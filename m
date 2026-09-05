@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E35D3C79F82
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 03:05:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5973C79F82
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 03:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDDDC6B008C; Fri,  4 Sep 2026 23:05:46 -0400 (EDT)
+	id 9FBA46B0092; Fri,  4 Sep 2026 23:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB5686B0092; Fri,  4 Sep 2026 23:05:46 -0400 (EDT)
+	id 9D3056B0095; Fri,  4 Sep 2026 23:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCADB6B0095; Fri,  4 Sep 2026 23:05:46 -0400 (EDT)
+	id 8E9496B0096; Fri,  4 Sep 2026 23:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BBCE06B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:05:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4076AA0265
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 65D996B0092
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 23:05:47 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D99EE1401B9
 	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 03:05:46 +0000 (UTC)
-X-FDA: 85178218692.24.77E1D3B
-Received: from mta0.migadu.com (out-146.mta0.migadu.com [91.218.175.146])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7A4971A0003
+X-FDA: 85178218692.15.25F9DF7
+Received: from mta0.migadu.com (out-143.mta0.migadu.com [91.218.175.143])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C5674A0004
 	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 03:05:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jjyS1sLK;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.146 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U3DiYY19;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.143 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788577545;
+	b=K80cjQGHx96RMGRFqK9cfc2jdjqs8RPwu+uSTD8NadwpftlP0ruM5fkPEFoXbY2nTctpEN
+	geiU0xObCl7KEQSKsB8ZuyBVkDMzz2zbz4IaPkqn2iIR6SeueZPOLPbgMnp1iEHpqKvY7Q
+	jadR999xbp7/5QvJkwK791IAzcX8+d4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U3DiYY19;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.143 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788577544;
+	s=arc-20220608; t=1788577545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Lv8emjDSLCQqXX4MOldl+P5GOTzFQBmPFgF9/GTZwgo=;
-	b=b+rcbfvnAQS5QGcZgIuusuRz/q+0A+UzzeyXzZQqoonQenAqUgYzltC2Jz1dVjQOahf4d8
-	9nITH5X+amTZTh6zlWtBc6FE/yslftbPMi0xsoOpQttWeNkjmRuHmN7v6cWqRDrU81QN8x
-	Ep0ylW17Lekt5sIkrE0m3Tl3uSK7uDE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788577544;
-	b=LdX6lbX0ElQ7PXtjX6TY046uHlEb+QPJsc7KVqbZSMmA5Rv9g7aW+cOS3O94+Ef2Y1iQbB
-	AiZfzRwc1awvvcU6LKxnghfCbPnowis7E5VV+FlLYRTSeILsssXznDpOauprIeQI5n9o+S
-	ISh/kL8XdHDxg+NyPntHMjoAksovGNA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jjyS1sLK;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.146 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1xsACVlUt/qLeChj8wnyvLoVOQpUoCMmyTKDFhWuvts=;
+	b=D82pZXKQ6zphPFOdjqrzzK9jGFEx5etKF8ZdKVx9dDf1IVuue+ETlwtwzAlEASXHUqomn/
+	yAKXYLs8NAewodMrSx8gdE5z8hkAdLoB/ebV4Rs1VfwDfyqfk/G9aXC2T+TErvf96JbsLI
+	juECjBUdT3lvuJaUgxnDwFo/eFXpFPw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=wLT7iFs3MczdphYR4AkXje9YdWj0uWa+VrRt5sOOktY=;
+DKIM-Signature: a=rsa-sha256; bh=OCqMxy89FiBT48toG1bb2lBNxftt+Uy3sG/HpFdPjKI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788577543; v=1; x=1789182343;
- b=jjyS1sLKPLphMwjUl3G1ZF2HBLcmNhPySNR4zxAcS88QvzF054XCtu14AWqqegKIG3s1pQvb
- b8QIDdHj9I8FHubHIlAzhTHgyPykidsgXl+mePQcPg81fhfob1uUDiQ62fF7DwOMfS3VFnWkKAh
- GjjNHCxS45UZAIsX4M90Q8T0=
+ t=1788577542; v=1; x=1789182342;
+ b=U3DiYY19bAXB6/KVr3LU7yjm1cTAB71T4DUya3mKji9CBTaU+wHDZhh6fCiTJgFrcRgpz3iQ
+ QPbSw2vzRdCYsD/EYU+MGXip0NNPj/cK5/A2h1//WpUqJjzGo4MjTI5SnXsWC/Q93PNoAgj1u4Y
+ LnZchLA+sOn5hVB+Wh794aZ0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 50c0c96e9f01a2e5;
-	Sat, 05 Sep 2026 03:05:33 +0000
-X-Mizu-Trace-ID: 50c0c96e9f01a2e5
+Received: by smtp.migadu.com with ESMTPS id 77fe83e8f7634880;
+	Sat, 05 Sep 2026 03:05:41 +0000
+X-Mizu-Trace-ID: 77fe83e8f7634880
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -72,20 +72,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/6] memcg: group struct fields by access pattern
-Date: Fri,  4 Sep 2026 20:05:16 -0700
-Message-ID: <20260905030522.1887837-1-shakeel.butt@linux.dev>
+Subject: [PATCH 3/6] memcg: group the write-hot fields of struct mem_cgroup
+Date: Fri,  4 Sep 2026 20:05:19 -0700
+Message-ID: <20260905030522.1887837-4-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260905030522.1887837-1-shakeel.butt@linux.dev>
+References: <20260905030522.1887837-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7A4971A0003
-X-Stat-Signature: e6de3uf3nrkq9jpdsf8tj5aqyxgczfgz
-X-HE-Tag: 1788577544-406476
-X-HE-Meta: U2FsdGVkX19ffIv2JJwkg99wadx47RWhlS6zkcjfa23ss0uinNIJTQ9ieDAkRjVVZGjT0NdcUjXB/G/3d8vqeJx58VUBmgDccknr6cW8qSSv2/c2tlN51h8/RFsiirce7os0xFQJy2f2zCctRDu4HCIANPUJ7RqSKc0BILoJpiVBs7Bb5DP2GfbH7rD0ZLtZshWAMxF9g3XWQHIIlKJGrjSML3pCqqYF0uxqw2t0l+GChpvRzSSpvefqrpe0W4oxSyICmWMGCwoKUhMXkBkdDOI6IYfxOOg43UimUz4rd33Hca5UAyMmK5ThdprnaoQVWWkDHLm4lP7FoKFvhCgCvqTfYnxkMVKWPaaEnSTYYbZq/ac1BbNScNCchK8P0NmNCFpB0bb2MeDZuaWZv4IWNji+RoY483Em4uisB0k3DmcsbIAT24iRkHOgW5jF24UDhDVeNWz5achLmlGLsjcHdo4anaQa6ka2Pw7UrMxArRMeEQA1aGCZDccNM0k3lr6VIO1DKwxSr6VzTeUhu0Edvh9hzRIDJNIz/al3ZLePT3rGjE/b5mzEJ45/qZBSBEc42PZz3D4sPcFqoZWrBlX6WH0URj5dfPAdRaaLS4yCjhGHFrsXRUXK9XKKuOSrRy5HB87iyaWh3p5rUw1WlbJ4Z5DmeqBdAxUQDhkE4RN+PU5pJ883d2D3i8Aa8NWcEWlo0BKpLI1ep9hcgU2RfukWHtNeg6XIuDhuc8O5QdVYhaWw8PL2mw/5Bk4Vy9INQX5E5FdBKBnpmSS00Z8oIAqpu+RjjKL9A+6DOtp5oemR+WTCXf2NAWu45XAOx6YSQ0WOO+Rn9jtd3CxCFTIOUDII2gH0xRGCqkpunfwWlNV3TfS7324/W4Ut+X5qR99VRqCtQoP3RVQHdqIHORHS27j298TRmsJpw0pXoHGIQIh8gsWGzGYzg9aa5UHo1wLogp/p9MuIDjIU4r5IgQ1uT1S
- uPC3dM5M
- MaqEVfWNf6ig1HI8RjCoQkDQJErbHTUnOUkcc4Mkw0MMJfHn0nhbef72iD+LlauVR8Q5ArbQreD7QZRNoAOqDgQlQYEnHW0SQBb0StkXXx02ST+QzwnlmD6JfFGuFBFd8oJZgY0kZnGfPWnQEwY7vsJEX2uKeOvSlUn00B+wyf39s6PGSpYXkuQIbpeMWngFZN+auitaKM3rLCCYwiAW0CZjZQvYimRrIIwhq
+X-Stat-Signature: mmbq1p8pk6kfjyjbp7cxcegrwyueddin
+X-Rspamd-Queue-Id: C5674A0004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788577544-406571
+X-HE-Meta: U2FsdGVkX1/TtCxN+kV3G6cuXgcmxhF08zGLfKDcKjpOBqNFmeuQUo99r6CnzW4vomrxxgWLJwPOWp3waLs/GramU7s8XUhZ3Q5mzFvjxwKs5zpwXt7d/7wto+TBxvo8nsWrkeYi+UfqppE+W8k2jpboZo9K7aQOUvvG+t/t36n7sha5m7WUGSVIfzB3vgJ/QYShGtB2wgm0Qzrt6P3v9D/jJ6cgaYvGnazKGwYI79MBH+N1A4f69OHl0LV9abF2gJyjGjV87ylSxs5KsGtI7Kbhq9aaJym12EFM/kG2y3mXjVwE8tTU6EqN2o3LkIYK/HaCv/X62QS42xy0hUkFq/hwM5XzGd1gjUGH4F7qfmveB94usNS8kl0ep4WfeAzEPGgziyuP3SoWGGUIZyk/dJzqsfn492zLHEdQynM9NZjWm7WqXbzBdZOtAUMei+Pk1F/CKLtt8lb4A7mHGAanuSjtyrBLWm+O47UZ6MlOUAGw3unEB9VjtwaRttrXNtuhUH6gFxLiw3OuOCf+XXTDgEZkRAD4K/jLlgyy1jpHJ3ABycab+De0eF4cOsmglr2srTZXpGLoAFizIrzm20lM6im1hnXDbFTtlk2iJy9DSnu5Zv1mVP6ynxoRW/f5B30ECYYLhI8VjDnvcnm+v6tNjtKIG/NjhzR35J+Al6kdqJ8IaCAo3c4Js4fmNbJ5wFdWEUAkKq/HStIvSHFfomBq8KdePnJZjkylzGZ3Tt5WG7cVLYRssqVqATXHV63YjJJ4gE+eS+cJqIL0cMG51G3IMN1haAiew1WICbbGFZ12IPdogOaX+mudWuKSnwRv6xbRGCy1+YQW5fIsTTrmPQq9Nl/PvLE9PsDIpoIA8kA5Gylf/VtLEAhOd+TmEQgqzNNoC0U/CJmmDHVt94zXs/24h8jI2olgeBoMkm8HtQRhWZQPJC9Ki5qjsqbvRDuoat9xly+cMBxEf/O8qntPDVQ
+ Ae7pcl8C
+ 1NzwDV6PZdKnKintDPmxUXxJqPfRQLjXgQ7n1Q2VkR8Os3n9nXRd6KzmoynjDATgRBLtdZX1WuBskfat4LDY9fee5aaX3Mgp1rF8gpcY62BXcLX3hXrjE4q5QN9BRDj7D5JFtM37TzYAfD94NI6ZUPNHF4GzBh3RwHYN1/e10Z3aWEPHGEavDP8nYS//asi5O6r6oEWKDVWbWLAxaIRHtfM2s7YOCIYSLIEvaZzNeykRv6kpB54jhF9HcFq5uMP0tWnNCHq8ivRULuenKm9HeHSiG2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,68 +95,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every so often we get a memcg performance regression caused by nothing
-more than a field moving. Someone adds a field, removes one, or puts a
-few behind a config option. The layout shifts, fields with different
-access patterns land on the same cache line, and a bot reports a
-regression.
+These fields are written on the charge, reclaim and socket paths:
 
-Two examples. commit 98c9daf5ae6b ("mm: memcg: guard memcg1-specific
-members of struct mem_cgroup_per_node") moved lruvec next to
-lru_zone_size[] and needed commit f59adcf59332 ("mm: memcg: add
-cacheline padding after lruvec in mem_cgroup_per_node") to fix it.
-commit c1afbd5de131 ("mm/memcontrol: avoid false sharing between
-vmstats and events") had to add ____cacheline_aligned_in_smp for the
-same reason.
+  socket_pressure       written by reclaim, read on every socket charge
+  memory_events         bumped for this memcg and every ancestor, so a
+                        busy child dirties the whole chain
+  memory_events_local
+  vmpressure            written on every reclaim iteration
+  private_id_ref        written on every swap charge and uncharge
+  kmem_stat
+  high_irq_work, high_work
 
-Each fix was correct but nothing stops the next field addition
-from undoing it.
+They are spread over the struct today and share cache lines with
+read-mostly fields. Put them in one cache line group.
 
-This series makes the layout a contract the compiler checks, the same
-way struct net_device does it. Fields are sorted into named cache line
-groups by access pattern, and memcg_struct_check() verifies at build
-time that every field sits in its group. A field added in the wrong
-place now breaks the build instead of quietly costing a few percent.
+socket_pressure is kept next to memory_events because
+mem_cgroup_sk_under_memory_pressure() reads one and bumps the other.
 
-struct mem_cgroup gets three groups:
+Add memcg_struct_check() so the build fails if a field lands outside
+its group.
 
-  memcg_write_hot     written on the charge, reclaim and socket paths
-  memcg_cold          only the cgroup control paths touch these
-  memcg_read_mostly   set when the memcg is created, then only read
+No functional change.
 
-Testing
-=======
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ include/linux/memcontrol.h | 59 ++++++++++++++++++++++----------------
+ mm/memcontrol.c            | 32 +++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 25 deletions(-)
 
-The cgroup selftests give identical results with and without the series.
-
-For performance, two identical 30 core Xeon machines each ran both
-kernels, with the boot order swapped between them so that machine and
-order effects cancel. The useful tests run two workloads at once in one
-cgroup, because false sharing only shows up when one side reads a field
-that the other side writes.
-
-  slab allocs + page faults, slab side           +1.2%
-  page faults + memory.stat readers, fault side  +1.3%
-  page faults + memory.stat readers, reader side +0.8%
-  everything else                                no change
-
-No test regressed. The gains are small but the point of the series is
-the build time contract.
-
-Shakeel Butt (6):
-  memcg: move per-node objcg to the read-mostly fields
-  memcg: split mem_cgroup_private_id into two fields
-  memcg: group the write-hot fields of struct mem_cgroup
-  memcg: group the cold fields of struct mem_cgroup
-  memcg: group the read-mostly fields of struct mem_cgroup
-  memcg: group the fields of struct mem_cgroup_per_node
-
- include/linux/memcontrol.h | 169 ++++++++++++++++++++++---------------
- mm/memcontrol.c            | 122 ++++++++++++++++++++++++--
- 2 files changed, 213 insertions(+), 78 deletions(-)
-
-
-base-commit: 817d340204c513316223ba084615f5906ac49ddb
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 46fc99786ebd..32b77ec5ba98 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -185,7 +185,6 @@ struct mem_cgroup {
+ 
+ 	/* Private memcg ID. Used to ID objects that outlive the cgroup */
+ 	int private_id;
+-	refcount_t private_id_ref;
+ 
+ 	/* Accounted resources */
+ 	struct page_counter memory;		/* Both v1 & v2 */
+@@ -195,15 +194,45 @@ struct mem_cgroup {
+ 		struct page_counter memsw;	/* v1 only */
+ 	};
+ 
+-	/* registered local peak watchers */
+-	struct list_head memory_peaks;
+-	struct list_head swap_peaks;
+-	spinlock_t	 peaks_lock;
++	/* Written on the charge, reclaim and socket paths. */
++	__cacheline_group_begin_aligned(memcg_write_hot);
++	/*
++	 * Hint of reclaim pressure for socket memory management. Note
++	 * that this indicator should NOT be used in legacy cgroup mode
++	 * where socket memory is accounted/charged separately.
++	 */
++	u64			socket_pressure;
++#if BITS_PER_LONG < 64
++	seqlock_t		socket_pressure_seqlock;
++#endif
++	/*
++	 * memory.events is bumped for this memcg and all its ancestors, so a
++	 * busy child dirties every ancestor.
++	 */
++	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
++	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
++
++	/* vmpressure notifications. Written on every reclaim iteration. */
++	struct vmpressure vmpressure;
++
++	/* Written on every swap charge and uncharge. */
++	refcount_t private_id_ref;
+ 
++#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
++	/* MEMCG_KMEM for nmi context */
++	atomic_t		kmem_stat;
++#endif
+ 	/* Range enforcement for interrupt charges */
+ 	struct irq_work high_irq_work;
+ 	struct work_struct high_work;
+ 
++	__cacheline_group_end_aligned(memcg_write_hot);
++
++	/* registered local peak watchers */
++	struct list_head memory_peaks;
++	struct list_head swap_peaks;
++	spinlock_t	 peaks_lock;
++
+ #ifdef CONFIG_ZSWAP
+ 	unsigned long zswap_max;
+ 
+@@ -214,9 +243,6 @@ struct mem_cgroup {
+ 	bool zswap_writeback;
+ #endif
+ 
+-	/* vmpressure notifications */
+-	struct vmpressure vmpressure;
+-
+ 	/*
+ 	 * Should the OOM killer kill all belonging tasks, had it kill one?
+ 	 */
+@@ -232,23 +258,6 @@ struct mem_cgroup {
+ 	/* memory.stat */
+ 	struct memcg_vmstats	*vmstats;
+ 
+-	/* memory.events */
+-	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+-	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
+-
+-#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+-	/* MEMCG_KMEM for nmi context */
+-	atomic_t		kmem_stat;
+-#endif
+-	/*
+-	 * Hint of reclaim pressure for socket memroy management. Note
+-	 * that this indicator should NOT be used in legacy cgroup mode
+-	 * where socket memory is accounted/charged separately.
+-	 */
+-	u64			socket_pressure;
+-#if BITS_PER_LONG < 64
+-	seqlock_t		socket_pressure_seqlock;
+-#endif
+ 	int kmemcg_id;
+ 
+ #ifdef CONFIG_CGROUP_WRITEBACK
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c42297ae3b0e..2e209dedeb4f 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5726,6 +5726,36 @@ __setup("cgroup.memory=", cgroup_memory);
+  * basically everything that doesn't depend on a specific mem_cgroup structure
+  * should be initialized from here.
+  */
++/*
++ * Fields are grouped by access pattern. Putting a field in the wrong group
++ * breaks the build here.
++ */
++static void __init memcg_struct_check(void)
++{
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      socket_pressure);
++#if BITS_PER_LONG < 64
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      socket_pressure_seqlock);
++#endif
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      memory_events);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      memory_events_local);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      vmpressure);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      private_id_ref);
++#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      kmem_stat);
++#endif
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      high_irq_work);
++	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, memcg_write_hot,
++				      high_work);
++}
++
+ int __init mem_cgroup_init(void)
+ {
+ 	unsigned int memcg_size;
+@@ -5739,6 +5769,8 @@ int __init mem_cgroup_init(void)
+ 	 */
+ 	BUILD_BUG_ON(MEMCG_CHARGE_BATCH > S32_MAX / PAGE_SIZE);
+ 
++	memcg_struct_check();
++
+ 	cpuhp_setup_state_nocalls(CPUHP_MM_MEMCQ_DEAD, "mm/memctrl:dead", NULL,
+ 				  memcg_hotplug_cpu_dead);
+ 
 -- 
 2.53.0-Meta
 
