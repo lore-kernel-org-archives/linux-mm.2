@@ -4,94 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA55CC624D6
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 08:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F17C624D6
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 08:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 313966B0088; Sat,  5 Sep 2026 04:35:47 -0400 (EDT)
+	id C93C66B008C; Sat,  5 Sep 2026 04:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EB626B008A; Sat,  5 Sep 2026 04:35:47 -0400 (EDT)
+	id C43D56B0092; Sat,  5 Sep 2026 04:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202BA6B008C; Sat,  5 Sep 2026 04:35:47 -0400 (EDT)
+	id B5CA96B0095; Sat,  5 Sep 2026 04:40:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 029786B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:35:46 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7AC111C1BEC
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 08:35:46 +0000 (UTC)
-X-FDA: 85179050292.03.24C96F0
-Received: from mta1.migadu.com (out-192.mta1.migadu.com [95.215.58.192])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4237D1A0008
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 08:35:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LbThWGY7;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 919006B008C
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:40:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14F3D16029B
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 08:40:47 +0000 (UTC)
+X-FDA: 85179062934.10.F562D44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5C474100003
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 08:40:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J84jmlQt;
+	spf=pass (imf14.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788597344;
+	s=arc-20220608; t=1788597645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZKdcalzFfHCkzaUSjtWFIOytWPP0NothcG56Z+sOaGs=;
-	b=kCvzZIDkNu4L78dkWEkOuemrwOUZeHOymWNzRJXVPAvtndBsK1blBvmdxkTq/yDeDCWKci
-	gR47C1yEY62x55htBF2OHF9fsnVt3SpLhgsdsxvA8u0U6YEG6v5qI+rzfijbtpkL17jsKu
-	oaQ8AvVb6pZC5vQyCJ4HpMGUYLQjX5w=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PN4g8RPgZ7jX0xRFxJnWC4F4Ar+p2OrqSGzlc5rvdWw=;
+	b=SzI7F3wyCpBhB3/lCMm2M2IkO5+LGvP3i1xcQjkCkJ0OjShKbLpvAlJ745z9Y/R3x9lZja
+	CeoP8ezbrKyV5giZR+DA598sIdnxAJmTBHSksogh6bC9yIDj8bHQchDZ3U7urbLMTuF8K3
+	sEECZ//mXjzjCc9JgMm8AEcVl6rfGXA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788597344;
-	b=8V36p3uGPAjehDdM7BHhqDzMdWoqlwvv7SDfGhE9rNTcfGyyQSYQgOVoMeMTYgpjvRl4cA
-	8lBWuHgLX48/VdMQ912lLU/75tb5Nfjcn6QJX8xcDbfRQYWtCV2AXWVXZgBauxFHjdBgbj
-	1YxXYPlQsiKN1+HthyIWxCztPxMhDQM=
+	t=1788597645;
+	b=pZ32Uc+zLz2OWlcsmcERF6k6lg/MfgV7B3uWFJLrJs2CmYTbyy5UDOEQ5F/bZSat4gD2Y6
+	9+BOnOKQQFjgRpHtVh3vPqqgNpHCPoybrOTzZ+BC5zgbKC7vIDBfxMnis6pZADhqM2KBNo
+	6DRa9UqpiPm+NgG6RmHWIwVjT8+1IVA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LbThWGY7;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LhEf2lmvz3lHfnrYNvIqdGOINaYOzsSsBbuAUaDK0d4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788597342; v=1; x=1789202142;
- b=LbThWGY7vZ2/ZeASc5XjxB7t/n5IBIhy62t573WwDn998Cdl9Xz+GWCmabUqgmUtwfWd7I2P
- VDyU0oSfPoXYXDlwtS+Hb+EGYXA6QWkahXFcUIFinC5Kzfad9AsCWaWRVK8drmYK/VIIGxCDrb1
- xj14qV4pMPTrtPPbSEQTrM4M=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 41100b57e1186b92;
-	Sat, 05 Sep 2026 08:35:42 +0000
-X-Mizu-Trace-ID: 41100b57e1186b92
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e3d0eaf8-a85f-48ff-96c2-dced4945b085@linux.dev>
-Date: Sat, 5 Sep 2026 16:35:31 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J84jmlQt;
+	spf=pass (imf14.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4956869750eso14280435e9.2
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 01:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788597644; x=1789202444; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PN4g8RPgZ7jX0xRFxJnWC4F4Ar+p2OrqSGzlc5rvdWw=;
+        b=J84jmlQtp/19zD0+D4gnUPho0syQOShCcoiDT6GOVqFAi7WVNiebt9ekwMjz5sFg50
+         x8OQZFMkfzF3cBrmkR2rowbl7cNn+JNfQmO9A4fjoA4uVcbC+I1qk9qXwpEmhMT3yybs
+         lnxLlGHpfseKak3GBNb7XuI0V95RCYoMnA88SGkQMGat5slmkC+x7nYEPQIGwaNbHv4S
+         o7kL1FcXULii4j0IMV2tWDoddyRKSKhMWxuWei+UAXJ2i+remhN+5pGuBrrop05GiXDT
+         S6dabUGtapfiykJg2prjOuyAeI+aR7z2sI5/flMzp8psCKAeFN3R4+DLadMWqvYUsrM/
+         6kEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788597644; x=1789202444;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PN4g8RPgZ7jX0xRFxJnWC4F4Ar+p2OrqSGzlc5rvdWw=;
+        b=V1NRnha6IPVnHjMHj5f1wo6Yx/W8gxbPJ0Q7PFfnqulMevKvRktPkj2gr/fRh6lVMR
+         oYiexGFLC9qIFz8l2FPNuandETglD6WO5YkV/vUkHG+vic8Iue2Z8pVcsmMnYJnF9vL/
+         ViJyleY1/aCB7y+6Gxom+EMFypUommnv0TG6SeRuKyx0YYS9NnS1pJOQKP1T+QVJRScP
+         TgbrlKn4DfPoJgzLMacOHsLeMQtBEgZIFAo1O3gitHmJbCTqXKxkZ2TyS+gXnJL4kIdK
+         JZglc5qvWv2RzmXR5aGVPa18cxGgnb88zUTyz4u1DTdHiLojrPZH1epvwCEPEhkcwYs3
+         jMFQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxhtmfUG3hrkBytfO0N6n2vw2AMZ7pnyFBlQwGb+QfMALSV7Piwq0Y5HvbGXtB1HcXa0WHnaqquOg==@kvack.org
+X-Gm-Message-State: AFuF++lUX0UAsQXNCU786pGM/f29iktZKusqh7r626eSGbKwZ6TCghzD
+	lEA1BemL6M5Pm+fYQeEeGm6ciMVV1IExFgj3PvTB+3mpQ2jax7++ymF7
+X-Gm-Gg: AYBFou3xJZ48jeh8A6aHFSn9G5B9UNeA+KAoTXMQcv0HZfTPUmeS/LwBMFpt0iDBMgj
+	NkNojst+joqvRYvnCWHZqyXvlejvoaHZe2cusWFV06EJzNv1QuQS0t/nv+m9vuZMqC4RcCqyCYJ
+	L/YBPXT/la6+Oc7UhQLC1qcnUUiBfWp8VoMvTJweyoEBmq+Nbn3f0ALu543fORSp5+Kbe18aXAF
+	a0wTTexUaRLBMuPsLjqTECwVFuJYH5kL1wTn7PJCs4UzY2TvMM4zpWbwhlAt8zSYU2x7ZYDQ0kU
+	4B57sgkdwU3jfqfDjqtUfny7SjRowwJrKMxq5MaZRR4f6cv3noHHBDrNaesIUm+XglRqa3RTSWX
+	EzFiKe+OS8XdlZhXRTl+gmVqzOwN6YaCkXgnagJXdf4i5t3sr6Ez6V95qPivwPf6kh0RitHG6QZ
+	KnOBs71OAF0PhV0gASdBhhPX9ALjgQVMqn5ehNiGS/q8JgCbPQTs84dPLHPHF0antpjQ9rKCjiA
+	L4YZaJW34TjQ+ELlair0vt/v6jomh305F14hBc6spIE2Z2faJ9inY/pIDNjWicp+elbPj3tos39
+	1Sm52mvsAbvMQW/l7o01TNCP9B10oNthi6DLfhwWwgWngVyv19RNCRsUFAot0rNkcTo=
+X-Received: by 2002:a05:600c:8b66:b0:49c:fa20:cbfe with SMTP id 5b1f17b1804b1-49cfa20cd6emr90941955e9.21.1788597643770;
+        Sat, 05 Sep 2026 01:40:43 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6158e9sm215544755e9.12.2026.09.05.01.40.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 05 Sep 2026 01:40:43 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-mm@kvack.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH] docs/mm: ksm: Use the renamed ksm structure names
+Date: Sat,  5 Sep 2026 10:40:34 +0200
+Message-Id: <20260905084034.39521-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/11] mm/sparse-vmemmap: switch device DAX to shared tail
- vmemmap pages
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
-References: <20260831075342.57563-1-songmuchun@bytedance.com>
- <20260831075342.57563-7-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260831075342.57563-7-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4237D1A0008
-X-Stat-Signature: z3fr41g5wdmdu1rjha5ea58nc65z9ex1
-X-HE-Tag: 1788597343-818200
-X-HE-Meta: U2FsdGVkX18r2pyiR1sL68cyKlX7+XtI5zmjCfpgZUVqeE2jOWlZFzjMOOVFYI1ojKc0paxdutUA6jrx5JuKJZ4wvuNhdHaAt+SNXjt1fVUSwhdztnNhroaNw9oaIj0xCZ9stif/35E76tNGSKlDz55c0aeG/kbUR6k5Pko9bosytXWoD/oFKqnLRcU1FmHUU71Jh+mH0Cc2CWstAWU7Oca7N4QkWZXai1RXVIdLq2u+IL6zUP65Yp80eUrTWp0UzlO+OtL/nknc4LDst/0GgrOuB3ryD1Ytp9OLggCHK0dqN/Cnp3GQUSg6ldIgNi0VYKkd6bO4zUnVgRtKYBKSZGQXHWgBBLT8MVD9O7ZDXCn2GxD44LZ/zt6Qkz9XkFWTFh27DXSGbMJL1RmV/RhTeupTkPrfVBE8fcQiFfv6A9J74cme4eyk4+ojGJeHdAP0t6KDFNG9cQP2AO7UIrrOgd3jSvXMNB8k/Y2NXblyB8+OZRtJl8ufYDqyHgm/dCNTaDesZIvd8uA6y0QOrsRMhSf2TM4mTjEusNrlGQpXWTmPOdhb09nXlWOIMsZ+hn6Nqlfe73jt+5YZ33qm5SDGHCmStdF13dXujyyiROWhP8SkrAxz/Rwt4tH5x0NhlxD75M00W5gMk6U72eXNcssl290s83l6RKyqqzdNSKS6aX6D3nt2u7umTZX39MnqRol1f0We4rrJvV3ftLN+q7MojH3OiaHOTi22twbBu4FX0LwDCfKdDGsAwHkfmuZ63g3TYG4hUBJBo/1cI3WxxEvrb08lVp2u8GACqOt3KXygFzYo9137elMPWqb4LbxsdZ2nQ7ys73zUctpwwxlYAZ8lv+saURQN9gkR0irUIDK/uubdhWV9RQwSJzQSBX6uCJMrfbQdSQr9+9RmHT8QtG4ImUP9ScPuxAK51I04urkSnci6+SQrzmLpYuUIeyWyx8EYziaCrzRFizcdOieGt2X
- H7tJYz7K
- b1qY215Mfrur7H0EYz6YxDj8aDVGfWhyjSsjE6GlF9e6c63M02tZJ8WEoiSVQHpLmcmD3BiAX1Vbz5pYFw4cs3boy+qvzaJ1BWZ6XqnbPmhjlyCTQ/5KxFxWLiTvqk02oSmBarY07GtWauBh5PjWwdyZbo7deoHx4c8F3UcTKoYmFgSY0W36B0sF7Tam3GCDA49VuEQig+hcIxuFwbYVe9Snv6yfCPNZvrQnFy7lodlZIwqRf0aG1dEorvWldQL3hx21dMqEukfHB/i2XL2rWw8ZoRHdipn0JVMG3ccIdYspL2VgM8YvR1KTiJXhpH6HabDOCogGKDn2tGO7n+jr+eb9Knyy6KI6joG7jZkWnAjOkMx8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5C474100003
+X-Stat-Signature: hedtjkzetqpqh9grafjsmexyr5gf3bf6
+X-HE-Tag: 1788597645-282812
+X-HE-Meta: U2FsdGVkX1/tvloqNvBmkB/PQVhNqldvq79Og8ojy45xgOHIsmaLu9N/7s08NZV6SchIOqGKxvBfynsbpz2Txgmh8bnFhBXD47pTLcV5K3+sB7sHKHkCzNBGjYp9vVHcjQgXG9q+RWaJY6ALnnrEuUyPvAHKlMIqZgIBtj5p5/GoupTiKjxfZ4RSQWBIRX1GtXk7Nt/s+UULPHPgYn5h/FW/bm3JP8RKz1RiGjuWkQWFWXEWdhcqrp8cWkpMxx5kSH6z3jM5LGbX0nUQ5wNNwUYxAB2jT6lC0zZsFGmGq+4bYaZHW2hx0iZ+xemCI/tvYaD0KNARu/Bwln9oaUJ/hfh5BJwo0T1o6/cwC8H8MXxpXQuhRGeP3ag05cMIFMz6f+PpiDWWLPfVfg5yMD+VNI9NblgMkQ4NaZW4LQ147dwvSU3BJ4PHCxJkSfcSxF3UcEDdygTz04Y5HV91kb5RRLTy+PGMwJx3QRy/lqEFIZOvQ2DuJQQSskRUS0ZVtiGxzGGV++ipZgjOYaOsUbnM10yLECn8RlkwgYonM5kFefLDGvJAxFelI+d0gkrrTBMWtucE63MGcFLJGwJrTwm2iYWRRcXgn/BhJysZbJgXl2P8hz9eL69y+c9PtQgyJpFrfkqvNIp/IgysKzkERgF/XQ046loCuNScZcPOBpL96M5EFHL6Teke7lia+Wx1oBxpfk+DkovBMJ7AOkkQToCpRAEifJQ8aWFsTZN0bEb80P4MmbQiCiW4t/oBC3a/wl8fqxppmXXYds6+pEproZIyKVFjis10zh69e60dMpvmTJ6/62ycXNmZsNDPOBZ7zfWUBC9yPn33lYWpUVSfJwOhqKLXaS5cK94UWHhirsy2yvYyRgoELm1h4YSRBbysluzHrv9J4pykpemPT7zTX5S584SXyjMhLwA5jcGIvgLcooYV8QwHFSaQ66Lb6Voc21nC+B5/4gyElTNsCoXP+ID
+ 5JZpk5ff
+ gyze0Us2Opm5sOWoaQHgLNrZ+3PkwRwOlNkNCR/LSTxYel7rw0iuL6oa9Ly5oD/l9Xb3Ha5661haS6478dJYetCK/I6mK5JIhRdibgi50CR2nYMBg+ghoju8Q7bVdfLdM7BadmLdXBxSAZljUijc5hKuHgUhLunW3ehWJqXNt1hvURSI08N8c6gZqqwzI6GNr06RLGHyP/uEv0cgQ0pzC6HEbnnOTqxoDqv7h7b2XGkMch9wZ6RnyUtjKBOtvJr5Rswv44kNLuXlQ2YJL0ewbSS2sz/CDnWlo6UnpV7WLV0ev73zVkWiA0yYlgDwWrpzxWis7l+14vTWFG0G/WRV3PZO1/uD/XU88EDFJOFbqiQOs60n6xEHPujNjUTy61PHG9jPpdBoiapX9wb0+RMkbIoKVslpR36fyNnsk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,28 +124,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The Reference section of ksm.rst asks mm/ksm.c for mm_slot, stable_node
+and rmap_item. Commit 21fbd59136e0 ("ksm: add the ksm prefix to the
+names of the ksm private structures") renamed them to ksm_mm_slot,
+ksm_stable_node and ksm_rmap_item. Since then only ksm_scan is rendered
+and the three structures are missing from the generated documentation.
 
+Use the current names.
 
-On 8/31/26 3:53 PM, Muchun Song wrote:
-> HugeTLB vmemmap optimization now uses per-zone shared tail vmemmap pages.
-> Device DAX has not been switched to that mechanism yet.
-> 
-> Switch device DAX to vmemmap_shared_tail_page() as well. This aligns DAX
-> with HugeTLB by using the common per-zone shared tail vmemmap page.
-> 
-> Since the shared tail page can now back ZONE_DEVICE vmemmap mappings,
+Fixes: 21fbd59136e0 ("ksm: add the ksm prefix to the names of the ksm private structures")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ Documentation/mm/ksm.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Could you explain this in more detail?
+diff --git a/Documentation/mm/ksm.rst b/Documentation/mm/ksm.rst
+index 2b4f72f1f953..5a80573162de 100644
+--- a/Documentation/mm/ksm.rst
++++ b/Documentation/mm/ksm.rst
+@@ -78,7 +78,7 @@ The frequency of such scans is defined by
+ Reference
+ ---------
+ .. kernel-doc:: mm/ksm.c
+-   :functions: mm_slot ksm_scan stable_node rmap_item
++   :functions: ksm_mm_slot ksm_scan ksm_stable_node ksm_rmap_item
+ 
+ --
+ Izik Eidus,
+-- 
+2.53.0
 
-As sashiko pointed out [1], it looks like this assumption is
-problematic: dax_folio_reset_order() may end up modifying all shared
-tail pages?
-
-[1]. 
-https://sashiko.dev/#/patchset/20260831075342.57563-1-songmuchun%40bytedance.com
-
-> initialize its entries with PG_reserved for device zones. Also skip
-> poisoning vmemmap-optimizable sections while their struct pages may be
-> shared.
-> 
 
