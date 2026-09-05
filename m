@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1AE6C624D6
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 04:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3967AC624D6
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 04:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64A2C6B0088; Sat,  5 Sep 2026 00:03:17 -0400 (EDT)
+	id AE60C6B008A; Sat,  5 Sep 2026 00:08:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 621836B008A; Sat,  5 Sep 2026 00:03:17 -0400 (EDT)
+	id A97356B008C; Sat,  5 Sep 2026 00:08:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55E736B008C; Sat,  5 Sep 2026 00:03:17 -0400 (EDT)
+	id 9ADDC6B0092; Sat,  5 Sep 2026 00:08:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 358B86B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 00:03:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFC19A41D1
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:03:16 +0000 (UTC)
-X-FDA: 85178363592.22.106DF84
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7D70B40005
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:03:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1DD6B008A
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 00:08:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 513DB12028A
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:08:13 +0000 (UTC)
+X-FDA: 85178376066.09.78ABBC4
+Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 289B3180004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 04:08:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h0m9iSVi;
+	spf=pass (imf24.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788580995;
+	s=arc-20220608; t=1788581291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ypuMNANzZkUknbrtbZYNBPUM7ZPhuLWbSdjgdFvvfX0=;
-	b=FmB0dnOPhdKZlC8EHTTdy2p2E9CNQg9Opkk1f9dHtXzt6zLreMSE/hSiOHmvFs2vuU0e6a
-	tOmvOtWAIlXVn/F5YkpmxaKxljhZHHQ2sF3tRZAX36L2eBIgjVtxIVcDbh+yl2S8aSp7n+
-	qaElr1R2hHkH6DtMvT2YdOYzAdCfILs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=swmnUz3epL8rr3V5+L0G3wg1OAO3XsfkpT2QJi7c4SQ=;
+	b=yGA4HEZl8CIibhDQA1WWWKLQiEAnJuVogbikiaf7+GaRDzPmVMApI2J3Mok7Fba5r0Dc1l
+	uT9zFR79UQATOCYg3ce6k7sAP42viT2roGBazvKPrO5LuOt04xC6tjYiSlCli5M5KPZoCx
+	QSBfDrXQBZOknZnYRttCLso3w2rgVts=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788580995;
-	b=zL6BVnFyXeUs5t2GvyjFjWtc80cdq/BAW9EJZD1JwXFGYSWceZx6D5gPhJAMMgNnCmnY9D
-	f53M45uPjg3Rqf6i771ppepx+PC+OLyuPDi8q9T/xxelE6Y4e+c+ov8GNK7N6R7o6QnPiO
-	QK/VuQib6GDRIzKesoqHbeiIAMN2WVk=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hcKR60tSwzKHMKN
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 12:02:10 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 7620A40561
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 12:03:06 +0800 (CST)
-Received: from [10.166.163.161] (unknown [10.166.163.161])
-	by APP3 (Coremail) with UTF8SMTPA id _Ch0CgB3NbN5lJtqvW00Aw--.4273S2;
-	Sat, 05 Sep 2026 12:03:06 +0800 (CST)
-Message-ID: <ac358441-95be-4254-ae2e-f9b2f6eb544e@huaweicloud.com>
-Date: Sat, 5 Sep 2026 12:03:05 +0800
+	t=1788581291;
+	b=VbDNLm1ZAVONFTOVoMiWa4dA8V2SAKaOMOP5KEXD+9wTSV+jXACxC7bhFuCXku5jKpbPwH
+	qS+S5OtfPbvkQsTtEgGnuS2qeaSnau40QJZPh9XFEEnN7AgmpvWAb2k1nT4LwLY51dQbdP
+	L1C8v882t8OkOVgy/U9mxQSITPuSW8o=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h0m9iSVi;
+	spf=pass (imf24.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Ogjcy6AWuIiNMoFElPu+5M0YUvjA1DAHyKooz++N5NU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788581289; v=1; x=1789186089;
+ b=h0m9iSViCse/ejJSm8+5HMIXz7cna1EPV225TkyAJuyIJeXjBl/i1XdzNA+khOH3q/PQaElM
+ XiAHPsrupi7MmolggXHPIYA9nOvRdo8VsJpXDcXiMCo20SRUog6KGljhmBDmdKfCQP/p6G1kZhM
+ sxddT5qZ4EsGtJPFGW9RJL8w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 92059d4e748b9bc4;
+	Sat, 05 Sep 2026 04:07:59 +0000
+X-Mizu-Trace-ID: 92059d4e748b9bc4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ffe712c9-6c24-4452-b703-c8e01828ed18@linux.dev>
+Date: Fri, 4 Sep 2026 21:07:50 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm, swap: Fix potential NULL dereference when
- trying a sleep table allocation
-To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <ryncsn@gmail.com>
-Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260820115505.20027-1-shikemeng@huaweicloud.com>
- <20260820115505.20027-2-shikemeng@huaweicloud.com>
- <ao_ybL9yRO_pHphW@KASONG-MC4>
- <20260828180338.0e62379137b832bd66d48b7d@linux-foundation.org>
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-In-Reply-To: <20260828180338.0e62379137b832bd66d48b7d@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 17/20] vfio: selftests: Add
+ vfio_pci_liveupdate_kexec_test
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org,
+ amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+ chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+ dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
+ jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+ kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com,
+ lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com,
+ parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com,
+ pratyush@kernel.org, rananta@google.com, rientjes@google.com,
+ rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+ schnelle@linux.ibm.com, skhan@linuxfoundation.org, skhawaja@google.com,
+ vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <20260714151505.3466855-18-vipinsh@google.com>
+ <0556e2fc-3be5-4023-a9a4-8482fa8c88b2@linux.dev>
+ <20260805055042.GA806762.vipinsh@google.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260805055042.GA806762.vipinsh@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgB3NbN5lJtqvW00Aw--.4273S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr1rGr45Gr4DXFy3Aw1DWrg_yoW8Zw48pF
-	sYga98KF45tr9rXr4vya4vva4ruw4F934DW3WxKw1293Z8Xr1xWrWkCrZYvFyDC3Z7Xryq
-	gr1UKw17uws0vrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UG-eOUUUUU=
-X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
-X-Stat-Signature: co37yjqwyui488gikn5f5ys36u4unns8
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7D70B40005
+X-Stat-Signature: 6gn5gxux3zssfm33chd3snkfc5h8tjhz
+X-Rspamd-Queue-Id: 289B3180004
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788580992-236030
-X-HE-Meta: U2FsdGVkX192pkPLQtPLQarxiTioEc8je0RdW9RDyS+FixZUfE5LzBXblP/MJ4KNwdcSfvf/ihK0opEtZPYXMXRUXILvBOrAsyxepEncawfQmWIF9TS0fzWdcSt237FmNf1wBMoxZccQjYSq6JPTCOzRgp5uaDYkwQ9k6SLiJF9zoy64Kx7m/e3oz0hcItgjqlzJYRqrWon28LAgD9O2tmp0V2cxwKd1nqoL6Ud68wZoCDAhJiKR7XcjCt0xpBPlxblQOXxD8OrROF/0mj7sIHz5F4h/gedTiO9qlFiOEmdjEsmjY5Jxwd4Dktw/BWBNz1i4CJtwF7spjD4rp7oCa0V1Y+kLPIPwlcb7s7FreO8DmbDPKTDSRrKWvjAep3UAUKeC4bp14aOX2qkU8Q5dNqjE1FzWVMIDuoKzC4RzwwX8+jR8LlnO2aiUCkpzH0a4np6rDGC6oFwaGlbO/SzdaW+OHMt+1Z3mnZ7Yxog+gfFSgLJ3vNBOC5t46AkHeZdshMYoILNQb4IQ2peWONOrZtt79GHvytPtnE6E4eRzri6I8ui8GChXY+eeT9jvxVtNRoQPDWWmsOPA9POBwBMxaQuufugoZEFYJquiYWXUt1I60DmLtSYQWVWKuuh0n8JFRhuT56ggmxRTykvPR87NmKv8Mzjhiz1wOQpUC2I9QJujbIQ/gzxpXyaovCiFWQhyEnylZ8TFZYzHw/scJkqzdiVdErYsgVHejBsDOxUByazAp6hJl1j7Qb9j7QZWWZEj35qj9kNJenNoQq70+Li8e0FitUqu2AGCCguzBxHLBU5FrFw2SuNryz/ArNZSl5petOmtzBRJm/SjtgJe1Zti/dysYCsGyFyHTdy0y9S0Jg2CjdCUmAhoNBE4jNgVGIg1G5ElULxF2qp+OARR0HK1UZNHh8HfLjT8zMY00+fPH8C2/xYj1X3DjfESNRttgW6cdepq8t+m6QKRpQyt32w
- YOtnn8R3
- ZsUuA5Z0Ga0qME/eerS1GrW4e52vCnhAs3gWt4nBOeUytTqJNvPrb+9T0OPSrkNCJU7aKwg49lfge5Zz/V+VgRN3AJtERJKL/LX7Kg4OIZMLHvWL24UbKbs+/q6MWAfctM+YOHg5oRGiOpxS8e5wBvqqN1aVkLJjxa/zvA5z0Ha326JwR+wAEp9ax+rpo5O+odSV4jM6iRhefz71aV/NOENg6AwFtf+2ZacGSs84PWwtxNPOzJGGbHJLRekcKi75cL29ZL9Ju56MdTErH4Koi2vdhmQ==
+X-HE-Tag: 1788581290-725154
+X-HE-Meta: U2FsdGVkX186vuawIg++BLWiyY9uesIrFMIXRt/UIiD0YBOioE44mxu4JpmeL+UpEzhMub8tTxA6+tCPNBroWav95snz9uJcYL1zg/sZSt6SEx0i7N2tiDOAYQlkUPfoUU8kwGVq6aG+V04WYf7E+3ys9ch5dZDWlkQXlr1DGzQwl9i1lRp3mxauJQNmCvF9gSPGx1xYhdDbwFNP1ZwwgQiu9hpiLLSAg+qtxiY+Ji8+rxwYc2UxHc0EFeAgmbypMGAjUexJqtsJV3OEFlaaS/54k8DcBI6v5iorl96JacdMfGyBtBzKyg3pfAIB9Bv0VGqwm/dAaretGuTaeRjMFQqBHyGSSjlC8QOz2NADTtpUbxL5eQVCkmOR6f4szK9SmOARuJMGAvIHuby+JIR/H+fsr52c9Rx1gJMYCBw0/0QGTDUbEtUiROf5GmRV2SZF2NDA+rEJKDCoMzHs+Mw1S1SQ44ckPlntAJYScwBf2lmnos/JejA09MZHBxrHDJAigNLb2f6vrDFWJ6g0UVuTn74o0psrLPNGsbpi3UXkIEH3Bygk1lK7Ls3YTKOipPwrY0723fJO/SDOlGFJJBr+KxD1L4lvF8jK7IwNSxeZ3CDl12BvH41vlqeMYkw9Iy5Am6oE9BVkuJYC27LqSbKynpUZX+RKXkiNZxfWY8BLUMDGS6Ei9ci/TvKBLuL7ng/5ycW5UfEW8lf0UrU2zBV0lNU3ttBsQS8nwTsFy2Sr/WPZN3UkcYHiI17qaM+OE6S842np8q0deJhQqyBWdktJoslM5aGk8xK3rc4SvQrGVCsjvjiVMnTKf6OzXfdwPpF+daeuhLGBLcnvUnHjDqGTMgUprJZ0UuBwfvBI15MM5CdKvCnKzNEHhN8AVMUXi9tHVF5Wm1Bz54j2KAosJujusXku3/iEnweUc0Eo1rirN9zlpOLwqFgEwBTn8UHMoBYIJD9I74s4JczoB7wkgU6
+ ICMRjAMa
+ 5rvzodNpVfqjSqfSTx1rFYSngJNaPbqi4wl4wb2wiwJOjyFlZ7Z77DWsRKHiOUCS3snswTbPm4ttd/tI3gowWBeob+vKaVZF0iqzKYkEutV7RKI0W4cU9K81KSGGolwjKrCCJzRUi0/izyhm0+A23csQ/PIpHVGaLgF/HMWxlVV6IrFbSchyq7NmhFwKZt7JqMwQlArO0zH363s18uESiYi3c5BEzT3hyL2sygiyfPZg1PYZjdQhaCUJlfBTc/RwiItdGFpTUZIYVKuKur8t1Tem5Nmio4SrM4/HampaYzcAl9qQO4ZeWcHQPL8hyeqx9GenDjFcuw6CtsXoePs4skWE4bto2uatndRao/gP7ra4BNpBgy5BjL7Q393yFZFLLiXAty3DpULTptk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,71 +107,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/8/29 9:03:38, Andrew Morton 写道:
-> On Thu, 27 Aug 2026 17:10:54 +0800 Kairui Song <ryncsn@gmail.com> wrote:
-> 
->>> --- a/mm/swapfile.c
->>> +++ b/mm/swapfile.c
->>> @@ -466,8 +466,6 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
->>>  	if (!table)
->>>  		return -ENOMEM;
->>>  
->>> -	rcu_assign_pointer(ci->table, table);
->>> -
->>>  #ifdef CONFIG_MEMCG
->>>  	if (!mem_cgroup_disabled()) {
->>>  		VM_WARN_ON_ONCE(ci->memcg_table);
->>> @@ -487,6 +485,12 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
->>>  		return -ENOMEM;
->>>  	}
->>>  #endif
->>> +
->>> +	/*
->>> +	 * Make tables visible to cluster_is_usable() after everything is
->>> +	 * ready.
->>> +	 */
->>> +	rcu_assign_pointer(ci->table, table);
+
+在 2026/8/4 23:02, Vipin Sharma 写道:
+> On Tue, Aug 04, 2026 at 03:19:34PM -0700, Yanjun.Zhu wrote:
+>> On 7/14/26 8:15 AM, Vipin Sharma wrote:
+>>> Add a selftest to exercise preserving a vfio-pci device across a Live
+>>> Update. For now the test is extremely simple and just verifies that the
+>>> device file can be preserved and retrieved. In the future this test will
+>>> be extended to verify more parts about device preservation as they are
+>>> implemented.
+>>>
+>>> This test is added to TEST_GEN_PROGS_EXTENDED since it must be run
+>>> manually along with a kexec.
+>>>
+>>> To run this test manually:
+>>>
+>>>    $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+>>>    $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1 0000:00:04.0
+>>>
+>>>    $ kexec ...   # NOTE: Exact method will be distro-dependent
+>>>
+>>>    $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+>>>    $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 2 0000:00:04.0
+>> Hi, Vipin
 >>
->> Hmm, but for the error paths above, they will leak the new allocated table?
-> 
-> Sashiko thinks so ;)
-> 
-> It also might have found a pre-existing data-race which seems
-> sufficiently on-topic for this patchset?
-> 
-> 	https://sashiko.dev/#/patchset/20260820115505.20027-1-shikemeng@huaweicloud.com
-Thanks for thre review, I will address the leak in the next version.
+>> Thanks a lot for your help. I followed your suggestion, vfio-pci setup can
+>> work.
+> I am glad your setup using virsh is working.
+>
+>> The followings are the test result. In the step 3, after kexec, there are
+>> some fails. I am not sure if these are known problem or not.
+>>
+>> 1. Before kexec command
+>>
+>> + modprobe -v vfio-pci
+>> + tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+>> + echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
+>> + echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
+>> + tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1
+>> 0000:00:04.0
+>> Preserving device in session
+>> Preserving memfd of size 0x40100000 in session
+>> # [STAGE 1] Forking persistent child to hold sessions...
+>> # [STAGE 1] Child PID: 1236. Resources are pinned.
+>> # [STAGE 1] You may now perform kexec reboot.
+>> + set +x
+>>
+>> 2. Run kexec command
+>>
+>> 3. After kexec command
+>>
+>> + echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
+>> + echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
+>> Checking open(/dev/vfio/devices/vfio0) fails  <--- I can confirm that the
+>> /dev/vfio/devices/vfio0 exists. But open this failed.
+> This is correct output. Test is verifying that open should fail. If it
+> didn't fail the ntest would have exited with an error. A preserved VFIO
+> FD can only be retrived using Live Update session ioctls and not through
+> usual VFIO dev path.
+>
+>> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
+>> (vfio_type1_iommu)      <--- fails
+>> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
+>> (vfio_type1v2_iommu).  <--- fails
+>> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
+>> (iommufd_compat_type1)  <--- fails
+>> Checking ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, "0000:00:04.0") fails
+>> (iommufd_compat_type1v2). <--- fails
+> These are all correct output. Test is verifying that userspace should
+> not be able to get VFIO device FD only through Live Update session
+> ioctls and nothing else.
+>
+>> Retrieving memfd from LUO
+>> Finishing the session before retrieving the device (should fail)
+>> Retrieving the device FD from LUO
+>> Finishing the session before binding to iommufd (should fail)
+>> Binding the device to an iommufd and setting it up
+>> Finishing the session
+>>
+> This is shows VFIO FD is successfully retrived by Live Update ioctl.
+>
+> So, you saw expected output from successful test run. I will change
+> the message getting printed to avoid confusion. I think current way of
+> printing ".... fails" is confusing.
 
-As for data-race concern, I analyzed it in [1] and concluded that the cluster lock
-already serializes all accesses in question:
+Thanks a lot. I have made tests in KVM. I can get the same test results.
 
-/* ci->table: protected by cluster lock */
-swap_cluster_lock()
-cluster_is_usable()
- cluster_table_is_alloced()
-swap_cluster_unlock()
+Reviewed-and-tested-by: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-/* memcg_table: protected by cluster lock */
-mem_cgroup_try_charge_swap
- swap_cluster_get_and_lock()
- __swap_cgroup_set()
- swap_cluster_unlock()
+Zhu Yanjun
 
-/* zero_bitmap: protected by cluster lock */
-swap_writeout
- swap_zeromap_folio_set
-  swap_cluster_get_and_lock
-  __swap_table_set_zero
-  swap_cluster_unlock
+>
+> Thanks
+> Vipin
 
-Since all three accessors acquire the same cluster lock, no data race
-or memory-ordering issue exists on these shared variables.
-
-Please let me know if I miss any case.
-
-[1] https://lore.kernel.org/all/76738b02-1f12-4deb-84f7-542d9830b0b5@huaweicloud.com/
-
-Thanks,
-Kemeng
+-- 
+Best Regards,
+Yanjun.Zhu
 
 
