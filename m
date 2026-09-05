@@ -4,122 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885F9C624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 01:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3EF0C624D3
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 01:57:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18D476B008C; Fri,  4 Sep 2026 21:55:26 -0400 (EDT)
+	id CDB0F6B0088; Fri,  4 Sep 2026 21:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164F26B0092; Fri,  4 Sep 2026 21:55:26 -0400 (EDT)
+	id C8CB66B008A; Fri,  4 Sep 2026 21:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 054596B0095; Fri,  4 Sep 2026 21:55:26 -0400 (EDT)
+	id BCBA86B0095; Fri,  4 Sep 2026 21:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C36F46B008C
-	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:55:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32CC214012C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 01:55:25 +0000 (UTC)
-X-FDA: 85178041410.24.B49712B
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7E7B740002
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 01:55:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NnAGey83;
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D3B26B0088
+	for <linux-mm@kvack.org>; Fri,  4 Sep 2026 21:57:02 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C4481A0224
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 01:57:02 +0000 (UTC)
+X-FDA: 85178045484.12.4739164
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 775394000D
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 01:57:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UF2mm+cV;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788573420;
+	b=FtUqdnoykqdCxMTyKYsQHhLEJAMvetTyKnuX3ixGQ5rNAGGfVFC7uSnvtABvWGg8AApMC2
+	GfHst08caN15wLuySRCStRzRO6cXYqNxphTN3xdgryYk/KMq/tOkkI8a8RPe6V9gkda+xI
+	zrkv9vpabqqBhwR6VsZbnKuGkdHdD60=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UF2mm+cV;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788573323;
+	s=arc-20220608; t=1788573420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bGqr/uumCH3i/wD1gHE7y7ihUxVOE4Gxi7P61fIxB4A=;
-	b=Icm0+71bX3xR7K2eArLL0/E+yoYq464NO0msQKV4/8eCIDKfiKPNCCMmyMQe+h4lfPpaAf
-	XTaTlruWS3SOLO9IN9Edoh0NuvjYGdSNkbNdxYz+KtjnJf7rJdRSW/LequN2yTUKK1uRwH
-	ZmkTspDw/e1S7vF+iDWJtXLtoP53XWk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788573323;
-	b=jrG10D1NEPJPA5dqRk5NoqixOfK6x8UMAze9B6Exab6fRuYw/0K4+Ah4h8W+QjpTeg43N4
-	JENsXoWdTPBWU1mtyLjpEUIVMnIoUDoJVZ2MEzyha6NLbSRTNv/HHB8+tolzZ37mKh0/jg
-	Wr9ADIkWvp5XlsHuZUvRFxz/mbPhSuY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NnAGey83;
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49b0dbfbf7bso12979205e9.2
-        for <linux-mm@kvack.org>; Fri, 04 Sep 2026 18:55:23 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ntf0Gs9o5nHGu8zNmOc2HNk/o4BHxgRxMWIB2pzt8o4=;
+	b=cW/8ekfOr9wbgj/RPyfQKPQgNga5Xd767JtXiTYWAJVRa7LhV9z9E9L196o7ttgtFHzgBf
+	dtgPrjqpYmew0Iugkd7Tj0KfGSuB8IDeskMgjN8yz1FAgvpHjkaLmFeR7zfdagz0yJsjB4
+	rO2pq3KdH5ftZ/F+0sZgN67XdEkT9JI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A38B5600C8;
+	Sat,  5 Sep 2026 01:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC991F00A3D;
+	Sat,  5 Sep 2026 01:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788573322; x=1789178122; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bGqr/uumCH3i/wD1gHE7y7ihUxVOE4Gxi7P61fIxB4A=;
-        b=NnAGey83dbb6SzkHIFC6f62lklcKFb8C+dhqVWe/Xa7OuQXkgIf76qo8B7pSdcY47s
-         i+rIBQ70gJFqCSQlhsfbDloa5rfEP3T8OsWmJ2H9vm7lycnGqCHItt+BnlZiekifQ6aS
-         WEEPHG3+fA96HzyZ8sq9F5C+yrrM0xJLHlW2vQeuj6x8yDpt/cwIgkMTUNIik/vE6U1m
-         hkH3Mvoq1QC7A2cyvDwx6bO3m3c9ixZKR4z9JoXRHYOJxhP2FRjC9nhIXvAYHsSFG68I
-         C1XFPzeVAzJhNcugr1APDlGBYZQTrw2ziYj4VVJsodZtdnrn8NFpG3qDrtjT3X8Y3D+f
-         gMoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788573322; x=1789178122;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bGqr/uumCH3i/wD1gHE7y7ihUxVOE4Gxi7P61fIxB4A=;
-        b=X9nbArO1VZTdFKCPOZXIO/fTfKrQ8ECO8ko3WykVVimUWShdocTD7aORRbrzBjT2gs
-         n0i/tBCWUbCgYmDvK4pkE/O9RiBss1xs/MqO5FGKeOy/38p3vXhOt6IR0Yw6+9dTL6um
-         miBHAbiG4h7loi/DKkhJOHQtWCDBs//d8g2KBRU+9uVUy4OsI7YcPmZl+bx/hezz0CoY
-         DlsCQA3NopnQo0+8zoWTBOMWVzt3C0Kbk2R2jT7i9zUxcfddPwYRjwzbtS2j65TpXQDY
-         ZmI3045790mCvQ76M4q3VGrIUcz6rMleXvD5yqN7vShDRGCnPuG7KsB0Jdz+S6eRt4Ga
-         iGnw==
-X-Forwarded-Encrypted: i=1; AKwUvBzOTwioV1OQ9EUrD2Of+6D1s/zioCMctqASkbQJM/23R/dLpOnZy2jfN2lbKr4n4ouDzjoL7Qia3A==@kvack.org
-X-Gm-Message-State: AFuF++kVpVgaSToMONiqX0hv4CSoWFU4qrcv6+36x4SRbCj00n5rJd12
-	iK+QldhlKVkRPVfXOiVL1IRSoCkreXQeOCdBL0Iz8/jUDGVOQ7Vy29jy
-X-Gm-Gg: AYBFou2osQJgNedFWwWqbAwnkZaxw5iRvMp0pQl0tY6FMszhT5cwyViccY7YMIjoObN
-	/9czd44XcVUaf8LkaA3S824dNWxcuUQBf9NETKgJ/Yj7gTqwt56xu71GoMoxUUEYLtgINwDVk2Q
-	CrXbLjM38wsmNsjuG4K4GdKQGwM4gMiATbE249e3y/TKmwTmzpOUWTS09ncbPi0+5/8OjStO2eM
-	rac2mAQTggDu8gWY4MJKhj/ENzZd9Z9ZMqy/tbIpatZ0W2H4nu5PNVxI+/5zyJC5H1iZMGbaUCo
-	5Bj6mdKiOpn87PKjDP+n6gRcmzL/Lk+Lu+DauXTOCXBH+I4lA5BZVhI49gWpe71ia27vyfgtXjg
-	mEODruMH/+K04pkOjdxm+tF7xOfGq+vGIxOBtn//hfWD7g4pOjJKQZMVR1jLi+lWnMF1F9sNek0
-	tXWlB+le1qFUWltXw9jZ9/3slDkqNe7X+n1I70Uoqe3O6jyz3jn9oOWBucczUe7PaEOv7YSWMhN
-	NIPjIyuzGwne3wZ/RljJol9bQK+3QC0wSyBHsO6pWFja5QeRKy5Mn071HZzGW/2IcM+2ilJdtVb
-	dkM7utHeEmVhDraiBBNgLpTavEX9V/oxkloHbZk598N4rDXXhx+F92HCei3aDpucDt8=
-X-Received: by 2002:a05:600c:6290:b0:499:8174:9f39 with SMTP id 5b1f17b1804b1-49cf7f3d239mr199069625e9.0.1788573321755;
-        Fri, 04 Sep 2026 18:55:21 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cff8195ffsm51258345e9.14.2026.09.04.18.55.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 04 Sep 2026 18:55:21 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] docs: maple_tree: Replace removed bulk insertion API
-Date: Sat,  5 Sep 2026 03:55:09 +0200
-Message-Id: <20260905015509.76265-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	d=linux-foundation.org; s=korg; t=1788573419;
+	bh=ntf0Gs9o5nHGu8zNmOc2HNk/o4BHxgRxMWIB2pzt8o4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UF2mm+cVyRVguVIyMXeo1zSa8ehJU05+xgU9XW/yThJCEM5wL9xkyCaKdw0jHiItR
+	 jjlazVvNsQVsxEg7fx8vXy0Pm2/cBBXGzBwnBlQJ8tbQKgYlxDlDc8DcvA2HlI8/gM
+	 p2QyoWJm+hqRTm26hBZOm1Ozdeh0s+rF3pvjyb2U=
+Date: Fri, 4 Sep 2026 18:56:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Gregory Price <gourry@gourry.net>, oe-kbuild-all@lists.linux.dev, David
+ Hildenbrand <david@kernel.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Subject: Re: [akpm-mm:mm-new 301/316] mm/memory_hotplug.c:1507:13: warning:
+ 'node_is_memoryless' defined but not used
+Message-Id: <20260904185658.cb3316b1d54ab7320620c26f@linux-foundation.org>
+In-Reply-To: <202609050628.ywCLhOj5-lkp@intel.com>
+References: <202609050628.ywCLhOj5-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7E7B740002
-X-Stat-Signature: cwa3gwqnnmem784yc6pmqfihsgmq4gaf
-X-HE-Tag: 1788573323-170455
-X-HE-Meta: U2FsdGVkX1+MloO8U49vCFd3a30tHG3uGayqpOzvrCkpPLq32aZmdGwccBc1TwhuOER4DoXBfP1qNhx9NkdleEaa98UkpNIIgA8bd8nLawTf5Am20ocPu0o9IpkFtvw78Gs1jlj6YXiILSfWFBaoRWY+SwJeRTS7KeH5WOb6UjiJWc4+kvPnjFvMlLSDciqyEQsZkao5ZxVh8FNeP/U+Sk2/P9jJ8soIyDkj4MmKltruNvBiTXWweCpVmoohxxoGlXnx+Uj9gpt1cRDjuMfZv+yj+chB2EFQZsJmoD2DTF40QOh5+UfRa+TdOv7j/sEdRXMzb2ZsMhuHPPl91eCIIcpOXeCI2ZUkWPW0FDEud/ZCRKiqyG7yySyZ+3tp91fOV87E8sdykurUP5EsvEQK9J/pwDo1Xn7vqirzu6FDAdLnZ0/45716CuXLnEWlhOGe7Ai3socJIaQFGO1gISR3u10qtGT/nSzVX9rcX8/xMwT9eu1Op5aWBMmQd7qq9bvsNC23Z7+AclQeqNq532E4IMEMU/pYNAY0BvimkrloiYfs/J3oM0HIkCYbNBTnhJzeexorzubP+709zTLwHhuuvkuNoy4cNqFtMBEB57ZCgV2k7axrCMjL/X3wR2aZaZZrQUmmbu6WSzp3xzP3r+PIs7z/ScuN5aS4A6MrX8nz7yXtuh6RuRY7KxkAgJLiLeCa2F5rMj+yjTYTcVmgUymlDIxLgdgo+kL39bliqQqCxVFXaSv/c4wO73peOOfgrV01Js776omRfjd5vX4Oo2v/Qh5ULOsuTd7DZv6U/sdjbjTHjQ/sq/IG253Jt5HHeVonIQos92GlEVgL3CkOPfjRySh6RcNi8sQMTnO97/1HxQTtpvVKXpp7qqrJvxBiMQ8GMCGUT9CEkCktsCnRAjTnGXJpRQ8w25vmHV9d52nTFYZMr8Mxd/t7PhzpUhIwa6zTTGpXWja8b3CcY5f3jzC
- lc2LQ0Zz
- HbBWZ8b6ag9tLsfKomZd8fLJWNicRkNS0gQGm+H1Mj4bTDNGMu/YMrPgp2AdmbgceOQsBxR5o1vVd1NZm5gSifACNxFUyWzvAQ9X7dRvcDlmRSVgO/XYHIUBZVslYjV8niMWwH7LcF6Pa20Bsx3CtR8OKbRyRTsg+6xdDD6CeoUpNeOXIjAHWROMzwTCNlpBx1X5M+IJU114K+7t5bK1Cxq15QZgsNY+Pn9yaanBFWE5tmMPw0K8V7d+BWeqFjuZX2sVJo9TSYjlbryIlZXyVXpc9+HmtXF8VCpoE6UP3tpMwGSTfOfuIN6v9T58HyzSP0Z0Ar1OOWqYJGNP/b7H9CqMQwIAkNlp0IDKKqN26onU4rV9Lz20tY+jTcNpr2J9Wq8HyNLjO2VB+yiuy8Soz5FFFFdyXxY5J82XwdlzflO3Lo6U8B2FnwVu4UtSlH/+VxisIzAlbvTmOs8wRpyxf2tc+/A==
+X-Stat-Signature: ty9xxnxkkxu9s4y9eehuysfrx5n6yjk5
+X-Rspamd-Queue-Id: 775394000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788573420-967100
+X-HE-Meta: U2FsdGVkX18rsLzUWHlAH7+6vUQ3V1tOgHxlRoEvnO+l98uGJV1xSNDHCjPKISGPYiFLFB/V0/5S4fAzAaHv2lQYE87yN/phcuIZPaIzc8rKfDnO7eOtvbabOkP33iCawEoa1pjjOdJo6PqwyXahyUnKhhfxfVtFm+o3iE4IYMQkGy38JK1DjBFDKnvt0YOKybYNqK9kPir4+RrxLMk9TTiP0Sp237DP9w/K2Y21uCRSEQWUJ/ppaXkQP7GCenfeSlbgRqwjaiNM7wM75WBsmroUa2Tz73dkN+2v/RR7tvCX/DHVN9ZpVOJ0T5JIgvBWlDizgcRC3BKgDBysW1j+x9HLa51rLslz4NcRXwhinVIwHu7CfHSaYo1Zx+XYnT29aAUsVaH83azmRz99oyCFg+gKWGrwIeqKVFYSqdyPi3F0fwFfJwq77vFcQoX86Y7vydP6kVt3d5ICdIfCZRDzP2nBLySVgrWy9NypVkDyKXZ+xKDuc0rl2fQlaQs0sizaD1zgbEXWW54FGGefGXEZy7Qd/ppKu6iu8QkzNobU1v4wTJqfZW/usYg1mOohXg9JOHmQA/ECnBNq3dMU65ghXDK45DFNzDI/yT9AFNlb7s86sX3ZrAKttZ90z2BOD0NFSzRMD/x13SdEtxzT/FbuWh9LnEjK/QeifHxVUsu3nnrvCvsqXmynJaC9+9NzkYCTItjMAv+SAK5ZpW727bmEoCCMhPs6o54TrYyQfLZWgqQhTOgvAJwvdQByVVy/IvNzNCGNOdQea1AZ984Q8ij75/UofqyoLFFUdC1myrVZPkbEry2AY1pZioo1PZgyMAsR181ePjQ7FjqA75x7oOVd6WCUmaveaxMRXXsCrn2c0nClNrjF5oMOcHXYFiYqVJmZsDysAI6RExn9L0ufJaYgaNCODCGXJgjdp0ksMqr8ghWRpB1dP67ut1afalHMQzsCSpOkiB5CNCkivpE3Xeo
+ juYEa4Sp
+ MtnB/Jn2iRni88b0wqfEmlvhAOtFLMYd4fZar08d5PzNPH0x4J+3Kc/FcSSO6zw3Kvz5lqog8ZjQf6zxfm+54x2tjGNNk3B+j79vo9gd5XIcHyYjA4w/r6L0sYoAGpNI3MARVkzv5JYm/Ih+vhYgr6BXo8QETns7mJjZwO86G4A3IjIm627tWWkgaxjPVozoO06EXayIm98nXA7Q/9DErWat6spv3/hEIsvIwOHPMZFfUPX7EPmS43Pl2mA1FMu1VkN9VhstxFl7/lgukERmxCpLxW1niBoBLUZJzZXJoZoXOUJKCACcCs7OP7f3hLLICCU6MAdNV7kXV7oUKamRwDmc6zAmwpjdbW+Wfr28CoS+R/SGYz5EvGkeRGmXoDWqc8JrOfhDYKg1HEvJ3SyErP3O6DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,38 +91,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit e3852a1213ff ("maple_tree: Drop bulk insert support") removed
-mas_expected_entries() but left the documentation describing it.
-Document the current preallocation interface instead.
+On Sat, 05 Sep 2026 06:32:19 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Fixes: e3852a1213ff ("maple_tree: Drop bulk insert support")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- Documentation/core-api/maple_tree.rst | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+> Hi Gregory,
+> 
+> FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
+> commit: 77a622e07892674da28eb3ad349ddd96df10aded [301/316] mm/memory_hotplug: factor out node_is_memoryless()
+> config: x86_64-randconfig-161-20260904 (https://download.01.org/0day-ci/archive/20260905/202609050628.ywCLhOj5-lkp@intel.com/config)
+> compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+> smatch: v0.5.0-9187-g5189e3fb
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260905/202609050628.ywCLhOj5-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202609050628.ywCLhOj5-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> mm/memory_hotplug.c:1507:13: warning: 'node_is_memoryless' defined but not used [-Wunused-function]
+>     1507 | static bool node_is_memoryless(int nid)
+>          |             ^~~~~~~~~~~~~~~~~~
 
-diff --git a/Documentation/core-api/maple_tree.rst b/Documentation/core-api/maple_tree.rst
-index 12bccfb6aac1..836342fb1eec 100644
---- a/Documentation/core-api/maple_tree.rst
-+++ b/Documentation/core-api/maple_tree.rst
-@@ -214,11 +214,10 @@ Advanced Allocating Nodes
- -------------------------
+Thanks.  Let me try this:
+
+--- a/mm/memory_hotplug.c~mm-memory_hotplug-factor-out-node_is_memoryless-fix
++++ a/mm/memory_hotplug.c
+@@ -1491,36 +1491,6 @@ out:
+ 	return ret;
+ }
  
- Allocations are usually handled internally to the tree, however if allocations
--need to occur before a write occurs then calling mas_expected_entries() will
--allocate the worst-case number of needed nodes to insert the provided number of
--ranges.  This also causes the tree to enter mass insertion mode.  Once
--insertions are complete calling mas_destroy() on the maple state will free the
--unused allocations.
-+need to occur before a write occurs then calling mas_preallocate() will
-+allocate the nodes needed to store the provided entry.  The entry is then
-+stored with mas_store_prealloc().  If the store is abandoned, calling
-+mas_destroy() on the maple state will free the unused allocations.
+-static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
+-{
+-	int nid = *(int *)arg;
+-
+-	/*
+-	 * If a memory block belongs to multiple nodes, the stored nid is not
+-	 * reliable. However, such blocks are always online (e.g., cannot get
+-	 * offlined) and, therefore, are still spanned by the node.
+-	 */
+-	return mem->nid == nid ? -EEXIST : 0;
+-}
+-
+-/* Caller must hold the memory hotplug lock for this check. */
+-static bool node_is_memoryless(int nid)
+-{
+-	/*
+-	 * A node still spanning pages (especially ZONE_DEVICE) is not
+-	 * memoryless.  A node spans memory after move_pfn_range_to_zone(),
+-	 * e.g. once a memory block has been onlined.
+-	 */
+-	if (node_spanned_pages(nid))
+-		return false;
+-	/*
+-	 * Offline memory blocks may not be spanned by the node yet, but they
+-	 * link to it in sysfs and can be onlined later, so the node is not
+-	 * memoryless while any remain.
+-	 */
+-	return !for_each_memory_block(&nid, check_no_memblock_for_node_cb);
+-}
+-
+ /*
+  * NOTE: The caller must call lock_device_hotplug() to serialize hotplug
+  * and online/offline operations (triggered e.g. by sysfs).
+@@ -1815,6 +1785,37 @@ bool mhp_range_allowed(u64 start, u64 si
+ }
  
- .. _maple-tree-advanced-locks:
- 
--- 
-2.53.0
+ #ifdef CONFIG_MEMORY_HOTREMOVE
++
++static int check_no_memblock_for_node_cb(struct memory_block *mem, void *arg)
++{
++	int nid = *(int *)arg;
++
++	/*
++	 * If a memory block belongs to multiple nodes, the stored nid is not
++	 * reliable. However, such blocks are always online (e.g., cannot get
++	 * offlined) and, therefore, are still spanned by the node.
++	 */
++	return mem->nid == nid ? -EEXIST : 0;
++}
++
++/* Caller must hold the memory hotplug lock for this check. */
++static bool node_is_memoryless(int nid)
++{
++	/*
++	 * A node still spanning pages (especially ZONE_DEVICE) is not
++	 * memoryless.  A node spans memory after move_pfn_range_to_zone(),
++	 * e.g. once a memory block has been onlined.
++	 */
++	if (node_spanned_pages(nid))
++		return false;
++	/*
++	 * Offline memory blocks may not be spanned by the node yet, but they
++	 * link to it in sysfs and can be onlined later, so the node is not
++	 * memoryless while any remain.
++	 */
++	return !for_each_memory_block(&nid, check_no_memblock_for_node_cb);
++}
++
+ /*
+  * Scan pfn range [start,end) to find movable/migratable pages (LRU and
+  * hugetlb folio, movable_ops pages). Will skip over most unmovable
+_
 
 
