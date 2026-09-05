@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A5DC79F8B
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 19:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E1EC79F8B
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 20:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51F526B00A0; Sat,  5 Sep 2026 15:49:54 -0400 (EDT)
+	id 78F506B00A4; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F84B6B00A1; Sat,  5 Sep 2026 15:49:54 -0400 (EDT)
+	id 6C3676B00A1; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 438616B00A2; Sat,  5 Sep 2026 15:49:54 -0400 (EDT)
+	id 543F66B00A5; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EBC36B00A0
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 15:49:54 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 953781A0366
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:49:53 +0000 (UTC)
-X-FDA: 85180749066.01.EDAFDA1
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A1BB5180002
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 19:49:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="Nc126gF/";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf06.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0946B009F
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 16:26:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3736160302
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:26:46 +0000 (UTC)
+X-FDA: 85180842012.25.BAE03BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1950240003
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:26:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y646QVjB;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788640005;
+	b=8nL0VXgCgDLllTSbcnhrZeTMarUEAi/88Wdjxw4oav9u/HwSKFd2kfaP50mPp1/qYY+r42
+	AVjYMS1Kiki8dxy41MquRPgfzOh1uuKkyx70F8L53yc3X9oBdjqYMZeQbr8KSeZkxbuX4o
+	14nMPNrIvJiLQSOCXgRSgKt9xIUEv/A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788637792;
+	s=arc-20220608; t=1788640005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dOlJOC5zpBu6MtL41vNbLB5DikFdEvej+QPJFEZWO4w=;
-	b=CF4b44NjxzLp/Pj3dHDGH9Uwl0hDGhyajk9dvbJ5/+wVFPPFtngQfeBFHeHcVQPAQDhlEP
-	DXdPT6RP0XrmmZg/93UA+cYyPW5Syqosk6Bfx8hPOzR0Yn9sQkKtVzzlg9oTyq4uwASjqD
-	aoycauJ/W7A5c/G1FonhP37vRbl8Olo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788637792;
-	b=gc6pzCk028216Hl/oV4m56hTASVMvXi6sx9FDYnaphERNhVKVc4osqziVuVGhojPGO5RvK
-	oQCMlq/Ws4kOdqz0eeOWxZe6XU2DbmGLQgBKLghX1W9p5+zt8i1u9V3ObcTSQ250PKqY9J
-	9mF9VM0dHnlppIDavYkhEb9qCcfQRDQ=
+	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
+	b=izKQ/aeCBcnElMgXvhq8k7MsY681zuj2Qo9JHFZ41/DA2Hd5UlSMlmaZD/k9irMRGnnJv/
+	licrzvEJLjQSQcJrY1fgCEI1h01FMgNky7btURPyraQDgWHmXJ7HubNZngETqrXY5mt6Qt
+	vzBoBX5r16pznfN+IshRfQU3TiAAbKM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="Nc126gF/";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf06.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=dOlJOC5zpBu6MtL41vNbLB5DikFdEvej+QPJFEZWO4w=; b=Nc126gF/TGG7yeI+pCV3ydxzEM
-	KZfq/OLCtVZBNokaXhRKhH6qyXIUNjtrbtIK5TweJrv2xoWQH3ZsW3fyB4dm8Qejfm7qq+OkA+ipB
-	1agDCfYTlf4+lOkqo9XNurXjeWmQ40On/t8exft5mt0noaJyFA84eyHYvoTtlC9F6kKqffaTgOejC
-	ki2k+njoPWB59k2LJEOlFC1s5qFnsUIJy7hO/By44TIlrf2mS5W+BjHN3B+Hd9HvfGH5YoTycud/Q
-	HrJ3J8eWxmAeW2IKx2lLx3m4pc364qR5owwuTfvXBFB8jpUZ5253KCji3yXpDAzF1BHidngEtXjrT
-	Va1oIdHw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2wOY-00000004NjQ-2uog;
-	Sat, 05 Sep 2026 19:49:46 +0000
-Message-ID: <97f80aaf-fe16-4557-a4bc-7eddaf406ee5@infradead.org>
-Date: Sat, 5 Sep 2026 12:49:46 -0700
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y646QVjB;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C7256025B;
+	Sat,  5 Sep 2026 20:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2A51F00AC4;
+	Sat,  5 Sep 2026 20:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788640004;
+	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y646QVjBODL2Nszz7u/PMlBRcqwdj40UkazJ/+ndoBf45LjxUX63V8oybAf0LrkTb
+	 EsbEmKlKOyyDEQcIBDdziEIQe6oT/MkSV5kt+HK9xOLpQDKOuJv6tv5rcRwxzjimdX
+	 WPzg/dpwTrEmQh9Xs46X7j10+LK21PhNLXpKZwPZL79EQ3ne4VVaQxSNlDktdEQeDl
+	 Fg31MReWxKR4UYG96stySnkAc2tdSInKBIywyRA7IRTUNTe0kJDSWlvcsjeRhXc5A2
+	 bfi9jDkidi/1NTrcVDtJ+BWtH5qstOI0Fesqwg7s6XE/PLvWmsnVbsyfl4LydHo4Ct
+	 dNlS54AuTjURA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 2/5] mm/damon/paddr: move probe filter handling to ops-common
+Date: Sat,  5 Sep 2026 13:26:24 -0700
+Message-ID: <20260905202634.88102-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260905202634.88102-1-sj@kernel.org>
+References: <20260905202634.88102-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/mm: ksm: Use the renamed ksm structure names
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <20260905084034.39521-1-kmehltretter@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260905084034.39521-1-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A1BB5180002
-X-Stat-Signature: f1uu89ywafkpjkqrfid6dqhrp7wceg6i
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788637790-843912
-X-HE-Meta: U2FsdGVkX1/AeXMY90YNHmtlfcWIGZ9kAJqk/lYKpwqFzc8ty9Pg64eMpdWBfHtyGgGfB8VOw/KJMQsvglubGSL20JqLtQq1n2zn0aQfRfB7ikmby2pDlHHbGSc6AsPFNicjehAWIZDwvn9QjkUNtII0v3Shi/PmfFDOHafoEfAo+vh38pDylspW4OZ4kkkqTUk6MCdhz1bKn8kBBMUoiyJ6LG/z1b3FYqqP4iJqTQGhOwvqUlPBU8h7O1989JIrb5UKeC1d+iPiCdbdGVq+sc66c06c7d00zvaqYOTGBODMWhaMKBbOR0GCky4otsiohgozUBEObVRa+3W9sK3jvEzJ0HbdzS5nDEsVb+33MaLyFpVujxW9rPeHkJjiUp7X4bbVsyos8Sx39ckMG7qUxMi3ApldKiigSi3uD5fIPEtcYfn2HLz+bBAP2ZNJZObwRrpP04gnTNhmYaE6L3zWFdie2Lr1YMAjPtezoY1rxjosoQn3RmmIyd1skuykLAL0+IG+vHkt8lm7MZMVn2Q4OmnYoPb5QMFGe9HqdqxV6TO6idFxQr9SIP/IVudm9Ke+aCgxUaXmBkWxQr60S7WJmBmJpaDr6nUruoawgorL68oKOFTLnuaiF0jXQ7WArD1Q3empAIx+XdgVzeilmG0rUxVqPoX2yglWOMwtBX7MEnSfbNPuoaFec4DXZVttaMt1nnCWOsT7mVpnD1wUoHiRhGyvsxZfgakjxu6Rmam90Ox1qK/qPAViHLKKZtiMTbUrZxrEO+qAEYqF4IgzI+rzEriXLdDgf24oq7+25cF+zKs3yQa5KF3FSFN0MGx9OkkxcFf328dAhUXX3YjPA8AmL7fy4vT7y4UC4xwO8/vS2MynTddrLk7EtUu6U6sMXN0NBMOHW4S1DWQWoczm+5QjdSknqeG0tQ5j+aOZgnvwn/9kWXmqObuqtlk07SaFjsV+RNBBHd3+Dr6jx1r2TT6
- PIlN/vAb
- QPn5FG8472MBmKGNaH9lL3PVwzBicM0LzHrMIpyN4STJZsZJ7WJVmEaMgLoWCpIoCXLcMr/6RZUwDbt/DPCI+q/bNzPpFFRA9gV3cS354L2edWqf7oG1MJ6Nq/2EYTvLQtQOr0HhGIQe1pYPsK43mBqpNtFgywIAt6Ys6yE21pfgdQN9axTDCnVyPFn53UkQdsFKchwbgplZv/iWPSgc3sBEMWJYt7s5gpsJRjsCOrVO1q0kUvZemDFMn0ek8cBKPQAIAtamzlvp29Mop6Y4U27hl/PXIavPspGZisYeldDBcIDdnkvs6Gtif9jQbIDOUR8ZsRqhMeHSgKHTOa43P4rycDq2vAy/tVKtkR5z1rnG0pIj3hMPGQOMK0g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1950240003
+X-Stat-Signature: 55qjygwa3aremtxec4k1eo1eq41nn4k6
+X-HE-Tag: 1788640004-977250
+X-HE-Meta: U2FsdGVkX197JXyv4p70Q2GdSE+mO7ri3kU878Fiiy7h1gm+OTNhSVd+e8i/klXcJIiY1OLrELtwvRxPpE7Q0qGuqIdIH2ZeTjDBAN7kR/vS5xeVYTEElyk04UgIlLseTYjga+nUlzXh386dXeV3uNUwl4egaemjFPpJvKyRvDjYQuCKobfviXI9th1R2bWMbxxGUQGhC8FJvAORPnJKsAsZ+bTpdnCsx++cr+FU9FZdSN6XAgjMM7zrN1ybyR9nTmSt7DVPHzwxQHL4NIIF5Exx5b0t6NTyp03yyafFU1558VMatmfN8Bryjmp9eS3CLjO3llVlQO15oUPnDlFetqFDu4dPOpMJwTbhuk9Opu/b9r6d8/8mg1jSpMEEugcU+TM00Kl9VtbXUVfvN/OVc5jj7zHPRM4cmEJMk2P06FdXhZ3LeqfeLuOpYqnou65wEuc/MylcrZ0tiYDvNWOWRtPRfrsnpoldD9ew9fuEelQf6AYBSs8HdvQcY7pofzcs3ydMZzT78ul4SodGiyoiwBswRGrLHK9iB4VPOImj38g2A7pqGRBV1qJb8vW0s2oV061WCzkbVhXXTEbXdpjie6OGwHKQfVryyYLNM0R5beSwIePGvB8mYBRWUFWeKueYNDFHrJXe7FqiEjHPNNVb7t+lhwuGL7jTU+bkdcoITwEQO/ohutrMiAXRzrCcuOxqwwWvLSOR/sw06sSerWmpMWgoAmJt/9XR2gAQ37yIIaWl456NbmXJ9d2a36HVb4JgHNXuRm2yVVkJjN8RncbCcsmZ2BNmO2SwpAfdIGvSQS/ISBBUb2bclMuQw4iqhWkbOBCNePUgfcOhbHp0h6J4pTIoNHuE7cnI6IJGNOOMBGN66EoMx7bRv5HaZ7CopRlqjFKFhDBy7TvH/WOB66n8bPSLD0DRuqM/DzpT6BGnskOhkOM9ODHixKq78bHvGNQGEapa2aPaj9SwZ1iucWy
+ OZxS78Rz
+ B3wlnU/t7Oeg7CF7Tsz7SkgvVOI10UdZvjsZx2ja+3r1Qu+6EqCyTzzi9KST3yNnCIh8TBtFdQ/204QFQWpU5FPq9akzAlj9cA3eZAiHvTqiDerzwTn8NUP9mKvABPwWhdRIcMTouqeaBPPHfg+19NAzwl9pBPAFY0cJOtZRfdFli/Vbgovw5L/HnhIWfKVnJLDQ8azNFAehG+V1kq3KIH1ofi3yzhdl0DnzGIagv5glH2gc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,44 +93,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Probe filter matching logic for anon and memcg type filters in DAMON's
+physical address space operation set (paddr) can be reused by virtual
+address space operation set (vaddr) in future.  Prepare the future by
+moving the code to ops-common.c
 
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/ops-common.c | 32 ++++++++++++++++++++++++++++++++
+ mm/damon/ops-common.h |  2 ++
+ mm/damon/paddr.c      | 23 +----------------------
+ 3 files changed, 35 insertions(+), 22 deletions(-)
 
-On 9/5/26 1:40 AM, Karl Mehltretter wrote:
-> The Reference section of ksm.rst asks mm/ksm.c for mm_slot, stable_node
-> and rmap_item. Commit 21fbd59136e0 ("ksm: add the ksm prefix to the
-> names of the ksm private structures") renamed them to ksm_mm_slot,
-> ksm_stable_node and ksm_rmap_item. Since then only ksm_scan is rendered
-> and the three structures are missing from the generated documentation.
-> 
-> Use the current names.
-> 
-> Fixes: 21fbd59136e0 ("ksm: add the ksm prefix to the names of the ksm private structures")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
-
-> ---
->  Documentation/mm/ksm.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/mm/ksm.rst b/Documentation/mm/ksm.rst
-> index 2b4f72f1f953..5a80573162de 100644
-> --- a/Documentation/mm/ksm.rst
-> +++ b/Documentation/mm/ksm.rst
-> @@ -78,7 +78,7 @@ The frequency of such scans is defined by
->  Reference
->  ---------
->  .. kernel-doc:: mm/ksm.c
-> -   :functions: mm_slot ksm_scan stable_node rmap_item
-> +   :functions: ksm_mm_slot ksm_scan ksm_stable_node ksm_rmap_item
->  
->  --
->  Izik Eidus,
-
-eh?
-
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 441d45679eaf2..76b663a4be610 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -524,3 +524,35 @@ bool damos_ops_has_filter(struct damos *s)
+ 		return true;
+ 	return false;
+ }
++
++bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio)
++{
++	bool matched = false;
++	struct mem_cgroup *memcg;
++
++	switch (filter->type) {
++	case DAMON_FILTER_TYPE_ANON:
++		if (!folio) {
++			matched = false;
++			break;
++		}
++		matched = folio_test_anon(folio);
++		break;
++	case DAMON_FILTER_TYPE_MEMCG:
++		if (!folio) {
++			matched = false;
++			break;
++		}
++		rcu_read_lock();
++		memcg = folio_memcg_check(folio);
++		if (!memcg)
++			matched = false;
++		else
++			matched = filter->memcg_id == mem_cgroup_id(memcg);
++		rcu_read_unlock();
++		break;
++	default:
++		break;
++	}
++	return matched == filter->matching;
++}
+diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
+index 172f0f17c4a84..ee27058251005 100644
+--- a/mm/damon/ops-common.h
++++ b/mm/damon/ops-common.h
+@@ -31,3 +31,5 @@ bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
+ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
+ 
+ bool damos_ops_has_filter(struct damos *s);
++
++bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index d2173a448d0b0..d7c81829445ba 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -143,29 +143,8 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
+ 		struct folio *folio)
+ {
+ 	bool matched = false;
+-	struct mem_cgroup *memcg;
+ 
+ 	switch (filter->type) {
+-	case DAMON_FILTER_TYPE_ANON:
+-		if (!folio) {
+-			matched = false;
+-			break;
+-		}
+-		matched = folio_test_anon(folio);
+-		break;
+-	case DAMON_FILTER_TYPE_MEMCG:
+-		if (!folio) {
+-			matched = false;
+-			break;
+-		}
+-		rcu_read_lock();
+-		memcg = folio_memcg_check(folio);
+-		if (!memcg)
+-			matched = false;
+-		else
+-			matched = filter->memcg_id == mem_cgroup_id(memcg);
+-		rcu_read_unlock();
+-		break;
+ 	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
+ 		if (!folio)
+ 			matched = false;
+@@ -173,7 +152,7 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
+ 			matched = damon_folio_young(folio);
+ 		break;
+ 	default:
+-		break;
++		return damon_ops_filter_match(filter, folio);
+ 	}
+ 	return matched == filter->matching;
+ }
 -- 
-~Randy
+2.47.3
 
