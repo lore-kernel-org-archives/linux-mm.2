@@ -4,94 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05534C624D3
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B4CC624D6
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 15:27:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3426B0088; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
+	id 998466B0088; Sat,  5 Sep 2026 11:27:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7CBF6B008A; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
+	id 8FA306B008A; Sat,  5 Sep 2026 11:27:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6B2A6B0092; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
+	id 7C1FA6B008C; Sat,  5 Sep 2026 11:27:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B22B36B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FB1E6B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 11:27:24 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39C7E1C1F65
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:26:26 +0000 (UTC)
-X-FDA: 85179933972.21.2B54C5B
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 85ED8140004
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:26:24 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.69 as permitted sender) smtp.mailfrom=3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788618384;
-	b=28nh/Q1N9n1dt3jtuCS0vh/Zig4Svns9fXevA/i6MhqSA+UKupBhR5oM2t0GRLF0a4e+6A
-	xTFt7uK6QOnvJlRVMWOi5dC9R2blXecaPA2Ays6SRgPVCXo2jNZGdLWmq61N8Brmo3fhNn
-	/fYpZRlyjbl9qM8YNNuJmkURL2xXO5g=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.69 as permitted sender) smtp.mailfrom=3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C392B403AF
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 15:27:23 +0000 (UTC)
+X-FDA: 85180087566.21.1F0AF8A
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26A85100009
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 15:27:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U5Ixe3Oc;
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788618384;
+	s=arc-20220608; t=1788622042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=1ETkXqycGRjohhEM+siMcRzRNo0ykM9QCfZj8kTd0Fk=;
-	b=JqdwcmEczdXre+uiEreYfcrcEFrikxIHQH0DXWjY/M5jSe/xxH+1E5Q9MP6MRxsn7XRpu4
-	EvfgE1lBC2P++Td0cogadEvM2tVdEKdDA07qVqN1uNgPM8fnWnll9rdg9ZbMwpZtGTFLmk
-	NTE9j7sTa7BYCsIJ8ODBN0pvxMXmHQc=
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7f8931a803cso1842296a34.0
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:26:24 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fMDzWqUveBSzd5QyaJkSDxL5FMTYjVkFKS0zQ+Fx1Uo=;
+	b=dRzBcwgLwC3I78U42N+vUB9hQJ461HrqjPoeEIQVIDed4S++Gk/cb7rtoEmD5BhENjU/tu
+	8eQlicrIRYRGaED0927O1Be6YD4IpYfj50ijwTKYEK1VDJm0q5CAqbhf42Xe8XatnfKUZF
+	rl0llQCcq6+Y4RwEL5N4M0Mz4xqoC/0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=U5Ixe3Oc;
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788622042;
+	b=oJNJmiQlPylDu+j+bws/DU92Mq8OwS+xbGtCMUXBbrIho17bu4c78BhqkoKgAUll3WGyQw
+	qQDd+oBPP6n5GnWIjo8W7LijIYKy6eaNVGh8imvg4D/eZbiXFrQK5qpP6M9lWzGwfXMwE6
+	ePkNM2P+qC3oifTz/735vwa69GWqTJA=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c250c6a6a9aso328989066b.1
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 08:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788622040; x=1789226840; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fMDzWqUveBSzd5QyaJkSDxL5FMTYjVkFKS0zQ+Fx1Uo=;
+        b=U5Ixe3OcLtWiNQXUf/pJtVwdP/c0+b6RuEe5rfijQQAYLyVHVWCwbmU486M4YVPnWS
+         l/5E8krkQqkEMBbaTyYcZ9Gjx0nUeMTdA7EWNdFBRVuDXSAI+GpQDMyGj0K5btTY4m3j
+         lrw4pU5zk3V3TX18yWeno5cGR8a+M6yTC4YRcgMtpemuPKsMd2tZwXuhBGEwKVV6NqlW
+         9wAe+RAiL7wre2ED3/S6p07Hn1YajNdt6xq4Of8AVi5ZogUhROsbs3KL9ZpWtBRhs5Yq
+         N1d8oPKFj26ei6Jo7z1q1mHbcpJjXAIrGaiePwFpCaqWbHffxhUY+fwnuT/w7JiVb++a
+         Ky8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788618383; x=1789223183;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1ETkXqycGRjohhEM+siMcRzRNo0ykM9QCfZj8kTd0Fk=;
-        b=I/iHotqXWdS8kpMVqKl4FFEvjJ3pNGgKaXShLkOjn0OCf4JDAmgmEHJVnApwE1IUcl
-         LUTVCqiVM/Jcl4dZXHakWYhdb5cJRQz0h1v/x5ZlY8cODFcS9G9+oD/GI9ARx1U7BFKb
-         aIF8uLcKDOFoNsWiYnECTmwvXhEdnbyxVUXr9MwKjiiBU6zbg1KI/kfYUraYSv2yJ7IE
-         dBE0gBwklI42x+HpDO2SdJEw7JAJJOpfYToxwe8KxcHOLA8+bYOObJIUSo4sA3hE7WlJ
-         b9Ul3rWH5pUp4SKQnO5iY6jENTqcZtKNGL+5tk/UT7aaS1dn3SnTKEfZcs1o4gKR6Ifr
-         lp0w==
-X-Forwarded-Encrypted: i=1; AKwUvBxxfzVd03Kjm/8XqfpL5szC5mZT3KgP6AZIuUH4NnZxDvVTmD47/us/NR3jJ2QIeDy7d1e2t4ACMw==@kvack.org
-X-Gm-Message-State: AFuF++ntRs1PEGSa0nhb02/UnwT68nnJMwJvqC6JjpnWdUb4Bn4taGE7
-	3LSMWzLWgmoWsKDv8D7ZnS+h3lHc8nOHTFSAsLBqJZFtXDNvBECMY5rYNpU/IHxrpu3qEATiCVj
-	1QLTPxW9zKDdg+mqW44LH9NPUmeD0qJ4QCs2hmstfErGcMxnaTeMU9OE1Q/E=
+        d=1e100.net; s=20251104; t=1788622040; x=1789226840;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fMDzWqUveBSzd5QyaJkSDxL5FMTYjVkFKS0zQ+Fx1Uo=;
+        b=AX18g/xKU9b75m9FlHVY1c822FBdDx1G8Tbe14RgDSIAnL8dWjsxo2E0cAUOYCYzcp
+         iSaxCUkIAyHdHGuD40hSIIU1kK31YbAoBXVAo1ugfvJMdiMxEdoIe61/FWycEQsZY8IZ
+         fRU9ftxfjJGNsNOLbiMnaKlH2YaV+Qe48W7RTmpNS2KOaj0zZoqSgN6AHUCD3PoBZCt0
+         vvi6UeAZHN3UKr0B5DiKUhfxfIX/VJiksFurp66ODbGm3MZGxpa1oFRR7J5g2SM8gQHC
+         reJcpT3jmEsaZ/LNgR/RyMIOL3WKeGIo+ShxYWnaH355mhA8AjPexB6YHJJ36k+pPV51
+         3/pg==
+X-Gm-Message-State: AFuF++lgMMCKv+AbJpbgiNb2UinTKVX0UAlExuIgo95qdbKfDlE3R8Si
+	QmafWT/cLZFpgLzH6+OjXIlZWY0DcU/Sgd2VnBrwd5v3V4RoGm/5yWgaa4CmX7EnD/g=
+X-Gm-Gg: AYBFou3bPVPOyT3GcEeXQezVKN3OkxDrmng9fLgbvEMVGRGclkrlG4myvY+/COSqa/4
+	P5cSFsBTar+yQSczNIFgiV7sESex18meg/U++jfcGfY1+eHdvhv0z1H12d9vxPDh3cnnWCYSgv5
+	LuZhXcUoMjR5rmv+AEK9ke8hY055Z1ZRaMbCPYzSYAOcz+s54dluTF4XZFD92HseUj32uSKjmZY
+	B8oVKJrRGZNoQkr/1B6mIQT0+UV9E4LluF5+P54oTa6FhM9Sfurd8TTlrPpjYtzK6vbRWvYLyqZ
+	r5BVgIjKXMKYGAPXWmupn7dtTQWZxES2kAeDKcfm0WgRErnLrvQJGqweRa1ealLFp22rHAGQ7nL
+	87XuX8kJ25f9qKwVT6Cs894x6OZvayHMgFzD7lNpDPzLgph2KtEHFFCaO3RbdPkvrfiYITz7i3R
+	ZqFR5tIIsRM4kX4vtgUxye7ZSfDPKjswKQC6mJhboADAiyezUGwDUM
+X-Received: by 2002:a17:906:c107:b0:c25:ec7a:a488 with SMTP id a640c23a62f3a-c260c9780b9mr862792266b.1.1788622040355;
+        Sat, 05 Sep 2026 08:27:20 -0700 (PDT)
+Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d5497cbsm236702166b.34.2026.09.05.08.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2026 08:27:19 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	stable@vger.kernel.org,
+	Dev Jain <dev.jain@arm.com>,
+	Ye Liu <ye.liu@linux.dev>,
+	lirongqing <lirongqing@baidu.com>
+Subject: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for vmap drain
+Date: Sat,  5 Sep 2026 17:27:17 +0200
+Message-ID: <20260905152717.11711-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:617:b0:6b3:506e:b484 with SMTP id
- 006d021491bc7-6b6fc9d0782mr8242414eaf.16.1788618383574; Sat, 05 Sep 2026
- 07:26:23 -0700 (PDT)
-Date: Sat, 05 Sep 2026 07:26:23 -0700
-In-Reply-To: <5fdd4d960a6b47ab7cfa6ef0f44fb575fc45d1ca.1788611415.git.qiwenjie@xiaomi.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9c268f.a6639fcc.23b8b0.0003.GAE@google.com>
-Subject: [syzbot ci] Re: f2fs: enable buffered RWF_DONTCACHE
-From: syzbot ci <syzbot+ci2f6618cc34ef3809@syzkaller.appspotmail.com>
-To: qwjhust@gmail.com, axboe@kernel.dk, baohua@kernel.org, chao@kernel.org, 
-	hch@lst.de, jack@suse.cz, jaegeuk@kernel.org, linux-block@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, qiwenjie@xiaomi.com, 
-	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, tz2294@columbia.edu
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hi3ms6iz4s6n1m9arrcb3yqptiueb5b8
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 26A85100009
 X-Rspam-User: 
-X-Stat-Signature: g86rjgka6zabdj8668n6jpd5uwtxg9bw
-X-Rspamd-Queue-Id: 85ED8140004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788618384-231692
-X-HE-Meta: U2FsdGVkX195D4EQs+yPNPmfZfANr6hM20QnSNM6125UE3S9KkuMjtvVVqpGguZlX2ldD2SVcdD3/pkx65SCm9GtU6P/rgkeUhNMgI9eS7g37rTnJ6i2LMyE1WmgmU+JGmNsoQ/GRuCFN1xNRUmAFKHH/QPk1w72BpF0GDOXbf6sTKKGNpv38cdGmrggvruanPySuStwRwBphUYPgpeiu+869QH9xVst+d2ws56e8lvHQw9m0+RKdV4QjmLMKjA6g/p74Op44Mv/6kCooWVz5rt5eL8eICUvBgqGxIAaToCHMt2u27r1VMjyb+xyCE+bSPljHk+stAoRN18w9X5QviBQYyiTNIXHW+HjsbAHxs0g2BGGCwjenZqM6Jg3is+x3wh4SICF2BcJeWuEtFBlugvkqBZfZ3toHN1bug+Lq24GO6wVYQr5dDWToV/rt94F83Har+k5yFIOHHQYF4Hlh+2JowgQRsouDnLVjOR9ge+80E0BTVtEFIB9GeVl9CHJ/m/FujOKYEvEdqCT0knqZ8Seuf9/LSkYnJW22sOZEjVmwQoOUMgjvwQtorAreBObqa0NqK5+d+dNmSdv/g4epxxM+EDgbVHx9UoO5kuSXfzXkyNU0C28XpQFW3tKVY/G+Mtz6/6RRkZQJerPVe1TDJ/0sAufsKw1c/rywXkVF7NUYp/Neo1ge6UxHE9FTOU/0G6Qggl28eE7K6FuJ96rRo1maQOgj7JITc3V7q/3P4PqxGzlN5QZ4ykG303FqjlZnR+O5XBM+XSP5KZOgykDFle0r1JQlzx8yfsrYdqARS+25R/eTJrAfqlSjHz2gI+/g6wpAF4bCk7orfQ5/UeQkLbuyLU5DN5SEJZr2W/O8jCNIyUn1nT+nU+jWvboONpLLsZhpe0hITTcLEFEyldbJREIxDT4fCg+Nvq5vTEZtHPVjkjvYUXZo1fIyfu/21cILb0l3vixRq0eDDb5tVa
- F5XOCXHc
- 2h8lcoNlcyY1PERfsi6KMPm9wVEI8B8tqfseJAo2YKBpNRZYeD97LQ3jJRKYdXzsqjoGe2weBsvhiTyb6ltoG4meAkjDq26kkb6aA+8Hvy0tb5np+RhCrAVHOnZiaBM72HFgBRUhqmXVDKx9QZJFG2kBcBs+hKTISBBCqNkYkucWhFZ2hob2Suy8YLsYwWvO3QaxiSW+XUG/9NSyDZAd7J3+n9fhbo9yL5HPdMe1OfauKA3zjirm0B0weqrr4ZNBTE2Lm1dh1TntAyI1xyHPtNX49N4wHEgi0hFNiaoS384tcXKpbvIAwvyXh4rJj6YAI+BdfGWjHAEWLcgrRj/kEAfULIXVQJEWII8ZJkIm31YYr+POXj1UGMimjxBIWJlXaQIjTd+7uSZNP6+nb+x5nXh7VrxTZtzuC3gZ9xxQg7R77ca+tHLH6dDgiR8YeLJo1kC/0+s+WEIg0iVV/O46dgeIT74bc54ELn8hUKJEs17X4+O0bYJU/HbiYe2XD6VEG6Q11QFW+Ips8Y0OOKlHYsifmeZHIOCfrENGgcci3V8q2/64ULpZDNzArxOURXio/AKT1sC5LqCY9PYFhQSRv+DZXv27bp+1C7HeXXJyGaG+JaG/Kn3e+ss9Wc4O2hM2gpssXUcTdA8O0zfcK/FE/wG4f4AI/siOB66uRGjhJER37u0FWWpkgxgmrqUAXjsf8zF8hJne9CQ7uNaQibL6tZQ+ZJb1GGIYk+kJpOBmjIE1jFBrAyt+/488OZZ9Np7/KDkrGj8xQJGOkl5YbexdAQiCe+Afg3BWWkQ/fHFJH6ON3Ed/2O+olFHYI/n297mOX8whT3ISFBBf+R/3d129B+fzfI755TtefGFoGNoV2f7rbFQ1ijc2FmtDQbdqGTugo59ISB6Swz26NYkEVB3L8aeiqUt/U0+qcXSUuSeslRLKrkds5vkJNxdB3bLs4ODTRsruYw3SoQT+P5lo=
+X-HE-Tag: 1788622042-301875
+X-HE-Meta: U2FsdGVkX1+CURD2vAsoUCpWAIMHYj6bvyp+lN8tTqRC6k0aHL1jYUIz2OHfMWq6EaAmqK9aeN1SXPTOllv8QPgY9QzKlN42kVUuZc64aXN4xo7XEyYkLOJuTqAhTSwo9sWo+JuTntpKWJrXc5f9lmbKVCNiY48XkHqpf97TP+TlpLKx0xnnWcSCfQPR6X7D+eu+WUxcNDE8KUx8KsdFUe2aBKUBUOiy6HNYZqFaN1DRHHAMgUj3nQ9JqllGKksGXb/Ma4xzq855HBFRrKTL5WKJOqStDE7pw9hdqxo3YsDxW/RVHCpMLwYD50rkOFIyaGA/Cx3KtNz+jRzGdo1ch+kJKGhAgjbyk04onUJr5F45Rn9OSWcWDWOvMN3IlZvrJ77fSuE4TWYzdkKMcNHeb3ztipsPMHEENmDPg3tBDvFEpZSG3OI72RHFa+NV6TurViG0QUFGulm8q+M/1WmgfvBGZRAKGi2hmJIMnwpfETbhidYJ+H/M+RrV7F+rZ2xQ+MpjbfgpNVgqDCUNlgNDsLcf3OLIDk0W+MhG7rFQv44k2E14WAi3WVEe6ndfJ8xaVlht358ISeDDVLfaJs5heQWuBDY051z5SqHvvHwgYc9i030oo8uYS52Es0TtsNdbtT4sDPUX/UwHkYVIoQszFNwDbp5MKl4AR/YCmJbmXU9HkYHBf5CRJVC57tthN1G2ICi4wI2OmAn7JHYWlVg927HoS7FrMAGFejfZyVvv5vrSGxW4pHxu+O9D9x0YDGQrFMAy6mUMsJB7Xjo4DFqncQ0N4WV/BaSYEPHp+Yy9d9DOvDTmSgpJzUaLm40oInq3nDGF7v8FYe2TFtgWu+zk9rtP4sUDEWC/SrAxjgua7GJjDbt/tu60/1IeXO1HvdANg/WsAG0/f3vtt/ZtsCJehHWbG6R3xhBxIRQR1wtYMcIdIc36m4tPdw/MCMr6GijCnch8ZuFGxmeXf6STXfL
+ pYdcoPpb
+ SpIGgdFCtBVstr9a0xRGjDYT/rML4FkHsUHJ9+YaOiJ0AcT3sjoHkKXIp+XoRUSdjUM9v6nX0OcKfMoxkAJSwY47/BPQALCeTTFmzLrYg8zdHqacAB5qveuBvaxH2Ez6MyWj3jhWNG776spWlNqUX1dS/d3rS2qzb9MNOo4FKRWpoNJXjMgUO1WBQKgWYnB/MTjiW9JpOQOVktA1XBH7yY1Fm5JnNuU/QWNuWtcqiCHbp9Q50Dtyp5K8D6W8wq3+EMX0TpxpJOANe4d1rvD3FLcv45n1CGCmT8UFDD4qi5VymQv37tKJGkecgjkaEX/agvV7aVBrJAXxEQjKBWhNHoycXdD2YApzrKB3VuAyANx7FY8aTgduX4CDOG1z+CK1hbPBjd+XpjFn2ioPQ422VFiOIOSqsCN5SlifThoc4E93urMcvhUP8f346v3aapeJ01kdENbXRQk7o+FIvdwzuN77/m7rguVaI2HTQ3KL1zbT1dwS/7b8rUvnHGdP+VK775H+b/+sh3dF4Jq2x6r3cWOqr5yrfuqwQSBMWEgh4yzfwvPk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,22 +119,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the suggested fix patch on top of the following series:
+drain_vmap_area_work() function can take >10ms to complete
+when there are many accumulated vmap areas in a system with
+high CPU count, causing workqueue watchdog warnings when run
+via schedule_work():
 
-[v4] f2fs: enable buffered RWF_DONTCACHE
-https://lore.kernel.org/all/cover.1788438786.git.qiwenjie@xiaomi.com
+  workqueue: drain_vmap_area_work hogged CPU for >10000us
 
-Patch: https://ci.syzbot.org/jobs/279baf88-89a3-4cb8-93c2-4bd86aa5092e/patch
-Testing results:
-* [build 0] Build Patched: passed
-* [build 0] Boot test: Patched: passed
-* [build 0] Previous reproducers: passed
-  - general protection fault in f2fs_write_begin (patched) - passed
+Move the top-level drain work to a dedicated WQ_UNBOUND
+workqueue so the scheduler can run this background work
+on any available CPU, improving responsiveness. Use the
+WQ_MEM_RECLAIM to ensure forward progress under memory
+pressure.
 
-Full report is available here:
-https://ci.syzbot.org/session/7e05d54c-8b9e-4e22-a746-48153ea42a60
+Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+workqueue. This allows drain_vmap_work to wait for helpers
+completion without creating dependency on the same rescuer
+thread and avoid a potential parent/child deadlock.
 
+Simplify purge helper scheduling by removing cpumask-based
+iteration to iterating directly over vmap nodes checking
+work_queued state.
+
+Cc: stable@vger.kernel.org
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Ye Liu <ye.liu@linux.dev>
+Cc: lirongqing <lirongqing@baidu.com>
+Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
+Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ mm/vmalloc.c | 79 ++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 52 insertions(+), 27 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index bea9f76ed7e7..89c327a6ce7d 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -972,6 +972,7 @@ static struct vmap_node {
+ 	struct list_head purge_list;
+ 	struct work_struct purge_work;
+ 	unsigned long nr_purged;
++	bool work_queued;
+ } single;
+ 
+ /*
+@@ -1090,6 +1091,8 @@ static void reclaim_and_purge_vmap_areas(void);
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++static struct workqueue_struct *drain_vmap_helpers_wq;
++static struct workqueue_struct *drain_vmap_wq;
+ 
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+ 
+@@ -2351,6 +2354,16 @@ static void purge_vmap_node(struct work_struct *work)
+ 	reclaim_list_global(&local_list);
+ }
+ 
++static bool
++schedule_drain_vmap_work(struct workqueue_struct *wq,
++		struct work_struct *work)
++{
++	if (wq)
++		return queue_work(wq, work);
++
++	return false;
++}
++
+ /*
+  * Purges all lazily-freed vmap areas.
+  */
+@@ -2358,19 +2371,12 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		bool full_pool_decay)
+ {
+ 	unsigned long nr_purged_areas = 0;
++	unsigned int nr_purge_nodes = 0;
+ 	unsigned int nr_purge_helpers;
+-	static cpumask_t purge_nodes;
+-	unsigned int nr_purge_nodes;
+ 	struct vmap_node *vn;
+-	int i;
+ 
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
+-	/*
+-	 * Use cpumask to mark which node has to be processed.
+-	 */
+-	purge_nodes = CPU_MASK_NONE;
+-
+ 	for_each_vmap_node(vn) {
+ 		INIT_LIST_HEAD(&vn->purge_list);
+ 		vn->skip_populate = full_pool_decay;
+@@ -2390,10 +2396,9 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		end = max(end, list_last_entry(&vn->purge_list,
+ 			struct vmap_area, list)->va_end);
+ 
+-		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
++		nr_purge_nodes++;
+ 	}
+ 
+-	nr_purge_nodes = cpumask_weight(&purge_nodes);
+ 	if (nr_purge_nodes > 0) {
+ 		flush_tlb_kernel_range(start, end);
+ 
+@@ -2401,29 +2406,31 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+ 		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++		for_each_vmap_node(vn) {
++			vn->work_queued = false;
++
++			if (list_empty(&vn->purge_list))
++				continue;
+ 
+ 			if (nr_purge_helpers > 0) {
+ 				INIT_WORK(&vn->purge_work, purge_vmap_node);
++				vn->work_queued = schedule_drain_vmap_work(
++					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
+ 
+-				if (cpumask_test_cpu(i, cpu_online_mask))
+-					schedule_work_on(i, &vn->purge_work);
+-				else
+-					schedule_work(&vn->purge_work);
+-
+-				nr_purge_helpers--;
+-			} else {
+-				vn->purge_work.func = NULL;
+-				purge_vmap_node(&vn->purge_work);
+-				nr_purged_areas += vn->nr_purged;
++				if (vn->work_queued) {
++					nr_purge_helpers--;
++					continue;
++				}
+ 			}
+-		}
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++			/* Sync path. Process locally. */
++			purge_vmap_node(&vn->purge_work);
++			nr_purged_areas += vn->nr_purged;
++		}
+ 
+-			if (vn->purge_work.func) {
++		/* Wait for completion if queued any. */
++		for_each_vmap_node(vn) {
++			if (vn->work_queued) {
+ 				flush_work(&vn->purge_work);
+ 				nr_purged_areas += vn->nr_purged;
+ 			}
+@@ -2487,7 +2494,8 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 
+ 	/* After this point, we may free va at any time */
+ 	if (unlikely(nr_lazy > nr_lazy_max))
+-		schedule_work(&drain_vmap_work);
++		schedule_drain_vmap_work(READ_ONCE(drain_vmap_wq),
++			&drain_vmap_work);
+ }
+ 
+ /*
+@@ -5587,3 +5595,20 @@ void __init vmalloc_init(void)
+ 	vmap_node_shrinker->scan_objects = vmap_node_shrink_scan;
+ 	shrinker_register(vmap_node_shrinker);
+ }
++
++static int __init vmalloc_init_workqueue(void)
++{
++	struct workqueue_struct *drain_wq, *helpers_wq;
++	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
++
++	drain_wq = alloc_workqueue("vmap_drain", flags, 0);
++	WARN_ON_ONCE(drain_wq == NULL);
++	WRITE_ONCE(drain_vmap_wq, drain_wq);
++
++	helpers_wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
++	WARN_ON_ONCE(helpers_wq == NULL);
++	WRITE_ONCE(drain_vmap_helpers_wq, helpers_wq);
++
++	return 0;
++}
++early_initcall(vmalloc_init_workqueue);
+-- 
+2.47.3
+
 
