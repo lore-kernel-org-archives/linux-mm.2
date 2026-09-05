@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DE81C624D6
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 06:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29FFCC624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 06:46:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A30516B0088; Sat,  5 Sep 2026 02:01:17 -0400 (EDT)
+	id F3FB06B0088; Sat,  5 Sep 2026 02:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E10B6B008A; Sat,  5 Sep 2026 02:01:17 -0400 (EDT)
+	id EF0666B008A; Sat,  5 Sep 2026 02:46:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0086B008C; Sat,  5 Sep 2026 02:01:17 -0400 (EDT)
+	id E08B56B008C; Sat,  5 Sep 2026 02:46:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 628666B0088
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:01:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 569AB1602C5
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:01:15 +0000 (UTC)
-X-FDA: 85178660910.10.8D90ABD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0C1EB1C0007
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:01:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bjijJwGD;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B476D6B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 02:46:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DD67802B4
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:46:21 +0000 (UTC)
+X-FDA: 85178774562.19.93199AB
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3FB881C0004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 06:46:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1EH0Afds;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788588073;
+	s=arc-20220608; t=1788590779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=T/9lO1xiPzGoqYbSWp5CmF5EjP3hvv7jsmRPdz65z8w=;
-	b=dAvwnifs46DrZR5hs5qo2+/TiuA79NDy6e5QSbxYsc9ZXJatcG/WFs4a0Smbu4NPVMrf6S
-	wNpmiOaGi4M0BfxRlhXR0wgVxFMG+UUJ/fGYYOck/uN48aqUHJE3aVY1+KejGi4O7+8Pyh
-	21gizrP2xwDwnyaRAUrKI6aQrJtz6KU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788588073;
-	b=hSJOBXbNU5Lq2ZQlAya0fZ+lidCcRh6qIFw7lNn45tA7514+5rcBPl4dZTi6bVRzVlW5Cm
-	dP6JdHrPcC4HY3bYn7R70PsD0T+E8x8o2p3VlIunOeBeX48TErDl9ihVCixPMi2E7gKTix
-	XSk/Ek4XFwXdvs4S7BFVDldK+GBbKL8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SrHR5CBRJdLHNcWo7Abm7uItODzcin9yiJGYKuE8ow8=;
+	b=g1cJNyUqhjPv6jd8KQJ3yR6y5E4lIq2bY/N3ptgJy3yymYhkV7BJt0rTTUO4JaBaF7M4K0
+	NzqnqmVCmRngadiqnzF9eMHIJvWfgFU0MMUdIILDJsBsJlVyerDSRB1u9m4pIL2vWu5POl
+	xDnq8Pddi9EElDcjLiaYRiIro/IRJ9s=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bjijJwGD;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788588072; x=1820124072;
-  h=date:from:to:cc:subject:message-id;
-  bh=lM22okNgFz1OuO8OLS+hbAQLYLsF6ANgD6I/iw0cgQU=;
-  b=bjijJwGDJEj4ooE8Evo7NiOrbHE2p1fCO+oQs1hk3ANwTPsoAqoBNYgo
-   gGBlvB9C/9rQGY7CQbjrpDy1iTNF/KjG3pM7P4uEtPGpnjlz6nPCAXSit
-   5FO/YZYoI2nBDVGKAhWlri2rRwEm1ZZ7Ug9XGmbGIZ8pQrIq48pP3oBuC
-   5BmRD+eboVPFJNyN7SP+2dhxN0T+Nisw75u0TV+LpkILQfmLvaS4Rqp9v
-   cb/vy4fDToAHz0hfV4YTG1xz35UaVLBGbDmhlk7Rh/o8Hxgu0tZmcTI2l
-   sBjW8p8YZg2zb0YwZMdAnsZaUVvBq8DxuaPnTnc6NS84d4AbnsEs+Pzw3
-   g==;
-X-CSE-ConnectionGUID: w5A9wWAuRSqrYpLydSpN4A==
-X-CSE-MsgGUID: ETwQIVySRWeQlbmSxyK/bQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="106601157"
-X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
-   d="scan'208";a="106601157"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 23:01:10 -0700
-X-CSE-ConnectionGUID: jHx/Xdi8Qc+O/62lcj6/xA==
-X-CSE-MsgGUID: Up5SPOhLSqCiO1GgvNOexw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,263,1779174000"; 
-   d="scan'208";a="267655865"
-Received: from lkp-server01.sh.intel.com (HELO 73f3364bc37e) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 04 Sep 2026 23:01:09 -0700
-Received: from kbuild by 73f3364bc37e with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x2jSc-0000000009j-28qD;
-	Sat, 05 Sep 2026 06:01:06 +0000
-Date: Sat, 05 Sep 2026 14:01:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS WITH WARNING
- e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
-Message-ID: <202609051403.2OSmiAZR-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: dbr3mtrczya1czqxf1jummqwezcdxnyi
-X-Rspamd-Queue-Id: 0C1EB1C0007
-X-Rspamd-Server: rspam02
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1EH0Afds;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788590779;
+	b=gLKRLPgScj4IZvOl/JK9mz+EWKaFImfTwj3uqD24XHAL0AEwuvfD1WKwNABz7yE8YTThR+
+	wDOg8krXycAFqQUrv9utcwu5rCo/4psGkY9WSQDJZSeKz6DkKZql6c2afv8ID5blMcwdxn
+	O08WD5/fiaIuPW+RiDRBkxA9BEksIQU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=SrHR5CBRJdLHNcWo7Abm7uItODzcin9yiJGYKuE8ow8=;
+	b=1EH0AfdsCHtM/gkEOyE8XqGhMGi5bcM3zOPfQwtxO0wiKE7ZLV3izWfHoEuIkZ/bxqukj7e/P
+	NATKx8NQJQzfgljKW7NAz8HgXCechMFFmMRsRSyETMJ9s7jhTL5ki8sNYIRZh6Ntbd+XLtsP6oS
+	We+iunXUZGq1wm7rzkfzQH8=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hcNqn4k38z1cyTD;
+	Sat,  5 Sep 2026 14:35:17 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id C5E4640586;
+	Sat,  5 Sep 2026 14:46:08 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Sat, 5 Sep
+ 2026 14:46:07 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<riel@surriel.com>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<harry@kernel.org>, <jannh@google.com>, <lance.yang@linux.dev>,
+	<minchan.kim@gmail.com>, <lwoodman@redhat.com>,
+	<kamezawa.hiroyu@jp.fujitsu.com>, <mel@csn.ul.ie>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH] mm/rmap: fix missing barrier between anon_vma init and vma->anon_vma publish
+Date: Sat, 5 Sep 2026 14:18:19 +0800
+Message-ID: <20260905061820.642437-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3FB881C0004
+X-Stat-Signature: bhfxhn453hbzxqtkub7m38iej4tnwku4
 X-Rspam-User: 
-X-HE-Tag: 1788588071-867647
-X-HE-Meta: U2FsdGVkX19nModAplzNMunEsGGYEo3ojsjvoM9qoRoVONTZ87+Fy6PH4SG5oC0Fa5wvenrhevA0MffYZtsJFO5hbj28lZnS3EtDXOt8B5sudVQrFdkneqGTPiUsgyJH0bmSDiwpZIBBbQ6tVDohJAL1dM0nZcp9S7Ul0UuVswfkBcVkoa1XO87yWCRy3t/LGeoofaRyn1n1AGkMiU0IGfrh3R2zrT2D+m0xlaE2tqTHr+MXoXYxmlMrL5wzsMejzkjT0wXBUmT+wbTWVe+Xv4ZsV+xq9lFKvCkLDQJ/weHfcRYFD+M0D4wUeLcPAE0U1pV0985zjoLkLlU0mamjyUcQCQZbmOUe/EVSs2j+btmntlyzxC6LpOPxxDGYwKPGPQ6yS33XLONIeSUqZBGRKdIdD5vnkYs0QOXX0uW9SAWRlBBq7y6DMehnEY2cZHfIbXYcNI1p6WyHEmsscWIzB5aZFZu7dTkj4AuLqPtQqQz9LYP826iKT+yYGP2tmbVdCmkmY7d/8zZi2/9zeA1r11hSP4JqruECb6O6FP0/UKGjLMXU4+Ca0hwcFmthxd883RUAPctAxhRMXGBMJI3DidkfSeGvXge6IzBMEflk/XVYtzRslq3DDO63xzaCbRBpqc85NWM8TIeVB3Je6VzKKSh1bJapLxuAHUCBOc4yIOapAO2GgmQwlGYJvcWkvQioUZHoXo0NQqYZ1U3Dpif+gMD5gz5bYSoSmL8Rnthd5wPHPe23btOE1b51P+beL16ZJFU643G3sCfliZRsA2xKFtvImft/nyPvCgITumqx7UxjOnYyX6XPIFQbtk6whBfq/ImZ37SiZsw8DSmhHSKKd/KcwXB0fsut5uG709l5RmvllLFb7NMc/h9OKLBw9T8aiXQdsaRYi8fZ4IDeJIf5+BNklSsXW+u6L+Akpp9kOvTpdGLAhTMcCIWg9E8g4ygtkGiiZVJdMN1MYyOjujS
- Y7/tcm7W
- SgGw968YryK3QFPSZTua4LnovCLcBvAwOZK44h+wl30x9/fMgbFZgJ3LQW2xxh/oKudeTGTLErIOoD43JRahWk7PVXo1qZTioUlFxuucf9mXJKwzfALygs7lEMIUZeDvUZqEAikPMgF1rDM7p8D+Bhr/qGQhbE82pjjGkfu8rgJOxm2FbFva0kozj8srdwhxnLbDJPYY80KW+jGoc1Il2d/xFoWHghXEiPE2C
+X-HE-Tag: 1788590776-651466
+X-HE-Meta: U2FsdGVkX1+W1LJc/cpRJLxAgrXI6XEe+s0QrjovZb4uxwfSWf3twJ0SmcpnQZFhfNz2fGggonvCiH7Q+OXJuS7mbNgfFiu/sy/khNs1yKjwrYTSi4AoLG19eR8ezrT/aG9MROHbSC0hkx4KGW/8o8XJBisbvlQp0zOCLDIEaleOJ7qT6sLl16/bOd6WYOvL94PtoDFFpedcdkKHD0mvbyHTmcluZDocMht1MRgfvVegC5QIcnnP2OMuXOQU/sw73pvmBtdLCMNXA6ZwpKwvAXjy4RTa/4W6JEJn0Q2dM+gHvp77ew/4Lv814/cPtneEEoL7NObxV4JlmgUL4XQlnMCy4hYu4b8pdJwaaZy0krhSnnI8xZE5KGkxWlqTRJHEpt1+lGnBlwuS1RUn9GB6FFamluRnpcIZa7Dvvc0Op1KReM/yB2ZXFihQ6cTtI5gOq+xWiAUEAq2J57cCGwNi8KXEmb+LBaA0ZIQz+V8rw8MCLNm9TS9oiaz4EyHryANk7SroVzBKQPpss89FgpfdZk1FJJF6zFlfTRRtCjBHfFudITi6cjLSglyGXhe8Gm714S9B824A7EcS1YwzYA9PJQSCdev5rouUMzRNd6sKMh8kj9wT9PwclbGfeyvj14Zet4od/IyeVznVsJSpCs1XZyJHddohLFyuGN+uVC2bDjv6dscb7FidtVgGjYLLjR4Q5PFGn0mkvvV2iK+kGqgtmYxJKAaTYu3AmKaDNj2U6uAZHRRb6Op57qTaeJVKx7y00KDoiByNiUAyrPpW45BGgXIcaPzXZGL8HreC6cr82/PYRwpJfrqqokIdALnhUkfHoiEfe5XByf6I4OKb4Ajqnn1g/Frfd/EYnToHZTgdKfPcV+WVb8IhwJwzIDs30rLYxOnfCyA50u1kirJ0xvYz/djCTCeRyHhEJTdUyO2CO1PRmXNpvJfMnrAzSZaebLo9G1zl6IVoxceYs244gY7
+ ndi5d4DX
+ kWBVORYv6+8LLHhsmBu8UGNj+rqkF3WOCGOx3+YOeU8r6MzXWFFbuoTmxyp5Y+WMzstNEXioMRrHRa2A0MT9/bOyB7B2a/tBW+6R5ApClKoB/8q8cO6kMMmOUIIm7NTELmh2OfNRICCSK7ZHY1WDuq0zlSAbvkZfmYzDcgeeCgYv4cChfxAzcnHH/HrxqRx6UQ+0ofDTgiBkgGyhNvPnpdfY8urZbrocfdOKBQLu6hVL9vxGhU2lJ9bJxUAVxNBAZl6voMOcb9LK8Ws7FyHCoMZKeG1rRlHkSpzgBpVLco1F7UhNPRXuxMbd+JUFI4QT90blDOpPdoEwsPOoGMOwctC427HGHtvFkkKixMn6F6NQcJ+e0ZfPrWaitaiPOWWjEUTzLage2eHoxSSrRhRyfIYS7SHfasZH+T3gAI6avESzpEpyQ9EB7f0PsyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,81 +98,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4  mm/swap, PM: hibernate: atomically replace hibernation pin
+On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+anon_vma->root is stale due to missing memory barrier, leading to
+lock and unlock two different anon_vma->root, thus leading to a anon_vma
+will never be unlocked, and another anon_vma couldn't be locked anymore.
 
-Warning (recently discovered and may have been fixed):
+The race is as follows:
 
-    https://lore.kernel.org/oe-kbuild-all/202609050628.ywCLhOj5-lkp@intel.com
+    THREAD A                             THREAD B
+__anon_vma_prepare                __anon_vma_prepare
+ anon_vma = anon_vma_alloc();
+ // writes may out of order here
+ vma->anon_vma = anon_vma;
+                                   anon_vma = find_mergeable_anon_vma(vma);
+                                   anon_vma_lock_write(anon_vma);
+                                     // may still see the old root
+                                     down_write(&anon_vma->root->rwsem);
+                                   anon_vma_unlock_write(anon_vma);
+                                     // see the new root, never unlock old
+                                     up_write(&anon_vma->root->rwsem);
 
-    mm/memory_hotplug.c:1507:13: warning: 'node_is_memoryless' defined but not used [-Wunused-function]
+thread A triggers page fault and calls __anon_vma_prepare() to prepare
+anon_vma for the faulting vma. __anon_vma_prepare() allocates and
+initializes a new anon_vma, and then publishes it to the vma with a plain
+store. anon_vma_prepare() only requires the mmap_lock to be held for
+reading, so two threads can fault on adjacent VMAs at the same time. While
+thread A publishes a new anon_vma, thread B could finds the anon_vma via
+find_mergeable_anon_vma() and then locks anon_vma->root->rwsem.
 
-Warning ids grouped by kconfigs:
+However, due to missing barrier, thread B can observe the published pointer
+but a stale anon_vma->root because the stores from anon_vma_alloc() aren't
+yet visible. What's the value of the stale anon_vma->root? __put_anon_vma()
+doesn't clear anon_vma->root, so the root of the new allocated anon_vma
+may point to a valid anon_vma.
 
-recent_errors
-`-- x86_64-randconfig-161-20260904
-    `-- mm-memory_hotplug.c:warning:node_is_memoryless-defined-but-not-used
+As a result, thread B can call anon_vma_lock_write() with the old root,
+and call anon_vma_unlock_write() with the new root, leading to a anon_vma
+will never be unlocked, and another anon_vma couldn't be locked anymore
+(it's count is dropped from 0 to -1 due to wrong unlock).
 
-elapsed time: 1477m
+To fix it, change the plain store `vma->anon_vma = anon_vma` to store
+release, so that the fields of anon_vma are visible before anon_vma is
+published to vma->anon_vma.
 
-configs tested: 52
-configs skipped: 3
+We don't need a read barrier at read side for thread B. The load of
+anon_vma and anon_vma->root have address-dependency. According to
+Documentation/memory-barriers.txt and some investigations, only Alpha
+needs address-dependency barriers and it has been handled by READ_ONCE().
 
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky         allmodconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    clang-24
-hexagon       allnoconfig    clang-24
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-20
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-microblaze   allyesconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-mips         allyesconfig    gcc-16.1.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-16.1.0
-openrisc      allnoconfig    gcc-16.1.0
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    gcc-16.1.0
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    gcc-16.1.0
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    gcc-16.1.0
-riscv        allyesconfig    clang-24
-s390         allmodconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    gcc-16.1.0
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    gcc-16.1.0
-sparc64      allmodconfig    clang-20
-um           allmodconfig    clang-17
-um            allnoconfig    clang-17
-um           allyesconfig    gcc-14
-x86_64        allnoconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    gcc-16.1.0
-xtensa       allyesconfig    gcc-16.1.0
+This issue needs two adjacent VMAs aren't merged but are compatible for
+anon_vma. We reproduced this issue in v5.10 with KSM enabled. The kernel
+doesn't merge commit cf7e7a3503df ("mm: prevent KSM from breaking VMA
+merging for new VMAs"), so there are many adjacent VMAs that aren't merged
+but are compatible for anon_vma.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Without this fix, our production environment could reproduce this issue
+about 2-5 times each month. After adding a smp_mb() before
+anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
+to this patch, this issue hasn't be reproduced for one month.
+
+Cc: stable@vger.kernel.org
+Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ mm/rmap.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index d1819fd69938..a868e835eadb 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+ 	/* page_table_lock to protect against threads */
+ 	spin_lock(&mm->page_table_lock);
+ 	if (likely(!vma->anon_vma)) {
+-		vma->anon_vma = anon_vma;
++		/*
++		 * The fields of anon_vma must be visible before anon_vma
++		 * is published to vma->anon_vma.
++		 */
++		smp_store_release(&vma->anon_vma, anon_vma);
+ 		anon_vma_chain_assign(vma, avc, anon_vma);
+ 		anon_rmap_tree_insert(avc, anon_vma);
+ 		anon_vma->num_active_vmas++;
+-- 
+2.43.0
+
 
