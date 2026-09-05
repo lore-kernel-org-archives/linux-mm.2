@@ -4,115 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4796C624DB
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05534C624D3
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B37C56B0095; Sat,  5 Sep 2026 10:15:53 -0400 (EDT)
+	id EF3426B0088; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE79E6B0096; Sat,  5 Sep 2026 10:15:53 -0400 (EDT)
+	id E7CBF6B008A; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D63B6B0098; Sat,  5 Sep 2026 10:15:53 -0400 (EDT)
+	id D6B2A6B0092; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 754316B0096
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:15:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 046F78036F
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:15:52 +0000 (UTC)
-X-FDA: 85179907386.27.F7B917C
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 470C6160011
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:15:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=acImnKEh;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B22B36B0088
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:26:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39C7E1C1F65
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:26:26 +0000 (UTC)
+X-FDA: 85179933972.21.2B54C5B
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 85ED8140004
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:26:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of 3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.69 as permitted sender) smtp.mailfrom=3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788618384;
+	b=28nh/Q1N9n1dt3jtuCS0vh/Zig4Svns9fXevA/i6MhqSA+UKupBhR5oM2t0GRLF0a4e+6A
+	xTFt7uK6QOnvJlRVMWOi5dC9R2blXecaPA2Ays6SRgPVCXo2jNZGdLWmq61N8Brmo3fhNn
+	/fYpZRlyjbl9qM8YNNuJmkURL2xXO5g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of 3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.69 as permitted sender) smtp.mailfrom=3jyacagkbAKgaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788617751;
+	s=arc-20220608; t=1788618384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oaI6KBzK7sPihmaSK/ByLcvQMgIofAT0nTkMKRAmXRI=;
-	b=mpIDhrwksbtzwkf8c4HlSVvcDFau/2WMSBwFHV6Fb7K7hYFTHmJcLWVW02xwNPu/Mysrgo
-	js73sSbVEp2nZnFt5xGiVRPQReFAla3Qzm5MRywcMTlwuE2aTRGPq8K5fDPDh+EFNBR2H4
-	caUDgyIj2OjDVYXE1cm+SI/Yd4uRp1E=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=acImnKEh;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788617751;
-	b=nbtJ3qOal2kDAWzu+1UbMua75VBUp57ZIwvPLW0k7w0Ls5MqiYG0L4iw5LJcFL704/9xtV
-	mXrxUpXkRhWQiJi9COu1MIGvFHNQFJscerzcm5PpV2j/Kl+fo5JwVd8AAUcwLRK+fMBMRO
-	u0jMGW1oxg+90FExXZTk6qnWF9rEw08=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbb8b54fcf8so2385242a12.0
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:15:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788617750; x=1789222550; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oaI6KBzK7sPihmaSK/ByLcvQMgIofAT0nTkMKRAmXRI=;
-        b=acImnKEh/1QFtkRgZopU4scidzCif/ifwpamBRbjZc/6b2RwH90/NPYsIwyvbAm/zD
-         vCSK8PYTO6mgxAgMnzJ7zgbzAacb6ufoZIGB2PzhBbE7SctyAS7P1VoUmdiSEoX8HTFL
-         6c3ymW9UXyL54elfLQyegdn6U9to08zZnMumVOhmLpfTARDCRJI3pDR7t8uqrs+HLRjV
-         vurcum8ifCgvPH2bZUQ+/Ge1Ofu4w0caL+PPWhr4KyyE5oLLAWUKkVucYgoyjgOxXsa8
-         ScVSAWlCSemlZLwAFwyscRB+tzcd/r7tfPX6j/uxhYxLjuAAxuAIKg2KQKGHRKeEoIpa
-         beWw==
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=1ETkXqycGRjohhEM+siMcRzRNo0ykM9QCfZj8kTd0Fk=;
+	b=JqdwcmEczdXre+uiEreYfcrcEFrikxIHQH0DXWjY/M5jSe/xxH+1E5Q9MP6MRxsn7XRpu4
+	EvfgE1lBC2P++Td0cogadEvM2tVdEKdDA07qVqN1uNgPM8fnWnll9rdg9ZbMwpZtGTFLmk
+	NTE9j7sTa7BYCsIJ8ODBN0pvxMXmHQc=
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7f8931a803cso1842296a34.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:26:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788617750; x=1789222550;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oaI6KBzK7sPihmaSK/ByLcvQMgIofAT0nTkMKRAmXRI=;
-        b=clPj/RlfaWlKe90vXwwUvTdA2Nbv7dgwLditd+hTonn8gnNfWrVO5W1LgtTAKYmqtG
-         ixcatXRoQXRZb5kzeuHjnOzpijp+9iyrQflkDeF0z8P0r86+Ig1b+ygG8jCmPQPnOpFq
-         dA4ojWVFAXV1vbQZg/f6o8TmKzFkWD1eWuqBO0y22jb9R0Kr3oNuWpXb0jh7hgKiiUSp
-         Y6VVgL0g3sY0WkVVsykeyZwEa9VVEHgbVhQcbaZijUR0h6DubKVTvjjl+2+oxpuJPABe
-         R/RGlzZkNb9l4osLjclHJ90E7gYqe7l2W9zWoV/12Om0RFA1X+Qglf/Lyhb64yey71Qt
-         hhEQ==
-X-Forwarded-Encrypted: i=1; AKwUvBylYMxrKQGnQVCSvBZ5NeiW1eqDp+K/CscXoAcI/toG01cmz2S4XKlSaQNFkYsvzPjKD2m788mFRQ==@kvack.org
-X-Gm-Message-State: AFuF++nYV/OtNRhqdBvBgTExT/oWjujfhuQf3ajZpD2kwHfQG0qATrZT
-	YM2TTHL1i1q/aeZDqXmEPXSSyZd00aviTwqQ4QnnHAboxjkKEzrcXJp2
-X-Gm-Gg: AYBFou39gaLUyJawjyt7cTaYZPqNn+olujPaIwPDd+/lQa05eB74cVUuclnvmYaQQH9
-	g4aNQYGrJDdeQFFHuEmlQv0SegVBe7lj8C6eK14m5A6rm3J6vUJbfZyFbRycHBBTdhLBs3Fcxtl
-	ptaGbV2Q3y3/pjDB7McamVaAJMzDwLcON5pT00V0m5JSKqTCQTE/LZenggd5n0xPpQH0zDTTr0+
-	FBExMy1zLjmAv31/WXsF/PmiPrBw17QbomeQ6GfiSDem548truLCXtGzK0JuuFRZ/fzwMhIESpl
-	Lp3LJnCqdIMmLIr8SLPXKf8jDHRrVSyft+DB4RqowqoCzwmJjvFWxsUVv4XFqYBPbQ8WsAJiwJ5
-	esq5PKU/QAQvRvf6xRr7AhiUd6/SF4e4em89L4RcE0uxROdysxOD9KkBx+1u5UI2RaN0yxf5V45
-	VqZzkFS9GHztrMkDQ6gcOF5DWpMbib2CrNCXPCsjPcaQQ2dxdtG0Zd0XA=
-X-Received: by 2002:a17:90b:2ccb:b0:398:9be8:ea64 with SMTP id 98e67ed59e1d1-39b261d8533mr23136808a91.17.1788617749977;
-        Sat, 05 Sep 2026 07:15:49 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08d0d845sm16940726a91.17.2026.09.05.07.15.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 07:15:49 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v2] memblock: reject non-page-aligned reserve_mem regions
-Date: Sat,  5 Sep 2026 23:15:24 +0900
-Message-ID: <20260905141526.1546478-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1788618383; x=1789223183;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1ETkXqycGRjohhEM+siMcRzRNo0ykM9QCfZj8kTd0Fk=;
+        b=I/iHotqXWdS8kpMVqKl4FFEvjJ3pNGgKaXShLkOjn0OCf4JDAmgmEHJVnApwE1IUcl
+         LUTVCqiVM/Jcl4dZXHakWYhdb5cJRQz0h1v/x5ZlY8cODFcS9G9+oD/GI9ARx1U7BFKb
+         aIF8uLcKDOFoNsWiYnECTmwvXhEdnbyxVUXr9MwKjiiBU6zbg1KI/kfYUraYSv2yJ7IE
+         dBE0gBwklI42x+HpDO2SdJEw7JAJJOpfYToxwe8KxcHOLA8+bYOObJIUSo4sA3hE7WlJ
+         b9Ul3rWH5pUp4SKQnO5iY6jENTqcZtKNGL+5tk/UT7aaS1dn3SnTKEfZcs1o4gKR6Ifr
+         lp0w==
+X-Forwarded-Encrypted: i=1; AKwUvBxxfzVd03Kjm/8XqfpL5szC5mZT3KgP6AZIuUH4NnZxDvVTmD47/us/NR3jJ2QIeDy7d1e2t4ACMw==@kvack.org
+X-Gm-Message-State: AFuF++ntRs1PEGSa0nhb02/UnwT68nnJMwJvqC6JjpnWdUb4Bn4taGE7
+	3LSMWzLWgmoWsKDv8D7ZnS+h3lHc8nOHTFSAsLBqJZFtXDNvBECMY5rYNpU/IHxrpu3qEATiCVj
+	1QLTPxW9zKDdg+mqW44LH9NPUmeD0qJ4QCs2hmstfErGcMxnaTeMU9OE1Q/E=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6fmrfmrzd5sc94qkfxhktro3rfi3xj7t
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 470C6160011
+X-Received: by 2002:a05:6820:617:b0:6b3:506e:b484 with SMTP id
+ 006d021491bc7-6b6fc9d0782mr8242414eaf.16.1788618383574; Sat, 05 Sep 2026
+ 07:26:23 -0700 (PDT)
+Date: Sat, 05 Sep 2026 07:26:23 -0700
+In-Reply-To: <5fdd4d960a6b47ab7cfa6ef0f44fb575fc45d1ca.1788611415.git.qiwenjie@xiaomi.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9c268f.a6639fcc.23b8b0.0003.GAE@google.com>
+Subject: [syzbot ci] Re: f2fs: enable buffered RWF_DONTCACHE
+From: syzbot ci <syzbot+ci2f6618cc34ef3809@syzkaller.appspotmail.com>
+To: qwjhust@gmail.com, axboe@kernel.dk, baohua@kernel.org, chao@kernel.org, 
+	hch@lst.de, jack@suse.cz, jaegeuk@kernel.org, linux-block@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, qiwenjie@xiaomi.com, 
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, tz2294@columbia.edu
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1788617751-486221
-X-HE-Meta: U2FsdGVkX19+BxxnxjpgfCNs5b1b7UfqQJSVSPmwhnnXi4OG2cMF0v31DMjMalmGZnwErKnQklNlQ801kyaYK8CAObz4DR2XD8wW/LhTrMVZNaPJEGdf2Rd7MJH90d/oOTT/6uj/YWPmJBIlFriD4LHi8DzZzv/j/7GNE+ApTuFdLWgfuE6wmxdXHNjC+fahId3DaASwkQw1tPWpa62fxbS/oHdMyfji64FX5IMNBamDQnTLOwenVhfvUXk/p5AYg1MWXv/KL4k6lQT7vLoJj30KijS85TmziWa1PccVKYGeZrazEPiJw5JsKkX2GlJy8bZi9CgJjG23E9V9b1DBbaf4B7pEaxnluuXdDebj9cgerNMujEn0SmiQHSHX/DoUPxboIAAHDicShoAUCJ4YE8Fz7k9TFY6Mo9q2kbSrPslh6eOxLtFfpVWEszqq6F9C6UC7KUEXACHhML1c+0Jy/ZXCA2TcnqP8R9IFWXVSSm8nFO3qVGUiuiTVnyzU/26W/lOjOH8/ELrXDZp/D0oCEpR4BV2YRGB7b4BnJt934xkM6TC8Tz0CFQXN5dety22vKG/YoMsRaigCRsIkKq/dUjqrsOc3vg3Ez45RIkCGTK3FBB5fZyqUKITCZRkOGtcoh2VZ1i7Ulu8ephGBHgGILrokvSWO9vSyhQ0K9TOUvRONuB4dntHsBhj8HyssQGLerdLO+Ww0qdty1QqAz3EGHAWcBAWM4qrIra0Yglu/8l38eL+ZX5if/TcnVt7RGFvJO2xC9ftE5ppe+FPYIkEJe9Ahy7Omf/URogs8gQbpu7dr/+KvQ4U8N3CNqRk2U0QO2rwiG/mYD58dnApTSekUXiq8626Pczg1eH25aKGKUfmWLyttjObOstNMcuSbGNkSRfdgj+dAKUp9s+KZ30kxDt92mTzuP0wJ7KR8yEdONM/lOYPg7NSfyWNyxob5qT/I+tE20hGx2RXAFjH3XJB
- GVTZy4B4
- ouA5xiCFNT9aVh7aNMK5OJhm1JTyv70RMy8zUR9ramg653oadkZsyD9TupVZ9wX7LLHeWGkQ9fAMw5eDSYTbTOAvzv4/pC1CVsnAjXQ0M11qP04LCs541gqCwS7Y/MUtDe43fYH9kLNlyYyZLmqcygNraJHHcsZp67I97Uk2E1Kc5eR6oi0k7GdF2nqnqFcDal1blETR8+hkEll4/PNi0zRvMc1mCQXaG6amoaJ2mNflWXmU1Dcmv/qMI2AoDXvgD6FoKBTGxCFSsdRQF2YDY47hxXSfwOb8SsiqWAckonL3kcQfwRs+LmdSW7wRc98X3nHx5MRl9sOWnc9SNy69Zr3sQnE+K0/abGEXLSk63soa4tglyVmLosKtYIcir9ocwcCQ2klx0RU8zGe5NMIEr4EeXrh0wyfSXaLOaLRe2e/myw1ganFf7cSwYOpkJKgiQahEFLCJf/K0FlTp8sO8fC0+MXlojhGAesll7zK1aPFMYPkY=
+X-Stat-Signature: g86rjgka6zabdj8668n6jpd5uwtxg9bw
+X-Rspamd-Queue-Id: 85ED8140004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788618384-231692
+X-HE-Meta: U2FsdGVkX195D4EQs+yPNPmfZfANr6hM20QnSNM6125UE3S9KkuMjtvVVqpGguZlX2ldD2SVcdD3/pkx65SCm9GtU6P/rgkeUhNMgI9eS7g37rTnJ6i2LMyE1WmgmU+JGmNsoQ/GRuCFN1xNRUmAFKHH/QPk1w72BpF0GDOXbf6sTKKGNpv38cdGmrggvruanPySuStwRwBphUYPgpeiu+869QH9xVst+d2ws56e8lvHQw9m0+RKdV4QjmLMKjA6g/p74Op44Mv/6kCooWVz5rt5eL8eICUvBgqGxIAaToCHMt2u27r1VMjyb+xyCE+bSPljHk+stAoRN18w9X5QviBQYyiTNIXHW+HjsbAHxs0g2BGGCwjenZqM6Jg3is+x3wh4SICF2BcJeWuEtFBlugvkqBZfZ3toHN1bug+Lq24GO6wVYQr5dDWToV/rt94F83Har+k5yFIOHHQYF4Hlh+2JowgQRsouDnLVjOR9ge+80E0BTVtEFIB9GeVl9CHJ/m/FujOKYEvEdqCT0knqZ8Seuf9/LSkYnJW22sOZEjVmwQoOUMgjvwQtorAreBObqa0NqK5+d+dNmSdv/g4epxxM+EDgbVHx9UoO5kuSXfzXkyNU0C28XpQFW3tKVY/G+Mtz6/6RRkZQJerPVe1TDJ/0sAufsKw1c/rywXkVF7NUYp/Neo1ge6UxHE9FTOU/0G6Qggl28eE7K6FuJ96rRo1maQOgj7JITc3V7q/3P4PqxGzlN5QZ4ykG303FqjlZnR+O5XBM+XSP5KZOgykDFle0r1JQlzx8yfsrYdqARS+25R/eTJrAfqlSjHz2gI+/g6wpAF4bCk7orfQ5/UeQkLbuyLU5DN5SEJZr2W/O8jCNIyUn1nT+nU+jWvboONpLLsZhpe0hITTcLEFEyldbJREIxDT4fCg+Nvq5vTEZtHPVjkjvYUXZo1fIyfu/21cILb0l3vixRq0eDDb5tVa
+ F5XOCXHc
+ 2h8lcoNlcyY1PERfsi6KMPm9wVEI8B8tqfseJAo2YKBpNRZYeD97LQ3jJRKYdXzsqjoGe2weBsvhiTyb6ltoG4meAkjDq26kkb6aA+8Hvy0tb5np+RhCrAVHOnZiaBM72HFgBRUhqmXVDKx9QZJFG2kBcBs+hKTISBBCqNkYkucWhFZ2hob2Suy8YLsYwWvO3QaxiSW+XUG/9NSyDZAd7J3+n9fhbo9yL5HPdMe1OfauKA3zjirm0B0weqrr4ZNBTE2Lm1dh1TntAyI1xyHPtNX49N4wHEgi0hFNiaoS384tcXKpbvIAwvyXh4rJj6YAI+BdfGWjHAEWLcgrRj/kEAfULIXVQJEWII8ZJkIm31YYr+POXj1UGMimjxBIWJlXaQIjTd+7uSZNP6+nb+x5nXh7VrxTZtzuC3gZ9xxQg7R77ca+tHLH6dDgiR8YeLJo1kC/0+s+WEIg0iVV/O46dgeIT74bc54ELn8hUKJEs17X4+O0bYJU/HbiYe2XD6VEG6Q11QFW+Ips8Y0OOKlHYsifmeZHIOCfrENGgcci3V8q2/64ULpZDNzArxOURXio/AKT1sC5LqCY9PYFhQSRv+DZXv27bp+1C7HeXXJyGaG+JaG/Kn3e+ss9Wc4O2hM2gpssXUcTdA8O0zfcK/FE/wG4f4AI/siOB66uRGjhJER37u0FWWpkgxgmrqUAXjsf8zF8hJne9CQ7uNaQibL6tZQ+ZJb1GGIYk+kJpOBmjIE1jFBrAyt+/488OZZ9Np7/KDkrGj8xQJGOkl5YbexdAQiCe+Afg3BWWkQ/fHFJH6ON3Ed/2O+olFHYI/n297mOX8whT3ISFBBf+R/3d129B+fzfI755TtefGFoGNoV2f7rbFQ1ijc2FmtDQbdqGTugo59ISB6Swz26NYkEVB3L8aeiqUt/U0+qcXSUuSeslRLKrkds5vkJNxdB3bLs4ODTRsruYw3SoQT+P5lo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,72 +99,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When map->start or map->size is not page aligned,
-reserved_mem_preserve() does not preserve the last one or two pages of
-the region from map->start to map->start + map->size.
+syzbot ci has tested the suggested fix patch on top of the following series:
 
-After kexec the new kernel reserves only the preserved pages, so those
-pages are released to the buddy allocator. But
-reserve_mem_find_by_name() still returns the whole region including
-them, so they can be allocated while the subsystem is still using them.
+[v4] f2fs: enable buffered RWF_DONTCACHE
+https://lore.kernel.org/all/cover.1788438786.git.qiwenjie@xiaomi.com
 
-So reject a reserve_mem= size or alignment that is not a multiple of
-PAGE_SIZE to keep both map->start and map->size page aligned.
+Patch: https://ci.syzbot.org/jobs/279baf88-89a3-4cb8-93c2-4bd86aa5092e/patch
+Testing results:
+* [build 0] Build Patched: passed
+* [build 0] Boot test: Patched: passed
+* [build 0] Previous reproducers: passed
+  - general protection fault in f2fs_write_begin (patched) - passed
 
-Fixes: 8375b76517cb ("kho: replace kho_preserve_phys() with kho_preserve_pages()")
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Full report is available here:
+https://ci.syzbot.org/session/7e05d54c-8b9e-4e22-a746-48153ea42a60
+
 ---
-Changes from v1 [1]
-- reject non-page-aligned size and align instead of fix page count when
-  preserving reserve_mem regions
-
-[1] https://lore.kernel.org/all/20260901165237.1025973-1-ekffu200098@gmail.com/
----
- Documentation/admin-guide/kernel-parameters.txt | 3 +++
- mm/memblock.c                                   | 9 +++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 68647ff4bdd2..f969085fffb7 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6648,6 +6648,9 @@ Kernel parameters
- 
- 			reserve_mem=12M:4096:oops ramoops.mem_name=oops
- 
-+			Both the size and the alignment must be multiples of
-+			the page size.
-+
- 	reservetop=	[X86-32,EARLY]
- 			Format: nn[KMG]
- 			Reserves a hole at the top of the kernel virtual
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 4302fb4ab85c..5e93b6da53e3 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2816,12 +2816,17 @@ static int __init reserve_mem(char *p)
- 	if (*p != ':')
- 		goto err_param;
- 
-+	if (!IS_ALIGNED(size, PAGE_SIZE) || !IS_ALIGNED(align, PAGE_SIZE)) {
-+		pr_err("reserve_mem: size and align must be multiples of the page size\n");
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * memblock_phys_alloc() doesn't like a zero size align,
- 	 * but it is OK for this command to have it.
- 	 */
--	if (align < SMP_CACHE_BYTES)
--		align = SMP_CACHE_BYTES;
-+	if (!align)
-+		align = PAGE_SIZE;
- 
- 	name = p + 1;
- 	len = strlen(name);
-
-base-commit: dbffc67777cd752ef3f77818109e1d2ef13e2949
--- 
-2.43.0
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
