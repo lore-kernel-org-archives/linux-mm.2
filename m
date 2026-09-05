@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7CDC624DB
-	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D54C624DB
+	for <linux-mm@archiver.kernel.org>; Sat,  5 Sep 2026 14:02:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B92506B008C; Sat,  5 Sep 2026 10:02:12 -0400 (EDT)
+	id CCAF46B0092; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6B026B0092; Sat,  5 Sep 2026 10:02:12 -0400 (EDT)
+	id C7C986B0095; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A58B96B0095; Sat,  5 Sep 2026 10:02:12 -0400 (EDT)
+	id AF5B76B0096; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8493A6B008C
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0665014034F
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:12 +0000 (UTC)
-X-FDA: 85179872904.22.53E1C6A
-Received: from mail-wm2-f8.google.com (mail-wm2-f8.google.com [74.125.225.136])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3FD3F1A000D
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q23VecM5;
-	spf=pass (imf19.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.136 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788616930;
-	b=N5v9SJcseaC4tj2PPQHqtIr6ZfioFh09KF/vfU65ECky8oJ73yCbTZQd1rnckKx8VUHLEH
-	I4F4gDriwD0cgxYWsSwgtX2ob1EnKD489hZ1FBeBRfHK1QGfOdlfvyXwq7erVZD7sOqdpT
-	1n/bnmbE5YdhhC5wjXAAPvGCRCkTX7E=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q23VecM5;
-	spf=pass (imf19.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.136 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 914756B0092
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 10:02:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11DF3120399
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:17 +0000 (UTC)
+X-FDA: 85179873114.15.3BA5524
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 467F320013
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 14:02:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwzULKrD;
+	spf=pass (imf31.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788616930;
+	s=arc-20220608; t=1788616935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=icDFr+1kJOyXzKJSmWL1jSVXiQ38MI3ua/+Z5tbVNKM=;
-	b=G6qwifcL1cGyL65KFUc9WjevbqLrUSixXCgSa5QntCl4wO/ZUlf6ufVLfF8LBx7obgqPkJ
-	zyTZqpha3rSlWCYpdxuGxt6LXa9e4Zj2tOG++upaL8QDABrH1W0EYrin7L2ivCjiWOMbQV
-	zJtQdxERGfbRZN8aVMjhxw39hchtEko=
-Received: by mail-wm2-f8.google.com with SMTP id 5b1f17b1804b1-4956bc73c0eso7428875e9.1
-        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:02:09 -0700 (PDT)
+	bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
+	b=E3NDInM3hI8I7YCnPaXXbnv7FGqyWQOxCnQT9ktDn4bCdQGbhn27usJRo0NKCkQDHte49D
+	FECrX1NOMtIIYaWKr1XKEdfYWuf3rWn1g40UHBmwO90MJyOnETNJ/zWkDWO42Vg0cCRVyi
+	yjklC3vqkW7XD+qH89p3xcUwAnW/qL0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788616935;
+	b=RRovTR0DCbZDppysOWqVnedeYDGOVwplOHBgh5wp/alawRhqFDYRe2PZEHpyBKZatRsNeq
+	kutAUE98RDZ3gQRGuLqeW3aadfGTwL5RvFWO0RkY9dQzdgUAOh6lirD2uMhtk0NKvLMk9M
+	jeUyJqQHzrIrqWg1YL0M1dXZEAPl2so=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwzULKrD;
+	spf=pass (imf31.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 74.125.225.139 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49ccea58fe3so4461285e9.1
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 07:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788616929; x=1789221729; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788616934; x=1789221734; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=icDFr+1kJOyXzKJSmWL1jSVXiQ38MI3ua/+Z5tbVNKM=;
-        b=q23VecM5UVF8w/zjGiW6TTQ2h8k4aWJRd8E0G2LQUzr1d10VR2KOiIl43AcotWUGfC
-         utHb8EqwgdrW2Aok/0V3FYIiLhSzD2R/D0i4nZ4iT8baZ8wMMX4bExkCNuAfWqDmCzaK
-         aYn9qcsy13qb8tKCVGAa9sU39GS/MPjVDvv/IGamBnMHsqGd59WldCFO6QIVLBtrSFk5
-         mTDk7jPOu9GVQZjHQfW14DoYE6Tf/0nVCoHBasqKMrOY5cw8k0vLTL86sFfUzaszVbzd
-         KzvTgMr4T5CDQexf2c0SBhhjo2iVWhIw0lL3/oAnACV9Hcaz5QoyWUif8YUDqqHiFze5
-         kyMQ==
+        bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
+        b=cwzULKrD7/e53GSJilToh9dM93qYob/koV9eTlML5Ef5BiHz0R/v99rtYDzNAGf7yI
+         TeJtz+XXzlQb3k0VA/1K+6afYlV5EB0TRCjALqbXVuYOeyUgqG70J2gW4fbahys3T6tl
+         ntg+zqs0NWZkVyYZOOA4LIx6Ii7kNy9UymlaU4pct06GAOIutecG2zTpXeCAxlCLSzad
+         Nf6sgrOS1PaNYMWnrgRM/wEHno3ILJbi4e1EdeXtgXrKYfPknRhIw/IDkFh5mnLRjDZ7
+         3NtIG5r3o7ODyq6YYfOzsA1Pdx76Iv7KZMlyiNayuz+fwCc8tomhrtgTwu9PWtYXurD8
+         Q9rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788616929; x=1789221729;
+        d=1e100.net; s=20251104; t=1788616934; x=1789221734;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=icDFr+1kJOyXzKJSmWL1jSVXiQ38MI3ua/+Z5tbVNKM=;
-        b=i2WSHgz/PG0rrt2BgH7EDjYUNJDS0aQpIpLzcyR60mSB53bq7Vu/6qIAH7KA4lgSCr
-         7sYcRFO57p4C0LAeb9IaYR/mUJw3XL7yWdBkSWumYljFbzeh8amjMABwRiO6yVItowBQ
-         YOJclQYE0jrmtLjXH3u9yglRvrFwlvyDMQPSDVwhRSZgOal9FVrOCNd5WQojaJKT0TAc
-         aLk/CQG+KSdr586/xuXCrOkPhoYoxyWoJXDpD6tsKUc6Mdk15t1LwXedNCoWqnhzH2E8
-         23EAkfXTicfEJEbwE3hG2D8Kac7o44+KH7g5bX2Vgkap1I8+39TaO8cDmC0UwpN32ph2
-         q2rw==
-X-Forwarded-Encrypted: i=1; AKwUvBxLqdl61wHLTB1k6xnmGc3PQnN+DYZuzV+QBfydp+r8r9qH5fNHK2XudEYT6Fo9UCLmH1lsU8Oz6A==@kvack.org
-X-Gm-Message-State: AFuF++miHbv+aZjL2YMWoa8RQ2oMuStMcv2bok8OqZzZ6MatlsL3SI8V
-	rj/9CWG4z5DJS8gP4dG8QZ/+sUCw4c2MwlpllHts9lOwIpKd7JOA6Zls
-X-Gm-Gg: AYBFou2TXm3btVPqGqmk1+tEfvwAvloURsjxd0qITKF7oQhfOPnIBC2OR4zj4YCjIXO
-	eTJSp7kfoGVzR8ciOSaxJT0ucDP90zPut+/t/34R7fPrav7+t9/qViG3aVK4Y56tlgivYWaI7AE
-	69QxNlWLKCkdaVs5HMks3GFXP3jbeA7xoh7HlGBQ5Sl1d5op7u2x4YNKUf+nXn80C5vCTO8NSZd
-	0pecxes4iZPvq+Vl/KbAOuiUipte2mdxRIOLnOP+RQnIZNIIUljx/q9JbY/wgfBsPs8nWwwRf73
-	ocOobRIFzd4ALu4IXzMupDzKiy4rhqhBC98dATKu5bBmFyouTbdVMJGBcUdhVS4Hy0RlxYkqUct
-	J68f03nlUPYV+33hlz6yt3VSpeM6+OpZJ7Qc1XXEetBSX/2Ijlflhf5c1UeztBzOQklT/InWxYB
-	Z/F/CVg9CPXgYJznV2FVOosNIOfdJ8iiYyk8M9M/1uFujS/LhtGIGr0kmd2y6jTk8zrdNIJXQkM
-	PLOUhmAwYamcwk=
-X-Received: by 2002:a05:600c:1da8:b0:49c:cf18:494e with SMTP id 5b1f17b1804b1-49cf825a530mr148106805e9.12.1788616928651;
-        Sat, 05 Sep 2026 07:02:08 -0700 (PDT)
+        bh=1j3T5b2cEL6pgSZfKmDhv9K0ynuzYhpAf3KEcht699E=;
+        b=ruTlOmHOU4aLNlnmIP75MxfB4B6H30h4Gen+BNbyDBu2AZ10vRyxK6W2SGgnekntbX
+         ouT8ivMvlEcZ0+q/0AiEnJaPkpBMo75wdcHZWR4P+Syx1j1RWbxNUDus7COJ6E1+N9ux
+         Ri5M5S35gTNOGFr0Id+imz+QefJf3G9KcvoimJynDhUnTKJSapHK6qlCNkjmeD6K1xK+
+         6Of4+lC1bqfrBpsRXd8UebvYrtR52bF8nwsBXJueIEr7slJp3uEwjVzQScRYGElxg3cp
+         Af/Kw8jCrjXezrc0gqZUMbcSVrxMQOG1d/XPX74SPkl64JnNV09F8GVbN/cY3rZ6KMYL
+         7hFA==
+X-Forwarded-Encrypted: i=1; AKwUvBzWGl47qLDznpN6dZGfgsAxZXFFjzqjsj7iCtlYG3ucXPdnNUpok7EYUuK052dAIcnXQB7GLQ5/Ng==@kvack.org
+X-Gm-Message-State: AFuF++ni2qgQ0YRfmvqEO94Ms9szR50h0IaVQyLMCl0RJ6ljYQVIcvmg
+	SRJRMEOViXBxZUjqazrmy+G3noQRbmG8hoz/nTBglPZcn5a/9ZB6cuwi
+X-Gm-Gg: AYBFou36RahElLiFX1g09+0vxshYgZHjlF5fnOUYjdgAUZLyzZAu+hh7GJm3bYhC9xa
+	doV4Arjs/dN2QoUsHnc4mR2ezG6SoK/FalslbFvf1yPaOd/eyv+vBhIIanqQNPBQ0lIVI09G0Xu
+	iRmwtyeoYhfbtCr/ECBHGtMPzVjKAbX5eMFqnCE9bD5f1ehDv6kCZVnyVqFzFS6KRP1MNN9rWIt
+	Xw92sLu5C17SuAnjEEz+INIoLuPTqvL7GGX7LJQXheg8SIK8iMHKaiEiBr3XI5fu8b1kQK0JDIa
+	asXJbQF861RFKu7254Pq5SZM02eLl0By7MtVkUo3dTbP87scygWGicU5XpZCYH9EhSMqjBGFGMG
+	6zm4Vc8S9F2VvIXEEGqpZ4DEnaaS8oLIZFyWZ7i7qsK6qZ+Iffzj8mh61iRxZiiOhNRMZ3QmUfS
+	Bnh2NPB7DTgaSH0XnM/8CjEynLKixAFYhuqIHgvyGjkQssgFwSzqamHGEsb+nZ3FmRCnyJsjYwS
+	DjaLVHMUHKg8i1z0pRrv+apNBT6Aw==
+X-Received: by 2002:a05:600c:c1d7:20b0:49c:ffe3:2b3f with SMTP id 5b1f17b1804b1-49cffe32f58mr50527755e9.3.1788616933800;
+        Sat, 05 Sep 2026 07:02:13 -0700 (PDT)
 Received: from outlook.com ([2a02:587:6022:4b00:84ac:4417:9f37:a496])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.02.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm149866765e9.0.2026.09.05.07.02.11
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 05 Sep 2026 07:02:08 -0700 (PDT)
+        Sat, 05 Sep 2026 07:02:13 -0700 (PDT)
 From: Christos Skarlos <christosskarlos.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -121,22 +121,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Christos Skarlos <christosskarlos.kernel@gmail.com>
-Subject: [PATCH 1/3] mm/mmap: fix various coding style warnings
-Date: Sat,  5 Sep 2026 17:01:38 +0300
-Message-ID: <20260905140140.60792-3-christosskarlos.kernel@gmail.com>
+Subject: [PATCH 2/3] mm/vamscan: fix various coding style warnings and errors
+Date: Sat,  5 Sep 2026 17:01:39 +0300
+Message-ID: <20260905140140.60792-4-christosskarlos.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
 References: <20260905140140.60792-1-christosskarlos.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3FD3F1A000D
-X-Stat-Signature: 8chk9u4eehkkjseof17nxy8184n4hucj
-X-HE-Tag: 1788616930-692571
-X-HE-Meta: U2FsdGVkX19zYf6fSbEiP0q/RyyuPq5LGJgBIRegTvdEI7rTyDlxCUbPzQ65WMt97OXaIs3owGhfI5KtGm9R2RB8UEtj57pR+Mf3iYN7I9DDUHwUXbDtY4IAZkjcSL9ZkJfws2jkCNF05fqH2InSmPBW0EzMdqQEOe44k4P8dxBVcaz/gAwyKKvO575YDj+ibCu32jjb733CmheRdbKAF2pv8QCHChgVV15raSskLsVtgrK2weeKd0ioSHBChVJNp/PYsS8kAMNAgp8zLA6nCuevtAF+WCN2KH9LNAgeIV3HRF86hU2Td1aKeadVN/5mAGXZo66XfrCmfLwrcTlNk2EG0xarGtcsno/1QZyxDA/cdwv9YwDZoAoJ3EwehCEApW5Jl4z8vDPGhRbh4Gwb+f6aVPUxhBQuozcygmptN2v+A9M2tnxKYYsJjgb/xtvg4ivY+LQ+E2e2UrKXvhsDIDnuIAh+eqHjkAiEy3luyAJ++WJ36kt5bw+3cz5x8XE2YG2xQXUl81Hvajm7KLBB9ALBXJjE1IUwS/12YuM2mkUgh/KvzJOlRjhxhNuBcDT0LQsBvblsXTR11ZVlHtumbd2TefdN/0boVKOwI2RFiiY3QWCaXpLBypv5p6OED/Thz0IhsIJL4yg/C4lr2h1AIrRTXZK9szvLoMA18r214cH+d4R2z3JWpygHYCvZz6a3s3ev2RA8qva3jpDFd/cyj/sCJtDK4s4DQeI8+0Y7O9i9Ox0z5c6xZE7j6LV3NE7dvk8wIRAJup1V5Q5n6ro5jsDVXFRtMrP1N+JIxpQxcyQ6YRdWW6HLkzU5hRXyJ1YA4YcGIYutSMaAZexDUbapXiWT3lItltyDp8uMdSQ4DE2cKYGIO/zbNv/sU9uHf83PLPIvikQme2VZRzk3Ah8abqxCgFvy0GmYNqoXkxG/9ABNQwk9BFNrJZPpGzDcBNgabw8RWkJaJX6Zh+ndncs
- mMFszTkc
- MkY90UHgNxalbAy6fFfRByVsZqY4oY8pL+q9JleN6saRjgJmXBdKuDAsWd6hc2pGUzwxBHmz/ei0CqfzCd/H5TEK0UfyDbIpg2D3TPIX2fZHxUJSsNhTaPDtnn2YHv7ARRpCRHRz/Uwczkl2HiGecUWTe1pow74X0t34makUExC/SyTbKyOjs8uvyghI+mmDCznSi+hEt/Jx8sEOUK4qZqG8s2K1EBcRvCSnJiez5a8lByX1T79daLTgasJ1KzGVG1lxH1q2ym8iJ7yLq6QuPxeAa3onczlgx+B2DSQrTWfo9KoYRZGgiY155OprMdCdi4rOeatTg1hcEUYuRCzV1A/XOKqQwiJF5wI7OcTeKPXtDyTVU5YZlwce+QWAxxp0KPHEc4/ImaMFnfvL2V2+g/I1ZG0+zP6zd2rvOo9ydHOoil2oWjzbs4lMqe+QfUYyOt6dCnuCKyx3dact3s/4/EKllUupQDOdfF08Gf/5Ufo3eVugwo9jxrlSDHg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 467F320013
+X-Stat-Signature: nyq56yhw9fidd33iccz98f3c4nemk3xq
+X-HE-Tag: 1788616935-206142
+X-HE-Meta: U2FsdGVkX1+y6Fpj1uXYPqpGwtJMmG1NHaPBplmKBNR8sAE9wotDIk+pHHT8EZhWerbu9tR5q3ioTiIx65ho6sH1MVMrThihR8c/TML2mJSQUJdEcTil6sU7FkXIcfn0dN0Bsk+5pefozvk9MBwq0OznCVcU11EH9ZlTeMcOkj6FkvstIrhypsejvTOzCIMgxqAQAvxN0cyySslaalZ6bYUhmrbyl6G2MroJX5AwiemT86xUU86H2y5zKHd3vAEEFtCHt3Gsn9rY630UCKFfjaGoUQaD4wL40hcPytrcFUMCRhgLWEWMuaFbWh+YJUYVqYZ2B5snCgRmCwqMRPYvbKwcjARcn2WltKokNqyd8LAfutUMTHOJ0kAdlpHVYZ3X9vmos03cvf43vmlznxHie5VBfX4xx10QuRHrG/TZOgxZrsBMZbKRpac2UILjBjM/VRrDLiGb9SIYrH8wFSd8cQpU8fIvpbNphSJBuc0/e20Be7bziWxYU5C7YosFTC48e1X9U0pRsNDpZpV/oxrKIRqzJieAnaxK2qvSN+r6/sYu+V+dBwHAg0nDuK+KMqCfCOOCwInvRWlvbErlgWjjvjPyd5LLVgRcxuLfq8/BpGJTAR3jN5Tkpi7nQNaQ68puCqwvg7b3fN2fM1AWlQF/RS0aZBZXe/MQj1PV7LFi+NAqqUNEQFXMTJw/gQYo1JNhT3S4zvqLd1wirZAXbployiwWQGmBWTk+DfSsi5L9oKUDmGX9dA6VNR7fJb9zhedNmqCb5BHOlcz2f8Fp5LIFYPAFUhxdKFNRWdILFPId5eNUrSpKdE6Qo4d3VayzYJmGjLstvAtcNYGVg84GCQyJtzpgvtEyVmnQFqi2dDVg27PyeaNn5KqQIuneJO3XF/tvD2vz1zbY/qc2uDlTRQu/WJ+BCE9+peKe9ImDf7NzxBEeZUOHvK7igzdDfxTf3XLkMTXTy9wlcB1H/pZjsvK
+ VaAGF4yq
+ kNaIPhI7C/5575TOdfiZVU9QRxMe0CSpmSfbi0xH1XGEU/xhvcwNki2Vy17QzVFUuIvEOMd3ZiUflrVVi6MBUel1ebmEFPbktjsEp9lYA+yAeF2KvEIGmMHoNWCcSaZUyqR+kXyimx1CGpX+oIYQ9Voua/LWAuhOHq3pHCGjy6/8f7ZbGlIHR/342iE92bsaCFUzyBHtBQd6cd4uGqcCL+/vuh+ENmqnFsgsdpwH8bsmPLAFuCLVfaii5t1a40670Al1ip0lZujjJbx6dOlGbGgmEJPP4RSmGY/4WyF3v0VfNYmu7Ca9MwRwE5KCIrO22ePL3pVI4EzKCzlvCMGffs/xAfNdiTsqrk09dxGXQyZunnKY7nbQDNShdH6WShQW0L5+cLR+LSdjdnzPA9CbCMqYBvuejHJc1o07sUML0tM+nwRhfMAx7yACPjH2sapWOtB7P0uJMt8EMjOWd4LR8ghNaQo1gBg95sLrWWc1vdMieCjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,116 +144,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resolve coding style warnings and errors flagged by checkpatch.pl script. Specifically:
-- Remove the obsolete filename reference in the top comment.
-- Replace <asm/cacheflush.h> and <asm/mmu_context.h> with <linux/...>.
-- Add missing blank lines after variable declarations and replace spaces with tabs where needed.
+Resolve coding style issues flagged by checkpatch.pl script. Specifically:
+- Add missing blank lines after variable declarations.
+- Replace "unsigned" with "unsigned int".
+- Replace spaces with tabs where possible.
 
 No functional changes are introduced.
 
 Signed-off-by: Christos Skarlos <christosskarlos.kernel@gmail.com>
 ---
- mm/mmap.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ mm/vmscan.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 4bf26b0f1e6e..626d3d2493ae 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mm/mmap.c
-  *
-  * Written by obz.
-  *
-@@ -50,9 +49,9 @@
- #include <linux/memfd.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f11491ee9ed5..8637cc0910fa 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -535,7 +535,7 @@ void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason)
+ 	 * writeback to a slow device to excessive referenced folios at the tail
+ 	 * of the inactive LRU.
+ 	 */
+-	switch(reason) {
++	switch (reason) {
+ 	case VMSCAN_THROTTLE_WRITEBACK:
+ 		timeout = HZ/10;
  
- #include <linux/uaccess.h>
--#include <asm/cacheflush.h>
-+#include <linux/cacheflush.h>
- #include <asm/tlb.h>
--#include <asm/mmu_context.h>
-+#include <linux/mmu_context.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/mmap.h>
-@@ -526,9 +525,9 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 			 * And don't attempt to combine with hugetlb for now.
- 			 */
- 			if (flags & (MAP_LOCKED | MAP_HUGETLB))
--			        return -EINVAL;
-+				return -EINVAL;
- 			if (vma_flags_can_grow(&vma_flags))
--			        return -EINVAL;
-+				return -EINVAL;
- 
- 			/*
- 			 * If the pages can be dropped, then it doesn't make
-@@ -832,6 +831,7 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- 				  = NULL;
- 
- 	unsigned long error = arch_mmap_check(addr, len, flags);
+@@ -1529,6 +1529,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
+ 		if (!folio_test_mlocked(folio)) {
+ 			int type = folio_is_file_lru(folio);
 +
- 	if (error)
- 		return error;
+ 			folio_set_active(folio);
+ 			stat->nr_activate[type] += nr_pages;
+ 			count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
+@@ -2073,8 +2074,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 	LIST_HEAD(l_hold);	/* The folios which were snipped off */
+ 	LIST_HEAD(l_active);
+ 	LIST_HEAD(l_inactive);
+-	unsigned nr_deactivate, nr_activate;
+-	unsigned nr_rotated = 0;
++	unsigned int nr_deactivate, nr_activate;
++	unsigned int nr_rotated = 0;
+ 	bool file = is_file_lru(lru);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
  
-@@ -942,6 +942,7 @@ find_vma_prev(struct mm_struct *mm, unsigned long addr,
- 			struct vm_area_struct **pprev)
+@@ -2614,7 +2615,7 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+ 	/*
+ 	 * If there is enough inactive page cache, we do not reclaim
+ 	 * anything from the anonymous working right now to make sure
+-         * a streaming file access pattern doesn't cause swapping.
++	 * a streaming file access pattern doesn't cause swapping.
+ 	 */
+ 	if (sc->cache_trim_mode) {
+ 		scan_balance = SCAN_FILE;
+@@ -3416,6 +3417,7 @@ static bool get_next_vma(unsigned long mask, unsigned long size, struct mm_walk
  {
- 	struct vm_area_struct *vma;
+ 	unsigned long start = round_up(*vm_end, size);
+ 	unsigned long end = (start | ~mask) + 1;
 +
- 	VMA_ITERATOR(vmi, mm, addr);
+ 	VMA_ITERATOR(vmi, args->mm, start);
  
- 	vma = vma_iter_load(&vmi);
-@@ -1017,12 +1018,12 @@ struct vm_area_struct *find_extend_vma_locked(struct mm_struct *mm, unsigned lon
+ 	VM_WARN_ON_ONCE(mask & size);
+@@ -7748,7 +7750,7 @@ static int __init kswapd_init(void)
+ 	int nid;
  
- #if defined(CONFIG_STACK_GROWSUP)
- 
--#define vma_expand_up(vma,addr) expand_upwards(vma, addr)
-+#define vma_expand_up(vma, addr) expand_upwards(vma, addr)
- #define vma_expand_down(vma, addr) (-EFAULT)
- 
- #else
- 
--#define vma_expand_up(vma,addr) (-EFAULT)
-+#define vma_expand_up(vma, addr) (-EFAULT)
- #define vma_expand_down(vma, addr) expand_downwards(vma, addr)
- 
- #endif
-@@ -1227,6 +1228,7 @@ int vm_brk_flags(unsigned long addr, unsigned long request, bool is_exec)
- 	int ret;
- 	bool populate;
- 	LIST_HEAD(uf);
-+
- 	VMA_ITERATOR(vmi, mm, addr);
- 
- 	len = PAGE_ALIGN(request);
-@@ -1290,6 +1292,7 @@ void exit_mmap(struct mm_struct *mm)
- 	struct mmu_gather tlb;
- 	struct vm_area_struct *vma;
- 	unsigned long nr_accounted = 0;
-+
- 	VMA_ITERATOR(vmi, mm, 0);
- 	struct unmap_desc unmap;
- 
-@@ -1454,6 +1457,7 @@ static vm_fault_t special_mapping_fault(struct vm_fault *vmf)
- 
- 	if (*pages) {
- 		struct page *page = *pages;
-+
- 		get_page(page);
- 		vmf->page = page;
- 		return 0;
-@@ -1711,6 +1715,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 	int retval;
- 	unsigned long charge = 0;
- 	LIST_HEAD(uf);
-+
- 	VMA_ITERATOR(vmi, mm, 0);
- 
- 	if (mmap_write_lock_killable(oldmm))
+ 	for_each_node_state(nid, N_MEMORY)
+- 		kswapd_run(nid);
++		kswapd_run(nid);
+ 	register_sysctl_init("vm", vmscan_sysctl_table);
+ 	return 0;
+ }
 -- 
 2.55.0
 
