@@ -4,128 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0690CC79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 07:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 788D6C79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 08:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A19DD6B0095; Sun,  6 Sep 2026 03:47:39 -0400 (EDT)
+	id 70CB66B0088; Sun,  6 Sep 2026 04:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A33C6B0096; Sun,  6 Sep 2026 03:47:39 -0400 (EDT)
+	id 6BD8E6B008A; Sun,  6 Sep 2026 04:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 891D76B0098; Sun,  6 Sep 2026 03:47:39 -0400 (EDT)
+	id 5D4776B008C; Sun,  6 Sep 2026 04:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FEBD6B0095
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 03:47:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02CDA1204C3
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:38 +0000 (UTC)
-X-FDA: 85182557838.26.79D3477
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0B25B1C0005
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuBDkrQH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AAEF6B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 04:18:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B3D601A04AB
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:18:22 +0000 (UTC)
+X-FDA: 85182635244.27.1F88B40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C77A740004
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:18:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Al5dJpzm;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788682700;
+	b=RAhMm0YQj1XiI6i9Jmy6Qcgw7iY9rZC9bRmFgauuyOrtRTCoxKKCP14LNQKYj5EASecE+w
+	OVNE1zxw3G2XWjHY14cKXH183bfO1nNEFxIJufXKvx4jYuPQO5YLPsqN2lbcrE0d1MTCIE
+	cCS1pbov+LtjWqRKvv1MCeixAzgoaoI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Al5dJpzm;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788680857;
+	s=arc-20220608; t=1788682700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xoId2o2x9KdlacVuk+UZ2/vbMr0aP2lUNDh5bJfaWLA=;
-	b=8KQS8C/8Gh4o0q2ugCDlJs8bEpHn7x+JbL61z32e7LM/olw3czey+hFXtSGWhOx1fNtsOx
-	qbJDYKVUCfdikn5rbUjaQ3Qm16ONKTpZQzTHUcUCeeDXhSbRieDcWcIeCIfzTOfI7G8bRJ
-	pQgWWZgD1Nw3VWAndBN8jpiy6+5fTxg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788680857;
-	b=FrXDyIrsU8yZMOEMeMcqYc87v68KnbHHIIDgRIQLcSBG8qV/QVPkBIYrFnw/hUdZCxo650
-	F6XkWuN9j7brY1D2TcTNlHo5KmL6gy4Q8KKrujugnl+xpTXhYDg/d2xgAZfaLqyzefhZAo
-	XSiPeVh8k5fOV7w1AGfHHHG9gWJNpfE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuBDkrQH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso2261919a12.0
-        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 00:47:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788680856; x=1789285656; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xoId2o2x9KdlacVuk+UZ2/vbMr0aP2lUNDh5bJfaWLA=;
-        b=CuBDkrQHwQIClTxWEgJxDuQ8DcHJqnc6UJ6zYjNHfIDdtfdBCZ6W/VhGYEOTcyFDCa
-         X0IciDqEzhhBX9OuxfpHNEJUyUH6c/khgRvtoPh/k9CsKT+K4Zcx1pp9KTnupJlgjLUk
-         sNqkDRiWoIs5ETckS8jLe9YDD0zus5mFjArY7FPLGtY78pdVersqL/ogWIcmj/3QzvnB
-         YkERqRY1uIeWYlTe7CMnrujd6YEXq7RiBqv8j39V63Mj5bVS/11mSjfnzURB3j6uPN9I
-         YOGa0iYtOxWzfoKrSPSlY+Z6+iZwpa9ksv2cRMsRxgs4e0KC1Zl5aB0co9lY0JfKsiTF
-         Es4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788680856; x=1789285656;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xoId2o2x9KdlacVuk+UZ2/vbMr0aP2lUNDh5bJfaWLA=;
-        b=FnsKqwztk+VgCrOIVFEvOmL5Nyj5hVEVf0A51SdQiooLsxnBDJRAHU+vVaz34be3P+
-         Vp7mAdgzGD14BmWe35/Qi9Xnc8XshLVrr5GDQnDwleK7abSrv+6jIlumRVMgrtMjK6ca
-         BaxqlvaoXBX5ouzkouZmq3T7dvBQcKGzBoREBldRAEH+fIPruvbAXQShyS42f7gZMDMy
-         0wvJQTDNiwl97wRYGaetGyGnj8Uz0yyJCHGtB3gw/Lb1yRI3bRZTL3Y6bNT9xstk+WFF
-         y/SmyWVVIdBj9VW1LT1o8hHkZMS9T0aYhOjbRKPaFWIRUBiqTwTnDcAxkwVlAeHtkj/F
-         Jz/w==
-X-Forwarded-Encrypted: i=1; AKwUvBx7Re0MULJ4A20lkPQW9a0DuPPGiZFuV5qR4w7HFPYrvE8MiXuXJNXaPWhpCyPo8JUXG1rDb0iXCw==@kvack.org
-X-Gm-Message-State: AFuF++m5Y3So374tHDFgGTmkVrQ/gOdDqIm/fAHArpJHeahqGDoHDAi0
-	9LFS33CPQNoupN+BFlndC8xFstz6cwaXkBi8xslE2tp2P97yaKwCDwgc
-X-Gm-Gg: AYBFou1+x9W/pey58Orgsg/UAytUGGOoICzTGXhhSfraLBM3rfT8+tjDNlpTpXJTny7
-	64XEFIbvqFmaL2lYS4DK+p8UdbUZWeBF47qY1RabQU1s1R/6hLZ6QOdyRCufNTzFlDypZfPCSCh
-	/XDWa5lpmdMEfWOj5Yc3FldG4b0BIW1AVEqZFGckX1gPR+jmoQMx+PVcJhbFWEnUTXecvgxouJH
-	xWTtgnLKocgikxptEHGlR8dEfo24EGys6Pfa7BRexXK+qIArLZzsDoVZ/IQvi5I5v/k0m3U9o49
-	x9u3oOqUaSh46cypBZQtQpJOh49OENHEP3OWfYptHIIRcRWUzwGyJeNrZARb3ACxSNlz3cqgaeq
-	Lwjiug9JvRg9rYdgrGBeIv4rYaBD1MZBsKxAvu2iW64YHMnAqE1VCHYxYvNgAfuz4r7/RmpWIeE
-	9NlFSqz39zFWn2dWkASztFCzMdlxFX2pb6p4d/kLheEfZvLY9C0FxnxYnR4uZV/8jT3Pe12cLG3
-	dAAleY9qnM2tAlVZX9MxSbzKRxAvwMHWwgohc4=
-X-Received: by 2002:a17:90b:3b8c:b0:398:9bd4:d13 with SMTP id 98e67ed59e1d1-39b26242a75mr22448300a91.18.1788680855786;
-        Sun, 06 Sep 2026 00:47:35 -0700 (PDT)
-Received: from NV-J4GCB44.localdomain ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08d0d7e8sm21138905a91.16.2026.09.06.00.47.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 00:47:35 -0700 (PDT)
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Sun, 06 Sep 2026 15:47:19 +0800
-Subject: [PATCH v6 3/3] mm/zswap: reference the pool by id to shrink struct
- zswap_entry
+	bh=rQZRDFZ3IOccz+fd+fDDFPiV3KsBwPv+BsJwqYRjyn0=;
+	b=5Y7rRPSTR1Qxyp2C+UYEWdarqoQuJ0Hs0RiEHs6e4KwISzmA1csLZl+uAbjfBW9VGbBjE4
+	Ikn5at0923q30HLkXq2A8W+954ZznMT14aDw1tBbWYFFWcWrVq79uI0eHtlfb1v+Ya+S43
+	mfS7Yv/d0vBYR8y5Ed2h5V5MWatjLKk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF73E43A65
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB831F00AC4
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:18:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788682699;
+	bh=rQZRDFZ3IOccz+fd+fDDFPiV3KsBwPv+BsJwqYRjyn0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Al5dJpzm6B1wU9XMtPcueJtAqov0f593Rm4tkkEzmPNh6Ua9LubeoIQHhI51yy71r
+	 VN7vR/v8Es2dfaIyCeMxmbpbPrvOQt0qhU5MZv326M+mdQh0cn7NGgmVZb/9C/Crne
+	 tGW0Cn8yhP8+wzIGZD3MXXRbS9t/55hOgktNFKxEepTfqLciWdeTh9wwMIhwbIqz6K
+	 vnYYZITAYnJ43xp/1f4H51JaPI7iAcCnIKVlg0pmeLZFbU8nFT7Jk3DXMIPKm/IMQe
+	 JNpfO3baA1jRH02KYx/UTfrqSLgftu4EduWqD4Bb6hM2TfENJ7JY8G51c/Uxw0BgnY
+	 9/ptUGQG2WFsA==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9399a162f93so65596585a.2
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 01:18:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzLpj30/5HsJ7qwN4Tj11yihfpAGcatzk0UIy72wZtfjYztTJuS0tfwlqcvatPCfFa8gXcX7ROIPA==@kvack.org
+X-Gm-Message-State: AFuF++njyDTtc1cNejXFRL8xI94byrrgB6e1uTtITHgRbxnIg5NckOtv
+	cfltT2BtGGelN9OTjZHBejHhqN5J/11Nb50YtqTdBS72GxD8QR0eWo2zoWTWoCJwA95MxxC6s6V
+	qQk0MiC5A+LGAqXpE9yU6oLf4tqenCbo=
+X-Received: by 2002:a05:620a:254a:b0:939:78c0:a496 with SMTP id
+ af79cd13be357-93980468659mr1711454585a.38.1788682698852; Sun, 06 Sep 2026
+ 01:18:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260906-shrink_zswap_entry_v6-v6-3-ac4cf61565fb@gmail.com>
-References: <20260906-shrink_zswap_entry_v6-v6-0-ac4cf61565fb@gmail.com>
-In-Reply-To: <20260906-shrink_zswap_entry_v6-v6-0-ac4cf61565fb@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
- Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Jianyue Wu <wujianyue000@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1788680840; l=4916;
- i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
- bh=aySURi7Iu1LgXwQtkFbM8kcAXTbBl9vxZBkFnJ9ZVdk=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
- H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QPpwHMd9/QdHAzFgAbtJaK6isCG2rxSbIwPWQYshJrQ5IblpffIxNYW2Cc8NvsfLkXjSqcFV+5/
- /JAf50ZMmygY=
-X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
- fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0B25B1C0005
-X-Stat-Signature: p6feneb8it8eom1bd69zpwdtsxmfdume
+References: <20260901232421.40157-1-baohua@kernel.org> <20260901232421.40157-3-baohua@kernel.org>
+ <ac1f4e9a-d45a-433c-b26a-23fd0d955243@linux.alibaba.com>
+In-Reply-To: <ac1f4e9a-d45a-433c-b26a-23fd0d955243@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 6 Sep 2026 16:18:07 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yRi=YQi9ooV-EZJLzzv2eSCiCCHiG4aC6FMb5QMXWoMg@mail.gmail.com>
+X-Gm-Features: AcwNN1UYQN4xnLf3vWTUQQebCDawV3qL4PRiq8gfcA3oguAOfDAy6RaLtERSzg8
+Message-ID: <CAGsJ_4yRi=YQi9ooV-EZJLzzv2eSCiCCHiG4aC6FMb5QMXWoMg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
+	baoquan.he@linux.dev, chenridong@xiaomi.com, david@kernel.org, 
+	hannes@cmpxchg.org, kasong@tencent.com, lianux.mm@gmail.com, 
+	linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com, 
+	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	stevensd@chromium.org, wangzicheng@honor.com, weixugc@google.com, 
+	yuanchu@google.com, zhangbo56@xiaomi.com, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1788680856-386511
-X-HE-Meta: U2FsdGVkX1/3ZpNf+QieVKhr2gneu5gzth9oHNDdWh6tX3aGE/a20y2GNVB0NI4Ehvt8ah8p2l2Ej6jKTvHAPRLF0E5nXTbvVH2ImGCVv/jRViSiHW+q6D+A+QmAQeXR/Gkash6GQC0xqJI+uzKNqkFunjuBtC41EY5g6T//ANU34Qw7GzDuBIomBcosiiK60Mttgp3Gp8wlxFA1FOSsrDpQxI7jfjc76LCuuO7ka13ccv+7TyHjeLsdXU9QY9XG94A/dQe18sBODE2q2GFKi6va1C+EGKhF+hqXC2R/qqeWQnuK+gBwUGQXgSgIZx1TkqlGfwoJhxeizlLhVb0+3uBDnJj8kqrspbkQXlzqP8fi/yoRZkc6gSe1AwGRHdtAkszdgsWohJHvHLf6dNX50ahL31jx0VkmUEHMtkwImb0MU+EZDPqkSa9jNrdnj0nTaIQfEkiL1YWMwqJP3gIJb+iuOtZYQh88NDLLD3Ja07EAJAFaJOVI1VG5t/7D8mGJQ18mhUwbHugs23SfF5n/SKLbN09GlbmMJn4BRuUSxKIv8b8dz1NTwhA6PyIeuPkLmuz6apr3KqTizWOVNIOhXYA8O72gn2YVtkBRJ/v2acVoI3mevstWmF2DmL9d+o1vA+UYMAKlvFXiwcpINBHW6dNoTlF6OzEEj+e1biM4ox+EJw+Hgo8YYpf9MLEWpeHqYpNEiOpHFHKjFtOvvV5qYBOw7Exqpo/uN6J8Wt4p9a+ITRDTnaJEyxYYzlGgSrbq3KRtkOeUQPygD6DYDC7Z4wf3IxAu+tsI1ukdJG1Y3eQd/BEbwjwLqaolRav5Swf7OvEcJjl5Up16jkCsy8h6QpkLKlG/d6d/p3aUICIA/HZTUD29MkEdSMqFEeHfvPPJdUID61kbl6wCtD32dzHufWo7cXpiNhXR593HNCua4hCjRsmBwnWwsPFPz7CP2odYp1q9EQNB+UJPWnG+kk3
- MQc6+B/C
- E1brT7+qr4ItJW/qp9jUajy/V2XCqMNeqjprXpd9dacgFa1rMtnBBS8IUEGVM9obds4bGS29sPREF8H47PPv95VVlADUZFJ+T9BdVVeIHo2ATqZ8bk0UJ5TA5eps9mD8ZbBD1ivbm+YHfy/lcCqPr4e25k2/AU5wXixaKdsRSem+uEhJl//UJEHrmWUCNW3UBAX+3sKgvavN3KpLXq1kuDTDh4arZHxfd9kxzSpCaHvfYbr1oHvI/LfWHpTzDRjxXScIQ83exhzv9b9V0qmdsD2jg+LxFBqclTmDjDWAeVuOgQek8p9fSj4R7s4Ci4nyWGb5vm4/TJ6To5SdgvQYACKXwsUJRvVbmYIuZZSachuBVZIVRNdmaaK8KJsiL5Jsxc9SB8bP5ge2RDnpjzOjCIBjztzMC7PlWaxGTSKhM8Rcnm0TF6v1iHcuGgyoGIJPS4eU8gRUqu+Fvr+bx7LAkWPmB3/JrQHbjLru7AT6lyWLILews7CTXbNJKpbSox471lp3+iwi57tcyfEs=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C77A740004
+X-Stat-Signature: i7kiudd3yn11e7ygawu64xhdjpmqs975
+X-HE-Tag: 1788682700-281343
+X-HE-Meta: U2FsdGVkX1/SLvQu2I3XlWYFlGB1INbTtyMFlfg+wCBtZfjp0BsNNUxKJ5SsUiHDFgpo4B7wX6gFntoC72RDhtUYEj4Jp/T6+SUCoFKzGv97Y7v9Qj1Ijv22j+q4tsZC4RI4CKbmZ6HnC8xu1Mj/24bRmXUEec7/N0EccIgTdwwNqMXXIC/WgbZjxa5PSQJIsF5a5d6y5B3WTgR9zcAedA7y911+p7Jl9B7KYs5GAcUIF4OgnkkwNecGTMSaDv9stXWnvsVztTrBbLyPGwJm2PEMF+dOC8r7veK2l8EfisGvxVIEpnMIxuDhsiQX9KlgnKZRMaZbxLD4leEYCl0LH4zrkgkq2AT0M4fAB7aZQ5E48iXuc5dd+kl5aaV6Rydj9xJHM2J6VAjM/Sn1Dip/daIAokIyEvjCiUYLIr3cWj005bDnGasMf3Dw3TO4H2118q5ASmd/vLPObdfm9t6SVX6PoSW8jpBzd/Uhs4dzK6a2IDegGDpsEImibbptuwdiJaMDotNP0mx8mWY8H945z7HWtmcbOAnMsqg/wKK6Pe7XBVJEvA2BUwesNAYc/yOrHblMtWIsHlqS4HIMwLtIXNx6mL3QnwQFP2TcrjaszfFKPJ+A1pbBzjA2fT89NhR5rJ5C4akVmNRqdTnGhBsfd0oBurAhDxcO+4/7UaE2guq4kzdYBmtbjIAN01zkMgHtJvzGW2s7M1EY2UHHZrWYUMcXKLbZLzxAZfdasdKnHE0HpWoaU6xjU55G4xFYqjsSkFevDcc6iaEl8c8cRM2FYd8XO9GhHAyOfYIV+HgP6QiYFjHB9tkSotp03gvs/s0WvJVkn/zu27pIYaos9+YFnIa5cVs/WGvyMJy+kZe83peMdxCO7seCbOx+L8EyiZIn0w7XQCk7C68JpX0y9wFHiaaqKQZ9usGjL8f9kUkeClR9uHJpZt/AI1988sBbnca9V5wTsiXr9OIqaY34Yt8
+ HPfa4AIE
+ JjClqqVGifoIzQijxHQoUOKDEx9b1EYSvokZOYWyl3f4k5eZcQC/yFeufNg7vIQ+M5WoK52RBn9xIy87hk4ntJphcoSOpDsJXLRcArW6kniIiIqKmHZ3Q6zAqOkA42kNeBOAh1yVxIKu0e+OJ0xJoSVAcRKcGy3P2vD4VqJavF+ltwhssgElYWfnK5y8p5wAN6BFIIBXNn3GCURgrd1vb5oSLr2/y6mxNk36m7hlP0/c6IYHEnDeLNaUi73sIt3AHDJVZMfeJHyQvPXsfss0PAZlW0gIKquDyKfq7s43jAIvopiGzsC9PzF5p/YnSx9jFwi9NvC73ETYyk+pIwJ3hyQ4T1ACwVGInCtty/8/F4G/vfc9o037dxbl9WhAdwrGBO3Vk16Q9Fp3iyW7fKsBbVXuHUdTGao6y/QFgYFFjZPgE6WO4Z0yiNKoTudedDwlulkxBbDJeAMNuWmFYBh+H3VjGeFlRGIqFKdtF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,133 +109,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct zswap_entry is one allocation per stored page, so its size is
-pure overhead. It currently embeds an 8-byte pool pointer, even though
-the live pools now sit in an allocating xarray keyed by a small integer
-id that fits in a u8.
+On Thu, Sep 3, 2026 at 6:06=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 9/2/26 7:24 AM, Barry Song (Xiaomi) wrote:
+> > Currently, folio_inc_gen() updates lrugen->nr_pages for every folio
+> > as it advances generations. Instead, accumulate the size changes
+> > and update lrugen->nr_pages in a batch after scanning the entire
+> > oldest generation, or when the scan stops because remaining reaches
+> > zero.
+> >
+> > Since we only move folios from the oldest generation to the second
+> > oldest generation, the active/inactive state cannot change. We can
+> > therefore skip __lru_update_size().
+>
+> Make sense to me.
+>
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+> > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> > ---
+>
+> LGTM. One nit follows.
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Replace the per-entry pool pointer with that u8 id and resolve it
-through the xarray with xa_load(). xa_load() does its own RCU-protected
-lookup, so the caller needs no rcu_read_lock() section of its own. The
-resolved pool stays valid because a live entry pins it via percpu_ref
-(taken in zswap_store_page()), so its id cannot be reused. A live entry
-never uses the reserved id 0, so a zeroed id resolves to NULL and trips
-a WARN rather than aliasing a live pool.
+Thanks very much!
 
-The u8 fits in the padding after the bool referenced field, shrinking
-the entry from 56 to 48 bytes on 64-bit. This raises objs_per_slab from
-73 to 85 and saves about 2MiB of metadata per 1GiB of data held in
-zswap.
+>
+> >   mm/vmscan.c | 23 ++++++++++++++++++-----
+> >   1 file changed, 18 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 54bce2f608ef..27494505cecc 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3918,6 +3918,7 @@ static bool inc_min_seq(struct lruvec *lruvec, in=
+t type, int swappiness)
+> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> >       int hist =3D lru_hist_from_seq(lrugen->min_seq[type]);
+> >       int new_gen, old_gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+> > +     int target_gen =3D (old_gen + 1) % MAX_NR_GENS;
+> >
+> >       /* For file type, skip the check if swappiness is anon only */
+> >       if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
+> > @@ -3927,35 +3928,47 @@ static bool inc_min_seq(struct lruvec *lruvec, =
+int type, int swappiness)
+> >       if (!type && !swappiness)
+> >               goto done;
+> >
+> > +     VM_WARN_ON_ONCE(get_nr_gens(lruvec, type) !=3D MAX_NR_GENS);
+> > +     VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) !=3D
+> > +                     lru_gen_is_active(lruvec, target_gen));
+> >       /* prevent cold/hot inversion if the type is evictable */
+> >       for (zone =3D 0; zone < MAX_NR_ZONES; zone++) {
+> >               struct list_head *head =3D &lrugen->folios[old_gen][type]=
+[zone];
+> > +             long delta =3D 0;
+> >
+> >               while (!list_empty(head)) {
+> >                       struct folio *folio =3D lru_to_folio(head);
+> > +                     long nr_pages =3D folio_nr_pages(folio);
+> >                       int refs =3D folio_lru_refs(folio);
+> >                       bool workingset =3D folio_test_workingset(folio);
+> > +                     bool gen_increased;
+> >
+> >                       VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(foli=
+o), folio);
+> >                       VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), f=
+olio);
+> >                       VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) !=
+=3D type, folio);
+> >                       VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) !=3D z=
+one, folio);
+> >
+> > -                     new_gen =3D folio_inc_gen(lruvec, folio);
+> > +                     new_gen =3D __folio_inc_gen(folio, old_gen, &gen_=
+increased);
+>
+> IMO, it's better to add some comments to describe why we don't need to
+> call __lru_update_size(), in case someone thinks this needs to be fixed
+> in the future. :)
 
-Suggested-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
----
- mm/zswap.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+We have already said this twice=E2=80=94once in the changelog and once with
+the `VM_WARN_ON()` in C :-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 86db023d63ed..253eebb971b9 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -194,7 +194,7 @@ static struct shrinker *zswap_shrinker;
-  *              writeback logic. The entry is only reclaimed by the writeback
-  *              logic if referenced is unset. See comments in the shrinker
-  *              section for context.
-- * pool - the zswap_pool the entry's data is in
-+ * pool_idx - id of the zswap_pool that the entry's data is in.
-  * handle - zsmalloc allocation handle that stores the compressed page data
-  * objcg - the obj_cgroup that the compressed memory is charged to
-  * lru - handle to the pool's lru used to evict pages.
-@@ -203,12 +203,22 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
--	struct zswap_pool *pool;
-+	u8 pool_idx;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
- 	struct list_head lru;
- };
- 
-+/*
-+ * No RCU section is needed around the returned pointer: a stored entry pins
-+ * its pool via percpu_ref (taken in zswap_store_page()), so the id cannot be
-+ * reused under us.  Callers WARN and handle a NULL from a corrupt pool_idx.
-+ */
-+static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-+{
-+	return xa_load(&zswap_pools, entry->pool_idx);
-+}
-+
- static struct xarray *zswap_trees[MAX_SWAPFILES];
- static unsigned int nr_zswap_trees[MAX_SWAPFILES];
- 
-@@ -759,9 +769,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-  */
- static void zswap_entry_free(struct zswap_entry *entry)
- {
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
-+
- 	zswap_lru_del(entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
--	zswap_pool_put(entry->pool);
-+	if (!WARN_ON_ONCE(!pool)) {
-+		zs_free(pool->zs_pool, entry->handle);
-+		zswap_pool_put(pool);
-+	}
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
- 		obj_cgroup_put(entry->objcg);
-@@ -918,12 +932,15 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 
- static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- {
--	struct zswap_pool *pool = entry->pool;
-+	struct zswap_pool *pool = zswap_entry_pool(entry);
- 	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
- 	struct scatterlist output;
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
- 
-+	if (WARN_ON_ONCE(!pool))
-+		return false;
-+
- 	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
- 	mutex_lock(&acomp_ctx->mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
-@@ -959,7 +976,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %u->%d)\n",
- 						swp_type(entry->swpentry),
- 						swp_offset(entry->swpentry),
--						entry->pool->tfm_name,
-+						pool->tfm_name,
- 						entry->length, dlen);
- 	return false;
- }
-@@ -1417,6 +1434,13 @@ static bool zswap_store_page(struct page *page,
- 	if (!zswap_compress(page, entry, pool))
- 		goto compress_failed;
- 
-+	/*
-+	 * Set pool_idx before the xa_store() below publishes the entry, or a
-+	 * concurrent reader could resolve a stale pool_idx left by slab reuse
-+	 * to an unrelated live pool.
-+	 */
-+	entry->pool_idx = pool->idx;
-+
- 	old = xa_store(swap_zswap_tree(page_swpentry),
- 		       swp_offset(page_swpentry),
- 		       entry, GFP_KERNEL);
-@@ -1462,7 +1486,6 @@ static bool zswap_store_page(struct page *page,
- 	 *    The publishing order matters to prevent writeback from seeing
- 	 *    an incoherent entry.
- 	 */
--	entry->pool = pool;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
- 	entry->referenced = true;
++     VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) !=3D
++                     lru_gen_is_active(lruvec, target_gen));
 
--- 
-2.43.0
+I guess we don't need to say it a third time, do we? It should be
+self-documenting.
 
+For a possible future change, I know Kairui may change the definition
+of active/inactive=E2=80=94for example, by no longer using generations to
+define them, but instead using refs. Kairui knows the MGLRU code
+inside out, though, so I'm not too concerned. :-)
+
+Best Regards
+Barry
 
