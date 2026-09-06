@@ -4,85 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40273C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 05:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6617AC79F8C
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 05:50:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E11206B00B6; Sun,  6 Sep 2026 01:05:41 -0400 (EDT)
+	id 36C8E6B00AB; Sun,  6 Sep 2026 01:50:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2416B00D0; Sun,  6 Sep 2026 01:05:41 -0400 (EDT)
+	id 344AF6B00B2; Sun,  6 Sep 2026 01:50:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFFA96B00D1; Sun,  6 Sep 2026 01:05:41 -0400 (EDT)
+	id 232F46B00B4; Sun,  6 Sep 2026 01:50:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5B16B00B6
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 01:05:41 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2846F1A045F
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 05:05:41 +0000 (UTC)
-X-FDA: 85182149682.12.EE34951
-Received: from mta1.migadu.com (out-16.mta1.migadu.com [95.215.58.16])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04461C0004
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 05:05:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YLdvTY+B;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788671139;
-	b=dCsFkFFvgpqv+llZkFFbqNeWP90FRhPYY3I0Bko8lO6QorYtKfnOK/MWB8Ij2TH2fyvBmO
-	R9JIJDIabQm8WD0EtdM/ymkH41XVfbveeRQ0ArNfluazutH91z9L7Ig+p6JXUEEvtYvojH
-	WI2EPH+Q2K4RCMtte051Vj1E9FM/Rbg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788671139;
+	by kanga.kvack.org (Postfix) with ESMTP id E83206B00AB
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 01:50:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F246B4047B
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 05:50:11 +0000 (UTC)
+X-FDA: 85182261822.30.4435F2E
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 108D81C0002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 05:50:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jcl7uqTx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788673810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CX7PufplC8BcEv6BPDm5tHrDUM3U9H51ZYT3tZk522A=;
-	b=t/uC79LIxUggvtZ0KI4yQRjP1424biYg5NeeVZEEE89t28vTREfvwkWQLo9Ddl+C89DVJA
-	qRNBH+DlATIX9Je11cTacSVIqYXCKRs1TJPUpgttDVLqD1IaCUeBtoSecubVUjnPRDg7Cj
-	EJ7Sn6hOga70SrBVzZX652jw7ZxGcgc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YLdvTY+B;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.16 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=90c8t894CaHOARptfQVdz1/jF1xpxhRk1kEXilNjskc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788671137; v=1; x=1789275937;
- b=YLdvTY+BdhyNetq/FhXe4EJRfKs9DSQjDHNoaWd8l9uLh9kMqYxUOh+IO1tnDOxXrJjw3EGC
- lZabqH3rKazj6pm80QQRLvsFcYlYbxPQGySi9bvJEJakjd8zPRAtLhmno2C0r73+txoiF5K7J+E
- iOK0VDADYSR4rly3oQfumg3c=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1352ad230425d981;
-	Sun, 06 Sep 2026 05:05:36 +0000
-X-Mizu-Trace-ID: 1352ad230425d981
-X-Migadu-Flow: FLOW_OUT
-Date: Sat, 5 Sep 2026 22:05:32 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, yosry@kernel.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3] mm/memcontrol: skip non-hierarchical memcg-wide stats
- when v1 is unavailable
-Message-ID: <20260906050459.GA80665@shakeel.butt@linux.dev>
-References: <20260903215616.1456239-1-joannelkoong@gmail.com>
+	bh=rlSLw0+YBIY2ITDImKVN6Gu2ov4yl998ZNhFCSCffxQ=;
+	b=XebdzbVJBEvcwqYtiUyjZhn3MXaVGTF+ig0iRarMRqpJ+gnGQ0QtocRchqYKuGzqYZ3l0E
+	/ccxmQDsox94m5tk8nbR6Oi/xT4iSbp68u/S+T1XQwc45Re1/Fr+uHPanFYaU7Y0JrpwlI
+	QBZMz2XE31Zov30m481NSTzosgdWgOw=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jcl7uqTx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788673810;
+	b=pDuakxp4UxZL5jehU9JusBcfZuPf6H0M2XLA0/zapKxztWa5/NEYbFFw+Mbu89yVvdQKki
+	aCRnohLLNdNjuFJ8z6M/v6++apKjiT1m7nLJ3hjOSVseMQr+eeDoUfXK53jw7ROFzUmgp6
+	NN85eE/4kIM8nMLtHJ52bu5RdIeTSZY=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c25b661d37dso329427766b.0
+        for <linux-mm@kvack.org>; Sat, 05 Sep 2026 22:50:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788673808; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LIfdbRZ7AVyNL3R3xqK9sebtXmcUMNYTU1OkCEndNqmhjUAQat8iWqjHuu2MSalRo9
+         yiKlQLmkfBpqRFSGd6jIYd7VNCnTuCmFUEhdaL3lgBjcTJeShJ3Q1JtMMX2gjDIFL5sL
+         EA/WK+nmBmWuTv+V87Ntg95vZgvqH+uWn8k/6RK7UJhz7PU8tPeVtN0fweFIW1cGlv9r
+         pU9DyHPrgfj7GhRJvpLxdg+mghEbpFIKTgwbo2VtDbIHP2vHEdDvlumS/Nqsr51N0tMz
+         pujACOzDl6scr1eZvZLXQ0+mMI5+ojyhhHlZS9K2lQxJgW0T39KnkDPoScKLO2YH9WC4
+         8o1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rlSLw0+YBIY2ITDImKVN6Gu2ov4yl998ZNhFCSCffxQ=;
+        fh=f3VI6YXzHho/jJghPIwspqKMUN8+08sjeHqstxvOkhQ=;
+        b=YxuLL9EtTwJaRLJJOxfoHQHK3FhVlTKuRjjVCODYAN9iaDj5tNNGE3ExEgCy/20g3c
+         Oxz75dTzW+75zUGb90OZpfVWZQr/sySmtfbMWNucEUnYZSktu9UpmAc7hZIE80L4p9W7
+         YyBo7kHPbMocf3VcDHhbvUDNevdABmRa1B1I/1Qg9FAD1do79n8gLbnmbLFfd4/B0J1N
+         x8a2NIs12+/ivc7OQBlxtIt4X4crvpSen+aUKj3LGGvs0QzmaY80nxefed1gVyhTWG6X
+         Djh1KOv8+LO4f8jGryb4o0CsnyikSPXd6ZHNNIIkVYdHwCjckY1eAK2E59dBt/k9rlZJ
+         IRuw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788673808; x=1789278608; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rlSLw0+YBIY2ITDImKVN6Gu2ov4yl998ZNhFCSCffxQ=;
+        b=jcl7uqTx1npd+Tmn+2mPM+xaJrVWea5YWGeu3gfDc0YId4thxtStHRYbGnDgvBGyaY
+         6bqaRsh2VhKpxea2yy5LjOizqWHPhnGRUyzlNWxazLCqiANdxCO+UGJA0TochMN0pe9q
+         rdciX4vmOYSrXwI+BdwdSWAZl6fhygAsM4UMgnutG2wCDmhSkL2K5Ihp02vqxVhaqZr5
+         rj9SFFY6VDkmFfhklSKp/noV4ui2Pmq+UEo8YkvijAvyszLE1bz/ixTPASu95pZPuwZI
+         OFXaMCw9cat0wDvUDa/sdy55QuYfzB85qEczndlXAiaxuewnV84F+60kyKmYpegx2o07
+         P5+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788673808; x=1789278608;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rlSLw0+YBIY2ITDImKVN6Gu2ov4yl998ZNhFCSCffxQ=;
+        b=FCOnZNE2HKjAjPyzIvbGc1dKxbrZ4YBTXhi/9U6zcI1Qp+fpWBFR1js+dF+v+V7/Zn
+         hYZsFEskMNRinkvP/5Bsow2Gae2p6pB1Zqm27VsYhx6rG9vYBUxu40yGSs1fw/nWWIFv
+         d9XECk4Qrsj/+b/KZXZ8aAmutOcYKjJZMkhfa6VDJ0AaPpWVZzuwlkB3imSG8IuXKegk
+         pieRymbUX2QIw7sDmK58bSvHAiy/sWRwAIN3eE/jnVzdprbktRjTrTkyRwrnISzAoW+r
+         VUgDrLIBairinlPh07yAdaUtkCO0xVhAzLSWnrrZ9CFNjKXI3Wuw13fbik6gtsb2o0be
+         Rgtw==
+X-Forwarded-Encrypted: i=1; AKwUvBxIy0ZhgbeNf1NZoNHau77QXP1YoR1woFEAhu6cAjxpx4f1htida1yF5fYPKili4ZfDC2T7xmle6A==@kvack.org
+X-Gm-Message-State: AFuF++l/jyfKkvfIpQYi/1yku+IcaUDthxPN4rX1vyeVVEfuT+k5kal1
+	P1l0SKVS1DUOWozspgcLNqeegWSObuYMczOv6SZPzrMJNoa3HLtknLjmtVKz2oVtZakA1pOXbj4
+	MyAUlZxLMikJd6rv8PMXKbDZ6D05tujU=
+X-Gm-Gg: AYBFou0KSpDQXJx9M+qxH0/eOpDFIYJCa07ix4aZVZb3YcY/pVjNH0YRGPZwO0evsEW
+	2A1MLSmEREu5R8H/YbsDuSYTbMJ3DpMnHhUujrDf4ptvuToZ85WC8ijn1ZLfLhiFgz3uczTD60P
+	apYT4QS7wP/2JVdTvdCRSa83UXxIRsSqgd26UOrj2OeLu5OhIZpi6F957DZibwmW7tG29P60wZZ
+	IEvp1TUmK18Hl+FRjVCg4+ZkmnUquNppUjtXMOHwFlZQt+6wbvZksDruone8xW8RXZ2jKuMTNhv
+	JKShF/ELRn/RPjypQ804bON0DNM6XrND32f4yTa7Zk3dG1FYnswNqMfi/2yULno/Fe07VkjlJS6
+	/Fg==
+X-Received: by 2002:a17:907:970f:b0:c25:4b3e:ff24 with SMTP id
+ a640c23a62f3a-c260c8d8077mr500163166b.10.1788673808156; Sat, 05 Sep 2026
+ 22:50:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903215616.1456239-1-joannelkoong@gmail.com>
+References: <20260903040131.4016290-1-zhangbo56@xiaomi.com>
+ <20260906011820.382381-1-zhangbo56@xiaomi.com> <CAGsJ_4wC78QDTrETC0WpnouN=8aF8ae6Yxgb+oKiOP3A76ATLg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wC78QDTrETC0WpnouN=8aF8ae6Yxgb+oKiOP3A76ATLg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 6 Sep 2026 13:49:30 +0800
+X-Gm-Features: AcwNN1W3d0Og_zgj_zuXYW_3ipFK3L8APnvEnnR3uGPVN-t0sokfY9kP47fq6Ys
+Message-ID: <CAMgjq7B==MqHXa6H=arrQ9a0bUXWpXG_a5EBxZGjLjYUuEf1gQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
+To: Barry Song <baohua@kernel.org>
+Cc: Bo Zhang <zhangbo0325@gmail.com>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org, 
+	mhocko@kernel.org, ljs@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: kjs4tgz4ch64t59n3dr4yse754i6d8bm
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 108D81C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 04461C0004
-X-Stat-Signature: qz94cir35ofwexoizjqo6yanq8zpgphn
-X-HE-Tag: 1788671138-410851
-X-HE-Meta: U2FsdGVkX19JVLbRG9oiNcAuUl9It/D3VtAkRiNkile0ZMD3lbcSvLdzAJ55Nl6/u4iyBbELPWXXkOM4dnG47Godv3kpmoUdhsiXnpvh4/spwMewCwUCcTBfTM7ga7OZH5LsKH62mydfAq6aLbxvgyEs4j+iPfJfXDDWcqiqTI1Jl2oaLKcAjNVqW6I+z8f/oeK662YKp2tQ5W+roaN+bWlpk1yKZRtVnBQqA767KDPmWDFQkOTjPnYKAaOytdqQS9sq0R2wGU3vywzrFfJcHYFiKewROJtilDmOTTwXD9DbwCk87LwVZq2AtJKPNxjyYuGeCgLMeF8FDsnv/bLfPJS1ImTw77Gpcn56pxACQ6gIx4+jDdOtKu5pjr89Njg7il6aG9niYnYFjLGh6BnHjH4rB16fdfzEEThHXev4xcX5TN0xHNcQAESfZKJEWpEY9AuwldE4AQut95n1jevri48hLHGWZfvM3/2jfSNNLDpI6zN2g6oMZoRzqR5xLyg/ci+LO9MSIo8oA9LI/UEw80Wm2+rQWALQOPupsBj6yT5OCn1Ky04vU0SSGf8ExfZbGOd9F/bKJxgwE2PLhqPbee5bKaKsRtrWfdOeb6MBohYOhTzdElWssDQCRttYDLf2GxCEKG+mvP23KUTysQVMTJwp8bvjeRA9TDTVu4MUua89XkO1xDMGY/k+0tj5HdpfS5W/DfXsPhUBImA53hIiHpMX5zoWNMmQhjNQohGtHd5qZs/qNoO47ibHWOq94C05oY5vdNfLltyIz1wzZBWLAJ0fvCcNejgp+OjRz9EnEdnaSav2LJXX1bgnvbUZG4z2Y44+5+hcX9XSe3xcC5wDleB+QkZ/AJNCHOuHtiI6D8er08ecPee3k5uzXxmH7A8lNzJXW+8UkppmzxQKsW/OLY63wE9ViXEh0nnqbqTCCT5J+QnOPDRxyh9N8LyaZxdoj0Uj4tTmUvQZ772P9VA
- YwbPTblU
- GlAmEy/JPx7CYw35Rq/MA3wDiyeuXdet/LSjVWWZ4zVLH55Tpi10u0es3+47MvY70giwAlQIyG87da0YtatspZ2+v+UNws9ZYU8vaiCDdThszIIusQQbUXOK7NVr/pJiD98PlOAjidA/S7u120I0YE+bvL/nQP9hxjh8bMtU/63fBNrFSoWC3gf7EKBc3FZbYWtlHwPrZIqNTMaY1DUknFmqulr76YOCemoUP4F/T505NajON+BTnNE9Bk679HpoR1gzS5XLWaRZ/FQpfsvbqxBagFuzQ68peKzOG
+X-HE-Tag: 1788673809-16034
+X-HE-Meta: U2FsdGVkX1/Yy85FqkJYjeoXqLaD4B4fc2LZXTlVY8JN3d4blnvcTwNNkY3NRtlplk3S2VvPFJVv2ZO+CvWjA6Ym3+/JQasw6cD1u6dzkzkImkguVEO1f47gydgH8Orqt1CeYAnSuJ/ePunaENrkVIgo0GwrTeVNQd5R084kJYDQRTezWtyoRODKHFGYJDfm/ZNJfyy1Zdkm48K+K8shI8LGJ+4kA4CZVtXUMPqwCKi6+cJRgAjNTC0I6zXwUlKFY+PInZ3QnEr/hkwwVeZa5drR0E8hOg7VOwNNudzZGziSs1oicYOIpHT9ON2X86EIA4T4hal1k7JK0CTZUgkOUyOXkEZfgaxhxF8kFnBdyVQ4hIVXNashGaqFtgYXW1mS7DWohcASgxn5frX8HX5gULL6sMPdiyu1JjcyyEmQhOllWoiEUNAwmaeO8wAgxn8rw1G1AMXwGF6IX486Y2R9Vt+kWvMs4NcpQqnOcORxd+TSHycc9TuscbGH2Siy6xBZiexJSGxueAeO6nTE69dVN3YqkYHZLKxfVDfWS7ETwJDxaK3u3Q4U5X2l/WXaZfNOMQ2wiI3YUpYppsmRO54lXPM1ZHTkdzASyDPyyhG1+wKd8qHa/aLp/Mu0xC7g6NPKN5cz3SeDuYJ1xXgwDnD7hyCXYdHn/Uh8NTAQQXNR0FAh7XNjkXDaxWpTF2nwy7JZ8qWQgaft4Uv7q6Bxl8RkI44aJt2Me1KB1PEh9cqO0MoLBoL34whTaVQsot+88ohNCSSR+4Ll1Jn6eX0ubenl0ydh4PxieDIg76tEnbo3q4WsUcQ6SicAQTuxF5HyMqaXQNnk4VijwKh38leVClcVpUBKNqyfv/aOpn4gnOKIYI5QG6u7PuitAHz9eREIuuzfUxz8xOOZRvN3CtQCziSRp2eK7QUMUJvzjcXwvCCoysJ5PxIjhV8Kvz/hmtiN1/sICWW4utLcY7Jq0H2vtCp
+ IpELWY+R
+ Fly8A6hGT5uutwReerb6Rw7vzBk6EqUWf/0LRJ5feMZ4QBPSy938p/8/Ry2w7AScopbRBIPqpVYZPxJ+hLX3Fys8dEQfMKsxB8VL00PsRptmL9Gby19CdmrujnQ7+1/U1KXGdqgKr/xZkTBQfRdXvp2huCdVIEUcMlPXmUrCmYUm5IjNTt1vcpp+R6AgKJ2mPAcA3HLanD6mOLca17l2d6sChWRHKZCzt8HxtHxwP4xodp+wDsFirJJZtvszB081SW61x9sW/Zhwl3zG7F4t1Dk6KOWXqkYG80gRTFVg114dNQnazuaBnmv9Oj4hTedBvdJkjfW0dKgopejGHIMaFouLyJ1ZNYlpbkJXawAwsdQljHNCCdJ1L0MIAajxIm38v+e8PIlJD2B6gM7VZGfSIoUconW5JjFitxcvrSr+8CJFNTxb7Y7GUdZ9FsJHE4PzXElOAr1NRYagsOEvhxqIrnUkJZ9rWSRJo/RLu1eu7vTiiJ2hO8SncEloO+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,55 +143,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 02:56:16PM -0700, Joanne Koong wrote:
-> memcg_vmstats keeps a non-hierarchical copy of every memcg-wide stat item
-> and event alongside the hierarchical one. The only readers however are
-> the legacy memory.stat and memory.numa_stat, and reparenting on offline.
-> All of them live under CONFIG_MEMCG_V1, and their accessors
-> (memcg_page_state_local() and memcg_events_local()) are already compiled
-> out with it. This means on a CONFIG_MEMCG_V1=n kernel, memcg_vmstats's
-> non-hierarchical arrays are written to on every rstat flush, despite
-> their values never being read / accessed.
-> 
-> The same holds when the kernel does support v1 but the controller has
-> been blocked from v1 hierarchies with the boot param
-> cgroup_no_v1={memory,all}. A v1 mount is refused in that case, so the
-> legacy memory.stat can never exist and the arrays are just as unread /
-> unaccessed.
-> 
-> Compile out the non-hierarchical memcg-wide arrays if CONFIG_MEMCG_V1 is
-> not set. If it is set but cgroup_no_v1= has blocked the controller, skip
-> updates on the arrays.
-> 
-> This makes flushes cheaper. mem_cgroup_stat_aggregate() can now skip the
-> read-modify-write of ac->local[i]. Nothing else accesses state_local or
-> events_local, so those cachelines were getting pulled in solely for the
-> writes and they are separate from the ones the loop is already walking.
-> 
-> On an 80-cpu x86_64 machine with 500 cgroups each running a workload that
-> dirties anon, file, dirty/writeback, slab, kmem, mlock, and reclaim
-> counters, timing mem_cgroup_css_rstat_flush() in-kernel in TSC ticks per
-> flush showed roughly
-> 
->                          before   after    delta
-> memcg-wide aggregation   1231     1180     -4.1%
-> overall flush function   2452     2397     -2.2%
-> 
-> These numbers are from taking the median of 70 samples, one per 20s
-> window on each kernel. The 95% intervals observed on the two deltas are
-> [-5.41%, -1.76%] and [-4.53%, -0.14%]. The values above include the
-> timing overhead itself, so only the delta is meaningful here.
-> 
-> Counting the items that actually changed, a median of 1.5 of the 77
-> memcg-wide items (57 state + 20 events) had a non-zero per-cpu delta at
-> each flush, which means the benchmarks above are with one or two fewer
-> cachelines pulled in per flush. The count is low because the benchmark
-> reads memory.stat in a loop to keep the flush rate up. For cases where
-> flushes are triggered only by the 2s periodic worker, more changes will
-> have accumulated between flushes, so more cachelines are skipped and the
-> per-flush saving should be larger.
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+On Sun, Sep 6, 2026 at 12:56=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Sun, Sep 6, 2026 at 9:18=E2=80=AFAM Bo Zhang <zhangbo0325@gmail.com> w=
+rote:
+> >
+> > We have observed some cases where memory is allocated with GFP_NOIO, so
+> > we cannot reclaim any anon folios unless they are in swapcache. We can
+> > end up spending more than 150 ms looping in `shrink_folio_list()` scann=
+ing
+> > non-swapcache folios without reclaiming a single folio. This is pure
+> > overhead.
+> >
+> > This is particularly true on systems using zRAM, where swapcache is
+> > relatively rare. So let's check whether anon reclaim is allowed by
+> > GFP_IO and whether there is enough swapcache to make it worthwhile. If
+> > the swapcache is extremely low, we're essentially searching for a
+> > needle in a haystack, so let's avoid scanning anon in the first place.
+> >
+> > On Android this is triggered by dm-verity hash-block reads through
+> > dm-bufio, which use GFP_NOIO:
+> >
+> >   verity_verify_io -> verity_hash_for_block -> verity_verify_level
+> >     -> dm_bufio_read_with_ioprio -> new_read -> __bufio_new
+> >       -> alloc_buffer
+> >          gfp: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWAR=
+N
+> >
+> > Such a reclaimer can land on a memcg with a large, unswapped anon LRU a=
+nd
+> > a tiny file LRU (e.g. inactive_anon ~335 MB vs inactive_file ~4 MB, wit=
+h
+> > negligible swapcache). shrink_lruvec() then keeps feeding that huge ano=
+n
+> > list into shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,00=
+0
+> > anon folios scanned - where every folio is kept because it needs IO. Th=
+e
+> > 150+ ms above is one such single shrink_lruvec() pass (not accumulated
+> > across a reclaim cycle), and it reclaims nothing; the actual progress
+> > comes entirely from the file side.
+> >
+> > Aging anon alongside file does have some value for a later __GFP_IO
+> > reclaimer, so it is not strictly pure overhead. But that aging is only
+> > deferred, not lost: kswapd and other __GFP_IO reclaimers still walk and
+> > age anon. Spending ~168 ms aging memory that this context cannot reclai=
+m
+> > is not a worthwhile trade-off in a latency-sensitive path.
+> >
+> > To stay conservative, this only skips anon when the swapcache is really
+> > tiny - below 1/64 of the anon LRU - i.e. when essentially no anon on th=
+e
+> > list can be reclaimed without IO. Whenever there is a meaningful amount=
+ of
+> > swapcached anon, the normal path is used and anon is scanned and aged a=
+s
+> > before.
+>
+> I notice this only fixes the active/inactive LRU case. To address the
+> MGLRU case, it seems we may need a more fundamental change.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+It won't be too hard if we just calculate the type and number to scan
+upfront, and I believe this is a similar issue due to the same root
+cause of the OOM and swappiness issue of MGLRU, which I mentiones
+before (see point 4, "force protection of the youngest two gens"):
+https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=3D8=3D75su38w=3DHD7=
+82T5E_cxyeCeH_g@mail.gmail.com/
+
+Removing that force protection and calculate the number to scan
+upfront, then we can also make use of can_reclaim_anon_pages, shift
+all scan budget to file type. Aging won't be triggered at default
+priority, resulting in zero overhead. We can then either offload aging
+to a worker or defer it if aging isn't helpful for one reclaim cycle.
 
