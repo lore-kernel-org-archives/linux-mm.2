@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008C6C79F9E
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 20:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED00C79F9E
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 20:17:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 681DF6B0088; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
+	id 4714A6B0088; Sun,  6 Sep 2026 16:17:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 632856B008A; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
+	id 3FC6B6B008A; Sun,  6 Sep 2026 16:17:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5491F6B008C; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
+	id 2C3896B008C; Sun,  6 Sep 2026 16:17:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B9266B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CD721605F0
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:08:00 +0000 (UTC)
-X-FDA: 85184423520.26.0372DE6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 92473140005
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:07:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqoOuRgR;
+	by kanga.kvack.org (Postfix) with ESMTP id EFD2A6B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 16:17:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66F011C1E2F
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:17:50 +0000 (UTC)
+X-FDA: 85184448300.24.2679ECF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AF2E740003
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:17:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OqNJUzP0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788725278;
+	s=arc-20220608; t=1788725868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6dLtZ4diiABDwf70eKATggUD/DCfK2UIavuZ29uFn94=;
-	b=BPgDGS95/2egYg6QXPF8YJnFi+M0TWdbDzwwnnNzkU/xT24RMlIqQPb8x75rbaF0mSCviy
-	pVQH9ptwvKWw4OazFS4ObJiX6c2E7ZV953BKFm46Ezr+soVuBvSysQK8YxWVKU74xNXOeG
-	N7CdJUpNZzFApRFGirNrb26Wvoggke0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788725278;
-	b=kpaStM3JC/p24msNnIihIP+lmZvTULNEL9wB0d2Tb/kF8HlADIIaDe84Dp3q8I0/HR3TDq
-	dWPXnS4vHiIAxDCNyTV1b6/+G11hNIGI93s3m+lD6evM8xz6NGIUsEl0ZdCVePa9F4G3bD
-	UryHiH/3T1BgjNCXrxX11VPp+Q9Mu9w=
+	bh=3uA93cxqW2HvNr9qUovcFs04ocnOSCf6zitvtFhj/vc=;
+	b=fZQYNQaNvDDRpgnLCcjr+l1i5rbkzD41yLjEt8frJ4cHyfiQ4YHTPDu0UedWLhuJCbQHuo
+	SmygKqiTdM60rHIdfW3Uo7HQbKVzkIydmYo4881XOQ+Rg/cZSNaPF0tgq8BcMbYDsXc/GV
+	n0OqlyMXJO9l2QO921N8HouCv7kNKgE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqoOuRgR;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OqNJUzP0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788725868;
+	b=Q9GduIrgZVRnK9UbQbqsOVkECmBFvw2PyuglGeefExbw/2AOLYqS41AqdHsbThDA2lPe0t
+	aLq0cXpw6aItg6OgOTc4C3ohzHMut6Sttm4GkBkmu17NtoOFXSo7JZHFTxooVwvvcDcbmI
+	Ooqo3865gpRAiUQ8LZMlTHH1WhSDCZk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2325B601F9;
-	Sun,  6 Sep 2026 20:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AFA1F00A3A;
-	Sun,  6 Sep 2026 20:07:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E9BA40C26;
+	Sun,  6 Sep 2026 20:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323381F00A3A;
+	Sun,  6 Sep 2026 20:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788725277;
-	bh=6dLtZ4diiABDwf70eKATggUD/DCfK2UIavuZ29uFn94=;
+	s=k20260515; t=1788725867;
+	bh=3uA93cxqW2HvNr9qUovcFs04ocnOSCf6zitvtFhj/vc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RqoOuRgRG1enfRI1D9SjcgS9tKVhnFREjkX+IlSFfMW3MsqNns+AWPlyPdeEKBY7e
-	 uG2BwFv3LXCAunkIOcVcViIXknbGSpB/bAjMbYO+mF2ZGpYOTTsSbcswzh6Fk7Bspk
-	 xoRdD8yV3EJZtO7zX2zPJxTGqrjmO5vXSbfXu6LB+CQU0sfi3Y3uUHxZppAMqYvAoR
-	 5eXN/m+EszZdq0meyMub1OCprX5zkG3e4PePLPkwZ7ydRDpkCPRWlF/F33DUyD2oX9
-	 OdIfAzYrAWfx2F44BxBIa/LZtftjfA4FnjPC4YITR6DlSoZQynoO34dyoQrkzp6mLU
-	 e9LTmn9kZa7gA==
-Date: Sun, 6 Sep 2026 23:07:49 +0300
+	b=OqNJUzP0i6ZpwRKqxhufYQAH5I3kHVxdsoCT87l5waW4epTijN0y0zPeWiaXN5JUb
+	 23WBzGGChe/MsQNytXS9qXlB+G8Y+nG4g1RIIJSYzv5ZhnU3l6NEbSLgBr0qSJSg14
+	 hjWsMrBdN+py/LNBhl+18Vd2NK6kvVdAnYFLK0hTuukpq6uGC99HSh9hiIIwb2OobH
+	 MF/FqwTyPgkwa3/oUOIM5Gxt6TJQUqBgU5GtS5LW2mdR8Jduh3KBQ/v21tk1TecpeS
+	 mFvEkLidNfvT2xsGG/h7cTnvivMSUiQPEg6G6MRxOaDRL/6ZS0zowMbTWh6om2J3LK
+	 nhYJ+2tU29SAA==
+Date: Sun, 6 Sep 2026 23:17:37 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: George Guo <dongtai.guo@linux.dev>
-Cc: pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com,
-	changyuanl@google.com, akpm@linux-foundation.org,
-	chenhuacai@kernel.org, liukexin@kylinos.cn, guodongtai@kylinos.cn,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] liveupdate: kho: calculate per-node scratch sizes
- before allocation
-Message-ID: <ap3IFd2FVvfKkHkV@kernel.org>
-References: <20260904025101.9959-1-dongtai.guo@linux.dev>
+Cc: pasha.tatashin@soleen.com, pratyush@kernel.org, chenhuacai@kernel.org,
+	ardb@kernel.org, shuah@kernel.org, ilias.apalodimas@linaro.org,
+	akpm@linux-foundation.org, baoquan.he@linux.dev,
+	ruirui.yang@linux.dev, guodongtai@kylinos.cn, kernel@xen0n.name,
+	graf@amazon.com, liukexin@kylinos.cn, loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 0/5] LoongArch: add KHO support and selftests
+Message-ID: <ap3KYSXQJfC0iysw@kernel.org>
+References: <20260904100852.26006-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260904025101.9959-1-dongtai.guo@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 92473140005
-X-Stat-Signature: y4ka4z9ksq1g8ig6uc1w5doidt7tzmz5
+In-Reply-To: <20260904100852.26006-1-dongtai.guo@linux.dev>
+X-Stat-Signature: hqnhdw8eff78stxdp99k9rhw8gahsmo4
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AF2E740003
 X-Rspam-User: 
-X-HE-Tag: 1788725278-819364
-X-HE-Meta: U2FsdGVkX18CAlwaEAqvQhTS0sNL0AQZd6gkLvqdO/7MZIjcFw9V+JHZTDAOoLk8CtK+02yexmKmN2IpIQ3psjUxwIJsEmnDjjSQfRcZslcXgoCkwb4KKejH2vEvekXFn8TihxkK16GF+QqZwFJnJXIR4b58Ej/oVbqBvuk0uRSwaY63lHcmZH0YHTCZp65wXjVfnyt71e4wZhtlkSX7PKxMUwBRcFnEENdNw5Hzx7ATeNIWVYJmCGGIyX1OByV2EHwhJk/4gVsVI1rvC8lAf00fBPXxKlfyV6pE+q/LJqMgJeObuYD2CAAz6zCt3Xzi424kuqZlspA8b2lBpm3Y+Jhjy1itE9RJ1koBdydkC4cyo4ijBf3PD641lMXv344jPTPEQy7J4nA6V0NhNY4Sn6QFyCF0RNeFDcBrYIrRAYP8c9BycrL8pDqw3ZgaP5to2pvG96SuZYLXyDBkL1VoHXgXdjlE8lzgHO16prQVc8QzOk745cj/E+UReqkCncj9YfwNqM4JxEi4BNfHAXuaH/t61rHWACDsg6zpKGudxOya1dLSdyuJCAQelzSiyT6e6khzyEz/CLW7Opaaq/XhqTGvlBGHvfUCfD3IaIH12TNRtOTi6oBh8Ltj5kpIm5bcYzMZ1hrxrALLWDENY16a6ViWk76Vl86eH0v6bsqCUi8kOaYOdLpf4zbHtaWsl+FQJCZ+L7iQuNgL6KH9BS8uudblqdk2in3/e53ujcMd+isZfoC3DCbdC0rc4Nwv6y/4JhKXwxO4GazTCKjo7bmg6DzoUhAAIrxGchku34iYDMiqQSAXhEEMN1/pSdg9vKeRzlrgmTg4CA50qeAt1YxJv8/kHTxGa5q2CD1dfUiobqi029uEU7o5PIbNM7OkEFmaY8Juu0C/R1tJcIY2+zgZ//HCMBHnFZvCFJfY46B0R4ubSoOd2QhgZ+omozd5QAkotehAuLRdmEEBwe9Ht4Q
- ZhY0hRjE
- iV0jSlkH8FGhjIku6laKwNh7H0AXMWn8EC2WlTQf4Ff1AI+2geJxG8agL955wqmvlvbTVaXNaZNX1BaMbzbAt9vJ9nYzMEGd/GaIWKzXvslYgz0F02vtBErvupG2HJdUoHzyEiblY0bh+hEvGq2Cv585eJua9DcCr6cfQUva6dS8Bbn/5/YoMDrufFEwA4UxwVKouvRSXeOxJGb4+StInlmcwk6sZeEFAAYKzZFq2zDv/cRvHVl0XvH9aW39tVjkK/tej3pGKixI5VIeDY3GyPqVge3XEMrMZCAQj7nO5+4CQw9AJyMAkUlV7T7rsAqUqGIXckjuGRmtW43z068gSTeeSzQ==
+X-HE-Tag: 1788725868-474827
+X-HE-Meta: U2FsdGVkX19lXP/9dTYSN4qQstpuIlHdB+rFUKSpt1n7tGIosT1zFiJjuidwnXg6RHuZY3XZXFBgooYB9f2I4HwIRfoqWd2LUF5Iy3udrDbbhmBHGNgoDQo1oeJlBK2GrD3rk+JEb5m2okgyDgJ2W5lh7XmYLtIrzraFHHYKT437rMQRz+5bbgFFmcFwjd469srISFB8OREmmrhn1cZas0ICYKpwchA/hK4uktZA39oX4z5JumE9mjKzKKCMx8vs3x7UcgPvZ7fvKzFEJ4n9+bpPGWSoNo2lHCmdAxuQv283JyC8zcbeEnNrNcbuJmo1CtVbWSMdMrlZgZDifB/GoyzXTVe/cF/nWJf0nXksPUTmy10Hx2MihSo9eQU+rTaWKhYeCZV9uQLNHJirZ+VKTqWvOFLxeL23NKxDHLTw9e8jwYqXBKdnXWl0MHoj7qr7hEQiFOeI6VNI0zq255EKcUy7HeJHpIMGDJ8pIsc3Qut+gPO/piXItX9qG3Xayr6MZd6+kB2VUEKRH0KZm2B3Ht59E8EvhgOgMapkMY7OgeBbxzeoY+JhJcbQ1uOojh3LsJ3Ewn2NX+jRwfRwZVGuKy/nHzmhOFNMbgqAvNCpS0DxEQADaFTLnmh27iIOj2OMxAECifrLbZv3EbRGQh/NVkjMOfqOKhNnNN7D5t5cd1/+12bBENgloVMOIUPTmDYDsN+9Oz8O1Maq0Ly0OccfIoq19N+DjOWxfzd3+c5jHqbOsdWdkOLxO6CkcUbpbK2qDaj1VzISFspNK02o5pCklFFi9LamHQlyOiy5lDNMbWR8Evd3PYsd6vItHqbs/mHntCFKDSpA3bJNUzYQ2gFqymqdksJBE6xR7pwRHGkc9dgE+BU1QLg/iQdfZeXgM56c5OlsfDCL468//hem/lWUoCgT7Qyn3X92wWK6D3Nw1jahALBPhPSlTUnqa470JzQL6DzCE/iFap7REA8DAnW
+ W9TYTN4U
+ q0TMCG/wwu4dpZnvxMNDPlSUOVniS+DujDTBLo2CzYezrckT36FIyEh8z9lPbe1wdeZBLEWvVQFF5WgstQ68ZaySCEcdi2cnWlYA9K3+XhVQ91kzhaJTBbucpbihhJS7dXsP/zS6Uw2IeeyGhD3Y2oyQqQTtExbXzEYhVLYCgyehlVTlA/gTBnMC9v8bpPxLkFNx67Q7p/DxG6ZUuung7IYTYJGBw9zvKPP13IFFDsqipGbpvutepPbRWj6fN4JcyO2Hld6tQ41DQ8e2AxgYG10nN1mw+FBD17Z+jzc9uMBmrdEHM3U2s4jid1rHZpRhAWNuODlU8hCIfc7a3dzAabSarJGDAqskwBQ7w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,88 +98,177 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi George,
 
-On Fri, Sep 04, 2026 at 10:51:01AM +0800, George Guo wrote:
-> From: George Guo <guodongtai@kylinos.cn>
+On Fri, Sep 04, 2026 at 06:08:47PM +0800, George Guo wrote:
+> This series enables Kexec HandOver (KHO) on 64-bit LoongArch and adds
+> LoongArch coverage to the KHO QEMU selftest.  KHO is the remaining
+> architecture gate needed by Live Update (LUO) on LoongArch.
 > 
-> The default percentage-based policy sizes scratch areas from the current
-> kernel's MEMBLOCK_RSRV_KERN footprint. This is a reasonable heuristic for
-> predicting the early memory demand of the next kernel.
+> The transport is the central problem.  Arm64 and riscv can pass the KHO
+> state FDT and scratch area through properties under /chosen in a boot
+> FDT.  LoongArch boots through EFI without a boot FDT, so that path is not
+> available.
 > 
-> scratch_size_update() calculates the lowmem and global sizes before either
-> area is allocated. However, kho_reserve_scratch() calculates each per-node
-> size only after allocating the lowmem and global areas. Since memblock
-> allocations are marked MEMBLOCK_RSRV_KERN, the per-node calculation
-> includes those newly allocated scratch areas and scales them again.
-> 
-> This feedback substantially inflates the per-node request. On a 1 GiB
-> LoongArch QEMU guest, the relevant reservation baseline is about
-> 98.45 MiB. With the default 200% scale and 32 MiB alignment, the old
-> ordering allocates 224 MiB of lowmem scratch, then requests 672 MiB for
-> node 0, for a total of 896 MiB. The node allocation fails and KHO is
-> disabled. The same incorrect calculation is hidden on the tested 1 GiB
-> x86 guest because its baseline is smaller and its memory map can satisfy
-> the inflated request.
-> 
-> Calculate and save all per-node sizes in the scratch descriptors before
-> reserving any scratch areas, then use the saved sizes during allocation.
-> This keeps the percentage heuristic while preventing scratch memory from
-> becoming input to the sizing of more scratch memory. On the LoongArch
-> guest, the aligned total is reduced from 896 MiB to 448 MiB.
-> 
-> The KHO vmtest passes on 1 GiB LoongArch and x86 QEMU guests with this
-> change.
+> EFI KHO channel:
 
-This reads as LLM-generated text. Please add LLM attribution as per 
+I can't say I like "transport" and "channel" terminology. We don't send
+anything anywhere.
+ 
+> v5 reworks the EFI transport following Pratyush's and Huacai's reviews
+> [1, 2].  Instead of rebuilding the EFI configuration table in
+> LoongArch code and switching st->tables before kexec, the common EFI stub
+> allocates and installs a persistent table under
+> LINUX_EFI_KEXEC_HANDOVER_GUID.  This follows the model used by
+> LINUX_EFI_MEMRESERVE_TABLE_GUID.
+> 
+> The common EFI table parser reserves the stub-allocated table, reads it
+> during early boot, and calls kho_populate().  An early initcall keeps the
+> table persistently mapped so it can also be updated on the crash kexec
+> path.  The implementation is architecture-independent; LoongArch only
+> selects EFI_KHO when KEXEC_HANDOVER is enabled.
+> 
+> The EFI table is global, but kexec can keep separate normal and crash
+> images and can replace a loaded candidate.  Updating the table while a
+> candidate image is being loaded could therefore leave it pointing at a
+> failed candidate while the previously installed image remains the one
+> that will be executed.  v5 records the KHO data in struct kimage and
+> synchronizes the channel from the image selected for execution.  Images
+> without KHO data, including legacy and crash images, clear the channel so
+> the next kernel boots cold rather than reviving stale state.
+> 
+> The GUID name is changed to LINUX_EFI_KEXEC_HANDOVER_GUID as suggested by
+> Huacai and Pratyush [3].  Existing x86 KHO support continues to use its
+> setup_data transport.  Besides supporting non-UEFI boot, that entry is
+> consumed by the x86 decompressor before normal EFI table parsing, so KASLR
+> only uses KHO scratch areas and does not overwrite preserved memory.  The
+> new channel is installed by the generic EFI-stub entry path and relies on
+> EFI_GENERIC_STUB, which x86 does not select.  Moving x86 would therefore
+> require installing the table from the x86-specific EFI stub and scanning it
+> in the decompressor, not just selecting EFI_KHO.
+> 
+> LoongArch enablement and build fix:
+> 
+> The architecture patch now only enables ARCH_SUPPORTS_KEXEC_HANDOVER and
+> selects the generic EFI channel.  No LoongArch setup reader, kexec writer,
+> or EFI system-table replacement remains.
+> 
+> The linux/mm.h build fix is moved from luo_session.c to kho_block.c, where
+> the virt_to_phys() and phys_to_virt() calls reside after the liveupdate
+> refactoring.  This addresses Pratyush's review [4].  Adding linux/mm.h to
+> asm/io.h was previously attempted, but creates an include cycle under
+> CONFIG_KFENCE [5].  The fix precedes LoongArch enablement so every
+> intermediate commit builds with CONFIG_KFENCE=y.
+> 
+> Selftest:
+> 
+> The LoongArch vmtest boots vmlinux.efi through EDK2 because the initial
+> EFI stub invocation installs the channel being tested.  QEMU_EFI can
+> override the firmware filename for distributions that install it under a
+> different name or path.
+> 
+> CONFIG_ACPI_SPCR_TABLE lets the bare earlycon parameter obtain the UART
+> description from EDK2's SPCR table.  CONFIG_PCI_HOST_GENERIC keeps i8042
+> enabled while ensuring that the QEMU virt machine's PCI I/O space is
+> mapped before the legacy fallback probe, addressing Huacai's concern that
+> the same kernel configuration should remain usable for hosts and guests.
+> 
+> With EFI runtime reset services available, panic=-1 and QEMU's existing
+> -no-reboot option terminate the test normally.  The generic QEMU runner
+> therefore remains unchanged and does not mask failures by forcibly
+> terminating QEMU after a timeout.
+> 
+> The LoongArch vmtest uses the default KHO scratch-sizing path.  This
+> series is based on the generic fix that calculates per-node scratch sizes
+> before scratch allocation [6].
+
+The text here and in the patches changelog reads reads as LLM-generated
+text. First, it's quite blind and unreadable with wall-to-wall text.
+Second, LLMs tend to describe what they did in the context of a session,
+but since we apply the cover letter to the liveupdate tree, the description
+here should *only* describe why the changes are required and how they are
+implemented. The history belongs to changes since vN-1 section.
+
+And last, but not least, please add LLM attribution as per 
 
 https://docs.kernel.org/process/coding-assistants.html#attribution
  
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Kexin Liu <liukexin@kylinos.cn>
-> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  kernel/liveupdate/kexec_handover.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+> The KHO vmtest passes on:
 > 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 7c4d86daf86d..39f489a258d9 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -847,6 +847,17 @@ static void __init kho_reserve_scratch(void)
->  		goto err_disable_kho;
->  	}
->  
-> +	/*
-> +	 * Calculate the per-node sizes before reserving any scratch areas.
-> +	 * memblock allocations are marked MEMBLOCK_RSRV_KERN, so calculating
-> +	 * them later would count the lowmem and global scratch areas as kernel
-> +	 * allocations and scale them again.
-> +	 */
-> +	i = 2;
-> +	for_each_node_state(nid, N_MEMORY)
-> +		kho_scratch[i++].size = scratch_size_node(nid);
-> +	i = 0;
-
-Ugh, this really does not look nice.
-Can't we just calculated all the sizes first and than do the allocations?
-
-> +
->  	/*
->  	 * reserve scratch area in low memory for lowmem allocations in the
->  	 * next kernel
-> @@ -880,7 +891,7 @@ static void __init kho_reserve_scratch(void)
->  	 * memoryless nodes, as we can not allocate scratch areas there.
->  	 */
->  	for_each_node_state(nid, N_MEMORY) {
-> -		size = scratch_size_node(nid);
-> +		size = kho_scratch[i].size;
->  		addr = memblock_alloc_range_nid(size, SCRATCH_ALIGNMENT_BYTES,
->  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
->  						nid, true);
+>   * LoongArch with KVM using QEMU_EFI.fd from edk2-loongarch64.
+>   * x86_64 with KVM, as regression coverage for the generic kexec/KHO
+>     changes.
+> 
+> Patch layout:
+> 
+>   1. Add the generic EFI KHO channel and its ABI.
+>   2. Synchronize the channel from the selected image at execution.
+>   3. Fix the kho_block.c header dependency exposed by LoongArch/KFENCE.
+>   4. Enable KHO on 64-bit LoongArch through the generic EFI channel.
+>   5. Add LoongArch to the KHO QEMU selftest.
+> 
+> Changes since v4:
+> 
+>   * Allocate and install the KHO table from the common EFI stub, following
+>     the EFI memreserve-table model (Pratyush).
+>   * Parse, reserve, map, and update the channel in generic EFI code; remove
+>     the LoongArch-specific reader, writer, and st->tables replacement
+>     (Pratyush, Huacai).
+>   * Synchronize the global channel at execution rather than image load;
+>     clear it for cold and crash images and use the scratch payload size.
+>   * Rename the GUID to LINUX_EFI_KEXEC_HANDOVER_GUID (Huacai, Pratyush).
+>   * Move the linux/mm.h include from luo_session.c to the actual caller,
+>     kho_block.c, and place the fix before architecture enablement
+>     (Pratyush, Huacai).
+>   * Boot the vmtest through EDK2, allow QEMU_EFI to override the firmware,
+>     and use vmlinux.efi to exercise the EFI stub and channel.
+>   * Keep i8042 enabled and select PCI_HOST_GENERIC instead of disabling
+>     the host configuration in the selftest (Huacai).
+>   * Enable ACPI_SPCR_TABLE and use the SPCR-provided early console.
+>   * Exercise the default KHO scratch-sizing path in the LoongArch vmtest;
+>     depend on the separately posted generic sizing fix [6].
+>   * Drop the generic QEMU timeout now that EFI runtime reset services make
+>     the LoongArch guest terminate normally.
+>   * Rebase onto Linux 7.3-rc1.
+> 
+> [1] Pratyush Yadav:
+>     https://lore.kernel.org/r/2vxzo6f96fmn.fsf@kernel.org/
+> [2] Huacai Chen:
+>     https://lore.kernel.org/r/CAAhV-H4PKRNCa4g=6TGepP+trtM82JiMoWgVr3O7PqbZYP9uGw@mail.gmail.com/
+> [3] https://lore.kernel.org/r/2vxzse4m54nz.fsf@kernel.org/
+> [4] https://lore.kernel.org/r/2vxzfr0l6fam.fsf@kernel.org/
+> [5] https://lore.kernel.org/r/202605211925.DbDvQ6ii-lkp@intel.com/
+> [6] https://lore.kernel.org/loongarch/20260904025101.9959-1-dongtai.guo@linux.dev/
+> 
+> Previous version:
+> 
+> v4: https://lore.kernel.org/loongarch/20260807103714.33074-1-dongtai.guo@linux.dev/
+> 
+> George Guo (5):
+>   efi: add a KHO configuration table channel
+>   liveupdate: synchronize EFI KHO channel at execution
+>   liveupdate: kho_block: include linux/mm.h for virt/phys translation
+>   LoongArch: enable kexec handover (KHO)
+>   selftests/kho: add LoongArch vmtest support
+> 
+>  arch/loongarch/Kconfig                     |  4 ++
+>  drivers/firmware/efi/Kconfig               | 12 ++++
+>  drivers/firmware/efi/efi.c                 | 78 ++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c    | 25 +++++++
+>  include/linux/efi.h                        | 36 ++++++++++
+>  kernel/crash_core.c                        |  7 ++
+>  kernel/kexec_core.c                        |  5 ++
+>  kernel/kexec_internal.h                    |  3 +
+>  kernel/liveupdate/kexec_handover.c         | 33 +++++++++
+>  kernel/liveupdate/kho_block.c              |  1 +
+>  tools/testing/selftests/kho/loongarch.conf | 11 +++
+>  tools/testing/selftests/kho/vmtest.sh      |  3 +-
+>  12 files changed, 217 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/kho/loongarch.conf
+> 
+> 
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> prerequisite-patch-id: a2f06addb17cc379b9f98674f087a1642588dc6e
 > -- 
 > 2.53.0
-> 
 
 -- 
 Sincerely yours,
