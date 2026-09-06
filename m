@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B2D3C79F9E
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 18:44:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B191CC79F9E
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 18:44:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E00706B008C; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
+	id 17DE86B008A; Sun,  6 Sep 2026 14:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8736B0095; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
+	id 156786B0092; Sun,  6 Sep 2026 14:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D14B36B0092; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
+	id 0919C6B0095; Sun,  6 Sep 2026 14:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AEB786B008C
+	by kanga.kvack.org (Postfix) with ESMTP id D651A6B008A
 	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DAB4A481A
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7AF528059C
 	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:27 +0000 (UTC)
-X-FDA: 85184212974.30.79A05C5
+X-FDA: 85184212974.08.67761A7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A48AA1A0008
+	by imf08.hostedemail.com (Postfix) with ESMTP id DE930160006
 	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8NOewHF;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K77of3bg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788720265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jEjB5+SmYpe1jV4B6kvt1MmnXfzrPfDtBLhTiuYoc8Q=;
-	b=mevP5i5ZC94L4BOyqGBa3ctLlaEPRhZKWf0hLLPYTrGPvqOGoXp82wD5ggIvlv2yMr1eEY
-	+N9bJwZGH/2m1JfkPyx8mA+GuNArF3Y/B38POzRZ6SI4sU2ooSaE5Wt0ZK/Q23yZb8uNt0
-	txTBYvyGtrPbB//EMa5B4xL+pXd3Fbk=
+	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
+	b=ZD1/+KJ9MhOj2XSEbjJZj4wHQ3yo8SkgCyyuaSrllzuJWkdWk0Qv4qcGwtgehfuMIeBS4t
+	paOoTj4x4VolxONJ9SdlbBwicjWdsxjtdVI0zzMEkxKHLKJZ4rWQ/8A2ZXDZM7V9orOxRV
+	3SVdPIC5s55iNtXugoO7B1+bZ5E5vq4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K77of3bg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788720265;
-	b=gCkBslNdaV3Spxg6tehdm2eHDjHFaOpJHmIR6nSg5gGTLA5AjOYEs+/CUH+K0ny4/e3mdV
-	OUGbi3+U+mLKwv6OVohGqxk3lDUqm2K6tbHAWF21LTgkEHlvWRVQwG4rOecZRBvpB4Y7ls
-	FT4jM6vwO9Hzqq4OYnBP0Z/oHpes6Zc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8NOewHF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	b=S4HYlx8K94Ymr1tAmuG6bC4JTCUbI9lhE10B7zGkZVobHYQLxA3GRD+TBaISQa24rr0HSQ
+	nS5IEG06Q9llrRHMLKn2ojwms+jdoQlckHV5GY+nJ48kvkmb7O7RcL3axTvfyLvZaiTufQ
+	IRvDw2oH5e8J2QFaOjmcRAMgCWZFRSs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 426A660236;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DE8160A6F;
 	Sun,  6 Sep 2026 18:44:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F101F00A3E;
-	Sun,  6 Sep 2026 18:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E271F00A3F;
+	Sun,  6 Sep 2026 18:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788720264;
-	bh=jEjB5+SmYpe1jV4B6kvt1MmnXfzrPfDtBLhTiuYoc8Q=;
+	s=k20260515; t=1788720265;
+	bh=Fn4wlsJY/z4XEr5TrccoXyN8K/aFxzX6vlLK3FGYk8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j8NOewHFOLvGTEYMvInpqpNqWqgOutYCTrLtaJbMOQ0c6Kv+ulJX47s6aHjniDJf9
-	 hGqEzySajML7VpB2LxEjY0rzYfF12PeIlBHsUtP98bth/cQDA4wWWVwrMQyXiD5+0n
-	 JX/PwHr0OxVKphCAsnkjA8tFlrgC495L3qwcvg/mbvaoFQn6dE03iv10sHABYB/Pia
-	 K7F2zp2RB9QZ/RrBHzvMp33QplPQHAOdtqMaAZmxz1DDmsKLcjot7sq9F5+xSBu21/
-	 Jp7VEdAd8VWKYYkOaxiRjHyqPQJSEuvAwDE8bTECGzJCLPkQFXZbNQpPu9dYQzL411
-	 OsnjI61STtyCg==
+	b=K77of3bgH2ETgg79GvBfvqsk1Fhipjvt+l4yf40emKaiJHOInR8qE1A6kKWuky9J0
+	 aWM/HflKvFn8nFjOEnA/ewjjn0rhytHaFhF+tviRvMjr9zV34lfHSdiXfco1qXePhL
+	 le3nhBAwGjJhrEoAylAN3EyJUp8F5UlDsXejZznILXL/tGfyomMXUVmbZhComT+Dk3
+	 1PMVQNlntAVu2ZxDh0O3nHGd+jOJFaMttIwc+BAa9r8HL/RtFOJmOOpCgqXYpjzHq5
+	 aF86moZ1oX9KUG3s+X82uojElKLZkzJh/sP+yoNLgNf6zpeZMWXf6BAkmsjL71gD5Z
+	 4S6pRmNd5nw4A==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/5] mm/damon/vaddr: support prep_probes
-Date: Sun,  6 Sep 2026 11:44:11 -0700
-Message-ID: <20260906184417.96621-2-sj@kernel.org>
+Subject: [PATCH 2/5] mm/damon/paddr: move probe filter handling to ops-common
+Date: Sun,  6 Sep 2026 11:44:12 -0700
+Message-ID: <20260906184417.96621-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260906184417.96621-1-sj@kernel.org>
 References: <20260906184417.96621-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A48AA1A0008
-X-Stat-Signature: 1twnwzby79msik4g6nojgmxeou7fn4r4
+X-Stat-Signature: fap53ukpnjpmgewm3izac5btxim4pf7z
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE930160006
 X-Rspam-User: 
-X-HE-Tag: 1788720265-628287
-X-HE-Meta: U2FsdGVkX1+lnjQG5rQ8itI8eZsL0Huvy50MPA7OgDe8+pIuiCZ58vsuK+4nJDdxTp/q3zkfZGldjdFgwA6KTM5DVk9DzPyCwG+5rmuFRzkcGB4n6Klhl7svIaG3mHmV+8+W5ZvFsO+nUTUFvvgCq1mhjFFvL0lZTv0/pnjtT26sOYmQEquJggAW1BWJexZiHztol7XZCFDKiP6ghNIswf/WJqz+wzU5OxJCI/3QH+sFdCibxxFGx99Qx7NTe3rn2SusJjVLy9MMEnBDK8e6iTEwckUlhURT0CgyQmJ+DGIzOu8L0SQiCuj9ksKzRIiMtglmfx9ZMHol+hErAnyWdA+02XWjedAxXZ0wGrOH3uO+ZB7xncXkFsrxW+cAXI6wSqdwsmAzgRiaUoSHmfuDQZOovllHCv09a8FDaTp1NGr+WQ8yTUq72W04+z4URMV7bnLZc/jylccGPonqxhA7y2q/GKYwWyOXmGoic5LRJnd0D+D0exXdXYLz0aKCGz73PBUhZazgqvkPHn4qrLuOuQPQA0/ycV7st5BldYijFXSWZeXNY/Yj1NMf+hJEqJUFb68Bu+msvHjpnkmxzgrUEJyoDS+Dg/de5RHLk3sUoS1/HReN+e1TGhlt8/VfApwiuV7HKdwag6LTaVkl++zeZF0UjpYkUN3e+nFDx2XUulTnngQD4URJVFN8rQQnS4WheOUqrPwt22Ypw963FcaFCr+GOi4uSrsyVyQaCwZz3Om6T8V0ZdaN+GU/puS7lRA0ZEqoGwNEup4qZn3NPv6e8r0RG4Qb2RpfGhfQMZENIqi3PK0sGcStXCeYvhclFOKd6xI+hRZ+mdeeYql4OEuzpDxu+FfFfTRJ2EuQ7NzyALvDffvxQ7gpTMqiGaIyVlHF7cBU3VnBp0rp9aNjPwq6HnG3kEMZJRhZEHqRspBzXa8lwPOqg3O2ZlfvfN+i6ndUUzVedFgWD+xO8zuJzpn
- WU2ygIKu
- zqUKuh1GGQQr0tLW6VRD3+2jpu6f3kxdm/n/P3JFQuvIOUvADlsGinDS3kIRTscQ3Nm8Uv2UXIrm8yiewE8NcEYSACWS9LTQi1jwbIhUg6RJ/ObNjfBZkiehzUIyW8g5+i+LY3uRUQmpvtvLfqkdQ2X7Zy6jBuu2DoLfbdDzj8KB9/oIVQcuiOvak2xxdFW4UAKMVOrWypv9IIH7eSZ9GXZDffGTMGZd35gCiQ2LuMn2JCFxq+MOBKh9unGFMwZPyKAY182HTHV+1q0MGnsY4I3AMjA==
+X-HE-Tag: 1788720265-748661
+X-HE-Meta: U2FsdGVkX186mW88H23D5sijW915sBqHh8I8S1XInQ1EGlAzwt43N120RZzLduNk1d6EPWqgso5E+7jxi8oYKB5EP4bvT8O6KqLnxecqQtVIUP3FPyQwmcMSsmLc2lIBbY37BunadudVbFu5JKKTobS7HZgU+BAEFW93n0VMdybvaiAe8eCaTFa2iBLK77gITn0Hg7FJmpNaN3Hoh3r8TBlHlLjwgbX2Pkg5ODkPgZDXxOH/N8gROFn2HowYAOt/aB/WEY3EJLx1PckuYoL5KAlRMgaX/kEy9swlwbBQAzO/tc9bEv6o2UzJfm15S2yFeNTxAFX1yVoWLQQHy/T3WBD0yyeLjvv8mZ6O0NcpBAJhyhLKjTZIc4X8dv/RchSwdtsMOEKm54kMs51gqXxHHRRrlfO/Xun+80NPsmnrg7eJM+aCRwBb0s5lfimm4Ay1r1YIbv8LpIFumYw9gbYNdkcFQKz1b418J6brR6jTZAbnk8ClORjIVDLw2lfpPDEUrkZ9SYWeX2JjlsuM9ovUB5qgTfcEzyaU0Gbdi5cNBzZTv0tracXRpvkosMd4lGfqrtHTLI09b1FACNfk+Gm3WKLgEv4WDkVlZ2ejI8CHmn7dG/r1B9txbDHyGHA7qrlcQ4MHe+kZKGuzR28U1DV7fTI2ULBAqgGFhCN3HpDHIvjJ2TU3BMybSHV0Uq949wP2GW5w6MYDQpkg1/eKjxClajV3BSydPsxdgCTCjLpwFt3Ua+2tWtw0tZ5Ug2azYLxcBuodg9PBhfNHIfbUaEjLD12o/9v/IPHklAbOkMYho6CpoHdHdH6Kx1kd09Mt4PtNZa2ZjzrZKn7/dYuNaY2v+rAZeXSve0C1oJjO4HgSYd6J6jzge2cdhGuUBtEkdqixpiRnJFvK1ghXf/J+Vc8FoR7DRNWPHJAo0SIiGv3nzxToO3HOjkcoW15tlhY8+r3usJdwV4KrrePQePOBbjD
+ zqU49jA1
+ bjJQikt9To5g9+m0wGKxICZP+XnFK+xIEqrigOLgq3ZUs7U2AKcM1sCGuXnYrBV//3GTtsK16Bt8ACCr8Mao22BZ38XYiAJ3xeIpAEHOMl8bRYT/XeWn0dV2exi7HhRVlQcp7XMOqlpO6K7f37dBKDtICgW6HS4Yiz5GyJygXcq+DUTeZyiokJKwAMpk67iZxMSB67Ph+PzVzAQih4gCRRs91K/nReWjjffkXTR9zsUXoGqo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,72 +92,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON virtual address space operation set (vaddr) is not supporting
-prep_probes.  Add the support.
+Probe filter matching logic for anon and memcg type filters in DAMON's
+physical address space operation set (paddr) can be reused by virtual
+address space operation set (vaddr) in future.  Prepare the future by
+moving the code to ops-common.c
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/vaddr.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ mm/damon/ops-common.c | 32 ++++++++++++++++++++++++++++++++
+ mm/damon/ops-common.h |  2 ++
+ mm/damon/paddr.c      | 23 +----------------------
+ 3 files changed, 35 insertions(+), 22 deletions(-)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index af9e1b82454cc..20f4784f17817 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -483,6 +483,45 @@ static unsigned int damon_va_check_accesses(struct damon_ctx *ctx)
- 	return max_nr_accesses;
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 441d45679eaf2..76b663a4be610 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -524,3 +524,35 @@ bool damos_ops_has_filter(struct damos *s)
+ 		return true;
+ 	return false;
  }
++
++bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio)
++{
++	bool matched = false;
++	struct mem_cgroup *memcg;
++
++	switch (filter->type) {
++	case DAMON_FILTER_TYPE_ANON:
++		if (!folio) {
++			matched = false;
++			break;
++		}
++		matched = folio_test_anon(folio);
++		break;
++	case DAMON_FILTER_TYPE_MEMCG:
++		if (!folio) {
++			matched = false;
++			break;
++		}
++		rcu_read_lock();
++		memcg = folio_memcg_check(folio);
++		if (!memcg)
++			matched = false;
++		else
++			matched = filter->memcg_id == mem_cgroup_id(memcg);
++		rcu_read_unlock();
++		break;
++	default:
++		break;
++	}
++	return matched == filter->matching;
++}
+diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
+index 172f0f17c4a84..ee27058251005 100644
+--- a/mm/damon/ops-common.h
++++ b/mm/damon/ops-common.h
+@@ -31,3 +31,5 @@ bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
+ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
  
-+static void damon_va_prep_probe_region(struct damon_ctx *ctx,
-+		struct mm_struct *mm, struct damon_region *r,
-+		struct damon_probe *probe)
-+{
-+	struct damon_prep *p;
+ bool damos_ops_has_filter(struct damos *s);
 +
-+	damon_for_each_prep(p, probe) {
-+		switch (p->action) {
-+		case DAMON_PREP_SET_PGIDLE:
-+			damon_va_mkold(mm, r->sampling_addr);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+static void damon_va_prep_probes(struct damon_ctx *ctx, bool set_samples)
-+{
-+	struct damon_target *t;
-+	struct mm_struct *mm;
-+	struct damon_region *r;
-+	struct damon_probe *p;
-+
-+	damon_for_each_target(t, ctx) {
-+		mm = damon_get_mm(t);
-+		if (!mm)
-+			continue;
-+		damon_for_each_region(r, t) {
-+			if (set_samples)
-+				r->sampling_addr = damon_rand(ctx, r->ar.start,
-+						r->ar.end);
-+			damon_for_each_probe(p, ctx)
-+				damon_va_prep_probe_region(ctx, mm, r, p);
-+		}
-+		mmput(mm);
-+	}
-+}
-+
- static bool damos_va_filter_young_match(struct damos_filter *filter,
- 		struct folio *folio, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep, pmd_t *pmdp)
-@@ -911,6 +950,7 @@ static int __init damon_va_initcall(void)
- 		.update = damon_va_update,
- 		.prepare_access_checks = damon_va_prepare_access_checks,
- 		.check_accesses = damon_va_check_accesses,
-+		.prep_probes = damon_va_prep_probes,
- 		.target_valid = damon_va_target_valid,
- 		.cleanup_target = damon_va_cleanup_target,
- 		.apply_scheme = damon_va_apply_scheme,
++bool damon_ops_filter_match(struct damon_filter *filter, struct folio *folio);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index d2173a448d0b0..d7c81829445ba 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -143,29 +143,8 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
+ 		struct folio *folio)
+ {
+ 	bool matched = false;
+-	struct mem_cgroup *memcg;
+ 
+ 	switch (filter->type) {
+-	case DAMON_FILTER_TYPE_ANON:
+-		if (!folio) {
+-			matched = false;
+-			break;
+-		}
+-		matched = folio_test_anon(folio);
+-		break;
+-	case DAMON_FILTER_TYPE_MEMCG:
+-		if (!folio) {
+-			matched = false;
+-			break;
+-		}
+-		rcu_read_lock();
+-		memcg = folio_memcg_check(folio);
+-		if (!memcg)
+-			matched = false;
+-		else
+-			matched = filter->memcg_id == mem_cgroup_id(memcg);
+-		rcu_read_unlock();
+-		break;
+ 	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
+ 		if (!folio)
+ 			matched = false;
+@@ -173,7 +152,7 @@ static bool damon_pa_filter_match(struct damon_filter *filter,
+ 			matched = damon_folio_young(folio);
+ 		break;
+ 	default:
+-		break;
++		return damon_ops_filter_match(filter, folio);
+ 	}
+ 	return matched == filter->matching;
+ }
 -- 
 2.47.3
 
