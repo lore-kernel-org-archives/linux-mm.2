@@ -4,78 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E37C9C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 08:27:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B03C79F99
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 08:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEB796B0088; Sun,  6 Sep 2026 04:27:26 -0400 (EDT)
+	id D120A6B008A; Sun,  6 Sep 2026 04:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74F26B008A; Sun,  6 Sep 2026 04:27:26 -0400 (EDT)
+	id CE9F36B008C; Sun,  6 Sep 2026 04:27:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8AB56B008C; Sun,  6 Sep 2026 04:27:26 -0400 (EDT)
+	id C269F6B0092; Sun,  6 Sep 2026 04:27:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91E7A6B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 04:27:26 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09A661A04AC
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:27:26 +0000 (UTC)
-X-FDA: 85182658092.06.D292438
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5959940008
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:27:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ke5hoBPC;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E17B6B008A
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 04:27:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F9FCA02B5
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:27:29 +0000 (UTC)
+X-FDA: 85182658218.08.1D86BA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D4D2680002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 08:27:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9xOmBhf;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788683244;
-	b=hYo/pMZuMjFKPmEBw1xlEAsPZLHExvsPg9r0c2M/3D8+F3WuxAO91gq58rhIAupfe8WZYp
-	G6/VOGIwqVUpcgaMLUpRmQoAAwbf0QOtMGv6vTNmsumPLiJagRTv67v8P47RL+XHjASF5Z
-	cQYSH9W6p2YdBwVthEFXiRIqZaASJco=
+	t=1788683248;
+	b=O55LzzMRs9wuI1ICTG4SGuFjn+MrixlXxPd1CcyYQq2a9b0ENdsYO1aoCSSdYH+FdGDvUG
+	XRPYu+TwnfMqzVm79k1+NEGUii53Zz8ZJieO8mUEbwfRG2vU08eGP4smm/mDEUAvHrzttf
+	fsE+N+2Pt6N7PJkMl1f1xJIoY+z4Opg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ke5hoBPC;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9xOmBhf;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788683244;
+	s=arc-20220608; t=1788683248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=unXDzhDOfQIn4PXJKkkXKY5S5G9gVC+CucPNUSrjj1Y=;
-	b=2kedBYifo6bh1IUs+rVMysdsgVZ3FizQvmEHf7LkgGabGwnMszHTsFkophBvy8Oi9oJf5i
-	4M6RB3cyqHZxgt5r5KQ4ZRDBHHOzENyxeRfPu0B4gYKxhH9o76/QkDfXCglKa/JIttBVTM
-	s1sFgke1wXUwP9bhboslwKzopjrNzQY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+/DLks/ODhSSfW/GITBux87qvqpTH/gxUu8xFDYHwLA=;
+	b=gcHyyJ6fJNMZGXkZlocpKNpZVu7sJkv0ikl5cyRnBiBlbsylhFRKUbCNdcvNcDpr5HGnvW
+	3TcXLqSbmJtCDik48VxNrM7O6nUe7ROgkD6Me/dZ3nrXK74HegBqhW3JoloB50c0hpEHTe
+	YDGjNOkW6QA4HAJLSS8C88udyvA/5Uk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90162600AA;
+	by sea.source.kernel.org (Postfix) with ESMTP id CBE0F41600;
+	Sun,  6 Sep 2026 08:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B3C1F00A3E;
 	Sun,  6 Sep 2026 08:27:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C7D1F00A3A;
-	Sun,  6 Sep 2026 08:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788683243;
-	bh=unXDzhDOfQIn4PXJKkkXKY5S5G9gVC+CucPNUSrjj1Y=;
-	h=From:Subject:Date:To:Cc;
-	b=ke5hoBPCBLJfy7v18TrpdtuvZX5gMfZZthDjmoILRiAamuDXoSFO3XcwRb11byypO
-	 gUkfNiPCaQkZU7GB6HMSY8QEB105yNJawxQaP6WADohh06xSb1VdKXlXBwG0jONw8Y
-	 HsjiaGzJYDz9ykUVvwsCapLoCTz+EQ9cpQNGJqdGr0vefP7rqDw/8LdwNc/Zhy+eD2
-	 mcMAMfoBGZP45+TNodejhQskuczfCfx5wwcq2kSpZFJJHVNyEaIGIaEkUsZ6eX2QA3
-	 QDbdGvNGmUNfPVShK5fwPPcmmkO7w3UGCig3HHWTFlnTd1OYvdgRAtulAxPFq3a6tV
-	 iZpW+SWVbrZ8w==
+	s=k20260515; t=1788683246;
+	bh=+/DLks/ODhSSfW/GITBux87qvqpTH/gxUu8xFDYHwLA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=B9xOmBhf5s1dNs5ihOaIRxoyVrbv3vnNPdqW1m1NfKoTMp2VCm129J6VEykH+qPZy
+	 TYo/4xEBX69W2vMkcM/8fu+tw+R4A9OS3OLvpBmVySnAEgusWdb85ZFx7idRl6qYmv
+	 8iElq7IoQW46OE+TTLDuiloZmzhPMfm8DuRYIOkdyCVw0R9QiAaKQUVYyOOe2fdaKv
+	 lcJpzhvsJdNb52UKsz6NgKjJsBFqv5aA3FMT+9lqSulnkIrpwNf9N7FzssS3icUuFR
+	 vh5/spbemJxViWOplTH8NDh4Mc/rX3ETRLyXT1/ulYvl/lKJ4LgwU9W42ROUFOxjn3
+	 Sdp2QgxR9wNnA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v2 0/4] KVM: s390: replace page allocator calls with
- kzalloc()
-Date: Sun, 06 Sep 2026 11:27:08 +0300
-Message-Id: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
+Date: Sun, 06 Sep 2026 11:27:09 +0300
+Subject: [PATCH v2 1/4] KVM: s390: Replace get_zeroed_page() with kzalloc()
+ for the STHYI buffer
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/0WOzQ6CMBCEX4X07JJtCX+efA/DgZYVKlrMFhsN4
- d2lcPD4zczO7CI8sSUvzskimIL1dnIbqFMizNC6nsB2GwuFqsBKVeCzGmEMT1Aoc41dWZadEVv
- 8xXSzn73q2hzs3/pOZo73MaFbT6C5dWaI0o5lmgEbGe3B+nni7/5KkLHmWK1R/VeDBIRMG6yrI
- s9Ry8tI7OiRTtyLZl3XH4EKmajSAAAA
-X-Change-ID: 20260828-s390-kvm-2015b0d777dc
+Message-Id: <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
+References: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
+In-Reply-To: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
 To: Christian Borntraeger <borntraeger@linux.ibm.com>, 
  Claudio Imbrenda <imbrenda@linux.ibm.com>, 
  Janosch Frank <frankja@linux.ibm.com>
@@ -87,13 +85,13 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-s390@vger.kernel.org
 X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5959940008
-X-Stat-Signature: 8x7s99ite588s7qkfxzmub4sf9noo54h
-X-HE-Tag: 1788683244-472147
-X-HE-Meta: U2FsdGVkX1+7YmvAcfjQwLCFPJ6EDULW2kUUgbwaLSb6wgXSOs/sULXyvx+qLZXVkujXvOrFTGCMpNRbA/LzkZ412zjihB9BErm7x13apXcYYldOu57eANtJzkbTycjO5JSXZpLMBBFKNg/kN006KyuxZKvHNOMjfT4gYKnubIt9q25FkFvsij6pZMnlv6x8qOtepQfvz2TCOBgyMNM54f26JEiFgYxYWC4vTfa5UHzdKKYizm6e3jIX/wS0QrNCnIMGqZsZOJ91rjFVL3mZzNWkCJjeFSavM/4TPw1fCYa1lxpsaGIRu9htVNGUuko0Fw0pRz0iBWXNeF0f1dfySHSr9GGInj9UssqqBPvw7/hsSHqUYqUREHQu0pBGBKwGpzdOvkMrMB5d8Zmls1I3tjIzs52E1sWvRKs6q6kcIlIBToEAddm7nLgm9GPN2Mmo+5w+miabxWtJdCt6NZtOmigdQRbyBnL3eRdGa1bfw7MOa5PLtvIir9i3G+tz76dGFj6lMLXuRB1TZu46/KVTrM0Ug38Vobc9enohbfmR7pq6sbN9W+iDTRsFQFYFVGTfEZIMNHM8Jtx7x6Uu4Vv+Z4MTm6oRVHeRi00vBkDqcV8AheNxtrhFjUrFwzCZ2r84wVjsyn2+LX7MUSsOOe0YUyXxtae2RfiPsdBH9SPL+1K9TiD6Ukph176vlP0Tn1XPYD21dbkL1/pct+Mj7i7ji6wSo2ZuravZaX5d1wEahRnJjTPEp0bRX7+kpCxfrhmWxOZ3eMI+l8kP2ntH4qyzsgBLqT7GwLA3jyFlu7gn11lwSLf4PzKPy22v5g3TFZENxHlqCsRDNJt1VOgUSZUj7Cosd2FJ6yLGYdSOJHUoQQQdBhREtZy2QETT3T1pyboyGSFfngqeAIJA8SvMxcB7okBba1qg5j8E5IDkPpv28JiAhW8E053zWKt7hUo58OfwWnI18SMAbwEmMjp2TdZ
- 0URUqTwl
- zFMRf7P3lLoBhMcg8n8ZH80n0cu/qRa6EOLv1uk3FyCmMmnjDqPN4NPyw5OqRKH2zbxo3SO5Ub0mu9rw9fovw6a1gTyulxF3vxOuYdsl5ffw/db2q5Nn6zf3dWDNC9vqsnO+N0gpSyM+/jzLLVMtmYpC3PyMk06pEjtPqdu2tHMl2539CuRCNG4evyi+alHKBlI5ATjoZ8DOuDUmsbfWJfGQf8z/zwKLgi/NogFG2xWDFJBQgXlJvfWTHdvatgjliNZEYAbhKmf28BLL3wcr1Xl9KQfaGoorKAubLbwiSEGTopSc3Aa4H5gWLFmcnd37mp1pklpjwp2eW1+/ujvIJBJl2ZJnIMqwBU9pj
+X-Stat-Signature: emc3m5zaon1xo84fconrsioeycheta4s
+X-Rspamd-Queue-Id: D4D2680002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788683247-543050
+X-HE-Meta: U2FsdGVkX1/2hm+soSmqmgHP7C4G4UXSEvf74cFypazjA5f+0XAYhP9O1fpYGZ+euSPi2aV/3QkC7V/bpfzqq9pYrHQwZdGxrF8jJk5lheHK0nPzPQxzDp+7dyv09LR98tBLNuD2bsZ59INc5Ex2+dwWCSc6uXXye9pkXn27PnXq4JACzSC4fNsZL6e4/Lxp2cHgsrxXMpdtNo1u5OSwccG95ySni/uyWir/lPYrpt0nUcobhei0HWWZL37FZxjdxUGA2WjvKsIvzo4M0draKqNLLWR9+E7jJ7+CFWz9YgRVeYBQd4xdDhSJ3WdLQRKSbcBps1v8M9b+bfQhfEScWWwUabR2IUpEJuOc6d+gwOcz8xHPjohEDRI1E+S7mI0GY8VLN3SDf4U1mwZZ088HKmWjZTtN95x3vM0P2hWYo01FZ4bOYCw3+Ar6+nzGZDO6dnThHy9NNniHLkZuTvkDy77l4XQZnZoEV3QhXyxanR3IT4RFsnJt4l/JlRsFu3DrX4J0ohpoGx6wH5QuUE50qbyWCi81WUQ8WczrNCr+rpM0G33GL4bIolKvD42o9dQ+R2Hlu4ybbogRf3CA1edIlFkpKAtPM6b9kwSTnIR/RAoiiIuri1DpDfGXE7FEb1mPJ5rkEXWeXprRl9z7J1GCdWeLCPnjkYL825OYIpk1IrXmNWHSSPlqewY8p9CcIdMMvXR+koCQ3w2FVJ8BQQVaDjRiA6kBb6K/uRTfRNC7YVNZGASBg6GZI9ale9dVlCDK6/T3+luKHpqsJDeSbq5VT6MIRZUXCJThFKX1WuFaqc2OJxfGRqXirkdSxkwdRPQOPIuU1yicLhbmWPMXWB7c1vGfyXBJNTwWpxCpk5WDrA7FxFYrmFfLwaHJ/cZlxC77ZVG2+GeOzma3PlGJpdi1rggGLwh4sJ7dQbKrCA7tKxa475rf1S7VXxLyr3Dtb0XQGuwTYmIGUHKLuUphxNC
+ l42Yaixr
+ jaafV+f7XdbE7qbvDNEFIXnfjthyXAE9RrfHp3gBVUMiYY6VR/b2c18Kq1MDaYAiWNe0m5zvLgf5ZW/0slxPUGyChWPhbg27xq7e+D+jem/ifgzhI7bwTphkJQr0o+kEnfzglrSDNP+LcLdCR7CB0dhaJ7K+Am+17xHgylIHMJ1NX6lwGHFxsmPLyYrK4ARrJBJmrSWDEAUSx3Fd58d3Ve+eBaAI1FvfbdQqlHxgmKoC/dx5dy115oE6Hg20qNDOM6IpNGqC6Ut7YG8I4tDwpEno0zzjBrvzBsNyp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,65 +99,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+handle_sthyi() allocates the buffer that receives the STHYI response
+block before it is copied to the guest.
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
+The only goto in that function does not unwind anything, it merely skips
+to the exit when the function code is invalid. Turn it into an early
+return so that the buffer can be freed with __free(kfree).
 
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-kvm
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v2 changes:
-* Mask out the next CBR entry offset SIE stores in the low bits of cbrlo
-  before handing the address to kfree()
-* Use __free(kfree) in handle_sthyi()
-
-v1: https://patch.msgid.link/20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org
-
----
-Mike Rapoport (Microsoft) (4):
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the STHYI buffer
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the STSI buffer
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for the GIB
-      KVM: s390: Replace get_zeroed_page() with kzalloc() for sie_page2 and CMMA
-
  arch/s390/kvm/s390/intercept.c | 23 ++++++++++-------------
- arch/s390/kvm/s390/interrupt.c |  8 ++++----
- arch/s390/kvm/s390/priv.c      | 19 ++++++++++---------
- arch/s390/kvm/s390/s390.c      | 12 ++++++------
- 4 files changed, 30 insertions(+), 32 deletions(-)
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260828-s390-kvm-2015b0d777dc
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
---
-Sincerely yours,
-Mike.
+diff --git a/arch/s390/kvm/s390/intercept.c b/arch/s390/kvm/s390/intercept.c
+index ca1205dfac8b0..f7ad111f259c9 100644
+--- a/arch/s390/kvm/s390/intercept.c
++++ b/arch/s390/kvm/s390/intercept.c
+@@ -11,6 +11,8 @@
+ #include <linux/kvm_host.h>
+ #include <linux/errno.h>
+ #include <linux/pagemap.h>
++#include <linux/cleanup.h>
++#include <linux/slab.h>
+ 
+ #include <asm/asm-offsets.h>
+ #include <asm/irq.h>
+@@ -411,9 +413,9 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
++	struct sthyi_sctns *sctns __free(kfree) = NULL;
+ 	int reg1, reg2, cc = 0, r = 0;
+ 	u64 code, addr, rc = 0;
+-	struct sthyi_sctns *sctns = NULL;
+ 
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+ 		return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
+@@ -430,37 +432,32 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+ 
+ 	if (code & 0xffff) {
+-		cc = 3;
+-		rc = 4;
+-		goto out;
++		vcpu->run->s.regs.gprs[reg2 + 1] = 4;
++		kvm_s390_set_psw_cc(vcpu, 3);
++		return 0;
+ 	}
+ 
+ 	if (!kvm_s390_pv_cpu_is_protected(vcpu) && (addr & ~PAGE_MASK))
+ 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+ 
+-	sctns = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
++	sctns = kzalloc(PAGE_SIZE, GFP_KERNEL_ACCOUNT);
+ 	if (!sctns)
+ 		return -ENOMEM;
+ 
+ 	cc = sthyi_fill(sctns, &rc);
+-	if (cc < 0) {
+-		free_page((unsigned long)sctns);
++	if (cc < 0)
+ 		return cc;
+-	}
+-out:
++
+ 	if (!cc) {
+ 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
+ 			memcpy(sida_addr(vcpu->arch.sie_block), sctns, PAGE_SIZE);
+ 		} else {
+ 			r = write_guest(vcpu, addr, reg2, sctns, PAGE_SIZE);
+-			if (r) {
+-				free_page((unsigned long)sctns);
++			if (r)
+ 				return kvm_s390_inject_prog_cond(vcpu, r);
+-			}
+ 		}
+ 	}
+ 
+-	free_page((unsigned long)sctns);
+ 	vcpu->run->s.regs.gprs[reg2 + 1] = rc;
+ 	kvm_s390_set_psw_cc(vcpu, cc);
+ 	return r;
+
+-- 
+2.53.0
 
 
