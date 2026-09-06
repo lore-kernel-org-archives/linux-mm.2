@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA6ECC624DB
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 00:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD83C79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 00:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C013E6B0099; Sat,  5 Sep 2026 20:23:46 -0400 (EDT)
+	id 18A686B00A9; Sat,  5 Sep 2026 20:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDB3D6B00B5; Sat,  5 Sep 2026 20:23:46 -0400 (EDT)
+	id 13B906B00AA; Sat,  5 Sep 2026 20:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B184C6B00B6; Sat,  5 Sep 2026 20:23:46 -0400 (EDT)
+	id 050E86B00BA; Sat,  5 Sep 2026 20:31:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A4E46B0099
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:23:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 067041C215D
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:23:46 +0000 (UTC)
-X-FDA: 85181439252.01.819731A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4EEA520008
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:23:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hu8vYvlm;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFA966B00A9
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:31:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6EC738042C
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:31:53 +0000 (UTC)
+X-FDA: 85181459706.10.8C53775
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0D2E71C0003
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:31:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=AcJNDRPl;
+	spf=pass (imf21.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788654711;
+	b=PF86CI06XQZ3P49NbvotUK1+9WRvBf7Gd6TqRC+Ondd9TnQxIpnWp8eosh/SDFMpDhVuPt
+	UJmad2ktqMQcIn9NVacHEY/vsEE8pWZZnOkELGH/QDJSeHAXHDSQYaY2p1IZrSJrmrzF/u
+	UbvYCCOXtlpxhfG1U77WS0AsreEAnCI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=AcJNDRPl;
+	spf=pass (imf21.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788654224;
+	s=arc-20220608; t=1788654711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o01Kye+IbaFrqz8jkXWQ4cSeCY/YwDxfGVu5J8CSFMA=;
-	b=h7fHpC7i+jWjCmmv3JxfVF94O3+L21CZx3O4szPkT00PCA3yYB+b/s96UCaQDkpdBQkMZS
-	OIcLbRQ8fr3tKoqr/KJstZFKrmaACQsmSFms4zGXm1qJL3Om3WWRZKqYPKGll9cpjrSj8V
-	fVS8xxf/5QZ9VcNNR6Et6/1xNLxU0Qg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hu8vYvlm;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788654224;
-	b=gLDPGrDGCy1o4Xjt9YbMkgDEwkVjH/BFtR8afd7xz+PGoZuro6IFnYEBUvQFq+Crof09qN
-	Z0h/i8jHKqPKR3RlGzRCxWTSDH3DzRPeJD/j6y3av/iBlTD8hVwD2omqlW5wm7LcTLxfSV
-	8l/GkjjOWaGFMDrvWr4heEB+mpFO5Ws=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57DBB60142;
-	Sun,  6 Sep 2026 00:23:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FCE1F00A3A;
-	Sun,  6 Sep 2026 00:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788654223;
-	bh=o01Kye+IbaFrqz8jkXWQ4cSeCY/YwDxfGVu5J8CSFMA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hu8vYvlmaeC97R2YdQx9QbtsMFN3k+qnx85wubeA8lCOG2v5oiV5oyNwCQ/KtynNI
-	 LMCsEWzrpuhUSTl2eSkb+u/pfSy8oiBqj866l9dJr/nqCSaOlg95sylO0c8NpdHbd+
-	 EJZVMBz/6LYgMerXDnF3nahP9hmX/pLhCPYyZoNg=
-Date: Sat, 5 Sep 2026 17:23:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, Zi
- Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
- Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: Re: [PATCH 00/12] mm/collapse: separate a collapse from its callers
-Message-Id: <20260905172342.72be31534af21871f8b13f47@linux-foundation.org>
-In-Reply-To: <cover.1788533997.git.kas@kernel.org>
-References: <cover.1788533997.git.kas@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4EEA520008
-X-Stat-Signature: fwekn3ib8in74fmmjpugty91f5ehtf46
+	bh=4CwkqFElh4pjGctDggceZpagl1zjwDqBMqU8Kvoo5mE=;
+	b=FH7uOmRMkKNbJO0xJhUOZoUDn3Eo+9VeSJpe5kq37+j0RdkvkR+tn9HdPBfwJ5HEh/ZGw9
+	/eLHOL3v5hKE/VlGjVgW0JFdv7Ugp/1t6f8xtkWcuqVuSQ7SgCo64QT23+Nyb8qaJkOug9
+	wmeyus5DyWHAyDErEVMlVRvnVjmkAT8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=4CwkqFElh4pjGctDggceZpagl1zjwDqBMqU8Kvoo5mE=;
+	b=AcJNDRPlkkjmT2yL8nlyy1lbUxXLVrTekW/BqaM/I/Anz8A1nX0LafSztPkBxi
+	IhovyoGRLWYPcw91g8AZN5/iPybDG+eI01f17BdYwh+IKPx6eNEWLElCmdkDAbkf
+	a0aWk4EguaOt2XMLmdDg6bfN4K/mq6w/q0OIRjIwiOHoc=
+Message-ID: <b2a66985-ede1-433b-aff0-4d2acc5c027b@163.com>
+Date: Sun, 6 Sep 2026 08:31:32 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/zswap: enable static key after runtime pool
+ recovery
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
+ chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
+References: <20260905125101.2970456-1-xialonglong2025@163.com>
+ <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDn3xZitJxqXko6Aw--.557S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KryDKryxtF1fGFW7Zw47Arb_yoW8Cry7pF
+	W0ga93Kr48tF1Iyr4xAF4IqF1Yy393Gry8tF1rG3yIywn8Crn5trWxKF40gay5CFn5A39I
+	vrZrA347Jr1Yk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UO2-5UUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9wUIAWqctGU0LAAA3E
 X-Rspam-User: 
-X-HE-Tag: 1788654224-233206
-X-HE-Meta: U2FsdGVkX196TWUx+l6AZcWQxfF9T/cwTAaJ8PtAB/XAHtN4cPhVuSwad9FUi9bfNEl8sXfjeoFenLlIGfxeqOaWiIrSBZbt5OEBYI47V6cakAwYO3E0d8o+kfYxRn0FepMRGwPIPRQwxFuF+OeyrhaokApa6W2MO6Y3xa7qImc3TWUhaHeOzn2xpJif47apJGJoHAjYKpEItGk6F+JLeUVWZh9452yTnYaop1gji7ANBnsrpLWei7XjXPducpzg8uG3TEbOeamMfOZTOxMz3NYdtfO5fn1dEG2fLNCnlw4X7MRD70NugFifaVhY4frPd0pzZIDt8WLEo0IxGWFG+vT1RyGmx9P4TpMQNhPJdQXzPTTnaVScDzqUS/UtnQAEpUwFGGu1hnJ7hHHU6lR7H/T28Ri2tSenZL0yHYVmqglsxmrt+3gNysWS8zKS3lrdtK+eZLpF3mIF7iyu96it9rofBxFvjM9rHSjSCKi61gPRhB5I1Mpx5reApEBi7iBAfb3fzswkgkug5BhW9AYVIMC+/DxbNxNlt7wXeF7RaYz3ABQh38d0ZbWkQ5e3fca8CVl+XWwPcAqZTupB7nnpLl98FzPG3FpFM1UquyYq5nz3isigGzyq4Nt+Yl7stdj4r505llOpx2v8q0XgyTS9IXoB3mJZNOVsKnwK6lvg8MX0RJgYDXdqh4S7M5Rzwtz3vlrNJf36IoFPMrMepCf+Su2f3dyqL1jXr1Rf6MSGTyh+KAQMgCPzlzDqNrxuPsBk4PNqhzx03GsbAcTUzxJffbtpf/XmHQ/sD9j4KhFani06/SmLnjj8TTn8LUNVk45022su4F9RqEttac9293mIVbDWmXRjXE7JC4WTt4koTRiF6Pk4m/7T1Z1gZxLRQldhnWwIfY1n4gjrztniyMgZiEcoSKRcBvjT3ZdgbQTkKxcfMi2/6tsn0AZvbiNrYlNYrbgOEWsT6L+BH92nh1i
- 2p6A4K5n
- ceO3KeWgApZYjlT0l8/cx8MmxcqV9dR9z1DkUnN6L/qAK0oSmLuegl04K8eVoD3q4yME71EGw1DQFVp69+vPqeqeENGCwe7nBaJk0WLkMKa1IE3y3qfpJZDKgJmferk/Hu1ZntG6V5LvHZZVJL8AW6JGr5biwOBvjOuC+kCViO4ZvSFTeVlsFWu1deuQsh6Gs9xTwL0Xt7HJPEjTmeKFUp22nAiAoJFiNLS2e10yRnML/V9qZEoHRmIMVqx91FEQh8hlq7S0+YVdyGPH8E9c7JSvqiw==
+X-Stat-Signature: jduzwc3mif8jk388dksc1ia37fei5cdx
+X-Rspamd-Queue-Id: 0D2E71C0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788654709-453040
+X-HE-Meta: U2FsdGVkX1/sJuEdjE9mHNvUjd7qCcyiAbLmT1/muhPOpNe5SzBx3sFXxBvxz06rtqF+QUgzuPuQkABLITdt87YYE1a2bns/80ZSx2/1aenhXQUueIEPqcFL702Tvv3YXbUlZTHNG+rOxMQbFfGbv7zdWMm0py5w5DdlYdHjgbNHWGFO4jbVxMGzKiQnubeVtjbVMWM//3zwrrqQBVHw2keS1WIYyNmn7TdC9vf2WCEGpnLZILjd51sUIsOV681xyHsqcWf5ZHbe6Xmq5K8KnJt+MoGKTskQj2P0sU0koSSXo5KMwLzI3amXBMwDcSS+LLSb4QdrXUtToex+2yEvvCO4BpmuRdzs5I0p0caVs//Wpi1nlwwWUGZ4LqKDgr6iw10OyvrXzwQpMJVgOJRBgAYcrFgmwIsQhm4n9btqPIaGAwa2+gyZHG/ZRt9B5Qe0DQHjmmgbWD9BU53EGuKFIxlPFsrEyBK62vnfnaCbW/uZiWiJcZCFkxQ2qgpLSXoAv7QkKdZHCAd4etVS6mkWr/bMppXotuoBqt3Lfks1/K8MkUNcwTr7hAK5ZLXS1q0x4nJ4/wH5/ltKCcVquadf/gXQSviDzgzw/AhHNz8YVLSZlzkROpLO6J+GdC7zr3bAkl6R+O63VWRMzWXWUodNPKYRrygMKbQqt9zBeu2jBz4+BfQq1yS9CAoQXbIr0HuY0wgcmJkw4UmHnP6g2qhL4x0vRExpA4RPdVgpueyEuvukcrrAFLWppnbELuETSCoUZfS/COdc4mHShyY4txOI5a8IrwdBzM6DpDgCRDZNnfkI2/Tk0f3J9n//+2JG0fuiiDsJXEhqJH0GlhDceYDEzEpxosnEGgQdX/RCsIkbRgLLk+1Ul1wRqeOBNYNSKgBpeoR7DJrBzNUnjNZvaELadHmINIYTZY8pZUUMDSbqZAUaKJZIIVudieVQ8Nx5oMldPaRg6GvbCc9S/o1tQQ0
+ FJy2bpE4
+ xutwUvrakAKad0FGiklwGp6fBEDCW1r/KApfz1i8EUC7WbhYTZ7da7arR5X1AOYWvjjPghdci7zPoEIWqHP9Es+0VgzJBHgWbOjolt7F4KIucGyCPuIj7kXrS9/Y2uODiisgDDpnShMhFzItwJgoiW3NK5fqEqbLmpGOIfycnOo1mmKB5FkMc8DKWO7auql8KTGxBp9TTIxTCr055dFQJNdhNtWm+gtoQGLmFXoVx7Tcik8GU6EmmagGhbn4M8aqF2PhBaENAut2yPv41hUHh0TqE6yCw6aJJH3FoL8Cz1iG0GT3Ps+SQORXTjwfEQNMurivNmcnoHbaFvNAdreb0XxWDYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +92,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  4 Sep 2026 16:10:14 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+Thanks for taking a look.
 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> [ This is the first of the cleanups I said I would front-load ]
-> 
-> There is no line between the collapse engine and the callers that ask for
-> a collapse.  khugepaged.c holds both, and they reach into each other.
-> 
->  - Sixteen tests through the collapse path read cc->is_khugepaged to work
->    out what they are allowed to do, when every one of those decisions was
->    made by the caller before it asked.
-> 
->  - collapse_single_pmd() does both halves of a collapse behind one call and
->    drops mmap_lock somewhere in the middle.  Which of its paths dropped it
->    is not something a caller can see, so it hands back a bool and the
->    caller keeps track.
-> 
->  - MADV_COLLAPSE's implementation -- the walk over the user's range, the
->    per-PMD loop, the errno translation -- sits in khugepaged.c, which is
->    the daemon's file.
-> 
-> So: draw the line.  State what a caller allows in a policy, split the call
-> in two with the lock as the boundary, and move the syscall to madvise.c.
-> What the engine offers is then four calls, with the lock state written
-> down against each, and a policy the caller fills for itself:
-> 
-> ...
-> 
-> Behaviour
-> =========
-> 
-> Nothing here changes what gets collapsed.  Three things a reader should
-> not have to find in the diff:
-> 
->  - Patch 5: khugepaged fills its policy once per scan pass, so the
->    max_ptes_* limits and the defrag setting behind the allocation mask are
->    sampled once per pass rather than once per table.  A table scanned early
->    in a pass and one scanned late are then judged alike, where before a
->    knob written mid-pass split them.
-> 
->  - Patch 8: mm_khugepaged_scan_pmd fires before mm_collapse_huge_page
->    rather than after it, the scan having returned before the collapse
->    runs.  Its status field already reads SCAN_SUCCEED for an accepted
->    table, so nothing changes there; what the collapse then made of the
->    table is mm_collapse_huge_page's to report, per order.
-> 
->  - Patch 10: which orders a table is scanned for is sampled once per VMA
->    rather than once per table.  It cannot widen what a collapse does --
->    the order is tested again under the lock the collapse retakes.
+在 2026/9/6 7:09, Andrew Morton 写道:
+> On Sat,  5 Sep 2026 20:50:28 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
+>
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> When CONFIG_ZSWAP_DEFAULT_ON is disabled, zswap_setup() can complete
+>> without a pool after a failed initial pool creation. A later compressor
+>> parameter update can create and publish a pool, but does not enable
+>> zswap_ever_enabled.
+>>
+>> If users then enable zswap, zswap_store() intercepts swapout while
+>> zswap_load() still returns -ENOENT without consulting the xarray. The
+>> swapin path therefore reads a stale backing swap slot because the store
+>> skipped writing it.
+> That sounds bad.  I'll leave it to reviewers to suggest whether this is
+> a sufficient description of the runtime effects, and to decide whether
+> a backport is appropriate.  Please.
+>
+>> Enable the static key after a successful compressor and pool update. Do
+>> this outside zswap_pools_lock because static key updates may sleep.
+>>
+>> Verified with fault injection on a stock kernel (compressor builtin,
+>> CONFIG_ZSWAP_DEFAULT_ON=n):
+>>
+>>    1. Boot with zswap.enabled=1; pool creation fails, init completes
+>>       pool-less (static key off).
+>>    2. Echo an available compressor name to zswap.compressor; a pool is
+>>       recovered but the key stays off.
+>>    3. Enable zswap.
+>>    4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
+>>       fault it back in and verify.
+>>
+>> Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
+>> without this patch; all pages intact (zswpin=131072) with it.
+> And thanks.  Sashiko might have found another issue in this zswap code:
+> 	https://sashiko.dev/#/patchset/20260905125101.2970456-1-xialonglong2025@163.com
 
-So is *any* functional change expected with this series?
+I'll send a separate fix patch.
 
-I'm reluctant to merge an unreviewed v1, but this comes close!  I'll
-sit on it for a week or less, see what people say.  Please poke me
-if/when you think it's good for mm-new.
+
+Thanks,
+
+Longlong
+
 
 
