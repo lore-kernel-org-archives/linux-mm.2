@@ -4,87 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5079DC79F9E
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 18:44:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C631C79F9E
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 19:05:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91FC16B0096; Sun,  6 Sep 2026 14:44:29 -0400 (EDT)
+	id B97116B0088; Sun,  6 Sep 2026 15:05:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F6AB6B0098; Sun,  6 Sep 2026 14:44:29 -0400 (EDT)
+	id B3FF46B008A; Sun,  6 Sep 2026 15:05:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 833686B0099; Sun,  6 Sep 2026 14:44:29 -0400 (EDT)
+	id A55EE6B008C; Sun,  6 Sep 2026 15:05:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8086B0096
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:44:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D45F7C052A
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:28 +0000 (UTC)
-X-FDA: 85184213016.27.C414280
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 878DF6B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 15:05:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1773914056B
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:05:08 +0000 (UTC)
+X-FDA: 85184265096.08.C076014
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4AD651C0006
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dml+ayEr;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7D57614000C
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:05:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U+KNoyQB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788720267;
+	s=arc-20220608; t=1788721506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XvOnZdXRT1oYcTh0OqGiqvrYhRphtRi0kIGud2JHRJM=;
-	b=27VXJZwqBK11r7EUZ/0zg1xS8RLFVzau+pwKLqQXq5BDtUkGf2PMfK74kcqnNBhM5kL2UF
-	SYLdan4mQUXIaxKL4a/FuC3it5jtLLeJMu+gjeiUf3bu9toUtfQf85WchmfVI2oDQAqd1k
-	e3WXdj2+BtlTrgQQBkROK5Rwrh3gnDs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788720267;
-	b=zzam/+iSUUojCRR4/geSsMb9a1E7oFuq4rYEQC1mNbNC1xs39Ez9TPLOtGSCbX/uHwlXoD
-	4MYK4DjP67nt/uxsSmjCoWALZUQLfT6yBJtKAYIavdBSxhjtkot2UQMplqQ4JkR0HY1M0A
-	qqPMM8SwUTg/v0cw9vX56WcUyHn+vdQ=
+	bh=HKp3qCBZSkqY8pXJev2cRbeRm+iBrgscyKsMOZzA12Q=;
+	b=MhEzW6b+iWRrsYLR2vH20iWKUXFa+4zyzqfc3kXWD105lYBRLXoqIRkcisdiiX3h4R9TKr
+	yB3aDYywdHpAQ+e0CFAdmyXkDyvvHW7b9MJBQUZZOI1PDyheJseamO75WiI1yMlhB45reb
+	iBO0zHcUar6dXInLq+IgilnxeM5K08I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dml+ayEr;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U+KNoyQB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788721506;
+	b=Ekjq4UQgyKGzMWFWgPhm/lWRJpFzHUEizvv+ZeKVP7k/18rPLhw3qkdg5hkmH4mXJsK7Zt
+	RehQZU3oA2Tv6A6JQO0/XQ3ed8v+4EdTAH9UvnavJDc+vNHRJJK1hX6nu8/SfqO05axiSN
+	pL3D0Tg55yDt+3I0csEosrniSRBOF18=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C87E60A82;
-	Sun,  6 Sep 2026 18:44:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBF31F00AC4;
-	Sun,  6 Sep 2026 18:44:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 84FB6601DE;
+	Sun,  6 Sep 2026 19:05:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DE61F00A3A;
+	Sun,  6 Sep 2026 19:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788720266;
-	bh=XvOnZdXRT1oYcTh0OqGiqvrYhRphtRi0kIGud2JHRJM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dml+ayEr24UUZMmalGx6HoHSRg65X9HJ6baZH7/ZPWpn7t/kf9eT1Eg8MJY2m5k3O
-	 8fn/FqG8+5CpIyntoIkqMeztKJeGOel0ka+hOpzxFu4JaCsvntcoW0MxTpBvb/pBb0
-	 SU0AWPKOZFLHzJEDsjjBBpIc8kvrif2l51bgHSQ5Kx+wWnN7qmtqwQPJZJoaTH5gaX
-	 zNkCJyrDTiVNBE8d/JQoJnuR4Jr2wzNisZO+DN/vMz2y+10mSlSf4OlD0PMSndARDu
-	 U5/+O1WWZ4vpDyeYZtVqsi1VEmwzXMVQPEpuemy+W9bblhZuDEvyjeb5Ks+wG7irQo
-	 r15TYuhcXAHOQ==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 5/5] mm/damon/vaddr: support pgidle_unset probe filter type
-Date: Sun,  6 Sep 2026 11:44:15 -0700
-Message-ID: <20260906184417.96621-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260906184417.96621-1-sj@kernel.org>
-References: <20260906184417.96621-1-sj@kernel.org>
+	s=k20260515; t=1788721504;
+	bh=HKp3qCBZSkqY8pXJev2cRbeRm+iBrgscyKsMOZzA12Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U+KNoyQBtkppQi9T9PyNlYHsgnWIP7ZtHskFM/Mu08J4KHZKizoeKU2ituucivcE+
+	 oiiGmw2BIfmqe6h2JInCY/0umyDidzoWhlajD2+RYLmsspBY84qp+XdAgoI1JC6ObQ
+	 48rdg3INsHMNlE/Sl417+5kUtS+AZ5yVOJ9m5HvklzByzG8tOdX4bgQ2ax2qnGuSZF
+	 4S4labuLpfFKoFEcotWGxxb+VfWq6U3V108vRd2Cno3D6OExIjJy/qT97rZAhRlKnr
+	 BjobNyHPOzR2/Emiz0kG5xJ8xPetEDk5DtG/KArNWQ+W0Kr+6J732rFeV/Bchl+F+2
+	 anWWQBi+m0TNg==
+Date: Sun, 6 Sep 2026 22:04:58 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/secretmem: Fix the enable parameter description
+Message-ID: <ap25Wj-kt2nsMn59@kernel.org>
+References: <20260906171523.3009-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260906171523.3009-1-kmehltretter@gmail.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4AD651C0006
-X-Stat-Signature: j5cqp46xw5gn94dezixgwu9qgzcsexw7
-X-HE-Tag: 1788720267-463606
-X-HE-Meta: U2FsdGVkX1+5hTvDpEZFKEogEA+90cxzRAIyIdfIpYdMNngZQ8WQ3zTJb5XTZTBjHyM+UvKoiZFi/Olcl3WBVAk3V0pDK4aXZjh7vq4WhGG8O6Td7Mq0q2tGfem2gymbjJDt++2Yt63uQ+5HOKhXPU4PJtyPg912E5bXeyBbajNko96HNv7YgciNj3ktLr3x0BKeDPk3ehVk6y1j/PCeU/o64Kgk7zsEnD+t+AeaLzDaXFwe+NRF2WUw047Et4s2c6clmqx63aPdEAeNK+4w7SSnoozl3NCuScK7gDDdKQduApIZZ+gXEW/TbF87lIg2tmrS9v7xjWJ/Phlu4AEl+qkSKFxPC8Lk7n4CPIjulz7Yc18QzoAb30wLE2hevobL/ovUzI4tNUdmUYUjZySwVn1M0AE4SJ4CWyrmCYgxWQDiZosC5qav6vrqpEvjK/9PFEo3meoHmgqzF6ePuOeq3xhf44qLUcDns1aiov7JggzeZY9I+oD5//7B8fxfG1eBy0PZUtkmb1e4SQWAZyR68sZZ4EGiuchpLITOiSEhtd+PGxTNl9zubJmn/23ymjZ+kKGA5XzSny4aC1YB09tdOws8zmSnRZrcjCd5zpvFVclE/ylw45a/zRqUlwraGplc0fR1UR5o5McwtiQxTeIcqqC2ttwXfiMOHbSdhczNoVKmfXxKcryL0zE/JkHizTxJbmw7Oc8pP3N0BrNfrtvkJbLsZBmZzRfM8LQixeIoH2nSmkuoDnEhgGRC9M5cwk5HvgBXPGarN3cVPj9EqR5Cjyz/yW/oEAWbcKemJKRTUAxzXNfO/vQpg2i+TJQ0oYaHJfuynJ/nnRbh+uDImuxEUko6xDYVbe6uA0zzPYG9L4iqMQycmG8+im6PZvDhYKXM1nR+qrszqQpQpfoDWd7kJGtcGWviFMLsTLQliEDw6ZGwqK7yfezw8JTHVUAI4j7n1sOEjNy4+hYcmL2EyBM
- lDWjGh3s
- cwTVXUcz30KkWQA/mch1xVPlw5Jn2zG43hgRPHdZOfbrYNUsSON6Pf6/1fqWxL9wBGFHsLLwrkAmHCNEgVNx3qRziLN1OCYguBWGQUSEdsm6fp6T6uPA9G2GFpx7oYQBgk6+eOvzd7K6erVJr9PVCG0Xn47XFd7QmChR73ntz3xvPZ9O0SpPvY8EZxBWoAhO4xzIotjTi3IdR9dhGSMVh+6lF8If85iub9zP7M6UzTv84BZAHQNATFT6QIHebXGZQvmdK2eSAwm/4E+qfLyewdsHnOQ==
+X-Stat-Signature: 63g4cfpbr3wi19ipejtzknt6noqdaorm
+X-Rspamd-Queue-Id: 7D57614000C
+X-HE-Tag: 1788721506-336511
+X-HE-Meta: U2FsdGVkX1/638TOgjPLh1ciHI/QOia3W2w1wbJkjZN975UzYO8tg00Bq606YW7jkHfMcEXByGrQUGVQxgiTHDwN+fNbrxVhQCNqiOcXPqQfYDpIau4bRmIzmPSCt7A4lYSIC/4BNyOtLhIyOk2xexZHIqWBpLba4XiuwSqW1zxUhhQ8Nhry0j9Lf0LiefUPq5j1VM+z4YNYzdaWFCYDAxIZ6Rn3QRegLHW1MrO991kwFGUw/DlJur+QEznFBpIX79HQWs94ctKQ8HSS0B+3ja97J+soU+PQqLtEr7SHjvPRGHJVkyG3GQozZ/uTc+m3lZElOss5YasaZ64n+iD9vMzGdSiFioROgFRoeR/S7tsV/7PC0G8AKtVZ8oi8dnPz09DQ03pgfyH80PJKoUL2rrFkNwGDikAUiJoVPmgZWB2mdJMtZdUZUoi1XB0MfGn6AuDm6HOaTbvXSpYenNyFuT4i1Lfqbygpu6j4FeiXeTebTHqr8cq56GeMB/bwN7/2G6MeXW4aOaW9TFN9njKpUDqIcghm4kURNXaCdBe3ddcPWsI7hEF3C9voS8ArJQYPKEwd/6ClYWLr67RVoWhY8/SZh2rLnidRfX0eSGYtz+VdfyxkLFDZ/KVp+YHvLyW/frQlfQNN5bJUE+dxcyQSB4vR72fV8On1K+jk0ic0rVL5U1iNN9nawK8FxLvKj4oVLvpeBpeMMyc6aBXQuXYA2Zi9DIBxByD00pT5N+ghO/gDskMdL6FPqL7AbC5GKQnkTQcSsTlzNY0lRSTwCaaUNmr5zXFYSWO+n27ygwZacdEZLYDDjtl/DySu2ZrlngvE/3rq5JzBcrfAno/OJkUTL0tqF5agE2zB+OrMYEmEIfhtxjbqwRrmmoe7l9uI363o5FD5JYTztny8rTk4TOApzaIbcx+FMXztDCi4MJ9hsgeK4Jc5MKdWtZF0Cg5S2Sly8EZNgSidRsN0Xqps1pp
+ qDOojbuW
+ tkEylTdHXES5qUXHr/wjWmmqmKpLORR6a4YuQ5p/ijpKGS99HQhcYZG+BLYUNJwJ8+y+SuECW9BlkDmurEeUsutXKmGptay+nAe9GtaV6QzjQPMvN1kB8yotE8QWN7ZqB6yqifHbUUTRcljJG0yUx/iBPkO4xlDdlgAqmTNm6NltAGQ7HLNWKQTiegBQchg/0RSS7VOajFVsniXPaumTYFc+zpKaPxUG3Wl00Kx5e/Q0onEuT/FDB9kdVx1nN29jPS+nBliEfCg250t8GcO9xZTj18rWLaVnoveKk9+ZnwljtkVLZ/dafWD1YnnD7/+Z+Hy2B3GmES/KKoGg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,118 +89,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON virtual address space operation set (vaddr) does not support
-pgidle_unset probe filter type.  Add the support.
+On Sun, Sep 06, 2026 at 07:15:23PM +0200, Karl Mehltretter wrote:
+> The module parameter is enable, but its MODULE_PARM_DESC() names the
+> variable behind it, secretmem_enable, so modinfo describes a parameter
+> that does not exist and shows no description for the real one.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/vaddr.c | 55 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 7 deletions(-)
+Hmm, does modinfo show secretmem description at all?
+ 
+> Use the parameter name in the description.
+> 
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Assisted-by: LLM
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 45239f05e113b..9a38dc89a156e 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -522,13 +522,49 @@ static void damon_va_prep_probes(struct damon_ctx *ctx, bool set_samples)
- 	}
- }
- 
--static bool damon_va_filter_pass(struct folio *folio, struct damon_probe *p)
-+static bool damon_va_young_addr(struct folio *folio, pte_t *pte, pmd_t *pmd,
-+		struct mm_struct *mm, unsigned long addr)
-+{
-+	bool young = false;
-+
-+	if (pte)
-+		young = pte_young(*pte);
-+	else if (pmd)
-+		young = pmd_young(*pmd);
-+	young = young || !folio_test_idle(folio) ||
-+		mmu_notifier_test_young(mm, addr);
-+	return young;
-+}
-+
-+static bool damon_va_filter_match(struct damon_filter *filter,
-+		struct folio *folio, pte_t *pte, pmd_t *pmd,
-+		struct mm_struct *mm, unsigned long addr)
-+{
-+	bool matched = false;
-+
-+	switch (filter->type) {
-+	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
-+		if (!folio)
-+			matched = false;
-+		else
-+			matched = damon_va_young_addr(folio, pte, pmd, mm,
-+					addr);
-+		break;
-+	default:
-+		return damon_ops_filter_match(filter, folio);
-+	}
-+	return matched == filter->matching;
-+}
-+
-+static bool damon_va_filter_pass(struct folio *folio, struct damon_probe *p,
-+		pte_t *pte, pmd_t *pmd, struct mm_struct *mm,
-+		unsigned long addr)
- {
- 	struct damon_filter *f;
- 	bool pass = true;
- 
- 	damon_for_each_filter(f, p) {
--		if (damon_ops_filter_match(f, folio)) {
-+		if (damon_va_filter_match(f, folio, pte, pmd, mm, addr)) {
- 			pass = f->allow;
- 			break;
- 		}
-@@ -543,13 +579,15 @@ struct damon_va_probe_walk_private {
- };
- 
- static void damon_va_probe_folio(struct damon_ctx *ctx,
--		struct damon_region *r, struct folio *folio)
-+		struct damon_region *r, struct folio *folio,
-+		pte_t *pte, pmd_t *pmd, struct mm_struct *mm)
- {
- 	struct damon_probe *probe;
- 	int i = 0;
- 
- 	damon_for_each_probe(probe, ctx) {
--		if (damon_va_filter_pass(folio, probe))
-+		if (damon_va_filter_pass(folio, probe, pte, pmd, mm,
-+					r->sampling_addr))
- 			r->probe_hits[i]++;
- 		i++;
- 	}
-@@ -574,7 +612,8 @@ static int damon_va_probe_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		folio = vm_normal_folio_pmd(walk->vma, addr, pmde);
- 		if (!folio)
- 			goto huge_out;
--		damon_va_probe_folio(priv->ctx, priv->r, folio);
-+		damon_va_probe_folio(priv->ctx, priv->r, folio, NULL, &pmde,
-+				walk->vma->vm_mm);
- 
- huge_out:
- 		spin_unlock(ptl);
-@@ -591,7 +630,8 @@ static int damon_va_probe_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	folio = vm_normal_folio(walk->vma, addr, ptent);
- 	if (!folio)
- 		goto out;
--	damon_va_probe_folio(priv->ctx, priv->r, folio);
-+	damon_va_probe_folio(priv->ctx, priv->r, folio, &ptent, NULL,
-+			walk->vma->vm_mm);
- 
- out:
- 	pte_unmap_unlock(pte, ptl);
-@@ -615,7 +655,8 @@ static int damon_va_probe_hugetlb_entry(pte_t *pte, unsigned long hmask,
- 
- 	folio = pfn_folio(pte_pfn(entry));
- 	folio_get(folio);
--	damon_va_probe_folio(priv->ctx, priv->r, folio);
-+	damon_va_probe_folio(priv->ctx, priv->r, folio, &entry, NULL,
-+			walk->vma->vm_mm);
- 	folio_put(folio);
- 
- out:
+Please use the form described in 
+
+https://docs.kernel.org/process/coding-assistants.html#attribution
+
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> ---
+>  mm/secretmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index 384f5cfc457f..4e32bf55a599 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -39,7 +39,7 @@
+>  
+>  static bool secretmem_enable __ro_after_init = 1;
+>  module_param_named(enable, secretmem_enable, bool, 0400);
+> -MODULE_PARM_DESC(secretmem_enable,
+> +MODULE_PARM_DESC(enable,
+>  		 "Enable secretmem and memfd_secret(2) system call");
+>  
+>  static atomic_t secretmem_users;
+> 
+> base-commit: 986c24e0fe44f844b44d365b71ce831947f50298
+> -- 
+> 2.53.0
+> 
+
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
