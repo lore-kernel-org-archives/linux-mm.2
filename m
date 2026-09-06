@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57498C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 19:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008C6C79F9E
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 20:08:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA5996B0088; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
+	id 681DF6B0088; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E57416B008A; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
+	id 632856B008A; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6EF06B008C; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
+	id 5491F6B008C; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B1D806B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FD501205E8
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:54:27 +0000 (UTC)
-X-FDA: 85184389374.09.3EFB904
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9266B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 16:08:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2CD721605F0
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:08:00 +0000 (UTC)
+X-FDA: 85184423520.26.0372DE6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id ADF19140006
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:54:25 +0000 (UTC)
+	by imf09.hostedemail.com (Postfix) with ESMTP id 92473140005
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 20:07:58 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI6qZzFS;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqoOuRgR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788724465;
+	s=arc-20220608; t=1788725278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9yZmy0/7ZEMQpd5WklGz4F0Ta/1vxLOno5MJ0SaNnXU=;
-	b=U6JxcMhl0Va+LniOV7T4odTJY33FSiM5Fna1XZkDe5fX1MxITIbGcPcQ5hnJSh20qXf0lX
-	UErZCdLc2QdoEis5PJkgV7loH7V4fN94CqQi+hwCgbFGYSsonlacc61IhTrSmOAIkgl5pX
-	grnM0OIIzTszpIM68RC4MV8a+lgk5Ps=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6dLtZ4diiABDwf70eKATggUD/DCfK2UIavuZ29uFn94=;
+	b=BPgDGS95/2egYg6QXPF8YJnFi+M0TWdbDzwwnnNzkU/xT24RMlIqQPb8x75rbaF0mSCviy
+	pVQH9ptwvKWw4OazFS4ObJiX6c2E7ZV953BKFm46Ezr+soVuBvSysQK8YxWVKU74xNXOeG
+	N7CdJUpNZzFApRFGirNrb26Wvoggke0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788724465;
-	b=Cx/N2TVSJNVw2wVC3zM3T3wcd4RAAYDEnpxq1ImH/8OlQtC3qCJ8FKpwrdGIy0WlUSXITh
-	wQVJWk8bg1lOBmRnz1GUaE5m494dKSbQ3we56K1YVoC8g3Ek7QyTCbZZ7yCR29mRjUQlVy
-	x5Y3c2M+9iC9xWU4FXxoyynlhlWlsVY=
+	t=1788725278;
+	b=kpaStM3JC/p24msNnIihIP+lmZvTULNEL9wB0d2Tb/kF8HlADIIaDe84Dp3q8I0/HR3TDq
+	dWPXnS4vHiIAxDCNyTV1b6/+G11hNIGI93s3m+lD6evM8xz6NGIUsEl0ZdCVePa9F4G3bD
+	UryHiH/3T1BgjNCXrxX11VPp+Q9Mu9w=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI6qZzFS;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqoOuRgR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 384B0601DE;
-	Sun,  6 Sep 2026 19:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8A41F00A3A;
-	Sun,  6 Sep 2026 19:54:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2325B601F9;
+	Sun,  6 Sep 2026 20:07:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AFA1F00A3A;
+	Sun,  6 Sep 2026 20:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788724464;
-	bh=9yZmy0/7ZEMQpd5WklGz4F0Ta/1vxLOno5MJ0SaNnXU=;
-	h=From:To:Cc:Subject:Date;
-	b=iI6qZzFSi9KxMAntjrQEPk/Gb895LQ8iS6PGcc4F5PZR5fQyWizFUbP03kVEKo+7Y
-	 T8ypxTxz/g6NjigLIcpAn88r05G8NR5A/Fh27G/zMPYY9UxbCX0vH8KDTeB4tE6rHW
-	 wy1INhYckOTm8oEL2OROZqsCDhQ5CU+uPw3VewpLwvIj6PhVRjLEVVy5jk7tn4PTnV
-	 BND0ABP+OCdbuyT0HSnQtO9m8vG+lU4Xe43SAuHOEnrVSDcduQ8m3LKitrIwsBZaXf
-	 z9YgHyiF0Qlc8mUWZWudc7epnxJZaOxl9OxzY4OTHmXoZCVrHaol2MsZ36q+GlW1no
-	 SwpASLEHHwxRA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/vaddr: avoid hw-driven pte updates during damon_hugetlb_mkold()
-Date: Sun,  6 Sep 2026 12:54:15 -0700
-Message-ID: <20260906195417.103263-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1788725277;
+	bh=6dLtZ4diiABDwf70eKATggUD/DCfK2UIavuZ29uFn94=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RqoOuRgRG1enfRI1D9SjcgS9tKVhnFREjkX+IlSFfMW3MsqNns+AWPlyPdeEKBY7e
+	 uG2BwFv3LXCAunkIOcVcViIXknbGSpB/bAjMbYO+mF2ZGpYOTTsSbcswzh6Fk7Bspk
+	 xoRdD8yV3EJZtO7zX2zPJxTGqrjmO5vXSbfXu6LB+CQU0sfi3Y3uUHxZppAMqYvAoR
+	 5eXN/m+EszZdq0meyMub1OCprX5zkG3e4PePLPkwZ7ydRDpkCPRWlF/F33DUyD2oX9
+	 OdIfAzYrAWfx2F44BxBIa/LZtftjfA4FnjPC4YITR6DlSoZQynoO34dyoQrkzp6mLU
+	 e9LTmn9kZa7gA==
+Date: Sun, 6 Sep 2026 23:07:49 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com,
+	changyuanl@google.com, akpm@linux-foundation.org,
+	chenhuacai@kernel.org, liukexin@kylinos.cn, guodongtai@kylinos.cn,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] liveupdate: kho: calculate per-node scratch sizes
+ before allocation
+Message-ID: <ap3IFd2FVvfKkHkV@kernel.org>
+References: <20260904025101.9959-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904025101.9959-1-dongtai.guo@linux.dev>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ADF19140006
-X-Stat-Signature: wxfxke8e434gmqqmjcnzg8ihi4yaa7pd
+X-Rspamd-Queue-Id: 92473140005
+X-Stat-Signature: y4ka4z9ksq1g8ig6uc1w5doidt7tzmz5
 X-Rspam-User: 
-X-HE-Tag: 1788724465-100919
-X-HE-Meta: U2FsdGVkX1/VPiDJ7stP5N2AwnGB+8SNb2ezFjoZfaHZrJHATKzDGwIEyhSGUVHPXBpJVPOSwjcuVLIpVcKn/wNjsMsE4J3g+EYIYzbshUJj/RPxyAc8eU2uUyX4HUmN246guu/GzG4nihg84Tcc0/u6vGxZQS25MztvjR3ac06a3w2iXdTywe7VLkV4/h77L+ISqy2tPWZVicJqq4mrjpQ0mXqFcjvWZiwhFRFMtW29lBZoGyBrOSzqQNGYXj6S0n3pSCdHc55NwOM7//EuDxpxAwuk1xySRsvG/Mp6wclD2X0F6ZXqH6Qjb28giBKjR9GLPUBKIJaXCVSOQLfUg/tx1RpWux7/CrGvcp7XbW9JqJiBlwIG/YHXagnnImTpCAJT9nLTFr6AORVLUJYngsu+L4PCIXCmlH0YXM+b0yqCpns0QlrLzH/1RWC5hCmyEDexDodwYgKvmj3vM2AEzB717jPyFQQ36KvrK7MHKm92etZtjHkXa/WB1Ds9D0oDWJasiiqog0NZpE79ac5O2bshvrqbIp8aXoH1qk1VdTVohOOzD67S4/BvY0I4qyI4xgmFdzJDAMfHd4qWoV4YrxlH7QlMrkp8kH7LW8kzyo2vfAtmhV0cp09ppfeB6UXm0OZPhzNC++N2gA6faXDrvq/+hBbLgdBImgP7TAERuSBDZpf4WJfYoXrvJ9AlLdgsLbMY2Pb4s7zheH3pyNIRp185ici/s+ramqP/W25RKvbY5U/AEtmsT70xC+EnZuuhSC2ao8UL0aWPjJ6fhgdp2VOqIJrGCWGmAXPFTowNS1QD3wl2VeI3mR6q/WSPCVSvB5RrwUAzOc/5zrp4KzGfdrEBr/rLQFhidECu8/bA0iFukC0EBKObwd6Jw546CW115qBPWrZQ6c4BpTlEQHvCWXONUSSQ2AJ+hSyuszQVLCPqlBumJiapXDRDBP7j9qYQQ6PAU+ZjKYb6T1Jco5O
- mhAMewa1
- 6SAu4uZ+NKz9YzXlB3l60KfLwP9CpefpvNsLPbfpAKsit6kQeHno+9M2l+DDybrnt022De6OVxIXM9J1nO7lzxKNPMoVpQ6l0tp18+Rogo39MBduYtRaNWUGZQ8LcPQ0FLfsxHVEF/JOHMixLzAG6u4CBQb0FCaN/OJ1uJyYmSei2BW9xDfjEz0wlBswuHVhOMzP2BvMRAWWV0qpHFvryC2hMtJZu4yXAie7M8ntu5ozIhVt4w+TwPiSGrV75v+ek2j/PnrE3/yk1f52xiKpVqdaVtQ==
+X-HE-Tag: 1788725278-819364
+X-HE-Meta: U2FsdGVkX18CAlwaEAqvQhTS0sNL0AQZd6gkLvqdO/7MZIjcFw9V+JHZTDAOoLk8CtK+02yexmKmN2IpIQ3psjUxwIJsEmnDjjSQfRcZslcXgoCkwb4KKejH2vEvekXFn8TihxkK16GF+QqZwFJnJXIR4b58Ej/oVbqBvuk0uRSwaY63lHcmZH0YHTCZp65wXjVfnyt71e4wZhtlkSX7PKxMUwBRcFnEENdNw5Hzx7ATeNIWVYJmCGGIyX1OByV2EHwhJk/4gVsVI1rvC8lAf00fBPXxKlfyV6pE+q/LJqMgJeObuYD2CAAz6zCt3Xzi424kuqZlspA8b2lBpm3Y+Jhjy1itE9RJ1koBdydkC4cyo4ijBf3PD641lMXv344jPTPEQy7J4nA6V0NhNY4Sn6QFyCF0RNeFDcBrYIrRAYP8c9BycrL8pDqw3ZgaP5to2pvG96SuZYLXyDBkL1VoHXgXdjlE8lzgHO16prQVc8QzOk745cj/E+UReqkCncj9YfwNqM4JxEi4BNfHAXuaH/t61rHWACDsg6zpKGudxOya1dLSdyuJCAQelzSiyT6e6khzyEz/CLW7Opaaq/XhqTGvlBGHvfUCfD3IaIH12TNRtOTi6oBh8Ltj5kpIm5bcYzMZ1hrxrALLWDENY16a6ViWk76Vl86eH0v6bsqCUi8kOaYOdLpf4zbHtaWsl+FQJCZ+L7iQuNgL6KH9BS8uudblqdk2in3/e53ujcMd+isZfoC3DCbdC0rc4Nwv6y/4JhKXwxO4GazTCKjo7bmg6DzoUhAAIrxGchku34iYDMiqQSAXhEEMN1/pSdg9vKeRzlrgmTg4CA50qeAt1YxJv8/kHTxGa5q2CD1dfUiobqi029uEU7o5PIbNM7OkEFmaY8Juu0C/R1tJcIY2+zgZ//HCMBHnFZvCFJfY46B0R4ubSoOd2QhgZ+omozd5QAkotehAuLRdmEEBwe9Ht4Q
+ ZhY0hRjE
+ iV0jSlkH8FGhjIku6laKwNh7H0AXMWn8EC2WlTQf4Ff1AI+2geJxG8agL955wqmvlvbTVaXNaZNX1BaMbzbAt9vJ9nYzMEGd/GaIWKzXvslYgz0F02vtBErvupG2HJdUoHzyEiblY0bh+hEvGq2Cv585eJua9DcCr6cfQUva6dS8Bbn/5/YoMDrufFEwA4UxwVKouvRSXeOxJGb4+StInlmcwk6sZeEFAAYKzZFq2zDv/cRvHVl0XvH9aW39tVjkK/tej3pGKixI5VIeDY3GyPqVge3XEMrMZCAQj7nO5+4CQw9AJyMAkUlV7T7rsAqUqGIXckjuGRmtW43z068gSTeeSzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,78 +94,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_hugetlb_mkold() reads the page table entry into a local variable,
-unsets the accessed bit in the variable, and updates the page table
-entry with the updated variable value.  If hardware updates the same
-page table entry in parallel, the hw updates could be lost.  For
-example, hardware-updated dirty bits might be lost.
+Hi George,
 
-Avoid the parallel updates by clearing the page table entry when reading
-it together, using huge_ptep_get_and_clear().  If a parallel write to
-the memory is made after the clearing, the hw will see the page table
-entry is cleared, trigger page fault and wait until it is handled.  The
-page fault handling will wait for damon_hugetlb_mkold() due to the page
-table lock.
+On Fri, Sep 04, 2026 at 10:51:01AM +0800, George Guo wrote:
+> From: George Guo <guodongtai@kylinos.cn>
+> 
+> The default percentage-based policy sizes scratch areas from the current
+> kernel's MEMBLOCK_RSRV_KERN footprint. This is a reasonable heuristic for
+> predicting the early memory demand of the next kernel.
+> 
+> scratch_size_update() calculates the lowmem and global sizes before either
+> area is allocated. However, kho_reserve_scratch() calculates each per-node
+> size only after allocating the lowmem and global areas. Since memblock
+> allocations are marked MEMBLOCK_RSRV_KERN, the per-node calculation
+> includes those newly allocated scratch areas and scales them again.
+> 
+> This feedback substantially inflates the per-node request. On a 1 GiB
+> LoongArch QEMU guest, the relevant reservation baseline is about
+> 98.45 MiB. With the default 200% scale and 32 MiB alignment, the old
+> ordering allocates 224 MiB of lowmem scratch, then requests 672 MiB for
+> node 0, for a total of 896 MiB. The node allocation fails and KHO is
+> disabled. The same incorrect calculation is hidden on the tested 1 GiB
+> x86 guest because its baseline is smaller and its memory map can satisfy
+> the inflated request.
+> 
+> Calculate and save all per-node sizes in the scratch descriptors before
+> reserving any scratch areas, then use the saved sizes during allocation.
+> This keeps the percentage heuristic while preventing scratch memory from
+> becoming input to the sizing of more scratch memory. On the LoongArch
+> guest, the aligned total is reduced from 896 MiB to 448 MiB.
+> 
+> The KHO vmtest passes on 1 GiB LoongArch and x86 QEMU guests with this
+> change.
 
-Because hugetlbfs is an in-memory file system and hugetlb pages cannot
-be reclaimed, no critical issue is expected to my best knowledge.  But
-definitely this is a nasty bug that should be fixed sooner rather than
-later.
+This reads as LLM-generated text. Please add LLM attribution as per 
 
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260830160545.98969-1-sj@kernel.org
-
-Fixes: 49f4203aae06 ("mm/damon: add access checking for hugetlb pages")
-Cc: <stable@vger.kernel.org> # 5.17.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/vaddr.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
-
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index f884d3f78f30a..91a0d441c1f94 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -283,22 +283,29 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
- }
+https://docs.kernel.org/process/coding-assistants.html#attribution
  
- #ifdef CONFIG_HUGETLB_PAGE
-+static bool damon_hugetlb_ptep_mkold(pte_t *pte, struct mm_struct *mm,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *entry)
-+{
-+	unsigned long psize = huge_page_size(hstate_vma(vma));
-+
-+	if (!pte_young(*entry))
-+		return false;
-+	*entry = huge_ptep_get_and_clear(mm, addr, pte, psize);
-+	*entry = pte_mkold(*entry);
-+	set_huge_pte_at(mm, addr, pte, *entry, psize);
-+	return true;
-+}
-+
- static void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
- 				struct vm_area_struct *vma, unsigned long addr)
- {
- 	bool referenced = false;
- 	pte_t entry = huge_ptep_get(mm, addr, pte);
- 	struct folio *folio = pfn_folio(pte_pfn(entry));
--	unsigned long psize = huge_page_size(hstate_vma(vma));
- 
- 	folio_get(folio);
- 
--	if (pte_young(entry)) {
--		referenced = true;
--		entry = pte_mkold(entry);
--		set_huge_pte_at(mm, addr, pte, entry, psize);
--	}
--
-+	referenced = damon_hugetlb_ptep_mkold(pte, mm, vma, addr, &entry);
- 	if (mmu_notifier_clear_young(mm, addr,
- 				     addr + huge_page_size(hstate_vma(vma))))
- 		referenced = true;
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Reported-by: Kexin Liu <liukexin@kylinos.cn>
+> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 7c4d86daf86d..39f489a258d9 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -847,6 +847,17 @@ static void __init kho_reserve_scratch(void)
+>  		goto err_disable_kho;
+>  	}
+>  
+> +	/*
+> +	 * Calculate the per-node sizes before reserving any scratch areas.
+> +	 * memblock allocations are marked MEMBLOCK_RSRV_KERN, so calculating
+> +	 * them later would count the lowmem and global scratch areas as kernel
+> +	 * allocations and scale them again.
+> +	 */
+> +	i = 2;
+> +	for_each_node_state(nid, N_MEMORY)
+> +		kho_scratch[i++].size = scratch_size_node(nid);
+> +	i = 0;
 
-base-commit: 99151e55d0d7c8c2b2cfdef93e2504bf2461106a
+Ugh, this really does not look nice.
+Can't we just calculated all the sizes first and than do the allocations?
+
+> +
+>  	/*
+>  	 * reserve scratch area in low memory for lowmem allocations in the
+>  	 * next kernel
+> @@ -880,7 +891,7 @@ static void __init kho_reserve_scratch(void)
+>  	 * memoryless nodes, as we can not allocate scratch areas there.
+>  	 */
+>  	for_each_node_state(nid, N_MEMORY) {
+> -		size = scratch_size_node(nid);
+> +		size = kho_scratch[i].size;
+>  		addr = memblock_alloc_range_nid(size, SCRATCH_ALIGNMENT_BYTES,
+>  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+>  						nid, true);
+> -- 
+> 2.53.0
+> 
+
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
