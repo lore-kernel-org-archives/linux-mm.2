@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E28FC79F8C
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 19:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57498C79F99
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 19:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27BBE6B0088; Sun,  6 Sep 2026 15:39:14 -0400 (EDT)
+	id EA5996B0088; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22D516B008A; Sun,  6 Sep 2026 15:39:14 -0400 (EDT)
+	id E57416B008A; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11CC36B008C; Sun,  6 Sep 2026 15:39:14 -0400 (EDT)
+	id D6EF06B008C; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D028E6B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 15:39:13 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F3B1805BD
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:39:13 +0000 (UTC)
-X-FDA: 85184350986.16.E9FD82E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B1D806B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 15:54:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FD501205E8
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:54:27 +0000 (UTC)
+X-FDA: 85184389374.09.3EFB904
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B36C120007
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:39:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQNoTprd;
+	by imf09.hostedemail.com (Postfix) with ESMTP id ADF19140006
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 19:54:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI6qZzFS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788723551;
+	s=arc-20220608; t=1788724465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V0dlg/OCZ/KvufmAUs7+NibuZAe4qcL98ZBaXdAOiso=;
-	b=y2EREaHTZJU1bXHNDwqLI+PaqnJ/VBZWJ+2NMP3EF7HskFk8TdO9t9OWVVFuFiJXOru0RM
-	ho4/bWCRZ7Z0qnLQcCNtQIA/YbVo2DRf7hJ4VIEcaRZh4rOMu+o1VVc20/qVk4+NrWczBL
-	EEN0cxMLKygtiYV3VHWnOor+YED3Ht4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQNoTprd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9yZmy0/7ZEMQpd5WklGz4F0Ta/1vxLOno5MJ0SaNnXU=;
+	b=U6JxcMhl0Va+LniOV7T4odTJY33FSiM5Fna1XZkDe5fX1MxITIbGcPcQ5hnJSh20qXf0lX
+	UErZCdLc2QdoEis5PJkgV7loH7V4fN94CqQi+hwCgbFGYSsonlacc61IhTrSmOAIkgl5pX
+	grnM0OIIzTszpIM68RC4MV8a+lgk5Ps=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788723551;
-	b=w5j/O5vGDFe2kkguHQl4sEReIPYM7z7+V0S2/HqlQ39kSasCb/bto2pjwDKirOtuWJ+kxN
-	BejIEztswSPmoZ+gE81yZ0iU1Bmdx5dKozB7Z7gbi9DH4imOrriG78jh6yf7K1QO2h8FBx
-	qoilwxt+Wx8x2USMhwuDF4O9rQWkDog=
+	t=1788724465;
+	b=Cx/N2TVSJNVw2wVC3zM3T3wcd4RAAYDEnpxq1ImH/8OlQtC3qCJ8FKpwrdGIy0WlUSXITh
+	wQVJWk8bg1lOBmRnz1GUaE5m494dKSbQ3we56K1YVoC8g3Ek7QyTCbZZ7yCR29mRjUQlVy
+	x5Y3c2M+9iC9xWU4FXxoyynlhlWlsVY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iI6qZzFS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25E51601F9;
-	Sun,  6 Sep 2026 19:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625C61F00A3A;
-	Sun,  6 Sep 2026 19:39:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 384B0601DE;
+	Sun,  6 Sep 2026 19:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8A41F00A3A;
+	Sun,  6 Sep 2026 19:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788723550;
-	bh=V0dlg/OCZ/KvufmAUs7+NibuZAe4qcL98ZBaXdAOiso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iQNoTprdzIABHeaY8m1+qIYrChSBW4YR5g56ND0IDGxjVrUjtu75iXcCInOb1364I
-	 +wTB43doqgMJLnfBYJoSskumSgUkqMuUSGSIyoiPPsV5IWdYEYUL+GqtDQkjrs8b/w
-	 R6nDfbG6LsyEfVITroBVaYZCYKvjcF1I8vSvuQf2oWbg1ZiodwnpaEcX1THbxmnSe+
-	 IHQQ7ZglbTz7DzRXjtIv6JDrqgE4UHHd8b9zAX216R+bHlW31/yMX2GKkwGDEUCJoJ
-	 YO213e8leFhpd/Q0nqRYPJDTLfgotLWQBIY2H1TusP0BQqbzqo8eIUTF+jNybiPMEk
-	 M4oRLiEK08ijQ==
-Date: Sun, 6 Sep 2026 22:39:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
-	mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org,
-	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 03/10] set_memory.h: Introduce
- can_set_direct_map_range()
-Message-ID: <ap3BVr5hHwA499gu@kernel.org>
-References: <20260902104712.2399797-1-vdonnefort@google.com>
- <20260902104712.2399797-4-vdonnefort@google.com>
+	s=k20260515; t=1788724464;
+	bh=9yZmy0/7ZEMQpd5WklGz4F0Ta/1vxLOno5MJ0SaNnXU=;
+	h=From:To:Cc:Subject:Date;
+	b=iI6qZzFSi9KxMAntjrQEPk/Gb895LQ8iS6PGcc4F5PZR5fQyWizFUbP03kVEKo+7Y
+	 T8ypxTxz/g6NjigLIcpAn88r05G8NR5A/Fh27G/zMPYY9UxbCX0vH8KDTeB4tE6rHW
+	 wy1INhYckOTm8oEL2OROZqsCDhQ5CU+uPw3VewpLwvIj6PhVRjLEVVy5jk7tn4PTnV
+	 BND0ABP+OCdbuyT0HSnQtO9m8vG+lU4Xe43SAuHOEnrVSDcduQ8m3LKitrIwsBZaXf
+	 z9YgHyiF0Qlc8mUWZWudc7epnxJZaOxl9OxzY4OTHmXoZCVrHaol2MsZ36q+GlW1no
+	 SwpASLEHHwxRA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/vaddr: avoid hw-driven pte updates during damon_hugetlb_mkold()
+Date: Sun,  6 Sep 2026 12:54:15 -0700
+Message-ID: <20260906195417.103263-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902104712.2399797-4-vdonnefort@google.com>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ADF19140006
+X-Stat-Signature: wxfxke8e434gmqqmjcnzg8ihi4yaa7pd
 X-Rspam-User: 
-X-Stat-Signature: dorggcp7mqnetp6h5wfitqrekoip45d4
-X-Rspamd-Queue-Id: B36C120007
-X-HE-Tag: 1788723551-871627
-X-HE-Meta: U2FsdGVkX1+6QV80mNptCFanYE8v+Wilcm0qas/5vecxOYJt6P+RjeskQbAKVxgSodkQC7AKGcFNGGuqQWboMeRbkp7keTP+WdMKKUeLBvPjdSmEIgSQYyTOIQVYmcvwxiNs2nbygxn0j6kxmcwf+DdWJdQyIB8fj7U5GHlbNPESuDajPxk8vai33RbYogDKd4kB6YkLnVuyyYUUyR7VnSS7eJ9SswvlFCOp9JuYBLxCKADj11lVKxb4hAdNkv3I5Sh/vsckdmt5WaQaAGGDiHL9KXt2efLGm9jyGOojDZUo34M5BSP5Iac0/231m9T487zBg2lWhlB7J7wKYF2Wv2Ji2URCEvSJzytkVamYNFle00YTQVkrwxRTelATQipUu96+58BrKEPVV9doBLyJrGF9UK+0y0+06pQ4c0IyUynfB65gO1G5ImRvHpIWFofwkdH3G1mNE093IC6deE6y8SNtcZEi3pazSG9cPlqpcT8iXLEXvz1OPYQVNvI+u+eCB0NUK0AcE0FaaPmAN76MZoQHG2fO/d1eC/jeF1vJtMDnK2bHiRH40tF6KZ68UZ349A3WsdFfiOP8Zqyg08VrYxsxhYSLTLuIFmfwCGEJvOhG1Mhjf7dRbFGIWQ4He6CW2dpW1vOprOchiysntiUqqhcTMkKut0Gt+FAs2VTv9MTNiJnpY1czjh/8DzaTjUgNKla55wTWJaoypSEOil8nPTM4U32EZ0eXX2Ko0gRnrZGnlepSnBfiX1YfgOqjRswfCjrGqlTSYGdptYexgGWTzMAjdpRLyn+JWFtUKyMJ/iALR6E5atcvQu+SI1xCKSkttv58KlFqtnB9qMR6NwOmqWI2wvpDBK1B8b/EKXma/SiOcggSnDk5g5YekIOwuLy9kKTOh42lm6izWt6oj8ZkBkYNpbaFv8Z/2NGM4ih+iz8x+cJMAlBOo0wZJ+deEMyje/N5DnOyvDqfDH8Q7u/
- nhmp4dNa
- Xm8r7WscXkjMsmMdw1xP6nO8sw23n+izIYkNZzAsiALKIedR5iVbSJOfo9dODfW2395+9HaoPkouXIQbEZV9RmVfE5leh5UETM+KIWKGTo5fdXLkSXT/IJ3U5ocsXEBLADRmOfvnNzhXu9M5EGH0Xy+1UWY+vVrK4q4r6/CuwWAO1Uamcfp+M0ERmTiXbldF7FJS7rNcH3ZFJEfEu68gxsVE8akT0DyPA32xpFkgvGCcgTRmHNj4zpck3B86e/QfwioPRKCuYg+YIRm0Awe09SkaNXer0ZmDuOoVVBX07ApPD4gx+cwNPSz/+HG5BOi1dy1bIw7G57TPTFESD7gVfWLTSZ9Zb87TrwbYi
+X-HE-Tag: 1788724465-100919
+X-HE-Meta: U2FsdGVkX1/VPiDJ7stP5N2AwnGB+8SNb2ezFjoZfaHZrJHATKzDGwIEyhSGUVHPXBpJVPOSwjcuVLIpVcKn/wNjsMsE4J3g+EYIYzbshUJj/RPxyAc8eU2uUyX4HUmN246guu/GzG4nihg84Tcc0/u6vGxZQS25MztvjR3ac06a3w2iXdTywe7VLkV4/h77L+ISqy2tPWZVicJqq4mrjpQ0mXqFcjvWZiwhFRFMtW29lBZoGyBrOSzqQNGYXj6S0n3pSCdHc55NwOM7//EuDxpxAwuk1xySRsvG/Mp6wclD2X0F6ZXqH6Qjb28giBKjR9GLPUBKIJaXCVSOQLfUg/tx1RpWux7/CrGvcp7XbW9JqJiBlwIG/YHXagnnImTpCAJT9nLTFr6AORVLUJYngsu+L4PCIXCmlH0YXM+b0yqCpns0QlrLzH/1RWC5hCmyEDexDodwYgKvmj3vM2AEzB717jPyFQQ36KvrK7MHKm92etZtjHkXa/WB1Ds9D0oDWJasiiqog0NZpE79ac5O2bshvrqbIp8aXoH1qk1VdTVohOOzD67S4/BvY0I4qyI4xgmFdzJDAMfHd4qWoV4YrxlH7QlMrkp8kH7LW8kzyo2vfAtmhV0cp09ppfeB6UXm0OZPhzNC++N2gA6faXDrvq/+hBbLgdBImgP7TAERuSBDZpf4WJfYoXrvJ9AlLdgsLbMY2Pb4s7zheH3pyNIRp185ici/s+ramqP/W25RKvbY5U/AEtmsT70xC+EnZuuhSC2ao8UL0aWPjJ6fhgdp2VOqIJrGCWGmAXPFTowNS1QD3wl2VeI3mR6q/WSPCVSvB5RrwUAzOc/5zrp4KzGfdrEBr/rLQFhidECu8/bA0iFukC0EBKObwd6Jw546CW115qBPWrZQ6c4BpTlEQHvCWXONUSSQ2AJ+hSyuszQVLCPqlBumJiapXDRDBP7j9qYQQ6PAU+ZjKYb6T1Jco5O
+ mhAMewa1
+ 6SAu4uZ+NKz9YzXlB3l60KfLwP9CpefpvNsLPbfpAKsit6kQeHno+9M2l+DDybrnt022De6OVxIXM9J1nO7lzxKNPMoVpQ6l0tp18+Rogo39MBduYtRaNWUGZQ8LcPQ0FLfsxHVEF/JOHMixLzAG6u4CBQb0FCaN/OJ1uJyYmSei2BW9xDfjEz0wlBswuHVhOMzP2BvMRAWWV0qpHFvryC2hMtJZu4yXAie7M8ntu5ozIhVt4w+TwPiSGrV75v+ek2j/PnrE3/yk1f52xiKpVqdaVtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +93,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 02, 2026 at 11:47:05AM +0100, Vincent Donnefort wrote:
-> While can_set_direct_map() tells whether the direct map can be modified
-> globally, can_set_direct_map_range() checks if a specific range can be
-> modified. e.g. if mapped at PTE-level.
+damon_hugetlb_mkold() reads the page table entry into a local variable,
+unsets the accessed bit in the variable, and updates the page table
+entry with the updated variable value.  If hardware updates the same
+page table entry in parallel, the hw updates could be lost.  For
+example, hardware-updated dirty bits might be lost.
 
-set_direct_map are going to have number of pages parameter soon:
+Avoid the parallel updates by clearing the page table entry when reading
+it together, using huge_ptep_get_and_clear().  If a parallel write to
+the memory is made after the clearing, the hw will see the page table
+entry is cleared, trigger page fault and wait until it is handled.  The
+page fault handling will wait for damon_hugetlb_mkold() due to the page
+table lock.
 
-https://lore.kernel.org/all/20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org
+Because hugetlbfs is an in-memory file system and hugetlb pages cannot
+be reclaimed, no critical issue is expected to my best knowledge.  But
+definitely this is a nasty bug that should be fixed sooner rather than
+later.
 
-so this check can be a part of arm64::set_direct_map
+The issue was discovered [1] by Sashiko.
 
-I wouldn't expose can_set_direct_map_range() as a public API and rely on
-the callers to "Do The Right Thing".
-  
-> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
-> 
-> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> index 3030d9245f5a..88175c3fa751 100644
-> --- a/include/linux/set_memory.h
-> +++ b/include/linux/set_memory.h
-> @@ -44,6 +44,12 @@ static inline bool kernel_page_present(struct page *page)
->  {
->  	return true;
->  }
-> +
-> +static inline bool can_set_direct_map_range(struct page *page,
-> +					    unsigned long nr_pages)
-> +{
-> +	return false;
-> +}
->  #else /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->  /*
->   * Some architectures, e.g. ARM64 can disable direct map modifications at
-> @@ -56,6 +62,14 @@ static inline bool can_set_direct_map(void)
->  }
->  #define can_set_direct_map can_set_direct_map
->  #endif
-> +
-> +#ifndef can_set_direct_map_range
-> +static inline bool can_set_direct_map_range(struct page *page, unsigned long nr_pages)
-> +{
-> +	return can_set_direct_map();
-> +}
-> +#define can_set_direct_map_range can_set_direct_map_range
-> +#endif
->  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->  
->  #ifdef CONFIG_X86_64
-> -- 
-> 2.55.0.970.g62bdec98f9-goog
-> 
+[1] https://lore.kernel.org/20260830160545.98969-1-sj@kernel.org
 
+Fixes: 49f4203aae06 ("mm/damon: add access checking for hugetlb pages")
+Cc: <stable@vger.kernel.org> # 5.17.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/vaddr.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index f884d3f78f30a..91a0d441c1f94 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -283,22 +283,29 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+ }
+ 
+ #ifdef CONFIG_HUGETLB_PAGE
++static bool damon_hugetlb_ptep_mkold(pte_t *pte, struct mm_struct *mm,
++		struct vm_area_struct *vma, unsigned long addr, pte_t *entry)
++{
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
++	if (!pte_young(*entry))
++		return false;
++	*entry = huge_ptep_get_and_clear(mm, addr, pte, psize);
++	*entry = pte_mkold(*entry);
++	set_huge_pte_at(mm, addr, pte, *entry, psize);
++	return true;
++}
++
+ static void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
+ 				struct vm_area_struct *vma, unsigned long addr)
+ {
+ 	bool referenced = false;
+ 	pte_t entry = huge_ptep_get(mm, addr, pte);
+ 	struct folio *folio = pfn_folio(pte_pfn(entry));
+-	unsigned long psize = huge_page_size(hstate_vma(vma));
+ 
+ 	folio_get(folio);
+ 
+-	if (pte_young(entry)) {
+-		referenced = true;
+-		entry = pte_mkold(entry);
+-		set_huge_pte_at(mm, addr, pte, entry, psize);
+-	}
+-
++	referenced = damon_hugetlb_ptep_mkold(pte, mm, vma, addr, &entry);
+ 	if (mmu_notifier_clear_young(mm, addr,
+ 				     addr + huge_page_size(hstate_vma(vma))))
+ 		referenced = true;
+
+base-commit: 99151e55d0d7c8c2b2cfdef93e2504bf2461106a
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
