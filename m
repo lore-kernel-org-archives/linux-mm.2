@@ -4,87 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD816C79F85
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D5DC79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:51:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD9696B0088; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
+	id 9E9A56B0088; Sun,  6 Sep 2026 06:51:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB14A6B008A; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
+	id 99A6E6B008A; Sun,  6 Sep 2026 06:51:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC71D6B008C; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
+	id 862926B008C; Sun,  6 Sep 2026 06:51:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8AD6B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EC1F1604C6
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:25:35 +0000 (UTC)
-X-FDA: 85182955830.17.FD52F96
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 740D380002
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:25:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT+A71hJ;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788690333;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4296B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:51:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCD248051C
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:51:10 +0000 (UTC)
+X-FDA: 85183020300.14.2B8A936
+Received: from sender6-op-o15.zoho.com (sender6-op-o15.zoho.com [165.173.180.15])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B9ABB20002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:51:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=MrrdizyY;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf03.hostedemail.com: domain of me@linux.beauty designates 165.173.180.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788691869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2XPq6jBsWxzSGkLN5JMNAqBj9VumCx6phCWWl2LqB4Y=;
-	b=JTctQHhzFVHGBrg3+MXVuqCxUf+0Z4fZfNbsI4ylcjp2KbML+qYT0nq2Th1NCGM5ctSnI+
-	SLw1BBlmWIRdbcTVo5TPVw00HbfcDMYLZDCdpsYD/5vXxfhd+TU1KsxSbnfB5AucE3sE5o
-	KCE8ghakASejgWSbB6gP1ogmTRc7fK8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788690333;
-	b=L/4oxPcOMq++xaank63fVxIvyVsshvigsp6K6ZgDi/UX31TnwI8D9oVHydeq0q8oo/ZJLl
-	HIUmH/tggViRz2KcYXcAm/R5EQWODRbDWm5O+zgsUOT4GNHhuIp3FMETUujiOvCFW80P7W
-	sSIshVFHma1z7eGm8q3jQoSa56PrxGA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT+A71hJ;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 51F6F40C51;
-	Sun,  6 Sep 2026 10:25:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4E71F00A3A;
-	Sun,  6 Sep 2026 10:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788690332;
-	bh=2XPq6jBsWxzSGkLN5JMNAqBj9VumCx6phCWWl2LqB4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aT+A71hJ8NCIRzwZvUAlmCF2acDHq2xysOzGVgGT3iPsEhswJ4mdi3jeaJj0iN+1f
-	 HJ8Wr8RRz4il12phVpTJYqK7TZm6HBoFHc23BkPlzoVI5sOLzIcKxRJuafbti3zxqq
-	 bBXfVWqy+KEdv6XsvE4Qy0digyusQeELvEYWRpU8teA74oWoYP3Zt0fHRT4wrmKt5g
-	 0m94g72F2kB5Tbe47F6EGnNZHQc88m1JsxF1TNvzE9iMJY45iWStpPyPTxmO6fgjcY
-	 wZ3IdvyxptArEnj1FQAsXDPHZTNWBFUPdAkGExdGbWnfmejDhiw5BQZPl6GBlhefSg
-	 0tHqpXaRiaZLg==
-Date: Sun, 6 Sep 2026 13:25:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
-Message-ID: <ap0_lSVF43FP3PPb@kernel.org>
-References: <20260903155907.1065681-1-tarunsahu@google.com>
+	bh=rBoSHGzWKBhSuGS8r2av+j/7qxpuVCAqAJc8a/E78no=;
+	b=8GW7N9NMfan11uHgfnV0pR19+xiNe7T2Q1xmfgBSDK40hymgmwtAFSTMQtJXPrg+ajPs5N
+	Obl/Ps2d2GusO3WTijO9+vB5oDuVe7ckFYVomkTvQgnwHCx5w9V+xoOaptxs6ynMU7cE0q
+	ZFt9XckCqf/IfBQTbp5sAMq2hKvEsdk=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=MrrdizyY;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf03.hostedemail.com: domain of me@linux.beauty designates 165.173.180.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788691869;
+	b=HI4ctYAkNn6j6z66AgrlIDnK7n/89wpvVA8TKJ3fUsPEymt2xMH8X7n2vt5vywNzYED/Jr
+	TtIiredekP5d/O3WhUcxsbwvH7E7+l5ngCg1/VioKdryJprPVDu07wIizZllZl/GK5p+TK
+	N3hd+ZF7ZUZcbd2x7EoNI1LQjK6U7Rs=
+ARC-Seal: i=1; a=rsa-sha256; t=1788691854; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=HcHv7QGeAJiTzwkPsLHQtIHDXg+2BOTsRnQz63gL5tKUhmSrb+xsES5fvihLNwX7fRBkNlp/y2e9XWkSUnGxybGoddpScOdoipvFHHNsogDA+nnOriuvZFh9U48Js69etl/8831j0h6BBlQ8Ohq8Jh76aQHkt9reQR+fv2vkO2s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788691854; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=rBoSHGzWKBhSuGS8r2av+j/7qxpuVCAqAJc8a/E78no=; 
+	b=YpSRvGr0ZzH6qrZ+qbq04ewCgD+HEWhzNGG5niJ8ZdAMrLyqvIClzi2u9fd0xcMGYavMl4X4lNM48aeWNvgiCS8+0OnLSmc4E1FhO3heka1AsDUf6fqFCNKOi6haJEK8WO7mWQUYMKKWpc516Mfn/6aW5rukRx+vHQ8vygDeSys=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788691854;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=rBoSHGzWKBhSuGS8r2av+j/7qxpuVCAqAJc8a/E78no=;
+	b=MrrdizyYZV3Ev0Xkg+kB7NUWS6PN14cITmMXKJ/oZJt2nUbvveceskVWxdh63bKK
+	XGTSGzsGkaH5x094cI7PomrPqnxP47UUqtkux5UkkWnBVmwMPqaEkZCLosN/1nK4l0k
+	ajHvJCfYOrDP3LmLFinwkZUG/4RlhaUdwQ6aP/5U=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1788691853878565.2585404132941; Sun, 6 Sep 2026 03:50:53 -0700 (PDT)
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1788691851513989.1054873609904; Sun, 6 Sep 2026 03:50:51 -0700 (PDT)
+Date: Sun, 06 Sep 2026 18:50:51 +0800
+From: Li Chen <me@linux.beauty>
+To: "Mateusz Guzik" <mjguzik@gmail.com>
+Cc: "Justin Suess" <utilityemal77@gmail.com>,
+	"Christian Brauner" <brauner@kernel.org>,
+	"Kees Cook" <kees@kernel.org>,
+	"Gabriel Krisman Bertazi" <krisman@kernel.org>,
+	"Josh Triplett" <josh@joshtriplett.org>,
+	"Andy Lutomirski" <luto@kernel.org>,
+	"John Ericson" <mail@johnericson.me>,
+	"Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>,
+	"Arnd Bergmann" <arnd@arndb.de>, "Oleg Nesterov" <oleg@redhat.com>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Paul Moore" <paul@paul-moore.com>, "Eric Paris" <eparis@redhat.com>,
+	=?UTF-8?Q?=22Micka=C3=ABl_Sala=C3=BCn=22?= <mic@digikod.net>,
+	=?UTF-8?Q?=22G=C3=BCnther_Noack=22?= <gnoack@google.com>,
+	"Alexander Viro" <viro@zeniv.linux.org.uk>,
+	"Jan Kara" <jack@suse.cz>, "linux-api" <linux-api@vger.kernel.org>,
+	"linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
+	"linux-doc" <linux-doc@vger.kernel.org>,
+	"audit" <audit@vger.kernel.org>,
+	"linux-security-module" <linux-security-module@vger.kernel.org>,
+	"linux-arch" <linux-arch@vger.kernel.org>,
+	"linux-mm" <linux-mm@kvack.org>
+Message-ID: <1a07657a8e1.4ebd8dda3414368.7718440407238274005@linux.beauty>
+In-Reply-To: <CAGudoHGoOr8rvhSQK+HQp7LmNyE9vP=xTok9eA1ZbV7uaVnMEg@mail.gmail.com>
+References: <cover.1784204592.git.me@linux.beauty> <anJE8SfBLtkh6QSa@zenbox> <1a01795b07a.1f456216580426.3401229391386650127@linux.beauty> <CAGudoHGoOr8rvhSQK+HQp7LmNyE9vP=xTok9eA1ZbV7uaVnMEg@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/24] pidfd: add a minimal process spawn builder
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903155907.1065681-1-tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Stat-Signature: tusjkabwoeg9mjzjwgz6tofrbrq9pw5t
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B9ABB20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 740D380002
-X-Stat-Signature: z44q8w81z6cyexkfanxm8rn7dapd9osc
-X-HE-Tag: 1788690333-967575
-X-HE-Meta: U2FsdGVkX18ofRKIctarkkROj7dq1Kb/gDfYtzD6AV4zRmqSvtwgF6CXrVvyABAyR3Lkb4Mun6apiDlSMWF84+eYCvsbrGUvkF8W7by0kKlWogNuVHbafOVezbHA0cslwXQn8GmqFGHRqF37Co29Hn48waBbeVIG8Diu8IkAmz9aliWANeVKpJfvdoPOKatuPoOYQ5cT1Mbt3zfdRe4N+Hp6CVEzLMhOsK+/yWRnjcd0SYcZT1Lu8wFE/l2R3i2eyFCKusK/owJk5//xpI+NLXbnJ/EKNBswvuBuOZE9LjiM0hz2pl1KD684WhIpfSEHM2n46HJH7eVJTG5jxruPrjLsFq4IAYO52L0kihGdNP3SlWEhpfl8gn2D9JHxPPsfXg+ySsHKFQagm5OwW3/pcs7f0uoLenPb1trYKiw5s+WFE/bDhkaqLdcvVkgDhG7gESHndY88qRhQziOie9G/8cYJrO4b8OV9YV+q03goEGTlFxs/ud5Hhj1YyG4FzcUVzihSF4UhHoBctTJFJr5/6RuvydSIoERePOz0Zpfep7KMZGNaAYQWDAHjsCke6N8jRAu2R/K3K+YQO9A4mKfx5GtpUr92GaLgyvkhuYBgIas96EjhpNSK44mQ6RorlhxwBZVCv9fYsg83VHtdgDzQKsKXoUqbqnM3HV3fiJeDbJWc8aUCxibQaHtlF7Pyo0pWlqU2JM8H3x3bOpAd+UiHmxCWt4CzzB4SjwNDS0wq81lv1qrOAkuHg0OzassIaIg5sAyCiljM+Gxjvbxt726cL1y8eFCMIZ0uW4e9QvLp2OqOx89FUM97JdYTDSFf59wcEp/tgyWlBsG8yhuISloKjbWAOXZrTVtSYS57QJLgHX9seRRD9x4P8M68b1MbkENa/0DCHPWyptX0vWRrfYaL7SGDE7LjWCrHr/VLWcNM2Hjjx4z67fNY/HjGmNadRcsXxpgkgIWUlCZj/MiOSmP
- 7x54evNO
- vv3ESpk+9SFjhJNeswBlLVv+5mVIPU3wQBv96XN1BkyG9J/leaFN6Jpumo5HWgWHhFasBLK1hpCfOiG5hgVhNf0ZtmAt0vAGT/mxkGkzRnYsJs8/G+DHS2R19KRRSUo+nHo4YmFQAGVELlUUjltPsz7OXUPxsHE4f8GItzuzS5f+/OwDchMytm6f4hsDKsVxPuZCL1yT0h7Wh2Xp5/dHBbQc6juUQ3dzKQOBLsCerGmCh9yG1r2YWjCnMsBX4TUhahUD0Y63M1xU2YRKkZfrcuw5LuA==
+X-HE-Tag: 1788691868-352558
+X-HE-Meta: U2FsdGVkX1+ZMeOI368GQo0TpAFoQTtw9OEqgb/LcIoeUiNO+CEMfQuiktu6FadBstkEFcneJVrvYveyjFnpa4fp4Egsvj5yJdPs6NRl8digcqXWUOAj3HnZSs1w3J5vr1S516DMwyW+uso9K8YTFl99RSHDwAdtiuKR1cs8mLnwfcRJ+oT7rhtG0edaHRj8y9ipPQn3ozL5iy88JSfzHtWOc3VKzCzeaFwtBYNRSefmrx32LshM3/izhRuh9K7jPallhcM6VtjadxAArcGA6NHp7x2bTAxgFck5fSbcefVu9qL4svg9scwVX0KQekMO0EvEAzX995j60afkEtxS4qOiivmUeCzVQKFJgiJAr3ZgIuIl5qHkAAX2WxHHUPBh5bckR7K/y5Us2ao6Rqtbny8SXZHGul+4rMi7oJHLikorCczbxuGGW+LKDMdwkpsp0H/lh1QFbpu2lW35gZmoyNnl7l1E8cO2X04Xz+yXfw8fvpl9wn39+zpCsf1RCMDLiQh/7JPAmvfZzJc5xRj7U47xYb9YourB/hggDEp9fkebPeHhB21iQFG7CIcJTTqAMHqbi/oYpuK6b4TQXealB4bD+zKfNTxr1gqa0f/otIzQnXAB7wGX2MFkhkNt78feKhHHyqm+OfVpTIVYmhwycWcVnSxcH+gSE7qYPmk/tKUIH4w74xqVVj4Qqul8VZxs3RKnPE8T5dyUr67HOj2foCYA+yoD/GUmQ9T2MYCGTh1riuQ49gcrS+wcOW41A4purfggqiunpyrPJnevIlOgBLgUEpXYz65xoLUWPyelgUnL43mO7swN9+vjzAfocFu1Nlrl/vcF21EMHfdw6MQtTnmH8Utn4ZW2rGhFo5zqk+afelVHDwUzZHhkCWTHul6XWSV+fvGlLyuWq+Rl1+ZrPjj8ijmtCLhJ2YeCtAOO7jk0DGwaXcbrgBQ/aP4t+4J69IPKL6fl7eTYaeAashE
+ +8BpS+yu
+ ScLnDcvGjhP5STElXzhoL2ca3WMs1HDIw2r37amgZ2vK+7ru/LL0Nx7mily9LkSQPRa/+CPF8rclvKG/Ckscn+IsTH80ZKAH1UGhe0QKmboGkdYUlW1ZT8/pmcslGb9ovSjGkOhwNMQyp8q5vRyLCj6ZK1IH/Bp1tq131xcXIGXRyAin6UhAw7tEI8M1p+ve+oE1BbPHtuse7iPkmqPshPoiyiKUb1BVk7ui52woVofg0SgZmZj8Em5D/nTYgBqLzyYNJAO4DHj6tVt0tttWLsHOdS3AqZs9wokVIDpHM19Hu1VBjJvJcMR+x8H9PWjYcGfXF/2xDt2yLkc+gyt0YjcRupwTnyN6nOBugtUJmuDXkJw+DHAX9KkWvIbgK2M07PiRRTEtjm3sDCJM3oyUb1F2YmNusyi+r5PREb+A/3uCXc1JDdA3xtTjuoegmeV7wgGInhjrTSNPnLsU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,110 +124,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Tarun,
+Hi Mateusz,
 
-On Thu, Sep 03, 2026 at 03:59:06PM +0000, Tarun Sahu wrote:
-> Use binary search (memblock_bsearch_start) in memblock_add_range() and
-> memblock_isolate_range() to locate candidate regions instead of linearly
-> scanning from index 0.
-> 
-> Under heavy memory fragmentation (such as KHO page preservation registering
-> hundreds of thousands of disjoint folios), scanning from index 0 on every
-> insertion and isolation results in O(N^2) complexity, causing boot-time
-> memory retrieval to take several minutes (~268s for 393k pages).
-> 
-> Using binary search reduces the worst-case complexity to O(N log N)
-> (and O(N) for sequential appends), cutting KHO memory retrieval time
-> from ~268s to ~50ms.
-> 
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
->  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
->  1 file changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 9ce86349a29f..88940474b020 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
->  	     i < memblock_type->cnt;					\
->  	     i++, rgn = &memblock_type->regions[i])
->  
-> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
-> +	for (i = (start), rgn = &memblock_type->regions[i];		\
-> +	     i < memblock_type->cnt;					\
-> +	     i++, rgn = &memblock_type->regions[i])
-> +
->  #define memblock_dbg(fmt, ...)						\
->  	do {								\
->  		if (memblock_debug)					\
-> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
->  	type->total_size += size;
->  }
->  
-> +/**
-> + * memblock_bsearch_start - Find the first region index where rend > base
-> + * @type: memblock type to search
-> + * @base: base physical address of the candidate range
-> + *
-> + * Returns the first region index that could potentially overlap @base.
-> + */
-> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
-> +						  phys_addr_t base)
-> +{
+> First and a foremost apologies for radio silence, I got really busy
+> with other stuff.
 
-We already have memblock_search() ;-)
+Thanks for making time to write such a detailed reply despite being busy
+with other work. Sorry for taking so long to get back to you.
 
-> +	int mid, low = 0;
-> +	int high = type->cnt;
-> +
-> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
-> +				 type->regions[type->cnt - 1].size)
-> +		return type->cnt;
-> +
-> +	while (low < high) {
-> +		mid = (low + high) / 2;
-> +		if (type->regions[mid].base + type->regions[mid].size <= base)
-> +			low = mid + 1;
-> +		else
-> +			high = mid;
-> +	}
-> +	return low;
-> +}
-> +
->  /**
->   * memblock_add_range - add new memblock region
->   * @type: memblock type to add new region into
-> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  	base = obase;
->  	nr_new = 0;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
+> I don't understand what race is supposed to be addressed either as
+> none of the setup depends on the content binary.
 
-I think we can just kill for_each_memblock_type() and open code all loops
-that use it and make memblock_add_range() and memblock_isolate_range() use
-binary search.
+You're right that none of the setup depends on an earlier check of
+the executable. My earlier reply mixed up two different requirements:
+executing whatever a pathname resolves to at exec time, and executing
+a particular file selected earlier.
 
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
->  		if (memblock_double_array(type, base, size) < 0)
->  			return -ENOMEM;
->  
-> -	for_each_memblock_type(idx, type, rgn) {
-> +	for_each_memblock_type_from(idx, type, rgn,
-> +				    memblock_bsearch_start(type, base)) {
->  		phys_addr_t rbase = rgn->base;
->  		phys_addr_t rend = rbase + rgn->size;
->  
-> -- 
-> 2.55.0.970.g62bdec98f9-goog
-> 
+The posted RFC does the former. It stores the pathname without looking
+up or inspecting the executable during configuration.
 
--- 
-Sincerely yours,
-Mike.
+The caller-side race I had in mind was this:
+
+caller                  another process        child
+    |                           |                  |
+    | inspect file A via path   |                  |
+    | configure builder         |                  |
+    |                           | replace path     |
+    |                           | with file B      |
+    | spawn_run()               |                  |
+    |                           |      lookup -> B |
+    |                           |      exec B      |
+
+This matters if the caller expects the file it inspected to be the
+one executed. Opening A first, inspecting it through that fd, and
+using the same fd for execution avoids the pathname substitution.
+The fd pins the file's identity, not immutable contents.
+
+> Regardless I don't think this is going to fly as it directly shafts
+> NUMA setups. What's needed is a path to the binary + the PATH
+> envifornment variable or a collection of paths to try out.
+
+I went back to the spawn_template discussion and realized that you had
+already raised these NUMA concerns there, including child-side lookup,
+PATH search, and target-node allocation. Sorry, I should have connected
+your current comment with that earlier explanation.
+
+> At minimum this will allocate a dentry and an inode for usr, bin and
+> coolprog itself.
+>
+> Afterwards any path lookup going through usr in that that container
+> will have to fetch memory from a non-local node to traverse it, same
+> thing for the bin subdirectory.
+>
+> This is a self-induced problem when using a fd.
+
+I see how opening the executable in the parent can populate cold
+filesystem metadata on the parent's node, even though the child will
+run on a different node. Making an executable fd mandatory would
+force that early lookup on callers who could otherwise leave it
+to the child.
+
+> A well-known exec-heavy workload where this is fine is compilation.
+> Any big project will do, to give you one trivial example, make -j
+> $BIGNUM modules in the Linux kernel directory.
+>
+> [...]
+>
+> The stock kernel with the fork
+> + exec machinery is doing a shitty job here, but the new mechanism can
+> assure process-specific allocation to come form the target node as
+> long as the scheduler does not mess up.
+
+The compilation example helps too, and this matters even without explicit
+affinity. Moving lookup into the child does not by itself address the
+initial per-task allocations.
+
+> 1. copy in whatever data it needs from userspace
+> 2. if no affinity is specified, ask the scheduler: assuming something
+> forks now, where is it going to run? the answer would be speculative
+> ofc
+> 3. to the minimum allocations needed (task_struct etc.) while passing
+> the node number from above
+> 4. have the newly spawned task handle everything else
+
+I'll look into using the scheduler's speculative placement for those
+initial allocations, then leaving the remaining work to the child
+where it actually runs.
+
+> In the real world userspace notoriously performs failed execs as it
+> makes its way through dirs in provided in PATH, and while you can
+> patch select programs all you want, the mechanism will have to account
+> for it.
+>
+> [...]
+>
+> This in particular means that a failed exec would be very expensive,
+> as it would go through task creation and teardown. Meaning the child
+> needs to be able to figure out where to binary to execute is. And
+> user-visible part has to account for it from the get-go.
+
+Your point about failed execs during PATH search makes sense too.
+Creating and tearing down a task for each candidate would be wasteful.
+I plan to have libc build a list of candidate paths without doing any
+filesystem lookup, and pass that list to the kernel. The child would
+apply its setup once, then try the candidates in order, continuing
+after recoverable exec failures in the same task.
+
+That keeps PATH parsing in libc and lookup in the child. Relative paths
+would stay relative, so they resolve against the child's cwd after file
+actions. A single pathname would just be a one-entry list. This needs
+interface support, and I'll need to work through the exec cleanup and
+error handling to preserve the expected posix_spawnp() behavior.
+
+I'm still unsure whether supporting both modes is a good interface
+design. An fd option seems useful for callers that need to execute
+the same file they opened earlier, while child-side pathname lookup
+would avoid forcing that early lookup on everyone. I'm leaning
+towards keeping both, but haven't settled on that yet.
+
+> I'm going to write more after I go through the patchset, should be next week.
+
+Thanks again for taking the time to explain this. I look forward to
+your further comments.
+
+Regards,
+Li
+
+
 
