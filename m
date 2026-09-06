@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8C3AC79F9E
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 18:37:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23954C79FA0
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 18:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EAFF6B0088; Sun,  6 Sep 2026 14:37:05 -0400 (EDT)
+	id ACCF66B0088; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B866B008A; Sun,  6 Sep 2026 14:37:05 -0400 (EDT)
+	id A7DFC6B008A; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B3FC6B008C; Sun,  6 Sep 2026 14:37:05 -0400 (EDT)
+	id 992FD6B008C; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F1166B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:37:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9099A0578
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:37:04 +0000 (UTC)
-X-FDA: 85184194368.18.680F9C5
+	by kanga.kvack.org (Postfix) with ESMTP id 7B3326B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:44:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 105DCA0587
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:27 +0000 (UTC)
+X-FDA: 85184212974.11.7106008
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4DAC620002
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:37:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EPvD/Ofu";
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8609418000D
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 18:44:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O1zLryBc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788719823;
+	s=arc-20220608; t=1788720265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=zhQNwRYEIS4kE/CvLbGr7B/xSZlKygyBMw9AdWBN80M=;
-	b=UwrpHMF4WefvPpcejOr2Az3BoYFcnnLeRdn2HrYvOujElkMTN6XQQTX/uD8U5PrylGaCt2
-	X4Ygm5aa1vZrqX1IC2Njnb5q+cOXzaFXIX6FTL07aQ9qdg6lBgmebDc4VLdwa2xQ7uo4tI
-	W4Xwxa6PVbcr4JvFyNRR+OpJUHIuFpo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EPvD/Ofu";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=CVcnKGbYuQsroSfeo45+tXGpgp7HLrTB2fSqLj66N7w=;
+	b=72pMof15IxH/9UNY1V6GAoHd0QcL7jWy1ySZ9OiwBZYcwt7etpDvenViR6vTYGXvZZy88L
+	tUY6BPj3NyoGvKcKoZohGfiDpIJUDI6/qlUiKZ8xXnyQClLBbbOwya6g57ERmmq5fKHWI8
+	P1NTTJ1ANVOT/9XFavydiGeXtNGTEuI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788719823;
-	b=P9A8roYTraJflJv+4cIl+cn8NXHLMYBYNsX/1uou7jjyi96/a3Qyfzcnj0V0WLxVyLT20X
-	7+CpEIrwAax6gnIAxK3ynJ0LN10BU1C3Bpp4Ex3XeBcanSY+FqbCuUccViwIME2pie4d31
-	MbHMnQUq/KY0f+8eigtGY5czmg8u1Gg=
+	t=1788720265;
+	b=aQQeOuLrWwiO/Wy1+LdbUxBhYfvOGXud6lpZ7zwaHeW+yzFDXZ9MZACsFKJkHMzgvdtvno
+	eovAK4qDUoUJwUvoBUgpyH+HFdEmP7+mUIqOwdjA3WD7kRifZrW0AIIqP/O2JwQO4t3Yk6
+	h3/Tng4aHCdmMpqqLjrvQDQUeLJUzaw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O1zLryBc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7EDB601F9;
-	Sun,  6 Sep 2026 18:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227151F00A3A;
-	Sun,  6 Sep 2026 18:37:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0549A601F9;
+	Sun,  6 Sep 2026 18:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B51F00A3A;
+	Sun,  6 Sep 2026 18:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788719822;
-	bh=zhQNwRYEIS4kE/CvLbGr7B/xSZlKygyBMw9AdWBN80M=;
+	s=k20260515; t=1788720264;
+	bh=CVcnKGbYuQsroSfeo45+tXGpgp7HLrTB2fSqLj66N7w=;
 	h=From:To:Cc:Subject:Date;
-	b=EPvD/OfuoevHCK7mt42e9YBPXAB3eu7jlX3A97CwVt8yRfNwcGk3HJCwmSQRSyOLK
-	 SvOFyw6XWSkRC18AOBekLM87MOBgeeuumRQ8hJCkmMBkd7acmqF7pELC1JDOSMGrVj
-	 7z1CSAJB1I1HIxPB4aEfnbvcUzC8xs8Nf0xAxS+q6ukTqWV43di8ky6JdzzvkJAA1v
-	 VlDtK8dqgrPmy/CCZB6yNRJ6EX7ysEYaWLrQN+hp4bfgOEZWQ4om9GAOmWeeNqqJY+
-	 F4kwS7ls29EmxQPR3ED/ga/0padmKWz476l2+nUacd5/wmExJSSnHX9pbQimXlOz4N
-	 VW+BVPNNU6lGQ==
+	b=O1zLryBc/iUX3iyFm4CLXnbyNTgqhfb4KtU5wDg0DzrK/Xm/xD9+MNeycr1x6I3/P
+	 8biSDVOAOqdguqwaIFL7+7BvzRpQ7cca6uDEnzQqY9PF6cMKhaIwcWtTojKNgJ05r+
+	 VeimpMln9miN2pKoGpZnJfE22Hg6P56fVqFLKfPhP0w6GTQVWZ4GXRNRGZqYwRQta/
+	 wkPbTSuUi4KxSgnyCuDwyUWdsY47e/iaXVeMIDnr5nu6fXsB2njwJpet34EZbEhDP6
+	 0n26HRNJV16+h64j1b0s5EFWUYUoJBoif6nFiMt5nUM0aWgVkZKotrmcepvRyZQouN
+	 iICsSsewoWh8g==
 From: SJ Park <sj@kernel.org>
-To: 
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Enze Li <lienze@kylinos.cn>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/core: reset invalid quota->charge_target_from
-Date: Sun,  6 Sep 2026 11:36:53 -0700
-Message-ID: <20260906183654.95634-1-sj@kernel.org>
+Subject: [PATCH 0/5] mm/damon/vaddr: support {prep,apply}_probes
+Date: Sun,  6 Sep 2026 11:44:10 -0700
+Message-ID: <20260906184417.96621-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4DAC620002
-X-Stat-Signature: u8nzsz8zw8w3q7hy17p4ro1edqzemdey
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8609418000D
+X-Stat-Signature: 6siujcgkofjte4u6mnqw9wguzphzbzg8
 X-Rspam-User: 
-X-HE-Tag: 1788719823-514420
-X-HE-Meta: U2FsdGVkX1/Kecdbs7i5wQ+drOeqaUXSd15J5KMEY4DD2mOToqP7RK/GJVSGnYoxEQkSVZihePIU4PIwzKrA9kZ4N63Uny6st5Y9gqlEdZCQEu8M28kmzRWACZJsIRCrfkmgVpteHoTCFJLZ7qJn5oIU5SFdBttfndwgIZAm9kxHQePURWFaXrIwy0sE8YZ2B70jTe5CDXYhDBA4AdWUVc0EfzPb+S6+XnYXuXZt6NhTeRPi4ZAVRrb23ld5d7NwdYBshfpHoIp11LIhjjzH2zs0iYvBZNIs7qpjih8tP5qITHZ7TU70Ix/cNMIm+9OBDTQCRxvtUIhrCKi27qWq6oU4ct2qnrfxBJVqlvNytI+KLS1Hl1Gltn/HV5f3IuFa/DgGqfXKVmbJpE3QgIenbkl8xOaqa1LAv2VmSuynon7Nm4LDvWkLbQDER+8SgbuTpXQ+B3dFzPjMyKKAVXVKjesfUWNaQrXJJjA2IhFY5kxTVGt/upoi9FZ1v0vDdGPxAPyJcwSQAHqzxZnJWt824FEQ9mSM9dRUZlTr5M4wLMDzKAqP48WXCAS8+3HntpH1SvbfBV69kEYul5IY0pAYUcvpXCKk/nPNVLFZEPLEVwto6MlzWEpa6DLikLEQFcz0MLBchsZ6K5nKAD9X8gPZcKgdboq2cvLE09dv3rAnQgEUYAXOfksRrKMMY3XoOqkFetwOx3exTQ38EqO1fhyAD4Xy94eljukLpmuo8QSc6hUTz0yZOk+RC+kmsWJJfK27rX7RMg+QGuhwCtTF6gVbDbVza+BFdhLNqyaBvB+1fFaL6JeTY6FVGdC6txUBbToohND845bNzp30SqXwx4tsTqUqri+lIiYccP1lMgUemWmk35y6tF4a8oG+Vkw2T6/m3srVALln5xdTRFAkrlNIDqxpK4AdZGNnQ7Q8h8itc2Kbf+ES0K28MKfdgtGuYp5x0E4WNPk/qPpYvWhSs9u
- wy7Ygxow
- v/+VxNUfP+kmJIEqAAU9n3B+p0jiezjD6qP8W7w2VzCrJaA1V8i1NNn3HzDDKJc2+GhUz71NM56A3ryzdAWT6QyDWsA43AT7oCkYsWIh71a4KhyTH24Y7jmLVHSgWR/HvWQUigfKg10kQvih5v8D3SsyKUGgcSWvSdnRpioSkLPF/J4MljBwTbR6gzS1iTagBmdjdKj+iUTQa/ywKLLZrr4M7Wl6D1vNezJMWMqpDRLyOtz0zL7m95BwAoesf/10fNSCYDVkv5uVe/VdnDrbr0iStxQ==
+X-HE-Tag: 1788720265-526081
+X-HE-Meta: U2FsdGVkX1/icKpshr5EhSGcMS2br2a4jceCAMOU3l9JeEPJWt3rBw9TBTNh/ea5ODr0mBB/lSu+miz+2uJafxiwkcVMUGxR4puuYaID0qpWt/CaERTtAM7VQ79MdBtm6c73Dlz1VEG7abEqYXYCzjG6qBWKo7LRLSjIcf+Ytd+83JEz7T4DDo6gxJ1Vzy5LviJ/nsY+sbEmIJSw45kr31PEGlhU9zxbbgIAmFdiXhKqEEeVsezG2GP/xQihgWV+i5pCYviIIZA66pU5Gb3+Stt42lhxii5ePNwftqD8p7P2FrsP6Y1ye7TnobsILDY32X3S6R8ikGZLI/pStvIBls7wxAz8ySsl70z4KaXuOyXX9tN/S8a3hGMNBBcGE/EN0twSfIzPO6CgfrfQzvBl+RkU3ndj06+IAZWnXpfzjQnv3wsknLXnY064WJeSGm8h/DSk9NAM+/PGCFS3sl0fF3WRxflVw6fFXWFjHluxS53XmIz4QZ7y2bQNy/pWCoKJrfJIEO/onfDtbasvaZMgdoKoT68r0LRU/Pd11ky9ZNcpfIVBBRkgkEKZ6KluuxBdDqAbd6svjejMb0JqPZcQvDAq9YNIP2IEcfx+AlJVmotpZ1gV8ytfDlqN7uCZCo2p7Wx1pHVJK/uuH6GqTufW+kwuCp9TE3yxaQQOly7N1nnOTXolL+sAUpiDbEEASWbshBsL340ci9fo6+PHRJ6ps22DO0mFn6pobejg/w6faP1GPZfib7113JroSwJkR4Sle9PKOwDrUqi/toH2nDYARMuUwrysJiX+iq6+3clVej2oHlAP/PssrGXvPErOM2a9d2xKodA1u4gRzIraJNYPFKtTzQ2tOlhG86kukBfeXkGBdMhpLGRp4Ok9n9qO9n71cpNUeQsrPGNNNN+JCfZ2d5byEscUKdIBu/bGEvg/AANsSY0UycPmpVIfZ8S2BWwyK/9SAS5tLgQHBfXt4vo
+ V0BGAxdz
+ KVxwtN1ANYJc/ONe+kSGsOJ+EwWlZ7MIL/7UHgtMUmPeELpPldWonOXeg8Rxe9MYiUY6I9CntXlzpmoorSg+GuD1IItZv8lIgGp9m78MAcKqdHoCavbcOwJQE+xbacHumIRC3malUkms9qqJ8RZxaZ+6gvLmkR7/OIM3+zggjbpEL4VeMrKBFn9PRzHx7ENBe+hb4pB2/+WBn/P6qpn1YjZcl7Xb3Us5cYUSBDS0HVWP3brrUxHyr9augg35Wg7ItiAw9fX4QTsl+7AEzMwnYKLX6UWIwoj2UFUgfIaL0ExBNKxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,88 +90,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS can suddenly stop working if a target process that quota just
-fully charged in it is terminated.  Fix by catching and processing the
-corner case.
+DAMON supports data attributes monitoring.  However, only the physical
+address space operation set (paddr) is supporting it.  Add the support
+to the virtual address space operation set (vaddr).
 
-When DAMOS quota is fully charged, the target and the region to continue
-applying the action in the next round is saved in
-damos_quota->charge_{target,addr}_from.  In the next round, DAMOS
-iterates targets and regions from the beginning.  It skips applying the
-action to the regions until it visits and skips the saved target/region.
+Patch 1 adds prep_probes support to vaddr.  Patch 2 moves probe filter
+handling code in paddr.c that can be reused by vaddr to ops-common.c.
+Patch 3 adds minimum apply_probes support to vaddr.  Patch 4 extends the
+support for hugetlb.  Patch 5 extends the support for pgidle_unset
+filter.
 
-Virtual address space targets become invalid if the process is
-terminated.  Trying to apply the scheme to invalid target is just a
-waste of time.  Hence commit 6e4930e33329 ("mm/damon/core: fix wasteful
-CPU calls by skipping non-existent targets") made the logic to skip
-invalid targets.  However, it does skip before the charged target/region
-skipping/updating.
+Test
+====
 
-Let's suppose the user runs DAMOS for multiple virtual address spaces
-with a quota.  The quota exceeded in the middle of a virtual address
-space.  And the process of the address space is terminated.  Then the
-charge_target_from points to the invalid target.  The pointer update
-logic is skipped for the invalid target, so the charge_target_from is
-never updated.  DAMOS action to every target/region is skipped.  From
-the user's perspective, it would look like suddenly DAMOS has stopped
-working.
+I confirmed it can capture ~48 mb working set of masim in vaddr mode,
+like below.
 
-No critical leak or crash can happen.  The user could reinstall the
-scheme.  But this makes use of DAMOS under certain setups quite
-unreliable.
+First, start masim [1] to access ~48 mb memory at a time, in the
+background.
 
-Catch the corner case and reset the pointer in damos_adjust_quota(),
-which is called for adjustment of the quota for every round.
+    $ ./masim/masim.py run \
+            --config_file ./masim/configs/stairs-50mb.cfg \
+            --repeat 10 --quiet &
 
-This issue was discovered [1] by Sashiko.
+Note that the config says the working set is 50mb.  It is 50 million
+bytes, so ~48 MiB.
 
-[1] https://lore.kernel.org/20260830064708.40CA61F000E9@smtp.kernel.org
+Start traditional access monitoring of masim's virtual address space
+using damo [2].
 
-Fixes: 6e4930e33329 ("mm/damon/core: fix wasteful CPU calls by skipping non-existent targets")
-Cc: <stable@vger.kernel.org> # 7.0.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+    $ sudo ./damo/damo start $(pidof masim)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ce8c6f99106ed..2c58be9edbde4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3283,6 +3283,22 @@ static void damos_trace_esz(struct damon_ctx *c, struct damos *s,
- 	trace_damos_esz(cidx, sidx, quota->esz);
- }
- 
-+static void damos_reset_invalid_charge_target_from(struct damos_quota *quota,
-+		struct damon_ctx *c)
-+{
-+	struct damon_target *t;
-+
-+	t = quota->charge_target_from;
-+	if (!t)
-+		return;
-+	if (!c->ops.target_valid)
-+		return;
-+	if (c->ops.target_valid(t))
-+		return;
-+	quota->charge_target_from = NULL;
-+	quota->charge_addr_from = 0;
-+}
-+
- static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- {
- 	struct damos_quota *quota = &s->quota;
-@@ -3318,6 +3334,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 			damos_trace_esz(c, s, quota);
- 	}
- 
-+	damos_reset_invalid_charge_target_from(quota, c);
-+
- 	if (!c->ops.get_scheme_score)
- 		return;
- 
+Confirm it can capture the ~48 MiB working set as the 4-th region on the
+snapshot.
 
-base-commit: 98a7a286b6060dce5e93b37e28f2e0be80304027
+    $ sudo ./damo/damo report access
+    heatmap:
+    11111111334[...]3000000000000000000000000000000000000000489999997777777743333333555556[...]8
+    # min/max temperatures: -1,150,000,000, 80,009,499, column size: 6.963
+    MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 85.355 TiB   size 55.703 MiB  access 0 hz   age 9.500 s
+    1   addr 85.355 TiB   size 18.984 MiB  access 0 hz   age 6.700 s
+    2   addr 127.183 TiB  size 278.516 MiB access 0 hz   age 11.500 s
+    3   addr 127.183 TiB  size 7.570 MiB   access 0 hz   age 900 ms
+    4   addr 127.183 TiB  size 48.133 MiB  access 190 hz age 800 ms
+    5   addr 127.183 TiB  size 54.977 MiB  access 0 hz   age 1.700 s
+    6   addr 127.183 TiB  size 55.113 MiB  access 0 hz   age 6.700 s
+    7   addr 127.183 TiB  size 37.902 MiB  access 0 hz   age 3.900 s
+    8   addr 127.990 TiB  size 120.000 KiB access 0 hz   age 11.400 s
+    9   addr 127.990 TiB  size 8.000 KiB   access 70 hz  age 0 ns
+    10  addr 127.990 TiB  size 4.000 KiB   access 0 hz   age 11.200 s
+    memory bw estimate: 8.931 GiB per second
+    total size: 557.027 MiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Stop access monitoring and start probe-only mode access monitoring.
+
+    $ sudo ./damo/damo stop
+    $ sudo ./damo/damo start $(pidof masim) --probe_prep set_pgidle \
+            --probe_filter allow pgidle_unset --probe_weight 1
+
+Confirm it can also capture the ~48 MiB working set as the 11-th region
+on the snapshot.
+
+    $ sudo ./damo/damo report attrs
+    heatmap:
+    00000000113[...]40000000000000000000000000000000000000000000000001111114999999533333336[...]6
+    # min/max temperatures: -840,000,000, 330,002,000, column size: 6.961
+    MiB
+    probe prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
+    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
+    #   size         address       age           probe_hits
+    0   8.000 KiB    127.990 TiB   8.700 s       0
+    1   120.000 KiB  127.990 TiB   8.600 s       0
+    2   55.543 MiB   127.183 TiB   8.400 s       0
+    3   110.008 MiB  127.183 TiB   8.300 s       0
+    4   55.352 MiB   127.183 TiB   8.100 s       0
+    5   55.605 MiB   127.183 TiB   8 s           0
+    6   55.691 MiB   85.355 TiB    7.900 s       0
+    7   54.430 MiB   127.183 TiB   7.900 s       0
+    8   50.391 MiB   127.183 TiB   6.900 s       0
+    9   18.879 MiB   85.355 TiB    6 s           0
+    10  52.844 MiB   127.183 TiB   3.500 s       0
+    11  48.039 MiB   127.183 TiB   3.300 s       20
+    12  4.000 KiB    127.990 TiB   8.500 s       20
+    memory bw estimate: 0 B per second
+    total size: 556.910 MiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+[1] https://github.com/sjp38/masim
+[2] https://github.com/damonitor/damo
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20260905202634.88102-1-sj@kernel.org
+- Drop RFC tag.
+- Rebase to latest mm-new.
+
+SJ Park (5):
+  mm/damon/vaddr: support prep_probes
+  mm/damon/paddr: move probe filter handling to ops-common
+  mm/damon/vaddr: support apply_probe
+  mm/damon/vaddr: extend apply_probes() for hugetlb
+  mm/damon/vaddr: support pgidle_unset probe filter type
+
+ mm/damon/ops-common.c |  32 ++++++
+ mm/damon/ops-common.h |   2 +
+ mm/damon/paddr.c      |  23 +----
+ mm/damon/vaddr.c      | 232 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 267 insertions(+), 22 deletions(-)
+
+
+base-commit: 87f579da3b3b652d1bf5ca71ccfd7e267807e8ac
 -- 
 2.47.3
 
