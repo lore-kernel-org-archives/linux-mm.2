@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96EC9C79F85
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 13:55:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26416C79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 14:02:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 860BF6B0088; Sun,  6 Sep 2026 09:55:19 -0400 (EDT)
+	id 7F70B6B008C; Sun,  6 Sep 2026 10:02:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 838C06B008A; Sun,  6 Sep 2026 09:55:19 -0400 (EDT)
+	id 7A9016B0092; Sun,  6 Sep 2026 10:02:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74D746B008C; Sun,  6 Sep 2026 09:55:19 -0400 (EDT)
+	id 6BDA76B0095; Sun,  6 Sep 2026 10:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 599596B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 09:55:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 338DC8052F
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 13:55:17 +0000 (UTC)
-X-FDA: 85183484274.26.92CC33A
-Received: from out-zbxj-a87.jellyfish.systems (out-zbxj-a87.jellyfish.systems [198.54.127.87])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 55E9080002
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 13:55:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=k+nC8v9x;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.87 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 455EA6B008C
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:02:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1DEF8055E
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:02:08 +0000 (UTC)
+X-FDA: 85183501536.21.8AEB856
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4BEC940006
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:02:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="SHutc/6z";
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788702915;
-	b=RBD+6YZLfp2FZUV6xIqnB/cPIYkYpB6YHFLIWUviOQt1q33Iy/+kLZC6G8wgO+uVfQ3udd
-	DPFw4B8JsgoubrqyxyhSZ38Ji1sVyAZsPJw3vs+3mWpOxihhUOY8y2lavTLlypnH5xSqN4
-	cTa/WW2Bm3utcaUEUb2H+AdhAE/rHNQ=
+	t=1788703326;
+	b=R0BzwUKxeaXffSjG5QZfVhFQUL3SI1rvkyDOdO9fi5zlxK1OGuIDydtJkn2ohGxWLu0O1T
+	7P3uNnDhwgTTTj/qH6D6pKxq860Tmef/pOH9G793rnyzNEe2iKFp5QhzfY/04tVrlxiTRb
+	2O4wpj7vIRQ6xJ8YBIq4p9COVqb+cFw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=k+nC8v9x;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.87 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
+	imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="SHutc/6z";
+	spf=pass (imf12.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788702915;
+	s=arc-20220608; t=1788703326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rdk1razVM4wzn8BYFk67V58kT1IZF+tiqXFv5msdJgM=;
-	b=OIqafK5Nt6XbCb7JtTaTAZSU6mKcPoAVrHWdTZ7mw+bMFhDx51HOI3l1NtKSNEF5rPYSaz
-	+fWQPNvQymR8azP78ofq2NwsGk2i5tot8tsLh3Pj3AHjFUwSpY3FJULeZGljLZCGgw0/BI
-	r3Zbz2xyWWsgC1yCs/PD1BiEsG70xV0=
-Received: from fedora (unknown [69.5.53.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hdBXW3m5Lz8sXQ;
-	Sun, 06 Sep 2026 13:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788702894;
-	bh=Rdk1razVM4wzn8BYFk67V58kT1IZF+tiqXFv5msdJgM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+nC8v9xOCXuaxIACm5N2ea5tjPWOcyhsH/oWRcrxtfjOoADlBUKIuVFjLD4QNArL
-	 khGdE484U8oj7VgnrYKk7v0Hbf2fb7ynvhVB1XOmdwpwqPdB8iMLQAy9bO3VXoP7su
-	 l+HuOk+0uokc3WvgH5K0+i5JLGz6YmUVsNSIGobMbSyySAlj/MvonfXoiB5jbx09f4
-	 8udyRITBcATAGCp2De26lgs1aSFvDjDLg5OjZ9f0xfN/yMILtukR3f8S5JKKQfX/Fr
-	 v9X133n9AAOiPRv4GzB2Z1Be60WgN1eO5jcTqtIE2+dA1kLAqvaWONcYrDbzOECpPL
-	 PqKG9AJZ7mqPw==
-From: Tianyi Chen <hi@tychen.cc>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Tianyi Chen <hi@tychen.cc>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
+	bh=suuN1kWSuEppLRDqgEECSEVpoIC/3+Amdt3xt38Doxk=;
+	b=KlVYvmhhRKx4vUIjNqIO/yqHptHIXdXm3bb18Ptqx2TiZnOgZPuMvvsD2iYK5OCDWRlqWs
+	+jZXfgpG3rQDjI/+SRgiLFB5FELcXVITcpOXXa8Oc1a8c9rGmFjHHdHFLA63NhTyjFcBkA
+	gFOj5NzFHOHD/VtjA5zGNB1VRneBgVM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=su
+	uN1kWSuEppLRDqgEECSEVpoIC/3+Amdt3xt38Doxk=; b=SHutc/6zXLc1cVD5Vl
+	CLdT7CGEoOSXrsMCrvo70k2VDA9aBZw5Wf3pvzZR+ObbzwrR9AnYAthncIym5Pql
+	Eji+jAGCVSTTN70bNLrpsqjThiEPqbBEEfUurHPSg6E47DOQoNGufjJquqEht6NX
+	A/XNNELwwi60pqnZIUecw3lQM=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wA3DJJAcp1qKIkSBA--.45087S2;
+	Sun, 06 Sep 2026 22:01:38 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: yosry@kernel.org
+Cc: akpm@linux-foundation.org,
+	chengming.zhou@linux.dev,
+	hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org,
-	Joel Savitz <jsavitz@redhat.com>
-Subject: [PATCH RESEND] selftests/mm: Exit on invalid command-line options
-Date: Sun,  6 Sep 2026 21:54:39 +0800
-Message-ID: <20260906135444.749144-1-hi@tychen.cc>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <ZTYJZT7Q8UU4.KPP9BUAAJVQO1@mailcore-89d674988-v7w7p>
-References: <ZTYJZT7Q8UU4.KPP9BUAAJVQO1@mailcore-89d674988-v7w7p>
+	linux-mm@kvack.org,
+	nphamcs@gmail.com,
+	stable@vger.kernel.org,
+	xialonglong2025@163.com,
+	xialonglong@kylinos.cn
+Subject: [PATCH v3 1/1] mm/zswap: enable zswap_ever_enabled in zswap_pool_create()
+Date: Sun,  6 Sep 2026 21:59:38 +0800
+Message-ID: <20260906135938.3568108-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAO9r8zNPckJzpC2ecOew1B=MNbFSMsUpmHgVu=_D_+osFFVFSQ@mail.gmail.com>
+References: <CAO9r8zNPckJzpC2ecOew1B=MNbFSMsUpmHgVu=_D_+osFFVFSQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: hi@tychen.cc
+X-CM-TRANSID:_____wA3DJJAcp1qKIkSBA--.45087S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4rXFy5uF47JrWkuryUKFg_yoW8KFWkpF
+	W8WF93Kr18Xr1xG3y8AF4IkFy5K39rJr47KryUGw48Z3Z8Cr1FvF1xKr98ta1qvayvk390
+	vFs7ArnrJr15K3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pREoGPUUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3AOup2qdckP3RAAA3j
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4BEC940006
+X-Stat-Signature: 4i63pfooc9dwnqm919twshaxdpegscuu
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 55E9080002
-X-Stat-Signature: er4wi93uddnw3fznq5tt77cjist4yspx
-X-HE-Tag: 1788702915-5281
-X-HE-Meta: U2FsdGVkX19BKuHblO0FIQzPLA9loiJGeIMNRVUef4Q5DCLGI1acSBoZ7jda2xstgyf/PgsL6dPq2MUtdiVtamM59fKLNI67HTAo424lRQiA07p9C5J/yRt0VXXGPAunIaVFasBUCPVo1ynt00i6wgikDvHorVKYRrCMheEHrfmcWgkUk5A3SoeGl0Cx1sHXWKg9wUYnwkh335+wm9K6DEwGwnzLoPDCtw6tHFmwdvjk8RhTGwtEQGFLAzeGFuR/pp0nIUFgmx+l2ZNG8VyWCyLSCxlWpph2KEfQVED+zqpLHokgrO27trnVSyNr5IWKQfid0Sa7ZrrZjsm84WiBPTdIFEBBxeKxPEaBnioZflQhPcfJbRNy0M89OoC7lcgcy7SR4drzuFWEsKBEmf69qM88R1yCcKdmjvNr44YXpEK5wqCj5vT7CRWDfWMPf9E6xF6qPk6ynW8VzbC1C/u+ApsQGtPRmgcwl2bPEhZCrCiZt6yaF3AYFpOi1ZKr/lsyIN8vcszxO7vU/9WpWGcnlwL7SafEL0S5VBFe0dHBPiJ9PX/m7aUS1bdC41IO5NuTg+WfN4Kky+JaDG381E3v4lPfUYlWepDVje/8oJYWzX8aeWDIDFsw1rxFJXDCu13oPA0sbQ63q1PcdtLZ7vt7TM2mM0KwhEaSZ9YpeEWOTGbS44aF4XuiPgDT+XZMkndyEcN0KdN9mgKm1rVHPQIRHq2OsoJjNghgo92NEQUHxZO57mD7jF/LcxDWTYjcohYMThQSsktje26JHXBVr6EOEOu4zIxogLCDtjuAeO5ckDSVD48/jRROPJxX70YdzGmdyr4gWNjdY2Vd7Kcf91Oiu6XFD1RTM9w1/e5kU+7qcjWBgo9G0QZ33l3M96zDLCwbXXi2cu0I2Emh11VwCzWYx7SQzw1wcUzBBVRnwdIIB4/sfr26g/U7aikxGuJiCbAqnRvwTGyFOwgotpquBPv
- WNdeoNzL
- ytelecrtnYOlTf7Ae7meYTDIoRDRZCHW8SaiNBQepkK6Sk1hmBgmnBGoSIZuv142mar2bKWuBnE9yM6tf19oR+nnqb3ohzaRDEFOSHcBrT3YHv133qqWvh6XPTK9aXYhiiOcWUoA7PyEwOWMkPJY3BD020AUE8+z4T9X+w99qriSIPkWe6lzY7spxriKTOrB3rP+/q9IZCxHB5gWNGQmfziTjYRkCj75YirNoX8efTuUcxZCKrMI8qRpLKAq6/hLRfaPRJTM1Ft2N9BtdSDQutVwTMn2pLjRnKY8q+lUT1EC0TxdY3PUxTh/zp1ZNCvE7Al9wKr2TvKdFkxo=
+X-HE-Tag: 1788703322-599874
+X-HE-Meta: U2FsdGVkX18Gd1hBCvNhVumkO0ibTVHdaieqi4NZ6q6djCQZrYK7VcrtcJCC0O8mbqSwRczl4fxM9Ieij8q8uRv1TiBcyD+EFLAWX49EfFD7hhxD5u87O6dM3vnVuuqMCN9N7fom1x7apx4ITjdYbT8fU4T6xiviF7VXUyw1zJxDj5cS7htrQ+vOLq/W6baUlAN0pZW8YyLH7MbM/0nwsoC9nbMC0dH+XCOJNExnsjFJANed7ySGZdDpymTQnimCXGlyZAHkbs/x94MRt6jm407m0Gd0BJw1+798qj7PGePI8jyoBSg0uEgywtoWg86TmqOaz6Pse19LLGWhJSEDjYHamnFdY6R0zVE7/ZpUn3RlUqHWJwl5Xl2sWzOt4BxdzWRyIMWMwwgaXHNa1MvIcJp5odiDubyVTiT7V01gre5SW5sFDrVI4y8rkq2nl0Y1OMTyyA1xzjsYw/ksZWqb9OEa/aAcydqRoIG9X3x3p0oDJINLkcuK7nk1phi1v8n+qgd23CLiupFkOlOP8C/d1mHPNdWuXZh4I3thoN4yRw6iqMvm7WPRm3IejPNUASEXDUP7q9n9RvrkNwxKLLGB4hRgBbCrAxNgFN9I77dyYyXEUN0vHPieCCPUp568cCxG3mhAFgH/+t3bBPzIQ7mP2g3HnI2PLV5F3CIHheCIxNWj2760kXNS6TBcFI1fXJLVDP8CovLI4rznhJFPstdl1CsnnwWsgHS7qR0vM+GpWFsajs5NHIv2YhOp098h7FD3hqgewAyX/DEfqr3TViCf5yXVQElCNvJEAsl4RDBGQUNr6H9a95X/XcfFE7CooeJb1rj7PkfURCuOKiRu5QO4uZcwhQLRNy6V9kcjmrhoutfoxeUhlSR6vmL5rXvZzmgxQ2/dGw66Q3vApPrPWHWsYf4UQhVjks1FZsVhs5KC9E541fZACjN8eHZX4D+Tm2MgyeUJgkjy9vlQL1HikTc
+ YzEs2VOy
+ Y035+aeY2Tt9oO+Vz4n2+mnBcHWjcCkRet1Cvt9cvbi5FZe9Alq5R4wnT1LYvC/JzXyr2C1rLi6K211DbD5qSVqloywB1paa+V0vaK2WPHP5i1XNrU5bTF3gZGjsT348v0/LD1E+v6EhQUsksGx6JCEUj1Cug+5Z9idEAbkE5sOveMMLNjTw0nMUA+1w6GtMyiZcDwKh5qhRuED2ST607qjFthJqBvXnifNaJ8H1pwV8JWKzC3FZjwbHIuLfe+m30Uw/IJpb30t2skQxnQZ4FcI9gtjxm1Ot/SgnpxLzK4ljbVBzzQlB36HBHc1fdv568tAKPPw/+HjPrMGRiUw5R5dC34g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-getopts reports unknown options and missing option arguments, but
-run_vmtests.sh ignores its error result and continues running tests.
-For example, passing -z or omitting the argument to -t can run the
-default test selection instead of rejecting the command.
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-Exit with failure when getopts reports an error, before any tests or
-their setup run. Keep the diagnostic provided by getopts.
+If zswap is enabled by default at boot and pool creation fails, then a
+pool is later created by updating the compressor, data written to
+zswap is corrupted on swapin.
 
-Verified that -z, -t and -t mmap -z exit with status 1, while -h still
-exits with status 0. The mmap category's three test programs pass in
-a VM running the kernel built from the same source tree.
+Enable the static key in zswap_pool_create(), covering boot-time and
+runtime pool creation with a single site.
 
-Fixes: 85463321e726 ("selftests/vm: enable running select groups of tests")
-Assisted-by: LLM
-Signed-off-by: Tianyi Chen <hi@tychen.cc>
+Verified with fault injection on a stock kernel (compressor builtin,
+CONFIG_ZSWAP_DEFAULT_ON=n):
+
+  1. Boot with zswap.enabled=1; pool creation fails, init completes
+     pool-less (static key off).
+  2. Echo an available compressor name to zswap.compressor.
+  3. Enable zswap.
+  4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
+     fault it back in and verify.
+
+Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
+without this patch; all pages intact (zswpin=131072) with it.
+
+Fixes: 2d4d2b1cfb85 ("mm: zswap: add zswap_never_enabled()")
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+Cc: stable@vger.kernel.org
+Assisted-by: Zcode:GLM-5.3
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 ---
-Resending because the webmail editor damaged the whitespace in the
-previous submission. The code change is unchanged.
+Changes in v3:
+- Drop the code comment per Yosry, and add his Acked-by.
 
- tools/testing/selftests/mm/run_vmtests.sh | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+- Enable the static key in zswap_pool_create() instead of adding a
+  second site next to the compressor parameter update, as suggested
+  by Yosry; boot-time and runtime pool creation are now covered by a
+  single site, and the zswap_setup() site is gone.
+- Use the high-level description from Yosry's reply to Andrew for the
+  corruption scenario, and rename the subject accordingly.
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384..189927f87e6 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -110,6 +110,7 @@ while getopts "aht:nd" OPT; do
- 		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
- 		"n") TAP_PREFIX= ;;
- 		"d") RUN_DESTRUCTIVE=true ;;
-+		"?") exit 1 ;;
- 	esac
- done
- shift $((OPTIND -1))
+Link: https://lore.kernel.org/r/20260905125101.2970456-1-xialonglong2025@163.com
+
+ mm/zswap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 37f34e406c8e3..3abcd8433425b 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -324,6 +324,8 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+ 
+ 	zswap_pool_debug("created", pool);
+ 
++	static_branch_enable(&zswap_ever_enabled);
++
+ 	return pool;
+ 
+ ref_fail:
+@@ -1805,7 +1807,6 @@ static int zswap_setup(void)
+ 		pr_info("loaded using pool %s\n", pool->tfm_name);
+ 		list_add(&pool->list, &zswap_pools);
+ 		zswap_has_pool = true;
+-		static_branch_enable(&zswap_ever_enabled);
+ 	} else {
+ 		pr_err("pool creation failed\n");
+ 		zswap_enabled = false;
 -- 
-2.55.0
+2.43.0
 
 
