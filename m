@@ -4,131 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209C2C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 07:47:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DFCC79F9E
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 07:47:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 782FC6B0088; Sun,  6 Sep 2026 03:47:29 -0400 (EDT)
+	id A1A116B008A; Sun,  6 Sep 2026 03:47:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7332E6B008A; Sun,  6 Sep 2026 03:47:29 -0400 (EDT)
+	id 9C9F46B008C; Sun,  6 Sep 2026 03:47:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 624946B008C; Sun,  6 Sep 2026 03:47:29 -0400 (EDT)
+	id 8B8DD6B0092; Sun,  6 Sep 2026 03:47:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BAFA6B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 03:47:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B775DC0472
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:28 +0000 (UTC)
-X-FDA: 85182557376.01.40390F2
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BBF89140004
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VnqvUZ6v;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66C8F6B008A
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 03:47:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03C8CA45B3
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:31 +0000 (UTC)
+X-FDA: 85182557544.13.BD728EA
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 162C340002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 07:47:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pF0kDvJj;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788680846;
+	s=arc-20220608; t=1788680850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DTW8rfxRTuzQ7sC9TwGZDi4dZwe0Eh2shs5D/k7Yn2w=;
-	b=AwSI3i0kKtk+OnuSJiku09Q7MeXHWcDX89KBrJYPRsY6NrgqZiybQATiRgc40UXqNU7CGU
-	9gjLYteiipzpmAbInzCcU60Iyo9ujsICdnaP+KJyMXc4D6iaO0hK31yBOht3GXTAgEx7m+
-	6wwNtzf2udiD072xM1dzaZWdfQ0ygOw=
+	bh=cfzhdafKOPcmowjGTCbLXY0Cj8hfEc5olvSFaFljUsg=;
+	b=aFMLEBfIRZ/Qdrjf7kEBWLS9+cltOu9BJp2xwUMsFE96EI1YgOP44OalebbsGiHrqYMCPZ
+	0rz0qE+Sd06QSQubkbvnHx/riy+PTQTTdUEyji+R124Y6pJKbdA9daNJv/2c6jel3Ck9On
+	a5eF1inYj63Sdp1IfOMXTb5UFivdL/E=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VnqvUZ6v;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pF0kDvJj;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788680846;
-	b=dQJk0in3LH6XcSUoHAgW2BScVAFDnP5rwbpUYOguGGBUnCfSRS1sCiSA3/tBi6NXAhQW6Z
-	hr/SZplTAfQPvHT+ZYDj7nx/3d1nezoceOA+abkt3MZLfQN/wmg98wU5Fdf0akBw+af/rS
-	gmuRxiqQL8CfORV9u6XypINyu7HOCVQ=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d01663d816so16912215ad.1
-        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 00:47:26 -0700 (PDT)
+	t=1788680850;
+	b=fC1ZNrKgn5/mjA2Mkaz3zi68M4NJRNwYM0Ab1jclHEYr6uoiwzh3zJHAFoKzRIi8G6R2iE
+	5slWtCCkVVFy6zZRMTMwlNRWSMxgxUotzkgzl4CttUuXAtnTXq2t4gRu38Y9q3pkl8BnV2
+	tUTySEhuG5jHH9Jde0TMwBg9xMeBtB8=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e58034d05so1985214a91.2
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 00:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788680845; x=1789285645; darn=kvack.org;
-        h=cc:to:references:in-reply-to:content-transfer-encoding:content-type
-         :mime-version:message-id:date:subject:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788680849; x=1789285649; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DTW8rfxRTuzQ7sC9TwGZDi4dZwe0Eh2shs5D/k7Yn2w=;
-        b=VnqvUZ6vSGQLdP+gkgqOafE+yAmehs4UVpa8ygAzYLdk1A+d/xpmMUIXl4Aa+B9fL8
-         l9YpTKDb9wxO6Ja5eQFbNAk4ZbcLsGyUIaZOKsOXdXvSGrQH4SgH21bRSJZxCS5td6t+
-         i9jAb0U+FYbQzAzyAt9VVTrhn32GYr/ogS7mLx6DqKkl92bpk4ZKo9CAr4Ywn9VyPi90
-         DP2sYFg7y39B/McYZH5ALMfbXTcLFREa6+1iUX4W5ciVNU1cZ9GzFXu2GUNF+UwjuKfj
-         MCPsu58CBkOjucYm4LkHxjpUM4+v+jkMsDUU3R+CwTzb/GnlaHbSk83DRJzTlZC5DCPc
-         I2fQ==
+        bh=cfzhdafKOPcmowjGTCbLXY0Cj8hfEc5olvSFaFljUsg=;
+        b=pF0kDvJjVQlEc77aTpPyKtpoJfy95izmjRMFBZGyT+VFyinNGW/f/9PctznhVK7pTx
+         dkpnt/O1EFeULqNGnkUSjShv1DW990YvjmePm5so02xOSN2KRCjpmsAGMiU0Z5fv4Xn0
+         dCnXO4IdAUHwH3rHilJmnLcVWz8PkTYKHigr8I1uiEPFFA79RoAZnA5y7I0Db1UyjVDX
+         8VsWgcRYUfbZycjuZqTtaBtxo0pyXL1ZBzHnd3EYCpE+UpSPj/46Cv0/mDX+SKHWbKms
+         G124SpwwNofrI3Ja38VXexGErRxF60iqqCbXDTDZjBpEAgC2xBC7lcM73tnGeU/O9lXy
+         bFBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788680845; x=1789285645;
-        h=cc:to:references:in-reply-to:content-transfer-encoding:content-type
-         :mime-version:message-id:date:subject:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788680849; x=1789285649;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DTW8rfxRTuzQ7sC9TwGZDi4dZwe0Eh2shs5D/k7Yn2w=;
-        b=kanP7a97YJrepQGW49Y/R6C1b3Xf+LoAz5kG2rg81QmbgJytU50dlDhoDe2s9Zazw5
-         mggjIh07GTp7GEJsqJpZFzXpZO4oMaoVxCAYBvEA20tjm8rpKVflgR6rXL1WYZvEwQMs
-         IyZB9IYY9W2KWsiXh6eBhwxK3Mdi+DmB0hWpjxXUW0Tp68I4dKTwb351xDOn2SMCjESf
-         UVE6X8WhwYml8yW/eoaau5QKRLzw71dBwNt5T+skBsDc4KN1dkTjNwy9oeajDWnTACKZ
-         qnl33zqsIukIOE8x7S2bK/eckWV6U99+KItyFgDuJ/rdKhn9nE5CrJIgIn6nMgfggaFc
-         ivSg==
-X-Forwarded-Encrypted: i=1; AKwUvBwyn5qeUr/wwsJOD2jrTZytzXLStqtLg6L/uT/pqXabY9ahCx/DeN4zjarxkZnsyiBLsr/34G02Rw==@kvack.org
-X-Gm-Message-State: AFuF++n0fVk++15zHrPK2WHvKOXqA6uUBS5nEgrvoG+Vw4I6Vm/LBbji
-	H+PN6gbzG4YRzI0rQV/pMy4CXOvEjoQeeNnkO16izHXHeKXE8/6f3ucs
-X-Gm-Gg: AYBFou3KeqQF/5KoQtWN06XcUYfD/byjEK0+uCfGpd7krRrn2PLC1Eq8YCqRs/hLDTc
-	JvuK/ebrUzZwLepQY0gP87+0FmgFhI3Xi+WCQ7pgQAUR99RjAcmtbPdbinBXz8DgHT6ce1/WukV
-	XSNKFT7PqOO+Lf4RUDLqQM4BlObxdJbwhaJO7q1//VAP0yStUCyPA6pnJHJ9/FuqxwGFWB05Fwa
-	PdtCsPxM+Kk4y5PgvQ1AgQCr2dNUTpR23nTmtyUlpkrQ3gLadh/oiR9kieAEbCb3Wl5QZDpxOXI
-	VNHBAByVv78T3k+J0IHTJW1jP85eRCHB2a9/ZB41/qL5/ER7TRrfcOoZkstX19YoL6tROsfzwAN
-	RL6245Jxqm9D9+7tkj/VsMmlHEsKqaIfrnpcmcTPQc9iIPMgtwtEsMqtNgl8S3bzLel6B6+ZxWR
-	ZXZZpk/9J7mujB3BpN6jXZCrbb5RnL0Npw+lF/qYSgqGVLgeVeQo479hreR9Ys3/3ut4me/aGU4
-	bwXyO+21GrzABimROM+fip9WW9vz/TQLSdYiXYva47tVHUGZA==
-X-Received: by 2002:a17:90b:54c3:b0:398:d6e8:f84e with SMTP id 98e67ed59e1d1-39b2612ecebmr26738023a91.9.1788680845337;
-        Sun, 06 Sep 2026 00:47:25 -0700 (PDT)
+        bh=cfzhdafKOPcmowjGTCbLXY0Cj8hfEc5olvSFaFljUsg=;
+        b=e6G61GM/q5cJ5rmaz5vv1VC5xu6bi0GVY1zm/bh5q2Wc8kplGZpGBNNOjkye3jhj6d
+         5fDHAguSdPtwTqIyg3bkAUrVhrRx2oezKMvpGxtr+xa/i02Z31GTc3jp1VMe9wCupL7O
+         WgWDwqYUAxFOnKDRzaZ4nphpyZJlcCsX1qtrYLpCrWc0GDXDUFQLsnW6m9YsKhQhSlsy
+         HCdeeCbqA2GS1BLLNThbkFldq4Jwbq0HPkCiLzRfr3jQC8zXCPdaSgmg9KdjqyScnRm9
+         m0gV1VVSjL1NtIBimbRqsLHyq3/3JLh5fLdJeYyMu400ccO1iXTGN1UNp+D4WD4YxEMe
+         LnPA==
+X-Forwarded-Encrypted: i=1; AKwUvBz6/v90/NpMMqNuW9b/WKCE8koQRQtoLcko6RlxPsm+S1Ggp4Ng1f5+yf76gNxMuXWHnW79mQoEIg==@kvack.org
+X-Gm-Message-State: AFuF++lRgJDoYUJTnyUUs/VSQrSa85mVi66IpM+IPcJQUrZVrqbjRKCb
+	Ki8ZHBFIcp5MGYnTpF+hnS2J1SBs6j+p+GVPUiN+sX37n+zwUFDeb8Xj
+X-Gm-Gg: AYBFou3wwITlDAOqeEHjZmYK/xR5NLsp/MQs2YiGiCYmC8dRpaGBAolYdA7ZJ3h3Zll
+	8GoUyMXtE3p98ZIijZODKX64Nr492E43jsxTFk52xPBZu38rZ++PnDEazVQ+AE2zQr9wIZDS2+9
+	1hS8YGud1ISVXWwyCukXLLccLT/dO5C3qqz6NocSaGb8i0abFm927hd+v4nJIVG8FWmYbWyWj5K
+	BgEall0DIprh69N84npkmSvW5ur+3FTecipbw5QHBIlT7SKESkmvV+ElG722fPH5i9IbblpkEcY
+	kfhRIKTaZ0mzMA9VvCAoxElW8OTxoF3vnaF1h2o1TqMD1BQL94/Fdr85PWoZgwCS2HogQqpt6Gy
+	JrYM/mSM49TgSmHIUWXOzRwXCjaSdJDcYaI7E5xWAcV3cjx2WZuuNEKxTxYQUtIyZgVbApQgXAC
+	kaQgAconma3y+S3LhgCs4tju7cpK9T5nMJpZ4i2LEc4o7kzmj2eMfBcLGixpjZMSuSDoxKHn2LS
+	jNtNwg6BkjsIEQWEZiwFSwIxr5GekMxYp90cKI=
+X-Received: by 2002:a17:90b:4fc5:b0:398:9be6:f996 with SMTP id 98e67ed59e1d1-39b262cee58mr28681622a91.21.1788680848803;
+        Sun, 06 Sep 2026 00:47:28 -0700 (PDT)
 Received: from NV-J4GCB44.localdomain ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08d0d7e8sm21138905a91.16.2026.09.06.00.47.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08d0d7e8sm21138905a91.16.2026.09.06.00.47.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 00:47:24 -0700 (PDT)
+        Sun, 06 Sep 2026 00:47:28 -0700 (PDT)
 From: Jianyue Wu <wujianyue000@gmail.com>
-Subject: [PATCH v6 0/3] mm/zswap: shrink zswap_entry via a pool id
-Date: Sun, 06 Sep 2026 15:47:16 +0800
-Message-Id: <20260906-shrink_zswap_entry_v6-v6-0-ac4cf61565fb@gmail.com>
+Date: Sun, 06 Sep 2026 15:47:17 +0800
+Subject: [PATCH v6 1/3] mm/zswap: release retired pools via
+ queue_rcu_work() instead of synchronize_rcu()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIQanWoC/x3NQQ6CMBQE0KuQrqX5VKngynsYQpryga/SkhaKS
- Li7leWbZGY25tERenZLNuYwkCdrIuQpYbpXpsOUmmgmQEgoQaa+d2Re9dcvaqzRTG6tg0yxOTf
- ZRZcAWctid3TY0ufYfVTRPfnJuvW4Cfk/ZdoGdDy7FkUuCpFJ3tHEl/lJyqwzAsC9GxS9ubYDq
- /Z9/wEVj+WXqwAAAA==
-In-Reply-To: <cover.1788528216.git.wujianyue000@gmail.com>
-References: <cover.1788528216.git.wujianyue000@gmail.com>
+Message-Id: <20260906-shrink_zswap_entry_v6-v6-1-ac4cf61565fb@gmail.com>
+References: <20260906-shrink_zswap_entry_v6-v6-0-ac4cf61565fb@gmail.com>
+In-Reply-To: <20260906-shrink_zswap_entry_v6-v6-0-ac4cf61565fb@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
  Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Jianyue Wu <wujianyue000@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1788680840; l=4938;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1788680840; l=2137;
  i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
- bh=KbN3asJSK+TTbGnv/VcqthRURzav8YC1jBQtgcwSjJM=;
+ bh=WwjbCGbpKx3pybwGrUA8/VZT5w49m4g/k61kb6kkG0c=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
  H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QH0cx7afb7EwRu47MyXKggWSjW8ssjR2L1qEb8101sNb/2zGGDS2pVRPumkcDgn331N2SAc3boT
- +RAUTfHD8yAM=
+ QMYNV8pIDrz+M/tSuqNBmingl1zVngKIT7QYZIxy2wkQbA4+uO1BijhHckb3wo/z69o0S4pYyv9
+ Nlj2JS8UmdAg=
 X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
  fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
-X-Stat-Signature: yrdgaprfi5zyq796be5gdsfj1i9f3cae
+X-Stat-Signature: nfaom4d9ypjfd71x4cqpnyx5mureca44
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BBF89140004
+X-Rspamd-Queue-Id: 162C340002
 X-Rspam-User: 
-X-HE-Tag: 1788680846-824305
-X-HE-Meta: U2FsdGVkX194Iav+ztiT4x6IdiTi1Ulk8Gd5BonV8o5D5S0mk+jN1LrbRIO/E8ufopYwifj8RKsozPy9xoutgk5Eyer8aBkuo+XQlp+W7wbWuSuwXJPVDEK+lCeCrgOZr8By0E8C0QnLNtIOk2FYMqRSFKv23ipCxdIHxXcv0EiUnIqIA64X3xdLcI4jmx77UuV7TIFuLJTAc4sOZCv7y2Nck0lXFYBAtFlgDXj1PpHIA64OSsdBrpvMkbM322vW6BswT29EPyhAOuqPZNik8kI83kKbeVYiUuavtbMa0Jqm209lneEMQLV8rKyk4vPRvBbz/WILRUK+GBjnuY3OcLiZKXJqhLlyXcqZ8VyodNzUo4K2N1QxcmOxNAwhy7pSOg9qp9KV6bfKCSoYsMkDOlzRgyCjdeTbra4UrZToe1cLTcq0TfzKPJo1c0+M8WUQpp0roIPtzSoPfO+gnxF35ebeM/1NVO84CJzLJAksdCIqsNRZ4uYg1K2EL1ml9coYEDRWGQ7fut1BTIvaozx2tmlID3K9CdDbYYwec8QESSn/2cxu+/kt4PfandkYochoE0pFUUcPEyLbzN7ZU6jOo06MvB3WJ6/ypGArT4j+gNHRA+Ovlwig8GyPbfJGHz/tp0LwxJpEYiKpmJCIet8fTxAms9FrGMwYGtc6s+/8gfLyAR0pNf6loRkbdHxTtG2O1n/0yx3Vu1DhRAQcsB/rszriNZh0N9ABuZwStenRgy4jBvnmuKf1Uv9HnX/mnpAMyvYfjJE2dA2ins/Jw2CqergEbV0gYrbpLnx5TiBp0ad1YHyngdQDAGVTSPgHIpRYL1gTl5zjEncQH47aj+GH5SXHzY25onYRthhW5RrbRg+y5+PAyeskwRTfo+RIJ5KB7w7irrKHCco2FLSmpn9Z6RjYtHmu4fu8ejfFtD/Zq1ougw8GEqEuPY5guMbNFdGEk4Yg2NdHZi82cGQcOmH
- ndNhuHvI
- a1p578p/AbfUi1/dsFbyFODAc5oTrlFw8oCbJNcdmz42FidMPAboWYB7nmzkiHfNTQpWJrroycNJfFGziwPeWTw8ilpvGoeF4pW9OPrHu6KfJArmgySed49xU2/21sJHHfBV4cLbpnEz4H31mZP3FoIKHA0GhEr38Ylpr2R03hhk/0Ou/zn+eh3GJcQUkRUTwwYjSVNdbtMnjcwnddm7v3fY8bU5LsZ7jd5paE+zAefkB0+M6qL6KB+MqmP/xvL781iUXQexZgOZS30dZAGxjci7+fojt/IEcmaopFSbjE+xzWpn5ikb/QHVYLJ0evG0Y4Sere7haGpM5t+G7f78MgWQVkVubtkinPEZopas/ELJWQGqFdvVAxXky/nEELv4LX31t0/jUKbCZSk86bP7JVS0FAWNC7CI+LZJgPFID3rHlIVD7bgriXyAQEmNklUUE3VASPKw9bSALWIcuJUULc+T+skZSz63ZlGbJVku2FB4RGQbc0cSasURML8ef1hdFUiZrhIOnE5XlVcrGqysUeDCE0N2UaUsP/8Xth4AZ08dpBWBmzaoHVzmwP+OgrEbmOfbkiz1EtZiYzRmmndLcFCBSnQTEVDyyw2mkyMgOF3vhT/CuQlAau632W3AJ5zGunBCa6uKN1A2t0PQUu3z6pkKpLaPwqaFZSwp6
+X-HE-Tag: 1788680849-931647
+X-HE-Meta: U2FsdGVkX1/Dxu7aVKPPtFjL5f9NGxwfen5u2UfUDqtCdYVO2l+12uRH9X4ufqSlfM+zrDrINgMn//tyDwXSdu3X1+kj806Zfpoz3kcGOFv9cpImC8t94O/HaMvTVpGkuWt/OJuPnNeGbits8G+ElkP7ZfCDshXNbjy77Z0bLm6RrwFCM8XPCcOFb3mrnLbcBBBy0qtgTVXZBZ74dJ+e/sRSGGP83WHvvEubMeSRUdKJU6Geviu9r1+cHLr6ff1IXOo9MpQh3Md3P/ExyOOf4ccsCW9lGd/Jd8kLEL8X8OqyFSxGKbzI7NB6ih0gfjNNJoPvLbt6ShZNYGzb6UEnOpPDK460t6H07W9KupxRk422rdDyYCUXTf1JWfcPzOV1eEZe/dTmwkpxzVhzyi95z+vjdPFFtbFVBaDcFUctNsfr392S+bwfc4VT+hIi4RJGKFOWlj1g18g8x/gknx1JtLOfoB6hhe8pRswIYGV8lDRv2m661TQP8RmmaRsNi5UEztOnXCjjX4sD1R3ZsWfXtEKv9Nfq8eM7oQ4GfpbO6qlW8JG0i6rmHxLNNcdC68kBZv675L/SpBfO6nCJdHgUZb2aaz6GDI4hEej5BUnjZDzyE0M4cp+P9pI390j6T512huRzIxVD/XmNBJG/jtXJ24oCeEok6RysNavVQLtbYtEeEk/8I9V0CFh2Riz0Jspo10843E+cUXNhF25axoVDU5yItDIg4QxUDXOvvzBLWlOYCg2NM4O1iPjlFlRPdIG11s/T9Q1F9DhOh+A+oWcamyC27t8M+6xvWPPXlerqj5W+8PxMl+hQGivCP3okseEY3GRuGqX6oz+MkBTS2lnS376v1VnF/oNsJ+OUXMbXq8N4zdCMEeZq3BDtIz5zZHO7tfNd6mFxKkQL/FUA5ymD7UwYKhrJXo4vDo45yQLoMolykGtjXqzljnCb76z++31P4NLn84tqbNZQy3bj5ze
+ xt0dsfnu
+ uXboRqsu1HVinLX6oOBXRDjgdI39PJLu17eMB+Y+++V/AYZP/k7zPvMOiVzEn3aWKq8zd1BdTja4dAXhF3bTintYkAT5RbIGOiYH95w9YjPxrKcDkLbVRp0pk6WpLsv2njTFAPLpiCT7mI2cc44zJCgZiDtHkk+QwRV0GjJmfCoyys23SySYb+5UxP3lQdFS808B4kadwSgQnUM16t7zdIYpxCykBggETgB8TDvjc0wc0yGSlQ44+kCTyLwrE9tNK7lgY51H1NooUqA2ZUp/A2eK1M+qgr0MJx5fzJRazuSG29xFRhJRyxVDKIZawEW763T/RSaxim2d2fEPaeEnSYYCc54Kbzo87muvTejhCDhECxKiteR0uGeUXFQ/NqYiRNa1wuCyktlrO6+AC3iri5vhZfaThz6sapC+ADb29+WM0In8VNgg//YhByv/Pvh+yAudXkkcI7ipXzYUUuO48NzTez/VZIIwDTUKzNVnt3Z10ITqHRrcOSOz/GJeoY2icYWpVg78AvPD/4FQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,110 +133,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every stored page has a struct zswap_entry, so its size is pure per-page
-overhead.  On 64-bit it is currently 56 bytes, of which 8 bytes are a
-pointer to the owning zswap_pool.
+When a pool's last reference is dropped, __zswap_pool_empty() removes it
+from the pool list and schedules __zswap_pool_release(), which calls
+synchronize_rcu() to wait for readers before tearing the pool down.
 
-Only a handful of pools are ever live: a new pool is created only when
-the compressor is (re)set, and pools are reused across compressor
-switches.  A list cannot look a pool up by id.  An allocating xarray
-can, which lets each zswap_entry store a u8 instead of a pointer.
+synchronize_rcu() is a synchronous, potentially long wait.  Replace it
+with queue_rcu_work(): __zswap_pool_empty() hands the pool to
+queue_rcu_work(), which waits for a grace period asynchronously and then
+runs __zswap_pool_release() from a worker for the sleepable teardown
+(__zswap_pool_empty() can run in atomic context and must not block).
+The grace-period guarantee is unchanged; the retirement path just no
+longer blocks on it.
 
-This series:
-
-  1. Releases retired pools with queue_rcu_work() instead of a worker
-     calling synchronize_rcu(), so the release worker no longer blocks
-     on an RCU grace period.
-  2. Replaces the zswap_pools list with an allocating xarray
-     (XA_FLAGS_ALLOC1 | XA_FLAGS_LOCK_BH) and a separate RCU-protected
-     current-pool pointer, giving each pool a stable small id.  Ids
-     start at 1.  The reserved id 0 is never allocated, so looking it
-     up resolves to NULL.  The table grows as needed up to 255 live
-     pools (u8 pool_idx), not a fixed slot array.
-  3. Stores that u8 pool id in each zswap_entry instead of the pool
-     pointer.  The u8 fits in padding after the bool referenced field.
-
-On 64-bit that shrinks the entry from 56 to 48 bytes, which fits 73 to
-85 objects in a 4K slab (~2MiB of metadata saved per 1GiB of data held
-in zswap).
-
-The 255-id cap counts every pool still in the xarray.  Switching
-compressor kills the old pool, but that pool stays in the table until
-its last entry drops the pool's ref, so a draining pool still occupies
-an id.  The id is reused only after xa_erase.  Switching back to a
-compressor whose pool is still in the table resurrects it instead of
-allocating a new id.  If every id is occupied, creating a pool for
-another compressor fails and the switch is rejected.
-
-Pool table locking: xa_for_each() walks and the current-pool pointer
-use an explicit rcu_read_lock(), because xa_for_each()'s own RCU does
-not span the loop body.  xa_load() takes RCU around the lookup itself,
-so zswap_entry_pool() needs no extra rcu_read_lock().  The returned
-pool stays valid because a live entry pins it via percpu_ref, so the
-id cannot be reused under it.  xa_lock is taken only in xa_alloc_bh()
-and xa_erase_bh().
-
-Benchmark (x86_64, compressor=lzo, MADV_PAGEOUT store + fault-in load):
-
-  - e2e store+load median latency: no measurable regression vs baseline
-    at matched stored_delta
-
-Each store, free, and decompress looks up the pool with xa_load()
-instead of following a pointer.  With only a handful of live pools the
-xarray walk is short.
-
-Testing
-=======
-
-- Boot with DEBUG_ATOMIC_SLEEP + lockdep/PROVE_RCU + KASAN:
-  zswap store/load, shrinker writeback, and compressor switch
-  (retire, then switch back to resurrect) pass
-
-This series is based on akpm/mm-unstable as of 2026-09-05
-(d118502628f8).
-
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry@kernel.org>
-To: Nhat Pham <nphamcs@gmail.com>
-To: Chengming Zhou <chengming.zhou@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-
-Changes since v5:
-  - Use xa_erase_bh() and move queue_rcu_work() out of xa_lock() in
-    __zswap_pool_empty().
-  - Drop the redundant rcu_read_lock() around zswap_entry_pool(). xa_load()
-    already takes RCU and a live entry pins its pool via percpu_ref.
-  - Replace xa_lock() protected pool walks with RCU. xa_lock() is now only for
-    xa_alloc_bh() and xa_erase_bh().
-  - Drop zswap_pool_current(), it only read the current pool under xa_lock(),
-    which this path no longer takes.
-  - Add a comment in zswap_total_pages() on why the outer rcu_read_lock()
-    remains (xa_for_each()'s RCU does not span the loop body).
-  - Rebase onto akpm/mm-unstable d118502628f8.
-
-Link: https://lore.kernel.org/all/cover.1788528216.git.wujianyue000@gmail.com/
-Link: https://lore.kernel.org/all/20260830114731.8322-1-wujianyue000@gmail.com/
-Link: https://lore.kernel.org/all/20260815-shrink_zswap_entry_0815_v2-v3-3-0171bd86a667@gmail.com/
-Link: https://lore.kernel.org/all/20260731-shrink_zswap_entry_v2-0-0-v2-0-e72083aa8734@gmail.com/
-Link: https://lore.kernel.org/all/20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com/
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 ---
-Jianyue Wu (3):
-      mm/zswap: release retired pools via queue_rcu_work() instead of synchronize_rcu()
-      mm/zswap: replace the zswap_pools list with an allocating xarray
-      mm/zswap: reference the pool by id to shrink struct zswap_entry
+ mm/zswap.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
- mm/zswap.c | 171 ++++++++++++++++++++++++++++++++++++-------------------------
- 1 file changed, 101 insertions(+), 70 deletions(-)
----
-base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
-change-id: 20260906-shrink_zswap_entry_v6-ed3d14c9001f
+diff --git a/mm/zswap.c b/mm/zswap.c
+index f3ae3c81e48e..e456e5080531 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -155,7 +155,7 @@ struct zswap_pool {
+ 	struct crypto_acomp_ctx __percpu *acomp_ctx;
+ 	struct percpu_ref ref;
+ 	struct list_head list;
+-	struct work_struct release_work;
++	struct rcu_work release_rwork;
+ 	struct hlist_node node;
+ 	char tfm_name[CRYPTO_MAX_ALG_NAME];
+ };
+@@ -379,10 +379,8 @@ static void zswap_pool_destroy(struct zswap_pool *pool)
+ 
+ static void __zswap_pool_release(struct work_struct *work)
+ {
+-	struct zswap_pool *pool = container_of(work, typeof(*pool),
+-						release_work);
+-
+-	synchronize_rcu();
++	struct zswap_pool *pool = container_of(to_rcu_work(work),
++					       typeof(*pool), release_rwork);
+ 
+ 	/* nobody should have been able to get a ref... */
+ 	WARN_ON(!percpu_ref_is_zero(&pool->ref));
+@@ -406,8 +404,8 @@ static void __zswap_pool_empty(struct percpu_ref *ref)
+ 
+ 	list_del_rcu(&pool->list);
+ 
+-	INIT_WORK(&pool->release_work, __zswap_pool_release);
+-	schedule_work(&pool->release_work);
++	INIT_RCU_WORK(&pool->release_rwork, __zswap_pool_release);
++	queue_rcu_work(system_percpu_wq, &pool->release_rwork);
+ 
+ 	spin_unlock_bh(&zswap_pools_lock);
+ }
 
-Best regards,
 -- 
-Jianyue Wu <wujianyue000@gmail.com>
+2.43.0
 
 
