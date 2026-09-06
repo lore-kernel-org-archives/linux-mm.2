@@ -4,112 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FCEC79F8C
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 17:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E46C79F8C
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 17:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64F126B0088; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
+	id 3152E6B008C; Sun,  6 Sep 2026 13:50:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 600406B008A; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
+	id 30FC56B008A; Sun,  6 Sep 2026 13:50:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F1666B008C; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
+	id 13C696B0092; Sun,  6 Sep 2026 13:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2120F6B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 936571205A2
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:15:29 +0000 (UTC)
-X-FDA: 85183988778.04.1D6D963
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CAFA5100006
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:15:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCtv7dZj;
-	spf=pass (imf05.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E3DC16B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 13:50:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 785C8A0569
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:50:20 +0000 (UTC)
+X-FDA: 85184076600.15.65BB6CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E5C67100005
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:50:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kckwBC9L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788714927;
+	s=arc-20220608; t=1788717018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
-	b=ruOkGh3ZILhEdT34/Q7c41PcbXDhuS2nWX6aTqm+/dcdVggrE4a27ZyK7/SMZDJbr+n2Ga
-	owZGDQ1sIgdr1qJpeF9KZlp0rWeIvx+/gHsF2BI2h+TQTBhIq8udQG+J2kdodDgmp/TW/L
-	szKvI13NvgMF6hOSyBVvjTbcpB5GEag=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788714927;
-	b=7fHFMx1unO7wenCD5fefD0SBpBrVVy6ppArnZTdURvdBUk/YHn80D9NvlVV7li3v9e86Ja
-	znRvml4GJpUWEhhmJBDJ/2xUwiJ0fE/5H0Lt/eaXhVT44DaLKaLxFPbwa2pZaGU5G/WPCX
-	1zJu+36AIlrc/nVSGXrDWbxU/YmZUmw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YFqbfbUKFKtPu4Tcg/+wjsywNqHMCK5UIyCPc9N/dhM=;
+	b=wAS/TQD3L1oBNCqpSRCCj8scPosFjuHTunOQBILSgdNn6KPhWPv7U0KyGVa+E+QcjsWXbU
+	v2uxYqxg80BG0qGLCl+oG0W2tXhU0vhmfc4RNc1xBPZ5gWDPwqrNHqVzmbaKPq9qBe/kzW
+	AMCuksuMBqj+U5gZb9t2mn21OcYFzE0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCtv7dZj;
-	spf=pass (imf05.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48436216a98so1730408f8f.0
-        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 10:15:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788714926; x=1789319726; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
-        b=GCtv7dZjlZNZEqqYmCljpVlYOPTtTByjKHjlPcISyc6JlMMk5XZgqi53ELpRENUiM2
-         g8vcSk2Jj65MTHSuJ2kBntdChYU6l2eSMQjCDXbT9uFayvUR1FAeN2ZFK362bNdGfnjg
-         kIM6srxWsZ79prlv+FifvPpA5zjnqMp/dGZMceHgR9zfhmoZ9Rcw94zlTBTNoZYlLLAa
-         gv4yoP58dN0FcBWhEtACocLAzn9TflEVSPUwU73PMvh8iE+Ntm9y+0l+89Z69fpc+cRM
-         wrwPMySvGvz5z1ZA+nqE3d3m7l6I9iOajR9VIk6nPQ5E/o68ip3BXtqX801hy3YU058E
-         OGJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788714926; x=1789319726;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
-        b=rtCiCKteq0aYTwhrH7HyAiakg+m5IMwm+DU6l27rZVy6Kcby3Nm1msqzBXmVpb/Fhj
-         kkHrxNKsCv2ZYXHM79aLVwR9aypAwShfFmrD9IbA4wThCoJ1I6O1gErUIudHb2OVzRFC
-         Wc8teD6+HBjLFjBmFDeG7wFh+pLxqIYUI+LEEntz1fggZ5Girgs6+/vVOcaVwRohy+lT
-         u5NBcqoW21MmFq5XUJpmzJbY3YE+TDKbFJ4wvV2vpQiqR1sSzIq26B7Sw2jdWHVOi1cj
-         uEbkJLAcFl7rpwZ+X3bElGR+xY12+XOjOyj8pE+GJLmGwvTC2/1apgOptRnwRtUflclQ
-         kbAQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJTPJZlPaZq7wA8M9YgI8N/bPDu3oNxddF+V91daEKEKbC7A6ZiarolDxCbzru5i7jNh2KOxxrfQ==@kvack.org
-X-Gm-Message-State: AFuF++mvBUYLSKtkBLsgyrrHEHm7TgqIBGRUciKMi1ccYTj0+VD10vOq
-	eKSE9gDgl3jL8bkx2vwD85XuJF2yGeDLZWV72L/4HngSbbHmzX7t813d
-X-Gm-Gg: AYBFou2LHIz5BMaD/k3EZwnNsyjT5T7OyGc6llBrPyMAyGgJfY9C6L6dxAiPiF8R2ZW
-	CgW4J/QH4rinPL7d4BBS93Kydm+uCZpPlazss9gcUYaIgo03OraxPdqLxKHrr+tTZ6vf8/wGOM6
-	BHxP57hvERG7KV6PLczJl6IiVN10V5mMKxDAWRhSmh1+RCAxRNOrm/J5cfgs9V7eOwn5CCrbjRu
-	RuGQyLw5YZPK+bY3L+/6xHMTT22R0CU9RtMKF4K/YkUVhy5tO80+q5BfIgMH7sPcwrQ2Ay3FcyW
-	phgZ1NNQjpLqXJdl7Ep7sGYGcdp27WaFTsF2R9lr53DZytx1G1p3LwMgSFFEL3+ZdhhlAKe2z9N
-	2EiwZ2ZPooUZ49XPKaLQoyHr5K0RdfKCL27XhRLJ9l0Xr4iXCWWoekfBJckD7V6qk8oP9kku+Wi
-	1rDB65XNphxRKt0+L6hNOQnulNj4D0oR1Mu/9k+Nt6EyHp8JO8ja3H6lPR5CLwhJdXSRBfTCOGP
-	Cnk6AV8MKl5RSINOBqKsfmhGapOuTcFB6b3eQrca54A6OWRkGvOFkaVWkSJJve8VQQFg56CAdJk
-	lxPnxBCKWgaTydoBD00MY+Nazf+A/1Ha4j41sCvYTTrRVRe/KI+No9mGFXAVLuPXuazex6JP
-X-Received: by 2002:a05:6000:41db:b0:485:8c17:9768 with SMTP id ffacd0b85a97d-4858c179982mr14804427f8f.42.1788714926191;
-        Sun, 06 Sep 2026 10:15:26 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-9d84-5101-9c80-d25b-14b6-410c.310.pool.telefonica.de. [2a02:3100:9d84:5101:9c80:d25b:14b6:410c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858ab73c2bsm21124742f8f.22.2026.09.06.10.15.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 06 Sep 2026 10:15:25 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kckwBC9L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788717018;
+	b=vwsNYLfcOi33qE1uq8ntbhpximfhkV82WbuiNfegPfiFUtssCVKLUS2ofviNqAzqbZEkb3
+	mntY3ZuKKF/G6uxH1Nv7dPDTEOPIXBEGi74YIp11iqxzOVq4JKsBwATPar3Gw3lbROUF1g
+	fgolRGxTP4uh8CmH1Uv77Ej4ifjfRgo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C38D60A6F
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:50:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB631F00A3D;
+	Sun,  6 Sep 2026 17:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788717017;
+	bh=YFqbfbUKFKtPu4Tcg/+wjsywNqHMCK5UIyCPc9N/dhM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kckwBC9LDnSc9g5Qt9hX2Jg8RpnrPDawioOb7Ip3VrnszHtGfRL56TA9k5YmWynMS
+	 WxHegJsm37AtALSqEafJvf+L1neyrMMv2zeh+CUJITuQV1XWhdGKXhKWbR+MbLsEbH
+	 IT+pn7A5JQ4emDsCiEs7llAxFOdZrHi0bDjKAAM4lsqa5GIvkCRTWiGMmwaEn8icM1
+	 Gf/Yob5fiQsRfeNv0ihDGTW5ODWLVILlLFTETmCw4RdO9wYdY2xzfuKfdyTemVuW+6
+	 RJ1CLLIpqCXxiOF8OYN1FnrOnMdk9k2EUSI50cpaqfC6ffixedklo+MqfvW9wU1zyT
+	 IEqu+nb23XWgA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH] mm/secretmem: Fix the enable parameter description
-Date: Sun,  6 Sep 2026 19:15:23 +0200
-Message-Id: <20260906171523.3009-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: [RFC PATCH 1/5] mm/damon/api: introduce DAMON_FILTER_TYPE_PGIDLE_SET
+Date: Sun,  6 Sep 2026 10:50:03 -0700
+Message-ID: <20260906175009.93471-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260906175009.93471-1-sj@kernel.org>
+References: <20260906175009.93471-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: p6a61k9skfff9ambw4q8t6z6ergpbha9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E5C67100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CAFA5100006
-X-Stat-Signature: yyhe67xzp8gxhxitx6tfchobnmnt36rz
-X-HE-Tag: 1788714927-853904
-X-HE-Meta: U2FsdGVkX18oqV+adfDh1xP8ZoLHraI2lXE4CXuQ3Y3o6qZ6HP7arXdK7+nNDAKT8e0vubppsP/e2CDqANWC+t3MstRZhuuBPFbX/Gx490T2B+5U+YlxQqWDojzNG0o3iYp59U/RXSBWKmdrvdxIfQqfyLNoKArrArpPrI3AEx7VSOgGvMGffQbhsmauRt/K/frjhEvuGNs6wT/WTwZUX0vrMvnargSibmiMpqZw0fwlQZrsc2KhPZwo2hBdGNhpMEgVqjuK3sq7OkqlDhIf1yri5TAIwzfcgKZSCeaaZZNpSkQ6cgR7JCXRxn+/zm5oMH8n5jjMJcES1jLhdPVkHADzMKdQXoQnxWUcXihRCPVg4C1WZNGOIIYQFlajqH44A72ofU20KfvBlTEQZwJf0/QQG4Kc8WhFsN+limv4qCgWprLHRCTSl1gAl/9CoMFbFqc2AF3R9GI9hsljJvO2FuSqsymLG2KoEAe7ErOMTDPSYQGDkn+ucJDgyidfp4J6S0Kt57p4bccFWVOeP0qPeMV0iowXr5xKullKY9VfVEmztNPwMnr+etG1q/uVX+utPiWlU2GSQaKywnkqhVSqtZrfassEfFfLUZNM/6gQzIiECjmlPDQNQp9VNEGhKlfmnikTBsqeqb52gVIsKqEPcpqnn+0ZGGQDcnLc7m/uLhtF4+ZWQvozmtDJ7AoalZGGw/ze1KlRvEsoCsq6TIJumZcZilpWK22yaLICTps/Ps+Botp6hbVoZZNgeD/GfDOD3U0h9bQkpNtwHeanZzc0gt71bgnseGx2uquht2OQw4WKpUWihTUNGV+698Rjx5lY6RjkXb4PP1liamoGoRqpyHH1k6rvqgUED5Rvy6H1IRa+KVSq8qe26yDjtCZ66pytksFMFskrKmlg6HfKLOyIsfk3QM0mKLU0HyMbQxQJaQ9lTNd6ps+NIRwVel9Ixaat1u/0QrH6eCRKZR3LXsz
- IIvLers3
- KAtDObfrX66VWdE7ddCLD4uGKYVncMU4lof29Q+UH3kkO6tDjOtjCrOhD+/lyPshfo+E+R19k1RZlpuFoPR5/SYazxZ6pprSbblI/zGKupG3W1HMqbnjpnJjqnoa0+7vWcac7lBV8Gq5HB+mL0AoCUmq/9Za0bdgA5nc/A0Z0cAzh5sbTsEzy0HKuk91H8AQUNYOx4oUVuGo9lEIsU8dxPEoelV/tsvS06S32fOzeF8D66IRHIpppzS8rN2omD5rGtQ9Kbjjo1t5lkKB0vK73El4avFg3nl7v4IxHBq4LF3pJrDB0tvzyAEU87U6A2c5eMJBWW0xnzeCjS3hrSB143ngSu9uQ6pW5ohZ0Dis4dFX9wHOY9Wxgpg9KrblDvIe9/y3QfX22FV94yN1kAbflpfnHO4TCX8uKbKoX
+X-HE-Tag: 1788717018-86299
+X-HE-Meta: U2FsdGVkX1+Pb37z/PS597Ft/L9E0M+znoReH1VnN+6gCk/V/mc+8xlTp1jv/XEG//9a9JZ/syJUfUf52b6IUW2o0+di1Zr3hcdu9qZy1wThfo9kxDZXOqNMJZzO+QOHJI7ytSQxJDYm4T2WzPFzSzGKWviWW2hy5j4mvI3Ymc3PP8cFlUYnoADncYhes2GrSkDyhzSa9yNYbPeFN0f237v18dYM87enfoYhj6ZUbaLjGKeQqG4QFZsSAvvLJaKVkGWBfShEcUfbrV5bh+PUxhN9T68jOVzafNys7hB/O+b5JAShM6rPPq7wFfJKiReyJhzUbQc42bMYBdHLcUhcwhoS36JwFfkP7CflAEGnfuGSTMckD70xfg9jgewD6gjAffa/4q4eZqfWID2UDOcZSXdw3TWa+vUYI/VG0LNJzn8wGwDcwc1MQWAP51q1j1kjt8M0PX9xyrh14YyNZEyZepKnb8lbQIvVd6GJZrXEgfGgm1oGExzNJvrwnSrBTHyn1EHN/QSLHljm1XOBqeg9RkOyadTB7/TXDbUAgNdd6fDb+1s/IcFs3x3TtjmUfSdh8+AWX10iGMDY39LVZvXZWWYwVVYqywj1EjeIN6DIMvbhg53AD7WMcxGFbk+hUjxbiZZH7PuAYEd4qFqQSlGCI/5Riv7HutjZZ0YF2ZL5Geag15PAk1yc/EaCd68XOSbyBPzFE9/GzL7XTn0TdUT/sty5qwc9GsIsvI3dkNmVYihpGFcan8EMDCt/S0QyLcbENieqCR6+Fj94BA8y4jIw6nXQXFO+nD4SgnT4Fqye1bf7HLuSpYjQ6r/hrY5N3Z6OSdhn1Pjr77Hv0bPAbks1ypte+C6MDqOJ7deRIGMIoW3Zyg9DC9h4QQRISGKSy2rzzOrFy0ZTR7YySGTovJeuAM1ylZF0/Bk69hvhub2gGaI+hXskcgWdHyVozhLTcBNhlrSscr231ENmntDm4OO
+ 9jPPU7wg
+ ZUV+59UWiAmFIEittbDibuA2yxYNgy8TuQnQE2z6FjD00gQ2xlrxKQ4vtb3Uw+WwkSwg9f7YnVAt5yQp2XE460DRgUBm7dh0duIG7xsQrDVydprNSyt9AvN0QrTRe7WDdmRgbNDpm5tVQzod9rUr4Mrf64IKcDkWQIdvLqPB0lgCUCHN9cqCb2dSlffrx7e+ypgoCdV0RjOsRplGJe5+GQxzxEIEBe/5yhdboGIBKgNpID1xJ8i0uTf4KCW4WuHxZTEznx3yxcwHN1imPsTvAzXQLaVDTp0tF7tw8oFVmsPL1B4DvkH6aZ4PhdstV6PDfcKDjaLHuKuF7IZT9Lyklb8B2K1U6xPRg086Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,35 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The module parameter is enable, but its MODULE_PARM_DESC() names the
-variable behind it, secretmem_enable, so modinfo describes a parameter
-that does not exist and shows no description for the real one.
+DAMON_FILTER_TYPE_PGIDLE_UNSET matches only memory that was able to
+confirm if it is marked as idle.  If the memory cannot be marked as
+idle, it simply doesn't match.  Hence, finding memory that was marked as
+idle with only DAMON_FILTER_TYPE_PGIDLE_UNSET is impossible.  Introduce
+a new filter for the purpose, DAMON_FILTER_TYPE_PGIDLE_SET.
 
-Use the parameter name in the description.
-
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/secretmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/damon.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 384f5cfc457f..4e32bf55a599 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -39,7 +39,7 @@
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 871d26adf6ae5..16800b3dc379b 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -774,11 +774,13 @@ struct damon_prep {
+  * @DAMON_FILTER_TYPE_ANON:		Anonymous pages.
+  * @DAMON_FILTER_TYPE_MEMCG:		Specific memcg's pages.
+  * @DAMON_FILTER_TYPE_PGIDLE_UNSET:	Pgidle is unset.
++ * @DAMON_FILTER_TYPE_PGIDLE_SET:	Pgidle is set.
+  */
+ enum damon_filter_type {
+ 	DAMON_FILTER_TYPE_ANON,
+ 	DAMON_FILTER_TYPE_MEMCG,
+ 	DAMON_FILTER_TYPE_PGIDLE_UNSET,
++	DAMON_FILTER_TYPE_PGIDLE_SET,
+ };
  
- static bool secretmem_enable __ro_after_init = 1;
- module_param_named(enable, secretmem_enable, bool, 0400);
--MODULE_PARM_DESC(secretmem_enable,
-+MODULE_PARM_DESC(enable,
- 		 "Enable secretmem and memfd_secret(2) system call");
- 
- static atomic_t secretmem_users;
-
-base-commit: 986c24e0fe44f844b44d365b71ce831947f50298
+ /**
 -- 
-2.53.0
-
+2.47.3
 
