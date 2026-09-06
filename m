@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD83C79F85
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 00:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D2FC79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 00:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18A686B00A9; Sat,  5 Sep 2026 20:31:54 -0400 (EDT)
+	id 2EB2B6B00B1; Sat,  5 Sep 2026 20:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13B906B00AA; Sat,  5 Sep 2026 20:31:54 -0400 (EDT)
+	id 2C2EC6B00B2; Sat,  5 Sep 2026 20:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 050E86B00BA; Sat,  5 Sep 2026 20:31:53 -0400 (EDT)
+	id 200676B00BB; Sat,  5 Sep 2026 20:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFA966B00A9
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:31:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6EC738042C
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:31:53 +0000 (UTC)
-X-FDA: 85181459706.10.8C53775
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0D2E71C0003
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:31:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=AcJNDRPl;
-	spf=pass (imf21.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788654711;
-	b=PF86CI06XQZ3P49NbvotUK1+9WRvBf7Gd6TqRC+Ondd9TnQxIpnWp8eosh/SDFMpDhVuPt
-	UJmad2ktqMQcIn9NVacHEY/vsEE8pWZZnOkELGH/QDJSeHAXHDSQYaY2p1IZrSJrmrzF/u
-	UbvYCCOXtlpxhfG1U77WS0AsreEAnCI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=AcJNDRPl;
-	spf=pass (imf21.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id F2CC46B00B1
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 20:32:55 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02F97140406
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:32:53 +0000 (UTC)
+X-FDA: 85181462268.28.5115566
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4D92F100002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 00:32:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WgSsm7Ob;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788654711;
+	s=arc-20220608; t=1788654772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4CwkqFElh4pjGctDggceZpagl1zjwDqBMqU8Kvoo5mE=;
-	b=FH7uOmRMkKNbJO0xJhUOZoUDn3Eo+9VeSJpe5kq37+j0RdkvkR+tn9HdPBfwJ5HEh/ZGw9
-	/eLHOL3v5hKE/VlGjVgW0JFdv7Ugp/1t6f8xtkWcuqVuSQ7SgCo64QT23+Nyb8qaJkOug9
-	wmeyus5DyWHAyDErEVMlVRvnVjmkAT8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=4CwkqFElh4pjGctDggceZpagl1zjwDqBMqU8Kvoo5mE=;
-	b=AcJNDRPlkkjmT2yL8nlyy1lbUxXLVrTekW/BqaM/I/Anz8A1nX0LafSztPkBxi
-	IhovyoGRLWYPcw91g8AZN5/iPybDG+eI01f17BdYwh+IKPx6eNEWLElCmdkDAbkf
-	a0aWk4EguaOt2XMLmdDg6bfN4K/mq6w/q0OIRjIwiOHoc=
-Message-ID: <b2a66985-ede1-433b-aff0-4d2acc5c027b@163.com>
-Date: Sun, 6 Sep 2026 08:31:32 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/zswap: enable static key after runtime pool
- recovery
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-References: <20260905125101.2970456-1-xialonglong2025@163.com>
- <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
-From: Longlong Xia <xialonglong2025@163.com>
-In-Reply-To: <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn3xZitJxqXko6Aw--.557S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KryDKryxtF1fGFW7Zw47Arb_yoW8Cry7pF
-	W0ga93Kr48tF1Iyr4xAF4IqF1Yy393Gry8tF1rG3yIywn8Crn5trWxKF40gay5CFn5A39I
-	vrZrA347Jr1Yk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UO2-5UUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9wUIAWqctGU0LAAA3E
+	bh=JzguznGN4wZaJ4BaohUL/D8OCMllkrYSCH0UgmH3tU0=;
+	b=jYsqaE4lquobtdQYHkahgytQ/df+jKpqCUSVnQXOiMBIQqlGPVTiqAmiypQRZKi1rUr5Ep
+	QA5Wm+idhk5tQW0GTDRSPvsO7zAXmBo2k8pgaK+Mu5kWovRj1KGDYWXp1BFZ+h3hxeyEWJ
+	uYszhycBXulO8RO/mv0RqDxFyITy1PM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WgSsm7Ob;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788654772;
+	b=t2d48U66c2unAB6WZwQZ9Lhe1uCX61oibBwe4zDpclHOoqbXdZafv/CGfSFymgU1cqOE32
+	tPAIuvOuwtgP/0gNdA2POk+YmkEKLmgaIR1PjrbkdZOO1pDRqFsx6pu28jqbqsiJTZlT0D
+	QoLx10nMm7GwN0V5pnNi61a4851PqYU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1279F60AB7;
+	Sun,  6 Sep 2026 00:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF841F00A3D;
+	Sun,  6 Sep 2026 00:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788654770;
+	bh=JzguznGN4wZaJ4BaohUL/D8OCMllkrYSCH0UgmH3tU0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WgSsm7ObXrMrJfIn8wocZvVmk1viVsJ8i/DGwFzwXHn7BRCWaJrz5waexMh61wfEZ
+	 wOeNPp7eJW0KXAVEi1Nn5VEBdxXIymbBCxZnqcn26qOkA5ue3hfCB14lzppG13QxeZ
+	 /MOIRI15EcghSoEiYeyN7l8hDKigwnfEu/K10i1c=
+Date: Sat, 5 Sep 2026 17:32:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
+ <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet
+ <corbet@lwn.net>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Leon Romanovsky
+ <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Mark Brown
+ <broonie@kernel.org>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 0/6] selftests/mm: separate GUP microbenchmarking
+ from functional testing
+Message-Id: <20260905173249.00f41b2a88abb0aefd217e94@linux-foundation.org>
+In-Reply-To: <20260904123631.198697-1-sarthak.sharma@arm.com>
+References: <20260904123631.198697-1-sarthak.sharma@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: it7k6b7tbnkdx8wamdmchdookzr5mk4t
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4D92F100002
 X-Rspam-User: 
-X-Stat-Signature: jduzwc3mif8jk388dksc1ia37fei5cdx
-X-Rspamd-Queue-Id: 0D2E71C0003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788654709-453040
-X-HE-Meta: U2FsdGVkX1/sJuEdjE9mHNvUjd7qCcyiAbLmT1/muhPOpNe5SzBx3sFXxBvxz06rtqF+QUgzuPuQkABLITdt87YYE1a2bns/80ZSx2/1aenhXQUueIEPqcFL702Tvv3YXbUlZTHNG+rOxMQbFfGbv7zdWMm0py5w5DdlYdHjgbNHWGFO4jbVxMGzKiQnubeVtjbVMWM//3zwrrqQBVHw2keS1WIYyNmn7TdC9vf2WCEGpnLZILjd51sUIsOV681xyHsqcWf5ZHbe6Xmq5K8KnJt+MoGKTskQj2P0sU0koSSXo5KMwLzI3amXBMwDcSS+LLSb4QdrXUtToex+2yEvvCO4BpmuRdzs5I0p0caVs//Wpi1nlwwWUGZ4LqKDgr6iw10OyvrXzwQpMJVgOJRBgAYcrFgmwIsQhm4n9btqPIaGAwa2+gyZHG/ZRt9B5Qe0DQHjmmgbWD9BU53EGuKFIxlPFsrEyBK62vnfnaCbW/uZiWiJcZCFkxQ2qgpLSXoAv7QkKdZHCAd4etVS6mkWr/bMppXotuoBqt3Lfks1/K8MkUNcwTr7hAK5ZLXS1q0x4nJ4/wH5/ltKCcVquadf/gXQSviDzgzw/AhHNz8YVLSZlzkROpLO6J+GdC7zr3bAkl6R+O63VWRMzWXWUodNPKYRrygMKbQqt9zBeu2jBz4+BfQq1yS9CAoQXbIr0HuY0wgcmJkw4UmHnP6g2qhL4x0vRExpA4RPdVgpueyEuvukcrrAFLWppnbELuETSCoUZfS/COdc4mHShyY4txOI5a8IrwdBzM6DpDgCRDZNnfkI2/Tk0f3J9n//+2JG0fuiiDsJXEhqJH0GlhDceYDEzEpxosnEGgQdX/RCsIkbRgLLk+1Ul1wRqeOBNYNSKgBpeoR7DJrBzNUnjNZvaELadHmINIYTZY8pZUUMDSbqZAUaKJZIIVudieVQ8Nx5oMldPaRg6GvbCc9S/o1tQQ0
- FJy2bpE4
- xutwUvrakAKad0FGiklwGp6fBEDCW1r/KApfz1i8EUC7WbhYTZ7da7arR5X1AOYWvjjPghdci7zPoEIWqHP9Es+0VgzJBHgWbOjolt7F4KIucGyCPuIj7kXrS9/Y2uODiisgDDpnShMhFzItwJgoiW3NK5fqEqbLmpGOIfycnOo1mmKB5FkMc8DKWO7auql8KTGxBp9TTIxTCr055dFQJNdhNtWm+gtoQGLmFXoVx7Tcik8GU6EmmagGhbn4M8aqF2PhBaENAut2yPv41hUHh0TqE6yCw6aJJH3FoL8Cz1iG0GT3Ps+SQORXTjwfEQNMurivNmcnoHbaFvNAdreb0XxWDYg==
+X-HE-Tag: 1788654772-452218
+X-HE-Meta: U2FsdGVkX1/hI3TyUmdvKzHw0O5L1w6nXb8jLusEAn20oobbYqveN/qyZRqX2lAUaVbnpBJvzkXeqg53cfLwpne2JzGn6zAWPBUsqJv4chgaEipyy+TZSxQaVDqa80G94/8ihKtkFPpIMe3Bw4s0epHJ/Il0o1rBTzMiYVUvfYr2JxRfyNGzG/GeWWCJAZi14teU3RC66+d8LE0GB1FaPB8nmShmkz7chFvUXl2SUzobyeaHnigbDsyp8flGFPaN0GjftZThvNuL1WI52lBwyNxby2KGdwmwLJOAitVoL8mLM+2W0U3fi73InQxcfcg1WY/woaEU25GnqcG0Qi00F1EzxaeFRuc0cZqK1cK41kE/OV9bAALvhNv3pCKLLi9vxZUKK9fImhO1GiFlcck5VlYLlPDDDnV334r4qfnSPzjC2088S8zANXRmj6ooeDci1ssmygYqR2lziYLx1N8qG774bfAZGPTbi9l+W1waiB2aELZ0SQDecJyim5rTsnEkx+EVJmn+JuDUL3cfTAPZijtW0gWznKbOt22PBJRpcBVDxbf6aemo70weeyXwoEEfH0O+1BIMOsV9y48MvdOr3RzirIrGojPlXzjRjD9ezuUlb3z5NF4PAcrIj6ZdscweqYWeao2KOiUZbrER6xAQ6jk0SXWWID2ecRFKRjGuv5tsM9I0+cOGai3/ZO1JTIp8GfSsvEqgtMFaqCMSynaTh6gikfOkYOs36GkjjJr7GIjqUQARYcH9rgo6z+G8quKUyfvGdFn024iW0UXaAiPjeToW2KeqIR1UDGuoFGwBxCbaOn1PK5V4lR4Z/lBaxRtcaq8bKh7C9/vQ6340/ICLtKYBTYx93KV7vuv725yObsemYtia6+f5YrH+IvUuG1l6ZsbonxRy9Ll2jVxSlCNIUy0uRIjlFXZAKsIjwc5He+cCeba/vrAcQT+GO4xmoX1P3G5GNx01Bsu9BQwjNic
+ KsmQuMeA
+ W1JTGtlIFTw0+TdtQTDDT4t4A2yrXBjcyrUuiOjxmtqJ/tkBOy4LzYGAbQYLvSw9jbzoSAMY3snUmrsyI8hAt22oHatau1gDr0fBXPM9pzZsMpg5rorkMuFatYuvmyF730TJ+KCm+B6YChV1ujfKdBnxpDVs7JUYZQHe1efLwEX1my/TeAA0RrCOmRmSxNSl12mebzLTfgKrQgnBDrvFlbfiZ7JfkHBUtWGcgPPH5QGYNK3zMQlWXkGjUFMihxvVCN4sYYMMZ1m+blm12pakvx1+XiE8AZkEMQNZBM+tDppZin+CZfGR7cLQO6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,51 +103,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for taking a look.
+On Fri,  4 Sep 2026 18:06:25 +0530 Sarthak Sharma <sarthak.sharma@arm.com> wrote:
 
-在 2026/9/6 7:09, Andrew Morton 写道:
-> On Sat,  5 Sep 2026 20:50:28 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
->
->> From: Longlong Xia <xialonglong@kylinos.cn>
->>
->> When CONFIG_ZSWAP_DEFAULT_ON is disabled, zswap_setup() can complete
->> without a pool after a failed initial pool creation. A later compressor
->> parameter update can create and publish a pool, but does not enable
->> zswap_ever_enabled.
->>
->> If users then enable zswap, zswap_store() intercepts swapout while
->> zswap_load() still returns -ENOENT without consulting the xarray. The
->> swapin path therefore reads a stale backing swap slot because the store
->> skipped writing it.
-> That sounds bad.  I'll leave it to reviewers to suggest whether this is
-> a sufficient description of the runtime effects, and to decide whether
-> a backport is appropriate.  Please.
->
->> Enable the static key after a successful compressor and pool update. Do
->> this outside zswap_pools_lock because static key updates may sleep.
->>
->> Verified with fault injection on a stock kernel (compressor builtin,
->> CONFIG_ZSWAP_DEFAULT_ON=n):
->>
->>    1. Boot with zswap.enabled=1; pool creation fails, init completes
->>       pool-less (static key off).
->>    2. Echo an available compressor name to zswap.compressor; a pool is
->>       recovered but the key stays off.
->>    3. Enable zswap.
->>    4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
->>       fault it back in and verify.
->>
->> Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
->> without this patch; all pages intact (zswpin=131072) with it.
-> And thanks.  Sashiko might have found another issue in this zswap code:
-> 	https://sashiko.dev/#/patchset/20260905125101.2970456-1-xialonglong2025@163.com
+> gup_test.c currently serves two separate purposes: benchmarking
+> (GUP_FAST_BENCHMARK, PIN_FAST_BENCHMARK and PIN_LONGTERM_BENCHMARK) and
+> functional testing (GUP_BASIC_TEST, PIN_BASIC_TEST and
+> DUMP_USER_PAGES_TEST). Keeping both in one program makes the functional
+> tests harder to run and report individually, while run_vmtests.sh has to
+> invoke the program repeatedly with different options.
+> 
+> Separate these roles into tools/mm/gup_bench for benchmarking and
+> tools/testing/selftests/mm/gup for functional testing. Move the shared
+> file and hugepage helpers to tools/lib/mm/ so both programs can use them
+> without duplicating the implementation.
 
-I'll send a separate fix patch.
-
-
-Thanks,
-
-Longlong
-
-
+Thanks, I've added this series to mm.git's mm-new branch for testing
+and hopefully further progression.
 
