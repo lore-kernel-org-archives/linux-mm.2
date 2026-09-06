@@ -4,131 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 097A7C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:16:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD816C79F85
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:25:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A948E6B0088; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
+	id DD9696B0088; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A459D6B008A; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
+	id DB14A6B008A; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936826B008C; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
+	id CC71D6B008C; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 629B16B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C181980505
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:16:27 +0000 (UTC)
-X-FDA: 85182932814.06.3237525
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F1DAE40006
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:16:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZDwHhkw;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8AD6B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:25:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EC1F1604C6
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:25:35 +0000 (UTC)
+X-FDA: 85182955830.17.FD52F96
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 740D380002
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:25:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT+A71hJ;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788689785;
+	s=arc-20220608; t=1788690333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
-	b=EezQDNmbJ4EZcwyEBch84EKVcoFlxvGJvyMm1ZAxI0gYjdE8DjpYBR2Plif/pu+7vsWZyw
-	JLwVOHR/nZ5ND1LVrotD+SP4D8SW30BEjIOnDw0eFHHlLzd74h5WIS9bv/tzyhh7ZhODHz
-	m8W+A87B+n9PX/GD8HwexLeiVj8XKFU=
+	bh=2XPq6jBsWxzSGkLN5JMNAqBj9VumCx6phCWWl2LqB4Y=;
+	b=JTctQHhzFVHGBrg3+MXVuqCxUf+0Z4fZfNbsI4ylcjp2KbML+qYT0nq2Th1NCGM5ctSnI+
+	SLw1BBlmWIRdbcTVo5TPVw00HbfcDMYLZDCdpsYD/5vXxfhd+TU1KsxSbnfB5AucE3sE5o
+	KCE8ghakASejgWSbB6gP1ogmTRc7fK8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788689786;
-	b=RS0TA+MeP9pKFBswgwIOBzR78EHf0KC+M3wVsQtH6qrya+Ru06Ao2Jl1tlP9ere56BkusL
-	shuEq7aPzf/1BAIfnHspTMRFR8zxIjqxKpNpRsB8m+hlhVaa/b8S+qMd6J03BkPSSfwxD5
-	xLltlytBktvAaAsQ3TlRbds+KePsNmk=
+	t=1788690333;
+	b=L/4oxPcOMq++xaank63fVxIvyVsshvigsp6K6ZgDi/UX31TnwI8D9oVHydeq0q8oo/ZJLl
+	HIUmH/tggViRz2KcYXcAm/R5EQWODRbDWm5O+zgsUOT4GNHhuIp3FMETUujiOvCFW80P7W
+	sSIshVFHma1z7eGm8q3jQoSa56PrxGA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZDwHhkw;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-495590dde14so35185355e9.0
-        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 03:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788689784; x=1789294584; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
-        b=MZDwHhkwd9vYiHkxu2gHtmTvhYCutveMIVHSlRiYUnIK44dBEaaQEDT68AnsWvEkjr
-         768bEwtxZx+98zCrX2Y9/v3dBlbCf38wTMovDE3YhnGzJU/I17eaINHpn4jxESC9TIkf
-         0mHE6yF2hGrBLP/9/IC283uV4DeWJ3RWrQ8NJM0EtD5aK2AJECMZqZTd0RuNfanI0V6U
-         z2WDcx9DE5gxITOBhmYujCeC28CH63JIe04+fbesHR5qBwkftOaJvyaQ+VArKPuK+Ce+
-         mhSUECZJ4UVGG8I92R/qd/W0tISPxssVVtBAfUfEqOEd/i9E6VFqhE1nG6ULqBZDoaR0
-         FEMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788689784; x=1789294584;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
-        b=bzdrdpRw5md7Be/Roo4lqw6/9EVWJQmpTkjN2myckhccA153gSfoR1FNF5h5ctNjKH
-         iciDqW2oJ/By6MZD9Cj/MohomqOQ0zsL2L+lBTPbIJslZLfmJwT05Uy4BhV0X/uKD9ym
-         O565KNlv2E/A/i0BeMkbzheBH4lkLS4zQkLnD7A4Pxc9QWVR321WAIWdYHwzviGTPasP
-         TkeLGXqZRRM0gERTFZT7+oXzU06gRIYtBSRf8zPbFsAkCv1EmFxsHpLraMf29g1adRqS
-         s3CVtzslQa1z+lIlBJPTqH8uSozwQXmeEBDqlWC7nK0b1ORDMpz/yEbmnm/TMH3x/ct0
-         xatg==
-X-Forwarded-Encrypted: i=1; AKwUvBy40TRdihaD9J3jAE7VHxVdPzVzvUxU18xzS1oveyfefSK+8PPyHATdsPlpwbUGoj8FxC/2Ghwkew==@kvack.org
-X-Gm-Message-State: AFuF++n/e/3U8CM5lEBmligJ0KaKXWsTwCI4MO2H0OwuK/96sHavLsJe
-	osb+ZjVKbChEwF/23dmdUFzxV5dbo8NzEMWXoHUD6sRAw/so0pZDpUrH
-X-Gm-Gg: AYBFou2iYwYimYgYe4IlCVJ+dkxuULVNAnCF7I+9uEzbI6cIeM4i2rWF1rJ29CSznu5
-	w3u3IRRMj1yCjGPuytJhXIGptvhqJmsm8MOei8kl3G7V6nmXK08roNbVwqZ47FaiJVdRSeEah0C
-	xMJk5rHmEMfkZsZ3ztAvZ91+AsNueoZtCylwpjpU3MvVyLW1LsFJ6fktxna1YkaArG2N1FKjtKT
-	5fuBa8sMQyeOL2gYTH3cGgAhZMYXq2z7t1dDG30mPW3tudBWyRoq/6nlibmLbgy5e3ibJSwJ/sB
-	NUV83R7nb3q7Od8fWuRDyWEWOgk0KY7iQVhQncXTh4LtvoyV/bZXfJvhwE72an3Xch8ecwNNNPo
-	0EjhZSSnPrCScB3SyCPCnMJIqnHkyi8Xa2x4riOoMVZ+hG9y65PDrr7cUABRxDk4GozDbJajNbU
-	m2HZUnWMz384V5ET7on/2xJ64EA2glmGxDCo97Fuxa7tjnUpt0l6YtqMne+0UrW+FOh8st/uvLI
-	GHG25fJvYoAiK9otAGUgqYwbA==
-X-Received: by 2002:a05:600c:3b11:b0:49c:f7c4:dc54 with SMTP id 5b1f17b1804b1-49cf82512b9mr288796435e9.14.1788689784162;
-        Sun, 06 Sep 2026 03:16:24 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d03703f13sm57044775e9.0.2026.09.06.03.16.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 03:16:23 -0700 (PDT)
-Date: Sun, 6 Sep 2026 11:16:18 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Muchun
- Song <muchun.song@linux.dev>, Kairui Song <kasong@tencent.com>, Qi Zheng
- <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
- <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Chris Down <chris@chrisdown.name>, Tejun Heo
- <tj@kernel.org>, Yu Zhao <yuzhao@google.com>, "open list:CONTROL GROUP -
- MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Ridong Chen
- <chenridong@xiaomi.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/page_counter: avoid integer overflow in
- effective_protection()
-Message-ID: <20260906111618.644362b3@pumpkin>
-In-Reply-To: <f65d4985-5e21-4e29-b5f4-dcff0fa479ab@linux.dev>
-References: <20260903031952.1120321-1-ridong.chen@linux.dev>
-	<20260903031952.1120321-2-ridong.chen@linux.dev>
-	<20260904093743.23cde26b@pumpkin>
-	<f65d4985-5e21-4e29-b5f4-dcff0fa479ab@linux.dev>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aT+A71hJ;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 51F6F40C51;
+	Sun,  6 Sep 2026 10:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4E71F00A3A;
+	Sun,  6 Sep 2026 10:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788690332;
+	bh=2XPq6jBsWxzSGkLN5JMNAqBj9VumCx6phCWWl2LqB4Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aT+A71hJ8NCIRzwZvUAlmCF2acDHq2xysOzGVgGT3iPsEhswJ4mdi3jeaJj0iN+1f
+	 HJ8Wr8RRz4il12phVpTJYqK7TZm6HBoFHc23BkPlzoVI5sOLzIcKxRJuafbti3zxqq
+	 bBXfVWqy+KEdv6XsvE4Qy0digyusQeELvEYWRpU8teA74oWoYP3Zt0fHRT4wrmKt5g
+	 0m94g72F2kB5Tbe47F6EGnNZHQc88m1JsxF1TNvzE9iMJY45iWStpPyPTxmO6fgjcY
+	 wZ3IdvyxptArEnj1FQAsXDPHZTNWBFUPdAkGExdGbWnfmejDhiw5BQZPl6GBlhefSg
+	 0tHqpXaRiaZLg==
+Date: Sun, 6 Sep 2026 13:25:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: dmatlack@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH] memblock: use binary search to locate candidate regions
+Message-ID: <ap0_lSVF43FP3PPb@kernel.org>
+References: <20260903155907.1065681-1-tarunsahu@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4fz4iohz8siqfbyqg484i7dubr4di9gx
-X-Rspamd-Queue-Id: F1DAE40006
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903155907.1065681-1-tarunsahu@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1788689785-91093
-X-HE-Meta: U2FsdGVkX19A6YjmFbaObvMRhm6hUB3VIrv9dqg1KNWvDKq3v7HpHJDn8lKTRHaUt7rOqlMjGU+2/dsgNoa+Yv6OqmV0pe4rnqbYAJc+xtGisFw3OlTM1+yPvUqciclBPYHBoRt0oTWiAc1tiW/x7O0ZL9U3ajq9gFf0iPEZeMNfmTDAxaX5orjdxBahoKPLPxa0PnCd042/1EWHX7Wc4qbZz6lVVYmCtK/ZS2uKeut9RoOW4RsxoNZWS+aiW8TeMseZp25KDmnraRW1zJMRosCXiuOqomuphL81q6D37JXDwHzYCgpa8oPYai892M2rTqzcbOK6M3IEBTsfRdJ9xK8ZkD87JPNSw0H4nL+NRArxNFDtBj9H8nySEUahU/oNX1l66yGKtAzEd/Fv5DTJ0+0He1PZkBNUyb1z9m3zVK5/C/2I+exSvdVmvSA3fZwTYlbwky8AWdbSisgFWadHFOfIxfcejG6WG2V9qJBe9AIdIfpbpihXkOhwX9oFAPOVT/kQPhlYnuexeJU41ECccyAf87zkyq7qAtoorzLlaR9pHJcbKwceYnjHV8jXDmcBZAhxjmWYIjGXH63hc/Zwz/IOmLaDtyhG/gS/qHK8P38tGJCuuXNYuznZvgeqVMZQlHipp8+Oxrcq+EBsdjN7IBLz5kRwwpztBFs/947uDoV3/HjPJ6Sn9JWqt5H2cvFTxh7GBk/IoVuM9OlDWbVBzlpv/zPloM1HbaKDhhFlz1WZ/kfEIDHinqq0swiVTTYFnhuYW9JBNS65qrsRBHs5MPYgMDk5AHXAD8yl/sa27OAnxQdq1tZMbgHgAyyMOiGpEem2LTiSCjHTb697BkTM1EXs7SdktZt95sde44LgRTvkIt92eO/I7h7W+7Ai+8+aXBWfJJCNfS7fYqABR3+YPaf/cSqqX1BbArivoHe8LlggMvgfRMQMKXE4a7HrmUrNwU1ljYxUSvvIwmgdz1X
- erBEWkhi
- l3I+dh6RKBSsgE2XXcC4dgSMHKAEjBhDl0V21X1M0M2bwdafWMq+Ze/29SlsLd7+fy3L2YQtLgpyJk8HwLpHwKjGvM3ylEdyznAJ5GkSpMBEuX0nKTHS7ORHKBHEHPC9Lx8f7L6w6x8OPhOtDSGVFmEsQhAUGXLX8g59ym6qNdOxY74lBBKkpntgsd/+rM+1vbgb7TcAGbgDCmHSL/Dhrd7NtySiZbA1g9eCMZqtWkk0750pNY08VLcWXKiEkUyi0Bvh9V3QZ/OzLHq2jOp0u6NeUJGvOahuqv5VI8TDd5v+SNETs8p650V0ayQBstOEY2KZrEW8iGuQeoatYjFhl86jlL/8bRsxBX9pdh0DTeMrp1V0ENABadYC8A4t4INVsJn+oIj7iEPYsi/3AbnrtpfeqdKZNPjs7TlbW14k8cs8oAeFCtrGKKRJR451yxRQ3joOoeneCXBtfaWu49TG1Jozj6Zl8Vt1IRDWWiOt6fTthDuGN95j8qRLOtzxiqmZBHZFCujjSy9h+02bDhackfBCMVhKTyS2X/4rbykcDg0zuNFOlUmKCrybQrl2QWg8QnVqwM+wuPKY425ZrY3sOIxxdqQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 740D380002
+X-Stat-Signature: z44q8w81z6cyexkfanxm8rn7dapd9osc
+X-HE-Tag: 1788690333-967575
+X-HE-Meta: U2FsdGVkX18ofRKIctarkkROj7dq1Kb/gDfYtzD6AV4zRmqSvtwgF6CXrVvyABAyR3Lkb4Mun6apiDlSMWF84+eYCvsbrGUvkF8W7by0kKlWogNuVHbafOVezbHA0cslwXQn8GmqFGHRqF37Co29Hn48waBbeVIG8Diu8IkAmz9aliWANeVKpJfvdoPOKatuPoOYQ5cT1Mbt3zfdRe4N+Hp6CVEzLMhOsK+/yWRnjcd0SYcZT1Lu8wFE/l2R3i2eyFCKusK/owJk5//xpI+NLXbnJ/EKNBswvuBuOZE9LjiM0hz2pl1KD684WhIpfSEHM2n46HJH7eVJTG5jxruPrjLsFq4IAYO52L0kihGdNP3SlWEhpfl8gn2D9JHxPPsfXg+ySsHKFQagm5OwW3/pcs7f0uoLenPb1trYKiw5s+WFE/bDhkaqLdcvVkgDhG7gESHndY88qRhQziOie9G/8cYJrO4b8OV9YV+q03goEGTlFxs/ud5Hhj1YyG4FzcUVzihSF4UhHoBctTJFJr5/6RuvydSIoERePOz0Zpfep7KMZGNaAYQWDAHjsCke6N8jRAu2R/K3K+YQO9A4mKfx5GtpUr92GaLgyvkhuYBgIas96EjhpNSK44mQ6RorlhxwBZVCv9fYsg83VHtdgDzQKsKXoUqbqnM3HV3fiJeDbJWc8aUCxibQaHtlF7Pyo0pWlqU2JM8H3x3bOpAd+UiHmxCWt4CzzB4SjwNDS0wq81lv1qrOAkuHg0OzassIaIg5sAyCiljM+Gxjvbxt726cL1y8eFCMIZ0uW4e9QvLp2OqOx89FUM97JdYTDSFf59wcEp/tgyWlBsG8yhuISloKjbWAOXZrTVtSYS57QJLgHX9seRRD9x4P8M68b1MbkENa/0DCHPWyptX0vWRrfYaL7SGDE7LjWCrHr/VLWcNM2Hjjx4z67fNY/HjGmNadRcsXxpgkgIWUlCZj/MiOSmP
+ 7x54evNO
+ vv3ESpk+9SFjhJNeswBlLVv+5mVIPU3wQBv96XN1BkyG9J/leaFN6Jpumo5HWgWHhFasBLK1hpCfOiG5hgVhNf0ZtmAt0vAGT/mxkGkzRnYsJs8/G+DHS2R19KRRSUo+nHo4YmFQAGVELlUUjltPsz7OXUPxsHE4f8GItzuzS5f+/OwDchMytm6f4hsDKsVxPuZCL1yT0h7Wh2Xp5/dHBbQc6juUQ3dzKQOBLsCerGmCh9yG1r2YWjCnMsBX4TUhahUD0Y63M1xU2YRKkZfrcuw5LuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,139 +92,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 6 Sep 2026 09:11:24 +0800
-Ridong Chen <ridong.chen@linux.dev> wrote:
+Hi Tarun,
 
-> On 9/4/2026 4:37 PM, David Laight wrote:
-> > On Thu,  3 Sep 2026 11:19:51 +0800
-> > Ridong Chen <ridong.chen@linux.dev> wrote:
-> >   
-> >> From: Ridong Chen <chenridong@xiaomi.com>
-> >>
-> >> effective_protection() scales a parent's protection by a ratio of page
-> >> counts, e.g. for recursive protection:
-> >>
-> >> 	(parent_effective - siblings_protected) * (usage - protected)
-> >> 		/ (parent_usage - siblings_protected)
-> >>
-> >> The multiply is done at unsigned long width before dividing. On systems
-> >> with >= 16TB RAM the product can exceed 2^64 and wrap, giving a bogus
-> >> protection value and silently breaking memory.min/low enforcement.
-> >>
-> >> Use mul_u64_u64_div_u64() to multiply in a 128-bit intermediate. Because
-> >> usage and parent_usage are not read atomically (a child is charged
-> >> before its parent), usage - protected can briefly exceed the divisor,
-> >> making the quotient overflow 64 bits and trap (#DE on x86). Cap it so
-> >> the ratio stays <= 1.
-> >>
-> >> Reported by the sashiko review tool [1].
-> >>
-> >> [1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@linux.dev?part=1
-> >>
-> >> Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low/min calculations")
-> >> Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
-> >> Cc: stable@vger.kernel.org
-> >> Assisted-by: Claude:claude-opus-4-8
-> >> Reviewed-by: Barry Song <baohua@kernel.org>
-> >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> >> ---
-> >>   mm/page_counter.c | 19 +++++++++++++------
-> >>   1 file changed, 13 insertions(+), 6 deletions(-)
-> >>
-> >> diff --git a/mm/page_counter.c b/mm/page_counter.c
-> >> index 661e0f2a5127..e8bd512069c5 100644
-> >> --- a/mm/page_counter.c
-> >> +++ b/mm/page_counter.c
-> >> @@ -8,6 +8,7 @@
-> >>   #include <linux/page_counter.h>
-> >>   #include <linux/atomic.h>
-> >>   #include <linux/kernel.h>
-> >> +#include <linux/math64.h>
-> >>   #include <linux/string.h>
-> >>   #include <linux/sched.h>
-> >>   #include <linux/bug.h>
-> >> @@ -356,7 +357,8 @@ static unsigned long effective_protection(unsigned long usage,
-> >>   	 * otherwise get a smaller chunk than what they claimed.
-> >>   	 */
-> >>   	if (siblings_protected > parent_effective)
-> >> -		return protected * parent_effective / siblings_protected;
-> >> +		return mul_u64_u64_div_u64(protected, parent_effective,
-> >> +					   siblings_protected);  
-> > 
-> > On 32bit it is only necessary to use a 64bit intermediary.
-> > mul_u64_u64_div_u64() will drop back to the (probably faster) 64 by 64
-> > divide (and then maybe to a 64 by 32 one).
-> > But there is a lot of extra code before that happens.
-> >   
+On Thu, Sep 03, 2026 at 03:59:06PM +0000, Tarun Sahu wrote:
+> Use binary search (memblock_bsearch_start) in memblock_add_range() and
+> memblock_isolate_range() to locate candidate regions instead of linearly
+> scanning from index 0.
 > 
-> Hi David,
+> Under heavy memory fragmentation (such as KHO page preservation registering
+> hundreds of thousands of disjoint folios), scanning from index 0 on every
+> insertion and isolation results in O(N^2) complexity, causing boot-time
+> memory retrieval to take several minutes (~268s for 393k pages).
 > 
-> Thank you for your review.
+> Using binary search reduces the worst-case complexity to O(N log N)
+> (and O(N) for sequential appends), cutting KHO memory retrieval time
+> from ~268s to ~50ms.
 > 
-> Do you want me to split this for 32-bit, or is keeping the single
-> mul_u64_u64_div_u64() call for readability fine with you?
-
-Maybe I'll look at wrapping mul_u64_add_u64_div_u64() with something that
-checks statically_true(((a) | (b) | (c) | (d)) < 1ull << 32).
-
-Probably neater than the conditional here.
-
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+> ---
+>  mm/memblock.c | 38 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 36 insertions(+), 2 deletions(-)
 > 
-> >>   
-> >>   	/*
-> >>   	 * Ok, utilized protection of all children is within what the
-> >> @@ -397,13 +399,18 @@ static unsigned long effective_protection(unsigned long usage,
-> >>   	if (parent_effective > siblings_protected &&
-> >>   	    parent_usage > siblings_protected &&
-> >>   	    usage > protected) {
-> >> -		unsigned long unclaimed;
-> >> +		unsigned long unclaimed = parent_effective - siblings_protected;
-> >> +		unsigned long unprotected = usage - protected;
-> >> +		unsigned long parent_unprotected = parent_usage - siblings_protected;
-> >>   
-> >> -		unclaimed = parent_effective - siblings_protected;
-> >> -		unclaimed *= usage - protected;
-> >> -		unclaimed /= parent_usage - siblings_protected;
-> >> +		/*
-> >> +		 * The usages aren't read atomically, so a child can transiently
-> >> +		 * appear to use more than its parent, making the ratio exceed 1
-> >> +		 * and the quotient overflow 64 bits (#DE on x86).  Cap it.
-> >> +		 */
-> >> +		unprotected = min(unprotected, parent_unprotected);
-> >>   
-> >> -		ep += unclaimed;
-> >> +		ep += mul_u64_u64_div_u64(unclaimed, unprotected, parent_unprotected);  
-> > 
-> > If the ratio is forced to 1 there is no point doing the scaling.
-> > So maybe:
-> > 		if (likely(parent_unprotected > unprotected))
-> > 			unclaimed = mul_u64_u64_div_u64(unclaimed, unprotected,
-> > 							parent_unprotected);
-> > 		ep += unclaimed;
-> > OTOH if the min() generates a cmov rather than a conditional branch
-> > then you don't get a statically mispredicted branch in the normal case
-> > (which is very likely with the empty 'else' branch).
-> >   
-> 
-> I'd rather keep it as-is and avoid the extra branch. Does that work for you?
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 9ce86349a29f..88940474b020 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -160,6 +160,11 @@ static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+>  	     i < memblock_type->cnt;					\
+>  	     i++, rgn = &memblock_type->regions[i])
+>  
+> +#define for_each_memblock_type_from(i, memblock_type, rgn, start)	\
+> +	for (i = (start), rgn = &memblock_type->regions[i];		\
+> +	     i < memblock_type->cnt;					\
+> +	     i++, rgn = &memblock_type->regions[i])
+> +
+>  #define memblock_dbg(fmt, ...)						\
+>  	do {								\
+>  		if (memblock_debug)					\
+> @@ -591,6 +596,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
+>  	type->total_size += size;
+>  }
+>  
+> +/**
+> + * memblock_bsearch_start - Find the first region index where rend > base
+> + * @type: memblock type to search
+> + * @base: base physical address of the candidate range
+> + *
+> + * Returns the first region index that could potentially overlap @base.
+> + */
+> +static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
+> +						  phys_addr_t base)
+> +{
 
-I nearly came to that conclusion while writing the comment!
-Actually the same might go for the other three tests - generating a 0 or 1
-from a conditional move ought to be better than the possibly mispredicted
-very unlikely branch.
-(I am right in thinking that they should never fail?)
+We already have memblock_search() ;-)
 
-I also suspect the #UD is the least of the problems.
-You don't want the scaling to produce a bigger number at all.
+> +	int mid, low = 0;
+> +	int high = type->cnt;
+> +
+> +	if (type->cnt && base >= type->regions[type->cnt - 1].base +
+> +				 type->regions[type->cnt - 1].size)
+> +		return type->cnt;
+> +
+> +	while (low < high) {
+> +		mid = (low + high) / 2;
+> +		if (type->regions[mid].base + type->regions[mid].size <= base)
+> +			low = mid + 1;
+> +		else
+> +			high = mid;
+> +	}
+> +	return low;
+> +}
+> +
+>  /**
+>   * memblock_add_range - add new memblock region
+>   * @type: memblock type to add new region into
+> @@ -651,7 +683,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>  	base = obase;
+>  	nr_new = 0;
+>  
+> -	for_each_memblock_type(idx, type, rgn) {
+> +	for_each_memblock_type_from(idx, type, rgn,
+> +				    memblock_bsearch_start(type, base)) {
 
-David
+I think we can just kill for_each_memblock_type() and open code all loops
+that use it and make memblock_add_range() and memblock_isolate_range() use
+binary search.
 
-> 
-> >   
-> >>   	}
-> >>   
-> >>   	return ep;  
-> >   
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+>  
+> @@ -827,7 +860,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>  		if (memblock_double_array(type, base, size) < 0)
+>  			return -ENOMEM;
+>  
+> -	for_each_memblock_type(idx, type, rgn) {
+> +	for_each_memblock_type_from(idx, type, rgn,
+> +				    memblock_bsearch_start(type, base)) {
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+>  
+> -- 
+> 2.55.0.970.g62bdec98f9-goog
 > 
 
+-- 
+Sincerely yours,
+Mike.
 
