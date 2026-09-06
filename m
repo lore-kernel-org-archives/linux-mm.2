@@ -4,91 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0E5BC79F9F
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 14:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FCEC79F8C
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 17:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DBFC6B0092; Sun,  6 Sep 2026 10:41:28 -0400 (EDT)
+	id 64F126B0088; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88CE76B0095; Sun,  6 Sep 2026 10:41:28 -0400 (EDT)
+	id 600406B008A; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77E946B0096; Sun,  6 Sep 2026 10:41:28 -0400 (EDT)
+	id 4F1666B008C; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A8C86B0092
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:41:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC9C3C0519
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:41:27 +0000 (UTC)
-X-FDA: 85183600614.17.FCC49CD
-Received: from out-2uec-a116.jellyfish.systems (out-2uec-a116.jellyfish.systems [63.250.43.116])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2DA12C000B
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 14:41:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=HeP+2KOE;
-	spf=pass (imf28.hostedemail.com: domain of hi@tychen.cc designates 63.250.43.116 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2120F6B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 13:15:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 936571205A2
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:15:29 +0000 (UTC)
+X-FDA: 85183988778.04.1D6D963
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CAFA5100006
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 17:15:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCtv7dZj;
+	spf=pass (imf05.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788705686;
+	s=arc-20220608; t=1788714927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=BMfLqBwWKBeYU1egJqEuEAvuOmS9JC9iK50RUqn+x44=;
-	b=y6mwXaoDPPZYo326zWGIONjLj1ZHHSLyjim1YlPhgYMCv40+ilbOZZNekp3Z47V/8akbpc
-	95pI765YlK+cnQQAQYs5+uly1jaeYiIaO6AyuqA3cdjbjCLQbjoPFRVCrFGgAe0V+ztGrk
-	hrX6LIqHhQEtOac+FPXwkTHuCkqIZVY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=HeP+2KOE;
-	spf=pass (imf28.hostedemail.com: domain of hi@tychen.cc designates 63.250.43.116 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
+	bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
+	b=ruOkGh3ZILhEdT34/Q7c41PcbXDhuS2nWX6aTqm+/dcdVggrE4a27ZyK7/SMZDJbr+n2Ga
+	owZGDQ1sIgdr1qJpeF9KZlp0rWeIvx+/gHsF2BI2h+TQTBhIq8udQG+J2kdodDgmp/TW/L
+	szKvI13NvgMF6hOSyBVvjTbcpB5GEag=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788705686;
-	b=6qSgawd2fry6aA5GZd4fVbe2RJZia9RovDdd2uMznbFbWYmvIZuG03H5GMNfVmiZ7SvsB+
-	LsA1PZdC6o7b7ASq3xcTsQwZ/llyVsLlPfBVHbpvKwV70q3OGKLJzHIKg5bF3p3xgBuahT
-	7FSsg2NC68lKO8C/1On0m8RpjswzN8g=
-Received: from fedora (unknown [69.5.53.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hdCYy1G73z2xBH;
-	Sun, 06 Sep 2026 14:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788705673;
-	bh=BMfLqBwWKBeYU1egJqEuEAvuOmS9JC9iK50RUqn+x44=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HeP+2KOEVEQwsAKbaTMLXL4OIo8jhFeapg2UDWFk/ihtHhBlMn0G7rLDNZQb0RUZg
-	 oG4fQ96wIcnDA1bVrRudHsIg+0JF0CXebElLDaqeTDNRjE3UZO2oniUBtwvAVS/R1U
-	 p6+IoLYu9X2dZZ6Eiv1DpMqdlpwhgSeYLUcl2/LOqyDZc8ba44BB7N26ig3QGrnPrW
-	 I74xQgrzk7yd8GJtYvSucSMgxghZOn44uos8PAAJbO+3C1+5VQntUEeOC47mdpB9gl
-	 RiMWukYLciZ9B8viExOLR88mODHjcckRaDLnGK3nYqCQ6oS6c3tj4bevfKTDopCWKb
-	 MCXN60d00Op6Q==
-From: Tianyi Chen <hi@tychen.cc>
-To: ljs@kernel.org,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Tianyi Chen <hi@tychen.cc>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tools/testing/vma: cover hole filling through __mmap_region()
-Date: Sun,  6 Sep 2026 22:41:00 +0800
-Message-ID: <20260906144100.849288-1-hi@tychen.cc>
-X-Mailer: git-send-email 2.55.0
+	t=1788714927;
+	b=7fHFMx1unO7wenCD5fefD0SBpBrVVy6ppArnZTdURvdBUk/YHn80D9NvlVV7li3v9e86Ja
+	znRvml4GJpUWEhhmJBDJ/2xUwiJ0fE/5H0Lt/eaXhVT44DaLKaLxFPbwa2pZaGU5G/WPCX
+	1zJu+36AIlrc/nVSGXrDWbxU/YmZUmw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCtv7dZj;
+	spf=pass (imf05.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48436216a98so1730408f8f.0
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 10:15:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788714926; x=1789319726; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
+        b=GCtv7dZjlZNZEqqYmCljpVlYOPTtTByjKHjlPcISyc6JlMMk5XZgqi53ELpRENUiM2
+         g8vcSk2Jj65MTHSuJ2kBntdChYU6l2eSMQjCDXbT9uFayvUR1FAeN2ZFK362bNdGfnjg
+         kIM6srxWsZ79prlv+FifvPpA5zjnqMp/dGZMceHgR9zfhmoZ9Rcw94zlTBTNoZYlLLAa
+         gv4yoP58dN0FcBWhEtACocLAzn9TflEVSPUwU73PMvh8iE+Ntm9y+0l+89Z69fpc+cRM
+         wrwPMySvGvz5z1ZA+nqE3d3m7l6I9iOajR9VIk6nPQ5E/o68ip3BXtqX801hy3YU058E
+         OGJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788714926; x=1789319726;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5XKjHfAZ1qBeB6DtrQ8eKJyiOtO1aHUJGx207Xurf1s=;
+        b=rtCiCKteq0aYTwhrH7HyAiakg+m5IMwm+DU6l27rZVy6Kcby3Nm1msqzBXmVpb/Fhj
+         kkHrxNKsCv2ZYXHM79aLVwR9aypAwShfFmrD9IbA4wThCoJ1I6O1gErUIudHb2OVzRFC
+         Wc8teD6+HBjLFjBmFDeG7wFh+pLxqIYUI+LEEntz1fggZ5Girgs6+/vVOcaVwRohy+lT
+         u5NBcqoW21MmFq5XUJpmzJbY3YE+TDKbFJ4wvV2vpQiqR1sSzIq26B7Sw2jdWHVOi1cj
+         uEbkJLAcFl7rpwZ+X3bElGR+xY12+XOjOyj8pE+GJLmGwvTC2/1apgOptRnwRtUflclQ
+         kbAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJTPJZlPaZq7wA8M9YgI8N/bPDu3oNxddF+V91daEKEKbC7A6ZiarolDxCbzru5i7jNh2KOxxrfQ==@kvack.org
+X-Gm-Message-State: AFuF++mvBUYLSKtkBLsgyrrHEHm7TgqIBGRUciKMi1ccYTj0+VD10vOq
+	eKSE9gDgl3jL8bkx2vwD85XuJF2yGeDLZWV72L/4HngSbbHmzX7t813d
+X-Gm-Gg: AYBFou2LHIz5BMaD/k3EZwnNsyjT5T7OyGc6llBrPyMAyGgJfY9C6L6dxAiPiF8R2ZW
+	CgW4J/QH4rinPL7d4BBS93Kydm+uCZpPlazss9gcUYaIgo03OraxPdqLxKHrr+tTZ6vf8/wGOM6
+	BHxP57hvERG7KV6PLczJl6IiVN10V5mMKxDAWRhSmh1+RCAxRNOrm/J5cfgs9V7eOwn5CCrbjRu
+	RuGQyLw5YZPK+bY3L+/6xHMTT22R0CU9RtMKF4K/YkUVhy5tO80+q5BfIgMH7sPcwrQ2Ay3FcyW
+	phgZ1NNQjpLqXJdl7Ep7sGYGcdp27WaFTsF2R9lr53DZytx1G1p3LwMgSFFEL3+ZdhhlAKe2z9N
+	2EiwZ2ZPooUZ49XPKaLQoyHr5K0RdfKCL27XhRLJ9l0Xr4iXCWWoekfBJckD7V6qk8oP9kku+Wi
+	1rDB65XNphxRKt0+L6hNOQnulNj4D0oR1Mu/9k+Nt6EyHp8JO8ja3H6lPR5CLwhJdXSRBfTCOGP
+	Cnk6AV8MKl5RSINOBqKsfmhGapOuTcFB6b3eQrca54A6OWRkGvOFkaVWkSJJve8VQQFg56CAdJk
+	lxPnxBCKWgaTydoBD00MY+Nazf+A/1Ha4j41sCvYTTrRVRe/KI+No9mGFXAVLuPXuazex6JP
+X-Received: by 2002:a05:6000:41db:b0:485:8c17:9768 with SMTP id ffacd0b85a97d-4858c179982mr14804427f8f.42.1788714926191;
+        Sun, 06 Sep 2026 10:15:26 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-9d84-5101-9c80-d25b-14b6-410c.310.pool.telefonica.de. [2a02:3100:9d84:5101:9c80:d25b:14b6:410c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858ab73c2bsm21124742f8f.22.2026.09.06.10.15.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 06 Sep 2026 10:15:25 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/secretmem: Fix the enable parameter description
+Date: Sun,  6 Sep 2026 19:15:23 +0200
+Message-Id: <20260906171523.3009-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: hi@tychen.cc
-X-Stat-Signature: 1a7haxygbc83n3eyg7m1yuwo5ukze63w
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2DA12C000B
 X-Rspam-User: 
-X-HE-Tag: 1788705685-591558
-X-HE-Meta: U2FsdGVkX19SPK7z9NWzazAJrid2mW3A+i3G2FZDzOxz6gJ+Qwgt0gxowQ2mC14MYv4uPUDePMXWhDnt9XkfDMMAAOMa78R7i0o+ZMgs+8gOWlcFfm3Zy8+0Z+Oa4MW1q/6wjlF3uKOlt19bfC45Poazhx5XunYblFd86ItwTOaq+DpCBWM5KufQqwQ6GfsmfDp5Pj7/7NplvgX+JasL4Du5e7VEuDptomntiV9iUL4f76QlRO64KXcRoXZdYwgDIJFhbvPVIaq+13ay2fVCWKZahD21V0jER0Iadz88Uvx4fBvei44LfRjkV4bHrLrsOG4aVoqGLH6FSnQjfJhLyHFsogXA7K4g3DRLnfPbxUJab4XTsAAnDKMfJMcqa7G32qGreTZiTW8K+94LyC8KtpFja899ezk0trqcHDby3NZL/r3gZsSn+5bIfpxcE4Z3ejja4jQ2jmt/NmRx+pdsjQJ5+UMXlldrUEg7AX8QrJAxL3le97vXUpK0CzO2Y0WquUgno2AMhNBXpesTlF4Dl3ebsa3kmcDjaxi99u8T8JML8+525oBvUU7UB6XkI5QVGP1EpUxWkqWVnoscl4VZ81hPhQl+/56AHCxI1RKml2UA/Svw2WjWSBqo+KyIW5s9nJPI8YN9cn+PNd5jxlkBaZ/AGmbErw9mFtw89G1ZtPVSvSyAVLa9M3CCG8wwRbd9UQ1lHdsdOZo5/2+sYdOxGt4rS+eFn2ia4qoGnde3HemKNwuT1G6FyHCdmdBFYMG/cX07wFwgR7Z4LgUPtCO+LhIJ2SuSyvBSKHzjREu/RPkvYmvQ4X/ZOsvbGfeIX03ri5l4saXU2Fc1WzCeYaotF3Ij5uv/uJJ0AQXbhLs/acaw9UFMWpDi9ZHWmIZRoFUt+ovr4+7M6DByspFFT6MuJpRbfvnAT8my/I+FFZzo8KNmu7aRLj0cTCVMrrepJx/AzFCsEWKWfVv+ssidpuX
- 6U9qc5VL
- rM1+E07dOaKHPX59HJd12MeGnLK+vBTjCiRu3+W954O2C0yiEuBcltQSVKDBQFZcgFPmDLsnp7ehx7NCQ5hTot7TXJSFblk8BsD8Zf29hmRN2KfWv6EqxOKOSupU4VZR8BKaJci+bH5RbsZsqmxpNOWxp7hN1X1jCoqwOJuib1CEGiSwuSoPixlNNgcmK8gOYi9QskFO3E9UOG9dCzwFKM77roWZ9jEfIAGFMeUF6p4qeGeFzE/TeTXYs7J4GWEhMW87GvLMv3483qtFIOqf77Fj1wNympyrNnjMSeIVEWzAiqoF/9l37ifnYsanyuyfSzHzCysWnWepzmc7GKaLZSEXb8p+/boA0gIjO4Tc7K1YM/a3Gg+J/f/xtigj/5oFKsZ/K
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CAFA5100006
+X-Stat-Signature: yyhe67xzp8gxhxitx6tfchobnmnt36rz
+X-HE-Tag: 1788714927-853904
+X-HE-Meta: U2FsdGVkX18oqV+adfDh1xP8ZoLHraI2lXE4CXuQ3Y3o6qZ6HP7arXdK7+nNDAKT8e0vubppsP/e2CDqANWC+t3MstRZhuuBPFbX/Gx490T2B+5U+YlxQqWDojzNG0o3iYp59U/RXSBWKmdrvdxIfQqfyLNoKArrArpPrI3AEx7VSOgGvMGffQbhsmauRt/K/frjhEvuGNs6wT/WTwZUX0vrMvnargSibmiMpqZw0fwlQZrsc2KhPZwo2hBdGNhpMEgVqjuK3sq7OkqlDhIf1yri5TAIwzfcgKZSCeaaZZNpSkQ6cgR7JCXRxn+/zm5oMH8n5jjMJcES1jLhdPVkHADzMKdQXoQnxWUcXihRCPVg4C1WZNGOIIYQFlajqH44A72ofU20KfvBlTEQZwJf0/QQG4Kc8WhFsN+limv4qCgWprLHRCTSl1gAl/9CoMFbFqc2AF3R9GI9hsljJvO2FuSqsymLG2KoEAe7ErOMTDPSYQGDkn+ucJDgyidfp4J6S0Kt57p4bccFWVOeP0qPeMV0iowXr5xKullKY9VfVEmztNPwMnr+etG1q/uVX+utPiWlU2GSQaKywnkqhVSqtZrfassEfFfLUZNM/6gQzIiECjmlPDQNQp9VNEGhKlfmnikTBsqeqb52gVIsKqEPcpqnn+0ZGGQDcnLc7m/uLhtF4+ZWQvozmtDJ7AoalZGGw/ze1KlRvEsoCsq6TIJumZcZilpWK22yaLICTps/Ps+Botp6hbVoZZNgeD/GfDOD3U0h9bQkpNtwHeanZzc0gt71bgnseGx2uquht2OQw4WKpUWihTUNGV+698Rjx5lY6RjkXb4PP1liamoGoRqpyHH1k6rvqgUED5Rvy6H1IRa+KVSq8qe26yDjtCZ66pytksFMFskrKmlg6HfKLOyIsfk3QM0mKLU0HyMbQxQJaQ9lTNd6ps+NIRwVel9Ixaat1u/0QrH6eCRKZR3LXsz
+ IIvLers3
+ KAtDObfrX66VWdE7ddCLD4uGKYVncMU4lof29Q+UH3kkO6tDjOtjCrOhD+/lyPshfo+E+R19k1RZlpuFoPR5/SYazxZ6pprSbblI/zGKupG3W1HMqbnjpnJjqnoa0+7vWcac7lBV8Gq5HB+mL0AoCUmq/9Za0bdgA5nc/A0Z0cAzh5sbTsEzy0HKuk91H8AQUNYOx4oUVuGo9lEIsU8dxPEoelV/tsvS06S32fOzeF8D66IRHIpppzS8rN2omD5rGtQ9Kbjjo1t5lkKB0vK73El4avFg3nl7v4IxHBq4LF3pJrDB0tvzyAEU87U6A2c5eMJBWW0xnzeCjS3hrSB143ngSu9uQ6pW5ohZ0Dis4dFX9wHOY9Wxgpg9KrblDvIe9/y3QfX22FV94yN1kAbflpfnHO4TCX8uKbKoX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,112 +117,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mmap tests extend existing mappings one neighbor at a time, while
-merge tests construct merge state directly. Neither exercises filling
-a hole between compatible mappings through the mmap setup and completion
-path.
+The module parameter is enable, but its MODULE_PARM_DESC() names the
+variable behind it, secretmem_enable, so modinfo describes a parameter
+that does not exist and shows no description for the real one.
 
-Fill a gap through __mmap_region() and require both neighbors to merge
-into one VMA. Repeat with only the new mapping's execute permission set
-and require three separate VMAs. Check boundaries, permissions, page
-offsets, map_count and tree lookups across the mapped pages.
+Use the parameter name in the description.
 
-The full VMA test suite passes all 28 tests with ASan and UBSan enabled.
-
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
 Assisted-by: LLM
-Signed-off-by: Tianyi Chen <hi@tychen.cc>
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- tools/testing/vma/tests/mmap.c | 75 ++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ mm/secretmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
-index c85bc000d1c..b66ec932a75 100644
---- a/tools/testing/vma/tests/mmap.c
-+++ b/tools/testing/vma/tests/mmap.c
-@@ -45,7 +45,82 @@ static bool test_mmap_region_basic(void)
- 	return true;
- }
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 384f5cfc457f..4e32bf55a599 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -39,7 +39,7 @@
  
-+static bool mmap_region_fill_hole(bool merge)
-+{
-+	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-+			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT);
-+	vma_flags_t hole_flags = vma_flags;
-+	struct mm_struct mm = {};
-+	struct vm_area_struct *vma;
-+	unsigned long addr;
-+	int count = 0;
-+	VMA_ITERATOR(vmi, &mm, 0);
-+
-+	current->mm = &mm;
-+	if (!merge)
-+		vma_flags_set(&hole_flags, VMA_EXEC_BIT);
-+
-+	/* Leave a hole between two otherwise mergeable mappings. */
-+	addr = __mmap_region(NULL, 0x300000, 0x3000, vma_flags, 0x300, NULL);
-+	ASSERT_EQ(addr, 0x300000);
-+	addr = __mmap_region(NULL, 0x306000, 0x3000, vma_flags, 0x306, NULL);
-+	ASSERT_EQ(addr, 0x306000);
-+	ASSERT_EQ(mm.map_count, 2);
-+	vma_iter_set(&vmi, 0x303000);
-+	ASSERT_EQ(vma_iter_load(&vmi), NULL);
-+	vma_iter_set(&vmi, 0x305fff);
-+	ASSERT_EQ(vma_iter_load(&vmi), NULL);
-+
-+	/* A single flag difference must prevent merging with either neighbor. */
-+	addr = __mmap_region(NULL, 0x303000, 0x3000, hole_flags, 0x303, NULL);
-+	ASSERT_EQ(addr, 0x303000);
-+	ASSERT_EQ(mm.map_count, merge ? 1 : 3);
-+
-+	vma_iter_set(&vmi, 0);
-+	for_each_vma(vmi, vma) {
-+		unsigned long start = 0x300000 + count * 0x3000;
-+		unsigned long end = merge ? 0x309000 : start + 0x3000;
-+		VMA_ITERATOR(lookup, &mm, start);
-+
-+		ASSERT_EQ(vma->vm_start, start);
-+		ASSERT_EQ(vma->vm_end, end);
-+		ASSERT_EQ(vma_start_pgoff(vma), start >> PAGE_SHIFT);
-+		ASSERT_EQ(vma_start_anon_pgoff(vma), start >> PAGE_SHIFT);
-+		ASSERT_TRUE(vma_test_all(vma, VMA_READ_BIT, VMA_WRITE_BIT,
-+					VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,
-+					VMA_MAYEXEC_BIT));
-+		ASSERT_EQ(vma_test(vma, VMA_EXEC_BIT), !merge && count == 1);
-+		for (addr = start; addr < end; addr += PAGE_SIZE) {
-+			vma_iter_set(&lookup, addr);
-+			ASSERT_EQ(vma_iter_load(&lookup), vma);
-+			vma_iter_set(&lookup, addr + PAGE_SIZE - 1);
-+			ASSERT_EQ(vma_iter_load(&lookup), vma);
-+		}
-+		count++;
-+	}
-+	ASSERT_EQ(count, mm.map_count);
-+	vma_iter_set(&vmi, 0x2fffff);
-+	ASSERT_EQ(vma_iter_load(&vmi), NULL);
-+	vma_iter_set(&vmi, 0x309000);
-+	ASSERT_EQ(vma_iter_load(&vmi), NULL);
-+
-+	ASSERT_EQ(cleanup_mm(&mm, &vmi), count);
-+	return true;
-+}
-+
-+static bool test_mmap_region_fill_hole_merge(void)
-+{
-+	return mmap_region_fill_hole(true);
-+}
-+
-+static bool test_mmap_region_fill_hole_flags_mismatch(void)
-+{
-+	return mmap_region_fill_hole(false);
-+}
-+
- static void run_mmap_tests(int *num_tests, int *num_fail)
- {
- 	TEST(mmap_region_basic);
-+	TEST(mmap_region_fill_hole_merge);
-+	TEST(mmap_region_fill_hole_flags_mismatch);
- }
+ static bool secretmem_enable __ro_after_init = 1;
+ module_param_named(enable, secretmem_enable, bool, 0400);
+-MODULE_PARM_DESC(secretmem_enable,
++MODULE_PARM_DESC(enable,
+ 		 "Enable secretmem and memfd_secret(2) system call");
+ 
+ static atomic_t secretmem_users;
+
+base-commit: 986c24e0fe44f844b44d365b71ce831947f50298
 -- 
-2.55.0
+2.53.0
 
 
