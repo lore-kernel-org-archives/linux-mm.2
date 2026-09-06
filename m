@@ -4,98 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0980C79F99
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 097A7C79F99
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 10:16:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C72B36B0088; Sun,  6 Sep 2026 06:00:41 -0400 (EDT)
+	id A948E6B0088; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C23B36B008A; Sun,  6 Sep 2026 06:00:41 -0400 (EDT)
+	id A459D6B008A; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B39556B008C; Sun,  6 Sep 2026 06:00:41 -0400 (EDT)
+	id 936826B008C; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88FB76B0088
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:00:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0237DA04E2
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:00:40 +0000 (UTC)
-X-FDA: 85182893082.24.6109886
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D73240006
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:00:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Akn72PWI;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 629B16B0088
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 06:16:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C181980505
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:16:27 +0000 (UTC)
+X-FDA: 85182932814.06.3237525
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F1DAE40006
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 10:16:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZDwHhkw;
+	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788688839;
+	s=arc-20220608; t=1788689785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=snH3EbBb/iu4/hpnhb7Q5dASnycbjTC3AQM0O003+3M=;
-	b=iay6JXfk/KcHoNq8hF/HxPHMB/u9DhwvBaAwpWwy24XQ6OGDDsTTYK9+aHnoY1fFCG7FK2
-	CgzGPZcs+aKkIhAD5mL63PkDBtYCPxiS0RnmsZeArKcgr9sxTJOemqXz2di4MwVvQnm9Cs
-	XqrbmaLBytI1OEI9V1NyBGq3sgoSR4s=
+	bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
+	b=EezQDNmbJ4EZcwyEBch84EKVcoFlxvGJvyMm1ZAxI0gYjdE8DjpYBR2Plif/pu+7vsWZyw
+	JLwVOHR/nZ5ND1LVrotD+SP4D8SW30BEjIOnDw0eFHHlLzd74h5WIS9bv/tzyhh7ZhODHz
+	m8W+A87B+n9PX/GD8HwexLeiVj8XKFU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788688839;
-	b=Uo5jg8kf6hm5awOuv8LjHSIDwzDeot8k3fp8D2sCKuGjgVpTwlatfi7GNChAyK7OIRyB4d
-	FMOqsbGmGCXTmlEiaKc+Aaeq9vv5w06XEiuEMHln0jMXfTpu8jQH94PGfIa5xje8oLb3ek
-	w4JgsktvFs7x1/ffB6Jnu81RyDWsZZo=
+	t=1788689786;
+	b=RS0TA+MeP9pKFBswgwIOBzR78EHf0KC+M3wVsQtH6qrya+Ru06Ao2Jl1tlP9ere56BkusL
+	shuEq7aPzf/1BAIfnHspTMRFR8zxIjqxKpNpRsB8m+hlhVaa/b8S+qMd6J03BkPSSfwxD5
+	xLltlytBktvAaAsQ3TlRbds+KePsNmk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Akn72PWI;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F82D43D7C;
-	Sun,  6 Sep 2026 10:00:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7151F00A3A;
-	Sun,  6 Sep 2026 10:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788688838;
-	bh=snH3EbBb/iu4/hpnhb7Q5dASnycbjTC3AQM0O003+3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Akn72PWIRJjwB6g+ptMXNhnydqgYB8YJdpJbWNP83TRqfLEPm6hacZqV9dTqOwkiN
-	 HOC863VLgNfr8uXx/bu+2eqqCfm8crNSNg8eS2E4dk8oFFSQX/z2ECjQ+FHOvIs5Cr
-	 Dn0Ws1XP98TBSlQJHHebBauNHrwOLGAoGYr/5E8RRZg7itrF4eSjIEnQ0jC0av8TvL
-	 8ZeOHsokWT65OKsh8d7cTYP+aoeLFFE8FbNYwjZsIoD3/dUC3f8XKU/PlvEG4RLQSp
-	 wVfhX0EnU1daZTI3X6ha/cPMtcae2UoCguWVUAJTPE9bVs1js6l0PjejQP82bmHtlS
-	 OfRV0zoMv61iA==
-Date: Sun, 6 Sep 2026 13:00:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	kas@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-Message-ID: <ap05ue1pq3TgHOS6@kernel.org>
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
- <apk8ZRr6do_YAlzf@kernel.org>
- <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZDwHhkw;
+	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-495590dde14so35185355e9.0
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 03:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788689784; x=1789294584; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
+        b=MZDwHhkwd9vYiHkxu2gHtmTvhYCutveMIVHSlRiYUnIK44dBEaaQEDT68AnsWvEkjr
+         768bEwtxZx+98zCrX2Y9/v3dBlbCf38wTMovDE3YhnGzJU/I17eaINHpn4jxESC9TIkf
+         0mHE6yF2hGrBLP/9/IC283uV4DeWJ3RWrQ8NJM0EtD5aK2AJECMZqZTd0RuNfanI0V6U
+         z2WDcx9DE5gxITOBhmYujCeC28CH63JIe04+fbesHR5qBwkftOaJvyaQ+VArKPuK+Ce+
+         mhSUECZJ4UVGG8I92R/qd/W0tISPxssVVtBAfUfEqOEd/i9E6VFqhE1nG6ULqBZDoaR0
+         FEMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788689784; x=1789294584;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ojcatem/E1McFU2tn3fpwcM30WG5bWRqceZT/nBgCPQ=;
+        b=bzdrdpRw5md7Be/Roo4lqw6/9EVWJQmpTkjN2myckhccA153gSfoR1FNF5h5ctNjKH
+         iciDqW2oJ/By6MZD9Cj/MohomqOQ0zsL2L+lBTPbIJslZLfmJwT05Uy4BhV0X/uKD9ym
+         O565KNlv2E/A/i0BeMkbzheBH4lkLS4zQkLnD7A4Pxc9QWVR321WAIWdYHwzviGTPasP
+         TkeLGXqZRRM0gERTFZT7+oXzU06gRIYtBSRf8zPbFsAkCv1EmFxsHpLraMf29g1adRqS
+         s3CVtzslQa1z+lIlBJPTqH8uSozwQXmeEBDqlWC7nK0b1ORDMpz/yEbmnm/TMH3x/ct0
+         xatg==
+X-Forwarded-Encrypted: i=1; AKwUvBy40TRdihaD9J3jAE7VHxVdPzVzvUxU18xzS1oveyfefSK+8PPyHATdsPlpwbUGoj8FxC/2Ghwkew==@kvack.org
+X-Gm-Message-State: AFuF++n/e/3U8CM5lEBmligJ0KaKXWsTwCI4MO2H0OwuK/96sHavLsJe
+	osb+ZjVKbChEwF/23dmdUFzxV5dbo8NzEMWXoHUD6sRAw/so0pZDpUrH
+X-Gm-Gg: AYBFou2iYwYimYgYe4IlCVJ+dkxuULVNAnCF7I+9uEzbI6cIeM4i2rWF1rJ29CSznu5
+	w3u3IRRMj1yCjGPuytJhXIGptvhqJmsm8MOei8kl3G7V6nmXK08roNbVwqZ47FaiJVdRSeEah0C
+	xMJk5rHmEMfkZsZ3ztAvZ91+AsNueoZtCylwpjpU3MvVyLW1LsFJ6fktxna1YkaArG2N1FKjtKT
+	5fuBa8sMQyeOL2gYTH3cGgAhZMYXq2z7t1dDG30mPW3tudBWyRoq/6nlibmLbgy5e3ibJSwJ/sB
+	NUV83R7nb3q7Od8fWuRDyWEWOgk0KY7iQVhQncXTh4LtvoyV/bZXfJvhwE72an3Xch8ecwNNNPo
+	0EjhZSSnPrCScB3SyCPCnMJIqnHkyi8Xa2x4riOoMVZ+hG9y65PDrr7cUABRxDk4GozDbJajNbU
+	m2HZUnWMz384V5ET7on/2xJ64EA2glmGxDCo97Fuxa7tjnUpt0l6YtqMne+0UrW+FOh8st/uvLI
+	GHG25fJvYoAiK9otAGUgqYwbA==
+X-Received: by 2002:a05:600c:3b11:b0:49c:f7c4:dc54 with SMTP id 5b1f17b1804b1-49cf82512b9mr288796435e9.14.1788689784162;
+        Sun, 06 Sep 2026 03:16:24 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d03703f13sm57044775e9.0.2026.09.06.03.16.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 03:16:23 -0700 (PDT)
+Date: Sun, 6 Sep 2026 11:16:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Muchun
+ Song <muchun.song@linux.dev>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Chris Down <chris@chrisdown.name>, Tejun Heo
+ <tj@kernel.org>, Yu Zhao <yuzhao@google.com>, "open list:CONTROL GROUP -
+ MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, "open
+ list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Ridong Chen
+ <chenridong@xiaomi.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] mm/page_counter: avoid integer overflow in
+ effective_protection()
+Message-ID: <20260906111618.644362b3@pumpkin>
+In-Reply-To: <f65d4985-5e21-4e29-b5f4-dcff0fa479ab@linux.dev>
+References: <20260903031952.1120321-1-ridong.chen@linux.dev>
+	<20260903031952.1120321-2-ridong.chen@linux.dev>
+	<20260904093743.23cde26b@pumpkin>
+	<f65d4985-5e21-4e29-b5f4-dcff0fa479ab@linux.dev>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4fz4iohz8siqfbyqg484i7dubr4di9gx
+X-Rspamd-Queue-Id: F1DAE40006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3D73240006
-X-Stat-Signature: 6k4jaa9nh9cg1gz1hr9mj8e17rjysmei
-X-HE-Tag: 1788688839-517461
-X-HE-Meta: U2FsdGVkX1/Z7t2XMBYdApcrQSTnN6bdxIbBHKWMFUOlEtzVFdYPJMt36/MijgteU7ww4Z0FrAWJBkWfP+k99hjk2JKjdGS/Dr1jmNQwhMSX4av9gGVS7Me5frYAZ3u2SYTVrppedezvdLr1WK1qjCrlgXlZb1jzEWmwSdE3VsokA5zQ4B1E8GtsyMgmhMdWpHIRT18vP/SUBZrfDZ7PHqn8lHyFhzYhg/DyZ6aP/jhPu+Q5xKheW3d5f+AbSGVs8lqFGriq+z+hDTljsxV9ii1KYasqBV/T3FSkG3pU7BovDn1iDJeVIekADOVWkxDGVK/9on74ns0f2JIwz/xrrtE1HNSvZDb471SsQ/1yhJuEy+qKI4mi03q9y0Jah8MLjCw0lm+1yLodVo+mvcF4fH9qLdln2T97XUVLSpVt14gZQa6iXRhSW7vnEzS9LHwd9rwS+Qh/LliTYeV753sK6Dkj7tD7czisx7w6X0Lc2ZV9hpujw1eaqjJ/w1DVE9OMbboecu0TEkWn5YFckVCFcPoRi3U5ULdtQMVqVJcxlzieixGHSKdgRSoDk40P4ykLC4o2i0g1XkUe0EprZ18W9Ti/IkdB9d9ReOK8pYcvqu2lX15QQcYrzvD9DgVxZTmtslr77QJo8m8LBGP/ngMIeRYWKsGlfvZvii8AK3o9DMdv6JADue7ygAcBkKQUPWx1+7GfoZqSQkbvVMq+RTf8YoVfSsOyLeQ6NT9p7meOFAV0X7rJXvl00z1U9rFm+Mmy6TrPcR69IJ++yyGtvAeGA4dxklvNr+cLTlUNFBYN1ieKCKwhntV6p9wYfuvRSbYaPVwKJvZ2qa3YL6EI0n0gJEBH+XOKXUuckHsoF/O1owtCKF0IxWHV/TqPhccn9tehNw0pWbN8UdZpU7TJiqp30TYK+vKtgbcr248R7m+Iqak4S89b3UtJzot7nBQ2iIQugchfMiKFO7IH36Uj2SX
- pgrbaA/y
- b8sfCeX51yE2Aui0auyimcc8v9WzKD7b0YNNI/ATJFUKkjsSIwZzVck7AvQSbxi+xZ8qU2JunzhlnkGBtVQ3210IfbPjpL7LsUqGER0zJhjlm/1RJtVxinGwdhTcKbu5YRCZxH68AMM7anmChECnJg/gFFzQw/ascLQZ6HCDoSVBGNq/SRbJhoxOMQnQ+5wx4MogyTPZuJ9X2Jf0zfF1c2Fp6dbPtY0FRx5AloGpd4KYv5DNeRdc2ia5Dm2HJyq2Yl06r1H07SGN7qIITNyfk+yuPKYrvQi9nmxUbRud59/aJMMDK+7dDAi4isyL/kOYDqVxWfBwYIwGZdZgdLNMzrt2LRiaiucV/DQ8Aug8w3bNMXln1TfM2ryUcqQm0WcgBXcYDXql9l23pxUva9nHJgcaoFpWN8OUULDwlVWnxOly7uq4=
+X-HE-Tag: 1788689785-91093
+X-HE-Meta: U2FsdGVkX19A6YjmFbaObvMRhm6hUB3VIrv9dqg1KNWvDKq3v7HpHJDn8lKTRHaUt7rOqlMjGU+2/dsgNoa+Yv6OqmV0pe4rnqbYAJc+xtGisFw3OlTM1+yPvUqciclBPYHBoRt0oTWiAc1tiW/x7O0ZL9U3ajq9gFf0iPEZeMNfmTDAxaX5orjdxBahoKPLPxa0PnCd042/1EWHX7Wc4qbZz6lVVYmCtK/ZS2uKeut9RoOW4RsxoNZWS+aiW8TeMseZp25KDmnraRW1zJMRosCXiuOqomuphL81q6D37JXDwHzYCgpa8oPYai892M2rTqzcbOK6M3IEBTsfRdJ9xK8ZkD87JPNSw0H4nL+NRArxNFDtBj9H8nySEUahU/oNX1l66yGKtAzEd/Fv5DTJ0+0He1PZkBNUyb1z9m3zVK5/C/2I+exSvdVmvSA3fZwTYlbwky8AWdbSisgFWadHFOfIxfcejG6WG2V9qJBe9AIdIfpbpihXkOhwX9oFAPOVT/kQPhlYnuexeJU41ECccyAf87zkyq7qAtoorzLlaR9pHJcbKwceYnjHV8jXDmcBZAhxjmWYIjGXH63hc/Zwz/IOmLaDtyhG/gS/qHK8P38tGJCuuXNYuznZvgeqVMZQlHipp8+Oxrcq+EBsdjN7IBLz5kRwwpztBFs/947uDoV3/HjPJ6Sn9JWqt5H2cvFTxh7GBk/IoVuM9OlDWbVBzlpv/zPloM1HbaKDhhFlz1WZ/kfEIDHinqq0swiVTTYFnhuYW9JBNS65qrsRBHs5MPYgMDk5AHXAD8yl/sa27OAnxQdq1tZMbgHgAyyMOiGpEem2LTiSCjHTb697BkTM1EXs7SdktZt95sde44LgRTvkIt92eO/I7h7W+7Ai+8+aXBWfJJCNfS7fYqABR3+YPaf/cSqqX1BbArivoHe8LlggMvgfRMQMKXE4a7HrmUrNwU1ljYxUSvvIwmgdz1X
+ erBEWkhi
+ l3I+dh6RKBSsgE2XXcC4dgSMHKAEjBhDl0V21X1M0M2bwdafWMq+Ze/29SlsLd7+fy3L2YQtLgpyJk8HwLpHwKjGvM3ylEdyznAJ5GkSpMBEuX0nKTHS7ORHKBHEHPC9Lx8f7L6w6x8OPhOtDSGVFmEsQhAUGXLX8g59ym6qNdOxY74lBBKkpntgsd/+rM+1vbgb7TcAGbgDCmHSL/Dhrd7NtySiZbA1g9eCMZqtWkk0750pNY08VLcWXKiEkUyi0Bvh9V3QZ/OzLHq2jOp0u6NeUJGvOahuqv5VI8TDd5v+SNETs8p650V0ayQBstOEY2KZrEW8iGuQeoatYjFhl86jlL/8bRsxBX9pdh0DTeMrp1V0ENABadYC8A4t4INVsJn+oIj7iEPYsi/3AbnrtpfeqdKZNPjs7TlbW14k8cs8oAeFCtrGKKRJR451yxRQ3joOoeneCXBtfaWu49TG1Jozj6Zl8Vt1IRDWWiOt6fTthDuGN95j8qRLOtzxiqmZBHZFCujjSy9h+02bDhackfBCMVhKTyS2X/4rbykcDg0zuNFOlUmKCrybQrl2QWg8QnVqwM+wuPKY425ZrY3sOIxxdqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,133 +136,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 08:49:52PM +0800, Xueyuan Chen wrote:
-> On Thu, Sep 3, 2026 at 5:22 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Tue, Sep 01, 2026 at 11:18:16PM +0800, Xueyuan Chen wrote:
-> > > The persistent huge zero folio is shared globally and should stay zero
-> > > after initialization. As Jann Horn pointed out [1], kernel bugs have
-> > > ended up writing to pages that were meant to be read-only, including in
-> > > security-sensitive cases. Making the folio read-only in the direct map
-> > > turns such writes into faults instead of silent zero-page corruption.
-> > >
-> > > Add a page-based helper consistent with the existing direct-map interfaces.
-> > > Handle TLB invalidation in the architecture implementation; unsupported
-> > > architectures retain their current behavior.
-> > >
-> > > Protect the folio after initialization. Skip highmem folios, which have no
-> > > permanent direct-map mapping.
-> > >
-> > > Inspired by Jann Horn's read-only zero page work [1] and follow-up
-> > > discussion [3] with Yang Shi.
-> > >
-> > > Link: https://lore.kernel.org/r/20260508-ro-zeropage-v1-1-9808abc20b49@google.com [1]
-> > > Link: https://lore.kernel.org/r/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org [2]
-> > > Link: https://lore.kernel.org/r/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com [3]
-> > >
-> > > Suggested-by: David Hildenbrand <david@kernel.org>
-> > > Suggested-by: Usama Arif <usama.arif@linux.dev>
-> > > Co-developed-by: Lance Yang <lance.yang@linux.dev>
-> > > Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > > ---
-> > >  include/linux/set_memory.h | 17 +++++++++++++++++
-> > >  mm/huge_memory.c           | 13 ++++++++++---
-> > >  2 files changed, 27 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> > > index 3fe293cfed8c..ed9ce04b18a1 100644
-> > > --- a/include/linux/set_memory.h
-> > > +++ b/include/linux/set_memory.h
-> > > @@ -54,6 +54,23 @@ static inline bool can_set_direct_map(void)
-> > >  #endif
-> > >  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-> > >
-> > > +#ifndef set_direct_map_ro
-> > > +/**
-> > > + * set_direct_map_ro - make a direct-map range read-only
-> > > + * @page: first page in the direct-map range
-> > > + * @nr: number of pages in the range
-> > > + *
-> > > + * Make the direct-map range starting at @page read-only and invalidate stale
-> > > + * writable translations before returning.
-> > > + *
-> > > + * Return: 0 on success, or a negative error code on failure.
-> > > + */
-> > > +static inline int set_direct_map_ro(struct page *page, unsigned int nr)
-> > > +{
-> > > +     return 0;
-> > > +}
-> > > +#endif
-> > > +
-> > >  #ifdef CONFIG_X86_64
-> > >  int set_mce_nospec(unsigned long pfn);
-> > >  int clear_mce_nospec(unsigned long pfn);
-> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > > index 54494c3fa983..742283b36d74 100644
-> > > --- a/mm/huge_memory.c
-> > > +++ b/mm/huge_memory.c
-> > > @@ -42,6 +42,7 @@
-> > >  #include <linux/pgalloc_tag.h>
-> > >  #include <linux/pagewalk.h>
-> > >  #include <linux/cleanup.h>
-> > > +#include <linux/set_memory.h>
-> > >
-> > >  #include <asm/tlb.h>
-> > >  #include "internal.h"
-> > > @@ -291,10 +292,16 @@ static int __init huge_zero_init(void)
-> > >       huge_zero_folio = alloc_huge_zero_folio();
-> > >       if (!huge_zero_folio) {
-> > >               pr_warn("Allocating persistent huge zero folio failed\n");
-> > > -     } else {
-> > > -             huge_zero_pfn = folio_pfn(huge_zero_folio);
-> > > -             count_vm_event(THP_ZERO_PAGE_ALLOC);
-> > > +             return 0;
-> > >       }
-> > > +
-> > > +     huge_zero_pfn = folio_pfn(huge_zero_folio);
-> > > +     count_vm_event(THP_ZERO_PAGE_ALLOC);
-> > > +
-> > > +     /* Highmem folios have no permanent direct-map mapping to protect. */
-> > > +     if (!folio_test_highmem(huge_zero_folio))
-> > > +             set_direct_map_ro(folio_page(huge_zero_folio, 0), HPAGE_PMD_NR);
-> >
-> > Sorry, I don't remember if it was discussed previously, but why can't we
-> > use the existing set_memory_ro() here?
-> 
-> Hi Mike,
-> 
-> We want to change the linear map here, but arm64 set_memory_ro() only
-> works on vmalloc addresses.
+On Sun, 6 Sep 2026 09:11:24 +0800
+Ridong Chen <ridong.chen@linux.dev> wrote:
 
-I believe this is an historical artifact. change_memory_common() already
-updates the linear map when a vmalloc mapping switches to RO and the system
-supports it.
-
-I believe arm64::set_memory_ro() can change the linear map in the general
-case as well as long as can_set_direct_map() is true.
-
-> So a new helper is needed on arm64, and x86 implements the same
-> helper to keep the two architectures consistent. On x86 it is
-> basically set_memory_ro() minus the alias check.
+> On 9/4/2026 4:37 PM, David Laight wrote:
+> > On Thu,  3 Sep 2026 11:19:51 +0800
+> > Ridong Chen <ridong.chen@linux.dev> wrote:
+> >   
+> >> From: Ridong Chen <chenridong@xiaomi.com>
+> >>
+> >> effective_protection() scales a parent's protection by a ratio of page
+> >> counts, e.g. for recursive protection:
+> >>
+> >> 	(parent_effective - siblings_protected) * (usage - protected)
+> >> 		/ (parent_usage - siblings_protected)
+> >>
+> >> The multiply is done at unsigned long width before dividing. On systems
+> >> with >= 16TB RAM the product can exceed 2^64 and wrap, giving a bogus
+> >> protection value and silently breaking memory.min/low enforcement.
+> >>
+> >> Use mul_u64_u64_div_u64() to multiply in a 128-bit intermediate. Because
+> >> usage and parent_usage are not read atomically (a child is charged
+> >> before its parent), usage - protected can briefly exceed the divisor,
+> >> making the quotient overflow 64 bits and trap (#DE on x86). Cap it so
+> >> the ratio stays <= 1.
+> >>
+> >> Reported by the sashiko review tool [1].
+> >>
+> >> [1] https://sashiko.dev/#/patchset/20260826133054.88529-1-ridong.chen@linux.dev?part=1
+> >>
+> >> Fixes: bc50bcc6e00b ("mm: memcontrol: clean up and document effective low/min calculations")
+> >> Fixes: 8a931f801340 ("mm: memcontrol: recursive memory.low protection")
+> >> Cc: stable@vger.kernel.org
+> >> Assisted-by: Claude:claude-opus-4-8
+> >> Reviewed-by: Barry Song <baohua@kernel.org>
+> >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> >> ---
+> >>   mm/page_counter.c | 19 +++++++++++++------
+> >>   1 file changed, 13 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/mm/page_counter.c b/mm/page_counter.c
+> >> index 661e0f2a5127..e8bd512069c5 100644
+> >> --- a/mm/page_counter.c
+> >> +++ b/mm/page_counter.c
+> >> @@ -8,6 +8,7 @@
+> >>   #include <linux/page_counter.h>
+> >>   #include <linux/atomic.h>
+> >>   #include <linux/kernel.h>
+> >> +#include <linux/math64.h>
+> >>   #include <linux/string.h>
+> >>   #include <linux/sched.h>
+> >>   #include <linux/bug.h>
+> >> @@ -356,7 +357,8 @@ static unsigned long effective_protection(unsigned long usage,
+> >>   	 * otherwise get a smaller chunk than what they claimed.
+> >>   	 */
+> >>   	if (siblings_protected > parent_effective)
+> >> -		return protected * parent_effective / siblings_protected;
+> >> +		return mul_u64_u64_div_u64(protected, parent_effective,
+> >> +					   siblings_protected);  
+> > 
+> > On 32bit it is only necessary to use a 64bit intermediary.
+> > mul_u64_u64_div_u64() will drop back to the (probably faster) 64 by 64
+> > divide (and then maybe to a 64 by 32 one).
+> > But there is a lot of extra code before that happens.
+> >   
 > 
-> Thanks,
-> Xueyuan
+> Hi David,
 > 
-> >
-> > > +
-> > >       return 0;
-> > >  }
-> > >
-> > > --
-> > > 2.47.3
-> > >
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
+> Thank you for your review.
+> 
+> Do you want me to split this for 32-bit, or is keeping the single
+> mul_u64_u64_div_u64() call for readability fine with you?
 
--- 
-Sincerely yours,
-Mike.
+Maybe I'll look at wrapping mul_u64_add_u64_div_u64() with something that
+checks statically_true(((a) | (b) | (c) | (d)) < 1ull << 32).
+
+Probably neater than the conditional here.
+
+> 
+> >>   
+> >>   	/*
+> >>   	 * Ok, utilized protection of all children is within what the
+> >> @@ -397,13 +399,18 @@ static unsigned long effective_protection(unsigned long usage,
+> >>   	if (parent_effective > siblings_protected &&
+> >>   	    parent_usage > siblings_protected &&
+> >>   	    usage > protected) {
+> >> -		unsigned long unclaimed;
+> >> +		unsigned long unclaimed = parent_effective - siblings_protected;
+> >> +		unsigned long unprotected = usage - protected;
+> >> +		unsigned long parent_unprotected = parent_usage - siblings_protected;
+> >>   
+> >> -		unclaimed = parent_effective - siblings_protected;
+> >> -		unclaimed *= usage - protected;
+> >> -		unclaimed /= parent_usage - siblings_protected;
+> >> +		/*
+> >> +		 * The usages aren't read atomically, so a child can transiently
+> >> +		 * appear to use more than its parent, making the ratio exceed 1
+> >> +		 * and the quotient overflow 64 bits (#DE on x86).  Cap it.
+> >> +		 */
+> >> +		unprotected = min(unprotected, parent_unprotected);
+> >>   
+> >> -		ep += unclaimed;
+> >> +		ep += mul_u64_u64_div_u64(unclaimed, unprotected, parent_unprotected);  
+> > 
+> > If the ratio is forced to 1 there is no point doing the scaling.
+> > So maybe:
+> > 		if (likely(parent_unprotected > unprotected))
+> > 			unclaimed = mul_u64_u64_div_u64(unclaimed, unprotected,
+> > 							parent_unprotected);
+> > 		ep += unclaimed;
+> > OTOH if the min() generates a cmov rather than a conditional branch
+> > then you don't get a statically mispredicted branch in the normal case
+> > (which is very likely with the empty 'else' branch).
+> >   
+> 
+> I'd rather keep it as-is and avoid the extra branch. Does that work for you?
+
+I nearly came to that conclusion while writing the comment!
+Actually the same might go for the other three tests - generating a 0 or 1
+from a conditional move ought to be better than the possibly mispredicted
+very unlikely branch.
+(I am right in thinking that they should never fail?)
+
+I also suspect the #UD is the least of the problems.
+You don't want the scaling to produce a bigger number at all.
+
+David
+
+> 
+> >   
+> >>   	}
+> >>   
+> >>   	return ep;  
+> >   
+> 
+
 
