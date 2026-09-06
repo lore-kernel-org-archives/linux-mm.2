@@ -4,93 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87BDDC624DB
-	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 01:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB661C79F82
+	for <linux-mm@archiver.kernel.org>; Sun,  6 Sep 2026 02:00:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287996B00AF; Sat,  5 Sep 2026 21:42:34 -0400 (EDT)
+	id 9AD926B00BD; Sat,  5 Sep 2026 22:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 237536B00B8; Sat,  5 Sep 2026 21:42:34 -0400 (EDT)
+	id 95E536B00BE; Sat,  5 Sep 2026 22:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 129906B00C2; Sat,  5 Sep 2026 21:42:34 -0400 (EDT)
+	id 8287A6B00BF; Sat,  5 Sep 2026 22:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4FB86B00AF
-	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 21:42:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5AA141A0428
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 01:42:33 +0000 (UTC)
-X-FDA: 85181637786.29.9C356F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 99FA420002
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 01:42:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d9otqxcd;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5820D6B00BD
+	for <linux-mm@kvack.org>; Sat,  5 Sep 2026 22:00:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D34AA80445
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 02:00:35 +0000 (UTC)
+X-FDA: 85181683230.16.6B3C682
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1AB3640003
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 02:00:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=onvqGLmc;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788660034;
+	b=hoXde2vMMuH4z8jrtoLi9fe5rEeBoZMreZ8aDZYHJ7xHKInFUBH4qQy6RS6IyzRfY2wOEc
+	Okyd5VEzUrcGClS6Vcg4cUEoU0j26zvNze6I9mu5FKu0KiFnntxSfbKU3tZ7g0mwZAqKpg
+	UGbTx8eA5IWbDbSHqoLjWUI1cvBZY0M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788658951;
+	s=arc-20220608; t=1788660034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/AYMvAp78dVD5vLMe+eK825AGZ5A0V/aakGb0r5iBD8=;
-	b=HkgwcESRh2PKNcFdBoxyNqroNPdkfl4hZHnvIeFPOE5tg+vu/yYCA069pg6OH0xfFCiKaW
-	zRrLMLELVvfs6YP4ewEZhP9O11oZXcfWfelxt2Ddyl3/jsj0A1Yucfr68cx/fN9Kvp/qW9
-	Y706UHztexQsI7JmuL904T27GKoCvXE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788658951;
-	b=YkJ7ndu9NORj4OqStQXm2pnSpJuF15WWViuwQQplmV5ONIV7jRxKqYHefAf4Y2aMHs0wJI
-	cZgJ0vkL61rUTenR5TSTydS3u4LaBuOhVSwvjQ0Vm1+kDAcTJ3dOco47pEcsNIOtv8Iigk
-	9opP+ws6KpSvM9C7Rj2wkUh5aVCsXMg=
+	bh=ohXcpCjF3E8Su2iGbnUTFcKH4Q5PX6bz9vn2jqgCP+c=;
+	b=eydI2Yoc6OFfdRgHIFdYV+SrwS94wwk4t6DnMBxCNEXVg0jkw8GER05NMG+SHcYmcJQEsX
+	aKnqqpu3C6FGGeNQ59zlmygGciJrzCgrglk93mGSARKRoK8HbiBGanDZ6cMm/R2sFR7M+v
+	YDjCItn44egBOuZupsdNBpywcrJa+Z8=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=d9otqxcd;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=onvqGLmc;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D9E5F60D7B;
-	Sun,  6 Sep 2026 01:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F288F1F00A3A;
-	Sun,  6 Sep 2026 01:42:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 54CA343C12;
+	Sun,  6 Sep 2026 02:00:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131AD1F00A3A;
+	Sun,  6 Sep 2026 02:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788658950;
-	bh=/AYMvAp78dVD5vLMe+eK825AGZ5A0V/aakGb0r5iBD8=;
+	d=linux-foundation.org; s=korg; t=1788660032;
+	bh=ohXcpCjF3E8Su2iGbnUTFcKH4Q5PX6bz9vn2jqgCP+c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=d9otqxcd7zj7hxwsR7h9z2fXV+XdoihBpmslDHd0s4xCWUN1nwpYbP6klTajWyeY8
-	 8w+ufiaU8aIE8EqK3x4dEuUmX7zmiB/PaoxQh+7SI8o2wyvRAzjJaGcC+dLNbn7q+1
-	 6FrDVJ5D6Lc3kW9cUm6S3KRt2N1DjTCTMaIoKtGM=
-Date: Sat, 5 Sep 2026 18:42:29 -0700
+	b=onvqGLmcP1GLOxpEKfzU67JdQE7IDZGMsPO64h/0NSOK+RvFXdBCqD8+ofD1WBq2g
+	 i6cYyIHzjygejYh8PKFLzFY7Ac5zL8dW6mlFYoHExtDtLuDxudvpRUkwCZVnaHxKoG
+	 FWNotUDCuJBgzmpoHcxnORH4VODmerRMAERbMW3I=
+Date: Sat, 5 Sep 2026 19:00:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Hui Zhu" <hui.zhu@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
- Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lorenzo
- Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu
- <zhuhui@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm: workingset: use lruvec_page_state_local() to
- count lru pages
-Message-Id: <20260905184229.8f7f30cf10638e7dc8224467@linux-foundation.org>
-In-Reply-To: <2ec3a7f73e85ee5f5739c9dc2e58e9a0e2091925.1788514750.git.zhuhui@kylinos.cn>
-References: <cover.1788514750.git.zhuhui@kylinos.cn>
-	<2ec3a7f73e85ee5f5739c9dc2e58e9a0e2091925.1788514750.git.zhuhui@kylinos.cn>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Adrian =?UTF-8?Q?Barna=C5=9B?= <abarnas@google.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, David Hildenbrand <david@kernel.org>, Gerald
+ Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Len Brown <lenb@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, Pavel Machek
+ <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Ryan Roberts
+ <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon
+ <will@kernel.org>, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ loongarch@lists.linux.dev
+Subject: Re: [PATCH v3 0/6] arch, mm/execmem: resolve confusion about
+ set_direct_map_valid_noflush()
+Message-Id: <20260905190030.adf2740822e211ddc028a24a@linux-foundation.org>
+In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
+References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 99FA420002
-X-Stat-Signature: 5x65puk51b3rqzc1c17adyjybup43a4x
-X-HE-Tag: 1788658951-730920
-X-HE-Meta: U2FsdGVkX1/ZUDT+i5pbv1cPH64jVpJZU6Aam+yV7s+cLVQKopwEMZJ7YkNPles8T9Hb6qM9+RxMOul29rLiP4gJCXY/Wg/u4fRtfuFzFkBL0vIwF3PLhvqvDuFWGTrCZwVmB20NJaxYm2iUgd9M9Gf/4sEJ0xXr0Ibt8zcO6GuW5ixd1nH4TNHApv6J9eXbplPR7lLtKe5/m3pQZIO9yzroH44M/Xkqa1b17rVyXs4TyAY3BRvsYBf1uqhg5ASuMvPA+8hj2/LugnzQPC4511EItGHZ52SDIxfKCEs29xMIAI6ondwSiwyb7DkXCtGodZuEjWUvL9P4GHvMc67wu9UozQdYebw0sn9UwYvL5HnihJNpryUVUWh/1m0sfKEJMbCZGc4LdF0uxq0gdrgjSLjntIxObRCXem1U0/HT3AfZfmluBRdWAd3BlTDAfZxKRKhJkTZmIzs+WADI4fgxgalapkzYBTYqk4Imr/8kI5CFqp2hckI23QQn3pKzs3hxYz0mlkIm4fR3pGu4ky31JQRXzldY+67ld8iuZjbKC3E2iQC1/rmZGhbCenJdAe1w4ZDvAfOmSuU/2afYt1BIWLmc9tlE3xYYyCvlVSdkD344hKMQdY/EaymAFU33q+yACV/2LXDB0GBQCiCyD31aFzAMfaO546KU0SkpGvkOTm5kT9Ip4uQsu34DJrgfVqOuH3hL273YrlMC+AyfGnBNyv8USq4hM41Irpmi180e7JlAYXtHb1fCVOshrBK4DItOD44rpOubuDilpPTE0X7egB30cb7G0ZioqPMTE+L/D2+wzANpZ1YaJb+MOP/RhgsJcGh7pGDynuEC20DwPbsG22qAVbxXGJ03RzXmto1EscNY0e16x7MGDkXwXTb4lvwDJsKek59ME26d+zSwhkxdTDVTDF5KCS/WSU9OmW+LXlydfTAF5mk7ZZgGmvh8RJXULAqJOuMQwlLleKNTBNO
- TkwHISxr
- UZhIFHWzbYTzBAVshriEAWGajSuqddYQvnHuBnevvnjpRulIOiPtyMPYLBqZV1H8IPuTUqSaFO8rG+I3jAFUKvsmDLgfu0czP3HdWE1/m063V2wb/QYwXFJT2tvnMUVZgeixeQd00OSUtK1nM8RlOp4gllSdQsfF2ZpbfHwBfmPSyI33RaQYeo9k+kp+mc+EvkeQ+rKy14rWuZygFiD8cTP6okRxChn80MOtOQemxyQRiW2A2dH1VdRnKXNHWKyu/yCGdBz9/lHdJR7GMUJuwqbOUw0MjNY1Ua/u52HH60/Y8qsM=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1AB3640003
+X-Stat-Signature: 5d8hno4c6qeop7nih8owcizoz1j7nuqk
+X-HE-Tag: 1788660033-95878
+X-HE-Meta: U2FsdGVkX19fB9bXZM38roGObM/1jyBmMGCeeR5koC5lCmU9+sGjhtJCoi/R0a1oB43f9ImTYzz4Nb33cD/lmBEjckYTy0LiXt/XLFePvx85A+0GuNy52NYa3WvJxfAEWOkpcBXOWMGBd02JqlMg3rCYsdZ6NfXbSM9nfT/VRZd1kcPBe0C0QCZl5FzuKgnKCC5yXssZg+x5zAqXkxCNtxJIdTuMayRTVXbO7W/LP8xQnqngLLT1kgG0Pkt1MI67hcdgKW01yDb729aLSgPdOOC5ZcxReMw1ce2bDCktKxbR+fTsb0Oeyv6vDRibZRMDux6vHsP2RqIY67FNJ2VhydJ3pQJs0krtv+09xTf4KNnxopijjwun4RCqLPZSVJDbv4BjspFQE2HrwOUd6yZ4Ci/LMYxp8XXw/5LBtv8cmC7GpWbThH6dvvr2noZf60xCxhSd7sXap0OaaDbfXTsfL1qabKHLjNangMLBcJGYK8f//pPG2M5oTR27DWA0kTDJ1A2swZXXgZVzFwur668gTpKm4PWrQLX+cz/Nb+8z0iwvMKIFchpybbms8kxxuLn4nKKfkeTZqqRtiRY4DgWMrfA/h/Vq3XdVYhsvVSMjFtuyQaYZXAq0QRDulqhbIIwHPgazZAjCIgK9+srspuKMgsOuJly6JqUE8bp8Px4rYSXEQk+BRCMHXsu7lQZF0hWyfTBHoq7TqRANjy9jxh3ZQ/qp9Ws+04ScfGtEYa50zcqUBS1vpcc8hjtMgsOYQPW9s8hdNxi0bzVsSbGSrRTq2kPZ00pJqJuiTx9GSy03Gq7HUDa9a1ix4S7lXKD2UVCeX7LPWbN/g5E7yuI7+4WoxjyZ8O3EEeaRgrd4SGe43F0Z0XKaIEpsyGOSJTnKyiw3Cp0tiQKVNLw61z00pHv8xWO33p3jafel8RlFoiPgBHP7J/DGsc871TLFhV53RRe1aBcr5SjMDo4v/aZ8YHS
+ BEoHbBFW
+ GT6BM++AK3u3LbSHkvSoRAFN08VwLScWadrmhEhyVKfifmsn6FL3nWpvBZJQgd4Z9147B98Qco9CZENyfxUrpiMkrNLCiubhuO+PYyVs8HoTurVnjAHOE6rE7sJcce4saqjh6bsQsoLKnafBwI2ZKAyaGg0IS2J9lvcTZfFLW5WlWyaj49TClBXuMMjm1U+RBgXdMv1irOHkUPH8bnAlyYwLAgezNTXE5VBrmxgssCX2DhWd8VwJhe8U3KKWi0ZARtsSZssfgH7lXq62WUfC7vxp2dhJnpg87rhPTEefih3HSKZzT7bEqLbdHSQy9sd81mzM3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,36 +108,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  4 Sep 2026 17:45:55 +0800 "Hui Zhu" <hui.zhu@linux.dev> wrote:
+On Thu, 03 Sep 2026 12:28:26 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-> From: Hui Zhu <zhuhui@kylinos.cn>
+> Recent discussion about implementation of execmem's ROX caches on arm64
+> revealed a confusion about how set_direct_map_valid_noflush()
+> implemented on different architectures.
 > 
-> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-> number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
-> With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
-> which only the classic LRU paths maintain.  MGLRU accounts its pages
-> through __update_lru_size(), which skips that array, so with MGLRU on the
-> four evictable LRU lists are always seen as empty.  The shadow node budget
-> (pages >> 3) then collapses to slab plus unevictable pages, and the
-> workingset shadow shrinker reclaims eviction tokens almost as fast as they
-> are created, losing thrashing protection.
+> ...
 > 
-> lruvec_page_state_local() reads lruvec_stats->state_local instead, which
-> both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
-> race this re-exposes on cgroup v2 is closed by the follow-up patch that
-> redirects dying-memcg stat updates for all hierarchies.
+> Implement these adjustments, make execmem always use VM_FLUSH_RESET_PERMS
+> and revert set_direct_map_valid_noflush() changes.
+> 
 
-The follow-up patch is "mm: memcg: skip the RCU lock when the memcg is
-not dying"?  But that's an optimization so I'm confused.
+Thanks, I updated mm-unstable to this version.
 
-If we're re-exposing a race, the fix for that race should have the same
-Fixes: and cc:stable as the commit which did the reexposure?
+> 
+> v3 changes:
+> * set VM_FLUSH_RESET_PERMS to allocated area just before flipping the
+>   permissions rather than at allocation time
+> 
 
-It isn't clear why any of these patches is cc:stable.  The overall
-effect is a tiny performance improvement?  Very clear descriptions of
-end-user effects are always helpful.
+Here's how v3 altered mm.git:
 
-So at this time I'll schedule the whole series for 7.4-rc1.  If there's
-some reason why some/all of these should be backported then please lmk.
+
+ mm/execmem.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+--- a/mm/execmem.c~b
++++ a/mm/execmem.c
+@@ -36,7 +36,6 @@ static void *execmem_vmalloc(struct exec
+ 	unsigned long end = range->end;
+ 	void *p;
+ 
+-	vm_flags |= VM_FLUSH_RESET_PERMS;
+ 	if (kasan)
+ 		vm_flags |= VM_DEFER_KMEMLEAK;
+ 
+@@ -277,6 +276,8 @@ static void *execmem_cache_populate_allo
+ 	/* fill memory with instructions that will trap */
+ 	execmem_fill_trapping_insns(p, alloc_size);
+ 
++	set_vm_flush_reset_perms(p);
++
+ 	err = set_memory_rox((unsigned long)p, vm->nr_pages);
+ 	if (err)
+ 		goto err_free_mem;
+@@ -439,6 +440,7 @@ void *execmem_alloc(enum execmem_type ty
+ {
+ 	struct execmem_range *range = &execmem_info->ranges[type];
+ 	bool use_cache = range->flags & EXECMEM_ROX_CACHE;
++	unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+ 	pgprot_t pgprot = range->pgprot;
+ 	void *p = NULL;
+ 
+@@ -447,7 +449,7 @@ void *execmem_alloc(enum execmem_type ty
+ 	if (use_cache)
+ 		p = execmem_cache_alloc(range, size);
+ 	else
+-		p = execmem_vmalloc(range, size, pgprot, 0);
++		p = execmem_vmalloc(range, size, pgprot, vm_flags);
+ 
+ 	return kasan_reset_tag(p);
+ }
+_
 
 
