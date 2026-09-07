@@ -4,89 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28D16C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A243C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 450A16B009F; Mon,  7 Sep 2026 04:28:28 -0400 (EDT)
+	id 2CE046B00A2; Mon,  7 Sep 2026 04:31:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4272F6B00A0; Mon,  7 Sep 2026 04:28:28 -0400 (EDT)
+	id 2A5636B00A3; Mon,  7 Sep 2026 04:31:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3649B6B00A1; Mon,  7 Sep 2026 04:28:28 -0400 (EDT)
+	id 1E2EC6B00A4; Mon,  7 Sep 2026 04:31:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B01A6B009F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:28:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A06DF40677
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:28:27 +0000 (UTC)
-X-FDA: 85186289454.07.8F7E897
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 66392C0007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:28:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rvzAH21X;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788769706;
-	b=WLdXXXsPL/td37gkmD5H9HYTRsmX574P3d1TahsDwvzbWUi5+XthDgVQb45z0DEUSh9ZbL
-	+fcvOeMT6jSv8qyJBU5JOKKmEP7kUq/dGQ/2Zy+NuUj3h8kFrZK5OKGeb3uszfaoaUbmIo
-	KiMv6wEbZOUz7EDCKysMkBhFA6NPd50=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rvzAH21X;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4D06B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:31:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5C91F16070F
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:31:03 +0000 (UTC)
+X-FDA: 85186296006.20.E86CA7D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A18C814000C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:31:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDdbDc9x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788769706;
+	s=arc-20220608; t=1788769861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OXBkqVELA+ZoClZ9gQ+v3PG6IJO4Th4rs/k5QhawMl4=;
-	b=dZTDBvzRQLbBAzNdxDv1uuWxgg2TL2YOYPGPD6r/4Lq7IT42LGR9b9LR9I7eS61awAzgHv
-	yRAbk2hH0cRXsGwlguzFgNw4i+tvcenQJ104bMZYG/fJSOsqWl1SDFajOd95XJNNNI+idB
-	JlWCg1Ukg6h49pDA70tPbCwozvGGdww=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788769700; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=OXBkqVELA+ZoClZ9gQ+v3PG6IJO4Th4rs/k5QhawMl4=;
-	b=rvzAH21Xe/+yUxN0CcjpuJOtMdjNOGghgH0ngQDa4V1xWoj926Umo0cfFHBZSG0Z1HkhRqFTnCKuiMpt8RLXZW9Ol471zf0xyXDFd3P94C8+TZFd7QUy7GBZD/GZa8n0X1iHf+JS9cNFx3T+M/2r36BJv7v32P4YxVBA8dj0YEY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R221e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XARiq-e_1788769697;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XARiq-e_1788769697 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 07 Sep 2026 16:28:18 +0800
-Message-ID: <fa681cd0-bc4b-4779-9540-c942d0573579@linux.alibaba.com>
-Date: Mon, 7 Sep 2026 16:28:17 +0800
+	bh=C3Qj5aYZdoYUGz5K6Ve4x0QUot1tBZloGgZLRhBtw34=;
+	b=xIpiYP+YsMAa+a51uEznIZvoiswh/dVCtsX5QBb2WmAvrzbOu7BXgHw8WFqTLZznyc/Sxe
+	OVCTKBIQZk2HGLOHbGlO+nESYcEmEXzvXhblmu5nZOgqSwBsxxBYrYeLhTph7y8neRJyRv
+	G6zpeZgQ+VtK4ZUAtYXoRpKv3tcKQjw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDdbDc9x;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788769861;
+	b=Ks537B2PVCXcBemhjPkU7pQ2yVQ5gVVOTo8E69rD9shEpNVRz45CZ1ADi7tW4L9/B+jXJk
+	5PIewtt+T3pQIP324MOrGt/h/FNEaoc/07N6mmaDpua1EBkRSCawi1wz3A5C8Oa9szTt/Z
+	ym4U1WSjwcnCD/A+VRsfzsu080YAshk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E40960052;
+	Mon,  7 Sep 2026 08:31:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98A01F00A3A;
+	Mon,  7 Sep 2026 08:30:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788769860;
+	bh=C3Qj5aYZdoYUGz5K6Ve4x0QUot1tBZloGgZLRhBtw34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CDdbDc9xHCMS30v5MjFDnxUKCRYcq4sLDVR7heIyRnV3dVUWiz3jSR21p2tC8tLY0
+	 a5ppuV7Oq3pqn1sm26nImkiVnwzWnY4nIQpm5AtJmpDSLfdRBixMkHYcZYNNP+KKIb
+	 V+8S6YT+pI9Ac75JoyFDjT5kVsmPyq3bHmp0UAu48vzyqptOu/DDxVdfhBdKPZMXxt
+	 LiYaNk1vnoX3Zi8LMh3SGY/hQ7VNY8eF5BGTFWspXDc9TtjKf6v0/YhUdmqpfrdnNY
+	 bLDNFrftjN8cE6OpOzzSLk//d9oDXTHlaIIWcd08zyic+FHuWNK9TPoDFmcRsKANU2
+	 WIu8oYXSV7NUA==
+Date: Mon, 7 Sep 2026 09:30:44 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Marco Elver <elver@google.com>, Ye Liu <liuye@kylinos.cn>, 
+	Tejun Heo <tj@kernel.org>, Christian Brauner <brauner@kernel.org>, 
+	Bart Van Assche <bvanassche@acm.org>, Yi Tao <escape@linux.alibaba.com>, 
+	Michal Hocko <mhocko@suse.com>, paulmck@kernel.org, mingo@redhat.com, rostedt@goodmis.org, 
+	jpoimboe@kernel.org, mic@digikod.net, tglx@kernel.org, akpm@linux-foundation.org, 
+	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, rafael@kernel.org, 
+	gnoack3000@gmail.com, sj@kernel.org, rientjes@google.com, shakeel.butt@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org, 
+	frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, 
+	josh@joshtriplett.org, urezki@gmail.com, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, 
+	lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com, longman@redhat.com, 
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang@linux.dev, 
+	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
+	kprateek.nayak@amd.com, mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, 
+	babu.moger@amd.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] sched: introduce for_each_process_rculock and
+ for_each_thread_rculock
+Message-ID: <ap51Mj0cqvAYb31k@gremlin>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-2-ye.liu@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/12] mm/collapse: drop the collapse_possible() wrapper
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <cover.1788533997.git.kas@kernel.org>
- <e6780351a3a29fc1a9efb7d2fb2ef6d1466a50dd.1788533997.git.kas@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <e6780351a3a29fc1a9efb7d2fb2ef6d1466a50dd.1788533997.git.kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907081334.1152889-2-ye.liu@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A18C814000C
+X-Stat-Signature: hwcjsfpy5jxuy66q1u6fyi67rdiazhbh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66392C0007
-X-Stat-Signature: rutkkz3efi6fbxst3ehat4ni46bhb3kn
-X-HE-Tag: 1788769704-734314
-X-HE-Meta: U2FsdGVkX1+Kn/XxOZ/TtPGv/kD5RqkoKYTMKOaBvLu7lrkvP/OBrhnne2q/NzodpwrfZDJndFGUapZJ99cNy+GpRzMpBYX0bevM7rKBPBI0JRW97LUeN3d38ukVALiinyDs2h8mm3qJkiD0IfhCwNZV0Tj08wp2BpmzSGClVNdbp9zS7K2ZSK1G/MF4/V4BS2f54g/W9ZF+5fjzSC7KmDKTCbpVCtpbHDIPePpxWPw2Ubd5L5DR8f3jT7H3gzA9iOKtzJFNo2W4BXlhn8DF5L7xorYhLjS1txMV7MJJ4cvUEPw3R10NLRiMrmls1hWpHaZS5JZGIffR4hovI4gHrj0LrgQZeFkGp248xETHS2fIyu/yn1GH+af7GXCmXXGepDn36I/oJ8g2Vormb4smN7jF8iuxJeDm+5YrNF4aZLELAE5vTFt5pp+jauFLWAe5SrIXD23+JKcjtJif2EruggxGUg6vISRY+fO9DLJzYo2J17cLZQ5ihiwv8aVUv+HIdaZElg48tU1szrRI2pAXyGar9Y5eXAGITQUTdu95rI1i533Ix6MFdSPHY66LFk8PuP+cq6hOvmuJYwLjOlnPUSZx0GR3wDB+ipbYhLmNYDgtkL8Hfcfl+puRN4URnd/9dSrj/kTepP/0nm1eg1YPkhrsKlkWUBmpFvz+Qgxb1q7l2rYuaCv/4wsWZzNJ8IrC2yU6FazHKla5yIi602DPmeLlYpQXE/vpsyHeDNcBQTIhbixytMmj0ymW8siNmvM5xMQIn78DT5UOJo3wOrKD8Au01bLhkqPkFvttssN4ZeHmOfJmmOTa3so2hDC0L3GFXod9rD8SNymNlCxPcDbPtiS3DSY7Kv/buEFIQ+vZhcFMROOno8WyzaD5zq/bvRVJDhelGHRocEMbbwbaRx6mW8Zj0xc36ouGIeiCE2E3m6x088cX2Ai6KivZeDFlCRVp+d6eRN8Q5+LOIq2qnfV
- U8jxMNQk
- Y7EFzkqfSA2Ka59a7SZLZeIIJ0jAihs/zrYok2MOxqgl5tEbtyP7tubfb4PGfr5Opon7qzeRBma1rikgLUO3rXc1BgTKEmELowdbPOWN+sBqUoObKd/Z7eOtxxovQV7NUx81IR5zxejpXtlIXvpwcTS36cdUf1n6A05tYq3INNxhdBC+4o/jkjvlXCP78QHk8IGiWdMwxvw4MYRW2J9CX78MzAXjKwKvLTYXz5HGmVvyu73f+WRN646XZr0Y77K2guukLFINSXoA5k/Z7pGuLd6dDF5kWUpqO+ZH9Khm2N4VRUDGnPyMQaqqQ48tE1wqHewNWTyT9RNhKpBMbpwg6VbPeYhmT2uZHNKBFh2K/zum6sLIJaIndWXiHYg==
+X-HE-Tag: 1788769861-842141
+X-HE-Meta: U2FsdGVkX19DRqgBATLWqS+hnkUBaFGPujqGaF4+1l5Lsj1aTC7Uoy5Ou+w9Rw9VN6AqcqlD4lerhDA0nhZ36cflHFz8eaq8ds2s3oViNzOm+8VF4hFiTIWQIdHZ4mHRCti/UcJSEVDenAxrCYb1krbsep/nAHvngEydPczSG3S/fz06Z5Ke6yx/wdQd69oH9v40rzpgJ4KwLNZgZYl1ju6x9CxQ+m/nWn4o0RNi4QznhVH/P3nDYAnRugD9e+OzAaMj0SEL4HHa8xnSL/R5sHkZUt3z+bAS5z0RlF0+cbW1q06qrpK/kB57NzBAFY2EIF9V+j3QKV3ILDSUyJHb4ujjs6IHFOXLdA1EPEAxfkKi+kKsmiM6nbz4KA2age49G+LUpgOEUAAPkYmNIZIUu4v0VYpI2zG5oXFcfqaZ1PfCbJkHWtrdc1Nfaiu7rozqwHvbyCgDBTfkKsYluDN2vmKGh4lQInQ+F18zs5VYF6eeEZwXhcb70FW35WJ2nAdKbAWTYCzQdIjtgt5zgjND43ygiYCQ1w5FAIgWbRNlnWVh9kjo7mehiEyNcVZKEp4W5fJ3bWV56qLCARy6Sl4GCgdpD/Gi8MfA0w9mOlJtrrRQ/OkL3geMwYutPeFiSsc+SfP72j9eh1keaWGSL2koGL2vdE6Zxd98IEl8xz2HhQcyt0b59XYrXRIh2fl+JKtaWilpWk9Iw1x6MnUtuwAA5QSFpsatn27q2nMMWktIKLxYOVnD2C/Yv3DP0csxpo+NCEld0oZn3x8SbS1z3gwad27IqegFqWyIsVN6hKDzSvTk7cTCutqGllPvh8rl4NzyOs938FoI2rio1c5m1OUjOCueU74jBbFi9vFAx3RvUQAdEWVIbx6kM4/J+QkbBzZNnyL1Ild39wICWhU4UX+B9cirUhJlnj/E9UIA4DF7lFKBT6v8BljyB+bHDXbsJSiksuX1k61t5Oaq2t6mCX7
+ jJwaiSPj
+ Yha0DU+rgazLw247nDXv54/Pq02uk7mXAecsWZaw8iHjwb/0PlNfZHgPpRxnIUNTN+B9etH18AM3SPfNpW3nTQzvrJL2edv8D9F+IYXKPJja5Ngk9ETN1y7mfIjKNuf27+SJcKXeJgg9AKxTA9OoAw/psy7B1BCBRWR1YnzpIPIvB8heSZCW4M1FI2c5ZXcm4YHKa9D92Fcl9+Hr3iA/PNdZ+NAlkUA8TTd4VHxyz/CmCR5WNsFcuaMTDJpv15IhM6WMIkHSS1DS9LXmD2SZ5hTe5FF77+r07RqZd23nCJSEEacx2X8TRieU+WQYwVcCkio8VHjHRKeTCQRIrFGeCgL6bXCxylQh7fVC5emknqeNXk+nGSUTcfJGhqbFg00HB8BVr6gBTlIuq30x99Cwp3zppjjfC9H7kbcXItC6tO5prsME8tPq6cxcjHB6CC+xM4ohFXUOibazX23U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,20 +110,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 07, 2026 at 04:13:27PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> Introduce for_each_process_rculock(), for_each_thread_rculock() and
+> for_each_process_thread_rculock() macros that acquire the RCU read
+> lock before the iteration starts and release it when the loop is left,
+> so that the RCU read-side critical section is scoped to the loop body
+> instead of an externally managed rcu_read_lock()/rcu_read_unlock()
+> pair.
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
+Some nits below, with those addressed, LGTM so:
 
-On 9/4/26 11:10 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> collapse_possible() only forwards to collapse_possible_orders() and turns
-> its mask into a bool.  Its three callers can test the mask themselves.
-> 
-> No functional change.
-> 
-> Assisted-by: Claude-Code:claude-opus-5
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
+> Changes in v2:
+>   - Rename macros from *_rcu to *_rculock (Steven Rostedt, Thomas Gleixner)
+>   - Improve comment on for_each_process_thread_rculock() double loop
+>   - Change prefix from mm: to sched: (Michal Hocko)
+>  include/linux/sched/signal.h | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+>
+> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+> index 584ae88b435e..110ea9f131f3 100644
+> --- a/include/linux/sched/signal.h
+> +++ b/include/linux/sched/signal.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _LINUX_SCHED_SIGNAL_H
+>  #define _LINUX_SCHED_SIGNAL_H
+>
+> +#include <linux/cleanup.h>
+>  #include <linux/rculist.h>
+>  #include <linux/signal.h>
+>  #include <linux/sched.h>
+> @@ -663,6 +664,30 @@ extern bool current_is_single_threaded(void);
+>  #define for_each_process_thread(p, t)	\
+>  	for_each_process(p) for_each_thread(p, t)
+>
+> +/*
+> + * Variants of for_each_process(), for_each_thread() and
+> + * for_each_process_thread() that automatically acquire and release the
+> + * RCU read lock via scoped_guard(rcu).  The lock is held for the
+> + * duration of the loop and released on exit, including via break,
+> + * goto, or return.
+> + */
+> +#define for_each_process_rculock(p) \
+> +	scoped_guard(rcu) \
+> +	for (p = &init_task ; (p = next_task(p)) != &init_task ; )
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+NIT: Can you indent the for loop by a tab? Since the for is in
+scoped_guard() scope and that's not made clear.
+
+> +
+> +#define for_each_thread_rculock(p, t) \
+> +	scoped_guard(rcu) \
+> +	__for_each_thread((p)->signal, t)
+
+Same comment as above.
+
+> +
+> +/*
+> + * Double loop: 'break' only exits the inner for_each_thread() loop.
+> + * Use 'goto' to exit both loops; the RCU read lock is released
+> + * automatically when the scoped_guard scope is left.
+> + */
+> +#define for_each_process_thread_rculock(p, t) \
+> +	scoped_guard(rcu) \
+> +	for_each_process(p) for_each_thread(p, t)
+
+Yeah this is even worse for clarity :) I know the existing defines do itg
+this way but it's kinda confusing.
+
+I know it's a bit fugly, but it's MUCH clearer as:
+
+	#define for_each_process_thread_rculock(p, t) \
+		scoped_guard(rcu) \
+			for_each_process(p) \
+				for_each_thread(p, t)
+
+> +
+>  typedef int (*proc_visitor)(struct task_struct *p, void *data);
+>  void walk_process_tree(struct task_struct *top, proc_visitor, void *);
+>
+> --
+> 2.25.1
+>
+
+--
+Cheers, Lorenzo
 
