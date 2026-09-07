@@ -4,92 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 063F6C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29523C79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF94E6B008C; Mon,  7 Sep 2026 12:17:43 -0400 (EDT)
+	id 377B76B0096; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA676B0092; Mon,  7 Sep 2026 12:17:43 -0400 (EDT)
+	id 34E186B009D; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE80B6B009D; Mon,  7 Sep 2026 12:17:43 -0400 (EDT)
+	id 23D606B009E; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C81C6B008C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:17:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF311401D7
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:17:42 +0000 (UTC)
-X-FDA: 85187471964.09.5FDD7CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 555AF40006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:17:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=chjSiu0k;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788797861;
-	b=I6Lkabo5MAl2GVDmu9TDPJztw8Z1uI8BpPe5Ur0QyTu7q/Hxp9qEZ6pGKeFbQKdJ1sqi1z
-	FtbZwaRQNqi8ok74A6y9hklX06/Z7WCXJYtM4eKbQJ4rtJa5C69/BlvJVTzk85v73ClwEa
-	ndut5DepmEOIx3IU5FUZL9Ig1rtRbwk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=chjSiu0k;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E934C6B0096
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:19:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77AF7401D7
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:39 +0000 (UTC)
+X-FDA: 85187476878.21.8E80AF9
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 62DC21A0003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcWjuxFa;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="iQlNs/Te";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VK8MzL9a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wei6+CSs;
+	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788797861;
+	s=arc-20220608; t=1788797977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wOnQahPO1TmCL6FmC3Riu7SZQYrSuY8UOh5mIJltyRE=;
-	b=Kgiyys9cUPAGWTF1KP8RsgeHquWLhuypktner+IbIaHvGLdT0M72HVn9bBOU0lCDIgBt/l
-	iN9HM6JeM7dfaApsayucFvrM4mhlNg1iCqRbv5QKDK8biUv0iV3ZzgmuJuntN7f7rog5Hv
-	yWA4VjormAzE3jukqerIfMGoHeb/NPs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEE7D601DB;
-	Mon,  7 Sep 2026 16:17:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D921F00A3A;
-	Mon,  7 Sep 2026 16:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788797860;
-	bh=wOnQahPO1TmCL6FmC3Riu7SZQYrSuY8UOh5mIJltyRE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=chjSiu0kxNy55FySd80YLuWpGKduvYPpWOIeXBDAEDtKqnVBNh9d2zpIacBhCSdaA
-	 /hPjIqOuSUHj8c/P9fQmZl5QsN4WOnfiIOfKBSlpTDf98LalsExTWUCBri/U/G11Qu
-	 463UFNmJOoS1/LOyoX+MydBYhJ4deFChj18UBUl7lXOC4G9EfqkcCO0FWNUFnMgVSu
-	 ZJ0dq8yg+/MGoN7WleKNCrwoFHxPeyLQn9DKBpOtPSgfQA6XKTE7mNpQtFaKmgn8pj
-	 cXgDuC+tRseK5NaxjJcE836EtT/y3wIWapSvHcDps3dvye1fYFKYf3q119INcb4rPb
-	 /Z9QHNIdzdHYA==
-Date: Mon, 7 Sep 2026 17:17:33 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Cedric Le Goater <clg@redhat.com>, 
-	Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
-Message-ID: <ap7jVxFLczCCsJp_@gremlin>
-References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
- <034a2687-3551-485a-a382-e7e77aa3919b@kernel.org>
+	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
+	b=kTf3Lm/yOkyPUC0ysFuK8KiEqZVDNNkdguawn9el0qTI2e70FEyrjwLga6kasmF0K1PMQ8
+	uDGAbWacl2MyUHzKWgP2wC95+oD39Y+sHcN/984e6FolhmTltQ2WdAVTqnKoBWlwTjv6fW
+	v+t62zSDO9blSjlOgUksHG3OqGWALm4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788797977;
+	b=gA92wataMc8MlpPx9+D3tF+NSHIsc53/M0TglsWeM/KPifTtgrscSLybWDbBwg1zrAXIJL
+	y2TRxKxl8WXd90tYWxTL1q/RbNSCAKIfFOWzdbU2HaOKNBqz/wQu2ZfNDUBCokTvWK3y46
+	SSryJPCIHa1E9bEZIVXtLve0wRbi1dU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcWjuxFa;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="iQlNs/Te";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VK8MzL9a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wei6+CSs;
+	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 867C31F7B3;
+	Mon,  7 Sep 2026 16:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788797971; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
+	b=LcWjuxFagTfgCxZiGMG2drQIg+8W6egTjIS6uSptZRYLxuwbIbeam1AVwPV9VWbMABBb8I
+	BqST/rAn9TqkejTpNHhc9iev+h9KQuz6UDMdgJOx2gsDo1fR32e8Vzcr2rPVCtwdVlX/xu
+	VT+wvyxeiRcowTN+orMnAFm6e+n7Yig=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788797971;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
+	b=iQlNs/TeiPSDeUixWjWYeH/JE/agATjevDEFmK4T71kQgf/0l8R6ISlaii1LvMSUC00mYD
+	svdl85RIQy8RaTCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788797967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
+	b=VK8MzL9apzKb9jpYbvPW7iGfWlWRKefhXHnYVZLdEhKMj/XP0Cmx8CMASRlvUVsThm2d6V
+	6kl5+QpZJK3NNaxbOOhhgbeLJ+IDJlbA6KP4ByjVsWqy4FnWxYFoMcXgLNj8B68IapJqJ/
+	y6uzBWvnZrm4jCw7PjlZTUljzNiXsXs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788797967;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
+	b=wei6+CSsK4PmGx/vpSZzXgBIjvTAvqgm5u/D6DLyOMbwTgn77kJkBn9W39mEoJtPUvbvdr
+	V8d1BvQOCQ/pe8CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 892A41339B;
+	Mon,  7 Sep 2026 16:19:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id n7jOHA7knmpQFAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 07 Sep 2026 16:19:26 +0000
+Date: Mon, 7 Sep 2026 17:19:24 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
+ list_lock contention
+Message-ID: <ap7f_w8hHkvpk9Vg@pedro-suse.tail5790ac.ts.net>
+References: <20260824122004.3652-1-hao.li@linux.dev>
+ <20260824122513.3829-1-hao.li@linux.dev>
+ <20260824122513.3829-2-hao.li@linux.dev>
+ <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <034a2687-3551-485a-a382-e7e77aa3919b@kernel.org>
+In-Reply-To: <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: 68duuhrmzjw986fs16wa38qetbxqegh3
+X-Rspamd-Queue-Id: 62DC21A0003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: qdouu6cka96jiye1iu1dkagj4kni1z7p
-X-Rspamd-Queue-Id: 555AF40006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788797861-119241
-X-HE-Meta: U2FsdGVkX1/HFg8x4SSmLeWfPzflRRczThoNeKMoSCEtHkLP4z2/HGbg50LbjxNHMwLnFLNF1kIe4zaKNHScETOiqJ0zZPMufVVc5nFpT5O2cs/hiHOXz+G/3BJXL2P0bErUlowzYYwTpvy7UPxArTLV9YrvjgHPunib8w5yb/QG9KspicPg19bKAh5HfNd3Ukj72wqgnqA6xi6G69WsEAOjzMeMZpW2IgjQ0Dpm1zrkMHXopQ0oqzZApDC6egTqfvZUvGKPGfmU26iZrNbkLkbVj/QVsCDJNbmTLfQgUG32SfCxYVM7crlVoyFuxUsZjcY2T2K415wtuM6S3OIMPZYMyW+yxlKYIa1wfddTDPTHJD2LyklsqSSHpPZVQuH/hBjQn/ENE6N/hO4LM3ECG/pHWEtKdsVxR5zTOYvgxOY00Xc5N6TMWjQvOA86wH7O1E8CwuGu/+ebW2TXuYflv95l5lDnXccuUuscMSDerEDs6u5tYWK0NW24BmNDjTHpW7Con1ryNRZl9KSXJVBYUpl9fuhlN4qmnlqPM9OnYV+ceZdD8M45gypzz0FUOq9TCBc92Gp+XgTy/U7tcdBuK2Z6sxzad1TGh4yf4UIBulLRGPhvQwKRhxxOuifs9VXPgCWJXYmqEeo85AIxCZ3M37xQbrH6Q0larbE6u+d4TxcWyP2ZgRKAKewrGcKKgrIqE59kiDvCzX3Qxs0cZvxJKfRiSNnIt3ictwhT5C6NSCrtKInmwDOqTVcnYczWcPbUoEk+lb+HVVZQuqFY8JIb64sq9+epnBarLlfZ0SFLOvOxka7AZ6Rh6kt5FVGXucFvzaIfyM9u1C/6xPAxa+LfCJbBPznFIJFycJ4OM/1shQS+aIB1BW6cpgY05WHlNzbj7OGc6ZGmWDMsAWxWdXyelg8mFUCsmWO3kU5FXGW2TvYCL1Z76vdJTWcDjTOKvfxU3v+XKQrokUQ5D4vxnTv
- U6ZaP6Li
- e6aMGMSYUIaolNl9VNB62rCzBh7VnlELwyyQSEM3Bid4ZxZ7iz1CpZ4AkPlOP597uEmEZH+4ZWCPODPZ1lO8p/jYeVZ50ZdY3lMZARU4cxJ3nh4j9zJHfcSZI/BMccXjwHSMZgGqQUMyyFvKSJbzsjRERnHNvUHjk6/G2zPJTITm0ea9OK8DjviVDoX4TlSNa1G2d+iaLj8rdx993csVfsOAonvw2w7rFEV8jTnLCo1kRiogHM4FEo+RkHsX4kiWxXPRlpFLvBocDIQASiyYiz5nmOz6AEGTRTG04aN3OM8OQbiqH0EgWtmZEV2dCRzHIwNvKw4VQB2xvlazIWnVUfnV+/jLdHbqeFM+Y
+X-HE-Tag: 1788797977-305610
+X-HE-Meta: U2FsdGVkX1/f9kmjtpOJd+gF1H2Fz/+B+gTqmD17ShpbLqBdKhvKB2Y1vpWS6MuuqRb5MvNUk/c2ekk6AU5B2pk6jYF8L3Rysbv51EMkK9Zk1EKAi1AYI4DDeHuwcsXQQbSLF7duTZSeXecuIUPdOzXi3HtD9JcStZMy1awqJFh0i7QGdTncS1zoMvXcCPdbF4oztDxw2wGu0iwuf/x81QXEdKPMmWgJ8SqalzYUb9YeRc4AuAX6TSvNmZOXdoVQLXC7oCZ+wrrNUqCO8g9Z3BTbgADdsPmw994Ny769RuqbrORYjEc80dpnwA6bA05985ymTAdK3b2vfv20uNNIusImcf8fQYcWrEihjk83Pl4iDPC773kDOREKaOKOqo5o3Udc+xL/TZC0Gu8bjU+PrQGhzq00AormZ/HvAr9YiD54GLqahshXM16ZLPnNLFn/G1Zb6RUsOkPs5eq9RxzS1O6JzgWQPY1MM7k6xvPSW5gsoFXfCnbhEk1aTQSIw0nCtKHBtDfNnJuMUaIFd5a2/HaL+w8h8Tbcbv+pnaIHTvrbo4SZrTPi8zyWhaurQeZnSrOakKY85gKCT80MVkVuGcb1J5pdAU48GmNworQ5KFgyKNGWx/FikyLmT6prE+reRmdtzPtaTAnf1yB2Io2yX8PHlSieZv69VBL2okU5KdggWDwNY126A9ehPAgNiYv5BVBc2eblyNfXZcMyuoodN4iOyFrcAG3baDkwJgaN/rmgrPbH5QRhep9GsZagRyQhxU6/sjS98Qw7MEsYs+U7bEZqkYrnSs7SgLZ/cyd+DaYSIgap8ZDpcuVHVY8uyFJKAV1RK4ExF69ck1eo8CQICHGeyrcR30UP+P10NV3qN+/wrfDo/Lb5+TPi4qWicYXuvYQufYWt+thoyXqWlRkvWd+vxiqgjfHM/gBAfJ5cbG3DdolUO+NxyitGN3ZX07Cg6bJD/PbvdcvtQF+wjSk
+ LhhN0rw4
+ p6Rrd30qUMqnIgyFsk9B4F5exLAYaB5j6UMznsIPkXtfiEZZFrhEyQQmsGuabQj4bw1hEuYoMYFjPLU2Oa3hCEGrZ3znHPU7qoQf1j0TQ6JOVRsmUgKl/j1EKUV3HINSAdUJ/LSvQpJgxghgrQMN+7aMzTIG5g/vjXRKIuAc+TsftX+iHtY0f1jGeR0a4/XmLUEkO+XKxbor6MfEG29XYkzwwP4UYn0X0Pp5QKXFxx3UtirZ+BHQi25wVJZ9AyOCdf9iHXb5nbLwPfH6GNM8DoPy+ClzkyZY3dxDjhqIQXCvJXJcGid/ypfa0jtQTYwqHg4ZR0z0zmvT1a9gLTtwxhJJ7FTk4NYN51+SCvZtUlxGeWThztchd78QSl+lBlAOayD7wHWrIZ6TLFpxtHIYSPBFYyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,188 +135,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 06:14:14PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/27/26 21:55, Lorenzo Stoakes (ARM) wrote:
-> > The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
-> > confusingly only control the behaviour of THP in some instances.
-> >
-> > They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
-> >
-> > Long-term, THP is predicated upon compaction being able to obtain large
-> > folios to populate THP ranges.
-> >
-> > However, vm_normal_folio() returns NULL for PFN map mappings, thus their
-> > reference count is maintained by the driver, not core mm.
-> >
-> > As a consequence, the folios are not subject to reclaim nor compaction, so
-> > are not truly part of the THP mechanism at all.
-> >
-> > However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> > introduced the ability to establish huge PFN maps, they have been subject
-> > to THP tuneables.
-> >
-> > This is incorrect - if a huge PFN map is available (defined by
-> > vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
-> > should be mapped huge upon fault-in.
-> >
-> > Correct this by explicitly checking for this while ensuring that smaps
-> > continues to accurately report THPeligible statistics.
-> >
-> > While here, abstract the entire file-backed THP check in
-> > vma_can_map_huge_file(), with sensible separation of logic into helper
-> > functions.
-> >
-> > Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
-> > maps of shmem folios, however they are marked unevictable in
-> > drm_gem_get_pages(), and in any case would fail the reference check in
-> > __remove_mapping() even if they weren't.
-> >
-> > Failing to map huge PFN maps has resulted in significant real-world
-> > performance degradation, see links for details.
-> >
-> > Reported-by: Cedric Le Goater <clg@redhat.com>
-> > Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
-> > Reported-by: Saravanan D <saravanand@crusoe.ai>
-> > Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
-> > Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/huge_memory.c | 86 +++++++++++++++++++++++++++++++++++++++++---------------
-> >  1 file changed, 64 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index afbb5974bd22..4bf7b670586d 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -92,7 +92,7 @@ unsigned long huge_anon_orders_madvise __read_mostly;
-> >  unsigned long huge_anon_orders_inherit __read_mostly;
-> >  static bool anon_orders_configured __initdata;
-> >
-> > -static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> > +static inline bool file_thp_enabled(const struct vm_area_struct *vma)
-> >  {
-> >  	struct inode *inode;
-> >
-> > @@ -118,6 +118,67 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
-> >  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-> >  }
-> >
-> > +static bool vma_bypass_thp_tuneables_file(const struct vm_area_struct *vma,
-> > +		enum tva_type type)
-> > +{
-> > +	const bool has_huge_fault = vma->vm_ops->huge_fault;
-> > +
-> > +	/* MADV_COLLAPSE ignores tuneables. */
-> > +	if (type == TVA_FORCED_COLLAPSE)
-> > +		return true;
-> > +	/* Huge PFN mappings are uncompactable so the policy doesn't apply. */
-> > +	if (vma_test(vma, VMA_PFNMAP_BIT) && has_huge_fault)
-> > +		return true;
-> > +	return false;
-> > +}
-> > +
-> > +static bool vma_thp_tuneables_allow_file(vm_flags_t vm_flags)
-> > +{
-> > +	/* THP=always? */
-> > +	if (hugepage_global_always())
-> > +		return true;
-> > +	/* THP=madvise and marked MADV_HUGEPAGE? */
-> > +	if (hugepage_global_enabled() && (vm_flags & VM_HUGEPAGE))
-> > +		return true;
-> > +	return false;
-> > +}
-> > +
-> > +static bool vma_check_thp_tuneables_file(const struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, enum tva_type type)
-> > +{
-> > +	return vma_bypass_thp_tuneables_file(vma, type) ||
-> > +		vma_thp_tuneables_allow_file(vm_flags);
-> > +}
-> > +
-> > +static bool vma_can_map_huge_file(const struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, enum tva_type type)
-> > +{
-> > +	const bool has_huge_fault = vma->vm_ops->huge_fault;
-> > +
-> > +	/*
-> > +	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> > +	 * were already handled in thp_vma_allowable_orders().
-> > +	 */
-> > +	if (!vma_check_thp_tuneables_file(vma, vm_flags, type))
-> > +		return false;
-> > +
-> > +	switch (type) {
-> > +	case TVA_PAGEFAULT:
-> > +		/*
-> > +		 * Trust that ->huge_fault() handlers know what they are doing
-> > +		 * in fault path.
-> > +		 */
-> > +		return has_huge_fault;
-> > +	case TVA_SMAPS:
-> > +		if (has_huge_fault)
-> > +			return true;
-> > +		fallthrough;
-> > +	default:
-> > +		/* Only regular file is valid in collapse path. */
-> > +		return file_thp_enabled(vma);
-> > +	}
-> > +}
-> > +
-> >  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  					 vm_flags_t vm_flags,
-> >  					 enum tva_type type,
-> > @@ -190,27 +251,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  						   vma, vma_start_pgoff(vma), 0,
-> >  						   forced_collapse);
-> >
-> > -	if (!vma_is_anonymous(vma)) {
-> > -		/*
-> > -		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> > -		 * were already handled in thp_vma_allowable_orders().
-> > -		 */
-> > -		if (!forced_collapse &&
-> > -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> > -						    !hugepage_global_always())))
-> > -			return 0;
-> > -
-> > -		/*
-> > -		 * Trust that ->huge_fault() handlers know what they are doing
-> > -		 * in fault path.
-> > -		 */
-> > -		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-> > -			return orders;
-> > -		/* Only regular file is valid in collapse path */
-> > -		if (((!in_pf || smaps)) && file_thp_enabled(vma))
-> > -			return orders;
-> > -		return 0;
-> > -	}
-> > +	if (!vma_is_anonymous(vma))
-> > +		return vma_can_map_huge_file(vma, vm_flags, type) ? orders : 0;
->
-> I don't have the time to find out how these functions ended up being named, I'll
-> have to trust that it will be alright.
+On Mon, Sep 07, 2026 at 03:38:22PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 8/24/26 14:25, Hao Li wrote:
+> > Introduce a mechanism called parking to mitigate lock contention in the
+> > free slowpath.
+> 
+> Interesting!
+> 
+> > In the free slowpath, when __slab_free() transitions a full slab into a
+> > partial/empty slab through a free operation, it must acquire the list
+> > lock to add these newly freed partial/empty slabs to the partial list.
+> > 
+> > Why must partial and empty slabs converted from full slabs be added to
+> > the partial list? Because only by doing so can the sheaf refill or alloc
+> > slowpath see these partial slabs and allocate from them. Therefore, the
+> > list insertion must be performed, which requires acquiring the lock and
+> > leads to heavy lock contention under high concurrency.
+> > 
+> > Analysis of profiling data from the will-it-scale mmap1 benchmark shows
+> > that full -> partial transitions account for a large proportion, second
+> > only to partial -> partial.
+> > 
+> > With extra instrumentation added to __slab_free(), the following data
+> > was collected for the maple_node cache (in counts):
+> > 
+> >   partial->partial    843017414
+> >   full->partial       550719384
+> >   partial->empty      17459564
+> >   full->empty         2
+> 
+> That's a lot inded. I'd be careful if it's some specific aspect of the test,
+> i.e. lots of parallel allocations followed by lots of frees, that wouldn't
+> be that common in realistic workloads. But worth looking into at least.
+> If it's this kind of pathologic behavior, then I expect changing sheaf size
+> as suggested by Pedro wouldn't help much.
 
-:-O
+mmap1[1] is a very simple test. It just mmaps and munmaps. I assume what we're
+observing here is the churn in maple tree nodes as we allocate/free/split/etc.
 
->
-> Adding to what Zi say, vma_can_map_huge_file is also confusing, no?
+I suspect it's also possible that bulk RCU freeing is causing this. It might
+1) be substantially delayed and 2) dumping a lot of freed maple tree node
+objects that overflow the pcs.
 
-Yeah I agree, I had a model in my head as to why it was an OK name then when Zi
-raised it I realised that my naming scheme was, in fact, terrible :)
+[1] https://github.com/heatd/will-it-scale/blob/master/tests/mmap1.c
 
->
-> are we mapping a huge file? :)
+> 
+> > Since the fundamental purpose of __slab_free() is to make newly freed
+> > partial/empty slabs visible to the sheaf refill or alloc slowpath, these
+> > slabs can be temporarily stored in a staging area in a lockless manner
+> > instead of making the free slowpath contend for the lock. The sheaf
+> 
+> However the lockless manipulation is still going to contend on the
+> llist_head. But perhaps it's limited enough in both users and lenght of
+> operations to make a difference.
+> 
+> > refill or alloc slowpath then checks this staging area first when
+> > allocating objects. This achieves the goal of making these slabs visible
+> > to the sheaf refill or alloc slowpath while allowing the free slowpath
+> > to operate locklessly. This process is called "parking".
+> 
+> I'm gonna pull a David Hildenbrand trick here and question the name :)
+> It seems to me it's an (extension of the) partial list, but lockless.
+> Parking would suggest to me that it's put somewhere aside not to be used, or
+> something.
+> 
+> > Parking occurs in only one case: when __slab_free() encounters a full ->
+> > partial/empty transition and the trylock fails. In this case,
+> > __slab_free() attaches the slab to an llist locklessly, instead of
+> > waiting for the lock unnecessarily.
+> 
+> It could be interesting to also see if skipping the trylock completely
+> (another cache contending operation) helps even more. Also whether moving
+> the llist_node to a different cache line than list_lock (and fields
+> protected by it) helps even more, or not.
+> 
+> > Conversely, the process of moving these parked slabs from the llist back
+> > to the partial list is called "unpark". Unpark occurs in four cases:
+> > 
+> > 1. Sheaf refill or alloc slowpath: This is the core case. The sheaf
+> >    refill or alloc slowpath must see the parked slabs, so the first
+> >    thing done after acquiring the lock in the sheaf refill or alloc
+> >    slowpath is unpark.
+> > 2. Cache shrinking: shrinking also needs to see slabs in the parked
+> >    state.
+> > 3. Cache destruction: kmem_cache_destroy() must also see parked slabs,
+> >    which is obvious, otherwise memory would leak.
+> > 4. delayed_work (see corner case b below)
+> > 
+> > Why is this scheme correct? Because paths entering the sheaf refill or
+> > alloc slowpath can see both slabs on the partial list and slabs on the
+> > parked llist, while allocation paths that do not enter the sheaf refill
+> > or alloc slowpath would not check the partial list in the first place
+> > and naturally do not need to care about parked slabs. Therefore, whether
+> > an allocation takes the sheaf refill or the alloc slowpath or not, slabs
+> > on the parked llist and slabs on the partial list make no difference to
+> > the allocator. This visibility equivalence is the core of the scheme.
+> > This analysis also shows that the scheme does not affect the utilization
+> > of partial slabs or lead to increased fragmentation.
+> > 
+> > Corner cases to handle:
+> > a. Parked slabs may become completely empty. Therefore, unpark must also
+> >    check min_partial and free excess empty slabs instead of adding them
+> >    back to the partial list.
+> > 
+> > b. In rare cases, the system may go idle immediately after slabs are
+> >    parked, and the sheaf refill or alloc slowpath may never run
+> >    again. These parked slabs would then remain in the llist until the
+> >    next sheaf refill or alloc slowpath performs an unpark. To
+> >    solve this problem, add a delayed_work named unpark_work to add
+> >    parked slabs back to the partial list when no other path unparks
+> >    them.
+> 
+> OK, but is this a problem that needs the delayed work? If the slabs are
+> still partial, they would just sit on the partial list rather than on the
+> llist, but it would cause no extra bloat?
+> It could be a problem only if free slab(s) got stuck on the llist.
+> 
+> So I'd try to avoid the delayed work as it's quite a red flag. Periodic
+> flushing of alien arrays used to be a very unpopular part of SLAB
+> implementation. I think there might be two ways:
+> 
+> 1) submit the delayed work only when transitioning partial->empty slab on
+> the llist. Would likely require flagging slabs that are on the llist.
+> Hopefully this will limit the submissions to negligible amounts.
+> 
+> 2) remove the delayed work completely, instead __slab_free() would perform
+> the "unpark" immediately when detecting partial->empty slab transition on
+> the llist. Would need flagging the slabs as well.
 
-Lol... hugetlb maybe? HW poision too? Perhaps? OK you've only been back for a
-day I should stop using these swear words :P
+3) Don't do any of this and keep a small(ish?) barn locally, for each CPU (welcome
+back per-CPU partial slabs!). I'll play around with this idea and see if I can
+get interesting results...
 
->
-> --
-> Cheers,
->
-> David
+I also have other vague, handwavy ideas... Hmm...
 
---
-Cheers, Lorenzo
+But I really, really suspect that deferring work and playing around with
+trylocks is really just working around allocator deficiencies.
+
+-- 
+Pedro
 
