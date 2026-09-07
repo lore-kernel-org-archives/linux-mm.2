@@ -4,90 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6791C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29888C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94EDE6B009B; Mon,  7 Sep 2026 05:05:30 -0400 (EDT)
+	id 2059F6B009D; Mon,  7 Sep 2026 05:11:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 900256B009F; Mon,  7 Sep 2026 05:05:30 -0400 (EDT)
+	id 1B63B6B009E; Mon,  7 Sep 2026 05:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815AF6B00A0; Mon,  7 Sep 2026 05:05:30 -0400 (EDT)
+	id 0CDB36B00A0; Mon,  7 Sep 2026 05:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E526B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:05:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C07E1140692
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:05:29 +0000 (UTC)
-X-FDA: 85186382778.30.2B756E1
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 20AFB4000B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:05:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s1QvXXpe;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788771928;
+	by kanga.kvack.org (Postfix) with ESMTP id D5CAD6B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:11:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59589A4C92
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:11:04 +0000 (UTC)
+X-FDA: 85186396848.17.3CF71EF
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6C7FB1C0006
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:11:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sJ2gDzCZ;
+	spf=pass (imf18.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788772262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXvYn9pGOWVNNZIM5zX5lrQlK0lUQ4h6ryyAL9cZz38=;
-	b=VxlB/fWAQ30J9mXQzFLXS1XCWpHn4zAb6momM2wcEkrBDpD6f7i/K3VeD/ZTW3iOdSxiAk
-	mafnI5GUijceRPlRO4BuXejrugkZZ+ipbfxVkDY7Oh0+0+Q03CG5GCsdDlgc4Dg4ZfpS1+
-	h1HKHI2wOOK8oIVaLXuga7x44NLjgdc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788771928;
-	b=vuh7EINrcq22MNuO2GjWbggXdLfUp3wyJUy5SqE9FbzFwgAsKQ57IPXi6tmaz8dW5DLH8g
-	tzqJ9gN+pTICplXTpoJH5lzglyrMLVFiqFXWsETGnTuvPL9I0EAW/rmb4HemcAE5TAz6hE
-	1OAheDiKL73bKz2pmk1zk2HVyxhHChc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s1QvXXpe;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788771922; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=iXvYn9pGOWVNNZIM5zX5lrQlK0lUQ4h6ryyAL9cZz38=;
-	b=s1QvXXpeSrKkKhu45ylvC0vTNwpp8qnQyESsoxK6gKtlDsmw73q6GhMl6YQy/jHQaCiK53rY5phDnUEU8FZ1icasRhCZT76mxn+EVSO7Llbsc0WCR/Et+cE7m+xNA2IEtlzjHXpQ4c4URRKngv5bVZrnq71A3LP+xzf6ktkm2cs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XATAmni_1788771920;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XATAmni_1788771920 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 07 Sep 2026 17:05:21 +0800
-Message-ID: <c070e67a-4c1e-478f-aa28-09fb88f8a786@linux.alibaba.com>
-Date: Mon, 7 Sep 2026 17:05:19 +0800
+	bh=UZwlo/PrjG/2W937OF/VpXOZ3P+Hd3ZS4n/JefxcXek=;
+	b=UwwNQ8cNZgFOrPxYWOi4JtNpwKfDCGtc9Yz1eispYg4sCi9OOPfVN7I8Ub8RiYS6zF/ywE
+	qtb0cxYnG5o6lmZqYJQdGwXZ+akwY1PX7pP+vOpAhfDSekjNHacD58bCOC3QjOFLmtsJrU
+	RbWzIO6cippBQFSHgKPhjPrriGdQ6JI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788772262;
+	b=fH8Yiyc/PQvz85sNdEcOEIDc+4KpR7cBigmiwwSQ7bP1O+fsiO5Xi2wT2IHl7ZzLkWunK2
+	0ZnGVG3v9v4qvxQCr5fm5l/k5jOUG/aY/8oVw3vD55hiclw/TSPX4Son59gtLLlBPtNtIg
+	nYq28kH0cgzTsrJjxOw8yWWFjLfz5cA=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sJ2gDzCZ;
+	spf=pass (imf18.hostedemail.com: domain of christosskarlos.kernel@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=christosskarlos.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c08df8513so20279411cf.3
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 02:11:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788772261; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kgGx1urOqiKN7bz84AgqKjMizw1yykPRyx+iodytD9aZa6D8XALiDM/vCMTXbQ8jXV
+         XZpz/tvnQwXIgrFhCx0jUjgosKnjTn/kezlP3Ly2+ygMu/4r3K8ptT4XeWX6JZP0HpFl
+         U/Mt5uXI4hAZFwazHRGG3bEig4MRC/85SSA/DTE8WJAreQPQExx7RJbj5jcKTME4BYhp
+         5C2RH4umvFSk84W6MEWoZawp6UBnbnw6HdThkdAariWFl834tWld5Nj/ly4MxIybSfQa
+         IMUezgqJuuOdi3XEu+qHIBLCn6NfH5RmRJ4JEOFPuHh/LSPyfdPhbU6wpJ2hNNs+k+t0
+         xCLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UZwlo/PrjG/2W937OF/VpXOZ3P+Hd3ZS4n/JefxcXek=;
+        fh=I594ESs5QYkzZ8zSKsnkO3Cu9owOEDaCIQHNLn8yVEc=;
+        b=rXNGvbdu6myOFzVGv/cirLFxKOq9b4LJZ2aKiDNBXkTv+Z3UzRHMTgRPpm65XISqZ5
+         +mSWhFRYH/SUXM2k5H9OJ+GtHssu7Mp68m/UX24rCT/24+uWJQ//BZ8H8lUU4YXX/QAO
+         LNUb0UvB+PqCpYh+fishAodRRQAD/rY4Pz9CEQT+w0sxN3zAJXcAEBuoQPAu27XvpoOZ
+         EVvDlnIg/sW+ac4pZj/egoLdvCas9nSWin58d0sDgknX1Lax/A0xg5Xqti2GW9yFgWqX
+         PFtufFDgma0WSCSvWBwVQKGMI/grh6mJX0v4w70wt8cjOYxyK4ke6xExqh8mXpzqUIiB
+         L4iw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788772261; x=1789377061; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UZwlo/PrjG/2W937OF/VpXOZ3P+Hd3ZS4n/JefxcXek=;
+        b=sJ2gDzCZKFBD/9//uNJqOUV9juozR0f4Ci1qgna6R+j5n3kNxBT6en420m2wEYeRL1
+         SXDUUt3pi6yY0tnnUR3kMEnEaJcpjz5lkujvDI2CzMINPGQnmEtLu8HEGnJb/DmNB4Rs
+         8WY6RSMPUJxGKashfar7V5P3lHKXTWnSFuQ5yK4h/y18kwK0XE1O8hMloH9YOw5GewhN
+         9vMnUrWQt9WuVbzXQsUCXIFykzqngvweLEVfG/2Q15SCJfFqy9Z9H24EQ3Hiy+pcO0qN
+         hRorlgees3fyxPcIuOMYonaCeFTKVXAeg7JeyXQN9PypU+adyWorCiFTuOEggn4q+ZLs
+         MCaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788772261; x=1789377061;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UZwlo/PrjG/2W937OF/VpXOZ3P+Hd3ZS4n/JefxcXek=;
+        b=qLybjvoyxdC5osMDawkB6XmXFdOxyCNtzERqjrKdO6xtiDd9OIQrV45TqkQfFdblXh
+         7le2yd65FPkord8U/Vo5nJwUrBJU6R8gOnfb6boJbm5/b3/8h/AYRGnXRPyDydl2B0mJ
+         xMgZv+oPSI/mdB5LfMdfOsQed3DS/V0qpR5igaUVzzpfLqtOgY4lHH8kD0FPGTznE0FU
+         5wPb39muOrPXcvNuoYDDDYwQ4zXpgLb7Q05NybTtjOysFtoEP8IkTNfmm9VRjno+jACT
+         09qsqJd+M88rLcfc0C01v/pX5A2YarGdbkUDIg/LsEcRO2ToQTIi/f9oDNkpWLvEriVD
+         WwiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxqL/5NvcodzVQdbzMJt72KNTZS1MwMnpugmJOHGxs9suOuQETOSjcif26WH4ov/zTJi+yVaWjIdQ==@kvack.org
+X-Gm-Message-State: AFuF++lWIhJA2A/vXg4sHdG+c/dj+jwPkT7gLgtsqfqlaXoPS/yACxTc
+	kjRsIOhDvkhEysZT6DXVR+kt6civuf2XelxkbCQkAYrqJayNsTib6C/la6qwPdHFvqqr44DXoZ3
+	u8UOA3j0VyctiWbOWjOfZWBuBoBAAjIY=
+X-Gm-Gg: AYBFou3b32I0Rc8DMqHEpIsJG0zH+zUvJ3hwjabzDplOgQu8ICt1YlXjxCGOUMjj26+
+	HjJJ6h+DUo6yPEeXpQ0QZXB//FCzagZWsJ9Pf0c4Wd6sbFeIoj4lSxb5ZOk+6mYIFHQjNF9HdVv
+	plW4DOagabsBEu1TXDdgXaMxoneSHjFgpjqbQMD2YWjulpfu0Jo/2XBBwa6t4URcIDoBTYdjX6z
+	fVMHakm4Ov2VCsKxvvcNhUQ5JGiXllfmOiGq0fNpa1qnx8asTIbapJ58KeDvWj8auTRnuiqEbvs
+	OZdOtnfzMpUEqGeA1ySl6wP+dHoc8NU2uuTj35Zvj6TcFGaEIVZfcyq8obQKoWspHqRhlZIavlX
+	F3A==
+X-Received: by 2002:a05:622a:e113:10b0:530:6f9f:d4b9 with SMTP id
+ d75a77b69052e-5306f9fe2fbmr77998031cf.20.1788772261584; Mon, 07 Sep 2026
+ 02:11:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/12] mm/collapse: state what a collapse may do in the
- policy
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <cover.1788533997.git.kas@kernel.org>
- <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 20AFB4000B
-X-Stat-Signature: swzeuyp7ohyxj5prspcxyd1oh3aj9i1z
+References: <20260905183135.20993-1-christosskarlos.kernel@gmail.com>
+ <60a8cf51-1493-4dbd-8779-8f007f6783a0@kernel.org> <CAEO-viHe6hZaJzS3mjKtA8sq=tnuQOp4a_u1D56tuFx69F3N2w@mail.gmail.com>
+In-Reply-To: <CAEO-viHe6hZaJzS3mjKtA8sq=tnuQOp4a_u1D56tuFx69F3N2w@mail.gmail.com>
+From: Christos Skarlos <christosskarlos.kernel@gmail.com>
+Date: Mon, 7 Sep 2026 12:10:50 +0300
+X-Gm-Features: AcwNN1VHz2Dx5JOhnvUzjOQL5MbqPSr2rrgIgq7g1Q4-0tJN6hN6Ipr9L7HFBoU
+Message-ID: <CAEO-viEyRBBWGzs1kDv7tdzYwuS4b75jm6abU5WcLN5iUD+54g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mm: minor janitorial style cleanups
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev, 
+	osalvador@suse.de, ljs@kernel.org, hannes@cmpxchg.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, jannh@google.com, 
+	pfalcato@suse.de, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zcn5xn9jt4738xoqrbgm15n7m5i4y79q
+X-Rspamd-Queue-Id: 6C7FB1C0006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788771924-149557
-X-HE-Meta: U2FsdGVkX1/67ErMzqKxdLkN+u31zIHk64JGzctR7yJPr04Q9Rvlb+YW7YTMUEjSQU+fnjYNRFtSCvfVqsY+eZ+F9nNSHN4gLD/tySYAeXHtWJHP/Bep+PvGqZrf/OhVsAytgrQtSvcacUE9wZrO08KDcEVdkH/k5L9rzjmcSAY3CPSiQg1wLw8EyTDqMewS1qiWCwMrnRTxNRlgSewQEsHBvmfEazc9ylIX6dl2sPqJrhULirJYezIkjN4Deg7fCvEnIi3x0npn3+/KWsm4UxDT32PareeCqyrA1fn383LT7hUxxlIh22fhfAOw2RgVIE/vAoqmvhIFz5lrrTHbQaB3cApVTqcMS2dq66NJXO+jnQ79xNEJlaw27NNdFo3bAAG26tbHlYDYXS+SxDGsluLbyH37pROcLvwmGcLwPtNVwqzfDGeeu4lKjaKLdUf6v9yA7VM2z+Bg+evv7Ka/t5xn4G5a8h96pl5Fke1BxpZ/TJebQLUc0mSOVReyTT85hW2OxerDsTVYeapdbr9H7N5I/IvQf/j/v5qcU0i+sBAReQ7SumPitsDe9IX+bfSTN5R1kxImZ3C7aT3IGWkKY1lYCsr1qz5lFVEHwC5/5QpFniPz9ja+DUbPx4CHAr5IZYTTkrVETZWOuouOhP2FTQpOOR0dcj0JQUNAnvFYfMc1lXHtnQkfRQ7vAwaEj+EKzUqKwbWnBb5LCo/pMFP3GRh8yQr+QaI3ufV0zSo1YTBe0UJc9I/vtrXHxWCJVuXhvVuuRVGE2NOq6/l02EL9aS4p6t01xcNpvGbnh1ksgNQoatZm90HKjovKOx5fSu/CB6WGnjWCUIci2cxKl49Wkd1anS6mr7JFiJgvBGFTJRpwwsIYfrsOy/8q5OytnrKzIBT501VaCiz1kFqJgxg0hP02a+gdSJnHHCLw/i28px5dMUKBa1Kb2N3BXQYXBQ5XYYAeWQ59T/1D39sfQDR
- g4HmNXWB
- Q+zSqTOGlbL07Z0fyVaNW54tfigMpHe/Itiwyamt06Le5EDwBxMg6INtwEpROC71aTbl+FNKFrgcrUpTsZyt1dsrBqFJ879e0j+pV2V4Ood3C3/TeVen6n8ZtFI4WIECDTULP5k44ZeonLmFTqEdiNA+HaCZGCrYbfvMffBCe4M0kgh6PfSVpO/9MIA6/6dnHwoGR+fM/ixV3NlEcaBsbjDPVaM8lQ0dstwjGRAWST6uDARgWxxluOvBa9HsHyNkYJ58yaR7+gNEAaM7fgCrOU6d7TFtAGLGCGuFAlya8We9dWxPlz+SWpSjWmGfmo1uDmHqHLYwbk0mYQ7NFoHkB1wa02g==
+X-HE-Tag: 1788772262-545441
+X-HE-Meta: U2FsdGVkX19Z7nEiZuQl7CCEVjoul1vXfH8LIX4tq+y4u4v4a012Doiy42T9pvJGkx7A+sRPPq/Xhc8UxDpUvc5oLEyU1bXgMscT9oQ6L2ZmUzirNbav6iiioYU9SwDGgqQRxgWAZRlkdS6txoTNgAnUhWI5cnR9tZxrA3P1WO8Y2ZwsrHZz1WjAxjeGsPEunvsmVK+2b50bFgfUWjt1NpCHYa4uOiUNlAYY+uiQ/Q1nuUS8Y3gLyMfjknURj2OfAurOd2R2rWNTM3Jop0k54ETdeKmgbSNyDh8fR/xjC7duJbrIMeHWcgJpLFsy5IerdHTqJCZEHeRicTdjjI1eD6U9RzqStKVrE7DUuVbptTw29hTg5++HlSZmRLZ7ET7wE/DONxee/0QmQn14UxPTSr37wHbv/wmsSP8RhqHAl+K5j2I2kt4/poTV/YmmwFW/H6/GGglin1DX0ku0KrJVXdyBZd4Zxptmv/CBH5agBRGYgFaV0GTcMNEFDKq7cCq92r8fmKIhbcxWuTcPcT+nM5y3s+pzI8GBZTFtS/MNFlJNeBD14onXVe2z+fXJWxLGUNLqIjYJFbWOo0+8N13n3oTLi56J58PiWQj0ViZylZ4S2wXxsluO0Ys2PLoPGD9h6F/VjZztUY6UHf/s1qmOQizd6QSaeF83rPO0Krau4OCQy5vFJa6vWXQaQLe+hrwFTu3W5eBNZAIOWTVq9WWPElKsJ0/kZMLKmV32O3oOPROHyUyDqTPdHI13Ntp//i1UnA6mQy1Dy2KS5J9jexluv8Ct1/EZ+xH4/nVy/gClQWSU9VTQt6jRDJx3tf5hqvAVkHpWKT2w/zNpcEqGFrP76QHUDHSk/4LCCOOBEVknuzUxrg7imAIPvH9ZYVlKt8OqM7gfCAsRFqfwJtsVl3b52p7uA2MtDY08twk+nlK6RVht344zrRxLU+OV0wrAJPiKRcAV7P4Nci6aZQVBETz
+ dCduwo+c
+ +GFXZQ3EKyyOfIK/mlP/RbF2n0fpDyDyrHVR2CUFxMtdoVwiYo92Y84Dqwb8yV72Dw2nQetWj3ex0qUrL7JeMrZ/ysHkBOGFjv6jIHfpemRe3JrvXyt/zHDdHGVZFdnUVINMkfEQY0oeGszp0ZeLv1hR24QUOnyzkLnVPcq0qlk+SWeASxqvwLn4CdobhM2jzGFKiPf9iR3qfbdcdsZTbFZWNntwdUOTngGam0hCctURzLV9b42/xLrmlUs1l/YxfeGT6CzuXGe9RqxVTVet3npMLUaG0E44pLYO/48MTPnf4A/lxF6nwflgYDJ8wQtxrJaURft1CLPA7wR17NCOSL03kOqKEAKxxjcEKHkrR4a70Uw8Ln2k0C93kwNl49KZErF9PYnwELfe16cs/jttO0mTQ8h/thOjS4bxRldhm89PFGUnnaomuBN7FiU+TP2A5sNjKR5sQJfPYctlS7mUHgqVDGwFIjL89VKuV0pr1xryLSeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,105 +148,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hey Vlastimil ,
+Understood. Thanks for taking the time to explain the proper scope of the
+checkpathc.pl. I will drop this patch and keep the tool strictly for new co=
+de
+submissions moving forward.
 
 
-On 9/4/26 11:10 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> Tests scattered through the collapse path decide what a collapse is
-> allowed to do by asking whether khugepaged started it.  Between them they
-> settle:
-> 
->   - which VMAs are eligible, and how hard to try for a folio;
->   - how many empty, swapped-out or shared PTEs a window may contain, and
->     whether a sub-PMD window is held to a stricter rule than a PMD;
->   - whether a range has to look used, and whether a MADV_FREE'd page is
->     left alone;
->   - whether the PMD is mapped as part of the request, and whether dirty
->     pages are worth writing back and retrying.
-> 
-> None of those is a fact about khugepaged.  Each is something the caller
-> decided before asking, and the collapse code should not have to look up
-> who called to find out.
-> 
-> Add struct collapse_policy for the caller to fill: khugepaged from its
-> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
-> Every test becomes a read of a field, and cc->is_khugepaged goes, having
-> no reader left.
-> 
-> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
-> call.  That is the one change in behaviour.  The max_ptes_* limits and the
-> defrag setting behind the allocation mask are sampled once per pass rather
-> than on every table.  A table scanned early in a pass and one scanned late
-> are then judged alike.
-> 
-> collapse_file() also drops a NULL check on the collapse_control.  It has
-> one call site, reached only from collapse_single_pmd(), which dereferences
-> cc unconditionally, so the check was already dead.
-> 
-> Assisted-by: Claude-Code:claude-opus-5
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->   mm/collapse.h   |  40 ++++++++++++++++-
->   mm/khugepaged.c | 114 ++++++++++++++++++++++++++----------------------
->   2 files changed, 102 insertions(+), 52 deletions(-)
-> 
-> diff --git a/mm/collapse.h b/mm/collapse.h
-> index 1c40229b9554..05282eed9a35 100644
-> --- a/mm/collapse.h
-> +++ b/mm/collapse.h
-> @@ -48,8 +48,46 @@ enum scan_result {
->   	SCAN_PAGE_DIRTY_OR_WRITEBACK,
->   };
->   
-> +/* What a collapse is allowed to do, decided by the caller that asks for it */
-> +struct collapse_policy {
-> +	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
-> +	unsigned int max_ptes_none;
-> +	unsigned int max_ptes_swap;
-> +	unsigned int max_ptes_shared;
-> +
-> +	/*
-> +	 * Hold a sub-PMD window to a stricter rule than a PMD: no swapped-out
-> +	 * and no shared PTEs at all, and max_ptes_none as
-> +	 * collapse_max_ptes_none() scales it.
-> +	 */
-> +	bool strict_sub_pmd;
-
-This is a bit confusing to me. Actually, the check for mTHP collapse is 
-stricter.
-
-How about naming it 'allow_mthp_collapse'? That way we can keep the most 
-original comments for the collapse_max_ptes_xxx() functions, which is 
-clearer to me.
-
-If others have a better name, please ignore my comment.
-
-> +	/*
-> +	 * Collapse only where it looks worth doing: require some sign the
-> +	 * range is in use, and leave clean lazyfree folios for reclaim rather
-> +	 * than collapsing them into a folio that is not lazyfree.
-> +	 */
-> +	bool skip_lazyfree;
-> +	bool require_referenced;
-> +
-> +	/*
-> +	 * Finish the job rather than leaving it half done for a fault to pick
-> +	 * up: map the PMD over a file collapse before returning, and write
-> +	 * dirty pages back and retry once instead of refusing them.  Both cost
-> +	 * latency the caller has to be willing to pay.
-> +	 */
-
-Can you simplify theses comments? I think the 'install_pmd' is easy to 
-expalain. :)
-
-> +	bool install_pmd;
-> +	bool writeback_dirty;
-> +
-> +	/* How hard to try for a destination folio */
-> +	gfp_t gfp;
-> +
-> +	/* Which VMAs are eligible, as thp_vma_allowable_orders() spells it */
-> +	enum tva_type tva_type;
-> +};
+=CE=A3=CF=84=CE=B9=CF=82 =CE=94=CE=B5=CF=85 7 =CE=A3=CE=B5=CF=80 2026 =CF=
+=83=CF=84=CE=B9=CF=82 11:58=E2=80=AF=CF=80.=CE=BC., =CE=BF/=CE=B7 Christos =
+Skarlos
+<christosskarlos.kernel@gmail.com> =CE=AD=CE=B3=CF=81=CE=B1=CF=88=CE=B5:
+>
+> Hey Vlastimil ,
+> Understood. Thanks for taking the time to explain the proper scope of the
+> checkpathc.pl. I will drop this patch and keep the tool strictly for new =
+code
+> submissions moving forward.
+>
+> =CE=A3=CF=84=CE=B9=CF=82 =CE=94=CE=B5=CF=85 7 =CE=A3=CE=B5=CF=80 2026 =CF=
+=83=CF=84=CE=B9=CF=82 10:44=E2=80=AF=CF=80.=CE=BC., =CE=BF/=CE=B7 Vlastimil=
+ Babka (SUSE) <vbabka@kernel.org> =CE=AD=CE=B3=CF=81=CE=B1=CF=88=CE=B5:
+>>
+>> On 9/5/26 20:31, Christos Skarlos wrote:
+>> > This patch series resolves various coding style issues flagged by
+>> > checkpatch.pl across mmap.c , vmscan.c and hugetlb.c.
+>>
+>> Checkpatch is meant for avoiding the issues when submitting new patches,=
+ not
+>> to be run on the existing code to generate fixes just for the checkpatch
+>> issues. NAK
+>>
+>> > Changes in v2:
+>> > - Restored filename comment at the top of mmap.c.
+>> > - Restore <asm/...> headers in mmap.c as they are architecture-specifi=
+c.
+>> > - Remove blank lines above VMA_ITERATORS and NODEMASK_ALLOC declaratio=
+ns.
+>> > - Fixed commit message typos.
+>> >
+>> >
+>> > Thanks for the thorough review and guidance. As a newcomer every
+>> > feedback and advice is really valuable to my workflow.
+>> >
+>> > (Note: Apologies for the stray huge_memory.c patch included in v1 by
+>> > accident; this v2 series correctly focuses strictly on mmap, vmscan, a=
+nd hugetlb.)
+>> >
+>> > No functional changes are introduced.
+>> >
+>> > Christos Skarlos (3):
+>> >   mm/mmap: fix various coding style warnings
+>> >   mm/vmscan: fix various coding style warnings and errors
+>> >   mm/hugetlb: fix various coding style warnings.
+>> >
+>> >  mm/hugetlb.c | 16 ++++++++++------
+>> >  mm/mmap.c    | 12 +++++++-----
+>> >  mm/vmscan.c  | 11 ++++++-----
+>> >  3 files changed, 23 insertions(+), 16 deletions(-)
+>> >
+>>
 
