@@ -4,96 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D29DC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42404C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FCFD6B0095; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
+	id 3AE5D6B009E; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4D96B00A0; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
+	id 385106B009F; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EA6D6B00A1; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
+	id 29DE36B00A0; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B426B0095
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC74A40694
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:40:16 +0000 (UTC)
-X-FDA: 85186319232.09.1C06532
-Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DE22D180005
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:40:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mimAj+tN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F39D36B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:46:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E9111206F0
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:46:50 +0000 (UTC)
+X-FDA: 85186335780.02.008471F
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 97512C0007
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:46:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E7zi2vbD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788770414;
+	s=arc-20220608; t=1788770808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=frSm7DWW8zJv/ucf5mxKFj7Ad5c5kQn6P7YVOYouEyg=;
-	b=UN6WCZJD/qe0aUEB0vAgYdIl7chrrV5o7qk2PI0nRjicamw6FmVfwymVcB4CWFW6Zu7HtZ
-	8N3AQ78UGgjdNVsfMpvEJmXyZjNwDPoZ2yDk4D/42dNc+gj2Lx1CFxlUcsIaS002QrSodd
-	UULDDSb14GZHDAD5YWIJ8UgPH91fsDg=
+	bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
+	b=GhDECIlP8YlTwDOO7KWTQh/TZ+Rsxov7xf06GQcPqgiL66gDTticGdKmJ7LcRgkZXyWRg4
+	y7B6UUvzUeIZdLLTejebLjzWwPYEZ3pJlJjRbTv7Ff4JiLuYh4aDdRLKNkrvW//2N0m7Wm
+	sY1KiuHuAxrkIra+j16oV4G/bK18eLg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mimAj+tN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E7zi2vbD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788770414;
-	b=DWRbC1qNWtttpmhX+uP6Z/4fVnt2dU8hb6lXne/dUImvrX7WgDz9nawO+Om3wr7wlResmw
-	nnYCkfMzKqzdkvxO0s3uBn275U/M9dH4DlkbB3pB0SFo7IU415kuW+mL52WKD7WCmy77kt
-	js9tvRs8kSPkHXvQ6eIdwdJVZaE2On0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GGO8eqN6d+o+o/h/2jMfZ75tLsSl7Qm1XxnpQIF2MLA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788770409; v=1; x=1789375209;
- b=mimAj+tNTstS2NFREbTdf492Qym2vL0fMboNBRUtTW4JnNus1vHg07l/KY9ZSBsPuNdnYjwS
- 5aij5txNcIc1eshgmoO4YYSvlu00Fl4r/nxsSX7V4vOVAPfKV5wczM4OZEFH+ooSNYTHPJac2LB
- 0luQVYqVunPm76ui+FWJJhNQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8cb33a948e3a62c7;
-	Mon, 07 Sep 2026 08:40:05 +0000
-X-Mizu-Trace-ID: 8cb33a948e3a62c7
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f1021240-ccb6-43dc-8e02-b94f0c4f5fb6@linux.dev>
-Date: Mon, 7 Sep 2026 16:39:54 +0800
+	t=1788770808;
+	b=UbSkRQR1TGI/zmxiRMS0UDfLvbvM3v6zVbtG06NlBtYvUzC4MT59LtQDAInXOV3vLuj3r4
+	oW2u6PegupcG5BfnIrFhuM20quF6MGJOGgig6lSFJNkL+iPWky114BWlCFDY0xm6Mr5ZTz
+	I99R7W4QexMaClaPfjcmj27JDYbFeyY=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2912380a12.3
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 01:46:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788770807; x=1789375607; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
+        b=E7zi2vbDLFcRCKj+SBKbJ+icb09XXAZ4lqUFk346LRzW48XkK6ki0GpS64so/ZhMFT
+         N0h3ZrQUTyr3G4f38XJaPjVMoH4soJ/yK8Phqzqi+85xDhLn8fIdNR2jSUX80HclTs1v
+         ayb5d+hlaAxptNl68kuAvvslPJYCqXgI/X+M8O+sRdKa0znTI05aZgzq+jPCk9M8O+gO
+         +9YVmbb9hblaYd9UWpGC81Jy8tMLvAPV4mpZyKE8v8us3Ma4kxJWW6UYPlxY8wm4vt2B
+         tEZYZFGZOVcvBB31kSHlDmo9T4wk6YBGNsI8IbgmOc7pzmagScG3dX6dWtGwGLlARymW
+         aGSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788770807; x=1789375607;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
+        b=qr97/6Af2vcGL4ntHtYXMuLKcxjkQk6gYKQHc6WidnoVZe/YjCHUA7dXmMTKOQRvna
+         hz3Pby+asKNi4JTSVKUqX6gWPFwfLgsWdyNPgVuObD7Yo8VvNx148kP4wqAaJLZk0HqY
+         L4Bzf9LFjQ8YwFkeXRVjAvyTLjpewT33taGDZZmdsUevqv2XTzBBaLTX0M2sGKkY29D+
+         P0HeD9+i1wh0igK1QqY5+abiAiCoDeHrDeM/8iMOFTBgxG+p/JyMWcGirdeMGLDJ1t0n
+         JlIS0iy6SwiFg9v7y5Tx3FBeVV5VAqnSvsSWq59IQs6sDbJPOHrGwXpBbDCtT2ewxp8R
+         uqPA==
+X-Forwarded-Encrypted: i=1; AKwUvBwx5fscTAohcMdmY/1pVB/nEV8bJv8oL/yEQOE0RKOxkj14wfjxVhPvp/O/47M3/DUreQi7JpkHCg==@kvack.org
+X-Gm-Message-State: AFuF++k1nc7BtFVGskTbJk++KfdlZOkqTZM23IvlIak947ttH2ZUbmC1
+	Tp84/ehxQ+hTgYZTXRA3enGjRTD1NosuDho7HhgizoKRabDaMsiWpZNw
+X-Gm-Gg: AYBFou0F/SaOt0scWAz09Xoy2BVB3ljXAROi0vwOiyUXDJzUiwFVq6F7i6tytmz5vF2
+	MlGKIaLDvf29qXyyHCExZ7gH49vwa+B73L5el2DctrsIRRXZlDs0mNHiRhXbwaOWBw3VPklWOLT
+	MHAu5CCmhhSJ0cmN6kS8F65YqlKDQC29xhLil48nmJ+K96c1MzhUHoTkhJZpN3NaijeD83ORjgb
+	f72E24ORAEOGFAFdr+PhKsXRAJfLVhn0kIwJktWmyTTU5wjg4JD5hYssHS+LA59EGMRB3Ng2ZJb
+	A7naAerwjAgS4KnfuIpdFvWI7O76fefdJ31bZshAajHntlmgD2+LWjfkdfgP1/OvPFOqT53QaZX
+	IKsiLbarB86/bRsVxsvnl7ZurIcvZfgcRODNDVNK0zyQVkohkLQjQXi5c1usE1HMOmTZtQ0YxZr
+	14oGQaa6031KMLiidEl8qoeYzdoMoXDTuRYIFxRf3JR9IgRDhthmx6LbN4hJs4JgC6/EPjxfv8C
+	b5TKQ==
+X-Received: by 2002:a17:90b:5790:b0:398:9bd5:4910 with SMTP id 98e67ed59e1d1-39b2624f0ffmr32121138a91.23.1788770807373;
+        Mon, 07 Sep 2026 01:46:47 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8f1cf6dsm9357274a91.3.2026.09.07.01.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 01:46:46 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: ziy@nvidia.com,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] mm: compaction: mTHP-friendly memory compaction
+Date: Mon,  7 Sep 2026 16:45:12 +0800
+Message-Id: <20260907084512.670883-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <DL8QRV0RZS55.238LGA5F34MYG@nvidia.com>
+References: <DL8QRV0RZS55.238LGA5F34MYG@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v3 1/3] mm: memcg: redirect stats updates of dying memcgs
- for all hierarchies
-To: sashiko-reviews@lists.linux.dev
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1788514750.git.zhuhui@kylinos.cn>
- <8a3fe5e6a076cdd9ac997125cb6c6a0948e1a6b6.1788514750.git.zhuhui@kylinos.cn>
- <20260904102113.DB9011F00A3D@smtp.kernel.org>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <20260904102113.DB9011F00A3D@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+X-Stat-Signature: 1hq3545p87ms5dy3psd98fdp5os8yny9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 97512C0007
 X-Rspam-User: 
-X-Stat-Signature: ai3q4kx3yfwnzwfjnzxdw3qd614ywt8n
-X-Rspamd-Queue-Id: DE22D180005
-X-HE-Tag: 1788770412-616675
-X-HE-Meta: U2FsdGVkX1+yndQUnCLdUSBpwomu3pkCJejwMdGhL36z8x9G7J25EDoHbuZ0dX5Kxp4XM3DlooGMtL8NtdrJ5fbjkRkmQMPwY3l/3I9O6vd/SkY7vMUIebDmv5gsKHUTLGaxOn+Yv3TXyrraW4uxoGU1mqhHizH+uUh5QaEosNQpaLvpOCTks0m2tFZIvfBjtmfNUav9Zyv23rJl1vIBYJzSXVXDmsfbci+Ov8uZEa365dBpn28HZqruZ7cJTiPaQpl+Z29GTqbT8MGz52thl5c6Yf0vVXNM8rfvKX2BfTBHektGnkjP23jtIpTw5kj/U9LBbvtHrh+jdUx6sbifItPkenUdZtKhgmh36lL1Z+L+WnEta8zYcmAnfd6vGDLeqvcacpvNuLZCMxxAF+7AnQGv/nxeCp2SzpFJ1Q14SMrvEnNZBs2PqkBEh/QCDa6Tol7VKyeyXvlYm0WngL/ZCWjKjzSje1XEHdAHPglaSbv50XkQxnb61w1pUtsiAxwpqMh6Q37AfOF4Gnq1CgL3JCgDEJ++S5LPDtqxCaL5Li6SvjcNwNgPD8HsOOW0RG3u+Sdt1kwwbOsp8i0i4lk+AwVbE3XAI836gtM5HCnHqqgwEri943Y1jdP5tLQug6yRgeifBvaiwCh8jKq2GFAsk+iuJzVWOscdsu7deOXuqNSV3yVadwJe6l4pFxNmcWBhvLpSQ5AwGS4MNm66FO/aN57GuxgvPMQ/bAkYa2zZA3PsF7XEjaGEcqb8UTBaITZzay5eNxYa8O9e3hP/A3MdGIavWIGDGMNQwWqha8lWAyxUrV4wNx1hxFNxDuBOAS1La8ohz+v37OdLnUAdnM+V9nczlVoV52YNq0v4L++dPL9X5y6HA4k/eB7+JW0k14/5VoaULaS7V7IrXgKYyu7tCBR3m/sowkeOe3hsuPpZVI4aoT7FLuVf5F/D/maWQ0ndKjn/9sOzIV60SB5x8uT
- //COb/mP
- D80bBOc8zE9yRFRRXofIaRi0Myd7fWXTfg42l5SUizU4mIX0/6y7AfHbaFX3HghlsU3FB++72fx6TTEW6IMLlMf6Cl8N8HUsHSGq4J4k4t+8A1xKwWd7xGk9irP9xUkoLKLE+lsmSSLQDUi9se8JhqgiQB+E5DNL/HCLnLLP7eW/QMbN5CBjOFEoNJDGT5AVvXuQJpVMj1GC7zD6TqqErkA4TWYysE2laADYknXUNfeoU3n4Qf+9w+SErH/rPwpmj1Mm+ULyCpssWDNEW4JLHz/RXQ0Lo81UFnfDjmcSUhxx/PBalaT2fYv4EOw==
+X-HE-Tag: 1788770808-442649
+X-HE-Meta: U2FsdGVkX1+E8pd2RL6b5rk6NQJoDK7f/JPf7QC1fjEo3Xzc6XV94YI8n2jNE9tuuDg9/l1HylUHfH5QuAiFLtTIEYyLd5OORnJqPGFxGmOPP9bfK9aIOsgu/rIrdyJWJEhr44vET0T07nlYcux3J258lFjTrzKyZasH76qy4ovG2ax/Ag8xDbKvJqpGV7+bPdLK32DO7pY2nXVUFCROKHbcNLwdgsIa20fMufSlHwNvtG8ndq+UhGQ7rIcxGAdKvRb1b86W4TmXfB8Zjc2Vzy1ZOxnZEKOcWlnL20J0RmiF7x6wthrd/ghBEqFNVGzm/GxCIAyyxAYQYBuFkBjZvx0SK+ZXfjjGtwIanmjg3X1TcGIquyvEGmVHoCl4KHwtxUKIXGW7aW7yvQeNyWTw7uA/594HDUymAWRbRtmuDVhxjIOFLVGGzoHH0kFUTXROmgJumBDi+kdU/RaeAMakCMM1eyrB4POZcuwNPPDo7/axSJe90eDAO0g8HPpZILx/Eutjc2NwdZOu/7IG8DBy2ahS1H97YsLBleuPlPiJeqQKjRi/NJN1WcaJLv57xie8T6f9O4jH4zOBdG9qCPHdb5EbNpyI0bzP3dLSN86Y18egBf0UM5pmazoeCYT66orOBZdGvTk9a4uMWPVrN0h9r67xP7VFrcHD/3Nl8MwMSABldaReIVK1i68EyIX6kRVJFuOAZeurQj0x2oYd9hk9qT3CPtKJX+HmBCciPGXlLYqcHT/tiPDWWSOZw4lgCbPn8jrGw0Yps49qNd1TxYoZIJN1hvRpZ/Dk1o1OjDhnbn7DrQGmZijPDiNXmRCb+vNlDIFCIrefGqOle0jVOheSn03GVoZFwCeW393hR0eet5il87jKgYbTMi4iTjP1bTVr1GZPcHW66AM5PDvwTrDmAtIEoO5qP/EJbOkpyzemRQa3oalcZHtzWVL/UCe4G2YcnV6l9YPu2CTjVbBF8QD
+ fEgf/PFb
+ 1VzfTEVT50Hz7WlsCnlEQsub62XvxauqLrQySvmRCVboiffBMBVMKphyAvJCCP6UraipZaAYk5h8/3F28x4PqpL6kqDjXRCxD8uODy29dxNtMY0SlsNcS4pVmpPO1YzlCeKDYefiaEIh/uM6Xm2pE3dwAeTUdKPZ0QDhkm0KAHiHeGhhLKsUiRaO+2Yc8Vcwg70PyPxMo6RkAz4o49Sk6+fo5j8OiNQcCIoj/UK1x4xjKQ8mBeQfnx79nsdrMzT/kvFQ1X6CWkTUGY2ZAPwuzZwcNZ7Ks8R4vlzRNy1e2wtw5axOZVm4mjNQRGhiNoLf9pdEdBjwOmGsLhGQoIUnzxs1sf6MsKrP2HAnr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,88 +138,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun Sep 07, 2026 at 10:51 PM EDT, Zi Yan wrote:
+> But skip_isolation_on_order() skips a folio with an order >= target
+> order.
+> ...
+> Oh, you are targeting proactive compaction, where
+> skip_isolation_on_order() does not apply.
 
+Right. To clarify the cover letter: the "migrating folios that already
+satisfy mTHP" concern is specific to proactive compaction, where
+target_order is -1 (via compact_memory) and the order >= target_order
+check in skip_isolation_on_order() does not apply. For compaction with an
+explicit target order that path already handles it.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Redirecting dying memcg stat updates to the parent on cgroup v2 without reparenting the base stats causes permanent negative stat leaks and underflows.
-> --
+> What about the impact on THP compaction? How does it affect direct
+> compaction for both mTHP and THP?
 >
-> commit 106b19246ac20191c0af6a41927414095cb5d019
-> Author: Hui Zhu <zhuhui@kylinos.cn>
->
-> mm: memcg: redirect stats updates of dying memcgs for all hierarchies
->
-> This patch removes the cgroup v1 restriction on redirecting dying memcg stat
-> updates to the closest non-dying ancestor. It unconditionally applies this
-> redirection across all hierarchies in an effort to fix workingset shadow node
-> budget calculations under MGLRU.
->
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 9a65d7148c227..64eb59bba61cf 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
-> [ ... ]
->
->> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
->> -							   bool *rcu_locked)
->> +static inline struct mem_cgroup *
->> +get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
->>   {
->> -	/* Rebinding can cause this value to be changed at runtime */
->> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
->> -		*rcu_locked = false;
->> -		return memcg;
->> -	}
->> -
->>   	rcu_read_lock();
->>   	*rcu_locked = true;
->>   
->> @@ -870,22 +864,8 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
-> [Severity: High]
-> Does this redirection cause permanent stat underflows in the ancestor under
-> cgroup v2?
->
-> In cgroup v2, base local stats are explicitly not reparented during offlining.
-> Looking at reparent_state_local():
->
->      if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
->          return;
->
-> Because of this early return, the dying memcg retains its positive base counts.
->
-> However, with this patch, when resources previously charged to the dying memcg
-> are freed later on, the negative delta applied in mod_memcg_state() is
-> redirected up to the parent.
->
-> Since the non-dying ancestor never received the positive base counts but now
-> receives the negative uncharge updates, its local stats (like NR_FILE_PAGES,
-> MEMCG_SOCK, and LRU counts) will permanently underflow.
->
-> Because lruvec_page_state_local() clamps negative values to zero, wouldn't
-> this severe underflow mask the ancestor's own legitimate positive stats,
-> ultimately breaking the workingset shadow node budget calculation and causing
-> the exact premature reclaim and thrashing this patch aims to resolve?
->
-The observation is correct: on cgroup v2 reparent_state_local() returns
-early, so the dying memcg keeps its positive base counts while the
-negative uncharge deltas land on the ancestor, and the ancestor's
-state_local can permanently underflow and get clamped to zero.
+> It sounds to me that this patch series target proactive compaction. Am I
+> getting right?
 
-One clarification on attribution, though: this underflow is not
-introduced by the redirection.  Once memcg_reparent_objcgs() rewrites
-objcg->memcg to the parent, folio_memcg() of the reparented folios
-already returns the parent, so the freeing path applies the negative
-deltas to the parent's lruvec directly, with or without this patch.
-The redirection only matters during the short window between
-css_offline() and the objcg reparenting.  So the missing base reparent
-is a pre-existing gap that this series re-exposes rather than creates.
+Two things:
 
-That said, I agree it needs to be handled.  I'm preparing a follow-up
-patch that also reparents the non-hierarchical lruvec state_locals
-(the ones count_shadow_nodes() reads) on cgroup v2, mirroring what v1
-already does.  Will fold it into the next version.
+1) Traditional THP (order-9) is not affected. The mTHP-aware branch in
+zone_effective_free_pages() only triggers when order == compact_hpage_order(),
+i.e. the minimum always-enabled mTHP order (e.g. order-2). An order-9 THP
+request does not match that, so it keeps its original behavior exactly
+(NR_FREE_PAGES_BLOCKS under defrag_mode, NR_FREE_PAGES otherwise). We
+didn't change the THP path.
 
-Best,
-Hui
+2) The series isn't limited to proactive compaction. Patches 1-3 target
+proactive compaction, but patch 4 also covers the kswapd -> kcompactd path
+via pgdat_balanced(), so both proactive compaction and kswapd wakeup are
+addressed.
 
+For direct compaction: patch 4 does touch compaction_suit_allocation_order(),
+which is shared with direct compaction, so order-2 mTHP direct compaction
+would also fall into the new accounting. However, the direct compaction case
+needs more testing and thought. How direct compaction should behave for mTHP
+is something worth discussing together to decide the right approach.
+
+Thanks for the review.
+
+Bo
 
