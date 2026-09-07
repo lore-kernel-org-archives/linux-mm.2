@@ -4,108 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8A6BC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B0FAC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:23:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E13F86B009E; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
+	id 64F996B00A0; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB946B009F; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
+	id 627296B00A1; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28696B00A0; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
+	id 5173D6B00A2; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD0966B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C21416013C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:21:10 +0000 (UTC)
-X-FDA: 85186875900.14.1D33A9B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 89E342000C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:21:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHCkg4gb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28CC46B00A0
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE3F740144
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:13 +0000 (UTC)
+X-FDA: 85186881066.01.E8FE206
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4BB8E8000A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3naaP8h;
+	spf=pass (imf30.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788783668;
+	s=arc-20220608; t=1788783791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6RafqFe1zOQfVX4I3+CvQ7y72wqiedDGCRPziRNypvU=;
-	b=cVxISRu7Fl9jcs/nfHKcK90ySx25TS1F6RSpxMYWW9+SxsoZK9jW9/PGlCRWwqT6rXqsVV
-	nlDqMx1qiwY76ybX2nbKI5cmoxqNJRwTqGaHyXgn/zthYYP0/SaDsYytJQHw/QvSjKoVXc
-	nEWYkIeG09msrB5nwlzl5yrngJTdBv4=
+	bh=1oB401PRChNM94BBOkC+2/OTgtouFWztcLaE/fiOs9A=;
+	b=3MNEVFfJs8k1RlpS3u2En0O72Sj6fm/StESPy6cIo78s+rkemnJw1uYU4mEXTYGKZDbzGM
+	truO9uwqteeLt8NuhEKIx7nXDxMnAdompwWxgdvL+otS173Y4VhBmL061uCmjzQfgB6BSU
+	0TitorDvAVgnxRzrcs0yjXdw2Gw7Ok8=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHCkg4gb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3naaP8h;
+	spf=pass (imf30.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788783668;
-	b=G52lpMiV9lHkg7mKXOS7g0YZJ/QvsXvHdSFBMbv7JU6gGKfSEP4HairPX18R8PaV1E9OWE
-	2JMemC2/TIYcAIAIQhkq6a2hqdN1qbnLWHbuRWcvtRJKO0FX3ql8mBVBZBaFN/i/l0sST4
-	es2cr0rm59Of8ElGyajX4pNi637FElM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 013ED60AB5;
-	Mon,  7 Sep 2026 12:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71C81F00A3A;
-	Mon,  7 Sep 2026 12:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788783667;
-	bh=6RafqFe1zOQfVX4I3+CvQ7y72wqiedDGCRPziRNypvU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bHCkg4gbtV4fR2YXJbmLmuc4792CiiwMkkiRBQHsBe3wK55pXp+8DhreyLDcaIbMw
-	 +XMz1qywEjymPY3Ej4XpuBzolt+eJO+nukbZ7CXCsQNU26wwPA1iXIhTSrRLpbGDix
-	 fwWR2FArhe/UEy7m95AYiCBVgXqtLK4g9V7jnUSj20xaBegsmmoK4Eg5QF6p25qKod
-	 FvDJ/mDhse/p+LJ4rbaxHYb1QC5RLLos4JcnAt7VH2IvwsAiCyGi4lzj9mRyvxW/JA
-	 h+bvh9R1HO3HUjIq8DKQveOiIQHs0vc3Dpq6Hwle2VPzfsPQD/3qCXSkt6Tz4Wm3Zg
-	 Y31OxqU9Ezkow==
-Date: Mon, 7 Sep 2026 13:20:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Thomas Gleixner <tglx@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>, 
-	Michal Hocko <mhocko@suse.com>, mic@digikod.net, oleg@redhat.com, david@kernel.org, 
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, gnoack3000@gmail.com, sj@kernel.org, 
-	rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, 
-	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com, 
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang@linux.dev, 
-	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
-	kprateek.nayak@amd.com, mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, 
-	babu.moger@amd.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
- for_each_*_rculock
-Message-ID: <ap6d3zuVsJiLkrpr@gremlin>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
- <20260907081334.1152889-6-ye.liu@linux.dev>
+	t=1788783791;
+	b=MX5isCF63SPGxAIVEzJuvVDvHYqA8dSePRkqrxs77DfQVeibACAogxz3bBwQidHuOxtc7J
+	NAL2Oa6A1DNwva1qI/DAb5niusU+yfKDkhysSR7QCBvOC3Cdb2iubSTY062jLL2YnEfmSr
+	Ryhf7gLspZqMn2nMJKCEtg7fTngM9m0=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687B1bNI627746;
+	Mon, 7 Sep 2026 12:23:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1oB401
+	PRChNM94BBOkC+2/OTgtouFWztcLaE/fiOs9A=; b=g3naaP8hxzYj/uqzO8A0VG
+	o2mIpjsr5spK/ZZnw2I+LSlH2Kf86hQDVnwXDWaKZ79PtAV7crImUnHf7YXg9TaJ
+	oE6ezSTpTWSwS8xm/paI1WtXS/hhIIwY+cQVdVzmkG7mUyWCe11tK3+Bfib5707T
+	1jB5Ui/jICh6WHgGV2kc/9SqYiBi634BVR9dztmyOMrQFFmudr37fuhYjCf0078M
+	fkToSfFTHH3M+5eHKu8kuLNAfUeEG9X+hpHzFURyg84550ys82VvykFvBPyAJgLX
+	aMB6GAWX/G5ariMl50wL55CJU8Jl2DiRPjJl5yCvXpcGmoIkW3lZnvWHwCLfBoyg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrggxs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 12:23:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687BuFbT027688;
+	Mon, 7 Sep 2026 12:23:07 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggwsvwy8j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 12:23:07 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687CN30v46072304
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Sep 2026 12:23:03 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4158A2004B;
+	Mon,  7 Sep 2026 12:23:03 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E76C320043;
+	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
+Received: from [9.87.132.113] (unknown [9.87.132.113])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
+Message-ID: <dcb5547b-a04b-4991-a581-e3784ccfe303@linux.ibm.com>
+Date: Mon, 7 Sep 2026 14:23:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260907081334.1152889-6-ye.liu@linux.dev>
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] KVM: s390: Replace get_zeroed_page() with
+ kzalloc() for the STHYI buffer
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org
+References: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
+ <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6a9eacac cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=kt7I_EveaTZZBW9BUTwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfX+arVqquRJ31Y
+ mcur1fAZHm1KhQjKFpEM4QT5CY3JEzwzs6kz7MSULeLhzhiSs9DY+//BC4oFwcl1Ly9dXRHVpou
+ X6VXmXQl1ar9eUD5I4aNZJDx5wLN9EU=
+X-Proofpoint-ORIG-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
+X-Proofpoint-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfXw0ZzwHzoN1qi
+ RWFmUX6QSzbsv8a+zREfzUN//ueiMOlh8GTtu6CVVbstAx1PPj+NyO7Va5LqAb/35ad9NTw9Ejr
+ JYEwwpM36tgawvzjDayZkpbiFzrPW3fsSRGYk4XI0WxCYKrTWT9NqE64PF1Z5GM7ITD1WlMx70d
+ QAkzJk/Pu8X7lX1cf7mCxpJQYU/e2mXqhmlsLY+zQXggLjSlUZjnZeRvJGxcM7uQ1cEbf93TWVG
+ CQC14GKgZsuiuBedkIOKtuaPwkOxql5o3bcK83h1YRtVUUBEmnrHUYlfMJ21TQA7rvD9ErvHsO6
+ o3ePU05j5MjRRc9JOhC6HnY9cr7fyE5bay/xFwNWXdnt+pqgN6MKirXdZxGpnfoRVnY2Zyrgmsy
+ kHMaUjEaThkeVKpu+FLb2v1PEXeNbMHjEfFNiLoXShRL8r5nhvOpkFIKvFAJlqpPNH95yerzK54
+ Y55V0YFeE0oSYQHklpQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070133
+X-Stat-Signature: cw6w7ery999ttq9kxccjcykknjis81ak
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4BB8E8000A
 X-Rspam-User: 
-X-Stat-Signature: um185dgbh7pmziozw16rau67b7kfptqk
-X-Rspamd-Queue-Id: 89E342000C
-X-HE-Tag: 1788783668-736314
-X-HE-Meta: U2FsdGVkX1+pghBnEwRQfcSf07o7tZ8fgm/CiN/K3FhHZYSXjERmOF/hzLydZqRq6K0Q3xjKFvS3LU3MkQ93XTlMDligsCdlFoSIiFmaH6LTmx5Hd6a6ie6HhygNyUW0QM2HcgCZkVoKFf2A6QbqII3trJ/+oYz5hkWAoQV/FXNFhaEuF/lqZqsbSlhf8IPI3B7JqoO0SZggDjTFA24/0wC08h3nRdKlSWS73p1xFSqTloMiD6Vk1+kde+xmsW662hIWbxEOGhBHiAzCC/cL/nqIk8T+V8fWqOubZvAo4iZPXWOru+aXS/XDQLe6Q3D8BcisbZHgwntOp9BtjFlHr6GhBOZkDMQH9mJPKm824NwCTrSkHR0t6+kMw9gNsiDjsgBWO/oxdhD1zebggEnNxakcEvpIVc0HG2r2XAk6psIZS/VvC5xDA7UiL73z5+mmjIUPAXtpzr2RAVNr9Y40LW0aNrIR7yzW2Vaq6JqT6hu2MTOyhMaipKPmxjf7JlwjdQ5cElweLGQm4bIuOnJeVHtMniyBUWPkD76VhqfUQXDjPhNSGwslIUNcvnyraJUumgP4svjay12IVoTVWYrl1GlUx8dG260f017NOuTFDx7jacraNj4jK33KiTHXlFxROriGEqUdEoW6j5O3NLHxpuoq7uFzRNJTtpD8wAe+mwXS6J90ocWMdqh68ybhSP/VcHvB2eyM/tpr1Na/ocwAMJU3GOOlHSVKkYXKUH6H34lIORtnfJ6xo9BqI/fgDpP7luUBsk3yToc3ZO/pUjir+gcOhYinFzuxrVEJZ5cVB6d8t/BYVm4HZRLigv5i7trxItspXnP+PtZlPxlcYelM888f4d+rf1wn0F6g0cNi8tUWUKhPm0IAllTXiJRkdH6wsiJdDd1PwCxvbnJwGRufprMuvdIgNNstcg6R5nuQVexDi9TvcyDxuIeJbn64lv5HMShNvywjNxTdQ5ItrRk
- EtL+hzrK
- yx1LRJEtGyYE1wlMNCyj0JaXPAAK1MaqNFh/bd3+IST0yNKzyc5lN/sDHDyH5ML8/wW45vIZJojdqHIiHxwtM6z9bIwr6gdpUCjHllbetP3F3K5Bd27T/vyfZkpMePSgWuCVcibiGeAwnCOT/NR68IyChXo7DPUDYuF8d0RDheZVhoS/BMGII8UqAldKfgmUegQZgzZqYguxjDinCP0z+mnvfA8pmM2jllsrNUgk7hx4/2UmL3tbbMTLDFm55FfaUGjjIUa/ed5d55fnQV8l8PjBKLs6qEbaBKICq5IeH7rVqZwp50tgKb4E5wXXDtgBFVsZy995HZ8gV46Nn0fa3mucrjYfbZr0jM5nncXyRqyYXKf6o0gG9W2vG4VEME6ZUTE3Pl+2vY4F+/nlJ9M1sfXJ2KGm28wNgvRUYBkCwUBFvIScfd+rFXmY/C1PhuAhHw7bT3mTpTWCzBLlSwNDOXOGXVmsh7SUUsddY
+X-HE-Tag: 1788783791-668135
+X-HE-Meta: U2FsdGVkX1+sGJqYIdbogmbHR2BaO3UlJvawA9I6FYY/3Ipnu91SDBjuox2OPfmeCxRJQq6qg0g5IrgxJbPJfq3+InzWu9I4NN+EkMd7ZGCl9Rybr8SZ6vzuX+A/Q1o12ZqrtNI5YpGu+3aQwJhp7MOLIGucj2CE32AoRUGhV/pgslim3tygUoTlrqZahRnMmy5kvQ7/qt5tlLw1eQG01vnPFtYiH/xPjdnO9wO4KM/tOzDZKrQui/4NiLu+B+4Ro+0p1EV0w1AbINqB0gxleufDvKjjJ+oaTxHBTJHwz5kQtrMhNdUlNRXLnWkqQ/YDLAKA2tmu/56ty1UKdBfd1AmsKwvyLmFs4jCn6TqsQwGsc2PsUU7W/+Vn+vp5JO3buu1GIz5aD/kJFZjymp8Gs7YA+vrHssgSrCMsNuJRpfpvNXM0rC8OYUrPXAYW0yXW5suhMWMKGqHzGuPPN8MxYRTbYxk3d2D714vAA6ES5Wh169QyM4qnq73uHCE1fRXrBnZGsujK+I85x+X9UlGOLM4ex0199jypdzZDuDq6nYfX/ujUZKEhltw48/vHQ9pKrhZkg/CCQpD967Pw7+oQSWqO+VF7AuI4+u9IFlWJg/469bnWxptUweeBCoEaICMkA+90onJr9XprJcxZ8RARAATInYJ/RfhEks0HZ1rPe4mymvx6lYRXD8DTtWaTnh2UdbXyHap/rxc7YK/5eBPXBz/E7sx3BSjPiGCawR7zDzexRyCfVlLycK44wxjKDKmvz69NR0weEWxesQSoW1fQL5ZYy1CFgVKb8NQU6A+MZtDWv7KuONj5LzfObqG7xBLTeoQLjmURi2HvYFLQUuajqKqxyCTaeLt1//xlRibNcrG93+mq12Fo4DdFLTKVoboff/wQnAJE18YkIIocZZFVLbp7XMZVpgJh8vkrjaOhHWMoUFRH8Nw0L9/BMe7WYixfs1JQvFmgpHmgfFAXV4W
+ KbDiicAE
+ KQ0djkSIGWdlGBtKxUbbOiTUIA2ZmABnXH3+T3NqYkS/1JXIqZd5MtGSPU6SkFONXIAjY9GEfw2C7U+CKimaEdRgw0Kcm+vFR5Y23vOR0TaUwumFOPHy9dzxJDloOLTwkioD+3rBZiKI1Ej0FAPKB+XMNE4f4mgySviNh/wA0vW3ZaHfYTDo+DlLa1RmyItcACreQPLHKV2nIYQKM8QDswYYUbbRJffhWDaBYJxsU/o8A1MC4tQoIO7bdSQrJbQLqVPwXVv4ojWzGru/NvM9+4eo+lNLCyZBTrFAZXcnCEOcf84c5IQXkeuLu0mRB3gn46Bo+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,233 +193,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:13:31PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
->
-> Replace the manual rcu_read_lock()/rcu_read_unlock() and guard(rcu)
-> pairs combined with for_each_process(), for_each_thread() and
-> for_each_process_thread() loops across kernel/ with the
-> for_each_*_rculock() macros, which scope the RCU read lock to the
-> loop body via scoped_guard(rcu).
->
-> No functional change.
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Michal Hocko <mhocko@suse.com>
+On 9/6/26 10:27 AM, Mike Rapoport (Microsoft) wrote:
+> handle_sthyi() allocates the buffer that receives the STHYI response
+> block before it is copied to the guest.
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> The only goto in that function does not unwind anything, it merely skips
+> to the exit when the function code is invalid. Turn it into an early
+> return so that the buffer can be freed with __free(kfree).
+> 
+> Replace use of get_zeroed_page() with kzalloc() and free_page() with
+> kfree().
+> 
+> Assisted-by: copilot:claude-opus
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Yup, there's no alignment requirement anyway.
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
 
-LGTM so:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> ---
-> Changes in v2:
->   - Rename *_rcu to *_rculock
->   - Rename stale 'unlock:' label to 'out:' in hung_task.c (Günther Noack)
->  kernel/cpu.c             |  4 +---
->  kernel/freezer.c         |  4 +---
->  kernel/hung_task.c       | 11 ++++-------
->  kernel/locking/lockdep.c |  4 +---
->  kernel/rcu/update.c      |  4 +---
->  kernel/sched/core.c      |  3 +--
->  kernel/sched/debug.c     |  4 +---
->  kernel/trace/fgraph.c    |  8 ++------
->  kernel/unwind/deferred.c |  3 +--
->  9 files changed, 13 insertions(+), 32 deletions(-)
->
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index b3c8553d7bd6..00638d2abc0f 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -1254,8 +1254,7 @@ void clear_tasks_mm_cpumask(int cpu)
->  	 * full-fledged tasklist_lock.
->  	 */
->  	WARN_ON(cpu_online(cpu));
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rculock(p) {
->  		struct task_struct *t;
->
->  		/*
-> @@ -1268,7 +1267,6 @@ void clear_tasks_mm_cpumask(int cpu)
->  		arch_clear_mm_cpumask_cpu(cpu, t->mm);
->  		task_unlock(t);
->  	}
-> -	rcu_read_unlock();
->  }
->
->  /* Take this CPU down. */
-> diff --git a/kernel/freezer.c b/kernel/freezer.c
-> index a76bf957fb32..7a870f71dcf6 100644
-> --- a/kernel/freezer.c
-> +++ b/kernel/freezer.c
-> @@ -217,11 +217,9 @@ void thaw_process(struct task_struct *p)
->  {
->  	struct task_struct *t;
->
-> -	rcu_read_lock();
-> -	for_each_thread(p, t) {
-> +	for_each_thread_rculock(p, t) {
->  		__thaw_task(t);
->  	}
-> -	rcu_read_unlock();
->  }
->
->  /**
-> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-> index 6fcc94ce4ca9..73a5ad3be9a8 100644
-> --- a/kernel/hung_task.c
-> +++ b/kernel/hung_task.c
-> @@ -315,13 +315,12 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
->  		return;
->
->  	this_round_count = 0;
-> -	rcu_read_lock();
-> -	for_each_process_thread(g, t) {
-> +	for_each_process_thread_rculock(g, t) {
->  		if (!max_count--)
-> -			goto unlock;
-> +			goto out;
->  		if (time_after(jiffies, last_break + HUNG_TASK_LOCK_BREAK)) {
->  			if (!rcu_lock_break(g, t))
-> -				goto unlock;
-> +				goto out;
->  			last_break = jiffies;
->  		}
->
-> @@ -337,9 +336,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
->  			hung_task_info(t, timeout, this_round_count);
->  		}
->  	}
-> - unlock:
-> -	rcu_read_unlock();
-> -
-> +out:
->  	if (!this_round_count)
->  		return;
->
-> diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-> index c56a7f91d72e..ea218dc75ad5 100644
-> --- a/kernel/locking/lockdep.c
-> +++ b/kernel/locking/lockdep.c
-> @@ -6834,15 +6834,13 @@ void debug_show_all_locks(void)
->  	}
->  	pr_warn("\nShowing all locks held in the system:\n");
->
-> -	rcu_read_lock();
-> -	for_each_process_thread(g, p) {
-> +	for_each_process_thread_rculock(g, p) {
->  		if (!p->lockdep_depth)
->  			continue;
->  		lockdep_print_held_locks(p);
->  		touch_nmi_watchdog();
->  		touch_all_softlockup_watchdogs();
->  	}
-> -	rcu_read_unlock();
->
->  	pr_warn("\n");
->  	pr_warn("=============================================\n\n");
-> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-> index 2a778b8ab4ad..d8e0b5896db9 100644
-> --- a/kernel/rcu/update.c
-> +++ b/kernel/rcu/update.c
-> @@ -548,15 +548,13 @@ void synchronize_rcu_trivial_preempt(void)
->  	struct task_struct *t;
->
->  	smp_mb(); // Order prior accesses before grace-period start.
-> -	rcu_read_lock(); // Protect task list.
-> -	for_each_process_thread(g, t) {
-> +	for_each_process_thread_rculock(g, t) {
->  		if (t == current)
->  			continue;  // Don't deadlock on ourselves!
->  		// Order later rcu_read_lock() on other tasks after QS.
->  		while (smp_load_acquire(&t->rcu_trivial_preempt_nesting))
->  			continue;
->  	}
-> -	rcu_read_unlock();
->  }
->  EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
->  #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 0697ed0f1c3d..fd5bdd2cb798 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -2005,8 +2005,7 @@ static void uclamp_sync_util_min_rt_default(void)
->  	smp_mb__after_spinlock();
->  	read_unlock(&tasklist_lock);
->
-> -	guard(rcu)();
-> -	for_each_process_thread(g, p)
-> +	for_each_process_thread_rculock(g, p)
->  		uclamp_update_util_min_rt_default(p);
->  }
->
-> diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-> index 72236db67983..cdae165b98f7 100644
-> --- a/kernel/sched/debug.c
-> +++ b/kernel/sched/debug.c
-> @@ -1029,14 +1029,12 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
->  #endif
->  		   "\n");
->
-> -	rcu_read_lock();
-> -	for_each_process_thread(g, p) {
-> +	for_each_process_thread_rculock(g, p) {
->  		if (task_cpu(p) != rq_cpu)
->  			continue;
->
->  		print_task(m, rq, p);
->  	}
-> -	rcu_read_unlock();
->  }
->
->  void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
-> diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-> index 40d373d65f9b..f797ce119223 100644
-> --- a/kernel/trace/fgraph.c
-> +++ b/kernel/trace/fgraph.c
-> @@ -1057,11 +1057,10 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
->  		}
->  	}
->
-> -	rcu_read_lock();
-> -	for_each_process_thread(g, t) {
-> +	for_each_process_thread_rculock(g, t) {
->  		if (start == end) {
->  			ret = -EAGAIN;
-> -			goto unlock;
-> +			goto free;
->  		}
->
->  		if (t->ret_stack == NULL) {
-> @@ -1074,9 +1073,6 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
->  			t->ret_stack = ret_stack_list[start++];
->  		}
->  	}
-> -
-> -unlock:
-> -	rcu_read_unlock();
->  free:
->  	for (i = start; i < end; i++)
->  		kmem_cache_free(fgraph_stack_cachep, ret_stack_list[i]);
-> diff --git a/kernel/unwind/deferred.c b/kernel/unwind/deferred.c
-> index 5bea47314254..ecfe1336095e 100644
-> --- a/kernel/unwind/deferred.c
-> +++ b/kernel/unwind/deferred.c
-> @@ -319,9 +319,8 @@ void unwind_deferred_cancel(struct unwind_work *work)
->
->  	synchronize_srcu(&unwind_srcu);
->
-> -	guard(rcu)();
->  	/* Clear this bit from all threads */
-> -	for_each_process_thread(g, t) {
-> +	for_each_process_thread_rculock(g, t) {
->  		atomic_long_andnot(BIT(bit),
->  				   &t->unwind_info.unwind_mask);
->  		if (t->unwind_info.cache)
-> --
-> 2.25.1
->
+Looking at the kernel's sthyi.c there are a couple more locations we 
+could change:
 
---
-Cheers, Lorenzo
+I don't see a need for the syscall to allocate a page and the cache 
+doesn't need page allocation either. We should even be able to have them 
+byte aligned since they are never the destination for one of the 
+diagnose instructions, a kvzalloc should be fine if I didn't miss 
+something...
+
+
+Diag224 needs a 4k aligned 31-bit physical address for some reason so 
+that needs GFP_DMA. diag204 is vmallocing anyway since subcode 7 uses 
+logical addresses.
 
