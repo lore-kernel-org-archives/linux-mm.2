@@ -4,134 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4AE3C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB63C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6DCD6B00A2; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
+	id C0FFE6B00A4; Mon,  7 Sep 2026 10:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D45CD6B00A3; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
+	id BE85F6B00A5; Mon,  7 Sep 2026 10:00:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5C7B6B00A4; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
+	id B25D96B00A6; Mon,  7 Sep 2026 10:00:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A0F5A6B00A2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3199CC0177
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:59:08 +0000 (UTC)
-X-FDA: 85187122776.13.89CCEBE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 693DB1C000A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:59:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixHulrZx;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 90A606B00A4
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:00:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07173A0190
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:00:25 +0000 (UTC)
+X-FDA: 85187126010.08.8AF5111
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 271ADA001B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:00:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtOe0lI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788789546;
+	s=arc-20220608; t=1788789623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+1QIqU52AVFPMroKZLyqFAwYP3b20aWfmSMgRX5j9U=;
-	b=d+U2rAtCLl8cs2+QAaqWswYW9+RAP913Yi1EtmAj+PKBdk9BIu09WFFj7AmYgoQWjwFTyS
-	+fmS88h0PfSQJIM9zEZbVyNGfBgPUjqX7x5oh+65KzycKVuqR4JOcyqnDPH4q9NHh4XPm3
-	PVXvN6E77ZE+cZS3AkcNDRn6cfxNXV8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788789546;
-	b=SP/FFrVzjgrumwJNHCLGjBqZcjNPJbRg8IMKikg0D8Otin56cRMK0JGeadZSNNqN0tVWmI
-	NXpckC2v9V0GIc6EUi+c7a+W4dH/4WP+x6quy1JNu4N1tPqkvZzUDeRZPnUEXY/rtaW534
-	J+f+H/EhdmmRLjPzXwRhtY4KaKPL/Fc=
+	bh=EgLK3o+julTVE6C/8v3utQVcxVTdU7XWXdzws8YaC20=;
+	b=UhP7CTxFMCLHO/kD+IoT3/eGWS4wKDwml0RESwaGgBIdT5HrM96I1uRJneFt/3CYRtAW3y
+	DTmzIURs6FaiA11ol6cctrEI2982xs+h3qcLTPbSKjUNFw1iBA5nyJuoCq4wZNuWcSrV8O
+	HZSy2OB/jfWbGMVkoTCovh89ucRTAWE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixHulrZx;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtOe0lI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788789623;
+	b=aBRf9t9D0Acy+iGWK3ZD5dsmpUKz07XuYeWs/n8cIJk6pIQt2FrT30FxmIe2CqQUVDX3Z9
+	eksImhNRpuKhZ1U30//6yPftripIDg4U5m/495LMXPIZ1GqYBK+LtdDqlwIQTAAAbyQPfj
+	ZIUXqWqAvOUxa4W3sAzjNEav/VKTnkY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0172360D91;
-	Mon,  7 Sep 2026 13:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4621F00A3E;
-	Mon,  7 Sep 2026 13:59:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 476184086C;
+	Mon,  7 Sep 2026 14:00:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985261F00A3D;
+	Mon,  7 Sep 2026 14:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788789545;
-	bh=V+1QIqU52AVFPMroKZLyqFAwYP3b20aWfmSMgRX5j9U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ixHulrZxrmJT9lfSwaDj4SWjTvLSrkbTPBYKU+Fg1+sffniB11uyw1qCzpuRdYiPk
-	 zUgv+2NJ40uemHK8XhXsJOpt4wt7YiN9kzADUr+JnCKuYxU9CiAYDCFpqxge7IYxBA
-	 JOxsmcRLr6fYAGMULodWLhhHGKphKgZXC0r3XPjg8BORNg3KNbXumftopqVU6lmYjj
-	 +I2KxYz8OU52dWkzagqLJVmx3afd77dfhk/xPqvnfRcwUGz4m+/PRGDT0e9nPlW0NG
-	 gY9nNDSFFWRR45lAQwhZXJphqNBH3T35d4hIu/LtSMOLiYLF0P1AdSGi3buftlb1PB
-	 NJjV3anxHrL/Q==
-Message-ID: <d0137f1b-b28c-4f2e-92e9-0dad044fc0dd@kernel.org>
-Date: Mon, 7 Sep 2026 15:59:02 +0200
+	s=k20260515; t=1788789622;
+	bh=EgLK3o+julTVE6C/8v3utQVcxVTdU7XWXdzws8YaC20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gtOe0lI4tICmFeXO0VXaSZWun1zD97NtGKzB00Fxz4Ka/Zpm56GHzGCFmpkzXvwya
+	 IjgdW5ASTJB+qKa5sg3xhHy+2z3Tif4EUzgG6v2G0AqXAMe/0BNO4ao6/A+PGKiEDt
+	 LiunuR042Q+3iJ1jf+LikMpBoAosls+iqBo1ld1uAEuNgD3FyixqBGd1NK8XwlELz8
+	 0aXr47TpsMtDRS4WsQVvIrdjIekWTZVzwY14LA7ppw9cLIVA/gJznyINUg586mqoJr
+	 i4bMWj2QqqCUzgdxYWZPl2+vXlMSa8ApBf/xkklnj7o+nTfBb5pP16MUu53RogA7JW
+	 PhrukphYxcyLg==
+Date: Mon, 7 Sep 2026 16:00:19 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: Rob Herring <robh@kernel.org>, catalin.marinas@arm.com, 
+	will@kernel.org, rppt@kernel.org, akpm@linux-foundation.org, 
+	sudeep.holla@kernel.org, jenswi@kernel.org, mark.rutland@arm.com, sumit.garg@kernel.org, 
+	ardb@kernel.org, david@kernel.org, danielmentz@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, op-tee@lists.trustedfirmware.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 02/10] of: reserved_mem: Introduce "ll-map" property
+Message-ID: <ap7CAowlFTFhSFP9@orome>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
+ <20260902104712.2399797-3-vdonnefort@google.com>
+ <20260902172436.GB1440252-robh@kernel.org>
+ <aplF4NaoFk73d-c5@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: vmpressure: scale window size based on machine memory
-To: Taha Sezer <tahasezer.is@gmail.com>, ljs@kernel.org,
- akpm@linux-foundation.org
-Cc: vbabka@kernel.org, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260831130316.448-1-tahasezer.is@gmail.com>
- <6a9673f4.cbade83c.66f7c.3d66@mx.google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <6a9673f4.cbade83c.66f7c.3d66@mx.google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 85kdr1da3djhi93ojjr5yei1es5a1bnf
-X-Rspamd-Queue-Id: 693DB1C000A
-X-Rspamd-Server: rspam02
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3ihzba4bzldpza5m"
+Content-Disposition: inline
+In-Reply-To: <aplF4NaoFk73d-c5@google.com>
+X-Stat-Signature: qe58cn1daz13xw3w3x56fz3z8qfxs45d
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 271ADA001B
 X-Rspam-User: 
-X-HE-Tag: 1788789546-875877
-X-HE-Meta: U2FsdGVkX1/fkK2Pu7Nnwr8y7FKpzWd7xIjJapwFguHxoGysJHXz/gJTYXaZCxDk7uFJ4HW/+PaxqTbM8b8oECXf547D/ZrjNja4X3G/J1qZ/BBUfLfUt3VuHl1b5f0ED7PDWtEC3DkuJb9QMI9yLrvbfXxhlBeSVn8vH0mlGQsYGhrNROD/X3QoYJ2eDFqxOA4+8wwym5q8W8Cu+hb8+pP3repZ7cxpdBH9o6trYbSLD/HHqXmTpEwvQJFkE5jBZQuga6p1ci4Mt2fGCGKr6eOXyTWjiCzZqZenLze2IWp2WnvfhMiaF5HWJ5b///jm1JyHVjH6wFQqO24WkUWLv2I5jU5tE5jb0dO4DR1uHN4SQyU+pDJWdK8/nAjATELs7P+EpdeFycsEDZWe2lcxpBL9a6afdMaM0bv2qhMTj26ROtmGoRhkPz3Un55ZI9nWupbxGQTNmOOA+t9JZwuxbriPEnU8pLZvv/QZJS6I0iCK9wn05CN36FyOk28/fx2WIR2SRuujPDuSPXyd73xfCqCuDKsZhW3VujIMfByeSWBTODYEuRH0y47y8k8K2VjOBWSrl7k6epqtDE9JG+jXBPbV0SjSPRrolMxAcnqoyfuGtttgFAOm9DH/nQva6Q+LTJicm5XjoM0oydt8I7nZ8L1BvrOQ9ezKBnEw3D1ZzZVsaKwK5cLGE3A1X8+IYYH8fMlBD6gCF0wvXedJ36BGnAAlr0sLQx/HwRRFx8PFgr5ZBYptrui6YgC4oyWKHTqbf1dzuIfQt1ScGWipWiRrWvj0kqJcAc9mkiRQzTDrbU9w376wQkkU9YdTLIy26VC2RVjPwFAy/4zxuvZX1tbkRVjJNg3h0JPW7O0NafNJyCoCX6wWyIJTkZpiXKMKkj7Bv8ki1ikuhRj2S8vMCGddJWNAupIYKWk4h2CIX1HTs+n7bTjcF091Of5x0zLjDgrlFjAgXpzg1Lqw6GIbF/l
- Pgy/hxgS
- ssWuHyDDAHVRl9UzuOGsZlZxYilBgXplzxAB00M8CCcukzs//Yx7OSG38kJBmpXXWMLynlBkUFpRiAxIeoEG91XP+BjjQxTg/aFAzyEbT6S1rMiBivcwRtvVAqO+HqvEAlMCzHEie6KQs+5NFtkuWjchb/np16H6t7H2cXgD0O1lyMv2VWE91mmM0+VsGFTEW/rF4Mx6qYXntNQ38tKHAWiXne75RFPk2Ng5kY4pT75uxBido1tY/VpFfyrJV5gq9oimSiYaHSgRuGRWzXtCKGYnx9Vf0deP/68VHYVlWs68yEnW8/SMIiDMNRBeLaNfAAY0piqZRZEoTXHk=
+X-HE-Tag: 1788789622-154867
+X-HE-Meta: U2FsdGVkX18FDnYZ7sOEHaW7g1sozmykJokKTa4yOCR3X6RhqMvT7aPEv9pihI3RcLWI38LxJYydvNrWs+1NJtO25yunkTyODgjIa4n0QWnXC8IrD/r4HutI3vAWcHuXp5L1OEDLvj7Zv1NEnMslFhHgSyJ2UAgYcEFm/ssXjZMOaaFZDXfLn2PGC6L6Y+XW1ILjQlktQxQt9H2VyMRi2QvjH4BdNrBfxkdPf9L00U4/1d090cMP5Agi1Sj5detrSCDYYNf/0yRVoKus+Vn1dkcUe5Ap67Z/rnB1lS5ZPBr2FVdIWlJ88/Rie29meyVutsEPKjwPtGnsVfXRplCfjy7YikQccUh4Ky7APjLHD3z1IEA+O5YhhCEApcLrtavi4znsZPOUifm+7bNLUKGQtcIHLbuXuPZRbB7Vr5CO4H4JsJPR8fSDMpd3h1B95fNtSdRHxxnNszFGjU8rPPtzvAJcaf7W337aYhh/p5diLOeR279LazYce/oLlQU947wv7AtizOHtGHaK9xGdLO1oThnN2VaL7QXiYJ5G/AgdRhjZXx3AIJhAIsRhT+ceyWdrAMaRyYFJ2cnJGgsbfvmtc5xNhBwUxtVgsDrmaOm2YFwHGaR+/JZaWzRl8eVu8roo74SaB2yrcj03znPYhohfB+1+4Tq5Cbv1YzXaIELO5ROuCwkW8aRVP2xPOIeiM3ov3UgCuboKnUexn+dyYIvJtWcgcN4axaoixdx0au7VMxNe/bdPPEI04M7xasI8UWq/Z1xdvM+cF/CNIQIPR+8Axf5MpJW5ol/JyxA/e3u6PQoqUJN/82NRYIRc2fwfjxNptBkzzG+QpsY9RbNqWOVfIyhU4iWOlM956sCGJax/k9syL1Ur3jWwpFWoz4lTrndpXaiNUhTk8YsNfRAilMpXkCnpGSc03p9fnXCIiokDKqCr1dWtC1CqQwQ8jIItVYhLbr/R41y9GB3u7o+QOv2
+ YTNPA+zG
+ VxrKp9LrsMWANS8sfY/7sUR+7nQ8qtTHGR8VFh2Gk7ZuGlwhB8JD92DM8pXFVbEg+p4mupJYuQtnA0mXDqJRX/enAuN4DYRohriMSePeMoCB+/zL8BVs2P9q9hmfl3/cDdZSx9y5F0jEpIyOMSa3E8lYSD0M2z3CLBFGTvSd4sD6t4l3E+sA4kvkk7lc3/mnY19P22XnWfc+KUWvY1rb82S30cDUXphECRyDLvVykoAac9LL5XqtaLBkCS8ua7Bo5EBIUvZXPXpXtR8asP7VyRgPWlDhlKhnORo5aT9lcMy4pblKboFpzNbxKWTUs6smAbggotBPr0iHPdqoQBjSZQWBpcuyKW0Qx/+L0YOh0ddpqNl1z3veDsACpDsC99B4D+Q+bwHAUOkG+/Mfk6zI2NTgiOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,57 +98,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 08:43, Taha Sezer wrote:
-> Hi Lorenzo, Andrew,
-> 
-> Thanks for the honest and thorough review.
-> 
-> Lorenzo -- yes, I did use an AI coding assistant (Claude) to help
-> write this patch. I should have included an Assisted-by: tag from
-> the start and I apologise for the omission. That was a mistake on
-> my part, not an attempt to hide anything -- I simply was not aware of
-> the disclosure process for my first submission.
-> 
-> Andrew -- you are absolutely right about the math. The original window
-> is SWAP_CLUSTER_MAX * 16 = 512 pages, and my formula clamp(fls(mem),
-> 4, 64) produces values well below 16 for every machine under ~8 TB.
-> The patch shrinks the window on virtually all real hardware, which is
-> the exact opposite of what the commit message promises. Embarrassing,
-> and I should have caught this before sending.
-> 
-> For a bit of context on why I chose mm/: I have been writing a hobby
-> kernel from scratch (Caelum) that includes a VMM with COW and demand
-> paging, a slab allocator with NUMA-aware allocation, TLB shootdown
-> via IPI, and SMP boot -- so memory management is the area I am most
-> comfortable with. That said, comfortable with the concepts clearly
-> did not save me from a basic arithmetic mistake here, and I take full
-> responsibility for not verifying the output carefully enough.
-> 
-> Before I send a v2, I would appreciate any guidance:
-> 
->   1. Is the general idea still worth pursuing -- scaling the window
->      logarithmically with total RAM using fls(), or do you think
->      the fixed 512-page window is fine as-is and this TODO is
->      better left alone?
-> 
->   2. If the approach is worth fixing: would keeping the original
->      multiplier of 16 as the floor (so the window only ever grows
->      beyond 512 pages) be the right direction, or would you prefer
->      a different scaling strategy entirely?
-> 
->   3. Any other advice for a first-time contributor on how to
->      approach mm/ patches more carefully?
-> 
-> I will hold off on v2 until I hear back, so I do not waste anyone's
-> time with another half-baked attempt. The next version will include
-> a proper Assisted-by: Claude:claude-opus-4 tag.
 
-Note that we now prefer
+--3ihzba4bzldpza5m
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v9 02/10] of: reserved_mem: Introduce "ll-map" property
+MIME-Version: 1.0
 
-Assisted-by: LLM
+On Thu, Sep 03, 2026 at 11:03:12AM +0100, Vincent Donnefort wrote:
+> On Wed, Sep 02, 2026 at 12:24:36PM -0500, Rob Herring wrote:
+> > On Wed, Sep 02, 2026 at 11:47:04AM +0100, Vincent Donnefort wrote:
+> > > Keeping last-level mappings is interesting on some architectures as it
+> > > allows mapping/unmapping pages from the kernel direct map without the
+> > > risk of splitting blocks which, under the break-before-make rule, may
+> > > trigger page-faults the kernel can't handle.
+> > >=20
+> > > Add an "ll-map" property for reserved-memory regions. When set, it
+> > > splits the underlying memblock and sets the MEMBLOCK_LLMAP flag.
+> >=20
+> > Where is this documented? Any DT property must have a schema.
+>=20
+> Ack.
+>=20
+> >=20
+> > Though I'm not thrilled about more flag properties. Handling all the=20
+> > combinations of properties has proven to be painful. Can this be implie=
+d=20
+> > from the compatible string instead?
+> >=20
+> > Rob
+>=20
+> We need this before the kernel direct map has been created (paging_init()=
+).
+>=20
+> I would have moved that directly into the driver lend_pool.c, but then it=
+ is
+> probed too late (unflatten_device_tree()).
 
--- 
-Cheers,
+Any of the node_*() callbacks from struct reserved_mem_ops get called
+prior to paging_init(), so these could be used to manually set the
+memblock flags in the corresponding drivers.
 
-David
+Thierry
+
+--3ihzba4bzldpza5m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqew3AACgkQ3SOs138+
+s6EXOg/9GV2dPaIR220HG9xlVLIy2HRX3X54lD7NjYUcMI5dH74ozC8XZ0/nWFsD
+64xYzCwkpDDlOUBftQPPgM44IfYfqHh4kLJjur9/fq03owom1beg4m9zIVIw4dBw
+ejIByjlSLI0Jy0xt5eQhc9VfpkfrO5/Oq44bkGKeBtuPRefpomIIcSV5C/aU8QDa
+cQv6aVjg6ZR2XncJrS3BA53s5Zc9Khwv7/O/Lb85rppj7aEHj7newBIEakVNB4pU
+lmOAY1Q3ckSBZ4xZkjGPGOc9eSMxdpXx7JLHPERWIXTz9qdumMHpXKT+WXUpRtgv
+cYT/O3KlrdSOC8K8t/2/lXVQ3J4HKSxP3T+cxvoWmkPHSeE4w17I9+62IhX0V0n2
+E3mxg820SetJTFz5VJAXV8QeheO/ZGqieBraWwvQcyDmQnqKddmQdFd8EuqKusC6
+M4vCBNFLt2/XEDoir9Q+3zqiDVJW32wMboSGe4P6VPhW8ojvOs43jE1owQRXCuOS
+Z3gqcw1c0fcxuvHYTEV77UI0la6H5DeWQJWJiolfJs74swqdx9Rp9sMNlqvGcHdS
+dRb5ltaA1WoYYMBhatF1gLHeFoZDvcOfmzF0dSNNEUXgR6g26s3Y5bbTVkB6+7cx
+hSybBcQOnVt7rYODTdksd+66a8PcOeXTzpy33pFoG9LaH9wWFbs=
+=iMEe
+-----END PGP SIGNATURE-----
+
+--3ihzba4bzldpza5m--
 
