@@ -4,97 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 047B7C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F02C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:29:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 148546B009E; Mon,  7 Sep 2026 10:28:26 -0400 (EDT)
+	id ABF166B00A0; Mon,  7 Sep 2026 10:29:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11F1E6B009F; Mon,  7 Sep 2026 10:28:26 -0400 (EDT)
+	id A6FE26B00A1; Mon,  7 Sep 2026 10:29:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 036116B00A0; Mon,  7 Sep 2026 10:28:25 -0400 (EDT)
+	id 987E66B00A2; Mon,  7 Sep 2026 10:29:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D8A436B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:28:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7337B140199
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:28:25 +0000 (UTC)
-X-FDA: 85187196570.30.B86F7D6
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CFDAA12000A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:28:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Umw5ALif;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76AC06B00A0
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:29:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A07D1C046D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:29:49 +0000 (UTC)
+X-FDA: 85187200098.10.ED20F0A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 396F91C0002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:29:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mU+l3JyX;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788791387;
+	b=NP0V+epx+5yv0SXuXQO4EeYdY1hpMSTNxHHk2HjIIi4gUh5eF05NUSOKJMdrFdb4UozoRI
+	MEnvyvnyKIHvpPAEFo7CCCSFJW2d/pmDqyfptkn7Ow8NQLzZyc3X9VA05nUmtAmeFd8skG
+	aK/sD6tLL+j/ldTivCcYnzf5QnJ5y7U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788791303;
+	s=arc-20220608; t=1788791387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rztXTxArE4kzHUFZdIzTTHMPPaOeWfni0CGbnXtVrRk=;
-	b=dYMYCyXjnqgT1wEDtsvZW3eHA68Gjfu5PmBEKTBP0plar8hG7TOSgaWIDjqxzYgdwIZFVJ
-	+r0M0JCn1QRghWsJpTiaLHDV/IWR7ebgtfUqff9bidvO49Dnkjppgug6a0vas51uZLBVYR
-	/FSdbR0ASNncnBtIz5OBguxDxvEtU+w=
+	bh=KAii27z2R3WgSqMKA8Gvau234+ZHaRSBQodcRzcwYBw=;
+	b=sZ6SfgeQgNsqk4GVT+swp0Tlh4/96LBVJiZ1kmh2Lr6TH2XS2Dv8dr5Y8kaE2nIZT8pD5X
+	WnSw5H3L46KTMfbzqmE8zclfb2F82Si9w31OSqNVEPqgbHLebrBrHFhsroIf2gci3Gnks/
+	r0rhkbyw4pLI6s5yHUIDun0dhEbjnQA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Umw5ALif;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788791303;
-	b=fT/cZyjEpYxhqpr1tDLL5cQnK2vQB4cuk/Kfvrmd2id5ljlHvCOzc/RoMuTHIR8pu9+04a
-	vsVWVw7gBnyFM/ZcO9R/4Yorqu7eLyHNXlGXZdIBmeMNqgMk40I2WNQWWCvfJXdschSEHb
-	N8TgcuJSw+5mOWCQB2MH3AH0zocijA8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rztXTxArE4kzHUFZdIzTTHMPPaOeWfni0CGbnXtVrRk=; b=Umw5ALif/GaeXHkSspbhFvoHpV
-	ijLLQm+T/BV/rHhk0gvAwCxMVRwRTOMtx26aNAEHtJIKbdhQM3WxgK4MokEQAWyeeKWPCAJTVlXML
-	bmc2f/MAzn+EgE22BwT5eY0Is8BLiPfaf1n6kzhQdx27HssCtRhiyNcPcRoU9gHy+ibvVg0M0nioW
-	3IuJob4fpt0JUH/gtsGGD6qsBZRPB705AgrGraAsrtjCn18wDiA9nrnJsMkZcITC2MHW5AijAEs0G
-	Ijk7UlL2EHiQ2VcO5N1WnjmfJ2soy0YOdupGKE5BNrIOLkbQ2wmdqdrBHZfhCMFHJJjpUuKqfX4Ts
-	ceKTlfCw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x3aJu-001ZS2-1N;
-	Mon, 07 Sep 2026 14:27:38 +0000
-Date: Mon, 7 Sep 2026 07:27:31 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 1/5] mm/memory-failure: efi: add the
- LINUX_EFI_POISONED_MEMORY configuration table
-Message-ID: <ap7HHvF7tXmz4Nsz@gmail.com>
-References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
- <20260826-hwpoison-kho-v3-1-6f79c4b605bc@debian.org>
- <apGOr0BAFc1DMQe6@thinkstation>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mU+l3JyX;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6067140AC3;
+	Mon,  7 Sep 2026 14:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53081F00A3A;
+	Mon,  7 Sep 2026 14:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788791386;
+	bh=KAii27z2R3WgSqMKA8Gvau234+ZHaRSBQodcRzcwYBw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mU+l3JyXv1lFF417mpUDg2GKxM4fbh9tRwzkGb6iqcgwGparR9k/Xj+qfJiSrIwm0
+	 OS8z1dLT62S8dUiFioRY6kaDWcxbqnR7gBA1w1ivIF90AeKnimZqD62rHchQEVDUS2
+	 cyNaheobD4eI0Wl/86XcysCssx5BfLCQL4kcX7keiqpdtP5Y0E26VQV8ciJVe5DuzO
+	 7sHid4cCgC16vkAqraTkVgnDOm2tEA774R+usebV1MYWqKS8aLfRHu7/cRPifxwpDB
+	 xgF+pWW7J6hSVGAWOq+hVzGvGLjUvi3GvplUZsf/rpA2ovFPF1CrwAilNxpe8SKpgs
+	 DF6KeggghiakA==
+Message-ID: <69100a2e-ffd0-4094-9999-910558807e4e@kernel.org>
+Date: Mon, 7 Sep 2026 16:29:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apGOr0BAFc1DMQe6@thinkstation>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: remove PageWriteback
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Matthew Wilcox <willy@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260905-remove-pagewriteback-v1-1-06f41c00db03@columbia.edu>
+ <ap7FKO_9BdNymgsn@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <ap7FKO_9BdNymgsn@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: bd85j5457icus1k3m6ehpwy1sz4sgesd
-X-Rspamd-Queue-Id: CFDAA12000A
-X-HE-Tag: 1788791303-55904
-X-HE-Meta: U2FsdGVkX183PnP1NFd336BlR78Q3C5VbcevLvVLWISX9n0lpmXOMe2y7jT52j/F8VqOSKIjJJababw9aX+FdhUUrQp07ROde6tzCQLeuBIFD0IGYkWIQGRa9v8FBN4raAxWMBEaTLP+48Elcl9ufGy5Ej1uynpn79KGvSZgj6eB6yhdU8jDr3+5cyH402qAncgWem6xr1zhTdB+Lok5qpFO915l6yxNmBdfqj39G81usrJjwz3544KYu9dXnHpJXao0GWsxyhMvSlmNvgGZP2i7dFRCOLZW7ZJls685RIoNMAKsKFRtosr102rP67nCa+nL3VnSmwtjmI1WFowsC8yVdh8EucD062BlAuShcnKIx3zpGPTpzVM8Be84rsBWvw/aDpP9E2vIQTeEOjKDdo+SbY/e4Syn0gD6yAm2ZWPRahDK3mfJML4kVhrs46IaTln1rekUhPK9uiuL2zi8XCnwFdob2VFLpQg8V6dISdDUiPf/F5XfmokpTciUJn37/8MbJ42XQ4e09/hTANItIKAT/OD4t/Ij0OngAaiMRz8imz333ES/FBEYymTx5G3419f/V48pJ7Vb63vVN5mZ5clVa2msRLLlCJl9sOq7xQcCFOqeE2m9GAZvcizFSVw4ndmx+VgdyZkw5ziRM7fN5CbtoOyCVNT4zufCnC2cxl9YwhBTjQM7xDECm31bzkJVmuPMtQfCncHL2RJenDoYFt/DA202P7mN9ZjXlTpH24saGYVmxOG99Wj/0hdBUAGglX/a9hy57N2e/bxRyrW7E/QtKTw8AtaYpLx+bWMc4V1X1y3QPvwXWhm6gVNF2Av30rwrXfrRPvJAskupFe6FacUpjbHSQwpKjVh9UHGfjGxVhLPUkUV/XgXk5WWZ/z62PrAQvBd07oG/3IU5u8jxjJVMxh9XJeykf8v+VhsoM/ZMIWy5sRBlEN01Hkolu6cT3Ze5B2hWD9oUdWj/p3L
- nQTzZG2F
- MR/2DSI6cTPdNUrjWUDYitleeOHgAYMxgu7MSLqjaf3pD8rueXO5KvoO+QlsMr4j6WVCWqouB+bHOJ806VDHWUZQ6GeHSrkJLh9BlEZ57/A+Nh5TPDNRuQ+0YaHvX2U6mF9JYpGkk869MyqxGJerJK1oiGGu8SPIxH0i1J0wTxoQbebSEEtPiHlQc2/06A75gtNMbqdys5l/rJhLxAMUGbWJcql6GENkf+BG9qXof8na+tC8tzoZfEbvGjugxYJkbtzXLdw7LXRPvjAWJXXn+LomiTvRLm1A20DrK1mgil8ABYch+xDMaaXay+VkY5MHpQp7HVDaf0v5dghsbpQcLkoC4RVYrT5yHsP9l7te5buzcXvHlKQeanXl1Y7MTnbdfkzuo
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 396F91C0002
+X-Stat-Signature: ff9chrdy9ipbqo9ntruhogjbajqdpthb
+X-HE-Tag: 1788791387-957936
+X-HE-Meta: U2FsdGVkX1+CZNII0ymer21hp4308svaWksdsZYAdXqy7GWE7QVhoC0NgepFn3Ct2TMwZNIZI6ZJ1qTUSpch6sUefz0QvkRz0/1fS8DWg50j66efmd0OaAfFqAIkH3XQcmI8USQOZ62r0kZboWX14D+JDFE8+Xz4cJjMeYg2rHXdRs712iHDUPRmKQbai2fX35w7S2EgpBRAFTkSuPTtULMuAonIRu6QCLt/9IVe2KtncYYReyZ6vIl0tQSvRjv0+onyAmdQxokt6AgtxQnT7H73k26a+G8vUV8cRwJhgelSTH2p6sw9FRSZp3ujjKflBidX2XCpAMnSfe4ZccvGBhAO/UIp1D0QUryz2XLvDSDNI+Fri9hc9l0t7mVbtgFAAAgXNaQRpavR54JjjJ7R988QFjgyxIWZ8D02rPBmVc+ldY9fFezHPgAfSzYrthcNZoGN4kL3Mn6feQ7KH83sm6zmuzkNc5ID7D2obfEAOBRgw1VfDjFLlvOXGWJ5llOCtSgyP8BdNr2wg3DtEY3aYsQBd9iCfWR6bHs8FdcTOJS5JHOekvamrCbjF/1n0WGcZkI4Vc6wQye2uyaAmINTP8QupoURtBbwAXMlvJHR10eVIwE0ovTXDsb/ON8kgMPPtRRqmoBIpayY/R1RqExjLknxlK5kGQ/uo/kW86hCJSr6WM/aZNJqAoPLZ1qf06jYRbrveJm7bxHOvawB/EgR194UAPc6zsQh7P7shKxTZzuPdpVuSQXaCAwqy60tcK5andKQBG+FKtdagJko/X5zWZrLW6KgxNaY5rolh4LJKMKdgRE15zCVWXgGd8ttsnJ+uhpxzOhtXlQ4zv1p6NDhBL3bnu4qDS2JglM1yghPcfimZYN1PB9QMVp2hdlmGRul8zI+pXgV1YXPM77gHVyLUBKzhWEjyUHUfD9O7uM0Wc1Iq/LQ9a3+c4gpwWL04DZMY/C/W5mQN+dXgFK2e6f
+ y8Zie8ue
+ upaJzhF+8Ib0pyTzjsocp9VggxKB7Eg49El66AzmeAAOADMtGlcUhpFUwy5KVAPiAPMY/YVodEG6vI1KOcStQs2+Nw88YC4ZKTFfUD9Q1u2GZSG2rB+OXgtCbadGSyMRS5i5MQaAcK/HSyJbM6EwEv0Haq3tw1iI+qUfk9zUx5pCJSEgnNOePSbFNvSsvIXLR5IOLNZJ/i5264WwX080b/coVKgRr7eq+XbFrv0IRMWnUd4U1wwMOAJ//yx9GVKlNCCToaaNFHKhBZf+TGzZ/ezkDFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,45 +142,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 02:47:39PM +0100, Kiryl Shutsemau wrote:
-> On Wed, Aug 26, 2026 at 05:03:52AM -0700, Breno Leitao wrote:
-> > @@ -1271,6 +1274,16 @@ struct linux_efi_memreserve {
-> >  #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
-> >  	/ sizeof_field(struct linux_efi_memreserve, entry[0]))
-> >  
-> > +/* Bit N covers unit N of physical address space, counting from address 0. */
-> > +struct linux_efi_poisoned_memory {
-> > +	u32		version;
-> > +	u32		unit_size;	/* bytes of phys space per bitmap bit */
-> > +	u64		size;		/* bitmap size in bytes */
-> > +	unsigned long	bitmap[];
-> > +};
+On 9/7/26 16:08, Lorenzo Stoakes (ARM) wrote:
+> On Sat, Sep 05, 2026 at 03:08:30PM -0400, Tal Zussman wrote:
+>> The last caller of PageWriteback() was removed in commit f75987e543c2
+>> ("libceph: remove pinning assertion in ceph_msg_data_iter_next()").
+>> This flag is now only used on folios, so we can remove all the page
+>> accessors. folio_test_clear_writeback() is not used, so don't add
+>> FOLIO_TEST_CLEAR_FLAG() for it.
+>>
+>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 > 
-> struct efi_unaccepted_memory has 'phys_base'. Do we want it here too?
+> Nice! LGTM so:
 > 
-> It can be helpful if physical memory starts very high for some reason.
-> I believe it is common for risc-v.
-> 
-> Tenstorrent Blackhole card has 4G of RAM based at 0x400030000000.
-> Counting from address 0 that is a 4M bitmap for 4G of RAM. :-/
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Sure, although this won't be used much right now, it will prepare the
-structure for future expansion. It also shouldn't add much complexity to
-the process.
+Indeed!
 
-I will get the structure like this now
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-  /* Bit N covers the unit at @phys_base + N * @unit_size. */
-  struct linux_efi_poisoned_memory {
-        u32             version;
-        u32             unit_size;      /* bytes of phys space per bitmap bit */
-        u64             phys_base;      /* address bit 0 covers */
-        u64             size;           /* bitmap size in bytes */
-        unsigned long   bitmap[];
-  };
+-- 
+Cheers,
 
-and then offset the entities in the bitmap by phys_base.
-
-Thanks for the feedback,
---breno
+David
 
