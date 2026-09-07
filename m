@@ -4,131 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D911C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:41:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4E9C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:42:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 283886B009D; Mon,  7 Sep 2026 06:41:24 -0400 (EDT)
+	id 56BCD6B009B; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233D56B009E; Mon,  7 Sep 2026 06:41:24 -0400 (EDT)
+	id 4CDED6B009E; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14A496B009F; Mon,  7 Sep 2026 06:41:24 -0400 (EDT)
+	id 3994F6B009F; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED0FE6B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:41:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BBC0160108
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:41:23 +0000 (UTC)
-X-FDA: 85186624446.08.2E20FE4
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9AB7720003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:41:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X /Lntpx";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=KJiR8X1i;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FDA16B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C7DBA0E61
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:42:23 +0000 (UTC)
+X-FDA: 85186626966.20.6A82163
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E6BA31C0008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:42:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2/bMEep";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788777681;
+	s=arc-20220608; t=1788777741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1jD860aYnoDzzTEnpbBDK2GJND4YZ6QB5STId18Bk54=;
-	b=58i54JhlbUMzZPRET2p4GWokJgFshGCGCn4+jpfbpshUaQYCZ43tVi6akDv89SA0oSb/pD
-	uUOmvb7jSm+IJkTaorGd3p2oS49HW0zba4k0a7p0cGsKGCnskSzRiNxmpWlGo+l2/IGlQe
-	VH+aMIAwPRP1hqZdHp+IiS3pkAXNaPw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X /Lntpx";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=KJiR8X1i;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	bh=bv3lOK+Xa5ryV284dRZSnT9zLzqTU49TaIVbEbCvDks=;
+	b=NVlxTDsgV5jqmcBwR4CrPUZDG1C3ddyHxqR6StgITMPEpvSdlKNx+hb+j9biK10aQKqzZ/
+	F+FzsSmABxC8dOqSW/ld0Mo7k8lUkvYXfAhB4fOoNIfWzM87VdcbrfTer+sWfLfWjMhcpe
+	vpZ0IiDHq8cexh/xblM+sgH/1dLOWsc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788777681;
-	b=G02EDl/8NjHXJo3F8oardVESiWQ1x1+FGWiJEevC17KpuDZzNvJ+SUUBurVzN2i10PzGs3
-	PFsiIB8U6Pc9X5oNV7gbe03n2X+UCqGWNZBRwZLZuQUPA0vd9neh/Vr7AroIFhuUb9m5uF
-	4xrkOZVsiKbTPDbHEWdWlEMe8W3zK8k=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 2464F1400067;
-	Mon,  7 Sep 2026 06:41:21 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 07 Sep 2026 06:41:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788777681; x=
-	1788864081; bh=1jD860aYnoDzzTEnpbBDK2GJND4YZ6QB5STId18Bk54=; b=X
-	/LntpxOyNtorVCir5bQm1OJHT5P5LZEDNcxMxx0lYxptKQiGcmarOPkSDBjiIhDE
-	sgRvqJGB/7MMgZynNfwIwPdes6HkOAxu6/205e9JSDaRrX6evBbpHk52TbCM51eG
-	JmnIYRV+iSa8miEGx7kE/CeTaMw7zsnrLrnVMW81/TVGdN1YHWdcJc3HHfQlTjQb
-	afZwnePWsn0Qe4jCdvt+GYwLazciszx/bNO6QuZa3sjAfcshj5fd+UwRsvwfzgwg
-	utoaqkOatrReUwfAWEulepVmOJJaffCDpHEQMJQgMM7KJpAqkmHrBPpXvlmogICO
-	kq6Pg+J9w4G2HPhOLoz3g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788777681; x=1788864081; bh=1jD860aYnoDzzTEnpbBDK2GJND4YZ6QB5ST
-	Id18Bk54=; b=KJiR8X1iWATJ1XU7NDFWEOTKYaasTfiqK/H6RiqUMw+ALi95AvC
-	kckukTbozf3Hx40vBalUOil0iNx8WamDvqV0gP+Q6RUbXxg9Nm7fV24zC3HRqrij
-	oTGoA4QBGQ1NemVnqhAQ2gSXg6tQuY4VTkGO7P0PFzNHdkE+zqXCTvZrQpyrW0p9
-	Nt1/hfUgWuB1acGenleAg8sg1j1vdg0ScC1H34ggexKm3bym8RPiK8cx9DHmSd4+
-	cEJ6esD1HXAgl56YPPm3F5UJ3BTHkv1zqsPvf7b1JGUWKrYbdUvHjpbmOIHgsBMV
-	BfjqO4xuvf6XYIWheG+o8zzAKjTWXnYi9aQ==
-X-ME-Sender: <xms:0JSeaidWHaHz5m6VOVDvZqXur6F75V16mRVA83UhhtSEW0yaoPr7ZA>
-    <xme:0JSeap1zeIDhmFFgoaWyTWPbnWL6bfCfEUt_hvE771PV9TdY4t8E8Rp3ZTcurBMpw
-    ZLLxjUkMey_7QVH5SbuNpzziXH91F6EdppuhOXvTIG16sU_XgE9M9k>
-X-ME-Received: <xmr:0JSeaq7ZHHW0066zNGuLLRssmb4goMIp89Eosxe9cVIJ-vWhKaEJi3DyFKw>
-X-ME-Proxy-Cause: dmFkZTE7xOBBvL/1OD9pECi3KCdAnpNQ7xJGV1gqKh8LGh9lBNniwXdMjixNdKGF3Rjiz6
-    CifmFleIX1zDNXXqXFb1kCy4yWhc+a5/oNU/hl7flkrPaYBo8uDuggQub2vrdfM0SlTk7N
-    iHc/CEZyhuvz3qNxoRQW3OwuWlT0fFltXwHfwm+gfLrRv6iKPMXIJc9B23QURUJTKjHR2E
-    gIQ6cM3sh1TNQ2fZpmbT6Z3NGu/BprrhWiWC6dzFFtCqyqbZ8rNSxSA5NQ/5sPG3JNfmQ0
-    9omRcS4KXSyO5NN4x3a3mm2XgmJ+tbvh0D95oHxRGr8PhyHIVUSMqLpcDIIsHzwxefE3PX
-    6PY02GFyH0T9JvrTn51Do9taVYrZBCm6YhDaxxKJGKIJHB8QTPnFwMHEbEeTaeXDB21mTO
-    fJeAbQP4eXU1/oO058LL5PDXFpQ7Z5IHOCCGx79hTDqOd2c1JC4EfnVoWV0g4EcvjhDDLT
-    uKvUIxPgR7URTdz7HYH3o7szAh3V3RlF7NRNUt8JM9rkUs9Os6L3ezTL1Z5gZzgvw/siFw
-    3qZWRxc3n+zDgp5ZfGNC1GfSkhtjPwoZY6sewrxdV0ki+lhmH/2H6Ss52C6sScbpi6rcVO
-    YMSUHrRvoyuT/XohWXow330iBKYVmgQWwK2/t6rEJmVOte9HFJrffmTGTKxA
-X-ME-Proxy: <xmx:0JSeaoLPait2-XP6nhI_IijMlpaLibVgtTkn4tHFJ5AwQERm4UcnTQ>
-    <xmx:0JSeambeqIStzhPBjLE-bio5-2JBQU1mqYgyYYIijYB9cElZX-5SKA>
-    <xmx:0JSeal3WTZHFK_a8hhtuI7_HaOYsXXvdc3GG9HmgQzByVXz19kV5xg>
-    <xmx:0JSeaoMeVhtRi855EJsLkGCvkh49baMiYPRb520XuBft3g7WvDzSBw>
-    <xmx:0ZSeatAm7wR4H7wutSb_QHhyKnBpzssyw3vUZHeSD-qP0ALiUjJ6q22x>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Sep 2026 06:41:19 -0400 (EDT)
-Date: Mon, 7 Sep 2026 11:41:19 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 04/12] mm/collapse: add collapse.h for the collapse
- interface
-Message-ID: <ap6UoT0h_Br97gX0@thinkstation>
-References: <cover.1788533997.git.kas@kernel.org>
- <ec5230f43af7153e18aed02c6ee38f010106d8e8.1788533997.git.kas@kernel.org>
- <DL717O23OZOA.2UYSFURHZH0H2@nvidia.com>
+	t=1788777741;
+	b=Dv/GsWnl3VJ+qs4HJLFG7uh6gCs5zD2Lx7C9BFahWDM7RII1hlp7wwhXUcxKac0+yICPGv
+	Vb+9qVmOXDYI1FAl4vJhcjPIYhZ6kG43wCgh8lEUSw1zW71V5Hd5o5Pn7uZ/ribmm1IwwW
+	HnCpnDg2xr0fI3tVwL92UN82uPLDkGs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2/bMEep";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D15D60AB5;
+	Mon,  7 Sep 2026 10:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336CB1F00A3A;
+	Mon,  7 Sep 2026 10:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788777740;
+	bh=bv3lOK+Xa5ryV284dRZSnT9zLzqTU49TaIVbEbCvDks=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=c2/bMEepc1j83amckC2cQIkOIRnCap+Llqh6TjNjeiVKdf7NB9ss/945JvVIokhbb
+	 IukLI0/YTu6RxrAhUVpbsG0XjGqmfVLnSWzSDNCoQjgzbk3LsMpl9zTdzw+4NzXv8Q
+	 ccoxpfmjtqELVXTvaWf2OqhptHwpy8jH+8FQ0rDoeyqtIGGfme2m0IHdDbfs/r7NJD
+	 rIiKgVV6ONvaLTJyzd1dDWerZbKiB502T5UkKY2bwWEoPDFjH8KpmECFKN6E6E9iEe
+	 KnAQSTUhY4Zmjpi48FUyoqVRESlKYxNM5ub1HmHySmcceSCH2Ia8m7Gtxg7DnfI5Uc
+	 Cz749Db8BmCcw==
+Message-ID: <616f0e6b-178c-4b50-b759-ccb20d9db9f4@kernel.org>
+Date: Mon, 7 Sep 2026 12:42:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DL717O23OZOA.2UYSFURHZH0H2@nvidia.com>
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred
+ split shrinker
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Kairui Song <kasong@tencent.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Xunlei Pang
+ <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
+ <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: njc55s4fizg563ftqz5dg8uitirjnh35
+X-Rspamd-Queue-Id: E6BA31C0008
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: 65pfj4pzmktdoczgpppg8xo8j7ds96fc
-X-Rspamd-Queue-Id: 9AB7720003
-X-HE-Tag: 1788777681-280386
-X-HE-Meta: U2FsdGVkX1/YRmbiAMoqCMU+Q4D+BVoLwyGzeqPgC0fG4JvJv5A7a3SkzDvcb4ojB+DuNIcDLH7HxOZK1JqCCP7OD8hCniel3Cg4wTN8mU1pz/BURUZg3XzBUzkUEnVz5aIJTPnBaqQFyGr5g2knT4oNmgNOq3mHkgjAKCW4S6JPFDz7KW0DNjnxaTTa6vWcofjjLRZ2EtbPD5gC0KoiNOnWAuOxLRLGeHuMhmF6/xzYSwkpGRNPNTAeI0f1ftMp5oX71iVrWyYF7/oxB2VoTYEcELi2yCCltSuVNMSc/l3FSKtsoyf2+q6sL5uDEOAv+WHgn1wkzkDLdr6s1zJoJtUz0989XQmqnt6LC9mOL2rSzhBwG+9H3gPehBr72htqlRSrDuttp+fbevtbmweU59YUQdmtfmHalUQf273Tk8DGiYmT4pAFaj2jDF4XcgOoxQhURu8rfV6sj2F4gVeGBLlOamPghX9ibxPgpQStZ9EtcpEekDA1YG9XvmQ0uZ2FbE0sCWiC7Rdsur9mc/nCWXw+u6K/B8ue+awLPMkmiUE7i7KyKJ/0Ajk9pPdTFtulSGT9hDbLypn5SstmqLFudoQrd4vD67FpzyoBy6J4+FD0O0Uoe5hLBczS2T3yVJ0Mlgsrf0ErcoqS0ulVw+zf0yutT1dY+E2gFQxPVEImgzCoSNa7YoZblEO4BLlBAP4z2LK+URoM5vRBSBOAujBZEIm/MGiPFFr4sExlOt4HcCsRz3Y4ZbSHbg+OPNuL46dK7uPxLxYmZ8Re9mzT0rd/EFjKx1tqb2UkjKrh/qFKIuHMU0ooIBgpXBWewTfUH5w4yKeAYCUglsuJusOKF87Z/3eIItyH0CrKZLKKtMTnKZaJ67yE2EvvV24FwsDvXK2Wvv3M+DZJ/k3jXXTGJgjMY1k1tT3bIZTnJrlNzzPk73FXZ27u+aT1Q5BIgT1wA992cwFzH6XaddTojsbVC0a
- MrtPqOuk
- A3gOAM9NVnndFWkUezP58fPt4G5ae1ZzyMtsd92hzptFtfWiZUnxCto+ETzjJ1MZ04s4gOhcJXzTZ9/kRjGFXNaNxRp3dAnpktZzmXCX5hB0uTexm6zd7++iKDbVKZN4KyujdirIk0fAkTfl0UBY1ewh6kHPXEjZ8KDNmKq43GNDxk1zQ9lRefgms97lBNbAA7VddQf/y6kL5h85QBr4h9UeFi9YWsTW5gSrstJ90qudzACA0pf8visWoVZklTCnGfzG8/n2gzogkOYPOIzpJRUabhOVEE7mSFVKufMqbNGVWWWCj6cb2st/RC93yBNId2Xw1Xeuto4L7+6fWgvqZBP7b05BtlbbWsqYgDKxrQmAUPfThmlfeq17YD6iE6dp2Nak/4N1bf1DdR3UKjgf7Iebt8YOLIQBb7VNjtOVN0a2bKTtMaCztShRGaV6j715UcYCpMjJ2syJzXHEPocCPKgOGaw==
+X-HE-Tag: 1788777741-924021
+X-HE-Meta: U2FsdGVkX1+PdY+yEO8Bma3fIrwH5NdbTrT510px750RF2hFv+B5lbKdSMCUZUfLTzY/NEplXHKav3aT6DmjPgnFmF6oIAeI9NVZieBfvNPK63mKXIItgMo7rLe7m0xtnsQlr/djjd7xDfd90HranWLVvWDWqLhabHKICQojXmi8Ttqrino3J0oLlOhmfMLCOtR1MjXlu/XPlkOUE7iixr9BjCVhJ3Vf5+iSilDSD+EjvVzVmLXD1V0G93YJpqniqYk4s0N90lLitbo4HAjXjWDJjeM4VPZfGdWF8LnPR5eR4f15avmByiDDQoU+yPQjZIUIGXVgyRvsgqf6KJb3IsJDqvao+LsJyp1kOKcZ5Twv2r3jCMzPPU7YXgd6F2tip06+J4+gjVOwcJrszYWrNHf6ql2vAKayAxZQ7j6AIciT8Z+hpREZYhcle8EBgp6Mq2hDQcyO7fbJkI7pi9kr52ixjhAKz+wLmu9ItCnYR25XH+5694+itZKnYvRH1x7m4r/b3wTqjkhitJWmVd1VJLciu9TN2l57j2lRbEnjnpO0MtGitSdPkiWypEfKB6mBkKMa2fIU9h8YmpZ0YVESpw8QAsmbCEbZJU+KA/gwZKOMihKOKJQG9yNYLeCOoV9jIR2SxpFlUSg6xVhg3SEexzBQzvHfn6U1SXy0vu6gyfaKJ5+u2Kj7BcNct/X0TEp4gGu5i8lwjyXN1SveRzkGCORcVnqKnHXpmQ70mKrqU2wqxe5v+ZMe7NOwsjheM0wkNQTr+WIUN6GZZE8TXnUxTN+K6G4BvZliV+ZwFvw8aXiT4VA4WIFiLD7MMEzwXMHb3mxtoMRkZxmfeXci1/e5r0SnxZThKb0IS8ry0hTmk/aSh+516JYqqtSBT7pj/xOAOcfmp/Y5SedPR/wM1+uJ+ai96GXaHzcn/I0QWVaRGwZ6OSXyYNfwq1jaWal/qRglCaRdVI2GIaBPmVJjByy
+ 662Is4GV
+ 9RkYA/ajXFsLYeWRa4dyHC4bfgZ0bzsQ7tX3zfyDB25zhU/pMnufuGW/2QzyMhBYqVQAasLQnRUvlBAnBlxrjnDpyBtU240y9L/ygoyQyDNT0W7/arLS+QsOpyz37dpkJMDnF4uTdrRDu3OTlwSf9F9r+NCXKz/K53MsyKqFt7GaE++HQ/Mo0lW1TXJP17WZMDNO9UMud6zqrDkbHEidebph1zKiK0DCYltN/RKBAJ/Wpqp772wK0rFO/iEnwF54b3UeqQp1zh7tTKUHpn0bokNK7RXhbCd2KE4p7VzFX3fS0laofJEuLqAdOpLc9EvPgzOnDsbkN9KeFGVNPsCvjG2lIsYUiFB6hlB6VZ7Br/wyeXDV/tflX+Y3PWJQ0+TY6PsgtjzwO/4zpsst2F2q3RlxmCDeBCWnXsRX2d2jYTg2/3wQ0Dq1FME1LDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,21 +149,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 10:36:58PM -0400, Zi Yan wrote:
-> Are you planning to clean up scan_result? SCAN_SCAN_ABORT sounds funny,
-> SCAN_ANY_PROCESS means nothing, SCAN_COPY_MC might better be
-> COLLAPSE_COPY_MC.
-
-I was not, but it is on my list now.  Not as part of this series: the
-rename touches every result site and the tracepoint's EM() table, and
-this patch only moves the enum.
-
-> Anyway, for this patch,
+On 9/4/26 05:35, Qinyun Tan wrote:
+> On a system booted with cgroup.memory=nokmem, the deferred split
+> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
+> partially unmapped THPs are only split under global reclaim; memcg
+> (limit-induced) reclaim never splits them, so a cgroup under memory
+> pressure keeps its underused THPs intact.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
+> split shrinker to list_lru"), which re-registered the shrinker without
+> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
+> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
+> precisely so it would keep working with kmem accounting disabled.
+> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
+> nokmem and the shrinker loses its memcg awareness.
+> 
+> This was noticed by Michal during review of the patch "mm/list_lru:
+> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
+> 
+> Restore the flag.
+> 
+> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
+> 
+> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+> Suggested-by: Michal Koutný <mkoutny@suse.com>
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+> ---
 
-Thanks!
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
