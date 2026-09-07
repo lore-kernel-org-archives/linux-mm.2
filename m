@@ -4,144 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696BFC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACE6C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:03:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6362C6B008A; Mon,  7 Sep 2026 13:00:42 -0400 (EDT)
+	id 7C3956B0092; Mon,  7 Sep 2026 13:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E7376B0093; Mon,  7 Sep 2026 13:00:42 -0400 (EDT)
+	id 773C36B0096; Mon,  7 Sep 2026 13:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D5DA6B0095; Mon,  7 Sep 2026 13:00:42 -0400 (EDT)
+	id 662986B0098; Mon,  7 Sep 2026 13:03:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 264306B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:00:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 96883401F8
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:00:41 +0000 (UTC)
-X-FDA: 85187580282.26.5EAD3E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DACEB2000B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:00:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYolw952;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 331C86B0092
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:03:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B79D4C020C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:03:42 +0000 (UTC)
+X-FDA: 85187587884.20.2872387
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id ED6314000C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:03:40 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pk6CuCYi;
+	spf=pass (imf27.hostedemail.com: domain of vdonnefort@google.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788800620;
+	b=rCqvsVK08i3yCHex4KFTIOs2rSdpmWnGl0kHx/zWrFsWrnneZVxerVvcBKtVD7a17Ju2s7
+	dfeiKOM82KcBBlFtueRaBZ+euozyLbliKmsqbnteapxJ6mfit5EbMEPgtfjJeqihy8gqyU
+	wsupqO/KQKwNsgrf0Qw1mAWY6UgWHfM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pk6CuCYi;
+	spf=pass (imf27.hostedemail.com: domain of vdonnefort@google.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788800439;
+	s=arc-20220608; t=1788800620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3jNN8pG7nsJKvuu9ANRbCsQdps+qC9dqn17QiKiem+c=;
-	b=2ytk0i8/+6DOYIbK5k+/sQB6z/kvswNx91ZucgABAr2FcSpje95tn4J0b8GnbElUocekub
-	KMZhgL+oaxMB0eXzE7gE0iLou/hWvcYwBKG2NkyzylJ1ok9cHUxKu3koNpoZV5lIokXPxE
-	I0zEafycifdaLh7xhZYpWtDdE0rSzTc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788800439;
-	b=MRSjjBTzozLZuUsLzjDyB/pvIkszfsoh7tNK3Fd/w0kC2/96B1PZVAkU8K2bvBPtqumuZ2
-	HrSE6FY3jrZpqQHT0s6dzXfwGYeatXwbPcrzAG+neJDblZNpTPGxQJ+Pn57scQRY4+l7qa
-	LQuNxOW8NDRb9mxxlzBLv3/EP1MYuR0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hYolw952;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 69D56601DB;
-	Mon,  7 Sep 2026 17:00:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E991F00A3A;
-	Mon,  7 Sep 2026 17:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788800439;
-	bh=3jNN8pG7nsJKvuu9ANRbCsQdps+qC9dqn17QiKiem+c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hYolw9520Za9hO3EyvE0zBizB6ALcYPXUMQG0dlkdLyTwx/nKg0X0deEkyz0fRoRH
-	 DKa4FpGqmH6OWN6PPPhA3WfT5Edf75IPlH6gPyoXMPhmxQMtvo5SaDatWsBydJ+YgR
-	 zeDYPULoOyabLj99zjZjGHtBatBhFDjZOiMo9OexutSaz+KTuhUwouau6GxaGZ9vQ0
-	 JoIIdQ9RDMWnfOhBeHrYTXCPnf2xFYNJSJdDmfVCK7//Zz/fEpBtyoaKunt5z0QoPr
-	 82XnNX7g0Q5NaoreGpIGIRanvsx1PKBgEjo8ioQ40lkoTj7wNprNdVUWxCzhzOmKDz
-	 PT+xQNVVkTqMQ==
-Message-ID: <2732913d-dbee-4726-aaad-c7c60b6c62fb@kernel.org>
-Date: Mon, 7 Sep 2026 19:00:31 +0200
+	bh=D/2WLxDmERbGCh7iT/2ZThPPuDMwAWqV6GCdXRr20bA=;
+	b=FcPzbOJ9Oye+RCBh8z/y5pAP4Kh5lJTMzd0tKNCcnKGM5kPlB4OC9cPnbgY+mCv/g6omhA
+	17tiEzMx/5ZZSlrn/Z1dWuVYdFBg+cj0GmzwhUl16ueOawBEUS17Pldu310wXjiOUyxIsx
+	JiTapE3l9HhOunzLLc1yidIQpJ3uRwU=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-485843aeab8so4218181f8f.1
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 10:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788800619; x=1789405419; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D/2WLxDmERbGCh7iT/2ZThPPuDMwAWqV6GCdXRr20bA=;
+        b=Pk6CuCYisblej1PABN68G0Dp20ntCHFGDWmVuTqaeTyaSNlCgRfIAacZFHVskYyzCX
+         HcQ4/XN4BsAZ4zZ4e+uKLoFk8mI7oXYLljFuGzntxotmdm9/K2EeLrIZtJBbpfBFIXlU
+         pXZovvjot+Z+204KJ0sUYXonuW4kL84eLJek1jm9xzSnJIDVlnzMaPDKS/hYfxVGf3Ny
+         Ew9xNk9MgqjusyIJ0OweRr7TzGw0d9KH5J4qjYT7Kk5NB2SvaRXrdCXfLDPHR3NpnryP
+         wy7sItUb7lH9hRNYnqGVTGGDONxZdiScMj7huoSiISxf0eEtzbOY48yWLJgulxpqeOx8
+         TDUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788800619; x=1789405419;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D/2WLxDmERbGCh7iT/2ZThPPuDMwAWqV6GCdXRr20bA=;
+        b=GDrJteGKcIiJkFSNiuZS9ufVaeV1KOBTDjdMi7l8HlqJRohuftZsfLbU7gxhfIdKTd
+         K4noIXEMAKFJ/I6wWtXzHVBwB5W2WT8i9oaj2nYUaWiJMLGckycItHvghtTOumJlzOrg
+         fnlkdfhKPAcF1PQCiJiu8cMSwTT8PplDGPDvt3CJPAKRJahrrW1k7oYTb2YvOyZ+10fP
+         uNp99kmmXsqunuEbgHv+KXDjTZ5Qx5rAUINkdvR3U+8JgRCinNF2WV+/iMiCt3Zo7hmo
+         nKcbOtFilNQALUcGnPVgy/D0lAgTNmM3f01rH+IrX/tZwlb6t/zKHcx/QkaHqqQg/tzi
+         UDHw==
+X-Forwarded-Encrypted: i=1; AKwUvBz5W80OBIPryqD+GH9rPaXWnhn7AdkFI+iKNU8zHKiyvMI+5/LdjYehxBu01XAWcr21LwtcTMrGNw==@kvack.org
+X-Gm-Message-State: AFuF++mug0vo4tZb1DqDYM/kQXsZuNDfHW07f1gciu4cazT5lPFRT7Ra
+	OKIYsRuniMo48/ZBc04VlZOAiTHEW8AR2RwRecxzZjioeQRjvtcCg7mTWDXzjYssDw==
+X-Gm-Gg: AYBFou20HmcNyvYkoufz/N79m4SsSp7buIy/3RMmlUseYc70gpRvrqY2Km277Z/9eEl
+	2AE6yJsHzrbb9/mqpcBvE97dV0aRZR3JOCDH2IYCyHz27L9bU8e8A0qTB+ZPxpuLbL8gAGUOOSL
+	ZcvmIXt8keCOr+2cY6OibDmFhtKRr/b4kpmiVjPw1ynLXMvtZ3e3a2rUWcjqG4WthN0Ga4qNdUv
+	fDox8iqhcQQdzCAiGP8c5sc9EILGcFz8+4DN4HYRoOA8yfgTNSoGaZMgkZgRjeAsvjqaUgSytU3
+	NVJpyrE2+tybW+xCHyaEqcaXpec8Y+Ts8292N28DxzfMWq94Dt8uNHjDOliEk3os4kT7w1mP1Fj
+	vq0onlckquQelvFPgQtJJeBEaEdf7fnoIKyNHMtfecoU87kFYz/bBH+tL83DDerXRTSA6hAfuBH
+	B26CHoSfosuNhTp8qUuhSAnKKuHPdstLXU0dm+sTAq09sKoSlkwtNvIEyezGqidTIDEuEiX4fWT
+	X0dmTkW/Im88jORINLeoWsucAzdsDa6
+X-Received: by 2002:a05:6000:605:b0:485:8b66:f5 with SMTP id ffacd0b85a97d-4858b660161mr42549469f8f.18.1788800618759;
+        Mon, 07 Sep 2026 10:03:38 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883927a3sm23089736f8f.11.2026.09.07.10.03.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 10:03:38 -0700 (PDT)
+Date: Mon, 7 Sep 2026 18:03:34 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, catalin.marinas@arm.com, will@kernel.org,
+	rppt@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org,
+	jenswi@kernel.org, mark.rutland@arm.com, sumit.garg@kernel.org,
+	ardb@kernel.org, david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 02/10] of: reserved_mem: Introduce "ll-map" property
+Message-ID: <ap7uZuGraZ2N58c_@google.com>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
+ <20260902104712.2399797-3-vdonnefort@google.com>
+ <20260902172436.GB1440252-robh@kernel.org>
+ <aplF4NaoFk73d-c5@google.com>
+ <ap7CAowlFTFhSFP9@orome>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
-To: Zi Yan <ziy@nvidia.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Cedric Le Goater <clg@redhat.com>,
- Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
-References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
- <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com> <apEzvfGgsvbc3vBI@gremlin>
- <dc52dd1d-f62d-4278-ab4d-95746383fd50@kernel.org> <ap7i1vLkfZj4rbNM@gremlin>
- <4743f22a-c24f-4f93-80f5-3260f29bd410@kernel.org> <ap7mZ1Ktd_rRRrdX@gremlin>
- <DL98S34F6I6L.12UZGOT6NF1J6@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <DL98S34F6I6L.12UZGOT6NF1J6@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ap7CAowlFTFhSFP9@orome>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: ED6314000C
+X-Stat-Signature: qydf5zjtp7m4gz4h5cbbi6frzcdbcwnf
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DACEB2000B
-X-Stat-Signature: rhyk9wtxm7i8dkspj6wz6spdm16gdion
-X-HE-Tag: 1788800439-724192
-X-HE-Meta: U2FsdGVkX1+WHkFs4yBlGm+Ki2Q+5ybZ7RAqe06X7D1XuZAujpgrDqE3DxzW97kbElIan4gb0YTQdf9l0N//2lPDAnoxBCCJukHUoLWWuIsBUdaqbv4OBmYhJ/MaoHiFdHSOli1Q2EMbWZSAMm+D6AzG7xguKOIGM4wpdg1kM8PkL8awO7rGBE5N3N9hsHmdvop+HGJ8yWQF6BbNU9K32gGt3rJlu1h+f4x6/yzNZhR/cx3IWBDwRAm/bIFkhVNCd45wG4zXUtU8KzCR9o3dy3yeEyh0tD/bCpke/WicgcuYTuW4DcM3Wq+xaDUydMtZlNnGXgYIY+ADCwiLtIpVzpSKjwJR0C9QgdhfbWUwkw41ZJZm9pGmUrZ/fk0ZMp2fAJZIAAYL18ugbOsUIPywyiV2hIpSdha6yjnPMZJqOpTohZcq9VWSoy47aTInew8lbfiOD5GC7oBJPfjSkinAETy7UHR/eXqzNMxLo5jo05pVseWvkb7CUUh3QHCbKF+9gjFQLPr1KVovvc0W4uIdugMM2WTaQteTqM1wJOXOky9H5vIRWdTrf/uX/qNZthbaO/8GmxkHaM5Vl1XLnW2Q40qBm9dBtWrjuw4W1g2wG4wnotfrAaOnatBKj0xyMo830ZViV0ANZMf+DL4XBGxJAYMEIqaYDvZrfCrgpaWbuSdKkMmX35xUXi9DTzKSNTQt+3w57JUe+4/y1Bc/NZSHZIi8SisYY2iPV0H3LF+RnS9kk9IDOQUK2DOFh2kX76A3fWmbKaTw708K6FoBntyBL83XH9bvhYfujmZYVfApatK0TueCtSQiPrx+tU4IxBHTpBE/NMNiJzqC+hrU3xjZUuHz4nA86Eu2DEOgHRzquNATPBVmVG6TiRxb0+b/jQIrQOpByeyQ9s+OieGkdJhqEG6vcrM66vJsU/sW+E8cyFkyFOZWxMICUdEvmmBSTWWjvCdY93pNAou0MS5K0E+
- YScUQcph
- 468F2sFqsXBVCmnF9oreUP2dWWddqqPadEcsWE0JkgsUJAw2ew8/ue6+/NhPaADLjan8xJDIiUZL4q8KDjYgFdt+0YCrcc8EE5QSMvuFeeEc97s7CSlzdIoitCLIaZ34kDB+XB+mEuI0LmphFRNUaN/ehyPolAMMOAGDVTUwN6+bXtsj82KpxnhAlaGZNJ6nRW2kHGkshcnXsUe4UTfc5omMQXhjYK9fjqYi2F54+6jacQNml9ir+WE61BIvrer8HT97jjdOv8jDKKVsAEf80SbwXJjNMtk7TihVd+so4vr2WOf1X5mHO8/2AlA==
+X-HE-Tag: 1788800620-179596
+X-HE-Meta: U2FsdGVkX1+58z+2hMvC0A7vuEbDsgqSvvc7AZxg6xdPSME9as7gdmqZNdB+m7T/HvirAvAVJmYEfKG1/NV7D8mZtxXtK5dgYMQIh0guQLe+iZXBHpjVbeOyKj19p5WaD0sL5uLeo1z23SaCC7xGustd8QojkphA0O2Ac/6OMym7JxzoKZ7wXEhnGTKMtMOW+4NBD5WGHRikyE8XLqpF+p0moZuGN2tgWHh13u1+3X5uSRR5bFcvnu/FhbOjGIXHFl04px1pth2+s1Fz3XSAaFrVx+viy95iWA4LdSJwUzGm5egmWkiT+pgYYEYsO03ojr70e1+oEHA6Mnqrc/JNu4btTndDAJl+xAOCVg+LvL+Zdoz4m+BYX4WHAbVazCDnMw/MYItbbv0AvxD0lCXhV9/9IT/ZfoZKXGI5Ln7AS9cwXcB8woW5Vr0WaEFf2LJKzBwJFhvB4DvPyqPa9STf/OCM5P0RIBFO5opJmgocQXucqsTVHYIENuClrUzmkFFJh3CB019kvQTqFK3WWGZxf6XyCccFP4euq6jE4dye1HDARV4VnhSlnLzKI4NIMp5DkBGZr1JTA86tMCOZee9RaQ1kKCaedo44HbtE8hzC+agKsLU0Om59Pzbhs2et0m7fAWwCJrA0a6lndISM/T3BffFl8NIK5S4taaAA+rohaNkAiaY4oVcPrGQrtltlrYJ87n/4dPJFWUrcmz1l3JD8TZ8y0JsvnqhcapHmIEv8shRL2QLBV9PO+ok7l5YgY7zx7RScUJY8m//Gc5d53loGF8wQySmRVLQaJpoawPP9sRC6G9fP0RS/20xef/JvGfNJVhuT7k5TdutWvjixdSuMdy3YgM3B9XHqXCeqsHfjyY0UDFhAIGRLU7tmv8mbtihYkVOUgt9BBEJrZ4mMasNGtG0E1IdI36wwXu3/x6TzEQ1GHWq/qlcMqyLJZHSM+nOa7JGsUSsxyRNMys8bUiE
+ CWzKAMXd
+ CIxX5ZxdVF1migLGsa6EaV8PihW82/ghdjTPcdxlyE/iVUWj8wz19WNX6diwlfVcMMToDalgPBEWWry4SYIb24Xb4VXQYUAHd2VW8Jad49M8kAamagd8dETWW0FnVAEFcQY7cO+9USGConw7bg5ygaMGbtkLaRs9hYJ/8V/evtcYvfHKSREWkj91MOzQVU4H6/R7AaObzFLnMQrEdyK6MAJmJfIPqJ3ETuF/eHegFHlH8hHHO7Y2/UECAsH89dd39bT2+JocLM3G58nGdV7BSiZqOvWPV50YazwFKlu6HCucl2d/myLO1PyU5JzlyoHRzEqL0haf7qyb2+JZY1qx6aBuSaRFoEn/+V9kOwpEtWdMHs3d5B++r7iGA9blmj5rCh0J7FxU9Dbmt5+G115OnhHEGyDQmvKZ5wkMu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,20 +128,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 18:58, Zi Yan wrote:
-> On Mon Sep 7, 2026 at 12:30 PM EDT, Lorenzo Stoakes (ARM) wrote:
->> On Mon, Sep 07, 2026 at 06:19:30PM +0200, David Hildenbrand (Arm) wrote:
+On Mon, Sep 07, 2026 at 04:00:19PM +0200, Thierry Reding wrote:
+> On Thu, Sep 03, 2026 at 11:03:12AM +0100, Vincent Donnefort wrote:
+> > On Wed, Sep 02, 2026 at 12:24:36PM -0500, Rob Herring wrote:
+> > > On Wed, Sep 02, 2026 at 11:47:04AM +0100, Vincent Donnefort wrote:
+> > > > Keeping last-level mappings is interesting on some architectures as it
+> > > > allows mapping/unmapping pages from the kernel direct map without the
+> > > > risk of splitting blocks which, under the break-before-make rule, may
+> > > > trigger page-faults the kernel can't handle.
+> > > > 
+> > > > Add an "ll-map" property for reserved-memory regions. When set, it
+> > > > splits the underlying memblock and sets the MEMBLOCK_LLMAP flag.
+> > > 
+> > > Where is this documented? Any DT property must have a schema.
+> > 
+> > Ack.
+> > 
+> > > 
+> > > Though I'm not thrilled about more flag properties. Handling all the 
+> > > combinations of properties has proven to be painful. Can this be implied 
+> > > from the compatible string instead?
+> > > 
+> > > Rob
+> > 
+> > We need this before the kernel direct map has been created (paging_init()).
+> > 
+> > I would have moved that directly into the driver lend_pool.c, but then it is
+> > probed too late (unflatten_device_tree()).
 > 
-> Probably worth putting it in the process documentation. Always resend if
-> a patch has any change.
+> Any of the node_*() callbacks from struct reserved_mem_ops get called
+> prior to paging_init(), so these could be used to manually set the
+> memblock flags in the corresponding drivers.
+> 
+> Thierry
 
-For things like fixes for spelling mistakes I don't really mind. So "always" is
-a strong word :)
+Ha yes my bad, early_init_fdt_scan_reserved_mem() is calling ->node_init()
 
-But yes, such stuff will be documented in the future.
+So I should be able to drop this patch entirely to do set memblock_set_llmap()
+(or memblock_set_pte_map()) directly ino the that new FF-A lend_pool driver.
 
 -- 
-Cheers,
-
-David
+Vincent
 
