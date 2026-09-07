@@ -4,106 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01F56C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA350C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEDFD6B00AF; Mon,  7 Sep 2026 04:19:45 -0400 (EDT)
+	id B9E7F6B009B; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC6CD6B00B0; Mon,  7 Sep 2026 04:19:45 -0400 (EDT)
+	id B6AFA6B009D; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDB886B00B1; Mon,  7 Sep 2026 04:19:45 -0400 (EDT)
+	id A8FE86B009E; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BBAA86B00AF
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:19:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BA6DA06A7
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:19:45 +0000 (UTC)
-X-FDA: 85186267530.05.3B66F57
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6CF82140008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:19:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UJuvfU9d;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 85E756B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22CECC0694
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:24 +0000 (UTC)
+X-FDA: 85186284288.27.172591E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6D1384000C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICur1IhM;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788769582;
+	b=m+H7IOm4b483enXQrqgIKTEA8IIziM9luO/arUqq6ByOSg/1IQcWi+2NnGrxkgGoU+/6Pc
+	m2j9v8ABl2lva7L3hMfr5+kx3qRxUvcJUeweBODve5xjCOXX1NMR4q3TUsippTxOn97oIL
+	z96lxL0e1KC8ynY/wY56/V2EHwxwUC8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICur1IhM;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788769183;
+	s=arc-20220608; t=1788769582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GAZ6TjlQNpAXJSOweplt0GKF/XRVopzqtspbK2Lvi9g=;
-	b=yZrgJRLH2s9dl6vP8mSmGisdylobW11CM6ssYLZwhHQS4fzGx8SX+FvSDp6pwEl/zADkBR
-	YdxNjgCZV+2XLt0lBCE4O9My5SIZW9rgoqdfz+PvyK483ij6jEqJ1K3z5t6ftNrOx7Ss1d
-	6patIOr793RiYNyHJcWafwz82etj+RI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UJuvfU9d;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788769183;
-	b=p9+YEFuYmUF2XDCR2WQO7KPdwy8PYEIqVMvD7eps2VwxBhzXpNUakNB+2KYjtVjHE5EE76
-	pqKOb2yzmYgQUOdcm6TDIug8nfw4cbxl4immtt2xqmJJE007JYbTeSFq5yn0g6p9HGXKZH
-	O+zp5JDGrn8z3kmc8d5IkvjG4HlLFPA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0557A1BCB;
-	Mon,  7 Sep 2026 01:19:39 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28EFB3F7D8;
-	Mon,  7 Sep 2026 01:19:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788769182; bh=YMxvpBXXES/5Be1PM7mR4Ou5S+++GkRnpdpj19mAzVE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UJuvfU9dmBPHjlicnGnG9INWQtct5wrTCoiuI0cPdx43hW8RJAqaNI2VbEWbTxqnw
-	 K+dKvgqNMLOMPc6i6cCyi7ICuVHIAdvEkoF7Z7KOlTzmoI5gUvsX11j518KUy1NXww
-	 /WUU1gIPqtvRbvMIoc6tI1Lz5AyxLz/n33OBsGy8=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 07 Sep 2026 09:19:28 +0100
-Subject: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
+	bh=aO6wg0mymQg3x/3sbOQTgRafHt9X06kvzyNxg3k6Uj4=;
+	b=3WJSkOjnJHZlVjdUO/bCG1tCcfjBU5R9ItzTE5vAAVRSgd1vAeQ6VqBekzH6wU/T470b2E
+	2DBa4+RWgoGAD5HDaiCnvBCXG5GJi57CLWUHdVOZ3w7DXM/HTgkqL93HNdGeG3LXKOsXbB
+	OZuiPfTown3WLVUEBrkkZkf4AaeLsJY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A6EC60D8B;
+	Mon,  7 Sep 2026 08:26:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1701F00A3D;
+	Mon,  7 Sep 2026 08:26:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788769580;
+	bh=aO6wg0mymQg3x/3sbOQTgRafHt9X06kvzyNxg3k6Uj4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ICur1IhMUSpSE6fcJQklY1JjVK0yR4xNQ89iJLicxz+OgQqZ/38m/VMenPeE9Fgjh
+	 3zZp4CFJQSZEmg7Cbb3c8Gmr4KKJmPxbjlJ6S91dcleSo3lhxvHVr2q/52m4SVe1hN
+	 V0YoGoCpoceNgZJ2iM4e1quy1vUZ3U9jOJIeZ7ws+u8AoiCy33KtG7j7l7erQjRCGh
+	 XK/Y37JnMPpsax/4NRvrf6fB7S0+P8MMYA913T2RiBV2xDxmXPXAT24GsFvLbVTay+
+	 XQn4yY4wu+PpYTh+CR6uz+68WNVDgYiBNWJ9aW3Mw0l0R7jcdt6C+0lvjItoYHKsB2
+	 CXBW4FIWwsdSw==
+Date: Mon, 7 Sep 2026 09:26:05 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Oleg Nesterov <oleg@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ye Liu <liuye@kylinos.cn>, David Hildenbrand <david@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>, 
+	SJ Park <sj@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, rientjes@google.com, 
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, will@kernel.org, 
+	boqun@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org, 
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, 
+	lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com, longman@redhat.com, 
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang@linux.dev, 
+	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
+	kprateek.nayak@amd.com, mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, 
+	babu.moger@amd.com
+Subject: Re: [PATCH v2 0/8] sched: introduce for_each_process_rculock and
+ for_each_thread_rculock
+Message-ID: <ap5yw-Cwb41FymNd@gremlin>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-fix_split-v5-3-822b810458bc@arm.com>
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
-In-Reply-To: <20260907-fix_split-v5-0-822b810458bc@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10091; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=YMxvpBXXES/5Be1PM7mR4Ou5S+++GkRnpdpj19mAzVE=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqnnOSBC1lHBxEGcvQkLeMnpFIofQkznfIuA16p
- cVk7ygMPoeJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCap5zkgAKCRBt1cPRWsUx
- M4KZC/9F3MiEPCRk2SO8QtTFyhFyRIiLkt4wNWwFynThNzpJuekgBxopKVyX57Fk88iI/i8UBWo
- MiXsVnrd+gJYt3cl9Gy02pLDS5NAYsTYaoCAn8ZFrB5Koe933x6+QMxY10aWQJfzC+XFtPL9TPZ
- Z7lzNFAFv+XadZ8fT8XW9zOnpW5W0bEw20Z4tDnQe4y18rhv9Rrap6yEz79e95oD8jGpjGbVXgx
- o9XSVgQttbAqX3LM7bEeTKcTxutOXGRdEpH8aFl57sHieF9YKM+mTNRS6x8V6TPujwGrCE8O7Zu
- 4Q+8agAoFWzRFhutmobC263m4poZILM6CnssK8bYQC1A/Oycdjv0zuQUZQpoIDHvmDc2TLfNsK+
- VCcHc/dkLRVFiIIktblQVlNUoMW+waxRkU0RVAYNvFIs2wiOrvIiXmzTmeRctGpUWacfRPyNy6L
- q6eIPzWUNiei3Ceig+JyfwhdLqds+ZTZRc7FtAR/TCuerdpVNhgP8JE1gr3kTyVz2dZyc=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Stat-Signature: xu8g3ej8oc74gdgyhh4yxka11jc7hnb8
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6CF82140008
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260907081334.1152889-1-ye.liu@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1788769183-103525
-X-HE-Meta: U2FsdGVkX1+mo7pEJm8CRByRZJclAWR/HHYOaNFwXOJJZy9/8BjRnfYLb1h/jJdXcxPk0xYrunZdOQWNxUkarLzZqw/IgBoLbHjDCpPpNmXEYayy211HKEuVA31HX8guhpgdF8WKD7bzWzXl3tXsZEcE8TzuIvplChTKPoE4DDcBhHh9zXylZtdzOaInc1qTG+3fViUHec5Qk0uEF2xlxk7CtVLOWElPjq5Mt39h4cD/UiIfdC7jZLybntO+gVjPaG+3h+F7hIrMNoLfkbBqSy6n0oIJx61D9+sos9Nxho+c4v3T06jeX12ENhqcj9g/yU3oQfOZFLaJ+tQpTv6jTFMFJ3ZwH+14qv79rGtAvx5nTLxpwNyvXuv9P6qOXmPGedgdaWo4pCPF/CAJQ5Idxw8eEKzASkOyjwzRECahmzYHqM8vFv3Q5WxLL6yIU+iimJZ7INtbEBCVW6WbUDwZYalhVK+j/R+8Xe1sHOVaX4g/oX1ScNfDzvS2wFWJqUW4/XlMJqkH1Ohu3EmbWqU/0FsYuM49hIB1Jjyga1EXCo5dzV8XNzx6AJP7XASYP1wL3jvLpB8CLXY8otoiMo17t5GkJVXAn1F0v6q4R1Syade1UhTLQS42hBA0k0ou/lxKev+B4MQSo2AOoUoK0Q/Z/vNVqBf8V1C7r4h2E+g8Up0RtgkdP+spaAnXk17DW7CfqKPEBPMqfJrpq1zfvXXQI5aO6d75ksvcvgX/3h/7OGBEOBAVJ/+79oVolXj3+MdRzWtNxvfof/0u3H7aAuXX/UJ+RibIFe/K/7qdDLFQKTMeuKFvhBJ0BFeGWMRcLGglOEXpLfs9ltbM6KasHilASTr4BYCMeCP/V8ip+xQBwhaE4ahnlYsP/idmTYmKhxNcSm6qWUyNuKr3NT+Iyj5zchAE7lHlEBtCxSr+yOvnvHqtFeSxm1GpkxWAoMOh43hwt9zjA7v0nBHZ+PkAPTa
- JE4YI5Gx
- LF1s3jZtvEACnXuSOejr1PqvKrNgnMFTO7WD4WohceH9qgxlsG+8FnlG+atKCpxh97yFNwd9eGbgagdCrwg1dNQF9NzBW/La/zOttDIkbgRhhY6GRLJlUGB/32t4wGa4GUY8fKAdwy+/nAm4WQ6BWGf/Xg5av3s2l1g3WATRSFCRl2XkZekIXhd7kW+5r/9RfR9hLssDKPlgD4aIEnt3A2suLYUBFkjjnhN8MyMatCVrh+Rn6PqU8pbFXi1jefNeJr3TkNd/WEuE8ejrdKPSgRYPJ43nHXwWaHGjygYi70fNFqPuqZx2OkJKkxOoifP+DjwP0J24i/0SiXXY=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D1384000C
+X-Stat-Signature: pqfef6pg13n4tj8cc6qogbtg7ide3gm4
+X-HE-Tag: 1788769582-532598
+X-HE-Meta: U2FsdGVkX19LJhhxa5Ln+ciBl/RzY/WMlD7zysdkaF/UGDmNddjxqipTwsqHWo3bO88e2HfmMD7pyZc/ZTU+e8hytw84nq6V2bQReoH8T09hUJm5QeYOtV2DlcmtE0o7PM4php6pWqdnm6u5vAzkoY2b+oCPukeVw6bvJf5mJWveBLjfG9AI6yD7KgaIbtXkp5LdF07ssr8diPAF5PpiiLdN3v7Dt64qkJoSoF99HWeczGY/qDtKl1l+zdhkBYYlZ+MdiFqcpm5Micdt6vlFekBZZMZv4Jg++OabDnA5EFVOIrGf2TAi/62ANcGnBDumz/73pIAxR0YVTqTXN7ooX9jS4oexiRvo0FXgf15c0Wwe6Mayjf1ZjIY1Azuqjdau1mJm1dveg0uc4gZSG80J15R3Uss+ta4Is/3mjLV9n/2gX5mq1lXaIGxnWvoO2NcuwHmuUlUVHCMW+he5ysEs0qEDUaTRMO2mAVFPvntR5n87T4z+/qE1sXACqkXkNhVVOgUTS7khQlBHSxaLolyx8EmnrE0fOEaBQeMbiPya+NZVQ1uFLdBJao1x1NUdjSpnNRj4WmKGoDtNR3/jAJclPjT8uWK09nqgXT9PracrapqDor226b/mF5irQKXHFxYE29ETLCrK5HgVqdVRyz/4D1r94CK7aQQUrH2l0FYAruV6pY4XjF3IwgChgirHAgZ01TI6ctyUZrNfWJElN15n+dygEm/IcvfsP3+Fl+5GEkcPzFCmMi8QrO1yGRfgYeseU2w/hZDvS0gJdxMhbWnpg0egBfVat/lIE8Gwe0jt5ATOosYFuVGldvwGi0ZMvTw5qd00lGiLiyRIHrKt/lmix5q179FzwWji2yFPRALoMMdvyNt0Av3C+FfvMl1ZcETWVqMtprDKLYr6TjoCETJA7uUbd+1nPJRCHLwJMyuSzf8xOW7DsVTgLO5sRlxqgiDQk7x/xUYToodLlf7ASZA
+ NHcdv6tx
+ wUSkwladI5jVVhf1sPWVy1zU4NZlxpanbJFNpx4SMqNKvXcI1ChT7WrMDjEhOzwX+Wf0xuMy+8g7QpIJL/PE4HQSEHyvR0n8EngE2j0np1cu3QyYqpgcokzxIWgx0UUQGhwd4a0s09mEfvKAkHA/NSDghjR5CVylOOyIiV6lZoKTSTxsOvM6nqt9oLk9oAkCbPsBhoprMYSPZ7fh3+OnJddr8h07gEQVZK/mewurQcZri4X0pvUnN/5mWvmf01VdTO7VTFIbLv6lmVXavp4P0k+owwmn/hLikqqawhFqvPE3/qhlyuV/oS7RF6caStZR8y8KOJeVmWUpSyMTM4jZiZ1yUDEVZlDaEABmk3L7f0zNu1Rm3CKMHX1WHIWi89lA/gWXoqDurwgHc88qh/bXfvKnWmg5DdtvyQ4o3Zyi0d7Zkwas=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,282 +112,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some MM tests use memalign() to allocate memory. However, the resulting
-memory area may unexpectedly merge with an adjacent VMA, causing tests
-that inspect it through /proc/self/smaps to fail.
+On Mon, Sep 07, 2026 at 04:13:26PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> Introduce for_each_process_rculock(), for_each_thread_rculock() and
+> for_each_process_thread_rculock() macros that combine the existing
+> iteration macros with scoped_guard(rcu), so that the RCU read lock
+> is automatically acquired before iteration and released when the
+> loop exits — including via break, goto, or return.
+>
+> The rest of the series converts manual rcu_read_lock()/
+> rcu_read_unlock() and guard(rcu)() pairs across mm/, kernel/, fs/,
+> lib/ and security/ to use the new macros.
+>
 
-Eliminate this potential source of test flakiness by introducing
-alloc_isolated_mem(), which places guard regions before and after the
-allocated area to prevent unexpected VMA merging.
+Andrew - just a note (assuming Ye Liu is in agreement) I think all of the
+below should be excluded from the cover letter that goes into the commit
+message, including the checkpatch thing.
 
-Replace memalign() with this helper and use the helper in
-softdirty_supported() instead of mmap().
+> Changes since v1 [1]:
+>   - Rename macros from *_rcu to *_rculock, as suggested by Steven
+>     Rostedt and acked by Thomas Gleixner, to avoid confusion with
+>     existing *_rcu() list iterators that expect the caller to hold
+>     the RCU read lock.
+>   - Improve the comment on for_each_process_thread_rculock() to
+>     document that 'break' only exits the inner loop and 'goto' is
+>     needed to exit both loops (Thomas Gleixner).
+>   - Rename the stale 'unlock:' label to 'out:' in hung_task.c, as
+>     noted by Günther Noack.
+>   - Clarify in patch 4 that page_pgoff() is safe outside the RCU
+>     read-side critical section (SJ Park).
+>   - CC all relevant maintainers on every patch (Lorenzo Stoakes).
+>   - Drop the mm: prefix from patch 1, as the macros are in
+>     include/linux/sched/signal.h (Michal Hocko).
+>
+> Patch 1 may trigger checkpatch "Macros with complex values should be
+> enclosed in parentheses" errors.  These are false positives — the
+> scoped_guard() pattern is a control-flow construct, not a multi-
+> statement macro, and the same idiom is used elsewhere in the kernel.
 
-Link: https://lore.kernel.org/all/apHDdRSr59mva3ey@lucifer/ [0]
-Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/pagemap_ioctl.c        | 18 +++---
- tools/testing/selftests/mm/soft-dirty.c           |  6 +-
- tools/testing/selftests/mm/split_huge_page_test.c |  8 +--
- tools/testing/selftests/mm/vm_util.c              | 67 +++++++++++++++++++++--
- tools/testing/selftests/mm/vm_util.h              |  2 +
- 5 files changed, 81 insertions(+), 20 deletions(-)
+While it's useful as a note to reviewers, in general checkpatch is taken
+with a pinch of salt - it's a master of false positives so usually no need
+to say this :)
 
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index eadc7159ca5b..7ed5b8fb3b25 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -792,9 +792,9 @@ void *gethugepage(int map_size)
- 	int ret;
- 	char *map;
- 
--	map = memalign(hpage_size, map_size);
-+	map = alloc_isolated_mem(hpage_size, map_size);
- 	if (!map)
--		ksft_exit_fail_msg("memalign failed %d %s\n", errno, strerror(errno));
-+		ksft_exit_fail_msg("alloc_isolated_mem failed %d %s\n", errno, strerror(errno));
- 
- 	ret = madvise(map, map_size, MADV_HUGEPAGE);
- 	if (ret)
-@@ -856,7 +856,7 @@ int hpage_unit_tests(void)
- 
- 		/* 4. only middle page written */
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 		map = gethugepage(map_size);
- 		wp_init(map, map_size);
- 		wp_addr_range(map, map_size);
-@@ -871,7 +871,7 @@ int hpage_unit_tests(void)
- 				 "%s only middle page written\n", __func__);
- 
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 	} else {
- 		ksft_test_result_skip("%s all new huge page must be written\n", __func__);
- 		ksft_test_result_skip("%s all the huge page must not be written\n", __func__);
-@@ -898,7 +898,7 @@ int hpage_unit_tests(void)
- 				 vec[0].start == (uintptr_t)(map + map_size/2),
- 				 "%s clear first half of huge page\n", __func__);
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 	} else {
- 		ksft_test_result_skip("%s clear first half of huge page\n", __func__);
- 	}
-@@ -927,7 +927,7 @@ int hpage_unit_tests(void)
- 				 "%s clear first half of huge page with limited buffer\n",
- 				 __func__);
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 	} else {
- 		ksft_test_result_skip("%s clear first half of huge page with limited buffer\n",
- 				      __func__);
-@@ -955,7 +955,7 @@ int hpage_unit_tests(void)
- 		ksft_test_result(ret == 1 && LEN(vec[0]) == vec_size/2,
- 				 "%s clear second half huge page\n", __func__);
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 	} else {
- 		ksft_test_result_skip("%s clear second half huge page\n", __func__);
- 	}
-@@ -988,7 +988,7 @@ int hpage_unit_tests(void)
- 				 "%s get half huge page\n", __func__);
- 
- 		wp_free(map, map_size);
--		free(map);
-+		free_isolated_mem(map, map_size);
- 	} else {
- 		ksft_test_result_skip("%s get half huge page\n", __func__);
- 		ksft_test_result_skip("%s get half huge page\n", __func__);
-@@ -1702,7 +1702,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 		wp_addr_range(map, hpage_size);
- 		base_tests("Huge page testing:", map, hpage_size, 0);
- 		wp_free(map, hpage_size);
--		free(map);
-+		free_isolated_mem(map, hpage_size);
- 	} else {
- 		base_tests("Huge page testing:", NULL, 0, 1);
- 	}
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index 5f278913c4d7..b6fad38c8bee 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -92,9 +92,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
- 	if (!hpage_len)
- 		ksft_exit_fail_msg("Reading PMD pagesize failed");
- 
--	map = memalign(hpage_len, hpage_len);
-+	map = alloc_isolated_mem(hpage_len, hpage_len);
- 	if (!map)
--		ksft_exit_fail_msg("memalign failed\n");
-+		ksft_exit_fail_msg("alloc_isolated_mem failed\n");
- 
- 	ret = madvise(map, hpage_len, MADV_HUGEPAGE);
- 	if (ret)
-@@ -130,7 +130,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
- 		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
- 		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
- 	}
--	free(map);
-+	free_isolated_mem(map, hpage_len);
- }
- 
- static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index cba327f77873..7865b0bab011 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -153,7 +153,7 @@ static char *allocate_zero_filled_hugepage(size_t len)
- 	char *result;
- 	size_t i;
- 
--	result = memalign(pmd_pagesize, len);
-+	result = alloc_isolated_mem(pmd_pagesize, len);
- 	if (!result) {
- 		printf("Fail to allocate memory\n");
- 		exit(EXIT_FAILURE);
-@@ -219,7 +219,7 @@ static void split_pmd_zero_pages(void)
- 	one_page = allocate_zero_filled_hugepage(len);
- 	verify_rss_anon_split_huge_page_all_zeroes(one_page, nr_hpages, len);
- 	ksft_test_result_pass("Split zero filled huge pages successful\n");
--	free(one_page);
-+	free_isolated_mem(one_page, len);
- }
- 
- static void split_pmd_thp_to_order(int order)
-@@ -228,7 +228,7 @@ static void split_pmd_thp_to_order(int order)
- 	size_t len = 4 * pmd_pagesize;
- 	size_t i;
- 
--	one_page = memalign(pmd_pagesize, len);
-+	one_page = alloc_isolated_mem(pmd_pagesize, len);
- 	if (!one_page)
- 		ksft_exit_fail_msg("Fail to allocate memory: %s\n", strerror(errno));
- 
-@@ -262,7 +262,7 @@ static void split_pmd_thp_to_order(int order)
- 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
- 
- 	ksft_test_result_pass("Split huge pages to order %d successful\n", order);
--	free(one_page);
-+	free_isolated_mem(one_page, len);
- }
- 
- static void split_pte_mapped_thp(void)
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index dc62ce84e143..159d627ae3b0 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -19,6 +19,11 @@
- #define KPAGEFLAGS_PATH "/proc/kpageflags"
- #define MAX_NR_ORDERS 20
- 
-+#define ALIGN(x, a)		(((x) + (a - 1)) & (~((a) - 1)))
-+#define ALIGN_PTR(p, a)		((typeof(p))ALIGN((unsigned long)(p), a))
-+#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
-+#define PTR_ALIGNED(p, a)	(IS_ALIGNED((unsigned long)(p), a))
-+
- unsigned int __page_size;
- unsigned int __page_shift;
- 
-@@ -514,6 +519,61 @@ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- 	return -1;
- }
- 
-+void *alloc_isolated_mem(size_t align, size_t size)
-+{
-+	char *ptr, *guard, *addr_align;
-+	size_t map_size, guard_size, page_size = psize();
-+	size_t padding;
-+
-+	if (__builtin_popcountll((unsigned long)align) > 1)
-+		return NULL;
-+
-+	align = (align > page_size) ? align : page_size;
-+	guard_size = page_size;
-+	size = ALIGN(size, page_size);
-+	map_size = size + align + guard_size;
-+
-+	ptr = mmap(NULL, map_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (ptr == MAP_FAILED)
-+		return NULL;
-+
-+	addr_align = PTR_ALIGNED(ptr, align) ? ptr + align : ALIGN_PTR(ptr, align);
-+	padding = addr_align - guard_size - ptr;
-+	if (padding) {
-+		munmap(ptr, padding);
-+		map_size -= padding;
-+		ptr += padding;
-+	}
-+
-+	guard = ptr;
-+	if (mprotect(guard, guard_size, PROT_NONE))
-+		goto err_out;
-+
-+	guard = addr_align + size;
-+	if (mprotect(guard, guard_size, PROT_NONE))
-+		goto err_out;
-+
-+	padding = (ptr + map_size) - (guard + guard_size);
-+	if (padding)
-+		munmap(guard + guard_size, padding);
-+
-+	return addr_align;
-+
-+err_out:
-+	munmap(ptr, map_size);
-+	return NULL;
-+}
-+
-+void free_isolated_mem(void *addr, size_t size)
-+{
-+	int guard_size, page_size = psize();
-+
-+	guard_size = page_size;
-+	munmap((char *)addr - guard_size,
-+	       guard_size * 2 + ALIGN(size, page_size));
-+}
-+
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags)
- {
- 	size_t count;
-@@ -618,13 +678,12 @@ bool softdirty_supported(void)
- 	const size_t pagesize = getpagesize();
- 
- 	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
--	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
--		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
--	if (addr == MAP_FAILED)
-+	addr = alloc_isolated_mem(pagesize, pagesize);
-+	if (!addr)
- 		ksft_exit_fail_msg("mmap failed\n");
- 
- 	supported = check_vmflag(addr, "sd");
--	munmap(addr, pagesize);
-+	free_isolated_mem(addr, pagesize);
- 	return supported;
- }
- 
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index f19bd17817e5..ce1da9a55310 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -95,6 +95,8 @@ bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- int64_t allocate_transhuge(void *ptr, int pagemap_fd);
-+void *alloc_isolated_mem(size_t align, size_t size);
-+void free_isolated_mem(void *addr, size_t size);
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
- int gather_folio_orders(char *vaddr_start, size_t len,
- 		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
+>
+> Suggested by Michal Hocko for the oom_kill path [2].
+>
+> [1] https://lore.kernel.org/all/20260904083001.553587-1-ye.liu@linux.dev/
+> [2] https://lore.kernel.org/all/20260813092933.562028-1-ye.liu@linux.dev/
+>
+> Ye Liu (8):
+>   sched: introduce for_each_process_rculock and for_each_thread_rculock
+>   mm/oom_kill: convert process/thread iterators to for_each_*_rculock
+>   mm/ksm: convert process iterator to for_each_process_rculock
+>   mm/memory-failure: convert process iterator to for_each_process_rculock
+>   kernel: convert process/thread iterators to for_each_*_rculock
+>   fs: convert process/thread iterators to for_each_*_rculock
+>   lib: convert process iterator to for_each_process_rculock
+>   security/landlock: convert thread iterator to for_each_thread_rculock
+>
+>  fs/proc/base.c               |  4 +---
+>  fs/resctrl/rdtgroup.c        |  8 ++------
+>  include/linux/sched/signal.h | 25 +++++++++++++++++++++++++
+>  kernel/cpu.c                 |  4 +---
+>  kernel/freezer.c             |  4 +---
+>  kernel/hung_task.c           | 11 ++++-------
+>  kernel/locking/lockdep.c     |  4 +---
+>  kernel/rcu/update.c          |  4 +---
+>  kernel/sched/core.c          |  3 +--
+>  kernel/sched/debug.c         |  4 +---
+>  kernel/trace/fgraph.c        |  8 ++------
+>  kernel/unwind/deferred.c     |  3 +--
+>  lib/is_single_threaded.c     |  5 +----
+>  mm/ksm.c                     |  4 +---
+>  mm/memory-failure.c          | 16 ++++------------
+>  mm/oom_kill.c                | 20 +++++---------------
+>  security/landlock/tsync.c    |  8 ++------
+>  17 files changed, 54 insertions(+), 81 deletions(-)
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>
+> --
+> 2.25.1
 
--- 
-2.43.0
-
+--
+Cheers, Lorenzo
 
