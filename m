@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E678C79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 053B2C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B4FA6B009B; Mon,  7 Sep 2026 13:12:30 -0400 (EDT)
+	id 1B8E66B009E; Mon,  7 Sep 2026 13:12:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 364986B009E; Mon,  7 Sep 2026 13:12:30 -0400 (EDT)
+	id 11B1A6B009F; Mon,  7 Sep 2026 13:12:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254AA6B009F; Mon,  7 Sep 2026 13:12:30 -0400 (EDT)
+	id EB1D06B00A0; Mon,  7 Sep 2026 13:12:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E28E46B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:12:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78DD012024C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:12:29 +0000 (UTC)
-X-FDA: 85187610018.04.F78F3CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E5C5A40002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:12:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CA9dADgt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C28F86B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:12:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 56FAE14026E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:12:30 +0000 (UTC)
+X-FDA: 85187610060.17.2591D8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B4AC7140002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:12:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULOcj1+A;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788801148;
+	b=7d0OJho/SB+DJWbRQwwek9MNb6d/pj0TMmXI7aWJdiM2eXweqTtVqlCAM0SH/gMfKNsthP
+	0wmieH5dIFW5y1jOIJ/bJWqOFVnn/HIQpIBu987Y2Fv1W3yZ19wyqyLDqIdB0IRF5pr0qf
+	tz2jAKYjbcfh2rawy4rPIk6JZjg/SHk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULOcj1+A;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788801147;
+	s=arc-20220608; t=1788801148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0LMfK+vJvFqvjmpgUK8C/JqVd+cTrrKRqz+a3Phr1zw=;
-	b=G+piAbXxljiDcUTStdxhI4Hm5Zk+eAd+GQEQScKpZOJ2oEjEiQ/OjIxFGdJ2Imtg7QxmuZ
-	dokAAZddFzjIuIYafQXaPPVTGu/ILFOKorSkCRWzLIi4CDdiOSDt7unG2xDs37i565tyq6
-	+T4Kpr0lcYwGKnD5nzHfBcyakzHhDK0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CA9dADgt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788801147;
-	b=7iZw8BrR0s4cwOX3IN2dyFfRNraxOb7ra98eG21U5OAw5HOccPqpnf8OZ2hgyYeObqz0xI
-	DOBDukkXXJ+W4jul3VxU3wh7cKjsD+Sv5dhod7DZOoklGuW40sP+KnKKK23OURY3O3juS8
-	RLVTS6BR5GgRdpFoDmyLzDDXN23x26s=
+	bh=3QelAmhdJ8KPxvwLkmNC9X/53BNSeYX//IkIfked+Kg=;
+	b=QdWhQNRDRqA7bAm3mREyf71kd2H9ZnOtsEJtesXvQlLAv6C4R20iFNZW3rl1OT0qqzR62D
+	3TORAJ8/9fCEgQ/1f7VRMHYped6pC+Tw8Cfc9UboccnwZi7Mva0zHDzSeVLulH73a4TgAJ
+	nCsgcK71NA+8D1KJyo97M/St0ETS3yY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73E58601FB;
+	by sea.source.kernel.org (Postfix) with ESMTP id EF00443CCB;
 	Mon,  7 Sep 2026 17:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063A91F00ACA;
-	Mon,  7 Sep 2026 17:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547671F00ACF;
+	Mon,  7 Sep 2026 17:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788801147;
-	bh=0LMfK+vJvFqvjmpgUK8C/JqVd+cTrrKRqz+a3Phr1zw=;
+	bh=3QelAmhdJ8KPxvwLkmNC9X/53BNSeYX//IkIfked+Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CA9dADgtK6IS30SWaNAkNxa55qZYJ4+mHnCLcym4xvMm/SrQ0hSfu5yvB0XQPcayH
-	 yqMERbE98Vd5iJ0RRCudq+w2WC0al1HUlFrZ26A4YZHPFqN3A8qFRYyIeE3Die/SFV
-	 K1RMICJPB+GHJKu22h8NhLdABZRVuaOwOuHEoYTe6w6Rsha/rFxXj/7P9uhyKhHaCS
-	 fuGb/jxvgE+A1vO8R0jJ2VEUppklpJ01IgrrBjfkSw79R+FyKU/1WBItixY9EYH4ML
-	 9VCtfgudJWNc2tydeFhQFjSyLC1mfFr+F8dzBa+/A665w1x19eUOJwMTAAsnsWTnVa
-	 sxI89uKyqAVEw==
+	b=ULOcj1+AJUjnPLd17XkSPhcPcHUidVKWGqekiLNjlvxtZ3f+/XbjQoNwssXBu8OzU
+	 G3zcFDrA1JQRHS4fK21J8STziU+/+9C+Vqn/1qmxpGe8cM8YtTwrKVz9ayrRyRHkjl
+	 W5bCGu2n05qfFsaGOdhPfDz8v7BclHFLLwgr6zoyUPX7W1jedNkN7rgGGpp2FrgwcZ
+	 6YgBtAvzZlEEM1BqM8e2trpVuPTOJQbYGvsy0eCm7LoUmMzk+s4iR2LarRMAi/g2mY
+	 AYtqHxN6V8Wey793BFm5f+uhDMEEYTm5KIxG4KfdeP3UWnwssw4h6NxG+uBX+WiE05
+	 OYGzpEk1N4GhA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 5/7] mm/damon/sysfs-schemes: support probe_hits_wsum damos core filter
-Date: Mon,  7 Sep 2026 10:12:14 -0700
-Message-ID: <20260907171218.101430-6-sj@kernel.org>
+Subject: [RFC PATCH v2 6/7] Docs/mm/damon/design: update for probe_hits_wsum DAMOS core filter
+Date: Mon,  7 Sep 2026 10:12:15 -0700
+Message-ID: <20260907171218.101430-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260907171218.101430-1-sj@kernel.org>
 References: <20260907171218.101430-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: xhqgbc1s5g5ikb1si5qjtg3t81txzq1z
-X-Rspamd-Queue-Id: E5C5A40002
-X-HE-Tag: 1788801147-850098
-X-HE-Meta: U2FsdGVkX1+rhyxtt/cokMrskeEp6cLqP9fjEDzUclbrZtLww7aCX90q1hg8YgiTvc9E3El8L/nbE1y2z2H2EuFn5nAney7U9/xTAj+mbX6HEsTCjBZ1JawV/nJy8+3XrquHdIFL73dObPC0EHpAK2Hg4UlijStuuNHS9WDOHnRRcec3Yul3o6Ti+UnUfI53qubFq6BGjPSnflCk3M73BaDPwwW2xScHY3HfYaIXaCmatyWCkwF1OEScjECfztRAGZwlOvzbpefelkXl7oH56AXrU/Wl5QMprs2+/beMPBdsjK0YKJYl3/jyicUx49KLXCHDGhOVFKy76S0yU29LktZMNpV9UP/zl6ah3DIP+GZXGWXN/5TpsiHiOyFsHpD9VCmJRK4toC5Efcqwlr3Bex5a2h1oPaHPnlu1AjXMhgs0np2Gsn2eakaBEGmruyUZGScfvWBEvMHBXxbQslsrN51YVinIhrYDtk7n1jMP2vHNfVCjCIQSAMG7KW7ZOJY3WuQTe0tLrlFrRgtNaZdwaqWjIHUgFO8eteICrC3+1QhbsEoHU8v02h5Zyd/2y37x5HxETF7yw0sqQqPFAVY5C0KjoWBcqgnRzAg49zkRhyc4n45qbx4DO1MAyJNZnJElN+lELfysMupvHG04ObKQWTnPKF43SmuO3ubbfA7B9qkvHgM8orNum6DvL8IMvChc6XoCWA/rNkZf7b3ZkIkSjNSqY/RkxnEAzuoDeVxlk8bI49aBoTUHphbArehS/wUZW+Bn/NcRvP1TwVJiBHipMXQRxKvgtkaOOxcaCC1Y8Di04+eOGnOUmZd6QOf4fYr0jzGyIjrcxjfVKlPwkuvQRl3Hfg+4yIkSe+JrSiaJYS8M91Gti5DhMdBmm5EpnlbhMJbxVqK00/Ujx4jrKONEv8PJuAq/9pTuCo6nSpoXFp2n9qcbHUv9AM5CxQ2yi4saMq0SGBmIK/QSyQRMyFK
- z1mbtFR/
- lhR8KKrjWPblnzzCVx78ZJBc6jzhhmZaTTstALUfMMq0O2Ze81HneXtzmlEWA6HdynKr+Bz5M+kxcAyLVi97IKMMYTR+F3Nuim9t8/jOcziOQsdyJS2R2R23IUOkX2dOQvgvP8Q6o5Z3n9+k16GXYbwkoBWHKQ4hNPQ4A1Ee8XVKQDyOzKp0OWoz7O9oLI4PGiijOHGGhAJ5MZuvO72KHffaThbm6iP0sJx0zqgI3z0Y4WUAciUjsYcfD2IUXkZW+KA2R4eJm3S3Sogu68mHAGFFOdw==
+X-Stat-Signature: si438hf8usdicyit1nc494nt5qaaxnza
+X-Rspamd-Queue-Id: B4AC7140002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788801148-638206
+X-HE-Meta: U2FsdGVkX1//NHk1BGyRc3u72Ai3PFTiHom1HJm4LsLkrFJpPs/MRk5SCYj/+Yp9Zn+RFMdt9zJC9C9mbP9wEXrVGfLPLOgiVyDVy+0IkKiE2GnTb56B98FpbCt+xeVPD89s7+MwremDNNR4XfjeuHycvxlT82RUpbuXSlTeQIXeXzVL1orvpuPE2MkmCz+Jbj5VfbN53bdNVunLlBXNla7U2EQADJSjSf/nMUDBrtZCyc0Gh/LSlvA3kqEEF92JAmjN/B1kkpwBCbzSeTi8joFRwSQQCGeMbmpzgWT2oapHIBGPGnp8+KgUxYQHPo/MTvnK1V/tWAdJsf7CfNQPgArtdCP+UWvesYi8wX3VRUMBKXBUrx1ZmVJLaWTPMT5+EsSa5ZWJUh1O2/x8JXYJcqd2yyLAA2k9TTL/wWRbIju9DX8Sj0leqPmR5IXDOoUdO4/TquLNt5qcaE5MDHaMCGbLVEOmqpCQ1m7vNaptgJLGFNV5PFD7keTiIAiJFRIuHdcF0jWtDtt0ysvNVxaxC+6EMAfAplHuA0t+blXTsmCxSANPFbWWDdXRuHBmB16bHGMVfOFG58xpbtKIqspQeAYB/mRBfsuW/I1o6BWgj/SCdY3gFN6V8mybKe2cZh2D+5HvXgQLwccrcxAOmUeWAmwX7D57u1xvlcGIqbI/TG3sje9EY3nsCQZH9iuAjc7rOMlaWEP+wlrEqtHl03OazuBoEHCtcEpx8H5eIz+GoY/euVhN+Gyu+DoklcEJAqiOzRbDj4AukS7HluYgMxYDVx6Wvf6G8zXQrYLA2+NvWT7RMZMY7Jvz3JwWQzhZvJEiU1A2IDUOAsZqtJ8RXIuXZSacjHNiODJeS6Teop11p0NSv55K5AEtVmIe6NuFtZ230ncdfxXSoMnJZaiFYYi8nBjfAh3Fo0xEWgJLE2z5Y2X9b6Mk3Z9pcJ8sgggLFOX49x+NIOtXxin/R11ZlKe
+ f82e4a7v
+ utbd1yDG9IVNXPM6DZpuMlkEfdoZY2F+wdgZeCrn+2LM1y8yOmv/D8/Z/O+IPcQgcgj1AqFlPLtZ6HV44ETDdpsDMixAs9vqf1IIdNcsq1iWMnamNSlJQmOtpIS/GhYKwVilmnjadNuw1BludwFP4Efq4lXsC5FfJDmdg1gWYCKVWLqomC8yVfc+laURndkEIW8X1HJ2Nyjw4s5yIGN58FzxN95q15/HMhGN9i5pIgBLDHLyvaSHJsjE7H7GdTuUklAOe+rk+7vsQrcMjS9rOQG4e7t2UIOTWridn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,46 +104,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend DAMON sysfs interface to support probe_hits_wsum input.  Also
-update sysfs input based scheme build logic to setup the min/max probe
-hits weighted sum range as user provided.
+Update DAMON design document for the newly added probe hits weighted sum
+based DAMOS core filter type.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ Documentation/mm/damon/design.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 4d9147d2a269e..d9dd4ee0442c7 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -589,7 +589,10 @@ damos_sysfs_filter_type_names[] = {
- 		.type = DAMOS_FILTER_TYPE_TARGET,
- 		.name = "target",
- 	},
--
-+	{
-+		.type = DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
-+		.name = "probe_hits_wsum",
-+	},
- };
- 
- static ssize_t type_show(struct kobject *kobj,
-@@ -2844,6 +2847,14 @@ static int damon_sysfs_add_scheme_filters(struct damos *scheme,
- 			}
- 			filter->sz_range.min = sysfs_filter->range_min;
- 			filter->sz_range.max = sysfs_filter->range_max;
-+		} else if (filter->type == DAMOS_FILTER_TYPE_PROBE_HITS_WSUM) {
-+			if (sysfs_filter->range_min >
-+					sysfs_filter->range_max) {
-+				damos_destroy_filter(filter);
-+				return -EINVAL;
-+			}
-+			filter->range_min = sysfs_filter->range_min;
-+			filter->range_max = sysfs_filter->range_max;
- 		}
- 
- 		damos_add_filter(scheme, filter);
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index aac84de261aa8..8e980dde362de 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -822,6 +822,9 @@ Below ``type`` of filters are currently supported.
+         - Applied to pages that belonging to a given address range.
+     - target
+         - Applied to pages that belonging to a given DAMON monitoring target.
++    - probe_hits_wsum
++        - Matches to monitoring regions having a given range of :ref:`probe
++          hits weighted sum <damon_design_attrs_only_monitoring>` value.
+ - Operations layer handled, supported by only ``paddr`` operations set.
+     - anon
+         - Applied to pages that containing data that not stored in files.
 -- 
 2.47.3
 
