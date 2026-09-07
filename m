@@ -4,123 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 162CDC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4AE3C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:59:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 075766B00A0; Mon,  7 Sep 2026 09:58:58 -0400 (EDT)
+	id D6DCD6B00A2; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C936B00A1; Mon,  7 Sep 2026 09:58:57 -0400 (EDT)
+	id D45CD6B00A3; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E800E6B00A2; Mon,  7 Sep 2026 09:58:57 -0400 (EDT)
+	id C5C7B6B00A4; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8067E6B00A0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:58:57 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18F8316017F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:58:57 +0000 (UTC)
-X-FDA: 85187122314.21.07AD559
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5E18B20004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:58:55 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu3IZRZr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A0F5A6B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:59:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3199CC0177
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:59:08 +0000 (UTC)
+X-FDA: 85187122776.13.89CCEBE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 693DB1C000A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:59:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixHulrZx;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788789535;
+	s=arc-20220608; t=1788789546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I6HvKokTBWQ5qgUPDm6WwxT5+vJL6f+t/uawYA58zoY=;
-	b=z/WFcgs3rF3YtSvYU9zBiZOOtCyyjgVmD5AlHOfqEzA/dqu3Fz6w81b/JNvSi6VCKYIlwj
-	LD00dHlE5bRqJHNK4i9kzFXTUszE+IiajqEfMD7LAFO5yru3CJQ3jcpXKu2QlojjBk0tIR
-	w9v0K/9cfDbJuYqrh9lGWSgSgOapU7E=
+	bh=V+1QIqU52AVFPMroKZLyqFAwYP3b20aWfmSMgRX5j9U=;
+	b=d+U2rAtCLl8cs2+QAaqWswYW9+RAP913Yi1EtmAj+PKBdk9BIu09WFFj7AmYgoQWjwFTyS
+	+fmS88h0PfSQJIM9zEZbVyNGfBgPUjqX7x5oh+65KzycKVuqR4JOcyqnDPH4q9NHh4XPm3
+	PVXvN6E77ZE+cZS3AkcNDRn6cfxNXV8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788789535;
-	b=VJ+PSOLk8oqHhLrpdXwfu1TMFT51XSYFrHp/9e+Dh2ucnbxWiFwqmDnesYTPqZWRT9T4HX
-	ABJlaUlWgwjuxMmuR6QfUsZciDLjUUmwZecB4rZiqjZju/8picLoLDbIORV5itcX2z2T2F
-	oyeI13vCxiSeyuFcyWbjWJ42rttRKsc=
+	t=1788789546;
+	b=SP/FFrVzjgrumwJNHCLGjBqZcjNPJbRg8IMKikg0D8Otin56cRMK0JGeadZSNNqN0tVWmI
+	NXpckC2v9V0GIc6EUi+c7a+W4dH/4WP+x6quy1JNu4N1tPqkvZzUDeRZPnUEXY/rtaW534
+	J+f+H/EhdmmRLjPzXwRhtY4KaKPL/Fc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu3IZRZr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixHulrZx;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A502C4086C;
-	Mon,  7 Sep 2026 13:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7821F00A3A;
-	Mon,  7 Sep 2026 13:58:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0172360D91;
+	Mon,  7 Sep 2026 13:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4621F00A3E;
+	Mon,  7 Sep 2026 13:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788789534;
-	bh=I6HvKokTBWQ5qgUPDm6WwxT5+vJL6f+t/uawYA58zoY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Wu3IZRZrPimxJw8Xrfy4xfMIQYTFuR01X8avL7jkL6VDDrRR/R5ZOFA2yk6u1qm/w
-	 AKoK2kijj6fYGv5w8z+yajL7wx8MHIt41AhSubYNt4+Zd6KlEXkqZX/mbd8drzk9W4
-	 BhAcsbTdhvbMQ0uxnwA4wAf3wYS7iFq4rFc1zYtkKv1sUwUKX2MnKP8p3a2Kd5g6iU
-	 gI55Yv2wG8TFVCTbExYoWOrB4WMke5xHKiy6gRZJDHOIqxHvyE18ycr3ZJ8xPejC3Y
-	 IggNAEHiJaevSjwpzqvJKs3X3UeTqGP8ry5v4xe4lCj+SE0wSrAqt5ojIe9ehxWWS7
-	 fBME7tR0VAR4g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- Lyude Paul
- <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve
- =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
- <tkjos@android.com>, Christian
- Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, "Rafael
- J.
- Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, Leon
- Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
- Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
- Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar
- <vireshk@kernel.org>, Nishanth
- Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>,
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski
- <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, Philipp Stanner
- <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- driver-core@lists.linux.dev, linux-block@vger.kernel.org,
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-usb@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>
-Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`'
-In-Reply-To: <CAH5fLgjEfZO9DwcUxaKCWd_hFUrXU+cxiwmRg1UnM2pKD6gPvg@mail.gmail.com>
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-4-490735672187@kernel.org>
- <ao2WubjLtDuHvRzx@google.com> <DL894TFXM5AT.2QOXN683UKXIF@garyguo.net>
- <CAH5fLggAMfBcxprKJxs4JbieKadC_mKg4B0xNETOH1QUi72UGQ@mail.gmail.com>
- <8733vlxmm8.fsf@t14s.mail-host-address-is-not-set>
- <2dpwVpJS3VbfQ7CmE3HeY4IJSSMXTP_O9sSP3HHHUD7Z29RNEG4Hc0m8f94jKWjFlekcTXvIBA-QdGYrf8w1sw==@protonmail.internalid>
- <CAH5fLgjEfZO9DwcUxaKCWd_hFUrXU+cxiwmRg1UnM2pKD6gPvg@mail.gmail.com>
-Date: Mon, 07 Sep 2026 15:58:35 +0200
-Message-ID: <87zextw4c4.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1788789545;
+	bh=V+1QIqU52AVFPMroKZLyqFAwYP3b20aWfmSMgRX5j9U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ixHulrZxrmJT9lfSwaDj4SWjTvLSrkbTPBYKU+Fg1+sffniB11uyw1qCzpuRdYiPk
+	 zUgv+2NJ40uemHK8XhXsJOpt4wt7YiN9kzADUr+JnCKuYxU9CiAYDCFpqxge7IYxBA
+	 JOxsmcRLr6fYAGMULodWLhhHGKphKgZXC0r3XPjg8BORNg3KNbXumftopqVU6lmYjj
+	 +I2KxYz8OU52dWkzagqLJVmx3afd77dfhk/xPqvnfRcwUGz4m+/PRGDT0e9nPlW0NG
+	 gY9nNDSFFWRR45lAQwhZXJphqNBH3T35d4hIu/LtSMOLiYLF0P1AdSGi3buftlb1PB
+	 NJjV3anxHrL/Q==
+Message-ID: <d0137f1b-b28c-4f2e-92e9-0dad044fc0dd@kernel.org>
+Date: Mon, 7 Sep 2026 15:59:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E18B20004
-X-Stat-Signature: m1cze8dx5g1z5sinwafemzqj6mwrpjem
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: vmpressure: scale window size based on machine memory
+To: Taha Sezer <tahasezer.is@gmail.com>, ljs@kernel.org,
+ akpm@linux-foundation.org
+Cc: vbabka@kernel.org, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260831130316.448-1-tahasezer.is@gmail.com>
+ <6a9673f4.cbade83c.66f7c.3d66@mx.google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <6a9673f4.cbade83c.66f7c.3d66@mx.google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 85kdr1da3djhi93ojjr5yei1es5a1bnf
+X-Rspamd-Queue-Id: 693DB1C000A
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788789535-772712
-X-HE-Meta: U2FsdGVkX1+q63b4U/vqjs73vJnQJH3nx7Junp4nZABYaOSoROoyXflgQuTF8JAIUOBpuTOj/VQ9R8g/Mt7RmU+w6+bo11+K0n39efAw4u9TW243kTxouDVbkLoZMZ8GdSBJa+NJ9hfE+APmUPaWKjDzBRaKEilv/slX5zzRDJnwrlgILk0YdHsjueI92LQ4NKO1qOBbkAZMXIggZHThZVOcLWQg8CayShYHW3duvTotC4Ak3bjIcA19M1uFY/nExEOqKJwdxf6n1w1o/my20FZHWabp6CMJKTU2ANts4C/QF7UpLoHkEine+51cIWotR4BqSReaQsy56A3+2JnxY041J3QMy58dtspA459AhW8oSQlPQvyvRBuVwK8K0Dr5SDI/1fHor1qUP1/yRX5UMNidcaKgZPUlUo8pSUK/yTTidhlEKBKdotCu0K7ntNtM7o3LM8A6WClz1PkA5QlitcbF6KNuy16+PbRdkgszMMXnI7c8ndDMcudcoVycdZ2+yOCzl7U+1Ws2SyQdoS+AjcpelthfdxyrMXvIQF9rEeJWnepKU5pkxgvK9a5rQfNJd8pQOtM3op9W/6UQQyo98RntrylahrVqHi0JrwWPwEWU8mMSuX1DpthB+lpabTMnTUndZrxMkKfWOBS0jq2/3qX2BvNxPMdtz5dv5WdA6RdIu57pP48XbE6x3LtFeaFAjMbfeKd3+ZqquHJyOj4YTk3XhqiQcsyW+6vDl9aksuukjj9FbvqCzvSJ62R1OfCv70XnhqCGqH0uiZdY/YymAbnqR1eTBNpScXvSqUJgnhpIlX0fFOeW7tnyHQp7b2uROgh+S6DF2Ngaqot7Cz/b/wzSfjPdO41EQraEPjxGUgJtacvoOSsSz1iNsx9iJc6NYx+QW4vpE5r+u6v8vm8pSNKxQXSnfQcv0BTja23CfRxnI14cXn+CufaaET2Clat/CdWh03aDb9m0HM8geVb
- ad35HDBg
- 2l4t8DmQc6Vpo9dFnpgBvGVh6YWSYC8uk3/wxjQUampcIUIo3P2o33YukkXmtudJwflC3Wwc5/G2Znb7ajaAJXFQRweJ81jArZLkdB6Olm8MuqJNqg6WDPEI9HhSq8DWR+q9sLiucyWrNoXlLxohVExVZu8vECKV6oOkK8Q24LLb4cE1YBxV8wNY906SjlB/FaP4s9vD5Ku96M5MY65Vo3XXGKyeyW+JKLrB8StqUjBIDYGFE3fywgIemlTfyFlST+zdOgMj/OLn2ta2KTINA8aHx8uVBMygHUFVhX2HgjUD8otWnnjJEm0JoO9BaBnwEeibKwJxMr7OWmjL2MZywmmVX/N7zhAFKwJQyTK1gyZ4yBMW+1DOLlXfg4wcl8q5FaBfwyiIfvoOleXj71DOuZva19XTGgyK9z2XFQ0Oj0B26m97lWnACGdlhvg==
+X-HE-Tag: 1788789546-875877
+X-HE-Meta: U2FsdGVkX1/fkK2Pu7Nnwr8y7FKpzWd7xIjJapwFguHxoGysJHXz/gJTYXaZCxDk7uFJ4HW/+PaxqTbM8b8oECXf547D/ZrjNja4X3G/J1qZ/BBUfLfUt3VuHl1b5f0ED7PDWtEC3DkuJb9QMI9yLrvbfXxhlBeSVn8vH0mlGQsYGhrNROD/X3QoYJ2eDFqxOA4+8wwym5q8W8Cu+hb8+pP3repZ7cxpdBH9o6trYbSLD/HHqXmTpEwvQJFkE5jBZQuga6p1ci4Mt2fGCGKr6eOXyTWjiCzZqZenLze2IWp2WnvfhMiaF5HWJ5b///jm1JyHVjH6wFQqO24WkUWLv2I5jU5tE5jb0dO4DR1uHN4SQyU+pDJWdK8/nAjATELs7P+EpdeFycsEDZWe2lcxpBL9a6afdMaM0bv2qhMTj26ROtmGoRhkPz3Un55ZI9nWupbxGQTNmOOA+t9JZwuxbriPEnU8pLZvv/QZJS6I0iCK9wn05CN36FyOk28/fx2WIR2SRuujPDuSPXyd73xfCqCuDKsZhW3VujIMfByeSWBTODYEuRH0y47y8k8K2VjOBWSrl7k6epqtDE9JG+jXBPbV0SjSPRrolMxAcnqoyfuGtttgFAOm9DH/nQva6Q+LTJicm5XjoM0oydt8I7nZ8L1BvrOQ9ezKBnEw3D1ZzZVsaKwK5cLGE3A1X8+IYYH8fMlBD6gCF0wvXedJ36BGnAAlr0sLQx/HwRRFx8PFgr5ZBYptrui6YgC4oyWKHTqbf1dzuIfQt1ScGWipWiRrWvj0kqJcAc9mkiRQzTDrbU9w376wQkkU9YdTLIy26VC2RVjPwFAy/4zxuvZX1tbkRVjJNg3h0JPW7O0NafNJyCoCX6wWyIJTkZpiXKMKkj7Bv8ki1ikuhRj2S8vMCGddJWNAupIYKWk4h2CIX1HTs+n7bTjcF091Of5x0zLjDgrlFjAgXpzg1Lqw6GIbF/l
+ Pgy/hxgS
+ ssWuHyDDAHVRl9UzuOGsZlZxYilBgXplzxAB00M8CCcukzs//Yx7OSG38kJBmpXXWMLynlBkUFpRiAxIeoEG91XP+BjjQxTg/aFAzyEbT6S1rMiBivcwRtvVAqO+HqvEAlMCzHEie6KQs+5NFtkuWjchb/np16H6t7H2cXgD0O1lyMv2VWE91mmM0+VsGFTEW/rF4Mx6qYXntNQ38tKHAWiXne75RFPk2Ng5kY4pT75uxBido1tY/VpFfyrJV5gq9oimSiYaHSgRuGRWzXtCKGYnx9Vf0deP/68VHYVlWs68yEnW8/SMIiDMNRBeLaNfAAY0piqZRZEoTXHk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,105 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On 9/1/26 08:43, Taha Sezer wrote:
+> Hi Lorenzo, Andrew,
+> 
+> Thanks for the honest and thorough review.
+> 
+> Lorenzo -- yes, I did use an AI coding assistant (Claude) to help
+> write this patch. I should have included an Assisted-by: tag from
+> the start and I apologise for the omission. That was a mistake on
+> my part, not an attempt to hide anything -- I simply was not aware of
+> the disclosure process for my first submission.
+> 
+> Andrew -- you are absolutely right about the math. The original window
+> is SWAP_CLUSTER_MAX * 16 = 512 pages, and my formula clamp(fls(mem),
+> 4, 64) produces values well below 16 for every machine under ~8 TB.
+> The patch shrinks the window on virtually all real hardware, which is
+> the exact opposite of what the commit message promises. Embarrassing,
+> and I should have caught this before sending.
+> 
+> For a bit of context on why I chose mm/: I have been writing a hobby
+> kernel from scratch (Caelum) that includes a VMM with COW and demand
+> paging, a slab allocator with NUMA-aware allocation, TLB shootdown
+> via IPI, and SMP boot -- so memory management is the area I am most
+> comfortable with. That said, comfortable with the concepts clearly
+> did not save me from a basic arithmetic mistake here, and I take full
+> responsibility for not verifying the output carefully enough.
+> 
+> Before I send a v2, I would appreciate any guidance:
+> 
+>   1. Is the general idea still worth pursuing -- scaling the window
+>      logarithmically with total RAM using fls(), or do you think
+>      the fixed 512-page window is fine as-is and this TODO is
+>      better left alone?
+> 
+>   2. If the approach is worth fixing: would keeping the original
+>      multiplier of 16 as the floor (so the window only ever grows
+>      beyond 512 pages) be the right direction, or would you prefer
+>      a different scaling strategy entirely?
+> 
+>   3. Any other advice for a first-time contributor on how to
+>      approach mm/ patches more carefully?
+> 
+> I will hold off on v2 until I hear back, so I do not waste anyone's
+> time with another half-baked attempt. The next version will include
+> a proper Assisted-by: Claude:claude-opus-4 tag.
 
-> On Mon, Sep 7, 2026 at 2:38=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> Alice Ryhl <aliceryhl@google.com> writes:
->>
->> > On Sun, Sep 6, 2026 at 3:02=E2=80=AFPM Gary Guo <gary@garyguo.net> wro=
-te:
->> >>
->> >> On Tue Aug 25, 2026 at 2:20 PM BST, Alice Ryhl wrote:
->> >> > On Mon, Aug 24, 2026 at 01:17:56PM +0200, Andreas Hindborg wrote:
->> >> >> +        // SAFETY: We just successfully allocated a page, so we n=
-ow have ownership of the newly
->> >> >> +        // allocated page. We transfer that ownership to the new =
-`Owned<Page>` object.
->> >> >> +        // Since `Page` is transparent, we can cast the pointer d=
-irectly.
->> >> >> +        Ok(unsafe { Owned::from_raw(page.cast()) })
->> >> >
->> >> > This doesn't satisfy the safety requirements of Owned::from_raw()
->> >> > because the page may be used with vm_insert_page(), which increment=
-s its
->> >> > refcount and causes it to be shared the vma system, and this occurs
->> >> > before Page::release() is called.
->> >>
->> >> I suppose the existing vm_insert_page() abstraction we have is already
->> >> problematic, because it uses `&Page`?
->> >>
->> >> Maybe we want to change the API to use `ARef<Page>` so it already has=
- to be
->> >> shared? Conceptually it takes a reference count from a `&Page`, which=
- isn't
->> >> possible because `Page` is not `AlwaysRefCounted`, so it needs a `&AR=
-ef<Page>`
->> >> to be able to do that op.
->> >
->> > Honestly, the problem is the safety requirements of Owned::from_raw().
->> > Pages have a "special" main reference, and free_page() does more than
->> > put_page(). It even does something when the refcount does not hit
->> > zero.
->> >
->> > The correct behavior for Page is to allow the user to hold one
->> > Owned<Page> whose drop calls free_page(), *plus* any number of
->> > ARef<Page> references that invoke put_page() on drop. This way, the
->> > owned page controls the special drop codepath.
->>
->> This does not mesh well with the model of `Owned` behaving like
->> `UniqueArc` to `ARef` behaving like an `Arc`.
->
-> It's a different case, I agree.
->
->> Please help me understand; with page having a main ref and an auxiliary
->> refcount, if we model that with a single `Owned<Page>` and a number of
->> `ARef<Page>`, what would happen in the case where the main ref (`Owned`)
->> is dropped first? Is this legal?
->
-> Yes, it's legal.
->
->> My intuition here would be to follow Garry's suggestion and have
->> `vm_insert_page` take an `ARef<Page>`. Can you elaborate why this is not
->> an option?
->
-> That would be the wrong ownership semantics. The C side increments the
-> refcount rather than take ownership of a passed-in refcount, so the
-> correct argument type is &Page.
+Note that we now prefer
 
-Or `&ARef<Page>`? Because with `Page` being `Ownable` it would not be
-OK to increment the refcount from just a `&Page`.
+Assisted-by: LLM
 
-> Now, for the use-case in Binder I believe we could switch to
-> put_page(), as we don't need the extra stuff from free_page(), in
-> which case we only want ARef<Page> and do not require Owned support.
-> But as long as we are calling free_page(), it needs to not be
-> clonable.
+-- 
+Cheers,
 
-You are calling `__free_page` directly in binder? I could not find this
-with grep except in the C binder. Is this code you are calling into from
-Rust binder?
-
-From `__free_pages()` kernel-doc (`mm/page_alloc.c`):
-
-> If the last reference to this page is speculative, it will be
-> released by put_page() which only frees the first page of a
-> non-compound allocation. [...] **If you want to use the page's
-> reference count to decide when to free the allocation, you should
-> allocate a compound page, and use put_page() instead of
-> __free_pages().**
-
-I guess this is what you are referring to? We could change `Page` to
-this style as well and all would be fine I think?
-
-At any rate, today I learned about Pfn walkers, compaction,
-memory-failure, etc. that take transient refcounts
-pages. With that in mind we need to reformulate the invariant of
-`Ownable` to exclude optimistic transient references.
-
-Best regards,
-Andreas Hindborg
-
-
+David
 
