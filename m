@@ -4,106 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF96C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 07:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31D66C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 07:11:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B2F76B00A0; Mon,  7 Sep 2026 03:11:01 -0400 (EDT)
+	id 2AA8C6B00A2; Mon,  7 Sep 2026 03:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78A6F6B00A1; Mon,  7 Sep 2026 03:11:01 -0400 (EDT)
+	id 281DC6B00A3; Mon,  7 Sep 2026 03:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A05B6B00A2; Mon,  7 Sep 2026 03:11:01 -0400 (EDT)
+	id 198286B00A4; Mon,  7 Sep 2026 03:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47C616B00A0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:11:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4F261606D0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:11:00 +0000 (UTC)
-X-FDA: 85186094280.25.D951FE1
-Received: from mta1.migadu.com (out-41.mta1.migadu.com [95.215.58.41])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B6FC8140008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:10:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hhgnm4SF;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ED2086B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:11:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80AF3C0683
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:11:07 +0000 (UTC)
+X-FDA: 85186094574.26.433B610
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 47FE420009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:11:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=myjIoRI1;
+	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788765058;
+	s=arc-20220608; t=1788765065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EHSiGbEuAeFAjGiivJ7HMyZlWUF2kTZ3Hz+I5kMVMuA=;
-	b=q65loHs2UjGujUU/uruDaIFTnyL667w9cM7p8JfcEE5QkOmu6/LRqXSq1JKNlx+mXyvt3U
-	TxhUajbscAADAO5mB0iKvKg2cska3hYm2LbNLQIOxnEa+nBr60yM9BkQqk+v+i0ncEOdM8
-	6HzhOWPoMDC1f5SZoBR0zitoucR2LUU=
+	bh=8NYiIdoA0clTQtdI5G5CycyM+YaApfB4aFiNuht58Cs=;
+	b=dGAzz2RxSwXC0M/iXkgbsLR1gv3LpMZzC6e4G4x581jO36216REqXI3X4B51CCAHxKu5Cs
+	4eUyhO8z2mG9Dw9zhdPC8VM7NKZy14EU090onVpF9pk7a3k/JiSP56hdHwd0fCGY0yOoZ/
+	zhLpQxRUr4rX//H4zy3AMMRZZHErvUE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788765058;
-	b=JWhRn1XHYp5LRglNkSgxbAwkh2wpbP8/plpQoA0B7izHbj4V2QvP06qBYraM2vPDCe5wiB
-	m3j6F5I2QDRR4zq8nb/vSa0fJUSx+2haDN4xjt86jEJnjj5oqofQSGeAVNLbVsAkMizhpd
-	5i8TDQtwT8nBxdTStRyadkx5SFGddC4=
+	t=1788765065;
+	b=StxCs77fFcL2GSsSmyUJIGrmzNe5jI5FvjJbF8d52LdPddQlxlm3k0E/H2B6HZuiD105Sv
+	zBdWquJ55Y5MjO3Af1YU/uHT8xznwBqkL3s08AIs7ObI9APmy7cOMf043vXmk4Ivj+9W8Q
+	R0dcZpijObK3jQPyGbvUMaJFguRaoHA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hhgnm4SF;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.41 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JRRbxs4nGui4cuCx7AujhYPrgAf4uhXjt73M6I+9Ogw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788765057; v=1; x=1789369857;
- b=Hhgnm4SF3mmBLXXwrqe1ktY1xlHdGoWv2w2BCE2HumKS1+pUL4nAKQrsYQnapFDQQc78N2Uk
- rgBZ3HjruPMaxvlKWw8Hxod3H2vp1IM/cshr4OgpWiybzzy5RFkq1j45pvmbwh35oPMKTRih4Lz
- bQiREaJCKv5VQSlsI3pOWTdg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 9cad51a24e8e6336;
-	Mon, 07 Sep 2026 07:10:57 +0000
-X-Mizu-Trace-ID: 9cad51a24e8e6336
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH RFC v2 4/6] mm/memcg: return the memcg when putting
- memcgid
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <apxvRTMdmit7dYk5@BINGFANGGUO-MC0>
-Date: Mon, 7 Sep 2026 15:10:38 +0800
-Cc: bingfangguo@tencent.com,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7B499C0E-2A46-4EC7-A850-8CC2DA2B5D20@linux.dev>
-References: <20260901-bingfangguo-memcgid-rework-v2-0-8edd7f7a7251@tencent.com>
- <20260901-bingfangguo-memcgid-rework-v2-4-8edd7f7a7251@tencent.com>
- <c3bec318-ef9d-4d96-8a98-a68717c17201@linux.dev>
- <apxvRTMdmit7dYk5@BINGFANGGUO-MC0>
-To: Bingfang Guo <bfguo@icloud.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=myjIoRI1;
+	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788765057; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=8NYiIdoA0clTQtdI5G5CycyM+YaApfB4aFiNuht58Cs=;
+	b=myjIoRI1mh/KNXuOlUnOF1hTMQA4Ey1eosSFYCrX/fnXjR+la1ZKOwkItyUXyf81VP34m+j3yTlVcOIi4ciIXCqZ/Qn1VXN8fYtfJgbY0p+TJFMrGdRwW+rXdkMsYnX9WEupr9yC1GAQciMyV83UaKgr1wS741hR7948/NtdIBI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XAQvWM0_1788765054;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAQvWM0_1788765054 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 07 Sep 2026 15:10:55 +0800
+Message-ID: <78b338da-d700-4457-aab4-8b051343c981@linux.alibaba.com>
+Date: Mon, 7 Sep 2026 15:10:53 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred
+ split shrinker
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
+ <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B6FC8140008
-X-Stat-Signature: tzohk7capqwo35i36w5rqn16ert9y86b
-X-HE-Tag: 1788765058-19904
-X-HE-Meta: U2FsdGVkX19+2lNxtcq3ky8qQo1WMf448NtrglEMl57xLbH4S/F4l1HooYu8J0n8jkCq2Xk02pcvNAqldqFBuknUAHTlLfRiFq0WZ3a5ah5/opdwfnrVuBGZ1UZ4G+EMCH8+iY+fgHKYHa8BVjF2VRBeyJrcCB9sEPvl1104YjVqjoHeXesXPicSbr7ETjWBdVPkBOmCTphwYlYTye1Qu+mUX9joCDjX3Wmt0FdH3YcF5MGs0OcEtwczFbq/APD4nIilyKh3MG/HbcgQKjg1JXzb2IZDQDE50rOkA++Y02EVaTsvYriLCIMEe3Wx5Ot/jjlwWsyMFqaC/mGVNRDnKhU/gNaT405V8Y6a/3D2YYF+GD4opVgKB2FSW311uiOnHjCWHRuJg+V/iyzoZ1KZeYyUtfbjj3EA3zUFHMQr+sy2qKTp6qHN7yZT1oan9vZdjwPGoMNntGWJwkrBJBIBjDegEmOh1+fl5FpPDKREwweB2oLghWXsvCbxbb9/yieKYsC/Dmi8F0yCIaznJ16tPhLBgdt7DzN9DTgOQVjEhEDQJYMGsWCWFPd12gPIQU61dUn6wxe6e/5sQvYM4U4PtjtOE0KF84JyHMZAO9nCm9NhHB9U2rlVGi6LYJdBojBgHLoPhETMY1RwNS+31lxbodh3Bl8QgWVXWO5AeB216g64AICfHnWyXgZUXzELf7I8yHwMk1zfm2CN+wjOAS6+LS6QkB1uazNFIe6Dh3aHt3qPM7J9MVbKr3FkRFFQklmtPKeWiXnShG+JDwPvfX59t4hGl4yLh/iUuFG87jp6+D7g/iwwJNsogP3Lsl97+laNezwtZzTADEWhME0gXf1quRwI600/7VLsIuBoHU/q53wihvsopPx1pGri+GuzeJ/sd3MS8lIhztuoY9bfRWtm1igjarh7rllMBMQDSt7c0WkUz0jQEWaPaGrjFFxoxe1gXneBQ61EcPGaI/n+o23
- h7xb8S8i
- QTY6EoJBoUPgZRjWE8M44KG+L2fuPFg2W0TBZ8ay6lQu8QdpiyP0bfXHR5FKQpqqFE9xKkhANNB0OuPZt4DGrrk0UqS6bhnu+1PvwAlfQrXg/xIHxTVtC8uiTmVsNlhgcew2PVMO9naHow1lA7qPm5tL1uPxdJcdq/HZJlak+ZzeGqRvugmPEPxiSB/wKTPIqN1tHXYibgQKEykovhW0aPY0UCDRIslf9sa59bCfBaARkVWEQvFTZmwKvBxXlF99iHGaxD3SxtluFVeOq/JC9C8x0pAa9tCiWovgFbUizh9iO19SK46u/scqQ4A==
+X-Rspamd-Queue-Id: 47FE420009
+X-Stat-Signature: otys9u83iuua7sujcz7juyt7xmm4g7rd
+X-HE-Tag: 1788765062-126862
+X-HE-Meta: U2FsdGVkX18Ql3JukXtgQXDJkWk9da1XtgHmmH8EIcObthh9AHBgml3rA27zpDENnKMFYRiR06koOGqN99ccs+Nwbh0bbd1v02Ge/FgYf7nOhSHHLhn9yHzzFVYfb+uqZRGRJWycjiCQ+3fGWNi0FondbpXho16pdsGf8QadSSdoiPosqB/6YEw9G6xrejzGrYKVbheL+RrUETPtRbEiXMHXP+HD3Hdokvluc4gFFA8RJA28KbiprD9hJSMRr2AU3JY+70C+0QcrS4mU+IYBdfxLxDGq8wd8DyaHscTMAt1TlhpMJdV6yzfQbyIQkVkHJOhrEtfsRq2+9Q37ohBrlhnXzG7j/GDitvxvxBfe9lcPum5Y0m/Bfxq2I6EKv81w2AtNbyeZhMFfAM5t1uwO8nu36IKycEHLtFnqhV2NAoz4GtAuJb0WPQFlgJPvfyAmiFvYmsz/5RTW5U/OUYoYmblIA2L1n4Vjn8njufWW1N59nUdx1hnSSrTN0TCWakQGmDpU3Wt0n3l8h9CF3IY+n4FiwcAnEA0xYZfWJhuVjd5YO7sRHTCboTTHZKq+z42bZ5Zp72Pmtx/FgDuyLbJYh3FCJkmaNu2MuBIRTaAC8lIbeshjxITH29o69e6L7VGf5pj0v1guCO+wgEVOSSlhQeDd6BgtTS7iVYsMvDcnU+iDVmIZvOu4Zs++on5ypUOrAM/IK5ctMNVzIlYtS8Gb1idB2P5Vo+ray5jpsNdI6L0yPVa/zFN7Joe5x2MuRaCh3rvvDHUyp/BbtKDQ7Q2QovWGUR11EOsyhdfsmBig5WvJdH2HrSYjyy379XglDi+AgIbaZgEoB2SAh5jlFI8aGm+OgCDrwv13Tb29B8gvoLOf8AMW1AJhjuXYVqofUqP+YmZNWwzX8wUhFxgIP4FO1qIwtRAD32AQznklclbu2vbpaaxXKjecGR1+DNcYsO0GJ9+4IT6uv5zMXM6iaMv
+ QRBvg2GW
+ ycGuX+OiLoJZagUyV/0SHtDpBsENGFbxl9cvq5XPN2DqtO14spSf+22IOOViNUtuXNM5JKt37bk8Cea0lwlZzj4aiaAi9FDxMQ3yR/X36H6vJEe/0KXXuDauD5ppZEp4rQy/TIU8pDhnPyVH5rceMaPCrK8L3MJhyo4/9v5vYn1dvjEc9xru+eFeEXVXOVGo8b8B8wcSAMQNi849kBFAFoOL6KQJcBZ0BSt9byLbCc4TPrevD/D19O+djOBz+KSMSyVkUlBVgStGWU5eMdbHMa8iitNbQ5l1goX8huH568VrcMgV2kYbGn1oKWEyL1yd8QJH0LRPPhZD56NRONq7vkiXqGEy0rJYpm2Pf89HSdeQRpNgVlpS7IL5vIH6IxCnriMnvE/N8jZ8qwdmVr2xeM5vVBDeMbdVRDe6YC0WWhUYD9jby/AJBYM166SaJ83jhX3cXdLnR/NT3pUI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,132 +100,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Sep 6, 2026, at 03:36, Bingfang Guo <bfguo@icloud.com> wrote:
->=20
-> On Sat, Sep 05, 2026 at 03:28:50PM +0800, Muchun Song wrote:
->>=20
->=20
-> Hi, Muchun!
->=20
->>=20
->> On 2026/9/1 16:58, Bingfang Guo via B4 Relay wrote:
->>> From: Bingfang Guo <bingfangguo@tencent.com>
->>>=20
->>> __mem_cgroup_uncharge_swap() needs both the memcg and the id =
-refcount
->>> drop.  Right now it looks the memcg up by id, uncharges it, then =
-looks
->>> it up again inside mem_cgroup_private_id_put() to drop the =
-reference.
->>>=20
->>> Make mem_cgroup_private_id_put() resolve the id once, drop the
->>> reference, and return the nearest online memcg with a reference held =
-for
->>> the caller.  __mem_cgroup_uncharge_swap() then uses that memcg =
-directly
->>> and drops the reference after uncharging, avoiding the second xarray
->>> lookup.
->>>=20
->>> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
->>> ---
->>>  mm/memcontrol.c | 20 +++++++++++++++++---
->>>  1 file changed, 17 insertions(+), 3 deletions(-)
->>>=20
->>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>> index 048c9bb0fad79..f0503a1e5492d 100644
->>> --- a/mm/memcontrol.c
->>> +++ b/mm/memcontrol.c
->>> @@ -4048,14 +4048,28 @@ static void =
-__mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n
->>>   }
->>>  }
->>> -static void mem_cgroup_private_id_put(unsigned short id, unsigned =
-int n)
->>> +/**
->>> + * mem_cgroup_private_id_put - put memcgid and get the nearest =
-online memcg
->>> + * @id: the memcg private id got from mem_cgroup_id_get_online
->>> + * @n: count of references to put
->>> + */
->>> +static struct mem_cgroup *mem_cgroup_private_id_put(unsigned short =
-id, unsigned int n)
->>=20
->> Having an API that put reference-counted resources return a struct =
-pointer
->> is a very strange design. Please don't do that.
->=20
-> That's true.
->=20
->>=20
->>>  {
->>>   struct mem_cgroup *memcg;
->>>   rcu_read_lock();
->>>   memcg =3D mem_cgroup_from_private_id(id);
->>> + if (!memcg)
->>> + goto out;
->>> +
->>>   __mem_cgroup_private_id_put(memcg, n);
->>> +
->>> + while (memcg_is_dying(memcg) || !mem_cgroup_tryget(memcg))
->>> + memcg =3D parent_mem_cgroup(memcg);
->>> +
->>> +out:
->>>   rcu_read_unlock();
->>> + return memcg;
->>>  }
->>>  static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
->>> @@ -5816,7 +5830,7 @@ void __mem_cgroup_uncharge_swap(unsigned short =
-id, unsigned int nr_pages)
->>>   struct mem_cgroup *memcg;
->>>   rcu_read_lock();
->>> - memcg =3D mem_cgroup_from_private_id(id);
->>=20
->> I think we can introduce a new helper like =
-obj_cgroup_from_private_id(),
->> We can use the ID to get the corresponding obj_cgroup, and then get =
-the
->> mem_cgroup.
->=20
-> I actually did this in some local versions but gave up in the end
-> because the ID should be referring to some memcg and I was not
-> sure if getting some objcg from a memcgid looks normal.
+On 9/4/26 11:35 AM, Qinyun Tan wrote:
+> On a system booted with cgroup.memory=nokmem, the deferred split
+> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
+> partially unmapped THPs are only split under global reclaim; memcg
+> (limit-induced) reclaim never splits them, so a cgroup under memory
+> pressure keeps its underused THPs intact.
+> 
+> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
+> split shrinker to list_lru"), which re-registered the shrinker without
+> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
+> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
+> precisely so it would keep working with kmem accounting disabled.
+> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
+> nokmem and the shrinker loses its memcg awareness.
+> 
+> This was noticed by Michal during review of the patch "mm/list_lru:
+> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
+> 
+> Restore the flag.
+> 
+> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
+> 
+> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+> Suggested-by: Michal Koutný <mkoutny@suse.com>
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+> ---
 
-But the current series is already changing the binding
-relationship between IDs and pointers. You've already
-established a binding between the ID and the objcg, rather
-than with the memcg. Therefore, I think this is a very
-natural transition.
-
-Muchun,
-Thanks.
-
->=20
-> So if that is acceptable, I think it's a great idea to do like
-> that! And the put can look less weird then.
->=20
-> Thanks for your idea!
->=20
-> Regards,
-> Bingfang
->=20
->>=20
->> Muhcun,
->> Thanks.
->>> + memcg =3D mem_cgroup_private_id_put(id, nr_pages);
->>>   if (memcg) {
->>>   if (!mem_cgroup_is_root(memcg)) {
->>>   if (do_memsw_account())
->>> @@ -5825,10 +5839,10 @@ void __mem_cgroup_uncharge_swap(unsigned =
-short id, unsigned int nr_pages)
->>>   page_counter_uncharge(&memcg->swap, nr_pages);
->>>   }
->>>   mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
->>> - mem_cgroup_private_id_put(id, nr_pages);
->>>   }
->>>   rcu_read_unlock();
->>> + mem_cgroup_put(memcg);
->>>  }
->>>  long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
-
-
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
