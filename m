@@ -4,144 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4E9C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F338DC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:49:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56BCD6B009B; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
+	id 15A626B008C; Mon,  7 Sep 2026 06:49:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CDED6B009E; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
+	id 10B6C6B009E; Mon,  7 Sep 2026 06:49:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3994F6B009F; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
+	id 021276B009F; Mon,  7 Sep 2026 06:49:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FDA16B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:42:24 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C7DBA0E61
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:42:23 +0000 (UTC)
-X-FDA: 85186626966.20.6A82163
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E6BA31C0008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:42:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2/bMEep";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C4A456B008C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:49:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41BA9120122
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:49:13 +0000 (UTC)
+X-FDA: 85186644186.16.AAA9137
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3C335C0003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:49:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I S+wSGK";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=P6V5JnSg;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788777741;
+	s=arc-20220608; t=1788778151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bv3lOK+Xa5ryV284dRZSnT9zLzqTU49TaIVbEbCvDks=;
-	b=NVlxTDsgV5jqmcBwR4CrPUZDG1C3ddyHxqR6StgITMPEpvSdlKNx+hb+j9biK10aQKqzZ/
-	F+FzsSmABxC8dOqSW/ld0Mo7k8lUkvYXfAhB4fOoNIfWzM87VdcbrfTer+sWfLfWjMhcpe
-	vpZ0IiDHq8cexh/xblM+sgH/1dLOWsc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788777741;
-	b=Dv/GsWnl3VJ+qs4HJLFG7uh6gCs5zD2Lx7C9BFahWDM7RII1hlp7wwhXUcxKac0+yICPGv
-	Vb+9qVmOXDYI1FAl4vJhcjPIYhZ6kG43wCgh8lEUSw1zW71V5Hd5o5Pn7uZ/ribmm1IwwW
-	HnCpnDg2xr0fI3tVwL92UN82uPLDkGs=
+	bh=s+zDE/Nc5gs/w4KbwvZ5L9RNBXJEN/bY6CjWChHoQog=;
+	b=vFKmmnny93/Z+4+VDIbUaBvKf6A0YN0jSil9blNM7i+n0jQqjNi8nQr8Vu+h4NoQzFZ8sY
+	X0NGUAg2O6ZYnQi8+6OqdMJKKgCOI0XYQjSNnhSPlRqeoKo1frJ/T6yL8rCw5m3DTKbJJk
+	04la01pBz5EYEMVQlmMkenRXCuSvleI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2/bMEep";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D15D60AB5;
-	Mon,  7 Sep 2026 10:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336CB1F00A3A;
-	Mon,  7 Sep 2026 10:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788777740;
-	bh=bv3lOK+Xa5ryV284dRZSnT9zLzqTU49TaIVbEbCvDks=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c2/bMEepc1j83amckC2cQIkOIRnCap+Llqh6TjNjeiVKdf7NB9ss/945JvVIokhbb
-	 IukLI0/YTu6RxrAhUVpbsG0XjGqmfVLnSWzSDNCoQjgzbk3LsMpl9zTdzw+4NzXv8Q
-	 ccoxpfmjtqELVXTvaWf2OqhptHwpy8jH+8FQ0rDoeyqtIGGfme2m0IHdDbfs/r7NJD
-	 rIiKgVV6ONvaLTJyzd1dDWerZbKiB502T5UkKY2bwWEoPDFjH8KpmECFKN6E6E9iEe
-	 KnAQSTUhY4Zmjpi48FUyoqVRESlKYxNM5ub1HmHySmcceSCH2Ia8m7Gtxg7DnfI5Uc
-	 Cz749Db8BmCcw==
-Message-ID: <616f0e6b-178c-4b50-b759-ccb20d9db9f4@kernel.org>
-Date: Mon, 7 Sep 2026 12:42:12 +0200
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I S+wSGK";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=P6V5JnSg;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788778151;
+	b=4/qlDE9oGa1lWELCvjiWKaUdVzJD8x1q8fTQIQbGQucDYdC4g37Dmf53iopwQ58OnXOTgo
+	cG1AwzEK9ZOUM2uqJxVsJNxD8+h8hcMhQIGLNOXHmMKaTwCa/ezJCChMznXzvS97FJcoXf
+	z+muygtufgevt8cHE6EybHl/Yp6PI3k=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CD82A1400183;
+	Mon,  7 Sep 2026 06:49:10 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 07 Sep 2026 06:49:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1788778150; x=
+	1788864550; bh=s+zDE/Nc5gs/w4KbwvZ5L9RNBXJEN/bY6CjWChHoQog=; b=I
+	S+wSGKelXRa7/kMd+4F5uaqH/H92eBOI1KleFygRMaSYAJn8Rqva67+i6KI07NC0
+	yOdwGEMP9L9VkslQC5KBI9jNZ1eDJzYgrm2oswe8sIm38RRnPnC+YFL2RdizmAGh
+	cuv9Hl5BfxdWTNCqPXkFPLmAaw7cMJOUosasMd3yRQ26rnlKa4djrZWXb8whlk2l
+	j4Qy5Fg+xgwAdyLQrDSM3IrBSi3ZXpqTb+Ncz1mtFEaTbsTKYkiwOEW9vjbrmGvf
+	j7gD2TdVwkmGNaFtAHAxC26omxExCeB9Ydzr+gofffR1M6LqUt3ELd2hvSiCbTt2
+	Vrhd27gvNggLcLhn1Ybog==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788778150; x=1788864550; bh=s+zDE/Nc5gs/w4KbwvZ5L9RNBXJEN/bY6Cj
+	WChHoQog=; b=P6V5JnSgXhYedgBCFKqXPfVdJh+ZLSFoU7iAnutp62h0xmF2NpV
+	sOgo2UQ8vmHNcvmECjfvhvsC86nr9KnMKin/CPBg5tk5BzKoA+pYCDwUy7SPffT0
+	oo7axZGMoj+zZ08Wq+SBaPs884Utcgir2RFun/0kddIopPuk6nrCKcyeMCphVV04
+	kMPovv+qsBIgno/ZlDovieC4zG/Fs4g46m+Xz43og4Lf5W1RID5IA8k7tYNyaBKo
+	NSX4jTp0+KmQT6k/3l0K9P5iRuFvtVVixLc+kibXuizacvA7NWdLnJ8R0QJbq3CM
+	neynYa9tRLNohQFeZhwNgHovKQ64PvZT6IA==
+X-ME-Sender: <xms:ppaeaoMiXAkdzwvtynwBUoWIsCzUj-HFjNAhqfOVlZJCIn9EX0DxWw>
+    <xme:ppaeaskeoHuYzIwDo2OEtK-3cgkZTKUcTzoN20goTpdcAO0P-b1-VtXlfeYR8ly-S
+    3npLJeXwnRMxl1yoCKiH8D7OXGBlgGyN40pJw6REABi_o8rSl5Wt5Q>
+X-ME-Received: <xmr:ppaeampDWv3NnLmgv6W_vhLtvb7EJusWVgJO56ccpMlQM4QcHcL2O5jEjck>
+X-ME-Proxy-Cause: dmFkZTGe3tLT5fc5+1pPy0eOLkMhNrtlYjSsZgwM58xbqe/DhzD5c9SsnG7aNo4wDlyEoA
+    uI68qsMxO4BPA9zitZYH4R9RNpulf1zz5tNYTG0P/Q+OrUohdknDB1ZG75PdleB59LGIOE
+    gQAu368RjXfOXvQkU0yxJ2YJDdU9aEfTg5J+CwomIK3tLx6WRUIkmS5VVXGxmhQ8gBvPWi
+    E+VofEuhqzTZIfqixt5wc/8fAeHiOn+Q6XvhHXRYdsNUnUQnA0GksMWee9DgplA082fJQr
+    jk8kbI1oW1nZcRBmUuQNB8sCn7D1zjsTEFES9DXQb1zkzU0t1Wi6PjKt1sj8SIpkcNE0Vy
+    leTi1mZVVXRC1OwK56ec8mcG7KW8yx4Z2dvmgNBhwxwQe3i3JqVHrgsmOndBSdGoR+zJpZ
+    9zzKSpizI7SjEnZ7dE2zEo3T0wpJa39DWi+zENbi98fm2xbdMFnViduoOz8gnS1Xd7CaIs
+    ZOVunMDjordK8QyfAlY7Oq79Aador+uFzNq/BkUABAKH4nzyncKjODVPVm1QApDMRS6mEd
+    eEInms44A6mMjw+eTaut8Ec3SatBbt0K7IuuOCu6EhQOlovXkuogyhflKqLWJsrleIuzOg
+    uG+IBacqViL5fHihWSMPZQM/HhK1oqXjW34SsQPyAj3EN1SCKpWlZ60yhcyQ
+X-ME-Proxy: <xmx:ppaeao6839vIWO4N53b9UbDcnVEzAHS7yvTZ8iILUIZlwSQo4iLVhg>
+    <xmx:ppaeaoKUeqJRvCPspqqDJHQTwjUoX-JHV3EjERZ645MjSQefBNy1TQ>
+    <xmx:ppaeakmIBddqicXOli0e25be4Cf97QaZaJYK_aniZqzetf7a4_DWNw>
+    <xmx:ppaeav_n9oGX4Z4f0PVDrrb8zA8VmECU1BsKvFlMc1S7aWPfC7xjzQ>
+    <xmx:ppaeaozL7Z_xCY09r__0vm7hJUFtf4bHqRAo0Zjj7dle7HXYEqUpqYLm>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Sep 2026 06:49:09 -0400 (EDT)
+Date: Mon, 7 Sep 2026 11:49:08 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 05/12] mm/collapse: state what a collapse may do in the
+ policy
+Message-ID: <ap6Wa6h_4HznOzSx@thinkstation>
+References: <cover.1788533997.git.kas@kernel.org>
+ <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
+ <DL71DSES00K6.5JMVM0IJLPHP@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred
- split shrinker
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- Chengming Zhou <chengming.zhou@linux.dev>, Kairui Song <kasong@tencent.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Xunlei Pang
- <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
- <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: njc55s4fizg563ftqz5dg8uitirjnh35
-X-Rspamd-Queue-Id: E6BA31C0008
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DL71DSES00K6.5JMVM0IJLPHP@nvidia.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3C335C0003
+X-Stat-Signature: i8fxxoqswnx6rwknju98cz1oiroqi79x
 X-Rspam-User: 
-X-HE-Tag: 1788777741-924021
-X-HE-Meta: U2FsdGVkX1+PdY+yEO8Bma3fIrwH5NdbTrT510px750RF2hFv+B5lbKdSMCUZUfLTzY/NEplXHKav3aT6DmjPgnFmF6oIAeI9NVZieBfvNPK63mKXIItgMo7rLe7m0xtnsQlr/djjd7xDfd90HranWLVvWDWqLhabHKICQojXmi8Ttqrino3J0oLlOhmfMLCOtR1MjXlu/XPlkOUE7iixr9BjCVhJ3Vf5+iSilDSD+EjvVzVmLXD1V0G93YJpqniqYk4s0N90lLitbo4HAjXjWDJjeM4VPZfGdWF8LnPR5eR4f15avmByiDDQoU+yPQjZIUIGXVgyRvsgqf6KJb3IsJDqvao+LsJyp1kOKcZ5Twv2r3jCMzPPU7YXgd6F2tip06+J4+gjVOwcJrszYWrNHf6ql2vAKayAxZQ7j6AIciT8Z+hpREZYhcle8EBgp6Mq2hDQcyO7fbJkI7pi9kr52ixjhAKz+wLmu9ItCnYR25XH+5694+itZKnYvRH1x7m4r/b3wTqjkhitJWmVd1VJLciu9TN2l57j2lRbEnjnpO0MtGitSdPkiWypEfKB6mBkKMa2fIU9h8YmpZ0YVESpw8QAsmbCEbZJU+KA/gwZKOMihKOKJQG9yNYLeCOoV9jIR2SxpFlUSg6xVhg3SEexzBQzvHfn6U1SXy0vu6gyfaKJ5+u2Kj7BcNct/X0TEp4gGu5i8lwjyXN1SveRzkGCORcVnqKnHXpmQ70mKrqU2wqxe5v+ZMe7NOwsjheM0wkNQTr+WIUN6GZZE8TXnUxTN+K6G4BvZliV+ZwFvw8aXiT4VA4WIFiLD7MMEzwXMHb3mxtoMRkZxmfeXci1/e5r0SnxZThKb0IS8ry0hTmk/aSh+516JYqqtSBT7pj/xOAOcfmp/Y5SedPR/wM1+uJ+ai96GXaHzcn/I0QWVaRGwZ6OSXyYNfwq1jaWal/qRglCaRdVI2GIaBPmVJjByy
- 662Is4GV
- 9RkYA/ajXFsLYeWRa4dyHC4bfgZ0bzsQ7tX3zfyDB25zhU/pMnufuGW/2QzyMhBYqVQAasLQnRUvlBAnBlxrjnDpyBtU240y9L/ygoyQyDNT0W7/arLS+QsOpyz37dpkJMDnF4uTdrRDu3OTlwSf9F9r+NCXKz/K53MsyKqFt7GaE++HQ/Mo0lW1TXJP17WZMDNO9UMud6zqrDkbHEidebph1zKiK0DCYltN/RKBAJ/Wpqp772wK0rFO/iEnwF54b3UeqQp1zh7tTKUHpn0bokNK7RXhbCd2KE4p7VzFX3fS0laofJEuLqAdOpLc9EvPgzOnDsbkN9KeFGVNPsCvjG2lIsYUiFB6hlB6VZ7Br/wyeXDV/tflX+Y3PWJQ0+TY6PsgtjzwO/4zpsst2F2q3RlxmCDeBCWnXsRX2d2jYTg2/3wQ0Dq1FME1LDA==
+X-HE-Tag: 1788778151-431587
+X-HE-Meta: U2FsdGVkX1/+lKXvvuy+IYGaLeEqWyhW6tSgNsDsVMFK2vcaCP/7Q0NyMtopU27w0NysC3CKbY+UzOadCUPdFrUZnZUQOlYWhuuU3obsj8vTI4NKSjulgvuzXwEdZchM8FFXAHRus+PMt97nQH8Y/jtx9LaN6P70RSNGA3JmgN+DBch2FhmBStvWtBZAQ3gJ8b2JEU4TRj/NBri5UfJMpDwcBb+NPwMSnZihjIJSz0tEDryXEOQHST2HQjnm6Foz1DId0XJhUiFQQcYMyaguWVXMANdyJdz68B6ZszN4UycCXOqVFHaW8qBlhXSooB05Z/00XtC85n9jgqaWudDhvif2y7jDEUENw53UWF3W+EOcv5o/7sEYzs0otGEsIkEVpNUoJi/N0iU5R5si96D+I+aDQgOcbuuMex2xrpr/7f5B3UAfIYn22+twXuuBfXBzA7oKs9E17DLoMvRa119fwfGig2vWSyc9o5qY/nYGJexApzMAHTHJ9pZBhIexwJ+ihm8z37qlzm06ninvWmwsq6ZXf+mji6mKCJY7zhwJEDH6I95+d0N6H8R5hFyDjfA6DwwfqSviT3D938Vc5OgawCxPw77tqgXeWmE2edvJqxlZaosIS26cPmn9bahgOJbLcWZIieNgVMmeSvIqfeD/ogCqRQXnMVCkmcEpUjErjnM7QorvOsDzR5p4gh8iT+mpwbGIp05/d0jax1lbqA1c5ahPdIeJN5Xkzy2J0Z8FtYDuDIO788rJ8qMN2Kuj3k5D6Rl3Ugp3POrdCc4f1I8gKsVm6XYpU9XtlXRsigYYBt6GQGGIKhTGWt+Gj7dNHlHddTQFzS4WSSf+11Rg4a9xIHOfQwKWpNjsbFe6X/n/A7P1L+d1uirSe/OIt8h9Sbmf8y0uOugUO7u0Dpx9gVTsXx9XQ45d8Cv/0OL9ph7NkeFi9Ny+eN2SNnN/fiEOycQNqc6mki985d+QFa+9ues
+ W1I28mmx
+ 44rqGYHMGMsJctnbNmwXruCPMWF6HvqU4DCqCdUSV2m/daKgeQmp9wmwajnyVk5bRsklE8uLxUkkyJ04471bFoLTw/68yW7ri2T1J786qMExh3JRsFk07Td+oAB6HSnyO9hwvms2FOV7nPX/ayezklztirkMv1VcvM2hbghzV/Vv180iEy6SAWUylLUz31rxn7Pk00zvQ7fMzEuHaEzB7k/pUFdAJfT4G+zIToZBxDeIins/O33kUR+U5k2nWdIznnmmg+IR64CBGqY7PGmllQmsIqzRy2mDjM3wWpgXycVOXwrmrozPsLN4AxX0Ft7/9YYRJI4ZkFugI4t2rUBSfc0JUJW3tInFxi91ObISaJhuljHQa2LvvInLhgjWAg9QniErMVVl/Xh12Gqlw0r+ce9Ng3+Jw4hHLMyvs88L0LilHyP0iLZHIhB2/nSMEWWH1/X/b5J0CgcyncOthcpV8o/q+CQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,37 +136,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/26 05:35, Qinyun Tan wrote:
-> On a system booted with cgroup.memory=nokmem, the deferred split
-> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
-> partially unmapped THPs are only split under global reclaim; memcg
-> (limit-induced) reclaim never splits them, so a cgroup under memory
-> pressure keeps its underused THPs intact.
+On Fri, Sep 04, 2026 at 10:44:58PM -0400, Zi Yan wrote:
+> On Fri Sep 4, 2026 at 11:10 AM EDT, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> >
+> > Tests scattered through the collapse path decide what a collapse is
+> > allowed to do by asking whether khugepaged started it.  Between them they
+> > settle:
+> >
+> >  - which VMAs are eligible, and how hard to try for a folio;
+> >  - how many empty, swapped-out or shared PTEs a window may contain, and
+> >    whether a sub-PMD window is held to a stricter rule than a PMD;
+> >  - whether a range has to look used, and whether a MADV_FREE'd page is
+> >    left alone;
+> >  - whether the PMD is mapped as part of the request, and whether dirty
+> >    pages are worth writing back and retrying.
+> >
+> > None of those is a fact about khugepaged.  Each is something the caller
+> > decided before asking, and the collapse code should not have to look up
+> > who called to find out.
+> >
+> > Add struct collapse_policy for the caller to fill: khugepaged from its
+> > own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
+> > Every test becomes a read of a field, and cc->is_khugepaged goes, having
+> > no reader left.
+> >
+> > khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
+> > call.  That is the one change in behaviour.  The max_ptes_* limits and the
+> > defrag setting behind the allocation mask are sampled once per pass rather
+> > than on every table.  A table scanned early in a pass and one scanned late
+> > are then judged alike.
+> >
+> > collapse_file() also drops a NULL check on the collapse_control.  It has
+> > one call site, reached only from collapse_single_pmd(), which dereferences
+> > cc unconditionally, so the check was already dead.
+> >
+> > Assisted-by: Claude-Code:claude-opus-5
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> >  mm/collapse.h   |  40 ++++++++++++++++-
+> >  mm/khugepaged.c | 114 ++++++++++++++++++++++++++----------------------
+> >  2 files changed, 102 insertions(+), 52 deletions(-)
+> >
+> > diff --git a/mm/collapse.h b/mm/collapse.h
+> > index 1c40229b9554..05282eed9a35 100644
+> > --- a/mm/collapse.h
+> > +++ b/mm/collapse.h
+> > @@ -48,8 +48,46 @@ enum scan_result {
+> >  	SCAN_PAGE_DIRTY_OR_WRITEBACK,
+> >  };
+> >  
+> > +/* What a collapse is allowed to do, decided by the caller that asks for it */
+> > +struct collapse_policy {
+> > +	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
+> > +	unsigned int max_ptes_none;
+> > +	unsigned int max_ptes_swap;
+> > +	unsigned int max_ptes_shared;
+> > +
+> > +	/*
+> > +	 * Hold a sub-PMD window to a stricter rule than a PMD: no swapped-out
+> > +	 * and no shared PTEs at all, and max_ptes_none as
+> > +	 * collapse_max_ptes_none() scales it.
+> > +	 */
+> > +	bool strict_sub_pmd;
+> > +
+> > +	/*
+> > +	 * Collapse only where it looks worth doing: require some sign the
+> > +	 * range is in use, and leave clean lazyfree folios for reclaim rather
+> > +	 * than collapsing them into a folio that is not lazyfree.
+> > +	 */
+> > +	bool skip_lazyfree;
+> > +	bool require_referenced;
+> > +
+> > +	/*
+> > +	 * Finish the job rather than leaving it half done for a fault to pick
+> > +	 * up: map the PMD over a file collapse before returning, and write
+> > +	 * dirty pages back and retry once instead of refusing them.  Both cost
+> > +	 * latency the caller has to be willing to pay.
+> > +	 */
+> > +	bool install_pmd;
+> > +	bool writeback_dirty;
+> > +
+> > +	/* How hard to try for a destination folio */
+> > +	gfp_t gfp;
+> > +
+> > +	/* Which VMAs are eligible, as thp_vma_allowable_orders() spells it */
+> > +	enum tva_type tva_type;
+> > +};
+> > +
+> >  struct collapse_control {
+> > -	bool is_khugepaged;
+> > +	struct collapse_policy policy;
 > 
-> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
-> split shrinker to list_lru"), which re-registered the shrinker without
-> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
-> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
-> precisely so it would keep working with kmem accounting disabled.
-> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
-> nokmem and the shrinker loses its memcg awareness.
-> 
-> This was noticed by Michal during review of the patch "mm/list_lru:
-> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
-> 
-> Restore the flag.
-> 
-> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-> 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Suggested-by: Michal Koutný <mkoutny@suse.com>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> ---
+> Can it be made const since it seems to be read-only?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Not as a member: khugepaged fills it once per pass from the sysfs knobs,
+so there is no constant object to point at. And madvise has to
+initialize it somehow after cc is allocated.
+
+It could become a const pointer to a struct the caller owns, but that
+adds a lifetime to track for a struct that is written in one place and
+read everywhere else.  I would rather keep it embedded.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
