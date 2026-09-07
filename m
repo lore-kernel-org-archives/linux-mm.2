@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA00C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3660C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:02:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFD326B0096; Mon,  7 Sep 2026 10:01:40 -0400 (EDT)
+	id C3C0A6B0099; Mon,  7 Sep 2026 10:02:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD5FF6B0098; Mon,  7 Sep 2026 10:01:40 -0400 (EDT)
+	id C13456B009B; Mon,  7 Sep 2026 10:02:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEBF86B009B; Mon,  7 Sep 2026 10:01:40 -0400 (EDT)
+	id B506C6B009F; Mon,  7 Sep 2026 10:02:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0966B0096
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:01:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23357C01AA
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:01:40 +0000 (UTC)
-X-FDA: 85187129160.19.49FC83D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 93FE66B0099
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:02:36 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29C7FA3A9E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:02:36 +0000 (UTC)
+X-FDA: 85187131512.25.B119B43
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 84D5F140011
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:01:38 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZDItgF5;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788789698;
-	b=3GRptpepCaidYe33hhyc44inWMxFzS1mOL4HxsLZ67t4L6jHUewOp2Iv/hFOdNbq5yaQbp
-	Gv9flo8uNcEqcb2lGv+BZmHzu7OAtYqyLCuQiVuVa7wTpHPWMUhS+BtQPjV6wCrWw8+G/W
-	o9WNW3G0tGJrhQSVF0QnDI3Zv4BTRAk=
+	by imf21.hostedemail.com (Postfix) with ESMTP id 64AC41C0003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:02:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B8vcSeOp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788789698;
+	s=arc-20220608; t=1788789754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CT/PRZLhit2fRIl3/YwuJ8bKg1BMJtfb23DmTmMzVEM=;
-	b=GGv1jdUsb3lS4fSB09dptObk8N7VhSXNswpO2DsnxNMs4zVh/89c9xPCS01GgZ8AwN+KMK
-	y3GRcMRPrl1g1gue2MRpjGYYxluBXJpRnBoJrz598E0C5yceElS3otfNzHyqf7Iq96RVY+
-	QxDNIm0Da35NIf4DXlMDlHn7wJLPKhQ=
+	bh=KL5T1TelDxX9poIIjnYG4VtudEiJeRhwq7HiScDnQV8=;
+	b=htF6NDkHFCDvGTgLUjrmL+fXrOlTe2HZj4V6yAUo6L+SjmxNzPaviJmIVD7xwoIKIgYYEt
+	DvoaT0trKrgWjIwZRD4vVbkHifQhRC9V96Nm2OptdwEfWw09Xa01kuHZ16xHLfqszliRHP
+	wymKH8B6OgKEuQbIvD9nWh0G9LX5THc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788789754;
+	b=72yH3fvKpHs2OZW77XdjM0OUXYUjlDLN8tlkCuCH4+uGmQ54MIg1yvCn3PH2Vm6BQmMrst
+	v26k/iRuE8N6joeMJkFYqwvawpgLEFrjrnoVh1O37/csxw/VA+YziWR9zN/x9Eegwqlz4D
+	sHEuFRighIGvhI6GDcoZ5cVZHantE34=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gZDItgF5;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B8vcSeOp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0AC8160D87;
-	Mon,  7 Sep 2026 14:01:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E131F00A3D;
-	Mon,  7 Sep 2026 14:01:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 055D8601F9;
+	Mon,  7 Sep 2026 14:02:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F7E1F00A3D;
+	Mon,  7 Sep 2026 14:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788789697;
-	bh=CT/PRZLhit2fRIl3/YwuJ8bKg1BMJtfb23DmTmMzVEM=;
+	s=k20260515; t=1788789753;
+	bh=KL5T1TelDxX9poIIjnYG4VtudEiJeRhwq7HiScDnQV8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gZDItgF5lu7ObJAVqpHDntSxEo5tnQSW97w+OS3wzeszJHbYiCLfnRHHpSFXM9pSd
-	 agr+j+4sQa8+BXS0SCLYyA5/yGk6soH2cY4y44jMqgxnRDm5+u0+B7HQHKCwPu9YgP
-	 OwwBtmiqO9gxxGTzNrEIn+8/do2+xJw6XuCOFijbQ7nS61OMGxNQ2o/Vp+amWYf8zV
-	 p/tXJKpLX7czlW1NVpT5cOKHcnUrynpMW7OxkgfmCIIUsjrqbPA53GwVtjOiG8QcYS
-	 I0Q+7FlF/WKakyEpCFfKJ7oe1btbCA7Km89/UDdOpKf1uIEI0XBsirEGbFRHzkmjmN
-	 3cK2HvEfdSQHA==
-Date: Mon, 7 Sep 2026 15:01:30 +0100
+	b=B8vcSeOpnnJxcWfWEVNhPY0Wo//3OoTHVsGmhGUQ9X+o/I95Am0Ekfe0/Rafmi0eT
+	 cqupf7BscB4yHQzmMvQzV9GPN+Pdnv0OZ5xGHFQCG9lcHg95OEURdjJNcg1TvF0eRy
+	 T8ZX62GYh5xvSqt633tWCkLkEvSUZQF9/FZocMHJWinuG1xZahU5X97RueYOCruOUN
+	 BLn+WBWTAw/kE13mBpADUJkXVIm0xd84jpTYHT7KKE1wm3lNg3g/oSQtwEjQQttd3q
+	 G66oEAaVXDvO9j0XsjuAOiGppqRGyAC2+pK9tJG4Ce5QDwgB/9X1vhYBLuIzd89xRc
+	 hCw8g3TUMKKLA==
+Date: Mon, 7 Sep 2026 15:02:28 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Cc: david@kernel.org, akpm@linux-foundation.org, andrii@kernel.org, 
-	ast@kernel.org, bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net, 
-	eddyz87@gmail.com, kpsingh@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matt@bobrowski.net, memxor@gmail.com, 
-	song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com, 
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH bpf-next v4 1/7] mm: Add copy_remote_mm_str()
-Message-ID: <ap7CocZyy6K9QYMp@gremlin>
-References: <0e4edfd3-0c82-42e0-ad09-19ff8b8d1511@kernel.org>
- <20260907134101.424017-1-tasos.papagiannnis@gmail.com>
+To: Pratyush Mallick <pratmal@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/testing/selftests/mm: add missing .gitignore
+ entries
+Message-ID: <ap7D4m2linUE1B9z@gremlin>
+References: <20260831-fix-mm-selftests-gitignore-v1-1-c984bbd4c5e4@kernel.org>
+ <CALHaPKcyxUMja5-eCcfWq-SOBXzzu_cPOzZa96gewUW-0Xttqg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260907134101.424017-1-tasos.papagiannnis@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALHaPKcyxUMja5-eCcfWq-SOBXzzu_cPOzZa96gewUW-0Xttqg@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 64AC41C0003
+X-Stat-Signature: ki3edowy9cz9epkxxyo17tfhaqm413di
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 84D5F140011
-X-Stat-Signature: d4sdgx7ntto87f1j7k3penb6ws1grthb
-X-HE-Tag: 1788789698-652151
-X-HE-Meta: U2FsdGVkX1+Ttrdi+kyOHrNpQ6MGLHDCCSfak6yoYBbfDepJnKYnKcVAc4PzTxtYiMiEaUQL3nU75YjTmWTVFJrZ2tGUdfF5iWbqVorugVEvoHFROfEL6Oq3l85SqxYr8FCk0NRVw5vgHMzoMqYJS3PnrQj4po169tONNhe5fjEdHWNZAFUAC/4pkp49IWk1UWH3XVa5UiJVw7iSUHgiMNZSb6Lkd6yISjfQVPpza/cT12Nxggjhc/qQwXf8cA6Ij7uQXZF7cTZ7CPXcPWzFKqz+mqQjvcqRPsVBiUh0Ssj/qhoCAra+GD5H6MmigNlb38zNWjU+POoYaZWuE0SKPIr3E95sTH9dNToEc5t5sXM/y4mN/HOr9fE2E2OVpTVBHhqwbDK4eE9TE7VR280etKANvScmQrMz99nmN8fp6nOfV14C+WxSV0yF9LJUY6oIdwmea7znS9dz1kMZrBSPfVP+TIUuuggqRr2qpvOoKqs4iLPzivLPcI9OSYwWNtX4eUE1tBKDgPZmWstrqrb7qPhQ+Gxyr+pNYE/36jH8y3quN0FMnzKZuOotha64T/CnnxHz487QtsYT1OHVttbvqIThKOMfVixsOazcImeqKcZ3sGzlqMIVqkVBTfQSnQtKU7d35pB3lrG0iGM6Dcd+eLPEz8VLey+12AWi0768/8NCFnIcl/n+rtevJwGHW+6QLYegWcfpFQbTmer2R9VP9PeTQv7+3t/w5/tAJrIjWgmHdip2qufrYHwL8Rb4YYwLTXGLn78OgHld5MOk9bD06Q3p8ZOURLkCFqgiZvq42gx+Ye5WKKTrBmVGWSU8LNLJU+XaY7w5MDtUxHwLWz81nFB6U07N1/wGBM0O7NrS4yeXmO3EMAu0cAwYDWdu6atI8MoiEEkJABodK4K2pTNv2pC7/Hr+uqcxgJ4gEW5hq8LbUIC9nmVc9sOg75IaPpiMGOkPsoLL5G3CKWV/J1M
- YFlGx/R/
- 8iCZq9ZQxhtSN7tgfQsgauRqNnNMw595wr0WECN7RtkgmiOg4aDiKjdKNE3V2t6eUrN80uMWFaOW5yH+hxUP2h7dKSE+p6gP/rVbjOJIKdyS0zmRnD5hBQ71RVku9JbnU0Md4vDZ1f0iuPBMB6r8hmX/3WQ0WKtDbAP/iS0SnVct9GDEpzcXr16us4Q3h6XAf1T5VtnRzD1Dwm41uPikDeBx5MUpfD/rXQoSZVoqa8PktaqxDBu9lebUWEsTjlJsUZMJvAb66/g6Wfl5amI77eVySXptXUcQOQEp5Xbq/dNRFPlCFX4Xorwk56XLSb+5AvUVUjxZks6bx3o21owLtuGGcD90flib7j6atomz0S3O6lhj9RaTpdHNwZA==
+X-HE-Tag: 1788789754-388153
+X-HE-Meta: U2FsdGVkX195vLE3dhMjTMSmuQ37uOHZ7B1IWQN45qBy9np3ie00vBiOdhpjcztPj/Q3XhUGaZ6sMY4KL2bfuRCeJ7oJAZZqHDpHFpK3jO0IK+V5tS+IE0qxC8+lolZyeYYWT5W7N6a2gFbN/IwJh73tQ5XXpWyd/OXiqekScCPb6i1bpCSrppcqNMwQ6ypkVTMDNpQYcFaoEQffSS0QKAavQ0YBoXZ4m73tpiiSZmE18h3wLTPcPVZG2aE15kh/H3KJlmz87hi9pCFP5ZmlxlvouRsY8TZZh4Xz2kPd5p7gm0S35POuRB7Tzy7uqs+D1E2yXOMdeCZEQSKn5XIooqno1xBgcvfHw3jwoA0xYHE/s0UbW+Is9KnotU7PelHPUB5AXKsecaWSoloktuJkpvShBG+Fx/Tge9bBYbJQ7Dd8F1CuLmM55mVoLWqS3ZScZ8rOIYpgHG0j4NfkWAt+OLWBGU89zkAS7ozmVLPywvaea3JNEaEI8OLPzGphn55WtBleqHPg5DfyA9bdwdVQtHl2IR2MhAqrgTOg0pUrLYxQ453wL7QIxJS1G5E6DlFENJD+/Nkep/YNP/rQrHwmB/V+3RjAvjXDvpp5REyORGRW02KPiSlaIH5Vcr5HMamzndsc2fR1p6VfNT2NSAp+kdZOxoncdYGPDZhWjJoiBVFYrYKkpge/QpoY/fybvB/H5XPUXHLpgzNaDm+VqVkll8O9tu234hlAof+0v0wz9HzdzXpgZQgcjqMjWsdr3fWfNs50brJ8+hmAkl0ggE42AOU8Dv8UxIuOSDp+hEjJPq2ThzbNGIkJpPv/Sw5Zd34G2rY8poMwzDcuYt4SqHY/Sm+w+PeCg5t7+4HJIHuMePfKo9YSyJ6TkwARDDCgrJN44Ee4MvGNNkHt1Q086K11jT8X3YwB+F76evbXB1b8PSf+B9cFAcvJl+7hmQfHvDhY4PfJyR7J3GP4ES+6D1H
+ bjwNApLn
+ LWOrwPQ4dugar3Gy4CuYEFlPruuPJ9hf7zb6NFS65zqMOFdZ4wHcHe4ZZwmLTp1dxVYdHdjuxcvE8WQrqgsit/vyNEojBFwA3P6IlmFwONtBFzv72ZrGWB6lTzMLBV/x0zmEJy0PCDzdnSCOmY8K2u7S4yMomHnnu/Iu5CBUORv7bcivZn5NY1rcyZ8uVXmt/qNcSzrYty91NHYgTSFTH+klFJMrsDoecRUTYGUKyPI6lSbPSETL/BtpcvtYZm7mhNkr0hdvAYz1e6FqMDWYhjWE7CPxijp8EuuSk+BNWhmByg6E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,71 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:41:01PM +0300, Anastasios Papagiannis wrote:
-> > We have this check in copy_remote_vm_str(). Why are we performing the check now
-> > twice?
->
-> > It should either go only into __copy_remote_mm_str(), or if there a reason to
-> > have it before get_task_mm(), it should go into copy_remote_mm_str(). Same
-> > applies to the memory.c case.
->
-> Yes, this makes sense. I will fix that.
->
-> > What's more annoying is that both implementations of copy_remote_vm_str() are
-> > identical, and both implementations of copy_remote_mm_str() are nearly identical
-> > (just dropping the gup_flags for nommu). I'd like to avoid duplicating code for
-> > nommu.
->
-> > If we could export __copy_remote_vm_str(mm, addr, buf, len, gup_flags) for both
-> > cases, we could instead provide a single implementation for copy_remote_vm_str()
-> > and copy_remote_mm_str() e.g., in mm.h? (I'd prefer somewhere else, but we don't
-> > seem to have a good git for memory.c + nommu.c shared stuff)
->
-> Another idea can be:
-> mm/memory.c: MMU implementation of __copy_remote_mm_str()
-> mm/nommu.c: NOMMU implementation of __copy_remote_mm_str()
-> mm/internal.h: declaration of __copy_remote_mm_str()
-> include/linux/mm.h: declaration of copy_remote_mm_str() and  copy_remote_vm_str()
-> mm/util.c: shared implementation for copy_remote_mm_str() and copy_remote_vm_str()
+On Mon, Aug 31, 2026 at 09:31:06PM -0700, Pratyush Mallick wrote:
+> Thanks for the fix and apologies for missing it.
 
-I mean copy_remote_vm_str() is tiny, so maybe just inline it in mm.h?
-
-get_task_mm() is available from include/linux/sched/mm.h anyway so it's not a
-problem to use that there.
+No worries, very easy to miss stuff with these :) thanks for cleaning this up,
+it's MUCH better now...
 
 >
-> This allows us to remove the duplicate code. Does this sound reasonable?
+> Regards,
+> Pratyush
 >
-> > Now, that's also not completely nice, as I don't want us to EXPORT
-> > __copy_remote_vm_str() ... given that these functions are "#ifdef
-> > CONFIG_BPF_SYSCALL" could we EXPORT_SYMBOL_FOR_MODULES?
 >
-> Now copy_remote_vm_str() is EXPORT_SYMBOL_GPL. In this series, we use
-> copy_remote_mm_str() without the need to export that. Why do we need to
-> consider exporting __copy_remote_vm_str()?
-
-I don't think that's a problem, because all copy_remote_vm_str() is is:
-
-- get_task_mm() (already GPL exported)
-- invokes __copy_remote_vm_str()
-
-It already requires that the caller has pinned mm, and I guess the one key
-difference is you can't pass some stupid parameter like NULL mm and have it
-break.
-
-But if you're kernel code you can NULL ptr deref without anybody's help so :)
-
-The other concern would be accessing a remote mm but... that's literally the
-whole point of the function and we already export that.
-
-I guess the other thing is mm copy_remote_vm_str() is only available if
-CONFIG_BPF_SYSCALL is enabled but that's pretty much any sensible kernel config
-so meh doesn't matter really.
-
->
-> --
-> Thanks,
-> -Anastasios
+> On Mon, Aug 31, 2026 at 7:18 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > Commit 2bee308f3adb ("selftests/mm: use pattern matching in .gitignore")
+> > switched to a pattern-matching mechanism to reduce churn in .gitignore.
+> >
+> > It however accidentally excluded the page_frag test's-generated module
+> > intermediate C file with .mod.c extension, and also the local_config.h
+> > header generated if liburing is available locally.
+> >
+> > Explicitly fix both the issues, fixing the module-generated C file as a
+> > general pattern as these are always intermediate files that should be
+> > ignored.
+> >
+> > Since this is a trivial .gitignore change it doesn't seem necessary to
+> > treat it as a hotfix.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  tools/testing/selftests/mm/.gitignore | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> > index fcd892ed21e3..a306d7754786 100644
+> > --- a/tools/testing/selftests/mm/.gitignore
+> > +++ b/tools/testing/selftests/mm/.gitignore
+> > @@ -2,7 +2,9 @@
+> >  *
+> >  !/**/
+> >  !*.c
+> > +*.mod.c
+> >  !*.h
+> > +local_config.h
+> >  !*.sh
+> >  !.gitignore
+> >  !Makefile
+> >
+> > ---
+> > base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> > change-id: 20260831-fix-mm-selftests-gitignore-dd389da72760
+> >
+> > Cheers,
+> > --
+> > Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >
 
 --
 Cheers, Lorenzo
