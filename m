@@ -4,144 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EBEC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73139C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91A196B00AB; Mon,  7 Sep 2026 04:15:46 -0400 (EDT)
+	id 96ED76B009E; Mon,  7 Sep 2026 04:19:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CA646B00AC; Mon,  7 Sep 2026 04:15:46 -0400 (EDT)
+	id 920056B00AD; Mon,  7 Sep 2026 04:19:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7926D6B00AD; Mon,  7 Sep 2026 04:15:46 -0400 (EDT)
+	id 80F1F6B00AE; Mon,  7 Sep 2026 04:19:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A11A6B00AB
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:15:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2B6C160707
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:15:45 +0000 (UTC)
-X-FDA: 85186257450.12.A878382
-Received: from mta0.migadu.com (out-168.mta0.migadu.com [91.218.175.168])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E50D5140008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:15:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Mr/dbA1s";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.168 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 62C3F6B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:19:37 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 009C9A481A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:19:36 +0000 (UTC)
+X-FDA: 85186267152.14.E4BD36F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F07B940002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:19:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fks87+pQ;
+	spf=pass (imf12.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788768944;
+	s=arc-20220608; t=1788769175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=coueAuHk1PZX4Mhu0iIY5Vl92296KF6DF8+4CmI1te8=;
-	b=y7+2MqCfxTaUZf0AbvXJpfQEoOWKUeO421v606U7x/wRTTCYD6JY4r62XNa8+o4piGeX9X
-	aphZ4VS9lIU+Tija8GTNSLzTMqRsUU1qxCXMZXxqnc5ov1L5NRxa1oQiGY7SMcUJXRIuQn
-	Yv/5mOsG1UV2ckenayFXWx2CGpExgdo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jOWfJqisT+i1JkQx2aTNyg1KyAvkKL3CgKDVUahZQPE=;
+	b=HoJWel3PazPXP+QuXHiCVH9C/couEuMmNiC5Xaq9dxx80vpmgxDVj+9eLRCToz5YmX8EAC
+	dKC2raMTwOfdMZigCpVybS3IZ4U8RIX4BxUGkdshGvcL1liSHi0luistFNOG4OI3JlHF8G
+	hq+Ik1DcY6Rv46twa4rLVHIKfhBRe24=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788768944;
-	b=DMZCmolufSscbO3+Z8FIH9rYt0nkBlMyZmfuCNKgBch1rNsuvOU/Y/8GJkwAM/2XOebG/d
-	yd8wFyBrkXnMdI7eMyQZPpTxMKr9Kz+FaJBdFYOnhLTOMUC1JnwpNMZ7+jTBhtVxJm7fQ5
-	KvsPSwo861FLFKiJHzkTBG5p/C2qsmU=
+	t=1788769175;
+	b=4WSZvN9I9aLE0XuLxZMcipNXHSscsrw70+MvA39NHFRUIdxdFLoM9cpbbKcOPwxNVgghAN
+	LeY8C/Z5eAkjZuqxDYZvGvgukzyJ4FTuzVbLu7Npgtp4eiTycf3lvtBx9nk2e2LmR7aw5T
+	VQbksGdh3PrOiAT+uAtUWAWLO7f4fQQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Mr/dbA1s";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.168 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QPbA87RHE+w44sKh8YFv32hrfoolvz7WuKZeL9giD2c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788768942; v=1; x=1789373742;
- b=Mr/dbA1ssVgGNGSkx9NfcW/TeNr3X7ajPN5WChcRkivApREW2EP1xWiVFInVPhm1sPWsjB3w
- SxfFgpedO4Vr5GcEhpleqAbVMPYg4DPql6i5nm/5ONajnHrM7ZQZwILXWB5BliGboSUnHA1OFdC
- Jb0/0QoO2QZhUW+sgHTDxF68=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6d517d0bf0f3bdbe;
-	Mon, 07 Sep 2026 08:15:41 +0000
-X-Mizu-Trace-ID: 6d517d0bf0f3bdbe
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Justin Suess <utilityemal77@gmail.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	mhocko@suse.com,
-	peterz@infradead.org,
-	paulmck@kernel.org,
-	mingo@redhat.com,
-	rostedt@goodmis.org,
-	jpoimboe@kernel.org,
-	oleg@redhat.com,
-	tglx@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	rafael@kernel.org,
-	ljs@kernel.org,
-	sj@kernel.org,
-	rientjes@google.com,
-	shakeel.butt@linux.dev,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev,
-	will@kernel.org,
-	boqun@kernel.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	tony.luck@intel.com,
-	reinette.chatre@intel.com,
-	x86@kernel.org,
-	pavel@kernel.org,
-	lance.yang@linux.dev,
-	mhiramat@kernel.org,
-	pmladek@suse.com,
-	longman@redhat.com,
-	mathieu.desnoyers@efficios.com,
-	jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev,
-	dietmar.eggemann@arm.com,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	mark.rutland@arm.com,
-	Dave.Martin@arm.com,
-	james.morse@arm.com,
-	babu.moger@amd.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH v2 8/8] security/landlock: convert thread iterator to for_each_thread_rculock
-Date: Mon,  7 Sep 2026 16:13:34 +0800
-Message-Id: <20260907081334.1152889-9-ye.liu@linux.dev>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260907081334.1152889-1-ye.liu@linux.dev>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fks87+pQ;
+	spf=pass (imf12.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79E621477;
+	Mon,  7 Sep 2026 01:19:30 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CD693F7D8;
+	Mon,  7 Sep 2026 01:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788769174; bh=JS+WBqmWmrP2fdC1UeFFZUubf/2Ll0DO5dqgbi/DZMw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=fks87+pQ8CUppKO9fEJDQS13VXKNev81oluHPjCSMNr4mO8NGp8ItPK34GYtO0XQ6
+	 JeJzBZ9cnbFNsRI0pZs2+mbKZ6nUEAFsfgY2JZNsy77xya6NR819cgJwTtrbTR6NtM
+	 Df3xr3hmgmQEaO4mFJrfd04jRc8Y8e4EwWQ00YZw=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v5 0/3] kselftest: mm: fix some failure of
+ split_huge_page_test
+Date: Mon, 07 Sep 2026 09:19:25 +0100
+Message-Id: <20260907-fix_split-v5-0-822b810458bc@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E50D5140008
-X-Stat-Signature: sxwbep78zogg3iuoiegrosi6wq86oosb
+X-B4-Tracking: v=1; b=H4sIAI1znmoC/23MTQ7CIBCG4asY1mKmMLTUlfcwxgCCJbE/gYZom
+ t5d2k1r4vKDed6JRBu8jeR8mEiwyUffd3mI44GYRnVPS/0jb8KAlSAZUOff9zi8/EgdYs1raxC
+ 1JPl+CDZ/rq3rLe/Gx7EPnzWdiuX1XyUVFKjSyMEIaSrjLiq0J9O3ZGkkvndy73h2vEJgTMhSo
+ f51uLka2N5hdlI44DUIV+lic/M8fwHuAcm0EAEAAA==
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3502; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=JS+WBqmWmrP2fdC1UeFFZUubf/2Ll0DO5dqgbi/DZMw=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqnnOR4knPYbXph4THLv5aahxcy3nFmOr67YDBu
+ Ikk6BgXFYuJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCap5zkQAKCRBt1cPRWsUx
+ MxwFC/94h60W5/bgOuiN6T1eWWPcRTmyR8sgt8i3utKJkv9p33t4rzj812FPIhmNEK3/U6AQ84b
+ Yuu3t3jsbi+gkNg5Cq+teedoStA9FFwluk5xsCULbr9p/wbyU2WLLTumdYRPtOYSOzBRIcV4wBW
+ O8UqZ0qTBagHJ8zIkLkJOLhsejbNw5/GCIJ32g7Rwzm73GQYcMnfpFPmmV35VUok/VBQm9PhuKa
+ YBrOU+ulrwhzBHTUPlCWH6p0x/lDXKyA0f9sAH5DL/NQBxpBxquD5NV45F0fdG/10c9W3DVP4ql
+ 8b/LMfBjJJvmjm4SzuADBuwq/yGC6SE0k2WSJEoEWMGjzSEFUnbRF2ZmYeMsF20kwoDFJ1Q9cgm
+ sEyJIJUdpIPVCGkE08iSYZtcbkv48/RrJiJGU7YhRQ9sBfBZ2kTRsSRctDz0/7AXd8+Nrbw1sID
+ GsDkOFDnjj7GXtIt2jKAL6xiQwCU3zd15e2p4cMHTSVX8F6JYr8kyrqWJHiCa27pta5YU=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: g4ruua6kss83rtdx5ck3kawwfnd4fbct
+X-Rspamd-Queue-Id: F07B940002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788768943-332070
-X-HE-Meta: U2FsdGVkX18xGXey06zjSSaTUHet0/Bc7EP0MNIxMoe/wmfjfuHHV82WQiqPb9mbFe1wBwaPTfp7GyR53UT1SgoPPT2Mi1p5BuQY3QIkX4fqlhAT9HYlV7NLPBuQGDTb/CvRmbhxN5RiILD8cRr8dPB5iDvqCYyLn9SWc+0WjxzfW8o/L+N9BeDcYfwlWbOSLqvlzaIKyEO2ytqmTG+nzgzGr52a1zUTibmOuOPyxBQkKT8Xx9DMekXMVcgXFwe0q4bkgWB4Zwfn5abAL+ip3xSEZIRQK7imTh8IjBFaBwPb6pQ8tz4gZWJSmYAubxj3XUUdzx0mWMQr/viofd1kwkn+8Rtlz4bYilU2kbQIe5H9BfjYgl0D/wMn138c/PshoPRzcPvyr5NixVOcD9rroPWZp/OMmAzBkLoNVRucHQcOhwTv7uNnzep5vR3JHIlngOaEoEVpsA/UvDCw16e7Xv9nsnEhZJ64Vv1L5lWhgSjLYPbkRjlPAqCmmY8C82NVbvQwSudYMdDDj2KKVZIIKv0dJPznJ5Tnq/lnJm1PnLO28jKB3Kh8hUu0KMYGvWxFv/M4tG565SBdBH4Ks23n7Si5LOmkLRffDztHuyrM484oUIgfYm/F5mXRn3SrsoHs0bwYLo8V6EEd+yOm63VHikXVOEQnegFmM0KYs8iuq8/hZgUQPiZvXx7C6dJ7RyjCyXvorYtyeXpS0ePT8AtIH5dlb3P2oEy75NUVPasj+UzFM+eXggnFh/P0eIQDEIsdDrpRKbB22GOMDg9FQIFjqOI2TIsX7SN6JSX0++Jv7d9aeUBBB/Q7Ww4Oi373d1xwfaT698MscW8bdEqf0NzQk51MCBrOkMP32jqHymxkrVdz/Dxfe/HRMQLv44l8kQ4A5pXWXUsmbiwjZBPdYOlMEZrpqhSf2+5q4z1wMvCtP0RRvUlMKSjKGhFmCc1lLxLi9+tszmRVO2JmWPXUUb+
- DoBjDXOd
- +QFRok8Y8v7khrwjF0xEhptxvl5C5dTMwIUpUwKBgYku5Jdjf0miPpLpoNca4xeGodPRinZrAHyG1eeSDH03P6+dE4RJ32ZnZ9WMsRhspx3duCzWxwEi6o844EMDA8nyTCFeVHD2V6NKukwLFfd+DBRJUDRIZm9q6+y/2jEwjYoEb5I0EkbnHyPBl355Q3bde9yuzy/SNH6BstFxFS1TIj26/qWx6w5anq9virBRlyHjRz9gVyPJj1ciB2eiQhFD2D/bZ87r0Kwp5Lf/siFOSFNpbRCH4QWeMF5ZKEN0bfY/86jbuHrUKt6h3lFjilS8smdALtbNwwUAAutkbseSMUryfF34bv2KjqvtLG2XIJYwNzzUaBYBQvwGC25xFvop+sDpK7wcALgD29mDznOYNm1dtB5LYHXUt6pMQj2wTASMqwvkQpFtJpN6ro1mhY9SAanZK
+X-HE-Tag: 1788769174-43483
+X-HE-Meta: U2FsdGVkX1+awM16ZF1kJGD/XtY+T4+sKU9IjSeA+hh0xDlujpIZUnB0HUKrHFW4eqGwinpn6jdWih2YSEZq30RjL7HgrUK0PNy55DHrS5cgmam7v2vIQ+GzEA+K+A8X4OcZcbJ6QHu4buhlShOd4vyXMQWiB6H+ChE9mm675F3SOTiBsF34pW/nyZMzJ+dCI+GI2EjebD8wB3huowZKJszEPmMeuaIzsc1JZBa05mBqVj6zUSYem7pUsHcex5F3NtAS2/o2OCDNtEj+eDSpm68tydEq/iY732MaqAnwdAvsGwpJ1wx3qtcrc9dD6SolOfQd6ddm97z7aQIGmxckuVLvZREY/SNv2wPB4fpqrw41wBzO41r8Y1e7B9Zx3A142e12e/77h1YbWqcMHIpjqICN/o1hInmtXQK87bqaHMnBXFtDFaEfh3BLAm78unkV/dgMB2MEAMyL3eX4xXleoYcjMPEMYyWr09JXXGj1KXFikHxdh1HDiQbKMtwH/IT0YeofjloMvY0JPd7K/V9yhPu94397oGiCGHo6lwPJ2NCjveOPVSFyObW0HGHrG+6cIy67oJWyxFEnlKc7Uu9LpplKi9dawTgXj5D3b1+mr3K94pshNjpyx+YyL+bVcWPZyQ35AwSSG8Ig4mromW5kg4+zXkMppc6FRkX7uCL20FDOPPeRN7U+yiiZHLzcQbrkNKLI7lV56eGUhlO2kV11G5SrLCAjicwyhkd/rpuU/DffPMGm2oi7loIuvdBduK3h9Qf+i8cJzdOL8yNzii/Scg0xF8NnARR/Ebe9RX4ZWxR0NsrimzK1edKGyo+u+ZBpyL8tt7r4LyCQ/PfUBAptXUkSi0CSwmUFGjFEtboE4vm0hxNVWa6rc2g/kb0NnYtOqU+Gz16qT5xLxyoQreGj2SrU5BtsRlFNS3dtXN1o+trVqSFZ13D8UqezxsIdsaNAVFvbicRnVEkV2N5uxia
+ +gQqB8X7
+ Bf6Y/8TdU2eHwA+CXIy/3wKmDfpi1/5bBU9B8iNbFuCqkFaxKUFA/d9HSlBvXrbcCgfRIfluU1DFC1DqNtemQb1Io0Ps0MUiIj7G5dOnwXGv0K2dtNM08vWS4oEKMC4r0m7au1s2Hh1Tm42E8U+KwrUHajgXx9qDkcQzvZe/hRlW0tp2R3L1ZTmIVpJaeWpLsSM/CNwgHvrCx/+XWOKNLsMzYBHqfHQjFVrJzHtao/W/yqLMWbcLtC6zpUibZ97MdrKCypwByfbTG+X9tAroe6gcgQ0tPkFZq6af093oKH68DvOtdVN0J17u5RvISsPQriT2UE4pnrlK7+n3T3M/Zxz+BBZC7o3pW2W2e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +113,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+split_huge_page_test can fail for the following reasons:
 
-Replace guard(rcu)() + for_each_thread() with for_each_thread_rculock(),
-which scopes the RCU read lock to the loop body via scoped_guard(rcu).
+  1. During the test, khugepaged may collapse previously split pages again,
+     causing intermittent failures.
 
-No functional change.
+  2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+     glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+     made by memalign(). The underlying VMA may start at a different address
+     from the aligned address returned by memalign(). Moreover, a subsequent
+     madvise(MADV_HUGEPAGE) call does not split the VMA because it already
+     has the same advice.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
-Reviewed-by: Justin Suess <utilityemal77@gmail.com>
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+     This causes the test to fail because the check_huge_xxx() helpers
+     incorrectly require the address returned by memalign() to match the
+     VMA start address reported in /proc/self/smaps.
+
+Address these issues by applying MADV_NOHUGEPAGE after faulting in the
+huge page, preventing khugepaged from collapsing it again, and instead of
+relying on /proc/self/smaps, use /proc/self/pagemap and
+/proc/kpageflags to detect huge-page mappings and large folios:
+
+  1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
+     using check_large_folios(), since only the mapping type matters.
+     This identifies PMD-mapped huge pages.
+  2. Otherwise, use check_large_folios() to detect large folios. This
+     covers mTHP cases.
+  3. Check the folio flags according to the type of huge page.
+
+Also, current usage of memalign() would result memory area may
+unexpectedly merge with an adjacent VMA, causing tests
+that inspect it through /proc/self/smaps to fail.
+
+Eliminate this potential source of test flakiness by introducing
+alloc_isolated_mem(), which places guard regions before and after the
+allocated area to prevent unexpected VMA merging.
+
+This patch based on mm-unstable
+
 ---
-Changes in v2:
-  - Rename *_rcu to *_rculock
- security/landlock/tsync.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Changes in v5:
+  - rename madv_nohuge() to disable_khugepaged().
+  - Link to v4: https://lore.kernel.org/r/20260902-fix_split-v4-0-85f03905f7b1@arm.com
 
-diff --git a/security/landlock/tsync.c b/security/landlock/tsync.c
-index 0b71e158c3f5..a578af640aad 100644
---- a/security/landlock/tsync.c
-+++ b/security/landlock/tsync.c
-@@ -335,9 +335,7 @@ static size_t count_additional_threads(const struct tsync_works *works)
- 
- 	caller = current;
- 
--	guard(rcu)();
--
--	for_each_thread(caller, thread) {
-+	for_each_thread_rculock(caller, thread) {
- 		/* Skip current, since it is initiating the sync. */
- 		if (thread == caller)
- 			continue;
-@@ -376,9 +374,7 @@ static bool schedule_task_work(struct tsync_works *works,
- 
- 	caller = current;
- 
--	guard(rcu)();
--
--	for_each_thread(caller, thread) {
-+	for_each_thread_rculock(caller, thread) {
- 		/* Skip current, since it is initiating the sync. */
- 		if (thread == caller)
- 			continue;
+Changes in v4:
+  - reparse commit message.
+  - introduce alloc_isolated_mem().
+  - make madv_nohuge() helper according to suggestion.
+  - Link to v3: https://lore.kernel.org/r/20260828-fix_split-v3-0-374022586a4b@arm.com
+
+Changes in v3:
+  - change  message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix collapse_single_mthp (mthp_khugepaged:anon) test case failure.
+  - Link to v2: https://lore.kernel.org/all/20260826-fix_split-v2-0-71153c7f579a@arm.com/
+
+Changes in v2:
+  - rebase to mm-unstable.
+  - add message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix wrong setup expected_huge in check_huge_shmem().
+  - Link to v1: https://lore.kernel.org/r/20260820-fix_split-v1-0-ab430c58c7cf@arm.com
+
+---
+Yeoreum Yun (3):
+      kselftest: mm: prevent random failure of huge page split for khugepaged
+      kselftest: mm: replace usage of /proc/self/smaps for check_huge_xxx() helper
+      kselftest: mm: introduce alloc_isolated_mem()
+
+ tools/testing/selftests/mm/pagemap_ioctl.c        |  18 +-
+ tools/testing/selftests/mm/soft-dirty.c           |   6 +-
+ tools/testing/selftests/mm/split_huge_page_test.c |  27 ++-
+ tools/testing/selftests/mm/vm_util.c              | 212 ++++++++++++++++------
+ tools/testing/selftests/mm/vm_util.h              |   3 +
+ 5 files changed, 192 insertions(+), 74 deletions(-)
+---
+base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
+change-id: 20260820-fix_split-f44939ec44b8
+
+Best regards,
 -- 
-2.25.1
+Sincerely,
+Yeoreum Yun
 
 
