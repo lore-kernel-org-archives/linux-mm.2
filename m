@@ -4,130 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2F3C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BDAC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 360EF6B009D; Mon,  7 Sep 2026 05:52:06 -0400 (EDT)
+	id A18DA6B009F; Mon,  7 Sep 2026 05:52:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 311BE6B009E; Mon,  7 Sep 2026 05:52:06 -0400 (EDT)
+	id 9C98C6B00A0; Mon,  7 Sep 2026 05:52:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22B166B009F; Mon,  7 Sep 2026 05:52:06 -0400 (EDT)
+	id 8E0546B00A1; Mon,  7 Sep 2026 05:52:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EFD366B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:52:05 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76F66160743
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:52:05 +0000 (UTC)
-X-FDA: 85186500210.24.3597B91
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4034F20007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:52:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dE3PFJPZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evckSjsS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NbQGgxrx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1h27ebbK;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 688626B009F
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:52:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 079951A06D5
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:52:51 +0000 (UTC)
+X-FDA: 85186502142.27.F2DD957
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4CAD4160002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:52:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PRHc5Tzk;
+	spf=pass (imf08.hostedemail.com: domain of vdonnefort@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788774723;
+	s=arc-20220608; t=1788774769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lrwr41K2Av2Kuzp3keYp7cIHw72jszLX9DJXo1qTJ+s=;
-	b=fGTpADKGz23cyFOypULfeubKrBYPDLcN9Trs8vFno3oX1MmlytsLwrSeYkGlQFGLFA7IrX
-	GlFC1owudZcU7JJI+QE3o1hcCYYSMtpCs8PCFX0Fa7hCDI8UvvcMdDT+e9p4fFxOCThuea
-	Sh2R8rPjoMxCh6MhrUUiMA7+4JeO8iU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dE3PFJPZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=evckSjsS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NbQGgxrx;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1h27ebbK;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	bh=kqgfejYSVwSnwDj4+nn08kyPi4IgtneNSDWgXEMZ2iw=;
+	b=h5O8asnu7y0KeMyV5wR6VzvvOh7oDjzlzAhSmS/vecg7gFEa63USnECTG2/7lZR/UQ2aLC
+	EmiqYxcNpCDbHUmIK1gscFI86DGy7NyJuybMf21F6gbfntZc8UqXV7DpT1PPEQ1B5NmhQL
+	qLfkicwrC96PARaqh1Y2A6e+NBtoSJU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788774723;
-	b=Z8dIZAmXQUxz3wPIqcvVTRLpU9zlYCX6JUI7PvenEyCXFxnSABChUb9+5w/vE6HDTh2Qtr
-	SFXAAsBoGRRh99/cqoywtQlYSEqX8KNvAeuZBu7Mi77D/FbumrE/uxPV1F5ZrIEnQZPBUB
-	8/IxX3KURqEZEwbqJRCcriETL//pJzA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A71E41F74B;
-	Mon,  7 Sep 2026 09:51:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788774717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lrwr41K2Av2Kuzp3keYp7cIHw72jszLX9DJXo1qTJ+s=;
-	b=dE3PFJPZWRBPE3E4+rmps6dicaRZa2lCogXhIAPARvhDr6vvx9qYbxmlSQjsnHfXNen+k9
-	5jcmJNUQgEpcf/GRp/OUHCDGv/s2RwAJb9RLv5g8y28PVln/B67+9+tv9bvPSNtXQLRIp4
-	auJpXhHpf9JXfP+UwDoG3pnUYEsRvEk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788774717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lrwr41K2Av2Kuzp3keYp7cIHw72jszLX9DJXo1qTJ+s=;
-	b=evckSjsSFhYc+ha+a3TasKEfS0/LQCR+139IpylcHE6VnVcJPNJjmlXsOvY9O3DuwYYjaA
-	CTIgKmbtMXby6CCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788774713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lrwr41K2Av2Kuzp3keYp7cIHw72jszLX9DJXo1qTJ+s=;
-	b=NbQGgxrx4+NYiF3BWZ485svl9z6Ee1XZLb/1OpRgnur5eDPsRpMyj4gNviEj+/kc+QPDCL
-	ODIOJEQYohutKHlDEki5eB59AHMB6I33iDeolOCdVGGUuCKnZ8AIIImspU26tZvI8+B/Aa
-	87/kQFxM5cCda+/c9MYTphsxXUmchIs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788774713;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lrwr41K2Av2Kuzp3keYp7cIHw72jszLX9DJXo1qTJ+s=;
-	b=1h27ebbKa5K3TTcSGv2wM/I+9Ex8ihbl44C997NEjxlviuolS4UO8fGXYe8BefaiWwHQWs
-	IQkWQKViMr4m1xAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D0AF13432;
-	Mon,  7 Sep 2026 09:51:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3FX5BTiJnmpiFAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 07 Sep 2026 09:51:52 +0000
-Date: Mon, 7 Sep 2026 10:51:50 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, akpm@linux-foundation.org, david@kernel.org, hpa@zytor.com, 
-	rmclure@linux.ibm.com, andrew+kernel@donnellan.id.au, pasha.tatashin@soleen.com, 
-	kas@kernel.org, tj@kernel.org, rppt@kernel.org, rick.p.edgecombe@intel.com, 
-	yu-cheng.yu@intel.com, orsonpeters@gmail.com, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-mm@kvack.org, Vernon Yang <yanglincheng@kylinos.cn>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm: Fix pmd_modify() dropping the dirty bit
-Message-ID: <ap6IYeTM8PMinxo-@pedro-suse.tail5790ac.ts.net>
-References: <20260903031608.1194238-1-vernon2gm@gmail.com>
+	t=1788774769;
+	b=FwW0lVfn3cKfjTxazhiYr6qP3m8ix07wnz8MeJSw52G9Qbx3VtRPkn1hdeKtyBPKz6SEui
+	70MKAfMNh5zzVQtesutNsOg2SCIGHkSBgPr7bLeBhLD4pp2E1Mb9CEUJt1vAGN+1Y1Gzqr
+	LK4uC4ZFy4uIAwTcbNtJ9oKNGeO29II=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PRHc5Tzk;
+	spf=pass (imf08.hostedemail.com: domain of vdonnefort@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-482dd6ee390so3813103f8f.3
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 02:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788774768; x=1789379568; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kqgfejYSVwSnwDj4+nn08kyPi4IgtneNSDWgXEMZ2iw=;
+        b=PRHc5Tzk2I84Q2nH9EWUVvcd3lqJz8BI9mYcVT7TZW+ed+42h9ADy4IT4rfG/NpZ8u
+         GJZ6F/PiG79sV4MG2ZVAn6P6IA/01mNLbfksL0qmI36FGEwpaMTz+ZfrdaKqCx1+8GsP
+         0jnsVsFxOpP/5fOWRi2EfjitR9oqN0zKZ/2U/Tl9sGPCSvdoreynMu+6UCdyGv3A/mwd
+         rxQmPaR4Xord3UvX0GdU1fIyADywVhT6gUNo5VQzOHLUwjHXk1d5eLDB8fzuMZkzL1DH
+         7z6oX0ZjGNEI4Fa76lrQqScmw2lbgGGfrG2Tnary5JN6c8ZAlgbkHK8P5/5k8j0NiZ5d
+         lMhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788774768; x=1789379568;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kqgfejYSVwSnwDj4+nn08kyPi4IgtneNSDWgXEMZ2iw=;
+        b=ZbRrlYzEg7pD8rwSIondXbgAlkSHdmytjaL89MU3yS7hOsmmGkna+taAAASRXYdaGS
+         xYXXF7MpNhCOZlMWcZ6ZktiBla/ByWVEMvHUcnSMXVbS1G6H0D/uczLy8H8kclhqZmJs
+         YIIz2q0sMNA4xQI+H2S0aeUsVY8oD9IYDXw8Up13zf0wcMFvwpt/Z0BfvAmGzgyXJzU/
+         G+f2IUOtuXbmXZbpb4ID3tuHXtxWEvq3ol3Y/+ZwCzRgeJcj6XpDotpexehe9Uy5hWUh
+         8kTFd4VhKe0eX1YU1DMUKTwTegX8OLVCISjkpI1+kxoawTO3tU35V6VjcgXcFl92DR5f
+         kZNA==
+X-Forwarded-Encrypted: i=1; AKwUvBwW/rAUe84yu0lCoD4WvktJGSRHS7m6+Bixfudmbhem+stpu1tnBiIzG4PjiOknUzuK2jUmHqzz1A==@kvack.org
+X-Gm-Message-State: AFuF++nD5CRk7h9c42U4wJdoJmWVdOCorHVU25i6jEWpoc+chgRLHket
+	IVu+wTkZGI+D5/CsUpcvxbstXZ8alecKkNSGHIM7+CFyJRvUurBYy3FBIg2TYUgumg==
+X-Gm-Gg: AYBFou1fEP3e8sn44Mk4+NBMg1zzN1/HQnxPOtjR7qkS7tBiPuCbHfMych1tcHcc1yO
+	GZJuYooqWijaemJzaUVpMBE/wI4hofs8+JcWmDMX0vR21cN6AxcJtTDCsgKL7JqMWbeCEKsIcRK
+	jj+DMCoZhxyYLLYZbyBhoV9hVhXvd4zcMBt0KBYNZjDNv4KTL7j2rgoODuHbReUnAmQTYu30/T8
+	bmItef+IgGbZs5xKFsHtTxQU0trUPNBknPKilXBv8pDnhI0rwzK8atPFS9Ddyppwpy9qjy1SdkE
+	4JvaiNRPUMb8KzrRu/3FVAhoF60m9s6Pq1I7mtPzCUOjAtpQ0zsMhPQUWJxN1zhLxlGTGHurp7i
+	XN3JqtbJ78eJ38op8vM03ntA6G9G4bloMmoNqNhGYClLdO/PORzgTUeslFg8P/EtQFp/+xNOODt
+	/RPDd26FyrSO07Dcn/KY0pfKl4qeGSbvUITY/gTkdYnMGDzqZyrN7kpEpfHrDqeKVoikM1S9B/D
+	Vxn/jQpCSpQgmAheJsTWtflY37ub3oy
+X-Received: by 2002:a05:6000:4b1d:b0:485:8c16:a32a with SMTP id ffacd0b85a97d-4858c16a5a7mr19950748f8f.31.1788774767486;
+        Mon, 07 Sep 2026 02:52:47 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bf3f0sm30012615f8f.33.2026.09.07.02.52.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 02:52:46 -0700 (PDT)
+Date: Mon, 7 Sep 2026 10:52:43 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
+	mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org,
+	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 03/10] set_memory.h: Introduce
+ can_set_direct_map_range()
+Message-ID: <ap6Ja02S5IDqWRHC@google.com>
+References: <20260902104712.2399797-1-vdonnefort@google.com>
+ <20260902104712.2399797-4-vdonnefort@google.com>
+ <ap3BVr5hHwA499gu@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260903031608.1194238-1-vernon2gm@gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4034F20007
-X-Stat-Signature: q5zs9k7efgxfscwra3bqk854p1cn1xjt
+In-Reply-To: <ap3BVr5hHwA499gu@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788774723-118406
-X-HE-Meta: U2FsdGVkX1+B2+TbYHwpoWk4Z7euT4CXtfVCVBtl42W7ln1swxikXE35c9H7nMsfwhTqQ2H9ETHJpZ/pLstj091iwAcxCzS4p4fcLncaZuLc5qsf+S0OC7kfxPAzO2UyVegSqJqpdgps9A0mZADQdLmFFVZbs7WYGSL0VZCKM9vjM5uxg81pmbcDY35RsZrGzQNJ6SCKS6c3Ro0E2TJK5vL0pZIizRGBR5gJpOuJS6MUQzbhVRwcgLtiaPkYgISZ02DdEkf16lz1oTunEwWlJlbSthtYgm1invc/vTOhNmv3FYIftgk80ghLvSTmKudGg3+ZtLwR9RD+aX84/8F9yOVDt84974jky+Uz1KAWphVQLHfiL5y4VIMZaCMITem349Dn7uNFf3J7JXLbHZ2JoUSJ5TaHD84v/7N36fGE2Hi2jY5LiDFVv7svOh85wHuul+5e23rEyg/Tovr70nusAl1LJAZtP7Hfz5dVIZrsDQ3dxWZ30a0xTjscxvHZhF8WpDRL1UqlpsqPeXnqdIOEfO01Z4BbEr6sihpoX9B9jTzI3MEct5Xz2klb5usXh8xEGPkopwS2E4BZxu2seCLVbxJ4qvv3wLwcCYCnKatenCuJkGek9dZHluYBdfpPKD4WEWylX3DWmq+1VuJmfsvGfhRjAEaxLpgTbQlRvTLq9hoy75D+V70S5z8tZgU0Bt+JJQ0wQ16etpdmj/fTAqr+xK6o1YORDgkTEjWH/rK7gdiANYV3pBK0tEMpzSE3xaw35XbRhRmvRzyS59ibIwgKXZm3LTYk6RWrHFaF3+mzU34ZXaoDcsrZvl9x5d+qKc+2nP78pXWS0SHpizGxtMkYkZGnlHW0YmpjufE66vK/nmn9p4usAMIwCk59Q7qjlS+J8RcPBq1VYuJ8A6QbEveiUcm+hB7Y2yWd8yxG1D4DaxKAI1kffH87D8UDvT5nVJPzKkliLLXkHPxdgo3G76U
- pzHhtzCP
- 8B5vXUhJEF3ch4CDNh+ANaXFECg95YjwSlye6jBrMCoKMuvx95e9aTq17thpNFDEr8ut9jN/t8zuJrLTLN/Q01FnL5goAZSJAcE70dNIT9Hz+Oi+nwedq3nx0CnjEsDGBkSLYJ/nyL9xG/uvufYZc5/RvhSfFc/zC+Ovn+tzr1k9SA8EjA5/dydBnvbvcGulv+Ba0N7jndL8pnn1T2RzPMa1lPMSHrw9bePg1pBQHljYcfv0nzkTN3sZGT7c6/+AutW7K1DgaxM4AlTgU6sNIqUb1b5Ysy1dodG6LudxllPsvRedROaO7VIdUh+3zWXe9YFLJ+YxSMb9PZR0Tlgqebfosr5gLKqq1F0f5yuSIRAj19L727lMeJqfhd0afrnCe81PJlgiOylA1REhQNfJ9EprUBEImzu3wU4Ze/T8rT4Wi48EycXqVtZxtjbnjwzT3ELiYTOQ/o3vQnxRY9lJgEpWrmCFxwAE/D3r3
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4CAD4160002
+X-Stat-Signature: szbt7shbdz8p917urtxpha9x5zs9mcdf
+X-HE-Tag: 1788774769-47009
+X-HE-Meta: U2FsdGVkX19BgFyivK9wytwViC3UJ2nKG2oS7pXbWrhSGmMNNFtEwIVl8hX8+4+ECnpHBiAs/YZQR45G1zS4aXr6vIxCBUoTOjjnLVHMDe7v3sTDKZwV7X5vrALHw8xkOmqOkT0spcTpPQeBLFXnkqvml23LQ6oAb7IFV2REBPpzknIjAHJd59gs1l/4Fg+BZOiRHmrbgR7UyvknaWLK1MWLGSaVWD8zE/5BmIwRWcRNFMpuwUfwHV7vsK4IDMdTvqcJuKhrLg6UPs6QTJiZY0VbfDclKySf/YyADDKZ8YL/gLNsRoE/kwLNU4NMo0N7Z04qPVO9Iqoj9N5/TEk+p+B9hfIXp5JbJGc1Hph5oxJ/zdXSqfCNsTFjarvjKlbv1gR+MYyrK0IWd9iZ4w/+rFh8WQHpm9U21ZOwEk2O2A1rhLnc+AfmTCq18YjQ9wu9GtDQ+bZYFMtLiaNejX9BNr7zlugSYnyJnbRDdqClRpn68vto9dgSh1LXiYCqYVVHDTHBWybxM+aDDl8NRmTtgmY2yPIaP+VgsKXkn9OcG0il9mvyZ/AXwwY+iKXfyfAw3NTNA5VHwApcfxyJvO3piJFSe0RSZYaKDmoPtZVUJ2kVIPXMwHUGeXQCHeRXsAXIp9OZvD3XKvIOqBFAwmU0RyPAdPCXOjTGa68joZXtVCTG2DhymF3m0NL0gnuNpdA8twP6UnD93NiWQ2Ychi8lB6VaYVbvaqa3bTXivUuPkTmpjfECfBxtpaB3i3jFAhHgOpLSq9HSG8Xwpx5r/yM7oxCJi5XbBZP4i4oe32Mn79mqMTpDJeNyKMQCsKnw11GleeVy9osDgg7dRLUPE/bo8ZCCBI4sR3sLYgGg1BRdAtGq0zC3trbhreGcUfSDRIihKDEoJAcFHR7BvinHilINXuao5dsN7+tC4ycQr3A1owgls2+rzm47BQptS1FBOHEzBmJDctZfcA9Spq5AS2E
+ 5CEmuACN
+ KQB+Yifwdz3uWECh+vLSrikusu/kKfcmjs1VpeSwaL2dKuDvZqcLV8XlCNzh5FzCXXNKLF6DgwkbpjiZmXEJkQw+4cgVCwFwVY0CLz16HNRYzzDoEqlVkmsPZEEkYfvGX9nO4KHUyQxAEEmLXyiumUARz8pPeZ1QA9Mcg7bj0oFri72mz0WCRRmYIxyECZmT6Q5eU30D825KOSeiANqAOGtKH7BhsQSP6L6Er7ajvr4V6NRDlI2lMbakkLOWrgQmeSaSaWWFaU8Kn7csEFCs4ySG2BMPSwhVHrawhjSHhyAYR6d6JJhYo8au5pgDEar+NB8Qm9jrp7k8ysqvaG8EwJt3y02AAtiBwcJ1tzbKOigwpkmBfF6zkuSJXN56o7EN69M+NAWjtbfr6+Q3TAvJXbqiqOlUovMvgGmrsMhTRGgSADBE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,58 +127,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 11:16:08AM +0800, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
+On Sun, Sep 06, 2026 at 10:39:02PM +0300, Mike Rapoport wrote:
+> On Wed, Sep 02, 2026 at 11:47:05AM +0100, Vincent Donnefort wrote:
+> > While can_set_direct_map() tells whether the direct map can be modified
+> > globally, can_set_direct_map_range() checks if a specific range can be
+> > modified. e.g. if mapped at PTE-level.
 > 
-> pmd_modify() masks the old value with (_HPAGE_CHG_MASK & ~_PAGE_DIRTY),
-> silently discarding the hardware dirty bit.  The subsequent
-> pmd_mksaveddirty() call is supposed to transfer _PAGE_DIRTY into
-> _PAGE_SAVED_DIRTY when write-protecting, but the dirty bit was already
-> stripped from the value, so there is nothing left to transfer.
+> set_direct_map are going to have number of pages parameter soon:
 > 
-> Contrast with pte_modify(), which keeps _PAGE_DIRTY_BITS in its mask,
-> and pud_modify(), which keeps _HPAGE_CHG_MASK untouched: pmd_modify()
-> is the odd one out.  Any pmd_modify() on a writable, dirty PMD loses
-> the dirty state.
+> https://lore.kernel.org/all/20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org
 > 
-> One visible consequence is data loss with MADV_FREE on PMD-mapped THP:
-> 
->     memset(buf, 0x5A, size);          // PMD-mapped THP, PMD dirty
->     madvise(buf, size, MADV_FREE);    // PMD cleaned but left writable,
->                                       // folio marked lazyfree
->     memset(buf, 0x5A, size);          // hardware sets _PAGE_DIRTY again
->     mprotect(buf, size, PROT_READ);   // pmd_modify() drops the dirty bit
->     mprotect(buf, size, PROT_READ|PROT_WRITE);
->     // ... memory pressure ...
-> 
-> Reclaim (e.g. under memcg pressure) then finds the lazyfree folio with
-> no dirty bit set anywhere and frees it in
-> __discard_anon_folio_pmd_locked(), even though the data was rewritten
-> after MADV_FREE; subsequent reads fault in fresh zero pages.  NUMA
-> hinting alone can trigger the same loss, as do_huge_pmd_numa_page()
-> restores the PMD through pmd_modify() as well.
-> 
-> PMD-mapped file THPs are affected too: mprotect()/NUMA hinting dropping
-> the dirty bit means rewritten data is never written back.
-> 
-> Fix it by keeping _PAGE_DIRTY in the preserved mask, exactly like
-> pte_modify() and pud_modify() do.  The existing
-> pmd_mksaveddirty()/pmd_clear_saveddirty() pair then performs the
-> hardware-dirty <-> saved-dirty transition based on the write bit,
-> preserving the shadow-stack encoding rules.
-> 
-> Closes: https://lore.kernel.org/r/CAJxLxMUGu1-L+O_nAONOwOXnS=cNbNApCWqdthRjd76LThtSPg@mail.gmail.com/
-> Fixes: bb3aadf7d446 ("x86/mm: Start actually marking _PAGE_SAVED_DIRTY")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> so this check can be a part of arm64::set_direct_map
 
-FYI we just had a customer case for our downstream kernel for this exact same
-issue. This fixed it beautifully (I'm wondering if polars started doing
-something interesting lately, that nobody else does, and that's why...).
+ack.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Tested-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> I wouldn't expose can_set_direct_map_range() as a public API and rely on
+> the callers to "Do The Right Thing".
+
+ack.
+
+Thanks for having a look at the series.
 
 -- 
-Pedro
+Vincent
+
+
+>   
+> > Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+> > 
+> > diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+> > index 3030d9245f5a..88175c3fa751 100644
+> > --- a/include/linux/set_memory.h
+> > +++ b/include/linux/set_memory.h
+> > @@ -44,6 +44,12 @@ static inline bool kernel_page_present(struct page *page)
+> >  {
+> >  	return true;
+> >  }
+> > +
+> > +static inline bool can_set_direct_map_range(struct page *page,
+> > +					    unsigned long nr_pages)
+> > +{
+> > +	return false;
+> > +}
+> >  #else /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+> >  /*
+> >   * Some architectures, e.g. ARM64 can disable direct map modifications at
+> > @@ -56,6 +62,14 @@ static inline bool can_set_direct_map(void)
+> >  }
+> >  #define can_set_direct_map can_set_direct_map
+> >  #endif
+> > +
+> > +#ifndef can_set_direct_map_range
+> > +static inline bool can_set_direct_map_range(struct page *page, unsigned long nr_pages)
+> > +{
+> > +	return can_set_direct_map();
+> > +}
+> > +#define can_set_direct_map_range can_set_direct_map_range
+> > +#endif
+> >  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+> >  
+> >  #ifdef CONFIG_X86_64
+> > -- 
+> > 2.55.0.970.g62bdec98f9-goog
+> > 
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
