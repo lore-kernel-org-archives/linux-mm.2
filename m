@@ -4,135 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 632DBC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 047B7C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:28:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E2CB6B009B; Mon,  7 Sep 2026 10:27:59 -0400 (EDT)
+	id 148546B009E; Mon,  7 Sep 2026 10:28:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 193C26B009D; Mon,  7 Sep 2026 10:27:59 -0400 (EDT)
+	id 11F1E6B009F; Mon,  7 Sep 2026 10:28:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 084A86B009E; Mon,  7 Sep 2026 10:27:59 -0400 (EDT)
+	id 036116B00A0; Mon,  7 Sep 2026 10:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6FEC6B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:27:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 748EE1A0183
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:27:58 +0000 (UTC)
-X-FDA: 85187195436.12.FA2A4FB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B2A87180004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:27:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TectPzyv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D8A436B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:28:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7337B140199
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:28:25 +0000 (UTC)
+X-FDA: 85187196570.30.B86F7D6
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CFDAA12000A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:28:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Umw5ALif;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788791276;
+	s=arc-20220608; t=1788791303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L2LUyi3JasTalKXaDzwg8qu2XnDVZGCw0xs9cKv1TcE=;
-	b=7xwy93zAcI9onDFzpHUaQCANWkyy/xmovgUJhPdGhG/GszO8LpC1zZi8u5ytKdss4K/ufO
-	6pmDB36XePiv9XzSWZuZSj23lcEptVNZ0MNVqMIUpozNBi5u4rm8844LASnGxxAN/LOSom
-	fyoH3Cuh7D7Sv16pGOCjtGK+6tukt/E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788791276;
-	b=lGL5QCjDms7RQKkK61pITs+TqIzPem0juFeDmx1eniEpOGAXegh/Qp8kRKD52oMQVicX5w
-	DMY/qJ4O0/3b0uX2twAaQsqlZslgQ4P3PZ1QDlHe1Tbwkp9vph94ZuRYTnJF4isnrjwHpC
-	mK/btm+dEVILn1XR38t2xzIsNLUJ5lU=
+	bh=rztXTxArE4kzHUFZdIzTTHMPPaOeWfni0CGbnXtVrRk=;
+	b=dYMYCyXjnqgT1wEDtsvZW3eHA68Gjfu5PmBEKTBP0plar8hG7TOSgaWIDjqxzYgdwIZFVJ
+	+r0M0JCn1QRghWsJpTiaLHDV/IWR7ebgtfUqff9bidvO49Dnkjppgug6a0vas51uZLBVYR
+	/FSdbR0ASNncnBtIz5OBguxDxvEtU+w=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TectPzyv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10C2F601F9;
-	Mon,  7 Sep 2026 14:27:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102D81F00A3A;
-	Mon,  7 Sep 2026 14:27:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788791275;
-	bh=L2LUyi3JasTalKXaDzwg8qu2XnDVZGCw0xs9cKv1TcE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TectPzyvQ6KaDruD02EunnARhdyeFcyCcgR0mB5w/mMMuJgYIDGR8EUcfGJDotTl4
-	 goRR5661jo9SMB51F3ToVh3646QGVlKdTAi9vFGW6VuFzyeOrMs1plVFqpVs63PHNE
-	 jAm2jma2TATMCOIYXK/Q30IGd++zn5lkrsQA5CEBzum3P1oXRsTcxAa8ka6uNGJD7+
-	 2xq6mcnWfg7GgI2zefOyPSiztwtPRBA2cnb0ILaTqq2JfczSK/mIeqDixjLZiKEFW6
-	 kIqrmFqQTT5+NwsHLsRjL8qiE6nyU49r0rt+FOZ0/W9LRaLbRXra2NhOgi2Y6/i7zR
-	 A1ui23uWP0Y+A==
-Message-ID: <1d625a60-9473-4f48-a384-7d756ccb7135@kernel.org>
-Date: Mon, 7 Sep 2026 16:27:50 +0200
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Umw5ALif;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788791303;
+	b=fT/cZyjEpYxhqpr1tDLL5cQnK2vQB4cuk/Kfvrmd2id5ljlHvCOzc/RoMuTHIR8pu9+04a
+	vsVWVw7gBnyFM/ZcO9R/4Yorqu7eLyHNXlGXZdIBmeMNqgMk40I2WNQWWCvfJXdschSEHb
+	N8TgcuJSw+5mOWCQB2MH3AH0zocijA8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rztXTxArE4kzHUFZdIzTTHMPPaOeWfni0CGbnXtVrRk=; b=Umw5ALif/GaeXHkSspbhFvoHpV
+	ijLLQm+T/BV/rHhk0gvAwCxMVRwRTOMtx26aNAEHtJIKbdhQM3WxgK4MokEQAWyeeKWPCAJTVlXML
+	bmc2f/MAzn+EgE22BwT5eY0Is8BLiPfaf1n6kzhQdx27HssCtRhiyNcPcRoU9gHy+ibvVg0M0nioW
+	3IuJob4fpt0JUH/gtsGGD6qsBZRPB705AgrGraAsrtjCn18wDiA9nrnJsMkZcITC2MHW5AijAEs0G
+	Ijk7UlL2EHiQ2VcO5N1WnjmfJ2soy0YOdupGKE5BNrIOLkbQ2wmdqdrBHZfhCMFHJJjpUuKqfX4Ts
+	ceKTlfCw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x3aJu-001ZS2-1N;
+	Mon, 07 Sep 2026 14:27:38 +0000
+Date: Mon, 7 Sep 2026 07:27:31 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 1/5] mm/memory-failure: efi: add the
+ LINUX_EFI_POISONED_MEMORY configuration table
+Message-ID: <ap7HHvF7tXmz4Nsz@gmail.com>
+References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
+ <20260826-hwpoison-kho-v3-1-6f79c4b605bc@debian.org>
+ <apGOr0BAFc1DMQe6@thinkstation>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] mm/memory_hotplug: panic due to race between compaction and
- memory hot-unplug
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Chen Yu <yu.c.chen@intel.com>, Jason Zeng <jason.zeng@intel.com>,
- Vlastimil Babka <vbabka@kernel.org>
-References: <20260903095543.3752338-1-yuan1.liu@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260903095543.3752338-1-yuan1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B2A87180004
-X-Stat-Signature: 3r7ffdicmdouem8p9jnzq4oocuibzpt9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apGOr0BAFc1DMQe6@thinkstation>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788791276-399741
-X-HE-Meta: U2FsdGVkX19RxWnh/xPIaW+5NSK/b0oF53H1fSuCI6+lF7d7t/YsRp+BIlRoR2K2/On2IGFzEokHxH6HQCUrJDmuUMEy6n+fLbg1xJV+hsIKsYWOgCvCy6tUEL1YsP0xnr+eI6R1krrQg9F9BFssla/D9JTeeR5cwNrw0lH7i7UffzR6rUxzxd5rA3YNuZjcvjWf4dUDYaeGvIsPaBbHSe6MwVYfEcaDZBC46dsYa234zmVb706HUxsiyO34JvMclvm1LFAXrcJ5ejajxplDBJtKe0dxctNznqjqRDOgaHdVatKZHn+RIMU7Phdpyy5Qs2YzSwynycJsi18gZIaJqv/9IUrSclPfIarskkf3YimarWhMpQs2Po3nJqaSbJpcVnlKtyppxmQALOQbq5deLYDu9+zlkoRgIHeK7k/2F8XzHI37LlbLM5kRQh8kN4yDDdxVIEzVuWJzAomHl/X2/JB3kYRKgEuBloL2kwlrPNTM922njZP15vDtnzOGmMI8l+heUh7ScFcEXLu7T6Y1PS5iLsQZM6mhxRoY1bB0YWcfEb6fYWsqx3vThZ9TGyYtKFn0m+6m6+c91fMjMWtlx3Zn3L3drhDrFbwfHJYTixTN/noX7UNCAVmUCz3QCL7umVfuJCXTRRCKBOzJ44MXeIkaqUyoSVdU4v5dXoE857VAoUdyUpWRLU0umBIf0wruIFH2kYl5JKN6VsIE4PKC3N2uTDgFo2sJsa85WOFavdzKhJjCy2pEYVDrNnE92QRxnVkoB92QHsOIHJ8nCxkAi1m/WMcyNX8Ekpn1jgpAmpBxVNnWC4jFoAXLvgzl9nkEOSZv6orzLdsNhGSebLNo0K7yEqtc+tbKQw9OqTJbJ6UrAMWfXWJp4xel9PuiIrvk3xxSugblBBjXWD3hqfMfAIekAbTf+5JJNv8hwf0Uuy8HvGIlTmV5SURnxLMYld7KJGcRmmapTPRxp5bvZmg
- adCHl6Fk
- ysmupk1HhcHhwnQIJTDoxvDtu6Oh5qrDSgrT7cWPJmD2e9zUlT3xVthmM3yGjQ1O54GI1o89br3cjVBZT0330i5VP6uTPNMmztIJu3gsAmxnTnfPGXvi5UMF5ih4BnwmVrDr8Q7CiUlRLak7MyRZ0ws0S1phBJgzTrit8jFdNZQNwvHbSkuYMPJ2VJs1CvRY9S0gG72vUclNsRNq3pJV1uqM05wLErzpIRmvvEKOPK/kdT2lgTGyJlLLqUl7gigJ92IjhCqMUNfC1n60RXijOJZOItrRyUAAg74Sm5GcYFoiu9J27VGoc2AP+ywc9NfZ6rDzVgDAtgQExVw6qUXpt+JqDEqcRPM8E2WiCGVak6hn2py8fOs6wveirjMwn0yHFXz+MUbTcr+uz8Mx5+bYeGJuFjw==
+X-Stat-Signature: bd85j5457icus1k3m6ehpwy1sz4sgesd
+X-Rspamd-Queue-Id: CFDAA12000A
+X-HE-Tag: 1788791303-55904
+X-HE-Meta: U2FsdGVkX183PnP1NFd336BlR78Q3C5VbcevLvVLWISX9n0lpmXOMe2y7jT52j/F8VqOSKIjJJababw9aX+FdhUUrQp07ROde6tzCQLeuBIFD0IGYkWIQGRa9v8FBN4raAxWMBEaTLP+48Elcl9ufGy5Ej1uynpn79KGvSZgj6eB6yhdU8jDr3+5cyH402qAncgWem6xr1zhTdB+Lok5qpFO915l6yxNmBdfqj39G81usrJjwz3544KYu9dXnHpJXao0GWsxyhMvSlmNvgGZP2i7dFRCOLZW7ZJls685RIoNMAKsKFRtosr102rP67nCa+nL3VnSmwtjmI1WFowsC8yVdh8EucD062BlAuShcnKIx3zpGPTpzVM8Be84rsBWvw/aDpP9E2vIQTeEOjKDdo+SbY/e4Syn0gD6yAm2ZWPRahDK3mfJML4kVhrs46IaTln1rekUhPK9uiuL2zi8XCnwFdob2VFLpQg8V6dISdDUiPf/F5XfmokpTciUJn37/8MbJ42XQ4e09/hTANItIKAT/OD4t/Ij0OngAaiMRz8imz333ES/FBEYymTx5G3419f/V48pJ7Vb63vVN5mZ5clVa2msRLLlCJl9sOq7xQcCFOqeE2m9GAZvcizFSVw4ndmx+VgdyZkw5ziRM7fN5CbtoOyCVNT4zufCnC2cxl9YwhBTjQM7xDECm31bzkJVmuPMtQfCncHL2RJenDoYFt/DA202P7mN9ZjXlTpH24saGYVmxOG99Wj/0hdBUAGglX/a9hy57N2e/bxRyrW7E/QtKTw8AtaYpLx+bWMc4V1X1y3QPvwXWhm6gVNF2Av30rwrXfrRPvJAskupFe6FacUpjbHSQwpKjVh9UHGfjGxVhLPUkUV/XgXk5WWZ/z62PrAQvBd07oG/3IU5u8jxjJVMxh9XJeykf8v+VhsoM/ZMIWy5sRBlEN01Hkolu6cT3Ze5B2hWD9oUdWj/p3L
+ nQTzZG2F
+ MR/2DSI6cTPdNUrjWUDYitleeOHgAYMxgu7MSLqjaf3pD8rueXO5KvoO+QlsMr4j6WVCWqouB+bHOJ806VDHWUZQ6GeHSrkJLh9BlEZ57/A+Nh5TPDNRuQ+0YaHvX2U6mF9JYpGkk869MyqxGJerJK1oiGGu8SPIxH0i1J0wTxoQbebSEEtPiHlQc2/06A75gtNMbqdys5l/rJhLxAMUGbWJcql6GENkf+BG9qXof8na+tC8tzoZfEbvGjugxYJkbtzXLdw7LXRPvjAWJXXn+LomiTvRLm1A20DrK1mgil8ABYch+xDMaaXay+VkY5MHpQp7HVDaf0v5dghsbpQcLkoC4RVYrT5yHsP9l7te5buzcXvHlKQeanXl1Y7MTnbdfkzuo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,85 +102,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 11:55, Yuan Liu wrote:
-> Hi all,
-
-Hi!
-
+On Fri, Aug 28, 2026 at 02:47:39PM +0100, Kiryl Shutsemau wrote:
+> On Wed, Aug 26, 2026 at 05:03:52AM -0700, Breno Leitao wrote:
+> > @@ -1271,6 +1274,16 @@ struct linux_efi_memreserve {
+> >  #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
+> >  	/ sizeof_field(struct linux_efi_memreserve, entry[0]))
+> >  
+> > +/* Bit N covers unit N of physical address space, counting from address 0. */
+> > +struct linux_efi_poisoned_memory {
+> > +	u32		version;
+> > +	u32		unit_size;	/* bytes of phys space per bitmap bit */
+> > +	u64		size;		/* bitmap size in bytes */
+> > +	unsigned long	bitmap[];
+> > +};
 > 
-> While stress testing memory hotplug on a VM guest running an
-> unmodified vanilla mainline kernel (7.3.0-rc1, as reported by
-> uname -r), we hit a kernel panic in the guest when memory
-> hot-unplug runs concurrently with memory compaction.
+> struct efi_unaccepted_memory has 'phys_base'. Do we want it here too?
 > 
-> The kernel was built from mainline at commit:
+> It can be helpful if physical memory starts very high for some reason.
+> I believe it is common for risc-v.
 > 
->     cee9395acd80 ("Linux 7.3-rc1")
-> 
-> To be more specific, after a large virtio-mem hot-unplug, the guest
-> kernel takes a fatal page fault in suitable_migration_target(), called
-> from isolate_freepages() during compaction.
+> Tenstorrent Blackhole card has 4G of RAM based at 0x400030000000.
+> Counting from address 0 that is a 4M bitmap for 4G of RAM. :-/
 
-Sounds like a real problem we should tackle.
+Sure, although this won't be used much right now, it will prepare the
+structure for future expansion. It also shouldn't add much complexity to
+the process.
 
-> 
-> We are not sure whether this race is reachable under realistic
-> workloads or only under this synthetic stress test. Sharing it here
-> in case it is useful, and in case this is already a known issue.
-> Thanks.
-> 
-> 
-> Call trace (top to bottom)
-> ==========================
-> - RIP: suitable_migration_target+0x5/0x70
->    isolate_freepages() <- compaction_alloc() <-
->    migrate_pages() <- compact_zone() <- compact_node() <-
->    sysctl_compaction_handler().
-> 
-> 
-> Why the race happens
-> ====================
-> CPU0 (compaction free-scanner)          CPU1 (virtio-mem hot-unplug)
-> ----                                    ----
-> page = pageblock_pfn_to_page()
->    /* checks pass, section ONLINE */
->    /* returns valid struct page* */
-> 
->                                          offline_pages()
->                                            /* section -> offline */
->                                          __remove_pages()
->                                            vmemmap_free()
->                                            /* struct page UNMAPPED */
-> 
-> suitable_migration_target(page)
->    PageBuddy(page)
->      read page->page_type
->      *** not-present fault -> panic ***
-> 
+I will get the structure like this now
 
-If it can be hit with virtio-mem, it can be hit with any other memory hotunplug
-code path (e.g., dimm, dax).
+  /* Bit N covers the unit at @phys_base + N * @unit_size. */
+  struct linux_efi_poisoned_memory {
+        u32             version;
+        u32             unit_size;      /* bytes of phys space per bitmap bit */
+        u64             phys_base;      /* address bit 0 covers */
+        u64             size;           /* bitmap size in bytes */
+        unsigned long   bitmap[];
+  };
 
-It is known that pfn_to_online_page() is racy. We usually expect the race window
-to be extremely small. But for compaction the race window is much larger.
+and then offset the entities in the bitmap by phys_base.
 
-We do have get_online_mems()/put_online_mems(), big its the big hammer.
-
-We once discussed using RCU to protect pfn_to_online_page(), but I suspect for
-comapction that's not actually helpful (again, large race window).
-
-We'd have to use the memory notifier or a dedicated callback to let memory
-offlining sync with compaction.
-
-That's where it gets tricky :)
-
-
-It would be sufficient to let MEM_OFFLINE wait until any previous compaction
-users would be done with the range. In that case, the sections would be offline,
-but the memmap and zone range would not have been adjusted yet.
-
--- 
-Cheers,
-
-David
+Thanks for the feedback,
+--breno
 
