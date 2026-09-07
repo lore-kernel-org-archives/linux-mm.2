@@ -4,77 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0864BC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99173C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08F746B009D; Mon,  7 Sep 2026 07:47:35 -0400 (EDT)
+	id ACF8B6B0098; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 040BD6B009F; Mon,  7 Sep 2026 07:47:34 -0400 (EDT)
+	id A80206B009B; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E704D6B00A0; Mon,  7 Sep 2026 07:47:34 -0400 (EDT)
+	id 9967D6B009E; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4C56B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:47:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 562A2140126
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:47:34 +0000 (UTC)
-X-FDA: 85186791228.03.20CA7ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9E74540008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:47:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4HQVbNI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 71C8C6B0098
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFF1FC0133
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:51:27 +0000 (UTC)
+X-FDA: 85186801014.10.4529B30
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2A22E120009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:51:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHSF+NiD;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788781886;
+	b=hxgAwQ7pQkZQOgZTJy/IWNsTjNnQp68ax3FlLrWeDtf7+/3FSd6bgZWaD1JweRyNBnyOyE
+	Phr0YpFKoJTQ/EzV4ZvrgX4JrZ094Wekp/EVNTxSkBz4wubXb2qC5tZ+EKlpDR/uaAFP3s
+	QqKaAIARDVaPmTjcCFJWJMutyscCvdA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788781652;
+	s=arc-20220608; t=1788781886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WAfJw8rlDGFV693RqXxEhHyrkGOz+/nxPst/tGc5IDk=;
-	b=BkvK/FNOv4rveHXIKdJGsw/MKHIxzx71ZhXCE0f3oU5hzp3IQnCcGNQhTJMK6TqQVIDDjJ
-	v8+gRaGN1hMmmRaW9H4UzbCREWiNWoAVraHGg91jTyPs7Q3lwp+jKHkb1kiaqRoC+1CbkV
-	YD4RMrZLZr0/C/A8Oca3BIVuVABcuP8=
+	bh=y+aPhc/SqhJ7JSMC3ivXbbYiLBKgxE4zPMSB4aVyP+8=;
+	b=oA53n9l7IpgVqbct2/U5dpGesw/Zi+H5/9WcgAsRJpacavvwg1HsHk+ZaGEDubIHZhReND
+	HE/uXYocBQggFWQPV/QVd16fq86eUAaKGXr3iqxWVKpQ87fNzAa7shrpGJIiW8RMhRAIbC
+	mqgetb55Z5K3lwyJiOMdd+DaTpI3OxQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K4HQVbNI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788781652;
-	b=NTZa/4O7pozqW7axLNxK6riPTJFLur76/j0hJTZP4+GCsuWkBNp4dF8sRGymMXMyW9Eq1P
-	MwktuMYG4PDzg50ABEwBaiwSXyqMqHnNjw8fOAcPM19wx+71SBDvvx5tEkXTA1HLAu3qgB
-	1wZp6z6do3DKZFfyxMCVRXpAzfehUMM=
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHSF+NiD;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C620660D8B;
-	Mon,  7 Sep 2026 11:47:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7211F00A3E;
-	Mon,  7 Sep 2026 11:47:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D0434167E;
+	Mon,  7 Sep 2026 11:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96911F00A3A;
+	Mon,  7 Sep 2026 11:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788781651;
-	bh=WAfJw8rlDGFV693RqXxEhHyrkGOz+/nxPst/tGc5IDk=;
+	s=k20260515; t=1788781885;
+	bh=y+aPhc/SqhJ7JSMC3ivXbbYiLBKgxE4zPMSB4aVyP+8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K4HQVbNITmdLrWTPYstHL1ppZVvLW1xIAtP6plAGta2iU2+YP6b/NBRC6KAIM+qS0
-	 1vlGfi9fcFBF17GKoZqPUwSJLJ5hM34ur4aAbNOioSf192So8R0wImQw/R7AJGAF2N
-	 pCeWs5g5b+91bAuq6A1mDAsZ8QrEw+bO9zTQXiUaiZT4JUuSQxddyaDkHemDT3m2bd
-	 TPugwJ4XwSllwkNP1Kd7OyW7ulhTeQ78Ru49cszmGks+RPTYKj+/rL2cADtDVgFGLc
-	 8M13V3Qghn2BHWhQxBBX/7qsIqlUJZh7GwhgHCbLf2hwHsayxStONew1cyQlxXRnHk
-	 ZB7BUnoi0v7QQ==
-Message-ID: <519ef70a-679c-455f-ba5f-3841730873a4@kernel.org>
-Date: Mon, 7 Sep 2026 13:47:27 +0200
+	b=nHSF+NiD6uq7sSUj9YDZ36amjTyArKCHbqydgbhqrn7tOJpTXs1l04YLotUgTb0hO
+	 Ckhkl66Bqh9dJutppBBoVi6eA3IkONRUlRoOJapdpZtJorG5PFfwnggyU1u2W9rrgk
+	 CjkjBiP2I4Gp88q43O04If5BhwBZHoM9abcQpRSON/ZRVxLrmgLOub7baaxvz4NFmN
+	 MSJnNgxhU7iUwBAhlBuhsiBQWwMUFGCxLAl278BiyIa9q6EEfB69LerlaLQn4AFN/E
+	 KDG/V7ZSYcJq8MSe9RW3Z0SDC4pGGZC0XjkvhVzirwdNcy4JbYjiXqWkFq3ecDCUTi
+	 ISujGXYthbxPA==
+Message-ID: <5930324d-8252-42e1-ad50-aab796e41550@kernel.org>
+Date: Mon, 7 Sep 2026 13:51:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] selftests/mm: Exit on invalid command-line options
-To: Tianyi Chen <hi@tychen.cc>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Joel Savitz <jsavitz@redhat.com>
-References: <ZTYJZT7Q8UU4.KPP9BUAAJVQO1@mailcore-89d674988-v7w7p>
- <20260906135444.749144-1-hi@tychen.cc>
+Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
+ MADV_WILLNEED
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>,
+ zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
+ <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net> <aprjOxDy3JCPb2oa@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260906135444.749144-1-hi@tychen.cc>
+In-Reply-To: <aprjOxDy3JCPb2oa@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: qsrhcijtpe7km5xi6nkcp49exbfgdcpw
-X-Rspamd-Queue-Id: 9E74540008
-X-HE-Tag: 1788781652-559362
-X-HE-Meta: U2FsdGVkX18gJbmW01jvUOLPonSHXZr9I4GZdUZPx1/GWnQLrk9VrWI0XqANcTJRE7gXllhKtvWh4nAy8LJSiFen5AX3Rg1EI6VrT+GuKyAnK9JpYwoql9j6dMoUbFd6KUZWqfTkqu4r5n5AkWtcRxy01hmVLjVNSpZN+8iL2Nhc4cR+gFHaLVsggXt7Mrr1dkXoBT3Zx1BDyFInLjiVM55N3K3f8WS8NzODG6wgcP3j+jfo4ZYBCBsc0lua0dmceqqS1ZzTvbwFhH1c8R39bNrN4qJwWcXlbgcK6GF2hVpFClN4FtgnsgkjrIvJ4hg7o8KcMzRrMFKaX551Y3wElzXWMTmM6bfSbPc7BOhI6HZT/ff1u4WZcvlvA0TeOTtgXcSTaMja2Hdy3DXu9B6jMMXUknGxpvcF433pvdzE6PX/Bjd+zPDmtsGarzfPwBn0gx59P6eTw+MkWrzdQ8Y/wrRIGoNgpFQMFD36MJzzTzrGRquPWxcyoo6YGtwfW2VZq7idJNTfwyyvHL21a5bUDXgdDe2N5bO0iC2OTx/0lfBnP7ssQFOhegjn9dclB7sykv5RTS+7aCXO5K5V8vDtdMlqQ1u2y6th4s1ZX/COB030s95c0o/d5o9Gzgr6VD9DYcO50wcajgyqZciNkVwzeuoUCcBAL7fNmPjEwmhMmjs+B37la22Imc6Fg/g0/bIFm4gd/RsGZCe3kMDReZ90/+qaIteBI+kuGXRk8Bqz8MYH7O4/M8iCakBMPyacwtso/A32SgCrpgMO6rIW2cdmXUJcaU9pBEHreEq+bkNNd4d1CaNuZSkOvOqE0cuN2lbZCnRGNSveo1xoq2WHZ7I65lRQCzail/zfTjIsm/wvUnPUI4LDNWy7cM6DvEiYIcFoLxmxJrjqZg+YcPeZS3uHsxFwlFVvkuWdf5m9VcCqunilver+xNXOzLWLt60vop/7zc/79cflBGfZb7FHFKy
- yjGHaQle
- d0djkpKGvbBVmeE6GgWve2vLVoGc9TYeQsMEhKyCSXAxyoAEl0C+Uot2hZcdBoZnEvDiwS13dvKVXiniSfPXIczg239lrUtBz2T7ng5i2Jm7ezT6N+UIS/T9pql6KzXu9l73NzLE7CSbV3NZMaEE1Qg2zmWBY1tig3vReQPgBvTnuftBfE16y1e82au7yEdP39htxKxv5MeQappu23PuQfuEFQ2J85UQB/CJk5y2G/JuAqnSTa5tORzg3QGutfSEWNuGT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2A22E120009
+X-Stat-Signature: 8swk1wc3jomcthbtyisrdupg45u9sdb8
+X-HE-Tag: 1788781886-41562
+X-HE-Meta: U2FsdGVkX1+OVYonrI/l+gavwaTC2AnEiIEWzkqDps/WOPFt35q0KeD3riPbYIdjc6d4X0yhy2OJ4DSBX0Y+OLne6k1enLczZAqjr4f2am77GwE6+6pK2DUOPMEW6F4mXP80PLtQ3eZtuzO9/7gBTA9Ys8AjrghjuM0Sh8/LO5X7KV/ZRw50zgi+prvaU5DY4vO7SUn+A87gRf2z74cx9ZiRm+smoYzEz0pgbLlhfxOXqdxbT1F1uOEmXgcJFopaFSTby/nyIXtIkyTdl0h7mZq7ac/uf88bOpS8X3bR72+vLBv1xBeSvNVHJamPFK2V3yikEys4HkGCie5hfVIs0eikDoTD4OmcD4XG/2JFJktQVf78YhKUegiiiTB8WgwrSc+Z2aeyx2ZhFkSjnvS6krgIpWa/eXzIk4rLT8bcOKFO8Kh2IfHXxm6ZNR/ON765EQVmL9UUY+qoad++04Dur4TgxULys+cFgm3fLKp8aGkzlJDpqhP2+E/3eDyWq0MyY9+6fcaOZiB+1lk7k6NAHpsjs7QRnUSKZrKXRFjA4069mo3vEpardFfydbz4f0EU4z9Q1aZlQCPKw2Iq4fq2ZIQXg0GtLbRzNXO9+Qr2Q8tsa8ImZor8ekcIsxXbW8Wguc79hcvS4kxUPLtehR3H/8/QFME9sC+4nQcIBPQf9AYdc6hqe/HOYbjn21BMJcwFfwq5GEDuUKkKUojdnMm8vR0Se3A44IcHpyXWSyat7F+kuIjgQ5kiWv14HNgbkon2j2M3WJNqc57Gro7qnTanX8wumybDXTDJU/Pd2EwHoaMD2afaQeLkbUOEaY1EpuM6Tte9fM6y1ONSNZHty7d8FTh7+krxlS5fKY+Lfii0R1PwYEiA/bnPi74eRdkW7jytMBkAO32Jdu0wszdbV+3521NGCGy9Di1V/A0M8/4EBmT53rIeSHmX3d9w7vhbJNBzfYyn/N6LKmVu/9hIO67
+ XLxyitJd
+ KJQkUe1byhdNTvvN1WOpSoyze0PCHOj01/JPeiTH0plCGe8cDC/oi0KoTM1CYCaGEML15ZpnVaugYGES1jHc3Gg6rjsyYkfrtdbTrzIdPzWJ0MS+CGwtSrHY7ATqc/a/JG53HKCohypHjkioT0gAmEO0O4suzUz0dWSdQSiF2esWdL56fPUNIi7TGmc4kXP/VsidRpU19iW3KcxiGpGGPyk+V+vm0wR8iOAGxpwSx+M+infagvV26xuDJSblh+ohp0iiOwYB88WoDyLE7Iu0uzpkyYwy+mobgfi393lficTrq3gePthCSiN5RVLT84i2Pjq8BuZPWUofeFIMpAWNt38py/z/JgPbyFchw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,23 +142,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/6/26 15:54, Tianyi Chen wrote:
-> getopts reports unknown options and missing option arguments, but
-> run_vmtests.sh ignores its error result and continues running tests.
-> For example, passing -z or omitting the argument to -t can run the
-> default test selection instead of rejecting the command.
+> And it's a real improvement to have unfaulted anon skip...
 > 
-> Exit with failure when getopts reports an error, before any tests or
-> their setup run. Keep the diagnostic provided by getopts.
+> But I find that version is documenting what's going on a lot less.
 > 
-> Verified that -z, -t and -t mmap -z exit with status 1, while -h still
-> exits with status 0. The mmap category's three test programs pass in
-> a VM running the kernel built from the same source tree.
+> Since both anon and MAP_PRIVATE file-backed are CoW mappings we could just
+> reference that.
+> 
+> Andrew - could you swap the patch out in-place with below? Thanks!
 
-I wonder whether we also bail out on wrong/missing categories?
+A proper v2 would have been nice ;)
 
-It's also interesting that we do the /proc/sys/kernel/yama/ptrace_scope stuff
-even when not actually running the memfd_secret test.
+(and would trigger sashiko and friends properly)
+
+> 
+> Cheers, Lorenzo
+> 
+> ----8<----
+> From a706374a1186b6b4409a0e760e8728bcadba0c96 Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> Date: Thu, 3 Sep 2026 20:08:39 +0100
+> Subject: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
+>  MADV_WILLNEED
+> 
+> Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
+> entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
+> for the former and a tree walk and swap in to swap cache for the latter.
+> 
+> MAP_PRIVATE-file backed mappings straddle the two and currently get treated
+> as if they were purely file-backed, meaning any swapped out private pages
+> remain swapped out.
+> 
+> Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
+> mappings and performing both walks in this case.
+> 
+> Since the logic checks for vma->anon_vma this means un-CoW'd
+> MAP_PRIVATE-file backed mappings retain only the single file walk.
+> 
+> Reported-by: Mike Kaplinskiy <mike@recall.ai>
+> Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/madvise.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 73c2901b9adb..963337f93a7a 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -297,11 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
+>  	loff_t offset;
+> 
+>  #ifdef CONFIG_SWAP
+> -	if (!file) {
+> +	if (vma_is_cow_mapping(vma) && vma->anon_vma) {
+>  		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
+>  		lru_add_drain(); /* Push any new pages onto the LRU now */
+> -		return 0;
+>  	}
+> +	if (!file)
+> +		return 0;
+> 
+LGTM
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
