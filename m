@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E31B9C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C47C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:52:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF8EF6B009D; Mon,  7 Sep 2026 06:52:11 -0400 (EDT)
+	id 8189E6B00A0; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD18A6B009F; Mon,  7 Sep 2026 06:52:11 -0400 (EDT)
+	id 7F0066B00A1; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C10376B00A0; Mon,  7 Sep 2026 06:52:11 -0400 (EDT)
+	id 704D96B00A2; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BC926B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:52:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2896514010B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:11 +0000 (UTC)
-X-FDA: 85186651662.12.6EAE651
-Received: from mta0.migadu.com (out-48.mta0.migadu.com [91.218.175.48])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F1E2420004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EhO2ieRZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.48 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 539C86B00A0
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA827140111
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:37 +0000 (UTC)
+X-FDA: 85186652754.15.8B2B069
+Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E439840009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FPmqLvNG;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778329;
+	s=arc-20220608; t=1788778356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fzQSfIDp9gwR1vCr0c9JB+9sQJvaSz0aDGhRN8SYhP4=;
-	b=TntLpMSYDk2asY5gFlg715klQuoZ/3fwuepILlVvxp0A3/XnTUnKyI8odhd5vt2Ook5J3D
-	2y9hxPm7bqtPL8ClDbgsHA3YpZ8cHI1AMiXFdnWJUi4mvmwVJBUHb6QgJNUQ/x4bfGxaHZ
-	w2utyGnRQnymGxYun/Jvf5QzMU8onuI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EhO2ieRZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.48 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	bh=MMZIxO6CQ07igvYbrEPXnr0lkolqEoOTIlZqNcyzMSs=;
+	b=nuV+iXfR5iSzKJy1gq3CCVmuK5ajZ55gX7xoASaO5UiYrokcaYrPGGEz6rol+Ch7JczodR
+	oI88c/rJlMi7vu1wWqUwOSmty7hlHVdz29lnC87gbfO+DDWtUEpsGxOV1i8Hu3ChhDqPcz
+	V92p3jMamaiJ1uDldYogq5GVUWI2Q6k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778329;
-	b=qimidFt43snoarRPMDMHEE0TNVWWUherVdvveFTmsLyVoZMJeIxTwfsZ+jrUNQaUDX4YAG
-	kgym0CI9UDj7LGneLTl2lfLX2m5nDh50i1tTvoav8eP+XHCnwgxoeY0wmvD6akSPTocytf
-	aV+IYiauGZGKDLeuHBo621qPZYQmVcc=
+	t=1788778356;
+	b=OwpSbDgIVWA3i8Qn07S2tiPO+clsCmhFgnjC2SWOA/91tI0W7DKRW5/lFddOfBQOyIO4pP
+	kMFwO8wyf3vA8uPQC4h6aHCcLX6vsbweZSl0tPtgMY8Q3+wi2woCA/cmITKbhTsjgZo694
+	YJsQ1cOwdNIMIPCKvgdM7Q5YISxDIw4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FPmqLvNG;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kIs7OO2Nz8gSyLnqYZsS6sd9DA4Hzm9SNGUNUFTSoCY=;
+DKIM-Signature: a=rsa-sha256; bh=veLSlCX5ITgmXND1QxVSP8GF9ucuQEFqR09oh1MjNvw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788778327; v=1; x=1789383127;
- b=EhO2ieRZ2O4YEVpxN/0PD59C0RgiTOl9GGy/gBa7S8zbgwOG6/I1vOlVN0fEN45DjQsQctdK
- CcaRX+rG0XelhcHcOg85AxkDmm5MPoGMN1xCRyJnZvH4vONiRIu8qmmRKreXBWceIaICD2ZTG9Q
- 9G7JzQg+fEcUjJDZIIMNNfHM=
+ t=1788778354; v=1; x=1789383154;
+ b=FPmqLvNGSelN/rlCLIg1CFeJhLjvx/ZNnB1VtbTfOR1JatUfHPu91fAiwRam+L13YzIwllLp
+ cSa9olUaOLstpW1uNAwVMAwzPu5/8kx5S3QcPK9ADFQzDf35mJfSZoft1m0Adep9ERkMPYXCU9F
+ FB/A5gY31O10brAU9cAlSVEw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 49a947ce0a393c76;
-	Mon, 07 Sep 2026 10:52:07 +0000
-X-Mizu-Trace-ID: 49a947ce0a393c76
+Received: by smtp.migadu.com with ESMTPS id a4af63cff6f3130f;
+	Mon, 07 Sep 2026 10:52:34 +0000
+X-Mizu-Trace-ID: a4af63cff6f3130f
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <a0277c83-6beb-4e65-a892-37eace21fc0f@linux.dev>
-Date: Mon, 7 Sep 2026 11:52:01 +0100
+Message-ID: <eca414b4-9baf-4d2f-9842-373f5cc79d60@linux.dev>
+Date: Mon, 7 Sep 2026 11:52:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: thp: restore SHRINKER_NONSLAB on the deferred
- split shrinker
+Subject: Re: [PATCH 2/2] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
 To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
@@ -82,20 +81,20 @@ Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
  Xunlei Pang <xlpang@linux.alibaba.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
- <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+ <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
 Content-Language: en-US
 From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260904033503.4067283-2-qinyuntan@linux.alibaba.com>
+In-Reply-To: <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+X-Stat-Signature: giax34d4d51fkesps1wpi3gzp5t1ceq6
+X-Rspamd-Queue-Id: E439840009
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: cdpbk5xxsxaoffb1keouzf64rg83sqfa
-X-Rspamd-Queue-Id: F1E2420004
-X-HE-Tag: 1788778328-380623
-X-HE-Meta: U2FsdGVkX1/+hdzBH6Raz5/9f5CYS0dQENmeaV2BIFN4pbj4yokF2SFQbEBinBuAL3Ia8MpvUdUH+i/yr1UGNIc9ROMKpdw8LYMSf918P3+39kNJZbfl4Am61h+FtJ/KiF41TRwrmxRuaK9ILIzYfzFBHH0hjZIQCL+npEPBZH6T5zW9prFXxnW13OM5Lfwp45+FqEIgUwK3rY9iEduFZXXqByCG16O58+gBTGEGEdbO86Mav3MONVRwmDqV2MoGPKxgXxtp+SbkcDlxYnEAcUXkOsgmdPGVFiWWl6bO/mqXI5YONw/EHY/0tyrH0Rnp7YhSDTiz8YWpXHhcwmCt5FBiavPdQPaVgMxcWT904iNcs/iPCRFSg0BP8u7SRIUKaVk1tZ2EMKxjzyiLs3ppgH2tyxfIetiu/MuRiY/Jsbxyj5fMuHc5lljvjMKyd30Ftl0nlAHco0R6smo38hhbkiQPoQZtXxVr7oMC8qDdeIMemdHtn9WLgJ+mKx86yUQqofTxg+3EbNAtKx4v8WGU1i1EFO30j+gFiuKpOPyT3B/5c0+qX53AU7mfHaElxz/FZe7lvuDl67cmMo4a/YeMa0p5KoxCdUzXv+Per13cK/+o74plaWCRrNiBjY1dxBGIm1x2XyLPpRh36BX9nWu9ad6KTknX4wEFDvp2blXposWw1gVRuEczEf8pA5N49cc5Sg/PbWHyWyY3GmsTbvmzWsfq2gBBnvgMLMEqahgq40T3af9Mlx9fwHAmXsTHWDVv6+jAP8efdoHl32alctKECs2cIj5g+vBMBgALpQIT1RgmKqLpf5pwGse9mOGWxPdZakQthtmrsMKsqoGbr7J8g5gZhxdm+C8s1qQXEp77QfpEHqiUkjYruTIFHBUYb0uqZNGeqvjy460ioF6bjeEZ4J41Ax0u/Hdz2EVPC9TlVsYcYaMrhWRE5sNZGvZ/fOyuaGZJM5ZMgtg4OxYhpgb
- ADdx3d2r
- 9Z8G+xXzmuwuqsNtxk1uszlRmZ89EzB3nPLC0s6Z+jD3LTi2RP3UukWSbhZYJV6SU+xXO35NRS5pjRuCmDjzfwcqd/ZQ0/Bmak9V+Wl0eaZxS0ofgIjM/VXTCSbsBQLve2tHyKY8+3q9m8bGo3XjnYxzyUHzek7qaUwguS+/axP6hHHkViiAL1lziCqKB4gsgZGjnAJRz4/gtqr5m2G0euW9jBz9ZajtjRUDift9/x00goTLQAAQAb0pZPnPcGjsVWVC/mmeUu11Q11uiLQU5n4Q9qII7tQe5v2dT6x7vN1i+ggPBidcIYz+UeTneEhazT17bpyjCX1qVDMqu5SmYhx16FhhlsxlfAqQ1sc7G/nfiy/anT1FTdQ36k428GYxooJ1FL+Q8EzaH6kmWj80eVHLXTFhatdg8GY4qcj7K24XnCir7BZvpSQxqM4je9z78fE3tAw6OE04tP2M=
+X-HE-Tag: 1788778355-511587
+X-HE-Meta: U2FsdGVkX1+zFcekw5bJRTq4lrURr1AV1ADBECxa7awBLET96GrgZoGpHiGqneHIN1qNmJ4IHOiuQ3OR5vCE/3iLauVw+EXnlm1FRil2ouYpQ4bQxxBlV3zKWYwN8O0yYd/mkyyUyqQR3jaFwfi765+3LMp0CVULWTekeR/fhWNkNKvadCSK2Lpdc8wZWtGl9qYYhjxyg8zsrZTKnaxeiBXqPBMZalF4wnwgV/yu8v40oUKx4TrvSfa7onn4gguZoyEcSAL2NZwE7ZcZIu5yfq9FWhSgZtWj5z1+jTlGJT3lhd6WZRwWYcHhRMBtZI/ioQCumSIRvRCyMRTqdIn7Tl2cqcEpCvUtUWzgCzTMx4QsBjr7vyN1iWiy0SKIY4CF8dtCTJ/mhPt9rn+fg/nDpkdh3iJ5/q2jZGRW6M8pJ2zeg/EXSh15GX4Uu0PGDVvdU1RuSWyBILxZfwnWCbtvMEv3Wjg95p7/rqxx2p5JaH/XBwV9NV/XV45cexDPX1YGQFevKGZdjhwDcAADK6qRDDmphPaU8w+8luDfLbD72Fe8dVGN+wE4knefgJ2AuyrmF8t237pZdSGLokvB8pU2l1lx0dqAm0umbHpWC/D/aDj0NTXvoLj4YxCERxLQPgZAe04afc6i6OGQo+mrw2i+Hrmk2jXkfmKU96MJtvnP6BC1CIgPaYLQP750qbuJWaDkxc+PaCA6UcUyYAAZYIEEEN1Esm/l8xHnlE/Fn3mP1PK6tWxoIxCg3t419su2NWnIvV6ZWEHrjgH1S14oCDcWf7n/BoSfBh2h74GfwuoCpux3De39kpH7pmxlzpzvq+vCi67DL+OtNwRxpsXued2R+H9YG2tuAL80rwv/CDNIHUgNW8H5dHXZ1NHWmTVGj5nkMXNAUquZXvg6X4i5uz7Gbrf4diCLKkVX4ODCPgaSRzoJeVGhQcrpzVdaQkUMmFCqMW+hOP/Ua6Nuj9DXO1G
+ e0oQkR+D
+ yQSP0AMR+p6TtI601DUTFRBcJZBscX7BOHkCtxCxuHtBJ7Dl2cmHceLUvv/NZ7EVc2hatyTKHu2zJP56VIz2u/JGZBzzMA4pTF6/SoFu1Wg5p48a5pCKKcO7zNhG/j/47ImtFjHvLP0diTvdPjcwPfrIz9eqS3dQt24RIX5XZPHMJPsQP0K4Kg5H93mGhA9jFNAMcdUDTS6BzSRIhfgVbbKFMzww5klceAfFZAdDmNxm3X/rqUsdd2aF2bbKjbo9sRbStGncc6cKhQ1OO7jrLOL9YMrWC56yEyODB+KVBQwoG8PH4WRK04JkLBlaZX1enEIdJQAuFuqxt8azG3zfQnEmJn9X4Wd5KhwLtsNuyvKOr2NM0nb252CbSUBOm2Q5e2zLtF2yUYPkvdupWYSyoReelH9F90jBCjM0X6Bv7FrNdjPdisj50Lu3BeO2+jyjMABI9wfuF4O7mbis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,48 +105,50 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 04/09/2026 04:35, Qinyun Tan wrote:
-> On a system booted with cgroup.memory=nokmem, the deferred split
-> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
-> partially unmapped THPs are only split under global reclaim; memcg
-> (limit-induced) reclaim never splits them, so a cgroup under memory
-> pressure keeps its underused THPs intact.
+> With kmem accounting disabled (cgroup.memory=nokmem), memcg reclaim
+> never invokes the zswap shrinker: a cgroup under memory pressure does
+> not write back its own zswapped pages to make room; they are only
+> written back by global reclaim or once the global pool limit kicks in.
 > 
-> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
-> split shrinker to list_lru"), which re-registered the shrinker without
-> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
-> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
-> precisely so it would keep working with kmem accounting disabled.
-> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
-> nokmem and the shrinker loses its memcg awareness.
+> The zswap shrinker is registered memcg-aware but without
+> SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
+> before commit 03375203e1da ("mm: do not allocate shrinker info with
+> cgroup.memory=nokmem") it was skipped by the !memcg_kmem_online()
+> check in shrink_slab_memcg(); since that commit it is demoted to
+> non-memcg-aware at registration.  But the zswap shrinker is not a slab
+> shrinker: it tracks zswap entries and resolves the owning memcg from
+> the folio's objcg, independent of kmem accounting.
 > 
 > This was noticed by Michal during review of the patch "mm/list_lru:
 > don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
 > 
-> Restore the flag.
+> Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
+> under memcg reclaim with nokmem.
 > 
 > [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
 > 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
 > Suggested-by: Michal Koutný <mkoutny@suse.com>
 > Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
 > ---
->  mm/huge_memory.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  mm/zswap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 644d6905b49cc..16f9aa5b2d077 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1022,7 +1022,8 @@ int folio_memcg_alloc_deferred(struct folio *folio)
->  static int __init thp_shrinker_init(void)
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 761cd699e0a3e..8bcc2997d7719 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1263,8 +1263,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
 >  {
->  	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
-> -						 SHRINKER_MEMCG_AWARE,
-> +						 SHRINKER_MEMCG_AWARE |
-> +						 SHRINKER_NONSLAB,
->  						 "thp-deferred_split");
->  	if (!deferred_split_shrinker)
->  		return -ENOMEM;
+>  	struct shrinker *shrinker;
+>  
+> -	shrinker =
+> -		shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE, "mm-zswap");
+> +	shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE |
+> +				  SHRINKER_NONSLAB, "mm-zswap");
+>  	if (!shrinker)
+>  		return NULL;
+>  
 
 Acked-by: Usama Arif <usama.arif@linux.dev>
 
