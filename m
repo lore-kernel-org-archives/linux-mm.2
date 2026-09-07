@@ -4,100 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F954C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 04:29:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8675FC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 04:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 223056B00A1; Mon,  7 Sep 2026 00:29:06 -0400 (EDT)
+	id 4E7D76B009B; Mon,  7 Sep 2026 00:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F3056B00A2; Mon,  7 Sep 2026 00:29:06 -0400 (EDT)
+	id 497EC6B009D; Mon,  7 Sep 2026 00:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 108BC6B00A3; Mon,  7 Sep 2026 00:29:06 -0400 (EDT)
+	id 387CC6B009E; Mon,  7 Sep 2026 00:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E294B6B00A1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 00:29:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7ED6E16069B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:29:05 +0000 (UTC)
-X-FDA: 85185686250.07.42F32A4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8CA69120004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:29:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Btqk/mt1";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788755343;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D22B6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 00:58:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84FEF80677
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:58:32 +0000 (UTC)
+X-FDA: 85185760464.23.AAA650E
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8E4BF40003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:58:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RhWAYS+3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788757110;
+	b=Rt6MFGFCHEoKeMYL16R1ctZsWSmPFf+0l/tkiI7EGYvRNF63jK5wUpLLCee+U6U+ImCIA/
+	62TGu2KqEsABfRTIQQatW6fWQE+V6tCx3C5/okROhoNMPPRBUXqN82nB0AI9nUa81T51VY
+	zuycP0fug9WHd43SolzFS/3U1CLR/Pc=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RhWAYS+3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788757110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zBifm/FraP57DTg4/mAb5WjQYonNACDntoRnYGfolsg=;
-	b=QpnTFm9raqV6UP5bFzDHF5mf0hKlrau6ZA4elgmJ+ugWzXqOhBLKwY8xCKeFcHs81q73TM
-	xWSB52NLvYU1MEoI4e05BH80I0DRXvsIv/BrEtXgmT4lJnBLFFASdIMnEfyx+GGTAgHdSC
-	OH84KyV8osFKSuOT4vt+vkcgu6uDB8s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Btqk/mt1";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788755343;
-	b=ek4HOuqt8qyfB7dkmNfe5pWdUXvDIUt7PARlsM2hcwsPPA4O0ksRo0PaM0Jb7UxlA6BQ0U
-	EdUJ0zw/iVNINC/UPwJZvMRY+9GTSdsBDFtaKxDnD0/fD9hp3WVc1tdD4Yg/SNfsJ19zes
-	ltz73lYPM3Ztdt3o9hVZvxFEKB9nqa4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D25CA43E5B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:29:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66771F00ADE
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788755341;
-	bh=zBifm/FraP57DTg4/mAb5WjQYonNACDntoRnYGfolsg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Btqk/mt102Gfpyoh8C+KbcMJdhNnyG3O8+0w+hbIg+sEM7tF9L/a7ERWMyKPTeBEd
-	 ERTHCmjKikWvXM4DO/yjxRzd3ZwB5un/ow9bL0rao0gBNWh+IidKm9qb/omW6sskCS
-	 cg3ieSiJ0vG1HxIxpSKIEnvl4EjUQin4CSXuRHVe7nW4Kuenzclmf6a81Jh6TIvIZ2
-	 ziI6f/Bst69buTgPTHqR9T7QHrDiHKRlKuM9GgBiWlgOiOrd378P0iYVX/XjazIQaZ
-	 Aa0JKuOCoo0o5Oa4JCKrkc8oNGwbzOWI0RAw1eBFqYpTYPay80SwUoYq7oI8x+8T8l
-	 ee3TmUSuraxag==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-9104956083aso19201186d6.1
-        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 21:29:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz1QQAQZIcm9m+Bs1kbTVL83YbX2J5fTbuRfVZ52QiHAPhEcwE+IUeDPrb4hmAX+63Ay3ZVzvyNIw==@kvack.org
-X-Gm-Message-State: AFuF++k0R5f2k15gjPCsixMHm/mfiDZZqwI0XoWHs4WU0/Z+oncS6xgq
-	2ExHmmFFGrpgb+vCc42v+IzK06Nf0LX3sJh2skaY7L4v0fCUfYZ7Akfrn0tq9mAcCepIEOVzNRF
-	e4oq7oKvclQIdb5lol/MT72gEU9UdzOk=
-X-Received: by 2002:a05:6214:311a:b0:90e:7fa0:2da0 with SMTP id
- 6a1803df08f44-9103f0c2e81mr260933466d6.26.1788755341039; Sun, 06 Sep 2026
- 21:29:01 -0700 (PDT)
+	bh=tuehE0uxyP8QclAP5St77Z5WsLN49LUO0mMCew4emS4=;
+	b=WSraXMrYcRuqJQfgEeIOHvYIqqIsTMG7Gdm+YWsAlU1v4ApPiCrppN/vsOTGZOe3u6LS8U
+	GNx66uLorYuBKzJ0CsG8Dewm4P/bNMf1Vs9Mr9mcxXxTW/nu78+FSpV4pWhLn5GZF7fQpe
+	h/khGFxc3jjQV5XFl6fcLV3UkA5OT14=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2544ff970dso400907566b.2
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 21:58:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788757109; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cfMoE0g8DJ+eq/C1lEHfkckfQJkeDKtCB1Hc1tUTtAagS1JdfSJOAP72eIfkNBpBMV
+         D74FCyvifTARn0oM4EhV6gaCKZBqNtJS6ioW4BZOyssRY7Z8P0M5ECFeKqvI+Rs4UkyB
+         vwS9Ds2yWgspMk6KSH868WPG8z1GtcF/rn/18kQ3OdQaTjxmtQs4O+uNk5pZoyRKMDNa
+         /SchgfwIFXdawiz2zr4hAya1Co+fm81HeRMwXsMQTiJVHQzTpaxWBCY8tXPd+v0fhBA1
+         kD+iRDk7WKc0pJp8ehqbbtdocyoSY1F9xfkKX+khkINDyRPj9t+ccFNq9bh2EMF8JKUt
+         N/3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tuehE0uxyP8QclAP5St77Z5WsLN49LUO0mMCew4emS4=;
+        fh=RRbu6igDyptu/BfVdSytSweFbj6Y8Iy9hfsYwsrYMcI=;
+        b=DBdjryKHZnwCjxgL9wS6zDhPjQ9KlMdUgyhaTh9UbD7t1JA+MzRs/7B3ZjeQBRjyVT
+         +N+XvZpXyTGiKszZuG+wtx9HtnR5DSbRpDw5k25Pv0p+oO2kGMGMYDlFPBtcbGRfuo4T
+         ehF5c/ln0sdgOk4c08WgfnO/yWX3Hx5NUZ4tHYGjzFevOT4kgIt9JE4CJml8vPyiJChY
+         zlh+01iOpDU/c9EsM0w5XU12tWDFf2yBU0MUScCgL1/E4P5aMEtejmc8iAsh2sJukbKy
+         UCOiXkpO8owQkOVUiuOz/fbl8/xy6K+NVez8nTVt0uyzSCbIJkfNTqvzWKUjcTsXkq/5
+         qH1g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788757109; x=1789361909; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tuehE0uxyP8QclAP5St77Z5WsLN49LUO0mMCew4emS4=;
+        b=RhWAYS+3LoxMZaud8lbm6JrUUjXwd4O3oUL281WSkM/vN7NfYfZyAtPpT27rVc6gec
+         VSdNcHItq9/HZUq4ppZkFfg6GtTYv/Qs+/alMozCE8oiyEtiLm7BtPmY0ZxbeJ5zKF5v
+         6uV9lNg2q1y8vGTf+D4yjkpA67aKrtc3DR2JZ5/0TbRVbxd6Xw0PyPS7RISidj3NngW6
+         C4KqKB7oceJ/FdiUiYExdGpD7/SUXrXMgidlSju5IAdXUKDKmRg5TFhYBrL1QCHhfYWB
+         1l/FnOtJ5uVX3AgapZDkCjMoSnXlfvimswcO8E02OqVw9B4Yrpgxa6JgQIgqX5Mr2LhW
+         E8Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788757109; x=1789361909;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tuehE0uxyP8QclAP5St77Z5WsLN49LUO0mMCew4emS4=;
+        b=eyWhYa9utdsiK/yzqEnonTe6gQRL2ARow+eUUYonqroizuiy2ntnxQZY622O+vnreV
+         WnpkGUyU4LHW0mAhxdF9iroM4rS/4FuUEXrBlAl8qfR2FlLRH5S0VjMb2JpM79VBfwyo
+         zDdgLQxesq7gyHphQdPEAg3seLBgUUeoAuouy4XK4abYrBGMMaefBC1Ef4XSc0XIhVoZ
+         RL09t0MHFbz8IH9295FSckNWwCDdboUhF7/wn4dhFZPbVZLQUoV14u5J3CMZ7gk/g7+C
+         zz7JElTZDjxxsj6d8QJR/96ZCpp0mnkN1at1pqDe5BVHV5I64JMVK9tRwAGb8T26moyf
+         H4Xg==
+X-Forwarded-Encrypted: i=1; AKwUvBzYG0AtOWWed8AjG7n8nhgBXJjUehVHWOHK3/avLncQaVC5/Avv5cnY0nJ9B5LHeZSjJSdtAochjA==@kvack.org
+X-Gm-Message-State: AFuF++l3SyKU++2PfGhFEjBSgUhkapAxdzFVBlkqT6Rq/TXY1nGBmCiM
+	g9lNB5Le/i5Mcu2HBqs5oIqG74oWN4U7iOJJZ/RjvtJLpAMpY5ZV4QGw6aCAmXbFl57MQE+3n+6
+	J71509w670QowdmYvjOO37fVAE26eMQ0=
+X-Gm-Gg: AYBFou18M1CPALD9Gr5rW3zPezMZf2/YOE2lwws5KpSTG8pT4buglMPC5g4It+F2eac
+	hUYn+UitvSzzaO3Rlsntcy4l+DoS1hmM7ElXdl3WDUUjhK3NvLnmBPYOnJf5TxwP1cj9qYTEi+I
+	dEATkqdxEGdEXBGAU3w6C7FnyU52Nzmbim+ctOnuwoCs7lGvjSb2m2C56+p5pYmDWeMPOdI81zD
+	0MpA5ddP742Rfw79J8JVuzvUpsY5l5Ncphz3GL4Aws0RQg1zHqpK74l287JeNT3ftvciKLmBrnW
+	EpnTOKll6ZfUGx2BmYf7M9MEiglsODaydpGzd0RrVZvjVocZaNq3opXXpzdVd9Unp5N7Z/L3avC
+	B8kVoGGhO5IBB
+X-Received: by 2002:a17:906:f591:b0:c20:f529:2d6a with SMTP id
+ a640c23a62f3a-c260ca339fdmr717091266b.22.1788757108783; Sun, 06 Sep 2026
+ 21:58:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
 In-Reply-To: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 7 Sep 2026 12:28:49 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xxZWomhtUmdz9f1x5wdeoTSTRfEudzufdBs_ykKM1HBA@mail.gmail.com>
-X-Gm-Features: AcwNN1VL4WFRr5mGdNag0Khr2IvvJ2RI26gEndOePTGO-SF3Asc1L8j2bncfTpI
-Message-ID: <CAGsJ_4xxZWomhtUmdz9f1x5wdeoTSTRfEudzufdBs_ykKM1HBA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 7 Sep 2026 12:57:52 +0800
+X-Gm-Features: AcwNN1WCmWRL6i_U62NrDST-CssECUSdn5YmF0MTFdEu-IgtpYwqDrGnPkSmwFE
+Message-ID: <CAMgjq7Cf2ZjkW0JxtHnm06NECHA0+wCXAxd4tkbtCLhC+qA0ZA@mail.gmail.com>
 Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected folios
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+Cc: akpm@linux-foundation.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
 	weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org, 
 	ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ho6poi19h65ygokd7rxz5jb56gw93er7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8CA69120004
 X-Rspam-User: 
-X-HE-Tag: 1788755343-97337
-X-HE-Meta: U2FsdGVkX19r8w/oI7d01dSXrnbS/To3J5Cdpo1mFXs62n2xLrZzwQ5Uw0Wl1ge64oqmdDX845lr6dWAFegOmBuKRk0/m1owUthGsu49HjieMu0n0hsxkjDa7Pqc3NpdMg66BWhuEYv+ltIJKoisU3A5YzGwYmm4ALgNQyJMztXKw4SQOyNevo56gC6rdIWKp4wNdcX2M4pAtwv5hUVTycccban1WgE0wsk4ZMlBsBKHQs8QBfRTJbnRg6z12GEOWm8UnZSeKZNRk5wsXjawHcJBrOgx3I9/ROxHYLLYDEI7JIpOSV3ta+7AV8b6jynFNBEyB3nL8qZaxFXYHKN/DvK7Nx3JF6DceexJaiWyJtBSQxoECh2HTqPRxdadvrnEqL4ogK1AX8MBSj4PE1amuUG0fFjIfGYEp3bzRAsFjWD1+jzpLE3iSeuTE6oEkrdNCv9QxSaPjaHsYjxdmIaEo2/t7qWmwpavlJjtWX/BoHeXpkePTvdxBAhugvwi+i1pipq/gY3G5qGfQaHSpHeADqsVKk0r5PdvBO2nAaFRyrRGgSWWZdLoGKyBT/ZsReMSfEu8CNpe1FmW7ZUCdrMjDqzgCgRFyt7sDQwwN11ShWqqT+QoB9LvgB2s+1ejon3ebDjLoaNA+kYGvrdcDQfiOmZT7x6ju882WH1adMniFv/iDVKfCVHcKElndliNuhjy82T/NHSQtdI36H7EDWjDaX7KvtxbHamhWMROdAdMg/bX6styq4TAWh8GSsUH6WC5UsW1fWSmph1Q39ROsTaQPgZYNany7O7fM6vnEwEpRj9EU6sdYrkBuRkSVIXVOt1XjHK5PalDmaEbtJqxa39aX0QdLN1kt4t2eQnih9hyUSM6RuPB/ODQCHjs1n/5qJJVcHDzI2TlMIexHHdaRa0DqfscbrpfQEoG7S9oY5rdtqKpbJXNjSzv63YCI9OEVDUvN8lPDbiG717U3QArA2T
- Q7uNfqTc
- ZkUd5ggO7k/xX5JwmAN8TgSUwNLR1X9cMGLrvoXIAub3yz8gDhWFUGZZ2bl/ky4Q8QxiHEW4m5z+j5BQ9spj5M2sbeQW0/Z525J7WsPZ3Nsxhtjwk9FSDGpdzMEpvgRuNP17XnRCNouzLWtYsqBFihSm2zuAJPL3NiNeKVZ/tsT8odWWPjiaYo2iYQD/f6NXDsXQd9WkKqnkUc/sgbcyA1EMrng+y8itfvxPg0eDTi4Qe5pf9c5Q4+dKaxM5ObUayZg+yOO1hjNBGJLjrJ3ke1QRzxwatx1+NSmo2exWWVIMaifQ1YEoWLk+TxGyPqSUodwS+ThGCpvDYysQ=
+X-Stat-Signature: nf8biykzyo3d4ffch5zfqzc7juqfbz5d
+X-Rspamd-Queue-Id: 8E4BF40003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788757110-715858
+X-HE-Meta: U2FsdGVkX19suelAL78SeuBPXiTXbFv9Jg2kmFcT6XY9sxROiMPQ46zgKzjFrevPytb36ya0XAKtGtH9sPEeRI57nBJ7bu8npZ7LPy1DH0nfYclpj0T8aVuMY1uJoBJKx0wFNPzP7fTp//eboxMkf0at0hDZvuvxBWCQfFjwOIcmTN1KFtYrfIXsjSDmIDLey6lMo8eLnrTrf0TSGpgAVz8zi7ua1oVb0trkjUSK/U+BYDuceANjMNhzQVHxBcp33Q3nwPTJD0MwTH43XcVll/oPPY7Wn5BLw6i9481A0SDBTY7rGnuiVd7GZGnQPjNY2xd4dqkt/fARFTE3ZjEmJOaejy8utkxjuD+V5BnHIdFNo61N5c1XgizcwV8gLuNJl5F0KKZla4Z8CZGNmQEkl5QdViuAKfzut8SFlnjSWBWobLnCXZ89w/O83Q7lKvZAwVmSyKkLQ8IPx4XNT9kOuxrD4dsCnAqD7sZCoGJWEkjGLcyLDeNXa22MwczpoQXnEBnzfSNPWkblt09Ow8AqN/XnLBi6Aa2XFBQlMB/ROqVRiA5TjjZxIC8bMr2t8bVz/UIqFrP24lQz2s3JxCbnn8hjCQlwmktIsN5IsfT2fDJtBdzrIiNKGrnA7nLQILFokTcHk21dLSkNds+HHtkTpwT/1I2aVktj++jyLW5+tvi1WEP3VsROHJwr3tRrlgzTLw9R7LuIF7e9jEc+/8N0wLRRNvyEOwge8gH4c/hqPirEDZMFS7G6myr2rGA55icuZIR4uij3hHnmMFbVsAiLu9ehDBnpAYqZVSN9qS272QIwVnkjKE5n0urQ2IYm50dp+AfX+/vqJTuDrkGS2E35MbZTIZq0gq1nHnoySbHXuRzGdBdqT812vEZuPkeWiKtZJv0xrl5Qk1hBZsCFQaWmnGiA3+Ww2qW76SHzQa4G0LftY0U63n//uMHRS9WHVHVL/Nuti/y1pcB6toj0P7E
+ gJUUkGBH
+ KF8irN1gPv1hTkXfwNdmAM1Sd5I/HUNsAXoRsQ074IbpHifnlCFgRkWlsAWh802son1u8plKUyu+n/YSX2S7AGgp0PUtY7hMq/47wzZ3CmC6wlaDzEz3+xjgUdNCg0UR2Qy7Z65Eg7GYLsD/wuWw6WOF9fA3z0ihEeWXPMyf5yRZVg5Zaqs6XwbQ6A8ETgwqrM9G7HtJ1Z85uabacuYzCMmelI0xZzRfuNdu1U4BatkC8ZSE/5H1JWGZA6N1nf6B09auTRRssydnBOgg0nffdSiPxGj0GBpPp0Nr5md9afDeFUzkBSYv4wui2lgdlfgdib+Rq5B652vb9fNJQyYuv/qJYxkKoEPsX7J3kBpbg26eRD9t96OwB+SqG9/KgB1mHywTt0zVv0jw3sKb98rwhBK+RRdI9+fGlSLv8qwqsGaepSco=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,7 +143,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 11:25=E2=80=AFAM Baolin Wang
+On Mon, Sep 7, 2026 at 11:29=E2=80=AFAM Baolin Wang
 <baolin.wang@linux.alibaba.com> wrote:
 >
 > As per the comment on LRU_REFS_FLAGS, when accessed folios are promoted t=
@@ -116,13 +154,6 @@ o
 > For folios rejected by shrink_folio_list(), we clear LRU_REFS_FLAGS and
 > set the PG_active flag if the rejected folio is planned to be put back to
 > the oldest generation. That's fine.
-
-I find the description a bit confusing. Yes, according to
-`lru_gen_folio_seq()`, the folio would be put back into the oldest
-generation. That's why we set the active bit to prevent this from
-happening. So there is no case where the folio is intentionally put
-back into the oldest generation.
-
 >
 > But for those that are not put back to the oldest generation (which can
 > be treated as a promotion), we do not clear LRU_REFS_FLAGS, which can
@@ -130,10 +161,6 @@ back into the oldest generation.
 > new generation with stale, inflated tier bits, which can inflate referenc=
 e
 > counts and distort eviction statistics for these rejected folios.
-
-Maybe simply say that folios for which lru_gen_folio_seq()
-returns something other than min_seq?
-
 >
 > Fix this by clearing LRU_REFS_FLAGS for rejected folios, and also do some
 > measurement. On my 32-core Arm machine, with the memcg limit set to 3G,
@@ -149,56 +176,25 @@ ith
 > NVMe swap:
 >                 w/o patch       w/patch
 > sys time:       760s            741.5s
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/vmscan.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 40d3f1b48a74..42c0a09938ab 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned long nr_to_scan,=
- struct lruvec *lruvec,
->                 }
->
->                 /* don't add rejected folios to the oldest generation */
-> -               if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
-q[type]) {
-> -                       folio_set_lru_refs(folio, 0);
-> +               if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
-q[type])
->                         folio_set_active(folio);
-> -               }
-> +
-> +               /* See the comments on LRU_REFS_FLAGS */
-> +               folio_set_lru_refs(folio, 0);
->         }
 
-The code change makes sense to me if we keep aging and always reclaim
-only the oldest generation. However, if we go further in
-`scan_folios()`=E2=80=94for example, continuing to scan after we have fewer
-than two generations left=E2=80=94we might not be in that case anymore.
+Hi Baolin,
 
-So far, the code looks correct to me.
+Thanks for the patch, it makes sense and I like the idea!
 
-BTW, Baolin, I wonder if you could find some time to test this
-change on your arm64 system:
-https://lore.kernel.org/linux-mm/20260901220430.79810-1-baohua@kernel.org/
+However, I find it interesting that your test setup shows such a
+significant benefit with several recent changes when I can't observe a
+performance gain on any of my setups. I'm a bit worried this (not only
+this patch) might be overfitting into to the kernel build test on
+specific setups.
 
-It might have addressed one of your previous, similar concerns here.
-On my x86 machine, I find that the change further reduces the
-sys time from 3 minutes 40 seconds to 3 minutes 30 seconds.
+I did try this optimization before and found no gain, maybe it is
+somehow tangled with some other recent upstream changes?
 
-Meanwhile, I will also run your patch on my x86 machine.
+For example a few recently landed MGLRU optimizations sped up the ZRAM
+kernel build test on your setup, but slowed down many other cases.
 
->
->         move_folios_to_lru(&list);
-> --
-> 2.47.3
->
-
-Thanks
-Barry
+I still think this is mergable, but before that, do you have the
+LRU_REFS_WIDTH data from your kernel build? Or lru_gen_full output? In
+some cases it shrinks to only 1 or 0 bits, leading to very different
+performance readings.
 
