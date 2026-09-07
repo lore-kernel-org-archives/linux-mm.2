@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEBC2C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 01:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA26C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 01:46:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E18A6B009B; Sun,  6 Sep 2026 21:44:55 -0400 (EDT)
+	id 4952D6B009D; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 491C86B009D; Sun,  6 Sep 2026 21:44:55 -0400 (EDT)
+	id 46C7C6B009E; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3810D6B009E; Sun,  6 Sep 2026 21:44:55 -0400 (EDT)
+	id 382FF6B009F; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0E1B6B009B
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 21:44:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AB1FA4AF9
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:44:54 +0000 (UTC)
-X-FDA: 85185272508.19.45F044D
-Received: from mta0.migadu.com (out-87.mta0.migadu.com [91.218.175.87])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2D5091C0006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:44:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZCwUwJdn;
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.87 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788745492;
-	b=MNKT68K+MFbMZoXUu4Qsbw2Mt9znY0dcjv1yu22MDZSH32bhAoLVIY7ciyiRui8r8Zm5x8
-	LYgSI0VidnQSM1Bh+FQ/pG3io3ulYF7TXQvYrdkOX5bWEu+YeflFPnIlgYwpgTHdOYDAIX
-	jM50G4Eo6QrIGrHdMApy1ifnV/9NfDc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZCwUwJdn;
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.87 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A85A6B009D
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74CE5120634
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:46:01 +0000 (UTC)
+X-FDA: 85185275322.29.035E4D3
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 58BCE100009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:45:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788745492;
+	s=arc-20220608; t=1788745559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xaBC8boHKgf9GrNtk6/5x8L2pCqXd5S9ucBUpnHSZlU=;
-	b=v+qijVSC7jgJai8s7eLUMQ9BZjCUzOberD09p3JLb3CExzlUrtLXtEGXeTzvKoUl8l8SLt
-	BM9PJ8VjmSi443aAl3vPbcx+bfEOBx68F1rf/7LZ7fwF+ABQW+pH4CTZvmqrNgfUZ/qVko
-	WUGt8Uhz36N7KXPn9oixvP8T/yWOPK0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XMR5YJjRPObLoKxi0OzfqaRkyg3NKVdX/m6x9mGp2oc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788745490; v=1; x=1789350290;
- b=ZCwUwJdnQWZStcaR1trmencBxswFTSJP9SSHtDQ85LnJZyNu/A4+4jTNLdmgUIHqbaDDb+JB
- LQudeadFJtMDgfTF6V0UwmXbodmzrtZ94bHIiO7J/kDN+fKED7jno1P5IJE9rmIMHXiHQdMxRy3
- k3qmsR2+SEnDwKHBqxMKh+Q8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8afd76475cebebba;
-	Mon, 07 Sep 2026 01:44:40 +0000
-X-Mizu-Trace-ID: 8afd76475cebebba
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <33a37382-28d0-420c-9254-431e1b7e6d6b@linux.dev>
-Date: Mon, 7 Sep 2026 09:44:35 +0800
+	 in-reply-to:in-reply-to:references:references;
+	bh=+G4MDmkdkKL/iE5/OlJHxou/7auZ2MdOrrTTdDQaGtg=;
+	b=0xOJjVEKyCvEo18G6Q96KJjsL4z2oJ/FxitZeM3vS/AYPmgmVuC5goh0USBcBreo34QPb+
+	h/9BBdiEYu07uXik9i4tDQaVlPzFMGLt1CWVV21QcVyuE00tgJuQRqwC2hkl3MZ/6yr7Yh
+	oLmsOOiyDUDIZdvD8x9+E72n8ZY0ss4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788745559;
+	b=5OGdTJbfSVSyRlSU60Ybt/Xsr5zFOYtt5/tBSala8H1WxfmZ+4AfyEoRKyXoGrwjfA0sx3
+	mQnASx5nUx92GC+aIhQ+fkZjnlWBshGSyZjpaHTlxoguIN9OPFctq9ti33g+vZK4GTMOb3
+	afO4ojFcIcgZ3MhwKeKnFDZNL1CtBi0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
+	by 156.147.23.52 with ESMTP; 7 Sep 2026 10:45:53 +0900
+X-Original-SENDERIP: 156.147.1.126
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.126 with ESMTP; 7 Sep 2026 10:45:53 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 7 Sep 2026 10:45:53 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Jihan LIN <linjh22s@gmail.com>, Kunwu Chan <kunwu.chan@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
+Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority
+ allocation queues
+Message-ID: <ap4XUQtdLIITU5Dt@yjaykim-PowerEdge-T330>
+References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
+ <appvhlPleahTRklV@yjaykim-PowerEdge-T330>
+ <20260904100900.21517-1-lianux.mm@gmail.com>
+ <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v3 2/3] mm: workingset: use lruvec_page_state_local() to
- count lru pages
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hui Zhu <zhuhui@kylinos.cn>, stable@vger.kernel.org
-References: <cover.1788514750.git.zhuhui@kylinos.cn>
- <2ec3a7f73e85ee5f5739c9dc2e58e9a0e2091925.1788514750.git.zhuhui@kylinos.cn>
- <20260905184229.8f7f30cf10638e7dc8224467@linux-foundation.org>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <20260905184229.8f7f30cf10638e7dc8224467@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2D5091C0006
-X-Stat-Signature: eqywiezz7hcpxbetkohk74gds6g3jng4
+In-Reply-To: <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 58BCE100009
+X-Stat-Signature: qmidbswp4k73neu7xrbbwbt4bmnpf5s5
 X-Rspam-User: 
-X-HE-Tag: 1788745491-706362
-X-HE-Meta: U2FsdGVkX1/LFZps8GYC4bCSYhYzoWPxm7uUASPzBUvvlcy0eF4trIsNiK8zgeSxC18LYqF8ng41rURnz7GmNOmw0/+TqcsgCeaMmoKfkholT/s1keM4nHbw/i0PYljPFDg4Buk2ih1TkI7o6+oZAO55/zw/XSVDdgCqwwDDU/0Z5MCSzGm7heobwr26eHftju2JIDmt1mL5AaooM3I94lXGD2SCjgWbr2Bh671iz6RGGO5YYEyq6WjIjMP4anAU6j73Ym0Eo6CnCuPGP8y1362xZnRUHUDdn+xqXAJcgXdaFP0dN6suOW+je28DHvMNSixmcgtu+NQMno2fqQrp5QscFrMaVtBIPmeSnvIXGe/CKV9SpfzIT7kq088J0okkyynK0DjQ2yvm3bSo9k9KVU+utTyM1fVvb44NEj0sk7PmbJ641s0pc083uQos90kRHZHBD3ROS7Kq93Q7A8UkEEn/IYG7DOYLsgaG0EbmUIJxeG+gJST79Zfk+izKItGWCohpg4y2Pa7l2G952PYix5Cop8bkhFsDS5521+diaMkb+gyDHCUYoXDp/lxMCUhfbGQmdeZL/pxE5F96irUxk8fH0HzTbUCyUd4lFvXun9hL7TBM1XEWyFvg/gFe9ce9bPo9BBsZjfsiXFU2HNmW2xXvdB3BUsKbzz1UGVp1AwK71u97rVkB8XhabIG5URxr+Ina4h5vstKURd9sEA7C8pmyecbPROi8bd5b0xTH5VfqK0sCfCWHwXty0saax8K/Y34TDnqT9sWRSYTxPNtajIxMEmsWMzUeYKFbqN0auSFVatrebDgDTYVzh0UJqOAuBt6aUG2G5Dqe5QUPeoL2hd/H2w20ZXZfZNzmvmaQip1Dq4ax2cPX28Jad1D7its2kegPgkFWSTH9iMjtv02igXG39kb3mQu1zQpUXkZ5rRxYxx6w129MYFPTBwR+kekENE/y6P5pC0mP4E6TojB
- L6XCzoDY
- pXFGes4hwHuF/ganpAdISu/NfnGLRMg89r5L7pBIgJ+AfChSaLAQTNTmvB8uEmq8MbFTgUGvQsEHxTD/tSijqta9XoMVIKSJqc5hftZ6PWruIJFFjuKp97r3OF6Qap4SqREkMTD6ZZRU49chzElvVZwHEa4cP+U8XKXEtOqifVZAOuRFtueL8ToWpN7I50R+rLSaKzxo+hsE9VIwJS1zB4ZYhFN9cdLLAuq/C+piAP/VvJzuX1xQ7zuTwy/mspaAOzyVGf+8/o0AEkxXwU8/IagvL9tMAUKUkQMhno0iMMX/MNtwo4g+R/RTG7ZOh7x//h9T0coScBjOmmJyXk9yXLT2x1rniSVDE5BMU57QQOu4konG0q72dxMCWCw==
+X-HE-Tag: 1788745557-577039
+X-HE-Meta: U2FsdGVkX1+3ESOIpmPqaNxfMiZVvaeZoj1xRH2lqRYHey8iofNRXei2uV7s5qWmMkgfP9yKWJxssKdv+3c9Njf2xBxoKwiDbkS4HRnIi7e0Jyz+eKFPQtxZYsXfXvCLmFPgqQLzivxdubGnKW3xSLaHTbgaWF2ZiehMNLW1jww8qHT3t3MReAyOoYSOmWeukoqC36eS7nqbfGcz7kvquw9cZQ7Zv/nbw4TY1qcPT59iRpRG+YBMZnDQLX262DtPcDjuUOY31DVjxM1EqmHoLVnkK2YohiKfzqTh3TheGerHAYo3GfehwylOsWs7BOkYae314dsaMRoDfZwF9G/9INkUizhqArHLPb2ciVr1JJgAi6TrSatyErh6LrurkoKu9ihHD7E3KEcJfn4ILLVsD7QG8E/4wbtZh4lJbs2psy6L5sH8T9sQVG5jKR8KHgFAiZzf2wPA9ZALxm6v8EiOgLLtIdrR76eT/CqWNKyb6Peg+9uiACUd6oSz4Q3mmOYvH65hBo+P6cSrX3lw5QbokiaZDbzuNSO1gWqcfZOqWOY9qcRvVhfEA1QLrZODA1sLWCLXMgQ2QxuaZmy6oiPBV3f9I1mlB8ZsjWU5p46wHxb1hRvxVG4WnGjZJ54coiIuSicl8uou3pmWkDNrivMnhwMrjiY1abufsNZAEca/gBEOUeWQhFyae8i5Nk0CNaLNXcT7q7MDkuhVwGAuL0/CinTMDQhVlSdOStupD3o/fHKSuhcffvYnURHCTWpy4WiLHtmwr0zTArDOMgQveHet6aR+d7534Tp8WZnEjoejINPxHNNiHyxL0AbjVMe71tbc2sXdcZ+areRllTaXjts3qWBFqpLoFg0HP4MSFKyKU7CNuJ+ndDH/ofBbG0bHv21zT+hYM0FkAPzEoXnxxYkFG0miw9JMZKjn61gWVDSTL/f1IC273/hFMfA4JJTSdiMvtLlaJt1kMGMWpMqzNXs
+ nzocYltc
+ kz6fdhkNNt+5bB42mftsi2rrvccfZ9vPZl0CpT/fKMzirdHL5AYnQa08I3IiCWlYhaG+Fv0hgOrH7cbbwVL/0I0K2nIZvHQTT+UUSiPgQD8HcRlh1zzwWzADpBr4rdQynA8hk6k79mCojk45W5xQyHu5pTvsyye9KpsNdto1k+utNQU8oml2UfkmfPkvr6TwcxAffznyarZ9RZE/6fHcpKPoZ60Qmm+b+BdHyRL7KMFVuRynawrerz0+TOSdV64sBA1+9vzmYiOOEVb+tisjkUJxx3AIE1Tv+JQmVncdbomBoJ6FFSTaY/h8DU0lXWfeWa72pmpv3UONaOBk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,97 +97,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Sep 04, 2026 at 09:02:00PM +0800, Kairui Song wrote:
+> On Fri, Sep 4, 2026 at 6:12 PM Lian Wang (ProcessMission)
+> <lianux.mm@gmail.com> wrote:
+> >
+> > On Fri, 4 Sep 2026 16:13:10 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+> >
+> > > Since tiers come up further down, I'd like to raise a point about the
+> > > patch subject line too. As Kairui mentioned in RFC v1 that we would
+> > > stay aligned with tiers, would it make sense to frame this RFC as a
+> > > per-tier allocation policy (or something along those lines)? Kairui,
+> > > what's your opinion?
+> >
+> > Thanks for the thoughtful feedback and for taking an initial pass over
+> > the series.
+> >
+> > I agree that this queue could naturally become an in-tier allocation
+> > policy. For this RFC, I would prefer to keep it separate and scoped to
+> > the existing priority semantics while the tier and virtual-swap
+> > directions are still being settled. We can revisit the subject and
+> > naming once that boundary is clearer.
+> 
+> Hi All!
+> 
+> We can start with adpating the default priority if tiering still needs
+> more time to land, Not changing the user interface means less risk.
+> It's also fine to implement tiering first, there are some other
+> blocking issues for tier though.
+> 
+> With tiering I think we will still need rotation of devices in the
+> same priorities / tier. Once tier is ready, we can further extend the
+> rotation in the same tier; that's something to discuss.
+> 
+> >
+> > I will also sync with Kairui when he has time. He has several things in
+> > flight, but his view on the ownership and framing would be valuable.
+> >
+> > > Devices assigned to the same tier already share the same priority, so
+> 
+> Hmm, the current posted tier is a band of priorities. Do you mean that
+> when tiering is enabled, devices in the same tier, despite of having
+> different priority, will be used equally? And is priority ineffective
+> then?
 
+Hello Kairui
 
-> On Fri,  4 Sep 2026 17:45:55 +0800 "Hui Zhu" <hui.zhu@linux.dev> wrote:
->
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
->> number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
->> With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
->> which only the classic LRU paths maintain.  MGLRU accounts its pages
->> through __update_lru_size(), which skips that array, so with MGLRU on the
->> four evictable LRU lists are always seen as empty.  The shadow node budget
->> (pages >> 3) then collapses to slab plus unevictable pages, and the
->> workingset shadow shrinker reclaims eviction tokens almost as fast as they
->> are created, losing thrashing protection.
->>
->> lruvec_page_state_local() reads lruvec_stats->state_local instead, which
->> both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
->> race this re-exposes on cgroup v2 is closed by the follow-up patch that
->> redirects dying-memcg stat updates for all hierarchies.
-> The follow-up patch is "mm: memcg: skip the RCU lock when the memcg is
-> not dying"?  But that's an optimization so I'm confused.
+Right. My thought is to remove the priority semantics within a tier.
 
-Sorry for the confusion - the commit message still says "follow-up
-patch" because that was the position in v2.  In v3 the series was
-reordered as requested, so the patch that closes the race, "mm: memcg:
-redirect stats updates of dying memcgs for all hierarchies", is now
-patch 1 and comes before this one.  Patch 3 is indeed only an
-optimization.  v4 will reword this sentence to:
+Once devices are grouped into the same tier, allocation within that tier
+should be handled by a tier-specific allocation policy.
 
-The reparenting race this re-exposes on cgroup v2 is closed by the
-preceding patch that redirects dying-memcg stat updates for all
-hierarchies.
+If users want the traditional priority-based behavior, I think they should
+assign devices to different tiers and manage them that way.
 
-> If we're re-exposing a race, the fix for that race should have the same
-> Fixes: and cc:stable as the commit which did the reexposure?
+For swap devices assigned to the same tier, we can still leave the behavior
+flexible through the interfac(they may be treated equally, or priority may
+still be considered). However, there should be a default allocation policy.
 
-Yes, and it does.  Patch 1 carries exactly the same tags as this
-patch:
-Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the 
-number of lru pages")
-Cc: stable@vger.kernel.org
-Patch 3 has no tags because it only recovers the fast-path overhead
-that patch 1 adds; it fixes no bug by itself.
+> > > I don't think the allocation policy needs more than one option for
+> > > that case (I can't think of a use case that would need it).
+> > >
+> > > 1. For legacy swap with no tier configured, define it as a single
+> > >    priority treated as one tier.
+> > > 2. When priorities match, allocation naturally falls to a single
+> > >    policy (not a queue). the concrete policy here is this
+> > >    queue-based scheme.
+> > > 3. When tiers are enabled, devices previously assigned under legacy
+> > >    swap are reassigned to tiers at runtime.
+> > >    (This means different swap device on same tier handled like same priority device)
+> >
+> > These are useful design points. I would like to study the concrete v11
+> > before deciding between runtime, boot-time, or compile-time tier
+> > assignment. It seems safer not to bind this queue RFC to a permanent
+> > tier interface while those semantics and the virtual-swap backend model
+> > are still under discussion.
+> >
+> > > I think this feature will also be needed on the virtualized swap side,
+> > > which makes me wonder whether this patch should go back into the swap
+> > > tier series instead. Kairui, Lian, what do you think? (Or separately?)
+> 
+> I'm fine as long as there won't be a regression. I remember V10 of
+> tier didn't touch this yet so the regression is limited to tier
+> enabled case, so no existing case will experience any issue, that is
+> fine. Causing a performance regression for existing usecases is
+> usually a bad idea.
 
-> It isn't clear why any of these patches is cc:stable.  The overall
-> effect is a tiny performance improvement?  Very clear descriptions of
-> end-user effects are always helpful.
-The performance table in the cover letter measures the overhead that
-the patches themselves add to the stat update fast path, not the
-impact of the bug - sorry if that was misleading.
+Yeah right. will consider regession case.
 
-The end-user effect of the bug is the loss of thrashing protection.
-Since 7404bd37cfbe, with MGLRU enabled count_shadow_nodes() sees the
-four evictable LRU lists as always empty, so the workingset shadow
-node budget collapses to slab plus unevictable pages: for a memcg
-holding 1 GiB of page cache and 64 MiB of slab the budget drops from
-~35k nodes to ~2k.  The shadow shrinker then reclaims eviction tokens
-almost as fast as they are created, so a refault finds a live page
-instead of a shadow entry and lru_gen_refault() cannot restore the
-workingset state of the refaulting page.  Hot file pages that should
-be protected are evicted again and re-read from disk.  In other words,
-workloads that refault page cache under memory pressure thrash, with
-visibly increased IO and latency.  This hits every memcg reclaim and,
-since the root memcg is iterated as well, global reclaim too.
-> So at this time I'll schedule the whole series for 7.4-rc1.  If there's
-> some reason why some/all of these should be backported then please lmk.
->
-I would suggest backporting all three patches together to the trees
-that contain 7404bd37cfbe: it went into v7.1, so 7.1.y and 7.2.y
-carry the regression.  Taking patch 3 along with patches 1 and 2
-avoids leaving the ~0.6% fast-path overhead of patch 1 in the stable
-trees.
-
-So v4 will reword the reference in this patch's commit message ("the
-preceding patch" instead of "the follow-up patch").  No code changes.
-
-One question: should patch 3 ("mm: memcg: skip the RCU lock when the
-memcg is not dying") also carry the same
-
-   Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get 
-the number of lru pages")
-   Cc: stable@vger.kernel.org
-
-tags?  That would make the stable trees pick up the whole series
-together, but since patch 3 only recovers the overhead of patch 1 and
-fixes no bug by itself, a Fixes: tag on it may look odd.  Please let
-me know your preference.
-
-Best,
-Hui
-
-
+Thanks
 
