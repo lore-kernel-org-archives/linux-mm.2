@@ -4,103 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC10C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D29DC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1ECDE6B00A3; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
+	id 6FCFD6B0095; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19D4E6B00A7; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
+	id 6D4D96B00A0; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08CA06B00A9; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
+	id 5EA6D6B00A1; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBD056B00A3
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:36:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 74E744069E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:36:25 +0000 (UTC)
-X-FDA: 85186309530.14.75B90B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DB43F160002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:36:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dt1YvAUg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 31B426B0095
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:40:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC74A40694
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:40:16 +0000 (UTC)
+X-FDA: 85186319232.09.1C06532
+Received: from mta1.migadu.com (out-252.mta1.migadu.com [95.215.58.252])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DE22D180005
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:40:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mimAj+tN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788770183;
+	s=arc-20220608; t=1788770414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nSKYKv9+IpmrXK+SaXRNeOF2fLG9l/6KPt7ur+clwx0=;
-	b=PVG33EZdk9/t9sF0nPgKOVcq33GNkgp6JyYvaK74GNk3jGAQzjpWu+5uWvtreYRzUtt8se
-	OgyZGRiKgLVcBB8Hj7/QPMu+0iQK8+K3G0/x8W8j83vxjz3tBcEd4lLACgjMZICU0uVeld
-	pAPOrXaKtJhrqgSt2m2C1z0dpGbauDM=
+	bh=frSm7DWW8zJv/ucf5mxKFj7Ad5c5kQn6P7YVOYouEyg=;
+	b=UN6WCZJD/qe0aUEB0vAgYdIl7chrrV5o7qk2PI0nRjicamw6FmVfwymVcB4CWFW6Zu7HtZ
+	8N3AQ78UGgjdNVsfMpvEJmXyZjNwDPoZ2yDk4D/42dNc+gj2Lx1CFxlUcsIaS002QrSodd
+	UULDDSb14GZHDAD5YWIJ8UgPH91fsDg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dt1YvAUg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mimAj+tN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.252 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788770183;
-	b=UKaJPJ/wt6VypvLCER3+QTS3LxLIxLRro9tjY+5EKzMUl6zIkmoUxJG7C/uOVS0MmmN9j0
-	D0Fpqkx5Zkm5sYV0Iw/DNFbtEYZnJrVcApGkHrOAmxjnO4Mv+UCnk2tbXZYANnYamyBSGB
-	54X1AP2V2M5cunMd3yNZ7P8WKa4iNy4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6185D60D86;
-	Mon,  7 Sep 2026 08:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC8F1F00A3D;
-	Mon,  7 Sep 2026 08:36:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788770183;
-	bh=nSKYKv9+IpmrXK+SaXRNeOF2fLG9l/6KPt7ur+clwx0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dt1YvAUg6NQDSEDvgG9mbQNggE1DpbwJYzMW4bcdlZql+uP+sMxqkUWIYAXsCyIq5
-	 coopp1kNdFyVaxSNXMEYuqQdamxoZARBxr6/t2IIpNcq7WwRE/IdJAYLPCVwlAJaWH
-	 tA5XXCdJgaMjyMpblDZk2E8jRfJIlW4C3XdTPPmivDkJqXxdgp1VDXYfAUR4AvdZ/g
-	 HNsX23T6/YieZlixieteuyT8T5FyobPtxs21tLst44lvW5pzaO1hrglEyJ5O9AFNG8
-	 q/mvBXkYa3rmnye/abn6dOoOlhqDPg3K7lRJlgZIbKtr/PzWNIFK6M9D4REDm265Pf
-	 ALtpygYtu6h/Q==
-Date: Mon, 7 Sep 2026 09:36:07 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Ye Liu <liuye@kylinos.cn>, Michal Hocko <mhocko@suse.com>, 
-	SJ Park <sj@kernel.org>, peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com, 
-	rostedt@goodmis.org, jpoimboe@kernel.org, mic@digikod.net, oleg@redhat.com, 
-	tglx@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, rafael@kernel.org, 
-	gnoack3000@gmail.com, rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org, frederic@kernel.org, 
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, tony.luck@intel.com, 
-	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com, jmorris@namei.org, 
-	serge@hallyn.com, pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org, 
-	pmladek@suse.com, longman@redhat.com, mathieu.desnoyers@efficios.com, 
-	jiangshanlai@gmail.com, qiang.zhang@linux.dev, dietmar.eggemann@arm.com, 
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, 
-	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 3/8] mm/ksm: convert process iterator to
- for_each_process_rculock
-Message-ID: <ap53cJ9c4oN1wQao@gremlin>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
- <20260907081334.1152889-4-ye.liu@linux.dev>
+	t=1788770414;
+	b=DWRbC1qNWtttpmhX+uP6Z/4fVnt2dU8hb6lXne/dUImvrX7WgDz9nawO+Om3wr7wlResmw
+	nnYCkfMzKqzdkvxO0s3uBn275U/M9dH4DlkbB3pB0SFo7IU415kuW+mL52WKD7WCmy77kt
+	js9tvRs8kSPkHXvQ6eIdwdJVZaE2On0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=GGO8eqN6d+o+o/h/2jMfZ75tLsSl7Qm1XxnpQIF2MLA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788770409; v=1; x=1789375209;
+ b=mimAj+tNTstS2NFREbTdf492Qym2vL0fMboNBRUtTW4JnNus1vHg07l/KY9ZSBsPuNdnYjwS
+ 5aij5txNcIc1eshgmoO4YYSvlu00Fl4r/nxsSX7V4vOVAPfKV5wczM4OZEFH+ooSNYTHPJac2LB
+ 0luQVYqVunPm76ui+FWJJhNQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8cb33a948e3a62c7;
+	Mon, 07 Sep 2026 08:40:05 +0000
+X-Mizu-Trace-ID: 8cb33a948e3a62c7
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f1021240-ccb6-43dc-8e02-b94f0c4f5fb6@linux.dev>
+Date: Mon, 7 Sep 2026 16:39:54 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907081334.1152889-4-ye.liu@linux.dev>
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH v3 1/3] mm: memcg: redirect stats updates of dying memcgs
+ for all hierarchies
+To: sashiko-reviews@lists.linux.dev
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1788514750.git.zhuhui@kylinos.cn>
+ <8a3fe5e6a076cdd9ac997125cb6c6a0948e1a6b6.1788514750.git.zhuhui@kylinos.cn>
+ <20260904102113.DB9011F00A3D@smtp.kernel.org>
+Content-Language: en-US
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <20260904102113.DB9011F00A3D@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: f36bwnukndnnib1h94g8x33uz7feu6mf
-X-Rspamd-Queue-Id: DB43F160002
-X-HE-Tag: 1788770183-38217
-X-HE-Meta: U2FsdGVkX18Xb5ScDMT3YF53yv7ZFbfaZxZWeyXoK37RFJTd2/o41B08eRknVCiJ06X8EUdAoBVOaP99/EdAGhWw5J5lS+kuRjVNrR8oZUBxLiHrjT9LD+NtimNbhpWFKSH9aFeG7ME3hFcdUhdkJ5DmdbHl4xrOxP93nSfQu5xkx1Z5y1KbcU/DVM6gI8nAsvm25m+wQ73M2aM0bTmnaDNVH6Adoj7iWR30Nn7ipcLvNPb+kjMiKSxyqRNe64K1cqZH2x7k35K2r8DUQOv7c+RexMyufg3UmQ27ADv2Dev6i3u0ptHS2eGtgRNlsoY31DooDMR6ZjwUtM0DiKQrAxa6ch11iLvIrJtxQb3YoqCFoCC8OJcF2OhDcXm8nxzBGs9QSSe6Dl9YzN2j3mwt1GKKx13GwfrjUpgJAlqfezJu8GDeTX2S6dQlICTDhN9ZUtgZyPqY6zTCUJSSegcYTN6rWwp9v048Tag5UTh/l51BMGWcr+APfY+CoFd00onfQcXicL0hjYS2qAyt6YenkDbI54rsuixl9omoWRke2P4AVd7K2QAFt/H+MzJuYULyFmVqS7e/WlrQXUdgXmkHRCnUKDBlU0PPLTiJ4+9K72bCqs6WWuldaA1Ns8XAlQTR6kNtH1dbPecCZ3rmz1Wi2o8y8Q3XpII0k6Ttuyt/N1Zxqx6OjYrZovaEHMPZIIK9C3XYo1LEzg/+HQSfef/vMorH7/fLApEfz8abZPCdW8sc/z8oldvRAMl/VjpJcqx7z6/0hGkTDs1RZKhewISiCQBMC/FkcJ60bzYBaMa96JBOrpD8UFYVfmySbvFcBJBEdHZd+rxucC3cmXYteCUqTYryU0b6JZS2rrAZinNyWrcBUju6AKENV1t7e3r0ZN7VwnwQtC2f2eZrSS2x3RoNxt14qksoQGbVo9mPMjqKObWxLW7sv+jkPrjHg8MtyY7FSB35jDMq8Jis0aMAYu2
- 84sz3FbS
- oGTP+SdBPG9iAiVg/WLxwWbj4hibgG8F+OamQp8o43VYwJm4ZPLnyxUwaQxaCVMOGFWQwgheDr9qz6AkiJxE9Ld4x5+GVe5swUyOYihzJcUau6ElHoI8HIDw9/KPwFeY6KFxklnjesmbXBy9268hZ6eHobErzUItCmE9GPT6LoZXOXXsz+pRwuzuSTnBSynlcuRC2znChtmFa3/CtDmj51QSfkUI5Y7BeUzGsqOcV8oZX1D9NzdwcK0jTH6uKUbivv7IX/tCFqcQNG4Cbgq3GIJtf1vnhj/nm2XN2z++9Uy/UCT9lvPUf/pMCt5JsvcI3Liw1ih1WjjxnqCLTSfNbP0Jyg4ytD/a3+yjwFyfkSdCZQ9hoBrVy4WFoJtJ9aIRrS9A1iyLApMNc8vSYUBPIns6pky5aQYF64xOD6EbYmrg7wbO9ypc1wMQ8MMcHuSL0i0fRlLXuwwyJQc8=
+X-Stat-Signature: ai3q4kx3yfwnzwfjnzxdw3qd614ywt8n
+X-Rspamd-Queue-Id: DE22D180005
+X-HE-Tag: 1788770412-616675
+X-HE-Meta: U2FsdGVkX1+yndQUnCLdUSBpwomu3pkCJejwMdGhL36z8x9G7J25EDoHbuZ0dX5Kxp4XM3DlooGMtL8NtdrJ5fbjkRkmQMPwY3l/3I9O6vd/SkY7vMUIebDmv5gsKHUTLGaxOn+Yv3TXyrraW4uxoGU1mqhHizH+uUh5QaEosNQpaLvpOCTks0m2tFZIvfBjtmfNUav9Zyv23rJl1vIBYJzSXVXDmsfbci+Ov8uZEa365dBpn28HZqruZ7cJTiPaQpl+Z29GTqbT8MGz52thl5c6Yf0vVXNM8rfvKX2BfTBHektGnkjP23jtIpTw5kj/U9LBbvtHrh+jdUx6sbifItPkenUdZtKhgmh36lL1Z+L+WnEta8zYcmAnfd6vGDLeqvcacpvNuLZCMxxAF+7AnQGv/nxeCp2SzpFJ1Q14SMrvEnNZBs2PqkBEh/QCDa6Tol7VKyeyXvlYm0WngL/ZCWjKjzSje1XEHdAHPglaSbv50XkQxnb61w1pUtsiAxwpqMh6Q37AfOF4Gnq1CgL3JCgDEJ++S5LPDtqxCaL5Li6SvjcNwNgPD8HsOOW0RG3u+Sdt1kwwbOsp8i0i4lk+AwVbE3XAI836gtM5HCnHqqgwEri943Y1jdP5tLQug6yRgeifBvaiwCh8jKq2GFAsk+iuJzVWOscdsu7deOXuqNSV3yVadwJe6l4pFxNmcWBhvLpSQ5AwGS4MNm66FO/aN57GuxgvPMQ/bAkYa2zZA3PsF7XEjaGEcqb8UTBaITZzay5eNxYa8O9e3hP/A3MdGIavWIGDGMNQwWqha8lWAyxUrV4wNx1hxFNxDuBOAS1La8ohz+v37OdLnUAdnM+V9nczlVoV52YNq0v4L++dPL9X5y6HA4k/eB7+JW0k14/5VoaULaS7V7IrXgKYyu7tCBR3m/sowkeOe3hsuPpZVI4aoT7FLuVf5F/D/maWQ0ndKjn/9sOzIV60SB5x8uT
+ //COb/mP
+ D80bBOc8zE9yRFRRXofIaRi0Myd7fWXTfg42l5SUizU4mIX0/6y7AfHbaFX3HghlsU3FB++72fx6TTEW6IMLlMf6Cl8N8HUsHSGq4J4k4t+8A1xKwWd7xGk9irP9xUkoLKLE+lsmSSLQDUi9se8JhqgiQB+E5DNL/HCLnLLP7eW/QMbN5CBjOFEoNJDGT5AVvXuQJpVMj1GC7zD6TqqErkA4TWYysE2laADYknXUNfeoU3n4Qf+9w+SErH/rPwpmj1Mm+ULyCpssWDNEW4JLHz/RXQ0Lo81UFnfDjmcSUhxx/PBalaT2fYv4EOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,55 +101,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:13:29PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
->
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
-> with for_each_process() loop in mm/ksm.c with for_each_process_rculock(),
-> which scopes the RCU read lock to the loop body via scoped_guard(rcu).
->
-> No functional change.
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Reviewed-by: SJ Park <sj@kernel.org>
 
-LGTM so:
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
-> Changes in v2:
->   - Rename *_rcu to *_rculock
->  mm/ksm.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 49d48d1e0998..69d30e80a090 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -3280,8 +3280,7 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
->  		struct anon_vma *av = rmap_item->anon_vma;
->
->  		anon_vma_lock_read(av);
-> -		rcu_read_lock();
-> -		for_each_process(tsk) {
-> +		for_each_process_rculock(tsk) {
->  			struct anon_vma_chain *vmac;
->  			const unsigned long addr = rmap_item->address & PAGE_MASK;
->  			const unsigned long index = rmap_item->linear_page_index;
-> @@ -3298,7 +3297,6 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
->  				}
->  			}
->  		}
-> -		rcu_read_unlock();
->  		anon_vma_unlock_read(av);
->  	}
->  }
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Redirecting dying memcg stat updates to the parent on cgroup v2 without reparenting the base stats causes permanent negative stat leaks and underflows.
 > --
-> 2.25.1
 >
+> commit 106b19246ac20191c0af6a41927414095cb5d019
+> Author: Hui Zhu <zhuhui@kylinos.cn>
+>
+> mm: memcg: redirect stats updates of dying memcgs for all hierarchies
+>
+> This patch removes the cgroup v1 restriction on redirecting dying memcg stat
+> updates to the closest non-dying ancestor. It unconditionally applies this
+> redirection across all hierarchies in an effort to fix workingset shadow node
+> budget calculations under MGLRU.
+>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 9a65d7148c227..64eb59bba61cf 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+> [ ... ]
+>
+>> -static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
+>> -							   bool *rcu_locked)
+>> +static inline struct mem_cgroup *
+>> +get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
+>>   {
+>> -	/* Rebinding can cause this value to be changed at runtime */
+>> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
+>> -		*rcu_locked = false;
+>> -		return memcg;
+>> -	}
+>> -
+>>   	rcu_read_lock();
+>>   	*rcu_locked = true;
+>>   
+>> @@ -870,22 +864,8 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
+> [Severity: High]
+> Does this redirection cause permanent stat underflows in the ancestor under
+> cgroup v2?
+>
+> In cgroup v2, base local stats are explicitly not reparented during offlining.
+> Looking at reparent_state_local():
+>
+>      if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>          return;
+>
+> Because of this early return, the dying memcg retains its positive base counts.
+>
+> However, with this patch, when resources previously charged to the dying memcg
+> are freed later on, the negative delta applied in mod_memcg_state() is
+> redirected up to the parent.
+>
+> Since the non-dying ancestor never received the positive base counts but now
+> receives the negative uncharge updates, its local stats (like NR_FILE_PAGES,
+> MEMCG_SOCK, and LRU counts) will permanently underflow.
+>
+> Because lruvec_page_state_local() clamps negative values to zero, wouldn't
+> this severe underflow mask the ancestor's own legitimate positive stats,
+> ultimately breaking the workingset shadow node budget calculation and causing
+> the exact premature reclaim and thrashing this patch aims to resolve?
+>
+The observation is correct: on cgroup v2 reparent_state_local() returns
+early, so the dying memcg keeps its positive base counts while the
+negative uncharge deltas land on the ancestor, and the ancestor's
+state_local can permanently underflow and get clamped to zero.
 
---
-Cheers, Lorenzo
+One clarification on attribution, though: this underflow is not
+introduced by the redirection.  Once memcg_reparent_objcgs() rewrites
+objcg->memcg to the parent, folio_memcg() of the reparented folios
+already returns the parent, so the freeing path applies the negative
+deltas to the parent's lruvec directly, with or without this patch.
+The redirection only matters during the short window between
+css_offline() and the objcg reparenting.  So the missing base reparent
+is a pre-existing gap that this series re-exposes rather than creates.
+
+That said, I agree it needs to be handled.  I'm preparing a follow-up
+patch that also reparents the non-hierarchical lruvec state_locals
+(the ones count_shadow_nodes() reads) on cgroup v2, mirroring what v1
+already does.  Will fold it into the next version.
+
+Best,
+Hui
+
 
