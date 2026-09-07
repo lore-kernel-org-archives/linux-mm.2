@@ -4,176 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E254C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91019C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2382B6B0093; Mon,  7 Sep 2026 17:07:54 -0400 (EDT)
+	id 7DE416B009B; Mon,  7 Sep 2026 17:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E8896B0099; Mon,  7 Sep 2026 17:07:54 -0400 (EDT)
+	id 7B6636B009D; Mon,  7 Sep 2026 17:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A216B009B; Mon,  7 Sep 2026 17:07:54 -0400 (EDT)
+	id 6CD606B009E; Mon,  7 Sep 2026 17:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1B5E6B0093
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:07:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 583D54030B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:07:53 +0000 (UTC)
-X-FDA: 85188203226.12.FCB7F60
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6B6BEA0007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:07:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 462666B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:08:33 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2A5D1202CD
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:08:32 +0000 (UTC)
+X-FDA: 85188204864.08.BF3EEDA
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E41F1A0006
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:08:30 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ocLeIaRa;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788815271;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b3BlheRS;
+	spf=pass (imf15.hostedemail.com: domain of jannh@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788815310;
+	b=IqbyOW1cWSo9yLpncxmUBDu2fVbo4wvpH6sMK/ooRgEaWukt55n+Rk5xmvX/2pGXbSAPtJ
+	haopYC0H/xe4B/Rqe2NfT4S6kH7opXovdKh0vWzUwvnu7xfZFaa32SxJyaFqWBmyZfVC3u
+	c0DzZWZAHwmf54GSzKeQUscJLfPAEGY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b3BlheRS;
+	spf=pass (imf15.hostedemail.com: domain of jannh@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788815310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j33dWXa87ubHe2rcHlgmZCfdvDttwcXovkMGxt/Pcfc=;
-	b=AQAY7tztjOfZfpOmhOyTde38YU+XBG7O5oKfHWNjmbtX53yiIEoWgj3QufDhiQfYs7LGbs
-	JjvNqUJ/Zc1qVxarPUkHvJ1VQq9EGDM8N+4ENbann4auhNrZjESUygLfGRiJZfZ1h5H5Xm
-	cmTQ64n9dTBzmUj08hBxTELKP7PGwwY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788815271;
-	b=lCyqRC3bkIQ4eDpytJZPBeYYa0v7vY/dicJfyEsn04F+gcgUIoVPk90HzO+uTX9KBaEgZP
-	0lp3aKtJszuVOhSD5SuFv/RWPDc4ENyTrpppNG8+hkbCNHMjXkB/sXmbY7FU37asDwme+7
-	U1DoSY3U981aRZ4P3C3lj2VwswrWt1I=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ocLeIaRa;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5306706e89dso455941cf.1
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 14:07:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788815270; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZoYx4o0w3Va5h++jv+HzWfftmkPr9/BeQyPQ/pbPT8xRq8WgMIvmMkq8CDaxERR8ek
-         3VYcr7BZfU7cVkt/j2pmQ3qnuOra/bfdLT5FfzoIT1q7zQYbLsRqpvoiY04bQ0jmD7yp
-         eQJNHrx4QIgt9SO6zbD5mDjLCqpRa9vy+nmAPqE3A8Aj7RgktMOQGexRCs7EINq0+ARF
-         MXPdUmBsKwV8kpeanKD7nGAIXstYYsjv5u2vuQdAJGe1j6zeQzguXhwp1TH8wYpWRHvv
-         uEcckD4IBiHzmmsA2MoKLtB5XtQ9i0CRMWGhedmAPgR5vz+3A539pPq7E5sB4ym3Myz0
-         QfQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j33dWXa87ubHe2rcHlgmZCfdvDttwcXovkMGxt/Pcfc=;
-        fh=coJgWrVHvSdeKM+qRqpC9fl0tV/Nptsz4tGhOptfbM8=;
-        b=IBp/S6S8+dofLl/Q11Xn8abPbU9MgyAi2DVlZVgZA2r5Za9E9VKf7WWHHI5BoVEWBg
-         bJ3O+FNHyqmVtLVtsRboRm9BnNaw3j72UlexZlrN/XndS2vZgpu7H0qPjcHyGpw3Fa4R
-         T58dJ14Pgy8+wgw+f0RyREWEAZ6XFQogxgSqXF8BB4KHCc6aNiHYVQ32Dq+BCZSb90bt
-         YnaC4WBHGQcBYdE+q/zDuYBCsSzrnbeMtIby4L9M7mEMWaoxX/x4Y7m18Y6g+Ok9k5VU
-         UrLizPZBxvGNWnJVa+AeRrUIIMXeOavLlnqhOydnwl3eiYDa2TuCNXKbKR3FPAPPsCMf
-         Q+qQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=opljs6/yePkUAePwO+BlsImVeSdvbWETq0V3zNfopXk=;
+	b=5s3f604lMLzB1p00Gj2KI0qekeHHepQWn1xZS78iLOcGSjDYVqOgJvWa9ZgEznpwVrlnnN
+	IlWbXXIzeyEsGlX99ltxdioTWDS9oS/D2419gMOBwMCutmM3X/5Xa0bKorDSnaGzXt8ljJ
+	8XkkM3OcmTqH2ClkIwuljYFOaaqKDSw=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b5e50eb70so63405e9.1
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 14:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788815270; x=1789420070; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=j33dWXa87ubHe2rcHlgmZCfdvDttwcXovkMGxt/Pcfc=;
-        b=ocLeIaRaBLUn/1xNl2FCkzUyoOU5cKekqWDu4y50u//1xE3P3IEv230mQ1f9xyPCJQ
-         SouxW86/iLq5FFlsGADc5eje1A7Jc27xnP6KzDPkSQWvGz/BfDOt8Hsy+uiNTGjv0nhX
-         nVcRUEC04c4qysh9Omh+uVbWeyKik344Fmi2LzYha/aVaYSGyHWtXVlKjmG/aJ9tr7Sg
-         8LUqhIFXrfbE70cXiQdltpaR/IwKmsNW+x0w3JzrjPQlJL2WqUlgQFjVOVI82cXh2kDn
-         10p+irpkyphIxLJbHX9GkG7HlkSMh7vmKG3OB0kcQ7j9Ld5YZ51IWbxWj7h6xBduWuxa
-         SwCA==
+        d=google.com; s=20251104; t=1788815309; x=1789420109; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=opljs6/yePkUAePwO+BlsImVeSdvbWETq0V3zNfopXk=;
+        b=b3BlheRScfb0gIqIIfkZxRQB2/d/D6O5UuwGJ/GezHrTOvYNZyMFWdpX4Yj1KbKtHG
+         38O9+8ROXI88gnz9RRdZ/vqd8JxpRoKTxLI6ZFgHRrlV2hpqaoxdEST88Vs4QW5fwJE2
+         fFIQ2dPjAY/ATgu3VT2tHrnTSUulW/D2sGVm2l20dvmTFh1q3mYDCoRHT5hn7OADeU9C
+         6xJAO7xP7AMzLRpRL+/URrHe+C/3LVBrjucv2Q/W8jwzRQLbsPTFPWsRr09si8K1U39D
+         xEDTMLOQByLBWqucJ8FAEmj3fgwp48ZVUNT46OKY08G7DD8+fdKKJR0+ZXl/ts4iTsX5
+         Yrcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788815270; x=1789420070;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1788815309; x=1789420109;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j33dWXa87ubHe2rcHlgmZCfdvDttwcXovkMGxt/Pcfc=;
-        b=WQuDvjfOWbFjI54o+JRP8mqCr0U8WOxhl9NZmmTB3/VH7IgbWcJ0E9my8Pe75L38Cr
-         U3c7Wtkxi7VkFtEofSpuRIxi/MBE/y8ITtW26KXjk4IXiV2V4eAz82nEGKCzCJj0vbvl
-         SxE9ZY6AJ+tVBWfKpM/ai2ma/ZvIFZM+MVxWfVt5ZV33SUWdQom9mhi4falW8ecz21+A
-         gxAifBmXZcAU9Jo4nnsehGvThzvrnNV9ecw+FDQtOBoecbZrkuBVdgRZE4+EdQ2dNwwN
-         WnV2ZJNE6LNNYqDNooNEYL7lHF3+QeS45x1MSidPQF2gPu7Yr2Y2e+2BxzdiddLHLKaG
-         2Clg==
-X-Forwarded-Encrypted: i=1; AKwUvBy6/WUbKNS9wVPUSzO5VD6jHHzqFGYgxK9CGyBQ6ZaMfJVmGx4BpNVdfF0OlNebKGHLHmpZVKxMXw==@kvack.org
-X-Gm-Message-State: AFuF++mz+WRcBAic8cirf+VudfYLa7tltLA0A0xYnBP94RVbl6FhXvCh
-	lwFzUF+WlwZbz+em0jAOguU+/Lao6EbCkAoCV2ikSdwzPwqb1fE9vTmDPh87S1MS4U5JRi2Ujvd
-	IGi/7MUaG8KRx4zT5+C/Z03jzM35CFr/3GSRo417z
-X-Gm-Gg: AYBFou1hmTQqT3AAC+gALM5Qt6tNCRijnQ7vzMoS0EGvSKP9VFxW4JU3VGd7OLgqXKN
-	s67Xnl7dw/Efp/+q1yMPfSqm0F/pFJLGiC2o3NT2ZOw5XKwyomoBUjSRvB1NkmyP7AGPv/mEx01
-	eT4erIyY49vABFBd3U64wmmzS3CPfeBtVb98KlLYa3s2cvYbQQFnJ4/5cIXBJplDOeF8tatF+GL
-	Qy/18+goGb4Uz/Dbj6EnD9z1+YjdPClpiYjQ8axbdRtP/OrswvKq9Wg1vH0x2Afr+Wd7xjig08E
-	Z2rUxwGmN7sWYWbjRsgk47a+0eM25JxoeT9Xqa87e6U=
-X-Received: by 2002:a05:622a:2589:b0:517:64f6:3365 with SMTP id
- d75a77b69052e-53065d7943emr35669061cf.4.1788815269129; Mon, 07 Sep 2026
- 14:07:49 -0700 (PDT)
+        bh=opljs6/yePkUAePwO+BlsImVeSdvbWETq0V3zNfopXk=;
+        b=dmyHhweG3GFRzu8YGQt5ipocQEpZ7j9w2LVjVt1CRBxB0Uuk6jUHOdRyDaIcx4JY0I
+         8BU3XQY/lvqYGXJaWzBdnCU3zVn5hvPVb65guYaIBwYcvUtifMDnij6nGgez3ZQTAZxD
+         p6rUu7r9dwYjgctueF0S+KBMRckNw2sWI+QjIXYvllO/VHKdfV1LposB+X9Qt0n8h4Vz
+         Z9yc4La0pKdlVYi3uJsVRBHfNcyqOo2uTq0Nhpszd/NN3IJZao/o1yGL5r2QsYBx6nhd
+         85ml+FsOnGBdgsz+z4vmJ0OHwCGbi0H5sF6H8TNLA8Tvrgcu/4VwzPDOrq5kyrFZtt/Z
+         4mEg==
+X-Forwarded-Encrypted: i=1; AKwUvBxHuaqjwYsVItIIDEyIZksxUedzmB3BSR9XX0eMaHLKJIfsqFcoJFJrRdfJvRwXxTHO5NOehiEoUg==@kvack.org
+X-Gm-Message-State: AFuF++lQb7M6NZ+zlDyHHVcbo6NLPL4tHglueUcMNUpfHDTJl8tQBulM
+	5mR+eQHkg+xhf8aJ4RJpAG1ULVaSW3CxYFjY7j8t1Fzqof4Rv9HGMOhd+n23L65lr7+xB6k1Bm9
+	xGSKdHvfs
+X-Gm-Gg: AYBFou3OjpENW7A2wQmKud/SWLCBanZ5l+kDwrutr22WNHBSmrTN6XiDkz5bjfkV/6s
+	eCV94fGcpfUxZheLXYDhiuEcPG26trgSE3FTxtnLyl+jo4etXJszNIzn/0aUDQ9RmQyPe1gXMdQ
+	74eydsDtqP1Da606056LTf7Y09mBZpk5sa1C2AIW3KxT3xMmGV8xKUVAzZvEvRSjPi4lnoa/kAq
+	0dsx+qJQ7UOgN8HV5mGb+VKaoCiCWO85SZUdTMBayel+NvToRfs3wBoHaqOk+EpyMU8l4Y70yfd
+	uFGLx8ktqPykiRdGYKIBqr3j5cOsvf7jF90sqi50GgWzadUeuQ8qDCXF5wNlmHW+hqRZnNQ+1At
+	0Q8Blqg1Ajf4GVZJunXifmFfy5dRtz6ANHuicjtwEP3E5Ac7sT6McrNRdU4n5WWbcTG3axx0OAD
+	tZ1n1lwVUm1cX39OQNI82OfnGixa3q4BWE5oMzaMaim6hB/TKU+UBEPGN2OHkQQpvE7Gpyx1ee9
+	ze388Ub4GUFKiTnxjI7pgeqEGKfLNa6/udaSr3FJ9wgZ3xt6AgLeLaXUBs=
+X-Received: by 2002:a05:600c:2e56:b0:499:c46c:adc7 with SMTP id 5b1f17b1804b1-49d17a6bf78mr222815e9.2.1788814828327;
+        Mon, 07 Sep 2026 14:00:28 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:437c:9ac6:4a41:e58b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858bc74298sm27752481f8f.6.2026.09.07.14.00.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 14:00:27 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Mon, 07 Sep 2026 23:00:17 +0200
+Subject: [PATCH v3 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
 MIME-Version: 1.0
-References: <20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org> <20260901-rcu-pagetable-freeing-v1-5-5456a81c8212@kernel.org>
-In-Reply-To: <20260901-rcu-pagetable-freeing-v1-5-5456a81c8212@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 7 Sep 2026 14:07:37 -0700
-X-Gm-Features: AcwNN1U8TkUrFVP6EqWbmqC7u-eOkQZui9u0urXe4uY9QHhCrt9ILjWVeJ-SJWo
-Message-ID: <CAJuCfpESe_BXihJh-8FhjQVKzsSpnS4zdMgg3e59byJTc8QViA@mail.gmail.com>
-Subject: Re: [PATCH 05/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for arc,
- microblaze, xtensa
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
-	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, 
-	Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3q168qpea956kuizify641fp1f9os6s3
-X-Rspamd-Queue-Id: 6B6BEA0007
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260907-selinux-pokemem-v3-2-0bafbaeafe50@google.com>
+References: <20260907-selinux-pokemem-v3-0-0bafbaeafe50@google.com>
+In-Reply-To: <20260907-selinux-pokemem-v3-0-0bafbaeafe50@google.com>
+To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jeff Xu <jeffxu@google.com>, 
+ =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788814820; l=6147;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=dFQPLUrKSushQVlRIfa3+RqE2BxwwVdKHC0sBsQHxRE=;
+ b=bGUXccOwcnRIhUpKEynLue6/VH0ISEjKrC+KubetQgYKUv6i7R6h/X7out5N5Yn9is7rXXonE
+ 38A9kIG8FRAB8evQRsnCLY8MGW1KQbFnMcLRddZZ8sHGqBcSRsMN0G9
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 X-Rspam-User: 
-X-HE-Tag: 1788815271-853539
-X-HE-Meta: U2FsdGVkX1/cLogfhQ/SPeQnTlBDfvdCnr3QDMy+vOZ6xsaDt2vc0wStW0XcEe2G2l+L33ftcZJuNMqS8d1no/Pga+tOMBKlme1of7X3QbzqhEg57xkAz581Sxy/kIpoJ1eIdwuntNrCL9XuF3KvDiu/viXMgweSZXfuGaEF28Uretyq3Pwt5WbTybm/qw9qyHIATooTDDAH6ldQ1kS9+qhQRNO4OEfoo9djWSal/VqREXVEwRgEkjwhQ6JkzmfmpZB50z2gscqgGE2y3EIO4AD0slaXARDvA6K7XhLYB1nFtizBQN5M5HDKfnl65IbyOaMBI98VN5Gv0i8lFla0z2hm0ruAJYEyJQAgN1u7z0BzlBhFj1f/OeEvqdaPqz094Jwi+ISxTJdkibkz1gP9zrjR1buwwDRrMO0oOTifc2XwXle915KhxFWyg024tCPbwLsHzQp0AZAGpZkKzOAiGwCaNeD8I5NHjpvVABdVreBIt3KdsWIl2i230VfDf9UECp5r6ULgdMJOmiy496lZa/lZtc6jOBx5NfPxRO5vtdcNpWI20wlpOYsMCicHqc2b1GYddnHcTgD9CBc61iAH7JCCC1qlXDFkWwq/NVBrYVCqo6vz0xUmxZ33cFionxhyX/qBqFJfPByErkdHhf7PbsNnVK+sVPR/k+IWBk3LsKMlg6YqT85VGLGOS/af2g5crFU/sSu1DXgFDCUC5n9vMvGqEw/z+aiks8FD/6cKBVuGevCwoNO+TkJKY/eYH54oLjH6hDpxcOPIP/Qdj2wTm5aaRbRY1asQeKNqYzFiLamG7CqsQ2seRdNnkhV0lyn7vyZn0t9Q3iSiTq71Mos08OnWSY67wqnEtUaxrCPFhma0A6oPMo/U8jw0O/1RZ69fC8u3wE+Cz+9ES+bhUYFkWuKtwVyXOcn0rXo8tOAlSsrPXX0A6tYxiHyGWTM0xbecx+YWWLGW4MAEaywYX2X
- 1VuVsbFj
- D2J3uhOgl7A6RDJWhfNPHbVbvSUEa1IIH7HehXyjZnhedSfM8g8d11hJJuK8XN4s9x/OBB4uMUgB4wKWQVp3ZsOxkcxjqjZsTWR97KSOCPoSzk+iiKiRnd7659T0larIcI03aPNh6Qhi5eIHRHnd+Hu/pxexhWZuqWdJro/bXDPEAoGFZURgXXpZjgkxZeUrEKYuXMSoZBr6uNpUkYih20KNEiRIArCHNf9MXhudUnqSfXG9fzHzeogiy4Ngm93/QZS8yPKehGD2cq6H21W89bYifCeg+ZSb/PEyQD8k1ASjAlcyJvYcXW9qYtMAywySsSE4JYzadEVX3Va4HnDj+bu8rc3TGFreqB1IBG5IIDKLrSh0HUlchggTUxMi85/VeeMUD
+X-Stat-Signature: rjskjoj7a5fn3sqbxyni9c38oxxjnmko
+X-Rspamd-Queue-Id: E41F1A0006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788815310-145645
+X-HE-Meta: U2FsdGVkX1+2a8vmnlr43YJqYM0akxiX1D4zhn7QNTqWqN+LG1L9BwuwE7rHgFCT+fai5lmp1+ApPg949S8LxWIlAwE5f0a4A8M++XGAoGzquISIMbTmITm/yeYM4yKkDTn5W0e0OGw1ezIuvhUg4V5RpvAlIsn1eRZ4obYrLHhQRoc1NWBPu2Uli4CajSgbtcUrtShVHXHpLhAcC4AOAaHPaT8CTwTfM8rf658T1Rwty6wk588U38k65vfZ5QyYL+WTqM2FW29hlgrwNXrEcFJJyOKttzb6+/6cQp6B5+JKBAWazs1aMaD8vlyN4jPj3FlQL+7fLGV8M67FAbI0ejU53Lg1y6y0DCzcOlbcNh/ymQrIyXywEgnEY5+YIIFGUlUbSb6jWSpkd0Zc9VSBxi9xSwIqGbdlKco8wRcWre/vQHZ62y/In29VwkGggaOM8yKdneaR/sfOzdT3ZozAM6hYRJDsTB2c60QcnxS+Azy0j0mRXKSKUNN+ncuReCRV3nJGTW5Jcnl9i+1iF/21akEqKzupZ/IIgwymmOxl+Ezdq+0X4xlJG6BAZyusR1x9ZFgbKNwdPPksx+w8OE758feuyCZEuatRxfTA9fvLUM8loVSqUU3Gxpt5/OyYm02Fo0OpRzOXhcEwYvkb5z7MYLv53oBehM4CMVd37vO9u4yUqyT91yUjeHf4G7S5OEX/G6B3J1k64Nu6SGKo1lexAtENCfjHkRcRbItMQO0i2ZQ95HIOR2knJy0r2bF8/BbdEiQH9/Maug3quPQY8W/KCNgvIgCy0OV2dQhG7inmZIIFFKuCzLC6hnjAVGZRIQQpwS1PvpOwqCl/6Q3HOkGRQLYRlYTOwbJWDxjf/zLiBybvI3ZM9RyW7seJxgYhbOgCo2G8Q3ZMEzCqDnVc/Gyo54ZW3QALVCAjQzJCHZkjamllKaOuwNClWWnZgqvbYTHMLBvjvbthWrLUNWE5E0u
+ Dt6oxy4l
+ m2gQ8c6teGHYzsbvbM2PJjSQQlk+lf2oUXcXA0eDMa4fsFq+oXl5u3pQLtY9xCNslESLsmCHBbi2Uyb/el4rsnhfbJxeJMI8lm2i67zk9RoAG4yIoAkQhrWEVgY1+gTqyhtJ5Qq83cewPaQfWLNXSNbO5orQ7uD3EJhF2/Y+bVk9kr1gXHwGZlXGqAQPA+wJmYuSuFASrLuL4ohLsAKLhKCgj69Vobvi91StKK8zMG1Wapa1RhG9OaNvmkCN8NN73wy8Tv6mWWk0IaVcEqA3G8gOQVvmyIy0D7wibOZ7h5AHjhgMUUiVHOvJZEkLDLk2bmyO1kdjQF2PJdMVxGT89i90G3Sh0DkxxtmPasSjs9d20EQLsQp/X19EB1vgfLdAhEiVm4KerP5AVDqcBu9HlhI6Ma3+MYzQmbwumXaj+q1xf2suX7v/D8qRrP+gJrzii1dYNZahA0fEGEVb8otQg6iDv4OTF4s9X1RVHYDOX4X/yXS2xxxYxcwnlPVIFZhV3U8Zv3KYoN5IIZUY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,147 +141,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 1, 2026 at 4:06=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> Each of these architectures directly free page tables without routing the=
-se
-> changes through tlb_remove_ptdesc().
->
-> The use of tlb_remove_ptdesc() is required for
-> CONFIG_MMU_GATHER_RCU_TABLE_FREE to correctly free page tables under RCU,
-> so simply update these architectures to use these functions.
->
-> Since none of the architectures share page tables or do anything unusual,
-> nothing complicated is required here.
->
-> Therefore this is simply a mechanical change - convert __pud_free_tlb(),
-> __pmd_free_tlb() and __pte_free_tlb() to use tlb_remove_ptdesc() as
-> required.
->
-> At the point this is in place, all mmu_gather page table freeing is
-> performed under RCU, and thus MMU_GATHER_RCU_TABLE_FREE is selected for
-> each architecture.
->
-> This forms part of an overall effort to switch every architecture to this
-> mode.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  arch/arc/Kconfig                      | 1 +
->  arch/arc/include/asm/pgalloc.h        | 6 +++---
->  arch/microblaze/Kconfig               | 1 +
->  arch/microblaze/include/asm/pgalloc.h | 2 +-
->  arch/xtensa/Kconfig                   | 1 +
->  arch/xtensa/include/asm/tlb.h         | 2 +-
->  6 files changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-> index 2ed7186c81c5..7a7542b61823 100644
-> --- a/arch/arc/Kconfig
-> +++ b/arch/arc/Kconfig
-> @@ -47,6 +47,7 @@ config ARC
->         select HAVE_SYSCALL_TRACEPOINTS
->         select IRQ_DOMAIN
->         select LOCK_MM_AND_FIND_VMA
-> +       select MMU_GATHER_RCU_TABLE_FREE
->         select MODULES_USE_ELF_RELA
->         select OF
->         select OF_EARLY_FLATTREE
-> diff --git a/arch/arc/include/asm/pgalloc.h b/arch/arc/include/asm/pgallo=
-c.h
-> index dfae070fe8d5..9b6c37f92e97 100644
-> --- a/arch/arc/include/asm/pgalloc.h
-> +++ b/arch/arc/include/asm/pgalloc.h
-> @@ -72,7 +72,7 @@ static inline void p4d_populate(struct mm_struct *mm, p=
-4d_t *p4dp, pud_t *pudp)
->         set_p4d(p4dp, __p4d((unsigned long)pudp));
->  }
->
-> -#define __pud_free_tlb(tlb, pmd, addr)  pud_free((tlb)->mm, pmd)
-> +#define __pud_free_tlb(tlb, pmd, addr)  tlb_remove_ptdesc((tlb), virt_to=
-_ptdesc(pmd))
->
->  #endif
->
-> @@ -83,10 +83,10 @@ static inline void pud_populate(struct mm_struct *mm,=
- pud_t *pudp, pmd_t *pmdp)
->         set_pud(pudp, __pud((unsigned long)pmdp));
->  }
->
-> -#define __pmd_free_tlb(tlb, pmd, addr)  pmd_free((tlb)->mm, pmd)
-> +#define __pmd_free_tlb(tlb, pmd, addr)  tlb_remove_ptdesc((tlb), virt_to=
-_ptdesc(pmd))
->
->  #endif
->
-> -#define __pte_free_tlb(tlb, pte, addr)  pte_free((tlb)->mm, pte)
-> +#define __pte_free_tlb(tlb, pte, addr)  tlb_remove_ptdesc((tlb), page_pt=
-desc(pte))
->
->  #endif /* _ASM_ARC_PGALLOC_H */
-> diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-> index 484ebb3baedf..af7e821e96c1 100644
-> --- a/arch/microblaze/Kconfig
-> +++ b/arch/microblaze/Kconfig
-> @@ -41,6 +41,7 @@ config MICROBLAZE
->         select PCI_SYSCALL if PCI
->         select CPU_NO_EFFICIENT_FFS
->         select MMU_GATHER_NO_RANGE
-> +       select MMU_GATHER_RCU_TABLE_FREE
->         select SPARSE_IRQ
->         select ZONE_DMA
->         select TRACE_IRQFLAGS_SUPPORT
-> diff --git a/arch/microblaze/include/asm/pgalloc.h b/arch/microblaze/incl=
-ude/asm/pgalloc.h
-> index 084a8a0dc239..ffee6a009219 100644
-> --- a/arch/microblaze/include/asm/pgalloc.h
-> +++ b/arch/microblaze/include/asm/pgalloc.h
-> @@ -25,7 +25,7 @@ extern void __bad_pte(pmd_t *pmd);
->
->  extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm);
->
-> -#define __pte_free_tlb(tlb, pte, addr) pte_free((tlb)->mm, (pte))
-> +#define __pte_free_tlb(tlb, pte, addr) tlb_remove_ptdesc((tlb), page_ptd=
-esc(pte))
->
->  #define pmd_populate(mm, pmd, pte) \
->                         (pmd_val(*(pmd)) =3D (unsigned long)page_address(=
-pte))
-> diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-> index f2f9cd9cde50..33c4caee30e2 100644
-> --- a/arch/xtensa/Kconfig
-> +++ b/arch/xtensa/Kconfig
-> @@ -55,6 +55,7 @@ config XTENSA
->         select HAVE_VIRT_CPU_ACCOUNTING_GEN
->         select IRQ_DOMAIN
->         select LOCK_MM_AND_FIND_VMA
-> +       select MMU_GATHER_RCU_TABLE_FREE if MMU
+If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+good opportunity to block a process from overwriting read-only code in its
+own address space through FOLL_FORCE writes via /proc/self/mem.
+The security_ptrace_access_check() LSM hook is bypassed when a process
+opens /proc/self/mem because this is considered "introspection".
 
-And MMU is required because NOMMU does not perform mmu_gather
-operations, same as in the previous patch? If so, maybe make a note of
-it in the changelog?
+This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+that a process cannot create executable anonymous pages.
 
->         select MODULES_USE_ELF_RELA
->         select PERF_USE_VMALLOC
->         select TRACE_IRQFLAGS_SUPPORT
-> diff --git a/arch/xtensa/include/asm/tlb.h b/arch/xtensa/include/asm/tlb.=
-h
-> index 8c3ceb427018..6fb7b78154f6 100644
-> --- a/arch/xtensa/include/asm/tlb.h
-> +++ b/arch/xtensa/include/asm/tlb.h
-> @@ -16,7 +16,7 @@
->
->  #include <asm-generic/tlb.h>
->
-> -#define __pte_free_tlb(tlb, pte, address)      pte_free((tlb)->mm, pte)
-> +#define __pte_free_tlb(tlb, pte, address)      tlb_remove_ptdesc((tlb), =
-page_ptdesc(pte))
->
->  void check_tlb_sanity(void);
->
->
-> --
-> 2.55.0
->
+PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+accesses are only possible when the LSM allows ptrace() attachment; but it
+is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+environments running lots of third-party code, such as Android.
+
+So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+such "introspective" accesses.
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ fs/proc/base.c                | 14 ++++++++++++--
+ include/linux/lsm_hook_defs.h |  1 +
+ include/linux/security.h      |  7 +++++++
+ security/security.c           | 25 +++++++++++++++++++++++++
+ 4 files changed, 45 insertions(+), 2 deletions(-)
+
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index bec6197329dc..295b21203c7f 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+ /* private_data for proc_mem_operations */
+ struct mem_private {
+ 	struct mm_struct *mm;
++	/*
++	 * Was the ptrace access check on open bypassed because the opener used
++	 * the same MM (introspection)?
++	 */
++	bool opened_by_owner;
+ };
+ 
+ static int mem_open(struct inode *inode, struct file *file)
+@@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct file *file)
+ 	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+ 	if (IS_ERR_OR_NULL(priv->mm))
+ 		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
++	priv->opened_by_owner = priv->mm == current->mm;
+ 	file->private_data = no_free_ptr(priv);
+ 	return 0;
+ }
+ 
+ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+ {
++	struct mem_private *priv = file->private_data;
+ 	struct task_struct *task;
+ 	bool ptrace_active = false;
+ 
+@@ -884,10 +891,13 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+ 					READ_ONCE(task->parent) == current;
+ 			put_task_struct(task);
+ 		}
+-		return ptrace_active;
++		if (!ptrace_active)
++			return false;
++		break;
+ 	default:
+-		return true;
++		break;
+ 	}
++	return security_mem_foll_force(file->f_cred, priv->opened_by_owner) == 0;
+ }
+ 
+ static ssize_t mem_rw(struct file *file, char __user *buf,
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 65c9609ec207..12f84a1e6fab 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -36,6 +36,7 @@ LSM_HOOK(int, 0, binder_transfer_file, const struct cred *from,
+ LSM_HOOK(int, 0, ptrace_access_check, struct task_struct *child,
+ 	 unsigned int mode)
+ LSM_HOOK(int, 0, ptrace_traceme, struct task_struct *parent)
++LSM_HOOK(int, 0, mem_foll_force, const struct cred *subject, bool opened_by_owner)
+ LSM_HOOK(int, 0, capget, const struct task_struct *target, kernel_cap_t *effective,
+ 	 kernel_cap_t *inheritable, kernel_cap_t *permitted)
+ LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 153e9043058f..e8bc2e644241 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -338,6 +338,7 @@ int security_binder_transfer_file(const struct cred *from,
+ 				  const struct cred *to, const struct file *file);
+ int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
+ int security_ptrace_traceme(struct task_struct *parent);
++int security_mem_foll_force(const struct cred *subject, bool opened_by_owner);
+ int security_capget(const struct task_struct *target,
+ 		    kernel_cap_t *effective,
+ 		    kernel_cap_t *inheritable,
+@@ -676,6 +677,12 @@ static inline int security_ptrace_traceme(struct task_struct *parent)
+ 	return cap_ptrace_traceme(parent);
+ }
+ 
++static inline int security_mem_foll_force(const struct cred *subject,
++					  bool opened_by_owner)
++{
++	return 0;
++}
++
+ static inline int security_capget(const struct task_struct *target,
+ 				   kernel_cap_t *effective,
+ 				   kernel_cap_t *inheritable,
+diff --git a/security/security.c b/security/security.c
+index 71aea8fdf014..2cde1efdb7a6 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -595,6 +595,31 @@ int security_ptrace_traceme(struct task_struct *parent)
+ 	return call_int_hook(ptrace_traceme, parent);
+ }
+ 
++/**
++ * security_mem_foll_force() - Check if FOLL_FORCE is allowed
++ * @subject: credentials using which /proc/$pid/mem was opened
++ * @opened_by_owner: whether checks on open() were bypassed because the opener
++ *                   has the same MM as the target
++ *
++ * Check if FOLL_FORCE is allowed for accessing process memory through
++ * /proc/$pid/mem. opened_by_owner signals whether the opener's MM was the same
++ * as the target MM, meaning the security_ptrace_access_check() hook was
++ * bypassed on open().
++ * (Current current->mm does not matter for this; for example, if write() is
++ * called on an FD that was received from another process which obtained it with
++ * open("/proc/self/mem"), @opened_by_owner is still true.)
++ *
++ * Note that this hook is only designed to be useful in the opened_by_owner
++ * case, where the subject credentials effectively also describe the object.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_mem_foll_force(const struct cred *subject,
++					    bool opened_by_owner)
++{
++	return call_int_hook(mem_foll_force, subject, opened_by_owner);
++}
++
+ /**
+  * security_capget() - Get the capability sets for a process
+  * @target: target process
+
+-- 
+2.55.0.1003.g10538fe699-goog
+
 
