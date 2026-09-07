@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13E76C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC10C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:36:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324E86B00A1; Mon,  7 Sep 2026 04:35:58 -0400 (EDT)
+	id 1ECDE6B00A3; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DA616B00A3; Mon,  7 Sep 2026 04:35:58 -0400 (EDT)
+	id 19D4E6B00A7; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C80A6B00A7; Mon,  7 Sep 2026 04:35:58 -0400 (EDT)
+	id 08CA06B00A9; Mon,  7 Sep 2026 04:36:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED8466B00A1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:35:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 796AE40697
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:35:57 +0000 (UTC)
-X-FDA: 85186308354.10.F1B242B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C839A140004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:35:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlDV0UdX;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788770155;
-	b=l27UzbztOEMkSLsDzK9bptj9YzTPeSXFqdlvtA3hg2v2r7yhpkBboeknGmGJgaly5jsm1O
-	roLkIC3JI2w9QlAwWk3URX0ZMY16MZWaBm2zaLbZ2+NQizbFD1EBGcYnFGXkJE/AHPqWyS
-	7eF5BmSksVb2JxIj97uBSovycqZ9Otk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlDV0UdX;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DBD056B00A3
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:36:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 74E744069E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:36:25 +0000 (UTC)
+X-FDA: 85186309530.14.75B90B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DB43F160002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:36:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dt1YvAUg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788770155;
+	s=arc-20220608; t=1788770183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AmRDoct7riDtBKsI2KwhHRknGPzx1klC4uVT+9xvqPI=;
-	b=fTlsKcGNBCEVB+9g8akLZLvsUYI8clQgT/NKtW3Q5mJ/GpSzijb2yUhYl3pHCgE5Fu0wcS
-	dhgD2MtW1MbGhkbBrrC0s0trt1+E0kLug65vY/ddCk88PPbI1kTMh1yglpo67KAdN5uUok
-	5Sk0e4DcMnzuOG7JNmJj8EXjJN89aNo=
+	bh=nSKYKv9+IpmrXK+SaXRNeOF2fLG9l/6KPt7ur+clwx0=;
+	b=PVG33EZdk9/t9sF0nPgKOVcq33GNkgp6JyYvaK74GNk3jGAQzjpWu+5uWvtreYRzUtt8se
+	OgyZGRiKgLVcBB8Hj7/QPMu+0iQK8+K3G0/x8W8j83vxjz3tBcEd4lLACgjMZICU0uVeld
+	pAPOrXaKtJhrqgSt2m2C1z0dpGbauDM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dt1YvAUg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788770183;
+	b=UKaJPJ/wt6VypvLCER3+QTS3LxLIxLRro9tjY+5EKzMUl6zIkmoUxJG7C/uOVS0MmmN9j0
+	D0Fpqkx5Zkm5sYV0Iw/DNFbtEYZnJrVcApGkHrOAmxjnO4Mv+UCnk2tbXZYANnYamyBSGB
+	54X1AP2V2M5cunMd3yNZ7P8WKa4iNy4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B64C943597;
-	Mon,  7 Sep 2026 08:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC061F00A3D;
-	Mon,  7 Sep 2026 08:35:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6185D60D86;
+	Mon,  7 Sep 2026 08:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC8F1F00A3D;
+	Mon,  7 Sep 2026 08:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788770154;
-	bh=AmRDoct7riDtBKsI2KwhHRknGPzx1klC4uVT+9xvqPI=;
+	s=k20260515; t=1788770183;
+	bh=nSKYKv9+IpmrXK+SaXRNeOF2fLG9l/6KPt7ur+clwx0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GlDV0UdXoMomtP016qtWdfhBcTL8gmddP/0T8F0MWrDwpxDQN2f4ko1Wocil4V+4O
-	 HDiMG6LHFKKijrMY/6TKhDx5a+XeTmjTLFpH0R+2E9I8zmfOpIeOP4jpVvD1J6oiqt
-	 r4zAGJtuddnX283jMvfQv5eopopQhFXVQCU400y1oiJe42/dF2HXBZZCpIA4/dAma5
-	 G+MTqCyVIBxJ6lyqxpV6OxjC1tom5XFf6lhGhYlL8trsEjwuKFseaDN3Hy/1563AfD
-	 idwFSfRBZGSexeqpYIZYA+bgizGrZT+uFCrKyDnUZ9DJRIT+UUNAEz6HFLpSLUqWu/
-	 NFtqaJWO8/eKg==
-Date: Mon, 7 Sep 2026 09:35:39 +0100
+	b=dt1YvAUg6NQDSEDvgG9mbQNggE1DpbwJYzMW4bcdlZql+uP+sMxqkUWIYAXsCyIq5
+	 coopp1kNdFyVaxSNXMEYuqQdamxoZARBxr6/t2IIpNcq7WwRE/IdJAYLPCVwlAJaWH
+	 tA5XXCdJgaMjyMpblDZk2E8jRfJIlW4C3XdTPPmivDkJqXxdgp1VDXYfAUR4AvdZ/g
+	 HNsX23T6/YieZlixieteuyT8T5FyobPtxs21tLst44lvW5pzaO1hrglEyJ5O9AFNG8
+	 q/mvBXkYa3rmnye/abn6dOoOlhqDPg3K7lRJlgZIbKtr/PzWNIFK6M9D4REDm265Pf
+	 ALtpygYtu6h/Q==
+Date: Mon, 7 Sep 2026 09:36:07 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Ye Liu <ye.liu@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>, SJ Park <sj@kernel.org>, 
-	peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com, rostedt@goodmis.org, 
-	jpoimboe@kernel.org, mic@digikod.net, oleg@redhat.com, tglx@kernel.org, 
-	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, rafael@kernel.org, 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Ye Liu <liuye@kylinos.cn>, Michal Hocko <mhocko@suse.com>, 
+	SJ Park <sj@kernel.org>, peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com, 
+	rostedt@goodmis.org, jpoimboe@kernel.org, mic@digikod.net, oleg@redhat.com, 
+	tglx@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, rafael@kernel.org, 
 	gnoack3000@gmail.com, rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn, 
 	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org, frederic@kernel.org, 
 	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com, 
@@ -84,23 +84,23 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
 	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] mm/oom_kill: convert process/thread iterators to
- for_each_*_rculock
-Message-ID: <ap53VD4AW_pWyNcT@gremlin>
+Subject: Re: [PATCH v2 3/8] mm/ksm: convert process iterator to
+ for_each_process_rculock
+Message-ID: <ap53cJ9c4oN1wQao@gremlin>
 References: <20260907081334.1152889-1-ye.liu@linux.dev>
- <20260907081334.1152889-3-ye.liu@linux.dev>
+ <20260907081334.1152889-4-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907081334.1152889-3-ye.liu@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C839A140004
-X-Stat-Signature: kbueuemtri46f7j5xbwepnr4bayae8qk
+In-Reply-To: <20260907081334.1152889-4-ye.liu@linux.dev>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788770155-862680
-X-HE-Meta: U2FsdGVkX1+F97aegBMmpfbZD+4rrZg2tFrG/3J9/yo84prpdkvxI32d1FBsB0J88igWKvVGid3pyblRd5whJnEufDNWsWiWyjYyySVkIr4M86b4ApDZ4yZpLvy30pszd4zo6AWnsk6nrzqCmoLj4AnKylI1a7WVQ6bQT0GNFvbl27pfbA8UY6gMKblJdBLMpj4VgVW9G+tJzPB2Kz4KjPXHB8KjFM9/IOPu5msC+dHmDl+UHLVQ9c9bK7hbOcqX28avym9uzm2pif6Mmk7OaEpwnBuoNHbn9EywAYd7oEGRf1JG7htGZskGpP1Mn2OeV269+Ov/iSbi+OoPBvtpPJTH0AAqbX5SVUl4XSC1bM3OoCiXkMzg0edkhPLU4uGMoZkA2qaL07k/zidPCFWKkC47AX7GRqM4uRVylPv3R8qKSl0jnkaBzzTOzZOP5zOgTp1T0RmjN8MxP8acQiUfdIehs0/zxHGBe0aZzAK66UUr+TT4TeoICrx0qNFG8G/NQ1jGdgk1fAK+0kApOYa/e1ho/jF5DVjgobRplrr/AUmeROxH/fNWqxj+b+fLdK6JkndRIBmD+jhl9hPb0glgCEGzFhZMvU28VUssHxgh2SWPpQ7v/A9WRn8o7qzFIHTeRLthGBH+kUchhWoHpA4cI7mUlGhsjs38XYLHbwWpLL8Kli61k4lRettmtt7RiKFiAWMNEQ3Y/Ix5ZeM0PI1UoUJCKDiBRtuRQ8m9Np3uH5KCszVsW3tEnkiDahXYuVMkTaAy5mBLS2/pWMekJPZBFgpJl8KobvCMKaqZSZAF/0d7D9mu657vKKc+KJzcot2BBeZKOF2GxJDRjkqncp/uL0FJUjg/5MIst7yTZ4RAb4uYFTHw/aFIcjtX691c1+Zt/H68TXJlxf7KwQd7wpSyfcbVUSQYNv7FzV7a+4ZHtZh2mtmBIoGtiX6hbMXdIAFW1ZeUbJ/w8JqcHvRtfRj
- fSE4s4Md
- LmKUNZK0cXO89BkplDnJ0ajNWM3xAZTlQ9N5gV8LpOJ++ZgecIwTtm6IhEWLkTTF5q9nN5m+F3PcbOkHCLeQZP6AWCLr9T5/QbAVzofQxSttESH9oVkppLQJH6vpoNbCpgJgxAQ1Ju9NxHlg2sMs7Uq8z3mW5VflK8IgVXeueq0opnBOU4kfS4BPO1cF+hmR4T7qlcgrmXjmoY1DdkUErAKkpPlNha2xNSXR7seaJo++77jgjvohz3AcVA3y3ocbgsjvo0wfY0UbRaEPnH4RvtGb/GmCQiQre0prsntF4NX4epsbzWtTDITmldn+eVrLGheAdLXJylcqxMzbKYppb5u+LY4RWrA0ArR2DphRBWsD3UF/KZliW4z2ch2PgpjcDYSPR00fmGR5Jj47gmd2FLIIBE0A55XgPyCJzfWYmh8jUi5ZTaeJiU7Aq+wxfRwqTKrtZ/zA+R2Skh1g=
+X-Stat-Signature: f36bwnukndnnib1h94g8x33uz7feu6mf
+X-Rspamd-Queue-Id: DB43F160002
+X-HE-Tag: 1788770183-38217
+X-HE-Meta: U2FsdGVkX18Xb5ScDMT3YF53yv7ZFbfaZxZWeyXoK37RFJTd2/o41B08eRknVCiJ06X8EUdAoBVOaP99/EdAGhWw5J5lS+kuRjVNrR8oZUBxLiHrjT9LD+NtimNbhpWFKSH9aFeG7ME3hFcdUhdkJ5DmdbHl4xrOxP93nSfQu5xkx1Z5y1KbcU/DVM6gI8nAsvm25m+wQ73M2aM0bTmnaDNVH6Adoj7iWR30Nn7ipcLvNPb+kjMiKSxyqRNe64K1cqZH2x7k35K2r8DUQOv7c+RexMyufg3UmQ27ADv2Dev6i3u0ptHS2eGtgRNlsoY31DooDMR6ZjwUtM0DiKQrAxa6ch11iLvIrJtxQb3YoqCFoCC8OJcF2OhDcXm8nxzBGs9QSSe6Dl9YzN2j3mwt1GKKx13GwfrjUpgJAlqfezJu8GDeTX2S6dQlICTDhN9ZUtgZyPqY6zTCUJSSegcYTN6rWwp9v048Tag5UTh/l51BMGWcr+APfY+CoFd00onfQcXicL0hjYS2qAyt6YenkDbI54rsuixl9omoWRke2P4AVd7K2QAFt/H+MzJuYULyFmVqS7e/WlrQXUdgXmkHRCnUKDBlU0PPLTiJ4+9K72bCqs6WWuldaA1Ns8XAlQTR6kNtH1dbPecCZ3rmz1Wi2o8y8Q3XpII0k6Ttuyt/N1Zxqx6OjYrZovaEHMPZIIK9C3XYo1LEzg/+HQSfef/vMorH7/fLApEfz8abZPCdW8sc/z8oldvRAMl/VjpJcqx7z6/0hGkTDs1RZKhewISiCQBMC/FkcJ60bzYBaMa96JBOrpD8UFYVfmySbvFcBJBEdHZd+rxucC3cmXYteCUqTYryU0b6JZS2rrAZinNyWrcBUju6AKENV1t7e3r0ZN7VwnwQtC2f2eZrSS2x3RoNxt14qksoQGbVo9mPMjqKObWxLW7sv+jkPrjHg8MtyY7FSB35jDMq8Jis0aMAYu2
+ 84sz3FbS
+ oGTP+SdBPG9iAiVg/WLxwWbj4hibgG8F+OamQp8o43VYwJm4ZPLnyxUwaQxaCVMOGFWQwgheDr9qz6AkiJxE9Ld4x5+GVe5swUyOYihzJcUau6ElHoI8HIDw9/KPwFeY6KFxklnjesmbXBy9268hZ6eHobErzUItCmE9GPT6LoZXOXXsz+pRwuzuSTnBSynlcuRC2znChtmFa3/CtDmj51QSfkUI5Y7BeUzGsqOcV8oZX1D9NzdwcK0jTH6uKUbivv7IX/tCFqcQNG4Cbgq3GIJtf1vnhj/nm2XN2z++9Uy/UCT9lvPUf/pMCt5JsvcI3Liw1ih1WjjxnqCLTSfNbP0Jyg4ytD/a3+yjwFyfkSdCZQ9hoBrVy4WFoJtJ9aIRrS9A1iyLApMNc8vSYUBPIns6pky5aQYF64xOD6EbYmrg7wbO9ypc1wMQ8MMcHuSL0i0fRlLXuwwyJQc8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,13 +108,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:13:28PM +0800, Ye Liu wrote:
+On Mon, Sep 07, 2026 at 04:13:29PM +0800, Ye Liu wrote:
 > From: Ye Liu <liuye@kylinos.cn>
 >
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pairs wrapping
-> for_each_process()/for_each_thread() loops with for_each_process_rculock()
-> and for_each_thread_rculock(), which scope the RCU read lock to the
-> loop body via scoped_guard(rcu).
+> Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
+> with for_each_process() loop in mm/ksm.c with for_each_process_rculock(),
+> which scopes the RCU read lock to the loop body via scoped_guard(rcu).
 >
 > No functional change.
 >
@@ -129,96 +128,31 @@ Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
 > Changes in v2:
 >   - Rename *_rcu to *_rculock
->  mm/oom_kill.c | 20 +++++---------------
->  1 file changed, 5 insertions(+), 15 deletions(-)
+>  mm/ksm.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 5f372f6e26fa..ef2e1c423c1d 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -94,8 +94,7 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  	bool ret = false;
->  	const nodemask_t *mask = oc->nodemask;
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 49d48d1e0998..69d30e80a090 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3280,8 +3280,7 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  		struct anon_vma *av = rmap_item->anon_vma;
 >
-> -	rcu_read_lock();
-> -	for_each_thread(start, tsk) {
-> +	for_each_thread_rculock(start, tsk) {
->  		if (mask) {
->  			/*
->  			 * If this is a mempolicy constrained oom, tsk's
-> @@ -114,7 +113,6 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->  		if (ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->
->  	return ret;
->  }
-> @@ -368,11 +366,9 @@ static void select_bad_process(struct oom_control *oc)
->  	else {
->  		struct task_struct *p;
->
+>  		anon_vma_lock_read(av);
 > -		rcu_read_lock();
-> -		for_each_process(p)
-> +		for_each_process_rculock(p)
->  			if (oom_evaluate_task(p, oc))
->  				break;
-> -		rcu_read_unlock();
->  	}
->  }
->
-> @@ -430,14 +426,12 @@ static void dump_tasks(struct oom_control *oc)
->  		struct task_struct *p;
->  		int i = 0;
->
-> -		rcu_read_lock();
-> -		for_each_process(p) {
-> +		for_each_process_rculock(p) {
->  			/* Avoid potential softlockup warning */
->  			if ((++i & 1023) == 0)
->  				touch_softlockup_watchdog();
->  			dump_task(p, oc);
+> -		for_each_process(tsk) {
+> +		for_each_process_rculock(tsk) {
+>  			struct anon_vma_chain *vmac;
+>  			const unsigned long addr = rmap_item->address & PAGE_MASK;
+>  			const unsigned long index = rmap_item->linear_page_index;
+> @@ -3298,7 +3297,6 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  				}
+>  			}
 >  		}
 > -		rcu_read_unlock();
+>  		anon_vma_unlock_read(av);
 >  	}
 >  }
->
-> @@ -894,8 +888,7 @@ static bool task_will_free_mem(struct task_struct *task)
->  	 * are dying as well to make sure that a) nobody pins its mm and
->  	 * b) the task is also reapable by the oom reaper.
->  	 */
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rculock(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
->  		if (same_thread_group(task, p))
-> @@ -904,7 +897,6 @@ static bool task_will_free_mem(struct task_struct *task)
->  		if (!ret)
->  			break;
->  	}
-> -	rcu_read_unlock();
->
->  	return ret;
->  }
-> @@ -960,8 +952,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  	 * That thread will now get access to memory reserves since it has a
->  	 * pending fatal signal.
->  	 */
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rculock(p) {
->  		if (!process_shares_mm(p, mm))
->  			continue;
->  		if (same_thread_group(p, victim))
-> @@ -982,7 +973,6 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->  			continue;
->  		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
->  	}
-> -	rcu_read_unlock();
->
->  	if (can_oom_reap)
->  		queue_oom_reaper(victim);
 > --
 > 2.25.1
 >
