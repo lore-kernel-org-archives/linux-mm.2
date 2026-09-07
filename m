@@ -4,188 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B0FAC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DD1C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:23:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64F996B00A0; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
+	id 565956B00A2; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627296B00A1; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
+	id 53ED06B00A3; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5173D6B00A2; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
+	id 42C846B00A4; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28CC46B00A0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:23:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE3F740144
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:13 +0000 (UTC)
-X-FDA: 85186881066.01.E8FE206
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4BB8E8000A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3naaP8h;
-	spf=pass (imf30.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 149A16B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:23:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A17A71A0132
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:41 +0000 (UTC)
+X-FDA: 85186882242.15.8CFF3F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CB0C84000D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTWtYKU2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788783791;
+	s=arc-20220608; t=1788783819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oB401PRChNM94BBOkC+2/OTgtouFWztcLaE/fiOs9A=;
-	b=3MNEVFfJs8k1RlpS3u2En0O72Sj6fm/StESPy6cIo78s+rkemnJw1uYU4mEXTYGKZDbzGM
-	truO9uwqteeLt8NuhEKIx7nXDxMnAdompwWxgdvL+otS173Y4VhBmL061uCmjzQfgB6BSU
-	0TitorDvAVgnxRzrcs0yjXdw2Gw7Ok8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3naaP8h;
-	spf=pass (imf30.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	bh=DKWwKFC4qZfk9FuvRkvf9yrxae6yPLmuMCybVojYj7w=;
+	b=cq6v+8GCR7Bs6vucEeHshiqrC0WkMcz+DUEK15sUO/NnipjoC4BrR1QRsmy4PpgSC4wsje
+	xBJaS0Sgccv7EdR78e33bwhuUT9EYDuT7wcEEDFsdZteOxyD5CH1i4mOXSNBqZUYhkPyUq
+	MBRwkYkJzYS6i9GyHwazjhcPt840kys=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788783791;
-	b=MX5isCF63SPGxAIVEzJuvVDvHYqA8dSePRkqrxs77DfQVeibACAogxz3bBwQidHuOxtc7J
-	NAL2Oa6A1DNwva1qI/DAb5niusU+yfKDkhysSR7QCBvOC3Cdb2iubSTY062jLL2YnEfmSr
-	Ryhf7gLspZqMn2nMJKCEtg7fTngM9m0=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687B1bNI627746;
-	Mon, 7 Sep 2026 12:23:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1oB401
-	PRChNM94BBOkC+2/OTgtouFWztcLaE/fiOs9A=; b=g3naaP8hxzYj/uqzO8A0VG
-	o2mIpjsr5spK/ZZnw2I+LSlH2Kf86hQDVnwXDWaKZ79PtAV7crImUnHf7YXg9TaJ
-	oE6ezSTpTWSwS8xm/paI1WtXS/hhIIwY+cQVdVzmkG7mUyWCe11tK3+Bfib5707T
-	1jB5Ui/jICh6WHgGV2kc/9SqYiBi634BVR9dztmyOMrQFFmudr37fuhYjCf0078M
-	fkToSfFTHH3M+5eHKu8kuLNAfUeEG9X+hpHzFURyg84550ys82VvykFvBPyAJgLX
-	aMB6GAWX/G5ariMl50wL55CJU8Jl2DiRPjJl5yCvXpcGmoIkW3lZnvWHwCLfBoyg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrggxs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:23:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687BuFbT027688;
-	Mon, 7 Sep 2026 12:23:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggwsvwy8j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:23:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687CN30v46072304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 12:23:03 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4158A2004B;
-	Mon,  7 Sep 2026 12:23:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E76C320043;
-	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
-Received: from [9.87.132.113] (unknown [9.87.132.113])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
-Message-ID: <dcb5547b-a04b-4991-a581-e3784ccfe303@linux.ibm.com>
-Date: Mon, 7 Sep 2026 14:23:02 +0200
+	t=1788783819;
+	b=IVpGz8mZ9//ZkvLOuzTnZCrGnm9dtVd6VxA/zfDid8QY9NTgAj8L+3vdiXoK4XqWc2O2X/
+	m3VcabJT+bfFR+PSMp2skRrzkK13MnDA7TRyZQNgoMOPXbUuCnN2FsQHrFvmKXGPKkrYWR
+	spGJKZYlJvR0HGgkGCR0uPxJIJ7SAEk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTWtYKU2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A48A601F9;
+	Mon,  7 Sep 2026 12:23:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D611F00A3A;
+	Mon,  7 Sep 2026 12:23:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788783819;
+	bh=DKWwKFC4qZfk9FuvRkvf9yrxae6yPLmuMCybVojYj7w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QTWtYKU2TyoxPXjcHz+SiSddeSqqdvSFOswAYcm578/7B/fTaz0fQyG5Icg3+VHLm
+	 v6Dq4OMR7o5VtmB4eXuQDSNPvgtsNPC++8zGFQlNPs1rWtlwyJuFbPXYmdfDhq8DGt
+	 8tU65ngkv7fDdyLxAha7PE8Okts73aKvC88MxdbnLJ/l1E1xohN6E3i8Dsy18loMEx
+	 hNojwg8rtowHlQGSIrFMObNhvk7T7n43KE+4tcMLPRXKdv3iemHiUrwcUczRjQippe
+	 L77nQ0Oovfubn2l3n1a2/Fb7FOwPkIV+0umIYUTyLvsVJjCqeF0MZIQiRuy7uCOY9l
+	 0P4eTZM0rGbjg==
+Message-ID: <5ae7a11c-1db4-44cd-bf67-a98cfd5ca08b@kernel.org>
+Date: Mon, 7 Sep 2026 14:23:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] KVM: s390: Replace get_zeroed_page() with
- kzalloc() for the STHYI buffer
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-References: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
- <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
+Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for
+ compound folios
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Hui Su <sh_def@163.com>, akpm@linux-foundation.org, balbirs@nvidia.com,
+ ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260817120758.669807-3-sh_def@163.com>
+ <4ead5df7-f000-4087-83e4-13aae036e0b7@kernel.org>
+ <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6a9eacac cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=kt7I_EveaTZZBW9BUTwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfX+arVqquRJ31Y
- mcur1fAZHm1KhQjKFpEM4QT5CY3JEzwzs6kz7MSULeLhzhiSs9DY+//BC4oFwcl1Ly9dXRHVpou
- X6VXmXQl1ar9eUD5I4aNZJDx5wLN9EU=
-X-Proofpoint-ORIG-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
-X-Proofpoint-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfXw0ZzwHzoN1qi
- RWFmUX6QSzbsv8a+zREfzUN//ueiMOlh8GTtu6CVVbstAx1PPj+NyO7Va5LqAb/35ad9NTw9Ejr
- JYEwwpM36tgawvzjDayZkpbiFzrPW3fsSRGYk4XI0WxCYKrTWT9NqE64PF1Z5GM7ITD1WlMx70d
- QAkzJk/Pu8X7lX1cf7mCxpJQYU/e2mXqhmlsLY+zQXggLjSlUZjnZeRvJGxcM7uQ1cEbf93TWVG
- CQC14GKgZsuiuBedkIOKtuaPwkOxql5o3bcK83h1YRtVUUBEmnrHUYlfMJ21TQA7rvD9ErvHsO6
- o3ePU05j5MjRRc9JOhC6HnY9cr7fyE5bay/xFwNWXdnt+pqgN6MKirXdZxGpnfoRVnY2Zyrgmsy
- kHMaUjEaThkeVKpu+FLb2v1PEXeNbMHjEfFNiLoXShRL8r5nhvOpkFIKvFAJlqpPNH95yerzK54
- Y55V0YFeE0oSYQHklpQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070133
-X-Stat-Signature: cw6w7ery999ttq9kxccjcykknjis81ak
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4BB8E8000A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CB0C84000D
+X-Stat-Signature: 83j4pa9ikcikr8hignccqceordjqzfsg
 X-Rspam-User: 
-X-HE-Tag: 1788783791-668135
-X-HE-Meta: U2FsdGVkX1+sGJqYIdbogmbHR2BaO3UlJvawA9I6FYY/3Ipnu91SDBjuox2OPfmeCxRJQq6qg0g5IrgxJbPJfq3+InzWu9I4NN+EkMd7ZGCl9Rybr8SZ6vzuX+A/Q1o12ZqrtNI5YpGu+3aQwJhp7MOLIGucj2CE32AoRUGhV/pgslim3tygUoTlrqZahRnMmy5kvQ7/qt5tlLw1eQG01vnPFtYiH/xPjdnO9wO4KM/tOzDZKrQui/4NiLu+B+4Ro+0p1EV0w1AbINqB0gxleufDvKjjJ+oaTxHBTJHwz5kQtrMhNdUlNRXLnWkqQ/YDLAKA2tmu/56ty1UKdBfd1AmsKwvyLmFs4jCn6TqsQwGsc2PsUU7W/+Vn+vp5JO3buu1GIz5aD/kJFZjymp8Gs7YA+vrHssgSrCMsNuJRpfpvNXM0rC8OYUrPXAYW0yXW5suhMWMKGqHzGuPPN8MxYRTbYxk3d2D714vAA6ES5Wh169QyM4qnq73uHCE1fRXrBnZGsujK+I85x+X9UlGOLM4ex0199jypdzZDuDq6nYfX/ujUZKEhltw48/vHQ9pKrhZkg/CCQpD967Pw7+oQSWqO+VF7AuI4+u9IFlWJg/469bnWxptUweeBCoEaICMkA+90onJr9XprJcxZ8RARAATInYJ/RfhEks0HZ1rPe4mymvx6lYRXD8DTtWaTnh2UdbXyHap/rxc7YK/5eBPXBz/E7sx3BSjPiGCawR7zDzexRyCfVlLycK44wxjKDKmvz69NR0weEWxesQSoW1fQL5ZYy1CFgVKb8NQU6A+MZtDWv7KuONj5LzfObqG7xBLTeoQLjmURi2HvYFLQUuajqKqxyCTaeLt1//xlRibNcrG93+mq12Fo4DdFLTKVoboff/wQnAJE18YkIIocZZFVLbp7XMZVpgJh8vkrjaOhHWMoUFRH8Nw0L9/BMe7WYixfs1JQvFmgpHmgfFAXV4W
- KbDiicAE
- KQ0djkSIGWdlGBtKxUbbOiTUIA2ZmABnXH3+T3NqYkS/1JXIqZd5MtGSPU6SkFONXIAjY9GEfw2C7U+CKimaEdRgw0Kcm+vFR5Y23vOR0TaUwumFOPHy9dzxJDloOLTwkioD+3rBZiKI1Ej0FAPKB+XMNE4f4mgySviNh/wA0vW3ZaHfYTDo+DlLa1RmyItcACreQPLHKV2nIYQKM8QDswYYUbbRJffhWDaBYJxsU/o8A1MC4tQoIO7bdSQrJbQLqVPwXVv4ojWzGru/NvM9+4eo+lNLCyZBTrFAZXcnCEOcf84c5IQXkeuLu0mRB3gn46Bo+
+X-HE-Tag: 1788783819-711726
+X-HE-Meta: U2FsdGVkX1+jW638h3XulMFUcV0S7QSUz2ycCVM0BCGkLedeLpW2DZolrsLABWHgEi+tIRVmZGikze2zIHR0/LyTi7rWO3+bL8TqKLtgPqGkLCMhS/IQXvDXvpAGXpD7wn2LFW9Cv0bBmMqyPZjvbanc8wKJCYC0t+6F+SpJQqUweTt20PI3yHkb6+NvLtEgzKoD/ZxUB3QGYllkpCckvfQ6ImdefUtNStm1BfRRF5zhGNabw/dcqHfIHkJZhLYdSvK4MpomOW9+JRCPRsTphqCNDucJPKReiftpv9v9aehpRcacMTcqST7UJxNSI06nfBFl1EStmoBJsxn05ih40E8USKZmJTIjQNUpwIHb2iYajbe4EGZt4Iy7RTRj2ScB5X66eJChGaGFtqsc1tg+AraSvz2p8b45XIR0/qVmCCXihPJMdthslhrhpu+cSRYeHIxio+FeduAo/xYnBSzZhNn6kDxfgVwZ8YSbfTdR/xaxIQXLajfcveHlRE8ALQDQL47i30InPfNIt0RhqhBVH5dERKC3nG2O6vrv2dWbFZnM2Wt+/6EDK34qwU3+MbBu90LGEyPrWNl0xjINQeqSvnj5lrsW7XHc524iMsgU+PjlzFdjptn5j5XdJlt2oi9jBeQv2XhwP7bJYg0iJhE/xUREUdQr7RkJR5hbXWoflk/xsflzfEo8lSVt/qM0X/6w1sZDNeUyRlWj3xvlFMu355SWWPCPgzOHD3VZpUkYvmY9f9g+YfLPOMy5gHgbSYDgaEWmXxNcmTVGjFIQAN8lWi3iU5wsnNXBndazd1IkXaivzxtR/HpbC9w23xVy7qVxbxCGQtrDQMWK7zc0f/GijfmRME0DwjMHFKxSnRWl4/aCEZqoUlLCWqKlIpG0osMPVukOqWRz0W//0K69b0Wf7x7OmJ86WzDX48ne7IQSp289Pn8sDRwHQeIVRWTVjEKMuVZALdkSpG8dfE5Up22
+ FrIiLJ4E
+ zqH+kJpDKi94xHferEbMfkQ5OnJw7f5mHqV+vlOGuKk7Ucm2p7HDzdLQrqu1wGcILxQtdYViuV5O6hql6+JRzTN4Gyk6Rty18Rpb2qpbR/Gt5ITYoEyO9dKQBQCRH/9AscGyT2enfw1UEPjLOtZli9khhpux7mzg7Mnodim3mdrBIx9piPxzw4CBkaoiQotR67HMJ3yKTIOIvt548pnTJG68UCgU7gASTk5yY+ZghxxkVftAUemuasvXTeNW8tchtjW09ADYPfg3lYWMkt7eX4Hr1Oh3/tMKtC1L4Pyfj3CxFor/fum/5w1LlGsb5jlX2vdoeF2IP1ZB5cyREHMkOs7bcoVG+ASUyYaht07QPR4Yv3xIdbCOQ/GPpQ//vBOgb0DznYWKpGI0jLhs2n/QAQemRKmCE6KA7HPgOCmZVkSmOznF9sSNeEeQWQuaULkijBtDAsJqn7G5I/SY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,48 +142,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/6/26 10:27 AM, Mike Rapoport (Microsoft) wrote:
-> handle_sthyi() allocates the buffer that receives the STHYI response
-> block before it is copied to the guest.
+On 8/28/26 06:44, Matthew Brost wrote:
+> On Thu, Aug 27, 2026 at 05:14:40PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/17/26 14:08, Hui Su wrote:
+>>> migrate_device_range() and migrate_device_pfns() clear the entries
+>>> following a compound folio so that the PFN arrays retain their
+>>> page-granular representation.
+>>>
+>>> If a compound folio extends beyond the end of the caller-provided range,
+>>> the loops clear all following folio entries without limiting them to the
+>>> number of slots remaining in the npages-sized array, causing an
+>>> out-of-bounds write.
+>>>
+>>> Do not proceed with a compound folio if its page-granular representation
+>>> does not fit entirely in the remaining PFN array. If this happens, drop
+>>> any reference and lock acquired for the folio, clear the remaining
+>>> entries, and stop collecting.
+>>>
+>>> Observed with a KASAN x86 QEMU kernel using the HMM
+>>> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
+>>> migrating an anonymous huge page to device memory exercises:
+>>>
+>>>   dmirror_fops_release()
+>>>     -> dmirror_device_evict_chunk()
+>>>       -> migrate_device_range()
+>>>
+>>> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Hui Su <sh_def@163.com>
+>>> ---
+>>> Changes in v2:
+>>> - Do not partially represent a compound folio when it does not fit in
+>>>   the remaining PFN array.
+>>> - Drop any reference and lock acquired for that folio, clear the
+>>>   remaining entries, and stop collecting, as suggested by Balbir Singh.
+>>>
+>>> v1: https://lore.kernel.org/lkml/20260817074350.442493-2-sh_def@163.com/
+>>>
+>>>  mm/migrate_device.c | 18 ++++++++++++++++++
+>>>  1 file changed, 18 insertions(+)
+>>>
+>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>>> index 908d2d4ec43a..69b8d0660bab 100644
+>>> --- a/mm/migrate_device.c
+>>> +++ b/mm/migrate_device.c
+>>> @@ -1400,6 +1400,15 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+>>>  
+>>>  		src_pfns[i] = migrate_device_pfn_lock(pfn);
+>>>  		nr = folio_nr_pages(folio);
+>>> +		if (nr > npages - i) {
+>>> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+>>> +				folio_unlock(folio);
+>>> +				folio_put(folio);
+>>> +			}
+>>> +			memset(&src_pfns[i], 0,
+>>> +			       (npages - i) * sizeof(*src_pfns));
+>>> +			break;
+>>> +		}
+>>>  		if (nr > 1) {
+>>>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+>>>  			for (j = 1; j < nr; j++)
+>>> @@ -1434,6 +1443,15 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+>>>  
+>>>  		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+>>>  		nr = folio_nr_pages(folio);
+>>> +		if (nr > npages - i) {
+>>> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+>>> +				folio_unlock(folio);
+>>> +				folio_put(folio);
+>>> +			}
+>>> +			memset(&src_pfns[i], 0,
+>>> +			       (npages - i) * sizeof(*src_pfns));
+>>> +			break;
+>>> +		}
+>>>  		if (nr > 1) {
+>>>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+>>>  			for (j = 1; j < nr; j++)
+>>
+>> The code duplication here makes me angry. :) And using a memset on one branch but
+>> not on the other is weird.
+>>
+>> But is this the right fix or rather what
+>>
+>> 	https://lore.kernel.org/r/20260805231041.3791771-3-matthew.brost@intel.com 
+>>
 > 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
+> I'm not sure my patch is right now that I think about, or if this patch
+> is right, or your suggestion either :).
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+>> tried? That fix would also need a cleanup but seems code-wise simpler. A cleanup could look like:
+>>
+>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>> index 762c5cee8fecc..480bf59bc2425 100644
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -1419,10 +1419,9 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+>>         for (pfn = start, i = 0; i < npages; pfn++, i++) {
+>>                 struct page *page = pfn_to_page(pfn);
+>>                 struct folio *folio = page_folio(page);
+>> -               unsigned int nr = 1;
+>> +               unsigned int nr = min(folio_nr_pages(folio), npages - i);
+>>  
+>>                 src_pfns[i] = migrate_device_pfn_lock(pfn);
+>> -               nr = folio_nr_pages(folio);
+>>                 if (nr > 1) {
+>>                         src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+>>                         for (j = 1; j < nr; j++)
+>> @@ -1453,10 +1452,9 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+>>         for (i = 0; i < npages; i++) {
+>>                 struct page *page = pfn_to_page(src_pfns[i]);
+>>                 struct folio *folio = page_folio(page);
+>> -               unsigned int nr = 1;
+>> +               unsigned int nr = min(folio_nr_pages(folio), npages - i);
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
+> I think the semantics of both these function should be that if a user
+> passes in a PFN array and one of the PFNs exceeds the `npages` limit,
+> that is a misuse of this function and we should unwind and return an
+> error. The caller is providing the PFNs and should therefore know the
+> backing page alignment, so `npages` should always end exactly on a page
+> boundary. The sole caller of migrate_device_pfns function is
+> `drm_gpusvm/pagemap`, which certainly adheres to this requirement.
 > 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> The only goto in that function does not unwind anything, it merely skips
-> to the exit when the function code is invalid. Turn it into an early
-> return so that the buffer can be freed with __free(kfree).
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> Assisted-by: copilot:claude-opus
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Yup, there's no alignment requirement anyway.
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+> The two callers of migrate_device_range, also seemly adheres to this
+> requirement.
 
+That's what I was thinking: because how should we partially migrate folios?
+Doesn't make sense :)
 
+If this cannot be triggered today, neither Fixes: nor CC: stable is appropriate.
 
-Looking at the kernel's sthyi.c there are a couple more locations we 
-could change:
+Agreed that we should just warn.
 
-I don't see a need for the syscall to allocate a page and the cache 
-doesn't need page allocation either. We should even be able to have them 
-byte aligned since they are never the destination for one of the 
-diagnose instructions, a kvzalloc should be fine if I didn't miss 
-something...
+-- 
+Cheers,
 
-
-Diag224 needs a 4k aligned 31-bit physical address for some reason so 
-that needs GFP_DMA. diag204 is vmallocing anyway since subcode 7 uses 
-logical addresses.
+David
 
