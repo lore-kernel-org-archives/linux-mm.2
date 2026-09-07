@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21873C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D02C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:59:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 327BD6B009D; Mon,  7 Sep 2026 02:53:54 -0400 (EDT)
+	id 4DED36B009B; Mon,  7 Sep 2026 02:59:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D80B6B009E; Mon,  7 Sep 2026 02:53:54 -0400 (EDT)
+	id 4B7426B009D; Mon,  7 Sep 2026 02:59:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA106B009F; Mon,  7 Sep 2026 02:53:54 -0400 (EDT)
+	id 3CE0C6B009E; Mon,  7 Sep 2026 02:59:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECC256B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:53:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A14D80685
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:53:53 +0000 (UTC)
-X-FDA: 85186051146.05.D51CA55
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 10C3AC0009
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:53:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2063C6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:59:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F37B1206BD
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:59:17 +0000 (UTC)
+X-FDA: 85186064754.19.90D33C7
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DC5D020008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:59:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XgilNugr;
+	spf=pass (imf03.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788764031;
+	s=arc-20220608; t=1788764355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=HSDgKTUWgY5kwiqDOAHVVdAshuS6ab2PANPt+E2RdnE=;
-	b=WjP/UaBHANsos6gru4SHsgI/xO2XC1MxjIQmJ+cnhhX6FZKIS9aGtEuwob8NGnX1NK7zuK
-	1mJtKf8vUCuaRSxrRhv9kYF/9pHyaVRJkcAoTxwBbq3ykB9nnEmDqg1V0doS+7ru+EXHWI
-	ABOG4sIV6q9YsDd4ffroUzvF8MJXizY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w9cOmcuQayUUNCvgq+25CsYuokAcgEplB60+U0kvgEU=;
+	b=E5HKbOpix7fpzxcFtYkSeQy68WAfuHa0/tR7v7sOmeEKGajpwz2Go3F+wgbYiW/6VOMzBt
+	3Wg1rMKqewW4/SiMdHTvIoN1VmQ4vQzwv3nMg2x7xKVjGfyTPXdUk92qGLh6dmMTd10GEa
+	KETlC7+Ilk9mNQc38W7iqp+Q5jSDuY4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XgilNugr;
+	spf=pass (imf03.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788764031;
-	b=fw5q0zwUTZYRAqaKHO14dqDC9bIn+Vkd4vx2KLk35mNGbw81S7UszI/LM1NczUTzT43hHc
-	GCYVgoQdAD3DuuMCHmBBxU5zCoYFqhiQI/93r2HpPGAt9V3ZfEGnF9UE/zZOvoaQmeHlLx
-	l6MLA/MnAKrUqbmugSar0JDXIj74Abs=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hdd8B61wkz8Xrrb;
-	Mon, 07 Sep 2026 14:53:46 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 6876reX2046712;
-	Mon, 7 Sep 2026 14:53:40 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 7 Sep 2026 14:53:42 +0800 (CST)
-X-Zmail-TransId: 2af96a9e5f76471-521a9
-X-Mailer: Zmail v1.0
-Message-ID: <20260907145342529uOGtNYWTAzrSCFnghfgCb@zte.com.cn>
-Date: Mon, 7 Sep 2026 14:53:42 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>
-Cc: <xu.xin16@zte.com.cn>, <xu.xin@linux.dev>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>
-Subject: =?UTF-8?B?W1BBVENIXSBNQUlOVEFJTkVSUzogdXBkYXRlIFh1IFhpbidzIGVtYWls?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 6876reX2046712
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 07 Sep 2026 14:53:46 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A9E5F7A.000/4hdd8B61wkz8Xrrb
-X-Stat-Signature: oz5f5u5195eh1ffgnn3s4m6p3b5xzsk8
+	t=1788764355;
+	b=GEAMpcMlfmwtxS0b7sCmtR4FeEXcMLPsl1ow/JW+XXT4okzZLUtk96ZGticeCeB/Q0Vbvx
+	4KGeS85ky1kUZskBSjYvS/f/f42wLa614lCw63LIDWkZrl+xNnyejyJHqdLCgZE5PZgTSG
+	eUJVZlVNAiOXhwv+0cvk+tuNAtSOCbk=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49d036e0e99so9004255e9.1
+        for <linux-mm@kvack.org>; Sun, 06 Sep 2026 23:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788764354; x=1789369154; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w9cOmcuQayUUNCvgq+25CsYuokAcgEplB60+U0kvgEU=;
+        b=XgilNugr2ub32CIWKZq7v3lz/Lfl9OwhQtxisJjrjA2FhgAntwPw4v70c3yuHLAsl6
+         LDyh0bfptgOPzB0oQlaXLbQfBXbbuCTutrFdpWD5PCxAxHdzGUD/0BF4VzG9QHIS8veo
+         pk+70QqnhjixngSZOMYLvLVzCzA+e3B+Y9MRAwF4M19SU15/bDFP7UCw+zY49E5+KZpo
+         625ujePz7R330yE/YfcLzfZ8gC0Rq2HAOdJy8HN1p3iyrqmkA32OVgz6qmETuz7jCwFQ
+         dI+yBiOEn0LjmWULqQiQ7DNA1lGP8oBIJF8YFrdZLkZkigl/4p9MCFBj+nK5sz5S9IDV
+         qXbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788764354; x=1789369154;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=w9cOmcuQayUUNCvgq+25CsYuokAcgEplB60+U0kvgEU=;
+        b=QyH9xn6Txnf1LeXuw2+PrIgX7R7rDrQySzlUBqnrM/6VdlMF4FJgpC69/1u4sKxvWj
+         CWrdUNf1QdsXedpEvA/C2MPnZRq7x9tw33MfaGY7BTdSCzZFvfPknwazJsP4ZKcaY8ft
+         uywEIvS0xCY2sHsq4R8A48g9Mo7pBmZTrImKJsx2kUd22GzCIeRMpMJZy4xBAHu/iWeI
+         QFkeMjCAOE1caxYcLUEIlO5f0FCSbsyAR+OduVr8uZTr7rOzwwLKoVq0/6WQUVXzKMlF
+         sl23/+8mAjA0ZfAcs1GVSVqs9TYv0V4lea4o3wHx5WdMFWWCpRbvKlEJwhDc6abj+i/C
+         J9Tg==
+X-Forwarded-Encrypted: i=1; AKwUvBz2HjDgiDc9LiJdD0dN/RmSLfBjAfdWFdvVnEwD+Khxj8ldfh2A7/oV9u1uNjRPdsyDjri9yZf8Gw==@kvack.org
+X-Gm-Message-State: AFuF++nUMlh3PdsUF1wn3tJUWf35oMy71pSMxF8JCN7AiwCvU+soaPPl
+	zelP07BNKtcOdXGQcGLaejSrZ7mDiN6sM5H/B1P/Kw8hWJv5ohUQ+TLM
+X-Gm-Gg: AYBFou2iTQB1h6LJsRAmGaC01e/ZKSKGGBPi0lSvIvIj4FB3pipV9wpfET+d3wGZVtj
+	FCoeB/17TGlsxO7vGlOCjkLVmgQc6zWTmTVzzaZxpcDki5T7VrCqwTkYR8wF7A449HX6l4s27Rr
+	OBv0DhMWDLEzrrN5vNcSVqtD3oHt2i6u2Ij15af6YWBklsDSeRe8Zkt7YYfn/FajzRh8n0+iABh
+	gjezkijerYS02NK7T3drwwjHgfzoLW0BzZVrzquJ6oZiuNsDmu85u8CO9uTuQB8TF25bWOP/c1Z
+	RLh5BHgVh/lCEzj7E8wJm7kUgxjP89yKKWas7/RTyN9JD3OszEv8QBVjKO4LuFhk0AwrZLVEmJq
+	uOEi5qktPjc2FwMriVmeX3ZE+1g2hRjoRoemvapqbEsTnRa6Q2xHqMrdLGnisfrLXAz7pn0jHVX
+	j5fGL81bji5Yx1ngoKq9DwnGFIEwWP/suy42Owfn/7IX+agOi6RbnVCMRuX3/9jjPdh1pXxCyE4
+	g==
+X-Received: by 2002:a05:600c:34d5:b0:49c:fc6c:bdfe with SMTP id 5b1f17b1804b1-49cfc6cc085mr168534645e9.21.1788764353895;
+        Sun, 06 Sep 2026 23:59:13 -0700 (PDT)
+Received: from dell-desktop ([2a02:587:4b5f:900:ef25:2f4:1792:4e6f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d057f4778sm184723965e9.8.2026.09.06.23.59.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 23:59:13 -0700 (PDT)
+From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+To: akpm@linux-foundation.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	brauner@kernel.org,
+	daniel@iogearbox.net,
+	david@kernel.org,
+	eddyz87@gmail.com,
+	kpsingh@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	matt@bobrowski.net,
+	memxor@gmail.com,
+	song@kernel.org,
+	sun.jian.kdev@gmail.com,
+	tasos.papagiannnis@gmail.com,
+	utilityemal77@gmail.com,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next v4 0/7] bpf: Add user memory access kfuncs for mm_struct
+Date: Mon,  7 Sep 2026 09:58:41 +0300
+Message-ID: <20260907065841.4129-1-tasos.papagiannnis@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260904112643.73448e55f788fb1cdcdd12ef@linux-foundation.org>
+References: <20260904112643.73448e55f788fb1cdcdd12ef@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1m8qqfnsh1pce8opxopp1pifqtz43s6j
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 10C3AC0009
+X-Rspamd-Queue-Id: DC5D020008
 X-Rspam-User: 
-X-HE-Tag: 1788764030-431045
-X-HE-Meta: U2FsdGVkX1+6HIPbT8TpcrxkCNbyW0sm/XhA1hNW6s8LD7lcRd3dcZTqo8SD1VVUcfCYDfaOfpdm3BzZ7MHDUX/OGR26ij9YklIPSzdh9122ECPCXnqm6liBfU49scDJZ6yXeoPmE2UyFSgN9JdioUxzfG6lS/L7U1cnHFp2wSokHEQEXQ1PbuFsPqcOIu4qDZdNdx9Mtj+iEE7DyDKNaicNZ921SoO4DgA27OuPbySmk/mkwKodU6I5uhjtCNZuhIoUIWXdT7J2FYHoieLU8PvX7h2zORvsErBndWptKNohHcYMqwVNA+/jYpcmyxTremR/y1T581eLe4JcAon+gGI1KD88HotHYxIJXUII2pJmtnP/IdpJaEbEfkHD07m07BYxRHZqrqLElCUOig3v3L8Jx1TnaLvCFQknFCXchp+eZRRwnh7/ocN3jc5HERus7yjsd/FhdCuPF8OBWAT5IOTURSqZXXgkZ5wZp34xtwaVqqjROrv7NLvmgcQb9Jd6Zy5cUs2fiHNzh4D4sPf1FdG6j0uarFkn1HDO83kRKBigdygRA5zdR2XImfcGdMyPR5ysbbF8c2HjhJG1nqQYMaeH7mR563ihv4ksskajmkLkyMZYfU3MEYVnjuBHKewgXlMqp3QOPFgi/uZrNr8INIjeoJsG3NGnz3DHMWwGeExa+SvHxtxDVeCcgYenFQckA//wLvjBUxLuJcvD8Cq+THrNFdI2zlWgvwIteg+zckEr/8nHousanB/0TrUGShYDu8BF3NUn756JCUm6nlRjYeZvNA136ZN4n9dcMAZancRXyXul8k565KsUypnQrogkKvPETKTmfH9QyczQZZix3xXL2afPVf+q8xSTZUqTX/phGyp88Y9hjga4ao6SD3byBeI0JeU6ESZSiHchIghRPM1o+nKFTKfomjsn/KTl/0Dete26q9EzTcw2yCdUTmaK6ZRmg9hS0fX1QPhw4cd
- nmx+TG7/
- ck/L5+DuVxY7QYpVqqs9LyX9zsb+bhHc6pHAWocpJZessi7j2ipCcs1PgFa+LA0D2XjgXvb131sdN6vrfIRn+kL/Fn5htew595M2PFk0sGaG5ZfEtQaeqXBRtfSAPx7+yWrrx8BZXDMuac/0wy6rbvjB2fuMWL8++frQ9z09X6FlCoWHNmAoroZuSnkL1q/g0BODm4GlgAfL7A73H6/+B4MGVesBkbm/ECpP2P7Dk38VPMBw9xxTE7S0phVLq2Rj/FMPpTXXSkLA4gl51Hm3OQMHgdhx9+gNYjIaCr6jDQY8CNVOkSm2W+GNTpcZ70L72IU5uJnDaBfwXTJZHzvnRTvp/HIcVemAPUkGQOcudn+Q8a2pcIapf9/WOYb6ApYZ6FjkcDzYfJ389hvNNC27qmoFvZK4vFMg3nri+IODJIvsd7+3sKx3bUgboJ1Bc9IXr4Fe13eYtwunKnT1s7LfWdARmdqh0Wku9TJfbdKbAkcxPa6N0XaTUw7lcOE60z2QsOfc0dpvClDnv/CZAMQYBNeKTljXePv6AeP8GkjDlZQPdnfcX1uGemf2k+6IEVuvLLacONHGGOoGKmb4HDvIIPS1n9zok9yFdiegv2lv8RbTRGop/oY3cAC2dJpoJNvbADIvvMaF48hzf+dw=
+X-HE-Tag: 1788764355-215161
+X-HE-Meta: U2FsdGVkX185jS3v71fDQC3DysMNYLS/D4MZs7jzfT43lJ2uexQl8/55roPVMX+mqUbYy1xQh6cSHru9s945YIwBiMp95TCe3Agbcueagm7pSx5SMeAUgc+wtdjF3T5rrCeVvc/3NFlFrFyA8ffBSfhXPA3hzLis7uaeUTfQkYSKlbsc7fRGbSuwRkKOhCvCM4/D7XHpBOw9ehb0HzpLo/Lw9jDJtokctlJ0LKsDTK6wQiaVmrrz5kxcsPfVuU1nd8PSPAFOl9cDqj37BTmjcqThBVYsjN1jsqPzEW0Q/vHVKRdfSJUA0XG8SnEa64M4KdUAlno8CfrfgMUL6wYmbRM/UzwuRCDWFeFQE5/bo27VjA1khK/EWEXwrhHeiGXYIoG728BIiocQGDkkZBKmBo+VE9RnHiI4I6mzxatT2x9P32/jbzBXNmR3HB7VibaTaBPEk1Unc468eSyLIWE8uvzlCx3GuxzrZY8WHnh8FF2onEPNybYQ2wAibyqGcUGQACMtF8y/E+QwWSMnDX31SC97Wej7pWVX99My3Tla8Pr4AwMFvX7PAtp+60w3TWYl6qgW5Ulo8Nou467bXl21pu/s3zTNbvZpaQvamjnzVoeSGklUcrVa42pCHMFB3N2nvp6gwC/efqXyZx3U3Cz9n7x0B9ec9ZK7AisPn+Cc860cgVmo++8KJ7oYPFuh4rJU2BWedl+lUKYRnbkQLquK/BsicIUpAON8kkvS/urkKFZEeeLnmCn5LTg4NDURMdfRsDH8kI+u7g5fsoH6WWhjP2PpUe1UkTb1bXPR1onTMYOqlaxVgj9PI7VhXh/kyB2ziAcZdQNwRxYjLP/RNIdIU+DOU/BMhASkc0aZ4cx+4RG5XE5C65K5SiDHNyl7otmVPGuZgvmgdeUwHeXRcSmwHpKOkfbyf4TM++64VEi+V85vjskfxIXHD2Z4snwmJmpv3+KyEBtr7eeNuwifBy0
+ lVfkcOTg
+ NjPRyoP3wIO8hpmpXAdDw5iXMfnbW3aBHrgU7kVEQ2comD/v73rW7YUgRVvzAAyEshY0G//BPBTeHq9zmQp4bq9euX+ItXxjPzAtvpJ7LKOiiE6sRzPKYinNr7qFwOioTy0MZStjPwU0zdz4Tl4VHJf6yGqGXmOLnu9HXTYpscZWeoBQ3VynPyJDXTt0+Rb58OaVkeofTIuuoWQtzhJBC0MR0HrHHE3UD47V6UtTDDQHhLSmfeJFy8GtefUegwPSDEIrSjrKIfDMSIGXOfADWwVUygqthZeWJSmpCa/uxR+UjixHmdQVyTqmK6AXdQRNZPo32rXGO66xUEJ55YNHZ3qsVas39vcwhZEHQqmLR5vUjEqOqis7lQezRjROdtH7937Z7E4kmBOtWlaJFD/nuFP8nQuxWasHUwulxbdoB/cyPMO1p5l9s14UdmT/7YK7CcHdIFwDZVpxT11PHBMV2U+JvzpAGE4QEB78//2o2lNcZ00dG/NRkpAP1Kl3Ey3BmyPSMmT2dKCsVnVftaWh371fzc5e1YqUf1/aVaSlUihe7nBvWuWIVWiW9HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,43 +134,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xu Xin <xu.xin16@zte.com.cn>
+> Why didn't I get the usual bpfbot review emails for this series?  Is
+> this a sign that all was clear?
 
-Now I'm moving to the @linux.dev account, so map my old email addresses
-and update them to my new address.
+The main work that I have done in v4 (compared to v3) is to address all
+bpfbot comments. My undestanding is that all is clear now.
 
-Signed-off-by: Xu Xin <xu.xin16@zte.com.cn>
----
- .mailmap    | 2 ++
- MAINTAINERS | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+> I'm surprised that bpf even attempts to support NOMMU.  I expect the
+> user/tester population is zero.  Perhaps just disallow this, if it
+> saves any effort.
 
-diff --git a/.mailmap b/.mailmap
-index 5e3e1ed3228d..5c9aadfe656f 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -991,6 +991,8 @@ Wesley Cheng <quic_wcheng@quicinc.com> <wcheng@codeaurora.org>
- Will Deacon <will@kernel.org> <will.deacon@arm.com>
- Wolfram Sang <wsa@kernel.org> <w.sang@pengutronix.de>
- Wolfram Sang <wsa@kernel.org> <wsa@the-dreams.de>
-+Xu Xin <xu.xin@linux.dev> <xu.xin16@zte.com.cn>
-+Xu Xin <xu.xin@linux.dev> xu xin <cgel.zte@gmail.com>
- Yakir Yang <kuankuan.y@gmail.com> <ykk@rock-chips.com>
- Yanteng Si <si.yanteng@linux.dev> <siyanteng@loongson.cn>
- Ying Huang <huang.ying.caritas@gmail.com> <ying.huang@intel.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dd9a3370ff31..4b5fe98ed01a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17240,7 +17240,7 @@ F:	tools/testing/selftests/mm/gup_test.c
- MEMORY MANAGEMENT - KSM (Kernel Samepage Merging)
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@kernel.org>
--R:	Xu Xin <xu.xin16@zte.com.cn>
-+R:	Xu Xin <xu.xin@linux.dev>
- R:	Chengming Zhou <chengming.zhou@linux.dev>
- L:	linux-mm@kvack.org
- S:	Maintained
--- 
-2.25.1
+I have just documented that in the cover letter and skipped the test
+in the last patch of the series in NOMMU. 
 
