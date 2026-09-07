@@ -4,105 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF67C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B5CC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155716B008A; Mon,  7 Sep 2026 17:33:45 -0400 (EDT)
+	id 4E68B6B0092; Mon,  7 Sep 2026 17:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107086B008C; Mon,  7 Sep 2026 17:33:45 -0400 (EDT)
+	id 479316B0093; Mon,  7 Sep 2026 17:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01C376B0092; Mon,  7 Sep 2026 17:33:44 -0400 (EDT)
+	id 3138A6B0095; Mon,  7 Sep 2026 17:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C74736B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:33:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 572D34030F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:33:44 +0000 (UTC)
-X-FDA: 85188268368.21.F7A1F99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 64EB01C0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:33:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOVRiolU;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FF436B0092
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:40:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 93A341202EB
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:40:55 +0000 (UTC)
+X-FDA: 85188286470.01.6E285A5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EE69040004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:40:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UE0pyYIv;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788817254;
+	b=sYwOpcWqGGgiGTsXkKdqLKKqLh+3Dd67t9ErVh/bKKCtx6k9AcO535zJO1H13voq6jsuQR
+	uOokS7eI4jC6oxmkXsBUmUqwZPp6jmtKSks+vjSi1k938BPyl75y4D+YtJ2N1gB618t+18
+	ZG8ihw6Qg3IQHGiMFQqq4d8lJ72jytA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UE0pyYIv;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788816822;
+	s=arc-20220608; t=1788817254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=glAq2A+LGqvZtGRjj6Vu76wV2nQ2vOLPDIiLnUABgOs=;
-	b=fLmCW/NhLiXFZuzSX29wlMtG5rAAl+Euo5LMXqFd31cO22++lSZZ3jrFuOkrYzZBeSQ70y
-	wccNi2bv6HmFngtpZTcbnENL5wyey6SlvfOJeGdxuMmLnUoijq6w6JGrkILQUkYdIdCxDy
-	fuQrWqwxWh1MR8miJL10A1zomFyqWl8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788816822;
-	b=P0n7n6Cr5lw0Is9eoz7I1P+x8vUI+pVywfgbXnp3aeZ95TY7X3JRoD1P2vSjpOzy/DUeAS
-	QgmmqY5r7jgLiZXiBdAUwCa09gdyUWKP1KJD4rPyVcfZe2q5uSVy5TH4fk7TC0NdyiemML
-	a9Yw62Vo02w2lJPtS/UOm9Nv2VLqm/0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOVRiolU;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=+URJUqEKl0fTxo39EvOW6Abd2LXVYYfRY7Esq7fulcM=;
+	b=J0Dpvxpn5rZbCgNeCHZchlqYwXzpRuqicWF8qiZ3bMw1PQK3Bmls25YFMMz0SRqbQTt15B
+	xhd43J2V2kPyI8HAU8NzzzSh79YdE886G42YvZGOJjT3l5/WT3/MoZuIhDEpp2sTXpYASm
+	EMpK9kkqV7ChYb2I6JJRV5Z+ExerlGw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7DA11444E7
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427CF1F0155F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:33:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F7A4601DB;
+	Mon,  7 Sep 2026 21:40:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1001F00A3A;
+	Mon,  7 Sep 2026 21:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788816821;
-	bh=glAq2A+LGqvZtGRjj6Vu76wV2nQ2vOLPDIiLnUABgOs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lOVRiolUuJdBzdns21YNoLq99TXgsNsteg1DQ5906S5QpffjdDRQocBGaW+h7tWqH
-	 IxCKdHubpL1oWVBW+C/a/JqhLHWGkMs/IUmx6GfhacRf1Q8mffLkeSGxtIp2oGFbid
-	 hk1A4/1zdoUWVltg+bEURpJWWI35evHxTMltztyVVB4fuiFPUodfTVLQNn6/RzDG4E
-	 dCKtEJEogMo2GRnip7ZBUKOeymrOctOFaGHYoR5t9jGQVbxJgBeBCB+Lkr3E2csErH
-	 wf8kE3+qBr+ZpVTS0xfU+fQ7UeuFIBwN1bZos7RuU9UA9wlJwJv3OaPqUudWm851fU
-	 +PyAleap8Hhig==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-90cd4631090so51591076d6.1
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 14:33:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxE/24n4WmGKMM2mLVQp/jsdtseXSfDIp8sMrjdF4gEYHKZOckkljqA0xUcUFzkPyggu8t/nwmrOg==@kvack.org
-X-Gm-Message-State: AFuF++lM19OSWpjX/TIuBsFMZHL+SrSgy4/lbEIquCD96KUJun6F9/o4
-	7dqFHRHUNPCyUT8+slkUgKVY/u3VlQk8A1jRH/4iag6o7GlmOWd7DUdYfJBdBdH10TTE1SfLfNt
-	j9urlAtRHKR3NRBJB5vq2w48aoxRa4So=
-X-Received: by 2002:a05:6214:1c0c:b0:8ef:1c10:65fa with SMTP id
- 6a1803df08f44-9103458aa2amr276801976d6.8.1788816820552; Mon, 07 Sep 2026
- 14:33:40 -0700 (PDT)
+	s=k20260515; t=1788817253;
+	bh=+URJUqEKl0fTxo39EvOW6Abd2LXVYYfRY7Esq7fulcM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UE0pyYIvk0vio3jkCrLQyN6+XkN/xYweeR8nniFUl/2qfAC7KVfzk0v27PwfA7nA1
+	 jRwk098mQw6qKGClkymTFqzrBU5IwJeY2MbeYz3EJganLj5O47iUGeeiW500wrapHc
+	 dGvrG1LnLyPqBFPGV5JWA5xYwsuqcZ2p09vnT/2l5josN6K/hITJMsIfsDvo9Vy27m
+	 E59Uj6NHvY09RtjyNlQw4SfjT3QGz8gFcn2Uger6n4ELkfGeTGUUW3jYVOLk7ue351
+	 Dq37HIp5KeM6mrFUwmPlTDlmGzF3BQ0XYMidwrsKjXVqywsX8VLqcU33O91DyZm56U
+	 7nhA3UnrqSbfQ==
+From: SJ Park <sj@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: SJ Park <sj@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	x86@kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	peterz@infradead.org,
+	paulmck@kernel.org,
+	mingo@redhat.com,
+	rostedt@goodmis.org,
+	jpoimboe@kernel.org,
+	mic@digikod.net,
+	tglx@kernel.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	rafael@kernel.org,
+	gnoack3000@gmail.com,
+	rientjes@google.com,
+	shakeel.butt@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	will@kernel.org,
+	boqun@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	pavel@kernel.org,
+	lance.yang@linux.dev,
+	mhiramat@kernel.org,
+	pmladek@suse.com,
+	longman@redhat.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	mark.rutland@arm.com,
+	Dave.Martin@arm.com,
+	james.morse@arm.com,
+	babu.moger@amd.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 6/8] fs: convert process/thread iterators to for_each_*_rculock
+Date: Mon,  7 Sep 2026 14:40:43 -0700
+Message-ID: <20260907214044.88682-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260907081334.1152889-7-ye.liu@linux.dev>
+References: 
 MIME-Version: 1.0
-References: <20260901054358.4049095-1-dev.jain@arm.com> <20260901054358.4049095-6-dev.jain@arm.com>
- <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com> <12efdc7f-ff82-412b-b79d-bff211d34218@arm.com>
-In-Reply-To: <12efdc7f-ff82-412b-b79d-bff211d34218@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 8 Sep 2026 05:33:27 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y7V40CnTTh=84=Ek6T3tPTyLXsUtgO81O1zyZpmQcbug@mail.gmail.com>
-X-Gm-Features: AcwNN1W7wBndyQG2UgjXdfAU5SOq--TgDgMkAQm3YP67ZZN3rfn6CHCdxQXyE8c
-Message-ID: <CAGsJ_4y7V40CnTTh=84=Ek6T3tPTyLXsUtgO81O1zyZpmQcbug@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] mm/internal: rename swap offset helpers to
- softleaf offset
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 64EB01C0003
-X-Stat-Signature: pj5pudawp53watqarnb9feg8r7skt38c
-X-HE-Tag: 1788816822-517314
-X-HE-Meta: U2FsdGVkX1965eOifdI1M/LXB1ziK0IjPYxYCchAPZr/vLr8V9sDJatlTWQvfO6vpmRrjHHXYK6D/q3BJqVw9JQjNBW3JiUj32pcApYOb9Qv1EzFu65FztB5bB/JHXmS32pyPyTLOpTjEcRWbf88gMppacLfKIt0PPvYibpbS0kJVAS/1Jc0O1zUdnUrR226ySQgipi/dYbd35JQgNu6rr4Mf8I4bG+zYHqmvXHDSUKs1x9AJXFbCBUasT1w4KtdHTjBqzZmDl1Y7feJ3YtCB2v7iIZ021sbOEGMybTbL394h2vqoQ5C7gf+hLfZgVTqsVdsXWcPf3g+DqtLN7vxbuZh+/AHVqAHJCYaPAIczkob0Zt1JSl2ZnmusshaXhCfAx9AgCDG66XO8QxJeu0+IWW7ktZQbkDTgpQi9iuCgsb2+Hzy/LwfDpm6vsripErGMeg0LgjQoKO1wxRM7XdZbPYnyidXo0LCeOQ2c8DfWHW9YUVvFQ3ILm7s3RIsv8Qmy/U8/1AmGnE72/4/i80IbnhxjVzZMXjpkkCa/uvZM9u8BC4wArP5NO6RyC1owFq/dhloHBgSU5ErQNLSXepNRwLDtiuiTn9FJ1HB8g4fzPtm6+7kM8CWIVhORrLsCc7KFqpsA163UloEXhhkzleeCFlpowRF67MCbWu+eTu9uQxoAMr3g87/fNk7SZdvJzbXdvREjJFC0UVRPQX37mm+E7jURSRTrPbZ1h41Z6MOCEJjjp05U5URnvK7fzMlJu3eacnAY9BEF69S/0pctpI8J9sTzfpmMHsksPARSC9EKmDd/oaRrBMJ23qoKtNAhIfwQvTNjzt+VhcX0+EDHncsDYppuFXeI6AtUhwiKIYvAnU0g0B4Kn/TBK1vfRbcFq0+ADhyhRGlP/g2ZI+QMCW/CZbEnae2ktu1sbLgZYKolOP4dxjnVLM6tArFXSpGxAjsryMNN64dnEULUwRKO5w
- 8OkoOrbd
- IcTeERGzqo6NTm187VFBvzLN78dzOcy7U6s6Q8KORqvoprhUzOp0+V9YYny5kTRrhGkhAKFp72rWkasEqZLOyiobPeKz0L94NHEpgY9QySbj/jdpMLLv/Z6+YsxhOfM8Jxs208MGt/v0rlaUuwWA6YNO1wXVAvLUFoNGIaBkavOaCIIwILwBwWFScej8RzKuA8qaN5kbhSok+3DFqMfkutCkeONTmJwR3g9aquN7wPDqVW4130nSb2lqgtAyMusgDflZbT36g+5CtdgqPYfNcjvAGFu3BF2qRbqRgTdHV/QupjnBQWVt8ha4ASnE7IYXa1TMlFSda1plPf0+B3yKkP/RRGeGr72IjVrtPFrkeXwhlDnBkC9vwWgVS/6N3Wd6skmgFvWfJGleGgzc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EE69040004
+X-Stat-Signature: a6nu6cg46trpohzk4bbam87ra8iqteyb
+X-HE-Tag: 1788817253-100697
+X-HE-Meta: U2FsdGVkX1/1wPJBSj2ze5ckQrOuTs2jfQaIxcMfZWkd2PEU6JmKsPjDSXTNfNjKYA90NZSu/H5SCrvG4Yw12NcXJHO8y9CDO4m4uTIjtdCi2JQtbpdX+E+LDvDvTefxmC/S771HxF7b77+34k2JZitb1FBsEwX1Jk3vhogD23KXheWDyJ5MZ3F4w2CsPp0F/tCadUgrCAM1dXduDpIvi6JZOEMHTI1YWB3vu9jnUBLEuHXTeaEgjF55REshZNwfzigotlj8XSzk0GUKpFfrTZHeTgIs4uc+eheQrun4Kpwgfw+z1JNy8obAzz9NCPuJxn8x0wsS8jOF0QNSMWoUhUjUxZdP98/RC503rX1+S+dDQwO0wbF/LmyNcd+c5AmoP5OERsDlW3h63yqnPRKTRSrjK+euLqhO220qT9sUt4HC3YCGJunvMeQboNLj/KLkpgXT//GZUzYuWVEPiTfCYlLqep3oW3mDPZzJU1PPQ+8xfPkOs0MIQwuhY6GP877V6O2VuymzN3YG5QNA/M8w6ISW8y6+4OSxNd1wNt+bht3BPTWjws7JEkC0Dg6yJBBVaDIn96B/40UlWcsGz+1zg+DoDjk7OTDcMXJhmJlIl/RdThiYhouaZYm1eDhzGTaQV0kVLn/YyziGLIX2eRAbZayAsOyEoK2L8Ox0BO8rekZcRINT1lLGLg9T1dPmAyR0J3VpZY6o3ntquM+DHeCcXSggKEu4nqIQ9XjvVCCf2cqkxLdcYCXu879pFPDGz2z8vtiSUGm/lJxtN9xAA/sG0WWasqRP3lLVCpOSztgdyG3siRJNVMEfXgobiuHQrjzlFQsB2w40zrx+mNLW2548ZvIu6a3TCiTPo5In+imOvFKG9VVxmBizEOHCACHvSMohR3rkYEebyJnNHWKIB0eK5qprCPVfKfbJn1eHTzQVYQDDWcQGNTiKCpDP3hjBbASH9pGe79soDiZ4FIktW0m
+ wqRykkqr
+ hkCgmgZaxHA2ukYCKscrtf8Fp9wZIw1UCYNghs15mGwljMbF8fgL5o/zLaBWlfJMmGWWsRSqRSJi0h/tcv5SLRCtJq9VQJIAomqPCDLgSRuR/4Rh52IzLTMQEbjxSvIDQzPth8EhFMagcYw4NruKzanEXVaRHHXa9NX3gH+uHFaqK1eNrYBMcAfU4dvwMC+IbUUBJEBEIkhhM1ALb4KKio9mZXs+ky3ONfjr2+KQCf2Jk1rStohzZFyXVK19duuss734pQZjCJP6bj9zV+pyDoSDxIeNIfE6nctl2CfYfftQ1FulOXs7OBKtj7XxfQNku1ZvpSKzMDBwJgR9CdkiNDIhL5jOtJMtp/FSndqP7Q7FIPH/zVYDFVEXsxnHNk/6JzDHY9GqwIC0CIO/TQkBMtQ73ZlratY69LWf7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,113 +152,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 1:38=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 05/09/26 4:12 pm, Barry Song wrote:
-> > On Tue, Sep 1, 2026 at 1:44=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrot=
-e:
-> >>
-> >> In preparation for adding a helper to set softleaf ptes in one go,
-> >> generalize the swap entry helpers shifting the swap offset by delta,
-> >> for softleaves.
-> >>
-> >> Note that the soft-dirty bit, exclusive bit and uffd bit preservation
-> >> will still work for non-swap softleaves, since a softleaf entry is
-> >> constructed out of a type and offset, and those bits are ahead of
-> >> the soft-dirty, exclusive and uffd bits.
-> >>
-> >> For example, for a migration entry, pte_swp_exclusive() will return
-> >> false, as the exclusivity is encoded in the type itself
-> >> (SOFTLEAF_MIGRATION_READ_EXCLUSIVE).
-> >
-> > I don't quite understand why you mention this. Is anyone calling
-> > `pte_swp_exclusive()` on a migration entry? Shouldn't it only be called
-> > when `softleaf_is_swap()` is true?
->
-> You are right. I just wanted to emphasize the second paragraph - that the
-> pte_move_swp_offset will also work for softleaf entries. But I think
-> the third para confuses more, I'll drop it.
+On Mon,  7 Sep 2026 16:13:32 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 
-I would rather interpret this as meaning that
-`pte_move_softleaf_offset` will also work for swap softleafs,
-since `pte_move_softleaf_offset` will call some pure-swap
-functions=EF=BC=9F
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> Replace the manual rcu_read_lock()/rcu_read_unlock() pairs combined
+> with for_each_process() and for_each_process_thread() loops in fs/
+> with the for_each_*_rculock() macros, which scope the RCU read lock
+> to the loop body via scoped_guard(rcu).
+> 
+> No functional change.
 
-Would it be possible to use `if (softleaf_is_swap())` for
-these cases to make the intent clearer? or we can
-keep both pte_move_softleaf_offset and pte_move_swap_offset?
+Looks good and correct to me.
 
-As `pte_move_softleaf_offset()` is getting a bit weird now,
-a generic softleaf function has a lot of swap-specific code in it:
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
-static inline pte_t pte_move_softleaf_offset(pte_t pte, long delta)
-{
-        const softleaf_t entry =3D softleaf_from_pte(pte);
-        pte_t new =3D __swp_entry_to_pte(__swp_entry(swp_type(entry),
-                                                   (swp_offset(entry)
-+ delta)));
+Reviewed-by: SJ Park <sj@kernel.org>
 
-        if (pte_swp_soft_dirty(pte))
-                new =3D pte_swp_mksoft_dirty(new);
-        if (pte_swp_exclusive(pte))
-                new =3D pte_swp_mkexclusive(new);
-        if (pte_swp_uffd(pte))
-                new =3D pte_swp_mkuffd(new);
 
-        return new;
-}
+Thanks,
+SJ
 
-Am I missing something here?
-
->
-> >
-> >>
-> >> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> >
-> > Reviewed-by: Barry Song <baohua@kernel.org>
->
-> Thanks.
->
->
-> >
-> >> ---
-> >>  mm/internal.h | 29 +++++++++++++++--------------
-> >>  mm/memory.c   |  4 ++--
-> >>  2 files changed, 17 insertions(+), 16 deletions(-)
-> >>
-> > [...]
-> >>
-> >>  /**
-> >> @@ -523,7 +524,7 @@ static inline pte_t pte_next_swp_offset(pte_t pte)
-> >>   */
-> >>  static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t=
- pte)
-> >>  {
-> >
-> > We might find a user for this in the future, in which case we might
-> > want to rename `swap_pte_batch()` to `swap_softleaf_batch()`?
->
-> That is what is being done here:
-> https://lore.kernel.org/all/20260813-migrate-rmap-batch-v2-1-3c5424c555c7=
-@amd.com/
->
-> I don't have a strong opinion, I can also generalize this right now.
-
-I don't know how you and Shivank are collaborating,
-since you're both changing the same thing at the same time :-)
-
-Hopefully, we can get one of yours into mm-new first,
-and the other one can find a way to resolve the conflicts.
-
->
->
-> >
-> >> -       pte_t expected_pte =3D pte_next_swp_offset(pte);
-> >> +       pte_t expected_pte =3D pte_next_softleaf_offset(pte);
-> >
-
-Best Regards
-Barry
+[...]
 
