@@ -4,146 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 524CEC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9054C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 21:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16A0B6B0096; Mon,  7 Sep 2026 17:44:43 -0400 (EDT)
+	id 96C3D6B008A; Mon,  7 Sep 2026 17:55:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C5A6B0098; Mon,  7 Sep 2026 17:44:43 -0400 (EDT)
+	id 944A96B008C; Mon,  7 Sep 2026 17:55:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C906B0099; Mon,  7 Sep 2026 17:44:42 -0400 (EDT)
+	id 80D8B6B0092; Mon,  7 Sep 2026 17:55:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D438F6B0096
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:44:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6955A1602CC
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:44:42 +0000 (UTC)
-X-FDA: 85188296004.10.905F0E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AE40618000A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:44:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ERrMVVR0;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788817480;
-	b=x76BhK4kR8YCIjFJ/8vEUyaolp1bVNNK9sknjNZ2saPRmHwnvBuirIDW36v0Jz9csABzXg
-	cO2NjDdvdTiL1HzkeV8DEKzH247CCvHeWpVUKuw7dauTlAEjM45lPpRoR17TA2ybVPKAqr
-	5i6G4DoEVKxng5h0Ql/bBZ+aOpc+0As=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ERrMVVR0;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F1AB6B008A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:55:16 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D87C8802A5
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:55:15 +0000 (UTC)
+X-FDA: 85188322590.26.2851C31
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A00F6100003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:55:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eJdlAp9p;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788817480;
+	s=arc-20220608; t=1788818113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8PEL7ctvrs8f9gJpA/MPoY+Iz+nKZl0JJs1AfAL5Us=;
-	b=PHjccnbjHGzDoWr3PDzM8UXONWepu21LeET5zpNpGO0eYiwBHBta95v4yzMsoyvLn/SHXo
-	QZ4hig2dWIQlEeEDKOtXx0Gca2e/5nOade0WUP28k7PXms+ZCLLZXeK7qI1S8m9el486mK
-	6Ri8k1uXzqM7+KOq0yRi0FYd/9KS8SA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1CD5B42B9B;
-	Mon,  7 Sep 2026 21:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6CF1F00A3A;
-	Mon,  7 Sep 2026 21:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788817479;
-	bh=e8PEL7ctvrs8f9gJpA/MPoY+Iz+nKZl0JJs1AfAL5Us=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ERrMVVR0YoM06xDxrpDyejQIadx+eQ9bZoWCmhpJgu/z2Ag8xwoBwAR0W6lsWUUn1
-	 10TgoAgTfR4oiRlgC0NQnYV3LwG4qDS0Z8J3Lye1zTT+F8y2lgfcCviKGokMfi3IhS
-	 fdoMi5jNaNCng9cYb78yE8LXv3wErzf3oU3vDvK7enqj8LpGMMntCt0i6Bzyjblokx
-	 BD6JCNmeWcS5tP96pScNCGcTK4eEGwIJTYCiapCvTbuXaO29J9Q1Nc7qv4EmeGQfRA
-	 shDUPHyzErFUUDtFpQA+jm6godpoOjzdEJZRR94hbjJHxygzPwT6uknFv50qfBuUz4
-	 yIdkUtPJT+n7g==
-From: SJ Park <sj@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Justin Suess <utilityemal77@gmail.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	mhocko@suse.com,
-	peterz@infradead.org,
-	paulmck@kernel.org,
-	mingo@redhat.com,
-	rostedt@goodmis.org,
-	jpoimboe@kernel.org,
-	oleg@redhat.com,
-	tglx@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	rafael@kernel.org,
-	ljs@kernel.org,
-	rientjes@google.com,
-	shakeel.butt@linux.dev,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev,
-	will@kernel.org,
-	boqun@kernel.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	tony.luck@intel.com,
-	reinette.chatre@intel.com,
-	x86@kernel.org,
-	pavel@kernel.org,
-	lance.yang@linux.dev,
-	mhiramat@kernel.org,
-	pmladek@suse.com,
-	longman@redhat.com,
-	mathieu.desnoyers@efficios.com,
-	jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev,
-	dietmar.eggemann@arm.com,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	mark.rutland@arm.com,
-	Dave.Martin@arm.com,
-	james.morse@arm.com,
-	babu.moger@amd.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
+	bh=U5vbt3dDTcq0wdPHap0JtL9B1dVtnkBH7soBmqKWLIw=;
+	b=fnqJ9VLxDIiGcCaMLWctWFVhkZG7ArvOxBDKDWiDAodA4na8rxoAv+EgQwVMPla5U1IIkX
+	IzSB+FB7J/FvVA7BQECuy3qXNEnj4S6eIaidyntmf+/ejix0ZNJgzPWy9s4biPCATq9Coh
+	3P4WQWeGKeOhBldZxHBsbtP4OBwv3r4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eJdlAp9p;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788818113;
+	b=m3VW+TYQQbHR9FXQ1lt6tsUUDLLq0n9AynRxV2hOMQYHz6U6B4+gDasL2WEbkWxaD1u7Fp
+	FWgn5bblo8IAzx3DeZ9ZVQpLOmzU7QFHaYdiwXLL8CHCntX1oTFbrjlEk9yOK55lzQoGTl
+	FjY7QTjpJGcJoDFnKsTZhHcDlZvrQw8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788818113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U5vbt3dDTcq0wdPHap0JtL9B1dVtnkBH7soBmqKWLIw=;
+	b=eJdlAp9pL8/AkZmsFNcDcH488lEHuOZRyL7mwqYn0eZPYi1qam0Eo5uSt7A0C0yFVtqPnK
+	pHcZQYNQA69oXFIBBbmkulB3dWcd7DCMt694WaME4MMHyWMAKvUTT7kpBgJmQsyfsbK0Sb
+	0h+Os93nKe1btBgHBM87lpYceJCgUDU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-76hC-MuePVOa3a9FHcteLQ-1; Mon,
+ 07 Sep 2026 17:55:09 -0400
+X-MC-Unique: 76hC-MuePVOa3a9FHcteLQ-1
+X-Mimecast-MFC-AGG-ID: 76hC-MuePVOa3a9FHcteLQ_1788818103
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 91EAD1956072;
+	Mon,  7 Sep 2026 21:55:00 +0000 (UTC)
+Received: from fedora (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 8E52D1800257;
+	Mon,  7 Sep 2026 21:54:42 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  7 Sep 2026 23:55:00 +0200 (CEST)
+Date: Mon, 7 Sep 2026 23:54:41 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: Ye Liu <ye.liu@linux.dev>, Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>, mic@digikod.net, david@kernel.org,
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, gnoack3000@gmail.com,
+	ljs@kernel.org, sj@kernel.org, rientjes@google.com,
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, tony.luck@intel.com,
+	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
+	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
+	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+	babu.moger@amd.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 8/8] security/landlock: convert thread iterator to for_each_thread_rculock
-Date: Mon,  7 Sep 2026 14:44:28 -0700
-Message-ID: <20260907214430.88978-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260907081334.1152889-9-ye.liu@linux.dev>
-References: 
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <ap8yoW37GY17pHYS@redhat.com>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
+ <ap7dC-LWNaoPYJvv@gourry-fedora-PF4VCD3F>
+ <ap76-0-hN6CAcYXX@redhat.com>
+ <ap8mgnpE7D4TTrno@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ap8mgnpE7D4TTrno@gourry-fedora-PF4VCD3F>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: KuTJyUN-BdeD7s2OgomzeZAazGGqfpu-AaEFYHirQPY_1788818103
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: qt51497c4e9mjzw9fqd6dymoecmfhopk
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A00F6100003
 X-Rspam-User: 
-X-Stat-Signature: nmifp1pxmi8qiumfhq1r86jz5gfggx6w
-X-Rspamd-Queue-Id: AE40618000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788817480-809951
-X-HE-Meta: U2FsdGVkX19SQKjcX6VyHgAamsT4acGPKm04xBib52CvaooaX/3+R6I3sSPC+m420VOD5MiPD+GGuBRij8BZ8ZqlvOImhskFz4O5QF/Sd/sAj/R/4TfGIm+QBSqQ/SVRJORJJBwb2tMquARl3lE1v6yJLUKWUFYBqS/fGA/fEBqDCuosuXJHjGPQqpgU2Um8ksvrBb7LW8GZF4L9H08v6JI9Fcd3bDhdYD2RbKKxYQVyUkGMdyiDtgcuvGokzKlRrygjppYAVXw5XASMuOWS8qTvTTfuMiMXNRe9Mcd4IyurcKtmKuTnP56p4ywnazAVQKR73flkhb1QWtvNX2TUvz4HIRxXn240nBQ+DdGdyQnTJ8F7GPIhA5bSXSl0TOt1yt9YEnnzuj1DTUdoI9ne/ZsohEn4zDfrn9PtItIXPZ5PRsLkqczH0pYn8fF3+Ofz9UXHT/08W07cla5IDqPewMXIkrppGPd19ilw1KXaCLmr62gzstXh14gBpFYWVcsca/BogYJGF2gL8cevkC6i5AdEBgHXJSEgUzF/xfX5RR2y4Cq6MJYXlo3VAR4qpa+NNip4Z4KWE8Xr2JKMbBHrchhpMioDy8nf1avWCEXYzY9xOLKNN2kaWNUt5hsyhdfvrtBy4tiPSUtA8wz9NJ7idTUJz4ZosjXeEmAM362E6zec3Gw6MDbRC9bYEi2AhCqcSWGA+44ZmafmfZSamB4oZrIKOQKdQ53UZMOEpG9i2aAoYvSqz58Z7PyDYXeQzKgPmZzigS8LWfgp+iavg8y4I/JR8t53Mhkf7XGk0aUj9sqrWyDhMsxhqA/vMds3GZ5hyHXKFN2GnfthLHwb7Dbyw9zHWVxWo/tHEjIbICV3qZTpklz/FN4WpT0hLBOArUFwREfa6rY1PAcKupflFAlc9SRVidAwo37oBpKnK2TFCPi+uwyuO8J6VBrAa5bZqLFIvxbRRIxZUFQgrdw09x7
- n/Vh/9wO
- uH/p0hU16/EzVwYDBtFwDiiD94AF8VKIvLWNEVIA7T5O+H3sq7OPsl5qDoHohBMMUK7T6/CwwLpF97nW9jR/tjbdKh2BfMHUtDHxxz28A687pVydlbaOcn/AtgG4h1HDYo4Rtxvkf39upjvYSovm0G6I2RjS58QkAOrfjrTcE2W1nMUGml8ekTfNHyjq7KVYq6HRLNUwcGhjff0YI+44Qb/kxzGQ0fC22JPRQWOaNzUTbf5JjCLv4ina5S68ZiBew8NlvSBq8bvLdiq4IS1+TrSnkrnReGHWRNFa2fX9GSMndCCmZK1irJDUwxX6EOaS/DgOFFGeLLDYUs8qDei9zbibeywr+V/sgWlU9pvGHURf7F3TQ0YpuyNQYlm4M7ex1VQm+ZySb1BGFtLbQP0VLlZWV1OBktCGwVVTb
+X-HE-Tag: 1788818113-72610
+X-HE-Meta: U2FsdGVkX18thryYkjqEf8J4I60UYGbOrXr7AIA6o4/2CHbrjdZl2p8AyHhq5uHVO1eJDGAduPPyklEDlgoC+gHqmTqijnJlDyIPimDAqg/Ie1PBrbSijRr4XxqvTjAQAVggFsnqFWe0o6dcfxdWEI0BVJ/ALG5BMX6mJbcU7NDRDP20fz/WMRcf83fPUKjLy8vg3huScH8UrmYlkJzb+4ZVJzueKnC0K4qPLBXoYeBzGdIGjKS1ZQjOjJep07mtRzDde6EQqbInTdhoTxl+3YdM7f+5diWJMPpQxLlXoDNqqRKuihXRIGBjt262QeddSBeXexqHRbED1gpvrzhyEm343UNhK6FDu/KrLUVyrlIqMpvjTzZWBM/9u0regi7+o3owR0FPCYfAFZgN86cUX3xxFbkJZWvA3ZIXN3a7XwRU8TU6M5+dG/PHuuaGxys9m7gxNaEKAe+vb8CI7ehaWJWdHhi4Dfz6lHJVSxlHdkA39vFpZnnhXQ1ve27qCrSSNrKe75TGOAdHOlfFdooIUuQe2U8S38Bl6FlfDcq1bNG5PaZc1Y4NeZgK1+nSTHavGqhThPEreqFvVJAQ+Dd8snXf5JDJSizlqdClr9Xud6foagdSOi+DSmCfzOGUs+OnEouussb7NRNlPBdprI/MVVEGmdmLmCORVf1X42sGom6eeKm7SMgZCHOAtwGpGBOxf/pnob6flliAC6ofrauuXpKgzS5n7Xs21BP2i7WPWCAmnFV96XrMUVT635PLvtck9P6UDzXfMTj/MHbsAZ2QJ8JGehA6lNyz1CN9yqpti2FJBZ3pSdWRrpVfUOty2wfFx8drnVDAolAORFYPpoIQUnk7muJWxE02EaaM+3LSC0+7scT7OAUyoHQgRfNt2TzoS4k9vNJ54w9z5DSS9PJqpE//xMkeGgQIwBzB0d/Q9Cpf/79QgQVrce9Ewk1qNzhW+sWjfxs+DUMNmKVZPoj
+ I58P4UBT
+ SfTav8dvSROycvvQL2HrZi3lCOjIgJ8w5kuk3gfaWdVoJEG2PIekGIlOuarG3mltIdVaWQXeTGNHAMTFC07/m4fOQ134Kge/DLHD/5AQ8/p0YzlsplUNmB/T/S+u8cGx5+YsOTMv4/pdkh/AYzZ+PoK5nhE+DQKD0IFlTdwX4fpdop10W1fob2pQhizRhQRE0R+MAgPfQdiIr5ImsYTviaXmkyVMUuK+G57KOyWTHdfZpc9OVIdr8Ig5okcbFr0w8Cm4C4DLawZnTYbg2doQCDqnaTHBJd4Ps1dqqg9ZH3RAnHkxSV0Ev4Si5E/0oMDZ4KqFYHoUOjhy5HYdIJqlJK2lFw3AjVFppf6qKxESkOyEpZ1d7p7/Q1q0uguqRiKHITYVE3Kww6vs9/hOqjq1QpDbcx8jQyrjZeh0WNtJJtfOTIsqEVaY/VjQsvTYWYBH4claK03jB+/FEg7OkcjCJsQYGfkspjRA9abIL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +143,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  7 Sep 2026 16:13:34 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On 09/07, Gregory Price wrote:
+>
+> On Mon, Sep 07, 2026 at 07:57:15PM +0200, Oleg Nesterov wrote:
+> > On 09/07, Gregory Price wrote:
+> > >
+> > > On Mon, Sep 07, 2026 at 04:13:31PM +0800, Ye Liu wrote:
+> > > > --- a/kernel/hung_task.c
+> > > > +++ b/kernel/hung_task.c
+> > > > @@ -315,13 +315,12 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+> > > >  		return;
+> > > >
+> > > >  	this_round_count = 0;
+> > > > -	rcu_read_lock();
+> > > > -	for_each_process_thread(g, t) {
+> > > > +	for_each_process_thread_rculock(g, t) {
+> > > >  		if (!max_count--)
+> > > > -			goto unlock;
+> > > > +			goto out;
+> > > ... snip ...
+> > > > - unlock:
+> > > > -	rcu_read_unlock();
+> > > > -
+> > > > +out:
+> > > >  	if (!this_round_count)
+> > > >  		return;
+> > > >
+> > >
+> > > The sunken rcu_read_lock()/unlock() + scoped_guard usage makes this goto
+> > > at a minimum very confusing, if not actually broken.
+> >
+> > I am afraid I misunderstood you concerns...
+> >
+>
+> This might be my - admittedly shallow - understanding of scoped_guard,
+> but does scoped guard handle goto correctly?
 
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Replace guard(rcu)() + for_each_thread() with for_each_thread_rculock(),
-> which scopes the RCU read lock to the loop body via scoped_guard(rcu).
-> 
-> No functional change.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Reviewed-by: Justin Suess <utilityemal77@gmail.com>
-> Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Yes, it does,
 
-Reviewed-by: SJ Park <sj@kernel.org>
+> and why it's generally discouraged to mix cleanup.h and goto.
 
+Hmm, why? I didn't know...
 
-Thanks,
-SJ
+Oleg.
 
-[...]
 
