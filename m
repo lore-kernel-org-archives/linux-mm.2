@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24654C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30A78C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:47:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36EEB6B009F; Mon,  7 Sep 2026 08:46:42 -0400 (EDT)
+	id 14D126B0098; Mon,  7 Sep 2026 08:47:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345B16B00A0; Mon,  7 Sep 2026 08:46:42 -0400 (EDT)
+	id 124A76B00A0; Mon,  7 Sep 2026 08:47:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 283C56B00A3; Mon,  7 Sep 2026 08:46:42 -0400 (EDT)
+	id 03B1C6B00A2; Mon,  7 Sep 2026 08:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E58AE6B009F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:46:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70138160145
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:46:41 +0000 (UTC)
-X-FDA: 85186940202.04.9453C14
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD9746B0098
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:47:34 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C416C015A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:47:34 +0000 (UTC)
+X-FDA: 85186942428.15.A9D5948
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CEEBC140005
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:46:39 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fmMU+Toi;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788785199;
-	b=V220PoRu9ipg3VqnXOfxsUEPsYfuBIQzKXrbJOQwxBW97jed29awPkdus50GlNUvrqCuea
-	dr5NtLOqwN4rpPLRrH28tjVGQmJAH0rF+TMjgoImpu8Vz3//LnPEKL61eZIPyfOP4bK06B
-	bqculinL5fn6kPQg6vh4RF3RoDAbXkk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fmMU+Toi;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id CBF961C000A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:47:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/pt58nE";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788785199;
+	s=arc-20220608; t=1788785252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzdkdKARecRe01szTYol++atDGkRoRfjvh6vRPYl5UI=;
-	b=PQiz0QV3vy8CHG+qI6b6S9GWsjwJULXhCbkI/HSyoIQ29wu7zVsftKjEziCIVF3i49bHXX
-	Wd784Qzmkdf4qoouYi3sxknQZk3oUYp3T4bmWqTIecqtwWusnnArIiiPMqnsb44mM/tjY1
-	nGvqGc2YRQFHG1X7StmW49L+5NfEHvE=
+	bh=iCqLzsf4q/SjfdvKYkdPfgYTxL/rJMKfiZpM8s0mfBA=;
+	b=5mysNcCJ45avvwWMqCWNQEUW6awlVwLNxKpZZB4O+PCsRprUPKNQABCp42VXPabRhusYba
+	Cj4L8ZWF7sdwjrRNOz0PbXC8cYJsx86O/qr7tK8mzYgwmDxAhs9TZSjrcEbWFWLo+On4aD
+	r3FaCT8bqdn82KRfqz6P99tK9xdcaXY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788785252;
+	b=8o8f806T4OD2ehbnJcI2BH3h9EvTR8Jk/+0U9T0qGrSnDbh2E78VOouB3ODIj4aArGz2Cg
+	t1h+IF2cxdZA2SZMH1K3+9eRS8+8AnaridgoLOpbs22W/8GsxTa7w9RWZXQZHqYytq2lYK
+	wPg21wYmt/xyK2WfmvOkMNlTBzFSnu8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/pt58nE";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 47D6C60D86;
-	Mon,  7 Sep 2026 12:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433761F00A3A;
-	Mon,  7 Sep 2026 12:46:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 676FD60D8B;
+	Mon,  7 Sep 2026 12:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692141F00A3A;
+	Mon,  7 Sep 2026 12:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788785199;
-	bh=rzdkdKARecRe01szTYol++atDGkRoRfjvh6vRPYl5UI=;
+	s=k20260515; t=1788785252;
+	bh=iCqLzsf4q/SjfdvKYkdPfgYTxL/rJMKfiZpM8s0mfBA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fmMU+ToibZFV8IbiMlB7BJcyNMWiUGoLS44Vm5Vqh9Vze0eOEl7CNxS0hUHcpn2+U
-	 KDqTzGIiVtZl2E49E4Ozxyf0r0idinYHKqHEcc0/vTsBG6TseiuvZKjo6li9gfwFBh
-	 XMatxt5QnMhLz37fIKXkBJm4CrR1X9lYXtjiPtET1jw5HDYQTBD/47WEJLkzTrSUnd
-	 qtnZwbvNxWcgKfkEWn1APaq0S6qTInfeKglBBhVX7cmBQW6mDOZq/KYHuVTiHoR5YF
-	 GH58BNpPS089GXzGEZdhaypjKL4ska+IMdoxMxlw3Ufn8A9fx1Lugz6xTXQlRh3dw1
-	 SNTmY/DAjaHGg==
-Date: Mon, 7 Sep 2026 13:46:31 +0100
+	b=j/pt58nEYJIBTSG6JkoVecRRGUrq9BhlZUOVIfR8LvjAIdP15n0d/nf7aFvZldqjl
+	 cLi36PuLgBqlndIF9jzAkxu2tXpNJD1dtEISU+xS62KLZc1hIOXRaiGmEWnINntAU5
+	 DEXX4SWUzQZEJ2M0RkgjVr5rGxWpw5CmBMrk2pgrI+opGYVwqKqe4iTXLdHthOOKFm
+	 tYXqnQg356uzvJ2gx47sAd7gXGu/eIy77OeQ8qAl073Wh9EqoSJjS5ok7HaNuPEEDZ
+	 oHLSyW5cU10ys95L0YxGArParqu6aBf+cTHufDaioJsU+KjB10QYMBC0sOzX4Vkz26
+	 0ubS21S89NhjQ==
+Date: Mon, 7 Sep 2026 13:47:25 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	usama.arif@linux.dev, kas@kernel.org, sarthak.sharma@arm.com
-Subject: Re: [PATCH v2] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
-Message-ID: <ap6vmwQw47sxSKQO@gremlin>
-References: <20260907081509.924979-1-yeoreum.yun@arm.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
+	jannh@google.com, lance.yang@linux.dev, minchan.kim@gmail.com, lwoodman@redhat.com, 
+	kamezawa.hiroyu@jp.fujitsu.com, mel@csn.ul.ie, linux-mm@kvack.org, wangkefeng.wang@huawei.com, 
+	sunnanyong@huawei.com
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+Message-ID: <ap6yUYw-DH3ZZ2_i@gremlin>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
+ <20260905162128.46fe06ad3689af1db637a005@linux-foundation.org>
+ <8ed3a018-3290-494b-8e67-bf317974d8b9@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260907081509.924979-1-yeoreum.yun@arm.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CEEBC140005
-X-Stat-Signature: wdsus4sfff1m1rqnw4rdpqpew7uo8i3g
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8ed3a018-3290-494b-8e67-bf317974d8b9@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1788785199-727790
-X-HE-Meta: U2FsdGVkX18EYOLquVTTEyHTwexMG9jaIYuGPr/3NZYJ8r7cpQJ6P8shoM5crcuSJFIZrNBrfznt9qiUasBw1Q2pDHilEhysRPehidOBJ65YMzutRONF/88Rbfl/Z1UVpL2LTpk05dEMWWeMTpdfKMFmKWyrvgQV7l7TJpUIX4WY7gVmRacI1nkx5u/ZVrwOivfbVqHWYoojwVfQ8CHJJq+tOMAnT9IP84kdJdKL/79qXMo/D7jFr+KQLI/FNYyXDLlWIAWYU38wpjJ6NF/lFMtYobg+O4l9n7D05Ychrc98b4BF1WEKyp30/W6ec+eLl3J2xW8DjRFFEdG7athgCwdU/9/ni8owMP/j7fTQ6IFqrTFRnAusmKV/BQ4miMxqLyz0DAUUxMRvY4PYvD/5GQG8u+ZJfZhqw5nogYpBdPJnc+QyYqZyfyG7z+aJ8CiK3kWMzcXFwMdgtqeFtJLUgEc25QIhaglpc6AczFnE8gF0hL7jPeRr7bKGK4mSWxJ+uCptBNDHGhk4AvpTxmVuQq43JDiGNDqpMDDATBatkQiZh3RilFu7bdDdCRgeSFOM/ixFut47fSFlcw1V17FZPQnvgSt32e1BC1piwxPco+ua0tQyT3UZhd9hN2UfqFgynYBJ41ihYvMjjo9btD+ukmMopuArpaoZ+Zi5bSs2j+ufwuhssvwlR4PoJ8TqQ769zPK6y6ULttDLneqO5MiafaWi1Ep9WXHPWf6m3rRMF3C4lvppSFiGxVWq2nXmDklE3Qu4p6/g2QqzXM52ViPhoIv/D/rYltP8qRR4y4pbiztQ1nu4eFSiXC7m3CqeRc17GkilF1m10FfRzyEdV1ycmQ4uFTQ3IaF4w89+W2ZyfRG3pb5/EkgvWV8EYyxJE4RPorIwAgmbFlq90dI9uBSs8HCEDMkOzV7Z4zRa9mJPbbUuksls6AwmTBcHW9+8eWqcd4bQRIZFpAlEQelCFQg
- u41BoqfF
- XcIYkuSOqfGAAYqnw8vrdUfX6jDASsbcAgqWfZA3cuSwS+xSmf/aQnSXjgVKWw1s18uv+SaU3OhfvCQlkUrifqWsys1FvBYnhRuBckz+wutYVQCQ66V9+z0vR6YCKuk2GOkAz8H13uKQBjbASAVxcgfCKvA6TKBZPH75G+EDuQWnLEoWsu7ZZh8AriwZq2g2RAJNk2eC00FYCprONt09is7bB8D0cYoBK6jcuKhXKCM7jDDYks/18dAu19hatXujcOnW0z9Q7xhyLA4gpU43+VwHsvNVYu3TJPpXpekDj3702uhE/CtffNE+bvX6DHVN4UFYc0r2iaLOp1JmKqPzTejGGG0priowTzQoO4J/5SJXRCuACr9OcwwV7yusWx4+iW94A
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CBF961C000A
+X-Stat-Signature: sh1nbwu1xs6gzbcdjz4synmn8njhkis3
+X-HE-Tag: 1788785252-971593
+X-HE-Meta: U2FsdGVkX19jyqVbxdPXdic8guIq3JbYuVr1a7LTEHGP+ko2LJ7YovFPO+kglWEQFtaOhLsB5Z9Nm6Akr+fjhC6S9nKcdj+fXDsO+qdNt+As3kWH0Wpy3KylAPfkW2hmju1L/dkodGZ5Ru1h67WjjQi0SyG3+oPaKZFcypOUzUDHmnJcQx0DWSQ/oQ4jPXDE8FzlF9IyHwBynW0lBMqLyAX08QMKvl6rsFNXbjy98AXJH1D0yM/vtWcN4cN7/c18xwJXdcF5jijNpJZFjV9YQB6g5rPWsjj7vHwv1i20rU1mZ3qsra9fvsS5at1gws7mFVmR9WDL5lNhS1Rp4d2LEMsGCLJaQ0eGZEg+mUkkwU41fyv9MAIaHoH6tTufWt07ggr1z7MsB9kX8mofElfL4gSYuBPG/kq0fRcMj+EMMN4pIM9PO56laerUBgIk4RHKDcamV0Wc2fBpaHJ7Jh5BHyAHi9pO0dJQKKnrlgO+/4vneOnpVdheP03wAGUKUfLV2lt8xLgEB7BUMEmNcC/8N1vqPE8s8y1oNo3gaeF5JlvG6FZrLre4oduJnHZo3pw22cmll9mzO8PcZrZt+dxgOffZI1DTIGhA4cBRoL+WqV/wbH3eKU/ahW+Qit422+q6dd6jKAV/mSTMkeK181t6aqlDUb6EoRN3cSIYioXqlcNzHmAF+81YnvXuniHSbYVJeK5tyXnlRRBKgHtnE+mNv1202RVLnhVp5fS2UYtUxcZamC6Liu3Q2fPT1mHpxOazLOAJ2RsPG+wiB/EE3iGtLgkN6mkfxfVqS2aERqal9KgEocK6OmK4CCuB+8y1YnUgyGXtwBAOD27NIlZWajW7Xb/XWDyQoj2Jt8cOSFNJq4F3TIxar67EmkheyR+fHmRlxa0uqwjKMvA06BCqq1irvhof/Uahv7YyTlaplPJ3KUQKgndD9RR5agPe6gX8U0Kpg5caiLsjfU6KPebYUQV
+ fjavCfy7
+ O6oIxuBrH3S+lCgdPETkTGpOx9DsOgjvborpCm+8dJeOyEfGPqcbcbYAqayjB3H76qtV23ToTWTjIXg61VGU03j7P/k3sM6g6ggU673wnDGc8ouU4P2z5E7w0U0DEzd21bLqrJnWESqlnj3DYD80SFleVEiEBR9XauJRAkUQPgxFScWZ2XgqHqC7Tqyn9LLj8M3rN5zC2Ng1nT8anoyx4FTS63jQofL1G4ENuxHCfEVH+TBkIGcNkmWkRF7cmE/EXr1KzcpbGk6h+C5HF9V3RprDSopQPM6XGkXuV1hR+tx7Y/cKTRY2hhRSBscQKhjQbHLh6iKl+VoItk4gRg8GQWhIiOuLG/3s9Lbx42ikblghYx7ZLeprJjwljd6VT7nH55/6g1iBjgTOvUugpTOCCGavItK05Xe6PP3cxHQWkMo5MS2w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,399 +98,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 09:15:08AM +0100, Yeoreum Yun wrote:
-> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-> When this macro is used in some test, test result would be strange in
-> the system where PAGE_SIZE is more then 4KB.
+On Mon, Sep 07, 2026 at 10:21:34AM +0800, Jinjiang Tu wrote:
 >
-> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> 在 2026/9/6 7:21, Andrew Morton 写道:
+> > On Sat, 5 Sep 2026 14:18:19 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
+> >
+> > > On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+> > > anon_vma->root is stale due to missing memory barrier, leading to
+> > > lock and unlock two different anon_vma->root, thus leading to a anon_vma
+> > > will never be unlocked, and another anon_vma couldn't be locked anymore.
+> > >
+> > > The race is as follows:
+> > >
+> > > ...
+> > >
+> > > Without this fix, our production environment could reproduce this issue
+> > > about 2-5 times each month.
+> > That's important info.  Can you tell us more?  How was this observed by
+> > operations people?  A copy-n-paste of the kernel messages would be helpful.
+> >
+> > This will help downstream people to decide whether this patch fixes a
+> > thing they're seeing happen.
 >
->   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
->     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
->     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     ...
->   ok 1 Completed
+> We can see a task that tries to grab anon_vma lock triggers hungtask.
 >
-> Remove the HPAGE_SIZE and HPAGE_SHIFT macros and introduce pmd_page_shift()
-> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
-> helper, read_pmd_pagesize().
+> [2434968.289510] INFO: task main:2354726 blocked for more than 120 seconds.
+> [2434968.289516]       Tainted: G            E     5.10.0-0021.aarch64 #1
+> [2434968.289517] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> [2434968.289519] task:main            state:D stack:    0 pid:2354726 ppid:2350673 flags:0x00000a01
+> [2434968.289523] Call trace:
+> [2434968.289531]  __switch_to+0x7c/0xbc
+> [2434968.289540]  __schedule+0x3b4/0x8a0
+> [2434968.289542]  schedule+0x50/0xe0
+> [2434968.289545]  rwsem_down_write_slowpath+0x3cc/0x6cc
+> [2434968.289547]  down_write+0x60/0x260
+> [2434968.289551]  __anon_vma_prepare+0x6c/0x210
+> [2434968.289555]  do_anonymous_page+0x258/0x660
+> [2434968.289557]  handle_pte_fault+0x188/0x214
+> [2434968.289559]  __handle_mm_fault+0x1b0/0x380
+> [2434968.289561]  handle_mm_fault+0xf4/0x284
+> [2434968.289563]  do_page_fault+0x19c/0x494
+> [2434968.289565]  do_translation_fault+0xcc/0xf8
+> [2434968.289569]  do_mem_abort+0x48/0xac
+> [2434968.289570]  el0_da+0x44/0x80
+> [2434968.289572]  el0_sync_handler+0x88/0xb4
+> [2434968.289573]  el0_sync+0x160/0x180
 >
-> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
-> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
-> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
-> PMD-sized units, the test may fail with the previous size of 100 MiB,
-> which is not a multiple of the PMD size when the base page size is
-> 16 KiB or 64 KiB.
->
-> After this patch, output of transhuge-stress:
->
->   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
->     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
->     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
->     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
->     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
->     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
->     ...
->   ok 1 Completed
->
-> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> After analyzing the vmcore, we found the anon_vma->root->rwsem.count is -1,
+> and there is another anon_vma whose anon_vma->root->rwsem.count is 1, and
+> the anon_vma->root->rwsem.owner shows the lock is held, but the stack of
+> the task shows the task doesn't hold the anon_vma lock.
 
-Tested and works locally :) (weird stall in data below is because it was being
-run in a VM that was given too much memory :P):
+Can we have these details in the commit message on respin please? Thanks :)
 
-$ sudo ./transhuge-stress -d 20
-TAP version 13
-1..1
-transhuge-stress: allocate 251 transhuge pages, using 8041 MiB virtual memory and 7 MiB of ram
-# 2.317 s/loop, 9.230 ms/page,   3467.040 MiB/s	 251 succeed,    0 failed,  233 different pages
-# 0.175 s/loop, 0.696 ms/page,  46008.352 MiB/s	 251 succeed,    0 failed,  235 different pages
-# 0.166 s/loop, 0.661 ms/page,  48416.410 MiB/s	 251 succeed,    0 failed,  232 different pages
-# 3.367 s/loop, 13.416 ms/page,  2385.195 MiB/s	 251 succeed,    0 failed,  235 different pages
-# 10.092 s/loop, 40.206 ms/page,  795.906 MiB/s	 251 succeed,    0 failed,  231 different pages
-# 0.190 s/loop, 0.757 ms/page,  42252.947 MiB/s	 251 succeed,    0 failed,  230 different pages
-# 0.170 s/loop, 0.678 ms/page,  47177.691 MiB/s	 251 succeed,    0 failed,  231 different pages
-# 0.259 s/loop, 1.032 ms/page,  30995.582 MiB/s	 251 succeed,    0 failed,  230 different pages
-# 1.416 s/loop, 5.642 ms/page,   5671.301 MiB/s	 251 succeed,    0 failed,  230 different pages
-# 0.170 s/loop, 0.677 ms/page,  47252.908 MiB/s	 251 succeed,    0 failed,  229 different pages
-# 0.166 s/loop, 0.662 ms/page,  48339.908 MiB/s	 251 succeed,    0 failed,  228 different pages
-# 0.165 s/loop, 0.659 ms/page,  48572.554 MiB/s	 251 succeed,    0 failed,  231 different pages
-# 0.164 s/loop, 0.655 ms/page,  48841.927 MiB/s	 251 succeed,    0 failed,  228 different pages
-# 0.216 s/loop, 0.861 ms/page,  37184.310 MiB/s	 251 succeed,    0 failed,  189 different pages
-# 0.175 s/loop, 0.698 ms/page,  45864.590 MiB/s	 251 succeed,    0 failed,  233 different pages
-ok 1 Completed
-# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Thanks for this!
-
-Tested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
-> Chnage in v2:
->  - rename hpage_* to pmd_page_*
->  - Link to v1: https://lore.kernel.org/all/20260902175611.1241118-1-yeoreum.yun@arm.com/#t
 >
-> ---
->  tools/testing/selftests/mm/guard-regions.c    | 11 ++++--
->  tools/testing/selftests/mm/ksm_tests.c        | 16 +++++----
->  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
->  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++------
->  tools/testing/selftests/mm/vm_util.c          | 36 ++++++++++++++++---
->  tools/testing/selftests/mm/vm_util.h          |  9 ++---
->  6 files changed, 71 insertions(+), 30 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index 5c8ec3ca75d7..e57cc7e39e41 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -2195,14 +2195,21 @@ TEST_F(guard_regions, pagemap_scan)
->  TEST_F(guard_regions, collapse)
->  {
->  	const unsigned long page_size = self->page_size;
-> -	const unsigned long size = 2 * HPAGE_SIZE;
-> -	const unsigned long num_pages = size / page_size;
-> +	const uint64_t hpage_size = read_pmd_pagesize();
-> +	unsigned long size;
-> +	unsigned long num_pages;
->  	char *ptr;
->  	int i;
->
->  	if (!thp_available())
->  		SKIP(return, "Transparent Hugepages not available\n");
->
-> +	if (!hpage_size)
-> +		ksft_exit_fail_msg("reading hpage_size failed\n");
-> +
-> +	size = 2 * hpage_size;
-> +	num_pages = size / page_size;
-> +
->  	/* Need file to be correct size for tests for non-anon. */
->  	if (variant->backing != ANON_BACKED)
->  		ASSERT_EQ(ftruncate(self->fd, size), 0);
-> diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-> index 5fd7792a0d47..ef27ce467b8c 100644
-> --- a/tools/testing/selftests/mm/ksm_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_tests.c
-> @@ -521,19 +521,23 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
->  	struct timespec start_time, end_time;
->  	unsigned long scan_time_ns;
->  	int pagemap_fd, n_normal_pages, n_huge_pages;
-> +	const uint64_t hpage_size = read_pmd_pagesize();
->
->  	if (!thp_is_enabled()) {
->  		ksft_print_msg("Transparent Hugepages not available\n");
->  		return KSFT_SKIP;
->  	}
->
-> +	if (!hpage_size)
-> +		ksft_exit_fail_msg("reading hpage_size failed\n");
-> +
->  	map_size *= MB;
->  	size_t len = map_size;
->
-> -	len -= len % HPAGE_SIZE;
-> -	map_ptr_orig = mmap(NULL, len + HPAGE_SIZE, PROT_READ | PROT_WRITE,
-> +	len -= len % hpage_size;
-> +	map_ptr_orig = mmap(NULL, len + hpage_size, PROT_READ | PROT_WRITE,
->  			MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE, -1, 0);
-> -	map_ptr = map_ptr_orig + HPAGE_SIZE - (uintptr_t)map_ptr_orig % HPAGE_SIZE;
-> +	map_ptr = map_ptr_orig + hpage_size - (uintptr_t)map_ptr_orig % hpage_size;
->
->  	if (map_ptr_orig == MAP_FAILED)
->  		err(2, "initial mmap");
-> @@ -547,7 +551,7 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
->
->  	n_normal_pages = 0;
->  	n_huge_pages = 0;
-> -	for (void *p = map_ptr; p < map_ptr + len; p += HPAGE_SIZE) {
-> +	for (void *p = map_ptr; p < map_ptr + len; p += hpage_size) {
->  		if (allocate_transhuge(p, pagemap_fd) < 0)
->  			n_normal_pages++;
->  		else
-> @@ -578,11 +582,11 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
->  	ksft_print_msg("Average speed:  %.3f MiB/s\n", (map_size / MB) /
->  					       ((double)scan_time_ns / NSEC_PER_SEC));
->
-> -	munmap(map_ptr_orig, len + HPAGE_SIZE);
-> +	munmap(map_ptr_orig, len + hpage_size);
->  	return KSFT_PASS;
->
->  err_out:
-> -	munmap(map_ptr_orig, len + HPAGE_SIZE);
-> +	munmap(map_ptr_orig, len + hpage_size);
->  	return KSFT_FAIL;
->  }
->
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index d09f9f6a384e..24aa1de27c25 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -360,8 +360,8 @@ fi
->  CATEGORY="memfd_secret" run_test ./memfd_secret
->  fi
->
-> -# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
-> -CATEGORY="ksm" run_test ./ksm_tests -H -s 100
-> +# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 512
-> +CATEGORY="ksm" run_test ./ksm_tests -H -s 512
->  # KSM KSM_MERGE_TIME test with size of 100
->  CATEGORY="ksm" run_test ./ksm_tests -P -s 100
->  # KSM MADV_MERGEABLE test with 10 identical pages
-> diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
-> index 8eb0c5630e7e..9cd9790224db 100644
-> --- a/tools/testing/selftests/mm/transhuge-stress.c
-> +++ b/tools/testing/selftests/mm/transhuge-stress.c
-> @@ -35,12 +35,17 @@ int main(int argc, char **argv)
->  	size_t map_len;
->  	int pagemap_fd;
->  	int duration = 0;
-> +	const uint64_t hpage_size = read_pmd_pagesize();
-> +	const uint64_t hpage_shift = pmd_page_shift();
->
->  	ksft_print_header();
->
->  	if (!thp_is_enabled())
->  		ksft_exit_skip("Transparent Hugepages not available\n");
->
-> +	if (!hpage_size || !hpage_shift)
-> +		ksft_exit_fail_msg("reading hpage_size failed\n");
-> +
->  	ram = sysconf(_SC_PHYS_PAGES);
->  	if (ram > SIZE_MAX / psize() / 4)
->  		ram = SIZE_MAX / 4;
-> @@ -70,23 +75,23 @@ int main(int argc, char **argv)
->  	}
->
->  	warnx("allocate %zd transhuge pages, using %zd MiB virtual memory"
-> -	      " and %zd MiB of ram", len >> HPAGE_SHIFT, len >> 20,
-> -	      ram >> (20 + HPAGE_SHIFT - pshift() - 1));
-> +	      " and %zd MiB of ram", len >> hpage_shift, len >> 20,
-> +	      ram >> (20 + hpage_shift - pshift() - 1));
->
->  	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
->  	if (pagemap_fd < 0)
->  		ksft_exit_fail_msg("open pagemap\n");
->
-> -	len -= len % HPAGE_SIZE;
-> -	ptr = mmap(NULL, len + HPAGE_SIZE, PROT_RW, mmap_flags, backing_fd, 0);
-> +	len -= len % hpage_size;
-> +	ptr = mmap(NULL, len + hpage_size, PROT_RW, mmap_flags, backing_fd, 0);
->  	if (ptr == MAP_FAILED)
->  		ksft_exit_fail_msg("initial mmap");
-> -	ptr += HPAGE_SIZE - (uintptr_t)ptr % HPAGE_SIZE;
-> +	ptr += hpage_size - (uintptr_t)ptr % hpage_size;
->
->  	if (madvise(ptr, len, MADV_HUGEPAGE))
->  		ksft_exit_fail_msg("MADV_HUGEPAGE");
->
-> -	map_len = ram >> (HPAGE_SHIFT - 1);
-> +	map_len = ram >> (hpage_shift - 1);
->  	map = malloc(map_len);
->  	if (!map)
->  		ksft_exit_fail_msg("map malloc\n");
-> @@ -99,7 +104,7 @@ int main(int argc, char **argv)
->  		memset(map, 0, map_len);
->
->  		clock_gettime(CLOCK_MONOTONIC, &a);
-> -		for (p = ptr; p < ptr + len; p += HPAGE_SIZE) {
-> +		for (p = ptr; p < ptr + len; p += hpage_size) {
->  			int64_t pfn;
->
->  			pfn = allocate_transhuge(p, pagemap_fd);
-> @@ -107,7 +112,7 @@ int main(int argc, char **argv)
->  			if (pfn < 0) {
->  				nr_failed++;
->  			} else {
-> -				size_t idx = pfn >> (HPAGE_SHIFT - pshift());
-> +				size_t idx = pfn >> (hpage_shift - pshift());
->
->  				nr_succeed++;
->  				if (idx >= map_len) {
-> @@ -123,7 +128,7 @@ int main(int argc, char **argv)
->  			}
->
->  			/* split transhuge page, keep last page */
-> -			if (madvise(p, HPAGE_SIZE - psize(), MADV_DONTNEED))
-> +			if (madvise(p, hpage_size - psize(), MADV_DONTNEED))
->  				ksft_exit_fail_msg("MADV_DONTNEED");
->  		}
->  		clock_gettime(CLOCK_MONOTONIC, &b);
-> @@ -131,7 +136,7 @@ int main(int argc, char **argv)
->
->  		ksft_print_msg("%.3f s/loop, %.3f ms/page, %10.3f MiB/s\t"
->  			       "%4d succeed, %4d failed, %4d different pages\n",
-> -			       s, s * 1000 / (len >> HPAGE_SHIFT), len / s / (1 << 20),
-> +			       s, s * 1000 / (len >> hpage_shift), len / s / (1 << 20),
->  			       nr_succeed, nr_failed, nr_pages);
->
->  		if (duration > 0 && b.tv_sec - start.tv_sec >= duration) {
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index 4821a3563036..f75bf0bacd18 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -21,6 +21,8 @@
->
->  unsigned int __page_size;
->  unsigned int __page_shift;
-> +uint64_t __pmd_page_size;
-> +uint64_t __pmd_page_shift;
->
->  uint64_t pagemap_get_entry(int fd, char *start)
->  {
-> @@ -161,6 +163,9 @@ uint64_t read_pmd_pagesize(void)
->  	char buf[20];
->  	ssize_t num_read;
->
-> +	if (__pmd_page_size)
-> +		return __pmd_page_size;
-> +
->  	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
->  	if (fd == -1)
->  		return 0;
-> @@ -173,7 +178,25 @@ uint64_t read_pmd_pagesize(void)
->  	buf[num_read] = '\0';
->  	close(fd);
->
-> -	return strtoul(buf, NULL, 10);
-> +	__pmd_page_size = strtoul(buf, NULL, 10);
-> +
-> +	return __pmd_page_size;
-> +}
-> +
-> +uint64_t pmd_page_shift(void)
-> +{
-> +	if (__pmd_page_shift)
-> +		return __pmd_page_shift;
-> +
-> +	if (!__pmd_page_size)
-> +		__pmd_page_size = read_pmd_pagesize();
-> +
-> +	if (!__pmd_page_size)
-> +		return 0;
-> +
-> +	__pmd_page_shift = (ffsl(__pmd_page_size) - 1);
-> +
-> +	return __pmd_page_shift;
->  }
->
->  unsigned long rss_anon(void)
-> @@ -452,14 +475,19 @@ bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size
->  int64_t allocate_transhuge(void *ptr, int pagemap_fd)
->  {
->  	uint64_t ent[2];
-> +	const uint64_t hpage_size = read_pmd_pagesize();
-> +	const uint64_t hpage_shift = pmd_page_shift();
-> +
-> +	if (!hpage_size || !hpage_shift)
-> +		return -1;
->
->  	/* drop pmd */
-> -	if (mmap(ptr, HPAGE_SIZE, PROT_READ | PROT_WRITE,
-> +	if (mmap(ptr, hpage_size, PROT_READ | PROT_WRITE,
->  		 MAP_FIXED | MAP_ANONYMOUS |
->  		 MAP_NORESERVE | MAP_PRIVATE, -1, 0) != ptr)
->  		ksft_exit_fail_msg("mmap transhuge\n");
->
-> -	if (madvise(ptr, HPAGE_SIZE, MADV_HUGEPAGE))
-> +	if (madvise(ptr, hpage_size, MADV_HUGEPAGE))
->  		ksft_exit_fail_msg("MADV_HUGEPAGE\n");
->
->  	/* allocate transparent huge page */
-> @@ -471,7 +499,7 @@ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
->
->  	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
->  	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
-> -	    !(PAGEMAP_PFN(ent[0]) & ((1 << (HPAGE_SHIFT - pshift())) - 1)))
-> +	    !(PAGEMAP_PFN(ent[0]) & ((1 << (hpage_shift - pshift())) - 1)))
->  		return PAGEMAP_PFN(ent[0]);
->
->  	return -1;
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index 9a49af88702e..1d2608c1ad08 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -31,6 +31,8 @@
->
->  extern unsigned int __page_size;
->  extern unsigned int __page_shift;
-> +extern uint64_t __pmd_page_size;
-> +extern uint64_t __pmd_page_shift;
->
->  /*
->   * Represents an open fd and PROCMAP_QUERY state for binary (via ioctl)
-> @@ -89,6 +91,7 @@ unsigned long pagemap_get_pfn(int fd, char *start);
->  void clear_softdirty(void);
->  bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
->  uint64_t read_pmd_pagesize(void);
-> +uint64_t pmd_page_shift(void);
->  unsigned long rss_anon(void);
->  bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
->  bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
-> @@ -157,12 +160,6 @@ int ksm_stop(void);
->  int get_hardware_corrupted_size(unsigned long *val);
->  int unpoison_memory(unsigned long pfn);
->
-> -/*
-> - * On ppc64 this will only work with radix 2M hugepage size
-> - */
-> -#define HPAGE_SHIFT 21
-> -#define HPAGE_SIZE (1 << HPAGE_SHIFT)
-> -
->  #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
->  #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
->
-> --
-> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
->
+> >
 
 --
 Cheers, Lorenzo
