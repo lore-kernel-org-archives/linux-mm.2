@@ -4,128 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97D4C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:12:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0EFBC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:14:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0E046B009B; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
+	id 96B346B00A0; Mon,  7 Sep 2026 10:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4FB6B009D; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
+	id 8F5606B00A7; Mon,  7 Sep 2026 10:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23E56B00A0; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
+	id 795ED6B00A9; Mon,  7 Sep 2026 10:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B1F7F6B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6D58A36BE
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:12:28 +0000 (UTC)
-X-FDA: 85187156376.12.ED108C3
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C55681C0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:12:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a SJ9bwQ";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ndD01nXT;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788790346;
-	b=sTcgyKqcr7dueJq/b/Uf/602tKD4DSwXDBbIW1zSNb+kS1rK5pKt8u1V+qxZ/C5EPN3Ddv
-	JPPPSz1eImvQdd3i4DUJMrE2nqrOxqMbbvwzUWv10jG1QhZH9+myhBiJPac7Nf9RJwV6eE
-	pM/gUQ+2jwS4Vr9yv4zOppeNlvKL/ZM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a SJ9bwQ";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ndD01nXT;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 490C86B00A0
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:14:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC21D14018A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:14:25 +0000 (UTC)
+X-FDA: 85187161290.01.5E7406C
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E303F1C0009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:14:23 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=XXqSvEpl;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf21.hostedemail.com: domain of spasswolf@web.de designates 217.72.192.78 as permitted sender) smtp.mailfrom=spasswolf@web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788790346;
+	s=arc-20220608; t=1788790464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+4coId5nk=;
-	b=B5miKfQ5mtajBDhuNgQf0QkC9+F/vOeTvgFHgElcz6RtNtRNh5fQ3uiLOck1L293K+/a5h
-	Q8WUnvR/FkrOYRCa21SCshHao3a1NF45BhfD+ry6vm3ilwmwq8KJ6HSMlkwEbRo7ZVoS0r
-	uWF4WFF3gDT3OWuZtOH93/o5p5GaqnM=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 297EA14001AE;
-	Mon,  7 Sep 2026 10:12:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 07 Sep 2026 10:12:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788790346; x=
-	1788876746; bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+4coId5nk=; b=a
-	SJ9bwQmgeeXzCh+rpvi6NWAt8C0hvIhJum2+soViebhRo6m1VPmiRfXP0KKnYLnZ
-	zt89JmR0Biq/0iXIgZBL04O/oukjPQGrgOLb85zu9XDZANUFDqdRlGid1j+Hpk1C
-	bErT9d42T2mYILgIbcJqDuzwAe6kI0cCvLoDfZm7rA2esFk2+nxcSyl1k70qqB+p
-	xaNxGCcTic46YgoVhMeS6sJlx2Pt+NZ23rTsf2aFt1B/E2VW9x5/y+vzjQZNYI3H
-	Ur81z2247HuY0kDtKbHhxFIOPsdT1RSGewN+M3NNPsYVd+JMvnM0QhpCrGO8+yGP
-	jd/hePvWAF7z3PP4Da2Mw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788790346; x=1788876746; bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+
-	4coId5nk=; b=ndD01nXTGRUV2sHHjJwAPiONfchcAnfjXYUIMb9lep4GhVlQGB9
-	rXLeS6+Msxq3mzxEJVvMnzvyMasJNLS5pIHDoNqBhI9h7CUgyQFr8dnDYiJOCEH+
-	8FymkyGlvYAi3YdD7q4e5H2xWdLe9qWUa/s8+ej3fp0dxhLmtHZDdKrHboizavGQ
-	4H5+Qy5Xnxcwy7Hicy+6Jhse+YapElI82yuHjRJsoCvPpuAhtTkU380VqP+f12XT
-	O6IvDkEzCKi4/r1maZ0MtJNQNa2VXss4i3ZN7ejgyqDEyKiKAc1aZCqUwF0D30K9
-	c0R0lS/Au0i8JHaO+V5OWEAetbGfVd82lUQ==
-X-ME-Sender: <xms:R8aeaiRaeJvMbr9Rr4CPkjz2Q3k0yfJEHoO2bi0g0p30uFjqkwSYHA>
-    <xme:R8aeaukei0h6ZkdKALZVxwAM679YQNQ2-p2CxNW2llRZ8-DYJHk0lBIrWiWFLIH2N
-    TqCWHezjYXY3ppGFBfEZLceyzskHotHFyUx3ltY4RLlyNePZ78vJWw>
-X-ME-Received: <xmr:R8aeaowVW0v5jg7BYP2neHE6BAZuGPTkeamZ42LDjc61EZqe8doPtnZjpWE>
-X-ME-Proxy-Cause: dmFkZTGoFCFY9lnCBAPkrzJuFdKFm5LgvA7vP2oOkhQ51damXXSrFR8r0fW/T/fEZZCcBS
-    cBr66M7WugjCfFCs3yKrXSMBJR0a4lDmZmFFz8Q37pMl3EQtfEnkIjRP7VcLGbiOhAOv8U
-    wKll2j8iFpfDXVDN6ZSFUQVgyjIt8i4vrTEo/XZHT9rYzaRSdwqbEKLk368Bdf42v+aX6d
-    KDRxz5XSieQJRfWSBQ9w8eLUqCFB7pTB9OFBoZNbHqAP/mirV8lJfQCIGC8yC1mmEx+4HI
-    91fxW/JgKt9pXSjBmKJK17bvBRjajPqOce+gw2NdBH0lA4jh8lkZiYgaWT6ccDpGm1hjnX
-    sSkiJ58Y3/H58ZvxBdG4tD5bgjmmcWKJAOXnJ9qYu3znkyJbWuSM2PWFWb6zKD3lU48ZYT
-    QqsCGndowo9+mKhFjsMTWxQE7n1FAPgdArsKnl5A4vPEpQWMxY4X3tAloBkybQIxXtL3mh
-    4PooriQ2tRULx7DoPg1KZnZqKjiBo6Fo0lqtCySrmDkaMlI7H+tYTTbOiQO/iL+lE9d0fJ
-    Qdf5RA24R9XGGvXS1W+7ayqZl3vWMF1C6u0vka2phaEfvdCYz10YmPB5mlerXeNt+oIZuf
-    DzmMdEVQKf7GAjFnddTTn09jfxA0fc2OX2xjeNAxLr99HmMt87nxd0ybhPdg
-X-ME-Proxy: <xmx:R8aeag3ANUhcpofUaDgDUrAFj8kBr4in5ewUjqU1PXhtzqdR5Jz3QA>
-    <xmx:R8aeavz2GnundL7MefdCZ7scxQM5oFyO0ggGwowZHiK8z1pNVEwSVw>
-    <xmx:R8aeapL5nz9as05vT_tZFHAiORdCT0sBqmARlnW5DTeOxF6eVQ2YiQ>
-    <xmx:R8aeat-rrorQQanmUrJGIbipGEDt_WPuccT0HoZL32mzuHbZzvhXGA>
-    <xmx:SsaeavvT4IEjEFkBUbui4eNOrDkE6EMxJpfw8kM0MWO22RWLFWrvB_V4>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Sep 2026 10:12:23 -0400 (EDT)
-Date: Mon, 7 Sep 2026 15:12:21 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, hannes@cmpxchg.org, 
-	usama.arif@linux.dev, lance.yang@linux.dev, ziy@nvidia.com, kasong@tencent.com, 
-	hughd@google.com, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
-	liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com, ryan.roberts@arm.com, 
-	balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm/huge_memory: dequeue the deferred split after
- the split freeze
-Message-ID: <ap7Fs9DCP3PVOxwY@thinkstation>
-References: <20260831091514.1879786-1-kirill@shutemov.name>
- <20260831091514.1879786-3-kirill@shutemov.name>
- <f44181bb-ff82-4537-b2eb-fcbde304d7eb@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GnMP+KCTCgbdas0U1IyYmNs2t5yhn7KLiMgPLuSCKsQ=;
+	b=qLzv5QvBW2jNfLNc1L0R+NQcxi4OeZN+MNvimZFn2o7CdfA7op+Em5A5O6DwZ6V3SIBXt7
+	rfUzdV7TKAw1ISfj50S+hbUXEEvXNjtMS+1wyS3GZ27MeLmay+LjGN+iBaoiVeSsXhmxCG
+	ZuEHl6C5hgNdKF3lgRiNnPC/gEyQE6E=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=XXqSvEpl;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf21.hostedemail.com: domain of spasswolf@web.de designates 217.72.192.78 as permitted sender) smtp.mailfrom=spasswolf@web.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788790464;
+	b=2tw7TBGutYULRusvyWdZCGsdLvSdhijGMVhsIZSRMpL8sLHymkbtnvdAE4ReeGDzVfKrpc
+	c9Ogq54OBwClW8riLCQMcyCJA63fC5TwaBEd8MMCOR9bDd0a4M1z8mAhNF0B6eTC6/7T3y
+	Tm5FopQSO5ssgf22SDPSeY6x0KcEh/4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1788790451; x=1789395251; i=spasswolf@web.de;
+	bh=GnMP+KCTCgbdas0U1IyYmNs2t5yhn7KLiMgPLuSCKsQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XXqSvEplLPQqQ6WvMnrz6pXmAZhDLw6ROp3FHe97qI3BdW4yY2Md1VnfHsXmnxqS
+	 4+xuKVwtCSBnX9o6bxg4XOWaXZU4nHoUGT1JDsLJfS3pZNKEhss6s1FjOgF12Pgyp
+	 97LtnLaMnxU0AdToFsckmiDkshlIwKcgk4Pu51KnpH/vO1d7wLkl0NNC7kFxoeymN
+	 vnA5Oao/EKXFhkgKi+IvhqxINJd1OI9uaxym62/wTjbjG/PLLWXF6zMXR4bNRt8f+
+	 gUVJOtCTwSLQUVhFgBF8wyKcD3eaahofMVtbbKBPtYHCBnvu6/rZT9TmgUZCI1tFy
+	 q6WIymwC28LD99tg2A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MgiXO-1wMZFn1Y0S-00cL9v; Mon, 07
+ Sep 2026 16:14:11 +0200
+From: Bert Karwatzki <spasswolf@web.de>
+To: linux-kernel@vger.kernel.org
+Cc: Bert Karwatzki <spasswolf@web.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-next@vger.kernel.org
+Subject: [PATCH] mm: memcontrol: fix compilation
+Date: Mon,  7 Sep 2026 16:14:07 +0200
+Message-ID: <20260907141409.215031-1-spasswolf@web.de>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f44181bb-ff82-4537-b2eb-fcbde304d7eb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:G2vb6+5FFlvznn/JhEyhzyxR3dV+ribanwtr5FETGq1US3wHy9a
+ Cp4Epu3nkl5eJh9BkXNyP7WDCvmxo15b2Z4JRU9GrXnDpskX8A0cEJZLovEvhnHnQa3K4J5
+ b3hkWmmo6PYURqKLTQ1jF6Ar2s3dylmlu2ykY/eJqgjp6lZkgTVHnyrhxT7n/h846kDFO9D
+ pvFUaGhKiRRRz19R5XEYg==
+UI-OutboundReport: notjunk:1;M01:P0:c1+siLfUC0c=;8UNvdyqaiO1qxa92hmCgFR+9yR5
+ 0Qa4xgAI+OZi1ypwPfqfXvJExaAhkDA76fsa5tCHEnxtPtRsnm9SoubtwyA+zWWWVsfsiPYCf
+ NZCfbsDS/3EfBNwyQu0i8j6cEsSVrOjPMookJno9DerV8vRVw6lJLIFHwKwk8zjM7v51wN5dr
+ GG0JIXD+xyQJkHJtcuFl3dR2+6iDMjrmtIQygm4HPXHJCuLPnazK0QPSP3Zv2mwfLRFutiF9/
+ uNdX//hpj9hK7i/196YJJPGZvEsZRnUXx7j3f9zTKIiFlH7brnizoX/cQVicW2rxDF1Myag8J
+ RnBclcAQjiq3P0UkKr6DGf3kSaop1zVuhNxxIB/8n5yJiv9I05i1/eVvjF6fV+GMgnref/I5h
+ 4L26uaDoL2WKyQBqTAuIn6Pdx3YtLo9iUHjn2D/urYxtKZsgbz9VBxfV3Xk4wN7/+SSnX5X+2
+ 5ZUEXHGzshzhNhrV7vpUavW+ZkfGCpz/FugRMMh7qkxEqsvsa8Nz2Bb+Jxo2mYPeJMj5I7O50
+ q/QvRGy03orwWwAsWeIfUVyhKTiMmjdkQI8ePIVwxa0L4mY8FJJNI8y4aRde+k5sKwF95kkNr
+ FoOTgSdadKt6c8Rx2Q9gvmeBkZHjcmgJC946Wv8KgP/Bl14PBT4rS021Ho9IXiaozl7h+1ynq
+ mCHuk5mhMMjCovYjF73RhjjGfd+ozUNS3wZlQN761MdhK9rp/4RpGWEo331Y/C+yWgsExjILE
+ 2kU9vfLK4ozggNIt4zD2ItWXT2hstOzI3yhc7yleM/V7KsxuOLJOv3s5yAwO9UE1EWf7q4fQk
+ sJomCAzUH/4QOCi3HME6n0Nf2n0nFNDqai2N1tvwy0J13Mb9h8zhCN6/aOrz0SVIlj8bQlzPr
+ OqjwhTsixxv8+YnEplTRvoMXk/TprmbQmwR5FKo11BM/nRBH0bQhYl70GyHeK3MC4AOBlg+rH
+ eGP+xzfU0Zmi8xjz6GlxLI4WJIIcFGOpWzJKglsNlYg2ObUpkqnbxvGxj2MC1yv3gVh2J2HrN
+ cogLbKc/VpJQC51cXmmiDC8FTawDmKD9larH+RPlNVQet2ptB50CkrhEUPZ0oPxKPPrgvDub6
+ VIc9XjwQJ0v0hAhMMrE3nU8oXTGdg8Acj7Fqrcann/vuBPnQ3yt5t8VcqkUN3F4SQQEBdhbEH
+ yCe0iH3xZc78k5y30Vty1i4hmBPjqdNYReVR8pBrUFf+FMVlhusRoFgSpg5qrZAVYu8yhgJW0
+ utpvwRAthQOcQRsV9FDA6ReCfxqDZqAeH0nMS/c2RHeSAGXVp2R8yaHPeH1OfoDtB4AUA+lH0
+ 33wp/kVUF1EEIs/K8wnBeLR+KTCK+v3nzDyDwTa0qNWqzmyEnuVaBdFaYJ8p0Tzypg0P7rMPc
+ WW3eMTrurPAHfdO2cf4RXM4CV/7s+zMbe7YMyQ2JMtTGhoTRT7OUkDQk6p1/V0oSKFbPV7rIF
+ 6tutrlHmwM14BABthKKVZgCpaKMB6+Uw2cT5pm5T6k+vAzlZNC4RQ+M/IzVatK40yKomgfVdr
+ GQGEStncO1aSnq/yv9xJR7ja/9BlVPyNeaAz5yr5yFLJM6kjmPLoocplpULCbRIkqeFQVnSrt
+ k2Dg0COpK2FANfRrRquy04wvSLI8KAZs8HoJPb8Vq16yTWOyEYBvpLKSJkmR8A9MYy0OIzjMa
+ /Ycp9PrcdQp8G3/MumBWtYMRCunCGEo5doIIG0D1+AanEo2cVZkc9izSUkLjxOjEn11OtW5ZP
+ sBffypd0dnuxVBqOxdtlJO4Z+3ImINZYEv9mTbg2TL5DH5sNcfzPFaT1y/ZBVUk2s/vPagrmB
+ b6YlDbrOj/6Qul8TuHeRiDa13c0R+ooMNaXssGCHESYKMZe2/1fot0Kq7xevqO+7hUQh4bv0Z
+ RaLwqCdLoUFIYuH5+5Z6FTfUxARho1+49kXRVvb6RSXvx3Szkv0oaWgXXdTS3+cMuA0y5uFw/
+ aY6pPIkHkSbZ/pqz1+NA5h/OHu37rKcCpHBviz49zxQbkoCvUIHKCLg/NJHokxskiT5ijb5xE
+ MnsOo01Xorh/jLiqXrhAW2pX/9HXeGspprn6B0F3OjWnptWY2xEgMpS5YrVNqKYmp6GopelF/
+ mJaivyCQ4TwvVmNd4eLF8CI11bvp76IAoPjEd4Wscgfl9JluOJPHbbgXCBf/lB0hYTznTpm4w
+ JUSHE5hitKO0Jvi68QGsjnjrgIGMN389KcFqFdwRgk3ROpYlxJkB/hDdPaJ0QysRJo69rwpJX
+ vs+5xoKJFbaZaY1zU3oa5VH9C1CI3ToeXs5dsYnZslkHoXqouoHIfwcnHk0NF1C7mKZw/kXCy
+ /R4DTOlmIlZOpQO3kXuhHqcp93Oau+ZnlzqKIw5gj2h8opUKOozR141mpANsr7oxMfIr7VrTs
+ 2UbIifhGHTHoFW3KYEWdWBtZlhk37oerssPhaAj1ffkPT30ebXayK9grIec6+jBH+ZAseMPnB
+ Wl6ZleLZsfVwZvQKQOSpi+k987mtSdGWYdVXD1mvyFUj311icD5PBoCkMnZE52vNy8f5vbtD1
+ HcKyq7iGzNWcb2ic4yhVaWtlHEMGOHygJYOs+HleaNrBs8j1GBf9uQJTFrrOUf+vzuuKGYoih
+ 7ljFcIBTJonLGbw0cNFYL9ybBH0qzx/ECqUudvMvPENVdlFApxDRElLNieNr2HWs7IroMIaa7
+ 0vLUVDl7uMjZJ/gVWkbI/AS9N3gbFb5TeCDhCFt559AsFHHIbBan0JMJ4KFgDSuR6SlwcLuNY
+ 2VjP59EFPIYfTgcbZ9TeaPPDGLBlZFXd6NaGm3bVfiAizo9YzF/HNhh8ZiBxw8QTa/P/EjK4d
+ Y+DtT/S4+Ru3Idw2wW8AO1t9j7gN9PPQ2Jv3ygJUqP92V7LsGl9rUBmrI//wMLTZGeIQ5vre9
+ LrMOTZMRO1zlDBNNYNIQqq1hocSCkjjCHNIOE8hO8HwPc8J1sJFph0vr45ySK5BIlJbPWj3Q9
+ OTbHXYUa8TUuJ0A/qFA3oHIB48n1EY9J86vhYJOwr9xJe7xIXokLeYDDFKUPaTTBOxVrE55v+
+ uauVUel+hGDV9mJpqslCFaOSGjHKalXpBb/G2171GMpLD98KW+hywqdgevWE+H+ZqcWlLdskD
+ TZ/9QRDq+s0A2711vD8r7pvZ6Bnnt5Mk07LvlwRt+gwO4BxwefbK++Upxg+uXVO2zCjAC+Zym
+ 9AJA8RCymmUiscFtiX53AM6YD1vaE2GWTa/ZUDE/dT2HHE7W+AaKu20WOCq6FPKSbKbT2xBt9
+ tXdMX79PbrtfL88Hb0aZNvKtWfshkuAk5v/WWiZ/Fly1fEJTqyDm8dFlxDR0x7YZUfK7oXk8F
+ ALXHe3p4nhwjrZ3bTQE+43EGHyXrR8m6fbIlUvsORe3SvuoASMP++p5iUk4VOJnYNqRu6OZeM
+ l45c7DI2GDOhdNnQD4cpDE+5VxqXD0xeZDvTW3Vgof5AknDzP9wpZgIjA1SbAIdhzRSFKG/uu
+ DwGtza/STxFCmUoLuTIIZpw5n4ZerU0cIwpcy4l66A5GQ9tAFnHtb0b6bSG1RNWJK89tf4XKt
+ FuEqoeaaWZnSpH2IYvCv4fagbeZdDzw+C4KmwvsONNxzvorMK4uEUhqO4QA2YLWYTgyEuvcpm
+ f6iQy0+a1NS6RqI2NL9XduenyXJdTbLl2EKPUsxsA5o1dcpL5aJzKIZqqKLnKiTNVvI+y+Jkj
+ UZSXc2poyiFzxG65XvzYyfMdZmasO2AK0UjaF60UB5DkLaCorm+OFVGnkxUf68rT9uf5tL4h+
+ IBFC/2OeB+vy1FkmiRXyGSHJdaNyDKXxMeQKUJJvs3jActSgu5kBf8hGn5hdvCQCR/ekkT35d
+ vkc4cubnwfCKf9eG3TsVJ188rZkW/0KXqobmGnyhunNftShpNAsp8rAluWhuN/BeGXPTpWeqp
+ q9witnBf2wKylrGJprtTvvoUkvSstAG8ExBAZclBu6SiZLgRW6BJErp2vGdgmiY86r7ctz/7N
+ sHLuMLvye97bMSV1XkM36Cy3hCTrdgLoLhZ+S1UUXtDHLywJRvcBBgHnsiC4n/hs8GSHMydOE
+ gnlnMDSTIamwKB6PC02dMyWwE7w6AzT7nIFg29dO6OMy01UEQKZck6p4Jkay5z2E/NX3XqiNS
+ 3BY5fAYnFbJLcF+PCQUhXAZmwzzxd1pTEMOncDwR+EPTQDPJFzmjV9a/jGM7iy83D6lKiG6IZ
+ Ze5pQ3xYkeYGleDme9t2yxKhW4p0xJqcPiZdWglv5e+bac743dO7XXCW9ygwXKfKl5Xrslm5R
+ VnNXwqW1vpltD7pBFe0pyPaB4R+NZOCxvlJFKa2dCb8WkFmH3cwIHIYLTlU/p5vuptOnrXCXv
+ mXSJtITA07qntzQbRmlG4WJ7nIrJV7au8dFshVb91Lk4urT+/zjXdPTgh620pnEXOAnP+dPH1
+ RANS47Mhst5pH3/PfY9fBgGtdRwRDzwA1/xIfKg/em03oJNAeR3bC1GPjlAU5wJONAVFmsZBv
+ hN2tPnBs5ID6ouj/f7i71wJxuyDKTAt0EhL/o+Ys2NIXKgucPpUzyW+EryVmIb6aEWo1l6gYT
+ 1bQGjzGWBvCXFn4J+xX+0lPzsgFYQz7TrgdNq0hnRmANT2vxAh27nBOL+tevbpizHc2RflR0t
+ sw6R0ei21FZA3gPGSAoFaX5YXwlpFSXdFo6jW54YI+cn4I0iRseujp2Y0JAwAcBaVd7D8OvyQ
+ ca1ouvb0LAUfxY4gOhLlpXqBY1TPsHJX/d/y9tLCwH+Dwg0uORrjKsUY0iqK0UJ5lndEr6HV2
+ yVrzhr1DdiSbnvNcmDGLIT0btAH0jOwvkH+4Rpurxy7jYTUzB9AVOoRBp2zm9NNLU/eBkRUFM
+ dj9lpZSRWPGAGQETV2IM6UEO+V3rqMYZg4WVEiWOUynz3bqS8zsSgva6GZ4aOmLrzrszdeOGx
+ n1OPm0kK7WyLKJMnc2z9UER2WuW5mECN6zkO3XFqmM0LzmKUJpAiy6H9QHKO7KyMVf4f+nkKi
+ kyUVkZB5lPdbVj+Az9NfS5H/SUKlB0oVX3+ICklOpIEQnI/9Zbr6zZwn8vfLP/ZY0XntTsgVV
+ jexCcPO3geJorjD6GLb1d8BL7n+xYhdWcftVxWaxmmaWnccmfuFmT82WI7WpZZJui6F1QcOAv
+ VAcQv4vwvA5Yhi9EIolZqTRU2c2sibTOG3BUwNS4wtTq3Od529ui+Cdi/culkT6X10yCGDUEj
+ d+FSOtUxgmRHP48zVF6DJPrKIqm/imXc/DdV0LVwolmztNiSjM774HskE7uJqQOCqtjdAcg/w
+ N37BQlhfJ5Z7vKEKrs9cdS2I8WH0EG7qwsNbdcR0bJCUZK1K6894MPrifNavp4GXKWmLUiwUo
+ Tz3fY2llchkq7zeFFwaoF7hz8aC7HFs93RvPoKljGL1XOJ3RFJBQdUZFwkAP1HIxL59Jovmg5
+ 2fWX+95tYVrupx5ZGqslrfcddF8x5vy9Q0Ai2uSh3cDM0Ka1yQgQ7VQIcqEVCfhi9Jy7w9aY1
+ jXI4zSLAZL85KvuXDymCYblOguWEEf8q5y1eYpqm22aJKufDrAIDTuDqlSaHqXCNkXBr2Hmu2
+ Ic3OS4YdAVf/gd2NsvZXZqccXZk8n3u1zBSu99B/d3uFdXMzWJf5Qs3BOaTms1/OKaWns7ZnP
+ zbDpihHMVkqjXYEk037O06PvTbgrpPkw81WBJyV3Ggup9gS+YH08HSaCuYHrnm8h1wQWlS87j
+ TNxcqvbX3ZP4sy9DYWMYYFIBNZ+aNQJxohN4Awboua3/XvP4LUjGRLKgwAQkzc8dHv06Hxx3V
+ R8TyJsXw9hzVVZx2FknY3kmkTpWNXqIv8UKIxpzFEzaptB2bdhGYnh+j7kCclFFTTJJLTiksC
+ ZEGWExR+sZvtfNURN1NdV94gX9qLzSci9ZKxnAyjgznrWztFxS3dwvOe/pQUkrWIqLSLCf8ia
+ gitcEHbu7pawxSuTc4MDyJ/s+gu8vk8XxKLPwGyLkBEhdtbObTRMD7YoUl8vSTXHGO6WNNDZQ
+ GkcMVzr2PA7TAcwCNIQwX88xgvx9ePi+CmpwgX58Raw/31M2/sNxiflEg0e47RqvUaTpNuY1Q
+ GAiHNY+QpKDi734TtdCFO9lOuRjhb/aCDB/h/OkG4t0ptFbUTsZTbeVp2cDKOtZjzB0AMrtEI
+ zB6FH5w2jSxjBddxfrLDGk0AaAnL1CmuHz07gOjdOwHpR6leZPzWIO7JCF7pzUep8sPvSU8rc
+ zINZYGp4K/RFXoizsKep0T7j+YNJiYRLwz4TmBuhiqXeZlFjQUpY+5vqeZDTRbn26LZfUkW+A
+ ILVwGsk9s+Dk8nqovfBotZ
+X-Stat-Signature: cqmxpz1smhjk9skw4ekbo3y6k5exudje
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E303F1C0009
 X-Rspam-User: 
-X-Stat-Signature: f4mgkz8nnfxqaowq9do3g1h4d9mt6d6p
-X-Rspamd-Queue-Id: C55681C0003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788790346-177021
-X-HE-Meta: U2FsdGVkX18k+AtcIapbnWLBCRsOuEtDUHohlrhgq7tJZi/+au2n+QYHdWntJy/rvrc+UM14EHxvTO7ZNFgJjFuaAFI44u7K8DQXetj9tZT2APIKxj8DZ2BlCuXEr+5aTJV3nSspIaFqy7q35Ygefj+xC77/qAveK2jfW+2xKxiRvVYGlLlDq8QOu//OvalJlBv21MAZddhd1uEMA0DcqDGq4FwgXNnKAQ+gw06iLOT467WBOOQX8lE8v768U8T9Bzt7utn83uZfuJh1sbms7n51hB3cL2hpmlALUjrdCKO4UgV7SBl8R5KOW2hgiZJ5pdK8Q4FRUj4RaHHBud9F7CaxRhe6Vw5ztpTNtC4/M4IBTui26ldZAruxjyEVisaozoFQpbbLOkiw1fvjd276BR/J9ShVI1T9Z80Ppo3+tKe6kWTjaN6VStQwzRtjoSeND2p4CtD4L7VOVKmpqT3AVHcNP1hg7N9P66OkwhnKkeRw+L5nGz1KUdDI3BdpZcNKveXeNk833adWZBKTjtbwWUq2xKm95+AMkHWBuupxfr2DxC3vPhyQZEe9oF3kpeguWcTQoM8/1ZTuCbNfHFPuXTlmgEOoZuWDHLAHlzVX0SSiIMQGpOGDd4/XjuIpx/VvOADTtut6mUYA5Lsbtccs5ienZ1Iq3s6IMdU+u4nsFUbwDsH91fI/RtD917dKIMfQAuBSFxgvT7wCd/994FTceg0K3l1XE5B+3qqv7SLIe6a9wCYzaJBaUKC9bxGSm6RR/K2m9WQ+YOAq5lbHbcC/d3DfwCOzJfectFWel7nkpEK5kX0H2aEzKS4F/3ZImrth9PdGI6ujY4g1ja+oSaiJcDAIjFdeWonP0XPp3CmOeTAQY+UTQUi3AfPkPDL4r97LPan4phkPdD6jFTBTTJ8JKxeDSqGWlHv0TyHh4yGpVDo4PUpnA/dYWoHNm7lKPpyGItN4YMSznfqe3+ge5Cx
- lrhD6wII
- 4vaK4bGsgKJhF0a4FFAzD3cUmY0bxRlK+tNV1dqSMD3cgHEUHGstE0bhhdVrQ30/PceU7a1Fdpq+1YelxqLmcbx1iePQ2HDdAO3KKLsUqEup/ED2+hTvPPGqL2uJHxEFyjAltR0NCS7ubUQqCGXQc36gPvEUw8DZyEvUi2mSmjxElPZxTNI/bfsBLBz/MqcvMDkuDFHHGRGO+oFoOEshpbtZ84RXqPR4FaW9JZgcQcevRa2IPe6ghqJ9QX0HsuL/JjrEG4sgCACG6TZha9yh3q6xskTSBSQG72EsNC+/7JkTfTy2wnuYRsOBGI85G2DXzMeCFYFS5EMpSh5DnXRQZXsA07+IO1JBjv6SNkukWHM9+5XkkCcDCnLKacilla5kRYbvkOkWzgshvG5wO1u3QfUzsdv0agp7kuUvF4TDu+ZwwX34nZOyFA9M5sG4v0ABXlw4ruM0Q+MhoCQObMLdKPbMqGq2e3mMqdpr1oW1jP4YuAQbt8Z5Wcmtr9duSccHqh/30gl3Y/oRKpPIcHbQsyFoP8ucOlVd+dpJaiottk3D2inxx5Rye+bw1df5C8CqkIf3B8RjwiqIUVGC5t55BZyMYIUc4rLaU9/qP
+X-HE-Tag: 1788790463-711131
+X-HE-Meta: U2FsdGVkX1+mmzQtSD22kYB8lpa6sd+LNQS2Izqr3aYMdUDkgWYWZ2q1iXQk8aRwVeL77dWonZqBe8ajii3wxCQ/Uv8sPqCVUPDmeHDGAF/3Can7jbh3s6E1nAdHLVwpID10L1TfBcM8xXmmgz+h4O2ypxDgsNEw1QAMj/Kz5jj2UluRQFlhcbQZy84c7RkSdhyKpRQSsv6jZXnhSBbkEb7J01MUSHVe+uEdH2iQwuRBUX+bU4jJR4+tcqj+y8HI37de3DLouHDyxLlq3Nfr43rFrtjfBUTyS/Jic200Lv5K632hwbjplww9K9y4JwK1Jin+BxIr+1vKOVrlAiunyeUYBelBisDz+OG3cDgvkADIp5XRCuSuB06tj7qTDjLrV/alY1FR/RgnBrOK3Ozvl/q/Gengafr6sm37kRI6dC3dqwXT8r3XtANiRUUGrIbaUlTxlms+wp413thYIkcMigkW1Vp3t6XTdXAWCzl499yfMvsN/vHEHd5Jvic51UQG+hzSusA4ZwxsvRxfWgVNjO0bmWxo+gI8JZWpuMKcndUmQKZdQcGe/gJZiof30xOz58RF4p9DK8IKyp+YlDTxLwm/qyBKIy9wx99QsnPo9LSabVmeH7q4N6w/T3JKvDlRbgzhVg9ShHeWnavo6bqmiYxKfwEPcCAYw6Lh1+8quTj0gS3Z541ptHiOoOjpcx2bNcOgnPqUs2MT8KDrQJ9DtQaiFG5ErKrqRHVBTnV1fQfB2as/Z1kparU/Zb4Tu4oSXSqu3EeiBPzyMdDG/2GSNnimosKE0Vxv9hphGGpbgWRCuw9sME7edR3Movln5ylfVkRjHRB8bRfBbdv3W9RKnIfMs/C2FRGkQSBCFRNOhPnMuB2C3x4z/53nlZMpEOhpraO5RO/4fOIBl0rxe/mQYhog4w/PUWu8rfgtvuFbSUdnTeEc53ynEJ1xKxBc2D4S6lfn7pZqJjh2LD7Bc6G
+ S9/nPHy2
+ ZopErNWLPTH8TjIXmbrRg7cwsE3KKLED/L1nNOtGzjwsk5MYbZHNBxydZ4ZsICgJsz6XRkzhoizvS6ftQ3F+QVr5JWo0VLHhDZsk5IBA0KH0OePPirqdwTyWnzTXJCVLLJgQ/LqwISLYTbxBEb/UyjIVZzClAmHhQyZw5t5OsfTX0EPjUpSkhKHAVbkTx7r8vYzHCXT7oXGCClW3kMabPgGuQZNxwvgBSIMsAWfjetTjUXQwtYJLv9Nx5T5pl/9uBQAztx3sljJhLA0fpUVZeX3pi6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,119 +191,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 03:55:53PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/31/26 11:15, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > __folio_freeze_and_split_unmapped() takes the deferred split list_lru lock
-> > across the freeze. It is only there to stop deferred_split_scan() from
-> > touching the folio under split.
-> > 
-> > With deferred_split_isolate() fixed, the workaround can be dropped.
-> > 
-> > Unqueue the folio after folio_ref_freeze(), the way
-> > __folio_migrate_mapping() does: folio_unqueue_deferred_split() needs a
-> > zero refcount and a memcg still set, and both hold there.
-> > 
-> > If the split is called from deferred_split_scan(), the unqueue is a
-> > no-op -- the folio is already removed from the list. But
-> > PG_partially_mapped is still set, so it has to be cleared here or
-> > MTHP_STAT_NR_ANON_PARTIALLY_MAPPED never comes back down.
-> > 
-> > Assisted-by: Claude-Code:claude-opus-5
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > ---
-> >  mm/huge_memory.c | 44 +++++++++++++-------------------------------
-> >  1 file changed, 13 insertions(+), 31 deletions(-)
-> > 
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 6281ed993243..c84e8cbc986d 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -3931,41 +3931,27 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-> >  	struct folio *end_folio = folio_next(folio);
-> >  	struct folio *new_folio, *next;
-> >  	int old_order = folio_order(folio);
-> > -	struct list_lru_one *lru;
-> > -	bool dequeue_deferred;
-> >  	int ret = 0;
-> >  
-> >  	VM_WARN_ON_ONCE(!mapping && end);
-> > -	/*
-> > -	 * If this folio can be on the deferred split queue, lock out
-> > -	 * the shrinker before freezing the ref. If the shrinker sees
-> > -	 * a 0-ref folio, it assumes it beat folio_put() to the list
-> > -	 * lock and must clean up the LRU state - the same dequeue we
-> > -	 * will do below as part of the split.
-> > -	 */
-> > -	dequeue_deferred = folio_test_anon(folio) && old_order > 1;
-> > -	if (dequeue_deferred) {
-> > -		struct mem_cgroup *memcg;
-> >  
-> > -		rcu_read_lock();
-> > -		memcg = folio_memcg(folio);
-> > -		lru = list_lru_lock(&deferred_split_lru,
-> > -				    folio_nid(folio), &memcg);
-> > -	}
-> 
-> Nice cleanup.
-> 
-> >  	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
-> >  		struct swap_cluster_info *ci = NULL;
-> >  		struct lruvec *lruvec;
-> >  
-> > -		if (dequeue_deferred) {
-> > -			__list_lru_del(&deferred_split_lru, lru,
-> > -				       &folio->_deferred_list, folio_nid(folio));
-> > -			if (folio_test_partially_mapped(folio)) {
-> > -				folio_clear_partially_mapped(folio);
-> > -				mod_mthp_stat(old_order,
-> > -					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> > -			}
-> > -			list_lru_unlock(lru);
-> > -			rcu_read_unlock();
-> > +		/* Take off the deferred split queue while frozen and memcg set */
-> > +		folio_unqueue_deferred_split(folio);
-> > +
-> > +		/*
-> > +		 * deferred_split_scan() takes the folio off the queue before it
-> > +		 * splits it, so the unqueue above finds an empty list and
-> > +		 * leaves PG_partially_mapped set.
-> > +		 * Clear it here: the flag does not survive the split.
-> > +		 */
-> > +		if (folio_test_partially_mapped(folio)) {
-> > +			folio_clear_partially_mapped(folio);
-> > +			mod_mthp_stat(old_order,
-> > +				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> >  		}
-> 
-> In general,
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> But I do wonder whether this sequence (that also
-> __folio_unqueue_deferred_split()) performs would deserve a small local helper in
-> mm/huge_memory.c
-> 
-> Could be done as a separate cleanup.
+Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+=2D--
+ mm/memcontrol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Just to be sure, do you want a helper like this:
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 5b9e0ebd42ae..e50135df6e82 100644
+=2D-- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -71,6 +71,7 @@
+ #include "memcontrol-v1.h"
+=20
+ #include <linux/uaccess.h>
++#include <linux/irq_work.h>
+=20
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/memcg.h>
+=2D-=20
+2.55.0
 
-static void folio_clear_partially_mapped_stat(struct folio *folio)
-{
-      if (!folio_test_partially_mapped(folio))
-              return;
+In next-20260904 compilation fails with this error:
 
-      folio_clear_partially_mapped(folio);
-      mod_mthp_stat(folio_order(folio),
-                    MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-}
+mm/memcontrol.c: In function =E2=80=98try_charge_memcg=E2=80=99:
+mm/memcontrol.c:2859:41: error: implicit declaration of function =E2=80=98=
+irq_work_queue=E2=80=99; did you mean =E2=80=98drain_workqueue=E2=80=99? [=
+-Wimplicit-function-declaration]
+ 2859 |                                         irq_work_queue(&memcg->hig=
+h_irq_work);
+      |                                         ^~~~~~~~~~~~~~
+      |                                         drain_workqueue
+  CC [M]  drivers/usb/typec/ucsi/ucsi.o
+  CC [M]  drivers/usb/typec/tipd/core.o
+mm/memcontrol.c: In function =E2=80=98mem_cgroup_alloc=E2=80=99:
+mm/memcontrol.c:4234:9: error: implicit declaration of function =E2=80=98i=
+nit_irq_work=E2=80=99; did you mean =E2=80=98init_irq_proc=E2=80=99? [-Wim=
+plicit-function-declaration]
+ 4234 |         init_irq_work(&memcg->high_irq_work, high_irq_work_func);
+      |         ^~~~~~~~~~~~~
+      |         init_irq_proc
+  CC [M]  drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.o
+mm/memcontrol.c: In function =E2=80=98mem_cgroup_css_free=E2=80=99:
+mm/memcontrol.c:4443:9: error: implicit declaration of function =E2=80=98i=
+rq_work_sync=E2=80=99 [-Wimplicit-function-declaration]
+ 4443 |         irq_work_sync(&memcg->high_irq_work);
+      |         ^~~~~~~~~~~~~
 
-?
+explicitly including include/linux/irq_work.h fixes the issue.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Bert Karwatzki
 
