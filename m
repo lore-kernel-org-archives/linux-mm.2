@@ -4,156 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B3BC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D9CC79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C08436B009B; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
+	id 113456B009D; Mon,  7 Sep 2026 07:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB9586B009E; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
+	id 0EADE6B009E; Mon,  7 Sep 2026 07:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAE696B009B; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
+	id 027A16B009F; Mon,  7 Sep 2026 07:33:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9E96B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 181E91C00F8
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:30:22 +0000 (UTC)
-X-FDA: 85186747884.13.68CB30D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5B6491A0007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:30:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0be+PQn;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C81126B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:33:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 50ADC120136
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:33:46 +0000 (UTC)
+X-FDA: 85186756452.30.EEAF81C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5A44114000A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:33:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sw8YClOh;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788780620;
+	s=arc-20220608; t=1788780824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Df9Vs2CsLw1K3pBOS28/RnLUuS1VBAgN7vqlEKdpBU=;
-	b=zomMPl85xL6O9wJcyZ5NRz70A51U8/6/JSGI3dJCiSj6MtPdwOAe6CMB0DYhB9zF4TUYz2
-	6FNFHHAUlUDPExwORzP5fEnV/lpcbdjdi6FnK7YG42i3yRAvMEj/NjYwhPW/F9dg8xXf3M
-	ghGsFthXsHIhnvxfwveU4jykhy02bFQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788780620;
-	b=tVMu8+5gHxf6mrfBdWLJmPzNiLyMaMw3wq56tnToelcP2zgWk0UasyuunKyRrom8LXs7hL
-	1MtO+mrWxGDMxuUwqXW9Fas48SrkOT7bDBYNa6owtaixblhKqJC7169fDKX+8dhsXDdxPp
-	YKwXBAZyd+fRsseZ5HzUkObsAbSfh+U=
+	bh=irZ0fuPGmEXIuvkRoDmmm/9mv1DPowEwpNdMgIfCvy0=;
+	b=ruVyz70DdKtO9YG0SgkP9FErOpWC0BXVf64okJLUF/HbOQZZjHH4IPs1P1ItCMKc8wRQu0
+	D5/JW+kFjJW3N8EEpIsLocYOKHmmDXQvWuxf5mFMHpB2oYYvxCBV9iaFhPYXihkifB7lmc
+	U9K8ooV2wca/m78kPVaPzijaOZRyncg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0be+PQn;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sw8YClOh;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788780824;
+	b=7wlKI60MpgJz51Q6H2LR2BAXHYhVcVC36dJ7ehhwlmu6IGi1fDOrmaJ0EIg3TMpoZWaFcS
+	RteQenW/DUXiFq5DueuYth6nEgWeXGyZG2L494H9xi4yu2ON5fL/k+cC/BCGy9vHAh+3ls
+	8NmUZ4kmq4fqee3AFYiI1pfwetI5+Xs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E167960D89;
-	Mon,  7 Sep 2026 11:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E5F1F00A3A;
-	Mon,  7 Sep 2026 11:30:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 719BC43D64
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D1E1F0155F
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788780619;
-	bh=1Df9Vs2CsLw1K3pBOS28/RnLUuS1VBAgN7vqlEKdpBU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D0be+PQnzcjaosyF+C2OgofVECAhlkIznofOYF2lXaw7UWLmROnusM8RC/F15P8YI
-	 /XcfgqV8RqudIXVBRYFXDzM5BGBuPMZZeT2tzlmZP840yDtx4VKqKAxvWo1ieldneE
-	 2K90uN/I0meOvnPlvsq3qAuYV9DJS2Yxfnqjw+Rn/1Hz5dxvSFGbf2aMVzU4pKuzV3
-	 vg7Pefe7ZBLfub/+b/BHOg2CGrk4CIEAL9NbKjA0Io4zzDsrQePpkLJYwR1+5elO87
-	 QDruieoxO/+Qvr7hYjvIVwDRS3wTwDccVbD7prhdJwsO7Bv51WKBfn6pp7IGC84ojh
-	 gE5Xn5zC8uqXg==
-Message-ID: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
-Date: Mon, 7 Sep 2026 13:30:07 +0200
+	s=k20260515; t=1788780823;
+	bh=irZ0fuPGmEXIuvkRoDmmm/9mv1DPowEwpNdMgIfCvy0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Sw8YClOhAIpUfUT7tgl1G+Z07bWN4b+Vv+g8xfZzDSf4EqeGKWViZG2mMh8vLwMZq
+	 ZJm4nLMgKnTvhgGHj5WvTIi7OonrMu0//98YYlhyjx9FJFy9gIrCu9BgLOISUWsxJj
+	 fcU6lZjWMwk8HpoB0OvCRlzPwU4etKssDPgSAg3gDxfIwMrCgrdWxjrFrsMafu/R3W
+	 YlWXp/ocHjCDhTZEBX6l2JYNXVbO5sxvVSciFDccHvpFNMLnSC5v1Lg8J9kbzrDA94
+	 oEL/OsJ98Q2mUbcr72ximflqHlW1SvcrM/3kAeGGhzpPZfbQumGFvMxc/nSQDjdf38
+	 +9M4PSr9kJZWA==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c252e703fa3so518958066b.3
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 04:33:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz0dVcBePqa6xWKKUaGN/SXnGUgQ2zJ/7t1SkwgaVTts9cm+S8SjeEZsDH0WSUZRF7zmJdfr37L2w==@kvack.org
+X-Gm-Message-State: AFuF++ksTDXxtGjhS+UHEJx7EWVE+u8tDT8pOf3fKRZQu27p1VA/vJgr
+	ZLiG1f7UVfl4vzA82hyu8dxmATdEK2jRDug+biSFn06WkiW5i716bIF/nVO4OyczX2yi5wl045j
+	uOK+WMOdjGgoSNwrtrm2K/TI2MbkAl/E=
+X-Received: by 2002:a17:907:b04c:10b0:c26:1648:a074 with SMTP id
+ a640c23a62f3a-c261648b742mr472935666b.47.1788780821956; Mon, 07 Sep 2026
+ 04:33:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Path forward for Virtualized Swap?
-To: Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>
-Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- YoungJun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
- Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-doc@vger.kernel.org,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fiyn65wobm7iipcoqqhhr3bjo1php4x9
-X-Rspamd-Queue-Id: 5B6491A0007
-X-Rspamd-Server: rspam02
+References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com> <20260907110111.2286932-5-qinyuntan@linux.alibaba.com>
+In-Reply-To: <20260907110111.2286932-5-qinyuntan@linux.alibaba.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 7 Sep 2026 04:33:30 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOtGdbaYe4cQJjaPkj5spD6gY2G33BBFrh3CURb6p2R1g@mail.gmail.com>
+X-Gm-Features: AcwNN1WUxkV0t1H79v8s5n6xxY8uRxvyRY1wjk5P6CDIF6YhixLFaZDpcmnoz4Y
+Message-ID: <CAO9r8zOtGdbaYe4cQJjaPkj5spD6gY2G33BBFrh3CURb6p2R1g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Usama Arif <usama.arif@linux.dev>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Xunlei Pang <xlpang@linux.alibaba.com>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: c6endqgse78whorfoyatgjui6ae4849h
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5A44114000A
 X-Rspam-User: 
-X-HE-Tag: 1788780620-246246
-X-HE-Meta: U2FsdGVkX1+SGJCiulP4P4YJWWhvEew7GeZ5UPvGI6n5eooCGY7qemsnj7h4MgvSgwUTrkZ+PYS4iUeDqxmlaoh+XtFeh/6SBdyTjmgbo+S7rkXPndeR+6MIJ01SFIDEa4ZRrefL9G6BS7W6gsbAIZhhdIqvZcY/LnKoB5cmaTbLr4tKtUdCkkGojhztjrD1WbLBFWgnr0GZhUhdRgNynnW8kCDg08YmEhpnnylxGAehmgn0muwwRLXf2j4iKPlB+X8lYrYjvjegPe0KkKiZB6cXZfHOj/q0/yOGCMsvsgt8Ebq1tJbMfdfP8VXU6eq0WEKkF44BOi2eIYgwMyvcDfHR17Pq9vBj1vpJiaCdPtd9FcM/VUSZhOGwWdbx77d6Lme9e2Ua1CJkxFcY7XEll9+HRlRdf0rC/6i1LpJBMyd2/jhk46TFgV146IVM4EcmQxHu4aRsI64JoIZI8h5yPB7s1LrHfuztkLAOVGOFNBiP2HzFtTgq81Q9b6aYZQpIsISXJdA6oY3viGYUeY2lqxpKwl9D8ZK0HJQVaLWgpuRhX28ZBcqwkYrV+azrSiHXUoF1F1gem/7L6NSMWq4RG8GpuSR3D7Lip17+lV+6C/35IXGCPljuIMwcgfOQyker1RhRWtErkpDFnZ4svtZ9ZbeNDWK4VIbA6PqRlM7+Ypole45nmm6CWJFCZIfdIArsVxDmAAZUdMAUybZqSebNuLCUclBzrtj+vWmYX13O3sWAmSLtxKJBMW0gwwSVovD7PkMbrzO57akavEUMJITcqGs3oKEC98aq1TVtbGLMsWgDPY4Nk8jDODUNp2YLnJoYbe06UmK8VAiNPOw7xq3Vp466VgFef3ajDIjlmGSirYjx0uGXUxfY7JGuzXowIDuzwkAHpKSurEPunsMGRE4YOFrmDH/RUNHMAD5dyc6lJfhX0HQwB37Nx87I+gMT579UYifiNXAy1h6QZPPMi3E
- SUUHj80n
- olrQzfDyBVmek0XZ0HO28dlcoxI8fdvcr41lXnVA/hlhUgcIMJpvWv+izbGr9CnyAbAF6CAWWPz/j0eNoqNBChGu/fK2d21A+QO3SWU3bXyvaTasgKDiOu6kJn8wB26vOYCMqzS6LL/8HAOe6KnwgqiDZklIRhgEdCIdISrWM3maPjyYV/1TFY6w+zLMHDwY7CKjI4KTi/TUfA3778tWlOwW8oZ0B8GrCVllCKYWEZTjnqdEqEEFvxZQpl4QgKpcdn6KYhIHsRI4mJNrN2sbvFpxAZx4jeLZumX7cfxRBfiOHYB+zai/0Tw99EVvPmvguxev6wztfQ/LM+CX1EN2GVFtfOB23Q7Yfj3xa7hE+roLT+XD8agXeohe6qQV1yZ4SjVf0
+X-HE-Tag: 1788780824-968905
+X-HE-Meta: U2FsdGVkX18WRQXZGzTtiYDjo6UnFhRpmmt3robSWt4Huyxx0kRCb5NTZ9PglsSWf/V3/fibMaHVKwV8KJCpXBHK+4PxsOdzxt2XO3B8Cq26DfJoZ0eMUQ5WvWkx7uoprTHilHiWMU1MXQhHUn8UMq5Z3cG5zFOo/X6woNUfdYTh3KQxv7CryMDQd1O7WHwOA7ygwgC5I9CDhwrZdDjLrYamSbQY0+h+m6fhGMLJFFuF9GxpUY5n3PR4rAGx5s6LUzADMwIisZR/r0LQSDJ4Rlei9vyt+KjdeHujPqEKt9RuQF9FACVM1+UhT25C+FJoaEIuU6OD4wBILBiq2h1nBtsDj5PaTW5+Et1jyhhPfBalBSJoxVelBVns5gPlf/67l6vPSG9ygNGjVNfdViMprvLOLUkMK9YwFnP261hBsddH4eEBFVwhV4dIQ9/FwOL82B8Tgv56qAJYFyxbrID2qLkttE+lyJa8ypmoHrIxewouWGls3S6dqbXnhfzDrfpTFqvF+gd0Gub/zfccc/cluBn+HK19m3jUsPelR73fOHpTs5/sCHsxgef1v4RhliNBl20z55erE5BqoFZRbnMKL1WMTki4efLLt9bpE1lkbd6pJVzAOU9lkghTMBtd7k2L8y/7ty4DUzdGNPrqxdxs2qVtLh04qxps1tvYEMiGw8wMAtmZWxEGdKh7wJM7NSclaB0cBl9DpkEWXLM4a0HqS2IOSe0aILSI2fS55aHrKoqUu0podZKGFK/Mu3VT3MtPtf1OObJ2wrzxlxPKRvtWIvqLANzYcm/fgQ+WdMm0K/gGtoIqlQ8K0TpQebSDZ0MLycKJZJIpE9FTyUe1DWBCYj/HfXH6ulCaQK9Jm/8rRziE6seSSvYQr0LH+VIdlHq9mG7+JFVkkEwqZYRs7WPloHggPvOONZM2clX7Uos0Mpvs6SraRXae5by9ouZ24gn+4wYqNni35G+cVnkGBEe
+ NSSG3ZYM
+ DDsKpqXsthJpA9YV942iFPfwhRdCt/eYXcOI0YLcU4KOm2FRTTrMfMLRCpa9mH99MtnVYUQo8vURG9FmJFevJU8Vpb6bDBoDPrsV4xjYCUW5hr60OUWiHVQACCEy8NYJ4K44TcN3jI0cVZQAw5a2cgw7rPUV6w6Ybw8oA+bE9n0DJwClgSlk1Lukl6zRgggXsgYuclxnWV/q8bUrxIS++Z8JekrDq1NTB1jxdEgzNfzb9DkjceZ8H4AhnKNy/UrTkluSEvsD9XywBWLiubnONKCla2jRq7WhI5kdDdRXreRaV1e8/La/JhHOtveydHpTiiX9vqn+wVlwP+7XwzkQ1HBLFEwuiGACCsgIRWNp1lbR7IfwFbF4ZNqdAouI4wJRKfnlacgLfE5qvj4/Hu8dywqy4m3O6Pe8+Ow33Wuu+5DW7B1IFopm5xR+6Dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,31 +109,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/26 23:14, Nhat Pham wrote:
+On Mon, Sep 7, 2026 at 4:01=E2=80=AFAM Qinyun Tan <qinyuntan@linux.alibaba.=
+com> wrote:
+>
+> With kmem accounting disabled (cgroup.memory=3Dnokmem), memcg reclaim
+> never invokes the zswap shrinker: a cgroup under memory pressure does
+> not write back its own zswapped pages to make room; they are only
+> written back by global reclaim or once the global pool limit kicks in.
+>
+> The zswap shrinker is registered memcg-aware but without
+> SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
+> before commit 03375203e1da ("mm: do not allocate shrinker info with
+> cgroup.memory=3Dnokmem") it was skipped by the !memcg_kmem_online()
+> check in shrink_slab_memcg(); since that commit it is demoted to
+> non-memcg-aware at registration.  But the zswap shrinker is not a slab
+> shrinker: it tracks zswap entries and resolves the owning memcg from
+> the folio's objcg, independent of kmem accounting.
+>
+> This was noticed by Michal during review of the patch "mm/list_lru:
+> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
+>
+> Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
+> under memcg reclaim with nokmem.
+>
+> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@lin=
+ux.alibaba.com/
+>
+> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+> Suggested-by: Michal Koutn=C3=BD <mkoutny@suse.com>
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+> Acked-by: Usama Arif <usama.arif@linux.dev>
 
-Hi,
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
-> To Kairui, Johannes, Yosry, Chris, David, Andrew, and other (z)swap folks -
-> I need some help here.
-
-I'll mostly ignore swap-related stuff because (a) -EBUSY and (b) we have quite
-some swap experts around :)
-
-Reading below, I do wonder if the swap subsystem needs some more coordination
-and collaboration?
-
-For example, maybe having bi-weekly/monthly meetings to get everybody aligned
-and uptodate could be something reasonable?
-
-This approach has proven fairly helpful in areas where (1) multiple companies
-are involved (2) many concurrent development is happening, and (3) people have
-different priorities and requirements.
-
-Is there already something like that to organize development? Should we get
-started with that?
-
--- 
-Cheers,
-
-David
+> ---
+>  mm/zswap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index f3ae3c81e48ea..032136942c172 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1252,8 +1252,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
+>  {
+>         struct shrinker *shrinker;
+>
+> -       shrinker =3D
+> -               shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE=
+, "mm-zswap");
+> +       shrinker =3D shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_=
+AWARE |
+> +                                 SHRINKER_NONSLAB, "mm-zswap");
+>         if (!shrinker)
+>                 return NULL;
+>
+> --
+> 2.43.7
+>
+>
 
