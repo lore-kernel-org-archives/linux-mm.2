@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76151C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB40C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 901A86B0096; Sun,  6 Sep 2026 23:51:00 -0400 (EDT)
+	id B4AD06B00A6; Sun,  6 Sep 2026 23:51:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D8C96B0098; Sun,  6 Sep 2026 23:51:00 -0400 (EDT)
+	id AFB176B00A7; Sun,  6 Sep 2026 23:51:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 816006B00A5; Sun,  6 Sep 2026 23:51:00 -0400 (EDT)
+	id 99C706B00A9; Sun,  6 Sep 2026 23:51:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F60A6B0096
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:51:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F28944061C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:59 +0000 (UTC)
-X-FDA: 85185590238.20.750D6B0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63DCE6B00A6
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:51:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDBFC160690
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:03 +0000 (UTC)
+X-FDA: 85185590406.01.E39E40E
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3FE76C000D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gaU3xvQi;
-	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 191E2140004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fl8VqLvm;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788753058;
+	s=arc-20220608; t=1788753062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWP9N7UB0joQXAJLUFHQKyDNGwC6LUah/EGUNqPDYTY=;
-	b=ihS6PkoAClgig8flymUKsph5QgRfggxhCpYLaroTCqdhdRN0h011aXpR05b3GV6QboJCht
-	WGQ8xncsOtn6saGFzvkwWg6ulFzZn8tnX99IAIMTNn77gw0ce9G8rd22Gfvjdl55P06JVb
-	X/3wWlh2qUmlFuzQQ9E4ymIAwf1EBe0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788753058;
-	b=PCnwhG6sxDLotLP7RVmZIACvFaF5mReTCVWIBfWjVDI3Y/cAJqiZz1EF0X5UKUqpBFF9VB
-	2JmPA5u00hV559XZRd1J/pRPqs5H9lSoGM6QDQtxlFw/j3jrUrgOsMN3mk5l/cPz7pWeaO
-	FoiVWd/IJu2GmF7IbFE/8OYawG8TiDA=
+	bh=dLxnyG2dbvc/QV1X8MTxe0+N1cXi1qBEfSgBEC7WBcw=;
+	b=LCjG84GVkblMH9c02sg2+kN7aLyY5k55MpHr/aM9nc3cMARmlZvHr3GT6a3rjE6der1rXD
+	Cu4hShVEaUGXkvyQdekPygtJzG2YUbwAN4eBWgk2R2+cXAGqNIyUimHUT5Pc4qE0U6mrX2
+	gQVjRiWZEBUhiaiXjssoUvF9FZjjjdw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gaU3xvQi;
-	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fl8VqLvm;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788753062;
+	b=gTzkvMuN+a1YgZ/wmKEai06rk/tOcM7qqnhHbQpfHVp3w9B0NvQ3sSIc3OTjbwYcty4lu4
+	KENvNJwu4cnDiTI+c74UQYxIEKW0Hgc6RXnBBWoj+LbWCrTLCXOMfcI/erat5/LLw4bOmO
+	9AxrdHrxk9UVfZFpqhwVJxL6i9RSunI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA7631AED;
-	Sun,  6 Sep 2026 20:50:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FD881477;
+	Sun,  6 Sep 2026 20:50:57 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A13643F7B4;
-	Sun,  6 Sep 2026 20:50:56 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7793E3F7B4;
+	Sun,  6 Sep 2026 20:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788753057; bh=qFNA6gQd3R3/N1F2NlRNUpaGJ73aKIkK2svQU86ktVQ=;
+	t=1788753061; bh=6wa5MsZMcn+Z3nxdy5kbv2HZNFuqAlAuRxAc1QrQTkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaU3xvQiDu0CvOWTMdlZQxYVQh/R/CHFyGgjq84fexhBOg1L9rxB+4w8ipcOCDa1Z
-	 E2Cs2eyqqBmiDulIGwNs832s30G8mh9bsgmEeCfvO6JqFbe7FWVnXIuS+NfF1Ekr8J
-	 yuvc0+cRZZKX6wwRSyT/+18yuMQL5X7/LgDl8Vkg=
+	b=fl8VqLvmTQZwKkcHorxP+8qDbRaaOF5rpdgiICuln2/D8a52ywJZ2eGm7xYrWI17b
+	 lPolpJsYANXrx5502C20P7O6olCTgsRw8X+lqFvgMPBR7Kq/CtPR4KZhbgShkCAeNg
+	 832RVk5IAZkPgsN2eikujbI3fztFJ587Xr01fJzE=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -74,22 +74,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH V2 06/14] arm64/mm: Enable fixmap with 5 level page table
-Date: Mon,  7 Sep 2026 09:20:21 +0530
-Message-ID: <20260907035030.2839978-7-anshuman.khandual@arm.com>
+Subject: [PATCH V2 07/14] arm64/mm: Enable pgtable geometry for FEAT_D128
+Date: Mon,  7 Sep 2026 09:20:22 +0530
+Message-ID: <20260907035030.2839978-8-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nrr8hht1k8jh31r8zyqmtobcufm8bqqh
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 191E2140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3FE76C000D
-X-Stat-Signature: njghyybktjyzb6qrdnjefppx6psmdi33
-X-HE-Tag: 1788753058-433162
-X-HE-Meta: U2FsdGVkX19RcJ778+nyALMtT3DxAKGC1hbzuzt6T5UPRFpDaiKCLOCZJQkpPVfHujQNZebobogSAKALcFH451znm6vGJjeLNA/uwYIGjR4ewqvw3AMHrNDSJSSpJRw1Yexjqy3tBawgcc62lh4BFmYPEgsEVVIUg8TXfXJlxAyf6a0htJxNwQyjbuJ7DlVq3ccVSSHKdwfcBJCBFrfPp2GVFvQT06TQpBjIEHJwqX0kug7Phr9/cFi2h2MZyB/Cq8pr9lKyfcTaNoRpM+pzC2VFKfjK0Ay48mA1xiBAJOL/puZJkPfbXr8JH0D+6Snk9Pd0WRA/T/Am0cHYVXa8F1rFfwDm/fsNoRXtk7ETrqRjfTe4bgcFiRmqW+EfU3h4WiQxnxYSGHftBtZ9wRccG8fXFhvh6i4q2JGKSvK+v7zJN3QRzDL8WroGUbBsM1J8rgT8JsGK5BZHAYU5TxPRc5vG9AuHx9abRqeC69f7hl/rFMkpd+toWfhqNL4Zia71Wov2hIiKrk9OJvB9iVRY6G8aKd1IQcRJ7niFPHERAGenzpSJsQTccmZpIMInz5hU7WA3IwXibaSh4BpcE6hSMwrxqzumxr7DVBZO5WFVXc4bFtKht+SzJAYf3DKrg8/Cu3IG1Qg4xBs3y+xOIgxGItpCI4IkuaHMBg24hy9eJMCVwSo8rbeNIhzTTr0rErO5ic2EwTHmYRBjzBA8hNRsM+sPjAnYHBaSuBseBgjQhM7ijwoJETIhNsK8XtBF35vSMY6Punwf9iSy1qB0OjnbUe12rpjgztAdlcvO5Jo5LCpxUQnn08s28MdRZ3jPKgZFLfmhQ4cSiopUnmUzrpAxPvjBsWMvmxXCipmb0bZqVm3b5GcUywjvJpD5TD7rmZuhf3oyg65wkRdC9OklO86Lkpxyns0NYGsLNpuwr5Eyx6Yr/uIkIYDKbPx1yGYfKzjIVI2M6kL/BkFxWsTpIB0
- IrHFnB+h
- PzlGQHqpGIgTk0XIfMn+0ghZ9/YDgvz0TlAeVAZw7QWgRvoyevzfyw1DohmQDiyrUPEGBOFiCZYBxzN+nqpbseF0YzQd4yeIT13Ot+sD1/bslEM0uHCcNZQLGSZHOomNsjr9Hwhz0GfXLV0FdD280LhjtxU3MdPSfTYLPhod6PXIafMHrrf7Aqk/kYp83ZZ1OSWGiAwbPp4k+sFmdk1e+CpWcGRIZ0qqoIJGAk2M+OU6fE/NjPGHu9abX2RneOYY2sky1TJdSg8Ms4O0b1wJw41I/yD5Y3n1BwdJZPD6jBgooqg75d0bE+l/rq1nlCaM4zD15+hJVWwLhlDm8IUEkkFmkrl6MAlbK+1ltJmxH9mlYvvc0q+druSHueQ==
+X-HE-Tag: 1788753061-664624
+X-HE-Meta: U2FsdGVkX18DupALhx1xpWh4boXQla7/VqYFodVOr5mbme/ldG9nlYUqO45U+2yStUidxeXyzhBFifJwfW5QjJRu1Ow43VrVXtHuFJB/fC2RjsBcdTdbsBXNWng+wSU3K+ri80YrdUd69FVQkW54HOSwuC6YFrrzTuWeTZSsgGS+V46QE1k3tSZDVVhodTu3mJ64s8PYQrdzR1MFe4gAs94jwLfgkHQZK1M1RziHiTERTA25QHPiTkFIn2svRsWDC+oq4iVXHC7uVkjZhsvjumiIUQt8lFL9/O3O0KyCN7ftzFnuj6Mmjq3HaHC2RgbxW+CL50fyT0dLT8dfxYm/lvLKftRNT+xFiPouR396gaZD8YGWTitCJ1AHpkyQGdjnZeJRV0VjHqzDG3MERBclRJPRL48+k26t+wnXUO0OaaXt1eJgAhoK4VUV3J8Ap59nNAIG2OV0r1yZPiYrUx//IeFB8RPK6AQ/L7AzICxZzoKNMGOcIzPefb4H8TN2J/wN2YyeuPDlvRe0OVoRGnXV4WgFol+lN+jGlgveFu0jH9ZqtSZ/21yakEK2p+sNz0n545RRGL9fA0xgM4cZ9LlFluelFIY7c/UK0xRFxeP8+Ma9nAZbHjguK22VDgrU18Xdpooc8tHg04uk4O2tclF/yzoorDbbW2cP7ULtt9hDAuPI1y5QXftD8clBi5dMzg/32TsT9knVewRl7OaViWHKfzYjObNGqA2GNoVU+zURDW0yL7TZ+F83QCyn+99qlorVL40+JiUZlkOTugGSDwOIJ4TIECgb3cl2Rs/59Cdx1PXi8ChoGgRsjNlGkFZrKb18oTgpBfHPCtyqOxuZcB7VEjbAZA9rlxC+U8gtY3fxFN3w6dNm6hShqSVqvB39V1zm9iwDI+YX2DrzPZTy7pJe72QbqbeQ/U3KLIIS6RKS/zI2Egf6lAYI5h28fuT+DK/VdoEuFxOF+cEnJtuWaAV
+ hcNXJ1Ly
+ 6D9MXeJIEpPlSMtPxTaROp6cBEjZiGBnvyqiIt+CKLF3CljCtO0ngDS3sz6V9jr+zhrn1IxZgB2/9K97iSodzxQm59WvLOT1KlbB/bBgth99UokS7CnDX3+xeAc0fpGdOMzBdAYLyI1xwbPT3RSFUkgFtcGMqY0f9e8DuM/H7k+9mxHyLgd0itmU9qLzYBTyIzsJbLNIRezAVea2nnziBXXdoM2SnZ4DufLqI5rl5hINtSblm50GtdE7Cvly0FTRnUDVXfxifDUXGSV1lNu/ur8174m/u2EL28VaIf9oW3D2BYZ/sLqTz7kprr58CymrfpP+8bGNilYUq7+LEedJtXNRnGgTPCBB753H9ZA3q55f14EISidpO9hXsHHY+i5xoRMVzFVv4/kVf12eniOtBgk2E3GrJhxl32xQw9CsLsXi1PTo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,17 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FEAT_D128 halves PTRS_PER_PXX thus shrinking the VA range coverage
-for each page table level. Hence in order to preserve all existing
-VA range configurations, some geometry now need to become 5-level.
+Add build time support for FEAT_D128 page tables with a new Kconfig option
+i.e CONFIG_ARM64_D128. When selected, PTE types become 128 bits wide and
+PTE bits are mapped to their new locations. Besides the basic page table
+geometry is also updated since each table page now holds half the number
+of entries (aka PTRS_PER_PXX) as it did previously. Similarly update the
+geometry relevant macros ARM64_CONT_[PTE|PMD]_SHIFT, PGTABLE_LEVELS, and
+PTDESC_ORDER.
 
-Since fixmap is used to build and manipulate page tables early on
-during boot the mapping must also gain that additional level which
-was not required earlier.
-
-Enable fixmap with 5 level page table when required. This creates table
-entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
-(PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
+Although for now config ARM64_D128 remains disabled while all the required
+dependencies are getting created in subsequent patches.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -117,65 +116,113 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h |  1 +
- arch/arm64/mm/fixmap.c           | 18 +++++++++++++++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ arch/arm64/Kconfig                     | 37 ++++++++++++++++++++++----
+ arch/arm64/include/asm/pgtable-hwdef.h |  4 +++
+ arch/arm64/include/asm/pgtable.h       |  2 ++
+ 3 files changed, 38 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b5a51b0ef944..306e6c803471 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -284,14 +284,18 @@ config MMU
+ 
+ config ARM64_CONT_PTE_SHIFT
+ 	int
+-	default 5 if PAGE_SIZE_64KB
+-	default 7 if PAGE_SIZE_16KB
++	default 4 if PAGE_SIZE_64KB && ARM64_D128
++	default 5 if PAGE_SIZE_64KB && !ARM64_D128
++	default 6 if PAGE_SIZE_16KB && ARM64_D128
++	default 7 if PAGE_SIZE_16KB && !ARM64_D128
+ 	default 4
+ 
+ config ARM64_CONT_PMD_SHIFT
+ 	int
+-	default 5 if PAGE_SIZE_64KB
+-	default 5 if PAGE_SIZE_16KB
++	default 6 if PAGE_SIZE_64KB && ARM64_D128
++	default 5 if PAGE_SIZE_64KB && !ARM64_D128
++	default 4 if PAGE_SIZE_16KB && ARM64_D128
++	default 5 if PAGE_SIZE_16KB && !ARM64_D128
+ 	default 4
+ 
+ config ARCH_MMAP_RND_BITS_MIN
+@@ -362,6 +366,16 @@ config FIX_EARLYCON_MEM
+ 
+ config PGTABLE_LEVELS
+ 	int
++	default 4 if ARM64_D128 && ARM64_4K_PAGES && ARM64_VA_BITS_39
++	default 5 if ARM64_D128 && ARM64_4K_PAGES && ARM64_VA_BITS_48
++	default 5 if ARM64_D128 && ARM64_4K_PAGES && ARM64_VA_BITS_52
++	default 3 if ARM64_D128 && ARM64_16K_PAGES && ARM64_VA_BITS_36
++	default 4 if ARM64_D128 && ARM64_16K_PAGES && ARM64_VA_BITS_47
++	default 4 if ARM64_D128 && ARM64_16K_PAGES && ARM64_VA_BITS_48
++	default 4 if ARM64_D128 && ARM64_16K_PAGES && ARM64_VA_BITS_52
++	default 3 if ARM64_D128 && ARM64_64K_PAGES && ARM64_VA_BITS_42
++	default 3 if ARM64_D128 && ARM64_64K_PAGES && ARM64_VA_BITS_48
++	default 3 if ARM64_D128 && ARM64_64K_PAGES && ARM64_VA_BITS_52
+ 	default 2 if ARM64_16K_PAGES && ARM64_VA_BITS_36
+ 	default 2 if ARM64_64K_PAGES && ARM64_VA_BITS_42
+ 	default 3 if ARM64_64K_PAGES && (ARM64_VA_BITS_48 || ARM64_VA_BITS_52)
+@@ -1594,7 +1608,7 @@ config ARM64_PA_BITS
+ 
+ config ARM64_LPA2
+ 	def_bool y
+-	depends on ARM64_PA_BITS_52 && !ARM64_64K_PAGES
++	depends on ARM64_PA_BITS_52 && !ARM64_64K_PAGES && !ARM64_D128
+ 
+ choice
+ 	prompt "Endianness"
+@@ -2289,6 +2303,19 @@ config ARM64_HAFT
+ 
+ endmenu # "ARMv8.9 architectural features"
+ 
++menu "ARMv9.3 architectural features"
++
++config ARM64_D128
++	bool
++	default n
++	help
++	  ARMv9.3 introduces FEAT_D128, which provides a 128 bit page
++	  table format, along with related instructions.
++
++	  If unsure, say Y.
++
++endmenu # "ARMv9.3 architectural features"
++
+ menu "ARMv9.4 architectural features"
+ 
+ config ARM64_GCS
+diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/asm/pgtable-hwdef.h
+index 72f31800c703..1ee1a6d9db6d 100644
+--- a/arch/arm64/include/asm/pgtable-hwdef.h
++++ b/arch/arm64/include/asm/pgtable-hwdef.h
+@@ -7,7 +7,11 @@
+ 
+ #include <asm/memory.h>
+ 
++#ifdef CONFIG_ARM64_D128
++#define PTDESC_ORDER 4
++#else
+ #define PTDESC_ORDER 3
++#endif
+ 
+ /* Number of VA bits resolved by a single translation table level */
+ #define PTDESC_TABLE_SHIFT	(PAGE_SHIFT - PTDESC_ORDER)
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 2b457db19be0..7a5d6a14bb52 100644
+index 7a5d6a14bb52..4b534be3f288 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -1178,6 +1178,7 @@ static inline p4d_t *p4d_offset_kimg(pgd_t *pgdp, u64 addr)
- #else
+@@ -1075,6 +1075,8 @@ static inline bool pgtable_l4_enabled(void) { return false; }
  
- static inline bool pgtable_l5_enabled(void) { return false; }
-+#define pgd_page_paddr(pgd)	({ BUILD_BUG(); 0; })
- 
- #define p4d_index(addr)		(((addr) >> P4D_SHIFT) & (PTRS_PER_P4D - 1))
- 
-diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-index 2a0fe0b0f771..5512521fef8f 100644
---- a/arch/arm64/mm/fixmap.c
-+++ b/arch/arm64/mm/fixmap.c
-@@ -34,6 +34,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
- static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
- static pmd_t bm_pmd[PTRS_PER_PMD] __bss_pgtbl __maybe_unused;
- static pud_t bm_pud[PTRS_PER_PUD] __bss_pgtbl __maybe_unused;
-+static p4d_t bm_p4d[PTRS_PER_P4D] __bss_pgtbl __maybe_unused;
- 
- static inline pte_t *fixmap_pte(unsigned long addr)
+ static __always_inline bool pgtable_l5_enabled(void)
  {
-@@ -95,6 +96,19 @@ static void __init early_fixmap_init_pud(p4d_t *p4dp, unsigned long addr,
- 	early_fixmap_init_pmd(pudp, addr, end);
- }
- 
-+static void __init early_fixmap_init_p4d(pgd_t *pgdp, unsigned long addr,
-+					 unsigned long end)
-+{
-+	pgd_t pgd = pgdp_get(pgdp);
-+	p4d_t *p4dp;
-+
-+	if (pgd_none(pgd))
-+		__pgd_populate(pgdp, __pa_symbol(bm_p4d),
-+			       PGD_TYPE_TABLE | PGD_TABLE_AF);
-+	p4dp = p4d_offset_kimg(pgdp, addr);
-+	early_fixmap_init_pud(p4dp, addr, end);
-+}
-+
- /*
-  * The p*d_populate functions call virt_to_phys implicitly so they can't be used
-  * directly on kernel symbols (bm_p*d). This function is called too early to use
-@@ -107,9 +121,7 @@ void __init early_fixmap_init(void)
- 	unsigned long end = FIXADDR_TOP;
- 
- 	pgd_t *pgdp = pgd_offset_k(addr);
--	p4d_t *p4dp = p4d_offset_kimg(pgdp, addr);
--
--	early_fixmap_init_pud(p4dp, addr, end);
-+	early_fixmap_init_p4d(pgdp, addr, end);
- }
- 
- /*
++	if (IS_ENABLED(CONFIG_ARM64_D128))
++		return true;
+ 	if (!alternative_has_cap_likely(ARM64_ALWAYS_BOOT))
+ 		return vabits_actual == VA_BITS;
+ 	return alternative_has_cap_unlikely(ARM64_HAS_VA52);
 -- 
 2.43.0
 
