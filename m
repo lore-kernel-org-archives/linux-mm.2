@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C60A5C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:41:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D56C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:44:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465366B0093; Mon,  7 Sep 2026 12:41:45 -0400 (EDT)
+	id 3F4B46B0098; Mon,  7 Sep 2026 12:43:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 415546B0095; Mon,  7 Sep 2026 12:41:45 -0400 (EDT)
+	id 3A5336B0099; Mon,  7 Sep 2026 12:43:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 307B86B0098; Mon,  7 Sep 2026 12:41:45 -0400 (EDT)
+	id 293766B009B; Mon,  7 Sep 2026 12:43:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 009136B0093
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:41:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 824DD1C1080
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:41:44 +0000 (UTC)
-X-FDA: 85187532528.29.7AFAC69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EAB9D1A0006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:41:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeZrNCGs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EFB746B0098
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:43:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7CD41A01EB
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:43:58 +0000 (UTC)
+X-FDA: 85187538156.09.63D1E8B
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B86A9180009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:43:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=j2vLVAu8;
+	spf=pass (imf16.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788799302;
+	s=arc-20220608; t=1788799436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2o2i19ypzRp1zZlcTwsPkK6eNqVdjfCbynSxyeXYXvc=;
-	b=pRim9hcdSckN2dj1lOBp7heVJ/p3cZf3dAXlfEp2ZyxDx9NrefJFdm+A4n0T9Ef002cWmv
-	0nzyp161TuoKO5GODDcL3+TWhism+q/KAFL31T0jvRMu4cPjH8KSFwinKKjHKHy1dQLkRs
-	KnF9Z/9I9mX2QIjJ0lRXOONn7gXAnUQ=
+	bh=K1QoYSkh0C9sSQm+kvMmLkOqIVg1cx7vAvkOyyyUjv8=;
+	b=7YQX2Ald3426MjgbXQCccoWuz8rooPUwnt2nj91la4oMR7b8Y9+56PRdVVTgfTXv3jr2JI
+	+gH4JM6kLov8oIplWv9ElYfXQWmCgK/HQjdZPkMUK+FqWbO5b7U58ru+NbMAUhZj0SKpde
+	Pkq82j1hPZ4R9IuRK2CYbNgmY8txNVs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788799302;
-	b=lgNIttKp06bOdoetIbhydMqZELN/Czao0PLRWz8DLTiWqLP0+IBPWlBX9mq950LsgE9HjK
-	bMDTE7vQhy4KS6Y9k5tkDc1FPnEi65vmuXSry0Om1sHl3iJQaNnFicK86xdilanzSSJjmE
-	5BGXsYjZg5fSy7Oy3P0Vj7jdi+0ddaU=
+	t=1788799436;
+	b=BDVcKZM1dqrh1fzhiYzrXZ+1MCf/w9dJ0bEOGsJ6px3nhJM62JaXaghcdjQI/Ifv55PHiM
+	a4eeBLV8PI1yA4D82M3giZFkHcMGHB/aFU7PbuMrBp7FC+tOmTMtt4Ya4mdlkR8W4WSCYI
+	WoDIghSjcig19T5F1OFiNEeS78Y5x4g=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeZrNCGs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7DAE1601FB;
-	Mon,  7 Sep 2026 16:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CCE1F00A3A;
-	Mon,  7 Sep 2026 16:41:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788799302;
-	bh=2o2i19ypzRp1zZlcTwsPkK6eNqVdjfCbynSxyeXYXvc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jeZrNCGs4WD65/u5voFDVJu2Ma65oDUNgRc93clYuDP6GSkDO2JtRtD2xncF6rOI2
-	 2f+OLlBmoWqRoayX9iKMhoc20b25cThk2jBb0mFWXneLqCuC/JOxRzaWbZxaNP8SLS
-	 9RzCNa1AVLdPFVE5wULRVgyAMqn8BqnXPzPi1xzLaM46f9g/uC3JH41cFZExF7CSeN
-	 ySRjyaJmg3l3UhFQM3zwMaWmasvYp9sGVi09quy7ghOxmFTcDDCoV36uR+Ycea6QGJ
-	 +YMFqmJ2PRvtm3nilju2fFUKWf9Hxf/VfAQQ1K7x+lOMHjH/cJST+XvjoMnWt0AErK
-	 z99k0CK0c7IbQ==
-From: SJ Park <sj@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shuah@kernel.org,
-	akpm@linux-foundation.org,
-	ekffu200098@gmail.com
-Subject: Re: [PATCH] selftests/damon: stop kdamond on error exits of no-op commit test
-Date: Mon,  7 Sep 2026 09:41:34 -0700
-Message-ID: <20260907164135.97543-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260907123455.67246-1-zenghui.yu@linux.dev>
-References: 
+	imf16.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=j2vLVAu8;
+	spf=pass (imf16.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6A072408FF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1788799435; bh=K1QoYSkh0C9sSQm+kvMmLkOqIVg1cx7vAvkOyyyUjv8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=j2vLVAu8BUfrPUfw0IoMLttB9KWrQwcIEceYhLSk9uQ5Z0ckEPVfOfscBHEcW87ni
+	 hmLInIrqLiwmZau8RpCopP0torx5zxcmYmnd8yNCifCDJ9w29pnYUhYWaLbp0pcmmI
+	 K2EpC+wXJqbVWmqIDrNUlyN7cb+dQaEa6MBWRXOQDvNzkMu2svKs+2K1aRQnRpKccs
+	 Bbt88ebw4fXNUuc5uDyjITojN/i8rhtRuLeabCSaYLpQLF1zP4BoWQ4u58OIZ/tQRo
+	 JVnPV0O3/+B5SOZ8lZUwSg+I+zq3l/9klm1cKAo6XqVrn/6ohtHCdsYDF3+NSB07BI
+	 bj19j/y/E5ZhA==
+Received: from localhost (unknown [IPv6:2601:280:4600:814::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 6A072408FF;
+	Mon,  7 Sep 2026 16:43:55 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Manuel Ebner <manuelebnerli@mailbox.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Shuah Khan
+ <skhan@linuxfoundation.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: locking: Fix bracket
+In-Reply-To: <20260902143936.703665-4-manuelebnerli@mailbox.org>
+References: <20260902143936.703665-4-manuelebnerli@mailbox.org>
+Date: Mon, 07 Sep 2026 10:43:54 -0600
+Message-ID: <87cxupovud.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EAB9D1A0006
-X-Stat-Signature: s5x5e6knkjpdkofbbubb93g1asuwp69h
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1788799302-788345
-X-HE-Meta: U2FsdGVkX1/HUeuea2BiUYo6eLWDoj/BZ/nnWe2c3d5wSeoSDBq3DPz1oWie1QlYJmhGV3ZM/5ZFDX+of2Ycmz6sYWYXx3LeNVbsKjf/mPAEoF8/+/ctlrcoC+0d80jkytmBdMfHuL6Qw4+FL+sgnkEbjLdf2B24IrXyHIY6ErnuZm382qjWL1x79jKwqkFIvUtkvxTbMiQy0sif175Bf3Vc3OKLVg8404xO9Q0s9SKK50xqCKJrdG57avkIR6OypwwLRo5XOTrovf5R6igqyzsIxrN/2tzqEvo/y4cWZwfg5Rk48MA874VP4YWlI4PaJCM0aXZ+e6RbZvcxXI/ltG/sFEXJIgxEISUc0u6q2TndZKUxcvtwQIMCm91hE2L2rCoIzvX5G+DCwS7DLQn0WrRTjPB2jtXI4C5qvgHxhwMFnuxBmwOga8O9lPEWMIt7i6Ip+9hLhHvuh0xV4ldPQFIt78+ukGxhn9/xb/HAwRr3stfM2FmFT8sSbKLi487anCyY4S5tyIbuO7FYFoeMFsrG28aBfGtO3VjVXaiBORD1kV2jTw7BD15snUuA6RO8YgpjbuxYpCitMEduXWU1jwtckWa2dozkkxmJ6bmRawEMWlOkSq2ODUrU/P9d6gZvcXcQe65xSzfH/IEGW0Bgg8fjpZaUxI34NQkV1bGBRlEJCHm08ZUbJ7eTQDDxJdvo5enYbr4n5nzvS5lVfDgtHs0/gqPtNXRsboqPXXebnOEYIpjMOPzTDOnhYx/kDCJN1TkxB1Pd1Yx65PGl9XMp2Nse06lRQgUlw5TYbvLg22Tm5EKeZIisM82saf2KhEUNkyOb2JWGz2S7M3WOsN3ixCLpxOFRFKtBc3Ycn/0unuu1LNEYJgtvLgpEOkYkpjGQDABuoQEGpUhyKwNFxuWKPkymYeUC2/tQFBYxmA/avzwSzedFqCay7uEQL1WVzVBIMfdSkWAsB9tebV2PQ29
- yms3NxRx
- GgDvwbKx5HmjPrZzcFViU0zKaPeuqsQcdXCVjeXWjYvVkbVYXDkzuoqZlg2KtXPapLY31+01UPmhQUv7UUhaHqMbKsYgkmXbTZuPkOyaGJE/VECtDwQrQJ7VsR967rXp7D+9Z65GRysWav41na5NEbiPA9ZUdwAQ0LRKN5sHgxO6usAReshlD6t/mFyCHaPGbQX5t8wW5RlygVOmFrxvKBzIS6rSupEn3WYzNSLS1iMDNU7Xn1uS288NepiMzhIGmFn3Ot4wxk7fiKQjrRL/qVHxiFYt3AHEpBB/A
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B86A9180009
+X-Stat-Signature: hi3zfjuujdcew8knyot5gc14ewbro9fh
+X-HE-Tag: 1788799436-593329
+X-HE-Meta: U2FsdGVkX1/lHav4t7dN84Ke52KERmJWKljhuDVGJ0+uQqTtWP7JZf64eAV2NtLYac9c3Q+9+kqXNQUBq8e8IkETUYI3c1brdzrE8RdFs5ldjZOZ3JpEMnCpOMG+mR5Vs0ndhygR8nw2ySe60f7rynYkr2TNknX/SLu1bIaYhTIfoxbicQSPP5a74k6wvnBMI/zJYL0PGoRGt7VNR8GkeCftWRUESFiQ3FO/OeA3xflhTXBnwcVPDSSdX+uecR1GBT+dvpkFMIsuWOzI4VcYqEUrAG/9lJp23JE/igynCZ6ra+ED+lng0on/rccUb2xHZe20j5m3NsbDemDYsYvyVvG93sGxilTQqzHCb1h5zvzk4anPUcxjBLPaOT+NMT19Ejgr5XGb5i9Ur9rXU79fyBjHk/DDsiCWcTKSDTcc1/u2X5tCq1xrCLLCyyPIlN3UkhNe2Ws4gekajgiySmGLEaTN0aohyM2VLBNCiaycRK/2AfXdCahztl36LWVOINyE/Okmmw+F6sGDoTkGD9Po7HwL0Lcd7b/ESoYhH2atMicij+/ZzxlKthtYo8Ob3bimmObHJjKOMkD/2SGAnhcwTp6Z4nCYw63xFCL6v4ZtabZiA0PgBlmjmIl8BaDxhEbzsuGNDLG7uQhf/g9a9p24eX7tcOU9EvysrPgjdMs6Y5N7TsL1IkHo9Md7jHUr+gv4WsHy5oR+7VQxJWPTw8Kkwy+OtVt+uzgZF/sj8h7REqjvLm37UgFdyj+AfI/keC24ix/T+Ya5AvVmPx0prIn0MSwuNKVVIsOL4DMEXcEJbJqiqocFhVi/7LhLdb9PySNKvQLt+9G+b8hqUSbhrvojxr+9wE/Qj7WfOj8TN/Mu1rgmnRW9P7iva7sxgOi+XRNkAJ0EZw6unUloaX22IcV8Jy5L3n0Mx6Hi+CUNAI1QVfctxPe+J5FDLsdQUX5kxJmGPX96V6d+YYbtpkP9G9c
+ LHP0zYih
+ PSyJIzI0qSIk2/AHrGUAN+zIZCbDyP7iviJBRA5JHmXMhLm3X1O1hUK72OCoq+BhA7Ep3w0Ei59CiodIHkSVqkXmFZJjIFczXmW8yH1Tek/bQVhnlQ6EaswiD/dRr6YWrTiyerVv9Yjo8YsgS6q4cLC/mHzhNECZbV7oxEGyNfdMt2voZdJ+otGqLNFV9v9B24U+IdE4ZqoGyLsT1F9V1Dyq2LpYkbLF4OI3yzDn6cKPSu1QeGxETbZf/fq3NOuizPE6G4vHBDGZyZEA+uFbQb9GCIC3AcN3FwwD/Q1NAO/iulZMTZX5hThhbr7HKxI4F+vEoj6m0E+vtN5aEXKJg1DBcgfIFq79Ruw4VAjxI2mXvhokWjzxNFVqbGLgdC04ZICVz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,38 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  7 Sep 2026 20:34:55 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+Manuel Ebner <manuelebnerli@mailbox.org> writes:
 
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> 
-> The sysfs_no_op_commit_break test starts a kdamond via sysfs, but its error
-> paths (e.g., drgn not installed) exit without stopping it.  The leaked
-> kdamond then makes subsequent tests, e.g. lru_sort.sh and reclaim.sh, skip
-> with "Another kdamond is running".
-> 
-> Wrap the post-start logic in try-finally so that kdamonds.stop() is
-> executed on every exit path.
+> Remove needless '(' from code block.
+>
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> ---
+> Should I also replace ')(' with ') (' as it is in the second code block?
+> It would improve readability in my opinion.
+> ---
+>  Documentation/filesystems/locking.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+> index 844d65eb4..1598cf555 100644
+> --- a/Documentation/filesystems/locking.rst
+> +++ b/Documentation/filesystems/locking.rst
+> @@ -27,7 +27,7 @@ prototypes::
+>  	int (*d_init)(struct dentry *);
+>  	void (*d_release)(struct dentry *);
+>  	void (*d_iput)(struct dentry *, struct inode *);
+> -	char *(*d_dname)((struct dentry *dentry, char *buffer, int buflen);
+> +	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
+>  	struct vfsmount *(*d_automount)(struct path *path);
 
-Looks good to me, thank you for fixing this, Zenghui.
+Applied, thanks.
 
-> 
-> Fixes: 10725cd2b09a ("selftests/damon: test no-op commit broke DAMON status")
-> Assisted-by: GLM-5.3 OpenCode
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+jon
 
