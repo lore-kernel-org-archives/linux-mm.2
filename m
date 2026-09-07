@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1519C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FBB9C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A52D6B00AA; Mon,  7 Sep 2026 06:24:25 -0400 (EDT)
+	id D60576B00AC; Mon,  7 Sep 2026 06:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82EEE6B00AC; Mon,  7 Sep 2026 06:24:25 -0400 (EDT)
+	id D105C6B00AD; Mon,  7 Sep 2026 06:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D296B00AD; Mon,  7 Sep 2026 06:24:25 -0400 (EDT)
+	id BD87B6B00AE; Mon,  7 Sep 2026 06:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FA646B00AA
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:24:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE4151A06EF
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:24 +0000 (UTC)
-X-FDA: 85186581648.28.B832929
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 22C3580005
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJI3p6NQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 92C876B00AC
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:24:28 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F08C4806B3
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:27 +0000 (UTC)
+X-FDA: 85186581774.27.89909A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5F690C0002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSFPOQga;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788776666;
+	b=3UT2aLvoclIYMG+iEnDhOlyzvFejbqcQ4jvvFSbHy0UmHZChi6zwy8qUG6Izv3THcwBRAo
+	YU5v1WZnlUgUQikiRDxE/K+YjgDbWkbw6pkrZzrhn0kTUuoXyP+DvyjrlGS03sluq0Iap1
+	jXeygCpaL3fJdD3ISM22w3Vwbw/ncaI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VSFPOQga;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788776663;
+	s=arc-20220608; t=1788776666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IId503ozKlk3cLt2ZvHKfnW0uEA0aXfpIbl0Bze/AnQ=;
-	b=X25XuHEj36yQ/72cmsQaR4gF3P4aQj7JmG22BQBoqJ5KRWd9Ins/tgVO7RPhg5CDgoOdvd
-	EdoLBDdcB6O3XwrhGK7VUAPXbHYbGhdcZGpUZGPi9QQIkQJLB5oukaZH380Pcrs+EyKDs4
-	/O2/q9MGuoP/u88d8ISbSBT08zZ/HHU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJI3p6NQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788776663;
-	b=be1kLotndxNcP9d7raoiW183P/qtzk9rsbzPqcezbK1uiY5UZJ4gAsgsysibB2RrbSwQf9
-	ZY+72qNnfEFMqTYw13OeXOvLU7j9fM79kCQfxmSfnDVuAzt1UtMejZp8vbutzdGfgzDyb/
-	qM+4/dBMkvU01QB/6zg+HXtNqEuYLUo=
+	bh=LB6kX+FFwnDBpk8VzIo69FZJtwl3A5eOSrIP15c/e4Y=;
+	b=GL5dqErqJUp8LV635l5CwXVA0HyIQ3en6IRJInIRgNM+xkUqOzXOffu7qwYD7JJRamCeln
+	S4CXSmyXMqijqXQG0peh4Q5rf35EraWpBPN6Yi3luQ+kTkDGwf94RoF577K55t/l/xPq79
+	Eeon5vA1PaS4Kq4nDA3PB0btDZjdIAU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 709934481A;
+	by tor.source.kernel.org (Postfix) with ESMTP id EA6AE60D96;
+	Mon,  7 Sep 2026 10:24:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78DA1F00A3F;
 	Mon,  7 Sep 2026 10:24:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCCF1F00A3E;
-	Mon,  7 Sep 2026 10:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788776662;
-	bh=IId503ozKlk3cLt2ZvHKfnW0uEA0aXfpIbl0Bze/AnQ=;
+	s=k20260515; t=1788776665;
+	bh=LB6kX+FFwnDBpk8VzIo69FZJtwl3A5eOSrIP15c/e4Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=CJI3p6NQLSFnQpujvGnuTo3rRXUwQLT1SIbJL+qhR0l//VBMu7zVfI8MW9VVEHCD1
-	 A5o8GtGZSuVUt8esWePoLVon2FWWNlFflXhI9T3ZbE+5/NZH8rfUDs+2qF/6AlcZDE
-	 swiluBjtOYD42LYLyt5+KUkfPzoR1fs1LPkr3+oiqakvqoRPBDO0aW67oWImCRGAJQ
-	 V7q1ry7sRho63rWNnkWZjzFKeEgnd5HH4v5VR5ZEkgU4T8RCisUntlkFgfktSOFLIv
-	 A2qXHUH9wUJKLUjp4XTZ+jZR7AHfq9iTRq1U/SUUe3a0WD3Qpgn+xvQypPPC8bj/rD
-	 0STxseZ4bsSCw==
+	b=VSFPOQgagwllHZbFfsorGzw3WQyeZsCzeMxcCv9VTYDjLMnEXGhqpUlRUvk87Qhks
+	 7lpd8Jl/A77vNADRXD/MUz8DTKrMt7qm+QiIQIi+U+AH7kUOBbP3fVlcaZS8yh6NAh
+	 EDe+BGYR3xUCfpG6/QpEJEObPiOlH2KJOTRy5tsiwbV5R6QrQ8vQ3DKn1bgmNLW1sd
+	 u0kuFe4xw51lECkKZutCbpfu/1MjuA4L8cYSs1+85ml30PZBTDzCs45C75L85Qi8BM
+	 /fsWIVGYFPg4P852DpOtyEdyRRvlHf/CA6jyz8C8UHuJeM1ersvekcvvBBBLqfXBCF
+	 SzIMe/ySFFK6Q==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Mon, 07 Sep 2026 13:23:50 +0300
-Subject: [PATCH 09/13] s390/qdio_main: Use kzalloc() for the QDR
+Date: Mon, 07 Sep 2026 13:23:51 +0300
+Subject: [PATCH 10/13] s390/qdio_setup: Use kzalloc() for QDIO buffers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-s390-cio-ready-v1-9-ca7f39806234@kernel.org>
+Message-Id: <20260907-s390-cio-ready-v1-10-ca7f39806234@kernel.org>
 References: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
 In-Reply-To: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -83,14 +83,14 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: k5u9h6jfyujupnezgmk36iqs51erqx9f
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 22C3580005
 X-Rspam-User: 
-X-HE-Tag: 1788776662-581261
-X-HE-Meta: U2FsdGVkX193DJ6SAld7ecWnD82ot6W0+JJ8lkwKj/l5NkVmO/akf/uBQ219plva7iR4prdVQ6RpcWOjUNGdfU7GFa7wLH6kN38GEi6ip7SoTU+44Jf2/5/2YiHyRhy7Rnc0OdKeHAPZmXlgpEBzunmHy8khMJmB0uJCTmMhw3A7SnGJBCC+lK/fQkRUG4vxvp3jKuwl+WDmEyNuCmTVAPT5tLkIXcNGzS8lVis7L+sJbGKzI2jklQBgztOObHO8f7SC55uhUIOge1SHMTry5UkLEofb/89S4VTp9cRXvZhQwY6+LDxEqSt8MAft12sGheT3YW+l4RkwsdAvuU5O8M+TBvqpVa8434k6LzepsPUuNqrrEielVwhh9iu26HoSgM6QbVCuxdpQ/Iksj1UXyBh7u2Btlra7GdgaPYMubgbPse0VI9dzdRvy6KdVQnBBeeqXDw0ZYTUUSAwaScMKK4tbMs7TsTXxwbv2oXYpdBwcg7Z0VUddH1Z4YNDgj1HpTEMEgFQV6bNxwy7EvpZzSQ8AdYVo+V5jOz9pC85zR6AxWm4rV9BNUkaDqVmLfKBZqKnkX7t00IXj1p33aNmNoorX1OMW/UC/vUFki/cuao+4YhODkmlA6hnYFbkGEU87evpMZ7fCV87pg4Znfx8DpJwR9bAxYX9LmfqEenSz6hIIPK0W5G4TnkNuGS1uT+U+LtEXqCiktYZELb5J/4JGoxEmsV6FCrGBZP+3cQe+i8qQFEDPqSJUFU6ZvJbKwZfeu+Gxz8hSTJ6ZI2+PYJkWLr5TV3gzkB13/QZySH26SeQ5DbHYsaYxmKORN1NCeqoifg//GxJLQ57aDhQPWD7m8W1Y6NNjJVGlcqqxPnWiKRdt9Fuh+PMjDJyOsjyGKLGMGk5pDyrEaKPotwVXmqwIFNiqAwRYAM8JAvMltMnmjq88lYZT+71viqHyg1xgo0u8STfFO3ixwHXv7SSWr5T
- aO/j/97X
- /neHUIQVSKpCnS64WQvta4WgH2xX9YcnpfK89K6PYA1aGh+W8SfMaeeiw5szAhCED5o9y0MMyv03GmX2oaDxDwdOaKn6WkmXmQH8kZWbvhS+H2Fwv5uRSNrqQAW1s90scOX/BztLF5U/EHdx5s62xYh/xe5FWox6vJQMWFNGnxEFjp9lOO39jiBwETofXRWW3KrpDAOAum+ub2fdTmYodWDk/ccUZcLAkKXDMSJvMeOp9neZxEP+laL2/s6Mp+fyMkMMsuz0eQzIZwp+PJ1Uw6UD57hugsBhcUgaMlljJ1KrP0G7yrjCGOB4CH8hv5JoqD7ma
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5F690C0002
+X-Stat-Signature: hi7jmdmeruhh9ozrsmuzyaq7sfar9jms
+X-HE-Tag: 1788776666-673176
+X-HE-Meta: U2FsdGVkX1+S+xpFpkfV/KL9Fyfvcokvqiskw+nnewuOSDjhpB7piazySygv3X2rgl1CMyFWQPnusvXOQQplYJaZorGPnxNDUqDmPuK61ECabfdI9hZ4ZSM1LRm02o00ez2l+DKFzDgOVXipFHnVnSOvPFXKgW0uv/msw7sBM6GvSHRpxruvBPC6Zi9LqXaB/pvs9d80y5urxgUhuN5iPoAbcI/f0zrVaFMqZYk0subu4GRMR22h7Dh88iFnS3OlUYnl1kqWnrvB7G9LtMh5ZOtPDdy02oWRfoLnCA3cjfOdxC9deuA5bZRwDHDYkxaB4LvQqMlkGuqLXfuvGrFcBd1FrkV3YSAWqB1M6iPiMcB98NI7DdmrgZSPNvXJ/HM0b4c8pdxWCvXRbvOAsTJs1iihLzoF/lPUkE6shKgblCFuZpEbsq/zmPAMFcdHJsl0VBSvhvpjeRp3RvvrZXdeouVgiXmgIITY06aKsaN6kfIf6GnBg2lD9TX16jh0PvmHrNBY0A9Q10IOeINpzECxICYnLcf6NHTurasxwsnfPa+60icfyqAbzxw5qeT5jjhI4duhba46Va0g7E/Am44e8HbxvrZtTNQjl3naTxhIpsxeRFiNbGzZMnirGZqq1YPhZ+ks6wkJbC9ElLpbnSGCq5PfV4zcrgu3W+xUYnsRKFOXkZY03QnCwM+DLzf3DQgUe7dftc8oofxEQrhkMD97Ai8pfilAv0Y7OmGDuDSmWna7wL9cvC/qAGGjt8+RYW1cW6+cFFnIa3sHgAHh4Y840dismm1bRtnlJayJCDhLMuZ+yFEgqJQVjDXjAfBH1COSfGtjWWk0XWDMvRInmtYEHBbjjr7zr0fyue9TXHUbo0I9dzCPMiV+dJtZVoAqnoUUQ50xf7AmDKRSFWzZBAe2iejYPsAidk5CjcsuiW99T8+Xx/Tc+jNbDCrb/UhNXllKWogIoGU3lrTgsZYSXSs
+ MqoiZkBc
+ eU+dZIoHlfcaGZaulw51bFOTHW1DAJ8BmCvMvmP7Wf3nQ8RZRrggII8C/mYzn81upaoYASDeZwJBchcxViEIoA0UrvJX3Z4ZpjgyoX7fmvxmrK4jjhm1PFozC5EhbXylhSF+ODn2xz2yPcBPGeJcheyH7/wUDiaU5af6ob7udNcqlVvd5/In9PM/ZmwmsioK/+4XU4TaTREuGBU21zq5wtVfCaHgiUM51c+0Oonkt4z8/i5hnizfenbB/KmSiu3yj6PhFv2/CbRnknkIeK7Pk3jHA6MxJQUAGayow4CevRltZzYlZ0Gh+0rVwTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,7 +98,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-qdio_allocate() allocates the queue description record (QDR).
+qdio_alloc_buffers() allocates the QDIO buffers.
 
 This memory can be allocated with kmalloc() as there's nothing special
 about it to go directly to the page allocator.
@@ -120,40 +120,31 @@ Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.co
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/cio/qdio_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/s390/cio/qdio_setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index 6b9442bae7ffd..bebc1250ebebf 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -934,7 +934,7 @@ int qdio_free(struct ccw_device *cdev)
- 	mutex_unlock(&irq_ptr->setup_mutex);
+diff --git a/drivers/s390/cio/qdio_setup.c b/drivers/s390/cio/qdio_setup.c
+index bd80703c174c7..b6f2ff202fe64 100644
+--- a/drivers/s390/cio/qdio_setup.c
++++ b/drivers/s390/cio/qdio_setup.c
+@@ -35,7 +35,7 @@ void qdio_free_buffers(struct qdio_buffer **buf, unsigned int count)
+ 	int pos;
  
- 	qdio_free_queues(irq_ptr);
--	free_page((unsigned long) irq_ptr->qdr);
-+	kfree(irq_ptr->qdr);
- 	kfree(irq_ptr->chsc_page);
- 	kfree(irq_ptr->ccw);
- 	kfree(irq_ptr);
-@@ -992,7 +992,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
- 		goto err_chsc;
+ 	for (pos = 0; pos < count; pos += QBUFF_PER_PAGE)
+-		free_page((unsigned long) buf[pos]);
++		kfree(buf[pos]);
+ }
+ EXPORT_SYMBOL_GPL(qdio_free_buffers);
  
- 	/* qdr is used in ccw1.cda which is u32 */
--	irq_ptr->qdr = (struct qdr *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	irq_ptr->qdr = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!irq_ptr->qdr)
- 		goto err_qdr;
+@@ -49,7 +49,7 @@ int qdio_alloc_buffers(struct qdio_buffer **buf, unsigned int count)
+ 	int pos;
  
-@@ -1005,7 +1005,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
- 	return 0;
- 
- err_queues:
--	free_page((unsigned long) irq_ptr->qdr);
-+	kfree(irq_ptr->qdr);
- err_qdr:
- 	kfree(irq_ptr->chsc_page);
- err_chsc:
+ 	for (pos = 0; pos < count; pos += QBUFF_PER_PAGE) {
+-		buf[pos] = (void *) get_zeroed_page(GFP_KERNEL);
++		buf[pos] = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 		if (!buf[pos]) {
+ 			qdio_free_buffers(buf, count);
+ 			return -ENOMEM;
 
 -- 
 2.53.0
