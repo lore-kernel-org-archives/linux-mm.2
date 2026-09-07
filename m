@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DD1C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:23:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A9CC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:26:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 565956B00A2; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
+	id D59336B009B; Mon,  7 Sep 2026 08:26:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53ED06B00A3; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
+	id D0A4B6B009D; Mon,  7 Sep 2026 08:26:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42C846B00A4; Mon,  7 Sep 2026 08:23:42 -0400 (EDT)
+	id BF9146B00A3; Mon,  7 Sep 2026 08:26:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 149A16B00A2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:23:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A17A71A0132
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:41 +0000 (UTC)
-X-FDA: 85186882242.15.8CFF3F6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E6F46B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A637A014B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:26:05 +0000 (UTC)
+X-FDA: 85186888290.28.B99BBB6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CB0C84000D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:23:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTWtYKU2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7E53880004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:26:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M3/tt1xb";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788783963;
+	b=7PSl16um3j41nwSCLs3jAGrtfWgWWTSbW5SVfbDlZyaUr1xXBrFn4ZxegeqmOweVGSLNh2
+	LOJb+SBhWmQsazg6X7dXXg4wqnCZ2XlsW5H5PhvtUSoap8GaMgJT65pypccDSs+WKERiG+
+	0gv6Var0XVZWgQtH48V8ugcAE5eJEUE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M3/tt1xb";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788783819;
+	s=arc-20220608; t=1788783963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DKWwKFC4qZfk9FuvRkvf9yrxae6yPLmuMCybVojYj7w=;
-	b=cq6v+8GCR7Bs6vucEeHshiqrC0WkMcz+DUEK15sUO/NnipjoC4BrR1QRsmy4PpgSC4wsje
-	xBJaS0Sgccv7EdR78e33bwhuUT9EYDuT7wcEEDFsdZteOxyD5CH1i4mOXSNBqZUYhkPyUq
-	MBRwkYkJzYS6i9GyHwazjhcPt840kys=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788783819;
-	b=IVpGz8mZ9//ZkvLOuzTnZCrGnm9dtVd6VxA/zfDid8QY9NTgAj8L+3vdiXoK4XqWc2O2X/
-	m3VcabJT+bfFR+PSMp2skRrzkK13MnDA7TRyZQNgoMOPXbUuCnN2FsQHrFvmKXGPKkrYWR
-	spGJKZYlJvR0HGgkGCR0uPxJIJ7SAEk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTWtYKU2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=khFAlLB3IE9nHz5wgfKxVmeFcDHKyAwXXbXcSPy92d4=;
+	b=A6D7hs/sMAnp0hFXAMj/r2p5+t2r/QvV+9D3AbdlOKm6PY8aFjvwytoBqzgvFI18pHe7sy
+	rg9EwKVUmfuCWB47v1hBP9ccO21OBlutZ3iFUfamS7LbmwhtgUVcmZwV8hMGKxIFgvx5xg
+	MO0QgZ0PxPRjgpTEJqNOxczJXUND8Wg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A48A601F9;
-	Mon,  7 Sep 2026 12:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D611F00A3A;
-	Mon,  7 Sep 2026 12:23:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 001E3601F9;
+	Mon,  7 Sep 2026 12:26:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104CB1F00A3D;
+	Mon,  7 Sep 2026 12:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788783819;
-	bh=DKWwKFC4qZfk9FuvRkvf9yrxae6yPLmuMCybVojYj7w=;
+	s=k20260515; t=1788783962;
+	bh=khFAlLB3IE9nHz5wgfKxVmeFcDHKyAwXXbXcSPy92d4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QTWtYKU2TyoxPXjcHz+SiSddeSqqdvSFOswAYcm578/7B/fTaz0fQyG5Icg3+VHLm
-	 v6Dq4OMR7o5VtmB4eXuQDSNPvgtsNPC++8zGFQlNPs1rWtlwyJuFbPXYmdfDhq8DGt
-	 8tU65ngkv7fDdyLxAha7PE8Okts73aKvC88MxdbnLJ/l1E1xohN6E3i8Dsy18loMEx
-	 hNojwg8rtowHlQGSIrFMObNhvk7T7n43KE+4tcMLPRXKdv3iemHiUrwcUczRjQippe
-	 L77nQ0Oovfubn2l3n1a2/Fb7FOwPkIV+0umIYUTyLvsVJjCqeF0MZIQiRuy7uCOY9l
-	 0P4eTZM0rGbjg==
-Message-ID: <5ae7a11c-1db4-44cd-bf67-a98cfd5ca08b@kernel.org>
-Date: Mon, 7 Sep 2026 14:23:33 +0200
+	b=M3/tt1xbUroc0tnLm8UfmiJG4vFvuRkj3HlzlzSU6Z2rP/ZRKVr0VO/am67MU/DOm
+	 0infuQjOeYcSJ5oDpXmCCveGVc7y90pgw3mAAXAlZ/8PuR71GDXiLnfSVBDwGZEXEK
+	 37VuLhqPawUKwsMgtTI5Tgt3R/Efv7hdyQe70H4x7VOGTwkO/wrtd2pm+7lxWGyqgm
+	 tJ2UcP7hiBJala6NQL7RVG6THLmKiGZAsYrf0Gkj0XkoVsKtu/DqS1QSa9C/vILm9r
+	 IAs3UC0pgDD+8cHta70g9anwqodk0QnKpCJvjtEvqs3wmcqIiapTSLLBbBBcdKq6Pk
+	 FiBqy5ji2Me6w==
+Message-ID: <53f3afde-b5a7-4c2e-b6b5-8c844d1b6c8e@kernel.org>
+Date: Mon, 7 Sep 2026 14:25:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for
- compound folios
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Hui Su <sh_def@163.com>, akpm@linux-foundation.org, balbirs@nvidia.com,
- ziy@nvidia.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260817120758.669807-3-sh_def@163.com>
- <4ead5df7-f000-4087-83e4-13aae036e0b7@kernel.org>
- <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com>
+Subject: Re: [PATCH v4 1/3] mm: khugepaged: fix swap entry value to
+ folio_pfn()
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260828055926.346744-1-vernon2gm@gmail.com>
+ <20260828055926.346744-2-vernon2gm@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com>
+In-Reply-To: <20260828055926.346744-2-vernon2gm@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CB0C84000D
-X-Stat-Signature: 83j4pa9ikcikr8hignccqceordjqzfsg
 X-Rspam-User: 
-X-HE-Tag: 1788783819-711726
-X-HE-Meta: U2FsdGVkX1+jW638h3XulMFUcV0S7QSUz2ycCVM0BCGkLedeLpW2DZolrsLABWHgEi+tIRVmZGikze2zIHR0/LyTi7rWO3+bL8TqKLtgPqGkLCMhS/IQXvDXvpAGXpD7wn2LFW9Cv0bBmMqyPZjvbanc8wKJCYC0t+6F+SpJQqUweTt20PI3yHkb6+NvLtEgzKoD/ZxUB3QGYllkpCckvfQ6ImdefUtNStm1BfRRF5zhGNabw/dcqHfIHkJZhLYdSvK4MpomOW9+JRCPRsTphqCNDucJPKReiftpv9v9aehpRcacMTcqST7UJxNSI06nfBFl1EStmoBJsxn05ih40E8USKZmJTIjQNUpwIHb2iYajbe4EGZt4Iy7RTRj2ScB5X66eJChGaGFtqsc1tg+AraSvz2p8b45XIR0/qVmCCXihPJMdthslhrhpu+cSRYeHIxio+FeduAo/xYnBSzZhNn6kDxfgVwZ8YSbfTdR/xaxIQXLajfcveHlRE8ALQDQL47i30InPfNIt0RhqhBVH5dERKC3nG2O6vrv2dWbFZnM2Wt+/6EDK34qwU3+MbBu90LGEyPrWNl0xjINQeqSvnj5lrsW7XHc524iMsgU+PjlzFdjptn5j5XdJlt2oi9jBeQv2XhwP7bJYg0iJhE/xUREUdQr7RkJR5hbXWoflk/xsflzfEo8lSVt/qM0X/6w1sZDNeUyRlWj3xvlFMu355SWWPCPgzOHD3VZpUkYvmY9f9g+YfLPOMy5gHgbSYDgaEWmXxNcmTVGjFIQAN8lWi3iU5wsnNXBndazd1IkXaivzxtR/HpbC9w23xVy7qVxbxCGQtrDQMWK7zc0f/GijfmRME0DwjMHFKxSnRWl4/aCEZqoUlLCWqKlIpG0osMPVukOqWRz0W//0K69b0Wf7x7OmJ86WzDX48ne7IQSp289Pn8sDRwHQeIVRWTVjEKMuVZALdkSpG8dfE5Up22
- FrIiLJ4E
- zqH+kJpDKi94xHferEbMfkQ5OnJw7f5mHqV+vlOGuKk7Ucm2p7HDzdLQrqu1wGcILxQtdYViuV5O6hql6+JRzTN4Gyk6Rty18Rpb2qpbR/Gt5ITYoEyO9dKQBQCRH/9AscGyT2enfw1UEPjLOtZli9khhpux7mzg7Mnodim3mdrBIx9piPxzw4CBkaoiQotR67HMJ3yKTIOIvt548pnTJG68UCgU7gASTk5yY+ZghxxkVftAUemuasvXTeNW8tchtjW09ADYPfg3lYWMkt7eX4Hr1Oh3/tMKtC1L4Pyfj3CxFor/fum/5w1LlGsb5jlX2vdoeF2IP1ZB5cyREHMkOs7bcoVG+ASUyYaht07QPR4Yv3xIdbCOQ/GPpQ//vBOgb0DznYWKpGI0jLhs2n/QAQemRKmCE6KA7HPgOCmZVkSmOznF9sSNeEeQWQuaULkijBtDAsJqn7G5I/SY=
+X-Stat-Signature: 9mmqfehj7fdiqgseibkykmf3hg4pykzk
+X-Rspamd-Queue-Id: 7E53880004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788783963-958675
+X-HE-Meta: U2FsdGVkX1//9+RQHAAzLIt3RDOVfjwQQql7HEjq8xSjjNn8GcfriV4LqSUAn1jEvFolBVqPQMgKSJ3qXwCGKvbIWKWgh81fyVhS266sbzd58sj645sETh+mBD8fjn9hHr6jGlslITyDj+LyoMSpnsXEDFu952DJvmE7nFOLElWKkR6LEkK1IBIhCu5UIE2cFpcVoOUk9lCkOfWBC9zF2XxFabVm+bL1E1epp9zAntVj4ZqCHce6V9ouwARbRfWa7lzXNEs+pKwl0ZLdWinCaKg4NaAE7GpjdGUdt6V7o0elCjrQZDHwSQIQt/ElkXa8lpsGO80K9YhWyRe2/auKaHp495o7BVtU0+TzGrHKw5J34LMAsHZTQqYYnH6CUZiwUKQXCnzsX/exiJ46LZXOz/8jT9ufiIzKMEW3HJ6qTQBN6Tqe+FxSlx7utivDoRA1nzjG0U0iKCvkVWdZ5HhI6KDDoxcobCwbIX80W9Ke6+/3VdrMUqcDeuVpSl3baPNwZ00TMVY0gkhYfZuZv3mjy9KQoNRqyGbqsAFsQFd2mfjknl2soeOb6arWupSAM+TVLUJC2sDeg7VeI9y1jTJx1fy2O8WzrWv9bl3XfImQnFqlgkrCBFJ8rqqTykKvQ/etIKkVc3qj69tDLUwWy00Twfs69Q6AV2VZG7vtfmiLQcwKzXQ+Ica7bgComXgyOI3kgwZbjKBLQnxCbqZ/8xVukxbS7Bv7K89tILrY6xINez8OoDSJuWdNinUlRI8OiMR35dN/mZvvXcLnRbvQ7gMcuqW/iT8pBM7NumQcZvGOJNQ3ZFSE0CemtLgzAdZnfQ2zI9g9azLM4sC3293LXNJ85KZE1eDWh3PsamUPOVDdTdNPk1fxsNyfQvsf2vEQ1BJDRnsFIdRBLI6MdHSxs/nb9mMHZQVt5YkTb/U3rr+nGawPLjSn2ybDSlWhXcNyYpxNtds7fhofrWruEgewEj2
+ 6SPWwuT5
+ KLT186rIkYb8shSxgtxy3GPoRbi8E46Q9xGh6SQ7/f37mgvfZo9Zs5VG5R/XUlTN/zvIz3nmPVbDKJJvGlSdRwGDPBKJHW4RpsNwHDeEy4yvSQkL7eLOqri/3jcwquFTUxPpm4B2i94nCoJhR7reF9jDsCyQjqevcYrro8wCxFz+6m3SEuj8uqncH9+CjqNluKR/M5FGHKLfNd7s5IuP0Dq8Y0rugXl/bxdOz7G3q3WbXygczMTqR1p9RKongpVc4n/W/js6hrfIz0vrks4SiaowkfiElpHZtulRrhySDkD0MQbRtauTznRrdccgWokJijUSSvn4Uz0Yxc+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,136 +142,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/28/26 06:44, Matthew Brost wrote:
-> On Thu, Aug 27, 2026 at 05:14:40PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/17/26 14:08, Hui Su wrote:
->>> migrate_device_range() and migrate_device_pfns() clear the entries
->>> following a compound folio so that the PFN arrays retain their
->>> page-granular representation.
->>>
->>> If a compound folio extends beyond the end of the caller-provided range,
->>> the loops clear all following folio entries without limiting them to the
->>> number of slots remaining in the npages-sized array, causing an
->>> out-of-bounds write.
->>>
->>> Do not proceed with a compound folio if its page-granular representation
->>> does not fit entirely in the remaining PFN array. If this happens, drop
->>> any reference and lock acquired for the folio, clear the remaining
->>> entries, and stop collecting.
->>>
->>> Observed with a KASAN x86 QEMU kernel using the HMM
->>> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
->>> migrating an anonymous huge page to device memory exercises:
->>>
->>>   dmirror_fops_release()
->>>     -> dmirror_device_evict_chunk()
->>>       -> migrate_device_range()
->>>
->>> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Hui Su <sh_def@163.com>
->>> ---
->>> Changes in v2:
->>> - Do not partially represent a compound folio when it does not fit in
->>>   the remaining PFN array.
->>> - Drop any reference and lock acquired for that folio, clear the
->>>   remaining entries, and stop collecting, as suggested by Balbir Singh.
->>>
->>> v1: https://lore.kernel.org/lkml/20260817074350.442493-2-sh_def@163.com/
->>>
->>>  mm/migrate_device.c | 18 ++++++++++++++++++
->>>  1 file changed, 18 insertions(+)
->>>
->>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>> index 908d2d4ec43a..69b8d0660bab 100644
->>> --- a/mm/migrate_device.c
->>> +++ b/mm/migrate_device.c
->>> @@ -1400,6 +1400,15 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
->>>  
->>>  		src_pfns[i] = migrate_device_pfn_lock(pfn);
->>>  		nr = folio_nr_pages(folio);
->>> +		if (nr > npages - i) {
->>> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
->>> +				folio_unlock(folio);
->>> +				folio_put(folio);
->>> +			}
->>> +			memset(&src_pfns[i], 0,
->>> +			       (npages - i) * sizeof(*src_pfns));
->>> +			break;
->>> +		}
->>>  		if (nr > 1) {
->>>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
->>>  			for (j = 1; j < nr; j++)
->>> @@ -1434,6 +1443,15 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
->>>  
->>>  		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
->>>  		nr = folio_nr_pages(folio);
->>> +		if (nr > npages - i) {
->>> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
->>> +				folio_unlock(folio);
->>> +				folio_put(folio);
->>> +			}
->>> +			memset(&src_pfns[i], 0,
->>> +			       (npages - i) * sizeof(*src_pfns));
->>> +			break;
->>> +		}
->>>  		if (nr > 1) {
->>>  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
->>>  			for (j = 1; j < nr; j++)
->>
->> The code duplication here makes me angry. :) And using a memset on one branch but
->> not on the other is weird.
->>
->> But is this the right fix or rather what
->>
->> 	https://lore.kernel.org/r/20260805231041.3791771-3-matthew.brost@intel.com 
->>
+On 8/28/26 07:59, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
 > 
-> I'm not sure my patch is right now that I think about, or if this patch
-> is right, or your suggestion either :).
+> When the swap entries found exceed max_ptes_swap, the loop is left via
+> break with folio still holding the xarray value that encodes the swap
+> entry, not valid folio pointer.
 > 
->> tried? That fix would also need a cleanup but seems code-wise simpler. A cleanup could look like:
->>
->> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->> index 762c5cee8fecc..480bf59bc2425 100644
->> --- a/mm/migrate_device.c
->> +++ b/mm/migrate_device.c
->> @@ -1419,10 +1419,9 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
->>         for (pfn = start, i = 0; i < npages; pfn++, i++) {
->>                 struct page *page = pfn_to_page(pfn);
->>                 struct folio *folio = page_folio(page);
->> -               unsigned int nr = 1;
->> +               unsigned int nr = min(folio_nr_pages(folio), npages - i);
->>  
->>                 src_pfns[i] = migrate_device_pfn_lock(pfn);
->> -               nr = folio_nr_pages(folio);
->>                 if (nr > 1) {
->>                         src_pfns[i] |= MIGRATE_PFN_COMPOUND;
->>                         for (j = 1; j < nr; j++)
->> @@ -1453,10 +1452,9 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
->>         for (i = 0; i < npages; i++) {
->>                 struct page *page = pfn_to_page(src_pfns[i]);
->>                 struct folio *folio = page_folio(page);
->> -               unsigned int nr = 1;
->> +               unsigned int nr = min(folio_nr_pages(folio), npages - i);
+> That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
+> to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
+> plain pointer arithmetic, so the trace event merely prints bogus
+> scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
+> dereferencing the tiny encoded integer and oopsing khugepaged whenever
+> the trace event is enabled.
 > 
-> I think the semantics of both these function should be that if a user
-> passes in a PFN array and one of the PFNs exceeds the `npages` limit,
-> that is a misuse of this function and we should unwind and return an
-> error. The caller is providing the PFNs and should therefore know the
-> backing page alignment, so `npages` should always end exactly on a page
-> boundary. The sole caller of migrate_device_pfns function is
-> `drm_gpusvm/pagemap`, which certainly adheres to this requirement.
+> So when folio is the swap entry value, simply set pfn to -1, just like
+> exhausted scan naturally.
 > 
-> The two callers of migrate_device_range, also seemly adheres to this
-> requirement.
+> And the folio_put() has maybe dropped the last reference of folio. The
+> trace_mm_khugepaged_scan_file() is left with a dangling folio pointer.
+> so using the folio_pfn() before dropping the reference, closing
+> use-after-free window.
+> 
+> About calling the respective trace_xxx() functions separately on success
+> and failure, refer to [1].
+> 
+> [1] https://lore.kernel.org/linux-mm/ao6jVbVHLUmuY2UA@gremlin/
+> 
+> Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>  include/trace/events/huge_memory.h |  6 +++---
+>  mm/khugepaged.c                    | 11 ++++++++++-
+>  2 files changed, 13 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> index 5a48c5406cce..7b526528f85b 100644
+> --- a/include/trace/events/huge_memory.h
+> +++ b/include/trace/events/huge_memory.h
+> @@ -178,10 +178,10 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
+>  
+>  TRACE_EVENT(mm_khugepaged_scan_file,
+>  
+> -	TP_PROTO(struct mm_struct *mm, struct folio *folio, struct file *file,
+> +	TP_PROTO(struct mm_struct *mm, unsigned long pfn, struct file *file,
+>  		 int present, int swap, int result),
+>  
+> -	TP_ARGS(mm, folio, file, present, swap, result),
+> +	TP_ARGS(mm, pfn, file, present, swap, result),
+>  
+>  	TP_STRUCT__entry(
+>  		__field(struct mm_struct *, mm)
+> @@ -194,7 +194,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
+>  
+>  	TP_fast_assign(
+>  		__entry->mm = mm;
+> -		__entry->pfn = folio ? folio_pfn(folio) : -1;
+> +		__entry->pfn = pfn;
+>  		__assign_str(filename);
+>  		__entry->present = present;
+>  		__entry->swap = swap;
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 75639298efc2..b597a3e68606 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2683,6 +2683,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  	int present, swap;
+>  	int node = NUMA_NO_NODE;
+>  	enum scan_result result = SCAN_SUCCEED;
+> +	unsigned long failed_pfn = -1;
+>  
+>  	present = 0;
+>  	swap = 0;
+> @@ -2715,6 +2716,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  
+>  		if (is_pmd_order(folio_order(folio))) {
+>  			result = SCAN_PTE_MAPPED_HUGEPAGE;
+> +			failed_pfn = folio_pfn(folio);
+>  			/*
+>  			 * PMD-sized THP implies that we can only try
+>  			 * retracting the PTE table.
+> @@ -2726,6 +2728,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  		node = folio_nid(folio);
+>  		if (collapse_scan_abort(node, cc)) {
+>  			result = SCAN_SCAN_ABORT;
+> +			failed_pfn = folio_pfn(folio);
+>  			folio_put(folio);
+>  			break;
+>  		}
+> @@ -2733,12 +2736,14 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  
+>  		if (!folio_test_lru(folio)) {
+>  			result = SCAN_PAGE_LRU;
+> +			failed_pfn = folio_pfn(folio);
+>  			folio_put(folio);
+>  			break;
+>  		}
+>  
+>  		if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
+>  			result = SCAN_PAGE_COUNT;
+> +			failed_pfn = folio_pfn(folio);
+>  			folio_put(folio);
+>  			break;
+>  		}
+> @@ -2771,9 +2776,13 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  		} else {
+>  			result = collapse_file(mm, addr, file, start, cc);
+>  		}
+> +		trace_mm_khugepaged_scan_file(mm, -1, file, present, swap,
+> +					      SCAN_SUCCEED);
+> +	} else {
+> +		trace_mm_khugepaged_scan_file(mm, failed_pfn, file, present,
+> +					      swap, result);
+>  	}
 
-That's what I was thinking: because how should we partially migrate folios?
-Doesn't make sense :)
+Just curious (maybe Lorenzo suggested that?), why separate out the SCAN_SUCCEED
+stuff?
 
-If this cannot be triggered today, neither Fixes: nor CC: stable is appropriate.
+When result == SCAN_SUCCEED, failed_pfn == -1 no?
 
-Agreed that we should just warn.
+We set failed_pfn now only when setting result ...
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
