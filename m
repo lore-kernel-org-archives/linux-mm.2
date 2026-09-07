@@ -4,90 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78703C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C24CC79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:50:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33F876B009E; Mon,  7 Sep 2026 10:48:16 -0400 (EDT)
+	id B33216B0095; Mon,  7 Sep 2026 10:50:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F7206B009F; Mon,  7 Sep 2026 10:48:16 -0400 (EDT)
+	id B0A266B0099; Mon,  7 Sep 2026 10:50:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ED546B00A0; Mon,  7 Sep 2026 10:48:16 -0400 (EDT)
+	id 9F8AE6B00A0; Mon,  7 Sep 2026 10:50:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E513E6B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:48:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71F35A014B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:48:15 +0000 (UTC)
-X-FDA: 85187246550.05.E401EE4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B496A160006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:48:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt9KYkEs;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DDFD6B0095
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:50:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00B4A1C0B5E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:50:11 +0000 (UTC)
+X-FDA: 85187251464.17.0E41B52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 266C1140005
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:50:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oBBZei8f;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788792610;
+	b=5HITsuTSQaGz9bBrg/3gki3tCMETsVAHKiqTnXsXX5sAcF/hgkMg9dPJCAm6K1lZB8hPKn
+	nhsrffy51w2Eeyn/p0b5bWxPXjxH4EZfo+Bpq+yh/AP8sn2FcZtBweO0F7Z70n8Jh4D33j
+	JVdl2ghiPt/DkSI8wky0YlDEHx4+qA4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oBBZei8f;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788792493;
+	s=arc-20220608; t=1788792610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iy6owUYD+Cyh1bhoOnre5fjmLNF5JIU8NAVziF18F7U=;
-	b=RDb5keBakOo28iuLECyOHxGRnsTMZ/btl2HdSRp6+Srha55206G18P1LKSS1iB9Ph2Pn3b
-	w6z+PmkwQzgTzkZ+fw6VI5t4HDmsS5y96a3UL8AgA7Y+m+EfiqsR1o3OvjW0XiZykrNBFx
-	n+aTkqUSBFF2GF2sJynk6hNPGjZxGTQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788792493;
-	b=SKQ3Ff+q3dzb6erEE2YNSGPTepVC+PRI5PojeRsmG3cuekh0WK68vwr3rTkbgMPHKpTnlx
-	OATt8DqMOiMMgdMNrz7wriO25FuT9ZQb7f+lg0A/2X/Ya6uBtJhFA9JU1ise+qbgQzmAcj
-	COsMKZtAsnhOvrWnG2eOsxOrv4FissA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt9KYkEs;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=0mIRzAim8Xm04hf6n5NB+NxEk+eE5bXm5v665dJOtpg=;
+	b=k1ru0+YLyrt+MOe/ya+vyPP7O+QcpeEdtw0/y00SvWkL8jy3IZqwoc+4P6mVcJIWhYXJ49
+	/SyCQryK6XrBPZjS4ud+0jZ5ahYQ1cIfJlmwPU10DBY/MCJgymUAINJnnnkoWmV5I9y2fc
+	EP7Vcl4tla1PSAWNfKB8cOILU0hKi/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C1CE60D86;
-	Mon,  7 Sep 2026 14:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73BD1F00A3A;
-	Mon,  7 Sep 2026 14:48:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EEAAF41AA3;
+	Mon,  7 Sep 2026 14:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F42B1F00A3A;
+	Mon,  7 Sep 2026 14:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788792492;
-	bh=Iy6owUYD+Cyh1bhoOnre5fjmLNF5JIU8NAVziF18F7U=;
+	s=k20260515; t=1788792608;
+	bh=0mIRzAim8Xm04hf6n5NB+NxEk+eE5bXm5v665dJOtpg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kt9KYkEsCfbD9dm+VVTaprLzLusq2rWJ2jIynnLBJ2bx410RackA+uvvuDGzpnxdn
-	 NAxeKAd3r6AxY2P3hP+9EMKM5GLj3cuURDA8cswfqP0XczAW0XG4zULfNmCyENAwhW
-	 pD1sxAG9oH4B/qtvnpENoP49KBCym1taieSCDgrs2Kcca8oVO7rxnWGUJJmEj5WDjP
-	 RRDagBX+jz/ZKYQrI40wjff7hBOs04j3xebzbOL78NtIkU2zwO/lmZojcd/M+Yz2B5
-	 xXZ8udJtB3+hI0wUtz6BdqD3nG06QmCLAN4ZnkCVaIVEvPF0um4PAHD7yVDlgGMFeG
-	 IZBb8K21oKtRw==
-Message-ID: <2e8dae0b-d81e-4c5d-b4d5-c80bde07a314@kernel.org>
-Date: Mon, 7 Sep 2026 16:48:01 +0200
+	b=oBBZei8fiHVJieUd7Lx21QpFtUu+KnLLeLIBYbntsp5gB1HSyOzJ2aCxPwQTrnzsR
+	 ZAV5ezYF7K8Svj2yPyUBGosD9SRvb0Pk+1Bi9o1dFVWx2Tv/7jSjX6oi0HUYKze38r
+	 ZkDapIB5ST8+zWkvJyYsQ1rbKV3Oh2LQJvhhfw4H+6HsGG5zQC0+FPDYOJBXL2FSk1
+	 dj6BTOsA7RqNsT0El6XVcv6nydL4/FdBaq9zC3Oc0FOe5VSIZEu2+qjJDRuhMI+fyC
+	 QMEJVhJUA/B5pP68gI7p3UQ4lFuzH1BYO9AcCR58lwusE8FgQzCK4yHGJmzAQfoGal
+	 M+e2/iEYEUDDw==
+Message-ID: <cc0fdb0e-ab6a-4095-b559-10e1d8a616d9@kernel.org>
+Date: Mon, 7 Sep 2026 16:50:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, usama.arif@linux.dev, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, kas@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
- peterz@infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
- <apk8ZRr6do_YAlzf@kernel.org>
- <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
- <ap05ue1pq3TgHOS6@kernel.org>
- <CA+qSx6y=OaMsvTKUbPP2DOan3Ym6c8L5z60512-tCYeUjLZz3w@mail.gmail.com>
- <ap5Tqu5yswJrj5UM@kernel.org>
- <69db9546-d14d-4107-96b7-30963292c2bd@kernel.org>
- <ap7L2UEriz6DJfif@kernel.org>
+Subject: Re: [PATCH v4] mm/gup_test: safely calculate GUP batch size
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260903115033.162218-1-sarthak.sharma@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ap7L2UEriz6DJfif@kernel.org>
+In-Reply-To: <20260903115033.162218-1-sarthak.sharma@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B496A160006
-X-Stat-Signature: 9r9aju5fu44zj84cmwhtjib44o6k51nh
-X-HE-Tag: 1788792493-145574
-X-HE-Meta: U2FsdGVkX1+wwTyJyrKSEvuUYLhldJvU4YshJabZ3hL8T3TmAB+98Bts4As3Z2E6ZLOtqtcLqCwbAwReotLBhhkwfxQUfVPYcEmGwp3Sg3LheqNOMF0fnmKTd9FjRM/K8PJdCvEZUrelp+QsvNzEne6xtYnseRBNkYeb+QUbw8zI4bRfAwt6Q5tARJpd2PJDkAWHcztRA1NtddWkihgpfghM54nwXxGo/WVoKQTIsDjcqjYIJqdObII7EvnS3I61Rwl5M2BTJmkDwEGV6oBpur5iJQhWADM1n8rHDrS6cGfn98XMfURWRFFF6GXlZcLi7kmbjaCK2/4EvGkOhszYRVdccxd2bzNwOYjcp/NHduzH52FRXdmodNTJmNkRm9ZlQ+WTTJo3WxPRILsGIvOboDkXzhVloivzClkHpum3vHnGAD1ShSjwF9hCnDu/LIN922wYmZNciJBDe2oH1xSnVYcXcUOgVmNkl5gS8cutjv+h2RrHjqFxNHFAUDpozbldx1BttfLupuUobD5paiQcgSISkA6/57WfR9Lr8uPLyINYs8FDBGtkre+vX6BipQe8K5KXKMrCXYB/2gGpqqNqGtwZ/NNNW5E4nZRD0veCMUY/sH55UhfrSjkuG1wu4xO+QF6tSVwIhsBk37cGbQUT+Yn7pcW1S7S77HwLH/Ej1x8qbw0dnUzOzjiROGs7CBiELrt7qrCGLgQMM0DFo0cKSgNWI0EaUAFiNHPHatNbBuzQsqQqLo0HvxBmojc++JvoN8QPy1YzoF11q0c51SuMaDEnfYjOzy2wzQEt1VyAp+BhJRCYG+0CrGjY/4HGrTiTxdo5+U5GzBUYfVV8ktc3H9V4qW76DM57tmMXE1N92KJIZ2SbbPn79N79yajSnBTaHNqE2eOqI32aTxXu8EDbfSosjrNqmIrGZLD8hg5SXQspN9lpJbPqqH19yCBejrRe2k3xWnH44l+5e36WXOH
- y5XHrx1L
- ZUiXNRk6EUUdGmnhMdVZrKrOCGSiOObkodU9FK2qrBqePfjDA8bO1FHMp2aCuVIyjeRgGq6KQAAmugQiBSqKVdS6ZM1smMDE9ZVH3kepdoU6jO0ohRBPs63X1tNkB4H4PgooXqa1hSvfbrCytCzQob9vg9inebJ3rZSRYOSVXemX3/sJwPgit2UUZCYQodCoH9D8zSZa7t6HS0fT5uc9r3QcuLhF0vEvfdOve7RvhqQvugSLBRQegJfQgBH4VXctfd2eIxjgGVS1reZvdVy9bstyL1rSqBujZrY1UOiBVmz2Px/DIClV8ucCeUeSgOmbPaFAsjuCJCeqr26Kfs/oru8jk34stjIp6VvvElZJ8EuPE5zo=
+X-Stat-Signature: sa66w17ozmekd8k5968z15u6zong5sdi
+X-Rspamd-Queue-Id: 266C1140005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788792610-162240
+X-HE-Meta: U2FsdGVkX19LMDEBAGKgc0eq7PSX4CGkE9MIoiEPsTWh1jq4Ttsk9sRmkq5I5539SnS0EfhlhnOFrzOfAC714H3NpWnPgnpBvG+E/EijMbE099xb6eHERFCjRDqicG06YTJjC1KxAnBOTjjw4PpU9sCBxBAfBiuZc6I6vOgvjtZkr/SyQXzzZaRTiC0PN1GG3hqQw+YFJWVyJ4k/46XgEjxecH7gDgAFEH2HKKXoPoE7Ialy/4vFDXQUkOhES8uKCL/jzXRms77NVbrqkN86yzTTKHL0BcWfzRP0aDRmIi3NKF/K9qGutotzyAiXbvbsXHATpcNhbel/q1RKwbx/ugnkAxIUvk02BnxecQxEq2UT4D0HSBQUr44Od6vTgFGBAG9+pjLlA8FONsaW+TeXi2NhkX8nB8cnaJV8WUIsL7iQUPlJj4g248/kQV1OYiA7ri4Xv74EwMpw44EFGXgaCg1iRmUNnIOunzNznowd39ik8xWkHOKLQtx9iuDDeQ8D/QXq3ifzfap96ejAJ3kUUcqLXH2JCtFQf2ZjfcIE33frEMapUfu62USPt5bniQ5TyKf4VHd3H3vQ5E0hvIzCsM7DE8CUAa+IZrQoH2KIHl4wuJLZSmB8CrdyIN0LB9oNIz6SBmXb5CbKsgMfnf3gn+33IZLx5iIhFecQra/zjGgI5oHRyqCf2pY0GWKcGZdYxAiddzJ/bx2EuakDoDz9FPAos3z9gXeBVisiUdgAU08IeFsvUXWLmFluvDI3ahzLItl7hIINNSau9k/WoejGtnHkPHh+hNNNRUNCttkj9ugtF+W42tUd8uhSlTOUmJfaE5E8GsGVFFeD9GNLv51qA7FnJfhVPIvgUwCokjI9N6eLbQnZBgwAX5MeVe9wn2sZfjU41Hwt1m8KDVYT+VhtFn8NYnDe4nQthbFGcfnvrw/fOjV3XoUAO6tXfkZwm+z1Qkn+r26xW1KQke8u++2
+ bb4YDo34
+ PDupmT5eWd5r/VgXB2T3ZRoHlzlpOASQ9CmlAOp56w27v5Kw2+V74C+LNxDOwGiWj/+v+tBJKaW2Bys8JuH5WX239NHzi1D6u26R9g9cmu1MgBudFAJ2VJfdfW7EZi8ZhUFcA4mXzftZtB+52LlcReuuI7cyXXiL1nBpa50s/5+PgQ0E4xx115HMtHuBpeUHQKmYpLZ9qNKFh0sb39sVjX175d7/TyhLEy6B5enAXhN++bCVKXOmD1LPiwj2unJ/2MLxPlW/gLiLygp+bAV2ZuR8dzDOtbYKK9L2mGgAQlUfjs0zWV2sSmjcMHPTUoJ2pWUQqnemILisDMxMaHstroerArMbv8OUY9zS1mB2jy7qHUMdh2PqQZokNgapohwb158GqGFY566nwzWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,56 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 16:36, Mike Rapoport wrote:
-> On Mon, Sep 07, 2026 at 01:18:42PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/7/26 08:03, Mike Rapoport wrote:
->>> Hi Xueyuan,
->>>
->>>
->>> And I believe this is an historical artifact rather than necessity. For
->>> configurations that allow set_direct_map on arm64, change_memory_common can
->>> update direct map too, it just need to be implemented there.
->>>
->>
->> Are we sure the other architectures do what we want in their set_memory_ro?
+On 9/3/26 13:50, Sarthak Sharma wrote:
+> __gup_test_ioctl() calculates the end of a GUP batch using:
 > 
-> It's a zoo right now :(
-
-Yeah, that's why I'm asking :)
-
-> Although most of them do.
+> next = addr + nr * PAGE_SIZE;
 > 
-> But we need to sort it out anyway because of increasingly growing demand
-> for modifications of the kernel page tables.
-
-The question really is whether we want to use a single interface for all page
-tables.
-
-I quite like a page-based directmap interface. Other page table areas are not
-necessarily page-based. It also expresses which types of operations we expect on
-the direct map.
-
-One could, of course, use set_memory_ro() internally to implement
-set_direct_map_ro() (and similarly for other variants); but at least
-set_direct_map_*() would have clear, well documented semantics.
-
+> If nr is too large, it can cause next to overflow and wrap around.
+> If it wraps, the next > end check is bypassed and a large value
+> of nr is passed to the GUP call, even though the pages array was
+> allocated according to gup->size. This can lead to out of bounds writes.
 > 
-> I started something here:
-> https://lore.kernel.org/linux-mm/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org/
+> Also, when fewer than PAGE_SIZE bytes remain, the calculated batch
+> contains zero pages. The code still calls GUP functions with pages + i,
+> which can point past the allocated array.
 > 
-> Now that x86 CPA is nearly fixed, I can look into the next iteration.
+> Calculate nr by taking the minimum of the number of pages per call and
+> the pages remaining in the address range. Stop processing when no
+> pages remain and calculate the end of the batch using this bounded
+> value of nr.
 > 
->> Having a dedicated set_direct_map_ro() with clear (documented ;)) semantics does
->> not sound too crazy to me.
+> Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
+> Sashiko reported the issue fixed by this patch while reviewing the patch
+> "mm/gup_test: report actual pinned bytes". That patch has been applied to
+> mm-new. Since the two fixes are independent, this revision contains
+> only the GUP batch size fix.
 > 
-> It's not too crazy, no.
+> Changes in v4:
+> - Simplify batch clamping logic as suggested by Kiryl
+> - Don't call GUP functions for an empty batch
+> - Drop the pinned byte reporting patch since it has been applied to mm-new
 > 
-> Still making arm64 more aligned with x86 and other arches that update the
-> direct/linear map in the set_memory_ro() seem a good thing on it's own.
+> v3: https://lore.kernel.org/all/20260901083452.115365-1-sarthak.sharma@arm.com/
+> 
+>  mm/gup_test.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/gup_test.c b/mm/gup_test.c
+> index 185ba3bb8ed1..1b64e932c4c5 100644
+> --- a/mm/gup_test.c
+> +++ b/mm/gup_test.c
+> @@ -139,11 +139,12 @@ static int __gup_test_ioctl(unsigned int cmd,
+>  		if (nr != gup->nr_pages_per_call)
+>  			break;
+>  
+> +		nr = min_t(unsigned long, gup->nr_pages_per_call,
+> +			   (end - addr) / PAGE_SIZE);
+> +		if (!nr)
+> +			break;
 
-Right, but I'd much rather user set_memory_ro() later to implement
-set_direct_map_ro() [initially on architectures where we made sure that it
-actually does what we expect? later maybe generically]
+Can !nr actually happen?
 
 -- 
 Cheers,
