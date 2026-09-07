@@ -4,161 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A84C8C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6408BC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 09:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EAFC6B009D; Mon,  7 Sep 2026 05:24:39 -0400 (EDT)
+	id 4F2FC6B009B; Mon,  7 Sep 2026 05:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C25B6B009E; Mon,  7 Sep 2026 05:24:39 -0400 (EDT)
+	id 4C9E66B009D; Mon,  7 Sep 2026 05:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B12F6B00A0; Mon,  7 Sep 2026 05:24:39 -0400 (EDT)
+	id 407456B009E; Mon,  7 Sep 2026 05:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C3F96B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:24:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A8D4F1C0B9B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:24:38 +0000 (UTC)
-X-FDA: 85186431036.27.6FF7B2F
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B54DA140008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:24:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BfpHtGtQ;
-	spf=pass (imf23.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788773076;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E3A66B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 05:36:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80A03406A9
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:35:59 +0000 (UTC)
+X-FDA: 85186459638.14.EF76A6B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 50D9B120008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:35:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jv9i7mdD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788773757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfGjfP8T35WEV6rGIAsKY4f5Rwo6my7dAG0voowddxQ=;
-	b=afkX08Hdiktq3EuILPJsuwkqHWaDB6Td78WUkx22fe/LptgLVfy8VZqV21DLZZps9/5uUk
-	zX7yXepDR1TBi3oL2d5USGlXD/UB2i6Rp1DlKFdYVP0fLn6c99/wWl7rjx1/hRKDQzXDPy
-	ru3q3/GECc4SGSij5nvhxMZDHMg1WXI=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788773076;
-	b=R2JEpog0NPtFNkMpR07B6CAailHBfG8wK9XwYZqL4pjm3cC15g7kZrxrx6yxYZFVL3dhmQ
-	bGMNxi2Vkp75lIugmujQcMs9fgc1l8o6Ozl+Byt6AxReeuWcI8u4NTzPGOYPQhgCzI4Qbx
-	DtWBinsBvj1hagS1pFLTfF9WwpuN7cY=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BfpHtGtQ;
-	spf=pass (imf23.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48436251906so3779625f8f.0
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 02:24:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788773075; cv=none;
-        d=google.com; s=arc-20260327;
-        b=av2l3FvOCSeEnjCfkc7rTdiEXh6dfY99e6mGjuCPEJrO5RHOLCRkdfGWIV4AdEKRuq
-         YXSDndGd9hyR4l6RPCE574DDNUS9ftPneXi8CE2mLEfk1Z0IUT1m0lQ2W/QB5DKqsNxN
-         w4G1CthrIAtjfJgXJ41PU7jkMvtdEgIKE2/cnh1ChwZ9MyQu+NIPYnUkS0ci+d8Tigkn
-         q+OZ8bnORFSti5F62u66X1dkuooQKFN2T/drnPhR3ejwinXnsjuG8yh18RRtZRc877GV
-         GmdgebthT76Hi6grVtKCPi4XVmtPiW4Va8yHRah+0JF7Gudz5d45zIobl28utshuh3my
-         MWpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hfGjfP8T35WEV6rGIAsKY4f5Rwo6my7dAG0voowddxQ=;
-        fh=EaP9VHj+1lgL6A6YjnGJf40zez8FitLK+qIzwLMSg4A=;
-        b=sP1cSDyn1LE2twIYMRf/ZLVauwYcXRdvCESPhuYpyQkMf+4i9L2DrksVFxGAK6lfIx
-         QAfSSghu45M+K4WqSETDJxyMGM+Kt2S8T0csQb/CAtcdCm7aDE0Vt4p/i60R0HwfMVMw
-         z6PGhy8dviNPX48KxvC8XznpQj6e70r1quq2sNmZHiKfjP1WopB+3Qdn++DY8Lo/L2tR
-         5FCJY6TnbirwYPHYteDUxCCAGjJTzK8BSgThNNT3J5jGs/YV080SJ7yWAPVW9bJDusJ9
-         98TpRakpMKKInUqoz/niq8DRAfr0dxar79yD/pT15tlZ/d34mqmoFpXK/W3vKZkE8p7G
-         PKxQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788773075; x=1789377875; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hfGjfP8T35WEV6rGIAsKY4f5Rwo6my7dAG0voowddxQ=;
-        b=BfpHtGtQSX/Wxp3E616F5aw1tPmQfZwL5SBbpsppqUgbZITEp82FfZ60K9ubvV99gC
-         Nv9a0yOWz8Xa2qDRr2N8DEDyOkM2jXiOmJGrkVmA9wqlu03bcZiAiOa9vWQg5peP8BWC
-         xwUVXXKWvN//7CHh/zlODBdQ8spPJ/qWW1wcieXa7dvjFyAGXUqsbwr5daAL6otYOrn/
-         u7ioddH383HEAhR6ZB9E94KpXjrWNBOsijm/HbkiK69rDZdZr9jklQh2Al2CRfsBYWKg
-         qHVi1JRi5ZdU46aqDwUrsZdWjVmYqeJTDKLDDZYwyZ4+Y6HYwdSa3+XcoJup+6hQRHZ5
-         o/0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788773075; x=1789377875;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hfGjfP8T35WEV6rGIAsKY4f5Rwo6my7dAG0voowddxQ=;
-        b=UQVVJgJtKBjq0SaMRiyjZWRoAWaldfC0lpfy4f/4yYJpcnlLdS0xW5R1+g1EJzRQl1
-         ITsltrEgZDgILxCGWmXqZWJqnzK6ltkXfox7Y3CBTAVR6h2UxzQTgOWrpYKW5LbOdG/U
-         6zO+zXbxBM625zyVv91n39HSGlfnL5uYOzt93CTenFexY9BVragkSQ0fuwy2RkSR5xcu
-         VCygh9FXkTKIFmwOBbUQ9qLSrpwiTtPugV/bu+wQF6oS5UtGni+a4w7zDpnGUA8kqLM4
-         qnAcmrytaqxlYaEVT5ax1ukCBM11hzqyzEVnCtK0cR3rT302UTjQh5DjwvKThg/GbSbl
-         0tiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzNMp5FTEi9WrOOpWNfDDJtGOkQJPLyaSjEEi9PnXHY1vE2wHT6YOkA9BgkP/p3wgG3J8CLxDiXyA==@kvack.org
-X-Gm-Message-State: AFuF++l+ITKajUDJF1MweGULV6jUnD5Qr4rc2plqPZNRvU9v0dxVnauC
-	M9p5UilXBqTFS6oV/i3l8OI2eqWyOW7imw7qHbRSfn8tW3Qc3hYcfHbdjhV3lcTmnJeS6Q2wnhf
-	IY3mqpqqnh/9qFjQjxOFIpuXOJ59kCHYLLLcNYyL9
-X-Gm-Gg: AYBFou108Q4+5etwZEuv/qybu6cL9P//Mi14rxTeGeTu2MxPvZnIeDFzFREZDbV6WUk
-	qaNLuB7O4PEcTqoQ3accVMehTV4YidCuVy/SkY6sHV1EzGfM12n94OExSeeOnRNIz9+XzaqwVJ5
-	h2xTWGMTm8uqCQ/GKRqs9nl5l2EPU3X3SXKE9XkEAwp2kBsHkYaUCjPiCLqDiYCps2kbwJ7eRAT
-	hOAQ0a4OlGFqp3N5hsaSkKyFjkbpioxl6W2HzmWBNxC3wAvdoVrAlHPxGt9WjVpGIT+XT03VcqM
-	IpHV8fQ8Quc0RGRPGPC8kiHsXVJoCUUUMwH9/gIHJV9uoNC+NkRuIizx0/C58/cRtd3Hs3k5rzR
-	PBLoTCB+XHda7fr8+AtvIbUnWYyBxAjM=
-X-Received: by 2002:a05:6000:430b:b0:485:8ad6:3752 with SMTP id
- ffacd0b85a97d-4858ad63a6fmr37026021f8f.5.1788773074197; Mon, 07 Sep 2026
- 02:24:34 -0700 (PDT)
+	bh=+1OruMYcQA77jLKl8fk/VE7hjZNXJ6hFvLeuBJHiyjQ=;
+	b=tQxWSHpJ9+SNJEtcQicEva6B7zyqTUFGGOm6xe+cap5cCLHlJMgtXhWgq/a9UH+UfmeN8p
+	odiQnlyOTcnYfMdVHGgK8WJ56kLgdPgFNdITX4andwSKLocY4+IIsreDyQFkH2K+q4aCWU
+	WN4Xi1w22GS19WPTCzh5jfAmM8TgjxQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788773757;
+	b=0sO8PbfY5KCCfcafDfHXW8dAHTIgEvAcMcsml3WwA+hsCMb6XIGkx8gtFrH1dUXRxTrmRj
+	nH2ouLaaZGy/MtiRF+gcSrq/zM33JSMJT+X0McHHyr5h/eAcimeAV/Xm79Y9CsXj7YREfZ
+	ofOhX29NrcxOUXeUXntuIS9CQuQf62A=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jv9i7mdD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788773756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+1OruMYcQA77jLKl8fk/VE7hjZNXJ6hFvLeuBJHiyjQ=;
+	b=Jv9i7mdD649mfE/9olGdP+jD0BCkOBZiBYjD7wlmBi4jjFH5Tggp8enVm3FF2ZZYBm86u4
+	zMyDszNTqSGUjvAPufQwDJfHh+2BoKGTnzmpTsLxuutbwaT9zsncgjBEfQIFJGZtWolgNI
+	Uffbz8m7Lhpva3miKTT1oXdyljV2+6E=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-456-F22W0QtZO7WXHkUBv2Umag-1; Mon,
+ 07 Sep 2026 05:35:51 -0400
+X-MC-Unique: F22W0QtZO7WXHkUBv2Umag-1
+X-Mimecast-MFC-AGG-ID: F22W0QtZO7WXHkUBv2Umag_1788773746
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DB2D19539B1;
+	Mon,  7 Sep 2026 09:35:43 +0000 (UTC)
+Received: from fedora (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id EA98D1955F11;
+	Mon,  7 Sep 2026 09:35:22 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  7 Sep 2026 11:35:43 +0200 (CEST)
+Date: Mon, 7 Sep 2026 11:35:21 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Marco Elver <elver@google.com>, Ye Liu <liuye@kylinos.cn>,
+	Tejun Heo <tj@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Yi Tao <escape@linux.alibaba.com>, Michal Hocko <mhocko@suse.com>,
+	paulmck@kernel.org, mingo@redhat.com, rostedt@goodmis.org,
+	jpoimboe@kernel.org, mic@digikod.net, tglx@kernel.org,
+	akpm@linux-foundation.org, david@kernel.org, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, rafael@kernel.org, gnoack3000@gmail.com,
+	ljs@kernel.org, sj@kernel.org, rientjes@google.com,
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org,
+	frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org,
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+	pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org,
+	pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+	babu.moger@amd.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] sched: introduce for_each_process_rculock and
+ for_each_thread_rculock
+Message-ID: <ap6FWZ9FYjkFKoH_@redhat.com>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-2-ye.liu@linux.dev>
 MIME-Version: 1.0
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-4-490735672187@kernel.org> <ao2WubjLtDuHvRzx@google.com>
- <DL894TFXM5AT.2QOXN683UKXIF@garyguo.net>
-In-Reply-To: <DL894TFXM5AT.2QOXN683UKXIF@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 7 Sep 2026 11:24:21 +0200
-X-Gm-Features: AcwNN1V4plkowyMHAsnIxTQwxzR-aYAz331pg1N8okzwNx7uKX70uWh-YG4Yx6I
-Message-ID: <CAH5fLggAMfBcxprKJxs4JbieKadC_mKg4B0xNETOH1QUi72UGQ@mail.gmail.com>
-Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`'
-To: Gary Guo <gary@garyguo.net>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
-	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Asahi Lina <lina+kernel@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260907081334.1152889-2-ye.liu@linux.dev>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ToHy1tTQg6w-3HuMgiDcpa-6UEgDn0MH99HKqw_A648_1788773746
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 50D9B120008
+X-Stat-Signature: 7bznpimisskw5csqz5ggdpdmnr9ejq9h
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B54DA140008
-X-Stat-Signature: zoc9mehfp4jqsciduxuyonpmapwg4pxx
-X-HE-Tag: 1788773076-829297
-X-HE-Meta: U2FsdGVkX19IMUMLzyn0m01YQ7sjR952gMwmE8lzegCyIWHydkqalVBboi/PvmvkjNQhyfpAQQGcmizH7oWtFweMnVZWEhKpZPFw3IHXe5N+Qv5NFB87LrKaaz3vC9r7zoyHJrcSI+sDgSZYqFzIMiw0ABgl7WeBIxUQnKFsJgQqr/hMh9yS0PMa5GP9JuRG7JqWdqmuWPSQpP5WxmA5IV8iNm1cqX1P7e63IzYx1GUG+nEO3hvhgswjB89G/pwHArUYV3F4BgBvYU77LIHpeb6+/ltL6R03CQ4ejnp1RDQCR+5372EIEDyVlzy9GFBQmohL/pKaYQVyQfzPZ4vnTssB10tYqOz5r6dghBQ9Po10WF8MWvsCcYwj4z/vVveIXdgexDTiP8/HzTeQXkw6Bm5sSgkCUo6u2XP6KGq1CrLaQPuTiy7xbUXeQkSF1XVx/B6FBD95sH2pH63Q2Ixh9mQktxlU5xOZu8EtNSChqoDwimYgMNVsaddVMnb1E1fdm2jEEl2+3xb2jUQMqIS0gQCDn8WHPMR6kW60MusUispTiTPKfbMZm89ueFNBLcIx/VGLsRLRx1GB2o1dyX2WduhCvIPM9TBqyw8zRqNSJIdVEKnLfZsdLxy6HiuDFnLy45C7tRKS4ydGUo+Bf4hSB9FhmHrEmyK2Dc2jLqQl8yE4OdltNoogYbPM+pcoE0x/aqcxp24XLa1zCRfK1na0Uza1YmyAI3aikS+XKywDy0MGUr+CGrYV9czV6ZY9fqVR5V9FG2GRrG/QhV5ANig9GoojinQIlKRXE8O4Lekt9xelBVBFh9r9sFFx6BTFEabbGwAv2tsZrkVGDmZE97XKUs3idyFH8LbllSolzdEKAuuBXKOo5qCesmsM/tcSCUL0kkoSO3X6cpe+Q93i6/WT3TbO3dq8VzeN8+8zrdBndUtizwny6QUG+A9ha63XUxkThVvnzutcqXgzKQx7C/Q
- UJCDpF49
- bQJ162ZqT9nM36rktbX2W/9c6LsKmJYOvwXQLkWh2QznLdzX3tnmzavwSfFOdHVg9zBRW4vyS79gqlmPIdUi4VE/cDg0xMA70ZHqSF7Gek2vCHeaU6LtIyyR+KutwCjn99oFUVeVIx3esHLsUkyw7E4Eyr3t1vDt/NN4gBRdp3hnDOpLtW3RW7KEgaMlM2lgMMu0wyKWYnVuiakTWI7sdTBVEQN8PHRDlyX4cOE/tKzKt/1NVx6+KrZYBMTpxcHxgjEJWsLPcCaKkIr91tW2i9I56r/zK/lxj1GVPpn7jKlPnoXsjj7rScJgTTGSZb/mvoTsNjnDJ6jpMRrav8OZuHVNuj71bckWJlOELopBvsh6uMY1zP2b72NF1N1cATsP6Lr46au+soFX55Z1Z9K5ENA0dP15IU+xbGOua
+X-HE-Tag: 1788773757-358907
+X-HE-Meta: U2FsdGVkX19SzHstKYR6SlHCzIwnPA28CSE7uez62L0hNDQl708HWQOEMUwrr05mCmzSsnSoRgwR66U91hFKsPMKpKPBf641EsaiEohVkKUEsQWA2ppIOnMMl21vHwNU5OUdeKApR5zig1nSQJ2wL/2czRx41xkp5N73tm6hQ9/qKEs/LdtrMov39oIM1YX3wsb2lTYughUfRFQO8t69zwkxQyM4+TwmJ1+vI1viFhhEgjua6OUo41MV0HKchstWQlTBQnkCYmcO6FCSP8zOwO6LC2TJUpK7W6I0XhMzgCQzcANdR5Cm7jRr6swegJAZWgMm9zpdFDs4xS90tyR5qb9t0tBbZOZs37hWawEs3yAEvPw0embikYS3/KZZdf1NoxuWKvL/8UmmnvzXRx9yk4HO0eqR4QmLUUeB7FGCiT6BFH3g9bLzNzT0Gv8UpzjCUPKsEBMy9sq/X4qOYI5Oedt0JyXZSGyomSm4MnoC1/A3/wR4VOUsUxI+SqImV+JMlUEuMEXFN69V3LYpRNpTH9qlGpe8eSp26AiagDjERNIRL3vbJpHHOUvaySBtaP1vkQOdVKxzN+8/S+DwaJye/KcSCaJznt8a3p0P5rtfRZJPnKs50+3ztpEPIUsHC5aOjfBLqEILcOwRpWA5G7pGQJiDuM3HxusVjSC5fMMrPsweF87vj5fPaY31bToUuqRsQ8rKn5MCiYqos7t+UMQS1XbBrFwN/HY9KvX51gTTADOJ2Y+LpX8eg4/e9ScdFWlaq2n8XTT7Nj/BMYF3RXlG8LjnhSGh4wCsbU/BSQwmedxsWapEiJxxRTuekIlu+FSorkErQNuZSYhaFlCCO5ESisqb7E0dO2+3EIkF6XHdgKj+LjN7Sc4/ZU8FNVLIii7gqYQQA1E9k7yCZ00f5ilRIU6mho8CV3IvaGd15VwlBAIcymCegIgfDWEdXRJKEDK3x9zhviat3pe2PjcU1Ct
+ 18u3CJd+
+ tK8YEoIhj3WoRg/rfMtGKorA2cigA4EgafAhWsPSMN8KBFiOUw9qjaO3G6qErsg1JMCdXUh0uyfoYZhE+Uds+7UV+xuAOzp6UoB89IPzk3MIQ2Esh/7Q9IUFJOqC4Y81ItqfimfTN3vx3UKtj0EDRoeBPAHxgCunf4Nw7yz0WiugPpRL3H4JU9Sdsuao37M2orr/DAANigYGT7aIcVZ7tBvD5jGXQodbVH8F6IBuAda+3idTuSbEL3+x4/eGN0rZ0BVDtMgMpug8V0uhQ9lMAsREiOzrjc2bcIanb4gBQcoPle7SpYGfBd5y8rVAHneY2nCU9PvVf+z5oDuebLy1lWWLPASju9UU3XlCzdGBVnnwUCnpp1qSAuw/MXXE1+xWz8Wb15srMUOJ3ULcM5Dg/eYS2eGmAQ2rDRfMSSNYGJ8rJwDruU63bwsyhne+q+zQZF8wBspBPVktDoc5rp5VMkoi2yV8WwvG0l6R8T0huUi41yOopENmo/s64SmWGXI60ChTvrVVh3FoYk89QXgF1cuvdlSiGO4yLeJesyje8VrjwmKdn9oEQy7vToA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,44 +134,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 6, 2026 at 3:02=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On 09/07, Ye Liu wrote:
 >
-> On Tue Aug 25, 2026 at 2:20 PM BST, Alice Ryhl wrote:
-> > On Mon, Aug 24, 2026 at 01:17:56PM +0200, Andreas Hindborg wrote:
-> >> +        // SAFETY: We just successfully allocated a page, so we now h=
-ave ownership of the newly
-> >> +        // allocated page. We transfer that ownership to the new `Own=
-ed<Page>` object.
-> >> +        // Since `Page` is transparent, we can cast the pointer direc=
-tly.
-> >> +        Ok(unsafe { Owned::from_raw(page.cast()) })
-> >
-> > This doesn't satisfy the safety requirements of Owned::from_raw()
-> > because the page may be used with vm_insert_page(), which increments it=
-s
-> > refcount and causes it to be shared the vma system, and this occurs
-> > before Page::release() is called.
+> Introduce for_each_process_rculock(), for_each_thread_rculock() and
+> for_each_process_thread_rculock() macros that acquire the RCU read
+> lock before the iteration starts and release it when the loop is left,
+> so that the RCU read-side critical section is scoped to the loop body
+> instead of an externally managed rcu_read_lock()/rcu_read_unlock()
+> pair.
 >
-> I suppose the existing vm_insert_page() abstraction we have is already
-> problematic, because it uses `&Page`?
->
-> Maybe we want to change the API to use `ARef<Page>` so it already has to =
-be
-> shared? Conceptually it takes a reference count from a `&Page`, which isn=
-'t
-> possible because `Page` is not `AlwaysRefCounted`, so it needs a `&ARef<P=
-age>`
-> to be able to do that op.
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
-Honestly, the problem is the safety requirements of Owned::from_raw().
-Pages have a "special" main reference, and free_page() does more than
-put_page(). It even does something when the refcount does not hit
-zero.
+Thanks, I personally like the new _rculock suffix more ;)
 
-The correct behavior for Page is to allow the user to hold one
-Owned<Page> whose drop calls free_page(), *plus* any number of
-ARef<Page> references that invoke put_page() on drop. This way, the
-owned page controls the special drop codepath.
+I see the comments about indentation from Lorenzo, I am fine either way.
 
-Alice
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+
 
