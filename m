@@ -4,188 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 632ACC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 393EDC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:53:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BDF76B009F; Mon,  7 Sep 2026 09:51:28 -0400 (EDT)
+	id 43AA86B0096; Mon,  7 Sep 2026 09:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56F316B00A0; Mon,  7 Sep 2026 09:51:28 -0400 (EDT)
+	id 3EBC76B0098; Mon,  7 Sep 2026 09:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4886E6B00A2; Mon,  7 Sep 2026 09:51:28 -0400 (EDT)
+	id 2DA896B0099; Mon,  7 Sep 2026 09:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1736B009F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:51:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA419C018F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:51:27 +0000 (UTC)
-X-FDA: 85187103414.08.5D2EAF5
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 361FEC0004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:51:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dbBKbIwZ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED52F6B0096
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:53:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80C25160188
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:53:01 +0000 (UTC)
+X-FDA: 85187107362.20.AA61AB1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D70EFC0003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:52:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDBzCLAi;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788789180;
+	b=Qg0J55x4CmEWju3cCqRvdTQUBb1PQVa4lNnegH2Qc60SWMw/A13WqMDcubGKE+gcLBjrUv
+	kjPMsog96HdoKgvExPiX2cKuEFA0tYDophmcRF2FTf6WBvQZWVWLMR3RBjBDk0pGqVySDt
+	eYMbeNaIe1AmLpsADDybkt3qIzv5B24=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDBzCLAi;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788789085;
+	s=arc-20220608; t=1788789180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BrctOc7+0ilqyZJzn0TSyruuoBDDl/zEMcp3J+ITiSY=;
-	b=c3+V8CYelWkRgxUE/h5JfY41pGuwVwJOh4AbtubD/Jw9mpzgK0uT/aaBPhAcTOAfN5KW5b
-	rRCf2eILvrNaWpMpOHApObK6Y3hhFKkY6MqN8ypj9Fz394V/WPGXkZlWiAcR/kOwWc7AiJ
-	qIbcIb38YzFrzECWoyF9LHzsn9qzd3o=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=dbBKbIwZ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of frankja@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=frankja@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788789085;
-	b=sE8vCza9ZPl0RphIvjehAynZasaAIjZ3IqItibXI9F5QrRdQ3PdhNEQpdMQxHCFDwcGdxt
-	KuYo90jgTZmmoBC8QvQdB4BK2Y1wLSP8uBYWuhWbZX4Dd815p9yCnqgeKRmmuEI5BlYU7E
-	K8BbX4M2BaEYjTHemf4RcfbAJ03t4Kk=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687B1aFZ1784880;
-	Mon, 7 Sep 2026 13:51:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BrctOc
-	7+0ilqyZJzn0TSyruuoBDDl/zEMcp3J+ITiSY=; b=dbBKbIwZ9oOMAvGKkqzu/5
-	FKT+9v8bJnP7/nTIBM2GYUHkMca+CDHJffJlLQKMJYwkq58HTowGlIOJYxmy9uwi
-	uZT6KcIQo1LLO9DDJFj/J11WlvE/LrORpE+5Rcqh3JOkbFO7fI3OFOEK+fYEg1MO
-	7RBP51zJ4Zy57aLNKq1O0cJvgtWbn52rtsy/ThBmG11vDByZftmN/HvsBJoF5oCc
-	/br2nYiiK3Cjn/bOy2iMU+23IcLiXTcuY9XeWkV8f2CZI4zR9vXQPGhkmyZzriCY
-	mL9K+z3ZFbN6VyZw2QUDNWmTVSvWuzv5waw8FUMGryBXdUxwiiu3bq3Dx4XiAD4w
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbf3s2q8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 13:51:22 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687DfheT022568;
-	Mon, 7 Sep 2026 13:51:21 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gh03y61nc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 13:51:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687DpIef51183992
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 13:51:18 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE9AF2004B;
-	Mon,  7 Sep 2026 13:51:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8436920040;
-	Mon,  7 Sep 2026 13:51:17 +0000 (GMT)
-Received: from [9.87.132.113] (unknown [9.87.132.113])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 13:51:17 +0000 (GMT)
-Message-ID: <56795c4f-150c-4a3f-abcf-b3ebed57db33@linux.ibm.com>
-Date: Mon, 7 Sep 2026 15:51:17 +0200
+	bh=8AT6+S9iTHVa+rI+62Z2IdD4rNbMRLrTmmumicT/HG8=;
+	b=hFC7GdMc78WS4kcksLUR/zf7HqrrTWUWuHYKn1NRXZ7BnvKVy0lsr8lZtmVVnScQzsFVa+
+	tVg80rqvTrF2eXy22MF1UpCIOenLB7f+E9PwUuIEVJ1xIAmkbaBc06RfQIzd7Jj2sEKwD4
+	dfgLbmFCr51Qk+nxxXIzfdROyafJ3BI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0671F42A2D;
+	Mon,  7 Sep 2026 13:52:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F211F00A3A;
+	Mon,  7 Sep 2026 13:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788789178;
+	bh=8AT6+S9iTHVa+rI+62Z2IdD4rNbMRLrTmmumicT/HG8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eDBzCLAiJnUkt9L6IL4S0XQb86abqk8jAQ9dMaCVj2S7D2gd7e08Dg8wCbwJqED/i
+	 wJcygbaSpdbrQVy3JHW2E93j12cU6AfNroFMWE3tOo3kR70N1PGl7V5RBaeXpEvw8s
+	 p5mT805cYSyWgoSQaZeBynrlYFHWKeSiOHnvy/g5HZIzPZPOWpEMG2MovO9/O/2ZC6
+	 VgWtKYddrdUXpllMLYoRIcg/oAUR+QJATNndOysltVNNqtwkaJAnGdQGHXeklQKyTx
+	 2S5NboYVaU4UPlbP3HIpKM60wp1k/RPqbUuqUbXE8k4ofPWd0vnq+lYbvUUQsXzqjU
+	 UrP8M9opAgLow==
+Date: Mon, 7 Sep 2026 14:52:52 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	lance.yang@linux.dev, minchan.kim@gmail.com, lwoodman@redhat.com, 
+	kamezawa.hiroyu@jp.fujitsu.com, mel@csn.ul.ie, linux-mm@kvack.org, wangkefeng.wang@huawei.com, 
+	sunnanyong@huawei.com
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+Message-ID: <ap6ybQeSg_rrmC95@gremlin>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] KVM: s390: Replace get_zeroed_page() with
- kzalloc() for the STSI buffer
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-References: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
- <20260906-s390-kvm-v2-2-2cf6434e6646@kernel.org>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260906-s390-kvm-v2-2-2cf6434e6646@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZDWVVP6yHtSLSEWBsTZ3gEZPeowrzNea
-X-Proofpoint-GUID: ZDWVVP6yHtSLSEWBsTZ3gEZPeowrzNea
-X-Authority-Analysis: v=2.4 cv=DbEnbPtW c=1 sm=1 tr=0 ts=6a9ec15a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=kt7I_EveaTZZBW9BUTwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDE1MCBTYWx0ZWRfX646L0GIIOxn5
- HOOKjmtg+QPcdfls8oZ8j1cPhzXy4LrcVTdDBeke9cVenMqhoY0x+LIlxmTvufAwDBDsQq7sCS7
- PEdWqmy0KUgU4HuIOzGdR/k9KOCNPu+GzN8jiLjtwLcAtWkLc/CZu5fRubnwTmBQOILuEeLmLuh
- suifWLvYh2g0zj818Klpv0j77XB144j714ZNlpQzojWZQCcVFkovbkMpCF1KTTAvotsNT+eIU6R
- sXAHivL1BDUmGEXhOx6qhFQTqToHquXFO5FvNBRHfaUqiUMFZMKv6wJc74kT+oCiWgUAsc6uNRs
- 6ug3LS1EvBIr2yA+6/drAKXAk4bqm1WsW8IUNvuAMVD2lLH0zj89QZkBM630JpQjhZ++567YHPs
- u/mP2Na468nNMZjSddHiqI6sda9m7VaK+OV6BHoMXj8PgpWs/IzJAfNQXvqzayvqfqPsd1AaeVX
- 60AY/PXn5cl98Yz3hMQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDE1MCBTYWx0ZWRfX5O5TpneUjsv5
- ktf6C9fVax/BRL/ymZn63RVFN1XUFiCxF5QEyvpJvpmSlusVCsRcV3aTIcfwSDgLY/CYREOcu9T
- pwTZuKPJrpCopaqRCi5DM9JyBfJxazg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070150
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 361FEC0004
-X-Stat-Signature: td8agpkibmxoc1b56icfdz9o3dd78qhe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1788789084-631008
-X-HE-Meta: U2FsdGVkX19hPp1433svoCdgrpKRJKH+TysqaUtvlPXm0jxaWAoZv8jFPMVkbaVH4A50vGcCKMKMZ2N0zn9as5wub5Wn3UT2kRLqpz474lqnuXN6/5xhZtdm6aCPHLqpqyA7SZ1Bil4+u5HDDLd96fEyqTdRDB0SvZ6ot+P2Dn7Lei32Wl0nYCPd1Z1/lykMFeMIKyrwALYPnjqYDvt7FcWSYPyA9nVddJnus78rcR8j4DCMs9KeafpGdJIoF1Pt9y8KmYrBmcPfI0k7ouuQYh7oRbMv+8zMjOpGcMdzNe7orWm4vSLgG21bVVrRnwg0oeweH2qIGFncRpby47L/hnRBl21Ny3TjUJQzq7h3lcIZXTq8fuj98V64TorwY1o+PavRcglK42blJUM/Mlq3AkcGZ3GlrWrIeQ+/aidSk2Fm79RCLvd9UtR4n5GsrMBwJtAMzcH5smYIu26OyAgzBHnelAxTNwFpVs4EcfAgWpj8gp+ip4Q9sw/hz+X/B8N+gN97xrwYMM4/J/lBspOBTOAdXtNqYMiDJ0WQBh1sHn5EdS2J3WYnWaeD42ySkw8mEl0hDLh7sOw6bejGIK1C0Jc1nRmZDbCI2tkYfU+hmvaoxr7O//UUMnw1lA5lbU3ZpudSeNsqFUnn2z9IbmMKU5Tzq4ILBdMuoDT8dDtODuaewL1Bwxbz0G+u1r2wb6pU8vA8689gbeMDCduhQiqaJNR9/1hNq4c33H6+mIqYOjkqukurkN3v2CQLOGDgiMsUp0X7FO2lO1BClkxv1muBCqAE4/F4LnUYeiElSkuV+YsiDA4I9i+dlhMYC6wYgq7zYBE1BMCGT28d0Tbwd5ffxq/B8TD7ZfgjwbavlpeVQdlFlRXjJWiu4wCdnzei+U6gHAtNqaEts1F7fiQGLc1k6i1kYq5y+k4PGDFafTDH0F9CLeFgdXInuU6lAz4nbd3XsiKBnMleWVTmCqjIGlr
- XsnqNYi0
- lTcF6O4wPdndEXkcHdDKY73uLkg/qNnghcj65MFGd+QI703R9myhDj4OfrdU1uD3Tet/ZGVK3vLIqzRHQCmZNvfrBpqlXOIftxhSna19bdrUP7pAvAOD+0nN27aEra6Si5PICsIWhAyY7tCALYiZc4ouc/EEQAaHjV0p5PWwIdJU3E4tA1dBoyJOi2TQDHb8ORyg7f+33EzqO/ij/bDZXmlpQzx0WSfPNdeyQRBszRIxnm2V7MoueUX1gOWVzwtphL5y74HdRnM2wMP6SVEqV4mhYYSEBRcklc6S6Bd4pWA9FDhLx4HOeW0D8SsNyo8glUMwLqsDgc7qLBfDH2QJ/GTNyisdgefHA3Fxvuh28mcgQj/zAan/2SblxVIkYQOLznDArRwFtZyqjh2B1z8khbpp3FTLogqt7fAB966+BfgUPej5ufdPoPj0oMA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D70EFC0003
+X-Stat-Signature: idjr99w3fwhzg6gaq7mz9u3nz4em491o
+X-HE-Tag: 1788789179-780302
+X-HE-Meta: U2FsdGVkX18l+FC8RErvbg0s+8gG9mIMNinWkyNGaBPf64+gJi6vKHO+pMdOXESVnPAy2auHGFSj/XOJXfmOc83KQ7psu9x50L79dSMcdHG4Ray9jT0tvNVxaIVLR2BvKgB8XNPtM2jM+xTzrtTEL4K7eFk6NAPMuXEFW/3r2JyjQe2k2Qmz6J6PSXCadu85gWd/grICRZMl76awpONCeRJIygpS8xDFsIbQA1Zf4+5FwrDpI8LKeulZcdVPm4k/39O7bnbY1Yslng4nE8qOlDwrrrMUgYlnYxn+jSQwTufWdZ0NJB0PI1gcoLMxJoqxgDyfQNN5QFw3egTM+DXxtjdW7qRfJNbEeO+KfvWFnYsEN7KArKXFX6lM3fVB0GMBWpBv1gfbCU17bB/lUolvDMRLBDmvRk29ypp8QJZljuFjJ82LwhOL4vMrKtdVxoHfc9TAu7pTy8tTbsLtrwUMQPod9B+JIi9fI2Zum7VNhgjlGdlx/VKtAJ/2IM8dTIIR6mcWDI+ZfngYfiKqE9eYFVj7XWN12FHG6neQ040W9cNmeNNfm2SEIAUWgbe71AjxGUpaGl6aDesNhz57uyvkeoe9FjuCpGmYDQwjK5Y8uI1ArrfFGG9JfKTErjCxSy82UPuHm6PpRjGJa3elmPxnaTN93aIdWPw2r0uAkNkDBLJtNa3931yxvZEv9/veyLoAZME7khm4sXR6GpVaHtYLBcRpknflKIwmS6dSNgjh0sIgolnMRuq3Gl0+adiY+Hb+5N4LdnRoMnZYZe1HJSZxk1JBn+vGx58A3iiAkdqoL9WyWr6+YS6Gokc9z2ldeKiEFYSSzkupAbyHF/j6fR1NJs3Bqu4xvIdyshe6u6FXuJFRh0FeXm4WewWdHT+ncA8lwgJgEcuLWH/46YvW4PFtDiIcX99lfoTb/VBzdTZb6jbzmMm/HPgGVnBJ+KFNbiLfwqFlfCVttCv917SorR2
+ /OjVE+vh
+ 1jhLt6vKRb1FrWGeAvQBJr1wk8EV6O5N2eToC7PWRDaZIvVU/7fN/nWi1g8CB0kAsupba96c2/K4fNYxw66TXk28KCbbkXYURPSvgSYU6taifCpz81YDOIKm+ZXFFb5Iig9/CqzBYAMvfDfU15bv1q2tY4STpAILYlEFNI1AOHyPCfwnNE5S+MX2jtQcgtcxkJVZqSljGiWkejTAamq+lIz7z76NsztzTQ9KBbai69UnigXTebMErijK0Y3WRTNEz05d+zh/io5lW7j2Gk9k49KuWSIDzGDhbsHbpoHPI0eNb0IFHGJaMihbnIdEvl7rVpYHuYLMzrISSQ1OvVio9DhVEkqMkvqy0rbtQtAJONSo/rmiUgwYlJaehCJKeGpoZq5AHG4EL6fGPefKlQ5y0DtwPD6zOEmRXCwOCRj4kDJ/sy2k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,30 +94,368 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/6/26 10:27 AM, Mike Rapoport (Microsoft) wrote:
-> handle_stsi() allocates the buffer that receives the STSI response block
-> before it is copied to the guest.
-> 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> While on it, make the buffer a void pointer to get rid of the casts.
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Assisted-by: copilot:claude-opus
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Sorry, I looked at this on the weekend, then thought 'I should really not read
+kernel mail on the weekend' and abandoned my reply. :)
+
+On Sat, Sep 05, 2026 at 02:18:19PM +0800, Jinjiang Tu wrote:
+> On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+> anon_vma->root is stale due to missing memory barrier, leading to
+> lock and unlock two different anon_vma->root, thus leading to a anon_vma
+> will never be unlocked, and another anon_vma couldn't be locked anymore.
+>
+> The race is as follows:
+>
+>     THREAD A                             THREAD B
+> __anon_vma_prepare                __anon_vma_prepare
+>  anon_vma = anon_vma_alloc();
+>  // writes may out of order here
+
+-> may be.
+
+>  vma->anon_vma = anon_vma;
+>                                    anon_vma = find_mergeable_anon_vma(vma);
+>                                    anon_vma_lock_write(anon_vma);
+>                                      // may still see the old root
+>                                      down_write(&anon_vma->root->rwsem);
+>                                    anon_vma_unlock_write(anon_vma);
+>                                      // see the new root, never unlock old
+>                                      up_write(&anon_vma->root->rwsem);
+
+The left column is missing a lot of stuff I feel.
+
+I think you need to make it clearer that what's happening is that you have:
+
+	|-----------||-----------|
+	|   VMA A   ||   VMA B   |
+	|-----------||-----------|
+
+Where VMA A and VMA B are merge compatible _except_ for a property that can
+be modified by mprotect() (i.e. fulfills criteria of
+anon_vma_compatible()).
+
+There are racing faults on each.
+
+Now VMA A has already tried calling find_mergeable_anon_vma(), which
+checked VMA B for merge compatbility and found it was not, yet, faulted in.
+
+Since:
+
+static struct anon_vma *reusable_anon_vma(struct vm_area_struct *old,
+					  struct vm_area_struct *a,
+					  struct vm_area_struct *b)
+{
+	if (anon_vma_compatible(a, b)) {
+		struct anon_vma *anon_vma = READ_ONCE(old->anon_vma);
+
+		if (anon_vma && list_is_singular(&old->anon_vma_chain))
+			return anon_vma; <---- Other VMA MUST have anon_vma.
+	}
+	return NULL;
+}
+
+So, __anon_vma_prepare() for VMA A goes ahead and allocates the anon VMA:
+
+int __anon_vma_prepare(struct vm_area_struct *vma)
+{
+	...
+
+	anon_vma = find_mergeable_anon_vma(vma);
+	allocated = NULL;
+	if (!anon_vma) {
+		anon_vma = anon_vma_alloc();
+		...
+	}
+	...
+}
+
+And sets its fields in anon_vma_alloc:
+
+static inline struct anon_vma *anon_vma_alloc(void)
+{
+	struct anon_vma *anon_vma;
+
+	anon_vma = kmem_cache_alloc(anon_vma_cachep, GFP_KERNEL);
+	if (anon_vma) {
+		...
+		anon_vma->root = anon_vma;
+	}
+
+	return anon_vma;
+}
+
+Then it assigns vma->anon_vma and observe the classic gotcha with
+acquire/release semantics:
+
+int __anon_vma_prepare(struct vm_area_struct *vma)
+{
+	...
+
+	<inlined>
+	anon_vma = kmem_cache_alloc(anon_vma_cachep, GFP_KERNEL);
+	if (anon_vma) {
+		...
+		anon_vma->root = anon_vma; ----------| Nothing stops this
+	}                                            | being reordered
+                                                     | to crit sect
+                                                     |
+	anon_vma_lock_write(anon_vma); --------------|------------
+	spin_lock(&mm->page_table_lock);  -----------|------------ Acquire x2
+                                                     |           |
+	if (likely(!vma->anon_vma)) {                |           v
+		vma->anon_vma = anon_vma;            |           ^
+		...                                  v           |
+	}                                                        |
+	spin_unlock(&mm->page_table_lock); -----------------------
+	anon_vma_unlock_write(anon_vma); ------------------------- Release x2
+
+	...
+}
+
+And so you can end up in the verse situation of a weakly ordered arch
+doing:
+
+	vma->anon_vma = anon_vma;
+	anon_vma->root = anon_vma;
+
+And this the problem observed is that Thread/VMA B finds this VMA (it now
+has vma->anon_vma assigned! So reusable_anon_vma() returns fine) and then:
+
+int __anon_vma_prepare(struct vm_area_struct *vma)
+{
+	...
+
+	anon_vma = find_mergeable_anon_vma(vma); <--- finds A!
+
+	...
+	anon_vma_lock_write(anon_vma); <-- goes to lock vma->anon_vma->root->rwsem
+					   but... it's not assigned yet.
+}
+
+And guess what:
+
+void __init anon_vma_init(void)
+{
+	anon_vma_cachep = kmem_cache_create("anon_vma", sizeof(struct anon_vma),
+			0, SLAB_TYPESAFE_BY_RCU|SLAB_PANIC|SLAB_ACCOUNT,
+			anon_vma_ctor); ^----------------  It's
+	anon_vma_chain_cachep = KMEM_CACHE(anon_vma_chain,    our friend...
+			SLAB_PANIC|SLAB_ACCOUNT);          SLAB_TYPESAFE_BY_RCU!
+}							   so _very_ easy to UAF.
+							   Not so much 'stale' just
+							   a UAF that might still work.
+							   Or the root might still exist...
+
+How hideous all round.
+
+>
+> thread A triggers page fault and calls __anon_vma_prepare() to prepare
+> anon_vma for the faulting vma. __anon_vma_prepare() allocates and
+> initializes a new anon_vma, and then publishes it to the vma with a plain
+> store. anon_vma_prepare() only requires the mmap_lock to be held for
+> reading, so two threads can fault on adjacent VMAs at the same time. While
+> thread A publishes a new anon_vma, thread B could finds the anon_vma via
+> find_mergeable_anon_vma() and then locks anon_vma->root->rwsem.
+>
+> However, due to missing barrier, thread B can observe the published pointer
+> but a stale anon_vma->root because the stores from anon_vma_alloc() aren't
+
+Less so stale, more UAF but you might get away with it...
+
+> yet visible. What's the value of the stale anon_vma->root? __put_anon_vma()
+> doesn't clear anon_vma->root, so the root of the new allocated anon_vma
+> may point to a valid anon_vma.
+>
+> As a result, thread B can call anon_vma_lock_write() with the old root,
+> and call anon_vma_unlock_write() with the new root, leading to a anon_vma
+> will never be unlocked, and another anon_vma couldn't be locked anymore
+> (it's count is dropped from 0 to -1 due to wrong unlock).
+>
+> To fix it, change the plain store `vma->anon_vma = anon_vma` to store
+> release, so that the fields of anon_vma are visible before anon_vma is
+> published to vma->anon_vma.
+>
+> We don't need a read barrier at read side for thread B. The load of
+
+Well you _have_ to have a barrier of some kind for this to work...
+
+> anon_vma and anon_vma->root have address-dependency. According to
+> Documentation/memory-barriers.txt and some investigations, only Alpha
+> needs address-dependency barriers and it has been handled by READ_ONCE().
+
+...yup, because you have an address dependency :)
+
+That works because, revising the memory barrier docs, the address
+dependency works on the LOAD side only, because it has to deref to knoww
+hat it's looking at whereas on the store side things can just live in the
+store buffer.
+
+>
+> This issue needs two adjacent VMAs aren't merged but are compatible for
+> anon_vma. We reproduced this issue in v5.10 with KSM enabled. The kernel
+> doesn't merge commit cf7e7a3503df ("mm: prevent KSM from breaking VMA
+> merging for new VMAs"), so there are many adjacent VMAs that aren't merged
+> but are compatible for anon_vma.
+
+How I hate the 'mergeable but not merged' terminology around this
+particular part of anon_vma.
+
+Well in any case I am replacing it all (eventually :) but in the meantime
+it's irksome :)
+
+>
+> Without this fix, our production environment could reproduce this issue
+> about 2-5 times each month. After adding a smp_mb() before
+> anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
+> to this patch, this issue hasn't be reproduced for one month.
+
+I don't see how the smp_mb() would make any difference there, I wonder if
+you just reduced the race window?
+
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
+
+I do wonder if something more recent made this at least more possible.
+
+A decade and a half without it being caught before seems... unlikely :)
+
+I wonder if the VMA locks made this more possible by (significantly)
+increasing the ability for racing faults to occur (no mmap read lock
+required).
+
+Either that or something increased the race window or this was somehow
+accidentally mitigated somehow.
+
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+
+Very good spot thanks!
+
+I feel the commit message should be reworked a bit to really clarify the
+problem, feel free to steal my
+explain-to-myself-because-memory-barriers-break-my-brain stuff above :)
+also add the stack trace from the subthread.
+
+I also want some changes in comments etc. but broadly I think your solution
+is correct.
+
+See attached patch for what I suggest for fixing that all up.
+
+With everything addressed feel free to add:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/rmap.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index d1819fd69938..a868e835eadb 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+>  	/* page_table_lock to protect against threads */
+>  	spin_lock(&mm->page_table_lock);
+>  	if (likely(!vma->anon_vma)) {
+> -		vma->anon_vma = anon_vma;
+> +		/*
+> +		 * The fields of anon_vma must be visible before anon_vma
+> +		 * is published to vma->anon_vma.
+> +		 */
+
+_Everything_ like this needs a 'paired with'.
+
+In this case, paired with the READ_ONCE() in reusable_anon_vma() (and a
+similar comment there please).
+
+Also over there the comment:
+
+ * NOTE! This runs with mmap_lock held for reading, so it is possible that
+ * the anon_vma of 'old' is concurrently in the process of being set up
+ * by another page fault trying to merge _that_. But that's ok: if it
+ * is being set up, that automatically means that it will be a singleton
+ * acceptable for merging, so we can do all of this optimistically. But
+ * we do that READ_ONCE() to make sure that we never re-load the pointe
+
+Will need updating.
+
+Actually, see below, I provide a patch showing what edits I think make
+sense here.
+
+BTW I actually wondered about doing this with a lock instead.
+
+Like:
+
+  scoped_guard(spinlock, &mm->page_table_lock)
+      anon_vma = find_mergeable_anon_vma(vma);
+
+I think that should work across the board as you get the right
+acquire/release semantics in both cases (you should then delete that
+comment above, remove the READ_ONCE() in reusable_anon_vma() etc.)
+
+BUT.
+
+You are then in a weird situation where it's kinda lockless but we get away
+with it because nobody else who touches anon_vma touches fields that might
+exhibit this kind of behaviour.
+
+So the barrier is probably still best.
+
+Anyway, adjust the patch as below on respin and update the commit message
+as requested above and think this is the right way to go.
+
+
+> +		smp_store_release(&vma->anon_vma, anon_vma);
+>  		anon_vma_chain_assign(vma, avc, anon_vma);
+>  		anon_rmap_tree_insert(avc, anon_vma);
+>  		anon_vma->num_active_vmas++;
+> --
+> 2.43.0
+>
+
+Cheers, Lorenzo
+
+----8<----
+diff --git a/mm/rmap.c b/mm/rmap.c
+index d1819fd69938..f3b21aaa34ee 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+ 	/* page_table_lock to protect against threads */
+ 	spin_lock(&mm->page_table_lock);
+ 	if (likely(!vma->anon_vma)) {
+-		vma->anon_vma = anon_vma;
++		/*
++		 * Make anon_vma fields visible before anon_vma is published.
++		 * Paired with an address dependency in reusable_anon_vma().
++		 */
++		smp_store_release(&vma->anon_vma, anon_vma);
+ 		anon_vma_chain_assign(vma, avc, anon_vma);
+ 		anon_rmap_tree_insert(avc, anon_vma);
+ 		anon_vma->num_active_vmas++;
+diff --git a/mm/vma.c b/mm/vma.c
+index 35e7a64855fa..ec4101250d71 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2094,6 +2094,13 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
+  * acceptable for merging, so we can do all of this optimistically. But
+  * we do that READ_ONCE() to make sure that we never re-load the pointer.
+  *
++ * The READ_ONCE() establishes an address dependency between anon_vma and
++ * any access to its fields, which pairs with the assignment to
++ * vma->anon_vma performed with release semantics in __anon_vma_prepare().
++ *
++ * This is especially important as anon_vma's are SLAB_TYPESAFE_BY_RCU so
++ * accessing an uninitialised anon_vma's fields may result in a UAF.
++ *
+  * IOW: that the "list_is_singular()" test on the anon_vma_chain only
+  * matters for the 'stable anon_vma' case (ie the thing we want to avoid
+  * is to return an anon_vma that is "complex" due to having gone through
+@@ -2108,6 +2115,7 @@ static struct anon_vma *reusable_anon_vma(struct vm_area_struct *old,
+ 					  struct vm_area_struct *b)
+ {
+ 	if (anon_vma_compatible(a, b)) {
++		/* Paired with a memory barrier in __anon_vma_prepare(). */
+ 		struct anon_vma *anon_vma = READ_ONCE(old->anon_vma);
+
+ 		if (anon_vma && list_is_singular(&old->anon_vma_chain))
 
