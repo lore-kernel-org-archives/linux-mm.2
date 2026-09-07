@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5477C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1606C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1AD66B00A1; Mon,  7 Sep 2026 02:03:40 -0400 (EDT)
+	id 9B9246B009D; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF2E86B00A2; Mon,  7 Sep 2026 02:03:40 -0400 (EDT)
+	id 969DD6B009E; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B309B6B00A3; Mon,  7 Sep 2026 02:03:40 -0400 (EDT)
+	id 858E06B00A0; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 974566B00A1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:03:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5DF91A0664
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:03:38 +0000 (UTC)
-X-FDA: 85185924516.15.003B5E6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 659396B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAAF7A4BBA
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:11:28 +0000 (UTC)
+X-FDA: 85185944256.25.A04B819
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0CE671A0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:03:36 +0000 (UTC)
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4B6BD1A0007
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:11:27 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QIPJIqcn;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVs8Xu5r;
 	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788761017;
-	b=iLg3H8CmRh8MQn0zhbEETVWz75OdURheNrqvLW+ptQPVqutzXEkiUWw4BG+LSe1To0vBpL
-	5E8r1v/1izPrgNAYsLQqSRa1cxOdTM6qiwJgFIMJE0UGAanLefxWj+caocDCq6+10BoAWV
-	DDvb0zRgpZv4Q0yjPlFh+EJD1VckrCg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788761017;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KWBg4m2wDtJRgYbxKBLwGfw2dBRi+ov6pvH3X93gXJg=;
-	b=ATXOuMXNxcLfDlpBNLhmtJ/ROE6pmdvDCzI3HevAQRn/7f5+odbzcGdZTUKP4pugD3Jkuz
-	rEdMfyAcWSwaUmSdiPbCiOeA4FJQxwVgdVYWPwmfAJTOjOnFykcsn8FOEdtSnfcpVekhAf
-	vM+v/azFmdQ5frUtFR/aQiuGIDjpkc4=
+	t=1788761487;
+	b=jHYrW2Vz03ofnSe9+XoFsGr5Ydx1Z+MowG4F41Ew0P4leJc5hYvooVKEZwu7YOw8VqvV3x
+	48FXyOmoSNsq0s1rFPLNjc5us6mJlAoAxzJpYvcjfcSa9mFaBYxBnVbBrCULpM0/s3fQvJ
+	Bl8klzk5m5gcYGw5Glif6m1GkLn+Dtg=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QIPJIqcn;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVs8Xu5r;
 	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788761487;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P3dmwjKWC6Wefq3ZCIghBfeiIweYofYEsPr73KhRS2U=;
+	b=iNAiJNKvcMTjkB802UhWjAoHLxCvmtLhFGxHQBDfFQAwln9mgdO2rvI8pEGs3dEeDt5atX
+	B4kJIVBd8j8x3UMHJOpKOpMKZpmWD0zgcQr2scrUxqO8dOmVo4xUHHE7HbE+QUYMgGrOrJ
+	TxaRA9IgvZkBsd+NnUud72aQFwHPp7A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63C6043BBB;
-	Mon,  7 Sep 2026 06:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8080E1F00A3A;
-	Mon,  7 Sep 2026 06:03:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4384943E11;
+	Mon,  7 Sep 2026 06:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B1D1F00A3A;
+	Mon,  7 Sep 2026 06:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788761015;
-	bh=KWBg4m2wDtJRgYbxKBLwGfw2dBRi+ov6pvH3X93gXJg=;
+	s=k20260515; t=1788761486;
+	bh=P3dmwjKWC6Wefq3ZCIghBfeiIweYofYEsPr73KhRS2U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QIPJIqcnFHP0Lub1MpXj6uRKUv0FSKOwY+sKSOczIkurDFVg8DJ/zw7OLg5EB1ma2
-	 4f0nD1HaGoa20C0MK76SEYuvFrXMDliytjO0IYEiTMoFIOq+M5I138pybc42UHA94d
-	 FOCqIBC6kJ76AIN2jWAkgAIjdaufr79vdXXUWUzVc+bl6XxXw5qNChplpmxaw0oQIt
-	 64JewSBIMk61QWyocXlPGeqiA5+54lMnNUrXjwqq2CMadvw+trfiqKrzs+JZxbVx1D
-	 czt5lT+NJ/uSVNKO9dDRZFe50OVsDUXIcboFdDYOzOx2mjo5h5nLUzUCYAY0hL7gnx
-	 asXnfjRtMbFSw==
-Date: Mon, 7 Sep 2026 09:03:22 +0300
+	b=lVs8Xu5rqDz7930qIA7wlWJw7qb10AZRIm5YTTMxjRCX2t4BjgpcgVLZXPFoE2zuV
+	 4M9SQHuqpn/loOucuyWXztqjFxihFRGD56lGccTw/1aKzhqr+FH50miDZnNnJJTcge
+	 hrFj1FJ/PnBupIUwR4OzjlZwAhRsQglnRhNbbhTtDkDe+eoDZPXiFLVvXUzM7f8S27
+	 KEdQ1IhnCiQ0qOmOch6tMR0gQjP7UBAb1uLBnTN5/9d2zn7ISWoLN9N/5bnBQKWNjQ
+	 tkjFcPJIC12n54uQoRw8+/rW2Oom44GLwphExcwF37vyG8s3lzkoYshwdmTmvDwhXs
+	 KhuinYov4BKRQ==
+Date: Mon, 7 Sep 2026 09:11:18 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	kas@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-Message-ID: <ap5Tqu5yswJrj5UM@kernel.org>
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
- <apk8ZRr6do_YAlzf@kernel.org>
- <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
- <ap05ue1pq3TgHOS6@kernel.org>
- <CA+qSx6y=OaMsvTKUbPP2DOan3Ym6c8L5z60512-tCYeUjLZz3w@mail.gmail.com>
+To: Eli Billauer <eli.billauer@gmail.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Ritu Agarwal <rituagar@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
+ kmalloc()
+Message-ID: <ap5VhownyptYcTw9@kernel.org>
+References: <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
+ <20260831123937.32255a49@pumpkin>
+ <apaF1HUtJnstuUN4@kernel.org>
+ <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
+ <apcPg_y-HsMki7we@kernel.org>
+ <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
+ <apgSCyj-h2xVc2ss@kernel.org>
+ <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
+ <3c19c24f-5036-4bbe-b3af-e5eae102f34a@kernel.org>
+ <49245a34-cc56-736e-b2b4-168c2a0b1df7@outbound.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+qSx6y=OaMsvTKUbPP2DOan3Ym6c8L5z60512-tCYeUjLZz3w@mail.gmail.com>
+In-Reply-To: <49245a34-cc56-736e-b2b4-168c2a0b1df7@outbound.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4B6BD1A0007
+X-Stat-Signature: o15cpw9d6rtaa5pkeesu5mxkot11k53h
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0CE671A0003
-X-Stat-Signature: huyn38k15jg4biszu768bnagj87rg8pg
-X-HE-Tag: 1788761016-36385
-X-HE-Meta: U2FsdGVkX1+Z2tKtwXdL7ewoBGfngscyjjVt0rK4wEI9hTi4kT6ROhsIsIFDT4bWDycGADY0K8aKM0JXmw9hoHu/h0JMJS9DM8AEgD9PThpQaeY3mfc/1f00z0LXuByt3kQ+Gd4u4vCcxIgvuY0ospxlBVujvAsEQH/vNub4JmDmyxtS49CLEmenjLMpHoS0i00EeS1iS3XKsocPkJ/B9YatCDhZ1w6+0dDxRHi4mAzyK0Ek6JLxrT3L+Zd4hXLgdjXgR1Pe0PaVKlHcOluxocYt+4N+VYhBQu2yKCx/69D9QRK2pLozFg5gVegbNt902AzVltA+IMSmL29yDYhhMQeKupi1omwxTl5ooOX7w/ansVnX/0MhYX38ZPHTmcGS+gAcoceJD85K8e26CMiXIOJhrIyg+dSwWk5Jwa5bIlTl72Vqkkjxv2jdDUbT1Ae7hgUJUdAhszUsK22Ero2eQpXAxIgY0lRFExvkQBqzkiFDiT7NuteBZluuX9CKgYZEt3F5ADxh839ssaAc31mzCwVyFM9wtuD4m3E3kxqDDvlkJvxCNt8jPXBH5h+Okd7wRtSWCCpbiDaHbtxFJSx1bnEDkOxOOmyxH7SHVPgWyqB4qMmCT5DWc4fq3kuLBs31v74cF9i1uIKpt026+N62nUFBNvn9precp5y1la6dYBleyqldO6ijorCR3I8geo1Qc1aC2sEWxsIL68HzPQfsHJMBalsH2IeZzMMA0Re3TSu2PqUpuVSU36KtS4jNmTfXNEn0ceOA1flxVa52PQpZi8jvzj2QndIAhwsrSZi9Qn+Bge2TIK59S94mH12MLx+LtmPXRCjHJCEx2PlU9wia+rqXTkQrFHGVzdFQXjrLmRAxYFQzHmu3C2TQL1mqpc70sI6ujfU5RwaSB9deBqIebvQIFCUa6WlFdTSAvVRILzlxjaZTzON33YcY357gf5wDb/yHwn2FsAz84gKBz3t
- BKiLHPhB
- RG2Z5lq+afZzEnpZXE/K+gNphuLHLT91HDOJjyRKSLPoSKMWsDlR91PmJyGwPQc8+XNJFXm7njozKm51FFGAV5Zv0sDeesvwAkHevPfP/Rv8rSd4zXBjQ6QwAtH6RPOEYxU4n2FaFe71xmYtMrw+VoWF0BRCtOu0/aTEAeAGWY+Y6IQkAQkZ/rTm+Qnhz1g2MZTlehcqsj4hHm+ZFMsoKMtWEys5dDrp9Xx6UGkaTuUbrn9EGpV8a0AGQ9eU1JYnRf/CXdZzaJHGqM3SwOtGhM5hslTLOJ7E9fsCCMk6EaIXEfXX9MqJCJsH5tgvUf9I6wk7mdvUwfR/efeavILLvWQEOooqpMjHiSZSNY9Iw4dNioT/e5XpwgRuJdQoTUE7VQ2R6
+X-HE-Tag: 1788761487-871123
+X-HE-Meta: U2FsdGVkX1+TvBM3XT9hogRn3HyqBBuwXqekymz/uv/1TmvF1Jn6yVGbt/6wJvxllvEKe4gp0hV2zMIMoUYL/VifFDVkL/vsBxM7C6Yjt3opxmGYwTqTsQQOFq1lhYHEQuv3Go86AY6d5l/8E4G0wp5ojIS/9nc36Et9UPl50OomwtfLPXBuEsccYfMuITxCB+G+5vpI7ORu2TdXp9hLTmkzKkgYVMCNJQRjm/hGx81d45wzbr+GA10DF19ywYhoz4r4GvGoeILaC08zT9Tn4jUeXx9HuzmVMQMfMbjZhrqNLawYnooemNVaFy5JKCURp1Oc3+D2lX7nBKGjySa8pLYTmLTvUyoCcEYkvv/8mzvp9pItx4qFyR3swPi64Uez8aICPPyLmPt3K5RLwNGdTsHhniC0A0E5OHTXfJbmbsZy+TwRw5VG3bkY5QFSdAwMHRpcIDs0JVQPToz3AMoKxHVj49LCIJn0ch7u7A5StNF+iaUAuNV6KFW42nbshaj9MaaJXZesFYFn/GdsuBqkQ3sAESPnUpeujpDBfxD0lmoRP7lkRdXhdASYzoeFbG13cPnXtIxmrU88GInC0olHIwIrQQlQBn13MShCE5a/qWlUWECaIKasjNl4JtOeg0CTuDJEv4hnirBfXcvo+9lWpy/kd/xb2WHX2RFo2aypuAQ6zpD+hB8KTJ72F6krzIAhcOYmOlBks+cX/OWEI6CdRm4nSJF2RktcM1aZ7fqQe2YmZjPXmzZe+gBtx64dMBwpyQCqvX8y7G2lfOBL4SpyID/5HqcoxIJazORGIGL/Cv7xK3ZfuUXYpq4J/Ef+l+FrTOGPPyznInbXxS0yzzTGMMn/Rutu/4WSmuvnFGWK72nakWbx4xk4zc3Pq3UoE2uBW2b4uRYVS2WHFe0srLQTK103rDV46fAvCpH6RLX1FOg6AUgi8cPNr7YeANqjNwZ3572e9tGEor2ZwBKXDSi
+ VUhVVxUl
+ 5FVfRo2WYasWTJqCgAB2Zn3WBRFA/qxA24FRvF2ILJ/rUExI5BrDMUD9XSWt0UfCxrJS/bXaud5DMwPenpfRUXR8cACLQIxV6SIMEJqlOxXcCFPNoPZuFWvTf3ZmSNUXPgMw4Zic7lYrA1yXIa59MpNHnlauSEGyubg7qrco8CG/W0yFIhBOMMTWDcCKDatKK4bEUIIQmHLv11Ivd7toD/oJo464FqCivBAI3qn7eN79ONBhk3afNBM4RtoIB4n8UJnJdZRUZLBpBcESP1u4dRavLSCie4tHF3HehNU+zP/bZ4aCd5KQRf45tTclAYMiJkhyiBrl5tYFiv8S5LfB4KUPnlK39K+FHvKouPP02HAN9Dwd2hGZkpN5o4ltgkQE8E5Xo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,50 +108,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Xueyuan,
+Hi Eli,
 
-On Mon, Sep 07, 2026 at 09:11:14AM +0800, Xueyuan Chen wrote:
-> On Sun, Sep 6, 2026 at 6:00 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > > > > +
-> > > > > +     /* Highmem folios have no permanent direct-map mapping to protect. */
-> > > > > +     if (!folio_test_highmem(huge_zero_folio))
-> > > > > +             set_direct_map_ro(folio_page(huge_zero_folio, 0), HPAGE_PMD_NR);
-> > > >
-> > > > Sorry, I don't remember if it was discussed previously, but why can't we
-> > > > use the existing set_memory_ro() here?
-> > >
-> > > Hi Mike,
-> > >
-> > > We want to change the linear map here, but arm64 set_memory_ro() only
-> > > works on vmalloc addresses.
-> >
-> > I believe this is an historical artifact. change_memory_common() already
-> > updates the linear map when a vmalloc mapping switches to RO and the system
-> > supports it.
+On Fri, Sep 04, 2026 at 05:29:16PM +0200, Eli Billauer wrote:
+> On 03/09/2026 16:28, Vlastimil Babka (SUSE) wrote:
+> > > Replacing it with a kmalloc() is confusing in my opinion, and requires
+> > > that the reader is aware that kmalloc() falls back to __get_free_pages()
+> > Why? The reader has only to know that kmalloc() will provide such a buffer
+> > (up to sizes that the page allocator would) and whether it falls back to the
+> > page allocator or not is an implementation detail.
 > 
-> On x86, set_memory_ro() does work on direct-map addresses.
-> 
-> >
-> > I believe arm64::set_memory_ro() can change the linear map in the general
-> > case as well as long as can_set_direct_map() is true.
-> >
-> 
-> On arm64, I'm reading arch/arm64/mm/pageattr.c, and the linear-map
-> update in change_memory_common() is only reachable for vmalloc
-> addresses:
-> 
->   set_memory_ro
->     change_memory_common
->        area = find_vm_area((void *)addr);
->        if (!area || ...)
->           return -EINVAL;
-> 
-> So set_memory_ro() on a linear-map address returns -EINVAL on arm64.
+> When I see __get_free_pages(), I automatically assume there is some ugly
+> low-level memory management going on, which is exactly what fifo_init()
+> does.
 
-And I believe this is an historical artifact rather than necessity. For
-configurations that allow set_direct_map on arm64, change_memory_common can
-update direct map too, it just need to be implemented there.
+However you allocate memory, there will be some ugly low-level memory
+management underneath :)
+
+> kmalloc() feels like something you use more for allocating memory for
+> a struct.
+
+For that we have k[mz]malloc_obj() now...
+
+> There is no such rule, of course, but this is my subjective view on these
+> two functions.
+
+... and using it to allocate struct is becoming a rule pretty much.
+
+> As I wrote earlier, this is a matter of taste. Maybe it's only me
+> thinking like that.
+
+Let's agree to disagree :)
+I think it's more about using the right tool for a job.
+
+For your usecase I really think vmalloc() should work. Presuming you can
+spare 256MB for fifo buffers, the driver can only run on quite recent and
+decent hardware and memory rates there are way higher than 400MB/s.
+
+Even the slowest DDR3 is above 6GB/s, so taking a fault to sync page tables
+on the first access is really a non-issue.
+ 
+> And as I'm not the one deciding whether this patch is applied or not, it
+> doesn't matter so much what I think about this matter. I've humbly voiced my
+> opinion, and that's about as much as I can do.
+> 
+> Regards,
+>    Eli
 
 -- 
 Sincerely yours,
