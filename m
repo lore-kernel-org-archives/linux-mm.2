@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8C68C79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47B14C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:48:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA9F6B00A1; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
+	id 145206B00A2; Mon,  7 Sep 2026 12:48:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AAC6B00A5; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
+	id 0790E6B00A4; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C87A46B00A3; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
+	id D22D86B00A2; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 916346B009F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A5C466B00A0
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:48:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16DA9140171
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28D9E1201C6
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:48:21 +0000 (UTC)
-X-FDA: 85187549202.23.D7F89CB
+X-FDA: 85187549202.24.C3A2F66
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1C988C0007
+	by imf26.hostedemail.com (Postfix) with ESMTP id 18D9C14000F
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:48:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KLmJC3S6;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KAMGLi5G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788799699;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DfEr0aIVioXmboiTfiVkLvLBdip/sDfqm0dmXwfuXTU=;
-	b=5C3ErQKKQJwHurt4DqMu3E6ldmBXznyqTVLvaBnFnoapC9BUm3OcRbd+x4k2bAM0hhiisv
-	epJxcLSaME2fHN94GQC5DUUQsCpbb7KW5RnsPMvdS0zqIb9iiL0qxGoWB2D0xACjTGMl5Y
-	UT12MCjXsjB5YRDGA0byn0h6Uwc0aoo=
+	bh=+glEgPUaMq/IVUolJi4og9sx3JSPGF6OV2zZoaC1lTw=;
+	b=JAsplcryWOQU2xJnuLd2LtKdZ15GEcL1CmsfTqlNyNY34zEN3g0nuV4sI56+hneWNDPIro
+	/HHHOBBi2R9RVJazK2Gl89wRtebGB8y2RLyGyV9ueZr8xvAIjejlofXhxIZpGl7D6STAiD
+	JhikUqptB8+Tolv3wW5IrbM6JU090HU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KLmJC3S6;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KAMGLi5G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788799699;
-	b=nPj1HQK+USUggPNU1QWfm25213h7scIvb+oveqnjPOluc4zsW1LIgUH0SLiwNvdNno8C5T
-	JtNEVk29AQDvPIZfw3diGRad3SbbBGF+fZyf4WqQadjEGEpPtPzdmwMZDiNhqUOLVIMoci
-	h07Ny0JLwK6SPm77KhC4lACjeQAsWq0=
+	b=2pckK01WrZx5beDo/17H1mfcWEhSmggl1do4NmnRFo1rHwIi13R7WeaYslSs29tfLswIDq
+	kN+FSph0Q7Zv0bhM9L61Uea73suHUsVAKL3P6NY8MwMn2gcwH2JH9WlspAVc+OR3uft7HU
+	tpqqND4Xq5+UvRhRnZe1rk/hH14Scek=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 182D9444EA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0668E44247;
 	Mon,  7 Sep 2026 16:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ECFD4C2BCF4;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9352C2BCFC;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788799696;
-	bh=BDSd5Sx099D86mwm18rAhbuJSuhw4ecU8Mnmm/h9BFA=;
+	s=k20201202; t=1788799695;
+	bh=4fCA01lVKFUQcPLwCosahsFm/a/A5bH2c66xJdLxhxw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KLmJC3S6WLkI6fhAbR7L7TT+9DfgvWGJP5xTfCUwRBbmJP1FVbj88Mb1Hi0TkvRdy
-	 znl+7zN2+dWI/HcxPgoIJz+txQjcPimA4fBkegIOQk0i6w8hsqisROH9QZkZoNbDpV
-	 kQJvjLG5vaQQgsigD2eAH0WyosKQgghUXb36QovyW9/HpYhPVm0YuBBPgrvJpeGe/T
-	 FCDWrruGEGjZvlR9lUtNxX05SaqBKfTvfgFm+Q4NdrRq10g8uOazYTAGnwBa+0198y
-	 Z6Wo+2M6iN3Bw3VMg4S9Eu6hNHSNZxfjdCB9iaQX7jlF14PlYqGMhn8E0NoxJGj7FT
-	 vvidE1bUQYLJw==
+	b=KAMGLi5GgpROMAvah1Ucb+Y+IL21IvaDpdJiE8Ul+O2TxxHOIRdxT/O/wCPc5k/I9
+	 TSqJbTGwuvG4tc4EEKCrhNi1xR/ekQ7i6l83cwWkaiXbsbU6lnwNTtf85pXrb+zcuR
+	 ZKCrEEJKcsWrZDNCqRem1AeTi+IjrHOpW+W7xvY5SrQhPoM+o86gDnjdH1f5Qof78n
+	 4bXtEfP+UY+/FufAXd2FbQVsID1H80OF22owjPCXXf437vJYjXvRnwaKzUomZkPlB+
+	 XgcI7Y/TKyezCP0J8Z5s5yCyI2vb3zcmDCpNS24XKzLstVjv82gRgV5hwpjf7Vtyqt
+	 CsjM4IcUJHdog==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8ECEC79FA7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C04BBC79F99;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 08 Sep 2026 00:47:54 +0800
-Subject: [PATCH v2 7/9] drm/tyr: refactor new_dummy_object to use
- new_object
+Date: Tue, 08 Sep 2026 00:47:53 +0800
+Subject: [PATCH v2 6/9] drm/tyr: add BO creation and lookup helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-tyr-ioctls-v2-7-88bea777df67@kylinos.cn>
+Message-Id: <20260908-tyr-ioctls-v2-6-88bea777df67@kylinos.cn>
 References: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 In-Reply-To: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -94,25 +93,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=1566;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=1988;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=evnUd0qm9ZwiYuhFDEcZYkjsD1f1+LG9OpRwEzX78ag=;
- b=DG8IaoiUFgNeMQe7P8OtUnLRSOFxuZi3gspovlvUFIJefp+Si1hZwHIZBN0xcP6q2w1y7skod
- SU6JBf12LKxAx8UhwZQ7btB/EOoS7CSkSoQ2zk9aUU0lIOE7Va2JyiU
+ bh=ZYb1XxhHAj4Uxqn92uytJJHTXG1ZVMUU2ITsdjHTgjA=;
+ b=Ac0h3eZ7WiN1yioRZwUbNwv6tjKWJCM+VnK1K8IkRgMNU6aUq+XgAgFZy+Qae5/H0qO+9UORF
+ Z5pYeSYrTAECeTmOw1OTsHafHEvs60gsXpXcADXZD4HADEuTUpyXsfK
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
-X-Stat-Signature: nhjm45b9npwitsyfw94cb33ipyguzano
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1C988C0007
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788799698-144277
-X-HE-Meta: U2FsdGVkX18gpxkSWr/C0Z5mCjV5qIteLQhqc3356DLjqK6owK+vdNZEXBcInmcLh+rroZN1WvWRoygrXeGPsL/6aR703afa5PfTiO5jpm8KwA4/NB1oaFDkEXHPaMouSB22Tj5hOagkP5qwQ3ZyU0Z95//rsix4YoKg7+J/VLW3LoCZkzfa6ufKmUPB1Trm951xwOCly2Q6D2G1NCO5pDgb8FiaFpvLOat3So9onSGygt3rJRlyUi0OKH5fsFrBCbnb+VIRQMXXFxD8UrVJuNWal27Qh4dLJUkUI51yW9qhU/lm1Box/wGJqd1cjHqnf83osdFALiLjqzY+h3OaKwauDBhwFfLH/ShJwNpS8Jzk7iPiVv9zkyYX0MdSnwfe0rEcdn+EptH//vMhEbPgTRJj9TndeRUcy2xz72HTdvL0ES4IzIcw1vZbJocwGE7y5et63yIQZqc9RUA8YZlm+loK0++27yjA2Tgep1CjYanwju6YvgmbKrUrB5srv4y4b2UCuL0gMhqEJai/gDUiInVO7qlj3jYqr5u28qcD4jTTv/DmJu/Bx1KrjcWETzVog5TXU36vCyZhhjJBAjjqz1gIB6NvSkcAQ7o+jEA1r3tDf9RbbvNxTKyOqw2tL607xg8KV58xbt844/V5SLidv5nIGNAAxJd0ay+6V4Jkqko/8zgwGfN5qojsfIkLC+l/txOr/sg5yajNruIo3hRvJ4UFyBhm0VajMCCI5WbZFLFnBnkI7WijaBnpGC9HCZYF3CHea0XwkgBiHh112W/9PT6K3ERja9ehbbhEBDX9nrUkS/nTPikuHVpKeH7PHY80S7onHLKnZIWnwlksmxmi7RaGnnmIukAyI52h+lW+ytF4r+oHHaol9j62kwVfX34EHPpsDp2jvH60dJkiO+x/UxsVld8xucz2J9JUSAdMdugo4BOM3IvKSXnNLOSXWzik4Jn62O6NNEJpRpwVqKD
- rZkr9kO7
- Ox5dDWEnbYsWRcmN2jYsHY8ihf2th7VkbhhHP3/l/rhs5ytlwfu+yp+6cyfnUqPoi5VYmB8WcjHrPk8wI3T25RhKtocrBIA0NCal+/3y7db4N0lhMuqIQX+AiQGN7p+PUqnA9uNAO++c3V2lLm8ADD1Q4vNDBT78O5EJtw0tLxAa8A55CFrpgeroqYO+zBxI6XC36VQIOWVSGOZMAvFk9AFyfTqh0lnYFH6TY4P+RcsvV+RL2K7Q9GI8iVLFo6XH7cYB3koUzVvtGWCcD4hFaHulj5b7pLwtyrFOdSGIli7M7XwY0xsUT4GsRN5mRKL1+k3xNllAKNziPDWkINqqeugBpX2Wp3rX2Tz9iJ8jOu+D3i8P7G6GgsCtc4YRwPX6HZT76J1c7JQwG6DnOgZclgJT9PhxiCGgq/VrLVzgxeo7T+5GDjV4GPp39d1M/jrRsom5vNcJJid/pxivWDt7Dl+UiiOQKvxS0BUtQAyRJsY3AmwM=
+X-Stat-Signature: f3taiib5o4ap5pfwy8irouupaoxzawhr
+X-Rspamd-Queue-Id: 18D9C14000F
+X-HE-Tag: 1788799698-812113
+X-HE-Meta: U2FsdGVkX1+YhkzpIzuVRc/g/YBMZrsfCEznaJ+Rye0wbYGQF8T9Dvqt+iI8kQ5pG5eZb2XJSFJqnMdiEZl20c8BB1S3HF+wTl2lQQxilGK2CTozC3ieYWLFRJwabDuG/CZuL12HVxpOta4nWW3tmK8UIJXVL/UoSDa1zj4bat/IPJUEA574nP+gNRusaweqB3tnlEYEDjZYXX8El724GaeKIKdSsgIssg5ddBb8FFlNscFe60rCueN5IBdp8R0Pnew0Me/jH1sAeK7FSTWuRj5w4mJxeMsGyT02xAKlLY1O5FBaJpoedhtOeX5rpYbzThcW3Er51XIP31LcDfPF9k0jynE4bJHRAUcBWdT3vKvUDUmv9Gk6DLjJxooiCQF5u93fO/Gp2nq0lyaJFNy19NE950+zOXh5QLpjN4PtI3k6NHwtGb/8BwxU9UKAKxjIHvvI6v7EOiICfdMfg+gcwMt1EHX7dVJA78rAlB21hZ0TfC84Jpcm6K+Pz5f1Q7NYQcmFyyAfF35jtR5p/TVTnm2xIzD9RaCx0UuKIW2MFa5T+dLhkL25RzwsBZ2LOwsGUM8IgfABI1VwteHmNPctXXQCeyz+SLnS/w8HE43f3wd/7YmuXDNebQVp84vdPyCPySl9gsKnTYU+dbZKYTOQ0MdDKO5y8mB7Rn5rFn/rpYYfU3nFibKTK/N8LQaWJsXDiFNc+pQLr1i3u7AN3Dsi+2grEKs2rZQzkYktLXsXFRT5nOM+wYdBOBGfdxqeeygEf2CDTsYSXzGTQB0ME02UMEgZh0v6+VgzQMYlnd8Fg64Ecth4aPQU29jo1II10I8uywgwpb1O8Qwoc1fA8uJYG25LfJmSLvpcsLVapfHmql3vYAoCF6pGK1hY//VHHnIqX04zARltNvte1gOyWpDH/FpBeivJ868FFTFhDf5gRtu8JB/u/vzsNj3DIbo4L5v9uf5l9yw3xvYPd6LbnHa
+ /Gcuvtlf
+ meWWNQFUqVd+UFPpZebMbKAxFvf0wqOWNxD+ypUayktMXae7KjBa/u4EGa64zHjVTGgEZKAaC10VHTt7A7eU99xZZWxTXIRfonGOpxpvm0H5rOgiR3gXlwp2x9k4vO+Xba3BAQWQ28oP4VA3FFSIkXqqiM6u/f67HZ4FxSkYmkOmu0esfRVWQVidEsOaP2G9fhOgxGzsgiDtKCD25VqJeuw9Ntex8swA05ec5u8delxW6cZu6KfWG1pIeBhFb4yYQ0k4fl2roWfVhTD2c3Zqc/9IoPjwHxxQ+05u0gzYaVziQy0nXRjFTq8U8eEidpXmADRfTFRVoeTKYcVEqI0AlGS6J5oQoypMgJhL9hCEzvkveHoM+cfuFaTwO3RV/oEqQAG1y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,47 +121,72 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-new_dummy_object() duplicated the BO creation code that new_object()
-now provides; call new_object() instead.
+Add helpers for the BO ioctls: new_object() creates a GEM object with
+the size aligned up to PAGE_SIZE, and lookup_handle() resolves a handle
+for a DRM file.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- drivers/gpu/drm/tyr/gem.rs | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/tyr/gem.rs | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 0e0989a48678f..2523d05de5527 100644
+index 3bf3787f5c3fd..0e0989a48678f 100644
 --- a/drivers/gpu/drm/tyr/gem.rs
 +++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -57,7 +57,6 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+@@ -9,8 +9,10 @@
+ use kernel::{
+     drm::gem::{
+         self,
+-        shmem, //
++        shmem,
++        BaseObject, //
+     },
++    page::PAGE_SIZE,
+     prelude::*,
+     sync::{
+         aref::ARef,
+@@ -23,6 +25,7 @@
+         TyrDrmDevice,
+         TyrDrmDriver, //
+     },
++    file::TyrDrmFile,
+     vm::{
+         Vm,
+         VmMapFlags, //
+@@ -53,6 +56,32 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+ /// Type alias for Tyr GEM buffer objects.
  pub(crate) type Bo = gem::shmem::Object<BoData>;
  
- /// Create a new GEM buffer object.
--#[expect(dead_code)]
- pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
-     if size == 0 {
-         return Err(EINVAL);
-@@ -84,17 +83,8 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
- 
++/// Create a new GEM buffer object.
++#[expect(dead_code)]
++pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
++    if size == 0 {
++        return Err(EINVAL);
++    }
++
++    let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
++
++    Bo::new(
++        ddev,
++        aligned_size,
++        shmem::ObjectConfig {
++            map_wc: true,
++            parent_resv_obj: None,
++        },
++        BoCreateArgs { flags },
++    )
++}
++
++/// Look up a GEM object by handle for a DRM file.
++#[expect(dead_code)]
++pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>> {
++    Bo::lookup_handle(file, handle)
++}
++
  /// Creates a dummy GEM object to serve as the root of a GPUVM.
  pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
--    let bo = Bo::new(
--        ddev,
--        4096,
--        shmem::ObjectConfig {
--            map_wc: true,
--            parent_resv_obj: None,
--        },
--        BoCreateArgs { flags: 0 },
--    )?;
--
--    Ok(bo)
-+    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
-+    new_object(ddev, PAGE_SIZE, 0)
- }
- 
- /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
+     let bo = Bo::new(
 
 -- 
 2.43.0
