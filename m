@@ -4,79 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD0C8C79F9F
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3A3C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD3896B00A3; Mon,  7 Sep 2026 04:14:44 -0400 (EDT)
+	id 23BB86B00A5; Mon,  7 Sep 2026 04:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D83E46B00A4; Mon,  7 Sep 2026 04:14:44 -0400 (EDT)
+	id 1EAC66B00A6; Mon,  7 Sep 2026 04:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4B8E6B00A5; Mon,  7 Sep 2026 04:14:44 -0400 (EDT)
+	id 0B3786B00A7; Mon,  7 Sep 2026 04:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D406B00A3
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:14:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41E63A41F3
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:44 +0000 (UTC)
-X-FDA: 85186254888.07.378EFFE
-Received: from mta0.migadu.com (out-68.mta0.migadu.com [91.218.175.68])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 558F8C0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:42 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D2F986B00A5
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:14:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 600FD140674
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:57 +0000 (UTC)
+X-FDA: 85186255434.29.610ED6C
+Received: from mta1.migadu.com (out-227.mta1.migadu.com [95.215.58.227])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6BB6FC0008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:55 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QsEv9tJx;
-	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IK19lLt3;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788768882;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQ+F8GUyQvjJq6dfsDo84ZbC6xAHAPh1z0XLCDR2tgw=;
-	b=lQGBWAOGcWA2yhYXDcyWoeqJNEsVlwzNCTIAALF/hJI78KoFiawnNcRviKhsDBUpWOTIZ1
-	2bR2VN87F56TTqhxY8+Sr9NBBnEdrby731CYGgoEBBstEZPUa2orNSBHhEHw2R1hxcddnV
-	Jh6QEi05js8Y7Qm4JCTp6PFz272Jlx0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788768882;
-	b=3GHT/u9QlSiu8rARdaoKB/nEPUFyEJO64OUsrTjybCo4rUvaU0h6mN/DEuKIm6RYNNRkRK
-	tHFWbr/TpI+wpWqXfiCho52viZDV0xyG89MhVLPsFfLy+1GrOiudejw22Tz13Jlx5U4b0s
-	NjqGLqmEljvzokZEP5qxpCpWWpZoXWk=
+	t=1788768895;
+	b=uD59aNJf+aPqhK9yQU/7sYmF4h0Zt+Mg22/WwiDBG+p062bKyKb1KSA0SqC9CtGr21LzkS
+	h3JtJ+/RHGXu9rNie1dl15Gz6zrrUm+sLGIvl60S4GeELsUIWDSRTCue+jBRhSIM0fEu4V
+	/R1q+GDf4zNWB4+GX4h9hJqE3YHNFhk=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QsEv9tJx;
-	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.68 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IK19lLt3;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.227 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788768895;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gIWVAkgul39EU7L8+1Wyw1ZlWb12R4TO5OwkpUN7c9U=;
+	b=P69tucNSiV7uNjzp19oNJDzjfWisrUNeFMzs42SCaVrKRiVXWoKIJ+6v+KyYh7IwLdRDz9
+	ix60/jmo+qfriCXTni4HOCvicNbqTSQy95ylL8SJu9JyrBw5zim33rNpRi75d4m0wlsBQW
+	2lr7v1IXASov6NwACshF6YgX1rWUaOI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DbvxqJsFC8I1jdIyCJVYNExbjeNMqAcKd+QJ2gOnSsI=;
+DKIM-Signature: a=rsa-sha256; bh=GYHf+zbpJIbN8wdET2m2KoX50bTFoVYyZ6SIH+UzDwc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788768881; v=1; x=1789373681;
- b=QsEv9tJx+htfHkVlXBVh0jqEMfIZhKIiV4pwh/o31FxltAeubh5Va9WuiRzlYNnLS4RGXW4x
- 3HwvGovI4EWm2dTeyV1ldFWXVea0E0hYEE3zKgj/wnYlr9LKJjErOiTjJr0WPsIeC7AFEexLstq
- DOoFXOu/yiKrsNroNAKn+bhU=
+ t=1788768893; v=1; x=1789373693;
+ b=IK19lLt3RNhYH68ocEIktoMXlTKmsbtOmPmpyDQFNth/wOqvSaB7UimEnHmi81y5XUfTIvwb
+ kKKcLzcqR7McNFASai1GURu9fB3QBwYl8KS2twuyvQUTMw7KgSZP295bAN8RXc1oUjTU5fNebjS
+ eABgGH/ib6letISwgKAGFn/0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a8a672054efb182f;
-	Mon, 07 Sep 2026 08:14:40 +0000
-X-Mizu-Trace-ID: a8a672054efb182f
+Received: by smtp.migadu.com with ESMTPS id 70f3f824a87c0db2;
+	Mon, 07 Sep 2026 08:14:52 +0000
+X-Mizu-Trace-ID: 70f3f824a87c0db2
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-To: Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: Ye Liu <liuye@kylinos.cn>,
 	Michal Hocko <mhocko@suse.com>,
-	peterz@infradead.org,
-	paulmck@kernel.org,
-	mingo@redhat.com,
-	rostedt@goodmis.org,
-	jpoimboe@kernel.org,
 	mic@digikod.net,
 	oleg@redhat.com,
-	tglx@kernel.org,
 	david@kernel.org,
+	linmiaohe@huawei.com,
 	nao.horiguchi@gmail.com,
-	rafael@kernel.org,
 	gnoack3000@gmail.com,
 	ljs@kernel.org,
 	sj@kernel.org,
@@ -84,15 +95,6 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	shakeel.butt@linux.dev,
 	xu.xin16@zte.com.cn,
 	chengming.zhou@linux.dev,
-	will@kernel.org,
-	boqun@kernel.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
 	tony.luck@intel.com,
 	reinette.chatre@intel.com,
 	x86@kernel.org,
@@ -101,7 +103,6 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	serge@hallyn.com,
 	pavel@kernel.org,
 	lance.yang@linux.dev,
-	mhiramat@kernel.org,
 	pmladek@suse.com,
 	longman@redhat.com,
 	mathieu.desnoyers@efficios.com,
@@ -123,22 +124,23 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	linux-trace-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-security-module@vger.kernel.org
-Subject: [PATCH v2 4/8] mm/memory-failure: convert process iterator to for_each_process_rculock
-Date: Mon,  7 Sep 2026 16:13:30 +0800
-Message-Id: <20260907081334.1152889-5-ye.liu@linux.dev>
+Subject: [PATCH v2 5/8] kernel: convert process/thread iterators to for_each_*_rculock
+Date: Mon,  7 Sep 2026 16:13:31 +0800
+Message-Id: <20260907081334.1152889-6-ye.liu@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260907081334.1152889-1-ye.liu@linux.dev>
 References: <20260907081334.1152889-1-ye.liu@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 558F8C0003
-X-Stat-Signature: pgc6fyrnseqbjgu86omk6n6r7r8xbre6
-X-HE-Tag: 1788768882-496080
-X-HE-Meta: U2FsdGVkX19KhJlmc/pcqyXiqpyMKvXkb3jfPDbKbu+cPCbD1t3kxsT0+SWls0o0B5Q17FjHQomaNi81DePi7aYgZBeHpI3HB5YKyI5Utt573YaQhPB1heWmQrySJS/m5MVU+ZATeY4fawA/uVUhnmOjgWGGPG+7yVXhjl2Xx8l9HHRsbz4ZgBEzohtHX/2pHtKOK8wNT68EquN+LqKNbHn0sJe9uD9gPC1YdCfAxl4s6EZ+6IC6bGOR/Ana7TDYvKRhCduQ1n8s3hhf2PXTAIxSjFJ+vnJlXgjgx1bot21WoJH8cxXwkr9u7LhJaPteFrxZpzp7AZWcHvTmXTmr9x4YNuaRBpEn1Canq63JJd1mZ+K0Alju4cCKDOtLJ5wGZ5L6q5rrOvLt7Ti1guSA73GO4HdVkb0wJ54fc55d0tvkSYg4eWoUE1/sXB0Z10DDCGJFG2OJg6iIJMQWE6AIZgff5var/QsH7ydOdgds01w2my0ULCH/uMjzSoaBAfRMgAXhE6tXrk7zNCJjfCEU6pW7fEGJxydlrDhUX4MoaFkzftZmiOWf8SABFbJcA0x4pIEkbh9XZ+KQCncdTXqc9WASa+ZxwwESTagDfekd/jHiGVnZWgeHnaxIsMeGfV1Bd2Txo3TkQIvi318hDvAroPibB2YgV4E9uEj1ZctFmlXjjTNbLSp7z/aeFk4GDBONM5dFGx4QUL3ZRxiewHfiQv54e/HSlfVv1kcSb9VE3rX5YBgIVBO3+muhmDCKUR8+A7KA5QulvlH8T6KKTChJxvjdchEPlCw5Pn1dIcS0qSe5U7TimoNP8hf6REgqEJJHK/+HChzuObH5bN1ssdwWTfsYKDY6IQKKVSnzdSwSZ0ebqDVfewxpWlJE3qNqLW6r0K7/0DpvBB7aU2f1IBJYObIL/2C2EJYRLN7QnCRHJFT33ZsGV+ChSR5JJ7ZZDMymK6EkAIYCm3eM6lbcMai
- K3kVZseu
- J1KVHhv8DQUaf2weLbiS7hRptNKmirEOzsh+7wqAAawk5LGEvR6QfB9dTarkVoakgGwgpzTKHOXgVAyP++CTafskHsZsx9X+Fb4pTCijrnc52vdyCTNE8mR8fzxteIa3/6HQV6UOamYWvsapba3pdVMJis/I5PruUtY3Ow10odJs91t07F2mgMvRGIENKWQyDeuCy5e8pqtZ8vGzfnRo34HyvrWz69nFfPfDOw9ikWQWRrJ2Xly5RU87TufLRr8ikHYHErtQze9JJU6t8d/do/YWGaiSKhFIv8/92xP65P6uXLqb9vCYGlcwirK4HFzU4KmdB7USfEqUKCUYImLLJ160c3cjjDyQawXVnSqWFwHJcEMpJqosb4jJDjia7OXO3vL8mPZ/ZgS4Y/lS8hJDaz9lQ5M/tYQzAL76jGi7Wlw1m3lxzJ9gOV8TQvXushS6vqHBdVp1fwmX6h8wUUwZbSiDI3Nt1EgZfyWJa
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6BB6FC0008
+X-Stat-Signature: smo4o9jab3pbsmpa1shooojem49kbfdy
+X-HE-Tag: 1788768895-880741
+X-HE-Meta: U2FsdGVkX1/UejTEa22KFFdUUxOAnPRybHvd/HqagMggY6Whd1trbr7VKeawXMcUxzFLoM3weXbyPvN4SqtA/j6q2ThAY6s3BL38aCfaWXWOYAk7wRf/QCTHxZWIPviT1S50k3W2qv2H9DTRBZ6Twf07KeW9mK9qDxz0mIqhweCOe2bdtBBosC+prHg99ofG/p0xaCpN0JJgtqu7rgWR9P8NmIsiYCDsGIlo+/rhq3t1bR09T/C2VlHOKfR7QA+vPc6QLsMwXXO886WT3iNRyJM5pFAtWrrvjNOusBrJEhgXFF94bOLCLnsD2hCTP0CBRUfD4/LpOLpXxGDhTQGTexLWqYZkYyaZ9eRH7lPuqq6SgLUicCD9lRdxYNsUCfsRJDzi8/eNdJGy1h42JvXMeRwnTFxGNMOw73ZZEZ39J6w3Vay4aVbemYpkiv7jY/qMPztCSY91pVF/CMjB79NZvbudPnFL5qzzr+fpb4vT/KmHOZZ2oj8VuiffRmwKq86xxZ7aL0c8tNlyKhfBmqIvTz2n2TP+afOxdv8CGWyAHQqdk2v+nkSOxh1P0UPoM7uqJptMdP40Q1XtvWkaRqJUJ8ikQAJ7X1Wtbwsk/oqron45q01MHGaLpEJ+X68x62QBv3puW/RD0Jq6XP2eSPhdEvYahG1d9ygxgcSRBfEAxX4ksWcbOE94S2Zuhua7jrt7g30Fqqy7tfXnzDMaEH7CVQLrhkKs9riCAs5i69SGgkVZI5DCK3+/OsBjBW08XatTY7mbU/12CRcAD4/o+/1A/iu11TAc9vYYCNu1bbAimS8fov4d3yANHoCJi8YJELmyCTmVOJUzM90K1pPZDONbCVp98eqj9HHqPDCou9uP6BoiZJAak1BV2fQ4Uswi6FN2wwMgdKn4G26deu3b/1xQ4Uuq22n1F5KgSdSDPJOQ6sZEw45chI2rDoHLxgMbBoczfnWtI8lSSmxFFzjmYwO
+ 4a+enLWK
+ Cbz/G2sj5LgFP210uf7y15Obmn8bu0TyU3LwLs6HfnUPE1uUbRaSccfRf6MwXnyp5y7W6STjvjt8+rQbz7TP8ByV7sMQyyFgZZfxwUq8tlqiB6oUHpIVtqNm1kmdWgeIDu5nfH3FStzTPsrgjAHVD3/nDN1Y2zvGKVAA5f7OlFFCYPc8dxhZwbIFnCOqvvRl1MWJxab0mcgGtLatJNdRC33skxaERGUi4jGwXCoORe+lcPUXPhI6niUxoTrDdFQGEGavqKSaa4zu1oRQPR0IttU+sfSFKcOJC6wu1XwCsY66nUZiCI3L6lNc3L34VM4RKuy+YdolWE8puYkk2gMjY4jk/mxWgGUBcH/r5yrM6NfnzDoqKrORLGDMTzFaK/G3qauSUwD+ASWkTKeLMBbbsuweZ5JjuKUaCLx/2dYYl9IYE67IEcdjWguExkWbWNGF4dBbT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,103 +150,221 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-Replace the manual rcu_read_lock()/rcu_read_unlock() pairs combined
-with for_each_process() loop in mm/memory-failure.c with
-for_each_process_rculock(), which scopes the RCU read lock to the
+Replace the manual rcu_read_lock()/rcu_read_unlock() and guard(rcu)
+pairs combined with for_each_process(), for_each_thread() and
+for_each_process_thread() loops across kernel/ with the
+for_each_*_rculock() macros, which scope the RCU read lock to the
 loop body via scoped_guard(rcu).
 
-In collect_procs_file(), the page_pgoff() call now falls outside the
-RCU read-side critical section.  This is safe because page_pgoff()
-only reads folio->index and does not traverse any RCU-protected
-structures.
+No functional change.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
 Changes in v2:
   - Rename *_rcu to *_rculock
-  - Clarify page_pgoff() safety outside RCU lock (SJ Park)
- mm/memory-failure.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+  - Rename stale 'unlock:' label to 'out:' in hung_task.c (Günther Noack)
+ kernel/cpu.c             |  4 +---
+ kernel/freezer.c         |  4 +---
+ kernel/hung_task.c       | 11 ++++-------
+ kernel/locking/lockdep.c |  4 +---
+ kernel/rcu/update.c      |  4 +---
+ kernel/sched/core.c      |  3 +--
+ kernel/sched/debug.c     |  4 +---
+ kernel/trace/fgraph.c    |  8 ++------
+ kernel/unwind/deferred.c |  3 +--
+ 9 files changed, 13 insertions(+), 32 deletions(-)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index a8b03e2920ba..7d93deb1f7b3 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -555,8 +555,7 @@ static void collect_procs_anon(const struct folio *folio,
- 		return;
- 
- 	pgoff = page_pgoff(folio, page);
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index b3c8553d7bd6..00638d2abc0f 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1254,8 +1254,7 @@ void clear_tasks_mm_cpumask(int cpu)
+ 	 * full-fledged tasklist_lock.
+ 	 */
+ 	WARN_ON(cpu_online(cpu));
 -	rcu_read_lock();
--	for_each_process(tsk) {
-+	for_each_process_rculock(tsk) {
- 		struct vm_area_struct *vma;
- 		struct anon_vma_chain *vmac;
- 		struct task_struct *t = task_early_kill(tsk, force_early);
-@@ -572,7 +571,6 @@ static void collect_procs_anon(const struct folio *folio,
- 			add_to_kill_anon_file(t, page, vma, to_kill, addr);
- 		}
- 	}
--	rcu_read_unlock();
- 	anon_vma_unlock_read(av);
- }
- 
-@@ -589,9 +587,8 @@ static void collect_procs_file(const struct folio *folio,
- 	pgoff_t pgoff;
- 
- 	i_mmap_lock_read(mapping);
--	rcu_read_lock();
- 	pgoff = page_pgoff(folio, page);
--	for_each_process(tsk) {
-+	for_each_process_rculock(tsk) {
- 		struct task_struct *t = task_early_kill(tsk, force_early);
- 		unsigned long addr;
- 
-@@ -611,7 +608,6 @@ static void collect_procs_file(const struct folio *folio,
- 			add_to_kill_anon_file(t, page, vma, to_kill, addr);
- 		}
- 	}
--	rcu_read_unlock();
- 	i_mmap_unlock_read(mapping);
- }
- 
-@@ -635,8 +631,7 @@ static void collect_procs_fsdax(const struct page *page,
- 	struct task_struct *tsk;
- 
- 	i_mmap_lock_read(mapping);
--	rcu_read_lock();
--	for_each_process(tsk) {
-+	for_each_process_rculock(tsk) {
- 		struct task_struct *t = tsk;
+-	for_each_process(p) {
++	for_each_process_rculock(p) {
+ 		struct task_struct *t;
  
  		/*
-@@ -653,7 +648,6 @@ static void collect_procs_fsdax(const struct page *page,
- 				add_to_kill_fsdax(t, page, vma, to_kill, pgoff);
- 		}
+@@ -1268,7 +1267,6 @@ void clear_tasks_mm_cpumask(int cpu)
+ 		arch_clear_mm_cpumask_cpu(cpu, t->mm);
+ 		task_unlock(t);
  	}
 -	rcu_read_unlock();
- 	i_mmap_unlock_read(mapping);
  }
- #endif /* CONFIG_FS_DAX */
-@@ -2288,8 +2282,7 @@ static void collect_procs_pfn(struct pfn_address_space *pfn_space,
- 	struct address_space *mapping = pfn_space->mapping;
  
- 	i_mmap_lock_read(mapping);
+ /* Take this CPU down. */
+diff --git a/kernel/freezer.c b/kernel/freezer.c
+index a76bf957fb32..7a870f71dcf6 100644
+--- a/kernel/freezer.c
++++ b/kernel/freezer.c
+@@ -217,11 +217,9 @@ void thaw_process(struct task_struct *p)
+ {
+ 	struct task_struct *t;
+ 
 -	rcu_read_lock();
--	for_each_process(tsk) {
-+	for_each_process_rculock(tsk) {
- 		struct task_struct *t = tsk;
- 
- 		t = task_early_kill(tsk, true);
-@@ -2303,7 +2296,6 @@ static void collect_procs_pfn(struct pfn_address_space *pfn_space,
- 				add_to_kill_pgoff(t, vma, to_kill, pgoff);
- 		}
+-	for_each_thread(p, t) {
++	for_each_thread_rculock(p, t) {
+ 		__thaw_task(t);
  	}
 -	rcu_read_unlock();
- 	i_mmap_unlock_read(mapping);
  }
  
+ /**
+diff --git a/kernel/hung_task.c b/kernel/hung_task.c
+index 6fcc94ce4ca9..73a5ad3be9a8 100644
+--- a/kernel/hung_task.c
++++ b/kernel/hung_task.c
+@@ -315,13 +315,12 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+ 		return;
+ 
+ 	this_round_count = 0;
+-	rcu_read_lock();
+-	for_each_process_thread(g, t) {
++	for_each_process_thread_rculock(g, t) {
+ 		if (!max_count--)
+-			goto unlock;
++			goto out;
+ 		if (time_after(jiffies, last_break + HUNG_TASK_LOCK_BREAK)) {
+ 			if (!rcu_lock_break(g, t))
+-				goto unlock;
++				goto out;
+ 			last_break = jiffies;
+ 		}
+ 
+@@ -337,9 +336,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+ 			hung_task_info(t, timeout, this_round_count);
+ 		}
+ 	}
+- unlock:
+-	rcu_read_unlock();
+-
++out:
+ 	if (!this_round_count)
+ 		return;
+ 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index c56a7f91d72e..ea218dc75ad5 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6834,15 +6834,13 @@ void debug_show_all_locks(void)
+ 	}
+ 	pr_warn("\nShowing all locks held in the system:\n");
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(g, p) {
++	for_each_process_thread_rculock(g, p) {
+ 		if (!p->lockdep_depth)
+ 			continue;
+ 		lockdep_print_held_locks(p);
+ 		touch_nmi_watchdog();
+ 		touch_all_softlockup_watchdogs();
+ 	}
+-	rcu_read_unlock();
+ 
+ 	pr_warn("\n");
+ 	pr_warn("=============================================\n\n");
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index 2a778b8ab4ad..d8e0b5896db9 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -548,15 +548,13 @@ void synchronize_rcu_trivial_preempt(void)
+ 	struct task_struct *t;
+ 
+ 	smp_mb(); // Order prior accesses before grace-period start.
+-	rcu_read_lock(); // Protect task list.
+-	for_each_process_thread(g, t) {
++	for_each_process_thread_rculock(g, t) {
+ 		if (t == current)
+ 			continue;  // Don't deadlock on ourselves!
+ 		// Order later rcu_read_lock() on other tasks after QS.
+ 		while (smp_load_acquire(&t->rcu_trivial_preempt_nesting))
+ 			continue;
+ 	}
+-	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
+ #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 0697ed0f1c3d..fd5bdd2cb798 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2005,8 +2005,7 @@ static void uclamp_sync_util_min_rt_default(void)
+ 	smp_mb__after_spinlock();
+ 	read_unlock(&tasklist_lock);
+ 
+-	guard(rcu)();
+-	for_each_process_thread(g, p)
++	for_each_process_thread_rculock(g, p)
+ 		uclamp_update_util_min_rt_default(p);
+ }
+ 
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 72236db67983..cdae165b98f7 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1029,14 +1029,12 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+ #endif
+ 		   "\n");
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(g, p) {
++	for_each_process_thread_rculock(g, p) {
+ 		if (task_cpu(p) != rq_cpu)
+ 			continue;
+ 
+ 		print_task(m, rq, p);
+ 	}
+-	rcu_read_unlock();
+ }
+ 
+ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 40d373d65f9b..f797ce119223 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1057,11 +1057,10 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+ 		}
+ 	}
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(g, t) {
++	for_each_process_thread_rculock(g, t) {
+ 		if (start == end) {
+ 			ret = -EAGAIN;
+-			goto unlock;
++			goto free;
+ 		}
+ 
+ 		if (t->ret_stack == NULL) {
+@@ -1074,9 +1073,6 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+ 			t->ret_stack = ret_stack_list[start++];
+ 		}
+ 	}
+-
+-unlock:
+-	rcu_read_unlock();
+ free:
+ 	for (i = start; i < end; i++)
+ 		kmem_cache_free(fgraph_stack_cachep, ret_stack_list[i]);
+diff --git a/kernel/unwind/deferred.c b/kernel/unwind/deferred.c
+index 5bea47314254..ecfe1336095e 100644
+--- a/kernel/unwind/deferred.c
++++ b/kernel/unwind/deferred.c
+@@ -319,9 +319,8 @@ void unwind_deferred_cancel(struct unwind_work *work)
+ 
+ 	synchronize_srcu(&unwind_srcu);
+ 
+-	guard(rcu)();
+ 	/* Clear this bit from all threads */
+-	for_each_process_thread(g, t) {
++	for_each_process_thread_rculock(g, t) {
+ 		atomic_long_andnot(BIT(bit),
+ 				   &t->unwind_info.unwind_mask);
+ 		if (t->unwind_info.cache)
 -- 
 2.25.1
 
