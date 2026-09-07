@@ -4,134 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99FD1C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 07:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74654C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 07:53:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52E56B009B; Mon,  7 Sep 2026 03:44:09 -0400 (EDT)
+	id 4CEB06B009B; Mon,  7 Sep 2026 03:53:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13796B009E; Mon,  7 Sep 2026 03:44:09 -0400 (EDT)
+	id 47F726B009D; Mon,  7 Sep 2026 03:53:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9296E6B009F; Mon,  7 Sep 2026 03:44:09 -0400 (EDT)
+	id 395206B009E; Mon,  7 Sep 2026 03:53:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 684EB6B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:44:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4872A4B61
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:44:08 +0000 (UTC)
-X-FDA: 85186177776.13.7EAF6CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 29029140002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:44:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZHcWvEz/";
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788767047;
-	b=t/UUpGXfyXxnF0MwaVXgUSmNAQmMU/Qde5HtGX8AtT74/jppEgmzPVqJqZtFrvsBgGGvUf
-	QflnSzAArge3X+4MTTFcjZ/3HsKN3NxM1NUhuwFh52aXR4zZ8HWrdSd03xHq64ioik3Lfg
-	NiMPnHCMbpB50BTBWsBZFynksPTD2lQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZHcWvEz/";
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id F3D1F6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:53:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 893E4806C3
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:53:27 +0000 (UTC)
+X-FDA: 85186201254.27.DC76458
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 05977100003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:53:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MOcXGWgd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788767047;
+	s=arc-20220608; t=1788767606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WqU1djRZxSt1nh3zcheMqIKq6ZNjalLZQ1iHp63Z5TM=;
-	b=bSkD2gL56xnKLqtrC4grBHHakmgWztyOUOC0mPzTtrNdK3vaO8hupXXFcTxbAztsNh301M
-	owW3Gs304U0csbNoQdhDtCPelHahZWu7+osIYCUo9SwCneRtDsZ5k+FWW52hri612ed8lY
-	SAm+OSYyA7AFsRRXf7nR30E79GP1mTs=
+	bh=kPZ1F3J8KBi9MBahvagaR9ROmfUoSVBBVkLS8cERORw=;
+	b=OIBi1ry6Bt0MP0zg4fiVw49w/eKfaoatu2x5ifhrbLBJkD70Euf8Ef5m/dhOm4dGRRtAai
+	Dl2yKT2OiajftWzttA8yl5acqj//WpuhyW9AsMUwkQEHsz3qbQ9eRRj0+S5lH4Dvk3Mnbr
+	8RN352R11uaqFEsYg8NFrc6jHUDW+kc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MOcXGWgd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788767606;
+	b=F+ZYehMji86xmD/S5/ZfrluFgMUyncQm0SAIjwwkxKbriI7ghSwN0WncNFv2oWF3s9IlTd
+	g/K33KW3H+J4RWY+EYE/BVNfFjXWhYBHDODbpk03KVK3mNdWTfS+eJGUcFSbGJV75M6qjL
+	5dXjKpmfpupzWPbdFoEUttosY/+u7u4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EEB2C4040A;
-	Mon,  7 Sep 2026 07:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FD51F00A3A;
-	Mon,  7 Sep 2026 07:44:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 841B360052;
+	Mon,  7 Sep 2026 07:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7821F00A3A;
+	Mon,  7 Sep 2026 07:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788767045;
-	bh=WqU1djRZxSt1nh3zcheMqIKq6ZNjalLZQ1iHp63Z5TM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZHcWvEz/9PARpUHvye3I/SIP6Z73Yg08URI/RQc3JEujjcu9flHGtLT1NgG7oqJKQ
-	 +aLogYYyK6bMMgHBR18vQRtetl7W3ZzwhQBrMmVtI3dyFg+RCWrySEjQgv2Ne9MzdF
-	 u/trHjYliLe6lXnspu3m1rZCnmfuiiRraqapmJQtb5qKJjkBLgYglwQ4Fpq8Nwj+bx
-	 0G8L+0cUU7BYK9Bd2eDrCeeAKAIHsOhRkcJ51coT9heNeqAewXUI4lzunlPnLmUiVj
-	 f+cZG4E1+fnlG4NUp6+gwrTr3H9vIphufAbWB4k3PdGxSaJj+8Sf2BA4GHlJav2ubp
-	 w6EeroWTPSFfg==
-Message-ID: <60a8cf51-1493-4dbd-8779-8f007f6783a0@kernel.org>
-Date: Mon, 7 Sep 2026 09:43:58 +0200
+	s=k20260515; t=1788767605;
+	bh=kPZ1F3J8KBi9MBahvagaR9ROmfUoSVBBVkLS8cERORw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MOcXGWgdidzTr8uSm3nVezqHIcr1nc28xnbSu6ByjN1peFiglJMoQ7TMIxM1rAuTo
+	 +LlTSFr+sxJbGh23IWkyDELK3sIkYklSEX408UnsFuy9KFMnoN42sFcRJvzJ81RUZv
+	 UH6SeeXYOqAk+dQLWuIXR7TZ2mGz9gbS6JMchxSKBC7mEGIWpb3InoZVHJ3ELsAuDd
+	 66jalnuy7h0pOV2+WXP+Q97rTsRn2tzkmOQaABQkCzIqMMWqDSRO9ml93GCdfaK7y6
+	 1gbsdCpfJaQ+C8zd9OdbBb+T33wq6Gz0pEhqAKaqjg0eAo5vPuC+iOVgOIaLEVm+gc
+	 2JhtpdNdvGt7g==
+Date: Mon, 7 Sep 2026 08:53:20 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tianyi Chen <hi@tychen.cc>
+Cc: "Liam R . Howlett" <liam@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/testing/vma: cover hole filling through
+ __mmap_region()
+Message-ID: <ap5pmX-RddQ-c90O@gremlin>
+References: <20260906144100.849288-1-hi@tychen.cc>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: minor janitorial style cleanups
-Content-Language: en-US
-To: Christos Skarlos <christosskarlos.kernel@gmail.com>,
- akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
- osalvador@suse.de, ljs@kernel.org, hannes@cmpxchg.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- kas@kernel.org, jannh@google.com, pfalcato@suse.de, kasong@tencent.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, mhocko@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260905183135.20993-1-christosskarlos.kernel@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260905183135.20993-1-christosskarlos.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260906144100.849288-1-hi@tychen.cc>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: nkpuzab9tyti3x5idzc8a9kcchiyongt
-X-Rspamd-Queue-Id: 29029140002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788767047-139052
-X-HE-Meta: U2FsdGVkX19V7leulmeHMmCmSOStSH+bLxqLXKWThpioHJVe4dee9h5k6BDtzdGT638Xn0aN5q2QB6t4M4nn+YxBdDe2JYXffnLPKB8FTDFlSks3P5MGRtmDtrorUgtHuasBZOMJLBO19pbQfy5GB2W6AdChKe5MVekDUIvVVrBgCUXV10fwjdYcrtRb0pLX9hGTZan8SI6kWomctN266IHmaUb/6R67R3OB1peZSEM7YUkKMg+MVRMk4M6hlzVnEVO8JnzDI8PmQStDNdCGh6VzLmwj5qppOnVKaHz4+s63DWtbK/YfSxu5dhiBu2CEMoslU53Rm7OoKF22ND0DTwUkbM96ICgt1g+UXgs6K/IW62JFhkoNSPM1WsqTcLLJ0e0ve/DQxsQ7pxZEWv2yjPSyhQxLMsaFbvgtPFhbeNZFUwKL+7waQhVAk7yKZfMQf8zOx1Ka+g+pqb83L+vTvKgmVwDSTbjNE2VekZD6ak5XMiTBJwnG4DGsQj/BsgJdvYpUPhB2Fs5if9tIdPiRJ2X1ooFiLvj3qWPBlBvAS7SJ2BA2EW0/mXsJCjiQ8FGynNvLwgM4eKVt3Kpuljy74KJsqnoyuuiK/lVxuWc9NWUmhP6J+5TTnthIzZ46Vdd14s/5WMkCgQwAwMTa0Cp6XtZuc0sylnecS6esV4d14P+FhmAreRmH8PPR195V/DNGM4X1ONlAoAanb9rEdnb3JwciKuql/OHBDA/Rj9mXHHNYyAjGacZ/oKhtNAU/d+aha+UI2RnIwMdvLFcSsuaPPRtYSwpGlSO951w61EgnKTBvVwkyqILPnE0LJl3yoVZQPqjBBwwQsHS2uYroSHKDkpsxM+ipA8Uz8Q7N0Op8d/RyxTX7vYFiNre2HUyx/nPYzQLRndOe9TX4QwRd4uBj1O7hvuxy64lCZf4/G6Lfk0LeXBx8damTKqTQZN9w0PfJ+/5M6yJB5ryOVDepVgM
- Fb44xR/a
- GMlxJrinlzFISRWZAY2NBRzZI8x11YhD1bB6zbw7F2W7gNiW1E/AaRxAzAf0K9yRTIhDplIm8CI2A/Tjz5f+ZJeWAGdqW9zu3ehu5dqMIuoeoZmle980RUtuFSI5COpgf/rV2W5XnOo0c1gGfvE6YPgpBz0CHE23heAcLPd3ymFMTFRUDtn+cQup03kGq3gxUdObBK1+YupeTzVWwRCvZt98v0TDeLXskeRaL8nBeVbN8Xu7juhMcFfVlkyHdS/neJaZyofuPIFB3n4sfzRinfFZUBm/HzCeKwC6Ysb8LJLOorgpyHlNe2bT6BEE/1f47+0Xa5AFkmb5zoZkZJMYYqNIIkA==
+X-Stat-Signature: yhnjzykwp4onc365jw6rx1h8xsug3imr
+X-Rspamd-Queue-Id: 05977100003
+X-HE-Tag: 1788767605-552136
+X-HE-Meta: U2FsdGVkX1/IEJGJmra+6ubXECJyamJ4Jp3SXaiLGxillhwQni94En1DpCVM5Ezv3ZM0F6boSyAhcs1M7JtbYTYwr54DH9oIzyM3LISNj7/mFKlXtyLcS0Of5Umu2lsZgPTwL6TDIhvdCr5YEaKua/rzmlLCiGGq0YpocPPtwZBBYL/KoF4TqzX9Mj0e/GImW5YztqUNWT7ClkHWaqkDS8cQqQhcayveG5ZV6v6XaR17TpYlCQfYB7wDMmIIVGh3Cp6/OVBYTmkKQe+4jgEr3/PSbcZ/1Z7Kb0BfDYjlKj+bMWjtp2zVQrKCn6S2iMztw5pGc8s1aaY4oChoq9oMI6GeAD7MEllNKHUEs8giVkk5V2p2GiJUpImrjb525ZCHeu3/cQRVyjhKp7of9R1/JDVH691u1nKJPd+/DZJT+Zjx3EqUq6b+7BtoaV9Zvjizp/Ck3TioFMEUDzXn3OBr/lp26LFcNmPzCz5CQpwW5KVUCNFPZdF9EnLm2GlXCPpeZSgtrqui22Ny93poIHI0fXNG8vNeUGGLH7czIImcQhWZvdSuEj8RJDXS7G3jVKR3D5dBDQyV+7rMZYd7sjwU4Ax/GvN1KdCZ2gUW1upCLRt3f3kqEfRj6h5B0k2LwYyAGE3CkpF++/6NlRkEEVYtDVpp+lVDBPilMvc+wU8AxXltN6Ol+hPXCF7BIu5DjhECpJ1PUPKVl2dJ4BYNzHRzAa5Tl1yH80KX45jX22C5pUyPwRLicNR2rgtrD0sIui9j51IyBjxk5++S28tlnYyvueCbvDG/BAw2cJXOJU94tVcbPlZkaeIpYqoGGWQVtONgPNyesgSQMGM/sHkrFTroi9ETbreU9j+zUyZ0LEnYbqD5W2Iv9pYmAfDAVUwFTeJtv5kIvM6XoAKi38xlQWCCPvngy3XABEdC/nZirGJL/F5WK3g52tuJo25lUb72aaaQ7WtaoLuXI9FI1R0OfC1
+ wZJ4R+PI
+ jGcciFwGyaXJ9NY92VonbiGwimvaRxhUWspchuU9WoGyV3ay0oTRimu4uFUjECLG1RGl0KcEuhVPsEa1H9Q6PGLFv/vLRwhuXQM+WizEY/5LRad3Sib896ieAXasFSu9gKckeNxh5LJZHRmJt6qKlL4qFsRXv4kgc+aKgRt7j9NzkLkamBKfTT+wzH6pIVMwkvXqNsjIpHePZ+wtL2nP2drHo2TBhhQ69XzFsyM1i5z+mQTQ15f4uxtX9RRAxpgiORf0ioNY6NHldVpiE0oLYokUn/L8D6R+jNspeSd7pDGIBzQ/LhdTW/6rIgo7o01sqTY6V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,38 +93,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/5/26 20:31, Christos Skarlos wrote:
-> This patch series resolves various coding style issues flagged by 
-> checkpatch.pl across mmap.c , vmscan.c and hugetlb.c.
+On Sun, Sep 06, 2026 at 10:41:00PM +0800, Tianyi Chen wrote:
+> The mmap tests extend existing mappings one neighbor at a time, while
+> merge tests construct merge state directly. Neither exercises filling
+> a hole between compatible mappings through the mmap setup and completion
+> path.
+>
+> Fill a gap through __mmap_region() and require both neighbors to merge
+> into one VMA. Repeat with only the new mapping's execute permission set
+> and require three separate VMAs. Check boundaries, permissions, page
+> offsets, map_count and tree lookups across the mapped pages.
+>
+> The full VMA test suite passes all 28 tests with ASan and UBSan enabled.
+>
+> Assisted-by: LLM
 
-Checkpatch is meant for avoiding the issues when submitting new patches, not
-to be run on the existing code to generate fixes just for the checkpatch
-issues. NAK
+Thanks for adding the tag, always much appreciated!
 
-> Changes in v2:
-> - Restored filename comment at the top of mmap.c.
-> - Restore <asm/...> headers in mmap.c as they are architecture-specific. 
-> - Remove blank lines above VMA_ITERATORS and NODEMASK_ALLOC declarations.
-> - Fixed commit message typos.
-> 
-> 
-> Thanks for the thorough review and guidance. As a newcomer every 
-> feedback and advice is really valuable to my workflow.
-> 
-> (Note: Apologies for the stray huge_memory.c patch included in v1 by 
-> accident; this v2 series correctly focuses strictly on mmap, vmscan, and hugetlb.)
-> 
-> No functional changes are introduced.
-> 
-> Christos Skarlos (3):
->   mm/mmap: fix various coding style warnings
->   mm/vmscan: fix various coding style warnings and errors
->   mm/hugetlb: fix various coding style warnings.
-> 
->  mm/hugetlb.c | 16 ++++++++++------
->  mm/mmap.c    | 12 +++++++-----
->  mm/vmscan.c  | 11 ++++++-----
->  3 files changed, 23 insertions(+), 16 deletions(-)
-> 
+I may actually set my own LLM loose on these tests to expand some more. Is
+a good area for such work I think.
 
+Though it still needs massaging to get good code :)
+
+> Signed-off-by: Tianyi Chen <hi@tychen.cc>
+
+General idea seems reasonable to me, and never any harm in adding more
+tests :)
+
+A bunch of stuff to fix below, but with those addressed patch should be
+good.
+
+Also please rebase this on the mm-unstable branch of Andrew's tree:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/
+
+As there is a minor conflict with my upcoming work :)
+
+> ---
+>  tools/testing/vma/tests/mmap.c | 75 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+>
+> diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
+> index c85bc000d1c..b66ec932a75 100644
+> --- a/tools/testing/vma/tests/mmap.c
+> +++ b/tools/testing/vma/tests/mmap.c
+> @@ -45,7 +45,82 @@ static bool test_mmap_region_basic(void)
+>  	return true;
+>  }
+>
+> +static bool mmap_region_fill_hole(bool merge)
+> +{
+> +	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
+> +			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT);
+> +	vma_flags_t hole_flags = vma_flags;
+
+Hole is the wrong word, maybe 'middle_flags'?
+
+> +	struct mm_struct mm = {};
+> +	struct vm_area_struct *vma;
+> +	unsigned long addr;
+> +	int count = 0;
+> +	VMA_ITERATOR(vmi, &mm, 0);
+> +
+> +	current->mm = &mm;
+> +	if (!merge)
+> +		vma_flags_set(&hole_flags, VMA_EXEC_BIT);
+> +
+> +	/* Leave a hole between two otherwise mergeable mappings. */
+> +	addr = __mmap_region(NULL, 0x300000, 0x3000, vma_flags, 0x300, NULL);
+> +	ASSERT_EQ(addr, 0x300000);
+> +	addr = __mmap_region(NULL, 0x306000, 0x3000, vma_flags, 0x306, NULL);
+> +	ASSERT_EQ(addr, 0x306000);
+> +	ASSERT_EQ(mm.map_count, 2);
+
+Everything here is reasonable but can you please add comments like other tests
+like:
+
+	/* Map at 0x306000, length 0x3000. */
+
+etc.
+
+> +	vma_iter_set(&vmi, 0x303000);
+> +	ASSERT_EQ(vma_iter_load(&vmi), NULL);
+> +	vma_iter_set(&vmi, 0x305fff);
+> +	ASSERT_EQ(vma_iter_load(&vmi), NULL);
+
+Let's drop these 4 lines they're a bit useless I think.
+
+> +
+> +	/* A single flag difference must prevent merging with either neighbor. */
+
+Similar to above re: comment.
+
+Also worth saying
+
+> +	addr = __mmap_region(NULL, 0x303000, 0x3000, hole_flags, 0x303, NULL);
+> +	ASSERT_EQ(addr, 0x303000);
+> +	ASSERT_EQ(mm.map_count, merge ? 1 : 3);
+> +
+> +	vma_iter_set(&vmi, 0);
+> +	for_each_vma(vmi, vma) {
+> +		unsigned long start = 0x300000 + count * 0x3000;
+> +		unsigned long end = merge ? 0x309000 : start + 0x3000;
+
+NIT: Can we make these const please?
+
+> +		VMA_ITERATOR(lookup, &mm, start);
+> +
+> +		ASSERT_EQ(vma->vm_start, start);
+> +		ASSERT_EQ(vma->vm_end, end);
+> +		ASSERT_EQ(vma_start_pgoff(vma), start >> PAGE_SHIFT);
+> +		ASSERT_EQ(vma_start_anon_pgoff(vma), start >> PAGE_SHIFT);
+
+Newline here maybe as basic stuff above.
+
+> +		ASSERT_TRUE(vma_test_all(vma, VMA_READ_BIT, VMA_WRITE_BIT,
+> +					VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,
+> +					VMA_MAYEXEC_BIT));
+> +		ASSERT_EQ(vma_test(vma, VMA_EXEC_BIT), !merge && count == 1);
+
+Also can we separate out the !merge && count bit? So put this at the start
+of the for_each_vma() block:
+
+	/* If testing the non-merge case, middle VMA will be set VMA_EXEC. */
+	const bool is_middle_vma = count == 1;
+	const expect_exec_vma = is_middle_vma && !merge;
+
+Then here:
+
+	ASSERT_EQ(vma_test(vma, VMA_EXEC_BIT), expect_exec_vma);
+
+Also a newline here would be nice.
+
+> +		for (addr = start; addr < end; addr += PAGE_SIZE) {
+> +			vma_iter_set(&lookup, addr);
+> +			ASSERT_EQ(vma_iter_load(&lookup), vma);
+> +			vma_iter_set(&lookup, addr + PAGE_SIZE - 1);
+> +			ASSERT_EQ(vma_iter_load(&lookup), vma);
+> +		}
+
+Let's drop this entire block please I don't think it's achieving anything
+useful.
+
+> +		count++;
+> +	}
+
+Newline here please.
+
+> +	ASSERT_EQ(count, mm.map_count);
+> +	vma_iter_set(&vmi, 0x2fffff);
+> +	ASSERT_EQ(vma_iter_load(&vmi), NULL);
+> +	vma_iter_set(&vmi, 0x309000);
+> +	ASSERT_EQ(vma_iter_load(&vmi), NULL);
+
+Again let's drop this block, it's not useful I don't think.
+
+> +
+> +	ASSERT_EQ(cleanup_mm(&mm, &vmi), count);
+> +	return true;
+> +}
+> +
+> +static bool test_mmap_region_fill_hole_merge(void)
+> +{
+> +	return mmap_region_fill_hole(true);
+> +}
+> +
+> +static bool test_mmap_region_fill_hole_flags_mismatch(void)
+> +{
+> +	return mmap_region_fill_hole(false);
+> +}
+> +
+>  static void run_mmap_tests(int *num_tests, int *num_fail)
+>  {
+>  	TEST(mmap_region_basic);
+> +	TEST(mmap_region_fill_hole_merge);
+> +	TEST(mmap_region_fill_hole_flags_mismatch);
+>  }
+> --
+> 2.55.0
+>
+
+--
+Cheers, Lorenzo
 
