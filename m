@@ -4,93 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF7FC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864F9C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:28:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B15C16B00B2; Mon,  7 Sep 2026 06:24:38 -0400 (EDT)
+	id 9972F6B00B5; Mon,  7 Sep 2026 06:28:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78C26B00B3; Mon,  7 Sep 2026 06:24:38 -0400 (EDT)
+	id 9471F6B00B6; Mon,  7 Sep 2026 06:28:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9409D6B00B4; Mon,  7 Sep 2026 06:24:38 -0400 (EDT)
+	id 85CE86B00B7; Mon,  7 Sep 2026 06:28:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2686B00B2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:24:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E48DEA06E5
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:37 +0000 (UTC)
-X-FDA: 85186582194.06.C720D33
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4D7AC1C0002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KS75OFvs;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 617026B00B5
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:28:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED68280707
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:28:07 +0000 (UTC)
+X-FDA: 85186591014.01.BBE1979
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F1FF3C0006
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:28:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="m cY5I/U";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Z5izyY1C;
+	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788776676;
-	b=M9Mq/d1HrOPS8d04eJjxIwowlIYyDyMpCpp0RU34oK2u8gfq4oY+k9tQaIp1aNo8f+lk9s
-	h6SkpvIaW3o2rgLSN4U0/7p20XiAKFhQGkMgMd1h7GrukDWYC9TwpYoG36ZC4po1hpi8hr
-	w6Z+SMQsat0HOzouiWfB+vMuUhuXzIY=
+	t=1788776886;
+	b=JFPQ4w3HZbclmR3s8T1T+YpPHpjlHnKsXPzhTKKT5sfY5lnnUH0OiR/Q2UCf6Y86ZTBoTM
+	tifJhO8uHobSgadVVHweh44d/9DVDLpCNEPC0+ESXV6jscNXXOYCUX53A2UZHdLf1Opbm/
+	MaGRYF1LtLRZuHEcCK94ePnJ0jbLe6Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KS75OFvs;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="m cY5I/U";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Z5izyY1C;
+	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788776676;
+	s=arc-20220608; t=1788776886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWoW41+x+7dy6umxK1i5p5XUicgKN/VyGWTHRTGB5Jk=;
-	b=L/VWG2HGQATO53NM52XVn+SnvEStsWTum6vVOX7ieY00eBePTNQH14tWQG4iehJiBfVSmP
-	VW5Je6sYodrztAor/GDA/tTIMT+ghg7mzHwjtDHVuT+TqFpb78jWGwJrcsxWBGOjWh5u25
-	k+Zj5hp2iN1ZqN+vT0uToECFTPb+tBM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D92F860D86;
-	Mon,  7 Sep 2026 10:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C692D1F00A3D;
-	Mon,  7 Sep 2026 10:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788776675;
-	bh=ZWoW41+x+7dy6umxK1i5p5XUicgKN/VyGWTHRTGB5Jk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KS75OFvsRCVf4saYIwM7a7NN1+hfRl9Js1UXnBdo4ejdc/JRfRr+x+8b7ByXevYcO
-	 rfWjqSA17UYgRcYKmT5++U7d420TnkfJlN6/yaQ6IiwBHHni3dULFPaSNEFlHOHw2c
-	 75cU9o/cuKArq7AlxXxBp5t1+KSdEJZobfXlSXI2uXLoU0e9yPaKq/Sue4Hk34mHCU
-	 GofAygwswbGe7s9LY4eI5lfqP+V3h1dDpHLxgGGX/umcnKChtdrJCfoURD02QOU0Ak
-	 g8d9a8fEYO5ZLLJ0aRKUoWXKJXV3FNe6Jw4y//ye/5HU1yV6B4ky0fGRSPsq4P5B2g
-	 ddGOIKLVTV9eg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Mon, 07 Sep 2026 13:23:54 +0300
-Subject: [PATCH 13/13] s390/scm: Use kmalloc() for SCM information
+	bh=f59EBJC/4ov46ZCcEJDi2RPpWdMP2hCDD0qZyQ2pkiU=;
+	b=rin8vmBguu5S12W1ymUxoGW+hZkmbjJH9Sxz+d7C1j3GzZYQV5xWg8YQXJ3URR/FtBtdNk
+	BxrBN9HLUhH7Kf0hmKkA6tN+0Ommt7qX40wgdwTn8atQSf8QVC5fpQplHOeH7b3Mfh7kEL
+	nmO2Ii4ZSc4jj0AiLMX0jYCMIZPq3hA=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 64559EC00BC;
+	Mon,  7 Sep 2026 06:28:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 07 Sep 2026 06:28:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1788776885; x=
+	1788863285; bh=f59EBJC/4ov46ZCcEJDi2RPpWdMP2hCDD0qZyQ2pkiU=; b=m
+	cY5I/UfwYFSeAQHuzewFLmqdpoFEUWE8AUwUXGpyIWk3U/X3jOecLARtpOHj+gSQ
+	NjmfDNVWPu/oznccqL/+5Xh9hN4CIZF52ofRgi+/jNxZrCweIIR9bL2wO2anieT1
+	vZh+WY6asXA9up7/4v1K7Qp91tmpg7Wp9UC0xHXiFGsJAsIsIumsq7e2C5t20xF6
+	RdmHvJ1gwbdQ2aEepyn894x1TYolXxrzIjhTbCrEurH9RniO1MSQX4Ba29vaoqH3
+	kmj9+Wnp1GoL1szROGPkUVHMfdHlv2SpmugHniWz1Zpxi0thtWQF3T9K4YwWFzqV
+	5o9TyCSavp4zCpuQymPhw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788776885; x=1788863285; bh=f59EBJC/4ov46ZCcEJDi2RPpWdMP2hCDD0q
+	ZyQ2pkiU=; b=Z5izyY1C0skqDUJfbFnOn+ebPFhIIBFXExxRMGpZWzZfY4Ah5ss
+	c8Vlcfymfnhds3zbdOU77p2m1SL9uFfG13kdYR/ccWDOzE9oHwJH35I3I/pacsWz
+	SgHU2777P6nP+9JNoe8gs8QI3sF1osgFxf8d9cqWrVJARkiKO6y2K/dSJ9k1QUIs
+	t5KEPCzVQfyMFypOaT48rlUmOkHr5hjcxhljb6lv6MNUC+A/Fo+n2EvP9HPfHS8E
+	+O+QCu7VSDR7AK7thqactXV3IkEOjQx5aASS7ivMPcN/O821zzJy0UYL34EOkrAa
+	hLRwfV9XwMu1XhExJ7265QZ/LMjCbtZmJjg==
+X-ME-Sender: <xms:tJGeaoU68yoKoEKdNauhVIokwD-QzoIvT8BQpYex709Cnp5m2TuHRA>
+    <xme:tJGeaqMjX2b_OmRAMpgjktF0t30Bq7KPQ8kXdBU4efxdWZOHoDxQiiM0T5Sb5Dm24
+    1geywWZnjZVkkFsxvGvX3s5PJQMv0AVudIftIdMpz5qDoMKWbcQ7po>
+X-ME-Received: <xmr:tJGeajwwAxT4V_izDNGfW5MaQWjScU3SeMhZ01oJQyQ5ajJQP_soJQOdT4w>
+X-ME-Proxy-Cause: dmFkZTEajUuK27hQfEZdWhLtkuQZ3pAPRpnx/tbUwrc/v9QlT7g/7Gy66eqONUzN+j0KBI
+    l9/1HIG3BYS2JhiizAePa8ggrFALJu6WrIq5DugLEZ9a7i9lU6Kcy4CsTHxBKoJHFgVZtg
+    EoJWTuvYf8HjIhz+N5A9ZZVcXSMS39pLs0Z+g+gnz4US2YclD1wx2uEzQd25YzHXGVhmkH
+    1Z/lkmjVpPq44tqalmrZoouDSgm7HOL47Iw2w8Qen0V0rRjW95Xn+RtTBdFs1xc+q7hZPg
+    PbWznKtKwvBgZZzoz/0Nn7E7Ph6ChFZkxWNQ7tTQ0sC9kxSKpIFubwJAqwhcS7cSQT+rP7
+    ZsvtxuqnS2jfe4UAfb4iqVGGXIAQOV2RKkydq+mrzLybVQMeYKEIFHHnK5FbFzu1O7vDr7
+    OFDILwOpljnp2cc0K8Cp1GyfjtVTwUWsz0edZAXiRr6AOjHVEEygfNrHq4DcJYfAu6Ms2N
+    H4d5G5GfjQGebOoh6Io3B9H4EFlxevLH5OrQIqRZjD1sCByP77ekxKA74pEbNrWLhQhND5
+    cH0rjs+I5KQT7Ue0GQCRGIHm5hTYSfgWf7dWfF3JCIlKsqw0meMCjnLDVKzQnnjR/s7veI
+    5rwIRyyh98hRpgiOmvsczZH5JC1Ij6mAm+VfSBKE0Tdv/9pJZoKuexWMkUFw
+X-ME-Proxy: <xmx:tJGeavg9KbQZkPJPU2BVND8jY_ugtwEzD8E6HxozUhK3-lXN7-t0_w>
+    <xmx:tJGeaqTqw_2psIBP3Yjtji3iJzooW-NGeMx_zgi_j0sRtdpEHVztXQ>
+    <xmx:tJGeasPA-XuufJD9MhXSGFAkTn3ew630p-QOCOTZWU_wJs2uih16Vg>
+    <xmx:tJGeavGPKAUScomINHIH-7FyDsSbFs0jSHNC38I1Q96FYHf14Ezkuw>
+    <xmx:tZGeat52CSqtoFjqX435ryj37GF0Yj6NJHFpPpruDQj2B3-FA-KFMUC4>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Sep 2026 06:28:04 -0400 (EDT)
+Date: Mon, 7 Sep 2026 11:28:03 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 00/12] mm/collapse: separate a collapse from its callers
+Message-ID: <ap6RNHS_ve88ijLo@thinkstation>
+References: <cover.1788533997.git.kas@kernel.org>
+ <20260905172342.72be31534af21871f8b13f47@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-s390-cio-ready-v1-13-ca7f39806234@kernel.org>
-References: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
-In-Reply-To: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
-To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Mike Rapoport <rppt@kernel.org>, 
- Peter Oberparleiter <oberpar@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Vineeth Vijayan <vneethv@linux.ibm.com>, 
- Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-X-Mailer: b4 0.17-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260905172342.72be31534af21871f8b13f47@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: zeiqi9m3fpkr6ieujr1zsosotj3cw8ns
-X-Rspamd-Queue-Id: 4D7AC1C0002
+X-Stat-Signature: 58bmjteexrhyqbt14wna4uoffig8ntsc
+X-Rspamd-Queue-Id: F1FF3C0006
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1788776676-136161
-X-HE-Meta: U2FsdGVkX19f/jGbmEehQ/BBlwVMA6O6jIzjBgNv62+2F8+Xqrm0fXCJwCf+Ei/581VWVoeZ5NCpV5FhnQm3XuCe7GzBEXEFfcEaMg9hEhuuZ+GDDI5B0JuRyDK7smtOTRZL1Tz5mm8Jn+sNeUs1O7YZ5yjCCUPNQ8zjMJnhnEe9z4XGQylZYGis1WCt/baVNm+uS1xag+8eiA4j4fBdOyju+1TehoOVAGF/BNytvQ6qV+IAA2iVjq7B5Q3xgJJBQKAQVAV8TCB+cDH7OZ6Oe4fJFmHbRTbMu2utKJA+J4lrrgJ8OJ862c54sZRH0l101K7k1EEsZAiCD2OHGLI3FSESuU1O9NEvYSA/qJU7D5MkUHKpoXxLWMPh1RcIOzx5nMqEM355Q1yPz7T7ft1unm9n6z80XYmZgnEaO5AQbDl7eAyYJ0UfrkJm4Cxzopz8q4Npb0jArnHjkSF3Y3tOpyLEc735aAaItr4ENm+ZGAGzZzhas8i3QZM8D9PTQZJ5fuAkg3OvQBLLOoDXnvC5hfx0/mbzDXIpsdjuqMaBAYd+W/ocd3vJBQs5fFAQdGL+HN+5d0eTxyH4fEDvI0TowdIf2iqmQY39wbW9qjLugn1HWgVPBmoOrkxAwL+r+u7hd7locgNoGmOjMdiNbVl6WZsnkbeH0clW64CdRTuYZyobaUoWUN3M5mFGIFarYRkxVw9cFycHv3gtmSDhMd0nP2ftrIOqDRa+oZ1FivwALZDph6EUyPx282B3BG6BPJ04b3qFDQeIfGaY4r1OCX/stZ7H8twoJezIrlDc8Gaiv8ZDFFzWEpOupbEpNVkDNgfbLCOTZpwU4lg4ixadkk3RwI2aToDJOxdm8f3FlzlFTC76MDjEASmJ4pryJlkIc0R1XOEo7TTdfu8lmE3JTUeZBFWLll6USAW0iBImWO52jQU6bgVeiQWys6+UnNHqyzd+lvfQ967aYOT4l4rr65l
- HQZdIAFh
- 0CM3edlJZ6iPvtDjgOb0dSka9tPEUXIN6+y4ek5+fJq9VD6UpeaveRn3uVBc2XHKrvIo/2hWV0CodLIkPV+BejWhLyMfNHC2tMnasGnFPV43cHlLnpmJ6ex8N30yiXC2bd9laRjmy5eu7op2an5NsYQsCm6tBtB3Am4jJzCRpz7cDOyHNSEaFqC7sf8Yb+sPnbbxKQBDG4LO3ho48domM8cg1R7JuUc2vyVYY25sKZ6SQCJJdytxuj8XLdzvzEe5aznnoLANjogm1mAQ=
+X-HE-Tag: 1788776885-805514
+X-HE-Meta: U2FsdGVkX1+tLjoxjNV9238aEle8pWBgs6rdHCBT9I9/X62yuvQA3C3O5VTYSXL/0pk16HChAr5FkIPXP55PsAU4khHoeF19/8AJUfy4z66cUSces+oecvLk2BXOQzeDrsPGGxnzlKpAnoDiyaEvyatfTiW0c5iYeeqQJuHfciZkdmpqZP9q6rLpS4xrQEjKmlwDHQrCRbzYakuOvTwTzkRkh9nW1cWGpgq+86xD6bYdgnB+rJttGab8HkwO8Y3VjTb8RfQjhG6Vj7c2L6TXMK9kfiLUTV+p0MeZxKbY/EnIs/O8h6NJBNmpaig19smSv2QC2CluyO+KQxWU6qJBFUmviuSDXQC/wyt+aRH/aOdTA0wpkmsrqoCdW+AnwmIMWhyEmmZ9Z6/92umvbxANGiyoSoFosI3A3PnnTme4TxOn0DmZaEnLs7r/A3Jkmww7LwcSYhJJ5SiehYX+q95cFdi4NIVzWwimfIsDFbZpCWJxQhZwbDMdDeRoD31p8sbFEDXFUC/q+MvjWT1w0B+9pqMFBvCGkeZSjjHq/xlGQkhnU9A6qyAQSHVPf3dpm6kdmM4lfE0Sp8XLGHV8M3pvlvqy6Cvtp4p6pBznly540/eqITz8Pk41aGIZyYu7HOR2ZNIVqFOY2DirVgje44IoTKBlUWyEB4mhgIWs7z1/8nSl9yHYpb5ETOYwWyhSAGScQynaSrO3gPizZPaFX8WFO1HODgKe3FwGGtVMWrURgwIzrEMA6TctHf4jmKCVUVE1ucBH3Y9Vv5saVN3E4EEyRHbu7U+LCctxlOVbfsjJROkvBXnGxqMbGEpzcwoXP+FL2b1P0f6ygkg2Be0kDXv9tajOj7RkalEDUvJZhpJQFnflItiAtWpcmIC6Mbn7pfdjPrRo52pfHvOFPlSMUSBJxkRVaWM9wo0Lae0v59RU+XN0C6K4NyykX9JjU+Qwwm+aiXGTwIr3EnyFO0C3y2C
+ j72N6aB+
+ Bj8Ya7kCHidHibAIfPaIuuuX7+2NfUikOFAPSbJZ+jRrdc/k8NFK5888lR8wxTrdcUhA2NAv3z6wZAqi+KyHp+HgzEN4+5caAR9rZ26eDoPc64aIQxeSrc1GGV9Pjypn9UDYe+63f/C7Hyer0dyGMHeUpZM352yulmnC/xIMGlaYu6HfCjuwWG4jxloKsJ4iVi86PQiu/bahPZLK0V8TeanE6pCHscNQXaAThnNpW4bxJl0MnXyxX/wNWk8O54uijHGtF4uEMbXk+VG5QxxHy6TD6d0Jnae+i6BKSNAoGL7X1OiBfbWN7my9GXi+Oa7uZFmz8jgAqxmxKU9HamRbhyY1vK7NS8KcmjoxwD/y1kzGv8HXOYTqj3OwhkegN9Uid0FSjDtPuJxpYF+VPyB2YttiqX8sjQdK6fslWNurX5v8kluqCcM1wnwKX6US2tyt73wFa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,72 +133,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-scm_update_information() allocates the response buffer for the CHSC
-Store SCM Information command.
+On Sat, Sep 05, 2026 at 05:23:42PM -0700, Andrew Morton wrote:
+> > Behaviour
+> > =========
+> > 
+> > Nothing here changes what gets collapsed.  Three things a reader should
+> > not have to find in the diff:
+> > 
+> >  - Patch 5: khugepaged fills its policy once per scan pass, so the
+> >    max_ptes_* limits and the defrag setting behind the allocation mask are
+> >    sampled once per pass rather than once per table.  A table scanned early
+> >    in a pass and one scanned late are then judged alike, where before a
+> >    knob written mid-pass split them.
+> > 
+> >  - Patch 8: mm_khugepaged_scan_pmd fires before mm_collapse_huge_page
+> >    rather than after it, the scan having returned before the collapse
+> >    runs.  Its status field already reads SCAN_SUCCEED for an accepted
+> >    table, so nothing changes there; what the collapse then made of the
+> >    table is mm_collapse_huge_page's to report, per order.
+> > 
+> >  - Patch 10: which orders a table is scanned for is sampled once per VMA
+> >    rather than once per table.  It cannot widen what a collapse does --
+> >    the order is tested again under the lock the collapse retakes.
+> 
+> So is *any* functional change expected with this series?
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+No.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+The three items here are so nobody has to find them in the diff, and
+calling them behaviour changes is a stretch: a sysfs knob written
+mid-pass takes effect on the next pass instead of the next table, and a
+tracepoint fires a few lines earlier with the same arguments.
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+> I'm reluctant to merge an unreviewed v1, but this comes close!  I'll
+> sit on it for a week or less, see what people say.  Please poke me
+> if/when you think it's good for mm-new.
 
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
-
-While on it, use __free(kfree) for the local response buffer.
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Assisted-by: copilot:claude-opus
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- drivers/s390/cio/scm.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/s390/cio/scm.c b/drivers/s390/cio/scm.c
-index 171212a6d2d9c..b79fe023ab8d1 100644
---- a/drivers/s390/cio/scm.c
-+++ b/drivers/s390/cio/scm.c
-@@ -13,6 +13,7 @@
- #include <linux/slab.h>
- #include <linux/init.h>
- #include <linux/err.h>
-+#include <linux/cleanup.h>
- #include <asm/eadm.h>
- #include "chsc.h"
- 
-@@ -224,12 +225,12 @@ static int scm_add(struct chsc_scm_info *scm_info, size_t num)
- 
- int scm_update_information(void)
- {
--	struct chsc_scm_info *scm_info;
-+	struct chsc_scm_info *scm_info __free(kfree) = NULL;
- 	u64 token = 0;
- 	size_t num;
- 	int ret;
- 
--	scm_info = (void *)__get_free_page(GFP_KERNEL | GFP_DMA);
-+	scm_info = kmalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!scm_info)
- 		return -ENOMEM;
- 
-@@ -250,8 +251,6 @@ int scm_update_information(void)
- 		token = scm_info->restok;
- 	} while (token);
- 
--	free_page((unsigned long)scm_info);
--
- 	return ret;
- }
- 
+Zi and Baolin have already provided enough feedback to justify v2.
 
 -- 
-2.53.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
