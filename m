@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D8DC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06C2C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:51:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5DED6B00AF; Sun,  6 Sep 2026 23:51:19 -0400 (EDT)
+	id 5F49F6B00B1; Sun,  6 Sep 2026 23:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C34426B00B0; Sun,  6 Sep 2026 23:51:19 -0400 (EDT)
+	id 556C96B00B2; Sun,  6 Sep 2026 23:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFC1E6B00B1; Sun,  6 Sep 2026 23:51:19 -0400 (EDT)
+	id 445796B00B3; Sun,  6 Sep 2026 23:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F9C6B00AF
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:51:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B5761C1E36
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:19 +0000 (UTC)
-X-FDA: 85185591078.12.6B7BDD8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 229596B00B1
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:51:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE488120675
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:22 +0000 (UTC)
+X-FDA: 85185591204.09.16EE5CF
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 60FEE14000A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GDH1iVaD;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2C32580003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:51:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lKEnAII+;
+	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788753077;
-	b=ShlWG8qTfV3v4uaItC5PabcpDB3veEiuYtyJWqBUyW4TnBnYK12lVGJ32gp12TX3B53ZTy
-	Psu6+HwF9X4sv82SVXbeQXM5sBn1VBDFdrcmTnVHV0c6kOGW1MiF2JeEAoaaTypL9BJziJ
-	R3an/9cbmhXT0PvJYC0UqO1kOdS0sro=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GDH1iVaD;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	t=1788753081;
+	b=wmoOfDWUd5BAVf2GaTP5YyxLBR5WbdaQcFjUlhzZ+OhW5QK6qWruPnklI6nfYA6Giz/1CB
+	5ge7aXcLinLG5EnCQUH2odOUbsjL9k8RovqOCnrdBDlGprQD+qaJdEzfasZOX+8h3LcNRZ
+	KHy3Gbzfa7ttXzMso52Y8GjbD2T7/yI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788753077;
+	s=arc-20220608; t=1788753081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luWlZWwBYYPwBya+o+ehXkBOxSyGbE4m07PKszzoAZs=;
-	b=sCZKu9/vAJzoj3So3cAwV3QYr24FFphIKa2m/56flO408VJY+zJwiwJ1mJ92XMMt03cKLs
-	8aWaaQguXCocG2Hqvt8BYyVZhPwdm0h9MooHOj4dtwTfXG1zbDsRyz9knI7c0fqHcVeWJ1
-	faYREdyMDy9U/fvKK/eXKRVRJy4zaOA=
+	bh=oEBvV9gjKrbuABjrjbq9iRE3PsX+PTSdkrbdKxkE1G4=;
+	b=IJgwsEFBK23dlaFUzm2rmNAH7FHzZ77Ml3NRp10KtIQNNJG/HsdDXPtXIJwkSNvcvXXm5D
+	wF/mYENVikvR3arnfGk08CutXkvbrPm+6vBlwdg/K/Bzx+aMoUoAlz/5b0USI8LknwkV6A
+	sCrvGkSCOsyDprIFQAsYAaIJ/KujEtM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lKEnAII+;
+	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD1AF1AED;
-	Sun,  6 Sep 2026 20:51:12 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A16E41BA8;
+	Sun,  6 Sep 2026 20:51:16 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C28233FBF5;
-	Sun,  6 Sep 2026 20:51:15 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9999D3F7B4;
+	Sun,  6 Sep 2026 20:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788753076; bh=LhsC0NhjKIdOi9rcgt72ehmDXHWyJcPL2hu83ddAkXM=;
+	t=1788753080; bh=Qb+7E8NXipxvoAEHwL2Au3g/XDt1GmXueAfBnPSqsJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDH1iVaDTX9uj2NicaktrTaa+TO516GXCUn6g6G08VZgnHdHZUl1DRy1eGFL6TTxv
-	 5QfnhHYRlF7ub/R7VFyqpPlgoON0Xu9Hhf6wHW0ROHaudZTmb5DVQB+JS16u+qgWDk
-	 bTw9+mPbTyJtpWzYfQuf/x3Ux/JhZoSnBhnxP2t0=
+	b=lKEnAII+5BcNq0/1T2NrvYL3H4zsr6jbJe17vY4vHbGtC5Ka7nzO99iXt8eHS5Maf
+	 DUh3npYqcQW/MG/QV9gj8aGR+OWVu2/7LIT0nnrpnjXk7rBdDRVbBdyr+CQYOu3SFr
+	 xyxdDNO5/m6NQtaItwuz7F+PRbFHlpCj5q5LgVLM=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -73,23 +73,27 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH V2 11/14] arm64/mm: Enable TLBIP instruction based TLB flush
-Date: Mon,  7 Sep 2026 09:20:26 +0530
-Message-ID: <20260907035030.2839978-12-anshuman.khandual@arm.com>
+	linux-mm@kvack.org,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	kasan-dev@googlegroups.com
+Subject: [PATCH V2 12/14] arm64/mm: Relax KASAN shadow alignment for FEAT_D128
+Date: Mon,  7 Sep 2026 09:20:27 +0530
+Message-ID: <20260907035030.2839978-13-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: grxu47bhyxx81bfqgp6cm14djgw35w3f
-X-Rspamd-Queue-Id: 60FEE14000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788753077-28056
-X-HE-Meta: U2FsdGVkX1/OiqfNQf9t9LNOeRR6tVG3dz/OVOvAkgBASVWpMDCKhcRe4eMn8d/8XF6hzuXk8JRBpm7QlI0pWjXzAV8o11RjVk1wNheXP5WpbSp+KJP918Beoo6ZSESSeBDheG89iBC404PWZwTuW0rtNPfAkW58q5q7Rwk1Nu3SadXIkk1WKoDCoT2gKFTyZ0ZxbuDhF6vMMrhgQfADWFFFzuZUsW81DASIXYGREHrJw/oDUx6DFlPa34z8FtwMmuRX/pB5jmNGH+9hw0Y/OYF398A+TAKGmkn2WimMuYljwMbSsWpoMcjMhgo5HymhrkY86rvqLSJ+Tzlz8yy6j6j/v6BweqJDj2K6wHck8hyUbxILkRYL3Knpy5PZsnfjqznmj8fxnInMrjITl/FN/VnAQX7K1IQwkQiSoUg0JWRjc0dP6sWQOj/tTtl73oesFyjnmKwxaNHiPcdVAcG2x5929BqjCAFxlTPWvF7Pn77jh27Uoawjhd8YQ2Qa/xm0glpPZhaW+NJoCUtjRZFnJDOP5+91CkVgT0g+Yz2EBfnXZycrM0aqgbD6J+9IhnzpK+Tw7PUQmnhXcbfQWblo1PFl1RxSnc6y6uc53cW34A4BTPoPtCbzprWpIre8GuH7ymV3xFM6ESpMrg5lrslLIAxzbqQljRtTmHigzZDcV6/8RomLV05Wy5LO0dQaZZkapf42DAMauHM5ugP/BBqjmbJa3jL+KPzyipxPLDMegUNt2bY6FWUreHTbynAhzb7iYIpyZ1gEmgnh9jbm05gYATfscTg+hnI91deHM41uADg6aVj+1QMGMt8dJn8P29TBqqYuljXPMfUfVoB1RWPorPL9XOKnbYvU0Lj+uENb12h8QBoaFdlF6BkRgDxnkCz+tpjbvupl6SpBN8O+KsOVc9OC2nqySCsdtNbICp5zSRYyVhdmMi8rmef1E9shJ8YvJ7mTUUyapybSfj3cj93
- knemUYmM
- axJpOKaI50oZHwGQkv3vQ/5E1rIg1YU1MoVzWuMSpZw0kXJY7J9TStnnYRR0DKOMppFmHoFr5e6d6MPdXaDWd52Ct8UMiwPRg8NViiX7n3Se4umi5fiuJUdUQrQrT4iXCMl0ZPmb2kHNrbpvQf8jsf1xHy39sZK3uiOM2srUjKpK9trYKGjfRl99uz/qrtkW0/ITwmbRgWwXPA42hkBmaaYEGPsnqoiQGiKd5dPRWUnlJXrcVIrehA114uVjrw9ria18AqXQkv8RPX8cMQmUnmziFkSs1c9+U+FKTC0J6gD46k50TrqyCs97C8ngnIJYel01Q
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2C32580003
+X-Stat-Signature: 49rrkr56wfkg5atddnaq3k3e5a5u6mf7
+X-HE-Tag: 1788753081-83812
+X-HE-Meta: U2FsdGVkX1+dcP7qYYQ8gpyk3GDrwDeBYtfsqeuk6sL+DhKG62BZpel4C+kVT/MVBWi3jQ/Ciz44NJ0UbW9owI5xG8aSFapCOSJsnNjUVo8Nc4guIwUxFIcCbBoYFrqLdLtc3vdFP56e6bNdrN0XPImO3nM4YVZ1H4c+vgt6L0UEh71l7EZ2lXvSk3cEQvQPX+wK/mMzQIGZ9jP8DswzkuXaOOkyUnzrvgpVb7kZNoTJnJ+ZMzE8VDy7/j7EcBJDS+GehGgovf1qe1QAkv2fCwGLNNZcvuq455gTBnzooq463HWbcy79dVTtrkhXSIrEf7Tp8//+ZRzdXaNhuglsc330NGD9Pmm0nqr3C4RaYzk5odWQYYeNKu1n2FeeDEwvdFBQca8aSkwerUAJUIg2eJg0+puZKm+uB65th+2PueeTphk50MG/S4nqRBcvyRWeTjr8ehKtGJHik90j9yS2FgdMQ4AfzNlfNOq+pjRETiDFYgYyvAsHifJvzMEPwd9qq6xY8MukleUnHKBvPSGczkbdrRD0UlqwoKiLbNDzciD6pkfk+ITfJIw+uYEfuxuip4KtHPOibN2K0kr6WkcPpwWFh0VB+WjuEhhM4WsLsucVo2fWoVZpLt5d0YdeQ5bhnHOFpMNdNOvsua9Ycin1ezcTroraWB6f6ya6YQAZyUqA7EDAjtvMOvZnoA1p7215kNGkD9ARiBcbxjdJynojED7/IRD2J38Q11Weq30zN9PMnb3zExWDu8HIgHEpyDg3Nyu1DTQ8mZYIJnEBXSLtqDzYkIDjd+2RHfVP49+qed3AoutI43bYB59jYFfkFkZWq/ziMRsGVYCYMc4xC2c52BTaXo3Wik/W3tSD/mGM5VeG1+wBUf5P8BOA5OSjlWL8D6APQZ20IR3sa1rKAy0zJESSTUuxxz+WRQKfCxx4RNtGGOx2PL+cXL7p/f4AIk1hz5WWIZa+QBeRyIsaM5J
+ OjvXuQcU
+ oUTvhKRDASOZ0SGmGxSZ3a674RPZ8tmF3QDn36wgubs6JIYaS3sCRr7bqRefqOR/CTps5kc6kt/k7B9OZt9vYT7zXb/jywytU900hZ2o39DUFsmUsb4wiXnG1ssdpzWZREyic8dSJ5AR95UUaJGZffKyGuVP/dKoXR7Lj9S4PzNM0ZOvPIw02EC0uztzvi5lK8SdN9Ax5bYIj8qfNhRlqcxENXJgdxd4+OdSmBSpTPVhdzY3NSl+YehAAtGZBX8J/JcxEr9cxFifMkxnBgSL3GI0TWxRMBDOoiqoRwmyCoOBjvvKpnG8L9JFdBuVrH5xzPv1nWmTuML500+7MhmJjRmVUjPUZ1+BMPMFrbZ3uNGE0i1gSvODGd593RSeJ4e3QOBXmK/Cre/uzhZcE1m8vrd6cGjXCH3COcKdKMv+KRrBay33+1lJnPuMuZQtJ8FN3lENHi5sKVWKSRvcHU/3ldJfnUWZPkhD3zVzdG2dLrzttPIkKsfhsMZsIOTNxZcrFOgc5w0XpCjQrK6mxmCuP71mEi6/+jH2We9CumUUiKz/qZp9EqCMcc431C8ktxMlbX9gW+T1QTNb/mxuANnz3aYqsjkA17S9Xrd14
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,140 +101,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Linu Cherian <linu.cherian@arm.com>
+D128 reduces the number of descriptors in each translation table, causing
+some VA size and page granule combinations that use two page table levels
+with D64 to now require three levels.
 
-Add TLBIP instruction support for TLB flush operation updating all relevant
-macros as necessary. This enables back pgtable level hint and address range
-support during TLB flush operation for D128 translation.
+For three-level page tables, the PUD level is folded while the PMD level
+remains a real translation level. Hence, PUD_SIZE represents a root-level
+span. With D128, some configurations have a KASAN shadow region smaller
+than this span, making it impossible for both KASAN shadow boundaries to
+satisfy the existing PUD_SIZE alignment requirement.
 
+The KASAN initialization code on arm64 already supports shadow boundaries
+which are not root-level aligned, by installing or cloning the next-level
+table as required.
+
+Similarly for three level D128 page tables, relax SHADOW_ALIGN to PMD_SIZE,
+which corresponds to the first non-folded level below the root level. Keep
+the existing alignment requirements unchanged for all other configurations.
+
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+Cc: kasan-dev@googlegroups.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/tlbflush.h | 68 +++++++++++++++++++++++++++----
- 1 file changed, 59 insertions(+), 9 deletions(-)
+ arch/arm64/mm/kasan_init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 88ae4e443ed6..f31a555760f0 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -41,6 +41,25 @@
- 
- #define __tlbi(op, ...)		__TLBI_N(op, ##__VA_ARGS__, 1, 0)
- 
-+#ifdef CONFIG_ARM64_D128
-+#define __tlbip(op, arg) do {		\
-+	asm (ARM64_ASM_PREAMBLE		\
-+	".arch_extension d128\n\t"	\
-+	"tlbip " #op ", %0, %H0\n"	\
-+	: : "r" (arg.full));		\
-+} while (0)
-+
-+#define __tlbip_user(op, arg) do {		\
-+	if (arm64_kernel_unmapped_at_el0()) {	\
-+		arg.low |= USER_ASID_FLAG;	\
-+		__tlbip(op, (arg));		\
-+	}					\
-+} while (0)
-+
-+#endif
-+
-+#define TLBI_ASID_MASK		GENMASK_ULL(63, 48)
-+
- #define __tlbi_user(op, arg) do {						\
- 	if (arm64_kernel_unmapped_at_el0())					\
- 		__tlbi(op, (arg) | USER_ASID_FLAG);				\
-@@ -130,9 +149,15 @@ static inline void sme_dvmsync_batch(void)
- 
- #define TLBI_TTL_UNKNOWN	INT_MAX
- 
-+#ifdef CONFIG_ARM64_D128
-+typedef union __u128_halves tlbi_arg_t;
-+#define __tlbi_wrapper(op, arg)		__tlbip(op, arg)
-+#define __tlbi_user_wrapper(op, arg)	__tlbip_user(op, arg)
-+#else
- typedef u64 tlbi_arg_t;
- #define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
- #define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
-+#endif
- 
- typedef void (*tlbi_op)(tlbi_arg_t arg);
- 
-@@ -179,17 +204,28 @@ static __always_inline void ipas2e1is(tlbi_arg_t arg)
- 	__tlbi_wrapper(ipas2e1is, arg);
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index f61f5bc09467..e12abea6ad15 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -178,7 +178,9 @@ static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
+ 	} while (pgdp++, addr = next, addr != end);
  }
  
--static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
--					      u16 asid)
-+static __always_inline void __tlbi_update_level(u32 level, u64 *arg)
- {
--	u64 arg = __TLBI_VADDR(addr, asid);
--
- 	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
- 		u64 ttl = level | (get_trans_granule() << 2);
- 
--		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
-+		FIELD_MODIFY(TLBI_TTL_MASK, arg, ttl);
- 	}
-+}
-+
-+static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level, u16 asid)
-+{
-+#ifdef CONFIG_ARM64_D128
-+	union __u128_halves arg;
-+
-+	arg.low = FIELD_PREP(TLBI_ASID_MASK, asid);
-+	__tlbi_update_level(level, &arg.low);
-+	arg.high = addr >> 12;
-+#else
-+	u64 arg = __TLBI_VADDR(addr, asid);
- 
-+	__tlbi_update_level(level, &arg);
-+#endif
- 	op(arg);
- }
- 
-@@ -475,19 +511,33 @@ static __always_inline void ripas2e1is(tlbi_arg_t arg)
- 	__tlbi_wrapper(ripas2e1is, arg);
- }
- 
--static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
--					 u16 asid, int scale, int num,
--					 u32 level, bool lpa2)
-+static __always_inline u64 __tlbi_range_args_encode_comm(u16 asid, int scale, int num, u32 level)
- {
- 	u64 arg = 0;
- 
--	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
- 	arg |= FIELD_PREP(TLBIR_TTL_MASK, level > 3 ? 0 : level);
- 	arg |= FIELD_PREP(TLBIR_NUM_MASK, num);
- 	arg |= FIELD_PREP(TLBIR_SCALE_MASK, scale);
- 	arg |= FIELD_PREP(TLBIR_TG_MASK, get_trans_granule());
- 	arg |= FIELD_PREP(TLBIR_ASID_MASK, asid);
- 
-+	return arg;
-+}
-+
-+static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
-+					 u16 asid, int scale, int num,
-+					 u32 level, bool lpa2)
-+{
-+#ifdef CONFIG_ARM64_D128
-+	union __u128_halves arg;
-+
-+	arg.low = __tlbi_range_args_encode_comm(asid, scale, num, level);
-+	arg.high = addr >> 12;
-+#else
-+	u64 arg = __tlbi_range_args_encode_comm(asid, scale, num, level);
-+
-+	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
-+#endif
- 	op(arg);
- }
- 
+-#if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS > 4
++#if defined(CONFIG_ARM64_D128) && CONFIG_PGTABLE_LEVELS == 3
++#define SHADOW_ALIGN	PMD_SIZE
++#elif defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS > 4
+ #define SHADOW_ALIGN	P4D_SIZE
+ #else
+ #define SHADOW_ALIGN	PUD_SIZE
 -- 
 2.43.0
 
