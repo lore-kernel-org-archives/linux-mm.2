@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 015D9C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58C7C79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:33:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC6656B009B; Mon,  7 Sep 2026 12:30:24 -0400 (EDT)
+	id DCC5D6B008C; Mon,  7 Sep 2026 12:33:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA36F6B009D; Mon,  7 Sep 2026 12:30:24 -0400 (EDT)
+	id D7C556B0096; Mon,  7 Sep 2026 12:33:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB2B16B009E; Mon,  7 Sep 2026 12:30:24 -0400 (EDT)
+	id C92AB6B009E; Mon,  7 Sep 2026 12:33:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A34156B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:30:24 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B30B1601D8
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:30:24 +0000 (UTC)
-X-FDA: 85187503968.25.EED35C0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C34D6B008C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:33:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 233B9401E3
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:33:55 +0000 (UTC)
+X-FDA: 85187512830.20.4EE876C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 803881C000B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:30:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KI62XHM/";
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 84E08120004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:33:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5wYc8By;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788798622;
+	s=arc-20220608; t=1788798833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYQA4jeD0DIJnAW0P78qjwDpNlErq0X6ckTCGSBrwCE=;
-	b=TTe56tslcN51I78ZDZyJWcgFEN5rMKOzwheJbBsTAG+U7xy1k/CDWTLcrviinc3A4igMhq
-	iU6kT2kBrAiKPJsD372CT/zyxZFsNQsmIMjU+3Q6mR2Y7sQ0NgjplFPUhlcVwh3JTH+daG
-	E5iwf1Y6la3nzTXbCu9ovjG2IsSMpDQ=
+	bh=cAuFkVwr+DWI2V4wrox0xZCJB/0hu3m74aTo0dee8I0=;
+	b=MDgT4LAXGLlJbdJH+iumbvFb4+FAGzgfsKiO2tzKXTH53T/nu7MR6W2iI95NS7bX+gNlz3
+	bSBQMOnFYAL81a5x3aD8QNHjuXfX860VVBV4O+QEnXON8oqe2DuFPE2rGaTIVh4Yg9l+Kj
+	KxzWtupXche3+56Q29Rzpki1HMNh7Ak=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788798622;
-	b=WOgwyB/fX/Z2tP0u9E4BlS98AlYXobn+9Z35Ha0tUcDjdjof0m9JutIxCsmZ+7y99uiGca
-	btMu+NdwFHIRe/ZQAFYyP4cyxq7U+AEhmHF7ELET1JPxsrLqkT1nKRcwjEmT1I68mOHwLN
-	hh3NEJJsfJBW4u77l9ZduIsxTT1CCcg=
+	t=1788798833;
+	b=J1lwe/ArAPF0rNU4+FSnuEaFW6EttOzMz3OAEw2ApeTQj2TNLZkXxWjmBg1brzKkIyBG+P
+	tLsubFKvDsms9i8OFIsQ3o6RoEJlBpeLgfDF1nFAAf5KhcCVC+RLnocHiuirsX3oe+49fT
+	Kwm8QM6oiQ6Ipx6V9BexHbos8mpbOfQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KI62XHM/";
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5wYc8By;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0E26601DB;
-	Mon,  7 Sep 2026 16:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF721F00A3A;
-	Mon,  7 Sep 2026 16:30:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C28D601DB;
+	Mon,  7 Sep 2026 16:33:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCF51F00A3A;
+	Mon,  7 Sep 2026 16:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788798621;
-	bh=TYQA4jeD0DIJnAW0P78qjwDpNlErq0X6ckTCGSBrwCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KI62XHM/GgSlqq9owo7p9GRljeRJwENVHuSPu6fS8Kl04az1Sb242UsyNOKb+j4yN
-	 ZZi0zcm8jQiNsGTjz2F6fRaAzU+TKsNUNm+PzC62GE/aHpaq6UwPqGqxc2Y6lfWGzw
-	 8fOAhd9L3XYcD7ps5jP2GxzgfafQb5GNI1pLYcEFGNwa4yOuT4q41/5/NIV6bAf9Fa
-	 dzsMQwOxbasMZ1trntTM+bbjwTqRFjeDxTzw85ts4FwCqtPSEh7RY7ypcCboomKVmw
-	 Bm/hdu1W2T2NmbCIMF7QHMQsh208+sNp16Rr0HXynJ2r1S/ce+oZdiAjjQnk4wFxz/
-	 hviFuc2R5p80w==
-Date: Mon, 7 Sep 2026 17:30:14 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Cedric Le Goater <clg@redhat.com>, 
-	Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
-Message-ID: <ap7mZ1Ktd_rRRrdX@gremlin>
-References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
- <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com>
- <apEzvfGgsvbc3vBI@gremlin>
- <dc52dd1d-f62d-4278-ab4d-95746383fd50@kernel.org>
- <ap7i1vLkfZj4rbNM@gremlin>
- <4743f22a-c24f-4f93-80f5-3260f29bd410@kernel.org>
+	s=k20260515; t=1788798832;
+	bh=cAuFkVwr+DWI2V4wrox0xZCJB/0hu3m74aTo0dee8I0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=i5wYc8BysTLjWIl1VZMisAs6qq70fofF+8/cz4NAB0r9TF8ieAzpbP2DsOXRCdYPs
+	 h/OAHgy169+b1CuJ8FoTJPYCFcuobmAA83xbEl5HsAtmh2DgNO1LaFmCflDfzD30hv
+	 ZBKpii018dEnIpP6ts7o8tlPIs8xXjKxmZhUfRujTGOO3v7A6fIZb7xR/H1eU5wzhj
+	 54x6CLqyDPNStPOVx9pj7VdSDCz5FeIJZA7TRfvq/M4GnVeN0mCsVuk4BehIK+nDPQ
+	 v7aYdvHltnPnINFV6eQ9PkxGIW95GK6TA5BTBB+9fxbWdMc/r5ZQuG1CKQhZI1Qn2Y
+	 /cpt8yAFkCgUA==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2.1] mm/damon/core: fix false positive in damos_quota_is_full() when esz is zero
+Date: Mon,  7 Sep 2026 09:33:44 -0700
+Message-ID: <20260907163344.87006-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260906222633.4227-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4743f22a-c24f-4f93-80f5-3260f29bd410@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 803881C000B
-X-Stat-Signature: urfars5ndi61wo736wcdfmtguki9f8cg
-X-HE-Tag: 1788798622-561878
-X-HE-Meta: U2FsdGVkX196Dt93t07PKfFm6d+lFIrgMq1UFcAJb7ilkT3ERVNuLGd/XVPz6YOylUid8Mmnvnyk84W5bQv7zapIVU7NnF4pyxw2TyAV5PeI3bEkAC1X5ECIspBedA/rB0jUk8rRSp94cssVOB8AB3c4PqsNt7lvYjRQBaxjxQEG/6LeGPF9CXvZvcUGkBuVj1SGuHArBA3z9NXc05y/y2adGVQrJdmoAyBhaTTMEf3A4IazOOI3ocGqzBFDzR1Z3qu0CU7tkN2he45F6TnZTdc37w2Hzcf4cOlqJ2BhZj07ldMeEMNjkRTInmg4Vcf1mjPNk97znriVhoE6uIT7Gb0K4SF0TjGdJplsXFxIHmW5euZptyWxF06BIEr4UdIFZlaw+eYU7ObsFXJMoRqW2qb/BdogWvcjDem0rwePOnwDPqujQKGCyGyb5BlpY2+Q/z2/fufDCOXdNaoPId68eTlQ66f8bKfvruJF75ARW/m1x9ZcevihKWMkpzeSYQYRu3n4KNiInnKxYZAIhiSKctdfaCuBTkauQWo8jndy5+PggGzFTHFyIBRdBGA+yRLpOK8aF7sAUsaiw5LoxkGpPHSw5h7hijwrPZZysA5vTjAPAxDwjA+eQBLeMYrVutJi/WWotaq+yhiK2kj4c3qPEiBAMU477MHpObwKWkoiewbaMkC6gfcc0BhMEgvZuPJAaj60g/GNVqKIzWEuNqB61JuJ9JXBMtdG10X6yp0JLf/C6TUr3ViSlXIe0xpmCrlUkxBkl57y9lsyWLIX9ZPK3h6ZMJh+G1bJBytarHgSepk4ZMDIXN9bdXElq0ZKKtBhjKcJkTIjaImqtgHc8LKYdQJZep9rsNj0nQMJIL354Hllkf1Jse1QyIW6g1qqQzHvf6NHVUzAMxt+6L2u4zPRIVENjL2BEQUMb5E/A9fHj4Sv7Evpj84GdBvXgySyvUmoZ4PBLPaP1wt1KxGVBji
- bp0PXfSh
- wlJ6D7SxMx1o2aYVRU/yUYbGbZcaeIi2BXDMQkSSTAQCTaANifQ5oGeJ9QvxMFdGpINgOFgyg+brvxEngM4UOU9KcJqseYJhpai+X71HmXugsBXMPtXTaPIZNWQu5peLKs1thhHIGih7nq+si4K6RhfZwZn56VNbShEoHUA+S72sgDBNeoawxPiY+FGmQgBkcGj6ROwZ8a3Q3YA+RrtCTfKxIB0a14HMmh52Fcsw/8stsV0yIpv9d4CujrzbBVOei1+Ykm+v5+1zp7/9G/kesR8pqKSbWb+XAWBjYd3d9xq6bmuw=
+X-Rspamd-Queue-Id: 84E08120004
+X-Stat-Signature: 3skiswyjde1w7mi6quyq9c48f6k1zbxy
+X-HE-Tag: 1788798833-94227
+X-HE-Meta: U2FsdGVkX1+Kf7sjoIEFCW0qhKaXZwnyOJsc/WfcxnXi29JG329wl2y9crUd+40Pu77cQcK1iHPzB+71JSbYAOlfJe5qoUxzZi0lK9cH+2hQaWlHe9/sWpPWMJ8x660eGmb/PI/G1NUQk//Ok2cC+6DLaPSdbUdQDE+I8bzecJVMR4vfJMDGOni5KVO4CulZcI0xgbr5QP82hwKPz0+aTF3GUvasN2cKwGYK1EctYntEfM22Oewd7oscPf9/RnaIiiPw9ujjjnsTf4Z7gbTlMAtnyaQzEBGs55w6rWCvQP26wmnpbbiZHrFGL6a80PwUoL95HeGhtpcDM38hB3NozyH2Tz+VvPZWLOk9Eb4X6Qi9fNtf0cHgnBOxGaeNXjmR/qYD7yTODUQGBN1aitm0KF5VheKe9ntJ1J3Bwqk3mQ9exB+fAhKS0FLzDppoUQrxEw2p7ocyk7TrW7Vtodq3b3wUkfiENLhTLVgVi0g9BRPkhw1WuDi/312eeaEC/NH5tHPgU0JGzCPgTsvwWsLk8X912fhkeNPcR1TJfF6CQ7/M6F0RNr3sZam0DkgKjgwHpZ3qmFh67Ja5kGXbxaeA9N0eyJQJX8MMoGe56W/DM80EFKqZg+UKHUeuTb3T4SSkEIPgqp0pjkT8+NOmYUmt9SEvv26kwkiKRiDmzrBDJkMhwfQNf+pR4yZfiW/5Z6ZAqA3PYGwq8XqeTVgBNTops5zBDjgHoWTrywHn+6369Wo17xXlSEpZsOxIPorDbmGZZoxxq4AAMd9qWBl59X6CWbf/yi9I3x3XYndJxVm1H0CUEQA5U436cUwxWEQHVn1Se7XOiP1lmqXbcQpJnL6m7f0KYhrpJTVL4f/EyUWOCOEpkD9VymxPv89/M+bloVyGwR72AdUJECKN9mhY/2Np7b5Of0I3MfB0bEabhNv651TSD50soRt7G2IK6iiDycbLC5UJZsUJn6E3WOemHNQ
+ nFF8xs3w
+ 47xPGGjoeai0Y4qznrQuDhnaGBbYoWKzBvJLU7fBVEmvi3jlQJwUvnH3iPbwx1LxF6OqtShjQvzALuM+9V7bT3WHFjGowoLbtLVmy/WOBIkg2T2Ff40FHJlgyQhjZoKFDgj4VkzfLFwBICDcndbkKc5k6PT9KpJlcN5Kk3Rmsv1elZgucEHb4UfBRGlqqStuQDCE6IyE2u0XnGzsn/G38A+Q7UQEPnJBuXlNYJBjplITNa7WBpxstXgI80cKAptUad5zCB9EbZIy8sggL73arq0WpGhCuPh3ia9GOF2WLwKy+Mag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,55 +94,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 06:19:30PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/7/26 18:15, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Sep 07, 2026 at 06:08:31PM +0200, David Hildenbrand (Arm) wrote:
-> >>
-> >>>
-> >>> That's a good idea! Much better thanks.
-> >>>
-> >>>
-> >>> Yeah, it's an annoying one as kinda want to say 'file-backed VMA' but I think
-> >>> you're right vma_xxx_file() -> vma_file_xxx() is better.
-> >>>
-> >>> Andrew - could you fix that up in place?
-> >>>
-> >>> Obviously if there's further feedback I can respin as well.
-> >>
-> >> Just as a general note I really hate these in-place updates.
-> >>
-> >> For a reviewer perspective (like me stumbling over this) this is just a mess.
-> >>
-> >> Resending with b4 is as easy as it gets.
-> >
-> > Ack, you are right to be honest, and I do empathise obviously.
-> >
-> > I will respin these in future!
-> >
-> > Let me know if you want me to respin this to make life a bit easier?
->
-> Sorry for being grumpy. With 1500 unread mails, playing Hensel and searching for
-> breadcrumbs in my inbox is hard :D
+On Mon,  7 Sep 2026 06:25:28 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Tsk, that's not grumpy, you're speaking to the king of grumpiness :P
+> On Sat, 05 Sep 2026 09:12:33 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > On Sat,  5 Sep 2026 18:36:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > 
+> > > On Fri, 04 Sep 2026 17:25:34 -0700 SJ Park <sj@kernel.org> wrote:
+> > > 
+> > > > On Fri,  4 Sep 2026 23:35:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > > 
+> > > > > That said, it's not important for me to add explanations to the
+> > > > > document, but may I know why commit [2] changed the behavior which
+> > > > > introduced by commit [1]?
+> > > > > 
+> > > > > Commit [1] Behavior:
+> > > > > 
+> > > > >     if (quota->esz && quota->changed_sz >= quota->esz)
+> > > > >         s->stat.qt_exceeds++;
+> > > > > 
+> > > > > Commit [2] Behavior:
+> > > > > 
+> > > > >     if (damos_quota_is_full(quota, c->min_region_sz))
+> > > > >         s->stat.qt_exceeds++;
+> > > > > 
+> > > > > Before commit [2], qt_exceeds will only increase when quota->esz is not
+> > > > > zero, but after commit [2], qt_exceeds also increase even when
+> > > > > quota->esz is zero.  I'd love to understand the rationale behind this
+> > > > > change to better grasp the design evolution.
+> > > > > 
+> > > > > [1] 6268eac34ca30 ("mm/damon/schemes: account how many times quota limit has exceeded")
+> > > > >     (Fri Jan 14 14:10:20 2022 -0800)
+> > > > > [2] c7ec7d5f6b3d1 ("mm/damon/core: handle <min_region_sz remaining quota as empty")
+> > > > >     (Mon Apr 27 18:33:50 2026 -0700)
+> > > > 
+> > > > Seems commit c7ec7d5f6b3d1 didn't make a behavior change that you are
+> > > > describing.
+> > > 
+> > > I actually wanted to point out the behavior difference between commit [1]
+> > > and [2], but I've understood and agreed with your point.
+> > > 
+> > > > 
+> > > > '''
+> > > > $ git show c7ec7d5f6b3d1
+> > > > [...]
+> > > > @@ -2601,8 +2613,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+> > > >         if (!time_in_range_open(jiffies, quota->charged_from,
+> > > >                                 quota->charged_from +
+> > > >                                 msecs_to_jiffies(quota->reset_interval))) {
+> > > > -               if (damos_quota_is_set(quota) &&
+> > > > -                               quota->charged_sz >= quota->esz)
+> > > > +               if (damos_quota_is_full(quota, c->min_region_sz))
+> > > >                         s->stat.qt_exceeds++;
+> > > >                 quota->total_charged_sz += quota->charged_sz;
+> > > >                 quota->charged_from = jiffies;
+> > > > '''
+> > > > 
+> > > > And I don't think there was a behavior change.  Hopefully commit 54419bbd0ee3
+> > > > ("mm/damon/core: allow quota goals set zero effective size quota") will give
+> > > > you some clues.
+> > > 
+> > > Thank you very much for your clarifying :>
+> > > 
+> > > Now I completely understand why there is different behavior
+> > 
+> > I told you I don't think there was a behavior change.  I still think so.
+> > 
+> > > between
+> > > commit [1] and [2].  Because in commit [1], esz==0 only means quota is
+> > > unlimited.
+> > 
+> > No.  Commit 54419bbd0ee3 says "DAMON core assumes zero effective quota means
+> > the user has set no quota."
+> > 
+> > 
+> > > After commit 54419bbd0ee3, esz==0 also can means do not have
+> > > quota at all.
+> > 
+> > That's what the commit is describing the before-commit status...
+> > 
+> > > But the qt_exceeds should just not increase when quota is
+> > > unlimited, that's why the current implementation is completely correct.
+> > 
+> > There is no unlimited quota.  Hence I don't understand what you are saying
+> > here.  Please carefully read the commit message again.
+> 
+> Thank you for the detailed explanation, and sorry for my confusing
+> wording.  Let me confirm my corrected understanding:
+> 
+> Before commit 54419bbd0ee3, esz == 0 appeared only when the quota was
+> unset, i.e., the user has set no quota.  DAMON core therefore assumed
+> zero effective quota means the user has set no quota, and the code
+> checked quota->esz to tell whether a quota is set.  Commit 54419bbd0ee3
+> decoupled "quota is set" from "esz != 0" by introducing
+> damos_quota_is_set().  After that, the temporal goal tuner
+> (af738a6a00c1f) made it possible for a set quota to have esz == 0 as
+> well, for example once its goal is over-achieved.  In that case the
+> scheme is intentionally deactivated,
 
->
-> (I did see some reply from Zi to an mm-unstable patch, but not sure if that was
-> applied in the end -- or whether Andrew fixed up any of that)
->
-> I just saw my reply to my other mail, maybe a v2 would be best :)
+From user's perspective, it may look like it is deactivated.  Technically
+speaking, however, it is not deactivated.  Everything keeps working in the
+normal way.  Just one difference is that now it has very small (zero) quota.
 
-Sure no problem will respin.
+> and counting qt_exceeds is intended,
+> not a bug.
+> 
+> Commit c7ec7d5f6b3d1 did not change the behavior I asked about; it only
+> refactored the check into damos_quota_is_full().
 
-I will probably respin the RCU page table series too to wrap Kiryl's changes
-into it just to make life easier there too!
+Seems you fully understand that now :)
 
->
-> --
-> Cheers,
->
-> David
+> 
+> I will send a documentation patch in the near future.  Thank you again
+> for your patience.
 
---
-Cheers, Lorenzo
+Thank you for your patience, too.  Looking forward to the patch!
+
+
+Thanks,
+SJ
+
+[...]
 
