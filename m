@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD0E3C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA18C79FA3
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 03:51:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF4356B00A2; Sun,  6 Sep 2026 23:50:52 -0400 (EDT)
+	id D6E1E6B00A4; Sun,  6 Sep 2026 23:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7F1E6B00A3; Sun,  6 Sep 2026 23:50:52 -0400 (EDT)
+	id CD06A6B00A5; Sun,  6 Sep 2026 23:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D93E36B00A4; Sun,  6 Sep 2026 23:50:52 -0400 (EDT)
+	id BBF566B00A6; Sun,  6 Sep 2026 23:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC6F6B00A2
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:50:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 466AD120683
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:52 +0000 (UTC)
-X-FDA: 85185589944.30.A657D06
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9491B6B00A4
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 23:50:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 20D35A4B76
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:56 +0000 (UTC)
+X-FDA: 85185590112.24.7447171
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8CAAD40006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rYQQ5NTw;
-	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8726A1C0004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 03:50:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sMy811HE;
+	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788753050;
+	s=arc-20220608; t=1788753054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Vnzyto12ET9Jnyu3Umgb51huyKdHOaZoey7A9TI62Y=;
-	b=D2ecmSoqLusbSLJXrGmpzo3vZPic+pyf+dkf4plkxr1DeGIEt2Nt+JEacC2enZp3OJCeNi
-	pQQeiDp2mzj45IVdMh3Wl4nFXMlkO8i3qbJRdSUqB0vq+Ybc27Q9f65Z7V+hYqABgIURcU
-	0+418NZiOIFOIF0ZWOXUH2aYQ4SFUd4=
+	bh=4lVshiSVFZ9Y82hpOELbFUOQ47Aud6N74VG1d7Ctjwk=;
+	b=bdLApLJlnR+IbKYSXmFzyu+9kD6NdPPntMtDfcpZ96l/QSCTr0hJl1L6oM2QlLho+f9XfU
+	VbFr9sZ0D56Zbk0QMG07ZWk4ycH33Hi6cR7uW3q/w4ydXHWjIxH3vgv4WrB7VfNPPojfEs
+	HmGVvXyDJW0lc28+luKlnRWBjnc1KZA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788753050;
-	b=7IllfoiE9nPc8dDnol7TtEe2hE2eVNIZ3cP101vln/xpzkazFjceh1pvDv/YrhAHAboRyO
-	NoJaY6QUrFdYSEyR7EdJ5uy8XyVl8AvRK8KKNTJ3DHR9tSGVvePJsWjqettm70jpv7pXqi
-	99jd9n2LEMPf9nrhN6Jaid9Uj500Doc=
+	t=1788753054;
+	b=2FvcM0CahFPgT7djWBIa46gn9RD1T/LT7JeC5AJyqTioQVILQoK5WtVnr8xtl15UfNqz4Z
+	cRpt3HmujPl88l1kVz2FkjBCaBP50SXr6Bybot4EpBhiF/Xdu1NpU8DC2o9jH3dqOIw+4g
+	PX1xIoZ3BUZbGfp7LFySTDMHyhHkh3k=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rYQQ5NTw;
-	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sMy811HE;
+	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B5CB1516;
-	Sun,  6 Sep 2026 20:50:46 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5DE61477;
+	Sun,  6 Sep 2026 20:50:49 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 01ABA3F7B4;
-	Sun,  6 Sep 2026 20:50:48 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB6B53F7B4;
+	Sun,  6 Sep 2026 20:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788753049; bh=datmweSr9Wz8l6EajpJTnuP4rYWsCtPHvC4W2LbaUaA=;
+	t=1788753053; bh=/rjGzAt748dsaT36LBnwBIEZW4gfjkEspNbbmVlfxKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYQQ5NTw++2T/tMCvMfnjCBpqab+/MaKV87YWGvK+K+0ywMBjSFsvu2yZ/L8K+tPL
-	 1buRRth44mADdhDZXsthTzNm91mt0BP1+rChGY2IHHTaLtQo/F4AZzRMIFpaMhPeNj
-	 GwSgJ9LCfd+pEY6KoBVJvR4Y2q1BdnGGtQiZTnOA=
+	b=sMy811HEo7xsqsm1p6JcAzLBb1J9PIdm3/h3H35Mn7WqMv0uYuDIVHpZ3IQqhy+bA
+	 sWeT+NJFvEID6NFJBlSkLv1xwq/uGZiqo3RpydBbivEGHiwYUfOgUUsd4NohfsU0vo
+	 apZdfIn31OFzbtwwAWTrajkO9WPqqLFAmPjA/4BU=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -74,22 +74,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH V2 04/14] arm64/mm: Route all pgtable atomics to central helpers
-Date: Mon,  7 Sep 2026 09:20:19 +0530
-Message-ID: <20260907035030.2839978-5-anshuman.khandual@arm.com>
+Subject: [PATCH V2 05/14] arm64/mm: Override read-write accessors for vm_page_prot
+Date: Mon,  7 Sep 2026 09:20:20 +0530
+Message-ID: <20260907035030.2839978-6-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8CAAD40006
-X-Stat-Signature: jet95yb5frzby66iac4amzdn6st8fnft
-X-HE-Tag: 1788753050-748246
-X-HE-Meta: U2FsdGVkX193Url7cTukyxjeEtPzyuX8WMPmxNn1uI3+YFoyqVWPGYfssLX9NdwsKhts/aGVc17vMY0rmFvik8oxViMKU/PASi1O/QIkdk78AmL+Lp5m0amGvELAOWOYldJFt7WP/FAsE+XHz2W5IEpWnGlA9kqeYFll3Quyb/e7Nv23n3MzJc57HUPoIPtQSxLrUf6xqRF4cH5ZQIQN3pVkLT+6f91rzT4L0yjq5BPQMgctl4GnfNGIqd6ZWPIm7LSmxrpgAcwWE3EZdYo2eWbl8oj6fk566Kx/Q6nY96WV1NEVTKAo3bSO35ROGhLkNa3EII8QJyVHh5H3bQC33oL+CxpACKjsUp52MUHYhnBEMr1TojDcaYk/X9g1L22c4arc90xH+r6xPS7O57HgfJ2mi1NJc7ZYSpHynXlJxqRjgi49B443J+FFX80sLH/+d21XKqd66wS3GDAYO7wPgMEp51elU7rKJvexdYlrpWqTxsSPPxfpNrvNr1/QmWQ8/SJ57aPTbJd6QSq8oKLyJZMwVLbTWVZ50QRziBVArsVS1+TCBGUiaEtOxIlEFUwImbwW+lN/GMIll3314qE2GZ2k0Qw/QOHxM8gXs7L8Bh4gYmbE+qyntRv6mhP7PdkQvswRvEguJG0XWwdM6MulDRUdVOP/gnS3f9SeiKwxLbLl2SzcEYiRFvGmQp9zhf7yhrCK1fKXRSwGu78+PbA78CwsEc1VA/3sdPmijlyeK/3YTra8DMkNrfJ0xAMT8VsEIJhlVDBgf1WETdUOC8sTpw1yeuROyNZB0a1wYVcNBoBXnnAVic4kh9TBd3XOP9xrw2l9QH6+o6uCJSFgQ3AKadn7Ymybz7lVktKt/A1N8fTwvqIVivHGlkZxJfyY0hF7Q9SDO1ZoSUkZ5VOr+u+Bb0Z64txL4GFhO4P/7vkr5c/bGn4TAq0UYQDdZRpImPC+VAj6Od+WNsql5sSp7Z3
- qAhiVCU+
- NTr/9bjTxTW0WlFWo9cvDYjXXaLD4matPwOqRaMzVrFuCyn9ra3/LqjYjYogt2Mj4cG4iA27lzcF8qbdbtRrOLaBepWg+4Kbd5QpzABykuedvEA0hsY0/ARqwngy42rz8zEvKAxdePsNZd/s/qu2EwqZmKUGnU4Kg2XwSWjijZl9/vr1nx+lPrM5EcL7hboy/N+9NA/21WTWVMOuqlheCxLPSh7MNcq3/qmdyM9+SLLMiI8tDvXk3wv6VpMyrSlWkzDVNwbgFncebk4r2lb4t2ynVfGfQtCXgi7AdYczyzTuJJyTWVlFkafbXiKzd6k2/6iAPSNePpeZaQjab0Cnw3DQ7B4jhR17Xx2jKWbfrJk9VCum66rf4Vy42Bg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8726A1C0004
+X-Stat-Signature: 7t8xokh1dtfsb46xg4e5reabasqk3q69
+X-HE-Tag: 1788753054-942505
+X-HE-Meta: U2FsdGVkX18oPVl+CgWhBK3VlwJG7jZWaq62qSG5C/37oVTI6mdbumfC53hk2O4/45L5K2YN0V2hTk1EOsSQnNQICr/YZJFUHMEcsYZy1EUqifCjO2G8t6i2alD6B7MZPjA7Ag2dNuZmpV3I26dK5EbGxlxWqq9pLRr2vdAyU6rGnQ8vi6Np0OKxa9Iuns8AonJ21RjPRfX6YcRu1eaMDMF6gsLZCtRMQKePHl/Ogt1ZSeZIdqUITJM7RuJmrgnZstXxb2XRQGX7Sp/bWdlDXsuJszV/4JVZX6lZtRwD/x0rv4/6FfNu9hZM7UvxC9iHf6InPwdfWgKxdvkO7Yr+es/Z31GQoeRI8ZFM25fQo0zPCgeISuLqFEOmg1mvbF83GTZZ5bFaAPSGf9HCLf9uzn4Ow3sOsWrk/vAXB5TSWiiqlf2Fe8V9hlkYISPVZ78UnAmRK/qA09pCQj22SC4ajSyRWOdiJnUrVLUMqORwzA8dsvaVWmWEHlSiwFymzB14AXXzg0Jp/SEBF07IZy9GxcYGhkbRaEzNAy5ZiusfhaZWFuhWvwbl65Jp6o1H+rZyuEHW+ksThP2I2qLYcl2F0yy4fmL59rWLPk1sHu+wOcvU4w4fHs8O4WxjYdkmUy1rmIjUSHBVbcB/UGSjup5RxVT+Ux7Zf4aXyoiNCRHLWmzAHF/i9fQ6PP2x5jFM6JMtKgofSdyHjqC3c71spFmTbAOFoWnJpGOgTHqYq1H83Cty6QExoqWlUD+L7qT4MdK/qptA7WxCb2afsMeut2RFZ5vphcJcdyOLl5TmyqOEHelpOnYR2ziV06oKNVTwwrlg3kIKfuZY9pTW3m6BuAdBlT+rZzr3j5ZcgEp61PHLdHoCYvo1TBQ7IK/4ZW/lb3J4ZE7kjQF9i1Wv2k6uU95O1CUwEHT3YyHY0/2OZd8O+yrJ2NE+39cn1iw653FtWlxTS2fen/2wkFRd3KGZRYh
+ dx7eCssi
+ dOXmBOk9ZyBJ9UzRYYR8ajR5hA2PkqDjwRB3OyA3WIlpjv9sc2qWp7uQxcUL4xjNa6awvfw3odmuood5XNhKfaokO0hKSk9ej50LSc47VJdmf+rH/LfG8Mc5FfvcWhjknyni4a8WpyFwyy1WQKMhnP+drBtCFxHScCoIA3BusoS/I2bitP3408qOtAf0ZAzfOc6dIM/WOpspfe4vRRYTTPLrPn5RlP8QHc+EP8tFRxxtNAXX59KUL+EMfp1dfuZRX2FteFaiT/s0/Qc4l2k8kAM1t8oEJ/D9iwkI9YB2pP5JXtJBwW9Iqof1ALAwEdigEo2VDtyp46OxXgAmLTtq0009DEwDQMGg3oJv+31pS5c2PCX7+Znv7YkBWhT5d5GBRBbbbBLP1ooHwCO+czfNTAVkjtkr4v0ok7zGm8S3Vd/h4eZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,13 +97,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Route all cmpxchg() operations performed on various page table entries to a
-new ptval_cmpxchg_relaxed() helper. Similarly route all xchg() operations
-performed on page table entries to a new ptval_xchg_relaxed() helper.
-
-Currently these helpers just forward to the same APIs that were previously
-called direct, but in future we will change the routing for D128 which is
-too long to use the standard APIs.
+Override pgprot_[read|write]() accessors using ptval_[get|set]() providing
+required single copy atomic operation for vma->vm_page_prot.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -113,102 +108,32 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 26 +++++++++++++++++++-------
- arch/arm64/mm/fault.c            |  2 +-
- 2 files changed, 20 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 692669ea2d29..66bf5bbe484e 100644
+index 66bf5bbe484e..2b457db19be0 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -87,6 +87,17 @@ static inline void arch_leave_lazy_mmu_mode(void)
- #define ptval_get(x)		READ_ONCE(x)
- #define ptval_set(x, val)	WRITE_ONCE(x, val)
+@@ -122,6 +122,18 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
+ 	return ptval_get(*pgdp);
+ }
  
-+static inline ptval_t ptval_cmpxchg_relaxed(ptval_t *ptep, ptval_t old,
-+					      ptval_t new)
++#define pgprot_read pgprot_read
++static inline pgprot_t pgprot_read(pgprot_t *prot)
 +{
-+	return cmpxchg_relaxed(ptep, old, new);
++	return ptval_get(*prot);
 +}
 +
-+static inline ptval_t ptval_xchg_relaxed(ptval_t *ptep, ptval_t new)
++#define pgprot_write pgprot_write
++static inline void pgprot_write(pgprot_t *prot, pgprot_t val)
 +{
-+	return xchg_relaxed(ptep, new);
++	ptval_set(*prot, val);
 +}
 +
- #define pmdp_get pmdp_get
- static inline pmd_t pmdp_get(pmd_t *pmdp)
- {
-@@ -1281,8 +1292,8 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- 	do {
- 		old_pte = pte;
- 		pte = pte_mkold(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
--					       pte_val(old_pte), pte_val(pte));
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
-+						      pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
  
- 	return pte_young(pte);
-@@ -1324,7 +1335,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
- 					       pte_t *ptep,
- 					       unsigned long pgsize)
- {
--	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
-+	pte_t pte = __pte(ptval_xchg_relaxed(&pte_val(*ptep), 0));
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
-@@ -1400,7 +1411,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
- 	do {
- 		old_pte = pte;
- 		pte = pte_wrprotect(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- }
-@@ -1438,7 +1449,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
- 		if (flags & CYDP_CLEAR_DIRTY)
- 			pte = pte_mkclean(pte);
- 
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- }
-@@ -1477,7 +1488,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
- {
- 	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
--	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
-+	return __pmd(ptval_xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
- }
- #endif
- 
-@@ -1804,7 +1815,8 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
- 
--	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-+	old = ptval_cmpxchg_relaxed(&pte_val(*ptep), old, pte_val(new_pte));
-+	if (old != 0)
- 		return false;
- 
- 	/*
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 1de76ced0403..6db93371d649 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -244,7 +244,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 		pteval ^= PTE_RDONLY;
- 		pteval |= pte_val(entry);
- 		pteval ^= PTE_RDONLY;
--		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
-+		pteval = ptval_cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
- 	} while (pteval != old_pteval);
- 
- 	/*
 -- 
 2.43.0
 
