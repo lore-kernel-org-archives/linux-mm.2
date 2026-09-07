@@ -4,136 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACD1C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 18:33:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED8DC79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 18:51:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 909496B008A; Mon,  7 Sep 2026 14:33:50 -0400 (EDT)
+	id 581306B008A; Mon,  7 Sep 2026 14:51:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0B56B008C; Mon,  7 Sep 2026 14:33:50 -0400 (EDT)
+	id 50A566B008C; Mon,  7 Sep 2026 14:51:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F65F6B0092; Mon,  7 Sep 2026 14:33:50 -0400 (EDT)
+	id 3D4DC6B0092; Mon,  7 Sep 2026 14:51:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BCBB6B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:33:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC7574028C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 18:33:49 +0000 (UTC)
-X-FDA: 85187814978.24.F54DFE4
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 15A2240006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 18:33:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=bBtFq1qE;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="hYl/dw46";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by kanga.kvack.org (Postfix) with ESMTP id 3263A6B008A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:51:23 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D4791A028A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 18:51:16 +0000 (UTC)
+X-FDA: 85187858952.06.3470C84
+Received: from mta0.migadu.com (out-71.mta0.migadu.com [91.218.175.71])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 02510A0005
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 18:51:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EcL5nzSM;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788807074;
+	b=pyzmkUhdr2OzIvGuW4BltVKMMpUHBo9kTjukdOKs6EmgvUdnXqYj5w4kwOoz33R27SCLPu
+	RcC3jRLPdHiNemW02Z5Uy7N13Apbvynln599j//+b5rQ0cSIO1HVFu1dJ6mLTCnEv0XDz6
+	QfvDmTJn4LlHE9FCmkFPsjROess+4Sc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EcL5nzSM;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788806028;
+	s=arc-20220608; t=1788807074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BXtFYHJPAKf7ySUW3H9RvkuC80wSwao0DDfxfWpC290=;
-	b=reJKebfVwnVfdfo2gY/t8Zi3HvPzsS5eIh4fXqNgDb9pannmiLDE0srl0timIb3jSPmMq/
-	5XtqsbqR6lja/KKVvJN5EoE/WUvsTaBSnf4hrIzpUPivNpJDROLifZVrZT91hzzacN8UTO
-	JURx03s1wGyqUwNO6RhW/YWO1r6tbno=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=bBtFq1qE;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="hYl/dw46";
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788806028;
-	b=A/5iOOzEA+cPH7DJhmOqLltOAqr5IdAN7oYn4VylIeX5OIINteh3P2TUfld5vLs9lBpYgb
-	DWuVnm14+c9M0F9cKOmVBuCPzcdopidsZUDVeOdrEv1w5f6ZWcXiHN674lbXdnM0a5aA7s
-	QwJn9aKgoZnU1SUvQlaQ1o57Al1PxeQ=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CC7F27A0096;
-	Mon,  7 Sep 2026 14:33:46 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 07 Sep 2026 14:33:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm2; t=1788806026; x=1788892426; bh=BXtFYHJPAK
-	f7ySUW3H9RvkuC80wSwao0DDfxfWpC290=; b=bBtFq1qEPlbUh7PdgXvR4k9Ic5
-	12H+YJWYrwFahJdTX2YAqCGYG/GvzypDugTok+bFEuhwU1s1906Ny3AIv2q5d7C2
-	PvUynxt8CguhPQSwpWufHxWazxBW0Rm62byks93U4CxVIf/SCtK/SAP82M4xwYbc
-	DhAvB/MelmhmTXmG33oKDvM/0EuYZEe4gjDqbs8e/ItcCYZATbz8XTZbNiJA8UL3
-	870fIIEuh7Hig1+pKZCh4RaaPuVoMPqNnPut5SoctRWeGmy0fUFZAA38LaYcN2q4
-	7BUfzZ2fxnEe4R3Yfm6+rgO8sHZCMtr5hM+gmQ9WP+bLEA+g2XbyroC4123w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788806026; x=1788892426; bh=BXtFYHJPAKf7ySUW3H9RvkuC80wSwao0DDf
-	xfWpC290=; b=hYl/dw46E9CNgxkp4DO9C3pI3k2WifzwuiFZ9EM6y7JU+yg0PN2
-	n8mXEnnAk8c+mJZR2Enwcz62VRIny++P5cpR15hvoF39XVJHFzAz50K1zardOjA+
-	7iY+tguykZA1BEE+QkK3pO9f5TlGXlFQdlUIHiaVjIeOMCWEWKzplWrNceyjc7vo
-	Tz+zdUVje28UBqb3Cp297CN5Me8lkyR8bZLmDS0Og5IL0Swu5aEVFBxBrIKKv3Yp
-	ElQSdXv4zwkKO4ZepQPNemyiBFvmXc1uNOohhDQtZ6lAREkJE8mRXUFbm84Nxnyv
-	SZQF09u+CgMYqVmupKKqnuvcQu+f7USb4mg==
-X-ME-Sender: <xms:iQOfaqT-O7TraHAT43xDGd_j2-wdE2vuRzzrRfT9heOBLGYQpZmWXg>
-    <xme:iQOfavD7OMCIjdX8uHkKzVZ-BNQje7uzB-8OIqVaYnYtw9ZmCaV9yklSFWuFBmWeZ
-    dg9omhVcG6MJPDeEyQttDB66N3troxpOV_8DnPaoalTr-VNUSyUNnop>
-X-ME-Received: <xmr:iQOfaqrZO4Z7BJCulYQT6TrG60HiZlzFRDXyy8a0K6RmhQCnb71PaKsiOkY>
-X-ME-Proxy-Cause: dmFkZTGqQC2Jf5uTmbrZ9IHMpLKMHTwTf8vZgahv+dbqM86a7GIADhyzyBKn+8z30hGxYi
-    JdDYvnWJ1aShMrgwyCTEnmGqMb6tYFf750DVdCmSYTFOLx+Tr1yyG804g5VwXxu336yI6l
-    6zVycKw68iUkXrefSacpJZvyFqpqN/zm7t3kC7vP4Q0H+B0U5TcLwi3Kb5oTxqwASil8yR
-    yPsRAGvocXU2rV25Q6e2Zq2n+VpPsGujc/6lxq2CTx4orAXd34KmW5x0fBxGrwQoGpVG8d
-    vq7W7xjZcTSZysP0Gwt5lGEw2lw7jGloKTLphiy6JNtlttF/KQb46faFXQDeP5KgdBeCn6
-    70x7HItBLj+zqtRIJ8W/FRQu3zx+HeJdagMUVLQhLfG7esTNc9Uj0E97K/T+cG2u7KPu9z
-    tDob6FASpCXCFDIavXHZugbOWHarPWT37AEabf6QgnweU87KCWMrmuWHG+kisA+F1la/QS
-    LpFd7GAV3g7eybbOVOqRqLG3yLoUwdpFTNBixqEr4C0whuO7rPQQUkwHUFSaeZE4/iQ+Pf
-    a+bOzP89N13YqRE7Ysf83Au4Fk2zxwapCi/uEEoKu7Y8+t3sw79xwnO8dXcAvofGGGrsxr
-    /S3gyqKGeYXVRWuZ7hOb0OGyJ/LyC+e272N2k/VWtxLHA7Brlny4IKkToTug
-X-ME-Proxy: <xmx:iQOfathAlH7BY-TLmTqCoPt8mVaOqIgTOdEVVV_2WK-OydFOrKJiJg>
-    <xmx:iQOfanz0zWFgeDVICnJc5EmizxL6_F0B9Wa_C1DKXSH6eDS_KOOBmw>
-    <xmx:iQOfarLPq3R1iQRaEMvvDKXA3DCtwjNNu2vfKbk0g_O_KqYg3Nst2Q>
-    <xmx:iQOfas1B7eZjGVd8_iYJIcXidTBeOGWg8tNngjVbY_PxD43U5S3Jbw>
-    <xmx:igOfasA-HIbX9cUeXjwgv7lo5N9Hqd43vnMiCxwIOpPgkRxDzXZV9yQg>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Sep 2026 14:33:44 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	hannes@cmpxchg.org
-Cc: ljs@kernel.org,
-	usama.arif@linux.dev,
-	lance.yang@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	hughd@google.com,
-	balbirs@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH] mm/huge_memory: add folio_reset_partially_mapped()
-Date: Mon,  7 Sep 2026 19:33:40 +0100
-Message-ID: <20260907183340.1446132-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nq5kH4buBYfnVz92jkpoGNXt/0aiwaMBDOTgjaNywH0=;
+	b=4ttkiafFYb2BuVr++LmaY/pqO9htxtS5vstkCSbTSlYzCaIMY0AmKqVzrsBHkFja4YtBdF
+	3Hl6+kb+krZXrYVFmry9MpYGtnEWR++eUAESP5DdbvrVRYo28Vs+hZWOzurhgDBDhyJfHb
+	gLHV/voM52pRjFPpld8xhPoEiGxmAkQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NddO47tYxBI2h7DsCq/hs4VZYoZz/R9enIlpJ3TUNlw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788807072; v=1; x=1789411872;
+ b=EcL5nzSMc/vm/90o63vsPdZHGM3U7c9pGvBSvfZmIIpjN9vH34WFfRrRdNfk2xBuYWbQ6Ckr
+ MeV4cOF0JgerKOzZLNevblkr8FTzqlzYmcJ1cbCFhA3P5a037/TPsO5vBCLIsmzoNgzHzwMK6Lp
+ mxU+qbAzF1dt6uO4RS6b8g68=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0ed654492ec4f958;
+	Mon, 07 Sep 2026 18:51:11 +0000
+X-Mizu-Trace-ID: 0ed654492ec4f958
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <6df0f368-0acb-49b4-8bf6-c82d3d2c79a1@linux.dev>
+Date: Mon, 7 Sep 2026 11:51:06 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ixzq94shaca7ytqs5748mhruhemzwyzz
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 15A2240006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v8 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
+To: Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>,
+ Barry Song <baohua@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <cover.1788764121.git.zhuhui@kylinos.cn>
+ <0f1e2b5408aef7baaacf7306dff5f6d4fb91e441.1788764121.git.zhuhui@kylinos.cn>
+Content-Language: en-US
+From: JP Kobryn <jp.kobryn@linux.dev>
+In-Reply-To: <0f1e2b5408aef7baaacf7306dff5f6d4fb91e441.1788764121.git.zhuhui@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788806027-424160
-X-HE-Meta: U2FsdGVkX1/hIwAwYYCcg7WVuPDL6bs9S0FWFjfUzvb8YA/n9b4RQrAFN6xyVx4Nb+EGRYuAAGLJlBFUDQFrCM7KwIsqqm/7MpfxurpBIoAZKl7v2pIb0OeRP+2yG5YDgC7KYycGbgGIkD9M/gfRHd990rgj4mBa14CFS7EPT6poYwsGDbhpz4+Ma4xKR6Mv9ryD6F+ht2cGeStIry7DHqFr47Ff3yHzh/m03vcJFWv0bytlJGDX7IpluHOrStgKr+uVR0BFEI+5OA35jeE67WjdoBB9LvT4jWBGuFrZGFGmoQA4rFbn3ncx7SLOqyFSKcb/mafkdRfsqDOaDlRm9iaC+/CQJ6mnhldp0jjxUrb8tPU5R+LlZKCnXWLBmYFh1Hfv7yg6Ln3KWDaQZUjaySLnTZdPQoOLDNc7qdB95GU02ifxquWM3XshAPvxiZbagKmv0zPaSwJgMAWCY7RX6hF86Lp7SzqU2ND4iBmODtfVq59mGEiCHMxmfhewpbP9RLt/utxL3XZlavBK590XimJLWZrdABI6ajpKT/wxVAm4uv5WiEuNZ8pyG1Np3RoOe4obEGFYO3iruJQ+NIawwnMTYVT3HkmFDy/KYvmPBl3y6P+SVRxQnVtoPaXqpGLQM/wJVreqJI8EOiKdAnGDWLwhF0N8ErJEGeXXexqDROfwEMNmtkqnwTYqSU0EoFAIjXo48wglnfpnXdxmlWc6mMzUpHFDnBpjSsVhj/YtMU3bMi40B41UL+JyVlFnmRN069xQPLRZ6unCSW2SLpVYg2rJjL1H88Z5D9/lIyLilDHNvxTA+m10AlB497qV86MZWPtstgAq3UkloQiIiYPOsQay4z6ZF6L9gGhf1hTXQ2EMYh6ejkOpaqouePPRi//TGApvN7xD+YB1B59TIa2s8xi+gUekI7qddempSpVEM0lBF/rZ0m8bjXm4FHqRDgMZqXVrFtzYkfR5Vrikt/H
- V1JfnJlX
- I0QnP2tgU/vTOyow2njt4SIHEMtfhZPCYlnOBSvIvprNxiwfsKRNHspHy+RIgjicVzRePLxmIT194mQVRcrpwb/gnfVqyZYV124rQotVhdbBzKxm3NmoiM+pMvjvpERSv0MWz5D565QVoRRdtzSvPQm2u2KeKs+6pqmEnowXM5/m+uAZpjjeoHv715al+Q5kCh9AIgHQy29cT/RpN2IUiIIghdJAD6sXMP0RWdSM0HFmgtvcO16eQExEcVGy6BrcN4N+pxw+UXZnZjITsIyzLfQz7Wi2gswcCW2WkvrZ4GGI8Snxy/NnCIu1Ehz7NDyidsdgjjyhNLCi3Z+Vwd/olapOMY5R1qUJTefPlnlCwaDiiJ/CjGgLjt3r4CI8S2narRj9jZedHA6nZ5IkAvcH5SBZegW8lrG5tJD3YJRgjWori/LAaghTi7O3nKNi/hoS8VbcP4V+aONA+ywENqlqZDAa5biGL9aNvUrZZRgEOHF6T6XsHVoH9ZBefOA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 02510A0005
+X-Stat-Signature: p5qhfghrws4a3nyi37juxwtgi4mmiqq5
+X-HE-Tag: 1788807073-498136
+X-HE-Meta: U2FsdGVkX18k5m0WKkaAcPbo2fRgsne8gdl3npuL8Faww76s5GGlQSUNoTqrL/tuOdBuzXgVNVI/kouhyfCG0rpltHOsCmBK9wFyXFMd4BWheY0WKKAGwehSGf6Oyi0Q8l7/NPQgKjbCj9qFnzxoYq0SnEHY6+mVhsPltA5jx57Rb61XZ7bvpXc5T+BU1+UqDefLyTCpW/WcFw+9GrR4tad5d2QkJUZt9yIYE0fB0uNncv3Fqif+GA4nxp7fiQkGLywxQrwpKTUBnjrZu7iMFEO4lP1wnprndkhTeJXKRqucPIB3JuJjl3z1geDsW2Kmn9R89Tkk/YXqjWeYzzQvWWYtmEqf1AUjgucSJvGC8U+5EstqvKswsUWrY9UjLBpLVNUup5StH6U9RhLN2A/cv+xNx/Jyqn761YBghPblWeRspAaaFgu/bgKOcs9ZFAv/EPhrn/QXj67hgjwj3NrTzq/TqHvgkxP4LwBjEmtX+fqE9n7QI2KSlQQvYyygTxETySxU611cFNRnPL7UtRC4GpZJ+hvjCfQHHreJpPSfdIKjJe3T66KwFbAimxH0MYW/GAhnObEerxcncFYpRiBXUNWnJ1y/JOMdxOXSp7gjKzh32AtsA+PCr5V047jCR57hmMUJfA1DJQ/gNhrs5fHVaiGo1oPY1tUiqCskK+fQD8ufhAklEQIOO5BWUcARR856K1uGvtb9UjS6wKrAzxHGNFh8CunDjWNaQN6cvUu7DD/onIdmcVtV6xx9hrJfnwDMfUHeYi8P0vtPA6RZZAUqRTlZzS/iiqQRmSJfaurtsfSzzW4424j5b6J0X24n/YLf+TWJMEsEPqqBeh5yeSqdA8pNqIHekN32g36HK7750k+xry0WlhihXjoo+1RZ7Z2dWh84Fz1dVfAjFMvuMcW+v+Op5o5VgUFLuEE4u7Xkmd/Zps7KrJi56m6sSeATJsenLp2FFfXI7UUy1GyGItc
+ +j39tSr3
+ 6kZoQtstSJGvDNCb0EnQZWLzTEFzr6O5xT/hmDv4pbqgTEq9XfiF6+AkqlmsHaxRexf3XIjMaqWIK23L8WDXejeQ3l3xi9O05pS9M4YnpKc/1UW1ug8p04TYcb8nAUOhoKCOEVYVRFGbIAHnYgrd+OYKkS1c8KA3wm0YV2CWMi6qj9o+6B2kPdgYF+sKQ9LQMeEjB5779PB684+mxBms+XdRNOuDBWhGH1lCO34ua3hM5uS8AP/2GEb6TkJoY52LSQispbz+CSzzOVtqyQvizkuKytYApmTpb8OAx+jfGxJxywaRLOO0lT6TrqFE4Ix9t42TYOMnXaXHVXpQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,96 +103,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Hi Hui,
 
-__folio_unqueue_deferred_split() and __folio_freeze_and_split_unmapped()
-both clear PG_partially_mapped and take the folio out of
-MTHP_STAT_NR_ANON_PARTIALLY_MAPPED with the same five lines.
+On 9/7/26 12:08 AM, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> Add bpf_proactive_reclaim(), a sleepable kfunc which performs one
+> proactive reclaim pass on a given memory cgroup, similar to a write
+> to memory.reclaim but without retrying until the target is reached.
 
-Move the block into folio_reset_partially_mapped() and call it from both
-places.
+The cover letter has the reasons why you're adding this kfunc. It should
+be included before this paragraph.
 
-The helper asserts what both callers rely on: the folio is frozen, so
-deferred_split_folio() cannot set the flag again under it, and the folio
-is already off the deferred split queue. The list check sits behind the
-flag test because order-1 folios have no _deferred_list.
+> 
+> The kfunc is restricted to BPF_PROG_TYPE_SYSCALL so that reclaim
+> always runs in a clean process context. Generic sleepable programs
+> may execute with filesystem locks held or in NOFS/NOIO contexts,
+> where the reclaim path could deadlock in filesystem shrinkers. A
+> SYSCALL program can still drive reclaim asynchronously through
+> bpf_wq or task_work callbacks, which run in process context and
+> keep the SYSCALL program type, so they can call the kfunc too.
 
-folio_order() is safe to use at this point in the split process: it
-still shows the pre-split order.
+I think this paragraph would read better if you inverted the decision
+and rationale. Something like:
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Assisted-by: Claude-Code:claude-fable-5-1
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/huge_memory.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+"Since some bpf program types may be invoked while holding fs locks,
+limit the kfunc to only syscall progs to avoid..."
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index dd66c6ad5af1..23ef22c2b5db 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3972,6 +3972,24 @@ static unsigned int folio_cache_ref_count(const struct folio *folio)
- 	return folio_nr_pages(folio);
- }
- 
-+static void folio_reset_partially_mapped(struct folio *folio)
-+{
-+	VM_WARN_ON_FOLIO(folio_ref_count(folio), folio);
-+
-+	if (!folio_test_partially_mapped(folio))
-+		return;
-+
-+	/*
-+	 * Order-1 folios have no _deferred_list. The flag is only ever set
-+	 * on folios that do, so the list can be checked after the flag.
-+	 */
-+	VM_WARN_ON_FOLIO(!list_empty(&folio->_deferred_list), folio);
-+
-+	folio_clear_partially_mapped(folio);
-+	mod_mthp_stat(folio_order(folio),
-+		      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-+}
-+
- static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
- 					     struct page *split_at, struct xa_state *xas,
- 					     struct address_space *mapping, bool do_lru,
-@@ -3980,7 +3998,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- {
- 	struct folio *end_folio = folio_next(folio);
- 	struct folio *new_folio, *next;
--	int old_order = folio_order(folio);
- 	int ret = 0;
- 
- 	VM_WARN_ON_ONCE(!mapping && end);
-@@ -3998,11 +4015,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 		 * leaves PG_partially_mapped set.
- 		 * Clear it here: the flag does not survive the split.
- 		 */
--		if (folio_test_partially_mapped(folio)) {
--			folio_clear_partially_mapped(folio);
--			mod_mthp_stat(old_order,
--				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
--		}
-+		folio_reset_partially_mapped(folio);
- 
- 		if (mapping) {
- 			int nr = folio_nr_pages(folio);
-@@ -4516,11 +4529,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
- 	memcg = folio_memcg(folio);
- 	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
- 	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
--		if (folio_test_partially_mapped(folio)) {
--			folio_clear_partially_mapped(folio);
--			mod_mthp_stat(folio_order(folio),
--				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
--		}
-+		folio_reset_partially_mapped(folio);
- 		unqueued = true;
- 	}
- 	list_lru_unlock_irqrestore(lru, &flags);
+> 
+> The reclaim target of a single call is clamped to MEMCG_CHARGE_BATCH.
+> try_to_free_mem_cgroup_pages() takes nr_to_reclaim as a lower bound,
+> so nothing else limits how long one call scans. An unbounded call
+> stalls other work on a shared workqueue, and since lru_lock is held
+> with interrupts disabled the contention delays IPI handling and can
+> cause CSD lock stalls. MEMCG_CHARGE_BATCH is the bound already used
+> by high_work_func(), so each call becomes a bounded unit of work.
 
-base-commit: e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
--- 
-2.54.0
+It's not strictly speaking a bounded unit of work though. The scan work
+time can vary.
+
+The example of interrupt delay I gave on the prior rev is included here,
+unnecessarily increasing the verbosity. I think you can just say that
+you're following the precedent in high_work_func() which uses the same
+cap, but I would still emphasize like I said above that the actual
+scanning work is not bounded.
+
+> 
+> Reclaiming more than one batch is left to the BPF program. This is
+> documented in the kfunc rather than enforced: call the kfunc once
+> per bpf_wq callback and requeue the same work item for the next
+> batch instead of looping inside a callback, and give each target
+> memcg its own bpf_wq item. Keeping the policy in BPF lets a program
+> decide when to reclaim and when to stop, e.g. once the target cgroup
+> is dying.
+
+You should be explicit on the different calling contexts. This is one
+way to use it, but someone could still invoke it directly in the syscall
+program.
+
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+>   mm/bpf_memcontrol.c | 94 ++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 92 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index 716df49d7647..74ccac30c011 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
+> @@ -6,8 +6,11 @@
+>    */
+>   
+>   #include <linux/memcontrol.h>
+> +#include <linux/swap.h>
+>   #include <linux/bpf.h>
+>   
+> +#include "internal.h"
+> +
+>   __bpf_kfunc_start_defs();
+>   
+>   /**
+> @@ -159,6 +162,71 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>   	mem_cgroup_flush_stats(memcg);
+>   }
+>   
+> +/**
+> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
+> + *                         cgroup
+> + * @memcg: the target memory cgroup to reclaim from
+> + * @size:  the amount of memory to reclaim, in bytes, clamped to
+> + *         MEMCG_CHARGE_BATCH (64 pages)
+> + * @swappiness: the reclaim swappiness, in the range [0, 201] where 201
+> + *         means anon-only reclaim; a negative value means the memcg's
+> + *         own swappiness is used
+> + *
+> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
+> + * memory.reclaim, but without retrying until @size is reached.
+> + *
+> + * @size is clamped so that one call is a bounded unit of work, matching
+> + * the memory.high workqueue fallback in high_work_func(). To reclaim
+> + * more, call this kfunc repeatedly instead of passing a larger @size.
+
+Again I think "bounded unit of work" is too strong here. The reclaim
+target is clamped but the scanning work/time will vary. Lets be explicit
+that we're only capping the reclaim target.
+
+> + *
+> + * This kfunc is restricted to BPF_PROG_TYPE_SYSCALL to ensure it runs
+> + * in a clean process context. The SYSCALL program can schedule the
+> + * actual reclaim work via bpf_wq or timers, which also execute in
+> + * safe process context (workqueue, task_work).
+
+"clean" and "safe" are ambiguous here.
+
+This is another example of mixing calling contexts. You should separate
+them. i.e. can I call this directly in a syscall prog? does it have to
+be async work? Also, as it reads, it makes it sound like calling the
+kfunc is ok in a timer program.
+
+> + *
+> + * When reclaim is driven from a bpf_wq, call this kfunc once per
+> + * callback and requeue the same work item for the next batch rather
+> + * than looping inside the callback: a long-running callback stalls
+> + * other work on the shared workqueue, and because lru_lock is held with
+> + * interrupts disabled the resulting contention also delays IPI
+> + * handling. Give each target memcg its own bpf_wq item, so that
+> + * reclaiming one memcg neither serializes behind nor piles up on top of
+> + * another. Deciding whether to submit the next batch is up to the BPF
+> + * program, which can stop at any point, e.g. once the target cgroup is
+> + * dying.
+
+If this is the intended usage, be more explicit on the recommendation.
+Reduce the verbosity on the interrupt delay here, similar to the advice
+on the changelog.
+
+> + *
+> + * Must not be called with a filesystem lock held: the reclaim path
+> + * may deadlock on it via filesystem shrinkers.
+
+This should move to the syscall-only prog rationale. Otherwise, it reads
+like something for callers to enforce.
+
+> + *
+> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
+> + * smaller than a page, or (unsigned long)-1 if @swappiness is out of
+> + * range.
+> + */
+> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
+> +						unsigned long size,
+> +						int swappiness)
+> +{
+> +	unsigned long nr_reclaimed;
+> +	unsigned long nr_pages;
+> +
+> +	if (swappiness < -1 || swappiness > SWAPPINESS_ANON_ONLY)
+> +		return (unsigned long)-1;
+> +
+> +	if (size < PAGE_SIZE)
+> +		return 0;
+> +
+> +	nr_pages = min(size / PAGE_SIZE, (unsigned long)MEMCG_CHARGE_BATCH);
+> +
+> +	nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages,
+> +						    GFP_KERNEL,
+> +						    MEMCG_RECLAIM_MAY_SWAP |
+> +						    MEMCG_RECLAIM_PROACTIVE,
+> +						    swappiness < 0 ? NULL :
+> +								     &swappiness);
+> +
+> +	return nr_reclaimed * PAGE_SIZE;
+> +}
+> +
+>   __bpf_kfunc_end_defs();
+>   
+>   BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> @@ -171,22 +239,44 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_memory_events)
+>   BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
+>   BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
+>   BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
+> -
+>   BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
+>   
+> +/*
+> + * Proactive reclaim needs a clean process context, so it is restricted
+> + * to BPF_PROG_TYPE_SYSCALL. The bpf_wq and task_work callbacks that a
+> + * SYSCALL program schedules run as the same program type, so they can
+> + * still invoke it; generic sleepable programs (e.g. fentry on reclaim
+> + * paths, inode_rmdir) cannot.
+
+This comment feels out of place here and is not buying much at this
+point. You already explained it in the kfunc comments, and the syscall
+only registration further down is explicit enough by now.
+
+> + */
+> +BTF_KFUNCS_START(bpf_memcontrol_reclaim_kfuncs)
+> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
+> +BTF_KFUNCS_END(bpf_memcontrol_reclaim_kfuncs)
+> +
+>   static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
+>   	.owner          = THIS_MODULE,
+>   	.set            = &bpf_memcontrol_kfuncs,
+>   };
+>   
+> +static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
+> +	.owner          = THIS_MODULE,
+> +	.set            = &bpf_memcontrol_reclaim_kfuncs,
+> +};
+> +
+>   static int __init bpf_memcontrol_init(void)
+>   {
+>   	int err;
+>   
+>   	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
+>   					&bpf_memcontrol_kfunc_set);
+> -	if (err)
+> +	if (err) {
+>   		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
+> +		return err;
+> +	}
+> +
+> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
+> +					&bpf_memcontrol_reclaim_kfunc_set);
+> +	if (err)
+> +		pr_warn("error registering bpf reclaim kfuncs: %d", err);
+>   
+>   	return err;
+>   }
 
 
