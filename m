@@ -4,133 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83D6C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:20:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8A6BC79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEE306B009D; Mon,  7 Sep 2026 08:20:02 -0400 (EDT)
+	id E13F86B009E; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9EEB6B009E; Mon,  7 Sep 2026 08:20:02 -0400 (EDT)
+	id DEB946B009F; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F1C6B009F; Mon,  7 Sep 2026 08:20:02 -0400 (EDT)
+	id D28696B00A0; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 830C76B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:20:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 073D480143
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:20:02 +0000 (UTC)
-X-FDA: 85186873044.29.51E0AD7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 344351C0002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:20:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzGaNfxs;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788783600;
-	b=Z0/s175ZJp3J2r/KqJyfgDxxhEf/ZNctogax/KIpmcJ9L0GdtNMpXWQzdact8ozHgsbbIP
-	xreqfcMPEwsDdGStfezZX3m04Al3/xPgukebNDRIivQdhFO1lZxDZHy9uqnLROTqdgMBWY
-	HcP3ppd+eAfHbteSPX+G4VDtgZcPOac=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzGaNfxs;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD0966B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:21:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C21416013C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:21:10 +0000 (UTC)
+X-FDA: 85186875900.14.1D33A9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 89E342000C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:21:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHCkg4gb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788783600;
+	s=arc-20220608; t=1788783668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jr+dzi/Mk6Ixf7g3doALXDqMGBZVD3wiiGgYyYVlQhs=;
-	b=smo8L1LOIH3dF54kK7ABruOo3Mq8EQw2hmQXexUQHji0VgEyQlykEx2FGSUTvxKiPDqxuz
-	MUCM7YxTZhXDTgoBgWlZSs+Efuf5N6HVDaSRTy1rP0L5xQ6QhDhJ0p2+ntyJsO2sBj5ABk
-	eMaN+8FeqUGQ+1/j+VongIXp3G0r1/8=
+	bh=6RafqFe1zOQfVX4I3+CvQ7y72wqiedDGCRPziRNypvU=;
+	b=cVxISRu7Fl9jcs/nfHKcK90ySx25TS1F6RSpxMYWW9+SxsoZK9jW9/PGlCRWwqT6rXqsVV
+	nlDqMx1qiwY76ybX2nbKI5cmoxqNJRwTqGaHyXgn/zthYYP0/SaDsYytJQHw/QvSjKoVXc
+	nEWYkIeG09msrB5nwlzl5yrngJTdBv4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bHCkg4gb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788783668;
+	b=G52lpMiV9lHkg7mKXOS7g0YZJ/QvsXvHdSFBMbv7JU6gGKfSEP4HairPX18R8PaV1E9OWE
+	2JMemC2/TIYcAIAIQhkq6a2hqdN1qbnLWHbuRWcvtRJKO0FX3ql8mBVBZBaFN/i/l0sST4
+	es2cr0rm59Of8ElGyajX4pNi637FElM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92DBE41797;
-	Mon,  7 Sep 2026 12:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55671F00A3A;
-	Mon,  7 Sep 2026 12:19:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 013ED60AB5;
+	Mon,  7 Sep 2026 12:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71C81F00A3A;
+	Mon,  7 Sep 2026 12:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788783598;
-	bh=jr+dzi/Mk6Ixf7g3doALXDqMGBZVD3wiiGgYyYVlQhs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dzGaNfxsAxTySxrFOKLq3KLOX855facEk1kcwfbMpf+V/sJkyLwP3Z5PcJ+qjFkDG
-	 4KpDJm1g1C1Hg7DqWxt11xh5vtL/dwrTSPQvvlvn4iGmeYb0pcZ8bJItEWYtlQXB7A
-	 6mp917Ys4NJUcuQZYBMfO+LAj45mqOimfsNeFVVzU64IN3NwpalluEEdNj2KKIKD1G
-	 z75JjldTUhnZO9hTQ7HkP8rrYlBJyCMasaoUHUAb9uYP5WD4IJa7CMpIa8g6MRvL6b
-	 l6AEzSUJTBmPBrL/Kj/ZovBKna0TsgRWD8wEhbdD6xedpfMWc9dQW+LiI1MqYViE/6
-	 EmW/xJzWjnxwA==
-Message-ID: <fffc191c-37d5-4f00-b73b-91b8d1b45046@kernel.org>
-Date: Mon, 7 Sep 2026 14:19:54 +0200
+	s=k20260515; t=1788783667;
+	bh=6RafqFe1zOQfVX4I3+CvQ7y72wqiedDGCRPziRNypvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bHCkg4gbtV4fR2YXJbmLmuc4792CiiwMkkiRBQHsBe3wK55pXp+8DhreyLDcaIbMw
+	 +XMz1qywEjymPY3Ej4XpuBzolt+eJO+nukbZ7CXCsQNU26wwPA1iXIhTSrRLpbGDix
+	 fwWR2FArhe/UEy7m95AYiCBVgXqtLK4g9V7jnUSj20xaBegsmmoK4Eg5QF6p25qKod
+	 FvDJ/mDhse/p+LJ4rbaxHYb1QC5RLLos4JcnAt7VH2IvwsAiCyGi4lzj9mRyvxW/JA
+	 h+bvh9R1HO3HUjIq8DKQveOiIQHs0vc3Dpq6Hwle2VPzfsPQD/3qCXSkt6Tz4Wm3Zg
+	 Y31OxqU9Ezkow==
+Date: Mon, 7 Sep 2026 13:20:51 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Thomas Gleixner <tglx@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>, 
+	Michal Hocko <mhocko@suse.com>, mic@digikod.net, oleg@redhat.com, david@kernel.org, 
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, gnoack3000@gmail.com, sj@kernel.org, 
+	rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, 
+	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com, 
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang@linux.dev, 
+	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
+	kprateek.nayak@amd.com, mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, 
+	babu.moger@amd.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <ap6d3zuVsJiLkrpr@gremlin>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] mm: gup: cleanup gup_fast call chain
-To: Aristeu Rozanski <aris@ruivo.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
-References: <20260828015542.125576330@ruivo.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260828015542.125576330@ruivo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260907081334.1152889-6-ye.liu@linux.dev>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: fk7mc1zestiezbtd9tkr7uwwaobore9y
-X-Rspamd-Queue-Id: 344351C0002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788783600-381236
-X-HE-Meta: U2FsdGVkX195YKLOs+a9C3TDS43971BTM8jU6gacH0e64TAa4TOijS0V9mB5wdip7KPRq9ATP+8RRLWl7jPrg/23MNJrSe8TUGB1mI4FDgRbBxDgM7VQVNkOw5OKqCiFL3JHdcP89Edcg5Np9qV89QCnOezXj0j+3TskMFAjd3RsptPT6r3BhbGz16EdJ5/bALwXlSnS1jClVh0Csql2iROY0Tu/UNB5kGCY2zHmB3ux+Eab4CoXEfAATk5RkONrCh2U2FVaGAaPVUsOBE9+DvzEyNmxtso+kMzKG3S/aW/pLZPacpLf4sf+J+7kVn81sMHfnckJ3oUVbjMblKHWTseWSp6jsTgxl6+L0TXr5iI7aAxecW+EHR0ehENtrSzyxkKIOzkuQ7E9EPzc9gISGl0p6ner7ZI2hV1dITzTz4+YGPuPb/A91fkgzocTnzP9EbnVC+7dRc9/ef8QrZ1Rpnmj00vGoTDC20WXhiH1zhW8SGfFeTZFnPtRYTxXZYm934HSxycPcEVwMS/JYGmgLfEYdFkTS1Ug7lVe2tK1ftt1+mIr8WodN1lVOCYHzzQ1a8Pey7fKhsXeHFwCeHkZUSiWp1jxmATAR6yME6mR6MSuX+4k7dKcYtnUc4rtUy3lQ1ccPA5RHNbPdbCPtJv5Ult7yJHWodTaaJc77YpFeFGCIaoQiqUCZ5x4GiIWbgWtH7RjZUoTuFP7Ka++W6uFSS8eaCviMuGkf9TxMWatVJZ5id0QMhC9qjl7ItCuCroIfc1ZTEokF5jbAMPiBw/zZM+G+39IxAr5Y5WkDrdNiyArWaX2CA7xeQ+vBHLhEFV4/JYJl02kd+cNsYMgLRTM40fP5peuDQZCCu1xGhHRSKxK4UF8PY6c9rcPA2BhkXf8shO3ij/40TSWV+yTqkUvD1aNP/DxEoZHyXoRcY00u6dDvbU5kjldsc8J+aeBb5F+hGAbL+0KAflmbM2u29P
- X7ZHBuhD
- CbyV5g231EyJyGUyjNmqOE34kGWXCRvsN50dEhDpMW6gkyebZ8q5KGancOjxxPUQBEa+1D0is5StZZ8Gxf/ZqB84/1HSoO9EQi7tSNByFFG93izUCS2JHrEru/cPS7v5BQpIZupXjXtv5NdzOaOB4iYvgN5wovyLwQ0/yc+pHBmyf/NpkiJ3icZo3R0KCAQ2wj4X8Ho/5yj4x1q+AulNuiThmaFhbA+0hLlAa1dPs23yLAQdp+0TZY6fEr0tKsCeYXPW1F9X0SM10+sn5Qc+caf/bVnb5Ps1quNEUsffQ96QsMd7wAoawhNbqYfvLSjFEwf5a6ZmC7PxQiCdM+ntXGy9MfEc0xPlp/9f0JycJfU6PAm1y0Q9Xo2Owi6Csck0IdUOF6Dvyhn7MBMklJ6MCEiCqbJn9V9XIR3HF1h6bkSezIk/N40aJ14VWHYtih38JruTFpSljbidCeJzSOulfwojV64IAhQfF/v/m96frA+MQ2rRlwK/rbhS1AP1mA25X8evI9KkVnLrDzOmqGwGxjPWvuovVaZ1oYqrFqkTtOVaIO/k=
+X-Stat-Signature: um185dgbh7pmziozw16rau67b7kfptqk
+X-Rspamd-Queue-Id: 89E342000C
+X-HE-Tag: 1788783668-736314
+X-HE-Meta: U2FsdGVkX1+pghBnEwRQfcSf07o7tZ8fgm/CiN/K3FhHZYSXjERmOF/hzLydZqRq6K0Q3xjKFvS3LU3MkQ93XTlMDligsCdlFoSIiFmaH6LTmx5Hd6a6ie6HhygNyUW0QM2HcgCZkVoKFf2A6QbqII3trJ/+oYz5hkWAoQV/FXNFhaEuF/lqZqsbSlhf8IPI3B7JqoO0SZggDjTFA24/0wC08h3nRdKlSWS73p1xFSqTloMiD6Vk1+kde+xmsW662hIWbxEOGhBHiAzCC/cL/nqIk8T+V8fWqOubZvAo4iZPXWOru+aXS/XDQLe6Q3D8BcisbZHgwntOp9BtjFlHr6GhBOZkDMQH9mJPKm824NwCTrSkHR0t6+kMw9gNsiDjsgBWO/oxdhD1zebggEnNxakcEvpIVc0HG2r2XAk6psIZS/VvC5xDA7UiL73z5+mmjIUPAXtpzr2RAVNr9Y40LW0aNrIR7yzW2Vaq6JqT6hu2MTOyhMaipKPmxjf7JlwjdQ5cElweLGQm4bIuOnJeVHtMniyBUWPkD76VhqfUQXDjPhNSGwslIUNcvnyraJUumgP4svjay12IVoTVWYrl1GlUx8dG260f017NOuTFDx7jacraNj4jK33KiTHXlFxROriGEqUdEoW6j5O3NLHxpuoq7uFzRNJTtpD8wAe+mwXS6J90ocWMdqh68ybhSP/VcHvB2eyM/tpr1Na/ocwAMJU3GOOlHSVKkYXKUH6H34lIORtnfJ6xo9BqI/fgDpP7luUBsk3yToc3ZO/pUjir+gcOhYinFzuxrVEJZ5cVB6d8t/BYVm4HZRLigv5i7trxItspXnP+PtZlPxlcYelM888f4d+rf1wn0F6g0cNi8tUWUKhPm0IAllTXiJRkdH6wsiJdDd1PwCxvbnJwGRufprMuvdIgNNstcg6R5nuQVexDi9TvcyDxuIeJbn64lv5HMShNvywjNxTdQ5ItrRk
+ EtL+hzrK
+ yx1LRJEtGyYE1wlMNCyj0JaXPAAK1MaqNFh/bd3+IST0yNKzyc5lN/sDHDyH5ML8/wW45vIZJojdqHIiHxwtM6z9bIwr6gdpUCjHllbetP3F3K5Bd27T/vyfZkpMePSgWuCVcibiGeAwnCOT/NR68IyChXo7DPUDYuF8d0RDheZVhoS/BMGII8UqAldKfgmUegQZgzZqYguxjDinCP0z+mnvfA8pmM2jllsrNUgk7hx4/2UmL3tbbMTLDFm55FfaUGjjIUa/ed5d55fnQV8l8PjBKLs6qEbaBKICq5IeH7rVqZwp50tgKb4E5wXXDtgBFVsZy995HZ8gV46Nn0fa3mucrjYfbZr0jM5nncXyRqyYXKf6o0gG9W2vG4VEME6ZUTE3Pl+2vY4F+/nlJ9M1sfXJ2KGm28wNgvRUYBkCwUBFvIScfd+rFXmY/C1PhuAhHw7bT3mTpTWCzBLlSwNDOXOGXVmsh7SUUsddY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,34 +113,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/28/26 03:55, Aristeu Rozanski wrote:
-> These two patches implement the refactor in gup_fast call chain David
-> Hildenbrand mentioned in
-> 
-> 	https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
-> 
-> v2: removed unneeded initializations on the second patch as pointed by David
-> v3: fixed gup_fast_pmd_range() nr_pages initialization as pointed by David
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
-> 
+On Mon, Sep 07, 2026 at 04:13:31PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> Replace the manual rcu_read_lock()/rcu_read_unlock() and guard(rcu)
+> pairs combined with for_each_process(), for_each_thread() and
+> for_each_process_thread() loops across kernel/ with the
+> for_each_*_rculock() macros, which scope the RCU read lock to the
+> loop body via scoped_guard(rcu).
+>
+> No functional change.
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+LGTM so:
 
-Andrew, can you queue this? If I manage to set up the new component flow on my
-side fairly quickly, I might still pick this my self.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-(have to dig through tons of mail first before getting started on that)
+> ---
+> Changes in v2:
+>   - Rename *_rcu to *_rculock
+>   - Rename stale 'unlock:' label to 'out:' in hung_task.c (Günther Noack)
+>  kernel/cpu.c             |  4 +---
+>  kernel/freezer.c         |  4 +---
+>  kernel/hung_task.c       | 11 ++++-------
+>  kernel/locking/lockdep.c |  4 +---
+>  kernel/rcu/update.c      |  4 +---
+>  kernel/sched/core.c      |  3 +--
+>  kernel/sched/debug.c     |  4 +---
+>  kernel/trace/fgraph.c    |  8 ++------
+>  kernel/unwind/deferred.c |  3 +--
+>  9 files changed, 13 insertions(+), 32 deletions(-)
+>
+> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> index b3c8553d7bd6..00638d2abc0f 100644
+> --- a/kernel/cpu.c
+> +++ b/kernel/cpu.c
+> @@ -1254,8 +1254,7 @@ void clear_tasks_mm_cpumask(int cpu)
+>  	 * full-fledged tasklist_lock.
+>  	 */
+>  	WARN_ON(cpu_online(cpu));
+> -	rcu_read_lock();
+> -	for_each_process(p) {
+> +	for_each_process_rculock(p) {
+>  		struct task_struct *t;
+>
+>  		/*
+> @@ -1268,7 +1267,6 @@ void clear_tasks_mm_cpumask(int cpu)
+>  		arch_clear_mm_cpumask_cpu(cpu, t->mm);
+>  		task_unlock(t);
+>  	}
+> -	rcu_read_unlock();
+>  }
+>
+>  /* Take this CPU down. */
+> diff --git a/kernel/freezer.c b/kernel/freezer.c
+> index a76bf957fb32..7a870f71dcf6 100644
+> --- a/kernel/freezer.c
+> +++ b/kernel/freezer.c
+> @@ -217,11 +217,9 @@ void thaw_process(struct task_struct *p)
+>  {
+>  	struct task_struct *t;
+>
+> -	rcu_read_lock();
+> -	for_each_thread(p, t) {
+> +	for_each_thread_rculock(p, t) {
+>  		__thaw_task(t);
+>  	}
+> -	rcu_read_unlock();
+>  }
+>
+>  /**
+> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
+> index 6fcc94ce4ca9..73a5ad3be9a8 100644
+> --- a/kernel/hung_task.c
+> +++ b/kernel/hung_task.c
+> @@ -315,13 +315,12 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+>  		return;
+>
+>  	this_round_count = 0;
+> -	rcu_read_lock();
+> -	for_each_process_thread(g, t) {
+> +	for_each_process_thread_rculock(g, t) {
+>  		if (!max_count--)
+> -			goto unlock;
+> +			goto out;
+>  		if (time_after(jiffies, last_break + HUNG_TASK_LOCK_BREAK)) {
+>  			if (!rcu_lock_break(g, t))
+> -				goto unlock;
+> +				goto out;
+>  			last_break = jiffies;
+>  		}
+>
+> @@ -337,9 +336,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+>  			hung_task_info(t, timeout, this_round_count);
+>  		}
+>  	}
+> - unlock:
+> -	rcu_read_unlock();
+> -
+> +out:
+>  	if (!this_round_count)
+>  		return;
+>
+> diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+> index c56a7f91d72e..ea218dc75ad5 100644
+> --- a/kernel/locking/lockdep.c
+> +++ b/kernel/locking/lockdep.c
+> @@ -6834,15 +6834,13 @@ void debug_show_all_locks(void)
+>  	}
+>  	pr_warn("\nShowing all locks held in the system:\n");
+>
+> -	rcu_read_lock();
+> -	for_each_process_thread(g, p) {
+> +	for_each_process_thread_rculock(g, p) {
+>  		if (!p->lockdep_depth)
+>  			continue;
+>  		lockdep_print_held_locks(p);
+>  		touch_nmi_watchdog();
+>  		touch_all_softlockup_watchdogs();
+>  	}
+> -	rcu_read_unlock();
+>
+>  	pr_warn("\n");
+>  	pr_warn("=============================================\n\n");
+> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> index 2a778b8ab4ad..d8e0b5896db9 100644
+> --- a/kernel/rcu/update.c
+> +++ b/kernel/rcu/update.c
+> @@ -548,15 +548,13 @@ void synchronize_rcu_trivial_preempt(void)
+>  	struct task_struct *t;
+>
+>  	smp_mb(); // Order prior accesses before grace-period start.
+> -	rcu_read_lock(); // Protect task list.
+> -	for_each_process_thread(g, t) {
+> +	for_each_process_thread_rculock(g, t) {
+>  		if (t == current)
+>  			continue;  // Don't deadlock on ourselves!
+>  		// Order later rcu_read_lock() on other tasks after QS.
+>  		while (smp_load_acquire(&t->rcu_trivial_preempt_nesting))
+>  			continue;
+>  	}
+> -	rcu_read_unlock();
+>  }
+>  EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
+>  #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 0697ed0f1c3d..fd5bdd2cb798 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -2005,8 +2005,7 @@ static void uclamp_sync_util_min_rt_default(void)
+>  	smp_mb__after_spinlock();
+>  	read_unlock(&tasklist_lock);
+>
+> -	guard(rcu)();
+> -	for_each_process_thread(g, p)
+> +	for_each_process_thread_rculock(g, p)
+>  		uclamp_update_util_min_rt_default(p);
+>  }
+>
+> diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+> index 72236db67983..cdae165b98f7 100644
+> --- a/kernel/sched/debug.c
+> +++ b/kernel/sched/debug.c
+> @@ -1029,14 +1029,12 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+>  #endif
+>  		   "\n");
+>
+> -	rcu_read_lock();
+> -	for_each_process_thread(g, p) {
+> +	for_each_process_thread_rculock(g, p) {
+>  		if (task_cpu(p) != rq_cpu)
+>  			continue;
+>
+>  		print_task(m, rq, p);
+>  	}
+> -	rcu_read_unlock();
+>  }
+>
+>  void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+> diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+> index 40d373d65f9b..f797ce119223 100644
+> --- a/kernel/trace/fgraph.c
+> +++ b/kernel/trace/fgraph.c
+> @@ -1057,11 +1057,10 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+>  		}
+>  	}
+>
+> -	rcu_read_lock();
+> -	for_each_process_thread(g, t) {
+> +	for_each_process_thread_rculock(g, t) {
+>  		if (start == end) {
+>  			ret = -EAGAIN;
+> -			goto unlock;
+> +			goto free;
+>  		}
+>
+>  		if (t->ret_stack == NULL) {
+> @@ -1074,9 +1073,6 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+>  			t->ret_stack = ret_stack_list[start++];
+>  		}
+>  	}
+> -
+> -unlock:
+> -	rcu_read_unlock();
+>  free:
+>  	for (i = start; i < end; i++)
+>  		kmem_cache_free(fgraph_stack_cachep, ret_stack_list[i]);
+> diff --git a/kernel/unwind/deferred.c b/kernel/unwind/deferred.c
+> index 5bea47314254..ecfe1336095e 100644
+> --- a/kernel/unwind/deferred.c
+> +++ b/kernel/unwind/deferred.c
+> @@ -319,9 +319,8 @@ void unwind_deferred_cancel(struct unwind_work *work)
+>
+>  	synchronize_srcu(&unwind_srcu);
+>
+> -	guard(rcu)();
+>  	/* Clear this bit from all threads */
+> -	for_each_process_thread(g, t) {
+> +	for_each_process_thread_rculock(g, t) {
+>  		atomic_long_andnot(BIT(bit),
+>  				   &t->unwind_info.unwind_mask);
+>  		if (t->unwind_info.cache)
+> --
+> 2.25.1
+>
 
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
