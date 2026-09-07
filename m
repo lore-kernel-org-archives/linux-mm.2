@@ -4,130 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29523C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D3C6C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 377B76B0096; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
+	id 2DA7C6B009D; Mon,  7 Sep 2026 12:19:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34E186B009D; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
+	id 2B1E26B009E; Mon,  7 Sep 2026 12:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23D606B009E; Mon,  7 Sep 2026 12:19:40 -0400 (EDT)
+	id 179E26B009F; Mon,  7 Sep 2026 12:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E934C6B0096
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:19:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77AF7401D7
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:39 +0000 (UTC)
-X-FDA: 85187476878.21.8E80AF9
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 62DC21A0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcWjuxFa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="iQlNs/Te";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VK8MzL9a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wei6+CSs;
-	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD84C6B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:19:42 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4C65A3B41
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:40 +0000 (UTC)
+X-FDA: 85187476920.27.A509D0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 18DF3180006
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:19:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ge/5Y2de";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788797977;
+	s=arc-20220608; t=1788797979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
-	b=kTf3Lm/yOkyPUC0ysFuK8KiEqZVDNNkdguawn9el0qTI2e70FEyrjwLga6kasmF0K1PMQ8
-	uDGAbWacl2MyUHzKWgP2wC95+oD39Y+sHcN/984e6FolhmTltQ2WdAVTqnKoBWlwTjv6fW
-	v+t62zSDO9blSjlOgUksHG3OqGWALm4=
+	bh=2LN83XCwEw0CeM7tqxYmhu+3et4F7kdFb/J83nVH818=;
+	b=rIRf/aBvztdAZ765luNedsKXzT7qqliO50YZK3cdpOEn1ntjA0zX1qdOnERw7kHy4AE4lJ
+	qKOAV7JlnyC8yOUUfhOY0tB0XBObvROoHuyuguKyOV9S8bWN5wAr+gPnTCyfez5W0mcKEh
+	4JNSxWoF9vtXOqOWWkFbQlrWzW02IeA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788797977;
-	b=gA92wataMc8MlpPx9+D3tF+NSHIsc53/M0TglsWeM/KPifTtgrscSLybWDbBwg1zrAXIJL
-	y2TRxKxl8WXd90tYWxTL1q/RbNSCAKIfFOWzdbU2HaOKNBqz/wQu2ZfNDUBCokTvWK3y46
-	SSryJPCIHa1E9bEZIVXtLve0wRbi1dU=
+	t=1788797979;
+	b=8o4jP258VHdTEI8Edru9NRogSMargjri7Jdh9h276QbGiXtDgdoUaQP9zmYkKzZs3jjVxP
+	q9HS35XyAsTAuBBRVvtsq/LY7SCmrT4QhYYp9BIHsJa1j2SW8zItLQRFDuuqfZMNr1s3Iy
+	Iz2ddSzNQ2uEMTNSaR+tnLqD7cqc3xM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcWjuxFa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="iQlNs/Te";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VK8MzL9a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wei6+CSs;
-	spf=pass (imf19.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 867C31F7B3;
-	Mon,  7 Sep 2026 16:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788797971; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
-	b=LcWjuxFagTfgCxZiGMG2drQIg+8W6egTjIS6uSptZRYLxuwbIbeam1AVwPV9VWbMABBb8I
-	BqST/rAn9TqkejTpNHhc9iev+h9KQuz6UDMdgJOx2gsDo1fR32e8Vzcr2rPVCtwdVlX/xu
-	VT+wvyxeiRcowTN+orMnAFm6e+n7Yig=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788797971;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
-	b=iQlNs/TeiPSDeUixWjWYeH/JE/agATjevDEFmK4T71kQgf/0l8R6ISlaii1LvMSUC00mYD
-	svdl85RIQy8RaTCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788797967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
-	b=VK8MzL9apzKb9jpYbvPW7iGfWlWRKefhXHnYVZLdEhKMj/XP0Cmx8CMASRlvUVsThm2d6V
-	6kl5+QpZJK3NNaxbOOhhgbeLJ+IDJlbA6KP4ByjVsWqy4FnWxYFoMcXgLNj8B68IapJqJ/
-	y6uzBWvnZrm4jCw7PjlZTUljzNiXsXs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788797967;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=omJY25/XWUjhUvy4Wr9FGwgJZb4rjKPTul22yTeJeNY=;
-	b=wei6+CSsK4PmGx/vpSZzXgBIjvTAvqgm5u/D6DLyOMbwTgn77kJkBn9W39mEoJtPUvbvdr
-	V8d1BvQOCQ/pe8CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 892A41339B;
-	Mon,  7 Sep 2026 16:19:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id n7jOHA7knmpQFAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 07 Sep 2026 16:19:26 +0000
-Date: Mon, 7 Sep 2026 17:19:24 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
- list_lock contention
-Message-ID: <ap7f_w8hHkvpk9Vg@pedro-suse.tail5790ac.ts.net>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <20260824122513.3829-1-hao.li@linux.dev>
- <20260824122513.3829-2-hao.li@linux.dev>
- <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ge/5Y2de";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3DA2343DB0;
+	Mon,  7 Sep 2026 16:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0DC1F00A3A;
+	Mon,  7 Sep 2026 16:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788797978;
+	bh=2LN83XCwEw0CeM7tqxYmhu+3et4F7kdFb/J83nVH818=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ge/5Y2desrl/XfwFy1P9kpoOoNrn78RFVs6DtfcnprDcBeyMH09VBr6qHacHQVoHb
+	 OmGK+t7Wyj9s1XIsPSEJJMlibGxmIqEX5Is8Gya+y8eq/HVMaj+zA3DylFzdL99rIJ
+	 qU9ZPOdC1uyZel+sO9ONnEbBdHZSk44DuBvm8lj5XVkMF71eMOwhiwUej50jRuTKi6
+	 doku0yv3r9+weHQKLMARhBAVeyvv1l8dp+QRjruUcuND633KxsNFj1M44I9i8UlrhE
+	 58hvfOIA/TuvxQfc/chCEnMaAOI4cqVz8xhENYNUkMhJI0asIE69IqgCV8NXJTgOXx
+	 bcK0WIXLE82lg==
+Message-ID: <4743f22a-c24f-4f93-80f5-3260f29bd410@kernel.org>
+Date: Mon, 7 Sep 2026 18:19:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: 68duuhrmzjw986fs16wa38qetbxqegh3
-X-Rspamd-Queue-Id: 62DC21A0003
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
+ mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Cedric Le Goater <clg@redhat.com>,
+ Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
+References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+ <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com> <apEzvfGgsvbc3vBI@gremlin>
+ <dc52dd1d-f62d-4278-ab4d-95746383fd50@kernel.org> <ap7i1vLkfZj4rbNM@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ap7i1vLkfZj4rbNM@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788797977-305610
-X-HE-Meta: U2FsdGVkX1/f9kmjtpOJd+gF1H2Fz/+B+gTqmD17ShpbLqBdKhvKB2Y1vpWS6MuuqRb5MvNUk/c2ekk6AU5B2pk6jYF8L3Rysbv51EMkK9Zk1EKAi1AYI4DDeHuwcsXQQbSLF7duTZSeXecuIUPdOzXi3HtD9JcStZMy1awqJFh0i7QGdTncS1zoMvXcCPdbF4oztDxw2wGu0iwuf/x81QXEdKPMmWgJ8SqalzYUb9YeRc4AuAX6TSvNmZOXdoVQLXC7oCZ+wrrNUqCO8g9Z3BTbgADdsPmw994Ny769RuqbrORYjEc80dpnwA6bA05985ymTAdK3b2vfv20uNNIusImcf8fQYcWrEihjk83Pl4iDPC773kDOREKaOKOqo5o3Udc+xL/TZC0Gu8bjU+PrQGhzq00AormZ/HvAr9YiD54GLqahshXM16ZLPnNLFn/G1Zb6RUsOkPs5eq9RxzS1O6JzgWQPY1MM7k6xvPSW5gsoFXfCnbhEk1aTQSIw0nCtKHBtDfNnJuMUaIFd5a2/HaL+w8h8Tbcbv+pnaIHTvrbo4SZrTPi8zyWhaurQeZnSrOakKY85gKCT80MVkVuGcb1J5pdAU48GmNworQ5KFgyKNGWx/FikyLmT6prE+reRmdtzPtaTAnf1yB2Io2yX8PHlSieZv69VBL2okU5KdggWDwNY126A9ehPAgNiYv5BVBc2eblyNfXZcMyuoodN4iOyFrcAG3baDkwJgaN/rmgrPbH5QRhep9GsZagRyQhxU6/sjS98Qw7MEsYs+U7bEZqkYrnSs7SgLZ/cyd+DaYSIgap8ZDpcuVHVY8uyFJKAV1RK4ExF69ck1eo8CQICHGeyrcR30UP+P10NV3qN+/wrfDo/Lb5+TPi4qWicYXuvYQufYWt+thoyXqWlRkvWd+vxiqgjfHM/gBAfJ5cbG3DdolUO+NxyitGN3ZX07Cg6bJD/PbvdcvtQF+wjSk
- LhhN0rw4
- p6Rrd30qUMqnIgyFsk9B4F5exLAYaB5j6UMznsIPkXtfiEZZFrhEyQQmsGuabQj4bw1hEuYoMYFjPLU2Oa3hCEGrZ3znHPU7qoQf1j0TQ6JOVRsmUgKl/j1EKUV3HINSAdUJ/LSvQpJgxghgrQMN+7aMzTIG5g/vjXRKIuAc+TsftX+iHtY0f1jGeR0a4/XmLUEkO+XKxbor6MfEG29XYkzwwP4UYn0X0Pp5QKXFxx3UtirZ+BHQi25wVJZ9AyOCdf9iHXb5nbLwPfH6GNM8DoPy+ClzkyZY3dxDjhqIQXCvJXJcGid/ypfa0jtQTYwqHg4ZR0z0zmvT1a9gLTtwxhJJ7FTk4NYN51+SCvZtUlxGeWThztchd78QSl+lBlAOayD7wHWrIZ6TLFpxtHIYSPBFYyw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 18DF3180006
+X-Stat-Signature: w8zn6x6ifx8bh5se4m8nsiqugi58yu8h
+X-HE-Tag: 1788797978-327690
+X-HE-Meta: U2FsdGVkX1/ocis78t92HLF/a+qSjguwP/pSX7/NMfCHthdnlaMIenUJaxfRiwAktyPXDvp3DJKEJ/ziWdDRi02+XG2h7dMAWk561x+GV/CaVleMqsNsPAEBd34fW+M0IL1nydDX2OoiZs91RI1PRIQd4AyYt9I6lF6pV8iqQLT/fG586RWnKjKl6yKo/8W5/tD6F1uaeJcL6bGRuh31Ux6S8YIZfdb1BcCVYRKRMrj1kF+Wpj9fanoICzMq+CEqemZ5jOmBs716MMP4fZG8QWC9YQPBB6Tzvn8Zrfy1tap743nnEQuGWDAxMn5RoSeK3gBpbtoCB3/DXvQAZ/rELgqA5oLcovvsuXjA28wLKsxhgAzwnT6AT8Kf1fOrfqa8ejeVtl9C2083Rfwy2FzskjhUSLCiqRTv+GxS+lofgrAgNsAZKB9VXwy3lhT5MQDUh184UjxYndNZZGV77AT0eTqggnpFtWL5wlmoNTbBkzmmMj7X/ZCUGe11kJCOaw6xJm6d6XOoWBD0KE4ZZgdOG3yxsUC0drFdSvCjY7qPKrG9nVsd3arpn4nHM4eq0z1b2B/Um526NY2wNpwMab/5X6NwKoikZqpmwbbRDJFWiUXaFVfcV/fqcJZJVvH78xWYSodf+ka/SY0k4V7hoSPni5k3ZL7ZrZ7oDokaov9RL5kg7NVy2VQJeonyVB47V0Uw8ouP9skvPHvjB3nWH1EIAc9Fr0l2+/MDKMqjh80MI+tgYrixw3Ckjdy1GKfjwTXBEUAk22vtVVK02dY2jHhRhOyqqY0EJXR04Xd/am1/zhyIn2mg/PRymy82rAFv+FA272+rSyf4MxFmJiIxLeDMls+kQWDh9U2AVgajHDk90BVhm9HLsawl5Wq8pLD/kTl/vdWqIIGur+ZzAZdih4oeqshNBjD1FM7sUgf99Nz+vqhQnTczV/lFgvCsmpxl82D2wAHXiETghiFAF3P921D
+ VI69LBJK
+ BnSaeo738j3OPyfaJnhIJjtb3uQqkFFhhAXVLXTNVw6U7SZ5yA2IJeFKdzzsfJdzK7WaUVHkH0fcL4jsBJDEm+tksql2qXvKh00+sFXltBNYVzN+YHWDnP9OaP8sVf50LCs1tYGfm4YtH0nc6ZU+zD9nmq0LoDTCn4W7rExEtKAL+pzgaRywOTE7UlixfCc2nmVQH/1LR8BF0KVb5JKF6OZIUjuvDa0ZCwIO+/i+DqgrXLqbRRyaHB0jIqb0iKnseMwYStGLGzAnwkeGXS9tdMIsVxSu5cj/crvXO6aOgXaMn5cge5eR3fF/7YQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,143 +147,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 03:38:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 8/24/26 14:25, Hao Li wrote:
-> > Introduce a mechanism called parking to mitigate lock contention in the
-> > free slowpath.
+On 9/7/26 18:15, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Sep 07, 2026 at 06:08:31PM +0200, David Hildenbrand (Arm) wrote:
+>>
+>>>
+>>> That's a good idea! Much better thanks.
+>>>
+>>>
+>>> Yeah, it's an annoying one as kinda want to say 'file-backed VMA' but I think
+>>> you're right vma_xxx_file() -> vma_file_xxx() is better.
+>>>
+>>> Andrew - could you fix that up in place?
+>>>
+>>> Obviously if there's further feedback I can respin as well.
+>>
+>> Just as a general note I really hate these in-place updates.
+>>
+>> For a reviewer perspective (like me stumbling over this) this is just a mess.
+>>
+>> Resending with b4 is as easy as it gets.
 > 
-> Interesting!
+> Ack, you are right to be honest, and I do empathise obviously.
 > 
-> > In the free slowpath, when __slab_free() transitions a full slab into a
-> > partial/empty slab through a free operation, it must acquire the list
-> > lock to add these newly freed partial/empty slabs to the partial list.
-> > 
-> > Why must partial and empty slabs converted from full slabs be added to
-> > the partial list? Because only by doing so can the sheaf refill or alloc
-> > slowpath see these partial slabs and allocate from them. Therefore, the
-> > list insertion must be performed, which requires acquiring the lock and
-> > leads to heavy lock contention under high concurrency.
-> > 
-> > Analysis of profiling data from the will-it-scale mmap1 benchmark shows
-> > that full -> partial transitions account for a large proportion, second
-> > only to partial -> partial.
-> > 
-> > With extra instrumentation added to __slab_free(), the following data
-> > was collected for the maple_node cache (in counts):
-> > 
-> >   partial->partial    843017414
-> >   full->partial       550719384
-> >   partial->empty      17459564
-> >   full->empty         2
+> I will respin these in future!
 > 
-> That's a lot inded. I'd be careful if it's some specific aspect of the test,
-> i.e. lots of parallel allocations followed by lots of frees, that wouldn't
-> be that common in realistic workloads. But worth looking into at least.
-> If it's this kind of pathologic behavior, then I expect changing sheaf size
-> as suggested by Pedro wouldn't help much.
+> Let me know if you want me to respin this to make life a bit easier?
 
-mmap1[1] is a very simple test. It just mmaps and munmaps. I assume what we're
-observing here is the churn in maple tree nodes as we allocate/free/split/etc.
+Sorry for being grumpy. With 1500 unread mails, playing Hensel and searching for
+breadcrumbs in my inbox is hard :D
 
-I suspect it's also possible that bulk RCU freeing is causing this. It might
-1) be substantially delayed and 2) dumping a lot of freed maple tree node
-objects that overflow the pcs.
+(I did see some reply from Zi to an mm-unstable patch, but not sure if that was
+applied in the end -- or whether Andrew fixed up any of that)
 
-[1] https://github.com/heatd/will-it-scale/blob/master/tests/mmap1.c
-
-> 
-> > Since the fundamental purpose of __slab_free() is to make newly freed
-> > partial/empty slabs visible to the sheaf refill or alloc slowpath, these
-> > slabs can be temporarily stored in a staging area in a lockless manner
-> > instead of making the free slowpath contend for the lock. The sheaf
-> 
-> However the lockless manipulation is still going to contend on the
-> llist_head. But perhaps it's limited enough in both users and lenght of
-> operations to make a difference.
-> 
-> > refill or alloc slowpath then checks this staging area first when
-> > allocating objects. This achieves the goal of making these slabs visible
-> > to the sheaf refill or alloc slowpath while allowing the free slowpath
-> > to operate locklessly. This process is called "parking".
-> 
-> I'm gonna pull a David Hildenbrand trick here and question the name :)
-> It seems to me it's an (extension of the) partial list, but lockless.
-> Parking would suggest to me that it's put somewhere aside not to be used, or
-> something.
-> 
-> > Parking occurs in only one case: when __slab_free() encounters a full ->
-> > partial/empty transition and the trylock fails. In this case,
-> > __slab_free() attaches the slab to an llist locklessly, instead of
-> > waiting for the lock unnecessarily.
-> 
-> It could be interesting to also see if skipping the trylock completely
-> (another cache contending operation) helps even more. Also whether moving
-> the llist_node to a different cache line than list_lock (and fields
-> protected by it) helps even more, or not.
-> 
-> > Conversely, the process of moving these parked slabs from the llist back
-> > to the partial list is called "unpark". Unpark occurs in four cases:
-> > 
-> > 1. Sheaf refill or alloc slowpath: This is the core case. The sheaf
-> >    refill or alloc slowpath must see the parked slabs, so the first
-> >    thing done after acquiring the lock in the sheaf refill or alloc
-> >    slowpath is unpark.
-> > 2. Cache shrinking: shrinking also needs to see slabs in the parked
-> >    state.
-> > 3. Cache destruction: kmem_cache_destroy() must also see parked slabs,
-> >    which is obvious, otherwise memory would leak.
-> > 4. delayed_work (see corner case b below)
-> > 
-> > Why is this scheme correct? Because paths entering the sheaf refill or
-> > alloc slowpath can see both slabs on the partial list and slabs on the
-> > parked llist, while allocation paths that do not enter the sheaf refill
-> > or alloc slowpath would not check the partial list in the first place
-> > and naturally do not need to care about parked slabs. Therefore, whether
-> > an allocation takes the sheaf refill or the alloc slowpath or not, slabs
-> > on the parked llist and slabs on the partial list make no difference to
-> > the allocator. This visibility equivalence is the core of the scheme.
-> > This analysis also shows that the scheme does not affect the utilization
-> > of partial slabs or lead to increased fragmentation.
-> > 
-> > Corner cases to handle:
-> > a. Parked slabs may become completely empty. Therefore, unpark must also
-> >    check min_partial and free excess empty slabs instead of adding them
-> >    back to the partial list.
-> > 
-> > b. In rare cases, the system may go idle immediately after slabs are
-> >    parked, and the sheaf refill or alloc slowpath may never run
-> >    again. These parked slabs would then remain in the llist until the
-> >    next sheaf refill or alloc slowpath performs an unpark. To
-> >    solve this problem, add a delayed_work named unpark_work to add
-> >    parked slabs back to the partial list when no other path unparks
-> >    them.
-> 
-> OK, but is this a problem that needs the delayed work? If the slabs are
-> still partial, they would just sit on the partial list rather than on the
-> llist, but it would cause no extra bloat?
-> It could be a problem only if free slab(s) got stuck on the llist.
-> 
-> So I'd try to avoid the delayed work as it's quite a red flag. Periodic
-> flushing of alien arrays used to be a very unpopular part of SLAB
-> implementation. I think there might be two ways:
-> 
-> 1) submit the delayed work only when transitioning partial->empty slab on
-> the llist. Would likely require flagging slabs that are on the llist.
-> Hopefully this will limit the submissions to negligible amounts.
-> 
-> 2) remove the delayed work completely, instead __slab_free() would perform
-> the "unpark" immediately when detecting partial->empty slab transition on
-> the llist. Would need flagging the slabs as well.
-
-3) Don't do any of this and keep a small(ish?) barn locally, for each CPU (welcome
-back per-CPU partial slabs!). I'll play around with this idea and see if I can
-get interesting results...
-
-I also have other vague, handwavy ideas... Hmm...
-
-But I really, really suspect that deferring work and playing around with
-trylocks is really just working around allocator deficiencies.
+I just saw my reply to my other mail, maybe a v2 would be best :)
 
 -- 
-Pedro
+Cheers,
+
+David
 
