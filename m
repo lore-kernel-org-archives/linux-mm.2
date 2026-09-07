@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336F7C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:34:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A122AC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:35:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 551FB6B009E; Mon,  7 Sep 2026 08:33:59 -0400 (EDT)
+	id 88BD46B009B; Mon,  7 Sep 2026 08:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503EB6B009F; Mon,  7 Sep 2026 08:33:59 -0400 (EDT)
+	id 861C46B009D; Mon,  7 Sep 2026 08:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F4166B00A0; Mon,  7 Sep 2026 08:33:59 -0400 (EDT)
+	id 7A2526B00A0; Mon,  7 Sep 2026 08:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4226B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:33:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE38580152
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:33:58 +0000 (UTC)
-X-FDA: 85186908156.06.BD24929
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F27F940013
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:33:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AHJmmyOp;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B80A6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:35:48 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ECCEDA015D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:35:47 +0000 (UTC)
+X-FDA: 85186912734.18.CB88BBA
+Received: from mta1.migadu.com (out-80.mta1.migadu.com [95.215.58.80])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F39E5140008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:35:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DBQX+QH7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.80 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788784437;
+	s=arc-20220608; t=1788784546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h7cKBm7+BzUzCvCkEH7tyBUTdRm4vS9wwDEbS3sNZuE=;
-	b=zzaOvEZotqCVE91cdLR1uHGoci/c6F1QtJUbqMZqQuNv3dw5SldtsstTa0feU2IQavjKLk
-	Tw9trCz8ZZN2ZYYVX9zJ/iwsbJhtxFtEyVGdErZuun5zPqe7K07YvUhZIUlNreQGleWRwl
-	AzIpBGkunAEydkiY2mMzcOlGE1MNiAo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JP7nF9i160kxxE3MRxFfbsP0OJMmmpzbYtWlr6yNcaU=;
+	b=sQZSml+znJYB/XEAnGKRy8U+2tIgeAPq6Fk8LYwE72kvJT45WwFgwlLzdCcvjksvx3VGui
+	eiZ02yAO1rarZZxBMr4LObuVAMEe/B3ldm4LupY9LSh3WDkiDZ/PmzkZ0lPj6aLqklQL+P
+	91QJjzyQNuJrUuzJYBAOXIGEwUJOJzc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788784437;
-	b=Y3gZ8b2ZgnL+hjZ40hsprqGr+j8ET4s9J8ctWPETIyhPd4wtpkiC5oKCz63yK0QBROCnG/
-	Pbbh2ZXVDli5mH31dP9EHz4yS4xbEZ6yakF+aoAkCuxwGDwjgjzBwOAbNEe8/A3tcuAWXu
-	udWKzVor+H28onXVLvjo3syEvZO0WWI=
+	t=1788784546;
+	b=cVFOyrNkrEpYdMGyNEGfhkm+XrJtkiCk3yk1iyIBmUTV31a8RcTGX5JVZfksg6qIYrcMhA
+	tW6a72OT7dAJAXqHz0HMlBJCbD5n+2QGJeiUpEE9gUt+YrrtZ8bB1yYiudKgp5Z3TIVkNj
+	cBYPVitS47lZs12vODNm84M+e6tNyoU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AHJmmyOp;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 506D642337;
-	Mon,  7 Sep 2026 12:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDA01F00A3E;
-	Mon,  7 Sep 2026 12:33:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788784436;
-	bh=h7cKBm7+BzUzCvCkEH7tyBUTdRm4vS9wwDEbS3sNZuE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AHJmmyOpiwExIz4vREZk9fQD+t6Q8jCuI00q/MyLSuDZHHaQBS4ygHbC7AtSWZQ8T
-	 J2FVEopbouH1yFG1kPLeu0k0diRmQDZIC537aX83zKcO1lQ4juKPm00ZLTrFX1Cjy2
-	 BNPfO+W+r/r1dBaIdJEkakAPZebE7tbiNCxeXG6GFUL3KlPDkLcKZYSFCBW5dWfDtt
-	 sOkDMNIFcoEzc+bj0u2OQ+9hmXrMAak1hJc1br0aFcvLkChengGjrWQh/peJX1SKTE
-	 aMWSeREzzHNLg+WYLTLtDgI42cJmb4uEgWccSuQnAepxBPJY5lQZ4lsWoeR/CMPVR4
-	 GydJS25pRlFqA==
-Date: Mon, 7 Sep 2026 13:33:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
- MADV_WILLNEED
-Message-ID: <ap6vCPHUIt3Es7ko@gremlin>
-References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
- <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
- <aprjOxDy3JCPb2oa@gremlin>
- <5930324d-8252-42e1-ad50-aab796e41550@kernel.org>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DBQX+QH7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.80 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=9Vrwldiu86hCVdvrUFji2IlPOad8eDYhb/cvDGNbV4A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788784544; v=1; x=1789389344;
+ b=DBQX+QH7zQpma/UCQFvjTdmmPcxt8V57ttCL0RJyfnc7GqZBlV/UklnADLlT07qcu0D5BzIb
+ G+gaT+aRNOH3yy5rQu9F3XgdTJXD6rmcB/Br/0A7H4M3I8P1t2Ow2jyQOHl36VhLBMmCyQJBFJ4
+ aE4uLIT+S8SptxUApezlOScE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 83939cb49fa7006e;
+	Mon, 07 Sep 2026 12:35:31 +0000
+X-Mizu-Trace-ID: 83939cb49fa7006e
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: sj@kernel.org,
+	shuah@kernel.org,
+	akpm@linux-foundation.org,
+	ekffu200098@gmail.com,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH] selftests/damon: stop kdamond on error exits of no-op commit test
+Date: Mon,  7 Sep 2026 20:34:55 +0800
+Message-ID: <20260907123455.67246-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5930324d-8252-42e1-ad50-aab796e41550@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F39E5140008
+X-Stat-Signature: io4nue5uctqrto64fmfx6ngyfysh11gm
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F27F940013
-X-Stat-Signature: stwswwrrnbfy95jhjfn7n3u4u3uctrtz
-X-HE-Tag: 1788784436-1229
-X-HE-Meta: U2FsdGVkX1/C1kWtO/ZiMKWZp102axv4WY87MhTr3CIio2ZUXNmpOXl0awYqM2ZHOpmOKMJILNb5DkMFspqrkqxQqk36TnltvCHfVbVuhTPJL9cXxC1eUSEojQiVpOgRTU5Tx4wmugq+D+PJyA8SKIMsurQUMhQop7J0uX1/RchdAQIuB0f6u2CyQUb2Ycb1XgeK7gQWzfS7EpMqaNur/kK/XSv5Dq5xxPAXA1Pf3q0epze7fgpgS1zGZ5r1il08kfkoaqWZ3I0evyE/AfmLT4uSD1jeywuoUGBgJpmGnKabyBGcrNG+MoIWWlIp8apgiAvHUDEq0Y8XkkUWPvcYGk7D2tEZ8dc+Kurhuyn716qWwkqCCLvB8DtFPxrP+Dr2iU6tNHr/hARmIlt2ha85pg6OzaN8R4KMDDMZp6jD2JIbM06qbQ+e4isrccvxiMUdzze21mev748BLtcRFvp537MqkOpHB2l7O4Ovc6YOD0RiCQJ95fNi4vx9uf1SGofwfh4CUNLBGOwzrt+SKdQ5xXSN2O9gkjaElQgYpZCIMPgH9l8+ReyINoZ/Eheu6L8sE6pkXQIggIWvKgy6VQ6dpjFg3YeBAdXkpBBEMGkdmGKW0xtoSSM2k/ac79UahhuDxBdrxlmHp34KPO0sLijyli/esBu9E4G0z+CArL5ik6h3SkRwIrGGo5Dp4JVJeJSHd94NO4JdOkD4eeFiuoCe0Mc4wjEa0ku5A5B/iPflxS/9LLC8SGpuJLx223hXlDe903TnVB2OPiS9Ox4WBrEdVROVRXW7iZLtxhcePo7d9Rm71FsNJrQodU1ogWfO4CUb6yLp/X3no0GbeXTnCk4OHYrmoMX0gin8ooWm4RI9IGx7OV9OkBha5khwksqZOhQijzxuasyKKappedPDP2kI8InXPCZDuRJCq+avquQzvt2gMR75zehvil/6mRWI3Q4ic/nBx5R4AmyUp/5urdU
- qVoBneKT
- xYgE+ibhQr/ctxOJD5fhYgkzaCT02rmMH7l06fvqTsciftC5itaQ2qfVde8kqSoSIBqzMITUpwrnROaIxWpbgBjzGT5vFJQjI2yWXyHyejmdJn3YDG96IAOfUm1rNA5OoEdErVaKe0iSczAcEf6c7nGFQUntCQLOOLb7MI52PWm5kuhFGOl5JivtzSOqvMdede7awNd3T13MhOXvUweroVvRi1Ylj8TLQ43U/c7PYhgUCg1dQMV3XiUQYkw7gYggS7pB7OBr5DpsbP/ztEd+PdvZnMWRMSTCthbUStSRaS82sI0dJ0TqKvXSb4cL3iaSyz/zeavE6gaGe1zbWHmhOEK0kofDMy55inXFg
+X-HE-Tag: 1788784545-153859
+X-HE-Meta: U2FsdGVkX1+uUBoDorxwnRxo5ewicDm0WxcV4JIcr1MtmAO554hENDO4Y90n4JK5Kbgmg7gtkJYidtEbgpysnw+amsjOFT9yK1AsQtYkTkqIxo0zyOM6yKGLmp0k7jm+NbvxQQ754dxtkf36m3bRNp/O3Se2k+PxwZ/PP0L7vpQqAVyXALrxTUwOn0Doqne8fludJicx4YqbLM2wNhjo0Rhxcj0MkXMZJizuB+dmaJzta8a+aa0ebvPxeX0lnIdOlsAfURblBeL5CsNGJ7D2Q/RVhqm35tERFNzBen9f4T7mtcD6ht0Uq8lrvqe/Y+gqbwJnyT+PrrMwLd5av+nqQnkWS23R1bcCRn7UXtXFP18VEPhFwZvkbLKzMTDfFCXzApkJbDmoeskgmFuWRG/q0t8Lzf3GNJj8k/zP953p6kXC4GAUR4Yx+z+RLcRnwrFc/gyRKdEv8zksnXk90E3T1dWgnauhiUZnH6FH8EGN89+KeS1yHQK62MIC0mQf9w6Bv74LxYq+mO15kdCwaemVE/UUA4O0Cy+mRico2PB6Lj54p7OKBabw1zH9VlB4W1a7W9obe1VwuqA1PqpTwjDfCkY7/wWV2c91mkx5t6SqXAaYbq+SkuEx9yUEBVkLmBMbiZr3gMnft20Y6Kc/bwekn51ZAQi3s9YLgDcSo592hLVIlRlbclQ8eznTPYGRYF4ccoLVuEJfu/fbTn9sS/EdoBddD7GZzdHv4FwrD2hUU5KWX6XbcDwpmdZHkM+QELzQHYOw/2wp72d7TN3klTvn1xnM6CmYRpCLXfxlWbBy2zBAh7n8CvEqw+LIuZAuWtYxRzMrjaBsxmsWHd28MbLURPoHaf9Tr1PpApBHm65/CPSH7IXm3lwceY0y6FjsQ9cu8Vn2Pl1pKG1eklKroWV/hqCrDoDOrB3GWOxOl8fhqR2sonpBVOw2ras7UdLFJavqIxZ61lQefgQPy6Jp3LS
+ gLIFyytL
+ alHujogH67E41AEOmRuINI/UZpRFBl0gdXYxoXKW4lOPZA8AeQll7t5XEg24WR7xYFmdzYICL5rmTJL32y73qG6/xFEm8bdUkMFzO3+5VPIJOV1LFES9Op/I8Siqa8NlkcoNM43UarfaWB+7+bXgoZnpHZZwq2Oha8Np6EcnZIHIch/fFJhuEJ6GhMmH27EyysMza2vEZAnLAg1JruUZWz7OIkLM2V0ZuKToO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,85 +92,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 01:51:20PM +0200, David Hildenbrand (Arm) wrote:
-> > And it's a real improvement to have unfaulted anon skip...
-> >
-> > But I find that version is documenting what's going on a lot less.
-> >
-> > Since both anon and MAP_PRIVATE file-backed are CoW mappings we could just
-> > reference that.
-> >
-> > Andrew - could you swap the patch out in-place with below? Thanks!
->
-> A proper v2 would have been nice ;)
->
-> (and would trigger sashiko and friends properly)
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-Ack, though it's kinda obviously functionally equivalent (or so I felt :P).
+The sysfs_no_op_commit_break test starts a kdamond via sysfs, but its error
+paths (e.g., drgn not installed) exit without stopping it.  The leaked
+kdamond then makes subsequent tests, e.g. lru_sort.sh and reclaim.sh, skip
+with "Another kdamond is running".
 
-I had a local LLM check it FWIW.
+Wrap the post-start logic in try-finally so that kdamonds.stop() is
+executed on every exit path.
 
->
-> >
-> > Cheers, Lorenzo
-> >
-> > ----8<----
-> > From a706374a1186b6b4409a0e760e8728bcadba0c96 Mon Sep 17 00:00:00 2001
-> > From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-> > Date: Thu, 3 Sep 2026 20:08:39 +0100
-> > Subject: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
-> >  MADV_WILLNEED
-> >
-> > Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
-> > entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
-> > for the former and a tree walk and swap in to swap cache for the latter.
-> >
-> > MAP_PRIVATE-file backed mappings straddle the two and currently get treated
-> > as if they were purely file-backed, meaning any swapped out private pages
-> > remain swapped out.
-> >
-> > Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
-> > mappings and performing both walks in this case.
-> >
-> > Since the logic checks for vma->anon_vma this means un-CoW'd
-> > MAP_PRIVATE-file backed mappings retain only the single file walk.
-> >
-> > Reported-by: Mike Kaplinskiy <mike@recall.ai>
-> > Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/madvise.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > index 73c2901b9adb..963337f93a7a 100644
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -297,11 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
-> >  	loff_t offset;
-> >
-> >  #ifdef CONFIG_SWAP
-> > -	if (!file) {
-> > +	if (vma_is_cow_mapping(vma) && vma->anon_vma) {
-> >  		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
-> >  		lru_add_drain(); /* Push any new pages onto the LRU now */
-> > -		return 0;
-> >  	}
-> > +	if (!file)
-> > +		return 0;
-> >
-> LGTM
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Fixes: 10725cd2b09a ("selftests/damon: test no-op commit broke DAMON status")
+Assisted-by: GLM-5.3 OpenCode
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+---
+ .../damon/sysfs_no_op_commit_break.py         | 35 ++++++++++---------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-Thanks!
+diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+index 2c65cffe6b54..81774ddc55ac 100755
+--- a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
++++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+@@ -47,26 +47,27 @@ def main():
+         print('kdamond start failed: %s' % err)
+         exit(1)
+ 
+-    before_commit_status, err = \
+-        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+-    if err is not None:
+-        print('before-commit status dump failed: %s' % err)
+-        exit(1)
++    try:
++        before_commit_status, err = \
++            dump_damon_status_dict(kdamonds.kdamonds[0].pid)
++        if err is not None:
++            print('before-commit status dump failed: %s' % err)
++            exit(1)
+ 
+-    kdamonds.kdamonds[0].commit()
++        kdamonds.kdamonds[0].commit()
+ 
+-    after_commit_status, err = \
+-        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+-    if err is not None:
+-        print('after-commit status dump failed: %s' % err)
+-        exit(1)
+-
+-    if before_commit_status != after_commit_status:
+-        print(f'before: {json.dumps(before_commit_status, indent=2)}')
+-        print(f'after: {json.dumps(after_commit_status, indent=2)}')
+-        exit(1)
++        after_commit_status, err = \
++            dump_damon_status_dict(kdamonds.kdamonds[0].pid)
++        if err is not None:
++            print('after-commit status dump failed: %s' % err)
++            exit(1)
+ 
+-    kdamonds.stop()
++        if before_commit_status != after_commit_status:
++            print(f'before: {json.dumps(before_commit_status, indent=2)}')
++            print(f'after: {json.dumps(after_commit_status, indent=2)}')
++            exit(1)
++    finally:
++        kdamonds.stop()
+ 
+ if __name__ == '__main__':
+     main()
+-- 
+2.53.0
 
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
 
