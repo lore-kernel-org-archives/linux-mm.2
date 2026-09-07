@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99173C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E82C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:08:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACF8B6B0098; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
+	id 856C96B0096; Mon,  7 Sep 2026 08:08:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A80206B009B; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
+	id 7E0876B009B; Mon,  7 Sep 2026 08:08:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9967D6B009E; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
+	id 6A7D26B009D; Mon,  7 Sep 2026 08:08:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 71C8C6B0098
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:51:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFF1FC0133
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:51:27 +0000 (UTC)
-X-FDA: 85186801014.10.4529B30
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2A22E120009
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:51:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHSF+NiD;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788781886;
-	b=hxgAwQ7pQkZQOgZTJy/IWNsTjNnQp68ax3FlLrWeDtf7+/3FSd6bgZWaD1JweRyNBnyOyE
-	Phr0YpFKoJTQ/EzV4ZvrgX4JrZ094Wekp/EVNTxSkBz4wubXb2qC5tZ+EKlpDR/uaAFP3s
-	QqKaAIARDVaPmTjcCFJWJMutyscCvdA=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3753E6B0096
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:08:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C564480149
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:08:38 +0000 (UTC)
+X-FDA: 85186844316.02.3D90B9D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 044F61A000E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:08:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHI2LGgs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788781886;
+	s=arc-20220608; t=1788782917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+aPhc/SqhJ7JSMC3ivXbbYiLBKgxE4zPMSB4aVyP+8=;
-	b=oA53n9l7IpgVqbct2/U5dpGesw/Zi+H5/9WcgAsRJpacavvwg1HsHk+ZaGEDubIHZhReND
-	HE/uXYocBQggFWQPV/QVd16fq86eUAaKGXr3iqxWVKpQ87fNzAa7shrpGJIiW8RMhRAIbC
-	mqgetb55Z5K3lwyJiOMdd+DaTpI3OxQ=
+	bh=F9XAOyQk7CNSeFwQo5G/rrbyMC4zTPJ5fNDWbA7bGIs=;
+	b=CetfFaafHGvmWvWtQtgs0qooWiAjWskgKqCYecwHwJIL1faCVi/jPBpXeNPEFN8P7J2dp/
+	i2mXn1e24naVxqvLL7HMi2F+JoyQOnvvW7byuylA5KkxlwEdlKI1ERlUTDUaw8wRIu5wLE
+	TDj4YIOOzNPEgfjkJ5J+CAWnHWGZ4wI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788782917;
+	b=6Pd7fQncmjfePerQVhw0+PekoX4CkPO1xUSpYSACYxICIvgvE2QyoT+qdexy+YtsLQl86S
+	q6K1yLq0nc8KYBAQwFMp9P6ZrjV88PwHSlCz08P4BK023KQaccZQpDNa9OtTz3nvRTaZyo
+	i72c/6VWHgHA1i7w48sR2g32wyodx1I=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHSF+NiD;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHI2LGgs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D0434167E;
-	Mon,  7 Sep 2026 11:51:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96911F00A3A;
-	Mon,  7 Sep 2026 11:51:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CF26260AB5;
+	Mon,  7 Sep 2026 12:08:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996AF1F00A3A;
+	Mon,  7 Sep 2026 12:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788781885;
-	bh=y+aPhc/SqhJ7JSMC3ivXbbYiLBKgxE4zPMSB4aVyP+8=;
+	s=k20260515; t=1788782915;
+	bh=F9XAOyQk7CNSeFwQo5G/rrbyMC4zTPJ5fNDWbA7bGIs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nHSF+NiD6uq7sSUj9YDZ36amjTyArKCHbqydgbhqrn7tOJpTXs1l04YLotUgTb0hO
-	 Ckhkl66Bqh9dJutppBBoVi6eA3IkONRUlRoOJapdpZtJorG5PFfwnggyU1u2W9rrgk
-	 CjkjBiP2I4Gp88q43O04If5BhwBZHoM9abcQpRSON/ZRVxLrmgLOub7baaxvz4NFmN
-	 MSJnNgxhU7iUwBAhlBuhsiBQWwMUFGCxLAl278BiyIa9q6EEfB69LerlaLQn4AFN/E
-	 KDG/V7ZSYcJq8MSe9RW3Z0SDC4pGGZC0XjkvhVzirwdNcy4JbYjiXqWkFq3ecDCUTi
-	 ISujGXYthbxPA==
-Message-ID: <5930324d-8252-42e1-ad50-aab796e41550@kernel.org>
-Date: Mon, 7 Sep 2026 13:51:20 +0200
+	b=HHI2LGgsBNcP3wHm+ZHe+TykMyXyGu727qZBKl7DzmjgYdw+ARUi7d69Qp6mTWUoN
+	 /83aYQoussugnC50w8VYBKyxjQt+UaulYFtdVesOhLX5ekL+hx/P842uB2AF2oECPz
+	 Gk1r92mUrJDbDiMjTHvUoUknpOW0TEPePsd+GtQLaYnNWAKxJpqYumeE9Gq6+vcWIp
+	 p7aYNNrXv7dNx6rm67s5skihcO/irlV9g/LuCf7ONnqU/yVnaJzPdhRYbuxGbjHpBn
+	 IODmCxxQYgDn80rPCXKyr0Pwuc2MPEBeJBSc3c5mJcZeGXln/cTOFKlvKc0UmQ4zfp
+	 r/n4WmgQTPM3w==
+Message-ID: <5140ad5d-a024-4df9-8e1c-b702433821dc@kernel.org>
+Date: Mon, 7 Sep 2026 14:08:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
- MADV_WILLNEED
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>,
- zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
- <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net> <aprjOxDy3JCPb2oa@gremlin>
+Subject: Re: [PATCH v2 1/1] mm/memory: constrain generic_access_phys() to page
+ boundary
+To: Ren Wei <weir@nebusec.ai>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ notasas@gmail.com, vega@nebusec.ai, rakukuip@gmail.com
+References: <cover.1788531737.git.rakukuip@gmail.com>
+ <eaa4de66f9491888e0ffeb2d37ba7ae796ba535e.1788531737.git.rakukuip@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aprjOxDy3JCPb2oa@gremlin>
+In-Reply-To: <eaa4de66f9491888e0ffeb2d37ba7ae796ba535e.1788531737.git.rakukuip@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 044F61A000E
+X-Stat-Signature: i3d3zd3fcs7qr6rpy17wwsws34qt74yr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2A22E120009
-X-Stat-Signature: 8swk1wc3jomcthbtyisrdupg45u9sdb8
-X-HE-Tag: 1788781886-41562
-X-HE-Meta: U2FsdGVkX1+OVYonrI/l+gavwaTC2AnEiIEWzkqDps/WOPFt35q0KeD3riPbYIdjc6d4X0yhy2OJ4DSBX0Y+OLne6k1enLczZAqjr4f2am77GwE6+6pK2DUOPMEW6F4mXP80PLtQ3eZtuzO9/7gBTA9Ys8AjrghjuM0Sh8/LO5X7KV/ZRw50zgi+prvaU5DY4vO7SUn+A87gRf2z74cx9ZiRm+smoYzEz0pgbLlhfxOXqdxbT1F1uOEmXgcJFopaFSTby/nyIXtIkyTdl0h7mZq7ac/uf88bOpS8X3bR72+vLBv1xBeSvNVHJamPFK2V3yikEys4HkGCie5hfVIs0eikDoTD4OmcD4XG/2JFJktQVf78YhKUegiiiTB8WgwrSc+Z2aeyx2ZhFkSjnvS6krgIpWa/eXzIk4rLT8bcOKFO8Kh2IfHXxm6ZNR/ON765EQVmL9UUY+qoad++04Dur4TgxULys+cFgm3fLKp8aGkzlJDpqhP2+E/3eDyWq0MyY9+6fcaOZiB+1lk7k6NAHpsjs7QRnUSKZrKXRFjA4069mo3vEpardFfydbz4f0EU4z9Q1aZlQCPKw2Iq4fq2ZIQXg0GtLbRzNXO9+Qr2Q8tsa8ImZor8ekcIsxXbW8Wguc79hcvS4kxUPLtehR3H/8/QFME9sC+4nQcIBPQf9AYdc6hqe/HOYbjn21BMJcwFfwq5GEDuUKkKUojdnMm8vR0Se3A44IcHpyXWSyat7F+kuIjgQ5kiWv14HNgbkon2j2M3WJNqc57Gro7qnTanX8wumybDXTDJU/Pd2EwHoaMD2afaQeLkbUOEaY1EpuM6Tte9fM6y1ONSNZHty7d8FTh7+krxlS5fKY+Lfii0R1PwYEiA/bnPi74eRdkW7jytMBkAO32Jdu0wszdbV+3521NGCGy9Di1V/A0M8/4EBmT53rIeSHmX3d9w7vhbJNBzfYyn/N6LKmVu/9hIO67
- XLxyitJd
- KJQkUe1byhdNTvvN1WOpSoyze0PCHOj01/JPeiTH0plCGe8cDC/oi0KoTM1CYCaGEML15ZpnVaugYGES1jHc3Gg6rjsyYkfrtdbTrzIdPzWJ0MS+CGwtSrHY7ATqc/a/JG53HKCohypHjkioT0gAmEO0O4suzUz0dWSdQSiF2esWdL56fPUNIi7TGmc4kXP/VsidRpU19iW3KcxiGpGGPyk+V+vm0wR8iOAGxpwSx+M+infagvV26xuDJSblh+ohp0iiOwYB88WoDyLE7Iu0uzpkyYwy+mobgfi393lficTrq3gePthCSiN5RVLT84i2Pjq8BuZPWUofeFIMpAWNt38py/z/JgPbyFchw
+X-HE-Tag: 1788782916-607921
+X-HE-Meta: U2FsdGVkX1/Vg0CQMXzhk50wayiK1U/EqC3KhsZF2rjWkQR9uRaIdI1dSshwXfblKitIO4hWygIkEnL7967OfE8lQ7QsnRk2/BlP2vK6xnxXw9th2xRqjlumVxPLHmWG/5Dl7+32AfXNxJa15wsetr/Z3ZHn/48eaIRluvejvF0QeAoOD9QxzIM9z+D4nc8LckKoOzvODyJur2TqW8WirDKjBA2Sg63a0je7W0UhZmi+GWkVOc2ltHIdjNMVjd6N0Jrmie5dbwSWB6XGWHVkNPWdpCzcYsNT7F1d7APQLWVxMbQwG7KSm7dgw9KSGetvbouk9ziqpQqs5xi48WPCKRhc/Gta2h/ujxsA5CsZrWb2fjH6+bvrx6P7EJhQge6CI6zUBE2d+w75k92DY4D39iZau+fb7m3ve7Tf3gHkYZKXYq4m6vRnpDpwtGf9W8h8RmrpYQ9vsXq7ulT1x4h5p2QzY0U5+gQ0xPJhUwAO9noGKAwaMiaEyOswvFV74BwmYFkCNCEIhShldHLSG3perSbHsGNTsZnZkNFMro4JiWnmpIX77LzzOXOjRB4zA52swXQ6ndLjrg0a679uEGmjwlgomG2d6r6PaePmlHuInRj4chYv0N4bSNW4LL7uF+RFez50pWvw733oqd13uZkm8wSmihjPM94wKUInh+IGhWzDOOxpq49r1XaYbZzZaqZSG2HtjsvtjARY1x5h8GJcbufAiW00x7gTfQE1uN51e8SfY/qYaXNKpZ25gTAxF06subrSk0WAi+IfR2Gh2L0UHPhgZl+DcvGVgIGmw+ag41PV4J+C+X+YF8luKlXURBjSTLnJ5DxuQ96UXs7B4gJUVYv0T+mPtKeXqG1JkjVbYOD3kR0XO2MJGYNzJ/C14PRJt3QUvqv1oodn9QnFE0ygEhNiPQxWrc5sz8EVTfB1nrJhrpym5DZDy+lJ5GdfKFTTzGinqmodfvJwcnI/yy9
+ 0m2RoKdc
+ 8fL7LqqpP4V4fIRNEZSoNx7QkFspxSNqKFKJB5P9QyM4LF+viKLY4CHAGjq1gB60nzYBkC0Qc8b2/HBSNhhSwoFPWns4zhQ+NWDUUvFGdwddVhIJjkNWJfZlvbBMKbvGk0yPb7kuBrrGcfsIDgXM9MQIV+PLzcdblBjsBFEDnxkjBP57egEy53K3vhxeG15Di4C5e/RBHT+oWW+FVBFi8W+j69zJ6KwoAeaRLehH1YmsqxcTItLFgy5vJrD9Cd9H8KVLQmA5CS8TSkssCJTwILkzuNXa6rG4L5glyZyCESXDBlNqiu//9FwihrenTloHvojETHd/x5xctgWMtGFxUFoGFzTLF3ahpGlJH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,70 +140,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> And it's a real improvement to have unfaulted anon skip...
+On 9/5/26 16:12, Ren Wei wrote:
+> From: Luxiao Xu <rakukuip@gmail.com>
 > 
-> But I find that version is documenting what's going on a lot less.
+> generic_access_phys() improperly validates the memory access range: it
+> only validates the start address using follow_pfnmap_start() and passes
+> PAGE_ALIGN(len + offset) to ioremap_prot().
 > 
-> Since both anon and MAP_PRIVATE file-backed are CoW mappings we could just
-> reference that.
+> This poses two problems:
+> 1. In PFNMAP VMAs, consecutive virtual pages are not guaranteed to be
+>    physically contiguous, and individual PTEs may have different access
+>    permissions or writability.
+> 2. The mapping may cross VMA boundaries if len extends beyond vma->vm_end.
 > 
-> Andrew - could you swap the patch out in-place with below? Thanks!
-
-A proper v2 would have been nice ;)
-
-(and would trigger sashiko and friends properly)
-
+> Since __access_remote_vm() already loops over the requested length and
+> accesses normal (struct page) memory page-by-page, constrain the ->access()
+> callback in __access_remote_vm() to at most the current page boundary.
+> Because VMA boundaries are always page-aligned, this also ensures the
+> access never exceeds the current VMA.
 > 
-> Cheers, Lorenzo
+> In generic_access_phys(), defensively clamp len to the page boundary as
+> well, map only a single PAGE_SIZE via ioremap_prot(), and add a missing
+> (resource_size_t) cast during PFN re-validation to avoid truncation on
+> 32-bit PAE systems.
 > 
-> ----8<----
-> From a706374a1186b6b4409a0e760e8728bcadba0c96 Mon Sep 17 00:00:00 2001
-> From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-> Date: Thu, 3 Sep 2026 20:08:39 +0100
-> Subject: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
->  MADV_WILLNEED
-> 
-> Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
-> entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
-> for the former and a tree walk and swap in to swap cache for the latter.
-> 
-> MAP_PRIVATE-file backed mappings straddle the two and currently get treated
-> as if they were purely file-backed, meaning any swapped out private pages
-> remain swapped out.
-> 
-> Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
-> mappings and performing both walks in this case.
-> 
-> Since the logic checks for vma->anon_vma this means un-CoW'd
-> MAP_PRIVATE-file backed mappings retain only the single file walk.
-> 
-> Reported-by: Mike Kaplinskiy <mike@recall.ai>
-> Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
 > ---
->  mm/madvise.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> v1 -> v2:
+> - Drop internal multi-page loop in generic_access_phys(); clamp the chunk
+>   size in __access_remote_vm() to PAGE_SIZE - offset instead, leveraging
+>   the existing caller loop (David Hildenbrand).
+> - Defensively clamp len in generic_access_phys() and only map PAGE_SIZE.
+> - Add missing (resource_size_t) cast when checking args.pfn (Andrew Morton).
+> Link: https://lore.kernel.org/r/f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com
+> ---
+>  mm/memory.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 73c2901b9adb..963337f93a7a 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -297,11 +297,12 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
->  	loff_t offset;
-> 
->  #ifdef CONFIG_SWAP
-> -	if (!file) {
-> +	if (vma_is_cow_mapping(vma) && vma->anon_vma) {
->  		walk_page_range_vma(vma, start, end, &swapin_walk_ops, vma);
->  		lru_add_drain(); /* Push any new pages onto the LRU now */
-> -		return 0;
->  	}
-> +	if (!file)
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 8b0c2c735d3d..09390e51432f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7164,6 +7164,11 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>  	bool writable;
+>  	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
+>  
+> +	if (len <= 0)
 > +		return 0;
-> 
-LGTM
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Why is that required? Why would it be valid to call this function with a size of 0?
+
+> +
+
+We should add a comment here explaining the situation:
+
+/*
+ * Limit access to one page at a time, as that's what follow_pfnmap_start()
+ * guarantees; expect the caller to retry to read larger ranges.
+ */
+
+> +	len = min_t(int, len, PAGE_SIZE - offset);
+
+Do we really need the "min_t" here? (can't we use min?)
+
+> +
+>  retry:
+>  	if (follow_pfnmap_start(&args))
+>  		return -EINVAL;
+> @@ -7175,7 +7180,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>  	if ((write & FOLL_WRITE) && !writable)
+>  		return -EINVAL;
+>  
+> -	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
+> +	maddr = ioremap_prot(phys_addr, PAGE_SIZE, prot);
+>  	if (!maddr)
+>  		return -ENOMEM;
+>  
+> @@ -7183,7 +7188,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>  		goto out_unmap;
+>  
+>  	if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
+> -	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
+> +	    (phys_addr != ((resource_size_t)args.pfn << PAGE_SHIFT)) ||
+>  	    (writable != args.writable)) {
+>  		follow_pfnmap_end(&args);
+>  		iounmap(maddr);
+> @@ -7254,7 +7259,8 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  #ifdef CONFIG_HAVE_IOREMAP_PROT
+>  			if (vma->vm_ops && vma->vm_ops->access)
+>  				bytes = vma->vm_ops->access(vma, addr, buf,
+> -							    len, write);
+> +							    min_t(int, len, PAGE_SIZE - offset_in_page(addr)),
+
+Why isn't it sufficient to cap in generic_access_phys() ?
+
 
 -- 
 Cheers,
