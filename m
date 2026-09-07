@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F25BC79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08DC8C79FA7
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:24:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDA206B00AF; Mon,  7 Sep 2026 06:24:32 -0400 (EDT)
+	id 7BA626B00B1; Mon,  7 Sep 2026 06:24:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3C196B00B0; Mon,  7 Sep 2026 06:24:32 -0400 (EDT)
+	id 745936B00B2; Mon,  7 Sep 2026 06:24:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DC436B00B1; Mon,  7 Sep 2026 06:24:32 -0400 (EDT)
+	id 5BD996B00B3; Mon,  7 Sep 2026 06:24:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE396B00AF
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:24:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC596C06D1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:31 +0000 (UTC)
-X-FDA: 85186581942.07.549D8C8
-Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 49C5040006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jXPzfFxX;
-	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.39 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B4596B00B1
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:24:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1212806B3
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:34 +0000 (UTC)
+X-FDA: 85186582068.03.58132B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EF8AB18000B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:24:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TL/JmbwP";
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788776670;
+	s=arc-20220608; t=1788776672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qdrm4DNBYm5dX7L6mU3n6kjCzAA9iq8Muamy4PiEFn8=;
-	b=bOncWW4XGKy8Fn4J7BAjyysQpaxLCJ7b03BH62GSUklLisQ/YlEp/Rj4nbKkffRXamYC/n
-	0DJS0Z+d3u+dJss0fqZNY0rF28iKfeuhv18dsOaqTxRG0QjcQKQZGFfb4No+FyGHzJvOlU
-	fIoB/p0MHMpBg4nKcws+Jc1cGqrmKzk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788776670;
-	b=Ia+dKH0VXlexyma3pcXBdldQsmMbgzyQ06iZoXI+vOy6TWuz5K37LSJuJMaak6RPu4nVbD
-	ML71HCmfBDcIgAUj41NEeeuT7Q8ZQTvoo+btt2sCR7Mp4mw94QIUeF9UgF+iS6pQEEvxck
-	Sz/zHXPjWDg43omugmFy1ErJ9Fua3cs=
+	bh=owHwZKjYQNBsdmW9cxprXhtWaMjXxhcOEf9UsPq09Zc=;
+	b=TwYwkdRu5qD1h96yUzL7mv35dEhBbTSCPhVtLCHDds7v8lwBh07vz64rGJ5g3wt+M/NBJ2
+	dcbhtFFkEcyssfAi5F0uHffb5Hau6DGGL5CCgFvOR9B4nPDfpr4+98FkKPMj122ddHR8zR
+	t0ng/ZvX78NFw1FNgwbufyFdiTSNAEY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jXPzfFxX;
-	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.39 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Qdrm4DNBYm5dX7L6mU3n6kjCzAA9iq8Muamy4PiEFn8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788776665; v=1; x=1789381465;
- b=jXPzfFxXodFwCehoxicliV7n6rXK8tL10JO3L02fST/m0SbITPVMsFqJt/5Ew+Diy0YF9swX
- LyvcK9QLMGzlnjvP4pyGEZ2TB9tZWbF7uJjRGRHogD6/4UgJ7dYgzPY3XXtlCW+3qbXDG17P3FK
- +CE472NHNPt7+m/y2R31wvR8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 06a3db8f22e82ea6;
-	Mon, 07 Sep 2026 10:24:25 +0000
-X-Mizu-Trace-ID: 06a3db8f22e82ea6
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	changyuanl@google.com,
-	akpm@linux-foundation.org,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Kexin Liu <liukexin@kylinos.cn>,
-	guodongtai@kylinos.cn,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] liveupdate: kho: calculate per-node scratch sizes before allocation
-Date: Mon,  7 Sep 2026 18:24:14 +0800
-Message-ID: <20260907102414.18958-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ap3IFd2FVvfKkHkV@kernel.org>
-References: <20260904025101.9959-1-dongtai.guo@linux.dev> <ap3IFd2FVvfKkHkV@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TL/JmbwP";
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788776673;
+	b=BZjxK6GcJug1EpUAUQsBsS/q48/FMMN1VpCSpm05grix0tO/uKhDlEe9GivdKXeEaKMChv
+	dG7jQ4MLFbuxc73vJ4PnbwRy8ND9FlYhaBi7nf1Om6zXObkwKjJBsej1W+19B2Od+U0sT7
+	tH7A4t7oFjgodV5L4TtoVS1pZctR4MY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D23160D8D;
+	Mon,  7 Sep 2026 10:24:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2721F00A3F;
+	Mon,  7 Sep 2026 10:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788776672;
+	bh=owHwZKjYQNBsdmW9cxprXhtWaMjXxhcOEf9UsPq09Zc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=TL/JmbwP1pZl9GSwEJwmvn24ao2aheHc7bJv5s2IshIbPh1MQB/NdU0L4gfFarRX2
+	 lNXJmprvh/3VECTEXa1m1TvtgDks8/LJxqDhwz7fhgTeygbWLnD2PWJ5Iz6hQmv3IF
+	 IYc/0ddIHeu89RZTebsq1YkUcgQA/PH1tiQEmfuffLfXFeJxeD3rdc09oGtE7vJ8y3
+	 1+bLY3jqAvOaEMObSG8ndYCTKMd+ER0wSeZ1MddZgQx2mIl7FOL9kBLAo+3hxeU92J
+	 HR0Enzt20v2LPipI6Gozf4Jo6exwgXtvcvmTGWL5WE7DXLer6R+B9OJmKi59mATpAb
+	 iWbc4mifNrExA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Mon, 07 Sep 2026 13:23:53 +0300
+Subject: [PATCH 12/13] s390/qdio_setup: Use kzalloc() for the SSQD request
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y9fjwszccteti485e8nan7ha311ti5tf
-X-Rspamd-Queue-Id: 49C5040006
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260907-s390-cio-ready-v1-12-ca7f39806234@kernel.org>
+References: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
+In-Reply-To: <20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Mike Rapoport <rppt@kernel.org>, 
+ Peter Oberparleiter <oberpar@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Vineeth Vijayan <vneethv@linux.ibm.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: uzud3k1tfea1a96hg3uzbu784ssaassw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EF8AB18000B
 X-Rspam-User: 
-X-HE-Tag: 1788776668-769067
-X-HE-Meta: U2FsdGVkX1/vaP0cgowtOzx6CUMKxfC3/qKtND91BPoO9rYqKXXuxgPH6UV8dgjrIxW7QIe+j5liwy9DLtrpWskSoiOCSvdqFzIUFVw01JPCuijQs8V7eEolyfyWNuAOdYw+xQfigO6bHukDcpx9uSDSTWiUoPS/XdxhFWloFOYT1ySqCVmLUHkHtm2sJTp2DAOkBMiTwjBUb3apVMcAOcOXwyvkflZ5+io/oHTzrb71N2sR3gBwReQGwvYXd5Zvnf4Ls0KLI5ZaHHgXroy+0NbQBwd+9FElOSrX42M3g+77bm2LY66/TxSo+ubN8oag6y7R326QmehidCaotfYpSktFPq9zuU1GMYPh+j48Hz05/gZ1uQXsX+P1YcIPmhfhG6vOCiaoc+KTvtzuRIGnew24mNLHppBx8Km2q6bdaoxYsJmrQCQ4wEAq4uXw95kMuWCshPfGSE2gqX2V1wanBMX+auwUQSs6VdmwZjaa9j+GaEjLvYoKTscp9WC3EZsSODSSoRVrYMMifIbnwT9xjThTGn/ku1s3oK+tyQzjmGSPhRa47KNksjUrg2BbeYFyuP6oK+Aa9oybGrTb3bV0ulGQkcuOYsoEbJwqoV1oKLmS9jR3EvEhP70PDejq5pSZf8wKKcDGrXignOgBBlEBUHRuFmQf6ut7ArJamjor5XvrmRYYpBj5gfUBt8RNYeHO/vK+nTNVaV0IGLkEV3RWDGlg2rZ0lJIgzN5v8ywXjlLJLNXGbui2T27jweg5cnUvAs14qHOp2hu4dRdiJatrwAIY3uQTIxTgkTtW3CWFbo0IlGPyVyv6+cPVAGi6ci/bMXRfiMycLsHdnfcnBIb5LZ4Ih4GBkh9YjRbEW/8wxcI+Y/migcwceLvh0WhBmjMWLlqRAYYv4vN1KP+wDb6xIPwn6cnmR5AnceXwFxhhTN7fygzZTELOwj4rchFWBcEieiyUyArgwBpwVtFn255
- fJtXIA8U
- bkKqgN4bx2c6IwKnJOnsRiTgliCVpMTb8I6CQ7TNNS4JNa57jHlVMyW3Qsg97jlH1zgX2GK7f1qECTTv7abz+onAySDMEuUOtHGGGumEpWzfaCVozw2a69kO5QqmfL7j7QqQ8XzXGWwk8B3DeHYu5MUVt3a2cbuwTn9FPOnUrczwL7Xzhe0i+E5J4vpT0dNYJbnuNVDbrDC/b5La790lEBcbgiaHfs2I1YWDFdwe3CKk+/8Pnyxgcp2knkDBAHgJjFdVv1xLCgdDt6C8eeSVIp9Cgaw==
+X-HE-Tag: 1788776672-711607
+X-HE-Meta: U2FsdGVkX1+6/Y6Hv3cKLlia5zL0K3cU39ofkA8Mdin3C5B35SenFZDHoHT2MIoONq+t81bBHxOA+48Y+DUF3KQluc+y6ADQk4YAkNau3ZMXVhrGhJt5gD7J74gRyuZInTZWw9duw6zhCGPaNhiRATrxPdETDuCGfQefR5/iGOwH8rpFm0Nju4RPZuCQ0khdCQ2xy9arKL4mfqX4NjT5BCJXuMXHPZURTsTa/CYCPyQIE8dCowWBiVFsRRWR4Dzwz3K+f0HjkiY+Y7unx6fKXJrOfVvlCg2azILCW24mfHPaS9DTLbQdEJSqFPFtNW2KeIPkI7G9InhLr/K/BOzESTlYL9pwKxSvg9gtxizJGIPRGh9OORPBiAJpShV6DjqRuCOSbckqFIQ64mJQY9KR8++EJawLO5aiuIvCJtU9NtMRJfpMBB76L1pVUlH9nZ/tfKSE7W3s4VEeRVWWfS3GevYJ7GnRNVSipWFf0lBU4qM5PR/7BtgMkDSokINiHV8y5veGqSXh2ArOVw+VQNZEyV6nT7W7orAVfBx4MDp6jLpHdusfsmlOiBUzmDS/G0VYd9032INevWm1gHNuDj5odQA7aYGQLsY/munsWGs36RBcydjbgpg4NXNVYeHCxAsScnX21iI8C4H+mwzu93x7Fc5G+M0xrO2vEcjq0Tszjl0ItwcNY14uTSdvXQlWsOLDZyYViTUhSMlXWsfqu2pdonZqH2M9DWr9ixNs/ZwXZtJ/0MAg1C6AiNRPn7MTZSFWnejj+00eEHh+pYQSe8gwZ63wl8R3jGjd1ucK0tvMj0Kcb06lVfKV35YTBDZI2C/df5eyYexpdLQwxfYr9B1NawZyE2JpQLpWnOmiwW3KtIE1exo3T9z023fqKrGnpee5fbOJCLX6CDoL9y3BIWckoMoAURkkaglPnV86jQo8FtDx32GNFHmwYbPHhYsQ3dg/CD7a/2EgP4zhPKJ0DVk
+ /9yW/wl7
+ d+Xvx7EXat5fW9cHqNTLQagzeGPP2L6jJz2ac9OJSnG6T/1qcKDSuOB8YIWwZkrfDU/2tLtqMcFYpFKQrS5xbBUHZ3ZqchYu5x7lVlxyHhPsheFD32UjtifHdRRJ13GGLjmqoKJn2qB7zN00SXZNEO/LItzN/OoHd9ExCw78TFtpDF5vCavBXRZk1iYCI2kTizYWZzf1zKG6rUOaKvr/ufBRYq6AhOeO5yNFPTPd2NrWiahJF3sM6QSYmCeL78/tpdtC1ejIu5ptIEf2MOFU9Ne/HaNcZYuv2I/J91jLR2bvgQ4JQsyelTkKyzxXAEFKg+CGS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +98,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+qdio_setup_get_ssqd() allocates the request block for the Store
+Subchannel QDIO Data (SSQD) CHSC command.
 
-> This reads as LLM-generated text. Please add LLM attribution as per
->
-> https://docs.kernel.org/process/coding-assistants.html#attribution
+This memory can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-I'll add the Assisted-by tag.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-> Can't we just calculated all the sizes first and than do the allocations?
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-Yes, I'll rework this to calculate all scratch sizes together before
-allocating the scratch areas.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-Adding Sourabh to Cc, since this relates to the scratch-sizing discussion
-in the PowerPC KHO thread.
+Replace use of __get_free_page() with kzalloc() and free_page() with
+kfree().
 
-Sourabh, this patch prevents newly allocated scratch areas from being
-counted in the per-node baseline. It does not address the overlap between
-global and per-node accounting. Could you review this approach as well?
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ drivers/s390/cio/qdio_setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-George
+diff --git a/drivers/s390/cio/qdio_setup.c b/drivers/s390/cio/qdio_setup.c
+index 7ca8f61a2387b..c0215a7d29a81 100644
+--- a/drivers/s390/cio/qdio_setup.c
++++ b/drivers/s390/cio/qdio_setup.c
+@@ -249,7 +249,7 @@ int qdio_setup_get_ssqd(struct qdio_irq *irq_ptr,
+ 
+ 	DBF_EVENT("getssqd:%4x", schid->sch_no);
+ 	if (!irq_ptr) {
+-		ssqd = (struct chsc_ssqd_area *)__get_free_page(GFP_KERNEL);
++		ssqd = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 		if (!ssqd)
+ 			return -ENOMEM;
+ 	} else {
+@@ -270,7 +270,7 @@ int qdio_setup_get_ssqd(struct qdio_irq *irq_ptr,
+ 
+ out:
+ 	if (!irq_ptr)
+-		free_page((unsigned long)ssqd);
++		kfree(ssqd);
+ 
+ 	return rc;
+ }
+
+-- 
+2.53.0
+
 
