@@ -4,107 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A789EC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1174C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 17:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2E86B008A; Mon,  7 Sep 2026 13:33:26 -0400 (EDT)
+	id 879EE6B008C; Mon,  7 Sep 2026 13:38:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674796B008C; Mon,  7 Sep 2026 13:33:26 -0400 (EDT)
+	id 82B126B0092; Mon,  7 Sep 2026 13:38:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562226B0093; Mon,  7 Sep 2026 13:33:26 -0400 (EDT)
+	id 741156B0093; Mon,  7 Sep 2026 13:38:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F2F56B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:33:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6FAAA41D9
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:33:25 +0000 (UTC)
-X-FDA: 85187662770.21.2D35117
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0975C14000E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:33:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FSB8dMCs;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5173C6B008C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:38:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D97F2C0280
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:38:31 +0000 (UTC)
+X-FDA: 85187675622.12.E530B07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 31F85180007
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 17:38:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VzMW3Iuw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788802404;
+	s=arc-20220608; t=1788802710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yrolGENT0USe5XNn+JkmDXEFy0r+GXBioZLVApy6mzs=;
-	b=3SBoso8PYtxqtWhZtUM1mW/yB3yPxQx/k1IZz9gZGL7axkpzg9L3IKMl1c89MKp6vU3GUT
-	4Gv18FrJdnXhPM2hYTFraS6XsIxF5Qc3lZBvUprY2mLc+d665a88nMVVu95rs1k7fquhdt
-	wRyxzGx4zmTe8EoJOomGPssWGPmv15s=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JYtjFp3g5gdPUFznyNGIYCvkhRU+oOhyCAUXnEZTtCo=;
+	b=aYZ/0ZlVg71ZasFhY5rDUHK0msfGkogkkmiIr8shdAXnxUmyTZA5/pJLO80snnUkkWxk+m
+	wzULtpa+D5WWu9TwHX3WQAY3ri3TND+zZrjlTqE1KvNIIJlgwEy8fOjau6+aT5GAeCGN2f
+	+6jYuwKcXFIg3nP/QgsBXEwxVSWyd5k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788802404;
-	b=jzK0VOSwsyWB435pBDY49Xy9Ae5v9H9tzLEFpH7QY56J8kYyiHQuFHnvWcw9v39xfuvdNZ
-	Y1jAkDwRAIH9nvWTSpzVzJgFNGkvFqx8v0dMpUVWtKCI5ywDzTbfVFyAot+/6tfOIzbYSU
-	YkGZ0qTMXuJjQonVTnHbuHTWEH63cCw=
+	t=1788802710;
+	b=ANh0JNUPyUejV6ifmLKr3JaY8KauXcVZvzEgeYZDHsT46IqW6Jwv5Ybor293tqW7NkB/Re
+	x+K1YfzTctj5xPv1XFcexhdeUpTkKw4q8meJ9dZ0QZLerD6wlebMgSwwHIQCDyr8NmWErW
+	YT+il3YH+4AAydbkFkm8nCSIWLQKbX0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FSB8dMCs;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VzMW3Iuw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92EC2601DE;
-	Mon,  7 Sep 2026 17:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169781F00A3A;
-	Mon,  7 Sep 2026 17:33:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 93E2B41B3A;
+	Mon,  7 Sep 2026 17:38:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BE21F00A3A;
+	Mon,  7 Sep 2026 17:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788802403;
-	bh=yrolGENT0USe5XNn+JkmDXEFy0r+GXBioZLVApy6mzs=;
-	h=From:Date:Subject:To:Cc;
-	b=FSB8dMCsmsGaYWSPpFiysguN/Ap562nxVy2Bo53ltfSz/PX0oLvPdNinem2ITEKaL
-	 jBUs4aLDVa+eCCH64gKFzT3+/G3lvjDhQZgTfR+enAZQsN9LIJ0/zr+r3VU6x20Mvh
-	 oVpwgk67cKT/3hBiLKWfdqn3M0phYLFBAvc1gO2kCxk8MweKJarGm6ISxO8qpr0e9z
-	 9B4hL7Ccy95egipxuda1eDFdD79eAn0eJX/TL6ALyHU7Ac44u0AvNxEIIlrWvVHCa+
-	 3UncHhyDGkyWgZicB8FJ3UGXTEv222ss6/lvdvFIH25xJ4ysY0XVOdZ51qc6gsbzcA
-	 reCd5naIPLnzQ==
+	s=k20260515; t=1788802708;
+	bh=JYtjFp3g5gdPUFznyNGIYCvkhRU+oOhyCAUXnEZTtCo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VzMW3IuwBAg0OTqQvmPn74oP0XsjLtq/qrNYYzxcb8nBQieMLuuNv34LCDXblb6dd
+	 h/+fzPZzyMdUTiZvrTV8VGZ55uTkC/1tZk9TrYYk3rOSFoDASk6wZWlVmt5cmNApAH
+	 JLSj1hCAl7D4YduZxjCE7Epw5GcJu5YyF2NN3i5OXGrp9JirRJ5HoT6KnWSvGX7AYZ
+	 aja9CsaKR6GbO/BpEntARV7zMTsVDyD6NbjUsewLkDd7tHNBbEaUko7Onb6f6mxCF2
+	 Zh2gq2ncPA/L5Z3K0jmjY+aO+R+7FbIyYg4erGHvbfD4HCGGwEjQHZXd5VaYoWRmZC
+	 Kj70uAvm9nifQ==
+Date: Mon, 7 Sep 2026 18:38:21 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 07 Sep 2026 18:33:13 +0100
-Subject: [PATCH v2] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 3/6] mm/vma: only permit MAP_PRIVATE /dev/zero to be
+ mapped anonymous
+Message-ID: <ap71GOPAeKHfHp5J@gremlin>
+References: <20260902-map-private-dev-zero-v1-0-a578c730cec7@kernel.org>
+ <20260902-map-private-dev-zero-v1-3-a578c730cec7@kernel.org>
+ <d6dc52e3-b27d-4663-848c-a2f270fb4c5d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-hugepfn-allowable-orders-v2-1-b89728339148@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0Jm7RhaRAor72FYYJlCY9OSqaKG9
- O5WTuDyveS/v0EkthShKzZgWm20wWeQhwL0PPiJ0I6ZQZbyXCrZ4PycaDEeB+fCa7g5wsAjcUR
- jKlkZVRtdN5DnC5Ox7z197TPPNj4Cf/anVfzsH9FVoMD2pESrlSobrS53Yk/uGHiCPqX0Be7yW
- mHBAAAA
-X-Change-ID: 20260827-hugepfn-allowable-orders-ff323f85fc57
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Cedric Le Goater <clg@redhat.com>, Saravanan D <saravanand@crusoe.ai>, 
- stable@vger.kernel.org, SJ Park <sj@kernel.org>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6275; i=ljs@kernel.org;
- h=from:subject:message-id; bh=EbkfQrduiBo4n56BhART5zdrKo//tuFGC85yYHYENTM=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLmfY3j47gkEcCUGts4/8mlzNPL4s5OcJq5U6/UQ3Gp5
- +Hi3zqcHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjI/J2MDI0GE1X1mvW7j7pM
- fM7ImDxzo8bHe+EWRVyrTdYu9p2wn4uR4a6+zyYj66B4oRvd/OfzjwvNOr560dQY77OFKWk6ifp
- 83AA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d6dc52e3-b27d-4663-848c-a2f270fb4c5d@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 31F85180007
+X-Stat-Signature: pp7dr63n9h5yh1cku9y1wdhbnwerdxxq
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0975C14000E
-X-Stat-Signature: bhs1axxksggh6rbcpp6xtmr6aykywkt5
-X-HE-Tag: 1788802403-44652
-X-HE-Meta: U2FsdGVkX1/CAsxN77+JzBpjSBKAP88/HA82PDRCS0KWeU5lUN514qjdfEJvuZCybPfHsV1Dg+PGoWgh84NoAIWamgySk4psxpn4cRZpcv0QMZpMUIosexDw2BE3cSensWhp79sZZ/uKib6khMXEec6ZnD1jG2d2N/Zu3Ox3ZvHUi6ikJbo9Wec08tLGcFpvoq7SdRPD2ot1XLoM+JEW3cnocYsFTLpCbBS7qxh9J/haNzFYL9Xmex0cOgjm94hVKP0qk7tOJVAzliN18CiPIG4/uX3jsl39LLhOZik6TJhyqhdYCUmnKUwz1CjCQxHS2ry7fNeXmMThVQvQr5fpurgwAzzo0mPmgPHb52/6Li4iKwWYxgvz0FbLsPkLe6ftTWqWnAwAAbkhOle60SjikFTkXcJ2e5ndHjpHwJ9KcmBTZpEcjKePrgVwNlp3Dw4xsZ2PXFY9olJvohW8xTy12TczCC2q8aJKqe88TI88o4Jko7FVfz6T1vs+ZxDcZBM2yB0DatXgXW9JWSwPq34OwRTCeswZK89TUu1u7nIGkX3iZqzA9PFpl9MNCmC048WylqljKsIxHjzPesmM3JPfU3Tlm4peMA3fgcIvKm/8cgXfBbLTY2YMWFQ5/Dsgcn6ZRtfZpPBiGpifrBzRsGOiO8ck7QEhADKUVXT4zW8JMIydYP0gzRlUCVK8op+OBrc9Ek17RGgy/ApUcAE8dji3BvI8Ph4pNSyMwG7G2cOAscab3RXrtpPDpTZbqvKxWS3+b80eN31eDEt6EH9oX+ie3x06bdfAu1hvdgcILMhnEm4TnaX0wTDvjf/Hs8EP23LBF82oefD19eDjcB6/LG34pqCjPghh+KuUAfEoNzHnox6qgvodAVTCKN4lEzjqNnrdQQQaMMn/v2L30GBM+Hip+bjXDBvW5EtWdpMzpM2q1G/7K+rpqzBSVzWpPxJzlJ3d0qCh2nzxAh8jzV07IrE
- cD6j3+yE
- p2RHxIoLm7ApzBh9MoBiWzj3vSpRF+2+fnIoctXRpLI75qQzMQKkXy7YckFw9G128/ooTRQD8G5vtqKvr/LiVXYiahUag7wW0zai/0MxanvZyzvN3JLQpnKutx0aVUgXabAd3+KpG/QNzTZNvB8aUw/V6C3AbkvCh6swGDKjgVIitZxS3DLl8k8SDsd64LkgarW7vXj5FtGVEEIpOidHZD50eYosg+NTEoHNSWmMGL0PqJUHCszCbnz7fsCYODSFCzqjWYahXR+QcVEG9zm3LDkskpVblfd+cVRiWATI9+9vJ628jw+TsCtm1yvY9QH06EHnnmsA/pHljgInYCBX9PzvBcz9lpg7w1G04c4ll8/8QES4=
+X-HE-Tag: 1788802710-163481
+X-HE-Meta: U2FsdGVkX1+NhaTwzaYC6FI5xkfiaV0DAHJ0NXslfkZclU5kWDhY+uMgJCLrYxDFfuiSHTzoLnvb74WrL0jQLfTX6QrdiSnoa4aBtA019n22DHYY9Tbg4+cdIABu3mCkADzwwI+yL9Cxg7+8Bx3gfqi+jokwmlDPWjlWHELtLFHDL13h0c2OTjSuztOpm4tRrJ+37jkOArCn7uY9EC2DnsQz+o+7cBIyXjk7cavYU36+qjjfG0o26uoCSJrygJnYklFQ3gbbO31iJrjLXZhzwg5P4v6Dv8oiF2c/XUSEqA7UOH/ODKbrUjEb3qNp3f5PJg/8OPRXUG7n42oaqevwa9HfYnGpXANXtZL7AWIV3gHWIULQSYlpB076o4APs3FEVlUjN/0IJuQk1Ox8wc+GaXU0v9Z6+t+x1TDG+GFtbGp4Xne2bqa84mYrN/IEZTtwTHka4YM84iJc3r9HO2uO24N0NRq+Uj6Dz9OEykKcCPlpWe2WbTv4q5y8jDZqjWEYTbfzMq5XIqL8fp6ZCMW9Wpw0AK0c999ev7ywi4qw/pZzaGECEYWC4NT+5OgTrInAcSkBmNXVFZHQdZoYOsp0pWJddvyL4LTmN4KVzOJrL85xRES7UeRJN5T2hVTy1O+QrlxYJwg3Qo+hzNF7UmioGofZm+PgRLBWbrOfNLrg4hlECW/CSlkZjTmAdAq8Uv8fxDPpdlmQJGLZuuRMzDr7rSjOan39NTI41bR0ECkSKtMLJ8E1uoRyHFHZWW2ZjnIccKFdm0iGqEwE6C1yPMBgtXE+EExgmt+YuaHsD4UCUbgpTIJsOR+RH2L391Ei47bTBGErGZpp5mQHPUshvyj/0bEkIrOB2yLchK/q4sMd5MCW3pKdNDloq/Bx7b/wydqrhCUxsog5DkonzByN+HwcGLzYnHEBh+zQIBy+UAiOP+Bo/QRh5xWKeIuMRvKlle2Rga82AAW1jDMKYhyexbe
+ YtIrsKYh
+ e+w+1UjkRLmLW6cqQrf7mP216+gm3bIM3z8oW6T794Je1pV4EDXjz48aBjvannQkV3R4I4H4FLrrDzQDzCAly/xt9sJaHgeXwFAc7LanBYNYoOu1FPD7NxuM8zh8SKhHOuJ0RHpHnipQLChLqgBeOq3Nb+w9MELrB7by7ydrWO4kKp/Nq+e8Ngp/G44wNG1fC9Hb8121vy5vJXqne8vjJSQyg4mHYDahlZkvQrnMJ5YvoB6gD6OJIGxx1u8xvt2vzZhE7TepQCD13jaxdi2ZuBobQ/mkV4ZSw+kbrHg7KMxrd+7k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,186 +100,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
-confusingly only control the behaviour of THP in some instances.
+On Mon, Sep 07, 2026 at 06:56:51PM +0200, David Hildenbrand (Arm) wrote:
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index 35e7a64855fa..4b8d430d9619 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -2621,6 +2621,19 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+> >  	return 0;
+> >  }
+> >
+> > +static bool map_is_private(const struct mmap_state *map)
+> > +{
+> > +	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
+> > +}
+> > +
+> > +static bool map_is_anon(const struct mmap_state *map)
+>
+> I was wondering whether we should call this "map_is_private_anon", due to
+> MAP_ANON|MAP_SHARED. But looking at __mmap_new_vma(), the existing "is_anon" is
+> also limited to MAP_ANON|MAP_PRIVATE.
 
-They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
+A 'shared anon' mapping is not anon at all, and that's handled early in
+do_mmap().
 
-Long-term, THP is predicated upon compaction being able to obtain large
-folios to populate THP ranges.
+I wish that we didn't confuse people by allowing MAP_SHARED | MAP_ANON as a
+shorthand but there we are.
 
-However, vm_normal_folio() returns NULL for PFN map mappings, thus their
-reference count is maintained by the driver, not core mm.
+So I don't like to make that distinction on the basis that a 'shared
+anon' mapping isn't something that exists :)
 
-As a consequence, the folios are not subject to reclaim nor compaction, so
-are not truly part of the THP mechanism at all.
+And then imagine vma_is_private_anonymous() vs. vma_is_anonymous() etc. It would
+get silly, quick...
 
-However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-introduced the ability to establish huge PFN maps, they have been subject
-to THP tuneables.
+>
+> > +{
+> > +	if (!map_is_private(map))
+> > +		return false;
+> > +
+> > +	return !map->file || file_is_dev_zero(map->file);
+> > +}
+> > +
+> >  /*
+> >   * __mmap_new_vma() - Allocate a new VMA for the region, as merging was not
+> >   * possible.
+> > @@ -2634,8 +2647,7 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+> >  static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
+> >  	struct mmap_action *action)
+> >  {
+> > -	const bool is_anon = !map->file &&
+> > -		!vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
+> > +	const bool is_anon = map_is_anon(map);
+> >  	struct vma_iterator *vmi = map->vmi;
+> >  	int error = 0;
+> >  	struct vm_area_struct *vma;
+> > @@ -2651,7 +2663,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
+> >
+> >  	vma_iter_config(vmi, map->addr, map->end);
+> >
+> > -	if (is_anon)
+> > +	if (is_anon && !map->file)
+> >  		vma_set_anonymous(vma);
+> >
+> >  	vma_set_range(vma, map->addr, map->end, map->pgoff, map->anon_pgoff);
+> > @@ -2669,6 +2681,10 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
+> >  	else if (!is_anon)
+> >  		error = shmem_zero_setup(vma);
+> >
+> > +	/* Temporary MAP_PRIVATE-/dev/zero workaround. */
+> > +	if (is_anon && map->file)
+> > +		vma_set_anonymous(vma);
+> > +
+> >  	if (error)
+> >  		goto free_iter_vma;
+> >
+> > @@ -2777,6 +2793,10 @@ static int call_mmap_prepare(struct mmap_state *map,
+> >  	if (err)
+> >  		return err;
+> >
+> > +	/* Hooks cannot mark themselves anonymous. */
+>
+> I guess this comment will be stale soon (after #4 where you drop the
+> set_anonymous part).
 
-This is incorrect - if a huge PFN map is available (defined by
-vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
-should be mapped huge upon fault-in.
+Not really, it's there to catch drivers doing something silly/broken (likely by
+mistake).
 
-Correct this by explicitly checking for this while ensuring that smaps
-continues to accurately report THPeligible statistics.
+I want to catch that early. I have a 36 patch series that extends this kind of
+idea... a lot :)
 
-While here, abstract the entire file-backed THP check in
-vma_can_map_huge_file(), with sensible separation of logic into helper
-functions.
+>
+> Should it be
+>
+> "vm_ops are strictly required with mmap_prepare"
+>
+> or sth like that?
 
-Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
-maps of shmem folios, however they are marked unevictable in
-drm_gem_get_pages(), and in any case would fail the reference check in
-__remove_mapping() even if they weren't.
+Well that's confusing though, because desc->vm_ops defaults to &dummy_vma_ops,
+and we absolutely do not require drivers to set vm_ops at all.
 
-Failing to map huge PFN maps has resulted in significant real-world
-performance degradation, see links for details.
+And as far as the driver is concerned maybe it's NULL? They maybe don't realise
+:)
 
-Reported-by: Cedric Le Goater <clg@redhat.com>
-Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
-Reported-by: Saravanan D <saravanand@crusoe.ai>
-Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
-Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Tested-by: Saravanan D <saravanand@crusoe.ai>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
-v2:
-- Added tags thanks everybody!
-- Updated to use vma_file_*() naming as per Zi.
-- Also updated vma_can_map_huge_file() to vma_file_can_map_huge() as per
-  David.
+So the idea is to say don't allow them to try to do something they can't do.
 
-v1:
-https://lore.kernel.org/r/20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org
----
- mm/huge_memory.c | 86 +++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 64 insertions(+), 22 deletions(-)
+>
+> > +	if (!desc->vm_ops)
+> > +		return -EINVAL;
+> > +
+> >  	err = call_action_prepare(map, desc);
+> >  	if (err)
+> >  		return err;
+> > @@ -2799,10 +2819,7 @@ static int call_mmap_prepare(struct mmap_state *map,
+> >  static void set_vma_user_defined_fields(struct vm_area_struct *vma,
+> >  		struct mmap_state *map)
+> >  {
+> > -	if (map->vm_ops)
+> > -		vma->vm_ops = map->vm_ops;
+> > -	else	/* Only /dev/zero should do this. */
+> > -		vma_set_anonymous(vma);
+> > +	vma->vm_ops = map->vm_ops;
+> >  	vma->vm_private_data = map->vm_private_data;
+> >  }
+> >
+> > @@ -2882,7 +2899,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+> >  		allocated_new = true;
+> >  	}
+> >
+> > -	if (have_mmap_prepare)
+> > +	if (have_mmap_prepare && !map_is_anon(&map))
+> >  		set_vma_user_defined_fields(vma, &map);
+>
+> Ah, we have mmap_zero_prepare() for handling the shmem_zero_setup_desc(). I was
+> just about to ask whether we can just get rid of this here.
+>
+>
+> But, hold on, do we now even need that? Could core-mm now take care of that as
+> well, and we could just remove mmap_zero_prepare() entirely?
+>
+> That is, we'd make shmem_zero_setup() in __mmap_new_vma() take care of this?
+> Then we might not even need shmem_zero_setup_desc() anymore.
+>
+> Maybe harder than it sounds at first.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index afbb5974bd22..75c204af40cb 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -92,7 +92,7 @@ unsigned long huge_anon_orders_madvise __read_mostly;
- unsigned long huge_anon_orders_inherit __read_mostly;
- static bool anon_orders_configured __initdata;
- 
--static inline bool file_thp_enabled(struct vm_area_struct *vma)
-+static inline bool file_thp_enabled(const struct vm_area_struct *vma)
- {
- 	struct inode *inode;
- 
-@@ -118,6 +118,67 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
- 	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
- }
- 
-+static bool vma_file_bypass_thp_tuneables(const struct vm_area_struct *vma,
-+		enum tva_type type)
-+{
-+	const bool has_huge_fault = vma->vm_ops->huge_fault;
-+
-+	/* MADV_COLLAPSE ignores tuneables. */
-+	if (type == TVA_FORCED_COLLAPSE)
-+		return true;
-+	/* Huge PFN mappings are uncompactable so the policy doesn't apply. */
-+	if (vma_test(vma, VMA_PFNMAP_BIT) && has_huge_fault)
-+		return true;
-+	return false;
-+}
-+
-+static bool vma_file_allow_thp_tuneables(vm_flags_t vm_flags)
-+{
-+	/* THP=always? */
-+	if (hugepage_global_always())
-+		return true;
-+	/* THP=madvise and marked MADV_HUGEPAGE? */
-+	if (hugepage_global_enabled() && (vm_flags & VM_HUGEPAGE))
-+		return true;
-+	return false;
-+}
-+
-+static bool vma_file_check_thp_tuneables(const struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, enum tva_type type)
-+{
-+	return vma_file_bypass_thp_tuneables(vma, type) ||
-+		vma_file_allow_thp_tuneables(vm_flags);
-+}
-+
-+static bool vma_file_can_map_huge(const struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, enum tva_type type)
-+{
-+	const bool has_huge_fault = vma->vm_ops->huge_fault;
-+
-+	/*
-+	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-+	 * were already handled in thp_vma_allowable_orders().
-+	 */
-+	if (!vma_file_check_thp_tuneables(vma, vm_flags, type))
-+		return false;
-+
-+	switch (type) {
-+	case TVA_PAGEFAULT:
-+		/*
-+		 * Trust that ->huge_fault() handlers know what they are doing
-+		 * in fault path.
-+		 */
-+		return has_huge_fault;
-+	case TVA_SMAPS:
-+		if (has_huge_fault)
-+			return true;
-+		fallthrough;
-+	default:
-+		/* Only regular file is valid in collapse path. */
-+		return file_thp_enabled(vma);
-+	}
-+}
-+
- unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 					 vm_flags_t vm_flags,
- 					 enum tva_type type,
-@@ -190,27 +251,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 						   vma, vma_start_pgoff(vma), 0,
- 						   forced_collapse);
- 
--	if (!vma_is_anonymous(vma)) {
--		/*
--		 * Enforce THP collapse requirements as necessary. Anonymous vmas
--		 * were already handled in thp_vma_allowable_orders().
--		 */
--		if (!forced_collapse &&
--		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
--						    !hugepage_global_always())))
--			return 0;
--
--		/*
--		 * Trust that ->huge_fault() handlers know what they are doing
--		 * in fault path.
--		 */
--		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
--			return orders;
--		/* Only regular file is valid in collapse path */
--		if (((!in_pf || smaps)) && file_thp_enabled(vma))
--			return orders;
--		return 0;
--	}
-+	if (!vma_is_anonymous(vma))
-+		return vma_file_can_map_huge(vma, vm_flags, type) ? orders : 0;
- 
- 	if (vma_is_temporary_stack(vma))
- 		return 0;
+I think I'd rather that be a follow up :) this series is about eliminiating the
+one last (I hope?) corner case for anon VMAs.
 
----
-base-commit: 234e77148199ae43b83a0a03a3f481e03460a286
-change-id: 20260827-hugepfn-allowable-orders-ff323f85fc57
+>
+> --
+> Cheers,
+>
+> David
 
-Best regards,
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+--
+Cheers, Lorenzo
 
