@@ -4,114 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6272DC79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21912C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:00:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64DD76B00A9; Mon,  7 Sep 2026 06:58:18 -0400 (EDT)
+	id 3B9E66B00A6; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 625AE6B00AA; Mon,  7 Sep 2026 06:58:18 -0400 (EDT)
+	id 391916B00AA; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562766B00AB; Mon,  7 Sep 2026 06:58:18 -0400 (EDT)
+	id 27FF86B00AB; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 319516B00A9
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:58:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC304A139E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:58:17 +0000 (UTC)
-X-FDA: 85186667034.07.F7403FF
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0F0E8140005
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:58:15 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iiE7gyBZ;
-	spf=pass (imf09.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 035616B00A6
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:00:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77823120114
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:07 +0000 (UTC)
+X-FDA: 85186671654.29.1B6B955
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AA9FB180002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS1bd8l5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778696;
+	s=arc-20220608; t=1788778805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y1AN/04P+M2MfSUIh9oyME08cOW6o5tz/4VT3PS1ydI=;
-	b=41yK6ZLPXewLP0o/VJC49S2KnSUDAG3LCHs64RXcBSfKKhpet62e1krIk/EGlCK0yCmU85
-	LWmET6WJGfzZzNR/OKWSsYd8LvmTQeHiC9bslunsZpg8NNM0zLWMQBDaACmvXgYpQDiMvc
-	CVQvpKaL/uxOveAknSG+AdpQK2JUwzY=
+	bh=ZmRAQp7CT9ZcGnXRbWq2cl8HArUYmjma0K0TpVSARi0=;
+	b=KvklQxUg5JmPUSAmyU+25TdoFO6ABH0NzXUiEaVG2YuYjD+NPO1wry3tQEYjwMoQld4jx6
+	WrtebnvLWV8QZwwh9nb6bBblCwbp26nzADHyr3vjjJTa22LY2zs3M8CMzJ7fqoalSb6HIg
+	YsYBxHuulNcQ05zzs2Om3vQ3YStllv4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778696;
-	b=aCUKfVxPKClHqVyKVxIduG7K6ACOXiNuY7vrUg0FpG1l/M8+/EzqVvQ8rrocduh1eXpKIv
-	TlUaZD2fErs1LQB1GwDGCbu9SuCf6KoV9H1BNOCAw/LC6LOAMMTIpqvELYYM4QLUr7EQNb
-	SFB//abWuTn+7WdON0QoXJhPYvq9mYs=
+	t=1788778805;
+	b=adr/x6bm7SybLRXdpZuYlV0JEi7q2GeGFbQ9ad/ycLD0e0LGS92dyCd21Ie+PrVEbviel7
+	avh1+PfaPyiwjOmF+462UfQI9NunoulITAaSHylQWC3XsCUVLGhzyE+u8I527YBbY6jZ5b
+	pFRiD32RGgqGnMpE1l2249Mc+Tqd3XY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iiE7gyBZ;
-	spf=pass (imf09.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso1866062a12.2
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 03:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1788778695; x=1789383495; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y1AN/04P+M2MfSUIh9oyME08cOW6o5tz/4VT3PS1ydI=;
-        b=iiE7gyBZuPC20/8ztfQPRB+IWiFuI9C/M/0oQe4rQ9T9FVATBfzSKN2BJkhrZGGwep
-         LjAFdZJ77pev/lsw2sVCvIp0xA7tlSAdwxQDMjinP3ZHEw8kDm66SxjXbwidPj3VlO4v
-         B0crbU7FEH37uhXogycv+a84AURlydC5O/Qg4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788778695; x=1789383495;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y1AN/04P+M2MfSUIh9oyME08cOW6o5tz/4VT3PS1ydI=;
-        b=VPno+gljk7ezFse1LyJS/lnNhZ8wnhArzcb0UutNooFLFo3ivzhOFiBlpOIQkEgesz
-         ovrGUeHt2DnYCOxsqL3PPRtN5F3/upoev5x73HsK5XyeskQc6t8WSlu8pPe0zs7Fd4zp
-         z3CmZ5BUoPQZtDKAubFrDO8nb5Qu1FVtM3HhnA3cUJEvm5ZbSK1cvGe5r5HxGUSOJIAF
-         xyqch/XkOlZlZCbj78TmQdmh+HUDSpeBYp5RwE06dWgVR3ViCB7dcYIoHLQK+lbD/oiK
-         WKQJBsms/PJ95nOXYeGC3FGJ+/d7ow/g7vJ5sK3Hu/BUSDOu7jRvDGgc8VjyQ5n4jMr4
-         0IVA==
-X-Forwarded-Encrypted: i=1; AKwUvBzhKl0h07OidXc/5eoJb4jZ3uA8ybqOIl0b9tmMVAL09Bn+tpWEX7Abr/JiUNEUvUjFYbYs9Ps4Sg==@kvack.org
-X-Gm-Message-State: AFuF++mXPjszZJoMSaciKhlXPnvDKrF4SNzigB0/fo2gOyu4u6UBkRZb
-	0VNEZnaZdmShMgZqPqaG03LM9Z1U/HtfMu1rUhSao1ErlWJ5BorDg+qnceGwjTOtgQ==
-X-Gm-Gg: AYBFou2W/eeGTpB9KXuzlaZbKgrVj46jXXv/RDapyzfzN1iKaMdrvYYJbk8mAR/Rr2s
-	OlEXT4rcy/VN5tlGlQd5RPtVc6LoJxkq7c3t/aBJLcnc6yla4XhopVV0AYk8oHYCOJi6KbNWuJF
-	j4F+/5p5NTbzAh9eYIPrJeg/1hCglV7wZy1uhd2qI7c298dDjN0WbtNETXHm1jHPodXRe+8MISf
-	RNEbOoIagflU6hnVR4o10I7geItL36buSopQUSwtlDpcwD/2eyPWXwkpB2GGnwq5kZWzccZ3NQW
-	aQda+tRSvm7ZU/OfLlRzDFsCX6gttaCUlZ9dLXALyt9stnZZR428hJmF70+iqU4LsR+/P4XKmVz
-	b98xPQlpB41lodjjwvv16hvqn4H4jBX9SrvmrU4q4X1iktfJaDC+tyUUIKQixb+VWtmQm7lcT4p
-	1OsrLWMpsGqSgHW7qoYVQ4aozsPss5YtNJqLgIcv8IOrPNkcJzAgFUilFrrnjf4KtcHQ3zg7wSL
-	OvwhWG13TjBozHGs9cVEKTPgy8mqQJzZcrO2Q2zq58VCBr+zXjE1UYNDkettCc=
-X-Received: by 2002:a17:90b:4fca:b0:38e:5b59:c2ff with SMTP id 98e67ed59e1d1-39b260dd278mr33380803a91.3.1788778694774;
-        Mon, 07 Sep 2026 03:58:14 -0700 (PDT)
-Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:7fc7:d8d5:4877:bc3f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b51eb40e6sm10343714a91.16.2026.09.07.03.58.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 03:58:14 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 2/2] zsmalloc: remove old object read API
-Date: Mon,  7 Sep 2026 19:57:29 +0900
-Message-ID: <20260907105739.1793316-3-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-In-Reply-To: <20260907105739.1793316-1-senozhatsky@chromium.org>
-References: <20260907105739.1793316-1-senozhatsky@chromium.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS1bd8l5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE333601F9;
+	Mon,  7 Sep 2026 11:00:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF241F00A3A;
+	Mon,  7 Sep 2026 10:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788778804;
+	bh=ZmRAQp7CT9ZcGnXRbWq2cl8HArUYmjma0K0TpVSARi0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OS1bd8l53HBFTLeWpn+DLUZW6acFae8EN0TYc4g1vuJkfPuU9kXzmAUwy2G73YgMu
+	 9IHR/D9kde7ZJvyI1/j+ddlfwpHOagprqjMcbn4V6AAmIrEXVKq8UvBDn7qYUVILek
+	 k/e6wBruu3DFLtXzN6AUY099s9O8sTOtqYhZjwG7TOU0d5UxZeYxCCOIlqlDop5lMC
+	 dmMA3yskAPtf8fg3NkoT2yvuEpHRlfW7Ex7wUaKR3pPcwFRI6USMASdXv78Mxj106o
+	 VjPROn9VYDQQC35JrwOlEi2ke9YQJlGFiD0p1RcmJSwgRpjS35fbAz09gMTykpyXTr
+	 714lZ1wOpZxdw==
+Message-ID: <0e4edfd3-0c82-42e0-ad09-19ff8b8d1511@kernel.org>
+Date: Mon, 7 Sep 2026 12:59:57 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ze97kpx34h8f6k9e9jjk5zqwrteaq55c
-X-Rspamd-Queue-Id: 0F0E8140005
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v4 1/7] mm: Add copy_remote_mm_str()
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>, bpf@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, kpsingh@kernel.org,
+ matt@bobrowski.net, song@kernel.org, utilityemal77@gmail.com,
+ sun.jian.kdev@gmail.com, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
+References: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
+ <20260904145340.40212-2-tasos.papagiannnis@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260904145340.40212-2-tasos.papagiannnis@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AA9FB180002
+X-Stat-Signature: sxhgbbnwggugrj5gb7ehuhu141it384k
 X-Rspam-User: 
-X-HE-Tag: 1788778695-296184
-X-HE-Meta: U2FsdGVkX1/huUVothx9ENMagSRgIFkz/Wq1tL8WcpEYj/fGr1sSNlrcdFIxw3qG4H2gp4ebdEttwSbd+G4SyL+lLGkzDpWN5mvZSdp5J93QwFa8X++R0ZBMO+lI4/wt+o8PztdJ8hZReuPO4BAKVNdpPHN1g5KLOqNj0MqByXk2vJ9XryGSxuXHFd+7q50RJlrX0jryqtTfphahh7fNO4dBlpRPSjiGJQiriOW/aCLWvN9HXhLISqB22A59V1GCnPIj3xqAw4Wy25c+0+1TIzvOzSrM4ECO/A8Vz0wTtvXrwKSetUfk+hgHWODkWCYr3DGSoj8D1r68n6ejgDY8ZCXwfgDhopjuDXwwEj43U8kVetfPml3+j57AhqrUmf/VVy8Q0mmtAejdt/QFm9hM9fT9/rvlSgw7zP8DKVEf2muHvIF5kBmilGfUXZ2gLl86RWPCSBmkYubksO/TsBuBDoIGVhYXyO6hhx1M2D0A8GxEpmyZ4Itq1rt1glu32AOY25MCwsFGFZJSVEnjt4CJ1HlvDumQVqXXbwwXDk9QBs5IqxfJQj9THL+YnDiVA/w6hKiy2efGvi3IrQ9IQkeQsSmSNSwqWWRuswsUiKpbUqx2yo40E17lA1pHm8hnQ59JDXMBIAy5I2pLGDMZ9uU1zGqkTZxuPaCPtZ9dRLxrx4CRSSw7vgbf7p1TQXYWE34uuuzAHY6TCMm5ieqwaj2LIFT1ltm+acbd5sX9sxKQPdtelNRILRjprLeGA4+9+dPHvkYqyfOdjizRJPnAvc5fsTtpgPHeISYXXsMGxmlAP9WgwEvYgcaQDxcVP1oyFC3qaCHcgZAEeGyARiD3TJQQ21nIeISuKZ2ymA09L2not3uVDNC4OAzn79rFs/Wp6oZ5fYQvoaN4XB261Yf/ZlnIFVxU9zQQ/AQexlKBYeRccP7eN5PgBa4dHdzb66R1PFsvoUMnWfRuYFj5ZH0LbZi
- pSELI8GV
- Wyj6DcJA3yXg8w9XbXY1kW4DscYJKnPPOafAZpFUaRei/0OsAiiaSHxdww2cLWr1IIKJa3LFnryojCfvlPBSLFGjfDmu0rtdpak7+s2i/ogIc6nyL2djU02Wsei38Rftwou36B0GwVTzPivBAVYiLLTwygman1/8+tr9B2GsBwUlpBANYioElLBYPBKgUrTgxBq/mI7h/+HKXni6njA/UUtgQi49KgiaVcgxIabY3r8E06QrjPcuoPpgQQVCWmayMjnU57Oib3B/6USgtiJB3kERTTrajvLmOe7T5UkfUVLUWTTJm87ofPPKT2g==
+X-HE-Tag: 1788778805-185247
+X-HE-Meta: U2FsdGVkX1/hAohbp4ardeRxE6f3d8oI/6E44zI07RnEW677XzceEIq7mXL519vSVw6vLM2DBwkc7YjLxKULYeVuXythZJZeI42k+hmbet9SkPe6sfmtBocUzgV3HYOwzxrVmy1p7pJZqdGpboHZl+6aFdgfJ1+KRz5r7I7DBpK/WXfiMpVVV4F7XATj6MZWVTWKOuTsee8PyVWO+bXgcZhJ7YN/s18AI/eMIJTmCoRRDrTgcOyjk614wFRDMtqd94n+Srodv6Mi0pLZZPc42VzrkGsqkxyZfLb3o43ZirIBeoqKMcV68uz2l7P1ZNpaNbQb9S1GBTRRCQd+u9WAbU8PUML9IzZMy7fDbjFaSjtS7BaghIRY4+wgDkuGDnKlJi3WBX0NkjXHj6Ujt/ukf21PoKgF/ki00avcZHVwE5PSkvMmarWLuKQiwH77b9lLOzRpwhAzONJ2kyKAY+8WLR6HU7+oHGCQs1SmoZIwyZdKNvxPvNpS2zKxhndo3ZCq2FtURNjSsdrxbeQOTVAGpvycuiMGQzN8LRaFBRRrpots0970ixSM6admEziPMiTUSTlxHhQG4yx7tlZ4tDyayAQR529NPmJ9cy1b0MXmHgHVrT6wkTDH8OUeFDWc++pUKwXyVYAopSMnP5IEAokvhKaSFBl1v67WoqpkbPzaUixrqBCQKYyg39fz2x9U/2tY5eTkVtJSqVSjj8cSJmrJwy6gMPO/9BA1j0gPr2IQQ3tLwqpdRO9lbjbCE5rLSlycXwRnT8rRW1csuXYu299Wb7Id0redRW+UddK0LBEiidk+Qf2xYldirbG/pMmaMuAOBEQuEKa810tRUb7Gb3FSWdQqulXOxOn2R0lj7yL6ItHLxFKjTJPASZkORplbMPlRAL7N4Afd9q0+Zjpl08a43nWW2NUbnxGjOVvQwVFt1VTNNpLAZhDpXW/cSnwJOi3cKhuB9qFfBjheJG27ehl
+ V+TMDUfP
+ nCoMTRfCLOAsuEiaua1Kj0h+PEgLEvhcA3piPwMI5OGzvKOnnL65y6MLRVMxjQlzEl1KRJbBEWNYPs8YCrBO1LjKdDxFedxE0vGYP14y1PhaXXiNIlMrTPFvP1t9GtGDYAffHGRlKP+zJSUzB4ice1XF1YLWzYa+Fgr0RAokVg94vs23KU702clV1bKJTATrhTvqbArtJvZuj1MlUSl5paJeUdlUEPj2CDsKAnYpBPX/7bKgsUiC68iZskvL2TxVi1vYlI4OUTYFLiHdDWPSuMFpPXeQkNvKBiLxwlorzqQdN3ktbpTWfu2ozd05BXO72bcFY4+xriwyGGovRX1v99JSy4ttZduRBwEmmxEnIYk8Rz1DrmER9oYWast7qQPKCTzw/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,119 +142,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are no users left of the old API, all have switched to
-SG-list object read API.  Remove it.
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index ed3934bc2de4..94e3709e95fd 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -1716,13 +1716,16 @@ EXPORT_SYMBOL_GPL(access_process_vm);
+>   * Copy a string from another process's address space as given in mm.
+>   * If there is any error return -EFAULT.
+>   */
+> -static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
+> +static int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
+>  				void *buf, int len)
+>  {
+>  	unsigned long addr_end;
+>  	struct vm_area_struct *vma;
+>  	int ret = -EFAULT;
+>  
+> +	if (unlikely(len == 0))
+> +		return 0;
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- include/linux/zsmalloc.h |  4 ---
- mm/zsmalloc.c            | 77 ----------------------------------------
- 2 files changed, 81 deletions(-)
+We have this check in copy_remote_vm_str(). Why are we performing the check now
+twice?
 
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index 478410c880b1..5b7298a5026b 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -40,10 +40,6 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
- 
- void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
- 
--void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			size_t mem_len, void *local_copy);
--void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
--		     size_t mem_len, void *handle_mem);
- void zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
- 			  struct scatterlist *sg, size_t mem_len);
- void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 825022a7a328..11be37c43171 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1134,83 +1134,6 @@ unsigned long zs_get_total_pages(struct zs_pool *pool)
- }
- EXPORT_SYMBOL_GPL(zs_get_total_pages);
- 
--void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
--			size_t mem_len, void *local_copy)
--{
--	struct zspage *zspage;
--	struct zpdesc *zpdesc;
--	unsigned long obj, off;
--	unsigned int obj_idx;
--	struct size_class *class;
--	void *addr;
--
--	/* Guarantee we can get zspage from handle safely */
--	read_lock(&pool->lock);
--	obj = handle_to_obj(handle);
--	obj_to_location(obj, &zpdesc, &obj_idx);
--	zspage = get_zspage(zpdesc);
--
--	/* Make sure migration doesn't move any pages in this zspage */
--	zspage_read_lock(zspage);
--	read_unlock(&pool->lock);
--
--	class = zspage_class(pool, zspage);
--	off = offset_in_page(class->size * obj_idx);
--
--	if (!ZsHugePage(zspage))
--		off += ZS_HANDLE_SIZE;
--
--	if (off + mem_len <= PAGE_SIZE) {
--		/* this object is contained entirely within a page */
--		addr = kmap_local_zpdesc(zpdesc);
--		addr += off;
--	} else {
--		size_t sizes[2];
--
--		/* this object spans two pages */
--		sizes[0] = PAGE_SIZE - off;
--		sizes[1] = mem_len - sizes[0];
--		addr = local_copy;
--
--		memcpy_from_page(addr, zpdesc_page(zpdesc),
--				 off, sizes[0]);
--		zpdesc = get_next_zpdesc(zpdesc);
--		memcpy_from_page(addr + sizes[0],
--				 zpdesc_page(zpdesc),
--				 0, sizes[1]);
--	}
--
--	return addr;
--}
--EXPORT_SYMBOL_GPL(zs_obj_read_begin);
--
--void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
--		     size_t mem_len, void *handle_mem)
--{
--	struct zspage *zspage;
--	struct zpdesc *zpdesc;
--	unsigned long obj, off;
--	unsigned int obj_idx;
--	struct size_class *class;
--
--	obj = handle_to_obj(handle);
--	obj_to_location(obj, &zpdesc, &obj_idx);
--	zspage = get_zspage(zpdesc);
--	class = zspage_class(pool, zspage);
--	off = offset_in_page(class->size * obj_idx);
--
--	if (!ZsHugePage(zspage))
--		off += ZS_HANDLE_SIZE;
--
--	if (off + mem_len <= PAGE_SIZE) {
--		handle_mem -= off;
--		kunmap_local(handle_mem);
--	}
--
--	zspage_read_unlock(zspage);
--}
--EXPORT_SYMBOL_GPL(zs_obj_read_end);
--
- void zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
- 			  struct scatterlist *sg, size_t mem_len)
- {
+It should either go only into __copy_remote_mm_str(), or if there a reason to
+have it before get_task_mm(), it should go into copy_remote_mm_str(). Same
+applies to the memory.c case.
+
+> +
+>  	*(char *)buf = '\0';
+>  
+>  	if (mmap_read_lock_killable(mm))
+> @@ -1752,6 +1755,27 @@ static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
+>  	return ret;
+>  }
+>  
+> +/**
+> + * copy_remote_mm_str - copy a string from a remote address space.
+> + * @mm:         the remote address space
+> + * @addr:       start address to read from
+> + * @buf:        destination buffer
+> + * @len:        number of bytes to copy
+> + * @gup_flags:  flags modifying lookup behaviour (unused)
+> + *
+> + * The caller must hold a reference on @mm.
+> + *
+> + * Return: number of bytes copied from @addr (source) to @buf (destination),
+> + * not including the trailing NUL. If @len is zero, return 0 without accessing
+> + * @buf. Otherwise, @buf is always NUL-terminated. On any error, return
+> + * -EFAULT.
+> + */
+> +int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
+> +		       void *buf, int len, unsigned int gup_flags)
+> +{
+> +	return __copy_remote_mm_str(mm, addr, buf, len);
+> +}
+What's more annoying is that both implementations of copy_remote_vm_str() are
+identical, and both implementations of copy_remote_mm_str() are nearly identical
+(just dropping the gup_flags for nommu). I'd like to avoid duplicating code for
+nommu.
+
+If we could export __copy_remote_vm_str(mm, addr, buf, len, gup_flags) for both
+cases, we could instead provide a single implementation for copy_remote_vm_str()
+and copy_remote_mm_str() e.g., in mm.h? (I'd prefer somewhere else, but we don't
+seem to have a good git for memory.c + nommu.c shared stuff)
+
+Now, that's also not completely nice, as I don't want us to EXPORT
+__copy_remote_vm_str() ... given that these functions are "#ifdef
+CONFIG_BPF_SYSCALL" could we EXPORT_SYMBOL_FOR_MODULES?
+
+Just a thought. CCing Lorenzo.
+
 -- 
-2.55.0.979.g7e5102b832-goog
+Cheers,
 
+David
 
