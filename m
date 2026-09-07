@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 034ADC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5085CC79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CB566B009F; Mon,  7 Sep 2026 11:28:14 -0400 (EDT)
+	id 4ED736B00A2; Mon,  7 Sep 2026 11:29:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07CFB6B00A2; Mon,  7 Sep 2026 11:28:14 -0400 (EDT)
+	id 49DCD6B00A3; Mon,  7 Sep 2026 11:29:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5486B00A3; Mon,  7 Sep 2026 11:28:13 -0400 (EDT)
+	id 3B8166B00A4; Mon,  7 Sep 2026 11:29:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC3306B009F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:28:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E178A01D2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:28:13 +0000 (UTC)
-X-FDA: 85187347266.22.B3AD2F1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 09A626B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:29:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E1BB401A4
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:29:49 +0000 (UTC)
+X-FDA: 85187351298.08.806B554
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BCA1920003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:28:11 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZdmbe2s;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id BB8C61C0002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:29:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVL1qCoE;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788794891;
-	b=h1TdeGqHJ6OjSCSrU3hRAaY6xi11x1vkGcUxDXr1d7/O3ZMVocgHHQHEkOcOsPIMenhw4n
-	j5ItAdKRCapdYID295UOEiCLCxWYcgP1x8Kxk/Aq8Se4aWVBKgqVnaPZfVyt3MRfIGNZEO
-	FUP3pm63x97HAhLjZ2Odo58iKBsXDqg=
+	t=1788794987;
+	b=t7E+dKpMBsIqt+xbNv+9NC6Ozto0l1H3tKcPBEF53Q1s4T8rVPplTZrxwgGjAT33lHJi3u
+	/JVmGDRIXk+V/PQOomXoBu/L+1mAGxmdPJrePvMK+go2J/5EnQPqVdLVxi/zRpVjb65kDr
+	49mhHY47NKr5K8eZ+DZ3IXGAS7fcISE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788794891;
+	s=arc-20220608; t=1788794987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mK+98jg5dsyflCRW6hzeWdXYj+TcG2jQV+y1BsFx2KU=;
-	b=AGNnweNccZrMTyAbyukXPaumS2kmQmdjyBramxw9ZAxE2laufKPEY/LFvfCDUJrj207Qio
-	ju5CT38IH52JQWh15mzuR32QZt5lkVzF9tssLww7Ak3EnVjs6BzK0/C+P6KSkJQKNDW3hM
-	JybtCXxty7fSOun+02PRftkTzSwBfLE=
+	bh=9SJTzceowrNohQipk3v/6QfqCF0/MRLk5RUcto72/EU=;
+	b=QEcm2WPWgHn6LK3LzIJRU55drreBxt2y90mu/XOMx78FhVldgTAnTuGtiYAHZ32IhsiZUK
+	aPChNQgJ/3QYozjIxrPFZ0HvuqQ7eoQqidJub2ji7CjDeda9wKL+VaGxfiUc46dj28+TjM
+	7BoS9SFDc4Llxyfko+3594O0VCpR3sc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZdmbe2s;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVL1qCoE;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B5A060D87;
-	Mon,  7 Sep 2026 15:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8286D1F00A3A;
-	Mon,  7 Sep 2026 15:28:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4924E60AB5;
+	Mon,  7 Sep 2026 15:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FC41F00A3A;
+	Mon,  7 Sep 2026 15:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788794890;
-	bh=mK+98jg5dsyflCRW6hzeWdXYj+TcG2jQV+y1BsFx2KU=;
+	s=k20260515; t=1788794987;
+	bh=9SJTzceowrNohQipk3v/6QfqCF0/MRLk5RUcto72/EU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kZdmbe2sBK7NcmlkxFNm48D+xjmNl7z46UL/QAb6geywyDhI6XiYzRxG0YTUPacBB
-	 oiF6MbRR5QldkE3rFwxN2ukKMilg/N8ceaWW4dygot3vp2d0fvU5kIyIPxjsctcf6R
-	 kKUeNZ3lkJOQ3XkH1UFChklewhrIS8S7L81EaBS3Z0bqup4yM5hFeIEUhZEEGYXZFP
-	 J+NLtmtVpgAuC5YO0iP9AB6vClWrdekVdoimyJG8TfpNqtNzafvIFhy3pR2wJrUOFB
-	 92AAh6FXgfbbbBRwYy6rw3/nk24XygJ8rlO+3l6+e1y/wx5DAdnF3PXvXVtNCtjv5D
-	 1CQ+31IH0razA==
-Message-ID: <502b573e-592b-46e5-96e4-c089329e7aee@kernel.org>
-Date: Mon, 7 Sep 2026 17:28:06 +0200
+	b=hVL1qCoESBzyncNyjZOjHebgaRnwQq7OTLas7qK5ytnPnGT/qVnxaJ8epup1Q3Gnv
+	 3fZX01jlfiPJ8xBm8egrhGjOfsoBy6lwtuUjXreRoArmc78LQGYhgHobBdJ4/YJBrl
+	 88oaQeAmO1iosbVzMtlohN2iPpfueXA873ipSpOYerzdG7DTRR15+OHWjaDCDBz7lE
+	 UHO5/LG7wcW8TivdO2WWQzflga8qsaBF/kT3ZIZ6NqVWme8+uvxZtG22o+Xxxtf4fk
+	 4rIHo7Kw7SC1kQhcu+DXKFWKfR+7s5udZgXs0KgtmTycvUOn5Sztcy/nehHBUGvPXB
+	 5/wzFQCynHLjA==
+Message-ID: <47a6817e-e98e-4a00-8e2c-6a66d15ddb37@kernel.org>
+Date: Mon, 7 Sep 2026 17:29:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: factor out node_is_memoryless()
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, osalvador@suse.de, akpm@linux-foundation.org
-References: <20260902195507.88655-1-gourry@gourry.net>
+Subject: Re: [PATCH] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
+To: Andrew Morton <akpm@linux-foundation.org>, Li Zhe <lizhe.67@bytedance.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, aiqi.i7@bytedance.com
+References: <20260831091023.66581-1-lizhe.67@bytedance.com>
+ <20260831173220.72ab28190a44a305dacf4d04@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902195507.88655-1-gourry@gourry.net>
+In-Reply-To: <20260831173220.72ab28190a44a305dacf4d04@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BCA1920003
-X-Stat-Signature: 8iuum4fnamej1n1emee7zesaw8u6gncw
-X-HE-Tag: 1788794891-28787
-X-HE-Meta: U2FsdGVkX19KouQT6rAXSo9XjSUiA3qLo2fLo32HXOI4B+2jhyCypI9rOYkXWm0S3u4H0jfZ9ik9goH76e8vMDl84ONhwq7JK2eTbMdRkXGPKVQ0uvx8wv9g1XysPdSbeIK1MmBZaaiyjwqmz4p889mKf9BKLMnwaTN2AQUE4dpEd/B9PoA5o4D3NDQutphZS7Bk9fMe4oDoOJ/EMbqBLAedWSYtTGrddSqNt8V+pblF50aLAL5Slgo9nCBo8WN+G56L5HqhsMSFMqUHiXBsdomljl38Y/XbQYib+NmTiZN6643qBodyCv3eibRGLxxynGq6Ej+CyKcNj3jhKCeMLEq0rpl2R9EDaxo1oI89pUe0OvB3MqOdvCVZMSRJRSxhzM7X04QNFJqi8Uava42MOR1bbcuH/cr/fxktKSeIig1AQWA5KU07zGRuYH+mSLdU1dX3xFk/xX6G9gDI3Wkdq/Pff/+EPQYdQM7NS0loBWJ4cUfNKRQhglCxs0npCyqflLN2fDrlFo0FipQlXQiTYFi9g2je4pvrzdCK1cvm+11roXlEDURH2AD0Yx8OaCh8S96HGeDz+Pchsv1FI3190YAPZ6nSY2QYjAwNj76WwETegj3meOMOwb4T27aapExH08uxXVuWcvIqkpT1w/vtOzRHvTnr+bezBiKdaVxZy8u0ho02gxQrbtR7JD5110BOCBwE+rQCF4dwqLfNtGq2OP/kGUL7kieYKwAvXh8WjC8h89KIg6brNq5aOllGJvXCp4RU0XBLqNktl8WMCrxdstq9rHSLZHpw1suUZmhYdvGY2OPNKIN2GrTPxfcW8u/4HHwaIJ09rVUAVJuiUE0O4l2MPCu9nOZeVyicQSiQ8m+aw30gKoTWJrhRYW3XDNT4Fqk1NjT634BCBN5Rjx1xyw+m4jPPIMyEIL9mdgDe8QVUuah5GOr58yT7Wsw1u782Qof8weAq6c+1duBIL9T
- 9GAoJ7xO
- SxVwbeR3SPY3429FSDzBlgXVQSEHkl7B+3usRpjUPvF1noif0TABrETb4GhjxhJpM3YmAmYcBrSlWypkQY4NIQ1VbU/PuGmNVVNi4RxNcGIPK5ZMyKx9o8B4IVor+nChiyGD1C8x3WRB55m/17bIqk7RCpyAPl8azF4Db5zGx3A4lQ/ijUR+JJ4AZDojxhGHZ5W8tUoXJVmrkzA2lrnCGMaLmUdYiHhvGXc9aHKXCI+fsmf17E+4aE/ku+giGGILpRcGVMkQ4SxnegYXltaACG+jnERPrNufayS7YEPHdi6+tjMdTu1RmwW686LlVrebx3rAi8Ufe+ZWoEbhc4Og+ivvE9k9mC6NL3KsCu43HKAj3l3pjRXvZiJ753gq72kSQ/GlR
+X-Rspamd-Queue-Id: BB8C61C0002
+X-Stat-Signature: py4spjwni93g76dfjbqz11bf8wycpaae
+X-HE-Tag: 1788794987-638921
+X-HE-Meta: U2FsdGVkX1/maJIXO1enu3ZPI/qCym1kpktnflJJ3hKIxVaTbaSNAeWrkmo9imD1XAEactzQnb//xbYd6prJ4MW3XpAtSxEOjnXAZK1KNTPhUp5igopPq6ZlUuIMoc6funmMG8TixGBh81cKhaDGao5gDbsrmVGSgR5ejStAoq8bpER8VKdZ5O7yW4JV+w+ZbqWm7N1YiVCk49b7KLeHB5XU7URluDDQvXp/K6VwUHH2wlb1v2rLPnII5GDVpB/CbgwXhMMuvJTUZsMu0buNe/efS5S496hjoCka20g1iyF8uY7eEQSb2DcaTtsUbygF62tDeUMhHcei1BybQ64vA8wZm5KkqBtyz+er81NdXjxNOwkwfxzYN1XshCWJPAZDyJzyH+BDFwrgVugiLde+gAqpoxlEO8bSmkB0TUDPi3fNReQsWk7FU0c/nRLO8OAlYxFkxewDphVftzqfhxyZpCkrehHPfxUTePpN05c1OST0Rri2Fmm+pGXs0Nthp532DCygqhR/P49nPv5lwtu/8d4HSdfhwIlcYeWoCTh9gHhHCo5t49CUAmaBuGPz2uDwAwYSxHXqpSAptK+myZzxBzj3gBfeDnjvb42SYbpZVy5E+H9lKPcCfAcyrEQp46QRYpQeVFknUkyHzd+G9Fmf4jbKLvHVxKS34iKhAXexmFKvABGUCsrBfM4I+AvTYIq1HPcf/aw3Txhjr7Ah+NdBMW3jcMoKI9tv3q5M7zrLFhEVYE+n699H48w4V2q0NT0JZ+Y+TR4jpmMF+fYJe2DxqLP2XKSlDFRdg0MEC8XydJwtBzGN7mYQ9u5WGi5PjHCa+DUUov+lINxyHYYQwPNlUQ6SzYdr5GatzMjwTh5kr5evqx39dxX7X2+XwP1BWtxB7jFmZECyMy7kw8+Fhbb6onhMF3l/qyLtoFetyRKv2Fd24H2dTJ+iEWgWsT2jpXFNa0h1EHYHazBlK3t3m1e
+ 3Eru14d6
+ HfQAbBB8iVQi0ITGebv8kMHJw1hdAMwPE3VYANyPKp1b1Pstrs7B1vCNXloyZ/oyQeCX5dOcfqsWKAVdWLzpJSBKDt2e4wYzxnlMbknK60tYs5+3U9oz7SkClmLLfccDQc9mO+J7GLME10QkXh1P89V+j2g4TxuJoOreshLdDDz2ORWVzoG+SO/wCnDj5H0douF27yrJn5ZlcnfPIbcHkM0izZORcknVy4WAAG8Jz8XwAe40UldCtbrA3S2TjZo3LFz/BHBzDZpQ144RmSpLTfeddoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,22 +138,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 21:55, Gregory Price wrote:
-> A memoryless node neither spans present pages (populated or ZONE_DEVICE)
-> nor has an offline-but-added memory block still linked to it in sysfs.
+On 9/1/26 02:32, Andrew Morton wrote:
+> On Mon, 31 Aug 2026 17:10:23 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
 > 
-> try_offline_node() presently open-codes this memoryless check.
+>> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
+>> PMD sharing is possible. That is only needed when huge_pmd_unshare()
+>> actually detaches a shared PMD page table, because clearing the PUD
+>> invalidates the whole PUD-sized virtual address range.
+>>
+>> For hugetlbfs hole punch and MADV_DONTNEED, a shared mapping can pass
+>> the "PMD sharing is possible" range test in function
+>> adjust_range_if_pmd_sharing_possible() even when the PMD table covering
+>> the target 2M page is not shared. KVM then receives a 1G invalidation for
+>> a 2M operation and zaps unrelated secondary mappings, so the guest has to
+>> fault them back in.
+>>
+>> Fix this by using the existing cheap "sharing possible" test only as a
+>> gate, then inspect the candidate PMD tables under the locks held by the
+>> hugetlb unmap paths. The notifier is expanded only for PUDs whose PMD
+>> table is actually shared, while the other callers keep the existing
+>> conservative expansion.
 > 
-> Pull that into a node_is_memoryless() helper and pull the existing
-> check_no_memblock_for_node_cb() helper ahead of the add/online path
-> so it's clearer what is happening here.
+> Thanks.
 > 
-> No functional change.
+>> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this
+>> patch improves P99 QPS stability while punching pages, reducing the QPS
+>> degradation ratio from 7.09% to 1.45%.
 > 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
+> So a modest performance improvement?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Is that worth the complexity, though?
 
 -- 
 Cheers,
