@@ -4,137 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21912C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E336BC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B9E66B00A6; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
+	id E42E56B009D; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 391916B00AA; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
+	id E194E6B009F; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FF86B00AB; Mon,  7 Sep 2026 07:00:08 -0400 (EDT)
+	id D56956B00AB; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 035616B00A6
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:00:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77823120114
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:07 +0000 (UTC)
-X-FDA: 85186671654.29.1B6B955
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AA9FB180002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS1bd8l5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B449B6B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52D2AA0146
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:59 +0000 (UTC)
+X-FDA: 85186673838.02.733E49A
+Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3ED6120013
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VWTEWPYr;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788778856;
+	b=M0OGuigzieRvbZQVUcj4FIHNUmsXxu1FSnGRIGhK/jqve0Bk+HnpMS9zrVUqahH6vGr/b2
+	XnqZH576mv27+WG/Q6Dk+b+g2uSqiXrKhPsypVAxpbPxEliCnSVSpCLvuPio4+WFC1nYkU
+	OKrFVOiNn7gtynkeEGEiicbmw+dkpXE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VWTEWPYr;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778805;
+	s=arc-20220608; t=1788778856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZmRAQp7CT9ZcGnXRbWq2cl8HArUYmjma0K0TpVSARi0=;
-	b=KvklQxUg5JmPUSAmyU+25TdoFO6ABH0NzXUiEaVG2YuYjD+NPO1wry3tQEYjwMoQld4jx6
-	WrtebnvLWV8QZwwh9nb6bBblCwbp26nzADHyr3vjjJTa22LY2zs3M8CMzJ7fqoalSb6HIg
-	YsYBxHuulNcQ05zzs2Om3vQ3YStllv4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778805;
-	b=adr/x6bm7SybLRXdpZuYlV0JEi7q2GeGFbQ9ad/ycLD0e0LGS92dyCd21Ie+PrVEbviel7
-	avh1+PfaPyiwjOmF+462UfQI9NunoulITAaSHylQWC3XsCUVLGhzyE+u8I527YBbY6jZ5b
-	pFRiD32RGgqGnMpE1l2249Mc+Tqd3XY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OS1bd8l5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE333601F9;
-	Mon,  7 Sep 2026 11:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF241F00A3A;
-	Mon,  7 Sep 2026 10:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788778804;
-	bh=ZmRAQp7CT9ZcGnXRbWq2cl8HArUYmjma0K0TpVSARi0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OS1bd8l53HBFTLeWpn+DLUZW6acFae8EN0TYc4g1vuJkfPuU9kXzmAUwy2G73YgMu
-	 9IHR/D9kde7ZJvyI1/j+ddlfwpHOagprqjMcbn4V6AAmIrEXVKq8UvBDn7qYUVILek
-	 k/e6wBruu3DFLtXzN6AUY099s9O8sTOtqYhZjwG7TOU0d5UxZeYxCCOIlqlDop5lMC
-	 dmMA3yskAPtf8fg3NkoT2yvuEpHRlfW7Ex7wUaKR3pPcwFRI6USMASdXv78Mxj106o
-	 VjPROn9VYDQQC35JrwOlEi2ke9YQJlGFiD0p1RcmJSwgRpjS35fbAz09gMTykpyXTr
-	 714lZ1wOpZxdw==
-Message-ID: <0e4edfd3-0c82-42e0-ad09-19ff8b8d1511@kernel.org>
-Date: Mon, 7 Sep 2026 12:59:57 +0200
+	bh=EqO18ho9GcWrKKMXhvJhZjhmLaxCjPidRFTIlkDKDqg=;
+	b=nS0EQtT0nWLNzkI6A6+GTYBXBE11IDjlZ1ciHo5Hk2yILldrOjJSLGjU3wEYlb4vWa0jnP
+	hBoVLPECwvWb6HD23axHCTxjxYerdY6E/PX6lH0d5QtmpasktPopEvM1w77pveoIZhoFLU
+	Jv54Jvify+rmTF/w0HSzT0ANS4gU9Ok=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yoobYKjOGtZnon27SCY91TYOpxeE4mzqFD6r85CKcU4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788778852; v=1; x=1789383652;
+ b=VWTEWPYriHE8ZCMELZtcIwNifpbJUQeMeG9YsAfOY6b2w0BieQTwDMlJAQcucP0K7CxyErd+
+ WCoHuvX7Ct7a+8I8tussIDCq0u5m/YEIO9i7Es+riYvqXXUHfXHGIjcDEXAe4deHNt+tRQfO6gG
+ 7boziFjtdGvQw4F55toVQFGA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id eccf057a93439051;
+	Mon, 07 Sep 2026 11:00:41 +0000
+X-Mizu-Trace-ID: eccf057a93439051
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b00822a4-87ce-47d7-ba63-21a7b99980af@linux.dev>
+Date: Mon, 7 Sep 2026 12:00:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v4 1/7] mm: Add copy_remote_mm_str()
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>, bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, kpsingh@kernel.org,
- matt@bobrowski.net, song@kernel.org, utilityemal77@gmail.com,
- sun.jian.kdev@gmail.com, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>
-References: <20260904145340.40212-1-tasos.papagiannnis@gmail.com>
- <20260904145340.40212-2-tasos.papagiannnis@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 1/1] mm/zswap: enable static key after runtime pool
+ recovery
+To: Yosry Ahmed <yosry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Longlong Xia <xialonglong2025@163.com>, hannes@cmpxchg.org,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>, Alexandre Ghiti <alexghiti@fb.com>
+References: <20260905125101.2970456-1-xialonglong2025@163.com>
+ <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
+ <CAO9r8zPhMw=2+wyRYwbBS4As-zNbVnkcT3Y2ppqLo1AxPzaTAQ@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260904145340.40212-2-tasos.papagiannnis@gmail.com>
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zPhMw=2+wyRYwbBS4As-zNbVnkcT3Y2ppqLo1AxPzaTAQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AA9FB180002
-X-Stat-Signature: sxhgbbnwggugrj5gb7ehuhu141it384k
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788778805-185247
-X-HE-Meta: U2FsdGVkX1/hAohbp4ardeRxE6f3d8oI/6E44zI07RnEW677XzceEIq7mXL519vSVw6vLM2DBwkc7YjLxKULYeVuXythZJZeI42k+hmbet9SkPe6sfmtBocUzgV3HYOwzxrVmy1p7pJZqdGpboHZl+6aFdgfJ1+KRz5r7I7DBpK/WXfiMpVVV4F7XATj6MZWVTWKOuTsee8PyVWO+bXgcZhJ7YN/s18AI/eMIJTmCoRRDrTgcOyjk614wFRDMtqd94n+Srodv6Mi0pLZZPc42VzrkGsqkxyZfLb3o43ZirIBeoqKMcV68uz2l7P1ZNpaNbQb9S1GBTRRCQd+u9WAbU8PUML9IzZMy7fDbjFaSjtS7BaghIRY4+wgDkuGDnKlJi3WBX0NkjXHj6Ujt/ukf21PoKgF/ki00avcZHVwE5PSkvMmarWLuKQiwH77b9lLOzRpwhAzONJ2kyKAY+8WLR6HU7+oHGCQs1SmoZIwyZdKNvxPvNpS2zKxhndo3ZCq2FtURNjSsdrxbeQOTVAGpvycuiMGQzN8LRaFBRRrpots0970ixSM6admEziPMiTUSTlxHhQG4yx7tlZ4tDyayAQR529NPmJ9cy1b0MXmHgHVrT6wkTDH8OUeFDWc++pUKwXyVYAopSMnP5IEAokvhKaSFBl1v67WoqpkbPzaUixrqBCQKYyg39fz2x9U/2tY5eTkVtJSqVSjj8cSJmrJwy6gMPO/9BA1j0gPr2IQQ3tLwqpdRO9lbjbCE5rLSlycXwRnT8rRW1csuXYu299Wb7Id0redRW+UddK0LBEiidk+Qf2xYldirbG/pMmaMuAOBEQuEKa810tRUb7Gb3FSWdQqulXOxOn2R0lj7yL6ItHLxFKjTJPASZkORplbMPlRAL7N4Afd9q0+Zjpl08a43nWW2NUbnxGjOVvQwVFt1VTNNpLAZhDpXW/cSnwJOi3cKhuB9qFfBjheJG27ehl
- V+TMDUfP
- nCoMTRfCLOAsuEiaua1Kj0h+PEgLEvhcA3piPwMI5OGzvKOnnL65y6MLRVMxjQlzEl1KRJbBEWNYPs8YCrBO1LjKdDxFedxE0vGYP14y1PhaXXiNIlMrTPFvP1t9GtGDYAffHGRlKP+zJSUzB4ice1XF1YLWzYa+Fgr0RAokVg94vs23KU702clV1bKJTATrhTvqbArtJvZuj1MlUSl5paJeUdlUEPj2CDsKAnYpBPX/7bKgsUiC68iZskvL2TxVi1vYlI4OUTYFLiHdDWPSuMFpPXeQkNvKBiLxwlorzqQdN3ktbpTWfu2ozd05BXO72bcFY4+xriwyGGovRX1v99JSy4ttZduRBwEmmxEnIYk8Rz1DrmER9oYWast7qQPKCTzw/
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3ED6120013
+X-Stat-Signature: x1btyofa7jjm4rxn4epu8juqkucwrgm5
+X-HE-Tag: 1788778856-295359
+X-HE-Meta: U2FsdGVkX19UXWfstErd24SAxwtur6wSvpE9jy8FbtEvJxNREhOVcSmQpqcN3cNFOqO77izfAmQlGYtohsjG4Nz6xTxZDTmaAgaIjn1vXEscvJajtKfEEk2V/nBCQkKOGY+NI6FIxNB4dw9UbS3eXcafAv9Pot9MKAvoyF6Gm+Eg93L2sFpGyCdjoQn2c8BKsR+AnOnr8Fm5n+yluX1G4wxyi9ZLXuRU5UgTbot+/uRvYvtOIglIawp9b03ZVeupLCMJSOm3W5xzjlJbSJd4AjzfKfjna/CxaxkQmtjvrj7E40UYspREs/iC/3GmIV7KJwcf2Bau3iMs0QddkT8IUIcsiRBWNFBPTEq63wFqNEO6Bwf96ZpWz0teytuh61288syjbpMtu7w+jHb0TsKa7LvuZReFsixQL2sZ1TX83Kac0jTWXdfOFiCXeC3xSVjHbVIFYKRcBY4DsmYmCRVB6NzcpqTlCniS9Qvl67fjrsJsnVRICj7D/P/lkKTKiiZ/F41Z/lOR2rUhhd8+yIe7GI9qF28+jBvhF0VgSlMzgfbcgsaMutP0EheIJqK/WRN+vZotB6YeHEa6vMcLI17rYYvj6Yst+w2DF7/TrWYU247j/j5mDBG7xuaFZUJrcXMHRDcGOCh7DCFqLQxqFoveQeCbn1TDUzKNFjSKOE1mHDFbuqBWYZNmQIWXjL7bpLag/Td5ST982+VvkigVN73WN/vW81DLSZIoiL6eG6IWadb/KoCuNoIBMBGAG+/EmXy0wjJDvyYxzci6kwugfy8gOv/w20MMBYkwsLov2QDB6sbJCVVeHul1cT4sc8IMQuclRaDsdlarwaKL7C1np0QM6sZ6dlab7AO8ca79mWHBiafnCJNZc6L5kwRQpWVV22B5YVgONuzFjBtJ97AQJhnc5UWX0Lg+MBez8BCW08xLHliW94KiSj7eGcZ3YMqxXppK/3G6qXAYeujMXw/64M9
+ 1SOXHR3v
+ ROE75AeqQmhTnIIVDcIQOJlYMxnOqXzVIZUnK6omxA7Jg+z3/y/xVdUdWe34sFG3dXJKd97XBGp87HcP8t6gK9/Sa+wPzKzvtjIHPM7MkDZ21NssY1lzOU4r3ZC5PaAwLLK4qrYxS3Lzr/qfOVzp2LofS/9qvALHiw5QJ7FYLikpOtuUGXi0rFx+d4KFDaNF8GuY+6d2IEHa3L2c5YqGibxIP5pR6CDK8C1d97HYcdbjlndta/jPuMynZkFJ/pU/HfNbv56hK81Cz6/ICgWcTTUQO/hx2hP6f7k7EMRyIY1vVqK4izNhLamv7So+FxdFL/0n03StKJ/jmWYlKdc7jihdCcbG5c797/T+XBhM3b8+1UXFSQ7h6Wz8R1BbcIsORuHHpCACFabcoS+bp+OyqbgledHCEH4geRP5/diuZiuSN5zo7PMgk7gv4upDBEL7TfAI/o1sF2B6WgDfNOKNH0XPETDo/ioJ2Y26o+j5E0S11RR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,78 +96,264 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index ed3934bc2de4..94e3709e95fd 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -1716,13 +1716,16 @@ EXPORT_SYMBOL_GPL(access_process_vm);
->   * Copy a string from another process's address space as given in mm.
->   * If there is any error return -EFAULT.
->   */
-> -static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
-> +static int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
->  				void *buf, int len)
->  {
->  	unsigned long addr_end;
->  	struct vm_area_struct *vma;
->  	int ret = -EFAULT;
->  
-> +	if (unlikely(len == 0))
-> +		return 0;
 
-We have this check in copy_remote_vm_str(). Why are we performing the check now
-twice?
 
-It should either go only into __copy_remote_mm_str(), or if there a reason to
-have it before get_task_mm(), it should go into copy_remote_mm_str(). Same
-applies to the memory.c case.
+On 06/09/2026 10:19, Yosry Ahmed wrote:
+> On Sat, Sep 5, 2026 at 4:09 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+>>
+>> On Sat,  5 Sep 2026 20:50:28 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
+>>
+>>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>>
+>>> When CONFIG_ZSWAP_DEFAULT_ON is disabled, zswap_setup() can complete
+>>> without a pool after a failed initial pool creation. A later compressor
+>>> parameter update can create and publish a pool, but does not enable
+>>> zswap_ever_enabled.
+>>>
+>>> If users then enable zswap, zswap_store() intercepts swapout while
+>>> zswap_load() still returns -ENOENT without consulting the xarray. The
+>>> swapin path therefore reads a stale backing swap slot because the store
+>>> skipped writing it.
+>>
+>> That sounds bad.  I'll leave it to reviewers to suggest whether this is
+>> a sufficient description of the runtime effects, and to decide whether
+>> a backport is appropriate.  Please.
+> 
+> Yes this needs a stable backport AFAICT.
+> 
+> A more high-level description would be:
+> 
+> If zswap is enabled by default at boot and pool creation fails, then a
+> pool is later created by updating the compressor, data written to
+> zswap is corrupted on swapin.
+> 
+>>
+>>> Enable the static key after a successful compressor and pool update. Do
+>>> this outside zswap_pools_lock because static key updates may sleep.
+>>>
+>>> Verified with fault injection on a stock kernel (compressor builtin,
+>>> CONFIG_ZSWAP_DEFAULT_ON=n):
+>>>
+>>>   1. Boot with zswap.enabled=1; pool creation fails, init completes
+>>>      pool-less (static key off).
+>>>   2. Echo an available compressor name to zswap.compressor; a pool is
+>>>      recovered but the key stays off.
+>>>   3. Enable zswap.
+>>>   4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
+>>>      fault it back in and verify.
+>>>
+>>> Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
+>>> without this patch; all pages intact (zswpin=131072) with it.
+>>
+>> And thanks.  Sashiko might have found another issue in this zswap code:
+>>         https://sashiko.dev/#/patchset/20260905125101.2970456-1-xialonglong2025@163.com
+> 
+> Hmm I think this might be fixed by Alexandre's patch (in Usama's
+> series): https://lore.kernel.org/linux-mm/20260818131202.494754-6-usama.arif@linux.dev/.
+> 
+> Instead of always returning -EINVAL for large folios we only do so if
+> they are actually in zswap. Usama/Alexandre, assuming I got this
+> right, can I interest you in sending the zswap bits of that patch as a
+> standalone fix? :)
 
-> +
->  	*(char *)buf = '\0';
->  
->  	if (mmap_read_lock_killable(mm))
-> @@ -1752,6 +1755,27 @@ static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
->  	return ret;
->  }
->  
-> +/**
-> + * copy_remote_mm_str - copy a string from a remote address space.
-> + * @mm:         the remote address space
-> + * @addr:       start address to read from
-> + * @buf:        destination buffer
-> + * @len:        number of bytes to copy
-> + * @gup_flags:  flags modifying lookup behaviour (unused)
-> + *
-> + * The caller must hold a reference on @mm.
-> + *
-> + * Return: number of bytes copied from @addr (source) to @buf (destination),
-> + * not including the trailing NUL. If @len is zero, return 0 without accessing
-> + * @buf. Otherwise, @buf is always NUL-terminated. On any error, return
-> + * -EFAULT.
-> + */
-> +int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-> +		       void *buf, int len, unsigned int gup_flags)
-> +{
-> +	return __copy_remote_mm_str(mm, addr, buf, len);
-> +}
-What's more annoying is that both implementations of copy_remote_vm_str() are
-identical, and both implementations of copy_remote_mm_str() are nearly identical
-(just dropping the gup_flags for nommu). I'd like to avoid duplicating code for
-nommu.
 
-If we could export __copy_remote_vm_str(mm, addr, buf, len, gup_flags) for both
-cases, we could instead provide a single implementation for copy_remote_vm_str()
-and copy_remote_mm_str() e.g., in mm.h? (I'd prefer somewhere else, but we don't
-seem to have a good git for memory.c + nommu.c shared stuff)
 
-Now, that's also not completely nice, as I don't want us to EXPORT
-__copy_remote_vm_str() ... given that these functions are "#ifdef
-CONFIG_BPF_SYSCALL" could we EXPORT_SYMBOL_FOR_MODULES?
+Hello!
 
-Just a thought. CCing Lorenzo.
+Below is what the patch looks like in my tree now. It can be sent independently of
+the PMD swap series. Yosry if you are happy with it, will send it on the list
 
+From a5b70b6d72eda15bd7a16b8fc51db1d271b08520 Mon Sep 17 00:00:00 2001
+From: Alexandre Ghiti <alexghiti@fb.com>
+Date: Wed, 22 Jul 2026 08:19:35 -0700
+Subject: [PATCH 01/19] mm: zswap: add range lookup for large-folio swapin
+
+A large folio reaches zswap_load() only when the caller expects
+the whole range to be on disk. Zswap still stores large folios as
+independent order-0 entries, so reconstructing a large folio from
+zswap entries would risk returning partially initialized data.
+
+Teach zswap_load() to scan the covered range. If no slot is in zswap,
+return -ENOENT so swap_read_folio() reads the backing device. If any
+slot is still in zswap, fail the large-folio read so the caller can
+fall back to per-page swapin.
+
+Return -EIO rather than -EINVAL for that conflict. Large-folio loads
+are now valid requests; the error means zswap cannot safely satisfy
+the request from partial per-page compressed state, not that the
+request is unsupported. Existing callers only distinguish -ENOENT,
+so this is a semantic clarification rather than a behavioral change.
+
+Add zswap_is_present() so PMD swap-entry consumers can make the same
+range decision before attempting PMD-order swapin. For high-order swap
+cache allocations, check the zswap range after inserting the folio into
+swap cache. The insertion stabilizes the range against zswap store and
+writeback; if pre-existing per-page zswap entries are found, remove the
+folio through the existing allocation rollback path and return -EBUSY.
+
+Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ include/linux/zswap.h |  6 ++++++
+ mm/swap_state.c       | 29 ++++++++++++++++++++-------
+ mm/zswap.c            | 46 +++++++++++++++++++++++++++++++------------
+ 3 files changed, 61 insertions(+), 20 deletions(-)
+
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 30c193a1207e1..cd9efcf9dec94 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+ bool zswap_is_enabled(void);
+ bool zswap_never_enabled(void);
++bool zswap_is_present(swp_entry_t entry, unsigned int nr);
+ #else
+ 
+ struct zswap_lruvec_state {};
+@@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
+ 	return true;
+ }
+ 
++static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++{
++	return false;
++}
++
+ #endif
+ 
+ #endif /* _LINUX_ZSWAP_H */
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index b76eb3d876fd7..103ae7ae8a4a6 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel_stat.h>
+ #include <linux/mempolicy.h>
+ #include <linux/swap.h>
++#include <linux/zswap.h>
+ #include <linux/leafops.h>
+ #include <linux/init.h>
+ #include <linux/pagemap.h>
+@@ -459,16 +460,21 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	__swap_cache_do_add_folio(ci, folio, entry);
+ 	spin_unlock(&ci->lock);
+ 
++	/*
++	 * Once the folio is in swap cache, zswap cannot start storing or
++	 * writing back any slot in the range. Reject high-order allocations
++	 * that raced with pre-existing per-page zswap entries.
++	 */
++	if (order && zswap_is_present(entry, nr_pages)) {
++		err = -EBUSY;
++		goto delete_folio;
++	}
++
+ 	if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
+ 					   vmf ? vmf->vma->vm_mm : NULL, gfp)) {
+-		spin_lock(&ci->lock);
+-		__swap_cache_do_del_folio(ci, folio, entry, shadow);
+-		spin_unlock(&ci->lock);
+-		folio_unlock(folio);
+-		/* nr_pages refs from swap cache, 1 from allocation */
+-		folio_put_refs(folio, nr_pages + 1);
++		err = -ENOMEM;
+ 		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
+-		return ERR_PTR(-ENOMEM);
++		goto delete_folio;
+ 	}
+ 
+ 	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+@@ -492,6 +498,15 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	/* Caller will initiate read into locked new_folio */
+ 	folio_add_lru(folio);
+ 	return folio;
++
++delete_folio:
++	spin_lock(&ci->lock);
++	__swap_cache_do_del_folio(ci, folio, entry, shadow);
++	spin_unlock(&ci->lock);
++	folio_unlock(folio);
++	/* nr_pages refs from swap cache, 1 from allocation */
++	folio_put_refs(folio, nr_pages + 1);
++	return ERR_PTR(err);
+ }
+ 
+ /**
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 37f34e406c8e3..32671dc2bf84d 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1571,6 +1571,23 @@ bool zswap_store(struct folio *folio)
+ 	return ret;
+ }
+ 
++/**
++ * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
++ * @entry: base swap entry of the range
++ * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
++ */
++bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++{
++	pgoff_t offset = swp_offset(entry);
++	struct xarray *tree = swap_zswap_tree(entry);
++	unsigned long index = offset;
++
++	if (!nr || zswap_never_enabled())
++		return false;
++
++	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
++}
++
+ /**
+  * zswap_load() - load a folio from zswap
+  * @folio: folio to load
+@@ -1578,13 +1595,9 @@ bool zswap_store(struct folio *folio)
+  * Return: 0 on success, with the folio unlocked and marked up-to-date, or one
+  * of the following error codes:
+  *
+- *  -EIO: if the swapped out content was in zswap, but could not be loaded
+- *  into the page due to a decompression failure. The folio is unlocked, but
+- *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+- *  will SIGBUS).
+- *
+- *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+- *  to a large folio, which is not supported by zswap. The folio is unlocked,
++ *  -EIO: if the swapped out content was in zswap but could not be handed
++ *  back, either because decompression failed or because a slot in a
++ *  large-folio range is unexpectedly still in zswap. The folio is unlocked,
+  *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+  *  do_swap_page() will SIGBUS).
+  *
+@@ -1605,13 +1618,20 @@ int zswap_load(struct folio *folio)
+ 		return -ENOENT;
+ 
+ 	/*
+-	 * Large folios should not be swapped in while zswap is being used, as
+-	 * they are not properly handled. Zswap does not properly load large
+-	 * folios, and a large folio may only be partially in zswap.
++	 * A large folio reaches zswap_load() only when its whole range is
++	 * expected to be on disk: PMD swap-entry consumers split before
++	 * calling into PMD-order swapin whenever any slot is still in zswap.
++	 * Confirm the range is entirely absent from zswap and return -ENOENT
++	 * so the caller reads it from disk; if a slot is unexpectedly still in
++	 * zswap, fail the read rather than return partially-initialized data.
+ 	 */
+-	if (WARN_ON_ONCE(folio_test_large(folio))) {
+-		folio_unlock(folio);
+-		return -EINVAL;
++	if (folio_test_large(folio)) {
++		if (WARN_ON_ONCE(zswap_is_present(swp,
++						  folio_nr_pages(folio)))) {
++			folio_unlock(folio);
++			return -EIO;
++		}
++		return -ENOENT;
+ 	}
+ 
+ 	entry = xa_load(tree, offset);
 -- 
-Cheers,
+2.53.0-Meta
 
-David
+
 
