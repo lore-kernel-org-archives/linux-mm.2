@@ -4,133 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42404C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 172AFC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE5D6B009E; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
+	id ED7426B0098; Mon,  7 Sep 2026 04:49:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385106B009F; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
+	id E87616B009D; Mon,  7 Sep 2026 04:49:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29DE36B00A0; Mon,  7 Sep 2026 04:46:51 -0400 (EDT)
+	id DC47E6B009F; Mon,  7 Sep 2026 04:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F39D36B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:46:50 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E9111206F0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:46:50 +0000 (UTC)
-X-FDA: 85186335780.02.008471F
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 97512C0007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:46:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E7zi2vbD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE41F6B0098
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:49:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25DC6140690
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:49:55 +0000 (UTC)
+X-FDA: 85186343550.09.588B479
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2B8891C0008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:49:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSKohq6K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788770808;
+	s=arc-20220608; t=1788770993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
-	b=GhDECIlP8YlTwDOO7KWTQh/TZ+Rsxov7xf06GQcPqgiL66gDTticGdKmJ7LcRgkZXyWRg4
-	y7B6UUvzUeIZdLLTejebLjzWwPYEZ3pJlJjRbTv7Ff4JiLuYh4aDdRLKNkrvW//2N0m7Wm
-	sY1KiuHuAxrkIra+j16oV4G/bK18eLg=
+	bh=kKgJ49C47SmCceaSKnyRvbwxPYyWkP7guI7246QP9D0=;
+	b=VBWghuxcMnZdHZuMJ1JT5MzWYl7fiSdFdMPzKu+8JZymnjgvny0v2hKayvs5WXIMUZwpKm
+	BMRnvCwm+0c1t+4ct34EgNjnd/b12s3Qwo9dh9NG1hpDN1c+GN+NmprTo7m+I0iwIKj5x5
+	+22vMwxYeaLfluzK+YMsrmWn7wMKHJY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E7zi2vbD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSKohq6K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788770808;
-	b=UbSkRQR1TGI/zmxiRMS0UDfLvbvM3v6zVbtG06NlBtYvUzC4MT59LtQDAInXOV3vLuj3r4
-	oW2u6PegupcG5BfnIrFhuM20quF6MGJOGgig6lSFJNkL+iPWky114BWlCFDY0xm6Mr5ZTz
-	I99R7W4QexMaClaPfjcmj27JDYbFeyY=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2912380a12.3
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 01:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788770807; x=1789375607; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
-        b=E7zi2vbDLFcRCKj+SBKbJ+icb09XXAZ4lqUFk346LRzW48XkK6ki0GpS64so/ZhMFT
-         N0h3ZrQUTyr3G4f38XJaPjVMoH4soJ/yK8Phqzqi+85xDhLn8fIdNR2jSUX80HclTs1v
-         ayb5d+hlaAxptNl68kuAvvslPJYCqXgI/X+M8O+sRdKa0znTI05aZgzq+jPCk9M8O+gO
-         +9YVmbb9hblaYd9UWpGC81Jy8tMLvAPV4mpZyKE8v8us3Ma4kxJWW6UYPlxY8wm4vt2B
-         tEZYZFGZOVcvBB31kSHlDmo9T4wk6YBGNsI8IbgmOc7pzmagScG3dX6dWtGwGLlARymW
-         aGSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788770807; x=1789375607;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bo+3ezyb4Sv4NQNeQMvoxqsPDGjYgbnA2PqCEy61drI=;
-        b=qr97/6Af2vcGL4ntHtYXMuLKcxjkQk6gYKQHc6WidnoVZe/YjCHUA7dXmMTKOQRvna
-         hz3Pby+asKNi4JTSVKUqX6gWPFwfLgsWdyNPgVuObD7Yo8VvNx148kP4wqAaJLZk0HqY
-         L4Bzf9LFjQ8YwFkeXRVjAvyTLjpewT33taGDZZmdsUevqv2XTzBBaLTX0M2sGKkY29D+
-         P0HeD9+i1wh0igK1QqY5+abiAiCoDeHrDeM/8iMOFTBgxG+p/JyMWcGirdeMGLDJ1t0n
-         JlIS0iy6SwiFg9v7y5Tx3FBeVV5VAqnSvsSWq59IQs6sDbJPOHrGwXpBbDCtT2ewxp8R
-         uqPA==
-X-Forwarded-Encrypted: i=1; AKwUvBwx5fscTAohcMdmY/1pVB/nEV8bJv8oL/yEQOE0RKOxkj14wfjxVhPvp/O/47M3/DUreQi7JpkHCg==@kvack.org
-X-Gm-Message-State: AFuF++k1nc7BtFVGskTbJk++KfdlZOkqTZM23IvlIak947ttH2ZUbmC1
-	Tp84/ehxQ+hTgYZTXRA3enGjRTD1NosuDho7HhgizoKRabDaMsiWpZNw
-X-Gm-Gg: AYBFou0F/SaOt0scWAz09Xoy2BVB3ljXAROi0vwOiyUXDJzUiwFVq6F7i6tytmz5vF2
-	MlGKIaLDvf29qXyyHCExZ7gH49vwa+B73L5el2DctrsIRRXZlDs0mNHiRhXbwaOWBw3VPklWOLT
-	MHAu5CCmhhSJ0cmN6kS8F65YqlKDQC29xhLil48nmJ+K96c1MzhUHoTkhJZpN3NaijeD83ORjgb
-	f72E24ORAEOGFAFdr+PhKsXRAJfLVhn0kIwJktWmyTTU5wjg4JD5hYssHS+LA59EGMRB3Ng2ZJb
-	A7naAerwjAgS4KnfuIpdFvWI7O76fefdJ31bZshAajHntlmgD2+LWjfkdfgP1/OvPFOqT53QaZX
-	IKsiLbarB86/bRsVxsvnl7ZurIcvZfgcRODNDVNK0zyQVkohkLQjQXi5c1usE1HMOmTZtQ0YxZr
-	14oGQaa6031KMLiidEl8qoeYzdoMoXDTuRYIFxRf3JR9IgRDhthmx6LbN4hJs4JgC6/EPjxfv8C
-	b5TKQ==
-X-Received: by 2002:a17:90b:5790:b0:398:9bd5:4910 with SMTP id 98e67ed59e1d1-39b2624f0ffmr32121138a91.23.1788770807373;
-        Mon, 07 Sep 2026 01:46:47 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8f1cf6dsm9357274a91.3.2026.09.07.01.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 01:46:46 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: ziy@nvidia.com,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	david@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhaonanzhe@xiaomi.com,
-	lipengfei28@xiaomi.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] mm: compaction: mTHP-friendly memory compaction
-Date: Mon,  7 Sep 2026 16:45:12 +0800
-Message-Id: <20260907084512.670883-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <DL8QRV0RZS55.238LGA5F34MYG@nvidia.com>
-References: <DL8QRV0RZS55.238LGA5F34MYG@nvidia.com>
+	t=1788770993;
+	b=kBAR67EvULQinV1ukl3CvduCy7wIghdnhVrNenZ4AwI2DyMWj+vejEVoBt2KH5kr9wu/G4
+	3aUHKMeKHWbIzCSYDICyQWPx5AC1VRtcEb3B2Z+K0eqL4syQUIa+QH2tlTRYP18/muKY7V
+	Li3D4grm7mTI5rYmBiqIwFmFEWnPtoI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DD4841881
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:49:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CB61F00ADB
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:49:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788770991;
+	bh=kKgJ49C47SmCceaSKnyRvbwxPYyWkP7guI7246QP9D0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cSKohq6KLTUqDc4/QivFhks0smK6aqb1q8vcXcCLg8XEfhBhGByoY5GDnt8rWakEw
+	 HgJdReiol/vttE3r1w4pWsCtV+F56vGeaH8qEzlyu0WkNBmne2chdeutLiPEfHwsn9
+	 9AcM2iG8tVFY8B1+6Qlpdu011ZxcX5X3Jl0mEsdd1ilHgF4uXjrL742fxRRuZRLYSh
+	 mFxQt8rZRnhtKCl8GlosCSltqLCXirgkQRDlVyQCBR0+bPGyHdVHfqtoLbEzPkWMkE
+	 pqfDJ9HaLB/aos5QCX2LCN/TcTPRujcSa7/bd+1ynBVFGS5CdKVCKAFPbAiXLUm38b
+	 KzeDKpo5le4ug==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2637dd37c1so176492266b.0
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 01:49:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByWeE1rucyo1/neamjrrXtIFL8JJsZATNQe5cF46f9ghN+nPM/acQLQGhY3F0nMzqKmOODAhiG0CQ==@kvack.org
+X-Gm-Message-State: AFuF++mRwXwZIMDGeGuss0Pap5i+SGMTRFXP/CiDwEss7UDlvac+crtO
+	j6kIEoedTjyh/WUmpJK7zHPFBaxwuKjBfkTKYCFpyZnvwS1bgg7iTIOgk5INzzR+BVMPxWoXeLD
+	RTZALmgfFyJsqkmvZY4zysMUpzetd2aI=
+X-Received: by 2002:a17:907:970b:b0:c26:1649:47a9 with SMTP id
+ a640c23a62f3a-c26164956c6mr640895966b.31.1788770990740; Mon, 07 Sep 2026
+ 01:49:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1hq3545p87ms5dy3psd98fdp5os8yny9
+References: <cover.1699104759.git.quic_charante@quicinc.com>
+ <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
+ <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
+ <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
+ <apqppFukssaAQz3w@tiehlicka> <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
+ <aprxXHSh-LyqaFCW@tiehlicka> <CAO9r8zO93CMjJHLO1ZqHY0Tr2kDfvpMHfH3MLkR37vV0YROf_g@mail.gmail.com>
+ <ap5nJm1mH-4nfLaY@tiehlicka>
+In-Reply-To: <ap5nJm1mH-4nfLaY@tiehlicka>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 7 Sep 2026 01:49:39 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOaAGHXK6FZ0PM9sJL2zH4fQe5kh+W2TBNL90YZV2detQ@mail.gmail.com>
+X-Gm-Features: AcwNN1Xa3QoSN2YWlMq10SWa69-3_5olJKFYqC41i2JxEfQV3MbKhUFRG6jO7dk
+Message-ID: <CAO9r8zOaAGHXK6FZ0PM9sJL2zH4fQe5kh+W2TBNL90YZV2detQ@mail.gmail.com>
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, mgorman@techsingularity.net, david@redhat.com, 
+	vbabka@suse.cz, hannes@cmpxchg.org, quic_pkondeti@quicinc.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ncf3een4iw5t5nmqhsdjycigq4n19y34
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 97512C0007
+X-Rspamd-Queue-Id: 2B8891C0008
 X-Rspam-User: 
-X-HE-Tag: 1788770808-442649
-X-HE-Meta: U2FsdGVkX1+E8pd2RL6b5rk6NQJoDK7f/JPf7QC1fjEo3Xzc6XV94YI8n2jNE9tuuDg9/l1HylUHfH5QuAiFLtTIEYyLd5OORnJqPGFxGmOPP9bfK9aIOsgu/rIrdyJWJEhr44vET0T07nlYcux3J258lFjTrzKyZasH76qy4ovG2ax/Ag8xDbKvJqpGV7+bPdLK32DO7pY2nXVUFCROKHbcNLwdgsIa20fMufSlHwNvtG8ndq+UhGQ7rIcxGAdKvRb1b86W4TmXfB8Zjc2Vzy1ZOxnZEKOcWlnL20J0RmiF7x6wthrd/ghBEqFNVGzm/GxCIAyyxAYQYBuFkBjZvx0SK+ZXfjjGtwIanmjg3X1TcGIquyvEGmVHoCl4KHwtxUKIXGW7aW7yvQeNyWTw7uA/594HDUymAWRbRtmuDVhxjIOFLVGGzoHH0kFUTXROmgJumBDi+kdU/RaeAMakCMM1eyrB4POZcuwNPPDo7/axSJe90eDAO0g8HPpZILx/Eutjc2NwdZOu/7IG8DBy2ahS1H97YsLBleuPlPiJeqQKjRi/NJN1WcaJLv57xie8T6f9O4jH4zOBdG9qCPHdb5EbNpyI0bzP3dLSN86Y18egBf0UM5pmazoeCYT66orOBZdGvTk9a4uMWPVrN0h9r67xP7VFrcHD/3Nl8MwMSABldaReIVK1i68EyIX6kRVJFuOAZeurQj0x2oYd9hk9qT3CPtKJX+HmBCciPGXlLYqcHT/tiPDWWSOZw4lgCbPn8jrGw0Yps49qNd1TxYoZIJN1hvRpZ/Dk1o1OjDhnbn7DrQGmZijPDiNXmRCb+vNlDIFCIrefGqOle0jVOheSn03GVoZFwCeW393hR0eet5il87jKgYbTMi4iTjP1bTVr1GZPcHW66AM5PDvwTrDmAtIEoO5qP/EJbOkpyzemRQa3oalcZHtzWVL/UCe4G2YcnV6l9YPu2CTjVbBF8QD
- fEgf/PFb
- 1VzfTEVT50Hz7WlsCnlEQsub62XvxauqLrQySvmRCVboiffBMBVMKphyAvJCCP6UraipZaAYk5h8/3F28x4PqpL6kqDjXRCxD8uODy29dxNtMY0SlsNcS4pVmpPO1YzlCeKDYefiaEIh/uM6Xm2pE3dwAeTUdKPZ0QDhkm0KAHiHeGhhLKsUiRaO+2Yc8Vcwg70PyPxMo6RkAz4o49Sk6+fo5j8OiNQcCIoj/UK1x4xjKQ8mBeQfnx79nsdrMzT/kvFQ1X6CWkTUGY2ZAPwuzZwcNZ7Ks8R4vlzRNy1e2wtw5axOZVm4mjNQRGhiNoLf9pdEdBjwOmGsLhGQoIUnzxs1sf6MsKrP2HAnr
+X-HE-Tag: 1788770993-421942
+X-HE-Meta: U2FsdGVkX1/d2SEMQGpnrmq3PDDA3PDJ00JZVmGvP4lTckSQCsBROrzBGUDfsEpPXOLc/Bqnux2ZmqUL82nZUJtx10ssTiJZ6T+MoS2neHKuGqGiH9re+dRUHXJrWK4QuQkYSzx53JO+6LkKsNd/dqiIalmxCuKNvcf0VYB4olUTKm0BblX+oMZ2IO1ki7e4mECrctydGX0D6IFBkva55uV5AUp4l8ejE3qMcD/D1KgKeenEGq0RFhAUDrFx3/rde3Dyuod7kWdggR7v9bpm7WcpltsXlFejtTtZemp370TkWwFsowuhdy6ei4TFIJ/gYrHIEwgMZATeonw0eI2zV603FzROra26wYe3SSJEgbpSatkmkGOEFLZzmaUOXiwAlD+5IGBb16QEBCdptz7+Xn8KK620OI22qYoS3agAOpaZtNXb46ToZCL1gitDR+3hon/dfaMncKFr51+RmcxjCNEzmN23hMlJHuZmsYLroOUnlOk+BD3pbRfRl/0bFsOaogqBdx9QFHuTOciaoSDEmw591kM7FjUsA99WYcg173iX33HXWbj4dsQbBHRfVWntmLlOCxah2suVhGxPcAO1o1gfGYFPhRxkM+fxo+lL14m2+AOEUuvsFap8R1Nz+IPEod6y7U4vdTECbTcgK/Z4V0jOJick0Im5UaVcs2FbQzBX0ILvoHDANdWuSxo8t2Wfc5bpvxkIXliGFvcqyUDB232sEgCKitx8RQSHdL45brvjZgPgepCZzZ4bPXq8+ic+SiMoG+IPkYfZMLQTWLHnEp8rj7d2XPHKxlIYZFyIxCEoUxJEbpLAMqF+k1+JYV8atInxUarlEHgN58brItavoUQhyaLmGx1Ldgjy3OXE/L5mPkPv8rfXqQ56JxFjujhKDevq4VNo2jYE+YqDGqSpj8A3QnNWFXLXLfVag/3Ve53MyKY144BGAfbZGPfoKqTQWHmymNxODsgWu1ci+Nu
+ JoqNTgXR
+ bc85pWUqtczek4J3oubZoQ4yRlKq2TDQ2x9N8oEMuzOa3qXi8mwZao3pvKs9TQh5DHtm/Vz2sLao91TRWW7ARNX65tAU49wg6I3iSLl1LTeTnIdbaP/J8y7w4Co47jUeaAo1ULow4Odi3memzLExm1zrY0U6n3UqI/nZNWbYQDkw4HLbAq6geLdE9avmjtEiXek29D9wh1F4C1VrzEXDCQRREE6JbL9GbmTBfVjopoqHUlsPm4WH9i7yuXSc1ub7uow7vvlLOuoHhP3BvE16C+ylLiODylDayeTguO7Rg6EkU8otLUy249dU7wrZPQgjGNvo+i7oAAFXs+uWOIt+o8jhhqTp9HjAdorDrkA/zAyzH9i6wFSXqtX0TX6hWxY9h+r1mBQPzHCVXOlE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,46 +109,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Sep 07, 2026 at 10:51 PM EDT, Zi Yan wrote:
-> But skip_isolation_on_order() skips a folio with an order >= target
-> order.
-> ...
-> Oh, you are targeting proactive compaction, where
-> skip_isolation_on_order() does not apply.
-
-Right. To clarify the cover letter: the "migrating folios that already
-satisfy mTHP" concern is specific to proactive compaction, where
-target_order is -1 (via compact_memory) and the order >= target_order
-check in skip_isolation_on_order() does not apply. For compaction with an
-explicit target order that path already handles it.
-
-> What about the impact on THP compaction? How does it affect direct
-> compaction for both mTHP and THP?
+On Mon, Sep 7, 2026 at 12:26=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
 >
-> It sounds to me that this patch series target proactive compaction. Am I
-> getting right?
+> On Fri 04-09-26 09:35:55, Yosry Ahmed wrote:
+> > On Fri, Sep 4, 2026 at 9:27=E2=80=AFAM Michal Hocko <mhocko@suse.com> w=
+rote:
+> [...]
+> > > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > > > index 8d79f76cdd0e1..98e9079240ad5 100644
+> > > > --- a/mm/page_alloc.c
+> > > > +++ b/mm/page_alloc.c
+> > > > @@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask=
+,
+> > > > unsigned int order,
+> > > >         psi_memstall_enter(&pflags);
+> > > >         *did_some_progress =3D __perform_reclaim(gfp_mask, order, a=
+c);
+> > > >         if (unlikely(!(*did_some_progress)))
+> > > > -               goto out;
+> > > > +               goto drain;
+> > > >
+> > > >  retry:
+> > > >         page =3D get_page_from_freelist(gfp_mask, order, alloc_flag=
+s, ac);
+> > > >
+> > > > +drain:
+> > > >         /*
+> > > >          * If an allocation failed after direct reclaim, it could b=
+e because
+> > > >          * pages are pinned on the per-cpu lists or in high alloc r=
+eserves.
+> > > > @@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask,
+> > > > unsigned int order,
+> > > >                 drained =3D true;
+> > > >                 goto retry;
+> > > >         }
+> > > > -out:
+> > > >         psi_memstall_leave(&pflags);
+> > >
+> > > Ideally if we can make the function call less hairy. Maybe we want to
+> > > make draining part of the reclaim as the last resort when normal recl=
+aim
+> > > fails.
+> >
+> > Do you mean do the draining in __perform_reclaim(), or deeper into the
+> > reclaim stack?
+> >
+> > The thing is that __alloc_pages_direct_reclaim() currently drains when
+> > __perform_reclaim() fails to make any progress and we still cannot
+> > allocate. The change above makes it drain if it cannot allocate after
+> > __perform_reclaim(), regardless of progress. So if you want to move it
+> > into __perform_reclaim(), we'll have it in both places.
+> >
+> > Or maybe I just don't understand what you meant :)
+>
+> Sorry for not being clear enough. I meant to pull draining out of
+> __alloc_pages_direct_reclaim and instead have it somewhere in the
+> reclaim path. It is not entirely clear to me  where at the moment but we
+> do not need to have the same behavior as now. The idea behind the code
+> is to not drain way too much. Maybe we want to drain when dropping the
+> priority down to 0.
 
-Two things:
+If we want to maintain the current behavior of only doing this for
+direct reclaim (not kswapd, cgroup reclaim, or proactive reclaim),
+then I was going to suggest adding it to do_try_to_free_pages().
+However, we bail before priority reaches 0 if we are able to make
+progress or compaction is ready.
 
-1) Traditional THP (order-9) is not affected. The mTHP-aware branch in
-zone_effective_free_pages() only triggers when order == compact_hpage_order(),
-i.e. the minimum always-enabled mTHP order (e.g. order-2). An order-9 THP
-request does not match that, so it keeps its original behavior exactly
-(NR_FREE_PAGES_BLOCKS under defrag_mode, NR_FREE_PAGES otherwise). We
-didn't change the THP path.
+Also, I think in do_try_to_free_pages() we don't have enough context
+to decide if we need to drain the pcplists. Looking at the comment in
+__alloc_pages_direct_reclaim(), we specifically drain the pcplists if
+the allocation fails after reclaim makes progress to make sure all
+reclaimed pages (e.g. in other CPUs' pcplists) are made available to
+the allocation. So I think it fits better in the allocation path, so
+that we only drain if we cannot allocate after direct reclaim.
 
-2) The series isn't limited to proactive compaction. Patches 1-3 target
-proactive compaction, but patch 4 also covers the kswapd -> kcompactd path
-via pgdat_balanced(), so both proactive compaction and kswapd wakeup are
-addressed.
+I think the main issue is that we only drain today if we know direct
+reclaim made progress, so it potentially freed some pages to pcplists.
+However, it is possible that reclaim did not make progress but there
+were already pages on the pcplists (e.g. freed concurrently or were
+already there). I don't think the right place to do this is reclaim
+path.
 
-For direct compaction: patch 4 does touch compaction_suit_allocation_order(),
-which is shared with direct compaction, so order-2 mTHP direct compaction
-would also fall into the new accounting. However, the direct compaction case
-needs more testing and thought. How direct compaction should behave for mTHP
-is something worth discussing together to decide the right approach.
+I personally think either Charan's original patch (draining in
+should_reclaim_retry()), or the diff I proposed upthread (draining in
+__alloc_pages_direct_reclaim()) are probably the best places. Please
+let me know if you still disagree.
 
-Thanks for the review.
-
-Bo
+>
+> --
+> Michal Hocko
+> SUSE Labs
 
