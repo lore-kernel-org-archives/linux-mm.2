@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2B1C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:54:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8036FC79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC5A56B00A2; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
+	id 890936B00A4; Mon,  7 Sep 2026 06:54:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78256B00A3; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
+	id 867D76B00A5; Mon,  7 Sep 2026 06:54:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A65B46B00A4; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
+	id 77F4A6B00A6; Mon,  7 Sep 2026 06:54:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E5DB6B00A2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6C17C0111
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:28 +0000 (UTC)
-X-FDA: 85186657416.22.77D5D54
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FB786B00A4
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:54:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1B431A0113
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:35 +0000 (UTC)
+X-FDA: 85186657710.20.DC1BDE0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2EEDE40004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7/0KQt1";
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 33D7F180006
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHbFXHXN;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788778474;
+	b=ZrqkBgJPL2w+zh/YDe7kApLhe/gRY4MDreZoJSmADpNlfrd+zdVDfGjvjzc9SCK9QRX/WV
+	Se8Kj2OBAmSLJlMtOAkmtSxhBcdE+5D3DsZWLILh02UWcGJ6QqafErC+p+t/tN1676mkFm
+	mFCnbOVfIvwZ4f8c9jUkGukng1Xtc7E=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHbFXHXN;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778467;
+	s=arc-20220608; t=1788778474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NOGW6/wWy7KCmoBtQtZTuis7xY50X7nU3u2PLYPpIC8=;
-	b=Ar/3T+0ufJ6lpB+3VMvlH9dugO9yMoc/od7Y7pFqdnKVHKRZv/P5PcsQmdym6Uae/fzNUO
-	aF4yr9Uee9z6P+addVq7OifHLp05nZwKNC07DIS1PXL1IakxuJQsylMdZZDZ0qHgqG1BRa
-	Ej/23Jx/jhlLBRLbo5vK5YBhGc+pkiI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778467;
-	b=ryqDydecRL3U2xvUZuNB1l2r6XoHqE120v8rIDHJ3yovIyRyy5SiwMpr1o8z2PAH6ZncYO
-	qAuAzdsk5mLv2V7X6PZqHELgh87YZSgC7rByFtqhxudPGX8vvPu7tJqEBpdOQHLacjVcYG
-	Jw6UypxjQt/DVQwT/Ab9Cm86kcphZe4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7/0KQt1";
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=V3C3uRSlXJAvrU8CA+JkknXP4ShUi36cTXYIJp4O8Nc=;
+	b=Y1saxoWGIXvXFsXliLk+Jnr1MxbqOLKmjyDAF7gJt+rALQaHRTCB1j2kszMD+exDlr/u+X
+	AYSRz67gEd1R780GiBD1sygvOxpKyJdkrw62oM+YDmwkJOgi3jiOlQqKptZcfTT7c9byUa
+	B2YhCUYccXa8kAo4CSBvd+iSvc1DkRg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A95AA42B6E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8628541476;
+	Mon,  7 Sep 2026 10:54:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B031F00A3A;
 	Mon,  7 Sep 2026 10:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EAC1F00AC4;
-	Mon,  7 Sep 2026 10:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788778465;
-	bh=NOGW6/wWy7KCmoBtQtZTuis7xY50X7nU3u2PLYPpIC8=;
+	s=k20260515; t=1788778473;
+	bh=V3C3uRSlXJAvrU8CA+JkknXP4ShUi36cTXYIJp4O8Nc=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=G7/0KQt1Skmof7ZpkUnZkQDRlafhOO12XFsIOYKQpAZmnVWs9cA5biIbNGPPuXDzW
-	 zsWIjohT+04Z7RKrQ4HzEy5BU3ZOMwvrWuBqgfNP1+E/sppYgegCHuaVVral3FOlD7
-	 E+BJ3cZ1lOKjnuBo7hq5B+GmYNIA2vRgOiSdaWPEUUmRfgH9LhJoq/xjGrXd8iQxIp
-	 0QLHHyb+1PCWt6wcujYQIYJHuxuOw+/3VdqprBCgXm18Ni37snzH3Dcs9NHuc/UdDL
-	 gPqtso0FJZynaI1csR5E/lOdWBfyYv0v+WaIOpjWESgWiFg2UzIYKaqr8ob0R4FU0r
-	 J5L9r8Wo6IEgw==
+	b=ZHbFXHXNQiOKEVicWGF68AIi3xG2x4I+cHsg8VqPlCzvv+nZFOAz8sbazJ8oBLnFB
+	 ML9MVBegMDsk51RXbXu3JMCcuJZb/ohTBVMqsW0habWrf9MSzwxJjEk/IISSR3SM5+
+	 wERS3KXe9I+Qam1+E7DPID9Er5aiyYuvlBxrpSI+Zcn1xmDosCkHdzrLvOXN6De63G
+	 qPtKHZuyqCKKa8ls2pYhHzjwY+lSjpLLKfwushmouce8WscmOiCFbQECE/0utjH1dc
+	 kk45mPSMKCcteX8yeA4ZmqvmVj241Gezp5GV3cX2trb7b17udLgCy++itmSvBAvbLI
+	 BI9MJeJODNKhw==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH RFC v9 01/25] mm: Introduce kpkeys
+Subject: Re: [PATCH RFC v9 11/25] mm: kpkeys: Introduce
+ kpkeys_hardened_pgtables feature
 From: Mike Rapoport <rppt@kernel.org>
 To: Kevin Brodsky <kevin.brodsky@arm.com>
 Cc: linux-hardening@vger.kernel.org, 
@@ -92,20 +93,20 @@ Cc: linux-hardening@vger.kernel.org,
  Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org, 
  linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>, 
  Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-In-Reply-To: <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
+In-Reply-To: <20260818-kpkeys-v9-11-743ad31b2c8f@arm.com>
 References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-11-743ad31b2c8f@arm.com>
 Date: Mon, 07 Sep 2026 13:54:14 +0300
-Message-Id: <178877845406.3691569.6930315020588094755.b4-review@b4>
+Message-Id: <178877845406.3691569.11239630051799000768.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: 9g84y9rqcffkaui8rqwhecjqted167kk
-X-Rspamd-Queue-Id: 2EEDE40004
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788778467-787327
-X-HE-Meta: U2FsdGVkX1/oeJ3Ugy219au01d+NVKqjR28DSTupilsHQ5UHKGNM54O7rtWEFGdGGfo5jzAtCBf9vMJZytdx9+6itLR0JB3/diDII0mFM07jC3BITsA88b5IGPWi3XpstwHyNv05XZX4xrsiDTkdFlfKTPNUEhOjCZ7+fePQcZZ40mbpp7a3J7tZGgNBEyh53bV/jMOHGSsbIKDrix+7eADov7kT0e68U6CeFU5FZnnjmkqVDhhPBFfIqtd8TKVyRt67BX5w4BWbv3/8F5cZSjBc0DiEkvOviIKnWjwCwaRzIOUGjTcon3aUZP3f7BfAXy8Ism+/v/svV/eWZjcvcgO7blZVNkZFzBjVeEpWBxOn3+0pJmOXiyz9zTsZPte4S+Vi+kPqMPNNh+jbNUITkBSKqTUZbZni4yjhJpMN7gQQslSJXjzEfjAqQnYOuM5UT7JRuFbL/dF/tEh83kf55PyRii4DuLzqt0kTuEn2ub/Td6ito6Jvp+Mkz7LEmdbYkzW3vH5QdW8bXA2/lB9imODjEJHPyFtaAf8rWvQ3sG75G6Ie6MqlzlDWAgmcI96SoecildkqFYZGR+R7f9WbuTOdSB2RtFYXGIGBSFk+/Lq1/1+mN7CiihoVJjVGtM5eM29SVOZVGXxPiorb7PRVT7jm3QeD33A+QXW+xz2q1v6UqoBJZHWixxUloGwIvGvpd/bwankQofYW2I/IwBv2zZKvfg8OpTM2cFb3blFZ6ktpGTC+svaEoepIlUuQNSErUh4229ejN5yjRRMJfPxRzh+wSQeoT8IaHEIB8zk5mSIUgKosJffGmtgqAtiP9yB8cl7eEtKH5EsJZgK1dCHgX3m+97DmlfpxugH1uZ6ScXdRkgJzxsxfhPdIlV9n+E/tb8BvNZFn6n4JHgaqQCd9xmN2HCDawdbcdJXGg6qLp4LIdn4yMvS1JmFp22FqyPSWGhLnViFsiwRl5dMnsEL
- 2BZV09BP
- QnXfdNd0sj9iCCVgeHDuJgZEac97BwwTyOp1bJ2p2n5YcvoqVCecA3t/MaEWLgSJtKoN2HQVawi3S9xcLyOfc2vvoF0DNKcl0KCEXfSZfL6khjTXK5rKbyo192CZKg3XSNXwLg0ZLR2kObom/MplrphBjj3y0FzYRKz70pBCm+oF7U5FXq3ystGc4y+NdaXzN5VH9es3nkiiNuq0u4yXiE1q+ulYkUh4TSWWYR+pZpAOuGLlkY+VSY/3bjk0vu8T1Q92Xymsb08D2m8Otr7Ud519px6Jo2JczIEi0R0gfcFldLSwhm7LeJcMQs72QDcy8wYfR
+X-Stat-Signature: gecssyrxhq63jrsopd68wnbdzaxr5naz
+X-Rspamd-Queue-Id: 33D7F180006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788778474-525350
+X-HE-Meta: U2FsdGVkX18TUacPwWVv446eDTxrzX/sL8/rB8mSrn0tUanFPYyppZFr1ncZTi2aZyRCZSK6sfpRjiBh8mMKjYIX/fJjCKFyZPjCcYaiLMlom/mHN7CEOGLzpagKR/trNGSls8jOc8fzh2HScrHfP4IOHbpCe5/ToDl+/GXSCo2mtXlVeSRNQSPuaefh21u2yPkZNPr+A7Q5HUv0IgP7FpneBX5WSWfFo/3bu7vjrd4HOck2Tcyl0e3xRGw4BwnBzgjNnWucyQKw6zDu1t+8cvs2+NETYknZRdcEajhtMLmRTi8YGrIreTq+P4AlmJMfKuONf2tWfUDZbfxaQIAiof9P80IfiDIPjNJpoPdiwcOOrwVbtWXaB0DwnVn7+Z/0yAIcmByFLkS9lBzS19fWzQKZvZT9YBNakDBNI/ousti8AnBiJkL/V8yA9fD/lbFbJKRtyD/RLUutQUEKlgPC3QY3+nEDfK6vtE/rN+grmVPl6TsC09ZD+E0ft66hlpPqGWX+EQBUh6jAa47ksPce5GKlp7MnXRIux+gB6w3UY+VM/U+yj7kT76TByqjau28zAYHheA3zrlM82GV0cPXbDdzStO9pR/slH9FfN0tAiI4hKHRjcl1i6tm79eYqZIjb0i7xh72ymE2BqyuA+FiZiaxlSN7gMYaNMz4fias6gPZiNsGvqjsIMc6Q6BrmzuNkAt9xHRx+30/+MYr8Swb+IVufPo79MHKuvdEATQfvYQKRymP/9DpikwfvWz6Zqr1l8dYTrp0daFCT5819E2+0k4NB8FmTeomcQFOV0l6Ni/gq/ZcsNCTiNJAB3MnQETkWO4Sd6ykQ0R1ME4+YrC1x5ZxljWGWiKN0HoKFpyRvAaKRAmIO5cr4hQ1u/eiH+7um3tyL9hTNEQ7vL/74e5BzOHQfCPGrn2xYrbl8hus/j0tCLCJHYYABXG4KnSQZMQ1tWUUAt8ikDHnzUR3s1kX
+ ePOlrmgQ
+ PBNMXbyJO9MXnkw4kyAP2tOs7Q3fGBLIRB7sxq+XfpMTGih9uBoorXeL7Q+cVi9fQIbJYqDKYwhfKxigLLMTc7L1o8ynoUg7RH3A/wDkVg4vnU0f4wfB6GFr1unuZ64EG9ihrts/Y62vtqDxqn/qgpnOCKCD17TaVvxRoS3Clj+HGU/Yplknay2xPdiBUugwdlD7FNkXZfNM0GY92s/kqPRZKOWRMb2DUVFYckBodwiMuR+U3YPrThCt1nQUFqfNw5NkLvtQyW32MUR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,54 +116,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi Kevin,
 
-> kpkeys is a simple framework to enable the use of protection keys
-> (pkeys) to harden the kernel itself. This patch introduces the basic
-> API in <linux/kpkeys.h>: a couple of functions to enter/leave a
-> kpkeys context and macros to define guard objects.
+> kpkeys_hardened_pgtables is a hardening feature based on kpkeys. It
+> aims to prevent the corruption of page tables by: 1. mapping all
+> page table pages, both kernel and user, with a privileged pkey
+> (KPKEYS_PKEY_PGTABLES), and 2. granting write access to that pkey
+> only when running at in a privileged kpkeys context
+> (KPKEYS_CTX_PGTABLES). This patch introduces basic infrastructure;
+> the implementation of both aspects will follow.
 > 
-> kpkeys introduces a new concept on top of pkeys: the kpkeys context.
-> Each context is associated with a set of permissions for the pkeys
-> managed by the kpkeys framework. kpkeys_enter_context(ctx) sets
-> those permissions according to ctx, and returns the original kpkeys
-> state (typically the arch-specific pkeys register) that is later
-> restored by calling kpkeys_leave_context(). To start with, only
-> KPKEYS_CTX_DEFAULT is available, which is meant to grant RW access
-> to KPKEYS_PKEY_DEFAULT (i.e. all memory since this is the only
-> available pkey for now).
+> The feature is exposed as CONFIG_KPKEYS_HARDENED_PGTABLES; it
+> requires explicit architecture opt-in by selecting
+> ARCH_HAS_KPKEYS_HARDENED_PGTABLES, since much of the page table
+> handling is arch-specific.
 > 
-> The underlying representation of each kpkeys context is entirely
-> architecture-specific. Support for kpkeys must be explicitly
-> indicated by selecting ARCH_HAS_KPKEYS and defining the following
-> functions in <asm/kpkeys.h>:
-> 
-> * arch_kpkeys_enter_context()
-> * arch_kpkeys_leave_context()
-> * arch_supports_kpkeys()
-> 
-> Additionally, <asm/kpkeys_types.h> must define struct arch_kpkeys_state,
-> which typically provides storage for the pkeys register.
-> 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->
-> diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
-> new file mode 100644
-> index 0000000000000..eac522f552141
-> --- /dev/null
-> +++ b/include/linux/kpkeys.h
-> @@ -0,0 +1,104 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef _LINUX_KPKEYS_H
-> +#define _LINUX_KPKEYS_H
-> +
-> +#include <linux/bug.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/kpkeys_types.h>
-> +
-> +/**
-> + * KPKEYS_GUARD_NOOP() - define a guard type that does nothing
+> Because this feature relies on kpkeys being supported and modifies
+> attributes of the linear map, it must be inactive on boot.
+> kpkeys_hardened_pgtables_init() enables it by toggling a static key;
+> this function must be called by supported architectures in
+> mem_init(), before any call to pagetable_alloc() is made.
 
-Nit: I'd suggest to drop "define" from all the descriptions, they would
-read better without it IMHO.
+Presuming other architecures will use kpkeys framework it's better to
+call kpkeys_hardened_pgtables_init() from mm_core_init() rather than
+stick into each arch's mem_init().
 
 -- 
 Sincerely yours,
