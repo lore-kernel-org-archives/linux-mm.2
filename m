@@ -4,87 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0C68C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E203EC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:42:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 956146B008C; Mon,  7 Sep 2026 08:40:14 -0400 (EDT)
+	id EB1076B00A7; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E0F6B0098; Mon,  7 Sep 2026 08:40:14 -0400 (EDT)
+	id E88B46B00A9; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 843B46B00A5; Mon,  7 Sep 2026 08:40:14 -0400 (EDT)
+	id D9E9B6B00AA; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1526B008C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:40:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4349A015B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:40:13 +0000 (UTC)
-X-FDA: 85186923906.19.626ED66
-Received: from mail-m82150.xmail.ntesmail.com (mail-m82150.xmail.ntesmail.com [156.224.82.150])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3F61B1C0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:40:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=deepseek.com header.s=default header.b="B/YC1o04";
-	spf=pass (imf20.hostedemail.com: domain of escape@deepseek.com designates 156.224.82.150 as permitted sender) smtp.mailfrom=escape@deepseek.com;
-	dmarc=pass (policy=quarantine) header.from=deepseek.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A71B96B00A7
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E35EA2B22
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:42:15 +0000 (UTC)
+X-FDA: 85186929030.14.9E0FA4E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7652820003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:42:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN062EFB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788784812;
+	s=arc-20220608; t=1788784933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GaQ5YtuWhqR6EHDoYWKfff2DgSHnW3S6WvgJatwu8eI=;
-	b=BjHtO+VbRyWwtzh3UrptjuZu3RNPxnmpnhVnI3FHYlAls4WkMbAZAVpbYvMCdX0+j6iab/
-	Ao/vQdKdbJI/stR7eu5hnTB9yDW+6/aRJE0x+ceZC8TV45HEhr5UV5JRCzmHazg/y2qMAh
-	5XqK2PttO9upoON8sWzVxodyHhcUcTg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=deepseek.com header.s=default header.b="B/YC1o04";
-	spf=pass (imf20.hostedemail.com: domain of escape@deepseek.com designates 156.224.82.150 as permitted sender) smtp.mailfrom=escape@deepseek.com;
-	dmarc=pass (policy=quarantine) header.from=deepseek.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HfMjjI2/7Y+3s7ee+yLarkRTyl6EkYifeRjlYtTl9Y8=;
+	b=TAfSKs4ue5nSSfgquhIJO7rws4A0oObbtf+q3MppC9l2yUxmItoV7/MhzhqZzoEGnT+I+S
+	D5P9izMbuomOHzeArlGhwP4RDVgiTPTLh/apYUhky8hV52k5V+ofk8S616fu5rmecuUQRr
+	QCRScfeKcVXF8xm3nZNhChzbYpBiQNw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788784812;
-	b=XE9COc8sVS453NtF5SSMKsH9GJYrFnFpt4C4Dkpo6zkfMXilqT2xEPanxH5amCQd9/J/4E
-	R9C9b9swZA0Xh1el29F6hyPaCSajLytglmE8GyM898tPauZwcID3TmEgQVmj17n4HCtEx4
-	YzZMzfELQ5O5j+EUv6bMzoOIRb/jghU=
-Received: from hg-fd0407-cpu-vm1-037085 (unknown [159.138.123.140])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4cd3dc5e9;
-	Mon, 7 Sep 2026 20:40:03 +0800 (GMT+08:00)
-From: Tao Yi <escape@deepseek.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>
-Cc: linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1] mm: memcg: skip frozen folios in page_cgroup_ino()
-Date: Mon,  7 Sep 2026 12:40:00 +0000
-Message-ID: <20260907124001.1544655-1-escape@deepseek.com>
-X-Mailer: git-send-email 2.53.0
+	t=1788784933;
+	b=ASi2EV44j0yv48UEwQnWDB2nH9RZOPuQK02KlQR6QqSqXNU3Vyv7OSi1kCjHYxl6yiV1G3
+	7NldoihsrWzpsp1V9KX+QwVCFWtzlor7vDzF3BEFkoDdtpkVLsNLCm/PRUOmCI1Oxa9HV8
+	YFjcN/ArTLnUnRvOzotEqcDxOaAoeQA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN062EFB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 85B0643D56;
+	Mon,  7 Sep 2026 12:42:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDD91F00A3A;
+	Mon,  7 Sep 2026 12:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788784932;
+	bh=HfMjjI2/7Y+3s7ee+yLarkRTyl6EkYifeRjlYtTl9Y8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BN062EFBvF2RtBvaF2jcb9/4wctMQKXTnIVyY+FSkPOpdWwfOAtcGub+ZYo6hRNnC
+	 uy/uQ/qMVG3Z/v4x/XFEMNJ51/MquyVxc5UoBSux4eqRB/gzl4tA1P2KSNrxetjcNi
+	 aBLy0Htl8EZAlZyhf4Ly9gbsBRWSZLsrCBPwVs59igbx3sv6vtl4mAxYvw4YqbwopJ
+	 czVe9Ogk1g4l1NAVXW++p3A5Z94J65+41Ma5rHiKdqE5/3jVjl+OA5Skjt/FekcW+t
+	 cXZ3Iu9R2IvivAMx3yRFKMqGJJwFU7IhUy6yHCgSsa/Ki5EEQ6ThBXeJdiqqmB3FOU
+	 dkVYKulSnFvJw==
+Message-ID: <1ecffc76-55da-4831-8f21-04c97ce90ec8@kernel.org>
+Date: Mon, 7 Sep 2026 14:42:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa07be1fde309dakunmf5d73b6726c9b2
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGUhJVkxMQkwdHx0ZGB5MQlYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKTkJVSkhDVUpJSFVKT0tZV1kWGg8SFR0UWUFZS1VLVU
-	tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=B/YC1o04V0UdNUcHS58/Yw63wjPuwQuOdIvQOvU7dKrt/7c9k8FNgiB0jkhPtFBPikjIrd1drYdH1zuYou5F5nys0UKMMKK5FrRvHMLonH045txDG2rm7tNeeFJuOxLbRvX8uL/7IWKZJGO03PcoYNpIPlnLEqMzK4WNBOfp6zc=; s=default; c=relaxed/relaxed; d=deepseek.com; v=1;
-	bh=GaQ5YtuWhqR6EHDoYWKfff2DgSHnW3S6WvgJatwu8eI=;
-	h=date:mime-version:subject:message-id:from;
-X-Stat-Signature: r64q1uduj3fridk4jxggs8afr9o48mhj
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3F61B1C0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, SJ Park <sj@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, kernel-team@meta.com
+References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
+ <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: giy865fzq1dru4k7qrpkptnd7ykqngmm
+X-Rspamd-Queue-Id: 7652820003
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788784809-304782
-X-HE-Meta: U2FsdGVkX1+m6+2U3QkNplngFH1nZvCajpVQlcf2cdm/gMEkeIPGBpfiO/JiNcN2xiwODRVmiUFA08rqkEZjqid7SM4ldGV0E8oEHCG8lDxe6XPnD9viLQyd4sMo3e4DvhKKq3fWLpAfH32vCzT54X45Ta6Ri5IxBUmkDklQJfsOY3tOqbcebFZ3oeUjqzUZm04vG8knBcrLB4Krkc9HihpdQwplSeFXUG2SmMedkn/DTnVlbPuyhrmAA3djgnhKxlATNAOAuAK3+0PVp7MXJZAqIlJt8afFwGVOlb1rtYewKTa5PTtYSGvuWfzx6lqeD82FsOP11TvTjMyF0wEBYtAECKWZiaU0dYTgLDPg3FlVdH6R3CK/3xA6n3yJiFsYTPhLxxyGvgDqk8zx5kzpdwMLwXHUeU3Ztea3yaEtP61d4lxxdtHGk3Bxwx/Ze/jdew9lzk7LEHSVL3GarjHdfd/HSrbVytPiWAxT4i/kH36lfxVN9/DvOkfODtTCmUNNzosZxt61JUGIzb/VAbqT5vrXuLUUl9WjxcbozOA4i6pCemn6E9SG6e9Xquym+hcexCS4ckro0YSiLZBueRPzRF+c/GmWUzn2KmzOVw2iHLl5quQBsI1zBzXRHDgB5WTJ1z+L7KgoxrB45QlQAV3ikhIKDAHxfz777HEA7S4kZBZbesbbH/+wYkEnBgzHbw+mPn/cDljgHXZRDdoWDJ/KuFpV+ngPVL7DdmXPdvrMlxOL1praoLELCck6TjFXSTQGe7V8K7Ba4a97ZW+j3VYbYSlWmbqDsW2GbXabdB3+qS+NI28Zb94nfZzZiMtb7HgfND5GKNNlpsq/tPqLhy2+9WC/mk086Ck2sXHY47UQqFP1B41gWW0ZmueSdZzM6z9MW1/sLxbWruh4Gk6MGZWJ7fcc99GLtsZRdz8C6guPgd1r4ploYKU1WCjrn2u4pEv4nxQ6r6KS4eM9dB24E5z
- 2MBsCuAK
- sNUYFoH0kS0VNTozuyTs6MnNTSl1qHf0WD+kY09jpHjZv9Zlj1ULW/tij6VYAe8gppFqNBov1qEWn6+FqwI+BwJyQYBlwAomxWEcB2DcNbKTKL9QRNrRF8R8TnsvSScOtzJWMNXRx6LVuXVKBsn/8lhBBRUdb9530DOAhPmrpSa1dljuMqpu4dqf4n2TqEdHQfCW1/UNMu1IktXusCnMdxwBXUNrmlHhEWsbE2s7ztFqZ0nFauersNIPwCi/U3xI3MHceRyBCpqt3d3rLdfwfstLwEjrpmWrl8/Z2dcvbsghtW5SRVWfZNFsQwSW64N0OgV3ma8FtvtDQwmi7E+Ahfq9VUfD+WjA0N8bQlR8MBACI6Z90gZnthFqDaCW6DHPqXbk9nHEbBsVKXfS2JyA7fOrRaCNg4i0NWG2IjWCPkgiZsf1wILFd9qHsiUnYq6yfhA6n
+X-HE-Tag: 1788784933-160126
+X-HE-Meta: U2FsdGVkX1/N5EGaqWESMiUQZmOOm/ZPT1Uksf3pffpJk3fiKKl7x3d36A2eaVSNy3Ega4B+MiPAbeRgLlA/xIYwo1LBlHXyFKah7c5ReK3uzQFGDoRvw1Ez+oNnhL8mwb1xLEmOraossIfb1UXAOSUz9RTegCAKCsUu0Z8v0mOVhjA93eN243wHttuCdEMUzKpEAVvC3NxSb6BgN74RFSRrrFiH9gi03CkOLFBM6SR0NPZce3+oXhxuYveu1BgyR5M/dWaEeAWnTJzunEvZrLCkW+WEiFvxDCpr7GPCQ8VUUrf5xdmaYC0AC+rwI9dFx08ysmCBoKc8KrBn72zyYS8orHA2PNCPUBiTzMd/gVikGClSsSd0gWuOvaILpScm8LWMbRbzNLam9nbO3tnKWBNDFziEYhm6ZPelM+glNMkYNg0nZrhcKCQuWe0bXdkrp6BxOTaICNQ2Kzg61MjFQCRmJtcmRS3avNCUH1oYfqnQVw0U1/5bML6gQYALSesLfhEgJG8FBZ3y5gkz6HTYMRtncGvMW3ww7p8Eu5n18K7PaI6l+WzMnDq/Ppr/xco1kcrhO8sBX6yOrMDdHnL4o6G6UMDhTzxg4JKH2tFKhB0Dqxf3b3kiCqCecNyJUpYwooeo+l/fsGLYkJpjYkn197MQqufC3zMzMXtSkW0lf+oL14bhbaxp3WDAlm9ehJVryJD0TexXKDHT87g91+ttms6fGwk66sd6liBsQ/g2WZZBF5vYDuVQq+siTxYHHv9cgBjkd68OOxaSqByKa6S0fCyI6rSSwbVxwtPFqRdXEciKpX6uAJ+qhoij8kuTjGhgBY87is6287ndt+qYKQg4DzSClriUq0/Q7v13eN4nU+/MLszc12fTlsTRcJAbqn2jX0UnH6Y3P9kXI3T/U8jXaqFa/pcZDYoQaKKBOjN1IaW16MjcTCcRWGDzQxhGo9pPltRZa4S7mwpFuaWYo4p
+ vvgQbK4O
+ tUMUon5M+/FJqVGz0A2FA3B6apJvbF0g0sqhsjD1tZRVViJY1kdoGU0Iwljt9qvO/rsCnFqbJrcgaqgZl53ZNBbhXDRhMsc62fAzMuJ/xoaXVlNddbyJNap0+FiEEJxrnV456MDzVxK6Zx8NlPB03Dg0ZgKPPxc3I0u4Xovd8ynrMu8CuMTZIVwFve7tt2ZuhZ7tUIGu24p6D91miMdAf6uhP6ERZc2d2nDd9E2lIx2SKGPCkm26DK6Ep+U8Tth7OtR7xeYJDJfbJ8dVEi2sGmo4nBCKEfQ1fvXdzvUWO5C8I5huGzoi3aQH4E+34iU7P6aeHjRzaBMSYT84/cHohjlD9jcnrKaetv0xHL5+oMXIZ/lY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,150 +143,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-folio->_nr_pages overlays the memcg_data field of the first tail page.
-When a large folio is split, __split_folio_to_order() clears PageTail
-before copying the original folio's memcg_data to the new folio.
+On 8/30/26 04:37, Andrew Morton wrote:
+> On Mon, 03 Aug 2026 04:31:20 -0700 Breno Leitao <leitao@debian.org> wrote:
+> 
+>> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
+>> sysctl, picks a kernel-owned PFN and writes its physical address to
+>> hard_offline_page.  Three page kinds are selectable with -k: rodata
+>> (default), slab or pgtable. In all cases the host should panic.
+>>
+>> Example:
+>>
+>>         # ./hwpoison-panic -k slab --yes-panic-my-kernel
+>>         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
+>>         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
+>>
+>> In dmesg, you will see:
+>>
+>>         Memory failure: 0x100032: unhandlable page.
+>>         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
+>>         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
+>>
+>> This lives in tools/mm rather than selftests/mm because every successful
+>> run crashes the machine, which is not something to run from CI.
+> 
+> I wonder if we can fix this.  Add a knob which tells the kernel not to
+> panic/oops/crash/etc.  Instead it sends a message "i tried to crash but
+> you told me not to" and proceeds.
+> 
+> Set that knob around your hwpoison-panic tool and voila, it's now a
+> selftest.
 
-That leaves a window where a lockless PFN walker can resolve the former
-tail as an independent folio while its memcg_data still contains
-_nr_pages. For example, the first tail of an order-4 folio contains
-0x10. page_cgroup_ino(), which is documented to be callable without a
-page reference and is used by /proc/kpagecgroup, can interpret that
-value as a pointer.
+We just shot down a random "kernel-owned PFN" (marking it hwpoison etc).
 
-This caused the following crash on 7.0.0-29-generic while a process
-was reading /proc/kpagecgroup. On that kernel, page_cgroup_ino()
-interpreted the value as a mem_cgroup pointer; page_cgroup_ino+0x4c is
-the inlined css_is_online() check, RAX contains the stale memcg_data
-value 0x10, and CR2 is RAX + 0x4c. On current kernels the value would
-be interpreted as an obj_cgroup pointer instead, but it is invalid in
-either case:
+That's really not something you want to do from a selftest.
 
-[870611.552359] BUG: kernel NULL pointer dereference, address: 000000000000005c
-[870611.553709] #PF: supervisor read access in kernel mode
-[870611.554704] #PF: error_code(0x0000) - not-present page
-[870611.555676] PGD 2ce74eb067 P4D 0
-[870611.556330] Oops: Oops: 0000 [#1] SMP NOPTI
-[870611.557131] CPU: 2 UID: 0 PID: 646187 Comm: grep Kdump: loaded Tainted: G        W  OE K     7.0.0-29-generic #29-Ubuntu PREEMPT(lazy)
-[870611.559161] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE, [K]=LIVEPATCH
-[870611.560427] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
-[870611.562203] RIP: 0010:page_cgroup_ino+0x4c/0xc0
-[870611.563061] Code: 53 38 48 89 d3 83 e3 01 75 73 48 89 d0 48 83 e0 f8 83 e2 02 74 0f 48 8b 40 10 eb 09 66 90 48 8b 80 b8 00 00 00 48 85 c0 74 14 <f6> 40 4c 02 74 ee 48 8b 00 48 8b 80 00 01 00 00 48 8b 58 60 e8 7b
-[870611.566161] RSP: 0018:ff837258046afbe8 EFLAGS: 00010202
-[870611.567146] RAX: 0000000000000010 RBX: 0000000000000000 RCX: 0000000000000000
-[870611.568305] RDX: 0000000000000000 RSI: 0000000000000000 RDI: fffbbc7280d84040
-[870611.569443] RBP: ff837258046afbf0 R08: ff3110e00bc9f500 R09: 0000000000000000
-[870611.570567] R10: 0000000000000000 R11: 0000000000000000 R12: 00005f6b27ac3808
-[870611.571704] R13: 0000000004036101 R14: 0000000000018000 R15: 00005f6b27abb000
-[870611.572806] FS:  00007cec6f8bdb80(0000) GS:ff311118762ff000(0000) knlGS:0000000000000000
-[870611.574025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[870611.574948] CR2: 000000000000005c CR3: 0000000361776004 CR4: 0000000000771ef0
-[870611.576069] DR0: 00005e7136461088 DR1: 000060e18f7c22c8 DR2: 000060e18f7c22d0
-[870611.577171] DR3: 000060e18f7c22d8 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-[870611.578292] PKRU: 55555554
-[870611.578791] Call Trace:
-[870611.579249]  <TASK>
-[870611.579689]  kpage_read.isra.0+0xe3/0x110
-[870611.580345]  kpagecgroup_read+0x1c/0x30
-[870611.580980]  proc_reg_read+0x31/0xd0
-[870611.581595]  vfs_read+0xbf/0x3a0
-[870611.582172]  ? proc_reg_read+0x31/0xd0
-[870611.582814]  ? vfs_read+0xbf/0x3a0
-[870611.583398]  ? proc_reg_read+0x31/0xd0
-[870611.584046]  ksys_read+0x71/0xf0
-[870611.584602]  __x64_sys_read+0x19/0x30
-[870611.585238]  x64_sys_call+0x1ff1/0x2390
-[870611.585905]  do_syscall_64+0x105/0x5a0
-[870611.586529]  ? page_cgroup_ino+0x65/0xc0
-[870611.587197]  ? kpage_read.isra.0+0x7b/0x110
-[870611.587901]  ? kpagecgroup_read+0x1c/0x30
-[870611.588554]  ? proc_reg_read+0x31/0xd0
-[870611.589189]  ? vfs_read+0xbf/0x3a0
-[870611.589782]  ? flush_tlb_func+0xa3/0x370
-[870611.590423]  ? __pfx_flush_tlb_func+0x10/0x10
-[870611.591149]  ? __flush_smp_call_function_queue+0xa1/0x4b0
-[870611.592013]  ? arch_exit_to_user_mode_prepare.isra.0+0xd/0x100
-[870611.592987]  ? irqentry_exit+0x97/0x6f0
-[870611.593727]  ? __irq_exit_rcu+0x45/0x120
-[870611.594464]  ? generic_smp_call_function_single_interrupt+0x13/0x20
-[870611.595595]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[870611.596509] RIP: 0033:0x7cec6f9cc3ce
-[870611.597250] Code: c0 e9 b6 fe ff ff 50 48 8d 3d 6e 08 0b 00 e8 69 01 02 00 66 0f 1f 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00 f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-[870611.600473] RSP: 002b:00007ffc12394718 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[870611.601834] RAX: ffffffffffffffda RBX: 0000000000018000 RCX: 00007cec6f9cc3ce
-[870611.603102] RDX: 0000000000018000 RSI: 00005f6b27abb000 RDI: 0000000000000003
-[870611.604328] RBP: 00005f6b27abb000 R08: 00005f6b27ad3000 R09: 00005f6b27aba1d0
-[870611.605497] R10: 00005f6b27ad3000 R11: 0000000000000246 R12: 00007ffc123947f0
-[870611.606774] R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000003
-[870611.608041]  </TASK>
+You'd need some kind of hwpoison simulation mode.
 
-After-split folios have frozen refcounts while their metadata is being
-initialized. Therefore, skip folios with a zero refcount before reading
-memcg_data. The acquire load pairs with the release store in
-folio_ref_unfreeze(), ensuring a nonzero refcount also makes the newly
-initialized memcg_data visible. This prevents page_cgroup_ino() from
-dereferencing the transient _nr_pages value during a split.
-
-Fixes: fa23a338de93 ("mm: separate folio_split_memcg_refs() from split_page_memcg()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Yi <escape@deepseek.com>
----
- include/linux/page_ref.h |  5 +++++
- mm/memcontrol.c          | 14 +++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 9f5c75d06f76..401330307bc5 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -107,6 +107,11 @@ static inline int folio_ref_count(const struct folio *folio)
- 	return page_ref_count(&folio->page);
- }
- 
-+static inline int folio_ref_count_acquire(const struct folio *folio)
-+{
-+	return atomic_read_acquire(&folio->_refcount);
-+}
-+
- static inline int page_count(const struct page *page)
- {
- 	return folio_ref_count(page_folio(page));
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..2971e5e0ece1 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -358,17 +358,29 @@ struct cgroup_subsys_state *get_mem_cgroup_css_from_folio(struct folio *folio)
-  */
- ino_t page_cgroup_ino(struct page *page)
- {
-+	struct folio *folio;
- 	struct mem_cgroup *memcg;
- 	unsigned long ino = 0;
- 
- 	rcu_read_lock();
- 	/* page_folio() is racy here, but the entire function is racy anyway */
--	memcg = folio_memcg_check(page_folio(page));
-+	folio = page_folio(page);
-+	/*
-+	 * After-split folios remain frozen until their metadata, including
-+	 * memcg_data, has been initialized.  The acquire load pairs with the
-+	 * release store in folio_ref_unfreeze() and makes that metadata
-+	 * visible to this caller.
-+	 */
-+	if (!folio_ref_count_acquire(folio))
-+		goto unlock;
-+
-+	memcg = folio_memcg_check(folio);
- 
- 	while (memcg && !css_is_online(&memcg->css))
- 		memcg = parent_mem_cgroup(memcg);
- 	if (memcg)
- 		ino = cgroup_ino(memcg->css.cgroup);
-+unlock:
- 	rcu_read_unlock();
- 	return ino;
- }
 -- 
-2.53.0
+Cheers,
 
+David
 
