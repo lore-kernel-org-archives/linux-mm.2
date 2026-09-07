@@ -4,103 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1606C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:11:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C8CC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 06:23:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B9246B009D; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
+	id 8E4526B009B; Mon,  7 Sep 2026 02:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 969DD6B009E; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
+	id 8BC5A6B009D; Mon,  7 Sep 2026 02:23:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 858E06B00A0; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
+	id 7D26D6B009E; Mon,  7 Sep 2026 02:23:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 659396B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:11:29 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAAF7A4BBA
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:11:28 +0000 (UTC)
-X-FDA: 85185944256.25.A04B819
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4B6BD1A0007
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:11:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVs8Xu5r;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C95C6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 02:23:35 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1E30A0673
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:23:34 +0000 (UTC)
+X-FDA: 85185974748.08.7290939
+Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 11FE740002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:23:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="OC/zIDew";
+	spf=pass (imf27.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788761487;
-	b=jHYrW2Vz03ofnSe9+XoFsGr5Ydx1Z+MowG4F41Ew0P4leJc5hYvooVKEZwu7YOw8VqvV3x
-	48FXyOmoSNsq0s1rFPLNjc5us6mJlAoAxzJpYvcjfcSa9mFaBYxBnVbBrCULpM0/s3fQvJ
-	Bl8klzk5m5gcYGw5Glif6m1GkLn+Dtg=
+	t=1788762211;
+	b=t8GHpOELIz+TlW6MPORHh4eWp6PE02l/HUAcJ528RLUywWiRHn9MmJSfCYCxnotJAfNxNK
+	RbOV/OVdU5u09ayyZrf++ZZxZMldd4n7nhnS96ZnU2L17iG6297tfq516P54LyhQSzMTgM
+	vxHXSLiHFR1nvYJUietm66auHYYmAM4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lVs8Xu5r;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="OC/zIDew";
+	spf=pass (imf27.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788761487;
+	s=arc-20220608; t=1788762211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3dmwjKWC6Wefq3ZCIghBfeiIweYofYEsPr73KhRS2U=;
-	b=iNAiJNKvcMTjkB802UhWjAoHLxCvmtLhFGxHQBDfFQAwln9mgdO2rvI8pEGs3dEeDt5atX
-	B4kJIVBd8j8x3UMHJOpKOpMKZpmWD0zgcQr2scrUxqO8dOmVo4xUHHE7HbE+QUYMgGrOrJ
-	TxaRA9IgvZkBsd+NnUud72aQFwHPp7A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4384943E11;
-	Mon,  7 Sep 2026 06:11:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B1D1F00A3A;
-	Mon,  7 Sep 2026 06:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788761486;
-	bh=P3dmwjKWC6Wefq3ZCIghBfeiIweYofYEsPr73KhRS2U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lVs8Xu5rqDz7930qIA7wlWJw7qb10AZRIm5YTTMxjRCX2t4BjgpcgVLZXPFoE2zuV
-	 4M9SQHuqpn/loOucuyWXztqjFxihFRGD56lGccTw/1aKzhqr+FH50miDZnNnJJTcge
-	 hrFj1FJ/PnBupIUwR4OzjlZwAhRsQglnRhNbbhTtDkDe+eoDZPXiFLVvXUzM7f8S27
-	 KEdQ1IhnCiQ0qOmOch6tMR0gQjP7UBAb1uLBnTN5/9d2zn7ISWoLN9N/5bnBQKWNjQ
-	 tkjFcPJIC12n54uQoRw8+/rW2Oom44GLwphExcwF37vyG8s3lzkoYshwdmTmvDwhXs
-	 KhuinYov4BKRQ==
-Date: Mon, 7 Sep 2026 09:11:18 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Eli Billauer <eli.billauer@gmail.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, Brad Warrum <bwarrum@linux.ibm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michal Simek <michal.simek@amd.com>,
-	Ritu Agarwal <rituagar@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/4] char: xillybus: replace __get_free_pages() with
- kmalloc()
-Message-ID: <ap5VhownyptYcTw9@kernel.org>
-References: <f6001085-9234-4025-ff34-6cc4a66c293a@outbound.gmail.com>
- <20260831123937.32255a49@pumpkin>
- <apaF1HUtJnstuUN4@kernel.org>
- <1729fb06-6beb-f8ef-3e71-47fc3f00345d@outbound.gmail.com>
- <apcPg_y-HsMki7we@kernel.org>
- <9a3d6a08-339c-3315-cc81-46907d0836ad@outbound.gmail.com>
- <apgSCyj-h2xVc2ss@kernel.org>
- <1d7f8806-f4a0-fda0-a361-a011460ef308@outbound.gmail.com>
- <3c19c24f-5036-4bbe-b3af-e5eae102f34a@kernel.org>
- <49245a34-cc56-736e-b2b4-168c2a0b1df7@outbound.gmail.com>
+	bh=SY1nhFgxRuHUzFEwBXRmpwzp8DWiy/uM12ejMBFxE8I=;
+	b=1XMrXvub6Uhan//pw/zlPHDLEEJHBjNk1C+zRORX+ulgCCYcdTe0vXEhSlk+i8behWGpUw
+	ZN5IU+iDLdY5XYXByHvf0nVv21PfmtrDdjGm6hvLuDDIuYbckr/AlCva9cibmv9cgievpB
+	dbhYBbdxe2xw6fd5+UHJdSslDY40Noo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=V8xaXgzY9XllyFlk89eNgFUoQBothzQGCS5P6ix37Rs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788762209; v=1; x=1789367009;
+ b=OC/zIDewivDGk5D/c2JMi+LTo2WKd7KhSdjJ7tDuc7BrSGSKXj/q1UZJ7gM9Uohur7TZqF4i
+ OaA19RRN733XQ5y0Mi5jrHu9E/Vq56iCXSlU203pOFrG+snKnppv0Mkd1JVcsAr7mN5x81iXjlz
+ VW2k56RylWsEPTPxVBP5fEdM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 985a0dad0ac24b89;
+	Mon, 07 Sep 2026 06:23:29 +0000
+X-Mizu-Trace-ID: 985a0dad0ac24b89
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Hao Ge <hao.ge@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v8 1/4] alloc_tag: move release_module_tags() above reserve_module_tags()
+Date: Mon,  7 Sep 2026 14:24:10 +0800
+Message-Id: <20260907062414.106873-2-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260907062414.106873-1-hao.ge@linux.dev>
+References: <20260907062414.106873-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49245a34-cc56-736e-b2b4-168c2a0b1df7@outbound.gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4B6BD1A0007
-X-Stat-Signature: o15cpw9d6rtaa5pkeesu5mxkot11k53h
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788761487-871123
-X-HE-Meta: U2FsdGVkX1+TvBM3XT9hogRn3HyqBBuwXqekymz/uv/1TmvF1Jn6yVGbt/6wJvxllvEKe4gp0hV2zMIMoUYL/VifFDVkL/vsBxM7C6Yjt3opxmGYwTqTsQQOFq1lhYHEQuv3Go86AY6d5l/8E4G0wp5ojIS/9nc36Et9UPl50OomwtfLPXBuEsccYfMuITxCB+G+5vpI7ORu2TdXp9hLTmkzKkgYVMCNJQRjm/hGx81d45wzbr+GA10DF19ywYhoz4r4GvGoeILaC08zT9Tn4jUeXx9HuzmVMQMfMbjZhrqNLawYnooemNVaFy5JKCURp1Oc3+D2lX7nBKGjySa8pLYTmLTvUyoCcEYkvv/8mzvp9pItx4qFyR3swPi64Uez8aICPPyLmPt3K5RLwNGdTsHhniC0A0E5OHTXfJbmbsZy+TwRw5VG3bkY5QFSdAwMHRpcIDs0JVQPToz3AMoKxHVj49LCIJn0ch7u7A5StNF+iaUAuNV6KFW42nbshaj9MaaJXZesFYFn/GdsuBqkQ3sAESPnUpeujpDBfxD0lmoRP7lkRdXhdASYzoeFbG13cPnXtIxmrU88GInC0olHIwIrQQlQBn13MShCE5a/qWlUWECaIKasjNl4JtOeg0CTuDJEv4hnirBfXcvo+9lWpy/kd/xb2WHX2RFo2aypuAQ6zpD+hB8KTJ72F6krzIAhcOYmOlBks+cX/OWEI6CdRm4nSJF2RktcM1aZ7fqQe2YmZjPXmzZe+gBtx64dMBwpyQCqvX8y7G2lfOBL4SpyID/5HqcoxIJazORGIGL/Cv7xK3ZfuUXYpq4J/Ef+l+FrTOGPPyznInbXxS0yzzTGMMn/Rutu/4WSmuvnFGWK72nakWbx4xk4zc3Pq3UoE2uBW2b4uRYVS2WHFe0srLQTK103rDV46fAvCpH6RLX1FOg6AUgi8cPNr7YeANqjNwZ3572e9tGEor2ZwBKXDSi
- VUhVVxUl
- 5FVfRo2WYasWTJqCgAB2Zn3WBRFA/qxA24FRvF2ILJ/rUExI5BrDMUD9XSWt0UfCxrJS/bXaud5DMwPenpfRUXR8cACLQIxV6SIMEJqlOxXcCFPNoPZuFWvTf3ZmSNUXPgMw4Zic7lYrA1yXIa59MpNHnlauSEGyubg7qrco8CG/W0yFIhBOMMTWDcCKDatKK4bEUIIQmHLv11Ivd7toD/oJo464FqCivBAI3qn7eN79ONBhk3afNBM4RtoIB4n8UJnJdZRUZLBpBcESP1u4dRavLSCie4tHF3HehNU+zP/bZ4aCd5KQRf45tTclAYMiJkhyiBrl5tYFiv8S5LfB4KUPnlK39K+FHvKouPP02HAN9Dwd2hGZkpN5o4ltgkQE8E5Xo
+X-Stat-Signature: gpf7ijtpq76817yhxf7hio6b1maiifw7
+X-Rspamd-Queue-Id: 11FE740002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788762210-294484
+X-HE-Meta: U2FsdGVkX19f+U1PDxtfxVgCFEb7KeaE2VqreDE07/QWLpzPyL4VHHjZOQ8If8QKYlaiEFVof1FuYtnIZAo5S5pJTaEVQ4L0yfGyN/lLn5ZcVbCePgB4izz9GJSIBwHBYkxs46J0fb8fTzVnDLpoAjQ5UkNr1kkHi4vP+T4n8M2TA4rw95/B+YVpWTtiOULWwzkz/sRNjiwLFDcTiignz2Wi+vSD5PBbvfU7coTrV6dY5mJaLKhc41MYJ1DlS4wUkNgq2H2wqLyeiUDLSP25SL2cJyQS3CqRTBwKqFpHvuk8BynweJqtBcN6OKYpbZAEyWyUus5VvnvxrZ6/Pt7arYmyHlfrCXrwKdKIbqOvBg+8SAMlR49uzbNFCenJCia3MRd9Ti85byj9H4sXZu2MOzKSB0dOSYQhFvehT19ZlGKi2ZNYEh8idDiU0UX1X/U8FdeamK6+GwIz0dICeGxAd++08jjXR/7xsE+9J0Z9nc48qTmlnCz1hSfelhbj7EnveH+9mVa6XdJ1uNaoB8CemR+b90pgoidaIGkZQAxtCCukjQ+SUu6fcucX83CTNpH+NTRmko9sqw/wdpuCTlS7Jiein+rqdgZjX+iI7HR9rn0YUKxcqAYmSsgMccjBFZtkMz7Lcr3CkYxNws1OAUBRWKzhoe5vfoCPS//D9q2WrlA1KulO5T6MGMDveAqFlOnsTc9ajExMAVg8BgYD7YhHAy58t/EzzoTiMf+qc3Fktezb2ETUArgDm/iAx7uVzKCWFVs/wD+Zwt7BIOtHic4ynQVP502mkYcv+OXCxCPRhoQBfxsKfHK7cdb1q7rW06dB0r0TRDkG3tBlEcChHWafY1X6fGL1DSuiTkdj3rbVAWtrbfbSGeSYfwAMBKhQoY6O5hZ/HgFBf5c4QAC4ApCGx8DoWepFYrmZ3o8lIRYErMjmCjE75rNtPYaa1djRM26ZMKn8ezAGcNbwGPIKwHo
+ cOgqNuGf
+ s6gFIB9UcNf8CxoPoshWbGq5njQHnT0kGYqpbgbG1R+m6F9fORRrF87OBJ+aHXKCRVZlUkXyd3T5i3FJyr19Pmisk9OFN+WKanGvTEg3hoztG6J4vV/+mL8WInhj3c2ayvHSMDAZSXOMu5DG6ygUWGlnEGND9pOzFlqdkJc1R5KrkhIjl3J+yAkQ1mn4GpczM73vQzulUWiT3t+665n+VOsunO7koSUkGD9Kn61aeDs4s9Lyksi4op7h+T1FJABWbFOWWQMMrDN1PQiwKv9Lsf9dq5svCThLnkMhi96RK86dB+hIywC6jJZTrdx+zi0jPmGRR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,54 +98,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Eli,
+release_module_tags() is a cleanup helper. reserve_module_tags() can
+also fail after storing the reservation in the maple tree, in which
+case it should call release_module_tags() to undo it. Move the helper
+above reserve_module_tags() so no forward declaration is needed.
 
-On Fri, Sep 04, 2026 at 05:29:16PM +0200, Eli Billauer wrote:
-> On 03/09/2026 16:28, Vlastimil Babka (SUSE) wrote:
-> > > Replacing it with a kmalloc() is confusing in my opinion, and requires
-> > > that the reader is aware that kmalloc() falls back to __get_free_pages()
-> > Why? The reader has only to know that kmalloc() will provide such a buffer
-> > (up to sizes that the page allocator would) and whether it falls back to the
-> > page allocator or not is an implementation detail.
-> 
-> When I see __get_free_pages(), I automatically assume there is some ugly
-> low-level memory management going on, which is exactly what fifo_init()
-> does.
+No functional change.
 
-However you allocate memory, there will be some ugly low-level memory
-management underneath :)
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ mm/alloc_tag.c | 92 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 46 insertions(+), 46 deletions(-)
 
-> kmalloc() feels like something you use more for allocating memory for
-> a struct.
-
-For that we have k[mz]malloc_obj() now...
-
-> There is no such rule, of course, but this is my subjective view on these
-> two functions.
-
-... and using it to allocate struct is becoming a rule pretty much.
-
-> As I wrote earlier, this is a matter of taste. Maybe it's only me
-> thinking like that.
-
-Let's agree to disagree :)
-I think it's more about using the right tool for a job.
-
-For your usecase I really think vmalloc() should work. Presuming you can
-spare 256MB for fifo buffers, the driver can only run on quite recent and
-decent hardware and memory rates there are way higher than 400MB/s.
-
-Even the slowest DDR3 is above 6GB/s, so taking a fault to sync page tables
-on the first access is really a non-issue.
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index b1d48532a25a..e7a79116ad81 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -843,6 +843,52 @@ static int vm_module_tags_populate(void)
+ 	return 0;
+ }
  
-> And as I'm not the one deciding whether this patch is applied or not, it
-> doesn't matter so much what I think about this matter. I've humbly voiced my
-> opinion, and that's about as much as I can do.
-> 
-> Regards,
->    Eli
-
++static void release_module_tags(struct module *mod, bool used)
++{
++	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
++	struct alloc_tag *start_tag;
++	struct alloc_tag *end_tag;
++	struct module *val;
++
++	mas_lock(&mas);
++	mas_for_each_rev(&mas, val, 0)
++		if (val == mod)
++			break;
++
++	if (!val) /* module not found */
++		goto out;
++
++	if (!used)
++		goto release_area;
++
++	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
++	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
++	if (!clean_unused_counters(start_tag, end_tag)) {
++		struct alloc_tag *tag;
++
++		for (tag = start_tag; tag <= end_tag; tag++) {
++			struct alloc_tag_counters counter;
++
++			if (!tag->counters)
++				continue;
++
++			counter = alloc_tag_read(tag);
++			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
++				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
++				tag->ct.function, counter.bytes);
++		}
++	} else {
++		used = false;
++	}
++release_area:
++	mas_store(&mas, used ? &unloaded_mod : NULL);
++	val = mas_prev_range(&mas, 0);
++	if (val == &prepend_mod)
++		mas_store(&mas, NULL);
++out:
++	mas_unlock(&mas);
++}
++
+ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 				 unsigned int prepend, unsigned long align)
+ {
+@@ -930,52 +976,6 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 	return (struct alloc_tag *)(module_tags.start_addr + offset);
+ }
+ 
+-static void release_module_tags(struct module *mod, bool used)
+-{
+-	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
+-	struct alloc_tag *start_tag;
+-	struct alloc_tag *end_tag;
+-	struct module *val;
+-
+-	mas_lock(&mas);
+-	mas_for_each_rev(&mas, val, 0)
+-		if (val == mod)
+-			break;
+-
+-	if (!val) /* module not found */
+-		goto out;
+-
+-	if (!used)
+-		goto release_area;
+-
+-	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
+-	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
+-	if (!clean_unused_counters(start_tag, end_tag)) {
+-		struct alloc_tag *tag;
+-
+-		for (tag = start_tag; tag <= end_tag; tag++) {
+-			struct alloc_tag_counters counter;
+-
+-			if (!tag->counters)
+-				continue;
+-
+-			counter = alloc_tag_read(tag);
+-			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
+-				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
+-				tag->ct.function, counter.bytes);
+-		}
+-	} else {
+-		used = false;
+-	}
+-release_area:
+-	mas_store(&mas, used ? &unloaded_mod : NULL);
+-	val = mas_prev_range(&mas, 0);
+-	if (val == &prepend_mod)
+-		mas_store(&mas, NULL);
+-out:
+-	mas_unlock(&mas);
+-}
+-
+ static int load_module(struct module *mod, struct codetag *start, struct codetag *stop)
+ {
+ 	/* Allocate module alloc_tag percpu counters */
 -- 
-Sincerely yours,
-Mike.
+2.25.1
+
 
