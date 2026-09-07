@@ -4,94 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85FA1C79FA1
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 034ADC79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 909226B00A1; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
+	id 0CB566B009F; Mon,  7 Sep 2026 11:28:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0566B00A2; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
+	id 07CFB6B00A2; Mon,  7 Sep 2026 11:28:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81CCE6B00A3; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
+	id ED5486B00A3; Mon,  7 Sep 2026 11:28:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 641E16B00A1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06033A3BEE
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:27:49 +0000 (UTC)
-X-FDA: 85187346258.12.A90A2B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6B4F1140008
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:27:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n2/6D9dV";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CC3306B009F
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:28:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E178A01D2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:28:13 +0000 (UTC)
+X-FDA: 85187347266.22.B3AD2F1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BCA1920003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:28:11 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZdmbe2s;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788794891;
+	b=h1TdeGqHJ6OjSCSrU3hRAaY6xi11x1vkGcUxDXr1d7/O3ZMVocgHHQHEkOcOsPIMenhw4n
+	j5ItAdKRCapdYID295UOEiCLCxWYcgP1x8Kxk/Aq8Se4aWVBKgqVnaPZfVyt3MRfIGNZEO
+	FUP3pm63x97HAhLjZ2Odo58iKBsXDqg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788794867;
+	s=arc-20220608; t=1788794891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6hrOBQSxvF0DAR349U8/vdSM9iBMmaVDEOirsjTaU5A=;
-	b=wRfp3wtVIO5vpv02cWyxkMP7g1choG87F4Uc9WrT4qDhdBqrnajuLwA4dx+bwecuEqj8wj
-	Bn9uDi0w1U98iiWQuVdoA8NUKc7NqEgoCFoEYFe4OcAvfmu1J6mbdTqTvPETL+T2HkIR3/
-	JIZggTTHu6eWlUITrY4iTMdijjaM1DM=
+	bh=mK+98jg5dsyflCRW6hzeWdXYj+TcG2jQV+y1BsFx2KU=;
+	b=AGNnweNccZrMTyAbyukXPaumS2kmQmdjyBramxw9ZAxE2laufKPEY/LFvfCDUJrj207Qio
+	ju5CT38IH52JQWh15mzuR32QZt5lkVzF9tssLww7Ak3EnVjs6BzK0/C+P6KSkJQKNDW3hM
+	JybtCXxty7fSOun+02PRftkTzSwBfLE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n2/6D9dV";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788794867;
-	b=ZCphZaQExiDLec1OgNVkv9+IJMiPbpk5tGGPuJCGeo6Q84COwjH10QqeKb23cMeZIlBWf8
-	fldpn4muTZ7x9idzdgaU+TBFqhZAQ3uPPZHQmcLxZt0w20pnPlIbbgQkBkYgE7Y+R6+GbZ
-	7otmnDVLjV8qTDCGaOv80qcIFoZtQ68=
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZdmbe2s;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 940A0403C4;
-	Mon,  7 Sep 2026 15:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC32D1F00A3A;
-	Mon,  7 Sep 2026 15:27:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B5A060D87;
+	Mon,  7 Sep 2026 15:28:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8286D1F00A3A;
+	Mon,  7 Sep 2026 15:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788794866;
-	bh=6hrOBQSxvF0DAR349U8/vdSM9iBMmaVDEOirsjTaU5A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=n2/6D9dV588UugjGE35JL2jNmMYrvZmp13XEWqyHCwlOKBQ4CXbXIKOvMXbmo1DOr
-	 QRTOBE2kf7W68XVe2AVyMtYDcqumD274NYRJTsEip23dIa36HSQZZIWDJAhPoYAknR
-	 REUXmzealeYx8AdNQqDG8KapN8yi5yZCXX7vgc8T0U4CMlpIRt7/KjeAZdhruboHeG
-	 pao8D/xBiH12p+W5OD2Pat8xC9WhfGOnCNAyhCl5PoXyUmKf6lHQTCYF3LflW1nVzc
-	 OklKrV38XlcWfgi4g/V4V54aZF7Xu5SYEfyHhcenHBJQTFQOVkYItsMdKIJs8d+Ngv
-	 Oq0fGodncyrMQ==
-Date: Mon, 7 Sep 2026 16:27:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Pedro Falcato <pfalcato@suse.de>, "Liam R. Howlett" <liam@infradead.org>, 
-	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
- MADV_WILLNEED
-Message-ID: <ap7Xz0clF7sOaAGK@gremlin>
-References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
- <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
- <aprjOxDy3JCPb2oa@gremlin>
- <20260905171757.ba8b0f8f0f18ebd04418bfeb@linux-foundation.org>
- <ap6u6Ana3MvvIIUe@gremlin>
- <55ce7bee-c0e0-4051-8bc4-26cf3aa3f7e9@kernel.org>
+	s=k20260515; t=1788794890;
+	bh=mK+98jg5dsyflCRW6hzeWdXYj+TcG2jQV+y1BsFx2KU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kZdmbe2sBK7NcmlkxFNm48D+xjmNl7z46UL/QAb6geywyDhI6XiYzRxG0YTUPacBB
+	 oiF6MbRR5QldkE3rFwxN2ukKMilg/N8ceaWW4dygot3vp2d0fvU5kIyIPxjsctcf6R
+	 kKUeNZ3lkJOQ3XkH1UFChklewhrIS8S7L81EaBS3Z0bqup4yM5hFeIEUhZEEGYXZFP
+	 J+NLtmtVpgAuC5YO0iP9AB6vClWrdekVdoimyJG8TfpNqtNzafvIFhy3pR2wJrUOFB
+	 92AAh6FXgfbbbBRwYy6rw3/nk24XygJ8rlO+3l6+e1y/wx5DAdnF3PXvXVtNCtjv5D
+	 1CQ+31IH0razA==
+Message-ID: <502b573e-592b-46e5-96e4-c089329e7aee@kernel.org>
+Date: Mon, 7 Sep 2026 17:28:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55ce7bee-c0e0-4051-8bc4-26cf3aa3f7e9@kernel.org>
-X-Stat-Signature: rubf955yuyjhymayr7yijiazdikrqrhz
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6B4F1140008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory_hotplug: factor out node_is_memoryless()
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, osalvador@suse.de, akpm@linux-foundation.org
+References: <20260902195507.88655-1-gourry@gourry.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260902195507.88655-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788794867-204065
-X-HE-Meta: U2FsdGVkX1+2+dgCh5A9m/CMd+bIq4xjOoYczqFI41K7nnRoL2422zahx1ZPAZ+P8w/MCyv6Xa8g/0ujihZeVoex5q66AV4clwZoVJ0r/SMN5+ppYDLhzRau77jt4sfZ5H2Al04eP3ZvikyBS9RkMpPyqDRnUW/Uhooj4yYNYs2mXIIh9DlvMbkmkfm/HSzKNK+Le3aU6zW/Tl01vmi3CaDwXQuZ5y5VBbd4sY2tXwCDIKwU97OaUp2M02dldn77ohKv13f9DgNAAl8zHSfnuvxGip/akMK2Nt3+4v1yK0NTpYX/+8fuk10QryNNJ+At2b0heEaPkaYwzuUeh/NcA9MF4v5AR3AhNu7VW+jk7yeruQI9Mc+bxCqhPy6toG6uhM89KtgC0Eov+1hw0c83Sqd0osyS917SxIbJyvI7vVegjj8rOOLo3b6tn5HyeiiWDGQxacDLZL6r8/Up2Csv8N2if9aeOEoMwijGGNrl6NbSnwzGuNY2tXSe6awWqUmBqL3jAb3WGuo1oFYP5XHi/W51CRDIzPy1Dm5d0yyaantU4KY5/jqGxbrRxu8rhC5mtolTqA60BJLNWNkyKSrMupV6D7BVenzL2sVEmNptxFHAFdPxwV1IyldoOYI078b4AKQC+yo/YoLRIUx0v1GOycQUMY5izsbHU+DQUp0n4L7uPXl+o3lGzd5i7ebb9ITzsdiougykWjkbb5yZ4D0j/wUzxTXPIzyyFhSVOzSG7hhHOdFpmrB00ptvz6pxFzlY7RtqqcNgvykZ/cRYr+66J8+DVlx7dIwjt26dnZgO7T/4zPCdi1aZqvE8QobgSSmGWkFBsdhz828lK66PXGIRX/VkwUkQhnf2K2ppz1U+VnSCJKK4T+VdFecsh/u6ss6t06pTbm1RXBYxZ+c+v7q9xLaRQKCJ6j5ho8RAMbIEWEvABiq69pZ6LdRUi4HoAPS66A2AYgHh5ZGBoDktyGm
- 2sR2Sl96
- EGi3LI0DnQmVX75R123hvvzRwI40oXykirIe5EL4CcapLl1uTdcwtXO7TYKZE6WMLlH9EpFbdnCm0v1W4K8WaKJtO8/0dbyh7C26ukuuQlB8sesBS8OA7zMcaCvfLAl+PPoa3jijuZdl5iafViSBFXPWIKabfvCox5J5sb219mfMRs38viHNCKM7fsY6KAZM2kHpI/8dsFiUrDpAg1RZCf4xyJvh1fdc/4jcRTlzqjbySTj6mRYws1O6cjSOFdzvCoxb5yDgAu4nOUmiFklMAscTolTxKg47/kbuxsJfJug+Iu30GiTHtq+eISwNX2PtP/sabZOZkUNwek4beanjctTpCdg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BCA1920003
+X-Stat-Signature: 8iuum4fnamej1n1emee7zesaw8u6gncw
+X-HE-Tag: 1788794891-28787
+X-HE-Meta: U2FsdGVkX19KouQT6rAXSo9XjSUiA3qLo2fLo32HXOI4B+2jhyCypI9rOYkXWm0S3u4H0jfZ9ik9goH76e8vMDl84ONhwq7JK2eTbMdRkXGPKVQ0uvx8wv9g1XysPdSbeIK1MmBZaaiyjwqmz4p889mKf9BKLMnwaTN2AQUE4dpEd/B9PoA5o4D3NDQutphZS7Bk9fMe4oDoOJ/EMbqBLAedWSYtTGrddSqNt8V+pblF50aLAL5Slgo9nCBo8WN+G56L5HqhsMSFMqUHiXBsdomljl38Y/XbQYib+NmTiZN6643qBodyCv3eibRGLxxynGq6Ej+CyKcNj3jhKCeMLEq0rpl2R9EDaxo1oI89pUe0OvB3MqOdvCVZMSRJRSxhzM7X04QNFJqi8Uava42MOR1bbcuH/cr/fxktKSeIig1AQWA5KU07zGRuYH+mSLdU1dX3xFk/xX6G9gDI3Wkdq/Pff/+EPQYdQM7NS0loBWJ4cUfNKRQhglCxs0npCyqflLN2fDrlFo0FipQlXQiTYFi9g2je4pvrzdCK1cvm+11roXlEDURH2AD0Yx8OaCh8S96HGeDz+Pchsv1FI3190YAPZ6nSY2QYjAwNj76WwETegj3meOMOwb4T27aapExH08uxXVuWcvIqkpT1w/vtOzRHvTnr+bezBiKdaVxZy8u0ho02gxQrbtR7JD5110BOCBwE+rQCF4dwqLfNtGq2OP/kGUL7kieYKwAvXh8WjC8h89KIg6brNq5aOllGJvXCp4RU0XBLqNktl8WMCrxdstq9rHSLZHpw1suUZmhYdvGY2OPNKIN2GrTPxfcW8u/4HHwaIJ09rVUAVJuiUE0O4l2MPCu9nOZeVyicQSiQ8m+aw30gKoTWJrhRYW3XDNT4Fqk1NjT634BCBN5Rjx1xyw+m4jPPIMyEIL9mdgDe8QVUuah5GOr58yT7Wsw1u782Qof8weAq6c+1duBIL9T
+ 9GAoJ7xO
+ SxVwbeR3SPY3429FSDzBlgXVQSEHkl7B+3usRpjUPvF1noif0TABrETb4GhjxhJpM3YmAmYcBrSlWypkQY4NIQ1VbU/PuGmNVVNi4RxNcGIPK5ZMyKx9o8B4IVor+nChiyGD1C8x3WRB55m/17bIqk7RCpyAPl8azF4Db5zGx3A4lQ/ijUR+JJ4AZDojxhGHZ5W8tUoXJVmrkzA2lrnCGMaLmUdYiHhvGXc9aHKXCI+fsmf17E+4aE/ku+giGGILpRcGVMkQ4SxnegYXltaACG+jnERPrNufayS7YEPHdi6+tjMdTu1RmwW686LlVrebx3rAi8Ufe+ZWoEbhc4Og+ivvE9k9mC6NL3KsCu43HKAj3l3pjRXvZiJ753gq72kSQ/GlR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,53 +137,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 05:09:34PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/7/26 14:32, Lorenzo Stoakes (ARM) wrote:
-> > On Sat, Sep 05, 2026 at 05:17:57PM -0700, Andrew Morton wrote:
-> >> On Fri, 4 Sep 2026 17:01:37 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> >>
-> >> > Andrew - could you swap the patch out in-place with below? Thanks!
-> >> >
-> >>
-> >> np.
-> >>
-> >> > Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
-> >> > entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
-> >> > for the former and a tree walk and swap in to swap cache for the latter.
-> >> >
-> >> > MAP_PRIVATE-file backed mappings straddle the two and currently get treated
-> >> > as if they were purely file-backed, meaning any swapped out private pages
-> >> > remain swapped out.
-> >> >
-> >> > Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
-> >> > mappings and performing both walks in this case.
-> >> >
-> >> > Since the logic checks for vma->anon_vma this means un-CoW'd
-> >> > MAP_PRIVATE-file backed mappings retain only the single file walk.
-> >> >
-> >> > Reported-by: Mike Kaplinskiy <mike@recall.ai>
-> >> > Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
-> >> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >>
-> >> The failure mode looks pretty obscure, so I'm thinking that no backport
-> >> is needed.
-> >
-> > Well it's not even really a failure mode so much as a 'known limitation' :)
-> > So yeah agreed.
->
-> Yeah, as we know madvise() just an advice after all, the kernel is free to
-> ignore it :)
->
-> (MADV_DONTNEED and friends enter the chat)
+On 9/2/26 21:55, Gregory Price wrote:
+> A memoryless node neither spans present pages (populated or ZONE_DEVICE)
+> nor has an offline-but-added memory block still linked to it in sysfs.
+> 
+> try_offline_node() presently open-codes this memoryless check.
+> 
+> Pull that into a node_is_memoryless() helper and pull the existing
+> check_no_memblock_for_node_cb() helper ahead of the add/online path
+> so it's clearer what is happening here.
+> 
+> No functional change.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
 
-Haha yeah, another brilliant footgun invented by the proud folks at kernel mm,
-catch us next time with some prctl's and BPF APIs! ;)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
->
-> > --
-> > Cheers, Lorenzo
->
+-- 
+Cheers,
 
---
-Cheers, Lorenzo
+David
 
