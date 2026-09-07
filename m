@@ -4,96 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AD9CC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:05:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D3BCC79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4948B6B0093; Mon,  7 Sep 2026 12:05:39 -0400 (EDT)
+	id 5837B6B008A; Mon,  7 Sep 2026 12:08:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46B856B0095; Mon,  7 Sep 2026 12:05:39 -0400 (EDT)
+	id 534AF6B0096; Mon,  7 Sep 2026 12:08:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3826E6B0096; Mon,  7 Sep 2026 12:05:39 -0400 (EDT)
+	id 4242A6B0098; Mon,  7 Sep 2026 12:08:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDC586B0093
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:05:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52974C01D2
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:05:38 +0000 (UTC)
-X-FDA: 85187441556.28.2EE4E66
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9B5A7140002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:05:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tr2FfEF5;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F1FBF6B008A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:08:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F2FB1A01D2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:08:41 +0000 (UTC)
+X-FDA: 85187449242.13.B9E58E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 906194000B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:08:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=caUN+MPf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788797136;
+	s=arc-20220608; t=1788797319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cOwjWSZU7sqyLauvsyIOoxB+VUvKj3AIMfesn2Gg0Gs=;
-	b=6KC2g7t1NcIDYj6aFIAu6q1pUhS7Lu3uHyvYDU+1Pb7pyJ9FOu6oWRafVx+iLcHsbT0jZq
-	NpLUfdutIrSk52JRpK8UZ109ePvNg3A890FeBZVo32e6S6P7byLIJ88HPncRqPDO7F6xJz
-	o7mTTi3kkgGCpnC9peP7CxuYQmPkxug=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788797136;
-	b=rMoBOFV97hi5GWxU7bVsa4zsCEQ1C7A5QK7Mh9hozt6B8XMwOgUBmqVXJJBcLotrCZT6NK
-	+cJtxNLqrFmWd3OFLXabSfmlqmcRFaLCtNtXys4LzCAVvNHsipFgKu6e8I4/uHhE2En9Cm
-	dILY0IejhDSZ/wGq2Pwa6L3yNciCzbI=
+	bh=eGMn5/9sC/zi2FVSWOrMUOQZ1VDAtU/WgF3coPeOhVo=;
+	b=fhHrjgdxlsspsy90zhXjhEwvcoshJQSRgMRPpYv4meVP1twdlAyd+9a9bgbg9luSKWSqsu
+	wlxxSMQsLShf4Rr6EYYZ2tBJjtMdE/LiLFilef7uQ1fIwgbadLCMkDWFpuR1lC0oAFFavX
+	BMXncIYMlwTa4QFr+v4Y2x8WLw1fuEc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tr2FfEF5;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=caUN+MPf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788797319;
+	b=ZZyVRJEZLe6z1BhKxlz+7atrGv2+d2Ps/PFJ22vf6490rbMReTn78YDSlHwRpMRpUQrRT4
+	tuh3XCIq3IMYiGtiB0G28lvHyUivUm9pOD7lxntuVnKBIio9FOZew67Eu93fstk54FatNM
+	hCqQtAwoK96//2Ofo6XeLUqB8bn+G3E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C0AB860AB9;
-	Mon,  7 Sep 2026 16:05:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781941F00A3A;
-	Mon,  7 Sep 2026 16:05:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7E6241790;
+	Mon,  7 Sep 2026 16:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491661F00A3A;
+	Mon,  7 Sep 2026 16:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788797135;
-	bh=cOwjWSZU7sqyLauvsyIOoxB+VUvKj3AIMfesn2Gg0Gs=;
+	s=k20260515; t=1788797318;
+	bh=eGMn5/9sC/zi2FVSWOrMUOQZ1VDAtU/WgF3coPeOhVo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tr2FfEF5/if8uJWKIxG0gE5uW6MrLIgXVkxsnhUy2MNYuwpxXo8H+OjnTjCKewBXJ
-	 d79BgOnqHsR7OmNC9i1+jf0O67/1aa8JZWXysbEVcPbVGzNj3oXhcEi6z3SiG7r2JL
-	 +4MTKVg3wKoCBfOBFDSppxqsV3QZ7izVPfXUj0eVgtdZ4TkukInO0lmXpZdjKBvD7S
-	 PXAVKbo5EjdtEfouYHfLhWvHBmIzWabnoPM7yg2O8bNWZIoRqt9sjWWiixxO1ln/OS
-	 MDRbLwpkgPbwt6u54BQApi/TupnPS4tGhC1w8XdKDFKDgxthmAZky7owi8ZMvhDZ+S
-	 fhL50r3JSR4UQ==
-Message-ID: <5491be7c-1bf1-464f-877d-9bb86155310e@kernel.org>
-Date: Mon, 7 Sep 2026 18:05:22 +0200
+	b=caUN+MPf9YppXvY6U6VEpgeTZf1MApSyRTpTPy8E055kTD4sujUzlB67rvbVzJWRV
+	 LtfR7wK/dXx1p/1PP7LH9P4gEfGMpYGuv6o5U/EpvN/Da0CtFXjYJEeryZT1a/GcSB
+	 oksP2ET4KnoZmbOh8Ssqm0x5FmbG67puut+4aMiFbRCyOk5dHj/Ho6FH3RSoXkbohd
+	 HWaQ0D2SPhVcUc3eFBS6nITKnbURRqf6WrIgt3OsQvLkkuzr0Lbj3OXeEmILOHR3U1
+	 uYZBp6Sm4DJysLDCQkSLWNsT12Iq53AwtmKibTHZ+r4HlPeG+JKKD5jMZSL5F5ClMe
+	 dvSbEsa0bYaVw==
+Message-ID: <dc52dd1d-f62d-4278-ab4d-95746383fd50@kernel.org>
+Date: Mon, 7 Sep 2026 18:08:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 13/25] mm: kpkeys: Introduce early page table
- allocator
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
+ mappings
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
- Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-13-743ad31b2c8f@arm.com>
- <1dc8739e-4eb6-4a71-9534-e03a15afd620@kernel.org>
- <7af32e98-f2ab-4961-9e3c-72b8a21416c0@arm.com>
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Cedric Le Goater <clg@redhat.com>,
+ Saravanan D <saravanand@crusoe.ai>, stable@vger.kernel.org
+References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+ <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com> <apEzvfGgsvbc3vBI@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7af32e98-f2ab-4961-9e3c-72b8a21416c0@arm.com>
+In-Reply-To: <apEzvfGgsvbc3vBI@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xx7r9cg3zdkoxpkewnujnmm7n7zicedf
-X-Rspamd-Queue-Id: 9B5A7140002
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 906194000B
+X-Stat-Signature: at1tbwdogmynoqgtc6w85jcsouy491kd
 X-Rspam-User: 
-X-HE-Tag: 1788797136-12287
-X-HE-Meta: U2FsdGVkX1+TPJLq4AoYXzuFwMNIfAmTMvKkvjHJv2WF+Jil4JQSsPz5BCfY7qXQxrBvEF70ocUPoAfX3AA01tXfcIDjf1T7rkdaD4JHOZW5VPCiSDxUEJr4hzgIVw21IRLIyQ44JQFsB/CVOdRzOOnGVbuTczHOWNCDL4KUKZGfIJB/toS6a7yiIi9TPBIMunQXzwDZpDUOh4K6CA/Cik/h03uUH/umfGmz+bXq96hsYgjoG+J8nJquUTFgVham1DUSgZZoRNUWI/cZA/eJmT532JAUxLegL1+rj/HGYBT84Yf8c64oj9JH/pJbapLuPBAKg/KE89F6dmjE0TuxK+rHHcJwCn/LUMebm1ILvSSkqlT1hgmqUHoMH/2IRcDO3gwkdRT50GJkhNMU4Eme4XJZx2gKxap12S+8FCav4AOY7UBDC4wO4VtMH+JowJN7nt+dQkNi16xxyDkfJ8+iyymvw6UAoJmgz8JHHhrY7KpNfYdwyYjKluQ0V63GIjmoVQT4bH80mBpsr257xykOmIt5IuNCYD0k77ewh3IB63Sbx5/nc21YU2d+ht2q/4uv23Q5D0Qmx/xG8pNtTOmqE7kGBU7TMVpHLDiz3r+oXeHcE1JSNX8T+6wRs30bNUrc5ASoZ7VqRTjGE2VWuVVW9FKIs7QVM/eHXqe2JiAMVDVR1ecSRU8hU+4VqW9O6UqWOHxsfelpEtQImCl5jiYOZVv8bIKXOssARzB98+ZX+xCUqPRHGpkBIrLi9ndaVwZloXVtNQU0IWW/lzFB8CxxD0TBja1lYGMdTHlOIPiJdFLPQpjCJZ9NF8UxWmkvwcQnnMSqbTtJ2yE1abBxlDRB459J7OVyN4Sr2eI4K7jxWU3Lov76eumHf/ATmDlK8g+phLUKZpi9nGNueQmkIWHo05aJRRTdUYXNdTPg18Vg/XzvBLYhaQQADndtnHb3UgKMxSlJ1jqN6MB5IYy+wka
- tRDOs8SK
- sqGHMMWdu3hJVkzgGJ6Du7Mmu4NAoEmelAHM8L/aLmcqbgq/fedo8ZcNmF68Jcb+QtT2wLPpoKAbRCC0nz4XXLq/Acw9Y2Sb3KNV6D0ZAlq9+RLNd6/p9fRMCGSxw9iWwjmfn6+MnVI66sTlMc2B5Py6XAZi8FHwum2rEXx3yh/4BOWCGg5Gj6fLw0CCKHdMVSt69DJVWBECYgZ777Z3jleH+wBscnxuXhDWv+/KuqJ849MwlWBa4zv1eWvu4XgiPRe6I
+X-HE-Tag: 1788797319-850779
+X-HE-Meta: U2FsdGVkX19TjdYaJu5p0Fs6TVLohkiWobuZggWIZhecV6wJ+eNaJlBYKKMFAu8Od9usfFlvXjOKnD0APH2wwjQlBGyi6OSDCa3b44E4afYij2ynTF45KHkcX808IM70TDj8QOKX8ryfxLgoBqcXcE+iQ4sq0QKDZeQaifsL6Gw9y1zKF7G/xdipyDdh7QnQuqhNIEBnEnxZuO87fkPaFDSsFYqMH8HkYE8oQGDS7DxCjdCKflRFQPxTG2dkrDh/etr454q3ctX7q8PJFEPswP/XlqiFyi4+Oxc4mY328N8y5wDR0NwIJNt10FvorGVlfVHOAIpm08YrIR6JWZzvTcEOJYGT08QF3lFwTm7cokSg2tdRnz8fuO2659/iiopeMZgmTqWVnMrLBjNbaiaaLBb9Dylww8uIIgLqWBkG4n1Xdm3B9YAw4c0tZNjzYE+75K16X7JDMQcFjFMJWHofdfEQYrPBBjIU2tU2qsSAcct+tT9Gw/SPMQP/UAUg94fpO/QKUOd/9n7befjyTV4YxhJgvgkXmNta+2vVcrQ9gNyPGHwyLFuxwfPgBiiCRQig5Kn/pf67ZA7Cavbar0+t0CJ3RbVsVUWszZwW8XeZfJy+Bo1AuTIYRspX39nm3cPMg90mP0FgnrWAX1kcCDofsV9hU3pJGr+KYaCgHYvLgK5/3G6u4qKDN4tNuYXspZbRv9wikvcplk02Df0TN1eMP0bFK7uhe+ikJ6ApihLSSaZxmoBViIWVFu76QhwXOmVnhNCmFSP/ImxUcWNSGMCswtcn5zo6PrwBNM9wIakQdR/V/HbDP57vOTX9yE2a4JjHpf7LzJs5Ji+/TYxf2AKi/tKgn+MRWs4M/kf4NPFWbcDVPntQ4i/BEXQ01pg6gF3e+amRc4oPGbBgI/z0KQOBrtOdm6BqiHQfAT5oS4AbLK9+jboQktrcVudifSULWjrD8Nrel/VmtqDg6cCtnzU
+ ERZgan7H
+ idBOf2QQHPP8VUVY+K8nzbJqWfEtu/nvokrrwtSdVjHj5PIksnTYaELmPIkyQkVkCL+RxGD7v9M6pPtXcbflkTcaaEU61KqTPqduKS/wZI2Qlc9gb8f8zZfW3+8HEbKsrtoQy89UBVLFzFyfZ0hWnoES7k/8CD+t9Nb9DxsCKGuGph1XRoECoLfnjRGdUOvmCR9v/ZOhpIG9XbNDqEa6y9zm8squvQ9c/y3bSZurT8PEMO6hHCtvBDyOxoqOhmDp06tO9lQ66EEypwiODQfrugW/6OuryTzTHaQ1h03ZT8qG44G776NzHoNbKMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,69 +146,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/31/26 17:28, Kevin Brodsky wrote:
-> On 27/08/2026 20:08, David Hildenbrand (Arm) wrote:
->> On 8/18/26 16:08, Kevin Brodsky wrote:
->>> The kpkeys_hardened_pgtables feature aims to protect all page table
->>> pages (PTPs) by mapping them with a privileged pkey. This is primarily
->>> handled by kpkeys_pgtable_alloc(), called from pagetable_alloc().
->>> However, this does not cover PTPs allocated early, before the
->>> buddy allocator is available. These PTPs are allocated by architecture
->>> code, either 1. from static pools or 2. using the memblock allocator,
->>> and should also be protected.
->>>
->>> This patch addresses the second category: PTPs allocated via memblock.
->>> Such PTPs are notably used to create the linear map. Protecting them as
->>> soon as they are allocated would require modifying the linear map while
->>> it is being created, which seems at best difficult. Instead, a
->>> simple allocator is introduced, obtaining pages from memblock and
->>> keeping track of all allocated ranges to set their pkey once it is
->>> safe to do so. PTPs allocated at that stage are not freed, so there
->>> is no need to manage a free list.
->> I'm think of ways to avoid remembering these ranges. I guess we get called that
->> early that we don't even have a ptdesc where we could just link the pages.
+
+>> 1. is vma_allow_thp_tuneables_file() better? Then all three helpers are
+>> vma + a verb + thp_tuneables_file().
 > 
-> Correct, in both the direct map and (early) vmemmap cases we can't rely
-> on struct page as storage.
+> That's a good idea! Much better thanks.
 > 
->> If only page tables would be linked in some datastructure where we could find
->> them all ... ;)
 >>
->> ... why can't we just scan the page table hierarchy to find all page tables that
->> need protection?
+>> 2. is vma_file_ a better prefix than putting file at the end?
 > 
-> It makes sense doesn't it :) In fact this is exactly what RFC v5 did [1]
-> (a year ago already...). Then in RFC v6 I attempted to support block
-> mappings, and things got a lot more complicated. In that case there are
-> (at least) two issues with protecting the early page tables by walking them:
+> Yeah, it's an annoying one as kinda want to say 'file-backed VMA' but I think
+> you're right vma_xxx_file() -> vma_file_xxx() is better.
+> 
+> Andrew - could you fix that up in place?
+> 
+> Obviously if there's further feedback I can respin as well.
 
-Thanks for the background.
+Just as a general note I really hate these in-place updates.
 
-> 
-> 1. On arm64 with BBML3 we cannot split blocks in the direct map until
-> all secondary cores are up. This makes locking pretty difficult if we're
-> to walk all page tables at that later stage.
-> 
-> 2. Without modifying the allocation strategy, early page tables may not
-> be contiguous and setting their pkey would generate fragmentation.
-> 
-> Naturally neither of these issues is relevant to the present series,
-> where we force page granularity in the direct map. I still kept the same
-> approach as in RFC v6 though, as the goal remains to support block
-> mappings eventually.
-> 
-> That said, as discussed offline it may be sensible to revert to the
-> "walk early page tables" approach to start with, even if we would
-> probably need to change it later. This allows us to drop quite a few
-> patches, since init_pg_dir no longer needs to be explicitly protected.
-> 
-> One caveat is that in RFC v5, any page table page installed after
-> smp_prepare_boot_cpu() is called, and allocated using memblock (or
-> anything else but the buddy allocator), won't be protected. Codex can't
-> find any such case though so we should be good for now.
+For a reviewer perspective (like me stumbling over this) this is just a mess.
 
-Great, that will let us focus on getting the other pkey bits into shape without
-having to worry too much about different allocators.
+Resending with b4 is as easy as it gets.
 
 -- 
 Cheers,
