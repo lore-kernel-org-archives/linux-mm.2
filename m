@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E203EC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A748BC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB1076B00A7; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
+	id A95236B009B; Mon,  7 Sep 2026 08:43:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88B46B00A9; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
+	id A45EF6B009E; Mon,  7 Sep 2026 08:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9E9B6B00AA; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
+	id 983F46B009F; Mon,  7 Sep 2026 08:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A71B96B00A7
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:42:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E35EA2B22
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:42:15 +0000 (UTC)
-X-FDA: 85186929030.14.9E0FA4E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7652820003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:42:13 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN062EFB;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AE706B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:43:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 182F2160150
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:43:54 +0000 (UTC)
+X-FDA: 85186933188.13.0BB1EBC
+Received: from mta1.migadu.com (out-201.mta1.migadu.com [95.215.58.201])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 678B5C0008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:43:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uZ8LOHW1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.201 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788784933;
+	s=arc-20220608; t=1788785032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HfMjjI2/7Y+3s7ee+yLarkRTyl6EkYifeRjlYtTl9Y8=;
-	b=TAfSKs4ue5nSSfgquhIJO7rws4A0oObbtf+q3MppC9l2yUxmItoV7/MhzhqZzoEGnT+I+S
-	D5P9izMbuomOHzeArlGhwP4RDVgiTPTLh/apYUhky8hV52k5V+ofk8S616fu5rmecuUQRr
-	QCRScfeKcVXF8xm3nZNhChzbYpBiQNw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788784933;
-	b=ASi2EV44j0yv48UEwQnWDB2nH9RZOPuQK02KlQR6QqSqXNU3Vyv7OSi1kCjHYxl6yiV1G3
-	7NldoihsrWzpsp1V9KX+QwVCFWtzlor7vDzF3BEFkoDdtpkVLsNLCm/PRUOmCI1Oxa9HV8
-	YFjcN/ArTLnUnRvOzotEqcDxOaAoeQA=
+	bh=itAebKJ8+btJYYB4R/X99UsKejgANSJEmmv0OeYDmQE=;
+	b=L4f5WqEKo7xK6wQJnjD/YlmVhH0useZspUDIpLUZ1dbOCdtuENLk3XapRZH3DWm6CUZLR3
+	rQWLyhyQDmn8vu4Ho32AFhbEgSSCNmz4RqJQBHH3q0aynn9vD81OuRCHsnoXnIJ/7O0sqY
+	y9J2BLCd6q0E4s7rrzBzuiOhQqmdZgc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BN062EFB;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85B0643D56;
-	Mon,  7 Sep 2026 12:42:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDD91F00A3A;
-	Mon,  7 Sep 2026 12:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788784932;
-	bh=HfMjjI2/7Y+3s7ee+yLarkRTyl6EkYifeRjlYtTl9Y8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BN062EFBvF2RtBvaF2jcb9/4wctMQKXTnIVyY+FSkPOpdWwfOAtcGub+ZYo6hRNnC
-	 uy/uQ/qMVG3Z/v4x/XFEMNJ51/MquyVxc5UoBSux4eqRB/gzl4tA1P2KSNrxetjcNi
-	 aBLy0Htl8EZAlZyhf4Ly9gbsBRWSZLsrCBPwVs59igbx3sv6vtl4mAxYvw4YqbwopJ
-	 czVe9Ogk1g4l1NAVXW++p3A5Z94J65+41Ma5rHiKdqE5/3jVjl+OA5Skjt/FekcW+t
-	 cXZ3Iu9R2IvivAMx3yRFKMqGJJwFU7IhUy6yHCgSsa/Ki5EEQ6ThBXeJdiqqmB3FOU
-	 dkVYKulSnFvJw==
-Message-ID: <1ecffc76-55da-4831-8f21-04c97ce90ec8@kernel.org>
-Date: Mon, 7 Sep 2026 14:42:06 +0200
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uZ8LOHW1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.201 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788785032;
+	b=PCUbMIp+GuLXN5znKDT4ngIz5BVfE/+Pb/bpOKK2yQ+ADNojfKI+PwqZWSbGTKOkBUftqW
+	dHVMH0kSBAWk99UGUCngOkbch93MwT86NdON5I6uP4aPJzVUeBu7X0TpQOADrHckNdLZIf
+	rboS41fDbq9BiJQOj7MJwzxhe0tUQjs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JTPAy2jan+rYgiarymBDIzjQvPOSEW75t+/yX0tY7gI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788785029; v=1; x=1789389829;
+ b=uZ8LOHW13rVsRDybKgeHk+rQA7icJ+fAZU/1WkpY9HE5ii5kMWveNdLZBmndyZHrplGBl4Pp
+ 5NPlX9kiR5qmCXDDd2lgmJK9xL8+zHWe5ENKaO0Y3E9nLNtDbBqhjRYdjwHzAMwxZdKKuFhLc48
+ RIZl81RME5DT78z9eamH59Js=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bc25794ece1f1b64;
+	Mon, 07 Sep 2026 12:43:48 +0000
+X-Mizu-Trace-ID: bc25794ece1f1b64
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: tujinjiang@huawei.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	minchan.kim@gmail.com,
+	lwoodman@redhat.com,
+	kamezawa.hiroyu@jp.fujitsu.com,
+	mel@csn.ul.ie,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	sunnanyong@huawei.com
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and vma->anon_vma publish
+Date: Mon,  7 Sep 2026 20:43:41 +0800
+Message-Id: <20260907124341.81999-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260905061820.642437-1-tujinjiang@huawei.com>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tools/mm: add hwpoison-panic tool
-To: Andrew Morton <akpm@linux-foundation.org>,
- Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, SJ Park <sj@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, kernel-team@meta.com
-References: <20260803-memory_failure_rewrite_test-v2-1-ed020ce42129@debian.org>
- <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260829193758.b251f3c89f8201bdc585a305@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: giy865fzq1dru4k7qrpkptnd7ykqngmm
-X-Rspamd-Queue-Id: 7652820003
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788784933-160126
-X-HE-Meta: U2FsdGVkX1/N5EGaqWESMiUQZmOOm/ZPT1Uksf3pffpJk3fiKKl7x3d36A2eaVSNy3Ega4B+MiPAbeRgLlA/xIYwo1LBlHXyFKah7c5ReK3uzQFGDoRvw1Ez+oNnhL8mwb1xLEmOraossIfb1UXAOSUz9RTegCAKCsUu0Z8v0mOVhjA93eN243wHttuCdEMUzKpEAVvC3NxSb6BgN74RFSRrrFiH9gi03CkOLFBM6SR0NPZce3+oXhxuYveu1BgyR5M/dWaEeAWnTJzunEvZrLCkW+WEiFvxDCpr7GPCQ8VUUrf5xdmaYC0AC+rwI9dFx08ysmCBoKc8KrBn72zyYS8orHA2PNCPUBiTzMd/gVikGClSsSd0gWuOvaILpScm8LWMbRbzNLam9nbO3tnKWBNDFziEYhm6ZPelM+glNMkYNg0nZrhcKCQuWe0bXdkrp6BxOTaICNQ2Kzg61MjFQCRmJtcmRS3avNCUH1oYfqnQVw0U1/5bML6gQYALSesLfhEgJG8FBZ3y5gkz6HTYMRtncGvMW3ww7p8Eu5n18K7PaI6l+WzMnDq/Ppr/xco1kcrhO8sBX6yOrMDdHnL4o6G6UMDhTzxg4JKH2tFKhB0Dqxf3b3kiCqCecNyJUpYwooeo+l/fsGLYkJpjYkn197MQqufC3zMzMXtSkW0lf+oL14bhbaxp3WDAlm9ehJVryJD0TexXKDHT87g91+ttms6fGwk66sd6liBsQ/g2WZZBF5vYDuVQq+siTxYHHv9cgBjkd68OOxaSqByKa6S0fCyI6rSSwbVxwtPFqRdXEciKpX6uAJ+qhoij8kuTjGhgBY87is6287ndt+qYKQg4DzSClriUq0/Q7v13eN4nU+/MLszc12fTlsTRcJAbqn2jX0UnH6Y3P9kXI3T/U8jXaqFa/pcZDYoQaKKBOjN1IaW16MjcTCcRWGDzQxhGo9pPltRZa4S7mwpFuaWYo4p
- vvgQbK4O
- tUMUon5M+/FJqVGz0A2FA3B6apJvbF0g0sqhsjD1tZRVViJY1kdoGU0Iwljt9qvO/rsCnFqbJrcgaqgZl53ZNBbhXDRhMsc62fAzMuJ/xoaXVlNddbyJNap0+FiEEJxrnV456MDzVxK6Zx8NlPB03Dg0ZgKPPxc3I0u4Xovd8ynrMu8CuMTZIVwFve7tt2ZuhZ7tUIGu24p6D91miMdAf6uhP6ERZc2d2nDd9E2lIx2SKGPCkm26DK6Ep+U8Tth7OtR7xeYJDJfbJ8dVEi2sGmo4nBCKEfQ1fvXdzvUWO5C8I5huGzoi3aQH4E+34iU7P6aeHjRzaBMSYT84/cHohjlD9jcnrKaetv0xHL5+oMXIZ/lY=
+X-Stat-Signature: tk53c61z44n4t3per1n9szpdsc7dsndy
+X-Rspamd-Queue-Id: 678B5C0008
+X-HE-Tag: 1788785030-298224
+X-HE-Meta: U2FsdGVkX1/VvCFHRdPMZYpJLad9803r6jHoeOIL1EA3nZmN7t+GNgGMW1DEPrSaM2jPz99iqgR0pULfh8/6XWZ0lsMoeYub4yg5/7B9pxVFpNyPrP8yvN6egiosnZ2OipFMYjkMf0FOyy/lUTH40/mxUhHzLPd8eUviRmJtKUUHaSOD6SR//iAbKU9sJbJVDrsFFsmrvyLupcbiwNP5LgMsBF0AQGsd8iwmxNEzKgj85doTV+rkSR7hiYDTBJb0xTQRFBoQ+hCYSA8sOwFfuLz1BK97hymVzzjKkq/hPob7VeusvoRX1isE8jDJs51gFo9pF3tM/p7pkc+Pijtx5OS2tCyGsEO5GyKwL4OTAwEA+uQNPcFjdBhmZjp0gmiFaP3ke/QgLBqLCxiyJtKMa912+XRBCACTOSL3iWox/3JewS4LYO56250GcvZuWy6BshBlDDbve8R0HqrADktjDUMxHG+TLQPNJ2oM7shqdBqzFobPFH7km7fozUuDRex0tTzPFf2jQESXM0CxsQFqavTbb33bAeUu+g912XACo3XaUR3CLLAEhFDVYWIDSefDJOImBckgeX0P7i0H/mhc5eqyN4ny5lNX8EAaryDnyeTGe0L00nY4M3hc+h9RuDifiVETyAPr6DheQJ1W/EpBcns8rcfEpTdwRRcWWgOpFbpEHbhbTmzjpE9mBwquhqFjGelU7iu53LpsR5GacmVoIbHJsNRuWxEcFK7f/sKSplfIuFzPpW48dwgn21mP4lONX++wyOVQF37PjRTA2DVB7i2bGAiWXd2T6mWgoYDydZhrRUcgR6Mglo2y3+NFJF8Lh/rNUUS46SpkEYFBXh+Lw8kmi+aWHuth8i+i9jGmJemSS7k8hd9ro4RJ86KCGyFs09cHrSwc+vJBK1aGb//8wTsHocQub0hTqaU621tTpHbs/NPnsPA2yb8d5rvQXsT7BB9PMiU2nZUEYc1Uewm
+ zIQzkaxN
+ 5qQmV1cGcbDNVL9Rf/eTCtWBE6ZWN/evL4yiCsv4LxzgljdKN30grMpgF/NCH9vqApepf7vXGYldcyDrcDAPedp1blQMUgFkYIGnlizAdn1bwnamnr6NuwxOwzVZiln1gZD9+MSDu0TP+o86fk42tnsnBJHWSmzqN5xfsp0SUJ8TRC+WKRZeihiQIixIMfrVa2d4/thHsctKFkzF+NOL6oYHqzVPFxSnfJFt6qJ3QGJomkuAUGchEj0YFvrZm+oKsvh+20YGXOGno4y+9hH/Ag3rFwoeiEqR7ZV183FeO6/w0mpDxj5voupqImWWUyJ4Wg0W4gkTMkpJb5cr7Igmo1QuHaIi78yK3v1SBA5AVgy6T9gdYQtT4MK8oxE/CicM5OXghsRXHHsD9IN48Qq+M6thLSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,44 +104,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/30/26 04:37, Andrew Morton wrote:
-> On Mon, 03 Aug 2026 04:31:20 -0700 Breno Leitao <leitao@debian.org> wrote:
-> 
->> Add a tool that enables the vm.panic_on_unrecoverable_memory_failure
->> sysctl, picks a kernel-owned PFN and writes its physical address to
->> hard_offline_page.  Three page kinds are selectable with -k: rodata
->> (default), slab or pgtable. In all cases the host should panic.
->>
->> Example:
->>
->>         # ./hwpoison-panic -k slab --yes-panic-my-kernel
->>         injecting hwpoison at phys 0x100032000 (pfn 0x100032, kind=slab)
->>         expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
->>
->> In dmesg, you will see:
->>
->>         Memory failure: 0x100032: unhandlable page.
->>         Memory failure: 0x100032: recovery action for reserved kernel page: Ignored
->>         Kernel panic - not syncing: Memory failure: 0x100032: unrecoverable page
->>
->> This lives in tools/mm rather than selftests/mm because every successful
->> run crashes the machine, which is not something to run from CI.
-> 
-> I wonder if we can fix this.  Add a knob which tells the kernel not to
-> panic/oops/crash/etc.  Instead it sends a message "i tried to crash but
-> you told me not to" and proceeds.
-> 
-> Set that knob around your hwpoison-panic tool and voila, it's now a
-> selftest.
 
-We just shot down a random "kernel-owned PFN" (marking it hwpoison etc).
+On Sat, Sep 05, 2026 at 02:18:19PM +0800, Jinjiang Tu wrote:
+>On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+>anon_vma->root is stale due to missing memory barrier, leading to
+>lock and unlock two different anon_vma->root, thus leading to a anon_vma
+>will never be unlocked, and another anon_vma couldn't be locked anymore.
+>
+>The race is as follows:
+>
+>    THREAD A                             THREAD B
+>__anon_vma_prepare                __anon_vma_prepare
+> anon_vma = anon_vma_alloc();
+> // writes may out of order here
+> vma->anon_vma = anon_vma;
+>                                   anon_vma = find_mergeable_anon_vma(vma);
+>                                   anon_vma_lock_write(anon_vma);
+>                                     // may still see the old root
+>                                     down_write(&anon_vma->root->rwsem);
+>                                   anon_vma_unlock_write(anon_vma);
+>                                     // see the new root, never unlock old
+>                                     up_write(&anon_vma->root->rwsem);
+>
+>thread A triggers page fault and calls __anon_vma_prepare() to prepare
+>anon_vma for the faulting vma. __anon_vma_prepare() allocates and
+>initializes a new anon_vma, and then publishes it to the vma with a plain
+>store. anon_vma_prepare() only requires the mmap_lock to be held for
+>reading, so two threads can fault on adjacent VMAs at the same time. While
+>thread A publishes a new anon_vma, thread B could finds the anon_vma via
+>find_mergeable_anon_vma() and then locks anon_vma->root->rwsem.
+>
+>However, due to missing barrier, thread B can observe the published pointer
+>but a stale anon_vma->root because the stores from anon_vma_alloc() aren't
+>yet visible. What's the value of the stale anon_vma->root? __put_anon_vma()
+>doesn't clear anon_vma->root, so the root of the new allocated anon_vma
+>may point to a valid anon_vma.
+>
+>As a result, thread B can call anon_vma_lock_write() with the old root,
+>and call anon_vma_unlock_write() with the new root, leading to a anon_vma
+>will never be unlocked, and another anon_vma couldn't be locked anymore
+>(it's count is dropped from 0 to -1 due to wrong unlock).
+>
+>To fix it, change the plain store `vma->anon_vma = anon_vma` to store
+>release, so that the fields of anon_vma are visible before anon_vma is
+>published to vma->anon_vma.
+>
+>We don't need a read barrier at read side for thread B. The load of
+>anon_vma and anon_vma->root have address-dependency. According to
+>Documentation/memory-barriers.txt and some investigations, only Alpha
+>needs address-dependency barriers and it has been handled by READ_ONCE().
+>
+>This issue needs two adjacent VMAs aren't merged but are compatible for
+>anon_vma. We reproduced this issue in v5.10 with KSM enabled. The kernel
+>doesn't merge commit cf7e7a3503df ("mm: prevent KSM from breaking VMA
+>merging for new VMAs"), so there are many adjacent VMAs that aren't merged
+>but are compatible for anon_vma.
+>
+>Without this fix, our production environment could reproduce this issue
+>about 2-5 times each month. After adding a smp_mb() before
+>anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
+>to this patch, this issue hasn't be reproduced for one month.
 
-That's really not something you want to do from a selftest.
+Good catch, thanks!
 
-You'd need some kind of hwpoison simulation mode.
+>Cc: stable@vger.kernel.org
+>Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
 
--- 
-Cheers,
+Shouldn't the tag point to the following ?
 
-David
+Fixes: 012f18004da3 ("mm: always lock the root (oldest) anon_vma")
+
+5c341ee1dfc8 introduced anon_vma->root, but 012f18004da3 made the lock
+helpers dereference it. Before that, anon_vma_lock() used anon_vma->lock
+directly, so a stale root could not cause this lock/unlock mismatch.
+
+>Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>---
+
+Hmm ... no luck reproducing this locally ... Still, AFAICT the race is
+real.
+
+For the read side, no extra barrier needed because the anon_vma->root
+dereference is address-dependent on the READ_ONCE() load, IIUC :)
+
+> mm/rmap.c | 6 +++++-
+> 1 file changed, 5 insertions(+), 1 deletion(-)
+>
+>diff --git a/mm/rmap.c b/mm/rmap.c
+>index d1819fd69938..a868e835eadb 100644
+>--- a/mm/rmap.c
+>+++ b/mm/rmap.c
+>@@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+> 	/* page_table_lock to protect against threads */
+> 	spin_lock(&mm->page_table_lock);
+> 	if (likely(!vma->anon_vma)) {
+>-		vma->anon_vma = anon_vma;
+>+		/*
+>+		 * The fields of anon_vma must be visible before anon_vma
+>+		 * is published to vma->anon_vma.
+>+		 */
+
+Maybe be more specific:
+
+/*
+ * Publish anon_vma only after ->root is visible, otherwise a
+ * concurrent fault may dereference a stale ->root when taking
+ * the rwsem.
+ */
+
+Otherwise, LGTM.
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+Cheers, Lance
 
