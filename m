@@ -4,142 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C6D7C79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E741C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:58:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803716B008A; Mon,  7 Sep 2026 12:57:02 -0400 (EDT)
+	id 065A76B0092; Mon,  7 Sep 2026 12:58:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DBE66B0095; Mon,  7 Sep 2026 12:57:02 -0400 (EDT)
+	id 015AE6B0093; Mon,  7 Sep 2026 12:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CAF36B0098; Mon,  7 Sep 2026 12:57:02 -0400 (EDT)
+	id E47516B0095; Mon,  7 Sep 2026 12:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6926B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:57:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4DFBA01EB
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:57:01 +0000 (UTC)
-X-FDA: 85187571042.16.010DB5F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0FA0D40003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:56:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U2eMkJBn;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788800220;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2106B0092
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:58:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6034F40192
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:58:16 +0000 (UTC)
+X-FDA: 85187574192.10.46B5021
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010070.outbound.protection.outlook.com [52.101.85.70])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7EE261C0004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:58:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I4ulMRAB;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788800293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7sMiZud/gecw2GU2/OU3WSFMgRwBwDYM1b6ol/3L2AQ=;
-	b=PHoNropceIZFRtgg6Pl4Zxes6hEGJlglFrrjbspw7uvij84YP2Mbc4IVhaKJPDDWAAywmw
-	tvi5KDbEqogDUfxzqnzJfFH327pHMP235hiY1T0IgJXIeGPfYhobJwbvuD6UiCQgMRfROv
-	vNtJFDyPplwOhDPZUadYYeBSrrMnLYE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788800220;
-	b=LR3Y9SO+7oymEHcu1fsqsQv+0T/3LZErRJB4vqv6V1YKTa4mnUwXn7fGV7vpWpQcYgDy5U
-	uc6dPhwopUJGijYZyIFj5y6wc+k8Tc181ZMX42pIh2r7TNQ4TNDVKrWbkUXjtpr27/Qwn7
-	MQwai2DRVtRbWuNRzk8tDAln9KaaUJw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U2eMkJBn;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3086D434EE;
-	Mon,  7 Sep 2026 16:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1461F00A3A;
-	Mon,  7 Sep 2026 16:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788800219;
-	bh=7sMiZud/gecw2GU2/OU3WSFMgRwBwDYM1b6ol/3L2AQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U2eMkJBnxejCrjOQYxNf49B/y7ghwS63xl8kEFfSHPWHnEslOhZPUH9PrfOaFb/oO
-	 vhBO4qgPGcA4rgq/5XcEfm7JlWYqx1IgFGQwjh1wWy1/O6JVpIHy2U4n8+BXHPsDNx
-	 1VLmZw2b6mikVBQRxjIYCzdsH5OuRk7gr2NrmNJMcOj+DSky/Ir00/zP+/t1IlvVKT
-	 b2ju0GSQNWjg7+im/JUVMHfkNJdv0WspOrigCfBEvB4oyND2m/Ye03Ju/EQ9/Hr6j1
-	 HFdX4QrTcpf91Aj+wxuQwfBphRIEyrP22dI461P1S/nE4ua3v7dNt1qETwDaMYrngQ
-	 Wxon93uiVUv/A==
-Message-ID: <d6dc52e3-b27d-4663-848c-a2f270fb4c5d@kernel.org>
-Date: Mon, 7 Sep 2026 18:56:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] mm/vma: only permit MAP_PRIVATE /dev/zero to be
- mapped anonymous
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260902-map-private-dev-zero-v1-0-a578c730cec7@kernel.org>
- <20260902-map-private-dev-zero-v1-3-a578c730cec7@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260902-map-private-dev-zero-v1-3-a578c730cec7@kernel.org>
+	bh=eMfbktzDNL+gk2PkVE/8BYQjIoc0ZEug9rKdXr+fivE=;
+	b=ROPdtiWrcxlKwFvY7ctmw8zmDKz7mVs8+Hjr/ES/iCzB7DdHB3yvdgjwTkoFr8jC2Hu6Tx
+	yhZFC7DdkDguemjUjNDzXGToNYMI3r8rIebxQF98Vl101M0WY+t3iY8JHV4ugn9AaIZvCM
+	yswjAtqXJbRev1lKdLbO2gn8cDnLsAA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788800293;
+	b=gJDR56TYLghmjMF11CQynnJBvnhRU0XbgHOxSd+aryV+MoRChD5f2sjIDolCnqO6dtl6WL
+	5t6H9nx3wkHFn68XgDHqy3PBxDjfNBzBiiYm3GjgCsqHWWY/UB+iNJLXYfMHReVCFYS1lH
+	7JUfisS+8LnFKerYotLIfc9IUWuVqV0=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I4ulMRAB;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pjdo0kPfZf0pyseeowT12im6z4XrWYuOWL037GIGfwmPeKUPvfkpOcnJjMs4VrGKQ30WVxShxEAz2V8xYSzMTeSta9j03r/BFXNR4zGDcE5jxl/RJE/Jt0baeo2R3LykPNsR6tcOiHRiE8klxt9cPmPeHrFFoFHuyKhL2wDLCUSTr9p5nsKkiqLD4lfZzhhC0bpOE3Nju3ZkwtcDHHiGkOgg56aHnLMUvm0b3UaVlYQGaWDQQ+BnH3ePqXTEh/9EcSbYx3rxLJW3sb51og5oCv5q76Mj0igvd/a1qtEQPWx+OSDyyq761zgIg4n5o22AlIPzjcy6cIbWetTljCiMZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eMfbktzDNL+gk2PkVE/8BYQjIoc0ZEug9rKdXr+fivE=;
+ b=kg3HR4Y6HxAZZxP0C3SMw9IFU1DWcPINQ7q3g3hrgEDjk7ZFXfu8uTRDm1Dh3SaqoGJKkDSkenvInHEvYMCstpUxWg0PnEstwIZvZ9p9qetBAFjH3nQ9tNYTUBufTk0+NUdfct0NaKHnGjUy93aW6hm+hahpWwe/VYPsE3UfJUWEbC6Hf4tf+WlB5elnFjwal8QZJFwJb7ZuZkVQlZBKlgs5RsgieuLi4tmbyxd7vptmIYRhog3XEgU6mN4HSbd4O8xwkQMvXg0g6lWFxTq3B0KOawwv4n3fjQP9UV3rVDvz2m0KdgV1FuZkAGXapIX0Xq9JoZ1nPX5iC99vtu1d1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eMfbktzDNL+gk2PkVE/8BYQjIoc0ZEug9rKdXr+fivE=;
+ b=I4ulMRABy3kDLIXqnH3I27IayDeD2HC8to8Ftz8W04JoYyn4V0MJqfhjVOPvmq/TAlhQZlfvwG9yeR5OyENHDdPR+1fRs1UoLmTq4IUDCftl2JTc9pl6CkX01/aC/7lHAf432xYIvAU2RPq9R5eSfe2bqmrQUXpjR/hECTd1uJiCioD57ClbLPiC+cjThetbOwm5alUgETu4fef8rwnrzYLORLC7pETJWMGrEdC9+HfasHQ0q39ATkd339Gts5CL2XJIVmFW+jZiEuFi8TgG8n8Pr+lyb/yH0EnQs/Iqdm8BChit/2BLyr4Vbzix6dTFiDqI0SIpzjM/9XAPCupR+Q==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by MW4PR12MB7309.namprd12.prod.outlook.com (2603:10b6:303:22f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 16:58:08 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 16:58:08 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 07 Sep 2026 12:58:06 -0400
+Message-Id: <DL98S34F6I6L.12UZGOT6NF1J6@nvidia.com>
+Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
+ mappings
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
+ Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Peter
+ Xu" <peterx@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Cedric Le Goater"
+ <clg@redhat.com>, "Saravanan D" <saravanand@crusoe.ai>,
+ <stable@vger.kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
+ <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com> <apEzvfGgsvbc3vBI@gremlin>
+ <dc52dd1d-f62d-4278-ab4d-95746383fd50@kernel.org>
+ <ap7i1vLkfZj4rbNM@gremlin>
+ <4743f22a-c24f-4f93-80f5-3260f29bd410@kernel.org>
+ <ap7mZ1Ktd_rRRrdX@gremlin>
+In-Reply-To: <ap7mZ1Ktd_rRRrdX@gremlin>
+X-ClientProxiedBy: YQBPR0101CA0256.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:68::23) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MW4PR12MB7309:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2d364c5-76ae-4ec7-b884-08df0d01314e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|4143699003|11063799006|56012099006|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	h73VlNw50rd+BL+MBQQfwappLmbPTvmcVB/J3PZfX/5uC/9SNBQ+PckdTzhX1MnSaBirDKQzahLTWNra64nK506edsMxD6PabMtHZxvZTxbANBleB3/mSFk3KwrtdUp4B8iZxUarvvC9valvf0/Yx36WBDDDkdqftLjQDiDoVxfFoW9ETJdIYwbqiBOZBzHkMerPVnyxOyDwv0/BpxuCaVRKP/E2KLIw1QCaW5DBapkSECSsZ3kjKnF6+10prDapMmXLf+kY01hZaQdrCe87JczjJxKYheBxDmvjMhtIiTpKfbTlKzXASB8y8CD5dXiUTAWueQunupEG6/yCUGF6WjII+JTJAW4bkTuLM6z/HKyblT+yp19wfol9cH06i+jSA5FczEiYbrcXlqq2GX1nsMakFuHY67WK5R0U76gJICTh6XGJNlrnnHO8rV9gXd5ojukNx3Bs67zz2BGbt/UxW/S9QLaa9Y/1QcKBLuA0jDQXqa0dtikiY862Cle7zefGxBInVSiMdzQyyDiEjRF5snU1FH5YNErLY91STJMVGePYM86khUfCZkDSh8bX2Yuxrs34dtCI9vPNLNQ8NdCE2lk+nnDVcg1S9lXaXfQCrs86AOsPSmlfr7bI5JOttL7ft7wczcoo25IdfjPYbGeH1JHJYQd477ZYmJlvWmM/q2A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SktrWU10UUdGWDRzN2NoL0xnck84MHpBQmFDMkt3dEU0ckFVYnNGRFFSYWQ0?=
+ =?utf-8?B?c1hLRXl1aW5ENklPUlltK3VBZWo5cSt4ZkFmZHJmVmRPVHlHVlJSa2F3Y2ZE?=
+ =?utf-8?B?MEJ1cDlyZzVWKzQ5REFPZkQrNndpdWtTVU1GcE01UXJjM08rUU04SEhCTXdI?=
+ =?utf-8?B?eTBXUzhLWnpJK2hubG9yL1ViSStmT0IxVlRQdGdvckNIL3d4cnpHMGhCOHEv?=
+ =?utf-8?B?c2V1eStIREZuL2dMYzZieTQraXJFZ0x0SmYxRmphaWc3ZGFnUjg1UllEN2tq?=
+ =?utf-8?B?OFJsZXNSQk13UDFmNjcrajR0SFIwaFlTMjgrY3hTcnNmdFU0UTkwWG1DWDVP?=
+ =?utf-8?B?ZVU5VTg2WHk4ZzhvdlFVblhnYW5xTHcxRkoxaFZMZ2xudTJKZWRTWjJiRC9L?=
+ =?utf-8?B?NTd4MEFKbVhoUmdxcExnOXQvNE5zZHhPOTZId05EODM3SlgzV2VrZ2h4OHhB?=
+ =?utf-8?B?ZjEvUVF3Si81U3ZxTEQ0dDMrVCt4Mllvd09XM2tyMEduejRCQVZ6UzFzcmNy?=
+ =?utf-8?B?NmVsSmtWVnpud2xUV3k0aUFzRWUvWFl6WGFRbk1PL0h0d0tyT29JallhejBW?=
+ =?utf-8?B?SzNRTDQwU0tSeVliSW1Ed1hqMTlLQk9ibFpGSEU2SjNmZkdXQ1daUWRmWitr?=
+ =?utf-8?B?TEQxQThJNmZUenBXOU9ObnVpSHBRakRBL3k2OVJ3TzNWOFpCd1ZPd05SbFBX?=
+ =?utf-8?B?M2lENUtITG1FdjhQMklrallOK0RpUUV2WEhkcUJTSXpPeDRQZFVXOEpxRHJo?=
+ =?utf-8?B?QjN4RTNvSW5yZ25XRllqcTdOdldSYzNrSUdWRU5mVy8vcER6VHFpUTFpdUdw?=
+ =?utf-8?B?bHhra0F4VmtKbkIwTlVjR2NST0szMjZwVlg1ekx4V0dLNys3M28wa1V1TUR4?=
+ =?utf-8?B?ajM1Sno5ODRuaGdHalJiS1cyTWdRNjdTR3dqcFllTXQzeVY4allhZFR3dW9F?=
+ =?utf-8?B?NFFqeVpHQm0rLzNuQ0hJRWNzQ1A5eTFMcGNGSjcvZTlJaHlLazdQUjE0Snh1?=
+ =?utf-8?B?aktmZVVBT1g1MlVBRC81dk1IQzFDUjJHa2VCRGwzUkJkdnlEZmVVZVdsMWo3?=
+ =?utf-8?B?ZXhUSVhHVlY0eDlvUFJpMkRkRkRBWmRmOHliQm9ObUp1SjcrS0RyM05QMVRX?=
+ =?utf-8?B?SEthd0NyK2xyYkF1L3FydG1WYk9heU81MDMyYlE4N05yWjlSWFRtRVQ1V3NK?=
+ =?utf-8?B?V2lXcUpBR3JHSm9tYW9qUWhlU0VPTmdtN3E2KzkrMS9zdFo3ak1aVzU4S2Rn?=
+ =?utf-8?B?eWxmUkNobCtheVdKWnd4aUVUNEZsaFI3RVNyYjU1aDR6cmhOcWdyRGRmOGor?=
+ =?utf-8?B?SVdCdC8zOUl5d3JtUGpTT3JJdVRTdTZPWkxxVmZBdWw3TjZsKzRVUnBTZ3FQ?=
+ =?utf-8?B?Wk5zVEcrNjBEL1BVdDU0K09pS3VZOVpKWjFoekN0Y2RXVG00dDBEcHRSL1o5?=
+ =?utf-8?B?SUgzSi9mQjl6cnpPamdYMSt3c2cvSm5oNHdlTXZpUklQOGIxdURoMEY2SXFx?=
+ =?utf-8?B?VzAweHZRbjVIeWdhME0ycWVSYjBKbWJXb2lUWVMxa2ZyTHU1MXluRjR1K0Rk?=
+ =?utf-8?B?RmZOMlYrTlpHRDM4anlDV1NwMnZVUVJNNkU0RjBKeVBWWTJ0cmVEU2pwODhV?=
+ =?utf-8?B?b0cxcXVKZ24yY0dvZTdLdVFqeWFmRW5wMFR4eDFGTkFwU2F4Q2EyQVNWdEVH?=
+ =?utf-8?B?dkVLbmZvN0dxdDFTRXdUL0E3TXo0MFd0TkgwRXV2YjFIeTZiSU9kSTQrWlVw?=
+ =?utf-8?B?Rjc0UnI5ZEx1T1FLcUtBUmZ6L1BkWjFWOEhTSTR5MU5tZ3ppamJQdU42YVpi?=
+ =?utf-8?B?b2toL3ZYcU1xenYreVBSOWNpWFhCYi9ZOHQ5ZXhIU0E3cmN0RGFGaWR4c25D?=
+ =?utf-8?B?NlJWR2tnclRWUWJTN3N4NEJaSW1lcDA5NHIyMDlKNCtVM3N2YWY3NXkzZVFo?=
+ =?utf-8?B?d1gwQ2xEOUpZd0FKOGY1OGEwU0JxR3kyOWVZNlZzYXlON1BmUWdER0JjT2J0?=
+ =?utf-8?B?KzU5aXB6cW9yR1NaMWd4Q2NPV1RGZkp4Y1B1YjlaZmtVTktSQm40N21JdG9i?=
+ =?utf-8?B?SUd1bDdNTENFcDhNNnBNVDU0TUJROGN5L1h5NlQzL1pJWGFIODF2SkRPYUVQ?=
+ =?utf-8?B?Y2VFM3g5RUFZU3hvTCtkcjRQR0E0ekl5MC9ucmhvdmtNc1MrOFM4TkRIN2Rt?=
+ =?utf-8?B?bUFlUTdNUkQwOHNUb1lMSnNzd0V2UkpnLzVLSnhNV0djNFJVWHluZm4vdDBH?=
+ =?utf-8?B?WEZ6NnpBWktTK1J5Si9kZFJVR2kvNHFrLzB0YjR4dFlxa1c0QVF3QXhwMnZo?=
+ =?utf-8?Q?fEiEacQztpZq2cOCJ4?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2d364c5-76ae-4ec7-b884-08df0d01314e
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 16:58:08.4339
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JX9E3K6kMZUrHc8/SGC8P2YTNMG2Wq9ttRVwSph6vdBt/tWkFljxFwin2Xyvx7uf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7309
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0FA0D40003
-X-Stat-Signature: ayqqwdzuc6b17sms8rxp46m54yfyudqu
-X-HE-Tag: 1788800219-181254
-X-HE-Meta: U2FsdGVkX1+NMuVxXJfHsvXRAiZ1SLnJGgnYaRdQ3s8NB2q9QkJgnnUTaeU3l57x+WG5Htr54UEpRSDan0eIDPV9qGuQAGBOsj2qSqAfcO3uEr/5PeWHXyTq6lkU4ZE1i/IpgiUGjO1R3Ocv8zxNfMqNscn3YusyHEBtk3LEXbFkhgIxGDpNB+yWgBQanEfh51en6YOP6OwbTm4/W/I59tO6GTnvLtSsijozPocvq1bGOELpLaUNR+XdfjA6a5A5YIw1LcRDHXFHm27TDuMkl9VNilYCdgHdZI/3RLQWbf5gvcABmDYBMoEsEldrEI+F9Rvpr8uic1zg+kl9DzdkjbmyCUCOoWm2J5mKfhrTScC/ug1jW78MCb5kRzOTgwFuCsRW2NmxvMmmxaz/AQN5uRuPlTKHxKcby/Dm1qtX4j3nV0QEKzRUv8ZVtd09vGgXxK4jAxC0ieywkBpSpNvJM787xdD89ZRTBfwQOo6A8QhxAEBRkzATPivmDPXn1wHWwgWjnEeB5zspsjEEQ975hB7TulI8lt6BTLSpibW3YiTc1P0p0JZFJPZr+tZH4IYd9ta4vx6v2qNw+u1z2e8rDzjwz+DOS+OgovJtypHnv976UFKrv/g0VDEh1++duk7W0qURgGnowprqwgz11ifUM453rfmxKrq6q+4fHGj7+mtYzrXG0MwoH/YPO6uRL2lGaLYnS2RtA27KL/2VkRXxPIsAuAIenMoeTncacIMnTWDVuCLxWay8NZRo88kcwu9ZIAb/wiZGpHJxYYBlcGnqXPChLBOaLSO9mhKHu7S8yS3bkKYxc33ZJdjmkg/KN5SJzhmcbCeiueXjiKmB9gIXC0wvLsr0VjnK1WPj0JLCIupWR04IAhdSljHFusD8h+adHQ0oBvSwApaFWrOy8ze5F1CNJ1eO8IjrdLr86Y1Pe6VKLnkvI6OlJdAlxrYHhtEcKeqMN4eYUR9JNoFUN8z
- siyDuia2
- y3xLCdQke9duvZqeep2/cWO2Un7kVNMl88ZP/JN8TrN4oQTRy/wfHAH45kzsvM1OTrppjWAa+jRmtNcsNUzSb4PcdwL1bcsymWS2gBN6q9M7tKkQInDz8NsMXZBe/rc8cbGAK6w5jjDgKn7rG5DlHzKY87sVZUDWvhk5inhRRy36yFy0u9cRMOEKNH33Z+rjxPsIFxy2d7Q4SS7hORVRQZL2CvZHzsvR2y4NOpiLXGOhLKvlYYStP0IKlMf4NozlNHfKXZt3WvPb+QGAHyxVxOWFwUNRqlSezPW2bxMrQsGm29r4zGkUtqXUWtS7EbJW8u5Rzkd9OosAn0j8=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7EE261C0004
+X-Stat-Signature: mwikunnb4bdedz3xbugxm4umfdmpzngr
+X-HE-Tag: 1788800293-404200
+X-HE-Meta: U2FsdGVkX1/uPMpbzEkM6/qOaOD5dgTyRUvinyfItcxM8texkQG5KFOxTNWXeOOnWmXWAXOSBDhLwZ3jNpgNn6I19O4W3OBwmISDbmqv3ooPtOkeOuo0gG+Ibgwie9LMpcBUdPzqFdjYuRI+hkHsvcJTKiGnSobAbrUsHA0lHi6tYKBNLzWOLAB4yBALCUmKfvbl1ecJZT7tc37uN+PW273BDSoX/5ph7jQckRlmq5oRQ/rmyfTe31Uz9nnI5QBwnsy6dtlJpehmRQj5j6/DX2WyR6h5ca0xQVYEeHcn2gxr/37cTDFWESfH5ivPuAqmPfhkxJwopcF+Dc15FuMXWdK/iSkHVEn+yLazh+Mf10Gx66DrGsXDWJZdesnxCqxy6WCvZ2y95sw1d7D6KMIcKB5zzOYcOZFDrIkWjt3RsAObxob109avIw4vd7HkP5tSCsZZOhdx3SlHBVDtgQiJNa2m7+3snwnyCYuCD9NJK0NnY6zmcsljU+wxld5jEZo1zNsr5fMxTaKIhkD1cyBlsaoc3GSvldMzVq3wgx0/i15ymGqyMX0a7FLDpzmtd44K1+fM3aa3lu3KUt2ensGD+eniRkWhY214471fPTpACU0P9XpKFK60kPmkKTeUcyW/yL8mbTH6n1QVuczUtjq+n0BwuNBfGtBKColHguAKydgiqiU3zUe1ZggkkcCNqtsxQZvz/dz0sp5u2L077RR5Uug0G0ORWSZB3meBSFuMsviDNeshSSEbUJNOjsDlkfR+BBjSTOAq78GafvzPMpqNDFNAGzGgZ60hjPksSnZMG3b6Lo4F7LYDTLD7bUQAGjcV3IiwKJ6roRCRQfhTzU1FkwgegePXK4Lhogf5DxLxhxgFbCM5wtiE7X1ScPFbsa/ZXcAHLAT/PGtmz/sDYWgD2G8VHvX6y4RoV2hwXWtwVJ9JA7a891mQl+MGZIZzhqw2Io+wywQdlNnhdtcIRA7
+ tq8TAoP6
+ 9oiUoCLAQVl4B07bg5tngKNhQqj7huJ5yZjTQowxjCTsXMxWAgE0oNo9sFR2qw+er4Iifk0Z1dqCOQITqVGlKQ2yYNXiynXd5S6zhIkbgS3xEmkUP1dCyv1NRfoNjAaC4sgcAaUat1S39HxhEnSG0Q+t8zQ1r93JuRbavHxkxv68NtyDxH0Idwu4hkbsZw0pVp+Eb2sXNjVbYl199Z8BVFDj4qPQdS2fkmsJYoLgSJI4UcDFje2SKb0UHm1G2A6wc76TWyGILjLFoLs267ujR/uXh9shQcm+3mbmGI2ZMQ7lHmTmqFEMd4/ihr9VSDhZNNUjqBlBHk52yGwDXUA9upcT20k2YELMdBxGASTNQU+EDFg7zJ4Ya+Xb1Q4oQqRy2lxU6modLmqwFlMV10R9u6aTCPOjIC2PxJhJ4q9zzWNiKyT9fkLUNWs2ukC5G0JU9GCn9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,227 +183,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 20:00, Lorenzo Stoakes (ARM) wrote:
-> In order to use mmap_prepare() with MAP_PRIVATE mappings of /dev/zero
-> without the success_hook hack we explicitly permitted mmap_prepare handlers
-> to set NULL vm_ops.
-> 
-> However this is dangerous and we really only want to allow this for
-> MAP_PRIVATE-mapped /dev/zero.
-> 
-> Therefore use the newly introduced file_is_dev_zero() to uniquely identify
-> MAP_PRIVATE-/dev/zero mappings and only permit this behaviour for them.
-> 
-> Then, remove all ability for mmap_prepare or mmap hooks to set a VMA
-> anonymous and update mmap_zero_prepare() to leave it to the core mmap code
-> to do so.
-> 
-> Note that this disallows nested MAP_PRIVATE-mappings of /dev/zero
-> regions. Doing this would be broken in any case.
-> 
-> We therefore do not need to update the mmap_prepare() compatibility layer
-> to reflect these changes, as the mmap hook check suffices to disallow this
-> behaviour.
-> 
-> Now we're setting vma->vm_ops to NULL for an mmap_prepare-initialised
-> MAP_PRIVATE-/dev/zero mapping, we have to avoid a subtle issue when
-> updating user-defined fields via set_vma_user_defined_fields().
-> 
-> The default for vma->vm_ops for all mmap_prepare-initialised mappings is
-> vma_dummy_vm_ops, so map->vm_ops will be set to this and setting
-> vma->vm_ops to this will render the VMA mistakenly non-anon.
-> 
-> In general, we should never be setting user-defined fields for an anonymous
-> VMA, so explicitly check for this to avoid doing so for the one case where
-> a mapping can be both mmap_prepare and anonymous.
-> 
-> In the case of legacy ->mmap hooks some drivers may set vma->vm_ops NULL
-> believing this is the equivalent of setting no VMA operations. Therefore
-> update mmap_file() to correct this by setting dummy VMA operations if this
-> occurs.
-> 
-> An example of this is drm_gem_shmem_mmap() which deliberately clears
-> vma->vm_ops before handing the VMA to dma-buf. Cases such as this will be
-> updated when they are converted to mmap_prepare.
-> 
-> Also, in order to avoid a single commit bisection hazard, add a temporary
-> workaround to set the VMA anonymous only after vma->vm_file is assigned in
-> __mmap_new_file_vma().
-> 
-> This is because vma_set_range() calls vma_set_pgoff() and
-> assert_sane_pgoff() in turn, prior to the vma->vm_file being assigned. If
-> we set the VMA anonymous early then this assert will fail.
-> 
-> This is removed in the subsequent commit.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/char-mem.c |  6 +-----
->  mm/internal.h | 17 ++++++++++-------
->  mm/vma.c      | 33 +++++++++++++++++++++++++--------
->  3 files changed, 36 insertions(+), 20 deletions(-)
-> 
-> diff --git a/mm/char-mem.c b/mm/char-mem.c
-> index e53e89e6ddd8..c0b5fb019223 100644
-> --- a/mm/char-mem.c
-> +++ b/mm/char-mem.c
-> @@ -508,11 +508,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
->  	if (vma_desc_test(desc, VMA_SHARED_BIT))
->  		return shmem_zero_setup_desc(desc);
->  
-> -	/*
-> -	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
-> -	 * of /dev/zero anonymous, despite it not being.
-> -	 */
-> -	vma_desc_set_anonymous(desc);
-> +	/* MAP_PRIVATE semantics are taken care of for us by core mm. */
->  	return 0;
->  }
->  
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 5d474e5f7709..da14c56fb24e 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -226,15 +226,18 @@ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
->  {
->  	int err = vfs_mmap(file, vma);
->  
-> -	if (likely(!err))
-> -		return 0;
-> -
->  	/*
-> -	 * OK, we tried to call the file hook for mmap(), but an error
-> -	 * arose. The mapping is in an inconsistent state and we must not invoke
-> -	 * any further hooks on it.
-> +	 * Either we tried to call the file hook for mmap() and an error arose
-> +	 * or a driver set vma->vm_ops = NULL intending there to be no VMA
-> +	 * operations.
-> +	 *
-> +	 * In the former case the VMA is in an inconsistent state and we mustn't
-> +	 * invoke any further hooks on it, in the latter case the hook actually
-> +	 * wanted no further hooks to be invoked, so fix both by setting dummy
-> +	 * VMA ops.
->  	 */
-> -	vma->vm_ops = &vma_dummy_vm_ops;
-> +	if (unlikely(err || !vma->vm_ops))
-> +		vma->vm_ops = &vma_dummy_vm_ops;
->  
->  	return err;
->  }
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 35e7a64855fa..4b8d430d9619 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -2621,6 +2621,19 @@ static int __mmap_new_file_vma(struct mmap_state *map,
->  	return 0;
->  }
->  
-> +static bool map_is_private(const struct mmap_state *map)
-> +{
-> +	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
-> +}
-> +
-> +static bool map_is_anon(const struct mmap_state *map)
+On Mon Sep 7, 2026 at 12:30 PM EDT, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Sep 07, 2026 at 06:19:30PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/7/26 18:15, Lorenzo Stoakes (ARM) wrote:
+>> > On Mon, Sep 07, 2026 at 06:08:31PM +0200, David Hildenbrand (Arm) wrot=
+e:
+>> >>
+>> >>>
+>> >>> That's a good idea! Much better thanks.
+>> >>>
+>> >>>
+>> >>> Yeah, it's an annoying one as kinda want to say 'file-backed VMA' bu=
+t I think
+>> >>> you're right vma_xxx_file() -> vma_file_xxx() is better.
+>> >>>
+>> >>> Andrew - could you fix that up in place?
+>> >>>
+>> >>> Obviously if there's further feedback I can respin as well.
+>> >>
+>> >> Just as a general note I really hate these in-place updates.
+>> >>
+>> >> For a reviewer perspective (like me stumbling over this) this is just=
+ a mess.
+>> >>
+>> >> Resending with b4 is as easy as it gets.
 
-I was wondering whether we should call this "map_is_private_anon", due to
-MAP_ANON|MAP_SHARED. But looking at __mmap_new_vma(), the existing "is_anon" is
-also limited to MAP_ANON|MAP_PRIVATE.
+Probably worth putting it in the process documentation. Always resend if
+a patch has any change.
 
-> +{
-> +	if (!map_is_private(map))
-> +		return false;
-> +
-> +	return !map->file || file_is_dev_zero(map->file);
-> +}
-> +
->  /*
->   * __mmap_new_vma() - Allocate a new VMA for the region, as merging was not
->   * possible.
-> @@ -2634,8 +2647,7 @@ static int __mmap_new_file_vma(struct mmap_state *map,
->  static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
->  	struct mmap_action *action)
->  {
-> -	const bool is_anon = !map->file &&
-> -		!vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
-> +	const bool is_anon = map_is_anon(map);
->  	struct vma_iterator *vmi = map->vmi;
->  	int error = 0;
->  	struct vm_area_struct *vma;
-> @@ -2651,7 +2663,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
->  
->  	vma_iter_config(vmi, map->addr, map->end);
->  
-> -	if (is_anon)
-> +	if (is_anon && !map->file)
->  		vma_set_anonymous(vma);
->  
->  	vma_set_range(vma, map->addr, map->end, map->pgoff, map->anon_pgoff);
-> @@ -2669,6 +2681,10 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
->  	else if (!is_anon)
->  		error = shmem_zero_setup(vma);
->  
-> +	/* Temporary MAP_PRIVATE-/dev/zero workaround. */
-> +	if (is_anon && map->file)
-> +		vma_set_anonymous(vma);
-> +
->  	if (error)
->  		goto free_iter_vma;
->  
-> @@ -2777,6 +2793,10 @@ static int call_mmap_prepare(struct mmap_state *map,
->  	if (err)
->  		return err;
->  
-> +	/* Hooks cannot mark themselves anonymous. */
+>> >
+>> > Ack, you are right to be honest, and I do empathise obviously.
+>> >
+>> > I will respin these in future!
+>> >
+>> > Let me know if you want me to respin this to make life a bit easier?
+>>
+>> Sorry for being grumpy. With 1500 unread mails, playing Hensel and searc=
+hing for
+>> breadcrumbs in my inbox is hard :D
+>
+> Tsk, that's not grumpy, you're speaking to the king of grumpiness :P
+>
+>>
+>> (I did see some reply from Zi to an mm-unstable patch, but not sure if t=
+hat was
+>> applied in the end -- or whether Andrew fixed up any of that)
+>>
+>> I just saw my reply to my other mail, maybe a v2 would be best :)
+>
+> Sure no problem will respin.
 
-I guess this comment will be stale soon (after #4 where you drop the
-set_anonymous part).
+The latest version from Andrew's tree is
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=3Dmm-=
+everything&id=3De384abeb559d10d6505aec053ede9368d81d4c71
 
-Should it be
-
-"vm_ops are strictly required with mmap_prepare"
-
-or sth like that?
-
-> +	if (!desc->vm_ops)
-> +		return -EINVAL;
-> +
->  	err = call_action_prepare(map, desc);
->  	if (err)
->  		return err;
-> @@ -2799,10 +2819,7 @@ static int call_mmap_prepare(struct mmap_state *map,
->  static void set_vma_user_defined_fields(struct vm_area_struct *vma,
->  		struct mmap_state *map)
->  {
-> -	if (map->vm_ops)
-> -		vma->vm_ops = map->vm_ops;
-> -	else	/* Only /dev/zero should do this. */
-> -		vma_set_anonymous(vma);
-> +	vma->vm_ops = map->vm_ops;
->  	vma->vm_private_data = map->vm_private_data;
->  }
->  
-> @@ -2882,7 +2899,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
->  		allocated_new = true;
->  	}
->  
-> -	if (have_mmap_prepare)
-> +	if (have_mmap_prepare && !map_is_anon(&map))
->  		set_vma_user_defined_fields(vma, &map);
-
-Ah, we have mmap_zero_prepare() for handling the shmem_zero_setup_desc(). I was
-just about to ask whether we can just get rid of this here.
+It has my renaming suggestion folded in.
 
 
-But, hold on, do we now even need that? Could core-mm now take care of that as
-well, and we could just remove mmap_zero_prepare() entirely?
+--=20
+Best Regards,
+Yan, Zi
 
-That is, we'd make shmem_zero_setup() in __mmap_new_vma() take care of this?
-Then we might not even need shmem_zero_setup_desc() anymore.
-
-Maybe harder than it sounds at first.
-
--- 
-Cheers,
-
-David
 
