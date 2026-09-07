@@ -4,87 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5977DC79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968D7C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:14:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6216B009E; Mon,  7 Sep 2026 04:14:09 -0400 (EDT)
+	id 7DF4A6B009F; Mon,  7 Sep 2026 04:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67E1B6B009F; Mon,  7 Sep 2026 04:14:09 -0400 (EDT)
+	id 7684E6B00A0; Mon,  7 Sep 2026 04:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 593766B00A0; Mon,  7 Sep 2026 04:14:09 -0400 (EDT)
+	id 60B6B6B00A1; Mon,  7 Sep 2026 04:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FD906B009E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:14:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 286B26B009F
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:14:21 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5962C06A1
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:08 +0000 (UTC)
-X-FDA: 85186253376.30.5B81961
-Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AFF6F1C0003
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fRc/27Rj";
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79649A06B2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:20 +0000 (UTC)
+X-FDA: 85186253880.30.BE78CCB
+Received: from mta0.migadu.com (out-18.mta0.migadu.com [91.218.175.18])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 644E61A0009
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:14:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PkoZv9VB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788768847;
+	s=arc-20220608; t=1788768858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xYCd3OAC6ugDwb5Q5pwl+ITTTc9U++zkBCViIWmyLfg=;
-	b=5bT69eDzirBjOf3Y+jVd1iExizGXGvHxi5NoGkWzHxk1lC02FcCziuqyPgeCMj0opwyJ9Z
-	4p5JFwhm9hD+E5ysjGw/WszQuTi9KSanld4xXMki0YZ9dbWOKOSQICzOrnqtaFlR/OcOe/
-	UakFY/SFjLEbqdzMqromnt7jP/kEBjc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788768847;
-	b=fjiTFGD1FcwdXUbWL5pxfDzvUi7aIsVpGXfvtcFaYorPHvO+5nNm45r/DOxYyAlD0M9Cy6
-	cZEHkaiCuCl722EV93RkZVICAA7b/LhdVdvjlHVMAE4d+8XeMJ/PTQIBrOE8TT0EkptUjc
-	hQ7eb5GxSqAeDALALQjaH/dtzxkksE4=
+	bh=JX9pz/iKnxiodB/9R1jM9tJEhGQeWy3SEA8tnCDJCWA=;
+	b=zaoPvJxKOjwPn2CiS0KO+d1yxnMV8b/yKVjYYkGjiM4rAJyYJnXEADF1x8vCI4UeZYKNF7
+	wI3hT83ELdyflesDkqp9UXi3/chWFP/tlD/F0i4Z0roJ8P8itpA60PvDRFdplpA/ypWyGr
+	sOHS8kX7SSuoruVCHi0+iLJY0+hf45U=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fRc/27Rj";
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PkoZv9VB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.18 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788768858;
+	b=RFSAvFzOky1iimjCof1GdZLSNDn5yRCn9pzY5NbmWUKMkiGZoo3dw5d6BQBvmXQygB55Xt
+	OaRyurJg5LcHRiCj1NGa/uvT8YIzNR0AcDx+x1mx5KmwwwV82hgXri1AQ3qGOLkoIfOi1S
+	KAHyH6ki+qgjKWa4uK4ZOplx2+/vKAA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nMTgYk091e0ILTHhRnXGH4A+hErpEAVN/BDSGxT7uPw=;
+DKIM-Signature: a=rsa-sha256; bh=ASmH7PI5FjNsmJJfvtLeEl3jMhKoYtXHiDpYlixm7NE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788768845; v=1; x=1789373645;
- b=fRc/27Rjb5/PrkOFN1fx1eZb0T5Uj4Qi6vPGV0FxSSZJ4oymS/zA0GU58VMKGHCBqAfkWM4h
- zFuuexu+23T9Nr22OHgWaPsDLqg49WrDyVwGLpG56T8jJMdPhKvWVlICc9BKOwB+MJGjF9wdp8w
- bm65RXoDeoZlBp/kUGh5J+pw=
+ t=1788768857; v=1; x=1789373657;
+ b=PkoZv9VByCYw+CljyqOF9vhxvVFtrnkwU1ESoTtbbzZMX+REPxlmCfAl3qLoVoYKZPvAzwyh
+ +1BeCydxCCbXVJCnECU0fqJmK8b9xDXFZiRik0vgS6hFllrBdVgmpVU9EDMs9z6FOcnl8W+AaKl
+ pj4TF64ee11t915IW3tj1a7M=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e2e364529cd50751;
-	Mon, 07 Sep 2026 08:14:04 +0000
-X-Mizu-Trace-ID: e2e364529cd50751
+Received: by smtp.migadu.com with ESMTPS id be9bc340ab630053;
+	Mon, 07 Sep 2026 08:14:16 +0000
+X-Mizu-Trace-ID: be9bc340ab630053
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-To: Oleg Nesterov <oleg@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Marco Elver <elver@google.com>,
-	Ye Liu <liuye@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Yi Tao <escape@linux.alibaba.com>
-Cc: Michal Hocko <mhocko@suse.com>,
+To: Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	SJ Park <sj@kernel.org>,
+	peterz@infradead.org,
 	paulmck@kernel.org,
 	mingo@redhat.com,
 	rostedt@goodmis.org,
 	jpoimboe@kernel.org,
 	mic@digikod.net,
+	oleg@redhat.com,
 	tglx@kernel.org,
-	akpm@linux-foundation.org,
 	david@kernel.org,
 	linmiaohe@huawei.com,
 	nao.horiguchi@gmail.com,
 	rafael@kernel.org,
 	gnoack3000@gmail.com,
 	ljs@kernel.org,
-	sj@kernel.org,
 	rientjes@google.com,
 	shakeel.butt@linux.dev,
 	xu.xin16@zte.com.cn,
@@ -128,22 +123,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	linux-trace-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-security-module@vger.kernel.org
-Subject: [PATCH v2 1/8] sched: introduce for_each_process_rculock and for_each_thread_rculock
-Date: Mon,  7 Sep 2026 16:13:27 +0800
-Message-Id: <20260907081334.1152889-2-ye.liu@linux.dev>
+Subject: [PATCH v2 2/8] mm/oom_kill: convert process/thread iterators to for_each_*_rculock
+Date: Mon,  7 Sep 2026 16:13:28 +0800
+Message-Id: <20260907081334.1152889-3-ye.liu@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260907081334.1152889-1-ye.liu@linux.dev>
 References: <20260907081334.1152889-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zrua4u7f5jdyricqhia6hiqzufiomr96
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 644E61A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AFF6F1C0003
-X-Stat-Signature: jmhojqxi55ran1jfsz9ss4yuwfdx4otj
-X-HE-Tag: 1788768846-871670
-X-HE-Meta: U2FsdGVkX1/z/bpKclO1SJj1S8ejJ3GvGPqPtFDEY38fpdgwwmZw4kXDClSTTs92RkSbcUNzQA7gHQTjfLvds98cKL5AbYsuB9n35MZVDDgCl2MwIMmNwK6iLM/1rJHMLHSaOAFGS2nh11PFNEs5X/0eN1cTCRhokXMF7sKCdTkmQm7kPunH15wb+sTdVF2/9SEWtOOVHBksS/Kw4RDvp9m++gfGlKbHd8urQnxTxwoKytYmd6n8frdTQj/DlZ+MA9u+nDMelq2zVJyooviNlwF6py6q3dZHb5h1FaLRWhwKPxicyriU/nXgnMoH5XQDCp2/1eNmFJ7I2+PpzGn1SmCBjyBdGtaVTBbIUSjZwSJn8num+zN2PqctaSpb0EESy8CV5Lb2hyWXLhh9tUME9pL6r9cIiEDt6GPAozpIJd7aAdZxpbnzstjUx13gXk3HpBu4XMLrPCSBU2WTVmxsuRUwhWjwaDnV1bpommd9UecXVWf18e81zVWK0znBy0cnYomXxhPsJ5Dkb8yFyruiV+5s/smdtOkks/MdPthdCURdsSPgJtsBZevkEwQCp46Eh76WpztbIx9asCFBIAVsWF5rjG9G4xcTD1vYUbJiySAOVeT70vRGWIoeufhWS28+5AVnCDL/PjGg8lDeUzMIo0bncwkwoPOTMXw3jp4TJRuZpzMlShrs7kcmz4gJrVQbmuNHGjSbhUhLTP7dC13qJilNHnFtTMk9h4AciOsvQ2JUILS1Bj+/zAFeyK5PQtL79OCY5ERDZVwkmCo51A6bx4xUC8+I6GGwvf6ZsVPC3F6TTar5ZC+BVbTXS4FVM9zCKL8nTjYNPCr6XyXekIF0IcrLTXgjCkOV2EBzu1OpRX9ygcrunNjKJ1UqzcP938hTUTpcxnha0+GBTvrxH6DZympaQBdSp7G9/mi2iakcNa4R4jGIfbSXRWajylVfVSg6RJBN+lvl4pWrD7LFz5K
- u5GDHm3A
- vFU9EmRCDD4GtCDWqbh4XutjiKZrOMnvvpyezixY9jOD7StGBYE1S6jvgPcI34DMDJCjz6IgCAcK8FzahLv4vZHaH9Y+fiGKHenDk+6rsuzIg0QxUkz8UykD/8Cv7jwVNzlLnFBAUdE5cPTOemphXhEW/eoHVuClV/UOY52kwWuiVZ/N7nQxc8TAnLvFUV0G55aPqPMAX5okd4Pu4JWqxcLI/Bhly4HJqr84c3A8w2njuUQCmVXpTDh66nOl2SXKpZvNjBHeER+W8uq9BA2TXAsTq8iyr9zapkuNZLI6bAZDRqFVM5Py2Drph3Bn5gDWdNSqGOvThQ/t1ATyv+H08w4ACUjoM6YcorUD0rQxx6tydvUKSCog0kh5w7c5lFo5DL63T5qoRc8FYMxlAtq51U4IQLmgunXUAa/TFaZI6HvLWkif/RCoR3FnywXthxZXTrS8k
+X-HE-Tag: 1788768858-478302
+X-HE-Meta: U2FsdGVkX1/K+ftby2FT0wymYtXaB4pKkedlsVcvvOdhfawE6kcAtnCJ6LXWM18kL7EbBXFA6nWoD9nV60LadsgGUJiVd4JBAOpNvWwKXFP71QNMWmFr9EHZEIGli/Qdobr4wXCT9ZPf0vtvpjPEmbdFrjcsqSwvrzOvTxKtcywmafL3FCsyJ0hdIREyRdY532wmewkKgMJGB/gEBdUGIRljNL+BxxDbu4pyvxuYREZ1G4uOEMSmkOaVXe0ESpc5WQ6T03BSYs77tISCoS9YFjs8XQyKQlj0CLQzSwjlxKBtFnTi/rc4iBR44hP88LbqdmyI2xyq8C3h1+jVAtZTzxEYo5taVEIf+nbFtrdazJM5x8lanPRikzZVqj8zsrHy4ZXIWtOOIx7x1PfDdaDPxRe59XohDfGn8OJoHH3Th2ONdESIBq6uN351bG1N1lckdNbI5irlVsYhAurrEYqbvkCEuSuZ2A9uFElyhlXa7ziQXyt5At7OUKzvNcfQCNFU1uzf6EjjQiePzXrN4g/IbMrfEGtVC4pb8Y3CCSf5sBE0gNJD1Qi6hT1dSFI6BVBXhfLHvNdIJIQxo1MdiAYOQlVLn2c1RR0i2555hk/oEJq/fpjHGDMXnyc5pEy5GCWS7UjQNw8oQID70tF6pj+jHDwKpDrs5aLPOSdqxWSkgiNMGAWzKLY/pOE77Z3rCc5upxgYXDvm+d3gzk/6oawFeM14hWWW7SmoleYu+ny0vcjqHPUch0Rmw8scQ0Q7D3p/Otx/LQoHbhAvSXxf9teZeEugj9Z6JcHiddRaL6V5F0wM82tYj/vyT0XhmxEZIzhfHPd0N4nI3GsZ7ihXMuA62RbxiavlIE7y3GTZ5uckazA0BSDBSn0jgWbOREGsyRiKLPEHSJZr1OsUAEHLn1sujfKOY2u9mGB7LUrgVawbjFizZm2xdPco+vvgoyTVGxHQbjFM2zRkxWfODwQbbU7
+ g7uUa7sG
+ iMEsEGShsVTvQQPnWBo8zkQYXHkeOdj4hiaY/jtEF5xf1nKRaPa9D7whPsL70iATzsyBUy2SYye0HWZG9DlB70P/TOYtc0zT0ET8pcpn8VwD3gMtBTfiixFlbUJDH5pmO16eBnoDcX9d6axLr8W5NgE0TXY88FTSa8eASbYfEQoKK8pFV4SCuw/JfkMBtFjB8aJe3zlUNwBfFNIhYxOcHUBE2+GMqI4VJ8Qt06DE0+XYdlAqz5x1hXTaZ+N/VfEpN2tuFNgisXjDz8bZNf2pvD+GTgtjApr3+mGRgWTXbnQx/WhT5kuRJB/CbiBhEHnzDQ/MmtHDfh2/O8gWltWL37MVENnUMujVGj/zogFsFaC0UMriG6XL0cYysDKE/do4lu772EgCvC2Cj5NADfRADY/R/QY6hGY0LSMEvC3WfGp3f84/13eEwYcXb4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,66 +148,109 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-Introduce for_each_process_rculock(), for_each_thread_rculock() and
-for_each_process_thread_rculock() macros that acquire the RCU read
-lock before the iteration starts and release it when the loop is left,
-so that the RCU read-side critical section is scoped to the loop body
-instead of an externally managed rcu_read_lock()/rcu_read_unlock()
-pair.
+Replace the manual rcu_read_lock()/rcu_read_unlock() pairs wrapping
+for_each_process()/for_each_thread() loops with for_each_process_rculock()
+and for_each_thread_rculock(), which scope the RCU read lock to the
+loop body via scoped_guard(rcu).
+
+No functional change.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: SJ Park <sj@kernel.org>
 ---
 Changes in v2:
-  - Rename macros from *_rcu to *_rculock (Steven Rostedt, Thomas Gleixner)
-  - Improve comment on for_each_process_thread_rculock() double loop
-  - Change prefix from mm: to sched: (Michal Hocko)
- include/linux/sched/signal.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+  - Rename *_rcu to *_rculock
+ mm/oom_kill.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 584ae88b435e..110ea9f131f3 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_SCHED_SIGNAL_H
- #define _LINUX_SCHED_SIGNAL_H
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5f372f6e26fa..ef2e1c423c1d 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -94,8 +94,7 @@ static bool oom_cpuset_eligible(struct task_struct *start,
+ 	bool ret = false;
+ 	const nodemask_t *mask = oc->nodemask;
  
-+#include <linux/cleanup.h>
- #include <linux/rculist.h>
- #include <linux/signal.h>
- #include <linux/sched.h>
-@@ -663,6 +664,30 @@ extern bool current_is_single_threaded(void);
- #define for_each_process_thread(p, t)	\
- 	for_each_process(p) for_each_thread(p, t)
+-	rcu_read_lock();
+-	for_each_thread(start, tsk) {
++	for_each_thread_rculock(start, tsk) {
+ 		if (mask) {
+ 			/*
+ 			 * If this is a mempolicy constrained oom, tsk's
+@@ -114,7 +113,6 @@ static bool oom_cpuset_eligible(struct task_struct *start,
+ 		if (ret)
+ 			break;
+ 	}
+-	rcu_read_unlock();
  
-+/*
-+ * Variants of for_each_process(), for_each_thread() and
-+ * for_each_process_thread() that automatically acquire and release the
-+ * RCU read lock via scoped_guard(rcu).  The lock is held for the
-+ * duration of the loop and released on exit, including via break,
-+ * goto, or return.
-+ */
-+#define for_each_process_rculock(p) \
-+	scoped_guard(rcu) \
-+	for (p = &init_task ; (p = next_task(p)) != &init_task ; )
-+
-+#define for_each_thread_rculock(p, t) \
-+	scoped_guard(rcu) \
-+	__for_each_thread((p)->signal, t)
-+
-+/*
-+ * Double loop: 'break' only exits the inner for_each_thread() loop.
-+ * Use 'goto' to exit both loops; the RCU read lock is released
-+ * automatically when the scoped_guard scope is left.
-+ */
-+#define for_each_process_thread_rculock(p, t) \
-+	scoped_guard(rcu) \
-+	for_each_process(p) for_each_thread(p, t)
-+
- typedef int (*proc_visitor)(struct task_struct *p, void *data);
- void walk_process_tree(struct task_struct *top, proc_visitor, void *);
+ 	return ret;
+ }
+@@ -368,11 +366,9 @@ static void select_bad_process(struct oom_control *oc)
+ 	else {
+ 		struct task_struct *p;
  
+-		rcu_read_lock();
+-		for_each_process(p)
++		for_each_process_rculock(p)
+ 			if (oom_evaluate_task(p, oc))
+ 				break;
+-		rcu_read_unlock();
+ 	}
+ }
+ 
+@@ -430,14 +426,12 @@ static void dump_tasks(struct oom_control *oc)
+ 		struct task_struct *p;
+ 		int i = 0;
+ 
+-		rcu_read_lock();
+-		for_each_process(p) {
++		for_each_process_rculock(p) {
+ 			/* Avoid potential softlockup warning */
+ 			if ((++i & 1023) == 0)
+ 				touch_softlockup_watchdog();
+ 			dump_task(p, oc);
+ 		}
+-		rcu_read_unlock();
+ 	}
+ }
+ 
+@@ -894,8 +888,7 @@ static bool task_will_free_mem(struct task_struct *task)
+ 	 * are dying as well to make sure that a) nobody pins its mm and
+ 	 * b) the task is also reapable by the oom reaper.
+ 	 */
+-	rcu_read_lock();
+-	for_each_process(p) {
++	for_each_process_rculock(p) {
+ 		if (!process_shares_mm(p, mm))
+ 			continue;
+ 		if (same_thread_group(task, p))
+@@ -904,7 +897,6 @@ static bool task_will_free_mem(struct task_struct *task)
+ 		if (!ret)
+ 			break;
+ 	}
+-	rcu_read_unlock();
+ 
+ 	return ret;
+ }
+@@ -960,8 +952,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 	 * That thread will now get access to memory reserves since it has a
+ 	 * pending fatal signal.
+ 	 */
+-	rcu_read_lock();
+-	for_each_process(p) {
++	for_each_process_rculock(p) {
+ 		if (!process_shares_mm(p, mm))
+ 			continue;
+ 		if (same_thread_group(p, victim))
+@@ -982,7 +973,6 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 			continue;
+ 		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
+ 	}
+-	rcu_read_unlock();
+ 
+ 	if (can_oom_reap)
+ 		queue_oom_reaper(victim);
 -- 
 2.25.1
 
