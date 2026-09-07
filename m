@@ -4,91 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E336BC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFDBC79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42E56B009D; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
+	id 764CE6B00AB; Mon,  7 Sep 2026 07:01:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E194E6B009F; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
+	id 715D86B00AC; Mon,  7 Sep 2026 07:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D56956B00AB; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
+	id 652E56B00AD; Mon,  7 Sep 2026 07:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B449B6B009D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:00:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 47C166B00AB
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:01:21 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52D2AA0146
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:59 +0000 (UTC)
-X-FDA: 85186673838.02.733E49A
-Received: from mta1.migadu.com (out-82.mta1.migadu.com [95.215.58.82])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3ED6120013
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:00:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VWTEWPYr;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778856;
-	b=M0OGuigzieRvbZQVUcj4FIHNUmsXxu1FSnGRIGhK/jqve0Bk+HnpMS9zrVUqahH6vGr/b2
-	XnqZH576mv27+WG/Q6Dk+b+g2uSqiXrKhPsypVAxpbPxEliCnSVSpCLvuPio4+WFC1nYkU
-	OKrFVOiNn7gtynkeEGEiicbmw+dkpXE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VWTEWPYr;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.82 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DDD2F1C00A5
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:01:20 +0000 (UTC)
+X-FDA: 85186674720.02.0BCC8A0
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 415B91C0010
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:01:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XvEVLdfW;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf20.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778856;
+	s=arc-20220608; t=1788778879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EqO18ho9GcWrKKMXhvJhZjhmLaxCjPidRFTIlkDKDqg=;
-	b=nS0EQtT0nWLNzkI6A6+GTYBXBE11IDjlZ1ciHo5Hk2yILldrOjJSLGjU3wEYlb4vWa0jnP
-	hBoVLPECwvWb6HD23axHCTxjxYerdY6E/PX6lH0d5QtmpasktPopEvM1w77pveoIZhoFLU
-	Jv54Jvify+rmTF/w0HSzT0ANS4gU9Ok=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yoobYKjOGtZnon27SCY91TYOpxeE4mzqFD6r85CKcU4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788778852; v=1; x=1789383652;
- b=VWTEWPYriHE8ZCMELZtcIwNifpbJUQeMeG9YsAfOY6b2w0BieQTwDMlJAQcucP0K7CxyErd+
- WCoHuvX7Ct7a+8I8tussIDCq0u5m/YEIO9i7Es+riYvqXXUHfXHGIjcDEXAe4deHNt+tRQfO6gG
- 7boziFjtdGvQw4F55toVQFGA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id eccf057a93439051;
-	Mon, 07 Sep 2026 11:00:41 +0000
-X-Mizu-Trace-ID: eccf057a93439051
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <b00822a4-87ce-47d7-ba63-21a7b99980af@linux.dev>
-Date: Mon, 7 Sep 2026 12:00:37 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fOZgTIi+9CkjJIkHZ5qDJVF7Cb2c4YKm1mdHlDBaqAs=;
+	b=KEkUQVbXcStSufHlGDBlBu5I+b3B5XSbG/C7CfFoMvBEmSIg0LY2vm+ssawwSoOCC2LSZe
+	n+oT9rjoysv4zARe0ygxuma19DOIfdE5ZVa6Ly75AS9EC/H6iML2ltPrvs7qgRwOwqDI2Q
+	Yt6HHtNu0ND9RQGqHhVzWDZhnjGfA7c=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XvEVLdfW;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf20.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788778879;
+	b=cYJEP2I1GMki47OQP34ylHRJNTjd95vMeVRJxVTiA1QXckgJS8SWTwagjYK8hzBk5kxrxq
+	R+83csZdeM308r4TL4ESqDv/aqe/GjoCv56gpDSjLsLTU7O/L2UUlqPaDoOqO2aMlbsUnC
+	HgYuO0oYANNWhqYqzCP1jMJT6CG0MGA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788778875; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=fOZgTIi+9CkjJIkHZ5qDJVF7Cb2c4YKm1mdHlDBaqAs=;
+	b=XvEVLdfWo5jvs4KjVjXnGS4DN8+wJnXy2KcvLZVvGdH35iHKbJ3tdk19w13QAFThVq2on7GwN32CivlRcFvqEBZUWIHcH3MZWi3Zsp6UIOyrylKOBFX64jDHXhZ0Zf6bbVkgZFGDEwsigebWf70Rk+0fZITt2Fdt5TyA6qkFi04=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R501e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XATsvzD_1788778872;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XATsvzD_1788778872 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 07 Sep 2026 19:01:14 +0800
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Dave Chinner <david@fromorbit.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Xunlei Pang <xlpang@linux.alibaba.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>
+Subject: [PATCH v2 0/4] mm: restore per-memcg reclaim for NONSLAB shrinkers under nokmem
+Date: Mon,  7 Sep 2026 19:01:07 +0800
+Message-ID: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/zswap: enable static key after runtime pool
- recovery
-To: Yosry Ahmed <yosry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Longlong Xia <xialonglong2025@163.com>, hannes@cmpxchg.org,
- nphamcs@gmail.com, chengming.zhou@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Longlong Xia <xialonglong@kylinos.cn>, Alexandre Ghiti <alexghiti@fb.com>
-References: <20260905125101.2970456-1-xialonglong2025@163.com>
- <20260905160926.9836f2ca0dc977b89f2f146e@linux-foundation.org>
- <CAO9r8zPhMw=2+wyRYwbBS4As-zNbVnkcT3Y2ppqLo1AxPzaTAQ@mail.gmail.com>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CAO9r8zPhMw=2+wyRYwbBS4As-zNbVnkcT3Y2ppqLo1AxPzaTAQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hgbhib574g4ykbqpyipy44j9w19ysyob
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 415B91C0010
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3ED6120013
-X-Stat-Signature: x1btyofa7jjm4rxn4epu8juqkucwrgm5
-X-HE-Tag: 1788778856-295359
-X-HE-Meta: U2FsdGVkX19UXWfstErd24SAxwtur6wSvpE9jy8FbtEvJxNREhOVcSmQpqcN3cNFOqO77izfAmQlGYtohsjG4Nz6xTxZDTmaAgaIjn1vXEscvJajtKfEEk2V/nBCQkKOGY+NI6FIxNB4dw9UbS3eXcafAv9Pot9MKAvoyF6Gm+Eg93L2sFpGyCdjoQn2c8BKsR+AnOnr8Fm5n+yluX1G4wxyi9ZLXuRU5UgTbot+/uRvYvtOIglIawp9b03ZVeupLCMJSOm3W5xzjlJbSJd4AjzfKfjna/CxaxkQmtjvrj7E40UYspREs/iC/3GmIV7KJwcf2Bau3iMs0QddkT8IUIcsiRBWNFBPTEq63wFqNEO6Bwf96ZpWz0teytuh61288syjbpMtu7w+jHb0TsKa7LvuZReFsixQL2sZ1TX83Kac0jTWXdfOFiCXeC3xSVjHbVIFYKRcBY4DsmYmCRVB6NzcpqTlCniS9Qvl67fjrsJsnVRICj7D/P/lkKTKiiZ/F41Z/lOR2rUhhd8+yIe7GI9qF28+jBvhF0VgSlMzgfbcgsaMutP0EheIJqK/WRN+vZotB6YeHEa6vMcLI17rYYvj6Yst+w2DF7/TrWYU247j/j5mDBG7xuaFZUJrcXMHRDcGOCh7DCFqLQxqFoveQeCbn1TDUzKNFjSKOE1mHDFbuqBWYZNmQIWXjL7bpLag/Td5ST982+VvkigVN73WN/vW81DLSZIoiL6eG6IWadb/KoCuNoIBMBGAG+/EmXy0wjJDvyYxzci6kwugfy8gOv/w20MMBYkwsLov2QDB6sbJCVVeHul1cT4sc8IMQuclRaDsdlarwaKL7C1np0QM6sZ6dlab7AO8ca79mWHBiafnCJNZc6L5kwRQpWVV22B5YVgONuzFjBtJ97AQJhnc5UWX0Lg+MBez8BCW08xLHliW94KiSj7eGcZ3YMqxXppK/3G6qXAYeujMXw/64M9
- 1SOXHR3v
- ROE75AeqQmhTnIIVDcIQOJlYMxnOqXzVIZUnK6omxA7Jg+z3/y/xVdUdWe34sFG3dXJKd97XBGp87HcP8t6gK9/Sa+wPzKzvtjIHPM7MkDZ21NssY1lzOU4r3ZC5PaAwLLK4qrYxS3Lzr/qfOVzp2LofS/9qvALHiw5QJ7FYLikpOtuUGXi0rFx+d4KFDaNF8GuY+6d2IEHa3L2c5YqGibxIP5pR6CDK8C1d97HYcdbjlndta/jPuMynZkFJ/pU/HfNbv56hK81Cz6/ICgWcTTUQO/hx2hP6f7k7EMRyIY1vVqK4izNhLamv7So+FxdFL/0n03StKJ/jmWYlKdc7jihdCcbG5c797/T+XBhM3b8+1UXFSQ7h6Wz8R1BbcIsORuHHpCACFabcoS+bp+OyqbgledHCEH4geRP5/diuZiuSN5zo7PMgk7gv4upDBEL7TfAI/o1sF2B6WgDfNOKNH0XPETDo/ioJ2Y26o+j5E0S11RR0=
+X-HE-Tag: 1788778877-47943
+X-HE-Meta: U2FsdGVkX1+PENO+zYBYULDES2Xse00dPqMnDU+s/rVHGYkHoVrLFaV907a22+dV6H1YDjVw+9cUEU4LRSrf6oJWMCuK+XCT91lcmop34qdpwyr/YHedIEZHED5oA3s05ZQnI9+Lrk03HM/6cT9b3l5d4xRxJLXfMh5dRa4Dq+6ixfKqtM0QcYCmAIgROspnOL0sFm/TdypBV1dxGCBkOZQjTDAAq5QYfo4lsjSBEDJdOzbqfXR6TnXqLkJTfy+WBkmG4KRVfiA8Dp59LmAi3mBdTfMmrf5vGLqVZP1rfz/UaP+tmwSriZh7BTGJrESxCre1NKRE2XEfuP5Khzv8sVsHHcDYbOsbqXuB7lg1AwzbZWHZRdfUMO2uv0PR0Gm1X9gg7cGxWGwE0gyof3O8GtCmVRNMcHIvWG64HbqDD5Y6Aj1hlORKDA9p6+VmldckOK2iApGCKG2iExRa96k4Bb2aYt7ZxtCyn4tnOeXsNIc802gv7Iz5zw18AdYdcH/F2Yts/H7p9RaalyLNdOD5e0EbQpn7VyBBsuGVtIIouly85bejlmd702oHi0X3ZR65WC0Zl/C1VH1/4E99czxQ+yhA1qevTUxtaCJeapI+pqCzvixtxpWlrkLy+qfVifEK9bo/hddSacK7Ym+y+fbok73AvaEyEbWRxkAoshGGOuqpoft0z3sRUL2gkCo4CsulP2ICDGJ+KtuwYYDgLyW6X7qJt4P/vrvwzDYfT4KnTdH7QISBAyG/NQmrV0LYaG5Ar9k0vKxFDQc6etgE5/p7myrq/YVHPOrtmxm1F0Zs4zfvoKOxI4jwEowbyiIYsSxUC68wa4Icm0rMNZ1cZUfWsXmEg9FJY1LJGvh1s0VGX0GERkvi4fVspI+C73eVf3whmiDQyLFZbEvOs73ZFx3Q5hNGWYVyFu4KlIBKE0eLDVrlslq8BoVbxCvFO2SApJGtYtjY5AqyEzHKq90F9MM
+ hBSPtB92
+ YMbK44vK90B+RNRFWF9muFlJRZglre13CLjtsRbHWdgAowp6wOBKaatPTMNqlMo9XhX7TRD8ZNUEC9ZWctbfZw4pd75gUG/ADVK/Q2FrX6Wf0z1mz1a8kb0uzXfAayV6qKzT9b0Ge1Ye1RFmwZZSdOzF0Xk+Z7o23sIF3YSbl8YBNi5y/BFmJqd38EReuu4IGq13Z5qh1081BxLsGoJzGulcv8H1Zx4jFsg/zdY8LLVY90doN6ScBLCnFXjyliy04SGnxm8OJmDCTwo5slmaX4FQ4/eeAq5EnA/t5seMtYNcS7kauRk4i3FLLM2l9SPX4r8vhMhUJW0D+BS/Y3NzHN4Lwyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,264 +101,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+With cgroup.memory=nokmem, the THP deferred split shrinker and the
+zswap shrinker are degraded in two ways.
 
+First, both shrinkers are missing the SHRINKER_NONSLAB flag, so
+shrinker_memcg_alloc() demotes them to non-memcg-aware shrinkers:
+limit-induced reclaim of a cgroup neither splits its partially
+unmapped THPs nor writes back its zswapped pages.  v1 of this series
+[1] restored the flag to fix that.
 
-On 06/09/2026 10:19, Yosry Ahmed wrote:
-> On Sat, Sep 5, 2026 at 4:09 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Sat,  5 Sep 2026 20:50:28 +0800 Longlong Xia <xialonglong2025@163.com> wrote:
->>
->>> From: Longlong Xia <xialonglong@kylinos.cn>
->>>
->>> When CONFIG_ZSWAP_DEFAULT_ON is disabled, zswap_setup() can complete
->>> without a pool after a failed initial pool creation. A later compressor
->>> parameter update can create and publish a pool, but does not enable
->>> zswap_ever_enabled.
->>>
->>> If users then enable zswap, zswap_store() intercepts swapout while
->>> zswap_load() still returns -ENOENT without consulting the xarray. The
->>> swapin path therefore reads a stale backing swap slot because the store
->>> skipped writing it.
->>
->> That sounds bad.  I'll leave it to reviewers to suggest whether this is
->> a sufficient description of the runtime effects, and to decide whether
->> a backport is appropriate.  Please.
-> 
-> Yes this needs a stable backport AFAICT.
-> 
-> A more high-level description would be:
-> 
-> If zswap is enabled by default at boot and pool creation fails, then a
-> pool is later created by updating the compressor, data written to
-> zswap is corrupted on swapin.
-> 
->>
->>> Enable the static key after a successful compressor and pool update. Do
->>> this outside zswap_pools_lock because static key updates may sleep.
->>>
->>> Verified with fault injection on a stock kernel (compressor builtin,
->>> CONFIG_ZSWAP_DEFAULT_ON=n):
->>>
->>>   1. Boot with zswap.enabled=1; pool creation fails, init completes
->>>      pool-less (static key off).
->>>   2. Echo an available compressor name to zswap.compressor; a pool is
->>>      recovered but the key stays off.
->>>   3. Enable zswap.
->>>   4. madvise(MADV_PAGEOUT) a pattern-verified 512 MiB region, then
->>>      fault it back in and verify.
->>>
->>> Step 4 reads back 131072/131072 zeroed pages (zswpin=0, zswpout=131072)
->>> without this patch; all pages intact (zswpin=131072) with it.
->>
->> And thanks.  Sashiko might have found another issue in this zswap code:
->>         https://sashiko.dev/#/patchset/20260905125101.2970456-1-xialonglong2025@163.com
-> 
-> Hmm I think this might be fixed by Alexandre's patch (in Usama's
-> series): https://lore.kernel.org/linux-mm/20260818131202.494754-6-usama.arif@linux.dev/.
-> 
-> Instead of always returning -EINVAL for large folios we only do so if
-> they are actually in zswap. Usama/Alexandre, assuming I got this
-> right, can I interest you in sending the zswap bits of that patch as a
-> standalone fix? :)
+However, as Sashiko's review of v1 pointed out [2], the flag alone
+is not enough.  __list_lru_init() also collapses every list_lru into
+per-node lists under nokmem, so even with the flag restored, the
+objects of all cgroups share one list per node: the per-memcg
+shrinker bit is only set for whichever memcg happens to repopulate
+the empty list, so pressure in other cgroups may not even trigger
+the scan, and when it does, the scan walks everyone's objects.
 
+Before commit fafaeceb89a5 ("mm: switch deferred split shrinker to
+list_lru"), THP had fully per-memcg deferred split queues embedded
+in struct mem_cgroup, working independently of kmem accounting.
+nokmem only opts out of kernel slab accounting; THPs and zswapped
+pages are user memory and remain charged to their cgroups, so
+per-memcg reclaim is still what these shrinkers want.
 
+This series keeps list_lrus backed by SHRINKER_NONSLAB shrinkers
+memcg aware under nokmem:
 
-Hello!
+Patch 1 drops the kmemcg_id copy, which is only assigned when kmem
+accounting is enabled, and derives the list_lru xarray index from
+the memcg ID directly, so the index works independently of kmem
+accounting.  It also drops the nokmem early return from
+memcg_offline_kmem() so these lrus are reparented on offline.
 
-Below is what the patch looks like in my tree now. It can be sent independently of
-the PMD swap series. Yosry if you are happy with it, will send it on the list
+Patch 2 keeps a list_lru memcg aware under nokmem when its backing
+shrinker is registered SHRINKER_NONSLAB.
 
-From a5b70b6d72eda15bd7a16b8fc51db1d271b08520 Mon Sep 17 00:00:00 2001
-From: Alexandre Ghiti <alexghiti@fb.com>
-Date: Wed, 22 Jul 2026 08:19:35 -0700
-Subject: [PATCH 01/19] mm: zswap: add range lookup for large-folio swapin
+Patches 3 and 4 restore/add SHRINKER_NONSLAB on the THP deferred
+split shrinker and the zswap shrinker, unchanged from v1.
 
-A large folio reaches zswap_load() only when the caller expects
-the whole range to be on disk. Zswap still stores large folios as
-independent order-0 entries, so reconstructing a large folio from
-zswap entries would risk returning partially initialized data.
+The savings of nokmem are preserved: slab-backed lrus (e.g. the
+superblock dentry/inode lrus) still fall back to per-node lists, and
+the per-memcg lists are only allocated when a memcg actually holds
+such objects.
 
-Teach zswap_load() to scan the covered range. If no slot is in zswap,
-return -ENOENT so swap_read_folio() reads the backing device. If any
-slot is still in zswap, fail the large-folio read so the caller can
-fall back to per-page swapin.
+[1] https://lore.kernel.org/lkml/20260904033503.4067283-1-qinyuntan@linux.alibaba.com/
+[2] https://sashiko.dev/#/patchset/20260904033503.4067283-1-qinyuntan@linux.alibaba.com
 
-Return -EIO rather than -EINVAL for that conflict. Large-folio loads
-are now valid requests; the error means zswap cannot safely satisfy
-the request from partial per-page compressed state, not that the
-request is unsupported. Existing callers only distinguish -ENOENT,
-so this is a semantic clarification rather than a behavioral change.
+Changes in v2:
+ - Keep the list_lrus behind the two shrinkers per-memcg under
+   nokmem, so the shrinker bits are set for the right memcgs and
+   scans stay scoped to the target cgroup's objects (patches 1-2,
+   new; addresses Sashiko's review of v1).
+ - Patches 3-4 unchanged from v1; collected the review tags.
 
-Add zswap_is_present() so PMD swap-entry consumers can make the same
-range decision before attempting PMD-order swapin. For high-order swap
-cache allocations, check the zswap range after inserting the folio into
-swap cache. The insertion stabilizes the range against zswap store and
-writeback; if pre-existing per-page zswap entries are found, remove the
-folio through the existing allocation rollback path and return -EBUSY.
+Qinyun Tan (4):
+  mm: memcontrol: drop kmemcg_id and use the memcg ID for list_lru
+    indexing
+  mm: list_lru: keep per-memcg lists with nokmem for NONSLAB-backed lrus
+  mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
+  mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
 
-Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- include/linux/zswap.h |  6 ++++++
- mm/swap_state.c       | 29 ++++++++++++++++++++-------
- mm/zswap.c            | 46 +++++++++++++++++++++++++++++++------------
- 3 files changed, 61 insertions(+), 20 deletions(-)
+ include/linux/memcontrol.h |  8 +++++---
+ mm/huge_memory.c           |  3 ++-
+ mm/list_lru.c              | 14 ++++++++------
+ mm/memcontrol.c            |  6 ------
+ mm/zswap.c                 |  4 ++--
+ 5 files changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 30c193a1207e1..cd9efcf9dec94 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	return false;
-+}
-+
- #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index b76eb3d876fd7..103ae7ae8a4a6 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel_stat.h>
- #include <linux/mempolicy.h>
- #include <linux/swap.h>
-+#include <linux/zswap.h>
- #include <linux/leafops.h>
- #include <linux/init.h>
- #include <linux/pagemap.h>
-@@ -459,16 +460,21 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
- 	__swap_cache_do_add_folio(ci, folio, entry);
- 	spin_unlock(&ci->lock);
- 
-+	/*
-+	 * Once the folio is in swap cache, zswap cannot start storing or
-+	 * writing back any slot in the range. Reject high-order allocations
-+	 * that raced with pre-existing per-page zswap entries.
-+	 */
-+	if (order && zswap_is_present(entry, nr_pages)) {
-+		err = -EBUSY;
-+		goto delete_folio;
-+	}
-+
- 	if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
- 					   vmf ? vmf->vma->vm_mm : NULL, gfp)) {
--		spin_lock(&ci->lock);
--		__swap_cache_do_del_folio(ci, folio, entry, shadow);
--		spin_unlock(&ci->lock);
--		folio_unlock(folio);
--		/* nr_pages refs from swap cache, 1 from allocation */
--		folio_put_refs(folio, nr_pages + 1);
-+		err = -ENOMEM;
- 		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
--		return ERR_PTR(-ENOMEM);
-+		goto delete_folio;
- 	}
- 
- 	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-@@ -492,6 +498,15 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
- 	/* Caller will initiate read into locked new_folio */
- 	folio_add_lru(folio);
- 	return folio;
-+
-+delete_folio:
-+	spin_lock(&ci->lock);
-+	__swap_cache_do_del_folio(ci, folio, entry, shadow);
-+	spin_unlock(&ci->lock);
-+	folio_unlock(folio);
-+	/* nr_pages refs from swap cache, 1 from allocation */
-+	folio_put_refs(folio, nr_pages + 1);
-+	return ERR_PTR(err);
- }
- 
- /**
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 37f34e406c8e3..32671dc2bf84d 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1571,6 +1571,23 @@ bool zswap_store(struct folio *folio)
- 	return ret;
- }
- 
-+/**
-+ * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
-+ * @entry: base swap entry of the range
-+ * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
-+ */
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	pgoff_t offset = swp_offset(entry);
-+	struct xarray *tree = swap_zswap_tree(entry);
-+	unsigned long index = offset;
-+
-+	if (!nr || zswap_never_enabled())
-+		return false;
-+
-+	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
-+}
-+
- /**
-  * zswap_load() - load a folio from zswap
-  * @folio: folio to load
-@@ -1578,13 +1595,9 @@ bool zswap_store(struct folio *folio)
-  * Return: 0 on success, with the folio unlocked and marked up-to-date, or one
-  * of the following error codes:
-  *
-- *  -EIO: if the swapped out content was in zswap, but could not be loaded
-- *  into the page due to a decompression failure. The folio is unlocked, but
-- *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
-- *  will SIGBUS).
-- *
-- *  -EINVAL: if the swapped out content was in zswap, but the page belongs
-- *  to a large folio, which is not supported by zswap. The folio is unlocked,
-+ *  -EIO: if the swapped out content was in zswap but could not be handed
-+ *  back, either because decompression failed or because a slot in a
-+ *  large-folio range is unexpectedly still in zswap. The folio is unlocked,
-  *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
-  *  do_swap_page() will SIGBUS).
-  *
-@@ -1605,13 +1618,20 @@ int zswap_load(struct folio *folio)
- 		return -ENOENT;
- 
- 	/*
--	 * Large folios should not be swapped in while zswap is being used, as
--	 * they are not properly handled. Zswap does not properly load large
--	 * folios, and a large folio may only be partially in zswap.
-+	 * A large folio reaches zswap_load() only when its whole range is
-+	 * expected to be on disk: PMD swap-entry consumers split before
-+	 * calling into PMD-order swapin whenever any slot is still in zswap.
-+	 * Confirm the range is entirely absent from zswap and return -ENOENT
-+	 * so the caller reads it from disk; if a slot is unexpectedly still in
-+	 * zswap, fail the read rather than return partially-initialized data.
- 	 */
--	if (WARN_ON_ONCE(folio_test_large(folio))) {
--		folio_unlock(folio);
--		return -EINVAL;
-+	if (folio_test_large(folio)) {
-+		if (WARN_ON_ONCE(zswap_is_present(swp,
-+						  folio_nr_pages(folio)))) {
-+			folio_unlock(folio);
-+			return -EIO;
-+		}
-+		return -ENOENT;
- 	}
- 
- 	entry = xa_load(tree, offset);
 -- 
-2.53.0-Meta
-
+2.43.7
 
 
