@@ -4,120 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26BF8C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC1FC79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 435C16B00A9; Mon,  7 Sep 2026 08:28:24 -0400 (EDT)
+	id 6F7736B0095; Mon,  7 Sep 2026 08:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6CD6B00AA; Mon,  7 Sep 2026 08:28:24 -0400 (EDT)
+	id 6A8016B0096; Mon,  7 Sep 2026 08:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D5E66B00AB; Mon,  7 Sep 2026 08:28:24 -0400 (EDT)
+	id 570CD6B00AA; Mon,  7 Sep 2026 08:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 069C16B00A9
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:28:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 901D214015D
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:28:23 +0000 (UTC)
-X-FDA: 85186894086.17.FBD6C5F
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CCD071C0006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:28:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CdlrDAuy;
-	spf=pass (imf21.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 381576B0095
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:29:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A253E160149
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:29:15 +0000 (UTC)
+X-FDA: 85186896270.04.BDC0F15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EBBE32000B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:29:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SamNaLe7;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788784101;
+	s=arc-20220608; t=1788784154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JTzF6RGmGUg4NezQEPwLNpok/5t7X4IGc6Kb6nHVcDw=;
-	b=8gvJbxpMC1nnZ5NIQg6RWRYpBXqSLwq8VjzzYLXmfvnqaNF1C+HqipEdHhQ1EWORL4VMNm
-	7yOdPaJsNIY36DJHRO0fTiC9iGirDavTe1lt546PaiCzGrunazTG1ZgmJdg9T+mO+V4sPC
-	9NezLfbdIwPbAAV52eCMnE/QFPqs+Eo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788784101;
-	b=IqPqB8MI3kRnOfINdAFzxBEQm8FXvZJc024uXRCInwhCs4p2tQxLGbCbwPjEZMbGCnV0OL
-	zZ+ku7D1mP8RPxzFYxQ/zebCUfKkNGd+NqBtT7NIRa8eYiEtlr4Jqdb6ul4OnZFlBrTlT7
-	V8NMl9VccjB1Zw/Eej2mrLpE6laMSXM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MkDAwsqxGaceGfRmb6vtMU2HC0ErrGFG0sZSl2jCjh0=;
+	b=8YRdKybCLYsfmuRi66F/hivBjAXfvXqyiHPiq2DOm/Z3sv3539jdQNaJ4a+lNz1qwfma9c
+	31l92zVlHZyUD3tO5aVihiUElpBHoMtpkMLO/o4+sR8OLaMmvVGOFbhPXGRqMesI51CVQc
+	W/LiX9Y3h9iHgFxRbBMkvd3sSzdZkUA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CdlrDAuy;
-	spf=pass (imf21.hostedemail.com: domain of zhangbo0325@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39675172593so2731971a91.2
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 05:28:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788784100; x=1789388900; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JTzF6RGmGUg4NezQEPwLNpok/5t7X4IGc6Kb6nHVcDw=;
-        b=CdlrDAuyCEYnXhp8yf9SrpK97ss177vigxQ3AbeGgnN3t5Wy2RWuoqgrEgFbnpJ1z+
-         jYIDLSBO/AU6FH6AL5JkNH6OuhcV1I1XBOGw+cNQaBXAqfu4d63CBFzKT9OLhBI/n5b/
-         dGC0bO7FkSHMPt1rwi/rsZRL4G/qjoluP0mJBHtatz/r95KGCIps+trtCcuKiV5Tpfue
-         JjBMxvHjsw6jsql3GQsjUm9NgxIv42fO4awJAo9zLnuQwAB4aP1a85x67uzvNMC85Yxm
-         7BEgjeZ/hdtPAaZZm+riCGrydr7gx7u3zyipI5SHBXAfylTO+JlxJhAo7BQPWsTALD9V
-         dxYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788784100; x=1789388900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JTzF6RGmGUg4NezQEPwLNpok/5t7X4IGc6Kb6nHVcDw=;
-        b=pibKlF24vfKLvHe0+HwNYusNQ/uAfwDFNMU0SQ8hTQPqWkI0TAW/2jzuYxm3xlYGuA
-         VIwEDwWhUvdEyZsrpeF9hJP/y+WksknJWyyqOlkazHs4qt7lDKPI5XkQeahwhjR9ZuKZ
-         7DM/sxFeledSUfYl1SKUFo17AtN2BpYnkbOXvrqckztyUfU26BjjNUuN8FZg62i70ar5
-         ewHjwU9VpiVQhbCk5kheqM7RpeSPpau+uSAqsBknBzmCe9k2K5cCJ/UrgRw+u8pPtmCg
-         Dw2dA0cf6mjcWkRZq+n7fGgaVS4rEicVFTkcvPxx3e1erfQ4iVUO9343Ks5pMbu/P7jT
-         AWsA==
-X-Forwarded-Encrypted: i=1; AKwUvBycQFiTHJOEmZYJhqUGwMQc4WplXm9qr8mbu9O3oIq+L2vnwH4d/9bwOT08XjG9ibT0WPAYNNHftA==@kvack.org
-X-Gm-Message-State: AFuF++lpSAl/lo8EOjE9iRwBLejwFnvF2fvYghGsNl8V8zb5aX6xUzD3
-	BBR24pJg00jYh++LRMLobMERdQCeXBjzbQWYpqsg8wlebyjpHW18VHjh
-X-Gm-Gg: AYBFou0K48DNzv+YZiLaRhbd5C+e3vZH1uYB7QkasgkVav26DrfJdLdJIpE+SrT2yNW
-	JvAdnlvlK2KreOUhX/gT8Eyerm0xkhrCdFAOeSxaw4O0pq0xhutkef3RnrVPpccpQx0RfOG9zut
-	e6I6YJbeztLblzs0cDMNQaG/7/tzFzHnC7niHnLxBPhRRxR7IQFEgjxzOOaxBFEEWFL71yNk6hj
-	7Jzr1zCMnukz8MYHPBBBjdYzXo8P+x/j+AoQCHNLk1U1reh5jFucsqXHxXwpc7HaRbXhcKhz2y9
-	Y5d/rBa+kSfDxvol2sdL1Cux+VEowJ8i+o+mEYNN8BkMnUGpMZvTtzDub7hGHbTdkcVwArFz7k4
-	5p/k8ZuFkgKlSdnd6v47EVDvKtikQcmopiwpF30juHfg4i3b/pdyiXq2ugUFo+6qASfeWn3kedr
-	UjodTfXaC+1IWOGwa6h5q9t2xbnjeOotHrP4Y23Z8aMdGkmfjvlFrCgWbiVjQcluqf6FGUNW6tM
-	7ZChQ==
-X-Received: by 2002:a17:90b:5106:b0:37f:c22a:c188 with SMTP id 98e67ed59e1d1-39b260feb03mr33390832a91.4.1788784100350;
-        Mon, 07 Sep 2026 05:28:20 -0700 (PDT)
-Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b84cce64fsm2345266a91.3.2026.09.07.05.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 05:28:20 -0700 (PDT)
-From: Bo Zhang <zhangbo0325@gmail.com>
-X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org
-Cc: baohua@kernel.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Bo Zhang <zhangbo56@xiaomi.com>
-Subject: [PATCH v3] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
-Date: Mon,  7 Sep 2026 20:27:57 +0800
-Message-Id: <20260907122757.748111-1-zhangbo56@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SamNaLe7;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788784154;
+	b=otlnYArt1KygMteDaPFoeeA7uM3O/HobwBW9CIpvv5rCdV78vjhIibAd4yAyCMZTWo/BoB
+	0isT2pshXsDRuAXU4Ay3i5HMeNz0+7RE2vFs6CA6X7jjb6yKYqqS49y2qH6BoSCLBVHIcZ
+	YyGqGB4DVLVLKCGJXxowwiVhX/PIsPE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29700414A3;
+	Mon,  7 Sep 2026 12:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD31F00A3A;
+	Mon,  7 Sep 2026 12:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788784153;
+	bh=MkDAwsqxGaceGfRmb6vtMU2HC0ErrGFG0sZSl2jCjh0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SamNaLe7XhM1e5/SCg2UgqFLGHgOX0ZA7pci54ayVgh1r8Aa55xnUGKXJAcXwXy5D
+	 tqGvIh/XnRv4Hr7k9h41IgEicJAdSCkZVXyjftuoH4uK+RSIEmBmOSABpe0xrbDE8b
+	 3qACI5xnCV9khLFq/VQhNPw5VtMvpDBkiIkCOQCN/Elv0GLgSAuqtU4KGpTPp8RW5X
+	 zcnz0ltm0IOaEnc8QEzYn8HP8eCs9CXs8E95BdP4T9MhQUB1AdMw6MTRom0KD24wt7
+	 nH4p7Uiva5uk0ptmQENNZ5ZMEh3OjS8AY1UoxR/HBNIh9NVkIDTyLYc1wUMeE/XfiY
+	 RYaMoruOloQsA==
+Date: Mon, 7 Sep 2026 13:28:57 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Ye Liu <liuye@kylinos.cn>, 
+	Justin Suess <utilityemal77@gmail.com>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>, 
+	mhocko@suse.com, peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com, 
+	rostedt@goodmis.org, jpoimboe@kernel.org, oleg@redhat.com, tglx@kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	rafael@kernel.org, sj@kernel.org, rientjes@google.com, shakeel.butt@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org, 
+	frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, 
+	josh@joshtriplett.org, urezki@gmail.com, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
+	pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com, 
+	longman@redhat.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, 
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, 
+	vschneid@redhat.com, kprateek.nayak@amd.com, mark.rutland@arm.com, 
+	Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 8/8] security/landlock: convert thread iterator to
+ for_each_thread_rculock
+Message-ID: <ap6t3Dyf-tLJ4Yfw@gremlin>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-9-ye.liu@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260907081334.1152889-9-ye.liu@linux.dev>
+X-Stat-Signature: 73ar1xgfhowdc1bkg5qp1xr448sbrmjj
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EBBE32000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CCD071C0006
-X-Stat-Signature: 169m7k7qkr3gzjgxahcc495sxwasd7f4
-X-HE-Tag: 1788784101-83116
-X-HE-Meta: U2FsdGVkX1/oJa8c57kcJFZSu5vLBjQwym6TqFM0oJ5/irZ1OhoDQXECAd97VFuQ/12BtG56nQWVurXyxsonSkCZ31fcWHxmtyWQZgeEn6vJOOGpObGAgcWiZenafXxHpoQjG6jkY+YVCIAYiliObY/5Etc9dVPj1dVzb+KSU+Z6th3OjVy4r7NUJWUXSZ+4YYE2Vdo4TT2G5mkeZD341tqYgsoaae/crd31FH04XoDtaZvHoPqagcbina3RTI0VXoAjvYzPAW1m7mFOuNU++/wXPVAlR6qNFDYlJwcSOnbdfv+Mv8y47cIfvLDFUaRwdLQjcG5oX0oemE+vFsit1jxQj2xNIjjuO5z/tCA0XQgI1Dcbvkztd9uC/jqMx2KzenF+kcrl4FoOCknSpDBqWZIjteIRQbr8Om5ga3s/SDGrRrfssQVPVjpTFf14J6eTaa4xDm5ahUYOSt9Ligpi17us2HbXqFcCdHKh8yruOW3HAsLctM5pR+50EF5yKdXqXCsDluIvBlq5kwnrc8OIJVKtdgUXCAXJ6Yc8Wl6Yl7THKm0ImXox3hdN2+Y4dkc6cH+z0ZMl/vFLFZjQq3Xo+AMHXukVLwz7n/f9yfrUb7GEJgR3ips0Sgm/lATjpFROV02f9tJOToaTIlnE3IxVqL2G89Xa9qcc3nRy7inCuXemKZoHDNSVbvtbVxtE60xTsWLZDhIKKsKI1OeB3WGetRgMAprdf/mvz9RJ/lJ1maZevdmEbUf/Sy5UxduY0fYy4zVPmsdSADdEEr+vnfQnAd1xnOcfwON1mxGO5+CikbnysFCXgM3V8dyCvMy3W0IJVqA6zUJamVZpeAfjGVdqX1rjMAfkZ81gTn2Itx+kplcyHcXWn3edVXP9qrCXJtLFi7RaU6a+qU/lQjGTnZD80+h8Q9wV1TYAQZLRYw54zzUFemt1FUy9Ge79n5215PKy+yVnTH30ya/MJqiIp1M
- fOwuLg0K
- 6C9vPnqBGKzWkLHNM9Z6+YeuMa+ygAsrsJxyqTBQEQKMzVeE8EK8kqrvh72DH0FXG0FhN+3p28jmUBC8QnGqtpJ0vgKEndrRel+Y/H8WTrpUjAbOE10zhE/1WC0CxKwyVBBXyvWeSzs4laEBBGo445bxB/80S7yah5Bo6mX8uYOb7O2nEPi6dfEFRsLfkoabZXM6zj6Okriq8dmO011CdWAcWp/ib1FRBtgYfE6nNbV9u575MctC8ZAyTwiq8LTEB+0AfbxVMunp6FW3BZfrvwoPEuAIpFa2bFsJ1kWctWf+ilVqSUyYZn0I5W1vRCuCpxv1ZCmKwYOkJSzUqMRKMmi2aPv5g1rNz1xTUpcfjghxE/KzBlo8hg4UhojAUL2yDzkvAi49pVGeIMs56L/c0qnS9sr+7qwzhSI7W
+X-HE-Tag: 1788784153-192959
+X-HE-Meta: U2FsdGVkX18A6k7oFKDP3/M1JjJ5q9vazEwYu/jbpqVoizSLAwCZE1xgUWIeOeJwuaDjiKsKhMPbxY1Ad1HLkv9abOXYIZbZl/qy9P+eKi1hUAnlCzWEbbXD31rn0geg74VU6UMBjzXmm79GjlnWHkhTfPknyWOA2EoeoNBHVk7dBVddiFO/vdKIw1x8bRItbLlVArWC93DqUPRsCCBIcsB29g2jyW3OrjRw9ULsvF+xWk9WZoAiWYhfIndjt9GYoIagBR6tobsvE+nnnPPvWTs4IGufS3tix4UsW7nKDTOKGjBR84UAeEdgHwRARMrkhqnNYCeLdK/A2tAjw1jMAlpS7JSdC538SDEfmC0UOu8VRv2aHptwj/rSlzSSVLLSMkFGiguQhJgGuP6pAHxG52YXQwXhY6Q6lisNnHAUWE8uA62kBWIgSm5oxsTWZ/SrJ495buQHuJjrYXEabnYUhaP7GmPiTlMq4YE2v1mpLK3LcJC+4a4DHrovedxwT3OZWIXiGo6dF3fHgSmU3ifJwFGJMZNIHbu2I+8S5MvIwwGJtwqf+bE7T5+CcIkpbUW7UXPusU+EdNeSbezlpZ6FpLLoMDkthzAaOihd/GgGaGyN0abJ0A4j7Va8kN7u42Yvq55p2Cp4Y6ty8o+085a3Cv/2av/Ac3HGxxFFXxxpc6nZfDcgClIGFKF2H0Lb4dmdobaPXXb2RDQpyRlUVbKP9ZmHBCDqX/3xhIbYdMc3zUXywr150XMecwFwz+BG7VRu2Bab1fstovUHmtjsuNz9O8rbBGRMhOUO4EV3xxI9Xio43wQDeZ2RLF+z2XbcJ+t4+RaN0SOjU+0511Vfo/HIJnQeL+D5sRMYzHS902AMC5OftxzBwrByZDLyKDSwBBtD6oZzVnsGRv9zL98MAR6D2jA/Bk0i1v0TRWKveggwodv2nmqangi6t8p2g6JU6yTiCgPRf1tAnQNJuUYHFQy
+ JPMxUvIz
+ GR1xgi6LQw3WmvhP/uQvJH+2mADJ4LU+aoNydR49Y+VGkdqVMcOYlMHjXrQO62GRFQyK1xeKy/oYW0/hpOzzg9+UWo98j3egy9Qdzmvt8vMmlDMBnw2V2iXQu8+3WcsOc8y87nMkVDOdwW+xccDCuS953RTEJP/jc5J8twnvPZ8qk2eqpMsmAZqkZI7hBB7S/RMPcVDhbbAyxWAnO3yMlyNd0Z6VVnx1tsiDwDE0Lg7gQFWcEiSCbbmYfAG8d1r4wyazzAJSF+1BiTB+BVvMxyHdWPkc45+bK/F3HSgAr28pyZ70CxKa/Md8HjJKjGxY8b3VtK4C6utkPyxamU0uL4COWC7uG+fJ5gqDUPdqN4g5oGs/fyN0dbyWPMoDhrJJIV3A5MVrkxhqCFP1UpRtUoaKq4dd9boEwrRaFDb+4866qXABmPLiPMofwAjpmDgIjoevC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,152 +112,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We have observed some cases where memory is allocated with GFP_NOIO, so
-we cannot reclaim any anon folios unless they are in swapcache. We can
-end up spending more than 150 ms looping in `shrink_folio_list()` scanning
-non-swapcache folios without reclaiming a single folio. This is pure
-overhead.
+On Mon, Sep 07, 2026 at 04:13:34PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> Replace guard(rcu)() + for_each_thread() with for_each_thread_rculock(),
+> which scopes the RCU read lock to the loop body via scoped_guard(rcu).
+>
+> No functional change.
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Reviewed-by: Justin Suess <utilityemal77@gmail.com>
+> Reviewed-by: Günther Noack <gnoack3000@gmail.com>
 
-This is particularly true on systems using zRAM, where swapcache is
-relatively rare. So let's check whether anon reclaim is allowed by
-GFP_IO and whether there is enough swapcache to make it worthwhile. If
-the swapcache is extremely low, we're essentially searching for a
-needle in a haystack, so let's avoid scanning anon in the first place.
+LGTM so:
 
-On Android this is triggered by dm-verity hash-block reads through
-dm-bufio, which legitimately use GFP_NOIO because they run underneath the
-IO path:
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-  verity_verify_io -> verity_hash_for_block -> verity_verify_level
-    -> dm_bufio_read_with_ioprio -> new_read -> __bufio_new
-      -> alloc_buffer
-         gfp: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
+> ---
+> Changes in v2:
+>   - Rename *_rcu to *_rculock
+>  security/landlock/tsync.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/security/landlock/tsync.c b/security/landlock/tsync.c
+> index 0b71e158c3f5..a578af640aad 100644
+> --- a/security/landlock/tsync.c
+> +++ b/security/landlock/tsync.c
+> @@ -335,9 +335,7 @@ static size_t count_additional_threads(const struct tsync_works *works)
+>
+>  	caller = current;
+>
+> -	guard(rcu)();
 
-Such a reclaimer can land on a memcg with a large, unswapped anon LRU and
-a tiny file LRU (e.g. inactive_anon ~335 MB vs inactive_file ~4 MB, with
-negligible swapcache). shrink_lruvec() then keeps feeding that huge anon
-list into shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000
-anon folios scanned - where every folio is kept because it needs IO. The
-150+ ms above is one such single shrink_lruvec() pass (not accumulated
-across a reclaim cycle), and it reclaims nothing; the actual progress
-comes entirely from the file side.
+OK looked at the file and confirmed the function exits just after the below
+section so fine :)
 
-Aging anon alongside file does have some value for a later __GFP_IO
-reclaimer, so it is not strictly pure overhead. But that aging is only
-deferred, not lost: kswapd and other __GFP_IO reclaimers still walk and
-age anon. Spending ~168 ms aging memory that this context cannot reclaim
-is not a worthwhile trade-off in a latency-sensitive path.
+> -
+> -	for_each_thread(caller, thread) {
+> +	for_each_thread_rculock(caller, thread) {
+>  		/* Skip current, since it is initiating the sync. */
+>  		if (thread == caller)
+>  			continue;
+> @@ -376,9 +374,7 @@ static bool schedule_task_work(struct tsync_works *works,
+>
+>  	caller = current;
+>
+> -	guard(rcu)();
 
-To stay conservative, this only skips anon when the swapcache is really
-tiny - below 1/64 of the anon LRU - i.e. when essentially no anon on the
-list can be reclaimed without IO. Whenever there is a meaningful amount of
-swapcached anon, the normal path is used and anon is scanned and aged as
-before.
+Similar here.
 
-Note this only addresses the traditional active/inactive LRU. MGLRU
-selects anon vs file scanning in its own path and is not covered here;
-fixing the MGLRU case is left as a TODO.
+> -
+> -	for_each_thread(caller, thread) {
+> +	for_each_thread_rculock(caller, thread) {
+>  		/* Skip current, since it is initiating the sync. */
+>  		if (thread == caller)
+>  			continue;
+> --
+> 2.25.1
+>
 
-Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
----
-v2 -> v3:
- - Fix stats source in reclaimable_anon_is_low(): for global reclaim
-   (memcg == NULL, e.g. from set_initial_priority()) use node_page_state()
-   instead of mem_cgroup_lruvec(NULL), which resolves to the root memcg and
-   excludes the child cgroups where anon actually lives. (reported by the
-   sashiko bot / AI review, raised by Andrew Morton)
- - Add a comment explaining the heuristic and its rationale. (Andrew Morton)
- - Update the comments above the can_reclaim_anon_pages() checks. (Barry Song)
- - Note in the changelog that only the traditional LRU is addressed; MGLRU
-   is left as a TODO. (Barry Song)
-
-v1 -> v2:
- - Use mem_cgroup_lruvec() instead of get_lruvec(), which returns the raw
-   node lruvec for a NULL memcg and would be misinterpreted by
-   lruvec_page_state()'s container_of() during global reclaim. This also
-   drops the get_lruvec() move. (sashiko bot, Barry Song)
- - Drop the SWAP_CLUSTER_MAX cap on the threshold; the check is purely
-   proportional now (swapcache below 1/64 of the anon LRU). (Barry Song)
- - Expand the changelog with the workload, the dm-verity/dm-bufio NOIO
-   stack, the single shrink_lruvec() breakdown, and the aging trade-off.
-   (Johannes Weiner)
-
- mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 5 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 245f68c75b28..e5c07490f5b3 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -362,20 +362,62 @@ static bool can_demote(int nid, struct scan_control *sc,
- 	return !nodes_empty(allowed_mask);
- }
- 
-+static inline bool reclaimable_anon_is_low(struct mem_cgroup *memcg,
-+		int nid, struct scan_control *sc)
-+{
-+	pg_data_t *pgdat = NODE_DATA(nid);
-+	unsigned long anon_pages, swapcache;
-+
-+	/*
-+	 * A !__GFP_IO reclaimer can only reclaim anon that is already in the
-+	 * swapcache (adding anon to the swapcache needs IO). When swapcache is
-+	 * far below the anon LRU, scanning anon reclaims nothing and only burns
-+	 * CPU; the aging it would do is merely deferred to later __GFP_IO
-+	 * reclaimers. The 1/64 threshold keeps this to the case where anon is
-+	 * effectively unreclaimable.
-+	 *
-+	 * Use the memcg's lruvec for memcg reclaim; for global reclaim
-+	 * (memcg == NULL) use node-wide stats. mem_cgroup_lruvec(NULL) would
-+	 * only see the root memcg, not the child cgroups where anon lives.
-+	 */
-+	if (!sc || (sc->gfp_mask & __GFP_IO))
-+		return false;
-+
-+	if (memcg) {
-+		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
-+
-+		anon_pages = lruvec_page_state(lruvec, NR_INACTIVE_ANON) +
-+			     lruvec_page_state(lruvec, NR_ACTIVE_ANON);
-+		swapcache = lruvec_page_state(lruvec, NR_SWAPCACHE);
-+	} else {
-+		anon_pages = node_page_state(pgdat, NR_INACTIVE_ANON) +
-+			     node_page_state(pgdat, NR_ACTIVE_ANON);
-+		swapcache = node_page_state(pgdat, NR_SWAPCACHE);
-+	}
-+
-+	return swapcache < (anon_pages >> 6);
-+}
-+
- static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
- 					  int nid,
- 					  struct scan_control *sc)
- {
- 	if (memcg == NULL) {
- 		/*
--		 * For non-memcg reclaim, is there
--		 * space in any swap device?
-+		 * For non-memcg reclaim, is there space in any swap device?
-+		 * And under GFP_NOIO, is there enough swapcached anon to make
-+		 * scanning anon worthwhile?
- 		 */
--		if (get_nr_swap_pages() > 0)
-+		if (get_nr_swap_pages() > 0 &&
-+		    !reclaimable_anon_is_low(memcg, nid, sc))
- 			return true;
- 	} else {
--		/* Is the memcg below its swap limit? */
--		if (mem_cgroup_get_nr_swap_pages(memcg) > 0)
-+		/*
-+		 * Is the memcg below its swap limit, and under GFP_NOIO does
-+		 * it have enough swapcached anon to make scanning worthwhile?
-+		 */
-+		if (mem_cgroup_get_nr_swap_pages(memcg) > 0 &&
-+		    !reclaimable_anon_is_low(memcg, nid, sc))
- 			return true;
- 	}
- 
--- 
-2.34.1
-
+--
+Cheers, Lorenzo
 
