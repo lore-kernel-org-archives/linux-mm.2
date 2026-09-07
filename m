@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F235C79FA7
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33892C79FA0
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 12:54:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E84D6B00A6; Mon,  7 Sep 2026 08:53:43 -0400 (EDT)
+	id C2EDC6B00A9; Mon,  7 Sep 2026 08:53:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7727D6B00A7; Mon,  7 Sep 2026 08:53:43 -0400 (EDT)
+	id BDF826B00AA; Mon,  7 Sep 2026 08:53:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 612BE6B00A9; Mon,  7 Sep 2026 08:53:43 -0400 (EDT)
+	id 9BC786B00AB; Mon,  7 Sep 2026 08:53:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E6756B00A6
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:53:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3E83C0130
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:53:42 +0000 (UTC)
-X-FDA: 85186957884.16.D70D31F
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 65206140006
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:53:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ERzwKorN;
-	spf=pass (imf09.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7406B6B00A9
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:53:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AAF6160145
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:53:44 +0000 (UTC)
+X-FDA: 85186957968.21.B23E9DC
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 325C34000E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:53:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WJsU5ZLP;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788785620;
+	s=arc-20220608; t=1788785622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kakKxXf+thybgh5+T6XpGw7wzdtVr4alrTQrwFxQYKk=;
-	b=ufIGxSHNJyz53DYXL0+YZGn2RP36PYOb5YGUMbQqnmW0u/5kpHImfko7nKt71797XDEFr2
-	hu/UAm376I/fFHknRH59mSBD4UJo3Rcdjd/pXhlZ2QpHiMYnHQr3g3zlG6Fnl7jp3LrgJe
-	9JlKl4xmlqCtRzK2iKADzd/Zdu7tIwU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788785620;
-	b=3ruMzW5/2+Ihv69ALhtvJFzMvLvZJegUzrFeMQTN/cfiJcoOJVWL5fEfLePduibAa80BjD
-	Glo1jrD2yTspOBkjlaxfHh+HkGT5Xx3KHowU22Q9m/2ICTYBp6zjSH3G8+PCjSarAOeSfn
-	GzAIOoaBR0t2fHdPHH9NGPKxG8n+7NA=
+	bh=up4/oktyfAdON3km3wdZWwjp1/r+vQu8s3QiiQB06UU=;
+	b=QaGkdxChbvwYQ5ud9dtzzHnbnWrxB8vObSdXtUUk601wSkaElmhnUrla715KRgMHTn/WNb
+	pD+YtdM6TYHBNAlICUr+toaeYNxFBEBgABrGb7ivZHHuM/HYzaqNEHmx2XGQviqhljIv/Y
+	aq06e3yijOZqO831K8ruoNi8hNmmz8I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ERzwKorN;
-	spf=pass (imf09.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WJsU5ZLP;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788785622;
+	b=1/zgJwav6ShlpYySVCFG9R6OTt6aoSRcoebbZeLVOWeGmGVyLDRwSxcxfqbg6I4KaqwK+t
+	pAsoNq5AU6JpA6BKKgn969dMKiUZs5DXscxeDdGQc1ZnVpjH+SF8BFSi/ikyho1PDzErQD
+	laXVI5z0508G0HvXk1TyRYWFTMy16+I=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=kakKxXf+thybgh5+T6XpGw7wzdtVr4alrTQrwFxQYKk=;
-	b=ERzwKorNX46smNvAMTCQwH07tGmDr+QFeag7UHiF601UiTQY0+4igkANnfmrJIwdnUs0LRVC2
-	P6bWuQZJV3zUhCpJAs3AhNSnLDMTy+URrLgI+F7px6xff3bjOn55hqEJE+l3/ta7v2SDGxv2wRI
-	A39hs9W7d99bLQJTOTp4OiY=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hdmtm3dR7zcb0T;
-	Mon,  7 Sep 2026 20:42:40 +0800 (CST)
+	bh=up4/oktyfAdON3km3wdZWwjp1/r+vQu8s3QiiQB06UU=;
+	b=WJsU5ZLPqqnObamEl+eDb1OQLn8fzTm2lS+jqZvsjkBOcZoPNvOCq137VskBlGKfkXIRHLxz0
+	r3TIwLJgnYKX+hhXcyhYsMrcfZw4l3uKg5x5sTenzOpFogQlp8Dx4ywI3SARgUR1LDQ5r9Wjz1F
+	GJzxQD5oYk6LTh2w3OIGcw8=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hdmtM1GBsz12LG0;
+	Mon,  7 Sep 2026 20:42:19 +0800 (CST)
 Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 96EF940579;
-	Mon,  7 Sep 2026 20:53:35 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 78E5A203B8;
+	Mon,  7 Sep 2026 20:53:32 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemk200008.china.huawei.com
  (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 7 Sep
- 2026 20:53:33 +0800
+ 2026 20:53:30 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
@@ -88,9 +88,9 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<linux-kernel@vger.kernel.org>, <loongarch@lists.linux.dev>,
 	<linuxppc-dev@lists.ozlabs.org>, <kexec@lists.infradead.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH v4 08/12] crash: Fix TOCTOU race in crash memory range collection
-Date: Mon, 7 Sep 2026 20:54:00 +0800
-Message-ID: <20260907125404.922123-9-ruanjinjie@huawei.com>
+Subject: [PATCH v4 06/12] LoongArch: kexec_file: Fix elf_headers memory leak in retry loop
+Date: Mon, 7 Sep 2026 20:53:58 +0800
+Message-ID: <20260907125404.922123-7-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260907125404.922123-1-ruanjinjie@huawei.com>
 References: <20260907125404.922123-1-ruanjinjie@huawei.com>
@@ -100,14 +100,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemk200008.china.huawei.com (7.202.194.74)
-X-Stat-Signature: kcdsgxrf6m1acgfwjkghzhzqemta4aaz
-X-Rspamd-Queue-Id: 65206140006
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788785620-530494
-X-HE-Meta: U2FsdGVkX186p8hLoLXNaiO0PAK91v9iYSXEkJK7Fv7D8sUKhXLOvkYt7yLbsPPXofZ1EAzdcEPl+Viv9tRZSEHeqFEOZHGFpKjYVSxe8BMVFljSzStjMiLCjAqoyizAGpKo5mjW0rf2Atm+hOWMyNB3PioJF5mxcc/XRKn4cYs5Kp2X5T8ekiN7cFI+qUwu+3g2YS5VoqqfBF65LVMU8DCSWsCTf8RIe3I0ydDGLnfRW2GbwTt9fGhq1UKeN1Q8URRD+VMxXZtFORpcrxg7CeBUsnJg/WcsEQaVJg0sIxcN1AcpfJd1tQ1JVUkMJA8cmUb3f+emCDX4mPxTO8bwCltmwT4S2KLXVreOQYkttMsLULLQcN3trEJqhpDiN8NfmvPX3uFNbLdnmV4/AXWC/pphqcBx0fH2uGxwechwMSQKL7gcvJf54NZHu6qg9tzstGSMatx3lpIWnxa/LUQ5DfVBwMHn0JUZUVLoDfdMO5rj0F2vMZ9Df2QbKZDQcxSeEh5wgPv2vUS/r3AtKmFveLha1mekndRgvMElnwuUJLUYnZlGcvuXz7nYBHACCaxHlKt9w7k6kjTeMkZMOKKLRHjMtxRhMZyRyvcurlDnD5a/I35xgphLAvsHbTIYtHuSsrP2lu5+OFcfGmjigXLqfM6CrLXiyxvyq08pGG1WQdI+QufOUOlzVYLm+GDrdwo/Dte5bKoM35PIiaLvDeOl+oSSGkK6JCNn1CJKWk6kNnRQCw9wMde+9hf68wLdekASHIifPPdHl+AVw4SvDbGgBNYdybj9dqEc+CAEMi1QDGo8xCl8OFH1YbA+EII+rab8gieoJwot/CnZi90nBoTDmpxe4Z2eKgQ0+Jv88/wGIGgeSDSVorG8MJKA71n8LnvR9udL4dJrcfE44z0xWAUZ6u/nELVMGGAED0DTgR43/nQeSRnzwLAIYqDg1WxasCFVWhXSHAbtTHW5jcMQq+i
- 1xUQAG6e
- ERVYsp7kSuWB87CtqxosQhLGbjye8e34lG9ObJcJ2muroHAgr6MUT6M3FzNu23tBhMUKIVh+KUoOxft0RBkayaQTLYl4S2ietQ1AwvD4EZRf7wum49tzMBpQUTQ3T998qzK7bDWoBxcigNtIX9hlgzjKrDaGd136zGpK3aK2v30Ym/HtvMj0tVNqh+zl/08Msn5Y05fQ7P0/FicBRspJupczPKGpY14ioLzUfWyV1SyhTXNG78McFqoo0f4GSlN0x528CJroFcI/1kNB6IcWUkX6tld9cADJJUvj7+eq0mumQQGod1Uei/50fxtcURCiT/2VFwpmL8puq7R7FyiywjNWopjT6YMrHnAQmglC35IuXJamZMJ2PZTdIOir5IeE899ut8Twaim+3aW6pzG6Mu4lhqvgJm3n90tbrVgD8sRZSiA1boEN3LPGVo5sDi4wpBuTJImHz2kwmxbUmG2bfPCfeWA4YAnPDM+nRYeT6t4+YxQ+LVlDFSo9kOKxnvnVJUeb/VGh8n1DgKQH4UZThpT1X06wQYzFnVoLxALO2k0ewQJVrshOLkAkHLvFXsSVpc4essvrXB+opVMYLzk37ovXB7gibgRbOpVvYURJwuroINkFlvrS/lV9Y3V04uPZNVoCu/xUp2sRh/URhtz+Bjhxqui8OYy4gFEGq
+X-Stat-Signature: 5si13hmccs4gomkdo49r9rq53i7sj1fs
+X-Rspamd-Queue-Id: 325C34000E
+X-HE-Tag: 1788785621-403895
+X-HE-Meta: U2FsdGVkX1+A7srmHzWa6+kFLRCn0Ar7anpErFIfEuuFkTxHw9iGcHIEBx3uMQ+N8GwjJYY9HP8Fg4FFAWX8NWJSn88LCNxTnL5kbEJxBqh84h+hrenhg+ehLU2FsdNLVEiw/PzNH/TFqZmTo/4y0Qk/JEfPnIr3lfDEDz7ycJSnNy3pxMwWPp5TpnfSQsESNyCxZ9FntZDd4j8/h4/wPLR+LBd+VHWrU6lb3O2wa995NnaDt6DyiLFIpouOD9F1PH5ZRXxR8P+0O5M/xWI2iLMvDsYzkC3SDD8h5TyBn03psvnkHt/AvJmv4MWwPG7raldBXsUkn9n6q/v+GFGgkZ37dy5ZpBfRbHxR+4+cElfOPx2cyplc1rbK5j6BYYBm2w+prvAFu0/uH0ejNXmnjDqY/PB/oar/lpXrcm66rGcU/B6qVvngmTzit6Xu/YOm4LmmPlxMq0/RNo1BkH6mnzrfit8NAb0+kw4ijtEq9CPVTq9yIKh+toocPiZU/B4CarA5NTIX5cpEO4Lc55vbazasRJhLf3StLOH1t+bDsgiLOV9cKCcNWA2eh40doAonbfwI0K0/OUVg3vlX61srSGjIaLUNev+nBeRdR0IUJ21iQRgU0ZQTveEztkAm+9bZ8ULOujNUhd0AGl+Pks2sVidMILKk6QvtF1qWKMpoQihw2544+L6Cw28Nb/mQ3jYWvkIYYh5ixgDTiA2wr7ddT9+wfD82zBl9o40aiFhD7/Wj4rdZa6QheEILD3lt9Q/saoHKTbdWbDgTm/qh5D1Z9oFyGyG1jIp8q1gzqjx+mMh8dDaqvTrHWX10+cdg0LnDcTzvZjBlDPrOTmFPo0h5UZJEaewwEhfS1bYT5D7SW5O5VJCJlFUAIO9NgTvoGbI09Ge6HqARxRqC2DVX2eJR+13Ikv4oPyd9iTYjCWR10Qf/VkjytWVQJc2Xpk1jvTb+k1qBX2r63NwtJAFqjDh
+ itanP6pL
+ zsl2ubNYItabVEaRswHIwOHWrtuS5SMhmIk19PtYLiPXqrAQ/agkVi5uwYU8qOinxGGg6VgBJSNHFnoCLb2bOdDDORTlA8wPi8gMhrx1z0hvOSluBTY8Enk1GFk+242nmmWdX28qyi3r4EJ5NvZIsei7+0sgmcvEkSlsWUiZr1Mvio1q1cOX8LxItWaVdlL8osKxE4oJY3Y8484gozOyvO2/83HXfw3ji+uXE6qF3zm08T/OkvxfFN+Spf9RUDezM+5eLiwIRTQgSkdSSjh1nUhoTmraCiX1/1CF+B2mhRoO/89QL/1PG+ENNoAZiTUBuMukeNdavXN2GU4LmwhIxgOMSHetiD0wWUMew6qDCtYPg8lKwU9IONG4yDyB16TWoKQMlE+UIcAIRKpT0jhlarRnJ9jIkUQbXdpqMcVpGFryMpiEB2ONRHaZ+6yebe+8VI/YW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,150 +115,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The crash kernel ELF core header construction counts system memory
-ranges via `arch_get_system_nr_ranges()`, allocates the crash_mem
-buffer, and then populates it via `arch_crash_populate_cmem()`.
-This sequence has a time-of-check-to-time-of-use (TOCTOU) race with
-memory hotplug: a concurrent hotplug event between the count
-and populate steps can increase the number of ranges beyond the allocated
-capacity, causing an out-of-bounds write. If the event triggers
-memblock_double_array(), the memblock array can be freed and reallocated
-during iteration, leading to a use-after-free.
+If load_other_segments() fails after image->elf_headers is assigned,
+the memory lifecycle is safely managed by the global kimage object
+and will be freed in arch_kimage_file_post_load_cleanup().
 
-Protect the entire range collection with device_hotplug_lock. Since
-the hotplug notification path already holds that lock, add a lockless
-helper, crash_get_memory_ranges_nolock(), for use there. The regular
-crash_get_memory_ranges() acquires the lock and calls the helper.
+However, during a retry loop in efi_kexec_load(), a subsequent iteration
+will allocate a new buffer and overwrite image->elf_headers. This
+permanently leaks the stale memory from the previous iteration before
+the global cleanup can track it.
 
-Cc: stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <baoquan.he@linux.dev>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Dave Young <ruirui.yang@linux.dev>
-Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Youling Tang <tangyouling@kylinos.cn>
+Fix this by explicitly freeing the stale `image->elf_headers` buffer
+before assigning the newly allocated headers.
+
 Cc: Huacai Chen <chenhuacai@kernel.org>
-Fixes: 8d5f894a3108 ("x86: kexec_file: lift CRASH_MAX_RANGES limit on crash_mem buffer")
-Fixes: 3751e728cef2 ("arm64: kexec_file: add crash dump support")
-Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
-Fixes: 1bcca8620a91 ("LoongArch: Add crash dump support for kexec_file")
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Youling Tang <tangyouling@kylinos.cn>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
 Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%40huawei.com
+Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- arch/x86/kernel/crash.c    |  9 ++++++++-
- include/linux/crash_core.h |  2 +-
- kernel/crash_core.c        | 28 +++++++++++++++++++++++++++-
- 3 files changed, 36 insertions(+), 3 deletions(-)
+ arch/loongarch/kernel/machine_kexec_file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index e681ec9cf1dc..d6430a593778 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -448,6 +448,7 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
- void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- {
- 	void *elfbuf = NULL, *old_elfcorehdr;
-+	struct crash_mem *cmem = NULL;
- 	unsigned long mem, memsz;
- 	unsigned long elfsz = 0;
- 
-@@ -461,11 +462,16 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 		(image->hp_action == KEXEC_CRASH_HP_REMOVE_CPU)))
- 		return;
- 
-+	if (crash_get_memory_ranges_nolock(&cmem)) {
-+		pr_err("Failed to get crash mem range\n");
-+		goto out;
-+	}
+diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+index 62a5be102065..3beb6977ecc6 100644
+--- a/arch/loongarch/kernel/machine_kexec_file.c
++++ b/arch/loongarch/kernel/machine_kexec_file.c
+@@ -166,6 +166,10 @@ int load_other_segments(struct kimage *image,
+ 			vfree(headers);
+ 			goto out_err;
+ 		}
 +
- 	/*
- 	 * Create the new elfcorehdr reflecting the changes to CPU and/or
- 	 * memory resources.
- 	 */
--	if (crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
-+	if (crash_prepare_elf64_headers(cmem, IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz)) {
- 		pr_err("unable to create new elfcorehdr");
- 		goto out;
- 	}
-@@ -502,6 +508,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 	pr_debug("updated elfcorehdr\n");
- 
- out:
-+	kvfree(cmem);
- 	vfree(elfbuf);
- }
- #endif
-diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-index b1c816e98143..a68c0a6346f4 100644
---- a/include/linux/crash_core.h
-+++ b/include/linux/crash_core.h
-@@ -62,7 +62,7 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
- extern int crash_prepare_headers(int need_kernel_map, void **addr,
- 				 unsigned long *sz, unsigned long *nr_mem_ranges);
- extern int crash_exclude_core_ranges(struct crash_mem **cmem);
--int crash_get_memory_ranges(struct crash_mem **mem_ranges);
-+int crash_get_memory_ranges_nolock(struct crash_mem **mem_ranges);
- 
- struct kimage;
- struct kexec_segment;
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 406b68d2adfd..39feb39b53be 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -7,6 +7,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <linux/buildid.h>
-+#include <linux/device.h>
- #include <linux/init.h>
- #include <linux/utsname.h>
- #include <linux/vmalloc.h>
-@@ -317,7 +318,21 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
- 	return 0;
- }
- 
--int crash_get_memory_ranges(struct crash_mem **mem_ranges)
-+/**
-+ * crash_get_memory_ranges_nolock - Collect crash kernel memory ranges
-+ * @mem_ranges: Output parameter for the allocated crash_mem structure
-+ *
-+ * Gathers the system memory ranges to be included in the crash kernel's
-+ * ELF core header, excluding the crashkernel reserved region and other
-+ * architecture-specific areas.
-+ *
-+ * Context: Caller must hold device_hotplug_lock.
-+ *
-+ * Return: 0 on success, in which case *@mem_ranges points to a newly
-+ * allocated struct crash_mem that the caller must free with kvfree().
-+ * Returns a negative error code on failure.
-+ */
-+int crash_get_memory_ranges_nolock(struct crash_mem **mem_ranges)
- {
- 	unsigned int max_nr_ranges;
- 	struct crash_mem *cmem;
-@@ -351,6 +366,17 @@ int crash_get_memory_ranges(struct crash_mem **mem_ranges)
- 	return ret;
- }
- 
-+static int crash_get_memory_ranges(struct crash_mem **mem_ranges)
-+{
-+	int ret;
++		if (unlikely(image->elf_headers))
++			vfree(image->elf_headers);
 +
-+	lock_device_hotplug();
-+	ret = crash_get_memory_ranges_nolock(mem_ranges);
-+	unlock_device_hotplug();
-+
-+	return ret;
-+}
-+
- int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
- 			  unsigned long *nr_mem_ranges)
- {
+ 		image->elf_headers = headers;
+ 		image->elf_load_addr = kbuf.mem;
+ 		image->elf_headers_sz = headers_sz;
 -- 
 2.34.1
 
