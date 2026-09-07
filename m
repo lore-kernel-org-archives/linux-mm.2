@@ -4,137 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2419AC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97D4C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 14:12:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40BA66B0098; Mon,  7 Sep 2026 10:09:48 -0400 (EDT)
+	id F0E046B009B; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3306B00A4; Mon,  7 Sep 2026 10:09:48 -0400 (EDT)
+	id EE4FB6B009D; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F9E36B00A7; Mon,  7 Sep 2026 10:09:48 -0400 (EDT)
+	id E23E56B00A0; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 07F966B0098
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:09:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1F43A01AD
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:09:47 +0000 (UTC)
-X-FDA: 85187149614.19.AA47E08
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BFAEE20010
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:09:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mzNgA4dk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B1F7F6B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:12:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6D58A36BE
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:12:28 +0000 (UTC)
+X-FDA: 85187156376.12.ED108C3
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C55681C0003
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 14:12:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a SJ9bwQ";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ndD01nXT;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788790346;
+	b=sTcgyKqcr7dueJq/b/Uf/602tKD4DSwXDBbIW1zSNb+kS1rK5pKt8u1V+qxZ/C5EPN3Ddv
+	JPPPSz1eImvQdd3i4DUJMrE2nqrOxqMbbvwzUWv10jG1QhZH9+myhBiJPac7Nf9RJwV6eE
+	pM/gUQ+2jwS4Vr9yv4zOppeNlvKL/ZM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a SJ9bwQ";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ndD01nXT;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788790185;
+	s=arc-20220608; t=1788790346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mAPqbLuFWuncpfCHNeDVN/DPeOZ1rIcAQsi7S3J/KLk=;
-	b=pJBAfmZrAO2l46vE0UcnXzOIvTrtyhhxYVCXq6dB5v1nB/fCzpXl8JYT5ikyMZgjxExN1Q
-	vZ7yahHWU63gmEmQzqklqx3oa3D4TifnXufgddPrH+T/1k0FQnjFt4HS0Av/AZ9IlJPNCh
-	+7BdHNXcigln14dwziZajkLBQrb611o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788790185;
-	b=1LpNlBzh9I9a9cwcLa/jffjd1H2QMnd89yHVTg2AP6b+J8rBG0DoicJ/mUPSu/69eoo80e
-	6oSQASR33DqZPsJ3HcD3REdiSIOM0HDEMWS4Ru+UDUqw6lFry1T0taTsJYwYF8B2vSpCmR
-	iRkQLaMDlLk1CwImBkrVY7o0dbrx97E=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mzNgA4dk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFC6340247;
-	Mon,  7 Sep 2026 14:09:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B47F1F00A3A;
-	Mon,  7 Sep 2026 14:09:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788790184;
-	bh=mAPqbLuFWuncpfCHNeDVN/DPeOZ1rIcAQsi7S3J/KLk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mzNgA4dk5MDoIQMR4mG95VGzCkXjcuxufKDW86PLFRn1GlfZY+y28XlxJAko9nGgB
-	 9w5/MPHbjvi0kPHuQauMQMjqUH01jA9CC37OlmxiVSbUCn04LghqaEgD7iX5C1B/NS
-	 +4XOO8W2ZdVFtfeoTu09pHGRohSD6b9IggFFL6SkpQM9MoIFnyHrG/hg1y206BgCAp
-	 wzCUP6tMtvWnHGnbYsuRPyln1cRnPl+5DX/70RgFuUvAgsirpLq5+KpNzud2EpG1lM
-	 7ltil5AgtWizfYFknlU+LI+J4zLVL8HANDx66IcYpHgruh8p9SfWVFmHJKIA6qJS5+
-	 vAb2SdmgsgjxQ==
-Message-ID: <f21ab49e-b61e-43fa-8846-e5ff6a7b25b3@kernel.org>
-Date: Mon, 7 Sep 2026 16:09:40 +0200
+	bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+4coId5nk=;
+	b=B5miKfQ5mtajBDhuNgQf0QkC9+F/vOeTvgFHgElcz6RtNtRNh5fQ3uiLOck1L293K+/a5h
+	Q8WUnvR/FkrOYRCa21SCshHao3a1NF45BhfD+ry6vm3ilwmwq8KJ6HSMlkwEbRo7ZVoS0r
+	uWF4WFF3gDT3OWuZtOH93/o5p5GaqnM=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 297EA14001AE;
+	Mon,  7 Sep 2026 10:12:26 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 07 Sep 2026 10:12:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1788790346; x=
+	1788876746; bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+4coId5nk=; b=a
+	SJ9bwQmgeeXzCh+rpvi6NWAt8C0hvIhJum2+soViebhRo6m1VPmiRfXP0KKnYLnZ
+	zt89JmR0Biq/0iXIgZBL04O/oukjPQGrgOLb85zu9XDZANUFDqdRlGid1j+Hpk1C
+	bErT9d42T2mYILgIbcJqDuzwAe6kI0cCvLoDfZm7rA2esFk2+nxcSyl1k70qqB+p
+	xaNxGCcTic46YgoVhMeS6sJlx2Pt+NZ23rTsf2aFt1B/E2VW9x5/y+vzjQZNYI3H
+	Ur81z2247HuY0kDtKbHhxFIOPsdT1RSGewN+M3NNPsYVd+JMvnM0QhpCrGO8+yGP
+	jd/hePvWAF7z3PP4Da2Mw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788790346; x=1788876746; bh=umeAJ+zJcQvKDZlRTgQ3GHuC/ov3xHfi3/+
+	4coId5nk=; b=ndD01nXTGRUV2sHHjJwAPiONfchcAnfjXYUIMb9lep4GhVlQGB9
+	rXLeS6+Msxq3mzxEJVvMnzvyMasJNLS5pIHDoNqBhI9h7CUgyQFr8dnDYiJOCEH+
+	8FymkyGlvYAi3YdD7q4e5H2xWdLe9qWUa/s8+ej3fp0dxhLmtHZDdKrHboizavGQ
+	4H5+Qy5Xnxcwy7Hicy+6Jhse+YapElI82yuHjRJsoCvPpuAhtTkU380VqP+f12XT
+	O6IvDkEzCKi4/r1maZ0MtJNQNa2VXss4i3ZN7ejgyqDEyKiKAc1aZCqUwF0D30K9
+	c0R0lS/Au0i8JHaO+V5OWEAetbGfVd82lUQ==
+X-ME-Sender: <xms:R8aeaiRaeJvMbr9Rr4CPkjz2Q3k0yfJEHoO2bi0g0p30uFjqkwSYHA>
+    <xme:R8aeaukei0h6ZkdKALZVxwAM679YQNQ2-p2CxNW2llRZ8-DYJHk0lBIrWiWFLIH2N
+    TqCWHezjYXY3ppGFBfEZLceyzskHotHFyUx3ltY4RLlyNePZ78vJWw>
+X-ME-Received: <xmr:R8aeaowVW0v5jg7BYP2neHE6BAZuGPTkeamZ42LDjc61EZqe8doPtnZjpWE>
+X-ME-Proxy-Cause: dmFkZTGoFCFY9lnCBAPkrzJuFdKFm5LgvA7vP2oOkhQ51damXXSrFR8r0fW/T/fEZZCcBS
+    cBr66M7WugjCfFCs3yKrXSMBJR0a4lDmZmFFz8Q37pMl3EQtfEnkIjRP7VcLGbiOhAOv8U
+    wKll2j8iFpfDXVDN6ZSFUQVgyjIt8i4vrTEo/XZHT9rYzaRSdwqbEKLk368Bdf42v+aX6d
+    KDRxz5XSieQJRfWSBQ9w8eLUqCFB7pTB9OFBoZNbHqAP/mirV8lJfQCIGC8yC1mmEx+4HI
+    91fxW/JgKt9pXSjBmKJK17bvBRjajPqOce+gw2NdBH0lA4jh8lkZiYgaWT6ccDpGm1hjnX
+    sSkiJ58Y3/H58ZvxBdG4tD5bgjmmcWKJAOXnJ9qYu3znkyJbWuSM2PWFWb6zKD3lU48ZYT
+    QqsCGndowo9+mKhFjsMTWxQE7n1FAPgdArsKnl5A4vPEpQWMxY4X3tAloBkybQIxXtL3mh
+    4PooriQ2tRULx7DoPg1KZnZqKjiBo6Fo0lqtCySrmDkaMlI7H+tYTTbOiQO/iL+lE9d0fJ
+    Qdf5RA24R9XGGvXS1W+7ayqZl3vWMF1C6u0vka2phaEfvdCYz10YmPB5mlerXeNt+oIZuf
+    DzmMdEVQKf7GAjFnddTTn09jfxA0fc2OX2xjeNAxLr99HmMt87nxd0ybhPdg
+X-ME-Proxy: <xmx:R8aeag3ANUhcpofUaDgDUrAFj8kBr4in5ewUjqU1PXhtzqdR5Jz3QA>
+    <xmx:R8aeavz2GnundL7MefdCZ7scxQM5oFyO0ggGwowZHiK8z1pNVEwSVw>
+    <xmx:R8aeapL5nz9as05vT_tZFHAiORdCT0sBqmARlnW5DTeOxF6eVQ2YiQ>
+    <xmx:R8aeat-rrorQQanmUrJGIbipGEDt_WPuccT0HoZL32mzuHbZzvhXGA>
+    <xmx:SsaeavvT4IEjEFkBUbui4eNOrDkE6EMxJpfw8kM0MWO22RWLFWrvB_V4>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Sep 2026 10:12:23 -0400 (EDT)
+Date: Mon, 7 Sep 2026 15:12:21 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, hannes@cmpxchg.org, 
+	usama.arif@linux.dev, lance.yang@linux.dev, ziy@nvidia.com, kasong@tencent.com, 
+	hughd@google.com, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
+	liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com, ryan.roberts@arm.com, 
+	balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/huge_memory: dequeue the deferred split after
+ the split freeze
+Message-ID: <ap7Fs9DCP3PVOxwY@thinkstation>
+References: <20260831091514.1879786-1-kirill@shutemov.name>
+ <20260831091514.1879786-3-kirill@shutemov.name>
+ <f44181bb-ff82-4537-b2eb-fcbde304d7eb@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: remove unused totalram_pages_inc() and
- totalram_pages_dec()
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260901-mm-remove-unused-helpers-v2-0-f6474e169c23@columbia.edu>
- <20260901-mm-remove-unused-helpers-v2-2-f6474e169c23@columbia.edu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260901-mm-remove-unused-helpers-v2-2-f6474e169c23@columbia.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BFAEE20010
-X-Stat-Signature: mxng9ys97wdpdshw9xibtwhxuks54u8c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f44181bb-ff82-4537-b2eb-fcbde304d7eb@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788790185-552902
-X-HE-Meta: U2FsdGVkX196S8z6F2pyLDkrg1YYG5SJpCm2C5YJ5oVThMVB5QkjCsoKJvMMj0+AUxaF+kEaTabKWd3UPxqTVceDYSeyJfXjgA2vSisO1oSAtA+OvXAPMy73/3STjOjLDwF9kIWXsHhUFEcutiDJL8y8vtOpro8QPoDopiqNJOk7FqIjVY557zkGbc3CrPABR3J2llRxwTUNKHDgTBHjCb+SWACloQgZ+1vAXJzdA+sHjW8QJYXjIVBjJdIYJOdBE3QQ6JIgdUS6t5XJsErD9I9f+Fhl3/+WqDBf6LsLVPCvN+K5JGQDhC1xYyGfc5VBQHjJ3xseuCTOJebn7ZDoeuCLJax6p0xSFSuAlVbRgBJ8geo1+1j5N2aHbxoFDI9VI/wJX+Ft6kxmQauN+D71m1SiXLAnyGYeMnwwIgGkZ1sD1iKoLDby98+K2vNQOKulYabemI6ICGy+S/cAdAv8cmxpnKfZ1T/s4j9u4ZKEJvgMbJ4mbi5Zr8dqQjnFflU4ZN16sUxWtMDnoO47n719f052i10WPgYINC7eMI8Clbsv9uWzq4wFDC+NMeIXFByCP7PxpIxqtSbKsuNm523yQEU5nyWPr7tbRN16uV6LlnIzADF7W6ehQ6iXK/VI77DQBRG4NHItGPi+4IbCemz2iEQ97rq55qtidyzqNozdr6hk4cc6YNarApp9mzkUOPV7Rp/xy/QB9/GfgDCbEEuUfeViT1+20i20/NRw5L1ZU0NC5j/J/Fnv/CZJsFpx+gJOqsvkWZwLBp/jjHomhczFOlTl/EhWh+ijwqsK3A/83dtdKX9Opj99FkYnPCw7+LYc20XGrXAyPvIxDwwLP3Key5VIPg1H8klaD0lMpSxJwMKWluuiWAnJyecRRqarDM3dC5Lenk/YRT13FSLPuSqOSWyb7/hOutZCENZSsd60NAVsZAmzdcf11sZm3qFfKKqPr7hpH6J02iZkaFEJWvN
- dyXdnS7V
- aS2/8bdR7kfWU44ciYJEhMSaz5dI6dC6ZuMvhtXD2/Jiy/3NKXX3BF4Mbud/Noy1W6+kwOGmg6CQVsldu7o5boo0omxrszyHkyzW/nppSTkjICVReBcSu9WkQzfaO+E80PDPMhTcVGLlr8QO2jgYZ+pXnEaf9P9UAVwU4KxYOZ4QgYYQ2eIizEgNPahupVxkDFBoExxI9R0Y0Ql/NbhoMFMcA81/Nx78Nf6iUxVsV+ft56NjCT5ivtnPezNZEXNlSZsNb33O/K1u4mHTLs+fXPxArQ3wUJg1Zpc+4Vs/agUUuPKM8bUym/GxmRtrO1oVlK73nIE92PTBVc84=
+X-Stat-Signature: f4mgkz8nnfxqaowq9do3g1h4d9mt6d6p
+X-Rspamd-Queue-Id: C55681C0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788790346-177021
+X-HE-Meta: U2FsdGVkX18k+AtcIapbnWLBCRsOuEtDUHohlrhgq7tJZi/+au2n+QYHdWntJy/rvrc+UM14EHxvTO7ZNFgJjFuaAFI44u7K8DQXetj9tZT2APIKxj8DZ2BlCuXEr+5aTJV3nSspIaFqy7q35Ygefj+xC77/qAveK2jfW+2xKxiRvVYGlLlDq8QOu//OvalJlBv21MAZddhd1uEMA0DcqDGq4FwgXNnKAQ+gw06iLOT467WBOOQX8lE8v768U8T9Bzt7utn83uZfuJh1sbms7n51hB3cL2hpmlALUjrdCKO4UgV7SBl8R5KOW2hgiZJ5pdK8Q4FRUj4RaHHBud9F7CaxRhe6Vw5ztpTNtC4/M4IBTui26ldZAruxjyEVisaozoFQpbbLOkiw1fvjd276BR/J9ShVI1T9Z80Ppo3+tKe6kWTjaN6VStQwzRtjoSeND2p4CtD4L7VOVKmpqT3AVHcNP1hg7N9P66OkwhnKkeRw+L5nGz1KUdDI3BdpZcNKveXeNk833adWZBKTjtbwWUq2xKm95+AMkHWBuupxfr2DxC3vPhyQZEe9oF3kpeguWcTQoM8/1ZTuCbNfHFPuXTlmgEOoZuWDHLAHlzVX0SSiIMQGpOGDd4/XjuIpx/VvOADTtut6mUYA5Lsbtccs5ienZ1Iq3s6IMdU+u4nsFUbwDsH91fI/RtD917dKIMfQAuBSFxgvT7wCd/994FTceg0K3l1XE5B+3qqv7SLIe6a9wCYzaJBaUKC9bxGSm6RR/K2m9WQ+YOAq5lbHbcC/d3DfwCOzJfectFWel7nkpEK5kX0H2aEzKS4F/3ZImrth9PdGI6ujY4g1ja+oSaiJcDAIjFdeWonP0XPp3CmOeTAQY+UTQUi3AfPkPDL4r97LPan4phkPdD6jFTBTTJ8JKxeDSqGWlHv0TyHh4yGpVDo4PUpnA/dYWoHNm7lKPpyGItN4YMSznfqe3+ge5Cx
+ lrhD6wII
+ 4vaK4bGsgKJhF0a4FFAzD3cUmY0bxRlK+tNV1dqSMD3cgHEUHGstE0bhhdVrQ30/PceU7a1Fdpq+1YelxqLmcbx1iePQ2HDdAO3KKLsUqEup/ED2+hTvPPGqL2uJHxEFyjAltR0NCS7ubUQqCGXQc36gPvEUw8DZyEvUi2mSmjxElPZxTNI/bfsBLBz/MqcvMDkuDFHHGRGO+oFoOEshpbtZ84RXqPR4FaW9JZgcQcevRa2IPe6ghqJ9QX0HsuL/JjrEG4sgCACG6TZha9yh3q6xskTSBSQG72EsNC+/7JkTfTy2wnuYRsOBGI85G2DXzMeCFYFS5EMpSh5DnXRQZXsA07+IO1JBjv6SNkukWHM9+5XkkCcDCnLKacilla5kRYbvkOkWzgshvG5wO1u3QfUzsdv0agp7kuUvF4TDu+ZwwX34nZOyFA9M5sG4v0ABXlw4ruM0Q+MhoCQObMLdKPbMqGq2e3mMqdpr1oW1jP4YuAQbt8Z5Wcmtr9duSccHqh/30gl3Y/oRKpPIcHbQsyFoP8ucOlVd+dpJaiottk3D2inxx5Rye+bw1df5C8CqkIf3B8RjwiqIUVGC5t55BZyMYIUc4rLaU9/qP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,67 +133,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 21:38, Tal Zussman wrote:
-> totalram_pages_inc() and totalram_pages_dec() have had no callers since
-> commit 7fbc5e26123e ("memblock: extract page freeing from
-> free_reserved_area() into a helper") and commit 287b89773d81
-> ("powerpc/pseries/cmm: Use adjust_managed_page_count() insted of
-> totalram_pages_*"), respectively. Remove them.
+On Mon, Sep 07, 2026 at 03:55:53PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/31/26 11:15, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > __folio_freeze_and_split_unmapped() takes the deferred split list_lru lock
+> > across the freeze. It is only there to stop deferred_split_scan() from
+> > touching the folio under split.
+> > 
+> > With deferred_split_isolate() fixed, the workaround can be dropped.
+> > 
+> > Unqueue the folio after folio_ref_freeze(), the way
+> > __folio_migrate_mapping() does: folio_unqueue_deferred_split() needs a
+> > zero refcount and a memcg still set, and both hold there.
+> > 
+> > If the split is called from deferred_split_scan(), the unqueue is a
+> > no-op -- the folio is already removed from the list. But
+> > PG_partially_mapped is still set, so it has to be cleared here or
+> > MTHP_STAT_NR_ANON_PARTIALLY_MAPPED never comes back down.
+> > 
+> > Assisted-by: Claude-Code:claude-opus-5
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  mm/huge_memory.c | 44 +++++++++++++-------------------------------
+> >  1 file changed, 13 insertions(+), 31 deletions(-)
+> > 
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 6281ed993243..c84e8cbc986d 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -3931,41 +3931,27 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+> >  	struct folio *end_folio = folio_next(folio);
+> >  	struct folio *new_folio, *next;
+> >  	int old_order = folio_order(folio);
+> > -	struct list_lru_one *lru;
+> > -	bool dequeue_deferred;
+> >  	int ret = 0;
+> >  
+> >  	VM_WARN_ON_ONCE(!mapping && end);
+> > -	/*
+> > -	 * If this folio can be on the deferred split queue, lock out
+> > -	 * the shrinker before freezing the ref. If the shrinker sees
+> > -	 * a 0-ref folio, it assumes it beat folio_put() to the list
+> > -	 * lock and must clean up the LRU state - the same dequeue we
+> > -	 * will do below as part of the split.
+> > -	 */
+> > -	dequeue_deferred = folio_test_anon(folio) && old_order > 1;
+> > -	if (dequeue_deferred) {
+> > -		struct mem_cgroup *memcg;
+> >  
+> > -		rcu_read_lock();
+> > -		memcg = folio_memcg(folio);
+> > -		lru = list_lru_lock(&deferred_split_lru,
+> > -				    folio_nid(folio), &memcg);
+> > -	}
 > 
-> Drop the totalram_pages_inc() stub from tools mm.h too.
+> Nice cleanup.
 > 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  include/linux/mm.h       | 10 ----------
->  tools/include/linux/mm.h |  4 ----
->  2 files changed, 14 deletions(-)
+> >  	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
+> >  		struct swap_cluster_info *ci = NULL;
+> >  		struct lruvec *lruvec;
+> >  
+> > -		if (dequeue_deferred) {
+> > -			__list_lru_del(&deferred_split_lru, lru,
+> > -				       &folio->_deferred_list, folio_nid(folio));
+> > -			if (folio_test_partially_mapped(folio)) {
+> > -				folio_clear_partially_mapped(folio);
+> > -				mod_mthp_stat(old_order,
+> > -					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+> > -			}
+> > -			list_lru_unlock(lru);
+> > -			rcu_read_unlock();
+> > +		/* Take off the deferred split queue while frozen and memcg set */
+> > +		folio_unqueue_deferred_split(folio);
+> > +
+> > +		/*
+> > +		 * deferred_split_scan() takes the folio off the queue before it
+> > +		 * splits it, so the unqueue above finds an empty list and
+> > +		 * leaves PG_partially_mapped set.
+> > +		 * Clear it here: the flag does not survive the split.
+> > +		 */
+> > +		if (folio_test_partially_mapped(folio)) {
+> > +			folio_clear_partially_mapped(folio);
+> > +			mod_mthp_stat(old_order,
+> > +				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+> >  		}
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index e3736c42c4db..c105a3758915 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -57,16 +57,6 @@ static inline unsigned long totalram_pages(void)
->  	return (unsigned long)atomic_long_read(&_totalram_pages);
->  }
->  
-> -static inline void totalram_pages_inc(void)
-> -{
-> -	atomic_long_inc(&_totalram_pages);
-> -}
-> -
-> -static inline void totalram_pages_dec(void)
-> -{
-> -	atomic_long_dec(&_totalram_pages);
-> -}
-> -
->  static inline void totalram_pages_add(long count)
->  {
->  	atomic_long_add(count, &_totalram_pages);
-> diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-> index 84b5954f66c3..d586a510e6e1 100644
-> --- a/tools/include/linux/mm.h
-> +++ b/tools/include/linux/mm.h
-> @@ -33,10 +33,6 @@ static inline phys_addr_t virt_to_phys(volatile void *address)
->  	return (phys_addr_t)address;
->  }
->  
-> -static inline void totalram_pages_inc(void)
-> -{
-> -}
-> -
->  static inline void totalram_pages_add(long count)
->  {
->  }
+> In general,
 > 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> But I do wonder whether this sequence (that also
+> __folio_unqueue_deferred_split()) performs would deserve a small local helper in
+> mm/huge_memory.c
+> 
+> Could be done as a separate cleanup.
 
-Also very nice!
+Just to be sure, do you want a helper like this:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+static void folio_clear_partially_mapped_stat(struct folio *folio)
+{
+      if (!folio_test_partially_mapped(folio))
+              return;
+
+      folio_clear_partially_mapped(folio);
+      mod_mthp_stat(folio_order(folio),
+                    MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+}
+
+?
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
