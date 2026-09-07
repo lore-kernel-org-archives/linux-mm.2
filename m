@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D9CBC79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3ADDC79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C3BF6B009B; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
+	id 869AE6B009D; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692B26B0096; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
+	id 7A8216B009F; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5136B009F; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
+	id 5CFD06B009D; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11EDC6B0096
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 15B4E6B009B
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:48:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9469EA3E84
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D44F1A01DD
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:48:18 +0000 (UTC)
-X-FDA: 85187549076.28.D654CBD
+X-FDA: 85187549076.27.91B8F2D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A48CB1A0009
+	by imf20.hostedemail.com (Postfix) with ESMTP id 923CB1C0002
 	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:48:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rbt2fYEQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCXN2QAe;
+	spf=pass (imf20.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788799696;
+	b=VkoLIlX/5i7I3nS6C7oW+Pg5q6z8BBqdgwwj45Dc3+O8pfCI5/eKDHOjZJdut/J59XKBRI
+	TJUi5AjrUjT45zAKTfm2X+SKIRa/TiBqw3aklN0xe0nuQcDK/ia82HIxJHA8oU2CMGaWrj
+	neIxwv+D5Y3+jn18KJh5Qtyn+GbkjYk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCXN2QAe;
+	spf=pass (imf20.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788799696;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XH3G2A7GvTP/8THrs95qFRMJKqXgEWRG0Nu2DxafnUo=;
-	b=5pB9ZNoMLh/d4HDi7lkGWPF4RzLWMwNU1uxHZ79RKqoCNPvFG6WUCBCdtUW9HEBwxrV2Pv
-	FOPrNCD4/P7vdQtAG1AiUfdB31iG4wdCW555gqn+fHkWECcnFkDRgXnA3kIktEiPq83xuq
-	mID5m3ke8kOJ3tFrcR1+lmIWIttOGUE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rbt2fYEQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788799696;
-	b=CcZgSKzflGt0OrmlFNrJFIknYSZBh8aqGhc7H+vzvyNbk1ibroQEzFCkTH7H7jm2xVli9J
-	kV/nDZdgSlybuw66dqKr3YicyALb1nh451Wf4CsXU2oRheMu8+BJu2SuUuHvIeonEhtnO6
-	ZwSaCn5MdwlQMoVY/7U9wizNFFccrLU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iRuxZLJeP+7PZ4qRhsglgIJjTiw/EENG/knrgNszNmM=;
+	b=LRpFySS3CAwzHSzo/tauNB3vmzPIewaQAWysIWpAe8LJ+lWl9KMUYFGMMJU6hFYAlwn1kv
+	NdEJHMYu8BteiaQ9Mpr1HeuMjpq4nIhIiuE494XoqcSt+/pIkWIsmn6uViUK0/eZXwC6Ms
+	YRMTPteVyxNqL/huF9LZcNHliDlyUnM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5D8D43AE7;
+	by sea.source.kernel.org (Postfix) with ESMTP id 821E440367;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80456C2BD00;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4EB02C2BCC7;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788799695;
-	bh=tAJEHSAuTRx0EwppaN+WcZOoNCdsIpUxUwps4sDokJQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Rbt2fYEQSS4C6EkdvC1fCToikE3BnUr2KIjHVVagi9tu7Irden05SaZW0kRUBOYvQ
-	 gbHhxXEwSG+UNMcnDcNzxFYCkhREKSXx9jgqjXeVbIK5RwtPT4kxwfw7XAsMed2c1W
-	 bWzasx772rdyAZ4tFhzbdhIohLbvZ9qg1f3pmTq8TFjAoVwuiXj6NREZmsUnWElSwc
-	 FlSrUHtUlMrBw3NxC4Oftm8StJ2mLAE0WKAKspm9LSOlRPS6rZd89SqxZi7338NBwR
-	 CWbJt7CBn5LiprSZE2MG4PImhAVM3oj/6sEREzGKWL+9CUauAAAjtp0AFd0j56bWG2
-	 yil5XWrUYSH/A==
+	bh=ugf+3s9PSyGAiuRrMcsfXDjILNpU++jjwzu5JJ9giJ8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mCXN2QAeH0qjPksLPGX5Sd8iHxXfjvSJRxd1ISUNWifwnPguwXvkXl6QbDKdDRZ7F
+	 FycIffpGIFKcxr00LwyM2KZtNUZZybn+DiXP0zzFAKoOs7coYSuyV3u7LwdsaxbUPu
+	 bVVhLTk218fT+pKP4vYlwdtWMUMSo71ByYRmPmIUGiT/8a8iSKEiSSx+i5qPM//IVh
+	 m8LyvKUkjhkjOHthoJ6YtomjxgbLOFRyy7EivO77F3/t/NUHB9EHrXdjtVISUA5twH
+	 wn8EE06bFkDLXCgZb2yVt02GsxyBcgEQ2i3j3HWjxqksvICbBmvfIeE80s/zs+15GC
+	 T5fSJDDUo4uCQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BF1C79FA7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB26C79F99;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 08 Sep 2026 00:47:49 +0800
-Subject: [PATCH v2 2/9] rust: mm: add `task_size` helper
+Subject: [PATCH v2 0/9] drm/tyr: add VM and BO ioctl support
+Date: Tue, 08 Sep 2026 00:47:47 +0800
+Message-Id: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-tyr-ioctls-v2-2-88bea777df67@kylinos.cn>
-References: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
-In-Reply-To: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIALPqnmoC/03MQQrDIBCF4auEWdcyughpV71HySLq2AwNWlSkE
+ rx7baDQ5f/gfTskikwJrsMOkQonDr6HOg1g1sU/SLDtDQrViBeUItcoOJi8JeEkkkNrtFtG6Id
+ XJMfvA7vPvVdOOcR62EV+1x+j/pkiBQpCZ7WbtJU43Z51Yx/S2XiYW2sfnoRSEqUAAAA=
+X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
 To: rust-for-linux@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -93,25 +94,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=951;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=2330;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=JO+2MVB8/0ZEX96oFL0eP1mAOKrIibNCaD5F9FcB8NY=;
- b=y55dyR98tdQkyQvRS1h0SbEjSI3cnaIDdg85SX7ZIaWbhXm+f+ZDU47osQZU2PcPwf9rjlhF1
- PmbRd8EcCmSC8RgKm7nNWPDYFWRTaPzPs62nL8aNDxU+XaJ2TT4eU/T
+ bh=ugf+3s9PSyGAiuRrMcsfXDjILNpU++jjwzu5JJ9giJ8=;
+ b=ZORc0oMwW5l3N9ppq/jrr9PENAwfIkL5qA+VfygKJi+UlDdBIzYqYtuMxE/JT6moDx0PZvFco
+ ld1n0m+H8x2Ckk3gfwq9rUCzc5HpBK9X+Slchoo7nftAcQTpie/H7z0
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A48CB1A0009
-X-Stat-Signature: 8t5zn3xw579t9bj3hx3tza8dofa9shoa
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 923CB1C0002
+X-Stat-Signature: fuwpqrz1ci66bn317duwciqb9wmqbtow
 X-Rspam-User: 
-X-HE-Tag: 1788799696-235356
-X-HE-Meta: U2FsdGVkX19XNzJodD8Pfa0dZ2WkMmCqWMd8zVeEgcUAeB5ruhqii8RNvlX4A7iwfvHUaTe53pynmiyJrUT/SabQ08OhNW4dlpQAE2vh8/QIKRqYzv0bAk9D0zOEH1alJ1hkdU7yBrWD9MpEnjfmGwBzcCXyeMjLSXRV8FSBU2rCjQ3eIBkPSylolK4VKvxo5wSF7uSy7rmfewTDyvLmJTk9tzkqVP6KKtkAZUHFjaQo+EitXWCXlkaA/fZAKjrNZoy1wyeK5JaRLzzZ0B9MKZ3ybJUhcQCEB6J3PqEBpFanLYUcMi/C7y71ied6Jwo1a/KPXlqx2HufVHkjo14K+zidKrFkRn6N4lT4WGbFqQ4t4M11FBVyqaQiYXNfkdqfwMY7XMO9xr8cWwI/WuZBVUmPZlT3lvcLdS41fyxz88JMNu+bS6U1pzGJ431NrlNPQMAVQ+SyhTWs6lZHg+FNQVNgFxaY5RK/9btMWKG0t71rFQmhgxMFMw5fVRzf2iWif8iemAPbscOK8Eu8rfyoUqd9oESVKrHjR9PpwHCXJw5f83janfDH1/U8Xoc7BT0Le3LibVfEKuuWaMag0p5YxgOunClyto8o86WgjAH6pqUQrs75HJLFf4C8klTybD/lz/vc+eRkeoT8563tdKFI4RAAZSIwE99urJkKMD2/dsplXnqlVg9NNEooFTRGruCdGhhhszgxQPddnR1sva/XDR4lzHzw6YITFJYOn9TxLtGaSZRhXXub5TlVpSqOjx3tHJPwd0YETXXLO4A3lLR17Q9xnzauQTRn7dBG+akND3ENqnDs3qgq7Kbtd2tXFopIBMPsE0gMMQTFivI8k8jsoVw80rSB0ko0o3UHO8vTMzW2ADoef+dVOiq3HSeW9I6rzvpqOTcpfv6W6MkzMmilhb0NEvdbSw27O/6OxShc68lpFSAqtpPmSrfVfqSRBk8HUVuT0Q77frVX1zPePk3
- 3AsPaidt
- M2KJMFH8N90lT6BC0FoGnMADmuPSuyqTfvauqgx1+sEaEzitAyxWq8GpOzyh3ucMz/oJbbz6bCuRT2alfuIyb30TeubQCaEX5XvcxrLh/hWKZg7JnOOZNOQaQKYTdvjLORVc5EVzSSTPzfWVCP3r2Oi7FjMqQkUAax5vzLJg0xHn2HOIeDeRUGYLbq/WxO76p55jn8nTqz5Ap1R2y3wTvq73a1FBw+KHxooTmJ7DrEVLJlFqniww7xzVfxRJircUoLekCxsTIJV1ip45DnArI3JFBqJdWtFcbuiH7C92DNMO8q20O1flPCa1D+V6xNAlzf4kDxpb43dZrCmLNqEzrKF3Qn6WBwcZt71Pgu2cf4HKinRlz/GmksUkGBAQk7FVWM1gTse2jmEBrFIBPvq9CbxCkzv7DCrf9dG+3HTr3jBWmSQoR5vHRDiSn9aKWWS4OMqxrZa5TJJ+k1+bgvXenvh9CIvO2B3jtC+fNW940cuYKSnA=
+X-HE-Tag: 1788799696-427599
+X-HE-Meta: U2FsdGVkX1/nz2toBg/QTmpzfCW/p5lsdoGKf3H4+n3Na3iRKMPm51HgI+OoC/j82sTnjFCjzr1pj1mIB8znY8Feyek8dBs4mAUxFQi1nQVhd68vvs3zfsPGaRxq7HiKByERn5P2wMl6oO01kCdsC1dB+BSzani3HPQEELqHnGKHsLSsccq0fa8C2DjRSsbiDBp7cuTpSWf18Oka8GFAi/ExY983i9Y7ExK2o1gOzpEWGYIcUIWAl3WrmiB622V3QB7oilSXbLehdgaWJkrrXr0CIzv3K65JioNt9QTZrrHL88P8wapmOPs/6rz/j9luZXlRVIpWOeepEJZMtnZCG5MiJ9IvO8a9sz+LXKBT7QkkXDbdER8FhTlgMrJqtqweYZhjhUks+1Aexf3mtQfexsO5KhuiwmqzHYbz7iMifbqR8gxbBoqi4Lw2cSjMVvP1fwsmUKikIU7/v5i2UB47SpDDGNx5zF45WMemTIJ/vPfnIYTpNijrQJE9EN7Qlj9wjf3N2a8awFGWWNwayxvLF8fr6dcb92Dmd695JgSnsvLs/NBN2ZZcdk07AakpJS9GDBQJZeWmNnzlMkfwH74Anwb6BkPOTG5srIiW7MdNF1TihID37JBO2prrEZjnziZ85tkVtdy8C4sySXpbvqleqJuXRsrzlFEEd81hTGQrKOeAT+n7xc23WnPIZ2/Ddlmj1AmJsqMI3ZWWv0YzDP3N9DMl9Aa+9aanyuT3qCpgr0SmGxRa22hxiJtEuBjFYl2P0x1UAaTNVmYbLpCt0eJArCAWS8O3f34cRJYpLe3RNG5vwVqyU+G1b2VajA7UQryONWZlFAFKiKBQSpB8Lg3k/fcwMEcdJXPD2qs3Q9+CXjgwkIRjw4391VA6Nc0ZEaEXdK7Xd/2CGeK7xOcI9/ycozutQqQ4Xvmxpw2J83mUNmXTMq05+n4rx+NbUwucPz995CZI/pGuDZoRfXMf7py
+ bvYPSqgC
+ ffsyNBYiZipCgCULQznB6ML/0bukDi/nEiT7dNAYHn9jvdd7spR7UV5m0xV4PREDiZnEvgnu5U0bBkqd6e+TaDm3zwnA39z3g5HEOocwpNNk5JsywVRzrQnHHC5uYhC2CHAdmj3rOyjVChCmIFKFUIjf+9a8F12/pBW70xCiT0syyp3BV9dx8jOQsMxbR6h1ckNNsbtVYnb7lJbv8I6HYQ0SXNgW4nd95vsDpO+Bghoq7Wzh+8zA3YrCIYg8poOnYg3uOJl99oCymSVgCCyJgM94V3WBwA13dK1Jc4stF7S4XDymWesKeDotUU26fpWzQO4A7jl9QliS2lWMLub0JiYThxhPTMYm38E8O4po8a/tSYds7Nj/exurHxIOybDlJ1V9Ch+qgzRXa+TGABGs/j/eb1bt5Z/h9Q3ilfL6jUaB4oHkpLZnlwXEgkREheqnwUKYNSKK7QdIKCYAh0VUZ/aJATw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,38 +120,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Alvin Sun <alvin.sun@linux.dev>
+Add the VM and BO ioctls to the Tyr driver, aligning its userspace
+interface with panthor. The series is based on Danilo's `drm-file`
+series on `drm-rust-next`, and uses the existing IdPool and xarray
+abstractions for per-file VM management.
 
-Expose the task's address space size. It is used by the Tyr driver
-for splitting a VM's GPU address space into user and kernel regions.
+The panthor IGT tests pass on an RK3588S device.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+A branch with the full series and all prerequisites applied is
+available at:
+https://gitlab.freedesktop.org/alvinsun039/linux.git tyr-ioctls
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
 ---
- rust/kernel/mm.rs | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes in v2:
+- Fold the VM pool into vm.rs and cap it at 32 VMs per file (Deborah).
+- Add VmOwner so a VM is killed exactly once on drop, regardless of
+  remaining references (Daniel).
+- Replace the VmSpec enum with new_for_fw()/new_for_user()
+  constructors (Daniel).
+- Parse VM_BIND op types via VmBindOpType and use the kernel
+  Atomic<bool> for the unusable flag (Daniel).
+- Use PAGE_SIZE for the dummy object size (Daniel).
+- Rename BoData::create_flags() to flags() (Daniel).
+- Report VA-split failures with dev_err! at the caller (Deborah).
+- Link to v1: https://lore.kernel.org/r/20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn
 
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 4764d7b68f2a7..d2dfbb7d43972 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
-             None
-         }
-     }
-+
-+    /// The size of the process virtual address space.
-+    #[inline]
-+    pub fn task_size(&self) -> usize {
-+        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
-+        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
-+    }
- }
- 
- // These methods require `mm_users` to be non-zero.
+---
+Alvin Sun (9):
+      rust: sizes: add SZ_4G constant
+      rust: mm: add `task_size` helper
+      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+      drm/tyr: add per-file VM pool
+      drm/tyr: add user and MCU VM specifications
+      drm/tyr: add BO creation and lookup helpers
+      drm/tyr: refactor new_dummy_object to use new_object
+      drm/tyr: add VM-related ioctls
+      drm/tyr: add BO-related ioctls
 
+ drivers/gpu/drm/tyr/driver.rs   |  14 +-
+ drivers/gpu/drm/tyr/file.rs     | 378 ++++++++++++++++++++++++++++++++++++++--
+ drivers/gpu/drm/tyr/fw.rs       |  37 ++--
+ drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
+ drivers/gpu/drm/tyr/vm.rs       | 378 ++++++++++++++++++++++++++++++++++++++--
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/mm.rs               |   7 +
+ rust/kernel/sizes.rs            |  12 ++
+ rust/kernel/sync/arc.rs         |  12 +-
+ 9 files changed, 819 insertions(+), 61 deletions(-)
+---
+base-commit: 3ac51829f95368876dcfbfbb42823ca0cd6e6f56
+change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+
+Best regards,
 -- 
-2.43.0
+Ke Sun <sunke@kylinos.cn>
 
 
 
