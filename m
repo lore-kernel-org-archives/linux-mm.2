@@ -4,108 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B91BC79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:36:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F368BC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 13:38:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46AE06B009B; Mon,  7 Sep 2026 09:36:40 -0400 (EDT)
+	id 04F896B009E; Mon,  7 Sep 2026 09:38:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 442036B009D; Mon,  7 Sep 2026 09:36:40 -0400 (EDT)
+	id 027C46B009F; Mon,  7 Sep 2026 09:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334036B009E; Mon,  7 Sep 2026 09:36:40 -0400 (EDT)
+	id E5AD56B00A0; Mon,  7 Sep 2026 09:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C4766B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:36:40 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F94EC011F
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:36:39 +0000 (UTC)
-X-FDA: 85187066118.01.1C4AF2E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B4CE74000E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:36:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Pp0fBinA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B54F26B009E
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 09:38:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39C90140111
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:38:29 +0000 (UTC)
+X-FDA: 85187070738.22.2CCE413
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4650220002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 13:38:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIhGnb09;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788788198;
+	s=arc-20220608; t=1788788307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VWt4misabhLOnV//lu2h3uE6MQyjYWXsTbiIxpiihLI=;
-	b=CZtnn8BYMz6lsUjKstaWfENG2PyY1rDPwm9uwitJwukNzGKNVDS94p/GxaimfGABG0M5sb
-	aNjMQFVMWmG0PoniCbDveCeszRin6MZWAexTwsXwzwEGLo8l7su++vjNKaDq2GjMeQnn87
-	QUr8jN9GTmzI2T9Sv9BAmlbZGn8GHw4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Pp0fBinA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
+	bh=NXPx7jZphY5xscJdBWYKC7jM8mTT70+S+YQbgVrwjUo=;
+	b=yEo3uhI3GVKo2UjF06Tlwqn/tjNYxrn12mbb2v0PE83ruMp0DiX0qNJeSZkJ2mo9QreL2y
+	rRfJzTPfgy1rn6FJoSPgZ1wL1qnKK5HwbLHJGAzx0GFaDOlYhQ4cgQdH8txe2arvGljnce
+	XUvXrz2DJgeKu1sHhQeAR92+/I+VDMI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788788198;
-	b=6d/P9Mb7XNvjJn40nKaGAweNatCH0XkY5dQGqH3Fu8OME9qrA9ioBCN+RG3qscU/i1S4Jv
-	m+E0N3MchPspyRBnQph35WFgEGLZiS1oFB6ZJP+y9nvOGqhEyMfMaoch2LokiawGz2WWy4
-	DPtvzd7MdnwCvw1Vf1cn9KdOk6Vv/2E=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E72CB1476;
-	Mon,  7 Sep 2026 06:36:32 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DBD973F528;
-	Mon,  7 Sep 2026 06:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788788196; bh=DeeXP5VTRAaxBpRd5mSKpS9jcefo3GPkzMjxSmfNmxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pp0fBinAfSAERaH+4GMK9+su2zRdcdSsv6MOvALzgktaheLoMKrQ6T4cii4dcsXm6
-	 cm8NTsibWj8CenWDa8KVg8LzXKEIRur5kVtj095fytxsJ0RlBjy1VgL7lDzLEpFVzf
-	 OMEXSJBomvM/JSvQWC/oz3gdFzrXQeuE3VwPANQk=
-Date: Mon, 7 Sep 2026 19:06:33 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 02/25] set_memory: Introduce set_memory_pkey() stub
-Message-ID: <ap694bZb0crWvLo3@a079125.arm.com>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-2-743ad31b2c8f@arm.com>
- <apbiQtt-cAlLkDqV@a079125.arm.com>
- <66270f42-931f-4043-b24c-edcc4cad74b8@arm.com>
+	t=1788788307;
+	b=DLOB7GyCfdbvXLHoVZs2JV00kkzf4MxoH02LvC0qxyk0NmC4q3bGHxIc68O42uTlNZhIgt
+	uw+47JmZQrP4WjbURqvkkZ0JkJYVUoAB74W7Xt/BUCJdx45wYkNv7YKc0BYRhKu81Iwhtq
+	KJGfFC5VDfk08xggPMrJ4kRHOFQ75W4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIhGnb09;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2AB5E414D3;
+	Mon,  7 Sep 2026 13:38:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FDA1F00A3A;
+	Mon,  7 Sep 2026 13:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788788306;
+	bh=NXPx7jZphY5xscJdBWYKC7jM8mTT70+S+YQbgVrwjUo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=eIhGnb091U2uURjovnjh38jpYJErL03yA/HrTFhuT85aqKHGa6GXC+EKQ3/1KU+Gx
+	 NfkiOxg2HbvLPgCVvyrpCb9jCnSy0OWCDPvafTfQuOhV0CcnCYPNDQSbxX7NUj4mcV
+	 DW46WMStXI+74xxObP8fsymvDcr+WnNLd+N/DCHvuYLnqv2O4GSL8oxF47HfGPy9+1
+	 gHkyLUv4Ku+0TX26Afgd+2SP9/LmVOVzEpZlBeVh94HcImH7Or54zqBTJEMwfnV0bn
+	 t5G8bLK0LFoan3X46Nes6TIer84z86LCj85MI9LxcriQaSaHSJLCuku2s/2Ez/3ihr
+	 hUousIHrZ6fgQ==
+Message-ID: <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
+Date: Mon, 7 Sep 2026 15:38:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66270f42-931f-4043-b24c-edcc4cad74b8@arm.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B4CE74000E
-X-Stat-Signature: 8mzf9ygc6didopb7pkngt6h5wfc6xgrm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
+ list_lock contention
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org
+Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Pedro Falcato <pfalcato@suse.de>
+References: <20260824122004.3652-1-hao.li@linux.dev>
+ <20260824122513.3829-1-hao.li@linux.dev>
+ <20260824122513.3829-2-hao.li@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260824122513.3829-2-hao.li@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hsjfxxxp1ubwfkseomxfwkqpksx8a34j
+X-Rspamd-Queue-Id: 4650220002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788788197-781154
-X-HE-Meta: U2FsdGVkX19dQ9OGNC7S7Te2aTHx13yvG+PTSB/12ywY33srh0Pe2T1B6XWOKH7HBpgCZ1BdcgWCPp8GLjLFAyI5PLvAA3BEtevdGUFBI8TRw+w/Klv4vjj5fZOeO7ihDP3UZVTBHnSTcUdVQmyFricHDKoJk4/jchcoy2Q/YGxba/bapro8nc72H9NZshGAgaZ+hEpEggqqDN3lI9qh3lo4L8M+nkqtSozFcYdCrrJbJNj6EyqHyAyrAB9+vfurVH0s11nlefZKvyicT8Cm6JRPSNMepovGtJHnhPtCWo0dIo4jpi8hqiAkQ1g/Be8qr2qJPyeO3EB5ZV4vkAo66UD80A5zvKhF8l7YXIq1yjcGEh0xYbmgv+rrHtIdhEBcPVvVfoFdQDeWsWyvYK6KEgcXPD1K1UFRYHzIfexbJ26hwNOLxxioO1nnAkMntf3GCmhS6gokZVFj307CEvaaOhBPu2p04j3wF1S82kgWxziyBGdlgcDyrn5QtIi9YLkTFwXufWphA0DspQ/RQimKJzTGHL2OjtR8uvOmI3JCeA85nWzvDaOJXL1aXNPAahObLqEAlA83bs35ZDysHNnEUrojdUBZpU1FhLjwvamu09nMv4y2rwl6LMeBtmiS55JTxmDyrb/QaNWQBpDhGz2gbeX7aM2r3lrBWj1VnmElB0fnH0N6ZVxqIRAZP0m06gKIwFIYpmxSvNoHtBYRi55Zu1hot+gLiR/s+AgrGcmVCJuczjE8e5f9PwUin3WUTjiSL13FhHL9NBK4+jB3kwGFg4+grs9SKA7QVYF36Xk04AO5n19CwP1uw8DFf6dRnf0dbyaDEQluUvJIL7I2/iPnkXW5/aey/hM3fV9iKfB7NpDtrEqJcdV2Yz9zGQsNAXal8cECt0q+8+ufNktahoZyqSh2wM8S+yeN7gT94p0lOQqLCZmonMEwgObq0sGfdR2FVlZn3vpWm7Y+HN/t8BF
- UFuQnfy6
- rnJp412lSwjKRse1xUZXYsduEbpjY8bxFFAq4gprxYmMTPgFyKmVoHpxkHY185DPwgS0EIDu7kjgEw9LOgByC/xzrrfEDQ4GXt395nzqLiK3YKW7AeUbqGoggjxzL1+AOh7rxDGSD2gU7iivL8bVK9yxFzq7q7sEye90NBPIHobouJoqKVrGtaA3P0HCNDHPn26D6/Ym+hYc8xd+GS76/EaQ2og4VBCdQKsBHayyPLvo3xjEBWSsINH9QV0Jnlismt8B+6eSkARMKQlbrjvMi5qL9B27h/y9XJBareP4rAu1svt3ENR6Ihbo6sTt8Ku34zHKMX0DVSbzDUeHngG3+L0vDfYmSPv9mhoEdhER5z8zukl4xy1slo5pls7duZLzL73My
+X-HE-Tag: 1788788307-335126
+X-HE-Meta: U2FsdGVkX18oW1HrD4OuS+7hvvfuXN/EbhNH+KJmqNt2usvoUSnFvufsrpEhvpkezPvlviAsVY2n4IiYN63QH/nej4L3rYjbTPzJxYHqQvjnf8Ff58/YQAciBeKxcCOiMzwZZ1XGfK56xNgVc9TzUzQ7ZqgX4+1iC39rrQ8ePJY0N1hsfYrJZGqNb5elic+6f5h3ojB+12cfhg6c9edfPQFN1Q3tdBryuOuIiJLPXOC59TCbcneqjsDjrRDfwIAEvLm6chqH/ETwiRKU3Xukmefb1Xnd+239zHjHfIYWglbry/SGIPo2XRsDfSG8gq1yWeIhEXPhTxFGBuu5uEEVTEioTfY19QQTXpgt2JgJVW0Og3QSn4oWBgqEX++cUra31eBSQawsFfcRHcd4mOquKWEoS4XBXWvedqTHvE1MIQUdGUWM3fCjWbe4bwLjhsPpkJm0vQY36Gvz7XIs7u0jZ6PjsdR45H4GdAKJDdcq97308qZ0zVYDAfpSJ51fJjOAGwQ0TEz47PP+pCRwyiPzmDDxFetLclyImLEE9MlWPIQEG+4mU0s/jTE6mrhIXEhQ0maJexQWQUmcrIA3hBEd4NcTX1TZaeydsSmw3urG49kr9MMrHjeruiV3x4YvCi9KNCv6frKojfv6p6GkTxLIGf4RpV2TEKNGMENGR9t3x7sQsdRl6gr9F1OzwwUKeSJTd8ZjSquZHJMNWihCabXA06heCF0Z0bJ2yoO8rJXsfbvXg6/rbRFC01927hpguQaEpemodKIYK9OFMsM8X42rA03tqw3OjTbRYHKEuZ+zaZOMZN4O8sXQynRH1t/pvorte4H2RztnIgB2SYCRD6XB2MHRhu/EhUS5fmJIHNQJSRCg+kBOEexoQktdwWzOne6o0caFfK2Odo8HVENL49EiKaJFiCtjbrJZS36ANfIP9E6hVOv8a426ZdL4nldmOC8BZ1l3lj9hAQGp8An3nop
+ yPl0X2Ok
+ 7EFDWO0rFeStgvHrP1mhRBeEb0PH/H+hNd7aNtaAoeIyBS4buOv05hhIgGbczE1zFQ0Z07Q/QKphQGHbFBAcroJbCQm8PXJDKnlVTWQ9orjzbabqw08FY6J+7kj7sVXRd2t8Z9qR9XUiIOw76eXd6uHUC8OFbxDp6/kFHZKOiMXdSfXa8fCQi/Bxli+tPMRK4GDuJk9AXnIf3dYSASbcDuswc2eOWazLYGGXDrT8bstdS6FZGSevOlmK+lb7olQ+j+qvpSueZKpFQ+AgSsovM/qQDex+YOXVrRGHCfhsrFf8OFBfybEiepdlr3X+XxoqpNQGcFzRKQWsv2kA5Dw764zajCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,67 +136,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 06:41:33PM +0200, Kevin Brodsky wrote:
-> On 01/09/2026 16:33, Linu Cherian wrote:
-> > Kevin,
-> >
-> > On Tue, Aug 18, 2026 at 03:08:44PM +0100, Kevin Brodsky wrote:
-> >> Introduce a new function, set_memory_pkey(), which sets the
-> >> protection key (pkey) of pages in the specified linear mapping
-> >> range. Architectures implementing kernel pkeys (kpkeys) must
-> >> provide a suitable implementation; an empty stub is added as
-> > Could you make it explicit here why we are restricting this only
-> > to the linear mapping range ? Would be helpful to add the reasoning
-> > in the commit message and as comments.
-> >
-> > Essentially we are also making a assumption here that there are no
-> > aliases to the linear map ?
-> 
-> We're not assuming this, this function is called on pages that are also
-> mapped as part of the kernel image. But indeed it ignores aliases,
-> unlike e.g. set_memory_ro(). Really its name is wrong as discussed below.
+On 8/24/26 14:25, Hao Li wrote:
+> Introduce a mechanism called parking to mitigate lock contention in the
+> free slowpath.
 
-Just trying to understand, does it also imply that we dont have use cases that has aliases.
+Interesting!
 
+> In the free slowpath, when __slab_free() transitions a full slab into a
+> partial/empty slab through a free operation, it must acquire the list
+> lock to add these newly freed partial/empty slabs to the partial list.
 > 
-> >> fallback.
-> >>
-> >> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> >> ---
-> >>  include/linux/set_memory.h | 7 +++++++
-> >>  1 file changed, 7 insertions(+)
-> >>
-> >> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> >> index 3030d9245f5a..7b3a8bfde3c6 100644
-> >> --- a/include/linux/set_memory.h
-> >> +++ b/include/linux/set_memory.h
-> >> @@ -84,4 +84,11 @@ static inline int set_memory_decrypted(unsigned long addr, int numpages)
-> >>  }
-> >>  #endif /* CONFIG_ARCH_HAS_MEM_ENCRYPT */
-> >>  
-> >> +#ifndef CONFIG_ARCH_HAS_KPKEYS
-> >> +static inline int set_memory_pkey(unsigned long addr, int numpages, int pkey)
-> >> +{
-> >> +	return 0;
-> >> +}
-> >> +#endif
-> > Would be better to make this (linar map range)constraint on the API name or that passed
-> > as a boolean flag ?
+> Why must partial and empty slabs converted from full slabs be added to
+> the partial list? Because only by doing so can the sheaf refill or alloc
+> slowpath see these partial slabs and allocate from them. Therefore, the
+> list insertion must be performed, which requires acquiring the lock and
+> leads to heavy lock contention under high concurrency.
 > 
-> Indeed, in fact I've been thinking about renaming this function for a
-> while and I've already done it locally :) It'll be set_direct_map_pkey()
-> in the next version.
+> Analysis of profiling data from the will-it-scale mmap1 benchmark shows
+> that full -> partial transitions account for a large proportion, second
+> only to partial -> partial.
+> 
+> With extra instrumentation added to __slab_free(), the following data
+> was collected for the maple_node cache (in counts):
+> 
+>   partial->partial    843017414
+>   full->partial       550719384
+>   partial->empty      17459564
+>   full->empty         2
 
-Okay.
+That's a lot inded. I'd be careful if it's some specific aspect of the test,
+i.e. lots of parallel allocations followed by lots of frees, that wouldn't
+be that common in realistic workloads. But worth looking into at least.
+If it's this kind of pathologic behavior, then I expect changing sheaf size
+as suggested by Pedro wouldn't help much.
 
-> 
-> > Also, it would be better to have the __is_lm_address checks in this generic wrapper which
-> > then calls arch_set_memory_pkey ?
-> 
-> That's not unreasonable, but such pattern isn't used by other functions
-> in set_memory.h and I'd rather not deviate too much without a good reason.
+> Since the fundamental purpose of __slab_free() is to make newly freed
+> partial/empty slabs visible to the sheaf refill or alloc slowpath, these
+> slabs can be temporarily stored in a staging area in a lockless manner
+> instead of making the free slowpath contend for the lock. The sheaf
 
-Ack.
+However the lockless manipulation is still going to contend on the
+llist_head. But perhaps it's limited enough in both users and lenght of
+operations to make a difference.
+
+> refill or alloc slowpath then checks this staging area first when
+> allocating objects. This achieves the goal of making these slabs visible
+> to the sheaf refill or alloc slowpath while allowing the free slowpath
+> to operate locklessly. This process is called "parking".
+
+I'm gonna pull a David Hildenbrand trick here and question the name :)
+It seems to me it's an (extension of the) partial list, but lockless.
+Parking would suggest to me that it's put somewhere aside not to be used, or
+something.
+
+> Parking occurs in only one case: when __slab_free() encounters a full ->
+> partial/empty transition and the trylock fails. In this case,
+> __slab_free() attaches the slab to an llist locklessly, instead of
+> waiting for the lock unnecessarily.
+
+It could be interesting to also see if skipping the trylock completely
+(another cache contending operation) helps even more. Also whether moving
+the llist_node to a different cache line than list_lock (and fields
+protected by it) helps even more, or not.
+
+> Conversely, the process of moving these parked slabs from the llist back
+> to the partial list is called "unpark". Unpark occurs in four cases:
 > 
-> - Kevin
+> 1. Sheaf refill or alloc slowpath: This is the core case. The sheaf
+>    refill or alloc slowpath must see the parked slabs, so the first
+>    thing done after acquiring the lock in the sheaf refill or alloc
+>    slowpath is unpark.
+> 2. Cache shrinking: shrinking also needs to see slabs in the parked
+>    state.
+> 3. Cache destruction: kmem_cache_destroy() must also see parked slabs,
+>    which is obvious, otherwise memory would leak.
+> 4. delayed_work (see corner case b below)
+> 
+> Why is this scheme correct? Because paths entering the sheaf refill or
+> alloc slowpath can see both slabs on the partial list and slabs on the
+> parked llist, while allocation paths that do not enter the sheaf refill
+> or alloc slowpath would not check the partial list in the first place
+> and naturally do not need to care about parked slabs. Therefore, whether
+> an allocation takes the sheaf refill or the alloc slowpath or not, slabs
+> on the parked llist and slabs on the partial list make no difference to
+> the allocator. This visibility equivalence is the core of the scheme.
+> This analysis also shows that the scheme does not affect the utilization
+> of partial slabs or lead to increased fragmentation.
+> 
+> Corner cases to handle:
+> a. Parked slabs may become completely empty. Therefore, unpark must also
+>    check min_partial and free excess empty slabs instead of adding them
+>    back to the partial list.
+> 
+> b. In rare cases, the system may go idle immediately after slabs are
+>    parked, and the sheaf refill or alloc slowpath may never run
+>    again. These parked slabs would then remain in the llist until the
+>    next sheaf refill or alloc slowpath performs an unpark. To
+>    solve this problem, add a delayed_work named unpark_work to add
+>    parked slabs back to the partial list when no other path unparks
+>    them.
+
+OK, but is this a problem that needs the delayed work? If the slabs are
+still partial, they would just sit on the partial list rather than on the
+llist, but it would cause no extra bloat?
+It could be a problem only if free slab(s) got stuck on the llist.
+
+So I'd try to avoid the delayed work as it's quite a red flag. Periodic
+flushing of alien arrays used to be a very unpopular part of SLAB
+implementation. I think there might be two ways:
+
+1) submit the delayed work only when transitioning partial->empty slab on
+the llist. Would likely require flagging slabs that are on the llist.
+Hopefully this will limit the submissions to negligible amounts.
+
+2) remove the delayed work completely, instead __slab_free() would perform
+the "unpark" immediately when detecting partial->empty slab transition on
+the llist. Would need flagging the slabs as well.
+
+I guess 2) would be preferred unless it compromises the benefits too much.
+
+> On will-it-scale mmap1 with 192 processes, throughput increases from
+> 29237910 to 35585663 (+21.7%). native_queued_spin_lock_slowpath drops
+> from 44% to 30% of cycles and __slab_free() disappears from the lock
+> profile. alloc_slab,free_slab drop by 52%, and park_slab equals
+> unpark_slab exactly, confirming no parked slabs are left stranded.
+> 
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+
 
