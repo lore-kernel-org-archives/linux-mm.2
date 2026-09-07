@@ -4,97 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C47C79F99
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2B1C79F99
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 10:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8189E6B00A0; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
+	id BC5A56B00A2; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F0066B00A1; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
+	id B78256B00A3; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704D96B00A2; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
+	id A65B46B00A4; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 539C86B00A0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:52:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA827140111
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:37 +0000 (UTC)
-X-FDA: 85186652754.15.8B2B069
-Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E439840009
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:52:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FPmqLvNG;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5DB6B00A2
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 06:54:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6C17C0111
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:28 +0000 (UTC)
+X-FDA: 85186657416.22.77D5D54
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EEDE40004
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 10:54:27 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7/0KQt1";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788778356;
+	s=arc-20220608; t=1788778467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMZIxO6CQ07igvYbrEPXnr0lkolqEoOTIlZqNcyzMSs=;
-	b=nuV+iXfR5iSzKJy1gq3CCVmuK5ajZ55gX7xoASaO5UiYrokcaYrPGGEz6rol+Ch7JczodR
-	oI88c/rJlMi7vu1wWqUwOSmty7hlHVdz29lnC87gbfO+DDWtUEpsGxOV1i8Hu3ChhDqPcz
-	V92p3jMamaiJ1uDldYogq5GVUWI2Q6k=
+	bh=NOGW6/wWy7KCmoBtQtZTuis7xY50X7nU3u2PLYPpIC8=;
+	b=Ar/3T+0ufJ6lpB+3VMvlH9dugO9yMoc/od7Y7pFqdnKVHKRZv/P5PcsQmdym6Uae/fzNUO
+	aF4yr9Uee9z6P+addVq7OifHLp05nZwKNC07DIS1PXL1IakxuJQsylMdZZDZ0qHgqG1BRa
+	Ej/23Jx/jhlLBRLbo5vK5YBhGc+pkiI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788778356;
-	b=OwpSbDgIVWA3i8Qn07S2tiPO+clsCmhFgnjC2SWOA/91tI0W7DKRW5/lFddOfBQOyIO4pP
-	kMFwO8wyf3vA8uPQC4h6aHCcLX6vsbweZSl0tPtgMY8Q3+wi2woCA/cmITKbhTsjgZo694
-	YJsQ1cOwdNIMIPCKvgdM7Q5YISxDIw4=
+	t=1788778467;
+	b=ryqDydecRL3U2xvUZuNB1l2r6XoHqE120v8rIDHJ3yovIyRyy5SiwMpr1o8z2PAH6ZncYO
+	qAuAzdsk5mLv2V7X6PZqHELgh87YZSgC7rByFtqhxudPGX8vvPu7tJqEBpdOQHLacjVcYG
+	Jw6UypxjQt/DVQwT/Ab9Cm86kcphZe4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FPmqLvNG;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=veLSlCX5ITgmXND1QxVSP8GF9ucuQEFqR09oh1MjNvw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788778354; v=1; x=1789383154;
- b=FPmqLvNGSelN/rlCLIg1CFeJhLjvx/ZNnB1VtbTfOR1JatUfHPu91fAiwRam+L13YzIwllLp
- cSa9olUaOLstpW1uNAwVMAwzPu5/8kx5S3QcPK9ADFQzDf35mJfSZoft1m0Adep9ERkMPYXCU9F
- FB/A5gY31O10brAU9cAlSVEw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a4af63cff6f3130f;
-	Mon, 07 Sep 2026 10:52:34 +0000
-X-Mizu-Trace-ID: a4af63cff6f3130f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <eca414b4-9baf-4d2f-9842-373f5cc79d60@linux.dev>
-Date: Mon, 7 Sep 2026 11:52:29 +0100
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7/0KQt1";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A95AA42B6E;
+	Mon,  7 Sep 2026 10:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EAC1F00AC4;
+	Mon,  7 Sep 2026 10:54:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788778465;
+	bh=NOGW6/wWy7KCmoBtQtZTuis7xY50X7nU3u2PLYPpIC8=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=G7/0KQt1Skmof7ZpkUnZkQDRlafhOO12XFsIOYKQpAZmnVWs9cA5biIbNGPPuXDzW
+	 zsWIjohT+04Z7RKrQ4HzEy5BU3ZOMwvrWuBqgfNP1+E/sppYgegCHuaVVral3FOlD7
+	 E+BJ3cZ1lOKjnuBo7hq5B+GmYNIA2vRgOiSdaWPEUUmRfgH9LhJoq/xjGrXd8iQxIp
+	 0QLHHyb+1PCWt6wcujYQIYJHuxuOw+/3VdqprBCgXm18Ni37snzH3Dcs9NHuc/UdDL
+	 gPqtso0FJZynaI1csR5E/lOdWBfyYv0v+WaIOpjWESgWiFg2UzIYKaqr8ob0R4FU0r
+	 J5L9r8Wo6IEgw==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Kairui Song <kasong@tencent.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Xunlei Pang <xlpang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com>
- <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: giax34d4d51fkesps1wpi3gzp5t1ceq6
-X-Rspamd-Queue-Id: E439840009
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH RFC v9 01/25] mm: Introduce kpkeys
+From: Mike Rapoport <rppt@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Lutomirski <luto@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>, 
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>, 
+ Kees Cook <kees@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
+ Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+ Maxwell Bland <mbland@motorola.com>, 
+ "Mike Rapoport (IBM)" <rppt@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, 
+ Pierre Langlois <pierre.langlois@arm.com>, 
+ =?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>, 
+ Quentin Perret <qperret@google.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org, 
+ linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+In-Reply-To: <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
+Date: Mon, 07 Sep 2026 13:54:14 +0300
+Message-Id: <178877845406.3691569.6930315020588094755.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: 9g84y9rqcffkaui8rqwhecjqted167kk
+X-Rspamd-Queue-Id: 2EEDE40004
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788778355-511587
-X-HE-Meta: U2FsdGVkX1+zFcekw5bJRTq4lrURr1AV1ADBECxa7awBLET96GrgZoGpHiGqneHIN1qNmJ4IHOiuQ3OR5vCE/3iLauVw+EXnlm1FRil2ouYpQ4bQxxBlV3zKWYwN8O0yYd/mkyyUyqQR3jaFwfi765+3LMp0CVULWTekeR/fhWNkNKvadCSK2Lpdc8wZWtGl9qYYhjxyg8zsrZTKnaxeiBXqPBMZalF4wnwgV/yu8v40oUKx4TrvSfa7onn4gguZoyEcSAL2NZwE7ZcZIu5yfq9FWhSgZtWj5z1+jTlGJT3lhd6WZRwWYcHhRMBtZI/ioQCumSIRvRCyMRTqdIn7Tl2cqcEpCvUtUWzgCzTMx4QsBjr7vyN1iWiy0SKIY4CF8dtCTJ/mhPt9rn+fg/nDpkdh3iJ5/q2jZGRW6M8pJ2zeg/EXSh15GX4Uu0PGDVvdU1RuSWyBILxZfwnWCbtvMEv3Wjg95p7/rqxx2p5JaH/XBwV9NV/XV45cexDPX1YGQFevKGZdjhwDcAADK6qRDDmphPaU8w+8luDfLbD72Fe8dVGN+wE4knefgJ2AuyrmF8t237pZdSGLokvB8pU2l1lx0dqAm0umbHpWC/D/aDj0NTXvoLj4YxCERxLQPgZAe04afc6i6OGQo+mrw2i+Hrmk2jXkfmKU96MJtvnP6BC1CIgPaYLQP750qbuJWaDkxc+PaCA6UcUyYAAZYIEEEN1Esm/l8xHnlE/Fn3mP1PK6tWxoIxCg3t419su2NWnIvV6ZWEHrjgH1S14oCDcWf7n/BoSfBh2h74GfwuoCpux3De39kpH7pmxlzpzvq+vCi67DL+OtNwRxpsXued2R+H9YG2tuAL80rwv/CDNIHUgNW8H5dHXZ1NHWmTVGj5nkMXNAUquZXvg6X4i5uz7Gbrf4diCLKkVX4ODCPgaSRzoJeVGhQcrpzVdaQkUMmFCqMW+hOP/Ua6Nuj9DXO1G
- e0oQkR+D
- yQSP0AMR+p6TtI601DUTFRBcJZBscX7BOHkCtxCxuHtBJ7Dl2cmHceLUvv/NZ7EVc2hatyTKHu2zJP56VIz2u/JGZBzzMA4pTF6/SoFu1Wg5p48a5pCKKcO7zNhG/j/47ImtFjHvLP0diTvdPjcwPfrIz9eqS3dQt24RIX5XZPHMJPsQP0K4Kg5H93mGhA9jFNAMcdUDTS6BzSRIhfgVbbKFMzww5klceAfFZAdDmNxm3X/rqUsdd2aF2bbKjbo9sRbStGncc6cKhQ1OO7jrLOL9YMrWC56yEyODB+KVBQwoG8PH4WRK04JkLBlaZX1enEIdJQAuFuqxt8azG3zfQnEmJn9X4Wd5KhwLtsNuyvKOr2NM0nb252CbSUBOm2Q5e2zLtF2yUYPkvdupWYSyoReelH9F90jBCjM0X6Bv7FrNdjPdisj50Lu3BeO2+jyjMABI9wfuF4O7mbis=
+X-HE-Tag: 1788778467-787327
+X-HE-Meta: U2FsdGVkX1/oeJ3Ugy219au01d+NVKqjR28DSTupilsHQ5UHKGNM54O7rtWEFGdGGfo5jzAtCBf9vMJZytdx9+6itLR0JB3/diDII0mFM07jC3BITsA88b5IGPWi3XpstwHyNv05XZX4xrsiDTkdFlfKTPNUEhOjCZ7+fePQcZZ40mbpp7a3J7tZGgNBEyh53bV/jMOHGSsbIKDrix+7eADov7kT0e68U6CeFU5FZnnjmkqVDhhPBFfIqtd8TKVyRt67BX5w4BWbv3/8F5cZSjBc0DiEkvOviIKnWjwCwaRzIOUGjTcon3aUZP3f7BfAXy8Ism+/v/svV/eWZjcvcgO7blZVNkZFzBjVeEpWBxOn3+0pJmOXiyz9zTsZPte4S+Vi+kPqMPNNh+jbNUITkBSKqTUZbZni4yjhJpMN7gQQslSJXjzEfjAqQnYOuM5UT7JRuFbL/dF/tEh83kf55PyRii4DuLzqt0kTuEn2ub/Td6ito6Jvp+Mkz7LEmdbYkzW3vH5QdW8bXA2/lB9imODjEJHPyFtaAf8rWvQ3sG75G6Ie6MqlzlDWAgmcI96SoecildkqFYZGR+R7f9WbuTOdSB2RtFYXGIGBSFk+/Lq1/1+mN7CiihoVJjVGtM5eM29SVOZVGXxPiorb7PRVT7jm3QeD33A+QXW+xz2q1v6UqoBJZHWixxUloGwIvGvpd/bwankQofYW2I/IwBv2zZKvfg8OpTM2cFb3blFZ6ktpGTC+svaEoepIlUuQNSErUh4229ejN5yjRRMJfPxRzh+wSQeoT8IaHEIB8zk5mSIUgKosJffGmtgqAtiP9yB8cl7eEtKH5EsJZgK1dCHgX3m+97DmlfpxugH1uZ6ScXdRkgJzxsxfhPdIlV9n+E/tb8BvNZFn6n4JHgaqQCd9xmN2HCDawdbcdJXGg6qLp4LIdn4yMvS1JmFp22FqyPSWGhLnViFsiwRl5dMnsEL
+ 2BZV09BP
+ QnXfdNd0sj9iCCVgeHDuJgZEac97BwwTyOp1bJ2p2n5YcvoqVCecA3t/MaEWLgSJtKoN2HQVawi3S9xcLyOfc2vvoF0DNKcl0KCEXfSZfL6khjTXK5rKbyo192CZKg3XSNXwLg0ZLR2kObom/MplrphBjj3y0FzYRKz70pBCm+oF7U5FXq3ystGc4y+NdaXzN5VH9es3nkiiNuq0u4yXiE1q+ulYkUh4TSWWYR+pZpAOuGLlkY+VSY/3bjk0vu8T1Q92Xymsb08D2m8Otr7Ud519px6Jo2JczIEi0R0gfcFldLSwhm7LeJcMQs72QDcy8wYfR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,54 +113,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Kevin,
 
+> kpkeys is a simple framework to enable the use of protection keys
+> (pkeys) to harden the kernel itself. This patch introduces the basic
+> API in <linux/kpkeys.h>: a couple of functions to enter/leave a
+> kpkeys context and macros to define guard objects.
+> 
+> kpkeys introduces a new concept on top of pkeys: the kpkeys context.
+> Each context is associated with a set of permissions for the pkeys
+> managed by the kpkeys framework. kpkeys_enter_context(ctx) sets
+> those permissions according to ctx, and returns the original kpkeys
+> state (typically the arch-specific pkeys register) that is later
+> restored by calling kpkeys_leave_context(). To start with, only
+> KPKEYS_CTX_DEFAULT is available, which is meant to grant RW access
+> to KPKEYS_PKEY_DEFAULT (i.e. all memory since this is the only
+> available pkey for now).
+> 
+> The underlying representation of each kpkeys context is entirely
+> architecture-specific. Support for kpkeys must be explicitly
+> indicated by selecting ARCH_HAS_KPKEYS and defining the following
+> functions in <asm/kpkeys.h>:
+> 
+> * arch_kpkeys_enter_context()
+> * arch_kpkeys_leave_context()
+> * arch_supports_kpkeys()
+> 
+> Additionally, <asm/kpkeys_types.h> must define struct arch_kpkeys_state,
+> which typically provides storage for the pkeys register.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>
+> diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+> new file mode 100644
+> index 0000000000000..eac522f552141
+> --- /dev/null
+> +++ b/include/linux/kpkeys.h
+> @@ -0,0 +1,104 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef _LINUX_KPKEYS_H
+> +#define _LINUX_KPKEYS_H
+> +
+> +#include <linux/bug.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/kpkeys_types.h>
+> +
+> +/**
+> + * KPKEYS_GUARD_NOOP() - define a guard type that does nothing
 
-On 04/09/2026 04:35, Qinyun Tan wrote:
-> With kmem accounting disabled (cgroup.memory=nokmem), memcg reclaim
-> never invokes the zswap shrinker: a cgroup under memory pressure does
-> not write back its own zswapped pages to make room; they are only
-> written back by global reclaim or once the global pool limit kicks in.
-> 
-> The zswap shrinker is registered memcg-aware but without
-> SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
-> before commit 03375203e1da ("mm: do not allocate shrinker info with
-> cgroup.memory=nokmem") it was skipped by the !memcg_kmem_online()
-> check in shrink_slab_memcg(); since that commit it is demoted to
-> non-memcg-aware at registration.  But the zswap shrinker is not a slab
-> shrinker: it tracks zswap entries and resolves the owning memcg from
-> the folio's objcg, independent of kmem accounting.
-> 
-> This was noticed by Michal during review of the patch "mm/list_lru:
-> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
-> 
-> Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
-> under memcg reclaim with nokmem.
-> 
-> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-> 
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-> Suggested-by: Michal Koutný <mkoutny@suse.com>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> ---
->  mm/zswap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 761cd699e0a3e..8bcc2997d7719 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1263,8 +1263,8 @@ static struct shrinker *zswap_alloc_shrinker(void)
->  {
->  	struct shrinker *shrinker;
->  
-> -	shrinker =
-> -		shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE, "mm-zswap");
-> +	shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE |
-> +				  SHRINKER_NONSLAB, "mm-zswap");
->  	if (!shrinker)
->  		return NULL;
->  
+Nit: I'd suggest to drop "define" from all the descriptions, they would
+read better without it IMHO.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+-- 
+Sincerely yours,
+Mike.
 
 
