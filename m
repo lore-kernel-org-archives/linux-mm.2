@@ -4,107 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA350C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA18C79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 08:26:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9E7F6B009B; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
+	id A8D546B009D; Mon,  7 Sep 2026 04:26:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6AFA6B009D; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
+	id A3E656B009E; Mon,  7 Sep 2026 04:26:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8FE86B009E; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
+	id 956756B00A5; Mon,  7 Sep 2026 04:26:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 85E756B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:26:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22CECC0694
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:24 +0000 (UTC)
-X-FDA: 85186284288.27.172591E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6D1384000C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICur1IhM;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C3E76B009D
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 04:26:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 04BE81C26AA
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:48 +0000 (UTC)
+X-FDA: 85186285338.16.F06698B
+Received: from mail-m82143.xmail.ntesmail.com (mail-m82143.xmail.ntesmail.com [156.224.82.143])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 06277A0007
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 08:26:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.143 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788769582;
-	b=m+H7IOm4b483enXQrqgIKTEA8IIziM9luO/arUqq6ByOSg/1IQcWi+2NnGrxkgGoU+/6Pc
-	m2j9v8ABl2lva7L3hMfr5+kx3qRxUvcJUeweBODve5xjCOXX1NMR4q3TUsippTxOn97oIL
-	z96lxL0e1KC8ynY/wY56/V2EHwxwUC8=
+	t=1788769607;
+	b=Zaswy5IpFh5dYCs3+8rT7xx2NU8U1XM5fhoBAcG4GtfaCHAhBlARmA5pnLgZbAiv8DuwuV
+	Oyl7UTu661HHAGMZf/GIDrBJn4qMWGNpTpCSnzEsBugNTzusdPXyIJKB8WbmyOge9RA94N
+	0eclc6K74UeM8X0Azex//4zxVDZw07E=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ICur1IhM;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.143 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788769582;
+	s=arc-20220608; t=1788769607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aO6wg0mymQg3x/3sbOQTgRafHt9X06kvzyNxg3k6Uj4=;
-	b=3WJSkOjnJHZlVjdUO/bCG1tCcfjBU5R9ItzTE5vAAVRSgd1vAeQ6VqBekzH6wU/T470b2E
-	2DBa4+RWgoGAD5HDaiCnvBCXG5GJi57CLWUHdVOZ3w7DXM/HTgkqL93HNdGeG3LXKOsXbB
-	OZuiPfTown3WLVUEBrkkZkf4AaeLsJY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A6EC60D8B;
-	Mon,  7 Sep 2026 08:26:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1701F00A3D;
-	Mon,  7 Sep 2026 08:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788769580;
-	bh=aO6wg0mymQg3x/3sbOQTgRafHt9X06kvzyNxg3k6Uj4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ICur1IhMUSpSE6fcJQklY1JjVK0yR4xNQ89iJLicxz+OgQqZ/38m/VMenPeE9Fgjh
-	 3zZp4CFJQSZEmg7Cbb3c8Gmr4KKJmPxbjlJ6S91dcleSo3lhxvHVr2q/52m4SVe1hN
-	 V0YoGoCpoceNgZJ2iM4e1quy1vUZ3U9jOJIeZ7ws+u8AoiCy33KtG7j7l7erQjRCGh
-	 XK/Y37JnMPpsax/4NRvrf6fB7S0+P8MMYA913T2RiBV2xDxmXPXAT24GsFvLbVTay+
-	 XQn4yY4wu+PpYTh+CR6uz+68WNVDgYiBNWJ9aW3Mw0l0R7jcdt6C+0lvjItoYHKsB2
-	 CXBW4FIWwsdSw==
-Date: Mon, 7 Sep 2026 09:26:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Oleg Nesterov <oleg@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ye Liu <liuye@kylinos.cn>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>, 
-	SJ Park <sj@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, rientjes@google.com, 
-	shakeel.butt@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, will@kernel.org, 
-	boqun@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org, 
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, 
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, 
-	lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com, longman@redhat.com, 
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang@linux.dev, 
-	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
-	kprateek.nayak@amd.com, mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com, 
-	babu.moger@amd.com
-Subject: Re: [PATCH v2 0/8] sched: introduce for_each_process_rculock and
- for_each_thread_rculock
-Message-ID: <ap5yw-Cwb41FymNd@gremlin>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qBaQAENlxtEudH56Y6g6cYUACFGJ5nWd0UDOdocGTGY=;
+	b=PNF1zHwNqq8Ect6FyaBUkAt9MGyK4hb8/Q8gwDVH9haefcHdEo8/e5o2BDDRj9mU2rT29L
+	6ceHu8LtxvFEXJZruD5iEaSJ6uo7A8hYo+97hJNgXYjmrbm4b5h/rcXflXw1yaDGZz9SvU
+	EjiCM3Q0Tg4lvroLzQN6bPyOzGvKelg=
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ec6fa083;
+	Mon, 7 Sep 2026 16:26:41 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH v3 1/8] mm/page_owner: Add PID filtering support
+Date: Mon,  7 Sep 2026 16:26:13 +0800
+Message-Id: <20260907082620.2083838-2-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260907082620.2083838-1-zhen.ni@easystack.cn>
+References: <20260907082620.2083838-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260907081334.1152889-1-ye.liu@linux.dev>
+X-HM-Tid: 0aa07afa076e0229kunm225d16da162ce9
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZT09PVk5KSU5NSUJJQxhLT1YVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6D1384000C
-X-Stat-Signature: pqfef6pg13n4tj8cc6qogbtg7ide3gm4
-X-HE-Tag: 1788769582-532598
-X-HE-Meta: U2FsdGVkX19LJhhxa5Ln+ciBl/RzY/WMlD7zysdkaF/UGDmNddjxqipTwsqHWo3bO88e2HfmMD7pyZc/ZTU+e8hytw84nq6V2bQReoH8T09hUJm5QeYOtV2DlcmtE0o7PM4php6pWqdnm6u5vAzkoY2b+oCPukeVw6bvJf5mJWveBLjfG9AI6yD7KgaIbtXkp5LdF07ssr8diPAF5PpiiLdN3v7Dt64qkJoSoF99HWeczGY/qDtKl1l+zdhkBYYlZ+MdiFqcpm5Micdt6vlFekBZZMZv4Jg++OabDnA5EFVOIrGf2TAi/62ANcGnBDumz/73pIAxR0YVTqTXN7ooX9jS4oexiRvo0FXgf15c0Wwe6Mayjf1ZjIY1Azuqjdau1mJm1dveg0uc4gZSG80J15R3Uss+ta4Is/3mjLV9n/2gX5mq1lXaIGxnWvoO2NcuwHmuUlUVHCMW+he5ysEs0qEDUaTRMO2mAVFPvntR5n87T4z+/qE1sXACqkXkNhVVOgUTS7khQlBHSxaLolyx8EmnrE0fOEaBQeMbiPya+NZVQ1uFLdBJao1x1NUdjSpnNRj4WmKGoDtNR3/jAJclPjT8uWK09nqgXT9PracrapqDor226b/mF5irQKXHFxYE29ETLCrK5HgVqdVRyz/4D1r94CK7aQQUrH2l0FYAruV6pY4XjF3IwgChgirHAgZ01TI6ctyUZrNfWJElN15n+dygEm/IcvfsP3+Fl+5GEkcPzFCmMi8QrO1yGRfgYeseU2w/hZDvS0gJdxMhbWnpg0egBfVat/lIE8Gwe0jt5ATOosYFuVGldvwGi0ZMvTw5qd00lGiLiyRIHrKt/lmix5q179FzwWji2yFPRALoMMdvyNt0Av3C+FfvMl1ZcETWVqMtprDKLYr6TjoCETJA7uUbd+1nPJRCHLwJMyuSzf8xOW7DsVTgLO5sRlxqgiDQk7x/xUYToodLlf7ASZA
- NHcdv6tx
- wUSkwladI5jVVhf1sPWVy1zU4NZlxpanbJFNpx4SMqNKvXcI1ChT7WrMDjEhOzwX+Wf0xuMy+8g7QpIJL/PE4HQSEHyvR0n8EngE2j0np1cu3QyYqpgcokzxIWgx0UUQGhwd4a0s09mEfvKAkHA/NSDghjR5CVylOOyIiV6lZoKTSTxsOvM6nqt9oLk9oAkCbPsBhoprMYSPZ7fh3+OnJddr8h07gEQVZK/mewurQcZri4X0pvUnN/5mWvmf01VdTO7VTFIbLv6lmVXavp4P0k+owwmn/hLikqqawhFqvPE3/qhlyuV/oS7RF6caStZR8y8KOJeVmWUpSyMTM4jZiZ1yUDEVZlDaEABmk3L7f0zNu1Rm3CKMHX1WHIWi89lA/gWXoqDurwgHc88qh/bXfvKnWmg5DdtvyQ4o3Zyi0d7Zkwas=
+X-Rspamd-Queue-Id: 06277A0007
+X-Stat-Signature: miuxei8ewbu7jbprhp31wkrxz4urudtc
+X-HE-Tag: 1788769605-828745
+X-HE-Meta: U2FsdGVkX1+8nZK39Gs+3zHQnS7GdCVnIrZGT5pevd/zUJ8+X5FruLksteHx26PUC6GpwAsfRCyZ89mqN71e1Y8QME6PEqDt0CB9gcXxU64Vu0B5wJRzWlLxQ75kptaUL+8tlYqYit702MSgWOFDmO+08dhKUNgnBzIot9xM9ou52HtegtrYU3Aduq8p3J9185x9kUoZIUpY5PqSeJbm4EB14X1iLzXMzwKAsyzjhWBBttdWLotpUjPwb+fRs9geQ34yC+eZm7pSEnrlp8ZJHalyDWehXkedi37o/VRq7Gs1W1vRq4uNVQRmGKDhK4QE6VJyU8mvMOYraWVESJh+Q0hIfWfz4q9dEpEyrMummlfIJbwnA/5HeljO7G8hMRd3Z1r/aPh1cRDQBuqUz1x4VIOMialpP22tfy/T4tESi+lCvn61GPTOnBn19jc9s9WITNs9OmmBfwq3ibPP9zVreWchAZy3cZ8OSlSRleNPtQuT17tv3xv2XZUnghhNLGcSdvxHVw2h9uzK46/E+LkuqKkN6IdppBvMUZDr6vvHWPQMxZgKTSCbuD9z41EBFgPJBafo1TGZZTSd9gCO77Lhi+Dco1jtd0FB3YTS+Ge3YkH+rt5S1m/8D0qPxYFcnsjSAYMxtJkwfBJG7pJVWNl1UJOZlmUOv4+rqni346VUMDhJT+pLUo1UO000ebl0sHUxRSlj8oxmIM0s0e4fxyW/S/zK7smiKv2zx/Ctb3r/l2qomiSQM3pw8xAUzOJNodQ6btQAQ0Aj4AG2E53OTXPzjAXsNrPvTRXhrnmEF90JXvwSbUk0UoJOPRLEYMLAn8o1iN1wC7x1px4wCUxppZauo/G5+qD6h1/+BbRqAJpJRsuYBCSKJLwuPhg62NeIyx777dODmCVPfMNiS/vZAvy98a9XE5vuVsJacDbMBrYTCh1RpcektMFHxjtGNnHa6E43f5PiDAOSnNCi0b5J4UK
+ uiCcYdmY
+ bM0cQmPk9IWoXcaEuE3PmkVfIH0KR0MD8ZHmCt5+n8kFR3P3j+NFn/f0Wl4FkzuuQR4x9jxmbkn9a3ogYepE/rs4HGbauRi9uLNc9ZvV8xGy1eJRDjFz45WRuZo1yANNoax6PXpoRuTVVCG11LVvMGMD92e8Zcd4Jex4P/5x1IC8xr6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,89 +99,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:13:26PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
->
-> Introduce for_each_process_rculock(), for_each_thread_rculock() and
-> for_each_process_thread_rculock() macros that combine the existing
-> iteration macros with scoped_guard(rcu), so that the RCU read lock
-> is automatically acquired before iteration and released when the
-> loop exits — including via break, goto, or return.
->
-> The rest of the series converts manual rcu_read_lock()/
-> rcu_read_unlock() and guard(rcu)() pairs across mm/, kernel/, fs/,
-> lib/ and security/ to use the new macros.
->
+Add PID filtering support. Users can filter page_owner output by process
+IDs using the "pid=<pid_list>" command format. The filter supports up to
+16 PIDs specified as a comma-separated list. PIDs are stored in sorted
+order for efficient binary search matching during page owner iteration.
 
-Andrew - just a note (assuming Ye Liu is in agreement) I think all of the
-below should be excluded from the cover letter that goes into the commit
-message, including the checkpatch thing.
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+Changes in v3:
+- Remove the unused new_proc_filter_enabled staging variable.
 
-> Changes since v1 [1]:
->   - Rename macros from *_rcu to *_rculock, as suggested by Steven
->     Rostedt and acked by Thomas Gleixner, to avoid confusion with
->     existing *_rcu() list iterators that expect the caller to hold
->     the RCU read lock.
->   - Improve the comment on for_each_process_thread_rculock() to
->     document that 'break' only exits the inner loop and 'goto' is
->     needed to exit both loops (Thomas Gleixner).
->   - Rename the stale 'unlock:' label to 'out:' in hung_task.c, as
->     noted by Günther Noack.
->   - Clarify in patch 4 that page_pgoff() is safe outside the RCU
->     read-side critical section (SJ Park).
->   - CC all relevant maintainers on every patch (Lorenzo Stoakes).
->   - Drop the mm: prefix from patch 1, as the macros are in
->     include/linux/sched/signal.h (Michal Hocko).
->
-> Patch 1 may trigger checkpatch "Macros with complex values should be
-> enclosed in parentheses" errors.  These are false positives — the
-> scoped_guard() pattern is a control-flow construct, not a multi-
-> statement macro, and the same idiom is used elsewhere in the kernel.
+Changes in v2:
+- Drop the kstrdup() copy in parse_pid_t_list(); parse the token in
+  place. This also fixes a leak on success and a kfree() of an advanced
+  pointer on error in v1.
+- Use cmp_int() in cmp_pid_t() to avoid overflow on subtraction.
+- Reject pids exceeding PID_MAX_LIMIT.
 
-While it's useful as a note to reviewers, in general checkpatch is taken
-with a pinch of salt - it's a master of false positives so usually no need
-to say this :)
+v1: https://lore.kernel.org/linux-mm/20260828031339.1270699-2-zhen.ni@easystack.cn/
+v2: https://lore.kernel.org/linux-mm/20260903041819.1776630-2-zhen.ni@easystack.cn/
+---
+ mm/page_owner.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 71 insertions(+), 2 deletions(-)
 
->
-> Suggested by Michal Hocko for the oom_kill path [2].
->
-> [1] https://lore.kernel.org/all/20260904083001.553587-1-ye.liu@linux.dev/
-> [2] https://lore.kernel.org/all/20260813092933.562028-1-ye.liu@linux.dev/
->
-> Ye Liu (8):
->   sched: introduce for_each_process_rculock and for_each_thread_rculock
->   mm/oom_kill: convert process/thread iterators to for_each_*_rculock
->   mm/ksm: convert process iterator to for_each_process_rculock
->   mm/memory-failure: convert process iterator to for_each_process_rculock
->   kernel: convert process/thread iterators to for_each_*_rculock
->   fs: convert process/thread iterators to for_each_*_rculock
->   lib: convert process iterator to for_each_process_rculock
->   security/landlock: convert thread iterator to for_each_thread_rculock
->
->  fs/proc/base.c               |  4 +---
->  fs/resctrl/rdtgroup.c        |  8 ++------
->  include/linux/sched/signal.h | 25 +++++++++++++++++++++++++
->  kernel/cpu.c                 |  4 +---
->  kernel/freezer.c             |  4 +---
->  kernel/hung_task.c           | 11 ++++-------
->  kernel/locking/lockdep.c     |  4 +---
->  kernel/rcu/update.c          |  4 +---
->  kernel/sched/core.c          |  3 +--
->  kernel/sched/debug.c         |  4 +---
->  kernel/trace/fgraph.c        |  8 ++------
->  kernel/unwind/deferred.c     |  3 +--
->  lib/is_single_threaded.c     |  5 +----
->  mm/ksm.c                     |  4 +---
->  mm/memory-failure.c          | 16 ++++------------
->  mm/oom_kill.c                | 20 +++++---------------
->  security/landlock/tsync.c    |  8 ++------
->  17 files changed, 54 insertions(+), 81 deletions(-)
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->
-> --
-> 2.25.1
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index fbbda7ba914b..8c704f1916ff 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -12,6 +12,8 @@
+ #include <linux/seq_file.h>
+ #include <linux/memcontrol.h>
+ #include <linux/sched/clock.h>
++#include <linux/bsearch.h>
++#include <linux/sort.h>
+ 
+ #include "page_alloc.h"
+ 
+@@ -66,12 +68,24 @@ static const char * const page_owner_print_mode_strings[] = {
+ 	[PAGE_OWNER_PRINT_STACK_HANDLE]	= "stack_handle",
+ };
+ 
++/* PID_MAX_LIMIT = 4,194,304 (7 decimal digits) */
++#define PID_MAX_DIGITS  	7
++#define MAX_FILTER_PIDS 	16
++
+ struct page_owner_filter_state {
+ 	enum page_owner_print_mode print_mode;
+-	nodemask_t nid_filter;
+ 	bool nid_filter_enabled;
++	bool proc_filter_enabled;
++	nodemask_t nid_filter;
++	int pid_count;
++	pid_t pid_list[MAX_FILTER_PIDS];
+ };
+ 
++static int cmp_pid_t(const void *a, const void *b)
++{
++	return cmp_int(*(pid_t *)a, *(pid_t *)b);
++}
++
+ static bool page_owner_enabled __initdata;
+ DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+ 
+@@ -820,6 +834,19 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 				goto ext_put_continue;
+ 		}
+ 
++		if (state->proc_filter_enabled) {
++			bool proc_match = false;
++
++			proc_match = bsearch(&page_owner->pid,
++					    state->pid_list,
++					    state->pid_count,
++					    sizeof(pid_t),
++					    cmp_pid_t) != NULL;
++
++			if (!proc_match)
++				goto ext_put_continue;
++		}
++
+ 		/* Record the next PFN to read in the file offset */
+ 		*ppos = pfn + 1;
+ 
+@@ -927,6 +954,7 @@ static int page_owner_open(struct inode *inode, struct file *file)
+ 	state->print_mode = PAGE_OWNER_PRINT_STACK;
+ 	nodes_clear(state->nid_filter);
+ 	state->nid_filter_enabled = false;
++	state->proc_filter_enabled = false;
+ 	file->private_data = state;
+ 	return 0;
+ }
+@@ -937,6 +965,27 @@ static int page_owner_release(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
++static int parse_pid_t_list(char *str, pid_t *list, int *count)
++{
++	char *token;
++	int i = 0;
++
++	while ((token = strsep(&str, ",")) != NULL) {
++		unsigned int pid;
++
++		if (*token == '\0')
++			continue;
++		if (i >= MAX_FILTER_PIDS)
++			return -E2BIG;
++		if (kstrtouint(token, 10, &pid) != 0 || pid > PID_MAX_LIMIT)
++			return -EINVAL;
++		list[i++] = (pid_t)pid;
++	}
++
++	*count = i;
++	return 0;
++}
++
+ static ssize_t page_owner_write(struct file *file,
+ 				 const char __user *buf,
+ 				 size_t count, loff_t *ppos)
+@@ -949,6 +998,8 @@ static ssize_t page_owner_write(struct file *file,
+ 	enum page_owner_print_mode new_print_mode;
+ 	nodemask_t new_nid_filter;
+ 	bool new_nid_filter_enabled;
++	pid_t new_pid_list[MAX_FILTER_PIDS];
++	int new_pid_count = 0;
+ 
+ 	/*
+ 	 * Maximum input length for filter commands:
+@@ -956,8 +1007,10 @@ static ssize_t page_owner_write(struct file *file,
+ 	 *        with sufficient buffer
+ 	 * - 6 * MAX_NUMNODES: worst case for nid list
+ 	 *   Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes
++	 * - For list filters: (digit+comma) * count + prefix
+ 	 */
+-	if (count > 32 + 6 * MAX_NUMNODES)
++	if (count > 32 + 6 * MAX_NUMNODES +
++			(PID_MAX_DIGITS + 1) * MAX_FILTER_PIDS + 4)
+ 		return -EINVAL;
+ 
+ 	kbuf = memdup_user_nul(buf, count);
+@@ -969,6 +1022,10 @@ static ssize_t page_owner_write(struct file *file,
+ 	new_print_mode = state->print_mode;
+ 	new_nid_filter = state->nid_filter;
+ 	new_nid_filter_enabled = state->nid_filter_enabled;
++	if (state->pid_count > 0) {
++		memcpy(new_pid_list, state->pid_list, sizeof(state->pid_list));
++		new_pid_count = state->pid_count;
++	}
+ 
+ 	while ((token = strsep(&kbuf, " \t\n")) != NULL) {
+ 		if (*token == '\0')
+@@ -1000,6 +1057,10 @@ static ssize_t page_owner_write(struct file *file,
+ 			}
+ 
+ 			new_nid_filter_enabled = true;
++		} else if (!strncmp(token, "pid=", 4)) {
++			ret = parse_pid_t_list(token + 4, new_pid_list, &new_pid_count);
++			if (ret < 0)
++				goto out_free;
+ 		} else {
+ 			ret = -EINVAL;
+ 			goto out_free;
+@@ -1010,6 +1071,14 @@ static ssize_t page_owner_write(struct file *file,
+ 	state->print_mode = new_print_mode;
+ 	state->nid_filter = new_nid_filter;
+ 	state->nid_filter_enabled = new_nid_filter_enabled;
++	state->proc_filter_enabled = new_pid_count > 0;
++	if (new_pid_count > 0) {
++		memcpy(state->pid_list, new_pid_list, sizeof(state->pid_list));
++		state->pid_count = new_pid_count;
++	}
++	if (state->pid_count > 1)
++		sort(state->pid_list, state->pid_count, sizeof(pid_t),
++		     cmp_pid_t, NULL);
+ 
+ 	ret = count;
+ 
+-- 
+2.20.1
 
---
-Cheers, Lorenzo
 
