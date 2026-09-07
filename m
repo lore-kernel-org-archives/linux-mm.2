@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DEC0C79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82684C79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 16:29:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4466F6B0093; Mon,  7 Sep 2026 12:26:16 -0400 (EDT)
+	id 9F1A56B0098; Mon,  7 Sep 2026 12:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F7B96B0095; Mon,  7 Sep 2026 12:26:16 -0400 (EDT)
+	id 9CA326B0099; Mon,  7 Sep 2026 12:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30E916B0098; Mon,  7 Sep 2026 12:26:16 -0400 (EDT)
+	id 907526B009B; Mon,  7 Sep 2026 12:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6926B0093
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:26:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99D511C0AA5
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:26:15 +0000 (UTC)
-X-FDA: 85187493510.28.93E04AA
+	by kanga.kvack.org (Postfix) with ESMTP id 73D476B0098
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 12:29:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 069BA1C07EA
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:29:14 +0000 (UTC)
+X-FDA: 85187501028.24.83B10F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E8AD720009
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:26:13 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ETrQgNG9;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 68AF540011
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 16:29:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AA9jvqee;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788798374;
-	b=4plECJtiaBcr0kEHfSGXu/lsawX/dbfRbulVjnuiH2jwQQnJVVGlQgmnXpoIN6cs4zjday
-	i/w8bHt8NkCDZ81IaNlGJi1Yc3ibZVlTTlKrZ+qlLhUERzxysB9uT0oV4zxix3fuVMKCde
-	mW0IQrLqA0THzOjjOdPMGtmCUEzN4us=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788798374;
+	s=arc-20220608; t=1788798552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7haBIfiIGhaU6/yfncxk2nIKY4oDyz2vAsQkjP7Gxfg=;
-	b=lXEd0XNSI3VGFE85q+cabz2NSC8LNKiOcq4oyiN+N4WpSejVd/N0MiZgG8BjEObP+UGPwv
-	Borq9gxqgTkwAE3kgElxAyMP9RG4z+DYMWVIjZw+odWnSgJV4vU45j8UBkUrW+6sOMVcM6
-	XCzPiQTFoMX3nUw1p0m+X/0xqXDns74=
+	bh=6Mi0KexjACT8EM1oYAJ+w+kZqAp8kzJ2mApTUd50940=;
+	b=Vxrxt9D/WZUgxIgw8Wn8kudE6x2AhjNnB5e8m7uLm0VQduJNuza3VdjlmgNRhHAnPp6Pdw
+	xBbFi9CqLgZdDQnAdqDFFtOdVL/V7IBrwPoRh68gBHnjX3CDD2vCaKbHyoDLTRUzoRJwqa
+	vKdn2szWvyVLdksfg1Vyd0H+QFq91YU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788798552;
+	b=YoA68G3tL1J+A7fWnA9DCcCN5aKSiE7gIEQBFaQakkVMdADnWxCn0INWTOtYm8Ai7DRM3l
+	T+UpO+HU8AFFIhvNdJCqDPRJFfSnygSxE+zMywhHB8KVNb4TxcT5eAjWsi2NGcDXSiGPnz
+	vy0K/6k6UFkSvbEPP6COU45R+95vp4s=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ETrQgNG9;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AA9jvqee;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D9FBD4002F;
-	Mon,  7 Sep 2026 16:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296EF1F00A3A;
-	Mon,  7 Sep 2026 16:26:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 88FAF40541;
+	Mon,  7 Sep 2026 16:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F52A1F00A3D;
+	Mon,  7 Sep 2026 16:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788798372;
-	bh=7haBIfiIGhaU6/yfncxk2nIKY4oDyz2vAsQkjP7Gxfg=;
+	s=k20260515; t=1788798551;
+	bh=6Mi0KexjACT8EM1oYAJ+w+kZqAp8kzJ2mApTUd50940=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ETrQgNG9R9OzQbrJlawv+3W86A8+IGTjRL2itbtyPn9PnaRLrc0POdBtnDb5FZgf7
-	 /6MD3X4z7nl6ZkA+yuGN6YJssbv+SfPmSuDPs8I4pY6b5bZg2JBwmbTXgztr6wDR2c
-	 edz8zWT8uJV5MZDxbV94aBQKG7Rlzk4NFLmoTPLfpWtV1DYVc5KbyxROXhy2IcTWXW
-	 tWoYDybnoP3HUh2UQgYKUOq0w6KZP8mtmS5KIzQ4n5/jBMxsHua5H+TkN4XvDgZ+1z
-	 ypB0E6SA07qKMKuNz3VGo34RenSMcMjZsvVeKDi+C4StNn8ByOX2Db5iFJBmtL8BNN
-	 c9DDSyF48VPVw==
-Date: Mon, 7 Sep 2026 17:26:05 +0100
+	b=AA9jvqeelrtgtADkk5mv9JMok2q4G/kVWhwLejDCvh7k6Bjosp16ast2eQbe8z3wZ
+	 32Jq8QsukZsY6MQEnZXPOrmXS1S6Gz4mRLAd0yCXI322sqt7HacOuSQEuoQ9Cby0q4
+	 Dmt6Z3Mr4zOK4ejpTbMgDIjkWmh9oM7y22gbIwFDLlAfoz3qjh46jLWvdQFuLC3sWG
+	 pI68lEya2SWOP9mM3qUldcXe9u+fiVXEre9AsJ0BDUIni2CL+AUGL18eQkIlyqkmAy
+	 GB49tJWtBs46+5TjG9ft7p1HGBBc0FzrEnhdIGPOMYzsSuOPma6Dy9P8sz0/ko/HuM
+	 Jn0ywdYBjHvUg==
+Date: Mon, 7 Sep 2026 17:29:04 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
 	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 3/6] mm/vma: only permit MAP_PRIVATE /dev/zero to be
- mapped anonymous
-Message-ID: <ap7j0oVf_ZOzX6pB@gremlin>
+Subject: Re: [PATCH 2/6] mm: implement file_is_dev_zero() to uniquely
+ identify /dev/zero
+Message-ID: <ap7mL02N2lPZuqB5@gremlin>
 References: <20260902-map-private-dev-zero-v1-0-a578c730cec7@kernel.org>
- <20260902-map-private-dev-zero-v1-3-a578c730cec7@kernel.org>
- <ap7fOu5DHkKtqlkg@gourry-fedora-PF4VCD3F>
+ <20260902-map-private-dev-zero-v1-2-a578c730cec7@kernel.org>
+ <292b27a7-94d1-4a2e-8346-a53e80fd2ed0@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ap7fOu5DHkKtqlkg@gourry-fedora-PF4VCD3F>
+In-Reply-To: <292b27a7-94d1-4a2e-8346-a53e80fd2ed0@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E8AD720009
-X-Stat-Signature: 6c33jndxkdycg83e5c1d566zid4ftqax
-X-HE-Tag: 1788798373-950622
-X-HE-Meta: U2FsdGVkX18XZKVOZ1pwl46S12DXKSVv/Cm2WAVJ0DC8HylLjvzxzlQX4C+WiKAOOuKwGEdMYYV1fj+LEmMFnJ1AasHPrKjTAVIFukdQsxhM+20cy3IHewkCYa8bGmgQWnm+jYjVlXhV+athy31uhLpzWHIv6lrPrAk67Ter8Ue88ldNaI2aa+DDKOp/Bgsw1Lma7lPsvvSBlV1zsl9w7iBzo4TbBt0buTXWvOHTmr/75233q+NJlOLjcy5UmB1FrbE/e1D65tV1HvEjxqWcUanZ00f5rYhp6H9hktvwk8cgzRXYmw+yq/n8jQoWu/kq6g8w9EH566iLZ0xs1tuvhFGhXonxVwJFXp3DRwdxR2/a+SqGwoUKpkWD8a+Uk4vpb3GQ/Vdox3UA75OO0CdiSHpKVfnAfJGbiK9NA7Df24eGEGGGlbnc44XGo7vjgNgoDo3BpNDqKsoSVlWIhQtzqNiaxX9Z7CRJaKZ0ZzcTiMl15Q5yaIMTCGO4QaGtwtuL0TA0dWD+IRj61lI37qarWkpWdS22cw5VZJG28gYPQD8iUOSitT9eGim2/snlCFEcjXnAt1EAezMtVXiuaTnFHPjGWMosNJTS3icuqdZtQlVjac1EVvvHeTDFqFReNpuWtzJCsCx02GaPkKUVvrSUwJVPdzyoOIHZ7AX/PMeO1WqYS6kgftAD9trTfHOseS237zmswZlq6JAfZfJF5e1tzimjtwCiDdfaER7vVXorfVqOXods8o/zKwDtiY30f55t67xQgwN90eN+1tViKc5Oijez7Ep4YCNvojqejE4ZMdFsLBMilvJpuzCuH59n+EoZdq3BfDEooLGSwcZQB6w6Nr8kSDKusGXOnmaGLzkxQqwWAiWPB3FeMYUTFdE++dqILPPi6Idlb1WD5Kx8PXDs6uXHiWjF1ZIUal9nLzIweWx57bIxzdV44vXgwHTraWCJer4SWDbCFEESCnm9rLK
- Sy30rHMo
- ZV9Aoeq5Aoa7ipbk6JJcFLhKOecJJfgMDf9NRQwLI0n6nPCie1SGVY3xoNB0ZZRtA9gwzyBSAVdU4SPvvVRfG0ELSVWo2HdkK4rcdQzl97rMAUgb6ZHViWqf9dHAUmMW+ML8sB/iJZyEuRNDe7p0EmvPtf8PBjMBvPdA2ThVQC0xfpqL5MtFIVY9T/u8HLI0+Go5PU/IL3xKNq8I5EmAHAESQIADau/3P1QLQILkUJDAkTyuCNGcTaM6Y4JiehrUcawDpIwsHzABydf38juFdRs0XL3XdI0NOb+Dr0++Q75eiDm0=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 68AF540011
+X-Stat-Signature: qgjmducjg7yda8h44s587e3xst5motij
+X-HE-Tag: 1788798552-877011
+X-HE-Meta: U2FsdGVkX1/kA4I3M1Ui9dgDM6uMFLPMj4lcgBzXahHPllUXS3FunxheKphvqH8ZHG6zahKTWZS5v9VPlpraqp5p4vwDyxOjR3t/TN3Uvn/Hqxi3ca7w1zI3+gxe39eheW1wxq/vOPtyo0AR4DJWVz++24GbJH7CPsvK7XjpyYRjyHsKw6PEaxw86KAqdbMCTs1KtgIflIqbHPs90c/vDyXbiZ4uiyF9uGCOCmrTPp9nLXymNNim2JZaHqGYRTIA9ybrdZ9BVaUEU2tS+H5jpKwYz71WjMCcTjG4No4k3CQt0YjnQdxCPfaeh9b837JckR8Sdpu4UzYkfh0ZbyQ+TQAyIJXnM6BqiYAyNkRdk31gGSIza3+Xz19eVs5S7ux4ds0BhyM1Nr62oGGthfw7FSSqmBbkruzvjLYjNvgAGbB8jD0gwEjFwWStfAiZYdoV287i9h1sFDYSFq6MaPkroNPw0S1cDhEEIZAll3PfXZDoxL9iEmoyM6smXO0q169pL4/F7qeyzMe0OZL1cHb/CGYf33LWCRbg+nZdzFdpONxyMtzneKUQbSNCGbl+ioqLk1/tKzyXGedPbB1f3OrNUuc+fa67YhKlape63WuIdIy9yMax7EuknBsgnkyBYv9QzrTIdYC00Ta4A8gkT1DxBTYTfGUikNcGL+Wp3vdklXAQoV9unmYu8eobutPhnJJWPBQOiy/8GN+d7p19tcahzTONo6qVbTJDiHhMBDbBteBxiSQKPSeLz4hkmVlb1xd9NCZ8s6j9D/2iKYrb1h2z608Aj7mh/udvQbhefbu6k9WrqYqlBVjic0aIKY5E08OJ7sHr6rXPCExTtCmttK6/fv7GcKvERCMD45ZrC4XNmdEWz70dDSikCvJAywUE5d/CrucJvRSroTDVy29gf9h3KDfrhF4K8rkkMIH7zb9gsFfHhE+lLJ/xR3n0atfVcXWlRN8UMLHwLE1oXK0JBu7
+ VVnB6ani
+ DWUlSM+CDl1OAfx053lPCQczz64e8aw1svjtWCfw3POugXxnEEuwD19kWZSW6BLBOSih2v4wRgh4WFR7/BagHvPaZniXlP4uExQ9gTqnJUSQncm90k+r4hELf+qHFCrRY6H9NgMzlXkRzoo+5aBnYWaRQiTLVpMu1srUxqTa1kIqxMfA+v27jjpHDoV/MrKyL5wRSAnDHUsjC7/nTP2fAbfIRmFHNmVtH/SrXNivc44D3fVxpRT5HlJTZ4AqsVFlAQ7X4G1T0XxaXFumjeeb8pJ3PsK/MxvWZTpEPSZLsTxROQol7u3KWlB5Uk7VetR1JPTCs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,62 +100,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 12:04:50PM -0400, Gregory Price wrote:
-> On Wed, Sep 02, 2026 at 07:00:20PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > In order to use mmap_prepare() with MAP_PRIVATE mappings of /dev/zero
-> > without the success_hook hack we explicitly permitted mmap_prepare handlers
-> > to set NULL vm_ops.
+On Mon, Sep 07, 2026 at 06:21:27PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/2/26 20:00, Lorenzo Stoakes (ARM) wrote:
+> > To lay the foundation for a future change that converts
+> > MAP_PRIVATE-/dev/zero mappings to be truly anonymous, add the ability to
+> > uniquely identify these mappings.
 > >
-> > However this is dangerous and we really only want to allow this for
-> > MAP_PRIVATE-mapped /dev/zero.
+> > With the memory character device now part of mm/ this is trivially
+> > achievable through a file_is_dev_zero() predicate that simply tests that
+> > the file operation hooks are zero_fops.
 > >
+> > Also update userland VMA tests to expose file_is_dev_zero() and provide
+> > a stub zero_fops for testing.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
 >
-> "this is dangerous" -> can you expand on this?
+> yes!
 >
-> I had been experimenting with mmap'ing kmem dax devices as a way to test
-> generating a driver-defined efault mempolicy on an anonymous region, and
-> this exact pattern came up for me during mmap_prepare trying to get rid
-> of the "fileness" of the VMA.
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+I thought you might like these ;)
+
+Thanks for pushing back last cycle, this is MUCH better. Struck me that
+actually that it's trivial + requires no fugliness the second we have it
+mm/.
+
 >
-> Basically looked exactly like the /dev/zero vma.
+> --
+> Cheers,
 >
-> I understand this is a hack, i'm just trying to better understand why
-> "this is dangerous" and it shouldn't be a supported pattern.
->
-> for clarity:
->
->    fd = open("/dev/dax0.0",...);
->    buf = mmap(fd, ...);
->    /*
->     * mmap(_prepare) callback marks the vma anonymous so it takes anon
->     * fault routes and sets an mbind mempolicy installed on the vma to
->     * prefer the node the dax device is registered to.
->     */
->    buf[0] = 0xDEADBEEF; /* faults an anon page from the node */
-
-Well firstly it's a contradiction in terms as it has to be file-backed for a
-driver to get it :)
-
-This exception is just a historic artifact.
-
-This kind of edge case VMA is a real footgun too, there's been bugs around it,
-weird behaviour-by mistake and in general it's safer, more maintainable and
-easier on the old noggin' to eliminate weirdo edge cases.
-
-It's also probably a good idea from a security point of view, especially now
-that can be LLM'd endlessly :)
-
-But also the driver can't properly ensure that everything is set up correctly
-re: rmap, mapcount, etc. and also drivers cannot be and should not be trusted to
-do this.
-
-The right away round here is for userland to allocate the memory and have a
-driver use GUP to fiddle with it.
-
-Finally CONFIG_DEBUG_VM warnings might go off because you set pgoff to something
-random. We kinda tolerate pgoff abuse for file-backed memory, but now for anon
-it's established as an invariant that it's what we expect (vm_start >>
-PAGE_SHIFT if unfaulted, or if faulted from first fault time).
+> David
 
 --
 Cheers, Lorenzo
