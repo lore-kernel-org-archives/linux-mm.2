@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA26C79F9E
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 01:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6F8C79F9E
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 01:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4952D6B009D; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
+	id 5AB7D6B009E; Sun,  6 Sep 2026 21:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C7C6B009E; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
+	id 5825C6B009F; Sun,  6 Sep 2026 21:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382FF6B009F; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
+	id 4C2AF6B00A0; Sun,  6 Sep 2026 21:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A85A6B009D
-	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 21:46:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74CE5120634
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:46:01 +0000 (UTC)
-X-FDA: 85185275322.29.035E4D3
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 58BCE100009
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:45:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E5CB6B009E
+	for <linux-mm@kvack.org>; Sun,  6 Sep 2026 21:48:14 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 969BAC05E6
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:48:13 +0000 (UTC)
+X-FDA: 85185280866.20.3C18404
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8A388180002
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 01:48:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uQaIqU8I;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788745691;
+	b=3tWi3ON/OemFs++VnW48WNp/4PWWZMGsDkDK2vJBVENevkrtOQvXD/vmSzs7VfAPpzsXA8
+	Hu9Mx46IXiJWvWH068xDNNLdwiJpM9tNdy9iLThvtdjXfZLYhVdM+QYpzGvjeIhcdozTA5
+	nmQUDxm9It+pg3bLB5axS94LwV98DD4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uQaIqU8I;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788745559;
+	s=arc-20220608; t=1788745691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+G4MDmkdkKL/iE5/OlJHxou/7auZ2MdOrrTTdDQaGtg=;
-	b=0xOJjVEKyCvEo18G6Q96KJjsL4z2oJ/FxitZeM3vS/AYPmgmVuC5goh0USBcBreo34QPb+
-	h/9BBdiEYu07uXik9i4tDQaVlPzFMGLt1CWVV21QcVyuE00tgJuQRqwC2hkl3MZ/6yr7Yh
-	oLmsOOiyDUDIZdvD8x9+E72n8ZY0ss4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788745559;
-	b=5OGdTJbfSVSyRlSU60Ybt/Xsr5zFOYtt5/tBSala8H1WxfmZ+4AfyEoRKyXoGrwjfA0sx3
-	mQnASx5nUx92GC+aIhQ+fkZjnlWBshGSyZjpaHTlxoguIN9OPFctq9ti33g+vZK4GTMOb3
-	afO4ojFcIcgZ3MhwKeKnFDZNL1CtBi0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.52 with ESMTP; 7 Sep 2026 10:45:53 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.126 with ESMTP; 7 Sep 2026 10:45:53 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 7 Sep 2026 10:45:53 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jihan LIN <linjh22s@gmail.com>, Kunwu Chan <kunwu.chan@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, linux-hardening@vger.kernel.org
-Subject: Re: [RESEND RFC PATCH v2 00/13] mm/swap: introduce per-priority
- allocation queues
-Message-ID: <ap4XUQtdLIITU5Dt@yjaykim-PowerEdge-T330>
-References: <20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com>
- <appvhlPleahTRklV@yjaykim-PowerEdge-T330>
- <20260904100900.21517-1-lianux.mm@gmail.com>
- <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Rf1IYeVlCgqGZveuksCsgQNi3NB+M3h/8C7Q1TBbR4g=;
+	b=pgWOqca7djJY9TGJZSvLHCiJaoODVAKT+CTe3kh+QdPIj9xTSE43qXNypVUyzPw9nfXYzk
+	GUsxMdEsXygVVsoyyejyzeIVENxpvFBsjwdzqHYyhhRspFkEQmeQ27jS7IFTozkOI0UuRI
+	Q/34Zmhs/jscb99uGbx3O+vEcNcrmKY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=oRl2Ig0sqb2lbu8LjCTCNBnNy0/sezGLFVcQX5GWk8Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788745687; v=1; x=1789350487;
+ b=uQaIqU8IAu7/Pz8O6I7cWNsO6/NVaQ5777HdUUrnawCe8tOS5P6nQYOhcuBJaVN0SIbdm/1d
+ WhLdAouzjuqqLiVM5JW08qOu25OoyddWp603dzr2f52dQKh5dg6y4nIH0aPVG6Q822CDfDtQ99B
+ IGncpnO78havMpSsuR4qVZiE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 2cb00b0d8266826f;
+	Mon, 07 Sep 2026 01:48:06 +0000
+X-Mizu-Trace-ID: 2cb00b0d8266826f
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 7 Sep 2026 09:47:58 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
+	chenhuacai@kernel.org, ardb@kernel.org, shuah@kernel.org,
+	ilias.apalodimas@linaro.org, akpm@linux-foundation.org,
+	ruirui.yang@linux.dev, guodongtai@kylinos.cn, kernel@xen0n.name,
+	graf@amazon.com, liukexin@kylinos.cn, loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 0/5] LoongArch: add KHO support and selftests
+Message-ID: <ap4XzvnM3WUn5ard@fedora>
+References: <20260904100852.26006-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7Bh0hdVoRcS4xMRL0YG-zmjh-TxyF9xXCmP2MRarAyksQ@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 58BCE100009
-X-Stat-Signature: qmidbswp4k73neu7xrbbwbt4bmnpf5s5
+In-Reply-To: <20260904100852.26006-1-dongtai.guo@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1788745557-577039
-X-HE-Meta: U2FsdGVkX1+3ESOIpmPqaNxfMiZVvaeZoj1xRH2lqRYHey8iofNRXei2uV7s5qWmMkgfP9yKWJxssKdv+3c9Njf2xBxoKwiDbkS4HRnIi7e0Jyz+eKFPQtxZYsXfXvCLmFPgqQLzivxdubGnKW3xSLaHTbgaWF2ZiehMNLW1jww8qHT3t3MReAyOoYSOmWeukoqC36eS7nqbfGcz7kvquw9cZQ7Zv/nbw4TY1qcPT59iRpRG+YBMZnDQLX262DtPcDjuUOY31DVjxM1EqmHoLVnkK2YohiKfzqTh3TheGerHAYo3GfehwylOsWs7BOkYae314dsaMRoDfZwF9G/9INkUizhqArHLPb2ciVr1JJgAi6TrSatyErh6LrurkoKu9ihHD7E3KEcJfn4ILLVsD7QG8E/4wbtZh4lJbs2psy6L5sH8T9sQVG5jKR8KHgFAiZzf2wPA9ZALxm6v8EiOgLLtIdrR76eT/CqWNKyb6Peg+9uiACUd6oSz4Q3mmOYvH65hBo+P6cSrX3lw5QbokiaZDbzuNSO1gWqcfZOqWOY9qcRvVhfEA1QLrZODA1sLWCLXMgQ2QxuaZmy6oiPBV3f9I1mlB8ZsjWU5p46wHxb1hRvxVG4WnGjZJ54coiIuSicl8uou3pmWkDNrivMnhwMrjiY1abufsNZAEca/gBEOUeWQhFyae8i5Nk0CNaLNXcT7q7MDkuhVwGAuL0/CinTMDQhVlSdOStupD3o/fHKSuhcffvYnURHCTWpy4WiLHtmwr0zTArDOMgQveHet6aR+d7534Tp8WZnEjoejINPxHNNiHyxL0AbjVMe71tbc2sXdcZ+areRllTaXjts3qWBFqpLoFg0HP4MSFKyKU7CNuJ+ndDH/ofBbG0bHv21zT+hYM0FkAPzEoXnxxYkFG0miw9JMZKjn61gWVDSTL/f1IC273/hFMfA4JJTSdiMvtLlaJt1kMGMWpMqzNXs
- nzocYltc
- kz6fdhkNNt+5bB42mftsi2rrvccfZ9vPZl0CpT/fKMzirdHL5AYnQa08I3IiCWlYhaG+Fv0hgOrH7cbbwVL/0I0K2nIZvHQTT+UUSiPgQD8HcRlh1zzwWzADpBr4rdQynA8hk6k79mCojk45W5xQyHu5pTvsyye9KpsNdto1k+utNQU8oml2UfkmfPkvr6TwcxAffznyarZ9RZE/6fHcpKPoZ60Qmm+b+BdHyRL7KMFVuRynawrerz0+TOSdV64sBA1+9vzmYiOOEVb+tisjkUJxx3AIE1Tv+JQmVncdbomBoJ6FFSTaY/h8DU0lXWfeWa72pmpv3UONaOBk=
+X-Stat-Signature: oe8k994oqzdxkbmuq6nfgppwgjaj4quq
+X-Rspamd-Queue-Id: 8A388180002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788745691-781947
+X-HE-Meta: U2FsdGVkX18tsOsc4jE5coZAYIwB5/2UZy/q6UrtdVgDdI35Fs8z2HJFpKNC808TmpyoWKtskPPtfqZOcyIgCWOTlUIzfZXP+h8OCsdD4JBENQGCQj6nLGG7cfO3GAWuxqtK+RqLEj6Pia/gliR2up8M5DKH1rgLy2MK1SrgEHM9CJQZegCUsHWDVOp3eJcKDz7Zak34ighjnxDjDyVKsg2kuY7UgHkHrs2wm9W8PmCIiWAIDaZLiPrJMxX0tlDhnyYGz50CfB4dEv7N0hTRNCfGch+Ct0hwHe7kndKk6Mw9eNSNJkvchf+hOKuLcQR8OGYh91TCRo1yJE3uTQifA79bZQz0NOwJi4DkN/lxjBGcqeVfRF6JnCxyukRRHOIRzuszmgiwk7pT/8Mvf0+gsLWa7tkwYcfROjfhCHl9pCsvBFkP7fx5fXM0/Te2i8uKCVjHjBhi9LkT3ZFp5Z+x+QV/0BxyNyKngUahGleq1S8fyAAnCERbTrEQnh+y5O+ocwQDDnv0UFKpJuf0DLSuTtgEhOm2vIQEH+wtKSC60VKArJuaJy7H81QrydBvUZZPlJeDbWYEG7pMLxfn8IXz9bd+cvtCTRGyy1UNnr0ongXpEwSwkdhJN6Cqcpqx1phJe7RLYR9dUoOkXShHeMyalAUlVFxCx1uj+PBMeIZr/pIx2JS3CQo1PoJb/qkJK92HjVpjH3bDBvtk0E/YvClUC7krYadMMQBJmkk2EI99w0cWr4fVjiO/DygrfI5mpu7wmWUIx60u/6gRVxvevh/fkkvlUmkWoAcaQfSom3ta3wpzUF7/OfUObJeBwwJpDX4o17Hv9nuSRL9FYDyrlW4prl/xNlyoe2EqkEVEUFAzJRd8yXZwbDiInmSs++RjjThdaU1p20QRC81MlLzODQKkDTNlUZwybMk5JsmzgecVNavukJ85jk4RnJ+v6JhuVgOfwbAt+YDGpaG85yIkvPC
+ uHI3wRHn
+ GYVSEe8+hPyq54R5X8CzzZZYIMrTPzdYG1/9o9ffk81T7cBqcLfqMM7+5lxa9+Qu2ovK56EtZIX5zrtXMdJCZ1FgqrZ5eEdC/CWIGx+EQOv3rdPUQMo+y1VdXb+Aqq1Rl+KvA5tovWzAz4Xl4ba5NmCiWHQ1vNapTehMihw+RAbz5ffVzOCbu0wqX3Wz1KOXsZwP+WYPd3ka3Xze9/bp3mY6RnBr4W6uInihXMLFLlZuOuaD58AIQS9TwS2f7wOkGEEEG5dPpKxwhXN25NQ7oo9B054NVYgnkVL1BMs7P+DwJjU45SQqCoWKS2w73ZIbvJTNr5g0pmEWwC6j0pWqTxa6pyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,92 +94,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04, 2026 at 09:02:00PM +0800, Kairui Song wrote:
-> On Fri, Sep 4, 2026 at 6:12 PM Lian Wang (ProcessMission)
-> <lianux.mm@gmail.com> wrote:
-> >
-> > On Fri, 4 Sep 2026 16:13:10 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > > Since tiers come up further down, I'd like to raise a point about the
-> > > patch subject line too. As Kairui mentioned in RFC v1 that we would
-> > > stay aligned with tiers, would it make sense to frame this RFC as a
-> > > per-tier allocation policy (or something along those lines)? Kairui,
-> > > what's your opinion?
-> >
-> > Thanks for the thoughtful feedback and for taking an initial pass over
-> > the series.
-> >
-> > I agree that this queue could naturally become an in-tier allocation
-> > policy. For this RFC, I would prefer to keep it separate and scoped to
-> > the existing priority semantics while the tier and virtual-swap
-> > directions are still being settled. We can revisit the subject and
-> > naming once that boundary is clearer.
+On 09/04/26 at 06:08pm, George Guo wrote:
+> This series enables Kexec HandOver (KHO) on 64-bit LoongArch and adds
+> LoongArch coverage to the KHO QEMU selftest.  KHO is the remaining
+> architecture gate needed by Live Update (LUO) on LoongArch.
 > 
-> Hi All!
+> The transport is the central problem.  Arm64 and riscv can pass the KHO
+> state FDT and scratch area through properties under /chosen in a boot
+> FDT.  LoongArch boots through EFI without a boot FDT, so that path is not
+> available.
+
+I didn't look into your patchset very carefully, but I doubt you
+are reinventing the wheel. X86 didn't have FDT, seems it introduces FDT
+for KHO support. LoongArch doesn't have FDT, so you reworks the EFI
+transport. Is there a reason you don't want to follow the standard KHO
+way using FDT too?
+
+Please correct me if I am wrong.
+
 > 
-> We can start with adpating the default priority if tiering still needs
-> more time to land, Not changing the user interface means less risk.
-> It's also fine to implement tiering first, there are some other
-> blocking issues for tier though.
+> EFI KHO channel:
 > 
-> With tiering I think we will still need rotation of devices in the
-> same priorities / tier. Once tier is ready, we can further extend the
-> rotation in the same tier; that's something to discuss.
+> v5 reworks the EFI transport following Pratyush's and Huacai's reviews
+> [1, 2].  Instead of rebuilding the EFI configuration table in
+> LoongArch code and switching st->tables before kexec, the common EFI stub
+> allocates and installs a persistent table under
+> LINUX_EFI_KEXEC_HANDOVER_GUID.  This follows the model used by
+> LINUX_EFI_MEMRESERVE_TABLE_GUID.
+
 > 
-> >
-> > I will also sync with Kairui when he has time. He has several things in
-> > flight, but his view on the ownership and framing would be valuable.
-> >
-> > > Devices assigned to the same tier already share the same priority, so
+> The common EFI table parser reserves the stub-allocated table, reads it
+> during early boot, and calls kho_populate().  An early initcall keeps the
+> table persistently mapped so it can also be updated on the crash kexec
+> path.  The implementation is architecture-independent; LoongArch only
+> selects EFI_KHO when KEXEC_HANDOVER is enabled.
 > 
-> Hmm, the current posted tier is a band of priorities. Do you mean that
-> when tiering is enabled, devices in the same tier, despite of having
-> different priority, will be used equally? And is priority ineffective
-> then?
-
-Hello Kairui
-
-Right. My thought is to remove the priority semantics within a tier.
-
-Once devices are grouped into the same tier, allocation within that tier
-should be handled by a tier-specific allocation policy.
-
-If users want the traditional priority-based behavior, I think they should
-assign devices to different tiers and manage them that way.
-
-For swap devices assigned to the same tier, we can still leave the behavior
-flexible through the interfac(they may be treated equally, or priority may
-still be considered). However, there should be a default allocation policy.
-
-> > > I don't think the allocation policy needs more than one option for
-> > > that case (I can't think of a use case that would need it).
-> > >
-> > > 1. For legacy swap with no tier configured, define it as a single
-> > >    priority treated as one tier.
-> > > 2. When priorities match, allocation naturally falls to a single
-> > >    policy (not a queue). the concrete policy here is this
-> > >    queue-based scheme.
-> > > 3. When tiers are enabled, devices previously assigned under legacy
-> > >    swap are reassigned to tiers at runtime.
-> > >    (This means different swap device on same tier handled like same priority device)
-> >
-> > These are useful design points. I would like to study the concrete v11
-> > before deciding between runtime, boot-time, or compile-time tier
-> > assignment. It seems safer not to bind this queue RFC to a permanent
-> > tier interface while those semantics and the virtual-swap backend model
-> > are still under discussion.
-> >
-> > > I think this feature will also be needed on the virtualized swap side,
-> > > which makes me wonder whether this patch should go back into the swap
-> > > tier series instead. Kairui, Lian, what do you think? (Or separately?)
+> The EFI table is global, but kexec can keep separate normal and crash
+> images and can replace a loaded candidate.  Updating the table while a
+> candidate image is being loaded could therefore leave it pointing at a
+> failed candidate while the previously installed image remains the one
+> that will be executed.  v5 records the KHO data in struct kimage and
+> synchronizes the channel from the image selected for execution.  Images
+> without KHO data, including legacy and crash images, clear the channel so
+> the next kernel boots cold rather than reviving stale state.
 > 
-> I'm fine as long as there won't be a regression. I remember V10 of
-> tier didn't touch this yet so the regression is limited to tier
-> enabled case, so no existing case will experience any issue, that is
-> fine. Causing a performance regression for existing usecases is
-> usually a bad idea.
-
-Yeah right. will consider regession case.
-
-Thanks
+> The GUID name is changed to LINUX_EFI_KEXEC_HANDOVER_GUID as suggested by
+> Huacai and Pratyush [3].  Existing x86 KHO support continues to use its
+> setup_data transport.  Besides supporting non-UEFI boot, that entry is
+> consumed by the x86 decompressor before normal EFI table parsing, so KASLR
+> only uses KHO scratch areas and does not overwrite preserved memory.  The
+> new channel is installed by the generic EFI-stub entry path and relies on
+> EFI_GENERIC_STUB, which x86 does not select.  Moving x86 would therefore
+> require installing the table from the x86-specific EFI stub and scanning it
+> in the decompressor, not just selecting EFI_KHO.
+> 
+> LoongArch enablement and build fix:
+> 
+> The architecture patch now only enables ARCH_SUPPORTS_KEXEC_HANDOVER and
+> selects the generic EFI channel.  No LoongArch setup reader, kexec writer,
+> or EFI system-table replacement remains.
+> 
+> The linux/mm.h build fix is moved from luo_session.c to kho_block.c, where
+> the virt_to_phys() and phys_to_virt() calls reside after the liveupdate
+> refactoring.  This addresses Pratyush's review [4].  Adding linux/mm.h to
+> asm/io.h was previously attempted, but creates an include cycle under
+> CONFIG_KFENCE [5].  The fix precedes LoongArch enablement so every
+> intermediate commit builds with CONFIG_KFENCE=y.
+> 
+> Selftest:
+> 
+> The LoongArch vmtest boots vmlinux.efi through EDK2 because the initial
+> EFI stub invocation installs the channel being tested.  QEMU_EFI can
+> override the firmware filename for distributions that install it under a
+> different name or path.
+> 
+> CONFIG_ACPI_SPCR_TABLE lets the bare earlycon parameter obtain the UART
+> description from EDK2's SPCR table.  CONFIG_PCI_HOST_GENERIC keeps i8042
+> enabled while ensuring that the QEMU virt machine's PCI I/O space is
+> mapped before the legacy fallback probe, addressing Huacai's concern that
+> the same kernel configuration should remain usable for hosts and guests.
+> 
+> With EFI runtime reset services available, panic=-1 and QEMU's existing
+> -no-reboot option terminate the test normally.  The generic QEMU runner
+> therefore remains unchanged and does not mask failures by forcibly
+> terminating QEMU after a timeout.
+> 
+> The LoongArch vmtest uses the default KHO scratch-sizing path.  This
+> series is based on the generic fix that calculates per-node scratch sizes
+> before scratch allocation [6].
+> 
+> The KHO vmtest passes on:
+> 
+>   * LoongArch with KVM using QEMU_EFI.fd from edk2-loongarch64.
+>   * x86_64 with KVM, as regression coverage for the generic kexec/KHO
+>     changes.
+> 
+> Patch layout:
+> 
+>   1. Add the generic EFI KHO channel and its ABI.
+>   2. Synchronize the channel from the selected image at execution.
+>   3. Fix the kho_block.c header dependency exposed by LoongArch/KFENCE.
+>   4. Enable KHO on 64-bit LoongArch through the generic EFI channel.
+>   5. Add LoongArch to the KHO QEMU selftest.
+> 
+> Changes since v4:
+> 
+>   * Allocate and install the KHO table from the common EFI stub, following
+>     the EFI memreserve-table model (Pratyush).
+>   * Parse, reserve, map, and update the channel in generic EFI code; remove
+>     the LoongArch-specific reader, writer, and st->tables replacement
+>     (Pratyush, Huacai).
+>   * Synchronize the global channel at execution rather than image load;
+>     clear it for cold and crash images and use the scratch payload size.
+>   * Rename the GUID to LINUX_EFI_KEXEC_HANDOVER_GUID (Huacai, Pratyush).
+>   * Move the linux/mm.h include from luo_session.c to the actual caller,
+>     kho_block.c, and place the fix before architecture enablement
+>     (Pratyush, Huacai).
+>   * Boot the vmtest through EDK2, allow QEMU_EFI to override the firmware,
+>     and use vmlinux.efi to exercise the EFI stub and channel.
+>   * Keep i8042 enabled and select PCI_HOST_GENERIC instead of disabling
+>     the host configuration in the selftest (Huacai).
+>   * Enable ACPI_SPCR_TABLE and use the SPCR-provided early console.
+>   * Exercise the default KHO scratch-sizing path in the LoongArch vmtest;
+>     depend on the separately posted generic sizing fix [6].
+>   * Drop the generic QEMU timeout now that EFI runtime reset services make
+>     the LoongArch guest terminate normally.
+>   * Rebase onto Linux 7.3-rc1.
+> 
+> [1] Pratyush Yadav:
+>     https://lore.kernel.org/r/2vxzo6f96fmn.fsf@kernel.org/
+> [2] Huacai Chen:
+>     https://lore.kernel.org/r/CAAhV-H4PKRNCa4g=6TGepP+trtM82JiMoWgVr3O7PqbZYP9uGw@mail.gmail.com/
+> [3] https://lore.kernel.org/r/2vxzse4m54nz.fsf@kernel.org/
+> [4] https://lore.kernel.org/r/2vxzfr0l6fam.fsf@kernel.org/
+> [5] https://lore.kernel.org/r/202605211925.DbDvQ6ii-lkp@intel.com/
+> [6] https://lore.kernel.org/loongarch/20260904025101.9959-1-dongtai.guo@linux.dev/
+> 
+> Previous version:
+> 
+> v4: https://lore.kernel.org/loongarch/20260807103714.33074-1-dongtai.guo@linux.dev/
+> 
+> George Guo (5):
+>   efi: add a KHO configuration table channel
+>   liveupdate: synchronize EFI KHO channel at execution
+>   liveupdate: kho_block: include linux/mm.h for virt/phys translation
+>   LoongArch: enable kexec handover (KHO)
+>   selftests/kho: add LoongArch vmtest support
+> 
+>  arch/loongarch/Kconfig                     |  4 ++
+>  drivers/firmware/efi/Kconfig               | 12 ++++
+>  drivers/firmware/efi/efi.c                 | 78 ++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c    | 25 +++++++
+>  include/linux/efi.h                        | 36 ++++++++++
+>  kernel/crash_core.c                        |  7 ++
+>  kernel/kexec_core.c                        |  5 ++
+>  kernel/kexec_internal.h                    |  3 +
+>  kernel/liveupdate/kexec_handover.c         | 33 +++++++++
+>  kernel/liveupdate/kho_block.c              |  1 +
+>  tools/testing/selftests/kho/loongarch.conf | 11 +++
+>  tools/testing/selftests/kho/vmtest.sh      |  3 +-
+>  12 files changed, 217 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/kho/loongarch.conf
+> 
+> 
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> prerequisite-patch-id: a2f06addb17cc379b9f98674f087a1642588dc6e
+> -- 
+> 2.53.0
 
