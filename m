@@ -4,97 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F25F7C79FA0
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:24:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85FA1C79FA1
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 15:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111EA6B00A0; Mon,  7 Sep 2026 11:24:12 -0400 (EDT)
+	id 909226B00A1; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA9E6B00A1; Mon,  7 Sep 2026 11:24:12 -0400 (EDT)
+	id 8E0566B00A2; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027286B00A2; Mon,  7 Sep 2026 11:24:11 -0400 (EDT)
+	id 81CCE6B00A3; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D74666B00A0
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:24:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B06DA01B4
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:24:11 +0000 (UTC)
-X-FDA: 85187337102.17.9FE2DFD
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AA41F180004
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:24:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=TwhS7pT7;
-	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 641E16B00A1
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:27:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06033A3BEE
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:27:49 +0000 (UTC)
+X-FDA: 85187346258.12.A90A2B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6B4F1140008
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 15:27:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n2/6D9dV";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788794649;
+	s=arc-20220608; t=1788794867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6c435i0Ybwx2SpPArP3T09GV23HR1EORsj2zutcyrsA=;
-	b=etlEEgyMdEykMrReQthQr7fIJfWbLfzTjphrX/G0LSP3KNrwywnDpaCBt7eIBH2r3Hw4Gf
-	CciZ0oT1tmcDVeC2Sh607vxheKlmIWzeDwsr2b60pAoos0u2MrztdeRvON7cWuLt+v6UxI
-	4I3k29lFYVlszVoKdTK3FQ/ZKpa82kU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788794649;
-	b=nwpINZvBJyljfM3PU8F92D8VYZ2FenQ9kPAC2Vi8iLbLcKTtFn6QuMSI32Z4bhMUL0V+Av
-	YluUeoepU8s/JPkRwkGFwpqGlxilKedOsbT5s1O7mqI7oXolG/QRsj6fJroczd5O4PhuSf
-	vSAbNAKRmtVwB7wS3/l0mwBE+V6E3a8=
+	bh=6hrOBQSxvF0DAR349U8/vdSM9iBMmaVDEOirsjTaU5A=;
+	b=wRfp3wtVIO5vpv02cWyxkMP7g1choG87F4Uc9WrT4qDhdBqrnajuLwA4dx+bwecuEqj8wj
+	Bn9uDi0w1U98iiWQuVdoA8NUKc7NqEgoCFoEYFe4OcAvfmu1J6mbdTqTvPETL+T2HkIR3/
+	JIZggTTHu6eWlUITrY4iTMdijjaM1DM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=TwhS7pT7;
-	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6c435i0Ybwx2SpPArP3T09GV23HR1EORsj2zutcyrsA=; b=TwhS7pT7b6MrSEMKFQfGDeSRIA
-	mv6TiijYkOzV3ljABhwcKRIImezX6VdLF59YDNzKwVu9XJSBnGJI+8bj+Zieec2dbmSX+dI64ObiU
-	C6HdX1Joy5LOL3lb5qIr5LcgDoacSanCjFIsu3Kvf6RuotHWPs8FxHINv1Mo6Jw8NyZsEJZmyioRK
-	Ei8ZzeJcwumibhpITvX9zwoCt14QChw+J8HOtulb9LVA4kEShJ+v6nO0XqbRUzgWQ7L1V+pSaiCHT
-	tbHwZpkOABgvU1Qwurrtp391g+wt6DKKAT7yXWR5gRPtkmNkPLKZHrevAIYTNDGTBgmBkr3mc7fuO
-	e3n1TF0Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x3bCK-001bGs-0M;
-	Mon, 07 Sep 2026 15:23:52 +0000
-Date: Mon, 7 Sep 2026 08:23:46 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 3/5] mm/memory-failure: efi: record hardware-poisoned
- frames into the poisoned-memory table
-Message-ID: <ap7Tup6mahjIljVF@gmail.com>
-References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
- <20260826-hwpoison-kho-v3-3-6f79c4b605bc@debian.org>
- <apGWUWi5-RbhFHpe@thinkstation>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n2/6D9dV";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788794867;
+	b=ZCphZaQExiDLec1OgNVkv9+IJMiPbpk5tGGPuJCGeo6Q84COwjH10QqeKb23cMeZIlBWf8
+	fldpn4muTZ7x9idzdgaU+TBFqhZAQ3uPPZHQmcLxZt0w20pnPlIbbgQkBkYgE7Y+R6+GbZ
+	7otmnDVLjV8qTDCGaOv80qcIFoZtQ68=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 940A0403C4;
+	Mon,  7 Sep 2026 15:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC32D1F00A3A;
+	Mon,  7 Sep 2026 15:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788794866;
+	bh=6hrOBQSxvF0DAR349U8/vdSM9iBMmaVDEOirsjTaU5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n2/6D9dV588UugjGE35JL2jNmMYrvZmp13XEWqyHCwlOKBQ4CXbXIKOvMXbmo1DOr
+	 QRTOBE2kf7W68XVe2AVyMtYDcqumD274NYRJTsEip23dIa36HSQZZIWDJAhPoYAknR
+	 REUXmzealeYx8AdNQqDG8KapN8yi5yZCXX7vgc8T0U4CMlpIRt7/KjeAZdhruboHeG
+	 pao8D/xBiH12p+W5OD2Pat8xC9WhfGOnCNAyhCl5PoXyUmKf6lHQTCYF3LflW1nVzc
+	 OklKrV38XlcWfgi4g/V4V54aZF7Xu5SYEfyHhcenHBJQTFQOVkYItsMdKIJs8d+Ngv
+	 Oq0fGodncyrMQ==
+Date: Mon, 7 Sep 2026 16:27:41 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Pedro Falcato <pfalcato@suse.de>, "Liam R. Howlett" <liam@infradead.org>, 
+	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Mike Kaplinskiy <mike@recall.ai>, 
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Subject: Re: [PATCH] mm/madvise: swap in CoW'd MAP_PRIVATE-file mappings on
+ MADV_WILLNEED
+Message-ID: <ap7Xz0clF7sOaAGK@gremlin>
+References: <20260904-madv-will-need-map-private-v1-1-6b83cc99fcff@kernel.org>
+ <apriM1q4GzAgP7JQ@pedro-suse.tail5790ac.ts.net>
+ <aprjOxDy3JCPb2oa@gremlin>
+ <20260905171757.ba8b0f8f0f18ebd04418bfeb@linux-foundation.org>
+ <ap6u6Ana3MvvIIUe@gremlin>
+ <55ce7bee-c0e0-4051-8bc4-26cf3aa3f7e9@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apGWUWi5-RbhFHpe@thinkstation>
-X-Debian-User: leitao
+In-Reply-To: <55ce7bee-c0e0-4051-8bc4-26cf3aa3f7e9@kernel.org>
+X-Stat-Signature: rubf955yuyjhymayr7yijiazdikrqrhz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6B4F1140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AA41F180004
-X-Stat-Signature: gaxas849bercw9ig6djqecbg6nwtimrx
-X-HE-Tag: 1788794649-812755
-X-HE-Meta: U2FsdGVkX1+hZcti3rbBSEbceVwMyKwrAScotbUCVYszbVR4NkDNB5Fylj68gKfZKcCFmRUqw/6AlP2H5w/T2BRSeiwoh2yRKD/rmqrQt4JT5PrW/inGnY/k2TvYC4nAsTLPxjYieqUyMONknA+suNDZMzKfaNXI9NbORLZYoWrxcIOy+ZBReeYNBWPHoDnG9r3+UocYH5CInj9SCMQi9E7nJCHUcmljnMkSTCjF5zGklz6pRlKFcC8EuPuzmHFO6w7zRJkKXV5KXMM19K/az97jEovftjEoTdS2ugne+xvjXPCEM2+7mgIPilauPiTM4ln2NwwZoyXXzcIvITWF18hUqKBig01Ovuem80Vo0SaRVioxH9Us7f6G0gObKw7b2zcuCzfyAZWN8cY6PcP5yjfSqucVoQ/FOKBdlArf36KITrba5NmHLPmb5n2gGf8EywzyR3W5Ar1rfIQOjJBX5inwXZ8Zqyt2woqb/AjnDwIllv/vMkAr8vBK37/6TM5jLfJLEslhowVE6NCqbmA950/DzJJ3Txc1mHUEmuYFYR+LBrr5Nw7cl5fdd1/4OTi+gotfAgqz3mXEKNTkzEFkWzS55/q2Poz/EwVgNh9IL1eSQtxh4R5r2MCzzqrDWf04dwuHmmno1trMvdeQaPA3oFk/47OXajPjVZK1hNH8Y8rfPDuLAFZ95taqsMrhbb5DT4SwVOVTc+M5p1Gg44zaAwk8+RrBKelSFuv3s1v3Yp5mAeld+aD/yzB+4yutk12GE5gP1ykr8dM+0v5VKIk2JaH84vLSJlQbzsgtBLs5YkwHSanCDXorAAsoNWS9jQCgdQsVocpXYAvPnXbBDwVwVY4jj0AqkxFuugHg9Np5abN8pD+WwK2wC+ITJr8Q7JdisyPQGUgUbKgmUflEEo1t3tiEW+0vCBl76EZ802lAonG0UjJYcX3SCXRQGu0e7IlOxomHdEiBnuaU5UOBFhn
- KS7w5AoW
- CTYKSqrnm5c51lWN6SFAj2b7Pvo2ZV6dnigKPIeVFVBC3NIwh6Gg8e5wX2H1hVzpjjl0trZtK1rzpkCpN82FdXL4MWepvyF3KUTh6HshZUNqfTN7jhveLLmKJy8WSH8xnTM+QEKqM7v5BvoQTseAtw1btrz325Mjoo/1G3A6I0a6lN7zRzfqLxIeZEndiwPW6oh7iik5+Id9VyVNa4bpLvRTLBNeRbDZaOmN0+1UO9ith623TaKaJMtk7iPBzMeSzip05ncUdlfe83Y5HIqvyt1KJNZ0VE+bFimB/n9WdDfy8pEXZqNX0duFDZspLiWsaIZwr0QHV4niMfRA=
+X-HE-Tag: 1788794867-204065
+X-HE-Meta: U2FsdGVkX1+2+dgCh5A9m/CMd+bIq4xjOoYczqFI41K7nnRoL2422zahx1ZPAZ+P8w/MCyv6Xa8g/0ujihZeVoex5q66AV4clwZoVJ0r/SMN5+ppYDLhzRau77jt4sfZ5H2Al04eP3ZvikyBS9RkMpPyqDRnUW/Uhooj4yYNYs2mXIIh9DlvMbkmkfm/HSzKNK+Le3aU6zW/Tl01vmi3CaDwXQuZ5y5VBbd4sY2tXwCDIKwU97OaUp2M02dldn77ohKv13f9DgNAAl8zHSfnuvxGip/akMK2Nt3+4v1yK0NTpYX/+8fuk10QryNNJ+At2b0heEaPkaYwzuUeh/NcA9MF4v5AR3AhNu7VW+jk7yeruQI9Mc+bxCqhPy6toG6uhM89KtgC0Eov+1hw0c83Sqd0osyS917SxIbJyvI7vVegjj8rOOLo3b6tn5HyeiiWDGQxacDLZL6r8/Up2Csv8N2if9aeOEoMwijGGNrl6NbSnwzGuNY2tXSe6awWqUmBqL3jAb3WGuo1oFYP5XHi/W51CRDIzPy1Dm5d0yyaantU4KY5/jqGxbrRxu8rhC5mtolTqA60BJLNWNkyKSrMupV6D7BVenzL2sVEmNptxFHAFdPxwV1IyldoOYI078b4AKQC+yo/YoLRIUx0v1GOycQUMY5izsbHU+DQUp0n4L7uPXl+o3lGzd5i7ebb9ITzsdiougykWjkbb5yZ4D0j/wUzxTXPIzyyFhSVOzSG7hhHOdFpmrB00ptvz6pxFzlY7RtqqcNgvykZ/cRYr+66J8+DVlx7dIwjt26dnZgO7T/4zPCdi1aZqvE8QobgSSmGWkFBsdhz828lK66PXGIRX/VkwUkQhnf2K2ppz1U+VnSCJKK4T+VdFecsh/u6ss6t06pTbm1RXBYxZ+c+v7q9xLaRQKCJ6j5ho8RAMbIEWEvABiq69pZ6LdRUi4HoAPS66A2AYgHh5ZGBoDktyGm
+ 2sR2Sl96
+ EGi3LI0DnQmVX75R123hvvzRwI40oXykirIe5EL4CcapLl1uTdcwtXO7TYKZE6WMLlH9EpFbdnCm0v1W4K8WaKJtO8/0dbyh7C26ukuuQlB8sesBS8OA7zMcaCvfLAl+PPoa3jijuZdl5iafViSBFXPWIKabfvCox5J5sb219mfMRs38viHNCKM7fsY6KAZM2kHpI/8dsFiUrDpAg1RZCf4xyJvh1fdc/4jcRTlzqjbySTj6mRYws1O6cjSOFdzvCoxb5yDgAu4nOUmiFklMAscTolTxKg47/kbuxsJfJug+Iu30GiTHtq+eISwNX2PtP/sabZOZkUNwek4beanjctTpCdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,39 +99,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 03:11:10PM +0100, Kiryl Shutsemau wrote:
-> On Wed, Aug 26, 2026 at 05:03:54AM -0700, Breno Leitao wrote:
-> > +#include <linux/memblock.h>
-> 
-> Is it leftover? I don't see any memblock usage.
+On Mon, Sep 07, 2026 at 05:09:34PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/7/26 14:32, Lorenzo Stoakes (ARM) wrote:
+> > On Sat, Sep 05, 2026 at 05:17:57PM -0700, Andrew Morton wrote:
+> >> On Fri, 4 Sep 2026 17:01:37 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> >>
+> >> > Andrew - could you swap the patch out in-place with below? Thanks!
+> >> >
+> >>
+> >> np.
+> >>
+> >> > Currently MADV_WILLNEED treats file-backed and pure anonymous mappings
+> >> > entirely separately - using POSIX_FADV_WILLNEED (equivalent of a readahead)
+> >> > for the former and a tree walk and swap in to swap cache for the latter.
+> >> >
+> >> > MAP_PRIVATE-file backed mappings straddle the two and currently get treated
+> >> > as if they were purely file-backed, meaning any swapped out private pages
+> >> > remain swapped out.
+> >> >
+> >> > Resolve the issue by explicitly checking for CoW'd MAP_PRIVATE-file backed
+> >> > mappings and performing both walks in this case.
+> >> >
+> >> > Since the logic checks for vma->anon_vma this means un-CoW'd
+> >> > MAP_PRIVATE-file backed mappings retain only the single file walk.
+> >> >
+> >> > Reported-by: Mike Kaplinskiy <mike@recall.ai>
+> >> > Closes: https://lore.kernel.org/all/CABeknB_S2XJSHFgnHdgnN0rjzHhH4oQJs_APq9fvxHztQ_pgiA@mail.gmail.com/
+> >> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >>
+> >> The failure mode looks pretty obscure, so I'm thinking that no backport
+> >> is needed.
+> >
+> > Well it's not even really a failure mode so much as a 'known limitation' :)
+> > So yeah agreed.
+>
+> Yeah, as we know madvise() just an advice after all, the kernel is free to
+> ignore it :)
+>
+> (MADV_DONTNEED and friends enter the chat)
 
-Yes, good catch, I will remove.
-> > +#include <linux/mm.h>
-> > +#include <linux/overflow.h>
-> > +
-> > +static struct linux_efi_poisoned_memory *efi_poison __ro_after_init;
-> > +static u64 efi_poison_nbits __ro_after_init;
-> > +
-> > +static u64 __init
-> > +efi_poison_usable_size(const struct linux_efi_poisoned_memory *pm)
-> > +{
-> > +	u64 nr_units = DIV_ROUND_UP(PFN_PHYS(max_pfn), pm->unit_size);
-> > +	u64 bytes = DIV_ROUND_UP(nr_units, BITS_PER_BYTE);
-> > +
-> > +	/* Whole words: the bitmap is reached an unsigned long at a time. */
-> > +	return min(round_up(bytes, sizeof(unsigned long)), pm->size);
-> 
-> Hm. Why bother to clamp to max_pfn? What's what's wrong with just using
-> pm->size directly?
+Haha yeah, another brilliant footgun invented by the proud folks at kernel mm,
+catch us next time with some prctl's and BPF APIs! ;)
 
-The clamp is a min(), so it can only ever make the kernel use less of
-the table than the table claims, just a silly and cheap optimization.
+>
+> > --
+> > Cheers, Lorenzo
+>
 
-That said, pm->size is more than enought for now, and we optimize later.
-
-I will drop efi_poison_usable_size() completely and replace it by
-pm->size.
-
-Thanks,
---breno
+--
+Cheers, Lorenzo
 
