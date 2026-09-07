@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EB3C79F89
-	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B3BC79F89
+	for <linux-mm@archiver.kernel.org>; Mon,  7 Sep 2026 11:30:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDA4E6B009B; Mon,  7 Sep 2026 07:18:55 -0400 (EDT)
+	id C08436B009B; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB16E6B009D; Mon,  7 Sep 2026 07:18:55 -0400 (EDT)
+	id BB9586B009E; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC7686B009E; Mon,  7 Sep 2026 07:18:55 -0400 (EDT)
+	id AAE696B009B; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B54F96B009B
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:18:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA6A88011E
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:18:53 +0000 (UTC)
-X-FDA: 85186718946.24.336D6FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EE51540002
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:18:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F8m423Lh;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9E96B009B
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 07:30:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 181E91C00F8
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:30:22 +0000 (UTC)
+X-FDA: 85186747884.13.68CB30D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5B6491A0007
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 11:30:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0be+PQn;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788779932;
-	b=In/nWJGOFDHJ4MnF/BmGL3RyjQflftHX1ELOtmzgzpLA6wRb/r8r2PWbtVyBClHJiHdHDH
-	u1MSLNWnA+yuNpyiNU/5FM2fjAdTkSJnKmYW96POHsIlAbc/GAtaExoV+TahFr+N+bKqqo
-	H0yWssy/fPeQ5dXK5j4AnHoUKiUaMjY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788779932;
+	s=arc-20220608; t=1788780620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Z/SgvhpSWZZrEnPffWXml8Hd3wiK1YMY4/p+rNNK8Y=;
-	b=k+M5R/UuSpAoHvKUvuPkjuK+4jDJ7mJ5UF6F5UtoZggPM091/0EwtdztuNYytXgHm/gzo8
-	0fdm3b0MZn5eerp/B3lNCS+bmmvzcsFreJ0C9gcjyonCbDd9d8UJBQ3rpJ2U3dzG44LuvQ
-	hscLbeuKAlZ9bycBJS717qRZE/9UfQ4=
+	bh=1Df9Vs2CsLw1K3pBOS28/RnLUuS1VBAgN7vqlEKdpBU=;
+	b=zomMPl85xL6O9wJcyZ5NRz70A51U8/6/JSGI3dJCiSj6MtPdwOAe6CMB0DYhB9zF4TUYz2
+	6FNFHHAUlUDPExwORzP5fEnV/lpcbdjdi6FnK7YG42i3yRAvMEj/NjYwhPW/F9dg8xXf3M
+	ghGsFthXsHIhnvxfwveU4jykhy02bFQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788780620;
+	b=tVMu8+5gHxf6mrfBdWLJmPzNiLyMaMw3wq56tnToelcP2zgWk0UasyuunKyRrom8LXs7hL
+	1MtO+mrWxGDMxuUwqXW9Fas48SrkOT7bDBYNa6owtaixblhKqJC7169fDKX+8dhsXDdxPp
+	YKwXBAZyd+fRsseZ5HzUkObsAbSfh+U=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F8m423Lh;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0be+PQn;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D692440B87;
-	Mon,  7 Sep 2026 11:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D51B1F00A3A;
-	Mon,  7 Sep 2026 11:18:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E167960D89;
+	Mon,  7 Sep 2026 11:30:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E5F1F00A3A;
+	Mon,  7 Sep 2026 11:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788779930;
-	bh=6Z/SgvhpSWZZrEnPffWXml8Hd3wiK1YMY4/p+rNNK8Y=;
+	s=k20260515; t=1788780619;
+	bh=1Df9Vs2CsLw1K3pBOS28/RnLUuS1VBAgN7vqlEKdpBU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=F8m423LhiG/t/9Wa6UuLgMPisSPSaM0ws6sLzcdYwfW2FEYdK/K+Z5A9zDpAI0e7z
-	 7zcW1KROfscWEZhgA/J8JMfiW9sSjf23XIOE1DtFpqV6RhSBlXktdEsVQQTJgaOMM4
-	 U+NDNAEYwpedUUzpWNcWoZO3jLmIdBS4eK85R8SBGtCl4vMw4N9c0Nuc0u/AMBroJV
-	 oRiUG+v7J4tZ82zGGs47AX3GVu31zIt3DwoR5PgXBUt3YEZASX0JDS1IsnET4tQ56d
-	 O1HMQB9Is+Yp9B8WSFxR5SaTnXfE7G6ZgJ+Now4boANlh1gpw9obeOJHtK/TEdEkGs
-	 kj3KDL5gjdRFA==
-Message-ID: <69db9546-d14d-4107-96b7-30963292c2bd@kernel.org>
-Date: Mon, 7 Sep 2026 13:18:42 +0200
+	b=D0be+PQnzcjaosyF+C2OgofVECAhlkIznofOYF2lXaw7UWLmROnusM8RC/F15P8YI
+	 /XcfgqV8RqudIXVBRYFXDzM5BGBuPMZZeT2tzlmZP840yDtx4VKqKAxvWo1ieldneE
+	 2K90uN/I0meOvnPlvsq3qAuYV9DJS2Yxfnqjw+Rn/1Hz5dxvSFGbf2aMVzU4pKuzV3
+	 vg7Pefe7ZBLfub/+b/BHOg2CGrk4CIEAL9NbKjA0Io4zzDsrQePpkLJYwR1+5elO87
+	 QDruieoxO/+Qvr7hYjvIVwDRS3wTwDccVbD7prhdJwsO7Bv51WKBfn6pp7IGC84ojh
+	 gE5Xn5zC8uqXg==
+Message-ID: <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+Date: Mon, 7 Sep 2026 13:30:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-To: Mike Rapoport <rppt@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
- linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com>
- <apk8ZRr6do_YAlzf@kernel.org>
- <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
- <ap05ue1pq3TgHOS6@kernel.org>
- <CA+qSx6y=OaMsvTKUbPP2DOan3Ym6c8L5z60512-tCYeUjLZz3w@mail.gmail.com>
- <ap5Tqu5yswJrj5UM@kernel.org>
+Subject: Re: Path forward for Virtualized Swap?
+To: Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>
+Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ YoungJun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-doc@vger.kernel.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +143,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ap5Tqu5yswJrj5UM@kernel.org>
+In-Reply-To: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fiyn65wobm7iipcoqqhhr3bjo1php4x9
+X-Rspamd-Queue-Id: 5B6491A0007
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EE51540002
-X-Stat-Signature: wksboqzno3dftgwbqzjmq1cjodm1k5ph
-X-HE-Tag: 1788779931-963969
-X-HE-Meta: U2FsdGVkX19CfdhMxmtnHcgOy35UPkhxcFKhm23wFwh3gP290uDovrZoPat3/qowgqWGJd/2/BMviMB/Gr8O2Ij1yC0mAOjvKmSLRwPx7cCHTHrftKM9ZKDE8ZTnPvw5u56NQaUmZCH2B0wWF/qY6ylaxB5CkNMxFk4xuJZ5O7BfxDFkYmg/W0jbkZv8wiWNya8S3CK+QRd5pyufrkxBByQMa1jdVo00p6rMCK1Vvldfi5jMFOLii9jdky797DnF1HrQkB15Z2CvNi3zi567TGWdHCbOjukNrr8ZwMXABUSRoIVryHm4rbVhmx/p8KdjgqPk9+6P1ygBe+3QKWvNH5ImT2ogkhzlV85vmxf6v7imEvExHNv4CyY+Y5DfG7vdi/GgXNSlnYwCuvhEc6842qglHB2MtYk2XN76l3dT4dWm8FQuXKjaBVovqXcUNxLd48HAxZzZyHBN47zIk9iAM+EOVGmvlZTIvzXD3hazuNsyU1QQiRLC/nCR1loI4J/KD6r1pfs1q/aWE+OipPcWKn0bPQc1GbxeXAk/BFaaCsSCija5s+0vqVXv6hSNbCfFhe+oIUnoIV8+vPnbmTVkubmEVP2+n9yh5vnjMnyHKmCkDYglRXGub7wpkj2Vw40Gj4vpFlUScERlEr/fPF9SrlZBdr4N/1evDML7az015RGMf8M/yKAfq2xtf2jUDN4tQIpRkIZzD6mn1ZraujWz+/NEHtLX8z3ESpX68OB7Svhvc1pW3J7kp7xsbh1teAYmBs/zuR8xzrYynSAkBjJHlbhaN1DOvBCq9LxwDFpPiOsGlyXQOJOr4N1syBsPvEl1g66TGaC8koTn5VFv4kPw17WFr5Wg+T7rTpE/Qs6vvlpGozUSiEaKcxbhp8Zq6pLMiJurGOlzTj9LdOjpLu+yomdTocVLru+BpcQBn6G+eOb44VWZOt8CPdQXNqc+1VkEXril8pSpOt3BLbi+JPN
- AoLN9vnF
- Yi8SatuUiweCP9/Qjq+uWgx1CVgg/jinTCflKcjbIynoTqL9NE3ZZytvXlYuri6zkDZYp2rNRhWJIYkHHFbbHHkBrYoI8K5D0DAit79vST2mLA72Mmz9n1Jmq813maI4BnfEFb/nuJ0gTt5AmhEkGdxlfyKx4nEeUk11J+ZayBzBGWE6IhnLWPmeTGSpptIGpYzW2sYexsI7zR1SpJxt8W4WXMUAl5KakRll0nQFYzAL2gBrfJBKc7A6Zr9ZM3K5uog44KIYYditrPrv/h9/ZuKnUQI32msACrnEHJcmecFYgEwM+YxMeINV2UV0Dj4Ldwg5XccLVVujL1qFPO0kREL11NyhPcQ9WfOUYRjTwOcn6iFmKj7u0EcLBMmXQ1+j71dWZ
+X-HE-Tag: 1788780620-246246
+X-HE-Meta: U2FsdGVkX1+SGJCiulP4P4YJWWhvEew7GeZ5UPvGI6n5eooCGY7qemsnj7h4MgvSgwUTrkZ+PYS4iUeDqxmlaoh+XtFeh/6SBdyTjmgbo+S7rkXPndeR+6MIJ01SFIDEa4ZRrefL9G6BS7W6gsbAIZhhdIqvZcY/LnKoB5cmaTbLr4tKtUdCkkGojhztjrD1WbLBFWgnr0GZhUhdRgNynnW8kCDg08YmEhpnnylxGAehmgn0muwwRLXf2j4iKPlB+X8lYrYjvjegPe0KkKiZB6cXZfHOj/q0/yOGCMsvsgt8Ebq1tJbMfdfP8VXU6eq0WEKkF44BOi2eIYgwMyvcDfHR17Pq9vBj1vpJiaCdPtd9FcM/VUSZhOGwWdbx77d6Lme9e2Ua1CJkxFcY7XEll9+HRlRdf0rC/6i1LpJBMyd2/jhk46TFgV146IVM4EcmQxHu4aRsI64JoIZI8h5yPB7s1LrHfuztkLAOVGOFNBiP2HzFtTgq81Q9b6aYZQpIsISXJdA6oY3viGYUeY2lqxpKwl9D8ZK0HJQVaLWgpuRhX28ZBcqwkYrV+azrSiHXUoF1F1gem/7L6NSMWq4RG8GpuSR3D7Lip17+lV+6C/35IXGCPljuIMwcgfOQyker1RhRWtErkpDFnZ4svtZ9ZbeNDWK4VIbA6PqRlM7+Ypole45nmm6CWJFCZIfdIArsVxDmAAZUdMAUybZqSebNuLCUclBzrtj+vWmYX13O3sWAmSLtxKJBMW0gwwSVovD7PkMbrzO57akavEUMJITcqGs3oKEC98aq1TVtbGLMsWgDPY4Nk8jDODUNp2YLnJoYbe06UmK8VAiNPOw7xq3Vp466VgFef3ajDIjlmGSirYjx0uGXUxfY7JGuzXowIDuzwkAHpKSurEPunsMGRE4YOFrmDH/RUNHMAD5dyc6lJfhX0HQwB37Nx87I+gMT579UYifiNXAy1h6QZPPMi3E
+ SUUHj80n
+ olrQzfDyBVmek0XZ0HO28dlcoxI8fdvcr41lXnVA/hlhUgcIMJpvWv+izbGr9CnyAbAF6CAWWPz/j0eNoqNBChGu/fK2d21A+QO3SWU3bXyvaTasgKDiOu6kJn8wB26vOYCMqzS6LL/8HAOe6KnwgqiDZklIRhgEdCIdISrWM3maPjyYV/1TFY6w+zLMHDwY7CKjI4KTi/TUfA3778tWlOwW8oZ0B8GrCVllCKYWEZTjnqdEqEEFvxZQpl4QgKpcdn6KYhIHsRI4mJNrN2sbvFpxAZx4jeLZumX7cfxRBfiOHYB+zai/0Tw99EVvPmvguxev6wztfQ/LM+CX1EN2GVFtfOB23Q7Yfj3xa7hE+roLT+XD8agXeohe6qQV1yZ4SjVf0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,44 +161,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 08:03, Mike Rapoport wrote:
-> Hi Xueyuan,
-> 
-> On Mon, Sep 07, 2026 at 09:11:14AM +0800, Xueyuan Chen wrote:
->> On Sun, Sep 6, 2026 at 6:00 PM Mike Rapoport <rppt@kernel.org> wrote:
->>>
->>>
->>> I believe this is an historical artifact. change_memory_common() already
->>> updates the linear map when a vmalloc mapping switches to RO and the system
->>> supports it.
->>
->> On x86, set_memory_ro() does work on direct-map addresses.
->>
->>>
->>> I believe arm64::set_memory_ro() can change the linear map in the general
->>> case as well as long as can_set_direct_map() is true.
->>>
->>
->> On arm64, I'm reading arch/arm64/mm/pageattr.c, and the linear-map
->> update in change_memory_common() is only reachable for vmalloc
->> addresses:
->>
->>   set_memory_ro
->>     change_memory_common
->>        area = find_vm_area((void *)addr);
->>        if (!area || ...)
->>           return -EINVAL;
->>
->> So set_memory_ro() on a linear-map address returns -EINVAL on arm64.
-> 
-> And I believe this is an historical artifact rather than necessity. For
-> configurations that allow set_direct_map on arm64, change_memory_common can
-> update direct map too, it just need to be implemented there.
-> 
+On 9/4/26 23:14, Nhat Pham wrote:
 
-Are we sure the other architectures do what we want in their set_memory_ro?
-Having a dedicated set_direct_map_ro() with clear (documented ;)) semantics does
-not sound too crazy to me.
+Hi,
+
+> To Kairui, Johannes, Yosry, Chris, David, Andrew, and other (z)swap folks -
+> I need some help here.
+
+I'll mostly ignore swap-related stuff because (a) -EBUSY and (b) we have quite
+some swap experts around :)
+
+Reading below, I do wonder if the swap subsystem needs some more coordination
+and collaboration?
+
+For example, maybe having bi-weekly/monthly meetings to get everybody aligned
+and uptodate could be something reasonable?
+
+This approach has proven fairly helpful in areas where (1) multiple companies
+are involved (2) many concurrent development is happening, and (3) people have
+different priorities and requirements.
+
+Is there already something like that to organize development? Should we get
+started with that?
 
 -- 
 Cheers,
