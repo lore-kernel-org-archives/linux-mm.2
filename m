@@ -4,90 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E9BC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D5DC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:10:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AA5E6B008C; Tue,  8 Sep 2026 04:08:14 -0400 (EDT)
+	id 71E3C6B008A; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 082486B0092; Tue,  8 Sep 2026 04:08:14 -0400 (EDT)
+	id 6A27A6B0093; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDB166B0093; Tue,  8 Sep 2026 04:08:13 -0400 (EDT)
+	id 568FC6B0095; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8E046B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:08:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5869980452
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:08:13 +0000 (UTC)
-X-FDA: 85189867266.17.7083ED5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C3D8C14000F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:08:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g3hdzvFt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A48B6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2EDDD12044E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:41 +0000 (UTC)
+X-FDA: 85189873482.11.E868315
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 376A5A0005
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VuvCCa9v;
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788854891;
+	s=arc-20220608; t=1788855039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ex5rOv7vKl28wj0SeyBEi/wKjcPUGR+up3g3DebNUfk=;
-	b=X8pzhYryB53teMlYWeoVRGJy7EYFUnEf/PFWJmyFXhKZwkCrqAm34f+KIF22QEpsRQ2/AH
-	HWiuz+5un5kcXVH+yEBw4vb/4iM8MMtESbuOzuxby2vpdENMivjZU2Bb1Ji3Q9rdz9RbI8
-	BwWVBi85WibDOc6K8JJ+/79eHqUqAxU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g3hdzvFt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=/LQ40bG3b0qEiWUXfmVaeOdjqlO0VS+wXll0EN2GKX0=;
+	b=25z5R+mloENRwgTLcqq5OLwbhaC4IXqlzdQUN+Zjt0EJHoTSM0J/Sk6UZcPU6BPbXDEbbe
+	2MhbEjHz4RpusuDGsFs4bGhF2pQPfvYCq7VU81w0HWvRxQW1N2zlp1CPadUOU+KC878Ru5
+	+hkkvMa5NV3JiKQQvQyA/1FQTyxY0sE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788854891;
-	b=i519nS2TAamqG7Y4consjBnEo/TPU/ftmhZ54WT/rD/rHgYYA4Vf8D818l6XV6rutrUmPC
-	bD+vIF7YKg6Hs9Dg3UHYQRvPY5Z1JajMoIfvXk1M2c30Gt45zwmhK9IWaqXNLuBin+iklJ
-	8vUi7WKGoZWKBHf9Ae5lcLAMsZvxdvg=
+	t=1788855039;
+	b=moO/KQqDqsdN5LaMMaSTgKqC2tpJ9r01PUyVzka9SOPkUFkKHGmI7Zpo7BXktu3vJr3GeC
+	B/SmZ4pz5oYGCLi9nBBqcnjT+31lZTNOekn6HmHpU56eA7hWY6fz0iiAFRMsSWt4OHFoks
+	BzshP2H6LzkKLP+75FlZjr7A7/eJGdM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VuvCCa9v;
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46F2160AA2;
-	Tue,  8 Sep 2026 08:08:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A601F00A3A;
-	Tue,  8 Sep 2026 08:08:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EAFD43A59
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC951F00ADB
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788854891;
-	bh=Ex5rOv7vKl28wj0SeyBEi/wKjcPUGR+up3g3DebNUfk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=g3hdzvFtn7mdxCrxrK3f5AngKmNRypNNY++sY86OVJO/qKmiyKU9WrgnNlJYMLjzS
-	 rUezNUNpyOGzENlX2jUpX6GmHAZDPN5ZdSoA1qij8ljUxe8/2pulEIkfIy4V6g2KPq
-	 sqEPAWjYgcQubNLBMwbKfeXvC/EvKPgACWv8kJC1EL011bCB4hhB1pshakHEcfbiQ+
-	 g9qneAn5/Ou+5ppRRsN7fh4XVxkqVrjbqDw8crgiyEVP/y065tOOaVb2vlXQo9H3nW
-	 vhdQO1X8MwvcFkcINL09UubOrvH/5hcbmV/tP8BGL8/5DrkpvdFMY/AZ5oiL9mz/lx
-	 4n/aQo3AHB1VA==
-Date: Tue, 8 Sep 2026 11:08:03 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org,
-	James.Bottomley@hansenpartnership.com, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] selftests/mm: fix ptrace PEEKDATA check in memfd_secret
- test
-Message-ID: <ap_CY1sTymJd8zOy@kernel.org>
-References: <20260908025111.34562-1-hongfu.li@linux.dev>
+	s=k20260515; t=1788855038;
+	bh=/LQ40bG3b0qEiWUXfmVaeOdjqlO0VS+wXll0EN2GKX0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=VuvCCa9vusaCARP4kqjikR+bv6LqFhsoUvglKfI1pJ9AsquQHsudSXKaSRn8WciPB
+	 PU18JpWe+CCGQx6pgLnGpxBdjf9d+Mqnyw1E9xm4a2xJ9aDt7sm9IBOWx3+xaz5O9f
+	 2Ay4dvMkb9bSXsEADr3vdT7M8wxiU/jRORNkZoyRhXHNLqO1haqy9GfjsmUMdT66EI
+	 /nA3gQ0tWJ5CJnqoSdyAGbyi8ZDHkzxKrSvGBcabUcF1k0uQ+jmtd8hmMrk2ac067f
+	 Pv4LmFlyY+5QoFse7RhmSATPp2FEbb13AOVufv4NIVar572vARYJfyAfl/ECwAFfOy
+	 Xa1T0McJHfLpw==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c28fde3bbd2so211544566b.3
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 01:10:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxyfuscW25pWkYC4jOG2RwIp3dSwyBjhN0ahD6PgxUHmzzsdazXw2fOqRvlnFor4UiprSJzIs1y+A==@kvack.org
+X-Gm-Message-State: AFuF++nptzD32NogkbemeIS/dPnjCowdouzrMLH2y5afvcj7O/lUAgIv
+	zlhjVuA4FnPG6BPcS8PjZLMeRTlSvoBzgtTc1MmmOFNVLoUBatmWJb0D5baziJgHwQfgR9vpDWF
+	hb0ZMWY+8hUja8XYJ0S2o6lZDOdAtf8I=
+X-Received: by 2002:a17:907:940b:b0:c26:1691:b366 with SMTP id
+ a640c23a62f3a-c261691b9d4mr944555766b.31.1788855036997; Tue, 08 Sep 2026
+ 01:10:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908025111.34562-1-hongfu.li@linux.dev>
-X-Rspamd-Server: rspam11
+References: <20260907161938.1932355-1-usama.arif@linux.dev>
+In-Reply-To: <20260907161938.1932355-1-usama.arif@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 8 Sep 2026 01:10:25 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNr7jMYkWjaRYpQYkR8yQT3R5guV=2EXTfWBipAZ5kEqw@mail.gmail.com>
+X-Gm-Features: AcwNN1WdBn7Fr6APF4VR9MOEKeL7VFm43JjsPuRw9XMXiiE2ug9S5SNh0owgQu4
+Message-ID: <CAO9r8zNr7jMYkWjaRYpQYkR8yQT3R5guV=2EXTfWBipAZ5kEqw@mail.gmail.com>
+Subject: Re: [PATCH] mm: zswap: don't fail a large-folio swapin whose range is
+ not in zswap
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, hannes@cmpxchg.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com, 
+	kernel-team@meta.com, stable@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, 
+	Longlong Xia <xialonglong@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: isya5mtf8zyz6ssucsqjd88m6exzxcou
-X-Rspamd-Queue-Id: C3D8C14000F
-X-HE-Tag: 1788854891-527379
-X-HE-Meta: U2FsdGVkX1/hDcPX5zNdFI9HmPlv0OReYpJHqaFoVqB2sIuKwe7GRqUasfk/TFQB4dQXCh253PwPuEwgM/vAHHdYgpfkzxyd/qyCHWXQnLcI5SYsStO2fQFsnLSKAcPq1Nntb/Ma8XLsj+l+Wt+kAosaOl4J9xawgb+nkDVZ74KcJrdaJpL6dSpeTlBX8FpZpJ7X9Cpn5mPhgKuBzLW7gjfAK6d01/Q1UnUxPSIJA7T0ADegAUUHNkvZpwwa2Uakexp2K3XnmxTIlwktZCJF7NjXsPjkzUdH7N74XXlt1S/QMF5hGPtlxBMU8AKJJpbmGWu6FoxfAVthMBdaLswJoRqvfXpASfNARLLHM0RVIXWZElAfPISXAJritqeNS7AV8qkBQ9ho2zllDk2+GbmXMYVWLeWWyRjT6tkxbCTbRkefcRS6W994YVn1tanJ6rZGv+mC9roZHqTTbqbcOGuKuF+wzHtGcxupKoEwiaBpbdEgMh36mB5JJ4Xp54qSDI+3Pvu2v/lZD2SiGLsNOM84C5PgijW/x5Hwa8lnqJDSL7G+Txmw1yaCfChqUbskmhcXqvQ+5yQS4P9zCGScjKgkWKulg/MKTz5p06i7JSlpcczd+Rrp+X/dooBUn1/W5B94xezeCBsGBVqTIJlkDvznJrXSAPOLKsjNPYT+8h8WAhTnGF1F4M31JnttrLX2DEM20X0hU6E7ZxVBbW9W7tyn4OX4hexd6mOpImU+lt2Ho4rkEpqByz24aVFD+78XRvDUh+glb6uAjbDcWSgcGhIEiCov0E/nNbFhgq14kQHuAGJeHHzZ0vineDzwHUnSFd97sm6VHsnu2Lx3rEbsnUfrVBOFGGXZQfTGnC7IWteWx0ngLs3Dn89KMBUDOFUqTHWHPGTh466VFPz78LLlJ5cq+zQmZuIMDkWX1QnoNDPRm4r/ksKP6EWNRgHkBIylxOyzyu69yo9TRoVwb3RUgAh
- p9WTpEaz
- W+Zh1l7CnDN+A43VMdo5nom2uoUVGCees2qQbJUqNoSXhZ/omQ4Fbn0Qz6b8xQPTKSKx3A0GsDF1mDCAZpZSFGQmJu+dTLzVzcGHAX3BoKq0uc/umxlzbZWhW9wRBR0U57eVqVHR5AKJ42HOfWEaM3TPE6SWKkBXSXSFFh32Gi2WiwoMfSIbb35dTEe8Ea7Gisd470RPt/vQi6wqgWpXbCO8WwT5u1AIoFh1CriyTlMIjYUVPftJAYIlwcYWJoqtsrj7ufiUZF0PQR7z3fQpmO3RuMS++To1ACOTxEkng/c3pOPa8pITDfTBK3JlSKfimjeguxIEwYxXgEJR6aIoyUHcxBtxd2/CnvLVkBZQhgBe+UvFs1q4MTfU8sQ3R8u6mBMbdUjVAKBPuaT6USHJxOtN0xQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 376A5A0005
+X-Stat-Signature: r4h45gt74t9ftfkc71jdzhs8i19d9xo9
+X-HE-Tag: 1788855039-89690
+X-HE-Meta: U2FsdGVkX1+tbEH97SPRnkaNloFfrmsMBt1vZ4TcFYl53cT9lefvxy0sO0hFo4PXX2jVL31uhoE9gnmdTHJfjBLAHSB5i0OL0cxu3egbZUho/qOd6bwdgLIXSoIYO6DxJvFygwxagIrjD03ylmYddlQSdpHrlOL9VUB5FB5X6xi50Cuo0HABV8xp1h2vV6puD1afDpBRUZW6nNetg82gPMTvqe0uCycyZ9c4c40z9SjJxe0hiagG8cxd6E8J9ky3V3ntdW/Zb1pZgaOoI7vXXg46+Zr8Wg9N0wfmYczMuugyWS/hg6RGGEJN4gSxp8JGjm+xeGTl+JwbXPlfdYMMVB3TOZvETVsnAEyFjbS4mH9jz1//QjYmVGO23uJ83NOiTS/hwgyzGQqZl+lTfcLuc3i9xPjTzsgKKw8ONLKhpnjXD1S2xfX/u9r8enG2CvgS4p68lP+10seIvxs0gQqP4rQOdHztS0MJpEOTd8hmGnbAgLA55oJ1JBcP+0+UGMNtsHOWtcqtfeqAjIMbxANDm99X7Mzz1ZlB/QRT4gj2DvZAjEeP1/4Wj0cWxNtjyhQeq5yVZ0qxOCWLPcsiUz9WyWSVQz6qSNTreACaG+5gOpSehIerHhLjWcAb00OSDxbISO1oTee/hVp3CqX/NoW1YIjhWhiE2Apfc0H3V//FUyeYz8VY/JalS0aBLeaTIxVp/Ch4FDFmXBSs1Pw0vKAt//akYEb20Ppdq7XI/hvoDv/BERJ4I3cIO4BrpRw8VpyteLIJApJc8jd0Tt+J4jprPo9VY1nS8QMP3XKhJTtHcYipXgumhskZgdXSh/E/x5TZdPOEOjjpCz3P570YFsYRTdBQT18vUrahLXb8oMN3Rdwlq4xS83nbRA6159yAAuSn3CV+PR8PcES5IgpvRVVPfWwowV9K0yt5rk37YzUHbZ6D+jI0Rg1JdyIrIeV3EA/dt8KbSSLwFJwEnNzGr6m
+ slvqKwu7
+ 6FPuRplr76/iH9NIXVQI630pNNQzWHevH55O8SOz6t4NuzUnHLJwk80leZd4RVhpQOZHuQgPZnN+y8gkBfwmzp00VYFt91I0o16jGdc0elZ947+GIHQMQi7MvOFIBNF0lTJvnMoBLptojEsJ5S1Q0zqktMgHz/b6ZAXFUKPskr8+AEuz0Xe9nhuIi9ZJ9eXJZbc0GZjwaaHyjH3tVkYUJ0fpJPLUc5I1d0/2/c8m1Ts2SIl+bze7a9e4fIBD7apjZwI5OdObPcCxMNUOq8qEkwZ8rt9HVikizbOlupczIKpXAFNj07EHMb4GA3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +105,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 10:51:11AM +0800, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
-> 
-> try_ptrace() treats PTRACE_PEEKDATA return value as a boolean
-> check. A successful read returns non-zero data (memory filled with
-> 0x55), causing the test to incorrectly report PASS when secret memory
-> protection is broken.
-> 
-> Check the return value against -1 instead. The test should only pass
-> when PTRACE_PEEKDATA fails, which means secret memory protection works.
-> 
-> Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+On Mon, Sep 7, 2026 at 9:20=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> thp_swapin_suitable_orders() and shmem_swap_alloc_folio() sample
+> zswap_never_enabled() to decide whether a swapin may use a large folio.
+> zswap_load() samples the same one-way static key again once the read
+> reaches it.  Nothing serialises the two reads, and in between the task
+> allocates and pins a high-order folio, which can sleep.
+>
+> If zswap is enabled for the first time in that window, a large folio that
+> was correctly permitted reaches zswap_load(), which rejects every large
+> folio with -EINVAL.  swap_read_folio() treats anything other than -ENOENT
+> as "zswap handled it" and skips the backing-device read, so the folio
+> comes back unlocked and not uptodate: SIGBUS for an anonymous fault, -EIO
+> for shmem.  The data is intact on the swap device - it was written there
+> before zswap was ever enabled - and the not-uptodate folio stays in the
+> swap cache, so every retry of the fault fails the same way.  With
+> panic_on_warn the WARN takes the machine down rather than the task.
+>
+> Scan the range instead of rejecting the folio.  The caller has pinned
+> every slot before issuing the read, so zswap cannot start a store or a
+> writeback into the range and the scan is stable.  If nothing in the range
+> is in zswap it is all on the backing device: return -ENOENT and let
+> swap_read_folio() read it.
+>
+> A range that does have a slot in zswap is still refused, because zswap
+> stores large folios as order-0 entries and cannot reconstruct one.  That
+> stays reachable - a slot shared with another task can be stored inside
+> the same window - and refusing is correct, since the alternative is
+> returning the stale device copy.  Report it as -EIO rather than -EINVAL:
+> the request is valid, zswap just cannot serve it.  The only caller
+> distinguishes -ENOENT from everything else, so that part is a
+> documentation fix.
+>
+> Fixes: 242d12c98174 ("mm: support large folios swap-in for sync io device=
+s")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+
 
 > ---
->  tools/testing/selftests/mm/memfd_secret.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
-> index c55d84c5e613..dd08a3a1ef14 100644
-> --- a/tools/testing/selftests/mm/memfd_secret.c
-> +++ b/tools/testing/selftests/mm/memfd_secret.c
-> @@ -145,7 +145,7 @@ static void try_ptrace(int fd, int pipefd[2])
->  		exit(KSFT_FAIL);
->  	}
->  
-> -	if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0))
-> +	if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0) == -1)
->  		exit(KSFT_PASS);
->  
->  	exit(KSFT_FAIL);
-> -- 
-> 2.54.0
-> 
-> 
-
--- 
-Sincerely yours,
-Mike.
+>  mm/zswap.c | 58 ++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 43 insertions(+), 15 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 37f34e406c8e3..fd36ac38e9a1e 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1571,6 +1571,32 @@ bool zswap_store(struct folio *folio)
+>         return ret;
+>  }
+>
+> +/**
+> + * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
+> + * @entry: base swap entry of the range
+> + * @nr: number of contiguous slots to check
+> + *
+> + * Context: The caller must keep the range pinned, otherwise the answer =
+can
+> + * change under it.
+> + * Return: true if at least one slot in the range is in zswap.
+> + */
+> +static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+> +{
+> +       pgoff_t offset =3D swp_offset(entry);
+> +       struct xarray *tree =3D swap_zswap_tree(entry);
+> +       unsigned long index =3D offset;
+> +
+> +       /*
+> +        * A pinned range is at most SWAPFILE_CLUSTER slots and is aligne=
+d to
+> +        * its own size, so one tree covers all of it and a single lookup=
+ is
+> +        * enough. Scanning only part of the range would report a false
+> +        * "absent" and let the caller read a stale copy from the device.
+> +        */
+> +       BUILD_BUG_ON(SWAPFILE_CLUSTER > ZSWAP_ADDRESS_SPACE_PAGES);
+> +
+> +       return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
+> +}
+> +
+>  /**
+>   * zswap_load() - load a folio from zswap
+>   * @folio: folio to load
+> @@ -1578,15 +1604,12 @@ bool zswap_store(struct folio *folio)
+>   * Return: 0 on success, with the folio unlocked and marked up-to-date, =
+or one
+>   * of the following error codes:
+>   *
+> - *  -EIO: if the swapped out content was in zswap, but could not be load=
+ed
+> - *  into the page due to a decompression failure. The folio is unlocked,=
+ but
+> - *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_=
+page()
+> - *  will SIGBUS).
+> - *
+> - *  -EINVAL: if the swapped out content was in zswap, but the page belon=
+gs
+> - *  to a large folio, which is not supported by zswap. The folio is unlo=
+cked,
+> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+> - *  do_swap_page() will SIGBUS).
+> + *  -EIO: if the swapped out content was in zswap but could not be hande=
+d
+> + *  back, either because decompression failed or because a slot in a
+> + *  large-folio range is still in zswap and zswap cannot reconstruct a l=
+arge
+> + *  folio from per-page entries. The folio is unlocked, but NOT marked
+> + *  up-to-date, so that an IO error is emitted (e.g. do_swap_page() will
+> + *  SIGBUS).
+>   *
+>   *  -ENOENT: if the swapped out content was not in zswap. The folio rema=
+ins
+>   *  locked on return.
+> @@ -1605,13 +1628,18 @@ int zswap_load(struct folio *folio)
+>                 return -ENOENT;
+>
+>         /*
+> -        * Large folios should not be swapped in while zswap is being use=
+d, as
+> -        * they are not properly handled. Zswap does not properly load la=
+rge
+> -        * folios, and a large folio may only be partially in zswap.
+> +        * A large folio can legitimately reach zswap_load() with its who=
+le
+> +        * range on the backing device, so scan the range rather than rej=
+ecting
+> +        * it outright. The caller has pinned every slot, so zswap cannot=
+ start
+> +        * a store or a writeback into the range while we look.
+>          */
+> -       if (WARN_ON_ONCE(folio_test_large(folio))) {
+> -               folio_unlock(folio);
+> -               return -EINVAL;
+> +       if (folio_test_large(folio)) {
+> +               if (WARN_ON_ONCE(zswap_is_present(swp,
+> +                                                 folio_nr_pages(folio)))=
+) {
+> +                       folio_unlock(folio);
+> +                       return -EIO;
+> +               }
+> +               return -ENOENT;
+>         }
+>
+>         entry =3D xa_load(tree, offset);
+> --
+> 2.53.0-Meta
+>
 
