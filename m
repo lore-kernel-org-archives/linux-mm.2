@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C9DDC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 02:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DEACC79F9E
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 02:41:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 398816B008C; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
+	id 042856B0093; Mon,  7 Sep 2026 22:41:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 371B96B0092; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
+	id F374D6B0096; Mon,  7 Sep 2026 22:41:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AE436B0093; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
+	id E4B506B009B; Mon,  7 Sep 2026 22:41:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0135D6B008C
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 22:38:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9069340396
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:38:15 +0000 (UTC)
-X-FDA: 85189035750.14.26403EC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E456114000F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:38:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTPULx+T;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788835089;
-	b=7UpHBksYmqcMZitvV2Akp9GXtfHV1tKpBQwRvP/3LGnY2kmFoVujSpYDmJ6PguDm6GVUkj
-	ztxw0OROaOsse6grAI50y2iVS6msgrFa23qyLmuafVxBMr1MX5UBDPpBqZDKyv/YzGJOoz
-	ukjxJrI2IIq5+XZc1olVnkj0f2OgDfI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTPULx+T;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B44916B0093
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 22:41:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5B69A1C1AAA
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:41:33 +0000 (UTC)
+X-FDA: 85189044066.21.6974B37
+Received: from mail-m602.netease.com (mail-m602.netease.com [210.79.60.2])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 49DC8160006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:41:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.2 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788835089;
+	s=arc-20220608; t=1788835291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=efZgJABcoG5ggDnZhAKLlrjhxD8FD9hOCVM7mhQeFpU=;
-	b=Nk5AWDdbabOdb5vLy5m5TdUYHBgNpSMBnmJdP51NDvl4tcpjkp0YQUJxiFCQYu6su0t3+P
-	D1YPduOKwIrNuyN5hihQO8pkz/iMB5nXTdb6ih/veMPqpwrBsgP6tSwFNsCrP/oWO+6i85
-	7sHVkZW2r5kIMZzcJ6fqLSTGnQZv6T0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26580602D1;
-	Tue,  8 Sep 2026 02:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617D11F00A3A;
-	Tue,  8 Sep 2026 02:38:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788835087;
-	bh=efZgJABcoG5ggDnZhAKLlrjhxD8FD9hOCVM7mhQeFpU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=uTPULx+T8gxPX+bbiKHFilFF9EHAF5AWTvUS7p8r95JPYvApttPFOFq1Q9LEjEnAj
-	 szCy4LqZA05c07jaZhRlFjp7TftqHtTtWLy7c9Z364JLL/EmNXQ1q6NF5z0FAU9IqE
-	 g2oS/XYfXxYGZxjyaluL3wXd8edItcIwC69DoRZQ=
-Date: Mon, 7 Sep 2026 19:38:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com>
-Cc: baohua@kernel.org, baoquan.he@linux.dev, chrisl@kernel.org,
- kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- nphamcs@gmail.com, shikemeng@huaweicloud.com,
- syzkaller-bugs@googlegroups.com, youngjun.park@lge.com
-Subject: Re: [syzbot] [mm?] WARNING in swap_put_entries_direct
-Message-Id: <20260907193806.3f562237942e4156c3d4d53e@linux-foundation.org>
-In-Reply-To: <6a9f6350.6e6c5f9e.28f11f.0005.GAE@google.com>
-References: <6a9f6350.6e6c5f9e.28f11f.0005.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nyoxs0BEx74ILkCWFnwfWvcoD5NnSEmNtXZobMUFMl8=;
+	b=cATo6aS0H8M5SJC31XfiE+ETZ3XU6irAeXrSpRGY+QAPKmcfrcG1ugwjfw99XlEtVRylLb
+	aRklq1EiJ0uBdPc7uu+MZPNmtV6uArB87CixpQVUa4ol+zRYRXLNn1oHV8ltpjGDB3nnC9
+	aTPoaJhwzYzN0HUq+YslLQNPZG/EQL8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 210.79.60.2 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788835291;
+	b=4oHxUBIU7J/7VkEkK72csC2H28jJVDqUO8DN6w/7TehBh8EIc019w7fJ1mDhNyeJFkojwb
+	NEE+H3JyyNvCH1/ajVU+VX66+jvHNM8s3/Az4SxBNS9zQmHea0Z5dY+KdGzylRAybF2Qhn
+	sCnIBE0ybENA7KHtsAcpnbbUeWAVO5Y=
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ece1b045;
+	Tue, 8 Sep 2026 10:41:23 +0800 (GMT+08:00)
+Message-ID: <6744bcdb-3456-4ba2-95a0-a58c354bfbfa@easystack.cn>
+Date: Tue, 8 Sep 2026 10:41:23 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
+ <a6ce8684-116b-42f2-a88c-154eb86bad59@kernel.org>
+ <a98bde94-d1fb-4246-b7c6-e64303d8388a@easystack.cn>
+ <5d4c247c-b8ea-4d3f-b2b9-d442d372fd03@kernel.org>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <5d4c247c-b8ea-4d3f-b2b9-d442d372fd03@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa07ee443440229kunma965adf619bcf2
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTx1LVh1MTE5PGE1CQ01MGlYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: pb6honyqw1af87rz9rs7wm5rwfyf7gys
-X-Rspamd-Queue-Id: E456114000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788835088-282463
-X-HE-Meta: U2FsdGVkX1/r3JtwVKY5Z/AvqvplMw0PqF4VHoeIpmi0Z+GANfCXUmflQ8xYlzOjImgi/sARD4iStF1Z01XXiJ2xoU0on4ckc5rpiIYRycfLyOWkmGp6gqXeKh4WN5SghBppFFvmQgItpPsenTLvj8h21ytEKygHBLqDuK0uiKmy3VvAnpelDmU9iM0/GbXMm7QdJ0fCwFVIZBYFsMeF2j2btX1hxq/s7RKoRAkUFXTR3D+PYdwkZc3lOg9h30X4C1ZLnnRtEkZ5kDJjEKvyeZs/MvfrIGrMwjvEA8AE1qE++gs1OKpy/D3+zqJ40Pzenh66KPIf389SIxKAL+/P1PMcprBt9iy7Qm6j1Lc8PUS3uNmeBHDoojahhsK77gH+z8G5c4EyQ9ZcWeW4JYKcjg3DD1v4EvwpzCmGEU4AQSC8ZLY7V/2uUcqPGp5qtfjkMt3qDfWNQ5mzY7P3e6+wLr6nmQPhJrm3wDmoB0v8oJSOYqs2cd/vZN3qVz2TDe1Rb05i9AFSf/1TI4nU8hxWZFuCXyz1Jo+4ef5Rz6YA3j7xvgJL7t272DXbzolCEEXLZS4KjyYi3j6EGerRm1hnGWG3bQsYNYh6VtdnPIvTRtlZ+pb+QTTCdH+QG0K2/3szJznjfg1RsawodvAvxuTC0ssI2sEA2ZrqIgKY9bvsxZ3r6UPiiS+wAWAEE8TWGN7HDZkuOBvAlaFqdRnA4i25OBtI2UV2MOhMpF8rmQF//8C1PL7RU2hy2hOsw6thdzfv1HcFHlLxHA8QmsjwnpSFUSCLiLjik5owsNMvGQ6Q8rNopbB1mpQr75k3+B4km/I9tUCoE4yHB0kcXZ+N833wjJi5P1UwutpwaUr18oiK2jQkYnVq8k5BJfJ1VfSs7e2pgQ7GvsKuMNOopJiaoJEH52arZAd92ot+3TStUCmlDZ0WmpPdt55xGxQHypIOXV4YMgtzwaVh9zhv+JMesPY
- xGL3LUMA
- 08k3swNcNzXwZEuhFSaSWyuFqc8cRPvg3aTPmfuPZWlV7kIsyI/JOX8FKv8T31/yotNL/XpqD40HBt9Lbs13GrKHUKa2FA6cBe6TM0Pkpj1vOpr/Pd5HRzTcEXk/e+w19Qxbm5JSTVJVMEh8v0c0NTF/5+um0v7b9yePad3g34aSLzHZbvdrJb0zPKXBC+alj20k3S3wjaAdc2B60aY47A7XSwnmLkf3f31SMicu9r3iOz3kp4tRRkaDINevqvb0NsjS0ETRkn/jfMEBtptSqOpvhI5xT3pdRaFM9g+2iRhRBmqcSEQGlK5IhSjsFLrDFvfIcd76/BCT2ynDtMW4p0R86H3YHmXb6TxNnoGzKasD8rh/jMnKv9j8JRHXygnLy4TOBe0CHJWb2reGl32kJUl5h7NUTtB7Kqk0A9QJDpxGT5PSKnd6JyQFbSvKan5U3YIsbHya5c8WBMVtwsHHOZuUjIH8xXM1Oa9eSJmVSt890RjhSNRdxIOpXkdvyyDDjMxLDRT84RtnKFpQHL6P0GZIkbdZJ+z2VCHPmvZg92Tf7A/1SKea4EBjdaXFyT2gstFAafCmNIf+MbaYGjDUzmaVcR0Yy/4ZyupD79hwYW7QmA6807ierjdll29mq2ykShA7bgpPIwClS5h7qUsDexIRtN9ju64Nu3FOBZtxNclqPSMVwMWf4Za3WSf4raBjuBfcsEVgH7KicB75qwPysiDy4bthbR4LX82qJHC5YV3FCR53FWnZJ7DoJz7p1WXLMuOoVWeul4SZFTQEJ0AHzydZt4jlXrpizSVuByaZlhsB2ncCaoMZAjqQ/cC+3ca6F48v652KJ11AEjYmhF690vgWaFhZFoIJZauuHQQ6hPt6QmJ9Jgccs0Rvwu1+9jCw+GXO8plXrdcYJWcuVBomEktkMSPFi4DrbSiEM4uB9Mj+x06dga5u8A/ymu3UqYAQrb6WNASbJw7PxIzJkv7rfefL3uEFB
- 1wuLPd3Y
+X-Stat-Signature: n6iyfi3q3trdd9rdebdj7ga19edkow8d
+X-Rspamd-Queue-Id: 49DC8160006
+X-HE-Tag: 1788835289-754773
+X-HE-Meta: U2FsdGVkX1+uE+CYliSplACgaYiXgcIH4N+vuekHWvggIBMDU3shLCIQoidUvIxLt721Sxv5VwJJZt+b7MXj/Hu5WxtCHvZyGkTB3uV+MkIZZdGzGVgO5FnDYseKQmBGDkMe2iJy9rI/JScU75CQ7JABQA7E7Kl6jwEXGbLnMItNmEATdP/Im7FsIkYjsLo6JHdbZ/I170ikwNniW728xajjW4DS4QZUfH6dcNd9r/rqqpA7TFlIPUcRrfaOUbCXvoukfPzlciOq5TNvso7DLIrcCUkXJLBtwkJYODi/b9eEVl0jCcq8iMuiIvJq1oryRlNzHefiDmHYjycoGOc86MpVgXo5CheZ2beemqYVF7pH0uFzp1YEnEc8lTUNmlKVllwFNl9n+fSJwUd9LrT2S+C9eBvN+kbLG3pNYo6ko9xozR84H12dywJ4KBoFZmpIOIXTsU/TpWX8mcJ3F8Kmsq2oPuRZw/A0VKZK2+G/l9Krmq2uunzYhKL/li0jt8CaG8zeI705rClS55KFp3ga5KtsmSc1r38vrE2WGoWe+QHXniL1Iztz0lmWg269z8jgmPGlj5qMV7WKRkHeOIZrN0uACNPWyek/btc4UtZ67m+JCltuifrRH7BMPh2zMJSVKB/reCcrj8SiJFX1LZ0KbtL39+Bfbs8If1XwusRkEPNJV5jI9uhdM1Wqv1zXDCNBHKYKn6Li57pU7EB1/V6M4husfrz2wMTpGXcY0xCxCW+VDdk3gl3ntMg11qRRbrMPHnu4z49KBWdRRCqcojijRTCPRH8HQzCDza0NOaP+m0f+qCjOKEL0QLpL8hXoM5BA8Cvg1jcQEXiAJqG4qsvaSDntHPoGIqUadZkA+Qa8+bwtx+6UskT5FqICOcHw/d7dd3Eo87LCz3qRXwbtodQjsiQrk8uQMRa3unGHvddbZHa36sifWfN3f4SeMArC42NrAiBkK1kaUJhLgeTucp1
+ uH5BuoYg
+ ZMrA9iKyBQETmZIEKCTqnhJKyvyON1kN11S6p38yBeEr3Wy6hi6RY3+jM4yXtBnygWxCleqyqy02ZkFIcPz3uP0nJiQbHEnt68sO26jni5OnC8sdsDZOjyqxd9YbCq5X3UuFZidsOmqZ+ZuhHjddRDHDFbcC6Cb7nnnVewbNXUa16/HY/23NLxwRYVqpFMk7WO0/KzmPA5tpglMFzTMn/o6ninySSQR1UydhnmQ/tuKvuXqYAiyCazFtHfhgfhO3SLdsfBzUv+hWfS9vd/x8aPHTZ5tI4L9Sc+xAfRqkwxi9Osmzu7IvfGqMS0WTIWgPOnsX9DFkKiFN6oe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,70 +98,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 07 Sep 2026 18:22:24 -0700 syzbot <syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com> wrote:
 
-> Hello,
+
+在 2026/9/7 23:21, Vlastimil Babka (SUSE) 写道:
+> On 9/7/26 06:08, zhen.ni wrote:
+>>
+>>
+>> 在 2026/9/4 16:25, Vlastimil Babka (SUSE) 写道:
+>>> On 9/3/26 06:18, Zhen Ni wrote:
+>>>> This patch series adds process and memory cgroup filtering support to
+>>>> page_owner. Following the previous series that introduced print_mode and
+>>>> NUMA node filters:
+>>>>     https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easystack.cn/
+>>>>
+>>>> This series adds filtering capabilities to page_owner, allowing users to
+>>>> filter output by specific processes and memory cgroups. Users can now
+>>>> filter page_owner output by PID, TGID, COMM (with wildcard support), and
+>>>> memory cgroup path. This makes page_owner debugging more focused and
+>>>> efficient for tracking memory allocations in specific contexts.
+>>>
+>>> I wonder about the usefulness of all the new filters. In my experience
+>>> page_owner is useful to find a kernel memory leak code, and for that the
+>>> stacktraces are most useful. Dealing with things like pid/tgid/comm/cgroups
+>>> sounds more like your aim is to profile and optimize particular userspace to
+>>> use less kernel memory? In that case, isn't it rather the area of memory
+>>> allocation profiling (or maybe tracing with bpf), not page_owner?
+>>>
+>>> Moreover, tracing or bpf can already do such kind of filtering and AFAIK
+>>> ftrace filters for tracepoints are nice and generic, while this is adding a
+>>> bunch of custom parsing and filtering. So that makes me somewhat sceptical.
+>>>
+>>
+>> Thanks for the review, and the scepticism is fair - let me first
+>> clarify where I agree with you, then explain the niche I think these
+>> filters fill.
 > 
-> syzbot found the following issue on:
+> Sorry but your whole reply reads like a LLM slop. It took a lot of mental
+> effor to actually try and engage with it.
 > 
-> HEAD commit:    8ab1afb2eb24 Merge tag 'for-7.3/dm-fixes' of git://git.ker..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1034a125580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=85bc5cc2fc7394d9
-> dashboard link: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> userspace arch: i386
+
+This reply was written by me, and its viewpoints are not simply copied 
+directly from an LLM. The LLM only assists with the wording.
+
+>> In memory usage source analysis and memory leak analysis, I believe
+>> page_owner has its own unique niche:
+>>
+>> 1. Nearly all historical allocation records are queryable. Dynamic
+>>      tracing tools (bpf, ftrace) cannot do this.
 > 
-> Unfortunately, I don't have any reproducer for this issue yet.
+> This seems totally the opposite. page_owner gives you the current allocation
+> snapshot. Tracing can provide the full historical record of allocation and
+> freeing, which can be also postprocessed for snapshots.
 > 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8ab1afb2.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/4767b33b6704/vmlinux-8ab1afb2.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/aa0bdf390bbc/bzImage-8ab1afb2.xz
+Here you completely misunderstood my meaning, perhaps I did not express 
+it clearly.
+
+The biggest difference between page_owner and dynamic tracing tools is 
+that page_owner traverses all currently allocated pages using PFN; 
+whereas dynamic tracing tools can only view pages after the observation 
+point is established. The pages collected by page_owner include those 
+from relatively early in the kernel — as long as they are still 
+occupying memory, they can be detected. This is what I mean by 
+"historical allocation records."
+
+>> 2. The full allocation stack is recorded via stackdepot. Memory
+>>      allocation profiling as a code-tagging technique cannot do this.
 > 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+> I think there's some extension (or plan for it), Suren would know better.
 > 
-> get_swap_device: Bad swap file entry 7c00000000000002
 
-hm, thanks.
+I have previously researched the code and documentation of Memory 
+allocation profiling, so this viewpoint is not directly copied from an 
+LLM. The reason I think it cannot record stacks is: its design goal is 
+to be lightweight and usable in production environments, therefore it 
+chose the code-tagging approach. If it recorded stacks, it would already 
+deviate from its original design goal.
 
-https://syzkaller.appspot.com/x/log.txt?x=1034a125580000 reveals a huge
-storm of I/O errors:
+>> 3. Zero extra usage cost (works as long as page_owner is enabled) and
+>>      a low barrier to entry (one echo line versus writing a bpf
+>>      program).
+>>
+>> On the pain points that motivated the series. On production machines
+>> with large memory configurations (e.g., 250GB+):
+>>
+>> 1. Collecting page_owner information takes minutes to tens of minutes.
+>> 2. The output is several gigabytes to over 10GB.
+>>
+>> That makes the raw output nearly unreadable and forces post-processing
+>> with tools/mm/page_owner_sort.c, adding further workload. The root
+>> causes are:
+> 
+> the "workload" is just cpu time though
 
-[ 1175.396574][ T1132] ata2: SATA link down (SStatus 0 SControl 300)
-[ 1175.417415][ T1123] ata1: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
-[ 1175.421618][ T1123] ata1.00: configured for UDMA/100
-[ 1175.447991][ T1137] ata3: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
-[ 1175.456823][ T1137] ata3.00: configured for UDMA/100
-[ 1175.614247][ T5836] usb usb50-port1: unable to enumerate USB device
-[ 1175.647906][ T5108] Aborting journal on device sda1-8.
-[ 1175.651011][T12337] buffer_io_error: 18 callbacks suppressed
-[ 1175.651033][T12337] Buffer I/O error on dev sda1, logical block 131072, lost sync page write
-[ 1175.657294][T20237] EXT4-fs error (device sda1): ext4_journal_check_start:94: comm syz.5.3709: Detected aborted journal
-[ 1175.665579][ T5108] JBD2: I/O error when updating journal superblock for sda1-8.
-[ 1175.673842][T20239] EXT4-fs error (device sda1): ext4_journal_check_start:94: comm syz.6.3710: Detected aborted journal
-[ 1175.721163][ T5923] Buffer I/O error on dev sda1, logical block 0, lost sync page write
-[ 1175.723567][T20239] EXT4-fs (sda1): previous I/O error to superblock detected
-[ 1175.730930][ T5923] Buffer I/O error on dev sda1, logical block 0, lost sync page write
-[ 1175.731190][T20239] EXT4-fs (sda1): I/O error while writing superblock
-[ 1175.731223][T20239] EXT4-fs (sda1): Remounting filesystem read-only
-[ 1175.791874][T11112] Read-error on swap-device (8:0:516182)
-[ 1175.863539][T10850] Read-error on swap-device (8:0:364134)
-[ 1175.888507][T20241] EXT4-fs (sda1): shut down requested (2)
-[ 1175.908145][ T5726] Read-error on swap-device (8:0:332990)
-[ 1175.908919][ T5923] Read-error on swap-device (8:0:333014)
-[ 1175.909235][ T5923] Read-error on swap-device (8:0:313854)
-[ 1175.939843][T11112] Read-error on swap-device (8:0:356918)
-[ 1175.967225][ T5148] Read-error on swap-device (8:0:364766)
-[ 1175.979645][ T5724] Read-error on sw
+This workload is not just CPU — printing the stack takes up the vast 
+majority of it.
+
+> 
+>> 1. The PFN scan itself - unavoidable, it is the price of page_owner's
+>>      core function of covering every page.
+>> 2. Printing every stack for every page - this dominates the cost and
+>>      is avoidable. stackdepot already deduplicates stacks and keeps a
+>>      refcount per unique stack; page_owner then re-prints the same stack
+>>      once per page, and page_owner_sort deduplicates it all over again
+>>      in userspace.
+> 
+> Since it's avoidable, why mention it at all? Oh I know, LLM slop.
+> 
+
+I feel like you haven't really understood what I'm trying to express.
+
+>> The filters target exactly this waste: they keep page_owner focused on
+>> the user's area of interest instead of paying the full print cost.
+>>
+>> On the overlap with dynamic tracing and allocation profiling: the
+>> features do look similar, but the usage scenarios differ. page_owner
+>> is not enabled by default on production systems, so most developers
+>> rightly reach for the lighter-weight tools first - dynamic tracing or
+>> allocation profiling.
+> 
+> Good! That's an argument against.
+> 
+>> But when page_owner is already enabled, or the
+>> lighter-weight tools cannot solve (or cannot conveniently solve) the
+> 
+> Adding custom filtering code to kernel vs user convenience is a trade-off.
+> 
+>> problem and enabling page_owner is an option, the advantages above
+>> kick in: the historical snapshot is filterable in place, and the
+>> filtered output is small enough to read directly.
+>>
+>> So I see the filters as completing page_owner for the scenarios where
+>> it is the right tool, rather than competing with the profiling and
+>> tracing tooling.
+> 
+> I'm not convinced it's worth it.
+
+You may keep your opinion. I think you haven't carefully read my reply, 
+or you simply assumed this is just an automated reply from an LLM.
+
+Perhaps you haven't actually used page_owner on a server with very large 
+memory to investigate memory usage or leak issues (for example, the NIC 
+ring buffer usage problem cannot be solved with dynamic tracing tools). 
+Once you've used it, you'll know how much you need a filter.
 
 
-So I suspect something's wrong with shmem/swap error handling.  ie, the
-code which doesn't get tested :(
-
-> ------------[ cut here ]------------
-> !si
-> WARNING: mm/swapfile.c:2130 at swap_put_entries_direct+0x17d/0x1b0 mm/swapfile.c:2130, CPU#1: udevd/13167
-
+Thanks,
+Zhen
 
