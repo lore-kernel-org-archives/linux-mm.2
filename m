@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A403FC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 085F9C79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:21:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBDC36B00A7; Tue,  8 Sep 2026 05:20:59 -0400 (EDT)
+	id 1ACA06B00AD; Tue,  8 Sep 2026 05:21:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6E426B00AD; Tue,  8 Sep 2026 05:20:59 -0400 (EDT)
+	id 1366E6B00AE; Tue,  8 Sep 2026 05:21:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A84476B00AE; Tue,  8 Sep 2026 05:20:59 -0400 (EDT)
+	id 0290D6B00AF; Tue,  8 Sep 2026 05:21:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81D816B00A7
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:20:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 255F0A4932
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:20:59 +0000 (UTC)
-X-FDA: 85190050638.12.E1CED47
-Received: from mta0.migadu.com (out-199.mta0.migadu.com [91.218.175.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 257B880003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:20:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dbGpm5W0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.199 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB9EE6B00AD
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:21:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 598D3C049E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:21:40 +0000 (UTC)
+X-FDA: 85190052360.04.4C2D4D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B63D41C0004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:21:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xn9XtBCz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788859257;
+	s=arc-20220608; t=1788859298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zjQzRyEeJRjIxmN/yjc9b+g6tX1AMMhanHRn8PYv4Dw=;
-	b=QHTix0FNEXQKQFoFW1taO9/4lkBl+AVuwBP1G86RHfWAyhGbLUtGpt+DnqqDBaFSsXIhmr
-	dISEQU3DaTcBXQqJ9ujAqTIY3GG1alweXWPsPfyABcEr7FqXtrVkj2dFUlpXcje6QU/CAT
-	YKseJ8ZQPwhbETC1XsxXVyaRxpxgi2U=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4k7jM/SARicUfiyID/Zb58FTA6TVrqfjgQqXrSbBJmY=;
+	b=cr2S9IVN8URVAT6Sm8wR8BLwDf97L5sn/Wja+VdIc4mml8Kr9m3BijbSnR0E6JzJwfrZ+I
+	JqUyT69wRJimmMZZ6pum3xJGtEbhM4vCKlunuDpsoQWBEcoWmVYOH2HVqPlHAM/QCRkdNn
+	9e11MKeMUHSNXda/AjFzF0uzZOcEAcQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dbGpm5W0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.199 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xn9XtBCz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788859257;
-	b=PtcAKHwqIyXI84VKZBc29HOXyUXA4n4NxOTHkE4Hzsm5/Nz58xBomdSzsXKKDcmXddqCSw
-	p8AcwzD7wrLKZbkVSdSJXF13KE2sMKsR/ikxvalUONZGTAr/LRccAnRcsy0KAuKvCaa79a
-	qLRWytHxMN78t6DVKK1U7jYJjM2eT9o=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5qZoCBZiXzbympZO5SLiimtaqd6GAU+iP1rCRMtmMRs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788859255; v=1; x=1789464055;
- b=dbGpm5W0Xg9SB5Xt648j1l9N0LrtMzg/bgqMr1qYC68tF6VJLqsJyiSoMh+zRO7hhvX74KXd
- +Ri1BNn8uH2ynopB+iwJWnQ6Ck11cH3MATwPlMCg5eV/vcmHj6uHglybS3oD8OGdFQgyhdx1rYV
- zDZ7ChPg/mx/cipL8+xSVD4I=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bd3504b82ee67862;
-	Tue, 08 Sep 2026 09:20:55 +0000
-X-Mizu-Trace-ID: bd3504b82ee67862
-X-Migadu-Flow: FLOW_OUT
-From: Hao Ge <hao.ge@linux.dev>
-To: Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Hao Ge <hao.ge@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v9 0/4] alloc_tag and module codetag section fixes
-Date: Tue,  8 Sep 2026 17:21:35 +0800
-Message-Id: <20260908092139.115329-1-hao.ge@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	t=1788859298;
+	b=cfs17f0AIGbVX7DPDQNMQhD3yQD5AsE+kfw8Tes7lhdm8Y/62Q0Y7eErstgQne+eB5uLMD
+	k16WRkS1QLJOgLXDtMZfkMDdxhFOoJ6RC04oKCm6a49vW+7GFEcy4KnkhrkScxwCSIwNrX
+	UExEg2lu1KzGUvFgBMnqVDxJLOc2TSM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5366660A97;
+	Tue,  8 Sep 2026 09:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E861F00A3A;
+	Tue,  8 Sep 2026 09:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788859298;
+	bh=4k7jM/SARicUfiyID/Zb58FTA6TVrqfjgQqXrSbBJmY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Xn9XtBCzNs8WX9mak5mpG8XRdy2i0zrbMydZ5LMlt1Qe6xYAL3LuxfUX8Atn2wQI5
+	 1axnL/wqewpo705igfKNy8cNCn9+Zo3sUO5bgJKNWeixiHCJ40tMpOcHYPd0ztKnwc
+	 thks3bDKvUFN5YfpBP21ImCqeVd4BuB9bshirgyOkT8qYPLl5IHF7GtOgYNVJtKM5z
+	 OWEfgEV7HLlzD0xSV0FLDhASxeMC0R5k+YiWCZlY18vuOZyNV5jOxZq4lBnvbHCbuK
+	 MWgRGux7fP8nPYbQvR4llwvXew14x5qlJam3L6qpRO9Kd3dID9dgWciFsi7Ok948U+
+	 EV4LzEuy2wGQQ==
+Message-ID: <9a27f318-2ab0-4f5e-8e87-daaa85dbc297@kernel.org>
+Date: Tue, 8 Sep 2026 11:21:20 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 16/24] powerpc/elf: Add 32-bit REL16 relocation
+ definitions
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-16-3a93791af1cf@linutronix.de>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260908-vdso-absolute-reloc-v5-16-3a93791af1cf@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 257B880003
-X-Stat-Signature: af1xo6ixdrc8g5igpy4dk6yo4fthodkj
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788859256-228375
-X-HE-Meta: U2FsdGVkX189SecY/9t2/P1GQQ59GdOuSD17L26V3RdtLq6kEzSh0aOemYi9jWsW++xyLIJgLCBtRWKxFMklARUFcH2UYx9SCzqoUdWCipaTmZkBRKl2o09aLezlQUcNRbWuc80fJ+oWi4xzcjvq+SCPuaiQPz/ZT1s3F8XJvcb2WPZRoHmQJmKAxzQgOe3H9aBbajtLuLBEo38KKbX/1K8QGeEp2edBaBifhBZIFRDlzZ+62VFRRPXs1t9+tRlqw2+gpHOLiWe5T0RogzN/Xk3ybZGTtrkjyiwGCaW8V/iNPK99e6xogJtP9Z1TQZkakjK7eMfShtnEMYmK1SMo09RUzoXhNqzI3YnsPoP7gag008iGpD96a12L6/db5gRAdXGVPqE+0mBeHJpolojKbX3kQjrLsvvvCkdEukiLG0a7BuQ+7hcA9Wnm5kgSKxm/BlaPFIZRuWRDsaH0Crg0t8iNInSntGaPYaRWjISh9sqCdsxA1BqSbR/eQt9pZizKibsPy896bt0ip+yUIq7YXzglbCaqnluliATOgA/GnhI4RZ371afWzVFxmFLuqG0VwqAZt8VtnBCc8dHKeQjGEMSHO1Md4RZsqNiEI7eIap2B0jo4KNJg03ZJzw1FftCGDL0Q//CKvjmtfLST0Olr9cWAcH3KyY891fHls3VjGEwBZnd2kGsyR6lFe+01AR/5XtxkP4kHEdwPxxXYetSpUZ0Gy9Lb4d/ye16HD1NwrH0BNcgxjRhvAIy37lg3/YFX4FDnQKUPTnAeBvgc0DlqfDjgvG+fUoVHCf+oGXjcomybYjYCo0it/zaOG0MAo7Ikj/sOqYIdHBu7eTI32YF3LTV7+q5D+CR4K2drlPB03WHlF91sCTz8GiuBKkyete0X4zmgq7XDb3082Hh3hwJn+Y3pEqe6WIrCH4RvOYwIXILpzCX964izpDOJv9N1sFOyClB4MxuuJLGOKSQsv0Z
- bhpZah7m
- ryC5jDC2c5+mKu8F7bbd7/toLqk4R22I3RLWQN1oKPQjLuCEafPs3Rd9FfQMnEhQNtpZvfPOyldf04mfzO6/KPhaYYcCCTZtf/sDJLYB0n7JyHLHibziB06CMLOWQV9t4M3mB6AX6iJtPmYbr0xO8TSMxAQTHwQVh4ePCgSCPDgIKTzXqf0fiW4kFDvDw3/gmTwq6NnncKg9pS8TGAXJRAGG04OD4j2QfyYz5O+kJKjVJy/Pt6vNk7tT2O//q/6MM+3bf4XwAbreOfHacvyv46Zw7quPfxr8ln96kIBC/Yr9ubXin9clvUzlkE++c/bxBXGx89P7IqwwZvM6DosY28CcfbFTJIiLk2oNxnqZoJ3UDtrY=
+X-Stat-Signature: p5t88se4zopuqwu7n31r4u83dfthzck9
+X-Rspamd-Queue-Id: B63D41C0004
+X-HE-Tag: 1788859298-237645
+X-HE-Meta: U2FsdGVkX18fBQshQ9sJtQ5JGXkoqZJa3xtldZx5H+ik05QVx1Dfj1mxEKLFA4gIoBCrfcowOcR5adR/ASPW4lngjvKKCzOIOgpH3pFdeC8JHteySshdByoqjxA3DWMiv0v+zDurye/WdoT0+Xoq21fw5OLmIuq8dU/QYU6hP5xwmCEge/wlBFnMHp3wr3QcUdtvFxcOTi3grU9fBo/B0mtni/Dh3/wKl94jINPhhrZfIovhjOYdajwDfWhwC25Obx5rEUycIvLO+muF/g8+E+iOnLFRaVYOOYvYfD5iRT8QEpfoPrN2YFGjkVRsFRsYbAkFaP+iKqXyGvZ4xL6B5kdiyE197aFjjUSZZtIZGhxzZOH3/LglHZABTZDpPyte5GieS1Y4eFfEikt9xpFYNvPR082MojLP/L0zxSYAa9inH5CJiWeIFP1DGRAEUB16CWSZruv5vA2dUX31P9ZipSy9D2eoh5iMsulNZwxlr3d0zAVzA+mWDYqQK0MFYhcDvGaO7ZWopPKtk+nzOvgjdlgaCnjNcDzz5ssPDan9a3elZtyFOwwuQbp3ghzDoCQvQ+txtyCNzoTExLbd9mXZzG4aryRKUr5yMe5j8usowTdssr7+KPw81+eJyUyIHKWAtrwvBegQM2nPo0+w36QSHSGBcu23xeE3rUuc0O0FNI1h1rCNj4qw8Q2l7WIPOEXKIMxVmC0FKuTO5qqWcCgZvkCxIl9fLzeTeooHd+WA9Y/gwGHnl4HCuGzLjdeU+IGzNQqXpEIFbkWUtSYXF7TIIXytUsGgCL7E9ioIX6jH134MHOiR51jqI35wSpw72oC23uad/qX1nkCA5jXB3/hZx0Lz0NslkUoeKiW6ZpqYT3hmq7P2DlYaMVVomjRKOUyFKTsxzuC59jPV/q73z8B4V3y3myLw4EEgMhmUhFDQPL4av3PHbevjVlGD/Ls3qt5/BAs2Go+GlUltMxkJkEr
+ I6reOnMZ
+ EwlzlgVd7ivZIMIGHFTlRy95dzW7GUOvFQx684nuEbMJIbHAU8r1uqLWVRU5PP7F4dT/sfR06Tn0JRBlx9OAqapYDiVxoDmXik5mCsOTkIub50D7VH0RuxSybTd7f2GtsDYQ35pTKIR7qpx6vfsNIwNFVNxqFgNnGNlfV0MN2q7jNwBPUIKO8YjJiGUbEIM4LZoI9pSITkx5YVh9A0mjNVJLpXKKMsaNyWDmTFr2DipI/CAYLNj16eqlnNlZVHZNpozhr0C/kqx5aJMQ/NQ5zCcrQ0v5l9HGsYgOdPegIuHbWGH2rlH+DDbbZ3jeZ/ikYfqLIvBD39gS8Lk49uzQWSY7LwDepZ4Fyq639ocY5CzehB23YE2knB3YbM6XVPgW3ncGsLKfRCAAO9+UWS+pNJnD9yZZc7Jf2bzli
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,175 +130,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I ran into an overflow problem in the module tag area. With profiling
-toggled off, the overflow check in reserve_module_tags() did not
-run, a module could load with more tags than the page flags can
-address, and re-enabling profiling then silently corrupted
-/proc/allocinfo. On overflow the fix shuts profiling down, releases
-the reservation and returns -EAGAIN, and the codetag section lands
-as regular module data in the same load, so the module loads without
-profiling.
 
-Review of the earlier series by Sashiko turned up two more problems.
 
-One is a race. layout_sections() and move_module() both asked
-codetag_needs_module_section() where a codetag section goes, and
-mem_profiling_support can change between the two calls, for instance
-when another module load overflows the tag index and shuts profiling
-down. move_module() then copied the codetag section to offset 0 of
-its regular destination and clobbered the first section placed in
-that region.
+Le 08/09/2026 à 08:33, Thomas Weißschuh a écrit :
+> These are used by userspace and are necessary for the vdsocheck tool.
+> They share the numbers with their 64-bit variants.
+> 
+> Also update the copy in tools/ so they can be used by vdsocheck.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-v7 reworks where codetag sections are allocated, on a prototype by
-Petr Pavlu [1]. The allocation runs before layout_sections() and the
-placement is decided in one step, so nothing re-asks the question
-and the race is gone. The retry is gone too, on -EAGAIN the section
-is laid out as regular module data right in the same load.
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-[1] https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/
-
-Following review feedback from Petr and Suren the series is now
-split into four patches.
-
-Patch 1 moves release_module_tags() above reserve_module_tags(),
-since the failure paths now have to call it.
-
-Patch 2 cleans up the populate failure path: the reservation is
-released, module_tags.size rolled back and the PTEs a failed
-vmap_pages_range() left behind unmapped, so a later populate of the
-same range is safe. It carries both Fixes tags so it backports
-wherever patch 4 goes, which uses its prev_size.
-
-Patch 3 introduces SH_ENTSIZE_STANDALONE to mark sections with a
-separate allocation, per the ELF spec SHF_ALLOC means a section
-occupies memory during execution, and the percpu section does, only
-outside the regular module layout. It was previously excluded from
-the layout by clearing its SHF_ALLOC, overloading the flag with a
-loader-internal meaning. The mark lives in sh_entsize now,
-find_sec(".data..percpu") gives stable results again and
-apply_relocations() goes back to testing only SHF_ALLOC. The section
-would now show up under /sys/module/*/sections/, but it has one
-instance per CPU and no single address to report, and the entry
-never existed before, so add_sect_attrs() and add_notes_attrs()
-skip it.
-
-Patch 4 moves the codetag allocation out of move_module() in front
-of layout_sections(). On overflow reserve_module_tags() shuts
-profiling down, releases the reservation, rolls module_tags.size
-back and returns -EAGAIN, and the section is laid out as regular
-module data, so the module loads without profiling instead of
-failing. Any other error fails the load. The release and the
-fallback belong together, without the release rmmod hits the stale
-entry and panics.
-
-Tested on an x86_64 virtual machine:
-
-Booted without sysctl.vm.mem_profiling=1,compressed:
-# cat /proc/allocinfo is fine
-
-Booted with sysctl.vm.mem_profiling=1,compressed:
-# cat /proc/allocinfo is fine
-# insmod overflow_tag.ko
-# dmesg
-  With module overflow_tag there are too many tags to fit in 13 page
-  flag bits. Memory allocation profiling is disabled!
-# rmmod overflow_tag
-The module loads without profiling and unloads cleanly.
-
-Changes in v9:
-- do not export .data..percpu under /sys/module/*/sections/ (Petr
-  Pavlu).
-- move the populate failure cleanup in front of the rework, v8 patch
-  4 is patch 2 now. It declares prev_size itself, which the overflow
-  path of the rework also uses, so it carries both Fixes tags and the
-  two patches backport together
-
-Changes in v8:
-- roll back module_tags.size when the reservation is released, so a
-  concurrent load which already passed needs_section_mem() does not
-  skip populate for the freed gap (Sashiko)
-- unmap the PTEs a failed vmap_pages_range() installed, a retry to
-  populate the same range would BUG on them
-- zero the separately allocated codetag memory for an SHT_NOBITS
-  section, the tag area pages are not zeroed on allocation (Sashiko)
-- .data..percpu is exported under /sys/module/*/sections/ with the
-  boot CPU instance of the per-cpu area, and the interface is
-  documented in the ABI docs (Petr Pavlu)
-- keep a comment in apply_relocations() on how .data..percpu is
-  relocated (Petr Pavlu)
-- replace the "Based-on-a-patch-by:" tag with an in-body
-  attribution and a numbered Link: (Andrew Morton)
-
-Changes in v7:
-- split the rework following review feedback (Petr Pavlu, Suren
-  Baghdasaryan)
-- new patch 2 marks separately allocated sections with
-  SH_ENTSIZE_STANDALONE instead of clearing SHF_ALLOC
-  (suggested by Petr Pavlu)
-- split the populate failure release into its own patch (suggested
-  by Suren Baghdasaryan)
-
-Changes in v6:
-- rework on Petr's prototype and allocate codetag sections before
-  layout_sections(), the retry and its state resets are gone
-- fix the layout_sections()/move_module() race (Found by Sashiko)
-- release the reservation on populate failure as well (Found by
-  Sashiko)
-- only -EAGAIN keeps the fallback, other errors fail the load
-
-Changes in v5:
-- add Fixes: and Cc: stable to patch 1/2 as well, since 2/2 does not
-  compile without it (Andrew Morton)
-- restore frob-adjusted mem[type].size on retry instead of zeroing,
-  as s390 and parisc add GOT/PLT space there in
-  module_frob_arch_sections() (Reported by Sashiko)
-- drop the load_module() mem_profiling_support check; the percpu
-  counter leak is pre-existing and orthogonal to this fix
-
-Changes in v4:
-- add a new patch (1/2) to move release_module_tags() above
-  reserve_module_tags(); the overflow fix is 2/2
-- release the reservation on the -EAGAIN path
-- return -EAGAIN instead of -ENOMEM so the module can still load
-  without profiling (Suren)
-- reset sh_addr, mem[type].size and sym/str SHF_ALLOC before retry
-- skip percpu counters in load_module() when profiling is off
-
-Changes in v3:
-- use pr_warn_once() instead of pr_warn()
-- return -ENOMEM instead of -ENOSPC (Suren)
-- expand the commit message to describe the /proc/allocinfo impact
-  (Andrew)
-
-Changes in v2:
-- return an error after shutdown_mem_profiling() to skip
-  vm_module_tags_populate()
-
-v1: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
-v2: https://lore.kernel.org/all/20260804122038.190270-1-hao.ge@linux.dev/
-v3: https://lore.kernel.org/all/20260805090633.141001-1-hao.ge@linux.dev/
-v4: https://lore.kernel.org/all/20260810093955.153015-1-hao.ge@linux.dev/
-v5: https://lore.kernel.org/all/20260812054105.102637-1-hao.ge@linux.dev/
-v6: https://lore.kernel.org/all/20260831072104.120197-1-hao.ge@linux.dev/
-v7: https://lore.kernel.org/all/20260902081802.146145-1-hao.ge@linux.dev/
-v8: https://lore.kernel.org/all/20260907062414.106873-1-hao.ge@linux.dev/
-
-Hao Ge (4):
-  alloc_tag: move release_module_tags() above reserve_module_tags()
-  alloc_tag: clean up the populate failure path
-  module: introduce SH_ENTSIZE_STANDALONE for separately allocated
-    sections
-  module: allocate codetag sections before the regular module layout
-
- include/linux/module.h   |   2 +
- kernel/module/internal.h |   8 +++
- kernel/module/kallsyms.c |  13 +---
- kernel/module/main.c     | 133 +++++++++++++++++++++------------------
- kernel/module/sysfs.c    |  15 ++++-
- mm/alloc_tag.c           | 111 +++++++++++++++++---------------
- 6 files changed, 158 insertions(+), 124 deletions(-)
-
--- 
-2.25.1
+> ---
+>   include/uapi/linux/elf-r.h       | 7 ++++++-
+>   tools/include/uapi/linux/elf-r.h | 7 ++++++-
+>   2 files changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
+> index 72fc9045a5d4..170888422400 100644
+> --- a/include/uapi/linux/elf-r.h
+> +++ b/include/uapi/linux/elf-r.h
+> @@ -182,8 +182,13 @@
+>   #define R_PPC_GOT_DTPREL16_HI	93 /* half16*	(sym+add)@got@dtprel@h */
+>   #define R_PPC_GOT_DTPREL16_HA	94 /* half16*	(sym+add)@got@dtprel@ha */
+>   
+> +#define R_PPC_REL16		249
+> +#define R_PPC_REL16_LO		250
+> +#define R_PPC_REL16_HI		251
+> +#define R_PPC_REL16_HA		252
+> +
+>   /* keep this the last entry. */
+> -#define R_PPC_NUM		95
+> +#define R_PPC_NUM		253
+>   
+>   /* PowerPC64 relocations defined by the ABIs */
+>   #define R_PPC64_NONE    R_PPC_NONE
+> diff --git a/tools/include/uapi/linux/elf-r.h b/tools/include/uapi/linux/elf-r.h
+> index 72fc9045a5d4..170888422400 100644
+> --- a/tools/include/uapi/linux/elf-r.h
+> +++ b/tools/include/uapi/linux/elf-r.h
+> @@ -182,8 +182,13 @@
+>   #define R_PPC_GOT_DTPREL16_HI	93 /* half16*	(sym+add)@got@dtprel@h */
+>   #define R_PPC_GOT_DTPREL16_HA	94 /* half16*	(sym+add)@got@dtprel@ha */
+>   
+> +#define R_PPC_REL16		249
+> +#define R_PPC_REL16_LO		250
+> +#define R_PPC_REL16_HI		251
+> +#define R_PPC_REL16_HA		252
+> +
+>   /* keep this the last entry. */
+> -#define R_PPC_NUM		95
+> +#define R_PPC_NUM		253
+>   
+>   /* PowerPC64 relocations defined by the ABIs */
+>   #define R_PPC64_NONE    R_PPC_NONE
+> 
 
 
