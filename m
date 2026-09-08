@@ -4,125 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42D0C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478DDC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:58:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85D2B6B008C; Tue,  8 Sep 2026 04:57:19 -0400 (EDT)
+	id 5C4F06B0093; Tue,  8 Sep 2026 04:58:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 812CA6B0092; Tue,  8 Sep 2026 04:57:19 -0400 (EDT)
+	id 59C056B0095; Tue,  8 Sep 2026 04:58:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FC3B6B0093; Tue,  8 Sep 2026 04:57:19 -0400 (EDT)
+	id 464186B0096; Tue,  8 Sep 2026 04:58:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FF646B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:57:19 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE51E1A0485
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:57:18 +0000 (UTC)
-X-FDA: 85189990956.02.8779391
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 39C7A1C0002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:57:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMlWBWtH;
-	spf=pass (imf18.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1697E6B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:58:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 826A3120469
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:58:05 +0000 (UTC)
+X-FDA: 85189992930.23.FE06F92
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B0B6740009
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:58:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i3xOZyLv;
+	spf=pass (imf17.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788857837;
-	b=ydXQ/cVdS0X3a5VuCY1O8XRXOYR66D5SZTKA0g/Q+uqukl22rjkD1BUkmD3bLxxgkVvbQi
-	UlJ14/wgMlCHiDKIjq5UvJTS286L49mo3527coq6IJtaIsbPpDSqg8bOuF7Bou57gGu7oK
-	HUnDgUmRGbvEHvrbu4GvhKTPjzU+nw8=
+	t=1788857883;
+	b=vIkImbu82+o0w0UkLlZ2nxq+n4AdcfU8kI3xB2Mc9WlBbG642t++LKnrs9RPbgUJzE5HoS
+	Lq66wtIL4Iizsf1TOcRJyCBZh170K5YIDKalO48ROFdyPEyuXhWER5mMu//n74NcCmXF+t
+	JoJ3seCuBi54GjMJuqLMpj7hCvK6grk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i3xOZyLv;
+	spf=pass (imf17.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788857837;
+	s=arc-20220608; t=1788857883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BOR2t3VtcjszZ4q3H4RF8INxqX7I/2OnFWmBk3yYh2U=;
-	b=NXWowpSvUGVzvS3PY++fV+sPValGilC6Ufhh8I4V8arHKBCNUDUGXcrKv/kvHurvPK0nek
-	0BoKoAnnPHN2ivmsI4QLdJmGZmmyBgNzkuJmCwNzImNbRB2HlXszrR+QaXJjY8T77/9Rcb
-	FZsBrq8SiVnjJLzdo59Zy6DhjmDBHCQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMlWBWtH;
-	spf=pass (imf18.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E869D60A93;
-	Tue,  8 Sep 2026 08:57:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D6F1F00A3A;
-	Tue,  8 Sep 2026 08:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788857835;
-	bh=BOR2t3VtcjszZ4q3H4RF8INxqX7I/2OnFWmBk3yYh2U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RMlWBWtHsUr314SSes2RbgrXEdhowxsDExyywV6MWPiyRlQ2MiRcnzJrKxwP2Uq5y
-	 FxFi3d8oyrDb4Ns+a5YQol0nE9UlpMARb5Srs2FLa3c8UgJq9bIRFnwje3hSYKfvsy
-	 4lejU8BQqLNJPlkLkj5fUKy1asSopqBNr8Z/GdXh3YL25ZL/xotJOBdRT8X+1frbzz
-	 5wc8MC7jxG0TFbXkBqhY75SKcdrJ0GvpwyMgIKA6vQKX0ndFDZCBRqE2+uKYcWsIZK
-	 O423o/0XnOMDsJENmzRb5yAhovNWoPRl28a6i0Ifx5k/RVsnRdBM2JH4gLApjYzNXL
-	 e95ar8gZlvOGw==
-Message-ID: <06996199-5255-41d0-ba6a-ebeca57f61da@kernel.org>
-Date: Tue, 8 Sep 2026 10:56:58 +0200
+	bh=1zFe5CkdviVdWpTUjRsL71ghioltrlS4PEP9q+np+JE=;
+	b=GAenr5Qn1htXTmDkI8Jytk2DfQMp9qBpyw9AmlH+XJCxBG7tT4t0jgJ+Lw0LVkLz/LsAD8
+	6/EHsBNc0EewWlVmqcOKI0m9ax1Q81K/DYadw/BWCKSlNZ2X73YDcCuosiRVMPo+TTIWjb
+	llaitOV2chgFN2cLZuSVlj98vkr2y4w=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso41943445e9.3
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 01:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788857882; x=1789462682; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1zFe5CkdviVdWpTUjRsL71ghioltrlS4PEP9q+np+JE=;
+        b=i3xOZyLvlJf+vlJ4lQRLhDtIP/5ZGZInyQFAPdDm+O5Rf22zkHZdFDd3l/pEIpuj1G
+         vHSqs8Xl9yMkd+LeR53NDisYZGPXIFVr1I47kPV3lkrrZm16JQ58Ui+93ZqAP9J6XR6E
+         heBCGtAvb1qKe7/hL4NTHmy33IQcnuNv97/DqyeGsl+p3cDdm1tTqtVSVDZTpVvEagg4
+         lAs7gc9XRf99l/dA4ip3D5M2ycMkgM3Zv3xsCKl11No7eBpFhy9iU6KPcx8VGWlEuFfl
+         8442YILLT3vuXL3oaS3UDLXUvLZ3CmcY1/qa1BVLYSD0jD+7a9fOzw2rW8s57p5211o8
+         sklg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788857882; x=1789462682;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1zFe5CkdviVdWpTUjRsL71ghioltrlS4PEP9q+np+JE=;
+        b=lsA5JKIEOn7Pxw7kfQMZxrZlGFFrL78N5UG5Jw8aoEdJTfzOelAqh+PsoLgLYARyR3
+         HhmEw9sMzQCTbPr4Momtx5FPH6Wl//c8C1jvbgpvuOo9gdBJZIH9qMNN6ZFKpy2t/GzK
+         tlz3UTWzEOh47c6NEHL2nXW+5sS6ISNbNbzKXlDnf9Wp7euuhIEPoLBKBY79YU+zLOwt
+         kKViS7WHnFrYxzZx11f80DM3tGBELJxgV57jSJAbODXzPPlqFPGyX7l0JV7KDEBMgCVo
+         GuT/2qMf+xUn3ByM0R152ZzOji9aggQoJvt4a16PegzaMz/7O+PeNTM0wgRum2YAvKBf
+         +tEw==
+X-Forwarded-Encrypted: i=1; AKwUvBwDEdN0uJSyZ1GeruALhRYIOCXIvO23VvdZLv9si5Z3cjbchPJfyaJ1lj6QDeKUhGke4mzMfLcxJQ==@kvack.org
+X-Gm-Message-State: AFuF++nIIsrKA2QH+EZhiL64aU0fYAVmXPGkbpD9/ShM3BzAIL9sqStJ
+	Kqm3GaRVYOjjNor9x68cSawEokNoC7o50zQ/i/vvt9h1EA9DDH2f2MVzGTlYRzpXrg==
+X-Gm-Gg: AYBFou3W87ypLOoA3dE6X0iaJtoT13s78V6SkTX++BF6VOh1K1kFQqXQ9bV+sQGFzeV
+	3G5y3FvkfN6LiWFSMSh1n83P0vDl+eMs+n/ynPYOWHREwis7FGUlHtTIlMBmLcg4g1HG6sQqd6c
+	NDAwIHGlDNbjwkj7J89iFDukfELHuB5uWWD4BtyOoxDRERfY3p+NsEibMFHPnMUlIzjTyq+I6Ta
+	Oe47qG4WVGaG7bUcr4qZtl9avpReZ3RZLksN967GeKo/1a0HKJ3diF2WI0VvWLyjO+1JihQ36Ct
+	kQPIc+3cacNIbhCGLhap0FisCTJXrGjsudqjTrrrycEeiNLGnpa90Chc2up+Yj4jbrPmK61ef91
+	+uWrRdSmYj1BRZwhv6dqDgz4zs2U56zJL73AvUWpnKZWDPq5rRwLQU4iaxAQfH2HpkP/g3Ga8tR
+	RdBBItcRnzP8e4XJXKAZw4nqg+LbssFWyt5b+M5+OwsOnMs68JhrRIP2X/KMfz86BKSrG6eLFGs
+	nLOXMbyWfB6qAJw4zrNuZlaS4IlSNHmqA==
+X-Received: by 2002:a05:600c:4713:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49cfa20cd4dmr257500325e9.23.1788857881099;
+        Tue, 08 Sep 2026 01:58:01 -0700 (PDT)
+Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5f912esm476174585e9.4.2026.09.08.01.58.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 01:58:00 -0700 (PDT)
+Date: Tue, 8 Sep 2026 09:57:57 +0100
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
+	linux-trace-kernel@vger.kernel.org,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
+Message-ID: <ap_OFQepcu26g88u@google.com>
+References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
+ <apquUWgrD9C2jWQ0@willie-the-truck>
+ <ap_HzwVp-6aOKEbJ@orome>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/24] tools headers UAPI: Sync ELF headers with the
- kernel sources
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Nicolas Schier <nsc@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ap_HzwVp-6aOKEbJ@orome>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 39C7A1C0002
-X-Stat-Signature: j4iythz5fazw4e3w3mdeoma4iexwstkc
-X-HE-Tag: 1788857837-797983
-X-HE-Meta: U2FsdGVkX18WN1pFfOWeS6gQUZRUisJdf8NHViv0UXd+5QejyWppCfRvpSm3mBVxsH8ko6vzvMgTJsDA5nGK2c2g9DTGBhl9efqyUg0nNsthQOUJOTBdliL64dKT7vPk75YlzjFEUwLLGzq2ICRS5Jc3DO85m2LSJmAQryGvvd+S68f11WMS6wZ9+4YqDc1pV8Mf86ZiWx30JCAUKRQbGNgS1HwPAMEruWWb3RAsKG5LCR1HzZ1U0nUIANUTb7v9RvGF4jZYXQ2jdXnL+6ZmKq4xs/ewXPXYFnKwYi6MlEr7W+E4fomZgFMHdXd8oudLJ8+kjvOFmKJ+NGzpjH4TxEkxVMLQk+6MJYEtl97ODnuyAgNC+pVHSB2y6Ku7h4S25siuxuwHw5RGdFgaV15ci/1jmNwtxfgmHi8voblG9TwaUfDhSBCFZjjkQ3htAAqs3o2HCXGk0RykwFxoSvpgNuJAtSWD0XdwxsePVago3N2upnNbUxP3K2bFlBgfJZfqBQoyzFlDdxJF0s6DUBKobIrgOk030x3I7jh2x3GHTCyeXD5UO3VfOTHHzeDQhkeBasTmaPJINmBHJ8eA+Le0MR8UjpFxUhyx4rhPy+BofLh09jgzH4MChM1f5YbIZC0bVPnDP6ME6d86F7fDjZVrAyrEg3YfUJEMPBVhHSvl7u6DkLfkD8SBaRUK18zgDtdWlCBuwQ2joJsQbxcu61fRysVPNoIO7I13xnetD64RZyrhmduggM/uQuBhEe4fvZMcHxmvtxjLig16zKM24GL3MosjtrpVFp6/WrZMSd4xm9kuPTUvCFduUsJEFuseSMF58uukslTbIFm+FezG8ZUZNXbbMKvx+PJQH2CFWkoD1z6d5iQUXwFqqzdRLu0xKo8/z9srTSYP23tDermeM7SN1YvF3WHU6u+BjPShRmmwmbeOOelRNkrHIlCkQWya88fCMQ6j2qeWZN9je0T5Vf4
- Cz/o5HyI
- ARJr9aEfKsk28BPDHYrR+VZfCp0drW18ixBh8V7EoZtXgFvvbq0wSAE+MIYjOl8qA5LaXn0HpZAHlcHHf/8NH2p0cjco9CLx4OB1IIqVMXFQycYf+On0VM9onUmRCATMpYdLbwPirKbk9eB/YpbEJRnk/xWY/E/BdCyx6CdAAFknT7G+87Xasbt0ozA3vZYG44tJTOttjouFVAxZpyknUKYDjnv4zwgRkWyzfYYNfq4r4bAgz6q3vA+pAmRqAkcrqXIVO+bBoAfXNTSxjDzTmWtvh5SC+62OGcx7U5ByQAk+DU3b1w1sCh7Cjib0mTtJhnjN7VhtABlbsOdjUMYJe4g9xuhlMw3wOACj378gJg0MrcfUaSVIR2wRoLP6IyjpOD441cIObaB38yGBbG2QtxXPxtMWlYJbQPe/t
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B0B6740009
+X-Stat-Signature: ouzyywyx7y4s7u6gap6zec167jgsf8mk
+X-HE-Tag: 1788857883-239475
+X-HE-Meta: U2FsdGVkX18xX6Cs6H/HzpjT/RgVrGIhgmQ+MTsUZnStXXo0eV2+bidgdQFmcthXSHq7hqf3dAXPS5tOiHI+zCRZCuVC060WkS0Dg1Alq5bt+VFKsFyy/htw2HNO1LgII4p0EJ834WtI7Ia+uRoAiPTJS3yDIiGVULCPG0ePnCigGeFHUyckYTzHPU0BgIMFuy2eoiHpxW4j5agVRKpLeL8FKG8hyFZYWmgU0ym3yb2BdoYjftZL/1nchiizfwJYG+CaUf3bT8JcOhpE+PmN64jU3nNJoUD+x8cf4eP0wF/eZyR79DGZsk+L+fKCj8fGurx8zCOLk4J5ghYUED+vXgWsSOXOT16tUZHg9f1t/+rSHbHJTVqgECP+ERYId8HIRYII1O6f9hUawN7QUzILrwulGyFC7OQUIx/x7BB7sJorJY7V/lOa4xz2kVfPlcuTlLIcwkJ+BWaUPVCuFMxuuKco+Mnmr1B/BCOn4wyZZg2gWtnsT3gwHoBTECAHc7Z3wa9Tp0eNPrqj4kl2SmGn68BQOqSdNIc/hAGdkmhO7lPix0DS0h46O4l9lpUEgJUuFUuhb89hC8pN71z10rPDc/b7tmk7QpGXdCRMzRauIFrkv4vhqY33tIXTQCfBb+WmXSmBDeUQU/MAiP0Tlg484WYhIgfL2FC3JxmEeQz11vdYRrzNL3brcc26gOUDpCg34fQATg9cV+aZmOveTCCTnLfkWb+FWZTlrXBj/hTd+9XJpE+RQkt+IbbQ/YQJdCszTqorKBgN8P1v6d7VXJ55LQSTEPqJBLrSiGyJV3FcDc1BlO5Rl/WBshKXbaLRVc5aFhtht6qMxbukYUffcR5YHWc4G109BkIl4Eoi5RC8qf0hss1RR5OrVf47ISsM5uCXWzfMTDQI3ttY1KDMqCjuqnTctd7yrzlY7y92HtEH3DD3X2Nz4AIHOTTvsAK9lWgeF9xCO8foaa2JG44zRuJ
+ VVMNgz0n
+ PNtvY5ppCI9MJ659rEEtKYJM1vY1ZN35avqM6RkJCSIp+ie07nlil3EZ4ZL3zNRlUwHfC8Wq+lpazPfAeiu3rr5dq2StRd3avT6c/8PW029cb8szRap2G2Hum2XTZvAkeypNwlfjoASOYnFFwv9Gr+bjmB1ECVCkv6D5wes6FVNWWXE0g1hR4Arze9fSSvbOgazZbTbIVIL62wF2TFWN1XAXkRZZ1+7Vai5GHHSTZ0oNEkz7vWHTeJ7lX+5TAkTetS51PAC5tdbXZaypcaj+1v3U7r1RcAqrgjIPavV2X5oLB7kGvr6qHctBGXf0SWd/y8RNFqEZUvqxnk6fWymmhyHPa/j/gezw9HXWUG+sd656flpP5qewrP2WgD5mDXUOumTO2Y+Gmox2+/UfFi+Xzvksa6hGBiloGZ5suMxJSjlgOeyxs0V8z07yn5+KCGpN76i7SbP0myNHqGvCDFcZryRBnNG+20Eotsj3c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,44 +169,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-Le 08/09/2026 à 08:33, Thomas Weißschuh a écrit :
-> Pick up changes from the UAPI ELF header files.
-> This picks up general changes to elf.h, elf-em.h which was forgotten
-> previously and the new elf-r.h.
+On Tue, Sep 08, 2026 at 10:39:17AM +0200, Thierry Reding wrote:
+> On Fri, Sep 04, 2026 at 12:41:05PM +0100, Will Deacon wrote:
+> > Hi Thierry,
+> > 
+> > On Fri, Sep 04, 2026 at 12:44:51PM +0200, Thierry Reding wrote:
+> > > This series adds support for the video protection region (VPR) used on
+> > > Tegra SoC devices. It's a special region of memory that is protected
+> > > from accesses by the CPU and used to store DRM protected content (both
+> > > decrypted stream data as well as decoded video frames).
+> > > 
+> > > Patches 1 through 3 add DT binding documentation for the VPR and add the
+> > > VPR to the list of memory-region items for display, host1x and NVDEC.
+> > > 
+> > > The set_direct_map_*_noflush() functions that will be used later in this
+> > > series are exported in patch 4 so that the drivers that use them can be
+> > > built as a module.
+> > > 
+> > > Patch 5 adds bitmap_allocate(), which is like bitmap_allocate_region()
+> > > but works on sizes that are not a power of two.
+> > > 
+> > > The of_node_to_nid() function is exported in patch 6 because it is used
+> > > in a later patch adding a driver that can be built as a module.
+> > > 
+> > > Patch 7 introduces new APIs needed by the Tegra VPR implementation that
+> > > allow memory to be allocated at a fixed offset within a CMA area. Tegra
+> > > VPR needs this in order to implement its own allocator on top of CMA to
+> > > meet the strict hardware requirements. This replaces the dynamic CMA
+> > > area creation patch from earlier versions.
+> > 
+> > Did you get a chance to see how this could work with Vincent's series:
+> > 
+> > https://lore.kernel.org/r/20260902104712.2399797-1-vdonnefort@google.com
+> > 
+> > ? I think that should remove your reliance on can_set_direct_map() and
+> > mean that you can retain block mappings for most of the linear mapping.
 > 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> I'm not sure if it would help all that much. Yes, if we mark the VPR
+> region as LLMAP (or PTE_MAP, whichever it ends up being), it should make
+> the checks for can_set_direct_map() redundant. However, from what I can
+> tell, Vincent's series still forces page-granularity on these regions,
+> so it won't retain block mappings at all for them.
 > 
-> ---
-> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-> ---
->   tools/include/uapi/linux/elf-em.h |  71 ++++
->   tools/include/uapi/linux/elf-r.h  | 696 ++++++++++++++++++++++++++++++++++++++
->   tools/include/uapi/linux/elf.h    | 112 +++++-
->   3 files changed, 868 insertions(+), 11 deletions(-)
+> The block mappings can be retained for the non-VPR memory, so that's
+> nice. It also reduces the amount of external prerequisites, but I had
+> kind of hoped that we could go one step further and keep block mappings
+> even for the VPR memory if the region happened to be a multiple of the
+> block size.
 > 
+> The recent addition of page count to the set_direct_map_*() functions
+> helps reduce the amount of checks that need to be run, so maybe there's
+> not too much to be gained from removing whole block mappings at once
+> from the linear map.
+> 
+> Thierry
 
-> diff --git a/tools/include/uapi/linux/elf.h b/tools/include/uapi/linux/elf.h
-> index 5834b83d7f9a..88bdcbb526c1 100644
-> --- a/tools/include/uapi/linux/elf.h
-> +++ b/tools/include/uapi/linux/elf.h
+I should be able to add PMD_SIZE mapping support to the series. That was
+actually my original idea as we can easily force the CMA allocation granule to
+be PMD_SIZE too.
 
-> @@ -312,7 +323,7 @@ typedef struct elf64_phdr {
->   #define SHN_ABS		0xfff1
->   #define SHN_COMMON	0xfff2
->   #define SHN_HIRESERVE	0xffff
-> -
-> +
+I didn't implement it as I thought there were not much interest in the end (and
+also as contiguous.c is always using PAGE_SIZE granularity).
 
-Getting the following warning when applying this series with 'b4 shazam'.
+But now as I have implemented a specific pool (and do not use contiguous.c as
+originally planned), if you believe it is important for the VPR driver, let me
+see if I can extend the support in a V2.
 
-/home/chleroy/linux-powerpc/.git/rebase-apply/patch:846: trailing 
-whitespace.
-
-Seems to come from here.
-
->   typedef struct elf32_shdr {
->     Elf32_Word	sh_name;
->     Elf32_Word	sh_type;
+-- 
+Vincent
 
