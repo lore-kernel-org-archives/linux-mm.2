@@ -4,125 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B827CC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94715C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:15:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCF576B0092; Tue,  8 Sep 2026 00:11:26 -0400 (EDT)
+	id 709A26B0095; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C80796B0093; Tue,  8 Sep 2026 00:11:26 -0400 (EDT)
+	id 6BA566B0096; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6E6A6B0095; Tue,  8 Sep 2026 00:11:26 -0400 (EDT)
+	id 5D0496B0098; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9360C6B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:11:26 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 434896B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3820016035E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:11:26 +0000 (UTC)
-X-FDA: 85189270572.24.4EBF4B8
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 6390020002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:11:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=E0OmA1yd;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf31.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.54 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3497D16035B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:15:05 +0000 (UTC)
+X-FDA: 85189279770.24.FCF23D5
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 904F340002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:15:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf17.hostedemail.com: domain of 3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788840684;
+	s=arc-20220608; t=1788840903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3IBDytwN2H/xXV0TEBFachD5Go/E9+5M3oIjuDOU/c=;
-	b=qQjc1rf4USfoBXVhCGcklneNRPgq/KmgAyDXZfyPqRS2MYMKSpYtPvViCoJYHJr0MpAh05
-	olsOLA6PWkqq4NXpZlbL76cQi+lxIIRrfPYIA6REKa7n4sMIzzNmdu3xegFcBOQiSGf4lh
-	dFrkGKltzmLBVnBXTQabH8HBhyTBJBM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788840684;
-	b=pqo6hvNlGnoHgHTxmihCM3qIMZWb5bwddyJDTVMeIMWUn6X+W/mBnWcrEq8+rESxJ31Wj0
-	HA4iYZbf9221x+sJMU32JdH1T9AwzuK+sW/g9dwpQpytteME+StHsKuUwFP7md0AcNAHN8
-	/UZ8k4fbKHHXhTCseXMRIlvEI+chOOs=
+	 in-reply-to:in-reply-to:references;
+	bh=OJeGxfQ1cnO4KfojSL4gJl33/1+VNF6TUeyMxAp1vaQ=;
+	b=YcBNNfHNVU4hnglTQdXEC95GqVWkpPBUxZHL66adBSffKFyg+n4/6hd+UihMn6Z+4wF7Pr
+	NbUOBhcAeNb+8xTckzmKfLeh6EN0TNAs7UHAMeAonKOTVc4WOfuWmBqvBmBLxDzPnZJhLg
+	7T0HnBZ0UNcLsxY53h+I+eYol6c9byk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=E0OmA1yd;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf31.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.54 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-382ef647e20so4220644a91.1
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 21:11:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1788840683; x=1789445483; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=k3IBDytwN2H/xXV0TEBFachD5Go/E9+5M3oIjuDOU/c=;
-        b=E0OmA1yd1oVMUZ3N9cNmItLwJTux1yKEsntqscbBvilU5/Q/kalA45H2hKgBeut5B+
-         Mg64WPaVSAnwP34QOOWcLtRPxt98PPsvU/BnygsAEPpOCHmQMKG3ZszjT6uw52iTQXty
-         3oPpXDfu69j42d4bxFf0mZsUMfdIAIus2CWsk=
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf17.hostedemail.com: domain of 3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788840903;
+	b=1djZLSG/lBoQ2a3BTHKFcSlB+xcomVU1PwwX8K4sgHbeJsvgmo9/7RcSHkDYhyN2KwlBRJ
+	1Kon8xMd6p8cUKGIoxbIc8R0EApk3E7LO8lIqdOgiG/Nzuk3DUnfaGUtDoBQPTaug4DmXv
+	slYRGgkxF1sVlTDEnRsUf9SM8hOftww=
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b28db6c77aso5003438b6e.3
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 21:15:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788840683; x=1789445483;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=k3IBDytwN2H/xXV0TEBFachD5Go/E9+5M3oIjuDOU/c=;
-        b=P2SQdM9bRAldWMBPamjIBqxuoPRfXIiYB11iVdPZSDTPCHspLmxTlQ48w7lwJzt8U8
-         E2J9hpKzJ5kBIP/O/DSubNprMyozEly4pa/zxvEJGCBMkFpUOJfVpMpIsVIMAUqVNnbi
-         rdGQd/83JjxZnVx8zthQ4xrMpdejHIDUWXl5Lycy1tFvmyWB9q1btH6e3ZPjD1DrL4nW
-         9PRbYfyoqkcmVrJdlHf71wC+fk4Tg6Mhrr/o38117nKXoMV8+vvc546Dnlzl1Vqwta5r
-         850R2BDgOkt8Iaqe2P5b55IjIvgXwPZNU282PBhB6qZB6wAUjvT67i7/stVFg3OU3Ubu
-         NxnA==
-X-Forwarded-Encrypted: i=1; AKwUvBy573fqmV2I6o7Eait43+x5FoiwWrsrw3nNhji7HiFHVpmvxhlPbb9kEG3Acl7Mk94nQueXJJRLcg==@kvack.org
-X-Gm-Message-State: AFuF++n7+ePSpmhrOLXWB58z0qz9KXvx6MzsZPQ/8Amt73M7FuPSikqJ
-	Vqt2mDDcZcEFIO853k5Nii0/qI70v4gl4MVKieezSC/bmMpQwduHuHPCjfovMmQ0pQ==
-X-Gm-Gg: AYBFou2xYYIX3Np8P/BHqKM67xTTdpA5XBkGbjEhRSIPpBAqEcGtXItfAOaHMpIYDgM
-	N3eSBlMF5P1ZvqtHvsm5I9Z0nR0Iy8So4u65U3hLY8SvNQzZuZV8BwBFcpl1AJiJn8bDYxzQIQh
-	FYlNeHzf1kMnKSINkbxzPuO6ECRB1a5aJbkGfSc+1DfFkOVu8E9U0Olui+PPEGKe8WziEydi3Yu
-	HaYXv3ZpsKxyY0K2ZouVlXIPU5wYbqdVvyz6EUJwzMJD5ND08f+/DzGNDpV9MFPb0O6OIu33R1y
-	fyHNtp0OQWhaPF5RBjzba9ydtCbjnR6LOT7nqpFv2VP4aXCLbHRopRMumOfH/mD5v1gMpHpIC8d
-	AiC791jOgDN2D7PrvmyUC3FxL6YsEgLSS2x2/Rn0MOkpt8G3TFqdpEwGNx8JIxbQFN4Vtt0Hg61
-	sSocm2e+hSTdQLjTqxyAdSzwU/JT98BPm9kYGjmWsCmLsJuOAsCjlzWKSUF7jTioHUTsmeSbKka
-	3XcC7/B9ZGzx7tDEizn6uXtCCZ2
-X-Received: by 2002:a17:90b:5905:b0:398:9bd5:490b with SMTP id 98e67ed59e1d1-39b262133ccmr39121529a91.18.1788840682937;
-        Mon, 07 Sep 2026 21:11:22 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:56ed:100b:a906:b2eb])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b3312f9a8sm21325570a91.2.2026.09.07.21.11.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 21:11:22 -0700 (PDT)
-Date: Tue, 8 Sep 2026 13:11:16 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v3 01/14] mm/zsmalloc: replace PG_private with pointer
- comparison
-Message-ID: <ap-Kx9qjJX2ElrSw@google.com>
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-1-6ae22f9d9272@nvidia.com>
+        d=1e100.net; s=20251104; t=1788840902; x=1789445702;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OJeGxfQ1cnO4KfojSL4gJl33/1+VNF6TUeyMxAp1vaQ=;
+        b=n5QcT+MklYf9M2XfYjkF1t7RY+gj/WkCFE464DVY6SKxrTxYwCJTYyH14aNJtMtu4B
+         tYjL3YPrxKUX7Zj61xF6BOgPBqMOGwO9NthwXR3GH0QBqXkALMQB9byBHVR+HNc9IVHd
+         m0NdTEsHF57Zu4uhcziM/eIIXO6K+fLNtkHFbTvz1iyxbQl6xdhcaXQfmi48VlX37n9H
+         fDNr0MWbCjma1fFhTu0yIM/FagLN62VnSYrXljpFwHrli4oCeKd6LFxJtr5kmtyCrdd1
+         RZDNJE/m4FgjirfMj+avK9tw4s8Y6+t1MYx2sEWoVL9uietIvRXeTW8+YCYA/DnZxGsU
+         chkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy9AwPssWT3xmcqLh8gHiJu0jYq00fJqShcX+JArTPSVdlGjQMc1L7tSgSU0qUZgi1tFXh6zbUs4g==@kvack.org
+X-Gm-Message-State: AFuF++mx3VL3siz3nuw+R/jh/aHzHVw1OsD+2bfd+CFMQYCB+5z0nMd1
+	XQUzRCPeq3cvRhWNZ4b4nEqLE0g4z9dWKgnYeftJuzoC//CGrdExzqHRnBQFFp/iSyTq3c4RKE8
+	7VPK51JgjO021AxRfG1PZmCPuxwG5SFo0EDs1/K53araJIwWzjaLhGEiKDGY=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907-remove-pg_private-v3-1-6ae22f9d9272@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6390020002
-X-Stat-Signature: s3ocn8b86y74rpdfkeu1roeo3s3oyw46
+X-Received: by 2002:a05:6820:603:b0:6b7:8415:d784 with SMTP id
+ 006d021491bc7-6b78415d7fdmr12916161eaf.47.1788840902666; Mon, 07 Sep 2026
+ 21:15:02 -0700 (PDT)
+Date: Mon, 07 Sep 2026 21:15:02 -0700
+In-Reply-To: <20260907192517.564ea15aa8c9d47669b3a81f@linux-foundation.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9f8bc6.f614420e.2bf292.0005.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in vma_add_pgoff
+From: syzbot <syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 8wou8qs5qsadf1dhjafd7w97nzrb58gq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 904F340002
 X-Rspam-User: 
-X-HE-Tag: 1788840684-363906
-X-HE-Meta: U2FsdGVkX1/NKn8EyRLKMeHAAhvYJ/7ajj/Zkig9IhJ7wF6yfZk+HvX21NSxosIq3x39EyaoTbewU6p8CnM1YUERM7tI9ee2FjWETmOgwl/L7N751QgxhhfvdjyzAVvIhvyEjcxTi0ZEGLUUIUfWhB1Tb7VnPadkHgqNXxxD12eslPTSe4JLJ0QId3v1r9oG4EDP/zssSsMadZ86Ox7otelgb7Zkp0tEKzFo0xk6mXV1G9NR28Uv9uMzzIkWnTHr8se5l8iblvZUWlFkVuDur8HM3IFQPAg0xMdq7x43rw+Tdf6n2SmKcSJ703smc8QZ+JnYg8p/nRpaeA/tEwRovK2BP4B5c3e9P/ju6QUf+hQ4zDHVsEfVIjCgcYcxy6MzlqpvkAK0tWSdazmNNxlAz1k2EhUaZ3vGkbLT/7ZiiLmpswV3t2N+jNLguk9kDtFZnhWznywpovZOsz0bmGy3Hl1KWygZjEZoC2Xf3UafQiI4/KsmUZU0JUMZxGkLIUTg691NgIJQ25RnT5iJXjWQDlLaFlxmIJ9omqsSdyVWOvj+E6H5u+hiWBNtReCqqpTJtlhd1ZRRdjfxnlNBmHSZ88xuTZSJBoqqqwm8o2kG8DNmcfTeeiet0aN0CLGhTZs/Qzez2IYNh1Bne3Y8JJjMJPCwvAOqawqWD96rn98tIBlBqyEadIr/1tAEWbdN4hWI8c2sAmCo4AhOBRP0kpCqJYIpMw/Y7UZi9oQAbnJl6SYgeEXDb9wktiTRA+0qONLY+OP46Y5v4ZArs/7g7hrAm3W7WlCdmt9u9Tr7rVkWv7mtkFrQaEL7Vx/Uv04QaNmN5PwTZy/8tqkaCW22yZ0Y+5bWWfGTxMHlxaUzJVaybij1xQwL4ZJtwLKxOZo9zCBAORjvFfICnNJfx0dAxxPFD07iqB+BrzU2iDwcBDNKXzCsFbaMwU+El+mIJ31/XwZuVftCasksF9k0NyW4/8Q
- QwxBNpRM
- fMVT91dYIfXxWUjVY63P6vZiFiVpTkNdwdk5pD4rT2k0V2Sw9cUClHxxRHrLB3DHXTK2gJZHwVBiynfO+rOBaGwopbjJTjEgy4jrU2NvBx3AxBhds+vQcgHncvJ4EsixWpRrFPuztlEMzbKKmGY7W+3Ru1v1Q15gPG+1QynM2msMV334HHMcePttkMNmGkl+GhyPmoVOmHHqrBcZsw8A/AUCojcQYXMEXDX3S9czu5VH+Z47fksXOO+prXlB/eAeJWFDVwvKrsk9d0E+50C2NMCIyDawzBp9hRBFHZAWr2yYNsISpREEhXPo1Y1k3LCF8hpNwS1jpDnj/NKytcX7a2M6sz13wnsy1tdBOjDFRMrQRI4kv9Om3C8fN4zrCTRN3pB1y0fJkJP0WzWpdTI02YPTCluOjNAYZZWM4akQM1QHgoBQSF52Je/sEPwySgetN/MMkPkdH1dF/ZidPZ+rJwAqNwnChWgOHIyQcwYcAVgMNoX08aZz83Qopixvs+O3S0QhZ9Jw/qmEdI3ojMI5cwPgommxu29JtKHzK0ogPiQdWe+SfNNKLdnTBK9C2HZIqGXS1/bee4cG9+nOvd3h9oaQGEREIEUEaG1995gm47U8HV64=
+X-HE-Tag: 1788840903-352734
+X-HE-Meta: U2FsdGVkX192GZlMjLmBFOWJimiENJmraHWcrMSCN2tSdZfgwEy/L5GRXj9AaJDwXEDpuHLYh6RgjkIaLjzL4QCVWNM9+G/SMZ3zOQ6PEcLox8R06+GqFPc7Q4p6dlTgXhkNYv90C2hojftDTH7bD/xu3QJKdxCakAqTPlI+3Y5zWhx1759Cm7Fpnam9qayd34sLVa9Ac40C6Fa3f2noVMkYHflhpcF3cwoU4ImI57GZ2o3+eGxahGvESHxc1s6OHtXhZTaYAaA3u3ZfLFeEh3xnYwCsXO9zU0S2bVq0zt1N//prgnf7pNJfHFfsfw330a9Bp1MKU2lb+N3UDm6pzY+OIVLyrb/r+LvnPf8vMJCMCIQR+SK/iuiWecz9we3lO995OWpapJYRFh6aiFp5xc5GI39pTJbLvysXq0gMAgbhfszIGUcXMnVUDXTv/BVihBSRmHKcCfNtvdyDYCYNDdf8ONERH88+jzph/BNmgxbYvds07boa/3xp4MnP8FYiOhXYNJEro/BzonWxU9SMqkv+P+/ecyC7qmwKYNNyR1sa4re0uNDQ5aqPi/s1/z+wSN2NA2LZErvwZoPE9gOqhsNi+x0m5NqKg+Aj4rweXYJDtYXUXmIpGmY2H9otMOkyu+QyNEKeHZurfykjDL+QOM9Zw/C5VvNm8hEzZf4kckY0Vz/SSw0f1ySTa+/jEessbbZNDsYv/OolR8shaDMtQ8z3wIMo9uC3eetIBHmzimBxQqIKsaMkxuMairwB/UfyBNNfw8GacC9L9OYM+6EowMMxuoo5UdGTjl5OVh1qVvrMHAMTYVVW0bP/S54Ajt64OU+f9IqvaIFsEE6FEP3ntThBsRdraBdgbpt6r7Y4ZDfp5HhlFXzdOM7hY8E8PbY7vliYQEV4BvXy3qWXqCBJEUz5rGEJHwH0lsWsUkKQNwyaxZhWd1wEbBGBJnqCdMI1NF16UjtC71/J7z2zqhC
+ VN30MWlr
+ UNu9CjRMUtQ4jeYKKvIplIyG7//964luyBGUTfSr6C4nnauLBKT2MQ/x3mx+tpgRauy715Aj7pgzuotRjr/gCxQZjGNKBHj6+YRKH6uotI2K5nwpomJ3qGgcfWTs75XxFXQ766aq7KMajFF0oz500vp4IttVbsY/57jue7R72H53ivQsRMLC5kDI2q+1Bku7TzRkdF9fPsMWV54ib5M4Cxuf+XltjUXqFW1j8A6w/NiwKkx3SORC5FFUgxZY7xnKpoL3IRnMK2ahphyml4J1+l2oZm1x2Xnesu+tjP95sn7loZomzzFlUmETxXLktg/TSI/37laFgWfd8ANvWEjOqteSgl9fQY4/AGsTWQEFUAiTPeYESTsfQVEU5WhxMQ4HFN260CI8fRrEe2/3zk54Ro+gPPfmdkC6I23xWuQfY3pK67QR9FWKN518ZYmwdjmnkFZtpyWfqUC8vM6JikqMmJBnaGwUzT00PxpboMsbBNHq4C2iCCZ4W3Ja5ehYqCsBKLSZf4qnfhaY/5Rwiu+6DPgTNtedC9a7XRmaQhDyllaWxczK/yVi2HX7NH2IyDvGQlSBqMBmlbJntRyRMQMSGwrItqm5orxWX49DVq7Wj9BL34LdlAQzvmkiOzibxV9RcE+tdYxxH9aJorZebSYTAKOfxVFPKIBH3bg/pxBe8lFsmF5leC+dXOaKda9laoJAPUHydV1uoDTDoct5HeKddM+e1LAbhGFjCBs64I4yggLwR8MGeqMweK/HAdGRBRe19LL1gCS3n1MW1/E9Uun4XoQLYyQD5z/8A2ht8NuVLS0QZWkAnmv77ISy+EoeoWAOQLZFQC8CV/dyd+NgefDMIgZKStMGG2DvANMtdIW1qJIRPlzSI3a7npksBDWZeMrw4B9R06ige0HIrAMIM18q8o+IANyJpX2udS3wis4uR48RyHMf9tX8+O8wuoJfNaoP6G0TZNoABiW97r6V7Wfl1lSHaNjPp
+ RZVtI7j8
+ UoJMusOoKAHaVFiAQ1YWQDYCxs8slt5l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,32 +98,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/09/07 22:56), Zi Yan wrote:
-> zsmalloc uses PG_private to indicate first zpdesc in a zspage chain. It is
-> equivalent to check zpdesc == zspage->first_zpdesc. Replace
-> is_first_zpdesc() with zpdesc == zspage->first_zpdesc in obj_allocated().
-> 
-> For get_first_zpdesc(), first_zpdesc is from zspage->first_zpdesc, so
-> replace is_first_zpdesc() with first_zpdesc->zspage == zspage, the second
-> requirement of a zspage chain, where all zpdescs point to the same zspage.
-> 
-> is_first_zpdesc(), is only used in VM_BUG_ON_PAGE(), so performance impact
-> should be negligible. While at it, change VM_BUG_ON() to
-> VM_WARN_ON_ONCE_PAGE().
-> 
-> It prepares for a future commit that remove PG_private.
-> 
-> No functional change intended.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Codex:gpt-5
-> To: Minchan Kim <minchan@kernel.org>
-> To: Sergey Senozhatsky <senozhatsky@chromium.org>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+Hello,
 
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+
+Reported-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+Tested-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         35b0fb39 mm/mremap: reset unfaulted VMA page offset fo..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=15e13af9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
+dashboard link: https://syzkaller.appspot.com/bug?extid=c6879dc677a017f0a21b
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
 
