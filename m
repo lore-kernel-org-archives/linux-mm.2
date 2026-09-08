@@ -4,111 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A658C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD73C79FAA
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 460136B008C; Tue,  8 Sep 2026 03:33:35 -0400 (EDT)
+	id 3EF0D6B008A; Tue,  8 Sep 2026 03:35:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 411B46B0092; Tue,  8 Sep 2026 03:33:35 -0400 (EDT)
+	id 39F5D6B0092; Tue,  8 Sep 2026 03:35:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 303266B0093; Tue,  8 Sep 2026 03:33:35 -0400 (EDT)
+	id 2B9376B0093; Tue,  8 Sep 2026 03:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 099C16B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:33:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F719140413
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:33:34 +0000 (UTC)
-X-FDA: 85189779948.14.59747C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DCF4B120008
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:33:32 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NDf5yNAB;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788852813;
-	b=EahwWisKDtcdH3dzbWOmMRb1SFzqTC9xnKXMy7GrlJbCzpx9WY+NxNMZh68XSN+iHgfGIy
-	ZZvUsQxCOuFu+zSN+Nny9iZnjVOOlLToKWnGnUeK0OxZXv2/9mcSSZUIvNOAvbnRNxss40
-	YgEa27gxuGEhPPVREh/ETqI4HvvA0RA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NDf5yNAB;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788852813;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 092696B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:35:41 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 939E9C0394
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:35:40 +0000 (UTC)
+X-FDA: 85189785240.26.1EBDCA2
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A0C7040004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:35:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=paDEHvk+;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788852938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XksScMTj542HVHkyB1nI14urzyZQ1NnPrwE6pFWv+JM=;
-	b=76Itrn9zw5dP4BjiXlO24yJhDv6Pi5ZXXQYrTbD38fxHvscK0WT/XL3gdlaQNyqxyeBEAt
-	OxI8bch9JOBjEdJlyAoMZVH21KbpytBfq4a76S3Y1jdtHXfFI7Lq13MozagZaWQ87dBZPj
-	TYBEgq1WiSpjcQWSBSk1lSO4u2QdeT0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D270D42B6A;
-	Tue,  8 Sep 2026 07:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6E41F00A3A;
-	Tue,  8 Sep 2026 07:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788852811;
-	bh=XksScMTj542HVHkyB1nI14urzyZQ1NnPrwE6pFWv+JM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NDf5yNABuLUHiqeaxlPBpJIkI3TK9/rc8cWI+3xEERZ7V7seyLQhxFkrAmyfltW9A
-	 YMYkHArboRJpL/my33wJQzLLWU30oaoeEJ6Ttyg6w1/hv2TEYtTysufc1I4riY7Dqe
-	 1JpKsL4Pz+cuPhrKS57RxOWMoKUh9ZXCcPFodVwYvHAdhk5Vs5zfob/oRkS22YVwvE
-	 9ctwQ1+AqKOVimiiWzAVqs/TQgZg2HOTktggOfpLZh3Suk6syCfNKi0yyOR3e83vSz
-	 TLAmts2y/e750y5m0ukDcwHblMQiyyUtAMyxQ5Byvy5FEVfYT0tz5dLmFYwRCykPWh
-	 XLK7zvj4B1Wsw==
-Date: Tue, 8 Sep 2026 10:33:17 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 12/25] mm: kpkeys: Protect regular page tables
-Message-ID: <ap-6PZqGZHhPD6u1@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-12-743ad31b2c8f@arm.com>
- <178877845406.3691569.12554855722197968629.b4-review@b4>
- <bdba5b54-8733-4d47-952d-e1bd958a1ead@arm.com>
+	bh=kEtwck+GhzVGnuAmeYI6QR28xLrnmqSNSlv9PEkxITQ=;
+	b=fC4Kd+i5NqnNRQSsYIaiiJ+/lctdoX6uCQ8KVPIZ8MknLs8leqHW4NjnwmdKfYGmeWIQum
+	R01g4t0XriWw1mWq0YTNnJ5Oxph7hWszFB3/HTQAb+RQjO+hNZkvCfmsPe9CByWPUdrmfs
+	XVp2GDW2V36bTSw8kRo85dkP5gbb7R8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788852938;
+	b=pyJRuxdZEbOvpNPtoQjWouOZHB0vOWENw8lWNHEtROiIaDWYAEdBSe/vswVWWR0FkCDF5h
+	jbkUk73LUpFthRzsj+etcjsoIcVwcLIuyLxofZ5Hf+Jnl5HyuKR2FPaljQVpx+pLmEjEwU
+	duRUEEdip1/m+LzU5BkGYZVOdyHSSWY=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=paDEHvk+;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482e1b30c94so261180f8f.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 00:35:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788852937; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qswiSym9tNHg9wR2wyjPrTRU7f2z/L6JYX+aT7zsInIbNM97I3xBQejeZ5/j6unQxX
+         MPVr9F9CY6/p2+xyrmea8LrP3Yv4+NVSetnnOFmhy2zNT0gti6hZC53tRHaDbXj9qlsK
+         75bxsCP1ii8GTX0PBvhsObsGXQ9N1Swlsw1JqlRdTV7JURVkK9Fa1g1hHNAlwWN6Jao7
+         QfpR9/xQvMzt5F5kdefPxFmvsAKC4IsRfMeW3LbJ8F4UZWg4dN5ioBEwWLKTqE5pGCwK
+         wG/eAoqmjl++JsG/2njbQ+k0a+HI67M/NMCqDIb5po9nUzRllx5j1JjHYtbnRh9qvhKa
+         SG8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kEtwck+GhzVGnuAmeYI6QR28xLrnmqSNSlv9PEkxITQ=;
+        fh=7qTqa0NfLaHElv5AH+mvkX7o1YFOTBXm5My7ARWBRcw=;
+        b=T5YQ7xDM3a8EM8NOpOVVLk/vn+aXpx8qAy7XObAzZ4WZS2tx4lksfBTrrUrFtllnF2
+         Cytq7OrplXWxAFwo29nlO4kocKHwm+u3qDj+IjwXk1UkQrZI8U4xawFfeuupHg494Gso
+         6i6whv5qSfKwHY3FLKvAxHQ7f1WxvKM/MHyLW8tbT88J8tcZaGVR84aySc2UMXF1Oq/q
+         s8l1uMrvbVlsSZuC+qfKuODGYgcuy2t+g9e1X7dnnKhYu1gth6Ma1KBeet2loyzhIzH5
+         922X0W2ZI9FlYw0WA6/aryxeMA3YGH/MFNLg9S1osqbn6j0K7dAKCPOHwrSbV2I2rHHl
+         cc9g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788852937; x=1789457737; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kEtwck+GhzVGnuAmeYI6QR28xLrnmqSNSlv9PEkxITQ=;
+        b=paDEHvk+Rxu/99ndbbUTZ8jU45M9SemyDzmDmSC41OImyUIqbRxZdZM5g++6O5nIL+
+         OlCSal2dWJyPi14me8vUx62hbSRBC+hWAeLK+KSguBLhYpdESYC2eHQKivj/RCFjGmlz
+         8VfSFPYc7uZtbiMB+OWSZrbWOWibzkcu3lHlj/drRvDmMPGKIF1ytsGBQK7viIEVFAmC
+         RkW4nPmnZ9bLz/6/6I9S2N/WQ38DAZdFfL2bpJJ9hjludaRqiq201ncvPn+cpes4eq5T
+         KT8U2UFHFVX88OiZNiyh7VrSKIoXefEqsCe4VqZIQiGXfvSXeKFcb4JtQcTWP3Y1/YLr
+         FKsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788852937; x=1789457737;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kEtwck+GhzVGnuAmeYI6QR28xLrnmqSNSlv9PEkxITQ=;
+        b=aLBv5J7YD7JkLP9rSOcktORNz46P7qe3FQP96jIhkuglriP1QqKcD8f9h9qchRTP3O
+         A/Rsdm70FaRib8BSZWtd5IcdZhfvOvkzMYbqEWSvYfpuy6MVVjRwVjQ+1jDIcIGJFN5V
+         1NCTySsz410s+1T6dysepc6DAm+3GnUd6lA36GgBduU2rzX1ob37Q0so/AGqTi4bZHIC
+         yVBFOByVQ4c/RbekZYqGk+XajveF6EIoleyu5dntuAf2vR2cHZTR/kqRvPYdTp6H5ndQ
+         kmmLleADYsGMyp4SV5KpRzHuyuJ354wcwPgHnLaIntPbKEg6HoMls1w5B6O13qPq2cnH
+         3RSw==
+X-Forwarded-Encrypted: i=1; AKwUvBxatv+2oEqhWB27swv2MFZXsaRK7rJHE+At7O5QqPp16+hCoqogyooREG5/A4DUotnQeYHqxzBTZQ==@kvack.org
+X-Gm-Message-State: AFuF++murhuxxAwc/mAetQ2Ziq52WohADHVc886i9ybia1CCTNn7jY1T
+	bnKSwX17JQaANeDV1UUHDmygCnn74WGC/Q7i09+Lt8MM1/S/fUTTwU3F8ZpC6M6M+We/r4UJXRE
+	AQX9q1kWNn+c3FVrtStT+d/g58Hk6Vlg=
+X-Gm-Gg: AYBFou39eK4wmQ1wnipHZwJ7tgsg4EPDLTx5PLGaKCy41SeMzhdHNb3DGKEmp0hEZF8
+	B+QbRWQ96+xlBkrTdbk3mx4jfg7XO9qUuXO49nFLn9NraanqkPh+almjAdWQwSdec3C8tuFHicf
+	iwJ/M/xl3V18Gq+mRjSo81R0rxdgLHbmuGSszyMibx0fDTfK7ZfsFLSz00UWmUl71kCBFkgj7St
+	q3+Pw86w6MKtEpzY0EWjh5dBPN1XdqZfPgRvXVdzH6gFxm27/t209OjFd/DANHrc1ZPTRc5XBCt
+	ja6XbgAHHTw+pA2HYlTCv5Fmzu7LTLN/qW9+S+CzzWjmhJZ33kBhP6OF3eO0+uU0iur0GlbK6B6
+	/zPQxdtpE/CGew77pXJREFjol+FVkfA==
+X-Received: by 2002:a05:6000:2610:b0:482:ea38:6b80 with SMTP id
+ ffacd0b85a97d-485905b6dcamr17746950f8f.1.1788852936749; Tue, 08 Sep 2026
+ 00:35:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bdba5b54-8733-4d47-952d-e1bd958a1ead@arm.com>
+References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
+ <20260901151818.3191443-2-xueyuan.chen21@gmail.com> <apk8ZRr6do_YAlzf@kernel.org>
+ <CA+qSx6wqd5VSR=9yarFFmyN1SyvLJqEHpA7BwmzuxNQTHbS=Xg@mail.gmail.com>
+ <ap05ue1pq3TgHOS6@kernel.org> <CA+qSx6y=OaMsvTKUbPP2DOan3Ym6c8L5z60512-tCYeUjLZz3w@mail.gmail.com>
+ <ap5Tqu5yswJrj5UM@kernel.org> <69db9546-d14d-4107-96b7-30963292c2bd@kernel.org>
+ <ap7L2UEriz6DJfif@kernel.org> <2e8dae0b-d81e-4c5d-b4d5-c80bde07a314@kernel.org>
+In-Reply-To: <2e8dae0b-d81e-4c5d-b4d5-c80bde07a314@kernel.org>
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Date: Tue, 8 Sep 2026 15:35:23 +0800
+X-Gm-Features: AcwNN1WRh9Ejy1a6UjKpBEjkYuP25njGh2x0QoOc56jCCHUBW1sbsWwyKaUqbMk
+Message-ID: <CA+qSx6ybfqMMNKkAwVgcEga4uzFixXYKLZ-D8FuXmjXpQ9zExA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org, ljs@kernel.org, 
+	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org, 
+	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
+	linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A0C7040004
+X-Stat-Signature: a6n7xmsxxe1ndoz4rwgdbkug6s5yt4b8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DCF4B120008
-X-Stat-Signature: 7q6mm3i1oru16if73f75n3igddr17mw1
-X-HE-Tag: 1788852812-655927
-X-HE-Meta: U2FsdGVkX1+Xv00JbZHKHEczgdEV691d/O9DP6mT8zCJVNCcrKhqOiENpGRI2eGlM1UdIfUI8gC1qJKWJEQsHxp9TLAGzWZim9ELoeyHMbasa/wDLIxilLkUJ0voQ1LfR0jIJCs7nlRqMKVdQElbevg1ZBc0jJBEc2mlv/u/3HQoVvx5UfBlKcbb+CZNm/x6AueNEIRpPcJw7th3pHsPcXMK3K729Jaw6dgfScOqNLqy35MXlFHJV+nT672hTNrQvWs5ZF9H1ZEFBUp3s6Tsr0w4mg4oTi0PRdRObMOzwDfFFSkDFCGeGq3wyck9EDsysYRanO8/Z4iOBQHFaMdd9rRINl2X7n9IMb8A5ES8DfSVwVkgM7bOZFJKBkqRXFqosqBzQlhn9Rwcsw4aW+zwjVU4MYICYFYi/jJ8H2vqrvz4BhHAm68n3lL6mOfxOiTk7QZRuYVBDYknpipyJs/3hN3O4NL1c7OaB2PCoAP208j2ZhkdJ9eNlenEKB3fxbVw/hJ8tGtoEVcJm3dcbqrd03fk1ZzLi4C1Ls1lDEc5/3jopKBKehzoT8sV/U/LB7zVzaPnJXIdqIrV+z+QjJgHvHZc3D8P+tMJYGsNSDizqcPqT2Pa7ce00378S+/WplWE+tNqvc8sRU77k7gINtMV28HeV2MmFX55uAQHv2y5jS9F5Ebo4Valxmux8u17lmheri8WnsvDo1VyyPsAWjJrXNS5peKJdvBlNqRVUKkTzMmDwzFCW88VAY6fboZ92uVl8TlnL/WBZixh1EHtBr03I1mlqUo6WY6WO/Kh2KLXTCR0G7DEsNfAHpjWZqN74WjNsdjLvrbaBtzaDJ+9SKf1muYPyNCfMIoHZoQkeKTGxyCCsbSI3/AvjRJAy4eXvJaJJqvReg4aUzLIVI89YvaIHAEOx7dsSBZWyO9J4WuST5MUpqc9X4EWIggaRPDhS+AxHYLLcROvIZDjtOIk/mu
- Ecil7H36
- Qb2hoDK/LMNjSajuu9dDMLWYgTSHTLXUs61Zs90yx5+6PNiC32/y8CutA/r5KQt9FobiG0zSXgW71hV8TD4NZ/lRZdxtyCG6WzdgMLjZf5aJuVdR9PbfUSDHieukNQ3iJiW0rkcaebkD27N2spRrwoNykfBd2mhp2zOCOx1QB540vwk4nFv1XO5px5ZHrBWIE0v7AvXj11wlkNeX+V5OsS0k1TlFYBNz1q/fXdtc47EcBGFo6XGtYDDEREp2QVjppfXcVkept8RcYxZTW5uUSYzVJ1Y9d3x1g//kJzZ9SDz3ovA3FZF53BEzefKQa4knLtmfiUkTpEo1gXngbipOfVUWANQ==
+X-HE-Tag: 1788852938-467545
+X-HE-Meta: U2FsdGVkX1+ZX15Ic9tit2g5VyuCJf3xaixAWs2UUBKN0wXzsYkjDrM9ws1rEtrbURJ+7fA5wcFUisSEhMxcfzIUTM34srOGHKtQT5cWAyBIsd/GuWpqklq64G6vN1SSTueOCHMckY6JoL9JFCQuuUAWdzF9+tRcFGZdGmrY4eTQ9nRI48xgPnDjNK6MGEDPudUV652MQqrfB1YdwxMACuQAFv5y2gj4tTK2R69BxHRriYWNiLQElhnzv+uYIbbPGxc1HsR2fxPAAw9A6QVkfWHoJPwuEIr/ZfgrDRKzHFBtvPebenOWew3b8/xWspDISvtkszE8tClmUZqMe0mKGUeUxJGRnhiJbkmf0A0PTpC4W4tWLFQZrt9k5VMxBSW8xgWFAODRM6QRY5fh2XDcoIsbaUTPsIdM7X4TvjX6FT3KI2g1yivj+LW8QrsQwC6wzfWJh+haCNYr0aNOcnuhnLjalr0cH07nmXzFyv9fwrHErOqeUbuA0n7E7FY/88Vu/KaH/3V8doDf420Tag1Cwnoa4JGipcuqNtzznG7BAxkgnz7DK5V5a2ooS5f48E+jJ2vuBOLF/oQITCRcYNLhZysTpM9VUU0mAtwsQ5Lpe0Ce9ik2OuezWnTfv9WTRDRd4yjUMnZZOs8DZR7YI1Sk540daGzYf7fPYhBDxFxHuRwfJixPw0gT0gWWfLC66lRXW0PeGhj6u4zpty7jMQa81470WsShkxoWZD4RMCuSQjcUDX2Z9rEG4eHsyL3ORwAoho+Q8Fxwho5yOshzvgzaHAbVfLvv3JeHhy18Hf9u+uobQ6eIlW20WBEpXzmWzkmhRNSlCr+E//I8CBUODp8cBOpuo13Kp0QJ4HCL+oCzaemtCGiN1FNn0fYVlwpZQq4l7uyZsWSL6IhYBTRozSry4cxL7RT3xx5eLLDnhwj/KoKDtCz45+Z34vKv0s1cgZwJFLI8WnHZ1wIiPwQGHlK
+ Lu83JNLN
+ xT4kWvhKUVO553H6csE6F6/QyKlpxR9X2ARo7Q26x+/CVK6VDkapBOtcu2GHsWmdxKpoWY/Dik1b5RmaXPXMcrleOFkXENLFds2weXoxdB6Vg0MLzUjo2H7W0DyzCchsdScKXfTSjZVJq5oZhHotRtkxYKa+9SNHRkFXBcDAAVmIHGFkEe4apOcuo49Y8NEZclNURMNyFHdnMBmZzoCTHwy/FJC3VGnYVTYIjhxQo6pbp/F/2btmncAoGvOtGViWKqDzYCH1nxUtdzC4bJWpUMXA2v4S6UDQlBe9ztg4Rh9Bs6D4eu8lyZ1tdQMWlD7z2XkazbZxJ8dQe1qSOhV6uqmiG7Z6QwcccYaJ+dCnRj9LOx/vapehjzLuhnSkQOxl8UDASxajZQ5D5uzvEsoOogzn1F6qHbhJOJ8DrYwTV7JgOas6q6ecfjVJY4OI3O2V6NR9Z6uTOuMkj+J4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,60 +152,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 05:52:32PM +0200, Kevin Brodsky wrote:
-> On 07/09/2026 12:54, Mike Rapoport wrote:
-> >> [...]
+On Mon, Sep 7, 2026 at 10:48=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/7/26 16:36, Mike Rapoport wrote:
+> > On Mon, Sep 07, 2026 at 01:18:42PM +0200, David Hildenbrand (Arm) wrote=
+:
+> >> On 9/7/26 08:03, Mike Rapoport wrote:
+> >>> Hi Xueyuan,
+> >>>
+> >>>
+> >>> And I believe this is an historical artifact rather than necessity. F=
+or
+> >>> configurations that allow set_direct_map on arm64, change_memory_comm=
+on can
+> >>> update direct map too, it just need to be implemented there.
+> >>>
 > >>
-> >>  static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
-> >>  {
-> >> -	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
-> >> +	struct page *page;
-> >> +
-> >> +	if (kpkeys_hardened_pgtables_enabled())
-> >> +		page = kpkeys_pgtable_alloc(gfp | __GFP_COMP, order);
-> >> +	else
-> >> +		page = alloc_pages_noprof(gfp | __GFP_COMP, order);
-> > Can we make it a sequence rahter than a branch?
+> >> Are we sure the other architectures do what we want in their set_memor=
+y_ro?
 > >
-> > kpkeys_pgtable_alloc() does alloc_pages and then sets their pkeys, so I
-> > think something like this should work:
+> > It's a zoo right now :(
+>
+> Yeah, that's why I'm asking :)
+>
+> > Although most of them do.
 > >
-> > 	page = alloc_pages_noprof(gfp | __GFP_COMP, order);
-> > 	if (!page)
-> > 		return NULL;
-> > 	err = kpkeys_pgtable_alloc(page);
-> > 	if (err) {
-> > 		__free_pages(page, order);
-> > 		return NULL;
+> > But we need to sort it out anyway because of increasingly growing deman=
+d
+> > for modifications of the kernel page tables.
+>
+> The question really is whether we want to use a single interface for all =
+page
+> tables.
+>
+> I quite like a page-based directmap interface. Other page table areas are=
+ not
+> necessarily page-based. It also expresses which types of operations we ex=
+pect on
+> the direct map.
+>
+> One could, of course, use set_memory_ro() internally to implement
+> set_direct_map_ro() (and similarly for other variants); but at least
+> set_direct_map_*() would have clear, well documented semantics.
+>
 > >
-> > with if (kpkeys_hardened_pgtables_enabled()) folded into
-> > kpkeys_pgtable_alloc().
-> 
-> I agree this would be less ugly. In fact this is pretty much what this
-> series did up to RFC v5 (albeit in the ctor/dtor instead of alloc/free).
-> We could go back to this API, *but* the big issue is that it makes it
-> impossible to use a smarter allocation strategy for protected pages.
-> Patch 14 in RFC v6 [1] will give you an idea of what such an allocator
-> (with support for large blocks and splitting) would look like.
-> 
-> As discussed with David H we're first trying to land this feature
-> without large block support (fully PTE-mapped direct map), but we do
-> want to support large blocks eventually [2] and I would prefer the core
-> API to be already compatible with that objective. Very happy to hear
-> about suggestions as to how to avoid the explicit condition in
-> pagetable_alloc() though!
+> > I started something here:
+> > https://lore.kernel.org/linux-mm/20260721-generic-set-memory-v0-1-v1-0-=
+2c1fc62306b3@kernel.org/
+> >
+> > Now that x86 CPA is nearly fixed, I can look into the next iteration.
+> >
+> >> Having a dedicated set_direct_map_ro() with clear (documented ;)) sema=
+ntics does
+> >> not sound too crazy to me.
+> >
+> > It's not too crazy, no.
+> >
+> > Still making arm64 more aligned with x86 and other arches that update t=
+he
+> > direct/linear map in the set_memory_ro() seem a good thing on it's own.
+>
+> Right, but I'd much rather user set_memory_ro() later to implement
+> set_direct_map_ro() [initially on architectures where we made sure that i=
+t
+> actually does what we expect? later maybe generically]
+>
 
-We could unconditionally replace alloc_pages_noprof() with
-kpkeys_pgtable_alloc() and make the latter choose the right allocator, but
-that's not very nice either :/
- 
-> - Kevin
-> 
-> [1]
-> https://lore.kernel.org/linux-hardening/20260227175518.3728055-15-kevin.brodsky@arm.com/
-> [2] https://lore.kernel.org/all/aMwd7IJVECEy8mzf@willie-the-truck/
+Hi David, Mike,
 
--- 
-Sincerely yours,
-Mike.
+Thanks for the discussion. I'll keep the page-based set_direct_map_ro()
+interface. :)
+
+Thanks,
+Xueyuan
+
+> --
+> Cheers,
+>
+> David
 
