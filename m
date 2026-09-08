@@ -4,88 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F8AC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 18:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF8A5C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 18:20:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 653646B0092; Tue,  8 Sep 2026 14:19:00 -0400 (EDT)
+	id C4B386B008A; Tue,  8 Sep 2026 14:20:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62C326B0093; Tue,  8 Sep 2026 14:19:00 -0400 (EDT)
+	id BFB926B0093; Tue,  8 Sep 2026 14:20:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 568A86B0096; Tue,  8 Sep 2026 14:19:00 -0400 (EDT)
+	id A9F5B6B0095; Tue,  8 Sep 2026 14:20:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 328446B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:19:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB3B2A077C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 18:18:59 +0000 (UTC)
-X-FDA: 85191406398.21.F45BC2A
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 47A2C16000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 18:18:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Luj6RHCd;
-	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C72B6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:20:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF4EDA4D23
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 18:20:56 +0000 (UTC)
+X-FDA: 85191411312.03.E0EB603
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5643FA000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 18:20:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="Ez23U2/Y";
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=DSchCrKT;
+	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788891538;
+	s=arc-20220608; t=1788891654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Li/ybmICa60a36A5BNtThplp6R00X6RYCrxbOUvrWvU=;
-	b=GpYUov+X5H1d36m4Rq0TXmVEh32o/QeJRLMJutalWrrnEe1sm+AU1VYfLqM8JL6FAmbyTO
-	vtiTpElpr3U3ke+ZSrfVSYZ1hE4QZsi8tkFlJl2oVYUcpkM0Cahdoiu81FV4T4ae5nqcTn
-	zM0ZGudNpDvXu4Tmul3JQj/OdmQWlSU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Luj6RHCd;
-	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=FiZbubyoP3HtKI9tuT86fH46V4++xl/Hu2bmom4u9Fc=;
+	b=ZRmJPkZn55/9HbbDdRT8Mm2zj4x0jX66vpJPmO5HXzhWlHo7SK0Mgarpqp+5WbUtfgvfHJ
+	mwULa8Z8ho4PH9VSIqWXBwdyb9jlNLt9/ZPwAlHPJ9g8cx7MwqwWAnT7GLYHXFS1mZZdqg
+	JGB2cEBj0b5M3vZjs/wiLviZOyQAfBs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788891538;
-	b=fRK2iCBQzwaCrg0S4nduXDuNz6oI6nLhZaOtSTuqXXHHr5O8uT28KVQzzASFpppfiKW0G5
-	A4GoPAIOUcsB2Q2l9FbPk1l/8BRYFi/RtAYMwAbWeWKtYeFkYng1MoPqX4Jahs8DcT/20t
-	e+7ExF8OHbNVTjW86D1DjdyriL8kZuI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Li/ybmICa60a36A5BNtThplp6R00X6RYCrxbOUvrWvU=; b=Luj6RHCddO2eLmRGq1mFZIXKPY
-	uFHiwRUEke2ZBWZ7XJ42jcIpuOUZ8tYkRkT8ZgUc7Je4qIzqxSs47vni975PywKADIIY6tv3iArhi
-	WOAW4XrekF0VnyUSEOxqYzZe6oP1agV/v2opf+TqB/t0Re52dxJ270OKQTcJTVNALiCsnJvKUs7D/
-	7g5OUra4oLYtrk14Bl1WPZP4I2EYgby1WE2nr2Ya9ca9Fnp54+/KVwDJagFm3kGBeEtY4f85ZZBoV
-	RhPhrGtZBok50Rt8frrCOgWFvlgdE+sscBqOAJMd1HoaU41x8lqyFZ1PavwlQ/M7oUsNoT65qrHr5
-	qsv1Dbxg==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x40PF-00000009xMy-3Xbw;
-	Tue, 08 Sep 2026 18:18:54 +0000
-Date: Tue, 8 Sep 2026 14:18:51 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] selftests/proc: add /proc/pid/smaps_rollup
- tearing tests
-Message-ID: <5tivjbxj2nqcgebjxx2lp4lymduaslocdbdibgain6pxtpec5f@dvgvxuod4byt>
-References: <20260907063918.3432401-1-surenb@google.com>
- <20260907063918.3432401-6-surenb@google.com>
+	t=1788891654;
+	b=0QS1A9plgxLeU3NI1M2S6/7JHX+jGagrugVeYLfnJW4RFWGjhzyfMtoFvbxVUfzXRr8mEt
+	Xcip9fRel6rbTn+jCisZ3myITtNDPSC+T/cxKGI52kyNlH536HR8r4HDtKLo7x4k+YB1qX
+	rw33eV0c546F1pM8svK6T0YCFDEnsWA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="Ez23U2/Y";
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=DSchCrKT;
+	spf=pass (imf25.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167071.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688HvZXu2919531
+	for <linux-mm@kvack.org>; Tue, 8 Sep 2026 14:20:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=FiZb
+	ubyoP3HtKI9tuT86fH46V4++xl/Hu2bmom4u9Fc=; b=Ez23U2/Y92kvNjZkkMvv
+	Z0de8+cWkmWr0Ru6KQ/R90lpdG3zB1/Vq9ydz5ed/hXdK8TuO/qX0RQWhwriO2ts
+	kEFE5uhYhgu4dP5YvFYgK0ce5Fqn3STMa9VW4tkrxu92pr1xNMFBItCleGsIg76E
+	MKbqMEc3YS1aqsvMjqDPTe/KY4geTohctvlhV9EalJgYohlfrhhdaqf3+P+3aP9d
+	AijG4i6Om5AgOaJeGclSB5CIUSSh8y4dXeZxCgMjW+UvVnOGVifTEEfdAaJhBK6D
+	M0UEkg+eM4j6yIZX4LOVV+oRkz47aTFSYh9IcMLv/cMC1qVitVAfxsJPrBsqdlI4
+	5w==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4gjnk09ayx-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 08 Sep 2026 14:20:52 -0400 (EDT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-9105be46009so33031256d6.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 11:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=columbia.edu; s=lionmail; t=1788891648; x=1789496448; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=FiZbubyoP3HtKI9tuT86fH46V4++xl/Hu2bmom4u9Fc=;
+        b=DSchCrKTBAJ5btU9WDuUz42aje2Hdhm43ErSbM3hvIi8RPQlcKfoAvP7Jed01iZqes
+         uHGcjDSE5FNKK3PsrTcB2JgB/RrV2IUIAnRIKUzRLAp61GQzFPn5lTp3+coDNx2czAuN
+         aIpCIrnBqvkxbpE4Wp6DP13ShE8HGJjtQUfl6R3j733ZyBsVcfTDARdoSRAHXAWxcpS3
+         wQPVaTDTjE1mHoSd9XxhXmzqXvUiX7p5hFh8NHmxx02SXY7O8IOKzq+idG5b804i8fgB
+         rqeOmGQGRErDXSbj0uXTqAaRmWbEBBFiz3UkBfyaRUFkjdK6WFR4gLEyMwQq/pYm4uMc
+         gogg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788891648; x=1789496448;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FiZbubyoP3HtKI9tuT86fH46V4++xl/Hu2bmom4u9Fc=;
+        b=oRj2d+PLXqRvWzzjMHWStAu/1t86YthOH48ntVarS9guM0zmo1y4trlJ78UuzdV7Ur
+         xeJAXSNLUEliY1eF2+oCvzOSAwMgT+JseT6ud7ge8UgrLs25/e4jZdUqa3lTbbt7fHZV
+         ieP+fy/JeIRAlajbP+Hj+a3fq/cLJpTmkxgzvJnHn/lmYBqK7+53aC/jz6mZAU6GFcub
+         v7bJY3wrbJDIQkpertAwwOnopSmk7X4ACrwzFp7NIvwFo81GtjADHH87xLxKlTWTpJx+
+         LsGz1rrF0yOCx+hzNCmsyGetuTApuoC1KF1Z5Cc1ooqjgsDAuslQvs20g23WgzZIqwxV
+         N8Bg==
+X-Forwarded-Encrypted: i=1; AKwUvBz7rUYT0Fl2sIxt6EGare0zzzQsj/mYy53LCzsI44echHaxRH94O7/JhsFmPOxSPPHGpO8lULJ2Xw==@kvack.org
+X-Gm-Message-State: AFuF++l5+PFjFEx0OOpaPtfGHuOdEn7Of3uRp/Gv0mS6zgFwYxz3OggB
+	ednOLclJgO1LdgkFcHAmDP8VIHNDpThXHQ+E2QazTTmyXdbQh+BBAQLsYkMlPvNAC9oHnm9Madg
+	5iLoeVdqI37PtW48dK0a84dK1weeRIDrJre5dCjUunMW2mqQU
+X-Gm-Gg: AYBFou344/UwTB7KZBhC2AgRiaj2+u4SSkBy4cFFGgBwdi3J6aBESo381FgesXNVm9x
+	ErHg3AHfHM2xuB53dpeiTgpYJgt+Hgx6OblfjDSuoOdBTsKI5vFUCUmEKq504g7chSGYoa1zQ81
+	iW3Xnr3BJHs/4LKeMqWwCsjgUOJqZveG/90u3blQh0O+79b/HhSsno5Rpf3XV3fuahYeVh4Yo6Y
+	fOitlBJ/V1DLTRZlnv6ljlz2mGZ3LIu1E+6i3fbijLCHcabwG3QZr+ygW1bUPqeaeTM/bz5F5Qc
+	606fJmWqCUjMN1cRtMHcoO58huuTjCfxOT+fuDa0aqhj842iAZrClr0IMUz348dK3e0KF8BnnfG
+	JXiuHmuAkKWOiaFJFEA1BcG8b+kw4s9mDl+wsqJ7yKQ7DME3W
+X-Received: by 2002:a05:6214:130f:b0:8ef:74ad:e62b with SMTP id 6a1803df08f44-91061f8ef49mr103030606d6.7.1788891645893;
+        Tue, 08 Sep 2026 11:20:45 -0700 (PDT)
+X-Received: by 2002:a05:6214:130f:b0:8ef:74ad:e62b with SMTP id 6a1803df08f44-91061f8ef49mr103024766d6.7.1788891640717;
+        Tue, 08 Sep 2026 11:20:40 -0700 (PDT)
+Received: from [127.0.1.1] (nat-128-59-177-174.net.columbia.edu. [128.59.177.174])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9104059559dsm123354136d6.1.2026.09.08.11.20.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 11:20:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907063918.3432401-6-surenb@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 47A2C16000D
-X-Stat-Signature: du19m4h5obnx4nnpyuboqd1ig9pertid
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+From: Tal Zussman <tz2294@columbia.edu>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+        Gregory Price <gourry@gourry.net>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+In-Reply-To: <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+Date: Tue, 08 Sep 2026 14:20:38 -0400
+Message-Id: <178889163877.1334491.3646957026033534678.b4-reply@b4>
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788891638; l=7108;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=9To4jbmxVaHU3YyuLHtldfm/+1dYUB3KmBeKEkAyIg0=;
+ b=dhSBI6ucL59FpBAGiQbj7EbpiPEM0NTxKglQM2e+fxAAMJcz6JHiE6WPjaSAL4vYEtNdtKSfh
+ Xc+ZbX2afaGBA+BJy+LCqsbdKeZjC+2iag0hd78rs0jseRBBFMBDBNT
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE5OSBTYWx0ZWRfX9df9Sd477OCp
+ YbGPLQRuGfuvzOUQ+4Pf3FldDhmYPW0L6eJSLjYaeyDTNQRFspUDL/FgvqeXlQXVTQRR8W3drth
+ lSBqD8SBanpHUJEvvm4eSELQDOyha9L0LQ0lk83ks57fgncQ5F70
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE5OSBTYWx0ZWRfX09TkoSgB6Nkr
+ O9V41S9syz0+vR6pHzhOVm1AiPCvEbs4I8/8YhndGlErwBI97RkY6G3CcID0S6zlZB+F4at/ere
+ px8dsMnktKoOwFPJtdCayzOqmkLOecl1v44/MXcz3cjExnNHX2bBGw/YI3f9nBGyfJeZK2WmrRd
+ uOdTOnB7BvWQCdJji6uZOXGEw5Pdq/7+RUcNbFjac1laEKGEpygIO0lrK61UfdWqUI3DkGtQfFm
+ bm5uVfb9UgL4+3wLKDAnHA9ccHIomg8u77uUFyo7gMYoFF2tL5fBAQ0QjwrkXn41xaXXXT9kTPT
+ qXJLgV18UUF8z/30bRNzh1S0/9qe64dfX/qdx1965OoRavbtQcArM5qh8v2l374i6vHGahsdLnp
+ OgBTPR5ZsV+xQCU0Cbp0Z4BcCCqyExfPFpxMo8cRMZ1EwJR+zuTSslZAZrura12CaHPvOxr+dEW
+ C2NX8GCi9ZvMWNGpPSg==
+X-Proofpoint-GUID: InLQjUZqIOYN-0JEabV7Edhvfzbvsbqn
+X-Authority-Analysis: v=2.4 cv=Z+fc2nRA c=1 sm=1 tr=0 ts=6aa05204 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=HBUb3goEnnz3w2smY6d+Hw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=79PYxaXUQd1wl-QFWJnA:22
+ a=VwQbUJbxAAAA:8 a=FP58Ms26AAAA:8 a=Ikd4Dj_1AAAA:8 a=tbrFcHqVj0uyXfjc5ToA:9
+ a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-ORIG-GUID: InLQjUZqIOYN-0JEabV7Edhvfzbvsbqn
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11900
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 clxscore=1015 bulkscore=10 impostorscore=10
+ suspectscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=10
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609080199
+X-Stat-Signature: kgqbyxpfo9rx4xr88uxjaj9awnccyni4
 X-Rspam-User: 
-X-HE-Tag: 1788891538-21642
-X-HE-Meta: U2FsdGVkX1/mzXto0JkrnEf/7350xM/M4oEVqNx/UBRV9GiHfC3C5fVnfclrU2oTnexW8unIATRoFA/xaJHyxZi2mDhEiu9Fyq7HkkEIl9EhBnvtsjv75+94GiAXkMG/wQX9NBEL7fMaANq7SUVaU2NmKUxchUO1gWDg+9EnLh8xwnxxX3etarksyyJLRpylhuUAaELxG5rVsguQXxEDLxx2hSe67pbp7K+PK2bP0aje15eBWq6h0NAADz9+pvAUp+vOTgE31ap9VqnGYRa3aFOt6BbV+LlbMQW3QNCnEH88bQikA1CZoeSkUaK4rqCcnD8Yt4xyqQR/LQaOnAskOX22CMlVeWKhpVJee5WzJM+wsAuEqA4uWf+dWJEeH+3bECutndzIyaC+7MKhpJfXXSQNdzjmkpsVEpYcidxmcfUG35kO2QC55YAPyOJocbnB8+da/3AQw9LcIjI18v+zuCPeB5cfUz/Jj+brawIL4hjUshUclp55Ku8nj4rkOjIwBpNHgm1SGI9wdM1P03jYct8z4gSCAhyo6ngwaTv7FeK6mx/56pdnd1kI55zSVcX8Fox0ve+DRe1fbDbVf2mvONeQG4ZO7lRl+ce2Hc5nWttxj6r+K/HbItjbUsXPXxFAvCs4bmw3PHvP1k1a8jHS4R8uAulJP6a9GDpD8AaCd4luPojqLymLtDhf0v22Z9XwOAtjZ7+vn1J0u2NYPfh+UpjXM0RCOCEuhZa2MfI3mGsiU0jLY3oDygw0RB4nFuaXH5ve+xbWCwSr2x5Tto0aDvL1Ws9qO2/bxLhnBlS3ZXiDclFwe8WCO+RCMIbUNJ4RXZfjI+o6hhzbf9D4CuDO25Bm6h6FKMvoZpEdju9X/g+ahncFDddK8f9jdCSbnjmvX3a1XpBurxQshFuf3HPi/CrkKdGBZ6Ds4MIQXLDzI28EvcsIOMogrdAjXRdOQnWxzgUoERNumUyqcnym2NR
- QoxIOMtN
- jCQUizyTBWX5y7YI5v4f7Dh3/YVcaOAUUuPz3S77NqIADl0vrPt/A+klbXoIuuKJNIQ+AA/yLx7dtRoacMVqIcf500ECOzzLqqRs3gaJyvfa6AHlid2vjxMrB9MPRvazH5/5XQBFsj7/WS1AlI6BUQUjv+nn5YToCUzYMfXuHAeyW3XDeK9w8p7p7idPFT1HnSy+DDUFB+VcBug5dqrh2VHwQDEoRnmvCiK0YEB3dExDAxAu+USyy2wYVYSQjtwF5ylDCrmNKgrZlzSqqIXbh355J7/Urr8mXJCe6zSyBj1+fz4Moh4FA8vLxaJMvrHyfaiz3CM/V18TCCsKem2UOco49kQspxGigyNZOuyeK+eUyrXA4lbLtuwDDPbyFOSft3cOJ4FxVAgGbDgSWcvbNjIbSFj31CG/SvSSX
+X-Rspamd-Queue-Id: 5643FA000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788891654-506038
+X-HE-Meta: U2FsdGVkX1//B6WQQfXiBanqSUrQs425t6a4C/NTTbp4q9/y4xKIrzveBE8S6HwES73D+enG95XOpDAF+e29u/UkVWfbdY+gdWEO+LN1sSg8b7E/0JH6TSKaVEILU9v7yhwtSY+7ct1sjpGPBzBD4UVCyiji/PW8UgsIk+hmdxAQya36esGDKuL1eiB43FDvSP8FhjfQpQrN1pRZDRpY9fZ13UcHC2fYkVf9nw8lSxGo3AkgvMWK2mxixQIoqYTbQDJWTztfMNgt8Rsypi6RyzdTJEdsg1qAT368I8QhH5VXpJTJPpdxpandhPcNF695bfq5qVGTB4jYyvOue8YCiq04RkAdKT0ecBMNmuuf8yVp1fq18KDf6VMCp4Xg6hPjfQ+b8vYojllLKEgAAABTLL9SfMHTk6ZL40JAYF9yFG62c6EmF4aQL3ITjSeCCyUzFFWnX3w/yc/HFCEP+LsdQ1fbVGIfGO36Kl/zaSJym4Y2sKmeiQH2LeVVs4XI6qyJL1CG8LxYAY27lLWpgW2UD8jWzx0taRUNmd3j6QuiVrEbBrLFMY+thKJkjWzq/Ur54s3n6gSaqEFtjpcjk3yYcAYHuJe3IPh8xBWXuKnGoQDtUEUMnKMt/ctvcuaKgRg/voKIdjPIaNu5t2ocBSSLMy8gGFGyqaHybHENjc++mq6+zV7xCA1vzFUNBXLtzARPIIiARZGGiA8TyCVsWM/dbzK7HvDcvIhaujypw/SRP4iSZcoqRoVgWrCnFFzo7cY/lRJeBz51aMTufeK/dMITk6ilZ3NLOz4ANTjwAJyatW9gJZUDQL4S5nSYJx8L5HI/r3q34y7tx0h3uYdAYp1XP/j3WPi9GfgxVhFNojaqhr8HACf2RqVmPfjEgH0L4BCw/+yyaBzfWdYZAparyzI6sC1QV7M7BxbbAyl0EEEj0BkfM8vsw5Zy47TDoHDXWZyCcgLbjj2qbk21pvSrrJA
+ pUnmSRvr
+ lEMHPry6CubEOImJFofPMdMwOoom9jMpN7z1E4KkPQKUlfUSvtsVGAjCHrXKMo+RMwOUHi5hYo3V+z/GDsjL0V+SXUASwYcSZoaRKqADQWWUfLNLIrlQq6RaKbGKDvdMbm7RVDsm6i5PfsfTAGGwrMYG5+cwmxeYtXjn6svwdv64ntURIy0sXAcbzAJ13SGC7227a2NcpKQMtpIeOLygkwbjB7DlpcVqylOl7PDdwD8dBoQ4+LrOIWwScWpTlIDfeBV7KrBaHelLQLACL3HTHGCnlccMkOiVfBphA5vcvGd1W016N2AddfHSA/oGhBErQmW2GQYcgS2hNwFk+u10YrBtuuo4wW8x9WZME8zyB07ddpBqqUVkMk/mfAk8f+UorzDR0CAgHaVL5LvPltPcuj2xgnp2od0zyQCnMuEOPpQGj+fxd8xAePCb7u4OfEX24y+YXBUqQOHwMAGRBHPimPoLZy0Fa0R6XfnD0MuNjKJTUm5A7ySsTEp3cJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,350 +193,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/09/06 11:39PM, Suren Baghdasaryan wrote:
-> During tearing tests, smaps_rollup Pss* metrics should stay constant.
-> Extend /proc/pid/smaps tearing tests to also check for smaps_rollup
-> consistency.
+On 2026-09-08 17:47 +0200, David Hildenbrand (Arm) wrote:
+> On 9/8/26 04:56, Zi Yan wrote:
+> > f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+> > page->private != NULL is equivalent to checking PG_private. Change
+> > PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+> > page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+> > but it can cause confusion when PG_private is removed and
+> > page->private != NULL is used instead. Change it to initialize
+> > page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+> > semantics.
+> > 
+> > It prepares for a future commit that removes PG_private.
+> > 
+> > No functional change intended.
+> > 
+> > Assisted-by: Claude:claude-opus-4-8
+> > Assisted-by: Codex:gpt-5
+> > To: Jaegeuk Kim <jaegeuk@kernel.org>
+> > To: Chao Yu <chao@kernel.org>
+> > Cc: linux-f2fs-devel@lists.sourceforge.net
+> > Cc: linux-kernel@vger.kernel.org
+> > Acked-by: Usama Arif <usama.arif@linux.dev>
+> > Acked-by: Chao Yu <chao@kernel.org>
+> > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> > ---
+> >  fs/f2fs/f2fs.h | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> > index 9940a6cecf1a2..2f7ab5888b078 100644
+> > --- a/fs/f2fs/f2fs.h
+> > +++ b/fs/f2fs/f2fs.h
+> > @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
+> >  }									\
+> >  static inline bool page_private_##name(struct page *page) \
+> >  { \
+> > -	return PagePrivate(page) && \
+> > +	return page_private(page) && \
+> >  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
+> >  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+> >  }
+> > @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+> >  }									\
+> >  static inline void set_page_private_##name(struct page *page) \
+> >  { \
+> > -	if (!PagePrivate(page)) \
+> > -		attach_page_private(page, (void *)0); \
+> > -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+> > +	if (!page_private(page)) \
+> > +		attach_page_private(page, \
+> > +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
+> >  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+> >  }
 > 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Very weird interface. Why do we even need the page-based interface still?
+> 
+> $ git grep -E "(set|clear)_page_private"
+> compress.c:             clear_page_private_gcing(cc->rpages[i]);
+> compress.c:                     set_page_private_gcing(cc->rpages[i]);
+> compress.c:             clear_page_private_gcing(cic->rpages[i]);
+> f2fs.h:static inline void set_page_private_##name(struct page *page) \
+> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
+> 
+> Seeing code like:
+> 
+> clear_page_private_gcing(cc->rpages[i]);
+> if (folio_test_writeback(page_folio(cc->rpages[i])))
+> 	end_page_writeback(cc->rpages[i]);
+> 
+> Makes me wonder whether we can just use the folio helper instead?
+> 
+> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
+> 
+> So naive me would assume that we can just get rid of the
+> set_page_private_/clear_page_private_ stuff entirely.
+>
 
-Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+I have a WIP series of ~30 patches converting much of the remaining page
+users in f2fs (including the below) to folios. Still have to do some
+testing and clean it up, but hoping to send it out in the next couple of
+weeks (in the hopes of eliminating some more folio_compat.c functions by
+next cycle...)
 
+> IOW something like:
+> 
+> 
+> From efcde918178604de11d16c6dc5485542ab4dcdaf Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Tue, 8 Sep 2026 17:46:06 +0200
+> Subject: [PATCH] tmp
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  tools/testing/selftests/proc/proc-maps-race.c | 187 +++++++++++++++++-
->  1 file changed, 182 insertions(+), 5 deletions(-)
+>  fs/f2fs/compress.c | 29 ++++++++++++++++++-----------
+>  fs/f2fs/f2fs.h     | 13 -------------
+>  2 files changed, 18 insertions(+), 24 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/testing/selftests/proc/proc-maps-race.c
-> index 415eccb70468..8d00d7db1c65 100644
-> --- a/tools/testing/selftests/proc/proc-maps-race.c
-> +++ b/tools/testing/selftests/proc/proc-maps-race.c
-> @@ -80,6 +80,61 @@ enum maps_file {
+> diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+> index ce88092d9ce26..0e9cc0fa297a4 100644
+> --- a/fs/f2fs/compress.c
+> +++ b/fs/f2fs/compress.c
+> @@ -1064,13 +1064,15 @@ static void cancel_cluster_writeback(struct compress_ctx *cc,
 >  
->  struct vma_modifier_info;
->  
-> +enum smaps_rollup_stat {
-> +	Rss,
-> +	Pss,
-> +	Pss_Dirty,
-> +	Pss_Anon,
-> +	Pss_File,
-> +	Pss_Shmem,
-> +	Shared_Clean,
-> +	Shared_Dirty,
-> +	Private_Clean,
-> +	Private_Dirty,
-> +	Referenced,
-> +	Anonymous,
-> +	KSM,
-> +	LazyFree,
-> +	AnonHugePages,
-> +	ShmemPmdMapped,
-> +	FilePmdMapped,
-> +	Shared_Hugetlb,
-> +	Private_Hugetlb,
-> +	Swap,
-> +	SwapPss,
-> +	Locked,
-> +	RollupFieldCount
-> +};
+>  	/* Cancel writeback and stay locked. */
+>  	for (i = 0; i < cc->cluster_size; i++) {
+> +		struct folio *folio = page_folio(cc->rpages[i]);
 > +
-> +static const char *smaps_rollup_stat_names[RollupFieldCount] = {
-> +	"Rss",
-> +	"Pss",
-> +	"Pss_Dirty",
-> +	"Pss_Anon",
-> +	"Pss_File",
-> +	"Pss_Shmem",
-> +	"Shared_Clean",
-> +	"Shared_Dirty",
-> +	"Private_Clean",
-> +	"Private_Dirty",
-> +	"Referenced",
-> +	"Anonymous",
-> +	"KSM",
-> +	"LazyFree",
-> +	"AnonHugePages",
-> +	"ShmemPmdMapped",
-> +	"FilePmdMapped",
-> +	"Shared_Hugetlb",
-> +	"Private_Hugetlb",
-> +	"Swap",
-> +	"SwapPss",
-> +	"Locked",
-> +};
-> +
-> +struct smaps_rollup_stats {
-> +	unsigned long values[RollupFieldCount];
-> +};
-> +
->  FIXTURE(proc_maps_race)
->  {
->  	struct vma_modifier_info *mod_info;
-> @@ -91,6 +146,7 @@ FIXTURE(proc_maps_race)
->  	enum maps_file maps_file;
->  	int shared_mem_size;
->  	int skip_pages;
-> +	int rollup_fd;
->  	int page_size;
->  	int vma_count;
->  	bool verbose;
-> @@ -132,12 +188,12 @@ struct vma_modifier_info {
->  	void *child_mapped_addr[];
->  };
->  
-> -static bool read_page(FIXTURE_DATA(proc_maps_race) *self,
-> +static bool read_page(FIXTURE_DATA(proc_maps_race) *self, int fd,
->  		      struct page_content *page)
->  {
->  	ssize_t  bytes_read;
->  
-> -	bytes_read = read(self->maps_fd, page->data, self->page_size);
-> +	bytes_read = read(fd, page->data, self->page_size);
->  	if (bytes_read <= 0)
->  		return false;
->  
-> @@ -175,7 +231,7 @@ static int locate_containing_page(FIXTURE_DATA(proc_maps_race) *self,
->  		char *curr_pos;
->  		char *end_pos;
->  
-> -		if (!read_page(self, &self->page1))
-> +		if (!read_page(self, self->maps_fd, &self->page1))
->  			return -1;
->  
->  		curr_pos = self->page1.data;
-> @@ -205,10 +261,11 @@ static bool read_two_pages(FIXTURE_DATA(proc_maps_race) *self)
->  		return false;
->  
->  	for (int i = 0; i < self->skip_pages; i++)
-> -		if (!read_page(self, &self->page1))
-> +		if (!read_page(self, self->maps_fd, &self->page1))
->  			return false;
->  
-> -	return read_page(self, &self->page1) && read_page(self, &self->page2);
-> +	return read_page(self, self->maps_fd, &self->page1) &&
-> +	       read_page(self, self->maps_fd, &self->page2);
+>  		if (i < submitted) {
+>  			inode_inc_dirty_pages(cc->inode);
+> -			lock_page(cc->rpages[i]);
+> +			folio_lock(folio);
+>  		}
+> -		clear_page_private_gcing(cc->rpages[i]);
+> -		if (folio_test_writeback(page_folio(cc->rpages[i])))
+> -			end_page_writeback(cc->rpages[i]);
+> +		folio_clear_f2fs_gcing(folio);
+> +		if (folio_test_writeback(folio))
+> +			folio_end_writeback(folio);
+>  	}
 >  }
 >  
->  static void copy_line(const char *line_start, const char *line_end,
-> @@ -317,6 +374,61 @@ static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
->  		      &first_line->end_addr) == 2;
->  }
+> @@ -1078,11 +1080,15 @@ static void set_cluster_dirty(struct compress_ctx *cc)
+>  {
+>  	int i;
 >  
-> +static bool parse_smaps_rollup(FIXTURE_DATA(proc_maps_race) *self,
-> +			       struct smaps_rollup_stats *stats)
-> +{
-> +	unsigned int dev_maj, dev_min, inode;
-> +	unsigned long start, end, offs;
-> +	unsigned long value;
-> +	char name[32], perm[5];
-> +	char *curr_pos;
-> +	char *end_pos;
-> +	char *line_end;
+> -	for (i = 0; i < cc->cluster_size; i++)
+> -		if (cc->rpages[i]) {
+> -			set_page_dirty(cc->rpages[i]);
+> -			set_page_private_gcing(cc->rpages[i]);
+> -		}
+> +	for (i = 0; i < cc->cluster_size; i++) {
+> +		struct folio *folio;
 > +
-> +	if (lseek(self->rollup_fd, 0, SEEK_SET) < 0)
-> +		return false;
-> +
-> +	if (!read_page(self, self->rollup_fd, &self->page1))
-> +		return false;
-> +
-> +	curr_pos = self->page1.data;
-> +	end_pos = self->page1.data + self->page1.size;
-> +
-> +	line_end = strchr(curr_pos, '\n');
-> +	if (!line_end)
-> +		return false;
-> +
-> +	if (sscanf(curr_pos, "%lx-%lx %4s %lx %u:%u %u %31s",
-> +		&start, &end, perm, &offs, &dev_maj, &dev_min, &inode, name) != 8)
-> +		return false;
-> +
-> +	if (strcmp(name, "[rollup]"))
-> +		return false;
-> +
-> +	for (int stat = 0; stat < ARRAY_SIZE(smaps_rollup_stat_names); stat++) {
-> +		int len;
-> +
-> +		curr_pos = line_end + 1;
-> +		if (curr_pos >= end_pos)
-> +			return false;
-> +
-> +		line_end = strchr(curr_pos, '\n');
-> +		if (!line_end)
-> +			return false;
-> +
-> +		if (sscanf(curr_pos, "%31s %lu kB", name, &value) != 2)
-> +			return false;
-> +
-> +		len = strlen(name);
-> +		if (name[len - 1] != ':' || strncmp(name, smaps_rollup_stat_names[stat], len - 1))
-> +			return false;
-> +
-> +		stats->values[stat] = value;
+> +		if (!cc->rpages[i])
+> +			continue;
+> +		folio = page_folio(cc->rpages[i]);
+> +		folio_mark_dirty(folio);
+> +		folio_set_f2fs_gcing(folio);
 > +	}
-> +
-> +	return true;
-> +}
-> +
->  /* Thread synchronization routines */
->  static void wait_for_state(struct vma_modifier_info *mod_info, enum test_state state)
->  {
-> @@ -397,6 +509,41 @@ static bool print_boundaries_on(bool condition, const char *title,
->  	return condition;
 >  }
 >  
-> +static void print_smaps_rollup_stats(const char *title, FIXTURE_DATA(proc_maps_race) *self,
-> +				     struct smaps_rollup_stats *stats)
-> +{
-> +	printf("%s", title);
-> +	for (int stat = 0; stat < ARRAY_SIZE(smaps_rollup_stat_names); stat++)
-> +		printf("%64s %lu kB\n", smaps_rollup_stat_names[stat], stats->values[stat]);
-> +}
-> +
-> +static bool cmp_smaps_rollup_stat(struct smaps_rollup_stats *s1,
-> +				  struct smaps_rollup_stats *s2,
-> +				  enum smaps_rollup_stat stat)
-> +{
-> +	return s1->values[stat] == s2->values[stat];
-> +}
-> +
-> +static bool compare_smaps_rollup(FIXTURE_DATA(proc_maps_race) *self,
-> +				 struct smaps_rollup_stats *expected,
-> +				 struct smaps_rollup_stats *actual)
-> +{
-> +	/*
-> +	 * Clean/dirty metrics might change but Pss-related ones
-> +	 * should stay constant.
-> +	 */
-> +	if (cmp_smaps_rollup_stat(expected, actual, Pss) &&
-> +	    cmp_smaps_rollup_stat(expected, actual, Pss_Anon) &&
-> +	    cmp_smaps_rollup_stat(expected, actual, Pss_File) &&
-> +	    cmp_smaps_rollup_stat(expected, actual, Pss_Shmem))
-> +		return true;
-> +
-> +	print_smaps_rollup_stats("Expected stats:", self, expected);
-> +	print_smaps_rollup_stats("Actual stats:", self, actual);
-> +
-> +	return false;
-> +}
-> +
->  static void report_test_start(const char *name, bool verbose)
->  {
->  	if (verbose)
-> @@ -572,6 +719,7 @@ FIXTURE_SETUP(proc_maps_race)
->  	unsigned long first_map_addr;
->  	unsigned long last_map_addr;
->  	unsigned long duration_sec;
-> +	char rollup_fname[32];
->  	char fname[32];
+>  static int prepare_compress_overwrite(struct compress_ctx *cc,
+> @@ -1477,8 +1483,9 @@ void f2fs_compress_write_end_io(struct bio *bio, struct folio *folio)
 >  
->  	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
-> @@ -649,6 +797,9 @@ FIXTURE_SETUP(proc_maps_race)
->  		break;
->  	case SMAPS:
->  		sprintf(fname, "/proc/%d/smaps", self->pid);
-> +		sprintf(rollup_fname, "/proc/%d/smaps_rollup", self->pid);
-> +		self->rollup_fd = open(rollup_fname, O_RDONLY);
-> +		ASSERT_NE(self->rollup_fd, -1);
->  		break;
->  	default:
->  		ksft_exit_fail();
-> @@ -711,6 +862,8 @@ FIXTURE_TEARDOWN(proc_maps_race)
->  	for (int i = 0; i < self->vma_count; i++)
->  		munmap(self->mod_info->child_mapped_addr[i], self->page_size);
->  	close(self->maps_fd);
-> +	if (self->maps_file == SMAPS)
-> +		close(self->rollup_fd);
->  	waitpid(self->pid, &status, 0);
->  	munmap(self->mod_info, self->shared_mem_size);
+>  	for (i = 0; i < cic->nr_rpages; i++) {
+>  		WARN_ON(!cic->rpages[i]);
+> -		clear_page_private_gcing(cic->rpages[i]);
+> -		end_page_writeback(cic->rpages[i]);
+> +		folio = page_folio(cic->rpages[i]);
+> +		folio_clear_f2fs_gcing(folio);
+> +		folio_end_writeback(folio);
+>  	}
+>  
+>  	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> index 9940a6cecf1a2..0cfba8742d4b4 100644
+> --- a/fs/f2fs/f2fs.h
+> +++ b/fs/f2fs/f2fs.h
+> @@ -2707,13 +2707,6 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+>  		v |= (unsigned long)folio->private;			\
+>  		folio->private = (void *)v;				\
+>  	}								\
+> -}									\
+> -static inline void set_page_private_##name(struct page *page) \
+> -{ \
+> -	if (!PagePrivate(page)) \
+> -		attach_page_private(page, (void *)0); \
+> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+> -	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
 >  }
-> @@ -723,6 +876,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
->  	struct line_content split_first_line;
->  	struct line_content restored_last_line;
->  	struct line_content restored_first_line;
-> +	struct smaps_rollup_stats orig_stats;
 >  
->  	wait_for_state(mod_info, SETUP_READY);
+>  #define PAGE_PRIVATE_CLEAR_FUNC(name, flagname) \
+> @@ -2726,12 +2719,6 @@ static inline void folio_clear_f2fs_##name(struct folio *folio)		\
+>  		folio_detach_private(folio);				\
+>  	else								\
+>  		folio->private = (void *)v;				\
+> -}									\
+> -static inline void clear_page_private_##name(struct page *page) \
+> -{ \
+> -	clear_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+> -	if (page_private(page) == BIT(PAGE_PRIVATE_NOT_POINTER)) \
+> -		detach_page_private(page); \
+>  }
 >  
-> @@ -736,6 +890,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
->  	report_test_start("Tearing from split", self->verbose);
->  	ASSERT_TRUE(capture_mod_pattern(self, &split_last_line, &split_first_line,
->  					&restored_last_line, &restored_first_line));
-> +	if (self->maps_file == SMAPS)
-> +		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
->  
->  	/* Now start concurrent modifications for self->duration_sec */
->  	signal_state(mod_info, TEST_READY);
-> @@ -799,6 +955,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
->  				     vma_end == self->last_line.end_addr) ||
->  				    (vma_start == split_first_line.start_addr &&
->  				     vma_end == split_first_line.end_addr));
-> +		} else {
-> +			struct smaps_rollup_stats stats;
-> +
-> +			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-> +			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
->  		}
->  		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
->  		end_test_iteration(&end_ts, self->verbose);
-> @@ -817,6 +978,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
->  	struct line_content shrunk_first_line;
->  	struct line_content restored_last_line;
->  	struct line_content restored_first_line;
-> +	struct smaps_rollup_stats orig_stats;
->  
->  	wait_for_state(mod_info, SETUP_READY);
->  
-> @@ -830,6 +992,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
->  	report_test_start("Tearing from resize", self->verbose);
->  	ASSERT_TRUE(capture_mod_pattern(self, &shrunk_last_line, &shrunk_first_line,
->  					&restored_last_line, &restored_first_line));
-> +	if (self->maps_file == SMAPS)
-> +		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
->  
->  	/* Now start concurrent modifications for self->duration_sec */
->  	signal_state(mod_info, TEST_READY);
-> @@ -880,6 +1044,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
->  			ASSERT_TRUE(vma_start == self->last_line.start_addr &&
->  				    (vma_end - vma_start == self->page_size * 3 ||
->  				     vma_end - vma_start == self->page_size));
-> +		} else {
-> +			struct smaps_rollup_stats stats;
-> +
-> +			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-> +			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
->  		}
->  		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
->  		end_test_iteration(&end_ts, self->verbose);
-> @@ -898,6 +1067,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
->  	struct line_content remapped_first_line;
->  	struct line_content restored_last_line;
->  	struct line_content restored_first_line;
-> +	struct smaps_rollup_stats orig_stats;
->  
->  	wait_for_state(mod_info, SETUP_READY);
->  
-> @@ -911,6 +1081,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
->  	report_test_start("Tearing from remap", self->verbose);
->  	ASSERT_TRUE(capture_mod_pattern(self, &remapped_last_line, &remapped_first_line,
->  					&restored_last_line, &restored_first_line));
-> +	if (self->maps_file == SMAPS)
-> +		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
->  
->  	/* Now start concurrent modifications for self->duration_sec */
->  	signal_state(mod_info, TEST_READY);
-> @@ -963,6 +1135,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
->  				     vma_end - vma_start == self->page_size * 3) ||
->  				    (vma_start == self->last_line.start_addr + self->page_size &&
->  				     vma_end - vma_start == self->page_size));
-> +		} else {
-> +			struct smaps_rollup_stats stats;
-> +
-> +			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-> +			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
->  		}
->  		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
->  		end_test_iteration(&end_ts, self->verbose);
+>  PAGE_PRIVATE_GET_FUNC(nonpointer, NOT_POINTER);
 > -- 
-> 2.55.0.979.g7e5102b832-goog
+> 2.43.0
 > 
+> 
+> -- 
+> Cheers,
+> 
+> David
+> 
+
+
 
