@@ -4,96 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CCE4C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:23:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5BF2C79FAA
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:24:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C90D6B0098; Tue,  8 Sep 2026 04:23:45 -0400 (EDT)
+	id EFBF76B0099; Tue,  8 Sep 2026 04:24:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A0E46B0099; Tue,  8 Sep 2026 04:23:45 -0400 (EDT)
+	id ED2E56B009B; Tue,  8 Sep 2026 04:24:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9796B009B; Tue,  8 Sep 2026 04:23:44 -0400 (EDT)
+	id DE92A6B009D; Tue,  8 Sep 2026 04:24:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E916B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:23:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39CEC140448
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:44 +0000 (UTC)
-X-FDA: 85189906368.12.B3DE2FE
-Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3A0854000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fgmBBoy2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBB586B0099
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:24:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5162B1C21D8
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:24:33 +0000 (UTC)
+X-FDA: 85189908426.29.91977FC
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7F0681C0006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:24:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8eJiwTT;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788855871;
+	b=XfC5A8OnVs46c0Me7stS0JaoVJR6pePp8/5Mv6i+fcXSQrG66Tt8itESFYX/HbtnvnTEvb
+	mJwl3vQ8z1x4X8+8Ac2mzorpmujhl6btZKHC7MJRygAeBobKnkOU44NVKOFEaIM2GhfXGa
+	dBplwrqChQv0/WhHmJVuqWsEAhkfAbo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788855822;
+	s=arc-20220608; t=1788855871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0SABSe6rOV+QtbFiRX1AQqZaCJbEvBGQSLmwzJIFmAM=;
-	b=ArWjh69XeqRmkKISL94grkOgfd0DDEkV7JLJlvzLQJB0FzUnJbA9/3MpUxpYFZWDCZL5CX
-	mtjIzv8c1mxn8JNcjPTnW3LaSxjYyeVGkQv7WYQ6SEuduzyn3Nz9G8pt1r3EENAOezqzfn
-	6XWIW6a7xMQhIfNTYSI1KOPZBaZBtAg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788855822;
-	b=7qb/9Mh807+R0dC6IEfSS5Mm4VMNHeTepYaNlv16U3lqidTcLY2N+YOxdS0kFgvaRskCHp
-	Iv/WC5s4Np6SIF3zcBePmB0PFzK1dBMOCeYQIIl2fjwRLcyzrd1knhA3EiDqHnZOcB0QpV
-	H/n4TP2BQgGEtFO6CorUzdl34Hdjhcg=
+	bh=oK4yZ0KXSZYf7SN3RbE80ZIj6P3fE7TSyC7nlXOk0JQ=;
+	b=JJyq9pBPBtHuh4vtTI0J14VTigelK1jg5M6l5jRRjRV6yBJLtmoYp0K4z1g4Gkt+c+oLND
+	CK7sIM9Fo/JjDeluRtSpyoKWQYp2w8mYwE+3/uLD/pHLOALnRHTKpHMJb1C3cmoIdVyOqE
+	fT0uMybZakyx5Lz1okBTc5x/y3fPD3g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fgmBBoy2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XMTIRxiwfQqzh0MfBQr/FOHrV2r/u3kqI0wioYrdBLk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788855820; v=1; x=1789460620;
- b=fgmBBoy24jouHn4NGx3Y/QVZrrQDsJ5nDOTIFF9nEgJa6mkY1XtZAoGGsWeaWr1E0+UWp0/z
- awUKW4EJB7VTb5z4VcPf761x9edOJHc5bdMtCHVgkklRVuXfoMipt256vx4ztNLwRirFbGhKnG+
- stoyuKdooZ0cwc5R3wSym6pw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 99ae5adff9099bc7;
-	Tue, 08 Sep 2026 08:23:40 +0000
-X-Mizu-Trace-ID: 99ae5adff9099bc7
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 8 Sep 2026 16:23:32 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org,
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
-	ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
- folios
-Message-ID: <ap_GBGDHkEzZ1Osq@fedora>
-References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
- <ap9zPPughaSlfXM2@fedora>
- <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
- <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
- <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
- <ap-yQOH0pni-mfdf@fedora>
- <ccb8e121-bf5b-4bb4-a9de-fb5290998ddd@linux.alibaba.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8eJiwTT;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2db858d60e0so908125ad.0
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 01:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788855870; x=1789460670; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oK4yZ0KXSZYf7SN3RbE80ZIj6P3fE7TSyC7nlXOk0JQ=;
+        b=J8eJiwTTEXBGokeqVlQ0v3iQDbPxSzYLjqyg0RAny+J+L2S511UVmywF3x6coFvsil
+         6JeO/hA8Hodt9lL//l28Pw5nVhJQfmzdq1bGaeV/owRuXKgKg7SXO0xf08qOIQHJOgJR
+         ELixFmeQLu44G+U6n3gy9K4xxuq7dRiQAM96w+P4F7K8RJ7EAeTAGE3mt6xeMU7j7bEz
+         /sfokS3aSaUdy7URTwQbn6wltThC7qQITMjeolQVMStbSJm7qrDoUu/Tqy0O5BEp8otL
+         liL0XiKxYzFricEhqEEMnfnxhHct8oXca59DDpkmljty3PxP6zRL/c7FtlD8VuUMgJBr
+         CV1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788855870; x=1789460670;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oK4yZ0KXSZYf7SN3RbE80ZIj6P3fE7TSyC7nlXOk0JQ=;
+        b=etggmfxUeKIYQpzon2Rngw1/B2onvWvRWiI1gJ6Z3ieTf1UOWc7LL1XeiMl2ceYBJ6
+         aTVMhE+/IjjuN4zyCWPPO7yIe36rNEzgW18mBjKS4dVQYBcjsFYLW4eb/ahUkJNrcxcl
+         51QFHXn4KpUA97eFeJg2n7wxHekMPBTMAOnIhS5g87Nyq0BH33OAFp3E/Pm8Q6slhOPs
+         RgT6qetMsBTc7taAl2d/lFPyEPpPV8JB6RqdPjKxdqt9E+s1d1sFjwHiNzKWerccP8qU
+         4N12Ay5VhSFVflzCHGeVaL2KDtDezNHA4iqD/M4kL3W0nnKyUkE43D/Ez7ZaAInJurJV
+         m5TA==
+X-Forwarded-Encrypted: i=1; AKwUvBzFjpeVTJJw/4V8UBxxhvnAmhrEw9on+uOnl+7bm/+yW3QQkGt39eEj/+W/mU9GnqiucfIKoWnKqQ==@kvack.org
+X-Gm-Message-State: AFuF++kf8h5iP4HsrGyCI87p19xe3vtYEG5CnB9OSeuRarKYFN+cmr/1
+	1lHkcbLY/KZ3YCtguZnLvQF6qnzdbb42KrINpxwbeZBZ3QBAieTpASVy
+X-Gm-Gg: AYBFou2ft2gC+BjMXT9SIPQ+056uC0OU+XrrIDHwTjbcznfSg+Gp7FjVV1iSpnXTyDl
+	6J0AhBwAr8r/5Sg3w1sDBaHD5AmKvHXFlqEZX6YN7ZsU0bEGpmvWqTiXBDlWZYe5S/42Gl/NU+P
+	6MPCD1PCSpyLM3fTgAouPBXzdUbwNhA3XZ20Xfr3pwt8yrD4+b5DSzOKKsI3ATHlPnCrjfaqnmQ
+	xkjMZqAgCOXNwokJ3Eu0U3BHl/HjyHVFx+Vh6czc+bw0CM5I7GdhLPb4MEmGotdcSY/pNvT0GC6
+	WuhcJwTnVZxS52p65JJIxfGEExQ/SY+mLnRDn4odPEr6W/2fYnpc7WFLZCzJ9dcUWH1L3B7jSv+
+	LVTihFpsK7i8vgPPRwtNZvlKg/vRJ8QKDJ9MzAZtZxE3K7ZP0T5JzPuIikS6Qhteso4her3+vIb
+	5I+GhrvPTGg96wMUjCxWTbqyRasyXXbZEbZdJ0zCxHXdCuaHebQYOxFKQkODc=
+X-Received: by 2002:a17:902:d586:b0:2cf:b68a:340 with SMTP id d9443c01a7336-2db125f0cf2mr410415385ad.10.1788855869776;
+        Tue, 08 Sep 2026 01:24:29 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1495acf7sm55472585ad.25.2026.09.08.01.24.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 01:24:29 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
+Date: Tue,  8 Sep 2026 16:24:15 +0800
+Message-ID: <20260908082416.2356617-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260825135209.3135169-4-alex@ghiti.fr>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ccb8e121-bf5b-4bb4-a9de-fb5290998ddd@linux.alibaba.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3A0854000D
-X-Stat-Signature: y5xj81qgnkx4qsquscwepooy9wcz3k8b
 X-Rspam-User: 
-X-HE-Tag: 1788855821-829284
-X-HE-Meta: U2FsdGVkX18DoYaoxgRiv1S2Dio/7fkkpcmXv8U7ggBGAzzSwE4fw95FNmqTO1pp2cbhPCHMVf4eCicwMGweGO9IK8N3S3G0DvrdLhipww+NSGQeAlmeEQ1spX7W43NgVCsCtioSVIWxJkitZGAa/AfbNuc4yT+uEw5zuX8XkgNlGlZMOWfbJu1Q8XY9LoIaW5QzwXJeNuKsrCmhg8A3NiAVmf1q/hsDJaOzgDoxGW+SSooh+plaaO26q7QgTWKu5/LpMsyHa2xgRbPq8F4Trlp+aojaN66gcJrjJbmFhhAc20sDwdlc43FHtmZqiQFYt8rvXHYPcdaYaVMvl5tR3QcCYfrI+Z9qGr2nGur3wfPulq868csofDLmShkaJErJ9yYSgbsr/srKu6n/Z3N+BI4Jx6vad8Xv/S5Cdxk1MF8T8UswlZDSjLXHfyJLnn4bCWEZFLpVQIdWZbWBEsN/++7wQ86OHl5ahUfrGXfA2p4cAfU3mcxpkZ9KaQY3TT7S8DQsIPKGue/FiVcf7E0mBvp/4vMo2uEIb7USLt7aQg9khRWP/ksQ8yE2CKGYVEc1BkpZ7HiJ6Np5JB0qNMQLeRQsAKMOIxM7ZIRItmkACX0Uix2pAmFSEgch+jccqe45oqFJQ5bg6kfBWhuhxaEynLitVQ0hvcVTiHks0aejETxB3QG3i/5f65l9rbiAPRMsElf6XL0I/4jWjC/8JAmLPw/UIfa0W400kPKW/CW1nR6++Ja6p9CnETnQoultwIK8w3l8zdT9LFoRhqUd2D0tH8n68KJnOCuOErWEleji3A2lOH9NQMecCk8S/1QKHfeEGuZNzCcZqJ1SyI1RjOZKYfudsHAXniBmedyu0bsTDvJlJQ8IKl+b88Nj6bAibBauG7axpnPc9PnwPOLMkjTBOQ1lZxTvv8CDHcRX60glAg2RWOTOd57ixLIkS67AQ/b2metDikBYIc35uxTE2Ru
- 4w/naY/s
- aKd20jvGNQr3YS1gQx39dyHCj0Htc/eKUkvG/fiZve90EZXoim36RrxKlwNJwfnAzjdUzwAmikkTrefgSJwlLTZoncIEDP/SSn5gRjUzjWPFJdoiK063+RofQT3KNXO7NvaPL8O5zYWAWk1w7nT/c5FyQMBbkyxNzTthvHnrLuBGL8OCy/P2fUxIDs+9cn7zdZAjwiNcth130vvuHMaujAl5kb/ivj5Z9vpRNzMFkb00IHUvGdyR5LQh3rupUlkhwjNcqWbW743RALIHlZxBsuoRskUgbECA9vJpUDWcP5r++SZRQiqgkeIkPWbvB6AIcflPt
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7F0681C0006
+X-Stat-Signature: ikc7zrizf3dnizqkto94cm59dzsyoah5
+X-HE-Tag: 1788855871-478253
+X-HE-Meta: U2FsdGVkX19xe4AlxkY9GXdh0A6OIzoAAgvv4EWr82RVeNS3RxbbQHTycrCTuj6/wLPtT9T2aiXYRtha5h2W0HHeAiZthHAECLVIunwq8BKo62FzyWx6upva1tR9TQmIPhgJrD233HK3rLSLP1CHuYz3hWqb8hTlPwEbHSZ2ILH8Bkx0Jn6GUUkIcUSlphtihWGkNtNRZ+CtJU7/TfqmFTB/Mjl0iXfFZD69KPTqAf03peNML7Xc7mTlBnRqN+bTCHmQuL5dD8P6UjY3yAR5yHflf+5kD+CBc7kguI9+jlzcdYvR0BmM01GIJaM227TQDQTQC5DMdIwJoQHLOfpexvTd50/Q4t5btm3eQKgqiBKOppP0Kx4nnO9NefIFd2QnaSrWXMHem99QYXNxJe0/HNZh+ULwcWHizHeOyohL5kNofZGmoMKNjfnE8yYjaIVzwFPwbfAF/1NoarCDDG+F1fhYtvNT4JQwGXfQhcS1s+ju+s5yl919Ib712eMWNJtnp+WNdD48qHz94rbgyYuI9hKKInfjLWE1uw01iovOJALZ5QNOxX+TPHIY/zEiiSGUgWDXH0E4pV3N+uQWWRlKkBZNV30ZIFpkGCU433LPuuHFrvtgMCN97PZJ/YcoR7ns5YmVqYlzQC0DDeDbNQ+FgApfwfzbQ99xmTpHoXj0sHKv7evAbWCYcNwqRBKiRG3QTMR7MX3bAHWv3DWvJ7F9eH3CSEttFcGs3AzAA2ccqIPzYncJ5/Z/56zFBKtWPffXFqEhNDTmIlZ1bIkYSSnX91Odaj5rAtGquSS5qsQdeHSnp048gGm8GcozxZoPGmjb7uWlqSziHB37ewfcb3Pm75LtawTwNbR54u+agb/PVvrLXpGuFqH+K0lkqkA1+RV9ZTf8xQV6JmekkRgDRG84h3SJA4L3OGRL7CLga01FJ4N0D+IGda5ttpOvAV6VLimDw9ux4b3NGm8Vyq1CRbV
+ 3lqD/D9o
+ LJ6RL9CtGL7S1kquU7ak8LJaAM+6h0mxQz946wLSRg+yqSliaVb5zHnX3uJStXsAbQ3T7V+16xLiMt6sCq2d3scAcZwnOvJfiZd/kJ4STnQonI42sKm5k7rT6SMTqJLkWWSQtxmso1yXYesEOleUgGhgmD7zjXSzk9V4bmFcYp/0O4wxlq8GVU0ukPNUDJvQx3Dm7EY4iLMcnbQKkCT+bQ2mmru5O92xFRmMEMip/lOlDP9GTFg8ItVJZbJM2Tj/c7OynYceiIJXa99jwEcvcAdhi65z3iIy7/GEg82Zil/YZ0mQMHUwnLKj6WyHTQ5ylwzP8rAUzY/n9EcM1v8+pmnGd9FzNOcRpEXfrRHDAMaG9WYOAUZVxT/qd92bIv9gJDfNAPKh1FjLgxHv1M20ybIYsNnvlU8I5Mwcm9gzV/vs+1teLEjvf3P7YShuyne+Zp7EaMlSAIaCaNm+Ws9A4VO+vBbdMHYSbMtp4l+1ytcJPpLnlzz5CisM1JNkZPaIchOqD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,158 +143,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/08/26 at 03:53pm, Baolin Wang wrote:
-> 
-> 
-> On 9/8/26 2:59 PM, Baoquan He wrote:
-> > On 09/08/26 at 12:01pm, Baolin Wang wrote:
-> > > 
-> > > 
-> > > On 9/8/26 11:03 AM, Baolin Wang wrote:
-> > > > 
-> > > > 
-> > > > On 9/8/26 10:34 AM, Barry Song wrote:
-> > > > > On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> > > > > > 
-> > > > > > Hi Baolin,
-> > > > > > 
-> > > > > > On 09/07/26 at 11:25am, Baolin Wang wrote:
-> > > > > > ......snip...
-> > > > > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > > > > > index 40d3f1b48a74..42c0a09938ab 100644
-> > > > > > > --- a/mm/vmscan.c
-> > > > > > > +++ b/mm/vmscan.c
-> > > > > > 
-> > > > > > Well, this seems to be based on Andrew's mm-new branch. I usually track
-> > > > > > mm-unstable branch. Maybe the subject should be marked as below?
-> > > > > > [PATCH mm-new] mm: mglru: clear the reference counter for rejected
-> > > > 
-> > > > ACK.
-> > > > 
-> > > > > > 
-> > > > > > > @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned
-> > > > > > > long nr_to_scan, struct lruvec *lruvec,
-> > > > > > >                 }
-> > > > > > > 
-> > > > > > >                 /* don't add rejected folios to the oldest generation */
-> > > > > > > -             if (lru_gen_folio_seq(lruvec, folio, false) ==
-> > > > > > > min_seq[type]) {
-> > > > > > > -                     folio_set_lru_refs(folio, 0);
-> > > > > > > +             if (lru_gen_folio_seq(lruvec, folio, false) ==
-> > > > > > > min_seq[type])
-> > > > > > >                         folio_set_active(folio);
-> > > > > > > -             }
-> > > > > > > +
-> > > > > > > +             /* See the comments on LRU_REFS_FLAGS */
-> > > > > > > +             folio_set_lru_refs(folio, 0);
-> > > > > > 
-> > > > > > This looks like a great catch, while the code change could bring issue.
-> > > > > > 
-> > > > > > Because move_folios_to_lru() relies on folios' flags to decide their new
-> > > > > > generation. You just cleared it before move_folios_to_lru(). This is no
-> > > > > > problem for rejected folios that are determined to be put into the
-> > > > > > oldest generation. But for those rejected folios that are determined to
-> > > > > > be promoted, this could be wrong. E.g currently gen window is 4, and a
-> > > > > > folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
-> > > > > > is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
-> > > > > > referenced bit, this causes it being put into the oldest generation in
-> > > > > > move_folios_to_lru(), this is not expected.
-> > > > 
-> > > > Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs
-> > > > to be reconsidered regarding whether it should rely on PG_referenced
-> > > > [1].
-> > > > 
-> > > > For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios
-> > > > either. Before commit 6cbdd9726fb5, if rejected folios did not have
-> > > > PG_active set by shrink_folio_list(), evict_folios() would set PG_active
-> > > > on these rejected folios.
-> > > > 
-> > > > [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1-
-> > > > baohua@kernel.org/
-> > > > 
-> > > > > The original code looks quite weird. It even prioritizes folios
-> > > > > that won't be promoted by `PG_active`. Do we need to change all
-> > > > > the cases just to call `PG_active`?
-> > 
-> > I would agree if we can. While I have one concern. A rejected folio that
-> > should have gone into the oldest generation is now being promoted to the
-> > 2nd newest generation. In the original code, referenced folio is only
-> > being promoted to the next gen. I even think this is not a bug, but Yu
-> 
-> That's not quite true. Before commit 6cbdd9726fb5, a rejected referenced
-> folio was also put back to the 2nd youngest gen.
+On Tue, 25 Aug 2026 15:52:07 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
 
-OK, I didn't follow your earlier discussion, I need take some time to
-fully understand that commit and the patch thread from Ehab.
-
+> zswap writeback decompresses an entry into a fresh swap cache folio and
+> writes it back. The folio is cold by construction, yet it is left on the
+> LRU for reclaim to find and free later, wasting a reclaim scan and keeping
+> cold memory resident longer than necessary.
 > 
-> > Zhao intentionally did it: the coldest folio is moved to 2nd newest gen,
-> > referenced folio (hot folio) is moved to new gen but carries the referenced
-> > bit. Both of them seems to be treated somewhat equally.
-> > 
-> > To me, I would rather move both of them to the next gen, while keep their
-> > refs untouched.
+> Allocate the folio off the LRU and mark it PG_dropbehind so the swap
+> dropbehind path frees it from the swap cache once writeback completes.
 > 
-> IMHO, I strongly recommend not doing this, and that's exactly the motivation
-> behind my patch. Because this is also being treated as a promotion, it
-> should behave like folio_inc_gen() or folio_update_gen() and clear the refs
-> after promotion. I think this is a fundamental principle of promotion.
-> Otherwise, ref-based promotion is already completely broken.
-
-OK, it makes sense to me to make principle of promotion strictly applied
-no efficiency degradation involved.
-
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  mm/zswap.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
 > 
-> Next, I also plan to clean up refs in lru_gen_set_refs() as discussed with
-> Barry.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 8163e6c5f76c..d16822a516e8 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1013,7 +1013,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  	 */
+>  	if (IS_ERR(folio))
+>  		return PTR_ERR(folio);
+> -	folio_add_lru(folio);
+>  
+>  	/*
+>  	 * folio is locked, and the swapcache is now secured against
+> @@ -1046,12 +1045,26 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  	/* folio is up to date */
+>  	folio_mark_uptodate(folio);
+>  
+> -	/* move it to the tail of the inactive list after end_writeback */
+> -	folio_set_reclaim(folio);
+> +	folio_set_dropbehind(folio);
+> +
+> +	/*
+> +	 * Drop our reference before starting writeback so the swap cache holds
+> +	 * the only one: the drop in folio_end_writeback() needs that for
+> +	 * remove_mapping_reclaim() to succeed, otherwise the folio is handed
+> +	 * back to reclaim instead.
+> +	 *
+> +	 * Nothing can free the folio in the meantime: we hold the folio lock
+> +	 * until writeback starts, PG_writeback then blocks swap cache removal,
+> +	 * and folio_end_writeback() takes its own reference before clearing
+> +	 * PG_writeback and donates it to the drop.
+> +	 */
+> +	folio_put(folio);
+>  
+>  	/* start writeback */
+>  	__swap_writepage(folio, NULL);
 
-Looks forward to seeing that. By the way, your discussion with Baryr is
-private or in public list, do you have pointer if public? Thanks.
+Thanks for addressing this.
 
-> 
-> > > > Yes. Regarding this concern, I plan to change back to the original
-> > > > behavior:
-> > > > 
-> > > >       /* See the comments on LRU_REFS_FLAGS */
-> > > >       folio_set_lru_refs(folio, 0);
-> > > > 
-> > > >       /* don't add rejected folios to the oldest generation */
-> > > >       if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
-> > > >           folio_set_active(folio);
-> > > > 
-> > > > What do you think?
-> > > 
-> > > Just FYI, after above changes, the performance improvement on zram is no
-> > > longer obvious either. I think this also answers Kairui's earlier question
-> > > about why I saw a performance improvement (which seems related to commit
-> > > 6cbdd9726fb5). Also, there is no obvious performance regression either.
-> > 
-> > Hi Baolin,
-> > 
-> > Not sure if it's convenient to do a little more testing in your side.
-> > E.g rejected folios are moved to next gen, but not clearing their flags.
-> 
-> I'm not sure what you mean by "next gen" here. If you mean the 2nd oldest
-> gen, I actually tested that too, that is, clearing refs after
-> move_folios_to_lru(), and there wasn't any noticeable performance impact
-> either (but the code was a bit hacky, so I didn't go with this approach).
+I checked the refcount handoff in v4. Dropping the zswap reference before 
+__swap_writepage() removes the refcount overlap I was concerned about in v3. 
+The swapcache reference keeps the folio alive until writeback starts, and 
+folio_end_writeback() takes the completion reference before clearing 
+PG_writeback, so remove_mapping_reclaim() sees the expected refcount.
 
-Yeah, I meant the 2nd oldest gen, while what I am curious about is moving
-them into 2nd oldest gen but not clearing refs. Clearly it's conflicting
-with your plan. Anyway, it's just a brain store idea, please forget it.
-Thanks for the sharing and detailed explanation.
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
+Thanks, 
+KunWu
+
+>  
+> +	return 0;
+> +
+>  out:
+>  	if (ret) {
+>  		swap_cache_del_folio(folio);
+> -- 
+> 2.53.0-Meta
 > 
-> > Then we can at least know which one is more efficient on yout testing
-> > platform.
-> > 
-> > coldest folio      referenced folio
-> > ---------------------------------------------
-> > max_gen -1         next gen + referenced kept
-> > max_gen -1         max_gen -1
-> > next_gen           next gen + referenced kept
-> > 
-> > Thanks
-> > Baoquan
 > 
+
 
