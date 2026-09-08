@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA41C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 01:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66F2EC79F9E
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 02:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAF5B6B0095; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
+	id E826A6B008A; Mon,  7 Sep 2026 22:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12946B0096; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
+	id E33266B008C; Mon,  7 Sep 2026 22:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D00D76B0098; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
+	id D48E46B0092; Mon,  7 Sep 2026 22:07:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A348A6B0095
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CBC240361
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:49:46 +0000 (UTC)
-X-FDA: 85188913572.03.19D11BD
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 95958180002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:49:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Tc0UhNC5;
-	spf=pass (imf24.hostedemail.com: domain of love_goo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=love_goo@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788832183;
-	b=CFGvJyyymqN5fo9lKq3aIYVLVyMwH7ocAeub28gFHjaRclBzcSvvmlM2iBOjyrqWLy7p5M
-	d1IqNAsXLYsgwiMaUsEVsej8XiittHGjAzc+YuzFUgePqPx9HEdPGsRO8VZBeWPz/ANdme
-	UEakfg2QoqSh7hPxVv91pwr9AuvvWMs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Tc0UhNC5;
-	spf=pass (imf24.hostedemail.com: domain of love_goo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=love_goo@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B28046B008A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 22:07:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F55D8032C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:07:53 +0000 (UTC)
+X-FDA: 85188959226.27.CE42D31
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7000040004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:07:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NEZsYN91;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788832183;
+	s=arc-20220608; t=1788833271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HrOK81VCA7fdgvtJBnT3Cwz5ib3t+eGo39+sr78CpkU=;
-	b=kOxFfmg6dfprtstuTgtFJa5RfP+p5Z25Gmw+t9SoB/au2cCQKjSBmq7pTzMlbq50KqBsVw
-	ovfzdnqqwFtcQ1gv21O+VBcEk5BdFJE/ZgE8Ttj626UeOsRGx7HutUFnPF1FO0+i7Bqi6f
-	xBrW2bYBewk4CQzyAgYtOOHfee9cefU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=HrOK81VCA7fdgvtJBnT3Cwz5ib3t+eGo39+sr78CpkU=;
-	b=Tc0UhNC5hIH1d5x7kg4j1eB92e1Sy1vrQ4jkFv7NMJIYzpyHb32lvmm8iMKepU
-	WKRoyUYEvjgLH3pazYKaYBMmyoFeAQsLj4kk40+RD8f4p6Nj0DX7hu/wAbCnaxbq
-	E7naBSIa3JoNN9TOsqG/iDimM9pGLf5x5QNQOB2zdsqvA=
-Message-ID: <19023334-9550-478b-bdce-3631de0b1d78@163.com>
-Date: Tue, 8 Sep 2026 09:49:12 +0800
+	bh=6nLMZobpXuVKchXUNS23tGum4icRsXSVQvTC7oxSsEU=;
+	b=lK6KRA7D+68azFQWi/yelnPaJSfbxvpbYfLNibIRCaLSRA/mgQcSQncxWcNeQ9wdzj4Lpd
+	jLNudCCHJjhLYYF7TOExBSLA1U/I7sJchIIO7buKS1iY/OK48RBYvzz/vrecjFC8BNt6j+
+	B3AlXSQnUl6K8nrTfCevQbGVHasbllo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NEZsYN91;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788833271;
+	b=PmWC7zN2Fe0JNdZSBz1eR1f5H17onRoA8FhjoBLIa3OYaxPU+CQvSQ0mgDpOWXrWXORLvN
+	A/b6EcFvNvOy//fZtAWWqEj+rFjLRUZFl+zfjgt6EJMrvES4+m+eRfh1h5VpyCT2Jxga5H
+	fU+jkFV0gd2uCWM/4m/ckEGfMCZ0edU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=6nLMZobpXuVKchXUNS23tGum4icRsXSVQvTC7oxSsEU=;
+	b=NEZsYN917BiDC536e8wdcQUPC9LwKbcgFNEjQZnbzbIrckER8WkPsIObcIFkefleC2rcFZ9hg
+	TLFyCk8XRDA0cRTtVZ5vceRT7RlqpupsX7oTz6gqky6+00vYhDamkzCpavhkT0lg0OfTMDssR6a
+	m7kiKkCAWtBzmoIvcoIVrmc=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hf6W214wrzmV7C;
+	Tue,  8 Sep 2026 09:56:46 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id D257F40572;
+	Tue,  8 Sep 2026 10:07:39 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 8 Sep
+ 2026 10:07:38 +0800
+Message-ID: <d5f6aab7-3901-4615-a237-c60cb4730244@huawei.com>
+Date: Tue, 8 Sep 2026 10:07:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH resend 0/2] mm: vmscan: fix scan overshoot and ineligible
- folio scanning
-To: akpm@linux-foundation.org, liuye@kylinos.cn, hannes@cmpxchg.org,
- mhocko@kernel.org, david@kernel.org, ljs@kernel.org, hughd@google.com,
- mgorman@techsingularity.net, yang@os.amperecomputing.com
-Cc: zhangqiuhao@huawei.com, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Wupeng Ma <mawupeng1@huawei.com>,
- mawupeng1@huawei.com
-References: <20260901084706.3784449-1-love_goo@163.com>
-From: john <love_goo@163.com>
-In-Reply-To: <20260901084706.3784449-1-love_goo@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+To: Lance Yang <lance.yang@linux.dev>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<riel@surriel.com>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<harry@kernel.org>, <jannh@google.com>, <minchan.kim@gmail.com>,
+	<lwoodman@redhat.com>, <kamezawa.hiroyu@jp.fujitsu.com>,
+	<linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20260905061820.642437-1-tujinjiang@huawei.com>
+ <20260907124341.81999-1-lance.yang@linux.dev>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <20260907124341.81999-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXzN+ZaZ9q03CQBQ--.21762S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGF1UCFyfCrWkKw43XrW7XFb_yoWrKr43pF
-	ZxGr93tw18JFWayasIq3W0gFyY9w48GFW5XF4fWw17uw15JFyI934DKw4UZFWxGrs8uFyY
-	qr4UGwsruF4UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UrcTQUUUUU=
-X-CM-SenderInfo: 5oryvsxjrrqiywtou0bp/xtbC6xoDO2qfaZq2mgAA3j
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: qq169gyfz96o9cjwtzuw91xfew59htk3
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7000040004
 X-Rspam-User: 
-X-Stat-Signature: t6i4hk58797xcgyqungstjr9yabkyib4
-X-Rspamd-Queue-Id: 95958180002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788832182-563992
-X-HE-Meta: U2FsdGVkX18Y0H7kdxxA7Za/ggVKuApzJtIU/3xetXrx2nQrtrOpcYpvayY4+sANJAuMTSq/lBbnvWRckog9B1MFO02H3DHt+QYy5MFIE3nkjmcRTkQm9FymsGQYD5DveVL2tJ6FaqTxrrL7m47Dn63+D8peZrcLhVGoXbzC44uYzGBdeWWKqngUdDd13IEXxEAkZdscD3IwxgK7x1N4aUF98MeBKswOkDNBNcZ5KLswnU0xX1mAT+e32lXGa8OrQavYuxR/kYtseXOvDQ0KH2jlyzvNtUbzjDU9g2LDj9Y08UWib2REF/4VJaF5GPVDZiNlbfBshY0Qe3ADaUclMIlzomy/6NI35qgfbwmyJZs//0tSh7n3amvJ0iTyKaKcdNLfqnPc18JtITYnTz6/chzPFpLLqCpFQHNV+HQuA4JV6a6cE0niqXse+A6m4WW445MQI2Zjvn3jDPs8I2DUJiCQw0gvYCUg2kjfMLmZI4JvoU1OGixc687Z8IY9zcimf34530weZQrh2k205pHZ1eshBcSGCrxxX++IdRn6TW/3ZVDFs2DUeWy6Zxy5Voa9saL294E/o9IPW34+K2KD94RbzCGA2Nc3i2x+JA++BZuEI/Ibw0ATI71e7uI0KyhtWAQLdfusxuZ6cvWXCT/7pOJm/DsP+lA3EGjpoxcJAxF3gKhNRw+nZrnU1OSRw+YeOJ4ruDYCzZpPV/hj6SdYe6C2Mg/kfhtukzOGuWMty4Mj+EuBJS23j8GhGI286xsu18oPa6IHHqQ6/AVDaQ+vR72rUmWVqGOJBw8VuTyomBFqNrYKS7NQl45GpdMjdB8qenUuyPQYZ5IhaunTa14+hmxXEDZV43yR3VOwQPCpAg4DOKNNUPp/ETaB/Q6JV6H9/KbpXk0Ss2xqhL8suE8ZLn5LPAg/ji73kNUb9jYt9GEELlT1Teg0DpfzmnNpRUjHnUZ5OH+wIujlS5j34pn
- 5IWJhkZh
- MZk92UTsDgM0fNJHD4KbjxjpAgKipijO/FTokZ87/pxMQt2KB+thpoBN81KR9D6RVH/Pt7+wBWJvK3qnOgnX4RsWM4doJgefnELQRmhwOq3sVa6ICWl4RKo+yXquPXVFeXfw0u60jYPXLVvF6ElB74wVa/uHrTyyvJLTE+6XZetLBWl/v8/UNJXL2KyZRdSJo0z/+dCNVx2L32GV/hpTsM0O9/Y7bAx0/Q4GaAbHu2IRBl4vXw/yzqXO2ubwwp+W/jsaIXpJb+4WCkbolB2rrah5c/A==
+X-HE-Tag: 1788833269-770139
+X-HE-Meta: U2FsdGVkX1+fFa7ZcAQrj8CXNNi1tUISSPfZP4YzBB746xa/aCbmYNw1I1FzggthPaH+NbX2D8X/OOUOzPOJ2AahFIcNraBXPird6eNVk2UEv3li5weXW4CYWGB6sqSJBuzlAQJqlL/ScBK3FXIPZ1kxTDbK8CWY6kYPJzuue4ybwYnEprUGhbdzhdLPQ+/At2u3j4it7TRAPh0NAom0JS1DLNdMsbMVhmz0kWflOI8Dhofaxt+ECXmSY4XNDbGz1hTeaC51yz+L1INDsBw0LRLsKv1juzgWr4etHzQHO5T+T16AxmDunHj+NDqqBuUYsvjK6Dd/5mdgFofKreadKJC1PlivjJh3bWJ5lC/dWP3Svd2prFgmW65czi/bxL4UsGSBkNh4mQNoty4etAnBkerpjPd8hdrMLxOdkZlHyhlE3Z4lreY5U+yRZbJnAAozMAfF9mfjFIjJ/Xf5CWwmDqb7yCfK6YBN4WdPZD2BrUtQ8LNF1vlurtgrDlgCSKnpxDTl8Li7kQV9z2JgGfn2c+OdDmJWZn8fR5m/W3krrrONEdUpPvmmKTueMWwXd0pCr8STtN842tHoKEpOMI0mKX3FUp60HuSXpYr70qEmf1wEeKlB7bgcLBb3lQXdFJwsYqaHfyxPQVuDIpwnKLcJCDjrzVu3JjOvLGMc4GNbfFU8p/O33k25W8vn7FlESHHWY0arOC1BvYM/D541rDQ3Q5H0axHKO9gLtspNs8jBdTY4yOILjepAB0NIaqQYM+TBxAnEUR2rUyRb9sHVYEzAmhLgT/SBA8q3wSWkIVGS4+9PCswBv+MmlzpmNVLYy9nuv4X1Z6NYZDcLXqjnpftD98t6ASgFin0/IyTjbufdqPRNCGg68rx+APPAtMJq7i+e9tPxfAtHqhc4I9RIWZjQxYMqYSmuHt2tpbTx6T8j4ATFEviD9PloxGd3RCjzk6YpID14yWHPRE/f+B1BSRa
+ ThW/fO+B
+ 0iYRaZVlB9tEBTFhV0ZCRUI/Q6zD5tLJXINU8Rd9pGOvPImUyni673UMq7Vq6J+gGjr4km4E0S8iXDl9FD+YPgHhftmcbFcb0Rvt8PPuLGGSxINTWnaBazFMCL9maEXd0MOD3chroZu5/fr46eKff73NhT2IkFrBZ33LpXZmSELDa3t2mka8cmbwOm68NRuUXotu6qclGGOzvQEin7wtNT/27gAdSwkUzj0Z6pmIMeNouTeDqTzRt10n7Z96+zASrmBikiOMYisLAfU7qs0M5pERrMyW3prWcyfSnZcTJSQBQocc90Tmy2KHUwSYclXHL5T7tSMhA3x6/uGLnjMKWNz1l3YQhoQ5HG43pgpDF1Uv9CJSjywv48PKQzmZzONnS3PEA9DNMJUzYx7LImpsyKl1M2fpE0di/NNO+Z73CeSkBTceHGqeaJKiN3J0qyWdjYOUoa32M9HaGSSCTJye4nTX6yTLAgpV0iyuY6EWIUjB1/EDyfMzgLcSr5HZD45pSptWx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,116 +102,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Maintainers
 
-   kindly ping.
+在 2026/9/7 20:43, Lance Yang 写道:
+> On Sat, Sep 05, 2026 at 02:18:19PM +0800, Jinjiang Tu wrote:
+>> On arm64 server, we found  __anon_vma_prepare() reuses anon_vma and
+>> anon_vma->root is stale due to missing memory barrier, leading to
+>> lock and unlock two different anon_vma->root, thus leading to a anon_vma
+>> will never be unlocked, and another anon_vma couldn't be locked anymore.
+>>
+>> The race is as follows:
+>>
+>>     THREAD A                             THREAD B
+>> __anon_vma_prepare                __anon_vma_prepare
+>> anon_vma = anon_vma_alloc();
+>> // writes may out of order here
+>> vma->anon_vma = anon_vma;
+>>                                    anon_vma = find_mergeable_anon_vma(vma);
+>>                                    anon_vma_lock_write(anon_vma);
+>>                                      // may still see the old root
+>>                                      down_write(&anon_vma->root->rwsem);
+>>                                    anon_vma_unlock_write(anon_vma);
+>>                                      // see the new root, never unlock old
+>>                                      up_write(&anon_vma->root->rwsem);
+>>
+>> thread A triggers page fault and calls __anon_vma_prepare() to prepare
+>> anon_vma for the faulting vma. __anon_vma_prepare() allocates and
+>> initializes a new anon_vma, and then publishes it to the vma with a plain
+>> store. anon_vma_prepare() only requires the mmap_lock to be held for
+>> reading, so two threads can fault on adjacent VMAs at the same time. While
+>> thread A publishes a new anon_vma, thread B could finds the anon_vma via
+>> find_mergeable_anon_vma() and then locks anon_vma->root->rwsem.
+>>
+>> However, due to missing barrier, thread B can observe the published pointer
+>> but a stale anon_vma->root because the stores from anon_vma_alloc() aren't
+>> yet visible. What's the value of the stale anon_vma->root? __put_anon_vma()
+>> doesn't clear anon_vma->root, so the root of the new allocated anon_vma
+>> may point to a valid anon_vma.
+>>
+>> As a result, thread B can call anon_vma_lock_write() with the old root,
+>> and call anon_vma_unlock_write() with the new root, leading to a anon_vma
+>> will never be unlocked, and another anon_vma couldn't be locked anymore
+>> (it's count is dropped from 0 to -1 due to wrong unlock).
+>>
+>> To fix it, change the plain store `vma->anon_vma = anon_vma` to store
+>> release, so that the fields of anon_vma are visible before anon_vma is
+>> published to vma->anon_vma.
+>>
+>> We don't need a read barrier at read side for thread B. The load of
+>> anon_vma and anon_vma->root have address-dependency. According to
+>> Documentation/memory-barriers.txt and some investigations, only Alpha
+>> needs address-dependency barriers and it has been handled by READ_ONCE().
+>>
+>> This issue needs two adjacent VMAs aren't merged but are compatible for
+>> anon_vma. We reproduced this issue in v5.10 with KSM enabled. The kernel
+>> doesn't merge commit cf7e7a3503df ("mm: prevent KSM from breaking VMA
+>> merging for new VMAs"), so there are many adjacent VMAs that aren't merged
+>> but are compatible for anon_vma.
+>>
+>> Without this fix, our production environment could reproduce this issue
+>> about 2-5 times each month. After adding a smp_mb() before
+>> anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
+>> to this patch, this issue hasn't be reproduced for one month.
+> Good catch, thanks!
+>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
+> Shouldn't the tag point to the following ?
+>
+> Fixes: 012f18004da3 ("mm: always lock the root (oldest) anon_vma")
+>
+> 5c341ee1dfc8 introduced anon_vma->root, but 012f18004da3 made the lock
+> helpers dereference it. Before that, anon_vma_lock() used anon_vma->lock
+> directly, so a stale root could not cause this lock/unlock mismatch.
 
-在 2026/9/1 16:47, john 写道:
-> From: Wupeng Ma <mawupeng1@huawei.com>
->
-> Rebase to the latest v7.3-rc-1.
->
-> These problems only surface when reclaim targets a lower zone
-> while the LRU holds folios from a higher zone.  Normal userspace
-> allocations go to the highest zone.  The zone-skip branch stays
-> dead under typical loads.  Lower-zone-pressured configs (DMA32
-> module allocations, memory-constrained devices) hit the issues.
-> They inflate scan cost and delay the OOM.
->
-> shrink_lruvec() drives reclaim in SWAP_CLUSTER_MAX (32) chunks, but
-> isolate_lru_folios() may scan far more than that per call on a single
-> LRU.  The excess is never charged back, so shrink_lruvec() keeps
-> rescanning the same folios round after round.  When reclaim targets a
-> lower zone, the same scanner also keeps walking zone-ineligible folios
-> that can never satisfy the allocation, inflating nr_reclaimed into a
-> false progress that delays the OOM.
->
-> This series fixes both:
->
->    [1/2] Charge the isolate overshoot against the scan quota so the
->          next round skips already-scanned folios.
->    [2/2] Stop scanning once too many zone-ineligible folios have been
->          skipped, instead of force-isolating them.
->
-> Background
-> ==========
->
-> We observed slow, unexpected OOM behavior during extreme stress testing,
-> and while digging into the reclaim code during that analysis we spotted
-> these latent risks in isolate_lru_folios() -- the overshoot never
-> being charged back, and the force-isolate path on lower-zone reclaim.
-> The concerns below are the ones surfaced from reading the code, then
-> confirmed by constructing the situation deliberately.
->
-> The problem only appears when reclaim targets a lower zone while the
-> LRU holds folios from a higher zone:
->
->    - reclaim_idx points at DMA32/DMA (the triggering allocation asked
->      for a lower zone, e.g. __GFP_DMA32), and
->    - the LRU holds folios from a higher zone (Normal/Movable).
->
-> Normal userspace allocations go to the highest zone, so reclaim_idx
-> never points below it and the zone-skip branch is never taken.  It
-> needs a real lower-zone allocator to drain that zone below watermark;
-> that is also why it went unnoticed upstream -- the 1c7b17cf hard-lockup
-> fix that introduced the force-isolate path was found only on a ~1 TB
-> box running DMA32 module allocations.
->
-> Impact
-> ======
->
-> Reproduced on x86 QEMU, 7.2-rc6, with a kernel module doing
-> __GFP_DMA32 allocations to drain DMA32 below watermark (LRU folios
-> sit in Movable):
->
->    - A single isolate_lru_folios() call scanned 32794 pages and took
->      25 (32769 skipped): 99.9% wasted on ineligible folios.
->    - Across one run, isolate was called 339 times, 140-165 of which
->      isolated nothing (taken=0, pure empty scans).
->    - shrink_lruvec() charges only the 32-page quota per round and
->      never refunds the overshoot, so the same skipped folios are
->      rescanned round after round.  vmstat on a memcg OOM path:
->      pgscan_direct / pgsteal_direct = 2836624 / 112719 = 25.2x
->      (isolate -> shrink_folio_list returns the folio -> isolate again).
->
-> Once max_nr_skipped hits SWAP_CLUSTER_MAX_SKIPPED, the current code
-> force-isolates the remaining ineligible folios.  On the inactive LRU
-> they reach shrink_folio_list() and get reclaimed though they can
-> never satisfy the allocation, inflating nr_reclaimed and resetting
-> no_progress_loops in should_reclaim_retry(), delaying the OOM.
->
-> A/B results (same .config, md5-identical):
->
->                            baseline    patched
->    empty scans (taken=0)   140-165         0
->    isolate calls               339         7
->    total pages scanned      343711      3140
->    single-call max scan      32794      3104
->
-> Empty-scan 0 is the stable evidence (holds every run).  The
-> pgscan/pgsteal ratio is volatile (baseline 56-26675x, patched
-> 65-1324x, ranges overlap) and is not relied on alone.
->
-> Caveats and reproduction
-> ========================
->
->    - Triggering needs a lower-zone-pressured box.  To confirm the code
->      analysis, the situation was constructed on a small x86 QEMU VM
->      (1500M, CONFIG_LRU_GEN=n) with kernel cmdline
->      `movable_zone=DMA32 kernelcore=256M` (DMA32 small, Normal empty,
->      Movable large), then a kernel module doing
->      `alloc_page(GFP_DMA32)` drains DMA32 below watermark.  LRU folios
->      sit in Movable and are zone-skipped while reclaiming for DMA32.
->      Observed via the `mm_vmscan_lru_isolate` tracepoint and
->      /proc/vmstat (pgscan_direct, pgsteal_direct).
->
->
-> Wupeng Ma (2):
->    mm: vmscan: charge isolate overshoot against scan quota
->    mm: vmscan: stop scanning ineligible folios after max_nr_skipped
->
->   mm/vmscan.c | 48 +++++++++++++++++++++++++++++++++---------------
->   1 file changed, 33 insertions(+), 15 deletions(-)
->
+Indeed, will update it in v2.
 
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>> ---
+> Hmm ... no luck reproducing this locally ... Still, AFAICT the race is
+> real.
+>
+> For the read side, no extra barrier needed because the anon_vma->root
+> dereference is address-dependent on the READ_ONCE() load, IIUC :)
+>
+>> mm/rmap.c | 6 +++++-
+>> 1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index d1819fd69938..a868e835eadb 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+>> 	/* page_table_lock to protect against threads */
+>> 	spin_lock(&mm->page_table_lock);
+>> 	if (likely(!vma->anon_vma)) {
+>> -		vma->anon_vma = anon_vma;
+>> +		/*
+>> +		 * The fields of anon_vma must be visible before anon_vma
+>> +		 * is published to vma->anon_vma.
+>> +		 */
+> Maybe be more specific:
+>
+> /*
+>   * Publish anon_vma only after ->root is visible, otherwise a
+>   * concurrent fault may dereference a stale ->root when taking
+>   * the rwsem.
+>   */
+
+Although other stale fields of anon_vma might not introduce issues,
+the stale values are fragile anyway, so I teed not to emphasize ->root here.
+
+> Otherwise, LGTM.
+>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+Thanks for review.
+
+>
+> Cheers, Lance
 
