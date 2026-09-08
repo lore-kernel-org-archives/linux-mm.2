@@ -4,93 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67A4C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:32:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B9EC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D39096B0099; Tue,  8 Sep 2026 05:32:08 -0400 (EDT)
+	id 655036B00A0; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE33C6B009F; Tue,  8 Sep 2026 05:32:08 -0400 (EDT)
+	id 605CB6B00A3; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD1806B00A0; Tue,  8 Sep 2026 05:32:08 -0400 (EDT)
+	id 51BD36B00A4; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C4C6B0099
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:32:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 402571A04C4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:08 +0000 (UTC)
-X-FDA: 85190078736.06.B5BC975
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 27B546B00A0
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B6CCA04E9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:24 +0000 (UTC)
+X-FDA: 85190079408.24.B577891
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 84DA014000C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eSiHtrwW;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8747B80006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=is6KQl01;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788859926;
+	s=arc-20220608; t=1788859942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DZAjXyNzHlCjg0AhlziS+3C/RKN5/CeoTOOqdZq/ZDI=;
-	b=U+yXtiRdA7kwE9azXr96pdfGVUy6eUqGdw7TvVI6Z9rLStYAXCxHqWWdj1pgQl8jUjNj+E
-	oVGifLWYqKpznr3CIlmiW07spOnQks+IGuDdKGJHqU2mu3ltmv8MIeU1JXdJRFh81kwTpj
-	f4oG3resy7R1F8nlfcXSCxHRCc7M9Nw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788859926;
-	b=d9wz7UMwktswMZtYkxn/KNGnFUAYJaw6AF+d1/FTCBgmUoObprko1AjDLLVE90HagJvmOv
-	lnGchUJo5UkwAFLxn5Siff3Dyhwhp8v2kyh93IDN/l+8aPcMJZo4dmfffKVVm7ZX2sbZxL
-	kuJR7iEk4LofaRzKD0gKnkXa2l0YQW0=
+	bh=idOnIsbF4aqGbbwgFi07xd+2BwFsQcBoIJ7fhbX7sIA=;
+	b=G02Gx9BaXcuRfJLjf55uUbM3Su6bqAGFSDRcAYUmsV4Fx8bnR9Q+F6sm6xLvaZ1jF0lr0e
+	LMI2fCxDMQPaoNCN8O+ydKsmsoNgwxCnCeydKqT2YGiBHVhSMcR7LOnEVzammqoN/72lD1
+	nHTNwIhZ5Q87i2iVqrKuwtrqYSZqI1Y=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eSiHtrwW;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=is6KQl01;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788859942;
+	b=vyx9OTfK46pAbNLOngft+qw64S7j0M9rYjrp0v3ZXiGCZzsQOXB4P6B1ZiR6YmKOrfbb00
+	plpDeMSfubDQlIKdGt79CPgdZN4zqa3tSz53km7r7ruo2FXRB4W8scus5niorzjXQHNmfr
+	EDm+HIoO5RMWMrFIK1g5SVz0tzIYqOw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B5E1960A98;
-	Tue,  8 Sep 2026 09:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23FB1F00A3A;
-	Tue,  8 Sep 2026 09:32:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24499601DB;
+	Tue,  8 Sep 2026 09:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C3E1F00A3A;
+	Tue,  8 Sep 2026 09:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788859925;
-	bh=DZAjXyNzHlCjg0AhlziS+3C/RKN5/CeoTOOqdZq/ZDI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eSiHtrwW3jRYSXPiUmwOiKfisZC0w2GGQuZST/Uxf79m4i19ogqSU5si61wFyLBxU
-	 iOs3ZPwRe26jYRixxg4ZMIAztZqDjnbk4yHEb3/ZtztgUl0jc4BljiI9GObSI3LnJo
-	 36JPADQksLGe/Nz0fdYJq6UgoGtbiO1zfkOV9briywY8rD6SXEMeo1zad+U+KwOTsj
-	 fR/3/WCYtrhVRdMQ8JHYR6U2sOr9DiUX1cm513VV4BW90wNgarOeemi2ZCb/vdC/Eg
-	 Yjf0/cMGLvRcGhuLrjkv4fl1W0lvag0j3yjhb+yiRprByAG6RuSS1Nrh0iZmhnHUYn
-	 cG2NaDhaA2fGg==
-Date: Tue, 8 Sep 2026 10:31:59 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, minchan.kim@gmail.com, lwoodman@redhat.com, 
-	kamezawa.hiroyu@jp.fujitsu.com, mel@csn.ul.ie, linux-mm@kvack.org, wangkefeng.wang@huawei.com, 
-	sunnanyong@huawei.com
-Subject: Re: [PATCH] mm/rmap: fix missing barrier between anon_vma init and
- vma->anon_vma publish
-Message-ID: <ap_U6R5aMGdL6rly@gremlin>
-References: <20260905061820.642437-1-tujinjiang@huawei.com>
- <ap6ybQeSg_rrmC95@gremlin>
- <cb602c85-ad10-426b-8edd-cf9684c51749@huawei.com>
+	s=k20260515; t=1788859941;
+	bh=idOnIsbF4aqGbbwgFi07xd+2BwFsQcBoIJ7fhbX7sIA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=is6KQl01jgWMql6FMQr1xk4ZLTp10tUIpdaw1BuP5Rf1d3EdS7dMLKaiPRZThwuqD
+	 Zz3wcM39/XWli/MFxs5l2NuNPSjlU8qMWXqNptPFuT4CFfVUNdkDthAFS1YK6zQLS1
+	 nmtpMdpWmBqCCe2wIfrgXYPvi8EvGSNXfa7xlVQe2pGyMROlgXFPsY+GF1r/q/OwTB
+	 p+s5pjSRGKJFXbW5tWnRNXxcQRntY9B3rZ83+pI7dTryfPaOjIWD6J8mfxP/35Wwg4
+	 NCNXkDMfDYhL3azEtB6DmMI4zns9IM5YqZaboMTZZIo95XbBv3wHc3xcP0mVoCNIyl
+	 60gxvEX45F9Tw==
+Message-ID: <90cd8ace-b135-45d6-815b-bf7329cbfa4d@kernel.org>
+Date: Tue, 8 Sep 2026 11:32:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cb602c85-ad10-426b-8edd-cf9684c51749@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in vma_add_pgoff
+Content-Language: en-US
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ syzbot <syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, pfalcato@suse.de,
+ syzkaller-bugs@googlegroups.com
+References: <20260907192517.564ea15aa8c9d47669b3a81f@linux-foundation.org>
+ <6a9f8bc6.f614420e.2bf292.0005.GAE@google.com> <ap_Uke89Q9LWoaoK@gremlin>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ap_Uke89Q9LWoaoK@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 84DA014000C
-X-Stat-Signature: bbfq5hebf71rybyymtue641uupuxo7y6
-X-HE-Tag: 1788859926-742657
-X-HE-Meta: U2FsdGVkX186rJoUrbX1IlCt1o8fdPZW7NllZ6wIDZqMm9TvoswqCz7yZu6IpXFUrZP/nrqe3+4tW8DcQv514VVG+GhU7MeKjy+5tlWcG0TiWgBKzlL9LTPjFekzYkgEC4kzwWpokraOqWKAwXxtK6+hxk+Uw4c2UvV2mRnRfCuwlAFK8PNcUzkDJQfLyaM0bE5j3ZXosvUSDKNsG3JMQwkdO4lLHWiTTrUkoaQLW+d9HJalM65ZaxmCpkC+QfRdoVBeJ/+TWFiBt3e66taAK0OyOT8VESznSWXrPwk4+L63KkMuM6l67saOXpz9/d72WodlOxSJH4QGYIrngZmyhLaUobMvDiB6d/ODk0j88nkUWijoIbjT9K3h380kZ6WUrozp6BODBi+eSK9tE3wPDp2cMk3QzuPWZBnLCwc9yxQLCke9tWE+MhAXTO02gTz/dZImqHcr5RwqEf1F9KyJX7j+ZL6iDbZovgNasnz5tLGwx5OX36XskxqbHCsfJwFi/VX47q3Gby9xnJslRlRGXYKdXtybsx7elvPqrMo+JTMkuH5y4w5CAjsgxrSVZrbm8KcCNtPEXD89AzoCHXPAJmPMSWFFX+qiGIDGaFZ1KAPTo4V3Zwxb0n2k2Lxz8Y6hPqspBZxmcC0aJ2yNupS9qjwRe6vB0Mjilg77+vRWPHpexCIQaMaNNm0Xaci/gVRcsYa8aTvlhWEXEjFbqpmEn6U6IDGSxFknYsM3qLT4p36kTjlP2qdF0Swp2+PATIhtln0RWc84kTN8dxBZDZQiJndjq3ICx1ulkOoH45fKt7Y5IOhO3+myqjIKvVbgTYmZrJpmqXGEcLI4AGCrtUSfMvah+if2i0/Ogb5iySqsrOe6TNdSHA/z4ITRO/88U8s443svUohTeaWhLSJVyueHFqzha01p1WnfiG4ggwzApfqVv5Qta5chVU9G897cC7I4lkY88+3pT+k2hGqaUiq
- 9/dNHFEf
- RlwobJ0zoAOpcSqK+rUC00j0kBrXnrnlYx3UzNqkqbPtaMq+C/ZfihCq70FSWAcqQiQPaCfAClxmqCtUAaQvt+pMvlzoC9zCWlkwd8yAj2AaU/JFZr0Bsy80USMmIzAGG+r6YT1h/bbyXAn9Evj9PTm+Mlnwp0uxyEDY9jx067Fh/b7qBNl+kFY5mUOeCr1ercW9AmRLeEOPYY4VEbIa387kBa/zXxnP4T6604zaoB8JQnvrmR77aTsqitYaRpEQo0u1zwK/hjIpCm1Ovqu47xqXpH6K1sjeqLFfsQA9f6ZCV1xH+drrMIdgzQNtjGhKi0cdWIbA8VqtXWv7RE4d5Dqjmd+pPBUd17iIRcsi1b+kJvxW7dDFJAM+KJ3p/VKpv+R5Fhro1Jksob8s7vJkqSNujMIHS7N9uGvaVdO++atFgQws=
+X-Stat-Signature: fe356qq6f5te86cw18hhjqrg7zfmbqpu
+X-Rspamd-Queue-Id: 8747B80006
+X-HE-Tag: 1788859942-889661
+X-HE-Meta: U2FsdGVkX194ty2u1gaqk5/jakPUD6cNCFjtV+f+UTE16UKI0wz2pN3oNy86Rsilu52ei+gtfZ4oC0QUJ1L0EtNmlnTKmxAnM/Q45T89lpHFPKdLRn5tC0EEsTwF8L7jPLHAPDzXPoLoHS3LmTFR3Q3yeDdCCcBZLaw+htYMrsUMMliaH0yO/4pNeYxUm3m/7qS1X+QhOsmB3Jf4IL8y2niOrYQTxkE01W+5mXgYFtHLXtMRP8OkRY9YCI+TKIiRah9rspcrCFYtfgsMs68jBNU/F9zp856cLvXw2dMaHu76vm9SbDDkjuiVlvEX3G9bWp7qXOV3JzTgZ9DVMwCXqqKHVh2Qpi/b8dOfrBR/wkMZuW9p5uBbn8xGQtmH+2nVZAthzweFhN4QOmuZZ3CHN9ogDc4dJ4jRZqWOBomC+DB7PxrO2xxnlNvSS/IimkF2OF7UKFceh4hCbFkEUFxpDYolgpHmiCrDMpJlr7xKRXE8IHF/8gZ2HF94CA8h2dQNJs7i3oi/vyHF8dDc4VDETMKZ2bPCj6utwJwY1N02kRkx/cAtBpQlJyWZQOW9wd9SUuR0x+f7ylE256v0SNb1rrVRwC+8CZnxAm9nDQosFwToBhPw7/y7LQV/IkSxjbxuRg7Mv7OEE4RQ0rdEG6RQzYONmJ7cu/DjJA7tigy+R2R1hi/k4NjnvPmhEQKwUb6OOC0PAgr1IFqaZ+y2o73Yb2nodzkbtMYwsFLfrlLb0jMhGwJ+S3tWEve3JWKC+WP0zSc4XokM3jPd+YxTvFwfKBBUvs6krkJHRMfme5nUybZUitZi+iEirJXXcb+u3+lDQcYo1E3HS7zwpIZKg2hWw+uVn8id74dfQZnhAl8u6m1YjXxf/QxAMZ7hRPQHdAj8fh5FPknjyREhrPDZNptYNQeroV/eZ4vBgoum66iugZ8Aji1BDNM1WKHmOon0rC42SPkzcBLy0S/7jZENtV9
+ o8vEURWz
+ PWJe9tTh89OWmFvCJtXLxv4SoWfsYQRFdnWkp3tn+MXEtb6U9zeMqOok/+txYPdQbzn8dXzy0qHXMSiMYdXMH1wHQY/kWMeh6xtBYC0Z8qD7hnO1gGliOjtZRewK3hnLUNJ1c+Px24vyCWcpV7p2xQtG27hpSqKKhsWShOmrmshitehU6rjVk73xKTK8BTRiqvv7Bj6dKid7UCoI9Z1QKUvkDG9PymkDhigFEkSK8qugfpfaBfMroHRLeTa1cvMxtZ8S933F9J3x+qAmhWt3XRS30R59tiCo9g7b0TnPFGUVlvBTOesX3dCz+V7a2G1bSEGiApS865f3BrUqy6vs1FlAEkq4V9SNfQSTJFORy8Ngf+2KB12o3aVIVp4d1b3ZBaMe1DNktZVxH+80eUCGmvhqLUPydy5vHhiRckthbVtIteF/xiS2Q4OskaEDablWHFv2Ns60Qflmu2l3zfsn8Ksl9TtrvWyqiOqq6VxK0RhzbSaOOPkxOq1DE29qlTE+W97iHH0Wpy2rBPgp9zOO/w/ln7wRVq2aQlSbiQr+sPz3WV+eqHu5pFrhl2+5Gw9slnhs28Xdk6VNPNbCJ4E95sKetdruYHXbNGT1Y/nEsSkZnke/9ifsdqQmDq5zh2Se51NmFpWDi/EsmY17FY8ZrMv8aNCtzZfacEEYk4PhkqorxKaCRoA2lDlr3ibDKH4LU60iTAdVaE6o3V/ZKUXTqLG4Ed7jY4ZqIVEUI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,80 +135,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 10:48:29AM +0800, Jinjiang Tu wrote:
->
-> 在 2026/9/7 21:52, Lorenzo Stoakes (ARM) 写道:
+On 9/8/26 11:25, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Sep 07, 2026 at 09:15:02PM -0700, syzbot wrote:
+>> Hello,
+>>
+>> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+>>
+>> Reported-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+>> Tested-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+> 
+> Yup there we are :)
+> 
+> Why is this constantly duplicating I wonder...
 
-> >
-> > > Without this fix, our production environment could reproduce this issue
-> > > about 2-5 times each month. After adding a smp_mb() before
-> > > anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
-> > > to this patch, this issue hasn't be reproduced for one month.
-> > I don't see how the smp_mb() would make any difference there, I wonder if
-> > you just reduced the race window?
->
-> When troubleshooting this issue, we suspected it was a memory barrier problem,
-> so we added a full memory barrier like below.
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index d1819fd69938..11203f381beb 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -205,6 +205,8 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
->                 allocated = anon_vma;
->         }
-> +       smp_mb();
-> +
->         anon_vma_lock_write(anon_vma);
->         /* page_table_lock to protect against threads */
->         spin_lock(&mm->page_table_lock);
->
->
-> smp_mb() ensures that all prior loads and stores are completed
-> before any subsequent loads and stores, has stricter semantics
-> than smp_store_release().
->
-> I used the strongest smp_mb() barrier to test in the production
-> environment to confirm whether the issue was related to memory
-> barriers, and to avoid falsely concluding that it wasn't a memory
-> barrier issue due to the incorrect use of a weaker barrier.
+Going back to the first mail:
 
-Ah OK I misunderstood this (memory barriers make this easy :) so this therefore
-means you've confirmed the bug fix also, as the release version is definitely
-correct (I analysed it through in my reply manually and ran it through a bunch
-of AI checks also to be sure).
+syzbot found the following issue on:
 
-Nice then :)
+HEAD commit:    5445d6419962 arm64: Don't read GMID_EL1 when MTE is disabled
+git tree:
+git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
 
->
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
-> > I do wonder if something more recent made this at least more possible.
-> >
-> > A decade and a half without it being caught before seems... unlikely :)
-> >
-> > I wonder if the VMA locks made this more possible by (significantly)
-> > increasing the ability for racing faults to occur (no mmap read lock
-> > required).
->
-> I mentioned it in the commit message, maybe you missed it.
->
-> "We reproduced this issue in v5.10 with KSM enabled. The kernel
-> doesn't merge commit cf7e7a3503df ("mm: prevent KSM from breaking
-> VMA merging for new VMAs"), so there are many adjacent VMAs that
-> aren't merged but are compatible for anon_vma."
+We can see it's based from 7.3-rc1:
 
-Ahh ok interesting.
+https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=for-kernelci
 
-I do wonder if that is a better Fixes target then? But at the same time,
-technically, I guess the old commit is the right one.
+And since the problem was introduced there, all kinds of development trees
+for 7.4 (or even pending hotfixes for 7.3) based on 7.3-rc1 will now have it.
 
-So yeah I think let's keep it as you've specified.
+I guess syzbot has to learn to recognize it's a known problem and ignore it,
+or have some repo of known important fixes merged after rc1 it applies on
+top of such development trees, as they generaly won't be rebased to later rcs.
 
-> Thanks for review. Will update the commit message and comments in v2.
+> 
+>>
+>> Tested on:
+>>
+>> commit:         35b0fb39 mm/mremap: reset unfaulted VMA page offset fo..
+>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=15e13af9580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=c6879dc677a017f0a21b
+>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+>> userspace arch: arm64
+>>
+>> Note: no patches were applied.
+>> Note: testing is done by a robot and is best-effort only.
+> 
+> --
+> Cheers, Lorenzo
 
-Great thanks!
-
---
-Cheers, Lorenzo
 
