@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84DF7C79FAE
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E63C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:34:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50F936B0099; Tue,  8 Sep 2026 08:34:36 -0400 (EDT)
+	id EFA566B009D; Tue,  8 Sep 2026 08:34:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6B16B009B; Tue,  8 Sep 2026 08:34:36 -0400 (EDT)
+	id ED1786B009E; Tue,  8 Sep 2026 08:34:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AE886B009D; Tue,  8 Sep 2026 08:34:36 -0400 (EDT)
+	id DEB356B009F; Tue,  8 Sep 2026 08:34:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 163326B0099
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:34:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 859A61A0672
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:34:35 +0000 (UTC)
-X-FDA: 85190538510.18.D169CD4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ACB8B6B009D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:34:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17183C0639
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:34:56 +0000 (UTC)
+X-FDA: 85190539392.03.1AB79D0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B8FB2140003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:34:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdhNnJ6O;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 55E4A140013
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:34:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkBhZQWM;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788870873;
+	s=arc-20220608; t=1788870894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ogEy3KL26BQtlHDKdvWVY5bVB5dGWcg102/9Ygp/YhQ=;
-	b=j/TNC7ZPhZ5Yf0LMIybrQrY/WFqKPmC/EPDtyAFoyXwKWrP9PdEJONZ3vrfpadOGgcGrnc
-	lofcIb7VYnu7MXIG0NUxVZdJ41jvTdmi4gQHUgoqi+NrMiniFvQLP/HhQX8rqRa4avi/iu
-	dYsNr9MF9u5pwzdhSJneq0Zk1scikDw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788870873;
-	b=LTHw2h6DHbdhzw5qxGArNlenlst/qsYLjWDXbai6hvKWJWNFE++BC8LB3xpRYuYb7AP+DY
-	BL1Ni7HkD2dihEFYb5fpp5+iodq0i+ENZ8w+CrsvBd+d2KVSjOfeY/zQ+LjQvZ/w7HI3gG
-	86TP78Q0R4B6LPLdTE8rYg3zv2h8clI=
+	bh=2RQcemfGMYTiDH29zfMnTtdgj0bHtOblVlsFhLPlSxk=;
+	b=k3DW6XLeze2hi+hCOu4zyE2yX7PljtL+ACBS4quXhEHJvAypO5HY3hS7w1SlWelfNTPbrS
+	Zq1ZLB8DnwwM8ofOkRo4dk+x9omk2rIl8BRpATQPPojHTWoiXjgzjpBNsH3MWdZ9U4s3m4
+	QY0YTGZheRdli5BtwdXmEIkTf6iTKbA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdhNnJ6O;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkBhZQWM;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788870894;
+	b=ujZy4VVzuka5rPtYXZS7KQ5WnuQ2LrywfEnOpYCiWIgKw4BYlSGNMpOm6zhngKxcQiRVgX
+	Wv5RdkXxNd6jxUv9BI4vduwqkEOyZWGJfb0/X9s9UlJR5iYwRcV1Wlmwng1raY1UY1uHwg
+	utSEjFkhxwB1lA4FITeaSPgChB5ah8M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4672C601F6;
+	by tor.source.kernel.org (Postfix) with ESMTP id DC22B601DB;
+	Tue,  8 Sep 2026 12:34:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1661F00A3A;
 	Tue,  8 Sep 2026 12:34:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DDF1F00A3D;
-	Tue,  8 Sep 2026 12:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788870873;
-	bh=ogEy3KL26BQtlHDKdvWVY5bVB5dGWcg102/9Ygp/YhQ=;
+	s=k20260515; t=1788870893;
+	bh=2RQcemfGMYTiDH29zfMnTtdgj0bHtOblVlsFhLPlSxk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hdhNnJ6OudyQtQA+ifeLs7z0U+WS1eHgzhObePjaFvu0Az67P3+lEiSG61BgqMJ2L
-	 Q+znY/97itgiu11iifpbnETnE+d49P+Y3mLvUhADFchoM6Z+uuVCwMOcbr+J3szPFN
-	 SFacWFBebAHx4u+GoTjdTohd7kJlAjNBn8AqIKgtM9VNpxtk8vWXnHh2tI8U+FVhH4
-	 r589eUSVGVOAfeEeW5kA8DBDE5m36ej5mUPQwYazQxByppaKFPS9SITBX1/U53thse
-	 Sc5fmj1CO15yt7VUaAAaIsMxRwDDEhKArzz0A2qmOfIfr+FcBm3r1us+mrLTmacdbN
-	 OroUM2/8AxgGQ==
+	b=BkBhZQWMJaKKK3kWxqiV0sRE5ApAZKRcLKBomVjsdDgfY+tP7URW39FuystAZN++H
+	 HQ7wqjHB/37EVGJIuwiSGmfTp7Vp8T/jU0DMjRS4P9klDLrGCj2Qgu+A6lGKXNczH1
+	 KJk4+Exs2cODA1A1Lu3ZQULVnsj0o5ldTr8gRlTAs6WV4+Eopslz62zHBRXBjdEVtW
+	 hZ/N9yTzYdMknuV+LXXwqefUBW5vIRH3y297e01EmAEhvvwopzgh/oDKM8BVvAv5W7
+	 0dJYrcsCtLdY8mL+iq+uQniVYRfzb5b9GZPzOV4w5hpwmFRg+SIxYSL8Mq+929rq4+
+	 Ys06pk+5Bfl3g==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 08 Sep 2026 13:32:14 +0100
-Subject: [PATCH v2 05/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for arc,
- microblaze, xtensa
+Date: Tue, 08 Sep 2026 13:32:15 +0100
+Subject: [PATCH v2 06/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc64
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-rcu-pagetable-freeing-v2-5-1f60b64e878e@kernel.org>
+Message-Id: <20260908-rcu-pagetable-freeing-v2-6-1f60b64e878e@kernel.org>
 References: <20260908-rcu-pagetable-freeing-v2-0-1f60b64e878e@kernel.org>
 In-Reply-To: <20260908-rcu-pagetable-freeing-v2-0-1f60b64e878e@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -134,22 +133,22 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
  Qi Zheng <qi.zheng@linux.dev>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4634; i=ljs@kernel.org;
- h=from:subject:message-id; bh=0wZjKlFxWmyZTWU5/sbzRvwAdATT493FvaG3sbSEVJs=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIWMET/nSKwlPXfcl6ulotCucGXT29NCS7Q23HmAu98i
- X4XzorOjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEwkaCMjw5z7Cf8a4m7aa5SG
- F7HnLivfeMl2O1PCFE+OK6dE7ZovFjAyPHvRVVp5eIuy1dr3T9a3+ppke7ZG30pr2x9tkR9cHTG
- VEwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2421; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=+cl/mE+MMAULPxyBPFJXsNZLkn5nuULAZlZa1FGDhyY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIWMESv2xKd48fI8mtTui4Ta/hp+d28Xu9rvA5wmH5vi
+ 71/9fG/jhIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExEtYzhx96CQv0jOvtW8Zx5
+ zXvjpdqkgMTXKRbHTaKeac+Ii+z4y8jQsigg8NunuC3bHPzfFqmkzHQ20pkho1xRW8x8/Nbx329
+ ZAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8FB2140003
-X-Stat-Signature: 4rirxtuaa48dsmjntiz35bxb5fdngijb
 X-Rspam-User: 
-X-HE-Tag: 1788870873-941255
-X-HE-Meta: U2FsdGVkX1/VCyzr2Kmv55iyFTRvH763lvCM4yoDeBcepYT2ZmFMx4wpU2U7VJ3sD0gXbBYatPjjHXNYuLrZWAhVbiyPWXEKjes34uf3WPOzMZ3N+thqBHIPri3PDJkGEGVRnOI38bS+sdtSX79pczbpMt8j2f/z2EagY4a5SWezpnxs06MKiGa6VV7Y1/FPiloq6ZKba+clerd0Acdcb8J6OYTYDOL6YN6wSH76CI6BkkbiW/KvfFitGnqfq1YQbDewpn3/ouqjj/B1RRTYgZFDxEZdtFRSXPfRWxOAhQBgXfjQBGEoUUCreohjiQ9r/MXLk406MvS85RtxKsGQ9W54gb5R5YAwQ6SKrHbOxP3cexSJSPJX9Ta4smzAAayux+SSSzaZ8RO5Ageh9qQvQfw8Y7YwLr5hSDqBWozyEZL+ttpQHzkEPc4fT0kILJoTvcaQ0rTbs1lxuZefhjo8uFRtdLvbsErBKyYlCXbajaY+6Ya9SEvlEKII7cUYXnICU9gVK6Sa0riEuYi5jlKoacPJHrFnY+iQPwoAX5IwEH69blYhREKkKAM6Vi9/L1imBEDZ0wC+EWe11YAwnHIHlr0cPXIlnSvw9mpA7vuHbXZAWbPnyE88/fkdqnp0hJ5XzLr5ez56TlcFsy3pZcUp/xfJYt7c2QNtGEY5zvqA2H9b18Q7Z9mw19fPUm3LZ/arY1QfParUtfIPacgEgR1YAHFbcA1gE+WAgMIQBl13oiHRM9OpuvfaFvRq5BN2wKWPHb1bEnFew1TFmcfiql2uFSMN9dRxKE0+9gJgOFaTgVjbVXN/Qqf2yVEV4Y/0u/DYe7NPHBWQodkbXMg0c9JUEH+Jp7ygcHMOzEB9TPvgOjS9gRSRSLSn8eyoWNvqZO/84NdnV3OmK1O4wX3vhgjWlezH2bcLdKHLPZq1uCpXEYIvkcMNk0xGtP2zx6fx9NdsFIUv4ijHaeRS6aNtilc
- H6WRZvhj
- w9HoiHkmFbQbXSE4HLSBL8GVntkb1BBSWxE2uKkhyClk8g8So9osvjH53yRfE/qp/5Mv8ZA3gM1ELcAHlwMkKkZFrCUiVNbp5VVlHRhvWTCcmFKNJZbOhCswWoC2c6k0AldP7QQ4yWUg57ovt+nLtwOEZbkUC7ynE9GYmvbJB9i0G4lxr4xv7jsteBf9Ak5rniNBkv/9XAEJWaJC1TTtI5Venzl3u9jkVWyJ3ikZDmKxNW0Mp5hacA+4+VAP0DZZwQRaXUQ62R35sLodIIvN19sga77loWon6UvTofBBhbD1OLQ3WS/SCu/FhTNusLjLA6ljaNrb0JL54jHmTn/a6rKK2jjBezFSPcKZgR/PNoNHJgUuqjoFRq6uBkg==
+X-Stat-Signature: 1ssprwzxi9f3rq1upkhrxk573ezqih1o
+X-Rspamd-Queue-Id: 55E4A140013
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788870894-96064
+X-HE-Meta: U2FsdGVkX19gfHxZx/L2UpryuowNu75l7xa5BfuoUOzC7h6YubtPSS8B2UXcf59C5K+0J8FEIir7EUB5vsbuLir3ToRiSiWO3Rn35m9bg+VVLhjkZ1AZtBesjOBRGPbeiVUKDU1p85tRdIPyIWLWdph5x9xGdZlX3GD2280Zy0XyPFauuks6d1KqDFOi4CBUMeZVI3DKMdOhDmXWgj/urjgaQd61P3PcP6wqunTahDZ+6Cx/WJn/R2eEIN4qfjYbqWXlOZtoUmHPtK6GRs2vMoZcWJSviFaITgTpmV6izqGxtPeJjwfQtQbsgqN2tDXLTcY0Ry1Z87AMKThkCwnlrmEmXGPKjHwEXFUMsM5NbN5OB/ab/Tb39GDul/yC0dHFTDrnXx4azUMdbLj+9KGJXu4yqmN8znAVSVXqxLZufsO6kOhfaYvty563f/3z0d3bEeMVjyYsJcBmt9HlGYdNGxrj79A2fAua/a/Aqp0Bldo2A4OnTd9/ZiJzQ8ecFMiWdc8imK9VBWQ6UZl4M6Cw3SUtv88it4mxwbT0rb+ZJual8lexh1tjv224fQ2k5j9roFcpheZCovlvYAX9taahRm5E/Etg4l6KD4/PyxPdT2nZsmUh80gBAGD/DQb9dQW2iutgDdZxr/sgPCX3I5TNJ3C2D+tLNK9AYbASL2Jg2SLByCdbdK0T42HcUuuvl0I4NfdrBgUcdiGP5KX/h+ltjcXk7NrnI742MScbvr+OYCoCptXtDstpGLqiOAs/Bl1y9ljCWC+jzULSB2m9ahG3uBsEeIP2TAOSaJ+r+WRLkM4u75HWaAZLVqG19XNXvr1soZPgnit96zzaWCRUNsCj9FA9jOAL1G4S3w8l+5bYx7UgHqgxUle8+mlhRzPBMDGJhAXu5kJqruOYhMeBy0SIv7XWdL0A6vj4kHkORnoUcHvlclXxLSwZFJGnQFzyRZZtoQK+R1smvrdZF00JSus
+ qPnBcwNx
+ z1hz3KC4mNAeR+1aUjlMMEsceFcNR4k8uEzvCF+QRPCoeTlwrTz/T8mOdeJqJ0Pjp+NTx6BhD1BfTu4O4LNpmOeUdZC4Zm85MsqK16heSSPA2XP49uGxvVPWOJeA5Xq/Z8fDIOLn5k6QSMn1X3rim8A9NoKgMqBShAPKq3JjcdfmmS/B5VQ0zolmCbgRUpnNH3BWjsrHO7+5awvdqgFXBFQnUiCpa2qJ032jxP6cwO5DmVSMq+AnLxQ9rsu6X5zpj/hcaBH5zJWjDozMLRsCk4NZkJ5fiUgSwl58L2Q2lVbUuKhko2ZJ7lSs5rHV+1uCGq5VImxgO7qFDvKrWGq8PyfCbneSOiRGMnvVXHf/GGLYLp1dUc1LcevmcCjqFo79/rgwnDENhOJCoHAnmgnPBk2sQeMyKgwvo/3ucPdA0Up/N5TGCNiR7D5jbnqSDAt7mHuroULS4XMXubI5rzck8FupTzEyubZXC2DhuROE+ZSIkJJ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,129 +156,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Each of these architectures directly free page tables without routing these
-changes through tlb_remove_ptdesc().
+Commit 4a0100f7546f ("sparc64: use RCU page table freeing") enabled
+CONFIG_MMU_GATHER_RCU_TABLE_FREE for SMP sparc64 architectures, expressly
+for GUP-fast page table walkers.
 
-The use of tlb_remove_ptdesc() is required for
-CONFIG_MMU_GATHER_RCU_TABLE_FREE to correctly free page tables under RCU,
-so simply update these architectures to use these functions.
+Naturally, UP systems do not have to worry about concurrent GUP fast
+operations.
 
-Since none of the architectures share page tables or do anything unusual,
-nothing complicated is required here.
+However, CONFIG_PREEMPT_RCU is also available even on a UP system, so a
+future pure-RCU page table walker requires MMU_GATHER_RCU_TABLE_FREE to be
+enabled on UP, even if concurrent GUP fast is not possible there.
 
-Therefore this is simply a mechanical change - convert __pud_free_tlb(),
-__pmd_free_tlb() and __pte_free_tlb() to use tlb_remove_ptdesc() as
-required.
+To enable future pure-RCU page table walkers, enable
+MMU_GATHER_RCU_TABLE_FREE unconditionally.
 
-At the point this is in place, all mmu_gather page table freeing is
-performed under RCU, and thus MMU_GATHER_RCU_TABLE_FREE is selected for
-each architecture.
-
-Note that CONFIG_MMU_GATHER_RCU_TABLE_FREE is dependent on CONFIG_MMU for
-xtensa to reflect the fact that nommu does not implement page table
-gathering.
+With this change, it is no longer necessary to have !CONFIG_SMP
+pgtable_free_tlb(), so also remove this now dead code.
 
 This forms part of an overall effort to switch every architecture to this
 mode.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/arc/Kconfig                      | 1 +
- arch/arc/include/asm/pgalloc.h        | 6 +++---
- arch/microblaze/Kconfig               | 1 +
- arch/microblaze/include/asm/pgalloc.h | 2 +-
- arch/xtensa/Kconfig                   | 1 +
- arch/xtensa/include/asm/tlb.h         | 2 +-
- 6 files changed, 8 insertions(+), 5 deletions(-)
+ arch/sparc/Kconfig                  | 4 ++--
+ arch/sparc/include/asm/pgalloc_64.h | 8 --------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-index 2ed7186c81c5..7a7542b61823 100644
---- a/arch/arc/Kconfig
-+++ b/arch/arc/Kconfig
-@@ -47,6 +47,7 @@ config ARC
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select IRQ_DOMAIN
- 	select LOCK_MM_AND_FIND_VMA
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index ab77d3f2536e..8d42ebc6d302 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -75,8 +75,8 @@ config SPARC64
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KPROBES
+-	select MMU_GATHER_RCU_TABLE_FREE if SMP
+-	select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select MODULES_USE_ELF_RELA
- 	select OF
- 	select OF_EARLY_FLATTREE
-diff --git a/arch/arc/include/asm/pgalloc.h b/arch/arc/include/asm/pgalloc.h
-index dfae070fe8d5..9b6c37f92e97 100644
---- a/arch/arc/include/asm/pgalloc.h
-+++ b/arch/arc/include/asm/pgalloc.h
-@@ -72,7 +72,7 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
- 	set_p4d(p4dp, __p4d((unsigned long)pudp));
++	select HAVE_ARCH_TLB_REMOVE_TABLE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_GATHER_NO_FLUSH_CACHE
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+diff --git a/arch/sparc/include/asm/pgalloc_64.h b/arch/sparc/include/asm/pgalloc_64.h
+index caa7632be4c2..b5055d259b74 100644
+--- a/arch/sparc/include/asm/pgalloc_64.h
++++ b/arch/sparc/include/asm/pgalloc_64.h
+@@ -74,8 +74,6 @@ void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable);
+ 
+ void pgtable_free(void *table, bool is_page);
+ 
+-#ifdef CONFIG_SMP
+-
+ struct mmu_gather;
+ void tlb_remove_table(struct mmu_gather *, void *);
+ 
+@@ -96,12 +94,6 @@ static inline void __tlb_remove_table(void *_table)
+ 		is_page = true;
+ 	pgtable_free(table, is_page);
  }
+-#else /* CONFIG_SMP */
+-static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, bool is_page)
+-{
+-	pgtable_free(table, is_page);
+-}
+-#endif /* !CONFIG_SMP */
  
--#define __pud_free_tlb(tlb, pmd, addr)  pud_free((tlb)->mm, pmd)
-+#define __pud_free_tlb(tlb, pmd, addr)  tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
- 
- #endif
- 
-@@ -83,10 +83,10 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
- 	set_pud(pudp, __pud((unsigned long)pmdp));
- }
- 
--#define __pmd_free_tlb(tlb, pmd, addr)  pmd_free((tlb)->mm, pmd)
-+#define __pmd_free_tlb(tlb, pmd, addr)  tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
- 
- #endif
- 
--#define __pte_free_tlb(tlb, pte, addr)  pte_free((tlb)->mm, pte)
-+#define __pte_free_tlb(tlb, pte, addr)  tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #endif /* _ASM_ARC_PGALLOC_H */
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 484ebb3baedf..af7e821e96c1 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -41,6 +41,7 @@ config MICROBLAZE
- 	select PCI_SYSCALL if PCI
- 	select CPU_NO_EFFICIENT_FFS
- 	select MMU_GATHER_NO_RANGE
-+	select MMU_GATHER_RCU_TABLE_FREE
- 	select SPARSE_IRQ
- 	select ZONE_DMA
- 	select TRACE_IRQFLAGS_SUPPORT
-diff --git a/arch/microblaze/include/asm/pgalloc.h b/arch/microblaze/include/asm/pgalloc.h
-index 084a8a0dc239..ffee6a009219 100644
---- a/arch/microblaze/include/asm/pgalloc.h
-+++ b/arch/microblaze/include/asm/pgalloc.h
-@@ -25,7 +25,7 @@ extern void __bad_pte(pmd_t *pmd);
- 
- extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm);
- 
--#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, (pte))
-+#define __pte_free_tlb(tlb, pte, addr)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #define pmd_populate(mm, pmd, pte) \
- 			(pmd_val(*(pmd)) = (unsigned long)page_address(pte))
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index f2f9cd9cde50..33c4caee30e2 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -55,6 +55,7 @@ config XTENSA
- 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
- 	select IRQ_DOMAIN
- 	select LOCK_MM_AND_FIND_VMA
-+	select MMU_GATHER_RCU_TABLE_FREE if MMU
- 	select MODULES_USE_ELF_RELA
- 	select PERF_USE_VMALLOC
- 	select TRACE_IRQFLAGS_SUPPORT
-diff --git a/arch/xtensa/include/asm/tlb.h b/arch/xtensa/include/asm/tlb.h
-index 8c3ceb427018..6fb7b78154f6 100644
---- a/arch/xtensa/include/asm/tlb.h
-+++ b/arch/xtensa/include/asm/tlb.h
-@@ -16,7 +16,7 @@
- 
- #include <asm-generic/tlb.h>
- 
--#define __pte_free_tlb(tlb, pte, address)	pte_free((tlb)->mm, pte)
-+#define __pte_free_tlb(tlb, pte, address)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- void check_tlb_sanity(void);
- 
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pte_t *pte,
+ 				  unsigned long address)
 
 -- 
 2.55.0
