@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A51C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 01:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E691EC79F9E
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 01:22:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 777926B008A; Mon,  7 Sep 2026 21:21:28 -0400 (EDT)
+	id A86146B008C; Mon,  7 Sep 2026 21:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 728526B008C; Mon,  7 Sep 2026 21:21:28 -0400 (EDT)
+	id A5DAD6B0092; Mon,  7 Sep 2026 21:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E126B0092; Mon,  7 Sep 2026 21:21:28 -0400 (EDT)
+	id 975006B0093; Mon,  7 Sep 2026 21:22:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 30C546B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:21:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6115A6B008C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:22:27 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90563120341
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:21:27 +0000 (UTC)
-X-FDA: 85188842214.02.EAE5785
-Received: from mail-oo2-f11.google.com (mail-oo2-f11.google.com [74.125.231.139])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 02A5B100006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:21:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6B0016031A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:22:26 +0000 (UTC)
+X-FDA: 85188844692.02.2722A77
+Received: from mail-oa2-f9.google.com (mail-oa2-f9.google.com [74.125.231.73])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2001840008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:22:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of 3FWOfagkbALQmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.139 as permitted sender) smtp.mailfrom=3FWOfagkbALQmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788830486;
-	b=uTfNduNmBemHEXj10/hOaf8p5MLxr/c1HarYuoccPLHWwsox/vRrcCneyFpCrImmzAtX8P
-	zwRpnrCFRWCcK8zgbpZfXWc7wK+Isj166ruddyvSOD2aRk1wNY7Y1brSuBoe3G+E2Qi8uG
-	cm4AKvqlplmJBlno15B+bpsLX64iiyU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of 3FWOfagkbALQmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.139 as permitted sender) smtp.mailfrom=3FWOfagkbALQmsteUffYlUjjcX.aiiafYomYlWihnYhn.Wig@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3UGOfagkbAO8jpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.73 as permitted sender) smtp.mailfrom=3UGOfagkbAO8jpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788830486;
+	s=arc-20220608; t=1788830545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=/QSud1Qdfk+ScoqbW7iGZusn2n1W3X5f04d+3HD3u1I=;
-	b=vhBzUc4X4XAxlWXE3uRnl0gwRs8XZSwbL9MdNJujGuyStB+EtHwI/ukZeWV/XrZiXu9uyD
-	Dii246/KUmevoPSKW8Hyo7zXHrGXqgThzky/UCi87biNsHCVs0hzO9EYb4H4pfIIg+ObUA
-	sgmxAh3fiMNT7m+zhhXEkxnMwhkTcrM=
-Received: by mail-oo2-f11.google.com with SMTP id 006d021491bc7-6aaf6076546so2141624eaf.1
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 18:21:25 -0700 (PDT)
+	 references; bh=ZCij2SvlUZ0ciBIF3n1U915PLtoGJOJG9GMDx+Fo66w=;
+	b=1WXzg+5IzIFaAh6YMzeQoHp0alRXkn10jWGOAB7uzrg+PDlnjuTtc5zsKAq3h8hOEnVM6P
+	LEURnDG7Y0M1STbreVErDRX0Z8nX6cFGLGVvaqIUzerHpDrm0lV7/H1MKa5URKTUKQR+ci
+	xv7fIaxAAL9/cdUWMR7jGZWVvknpGBQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788830545;
+	b=gMZrp2qv9+AG5fWLa1oxbWi8v8Q1gf3JajQopkuREORtML9aMsi1FeE7OmoS9Wik6W9y6B
+	Ezzm+67uxvsC9Pw2JrgkraYLA/SdnU5icqLoonFA89OUBdRi4+b7s6M1Xlbm/rLzjyZ18M
+	nyx+iiXnXUJbSDWigCWwnV7030sd4rk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3UGOfagkbAO8jpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.73 as permitted sender) smtp.mailfrom=3UGOfagkbAO8jpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa2-f9.google.com with SMTP id 586e51a60fabf-4667f43a4ccso1813774fac.0
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 18:22:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788830485; x=1789435285;
+        d=1e100.net; s=20251104; t=1788830544; x=1789435344;
         h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/QSud1Qdfk+ScoqbW7iGZusn2n1W3X5f04d+3HD3u1I=;
-        b=W1hQHQGuan41XI7XwZfleOOD9V6cS6fAQAijKH9ZZh8sIoW5fquwb7L3OjtsUqj/d3
-         MzazkDdBeH6v+4/3wszuYkSSMnn5IRNwTNi6948/+xAHtCNphP+WpsdlK+o/risv4NAV
-         KVGLx+5MqX1LeIf92Db9LGvKPzDEJUfHwkmCoJZZvblYS688v/0a7tJTT6GD6aq4S3r9
-         tUg74md9G6M0mRM7alnjd1swKPVMumhIlrupr0wwZQUpdIoHGU+88Gy4dDoYJ/MiOqSB
-         bNHP0Q7GOcRl6twhcfzU78w4j94wHecyvFTKdMXRv0vBjCn1uTbDoLb8k77JARTB9KJq
-         ALwg==
-X-Forwarded-Encrypted: i=1; AKwUvBzjTgWrkPARIRRrKDbmlMd2uhXr9MOnbGqfJYRHwMNoOsfnU3Pgu/mPnis25OaqEO7WIlYMitkOJQ==@kvack.org
-X-Gm-Message-State: AFuF++laGExrOst2iKjlldwYAEgRWjWAT0TbvEC7t0k9ACr7Rhq6FutL
-	MAiXcBCEgmXqEYrKK9fna/OFzfui7wx/h0kRFwk6cSSRcbeDmMIDb6/27deh/1++dSi6YBEUfLn
-	6A/buUB4wJdN80ScDFAV5cNVRtBSfoclzOR8x5gHPF0UjMcHGMQGQspOE1fM=
+        bh=ZCij2SvlUZ0ciBIF3n1U915PLtoGJOJG9GMDx+Fo66w=;
+        b=UkU3l2/6zdoz4BsSgaDT1xtnk8DLZD0QYwvoQ/6gvP5vAqFOfgB51wlzTJ7+xUh1Ll
+         BuizHMl6HVnhSqTKNn0y8JNOjndrS4BRyAMMXvwHsfTRBx9En4wkw5y+jJ2wytJwTtug
+         1wb3fGIGpMZentDxem6/IkwDx1HW+JL9T4Mxyp6IeBPakq2t7G096F4cZxel6zqXrUQQ
+         KNAB/7r0rwOEH1DunUOZiEOpyeOUUIYnkDfrc3VD5+T8fjobTz3Egu2QLsHfsu6w+IR7
+         KxuYGruFXfRNsOzf10qp+5m5EThC1tYjIMk4v/+ij4ODIsy9nlOEijHzAsy+QlN6owmU
+         6Hsw==
+X-Forwarded-Encrypted: i=1; AKwUvBxnMrnaxpy6rJZmqGmUiqmpzB0sbZNI2b/YQpaScjcUg1tj/cV5h3+AkkGFmuZ+vdKtx2Eh4GtEAQ==@kvack.org
+X-Gm-Message-State: AFuF++lj3bOf6WNdVwQgnLWYJe79jm4LSd+f3vQOjO1tx7cLlUhtDICN
+	VkkdLc4GMfpGeFriaGeYkDa+WHKkhQqfFMvsXqQQutzNhpRxzsH5z9QiZr1sk2WJWjymCZB8QJs
+	+/sdd5BvxG1uyujxmbdxfeXe4pJ5EQnswYJPBboJ0fRL5yDSc2Yba9TxkXnA=
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:624:b0:6b8:ef7d:e181 with SMTP id
- 006d021491bc7-6b8ef7de33cmr8964649eaf.54.1788830485042; Mon, 07 Sep 2026
- 18:21:25 -0700 (PDT)
-Date: Mon, 07 Sep 2026 18:21:25 -0700
+X-Received: by 2002:a05:6820:221c:b0:6b7:46fc:1ca with SMTP id
+ 006d021491bc7-6b746fc0324mr13647657eaf.41.1788830544096; Mon, 07 Sep 2026
+ 18:22:24 -0700 (PDT)
+Date: Mon, 07 Sep 2026 18:22:24 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9f6315.6e6c5f9e.28f11f.0002.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in vma_add_pgoff
-From: syzbot <syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Message-ID: <6a9f6350.6e6c5f9e.28f11f.0005.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in swap_put_entries_direct
+From: syzbot <syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baohua@kernel.org, baoquan.he@linux.dev, 
+	chrisl@kernel.org, kasong@tencent.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	syzkaller-bugs@googlegroups.com, youngjun.park@lge.com
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2001840008
+X-Stat-Signature: p4qw4cc4cz6cca7ho4cks7mts7ud9suq
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 02A5B100006
-X-Stat-Signature: u4ypjxszba1pyogckwbqx63d7xqhha8i
-X-HE-Tag: 1788830485-860969
-X-HE-Meta: U2FsdGVkX18q9NlKnznDGsO9f3erbTKXoL+msGAADj8Tai7TwSVYboPZzGLF4Evh53tVoVDVqsnj2P8CSqMtbxxv7LH4UkA7v8qtpt7mpp47CixknJZYY2pVyt9diRCIMSYN+pgUnnQC1D2jRfeC16AZgeOLQGoptrpo9EwmbHmtpNlLXH9FgVx5n7mtNl0VKPiJS760ODr2FIcI3aJtKbSs1LZZpxDZxAJ9yxajBE3JHpNLWR02PHwwesJnBErvfimz7WXhXL5IHfnFSDBaHrYBEVslpCtB85KKIwZitK18n2pBZVT55htjrPmQerfcya9KgjC7W6HNdZCdhZwgtb/E6xw1kqtkH1odfreNQXtcVLTgPZ+4Z6W3FbVYkmnl4SKVqHOxZiNuOABLpiQbjeaB5WiCAVnu2dnxNRqiVcGi9lDBPYeqPU2JKyhM7YgaANiHKVSEVuEkzVoHxXgQIaRqRdpBewzNi4RIXp/z+AGSL5uvRpoqyMHvyLwV38QqDriR0cOBrXZZBDwSIHurC23Xu5VBQudz3riVcA859KdRBq5bwRmaoM/+Os2EL/5gxjutatHLs5PTKGxwv1BSbErznlQDCJdVBbEGAuD8snm4zsTcIqn6v0doP6QvsRSO5TcreRWbMEFxiNrJjZB7gBBurCgj5qFGg3iL4yHXnRcoKUKfxNqqQwphvz0/NvRC0dgfHIXV7uHCHotfJNtKDxK+svegg+2tTyfJ5cityLjF/hIB925r7i35WNexx21xYFDyFg9ELogWtzmjRAFFD7QGG7bfgQEa4rDKVDIfl+4rxBYqyssEzF6An6wMwD2nxlefWGMLiPv6x+nhRWTsbzemfGZIiKynxHev39Bng438jQcHP48JcAwZfEmyHoWhC/Hq7v3PToSuCAy+yIX28/j0eRFyorjdDZcAN9o54qnpptS9rmUCpSLQTM6kL5b74f0kWCTyyxQQ/qVUTp6
- 62YWqvq6
- YX01adxwxF3aQBc2SS+8Qs8DXPHpNL3eGuHa/DmpxTpaME5KWh0Ptnz9rQ+r7PfTQX0ocj3HyiOBJsU5UsjAKy4Ns4MhZHCvQtIo6cJteDuqryHw5CpM2m7Zj0+T5npjqA99CHnOEJVNcVKCsDh9y0ZI0NcRwEiOclIbtVcsIpf//5e5zGLRzJpM7Yyx2/S9g33BrM/cpVJejOGDhAzg/4xAnRSslfSMQ3lVKfZcKYr3nvJbdcekEz6YU13PqbjS7hKULwC4j6lPsngynD+BZ126VrZc2bvM8PdeIxTOBWYBftZQczFiMv+s/TviZaUZTps8OJQux21fGJrXrLDe8UtJcW7LxR7EkU4YTkXO0jUJH7lY7S5taCHiC4TQogOd4JnBBa2LgGuJMx7u+hzTeS6cyIQQSjw51EHWW4PZ0CCVoxxtwWkwicDkX+YlJCvo4L7e/+ajge43IlRH42B9qrP869a/E+5mYenAmWcI5Dr/oYm++SdiQYctXp44PmaP3A/a6vB4rVIjfhQdWJ7VhWCknAqf44xL/cGNDhbnjJ6C/akOJwcikfciQrsYzf1Dq5GowFcfopyoYQEIdiRIFSv5Qvir7akSVqIqh8bfXMiJoyUTgtojvAAlDghhh0iMNOahdlkGiUVMhY6EHLX5VUsmEFUj2YbmIx3+lYisnK8xpenkXdvRFdv8OJWxyb8anpNYp+B9/75fJMxuX1FTTAvRMGM77viBYhonCN1lQAlytSTTh1DmZre+0ruBV11EqRsrB3E55eGruN/sMhgG/yy4K0F8sIwJCl1LiWEq4c+wA5a5wX9j2a2+jMr2mBEkLkE+hm+DK1LRkyVDkaYKB0LhAGgw+T4EovPddLg7erTtm0+Q2flq1BlGXYcTd+gEuYjTDiSdkgg81cVi/qSuOazxW4dShq44gZc0GcwYYsNGqz1PUisI8f+t66MGQZbO9vHU2LYgNyrhhK57i81S/bl/8/z/5
- +o4FGCYc
- xQJ4l6N+1ByBjcp+MVuc6K53qY2Zf1pjchvv25N70TZXm4Dut4Tkv9b3vGeWSUzeurEyDIozksRgP9Q+KyBLsRgFT34CgwO+f0xsABNN17Ffudf3kxymhWk9Vlr9JkvKGRKr8h4PZ759I3L1dD0kiYmwt/jjf4FO71tVkXeb4u5gqtJ6r5nYEZS3QPMZ47YA8gZlsqQfv5wTixxu3jDom9xQIjd3VbdwDSyQwEozKDJSjgOK1WvjLylk9rvVpGicz4Ivmw/E7xBvtOnF3BnWYiIkSEAJ3uJh4SvoFgCmNiJetI0U3vktKLSaQPSK6IbRrFfSQmFCF1kRohebABeHrPINgVMuG1IgUY4MMH0Cy9eftcRUp4rWI9SGUcKhDJOzj/ETsEOheEFUvljBZEI1Te+uN/ilbozaKvPJ7egFftfbQ7HLACbg1RBPSdTNPeP4UJv0cTGO3bdhygdXoGA8QPhEYZWY8JzK3ddUveqJ5hI=
+X-HE-Tag: 1788830544-14700
+X-HE-Meta: U2FsdGVkX19UNOIYecDJXIY54VprvAtnt0HNXzcJr050yp6ahhkleg1q63imOD9iIcrgQurwcSeRFde9oxL9jxW6uxqiHMq3c2Mv7Zci/YQLdu2/fkTLATPleVSaVg8MtPBpCAqJkHQ7Qmz1HibrNYjqXxuuWu7B1eu6DlPDRVXRmKuSraBH6OwdyKgyyuDE9uyzflk7FHVNBw6ewNWQDdu0QvzmYgTLAHvHibld92J/GtQqCtpSy8wQ8otg2YksUswVmqYUAx15TCRQv8VfjEyV+moUBkg887UgJYBgF7v/sQt9SY16dfNw/oSWX0bLAKjjE2csKHd06ORLPL7F/YUbaMF9TuMjZDlC9vQBdWj1QzD0JtuPn0dVmNsxA1qjryQHsIFQ2wCRtdLY/MJB+x0dSxbqsdrmOVIOZqu7QziM72KXtevZu0TzNs1GAKOqJF2OF23drOvM5GzzuY3UN9+Oh2SIwXzJLo5I3CJ/v3/yNB8ffYofHRVOd4IepZfBOJzZU4brqK5r3xcTDaX3FCTdy3bybQZfm4MomginHg/R2gzaE68Vm3QRJoWLu7M00oO2gSUW2o6VZmhWvIzD4dplcaX6x2z1XMTDlo2ZrH5J6CwORh+PDY66bFLbtzW2E0tmulqyWuuH2LnrO0FvYVifeoyT8WIdgl6mIK8yq4QmlvtSfeh8DznaXrIEZ0elri+L1Xu69HjyBhvNMwNIpqRKphF2YnevqBK+nvPH4804aImzYymtO9Aom7j+5CLJ3b0H22nnTXvRATO24oito7aDJ7VWEgTnXdPd8GVIMSQcw42cAipGh8PRxK0nBesDxSlt7Pgj9zX6rmDycF72EAw19qN/XWdgBTwtM1VPZOMXtB/KWxEbsrqIh1T4YdfktpSkwJ+Z7uB8Kb1TVO91A2ieUDtpeXNTiQ/KM4MiqZ53v56e7EVOi+41NIPGVDVnPAri73ql1BpLG4N8LPp
+ eNM/3rFS
+ 2leh1z325J20zh4v2R7Cpulz/4PJsit7D2SGiVjmXoYHaEuvSBjSDSFAbENXxjSSYn9AgxjRZ/Je4yPP34eiaDqierlnZIYCafjaEvxV/XQROIzUWqezpeVBcAO97OK/yl84tozC3PWzWENHoA1ShYDH+yW6f4udNEbt7pLRayT8xvl2mUuGbmDyIlDz0naadTzFv3SLMAfHxMjVAzPk9OBWRZQDnPFzYb1Pu25/2RXdvRdv8JaKY83ebwAkEJbpOLeJuYhE2+kAyJbJanL3Fn0gaoWjHb853BQgWiOv+KgO7H/Lob5ROluFuswaKeNGQFMOEhFottfXUkc1RKXRhiHOhAvvoUqf451dUqzl3IOvkXbOfMi1AAYSXy6eAmc8Mje8A92g6hm2Azlutvqyx9q0mBYSe3SgccS4O4UFXrxrUncJBUw1BBByq//LP6rvwb6vLehhpm3QzlYsyijse2GkbugWjJgPfq+mmSradq968O3IEgTU64lBiTFASI/LG2Fx+Xt7s6yBCLj3FfwHFX4CXi6yIIbfNU4pxd5NrSa76GOB5xdGgkantA8c2tYGDdYt4dTx0/ay2gDIO5ISOWo4OvGOnbVpM2Rj99O3fephj6qZb70+O4dYH3qD2OFT94fxXyvLJb0IQh3Vai/QKbaLwKMxLzxbIo41HmaBU3S7sobU1AgWAmotHlk6uxt5X+Otyv9YHI5mC5RlvgKPabqTbVYYvzGcnldGteXVeZJEN20z2W4xbmL0Be3iLJ9/3DlXvmtEzusFWiunIHt5X8DNvQ0qkkPBoVyn+rGlmt3ZzMVmCcYLrYI1jLxDP2+Oc358FjLvABnJHE/CtCl/ECjsLeKcuY4XsMV9UyKsYqa1zZMtUCmzpTQxM65y3fFNPTdAQHZqlIs64OlBHIi13C/TyshUq5qfTTtgu43OxtoxLylAQjyJZIk/zW07hBte6aXwJMtdUkUrin0bUcwnXvkTe4mfg
+ XPd0zUC2
+ nGVLfIcMbTrq6MynglYatYMmZl+PYswvRtiJf9U7U1i1sI434i9eWY/ZrRkvRJJmnkvOkFlXxeYaT6Y4t6y4PcB7Stfn+d9PrrDt6dftPpgrHQhUDNn5TYWttg9GuosewLamMGS1260mEYYrqvbC9vyDpmrgXvQqwe6cszHg4Pk9GwgvQxxaiCsr9W2cmWoUlRnYUhOLDh95a4ysFR1xXATKX7wqW09FW8u52UdqZ3325KgoqW61/aQdLRJgFDXHawVgNAQ/IBvvKcM5fBM7K4V6YiCIjHCWLaN9nobaOu61Y0mtV19FeZBYLaDW7YiZG8tbo8uAXdT2mBJHKIdGGWU99U4Xxcy8xbqSuJU37BcsJGsiLrk4/G5bS0RuX8f6bTV2NFl5XuizcqAfDUSAwGfAPLgdF5XPASiNDv/IH4ekj7nGgoqxjlHtPJHjripOA9ZpKULMcAg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,81 +101,71 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    5445d6419962 arm64: Don't read GMID_EL1 when MTE is disabled
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=1517ecf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
-dashboard link: https://syzkaller.appspot.com/bug?extid=c6879dc677a017f0a21b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=147ad125580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=127ad125580000
+HEAD commit:    8ab1afb2eb24 Merge tag 'for-7.3/dm-fixes' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1034a125580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=85bc5cc2fc7394d9
+dashboard link: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e8b70e3bd109/disk-5445d641.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e5227e56ac93/vmlinux-5445d641.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/54905f78be59/Image-5445d641.gz.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8ab1afb2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4767b33b6704/vmlinux-8ab1afb2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/aa0bdf390bbc/bzImage-8ab1afb2.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
 
+get_swap_device: Bad swap file entry 7c00000000000002
 ------------[ cut here ]------------
-WARNING: mm/vma.h:277 at assert_sane_pgoff mm/vma.h:277 [inline], CPU#1: syz.0.17/4912
-WARNING: mm/vma.h:277 at vma_set_pgoff mm/vma.h:283 [inline], CPU#1: syz.0.17/4912
-WARNING: mm/vma.h:277 at vma_add_pgoff+0x50c/0x700 mm/vma.h:314, CPU#1: syz.0.17/4912
+!si
+WARNING: mm/swapfile.c:2130 at swap_put_entries_direct+0x17d/0x1b0 mm/swapfile.c:2130, CPU#1: udevd/13167
 Modules linked in:
-CPU: 1 UID: 0 PID: 4912 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : assert_sane_pgoff mm/vma.h:277 [inline]
-pc : vma_set_pgoff mm/vma.h:283 [inline]
-pc : vma_add_pgoff+0x50c/0x700 mm/vma.h:314
-lr : assert_sane_pgoff mm/vma.h:277 [inline]
-lr : vma_set_pgoff mm/vma.h:283 [inline]
-lr : vma_add_pgoff+0x50c/0x700 mm/vma.h:314
-sp : ffff8000963176e0
-x29: ffff800096317700 x28: 1fffe00019d174aa x27: 0000000000000001
-x26: ffff0000c659b700 x25: dfff800000000000 x24: 1fffe00019d174b0
-x23: ffff0000ce8ba580 x22: 0000000000020a97 x21: ffff0000ce8ba548
-x20: ffff0000ce8ba500 x19: 0000000020001000 x18: 1fffe00035ba3828
-x17: ffff800080adeaf4 x16: ffff800080addecc x15: ffff800080b8bf18
-x14: ffff800080b96bac x13: 0000000000000001 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000003 x9 : 0000000000000000
-x8 : 0000000000000000 x7 : ffff800080bee7b0 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080ae89e0
-x2 : 0000000000020001 x1 : ffff0000c825bb00 x0 : 0000000000000000
-Call trace:
- assert_sane_pgoff mm/vma.h:277 [inline] (P)
- vma_set_pgoff mm/vma.h:283 [inline] (P)
- vma_add_pgoff+0x50c/0x700 mm/vma.h:314 (P)
- __split_vma+0x6a8/0x83c mm/vma.c:607
- split_vma mm/vma.c:643 [inline]
- vma_modify+0x11ac/0x18f0 mm/vma.c:1771
- vma_modify_policy+0x210/0x2b8 mm/vma.c:1834
- mbind_range+0x160/0x3e4 mm/mempolicy.c:1061
- do_mbind mm/mempolicy.c:1563 [inline]
- kernel_mbind mm/mempolicy.c:1760 [inline]
- __do_sys_mbind mm/mempolicy.c:1834 [inline]
- __se_sys_mbind mm/mempolicy.c:1830 [inline]
- __arm64_sys_mbind+0x5c8/0x994 mm/mempolicy.c:1830
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
- do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
- el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:758
- el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:777
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
-irq event stamp: 928
-hardirqs last  enabled at (927): [<ffff8000869a9950>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:210 [inline]
-hardirqs last  enabled at (927): [<ffff8000869a9950>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:221
-hardirqs last disabled at (928): [<ffff8000869841d4>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:445
-softirqs last  enabled at (208): [<ffff80008013891c>] local_bh_enable include/linux/bottom_half.h:33 [inline]
-softirqs last  enabled at (208): [<ffff80008013891c>] put_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:251 [inline]
-softirqs last  enabled at (208): [<ffff80008013891c>] do_sve_acc+0x32c/0x4b8 arch/arm64/kernel/fpsimd.c:1349
-softirqs last disabled at (206): [<ffff8000801386fc>] local_bh_disable include/linux/bottom_half.h:20 [inline]
-softirqs last disabled at (206): [<ffff8000801386fc>] get_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:234 [inline]
-softirqs last disabled at (206): [<ffff8000801386fc>] do_sve_acc+0x10c/0x4b8 arch/arm64/kernel/fpsimd.c:1325
----[ end trace 0000000000000000 ]---
+CPU: 1 UID: 0 PID: 13167 Comm: udevd Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:swap_put_entries_direct+0x17d/0x1b0 mm/swapfile.c:2130
+Code: 00 00 00 00 48 8b 44 24 58 65 48 2b 05 64 fa 15 12 75 3b 48 83 c4 60 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc e8 74 a6 95 ff 90 <0f> 0b 90 eb be e8 69 a6 95 ff 90 0f 0b 90 eb a6 e8 5e bf 07 00 e9
+RSP: 0018:ffffc90004d9f628 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: dffffc0000000000 RCX: 0000000000000000
+RDX: ffff888049448000 RSI: ffffffff827595bc RDI: fffff520009b3ea4
+RBP: 0000000000000003 R08: 0000000000000007 R09: 0000000000000000
+R10: 8000000000000000 R11: 0000000000000001 R12: 0000000000000002
+R13: 0000000000000000 R14: 1ffff920009b3ec5 R15: ffffc90004d9f6e0
+FS:  00007fcd01ba2880(0000) GS:ffff888096a67000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f740d2a8 CR3: 00000000703ea000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 000000000000000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ shmem_free_swap+0x1f4/0x200 mm/shmem.c:996
+ shmem_undo_range+0x3fd/0x1570 mm/shmem.c:1151
+ shmem_truncate_range mm/shmem.c:1289 [inline]
+ shmem_evict_inode+0x3b1/0xca0 mm/shmem.c:1420
+ evict+0x3c2/0xad0 fs/inode.c:822
+ iput_final fs/inode.c:2015 [inline]
+ iput.part.0+0x989/0x1050 fs/inode.c:2064
+ iput+0x35/0x40 fs/inode.c:2030
+ filename_unlinkat+0x466/0x730 fs/namei.c:5723
+ __do_sys_unlink fs/namei.c:5754 [inline]
+ __se_sys_unlink fs/namei.c:5751 [inline]
+ __x64_sys_unlink+0x46/0x70 fs/namei.c:5751
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x121/0x770 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fcd01515937
+Code: 00 00 e9 a9 fd ff ff 66 2e 0f 1f 84 00 00 00 00 00 66 90 b8 5f 00 00 00 0f 05 c3 0f 1f 84 00 00 00 00 00 b8 57 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 8b 15 91 b4 0d 00 f7 d8 64 89 02 b8
+RSP: 002b:00007ffc4214fcf8 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
+RAX: ffffffffffffffda RBX: 00007ffc4214fd00 RCX: 00007fcd01515937
+RDX: 0000000000000000 RSI: 00000000000003ed RDI: 00007ffc4214fd00
+RBP: 000055f191cfee00 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 000000000aba9500
+R13: 0000000003938700 R14: 000055f18779e100 R15: 000055f18779e140
+ </TASK>
 
 
 ---
@@ -187,10 +178,6 @@ https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
 If the report is already addressed, let syzbot know by replying with:
 #syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
 If you want to overwrite report's subsystems, reply with:
 #syz set subsystems: new-subsystem
