@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E2C7C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:01:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26AE5C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8506B008C; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
+	id 161936B008A; Tue,  8 Sep 2026 00:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A87C6B0092; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
+	id 10B656B008C; Tue,  8 Sep 2026 00:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1B86B0093; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
+	id 0208F6B0092; Tue,  8 Sep 2026 00:09:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E42EC6B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:01:54 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84EFD1C206C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:01:54 +0000 (UTC)
-X-FDA: 85189246548.18.E272EBF
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 66C5940008
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:01:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M9oOdwWt;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788840112;
-	b=oIet7zQsXXS6A+P0KgdHgBm5HpbpOSTjkp9ORbFW4iwMx4kr9ALFSPeb+FGFTONl5kDysG
-	OIAEA158MsPFfkMXJeNpoyNktmvMMSewlKDyEyrvCh4eOtgoL+eD+gMVPAj65QpJE0/FLS
-	F/95Z/W67YiVIfUWNXsZTYxTnAoWUew=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CF0FA6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:09:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68F5B403A2
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:09:38 +0000 (UTC)
+X-FDA: 85189266036.12.645123C
+Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4BEA420008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:09:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jDgC7zY/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788840112;
+	s=arc-20220608; t=1788840576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Najs9RGCkB+xTfIo5Ipvni0lhIFU34DcqdN/H9GY20E=;
-	b=q+sMfZ3u4FG1pEBwUbEJWRH/IgjOfGlyyi65pOTrrX86kLZbvyvhEgRoH3hqVN7hLNxN3K
-	bxS2AVFwW9RtPGn57BeHj5HJZN5gvZDnyJTEF5uaTeFyBJt+FtQJ2m83qtCZ2rQ8NCe4xc
-	Adwa2AAE6oHymXDSHuX3KV3kS5YXYAY=
+	bh=ETu/+IdC6wkVcR7kfefhUdeU0dpDBUqiUlZER/ibfSw=;
+	b=AIYfJyJ7M/ptSiP2dGSCjTlS0WrN4/jt4p0RAbr4LD4QOc6AtAKUhovnVE1MyoslrPKGYR
+	ZDAI6BLa4HLgEclVKCOnGgCCPOzIfjvxdOpweBl6ZsbOwvj4TKf4FKGupCPkvvjQSrNOE3
+	T6tRtwqpr+ogr/deT915VZrZ/CGVVn4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M9oOdwWt;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788840108; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=Najs9RGCkB+xTfIo5Ipvni0lhIFU34DcqdN/H9GY20E=;
-	b=M9oOdwWtCAnh0m0XULvaX+L3CM8yp1ebQIvTYvIIvHvPYbgSUhg0uLLXDSrpvOG8ogRYFsjXF9HNlaW376vnR537N2xlD3qwizEeVZHpW07TX9MHgsQpuR5JVucd5XDNJMVgOzVyq1Ik/FbiLZ4lqDCW/ddVwOl8ICtM9MYo2CQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAaJnml_1788840106;
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAaJnml_1788840106 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 08 Sep 2026 12:01:47 +0800
-Message-ID: <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
-Date: Tue, 8 Sep 2026 12:01:46 +0800
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jDgC7zY/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788840576;
+	b=Lg0eo/2DyreKIpxkWG9ckbS+RUqJo6DTE8fXz36rqSRZXkDJ/o7tyfzuw9J9z4m23rmglV
+	5IVm4MzexUb9QfgQbuytc2Lrw8Fi4QXm1dsPwG4CMqnqcUNlohhziKPsVXCNo8QLZiwvcD
+	B/T8mli+gw4R+ukdoLXqYzonQ0UI7ko=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=x0VZgiJePeWqh4cLtuV0TthQ7an0Lkb4/kBk4eS0cSE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788840574; v=1; x=1789445374;
+ b=jDgC7zY/V8BLQEIKy7tVWfyP1jb6jwZKpSpVTU1oDt517zH1yH4hWw4bvBBkqoF0UzFDXJ1n
+ 73mC2oiYNg27wKdSWPan61KUYJra/CdLbsMz6stVUtOoKVDQeNDwGDcK+x5LDNb0AEN/2DnDGhU
+ skM3qTLJpQoRHK9T3zt7N668=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id aa67825df359c637;
+	Tue, 08 Sep 2026 04:09:34 +0000
+X-Mizu-Trace-ID: aa67825df359c637
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3856ab3a-5bc6-4483-a116-601ae431b2c1@linux.dev>
+Date: Tue, 8 Sep 2026 12:09:24 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
- folios
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Barry Song <baohua@kernel.org>, Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
- ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
- <ap9zPPughaSlfXM2@fedora>
- <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
- <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
-In-Reply-To: <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
+Subject: Re: [PATCH v2 06/11] mm/sparse-vmemmap: switch device DAX to shared
+ tail vmemmap pages
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
+References: <20260908030335.96549-1-songmuchun@bytedance.com>
+ <20260908030335.96549-7-songmuchun@bytedance.com>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260908030335.96549-7-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6uc339uif3emzeqkyg9d9aronfwqkmp4
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4BEA420008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 66C5940008
-X-Stat-Signature: y1j8bohnah8rs5bt5ribsy3qjuf3gazc
-X-HE-Tag: 1788840111-517632
-X-HE-Meta: U2FsdGVkX18NR/jFugZwD4WZP0vN4iMjONYaAHv56LPbc3l56DyNbH2ngHFsrk4xFX+q7y/uwRUcm/V+ZhcT36jh+E/6jqBBIUyzXwLyJPS/lULY1S6jFJuPzZhcsSW8DfuZKvUGw30z8/tG8SHKSR1h0pFQdIqMTzNCTJr9LUS5bIrVS5S285C4I0jl63HePlS3UxZOeNPj8396pUw1c3gRpbLtum/8lIAUqXi1YFLBBJdVMRq5u5Uu0BewIn9xnEVrBcT3MDpVI55WfsMr6xbve9XdwUjTBlgaLTLtGDQ5d639TPg7Mk/m4mbkvWltxZb8AcgJ0BUKZp5DHH6fXhvmZ5/GXaePccpLGzUmaqQEPiFvxlKymwSVRfp/AHVPBefWQ7iCsPdGn6SrdG1tBo/OqiipbIH+yp5fJsewqwicuhKFCk/GZ6z7/PbjsT/dGFULYY8joWWQcJER1BsNoxEFJj3WTvaSl3uaMklwuOnuI7PwdE5Q+sU7O+9qWeNYf5RpuOHNysoon0qZTHITvc8nehJorz1wqto1f4MMKi71GVL1G/djWrr7PD3tWTNNpGe7kahml2rXf4jdAWy5K70NU9p4oEw4y57vIysPZhblAecdQI4PMy4yWlYLOHbnarSMoSHiVLtrmKXPmnciIahCPhKTQKV/uGGGNqCPDx/SY7eTp+RayszscYuWN0qQZC1uShdb67p/JZ/dli1kKmM3xW50zNMY50ilJfw1zJZ3GiZC4HZxFSe1pD8oIW35pVMD/ZX9iN/mFPVhCEcIGKXKz6SgrPOBGfTEp18peTemAUjlkrLeYqAfSHgeF/uiXq+zWlwG5l9z3xbHZ8IMkvrki+Daq2M0Zl8lC8LiIYTQ4adhuni6WDDXm8ANI3lDz9xOaxtR2CkIpPMeyGJMEo/AygIJmevNjwHbFwVTr2eC0FgDQjRsDONEAgOn1fa0I49CoULRBIsNkYC4UV2
- j7F3EhQm
- 2GlOPUJjfCqFq+0Ye0HnO8/kcaH0PLUhQnZCRDpwIzBWWLVjKs/0/EG+RTqEaZOG7zsIP3ArvHqKPRU9QK6KkzP8/vxfLzXLwRI8SDuomVKFLzmamVLQc/GW8oGjihN3DfbOljchEeRbgmAHVW+MFMy7Fk3byKkKMRSCNMr3c7lQXuEHBHYBVh+MnZMx3LKtdcSbV5dlnfSgrE5nyLt75DmOrVQFtPdv6hzJxik9cEj4j8kUYTTbmQI1iW89oUl6tlp0XUSNYHKzriL2mZeI5De0YrQu+FBIW1WGBrla/HPe0aXpm02iyNQQGsE9iTUsXAvyDRy40j9+cjLnU8Ayd59HPL9Yre8/OPZ7/fc/IQdcKIOo=
+X-HE-Tag: 1788840576-947436
+X-HE-Meta: U2FsdGVkX1/DdtUndQN7mNV+6I5ezbvPax6t3ChXmQDqFWtmaZ0C5l9UAvkrR3F1Jpnvd4sxZhLaHPW1BuY7EL/iK+q0MJA/U8ESNmoQh7YS4nscVdLRs00TqDcXPEit6zu2tKl1IXDMjFQrwjJvm8iBuxZhscBAIyW3CdFxkf/sPtkT+QAQNrPaCv7D/eIx8mr60/NPhLWFv17XNP1c3VBlnscY7p3Ufj2ia2EuhsLAW45MHA9NLZoZ+nZGGpBLc+/E273hyWUX06GA6DznbDsGjIh4DOB0+htCAox+EhqaIeLODqK78hLt3jHTz7CRdTk0DLbKL4Mr20YfWNjgvX2eviwjUvAEPALbq4I+dPmGOt70r3W+4x95fHBuKrJ9YL1YeJS4WoJgvyi2Az6ujcMTHfah8TyXy7D38qZNw4XjzeIFDNLNi7pZxEL/0eU6jcTe21BtKpIaIr+apNxhUIeOBmYetTmXpYNvITxRtYoQ0A0ay3E2LVN6/+FbKe1aq4IL3DPXd8peK6sifphujcn+ewEWaXxan1r4XUELckKclOvGR9xy9iytIgOauiCgSbC5+VKZkvEe+PvpY3RnEN470Fnnhqin5lNoQoqf7gdgO3e0lun0Jd/48+X0waRxd0bnMaJxAbUjD7vZ/g7MR5DwN+Nek39bggwDX3sLu9ncMaFJgfH231zVTBNhAWCVFXQcAs9DJphG1IcDroo1EBoIUC5yKN2RECiCr7UL2os3lG/GLgBbLsrpR+hB3CaphCPGyjKE0lRi6H0GsVZJ6BGdNTKDW9oaTY2lBkvjPvHgG4Mv02OtRGX2b5dxsefj5BkuN1LRkQuyS0S8FCFcY8tRh26gksvem674tP4xWmhhEcW8hrKKTvMHw42GrMRC+LPmjMT6TIKtLzEZ0tOKt1ggKNkIBDTJC4bsMFX8KjB0WJ0fVMaC8iiujy3beW1GD7Hweo5Fku03nQ8qrNB
+ LJ9SYM0y
+ Guz1evmKUaFXjN9Q0QqhW/BuyxDFUc+M4JfUqFM3656BxG5PHVRYSvg5D59S/IDSt5ecWYpGw5yt7fRg1cmFtaAmDljDSmbxGaTccXjEx61Fhc4AKtUaXJ8MPJOVjY/S3ro4vNHZqA+J/jm5GzZuS2z6nWpJmO5Kc3lvPo2IEFIe5CtG3ehQWsTs2K5DURHNBKP+WAqm9BQy3/8bYjlfsriFwVvos0K4lVkmXtccnlXNok+YAsf2DDVRhyffHgFADmGClJAE7k+bL92ZEblIa0LaYVwIZtYXyEmdsH4pMjcwaDcHqQ1iKtlZjDZU5TeggSBY8NoprF+PVOHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,91 +102,250 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/8/26 11:03 AM, Baolin Wang wrote:
-> 
-> 
-> On 9/8/26 10:34 AM, Barry Song wrote:
->> On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
->>>
->>> Hi Baolin,
->>>
->>> On 09/07/26 at 11:25am, Baolin Wang wrote:
->>> ......snip...
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 40d3f1b48a74..42c0a09938ab 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>
->>> Well, this seems to be based on Andrew's mm-new branch. I usually track
->>> mm-unstable branch. Maybe the subject should be marked as below?
->>> [PATCH mm-new] mm: mglru: clear the reference counter for rejected
-> 
-> ACK.
-> 
->>>
->>>> @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned long 
->>>> nr_to_scan, struct lruvec *lruvec,
->>>>                }
->>>>
->>>>                /* don't add rejected folios to the oldest generation */
->>>> -             if (lru_gen_folio_seq(lruvec, folio, false) == 
->>>> min_seq[type]) {
->>>> -                     folio_set_lru_refs(folio, 0);
->>>> +             if (lru_gen_folio_seq(lruvec, folio, false) == 
->>>> min_seq[type])
->>>>                        folio_set_active(folio);
->>>> -             }
->>>> +
->>>> +             /* See the comments on LRU_REFS_FLAGS */
->>>> +             folio_set_lru_refs(folio, 0);
->>>
->>> This looks like a great catch, while the code change could bring issue.
->>>
->>> Because move_folios_to_lru() relies on folios' flags to decide their new
->>> generation. You just cleared it before move_folios_to_lru(). This is no
->>> problem for rejected folios that are determined to be put into the
->>> oldest generation. But for those rejected folios that are determined to
->>> be promoted, this could be wrong. E.g currently gen window is 4, and a
->>> folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
->>> is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
->>> referenced bit, this causes it being put into the oldest generation in
->>> move_folios_to_lru(), this is not expected.
-> 
-> Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs 
-> to be reconsidered regarding whether it should rely on PG_referenced [1].
-> 
-> For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios 
-> either. Before commit 6cbdd9726fb5, if rejected folios did not have 
-> PG_active set by shrink_folio_list(), evict_folios() would set PG_active 
-> on these rejected folios.
-> 
-> [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1- 
-> baohua@kernel.org/
-> 
->> The original code looks quite weird. It even prioritizes folios
->> that won't be promoted by `PG_active`. Do we need to change all
->> the cases just to call `PG_active`?
-> 
-> Yes. Regarding this concern, I plan to change back to the original 
-> behavior:
-> 
->      /* See the comments on LRU_REFS_FLAGS */
->      folio_set_lru_refs(folio, 0);
-> 
->      /* don't add rejected folios to the oldest generation */
->      if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
->          folio_set_active(folio);
-> 
-> What do you think?
+On 2026/9/8 11:03, Muchun Song wrote:
+> HugeTLB vmemmap optimization now uses per-zone shared tail vmemmap pages.
+> Device DAX has not been switched to that mechanism yet.
+>
+> Switch device DAX to vmemmap_shared_tail_page() as well. This aligns DAX
+> with HugeTLB by using the common per-zone shared tail vmemmap page.
+>
+> The optimization is enabled only for DEV-DAX through pgmap->vmemmap_shift,
+> which is assigned when a DEV-DAX device is initialized. Unlike FS-DAX,
+> DEV-DAX does not modify tail struct pages, so sharing them is safe.
+>
+> Since the shared tail page can now back ZONE_DEVICE vmemmap mappings,
+> initialize its entries with PG_reserved for device zones. Also skip
+> poisoning vmemmap-optimizable sections while their struct pages may be
+> shared.
+>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> v2:
+> - Explain why sharing tail vmemmap pages is safe for DEV-DAX
+>    (suggested by Qi Zheng)
+> ---
+>   include/linux/mmzone.h | 10 +++++++++
+>   mm/memory_hotplug.c    |  5 +++--
+>   mm/sparse-vmemmap.c    | 47 ++++++++++++++----------------------------
+>   3 files changed, 28 insertions(+), 34 deletions(-)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index d3778ba976a5..03ed9232f186 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1686,11 +1686,21 @@ static inline bool zone_is_zone_device(const struct zone *zone)
+>   {
+>   	return zone_idx(zone) == ZONE_DEVICE;
+>   }
+> +
+> +static inline struct zone *device_zone(int nid)
+> +{
+> +	return &NODE_DATA(nid)->node_zones[ZONE_DEVICE];
+> +}
+>   #else
+>   static inline bool zone_is_zone_device(const struct zone *zone)
+>   {
+>   	return false;
+>   }
+> +
+> +static inline struct zone *device_zone(int nid)
+> +{
+> +	return NULL;
+> +}
+>   #endif
+>   
+>   /*
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index b428da66d279..0db0379826df 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -554,8 +554,9 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>   		/* Select all remaining pages up to the next section boundary */
+>   		cur_nr_pages =
+>   			min(end_pfn - pfn, SECTION_ALIGN_UP(pfn + 1) - pfn);
+> -		page_init_poison(pfn_to_page(pfn),
+> -				 sizeof(struct page) * cur_nr_pages);
+> +		if (!section_vmemmap_optimizable(__pfn_to_section(pfn)))
+> +			page_init_poison(pfn_to_page(pfn),
+> +					 sizeof(struct page) * cur_nr_pages);
+>   	}
+>   
+>   	/*
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index aed1e7429daa..0201877a7f80 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -193,6 +193,8 @@ struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zon
+>   		set_page_node(page, zone_to_nid(zone));
+>   		set_page_zone(page, zone_idx(zone));
+>   		prep_compound_tail(page, NULL, order);
+> +		if (zone_is_zone_device(zone))
+> +			__SetPageReserved(page);
 
-Just FYI, after above changes, the performance improvement on zram is no 
-longer obvious either. I think this also answers Kairui's earlier 
-question about why I saw a performance improvement (which seems related 
-to commit 6cbdd9726fb5). Also, there is no obvious performance 
-regression either.
+Sashiko said: "
+   Could setting PG_reserved here cause a use-after-free
+   during device hot-remove?
 
-zram swap:
-		w/o patch	w/ patch
-sys time:	1666.5s		1628.5s
+   When a DEV-DAX device is removed and vmemmap_free is called,
+   remove_pte_table calls free_vmemmap_pages. In free_vmemmap_pages,
+   the PG_reserved flag redirects execution:
+
+   arch/x86/mm/init_64.c:free_vmemmap_pages() {
+       ...
+       else if (PageReserved(page))
+           free_reserved_pages(page, order);
+   }
+
+   Does this forcefully drop the refcount and free the shared
+   page to the buddy allocator, leaving a dangling pointer in
+   zone->vmemmap_tails[idx] that breaks other DAX devices
+   sharing this page?
+"
+
+It is a false positive.
+
+The struct page marked reserved here is an entry stored
+inside the shared vmemmap backing page; after mapping, it
+represents a Device DAX tail page. It is not the struct
+page describing the backing page itself.
+
+remove_pte_table() passes pte_page(*pte) to free_vmemmap_pages(),
+which is the latter. The runtime-allocated backing page is
+not reserved, so removal takes the __free_pages() path. Each
+reused PTE takes a reference via get_page(), and removal
+drops one such reference, while the allocation reference
+retained by zone->vmemmap_tails[] remains. Therefore removing
+one DAX device does not free the shared backing page or leave
+a dangling pointer.
+
+>   	}
+>   
+>   	page = virt_to_page(addr);
+> @@ -490,23 +492,6 @@ static bool __meminit reuse_compound_section(unsigned long start_pfn,
+>   	return !IS_ALIGNED(offset, nr_pages) && nr_pages > PAGES_PER_SUBSECTION;
+>   }
+>   
+> -static pte_t * __meminit compound_section_tail_page(unsigned long addr)
+> -{
+> -	pte_t *pte;
+> -
+> -	addr -= PAGE_SIZE;
+> -
+> -	/*
+> -	 * Assuming sections are populated sequentially, the previous section's
+> -	 * page data can be reused.
+> -	 */
+> -	pte = pte_offset_kernel(pmd_off_k(addr), addr);
+> -	if (!pte)
+> -		return NULL;
+> -
+> -	return pte;
+> -}
+> -
+>   static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   						     unsigned long start,
+>   						     unsigned long end, int node,
+> @@ -516,21 +501,18 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   	pte_t *pte;
+>   	int rc;
+>   	unsigned long flags = VMEMMAP_POPULATE_DAX;
+> +	struct page *page;
+> +	unsigned int order = pfn_to_section_order(start_pfn);
+>   
+> -	if (reuse_compound_section(start_pfn, pgmap)) {
+> -		pte = compound_section_tail_page(start);
+> -		if (!pte)
+> -			return -ENOMEM;
+> +	page = vmemmap_shared_tail_page(order, device_zone(node));
+> +	if (!page)
+> +		return -ENOMEM;
+>   
+> -		/*
+> -		 * Reuse the page that was populated in the prior iteration
+> -		 * with just tail struct pages.
+> -		 */
+> +	if (reuse_compound_section(start_pfn, pgmap))
+>   		return vmemmap_populate_range(start, end, node, NULL,
+> -					      pte_pfn(ptep_get(pte)), flags);
+> -	}
+> +					      page_to_pfn(page), flags);
+>   
+> -	size = min(end - start, pgmap_vmemmap_nr(pgmap) * sizeof(struct page));
+> +	size = min(end - start, (1UL << order) * sizeof(struct page));
+>   	for (addr = start; addr < end; addr += size) {
+>   		unsigned long next, last = addr + size;
+>   
+> @@ -546,12 +528,12 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   			return -ENOMEM;
+>   
+>   		/*
+> -		 * Reuse the previous page for the rest of tail pages
+> +		 * Reuse the shared page for the rest of tail pages
+>   		 * See layout diagram in Documentation/mm/vmemmap_dedup.rst
+>   		 */
+>   		next += PAGE_SIZE;
+>   		rc = vmemmap_populate_range(next, last, node, NULL,
+> -					    pte_pfn(ptep_get(pte)), flags);
+> +					    page_to_pfn(page), flags);
+
+Another report is like:
+
+"
+   When this shared tail page is used to back the
+   DEV-DAX tail pages, could concurrent initialization
+   corrupt the compound_head pointer for the entire
+   node?
+
+   Looking at memmap_init_zone_device which calls
+   memmap_init_compound, the head page template is copied
+   unconditionally into the tail pages:
+
+   mm/mm_init.c:memmap_init_compound() {
+       for (pfn = head_pfn + 2; pfn < end_pfn; pfn++)
+           zone_device_page_init_from_template(pfn_to_page(pfn), pfn, 
+&template);
+   }
+
+   Since page_to_pfn(page) here points to a node-wide
+   shared physical page, would this template copy overwrite
+   the compound_head for all DEV-DAX tail pages on the node
+   to point to the latest initialized PMD's head page?
+"
+
+This is also a false positive.
+
+memmap_init_compound() does not initialize the full
+compound range when the section uses vmemmap optimization.
+compound_nr_pages() limits it to:
+
+   2 * PAGE_SIZE / sizeof(struct page)
+
+i.e. exactly the entries in the retained vmemmap page.
+The shared mappings start at addr + PAGE_SIZE, so the
+template-copy loop stops before reaching them.
+
+Thanks
+Muchun
+
+>   		if (rc)
+>   			return -ENOMEM;
+>   	}
+> @@ -883,13 +865,14 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
+>   	if (IS_ERR(memmap))
+>   		return PTR_ERR(memmap);
+>   
+> +	ms = __nr_to_section(section_nr);
+>   	/*
+>   	 * Poison uninitialized struct pages in order to catch invalid flags
+>   	 * combinations.
+>   	 */
+> -	page_init_poison(memmap, sizeof(struct page) * nr_pages);
+> +	if (!section_vmemmap_optimizable(ms))
+> +		page_init_poison(memmap, sizeof(struct page) * nr_pages);
+>   
+> -	ms = __nr_to_section(section_nr);
+>   	__section_mark_present(ms, section_nr);
+>   
+>   	/* Align memmap to section boundary in the subsection case */
 
 
