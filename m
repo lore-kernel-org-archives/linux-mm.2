@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4644AC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB0FC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:52:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5046B00A9; Tue,  8 Sep 2026 08:51:38 -0400 (EDT)
+	id 2E2906B00AB; Tue,  8 Sep 2026 08:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 356D06B00AA; Tue,  8 Sep 2026 08:51:38 -0400 (EDT)
+	id 2BA5A6B00AD; Tue,  8 Sep 2026 08:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C216B00AB; Tue,  8 Sep 2026 08:51:38 -0400 (EDT)
+	id 157E26B00AB; Tue,  8 Sep 2026 08:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EDFC06B00A9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:51:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9728DA0676
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:37 +0000 (UTC)
-X-FDA: 85190581434.18.E8EBA1C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2906B00AB
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:51:39 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E3A81C2808
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:39 +0000 (UTC)
+X-FDA: 85190581518.11.7491DC5
 Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AFDBF180004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="T MV4cmo";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iFYTl03s;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 76AA2C0008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P fewFF2";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=M0SqDjHV;
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788871895;
+	s=arc-20220608; t=1788871897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aAoOR2JpHpeae+txrvqhct8oCjiMK1u+dO7P0yt7mGY=;
-	b=TWjD9TCU5bdfHIOO/+Ijsh6HwHep8TpoNmt2fV/S2FD5yp0+fj2bI69zFOUUSiKs8SJWt0
-	CFgKKahRtrzdQIGM2ifPo1DyQvsD/ahhosOlN47uxHg/PGYK5YmubhMlQ2UsQoeKmp2/yj
-	enGtQgxvSVuo5dnE/huJjobCq2k87Kc=
+	bh=qldUBMROz+IaFvGXCDPIVYq1t0GWR0yhYtHQ48mvYkw=;
+	b=Q7k1NKMsZStTHDp8G0zv3BHWb5hWgfFbXrBesE8fZKz1NieWTS1Y7Yi2AsqKJ+zXdIjei9
+	UQ/Es2EZZyfkaoRRXrs/T5goUrZd7T8u1LoTsQ2i7w4YagTEBkIE+RjIdgyT+Uu9Onw56V
+	8fgH1PzC/OoYSjTY5rZBIfiFcVI5b4I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788871895;
-	b=BY4TvNP3xLI5gTB+ofRiQe7Hp1jXRjNfmJy3e3TXntSrg0qOEn/u0HhTrt9Y/xmnhY0F8l
-	HFVKyPYmyOtGGYb/mvJ3Tas5/pX+jdTcRYXvK/N62EKKAxHo5tCjAoBYiViX7haJkx6YJ2
-	ErOZsZrR5itmB37V0n4UxtduNvoMhfw=
+	t=1788871897;
+	b=FzPeDsSThfnAtpWP2+y6HZJ8XEDy0FSp7PhCSiuEnFvE4NBvsMn30yQCz3ykjNIn+duhXF
+	FbfzEwbTrKZQqGUHqAt8jKn9hM09G1gkv1blRgKYLeQT7CqTEyrai8E4aJpYjUU93/7EAK
+	YbbrBNr/lDy6OWgTSZ/ejt59gXcK1m0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="T MV4cmo";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=iFYTl03s;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf10.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P fewFF2";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=M0SqDjHV;
+	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 3A20EEC0032;
-	Tue,  8 Sep 2026 08:51:35 -0400 (EDT)
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 0DFEBEC006A;
+	Tue,  8 Sep 2026 08:51:37 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 08 Sep 2026 08:51:35 -0400
+  by phl-compute-02.internal (MEProxy); Tue, 08 Sep 2026 08:51:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788871895; x=
-	1788958295; bh=aAoOR2JpHpeae+txrvqhct8oCjiMK1u+dO7P0yt7mGY=; b=T
-	MV4cmoloJrwMWev3RQ9drw5GaSxGrwTGLJqzy8wDPst53OjD4n7sATPRu7Y59jhW
-	KGUSMXMIFAKQSyQ0JhbBTT1/zQKipJ5szN3yGai4xryF3F5uYD6zat/fo509pQun
-	+LVXHKDat2sXYDQ/0WDZe4wg8ifiytXcT9VPfhumlTK73+kAmYpom4wypkAQ3c9u
-	ph+M4ui84MCPW3jJIjzWx4yuWUa3HQ0tvkM/O4j0AK/nArhbGpBCEQOCjw4ECzrT
-	5ogMDkyp0qNR1BSLckBpxBNiFZ3dwaoKCU/XgyqzRUyihqpNF+5Z9DBu5XkPMaF9
-	JGegXEKQUBoO8g8tkcU4Q==
+	:reply-to:subject:subject:to:to; s=fm2; t=1788871897; x=
+	1788958297; bh=qldUBMROz+IaFvGXCDPIVYq1t0GWR0yhYtHQ48mvYkw=; b=P
+	fewFF21Tpf2j/Miajfmjpz0sAc3frA2GCSQ8SBkZkCfL4InJR3UtpnFeI1OGcGOX
+	Xn/W+sc9HEqxKdKTLSJonoR+uH3C6YU5EuDiqtNWBPYKo3c3JtZCT+cvpYItHnUx
+	h8iq7/JK2bBSi1O3T1YtFMgS1nPRna0vENIUe82IajkdZCW0HTrwPmJCMpz3Gr2I
+	HTAT2U2cRCz3W1wIXh21wd+5SmwZMnkMeB6Mj2LNGrs17w14Doja3JY9e1kYPJTl
+	ePn9tBF27MBovGztsLjIkY8SiluJ/XNdaBveqy6sDC1vr943wbxguoinZMfjqRxR
+	oYPpQpi5WiYsnbYAYUARw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1788871895; x=1788958295; bh=a
-	AoOR2JpHpeae+txrvqhct8oCjiMK1u+dO7P0yt7mGY=; b=iFYTl03scM205lMti
-	zu6nsqBavzBq2vot9GYPyOX1lNWHP1CX2u0WwoD3jYi7bYIP9eoqC3mYFFU+x59h
-	gr49yKlvjlOtgFVTZfgwoB3QUo53oxfrBryZHdyRZMD1coag+yFEE6eJdLR3eM5D
-	1Uu8Xg7SHaglbkx6SRENp8anIJ2e0LQ2eYDcoZgb5r8hbP4KwINCrdQ4bIhR0ley
-	kVp7fB19LPjWufW4sKkTzlTeK+YlaNkrEpi5RK0NYER9GyvSW/uXHHwrQ2y4kLHj
-	V2AtfcHAeP4I0MrgrskmL4Cb2/0mO68doabZgP8RU9+8I4XH3FnYu3YXPxtY4IKi
-	oFO6A==
-X-ME-Sender: <xms:1wSgaj393UJYpkOctWYyXk5FJvVwN-oTwaBpr66ew5d3tr3IEmCsFQ>
-    <xme:1wSgaqc5iq6f8cel7KrgW4oUlp0Hbpw7dAqyaeSNKVAYNnXJ3WdX6P1MXdjjT2lZJ
-    QCvRlt08mlRC9GlAzKBp9rR5IxqiN_JppEw3QeDnbFcfbTY_YqnFKk>
-X-ME-Received: <xmr:1wSgamHuXqMAlTo8vcmVvXqQaYmzi4TnLJfr7zY3tsdnwqn1ViPMs2wt38Y>
-X-ME-Proxy-Cause: dmFkZTFWe/QI6m+ZXOiH25I14VSUcDEmQWvIJTkoHMAZtN2azwvxUv07K8nNahSlNeJ4Z9
-    6eHjxl/BiXM1vPYXBSjNJhxqwqvDDNYnCkPHmLCbq4adC57onKQLlqdPi/SM35ZhUSQuAt
-    oRpyp7Ri3t8bYQcmJtPujCQbmd86G+mUWXXI2nu6Mtv09ASCHHJTlzhzeQpnnFQ07IodBo
-    3ooVqbRyu34Jvm9Dh+nNFu4XRDq6hWeQ2IW+S+nyO71TFsfO33MG2zd0J+TcVl9g/s7mL/
-    x93b/UdXcwtuY1HOdcGRsIdopKTGnoTNDXdbX9wz19n5nkOd3IsxnbGCKHISgqzDlIJpBD
-    7kpFqjWaHYh20TF1Po27X3IUf2hMX5WsY2ffOrBn8O33Q4PGlV+0eG26xYkEoVPjpLUQ7o
-    K4Gw+1BIHrS6+Df0gszthr8DRxnMQoOSZO0zOGZCNfutMv443eaJo6WYdl2v4wMZGU6svH
-    nRDQBsmPu/104D5jb6kvKPpcsMCDluEQBGgVtgI16Tk5ZZuiHVgXQpJO06zvlykLvd/xIU
-    O59/TSCW7b4ZnRZQ8uEo0fjBLO2VaS3b6G5vQUvF41wiuhHQkX479nttXU3hp094FjYQbm
-    fA2IsmO+3dizMZryokRV+4EP/gN9G0i1r9RtmCtB4HOw9ZiQ4bEiDJepkq9Q
-X-ME-Proxy: <xmx:1wSgagrXYKrFe-rvPZLFQP7pn9Pgs_mrPCWl8ab3TPh5A5fe1KLEig>
-    <xmx:1wSgaoL0d7_p31uFJBDErwPwMIGiZjkK3DDwl4A-6wrkhUh4vO7uNQ>
-    <xmx:1wSgapxGp7OKjMBJY76JK3Ce26jJtc0CgX9ex3S0tIRIfyIyvm2YFg>
-    <xmx:1wSganbiassJwc9qE26I6X5tY7_9T21fthP7B5r22UHCbwgn4U1iHg>
-    <xmx:1wSgapFr2bLOqY782OVoC6BmJsd1ugUJbMasnQ_tew7ZCRipCeBMeW-q>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1788871897; x=1788958297; bh=q
+	ldUBMROz+IaFvGXCDPIVYq1t0GWR0yhYtHQ48mvYkw=; b=M0SqDjHV7lLSHZh9v
+	C3dB6okQNFvKDATjcGpgwrN5hc0+/0TB1T64huXrxaqcxZw+74uGQ21cFqdXy6Ir
+	4L1DNXkAcnaLxv6EVoXF2YtLRXPKt/r7GtzgrF6r3vyWYb4MGTteZLZQEMtMIPuf
+	z8ZWF+ZT/m2bnbG4gZHsLfPJiyCWBr4VP7beRD95nibP3ouB4S/lup6yQs6KiECB
+	NBiQc7RDWMAfRWY2FrbSIvx4cJ9hbw8ityxCIuLrTetNCAF6Hd6U1orauPjRrgXQ
+	BDXB9Cm3aXZ2tktSQizqhSdRf6LFGP4eBB9GARtdjlSe8KDQoL3f+1cyG/C4UBRr
+	DwW7A==
+X-ME-Sender: <xms:2ASgauNcDaYNEPQDs9eYB6PLAn2Tt582npWzJLaPzmWOMlkb4IevDA>
+    <xme:2ASgau3WLFsQNGuizpzE4tGUqlUAxURxRdZWl6Y6SQhXwPmJc_00cSBWRVPxLHMIN
+    yylCGoQQwDLDeJxef4pu363lyzzmY8SXuIP_jrtwR9H0ff1K1j8nM0P>
+X-ME-Received: <xmr:2ASgaqaiCrXC3vqctyln3ZJFWJskeSPHMGqqNBuvsTosfYsg8bmfrVZjj9k>
+X-ME-Proxy-Cause: dmFkZTEqhwhdybusskt0pvIfnDHaUnU8VDm23OZYXtTM+3VchiC9Aeb+sVxnsk6fYrSw+D
+    ThqYkrS5/6/vxmtuBdFXmhYIhVzzMwKM2h/EuTd0ioKo/SR7JG6qiZdpwqyCgxSw3ap0C4
+    BwVCwTZ6/NsCbeDdXy9FE5B58Xto5VjC3MUnB3djmw4ijxWpRXgLZG/TTGkjuz6Wl73hCN
+    DLujar0Luemoo2GGzStZ/AivOKYRI2J4riPLZz79qeImA1Ygm/BltYdUhOJX4iOWEiQXMZ
+    R5ImdiLN0us354rUC8gTNq0PrK6J11WLhxFnA56Lf/FdfG/G6OPaoDYxKnsgAlbq4sHOi6
+    NvIbZOZEtiTeN/4yfCgIFcF+icU6YDIkjvjC7OzGF+dL3TObMZpwcq+9T1R4rMNvBcFFpW
+    x6W2dA1MI1YePYX1GtDkVZ8RJKRjEFkXioma/ZMRUkJfs3jpt7OjI8S2c4tuhCMGoRav+D
+    g2C2IZzaXd2WUOJATJ9JqgPY2CFu9qIu/JcmY7z+lFnu7SLI22fokcG8gC3ROeCoIfgf/8
+    9bXixF2v/IqACwPBfA/ngV84kuZYItqVUSDdYj3wCgFoTwujGtLtfuyEBaKLx4YD+Wdho5
+    ZZycM+hQSOG7Kr94EpSdZxGBpCS0OY50DXxG1ah89t9I3dC7ospaINBNnfnA
+X-ME-Proxy: <xmx:2ASgau7NgdL3CAjRfPGXpqDx7fa99gVUAU-GLi7jhqCalxY_nOit6w>
+    <xmx:2ASgapjhv78hh1MBELrYBAsWiQ0W7fyuVeXJS4jM87nHrTx-T1xp7A>
+    <xmx:2ASgasJHc3UUcuD2VWKwpoY79YVbl5FDVCL9AV7KrSXiFR8EzFgyWQ>
+    <xmx:2ASgajoxXa9VauiYMdyR2BCLNSqbUVywUPgHeyT7W9TTdKdANPB43Q>
+    <xmx:2QSgaja09JdN7BsqunBqKPb632zn5HcPVJUfG_aZXgSEEqr0cfr1Nql3>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 08:51:34 -0400 (EDT)
+ 8 Sep 2026 08:51:36 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -129,22 +129,22 @@ Cc: linux-mm@kvack.org,
 	leon@kernel.org,
 	kernel-team@meta.com,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v5 12/19] selftests/mm: parameterize the mixed-source collapse case by source order
-Date: Tue,  8 Sep 2026 13:50:58 +0100
-Message-ID: <20260908125105.1510704-13-kirill@shutemov.name>
+Subject: [PATCH v5 13/19] selftests/mm: cover a shared-source collapse write race
+Date: Tue,  8 Sep 2026 13:50:59 +0100
+Message-ID: <20260908125105.1510704-14-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260908125105.1510704-1-kirill@shutemov.name>
 References: <20260908125105.1510704-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 76AA2C0008
+X-Stat-Signature: ub4yfckjrkxxrmg6pwzz8z6m9oxfa45s
 X-Rspam-User: 
-X-Stat-Signature: 7y5u4fdg81y18nmks7n4mcxfo5bmfzfr
-X-Rspamd-Queue-Id: AFDBF180004
-X-HE-Tag: 1788871895-355786
-X-HE-Meta: U2FsdGVkX18tyT1CfXAZyTcv58hz28IJSI8OAvTg81wa4qyiw+E6HY389tVKp7e2yo1Cd+CKvUtiqg31qxARkt6KN15XvrFShMA8FYh2nmqX+e4GRVgFYLxmg0Ny0O1aCSV45sV6YElxM5IgI67nZ17quspFcnaKWTejsSvabc7Ck+BQjoH6UbfP5UrE9Z4P5OYG6KwzKwc2zMbiqvJcBU5uSE59pZwG24EguqlzFVnrdVf+ztErxY1j09zy7weoAxboyOUEU6NtXv7MSBWtCGSEI2g+TLaynSCyF/6rtGsYtCV2z1yt2nCTpsmQedFlX7z+BMaGij/DGq0O8jHwaHYp2j97M67cvejXy5Wlnpc9xAyhVXcmwN3GfH43nPl7q4Cj5Ymi9DSvnGSz7tSwSdxfsuKatc+AlKTKG2F/OXdA+00SYDlVGcmYsS2iywfiI8CX8UB0Y6CWMIObLVlqk0HQCs5RcJXzwqDLu0UoPTFFKXSEvhzBXiC3QMBoEMF5lswV/UvR1I4Oli7BfHGaAvQFpCaFXWQZByvWIgfktNaPCvDdJ6nE2vy9QhNoHTTBQGeZIa2SikjruujwL9hlvuxkKxGV22NgEspFjZ2hbyN95ay092QS7Frpm8MPDy2dEYWzma6ylt8Kr9FvIjLCc4+YVqoNc9G6i/syjbEiACNwIT9pOB5kfvfnlkbGQhHma8Rpx/ILGXTl27MqdJJSe8SIpUi7hjSEhc05T4NDtOm7AI1oHrb9/nesyv7VvAnS+svMd9N+qEbPFjEoHQZ+tMWYTgdoBlB7K6dfx0BZLWe8umTE8TNkcHZFZjkcfRBFuGNzEY7Q9z1XuNbLzM9fTuVb6XkWX32AoAtaKE+kEpGEEc7GFGC/3NPHyzlAbn/Q57ehjMFKE7T5Dl+POSt88M69doq16Hl5aV+6vWAGzwWWuXGDWAdOiNDfCuMcz5i+xye/aMtevdZujfxA1rb
- qFIN7IY0
- IVXbdeE6XDXRKSILQlff0w+7ltsUydTn7xbGuY8qjeLBvn/iiFE5Z7UJnmrF3L7oNICMTGe8CNOmhwXizOSaYIXkVesTXsr0ka1GHg8JI+DGOyBVBC9BTlvz73QLBilJe5Knoq6OkQPkHJqhnNoJSAB/T/2lulrVcqq6UIGOCHDs7xsmo61+uUYlVBtE9iiEpf/CHkkf3bhxyvC7hr4ETbQ9URApZJXT6bdNJai+hlNqXnAANyF9GMEX5ClDPePCis+GPX3/9BM2TXvQrUTfZWX9ExQzP8i6P6QydOAuJunWj29McfY/uG9qXkDx98KJX55IUUPuocnDeAnbcVTTc380i9XviCuocxVy5QQv9L+o3KwB3kiSKDWKX4fh9r+Ymnle+xkMn2yzCZMv2iTeEwqZCQVBKL5583IlkhQn7WYPdtGOUa1qd5HdT169jGqca3dnrNyainpJMWkn+RPBCY96Zl3GXpWIcVjWkwwtkTAsfquH93UCSuS5UyygWr3CXFrIS
+X-HE-Tag: 1788871897-861377
+X-HE-Meta: U2FsdGVkX19OsIKiYWvFeVpaWYSnYtnbuOn5Cw9PjW/xKKwf71j6F+eV19xl8JreU3e4D/1CsF9byCwpZslAeGFma8l2d78QwjRfc09OSNaK6I+iGEh5C/iiZKyn2T13ILqprhj06EBYD1WLB/xpHSjOdSpAX8ubYJn57A9wNS6fwbBhUZZkGfJaXWLd7YHOsR6TSdn9ayWz1fmzsx/JiROlBc2DRdwdJbUDzSwqmiXBII7gjkinc/qWg36s/2TLuVHHHAvnBEaCoAqiCFwSoap28oM1+PUSwV01z8S+Tr8p9h9qbxaC9cWoyQuKrREOT2rMjxA3sNH88Q3jXovMB3o2gtOAwHsf3EZaCkTITV/FmLJ7bx0UJiQwka3d7/pVwzIJuXcr28CbafYY3eeT94C+KNczr41sUNnH6Kw0y+Q7101RhH71d5hSd6IITyvTMvmxcWtdQVyhCqF5POeqjFdFSnygxWYoG53qyHWjkrwLxd7natFJfEpnxQjl2uR3nN2oAfVhVvae4WAMiwGNUL+iygWkcRbT/GaeTwUm4eVsigPLTZBpcGnXA7r5ZJtMIIBgtzCBX8Nghcblm+gTognvqdtIA/cpAhorRtclC4U+QaOtH4+uhWcGAGKk8wMz3aaxsihPZ44vTLQgRgjNMBmxZxkGMIBm+fbYpcFpNPb7K8LJaDuzYcz32mNvfYFCn1DTkaEcJ+hLkpIM8rg91vHt+MgIbGzYcqVOUBlL7Q4vSQEFSoliIvfEU016q3P28d/D22qw3hq0OTsrsMJCOaugHXbIwhIaPL3V6KuUWdVbt+Q2nZ/rT31mXBG4N2PeCTM1SE46juHcSJ+NBcaZod/EXVLrg50U6G47Q3n8J9Wqz7yGaIEfO4YBvzimcKtgUsX/K5VoNdBYKD6SQi5sI+3nsK9YPlGDR/SAhwwr2Yk1eXE4T7l8IeOBpF26gmDNLUZe1SZH/u7+8PomswQ
+ O1T2IgM/
+ u/tuaNzGb4ynAFP3R4VAz3K2Vq8yodkqqLr9Pj+7heUXwhYLrMqepUsoL2PEkb/uCq6tZ3LTzkQ0wFEfGi8HbNwZjlMfGeV0UO6XaIwd+EYHpT0NtKngrAQjBLyNdRsOzx16ojPWVUPYND3twaba65f4UpaR7CYRu2cFgCQPE0CnLIVKjwFHYZPA7al8v1MTwG3R3De2YO845YkIvqK21l2OIVACBSBTp+KOYqevGMFylt4l8H3c4AQyHZEyFtWBx7Bhm73RxPkMJuXrg7zeIK5jN3NmJkgX0bGiS4WCQdC9gbtsBJcy/LO99wsp67tkxXSqBWWg130qKhVR5ms9nlGldnd9q0muAmTXCwnU+BbfcGiFtSa/xn1v1QJAVRmAO+Reg46uOU5NgOgH52+7ZVoYqkV5bBzVX9xi56bJVWV+IbvEll4nqfKussktOX+6eXwJOwr/uq3XFx0LoxPY+RZWf/QCOMrAvj5KFhhOj8+f5fS7MYO880yPTNzNPe3SSOEhO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,87 +154,147 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-collapse_order_mixed_sources() faults its region as order-2 folios and
-collapses them to the -c target.  Order 2 is below the contpte size on
-every arm64 page size, so nothing in this suite collapses a contpte-mapped
-source on purpose.
+collapse_fork() checks that a fork-shared range collapses in the child
+while the parent keeps its own pages, but the parent sits still while
+that happens.  Nothing checks that CoW isolation survives a collapse
+racing with writes to the shared source.
 
-Let -s name the source order alongside -c.  The case then faults at that
-order, keeping order 2 when -s is absent, and the source order has to be a
-supported mTHP order below the target.  The other mTHP cases are
-unaffected: mthp_push_target_order() enables only the target order.
+Add a case where the parent writes to the shared range throughout the
+child's collapse.  CoW has to keep the two apart: the child must see the
+content from before the fork, and the parent only its own writes.
 
-"-s 5 -c 7" on arm64/64K then collapses contpte-mapped sources into a
-larger mTHP.
+The parent unshares one page every 10ms, starting only once the child
+says it is about to collapse.  Writing the range in a burst would break
+CoW on all of it before the collapse begins, leaving the child to collapse
+pages that are already exclusive to it.
+
+Preparation for changing how collapse handles fork-shared sources.
 
 Assisted-by: LLM
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/khugepaged.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/khugepaged.c | 100 ++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index fb4efaf67c40..b15cd07fc0b3 100644
+index b15cd07fc0b3..f5d4847c50cd 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1352,11 +1352,13 @@ static void collapse_order_max_ptes_none(struct collapse_context *c,
- static void collapse_order_mixed_sources(struct collapse_context *c,
- 					 struct mem_ops *ops)
- {
-+	int source_order = anon_order ? anon_order : MIN_MTHP_ORDER;
- 	struct thp_settings settings;
- 	void *p;
- 
--	if (collapse_order <= MIN_MTHP_ORDER) {
--		ksft_test_result_skip("%s: no source order below target\n",
-+	if (source_order >= collapse_order ||
-+	    !(thp_supported_orders() & (1UL << source_order))) {
-+		ksft_test_result_skip("%s: no supported source order below target\n",
- 				      __func__);
- 		return;
- 	}
-@@ -1364,7 +1366,7 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
- 	mthp_push_target_order();
- 
- 	settings = *thp_current_settings();
--	settings.hugepages[MIN_MTHP_ORDER].enabled = THP_ALWAYS;
-+	settings.hugepages[source_order].enabled = THP_ALWAYS;
- 	thp_push_settings(&settings);
- 	p = ops->setup_area(1);
- 	ops->fault(p, 0, hpage_pmd_size);
-@@ -1374,10 +1376,9 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
- 	 * The allocator can fall back to smaller folios under fragmentation;
- 	 * having nothing to collapse from is not a failure.
- 	 */
--	if (!is_range_backed_by_order(p, hpage_pmd_size, MIN_MTHP_ORDER,
-+	if (!is_range_backed_by_order(p, hpage_pmd_size, source_order,
- 				      pagemap_fd, kpageflags_fd)) {
--		ksft_print_msg("No order-%d sources to collapse...",
--			       MIN_MTHP_ORDER);
-+		ksft_print_msg("No order-%d sources to collapse...", source_order);
- 		skip("Skip");
- 		ops->cleanup_area(p, hpage_pmd_size);
- 		thp_pop_settings();
-@@ -1387,7 +1388,8 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
- 
- 	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
- 		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
--	ksft_print_msg("Collapse region backed by smaller large folios...");
-+	ksft_print_msg("Collapse region backed by order-%d sources...",
-+		       source_order);
- 	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
- 		fail("Timeout");
- 	else if (all_windows_at_order(p, hpage_pmd_size))
-@@ -1418,6 +1420,7 @@ static void usage(void)
- 	fprintf(stderr,	"\t\t-s: mTHP size, expressed as page order.\n");
- 	fprintf(stderr,	"\t\t    Defaults to 0. Use this size for anon or shmem allocations.\n");
- 	fprintf(stderr,	"\t\t-c: collapse order for mTHP collapse, expressed as page order.\n");
-+	fprintf(stderr,	"\t\t    -s, if set, is the source order for the mixed-source case.\n");
- 	exit(1);
+@@ -1164,6 +1164,103 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 	ksft_test_result_report(exit_status, "%s\n", __func__);
  }
  
++/*
++ * The parent writes to the fork-shared range throughout the child's
++ * collapse.  CoW must keep the two apart: the child sees the pre-fork
++ * content, the parent only its own writes.
++ */
++static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *ops)
++{
++	const int stride = page_size / sizeof(int);
++	int wstatus, child_status, i, n;
++	unsigned long shared;
++	volatile int *ip;
++	pid_t child;
++	int sync[2];
++	char go = 1;
++	void *p;
++
++	/* At a page per 10 ms, 64 pages spread the writes across the collapse */
++	n = 64;
++	shared = n * page_size;
++
++	p = ops->setup_area(1);
++	/* Shared prefix, with the pre-fork pattern */
++	ops->fault(p, 0, shared);
++	if (pipe(sync))
++		ksft_exit_fail_perror("pipe()");
++
++	/* A volatile pointer so the stores are not merged or dropped */
++	ip = p;
++
++	ksft_print_msg("Fork, collapse in the child while the parent rewrites...");
++	child = fork();
++	if (!child) {
++		int collapse_status;
++
++		close(sync[0]);
++		/* Private remainder */
++		ops->fault(p, shared, hpage_pmd_size);
++		/* Start the parent unsharing, and give it a head start */
++		if (write(sync[1], &go, 1) != 1)
++			_exit(KSFT_FAIL);
++		usleep(5000);
++		c->collapse("Collapse a range the parent is writing to",
++			    p, 1, ops, true);
++		collapse_status = exit_status;
++		for (i = 0; i < n; i++)
++			if (ip[i * stride] != i + 0xdead0000)
++				break;
++		if (i == n)
++			success("OK");
++		else
++			fail("Fail: child content");
++		/* The content check must not bury a failed collapse */
++		if (exit_status != KSFT_FAIL)
++			exit_status = collapse_status;
++		ops->cleanup_area(p, hpage_pmd_size);
++		_exit(exit_status);
++	}
++
++	close(sync[1]);
++	if (read(sync[0], &go, 1) != 1)
++		ksft_exit_fail_msg("child never reached the collapse\n");
++
++	/*
++	 * Unshare one page at a time: a burst would break CoW on the whole
++	 * range before the collapse starts, leaving nothing shared to collapse.
++	 */
++	i = 0;
++	for (;;) {
++		if (i < n)
++			ip[i * stride] = i + 0xbeef0000;
++		i++;
++		usleep(10 * 1000);
++		if (waitpid(child, &wstatus, WNOHANG))
++			break;
++	}
++
++	/* Finish whatever the paced sweep did not reach */
++	for (; i < n; i++)
++		ip[i * stride] = i + 0xbeef0000;
++	/* A child that died reading the racing pages is a failure, not a zero */
++	child_status = WIFEXITED(wstatus) ? WEXITSTATUS(wstatus) : KSFT_FAIL;
++
++	ksft_print_msg("Check the parent sees only its own writes...");
++	for (i = 0; i < n; i++)
++		if (ip[i * stride] != i + 0xbeef0000)
++			break;
++	if (i == n)
++		success("OK");
++	else
++		fail("Fail: parent content");
++	ops->cleanup_area(p, hpage_pmd_size);
++	/* The parent's check must not bury the child's verdict */
++	if (exit_status != KSFT_FAIL)
++		exit_status = child_status;
++	ksft_test_result_report(exit_status, "%s\n", __func__);
++}
++
+ static void madvise_collapse_existing_thps(struct collapse_context *c,
+ 					   struct mem_ops *ops)
+ {
+@@ -1695,6 +1792,9 @@ int main(int argc, char **argv)
+ 	TEST(collapse_max_ptes_shared, khugepaged_context, anon_ops);
+ 	TEST(collapse_max_ptes_shared, madvise_context, anon_ops);
+ 
++	TEST(collapse_fork_cow_race, khugepaged_context, anon_ops);
++	TEST(collapse_fork_cow_race, madvise_context, anon_ops);
++
+ 	TEST(madvise_collapse_existing_thps, madvise_context, anon_ops);
+ 	TEST(madvise_collapse_existing_thps, madvise_context, read_only_file_ops);
+ 	TEST(madvise_collapse_existing_thps, madvise_context, read_write_file_read_ops);
 -- 
 2.54.0
 
