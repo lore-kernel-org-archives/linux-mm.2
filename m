@@ -4,124 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA7EC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0D8FC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:56:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01BDC6B0092; Tue,  8 Sep 2026 11:56:25 -0400 (EDT)
+	id B67476B0093; Tue,  8 Sep 2026 11:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0EF86B0093; Tue,  8 Sep 2026 11:56:24 -0400 (EDT)
+	id AF0E86B0095; Tue,  8 Sep 2026 11:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFEDF6B0095; Tue,  8 Sep 2026 11:56:24 -0400 (EDT)
+	id 9BB966B0096; Tue,  8 Sep 2026 11:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6FCB6B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:56:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4559C1205FC
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:56:24 +0000 (UTC)
-X-FDA: 85191047088.04.DA9D9E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3EC2C16000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:56:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYxSkOqq;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788882982;
-	b=HPgaIVSMbNe9KjaGwJ/3KDs0wlBc26TJ7EkRw0a6OzO5AkFzVVJtk6ZkjmUMxHenARno4l
-	u9ZWjbsyJBcStRbVx137ZhFxtms8rttqXL9WqQ9eD+Thm9Uoddo72/e46HuOShVqfQppVk
-	YeS+h50w/NTK+RUBeEVfNge2ovXd2sE=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D1736B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:56:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1DAD6A4B33
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:56:51 +0000 (UTC)
+X-FDA: 85191048222.16.320C4F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A5836C0004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:56:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dgzqAq0R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYxSkOqq;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dgzqAq0R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788883009;
+	b=Q7hJokTSQ8KV/8G8EWTiYr1CQV/NkR/2gyvhqk/Xls3txFAezMul5RCxTca+hBquab7dbr
+	EDXlT1H389MbZbk6vDkTzPcU20aXfYkJyPGdh8ShG12PdBUDJPQZZhukCT3yvQJff451tb
+	zeSmBLWUrcTWmCEFpIlOZfNovvCveZ8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788882982;
+	s=arc-20220608; t=1788883009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N9fgGq2X2uChEtYWmFfDevJiLw3yAP3NdTyXSMdqiTs=;
-	b=BfrwYKkkfTe1aE+yX0a7vth/eDTDs8Gy60f0sqtkTa8cvIriDdlPrKlpshwtMW9V1jVc+D
-	0snMhuo7kNaZ0rCDoaQcQc5dSUe5fPGfmFJS6XY0hZTWiYMWcQYal6E5rRzU0AjJWiRXTU
-	RtbZfMEdu7Cn8vGC3Eufzz30pXO5j08=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sRrd8HW6tVkZeGdEyEtiUpIMBkv6a/57SRsi9SBmBeE=;
+	b=Y141muh8tJwFtrNrxqxFeQz9FLtZQm7XiIAoc2bVfx3LIW13LPgqP8AuwCzl4zIWNxr3i5
+	ppfCeL4l627fb9IfKtNxM+GpW8auaYo4lgyEgldoF4w8yiBljC2cK7CWvdMie+2d55VOvK
+	i692+F9AYjf4V5nF9je2ED7HNEI26io=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D1D943C12;
-	Tue,  8 Sep 2026 15:56:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2831F00A3E;
-	Tue,  8 Sep 2026 15:56:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D2C9601FA;
+	Tue,  8 Sep 2026 15:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E71F00A3D;
+	Tue,  8 Sep 2026 15:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788882981;
-	bh=N9fgGq2X2uChEtYWmFfDevJiLw3yAP3NdTyXSMdqiTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AYxSkOqqtRkXROWj3gB+7ReXgoHiyFFrrjnxIz/90YaeJ3Q/oOcXcADEhYVwjqu1o
-	 3Fm1Jcwf8SAzxUUpS2kkTUbOxVkNcijIsb5l12Jm0B6zzqWxuj2KMgzZmQqsXor6vz
-	 B093oKN0PG5FLcZdSkIgl0IQbhWQgHP/RYNC68D/wm/ba/9vaFD6TCCMAo6S8BiNon
-	 M81/HJN1FLDDJjM5Kp0ZX92of4k9tcEImVeiL3r24SHpoKM+M8xf7wKYimg4gZ51D6
-	 dB2C/xNmu5FmDsDpegQt03q1fQRF1mUMthr9k7pe0dV50Y21GGAC8FDx/yj2yukz0n
-	 OhmCpmb5wEnxA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id CA820198003A;
-	Tue,  8 Sep 2026 11:56:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 08 Sep 2026 11:56:18 -0400
-X-ME-Sender: <xms:HTCgateyjfYFJdrtV7amQ9wKd5WHkuIUJV1wBimJoVJ08GqbGVDl8Q>
-    <xme:HTCgauRae6D3D-6pIsU_QUdZxKrkpC8KEJxo87_2EoODrEVZEnud1qsMmo6WR_md5
-    1EtZbxZ7fMswFDzVZemiCkbu6_SrxU56Tr6pehvBO9TqHkEP-MJOIg>
-X-ME-Received: <xmr:HTCgakmvep3BQWXmrdY7q7Ef7PDqzQKKi5xj8CFcqCXJYXxmNUGf2cmdoxQ>
-X-ME-Proxy-Cause: dmFkZTF3IiLrxKTc6MEEiVzjdeGok30jImMQRh0oSfDm6XFoFRUjHYcV2z+3oyw9IE98S8
-    jhHjjVUPmLb8M1epXseCNDEw3g/pBEbeVDnYYxEmv/e8MqjF23LLhO7qB6zOijx3q2TO8Z
-    chf+iV/I1x+z9V8/XJ8dR80BupXVG0lg4hH4QLv1WG4+83EGiENMGK0RcO9dEJ8TODIGIE
-    8wJi2hmB6J1ep99h6Ir8Gc/c5bfldImT3JKGX8HjLU0BbFWuqm62tA7g6VKS+hvWJGI/j/
-    X05+tUfS3Abz/aIZ74BfbklxYyRaMDjdfIMlDmfoddqHWsbbkYh3Ce3RSfpHWut5aet9ZY
-    JJiG7gZhGux8ERCOwn6ER5ulGtWTcS3oPod6tev1968K2xCBHQySsRN0r9nXV27kFShhCx
-    E+DaEwFCUVqdfyq4enpFO3knr7GakbCY8YHyql2lIo+1gg6DmH21S1PbITefkjVzC/oBDk
-    rGivE4sjTsRAbzIfAtHqMU7HMkwAguEDmB5jFTozR0eX8kXCXiL+OBUGkSnAvFP5epOENB
-    /kLy2ln2QKxI5D3xfCzdIjX2HzMQeVrkKvXuEZFmemlN9uGAZyYJwBrToCOWJa/Mi7ej8X
-    eTwT1SbLxn/5mxYEk+0c314mj2MSpRkoxM6ltRC1v1My0h3nDOfh3HPKUa6w
-X-ME-Proxy: <xmx:HTCgaqZ4TNJfpPRLt2blkL-fSGCQUuK2aTJq7fiKRsbRtfQMPsrS9A>
-    <xmx:HTCgav2uhd1-UupJDsed_7VsdzptAOIz8jUkNT7xOlOsREgTUg5IEw>
-    <xmx:HTCgaiqxkzH_b6CQSua9FpR1ywCgjYVvehT9qgwQzcYeICM97WdDsQ>
-    <xmx:HTCgarwbrQIQaiihmQIsf43lSHARzGEj1U0WS3HJMnSyUdg0MbyEXg>
-    <xmx:HTCgahjnYxs-rz7p5qLOGW4K36XsgUA_7OcoKvtN0wkE_iE9u5BUGLcN>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 11:56:12 -0400 (EDT)
-Date: Tue, 8 Sep 2026 16:56:11 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Yeoreum Yun <yeoreum.yun@arm.com>, Shivam Kalra <shivamkalra98@zohomail.in>, 
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v4 12/17] mm/huge_memory: move anon_vma handling into the
- anon split helper
-Message-ID: <aqAvPuHUVXvkJmV4@thinkstation>
-References: <20260908-swap-thp-cleanup-v4-0-b532a3f20e71@tencent.com>
- <20260908-swap-thp-cleanup-v4-12-b532a3f20e71@tencent.com>
+	s=k20260515; t=1788883008;
+	bh=sRrd8HW6tVkZeGdEyEtiUpIMBkv6a/57SRsi9SBmBeE=;
+	h=From:To:Cc:Subject:Date;
+	b=dgzqAq0Rb4t3E65A90uWXQ8od7s2sZqu5HDBqaJYS739IKSVberiqznPYaCD46X76
+	 hg7VF2iHl6HtZqNtYIGeMQKuNy1OcnIqdyV2Npj8y99of6jDpJGQaTtRm4sV8kXBrT
+	 wZ28xpm0TQ+y8vNp9XgYu7sReJxXI2Srrf7PXc5BJKRImATk8y4scer0CX2Wdk+Ygs
+	 7fNnOlWi69n052qHTsAJcBEsosfaF/dO113v1vD1Hs/MR9HMYD7A5rHRuc+yLNe696
+	 iYg6m/WbEHurdr6ucmTDEdR45Zi7/yEnJJZLhMeePTkWBjoDdJMaLi/3GdTwdzmT7J
+	 YMPEMq8UVBnJA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Baoquan He <baoquan.he@linux.dev>
+Cc: x86@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH v2 0/4] kho: rename "scratch" to "bootmem"
+Date: Tue,  8 Sep 2026 17:56:34 +0200
+Message-ID: <20260908155639.2496551-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-swap-thp-cleanup-v4-12-b532a3f20e71@tencent.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3EC2C16000B
-X-Stat-Signature: u3yb6ymss4f5uejseeg38ub3xiboqo6d
-X-HE-Tag: 1788882982-296192
-X-HE-Meta: U2FsdGVkX18c8TebSAi1zEvbvMBWCkwknipRWjJ3HzmVGw/7IskBO0qRdvYvJtwZ0iQ36X8aNZPeBnRewPENX5MvtP70xQz/ppP2zisJ7Q919yE02DOz53UyYwx2xh/bCPeuk6PHA9l4Rre/3tTXSsTq3//e6b6ybjx7LXSoxrE0TcO1yuYeHiYn5P3r6SEnppO5Ptdpo6Yt1028A7Fk8Uv1SMVyOQZ0qQbFexAgKDm14nwtlcvLfbkS4SXBNfpODpbq//pM4afol+vyegUbIqjdAdeJxOnA+2QA1Kwci3q50E6dxwrFEpVlAUwx0FXr3WPousO0PKpqfJWgBbfmfiuBEBGOx/Wgvj3r467d10lLadIIrIW1186e8zzdvfK0TqND1tYA5Zj2pnQIFI/5qc6JrU+iypggszZlww2s71GcOut/p4NzIwTkl89SY1K2OQP15DUc/VelRLye75sfXw9bz4DWvsolv+L/M1Z4RyguNOhUXP170l20g8XcSq9SKZnHIYAhtbKZvTbnPDEHqAuj4insJMsiato04ZwkN35THC0bWsGSO121IDEREkBloXSpjoejg3TzcCzo/dC8Zb/aGvS1QcdJM0C70ZPCahJUou/eOTSNW710B0ZKn91eZmkTn898FwzCGRCbIYkvkYMfcjAKlcfp0MPyJ3dS/DnotslGcd6UzDFquSNXTUnnUD75T4FI1rA/FogBHsgqdijq9JZvpCDRzq5pDF6kxLJRDhQG3dywhzlf04DWiPSMpOLKZL66RvYx1MnRp6ctnYy22Z5gR/dCjU5Kct4aWMHGDgCtuzbwHzi5hS18MkUf+5ptjOpxLRgEdqDmZK1IOv7Ug+rqUs02GYiVKxtqdh0f5vM/8cGQ9LvNgqvKtEIp4csXvRHuK8WNRhnD3Rov1xi0Dw3ICh5MCfted5YbiRXmcVUxUf0nEBnBzvERtVGW8Z8SYpVq9IiqA8TtoJC
- JHrPJeKy
- vrsMkpohbfWDAaxD92kroyp0mXBzEboCm3DoHDcaxw/6jsBE7phu0sLZBBPpPz/bJ/Zp5CsBrQ+5V/dp1txGfWtIIlNo3vtKmYp/jofLaIcB0e9sDMcF4zQgEA2p3a1D+5BsZY8L0BYpXN39nYH4dICMY5frvyIopfU6icgjXbQGDT8MbI6hAKiZFJhGrXSPleCaT6sPZAA3VKIWz7E/vtnhjp0vVhIcinOimgiN4qBZZZqd2Ru/O5+454pvUYtqtBZMB+cX9Wl53byqdq/TzH/pDtoQgIyyb2OCfxOo/2JzRzVzIcDex2kJqrAIuTRo6tKV8jgV400b7tyE=
+X-Rspamd-Queue-Id: A5836C0004
+X-Stat-Signature: qpratpd9w1prg9g4uazrwre5zhodxnqk
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788883009-751113
+X-HE-Meta: U2FsdGVkX1/YOpztNFjnJ2Kay010rQUu3WgJhOj5ApicZaivf032XGocKXxc1LYlj69FyevbKCAXzGm8U2AaURTHRT+rqhV3HllJB0jW/J0nK1Ou7bG33KZOeamkxi3eVHn731v8goig8gtpSpXlqpejXGAK0ec0cGAVXkqH8SZXqnUmQL0zcwgqxKlmgKHvSW0sIUTaZCfFBBsj52qwVn5UBLw2AcJqEwDuSWzCBQ3sgE+us9470MrzOZmFzRFufw/pNALAgEX4hTWszu4/s/7OAJGDPY3Cw5tS6GuFCxkk09gvi9wS5/WdT2OXEmw4fQ8ZqrvRe7uT9k38ppzl3ivg94/IHGcdzz07pRioqoNhDSKiamw4idJ6TYtWArlNB6zKXUDFNQTo1yT0xQGRX8NsC6lH6Fsn+kDsaYaKAnb+aM+XhEksI3UMwtEtWybmGmFEBuwfAlIztX6/ominq0Jk7DyYD5oum1Zc7Gy25xFCUeKzuAt6dSBRu8Zs+7GEXPSN/lv9BuP+M9C24VaiSANH4qwsyjonOq1X3CKSIXhvg4cZu3lR02DsdXzh7ss4icEAGiqilZSjCyT5iLY2qmTEFV7plzu0zd0LFZhmMT+XfRoNMf/o8OZuzm9H1nbffDExaRlxR3FcFY+HkVRt37Yf0LCeQdFgM3nVbzt61SR8c1twSawSjsJ3d+kDJXO6zQD+T7fZRzgQbwLiQpcQcx/aLb7S5JnVUuJWS3LQrWpY+r7flCLbkhi0rWxMx5CuJkqkmCE8JtyLKU7O+k5HZqu1Z5LOH3JeqxRGc+DUJaPxCNqQVoR9mDcpOxX+EvEOEqvZz1I0UE8EQ9l12sNyxglXdUYByvycM4eThl9KE4c25IZXZL1meLIJKpSxwNmlsbS9YLO8pvJn9ERqPV47bfTKT8pu+XjLTgFMTPdRHdVBOgLdxSBv0RKvi3ipakdte7R7iuVn4qxvLF4BLYw
+ 9le+Ey8A
+ /SykFEMdTd8PUBbcGW903dF810CWtR29Tb2ZEhjnvHWLcY1phcjRZBBcbq3g5AVg+WOP7aDuPntf9qxNhnQjOtDjlJO3r4fDni5PlIkMsMxeoowyd/A27rg6WMMt900Q/S7eUxFGTybHEXC8kWjgno4yxzZl9EiD3o5PElE/TIupE4wNJg4jVZmmvTCQ8zCXXLfyhjSz7cHUu7wMLQUWPLqo13tSPCmZbIKTBFchkrjLtc0o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,45 +117,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 02:12:16AM +0800, Kairui Song via B4 Relay wrote:
-> +	/*
-> +	 * Unmap/remap needs the anon_vma. The caller does not necessarily
-> +	 * hold an mmap_lock that would prevent the anon_vma from
-> +	 * disappearing, so we first take a reference and lock it.
-> +	 *
-> +	 * An unmapped folio needs none of this: folio_get_anon_vma() and
-> +	 * folio_lock_anon_vma_read() both bail out on !folio_mapped()
-> +	 * before taking the lock, and folio_ref_freeze() below still
-> +	 * rejects a folio that picked up a reference meanwhile. Note
-> +	 * a swapped-out THP counts as unmapped here as swap PTEs do
-> +	 * not contribute mapcount, and they are splittable.
-> +	 */
->  	if (folio_mapped(folio)) {
-> -		need_remap = true;
-> +		anon_vma = folio_get_anon_vma(folio);
-> +		if (!anon_vma)
-> +			return -EBUSY;
-> +		anon_vma_lock_write(anon_vma);
->  		ret = unmap_folio(folio);
->  		if (ret)
-> -			return ret;
-> +			goto out_unlock;
->  	}
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hm. Nothing serializes folio_mapped() here. I believe it is fine, but the
-reasoning deserves a comment, since it is what the whole change rests on.
-Something along the lines of:
+The term "KHO scratch" is vague and overloaded. It does not accurately
+describe what the memory is for. This was discussed previously at [0].
+The conclusion was to rename "KHO scratch" to "KHO bootmem", since this
+is memory passed by the previous kernel for early boot allocations.
 
-       * folio_mapped() is not stable here, but it can only change in
-       * one direction while the folio is locked. The mapcount can drop
-       * to zero at any time, zap_pte_range() takes no folio lock. It
-       * cannot go up: swapin, migration and uffd move all lock the folio
-       * before mapping it, and fork only copies PTEs that already exist.
-       *
-       * So if we see the folio mapped, the worst case is an empty rmap
-       * walk. If we see it unmapped, it stays unmapped. Anything else
-       * needs a reference first and folio_ref_freeze() below catches it.
+In addition, memblock does not care about the provenance of the memory.
+It cares more about how it should use it. Use MEMBLOCK_KHO_NOPRSRV,
+instead of MEMBLOCK_KHO_SCRATCH, to describe this memory to memblock.
 
+This series does the renames. It also gets rid of a redundant Kconfig.
+
+While the diffstat is big and scary, most of the changes are mechanical.
+The most interesting functional change is in patch 4.
+
+This series touches a lot of files across a lot of trees. But since all
+of that is purely KHO-related code, I would like to collect ACKs from
+the maintainers and take it via the liveupdate tree.
+
+Ideally we should queue it in liveupdate/next early in the v7.4 cycle
+since it will cause a lot of conflicts with other patches throughout the
+KHO tree.
+
+[0] https://lore.kernel.org/kexec/agHGOxSnP_VraH1M@kernel.org/T/#u
+
+Changes in v2:
+- Rebase on latest liveupdate/next.
+
+Pratyush Yadav (Google) (4):
+  memblock: get rid of CONFIG_MEMBLOCK_KHO_SCRATCH
+  memblock: rename KHO_SCRATCH to KHO_NOPRSRV
+  kho: rename KHO scratch to KHO bootmem
+  kho: rename kho_scratch= commandline parameter to kho_bootmem=
+
+ .../admin-guide/kernel-parameters.txt         |  15 +-
+ Documentation/admin-guide/mm/kho.rst          |  18 +-
+ Documentation/core-api/kho/index.rst          |  36 +-
+ arch/x86/boot/compressed/kaslr.c              |  12 +-
+ arch/x86/include/uapi/asm/setup_data.h        |   4 +-
+ arch/x86/kernel/e820.c                        |   2 +-
+ arch/x86/kernel/kexec-bzimage64.c             |   6 +-
+ arch/x86/kernel/setup.c                       |   2 +-
+ arch/x86/realmode/init.c                      |   2 +-
+ drivers/firmware/efi/efi-init.c               |   6 +-
+ drivers/of/kexec.c                            |  16 +-
+ include/asm-generic/kexec_handover.h          |   2 +-
+ include/linux/kexec.h                         |   2 +-
+ include/linux/kexec_handover.h                |  16 +-
+ include/linux/memblock.h                      |  30 +-
+ kernel/liveupdate/Kconfig                     |   1 -
+ kernel/liveupdate/kexec_handover.c            | 340 +++++++++---------
+ kernel/liveupdate/kexec_handover_debugfs.c    |  24 +-
+ kernel/liveupdate/kexec_handover_internal.h   |   4 +-
+ mm/Kconfig                                    |   4 -
+ mm/memblock.c                                 |  56 +--
+ mm/mm_init.c                                  |   6 +-
+ tools/testing/memblock/internal.h             |   2 +-
+ 23 files changed, 302 insertions(+), 304 deletions(-)
+
+
+base-commit: c65687600ed075d237a204755d99ad538db34b47
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.55.0.979.g7e5102b832-goog
+
 
