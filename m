@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B19BC79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0631FC79FAD
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:44:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 750976B008C; Tue,  8 Sep 2026 06:42:05 -0400 (EDT)
+	id E0A4E6B009F; Tue,  8 Sep 2026 06:44:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 700386B0092; Tue,  8 Sep 2026 06:42:05 -0400 (EDT)
+	id DBAAD6B00A0; Tue,  8 Sep 2026 06:44:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A3F46B009F; Tue,  8 Sep 2026 06:42:05 -0400 (EDT)
+	id C5C7D6B00A1; Tue,  8 Sep 2026 06:44:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DD8C6B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:42:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B321C1604AB
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:42:04 +0000 (UTC)
-X-FDA: 85190254968.28.FCFCBB8
+	by kanga.kvack.org (Postfix) with ESMTP id 9FECC6B009F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:44:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E34C1604AB
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:44:01 +0000 (UTC)
+X-FDA: 85190259882.17.B04BCF6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E9D8D1A0003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:42:02 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ts+2oT9g;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6972D180002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:43:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DhO0ZheH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788864123;
+	s=arc-20220608; t=1788864239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXqs15IsRXVps+8wsgrFLas5JJDnQxYsS/CgwzQnLIQ=;
-	b=AKVDLIy2yjpHhMlD19CgG63qHGEAnC9H78UBt5pz/LfWwIKCfw1YqZXzPFqz1qDI0j1OOK
-	cYcljnrRpBttBjOuS3UgVkerWqm4f/ILQfdNNQhPWqSHZGIdAXZ2Rq2Yv0k3VgtMQnCiKC
-	TQEinS6LbyQs9Dx+j6EWOwOK1x50MYU=
+	bh=g0B7wENEpxIvccDLJRxXqbL7rcutNHrgtgVnGBh9mik=;
+	b=PclF6at/7ONRh9afLnH5do3DXXt9Ct81gyDQl61XDGFBuN5GGrP0MT8I0RKfsNAP/QcWIM
+	7WNqq1lijPeFwwe5ZXzFMGPQ5+SjVvvAOJpMgIKc+jiDMAwt+B0L1kM5g0O7z5p6LR/hgv
+	egVd/JfdRcFs1oouhAsuF508nnKyBV4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ts+2oT9g;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DhO0ZheH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788864123;
-	b=RCFvphkIXIWPHLcKoFocM92M/ZS5JlmJEXTX53/jsPer5/jILS97VfLpJwL4Mdpen09qha
-	n+6CpmbV90ttOAfoKixME5iNASm6ouYDqms58m0jvTmRAbcId4PWWtLpyjaVn3l3TWk8qi
-	IPWYwfIt6zthp1pkMe3X/1OuQr3/fVM=
+	t=1788864239;
+	b=sthEL6dQPPAp218GjiNSa8gwtYbh5AWWmUcIwm3F1pY1SsXXpxUyNXn9uy5RlqV39uSrOQ
+	9cBBQuyKIqULfVUSl64YewZf0WfGh8mlF7M/akzaOS/kqHIpg/PMXOq7RQ9y7EXlBAptpS
+	MtKuISzeeQbWkez7W62uAUiMkarfluE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 24EF6432A7;
-	Tue,  8 Sep 2026 10:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217E41F00A3D;
-	Tue,  8 Sep 2026 10:41:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9999243CDA;
+	Tue,  8 Sep 2026 10:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0541F00A3A;
+	Tue,  8 Sep 2026 10:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788864122;
-	bh=AXqs15IsRXVps+8wsgrFLas5JJDnQxYsS/CgwzQnLIQ=;
+	s=k20260515; t=1788864238;
+	bh=g0B7wENEpxIvccDLJRxXqbL7rcutNHrgtgVnGBh9mik=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ts+2oT9g4dJ8E/yRTT4+ymW5CL2YgT30NOeH0+37YvojcObvX/+LwiXW6viFmv/li
-	 Kn/t6Lg4LFnq79JAr859FgsU7XvspRgAlKzQDkHtua6XY3i7HrqNpsuI6yUjozNycM
-	 JcyhwJZEj+qrzDkXpIzT9fXTaxcF7dV3EaR4PkuYHujkwfqFjLqoMiGIDMqZrCvGzq
-	 ezFSUXNF8AWUnyxoSHcP9zcnY8PW8YHaGuA812enyhr5Vh47ituyy+VP+uj/6KSU9x
-	 yQhY1Zlg5QuRgwIkMWdo590auZy/dtyijHs98kn/Dz9CNQ1YSj3uTLFHhqSjmusAlX
-	 KK7OnJtFUhmnQ==
-Message-ID: <2b0f5877-e71a-4824-adeb-5af2dd8b0269@kernel.org>
-Date: Tue, 8 Sep 2026 12:41:48 +0200
+	b=DhO0ZheHjan/SRSeXGixJyH8oo7EQVl6pY1Zvv4NBjV9MXFi9nEUNerTWTxa+yxJx
+	 Y4lnjFH5Fpq3IUKpFiGfk/gJbwVliEKYOeZJlHUAIVWB+21HjpkjfnVo2pHxsrizmA
+	 GX3qsGLRJoBYKPW4jm6zwExJv4tGStgBPZDANikXVzQKjkWI0wIsOS8xxI7u5LWqTy
+	 0gW44Qn3nnZtcXnaN46nGvLm2vb+/13Qz5A17VSWKOST/LVFHHGReP2rNwzkuW29VA
+	 a1ejYyd7L2hZCGokATZ5s91l4kw7X8hftF/eG8AcQ4i3fuzKLQWwjJo+ms7DzH/6Fs
+	 MNOxy84IcmpNQ==
+Message-ID: <c2237474-ed50-42ef-bcec-90fb705e1fe9@kernel.org>
+Date: Tue, 8 Sep 2026 12:43:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] mm/vmalloc: make set_area_direct_map HUGE_VMAP
- friendly
+Subject: Re: [PATCH v3 6/6] Revert "arch: introduce
+ set_direct_map_valid_noflush()"
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
@@ -95,7 +95,7 @@ Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
  loongarch@lists.linux.dev
 References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-4-949b64a9f755@kernel.org>
+ <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-4-949b64a9f755@kernel.org>
+In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E9D8D1A0003
-X-Stat-Signature: etdjybgqaysdnhykimsyz9g58kwosfbh
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788864122-263805
-X-HE-Meta: U2FsdGVkX1/Kwk3KJefwk2Lo2nEbrL4+BtQck0bKUdih8umKpBtaFDeOT7AVO3pIHIkGQc70Dn/9/jl3z0ztaTNeWuV4Z2yxIEtDuJf8K936QPr+nwI2MtDIgaNT9XZk2B8+UY1q+9yascNmt+NCMYhUDGexa2bnFSuCLSSEOMnhRGqjNprI3SS4GC3marCOvWuPyDLu2SJM7dgaAFn2k76Axm6jeZVM6zAKttke69bRcsPh72Z2KmJfB/zKR1SIqkDmyxcUD+EEP71pEYObhAxJ3vpQ9iK9BJvhhaVizzfNFQS9trZAo1aVb89SVGtgs2Y6mzFIHXrKbXRl8gO5H56c8xOeGKdoQx8vggDiNQFUzdhiQ6vEIyRTvGR+mlyGCcVpgUznP1ZMWrH+ZNBhNrz3m5VxK9n+zm0H+8pWpxuWsniG7bQP+va/u/OzhGfusDEU7k2i9rQjhCXYPsa4HwISEptlFVWzc9wGg6IRdkOUJTOAJfNQ21ux3otVl0/NgWIM0Pqi5DVVITWyFEFJeuBXxsayk5BBmf9+k0AaGbkvpSwmdYp9newJeGWpDajsl10nkTxvOpb8nSQoOefsh59P8p0d4sMLWB84Y1MWCORgEUnUTI9BpwQx9x50XENzcOrhLKqHxQXpUyRC1AdlfwdF9cWWZasxN0eBLyTMQlZnT9d3+aPfQ9+dyGSbJDLnKzFCJvZSPG3mH9GQTF1q4oUxm2lwUjM+MwT2fIm7W/jD26qVlmepBb8zgrH8AOIeV4QTVaY67xu1kVSS4UyQeN7OfN5jZt7cHBI+FSJuyf+4v2mws1T2EexFQZc7tOyuK6mcLQNUWtUyjVZmW9jm0EtfPGYbSfq3TFddTFy1SIiwLxVoFS+C2sJxF8PyJadkIgpCQ1Y5jC3qh4Z3gB88hCRCJYQfhR7tWpXvgu/njoXDqi0Dp5Yl14ipPYWUO+9ppdJAyBTVwLD8uxlAAqR
- dNXixJfv
- 0/hTtGQfcBGY1baU1MYYmHmVrwGjHtX0c6Gj9FhlhiX+vn0dIHa/zc2n6+XARsfz3PPj8Ilhlt2exSAoszgOLHtHX+QKyl/BEGgNfNtDUgkESq2zQ+Lww3urX5/oM4CVgQwuYpYYOpYcguCrVDhuyaB8iYxlruNKWnFIfKZd/tW+3oUy7n7x3jZ5u17JvBrtxaBoBtq5zTVt1cfX173KDWb7b4xPNCzJIzpplyWN1Spr+qZiOJiG34tjQUig1NBJTMIUP3OlnAqhJf8E8BAzW+oKtN7+32xszTB4JMLymwJ6N0VSaI9Pp9FaUGZafDzBCT6vCuJ1xETXrbLo=
+X-Stat-Signature: xzg8eyyh66j7a5mwn4psymwi4dgxeoa1
+X-Rspamd-Queue-Id: 6972D180002
+X-HE-Tag: 1788864239-18811
+X-HE-Meta: U2FsdGVkX1+JiGvlH6IhGC4PlhZdWb63YNFbXZKQobWQz9deNxZB3lWss/SZR/RTBh/fj3DIGb3OT0q1P9J4XfQShbpi+KvoHXAzI4rOcZmKUytGBmtv6EQH8Ba5wSKhbMf1F6wrYSzDYuP74RjbRrIfuVEqCa3XBwT8cK9U5AQhHY0suW0oaiWeAWYRoPjn2tvNA5JDldmqxEaI5dElA8ke2P+3aMhq7+ioJOVAjo2FlkG3hOk8VZgreAE6iJPPXBmjLgCnlVKaj1C357Bm8i9irUneAZCv2wgQgD9YXlznr5qVVVRK6xDATCA12sGe9Sls6ip07KD8nsGzGNcX07xMUdFAz2r+cKSO63VQIISY/gInuc2z0Uzb2FyD9qM4F2Nv3yLp9sbRH2imUjkB90bdqzOl7wtFhTnHWOJIvHd0n1p7Fb9rtP2cfREhUwWnUAcC6YMRfss8l2Mrjfsh4m/zH5D9DA6RXk0AENn3NEhrBitgDZJmIN8Lf2lFvs26AtxG/f0N+BErAX7aytPG1IPlIW7Z5+2xQmge1HxnydyohT+hiAbdXfVRlL40kHgTD8SIdOcavnPtrNEVzQnhDt7t0Qxoy8HiTXwpECjKBsqNGQ9VMBDRg6xMGNqKoTgvvuxPtUgFxQbfayTrdth+VcJc9PczlP6zQhkG95AixKIncgKg+wQzlfwJDsFBQ1156yUqG5ev0Vp6QBYceKnQWPW1P39sjbqriHLK9sOj4cCKjiGm/64R+4V539Dw4eMehUe84/rsXHc8ckFs8e32YAaDLgmbqWoBSf38xGD3AD1581wLa4YiHRNvUXbzinv9NbYCBcf/eHerOmZB4xRrwSadxEkV9qQKQhP3KTM+z2EmCuKeuka0g1pr1wrCw3AolR1XIO9U8H5/7dsZNDiGHz1J3iyy/x10uv7AAhPw0JhxAAmH1kfBBal60qI6bo3v3Nc393vt5QRu61UWU00
+ zD3MSJXv
+ B89ce4KovRT8OFzkJq0eZwnS08zNX9H0BJ9n/rZ8vPVvAGE3ziq8v8Fcosr3p3twtql9aKntEe5DMm3a1G8bK6U02QVDgKU6sWoWZ8t1MTkQRX0z6nidEAzjFnMORwBN9bkzlJLwjxBEbE+C84DmTg2pQjKLLXcYZ1qMQ8UgRGdYWrM7eMpmPO1EWNuBM01vDKtGx38Z5tcYm8TXoQE+5QgM6DyWHwGnTMHagMEI4Ok13eLfLGRFYT2+olEfcY1JWBeiDv6Umm9V3Ksu1BTjFUQUcgat0596yJFlhvmlexvaaNamNgm4PUFmtyfSj7Jtmyb7M/xO3aZOfQvc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,44 +161,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/3/26 11:28, Mike Rapoport (Microsoft) wrote:
-> set_area_direct_map() always updates direct map alias permissions in
-> single page increments.
+> Commit 0c6378a71574 ("arch: introduce set_direct_map_valid_noflush()")
+> added set_direct_map_valid_noflush() to allow updating the direct map
+> for a physically contiguous range in execmem.
 > 
-> For HUGE_VMAP areas it's suboptimal. Not only the loop in
-> set_area_direct_map() needlessly has more iterations (e.g times 512 on
-> x86), but it also causes fragmentation of the direct map that could be
-> avoided for the HUGE_VMAP areas populated with large pages.
+> As Brendan recently pointed out [1], this API is confusing because on
+> arm64 it means that is sets VALID bit in ptes, while on other
+> architectures it is an analog of set_direct_map_default_noflush().
 > 
-> All pages in an area are always of the same order: either same-order
-> large pages when VM_ALLOW_HUGE_VMAP is set and all huge pages were
-> successfully allocated, or order-0 page when VM_ALLOW_HUGE_VMAP is
-> cleared or when huge pages allocation fails and fallback path is taken.
+> The only user of set_direct_map_valid_noflush() was execmem's ROX cache
+> freeing path and it was switched to utilize VM_FLUSH_RESET_PERMS for
+> resetting permissions of the direct map alias.
 > 
-> Instead of updating the direct map permissions for every order-0 page in
-> an area, use the area's page_order as the loop increment and update the
-> large pages in one call to set_direct_map_{invalid,default}_noflush().
+> With the last user gone and with set_direct_map_{invalid,default}_noflush()
+> accepting number of pages as a parameter, set_direct_map_valid_noflush()
+> become a copy of set_memory_valid() on arm64 and a duplicate of
+> set_direct_map_{invalid,default}_noflush() on other architecture, it is
+> safe to remove set_direct_map_valid_noflush().
 > 
+> Also drop a stale comment in arm64::__kernel_map_pages() that Linus
+> bothered to add when merging changes containing set_direct_map_valid_noflush()
+> to his tree.
+> 
+> This reverts commit 0c6378a71574daa6cd1534ad42a956e3262756c7.
+> 
+> [1] https://lore.kernel.org/all/DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev
+> 
+> Reviewed-by: Brendan Jackman <brendan.jackman@linux.dev>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  mm/vmalloc.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 5506b180f5c27..6ed6c160abed7 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3367,12 +3367,15 @@ static inline void set_area_direct_map(const struct vm_struct *area,
->  				       int (*set_direct_map)(struct page *page,
->  							     unsigned int nr))
->  {
-> -	unsigned long i;
-> +	unsigned int nr = (1U << vm_area_page_order(area));
-> +
-> +	for (unsigned long i = 0; i < area->nr_pages; i += nr) {
-> +		if (page_address(area->pages[i])) {
-> +			int err = set_direct_map(area->pages[i], nr);
 
-Do we really expect some pages to have a directmap and others not?
+Thanks!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
