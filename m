@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51811C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:50:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58370C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7452C6B008A; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
+	id 3C42E6B0092; Tue,  8 Sep 2026 10:51:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5076B008C; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
+	id 34E136B0093; Tue,  8 Sep 2026 10:51:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E3C46B0098; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
+	id 2652A6B0098; Tue,  8 Sep 2026 10:51:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C5446B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEF2E1A064B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:50:45 +0000 (UTC)
-X-FDA: 85190881650.06.052D20E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 30E531C0004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:50:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aRMevG6J;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F35C76B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:51:42 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 67CF91206EB
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:51:42 +0000 (UTC)
+X-FDA: 85190884044.22.2B19DB5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CCF63A000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:51:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbHDg+F7;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788879100;
+	b=ypzkcAFiWKGWi+S/sxoGfjdy0QNbPVs39fQf7WvYpjEAN8pfNM9K48Bgunnrtn1z1D0PvM
+	orVmos54+fxUiB4Iqj6QlmxSrpzcyafoLYnJic/rDMK7x71PhmTe4FPF4ujDahHasaRGiG
+	usCR8tZdvmEmDDR57BUrJLTUhb2DLo8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbHDg+F7;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788879044;
+	s=arc-20220608; t=1788879100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pQNrk3rJgyZaUFqdcMUHuETyCztvxyMaMetlGBU29w=;
-	b=mnvO2dJrTQcIfu2EitBqf9bGDbVZ/oKyHOF2LgrU3+6WX26eomC6Dgu+ElGyCvfPn1H/V/
-	AGZk1QcALaQntwyQf/9gtxUOrHK7x8sbDI/62N9nQMxqIkbROPb1sJg3xKdNvOUDeNxgRJ
-	1Efp4k0frP8D7fpvzAS9tu9K+y0Y2ZI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788879044;
-	b=8al++NCoYD02lHImYT6exwVj2QsyurhZ6xHahNI7fuA2bW1vBAMPEeZAExbnFOE7Ro8RgQ
-	nKtmdrjmtaoiz6tHx61ZaXcC7Y5GJ5Vtrj9kpZJXWw+DiY+qei3k/DhVfmXojfTq4lWUp7
-	48T6Icx8bcYhAAlH5Q2oWyy+O2dcN7c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aRMevG6J;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=5HhwnTeHEt+NjdQZ0IEPNu7Xi23jc3U/hYhWJffOVLY=;
+	b=X3OiM31ZSKZb5v6f5G8syUgI6vfs3RhIdrZy8MC7UEs8WkCg4R8xWDKDapYz6ShJftT/2l
+	VDCkoHy/FXogVhcs5nvRNwIX5TKMZmO/f3PO3VMzi8a6+zSZVUWttcOrJGv2nw/OLWTVrl
+	98MtdKexmbOnV/SLaMlT6FaCHnsTtqM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B9D741427;
-	Tue,  8 Sep 2026 14:50:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B191F00A3A;
-	Tue,  8 Sep 2026 14:50:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66EA4601F9;
+	Tue,  8 Sep 2026 14:51:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2E61F00A3A;
+	Tue,  8 Sep 2026 14:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788879043;
-	bh=1pQNrk3rJgyZaUFqdcMUHuETyCztvxyMaMetlGBU29w=;
+	s=k20260515; t=1788879100;
+	bh=5HhwnTeHEt+NjdQZ0IEPNu7Xi23jc3U/hYhWJffOVLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aRMevG6JLVYkL0wBFdrn6ynusrO/tCacdQm5POZg/Xma+pc21b9eOr63hXqZVDX9f
-	 9nT477K6WHXvIvUqT6uVuj1B7p3WRGKeVzdI6hs+E0l6jIIrkMF9jHQR070UTCAahJ
-	 wZLx0jeH6LJZCeFZUcmwL0l7bnLW53+qLeHyhAUtk8AKUc7c+f9ZzWRSbpWD1g8+Qr
-	 YV790KYMzuV2tfcxOxFhTO8ZTE0z+WDRbsvhBlSxJ9exPaUwCLteDLpNsZX2a6J7sN
-	 xPU8xSOrnuQ0nySeg5/4X73+ayIqQxsMkHW42K+HrQ/syfaKwYG5fGZ0qKHfcdOlPI
-	 PfGAbb4pZTkXQ==
+	b=gbHDg+F7o02qr1+zS/Ce/1wGsbRYhWnb9S5/cNXzn6LUnGYfnuDTth5KZAYMF/ONO
+	 /6yxAPiuddWLk5FN7T5fQ+Xh9NKmAXDohX/0mdnjjhOF5uzETeXg1dH0MjBJNpsQ7N
+	 R1s2H+Uv0se7TarcsK+bV0ylmU54WH/OfiSZt3voHpMXzSkfs3hDJRXiaoMvTF2I20
+	 BstKpmA9bcchQ7JWreVjAd2MO7F8jZPaB6zeBd75Y/iWJ48w6rRepNd3ErNiDmkn+Y
+	 WuMn39iuoHUKlE3ExBcS68b416nm8s7bRMOcqDTrIImqBimpvzrpqLEIhqcWOXeKVJ
+	 lt1JsJdC7NwoQ==
 From: SJ Park <sj@kernel.org>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -71,22 +71,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v4] mm/damon/core: allow esz to be set to zero
-Date: Tue,  8 Sep 2026 07:50:35 -0700
-Message-ID: <20260908145036.104970-1-sj@kernel.org>
+Subject: Re: [PATCH v3] mm/damon/core: fix unconditionally skip last region
+Date: Tue,  8 Sep 2026 07:51:32 -0700
+Message-ID: <20260908145133.105111-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260908135413.97570-1-sj@kernel.org>
+In-Reply-To: <20260908134739.96919-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CCF63A000D
+X-Stat-Signature: x41xq3iiaoa9f6nd67qdfatxka3dba63
 X-Rspam-User: 
-X-Stat-Signature: jrgd38aa9zzgdm6r9z65gjjjg3aojf1b
-X-Rspamd-Queue-Id: 30E531C0004
-X-HE-Tag: 1788879044-226445
-X-HE-Meta: U2FsdGVkX1/S4l7V4ntGySWKQ3v/FUSRsM2sYftymH/5m4HuKJ/O8mEC8/TvpDRlpchOIKARZD9kI0iKq/nQfvQZEdxx7cH/f9I3sYzvmEiXewHljQDW/IDaTArgzo2KQ6raD9fUy5090JXSKAYuIYjE6ymV3abjvot+gJG2WFJ9jEw9NOiaEyicpi1/kbbD8G4WxdIoYWb2OSfK0/KydXpKddCVkWC/pDGnwDz5CFWBfIhticY7jd+dxFMoZFWzP5VtCEhNxNLyzEqJ8LcIXX9Las2f3aN1hKIW/kPhE1mgNmRIfmj46j0tZUzcjHfIBGZsJQlrHbsgyf1NULbsBmxxeLA+ob5b2U0FA8eiC2a2sLmkOnUZoRCYmZBdNCe5fA2rHBu8xoV+8wasb5S07WGahgGnaDvBzxSPVXgnp40v905O+FH7D8TC7x4bwm5MPv40RTw1R8jjYnZEOzgc3fDgIMZ4zEYNiqnaPobKf8C4AxyL5/dt3bs/Yw1kSJ1sfJpIv7C5xtJwCPMHcACdv+yByNBP/Z+BDVXGmc5EjnF28ux75XL99nwhlsT2Dlz5UbbLO2Yt6tUV42YY0yQrBIbN+ZvUW+bsFgxhwuTEHu5JqmuqKgjINHSdJ4EEm7tI78Cz+pnY+gOwlLnGvbMpOryn1Cxbi1iBKn1T2gw4c4nX19uVmxUkGHtkEiDEnZF1x33Z3LLnNKX5nIjwDYZfFL+yFNAfknLDayHgabOl5a2M42WyzYeWlmKajK7ZM1ol7dl0zH4VGB7xby/OpGxKq6ZpoumLmrV5QyMYitoiR5SDfGtCqrc16qkFeXI+4bTRDRD3mX3ftt0Z+POcg3M/9HzyEb83itoT9cZEaULrBvK/xMw4xl6q6CdCYYx8QLVlsg+SH2PAiR638G3w1XKX0zOcOWZB7oXfz7nWR1WS8bJHIGpICuZ4L8KaqbI5SEN6F9cU7GbUK1yIH3c3U1k
- SpL+p9zc
- eXUcefm9ySPp4GpmoXdNMTxeLmF1zZGkRnOq9SsfyYGWZ+la9/OHZlNDd8J2sHUgTKamygKvgKQDO2p/Z8AWaGObfbU1oR4bXLDOLSEbUZbln7R1j8iN/rbA3swnJoCt06lNnAzZOaPQrFzjsbKQgsm/mKFOc8LLJRKK6Hd9eOpx9L5glvYehpH69zB4DEw6mjHbgGOaRkl2dyz5r8ZBLW2HN1t1FI6P7krf9/B10Pk24gp9+BiRxEbthE2Jg+zS+Ya3u
+X-HE-Tag: 1788879100-259677
+X-HE-Meta: U2FsdGVkX19A3RlMYMXs5tMjvyoYVNS6nFOyr6pqEUM+7XOysbo1z1/uO+iwZacX0szHrMHZ+HKiD5r7k5n6D5lhHXEAjAlKykB4/uAETQQ15KUE7AaXl9WjTysAQsnCAyOOmBrj3ipEKyzLwTSsoq+MDqcwgV4jYR1CpLgvrMJRRVEr/h3i4xErq2UjhOgfDTtgZcVjRKT7VJK4rEpIr/w60sItTx4H91/VpRYR41zGqTrDTZHorrjeijjDmxSqok5Aa7xKD04J4XPdyL3KnGILAIdygEiMQEwVR48au5KsgxPyAdwpaJQro8BYGBXqjMhRIrTp8IYeSvvuq8BLZCLQZ+7t2Deu/bGnKvDVQDX7sxmbLtvF0KodU8QjWxEAETyBl4cyBA9FITDFRfJwoBBO49cy5VcP8Bf4+YIDMp+LaO5OJb6C92ZQV+kgOtRgc+1P1e9RE2MLf9AJCFosWNdvJ3x5AeO6MvCuwdFzJf6CY66L3AUBp4yaW+kqM8Kx3TqUZdUck966HyHlSLwjk5ScD/zL+IUm2fke4pA6To8Xsbpyb2i70NNgtZmCEQkhXaISJivRUDQvmtHXc28IieFYntmRvMnW7VjCxn45dBuA5trGe3tS4ef3acGb2U2kDn+bg+xghBepDH2RKuIh7zt8Td2bUeQiBATBzW2e/YS2c1HXgj6SE1Yaq/NxST4YXkQmU0GtSwPe2mnB3XtfAH15rWnuBCvMrpuk+NW9chEvxwl5vg4sHvi1brqQ1vyEBVwAZh3JM18B4QGOUwxV/mNlCw0roBzyAnJb0KMFaqxMRBMdprYA0Rd166gbpgxjVLHfXPL39K+cFUm0l96fxj4JXWFU/3lgw1IBHY7qj+UkK0yIAWbLicaU6yUzks7cFZ3n/TucDMeQpNVDt8E0thSMEhjSpD9M/LE0QkTbn7kY8u8F9bALMJYt8+y5oYlefm37WWLXLQt2VmhN6jE
+ bQ2uJ7CL
+ YwyuGz3QOTzzoZjG35WwxyxtUdj87L0aQAFt2WmqEIJc0mVyh0wT4GYyqOCg3rY4pv4/vnqTFt6TPymXxuRy9GTujPCNqRF44OOrr6EbCkVON0g9lBB99T4EeamRdqnP3k/VhAtQGBXsDyclYBytR6V3GrNVn+P1wzmewZajPFet3DbGFuKJF/0OJoYDPP2n+PMg6/NDZWo+k5M5LOHVqrEX9Euss1Ti3ZrnDROcGRY532Bp3Rk2NXAqUvO5+o2K2LB6g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,22 +94,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  8 Sep 2026 06:54:11 -0700 SJ Park <sj@kernel.org> wrote:
+On Tue,  8 Sep 2026 06:47:38 -0700 SJ Park <sj@kernel.org> wrote:
 
 > From: Liew Rui Yan <aethernet65535@gmail.com>
 > 
-> When the temporal quota goal tuner determines that the goal has been
-> achieved (score >= 10000), it sets esz_bp to zero so that the esz
-> becomes zero.  However, damos_set_effective_quota() clamps the esz to
-> min_region_sz when quota->ms is set.
+> Once quota set, the charge_{target,addr}_from unconditionally skips and
+> resets at the last region of the tracked target, so the last region can
+> be skipped even when it has not been processed.
 > 
-> This is a minor issue, the main problem is that it doesn't match the
-> description in the documentation, which state that if the goal has
-> already been [over-]achieved, the quota will be set to zero.
+> Example:
 > 
-> Fix this by set quota (esz) as minimum as possible.
+>     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+>     2. Quota is configured to process only 100 bytes per window.
+>     3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+>        addr}_from is saved at (Target, 100).
+>     4. Window 2: The loop reaches R2.  Because R2 is
+>        damon_last_region(t), the old code unconditionally returns true,
+>        skipping R2 entirely and resetting the charge_{target,addr}_from.
+> 
+>     Result: R2 is permanently skipped even though it has never been
+>     processed.
+> 
+> However, it is important to note that this is a very minor issue.  This
+> is because it is triggered only when the previous window saved/kept
+> charge_{target,addr}_from, and in the next window, all regions except
+> the last region were skipped by damos_skip_charged_region().
+> 
+> Fix this by only resets the charge_{target,addr}_from when last region
+> is reached, only skips when it applied or cannot split.
 
-Sashiko found a few pre-existing issues but no blocker for this patch.
+Sashiko found a pre-existing issue that I'm separately working on.  It is no
+blocker for this patch.
 
 
 Thanks,
