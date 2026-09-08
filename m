@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C408C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 05:38:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C571C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 05:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F213B6B008A; Tue,  8 Sep 2026 01:38:24 -0400 (EDT)
+	id 642456B008A; Tue,  8 Sep 2026 01:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED1E16B008C; Tue,  8 Sep 2026 01:38:24 -0400 (EDT)
+	id 5F2986B008C; Tue,  8 Sep 2026 01:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE8176B0092; Tue,  8 Sep 2026 01:38:24 -0400 (EDT)
+	id 508D66B0092; Tue,  8 Sep 2026 01:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B12676B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:38:24 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4400E140379
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:38:24 +0000 (UTC)
-X-FDA: 85189489728.03.777BDF6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 225876B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:56:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7B1CC03AC
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:32 +0000 (UTC)
+X-FDA: 85189535424.23.19F0E70
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 205BE100002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:38:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ui0+1jMz;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id C517E1C0002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LQfxyU3G;
+	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788845902;
+	s=arc-20220608; t=1788846991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bKAqucLIpiaQiGlBcG5qw8Y0T29OPfyQkqx31sWDnYM=;
-	b=TOCh2qBb+cPM123hnpH1Zt+ncveI6Iqc2kilFTSDEEY24uBoc/Erpjc3aVqE3vNADTPd/6
-	XF7WrTuj7bFrRQYaD7kr2JBfLEqP6Kjnr09m64r6sNDn2RbjrONOIoC90kjy4RyW3QO275
-	GjtbY8knyYlqfwHWRoG7R+j20XtEZC4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ui0+1jMz;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=ArlPOUciAu0NaRxeTiL/N1bM2SL1B47wDPGIMJE/C6E=;
+	b=MA5pt9MxCIizJ9DASdv3BEoFcUOhXfs+j6okRSW1s3DMBM9Nnyph4KhBWW8bgBIraXkQP3
+	sNpVUf8DIguyriyPqYQSJpvFXpIIux9EP00N1m1ARaHXXqIfqiLNP3OhNcVGOc8w0JN952
+	cICeH29zJYtJu2nLs88ViqObIr5V6HM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788845902;
-	b=IfB+Eq/25CgZcx1mh95h0aI190MxmpW/YG9UExGh05LY1Iagq4WHUOyNd+SHt0QPpUckix
-	ezSh+PBbTMTyEAUrbIiI1N1hIVF1h3Lu7MIxpXxZuQJUPt3UuMU6+7F7HW9T2Py1AkiMoZ
-	xt6YOS3rn88nr8pUxzZ5XqNmE79cG/4=
+	t=1788846991;
+	b=u4ggyVx5ObgQL8jkslUgKd9JPlzp+hvjf8pMJ10QQg6XfMu916nwI66gMOSVLnOCqtevCR
+	wEpSHA0n3B8OrrL9ewe4iAeo5jRdSVq9S5c3ivKAtf6diuMVDc9y95qoQO2TH+fP5WM0ny
+	ddUDszWqzcY2H9bMtJR4zcLffQsL1dg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LQfxyU3G;
+	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F1481476;
-	Mon,  7 Sep 2026 22:38:17 -0700 (PDT)
-Received: from [10.164.19.55] (unknown [10.164.19.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49A183F86C;
-	Mon,  7 Sep 2026 22:38:14 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3797C1476;
+	Mon,  7 Sep 2026 22:56:26 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A5CA43F86C;
+	Mon,  7 Sep 2026 22:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788845900; bh=9xo2d/f1FvcfQH5bT3nqJ1JKECxz53ZfQJY8y160y1k=;
+	t=1788846989; bh=sOMZfPSSdTLgfz3hBoUNe6ytFxzY7bCG8cECAo6gYNw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ui0+1jMzj/HFyPwLgMd+uu8A17z2Fo19bUnzQ5WOHpHIC0Jrw9bc5Tc/l2+1wFYSM
-	 NyY8mzr1NED4iwaPd1f2p1sF/Y9r+rk9+M3NOG6S23iLNBA2sL7TdnAtF4wS4uLCV2
-	 ydynjooP7qcvFNkL+EivMXciyB0dfeGzBeCgkWzA=
-Message-ID: <8cc0b340-9526-47ac-abd4-3f5724963409@arm.com>
-Date: Tue, 8 Sep 2026 11:08:13 +0530
+	b=LQfxyU3GO+oro+24KrwqJMvyeWaO8TlfaE7lFJ2A4gY5+v1rxELR+J40yu2uH8l9o
+	 /0Zco3/HVf9IsN0KEncrt8Zd8afwYgrX/5YPDmALdrC8oKYnPczHvzVlC1Y73PNHHe
+	 pr7B26aAMm/GeInAJJemqJ96LuoWLYgHy7cBfX0c=
+Message-ID: <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
+Date: Tue, 8 Sep 2026 11:26:19 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/8] mm/internal: rename swap offset helpers to
- softleaf offset
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260901054358.4049095-1-dev.jain@arm.com>
- <20260901054358.4049095-6-dev.jain@arm.com>
- <CAGsJ_4yigbhqkrnufJKC2+rW7StraQvD0gr=4HQkTjKGQ9siGQ@mail.gmail.com>
- <12efdc7f-ff82-412b-b79d-bff211d34218@arm.com>
- <CAGsJ_4y7V40CnTTh=84=Ek6T3tPTyLXsUtgO81O1zyZpmQcbug@mail.gmail.com>
+Subject: Re: [PATCH v9 6/6] selftests/mm: add a GUP selftest
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260904123631.198697-1-sarthak.sharma@arm.com>
+ <20260904123631.198697-7-sarthak.sharma@arm.com>
+ <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAGsJ_4y7V40CnTTh=84=Ek6T3tPTyLXsUtgO81O1zyZpmQcbug@mail.gmail.com>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jskw5a4pf83ujxkkaeisq8qs9nqua8rf
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 205BE100002
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uxjar9x6wzkj9cskdiddat1h1qa34tb6
+X-Rspamd-Queue-Id: C517E1C0002
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788845901-689065
-X-HE-Meta: U2FsdGVkX19GY2HsYs5wurCTOHPjlKQBb9w6QIqZaM6p5aIyFJxf9w5qB/jfhwjri7XZWs+8Sqscjuu2ps05UFrNWTbkm0rZ/hkNtUG0pXTqGzUdyKH5SfBBoGaijSCiS5RmcLpV3B524+Ql3VlH4OHRT1E1PECheP8/XJoq/X0HLrn0DS8mlWD+4fx/mok+O/XdTuo1bwCVlDZRNjkR0CdTsMtZvA5J5tY3/do0th7vKUEHGK2fej1gn7ZQVH+erm0klTDrZyO1Hjeq+5vC6C8TXVr+f7F+cYx87cLV/6JyhkE+NviSWH5cm7+CW5owqQ7LwhlMv18u6yrVUZJKPt378HFHOUwOaG3VhMyC8DvaLTDuHZPNMImXLojLXIuL8zsNcXDUbQBfS3777oLVCjBcqah92BrRMhZ9/31XPfJ/o4Sc8m5TDwJ7k1VicND5qeBkLHtxxkOSQ8woGvSGdx/Pth4t1LK0dflG+Dq7C8xoCicokpgHRYVCsrpsMGZJbacLeJHnfbRHtvpMBEJU2wPpT/P46DcpQ5Dg5CAa1BD96Uc6ZEKMCmpwVSYyLJtYE3S34AZevUudrXmTdMKZSLs1Cp35/o9qfQsjUMo40ezWufjzoQegAn2Eg0F3zVn2n6x3L0I1mut+AlColFS9xxcOe2SUe6cl7FpYa5lMivwOBeF0VrZ2e6iIqXzE1E6hjFDOVDZ+1zSnIyOhbYsSOLw65r1feaew19073MTCNdrAt6YUnENSXYYPoJ7nb8tvkp38ILiqGahSZm5d2vmghfaOGq4aIBWN/qhLVS24gW9cc0t7p2GUN7pafoNrdxfNn+bwk5x5wbd7+LuQ2z5UAM8Tuj5Rla/Buhoz839CidKlwWUdD6pfhwB2cS+FY1VbDUs77+O4Qdb7mI+GoUNaDVravL6f8r8NB4MoNBKPpQcnhB2FPZpx+m2S4w05VneDNQnrG9FogZ8Ihbmaeij
- gL/pSWI8
- ALm1gn2Wa8NxFEPPXC4RHqf7BJN4paf3nJRCYQNrWuLlHR3KTYvXdvgyBS/Re/p9To1raoCGQ3fqjzlBCbhdCmwRjDkfLYCJGgd6V6M+1sRXW+XLIPaxIic3XiK9YX1+n51kEJVGF1mvKzpbIS06hkBIIBHiCXAlvmhvV3vGrJyRqyvcflNJCUGMsCy+Ms22petAOD5JUWqMbbPyxZ2Hw4lucxQF2Zku/2dQOGygS18xrFil0cqqgWHwpxL8xYT5XpexQvue2JATjzOXBRFvyBbXREXS70ogH/g1zY+FpI4AjNPbAHNuXo5WkrhE/Mh3vcaXz1XL5aZ9bKxtAQNyMTTszZPeul7ILD5Uhs1ZBuE+7nSQ=
+X-HE-Tag: 1788846990-262752
+X-HE-Meta: U2FsdGVkX18TaTbLEpFeD/V0XF5Oy0nCtbV1MrqPdky/lYRmoIwJImUnmaFXCwcR6KbTp1pHpsC2GOCSmxanYsyq7yW00/McL2dGzFL759GK+4FOxSasqCxlSSgTWW9b4RIz6FF16ICeIuXy7Tj+cd74h+tYxpWdKXEx/vbxZG2hOjXgdP47O66Qk6PO0yY8VxwYuY/K8mWWZNxmiMfr4kG0slSbuefMHO2tK8e5ozuA25Gj0O+R0ZiY+6S6KK9kGq5TjJGb1zlHOEl+6oXI4DZFg166DgdStS60el/+hX/1r/eBWoWi56VUmGbJScq4gR7SaSu9V80h1wjUeuHmUBXGvnziDYrdmkuTK5BIwRXgbS9pvMbKMqSP0OUYiCtKH2G5Ef4I8XG/Gp7lQs4s3k0lfPFzrhxQfgBiUmKKNRKdhMXM47+3mgcG/677WbzuI9ZPl1fqpPtW2yTTwxenQv6D3F11zwoGyC6nuhwuZl2l6nYfVSPFHsIWJ9y89gt8edDrrC0YHSSJArQI55pJeckrbMDmb7hs1Vod1LsJHSnTWuQfoCJzAG2y3OGTfGD7JlhouUQBxSxO/u+fcs9P/J9UXyw++GesFQUX8FIWrIGVaTGNYpwwEvLk0fjhmzGJRHJtHsM3TDuCK9WFK9s7Ybx/uREMISzE5ZlIqrFq7TpOSw0tAjVzcn5fu0GMov9Po37/TShO6yFcXWgf98r+RxbuRkwajD72Yw0t1KsEb+USz2zVtmvWJeh0Ynsdue2nbwj4EiVBo/NReJOBhJBea4C1n8JnQ3R+P5iGpKbzUPhjytOqQ9ukF7W/JzvoxaTnG8QZdhzaiJZ5S8p+Hsi3T2GPwrjhJHZByOrwqYd3xR8F3wQYKSyxBAWqAytdMqyI9iTHLMfyUVD8drcvsALALBegYhiUkT6twC6rxuJ3SkcjH1P6OFiX4BMg3FKvCICH92Aif8n/MSMSToEZwUk
+ 9X51rwL7
+ o1mdmVRwTXCnW8Bhj/VnZ1qr4R+eFCLUR8Cujx2kDdvNHhrDmGyUbrtJLApMx5Fx96skh/yzyE1vfMS+yBjOj1rW3mB5Iso0YiCEUPKk2UtjyA03x5vcPv690DRU7fs/Vef5q3GpLt1/qcQstznM/HQhlVm8lXfWUd2RLYymT6DjR9mHp3EQvi15FShWe4u8iAaOLB6jOcJ0oYZra0jGOV6M4BE7WbFvZpQ7Gk/XLuecJtpFInZJdgL0qbfuzJx/rlSA0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,141 +106,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi David!
 
-
-On 08/09/26 3:03 am, Barry Song wrote:
-> On Mon, Sep 7, 2026 at 1:38 PM Dev Jain <dev.jain@arm.com> wrote:
+On 9/7/26 8:45 PM, David Hildenbrand (Arm) wrote:
+> On 9/4/26 14:36, Sarthak Sharma wrote:
+>> Add a new GUP selftest which uses kselftest_harness.h. Cover
+>> 12 mapping configurations: THP enabled, THP disabled and
+>> HugeTLB, each across private/shared mappings and with/without
+>> FOLL_WRITE. Run 5 test cases for every variant: get_user_pages,
+>> get_user_pages_fast, pin_user_pages, pin_user_pages_fast and
+>> pin_user_pages_longterm.
 >>
+>> Choose the number of default hugeTLB pages using a 256 MiB target,
+>> with a minimum of 1 page and derive the mapping size from that
+>> number. This avoids reserving excess memory when the hugeTLB page
+>> size is too large and retains 128 pages for the most common case
+>> of 2MiB hugeTLB pages.
 >>
->>
->> On 05/09/26 4:12 pm, Barry Song wrote:
->>> On Tue, Sep 1, 2026 at 1:44 PM Dev Jain <dev.jain@arm.com> wrote:
->>>>
->>>> In preparation for adding a helper to set softleaf ptes in one go,
->>>> generalize the swap entry helpers shifting the swap offset by delta,
->>>> for softleaves.
->>>>
->>>> Note that the soft-dirty bit, exclusive bit and uffd bit preservation
->>>> will still work for non-swap softleaves, since a softleaf entry is
->>>> constructed out of a type and offset, and those bits are ahead of
->>>> the soft-dirty, exclusive and uffd bits.
->>>>
->>>> For example, for a migration entry, pte_swp_exclusive() will return
->>>> false, as the exclusivity is encoded in the type itself
->>>> (SOFTLEAF_MIGRATION_READ_EXCLUSIVE).
->>>
->>> I don't quite understand why you mention this. Is anyone calling
->>> `pte_swp_exclusive()` on a migration entry? Shouldn't it only be called
->>> when `softleaf_is_swap()` is true?
->>
->> You are right. I just wanted to emphasize the second paragraph - that the
->> pte_move_swp_offset will also work for softleaf entries. But I think
->> the third para confuses more, I'll drop it.
-> 
-> I would rather interpret this as meaning that
-> `pte_move_softleaf_offset` will also work for swap softleafs,
-> since `pte_move_softleaf_offset` will call some pure-swap
-> functions？
+>> Sweep four nr_pages_per_call values for each test: 1, 512, 123 and
+>> all pages. This preserves the coverage previously provided by
+>> run_gup_matrix(): 12 mapping combinations x 5 GUP/PUP operations x 4
+>> batch sizes. In total the selftest reports 60 TAP cases and issues
+>> 240 ioctls.
 
-Yes, so if you see remove_migration_pte, there pte_swp_uffd and
-pte_swp_soft_dirty are being used. Same with restore_exclusive_pte
-(for device-exclusive stuff).
-
-Which means that pte_swp_exclusive is the only one being used
-*only* for swap entries.
-
+[...]
 
 > 
-> Would it be possible to use `if (softleaf_is_swap())` for
-> these cases to make the intent clearer? or we can
-> keep both pte_move_softleaf_offset and pte_move_swap_offset?
+> 
+> BTW, I was wondering what it would take to:
+> 
+> 1) Turn mm/gup_test.o into an OOT module (would we need more EXPORT_SYMBOL_GPL?
+> EXPORT_SYMBOL_FOOR_MODULE ?)
+> 
+> 2) Move it to tools/mm/modules or sth like that.
+> 
+> 3) Build it with the selftests etc
+> 
+> 4) Remove GUP_TEST
+> 
+> 5) Try insmod'ing it from the tools+selftests that need it.
 
-So in my patch I can do
-
-if (softleaf_is_swap(entry) && pte_swp_exclusive(pte))
-
-That would make the intent clear.
-
+This is an interesting change. We can keep this open for discussion
+here. If required, I can work on this in the future.
 
 > 
-> As `pte_move_softleaf_offset()` is getting a bit weird now,
-> a generic softleaf function has a lot of swap-specific code in it:
+> [...]
 > 
-> static inline pte_t pte_move_softleaf_offset(pte_t pte, long delta)
-> {
->         const softleaf_t entry = softleaf_from_pte(pte);
->         pte_t new = __swp_entry_to_pte(__swp_entry(swp_type(entry),
->                                                    (swp_offset(entry)
-> + delta)));
+>> +int main(int argc, char **argv)
+>> +{
+>> +	char *file = "/dev/zero";
+>> +	int fd;
+>> +
+>> +	fd = open(file, O_RDWR);
+>> +	if (fd < 0) {
+>> +		ksft_print_header();
+>> +		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
+>> +	}
+>> +	close(fd);
 > 
->         if (pte_swp_soft_dirty(pte))
->                 new = pte_swp_mksoft_dirty(new);
->         if (pte_swp_exclusive(pte))
->                 new = pte_swp_mkexclusive(new);
->         if (pte_swp_uffd(pte))
->                 new = pte_swp_mkuffd(new);
 > 
->         return new;
-> }
-> 
-> Am I missing something here?
-> 
->>
->>>
->>>>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>
->>> Reviewed-by: Barry Song <baohua@kernel.org>
->>
->> Thanks.
->>
->>
->>>
->>>> ---
->>>>  mm/internal.h | 29 +++++++++++++++--------------
->>>>  mm/memory.c   |  4 ++--
->>>>  2 files changed, 17 insertions(+), 16 deletions(-)
->>>>
->>> [...]
->>>>
->>>>  /**
->>>> @@ -523,7 +524,7 @@ static inline pte_t pte_next_swp_offset(pte_t pte)
->>>>   */
->>>>  static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
->>>>  {
->>>
->>> We might find a user for this in the future, in which case we might
->>> want to rename `swap_pte_batch()` to `swap_softleaf_batch()`?
->>
->> That is what is being done here:
->> https://lore.kernel.org/all/20260813-migrate-rmap-batch-v2-1-3c5424c555c7@amd.com/
->>
->> I don't have a strong opinion, I can also generalize this right now.
-> 
-> I don't know how you and Shivank are collaborating,
-> since you're both changing the same thing at the same time :-)
+> I'm confused. Why do we have to open+close /dev/zero?
 
-We are not collaborating really : ) he should have ideally waited
-for my patchset to go in first since I was doing big changes in
-rmap.c.
-
+This is a pre requisite check. Every test opens and closes /dev/zero and
+/sys/kernel/debug/gup_test of its own. So I wanted to check before
+running the harness if these two are available, so that we don't have
+setup failures for 60 test cases.
 
 > 
-> Hopefully, we can get one of yours into mm-new first,
-> and the other one can find a way to resolve the conflicts.
+>> +
+>> +	fd = open(GUP_TEST_FILE, O_RDWR);
+>> +	if (fd == -1) {
+>> +		ksft_print_header();
+>> +		if (errno == EACCES)
+>> +			ksft_exit_skip("Please run this test as root\n");
+> 
+> Wouldn't we want to fail here?
 
-Yes.
-
+mm selftests normally skip if the test is not run as root. So I tried
+keeping the same thing here. Do you think I should change it to fail?
 
 > 
->>
->>
->>>
->>>> -       pte_t expected_pte = pte_next_swp_offset(pte);
->>>> +       pte_t expected_pte = pte_next_softleaf_offset(pte);
->>>
+>> +		if (errno == ENOENT) {
+>> +			DIR *debugfs = opendir("/sys/kernel/debug");
+>> +
+>> +			if (!debugfs) {
+>> +				ksft_exit_skip("Mount debugfs at /sys/kernel/debug\n");
+>> +			} else {
+>> +				closedir(debugfs);
+>> +				ksft_exit_skip("Check CONFIG_GUP_TEST in kernel config\n");
+>> +			}
 > 
-> Best Regards
-> Barry
+> You can remove the } else { part as you skip on !debugfs.
+
+Agreed
+
+> 
+>> +		}
+>> +		ksft_exit_fail_msg("Failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
+>> +	}
+>> +	close(fd);
+>> +
+>> +	hp_size = default_huge_page_size();
+>> +	if (hp_size) {
+>> +		nr_huge_pages = HUGETLB_TARGET_SIZE / hp_size;
+>> +		if (!nr_huge_pages)
+>> +			nr_huge_pages = 1;
+>> +
+>> +		hugetlb_setup_succeeded = hugetlb_setup_default(nr_huge_pages);
+>> +	}
+> 
+> BTW, why are we using HUGETLB_TARGET_SIZE instead of just using the
+> default_huge_page_size()?
+
+HUGETLB_TARGET_SIZE is the target mapping size and
+default_huge_page_size() gives the size of a single hugetlb page.
+
+Using default_huge_page_size() would reduce coverage for 2MB hugetlb
+pages. The old test set self->size to be 256 MB for the hugetlb case.
+
+Now it was discussed in a previous version of this patchset that we can
+derive the self->size for hugetlb case by fixing the nr_hugepages and
+multiplying by hugetlb size, and thought 128 would be a good number for
+nr_hugepages [1].
+
+But in case the hugetlb pages are very large, eg we can have 1 GB
+hugepages as well, reserving 128 GB is not a good idea. So I tried to
+keep the target size of the mapping as 256 MB, as it was before in the
+old gup test. If the hugetlb pages are larger than this, we'll reserve
+only one of them. Else, we'll reserve (256 MB /
+default_huge_page_size()) hugetlb pages, which comes out to be 128 for
+the case of 2MB hugetlb pages.
+
+[1] https://lore.kernel.org/all/anGyXt_PDImUglIN@kernel.org/
+
+> 
+>> +
+>> +	return test_harness_run(argc, argv);
+>> +}
+>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>> index 8f1e828e4f39..ae0ab5efabae 100755
+>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>> @@ -251,6 +251,7 @@ fi
+>>  
+>>  CATEGORY="mmap" run_test ./map_fixed_noreplace
+>>  
+>> +CATEGORY="gup_test" run_test ./gup
+>>  CATEGORY="gup_test" run_test ./gup_longterm
+> 
+> Nice
+
+:)
+
+> 
 
 
