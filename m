@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9386AC79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C57A4C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:16:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13666B0096; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
+	id B16156B0098; Tue,  8 Sep 2026 06:15:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3D46B0098; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
+	id AC76D6B0099; Tue,  8 Sep 2026 06:15:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA936B0099; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
+	id 9B5EE6B009B; Tue,  8 Sep 2026 06:15:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C23D6B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D458A04ED
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:14:49 +0000 (UTC)
-X-FDA: 85190186298.26.0A94725
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 666B16B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:15:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F012116048E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:15:58 +0000 (UTC)
+X-FDA: 85190189196.06.227F5E6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3E56912000E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:14:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iz9xURpW;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788862487;
-	b=ODFCVT5GHdduxiOLId8nVOdgToHvIC1uqbI8YYFTWLMnz4tzo4fOp49RpsORW3wbWLVH3A
-	TOheclEcp8sHb4juq4ZSZWG98k6AySvy2lOeBd5u+HtT+JM4ia8udrJG5J6Vc8pGfL8EgW
-	vCjH3k2/x3rpS2U8aWUtKXodoYhUWJo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iz9xURpW;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 24CE2C000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:15:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kPlt8z7j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788862487;
+	s=arc-20220608; t=1788862557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cvq4qMjanLuwG3YSjMLX9OxK6QvsahWFeb4aWNdZaXM=;
-	b=bK5KJ0oQ/EP47DMBZHvnWHxkBBDdEHKpRI6CCv8xN1JJRa3gHrtqQTrt92d1pyrVo4/264
-	VVZU0UIM4dSB8+v6Y5nA4Z8rl1RcoEcFEpBOghzQbLE0HlSw8axh6l3CDDUXZMRVprkuGN
-	0FWPhNP8WKqIORI4pb8Szpo3qC57Co4=
+	bh=ekjkNjyquBfVj0KUaXkP0qTUEnu6sauJ66A70KU2iAM=;
+	b=49o8jFMmbs5eda1gc+5f7cywnbMtcvxQIygU0qPJ2tZKq86ZjlQZhuCer9pg+st6Q3q0/P
+	O4nRDTmLJslQFLwSQ+67zjRLOCbEbEXwM7aJBWiFjfxIMyTb6HRmQ3aYp/Rom9fzrpsyaK
+	fo+VG8pzXxb/Bxi7vgy7kTIQeRfg4LI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kPlt8z7j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788862557;
+	b=x7f7WzxRYUztezp/zCG9rcmBrk4dIsZWBoDXTlElbwVW9WipXjrf2YQdtWkSmTGKvjTGEO
+	lNT1CDwhfpzSUSonMpBsuMKNvh0PtiBFxme8nVZvO+dsth8Vb+hde1dVJG4++I/VvnXdLo
+	klltSt3rirYBIGY9bDeqqqYkR/JnX2U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60E33402F9;
-	Tue,  8 Sep 2026 10:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E1D1F00A3A;
-	Tue,  8 Sep 2026 10:14:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 22E2E42A41;
+	Tue,  8 Sep 2026 10:15:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCED91F00A3A;
+	Tue,  8 Sep 2026 10:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788862486;
-	bh=Cvq4qMjanLuwG3YSjMLX9OxK6QvsahWFeb4aWNdZaXM=;
+	s=k20260515; t=1788862556;
+	bh=ekjkNjyquBfVj0KUaXkP0qTUEnu6sauJ66A70KU2iAM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iz9xURpWnnx+dU5/HrM8VQO5BbUDBW7rvyOLEuiLWetDXdQ8k9sBR4ImmLdNM+Dla
-	 N9Dfp7sOUwRPAKQbqdb/YMlpm5hpy6WKAwoioZvsKkWesFetbmX/dgCDD7SwWw0Sh8
-	 sdrThQmQVgTDomTp7h5cUd70qq67m8ahaB44eFW7y5LRfCBqUDMACXcX8xpnkJgR90
-	 ThiuAAAiaifndll5OnzG754tijKFWr3abF20Ynl6N13OEEvqTD5p/YrmKZ8l2+CuLy
-	 4e9UVv2pB0x39Ake1gvwn527QYcC2r9cUvKByu65tH2hoLFf2vOU18urhhaoqRuR1Q
-	 lT+RtcZM6i4Wg==
-Message-ID: <c8f3161f-0428-4f0e-a3bf-6ca72370b4fa@kernel.org>
-Date: Tue, 8 Sep 2026 12:14:41 +0200
+	b=kPlt8z7jZmNtunlUzwNDs8G6avxVAMsAD5cPfdkaobbL7+WfVWyPofROj6KBDOnvS
+	 32cslRcICIzEoo24KXgU2CT3g+SyznrFPBm7ratNwixpf4yLwLE7TgYJxyGEEUte+4
+	 NOmK6Z4vDQxg64SpI9oIe6qTREXaEwLSaB2bJKk86vXY83KmzFPJGQqN8Ae15zjOgz
+	 ql1QOtj43iaqQqaLLsjESsy9iEWnOuMQo716zHsbRulSrtKNsSf+D3qpGq+cJQADHY
+	 fRsvFByfuaepL5ab9jTt/exrvglxG2dO/N5OM9EdTFs9GvfPEAkRYspWPVH3Nrt7ZR
+	 ca5x/QANDt6ew==
+Message-ID: <adaade14-6ce5-4a7a-9510-8ff99ee66eca@kernel.org>
+Date: Tue, 8 Sep 2026 12:15:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] selftests/mm: Only prepare ptrace_scope when
- memfd_secret is selected
+Subject: Re: [PATCH v2 0/2] selftests/mm: Validate selections and scope
+ memfd_secret setup
 To: Tianyi Chen <hi@tychen.cc>, Andrew Morton <akpm@linux-foundation.org>
 Cc: shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, jsavitz@redhat.com
 References: <20260906135444.749144-1-hi@tychen.cc>
  <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
- <178886112560.138404.8930658836608223518.mm-cli-v2-2@tychen.cc>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <178886112560.138404.8930658836608223518.mm-cli-v2-2@tychen.cc>
+In-Reply-To: <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3E56912000E
-X-Stat-Signature: crcrggfe7s15hthmyzihogzk9w8tmxup
+X-Stat-Signature: 5tmxkhcsygz8dakxeqow4uy33d5ot3ew
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 24CE2C000C
 X-Rspam-User: 
-X-HE-Tag: 1788862487-774901
-X-HE-Meta: U2FsdGVkX19o7lL2x/oez1Zxs33ixe9szf0LcMT8KgrkL5bc+PJGkFXZsbsDyFC+HD5jMAeVEyRsZ8ZhfCrKeX8Npi+BZvC7qJGPYNemyDm9gLwMege2mcl5ibm1YXUIWj1C8blKDDJMEsL22YpsfZkEKf9Gaz90s3+oathxdyvRvlP7VCmjQVX2k5nVsggYhYGC4ahHuS+vSjW2luvFueJ8N9bmB9E2260p2j/b800H7lO82qeT0mZyLmmP01kAAfxIwWajJBnhj7ywmvP1MuRnwZERVa0LGrTi3Kxj6P38XFFJ4wfPU38FzG3K7KTgPro0kwVEIZCnURiHSHgf6q5/eJXEoEoJTl5kovUupO4JvmmlzvM/VWHyyeVgo2f4wqL3XZKattcWL/vnrDh6wTjeC/5FIukXK4jdEYHMwP1+s8X9uBGG2qFQENTUHXwoGoOb0PbTrVQumSsJhwUyzA1HaqPmWctleg4v42iLss+C0MNc4BsmOCR+t3bSVa9uSou9rPJ8fKe7KQItGqhNPvOwJuunjzSIQo//Y7Hb4OKW9aQEnL5pinzrqpGmltGxYxGak9kVOgD5dTmJwpzqMT+/bu6phVgUDZmX85w13DPmvWGrsEnQQI9DID9v7HVjzYsH41e+gQIL8nxbOEBXrcpeakwEDoKSM2lOva3YtZr+SyMgdgvMbDhq720J646IdPIZSrY4TiiTX3BQBzgKKpcXy8Jng1DytTSgoFEUln1nWyarfCh5Xg68VAlxpO2verpib62HqW/eAJ+0nCUY7FKjS+55F8hjo/ZADmafQaiptanTNJFP14B4ZFJVU6L5Kb0Lp5Tu1h1ADhoXg/u10ZyQ8Njk50iepkcwY/mmGwRyCpvPyEeL/f90SWlGM/IhqUYd3OL6sTqGD1gJdaLvOhrhuhf439DVMR/U0a+1RuTqrGWHrziUEEIcaagY1/UXMnEiv+m4vbHThrIeTNa
- iK4SiMkP
- RVQITtByvZ/xL76aq5fKR96xO6VSlvStLHQN0JMuywvCw4mZCu6AwYMiG5uImUAoCyDrK3CpbvlsbX+0+5Hg3+tfkFwhTOfwh3Z69MghmXBvCrbFCdCsuOeU77KSPxl8bA+XANkbfLT6ryuyGmp+FeIrQi7VR/oK0gGMMz7P8WNwnsrB4diXJbGSnzdgOEIz9OOWfpKwQdViz4dJwVb+/+4VZ1fQbjC7sL3/7nNhuP57eS4JH97RmEvz/aK4l8NBLYP03IGKxbZPKu8aWwzraGxfP9RO6AJUj3484G5wSKCmwDz+YHmbqxY/ybOj1XCL55wpl0Fvn1IWAGEI=
+X-HE-Tag: 1788862557-596570
+X-HE-Meta: U2FsdGVkX18fEo5U6GeWaeGgjpE3jpKhpin1rNK/vOOgxEE8gszqk6ZzsiB3u0OS2Ugc4nt8ftpms2UQeI/+Q0p4cPy/10tqFJ7tBvzw9Jkk3MOIYBQC+3XTUSuycivm7fyOelU584d/1+GiCiP697OZnWVp5TQsG5NdsZy0nvZ9q4IvRA8NlU58C2t6m5+kGGa/LMZVs+pvKAlHCzi0+4BmgOTLvvbK5iEoY6SWpGX1r+rvWUGAZR25oUQjl8d1hadZA5MqmCaZuwKV/8wVhwtG/RiqyqaeJqMeftrCTJQRDkOZmUuTF1zO2JfsX1bMwr2sgwJ/Jkp+W+49N5MrGVpCQlOrW/wccOP/7Rzi/bZIloq0Fi6gA2HF4U/ty19ZPVZP/pOde1aIi07gZrJokfVDeks9yQ3P8QPtDWkUbtFI4Spx41BXwkPbLSJybjdwsLVJsfcgwsje5rwcgC8fnB77qmOh8n8iE+Ks0rNeHBQEymEIKMK/bVGvdnQFUtUnv/2PEMxLga2PBP/BMIQNjp440KcIzd7TLBFWVvj7Ekt14hkk2FNRCigEYsdKOMMi3aUgAYUNGmtD8Ba1RYgv9hT9X5NUqDKhaqAvOuc4wOAAbcmvM8NgQBU9ud3tdj+WovmaKxcV0UMoxA7sUSXTXu3qvvGOO2Y13Cq2bKMkvKTvOL+USjljgOxS6ln+SP/CmfpxvaBEajIDPZwg42dIrT6+a7hOKwbUaQrXWaId6WKnf3KR2Vne1RiDJskycCWN/1qgC1T7vDqvrouF47lSMtt1qlKM97ByAe8joUs5rBzskie4yChT12GuXbl4C9yEmnO8kwa/o4ilLKUoMfSMn8S0+EcVgHqERqw2iKosI4b3RaccZWf/I3TRGmpwf63XXcz8LfcDb7UzdSfItSuNBQ1a7NyhaQ00IiexNKVo8BjEMrNAFQbISzSW5j+qhYksyaTEy/6xNXbF2Qq9tWb
+ UWteMVQV
+ PNYv8XRVJFffOjuJQZas/JeW3BW1mTQ7wHiQarDTGrrBOScdbsDjXoj3eP18JK9IXeyj3ZA7IPrg/oPe7VaQkveQsPeHW6Dd5mG+f24SDGtSOKl4YLgAhSa+1L59hxqC+RMKqyPUg+MjISp7feC4BpGNCjqgfsBQomBCWwcRP05mw5695dl+YewwKG3q19vlEu/6kwvdEAt60IQ4cHj8QIXlYVRtLLUO3KTx0EeDR22RAPKefAA/ilXJfvxz4qTjl8q/ixzGoMYqry9mC8FMaXYd/6QJYGXKMYrR5SM+CxC1/CIpJ1HafoyQrf1vm0Bf3vsh7HBa3almE1/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,42 +140,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/8/26 11:55, Tianyi Chen wrote:
-> The memfd_secret setup clears ptrace_scope whenever its test binary is
-> executable, even when a different category was selected. run_test() filters
-> the test invocation, but it does not protect the preceding setup.
+> run_vmtests.sh can reach test setup after an invalid category selection,
+> and its memfd_secret preparation can change ptrace_scope even when that
+> category was not selected. These two patches address David's follow-up
+> questions on the earlier getopts fix.
 > 
-> Check the category selection before entering the memfd_secret block so
-> running unrelated categories does not change ptrace_scope. Keep the
-> existing executable check and the behavior when memfd_secret is selected.
+> Patch 1 extends the getopts error handling to reject empty, whitespace-only
+> and unknown category selections before setup. It uses the existing category
+> list in usage() and normalizes separators, while preserving the default
+> when -t is omitted and the existing environment-selection behavior.
 > 
-> Assisted-by: Codex:GPT-6
-
-We prefer
-
-Assisted-by: LLM
-
-now
-
-> Signed-off-by: Tianyi Chen <hi@tychen.cc>
-> ---
->  tools/testing/selftests/mm/run_vmtests.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Patch 2 gates memfd_secret preparation on category selection and executable
+> presence. It retains the existing behavior when memfd_secret is selected;
+> it does not add configuration restoration or otherwise change that test.
 > 
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index 836c7454cba..9932df252f4 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -371,7 +371,7 @@ CATEGORY="process_madv" run_test ./process_madv
->  
->  CATEGORY="vma_merge" run_test ./merge
->  
-> -if [ -x ./memfd_secret ]
-> +if test_selected "memfd_secret" && [ -x ./memfd_secret ]
->  then
->  if [ -f /proc/sys/kernel/yama/ptrace_scope ]; then
->  	(echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
+> Changes in v2:
+> - Rebase onto current mm-unstable.
+> - Extend the original option-error patch with category validation.
+> - Add a separate patch for the memfd_secret setup side effect.
+> 
+> Focused validation:
+> - Bash syntax and strict checkpatch passed. All 30 documented categories
+>   match the categories used by the script.
+> - Parser checks cover omitted/default selections, empty environment values,
+>   explicit empty -t, invalid options/categories, whitespace-separated lists
+>   and command-line overrides of environment selections.
+> - Twelve invalid-input cases and help were run through the full script in
+>   a KVM guest. Invalid inputs exited with status 1 before test setup.
+> - The real mmap category's three programs and memfd_secret passed in an
+>   x86-64 KVM guest running Linux 7.3.0-rc1, including multi-category and
+>   environment-selected runs.
+> - The guest kernel lacks Yama. A disposable file bind-mounted at the actual
+>   ptrace_scope path verified the shell's write condition: the old script
+>   writes for an unrelated selection, the new script does not, and selected
+>   executable memfd_secret retains the write. This checks script gating,
+>   not Yama policy enforcement. Missing-executable behavior was also checked.
+> 
+> This was focused validation, not a run of the complete MM selftest suite.
+> 
+> Previous submission:
+> https://lore.kernel.org/r/20260906135444.749144-1-hi@tychen.cc
+> Review:
+> https://lore.kernel.org/r/519ef70a-679c-455f-ba5f-3841730873a4@kernel.org
+> 
+> 
+> Tianyi Chen (2):
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+For the future, don't send new versions in reply to old versions of a patch set.
 
 -- 
 Cheers,
