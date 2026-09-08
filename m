@@ -4,114 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EEC3C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3241C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9FE06B0092; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
+	id EE0FD6B008A; Tue,  8 Sep 2026 03:29:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B509B6B0093; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
+	id E90FA6B008C; Tue,  8 Sep 2026 03:29:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66556B0095; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
+	id D80626B0092; Tue,  8 Sep 2026 03:29:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 811EA6B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0604C1A03A3
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:23:22 +0000 (UTC)
-X-FDA: 85189754244.30.686227C
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3F01640003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:23:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hyaS2dA6;
-	spf=pass (imf12.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788852200;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFC7D6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:29:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 093E180427
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:29:54 +0000 (UTC)
+X-FDA: 85189770708.09.6596F0E
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2080120003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:29:51 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ld/eHomq";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788852592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7nz+2I01rp2LskTbFRR2FK0vPBroOC8XutcipcnIsM=;
-	b=3M3Y9/2Hxp1c2FNDbcBb68sBDgWk3t3b5yBaGMSrACoAvevzxjTA+8v96PmjDNj9ifPpYV
-	VUNWnhu+QaWUXJukHref6z4nOvfw0YvBk8jPGjqvU+oLQSVNl2+WPacDtIjv4FdmSIMV8i
-	aA+qI1OgjnYYcRnT7DBTlTrg5AaySlo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hyaS2dA6;
-	spf=pass (imf12.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788852200;
-	b=WCYQmxbQQUWM6fiV0rZwV7cn5qLUHBIjmYPyM3R808BRmqUBTtuiQyX5H7+l/5q4HHyRgK
-	8osqs0wj1O9bKVU/326pzsJYF1/Ejr5LufBUKjoFluf84QuJJgl44f/pFgPWSpNv4sfXJp
-	zv9Pc0/Gpu4DKQqAJWzOcEyKWTtlCRs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G7nz+2I01rp2LskTbFRR2FK0vPBroOC8XutcipcnIsM=;
-	b=hyaS2dA64DcCg3GRIM7kcjDzC2hUqQBzbi0wYEmlK75paxqrzZ4Qk09vQIT+D6ItcGzT9PK7K
-	+Fa6fiPBtKYscFQTRzVIbY6yweWimJ2oM5lKsGuwlq23S1Lfx1H1u//nCgErq4AFzAXXYPebOeM
-	yjA4Etr6FTTSMfxdr1fEXw0=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hfFVy3mfZzKmVp;
-	Tue,  8 Sep 2026 15:12:10 +0800 (CST)
-Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id D100C40586;
-	Tue,  8 Sep 2026 15:23:07 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemk200008.china.huawei.com (7.202.194.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 8 Sep 2026 15:23:05 +0800
-Message-ID: <92050fca-96ff-46e6-aca8-3cecd7cfb778@huawei.com>
-Date: Tue, 8 Sep 2026 15:23:04 +0800
+	bh=TKfQxZ3gyiwirNDj+FitYX1gJJkSzXez9jKvYCt/Fto=;
+	b=d3UqEPLSCLLmbGh6sFh6/C5Zljwvg4NQ1tlzvrIGt6yOGkKD2dv8oM3qVGqA5/Bhs/tX6C
+	SpQmzGiPozfdtphjYt9YEfep0pxrwmDo1fonqCZePoEZgbpYPKE8wEqI61Bhr9gKshZSpY
+	630JIE3CjpH/7bW0H37aGvggUAqiMCs=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ld/eHomq";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788852592;
+	b=XWjRmynlLzkGBQ4SPmDybcOnr2+WahZkeTWTm8RUfwAv9xwCAJssGQeDJSu5FhKeaj2aUy
+	7D8baB1zBSyGw+HwWyofCZNMR5/PeWVPSms/JLRDl1hF7sE+z4VuNKKLs74Yovm5/VXZHG
+	vkueTCS1mX9GnlRLkIHLgc2zhhhpV1g=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1670dad7a8so652500566b.3
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 00:29:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788852591; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CGQUTQUN63+5A2jHqMSf9geBDyvdpshb0RPeV8leb7b5YuYLi5czwxUJmkMzlhLevB
+         x1WuB/i03Uu4I5bEX8eX/G6SaqJr38tDbR1Xa1AMyp1wO6uuv8VBwZeB03rANYc3BfjQ
+         2OgFbhUVk8Ii4jCqhTI8IsvD0kD+1vJBcqFtXwAnYXkA4P4EF1L3NFZDLUIBM3bDPC7Z
+         /PwwIk8a13z9PfaKSPLkD/iEX9sBqz6Cfu4PnmZn947QqfVMt3uOAwT2/YZVdK2NL/78
+         pLuG3q09qLoBdBVm5QD/fN5ZPZJ/ecQ7R1SgJiRIiKQGwM1CC0+Y12hJUlpsV7szWq0w
+         VMzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TKfQxZ3gyiwirNDj+FitYX1gJJkSzXez9jKvYCt/Fto=;
+        fh=UjORM2oiJGy1rpNbSZIZoXMcmn3EGuEOMCCdMJ/tHgE=;
+        b=BaQNgmxYa/OuffY0bmGaTbDHc+hBv0uZVUzKSDJWheZz+5Msy6ptcwJZBoaEWYhfmj
+         GbbQ95flx3C5jpTy3eQPKVQH+siGcMS9qcJ4d+/Ibb+Fzo/kgVECq0I54hAo1xFw/BLf
+         PrwrvqE7umCoCTBGbjsgOf2M5siYG4KbRROoICPj2l/exZ/hvJSN91RQCPrmbM44MVC1
+         YHrU8QYVx/XWJxqdu8yOIILmIAoPFgez+l+M2Yh45tQ5s4IDRd1OyX8jgm2x8VsY8IZG
+         VPjzPsvLhmG1xQxkFZ2R+BduDj21tp+vVHWCn0wREZGMTavnlN71l2yPIDyRKx5URUHi
+         P31g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788852591; x=1789457391; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TKfQxZ3gyiwirNDj+FitYX1gJJkSzXez9jKvYCt/Fto=;
+        b=ld/eHomqiTrF5TpJOfJ7bSs4jxDT132hBtfPNdsSm3+2BjM3Xdalqe1KR4rFoG4G3j
+         4zUl5Ft5s/9+3js6juQq/0UFFEHqE750GhoxPhudqmbRKl+ADoBELvMMywa3Q1YOUFsR
+         wNeGJrRznxtXvknwrjFGG/Du6HhHy/BWYE/WqcZZVOPyC6HiU7wmlD8LQNy1M1vSj9H0
+         AMdg8cQcEtCZANLwDrGB/WEB3O3B+hyl9Poj0bSWZQU2QJYXvbJ9WgzkhJm5ClVoNVXE
+         tX+BU4r9WLBRBSZy+slBVU5nWE1cCLXOyBnla5y/x92g0AuwL6tNLca7a9jVTikf3yPS
+         KHjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788852591; x=1789457391;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TKfQxZ3gyiwirNDj+FitYX1gJJkSzXez9jKvYCt/Fto=;
+        b=L134oWkl+G8T0cyv/8we99Boas8Qu9kuEbk0LofheioJ05aw1Bh+ywsEBb2QiR05Bz
+         gnVAgVoTPgqwX0hGRfZYieOcYed7w1skcj5BDKNmOkbTUNcWztmhWdcd/aPFKLG3vfYt
+         Xj8jE7u4BooRURM6+/trXWKfRIkE+SDI+72n7dkwYKUPykqv5IHkAeQb7XzaqrrCq0dR
+         LvlONP0A17aDL0bWmXb95CiH40jhHepMwo08W2O6BHc09tQbZcE1Af9yMr5Sf+8nSmus
+         MX3BfF+/1i+pR5gmPJvh9aqM3NevYHNhRCfNkdVPCj+T630464GFLL1d7IQGYqMOnSYg
+         s0pg==
+X-Forwarded-Encrypted: i=1; AKwUvBzPUog3SY0v6SWCRtL1mp9ppygJ0kVBOSLsNW4CtcWJm5cjTuoi4084ax3ZxlAxsTZVhYie8WZPuA==@kvack.org
+X-Gm-Message-State: AFuF++nJp0/ADxRdysO8CuGvS1mAUpotH/9/I4Dc+Y3rA+sOiHT0qnaC
+	1o5G0xxoxdVp99ob8Zql54s6Q+3gvQ994sx2YtKxnBtNVybowllWUz8P3YhwB/Qko9HtYfQQzdY
+	vnq77Q+qIGwWiR7YVs6dYZuJWWUZUWQM=
+X-Gm-Gg: AYBFou33MrmUPAe5kOosVhSDwtuI74Br8+TmluMMar4k8WbByff4uzkbiQv+00svEtH
+	ZyMnHM6QUSm/ic/y2ZByHG4SKQ0em45eQMKb6t2ddUZ+6ycNulwwY/idIfMUZboR/sLQbSY+mQm
+	6Ei5ClKPY9lQhq21CuMVxxSpE5gVdQFa3Zsc523M6UFD/gwZ574ucpV2+vpFiEDGR6DNZIFTuFg
+	lvZQgFIH86Xex3r1L40UF4n9SPSj/zOHMTJ8ZefZSag+I2aJIbEK5CLhYHXfVI+Tg1KKNRamtM8
+	kHplmR25dLxPqd43f+DfZ488ivOLSpA4zgjNEHcfpi75sgwcVOcs5tsmrlMEd01SuukhOhpT987
+	/yio=
+X-Received: by 2002:a17:907:3f15:b0:c1c:2007:298e with SMTP id
+ a640c23a62f3a-c260cb450c9mr1089341266b.24.1788852590630; Tue, 08 Sep 2026
+ 00:29:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] LoongArch: kexec_file: Fix CMA page leaks in
- segment placement retry loops
-To: Huacai Chen <chenhuacai@kernel.org>
-CC: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
-	<kernel@xen0n.name>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
-	<npiggin@gmail.com>, <chleroy@kernel.org>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <baoquan.he@linux.dev>,
-	<rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
-	<ruirui.yang@linux.dev>, <kees@kernel.org>, <thuth@redhat.com>,
-	<jic23@kernel.org>, <tan.shaopeng@jp.fujitsu.com>, <zengheng4@huawei.com>,
-	<james.morse@arm.com>, <ardb@kernel.org>, <leitao@debian.org>,
-	<yeoreum.yun@arm.com>, <sourabhjain@linux.ibm.com>, <robh@kernel.org>,
-	<coxu@redhat.com>, <tangyouling@kylinos.cn>, <hbathini@linux.ibm.com>,
-	<adityag@linux.ibm.com>, <djbw@kernel.org>, <seanjc@google.com>,
-	<liaoyuanhong@vivo.com>, <vishal.l.verma@intel.com>,
-	<fuqiang.wang@easystack.cn>, <makb@juniper.net>, <piliu@redhat.com>,
-	<ebiggers@kernel.org>, <jbouron@amazon.com>, <mclapinski@google.com>,
-	<me@linux.beauty>, <graf@amazon.com>, <bgwin@google.com>,
-	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20260907125404.922123-1-ruanjinjie@huawei.com>
- <20260907125404.922123-6-ruanjinjie@huawei.com>
- <CAAhV-H7qjJ7BPnJ2KoQZSyMUvX_6i9H=EfdadXnmXtNiiB4ROA@mail.gmail.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <CAAhV-H7qjJ7BPnJ2KoQZSyMUvX_6i9H=EfdadXnmXtNiiB4ROA@mail.gmail.com>
+References: <20260905-memcg-swapcache-stats-fix-v4-1-d3626d305d4f@tencent.com>
+In-Reply-To: <20260905-memcg-swapcache-stats-fix-v4-1-d3626d305d4f@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 8 Sep 2026 15:29:14 +0800
+X-Gm-Features: AcwNN1WWN5Imx29M9KWwho3-Z5IQKifWJ1tJ__QZC48lfB_vyWmh-z7xUMM4azM
+Message-ID: <CAMgjq7B8ALDN1wUvFeJhPnkg8R7w6G=KzbGeO6BnCGMh_cVWJQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/memcg: clear folio memcg after changing per memcg stats
+To: bingfangguo@tencent.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo <bfguo@icloud.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk200008.china.huawei.com (7.202.194.74)
-X-Stat-Signature: h3cxbmicx6qfnsiqzemka3i397bcjd4b
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: e8pes3f7fh86w1mb746by33gizgfgfoa
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3F01640003
+X-Rspamd-Queue-Id: 2080120003
 X-Rspam-User: 
-X-HE-Tag: 1788852198-583714
-X-HE-Meta: U2FsdGVkX19qklpZ/RCzttVKGZzEZKjL51+7Ig47Ra5ED+Vyz03v0bH/YZbuATRSr8JmdGRa40MUTIoUoFJP05G67yO0mXcbWmUboFGutcskU7dWc9WUmdWIeveVmhMsVJn5DVtZS9Jjs1oHHVbrtsuVKgfRE53m+3YyDh9D9d9YYiTqi+ZvX0yprID8H3sDd2lhwyxm+JgO950qztBn5LeL/HerjdIPxxDydRR/y91ix3r+PU8KsTnQsIMLLHGkY7gWFlkxhNxSnL+9rdEB+tsSPGdT8gdsuQr0oekW3C8MI3iXdVX5t9uToM13wucJOGG1F6C+lqD/XxE9OaNGxFhhwfegizFObwZDZZ9gONqcBVTndgyTUqCRrfYOZ+08+X8hzY1Lxd+vh7Ad/mJDeTQbrb55TXC3Sbz/rUYowLA15OcLzV+nNjy4nlz+rz0+7iPvm4goH36w7C1FtLpw5YPnKKroDYpZ20KjWwOUq0vUaGkKknsmKxw7ODNz8I2w+wF1i16jltYw0PWtDBwP6RZKNn2/Ms72l6Gvu+Hxi3jgEg61SMt0diTj0vsgNvL9aBLplpYab2LsuNt/gu7rDIr/yvDt9/VYsTisG4pbXJ5pVsd1ypgn+/qg+oRJSbzZWNAAr9s6XIe+ewIVYz0OEB4c5iqHWekOPSDHJWuxuOpYVarM8i1RTqOrd9BOZkac1ZTutEMMeYowCN8ojbr+uOt1Ez/LId7gsYpsRTbRAJJL1d4WLQvcznlxDETCk0s+2kadehldzYJv5vYR+f5xmH48WtOeLzlXS0mrfsnFyRasZvsyhLsacKTVhklg0gZFX32SuBiPTHTHLJODRrMFdC236l93f0qBbX/cN4dagupxftHK7aEAbCKD0UiiIIDcWAzFZ4eYv5D5Ic58wW+bFl63FPorreu5VJ/Ezd7YhNXtUKGu0fXeJcOXK5i399UXZQpr11QxtgvhRQkhkIf
- rzQJGsKJ
- eQhBzdGiwoQksLJ/jojuhWF5i+E6SYPW03+psHVohHAWrbKY/xD1Yrjjs0m6/esw6At9j/FoVJbnC892Q4zG9y4QwkTW63qBCtXLeh3TFdLSzTVJvZxYYhNjxKhCDuOPHdPnVnkRA2vUjsRWW6rjy4FJ4dApDHFOPOtdqlhibGiaBOzllcqMpVjIy/tKT8Veha5oerf1t1NU52p8rm8gXonIMNpPbpOQrYiDkNVil6/G1L1BOMuTKf2KxfNQG0Ljq76D3S0t9y2rU9WVHYGbqv+0At8mzcenRut+bq1GDUsnkZOBIo9Iq4+94gSvkWDl3SEpHorfPoSZ74tokNDnAEyk+pjMNdt4yw0/NHvd3f2+UpD2GV6/9U4jLP7Uu1Tg5si29aE9y6q+1/qnZ2KaFbRZaCjr9zSVpQ4BnpIfdVvziXLVBdNhW/QP8y2JuLDpf8DluFGt7/shDedTfGWaxQmNnKUF6jRFZfK0tF46csVE9fFnl4mZ5lur1KmaHBgugkWRrrqb4s0aYZWQ=
+X-HE-Tag: 1788852591-360921
+X-HE-Meta: U2FsdGVkX197nLGbjz6Nd+XwqTomt7PCYFXTbANVCWoW/j2zuUgjPH75Dhv8/pyg0rzaW0dkUhuj7eZsoOacw2n0DDsXHlE+57RLyDlbtr+f3L4HWpJCb8g+OuudH9UIeeAoooWBgI6z7rBNxsV0BHVP83Vrp9EK9WqCTOCsS9zKAgIw+3MEI+8sqvGHGCiL5TEI2uW5R4Ry27a6U1xFYxBtpgyTmHaoCkw5l29XvfGI25viPCf/no2I1JdGWDqPXDNgu5aGkUZWFAyhsCGq9JjbSgyKTsZZkMS98rcdoWEnRdw+mu5sq9iiEsXNlJdKswMZNBO+hIklzQ2lnHAkt1ImBCaZIYb0z/nWJEO+w7AcMltRQ+1DtnH6V8/NmvbmwFmZ+e4fkNXOP3ZDDBwdw2QPM9qNf3KLP7itZZqXQTQ3OWDKG5/6868XPSpFCNuq+vk7KEpLpiOs8wZnx0QaN2i3/Jf1cTOM3wPGtohZ3gIZGDZG96CiECuSz5SYnDBVnewAl/ZljuRk2lBqfIEA85L4kf0PXhWKLzWbvUVViyv6SH//0vNc821tgw6nseqG2CPkS6XEUDNZmEY+Fw1ne7mBefplCt0k9DKKZAD0PtUTalFP3sdH7/pj+OsVRjuIu35AJTDhq0XZK78+fK4htOaFsO9CnHH+8i4AeJr98bXX7gnNCSobVCB8Kz24Ttvv80m/5uPX912dUwA2UeY3nGXd5oLZaWzfl7BW6hmYbq4ZPfuxH/ve1RzWRVDe4ZI2oWezPuF53q3o5NWblicN65N3VXdLBOSvnHQpvqDTCeXrIATNwmAje0GvwD1MTliGCl8eNangqGAxJhBbNtRvZpv7I/0oxhSyDua+SML8ebLh4PigVWg+fuL4cGLl5+c+s83dPR6WZfULFVN/xr8O1uO74Jj63cQnqjeVF5bmVolcSHvwGJzfBzwFMxx4U1n+3uwmLwQDwcKMR9wGKy7
+ 0sxIqF1B
+ 2Hj8KHTcHWn4f8wX2EZuJ7vX9nyUt4aqpqh2ieZHT5ogO4GKYqQYPVsXQRpL0nHO4i0Z9hyxV2dw9JRUubr6G6ePbELFn48qF4PLSiEg4nw+eijmWTK5c5vGukDpPNzuukra+5KDMpw/d+eVw6Yqg4Mvjyp1mwQkzu9SZfbriRKdmyo0WF9A/6PMbFf4Ml3rIXZQJAmzhtdXiV60rvaY4pV0nfEpK6o8TOILNFv9qJ39iuMOkNXlRQrvafXAXj/95+VSzPKNKVtyofZafWHyuAy6KFNZflTpXxoQCf1XFE8/dkpNpKjUN1tL7u20qEWtZe9TVWWahaP5q3iBYti2+Jf+gEAa1pJuet3XIgCWmSXr7oBE/au51k0UTy7sTbOP81FXxScOeDJnYK95aVlxgxeR7ZPli3X+urXs2ai9CFQrMmgcUmPsSL721l8z4H6vbKykFOkUZp05+2sE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,86 +147,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Sep 6, 2026 at 3:34=E2=80=AFAM Bingfang Guo via B4 Relay
+<devnull+bingfangguo.tencent.com@kernel.org> wrote:
+>
+> From: Bingfang Guo <bingfangguo@tencent.com>
+>
+> I notice extremely high swapcached count in the per memcg level
+> memory.stat when running tests with cgroupv1 setup by swapping pages in
+> and out.  It seems that the counter never gets decreased so the value is
+> rather useless and confusing to users reading it. So I think fixing it
+> so that the value can reflect the actual swapcache usage correctly could
+> be helpful.
+>
+> __memcg1_swapout() transfers the memsw charge of a folio to its swap
+> entry and clears folio->memcg_data as part of that.  In the vmscan
+> swapout path it runs before __swap_cache_del_folio(), which then
+> decrements the swapcache stats through lruvec_stat_mod_folio().  Since
+> folio->memcg_data has already been cleared, folio_memcg() returns NULL
+> and the NR_SWAPCACHE decrement only updates the node-level counter
+> instead of the memcg's lruvec, leaking the per-memcg swapcache count.
+>
+> Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
+> the NR_FILE_PAGES and NR_SWAPCACHE updates but before
+> __swap_cache_do_del_folio() removes the folio from the swap cache.  This
+> keeps the stats attributed to the folio's memcg while still recording
+> the swap cgroup with a valid folio->swap.  Add a swapout parameter so
+> the plain swap_cache_del_folio() path is left unchanged.
+>
+> Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize=
+ layer")
+> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> ---
 
+...
 
-在 2026/9/7 22:05, Huacai Chen 写道:
-> Hi, Jinjie,
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 305877e1f4d7..38916ea96ac5 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -306,21 +306,28 @@ static void __swap_cache_do_del_folio(struct swap_c=
+luster_info *ci,
+>   * @folio: The folio.
+>   * @entry: The first swap entry that the folio corresponds to.
+>   * @shadow: shadow value to be filled in the swap cache.
+> + * @swapout: whether this operation swaps out the folio.
 
-Hi Huacai,
+This reads a bit strange, I think you mean "whether this folio is
+being reclaimed after swapout".
 
-> 
-> On Mon, Sep 7, 2026 at 8:53 PM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->>
->> During kexec image placement retry loops, any midway failure causes
->> the loader to truncate `image->nr_segments` back to its initial state
->> to purge the failed segments.
->>
->> However, this truncation introduces a memory leak. The CMA pages
->> allocated via kexec_add_buffer() during the failed attempt are tracked
->> in the `image->segment_cma` array. Because the subsequent cleanup paths
->> only iterate up to the truncated `nr_segments` boundary, these allocated
->> CMA pages outside the new boundary are permanently leaked.
->>
->> Fix this by explicitly releasing the associated CMA buffers in
->> the failure paths before `image->nr_segments` is reduced.
-> I'm not sure but does the elf version have similar problems as the efi version?
+>   *
+>   * Removes a folio from the swap cache and fills a shadow in place.
+>   * This won't put the folio's refcount. The caller has to do that.
+>   *
+>   * Context: Caller must ensure the folio is locked and in the swap cache
+>   * using the index of @entry, and lock the cluster that holds the entrie=
+s.
+> + * If @swapout is set, the folio should be in reclaim path and IRQs
+> + * should be disabled.
+>   */
+>  void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *=
+folio,
+> -                           swp_entry_t entry, void *shadow)
+> +                           swp_entry_t entry, void *shadow, bool swapout=
+)
+>  {
+>         unsigned long nr_pages =3D folio_nr_pages(folio);
+>
+> -       __swap_cache_do_del_folio(ci, folio, entry, shadow);
+>         node_stat_mod_folio(folio, NR_FILE_PAGES, -nr_pages);
+>         lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
+> +
+> +       if (swapout)
+> +               __memcg1_swapout(folio, ci);
+> +
+> +       __swap_cache_do_del_folio(ci, folio, entry, shadow);
+>  }
+>
+>  /**
+> @@ -339,7 +346,7 @@ void swap_cache_del_folio(struct folio *folio)
+>         swp_entry_t entry =3D folio->swap;
+>
+>         ci =3D swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(=
+entry));
+> -       __swap_cache_del_folio(ci, folio, entry, NULL);
+> +       __swap_cache_del_folio(ci, folio, entry, NULL, false);
+>         swap_cluster_unlock(ci);
+>
+>         folio_ref_sub(folio, folio_nr_pages(folio));
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 245f68c75b28..29bced43b0ce 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -755,8 +755,7 @@ static int __remove_mapping(struct address_space *map=
+ping, struct folio *folio,
+>
+>                 if (reclaimed && !mapping_exiting(mapping))
+>                         shadow =3D workingset_eviction(folio, target_memc=
+g);
+> -               __memcg1_swapout(folio, ci);
+> -               __swap_cache_del_folio(ci, folio, swap, shadow);
+> +               __swap_cache_del_folio(ci, folio, swap, shadow, true);
+>                 swap_cluster_unlock_irq(ci);
+>         } else {
+>                 void (*free_folio)(struct folio *);
+>
+> ---
+> base-commit: b5529903123d9535bcf74386c1f4e185e8632dd9
+> change-id: 20260828-memcg-swapcache-stats-fix-1beef3dc3afb
+>
+> Best regards,
+> --
+> Bingfang Guo <bingfangguo@tencent.com>
+>
 
-This issue does not exist in the ELF version, as the retry loop for
-load_other_segments() does not exit here.
+Other than that this looks good!
 
-Best regards,
-Jinjie
-
-> 
-> Huacai
-> 
->>
->> Cc: Huacai Chen <chenhuacai@kernel.org>
->> Cc: WANG Xuerui <kernel@xen0n.name>
->> Cc: Youling Tang <tangyouling@kylinos.cn>
->> Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
->> Cc: Kees Cook <kees@kernel.org>
->> Cc: stable@vger.kernel.org
->> Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%40huawei.com
->> Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->>  arch/loongarch/kernel/kexec_efi.c          | 1 +
->>  arch/loongarch/kernel/machine_kexec_file.c | 6 +++++-
->>  2 files changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/loongarch/kernel/kexec_efi.c b/arch/loongarch/kernel/kexec_efi.c
->> index 5ee78ebb1546..15fd797ff3de 100644
->> --- a/arch/loongarch/kernel/kexec_efi.c
->> +++ b/arch/loongarch/kernel/kexec_efi.c
->> @@ -86,6 +86,7 @@ static void *efi_kexec_load(struct kimage *image,
->>                  * We couldn't find space for the other segments; erase the
->>                  * kernel segment and try the next available hole.
->>                  */
->> +               kexec_free_segment_cma(image, kernel_segment_number);
->>                 image->nr_segments -= 1;
->>                 kbuf.buf_min = kernel_segment->mem + kernel_segment->memsz;
->>                 kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
->> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
->> index 5412aa9f3568..62a5be102065 100644
->> --- a/arch/loongarch/kernel/machine_kexec_file.c
->> +++ b/arch/loongarch/kernel/machine_kexec_file.c
->> @@ -217,7 +217,11 @@ int load_other_segments(struct kimage *image,
->>         return 0;
->>
->>  out_err:
->> -       image->nr_segments = orig_segments;
->> +       while (image->nr_segments > orig_segments) {
->> +               kexec_free_segment_cma(image, image->nr_segments - 1);
->> +               image->nr_segments--;
->> +       }
->> +
->>         kfree(modified_cmdline);
->>         return ret;
->>  }
->> --
->> 2.34.1
->>
-
+Acked-by: Kairui Song <kasong@tencent.com>
 
