@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B66C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BD53C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5B456B008A; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
+	id 4BA266B0092; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0C026B0093; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
+	id 46B6C6B0093; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D54A6B0095; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
+	id 35B216B0095; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BAA96B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E7D831A0463
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:22:33 +0000 (UTC)
-X-FDA: 85190356986.07.EA30472
-Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B429520004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:22:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ies7xEzQ;
-	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F33816B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:24:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 882EE1404EB
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:41 +0000 (UTC)
+X-FDA: 85190362362.17.282E5E2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AC48210000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=URN9YlhJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=URN9YlhJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788866679;
+	b=AbXO8sMIBRCZecpaWWl4cQoptqlFLJQ7pJa9nssB7cnE65J0Pm3i+H07rRvQqKxbKxHxTj
+	FExdK8H+5gbLEi/4zAQ4lDtAG7sHmsN46Sxk0yBmqJK3ChLzot4qlTjMJfwGJvuS3+G21g
+	pAr1JnzjRJSOocEY4fiH+oyIi5CFCSQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788866552;
+	s=arc-20220608; t=1788866679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kfFKgEaR5N0ccB7p1iUJntQYHPyNRYEKS50nvIP/hf8=;
-	b=MBn+PKJWi6CiG4rE0TLgwImEeugMQXuWRt/M+McjIbcxUdm1vm+tZXMJcRUDJenk2t1/h5
-	MgeUnL1Wg1my5iETG1pLTDS/uXDxVDY6PLNZ0V1w8cvtztZG2vOM8yJA8JZBeaXARttJT5
-	uJLIt64beLVdIcnKNLKIzAecLoHOwvQ=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ies7xEzQ;
-	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788866552;
-	b=SV+YFYZq1KxvOyskV/701Uj6r+kk/7kxoUSTLnPq/4N+RaD5y6g83NkMPGv7Q1AWpr/++j
-	Qz1HzirdaU1Bq03aGqR4Wci3t8ijq90r2QU/DMifU1eLrjaYSXySfMyF9P/BXttGO7NHC8
-	8cR3SADqERNypVBmw+yQ2PzETpmYY+4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ZZA+ZfYds4/VfNcL2acHrCCj6KTrChkpY0m87hvHxuE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788866550; v=1; x=1789471350;
- b=Ies7xEzQJf7JxDZI/4u0i0dCM/tumbE7X7UkIPTCa8Z5ARLiHjNVkfxiZ3PFHwp96chf3NQU
- dVIvz00L+tb2eBJs9D+tVhVjH08j1q+CO9C5+6xJMDiGR50gQGryYUZlA/6AjSIqP64De8daXGI
- nLGXEd1Hr+gXT+pXN1droyn8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1cd0bb8d8965546c;
-	Tue, 08 Sep 2026 11:22:30 +0000
-X-Mizu-Trace-ID: 1cd0bb8d8965546c
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <df053a08-6c9a-4e56-9ba5-bdfbf930331b@linux.dev>
-Date: Tue, 8 Sep 2026 19:22:18 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mfTEZnUAqIu9snNugWvKz9NgMLsK8FTL3j9DOamLiBo=;
+	b=WRFDgSNwB5Vn8b3bcMW8KUvLQEPbY6yZHgZq6afFqamQ9kveU4riVF0HavNRC1Xpg7z4tZ
+	ANw0E9IKFrkIetDluznS2sp2J3ApkkFDdh7duCpUz1wUFo0oICLvYnmlLBroS3PXDqN3sG
+	hS6hEbiVCuPX+oDANiohts98ynty/UQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DB743438C6;
+	Tue,  8 Sep 2026 11:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520251F00A3A;
+	Tue,  8 Sep 2026 11:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788866678;
+	bh=mfTEZnUAqIu9snNugWvKz9NgMLsK8FTL3j9DOamLiBo=;
+	h=From:Subject:Date:To:Cc;
+	b=URN9YlhJSN5Go9+FGDnDonQuzMD3QjcnwdGAyMqEVUEuGrKKUAmNP+q5CuHjZQlhv
+	 ClYVpndKK8xa9gqd6ICtUjHEKPCKLHvW9r7Q+P4WIMXlpW8IL7k1nv94wvxhY6AuEP
+	 ukXMuQPId/Ph4WCO8dCGMkLGNy7UjYnvjQqW9wOhgTvG03UU8cy870Bbr/pJVU6Ugb
+	 czHNQFEamstUcQLxJ45kh9iBiGnT7dqM2pYQxYxNWNSj4d7GtVeuq87TP/s083vsxW
+	 wo5+jRt6XykBmUJbIfzE29PaWRRRSlCpKz2zi0p03fCCsGHsC9o89ebsiDx7YKOwjy
+	 N7gXijLrRfYqA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v2 0/6] mm: make MAP_PRIVATE-/dev/zero mappings truly
+ anonymous
+Date: Tue, 08 Sep 2026 12:23:37 +0100
+Message-Id: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: fix size truncation in pagemap_ioctl test
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org
-References: <20260907135613.68692-1-zenghui.yu@linux.dev>
- <9a21fc3c-1ca9-42a3-a044-6421f20341f6@kernel.org>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <9a21fc3c-1ca9-42a3-a044-6421f20341f6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7ZhSIkVX3MOwqGWAiUqbKWlUw
+ t2tXMDle8l/f4VIwhThUqwglDiynzPoQwFusvNIyH1m0ErX6qw0Pm3AIJzsQthTwg+Jx5ut6t7
+ UVg+ugTwNQgO/9uy1yzxxXLy895dU/uyfYCpRoT2ZxplKOXKmvZPM9Dh6GaHbtu0LSYzZrbkAA
+ AA=
+X-Change-ID: 20260902-map-private-dev-zero-ba36d76a2fc8
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3588; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=zyHpGOvJgvpz0CkPBa/akIw5hynneWmyWjMSuuPUPHQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLmfygo+B1t2+j0RnhubYNyxk894yWXTk+wjLpmZJv+b
+ dZ8+XmZHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIRggjw7l1t97/8Au7PT/9
+ 3i6li4KPmN+1PO1LVtjZpyG2rSJD+wXD/9imdwurPFYLx7Wv+dd8wuDq4X//qnfGBH2pUb5sYf/
+ 0KgcA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Stat-Signature: 3atmrdiiyy4pkzc3pcqjteagrrnyjwoo
-X-Rspamd-Queue-Id: B429520004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788866551-538795
-X-HE-Meta: U2FsdGVkX19So42nVrjcUPaZ1QCTLyVVMqGoS+GNY1ZPtcAA1QoCS4xS+oe6B5Y7+L311rkuRuKQ2JnxqlrKPySTox09HCR54b8/WiHJLLGptJVlimCc4BXOP4o1O0A3QOfQYgd33AseK6I0cDornseI+65cA8saexa4IUolav2v0DyTHMhQactlia8SuGvLzNcmtEtVrXIN81Tel0b8V+CGJGtvXSIJj7id+Asyf+bqtEP0i+BKY1cYMJj6yFMeiQtzg/2EQ9TdwmMNyJxvDs8N2LDTCdkb0EUqXqSsLhFVKtbovOua/0sJVk5AizWaoqzZVFZLR6jEcO1KnxGPVDAkg69Cscd4r+eRalKO5y/1F9vSz3l2w2+P5wyXAXD1EW2wSskSdqri/9Wv/qbdeg6YhyHsasQUekTFkxTJB8bMgtLeAVbFK3BILC8Sj5dBZqHP5vYD5SGogBTagCKZA/cLYaRcc3K1ikP38cm9pkUkag37dsmOjzbY17ho76tqsKrqPgoVShZZEs3Pp3uXb4dgnZECe6luRwrj4A1rqnZauwvQOzhC1i5c0K4SwkjiyqionqJQTeVNx7AscdKU1yxR/+mNXPUWg5PCCbcRR8O6SxUdQ3Zq6Hl4wuO87DUAGJOJk5AgiV2zs5+E2A3ePvALvNj9TBusO1oLouoC0qAik7NTB4EdjeiucngO7HZo+OPWzrU9Rt5LUcov5Mi8pZ81yZKr6CWB2pbhHCczdmSozdTmCbBmvFKMm6cuO3DvbAwJ3k2bvi5KlZr9UCn2Yk0u79Ua6+kyCBobqco+whPK4q4hPlJeIiAG4OTpbY+cdk6C4NwABxA+YI07Qp/+HnEkHbzjirNh+TFr4Y7X0MM2N0+nQhsSUc39ALO6dNSgYNIj7k2JMNj4c27arqifCyNGzJ2uFyiL3/yhE7KGlKyFR6ZLOtx6E3Ase+6vuxE+6lwpvBwgqDYMAqc0REW
- 5Mg6Y3BB
- zp3GkbVpJ8mnkJHD1VSGSopF6vc6TN0o0MiBJqEyPVlBi5MzcyJOId0WlE5XWS/5oMATC71f7zI275uYeRAwoshc30WkyvmswkCF4GrkQWeORbIIehLviqDe/CjKoF4jQ2obN4lsTJtGHJBtw7lalMOMy+7tXkGmKKdGK6SSnKtOo+mWPNjz2ZRKzH6Jb4FlddFp56VMlDbudO7t+2ON4/Cw7gc5M05r9daACBWd1iXcEZvu5nZ2cWnYkKwzR4Y5+zDXoZuNhvZ2vzxmkvznZKyRPnqvRUfeayh6lz8Hk1QiO6LcZzkC5XejjbiiaVJ6w3Qmx
+X-Rspamd-Queue-Id: AC48210000D
+X-Stat-Signature: b6ttcprnbtwsj4iwc89nwk1fipsbdk1b
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788866679-640781
+X-HE-Meta: U2FsdGVkX1+gGpPpIfhJEEzNlyedtT64Uj9tODbxX75DbAzWaPsrABsfM/9IgxXuIKaw4sV9dLs5KeOgB9qb5NvWLP5qow1ZqyWJxMTI4c+Svh9u0swJMGIB1koF48Da0NvDHmRp0oZKhxTW4+xFWiX3qK6D6E4Qwork5AJGR0zfNKjDJY0iLnN0CJop/8BwamvTcNxNSoKTlxIFhFZGYE3Rh8UDO6QmJEECb7mUBlfVW+98DBEj9PAa0hnUIB8TsAP4TvGNWCtGuOHHuphN/0cITynphXvDPD163HWcTWNra1Xgu9NaXLdcAcScxJeuG9zcfTi1pKY6DqbZhOdtEciyNH1VI0I+UHxkpQzzz0H+NK/TjJT4QClwX+T31Mm2yTkOaUhUlc5gGedfnMaH000vqeLPFG8EdARdf1E60HUTztaV+FxuaFj990rDfaw4yyWKI2IZLJ/R2UY6QVWnzUphG3W4Y1cSQfJTSrdsPKLCWxClKy+zEhZBiuex/oVYTVObAHvnNFm56XRSyvMu91Nq8i54xJoJM5TfEHS0MRa0aFZyqOqgOu+NOUGGDpLQbb5M0SP1/naVxTA0FBRKvL08hYDCwGCUdIwIroPFnZRe96i0ih7OV6jJzVXMjuymvC6GVf1YXB6FnuWewTU3w4PcI9YjdB2o279K/+9ob6eNPAKNYH0QHJOS6H4n2KPs0OHvDaM0aN+pbCJm9UUKnALJBLM3jzDO09MiKV+cthNHMdO9KYsrqGy4LGugSqtOwH6P2OhTI5w3zZhsiwubRlhLYmLgOo1uBA4jUfLbxt9lUr60gjBalJmx3SjCOeIx3zwET8KpZM97ogaqw7wm0VhnXipuR4gOb06PBBpE7yZqXB4j254sxiNLZnIVnfIfn88B3Zzt4pPfEqKGQIRkQarnJIccnQZPg8fwI4F71yPtSqgaEf8SNBoB++YtJaeEYvJdKmay3KRflcqrZ3S
+ tRblnj4c
+ BHjHvD0kBnfkSahLWIutmP30zrwrM3JviaEoCWoDwKc0QY46emVboluN/69qXH+lidGw2a9x3aTBX8cJoNlAzhcvudFELy71jPMT7eGT8+gW964SiulHKnBIaq3FsyWD1B/u57DRtdj1pM7YOF/IUqc2rMLEoGQcfii8atxxYUJ/0lnDoouHZVY384bVOdiTTlx+DCrMsO6eNVd83D9eDSFYY1v0hBP1VHlZ5mYcmUobq31fOhwLQ0lJmcTnfoP1LKsZB7X98sXBibjYkqGVN+tLlj/g6ppz26SmjFZAh/xc4Bew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +113,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 11:22 PM, David Hildenbrand (Arm) wrote:
-> On 9/7/26 15:56, Zenghui Yu wrote:
-> > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> >
-> > On arm64 with 64K base pages, the huge page size is 512 MiB, and
-> > hpage_unit_tests() builds a 5 GiB range (10 * 512 MiB) for its tests.  This
-> > exceeds the range of the int size parameters of gethugepage(),
-> > wp_addr_range() and pagemap_ioctl().  The implicit truncation to 1 GiB
-> > makes gethugepage() allocate a too small buffer, while the callers keep
-> > operating on the original 5 GiB range, resulting in spurious failures or
-> > SIGSEGV.
-> >
-> > Change those size parameters to size_t.
-> >
-> > Fixes: 46fd75d4a3c9 ("selftests: mm: add pagemap ioctl tests")
-> > Assisted-by: GLM-5.3 OpenCode
-> > Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-> > ---
-> 
-> Looking at pagemap_ioctl.c ... I think most functions should actually be "static".
+Historically anonymous memory was obtained in linux by MAP_PRIVATE-mapping
+/dev/zero.
 
-Yup.
+The canonical way of doing these now is mmap() specifying MAP_PRIVATE |
+MAP_ANON, but we must continue to support the legacy means of obtaining these
+mappings.
 
-> Using size_t is ok. But then we should also change "unsigned long long mem_size"
-> to size_t, no?
-> 
-> Also, in wp_free() we are suddenly using "long size". In pagemap_ioc() we're
-> also still using "int len".
-> 
-> Can we consistently use one type please?
+As-is these mappings are an unusual edge-case - they satisfy
+vma_is_anonymous() but have non-NULL vma->vm_file, and their page offset is
+the offset into the /dev/zero file.
 
-Yes we can.  This patch adopts a minimal fix for this specific issue.  I'll
-unify all size-related parameters and variables to size_t in v2.
+Commit 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE
+file-backed anon folios") causes all other anonymous folios to be tracked
+by their anon index (vma->vm_start >> PAGE_SHIFT at the point of first
+fault), leaving MAP_PRIVATE-/dev/zero as the outlier.
 
-Thanks,
-Zenghui
+This series remedies the situation by making MAP_PRIVATE-/dev/zero mappings
+truly anonymous with !vma->vm_file and correct anonymous page offset.
+
+It starts by bringing the memory character driver into mm/ - this file
+implements /dev/zero, /dev/mem among other things and is already (as
+clearly indicated by its name) within the remit of memory management.
+
+By doing this, the file_is_dev_zero() function can be provided, internal to
+mm, which allows for positive identification of these mappings.
+
+Using this, first prevent any other mappings from mapping memory
+anonymously, then make these mappings truly anonymous and eliminate all
+code in the kernel that previously had to account for these strange beasts.
+
+Finally, it adds userland VMA tests to assert the behaviour and selftests
+to assert expected merge behaviour.
+
+v2:
+* Added tags (thanks everybody!)
+* Reworked comment about mappings not setting themselves anon as per David.
+* Fixed up test typo as per David.
+* Fixed up test close() as per David.
+
+v1:
+https://lore.kernel.org/r/20260902-map-private-dev-zero-v1-0-a578c730cec7@kernel.org
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Lorenzo Stoakes (ARM) (6):
+      mm: move drivers/char/mem.c to mm/char-mem.c
+      mm: implement file_is_dev_zero() to uniquely identify /dev/zero
+      mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous
+      mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous
+      tools/testing/vma: add test to assert MAP_PRIVATE-/dev/zero is anon
+      tools/testing/selftests/mm: add MAP_PRIVATE-/dev/zero merge tests
+
+ MAINTAINERS                                        |  4 +-
+ drivers/char/Makefile                              |  2 +-
+ include/linux/mm.h                                 | 10 +--
+ include/linux/pagemap.h                            |  3 +-
+ mm/Makefile                                        |  3 +-
+ drivers/char/mem.c => mm/char-mem.c                | 21 +++--
+ mm/internal.h                                      | 20 +++--
+ mm/shmem.c                                         |  2 +-
+ mm/vma.c                                           | 39 +++++++--
+ mm/vma.h                                           |  3 -
+ tools/testing/selftests/mm/merge.c                 | 95 ++++++++++++++++++++++
+ .../selftests/proc/proc-self-map-files-001.c       |  2 +-
+ .../selftests/proc/proc-self-map-files-002.c       |  2 +-
+ tools/testing/vma/include/dup.h                    | 10 ++-
+ tools/testing/vma/shared.c                         |  9 ++
+ tools/testing/vma/tests/mmap.c                     | 37 +++++++++
+ 16 files changed, 220 insertions(+), 42 deletions(-)
+---
+base-commit: e3b5239afe1b8f0194db7436b17c33e94c1988c4
+change-id: 20260902-map-private-dev-zero-ba36d76a2fc8
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
