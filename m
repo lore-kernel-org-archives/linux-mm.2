@@ -4,124 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2856BC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6FC2C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A73C6B008C; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
+	id AECB36B0095; Tue,  8 Sep 2026 10:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27ED26B0099; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
+	id A766B6B0099; Tue,  8 Sep 2026 10:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16D3E6B009B; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
+	id 93EEC6B009B; Tue,  8 Sep 2026 10:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F1E736B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:26:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8429EA071F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:26:10 +0000 (UTC)
-X-FDA: 85190819700.24.5CCF046
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BAED510000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:26:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ibCJ1vTa;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=dujpHxA7;
-	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 70FE16B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:30:29 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0F7271406DF
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:30:29 +0000 (UTC)
+X-FDA: 85190830578.21.5DA92E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3B31F20009
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:30:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RLsG+ePv;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788877568;
+	s=arc-20220608; t=1788877827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
-	b=U6+nf0lr3R8vwwW2L/CkJeUOxgr02qIu+uSMbW/R95i0krpxTCsXMt4/IY6gkBYmRxouzJ
-	JtqhyTq1v+7vjxDh74xiyfgp8unPWVkK8K5oFBu22/3Q2WiSElFmJXt8JjyPCAz9RxokQJ
-	fTr1GXCeQ4JJba66TnyGNqPVmjiqxuM=
+	bh=W1fcP7/pBh9KdtEegdsKqPfiQ9bBYmCGdHpPYEo3xto=;
+	b=oaBZ5WLsIttsEgMAl/Pz27BU3rEgHaUwg6dT/0CFLAAvd9LhCANkj0QxY50lMzfE/NyaGb
+	EOoUN/hphAlggnUA0ugFkZ+e7A8DDWQK5twRnvSxQ1Rm6gtnxC1X1aUu6ydJ124JB5v9j5
+	En8j6p5l3NEgtgJHar8MwPmxoV/NaTc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ibCJ1vTa;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=dujpHxA7;
-	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RLsG+ePv;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788877568;
-	b=YiRw8dql6Pl+c8JGBn5DPOn6bbifdGVh1hGnbXgOV5LvzQ+0cO4Z0WFBIybXISA/zSYAB/
-	rFvAzSHt3zP05s2zk2OjksGK2bkTfLhn6cvtNY7J6FixyIpUv/rCawFVDcTkIJa1JHmLCo
-	GEnWNp5z1ILFloq+McA35i1rca8qdkI=
-Date: Tue, 8 Sep 2026 16:26:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788877566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
-	b=ibCJ1vTaf2PfeTeGGS4CPdeCQlmt6p7aLY7mIyests6CYT2a6E4Mjbx9HP5VcqSFIGIDN5
-	lQzNq4LeidtkfT+EysNyxDj3JNRd+SkiSObbBLZntgveQTRfZuO3v/L3jsJBVUb2BH8YCM
-	7vKdLixe7hXeDeAfmTR73MLoheT6qddEqn0zSpdo08XfzCFSXasPoLv5PXY5oZ4uUtuuhQ
-	ue9dInv7mMssJZ5SEhI8zG40m/o1XMobx0JA0bqLkrd6i/I6QO8W9g5ozGh5HmdlKJSK+H
-	nBg3aR8ypjomfwqNmYevI/XWRU18YkOzSNQOVFvzM7BNe1wvopfv0uHl4KPu0w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788877566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
-	b=dujpHxA7PKpeJCyeZiOagFVHrYS6MiqrupOYGFJ0EP4mlmR+jdnMRKg1XsL53yLYA37pen
-	ASTs5tXfWZYBIDDw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
-	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
- to UAPI
-Message-ID: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
- <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+	t=1788877827;
+	b=qhNp/LaO+fXJYfjhoIgOnE/GZruHoRjbgRkyVI55PMqhkklzY92GrpEHZsA42v+82tA32G
+	IU8vz9NGwAj2ac5JO94OxIi6GhdoYRziWAigmkKe6/72d/abm9ZlNSdh+ImgNKhDuIcKK2
+	4OTBJazoMsoTWn4jHbeKd7cTw563hB4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 864B1601DB;
+	Tue,  8 Sep 2026 14:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5711F00A3A;
+	Tue,  8 Sep 2026 14:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788877826;
+	bh=W1fcP7/pBh9KdtEegdsKqPfiQ9bBYmCGdHpPYEo3xto=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RLsG+ePvr3FjX3wQ6Fy+T38pvjKoC5pSHq11Uj/V5WKegnkmcAlGSriwspSUl02Vc
+	 9IIAMQIczl8YBeu1uSmr1BrVMOQNqUX+jF3G6KOnsM3r/YJ6lsKXU2iwwYfrwcr9ea
+	 ys3tByR95VJ6BhptNlWyccA5hb47KdnZY3zpAOInfuOKmI28tCEBTx+Zw9v6tGdjkl
+	 FF82MNV7/khA6CnYpot4aLAZuT95sKKyUX4V5fdnbz4KFif2expQYCDYXLN/Q2ewLK
+	 rKSAoc5nQqFlQR7l+PlxiaOzXj+h7fup7IGMMmlCp6oOq8dYM7QLSzz9KE95mYwIIK
+	 MuXIef5xL7sxg==
+Message-ID: <79548641-25f3-4ec3-a549-782fad168962@kernel.org>
+Date: Tue, 8 Sep 2026 16:30:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: Zhen Ni <zhen.ni@easystack.cn>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260907082620.2083838-1-zhen.ni@easystack.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260907082620.2083838-1-zhen.ni@easystack.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BAED510000D
-X-Stat-Signature: 7bqnp59czkq48dsynfje6k16yeh9onjx
+X-Rspamd-Queue-Id: 3B31F20009
+X-Stat-Signature: 15bs5fkjwf6n4564yjj4gg7opcu1b7ay
 X-Rspam-User: 
-X-HE-Tag: 1788877568-764564
-X-HE-Meta: U2FsdGVkX18iI3e16wnP75TMLsy8aphFxAyXhB9xH3Kpl4nLoDdE8Eu87rmGYYXwMIDjP9k7YWlDm0tUYuaGvx9l1aH/f/XQaZxYvaJ8/LlUs1qEVDSl1WAyjS2tTiQIV9L+2yaghy+aoFwb3ZWPaKqvyahNCi0a/pQdd0PsVlC5wtO+ec3X4YpzDOU2Zg2pOMGiuKAdDYpOq6j3bN8CPSFJWTDylVcrTgb3GUakAaA7WRfl3AwHchbLrw1Q0CLrizKXNCWgRXGgQYwGdbaZkF+HvzPI8z/tQ/KH3yzt+JH6N73YluaFSrHqY4j5wO2+pf1M1rTtjrRENLPSAfEl20BMj+AVB6OvWCCMRA+yxpA9NzhnRB3Fuo56CdcH7QXNc6NpwfvZUjSUdl5pvEC+b6cJK1+DacWAcGj21Nkb7fk+tz5f1KE7OVYoxwYqsRpAqbsyxK8DFQ61hHPuLuLogUC+GrStPeB4SXoqwC6drDSwf3eLOqhiITov7MU2jsDJwPlsH8spGNax1N/pXhkdhYA4XKjQYdV0oEoku0sgFc1Ebd0l0sJSNkTGwgK0Gp3oKr6cU/GpPcIAGmSs6+3TPJAsoo+IYx9vEQXeOBx2CNC5Ew4l+cHAaW65C0LPsZ4VKH6wkD8lMAb9CsHezYVRsSBUD4uvlpch5HJn1JstUtuO4ms3AYXdh1WzWeg57UT5bAUvpkapcFw4pBOld5YCM2A3Pm2k19r2mb2qFmJg+AdsZjL9mRXAombfabi1aYPHBgPWI2qYgqG7IVKNyLJBFfwIj/bk0edq15P/B5381wOtbPG+byGj64sJuxlJOJWb+7D5ZY/PfCiIlFfYwsUz3ZPEZTGTbByf4r/tk09/BUbgIhr1frhAyq7cQi/B4E5oT7xOVRGX/BILyyX0oDBuSOwAQtp7gFYyBXDcI+KbPAfQLl3xVO3qxUIedf6bTPbARJkYsgvFNI5f6eQw42J
- e0P7erCU
- xf/4d1uckBYRDMQ0Wc7sLYy+/eojzjmrXNuozdKpdi9/2oEHaVkb1fXD0DxEJ4DzmNxfPFrtb3LEm9ed1bNvBdjweDwj8u6dFudT2roL8cyvAYJ9ExR7Dza8MHj6Yr96OWSEOx+D3KsVtqPclEAp9mDt3CLLwXnnjyrhQ/1QWkGPIwdfm4qzlmwLIq1hFG2cWLEEVRTnJ/5HsjoVaEsPrPQQ6I90Ipy+DndYIf9dAxILyTBhZ3AMV3NGlxfGRKf/pfXDoBsCoEVoQ5CaMweOHd+IxxSPdeNcMpK0uTDhI5Qi6o+8B79IMYIM8SjRcLq0JvkDNClP/tYKEihjHB5zGfS7V8rDXByjNG7tcWalIp2H6zNyf2CN8HsTwvqSGygVF35XzlGvFNWeen0TcVOPtiF4D7x7AAD4ytU/Qod6E0ia6jOgS7GOEiRxLkyguz/rM0DqYnTmtVaes8Hgcshd0Or1X0EL1NYS3t6v5rRXXz1jeAcMjkIhdnJl3vPixM+4SkysF0OCG6wwRzLwO7HlNq02ceQK1WNgsYDiMhsLXFIn9JtE=
+X-HE-Tag: 1788877827-348650
+X-HE-Meta: U2FsdGVkX1+pYV8mzu/PhGQ/JZbFtL7+Z5CYtVyyKlg26q6morulHNk7LUD/nrpkcwHNHOesSHfblfJblHoFMLDjX7CN2viHZSHIrzKuFK7f/1prtXrgaBN7eGRSgQuQhhZA+MXFN/gW67qL7tb/ujesRheyIdn1YFhXHV2rYJuv+ku6Ccz6ArTOZBm8iSdTwVT/7iCDvG0dterQCNYQIKGAqd3w2Qwt+k9Ke5F63VrW/1KzuOyKM2C4nGkHV05HiYNvRDH6StgBLTaJPpe0CiN5tUj2vZtQj0WLeFoUYxXLt4tAtlF/NdrXrWY9i8j6wakCGWpCWVWPdByaSguGkmvMwwJYZYt1z0/tCy+/9ToySWsEKWO/6mb8YjThRQBt7wFAeoEG8UokgSFiAjtbcaKhr/Us8m+0NkzMl3TKZKYEw2yHKFSuBSKtPT2/vt8CUOicsddVVCxIvQEIHLRuTmc8vyh+onvzCSRaA0AJz4zVjmTEi9SFyhKaOFV+VnGDL0YEmdTxOTcK74CI8gSOjf350b3Ezb2wUzScO6REKBJajyICL1OHDn+/sEwF/18Gm/Xd5PqsbAlorA6TbL9FZpbFQPxw015Q7mMDx+nxjw0Ojg4eQGNpxttS/VgN7WYBWmUQw9ewv3GlKFLudn87YMFtKfgVIsj4mcM96jhRoDabel/fx/I7oWt/vykA424DVkBGtbJKIVrclDH1lC9FYUidxiWEnziDfuZiJrWJHUaXMwG4CBvKN3InWzBSt7/tMCPQNRrPxw5GGL5ybScc+17Ygu+jnkjWoi+DdmFZH5BnKnroWk+PDiIKE2tf0dWe/Krpz12T6eeNtMgmVFHcoxZnKJ8iM09otPDB5kgn9K55O24273k5QzWWg1W+WKKYnD8Oj0jVnHgi1TZqNxYK2kgVxILZO8uf/+gkb+APNI+WXy15BfIdIMM7nVYC1qNaNaAX6r92h0fqxBoi0Vh
+ cq4LCaa4
+ s7B22wMckr3fpfxZXuks62xqkmMvUogqMEks6qeUOVQwnPzI5h0/As/w4lJ/USnQ/zi/ba2mu6fsC7nQIU1lXEGHfCeWKfunG/LL7kzCRoU+4rcwtb4TiKANaKH8zv0l5tIlAjlr2MIV3X18ppgQKlaIrtcSGlvGU/b8GEIKp72F6Jl0lLVzvRZKzNXcA3k+pT0wsgwUR8SUNIH3TVwTXDjNCv7R7ZHpIK3YIlfueyI/x9OWSNfIkQmNH8AJH4Z2DtfDqliClny3v1RFt32H9YO9jfNdpOws5Zl4ARxTYPnEySNn3HJGgZuEBp9PGzA2DN2VBSHcaD+7nsPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,24 +144,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 06:55:13AM -0700, Borislav Petkov wrote:
-> On Tue, Sep 08, 2026 at 08:33:36AM +0200, Thomas Weißschuh wrote:
-> > These constants are useful for cross-platform userspace, for example to
-> > process ELF files during kernel cross-compilation.
-> > 
-> > Move them from the kernel-private architecture-specific header to the UAPI.
+On 9/7/26 10:26, Zhen Ni wrote:
+> This patch series adds process and memory cgroup filtering support to
+> page_owner. Following the previous series that introduced print_mode and
+> NUMA node filters:
+>   https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easystack.cn/
 > 
-> Why UAPI?
+> This series adds filtering capabilities to page_owner, allowing users to
+> filter output by specific processes and memory cgroups. Users can now
+> filter page_owner output by PID, TGID, COMM (with wildcard support), and
+> memory cgroup path. This makes page_owner debugging more focused and
+> efficient for tracking memory allocations in specific contexts.
 > 
-> Why not include/linux/ ?
+> Targeted filtering provides significant performance benefits on large memory
+> servers by reducing both execution time and output size. By filtering at the
+> kernel level before reading, only relevant page allocations are processed,
+> dramatically reducing the amount of data that needs to be handled in userspace.
 
-The existing, generic ELF definitions are there.
-The ELF stuff in include/linux/ is highly specific to Linux.
+page_owner is used for debugging. Why do we have to add kernel code to make it
+faster?
 
-Also later in the patchset I want to expose the definitions to the
-tools/ build. Exposing generic UAPI definitions to tools/ is a much
-easier sell than include/linux/.
+How much faster are we talking about?
 
+Or are there other limits to actually implementing it without kernel pre-filtering?
 
-Thomas
+-- 
+Cheers,
+
+David
 
