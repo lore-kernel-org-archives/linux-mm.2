@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215DC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EBDC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:14:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E3276B00A0; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
+	id 380976B00A1; Tue,  8 Sep 2026 09:14:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 294576B00A1; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
+	id 358B26B00A3; Tue,  8 Sep 2026 09:14:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15D926B00A2; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
+	id 1D1EB6B00A4; Tue,  8 Sep 2026 09:14:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D55D06B00A0
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:14:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 771B2A503C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DBD9F6B00A1
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:14:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74912C0691
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:06 +0000 (UTC)
+X-FDA: 85190638092.17.36181B3
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8635B18000B
 	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:04 +0000 (UTC)
-X-FDA: 85190638008.09.214D521
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A578E18000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:02 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lPw/po6N";
-	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T5DnMrzr;
+	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788873242;
+	s=arc-20220608; t=1788873244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
-	b=VJON2dPz/JUAJaXAfs6pXymJ4aA2UctfRY9PS/nQZeLa4/z9yoi75dXNiwen6oI13oxa/J
-	UJtrNP15UPOT4a8Pf1BH9ZHQ9zwhb5pFUJlTtbJDPvdUajYX9FSmoF8kdJvMXOWbqavz1W
-	VVpCsPv1C5CjOGaZM0rqEUtAqM3bF+c=
+	bh=WAyR6h5/4ojoKsK6CQz1j0Z55ZNB06yaKFwRajx+NlY=;
+	b=hQgs4lcr+Vlnv9R/xMIT6mbNowAOnqPe/4+EyjDm47FHtepcYfU4PZWdMM3QMTDEuD+48Q
+	8OBLUI13WMQDGwl2rGA7a6i51dXoBpVp8axR9tGvm0LwGkbfAXU/QV5EGR0bTpGxinktOk
+	cHuwS0S9jyQg3g3IVYJkuUqitYwrHe0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788873244;
+	b=KN3tH5eUNW+leX0EqswhmlgE8ZIkr2gam+HKt084qB7ux1ra6tPvrFqChEX2OHsTnoevY8
+	smweFafAwdLDok6UqF28HiPbkvG126gQF5h0pebyVRV4ODdJFgxBn7rvJEiTJdjgc7iAM7
+	dQ0TkL/Ah9pQG01xtTHpVcXwuTcUF2M=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lPw/po6N";
-	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T5DnMrzr;
+	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788873242;
-	b=hfyUZkjNDww6VCKQ8LTAby6MUKdtrI3YyZMx7LQ+Yh7hOGUBYPaSH8Ni03n2/kGxhHMu5a
-	QduBIoF1xP3OuWPldtNOsncY3PzSxWj+B+dsrBkElzwu4wSKj+A1Ze/A3r6nbLbxLoTgb1
-	bAaD4gYB8hEW5OXeSqR1J+TJDMQCXBU=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c250c6a6a9aso762660466b.1
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 06:14:02 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1677c91969so462637066b.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 06:14:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788873241; x=1789478041; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788873243; x=1789478043; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
-        b=lPw/po6N6OT4x/tYBPDhf+LAsOJ2eXzcX9T6gBxNXtHhx5HURwufml3EGP4aRK+/CO
-         pipfLNLTJqn+dEvkuRKgSjJHSb+4XhD9vEIApkkirkPdeEnxFOSFIBd79oxZt+sgOWqU
-         HBVLv/nFfTIOtSrN/gwg6m4e3kXGV+brRu2PmKHkuMV0zAlqS50c/m9bBDsmi1u7AWTP
-         6naF06D8lV8gynWAMPCw/G/2LYifPAy4alcKnsAgDKXeCwG1dFzztR3XPPYS5jLcq54P
-         fG1Hiy7xqBs4cNFaR1w/wZwRn/n0Z78kXqwY84K++CoJVIX9/2tRxpFkx90wAd6EbVB7
-         lreQ==
+        bh=WAyR6h5/4ojoKsK6CQz1j0Z55ZNB06yaKFwRajx+NlY=;
+        b=T5DnMrzrpla3jjjTF4Kz1IoTx56DD8/c/xmcJHJUup1Qz7gQjQjXhcRAjHwyhopRct
+         99nfnu3kF0o0cQFG+MDGxR56YZCBwNtuSCZglGi+2SI03ohDcnAFV81uuu/Dy4zTTxn0
+         rZzPdlJ6DjxvzMwdHeeWRHHcE1PL2TS20JT8fdFyLj/JgIoB2k0DXqGlfJmGo+rBLRpp
+         V+2dOOc7L5pnwOlCdYr3JwpayG9r6qRue0C/XJABwmCUpFYFz9g1yljG5VbeYXdJgH3V
+         8O9Y4KUwyv/k6cOjxFKne5KbaSDvZFlxrKRVT/1ysEipd6DdPqxy7zxIRORJmZdndjDf
+         umnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788873241; x=1789478041;
+        d=1e100.net; s=20251104; t=1788873243; x=1789478043;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
-        b=iQIDKwNwNvy2N08lHZJ5RPKDCE8m5MvanK5/rGpiz69OYQRbT47yVEIYI6aGdFADz2
-         7bomiTzeNGaBDevp+mSOR3moN5akeEcdNJqn2Ti0cTbXLltcf8HrH/TNKzyymfOa8AMo
-         n8yNaRQldU89SWYu5bZ4x0j8/7n05pZCT0Ho6xGLXGfUZqc/1hZQ12dFw86MBMQ3GThS
-         tAcz/KS4DLql2IieQ8PU2npCUR7VqeTaNgMCAFD21YQ2c+6zkx9WpX9XRpNWVdXAPJ2l
-         OIQFSzpzlWBH/tdfrLepApUHBLoIJJa9KbfmvDVTlA6s1sSA0vFwFo/O5WDkOqAR1NkY
-         vc8A==
-X-Gm-Message-State: AFuF++m33WMpPox0N5j5jIHfkzq1VcLIQGkJjme7W+2O31DXhN4U6ICi
-	P+jBqzf/ErssWp7xYXmN4dnLxXbMRk55NV90WikP6gS2r8h4KjXNo4uU
-X-Gm-Gg: AYBFou1Gkg/AWVe5vIVJCx4HDFfGdRVWmbIMSNtsyh+BiHE0F10wbotTFUuG7kO4wR2
-	BcxdS0JXqnqfYa4WMVt8qcMyFaO3kOdx9eC1Srpq4vVcEv6geVH/6v3/DcvbywDYINHzlt5VtnC
-	FS5zfs1AJ9pFcwRz0Zd+p9lPPFn6GU38+QceCV6wPhDKb2O5AP7i+dR2KkP05SpQJn4mbFvlWaw
-	HDdtShXVZ8RHTNXH9hzCsuPXGyWS6LXxvP/ecIMSOnFg8Xyljn8ctKoPTWITngA3EgnzD09s5P4
-	/hg/uh7SlmVsOiPx/PFOiWjSERRdffuK46f4YhIdEABQ8ouI98FGZfnQ84Q/wFRjSnrzMfGHUdK
-	7IQASKBRtJuo32RhdFVlWwY2p+WokUtyCeu2A9skwwemY6KclUUXw7FkXaoSCANARVxi97iNulM
-	U5XRDm4t+Dw6Wi8qD9gM0JLF0Qc+aZlhqHHA8BssAgww3Oic1u/Q==
-X-Received: by 2002:a17:907:7b8c:b0:c19:49ee:19b9 with SMTP id a640c23a62f3a-c260cbfa1a6mr2202057266b.15.1788873241205;
-        Tue, 08 Sep 2026 06:14:01 -0700 (PDT)
+        bh=WAyR6h5/4ojoKsK6CQz1j0Z55ZNB06yaKFwRajx+NlY=;
+        b=HtIRyUcvctncxXLvsNbt5LkqMnAYj/z0e1XDe1NaVdnzLOwsk9Wd6zqdkee71RJ+4x
+         AbS+dCdTXgPwkN4BM7jOJDH1y7XmPfEVy9Mei/RU0Xypz72kRq49MZNB9aeJOqQFRq+V
+         N9WObF3xyeC1QsD+hfN2VLSgAaFg2SOPuoMU6goo5WfNNAUcLvTt35SiuPdhVxYPXtah
+         u6Jj70LIQJN999yAtpOmti+V5PvHHQSJCvJckz52da8BvET1UJgvOqGGDWKr9ErmggO9
+         qlW8JRmWmYixq/Jg4pbVhG+IU3xuRHEDtWc/eoEqKXTlpXBQ74752OZFhNELkr0Rcv/v
+         AiZQ==
+X-Gm-Message-State: AFuF++niyVYXGECWkztvairUqEga8eK+6CdkspUBw1UZQuOy83Ci2l/x
+	0DJrRZf6gkXZOkte2oR0Duf6s5rvG1S0vu2CUxV7HQKbk5cIXYFIE8cS
+X-Gm-Gg: AYBFou1pvalCJK17aLQM8PftU4ILYdYlpQMzptOlo/Z7XtMgcNrZ3y+plC6eQNePo+h
+	fS/WhBh7dg61k1+dbTPWI3atKiIN0YxyTr5EyiuXqjtgHMWMFbvebhfuqzWypqPV7rAUXue3nrb
+	hCYTXnTPOA6BUotCdZH6sXfe7O13VK0FY8SBqrXCDstifL/BdII8W4tdOAuw82mV+IxQM8CJkRM
+	vw8vP0h0b6eszPE2tnjUj67keHsFwvG7PqfVEq0LzARLFqeByK32ZVm29QeKa0CfPi3n2pDSBq2
+	W+hvtYtYooJjPzqDVRHVS9narIhUZEITEsyH7SbwsfBtGx//v5iJ1zWl0SKjyROO17Ne5Jaw3vL
+	W+SGJdflmSAuPxOV7ZthdU5lEuv0r29zGEc08HBIbKiXYLLnfxzubrvlXH4hhOLdYrsT4RS+FFC
+	DXVQQ+x+kB+0TBbkK9MvpNhnPOzRzHx7EsZfxTa4cNGoxnySzCtmszQYGRnlaV
+X-Received: by 2002:a17:907:7287:b0:c26:1649:47b0 with SMTP id a640c23a62f3a-c261649564fmr960747966b.38.1788873243007;
+        Tue, 08 Sep 2026 06:14:03 -0700 (PDT)
 Received: from [127.0.0.1] ([2a09:bac6:37a9:1e5a::306:1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d6e1c93sm625170866b.63.2026.09.08.06.14.00
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d6e1c93sm625170866b.63.2026.09.08.06.14.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 06:14:00 -0700 (PDT)
+        Tue, 08 Sep 2026 06:14:02 -0700 (PDT)
 From: Caleb Kan <calebkan1106@gmail.com>
-Date: Tue, 08 Sep 2026 14:13:42 +0100
-Subject: [PATCH RFC v2 09/11] stackdepot: add architecture hooks for
- compact frame storage
+Date: Tue, 08 Sep 2026 14:13:44 +0100
+Subject: [PATCH RFC v2 11/11] stackdepot: add KUnit tests for trie storage
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-stackdepot-trie-v2-9-1996d5cef732@cloudflare.com>
+Message-Id: <20260908-stackdepot-trie-v2-11-1996d5cef732@cloudflare.com>
 References: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
 In-Reply-To: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -109,14 +108,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, 
  kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A578E18000B
-X-Stat-Signature: wtz7crqty1euikbboawhqkr6w5zitfwg
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788873242-52867
-X-HE-Meta: U2FsdGVkX1/yMiLyHczIMgXvBb6OuKEy8A+75BUqfgIUGBsMUDTomE6jAskiKVt4zJ/nfWoSfBe+8J5XBeKmzHI/baWyDpNOMUObuLaHMgy1Im+MCZhxWX04idsQN3Ug+0I8vm31YqMOdBMd8gBrWaX9wxC674RcyTLG/IEjYj0WisDJXkST8atmiJz6vfzpObatmRPseGJ4CsPj4mnda2Yqkgj2H0e3CLCcVHOP/tOR7sTU2zt4WNeIU7Pr7K2/KWtxybO9fbtsENdDRn+AgxYr/KreYeuh8OY1jec2SMPLIlK2oEDsA3gfeVsIyVdwdANou8GJeE5WsHaN7wYL0NM432NogPiogCXE61sqZrB5eCkBq4YiQHMUhj2mg7Zd3sMr7+pfSNVOUL89M/l6JnzbHFqRl2z8o/jp7x1dKhptMxC3YqKnEe6IxJaMeMOWKbrcfDfTghQTZ5hi/1kDsfVorxfG0ZGaeS6TDfT5cyjb/eH0zBhBPtZ6858bGB/gdMOsye/unfF2BD+kwJGW8GlJrMNR1Bh0IjiF9h75iUkNRZp/kl8Cjj+D4rG86amlElaX6iYiEoEAAKAaK81qYxDt4Eq2SpMBhOdsxLrTFZc0ryoexA8EyoV26R+WvVRP0M2pczZPyAEIRviiozWyoHTUR6HjuXhdzicUhquTvTUtSkyB88LA/Ok7p4VVBOpZbX3hLQYQN4i5CHRcguNepHsxtIcut5A0mwyWEvv+Rq3Mofwr3jQGo8FskJ7yZxeIDKzwc6qjW9rYYhIXOuqKumW5Uchg351rVoivRAd2wz+yns1wS8il6JgDMAXmpd/ga03/I0TS39lZHuXU3LJ9r6XPQaWy4LjvXGh+5BWFd63rP/MeEhQYORPLF3M/KVJ7DfSVynUladkjmiCbu6ZDB7ij/Y9faQ4Xe5i7wIbFLDAeoXmgksxAzoh72+kBgJYicFB18d5Tru6d0r1Glef
- WqCkbeYI
- 2drcNdzLOh/eHNYBiqtQIbHN+cDyeVG81zpELwl6JBg9k7Ri/6zGUKunVeq+enRyAimVoyX3pv3GZmhqMGJjm/0J93QngMghmNlcm13HC1iq/6Wqr8r9nqTuJ7DZHftceQ4P1FA3lJ21ylxBcahjHL1IGRNApUrGc+8I1GzSk4Jh7P0xHaiYwbKJ4yDZQp19JIzPdLm7iH7MpStweIKcV1FUQvuYUm3rBjrLqPoJ84e8nIlhaAdKyf41ntHKjMM90Ka7wLYgBM9cQmGiJBxYKy3Gdi5HAirHbMi65KChPMy7O1zaMb3D0BlzwakxEpjz0ZUrUcndNe4CGMgC78KfQqhLJ0spmZKJuwF33lqTMZnKvkjPibG4IwvB6UlG3Dp+cOWJun6gQBB7wW+n8pQO9d7x8rJ8Ip20ItDnv1OL42Huos9B9DzwQjKNJTQiogfN1GjMGxLd50hlDNDUS+uNVzQAzJp2/v4/JCfnX
+X-Stat-Signature: y1cen5qe9mc6w959ypeief8f4i5jof6e
+X-Rspamd-Queue-Id: 8635B18000B
+X-HE-Tag: 1788873244-529072
+X-HE-Meta: U2FsdGVkX1+jeq7potghgrcO5an4dqZLxt8L+7kUmVvtOg8qv9LiAT2s+6wiDIEREEEN6MltIBAA/sp+m3GWfCIbmCkIM9GpodV8X8YxX1/XxDBZ8LU6cvvllzsrUGnpJEbe0oophjTpOIFztUTB2qAuZ6NfBYRH6n7go7i0E2Wnt045PcFbGh1cozwjd5FFlWxHldRQtbHtUuW9EAJTLMCVFW8o0RaArbtldwaQA8DEJG6LZuRMUa9e+oqwXcrL0qTMuHh/lsWEH/ScHcvMbuVP75uSSbpB6isJvOvLVoLX8DwwTr5pkc1+q1KPt7hQXlu+/s5Bin9kYcVCI4TE4CjRETo4tlS8dLjOWtCPRGtyw6akU+H7pOVD34a94glvGDDZ1jwelYW3jhtQRIjveisyjESdsY+7WlpHl9T1eeg4+jPVmLG4q6OsSVP9WVgTtC0gV7Jo86y6SJKO+Tnl6aAUgPQ1Swcz2oaPhZ+qnnjNlbt+pPlfSJZieEUmvldS2R2WItaF5XUJgO1y/3Y5Z1auWK2AeJHJcHo6vvEEVSTyU+0MLM4UsPLhF2/s2xck60CbNdBMv/8WobM6MTsEZ3qsbjW1mxTAhHWHgecuCA3NJIicnyOp+b6eTlDn0blW8zsp5v8NYWS7FM6Reci5Vs2RhqReMNUWuOgefM9wUM5Z8Rv8AcUJJhILE1hKcO3U9vtjBmvAZj+73DY6WSugDHzfyh5AR7IKyPzA/trvVRgk4jdWG/UHn1zQbS0x4efx2ZWp6HTFPs0xmR7W0yiIsRyr93oqxe0si0iff5h3h4umxQnZGT+wHbhN+48PQuT7xsxlaP98S0psMptB3J6taIty7unbuTMBmCD2cbhRTHwd5pKSGjy2hlXZPjhGbCyRBasiDLsDRBhEQI213R3CSMwB5LSXz04JMv8rbQHRgsx111YYBV6tiAXc1kaNWF+ptx6I9C/kfSkSY+Ee7mN
+ K2z+IjVp
+ lIw8lL12QOjUqau4UrvL1JqYQkPfVXGcRkhWYzyVgYOxJxwwEAqyEpoaUJF9sy/7FDjbXbGIItWCsiitR6kbxHHqmsoHuzk/NZKnopIYq15j+6AetoueQmq17W9TUyPdODCAoRuG2wtxp/sYF3vY0egLMQ4yaBR78fzYDzqfPtHAcDz06HpQjHPoaQqvMp+HzaDdJFEamN4/eq/8J7sOOgDH9w9e/6TscP2PjDp4EbOEdLboK83YvcQKWvmfxaUY/mLF5NTbGljguN9WwOsc5KMMy9fBwzUEjv7XcXuFfwX8+EojXakpSs/OsnJpeYGIYkIkqKgib34C4F+pLQrVhLiYn8A5sC9Doaqv5dU8sKfldeYldFkZaZBDGQ9hzkNrVZAPktvo8hg2Rt3TYJjDxJGz1dN5RjqugUmrgMIPWK80NTXzEZyTl0wslxdcUEOAOVqAVr3TQqme155ZUhBLlUyGNKYzEaJ4FGxzF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,285 +125,434 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Caleb Kan <ckan@cloudflare.com>
 
-Path-compressed trie nodes can reduce their frame storage further when an
-architecture can represent kernel text and module addresses in 32 bits.
-Add architecture hooks that compress a frame only when decompression
-reproduces the original address exactly.
+Trie insertion changes shared topology, but handles returned before later
+splits, promotions, and child-array replacements must continue to fetch
+and deduplicate the same traces.
 
-Store arm64 frames as signed 32-bit offsets from _text. This covers the
-2 GB module relocation window without depending on a 4 GB high-bit
-boundary. On x86-64, store the low 32 bits when the upper 32 bits are all
-set. Keep other frames full-width, and provide a generic implementation
-that always rejects compression.
+Extend the built-in stack depot KUnit suite to test trie storage through
+the public APIs and direct insertion cases. The public cases continue to
+run against the hash backend by default and exercise the trie when it is
+enabled.
 
-Make the generic header available to architectures without a specialized
-implementation and wire it explicitly for UML. Add KUnit coverage for raw
-fallback, arm64 boundary round trips, and native x86-64 prefix compression.
+Cover save and deduplication behavior, maximum-depth and overlong stacks,
+insertion when allocation is not permitted, GET records, extra bits,
+caller-owned fetching, and complete and truncated formatted output.
+Exercise append, descent, split, promotion, child-array growth, and
+tail-append paths. Verify that handles returned before these changes still
+fetch the same trace and are returned again when that trace is saved.
 
-These hooks do not change stack depot behavior until a later patch adds
-trie storage.
+Add round-trip tests for compressed and full-width frames on arm64 and
+native x86-64, plus an architecture-independent full-width test. Keep the
+topology fixtures portable to 32-bit architectures. On 4 KiB arm64 and
+native x86-64 builds configured for 256 frames, a maximum-depth trace that
+alternates compressed and full-width frames creates one node per frame and
+requires more space than one otherwise-empty trie pool.
+
+Require stackdepot_kunit.trie_pool_limit to match the
+stack_depot_max_pools value used at boot before running trie-only cases.
+This makes backend selection explicit and prevents an initialization
+failure from silently running the hash tests instead. The save-flags and
+snprint cases also check that saves return trie handles when a trie pool
+limit is supplied.
 
 Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 ---
- arch/arm64/include/asm/stackdepot.h | 42 ++++++++++++++++++
- arch/um/include/asm/Kbuild          |  1 +
- arch/x86/include/asm/stackdepot.h   | 37 ++++++++++++++++
- include/asm-generic/Kbuild          |  1 +
- include/asm-generic/stackdepot.h    | 19 ++++++++
- lib/tests/stackdepot_kunit.c        | 86 +++++++++++++++++++++++++++++++++++++
- 6 files changed, 186 insertions(+)
+ lib/tests/stackdepot_kunit.c | 352 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 352 insertions(+)
 
-diff --git a/arch/arm64/include/asm/stackdepot.h b/arch/arm64/include/asm/stackdepot.h
-new file mode 100644
-index 000000000000..df8959d59336
---- /dev/null
-+++ b/arch/arm64/include/asm/stackdepot.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_STACKDEPOT_H
-+#define __ASM_STACKDEPOT_H
-+
-+#include <linux/types.h>
-+#include <asm/sections.h>
-+
-+/*
-+ * Modules are allocated inside a 2 GB relocation window containing the
-+ * kernel image. Store a signed 32-bit offset from _text so compression is
-+ * independent of 4 GB high-bit boundaries crossed by that window.
-+ */
-+static inline unsigned long arch_stack_depot_frame_from_payload(u32 payload)
-+{
-+	long offset;
-+
-+	offset = (s32)payload;
-+	if (offset < 0)
-+		return (unsigned long)_text - (unsigned long)(-offset);
-+	return (unsigned long)_text + (unsigned long)offset;
-+}
-+
-+static inline bool
-+arch_stack_depot_frame_try_compress(unsigned long frame, u32 *payload)
-+{
-+	u32 candidate;
-+
-+	candidate = (u32)(frame - (unsigned long)_text);
-+	if (arch_stack_depot_frame_from_payload(candidate) != frame)
-+		return false;
-+
-+	*payload = candidate;
-+	return true;
-+}
-+
-+static inline void
-+arch_stack_depot_frame_decompress(u32 payload, unsigned long *frame)
-+{
-+	*frame = arch_stack_depot_frame_from_payload(payload);
-+}
-+
-+#endif /* __ASM_STACKDEPOT_H */
-diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
-index 8fdc0bd9ab6f..14778d2457d7 100644
---- a/arch/um/include/asm/Kbuild
-+++ b/arch/um/include/asm/Kbuild
-@@ -21,6 +21,7 @@ generic-y += preempt.h
- generic-y += ring_buffer.h
- generic-y += runtime-const.h
- generic-y += softirq_stack.h
-+generic-y += stackdepot.h
- generic-y += switch_to.h
- generic-y += topology.h
- generic-y += trace_clock.h
-diff --git a/arch/x86/include/asm/stackdepot.h b/arch/x86/include/asm/stackdepot.h
-new file mode 100644
-index 000000000000..9a8d04fa8c1c
---- /dev/null
-+++ b/arch/x86/include/asm/stackdepot.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_STACKDEPOT_H
-+#define _ASM_X86_STACKDEPOT_H
-+
-+#include <linux/types.h>
-+
-+#ifdef CONFIG_X86_64
-+/*
-+ * Compress canonical kernel text/module addresses whose upper 32 bits are all
-+ * ones. Other kernel virtual addresses stay raw, so decompression reconstructs
-+ * the original frame by restoring this prefix.
-+ */
-+#define STACK_DEPOT_X86_64_FRAME_PREFIX	0xffffffff00000000UL
-+#define STACK_DEPOT_X86_64_FRAME_LOW_MASK	0x00000000ffffffffUL
-+
-+static inline bool
-+arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
-+{
-+	if ((frame & ~STACK_DEPOT_X86_64_FRAME_LOW_MASK) !=
-+	    STACK_DEPOT_X86_64_FRAME_PREFIX)
-+		return false;
-+
-+	*low = (u32)frame;
-+	return true;
-+}
-+
-+static inline void
-+arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
-+{
-+	*frame = STACK_DEPOT_X86_64_FRAME_PREFIX | low;
-+}
-+
-+#else
-+#include <asm-generic/stackdepot.h>
-+#endif /* CONFIG_X86_64 */
-+
-+#endif /* _ASM_X86_STACKDEPOT_H */
-diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-index 2bc00c67dc54..d8402a6afc70 100644
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -55,6 +55,7 @@ mandatory-y += serial.h
- mandatory-y += shmparam.h
- mandatory-y += simd.h
- mandatory-y += softirq_stack.h
-+mandatory-y += stackdepot.h
- mandatory-y += switch_to.h
- mandatory-y += timex.h
- mandatory-y += tlbflush.h
-diff --git a/include/asm-generic/stackdepot.h b/include/asm-generic/stackdepot.h
-new file mode 100644
-index 000000000000..846975767bdd
---- /dev/null
-+++ b/include/asm-generic/stackdepot.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_GENERIC_STACKDEPOT_H
-+#define __ASM_GENERIC_STACKDEPOT_H
-+
-+#include <linux/types.h>
-+
-+static inline bool
-+arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
-+{
-+	return false;
-+}
-+
-+static inline void
-+arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
-+{
-+	/* Generic code never compresses frames, so this hook is unreachable. */
-+}
-+
-+#endif /* __ASM_GENERIC_STACKDEPOT_H */
 diff --git a/lib/tests/stackdepot_kunit.c b/lib/tests/stackdepot_kunit.c
-index 3c526791ef93..e4a7f1c83457 100644
+index e4a7f1c83457..b86b84d56176 100644
 --- a/lib/tests/stackdepot_kunit.c
 +++ b/lib/tests/stackdepot_kunit.c
-@@ -3,9 +3,21 @@
+@@ -3,12 +3,19 @@
  #include <kunit/test.h>
  #include <linux/array_size.h>
  #include <linux/gfp.h>
-+#include <linux/limits.h>
++#include <linux/kallsyms.h>
+ #include <linux/limits.h>
++#include <linux/moduleparam.h>
  #include <linux/stackdepot.h>
++#include <linux/stacktrace.h>
  #include <linux/string.h>
  
-+#include <asm/stackdepot.h>
+ #include <asm/stackdepot.h>
+ 
++static int expected_trie_pool_limit = -1;
++module_param_named(trie_pool_limit, expected_trie_pool_limit, int, 0);
++MODULE_PARM_DESC(trie_pool_limit, "Expected stackdepot hash/trie pool split");
 +
-+#ifdef CONFIG_ARM64
-+#include <asm/sections.h>
-+
-+static inline unsigned long stackdepot_arm64_frame(long offset)
+ #ifdef CONFIG_ARM64
+ #include <asm/sections.h>
+ 
+@@ -18,6 +25,222 @@ static inline unsigned long stackdepot_arm64_frame(long offset)
+ }
+ #endif
+ 
++static unsigned long stackdepot_test_frame(unsigned int i)
 +{
-+	return (unsigned long)((long)_text + offset);
-+}
++#ifdef CONFIG_ARM64
++	return i & 1 ? 0x1000UL + i * 0x1000UL :
++		stackdepot_arm64_frame(i * 4);
++#elif defined(CONFIG_X86_64) && !defined(CONFIG_UML)
++	return i & 1 ? 0xffff888000000000UL + i * 0x1000UL :
++		0xffffffff10000000UL + i * 0x10UL;
++#else
++	return 0x1000UL + i * 0x1000UL;
 +#endif
++}
++
++static void stackdepot_trie_max_path_roundtrip(struct kunit *test)
++{
++	union handle_parts parts;
++	unsigned long *entries;
++	unsigned long *fetched;
++	depot_stack_handle_t handle;
++	size_t size = CONFIG_STACKDEPOT_MAX_FRAMES * sizeof(*entries);
++	u32 pool_index_plus_1;
++	unsigned int i;
++
++	if (expected_trie_pool_limit < 0)
++		kunit_skip(test, "trie pool limit was not provided");
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++	entries = kunit_kcalloc(test, CONFIG_STACKDEPOT_MAX_FRAMES,
++				sizeof(*entries), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, entries);
++	fetched = kunit_kcalloc(test, CONFIG_STACKDEPOT_MAX_FRAMES,
++				sizeof(*fetched), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, fetched);
++	for (i = 0; i < CONFIG_STACKDEPOT_MAX_FRAMES; i++)
++		entries[i] = stackdepot_test_frame(i);
++
++	handle = stack_depot_save(entries, CONFIG_STACKDEPOT_MAX_FRAMES,
++				  GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
++	parts.handle = handle;
++	pool_index_plus_1 = parts.pool_index_plus_1;
++	KUNIT_EXPECT_GT(test, pool_index_plus_1, (u32)expected_trie_pool_limit);
++	KUNIT_EXPECT_EQ(test,
++			stack_depot_fetch_into(handle, fetched,
++					       CONFIG_STACKDEPOT_MAX_FRAMES),
++			(unsigned int)CONFIG_STACKDEPOT_MAX_FRAMES);
++	KUNIT_EXPECT_MEMEQ(test, fetched, entries, size);
++	KUNIT_EXPECT_EQ(test,
++			stack_depot_save(entries, CONFIG_STACKDEPOT_MAX_FRAMES,
++					 GFP_KERNEL),
++			handle);
++}
++
++static void stackdepot_save_flags_public(struct kunit *test)
++{
++	union handle_parts parts;
++	unsigned long entries[] = { 0x501000UL, 0x502000UL, 0x503000UL };
++	unsigned long get_entries[] = { 0x601000UL, 0x602000UL };
++	unsigned long missing_entries[] = { 0x701000UL, 0x702000UL };
++	unsigned long blocking_entries[] = { 0x711000UL, 0x712000UL };
++	unsigned long fetched[ARRAY_SIZE(entries)] = {};
++	depot_stack_handle_t blocking_handle;
++	depot_stack_handle_t noalloc_handle;
++	depot_stack_handle_t overlong_handle;
++	depot_stack_handle_t plain_handle;
++	depot_stack_handle_t get_handle;
++	depot_stack_handle_t again;
++	depot_stack_handle_t extra;
++	gfp_t no_spin = GFP_NOWAIT & ~__GFP_RECLAIM;
++	u32 pool_index_plus_1;
++	unsigned long *overlong_fetched;
++	unsigned long *overlong_entries;
++	unsigned int overlong_nr = CONFIG_STACKDEPOT_MAX_FRAMES + 1;
++	unsigned int nr_entries;
++	size_t overlong_size;
++	unsigned int i;
++
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++	overlong_entries = kunit_kcalloc(test, overlong_nr,
++					 sizeof(*overlong_entries), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, overlong_entries);
++	overlong_fetched = kunit_kcalloc(test, CONFIG_STACKDEPOT_MAX_FRAMES,
++					 sizeof(*overlong_fetched), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, overlong_fetched);
++	for (i = 0; i < overlong_nr; i++)
++		overlong_entries[i] = 0x800000UL + i * 0x1000UL;
++
++	plain_handle = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, plain_handle, (depot_stack_handle_t)0);
++	again = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_KERNEL);
++	KUNIT_EXPECT_EQ(test, again, plain_handle);
++
++	nr_entries = stack_depot_fetch_into(plain_handle, fetched,
++					    ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)ARRAY_SIZE(entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, entries, sizeof(entries));
++
++	noalloc_handle = stack_depot_save_flags(entries, ARRAY_SIZE(entries), no_spin, 0);
++	KUNIT_EXPECT_EQ(test, noalloc_handle, plain_handle);
++	noalloc_handle = stack_depot_save_flags(missing_entries,
++						ARRAY_SIZE(missing_entries),
++						GFP_KERNEL, 0);
++	KUNIT_ASSERT_NE(test, noalloc_handle, (depot_stack_handle_t)0);
++	if (expected_trie_pool_limit >= 0) {
++		parts.handle = noalloc_handle;
++		pool_index_plus_1 = parts.pool_index_plus_1;
++		KUNIT_EXPECT_GT(test, pool_index_plus_1,
++				(u32)expected_trie_pool_limit);
++	}
++	nr_entries = stack_depot_fetch_into(noalloc_handle, fetched,
++					    ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries,
++			(unsigned int)ARRAY_SIZE(missing_entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, missing_entries, sizeof(missing_entries));
++	KUNIT_EXPECT_EQ(test,
++			stack_depot_save_flags(missing_entries,
++					       ARRAY_SIZE(missing_entries),
++					       no_spin, 0),
++			noalloc_handle);
++
++	blocking_handle = stack_depot_save_flags(blocking_entries,
++						 ARRAY_SIZE(blocking_entries),
++						 GFP_KERNEL, 0);
++	KUNIT_ASSERT_NE(test, blocking_handle, (depot_stack_handle_t)0);
++	if (expected_trie_pool_limit >= 0) {
++		parts.handle = blocking_handle;
++		pool_index_plus_1 = parts.pool_index_plus_1;
++		KUNIT_EXPECT_GT(test, pool_index_plus_1,
++				(u32)expected_trie_pool_limit);
++	}
++	memset(fetched, 0, sizeof(fetched));
++	nr_entries = stack_depot_fetch_into(blocking_handle, fetched,
++					    ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries,
++			(unsigned int)ARRAY_SIZE(blocking_entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, blocking_entries,
++			   sizeof(blocking_entries));
++
++	get_handle = stack_depot_save_flags(get_entries, ARRAY_SIZE(get_entries),
++					    GFP_KERNEL,
++					    STACK_DEPOT_FLAG_CAN_ALLOC |
++					    STACK_DEPOT_FLAG_GET);
++	KUNIT_ASSERT_NE(test, get_handle, (depot_stack_handle_t)0);
++	stack_depot_put(get_handle);
++
++	overlong_handle = stack_depot_save(overlong_entries, overlong_nr,
++					   GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, overlong_handle, (depot_stack_handle_t)0);
++	nr_entries = stack_depot_fetch_into(overlong_handle, overlong_fetched,
++					    CONFIG_STACKDEPOT_MAX_FRAMES);
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)CONFIG_STACKDEPOT_MAX_FRAMES);
++	overlong_size = CONFIG_STACKDEPOT_MAX_FRAMES * sizeof(*overlong_entries);
++	KUNIT_EXPECT_MEMEQ(test, overlong_fetched, overlong_entries, overlong_size);
++
++	extra = stack_depot_set_extra_bits(plain_handle, 7);
++	KUNIT_ASSERT_NE(test, extra, (depot_stack_handle_t)0);
++	KUNIT_EXPECT_EQ(test, stack_depot_get_extra_bits(extra), 7U);
++	memset(fetched, 0, sizeof(fetched));
++	nr_entries = stack_depot_fetch_into(extra, fetched, ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)ARRAY_SIZE(entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, entries, sizeof(entries));
++}
++
++static void stackdepot_snprint_public(struct kunit *test)
++{
++	const unsigned int nr_entries = CONFIG_STACKDEPOT_MAX_FRAMES;
++	const size_t buf_size = nr_entries * (KSYM_SYMBOL_LEN + 4);
++	unsigned long *entries;
++	char *expected;
++	char *actual;
++	depot_stack_handle_t handle;
++	unsigned int expected_len;
++	unsigned int prefix_entries;
++	unsigned int prefix_len;
++	size_t output_size;
++	unsigned int i;
++	int actual_len;
++
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++	entries = kunit_kmalloc_array(test, nr_entries, sizeof(*entries),
++				      GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, entries);
++	expected = kunit_kzalloc(test, buf_size, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, expected);
++	actual = kunit_kzalloc(test, buf_size, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, actual);
++	for (i = 0; i < nr_entries; i++)
++		entries[i] = stackdepot_test_frame(i);
++
++	handle = stack_depot_save(entries, nr_entries, GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
++	if (expected_trie_pool_limit >= 0) {
++		union handle_parts parts = { .handle = handle };
++
++		KUNIT_EXPECT_GT(test, (u32)parts.pool_index_plus_1,
++				(u32)expected_trie_pool_limit);
++	}
++	expected_len = stack_trace_snprint(expected, buf_size, entries,
++					   nr_entries, 2);
++	actual_len = stack_depot_snprint(handle, actual, buf_size, 2);
++	KUNIT_EXPECT_EQ(test, actual_len, (int)expected_len);
++	KUNIT_EXPECT_STREQ(test, actual, expected);
++
++	prefix_entries = nr_entries / 2 + 1;
++	prefix_len = stack_trace_snprint(expected, buf_size, entries,
++					 prefix_entries, 2);
++	KUNIT_ASSERT_LE(test, (size_t)prefix_len + 2, buf_size);
++	output_size = prefix_len + 2;
++	memset(expected, 0, buf_size);
++	memset(actual, 0, buf_size);
++	expected_len = stack_trace_snprint(expected, output_size, entries,
++					   nr_entries, 2);
++	actual_len = stack_depot_snprint(handle, actual, output_size, 2);
++	KUNIT_EXPECT_EQ(test, actual_len, (int)expected_len);
++	KUNIT_EXPECT_STREQ(test, actual, expected);
++}
 +
  static void stackdepot_countable_public(struct kunit *test)
  {
  	unsigned long plain_entries[] = {
-@@ -125,10 +137,84 @@ static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *t
+@@ -137,6 +360,129 @@ static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *t
  	KUNIT_EXPECT_MEMEQ(test, fetched, expected, sizeof(expected));
  }
  
-+static void stackdepot_frame_raw_fallback(struct kunit *test)
++static void stackdepot_trie_topology_roundtrip(struct kunit *test,
++					       bool constrained)
 +{
-+	unsigned long frame = 0x1000UL;
-+	bool compressed;
-+	u32 payload;
++	union handle_parts parts;
++	unsigned long seed[] = { 0x191000UL, 0x192000UL };
++	unsigned long stacks[][3] = {
++		{ 0x201000UL, 0x202000UL },
++		{ 0x201000UL, 0x203000UL },
++		{ 0x201000UL },
++		{ 0x201000UL, 0x203000UL, 0x204000UL },
++		{ 0x201000UL, 0x205000UL },
++		{ 0x201000UL, 0x204000UL },
++		{ 0x201000UL, 0x206000UL },
++		{ 0x201000UL, 0x207000UL },
++		{ 0x301000UL, 0x302000UL },
++		{ 0x301000UL, 0x302000UL, 0x303000UL },
++		{ 0x301000UL, 0x304000UL },
++		{ 0x401000UL, 0x402000UL, 0x403000UL },
++		{ 0x401000UL, 0x402000UL },
++	};
++	unsigned int nr_entries[] = { 2, 2, 1, 3, 2, 2, 2, 2, 2, 3, 2, 3, 2 };
++	depot_stack_handle_t handles[ARRAY_SIZE(stacks)];
++	depot_stack_handle_t seed_handle;
++	unsigned long fetched[ARRAY_SIZE(stacks[0])];
++	gfp_t no_spin = GFP_NOWAIT & ~__GFP_RECLAIM;
++	u32 pool_index_plus_1;
++	unsigned int j;
++	unsigned int i;
 +
-+#ifdef CONFIG_ARM64
-+	frame = (unsigned long)_text + (unsigned long)S32_MAX + 1UL;
++	if (expected_trie_pool_limit < 0)
++		kunit_skip(test, "trie pool limit was not provided");
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++	if (constrained) {
++		seed_handle = stack_depot_save(seed, ARRAY_SIZE(seed), GFP_KERNEL);
++		KUNIT_ASSERT_NE(test, seed_handle, (depot_stack_handle_t)0);
++		for (i = 0; i < ARRAY_SIZE(stacks); i++)
++			for (j = 0; j < nr_entries[i]; j++)
++				stacks[i][j] += 0x10000000UL;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(stacks); i++) {
++		if (constrained)
++			handles[i] = stack_depot_save_flags(stacks[i], nr_entries[i],
++							    GFP_KERNEL, 0);
++		else
++			handles[i] = stack_depot_save(stacks[i], nr_entries[i],
++						      GFP_KERNEL);
++		KUNIT_ASSERT_NE(test, handles[i], (depot_stack_handle_t)0);
++	}
++	parts.handle = handles[0];
++	pool_index_plus_1 = parts.pool_index_plus_1;
++	KUNIT_ASSERT_GT(test, pool_index_plus_1,
++			(u32)expected_trie_pool_limit);
++
++	for (i = 0; i < ARRAY_SIZE(stacks); i++) {
++		memset(fetched, 0, sizeof(fetched));
++		KUNIT_EXPECT_EQ(test,
++				stack_depot_fetch_into(handles[i], fetched,
++						       ARRAY_SIZE(fetched)),
++				nr_entries[i]);
++		KUNIT_EXPECT_MEMEQ(test, fetched, stacks[i],
++				   nr_entries[i] * sizeof(fetched[0]));
++		if (constrained)
++			KUNIT_EXPECT_EQ(test,
++					stack_depot_save_flags(stacks[i], nr_entries[i],
++							       no_spin, 0),
++					handles[i]);
++		else
++			KUNIT_EXPECT_EQ(test,
++					stack_depot_save(stacks[i], nr_entries[i],
++							 GFP_KERNEL),
++					handles[i]);
++	}
++}
++
++static void stackdepot_trie_topology_allocating(struct kunit *test)
++{
++	stackdepot_trie_topology_roundtrip(test, false);
++}
++
++static void stackdepot_trie_topology_constrained(struct kunit *test)
++{
++	stackdepot_trie_topology_roundtrip(test, true);
++}
++
++static void stackdepot_frame_storage_roundtrip(struct kunit *test)
++{
++	union handle_parts parts;
++	unsigned long fetched[3] = {};
++	depot_stack_handle_t handle;
++	u32 pool_index_plus_1;
++	unsigned int nr_entries;
++#if defined(CONFIG_ARM64)
++	unsigned long entries[] = {
++		stackdepot_arm64_frame(S32_MIN),
++		0x1000UL,
++		stackdepot_arm64_frame(S32_MAX),
++	};
++#elif defined(CONFIG_X86_64)
++	unsigned long entries[] = {
++		0xffffffff10001000UL,
++		0xffff888000001000UL,
++		0xffffffff20002000UL,
++	};
++#else
++	unsigned long entries[] = { 0x301000UL, 0x302000UL, 0x303000UL };
 +#endif
 +
-+	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
-+	KUNIT_EXPECT_FALSE(test, compressed);
++	if (expected_trie_pool_limit < 0)
++		kunit_skip(test, "trie pool limit was not provided");
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++	handle = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
++	parts.handle = handle;
++	pool_index_plus_1 = parts.pool_index_plus_1;
++	KUNIT_ASSERT_GT(test, pool_index_plus_1,
++			(u32)expected_trie_pool_limit);
++
++	nr_entries = stack_depot_fetch_into(handle, fetched, ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)ARRAY_SIZE(entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, entries, sizeof(entries));
 +}
 +
-+#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
-+static void stackdepot_frame_x86_64(struct kunit *test)
-+{
-+	unsigned long direct_map = 0xffff888000001000UL;
-+	unsigned long frame = 0xffffffff81234567UL;
-+	unsigned long out;
-+	bool compressed;
-+	u32 low;
-+
-+	compressed = arch_stack_depot_frame_try_compress(frame, &low);
-+	KUNIT_EXPECT_TRUE(test, compressed);
-+	KUNIT_EXPECT_EQ(test, low, (u32)0x81234567);
-+	arch_stack_depot_frame_decompress(low, &out);
-+	KUNIT_EXPECT_EQ(test, out, frame);
-+
-+	compressed = arch_stack_depot_frame_try_compress(direct_map, &low);
-+	KUNIT_EXPECT_FALSE(test, compressed);
-+}
-+#endif /* CONFIG_X86_64 && !CONFIG_UML */
-+
-+#ifdef CONFIG_ARM64
-+static void stackdepot_frame_arm64(struct kunit *test)
-+{
-+	long negative_offset = S32_MIN;
-+	long positive_offset = S32_MAX;
-+	long offset = 0x123456;
-+	unsigned long frame = stackdepot_arm64_frame(offset);
-+	unsigned long out;
-+	bool compressed;
-+	u32 payload;
-+
-+	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
-+	KUNIT_EXPECT_TRUE(test, compressed);
-+	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)offset);
-+	arch_stack_depot_frame_decompress(payload, &out);
-+	KUNIT_EXPECT_EQ(test, out, frame);
-+
-+	frame = stackdepot_arm64_frame(negative_offset);
-+	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
-+	KUNIT_EXPECT_TRUE(test, compressed);
-+	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)negative_offset);
-+	arch_stack_depot_frame_decompress(payload, &out);
-+	KUNIT_EXPECT_EQ(test, out, frame);
-+
-+	frame = stackdepot_arm64_frame(positive_offset);
-+	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
-+	KUNIT_EXPECT_TRUE(test, compressed);
-+	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)positive_offset);
-+	arch_stack_depot_frame_decompress(payload, &out);
-+	KUNIT_EXPECT_EQ(test, out, frame);
-+}
-+#endif /* CONFIG_ARM64 */
-+
+ static void stackdepot_frame_raw_fallback(struct kunit *test)
+ {
+ 	unsigned long frame = 0x1000UL;
+@@ -205,9 +551,15 @@ static void stackdepot_frame_arm64(struct kunit *test)
+ #endif /* CONFIG_ARM64 */
+ 
  static struct kunit_case stackdepot_test_cases[] = {
++	KUNIT_CASE(stackdepot_trie_max_path_roundtrip),
++	KUNIT_CASE(stackdepot_save_flags_public),
++	KUNIT_CASE(stackdepot_snprint_public),
  	KUNIT_CASE(stackdepot_countable_public),
  	KUNIT_CASE(stackdepot_fetch_into_roundtrip),
  	KUNIT_CASE(stackdepot_fetch_into_rejects_missing_or_short_stack),
-+	KUNIT_CASE(stackdepot_frame_raw_fallback),
-+#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
-+	KUNIT_CASE(stackdepot_frame_x86_64),
-+#endif
-+#ifdef CONFIG_ARM64
-+	KUNIT_CASE(stackdepot_frame_arm64),
-+#endif
- 	{}
- };
- 
++	KUNIT_CASE(stackdepot_trie_topology_allocating),
++	KUNIT_CASE(stackdepot_trie_topology_constrained),
++	KUNIT_CASE(stackdepot_frame_storage_roundtrip),
+ 	KUNIT_CASE(stackdepot_frame_raw_fallback),
+ #if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
+ 	KUNIT_CASE(stackdepot_frame_x86_64),
 
 -- 
 Git-155)
