@@ -4,96 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 617D1C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F617C79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:52:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 597706B008A; Tue,  8 Sep 2026 02:51:03 -0400 (EDT)
+	id 9DE816B0098; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 549776B0098; Tue,  8 Sep 2026 02:51:03 -0400 (EDT)
+	id 98F376B00B1; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45E816B00B0; Tue,  8 Sep 2026 02:51:03 -0400 (EDT)
+	id 8A6E96B00C0; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21E3D6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:51:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EC3D160386
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:51:02 +0000 (UTC)
-X-FDA: 85189672764.29.035C1C0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4F4D9180002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:50:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788850260;
-	b=YizytiZ7SHdSQbYd4SF+5ccLLHYBsJahMw571Dq0kN/YNpnNTTBX8q1wKN1xG05cYNDHfy
-	YUuaIQzEq+QJwEEvm+JwqltR5HqV7c80ZYTj3qIN+Z8c/3ABBtw8ArANtI4JEHGahQyYXc
-	T2J4feMdmn48M2yuqWp2ShbHwIvpccA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65A6C6B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDDD81A03B4
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:52:28 +0000 (UTC)
+X-FDA: 85189676376.19.39B911B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5E68E14000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:52:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MxGHPr/o";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788850260;
+	s=arc-20220608; t=1788850347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zNVbKr+BOy40cKruLZlBTv3PlLm2XSJZoqQLyWV42tk=;
-	b=5Om8dLpxxY7EUmyI/HhVO2fOYY8KddrmZyc3iJLV+GfSI5TNbz3VO4iRZHVGoDh1JqwARR
-	YNUqj3O9KRw9Wh9b4uk0GwXYjdeJfQN5E4rdSEB7f7K6TAsdQcyGpQyDhcJf3jiGRrD5Bd
-	TcnrqLGuG4gI3K6MH6h3dp8utUNhdmQ=
-X-UUID: 9f07f438ab5111f19a56ed5b684f684d-20260908
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:fbcbc149-e036-4ab9-acd7-25072a84f49e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:87ba067fa001faebc6bb9e21890526b9,BulkI
-	D:nil,BulkQuantity:0,SF:81|82|102|850|865|898,TC:nil,Content:0|15|50|99,ED
-	M:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9f07f438ab5111f19a56ed5b684f684d-20260908
-X-User: liuqiqi@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liuqiqi@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1618917366; Tue, 08 Sep 2026 14:50:47 +0800
-From: Qiqi Liu <liuqiqi@kylinos.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rostedt@goodmis.org,
-	gourry@gourry.net,
-	Qiqi Liu <liuqiqi@kylinos.cn>
-Subject: [PATCH v3] mm: page_alloc: add missing hooks to bulk allocation path
-Date: Tue,  8 Sep 2026 14:50:43 +0800
-Message-Id: <20260908065043.217569-1-liuqiqi@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260907120949.418450-1-liuqiqi@kylinos.cn>
-References: <20260907120949.418450-1-liuqiqi@kylinos.cn>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tQCExSqn1W0rL2KHHjcgog6hZgpy3PJqmFXUPMAfp8c=;
+	b=4RjyKZ8hYLNKWRW/80f3sXBwil3mqVj//CKkjOARt1BbSKkN7MeygDMYB4mzkpUodbcesy
+	XCzp40hTgVhX6/YCtGDJfZwqgPQB6hjipnm6blh2YiE+JOdAx8i7NEB1XjqeKSblKBjKKJ
+	nStWEz1zSxecfvZWx15W4qqgmHdXpDI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788850347;
+	b=aPeLd9sEdESRoKHkvEA3dqbzT9lKiokvdhPdIPbfS7bWzoTr8Qij1APR3SvgFDlNTzmUAJ
+	0QiWXdvlpER/0y3muAQJRZck8MlJ81FU26Xte7ASxQghSuTbR2eSrZ/9bdVFVQQjxoi4F9
+	J9QrtonxzI1thjx/YVsahPKwk7Ah4PU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MxGHPr/o";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FDA742EA1;
+	Tue,  8 Sep 2026 06:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9921F00A3A;
+	Tue,  8 Sep 2026 06:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788850346;
+	bh=tQCExSqn1W0rL2KHHjcgog6hZgpy3PJqmFXUPMAfp8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MxGHPr/o7Egzf7/M8R8Ao6xgWW828L9KjV5g84sSn7wi9vQ7ZcW0u0yYAkaDvectd
+	 mR4UMWwASyruj3B4tXUeARgiJB6uF8PJhd7Vk5pHsWytx6JL63jN1/RAI90iaZDj5v
+	 BSMATV5Tjnay2NldoJaKCaxkJf+B14z9AyDmY+MVafeEWhRzFRldWfi0CqcNr52USK
+	 953kOdfoLHavZRSp42M83cfpJ14CsK0C7vG3yQyKNcguUsP8lAJpH7cavlJCQtN9Gc
+	 1lsmIJCiWgIzHl6QoyQVlGhaNA5yh2Rs7v8dUZbABjex8SUJroXjJK4pnfLnMSZmk4
+	 hpWo7/SVN/Y7Q==
+Date: Tue, 8 Sep 2026 09:52:12 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v9 01/25] mm: Introduce kpkeys
+Message-ID: <ap-wnHAwfdX_b39o@kernel.org>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
+ <178877845406.3691569.6930315020588094755.b4-review@b4>
+ <3f6e7678-0784-4ac1-acb4-b128887803c5@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3f6e7678-0784-4ac1-acb4-b128887803c5@arm.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E68E14000B
+X-Stat-Signature: 8u9zkk1zsqz9img1w7f5m785iqkfoyxf
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F4D9180002
-X-Stat-Signature: drobxqeaubwhtejrkuqs7tcz31jo9zh6
-X-HE-Tag: 1788850258-621183
-X-HE-Meta: U2FsdGVkX19YPKtlwSmlYMUA8+1zMYt5hQqPmvIXh8l4D0QfmKHcKQi+jFSPBLmd5CZAk+mVK60USPduK4Qa8qIod0lyT/81zPX8ey0HPErucPROXIS3ti/WN9aBJyvU+XVh7OAsCBiPHGrQRtogA6UmRNbamQcnO3XBp9ZjP1eN+GFba6H3uC/QCTyFQwN9n/ZGELOT3ugurtFE6rovvO/9SRHqZjfl/5HSV4fzfqE+b5oYkG8XJ864rh71WWlHbaetsVtDz+rQ43Y2r0CGXRTlBEiHZc4wRnQvvGIKu8GUbQpe4JSxgBd0b0/+JyLfqQG0jCL/1QFi3kdVrFVggMt/Sy5Stws4QslW0UVp6FAscEE61f9//COndlmEW0ZjXiRNflDnzdG5gaAk9oHPTf4pbx7jBrbcInDImyrBy89KHJcmebXV06QKHV2N9nzo/GQtQzmv1/4/1GxbuPi50zojwtNmf59nfuSBii9f2VsyEdFCRoXAPlcK58n7yCfl5U5SrwirXPKf81JmEDbKYC/gawc8sgsgtBIhnHfLZHx+HB8nQFi/07G9BtBKHXiooEArtUtZqK5MaBQv9zaaA4xZTJDfABzZDrUBKnKwEELXNeEbhY1JCAF4huX9BP+aDmRGLyinS0FoSRL///AsaCZVmOSTzw144wiXqJTy7aoF2yywgXk8M/gFfJHELyvOJ/LWiJuJyQ0E0PZjL81l080PzM0027B3D0+0zSwzgGZE6ZoWN6k6nY6iYJCeTCSloWYExuuEj333AgBUQWzDWlDdAvJwUPN8Y7xTNd1KXkFETSXE8Ft/P2H07Tl7jnEU7MlK3pguLzOIg443GjcMiyEdsCx5aLmC6HTJ3reLksm1Sqlalna4UvuhRFEdBirMdJlwgmRtkEIRjbkyF4lWL9vQSiN0U3PMprA1Imb1hHE7lMdyRKWkgI0ACRXr36505Q803qTDDKyRG0VFKPz
- AoENe2Ci
- OSnek6VZCdMB2qa6XXT1xR5QmqrscTKF27XxsH5E3tXc6tRpO8KjiKv8mjX6nU0z2v6rjOwOaazwkpHaft9ktneonBdSKfrVCaBPQB+KHbVGG1zM=
+X-HE-Tag: 1788850347-329627
+X-HE-Meta: U2FsdGVkX188IZJTk35xLnrbX6jmi9zSyQ5Oa5N62VV8qUyUiPY+CQB/z2WI13xh1ZlRBLpb5J51swWDuiwYiSVm7yNcAyIAcBJr+YA7vaJMkFZWg1WT6jLLzDQG2XS+EK8cPSmkZL1luz40rHXn4tTmC4A+zd27qVDPUQuEchaZVGdYhdJU87KYPqgXnbdUasBbydzGrLlqVb8d4ZeusyWD+g8Zq2vpmaDodsPSlblrLr/gHvpeUDxWYtl1S1VTmVjspCpxSc4/KFeKLe8bdIRgDZHK8nullpBoBbJyjAkix2FN0P0WTH2VgPz6hy8TMTJ0gHlp2/4r7zZrguguJcDEqd6fUeSl1toMDDsxN/lp6JU7WznGPk9CvotX6pELjjH3wGEUxXwtoKZ7Gp9XlYOW+zRufKobwoIq5oUKFO5+uGy0vAuM/0380dcl2N3XekYmlVaG4byVW8Y1L+iKIon0WAKk04IMTyBlGQkhpJhWbqRVgFPTg6M45D2oPcSJjUqLgHxsVoxRTEqnR93SAEL/fbcy2YgbX6WUWizRpCAvOSZW1VGhzAn2d1udix9DWk7O+ywsmDJgWj+2wY9evbqdPelUtsoW/V1g6+1qiMh2td8Oaz9vLmvSe0ZUufAZay46kZsHLDMQ/paCiyA6h43TeGnnDuMpB5RT5OS17i2Xk/hhnOZZ2xPzb1disGd4RNMuoihwd6UU46n/aTAGKow7ykp09v/fNhrAzFifgG8ow6pRvY2cFN9SVTKNHJZA4TzTHTucpALY+kxD4ivBEakFBqDIDmQ/0DK5UI/GrXL+H36OBfpqsF4h+hloXO6ukigemGHanGNdVUKTjqcd1ghcqaBgYEIzcPhcZIvpDPFAzovbU9vvIksfYon+xU0xgzmuOFQiTtcpUwfPg76EF+kCF5tZ4sxVAVbbpCQ8arEtyhipurNjp19PAMhaf+WKEdHfgcEd4cMFS/ThjLB
+ 89g51Ab6
+ HPhhXRCQwmzLBTq2vZ8wO/U8niav1VQLFIASaDDTlqthrDs8ScTAII7kGlH/loEJN4QyqiMJwRnJIa8bQw3Dpnl3axsyiX9xsTeseXL10guD9kIxawoYR65mzG7oIxkz0jhXJOKLa1/avzYYVoedgywRwc0z8zaqLzc7EF00oOn27DYTeu+iZgjj+/5Ebv4O04FdBB30/ROHfkbZVDufa3pAPOlrT8ulwCzdGCKmhl+errWxN9Z3cXVQRCrE2EYml7q5E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,38 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The bulk allocation path in alloc_pages_bulk_noprof() currently misses
-trace_mm_page_alloc() and kmsan_alloc_page() calls, leaving bulk-allocated
-pages invisible to ftrace/BPF/perf and leaving KMSAN shadow memory stale.
+On Mon, Sep 07, 2026 at 05:49:42PM +0200, Kevin Brodsky wrote:
+> On 07/09/2026 12:54, Mike Rapoport wrote:
+> >> +
+> >> +#include <linux/bug.h>
+> >> +#include <linux/cleanup.h>
+> >> +#include <linux/kpkeys_types.h>
+> >> +
+> >> +/**
+> >> + * KPKEYS_GUARD_NOOP() - define a guard type that does nothing
+> > Nit: I'd suggest to drop "define" from all the descriptions, they would
+> > read better without it IMHO.
+> 
+> Fair enough, but if we say just "a guard type that does nothing" is it
+> clear that this is a macro defining a type, and not a type itself?
 
-Add both calls after set_page_refcounted() in the bulk loop to match
-the standard allocation path. The gfp mask passed to kmsan_alloc_page()
-is stripped of __GFP_RECLAIM because the bulk loop runs under the PCP
-spinlock, and KMSAN's stack depot allocation must not sleep.
-
-Both are no-ops when their respective features are disabled, so there
-is no overhead in production kernels.
-
-Suggested-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
----
- mm/page_alloc.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..73c73499a051 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5280,6 +5280,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+Then maybe "helper to define", like cleanup.h does?
  
- 		prep_new_page(page, 0, gfp, ALLOC_DEFAULT);
- 		set_page_refcounted(page);
-+		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
-+		kmsan_alloc_page(page, 0, gfp & ~__GFP_RECLAIM);
- 		page_array[nr_populated++] = page;
- 	}
- 
+> - Kevin
+
 -- 
-2.25.1
-
+Sincerely yours,
+Mike.
 
