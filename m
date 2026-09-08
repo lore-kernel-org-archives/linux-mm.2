@@ -4,126 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BE92C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 03:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E2C7C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 536BB6B008A; Mon,  7 Sep 2026 23:56:09 -0400 (EDT)
+	id 2F8506B008C; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BFE56B0096; Mon,  7 Sep 2026 23:56:09 -0400 (EDT)
+	id 2A87C6B0092; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 387D16B0099; Mon,  7 Sep 2026 23:56:09 -0400 (EDT)
+	id 1C1B86B0093; Tue,  8 Sep 2026 00:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F39786B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 23:56:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8252E1A0361
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:56:08 +0000 (UTC)
-X-FDA: 85189232016.25.7FC43E6
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A60A61A0003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:56:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PO65xj2g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E42EC6B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:01:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84EFD1C206C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:01:54 +0000 (UTC)
+X-FDA: 85189246548.18.E272EBF
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 66C5940008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:01:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M9oOdwWt;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788840112;
+	b=oIet7zQsXXS6A+P0KgdHgBm5HpbpOSTjkp9ORbFW4iwMx4kr9ALFSPeb+FGFTONl5kDysG
+	OIAEA158MsPFfkMXJeNpoyNktmvMMSewlKDyEyrvCh4eOtgoL+eD+gMVPAj65QpJE0/FLS
+	F/95Z/W67YiVIfUWNXsZTYxTnAoWUew=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788839766;
+	s=arc-20220608; t=1788840112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wHuXN+TozonanTrHY2nOVJpLzPnOvGV5cbx8xr3LhCY=;
-	b=hFZOhqaXSWklkr992kqGHwQlyMNdpp82ku4YSvVV+8FuD02ETnmAGI2vrzAzgS/jR6drG7
-	ptrkpvReKOSFy8t0E8TyA/+d/PeUhHSp9Yprk5v62epHwxC34ixuxsCkC9CZGNU1zAjoEI
-	ppyMViY0ryXn11lpGHJqhOMgHDLcfo8=
+	bh=Najs9RGCkB+xTfIo5Ipvni0lhIFU34DcqdN/H9GY20E=;
+	b=q+sMfZ3u4FG1pEBwUbEJWRH/IgjOfGlyyi65pOTrrX86kLZbvyvhEgRoH3hqVN7hLNxN3K
+	bxS2AVFwW9RtPGn57BeHj5HJZN5gvZDnyJTEF5uaTeFyBJt+FtQJ2m83qtCZ2rQ8NCe4xc
+	Adwa2AAE6oHymXDSHuX3KV3kS5YXYAY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PO65xj2g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788839766;
-	b=cDai6VBEe4nr4eM9CDPWE0bKp2Y6Q7jSjCqFCb7XY6XQLtTSas+5Mw2FDh0JbnLN1Gudqz
-	rBLuWmnaZGgxHY2f8NeP0DeyXnNZPhwi6DEoIi31+hjSjdH8LAKE3E38riSUPqxo6wwM25
-	n/cHOJqU3GmfraUAi7t7ZYSFPcoTGMU=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2db3305f94fso28966195ad.0
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 20:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788839765; x=1789444565; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wHuXN+TozonanTrHY2nOVJpLzPnOvGV5cbx8xr3LhCY=;
-        b=PO65xj2gdD8WrxMXC6We/NTGTgo6QnYqeyZYNiOYGjucpkaTiErq6EsGDKEOcSZvcR
-         FJ8/Dggg4TCrC9jZPXSJafKycmxY1gVO0f5qGtS899uB6x5se8hjoUox9GFrhLTfcQzM
-         AgfMBkBDOwnBNgL2U36Afr39yvci1gZsVC0ms1IwDCF8I8OOjsFniqRCCPgcKOdV3GNF
-         ypEQdgIe/4QxQRBtwRqJdMGJEbllf4W5lAlSVyx7KYejNltm575jKi8X3VPXWken228o
-         fymGNDSsGdgF07p0PYyfhocC2TtmXTgThf5eIx9JO+WIUOdAb3BAKqnAI3V4wh4ulYfo
-         sRWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788839765; x=1789444565;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wHuXN+TozonanTrHY2nOVJpLzPnOvGV5cbx8xr3LhCY=;
-        b=UD+FpaYjcmQskqXqazUt02e3FWJabBPuUc+ghJy4Oob5387HuxztIoACXVuCYkxWyn
-         bpxSkydL1lVWL566r1i8Ajw4bDKDaA1WlDCiB3X8MzGBDEAehKrfBa1haF7O7RFrWRzn
-         ityh59rW91pbfVTTafahNK7Apz7QnlaM/CCZhb5czADT4XoUfMqV9qwJ7uRdvze2ZyGK
-         IgugJkVVnCCrWXo3U4U/CPr5R0dtUQseT/p5WXb6gvlXTaOsRuvpRzV1pBRUc73L4eIA
-         Yr2XfhsIf105P6Wx704kX78dPC2+fUcMpqeqW9Pb9eYyFMViPvMR1M7ZgMlcvM7MdjLk
-         YNOg==
-X-Forwarded-Encrypted: i=1; AKwUvBzOTWGpQ0bxhpu0VKopg8xzQ3ragLRjb42sZM7JOr181RgTeIs5kTvCYPrq5IgK6OCN8d9+Zw2YgA==@kvack.org
-X-Gm-Message-State: AFuF++mBekzCK9vhSu9MxXBYWN25KPLGXrn3HANEyg7ufZ3oculuGSRe
-	Xw1xB7YdcXfN82F54UgnDnzgg5eJ2AiAjFCpYvb0WbuaGCHv19ib1wS2
-X-Gm-Gg: AYBFou0ZYXnvZsvQBwFlZtZX9rFhhyq6sOonMVSafJxYXpUSx/qFLIY9YEAYbsLl/D3
-	dAZQc2u0KEE1rD5HI9LPw8uHE25JPirfccwOkhtbl1/Adw1jU8p0S9IMqTnNFG3JRr2fnb5EzFQ
-	oQgI6cj578AQCmtO1xaKgbZxeJyhMr7jw0HFbT4Sm/Etsksw/esvharjzkZ6VlhIBdWDi5qcu+8
-	tDtfktILYYLyj76ULHllLKNUCJxwEwcp3rmTJ0TBbBsf93blkE8UTNHixQIqnA8V/LH0qctS9Zy
-	V8ke0sMtsC6YsaQ5G5UFrgsnznISJLJwi3tBhlDoHwfG+1ItNC1Pcp9I+QYCClmcMBn4j1FeyHx
-	bYZcCJPAqtVBkfB4bnV9RrUZekwh655D32JLOO0kXbCXinD2ggosn0XTK5/iA/mPoTk6RdhaEVP
-	BtnlyWV1iKLnw6q4icKgL1s79dMXU+dStabpj93CU5nLID6JXeMdPO0sUWUVNrBfwbhx8jgCO79
-	OMm+igCxcx3XcjMloSUcuQm
-X-Received: by 2002:a17:902:f70f:b0:2bf:dd0:c8b1 with SMTP id d9443c01a7336-2db1225b297mr394667095ad.0.1788839765501;
-        Mon, 07 Sep 2026 20:56:05 -0700 (PDT)
-Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db14aeaf74sm51899295ad.81.2026.09.07.20.56.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 20:56:05 -0700 (PDT)
-From: Wenjie Qi <qwjhust@gmail.com>
-X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
-To: jaegeuk@kernel.org,
-	chao@kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	hch@lst.de,
-	jack@suse.cz,
-	axboe@kernel.dk,
-	tz2294@columbia.edu,
-	baohua@kernel.org,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	qiwenjie@xiaomi.com,
-	qwjhust@gmail.com,
-	syzbot+cid5582b8164122eda@syzkaller.appspotmail.com
-Subject: [PATCH v5 2/2] f2fs: enable buffered RWF_DONTCACHE
-Date: Tue,  8 Sep 2026 11:55:43 +0800
-Message-ID: <1cd46ad6e0e566c283dd70be7864248f504b1997.1788795700.git.qiwenjie@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1788795700.git.qiwenjie@xiaomi.com>
-References: <cover.1788438786.git.qiwenjie@xiaomi.com> <cover.1788795700.git.qiwenjie@xiaomi.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M9oOdwWt;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788840108; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=Najs9RGCkB+xTfIo5Ipvni0lhIFU34DcqdN/H9GY20E=;
+	b=M9oOdwWtCAnh0m0XULvaX+L3CM8yp1ebQIvTYvIIvHvPYbgSUhg0uLLXDSrpvOG8ogRYFsjXF9HNlaW376vnR537N2xlD3qwizEeVZHpW07TX9MHgsQpuR5JVucd5XDNJMVgOzVyq1Ik/FbiLZ4lqDCW/ddVwOl8ICtM9MYo2CQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAaJnml_1788840106;
+Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAaJnml_1788840106 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 08 Sep 2026 12:01:47 +0800
+Message-ID: <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
+Date: Tue, 8 Sep 2026 12:01:46 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
+ folios
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: Barry Song <baohua@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+ ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
+ <ap9zPPughaSlfXM2@fedora>
+ <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
+ <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
+In-Reply-To: <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: t4jhxrwku9h34f4krseqdsb4d8mbk5nq
-X-Rspamd-Queue-Id: A60A61A0003
-X-HE-Tag: 1788839766-653524
-X-HE-Meta: U2FsdGVkX18H1n8vNjbadW4mnIOIPUZ6cCJWws/mQuMwirdF/YcOa/g0hl+ttp/pV6rJKLH3ioCXnM8uj8BaPHH2aAElM1N+QZCQmFPqBqhCRED8Oa74/y6R/YvnOnKXup/S5Slua/jXwIh0DzjzOLbUwpX0oAoLhME8ePR7eAK8RRynq82w7gx+3ssSF/OWgetzvwB1i8tkMbsuKuPViCOlWT4rtA/NFJqm5AsRWVGv6HL7z9T8ZTazv+88vmosI6urXK4bgUlRSdiqxcHHayR3XOHyh0E0BhBU4tJi7NgnY1E1HA0ooEEJe7DzlQS6Yo1JezbctphIMM/s/aBI9xdNR6ywFR6a9DHW4kXqwyrWM8i9NY55iFNkORdbPkWN3MzPrMMHQ+TMG9WX5YNaK9dK0bbWc4/aAPR9azSfRbK6GvICUjlUnPXyzpuJta+6ctUQetoRODnK2rkoMIisr9FodtN+AkUpFTKFx5yW3BbZEsG3wABJxcU+ndET7XzyUxEPIXXavd+TGidz0ib3LJzQwnxNLvv2wh04p5Q9wo2edrh5HpFQXlP6vgnRiIVPxiOatQ4l29DVKe1hmCvNqIBZ5FC69V8KQr/8K8NdHdiJ2c0wCoEbYOIqpqDyd9kbeJ/+12agrz4vlIr7KAH8BC4b9piY8uS1aGSQtZHonpEr40s68DgI0V6KHKs57I5DgcH2Eg+qpI4SxY3qRm75+fqB9vEl1gYqMpHrHdzh/JSwNVDSGWq2a/tzZlgbcZZTrARSPZd+eFlEu4fUpQbALyJ/lu+ygppOvlWZZAhOrWr0tMof8s9SDkL01O7Zn0GQ2UsQfJM1xtyLLRoDWJrI1gX+W5RdTIz6yoHFGFD1Ut6M/qqwrEKUhuGsVqJA+/9LYqvL74h/vFKjlBhFu9AXOLMUh8Espcgh4j7pzT/S/z38iiCBdE41ucwhupSkycppYsfdAyAnYSz2RyHwRCy
- MlOpZVQ8
- xyzQjWkN9PnfaV8RDFoIhbrm0vROBjk4Di/S7QlDCUV4IlyToIvNQzF9IgxvyuEQOmtXGWXWYfpDIkNPLr244cFOyxWv1D8TKHBikD6O2k5j/IJgPgr0SagdAZ3clubHbc+PvW8apSn6M2he4ADVt/EEpoF/ldEFt61Ev9W99UvjUdFj0jd/7lx7NiSbckLRzzmQqnLIiFHI9hdpW5b0Oi4EqqgKZbhS5sJLrJE+Ijq8YgW6E1lkfjqUb09mPxv7K+saabC/EEf7Q/Avu4GH5cXpoH+2qT5hOw4+rb7sU77dGE+mVmxkQ8XKgBQfgwS3JDXDfEuT7+u4ZZtj1sY2DwycXHG6vxa1u64g/NI2mwteDOS77DrBu7+1O/HGsg4OZ6lOynyGAWmPqmtmgyDvd5cKaYbRyXwmNBCIKGKKls/vzTKbUsup+1ULAfn3P8utIGJQ7oY2USLBNQZ7qhbeGUI1vOFPTV2vFgSvU0tfhlMP9TTLu1Zug7vuf8+cvv0ysPf4dIQpKq5hq5MYeBZqUJ+CENWw3OTjbS05E/XNa2MpNgtg0V5W6mBit0yVe8694fXhc1bV3GxxAwqFlewXZForEvziCsj4LPZhE8WmH42ZbuNyzCpM6/IIA189gJRLJLI6bT0nvNk2BtW8WST912gaYNlkkom+JEExN
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 66C5940008
+X-Stat-Signature: y1j8bohnah8rs5bt5ribsy3qjuf3gazc
+X-HE-Tag: 1788840111-517632
+X-HE-Meta: U2FsdGVkX18NR/jFugZwD4WZP0vN4iMjONYaAHv56LPbc3l56DyNbH2ngHFsrk4xFX+q7y/uwRUcm/V+ZhcT36jh+E/6jqBBIUyzXwLyJPS/lULY1S6jFJuPzZhcsSW8DfuZKvUGw30z8/tG8SHKSR1h0pFQdIqMTzNCTJr9LUS5bIrVS5S285C4I0jl63HePlS3UxZOeNPj8396pUw1c3gRpbLtum/8lIAUqXi1YFLBBJdVMRq5u5Uu0BewIn9xnEVrBcT3MDpVI55WfsMr6xbve9XdwUjTBlgaLTLtGDQ5d639TPg7Mk/m4mbkvWltxZb8AcgJ0BUKZp5DHH6fXhvmZ5/GXaePccpLGzUmaqQEPiFvxlKymwSVRfp/AHVPBefWQ7iCsPdGn6SrdG1tBo/OqiipbIH+yp5fJsewqwicuhKFCk/GZ6z7/PbjsT/dGFULYY8joWWQcJER1BsNoxEFJj3WTvaSl3uaMklwuOnuI7PwdE5Q+sU7O+9qWeNYf5RpuOHNysoon0qZTHITvc8nehJorz1wqto1f4MMKi71GVL1G/djWrr7PD3tWTNNpGe7kahml2rXf4jdAWy5K70NU9p4oEw4y57vIysPZhblAecdQI4PMy4yWlYLOHbnarSMoSHiVLtrmKXPmnciIahCPhKTQKV/uGGGNqCPDx/SY7eTp+RayszscYuWN0qQZC1uShdb67p/JZ/dli1kKmM3xW50zNMY50ilJfw1zJZ3GiZC4HZxFSe1pD8oIW35pVMD/ZX9iN/mFPVhCEcIGKXKz6SgrPOBGfTEp18peTemAUjlkrLeYqAfSHgeF/uiXq+zWlwG5l9z3xbHZ8IMkvrki+Daq2M0Zl8lC8LiIYTQ4adhuni6WDDXm8ANI3lDz9xOaxtR2CkIpPMeyGJMEo/AygIJmevNjwHbFwVTr2eC0FgDQjRsDONEAgOn1fa0I49CoULRBIsNkYC4UV2
+ j7F3EhQm
+ 2GlOPUJjfCqFq+0Ye0HnO8/kcaH0PLUhQnZCRDpwIzBWWLVjKs/0/EG+RTqEaZOG7zsIP3ArvHqKPRU9QK6KkzP8/vxfLzXLwRI8SDuomVKFLzmamVLQc/GW8oGjihN3DfbOljchEeRbgmAHVW+MFMy7Fk3byKkKMRSCNMr3c7lQXuEHBHYBVh+MnZMx3LKtdcSbV5dlnfSgrE5nyLt75DmOrVQFtPdv6hzJxik9cEj4j8kUYTTbmQI1iW89oUl6tlp0XUSNYHKzriL2mZeI5De0YrQu+FBIW1WGBrla/HPe0aXpm02iyNQQGsE9iTUsXAvyDRy40j9+cjLnU8Ayd59HPL9Yre8/OPZ7/fc/IQdcKIOo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,73 +93,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pass FGP_DONTCACHE to f2fs_filemap_get_folio() for
-IOCB_DONTCACHE writes and advertise FOP_DONTCACHE.
 
-The address-space write_begin callback is also used by internal
-callers that pass a NULL kiocb, including page_symlink(). Check iocb before
-inspecting its flags.
 
-Keep the F2FS-specific lookup because write_begin_get_folio() adds
-FGP_STABLE, which can deadlock here.
+On 9/8/26 11:03 AM, Baolin Wang wrote:
+> 
+> 
+> On 9/8/26 10:34 AM, Barry Song wrote:
+>> On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
+>>>
+>>> Hi Baolin,
+>>>
+>>> On 09/07/26 at 11:25am, Baolin Wang wrote:
+>>> ......snip...
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index 40d3f1b48a74..42c0a09938ab 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>>
+>>> Well, this seems to be based on Andrew's mm-new branch. I usually track
+>>> mm-unstable branch. Maybe the subject should be marked as below?
+>>> [PATCH mm-new] mm: mglru: clear the reference counter for rejected
+> 
+> ACK.
+> 
+>>>
+>>>> @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned long 
+>>>> nr_to_scan, struct lruvec *lruvec,
+>>>>                }
+>>>>
+>>>>                /* don't add rejected folios to the oldest generation */
+>>>> -             if (lru_gen_folio_seq(lruvec, folio, false) == 
+>>>> min_seq[type]) {
+>>>> -                     folio_set_lru_refs(folio, 0);
+>>>> +             if (lru_gen_folio_seq(lruvec, folio, false) == 
+>>>> min_seq[type])
+>>>>                        folio_set_active(folio);
+>>>> -             }
+>>>> +
+>>>> +             /* See the comments on LRU_REFS_FLAGS */
+>>>> +             folio_set_lru_refs(folio, 0);
+>>>
+>>> This looks like a great catch, while the code change could bring issue.
+>>>
+>>> Because move_folios_to_lru() relies on folios' flags to decide their new
+>>> generation. You just cleared it before move_folios_to_lru(). This is no
+>>> problem for rejected folios that are determined to be put into the
+>>> oldest generation. But for those rejected folios that are determined to
+>>> be promoted, this could be wrong. E.g currently gen window is 4, and a
+>>> folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
+>>> is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
+>>> referenced bit, this causes it being put into the oldest generation in
+>>> move_folios_to_lru(), this is not expected.
+> 
+> Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs 
+> to be reconsidered regarding whether it should rely on PG_referenced [1].
+> 
+> For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios 
+> either. Before commit 6cbdd9726fb5, if rejected folios did not have 
+> PG_active set by shrink_folio_list(), evict_folios() would set PG_active 
+> on these rejected folios.
+> 
+> [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1- 
+> baohua@kernel.org/
+> 
+>> The original code looks quite weird. It even prioritizes folios
+>> that won't be promoted by `PG_active`. Do we need to change all
+>> the cases just to call `PG_active`?
+> 
+> Yes. Regarding this concern, I plan to change back to the original 
+> behavior:
+> 
+>      /* See the comments on LRU_REFS_FLAGS */
+>      folio_set_lru_refs(folio, 0);
+> 
+>      /* don't add rejected folios to the oldest generation */
+>      if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
+>          folio_set_active(folio);
+> 
+> What do you think?
 
-Reported-by: syzbot+cid5582b8164122eda@syzkaller.appspotmail.com
-Closes: https://ci.syzbot.org/series/cbb9ded8-1388-4a7b-bfa7-44082b04025b
-Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
----
-Changes since v4:
+Just FYI, after above changes, the performance improvement on zram is no 
+longer obvious either. I think this also answers Kairui's earlier 
+question about why I saw a performance improvement (which seems related 
+to commit 6cbdd9726fb5). Also, there is no obvious performance 
+regression either.
 
-- handle internal write_begin callers that pass a NULL kiocb;
-- add syzbot report attribution.
+zram swap:
+		w/o patch	w/ patch
+sys time:	1666.5s		1628.5s
 
- fs/f2fs/data.c | 9 ++++++---
- fs/f2fs/file.c | 2 +-
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index fc48a752fe9..c9b29882f07 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3883,11 +3883,15 @@ static int f2fs_write_begin(const struct kiocb *iocb,
- 	struct inode *inode = mapping->host;
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct folio *folio;
-+	fgf_t fgp_flags = FGP_LOCK | FGP_WRITE | FGP_CREAT;
- 	pgoff_t index = pos >> PAGE_SHIFT;
- 	bool need_balance = false;
- 	block_t blkaddr = NULL_ADDR;
- 	int err = 0;
- 
-+	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
-+		fgp_flags |= FGP_DONTCACHE;
-+
- 	trace_f2fs_write_begin(inode, pos, len);
- 
- 	if (!f2fs_is_checkpoint_ready(sbi)) {
-@@ -3933,9 +3937,8 @@ static int f2fs_write_begin(const struct kiocb *iocb,
- 	 * Do not use FGP_STABLE to avoid deadlock.
- 	 * Will wait that below with our IO control.
- 	 */
--	folio = f2fs_filemap_get_folio(mapping, index,
--				FGP_LOCK | FGP_WRITE | FGP_CREAT,
--				mapping_gfp_mask(mapping));
-+	folio = f2fs_filemap_get_folio(mapping, index, fgp_flags,
-+				       mapping_gfp_mask(mapping));
- 	if (IS_ERR(folio)) {
- 		err = PTR_ERR(folio);
- 		goto fail;
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index c763fb972e8..92f916ca8b9 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -5920,6 +5920,6 @@ const struct file_operations f2fs_file_operations = {
- 	.splice_read	= f2fs_file_splice_read,
- 	.splice_write	= iter_file_splice_write,
- 	.fadvise	= f2fs_file_fadvise,
--	.fop_flags	= FOP_BUFFER_RASYNC,
-+	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
- 	.setlease	= generic_setlease,
- };
--- 
-2.43.0
 
