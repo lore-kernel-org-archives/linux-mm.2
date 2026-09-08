@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81DFAC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 01:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA41C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 01:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4546B008A; Mon,  7 Sep 2026 21:48:27 -0400 (EDT)
+	id EAF5B6B0095; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BC0D6B008C; Mon,  7 Sep 2026 21:48:27 -0400 (EDT)
+	id E12946B0096; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D1826B0095; Mon,  7 Sep 2026 21:48:27 -0400 (EDT)
+	id D00D76B0098; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38DAA6B008A
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:48:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A880C1C0860
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:48:26 +0000 (UTC)
-X-FDA: 85188910212.09.55138DB
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DA10A140007
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:48:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RFeKGN8q;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A348A6B0095
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 21:49:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CBC240361
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:49:46 +0000 (UTC)
+X-FDA: 85188913572.03.19D11BD
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 95958180002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 01:49:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Tc0UhNC5;
+	spf=pass (imf24.hostedemail.com: domain of love_goo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=love_goo@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788832183;
+	b=CFGvJyyymqN5fo9lKq3aIYVLVyMwH7ocAeub28gFHjaRclBzcSvvmlM2iBOjyrqWLy7p5M
+	d1IqNAsXLYsgwiMaUsEVsej8XiittHGjAzc+YuzFUgePqPx9HEdPGsRO8VZBeWPz/ANdme
+	UEakfg2QoqSh7hPxVv91pwr9AuvvWMs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Tc0UhNC5;
+	spf=pass (imf24.hostedemail.com: domain of love_goo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=love_goo@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788832105;
+	s=arc-20220608; t=1788832183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sj+gujuvTHFxhZN0Qt7S2VOpoMJsQgUY9QhEhfjAcs0=;
-	b=CU6ygU2Yy6aQIbOKpJonnrlC278S9N/2eMQBscBSO8C8cEKtCZKR9YFqyrhmvFfkjTcpwf
-	KA+CnE79uqcROHjML16VggKCRkUHlTFWRnF3ih+NMYfryPGu5g3O26rbRbCr6uf5XR6oeg
-	sRRdlMH9eoYSHHq1A+oP/hCNI6+yUOU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RFeKGN8q;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788832105;
-	b=x9jqjpp1RYWlwXVZ+ChicPXmDa+0IToCLBaowJEmNddWSMGndaew2CWFMFKoDxpxL1OWJv
-	uhOBkKTYBD8LS4ILND0lcnzJ7LVuzk+UIxgFCnC+Wcf42lj9gnL943v3tJfhVSm3rwE5I6
-	hAUcVaB+fNNKK8N+hox7JDdRFoRRRqw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788832100; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=sj+gujuvTHFxhZN0Qt7S2VOpoMJsQgUY9QhEhfjAcs0=;
-	b=RFeKGN8qjoMCBRlXoEf/Dr6/9GcBgoxJQgpzCcg6BGrnc7F120de9CS5nXny3LttvT4Sl32pak6JjOHyyXxvBYNcPiUpWeqHbKYWHlbfBUCSck+tbDcI4pR+LfQtwWbqYUwwmIRHntj4u7/TV83Gmy6Y6OvItRJL/W2KBCHli44=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAZmSo9_1788832097;
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAZmSo9_1788832097 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 08 Sep 2026 09:48:18 +0800
-Message-ID: <04df803b-b168-41b7-b394-1071e002e3bc@linux.alibaba.com>
-Date: Tue, 8 Sep 2026 09:48:17 +0800
+	bh=HrOK81VCA7fdgvtJBnT3Cwz5ib3t+eGo39+sr78CpkU=;
+	b=kOxFfmg6dfprtstuTgtFJa5RfP+p5Z25Gmw+t9SoB/au2cCQKjSBmq7pTzMlbq50KqBsVw
+	ovfzdnqqwFtcQ1gv21O+VBcEk5BdFJE/ZgE8Ttj626UeOsRGx7HutUFnPF1FO0+i7Bqi6f
+	xBrW2bYBewk4CQzyAgYtOOHfee9cefU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=HrOK81VCA7fdgvtJBnT3Cwz5ib3t+eGo39+sr78CpkU=;
+	b=Tc0UhNC5hIH1d5x7kg4j1eB92e1Sy1vrQ4jkFv7NMJIYzpyHb32lvmm8iMKepU
+	WKRoyUYEvjgLH3pazYKaYBMmyoFeAQsLj4kk40+RD8f4p6Nj0DX7hu/wAbCnaxbq
+	E7naBSIa3JoNN9TOsqG/iDimM9pGLf5x5QNQOB2zdsqvA=
+Message-ID: <19023334-9550-478b-bdce-3631de0b1d78@163.com>
+Date: Tue, 8 Sep 2026 09:49:12 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/12] mm/collapse: state what a collapse may do in the
- policy
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>
-References: <cover.1788533997.git.kas@kernel.org>
- <b01681c3cc945a7f7c3c7ca1de502f7cc0e93fe8.1788533997.git.kas@kernel.org>
- <c070e67a-4c1e-478f-aa28-09fb88f8a786@linux.alibaba.com>
- <ap6XERs2j7e1lZCU@thinkstation>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <ap6XERs2j7e1lZCU@thinkstation>
+Subject: Re: [PATCH resend 0/2] mm: vmscan: fix scan overshoot and ineligible
+ folio scanning
+To: akpm@linux-foundation.org, liuye@kylinos.cn, hannes@cmpxchg.org,
+ mhocko@kernel.org, david@kernel.org, ljs@kernel.org, hughd@google.com,
+ mgorman@techsingularity.net, yang@os.amperecomputing.com
+Cc: zhangqiuhao@huawei.com, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Wupeng Ma <mawupeng1@huawei.com>,
+ mawupeng1@huawei.com
+References: <20260901084706.3784449-1-love_goo@163.com>
+From: john <love_goo@163.com>
+In-Reply-To: <20260901084706.3784449-1-love_goo@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3q1g3um6pmyiukq4i6nubex7snaz1u7g
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA10A140007
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXzN+ZaZ9q03CQBQ--.21762S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGF1UCFyfCrWkKw43XrW7XFb_yoWrKr43pF
+	ZxGr93tw18JFWayasIq3W0gFyY9w48GFW5XF4fWw17uw15JFyI934DKw4UZFWxGrs8uFyY
+	qr4UGwsruF4UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UrcTQUUUUU=
+X-CM-SenderInfo: 5oryvsxjrrqiywtou0bp/xtbC6xoDO2qfaZq2mgAA3j
 X-Rspam-User: 
-X-HE-Tag: 1788832103-376465
-X-HE-Meta: U2FsdGVkX1/uNVtUx421fPWFzQ4zTZ88oWRrvEd9xy8JoM9XCC/3/OS/Ee0pAFmk3ZHtodL3hnQsW+TO4qChGxoVBMMbV2YHY1NPwik4URCsYMSVzOcQLVh/rXcC/s7JGj40Gz9G3tMD7plUM6kPMdtHEk6F7LvhqPcJxbi6NGCpOms+6vY/zJsUzYllleBE9ttXmZYms37DWaXcmFCEC8awZcW4MkjW6tg+zVGS/prKJA1/KFcaWbtoIeiAZomLuw31+xzqUxfxJxioCN8kWGmZEV3VO07I3CYoJS0Z3GXxUL9SFlxaJyHbC6hq952SsSoSNZX6Ee6ORKwcrNAXtUWNlHsBC4urHFaelGo6qYqAb9tGZRLfyfB/b0fVXC2TNTODHUZYPXT3Je3E8bTdlA3NUqj/9HNetT8hBHWvogrLbfjpvOjWvGtnovzGJMHiwBzbbV5spnLidaeJSWmjhqbpi2Lg8Fh3Yze0GK9lO6PbCL76J3p2kflIHdHjJn6kdmXNdViYfihT2r7mEz6svSoa0NbeCSrqLm8TbluN4PURrCWWsgefWzNLpMtR0L8CqSgDsEzZyxU0qvkgmkrcONqEl13cA8nO4OQ9YqfGHUKtGr8pQ88ocV0T0wPCjzEgeEQldmPkCtLlUrB31kBtd0e/OHiLfy+SSJaTPTv/Yf8BXnniDJFOo9cvndpxDb7+R050PAEBjxqX141Pvf9th/kHCtKvMWCaZb/cBteKXaviNsYpf/wCBq2MUtUNjF0JcVOVQLpz8NTdtrniGNL27/Stp9duKQNEpWlziCe88E4GtIiw1qnG45zI7um4mz8iVauJziMNAsu8LJ4uj7V58DhlZN2gcRr4sZfATP90mvpc/C52it9ROus+WbwA9kvQ6/lGmGVNGgaIdVCpma28nZkgDDmWFnMU2dEj64UEFpBZmmPoUJFHkkzjOm4ODmHx+QNcQx7RcPPccbBMRll
- 1Ha3p3NQ
- LcG06HJKdgbw9NgsNURUjic7TcQHe/D55bZboluIky8S4dVFdHZpgiKYBKden93c3jaQNh08F926UKNw4dD36ViYLdVrpxz9J6f4W+BCPr8EEWdJczHa7qvTmVq8MmxZTcfJm8bNqUmMy0yWPutqgb+0AxgwCTuERstAvY2Nym4bnkw08qPHHc3QNz6o5X17DFfnNyzU6zZBXbkoWOEP2ZqHwEpK7TQwf8Uy8g3JFHE6eOc9c3uiP4rH3PaXP4zGqI06wOIl46lbNPVk9tkgNQ7qmAU+SjT7o32KniPAZQDi8H8XqDC1cJJfKd7HR51SoMyHi
+X-Stat-Signature: t6i4hk58797xcgyqungstjr9yabkyib4
+X-Rspamd-Queue-Id: 95958180002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788832182-563992
+X-HE-Meta: U2FsdGVkX18Y0H7kdxxA7Za/ggVKuApzJtIU/3xetXrx2nQrtrOpcYpvayY4+sANJAuMTSq/lBbnvWRckog9B1MFO02H3DHt+QYy5MFIE3nkjmcRTkQm9FymsGQYD5DveVL2tJ6FaqTxrrL7m47Dn63+D8peZrcLhVGoXbzC44uYzGBdeWWKqngUdDd13IEXxEAkZdscD3IwxgK7x1N4aUF98MeBKswOkDNBNcZ5KLswnU0xX1mAT+e32lXGa8OrQavYuxR/kYtseXOvDQ0KH2jlyzvNtUbzjDU9g2LDj9Y08UWib2REF/4VJaF5GPVDZiNlbfBshY0Qe3ADaUclMIlzomy/6NI35qgfbwmyJZs//0tSh7n3amvJ0iTyKaKcdNLfqnPc18JtITYnTz6/chzPFpLLqCpFQHNV+HQuA4JV6a6cE0niqXse+A6m4WW445MQI2Zjvn3jDPs8I2DUJiCQw0gvYCUg2kjfMLmZI4JvoU1OGixc687Z8IY9zcimf34530weZQrh2k205pHZ1eshBcSGCrxxX++IdRn6TW/3ZVDFs2DUeWy6Zxy5Voa9saL294E/o9IPW34+K2KD94RbzCGA2Nc3i2x+JA++BZuEI/Ibw0ATI71e7uI0KyhtWAQLdfusxuZ6cvWXCT/7pOJm/DsP+lA3EGjpoxcJAxF3gKhNRw+nZrnU1OSRw+YeOJ4ruDYCzZpPV/hj6SdYe6C2Mg/kfhtukzOGuWMty4Mj+EuBJS23j8GhGI286xsu18oPa6IHHqQ6/AVDaQ+vR72rUmWVqGOJBw8VuTyomBFqNrYKS7NQl45GpdMjdB8qenUuyPQYZ5IhaunTa14+hmxXEDZV43yR3VOwQPCpAg4DOKNNUPp/ETaB/Q6JV6H9/KbpXk0Ss2xqhL8suE8ZLn5LPAg/ji73kNUb9jYt9GEELlT1Teg0DpfzmnNpRUjHnUZ5OH+wIujlS5j34pn
+ 5IWJhkZh
+ MZk92UTsDgM0fNJHD4KbjxjpAgKipijO/FTokZ87/pxMQt2KB+thpoBN81KR9D6RVH/Pt7+wBWJvK3qnOgnX4RsWM4doJgefnELQRmhwOq3sVa6ICWl4RKo+yXquPXVFeXfw0u60jYPXLVvF6ElB74wVa/uHrTyyvJLTE+6XZetLBWl/v8/UNJXL2KyZRdSJo0z/+dCNVx2L32GV/hpTsM0O9/Y7bAx0/Q4GaAbHu2IRBl4vXw/yzqXO2ubwwp+W/jsaIXpJb+4WCkbolB2rrah5c/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi, Maintainers
 
+   kindly ping.
 
-On 9/7/26 6:56 PM, Kiryl Shutsemau wrote:
-> On Mon, Sep 07, 2026 at 05:05:19PM +0800, Baolin Wang wrote:
->>> +/* What a collapse is allowed to do, decided by the caller that asks for it */
->>> +struct collapse_policy {
->>> +	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
->>> +	unsigned int max_ptes_none;
->>> +	unsigned int max_ptes_swap;
->>> +	unsigned int max_ptes_shared;
->>> +
->>> +	/*
->>> +	 * Hold a sub-PMD window to a stricter rule than a PMD: no swapped-out
->>> +	 * and no shared PTEs at all, and max_ptes_none as
->>> +	 * collapse_max_ptes_none() scales it.
->>> +	 */
->>> +	bool strict_sub_pmd;
->>
->> This is a bit confusing to me. Actually, the check for mTHP collapse is
->> stricter.
->>
->> How about naming it 'allow_mthp_collapse'? That way we can keep the most
->> original comments for the collapse_max_ptes_xxx() functions, which is
->> clearer to me.
->>
->> If others have a better name, please ignore my comment.
-> 
-> I would rather keep strict_sub_pmd.
-> 
-> Which orders a caller asks for is already decided elsewhere:
-> collapse_possible_orders() hands khugepaged every anonymous order and
-> MADV_COLLAPSE the PMD order only, from tva_type.
-> 
-> A flag called allow_mthp_collapse next to that would read as
-> a second place deciding the same thing, and flipping it would not change
-> which orders get collapsed.  What it does change is how a sub-PMD window
-> is judged once one is asked for, and it is read at exactly the three
-> places that judge one.
-> 
-> I will do:
-> 
->        /* Take no swapped-out or shared PTE into a sub-PMD collapse */
->        bool strict_sub_pmd;
+在 2026/9/1 16:47, john 写道:
+> From: Wupeng Ma <mawupeng1@huawei.com>
+>
+> Rebase to the latest v7.3-rc-1.
+>
+> These problems only surface when reclaim targets a lower zone
+> while the LRU holds folios from a higher zone.  Normal userspace
+> allocations go to the highest zone.  The zone-skip branch stays
+> dead under typical loads.  Lower-zone-pressured configs (DMA32
+> module allocations, memory-constrained devices) hit the issues.
+> They inflate scan cost and delay the OOM.
+>
+> shrink_lruvec() drives reclaim in SWAP_CLUSTER_MAX (32) chunks, but
+> isolate_lru_folios() may scan far more than that per call on a single
+> LRU.  The excess is never charged back, so shrink_lruvec() keeps
+> rescanning the same folios round after round.  When reclaim targets a
+> lower zone, the same scanner also keeps walking zone-ineligible folios
+> that can never satisfy the allocation, inflating nr_reclaimed into a
+> false progress that delays the OOM.
+>
+> This series fixes both:
+>
+>    [1/2] Charge the isolate overshoot against the scan quota so the
+>          next round skips already-scanned folios.
+>    [2/2] Stop scanning once too many zone-ineligible folios have been
+>          skipped, instead of force-isolating them.
+>
+> Background
+> ==========
+>
+> We observed slow, unexpected OOM behavior during extreme stress testing,
+> and while digging into the reclaim code during that analysis we spotted
+> these latent risks in isolate_lru_folios() -- the overshoot never
+> being charged back, and the force-isolate path on lower-zone reclaim.
+> The concerns below are the ones surfaced from reading the code, then
+> confirmed by constructing the situation deliberately.
+>
+> The problem only appears when reclaim targets a lower zone while the
+> LRU holds folios from a higher zone:
+>
+>    - reclaim_idx points at DMA32/DMA (the triggering allocation asked
+>      for a lower zone, e.g. __GFP_DMA32), and
+>    - the LRU holds folios from a higher zone (Normal/Movable).
+>
+> Normal userspace allocations go to the highest zone, so reclaim_idx
+> never points below it and the zone-skip branch is never taken.  It
+> needs a real lower-zone allocator to drain that zone below watermark;
+> that is also why it went unnoticed upstream -- the 1c7b17cf hard-lockup
+> fix that introduced the force-isolate path was found only on a ~1 TB
+> box running DMA32 module allocations.
+>
+> Impact
+> ======
+>
+> Reproduced on x86 QEMU, 7.2-rc6, with a kernel module doing
+> __GFP_DMA32 allocations to drain DMA32 below watermark (LRU folios
+> sit in Movable):
+>
+>    - A single isolate_lru_folios() call scanned 32794 pages and took
+>      25 (32769 skipped): 99.9% wasted on ineligible folios.
+>    - Across one run, isolate was called 339 times, 140-165 of which
+>      isolated nothing (taken=0, pure empty scans).
+>    - shrink_lruvec() charges only the 32-page quota per round and
+>      never refunds the overshoot, so the same skipped folios are
+>      rescanned round after round.  vmstat on a memcg OOM path:
+>      pgscan_direct / pgsteal_direct = 2836624 / 112719 = 25.2x
+>      (isolate -> shrink_folio_list returns the folio -> isolate again).
+>
+> Once max_nr_skipped hits SWAP_CLUSTER_MAX_SKIPPED, the current code
+> force-isolates the remaining ineligible folios.  On the inactive LRU
+> they reach shrink_folio_list() and get reclaimed though they can
+> never satisfy the allocation, inflating nr_reclaimed and resetting
+> no_progress_loops in should_reclaim_retry(), delaying the OOM.
+>
+> A/B results (same .config, md5-identical):
+>
+>                            baseline    patched
+>    empty scans (taken=0)   140-165         0
+>    isolate calls               339         7
+>    total pages scanned      343711      3140
+>    single-call max scan      32794      3104
+>
+> Empty-scan 0 is the stable evidence (holds every run).  The
+> pgscan/pgsteal ratio is volatile (baseline 56-26675x, patched
+> 65-1324x, ranges overlap) and is not relied on alone.
+>
+> Caveats and reproduction
+> ========================
+>
+>    - Triggering needs a lower-zone-pressured box.  To confirm the code
+>      analysis, the situation was constructed on a small x86 QEMU VM
+>      (1500M, CONFIG_LRU_GEN=n) with kernel cmdline
+>      `movable_zone=DMA32 kernelcore=256M` (DMA32 small, Normal empty,
+>      Movable large), then a kernel module doing
+>      `alloc_page(GFP_DMA32)` drains DMA32 below watermark.  LRU folios
+>      sit in Movable and are zone-skipped while reclaiming for DMA32.
+>      Observed via the `mm_vmscan_lru_isolate` tracepoint and
+>      /proc/vmstat (pgscan_direct, pgsteal_direct).
+>
+>
+> Wupeng Ma (2):
+>    mm: vmscan: charge isolate overshoot against scan quota
+>    mm: vmscan: stop scanning ineligible folios after max_nr_skipped
+>
+>   mm/vmscan.c | 48 +++++++++++++++++++++++++++++++++---------------
+>   1 file changed, 33 insertions(+), 15 deletions(-)
+>
 
-OK. Fair enough. Thanks.
 
