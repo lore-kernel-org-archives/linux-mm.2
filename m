@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94715C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96A3C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 709A26B0095; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
+	id A99326B0095; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BA566B0096; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
+	id A4A7B6B0096; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0496B0098; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
+	id 938586B0098; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 434896B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:15:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3497D16035B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:15:05 +0000 (UTC)
-X-FDA: 85189279770.24.FCF23D5
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 904F340002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:15:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788840903;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=OJeGxfQ1cnO4KfojSL4gJl33/1+VNF6TUeyMxAp1vaQ=;
-	b=YcBNNfHNVU4hnglTQdXEC95GqVWkpPBUxZHL66adBSffKFyg+n4/6hd+UihMn6Z+4wF7Pr
-	NbUOBhcAeNb+8xTckzmKfLeh6EN0TNAs7UHAMeAonKOTVc4WOfuWmBqvBmBLxDzPnZJhLg
-	7T0HnBZ0UNcLsxY53h+I+eYol6c9byk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3xoufagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6996E6B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF311A03A9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:21:25 +0000 (UTC)
+X-FDA: 85189295730.13.0121933
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DB89E140003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:21:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RqqsGDNb;
+	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788840903;
-	b=1djZLSG/lBoQ2a3BTHKFcSlB+xcomVU1PwwX8K4sgHbeJsvgmo9/7RcSHkDYhyN2KwlBRJ
-	1Kon8xMd6p8cUKGIoxbIc8R0EApk3E7LO8lIqdOgiG/Nzuk3DUnfaGUtDoBQPTaug4DmXv
-	slYRGgkxF1sVlTDEnRsUf9SM8hOftww=
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b28db6c77aso5003438b6e.3
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 21:15:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788840902; x=1789445702;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OJeGxfQ1cnO4KfojSL4gJl33/1+VNF6TUeyMxAp1vaQ=;
-        b=n5QcT+MklYf9M2XfYjkF1t7RY+gj/WkCFE464DVY6SKxrTxYwCJTYyH14aNJtMtu4B
-         tYjL3YPrxKUX7Zj61xF6BOgPBqMOGwO9NthwXR3GH0QBqXkALMQB9byBHVR+HNc9IVHd
-         m0NdTEsHF57Zu4uhcziM/eIIXO6K+fLNtkHFbTvz1iyxbQl6xdhcaXQfmi48VlX37n9H
-         fDNr0MWbCjma1fFhTu0yIM/FagLN62VnSYrXljpFwHrli4oCeKd6LFxJtr5kmtyCrdd1
-         RZDNJE/m4FgjirfMj+avK9tw4s8Y6+t1MYx2sEWoVL9uietIvRXeTW8+YCYA/DnZxGsU
-         chkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy9AwPssWT3xmcqLh8gHiJu0jYq00fJqShcX+JArTPSVdlGjQMc1L7tSgSU0qUZgi1tFXh6zbUs4g==@kvack.org
-X-Gm-Message-State: AFuF++mx3VL3siz3nuw+R/jh/aHzHVw1OsD+2bfd+CFMQYCB+5z0nMd1
-	XQUzRCPeq3cvRhWNZ4b4nEqLE0g4z9dWKgnYeftJuzoC//CGrdExzqHRnBQFFp/iSyTq3c4RKE8
-	7VPK51JgjO021AxRfG1PZmCPuxwG5SFo0EDs1/K53araJIwWzjaLhGEiKDGY=
+	t=1788841284;
+	b=hj3CKWyHm0nqGq3NQOBual427Xi/68ky8o+l5IooVEdkQyDJ9ZJ6yGetAwgZq1uK1U6+L8
+	/yU5ZaSgCTrt4mVfquODSDIaSX3lVB0MVwHfinwjPLHSE7fgqLlGR/78+VNNY8nY1fmYwk
+	3r5wSA40jJ8SLqZsOtah1vyIeVDDHk0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RqqsGDNb;
+	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788841284;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5l2GsWMCXIa1zqfwvNfoBsJB+Pcrj54mJBjCGSkGnMs=;
+	b=o6ZULJOAHeczh1rFqKPZC3HrWAZOuqawpyfm+1heiFk2e3dfHsC0SNrvFXqAYc5t6pl1JV
+	P9tNTJ80K1bnvSCI8oUP91xWiQEEO9a0Rj3rjQBX8aTYlaRNWu0E+CGhTkkB4/972XZ4kI
+	pm8hk/+lQM8sCzURkR3u8A4ocMr/xyM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E71921476;
+	Mon,  7 Sep 2026 21:21:18 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 520A93F528;
+	Mon,  7 Sep 2026 21:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788841282; bh=K0Wlf9u1v8EnKIQ5AhyaZte4Iwg0VOgbEUCSHSr2OBY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RqqsGDNbNtoGF8UaRD/lb3640ii0GOwPaqfaV9OUSkpZ8Pv7s0Ig+sx0ZF2WElmJL
+	 QGEE2st8jPLsPDEvCKixIHnvUwWRf3ky8NfQXwxbdzy1Pxg7G7hl8TrxYDz6qOTfHf
+	 UCxTossPmCnXFlVPRAx55tMMlqTM3W75gCtjdI+c=
+Message-ID: <943faa15-06b8-49ce-8b91-e4c1e2f22fa2@arm.com>
+Date: Tue, 8 Sep 2026 09:51:14 +0530
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:603:b0:6b7:8415:d784 with SMTP id
- 006d021491bc7-6b78415d7fdmr12916161eaf.47.1788840902666; Mon, 07 Sep 2026
- 21:15:02 -0700 (PDT)
-Date: Mon, 07 Sep 2026 21:15:02 -0700
-In-Reply-To: <20260907192517.564ea15aa8c9d47669b3a81f@linux-foundation.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9f8bc6.f614420e.2bf292.0005.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in vma_add_pgoff
-From: syzbot <syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 8wou8qs5qsadf1dhjafd7w97nzrb58gq
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 904F340002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org
+References: <20260907081509.924979-1-yeoreum.yun@arm.com>
+ <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788840903-352734
-X-HE-Meta: U2FsdGVkX192GZlMjLmBFOWJimiENJmraHWcrMSCN2tSdZfgwEy/L5GRXj9AaJDwXEDpuHLYh6RgjkIaLjzL4QCVWNM9+G/SMZ3zOQ6PEcLox8R06+GqFPc7Q4p6dlTgXhkNYv90C2hojftDTH7bD/xu3QJKdxCakAqTPlI+3Y5zWhx1759Cm7Fpnam9qayd34sLVa9Ac40C6Fa3f2noVMkYHflhpcF3cwoU4ImI57GZ2o3+eGxahGvESHxc1s6OHtXhZTaYAaA3u3ZfLFeEh3xnYwCsXO9zU0S2bVq0zt1N//prgnf7pNJfHFfsfw330a9Bp1MKU2lb+N3UDm6pzY+OIVLyrb/r+LvnPf8vMJCMCIQR+SK/iuiWecz9we3lO995OWpapJYRFh6aiFp5xc5GI39pTJbLvysXq0gMAgbhfszIGUcXMnVUDXTv/BVihBSRmHKcCfNtvdyDYCYNDdf8ONERH88+jzph/BNmgxbYvds07boa/3xp4MnP8FYiOhXYNJEro/BzonWxU9SMqkv+P+/ecyC7qmwKYNNyR1sa4re0uNDQ5aqPi/s1/z+wSN2NA2LZErvwZoPE9gOqhsNi+x0m5NqKg+Aj4rweXYJDtYXUXmIpGmY2H9otMOkyu+QyNEKeHZurfykjDL+QOM9Zw/C5VvNm8hEzZf4kckY0Vz/SSw0f1ySTa+/jEessbbZNDsYv/OolR8shaDMtQ8z3wIMo9uC3eetIBHmzimBxQqIKsaMkxuMairwB/UfyBNNfw8GacC9L9OYM+6EowMMxuoo5UdGTjl5OVh1qVvrMHAMTYVVW0bP/S54Ajt64OU+f9IqvaIFsEE6FEP3ntThBsRdraBdgbpt6r7Y4ZDfp5HhlFXzdOM7hY8E8PbY7vliYQEV4BvXy3qWXqCBJEUz5rGEJHwH0lsWsUkKQNwyaxZhWd1wEbBGBJnqCdMI1NF16UjtC71/J7z2zqhC
- VN30MWlr
- UNu9CjRMUtQ4jeYKKvIplIyG7//964luyBGUTfSr6C4nnauLBKT2MQ/x3mx+tpgRauy715Aj7pgzuotRjr/gCxQZjGNKBHj6+YRKH6uotI2K5nwpomJ3qGgcfWTs75XxFXQ766aq7KMajFF0oz500vp4IttVbsY/57jue7R72H53ivQsRMLC5kDI2q+1Bku7TzRkdF9fPsMWV54ib5M4Cxuf+XltjUXqFW1j8A6w/NiwKkx3SORC5FFUgxZY7xnKpoL3IRnMK2ahphyml4J1+l2oZm1x2Xnesu+tjP95sn7loZomzzFlUmETxXLktg/TSI/37laFgWfd8ANvWEjOqteSgl9fQY4/AGsTWQEFUAiTPeYESTsfQVEU5WhxMQ4HFN260CI8fRrEe2/3zk54Ro+gPPfmdkC6I23xWuQfY3pK67QR9FWKN518ZYmwdjmnkFZtpyWfqUC8vM6JikqMmJBnaGwUzT00PxpboMsbBNHq4C2iCCZ4W3Ja5ehYqCsBKLSZf4qnfhaY/5Rwiu+6DPgTNtedC9a7XRmaQhDyllaWxczK/yVi2HX7NH2IyDvGQlSBqMBmlbJntRyRMQMSGwrItqm5orxWX49DVq7Wj9BL34LdlAQzvmkiOzibxV9RcE+tdYxxH9aJorZebSYTAKOfxVFPKIBH3bg/pxBe8lFsmF5leC+dXOaKda9laoJAPUHydV1uoDTDoct5HeKddM+e1LAbhGFjCBs64I4yggLwR8MGeqMweK/HAdGRBRe19LL1gCS3n1MW1/E9Uun4XoQLYyQD5z/8A2ht8NuVLS0QZWkAnmv77ISy+EoeoWAOQLZFQC8CV/dyd+NgefDMIgZKStMGG2DvANMtdIW1qJIRPlzSI3a7npksBDWZeMrw4B9R06ige0HIrAMIM18q8o+IANyJpX2udS3wis4uR48RyHMf9tX8+O8wuoJfNaoP6G0TZNoABiW97r6V7Wfl1lSHaNjPp
- RZVtI7j8
- UoJMusOoKAHaVFiAQ1YWQDYCxs8slt5l
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DB89E140003
+X-Stat-Signature: p8tdgh6kaf15ugbidp8f5wxbha1xqubz
+X-HE-Tag: 1788841283-93083
+X-HE-Meta: U2FsdGVkX18/8K33bY+QxXztR9AcUdQA+Duy83oLU9J7zOxUVLEXw8zwEtEGvkoqAVECNEUu6KVO0iO5h7hMjFXbe3BlOtpyA28k3p6rJkiginBXhWr3n1yD2wz3ZWyzZiylUObf/smDALchQ8h7QJO8WFJI6/nixyWUtTG/gKMd3LTVQSW+voDSkw3XL5Atgsq6CY7w3TCBCBnb1Rk6RB8hpp1MNabygpgf61uRG1BuqB4KiyI3JSbH472LG0ucApr9y0M0HWV5KMvlahk8qgbw1iiUirshTKKegyz/RnHz1HTSk2VzuR3xgn0rngdR+hRqDr9md+ICFk+jiZXpji4/EZhLwMlEhssB4ue92kqk5srGYNlvfG24k1Jfc3xIFLOKaIfHvARDq3ZT1OhyAj+bCP3qk/MWLZPAd8GWroRecErbfqDWKacQVA7o9sGuGipNaAhhScxwszE4nKO0n8J1IqQRpJySCi4gwWiTi751KfJOafczGUcisIa41AXFmv/yrVSUYps7c+0QKgXA0PEeD5C/eEFMsMnGuGGjQQWDqrgae9svfl3b7en+bnd2tqJBiD2xl8sVqSA3+TupLHV98mhJwvRpT+rNMAHEkHffm8PXraTSxBLoumWT0DyermUBs0QVcHoGnhi5BIIONmmAx8PCE34h6BZSaXv8afI8aLxv6TBIzi4gVQuyRfF8PrKClh5MAE8k7m4STCDF5iQS1PcZVMyDFnumZsa821nZPqCyrS1g9ntks22lTovQw6DbhnOX2QdzNj28gfbi+y96Mbs/rBosDcm5vZeWcKghqXgVQCi2yUovTDw/8yNeRxAQAYz1Wt2MJns7+ggPZqLJ2CqizbPE5/yhFZh7+vQQz6jLvDXMEs1PA1knT/oLzP1NxYoVq1HEx4Bek/qaBAfSBEB2dDHxgGgmC656sdnr10yOkYQazMXzOAPLcZALSB5v3uDxYUp0F4NHtJw
+ 40txxThC
+ RqjuEbVsIsc2lGZRWOGCrQyEq5LoB0NiEho3xt5zE9DSuAdegWIc6RQC6agVw/33lLEO0wDdFeRZorwzWBhLiwezQAi1nyJ+/FYjdsv3hYAkyXFeCikQDL67p54LnFIVc5p85wU5QzLhI4i15VJPUgxAfBZlV4PDG6YbMP2xJGI5Fxnj1exQF+jDEBLNt06sUNQVDqhcLqs4LlPsVE6lyBQw1+NCM7rQQAzqnEYphkX0tS6vTWAckRpMsjIQM+dUWZFRjnmvXrs1eIx4K4YD+laTCbs1NG22vPr+zIj05HcMLTUPxaKH0q+/T1D+3UuN4FeUtlhY/M1Q6P9r0o2V6xvC5ZqEC56Kxb9k2Xw/6hVKu/awytpkA4ygDmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +96,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Reported-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
-Tested-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
+On 9/7/26 8:06 PM, David Hildenbrand (Arm) wrote:
+> On 9/7/26 10:15, Yeoreum Yun wrote:
+>> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+>> When this macro is used in some test, test result would be strange in
+>> the system where PAGE_SIZE is more then 4KB.
+>>
+>> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+>>
+>>   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+>>     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+>>     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+>>     ...
+>>   ok 1 Completed
+>>
+>> Remove the HPAGE_SIZE and HPAGE_SHIFT macros and introduce pmd_page_shift()
+>> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+>> helper, read_pmd_pagesize().
+>>
+>> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+>> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+>> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+>> PMD-sized units, the test may fail with the previous size of 100 MiB,
+>> which is not a multiple of the PMD size when the base page size is
+>> 16 KiB or 64 KiB.
+>>
+>> After this patch, output of transhuge-stress:
+>>
+>>   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+>>     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+>>     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+>>     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+>>     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+>>     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+>>     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+>>     ...
+>>   ok 1 Completed
+>>
+>> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>> ---
+> 
+> 
+> [...]
+> 
+>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>> index d09f9f6a384e..24aa1de27c25 100755
+>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>> @@ -360,8 +360,8 @@ fi
+>>  CATEGORY="memfd_secret" run_test ./memfd_secret
+>>  fi
+>>  
+>> -# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+>> -CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+>> +# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 512
+>> +CATEGORY="ksm" run_test ./ksm_tests -H -s 512
+> 
+> 
+> Why the magic value 512? (desrves a comment)
+> 
+> A clear sign that the ksm tests must be rewritten to be standalone and just
+> handle this internally. @Sarthak
 
-Tested on:
+Sure David, I'll work on this.
 
-commit:         35b0fb39 mm/mremap: reset unfaulted VMA page offset fo..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=15e13af9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
-dashboard link: https://syzkaller.appspot.com/bug?extid=c6879dc677a017f0a21b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
-
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
 
