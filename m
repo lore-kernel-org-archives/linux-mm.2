@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24653C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B5EBC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B7E86B009E; Tue,  8 Sep 2026 05:56:21 -0400 (EDT)
+	id 720B06B009F; Tue,  8 Sep 2026 05:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 068C46B009F; Tue,  8 Sep 2026 05:56:21 -0400 (EDT)
+	id 6D3AE6B00A0; Tue,  8 Sep 2026 05:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E986E6B00A0; Tue,  8 Sep 2026 05:56:20 -0400 (EDT)
+	id 5C33A6B00A1; Tue,  8 Sep 2026 05:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4D996B009E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E23C1204AE
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:20 +0000 (UTC)
-X-FDA: 85190139720.26.4FAFC9B
-Received: from out-utut-a194.jellyfish.systems (out-utut-a194.jellyfish.systems [198.177.127.194])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6EDD014000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DOSSsjQb;
-	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.194 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 388546B009F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E1A3804A9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:47 +0000 (UTC)
+X-FDA: 85190140854.02.A0CEAA0
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D399218000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788861403;
+	b=R8LKpypldVXKJtwUZppwuUFslmWO0Oo8eCQAmVuNsDlSBO0wVNACZd7dnGk3R/vLykCq0w
+	DiB+h+m3icrZuMi7FCFMtN2VGG7Ope7SjzADQzDzBz+0YQFgi08xA5wEhowHtK1t+0/Ir5
+	PYcrYPJY6lzpG2725qjQwY7uhNwsP88=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788861378;
+	s=arc-20220608; t=1788861403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vex2Z7sk6yPXZz+/u0iVKmqeypvzt3JwnfHpdqCuCKE=;
-	b=4C6+CwDMDdOA/3nF5NabTdIHYQ0G/rHt1IQfwZJ8LWBx1C0yTketNiB4wlsxEI3mj/PyCa
-	2LLzCFCls0gV9H+beROZqNGq3gYO9/yBCg8rNezhFlrYKb9XFvl2aOsqtptoBlgDB/B7Ig
-	FIlJn4OfSQQnLjRT2USVCsO3y9VUbzY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788861378;
-	b=QjhbEDey5oDEP3kGeAF6yDep7ELANblrnyeuSjMP78ht76s+yGXpOQebSo54KMGbzFXp/i
-	S9Qea/jgy6y9K4NkmlK4GBNyRMvvF6sfBsSmvCV/r1L6X31w36dcFQqvd3qWr3KLMGybFz
-	MCPaFQTPHeflLmIqYTOGeQE+mfMgS40=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DOSSsjQb;
-	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.194 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
-Received: from fedora (unknown [69.5.53.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hfK820ZX1z2xMb;
-	Tue, 08 Sep 2026 09:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788861366;
-	bh=vex2Z7sk6yPXZz+/u0iVKmqeypvzt3JwnfHpdqCuCKE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOSSsjQbdN/z7OIrg9U4fpJf+gF27UzsoJU7SIiwOhePNsP9hOIH86Lq+YwzYyOIO
-	 V4KfB4V+Bhll4ZQO1ogTvJvzoT7ZRHwTNgsI86SQhrBeDapcQmGAMyKMMBCqrvS007
-	 amy3q1tRlGoCXBWnrXRjUSYw7g/Zq9c8c3aY2RWt/NSgOiouCO635eY8gtr+1N9odD
-	 iPNSteugwez7jHnBRGzfz9sg8BJ5oiiXmfqdJrXrrvj8qED0IiwG2skeCve5hi43+p
-	 RXs4wFCE0Tvi3R9zXQJCq6dWQwq6U+7moCHBlAvOhDNS1cVKBM7go4U3cqVXOfbNel
-	 TVdyyeY3r9rcw==
-From: Tianyi Chen <hi@tychen.cc>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: shuah@kernel.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0/Brum9tOQKlUroYTtIHPsdanzwwvTW802hWdMpXWs8=;
+	b=Z39F5qW5WYoZjyYUzizEjgz9XA2Dono/KWOc8Ly90NgsmrnFssGWwCjMMvthFyp77l5961
+	UAV/QnqJs4LKsKScYtHWQnopgKBXhUwJ8fHrlcaRj/EY+1Xe2ebWrXCRtT50ChScQYMa6w
+	3n4j7qVxcIwon9KDI+ryPeMudkgxeso=
+X-UUID: 921928feab6b11f19a56ed5b684f684d-20260908
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:4716adfa-6f8e-4ef5-8821-d7ce7aaad837,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:0f4028235c6ff823b644fee21e638421,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|850|865|898,TC:nil,Content:0|15|50
+	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 921928feab6b11f19a56ed5b684f684d-20260908
+X-User: liuqiqi@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liuqiqi@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 990608029; Tue, 08 Sep 2026 17:56:32 +0800
+From: Qiqi Liu <liuqiqi@kylinos.cn>
+To: Gregory Price <gourry@gourry.net>
+Cc: Qiqi Liu <liuqiqi@kylinos.cn>,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jsavitz@redhat.com,
-	hi@tychen.cc
-Subject: Re: [PATCH RESEND] selftests/mm: Exit on invalid command-line options
-Date: Tue,  8 Sep 2026 17:55:34 +0800
-Message-ID: <178886112560.138404.1757557703285138272.mm-cli-review-reply@tychen.cc>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <519ef70a-679c-455f-ba5f-3841730873a4@kernel.org>
-References: <20260906135444.749144-1-hi@tychen.cc> <519ef70a-679c-455f-ba5f-3841730873a4@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: page_alloc: add trace_mm_page_alloc to bulk allocation path
+Date: Tue,  8 Sep 2026 17:56:26 +0800
+Message-Id: <20260908095626.339906-1-liuqiqi@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <ap7Pbm70m0pw_NqM@gourry-fedora-PF4VCD3F>
+References: <20260907120949.418450-1-liuqiqi@kylinos.cn> <ap7Pbm70m0pw_NqM@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: hi@tychen.cc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6EDD014000B
-X-Stat-Signature: 6w1rdezjj4ep9s435d4sfipbsepc8xqb
-X-HE-Tag: 1788861378-236097
-X-HE-Meta: U2FsdGVkX1/mJxDdu2qm1NLlgJFDkMH9bM0Z7VMWCrxs72fPvtpkAXnmnwSN4YAT/7nIqWVJLYq4GiX//kn01TQaC8WJ32fXjMODQzVUJWAgGbDtCamtwi8LPcmRGpS+AGsjtELpZZhH0mmMZTplELVtv+86dkqOQWrbP2kSncu3jZ+cCY52SRJq4LgGmy9HZS9dBDZosJd2PQBpNgaXZq8H6JXzBIe5vlBCMAX2FWOOl76pQZ9Aj2RtpPhVp06JoqQSYoU63RoS/3Rr+F5uqCwDNZbr+nvJcr5K16OC56LQOSb/44XUYCSpG/cZtFezEKhbo0Cj15kI5NK7Ioc3Ayhe051ars6uFjztoUf4NPjK5U+eJOhzXgi4M1uSsKFA8w7wFmSYP+o1Blv39Hd2kak4Rq4eKGHH+nca67Uccq0P3ubLp6vX0URiSAMV6IQ8f/QvfEj5iaJK9y3egThIJt1VHjELJKRD4NEVCHvlDjWBDMcoKrtdbMHvQWvmUW1ah8m0GiPxgPZFT7mKVlsGX7CBTo0ZyATnKjcXrOldWa21X0as573cuZ0XXCPMRZrb06b8ZG7E7amloGFTffeVJwamj/+GCf9w/qOgJ1JZZej+UXHQsd4LPkLJZIeJk8YZrR8qTnvVu/QfZCMt7hfeDkMq2pFMm1nhXTK9jYN0ZcP34+NV1J0ya5+ErGiy9tNzEnAuLQ246ZVAe8DopXREXPc/nqB6fGKdO99RidipNQkpIU0SxJdaHoeJVLnS8tn5Ht3P4UVoa2pkp7OXrLo/V3Ph42XJ+Ue+WkEOn7NUzdVQf6s7gX1OBj8Ub/hFjfxjtVg/Z5qwMB2eIM3gP4bG/y1I1HTfkvVJSB6XwMonjbHytxO+nIpDwd8YiLmx1Fc3Ag0Ve/DEnZDGVVtJk0LWdgPdAQssL+fCJYFhJvvyvbqDwzgGPnDd4DmXHi/6II4RaIEcp4u5INeWfdkr6N4
- JytcZ9fX
- 11aqpZKFrFy2ULChlQC7fH4mf+qkWohwmfqJqYTJ+PGjY/WBtHH6jGCn0aHAlo9csVVTKT5AXBbeVf+ZhEyywaEm4U4hOmSqrIbZ1DxYWZsCPDxrV/ngHgHLlQpXCejkzg6xbwooXARoj/0q31ajdtagj1M4oZLIXh6vy3+N578ydcUjEN/2U1ruoeiEZ+KV+xhAMgZwh+IY4xtuJGseDlq8vJwXKMRnxKmvCl5TT5BnTQZakvHNEQ3u+HkUqbAq9M9sJUdNvh3bCo93GXhClETs5Hw5ynUZlDH/kiDmoh1Xdsw/Gbvo54AU5ZoeKhxw0UG6WGLXcy1whEiVgeFhI+Dsg7OQ2PNK1HcGuc9Ajk0CEQK/jpwxNAhZSew==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D399218000C
+X-Stat-Signature: eytrbax8sjpxzb3gc6cynozyya76baub
+X-HE-Tag: 1788861402-368219
+X-HE-Meta: U2FsdGVkX1+T0mEbSR+YqKMUxXYuXYXz7tl/Mgy3Fo3KjyzAovrvB4Hr2sBbgwgoksK1AHmSme1b1RkPIQ00W0irdUiju9NCjVailM2PNHyXw5b05ZzD52pHkR2ANzfSB9Hef466fWjF3M5CIb9vTiAYSeYAiP12CP7AnL0m8fOCk70DHFODvOojroHTXQLOzXV2oEqgpYpCUgqbAskVVamqtrpVdyxwvEoA9xOec9nqx61ANzVMPm0t8K32rBgtc6UD36729g3wt6grECdw94/IgXb4UIBSrA8diWI7ghQdymv7Wa9U5KLKRXfCtRq2lOMF2/0cPUcla0yfwo8KdrIoS3St+tKvCkV1RigW7CH4zvytPAlf/181QmDrJUuq1k1xko+8zwWojJ7eURPBSmwvAO7XTNLXgE3X8xjKqxNnAPgSygKFFXL4FvrwkJ2xM7Vk1zkOasDUCOdCfYYnBJslIhPSTv0wYxgeSc3gsUJYBTUzd9RSuDPWEUGRL2GCstq5fVzXSdaUftW3Pyl2mLbWN90dTcf8Gghx5kxVFmQaIfh/ai2HZfy9ZxE7PzgpDVirktJjtcOsOvJxdpFCwOgwSp1RdLxI4AIBoxC3M7hysgrqwV2tmxrvSpyusgBtAFzOazH7zHfksAlZcA6Ig72lZW5nMkenF8nx4P+e5w+7v7lLC2SV0oO0zoA5Q4xPOIlsUZXC50CnsWW65N9GBc5xg6o4aaJusrRsXc43DVldyPs+1ARrUMg5gU7DiKZnq7apIKAAFL0GHZ8jZMZhZ9rDS+Bzy4Yhrt+FTmIuiS/GjcnC5Qrjp8Y3Xwo2Vhn+1XnHf1VmiZjxTOiBexT+Iji/uypuChBDm/5szMaDFBPE57G9zjs4R2+6pZL3P3FJNMIDlyICz3k2fQbhGVCp7YmxUPsn4JFKKVW+kM/F/28B74nfaWkCZx0ee9+CRulmJLNRWM0JTN0QCLf/NXr
+ JXcA6KzD
+ XUCtnuhahpeGj43Bd0H50P/UQJcJqYoqbCSWdZwNth+jT/hQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for pointing these out.
+On Mon, Sep 07, 2026 at 10:53:19AM -0400, Gregory Price wrote:
+> Sashiko asked whether we're also missing kmsan hook here as well:
+> 
+> 	kmsan_alloc_page(page, 0, gfp);
+> 
+> Might be worth a quick look and just adding both in one go.
+> 
+> ~Gregory
 
-Unknown categories were not validated, and an explicitly empty -t
-argument fell back to the default selection. A missing -t argument is
-covered by getopts error handling. I have extended the first patch to
-reject empty and unknown selections before setup, while preserving the
-default behavior when -t is omitted. Validation uses the existing category
-list in usage(), so there is no second category list to keep synchronized.
+Hi Gregory,
 
-The ptrace_scope setup was indeed outside the category check. I have added
-a separate patch to run it only when memfd_secret is selected and its
-executable is present. The behavior when that test is selected is unchanged.
+Thanks for the suggestion and for taking the time to review this patch.
 
-The v2 two-patch series and focused validation details are here:
-https://lore.kernel.org/r/178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc
+I've added both trace_mm_page_alloc() and kmsan_alloc_page() in v3 to
+ensure the bulk path matches the standard allocation path.
 
-The real mmap and memfd_secret tests passed in the guest. The configuration
-write check used a disposable file at the sysctl path because that kernel
-does not enable Yama; it verifies the script's gating, not Yama enforcement.
-
-Thanks,
-Tianyi
+Best regards,
+Qiqi Liu
 
