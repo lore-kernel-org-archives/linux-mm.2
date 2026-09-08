@@ -4,172 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6042BC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24CA1C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:19:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05EBA6B0092; Tue,  8 Sep 2026 07:13:09 -0400 (EDT)
+	id 376FE6B0092; Tue,  8 Sep 2026 07:19:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 036546B0093; Tue,  8 Sep 2026 07:13:08 -0400 (EDT)
+	id 3007F6B0093; Tue,  8 Sep 2026 07:19:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E685D6B0095; Tue,  8 Sep 2026 07:13:08 -0400 (EDT)
+	id 1C9EE6B0095; Tue,  8 Sep 2026 07:19:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AEBD36B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:13:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32773C0534
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:13:08 +0000 (UTC)
-X-FDA: 85190333256.12.4D3699C
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012024.outbound.protection.outlook.com [52.101.43.24])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3A32780005
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:13:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E716B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:19:09 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DCECA48EA
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:19:09 +0000 (UTC)
+X-FDA: 85190348418.13.EC5080D
+Received: from mail-m82102.xmail.ntesmail.com (mail-m82102.xmail.ntesmail.com [156.224.82.102])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A134B80006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:19:06 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dr0hhpDk;
-	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.43.24 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788865985;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.102 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788866347;
+	b=pa3ERgLy6Kk3MfCfBqK2Rr0g+ESQ8dyArexhW+qDWQbgw/+vBKJIucNn0vi3FAAc6+vb/F
+	hHVQ6HIt7qaa5tby8kg5WCPONXUEbpsu/lG+6GxyN7/W6G/OYHJog04dFXh49z1zjZQ1Pf
+	vwUjNM7TzKvSzDpNH7n/ZI+xD+N3C4Q=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.102 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788866347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luPmZf4cp5dz07FJBCmfrWE0TCBNjfIMciZMRi4hj6Q=;
-	b=6U0sviUIspwhzpRIPDG6KBGhcaBaJySGDM6x8IdhNOJly5cJnjakFcIYjdQWYwpA2t/ysc
-	eb3QJ0fSNUfgHWuOdrKZs74bSrT9f3BCSqpkNEpMnWmbovtM7XA2erwrnXbfasRP5GDOjX
-	lawHaxFlTMv1yeiiYtlejLq6Y4WAvn0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788865985;
-	b=0dDJKoD0Tjy0gKS+yVg4pio9VSJYLCUpKO7NjodMF4e2TS1fGfKF2wsx1fsXvfwNSmG/uN
-	MzrAY5dAFQYK9FUleFlnlP31trWnGkefuOU8wajErsD5OByVUaby88kO3ObZWcmmIFAjwI
-	f/XDyU6rztnzedewqvyU30qjxRyW2iU=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dr0hhpDk;
-	spf=pass (imf02.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.43.24 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L67qYjddTMm2P0rGNRF78cZn6GBnN9sdbL7Cc0r9mlxexdWCGZ8JnVtIOGMWCBHAZ+ikzBMCYHhMLX0DNzz7QwkAiwnIqzYvLnRjgACuKOYBG68vcsdXpJJoQY8vxeNT+DtGiaio9eaKOm77iXoYdjvUYy1/6Cb4d0Z9sGB2dqlrDSQBw+Ww7iYb/wseKHGz3vkRnnSxwl6+gCaRPmLFecESXJQJSKlXulS9KwR9cUsmfjYPSvrlzNusZLZZ2usB/SRkfD2cG2DH5i+mjSBMGmURFx7Nvzkv9nIH8nZaBIHf2bgTIm9dW4fFuHMauJmQNHUgA710ugV6fuVrYesR9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=luPmZf4cp5dz07FJBCmfrWE0TCBNjfIMciZMRi4hj6Q=;
- b=MpO40Aiy2W0EKKWZLp1PUQWnnTqX8k5szvClDJOeR0Kb3T8Cf6TkvU9kqkrb7DZbWDxageejqhX5aCvwNJ8NW7qeXCITgIopCd5Wl24xzOJb6ZH8ACOJnHAA4NW5Jm438NVMsZFm+vshauDSfFHkU4TKePve3JcxNceg59PJJ9YG/ZCcCD4kMwlGyvpFgcpdEP08yP1qBnQaO2UHSztHsidSVxp+gFVgETrZu+AdGeDDYmNBdVPpqYsL0jNFCstSb3eDv2h+QwZiiYNekfSZtVaX05l0lyjyV0sz68xjHTfxK2A0tAWaM25rAlL25ld10eMP9aQZQJlW+aWbSff35g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=luPmZf4cp5dz07FJBCmfrWE0TCBNjfIMciZMRi4hj6Q=;
- b=dr0hhpDku61yROLDyGeFPghYPWzWc9Rjr02KrqPALA+0o17KJvJWEGiWUTNryn8AXsV/ziEc+uvWmQYfwNh++DNLBKa/z8t0d8In6tWWcUfnTr17PbDxhWkmUai9RjaZUmBTEPYuV27F5A3LMA1lTaGxIQQNoOedB2NXDenGWUaS1zbPuaPQrWdNEzy47cWxipnPAavSCsEMoObie2tLS1mSoUzaMXXfroYXm21gsE8/snD+ZVf/Tj0roCyuqYwj3CoajRtLM0ixMJbizmhTwftBGOLDzuKE2q1RuSxw12L9rk8fleDoZORSb4yeP1PSXS7vDcJAS0fviqNU3lIVsA==
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
- by SA3PR12MB7829.namprd12.prod.outlook.com (2603:10b6:806:316::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Tue, 8 Sep 2026
- 11:13:00 +0000
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
- 11:13:00 +0000
-Message-ID: <9c78491d-83cd-4ed7-93fb-c228adb778a7@nvidia.com>
-Date: Tue, 8 Sep 2026 21:12:45 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: add folio_reset_partially_mapped()
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- david@kernel.org, ziy@nvidia.com, hannes@cmpxchg.org
-Cc: ljs@kernel.org, usama.arif@linux.dev, lance.yang@linux.dev,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- kasong@tencent.com, hughd@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260907183340.1446132-1-kirill@shutemov.name>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260907183340.1446132-1-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0036.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::20) To CH3PR12MB9730.namprd12.prod.outlook.com
- (2603:10b6:610:253::9)
+	 in-reply-to:in-reply-to:references:references;
+	bh=d5qmPtV+Si645wm/t/d+hQYYFbSbVKqcD6QNIiB514U=;
+	b=NX37pWfKltPX79jStObNpQo99b89TsdritE93xzglqrGXWDU6zL170R6dizwpYXyMmm4vQ
+	TlPcsxl3y0/MvID8RNH+Q8NV9sb2A3fAQ/5iFU8zce4ilNd4Y0fzcSLp0ZKafVBRVF6Q0q
+	eL/XgbdlQvBAmBfbMeE3njc5yII4ceA=
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ed4ad140;
+	Tue, 8 Sep 2026 19:18:59 +0800 (GMT+08:00)
+Message-ID: <be27d762-af18-4efb-8f24-3e39373f53ff@easystack.cn>
+Date: Tue, 8 Sep 2026 19:18:59 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|SA3PR12MB7829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 379d13dd-c1cc-4c58-c5c6-08df0d9a24b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|10070799003|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	7gfaS7MUeKIdsMfO4eYJj6+dmixHooF68Vh5dx+kgA8WovOGD/0lqo//4KNZyBSNqOnxEtgqSaC/MFHdRpLLOqSLMkfhEucP/qKutl2zPZgPhCV4alJRYDmGOqtyuSXiQKw+P264UtQz5n7wohN54J7WPD+7KQkaroCb+8kmVISV5/W+wYOCgjxDge820HKlkBySrxoW2Nnily1VcUyHjsqicHRIhuG4RitdrdNToUeIPUAneuM7g6VRVBgF6IYo1tcVycTvtDoYazvYx3oeLr7YqjQ00xmrswvcWiS9XWY1o5SzsgbtvQu9p7f9G13Le7JW5x+RtjMyJkI457z8H58wU8BNhizGb1+Mbn9eri6CoOlo6luqQaFs9vsrkXR2oL1S7rvT1dbMU2LiTR08caKPV86liCGOCqxxvPwTDENMX0RGKbR1guX4omr8E3ydnhUmrTVFV5zA4/+hEsawwu7j+L7f//apm9kvC1lH3QahgkvcVeER4UByZde8jRvWg+aZrcU+TUs2BShu722rWSZ+W3HFNsUFqktJ3FOQKqFa/jSZkeomtpKQ+8GsqiVPrjcrbncsI2fidd84nECY0GLH2zwEsJ9LLt660SP4/Zjs3uL2R135FQM5+6G5fnuHAo8by6V3RW0HYfHfOE4l1hNh83abJiLwMyQECT9H8RM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(10070799003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aHRKdzROUUVUZmR4Vi9WOTY2TzM4bUpBaUVOUC84RjVibnJZQWxVdEpLQVR2?=
- =?utf-8?B?Vk9rc2FPYUc3bG4zT1R6aFFMOFY1enJPUXEvVk1wL2RPOU1LRlpBMTV0OERl?=
- =?utf-8?B?Mk8wOE5UYm94QXNWTWNJSkF6ZEFkUjFyQkV6a2tsbUdaQVBFb1BoVkVQOEhs?=
- =?utf-8?B?TW9oczY5eGg5TEhqUytzaXBOQ2ZUVzRGbG1kemZXY3NVSDZ6a0t6U3VDTFl1?=
- =?utf-8?B?eHN0VUk5eUJyQ3lLQU45STc5WXRmZHRjRVhlYVNZV1lOZGFwZEVucnpDN09R?=
- =?utf-8?B?UHU3YkVyb013T0ZqcWVuZWk4R05WSjVWS20rUHhWRy9JZkxvUVNzQzIvSll1?=
- =?utf-8?B?T0duNVpYbXFsdk56bjNoOENpcU9NOTdITUNFZjFPNzBHazNyVEFVc3NSVFR5?=
- =?utf-8?B?R1V2NUEwNnQyWUxTSnJYZlg2SU1RK0xVUTNGUDMzdUNCYjJPT2l4N2h5bHZP?=
- =?utf-8?B?RGs4ZDUybW9OM2d3UHdaWFdMTXdtZ1ZEelV5SnBqVTlwUE5EY2E4ci9hbnlz?=
- =?utf-8?B?c2hRV0NqajNZbWFXZkhMZ05UQnIvK0VMSGZBOGdCZUY4cWxFbDFncm1NbXY0?=
- =?utf-8?B?akEvYkZjY0poc2REYUgxQkY0clBqNUJJeWFzSGtRTjlEdlRNdXc3UkxpWnVS?=
- =?utf-8?B?U0VGZVNxSFI1L2hNc3NJc0txYlA4akQwckxnMEltVEhjV3hDREhjYjIxRHJD?=
- =?utf-8?B?bVZROHlpRkcvMU9nU1NacC9xeklzSlhSUHZhY1hmcm5jOHMxVjRrV3VIQXM3?=
- =?utf-8?B?K3h6ZHRxdGV0UFY0ZEQxYk1NQzAycTBiTzl1dmtHTzZEZXhyYzZZK1dyVG5F?=
- =?utf-8?B?bkduZHcydG5ZOEpJek8wcVhVWVQ2WkdPRERsTmh3Y1RwdDdrbW1YUS9kVzd2?=
- =?utf-8?B?WFV1V1BhY29CclRaT0JmeTlWWEdXdmxGbW16QWt3b1VpY3hod0VMdm8xUHJR?=
- =?utf-8?B?QXl0akMya0JFZ3ZGcDRqeEtOYlN6RVNOODI2VFlVdTVqUlNVakVqbmc5REp5?=
- =?utf-8?B?NlVOdWd4ZDFOakdMb0FuT1hJK3JGdEZOOVpnajNYRmFpYThsd29xVkYzZ0du?=
- =?utf-8?B?djIza1ZqVk02TFNVYTlzd1JxbkJZVVhvMjA4UlBGdG81cG9SODV3K3pkdTR2?=
- =?utf-8?B?ZXQrNEJJdmdzUjcvWmRYbVFZSjRXOWxHZUF5ankwTzZmWnA4bC83UHc0bjdh?=
- =?utf-8?B?dnVicXFjdnBQY1RFY2FIdjBmSjJyVGN0RkNmUW55OHl6bGZLVHpIRk9SUHcx?=
- =?utf-8?B?N3BOQWR6bGxTSTB2MGwvMG9ScGlwMWpOemdnZnJnL3BIb0hKZ0N5L2ErWjV3?=
- =?utf-8?B?Mk5Oc2x3a1YzY2MxaVdvUUhWMmFsUXNMNjFYUEp3bVV5cWZDZXBJNlhMSkVo?=
- =?utf-8?B?UjZvbjBrcSs4SzhiZy9OUlF6bGNid0MzMGVsM1liWU0xdHUrOTNiOG9DUWVx?=
- =?utf-8?B?NWF1L2ZZWmpRbHBKeTdqK09oTjZzQUozbzhBMlhpdzhmZElpcjFPWnV5WGF6?=
- =?utf-8?B?SVpBalNmTWk3VDhHTzhLbDQxeGVqYmkwMEVXNjRnTE1aQWlxNHkrd3RFeGxJ?=
- =?utf-8?B?Z200d25KL0trZldVb2h0MUEvZk5ZNWkyUDBXa2ZTeXEwd1U4a28vMWd4Mndk?=
- =?utf-8?B?VlJyaHFsMXNiLzUvTlliNU1ucVVBMGtlM3I4ZXMzb1llNERneWFzWTNqN0FB?=
- =?utf-8?B?cWZ6b281WkpZQ2tSRWtBSTNaRHNmK1VPeFFYSlh3eVNZalc1QlVRSkJ5TWZQ?=
- =?utf-8?B?b3ZWaUZQSU13aGNUYzZjUTlkZ0tqUWxoTnFVaEtRUFp1UGMyeEdyWW84dDRt?=
- =?utf-8?B?UVdUMDYrb1k4WmI5dTZVekpFbVIvV2V4QkVWY0ZkNkM0dFkwYjBkbS81ZVEw?=
- =?utf-8?B?U29lZ1YyK0ZnRi9lV21XSlNNNVRzd21uTnA2YUppN1JRYUNzRFhjbnFaemlm?=
- =?utf-8?B?Qjc3dXVjblFvd0MwWjQ0QWt6Z2UvTUx4V05LbHJCNjdQYXlPY3BiN2UwWjNt?=
- =?utf-8?B?VW9rR1RhamQ5ZDFUVy9yVkhIYzV4T3VJOEdLUXRIZ2dOZ25KZnZrckRUU2pY?=
- =?utf-8?B?NVQ1MC94aUZtM2QvY0lBbmVDZ2QzUzlpR1JhL0l6Qllja0pVVTJBb2xHYnZz?=
- =?utf-8?B?Z3NLQmd4Vnk1WnI5UUZmWERqbkxXVzZrbTFoN1hWZkpJNjd5MHNIVnFWdmxL?=
- =?utf-8?B?czBLaG1RRlliV0xqYjNjTnR5SmlRQjBvWTZSUUg4NnNFMm92cTZTeWpzVXdN?=
- =?utf-8?B?cWVFaW4rRXFocUNsOTExeDdDWk9aV2krM1VxT0oySENlOWlIRjlEK3ljWGNE?=
- =?utf-8?B?R3c3dW5RTks5NTJlTnZETWh0OGxINC9scjY5bDV3OHlPSzBUT1c4MWNVUlJZ?=
- =?utf-8?Q?y7BRdkWSiNsqvzI2/BD1hpbBGX+aq4jwNu0+kDq76zXzr?=
-X-MS-Exchange-AntiSpam-MessageData-1: wdl/mau2cQeKIw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 379d13dd-c1cc-4c58-c5c6-08df0d9a24b7
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 11:13:00.3182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bUsoQVf0UPBFAYAVGc6XrtdIU1x7oILQwbeTmQ2fm/+tqW+7c4p10esc2gu8ZbMtjRGiPhzuvydq/65ylbowfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7829
-X-Stat-Signature: nj5hzsyzcz3ck1exfcek5ffbmwtkibht
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Weijie Yuan <wy@wyuan.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
+ <a6ce8684-116b-42f2-a88c-154eb86bad59@kernel.org>
+ <a98bde94-d1fb-4246-b7c6-e64303d8388a@easystack.cn>
+ <5d4c247c-b8ea-4d3f-b2b9-d442d372fd03@kernel.org>
+ <6744bcdb-3456-4ba2-95a0-a58c354bfbfa@easystack.cn>
+ <ap-qDThi-NQgVXVD@wyuan.org>
+ <048d7470-a813-4252-a4f0-0ec29694f639@easystack.cn>
+ <ap-zYt-1qCBGKZed@wyuan.org> <ap_P_Pvlpn2rEjBV@gremlin>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <ap_P_Pvlpn2rEjBV@gremlin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa080be24450229kunm2817d6f71c285e
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHkofVh9KSRhDSh8YHRkfH1YVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A134B80006
+X-Stat-Signature: oeuknbfjpeq9ha7knhj8934c9brgn9o4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A32780005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788865985-850094
-X-HE-Meta: U2FsdGVkX1/TqAorkywzf+cH7ZEmbQ/3XK2S2iXWqYB89Wu3NxjHdX10Z3e+zNVCrzRmjYac4+6JRYwT6750mCnwH9G1l5PDTeqXCcpw9R4Rdpm5oGGmMmNROVgxnihPzKPNU5+DWX083eSgaoJFjchipnbS66J9Y19NknSdJR+1VZHIjmfyjEYRS/oiJwp3GZuVAItAMh9SZtdCjJqd4MzxU+MsqNONLfejoOgllf5sMTwsYLGQ2/leCo7E0ie8tNbOg1ZUNGtkjBLf+88qIvdwZXQ41nRci9BFpblJl3VcFFadx1X6y9m6IxHgJ/ynizPAayRk6GKFC9luHzIE7iWYICU6Nk+99r0o7TBNeiKYozllY0sl4DzaKeXfl5E/KJlBhAP5w/NWEsws5xrSwyt3N9pbRdYSH+//6nrHc/uD1+KB68VbHFY+oOO0lUdlQoki5IHhSZMr8G/DkV4G3ARiypR/AjV4klqvUQ+ldeX9SBweRNjaMPaNB6pUEjLb1zmorS9tTz0R9UaOt562v77Z+vAyB8Qc2BjpubGN8PZDBZjw5ZkaKoUy+dVAnYevxZu6RmvpfVLAgv3BC8c9elcwKGa2NchSzWldfS31Z+jvwvGHpcFwFwv6xwHB9ceilXmDkqdQaxXVmy3fv5hwQCKdhmrw8KudtMGo5sumiu6SleexM+No0tr79osD1kJusVGi+iTFJvbjzorDtzzOHzTTRMw4kS0SYE6kWRaJJ7DkH82iUYl/fvRP4NLn735WA9agckBWhdo4XB3RU6NP5e3FGztDHgxE20uGaAKo9MzIXZRj0ptksjJn2JOrht3tRAp0vHN41kHmPZpXdozZUfknPGRNYMcPD9eLx+oZcT6yZV0TsYrIZrCHy2amkJH8eEnVQq/woTVaE0tt+G4fNxifQUZrV8ivdR8C/iN3FcLOsC4ai2/82BUij+vw7KzzzYRTdWNJyzZCYnMH7jj
- Kl2Br8/2
- V9JEW8slrTxdMM8KjDHEQ86NKPL7GZVOEfz4SYxgfX9mdjEHflYXCxAFaKmnzEkLsnZybL5fZqypuWY2cm/cwc3Za1kNUomxTxKclszzJcHsL2SwUWqTLXTpO36TLnm3QsFJIAHiHMZJsBtEY2yosKGFHmmt3a42vuHlTJ/0o9gy6m1g/tuVCrKNh44HztaJGAjGS9Lu52M7mBEAbuFk1aD2CB6KXS07SyWPY2DagWIGvt+FkO/ShWjCj+TQdDa9Hgj4FEdr2S2+Kq0tVEffQl3buvh2HSuKCmZrwN2EyeOCZ+AQGenwzocVs+r6knTdpS8S6qxWd4f1dOO5/5CpsGN0lf4qcxBp5qVGTJe0c8AMU+Z4FgxI+FxKOhZpp2U6s2qpDWdBaoLHkkMgL/AQGfSQPuJPftPAzDhCJANPDAV8WUP79IjOu8tQ9BCALI1RttNsXvywlZf7a1OEc5xcuf8Q3dhu6vYml6BaSK14/EkhTEcVFm2n/v8nfM+wKPE3e4jvR
+X-HE-Tag: 1788866346-772438
+X-HE-Meta: U2FsdGVkX1+eHuYjzBQ8MYydIZXDADCQhO8XXpV0TRkuJm/+5j1eLvk7KR/EDy5gL2qow5Q1om5rdNhcieh9IKrC3VYSuzgEscv8ej5rIirePQOKuRKBUF5RHMPddeGqYRE9fTQ9f4OGpI+d7bEDG/g3YenzQv8riLqUhpCXd3QpPIh0VpaXfmSawgGnmG0lJVYlsCRWZZbI73BowLLEI9BxgbIAeALIc5qMNJNpT19w82r7PBOdgUbuptChHc2M0OiioCeDN9Ch1lsLzSLtn4nSc8zCUQXa8L5y87GhDmF5JXlC777+b4H85PWOCuZae5rv69Ujq5VQfdfhPeIr2tMsL+cztbwPu6AEZQ8wELIntK6l2Mi03Kdw7fTz09GFMfcHh8Gx62638HLjGPQXnRlogwy4DMNPY5W7FSq/fRbN+AH3FA15D8OhG58r0IUngoefBhHiGk6jcSpuz7iwfRZK5boMEUIzPDLn6ewtqADtnEStEc8uNTl1sPGn33N+cVecTtVHpQw6errFbVycaDIREUF7nBczcwa34AM0YJvfuXjomHxseRuDr6q0fIVTwaZ0TgsBlEGwuyihyCotYSgAz+CY1tVq23o2sIR5/K5zv+AY7rVDHl3R8uYW0iYQ5VXfde9mSTYIUk56rMKzccSLK4VqREVg105phmnK7JExBJT2tjeHT67O596bjZPAeAbnZ35kybpoVUtEhD6yNiUKPDzO8oMZqCVcqcai/Fpn7v0HCsy96Wl6FJjLb5S1hmo08Bu+8IFtieqDXwPMN0renk/g8J1s7Ua/0Knx+wgArrkUxVcr3bATL0yRp5Fktpr9aZAAOKnz3sktdqTV9GrvMFZTWjTuLQdKLCGw2zqQjh3m6vfJBgT+fEZAMtTTf93YFdLC38yY/sQv9YEktRpqM1rzqMmXKqE2esTcvCw4ISCAtjMMIvBdyPGjl0oCk/e3DbT0LBOkvvJRxvp
+ E1wqHeje
+ HgSdGZVG4PfhFseHl5gFGq0yHviLqzAsDAsX5c5U4I4XrlJzvSQWUC/QL0YOJhnxWF1tRnFgF5Kr7SFRPn7of4Adr8DHYRj35TlenuPedAEFuEPfKEEFoj3aoOL5Z0WE1CGIYsLIQVz+Upxy14tpirobDIf07fUBzyWmzcfiXTIPeBqv9Pwl/yIAHjYWrPqoK5qgeXYruZJV4ghCZYGem2S3K7TOlrCyImmWqyCnTlbwcecRGFLlBC8BCxTMvGmG1cM2gtIf9cOtGv3L+Yot/tqffAiTX9J/KVITVb+AgYwaSWmWSHhlxQfHsXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,99 +103,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 4:33 AM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> __folio_unqueue_deferred_split() and __folio_freeze_and_split_unmapped()
-> both clear PG_partially_mapped and take the folio out of
-> MTHP_STAT_NR_ANON_PARTIALLY_MAPPED with the same five lines.
-> 
-> Move the block into folio_reset_partially_mapped() and call it from both
-> places.
-> 
-> The helper asserts what both callers rely on: the folio is frozen, so
-> deferred_split_folio() cannot set the flag again under it, and the folio
-> is already off the deferred split queue. The list check sits behind the
-> flag test because order-1 folios have no _deferred_list.
-> 
-> folio_order() is safe to use at this point in the split process: it
-> still shows the pre-split order.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Assisted-by: Claude-Code:claude-fable-5-1
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  mm/huge_memory.c | 31 ++++++++++++++++++++-----------
->  1 file changed, 20 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index dd66c6ad5af1..23ef22c2b5db 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3972,6 +3972,24 @@ static unsigned int folio_cache_ref_count(const struct folio *folio)
->  	return folio_nr_pages(folio);
->  }
->  
-> +static void folio_reset_partially_mapped(struct folio *folio)
-> +{
-> +	VM_WARN_ON_FOLIO(folio_ref_count(folio), folio);
-> +
-> +	if (!folio_test_partially_mapped(folio))
-> +		return;
-> +
-> +	/*
-> +	 * Order-1 folios have no _deferred_list. The flag is only ever set
-> +	 * on folios that do, so the list can be checked after the flag.
-> +	 */
-> +	VM_WARN_ON_FOLIO(!list_empty(&folio->_deferred_list), folio);
-> +
-> +	folio_clear_partially_mapped(folio);
-> +	mod_mthp_stat(folio_order(folio),
-> +		      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> +}
-> +
->  static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
->  					     struct page *split_at, struct xa_state *xas,
->  					     struct address_space *mapping, bool do_lru,
-> @@ -3980,7 +3998,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  {
->  	struct folio *end_folio = folio_next(folio);
->  	struct folio *new_folio, *next;
-> -	int old_order = folio_order(folio);
->  	int ret = 0;
->  
->  	VM_WARN_ON_ONCE(!mapping && end);
-> @@ -3998,11 +4015,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  		 * leaves PG_partially_mapped set.
->  		 * Clear it here: the flag does not survive the split.
->  		 */
-> -		if (folio_test_partially_mapped(folio)) {
-> -			folio_clear_partially_mapped(folio);
-> -			mod_mthp_stat(old_order,
-> -				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> -		}
-> +		folio_reset_partially_mapped(folio);
->  
->  		if (mapping) {
->  			int nr = folio_nr_pages(folio);
-> @@ -4516,11 +4529,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
->  	memcg = folio_memcg(folio);
->  	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
->  	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
-> -		if (folio_test_partially_mapped(folio)) {
-> -			folio_clear_partially_mapped(folio);
-> -			mod_mthp_stat(folio_order(folio),
-> -				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> -		}
-> +		folio_reset_partially_mapped(folio);
->  		unqueued = true;
->  	}
->  	list_lru_unlock_irqrestore(lru, &flags);
-> 
-> base-commit: e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
 
 
-Makes sense
+在 2026/9/8 17:13, Lorenzo Stoakes (ARM) 写道:
+> On Tue, Sep 08, 2026 at 03:04:02PM +0800, Weijie Yuan wrote:
+>> On Tue, Sep 08, 2026 at 02:40:10PM +0800, zhen.ni wrote:
+>>>
+>>>
+>>> 在 2026/9/8 14:24, Weijie Yuan 写道:
+>>>>   From an outsider..
+>>>>
+>>>> On Tue, Sep 08, 2026 at 10:41:23AM +0800, zhen.ni wrote:
+>>>>>>
+>>>>>> Sorry but your whole reply reads like a LLM slop. It took a lot of
+>>>>>> mental effor to actually try and engage with it.
+>>>>>>
+>>>>>
+>>>>> This reply was written by me, and its viewpoints are not simply copied
+>>>>> directly from an LLM. The LLM only assists with the wording.
+>>>>
+>>>> So that's probably the reason. Your previous replies was indeed very
+>>>> much like the output of an LLM. Even if the idea is your own, after
+>>>> being "polished" by LLM, it's hard to read. I know English is not our
+>>>> first language, and it's not that easy to speak like a native speaker.
+>>>> But may I ask you did you read it before sending them out? I really
+>>>> found this bunch of overly formal content a little painful to read.
+>>>>
+>>>> So I suspect the LLM may have taken too much liberty in polishing your
+>>>> text, to the point that your replies no longer read like something a
+>>>> person would naturally write.
+>>>>
+>>>> The "Summary and Plan" in your reply in v1, both in its formatting and
+>>>> wording, looks quite similar to LLM-generated text to me. So I can
+>>>> understand why Lorenzo asked whether you had used an LLM. Come on, we
+>>>> all know what LLM writing looks like.
+>>>>
+>>>> That said, I do not know exactly how you used the LLM on your original
+>>>> text, so please forgive me if I have this wrong.
+>>>>
+>>>> Thanks.
+>>>>
+>>> I really can't distinguish the LLM flavor that clearly in English.
+>>
+>> Yes, sometimes I can not as well. But I guess the native ones can.
+>> So.. ;-)
+>>
+>>> I'm sorry for causing some trouble.
+>>
+>> That's fine. No need to say sorry.
+>>
+>> I know and understand that we non-native speakers would rather not make
+>> mistakes over these little language detail issues. But over-polishing
+>> can end up having the opposite effect. Keeping some of your natural
+>> writing style may actually be what the community prefers, especially
+>> these AI days.
+>>
+>>> My normal reply process is to first describe my ideas, then have the
+>>> LLM check for logic and grammar issues, and do a round of polishing. I
+>>> check the final draft once more to see if it has deviated from my
+>>> ideas, and make corresponding revisions.
+>>
+>> Sigh, so it is hard to know where to draw the line. Write more and learn
+>> more about "human-like" writing, perhaps. :)
+>>
+>> Thanks!
+> 
+> Thanks Weijie appreciate your input :) and it's good to get a perspective from a
+> non-native speaker on this!
+> 
+> Generally I empathise with LLM usage for helping non-native speakers with
+> English, that's a great use of it, so I don't object to it _in general_ BUT as
+> Weijie points out there's better ways of using and worse ways of using it.
+> 
+> You have to ensure that your meaning is transmitted properly without it
+> ultimately becoming essentially a conversation between a reviewer and an LLM.
+> 
+> So the technial discussion you are engaging in MUST be your own.
+> 
+> As for the 'summary' emails - please don't send them at all.
+> 
+> I feel like often they're used to generate a new prompt for the LLM and it
+> really ends up being 'workslopping', that is, making reviewers do more work
+> while the LLM takes care of things for you.
+> 
+> And that crosses the line really from 'aid to English' into it being a problem.
+> 
+> Instead, ENGAGE IN CONVERSATION with the reviewer, in line.
+> 
+> So if a review says:
+> 
+> "Please make this function do X, Y, Z".
+> 
+> Don't put something in a summary email or anything like that. REPLY to them,
+> quoting the request and respond. Like:
+> 
+> 	> Please make this function do X, Y, Z.
+> 
+> 	OK makes sense about X, Y is a bit tricker because of ... and Z is
+> 	impossible because ....
+> 
+> For instance.
+> 
+> That way it is human-to-human interaction at all times, with maybe the LLM
+> helping with translation along the way.
+> 
 
-Acked-by: Balbir Singh <balbirs@nvidia.com>
+Noted with thanks.
+
+> As for the review - Vlastimil has raised legitimate technical points so I would
+> engage with those directly.
+> 
+> It's very reasonable for him to conclude an LLM was used for more than
+> translation, certainly the rather ludicrious 'document the world in the commit
+> message' approach looks inhuman.
+
+I'm not sure which patch you are referring to, as its commit message
+appears to be unusually long (seemingly stuffed with massive LLM-
+generated information).
+
+For my 8 patches, the commit messages are not generated by an LLM, and
+they are written very concisely.
+
+If you are referring to the cover letter being long, I would like to
+briefly explain. The cover letter itself isn't that long; the extra
+length comes from the test programs and test results I attached. I felt
+it was necessary to let the reviewers know exactly what tests I
+performed and how effective they were, so as to ease the review burden.
+
+However, since this information cannot be placed within the individual
+patches, I had to put it in the cover letter for now. Please note that
+this content will not be included in the final commit messages later on.
+
+> 
+> So engage on the technical points without summary emails, and please put
+> documentation in a documentation file :)
+> 
+> Also I think it's reasonable now for you to use an:
+> 
+> 	Assisted-by: LLM
+> 
+> Tag on this series.
+> 
+
+I resorted to an LLM only to structure the language in my reply email —
+purely for efficiency, to help expedite the review process. For the
+patch series itself, however, I had ample time to prepare, and both the
+code and the documentation were written without any LLM involvement.
+
+Therefore, I believe the Tag in question is not really suitable here.
+
+Thanks,
+Zhen
 
