@@ -4,93 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 817ECC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D3A9C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DDC46B0096; Tue,  8 Sep 2026 03:40:29 -0400 (EDT)
+	id 13D7E6B008A; Tue,  8 Sep 2026 03:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5EC6B0098; Tue,  8 Sep 2026 03:40:29 -0400 (EDT)
+	id 114BF6B0099; Tue,  8 Sep 2026 03:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F63C6B0099; Tue,  8 Sep 2026 03:40:29 -0400 (EDT)
+	id 053526B009B; Tue,  8 Sep 2026 03:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E7AC6B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:40:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3E23C0443
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:40:28 +0000 (UTC)
-X-FDA: 85189797336.14.E6F757B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 441F040004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:40:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iVpMzVBV;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788853227;
-	b=QwiVkvsA6hDd88PHfnx9SOrMcfvLVOB0vvUJiOjOS9/aJ/gQfy51K2N7hNPgHVU3tq7Fem
-	swKH2gxAaY7XaIRm3GgE3sNU/9bNxy2XnBB8zzo3b4KuAB54QRCehjUbrIPOclr7W4E9Da
-	oe2k1c/fEkVi5S+hl04MgpLFwlmf1w4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iVpMzVBV;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DAF576B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:42:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72A2C16041E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:42:54 +0000 (UTC)
+X-FDA: 85189803468.29.C19A459
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 34B04140008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:42:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eh4sqniW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788853227;
+	s=arc-20220608; t=1788853372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dW0Bt6wVwx6uYNJdG4bnYanuxC0mWdhwlxmUwvkpPtI=;
-	b=lQgHVkP5Sn1aPIAp7sTl1orVnK/qjbM58jNTI+DoTBNafC4/ATeT/OoL7QUXh4bwYseDPe
-	Q8CTMRDQ2gH8YY3wdUWSXtXoUTlrJWmH5/FzUAUOLsHE+fLfpvs5bdP5/WmPKe/pXu4/7F
-	U3U+dT5YNvzZ9ng3xxc/eRBuW1i4oyw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C8D3B60A97;
-	Tue,  8 Sep 2026 07:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FCE1F00A3A;
-	Tue,  8 Sep 2026 07:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788853225;
-	bh=dW0Bt6wVwx6uYNJdG4bnYanuxC0mWdhwlxmUwvkpPtI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iVpMzVBVDpbbjmSmLjf9/u1y3Rr+zfuCTrDmGqoJwDmagIYgicropXMGIej4xSaxg
-	 6cLeStx2+JupYI5v46SFH93vN1pLOaqi+71OxT+0bOJXF46WT8TIADUbfXr6wM0X6y
-	 j1wQEMfYEqkJp0+VVHTg+hRXEBocWl2PZ2Gxdqa96QFMigsr2ZMs+aOiSh09Bl9Nce
-	 OQjSjvU/RbtJveqJElRlq/Pv63+Uov2SfEkKZ+0O2mOCeEHPy0le7Mc8q36JU8dfL3
-	 taQ9sUCphHLYu4/BTPtAXLlD5cjXs4iaTH5w84MhhGeyR7IHE6ys0J1mEfDUQfC1JJ
-	 3Xxl0cUO8U+Uw==
-Date: Tue, 8 Sep 2026 10:40:16 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
-	mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org,
-	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 01/10] memblock: Introduce MEMBLOCK_LLMAP
-Message-ID: <ap-74AkHSGXbFCF_@kernel.org>
-References: <20260902104712.2399797-1-vdonnefort@google.com>
- <20260902104712.2399797-2-vdonnefort@google.com>
- <ap2_926WXr7uAYVX@kernel.org>
- <ap6I1FN_2ylRzFXH@google.com>
+	bh=ITKIR/SP3MZPnGUhR4LXjkgAnNpOrsRWnH2rgnYP3QY=;
+	b=kqOf2CjT9R/OZaOPoY9BvHunqEaUrPfgrg0ohiIxlAdk79pgH/lNkHERlxqFvLW0sIAWD6
+	M911A/GQiYWRFmYvYV8OmwjKcY3l0M0/1/qp7noUMy6axjakltNJVEI5ngoywDe3fAsj6Y
+	Z6xWeNmlQ/8mOZXnS83woRDwbHq9VX0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eh4sqniW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788853372;
+	b=RmES9PWqUsBu4gWdTgc533QbeghCsWS9jigK6RM/p+DVUo6xhEzkK54Wf1chglLoBVHLKV
+	MRslE3qndxywIwRfsF/x56XRAMW1bDe+1XhACtYLHJEEuYZBM2e/+l24gedXGR2tqAFtU3
+	aWa2mqDv2vDsmeibP2AZJVGKTfy5aPw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=ITKIR/SP3MZPnGUhR4LXjkgAnNpOrsRWnH2rgnYP3QY=; b=eh4sqniWZeE3YRU+SJi9F0y7YD
+	05mJTtjzX+NgbqCMm5O18Sw7waDe3W9pVUUBKaCioirTGvApWjZH8r4G1la+EFB5wFi5fHv6PLXdT
+	fkih5RQnAfldrNhepI2xLlxDYzzoc9V+v8GrY4UPiwauhFtbT/BcxeMt6oXH8y0cNY8p/0uJaS0Rx
+	s2ZAtsfPTTE+J+Me8AaG/g520HOB+z+CaGSf7cAY5VXpXjGcrW7D+dVxRVLSojGMpIuLzMgwrvbsF
+	y/zn6jpykbQGRlvz3LKeDXk8ca9BdoD5mKMiPzM0xBdaLMnUySbaPaf2Zyf5p0S/31zd5pKfkS+Up
+	K6TURICA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x3qTN-00000006lik-3KGR;
+	Tue, 08 Sep 2026 07:42:29 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id CE6E33005AF; Tue, 08 Sep 2026 09:42:28 +0200 (CEST)
+Date: Tue, 8 Sep 2026 09:42:28 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>, mic@digikod.net, oleg@redhat.com,
+	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	gnoack3000@gmail.com, ljs@kernel.org, sj@kernel.org,
+	rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, tony.luck@intel.com,
+	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
+	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
+	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+	babu.moger@amd.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <20260908074228.GW4120091@noisy.programming.kicks-ass.net>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ap6I1FN_2ylRzFXH@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 441F040004
-X-Stat-Signature: cogd8jfr14uyam9sg3bdm8gxchufmwyz
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260907081334.1152889-6-ye.liu@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 34B04140008
+X-Stat-Signature: 8x7x8o6grz87u4rs1hgaj3qsdg7zf9wz
 X-Rspam-User: 
-X-HE-Tag: 1788853227-831596
-X-HE-Meta: U2FsdGVkX1+66yn4JwcaKt34cqYj+8IawGe99iG3+XWu2JBS6+cP47To74WSwU8UvMPKwPfvoivKRfqqPvxqU8kqsKuEQqJ/5/9L7hnt+ZiIOYRVrqP5uojUbydTioK02jcYfpUYQjjA5vRijZ2DcCTeKvOmsmTHpn8AE3OuKr/ceuUzv2SnWB7Ft/N9mhcJqrwDAkeYab9JeDn8pKFbvuFHOf8smcQiK8/ZGlRbMVSRIEyC3CQjO/j8WEkMWun0DfFU+KgHgDJQJKHnyrxSlxwevhvtSb0hJsWktSOazG7/ZSaSPh/GVdkX/EuO/lOPVLt3eqmaNinc/tWTHJ64uvA21G9AYIkgK8ty7eR0rBCDcBGevZ3zsqnM6rOjhUQ44JDDOnuqO5xnE30YRmjXjI1O/gaQ3QvkyYnvBf/X9b6Zby3LXeTfanRbyB5OovKf290ioJtkbx4KhPL2XgTuDoqmeM8cdelZOVjmT98JFntLohSrsEUHr77jE75z3emZbPf3Ov7Fc7Ua0xUbk3wepcwX8toA8w+1y0ZTlvWKA5Vc1IhwAJRFDaWszSwjfChJfJQA/kG/O2pl/s4321/1M3xQ56DxfrG2kOKG/bXu9XOQXTBzuACIZHsGp5EziqwtE9+fLoxqAS3oCNHdtdgs2DHwJtTZT63zstTPv5jnJTFeQpNZTKtLYcNePUfQi8v/Lxst7A2qoc72xN+mbQMVNIil5gbJWGbykpUWAfC+Y0lTu/5iwu+ouEacamwALuxthMyGXf1l/EsunplXwk1R+7fKZh/cxPZxMMQJpvDH8BQ1QlWg/sKtO8RI1ljqH2vat+4YuhwGiRaP2JsXdFiprBMqfYOPEcJ/SCvR5FK6jHqP/nQw9lhtcdxv97FybaHn2g/ZVJacbO6tEG872rRJ4tlPV8pwoLo31K687D5I7qrfkdnkYnkP2sUIxndidWplBLualcA7YnxA+47i89+
- jcVaVQm+
- /LeNxXvJkiIgYylX+X76PMa3OtJjHwKUARYRziZZLXBnj6TmmalCQKiyzejJaFL+9moQbn7woolCv62NOx2IV/Mhkdktfm0FbkqawkwDf6iJpBTHiJbq6OAPnDf0kC3D/ur80XzqpnfLR/yxxm4bFfkNWoU7+Ocb+wmga4ZwOrdzeI5kuUecvJxR02K6khY4drJWf2aimdpe/yJtcJzpYPLdcR3uAlSKQ8FOEiisabYHHTKtZP+Kqk5dFRzPsvtaKeZALZfZ/oseNuAj70Avfd4Lz+gWO7/fkpgMWWRnz+z9lcmNKFGEocjEOt6FT9wCqv/DIWlcXM1FLOHM=
+X-HE-Tag: 1788853372-797710
+X-HE-Meta: U2FsdGVkX18JA7dQfa3DhK3RjYEJeIwMVkCKLKd+BhZhBsiVqfN4Y93r6sy7DLmz0AyI9yoKRliiGeal8O/RSR30ygd1weNzoJh++t+CsYmeJUFtj8/34DFPZSFs5hXxfK3PGrJjV3XrJOq6QMxn+1JdVUxTaUhLzlqTNaIgv+LjK2La0PIdoy5E090yQH/WLyUs3MPj6Am3oJYCN000yBMgTsWr2x4Dh4Q9vik+hvErOEvef/jqh0rZC2kFRastWCINfGa0xBw/4H/mPLKr155uOm/WgliSEunNBsMTU45Ejb5TonxwUdenf2iH4K4zEQK7GNiux8wj9V7P72tRsDZEx0XTNIoi+J40A6AoNS3dGXSJ5/U1WejsJ7GXsPJ6Ag3Wxo9mp/QHjK7458b2WaM721iHqIKaE+COQUoEirrEXM7bH1H41UD4TuIF1OhCf0hKFK5z9G6wRzFYoQOz6ner2Uqvn/aeW/Pc12A/rlpSLnhPKAelHbUkI7Zke2LyApx1qosMpLSz66ApBpbb3y+3klxMFFkrZgYxPj2Yj8MW23Oq8s9wZwuElSk8rSJsa1O5gnS98Gwl2vOnO000tYecPTa+wXqZjVbqWm+gMKp+G1IJFa3Yb0EA+C7kuV1cOkFR8OkcI29doC1c83jQdIkExpgWDhLSeYCl6wGIm5oobE+DURkqqRxVcltJPbgQDOgG3IBT8kWgKAfD2WgpAhxHJ+5keIwQdUl/EiHKoJkG3uF2/fqePTj/8HSzWJvFgD3qacqq3xGZElEdGIUC1SV1tal6eVX4LCOVHquiYengT3jsfKFgYOe2qhnuf5gzELbg7Dk+/w0l0SJ0BmXEquk8FvLWHF5HB01Oeuvlh9mhUSQz8ZLsq7Eof8xrWWI9ssvK9FPLeKAH/qKCxOoulDOADnpuNtzQqDqrzgGq9Gmf3BRQa0yr6cP4JHrA+zmV0/Ch8UA++73d7NyUKd0
+ V7MRJaAM
+ /nXguQPgIWYCKK18F9O0nvB+7ZCsXnoJn2g9CscfPaDgS4Xagcf1IBazmvf824OE/T0+1C2lEvZ5FmFUFz5Z5Sw2t+fmmgpM+YBROt0eGhxKoD0r2p1CqXqXaWsNOUhsY2e+Ab6NtZxH9t792pkTCvKOyqgOFRxReNLfd0onwVqmTqEjkHfEEyaEG+D+tlCYYVXqyDISawuRLKw5aERK//mMHzGCmj0v8H4XTqOkntxpcni7eJP6tGBYGBdSSd7VyfAxO/L7uZv60zYy4Aozjhk36SiRTJvNm24Pc8HOMbJOiHLbHenSFi4bPoTPVS1amILiX2APciTVZP9N5OWIInfYAhom6ajPnNWhZy7KtuxLdZCaYdgWaQFhk8msEHbmXCvd/bgfVhVWBVhK2rmKfcLjvEw4Dbo/FOL5j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,34 +126,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 10:50:12AM +0100, Vincent Donnefort wrote:
-> On Sun, Sep 06, 2026 at 10:33:11PM +0300, Mike Rapoport wrote:
-> > On Wed, Sep 02, 2026 at 11:47:03AM +0100, Vincent Donnefort wrote:
-> > > Keeping last-level mappings is interesting on some architectures as it
-> > > allows mapping/unmapping pages from the kernel direct map without the
-> > > risk of splitting blocks which, under the break-before-make rule, may
-> > > trigger page-faults the kernel can't handle.
-> > > 
-> > > However, mapping the entire direct map at PTE-level is costly. So
-> > > instead, create a new memblock flag MEMBLOCK_LLMAP to enable the system
-> > 
-> > I believe MEMBLOCK_PTE_MAP sounds more descriptive.
+On Mon, Sep 07, 2026 at 04:13:31PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> The idea was to have something close from NOMAP, to emphasis it is one or the
-> other. But PTE_MAP sounds good too.
+> Replace the manual rcu_read_lock()/rcu_read_unlock() and guard(rcu)
+> pairs combined with for_each_process(), for_each_thread() and
+> for_each_process_thread() loops across kernel/ with the
+> for_each_*_rculock() macros, which scope the RCU read lock to the
+> loop body via scoped_guard(rcu).
+> 
+> No functional change.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> ---
+> Changes in v2:
+>   - Rename *_rcu to *_rculock
+>   - Rename stale 'unlock:' label to 'out:' in hung_task.c (Günther Noack)
+>  kernel/cpu.c             |  4 +---
+>  kernel/freezer.c         |  4 +---
+>  kernel/hung_task.c       | 11 ++++-------
+>  kernel/locking/lockdep.c |  4 +---
+>  kernel/rcu/update.c      |  4 +---
+>  kernel/sched/core.c      |  3 +--
+>  kernel/sched/debug.c     |  4 +---
+>  kernel/trace/fgraph.c    |  8 ++------
+>  kernel/unwind/deferred.c |  3 +--
+>  9 files changed, 13 insertions(+), 32 deletions(-)
 
-Could be PTEMAP if you prefer.
-My point was that unlike PTE, "LL" is not perceived as last-level, it
-should be looked up.
- 
-> > > to decide which region must be covered by mappings up to the last-level.
-> > > 
-> > > Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
->
-> -- 
-> Vincent
-
--- 
-Sincerely yours,
-Mike.
+This is not something that can be applied.
 
