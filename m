@@ -4,130 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B9EC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C10EC79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 655036B00A0; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
+	id 7B9CA6B008C; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 605CB6B00A3; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
+	id 76A416B0092; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51BD36B00A4; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
+	id 65A0C6B0093; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27B546B00A0
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:32:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B6CCA04E9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:24 +0000 (UTC)
-X-FDA: 85190079408.24.B577891
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8747B80006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:32:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=is6KQl01;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 42D6B6B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53C7D1A04B9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:50 +0000 (UTC)
+X-FDA: 85190085540.19.1B60E19
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 53D8214000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mu2PzmkF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788859942;
+	s=arc-20220608; t=1788860088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=idOnIsbF4aqGbbwgFi07xd+2BwFsQcBoIJ7fhbX7sIA=;
-	b=G02Gx9BaXcuRfJLjf55uUbM3Su6bqAGFSDRcAYUmsV4Fx8bnR9Q+F6sm6xLvaZ1jF0lr0e
-	LMI2fCxDMQPaoNCN8O+ydKsmsoNgwxCnCeydKqT2YGiBHVhSMcR7LOnEVzammqoN/72lD1
-	nHTNwIhZ5Q87i2iVqrKuwtrqYSZqI1Y=
+	bh=+dWSZPT2cSGadun9qNKyTf04I9xLfA1wAds+skSZwk8=;
+	b=MDKUWjTbb6mzeC2dSrLVVeFEQStejA76gtqywd5l4TsthB5PsSWnluKE7Ayt//Q27BAuZg
+	BVHhcuJe0ys8XfHCfEaW4gXMwhycpxzc1QEoZvJO2G49lVBnxO5zDZ54u6kDf8HoBcJsxi
+	FvfiHkuDTzhQ2qCHl88YndcbpHehjgM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=is6KQl01;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mu2PzmkF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788859942;
-	b=vyx9OTfK46pAbNLOngft+qw64S7j0M9rYjrp0v3ZXiGCZzsQOXB4P6B1ZiR6YmKOrfbb00
-	plpDeMSfubDQlIKdGt79CPgdZN4zqa3tSz53km7r7ruo2FXRB4W8scus5niorzjXQHNmfr
-	EDm+HIoO5RMWMrFIK1g5SVz0tzIYqOw=
+	t=1788860088;
+	b=2YvtOQ5wnvReRBYG3yGqmgSz9rzv7RY00g+mStxtCEeQAFGIuKRjB6RETZ5xD8oBfqtG6B
+	U7uT9BKsQnrKg5FIdMw453i90C+ibsVd8b15+qr7t9BqGxFYgiy8wCCh52v/DG7RcPKoMj
+	dZJlsekY4r1WP0n87ZdmhMihUFDLMpg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 24499601DB;
-	Tue,  8 Sep 2026 09:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C3E1F00A3A;
-	Tue,  8 Sep 2026 09:32:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 66083438C5
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA431F00A3D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788859941;
-	bh=idOnIsbF4aqGbbwgFi07xd+2BwFsQcBoIJ7fhbX7sIA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=is6KQl01jgWMql6FMQr1xk4ZLTp10tUIpdaw1BuP5Rf1d3EdS7dMLKaiPRZThwuqD
-	 Zz3wcM39/XWli/MFxs5l2NuNPSjlU8qMWXqNptPFuT4CFfVUNdkDthAFS1YK6zQLS1
-	 nmtpMdpWmBqCCe2wIfrgXYPvi8EvGSNXfa7xlVQe2pGyMROlgXFPsY+GF1r/q/OwTB
-	 p+s5pjSRGKJFXbW5tWnRNXxcQRntY9B3rZ83+pI7dTryfPaOjIWD6J8mfxP/35Wwg4
-	 NCNXkDMfDYhL3azEtB6DmMI4zns9IM5YqZaboMTZZIo95XbBv3wHc3xcP0mVoCNIyl
-	 60gxvEX45F9Tw==
-Message-ID: <90cd8ace-b135-45d6-815b-bf7329cbfa4d@kernel.org>
-Date: Tue, 8 Sep 2026 11:32:18 +0200
+	s=k20260515; t=1788860087;
+	bh=+dWSZPT2cSGadun9qNKyTf04I9xLfA1wAds+skSZwk8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=mu2PzmkFXSLVnWc9+80K+GhP2s/fN3B/m1e4latNf8K063Gep1oC3n5+jmKID/Skc
+	 4zgdN67dWdC2LmkWonYNXCZmdIRRxVFrLV2xrzZ4uvtAEP7BnJmuLvIKvrPhNwFXUt
+	 KKUeRpAFE46ilE+iDELbfSZPv0NQeudSQAQLjUyGSe1FHZBW47Igsohh9n+MnRyP1M
+	 FEkfhFBuyDIA2XFUg/5JXWZr63/rqp+enM8fkuXRVl8EkSGMbNHffhy9vgDcL7aee9
+	 gyEQ7xdo8BWnV86ftMar1hV5nW0zKqczrhuRtOxW45sFxxOFBM6J4BXrfFOhb8MY1a
+	 oAfQyYIkB1wPw==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930c0f9c1b1so420661285a.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 02:34:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzRxMbwVy86BUF6xujn+Tgyz2AmpiTIWnqvyNy763HPswEj34dcEicPjhu4ymR3WE+TumczgcZQkg==@kvack.org
+X-Gm-Message-State: AFuF++kj4gRLi9AP/OOJV9O5Zc85oU+g4eLElS5Nt1cZ5+v+z5y+aQJM
+	5o9fGFVB0MbrFsn3iAneMAAxg+skAcdvbIUnrHPxSXi3hCLQPonMEMrPwd3ZyKg+ZuDfOSqGvKq
+	rFs1Jve/qQpHJWCA740iMJWoiksQ/Kcg=
+X-Received: by 2002:a05:620a:aa0c:b0:937:2e9f:70a8 with SMTP id
+ af79cd13be357-939804af824mr3279565385a.39.1788860086621; Tue, 08 Sep 2026
+ 02:34:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] WARNING in vma_add_pgoff
-Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- syzbot <syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, pfalcato@suse.de,
- syzkaller-bugs@googlegroups.com
-References: <20260907192517.564ea15aa8c9d47669b3a81f@linux-foundation.org>
- <6a9f8bc6.f614420e.2bf292.0005.GAE@google.com> <ap_Uke89Q9LWoaoK@gremlin>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <ap_Uke89Q9LWoaoK@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+References: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
+In-Reply-To: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 8 Sep 2026 17:34:34 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y7XRChHuquYj9brgTv9bugOVo14DmoaPFHam+vnmGnFg@mail.gmail.com>
+X-Gm-Features: AcwNN1U9qAXnbYyo19332yqF90SnZUuQ82rHyPQcT8THjupG7pojENqlZKkPEQ8
+Message-ID: <CAGsJ_4y7XRChHuquYj9brgTv9bugOVo14DmoaPFHam+vnmGnFg@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org, 
+	mhocko@kernel.org, ljs@kernel.org, ryncsn@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6sy6k7htbe99f4u638nj4db3u3xokxiq
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 53D8214000B
 X-Rspam-User: 
-X-Stat-Signature: fe356qq6f5te86cw18hhjqrg7zfmbqpu
-X-Rspamd-Queue-Id: 8747B80006
-X-HE-Tag: 1788859942-889661
-X-HE-Meta: U2FsdGVkX194ty2u1gaqk5/jakPUD6cNCFjtV+f+UTE16UKI0wz2pN3oNy86Rsilu52ei+gtfZ4oC0QUJ1L0EtNmlnTKmxAnM/Q45T89lpHFPKdLRn5tC0EEsTwF8L7jPLHAPDzXPoLoHS3LmTFR3Q3yeDdCCcBZLaw+htYMrsUMMliaH0yO/4pNeYxUm3m/7qS1X+QhOsmB3Jf4IL8y2niOrYQTxkE01W+5mXgYFtHLXtMRP8OkRY9YCI+TKIiRah9rspcrCFYtfgsMs68jBNU/F9zp856cLvXw2dMaHu76vm9SbDDkjuiVlvEX3G9bWp7qXOV3JzTgZ9DVMwCXqqKHVh2Qpi/b8dOfrBR/wkMZuW9p5uBbn8xGQtmH+2nVZAthzweFhN4QOmuZZ3CHN9ogDc4dJ4jRZqWOBomC+DB7PxrO2xxnlNvSS/IimkF2OF7UKFceh4hCbFkEUFxpDYolgpHmiCrDMpJlr7xKRXE8IHF/8gZ2HF94CA8h2dQNJs7i3oi/vyHF8dDc4VDETMKZ2bPCj6utwJwY1N02kRkx/cAtBpQlJyWZQOW9wd9SUuR0x+f7ylE256v0SNb1rrVRwC+8CZnxAm9nDQosFwToBhPw7/y7LQV/IkSxjbxuRg7Mv7OEE4RQ0rdEG6RQzYONmJ7cu/DjJA7tigy+R2R1hi/k4NjnvPmhEQKwUb6OOC0PAgr1IFqaZ+y2o73Yb2nodzkbtMYwsFLfrlLb0jMhGwJ+S3tWEve3JWKC+WP0zSc4XokM3jPd+YxTvFwfKBBUvs6krkJHRMfme5nUybZUitZi+iEirJXXcb+u3+lDQcYo1E3HS7zwpIZKg2hWw+uVn8id74dfQZnhAl8u6m1YjXxf/QxAMZ7hRPQHdAj8fh5FPknjyREhrPDZNptYNQeroV/eZ4vBgoum66iugZ8Aji1BDNM1WKHmOon0rC42SPkzcBLy0S/7jZENtV9
- o8vEURWz
- PWJe9tTh89OWmFvCJtXLxv4SoWfsYQRFdnWkp3tn+MXEtb6U9zeMqOok/+txYPdQbzn8dXzy0qHXMSiMYdXMH1wHQY/kWMeh6xtBYC0Z8qD7hnO1gGliOjtZRewK3hnLUNJ1c+Px24vyCWcpV7p2xQtG27hpSqKKhsWShOmrmshitehU6rjVk73xKTK8BTRiqvv7Bj6dKid7UCoI9Z1QKUvkDG9PymkDhigFEkSK8qugfpfaBfMroHRLeTa1cvMxtZ8S933F9J3x+qAmhWt3XRS30R59tiCo9g7b0TnPFGUVlvBTOesX3dCz+V7a2G1bSEGiApS865f3BrUqy6vs1FlAEkq4V9SNfQSTJFORy8Ngf+2KB12o3aVIVp4d1b3ZBaMe1DNktZVxH+80eUCGmvhqLUPydy5vHhiRckthbVtIteF/xiS2Q4OskaEDablWHFv2Ns60Qflmu2l3zfsn8Ksl9TtrvWyqiOqq6VxK0RhzbSaOOPkxOq1DE29qlTE+W97iHH0Wpy2rBPgp9zOO/w/ln7wRVq2aQlSbiQr+sPz3WV+eqHu5pFrhl2+5Gw9slnhs28Xdk6VNPNbCJ4E95sKetdruYHXbNGT1Y/nEsSkZnke/9ifsdqQmDq5zh2Se51NmFpWDi/EsmY17FY8ZrMv8aNCtzZfacEEYk4PhkqorxKaCRoA2lDlr3ibDKH4LU60iTAdVaE6o3V/ZKUXTqLG4Ed7jY4ZqIVEUI
+X-HE-Tag: 1788860088-205759
+X-HE-Meta: U2FsdGVkX1/J2hH04G/WfbX0yeNPir568bLemZjXkfscCXJ7gp1X8IXYc7y1oELf9OBr4nQWnZucKMl3LRu9mLw64zdMnU1WygP3RodX1kzWQnvYdZCxhnE04Xv5uP1IS+nyqLIyR5Rl9FLPp858+UMBdhEaKkC6I9E9P5Tp9aNGolJ+FjLwAyx085LeKTd9rbLN4hV91ryPQ6tMZgPM1S+0z/s/FTMhpzPUqpNhupM2cWYB2/5wZgf2AEoDvdmNA8TKB7SxktBOKIr8+hiVmgqnsjeeb9s+kRzYfYzmncST8k5SzpYwzL7/X/9py5CpGayw0KBqNm8xJFkOmiXIFRdzeHwWFArkQ3Vsy6QR2+uKM4KhjAlKbHq9isMOEfwKrk8OM6j6VcG+dOAepFBa3TMa1MF6VBokLXYuo2e464Ypx1uOCgPqlw373F6mUmhKxm/EOYFqJe8Q+hOKLUfyXnuvtSMvhWXt9X8i/tvduJMjy6KIk0IrhEpvRGR9J0e93LhA8+G9GiYbZYVJ82Im6HtTgGlxxCXbUNgihVIzqRElu5eKf5T9v2BwuSEjFCUu/Lhfvsu+voX9AfYEkE5H1gmo2SZ0eblJe6LrPYsEqsiwY9fmvt0vxQKNR4QrfgI8MklMHZDkNLijHIYRvuymCJFmCKYZ3YQoC7DUfaTTkko6UPurMTftw4v/qBY5dDGbuFsWLfKtmBh92zcCO/u1SVqmBYzR/2UJHBn2zJVspyPeBeSsCE9oFnjejx3ABa75YR3W1IjHaNuTKnc/lCrDrrDX779OKYZp1xPTSmYEwr8Q6j9KLm54OdC9FkbUyPQBzSxN0e31ItvAAuCcB0lDCyrGIy/HQfdtOs0TkdxvsmnF5Bs7A8cKbHTVD/6K1WIf79RLkzqKzIVVJSE7uL87+yLkDBCUm2+Ftm9a9qenb4J9e1MVnqyWt3M1lbNFKUdIuQl9/kGZ+BU1CX87KYQ
+ QG9CkDNb
+ cfZv763qXSvMaAhUFSBJZ+HvpAs9/33DmaZD6ABhPm5RKyG7coPXi2ZxuYncSC0sTq8j9Eh3o2DuVdPS/zZaYgLi65QX/9yiA6DyvMJ36HNPQk5GANORpp7XxVfBbRxD087MtgBg+m4iE+Wi9qWJRK1cySioNdkSA/ZWL3/DZn8FKVpYFewfmti7Nhb4DrPeJaee0nRnPhVfvDs48OJvZIrr6uBZbBDRjY2R0NTQGFhZs28ao7csI7hX34kSvBg4Te32WemmCZLNuZUnKde4d1Qa5t4559AwOZTa0QGxJ7xyxvhw31Zz7e23rbNApUVPnS3N13vv1ItkdHp4cxLfrVwrNJFQ6mi9s5eNeRDt40P7pFtKhtqTxPvJiDd5UUDtI2gPfkr8/50uk35nUExUhwRAgcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,54 +104,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 11:25, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Sep 07, 2026 at 09:15:02PM -0700, syzbot wrote:
->> Hello,
->>
->> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
->>
->> Reported-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
->> Tested-by: syzbot+c6879dc677a017f0a21b@syzkaller.appspotmail.com
-> 
-> Yup there we are :)
-> 
-> Why is this constantly duplicating I wonder...
+On Tue, Sep 8, 2026 at 2:27=E2=80=AFPM Bo Zhang <zhangbo0325@gmail.com> wro=
+te:
+>
+> We have observed some cases where memory is allocated with GFP_NOIO, so
+> we cannot reclaim any anon folios unless they are in swapcache. We can
+> end up spending more than 150 ms looping in `shrink_folio_list()` scannin=
+g
+> non-swapcache folios without reclaiming a single folio. This is pure
+> overhead.
+>
+> This is particularly true on systems using zRAM, where swapcache is
+> relatively rare. So let's check whether anon reclaim is allowed by
+> GFP_IO and whether there is enough swapcache to make it worthwhile. If
+> the swapcache is extremely low, we're essentially searching for a
+> needle in a haystack, so let's avoid scanning anon in the first place.
+>
+> On Android this is triggered by dm-verity hash-block reads through
+> dm-bufio, which legitimately use GFP_NOIO because they run underneath the
+> IO path:
+>
+>   verity_verify_io -> verity_hash_for_block -> verity_verify_level
+>     -> dm_bufio_read_with_ioprio -> new_read -> __bufio_new
+>       -> alloc_buffer
+>          gfp: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
+>
+> Such a reclaimer can land on a memcg with a large, unswapped anon LRU and
+> a tiny file LRU (e.g. inactive_anon ~335 MB vs inactive_file ~4 MB, with
+> negligible swapcache). shrink_lruvec() then keeps feeding that huge anon
+> list into shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000
+> anon folios scanned - where every folio is kept because it needs IO. The
+> 150+ ms above is one such single shrink_lruvec() pass (not accumulated
+> across a reclaim cycle), and it reclaims nothing; the actual progress
+> comes entirely from the file side.
+>
+> Aging anon alongside file does have some value for a later __GFP_IO
+> reclaimer, so it is not strictly pure overhead. But that aging is only
+> deferred, not lost: kswapd and other __GFP_IO reclaimers still walk and
+> age anon. Spending ~168 ms aging memory that this context cannot reclaim
+> is not a worthwhile trade-off in a latency-sensitive path.
+>
+> To stay conservative, this only skips anon when the swapcache is really
+> tiny - below 1/64 of the anon LRU - i.e. when essentially no anon on the
+> list can be reclaimed without IO. Whenever there is a meaningful amount o=
+f
+> swapcached anon, the normal path is used and anon is scanned and aged as
+> before.
+>
+> Note this only addresses the traditional active/inactive LRU. MGLRU
+> selects anon vs file scanning in its own path and is not covered here;
+> fixing the MGLRU case is left as a TODO.
+>
+> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
 
-Going back to the first mail:
+LGTM,
 
-syzbot found the following issue on:
-
-HEAD commit:    5445d6419962 arm64: Don't read GMID_EL1 when MTE is disabled
-git tree:
-git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-
-We can see it's based from 7.3-rc1:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=for-kernelci
-
-And since the problem was introduced there, all kinds of development trees
-for 7.4 (or even pending hotfixes for 7.3) based on 7.3-rc1 will now have it.
-
-I guess syzbot has to learn to recognize it's a known problem and ignore it,
-or have some repo of known important fixes merged after rc1 it applies on
-top of such development trees, as they generaly won't be rebased to later rcs.
-
-> 
->>
->> Tested on:
->>
->> commit:         35b0fb39 mm/mremap: reset unfaulted VMA page offset fo..
->> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
->> console output: https://syzkaller.appspot.com/x/log.txt?x=15e13af9580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
->> dashboard link: https://syzkaller.appspot.com/bug?extid=c6879dc677a017f0a21b
->> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
->> userspace arch: arm64
->>
->> Note: no patches were applied.
->> Note: testing is done by a robot and is best-effort only.
-> 
-> --
-> Cheers, Lorenzo
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
