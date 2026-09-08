@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBAFC79FAD
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:21:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFE2C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:24:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E06FB6B008A; Tue,  8 Sep 2026 06:21:41 -0400 (EDT)
+	id 46E306B0092; Tue,  8 Sep 2026 06:24:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBD456B008C; Tue,  8 Sep 2026 06:21:41 -0400 (EDT)
+	id 41EAD6B0096; Tue,  8 Sep 2026 06:24:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF4DA6B009B; Tue,  8 Sep 2026 06:21:41 -0400 (EDT)
+	id 335296B009D; Tue,  8 Sep 2026 06:24:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ED656B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:21:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A558140491
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:21:41 +0000 (UTC)
-X-FDA: 85190203602.24.02B613A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5F6AE80004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:21:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naAVfI6v;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 12F706B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:24:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1B0C1604A8
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:24:09 +0000 (UTC)
+X-FDA: 85190209818.23.03F2303
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CA432120009
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:24:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788862899;
-	b=XzMpHAC53bIUDBBgO7fk4sI+VA3p2K/RaU8x5jC4xzTjhRBkU7O1P2oOsvoVoQqyqxxFCS
-	ju0On++QCvB1jPYIE81xnvcLi+EBJa3JEzPZYzT52ph9e+3c6GE1Sw1IlaM+8eFwWE87zM
-	t7fLygmUUOlsHglS4/BoUnZ73tFYSOY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naAVfI6v;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1788863046;
+	b=aXbRocfv94uzP4yDFA6V4+o4dzNkR6/gtPatV5ReUY7KFp2BEnSNOqw67E52YNoM2gUVdH
+	YAPhpjtYPhP1ovzbvXjtJoQDx3I9eO4d/085UMy3ZumTNdv6FHk+ixKeLTel58lpcZ/J5k
+	odleu5vvWyXqF6b5fR1T70v04pEDrX8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788862899;
+	s=arc-20220608; t=1788863046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trKkVjLDuoNyZ1KBYX25zdJ5VlGPOhjg9ThffyQDe88=;
-	b=59SJy+bjh14alTRb7w4cW1vIJbnd4rzPuRHmcxwk2qxwQLLz2AjoajlspGwRSmQr/+xILf
-	6AGGV+j813i5rz3VY/DdRGAY5631XWHrGFMZD0+TAL/LgOXLIZXgfIen/tIDkUldOeJ5V6
-	kX7krJhUzADQ+Qyr2O16zMC5SsKrY+s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BA7242A1E;
-	Tue,  8 Sep 2026 10:21:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E441F00A3D;
-	Tue,  8 Sep 2026 10:21:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788862898;
-	bh=trKkVjLDuoNyZ1KBYX25zdJ5VlGPOhjg9ThffyQDe88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=naAVfI6vDSA2o8yuJf1a9zMvqUkjjc3EB/eQ0HaObPU5xZO+BguKYHo0/BI8FO5wO
-	 OPTkGvC+MxQEP7eTKyh7XFqvIXvpiVZlXuZht6DZBEg6i0YsBjd9RbSUg44cqDUg/W
-	 DYi/Ymu6EFJDSFSaOdKJh+Art02RzAW1vXucjI/m+/rJbatHGfjFKKdlzVDGw1YiWx
-	 oqlQi4rtudxQygI4tlVghW/3tam1Xjso8WGESLncynmqsA0rQTmaGnquHA1Uu+db/a
-	 JmLA+Y/hiXysYeDOKJ1KBFXVnuQ9At4J7hZA+880iOB+OSFGQkf6N8ABwn4Z7BrKUf
-	 xUnf53cNE74xg==
-Date: Tue, 8 Sep 2026 11:21:33 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Tianyi Chen <hi@tychen.cc>
-Cc: "Liam R . Howlett" <liam@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] tools/testing/vma: cover hole filling through
- __mmap_region()
-Message-ID: <ap_gTfb10dw0wx91@gremlin>
-References: <20260906144100.849288-1-hi@tychen.cc>
- <178886112560.138404.17741948638665342936.vma-v2@tychen.cc>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=77cylPXzBEqGNd8sCNOrfJjdMK+jPvwH593jRiIGNxE=;
+	b=tO/3yLfFdCwz7GwLwiDPV9MXLAaEiVRL3uOJR+G7UpxEIGWUovXDKTmcNHnFK6P3ABMK3d
+	i9ILfFwuUB9O/lYXgEps2G76yhj8zEjEEJmPbYpXMezin07ft/+g7KSb9Q8GNiw+ZOVKef
+	hgwx5G/lvD5ldLUeMQDF6Sbc8SaBcZc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
+X-UUID: 68d60562ab6f11f19a56ed5b684f684d-20260908
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:092cf187-ca51-4ca9-98e4-ea0066458ffb,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:8fb3236ba92cc8e487a5ccb68986fc5e,BulkI
+	D:nil,BulkQuantity:0,SF:81|82|102|850|865|898,TC:nil,Content:0|15|50|99,ED
+	M:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 68d60562ab6f11f19a56ed5b684f684d-20260908
+X-User: liuqiqi@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liuqiqi@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1347047867; Tue, 08 Sep 2026 18:24:01 +0800
+From: Qiqi Liu <liuqiqi@kylinos.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	gourry@gourry.net,
+	Qiqi Liu <liuqiqi@kylinos.cn>
+Subject: [PATCH v4] mm: page_alloc: add missing hooks to bulk allocation path
+Date: Tue,  8 Sep 2026 18:23:56 +0800
+Message-Id: <20260908102356.344075-1-liuqiqi@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260907120949.418450-1-liuqiqi@kylinos.cn>
+References: <20260907120949.418450-1-liuqiqi@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178886112560.138404.17741948638665342936.vma-v2@tychen.cc>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5F6AE80004
-X-Stat-Signature: w6f6hfwmu8ahmnwcx9h1q1zm3okapn48
-X-HE-Tag: 1788862899-850977
-X-HE-Meta: U2FsdGVkX1+Z87oVG1Sqy+yqt7g1K8LaCoT04Yi//hPIS3rnieO1H3UBzt4ttBwRHMypxBCwyapGpTTP+YRDSmw0a0uWjN9/i4hgz0P2au0aU5grFiJRgJqboxLekD1YN3rqIp+YMagPFU8S24XCbQqKmuvynVC0rH1//3RjHq0ms/tvtSwfT3VjZ8LudfotAD5G9gG/LUSnI8dR5m8ovAtCKNc1Ypte5pzvK5uuY1nP992wBa2hT+3XJ697Mn6ntJWle+ZCcO2d/X0dXBNdyFxPiREQfsOL0uuZb/XDiTNyMMvwdSEz7XYi2IpECeoZ4NkCDqggI+LOOd09DrBovaI86iyfo8Xg+LuiIZq/4ylgC4IlMHqAx3+EtwOwsfzTGuXbT6UAOr7pDMUJzZnojfX8tDPTQYhBdVNcriIzj2inXVQ++6bsSShv+t/Zhi5vjKQVq9EWoTQ2hD+EPxnJKRFp0ZrYaLMAATs5zJYQqWb/BRQTzTBOxZ6R18IORbQb2711eV4FHnV9qio2R00hmIWbth+Yg3KiFEqHwgIjmP6SW7iCQCkp1GE6jZHnvFmzWdiA5c+Gjne6dp2HyNwH67VIQTOJK+/kEdU2+/oIuD8Ak9VfSeuH+u6lgiMVA2pa9ovqsmD0u7//Fpt3XhM/2R7dP5MrHqY9uXgxv7/tHWVBQqHD68JtQPJoYBGZzFcmEnwI68moPN/kVMz2bapaD4rH8bKmoUZwvh5jYuJhLxutq2Jz2h1MfokMwFuKc05871x6MTLAlQQphkkKfR+lOaLOpmZf+VduUDTjorvAsLjVjr2lnhnFpuMvbnclwttxaZ9qy2hw44gmbCNKjq9Tul0MpLwsD94JoFpgPTy8Vg5ND/vn1eCAhlhkRgAAayiRWbMUrwjtSOIgIHHS4p4dfGyLyLx80QBdcowoC2O00virU/knz875771vW+oT8UdivQ7T5Pw3/ysyFNYJJ1J
- HWplt4PU
- OZv9QOnE/gTT45HreMtLbw/j/S7b+k0yur/0/r4I6/g0NQ/TY2divJRKSLrfBHpI5TvpgjiUAs3Iludjfhb9jstzw+l7dktRFd135D8n/AvTEIZjHxFZ5dUraRh3pjiQ827s9kDcNS1H7lpI7peb/AsHik8ALnlFrVbL98RfW4HgD+KyauxxWZAch/Lf9smR9nWrBckqaqt44nEx6x4qaYQ+uI8DUb9KV8cdLNq8m1bGpQpKxa008A7gI7vui8J9AXkxsSQCCVdw2NzBhdrPKuB9y2h48EpXj0DMpcX/AtCxKe8nn/IF/AFBzM9JVAjf0sMUrY/pOgETGuKM=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CA432120009
+X-Stat-Signature: fk6motscgq3a956i3i5xsxequ8k1cqyr
+X-HE-Tag: 1788863045-559382
+X-HE-Meta: U2FsdGVkX18b3Vuc8Tk1lbX6RPoeT+bQ5FNAKaEgv1dPxAyMVYcV6rhkCKmO1o5lPr+VaYtWsvNXBzMOVVmRA6T2o0wrjREla7ryFZeFr5PjX79Y08mHb6WbV2801blPjXhCJgLXNXYC17Gq5EmK/vD2aEe/IxFenveaQ89sQ0Nw4nuDTbWT3L8NMWGSJRAvKCsHtMui3dpnX8YZyRvvSh0GuJisQBLmmrZiL9grIi411TJJdT0C52n2y0dJPm8/VDgZReN4PcSESYRC0pB8mGZXPKgPeDMCV6mZIf/N9h17Q45+egkxHQjW3qdduvjvjB63i9XI+d84MstmbHSDymugZ20M33U/w93SX2eDwPfCLIch931kZtzG/G0uBX7jOq/XzWcuiBB3JS+0X29JMBmJMp3xbgKx7FArnjxdCSYmEU6I4RayRAcPaUJiGn0NJmWPmW+uNg4jJN/n7mz0aDD8Qb/yJanLIYqn+YwAlpeAYFaUQzvenqHNrk3SWgFtMc2i2SWYklhNw2sJQu1TtkjWtPBjSj5UEPfxzyFDzWr5MEzOM6P5TCNizgtemAL0d8+8qub18i1M5u5YH/A/5XGGswmk6VQGWDTVC6GuifsUuJEBOvPqf1yW8ku96V6jCejasGXqnXJD9rmrG8iSd33Ytpasqk4qU3oq/UV0u0Xlz9BN3dQT7mFyX464x1hvBIE/FArW+e08X+tA67TY2+UOwSVdyGZRQ2DVVpemKnXNJTHFLuVl2e95Mqom5V6x6Zi6+2TcU8Em9m8wtZEw4lVz40ui6kUeiS5QBNL1+0xINyHMgtivqMY8XJAicXzna6fG090+T+NZBZVffqZxj1+cddHNWz4cSdLimQQ+BfP0Gm2KyA3ozzQNap+yI9j/kuoQM8XAgpNS84tSsZxPkvXklEPuMJNCji3qWv3AooYyd3VohswCpixwPDdFl8EzjRbVPdworEDfMqx9cRd
+ tFfOjrug
+ wVQ92eLyTeaH6xKq//Nbs88t2cosvdu9xmDYT6OYjK25O89eEOw2o2NM5aRyYhTH8pQqGQV0642pRVijF+1YmzApAvMJw6kzMFcnud0rsVVOWqmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,137 +100,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 05:55:15PM +0800, Tianyi Chen wrote:
-> The mmap tests extend existing mappings one neighbor at a time, while
-> merge tests construct merge state directly. Neither exercises filling
-> a hole between compatible mappings through the mmap setup and completion
-> path.
->
-> Fill a gap through __mmap_region() and require both neighbors to merge
-> into one VMA. Repeat with only the new mapping's execute permission set
-> and require three separate VMAs. Check boundaries, permissions, page
-> offsets, map_count and cleanup.
->
-> Signed-off-by: Tianyi Chen <hi@tychen.cc>
+The bulk allocation path in alloc_pages_bulk_noprof() currently misses
+trace_mm_page_alloc() and kmsan_alloc_page() calls, leaving bulk-allocated
+pages invisible to ftrace/BPF/perf and leaving KMSAN shadow memory stale.
 
-For future - please always send v2 patches not in-reply-to anything :P otherwise
-mails get buried.
+Add both calls in the bulk loop to match the standard allocation path,
+placing them before set_page_refcounted() for consistency. The gfp mask
+passed to kmsan_alloc_page() is stripped of __GFP_RECLAIM because the
+bulk loop runs under the PCP spinlock, and KMSAN's stack depot allocation
+must not sleep.
 
-Otherwise all LGTM, thanks for addressing feedback! So:
+Both are no-ops when their respective features are disabled, so there
+is no overhead in production kernels.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Suggested-by: Gregory Price <gourry@gourry.net>
+Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
+---
+ mm/page_alloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Assisted-by: Codex:GPT-6
-> ---
-> Changes in v2:
-> - Rebase onto mm-unstable, preserving the new /dev/zero test.
-> - Rename hole_flags to middle_flags and describe each mapping's address
->   and length in its comment.
-> - Remove the redundant hole, per-page and outer-boundary iterator checks.
-> - Use const bounds and named booleans for the middle VMA's expected execute
->   permission, and separate assertion groups for readability.
->
-> Validation: all 29 VMA tests passed with ASan and UBSan enabled, built
-> with clang 20 using the existing VMA Makefile.
->
-> v1: https://lore.kernel.org/r/20260906144100.849288-1-hi@tychen.cc
-> Review: https://lore.kernel.org/r/ap5pmX-RddQ-c90O@gremlin
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..eac419eef697 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5279,6 +5279,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		nr_account++;
+ 
+ 		prep_new_page(page, 0, gfp, ALLOC_DEFAULT);
++		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
++		kmsan_alloc_page(page, 0, gfp & ~__GFP_RECLAIM);
+ 		set_page_refcounted(page);
+ 		page_array[nr_populated++] = page;
+ 	}
+-- 
+2.25.1
 
-Thanks! :) very nice.
-
->
->  tools/testing/vma/tests/mmap.c | 68 ++++++++++++++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
->
-> diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
-> index fa73faff226..53e4abe6a63 100644
-> --- a/tools/testing/vma/tests/mmap.c
-> +++ b/tools/testing/vma/tests/mmap.c
-> @@ -45,6 +45,72 @@ static bool test_mmap_region_basic(void)
->  	return true;
->  }
->
-> +static bool mmap_region_fill_hole(bool merge)
-> +{
-> +	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> +			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT, VMA_MAYEXEC_BIT);
-> +	vma_flags_t middle_flags = vma_flags;
-> +	struct mm_struct mm = {};
-> +	struct vm_area_struct *vma;
-> +	unsigned long addr;
-> +	int count = 0;
-> +	VMA_ITERATOR(vmi, &mm, 0);
-> +
-> +	current->mm = &mm;
-> +	if (!merge)
-> +		vma_flags_set(&middle_flags, VMA_EXEC_BIT);
-> +
-> +	/* Map at 0x300000, length 0x3000. */
-> +	addr = __mmap_region(NULL, 0x300000, 0x3000, vma_flags, 0x300, NULL);
-> +	ASSERT_EQ(addr, 0x300000);
-> +
-> +	/* Map at 0x306000, length 0x3000, leaving a hole. */
-> +	addr = __mmap_region(NULL, 0x306000, 0x3000, vma_flags, 0x306, NULL);
-> +	ASSERT_EQ(addr, 0x306000);
-> +	ASSERT_EQ(mm.map_count, 2);
-> +
-> +	/* Map at 0x303000, length 0x3000, filling the hole. */
-> +	addr = __mmap_region(NULL, 0x303000, 0x3000, middle_flags, 0x303, NULL);
-> +	ASSERT_EQ(addr, 0x303000);
-> +	ASSERT_EQ(mm.map_count, merge ? 1 : 3);
-> +
-> +	vma_iter_set(&vmi, 0);
-> +	for_each_vma(vmi, vma) {
-> +		const unsigned long start = 0x300000 + count * 0x3000;
-> +		const unsigned long end = merge ? 0x309000 : start + 0x3000;
-> +		/* Only the middle VMA in the non-merge case has VMA_EXEC. */
-> +		const bool is_middle_vma = count == 1;
-> +		const bool expect_exec_vma = is_middle_vma && !merge;
-> +
-> +		ASSERT_EQ(vma->vm_start, start);
-> +		ASSERT_EQ(vma->vm_end, end);
-> +		ASSERT_EQ(vma_start_pgoff(vma), start >> PAGE_SHIFT);
-> +		ASSERT_EQ(vma_start_anon_pgoff(vma), start >> PAGE_SHIFT);
-> +
-> +		ASSERT_TRUE(vma_test_all(vma, VMA_READ_BIT, VMA_WRITE_BIT,
-> +					 VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT,
-> +					 VMA_MAYEXEC_BIT));
-> +		ASSERT_EQ(vma_test(vma, VMA_EXEC_BIT), expect_exec_vma);
-> +
-> +		count++;
-> +	}
-> +
-> +	ASSERT_EQ(count, mm.map_count);
-> +
-> +	ASSERT_EQ(cleanup_mm(&mm, &vmi), count);
-> +	return true;
-> +}
-> +
-> +static bool test_mmap_region_fill_hole_merge(void)
-> +{
-> +	return mmap_region_fill_hole(true);
-> +}
-> +
-> +static bool test_mmap_region_fill_hole_flags_mismatch(void)
-> +{
-> +	return mmap_region_fill_hole(false);
-> +}
-> +
->  static bool test_pure_anon_dev_zero(void)
->  {
->  	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> @@ -84,5 +150,7 @@ static bool test_pure_anon_dev_zero(void)
->  static void run_mmap_tests(int *num_tests, int *num_fail)
->  {
->  	TEST(mmap_region_basic);
-> +	TEST(mmap_region_fill_hole_merge);
-> +	TEST(mmap_region_fill_hole_flags_mismatch);
->  	TEST(pure_anon_dev_zero);
->  }
-> --
-> 2.55.0
->
-
---
-Cheers, Lorenzo
 
