@@ -4,140 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 496B0C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D408FC79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:37:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B1586B00BE; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
+	id 04B056B0092; Tue,  8 Sep 2026 02:37:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 662C86B00BF; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
+	id F3E206B0093; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555046B00C0; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
+	id E54EA6B00C0; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 356A76B00BE
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFFF51C213B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:35:53 +0000 (UTC)
-X-FDA: 85189634586.24.FCE4F95
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 883FF40006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:35:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aRfHG7fW;
-	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2FB6B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E0ED1A03B6
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:37:00 +0000 (UTC)
+X-FDA: 85189637400.11.E0AB1DF
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C04391A0003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:36:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rzpYKvAq;
+	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788849418;
+	b=PoA95s3+/G24DJhnwFP+hLM3rMCfEZISnJsvbps0jPmAt4LQAenlYALUTdzPpyr5tJQJiC
+	bX++OPlNoUZUpRkD1pq4/VPbGrF3YFJ614G9SN08pCh/inLjaKkPssKEQDEvEGrYqWsbYW
+	I3JdUz7tk5hG7Ove8eCHX0bwCJhiNF4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rzpYKvAq;
+	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788849351;
+	s=arc-20220608; t=1788849418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VcsRTcR7UvmGPi3UVltnJ8Mvdqg2EXaylPcDLJc0IKg=;
-	b=LGLzejFBHFtJnyH6J7NnVtLWQ662kie2QyXeZLVFQ6MPvoLiwRgWZ/3Mxuvh5rx4uS0FWB
-	JOTS/jSDdr5RScP04PKzNTtUxgv054FB+nv3MHgzhzB/GkLgpwLWw2/KZ/tjTKf9trYD/q
-	im8Nw2lBh+ZKIqSGccoT/LgNecpkRgg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788849351;
-	b=sPItiMnlfxXZ/T78D9uJZVWjxLTqD5LCN+qidnwpT+lQ/vXKMKhmPVB0G8QsYctOnkmff5
-	oU1RWNC42qRAacs/pav22y9MoYwiGTbfKyBMrXsjR8TeeCZOPPrwFlZ8WG3tq3rvte+20E
-	/v34YY1z1A25eKVJ0CRzo0NMCjKlOB0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aRfHG7fW;
-	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788849351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VcsRTcR7UvmGPi3UVltnJ8Mvdqg2EXaylPcDLJc0IKg=;
-	b=aRfHG7fWzBd01n+ZTmreTAQEzQYToYsff+nsr36ByOO61dJyTZQUUl1VcMkChkqi7TBvDG
-	w2Kb8yPTOBIMlNQ0C4pckLx2RGYFyf9i4QBzf7/ve7toNbhps07YVcRzMrkwCQrHAnyhv9
-	m4TzscQNEkw+Y9PCGEFXGlezOxQ/ozo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-gPbOnE8kP2O-yRJR4n8BJA-1; Tue,
- 08 Sep 2026 02:35:45 -0400
-X-MC-Unique: gPbOnE8kP2O-yRJR4n8BJA-1
-X-Mimecast-MFC-AGG-ID: gPbOnE8kP2O-yRJR4n8BJA_1788849340
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 904731977647;
-	Tue,  8 Sep 2026 06:35:36 +0000 (UTC)
-Received: from fedora (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A93311955F08;
-	Tue,  8 Sep 2026 06:35:17 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue,  8 Sep 2026 08:35:36 +0200 (CEST)
-Date: Tue, 8 Sep 2026 08:35:16 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Gregory Price <gourry@gourry.net>, Ye Liu <ye.liu@linux.dev>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
-	Michal Hocko <mhocko@suse.com>, mic@digikod.net, david@kernel.org,
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, gnoack3000@gmail.com,
-	ljs@kernel.org, sj@kernel.org, rientjes@google.com,
-	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, tony.luck@intel.com,
-	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
-	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, mark.rutland@arm.com,
-	Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
- for_each_*_rculock
-Message-ID: <ap-spMNyMvYFga5k@redhat.com>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
- <20260907081334.1152889-6-ye.liu@linux.dev>
- <ap7dC-LWNaoPYJvv@gourry-fedora-PF4VCD3F>
- <ap76-0-hN6CAcYXX@redhat.com>
- <ap8mgnpE7D4TTrno@gourry-fedora-PF4VCD3F>
- <ap8yoW37GY17pHYS@redhat.com>
- <e618ace1-6a8b-42c5-8a97-44b39dd1a7c7@amd.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
+	b=sc7isBGkpW/EpQTJSOla/11gdIvnP3/zUDQU0JgVVFtlSWFErfSBxO2A99rRcl6msP5jwM
+	k3L8UBd+mX1KOZZnVMei2Dcp6CuxHeS1v2QWIVmfNiYL0c8LpwmCNZuFJqi4iBsX8m2CAj
+	sxaLdsMLV1QqlPUpSAbTqFAxyNzwR8U=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-39b35105ba4so3736461a91.1
+        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 23:36:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788849417; x=1789454217; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
+        b=rzpYKvAqn0WbOQSJIulhP7Y3wrGEQaDeQK/E2XSR7gZPb50MFOZbBu4tRX0TVuqGBc
+         SF8pXNykgm+OiuVjxAz1QFfny8pOZJLUMGKwlTZUfrfeaebL51VvuwHxufjpWxhrrZPk
+         0Q4dJDCJG9W1vOcJ8dmUs2Ul674Qmc5rsIF4CckNxCjDlvHgfF+XIe8UbZtnKc2fUIt5
+         vXbmjaN5+c1el6Iq7xP9ZpoBXTZVoT4UD8LhtxuExpAzCirtgPqqLhAgG3HOM9r/Q7Vw
+         alSQlUNYpv+fsMxGxqnzCzJ0C4kyfltBRs+qu8+7cEui7Lfjuj+nNzVK5OuuKJkU0/9W
+         yDQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788849418; x=1789454218;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
+        b=jEfQFnWdP64lIhpkNPMLCSm1p/4ukjcGd3Kxx8QLqTmEGbHDwMIEEKwYjnVsf0Ep+S
+         n9k1lvSvnRIK+z2SQtmcv2fBpdNxFJhV4r4bPqeKfv5NWvJA30WDks/eZvRvHxb2pAy+
+         l0whPcfsCnlpSEgTmUc84Bah0wHBEL/HXwzWN0qlYrF01SvlkMOW6u3ondJEBkGCFmXE
+         pcPza9b9ZctFdeEPjTX/xf+x0IwkDXWfam2cb9Qca7pz27+feR8SO17HTwZLc1jsfuYj
+         OJUs5YBjRJoK9PyEBwmaQI0i6O7O7RN4juQOWdme1tNfuAZFMSpvcNwrRDE0y6lxggPT
+         kKDg==
+X-Forwarded-Encrypted: i=1; AKwUvBz220rsDNitJ8vYq2mfd6i01gidD6Q1epfZl23mYSr5wQR5oHA/WJR+t2XypGokCj78xr/3H88S8A==@kvack.org
+X-Gm-Message-State: AFuF++kFV/j2eT4vDZAcMCOJamzUUatUAiMuvrkycMzL5UBSYiR6C3cp
+	Li7ZsfFZ+YZ4CMs8tJaH5QpApsblrN25xIfBKmSX1h7rrSwtDNJ175bV
+X-Gm-Gg: AYBFou2p6ZkE26j7s6eEUNT02tItp/C+ZuuwU6UWR3GvUvZPpc3pZSKpAg/yfO3L3ji
+	90CbekP+QfBMEkKG8uHPnKBqTBaEJ+/Vsnjn1U1t/IPBgyuS3SO1ZvSgpT7dTsXBsV00q9hY9vX
+	5y/6fiZ/Z7VodHytpgkzdhd4enspMG0SFQsC9m2UukoWRzx6MwO60UzC59NL1Lq3v+hj0raPelN
+	CVbxy9obdLxDVl3rPc1jto3jn51V5SVLNGfiW7xN2IuzG+GE14bXorDBzZGDIjSKj3k0XcYfb5S
+	zHGC/5gW+BGHJFAgcX8s1v1q4gpmo4lCSS7BO8FvNLxxAosIi9e9avyjBPW4hMncI5GLPmBUHK0
+	m1x+Dg4r0lh/kUOOOyUiXh8XpDcUd3IF9KbnKvEcNcNporV1M2EgiRlDqOrntD+QQ0G430akWi3
+	cHAEw2AYf81hwXBioIStuWTGhk1rqWBKiEadZu1DN4sGafobMxC2yUEOLJ7Pn8MnqR8PKbHDxrs
+	MDAmLw=
+X-Received: by 2002:a17:90b:1a8f:b0:398:d2a0:87ff with SMTP id 98e67ed59e1d1-39b26101029mr40740639a91.1.1788849416965;
+        Mon, 07 Sep 2026 23:36:56 -0700 (PDT)
+Received: from kernel.tail6741c6.ts.net ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b4b72f62esm18814349a91.5.2026.09.07.23.36.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 23:36:56 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: lianux.mm@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: [PATCH] mm/damon/tests/core-kunit: improve nr_samples_per_aggr test isolation
+Date: Tue,  8 Sep 2026 14:36:35 +0800
+Message-ID: <20260908063635.2208922-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-In-Reply-To: <e618ace1-6a8b-42c5-8a97-44b39dd1a7c7@amd.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: k0knV9sBER0BlBuHGwtfXiir6hBNPqxA-O-1gVzM4sk_1788849340
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 883FF40006
-X-Stat-Signature: 69ma85xjq3gad9tzroje6y3bybpfa4gu
-X-HE-Tag: 1788849351-535443
-X-HE-Meta: U2FsdGVkX18zw29y+kStxYY/8/or8pLHdE0Qgsz9lvPisnxM89vAq8QkVc9JAAoN1MT/8fkbbCmbIYst40N8Y67uRF4NoyAmtgC2fSesMY1WDO9IL16Mpetyp9u6sjK4LDJ9h806AF8VkFc7y2K7qo4utLyFBXp/K+ioWyHeF1hg/cHpL8lUGHkbcS/vBFwcM7ve/n/Gepi9DKgI6XVgJgIF1/VWTDQcuyNVEAat9pN1xD0CXUaZxWGyL0az/tJuaJZtLbGTjr/9QUX1vrjjCBMT3PeWWhrEmghaeUKSJnHXZSe98ws9BOynux2y8LiyxT+nJiK+EiEHiSL+u6jBz0azV8NvE1aV90BBQ2kpNbkpfJhMhwWh0ND70wOIRG38a0Al8D42s7XCJLOfyLKPx+CcGAyI0OSqXf12slS7GOINptwUv2tY8ZRW5wGVRANb0sVD5gUq0jlTk06eZtcTfWi6yzNbZL3yO+E3i9IUnA/2Ysy0db5rgbYMF83FXdR42HgmWAPTLpLlDdeaZVzXaTOywJfCbfR3lvbI/+eoQB/q4G3zQQRGuCYkQIjZX0p0K5sk/DBS5xz90aAbZNlx9UCxAis3KjVgsP2tXZo2N+FgMy63Pd2QN+ULQFgqd+EEdFyNeMg50OhzK/u3gyto7l/fZe2C5OiJnsaZHNwzaOmfsYTJSDuYG3qHinDm55de7s517K8bftS7yrfxP3kfCykyVl8amuB3g6/t82oBGEmpciCt+D5UFBISsf/C3YgyvnSe/PP/ehIqI+oUjQYUFhJHYD0ENGaTyn9KaEn9Zo4yfDNjHPAFkyUQfJ0lb3bkO6uG8A+JGMO3mTQy085/50vNxAM30EsqkvwZFXMek+oQ2X01lZ3b3ZnOBWriH/eGOsPNdke6Fal8zdeYAwGuaTzbILcFdm4EanZp61tPqhRDWhk7vz+7sNxj3c1sfiSsY5mJ6kFbRWsF8h44syw
- 5kS5YI4u
- sctrYP6hVUS/y0SVY4SZI5COGx1D1F0vLtz8UvTrcj75n42RYic+kolLYpUIwIVRm4Qr7OIS6aX7u4sjPL22z6+W4DhiudwR5prztsvDHQ+HPKXGr0+83yXaJUJNSCfUmHmkAcF0Nv2uh8wU7zxYEG/1M1kj7QA8muKNnvFPcy1dD9BUAj+7olAjWkhTCzXcmOlUJwxiiRJgrV8Q+z+stuM2Wx3eHt2M4/OG4qMH6moUqDMm4Z7o1FsIgJfzKGGoFHXbCTqAenkw93qnebDfLLh3Q+fEqa3/k2Bqnj7CW3lJXM+mrN8jMnYftUfg7X4EkWrd3OGkAJ2YNy2IknFSDvy5vIXgqkbkGTM2v8L9tsNnEm08bCxOdNZpwht3hIUX1+dXi98IelOpGiGpjFHrSQYnW/h26exfWBc/TOzBRXACPJ5mvcy8zmRmyn2ekBt3/1hWqQj1NbhHv509mdTLjYUdMuhj9XlA6k+OxAwS2rryJGEmmIYEiOywZk59MRqHf4haMx+KML/pOYFRE421YL633wj8G0fNCNKLT1+tmaiSnDuSoUd7vT+knNw==
+X-Stat-Signature: ph3w4pgsif6djsydshjnzadeaghohuk8
+X-Rspamd-Queue-Id: C04391A0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788849418-800149
+X-HE-Meta: U2FsdGVkX195nKULEuqruLnjrKrduebvPwUIO/QzYHIER6s0VIa0HQfx20tXYTT48H692uEDQDM+QdidaHMnRO0K2098Uj9f3SKpwlvn2S7DBkLiDngji+lgILBdzCGZhEmVLjREoTywrkmp7TVe4+XwM8aZbhnnSXVlocB3RH/+EngLAlFFIv7zmyqXT9m8CHqyBIGHXlXChdQOpbNjDQsFOMZE2wQwqHzM5J5RYzPfjixpWhB5ZMeADM/+AMO2gn1Rm460quq1x0A9SFrZZKbmkxBc5jubWndWJCEkr4EFcVheGbk4WdDNqq46scKiNXkx6gxcVuKOs7veaP7DKO7bo6nFJ4IXfwnMY/YoOOFXqQKZZqvAddxmyJiwAousQds+Op0Eja6En3XLlod0iofmVpsHUI72sLaueCWcbEirvHKBcStTmhJemQVBzH6HYEioFYFdhg2rTgSuTnaSReNRr5izMOlPiAsLOr3Tk6NVb7QTyUkuVllKZadaHSuGfDESHF6vE2ONpbVEplMseZIlNoMZ2sZvILeSj4VocWFP02hS/ARgdwfo0oBsSY5k/cyGTNpbeLboi7v/UysitdUOdx1D79/0kEQUk+JYReJFKv3g81bZz7YeABHc+8UGcG8VE9BCJXfNcBOTjY3iJql/hVPYADHyXnGfI6JL8+fo79Dzf1a0UQ4z2CI/oLEQkcjNELFr8F50DQlPwwcfqE8OHTbjxKdvt3JLZTiIw9omQs/dyIGAcjgutxdqV3UgoiYbDNUzASiSrSrxNsMNY7z7lITRNTA38FFEKWvk5QudEa433M5e0vuRb4mChb+4e/ozRcjscjG+oc46V3EyUFWKH0HvLoYbHTSrjr+x7X0Xr8SCQXir0V1UfKoUTauMAfM0myAmLZht3973MuBP4IFtgZJq7y1SbU2YSxir4jdJVzJOjn7zFVn5Ml+/jxdTLWUPEwmkv9wFv+ljrEs
+ dcCuEnxd
+ voP73FP6hv/c/OCWkxEiAQ1XT2qUrgPZVmdBrfRWarpNL0HienY6QIVupgAaqF7ZavrH3y45Hfb4idUtYdiZhxm5EbhZENAaC5bJZUWMZAC+3VfHeJQXcpP5M/WtuJc9UOMOl9xSjUNSV7CXQKAqoi1c+C+9UTtGSRc194qD1do7tfGyoALpFM0KFC7PnXXn38/zuwOisNjslLXfrb5eSR85WZxr7G3twHxHamiqFVbKgNpNV6N5Dom2XwLZC3AzKQUGRXBdvczOWPOR8mqQgXV8yx3y+8fq6G3mlgIg+ab0w6QeW6hD7n44rY5akx5IC/ZgEnNCHA+6ecUMutR5dmm/O5G5GsJVFzugiF6LYTMsmadRnXpwUuKhr4qB9x/gpTGvKrOunnIIMUsTGRo/4dgbWukxl9aD8lsvO3niG8oaB2kcedrv4ExfhbIHZ0lDlx4LCzpjzAsMKlN7DN8K8OSeDy0pyjozXWi+dlckwbXDgYM3nQWyjZXy60Tzf5vh4wrA9lDrHaOoYDEx4pEHDXJ90+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,32 +119,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/08, K Prateek Nayak wrote:
->
-> On 9/8/2026 3:24 AM, Oleg Nesterov wrote:
-> >> This might be my - admittedly shallow - understanding of scoped_guard,
-> >> but does scoped guard handle goto correctly?
-> >
-> > Yes, it does,
-> >
-> >> and why it's generally discouraged to mix cleanup.h and goto.
-> >
-> > Hmm, why? I didn't know...
->
-> Apparently older GCC would allow subtle bugs with cleanup + goto to slip
-> by but clang has always caught those bugs and refused to compile so as
-> long as clang builds are happy, things should be good.
->
-> Here is an older explanation from Peter:
-> https://lore.kernel.org/lkml/20260327154136.GL3739106@noisy.programming.kicks-ass.net/
+The damon_nr_samples_per_aggr() test sets both intervals to zero,
+which exercises two different fallback paths at once.
 
-Ah, but in this case the code is buggy, "goto unregister" jumps
-into the scope of __free.
+Use separate compound initializers for each case so that each case
+tests one fallback path independently. Also make the overflow case
+use an explicit non-zero sample interval so that it does not depend
+on the zero sample interval fallback.
 
-Anyway, I agree that mixing cleanup and goto can make the code
-confusing or buggy, but this particular case still looks fine
-to me...
+Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
+---
+ mm/damon/tests/core-kunit.h | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-Oleg.
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index c01e6a75cad..ff23208c181 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -627,12 +627,20 @@ static void damon_test_set_regions(struct kunit *test)
+ 
+ static void damon_test_nr_samples_per_aggr(struct kunit *test)
+ {
+-	struct damon_attrs attrs = {
++	struct damon_attrs attrs;
++
++	/* Zero sample interval is treated as one. */
++	attrs = (struct damon_attrs){
+ 		.sample_interval = 0,
+-		.aggr_interval = 0,
++		.aggr_interval = 5000,
+ 	};
++	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 5000);
+ 
+-	/* Zero aggregation interval doesn't cause division by zero */
++	/* Zero samples per aggregation is treated as one. */
++	attrs = (struct damon_attrs){
++		.sample_interval = 5000,
++		.aggr_interval = 0,
++	};
+ 	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 1);
+ 
+ 	/*
+@@ -640,7 +648,10 @@ static void damon_test_nr_samples_per_aggr(struct kunit *test)
+ 	 * overflow
+ 	 */
+ 	if (ULONG_MAX > UINT_MAX) {
+-		attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
++		attrs = (struct damon_attrs){
++			.sample_interval = 1,
++			.aggr_interval = (unsigned long)UINT_MAX + 1,
++		};
+ 		KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs),
+ 				UINT_MAX);
+ 	}
+
+base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
+-- 
+2.43.0
 
 
