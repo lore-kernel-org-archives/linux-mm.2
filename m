@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06636C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A1B2C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:17:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0912A6B0093; Tue,  8 Sep 2026 10:12:35 -0400 (EDT)
+	id 4B9846B008A; Tue,  8 Sep 2026 10:17:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 041EC6B009D; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
+	id 46A176B008C; Tue,  8 Sep 2026 10:17:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E99846B009E; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
+	id 359906B0092; Tue,  8 Sep 2026 10:17:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C20146B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6028B406DA
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:12:34 +0000 (UTC)
-X-FDA: 85190785428.25.582677A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EFFC6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:17:38 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96BBF1206A7
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:17:37 +0000 (UTC)
+X-FDA: 85190798154.03.06094CB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9A3842000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:12:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6F5C9hk;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id DD812120008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:17:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="myV7eNg/";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788876752;
+	s=arc-20220608; t=1788877055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7QY+32xJuMq6Tz60T2FtAYLMwPxmKJa9EIw0naxNRw=;
-	b=IMsOro+mfd9wTCKaipr+G6c0PWBK+hJ7xwms6jCnI1yXzLsCwJVXS79heYf9HRFlmUR1rh
-	4uC/ttgiY7i1yf/hxQOA6Grpb98dz5FP/RB0asbDI8+oeUYXeNlGjvmWQ/4vQSCSDzboRJ
-	zBnL4cGJI3AlU4C24sivWW+TUX0ybE0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788876752;
-	b=eb1T6lsjrfIF5nXABCDZhGDipGjWlqTrqck8YXD5EWr8VC4h/0NrdNxtpi6IFuqO7cGn5p
-	hD0HWAVGgmyaTiH91+jEDurBXqEjfxiJ77/egVjX3JKx57baIBwnP+7hV6eCjES/Jv2iP0
-	4Zn3h58m4X7b1oZ3sabul8mwlCk6TkU=
+	bh=NNSm9JyIdvqOJegC2cdB6kLuYGU1rFuia0SmDqpT6mw=;
+	b=Lie1U7YrUDWcKUr0t2Mzo0HPEXlNAqRk1EUF27f38CHjDucbmZnTzX2Zn7R0hGCKfbYqAW
+	CSHfVgJBkqplu3f1A1ZWChQIJJpUlswLgpDBfyYAU4W9nrxt9liYjnSmjjjmGDOWfk3eln
+	r+mVITk/e4Hddl/45T/4T9SmVUKhr/s=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6F5C9hk;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="myV7eNg/";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788877055;
+	b=wToau+i5gHUe41vOfDkEeHMiExoc/mIXQfbxkr4pilNSAwCOhJ8Ux4nvFTOVvwzJ0YQtjc
+	g1G1hHyEyFJROpqIXX/BcpmxhczHl6qsZ+905PCzO2B4Z1YwakoL6ijLa3CTnGKlAqqJ72
+	rxVdhL+WgTvftcXkiol6uXGNY1s7cb4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1963E601F7;
-	Tue,  8 Sep 2026 14:12:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019B21F00A3A;
-	Tue,  8 Sep 2026 14:12:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7157C601DE;
+	Tue,  8 Sep 2026 14:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B171E1F00A3D;
+	Tue,  8 Sep 2026 14:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876751;
-	bh=Y7QY+32xJuMq6Tz60T2FtAYLMwPxmKJa9EIw0naxNRw=;
+	s=k20260515; t=1788877055;
+	bh=NNSm9JyIdvqOJegC2cdB6kLuYGU1rFuia0SmDqpT6mw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q6F5C9hkksHR3U/qP+t0jNS27VaZxxFP2ctszQifVzprISbqSQo7LQFXLrJFnIX1o
-	 Bafps7WKNOyAbhevxCim2zGutTnUOIDSifFGUGCiP9RwxASEYTPSF2tXGt+5AFtsRQ
-	 bRbuIfuVAYhAwBPbxXaTWAqOrlN/JwyhCpmyzSJuqnWuXNvEK6V0gdeOkP6z1D5xpg
-	 z5EMDrurGFQ3/kil1agUJxZyQJZ/6xB3Zotk2rMQmqW2hPUL8lXvudBSa0NDHTmxQ1
-	 K84k8y8+PPNx8ZBj80Ht1qxr0ljuwdeEVDsbdZElRqKWewvLo+314UzApBhluK51Mx
-	 O5trPvNcY9YMg==
-Message-ID: <9bc5787d-6106-4d0f-816e-cdf5a308abd6@kernel.org>
-Date: Tue, 8 Sep 2026 16:12:23 +0200
+	b=myV7eNg/gv18ZLJYuBI9HmZI8F2KKiBaPLhVUz+ajLhMZhgl0dEcFdPpnMth6B83v
+	 f7bKAmwnkn9B0NO+54KyVRbbRUSJT+mqymyMHBpmKK2jZU+aRP8M304KVS1gKBFzeh
+	 EcYROI937QJtzjnVZHMtcKkuH/fgohPt/53e0Xjf4cYrDbIlpcnz3Ch3HzkCeAF2He
+	 mjDTcEnwkIc79obTXOVQkYijQogcTpASWqBWw7RwTrb82kurV+UZ9BZelSzjnJ3ui9
+	 WLgDmf/OjnP51LoWTRGGQQ3znASGd9+51tfmaf5s0IinPyNYr1r7oMLH+QeT7qEO5a
+	 nrFkF6e9FdI4g==
+Message-ID: <2335b64f-483b-4327-9598-94123c36902f@kernel.org>
+Date: Tue, 8 Sep 2026 16:17:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: support splitting mappingless swapcache folios
-To: Kairui Song <ryncsn@gmail.com>, Zi Yan <ziy@nvidia.com>
-Cc: Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song
- <kasong@tencent.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+Subject: Re: [PATCH v2 3/6] mm/vma: only permit MAP_PRIVATE /dev/zero to be
+ mapped anonymous
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
- <590B3189-5B66-4ECB-84CD-7B7EF18C0E54@nvidia.com>
- <anNOroQdjQh7xmU9@KASONG-MC4> <DKIRYOJXLIYN.32KI06POZL7SY@nvidia.com>
- <anZLkwwxHdhM2M2Q@KASONG-MC4>
+ Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
+ <20260908-map-private-dev-zero-v2-3-acc7b5625305@kernel.org>
+ <e743b598-9048-440f-9124-72071c696679@kernel.org> <aqAFBTyAqPTHlxkZ@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <anZLkwwxHdhM2M2Q@KASONG-MC4>
+In-Reply-To: <aqAFBTyAqPTHlxkZ@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DD812120008
+X-Stat-Signature: ma36nj4ftx6meoc6ws43wc8knaqoypj1
 X-Rspam-User: 
-X-Stat-Signature: 6ebjt8mx7t49tdteyy5ddrb947m1aiw9
-X-Rspamd-Queue-Id: 9A3842000B
-X-HE-Tag: 1788876752-828783
-X-HE-Meta: U2FsdGVkX19vuU5lCRTvX20FD7E5vSJFP5XLxn7pxop4dxV9V43I5ZRJW03C/IoDMwoD+7lXPsz++C12MGypFTdbojVGOlgbJC9XAG9eYI6+Ab8kkRq+Eg/1Ppyeckprhj06xbhlqtzk2RFcmfMCYwjwGgEpphSvfbLtEfqPcvAb8Il9KLyzumKbXhCi9uHr6otKIyokHOqk/C3hn4nQcN/Ml6n3u/VF2Yqywc+xhyt7V15L4Hdggz4PL0ktICsVDrsebIcu95uota9pxkM45zUIGwt7pGSBzMXDh6z7qsPIAiQN7MIuWn4MJKLJwrOR4NcZXzlWLnWWb5C8k/J8Pw5lZSWzN3jZc82df8kofgkPLxBpnlbd+d2UaDgwOsV72wMm2zJhpAWBa/l8KnoJXKEJ5WPq224QoUzHGCF1vU8QHNM57qU1IO++XExJQrdOHJ3mJRdzyjUAmAXfDBGlpt2Xj1M6eapLRF3+K1A+oi//s57WHeonoeRaBRkYIRGVwfT63NGIoEVjVwR9nsMxRJBQVleDvbQklBFVu5q4O/UtFuM3BHi7xYfNA8N5gZMgAMDrjkKpvm6yZyhOIrWYWmel7Zl4cAe3CVaVvLW1x6kZlO2rWEf3+13+3s4ksiDGIWiWRIgn1DqXv+gF8415NVblCu/cLmUBMTp5YDobxPTFET6QhZWaZQmKggpxRBwBtqNahRiBZBWNx6s2Wz2RM2mFM/zeaw5cT80J8KLEV/wd7/+j2lnWpA7jSdaCVwpMvkAHjUccuhGCaqJ8T6INnR6Sn6XAtbjf5jpKCbQY15F0eOTmLVIU4r4Rf2BvmyoueJask5tYznJ7+bPL3591SRFzEbKP8U8nGmbqBpocfSBcEW0W9e4ZChm71/fZDo1FfVJC2Z4TiUp2RbYtMctpGHPx8H+scTwdhwhTxd2T3LK+pw28TDHoTt6/Yq7cf6o3/vnTwBCR+1YyrXig2p+
- gODCLSTW
- 9ULFDLEoFMyKXwf4i8HCX9NV4D4CbVJRmnAkQtL7vgXJxS3qk0D1dTziZWvX/7GfvpoZNN4c+a9qPpK0uQzoJa0CtXId8K3SM8Le+82hH9aDAEM/R2FoUCArmjEnq4PGQy1fVyz/8HMRDwIlgosoRwc6j7F9l1QB8vSxalAAX5bBDdWjvN8sBZV9drbb1rkIhUjAB3316eQGbGEKsHCSQMIdrBLA930CHZ/OEZgAkZMoVjYLK8CcNR/LpdpEK/6wc+iZt
+X-HE-Tag: 1788877055-372662
+X-HE-Meta: U2FsdGVkX18XZIMUmS4Gq4DpWVvuYehXuzpnLIOZrirWboC8i193q+qQwZSCr0wEH/1Yw42XWmE8/HEoQudt/L7nVLHyiEwOaqZzJqTgEGVWuqnRszpra2t1awnmNnwl9idChlWwM6VxQQl38bc4fTmQ02rHaJ0Fo5RqMdrgrXnuNOl6/dXezB+4ltoH/XdZ83TbIVzSbUX7vmlshWqO+8xBSmsMJAWsawwdZR9r9TTwTSxLWLmPdy0hFrmf2fpQbUpf0i35Ycw1DZ3ncRniOVTu6t4d0Pfz8RHnFUlbDrXTV8znVUe3UP/GH4v8Yfk1bJUGm1jgiDrhbfEn+AJYfYX4XIC6EliKuuEBNElRQl+0SFc0ldOpEeSM/R7CYhCNEcPcJ/23qptzFEQ1egnaNcV4nsnJwognJZJlvtz5TzlLnN4Z9pk78nQjh5c25Xz3mtkI1/bpzKXYbPByReEv7EhtwTcdbPvYIslIiKInD2lqb3zBqsqKlhArV0y+Pw4mkrURzvUV/m69iuW1vIgkDAe/LPpvLi6CrNYftG0leWM+WZWJ5FHM+Dht4/sBLPg0xWYx9dUSxc5xAOiVFhyMXAgm1+sNhU9NtZOlQkECZDPRdCRo+vEMrGfjyx0Y0sZJfzciKMcQqTHU1lTVLKa7NWWpuf1XfOtNka5iekgCkqHN/SPT5bBlJsnrPHs4E8u0tPB8PfTE/N9ULXssM4voB7Csk+7Awew/WNiFzVkX5/R6YigeprgoxzIMZnzrbFf+9++eEuhQVCtoYKZP4E/B8eBePLJ/qe0bi1VyNSPpa/e2wVj1Hqrd+2qBNBhP9qIMehWMqsM0e5obS+6EkW+oa5CdpHW61/6bmpxc+g6ZJyK9pa9MAYkdw7TDdCJAbH2QhuwFFbLatHstuBRg8IWsJbl6up5kcZwIVFzOF55RBfBqnU/RSgnn52ePE6WyYuzn4Bb+Fs0WD04DnkMmNwv
+ RiyQdFI2
+ yKMtUyq4AiR09YEKkirxSaWJ4aCx+cGJuhoS/qM77eh95IkrUtJ9uac1wFbNI/EUvMAcKewMWX/Q28legu62ECPUL8E3UmsHOx28toIUZH2DX40GQRGq6DBEhv8sc09McoFTpLvxXOkCRHfEuRADbko+LvO6n1CWEFQ7dRuoPs6x5g2CimqPjgsKqOvu1B295zSzXkdhmLkSbOQLAbpcj8359EEng49hVVKraOwFbGPZeIIgOEZs+5M/i7Hbdhzz3Lv5Ab7JWHsD/T7s3UN04WCRa5z3cO5TWv1itRipqn91Y74XALY/HhXq8/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,41 +149,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/7/26 23:22, Kairui Song wrote:
-> On Fri, Aug 07, 2026 at 10:18:05AM +0800, Zi Yan wrote:
->> On Wed Aug 5, 2026 at 11:54 AM EDT, Kairui Song wrote:
->>>
->>> Thanks for the CC, this is actually not hard to implement as shown by
->>> Shivam, I just found the code more and more hard to follow and fragile
->>> as we add more logic to it. And we don't have to reject higher order
->>> split either which can be seen easily if the code is cleaner.
->>>
->>> Personally I think doing some cleanup first is better, I haven't post any
->>> code as right now there doesn't seem to be much user of this. It will be
->>> needed if more clean THP swapcache begin to show up due to things like
->>> THP readahead for swap, which isn't here yet. I think I can send an RFC
->>> tomorrow just for reference. I'm fine if we prefer to remove that TODO
->>> using this smaller change first :)
+On 9/8/26 14:52, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Sep 08, 2026 at 02:49:33PM +0200, David Hildenbrand (Arm) wrote:
 >>
->> Thanks. Can you also help review this patchset? The changes looks good
->> to me but I am not sure if I get all the details about swapcache handling.
+>>> +	/* Temporary MAP_PRIVATE-/dev/zero workaround. */
+>>> +	if (is_anon && map->file)
+>>> +		vma_set_anonymous(vma);
+>>> +
+>>>  	if (error)
+>>>  		goto free_iter_vma;
+>>>
+>>> @@ -2777,6 +2793,10 @@ static int call_mmap_prepare(struct mmap_state *map,
+>>>  	if (err)
+>>>  		return err;
+>>>
+>>> +	/* Hooks cannot mark themselves anonymous. */
 >>
->> -- 
->> Best Regards,
->> Yan, Zi
+>> Wasn't this supposed to be reworked? :)
 > 
-> Hello,
-> 
-> Thanks for the reminder, I got a bit busy so delayed for a day on that
-> RFC.
-> 
-> For this series I think it's functionally fine, just the split logic is
-> a bit complex to follow and we still have restriction on swap cache
-> for order 0 uniform split only. I'll have a closer look later. Also
-> let me know how you think about that RFC.
+> It is, you yourself pointed out 4/6 makes this irrelevant, so I changed it
+> there :)
 
-How does this patch set relate to your split cleanups? Is it still applicable
-independently?
+Ah, thought you'd adjust that right away. Works for me, thanks.
 
 -- 
 Cheers,
