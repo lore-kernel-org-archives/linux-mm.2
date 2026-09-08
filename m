@@ -4,121 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910D1C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F359DC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B2F6B008A; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
+	id 051DF6B008A; Tue,  8 Sep 2026 08:11:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A71296B008C; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
+	id 0033A6B008C; Tue,  8 Sep 2026 08:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987076B009B; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
+	id E33876B0092; Tue,  8 Sep 2026 08:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 747F56B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13359A05E4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:57:14 +0000 (UTC)
-X-FDA: 85190444388.07.EC18FEC
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3DA5FC000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:57:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bobrowski.net header.s=google header.b=MVdgFRcu;
-	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.217.50 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
-	dmarc=pass (policy=none) header.from=bobrowski.net
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C0DB66B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:11:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABAE0C0571
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:11:04 +0000 (UTC)
+X-FDA: 85190479248.28.F28BAC7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1023D4000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:11:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGMrz+Uo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788869463;
+	b=ivW4f5CdWWwhTaM1vuJwxzcmQUoBdYlHWLr4LdXCtTzjCg6eBTy99yAFlUFgmq97WgQrDd
+	KXzcoCC4MT2zmd18nsix4edJ2xtxvtO6/ozunPCKPi8tjGhccphsJuy0tDB6ENusheUZIe
+	GyjAT6gYtmTZozZRpr6h9PebDOVXI08=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGMrz+Uo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788868632;
+	s=arc-20220608; t=1788869463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
-	b=nlnFpxMFt8pd6/XzgKE1iZTp+JgdsA2RTeAXCyvd3J0zsCwQDdDOqwPpx4Mn4+j1sVqxKG
-	aAGIP2s3KXC2cygmCLLETgHqtVjDBAMDAnS9Y546LLwkfUbMURr1tgaYqkLJEjfEdMHFWx
-	d+/9ToVNQLB3BNHmV0tuNzj+yvoZWtU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bobrowski.net header.s=google header.b=MVdgFRcu;
-	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.217.50 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
-	dmarc=pass (policy=none) header.from=bobrowski.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788868632;
-	b=wgJCNuhXs2N0ELyvR/7e8IhqqSEdBVj5nSBAWFNvHpTm3IX9hMSSRXETOZ3wEex/3quAiz
-	ZdbPIuVywFOktqpegbiZaYarEu/woZ0tXr8TuaXqI+XEQ1T7uUp62OIAxHeixTWWD2dEcv
-	oAdsFf+TGaVW1VQ77tHT9MKx1K1JNz4=
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-784980b88acso1423783137.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 04:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobrowski.net; s=google; t=1788868631; x=1789473431; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
-        b=MVdgFRcuyOUWqLwe7UAMlzNTCohKKokMKpY3VEE1G3OmDG4MuQMe+CqnuBqddVA0Yg
-         OCSEf+IhNZ5A7tIbxf3C8p/FcZz/IAL4XQipTdyKpqb0HCbCWKfaYpdvY2PjklfwcoaY
-         D7r/11ZqPIvx/cGaTfZZoUvZOGFvNQB04p/fcClhZ8j/orA2XvIa2cdsIv/3syA9FpbO
-         uKNBmGOZFB4pXohhYW+PLe6eZofquL4vTyixFZ6sTAKaloPdOZ+fciJxnFKfOsoxbulA
-         4iPY0Snu+v5VK+HPqwS3CsDJhlNg/KFDYqp83AVrypjuxpFKIHxgolF4hDcI5Gp1V35t
-         EbJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788868631; x=1789473431;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
-        b=Di1CpuUAJyYkYVqk0MR3xouUXAjFx/Ite9mojJHfdFmKzKQ4G30kCqLegieIN2Cm7M
-         wu+iPw+z8FV7fVhy9Ul4p8C/DUWtQXSBoxqnK1hiQE0wFXiijvVPsuy3uYOQPH//NLja
-         Ik1k2T9PVL1w8tZwfx+pGFrMhVqwyTEAoqwTOZ6U7hobfPzdviXhZ3mj+5lsHKxP5eV5
-         af8FoOeWCtrNsMVVaUNppuOl1Ep0JPtwSMN7F1wRD076QeQgXgPBST6guSeUgFcOIYht
-         lYiA470S4k7ULjO5qmIgYl5xyjn7/ScWEIhpkiurO2ewITykC37VDZhqc2Ru0XdYbgMv
-         Gg3w==
-X-Forwarded-Encrypted: i=1; AKwUvBxjp4JZBW+6SrtXtOMhCRultJxFsQZbDIYFI28Zo21Rrqr8kHBLszbwdTjP67ZvwRBwfKDKVnCx3A==@kvack.org
-X-Gm-Message-State: AFuF++kASUloiCKpR3wP+XrO7uWU9+JbvKGddbxhmheVzbGPwce5R4E/
-	o9Hn9gKifENlNEKgYGq7lhBy8g34vN91aAzu3WrBlYyBvo6waIofePbaH4+WVJLO8Mfv
-X-Gm-Gg: AYBFou3JE3Xj+eChEHD2EykHrRDCDBs2POdwFh5uNLAkNyoC5pK0j4YyI4wGadWH8VK
-	RCehEZS0X9X6SUVPL/X0YcEv3aONc6Sk9bC9nzZ0N1mwxwDDCEjhZX5uZU1lmfvpGEOGxz804LN
-	WlkHzbyrtCRJkwlZ5NsAHATBOQzuHI+HctMxX+gzz/4gBDXBc6O/53rIvK+em1pwgOEctQ2HgVZ
-	5AhQwsBVspsSL5MZ291XDPmU3fibJQn/cEAaiaQUPT9wO4XUUkTQCNwL3WJRX3eav2Cz/YYcQiB
-	JQt/DGrZRXd3tV03PSdccVdwTtUSYjEPx8i3jJ3LhT4TDZiZpxqMXoK/QwBBpjVr10Z4vk5m2uR
-	LS2hA6qb8SGBGM2PzxeoEIq+hA0vsAO5Gmk9xUPaas/2Bccz1oRXbA+3BmjvE2ZW8kSlCAlMHL0
-	3gptMS/KB7zMebyUBz7dbGxrzInyYqIMwE6xhkJ3Wf0y7ay8/ygo5plPU469Acby3aXWJXz3WI0
-	4kLWMfomjoVZQZ83BAQxxL5p/03ktmPtWs9LRzl
-X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr9329411137.0.1788868631172;
-        Tue, 08 Sep 2026 04:57:11 -0700 (PDT)
-Received: from lima-development (163-53-146-23.ip4.superloop.au. [163.53.146.23])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-78a47ae301fsm8384438137.7.2026.09.08.04.57.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 04:57:10 -0700 (PDT)
-Date: Tue, 8 Sep 2026 21:56:53 +1000
-From: Matt Bobrowski <matt@bobrowski.net>
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Cc: bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
-	akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
-	brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
-	kpsingh@kernel.org, ljs@kernel.org, memxor@gmail.com,
-	song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH bpf-next v5 3/7] bpf: Add user memory access kfuncs for
- mm_struct
-Message-ID: <ap_4Bf61N4AtZWB2@lima-development>
-References: <20260907165220.52431-1-tasos.papagiannnis@gmail.com>
- <20260907165220.52431-4-tasos.papagiannnis@gmail.com>
+	bh=Iogr4guSukTn7BNwHpl36e5eQOn5fbSrjKYt1mM0zZs=;
+	b=dMzPu5V+W8XEPtTImKtGBxRCqfTRfezvF//8lE/H4T5gBWHnyqCz8WUVw93zje1o2W2iPj
+	5JnC2mm2decEiQyg9QBZXposKzXW9A8Hn9JYTAgp8qhdNuP9zOvwRrXoF2t8jhmnnMiTdG
+	P1rlcmRy6StNRCr87XJPPLhNf9PZCgI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8B56260A9B;
+	Tue,  8 Sep 2026 12:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836221F00A3A;
+	Tue,  8 Sep 2026 12:10:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788869462;
+	bh=Iogr4guSukTn7BNwHpl36e5eQOn5fbSrjKYt1mM0zZs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NGMrz+UoNf/gzaQ74JTfvoy7vqEpiw+5cmO1q4iP3yGfSAjHDVAN4/CMNqORDPu4n
+	 HJl+Qq+4W8rI5VQ2LeiZLjAJlqVYQ4R5FU5MHyCF+oFtznk29zfKuTL5ZLchElsBNb
+	 0eJCxdkHcn1mvaRAmCxAu8WD9YZH/RgfqaJKn1EWHoMuT9EFFfyR+r+Ju1UjOUBm3e
+	 8KwKksoimiSzXS34OkSVnFOGIYz9tkgwPyHprsro/tRuNIUakklpM4RlWUmnJFCrSY
+	 wpu/sO5kJMg1HOOsq68qOmuarpS+zYwOP/2zS07HgExdpFKBauBYGI68RBci+m6JUw
+	 k0/p5zwRBIfFg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ Lyude Paul
+ <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve
+ =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian
+ Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, "Rafael
+ J.
+ Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
+ Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar
+ <vireshk@kernel.org>, Nishanth
+ Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski
+ <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, Philipp Stanner
+ <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ driver-core@lists.linux.dev, linux-block@vger.kernel.org,
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-usb@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>
+Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`'
+In-Reply-To: <CAH5fLgjrQDWSPX-81TNdnc=AU3Jge57vUJ_SHCn8=uUyGfRq=g@mail.gmail.com>
+References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
+ <20260824-unique-ref-v20-4-490735672187@kernel.org>
+ <ao2WubjLtDuHvRzx@google.com> <DL894TFXM5AT.2QOXN683UKXIF@garyguo.net>
+ <CAH5fLggAMfBcxprKJxs4JbieKadC_mKg4B0xNETOH1QUi72UGQ@mail.gmail.com>
+ <8733vlxmm8.fsf@t14s.mail-host-address-is-not-set>
+ <2dpwVpJS3VbfQ7CmE3HeY4IJSSMXTP_O9sSP3HHHUD7Z29RNEG4Hc0m8f94jKWjFlekcTXvIBA-QdGYrf8w1sw==@protonmail.internalid>
+ <CAH5fLgjEfZO9DwcUxaKCWd_hFUrXU+cxiwmRg1UnM2pKD6gPvg@mail.gmail.com>
+ <87zextw4c4.fsf@t14s.mail-host-address-is-not-set>
+ <CAH5fLgjYmvp1Ph3dYXnTKkAvWgNpgCAPeq_7PZhRai6pCNmVmw@mail.gmail.com>
+ <87qzj4w2nw.fsf@t14s.mail-host-address-is-not-set>
+ <BHf9mFp5zLg4GcKDzWhjsF9lzCPG1Pd8-nPd6b9HODeCiw9Nj9OAjU7aDmN6rnk-koAD37kW_flzkTMbOjp9Tg==@protonmail.internalid>
+ <CAH5fLgjrQDWSPX-81TNdnc=AU3Jge57vUJ_SHCn8=uUyGfRq=g@mail.gmail.com>
+Date: Tue, 08 Sep 2026 14:10:45 +0200
+Message-ID: <87mrtsvt8a.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907165220.52431-4-tasos.papagiannnis@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: t1brbx55gtow5b85frocz7u345bzynkw
-X-Rspamd-Queue-Id: 3DA5FC000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788868632-338519
-X-HE-Meta: U2FsdGVkX19R5/X91IMxTePHRkcuYTo+/3tWxrXGpTaoU9rSjMwU9RzG/z2TXYskj7NDK6sBpFap0BtTYudhx9PLXYBtal15s2OFVrA8T3wGKeT4JIbr5Qkj58rbKwqWzaq8CIl0UlgpcwW5cf0fGKdIXJMSxlhQo6NBj0DtIqQ1OLtSya5MfdOGS8hB6SJi871im9RhKKu/OBSwcP8jweZda3NdRXWnON89hQ7ugdkVPt/W7uM2GuUt9+kWJ8jqadbSvKFVOoJQWNeL1KfieQNEvD7woAKvS/8U2F6Ox9hFDa7yGE+Uup2b+9IU1OcJWHwiDyA2myogp90JAUatJBiW5DbPagovtZkTjiN3sNX76gth9ntr2tWix7crNxgjp/5CmUSkQwYdYjrOY+7hfuIP4nW08yhNx3sjT7w/t/oanWg1XjMpRXPQ+pBL4t6Dff3n8/JhDqwSrvzB7zXu9C1HH/Tr1AX0gnJVHaW1DgQglc3hR8eNMDLChEORasRG+GYANba/lxPCpF7+0snpsgi+sGqmQsy1USO7SzJ+9g0oh58x7dOqEHFnmejt2Ybspu3viUcDNggAcn3elVuwHgLQNS2TokGWq8+zQzVDUBi5HbDKwjxnC5vIFbe0/amwrBB/QkK4p5+KAI0TGopOLr1Qd5v4ONyCkcu1OKkPBbLRIqY/XolCdwSr9B1w//5fdqgcJZ3np9autOfdeR0SpbCOc3Ddxc8PUpW3pZ3U1PAelrALHdZ/CLa/2fi2IwVlCE++E55pBx+SOaQ22ZDfm0wCo/6cS99PfmwwSmlZiQDw3d1+Qa0cGMzsRlK+Oo6+gVRpL2EKWk89XJFy2D4pDdGGBzeVBoyNak23Kpogt8GG0jsR7xOgESjC+cLkLeES8VsBxJmz5HwzIGbdJgjld1XH6Ty2MHopKuB94GKMfEfbSn7/8ZtCtnnZUVdMSAeooR+iEMz+XxtPPmJ+onR
- Q5Llvid+
- ZqPwJVG3qPy5efKE15vG4zTtfDDy7jsc9tpOhiP+MTHnYf/hWTcVE0OTrZxte/37d1RIGz/p8isDot55zQptzHQy5tKZYTVpiAXbz+4avXlYyEVh8UEpFwcKEEyXkJNbxr30hN8s2DyBlk7aO1qMHT7Qtb0FLCIcHZoGUuXK8HRSvCwExt+4Yn5gashdBkPqcZ03Z+C9nA/Ntd+9K1B4L1C+4pchsoDvSDxU8jZHEQOxKRSkIvVZE2HHZ1poreSSw7Y7qWLt2OHyPV636qVrRZGXGHwR0qLrQjqAYPnPdcLb99i9lwn7+w0WFwVPTXMM5OxqdBqWmqP7SEa0gAm5yFymwQS3ykmMJgeKyFxDTjdofggQBS76K4LECpcuspDjYqc1RnORSywavRIycVrS8KplYRr/bgnFhulrMVGU7wWfeWGhM9RG1LYo95AwLf5PtnVwFYccGk5+K9MFbEZsKYB/6Jw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1023D4000C
+X-Stat-Signature: chy18cfj7ohzg3bhef8f9rkqcdemaafs
+X-HE-Tag: 1788869462-962591
+X-HE-Meta: U2FsdGVkX19nIbYP+d5YtROkGmuazSO/5DDepfgaqPEwkEsGgHBdaWNP2qYqA35HK14odR6L3iyaYbX/q57lyMNnknghdGtFM5oHd/iF/k3YFFgKjqqjR+N9X0XRXwuEhNAUqGA7IQdD4Uxk3uAHq5rmQqK5fxdCv2aqAV9EjkLtOpsY8v/vUogYEsqa/RWpFDGm28zmJw+2++8h3vEz8wH5jSj7DWibj1PntnGSFtdz5wIaTgEo50A2lTIFQmw0su4dKI8XOjDd+H4w6Go0fAqhzpFYETJTM4QDSCaNNtUMpAUazRIV6/YLgfHG7bAdBoMzBA6iQja4N+dVV/PvlJRXhaPvbFa2jZ43TNZaJJArF2/G3w85tca07C59yNcG2e/ekA5upx77SiKbDAgC7KUVahiLElWI2oixjYnbqD0e+lMXVs5UcAG1xPN3GVBogSHYP8rlYEoxGuRMVr/mFAvOD0M01EbZGP34oL3xfej0o4bCck++X1pm4XaFpUnPm7slchA2yTEy/k9xlOzeKxy9V5hbLuHixbZnBV7amaGwld4RGi4fe6KY+5Mmf3IJH1XHal7hM035pcl2BuoT4c+84Du5JQCn+eUFcXQ5bL8oQLP8zHe7LLmxiHQbt5pF8wD1G4vl6uZBh47UJEjP8h4JOr9jur4laixNMpWeCE7t39QDhuO3KrlJpOJBWspI37CBz+1yLZDD1TWijOzxuKR3Bf6b5WpYflDFVpUJFk9TPWk5gHMtl5nK+83dUDr43vTO5JUDgkqNqQPgunnvFKT0KmXwNw3Q4V5EGmRLjXK3hX52CmOnlxA/UxHPJQlgAGGLr8hoYZqePOVAipvDMRGr++ngKV20B6ne9nEOFfYCqwA6O/pq3oL3VZPprdYautZEKqYpOW+6UCezItVk7bV3ubbMhZ0Q+zZwrLXk0pw8vHz/gYNQZOV3jpu9h/E8dpF2oHEFakM+h8BL9XA
+ SCSR0Jdr
+ zSd9/oENPUxfPBwiR8+nPjGZLmLs9w2NchoHzHMqi9Nqpah4UZQ14yOceUzKG+Bbf9JzvI5Dnw31Ws/TvGNekijJqtTzDCTQQ15N4+bU3IIr5TierUa1VwfNqPoRfiFS/iJKVCrRCfJnXlkKLFgEforNFBvyZHPfmo7n4tgTRw0uggG4Z4izhVO3A4weLJga+FsksoGwY3QEVqKL09Qr3pyCR3l+Msuw1oHtLmDb8I6BB+bowrfdWfC3WetbA/QKXA8GH8jT0DT1fmBZpOJuESIg/CCcb/ljONAPj5L1gj3ldGR9HgOZJYZPxQn0ypDw53otgYDHk7zt8aV/whQqFrOgtWHhUTYDzy6+q2H3JNcQPNxoD+ALHRzNjhExLyKNV50hohUpMyxSmu2h/OA4iAn0X3C/iDFQX0j9udgGUX5jle5ezQIyp/eb0oA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,246 +133,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 07:52:16PM +0300, Anastasios Papagiannis wrote:
-> On CONFIG_MMU kernels, when security_bprm_check() runs, the argument and
-> environment strings for the exec have been copied into bprm->mm. The new
-> address space is not associated with a task_struct until exec_mmap(), so
-> existing BPF user memory helpers cannot access it.
-> 
-> Add bpf_copy_from_user_mm() and bpf_copy_from_user_mm_str() kfuncs. Both
-> take a struct mm_struct pointer directly, allowing callers to access
-> trusted address spaces that are not associated with a task_struct.
-> 
-> bpf_copy_from_user_mm() has similar semantics to
-> bpf_copy_from_user_task(). bpf_copy_from_user_mm_str() copies one
-> NUL-terminated string and returns its size including the NUL terminator.
-> It accepts BPF_F_PAD_ZEROS to clear unused destination bytes on success.
-> 
-> Refactor bpf_copy_from_user_task() and bpf_copy_from_user_task_str() to
-> acquire the task's mm with get_task_mm() and delegate to the corresponding
-> mm-based implementations. No behavior change is intended for the existing
-> task-based interfaces.
-> 
-> Register both new kfuncs and mark them KF_SLEEPABLE because accessing a
-> remote address space can fault.
-> 
-> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-A couple nits here.
+> On Tue, Sep 8, 2026 at 11:00=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Alice Ryhl <aliceryhl@google.com> writes:
+>>
+>> > On Mon, Sep 7, 2026 at 3:58=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+>> >>
+>> >> "Alice Ryhl" <aliceryhl@google.com> writes:
+>> >>
+>> >> > On Mon, Sep 7, 2026 at 2:38=E2=80=AFPM Andreas Hindborg <a.hindborg=
+@kernel.org> wrote:
+>> >> >>
+>> >> >> Alice Ryhl <aliceryhl@google.com> writes:
+>> >> >>
+>> >> >> > On Sun, Sep 6, 2026 at 3:02=E2=80=AFPM Gary Guo <gary@garyguo.ne=
+t> wrote:
+>> >> >> >>
+>> >> >> >> On Tue Aug 25, 2026 at 2:20 PM BST, Alice Ryhl wrote:
+>> >> >> >> > On Mon, Aug 24, 2026 at 01:17:56PM +0200, Andreas Hindborg wr=
+ote:
+>> >> >> >> >> +        // SAFETY: We just successfully allocated a page, s=
+o we now have ownership of the newly
+>> >> >> >> >> +        // allocated page. We transfer that ownership to th=
+e new `Owned<Page>` object.
+>> >> >> >> >> +        // Since `Page` is transparent, we can cast the poi=
+nter directly.
+>> >> >> >> >> +        Ok(unsafe { Owned::from_raw(page.cast()) })
+>> >> >> >> >
+>> >> >> >> > This doesn't satisfy the safety requirements of Owned::from_r=
+aw()
+>> >> >> >> > because the page may be used with vm_insert_page(), which inc=
+rements its
+>> >> >> >> > refcount and causes it to be shared the vma system, and this =
+occurs
+>> >> >> >> > before Page::release() is called.
+>> >> >> >>
+>> >> >> >> I suppose the existing vm_insert_page() abstraction we have is =
+already
+>> >> >> >> problematic, because it uses `&Page`?
+>> >> >> >>
+>> >> >> >> Maybe we want to change the API to use `ARef<Page>` so it alrea=
+dy has to be
+>> >> >> >> shared? Conceptually it takes a reference count from a `&Page`,=
+ which isn't
+>> >> >> >> possible because `Page` is not `AlwaysRefCounted`, so it needs =
+a `&ARef<Page>`
+>> >> >> >> to be able to do that op.
+>> >> >> >
+>> >> >> > Honestly, the problem is the safety requirements of Owned::from_=
+raw().
+>> >> >> > Pages have a "special" main reference, and free_page() does more=
+ than
+>> >> >> > put_page(). It even does something when the refcount does not hit
+>> >> >> > zero.
+>> >> >> >
+>> >> >> > The correct behavior for Page is to allow the user to hold one
+>> >> >> > Owned<Page> whose drop calls free_page(), *plus* any number of
+>> >> >> > ARef<Page> references that invoke put_page() on drop. This way, =
+the
+>> >> >> > owned page controls the special drop codepath.
+>> >> >>
+>> >> >> This does not mesh well with the model of `Owned` behaving like
+>> >> >> `UniqueArc` to `ARef` behaving like an `Arc`.
+>> >> >
+>> >> > It's a different case, I agree.
+>> >> >
+>> >> >> Please help me understand; with page having a main ref and an auxi=
+liary
+>> >> >> refcount, if we model that with a single `Owned<Page>` and a numbe=
+r of
+>> >> >> `ARef<Page>`, what would happen in the case where the main ref (`O=
+wned`)
+>> >> >> is dropped first? Is this legal?
+>> >> >
+>> >> > Yes, it's legal.
+>> >> >
+>> >> >> My intuition here would be to follow Garry's suggestion and have
+>> >> >> `vm_insert_page` take an `ARef<Page>`. Can you elaborate why this =
+is not
+>> >> >> an option?
+>> >> >
+>> >> > That would be the wrong ownership semantics. The C side increments =
+the
+>> >> > refcount rather than take ownership of a passed-in refcount, so the
+>> >> > correct argument type is &Page.
+>> >>
+>> >> Or `&ARef<Page>`? Because with `Page` being `Ownable` it would not be
+>> >> OK to increment the refcount from just a `&Page`.
+>> >
+>> > That's just a limitation in your traits. There is no problem with
+>> > creating a refcount from just a &Page.
+>>
+>> Yes, I agree. The limitation is by design. My point is, `vm_insert_page`
+>> can work fine with the `&ARef<Page>` type. So if that would be OK with
+>> you, I would patch that as part of this patch.
+>
+> IMO, Page should implement AlwaysRefcounted and this method should
+> take &Page. Anything else just adds limitations that are not needed.
+> But I'm ok not implementing Ownable for it.
 
-> ---
->  kernel/bpf/helpers.c | 142 ++++++++++++++++++++++++++++++++++---------
->  1 file changed, 113 insertions(+), 29 deletions(-)
-> 
-> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> index b3cc5c8fc875..d3c564437ad0 100644
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-> @@ -32,6 +32,10 @@
->  
->  #include "../../lib/kstrtox.h"
->  
-> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
-> +				      const void __user *unsafe_ptr__ign,
-> +				      struct mm_struct *mm, u64 flags);
-> +
+Ok, I think you have me convinced. Mainly because `Page` as it is has no
+benefit of exclusive access.
 
-This shouldn't be needed. kfuncs are prototype-free by design, which is
-what the -Wmissing-prototypes suppression in __bpf_kfunc_start_defs() is
-for, and __bpf_kfuncs expands to __used __retain noinline, which are
-definition attributes.
+>> >> > Now, for the use-case in Binder I believe we could switch to
+>> >> > put_page(), as we don't need the extra stuff from free_page(), in
+>> >> > which case we only want ARef<Page> and do not require Owned support.
+>> >> > But as long as we are calling free_page(), it needs to not be
+>> >> > clonable.
+>> >>
+>> >> You are calling `__free_page` directly in binder? I could not find th=
+is
+>> >> with grep except in the C binder. Is this code you are calling into f=
+rom
+>> >> Rust binder?
+>> >
+>> > Via the Drop of Page, not directly of course.
+>> >
+>> >> From `__free_pages()` kernel-doc (`mm/page_alloc.c`):
+>> >>
+>> >> > If the last reference to this page is speculative, it will be
+>> >> > released by put_page() which only frees the first page of a
+>> >> > non-compound allocation. [...] **If you want to use the page's
+>> >> > reference count to decide when to free the allocation, you should
+>> >> > allocate a compound page, and use put_page() instead of
+>> >> > __free_pages().**
+>> >>
+>> >> I guess this is what you are referring to? We could change `Page` to
+>> >> this style as well and all would be fine I think?
+>> >>
+>> >> At any rate, today I learned about Pfn walkers, compaction,
+>> >> memory-failure, etc. that take transient refcounts
+>> >> pages. With that in mind we need to reformulate the invariant of
+>> >> `Ownable` to exclude optimistic transient references.
+>> >
+>> > Yes we can switch Rust Binder to use put_page() and have Page not
+>> > implement Ownable at all. That would be okay, because Binder's pages
+>> > are not higher order.
+>>
+>> As far as I can tell, we can also switch `Owned<Page>` to allocate the
+>> page with `__GFP_COMP` and use `put_page` in drop.
+>
+> I'm not entirely sure if __GFP_COMP is needed, since the page is order
+> zero to begin with, so I don't think it makes a difference.
 
-Additionally, I feel as though any shared pieces of infrastructure
-amongst these kfuncs/helpers should live within their own static
-internal helpers (__bpf_copy_from_user_mm() and
-__bpf_copy_from_user_mm_str() or something like that. Callers should
-also guarantee that a live mm is being passed into each respective
-helper). That also lets the compiler inline them, rather than being
-blocked by noinline on both ends.
+With alignment on `Page: AlwaysRefCounted`, I think this becomes
+orthogonal. When we want to support allocations of more than one page,
+we should probably make them compound pages (folios) and manage them
+with the refcount (put_page), rather than non-compound high-order pages.
+But this can wait.
 
->  /* If kernel subsystem is allowing eBPF programs to call this function,
->   * inside its own verifier_ops->get_func_proto() callback it should return
->   * bpf_map_lookup_elem_proto, so that verifier can properly check the arguments
-> @@ -682,22 +686,15 @@ const struct bpf_func_proto bpf_copy_from_user_proto = {
->  BPF_CALL_5(bpf_copy_from_user_task, void *, dst, u32, size,
->  	   const void __user *, user_ptr, struct task_struct *, tsk, u64, flags)
->  {
-> +	struct mm_struct *mm;
->  	int ret;
->  
-> -	/* flags is not used yet */
-> -	if (unlikely(flags))
-> -		return -EINVAL;
-> -
-> -	if (unlikely(!size))
-> -		return 0;
-> -
-> -	ret = access_process_vm(tsk, (unsigned long)user_ptr, dst, size, 0);
-> -	if (ret == size)
-> -		return 0;
-> +	mm = get_task_mm(tsk);
+>> > But this case still does highlight that
+>> > Ownable<_> currently does not address the use-case where the
+>> > Ownable<T> is a special reference there can only be one of, rather
+>> > than a completely unique reference.
+>>
+>> This is not the use case `Ownable` aims to solve.
+>
+> Maybe not, but then it doesn't apply to Page.
 
-I'd keep the flags and size checks before get_task_mm(). Otherwise a bad
-flags value or size results in us taking a task_lock() and an mm
-reference before returning -EINVAL. So I'd argue that you changing these
-semantics alone doesn't allow you to uphold your statement around there
-being "no behavior change".
+I agree.
 
-> +	ret = bpf_copy_from_user_mm(dst, size, user_ptr, mm, flags);
-> +	if (mm)
-> +		mmput(mm);
->  
-> -	memset(dst, 0, size);
-> -	/* Return -EFAULT for partial read */
-> -	return ret < 0 ? ret : -EFAULT;
-> +	return ret;
->  }
->  
->  const struct bpf_func_proto bpf_copy_from_user_task_proto = {
-> @@ -3658,6 +3655,100 @@ __bpf_kfunc int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void __user
->  	return ret + 1;
->  }
->  
-> +/**
-> + * bpf_copy_from_user_mm() - Copy data from an address space
-> + * @dst:             Destination address, in kernel space
-> + * @dst__sz:         Number of bytes to copy
-> + * @unsafe_ptr__ign: Source address in the address space
-> + * @mm:              Address space to copy from
-> + * @flags:           Reserved for future use; must be zero
-> + *
-> + * Copies data from the user address space associated with @mm. The destination
-> + * is zeroed if an attempted copy cannot be completed in full. Unsupported
-> + * flags return -EINVAL without modifying @dst.
-> + *
-> + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
-> + * fails or is partial.
-> + */
-> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
-> +				      const void __user *unsafe_ptr__ign,
-> +				      struct mm_struct *mm, u64 flags)
-> +{
-> +	int ret;
-> +
-> +	if (unlikely(flags))
-> +		return -EINVAL;
-> +
-> +	if (unlikely(!dst__sz))
-> +		return 0;
-> +
-> +	if (unlikely(!mm)) {
-> +		memset(dst, 0, dst__sz);
-> +		return -EFAULT;
-> +	}
-> +
-> +	ret = access_remote_vm(mm, (unsigned long)unsafe_ptr__ign,
-> +			       dst, dst__sz, 0);
-> +	if (ret == dst__sz)
-> +		return 0;
-> +
-> +	memset(dst, 0, dst__sz);
-> +	return ret < 0 ? ret : -EFAULT;
-> +}
-> +
-> +/**
-> + * bpf_copy_from_user_mm_str() - Copy a string from an address space
-> + * @dst:             Destination address, in kernel space. This buffer must be
-> + *                   at least @dst__sz bytes long
-> + * @dst__sz:         Maximum number of bytes to copy, including the trailing NUL
-> + * @unsafe_ptr__ign: Source address in the address space
-> + * @mm:              Address space to copy from
-> + * @flags:           The only supported flag is BPF_F_PAD_ZEROS
-> + *
-> + * Copies a NUL-terminated string from the user address space associated with
-> + * @mm. If the string is too long, @dst is still NUL-terminated unless @dst__sz
-> + * is zero.
-> + *
-> + * If the flags are valid and BPF_F_PAD_ZEROS is set, the unused portion of
-> + * @dst is cleared on success and all of @dst is cleared on a copy failure.
-> + * Unsupported flags return -EINVAL without modifying @dst.
-> + *
-> + * Return: The number of copied bytes including the NUL terminator on success,
-> + * or a negative error code on failure.
-> + */
-> +__bpf_kfunc int bpf_copy_from_user_mm_str(void *dst, u32 dst__sz,
-> +					  const void __user *unsafe_ptr__ign,
-> +					  struct mm_struct *mm, u64 flags)
-> +{
-> +	int ret;
-> +
-> +	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
-> +		return -EINVAL;
-> +
-> +	if (unlikely(dst__sz == 0))
-> +		return 0;
-> +
-> +	if (unlikely(!mm)) {
-> +		if (flags & BPF_F_PAD_ZEROS)
-> +			memset(dst, 0, dst__sz);
-> +		else
-> +			*(char *)dst = '\0';
-> +		return -EFAULT;
-> +	}
-> +
-> +	ret = copy_remote_mm_str(mm, (unsigned long)unsafe_ptr__ign, dst, dst__sz, 0);
-> +	if (ret < 0) {
-> +		if (flags & BPF_F_PAD_ZEROS)
-> +			memset(dst, 0, dst__sz);
-> +		return ret;
-> +	}
-> +
-> +	if (flags & BPF_F_PAD_ZEROS)
-> +		memset(dst + ret, 0, dst__sz - ret);
-> +
-> +	return ret + 1;
-> +}
-> +
->  /**
->   * bpf_copy_from_user_task_str() - Copy a string from an task's address space
->   * @dst:             Destination address, in kernel space.  This buffer must be
-> @@ -3681,25 +3772,16 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
->  					    const void __user *unsafe_ptr__ign,
->  					    struct task_struct *tsk, u64 flags)
->  {
-> +	struct mm_struct *mm;
->  	int ret;
->  
-> -	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
-> -		return -EINVAL;
-> -
-> -	if (unlikely(dst__sz == 0))
-> -		return 0;
-> +	mm = get_task_mm(tsk);
-> +	ret = bpf_copy_from_user_mm_str(dst, dst__sz, unsafe_ptr__ign,
-> +					mm, flags);
-> +	if (mm)
-> +		mmput(mm);
->  
-> -	ret = copy_remote_vm_str(tsk, (unsigned long)unsafe_ptr__ign, dst, dst__sz, 0);
-> -	if (ret < 0) {
-> -		if (flags & BPF_F_PAD_ZEROS)
-> -			memset(dst, 0, dst__sz);
-> -		return ret;
-> -	}
-> -
-> -	if (flags & BPF_F_PAD_ZEROS)
-> -		memset(dst + ret, 0, dst__sz - ret);
-> -
-> -	return ret + 1;
-> +	return ret;
->  }
->  
->  /* Keep unsigned long in prototype so that kfunc is usable when emitted to
-> @@ -4924,6 +5006,8 @@ BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
->  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
->  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
->  BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
->  BTF_ID_FLAGS(func, bpf_get_kmem_cache)
->  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
-> -- 
-> 2.55.0
-> 
+>> > For instance, the GPUVM abstraction would be another case where
+>> > Ownable<_> could be used if we have this other model where Ownable<_>
+>> > and ARef<_> are legal at the same time. Currently GPUVM uses a special
+>> > UniqueRefGpuVm type to solve this problem.
+>>
+>> I am wondering if we can make case I intend to solve (Ownable is a
+>> unique reference) coexist with the "at most one of this ref can exist".
+>> The "at most one of this kind" sounds similar to the `ListArc` use case
+>> to me, which is a different problem.
+>
+> I think they can co-exist. If AlwaysRefcounted is implemented, it is
+> the ListArc use-case. If Refcounted but not AlwaysRefcounted is
+> implemented, it is UniqueArc use-case.
+
+I see.
+
+So for v21 I will implement RefCounted + AlwaysRefCounted for Page and
+drop the Ownable implementation, have alloc_page() return ARef<Page>,
+keep vm_insert_page() taking &Page, and switch Rust Binder to hold
+ARef<Page>.
+
+I will also include the SafePage/ExclusivePage series [1] in v21 as a user
+of `Ownable` with a few modifications. It will no longer be possible for
+this type to deref to `&Page`, due to `Page: AlwaysRefCounted` and
+`vm_insert_page` taking refcounts through `&Page`.
+
+Best regards,
+Andreas Hindborg
+
+[1] https://lore.kernel.org/rust-for-linux/20260605-page-additions-v2-0-03f=
+04c8fdbbf@kernel.org/
+
 
