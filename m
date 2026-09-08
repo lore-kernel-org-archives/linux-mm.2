@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D3AC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDCAC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B945B6B00A4; Tue,  8 Sep 2026 08:51:32 -0400 (EDT)
+	id 664C06B00A5; Tue,  8 Sep 2026 08:51:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BB96B00A5; Tue,  8 Sep 2026 08:51:32 -0400 (EDT)
+	id 5EDC76B00A6; Tue,  8 Sep 2026 08:51:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E916B00A6; Tue,  8 Sep 2026 08:51:32 -0400 (EDT)
+	id 5039F6B00A7; Tue,  8 Sep 2026 08:51:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 73EFA6B00A4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:51:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 12D244057F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:32 +0000 (UTC)
-X-FDA: 85190581224.27.822BDBB
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1955D160011
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k LxwheJ";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BRWO2MQm;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 28C596B00A5
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:51:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0648140602
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:33 +0000 (UTC)
+X-FDA: 85190581266.18.C24515C
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D178E8000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:51:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e Zo36fA";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="mv/UO6PX";
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788871890;
+	s=arc-20220608; t=1788871891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sIS6fNLbNyz8emwIgfidikiVHKPCia4QjSI19QX/P8g=;
-	b=aVIkqDQrNeNPqJoIQZqOu0UdsMsB4ZIj0fULWpONTF97aDZCI1TOpr7HOeB521w02IPpMc
-	izbYfsGG9Xbl4JTk5RiRX7x62QBzpypDHd0lLN75FuJ9JUyxtovyD5sfMu3lyyu/IMniTK
-	t2kWOy4bVHpMs/fCUijIyZ4oyy2lWSo=
+	bh=uYuChwOH6ew6d87IvPSmlwr+N0kwHvlcJjHBLazstgw=;
+	b=zwzUmeDeXmPO+JqpH4Oj91OCUirW35zs27AEyBKU9kjDS+kp0Gxw013b9VmBT4tbuHlDMx
+	dzkGmLvT7tSjNBoCHBbLbNsNwDep1tSbPXzHjtq1dtoClmyPlg7nASLjOmvfD/0rb/rtNO
+	RiqfFOmH/bH4qR37TqWIAcO861blwaI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k LxwheJ";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BRWO2MQm;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf30.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e Zo36fA";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="mv/UO6PX";
+	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788871890;
-	b=tgTIzuFkCASLjqW482+P7/F6nyTQjdN10bDQOFsWbcmYzRNw2sr1o33pwrjdtoyysAiI+Q
-	vuZhnOLF48Wgk2wimwabw6OZzEdkFWcO+Ete3NciYM7r0ZM/F9f7RoCF14RhXo9T531IQH
-	AWCQTKPO2KOaRknbqhFrx/ink1PTLz4=
+	t=1788871891;
+	b=tUExKH9TdWu91AfxWLQMZOQR2U8cSOecI/DCsdJBFaHGV/QiECPmtfu7IvenB3rpBIB6O8
+	H6zb7BDnj5FQJCXou3JYRsiBJIJQmhSLjkLVt1jhpQCT+x0xd6AwdL4/+XuTQTO/pBzsY/
+	gppy+fSRBBGTKRMSip/Qsui/OUJXEDU=
 Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 9A351EC0032;
-	Tue,  8 Sep 2026 08:51:29 -0400 (EDT)
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5A28B140002E;
+	Tue,  8 Sep 2026 08:51:31 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 08 Sep 2026 08:51:29 -0400
+  by phl-compute-01.internal (MEProxy); Tue, 08 Sep 2026 08:51:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788871889; x=
-	1788958289; bh=sIS6fNLbNyz8emwIgfidikiVHKPCia4QjSI19QX/P8g=; b=k
-	LxwheJba5G3C6xh00NrzV0Uw6X7N4Gydxv8DHAKE13fNnSrzqRfFoahfUWpcgi5V
-	QwUY/5qDPKSDAcTSJdQikZZXiGxSQyXzT6QE+dfXpGwRulqUNUC8cStxRXQVNZXF
-	MDE64bjQxH3Gx1JUGF3WxYOYvxnDamqWPGJUQ+ZEQ0j92nXUMcApTlzFdv2w4KIN
-	i6628kAo63k0hquSdysOjzRg6SU+QC8Zu5RuimrqEKnqXTI2Ex5zipb1itE4k/wN
-	UI3Fl1y0VaRKB69peod5CQyWHwQRT4wAbZCKTd4J7xqQyI1c+0hJvR7lYBzlUcpT
-	PSxd9pl5MXU8z0Hq+2LIA==
+	:reply-to:subject:subject:to:to; s=fm2; t=1788871891; x=
+	1788958291; bh=uYuChwOH6ew6d87IvPSmlwr+N0kwHvlcJjHBLazstgw=; b=e
+	Zo36fATQgMn+zXwD3MbBP1FAmS8Ii19fPt+CdoEDx9fGfbyDlzsW8xkHXBL2pWja
+	68dk+MRyYrA3NCUBfTD0ztRNTZwGSzx00Yaeim4OnsISi9zeWH2Uy9wimaf18e+w
+	CHvQ6joD3fQdanXvzhIWFEqaqe4pJBGWTWBzoj4gsxM2Hx/yGYs64zuLLVvwfipu
+	5xWdUETW0vx/LVPQTAZAGXzYFIeVoILAd7imxlLxKQikX0MfAGoNPg1e0HoUgOrl
+	KJ6OYVlEwMFbRo6EluUKiRE9j2WiglfhYZVscAAilEVClLWEHVXm0571h8WSZP/0
+	XFNlnH42jpBqJi88l5aww==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1788871889; x=1788958289; bh=s
-	IS6fNLbNyz8emwIgfidikiVHKPCia4QjSI19QX/P8g=; b=BRWO2MQmDuQrRSa7f
-	+JwtTMATBVzrm3voyzxuwGvd3K7PUAxMg+HMh8rX2eNgQJ2xHsuyHOpT6SZv2Ysb
-	TlqaZYSn3vDCcPv3cpQyfZyUVgWtREB8xvgZflJUQuSsZOUzYoGjFup7DvK7oiZ0
-	dncULcTsOVM2jzDYu5RkkFEx9vXP6iWEheQCJpALW45kG2tcIl1ULrlkHTFAe0Rt
-	53taZFxCUyvjHWtF3wQJI20pbfvZJxFMxkkn2wRZ2Q1Li73f/DhZSsdGR1trfpnZ
-	8LQt4HKG+8Gk02Kyh1GmJoKlGuArlJEM7daFeSX7/P7rV87rYt1l2HbwOItLzYDB
-	BeaEA==
-X-ME-Sender: <xms:0QSgarUDQWLnA0yNUxgPgoAkpsKOph0CEV7lIiT4YgnwnJGWEuAdhA>
-    <xme:0QSgar_KIwpmp20huAUFUW2zo3ABPRn0ezIO2seZ_HgbiOApBAUzaCB29bMpThoPm
-    zUC7PjBkLp2zxZL-x6I8CpjSRhwqVlw8UZ_LY-Ipin2NJTX0B-AcVQA>
-X-ME-Received: <xmr:0QSgaplFPS6Qxp7aLdQnc1_NEeCQvSUil6KQ1Wvgy22qOqjOhzLeVsWlTQM>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1788871891; x=1788958291; bh=u
+	YuChwOH6ew6d87IvPSmlwr+N0kwHvlcJjHBLazstgw=; b=mv/UO6PX2y+6qNmXD
+	/AW0LSdylC/oVJ+vFki+CiLYzGrLsDQmJdx1XC+gRlxdw6rFqqWgkPnQmp3FPhSK
+	iI7pGiidSr0l/OhvNHQNj8Crb9F4pl2vcrTDO/FYhWFNGYID22NGFM9vWEcDA96x
+	XzR/9eUtJIFc16jo+AzaIa69j++iLC6dIn2zV00G0/aNO3HrFs5DTfRVmUBqtSck
+	JPjOIccGogtub/GIrFYoV2i2x0L2V9qjk3FjhD623y5nmR04b/uMyDbxIQK0s4Ae
+	0EB88O6wrEyY28Xs7OSI/u0ysgiR/YSwKrceXcZ0TR+2G3lAraw3oxT4lnlt4eqU
+	Rlzvg==
+X-ME-Sender: <xms:0wSgao7zr8fDtXeKtBXKPWUIgAH8ujoQRUeH8rABgy-U1HHRCVVWdw>
+    <xme:0wSgaryfaPClYWh71dDK3q8quTICqrA_xvyc7B79bahM1E6TM7Vf0m61lIuM-8VKT
+    iTQHSsyBgtbBbtfFwaEDVkcBous-ANDZxuN_EFyiDcI-14_OAI-2RoFqw>
+X-ME-Received: <xmr:0wSgaskcvZaXqNAxizlQbN7b-frVT_CyWIvVGhZYh2M3YAMytaDmJsI1yqA>
 X-ME-Proxy-Cause: dmFkZTFCT83ts3xpHDuUgDdlzQtELcoAknrXBpsFepmdcEBLccwduWOOVyAuau0VlYvm49
     objBvbnGefvuHsKXiB+MOl7qErn3M4/Q7Z72R+asBFni+WG6jRYqPjjJBv1F7ovmfnEZp3
     uEJcbLADGcdxsWcYxdWct2wwV9KQaoOTpGWM7Il7/oKOILrVOp7MvqHbWAXdA0mgRBniUZ
     2M+Su4Zoe9zFbzekNirjNltohahTSfzaLbYZTkGXD/hRQ+ajqkABo2HdEn2GJrc7g0w4Iu
-    PhTUexE0AKZ4j2dsA7W9i19VnbZvZZgTTujH64lpg2nDW6KlKK63jDlRsrLETwVfJ8WCX6
-    WSN+HYjEFpoqT62XYb69m8N3bWF4E7LxK14kEgvviCmVPuHyhEkc3JMD+WicAP6/3dRBQN
-    xi+2W80PS5RkYFCLbTMOdiI/2lgS/lm8JjCs0I4ZG1TQd40+C1Cs45KpE0Os/oUvfnlMuR
-    Kt+srlzhA/YG2BELRtW8Gn2FSMnoLKByjqzbv72BURgBb7ET7xoA6jKcfMFk+l40EYSOii
-    o58OEfLUVQurMS9J1Zcszd8f0WO193vq/Zb9LveVOtxLhXFL1MkY6u5aCVhpklNrIJnbHq
-    2iE/TK9qEMWk0cAspao+vMN6CqF1Pjrejwi2N3ZjXyk6xjfWY9qDzLW52SSw
-X-ME-Proxy: <xmx:0QSgauJJCIWFwgR5qvPmAN_xC6z-QwsdnJcFGzoRwo5s2I9l4UtS4g>
-    <xmx:0QSganrqEXkg_tQzyA1WmY9kIHYS8MqHUUHAAtYbYnOBj2mRTM3rEg>
-    <xmx:0QSgajTR0d0PS6j7UvI4Ofrs3kMHC7TWE3ofdjbuXYRpR2CZauTYtQ>
-    <xmx:0QSgai51LIyY6-M-ugeYYpZ25Ek5N1BXqXUTiSBhZEiyzu_LeZ_OSw>
-    <xmx:0QSgaulB9yaVnirB2mTG7vsqJT-6h2UJ9FHQC4_ZmP3co8yWD_9BiUIs>
+    PhTUexE0AKZ4j2dsA7W9i19VnbZvZZgTTujH64lpg2nDW6KlKK63jDlRsrLETwVfJ8WCN3
+    +MwnMNKlyxvUtzgJResqXczwCWadQ6jU1lt/NFr9LVMmwtO45z/bD0abIHltz9TYHjDzgp
+    tzxRu8BIqOseqELdQvOAghT7ZVTUm4SX7v8ugAsJzlfzsAmlWYj3VORfDIneiliZf4Xhrs
+    wFxQll2g0zT3uTAkt/VKUh2MJyM5D4ukmzTG4TMsHHvIb67YJoPZ7lmgfPJM8sluNJHuOU
+    rMTtUPcsKYnfwKtGXzsruC6CBCw0USjBUoVKq25IVR1cg7mzZxzMpgaxd5AXj27ReknwOf
+    ja+O1ZIt+CCcU3z435RDhuMPTZsAv17wWQDc59fDOMrMjT36MyNzf7P5jumQ
+X-ME-Proxy: <xmx:0wSgatVAfzf7Xya4hPdsViiqohKnjJwxDZ_iXBlAqfbSYD3Fw4xICQ>
+    <xmx:0wSgavNX2bP1tnjnVhf0aLwAdSYqzRwslWjgp7JJbLKqpbRCBtT41A>
+    <xmx:0wSgaoFuhEo0xOIz0R-LERukmamye_iEwPdmLw6_Lvm47uH2W4gsFg>
+    <xmx:0wSgao1KjiqcdRWVIQ8xXa7QHwC6_HUr5KYK2bd43lNjNSzabkdCng>
+    <xmx:0wSgak2faSwsp15-LNdSdYVEgLmQs1C4qRuM7GJMNe-IZ71cwzWLkneJ>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 08:51:28 -0400 (EDT)
+ 8 Sep 2026 08:51:30 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -129,22 +129,22 @@ Cc: linux-mm@kvack.org,
 	leon@kernel.org,
 	kernel-team@meta.com,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v5 09/19] selftests/mm: add folio-order detection self-check
-Date: Tue,  8 Sep 2026 13:50:55 +0100
-Message-ID: <20260908125105.1510704-10-kirill@shutemov.name>
+Subject: [PATCH v5 10/19] selftests/mm: add khugepaged completion barrier helper
+Date: Tue,  8 Sep 2026 13:50:56 +0100
+Message-ID: <20260908125105.1510704-11-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260908125105.1510704-1-kirill@shutemov.name>
 References: <20260908125105.1510704-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D178E8000B
+X-Stat-Signature: 4jbmjpr3u46zapixixgcmggtn3jk4fdk
 X-Rspam-User: 
-X-Stat-Signature: atoei5ej3x54jwsgrj53x37k1nrcxqdj
-X-Rspamd-Queue-Id: 1955D160011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788871889-141110
-X-HE-Meta: U2FsdGVkX19Vy5SVYACBEm8aroTuI0fj7OY5pnj/6B0EWOfq6upDuV9JDwOszb5g4no+DQ/q34esHiisnYjwrGugbhv4j2lu8IOHThatY9Y7ek1jqpWpJYAjlr3XiOh0sEA54BlcdgiBKcevBHtM8LDY+fl7ISu1qRAXihHvpuB1SPTWkbaftJbJ+OCL9YOSdKe7TGgLmZD9Eitc+1tl2Jf1gzB9AcT9Bdi7WHoUXVL6Dx8Z87Uw259ejRy3muiNPEzmt+3Tb+K4bfaqJ/SuUT31u99gAOSUaexxLcIxlwRjfNtymJjC7y6LPMMuLZJmIFD9yGCpYTAjuEPmZgrKQhDLganP4PmGAqEfpi6rrwcFVcyp8EmWQS5oaRZKAscaTcJCSZxYO9e/9otavQ+jFVxuxQW8Oom78fBXRvjIoB7q5ixYXAvTOVeoNcysgrJuZD/nXNpeWh8Y8HKLIUjlhuWjsBaqZcDz6ZXQf62mxNjtQv9CB18/I1X1eRrOA1Y/trmQtU5VxLRmxHu6Lalh7BfL2QlehfVSLX3aE6SiofyVvueEmHVyBtMzzyOEFPb2wM4lmyHZelFjQ21TGgkw9mmwdOp1jexSILDxPQ8rIIMYXh0G7yvDesI3V+fGnDqF8C9Kt0IIPfkuM8leCm0FvOPA0t57eWo6DLnEP1ndwIMvL2pv3E8gwXJm3TGAg3OlK+dsu2y7qRXjP5tXsECXKc/166MulhISTZNryYp81PMV/xaffpw8ftkb1lGkwdpipZ0Y+KkM5nswj4B6d5VltUwFzZkSKG+HaXrLfxY/lgJrQRQyQmhEDH8oAnG0RLHiMs4oQfahFOvK1kIgZ+/zrVrPXk0RAwYqTRvd8jIFhzckHeR83tbBN83atUKlpZozUo56fjmHUyv92nvnxKS4AIt7a6YOcfFWm16t0GUBZJL4eaGHWN/ea5dTmyisetOua2k4FITtWqM8h/hecbo
- LD1nleZ0
- BQHioU5UJAwOSDo2UE40LwZrfbQ5n2moNgMahS9imIMp/0XarKV1qsX41PwiVLqGbXRClJKPSYOsn8nZ7oYJr2yihmJBH5MOwpRvJjOSVx+xTR/uoD7xyzGxbTRNZI6wQgPq50D/A32qVHffSdEtVu9+E+YiWIKrU5phApdxYNxK16yQwcelok+VjceLF9F4vAlJ7B34rUgbemEf60sdG37qsR5iPgeK8+XY7P2hFkmf7WFNrJqs67XrffjAsiWkF5+CmdJ8PEJB2GqtDBZlsETQf1pvKaR7u9XjqVxNIeWw6ND3EtIgfKVktFa8E87X+QerFPZDimRTBuFpEhpPBZdWTvLukll72+9c1Ci+UTmxDEbsZkFFTBEjQO/w38skzRwV6n9YgOnuz1v294EONKsAGEh8Es0gO0NHe0fJc7JtRtIvqULsLOp7FFMKwzAR8BzazobGF2XtQA9gPuSBFOjcTmEEvfPKUFs06PHH+zmK5+OOX2VpTojGk+6nadoB6Ym7H
+X-HE-Tag: 1788871891-499292
+X-HE-Meta: U2FsdGVkX194uf9lCWfMEvJn3B0zuUSrMcbvVes24YNCKNIT/XkoicZSihQsuQK5drwiYu/D3yhHCtXmGGFBBkbvDWS7msyiN2hUCgSMGMCXvZ3Wdcc7bB5bZTJ/9M6ONMOxqvDD4/P48XtxIi4waNKVCucE6+Sw1FlDiPDIYcTXn7DnKXKEJxsCMraeDA/nFAU8t0cuD10Ob4RnmBy6a8m85OCMk3dGadWtivlmd0w8dkpzML7xEpZny5jUME24EVASojY9wcq3up2/Sfa4NPnU3QRKuMHnlaSqelpJNbw22pkQCZVgHhWTlYXtXwxjgLfTJw1OJEMvU0qK/DkfRxOB9D2ek1J2krb6EYq5YMjWLxws59rG0blaKSQzJhiLWiZaRannylw5UD5yva5w3vfME5mqx97eQK+2VpClcLMcVBbpNrmMa/mh4IQWlHey2x2yZP5rFBowLPjC6AmNU1QlSDPAsvvWACA72jHy2mJJTyl/R0wZ6K6EfvYsqul2M4Rr1/USuWxcnMYxZQzlWfHYuHMADf4FH+QbxdxnIthuXDqY7ypSgwJfDJQ67pkNQn+DW7uA22tkVfkA0zIcJOMIitrUpB05EPf3x/IVT6QwWxaioSrBnRD4gS7jIyLxK1nc3vJGB/N9O2gvwwkP5WXa6Lh5Ytiu4fU/GvuSYctnvDYN0ZbJ4d+/5CWeRAliEeUMaSd1wA2sdfaKYmO/xu2vjOSdn9y9HvoNyFCUozW9vFoEMzriBx7LtA3z/dKE+PgFfSV51yG3hpReqQi9wsYbVIujapP4r98ULpZ3oviS4Nkz18FB34/2dQRjjDB3p1jt2N+n2YXYOhjnKDC1aNmkyxJgxOUN3GIXpwQgB2OSmqlJYIPt6dV8GBK78cqYt5NyY1NrrSZKwC3KEF3guGfYNfQikb/q8MMGLsSHapCIyg4YUNbJUQnCvfjjHZFa1VInln6QWVzqHITCP4x
+ I8lMynJY
+ WihIXz2iPCbyTJ+5hA8rvX7LSG+L8UhYSa+R6S5U60BPDNLwodIWYBVlDchrWd4PYYhWdmEvuW+Qt7UQgxrF3viPPFTgQY/QBtVrcVhX/wcTF/jXYjHW4yt7oInWyzNnofSBpURwRiCohxZfu5XS2z9y+tSvW1dqlFITq4dDSVzzEPaiMTirqGcbMf2K66PqbqVbEixXfUiOTvdVhDyFc2x6uMdNVziLOTjo+/9GXC9UToKjDzsRI25VB87VsqdeoluVQN5jsXK0bW76HA1ZDdljD/FEHUHPz4HiIS24h8CarTfEhrzEEkEzrnsDvPgxrC1mBRNE9+HLG3RX9GTKc3cwb/RDJNHjCbkpAnqVOhtQqhwuPkjOXf6ft7a6x1NYmqn3JzUoG2NbQQtMYTSD6yyu2haPcHGdT58ilMumA9Z1Pk5bOc/qNwETYN+8X5znXK+oWskriFFs7apGb7qQAIGeIpVGsu53hkR0J6epYt6N6GHr8yz5osM2rcJHGWhvzZyU1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,226 +154,132 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-The khugepaged mTHP tests detect collapse results with the vm_util
-folio-order helpers rather than smaps AnonHugePages, which only sees PMD
-mappings.  If those helpers are wrong, every case built on them is wrong
-the same way, and nothing says so.
+A khugepaged test has to tell "not collapsed" from "not scanned yet", and
+nothing in the selftests can.  wait_for_scan() in khugepaged.c comes
+closest: it polls full_scans until the counter has advanced by two, since
+the pass in progress may already have passed the test's mm.  But it only
+returns in time if scan_sleep_millisecs happens to be short, and it is
+private to that one test.
 
-Check them directly.  For every anon THP order the kernel supports, fault
-memory in with only that order enabled.  Require the helpers to classify
-the backing as exactly that order: not the order below it, and base-page
-memory as order 0.
+Add khugepaged_full_pass() to hugepage_settings, built on the same
+advance-by-two wait but driven through sysfs: a store to
+scan_sleep_millisecs wakes the daemon, so the barrier completes whatever
+the scan cadence.  A store made while the daemon is scanning rather than
+sleeping is lost, so the helper keeps storing until the pass lands.
 
-Run it in the thp category, ahead of ./khugepaged, so a broken helper is
-reported as itself rather than as a collapse failure.  Verified on x86-64
-4K (orders 0, 2-9) and arm64 64K (orders 0, 2-13).
+One wake completes one pass only if pages_to_scan covers every mm on the
+list, so callers need it large.
 
-The test needs ALIGN(), which hmm-tests.c and migration.c each defined
-privately.  Move it to vm_util.h and drop both copies.
+Settings pushes must not start passes of their own.  A store to either
+sleep knob wakes the daemon, so thp_write_settings() now writes a
+khugepaged knob only when its value changes.
 
 Assisted-by: LLM
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- tools/testing/selftests/mm/Makefile           |   1 +
- .../testing/selftests/mm/folio_order_check.c  | 122 ++++++++++++++++++
- tools/testing/selftests/mm/hmm-tests.c        |   1 -
- tools/testing/selftests/mm/migration.c        |   1 -
- tools/testing/selftests/mm/run_vmtests.sh     |   2 +
- tools/testing/selftests/mm/vm_util.h          |   2 +
- 6 files changed, 127 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/mm/folio_order_check.c
+ .../testing/selftests/mm/hugepage_settings.c  | 60 ++++++++++++++++---
+ .../testing/selftests/mm/hugepage_settings.h  |  2 +
+ 2 files changed, 53 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 2d5366196e30..2093fcf6e915 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -104,6 +104,7 @@ TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
-+TEST_GEN_FILES += folio_order_check
+diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+index d7917dce3aba..ca73f9ac8e9b 100644
+--- a/tools/testing/selftests/mm/hugepage_settings.c
++++ b/tools/testing/selftests/mm/hugepage_settings.c
+@@ -183,6 +183,13 @@ void thp_read_settings(struct thp_settings *settings)
+ 	}
+ }
  
- ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
-diff --git a/tools/testing/selftests/mm/folio_order_check.c b/tools/testing/selftests/mm/folio_order_check.c
-new file mode 100644
-index 000000000000..fa736c9f701a
---- /dev/null
-+++ b/tools/testing/selftests/mm/folio_order_check.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0
++/* A store to either sleep knob wakes khugepaged, so write only on change */
++static void thp_update_num(const char *name, unsigned long num)
++{
++	if (thp_read_num(name) != num)
++		thp_write_num(name, num);
++}
++
+ void thp_write_settings(struct thp_settings *settings)
+ {
+ 	struct khugepaged_settings *khugepaged = &settings->khugepaged;
+@@ -198,15 +205,15 @@ void thp_write_settings(struct thp_settings *settings)
+ 			shmem_enabled_strings[settings->shmem_enabled]);
+ 	thp_write_num("use_zero_page", settings->use_zero_page);
+ 
+-	thp_write_num("khugepaged/defrag", khugepaged->defrag);
+-	thp_write_num("khugepaged/alloc_sleep_millisecs",
+-			khugepaged->alloc_sleep_millisecs);
+-	thp_write_num("khugepaged/scan_sleep_millisecs",
+-			khugepaged->scan_sleep_millisecs);
+-	thp_write_num("khugepaged/max_ptes_none", khugepaged->max_ptes_none);
+-	thp_write_num("khugepaged/max_ptes_swap", khugepaged->max_ptes_swap);
+-	thp_write_num("khugepaged/max_ptes_shared", khugepaged->max_ptes_shared);
+-	thp_write_num("khugepaged/pages_to_scan", khugepaged->pages_to_scan);
++	thp_update_num("khugepaged/defrag", khugepaged->defrag);
++	thp_update_num("khugepaged/alloc_sleep_millisecs",
++		       khugepaged->alloc_sleep_millisecs);
++	thp_update_num("khugepaged/scan_sleep_millisecs",
++		       khugepaged->scan_sleep_millisecs);
++	thp_update_num("khugepaged/max_ptes_none", khugepaged->max_ptes_none);
++	thp_update_num("khugepaged/max_ptes_swap", khugepaged->max_ptes_swap);
++	thp_update_num("khugepaged/max_ptes_shared", khugepaged->max_ptes_shared);
++	thp_update_num("khugepaged/pages_to_scan", khugepaged->pages_to_scan);
+ 
+ 	if (dev_queue_read_ahead_path[0])
+ 		write_num(dev_queue_read_ahead_path, settings->read_ahead_kb);
+@@ -230,6 +237,41 @@ void thp_write_settings(struct thp_settings *settings)
+ 	}
+ }
+ 
 +/*
-+ * Self-check for the vm_util folio-order helpers, is_backed_by_folio() and
-+ * is_range_backed_by_order(), which the khugepaged mTHP cases use to detect
-+ * collapse results.  For every anon THP order the kernel supports, fault
-+ * memory in with only that order enabled and require the helpers to report
-+ * exactly that order.
++ * Wait for a full khugepaged scan pass that started after this call: the
++ * pass in progress may already have passed this mm, so full_scans has to
++ * advance twice.
++ *
++ * A store to scan_sleep_millisecs wakes the daemon, but one made while it
++ * is scanning rather than sleeping is lost, so keep storing until the pass
++ * lands.
++ *
++ * One wake is one pass only if pages_to_scan covers every mm on the list.
 + */
-+#define _GNU_SOURCE
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+#include "vm_util.h"
-+#include "hugepage_settings.h"
-+
-+static int pagemap_fd;
-+static int kpageflags_fd;
-+
-+static char *alloc_aligned(size_t size)
++bool khugepaged_full_pass(unsigned int timeout_s)
 +{
-+	size_t len = size * 2;
-+	char *p, *aligned;
++	unsigned long deadline_ms = timeout_s * 1000UL;
++	unsigned long elapsed_ms = 0, poll_ms = 10;
++	unsigned long sleep_ms;
++	int pass;
 +
-+	p = mmap(NULL, len, PROT_READ | PROT_WRITE,
-+		 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-+	if (p == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap()");
++	sleep_ms = thp_read_num("khugepaged/scan_sleep_millisecs");
++	for (pass = 0; pass < 2; pass++) {
++		unsigned long target =
++			thp_read_num("khugepaged/full_scans") + 1;
 +
-+	aligned = (char *)ALIGN((uintptr_t)p, size);
-+	if (aligned != p)
-+		munmap(p, aligned - p);
-+	if (aligned + size != p + len)
-+		munmap(aligned + size, p + len - aligned - size);
-+
-+	return aligned;
++		while (thp_read_num("khugepaged/full_scans") < target) {
++			if (elapsed_ms >= deadline_ms)
++				return false;
++			thp_write_num("khugepaged/scan_sleep_millisecs",
++				      sleep_ms);
++			usleep(poll_ms * 1000);
++			elapsed_ms += poll_ms;
++		}
++	}
++	return true;
 +}
 +
-+static void check_order(int order)
-+{
-+	struct thp_settings settings = *thp_current_settings();
-+	size_t size = psize() << order;
-+	bool ok = true;
-+	char *p;
-+	int i;
-+
-+	for (i = 0; i < NR_ORDERS; i++)
-+		settings.hugepages[i].enabled = THP_NEVER;
-+	if (order)
-+		settings.hugepages[order].enabled = THP_ALWAYS;
-+	thp_push_settings(&settings);
-+
-+	p = alloc_aligned(size);
-+	*p = 1;
-+
-+	if (!is_range_backed_by_order(p, size, order, pagemap_fd, kpageflags_fd)) {
-+		ksft_print_msg("order %d not detected after fault\n", order);
-+		ok = false;
-+	}
-+
-+	/* A lower order must be rejected: the folio is larger */
-+	if (order && is_range_backed_by_order(p, size, order - 1,
-+					      pagemap_fd, kpageflags_fd)) {
-+		ksft_print_msg("order %d also reported as order %d\n",
-+			       order, order - 1);
-+		ok = false;
-+	}
-+
-+	/* A large folio must not pass as order 0 */
-+	if (order && is_range_backed_by_order(p, size, 0,
-+					      pagemap_fd, kpageflags_fd)) {
-+		ksft_print_msg("order %d also reported as order 0\n", order);
-+		ok = false;
-+	}
-+
-+	munmap(p, size);
-+	thp_pop_settings();
-+
-+	ksft_test_result(ok, "order %d classified\n", order);
-+}
-+
-+int main(void)
-+{
-+	struct thp_settings settings;
-+	unsigned long orders;
-+	int order;
-+
-+	ksft_print_header();
-+
-+	if (!thp_available())
-+		ksft_exit_skip("Transparent Hugepages not available\n");
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		ksft_exit_fail_perror("open(/proc/self/pagemap)");
-+	kpageflags_fd = open("/proc/kpageflags", O_RDONLY);
-+	if (kpageflags_fd < 0)
-+		ksft_exit_skip("open(/proc/kpageflags) requires root\n");
-+
-+	orders = thp_supported_orders();
-+	if (!orders)
-+		ksft_exit_skip("No supported THP orders\n");
-+
-+	ksft_set_plan(__builtin_popcountl(orders) + 1);
-+
-+	thp_save_settings();
-+	thp_read_settings(&settings);
-+	/* Base of the settings stack; the bottom entry is never popped */
-+	thp_push_settings(&settings);
-+
-+	check_order(0);
-+	for (order = 1; order < NR_ORDERS; order++) {
-+		if (!(orders & (1UL << order)))
-+			continue;
-+		check_order(order);
-+	}
-+
-+	ksft_finished();
-+}
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index e2642eca0d02..df426f9218e7 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -65,7 +65,6 @@ enum {
- #define HMM_PATH_MAX    64
- #define NTIMES		10
+ struct thp_settings *thp_current_settings(void)
+ {
+ 	if (!settings_index) {
+diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
+index a1d12e2ffd62..2ea169d11796 100644
+--- a/tools/testing/selftests/mm/hugepage_settings.h
++++ b/tools/testing/selftests/mm/hugepage_settings.h
+@@ -83,6 +83,8 @@ static inline void thp_save_settings(void)
+ 	hugepage_save_settings(/* thp = */ true, /* hugetlb = */ false);
+ }
  
--#define ALIGN(x, a) (((x) + (a - 1)) & (~((a) - 1)))
- /* Just the flags we need, copied from mm.h: */
- 
- #ifndef FOLL_WRITE
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index f19d53c69576..fd35f8a7b5b8 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -20,7 +20,6 @@
- 
- #define TWOMEG		(2<<20)
- #define RUNTIME		(20)
--#define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
- 
- HUGETLB_SETUP_DEFAULT_PAGES(1)
- 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384e..2652a7920b80 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -402,6 +402,8 @@ CATEGORY="pfnmap" run_test ./pfnmap
- # COW tests
- CATEGORY="cow" run_test ./cow
- 
-+CATEGORY="thp" run_test ./folio_order_check
++bool khugepaged_full_pass(unsigned int timeout_s);
 +
- CATEGORY="thp" run_test ./khugepaged
- 
- CATEGORY="thp" run_test ./khugepaged -s 2
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index e509fc4012a5..3be430e01901 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -10,6 +10,8 @@
- #include <linux/fs.h>
- 
- #define BIT_ULL(nr)                   (1ULL << (nr))
-+#define ALIGN(x, a)                   (((x) + (a) - 1) & ~((a) - 1))
-+
- #define PM_SOFT_DIRTY                 BIT_ULL(55)
- #define PM_MMAP_EXCLUSIVE             BIT_ULL(56)
- #define PM_UFFD_WP                    BIT_ULL(57)
+ void thp_set_read_ahead_path(char *path);
+ unsigned long thp_supported_orders(void);
+ unsigned long thp_shmem_supported_orders(void);
 -- 
 2.54.0
 
