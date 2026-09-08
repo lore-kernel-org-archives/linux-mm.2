@@ -4,83 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF80C79F9E
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 16:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA5DC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 16:21:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 660226B0096; Tue,  8 Sep 2026 12:19:02 -0400 (EDT)
+	id 246E96B0093; Tue,  8 Sep 2026 12:21:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E86B6B0098; Tue,  8 Sep 2026 12:19:02 -0400 (EDT)
+	id 21DDB6B0095; Tue,  8 Sep 2026 12:21:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0346B0099; Tue,  8 Sep 2026 12:19:02 -0400 (EDT)
+	id 110206B0098; Tue,  8 Sep 2026 12:21:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 268096B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:19:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5799A076F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:19:01 +0000 (UTC)
-X-FDA: 85191104082.18.FFDB703
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E18EA20009
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:18:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hIJVey6e;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D1BE16B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:21:55 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C2461606B8
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:21:55 +0000 (UTC)
+X-FDA: 85191111390.05.FB13A1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ADFDDA000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:21:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JiZa1FAG;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788884340;
+	s=arc-20220608; t=1788884513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XIz1WNRfjVai+B//TeytB0d3qjhRgjrFm/mWruttF3A=;
-	b=M1xWie0pWAG8+Kb0I5xPIXgnQ9/yH/EGzXJ4l8TdWZNWKOuxIGnwfl5URjdSQo1YsJV+kx
-	+vRvTA1N3zKBjoFBem10DAV6dUQD8ppYMvc3GT5tBwKs+BzQOCeSDf++RCo64TP+s2nw1j
-	IhMc5qkvVldaA1TlvoTVLy6BlS/+xCo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788884340;
-	b=cmZliVGmuxV2PHA2lPiZTb/jGjT0gSHbZpUP2RK/u9MblBYwBLEqIdfuFsPeTLMb/35YEc
-	fKLz5GJi6wMxGWvA/OIPLDG/TblLbNLHRdkOt5fyrrz2BOVf4u9EHq9sbs2Ok4qQdZF1Zv
-	gNEjWevAnRNkN+MsoAmUmcguYOlHEGs=
+	bh=7TqmDJUy5o6mpDI4ISF8yh2oVfrhqIccw/xxHz+n0OU=;
+	b=PZJecgy+mv0Biujb+1+OHNTckpDSqrcuRwjqv/rftg7eEg87P4/yWClczCtA2NYXLkDl4c
+	qEragIpzv449Bt0yZhdHRk4AK17vCyvdxe+NWjVHlassMmsj2ZztFX6wtcpLZOhznTEqcc
+	qBdmX6cnsgrshOeWDKSCMK+BHxHpzNA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hIJVey6e;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JiZa1FAG;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788884513;
+	b=K2rrgMFJCMaoK2u+X5pzazwQ0vWatLuFjdnpBMNkZVgvos2PXIPNLLjk2ke+vXZ3KZUkMc
+	ui0jRX/AZNZ+fkFWcDxQ9CiePpodgIqXP8++Xic3QW5fklC2YMWxTMqtdd7U1vxFE0yAqe
+	AVHSk4oblMZe48CRlHLK/pZSs0O9b/Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 372AF43CAA;
-	Tue,  8 Sep 2026 16:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F245F1F00A3D;
-	Tue,  8 Sep 2026 16:18:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 03BD1601DB;
+	Tue,  8 Sep 2026 16:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123031F00A3A;
+	Tue,  8 Sep 2026 16:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788884339;
-	bh=XIz1WNRfjVai+B//TeytB0d3qjhRgjrFm/mWruttF3A=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=hIJVey6eXNMSqenjKnHt/h3sPBnFmxxNwxxhNSLcnZqLT8BPOeaFF1hH0tR+Co41r
-	 ael/HHqtugbbBaP3x76wS8jPP2c3Gd9Hrxs2w2259eSP6c3ptcA12BHppqw4qNwESw
-	 1mKbemsI2cMKk4icBvIYGk2I5/TJB0NnIVWjmks371jAh/qHe5t7X83AHcmsWDWNvm
-	 7oHnROaYqtHg5NUCH71/D8qPX0B0cJufiagv+qF4iN92DTstNu/8SfbSaSjrf2kb2d
-	 FohgbJaqS25TpKPd3r0YgaIUmj59g9wU7LWskx7jcSw1XhD9kcFPO5BHHxszsbRQ+7
-	 0cTLaVelCJyCA==
-Content-Type: multipart/mixed; boundary="===============0769803629942985773=="
+	s=k20260515; t=1788884512;
+	bh=7TqmDJUy5o6mpDI4ISF8yh2oVfrhqIccw/xxHz+n0OU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JiZa1FAGRjiBxr4eCE7etd8xF5Ox2fvunf4Jh+pFg1WAlP4CubwSmpW8U6vTnZbqI
+	 YPq9gfVGk9OeA9lPeUUItoILDjtrvzuNLB1QRZzdMNroVNsqitDi63hRXYHDWz8faX
+	 ryQ4NCpeoWxNaIWCwerL0PlpSURsC79JZceJ11MmTMhmAQPP9fUSqHbOMpekl2pkdx
+	 jgPUXw+/QOFPPU4n9pXbY5TmblnOwnS2K0Y1UVizacnB1rHu1w//n5XlgfEoru/2O7
+	 pCEWvLm7W9BGee4uNRUQoDTIiJNIonPu9E1BUPZULWOxY3pMWs2zt/FjbDlFGfVudH
+	 /BwFmrRFqP37A==
+Message-ID: <25144cf6-a5ae-4e1f-b77b-768e2636825f@kernel.org>
+Date: Tue, 8 Sep 2026 18:21:43 +0200
 MIME-Version: 1.0
-Message-Id: <bf31b548282f8e22f34ed509308df909261914918d9d3a5b3d9baf31210dc254@mail.kernel.org>
-In-Reply-To: <20260908135302.74963-6-tasos.papagiannnis@gmail.com>
-References: <20260908135302.74963-6-tasos.papagiannnis@gmail.com>
-Subject: Re: [PATCH bpf-next v6 5/5] selftests/bpf: Test mm_struct user memory kfuncs with linux_binprm
-From: bot+bpf-ci@kernel.org
-To: tasos.papagiannnis@gmail.com,bpf@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org,linux-kernel@vger.kernel.org,linux-mm@kvack.org,david@kernel.org,akpm@linux-foundation.org,andrii@kernel.org,ast@kernel.org,brauner@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,kpsingh@kernel.org,ljs@kernel.org,matt@bobrowski.net,memxor@gmail.com,song@kernel.org,sun.jian.kdev@gmail.com,utilityemal77@gmail.com,viro@zeniv.linux.org.uk,tasos.papagiannnis@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue,  8 Sep 2026 16:18:57 +0000 (UTC)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E18EA20009
-X-Stat-Signature: yc7nzaspa1kh3cygysmtgy8jfjnzrqqb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/25] mm/fbatch: allow folios_put_refs() to skip
+ xa_is_value() entries
+Content-Language: en-US
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
+ <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>,
+ Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Yang Shi <yang@os.amperecomputing.com>,
+ Yu Zhao <yuzhao@google.com>, Zach O'Keefe <zokeefe@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+ <44c7773e-5806-d24a-83c9-f39b3a134138@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <44c7773e-5806-d24a-83c9-f39b3a134138@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788884339-814401
-X-HE-Meta: U2FsdGVkX184xwyN602cWK0BkcZNwXpJiC8XAnaRXCR/+dRZMWMEjVI0lds3CEa4LaXj70re5nJeoVA9kDhmcgx3UYQCohEMP6XqtDdQ8vT/1ESAi/r8FnAVke/NhxtP8ir2J/G1A1/yzG4pNkQTeat6o89+jZppcG48PtKmLAUKp/jIynSHqyFEB4fDm/v5+QXiWF9DuRiqNnmKqhJM/t6ncsdh/KvmOIemKfsv2YQmfVLgApY6RSJ1RLHx4/EBAp1j3YbCgftApFYPHXTGYXoltNOE1nwQyokYEAQ2rrmSpHNYaDvyFgcP6iaasXqgz9Jqq1idRmYhka1i9Hjg2z4kRFWrw6WZ0Lz3foyZIXm/xafYU4cwQQvXqfLzSbz1Y6A43slckhHi3OTv39cj4BALEVEw5z9zrX5UeQgxmcoFmsO3aKSwNfHVypRhcLbQycYydQimqfwaj8GrJpJpLhV+m7i748PJAx/asm5Y2woBzSD1XgTR17CCv71LiahknDNLGu/p8bag985jaYNuYGCsfI8c3tRVBvot4aIq5/JWF7GSFthbN00mO5KZFAkcVoS0mqLo/vjOumGT4HNF9Gjyqzzyf97Y6BgNcyWlt5gNdFJG4XZykbTXb03TuNkhU+S3LpweekT1E26PIEtCzz2srxEd6F48BSaXIkawTMoOmY3RZN/wS5Czkvt54fhv2zPFc/EjHTB/91MgK/l6XCWcM5MDPk62tm4LzxjJw1pst1GDBFUj3Zl2ItQgvuyaIRgQaRe6WJcEscCcomZyRK8o8UiJRDtmRmLGW3WMKJaRlsEJZeBZZHFTtKw3NyTQo6QY3BsNyT2aSKzmEQOMAlWrBLK11Q50ZdPEw4eGPzX7hiBwbnYdnS6Y5mtY5Zs+7baQEs8aVlXWoN5W+APDX7J/97V0/qwJ4Y4N30gIGHAvkuMrzHsieYSrPlySPkLFnORS0BpoPmP77DwdNzc
- XChnQgzX
- BBs6lRMLqF3c6jyCL0TeQwg2mG4l7KMNpNZQWrXNCLYNPsNg6EF2cqOGe+NT09IeYNRyhneWPsDoX+YQRWgxCW/7OD1w6fBglz69f1e98+oC1evV5B4t9WKSXq8x+39tq2K55p4z3y7gNx2EnXLU/aAQmqMRHutNrI8ORGbYlwEaokgBdqD99WCsOqIHGbkfFnwMz22/S/Jpe4mV89aEK2H2A3DQK7I8LATKPR3WK+T1cmqpdlbugYy1D57aLARDhEt8/AY9qLYprpPh00h9R8v7lVl0FJp0eUp6ACLzlPTpgrN3vNmvdzk9gORZ9wL0/0Zb702fC4aGHESWpfyWZzPVLm9KLK++icYNWSlNY7/17kEWUiodAlTGMptfQIDHnR8AChsK2+DkLWFYyYUCPOLmzTvIUrULTLTxC0Jt6ZbC+z7rJ/C7mErtUA19Um3sUgtqV7mg2b7x8XGoNcurtcF4mSij5Qt4JohmhtpcKdUfa1dbrbCE2Jdwuafi07AJWPqsE3MFHwHqPO6DCHy1wTKbCeHEngErKcQF/mHE2z0jnhC2ebkURdtLZFpXfjj3iY+wYRd9kfWf7l1I=
+X-Stat-Signature: miri7nmqwqzxbnenq93cx4hig39ds3xx
+X-Rspamd-Queue-Id: ADFDDA000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788884513-667264
+X-HE-Meta: U2FsdGVkX1+QHPX2A8OHywiuWmvFkF8kl+CIp223JiG1c78K1b1XuYb9jjCK0O9IuHQAWy7jp9RlZsojp5ZDRHTX3cUrelWbrLuRxAXY/3E9cxBCJzITYXANCBKfUhahH1uScynllZhP1vFI4lB0jKDovMalOFToIpbswougbQRrW14MKiKiIS/zhPhwRRUH1AxFlk7yVtDJjRCPeV1zETw4UxIuqLIkN523ijMIdxp4Jg4kSKW4cfZszqILCih2pM8/d3JlVc1bxDii0vJ47BcHoC7f6HxPQyhB0/lsHYG/o+Id4sTa6uzUw15eY4vDOQlE8YSImJFa85Ai+hPWv++U+54PWei1Q8izB9A/oz5rpw0Xb0Ha113JiCEdCTkWCptif9RAak7Fc9x60bxlWD0LzzevbXKWSCdufNOvCUpyhdF2BDLm2VcLI/demudspssuXpfdyPwfMbs8kUpy4zJ0vgSijdHBEe8MM8EERGSmElfZZXX2aFV/O2aORwmrynJhOVUhmUe5lypmaq5vfOqmVyDQL6odtJKzKWhWpw3a439QyCRbV8zQ4PeVE1u74xb0rMUzivYKvG7SVo0D3Iz64LY+vGSHJ9AQIOYxMGv8CKtgFLKy4fh5xtNgce0xgU6HmZrCRSiGzGmkgF2/T5y7MCZAepjAioK+B6rWAbsVNcRUi//i3VFOifGV8GJGrLzD0V3Nmo7vvrsqWftU3u1WUto5oJqok7kN1JL6D9Ul9LdkUwLPuTK+DigRcFT3U7heMVNkGWRDaPX70ceYmiHOMhb3hlOTUCdWQBJ4AppfeyRBM1hH+/brSKzLYY8h7Isz6ITLRerY+OoLPPDgnWyVnBydj6cpHZS3Pdfa3/Y6cxAs3Kgo5PYXXRRaN9DQCqj8fjZ+vWpISYqkonpwqH54TP1lsgk4pElnTB12izSem2z0cPPClOZ0A3IngOg6sZh5vOeSZwi0MpkL909
+ 7pAZl1ZZ
+ /+qwua7oE2kct1tp97u/v0nfza3q+KyOsUTqYeuXPkJ2L5cniVNjD27h7IvylQK38oe98UWsDoS8uYoVsD/J+ujeV6VMUsy9ofkS/grxsMw5xkAAGKdRtgCbtm9sRIkN70PT31+nkBW/PcteyCDzvC1eknjIJ0qIcIcctR1Ce7YItm9NbA4iU8huHWpbV9ltMb8jHaChvz225PokhO3klKupQHN69HebEYuz3U040z1HxHXKWLmYmriox2Tvi04MnyHjwx6UOp9dzyatnfBlwmCcZtg48Pbp/blhDNjkwynpXItLBaKDx6xUUM7iOo36EdLtYyjol/2b9x1GrjehkwATjxQRfiwbGuBX+LiYobgLfrfgqy8K/2by7N3Uqw280MiTIEtKJF1jLq5JFr5QI+kK4U4fSRSYPdre8dMpNe0g3p6s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,91 +156,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============0769803629942985773==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 8/24/26 15:55, Hugh Dickins wrote:
+> Let folios_put_refs() (hence folio_batch_release()) skip xa_is_value()
+> entries, and therefore remove unneeded folio_batch_remove_exceptionals().
+> 
+> It made some sense when introduced in 3.1 for shmem swap entries only,
+> but workingset shadows popularized exceptional entries in 3.15, and it's
+> silly for so many sites to be squashing exceptionals out of the fbatch,
+> merely to suit an inadequacy in folios_put_refs().
+> 
+> But remove exceptionals on leaving truncate_folio_batch_exceptionals(),
+> one of whose callers then passes the fbatch on to others less tolerant.
+> 
+> No longer essential to this series, since 7.2 commit 9669b87065a6
+> ("mm/lruvec: preemptively free dead folios during lru_add drain")
+> allowed folios_put_refs() to skip NULLs; but still an improvement.
+> 
+> Signed-off-by: Hugh Dickins <hughd@google.com>
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-> new file mode 100644
-> index 000000000000..b2325b193576
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-> @@ -0,0 +1,72 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <errno.h>
-> +#include <sys/wait.h>
-> +#include <unistd.h>
-> +
-> +#include <test_progs.h>
-> +
-> +#include "copy_from_user_bprm.skel.h"
+Like David, I don't understand what exactly
+truncate_folio_batch_exceptionals() does. But this patch seems correct to
+me, so:
 
-[ ... ]
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-> +	if (!child) {
-> +		char *const argv[] = { arg0, arg1, NULL };
-> +		char *const envp[] = { env0, env1, NULL };
-> +
-> +		skel->bss->monitored_pid = getpid();
-> +		execve("/bin/true", argv, envp);
-> +		_exit(errno);
-> +	}
-
-This isn't a bug, but would execvp("true", ...) like test_lsm.c does be
-more portable here than the hardcoded /bin/true? With the absolute path,
-hosts where only /usr/bin/true exists would see execve() fail with ENOENT.
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-> new file mode 100644
-> index 000000000000..b334a157419e
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-> @@ -0,0 +1,123 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include "vmlinux.h"
-> +
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +#include <errno.h>
-> +#include "bpf_misc.h"
-
-This isn't a bug, but is anything from bpf_misc.h actually needed here,
-or could that include be dropped? The test-tag macros, __sink, the
-__clobber_* and __imm_* helpers, SYS_PREFIX and CAP_* defines all appear
-unreferenced; __ksym, __kconfig and __weak come from bpf/bpf_helpers.h,
-u32/u64 and BPF_F_PAD_ZEROS from vmlinux.h, and BPF_PROG from
-bpf/bpf_tracing.h.
-
-[ ... ]
-
-> +	data_len = bprm->exec - bprm->p;
-> +	data_len_match = data_len == sizeof(expected_data);
-> +
-> +	invalid_flags_ret = bpf_copy_from_user_mm(data,
-> +						  sizeof(data), (void *)bprm->p, mm, ~0ULL);
-> +
-> +	copy_ret = bpf_copy_from_user_mm(data, sizeof(data), (void *)bprm->p,
-> +					 mm, 0);
-
-This isn't a bug, but could the first call be wrapped the same way as
-the copy_ret call just below, so both fit in 80 columns? The first
-bpf_copy_from_user_mm() call breaks after the single data argument and
-pushes the remaining four arguments onto a 92-column continuation line,
-while the identical call three lines below is wrapped conventionally at
-the last argument that fits.
-
-[ ... ]
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34245694915
---===============0769803629942985773==--
 
