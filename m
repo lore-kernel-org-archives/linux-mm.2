@@ -4,114 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D408FC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:37:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49262C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04B056B0092; Tue,  8 Sep 2026 02:37:01 -0400 (EDT)
+	id 55A3B6B008A; Tue,  8 Sep 2026 02:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3E206B0093; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
+	id 50B276B0093; Tue,  8 Sep 2026 02:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E54EA6B00C0; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
+	id 422036B00C0; Tue,  8 Sep 2026 02:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA2FB6B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:37:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E0ED1A03B6
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:37:00 +0000 (UTC)
-X-FDA: 85189637400.11.E0AB1DF
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C04391A0003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:36:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rzpYKvAq;
-	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788849418;
-	b=PoA95s3+/G24DJhnwFP+hLM3rMCfEZISnJsvbps0jPmAt4LQAenlYALUTdzPpyr5tJQJiC
-	bX++OPlNoUZUpRkD1pq4/VPbGrF3YFJ614G9SN08pCh/inLjaKkPssKEQDEvEGrYqWsbYW
-	I3JdUz7tk5hG7Ove8eCHX0bwCJhiNF4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rzpYKvAq;
-	spf=pass (imf19.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2237C6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:40:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ACF83A03BE
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:40:23 +0000 (UTC)
+X-FDA: 85189645926.13.78E24F2
+Received: from mail-m127213.xmail.ntesmail.com (mail-m127213.xmail.ntesmail.com [115.236.127.213])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8FAF118000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:40:19 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf06.hostedemail.com: domain of zhen.ni@easystack.cn designates 115.236.127.213 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788849418;
+	s=arc-20220608; t=1788849622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
-	b=sc7isBGkpW/EpQTJSOla/11gdIvnP3/zUDQU0JgVVFtlSWFErfSBxO2A99rRcl6msP5jwM
-	k3L8UBd+mX1KOZZnVMei2Dcp6CuxHeS1v2QWIVmfNiYL0c8LpwmCNZuFJqi4iBsX8m2CAj
-	sxaLdsMLV1QqlPUpSAbTqFAxyNzwR8U=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-39b35105ba4so3736461a91.1
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 23:36:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788849417; x=1789454217; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
-        b=rzpYKvAqn0WbOQSJIulhP7Y3wrGEQaDeQK/E2XSR7gZPb50MFOZbBu4tRX0TVuqGBc
-         SF8pXNykgm+OiuVjxAz1QFfny8pOZJLUMGKwlTZUfrfeaebL51VvuwHxufjpWxhrrZPk
-         0Q4dJDCJG9W1vOcJ8dmUs2Ul674Qmc5rsIF4CckNxCjDlvHgfF+XIe8UbZtnKc2fUIt5
-         vXbmjaN5+c1el6Iq7xP9ZpoBXTZVoT4UD8LhtxuExpAzCirtgPqqLhAgG3HOM9r/Q7Vw
-         alSQlUNYpv+fsMxGxqnzCzJ0C4kyfltBRs+qu8+7cEui7Lfjuj+nNzVK5OuuKJkU0/9W
-         yDQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788849418; x=1789454218;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xm1rxSc0BVfymKk4bSWdt2MAj/JI/30d2pnBXYKFQig=;
-        b=jEfQFnWdP64lIhpkNPMLCSm1p/4ukjcGd3Kxx8QLqTmEGbHDwMIEEKwYjnVsf0Ep+S
-         n9k1lvSvnRIK+z2SQtmcv2fBpdNxFJhV4r4bPqeKfv5NWvJA30WDks/eZvRvHxb2pAy+
-         l0whPcfsCnlpSEgTmUc84Bah0wHBEL/HXwzWN0qlYrF01SvlkMOW6u3ondJEBkGCFmXE
-         pcPza9b9ZctFdeEPjTX/xf+x0IwkDXWfam2cb9Qca7pz27+feR8SO17HTwZLc1jsfuYj
-         OJUs5YBjRJoK9PyEBwmaQI0i6O7O7RN4juQOWdme1tNfuAZFMSpvcNwrRDE0y6lxggPT
-         kKDg==
-X-Forwarded-Encrypted: i=1; AKwUvBz220rsDNitJ8vYq2mfd6i01gidD6Q1epfZl23mYSr5wQR5oHA/WJR+t2XypGokCj78xr/3H88S8A==@kvack.org
-X-Gm-Message-State: AFuF++kFV/j2eT4vDZAcMCOJamzUUatUAiMuvrkycMzL5UBSYiR6C3cp
-	Li7ZsfFZ+YZ4CMs8tJaH5QpApsblrN25xIfBKmSX1h7rrSwtDNJ175bV
-X-Gm-Gg: AYBFou2p6ZkE26j7s6eEUNT02tItp/C+ZuuwU6UWR3GvUvZPpc3pZSKpAg/yfO3L3ji
-	90CbekP+QfBMEkKG8uHPnKBqTBaEJ+/Vsnjn1U1t/IPBgyuS3SO1ZvSgpT7dTsXBsV00q9hY9vX
-	5y/6fiZ/Z7VodHytpgkzdhd4enspMG0SFQsC9m2UukoWRzx6MwO60UzC59NL1Lq3v+hj0raPelN
-	CVbxy9obdLxDVl3rPc1jto3jn51V5SVLNGfiW7xN2IuzG+GE14bXorDBzZGDIjSKj3k0XcYfb5S
-	zHGC/5gW+BGHJFAgcX8s1v1q4gpmo4lCSS7BO8FvNLxxAosIi9e9avyjBPW4hMncI5GLPmBUHK0
-	m1x+Dg4r0lh/kUOOOyUiXh8XpDcUd3IF9KbnKvEcNcNporV1M2EgiRlDqOrntD+QQ0G430akWi3
-	cHAEw2AYf81hwXBioIStuWTGhk1rqWBKiEadZu1DN4sGafobMxC2yUEOLJ7Pn8MnqR8PKbHDxrs
-	MDAmLw=
-X-Received: by 2002:a17:90b:1a8f:b0:398:d2a0:87ff with SMTP id 98e67ed59e1d1-39b26101029mr40740639a91.1.1788849416965;
-        Mon, 07 Sep 2026 23:36:56 -0700 (PDT)
-Received: from kernel.tail6741c6.ts.net ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b4b72f62esm18814349a91.5.2026.09.07.23.36.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 23:36:56 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: lianux.mm@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kunwu Chan <kunwu.chan@gmail.com>
-Subject: [PATCH] mm/damon/tests/core-kunit: improve nr_samples_per_aggr test isolation
-Date: Tue,  8 Sep 2026 14:36:35 +0800
-Message-ID: <20260908063635.2208922-1-kunwu.chan@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zGSumJiJaaHChErf9w8J+E3GDcThdjqb3i+OaPlWdas=;
+	b=BV9L+FlsaE7RwJ2XKD44hhPcB9kULfih13JSKUNtz9bY4zZApXIcX6E4TjGvqmfhYt4gyE
+	XG4swVtwjaWBmP+vEwo0jdRts1oyXcD2IIaiq0e0gDIClCquVUAubdLMegcr2ycYU3NvLE
+	Kodr/N/pQPiF2qFTqo8HJXXWUscDihc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788849622;
+	b=vzglvWpdyiPCBwE7Ha9lXeverBg++IFuHkZLWhGOjRvDH6qPRgktXpqQ2tzXayVNV84J5U
+	9YgaXmgB3a+BDQO22K7vIxBoD60wHuC2r3CkVYSRUpIx3Wf/gFmuFUZNOjkrOlzZbTpvCG
+	UhW6hGEzyy3zAcNfd+B2p5B6fJQlU/M=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf06.hostedemail.com: domain of zhen.ni@easystack.cn designates 115.236.127.213 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1ed122a35;
+	Tue, 8 Sep 2026 14:40:10 +0800 (GMT+08:00)
+Message-ID: <048d7470-a813-4252-a4f0-0ec29694f639@easystack.cn>
+Date: Tue, 8 Sep 2026 14:40:10 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: Weijie Yuan <wy@wyuan.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
+ <a6ce8684-116b-42f2-a88c-154eb86bad59@kernel.org>
+ <a98bde94-d1fb-4246-b7c6-e64303d8388a@easystack.cn>
+ <5d4c247c-b8ea-4d3f-b2b9-d442d372fd03@kernel.org>
+ <6744bcdb-3456-4ba2-95a0-a58c354bfbfa@easystack.cn>
+ <ap-qDThi-NQgVXVD@wyuan.org>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <ap-qDThi-NQgVXVD@wyuan.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa07fbedeea0229kunmc6aacfca1acab9
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUhXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQh1OVkoZSB1DThhNShhKTFYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9CTFVISU
+	xNQlVPVUhLS0pZBg++
 X-Rspam-User: 
-X-Stat-Signature: ph3w4pgsif6djsydshjnzadeaghohuk8
-X-Rspamd-Queue-Id: C04391A0003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788849418-800149
-X-HE-Meta: U2FsdGVkX195nKULEuqruLnjrKrduebvPwUIO/QzYHIER6s0VIa0HQfx20tXYTT48H692uEDQDM+QdidaHMnRO0K2098Uj9f3SKpwlvn2S7DBkLiDngji+lgILBdzCGZhEmVLjREoTywrkmp7TVe4+XwM8aZbhnnSXVlocB3RH/+EngLAlFFIv7zmyqXT9m8CHqyBIGHXlXChdQOpbNjDQsFOMZE2wQwqHzM5J5RYzPfjixpWhB5ZMeADM/+AMO2gn1Rm460quq1x0A9SFrZZKbmkxBc5jubWndWJCEkr4EFcVheGbk4WdDNqq46scKiNXkx6gxcVuKOs7veaP7DKO7bo6nFJ4IXfwnMY/YoOOFXqQKZZqvAddxmyJiwAousQds+Op0Eja6En3XLlod0iofmVpsHUI72sLaueCWcbEirvHKBcStTmhJemQVBzH6HYEioFYFdhg2rTgSuTnaSReNRr5izMOlPiAsLOr3Tk6NVb7QTyUkuVllKZadaHSuGfDESHF6vE2ONpbVEplMseZIlNoMZ2sZvILeSj4VocWFP02hS/ARgdwfo0oBsSY5k/cyGTNpbeLboi7v/UysitdUOdx1D79/0kEQUk+JYReJFKv3g81bZz7YeABHc+8UGcG8VE9BCJXfNcBOTjY3iJql/hVPYADHyXnGfI6JL8+fo79Dzf1a0UQ4z2CI/oLEQkcjNELFr8F50DQlPwwcfqE8OHTbjxKdvt3JLZTiIw9omQs/dyIGAcjgutxdqV3UgoiYbDNUzASiSrSrxNsMNY7z7lITRNTA38FFEKWvk5QudEa433M5e0vuRb4mChb+4e/ozRcjscjG+oc46V3EyUFWKH0HvLoYbHTSrjr+x7X0Xr8SCQXir0V1UfKoUTauMAfM0myAmLZht3973MuBP4IFtgZJq7y1SbU2YSxir4jdJVzJOjn7zFVn5Ml+/jxdTLWUPEwmkv9wFv+ljrEs
- dcCuEnxd
- voP73FP6hv/c/OCWkxEiAQ1XT2qUrgPZVmdBrfRWarpNL0HienY6QIVupgAaqF7ZavrH3y45Hfb4idUtYdiZhxm5EbhZENAaC5bJZUWMZAC+3VfHeJQXcpP5M/WtuJc9UOMOl9xSjUNSV7CXQKAqoi1c+C+9UTtGSRc194qD1do7tfGyoALpFM0KFC7PnXXn38/zuwOisNjslLXfrb5eSR85WZxr7G3twHxHamiqFVbKgNpNV6N5Dom2XwLZC3AzKQUGRXBdvczOWPOR8mqQgXV8yx3y+8fq6G3mlgIg+ab0w6QeW6hD7n44rY5akx5IC/ZgEnNCHA+6ecUMutR5dmm/O5G5GsJVFzugiF6LYTMsmadRnXpwUuKhr4qB9x/gpTGvKrOunnIIMUsTGRo/4dgbWukxl9aD8lsvO3niG8oaB2kcedrv4ExfhbIHZ0lDlx4LCzpjzAsMKlN7DN8K8OSeDy0pyjozXWi+dlckwbXDgYM3nQWyjZXy60Tzf5vh4wrA9lDrHaOoYDEx4pEHDXJ90+Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8FAF118000C
+X-Stat-Signature: rr5rfs31rtu7deaof7iozw6c7ttrstr3
+X-HE-Tag: 1788849619-958070
+X-HE-Meta: U2FsdGVkX1868hgrMKoAE+ok0zIO0r4HUyBOX9PBpshMEcIuBXRSRSILCfRpKKu6wz9omAhJ6kMU5ITAS0kALKhau6CjkSix86Ohn3r08rGHYi/zwvQQEcMilMCNvx49rhdaVoKzuCO4RgVcgF1ziHoYzXPVApRZTXfQ0EjlTRFZHLzdASOR0Raui/ovulddMcdD1oToFobdvVUJ6Km80QMmYA1cMbRsrplBVg+cCALEOBffutng0iNMZuoEb2G5K1klByeRLzGK7waXns8efLIn8b1kNDKKtkq7wVw2Oyum9ueM1y3qPK6wTJ1pRjv+WepFrL9WMC2juVZun8tIxp6kGV9AiPPpP6Nadw35ALmq38WOY1ebTPPJz5vgwwLyDusCwB1M13YHV4IhNcqXBXnM7cHCIsPy302Hp2XkeF88FoPdL6JQ1xQunjSbtv54UvYW3EUWKgLpAL7xRXtp4RccvZmi3imtEW2jI4m3A4nUX22ixaZGTrRLQJRiYrJ8k1rGVcF50wD6P6CARHHgeiuivfbJXb/0DquE7hv6gl5oLvmW8c5XxlcnOEZBU5cIOvYv8PemwSFrplXJT1nE+dVNJEYcW+eBjRB8z1Mwmj0DMgZ1QtEtUOdIlR03jJ/NmUAmJUoWCI6Xyn0eheeGI7K4B2bPKbNfxXFptxkgF8TiyqEmna4fhSqZnDBcLDT0yl1Pqu5jxH6TM2oBvEpsZ7YJcpRf5sBb/oW8/ZPZp85id30A2LiTj9Qbuke8nhSbUNr4QzSnc+1EscBeY7pwanUILV5TRGe/m9f+FSGipTS1b/awg+jGd5dnUxhulJmSZSl5V1+O+x8A5SvrXHd/dXZIX4uhUH9XOLB9GfsxHea/afpsknB4h7DTEurY3kT8RfdRJPTuIjQchOaZa7gNi+WLomsatVx19T5vxc7nuUu4XxpZOsZ6gZRX62fbvBld2ez7jtgoMqzBUOuu7LI
+ prvSc0kf
+ MZyxJd9i8jrHnpCFrGLSYo1BRMceRlWqigC7ubYRCFiYHJXy3Kma64dZ2TtvsobkcVohkkAMfdd94hXDGTkuPfZia4sIWMnmdv2EhwJXLQpzyvbQlWNI3qokgTc2GCIQvoAuPefJEppHj4dZ3exHXi2f4g7wPA+qukh2Ulnju4P/XOLkByFG2SrI2pD1jkQFbTB3aMFqvahvNH7k/FnKxdMD5fjDM3inHJbxv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,62 +101,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The damon_nr_samples_per_aggr() test sets both intervals to zero,
-which exercises two different fallback paths at once.
 
-Use separate compound initializers for each case so that each case
-tests one fallback path independently. Also make the overflow case
-use an explicit non-zero sample interval so that it does not depend
-on the zero sample interval fallback.
 
-Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
----
- mm/damon/tests/core-kunit.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+在 2026/9/8 14:24, Weijie Yuan 写道:
+>  From an outsider..
+> 
+> On Tue, Sep 08, 2026 at 10:41:23AM +0800, zhen.ni wrote:
+>>>
+>>> Sorry but your whole reply reads like a LLM slop. It took a lot of
+>>> mental effor to actually try and engage with it.
+>>>
+>>
+>> This reply was written by me, and its viewpoints are not simply copied
+>> directly from an LLM. The LLM only assists with the wording.
+> 
+> So that's probably the reason. Your previous replies was indeed very
+> much like the output of an LLM. Even if the idea is your own, after
+> being "polished" by LLM, it's hard to read. I know English is not our
+> first language, and it's not that easy to speak like a native speaker.
+> But may I ask you did you read it before sending them out? I really
+> found this bunch of overly formal content a little painful to read.
+> 
+> So I suspect the LLM may have taken too much liberty in polishing your
+> text, to the point that your replies no longer read like something a
+> person would naturally write.
+> 
+> The "Summary and Plan" in your reply in v1, both in its formatting and
+> wording, looks quite similar to LLM-generated text to me. So I can
+> understand why Lorenzo asked whether you had used an LLM. Come on, we
+> all know what LLM writing looks like.
+> 
+> That said, I do not know exactly how you used the LLM on your original
+> text, so please forgive me if I have this wrong.
+> 
+> Thanks.
+> 
+> 
+I really can't distinguish the LLM flavor that clearly in English. I'm
+sorry for causing some trouble.
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index c01e6a75cad..ff23208c181 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -627,12 +627,20 @@ static void damon_test_set_regions(struct kunit *test)
- 
- static void damon_test_nr_samples_per_aggr(struct kunit *test)
- {
--	struct damon_attrs attrs = {
-+	struct damon_attrs attrs;
-+
-+	/* Zero sample interval is treated as one. */
-+	attrs = (struct damon_attrs){
- 		.sample_interval = 0,
--		.aggr_interval = 0,
-+		.aggr_interval = 5000,
- 	};
-+	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 5000);
- 
--	/* Zero aggregation interval doesn't cause division by zero */
-+	/* Zero samples per aggregation is treated as one. */
-+	attrs = (struct damon_attrs){
-+		.sample_interval = 5000,
-+		.aggr_interval = 0,
-+	};
- 	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 1);
- 
- 	/*
-@@ -640,7 +648,10 @@ static void damon_test_nr_samples_per_aggr(struct kunit *test)
- 	 * overflow
- 	 */
- 	if (ULONG_MAX > UINT_MAX) {
--		attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
-+		attrs = (struct damon_attrs){
-+			.sample_interval = 1,
-+			.aggr_interval = (unsigned long)UINT_MAX + 1,
-+		};
- 		KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs),
- 				UINT_MAX);
- 	}
+My normal reply process is to first describe my ideas, then have the LLM
+check for logic and grammar issues, and do a round of polishing. I check
+the final draft once more to see if it has deviated from my ideas, and
+make corresponding revisions.
 
-base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
--- 
-2.43.0
-
+Thanks,
+Zhen
 
