@@ -4,183 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30F5C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:03:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF84C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1CE96B008A; Tue,  8 Sep 2026 10:03:36 -0400 (EDT)
+	id F039F6B0095; Tue,  8 Sep 2026 10:06:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F50E6B008C; Tue,  8 Sep 2026 10:03:36 -0400 (EDT)
+	id EB47A6B0098; Tue,  8 Sep 2026 10:06:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3FC6B0095; Tue,  8 Sep 2026 10:03:36 -0400 (EDT)
+	id DA3A16B0099; Tue,  8 Sep 2026 10:06:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 623266B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:03:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88F0B1206B1
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:03:35 +0000 (UTC)
-X-FDA: 85190762790.17.293A7D4
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 00AC7140011
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:03:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="YIKyU/c/";
-	spf=pass (imf23.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C13C56B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:06:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 639D48067E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:06:22 +0000 (UTC)
+X-FDA: 85190769804.25.413AFD2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D735010000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:06:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788876213;
+	s=arc-20220608; t=1788876380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KqndmaW8DL9z5lUDZrm9whEknryFxk+Tb/v8/jM4l2k=;
-	b=Y/rdPm8Qnyy3VyGS96QmlGDtXcl24X+OrQFef6iylITYOIc1pPSOEavePYOosPploSFo3i
-	wKvkICIyfyxO9AIc5EwH3D1GYw4j6qF/pKViHFMZSU0xvyDynepXC8y4RLF0jGgn5QBi0p
-	kNSzeTq3eTxIuUKtXaWZI1a8HBPdV5M=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="YIKyU/c/";
-	spf=pass (imf23.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4+u2yXTlOWKcqkeqK6YRaaFUGKsrCjZSa2GeIvnymUI=;
+	b=8nqWqwk4UCFp2CopYga0x382oEPGV0CoEeS4YohA/9cwsLHh1oRB1OUFYr9fokmY15EaM+
+	DMSLDZBl7MGAVxdxxPr5JjOi8VIKsm3eqfIA7TLJ6dqLrFlrkzOlqyNhnyt3HTO/xeawEv
+	xVfE6QyUQ/56gyz5YgeLC5xMg9B0VT8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788876213;
-	b=rQQ4gkgeM2aKLXFCZb+8I1I38PHV7Qg1prZiwtwW7oMktA3Byh5LI/wTyIlsqJUG7/z1VF
-	yLU1e7PiKq+geLPeeMIhFQ9x5UZvxZeCdL2GPyhQTycpcE1orVr5AzZZoTZKqcHcP/zWrc
-	saeuXGaBehIB5a+1G6Gy6SNoM7nLlFo=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688D1gN04008041;
-	Tue, 8 Sep 2026 14:03:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Kqndma
-	W8DL9z5lUDZrm9whEknryFxk+Tb/v8/jM4l2k=; b=YIKyU/c/H2YnhGEjQBTa9F
-	dGyW1cMyR8KPdeMzvyf7ZKByaoGiinWEyo8cS/v1j4OLIntRGtT+aycfFi9HZZ6g
-	IupqGgQQhmriK5BQzjtXIQitZ3Z+sXnY8CEvS9rMjYVQJdO79qCnhyuEuhxaEH/L
-	y+XM+TuWHWlUgF/DdA25SyUq2zqec4Ah859o3SI1mkj803zNxzFQXTnZXH4z6GLE
-	ZCdp0TVWF9z+RXUIcyQXhlJ4E87Ct2Ss67T8WynuRHDsn5Zcj1PRqHRCOauCdw93
-	69kR/q7nng1XtMu11UlnKvVgFf5b1Y2ze3gWAWRYrRGHhnZXjCl6aK3G6NBYCpRg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrq4a1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Sep 2026 14:03:12 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 688DuE46015482;
-	Tue, 8 Sep 2026 14:03:11 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gh03ybyjg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Sep 2026 14:03:10 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 688E37pW45154618
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 8 Sep 2026 14:03:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C5972004B;
-	Tue,  8 Sep 2026 14:03:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BD1E20043;
-	Tue,  8 Sep 2026 14:02:41 +0000 (GMT)
-Received: from [9.61.253.97] (unknown [9.61.253.97])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  8 Sep 2026 14:02:40 +0000 (GMT)
-Message-ID: <264436d6-4a2a-4fe7-8b10-bbbd69cf7fd5@linux.ibm.com>
-Date: Tue, 8 Sep 2026 19:32:37 +0530
+	t=1788876380;
+	b=qkEYV84Q3z+oKSuBIeCAZU9HBwpKvMbe4mb9yCxb/aN7UmQ8aKJpJVAwZBioV9ZmA9RlZq
+	jjrcokbM3rbxCUTu0jTfK+7EQhCzs5l52gv6LcOl1slgZw9ebDAaAA+UzvmL66JCCobyUN
+	FcJMaoGgDVPBp3n6Bg5yqLJOe+THJ3o=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 343DC601F7;
+	Tue,  8 Sep 2026 14:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66881F00A3A;
+	Tue,  8 Sep 2026 14:06:08 +0000 (UTC)
+Date: Tue, 8 Sep 2026 17:05:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Len Brown <lenb@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: Re: [PATCH v3 4/6] mm/vmalloc: make set_area_direct_map HUGE_VMAP
+ friendly
+Message-ID: <aqAWOKZDiHE9ksrM@kernel.org>
+References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
+ <20260903-execmem-set-vm-perms-v0-2-v3-4-949b64a9f755@kernel.org>
+ <2b0f5877-e71a-4824-adeb-5af2dd8b0269@kernel.org>
+ <ap_tjOTR48tja_8e@kernel.org>
+ <d379aae2-4249-4c6a-a748-5419d4f74f34@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/24] powerpc/vdso: Enable the vdsocheck tool
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt
- <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
-        Nicolas Schier <nsc@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
-        linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-17-3a93791af1cf@linutronix.de>
-Content-Language: en-US
-From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-17-3a93791af1cf@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6aa015a0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=0oLV-YkNZL8bY7TGgZYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE1MSBTYWx0ZWRfX3KyouA8o5rAD
- ByjA/dZC1Xn2n5rWH2E08Rby3F+ieH1b8xVcBpTsx0Pq3F1Kh8H6gO0eZ56x8axONjS0M7Vrmnn
- 1W+1YJV6A3rf0XXO5ICf/YfbKJvemH4=
-X-Proofpoint-ORIG-GUID: pTJswYdOioXws7GKWQycoAhrlwYXMjr-
-X-Proofpoint-GUID: gTxGanC_PLNk6Cp8fvurHqYNODghYxXb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE1MSBTYWx0ZWRfX+h8v/6PDKP+Z
- jAdm1rpGv4OhJjZsh6igckQQoLJoC7k9srOWBrLXydyr1uM/ouNV0nG/uX0KMsRisoyR2/cj7Mb
- Hy2sciE8csHY6RSCpOx2nHtrmmW9Bn3O8HYVkQEH4zuSVA5NUU414f/b1P3dY2Y9XVnEpbCvJEP
- gZdPdvU+PEg2VuiKByiM4jecbnLFEgaHV5/AHo2rbC0Fn3xseCHAZ0BYnJpQACipja6Fj5ZcajM
- 9S0iR7edRavzStHw3Bl0kcStsnMxiBYTJV59jwjjZrHbhDEDVEGjtlhKJlGMl7XI9iVT6tVB69E
- /bcJ2zCAI+cma3BesLX1c2J13X5ouAGoXJs8yD7QAv6QzEAtvkL7oWFOsTBNu+FkE5yVjZH/1kZ
- OZGjxAMbcSHhLhthhYM2mHEV+LTIa+3ZOqkA9IE9Sq7oBPMJ8eRmrGM9/yOAAzelV4MYH0qfW5K
- 8wt2O27vBLIE4mVUxeA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_02,2026-09-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080151
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d379aae2-4249-4c6a-a748-5419d4f74f34@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: s6ze1t136nssz8ipyuhcynpmf5wopxkr
-X-Rspamd-Queue-Id: 00AC7140011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788876212-223802
-X-HE-Meta: U2FsdGVkX1+CU/Mg4qtd3AgWFfyqce2L5ShL6Yn/LdHBhQMBgGrFXbYfK6gkSlbdTJGwpo7G/OuSj8Vuu4R8krKJHPe8LJDyMC7x+1qFw3BNgehWspBurYfSrkaji8Jd64RhGRKy9ylxJpW902yzXFk8o+BPAu1YYLuZsF9xg+2eRIQx5hDfuVG9t+cL7Sl3GEqdEeGgWxo7qXef1TFabjwylqrtcP38prel3nXljuNGuvGaza+7zlnvx1r4P9VHj/Mr0iCQRXx14boyZrl0jMUNZpWqZcnjsr+cDLIyZteemsVKlT4pf6TgJ3UjRW3qXaWvi7iZz90ZHzdbzAi0rCTWj6SpQKZa6h/woWcaRcDawpJksiNfpkYlm67RPvQ5heGeqDn//qf/WjO5vv5qIYLmQgLu9+5eK5GYQzJ6BpxtpCvuq7L/2IG8bUxIbt2dqEtXY6gC9HRZbUDagMkdnysjs3Y8WXoKtBGRBNr3Rt2Ht58lvvUoJ0RdT6EIo+6WXo+D7cZGlxXhm6p+gjJDSUUECoftBy1RbZUUnEZFd0T3efjdEHKpmUf6It356cQEXlLa4wm3ckomAFLeA3XaTD8RBT//s1akSymHZjLls0PR4Y95/hNPCFXXDUmMCuNMKQDG7GhjxxCQexD520dLcCVpy+yDxDWzJixy1KXKcz8qPbcueiWdVznmgPeV9vWy7JPdZgRg/SP9T5nE/tkubuhx4CVs8YtlzXOBk0PYgG6ulGQjpxOD5d3eusqgeDiKiuGwz3UVADzy/ntwPV/gqX1DR9YXCQVVCgNc6lNBqtwhE/PQHAWao0F4zFttFD4wrsbnhrxlb1V3oZrU5L9stqjjxl2SSDqUF4nZ3VFAC2Hv3iIeKlNXKdih2IkYzXLDyHvTxnrIT+QHyEzqWs/hdrX1R1E0JowPSwQQM/hXbLeNQfeE1NMPFWbua5s20OGFBciZiDpcbmht5oJDHE9
- ZMjlsSBT
- xwQKKczECyPUDrb3hgzG9DQFPVKvhlxsdNb1y6EDkYvBY4M6xCXyFgE7wWs9neagiedIYLCXsXcccM4mxvmdkByLpIU8YqDEZ9Y7JrFavbQznuiefABSAFK+K1No/qxnAOwnFg9MPP0KUhBVBiiQ/kkpLt0BNwp7lvJJX6Wx4I3KKQ1By7vJhz27j3Ah4lBpPEAvMHjxz4fj6Pr0yeYKOYpsnBYMF2L8xDG7LeCrEmFCaz/SeKdeb1A16tiB6PQ3HjElQWeIli1JfAGr/FPcwOMvCeCxeAhZPKulH4/m9x3H48+YeXJO2fxzrQkY8ccA4AtZJsKxSDXdDoNOPljUvVR0J3Tmh6qF+fCDSpSdMbejjJnm2D5Y+z9Rd+RJQsXDcikqlfvgg/X7xqJHTpKUteTWLTxpSQoRQEdy/n6xRzSe2hsqMC3cTaul1UcD6SXo3IUBVyl0AgpOxA4vKG5VutzRz+dMm6RwUWXPD
+X-Stat-Signature: x8f6o5mhh1z448z4jnk38ycwgja8mict
+X-Rspamd-Queue-Id: D735010000C
+X-HE-Tag: 1788876380-507027
+X-HE-Meta: U2FsdGVkX1/cgG7S1raPQG/cz6qhaB3VFc9BDv0nUCefEPv7Ef4WZS7oOnt70/sJ3DvzpZBJHUA44DoL4cT6hYlefRtoxKsByolVDyH9Zahcv4DuXcYNzatlxwWYoKA4MyZyBKY8SjbLEnl20wNhpntB5l7f5b6zaB7SlBxFbodbPPkr8Hs1lanS9nuqKrNgp5qi6+F6ktjivQp9UW0QlNl2ErAM/PXnxcKXlfro7Vu401I+05egCgyLf64WqL+AKVv6O2VJLPsx7dWXg31xLuq+nktPlVjPbUN5E4RnLM2m+cBLNcN2Tx4AIEqY+oy4tHdZyt7u0zz4IrigwTr8heH2uQL8L10BGXawJNg4X36BBoVh34e5Su7II3CVd3mRB9XD4jHlo/ZUqdh2p/0c81mZYXrCsCMnjxd5IHr5arWwwWhn5aAFaHLvSRqpqUGyv8zAG52jnRYlVl5PZuE+foHtAAcajsBf9bkEs9lGlMUkAsfT3U31ebOsubzRuA3xDP2zEqpCcmTQ76WiqpoxExPduiwFVpFYmfqkriyeSvkIruvVjXQ326YPK8+eLM8PCz+zaUbduI+4klEtQ+fy+2GzgWYbomVvWHH9zoviMQVLGM+50HnIxS9xddU0wZPf3iDlSGZYQ8iasvOqig81Yh3C9AH+NlVTCgsVcBIhYHhwj5RMwfcEE75RNl1/qsVYjqcQshi7D2onY5dRXQFYNcODW+GNHe9H5ren8vCuBP0+tG+bPJCqguLdzNcAGKBO1P0mw+lySVd/tVhBB+/FHLB3mR1lgJhIuP4KxhsL5Jh4aJ67kF4jdJ1NBigV9bIuXlCf/59DAWmLXRorB4t7A7is3cpHZmZKNIO7eO8NvoFn6oOIyDPmmnjmdGXWYHE+TQfLr/yyBgbFp0BhEvgzVNQwD2Sw6cZ2dYty4c5409sLczLITgK0rASim7LwSzA89M/vxzsUSwa/Xj2bOQX
+ upIb2LZ4
+ uam+vcp2hJ03jJ/mxOF9/RnpOCPb9lUKHLqxV77pha6HJFTV+0+oYuNfXMYt1CG+NTVIuhqnnXVDPEVuUZIMFmpnzXuzGnUVs/bolz9jpOpi0yINsNr8X0+0QQbJ6A0JFHmjng59pC91e2KRt8XEFla5bFzi7H0Ggiazs3olKaV+MFA/wqYHajUGpxkNZFfyImCANRrDBsgtvst/EQaN1G3t+ZyNk+FCI1F/p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,93 +111,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 08, 2026 at 01:48:36PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/8/26 13:12, Mike Rapoport wrote:
+> > On Tue, Sep 08, 2026 at 12:41:48PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/3/26 11:28, Mike Rapoport (Microsoft) wrote:
+> >>> set_area_direct_map() always updates direct map alias permissions in
+> >>> single page increments.
+> >>>
+> >>> For HUGE_VMAP areas it's suboptimal. Not only the loop in
+> >>> set_area_direct_map() needlessly has more iterations (e.g times 512 on
+> >>> x86), but it also causes fragmentation of the direct map that could be
+> >>> avoided for the HUGE_VMAP areas populated with large pages.
+> >>>
+> >>> All pages in an area are always of the same order: either same-order
+> >>> large pages when VM_ALLOW_HUGE_VMAP is set and all huge pages were
+> >>> successfully allocated, or order-0 page when VM_ALLOW_HUGE_VMAP is
+> >>> cleared or when huge pages allocation fails and fallback path is taken.
+> >>>
+> >>> Instead of updating the direct map permissions for every order-0 page in
+> >>> an area, use the area's page_order as the loop increment and update the
+> >>> large pages in one call to set_direct_map_{invalid,default}_noflush().
+> >>>
+> >>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >>> ---
+> >>>  mm/vmalloc.c | 13 ++++++++-----
+> >>>  1 file changed, 8 insertions(+), 5 deletions(-)
+> >>>
+> >>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> >>> index 5506b180f5c27..6ed6c160abed7 100644
+> >>> --- a/mm/vmalloc.c
+> >>> +++ b/mm/vmalloc.c
+> >>> @@ -3367,12 +3367,15 @@ static inline void set_area_direct_map(const struct vm_struct *area,
+> >>>  				       int (*set_direct_map)(struct page *page,
+> >>>  							     unsigned int nr))
+> >>>  {
+> >>> -	unsigned long i;
+> >>> +	unsigned int nr = (1U << vm_area_page_order(area));
+> >>> +
+> >>> +	for (unsigned long i = 0; i < area->nr_pages; i += nr) {
+> >>> +		if (page_address(area->pages[i])) {
+> >>> +			int err = set_direct_map(area->pages[i], nr);
+> >>
+> >> Do we really expect some pages to have a directmap and others not?
+> > 
+> > Every page in the area can be allocated separately and
+> > __vmalloc_area_node() has
+> > 
+> > 	if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
+> > 		gfp_mask |= __GFP_HIGHMEM;
+> > 
+> > so generally speaking yes :)
+> 
+> Ah, I was thinking in terms of HUGE_VMAP, because there we sure would expect
+> all-or-nothing, right?
 
-On 08.09.2026 12:03 PM, Thomas Weißschuh wrote:
-> The vdsocheck tool validates the object files and final .so library.
-> It can detect if the compiler created relocations which are incompatible
-> with the vDSO which need to be worked around.
->
-> Wire it up for the architecture.
->
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Even with VM_ALLOW_HUGE_VMAP an area may be backed by highmem pages. When
+huge allocations are disabled either because an architecture does not
+support them or nohugevmalloc=no, vmalloc(VM_ALLOW_HUGE_VMAP) silently
+falls back to order-0 allocations.
+ 
+> -- 
+> Cheers,
+> 
+> David
 
-System: ppc64le LPAR (IBM POWER), Linux 7.3-rc2
-> ---
->   arch/powerpc/Kconfig              |  1 +
->   arch/powerpc/kernel/vdso/Makefile |  4 ++--
->   lib/vdso/check/vdsocheck.rs       | 27 +++++++++++++++++++++++++++
->   3 files changed, 30 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 2580e27e4328..f19e225cfc5c 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -330,6 +330,7 @@ config PPC
->   	select SYSCTL_EXCEPTION_TRACE
->   	select THREAD_INFO_IN_TASK
->   	select TRACE_IRQFLAGS_SUPPORT
-> +	select VDSO_CHECK
->   	select VDSO_DATASTORE
->   	select VDSO_GETRANDOM
->   	#
-> diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-> index 368759f81708..ca20b91b4373 100644
-> --- a/arch/powerpc/kernel/vdso/Makefile
-> +++ b/arch/powerpc/kernel/vdso/Makefile
-> @@ -81,9 +81,9 @@ targets += vdso64.lds
->   CPPFLAGS_vdso64.lds += -P -C
->   
->   # link rule for the .so file, .lds has to be first
-> -$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/vgetrandom-32.o $(obj)/crtsavres-32.o FORCE
-> +$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/vgetrandom-32.o $(obj)/crtsavres-32.o $(vdsocheck) FORCE
->   	$(call if_changed,vdso32ld_and_check)
-> -$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o $(obj)/vgetrandom-64.o FORCE
-> +$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o $(obj)/vgetrandom-64.o $(vdsocheck) FORCE
->   	$(call if_changed,vdso64ld_and_check)
->   
->   # assembly rules for the .S files
-> diff --git a/lib/vdso/check/vdsocheck.rs b/lib/vdso/check/vdsocheck.rs
-> index e45a1fbc6829..429bdcd65818 100644
-> --- a/lib/vdso/check/vdsocheck.rs
-> +++ b/lib/vdso/check/vdsocheck.rs
-> @@ -69,6 +69,33 @@ fn allowed_relocations_for_machine(machine: u16) -> Option<AllowedRelocations<'s
->               ..Default::default()
->           }
->           .into(),
-> +        bindings::EM_PPC => AllowedRelocations {
-> +            in_object_file: &[
-> +                bindings::R_PPC_REL24,
-> +                bindings::R_PPC_REL14,
-> +                bindings::R_PPC_REL32,
-> +                bindings::R_PPC_REL16,
-> +                bindings::R_PPC_REL16_LO,
-> +                bindings::R_PPC_REL16_HI,
-> +                bindings::R_PPC_REL16_HA,
-> +            ],
-> +            ..Default::default()
-> +        }
-> +        .into(),
-> +        bindings::EM_PPC64 => AllowedRelocations {
-> +            in_object_file: &[
-> +                bindings::R_PPC64_REL24,
-> +                bindings::R_PPC64_REL14,
-> +                bindings::R_PPC64_REL32,
-> +                bindings::R_PPC64_REL64,
-> +                bindings::R_PPC64_REL16,
-> +                bindings::R_PPC64_REL16_LO,
-> +                bindings::R_PPC64_REL16_HI,
-> +                bindings::R_PPC64_REL16_HA,
-> +            ],
-> +            ..Default::default()
-> +        }
-> +        .into(),
->           _ => None,
->       }
->   }
->
 -- 
-Thanks and Regards
-R.Nageswara Sastry
-
+Sincerely yours,
+Mike.
 
