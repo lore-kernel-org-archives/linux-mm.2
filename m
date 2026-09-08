@@ -4,135 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08961C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EEC3C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 138826B008A; Tue,  8 Sep 2026 03:19:50 -0400 (EDT)
+	id B9FE06B0092; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA736B008C; Tue,  8 Sep 2026 03:19:50 -0400 (EDT)
+	id B509B6B0093; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1A526B0092; Tue,  8 Sep 2026 03:19:49 -0400 (EDT)
+	id A66556B0095; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9BE96B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:19:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74C4F1403A2
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:19:49 +0000 (UTC)
-X-FDA: 85189745298.20.0099658
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 914E940003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:19:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="UoZziDS/";
-	spf=pass (imf07.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 811EA6B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:23:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0604C1A03A3
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:23:22 +0000 (UTC)
+X-FDA: 85189754244.30.686227C
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3F01640003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:23:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hyaS2dA6;
+	spf=pass (imf12.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788851987;
+	s=arc-20220608; t=1788852200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cvxxmFP38glDv9aUVdeEkTg6ek/m9m390THhoWCfEM0=;
-	b=2cC3HPq+FP1iU1isziUdoF5HX+MlKMCrPFgD2qccpnIR14W6kO6Rvv6QWMWl65M2woS7Fn
-	Qnx3jphufgJNCddVjay9+7SmFlxwQzK6HbeZvMN0mznfGOpfhtIgITQLYVdoG/ZHOcUW5/
-	TqUrFrT1AFWRiUdq6L8dG4dI90mKuD0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788851987;
-	b=SUXIA8X13u6T1JmZToP4wPxCCUMxX1qY+fVHUjz1tiaKWXMcokgz7Gv91i//Vjp2HWeRV6
-	9O0JH0BSqzsX9iw2Jq7epjJRSuub0/syfJzuBUuuuO9C4udFJRfjDx0kVrjoNLu7M6aNas
-	sFc3lf+/qd0Q8lVFBfW20mfgxfnjIFU=
+	bh=G7nz+2I01rp2LskTbFRR2FK0vPBroOC8XutcipcnIsM=;
+	b=3M3Y9/2Hxp1c2FNDbcBb68sBDgWk3t3b5yBaGMSrACoAvevzxjTA+8v96PmjDNj9ifPpYV
+	VUNWnhu+QaWUXJukHref6z4nOvfw0YvBk8jPGjqvU+oLQSVNl2+WPacDtIjv4FdmSIMV8i
+	aA+qI1OgjnYYcRnT7DBTlTrg5AaySlo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="UoZziDS/";
-	spf=pass (imf07.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=cvxxmFP38glDv9aUVdeEkTg6ek/m9m390THhoWCfEM0=; b=UoZziDS/M2tkE9i/kd/fRWxjxG
-	xi+fyu0pTnULNJBoBTxWqssjFBpND46iwdm8/Xdasvn1rRlVO3YRTifGQHqQ7Djyr0qN+giJZ+fhm
-	VGFo7VQcUzTluQnwuFY/TINjSZwGg2wAu6h/I2aJQekwAQAHDfDRbs5c4653HmcsHzR3/MT7uYBiv
-	OHGOF2sDyRO8Ng0HJl/EAucBF+nX0HMCIeEV9AzqfniAsQubp91a/6o38RnF6m5eUvGRXcnh6SFwM
-	YSzWSLDv1463xBJzjZwzhVMGY0l1ix+hGiimn09WhCg0UeYSjjmBlFhgA8gLyLSTRRkm2555WQmqU
-	gUx+TBrQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x3q6s-0000000H2YA-0CKd;
-	Tue, 08 Sep 2026 07:19:14 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5B0713005AF; Tue, 08 Sep 2026 09:19:11 +0200 (CEST)
-Date: Tue, 8 Sep 2026 09:19:11 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-mm@kvack.org,
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Jan Stancek <jstancek@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 12/24] vdso: Add the vdsocheck tool
-Message-ID: <20260908071911.GU4120091@noisy.programming.kicks-ass.net>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hyaS2dA6;
+	spf=pass (imf12.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788852200;
+	b=WCYQmxbQQUWM6fiV0rZwV7cn5qLUHBIjmYPyM3R808BRmqUBTtuiQyX5H7+l/5q4HHyRgK
+	8osqs0wj1O9bKVU/326pzsJYF1/Ejr5LufBUKjoFluf84QuJJgl44f/pFgPWSpNv4sfXJp
+	zv9Pc0/Gpu4DKQqAJWzOcEyKWTtlCRs=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=G7nz+2I01rp2LskTbFRR2FK0vPBroOC8XutcipcnIsM=;
+	b=hyaS2dA64DcCg3GRIM7kcjDzC2hUqQBzbi0wYEmlK75paxqrzZ4Qk09vQIT+D6ItcGzT9PK7K
+	+Fa6fiPBtKYscFQTRzVIbY6yweWimJ2oM5lKsGuwlq23S1Lfx1H1u//nCgErq4AFzAXXYPebOeM
+	yjA4Etr6FTTSMfxdr1fEXw0=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hfFVy3mfZzKmVp;
+	Tue,  8 Sep 2026 15:12:10 +0800 (CST)
+Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id D100C40586;
+	Tue,  8 Sep 2026 15:23:07 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemk200008.china.huawei.com (7.202.194.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 8 Sep 2026 15:23:05 +0800
+Message-ID: <92050fca-96ff-46e6-aca8-3cecd7cfb778@huawei.com>
+Date: Tue, 8 Sep 2026 15:23:04 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/12] LoongArch: kexec_file: Fix CMA page leaks in
+ segment placement retry loops
+To: Huacai Chen <chenhuacai@kernel.org>
+CC: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
+	<kernel@xen0n.name>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
+	<npiggin@gmail.com>, <chleroy@kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <baoquan.he@linux.dev>,
+	<rppt@kernel.org>, <pasha.tatashin@soleen.com>, <pratyush@kernel.org>,
+	<ruirui.yang@linux.dev>, <kees@kernel.org>, <thuth@redhat.com>,
+	<jic23@kernel.org>, <tan.shaopeng@jp.fujitsu.com>, <zengheng4@huawei.com>,
+	<james.morse@arm.com>, <ardb@kernel.org>, <leitao@debian.org>,
+	<yeoreum.yun@arm.com>, <sourabhjain@linux.ibm.com>, <robh@kernel.org>,
+	<coxu@redhat.com>, <tangyouling@kylinos.cn>, <hbathini@linux.ibm.com>,
+	<adityag@linux.ibm.com>, <djbw@kernel.org>, <seanjc@google.com>,
+	<liaoyuanhong@vivo.com>, <vishal.l.verma@intel.com>,
+	<fuqiang.wang@easystack.cn>, <makb@juniper.net>, <piliu@redhat.com>,
+	<ebiggers@kernel.org>, <jbouron@amazon.com>, <mclapinski@google.com>,
+	<me@linux.beauty>, <graf@amazon.com>, <bgwin@google.com>,
+	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20260907125404.922123-1-ruanjinjie@huawei.com>
+ <20260907125404.922123-6-ruanjinjie@huawei.com>
+ <CAAhV-H7qjJ7BPnJ2KoQZSyMUvX_6i9H=EfdadXnmXtNiiB4ROA@mail.gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <CAAhV-H7qjJ7BPnJ2KoQZSyMUvX_6i9H=EfdadXnmXtNiiB4ROA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
-X-Stat-Signature: 3may6gnrga5sfasnsqee9q1eq9p9wo7t
-X-Rspamd-Queue-Id: 914E940003
-X-Rspamd-Server: rspam02
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk200008.china.huawei.com (7.202.194.74)
+X-Stat-Signature: h3cxbmicx6qfnsiqzemka3i397bcjd4b
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3F01640003
 X-Rspam-User: 
-X-HE-Tag: 1788851986-642340
-X-HE-Meta: U2FsdGVkX1/ZWvJEt02D8ENOhCc7DCTliw7C3RtB8PCp8IMxFRGgiAzCNwuMmLcAa/z4BwEtSbMFwy7sRiYlZ+yqUJgC9e101CDk6gVj1CXwU8OGCs+jEAjhqZZqMBbsoaoGtPtksKo074rlYqn4pAjxtkDDfEtbni4dGbY66yzwHAWGLahhDtQmLjCzRZ49Mbh9iYkG6KOlLXZsG3tXIa7eJDT8RCcRhUJ4Jl1vWARL8CULDgNO5KtJXyiU8YWneSKHUvYdRZXjLp9jm2LstSlybK8hyiyfmMooysId1m3JDQ+fsT3U2nEYsRd52QbIu3QvmDZpDCT6E8v0KrVDmAP3h2XVKAMauihZuzBtXdGB41GLlHfRe+mRzPkg4xyinfQGROfKjyxCkEqBcInHJxezcIuZa+DhMbEDNnv1E4VxOL6xKL+wHLz2O0iDEJuGp1BYyYW+W0h0Tx+IbNI+pUaEDCLQFh+wRBaho6BIskDntUVzvJqA5+GjhT4WtUMw5UsBOKa5pK8NSrJ0OGolfMMOHVQtxIMxBcqNG4S46/jk4cTi3OQ3JUW6XYKjUgFHnQXHKo0t96ohSf+N9BZGD558UbhrvdjlAVuvWM7dZ7jd0Ca8Vy3lR76Oa3aGwf9sbZd1zRLNbpxYtCPl77m8jtx+v+qsu+XPCS6bEeJk3goTDb7qXeOFd/tqOf8ZArmhmKdt05MDGvWKguiuEZNxbsjEBcoG7EGs/IghnpzqpTY4mzZohLNtWqqxFgJdcxVt50JoiN5K/fF4Vsqh07Uqvaa7ARkggtrBmVET7LIp19ypDBT+yIBTSZOOmol8X1Xd2mHGWwYsHOt844Sc9ZbM/nBoCNguWm44c2z+/AOiEXU/xdhWOEIuTKPPbXjOe0PwQ8ZEK7FyVD7la33/oODq/JB8SkDw0vLTVkie/oGl9sWjCAjIGP7t8vbOpOkPORTn+74I6YPPzg3JT/B0aA4
- sXdjODPX
- b5uU4K8UHJHN566BK5ihG6Y0zIZ+Q4aInua5RKeSVge5bxidLMBdG+3svDJ/xM21Ow1bO1IVPlsIDfsmsRx0bYn/F8WcJvVx6kN2y5dWs+yE5bE9j8xrEHou1Eon6DWZ2fD9pPYzgyMivwcOUW75iMqfJFDOXAIhHuQ1Oh+yjTnaxndfeQtyvuVzVy6Yn2nprlYnoGKVSUH7UPan8zKbJbiig1bVG1D+5EWOYdoRVyVEcxjJsysEqVzu7NcX8AL1dLkur5/VnAb11UGGxcRWAC1qWwRCzpDxQz6Hi3wCOhX5goA7imEBaz1xEnN9ljGTIuE4DezsKKsRGuGp1jxjLkRHufDqOHu9mR+0qPT7vilQ2Igk/tr6gq2+R3g==
+X-HE-Tag: 1788852198-583714
+X-HE-Meta: U2FsdGVkX19qklpZ/RCzttVKGZzEZKjL51+7Ig47Ra5ED+Vyz03v0bH/YZbuATRSr8JmdGRa40MUTIoUoFJP05G67yO0mXcbWmUboFGutcskU7dWc9WUmdWIeveVmhMsVJn5DVtZS9Jjs1oHHVbrtsuVKgfRE53m+3YyDh9D9d9YYiTqi+ZvX0yprID8H3sDd2lhwyxm+JgO950qztBn5LeL/HerjdIPxxDydRR/y91ix3r+PU8KsTnQsIMLLHGkY7gWFlkxhNxSnL+9rdEB+tsSPGdT8gdsuQr0oekW3C8MI3iXdVX5t9uToM13wucJOGG1F6C+lqD/XxE9OaNGxFhhwfegizFObwZDZZ9gONqcBVTndgyTUqCRrfYOZ+08+X8hzY1Lxd+vh7Ad/mJDeTQbrb55TXC3Sbz/rUYowLA15OcLzV+nNjy4nlz+rz0+7iPvm4goH36w7C1FtLpw5YPnKKroDYpZ20KjWwOUq0vUaGkKknsmKxw7ODNz8I2w+wF1i16jltYw0PWtDBwP6RZKNn2/Ms72l6Gvu+Hxi3jgEg61SMt0diTj0vsgNvL9aBLplpYab2LsuNt/gu7rDIr/yvDt9/VYsTisG4pbXJ5pVsd1ypgn+/qg+oRJSbzZWNAAr9s6XIe+ewIVYz0OEB4c5iqHWekOPSDHJWuxuOpYVarM8i1RTqOrd9BOZkac1ZTutEMMeYowCN8ojbr+uOt1Ez/LId7gsYpsRTbRAJJL1d4WLQvcznlxDETCk0s+2kadehldzYJv5vYR+f5xmH48WtOeLzlXS0mrfsnFyRasZvsyhLsacKTVhklg0gZFX32SuBiPTHTHLJODRrMFdC236l93f0qBbX/cN4dagupxftHK7aEAbCKD0UiiIIDcWAzFZ4eYv5D5Ic58wW+bFl63FPorreu5VJ/Ezd7YhNXtUKGu0fXeJcOXK5i399UXZQpr11QxtgvhRQkhkIf
+ rzQJGsKJ
+ eQhBzdGiwoQksLJ/jojuhWF5i+E6SYPW03+psHVohHAWrbKY/xD1Yrjjs0m6/esw6At9j/FoVJbnC892Q4zG9y4QwkTW63qBCtXLeh3TFdLSzTVJvZxYYhNjxKhCDuOPHdPnVnkRA2vUjsRWW6rjy4FJ4dApDHFOPOtdqlhibGiaBOzllcqMpVjIy/tKT8Veha5oerf1t1NU52p8rm8gXonIMNpPbpOQrYiDkNVil6/G1L1BOMuTKf2KxfNQG0Ljq76D3S0t9y2rU9WVHYGbqv+0At8mzcenRut+bq1GDUsnkZOBIo9Iq4+94gSvkWDl3SEpHorfPoSZ74tokNDnAEyk+pjMNdt4yw0/NHvd3f2+UpD2GV6/9U4jLP7Uu1Tg5si29aE9y6q+1/qnZ2KaFbRZaCjr9zSVpQ4BnpIfdVvziXLVBdNhW/QP8y2JuLDpf8DluFGt7/shDedTfGWaxQmNnKUF6jRFZfK0tF46csVE9fFnl4mZ5lur1KmaHBgugkWRrrqb4s0aYZWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,33 +119,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 08:33:46AM +0200, Thomas Wei�schuh wrote:
-> All vDSO code needs to be completely position independent. Symbol
-> references are marked as hidden so the compiler emits PC-relative
-> relocations. However there are cases where the compiler may still
-> emit absolute relocations, as they are valid in regular PIC DSO code.
-> These would be resolved by the linker and will break at runtime.
-> This has been observed on arm64, see commit 0c314cda9325 ("arm64: vdso:
-> Work around invalid absolute relocations from GCC")
-> 
-> Introduce a tool to check for absolute relocations during the build,
-> as the current inline-shell logic is not expressive enough.
-> The check is done on the object files as the relocations will not exist
-> anymore in the final DSO. As there is no extension point for the
-> compilation of each object file, perform the validation in vdso_check.
-> 
-> Signed-off-by: Thomas Wei�schuh <thomas.weissschuh@linutronix.de>
-> ---
->  Makefile                    |  19 ++
->  lib/vdso/Kconfig            |   5 +
->  lib/vdso/Makefile           |   2 +
->  lib/vdso/Makefile.include   |  14 ++
->  lib/vdso/check/.gitignore   |   3 +
->  lib/vdso/check/Makefile     |  34 +++
->  lib/vdso/check/elf.rs       | 498 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/vdso/check/vdsocheck.rs | 154 ++++++++++++++
->  8 files changed, 729 insertions(+)
 
-Urgh, does this mean I have to have rust installed just to build a
-kernel now?
+
+在 2026/9/7 22:05, Huacai Chen 写道:
+> Hi, Jinjie,
+
+Hi Huacai,
+
+> 
+> On Mon, Sep 7, 2026 at 8:53 PM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+>>
+>> During kexec image placement retry loops, any midway failure causes
+>> the loader to truncate `image->nr_segments` back to its initial state
+>> to purge the failed segments.
+>>
+>> However, this truncation introduces a memory leak. The CMA pages
+>> allocated via kexec_add_buffer() during the failed attempt are tracked
+>> in the `image->segment_cma` array. Because the subsequent cleanup paths
+>> only iterate up to the truncated `nr_segments` boundary, these allocated
+>> CMA pages outside the new boundary are permanently leaked.
+>>
+>> Fix this by explicitly releasing the associated CMA buffers in
+>> the failure paths before `image->nr_segments` is reduced.
+> I'm not sure but does the elf version have similar problems as the efi version?
+
+This issue does not exist in the ELF version, as the retry loop for
+load_other_segments() does not exit here.
+
+Best regards,
+Jinjie
+
+> 
+> Huacai
+> 
+>>
+>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>> Cc: WANG Xuerui <kernel@xen0n.name>
+>> Cc: Youling Tang <tangyouling@kylinos.cn>
+>> Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> Cc: Kees Cook <kees@kernel.org>
+>> Cc: stable@vger.kernel.org
+>> Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%40huawei.com
+>> Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>  arch/loongarch/kernel/kexec_efi.c          | 1 +
+>>  arch/loongarch/kernel/machine_kexec_file.c | 6 +++++-
+>>  2 files changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/loongarch/kernel/kexec_efi.c b/arch/loongarch/kernel/kexec_efi.c
+>> index 5ee78ebb1546..15fd797ff3de 100644
+>> --- a/arch/loongarch/kernel/kexec_efi.c
+>> +++ b/arch/loongarch/kernel/kexec_efi.c
+>> @@ -86,6 +86,7 @@ static void *efi_kexec_load(struct kimage *image,
+>>                  * We couldn't find space for the other segments; erase the
+>>                  * kernel segment and try the next available hole.
+>>                  */
+>> +               kexec_free_segment_cma(image, kernel_segment_number);
+>>                 image->nr_segments -= 1;
+>>                 kbuf.buf_min = kernel_segment->mem + kernel_segment->memsz;
+>>                 kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+>> index 5412aa9f3568..62a5be102065 100644
+>> --- a/arch/loongarch/kernel/machine_kexec_file.c
+>> +++ b/arch/loongarch/kernel/machine_kexec_file.c
+>> @@ -217,7 +217,11 @@ int load_other_segments(struct kimage *image,
+>>         return 0;
+>>
+>>  out_err:
+>> -       image->nr_segments = orig_segments;
+>> +       while (image->nr_segments > orig_segments) {
+>> +               kexec_free_segment_cma(image, image->nr_segments - 1);
+>> +               image->nr_segments--;
+>> +       }
+>> +
+>>         kfree(modified_cmdline);
+>>         return ret;
+>>  }
+>> --
+>> 2.34.1
+>>
+
 
