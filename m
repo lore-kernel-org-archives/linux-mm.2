@@ -4,149 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69766C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 16:13:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC151C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 16:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 348F26B009E; Tue,  8 Sep 2026 12:13:54 -0400 (EDT)
+	id 9B7DE6B0095; Tue,  8 Sep 2026 12:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 320776B00A1; Tue,  8 Sep 2026 12:13:54 -0400 (EDT)
+	id 941BA6B0096; Tue,  8 Sep 2026 12:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 211866B00A5; Tue,  8 Sep 2026 12:13:54 -0400 (EDT)
+	id 7E3AC6B0098; Tue,  8 Sep 2026 12:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D38536B009E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:13:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60BDCA4DB4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:13:53 +0000 (UTC)
-X-FDA: 85191091146.21.FD90AB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7C3344000C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:13:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QZQ0bmB/";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 423DA6B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:17:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8DB41C2919
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:17:14 +0000 (UTC)
+X-FDA: 85191099588.24.CC865EE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7B66614000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:17:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N+56EXQe;
+	dkim=pass header.d=redhat.com header.s=google header.b=fx4E82OP;
+	spf=pass (imf26.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788884031;
+	s=arc-20220608; t=1788884232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tOS0VQ3pxNli+fnzbQ+4GcgPT7gVlj6GtERNyCqVDto=;
-	b=j+z591pqsjlMqyEmG7giKuZowdAGwLEc28pQN/250v25dPCy2YqgVZclmx+7XBndG6Xgnc
-	28gdoUdmc1IEuy9dgv5OxJOp0+R4CXF5v05+n0YqGGLOtetqGEPRiPHc11cAUyz9EigbjE
-	tUniOLvaaM8XLKeIV9WXsBgpG3r8DPk=
+	bh=biebLiR5oHGYPmQPO3uT20qG8Uw3pA9q7i4FEjIutYc=;
+	b=PjGv3GUQojmev2MwRjpSjLTuJvZSY/ytoncwm4mOhADwXsBPepku/fsPJI2aDIKCzZkMBo
+	hpoxfeIS5LfkJpgRI2MNJOhXT1GlH2KfOlWga94LF55ttr2Vcy+YdxI9HNbJg3zfiejc0J
+	IvZy6xes9lwLzzBsoojY6czxr3dO8Xk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788884031;
-	b=R+1YkyLrpbPtx7P7hm+vnrDMstfeFFPkmsk6IX2HyueVueeZOqE5iN7hrpXy+P5b/xcdvY
-	91JQCFG1uwOtsoXfZ1QJUl/87D176uOrxT5y4uVMd9yBbPKqoyzEjjvUA6Z+Jje/c+BY8k
-	kSVGaFshrzuV0uUH0EiQe14BW3cKoQU=
+	t=1788884232;
+	b=aa4VfPvTrZeIVzBxJDIeW8OCCbIKefohNdArcEXbG40scwPrcYxlSQSzuF0ZCaTcMw07mG
+	1OSbbjcFTOqhc9KhHTqyiZCzvWiKFYx9LngajKYXecYzGzrl19hYSX4usbDHzJ/fu8GCYe
+	7DrzIQyNP7ihlIpuKpWFqlJrhK4zlvg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QZQ0bmB/";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FA5743AF2;
-	Tue,  8 Sep 2026 16:13:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5817D1F00A3A;
-	Tue,  8 Sep 2026 16:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788884030;
-	bh=tOS0VQ3pxNli+fnzbQ+4GcgPT7gVlj6GtERNyCqVDto=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QZQ0bmB/xT1mMR2EivpC8SAALYplDz/p6XJ0LwSWEjUfwX5385zpmTa2JuhsIXPUz
-	 YBo5HdXD6sRD/GHk3xVJ1OQ/eE/sNDGIVV8sio1XqhsRZsX480hZzYkuJOQVuocYGI
-	 uLBbckItcXqaxCFSwIWMkFwhlz6IsIrVSvCQrrcqv76HGZTUW6BnqRnGFYhU59fOsR
-	 9+rUnPQ0nQHjFIcBv8E9aRovC8q+V57ExoA9EwmSpcdtj2Di9ZDREn5tjZVYkkgnED
-	 Z3yu3BRW65/MCTVMPWLWLlj8Tg5zXSc8IxoD/XhjBruToNa2OlwWOY/ySqhe6mHulf
-	 rD8JuF/Z6xQbg==
-Message-ID: <5b02f5de-00b6-4f8e-9e30-6d0acedafaf4@kernel.org>
-Date: Tue, 8 Sep 2026 18:13:37 +0200
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N+56EXQe;
+	dkim=pass header.d=redhat.com header.s=google header.b=fx4E82OP;
+	spf=pass (imf26.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788884231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=biebLiR5oHGYPmQPO3uT20qG8Uw3pA9q7i4FEjIutYc=;
+	b=N+56EXQe4v8OdEw+LCtYioMwybp2wESB9AL08dzmOKI3CTRDfw+nKFukqiAmQ4ecP8b11e
+	L3PYwNORgNORcmiHHo2CCJgm/vjaJzvDPWPqKaqUfOu8prm+G1BTzglMizyfVzNA1b5nnw
+	GM6Z05OHJDSZmnJYTt23q6TMYEn5l18=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-HuLFEB92OgykaFsE8gU4Eg-1; Tue, 08 Sep 2026 12:17:10 -0400
+X-MC-Unique: HuLFEB92OgykaFsE8gU4Eg-1
+X-Mimecast-MFC-AGG-ID: HuLFEB92OgykaFsE8gU4Eg_1788884229
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66f81a0f5c9so5780397d50.3
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 09:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788884229; x=1789489029; darn=kvack.org;
+        h=mime-version:user-agent:content-type:autocrypt:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=biebLiR5oHGYPmQPO3uT20qG8Uw3pA9q7i4FEjIutYc=;
+        b=fx4E82OPTBDCkn4s/mIBYjBojLof+OzP3Mx3aNF61i7ggLn6MymmAF02IHKOeIKmOI
+         JpNKe9tWuXktpAmJkm2t57/xmhyPJd8yCUTdzw63xLgLm2145f5TX0aa7Vh1iFAGrtk7
+         RsoVHpoO+mOYnX8hOxFDVRog5gkwSyFn8lml8mH79s+IutDxnkYlSQ1nWT/FXdtYizMh
+         hMbgtBEiYsOBX/7WU79zkVMLQKA/lvRVcCB1Z4Qn7GzE4b/U2ZShLpJTtDvNDhjcV220
+         SMVPAks3Zfl1gafrcaGEqyOn8barngJ0KbbQ0bcxh6PsDKRoCqE2ER5xqX6hvZHLu1CO
+         bHcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788884229; x=1789489029;
+        h=mime-version:user-agent:content-type:autocrypt:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=biebLiR5oHGYPmQPO3uT20qG8Uw3pA9q7i4FEjIutYc=;
+        b=CxXI4NVsWMs4socr0rZiTDxOiAGzEqk+qeriMesIDRKoOZTQ0NikCNoDEd8EoGM1++
+         ACl8DtXdIiYxE0fydlznM3h/H2fVtosU1scY4C6zZQ4hIDd/k6TMmyxyDQxSz3eMql5q
+         ciQSm7UezsGiqjqiiVDYbcnCLJYxksa3beHDIBx2Ho2IT8b69HoHGeYbOCerkMA1vTfw
+         wqnT3R/yFOjMNLWpF6FrPRuo6iLC+7cdmJ84TYLg20X8yFMTIGxpvLQZ8ZLaWdLH47tT
+         R4J5ayOhzJJTfjVR/PKTuLmBpjvXNE7UVwzl9oYPJPuStlXbANFeAEsDPGNlShDuIp7g
+         2Ycw==
+X-Forwarded-Encrypted: i=1; AKwUvBxIWQQ/DcceVz5acO8kihwt/Tw7yDQa53KIftHpYRiGhqEJ4SiCWeHTdD8ctujxO1xt7JfPvSCFNA==@kvack.org
+X-Gm-Message-State: AFuF++k0/nvubucxRZq0YqsnO5YjP/N7u86UqxmAntlM9HCVSSqIuD+g
+	P6rz1mHOFMvpMWEHtqhpPNz2wRuz/NMh9/Xg5b20UU0yKC2vYoyo2sveXu6tp9i18OZRbrshikx
+	odsqtj92MU/Cm2B1E5/XBkFF6IQwZd7fg281Hd/8kXm/wVyboBQei
+X-Gm-Gg: AYBFou2Xphx17yZZl3h5ctw5WLyapWK9OKgsiOPBfqtSPVNkoxcSRaaRQAJIkhgTGWN
+	1LCdchqskP/dB0/GJysh+F4YjBkq5eUKj5/h5Y8jlaTR/rw24ERZNjjCoB9S1IdA+45aXjnX/gr
+	da2dWWE+KEMHrym9JntN+mv859m54FPQ2cqttyEB8tYHyue6qtBfM7KLhvyiF4YxOmEyTFpVCUR
+	IN/50fmOXPDa9y31EJFPFp8YRDkBySKcjKsGNd6oDBbMxPWCUXig9rlk7KviWKvZ1CX0NeGnjSw
+	22d/kEpkO0VZvJwXoQ3FFS+7OjBvhZ+cdHydXOQi63dNHD31m6FGjGr/3yvMnZMYD2k0Xxs45IV
+	mMOkknNKXXWHLGKMbUH7Xd7fOWkUDq/RWlOpta8gDt+r/1Za5TTkLyWFM6uvAb1ltHb2ikb7VJW
+	+Qlmat4exUeenqisNCK4yD
+X-Received: by 2002:a53:c086:0:b0:66f:c1bc:c09b with SMTP id 956f58d0204a3-66fc1bcc6ddmr4966007d50.99.1788884229315;
+        Tue, 08 Sep 2026 09:17:09 -0700 (PDT)
+X-Received: by 2002:a53:c086:0:b0:66f:c1bc:c09b with SMTP id 956f58d0204a3-66fc1bcc6ddmr4965972d50.99.1788884228782;
+        Tue, 08 Sep 2026 09:17:08 -0700 (PDT)
+Received: from chaithco-thinkpadp16vgen1.rmtusco.csb (184-96-189-144.hlrn.qwest.net. [184.96.189.144])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040663a87sm123734166d6.19.2026.09.08.09.17.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 09:17:07 -0700 (PDT)
+Message-ID: <0f3340facc968f1d911c637ef0d305c9282044e0.camel@redhat.com>
+Subject: Re: [PATCH 0/2] mm/hugetlb Try to respect mempolicy when
+ calculating surplus huge pages
+From: "chaithco@redhat.com" <chaithco@redhat.com>
+To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
+Cc: david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	arozansk@redhat.com
+Date: Tue, 08 Sep 2026 10:17:05 -0600
+In-Reply-To: <20260707182900.483757-1-chaithco@redhat.com>
+References: <20260707182900.483757-1-chaithco@redhat.com>
+Autocrypt: addr=chaithco@redhat.com; prefer-encrypt=mutual;
+ keydata=mDMEapCVehYJKwYBBAHaRw8BAQdAORXHCioh8sg4JScf3G8JrmX1nUt+teTWsqlbk67dr
+ va0NkNoYXJsZXMgSGFpdGhjb2NrIChXb3JrIEdQRyBLZXkpIDxjaGFpdGhjb0ByZWRoYXQuY29tPo
+ iTBBMWCgA7FiEEoln/+dhdP2hiiZGQ86/NNaAhFjYFAmqQlXoCGwMFCwkIBwICIgIGFQoJCAsCBBY
+ CAwECHgcCF4AACgkQ86/NNaAhFjbm1gEA9t0Iaxr6IkGONOjD7eB10PjTYyDGVd4QdJYPohP8xRsA
+ /0OETJIGSr5rxRqG23AGUdlnUfzFlgm3QuyfNpGHcv0C
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-CmIuoRvvvnKZ0ZKUUcy9"
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/14] erofs: use folio_attach/detach_private() instead
- of direct assignment
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>,
- Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-8-6ae22f9d9272@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260907-remove-pg_private-v3-8-6ae22f9d9272@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8duir44ihx7kx8dnyqog93kbpp6w6dd8
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7C3344000C
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788884031-39667
-X-HE-Meta: U2FsdGVkX1/4WN2iwWb+FVk5v0wNRjYZiTxb6DsO2yrqoA4DSH2HekVAjHAxHm8zuwo0Vy9ZeLUARZYBCYazN3/Eim81VfFe1mxdySFe8A6G2VwJIMwau1Js12kUxj9exjNfPV2obnTln8AdQMKYnRw6DXSkk6TIhwlaHvEPjOZLobvoP7cPoeuN3L4KD6vY/8uSIShWHyyXSH6lhjCODsHOwlnQ5aM4jU+ZUFrKT+F31QSQQPw4rTr+D4BBIARuuFhQJ4stjvl4C6eXPbHAAnWGC/BJXfuaIJJTh03DHKf9sIkqTpRsdqMWflHuz1+FCIMupk7fsvgEdDKEOGQ7vMjXPk0t33qQY+etkH5ksDzoMKIOBbsW/qOiaghoZ14MaWZnbiq/i2xttSLv0innW8PX6AkBmFZ+ROiEc3He7kkH2s3OpQ0C8JVukfh3ELebWyqDr/EfDh3YDxqiuoe3T/fNvADJHmKszFmmYXHVm0s/Pd7G588y2h1Ghx67XqrWaW9u8585By7FUddtNHoXgQTgnIZ+eENlGfWpusUUKjZNNjFJsoiwWaLO8ZAkWTSLb1dbbSzjC01BDu1g/A14Vof2MwUINzqsUGs8v6nC24/y4kNRYuND0kFdCg1ncb8q0mrdemLwuZs76O8J0JVCDa3g9jsKdLZQnzuk5mDpGKlxP5ruBCg3iEVgW9+DBQFBbWG8CXk7+KvrBrT57Jm09qDZ7oKqMd6wmjSn5OkshhjF7cfc6H6YdmpDXyfiyygwRM9KQgi8rqmDkDn2p2q0UJ8HomZ45uI2Z1/Otz+TcVLz+xxfidnFSv4XMcV80bUdCg0Zl1i3dGNE8Bc+bbaJcyrztji3Rxpk6qtrDnzblYHFJAbCPVH+zB+nxehtlo6XrE5jZICN4is+Y0IwPYNzzgdR9Rxw+oZhiUaO6qUTeHocoMsT4KG5WybILV0dnq1ri/oaxJ/60gmFxkXH3T7
- /lIQb7I3
- vJqTgovzmelc6PoYQ6xViVng8D8TytPUgG+lmCVFfIcbsw4qHwMqty4F3jU8mDGtRkSr++OJ8SrqkXxV3B4NUDeLa6uMp5h9sL+MKXUAcSM3CfoE02nSHobO5zXdPrJYJr9vuF6BZMBrdHtsu7h59Uo8S4Ys60YtVTOrWsNiOyLTlKTYU/juUSaCfFzgGmdKOJ33praG/7iwDIjlN+jhDLJ8iX0eFNio5HCLrV3kfeD9ZlqC0O3fcSIt026Z88fMwVt2z+xmdyLB6twH9udf17VABRAPaeUXcyuOLV1YETduWjrMLpjPTzwdCpNzQTtnLJBpgYQlZBfWK+/Y=
+X-Stat-Signature: bkynikp449zn933prys4amr4ci1a8u7i
+X-Rspamd-Queue-Id: 7B66614000C
+X-HE-Tag: 1788884232-90741
+X-HE-Meta: U2FsdGVkX1/C6vYFLRdlnU20wuPHHkZq8EZU+O7JH1OtMT16EOcOji31t6DbkGRL5UDFhkLKHmc/cy1QVeI5q/Ko22ZeCaMqvFu5btiwF7oFqavbFAQhnPFiJoTUa5ndJxau6FlTU0aUOoX7leBCX6FQgla/gWrla+KYeVhG7EFZWIDXHs13LBzYiUDikk1GtkM+r6fn+AVrFBAS2Bp/gtDtd/8aM2b6NKtKV+i5H5PPwr9X4bQgPyAPPEG7vXOSt0sYXaMy21VOcyQYUDPp1Ljx4LsKgQTQR5/RFeF67TxH3DMSop6lRosg5e56reqEsZDD7dk6BH9hveJxEXWJuSkSxA0urMMNn0Yb/cMUFrjDTy085z208qGOSMd8HAcBCJ+IVaFdt7KdxDS3OG9uzXR7kSwFtFiCc3hDmjXB53Y1WL0lB8BIm3gPlbU3DIQFFAZqvoY8hxi/HtlzEp7K0u/4EXA1fcOywmxk8Bap2i09o6hCJ3y6YjRT+uyu4t5EY6OcRBccdCdEWsCU+eNfzTBdvqj1kUoXcgnL0BsGmS3Asu3Tl9v6KRWpfFVbFCp/vh6n2QhGWlbO4KlaA68Pdor98JrZtl2S3AJAqPOslCnQUPS+AwDyBfD0oZ6xwc33BUTz+GRz2HQ8ZqEqJRjGAQiEsFzFNFCg9dvnOkPjekfnYM6bwOPrADycf3Yd1AdODyBwIzBlSdaL8qZ/PzvD3EpWbeHIueqh2+qgaeCO61VXP71pEyGPtJGkEUpEn/kp8dw6TtzbwE3j0rXhOxpzBeLBt+j8k2lc1WPEU/Z2PH7I6dxciMl1k0vqz/zGEg0pxr7YpvIl43x+UrrIa6R1oL4emDXvG+yK5n827hfVT5dAu/sm/8m0njvB7qt2O08nKrM/oE5Ufr4hKi/8C9+HyJYxtHTTM7Uo3fXkJ37r4VMs3ePXdMioq+g87gCHsqAZNFR9nKAJih3KXSD67NY
+ EBt0pCYG
+ 76ZLH8F4fkVV4BejTdnE4bk4i58B+V/YWSH8QU7vzYbYasCnLBmmUexNl5NKSCPqqKYPsisjMkG8TMWcXz65/k31Ig2GdwcfdvqWJ1U9EES6UMQFE5lkbLEkoo/NwXQvgfUphfDrEfx8AQZZRUYczg/1TI/ZTgPdbe2VK+ZdQRRvB6VrXUAohXAeywUSA5YC3snpSTIW/6LnG6zMoVZJVMz06muusH10sdDdUtDUCXSF1bwFsfMmDhzRDsl/vxTQRBtzLzn5/C/Phu8xW0ml/hFbZu3iphrLA8nXIBS0iTBMysZFEL0yzyZIASdMQYrKhyMGIwaX7ZKNlcV0mShMLtMywUOYijlVQACgwUKgbJhwjJ1AEAmzAHoTb4jUHQdtEtIDultmkFr9uqKGHOEAQ5/EyoaRiGXkIRCRO2xU93DGzLZX56N8FoOtoq5oYfZ1WNkKefHUjW3Gs5Kv8nR+efW7ceAJBIHF2eX2xFJ1wWtZjU4HjhNmgBkO52w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,24 +146,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 04:56, Zi Yan wrote:
-> erofs_onlinefolio_init/split/end() use folio->private without setting
-> PG_private or increasing folio refcount and it works. But after PG_private
-> is replaced by checking folio->private in a future commit, it can break
-> folio_expected_ref_count(), since the folio has private data without
-> elevated refcount. Change them to use folio_attach/detach_private().
 
-Freezing the folio will properly work I assume, as we'd always freeze with that
-refcount in mind or remove the reference (detach private) early?
+--=-CmIuoRvvvnKZ0ZKUUcy9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm thinking of folio_ref_freeze() in __folio_freeze_and_split_unmapped().
+On Tue, 2026-07-07 at 12:28 -0600, Charles Haithcock wrote:
+> Presently, when calculating how many huge pages are needed when
+> reserving surplus huge pages, the global count of free huge pages
+> is used. When reserving with a mempolicy, the global count of free
+> huge
+> pages is used even if some/all of those free huge pages are on numa
+> nodes outside of the mempolicy.
+>=20
+> Reserving surplus huge pages is ultimately best effort even without a
+> mempolicy. Restrictions from cpusets and mempolicies further
+> complicate
+> calculating correct numbers of surplus huge pages to reserve and=20
+> maintaining which nodes those reservations belong to (see the comment
+> in
+> `hugetlb_acct_memory`).
+>=20
+> However, we can do a little better when reserving surplus huge pages
+> with a mempolicy. This patch changes how to calculate the necessary
+> amount of surplus huge pages to reserve by considering the max of
+> either
+> the amount of free huge pages on nodes in the mempolicy or the global
+> amount of free huge pages. We may still attempt to reserve huge pages
+> outside the mempolicy, however, we end up being more likely to
+> reserve
+> from nodes in the mempolicy.
+>=20
+> - v1: Modified `needed` calculation to use `allowed_mems_nr(h)` in
+> order
+> =C2=A0 to consider free hugetlb pages in our mempolicy.
+> - v2: Folded in Joshua Hahn's recommendation [1] to further modify
+> =C2=A0 `needed` calculation to take the max of either the available
+> hugetlb
+> =C2=A0 pages in the mempolicy or the globally available hugetlb pages.
+> Allows
+> =C2=A0 allocations to prioritize nodes in the mempolicy but can still fal=
+l
+> =C2=A0 back to offnode allocations. Also added selftests to check only fo=
+r
+> =C2=A0 the edgecase which caused this to initially be reported and sanity
+> =C2=A0 checks.
+> - v3: Split the change and tests into separate patches and clean up
+> code
+> =C2=A0 to better align with kernel style guidelines. Likewise, fold in
+> Usama
+> =C2=A0 Arif's correction [2].
+>=20
+> [1]
+> https://lore.kernel.org/all/20260602152022.2673803-1-joshua.hahnjy@gmail.=
+com/
+> [2]
+> https://lore.kernel.org/linux-mm/20260624144600.8159-1-usama.arif@linux.d=
+ev/
+>=20
+> Charles Haithcock (2):
+> =C2=A0 mm/hugetlb: Prefer mempolicy nodes for calcuating surplus hugepage
+> =C2=A0=C2=A0=C2=A0 reservation
+> =C2=A0 selftests/mm: add surplus hugetlb mempolicy reservation tests
+>=20
+> =C2=A0mm/hugetlb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 42 +-
+> =C2=A0tools/testing/selftests/mm/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 +
+> =C2=A0.../selftests/mm/hugetlb_surplus_mempolicy.c=C2=A0 | 491
+> ++++++++++++++++++
+> =C2=A0tools/testing/selftests/mm/run_vmtests.sh=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0=C2=A0 1 +
+> =C2=A04 files changed, 517 insertions(+), 20 deletions(-)
+> =C2=A0create mode 100644
+> tools/testing/selftests/mm/hugetlb_surplus_mempolicy.c
 
-Or is the ref only very short-lived either way such that we don't care?
+Any followups on this? Please do let me know if I need to do anything
+else to help this patch along! :)
 
+--=-CmIuoRvvvnKZ0ZKUUcy9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Cheers,
+iHUEABYKAB0WIQSiWf/52F0/aGKJkZDzr801oCEWNgUCaqA1AQAKCRDzr801oCEW
+Nh2dAP0RhTUkLY/ZXEagxLRS3qw+NmM/NsgO63pwcBk6CqLfwgEAuV6RgVQFNBd7
+xyJ4ZSiOAN4LL3qxSB2uJu7LCTUwFQk=
+=WurH
+-----END PGP SIGNATURE-----
 
-David
+--=-CmIuoRvvvnKZ0ZKUUcy9--
+
 
