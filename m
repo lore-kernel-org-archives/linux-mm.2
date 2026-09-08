@@ -4,141 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E61C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:37:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C57F9C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56E76B008A; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
+	id C53616B0093; Tue,  8 Sep 2026 05:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A07A36B0093; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
+	id C03A46B0095; Tue,  8 Sep 2026 05:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7A06B0095; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
+	id AF20E6B0096; Tue,  8 Sep 2026 05:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 566836B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 78B466B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:37:39 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D2BF31C204C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:28 +0000 (UTC)
-X-FDA: 85190092176.11.3E826B3
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 006F24000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dudD5dZA;
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FA4F160470
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:39 +0000 (UTC)
+X-FDA: 85190092638.11.B4D33CE
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 60CD2C0005
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=F99r3XWu;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Eal5NKMa;
+	spf=pass (imf22.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788860257;
+	b=gH6W8PGHVyU7Z1iGw4VxN32O35XvfiaIqa9sgySHNL0ZLeX4edBfgmOLCM/AJL4iI39fg9
+	0o38Fw5lzIaerBaofJYjfIUeXEA1+KPj6XOt2rTPrpsKfkDgHFzZokbsUe1YQxctTszMsp
+	eV2mkhmEMxiI1LsJnWDlEjBSpcmWAvI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=F99r3XWu;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=Eal5NKMa;
+	spf=pass (imf22.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788860247;
+	s=arc-20220608; t=1788860257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
-	b=lGVC5qeuXNrID2c6kuXwxTJlx9RQ/OsSlJ45vmgZEDyaniXkkJRD7sTDIMrcFmhSLzwEKw
-	NBIqQ/xOmWFHvVLE3f4r+Z8eIk6SdpFPX217/eEzGT2BqjEFOYY6lboK/alMajV8jlALeN
-	P6Bi4XgegVHhhNo2feGGZqNumhkDbds=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788860247;
-	b=pLVmAgnhc1btv3GQssd6ANCLYWCXMDEt1g5jEmfnIgihg4xmeqB6ilyGGvv98aTleDGlIk
-	tQxldL8XsqPl3JyPfy3tDMhPT+Bj2KudhiDs2QXPHvzx+tDRdh3DgTFzsD+QfEakVY9NDv
-	Um/Fx+RotDJf868ogD1IJvp3qAPde3M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dudD5dZA;
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8534d507f59so4615263b3a.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 02:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788860246; x=1789465046; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
-        b=dudD5dZAh/rNlsxpCgq1uNAj1Ro4cBDVx1hG53dK5Pfdgmm0e9b6f/Y/yCaKcT+c3N
-         1rv9reUpKP24x8yXLcKd5laitcs/dNnzFzT64T29VHwB2DR28sxj8OLfL7VCLyp+c6NA
-         FIx0wigpbpif27LpEGtg6HEIY4qdPeGoHw2aY4ioqjWsRmJ2CoexO2fYbxGmwxY58tgi
-         Bb3VfkayZ/Sv/ZLoAe4Zg+mYuitrdpoiDlcQS3nWFJ/CPB+6J7pD5XyUQw+94Pg9wyKX
-         zObAZH4HOv/yeyoVnohonz2yDta10aNYzpQcFpDMbYHP6JRnjefr0A9nX+G44pDrKT3R
-         7H6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788860246; x=1789465046;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
-        b=pCGkQy6iCk0KoLoHiZAzZWVietRsRQCscXNfi18J+MMjZQFtTtUViqLNZXNTfey2tk
-         0QM9PoIA59aTpawMEg7QyLvNyA4pLz8Zv0N7L73JHcdkV6kV+qUvYfJLwOC1vubjw+5F
-         DOuMU64F3nKuPZd7eGy3wDZQVf034m5j5vN1l+IYDjdHKYKTJnmJpB9YJiXYrUSP+wq0
-         EnFmlykQqOQep1ckny/t4g2Yw7nZDiFxwIQjO5MPainChqNpDyoSEv1/iEYNDdn1vtBM
-         SP4GAfjau4RXzBK9eqXZf25OLV7+c0GZ4rzsxd8sLDo9mewuZKwS2grdB0B0oKIqgIEZ
-         K1Rg==
-X-Forwarded-Encrypted: i=1; AKwUvBzUwc9vPtVJQkb4Xdj0o4kHnXh5/Cb4G75kAbz/FUeahCtR52R9ykdgM393v/HOW+mtA2NacigMAQ==@kvack.org
-X-Gm-Message-State: AFuF++nfcpvbZMl0t19EFlq5CWBeNc1eCaXe5mpzTWkRaoy0JYsPfdbf
-	qD6LWbwzP14cqIeDtMgcdncBCsSQ5RLGiunHJ6EEIER1QEF2jnXTN1Ay
-X-Gm-Gg: AYBFou2m7scchKIDGovI1GCjQhQGsuZtioAa+5GCZ2PqOTaVAL15hieTnn7YaupHqCj
-	8PfTMK0mywdyBifm1JFGu1VMMehJntUQg+brCd0Qb1cKLDPIravpXjBhvhLmr/37cuvGbbFf1D5
-	tPrKlw72WpLr4LNrfnu1IJ0LPAt1/yy/84A8FK/AUfSjjXPxWuMCCAcZYIXX8KU+oTYKcb7fYdQ
-	9hSFcLG5bcXyx65kgJGgHxK5XYI0UyZpBlrt45b7aMt7/LM+jkc3T6K2OGm9McMvQLSBK/qC3b4
-	bnihCDMSStCcHTpNJmtwesVh+ItUmiV9KZd3bboJmYs3ei7Pa5/c+GmvvmCLlBCrkTOb5AEllvz
-	hpDLHgh9m/2cATfhe8wPhUM3Gzv8PKiKFDvin+hYzYlUDbQ7TPtt168cHe7VxO2rkBYpZpHdUfq
-	lGn7y2pLns5stXk4KDd89+bkj8Ecie3flCbg/N0+TbXA+mqlD2MLMC7JUKgu4=
-X-Received: by 2002:a05:6a00:f94:b0:857:7337:5db7 with SMTP id d2e1a72fcca58-8616ac58363mr41402529b3a.21.1788860245006;
-        Tue, 08 Sep 2026 02:37:25 -0700 (PDT)
-Received: from gmail.com ([185.220.238.35])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8615292d875sm5324180b3a.25.2026.09.08.02.37.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 02:37:24 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Kunwu Chan <kunwu.chan@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Wei Xu <weixugc@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm: swap: move LRU insertion out of the swap cache allocator
-Date: Tue,  8 Sep 2026 17:37:00 +0800
-Message-ID: <20260908093711.2364516-1-kunwu.chan@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260825135209.3135169-2-alex@ghiti.fr>
-References: 
+	bh=M4bnahwswymvE5nOIFxOjV/veHxRfM8mUS2vFlMphLI=;
+	b=Pq0xbCWrSaPXVZBKQxIfKemWdTI/qVtI3VOYWWI3F/1AoFmj5NvGnvXDYyG9fViuxomrib
+	y2jR/TGdzfRA0TJs1yadm6z6kUTeSrMPxc1ixaak/XKGfw/33VV6Nnx6RfZoIFIimHVe7c
+	DD32rQmQPebVpI9YLz0wkXP+afqzC3w=
+Date: Tue, 8 Sep 2026 11:37:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788860254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M4bnahwswymvE5nOIFxOjV/veHxRfM8mUS2vFlMphLI=;
+	b=F99r3XWuTQu1aQaZj3Rg35vrK+Vh4xoW6esYP08KsnkTB5yxRHFlAX+DCSQ9MmE/ytdjCY
+	bT6ZSwlbgz0Tp/9QlaRm9xj6k6x+gQowVBcql48kgWTi7EY8hoPzlCmCwOwmHC8SxOCa3J
+	0icgZeoQJU6KNJO4gOL3qhihZkDuWn/jnlOBCrvGJD7o4Fnl7C36ruhip68Y+2nMvnOAVX
+	9XoGZlIvgcOwA32mE4o6lEcMBu1d9f3urtNxvC6vBsxPGt/e/3MpqOApvFdmwEjj/Zakfp
+	dC6HHcg6MFdoR4Ez1Du4OVqzN/fIOPQmWkTrSXFlU1lEDS+2M+h55TuuwKLKTg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788860254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M4bnahwswymvE5nOIFxOjV/veHxRfM8mUS2vFlMphLI=;
+	b=Eal5NKMa9KoeM279byQBbEfyeEmUQxO7LFbQVe68UMo95PO7FvduzWF1IqJWwbafV544s9
+	HhGMsegsgfpaGqBA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-mm@kvack.org, linux-um@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 11/24] tools headers UAPI: Sync ELF headers with the
+ kernel sources
+Message-ID: <20260908113701-7b7e8e99-81cd-40b3-8a33-f316defe6f45@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
+ <06996199-5255-41d0-ba6a-ebeca57f61da@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: stmbtf7csorxxp8gy8363up1ikhi334s
-X-Rspamd-Queue-Id: 006F24000B
-X-Rspamd-Server: rspam02
+In-Reply-To: <06996199-5255-41d0-ba6a-ebeca57f61da@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788860246-154027
-X-HE-Meta: U2FsdGVkX19h6TA8YDVukuaRQCUVP8QwnwKBdpRFx09HawJr2FEo6kvXjXSmkMRihhtjYID0TiFTEicytG+Y1rjvaA7XRdU82scRQFzCINPf45d6aj1a4VhSjYp3/VPJBQ2QRLj9W7hwzLxeW364/JRGbZueopKtBKz9TILfEDlWsGXcT47ZLAd5PGPdTBkkZmrB59mV2P82TEaZqRUvF8hLaBAUuHrunSWViBMcumCzjnO4CoB8DpOejI5cY0HxDUSgJzrhj8nASmn1bbSgTDMb/3wVCmCR4Xl00xUQWQThBn0UJa4bdVrBjwfcvjSWlGhDo7cAF91CvgMrqpytdbOHwhYsPQnFrv1qMItiEa/lI4rltdrziLxuBOWEPrGBl8OmM5BOg91Wq64t97UC5ojX5MfGKQiPUfGHvYhgijXGEdRoe/xfk9p24DbYZUmcjWaCtgtzD6c9wEovlUyWsZULzh8sQJhDjgY021xtkPYFjfN+6LhAzAoy9UrDCvpsRT8XHgOJIuRZF5RKtE1sSHBuYkkLra5uhw+rtJxVN7gRcRgGbreZl2iRZcE35b2aop6/NI1SxeU0dA/TB6D2ZCDWMIUnH8xsxyGi7UXO3qLVNtNZB2rYYXY4VjJdpvcrj+Wo1q8/vEkGJ9eRPWLetwKIYD2fZyPeD2oCvMj9ahxFk4w+Wkhn7bO8pmADQ8t9av/qFj1ss3fKXWefGrws8a7Og6eLPzuHQtC/G8ykMJ0DAvWoIBf443LadcnjC4DgChamEefEfo+vNnsb3XIjK5nHsaIo6RwyaXzyLHZImIO//FgwTXz0tLbNNcaZvSSGy+fjzvSZGigrc4CnvSW4ygQ4UPsBSKgjq0+nF89D3lva7VJENyw89RSPWnDkksEejvNWq5UoJKxqFc1kfmVkQBLqWbAGVS3rIQAjY0/16qqtAZnUrucK97KdVrZtSLlMNK/50ODxWKgwWtmGpYa
- SOaKDswg
- +oC9WnEA9HNQTg0KJrz0t0cJSHceMCKjnZ2/GbPZZSWd386yuZB8z2Lpa9SYU9oaplDE1iwfUH2BN//1Sey67pNgvpaRiA8bWeD4YSgCy+qOR1DWxRbhaLQd2JzaPbGWndYEKjVvMY6uyllUH7Yu4cNo98WTaxKBI928AJ+ZhKgdsWe36hGubEuJqI5V8LsyLRp08Mp6fNu1xnP9UjZ1Xp6SYoJK9ZnswffTUArHWCSFDpXBQe/czeOFdEwo4qFcBylXNOF0oFwotBqxY6d+5f8QPvSa7x3WfX7pGHhMHPdP5Si4kLNVJlEUUjdMvgbKeRAUmgzTpqni4mrbkOwa3HCcJAYo77NCLNyMZP/mxI2546sfTtA5zc1CgRUtQprIHhomKNNdcBSwsn+ZaepOC1zl023AKt/6I1/eBeLTS8XIZnrDJFNaX60+sEZSfrQrngaDNQnBj/rcfgIcURhZ+dPhvFK52I41yB4E3eF6aVmSSen72eF26ubSMvR5kbxIDz5wF
+X-Stat-Signature: gtznim1uews7txoebeewc5n5i4jkcdke
+X-Rspamd-Queue-Id: 60CD2C0005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788860257-611774
+X-HE-Meta: U2FsdGVkX19CTul3IHHf4manjXwqFlH3U8A704dH9qkrcFBXfPW+Ar1LIg8YR9r69UbIlPcT+E91Iv0hWBczYOltFDKjnwWd0e6BxOias1HlOP1/uFBQxBVDDhScQCDjy+l1sFhyqbsqd7BIbXWf+yIItTdJ920mwWbmvrbwxlRIlL4rxDnLFAJbMUw65wB0XQuvAz2rT+NJ04QN3WSwYD2BsTQj3+TzLfhb2ndmi3LwTCf1/3BzmDXpXI6bXZ+bbjswXCx8dKovHubxbx0c27BbUHL7mOOnM2j3cx/gvnMlIOjHLxHSMCscJGi8sj6WubnzBw+yXOeAU7Fpi0qtaxo9NNUnehtAl7AQUOA1ctMBA/fFCwW+GV2A5yblUUTDqJdoAdtaEvDvkTbrHoDe+2nO+gphOk3xugx8YWRn5LBHsa7R3hZdjXyQbJ42mRnE2dHHV507BV5Kgt9e+C8XzFudxeO9E266BjAYPoNE/+jljkP8/L6qrei9HQdUbQNKEj+Lj5en07dJfPdYGV+i27NbK8pDAI2uPYACxjzKkVoRsN9f+PANMr5YjjejgSGVvIVQf454229pA8lrnfC6d89MCAD/Pe7Rm4beurdZj8CSbI3pnLfEdIcw6hogvaC+HY0qIWEqsmqF6TU7yI9EJfNv4/2hlmU9r2i+rjTuBgbpT7g1xkIFsvzuwcW+k4kqgXqboFAe62pHVH/+x4hXeWEaXbfkwumY3Bm7youmQAHlZ4AEMjIMLy5fE9gVlv0YF4hNvexuDnf6M2UkJqikCOvBktybeOxWEPD7/Jq2NBksKJ/P6xYvAD7VFUz4CFvAFODqyDHnqz5SVDx0VV3MiUyv7cuW9mw2tNH4Z/6m8Ij3dPdzdNMHsI2D6W5G2RzmWv3sSw1xHVgDlP1ESpcmQZ1HjRF1mfWnJ0jOB1FqqhdioTmDQLAqXO1jUFj8nzQfPPTlj6ecp02IPPiFs3X
+ y57vCeN6
+ XatHVRbO9wZa7HFmKhgPIzRGE/VVTXRaAz9T0ByLYVHs/a/OGk/WeG7zmbdmRP/hGqZmQK+UnDA7EGh/yJbI+abGqN4MaVygTCNTo0pw0sBEvUy6OHLOqHczyFP028w/2hQD6ZlDhtPscX3IOjD0CoJKliLnxNhzoUI8dity+fHK1mv20vKPesm2CQseMpTKSTxS1kST/7KYxISmMf5LVdwsxEMF4n2H6IpmIsoK5bFKr5JdnMNhTy/VF5ppgAncXxnU8Y9V5HodytleShbKCUDJveWE+W9+iEwrhzCz4usjp7O6vPaqtEJlZR4tfEbfgzt+ICrpxnswTKvfOpQqSIes8gZSuKW+cblxrYJV9+Utc+EBclIJmixm66w0PHC0mQlRhCqgEqdUoQEzdRM9K2cOyEuaHttZ0JyTmVfTI5TyOJqBVkPpi7Kl51KOtsk2iHzxOId6KDyBeiBWh6n0zYFTrFZ4nZ0TSgl+8mAhM0zv1YMYfjb7BGswjgaNFWyxbvpKv95tF/Rwxh9EAVXm+1N7/vtZog6GAP3jETibctq0VJPVhbtoOMBxJqNiXa+hVTJxn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,152 +128,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 15:52:05 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
-
-> zswap writeback wants a swap cache folio it can free directly once
-> writeback completes, i.e. one that is not on the LRU (folio_add_lru()
-> stages the folio in a per-CPU batch that holds a reference until it is
-> drained, which keeps remove_mapping() from freeing the folio on
-> synchronous devices, and likely on asynchronous ones too).
+On Tue, Sep 08, 2026 at 10:56:58AM +0200, Christophe Leroy (CS GROUP) wrote:
+> Le 08/09/2026 à 08:33, Thomas Weißschuh a écrit :
+> > Pick up changes from the UAPI ELF header files.
+> > This picks up general changes to elf.h, elf-em.h which was forgotten
+> > previously and the new elf-r.h.
+> > 
+> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> > 
+> > ---
+> > Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+> > ---
+> >   tools/include/uapi/linux/elf-em.h |  71 ++++
+> >   tools/include/uapi/linux/elf-r.h  | 696 ++++++++++++++++++++++++++++++++++++++
+> >   tools/include/uapi/linux/elf.h    | 112 +++++-
+> >   3 files changed, 868 insertions(+), 11 deletions(-)
+> > 
 > 
-> So defer the LRU addition to the callers of __swap_cache_alloc_folio(),
-> no functional change intended.
+> > diff --git a/tools/include/uapi/linux/elf.h b/tools/include/uapi/linux/elf.h
+> > index 5834b83d7f9a..88bdcbb526c1 100644
+> > --- a/tools/include/uapi/linux/elf.h
+> > +++ b/tools/include/uapi/linux/elf.h
 > 
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->  mm/swap.h       |  6 +++---
->  mm/swap_state.c | 20 ++++++++++++--------
->  mm/zswap.c      |  5 +++--
->  3 files changed, 18 insertions(+), 13 deletions(-)
+> > @@ -312,7 +323,7 @@ typedef struct elf64_phdr {
+> >   #define SHN_ABS		0xfff1
+> >   #define SHN_COMMON	0xfff2
+> >   #define SHN_HIRESERVE	0xffff
+> > -
+> > +
 > 
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 77d2d14eda42..fc44daae1de1 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -304,9 +304,9 @@ bool swap_cache_has_folio(swp_entry_t entry);
->  struct folio *swap_cache_get_folio(swp_entry_t entry);
->  void *swap_cache_get_shadow(swp_entry_t entry);
->  void swap_cache_del_folio(struct folio *folio);
-> -struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
-> -				     unsigned long orders, struct vm_fault *vmf,
-> -				     struct mempolicy *mpol, pgoff_t ilx);
-> +struct folio *__swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
-> +				       unsigned long orders, struct vm_fault *vmf,
-> +				       struct mempolicy *mpol, pgoff_t ilx);
->  /* Below helpers require the caller to lock and pass in the swap cluster. */
->  void __swap_cache_add_folio(struct swap_cluster_info *ci,
->  			    struct folio *folio, swp_entry_t entry);
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 727a17ee7821..07418fc94f00 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -483,13 +483,11 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->  	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
->  	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
->  
-> -	/* Caller will initiate read into locked new_folio */
-> -	folio_add_lru(folio);
->  	return folio;
->  }
->  
->  /**
-> - * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
-> + * __swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
->   * @targ_entry: swap entry indicating the target slot
->   * @gfp: memory allocation flags
->   * @orders: allocation orders, must be non zero
-> @@ -501,13 +499,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->   * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
->   * @targ_entry must have a non-zero swap count (swapped out).
->   *
-> + * The returned folio is locked and is NOT on the LRU. The caller must either
-> + * add it to the LRU with folio_add_lru() so page reclaim can find it, or free
-> + * it directly once done; a folio left off the LRU is unreclaimable and leaks.
-> + *
->   * Context: Caller must protect the swap device with reference count or locks.
->   * Return: Returns the folio if allocation succeeded and folio is in the swap
->   * cache. Returns error code if failed due to race, OOM or invalid arguments.
->   */
-> -struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-> -				     unsigned long orders, struct vm_fault *vmf,
-> -				     struct mempolicy *mpol, pgoff_t ilx)
-> +struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-> +				       unsigned long orders, struct vm_fault *vmf,
-> +				       struct mempolicy *mpol, pgoff_t ilx)
->  {
->  	int order, err;
->  	struct folio *ret;
-> @@ -643,12 +645,13 @@ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
->  		folio = swap_cache_get_folio(entry);
->  		if (folio)
->  			return folio;
-> -		folio = swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
-> +		folio = __swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
->  	} while (PTR_ERR(folio) == -EEXIST);
->  
->  	if (IS_ERR_OR_NULL(folio))
->  		return NULL;
->  
-> +	folio_add_lru(folio);
->  	swap_read_folio(folio, plug);
->  	if (readahead) {
->  		folio_set_readahead(folio);
-> @@ -683,12 +686,13 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
->  		folio = swap_cache_get_folio(entry);
->  		if (folio)
->  			return folio;
-> -		folio = swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
-> +		folio = __swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
->  	} while (PTR_ERR(folio) == -EEXIST);
->  
->  	if (IS_ERR(folio))
->  		return folio;
->  
-> +	folio_add_lru(folio);
->  	swap_read_folio(folio, NULL);
->  	return folio;
->  }
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 761cd699e0a3..8163e6c5f76c 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1000,8 +1000,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  		return -EEXIST;
->  
->  	mpol = get_task_policy(current);
-> -	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
-> -				       NO_INTERLEAVE_INDEX);
-> +	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
-> +					 NO_INTERLEAVE_INDEX);
->  	put_swap_device(si);
->  
->  	/*
-> @@ -1013,6 +1013,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	 */
->  	if (IS_ERR(folio))
->  		return PTR_ERR(folio);
-> +	folio_add_lru(folio);
->  
->  	/*
->  	 * folio is locked, and the swapcache is now secured against
-> -- 
-> 2.53.0-Meta
+> Getting the following warning when applying this series with 'b4 shazam'.
 > 
+> /home/chleroy/linux-powerpc/.git/rebase-apply/patch:846: trailing
+> whitespace.
 > 
+> Seems to come from here.
 
-I checked the callers of __swap_cache_alloc_folio(). The regular 
-swap-in paths add the folio to the LRU after allocation, while 
-the zswap writeback path keeps it off-LRU for the dropbehind 
-handling in patch 3. 
-The new allocator contract is preserved by all callers.
+That's also present in include/uapi/linux/elf.h.
+I'll add a fix for that, too.
 
-swapfile.c still references the old name in a comment â€” minorÂ 
-consistency nit.
-
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-
-Thanks,
-KunWu
-
+> 
+> >   typedef struct elf32_shdr {
+> >     Elf32_Word	sh_name;
+> >     Elf32_Word	sh_type;
 
