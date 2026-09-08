@@ -4,124 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E343C79F9E
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:26:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A0FDC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:26:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364696B0095; Tue,  8 Sep 2026 11:26:00 -0400 (EDT)
+	id 9826B6B008C; Tue,  8 Sep 2026 11:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 315A16B0096; Tue,  8 Sep 2026 11:26:00 -0400 (EDT)
+	id 959BA6B0093; Tue,  8 Sep 2026 11:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DDB66B0098; Tue,  8 Sep 2026 11:26:00 -0400 (EDT)
+	id 8710F6B0096; Tue,  8 Sep 2026 11:26:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDC0B6B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:25:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89D0314036D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:25:59 +0000 (UTC)
-X-FDA: 85190970438.26.B65C867
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 83EC580002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:25:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIPoFbWn;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 65C656B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:26:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D6095804F7
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:26:28 +0000 (UTC)
+X-FDA: 85190971656.10.AC9F899
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2525D20006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:26:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nJ04DpNV;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788881157;
+	s=arc-20220608; t=1788881187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLL5t97riWq5Zu+ReRl9pR+1kEZ80aHdKkkE9El90lc=;
-	b=pIEL5old37gPV9GdYQqA6HzmRa6UU1t7DyTXD9jXKe7TkWJrPw6FKwFqf/6t2/BHULEHu1
-	UTz75C7BLEW5M91D6qf/PJLm1t3edJfwXjXAca9rIxWPA/78PRYM+C3zg+xONaSr52IvAT
-	BXvLbdzrLqN03U/C0nGvGn9qVB7wHnc=
+	bh=MUETNzuvyl9p/q2JvmY1Yyagyh34A5+QCqEncLEVPKI=;
+	b=Wo2hJLvTlX0MmCsEH2qQsFARRRc7r6rd0TKLjlylN377pj7zGzp+SLC0ZFFStoZGILzivL
+	F33ypfxe0ZmYkE/+rNdHCgnVCVdO2R8ax+GZBZv64b+yR4atmP3qIcPCOFf74KjGkwYXK3
+	YAhHlvoggKCczvKZ4z+tr+3VtuV6yBQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788881157;
-	b=QcgQhZYh4vGMESnGDJ6ti+yiB2GuDmprVZPtGxiUxUbUAKso2b5F8eFLUy8WVPcxl4m4Tk
-	IyDcbbXA5ooUmUCCv1PhYeXTfHpxM6Xmf51ZFc9npmxI9Vq4xVO2NrRWe0urLiRI0SNQ84
-	7s5/0gjDOVmtgPsrAOiNxTLfcFWqTK8=
+	t=1788881187;
+	b=S+OEZKZM2UKNX/zvK28s5BXwHvlROUf9euYuPU1+SjKgSGSmNEIC3znScYEeYgzMYE98fi
+	GpG6Wl5be3n5DAjIgMR2SBR/Of+HvMsVlXyWFaRyyIXGC+ljcA3PUYbF8AT35l2rpy8Xgd
+	5l7eloKzzUjRiaBh/baJq9pwY9Q4zFI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIPoFbWn;
-	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nJ04DpNV;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C39FE43430;
-	Tue,  8 Sep 2026 15:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBC01F00A3E;
-	Tue,  8 Sep 2026 15:25:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 99EDC601FA;
+	Tue,  8 Sep 2026 15:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECC61F00A3D;
+	Tue,  8 Sep 2026 15:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788881156;
-	bh=NLL5t97riWq5Zu+ReRl9pR+1kEZ80aHdKkkE9El90lc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aIPoFbWnDCAK2rK8PR+iH8Vps4cfkge7ZyoHMyMsQipULlAqeC8wHruNKj+VVMkMt
-	 CqlAM5+Bxm+T9/fHDwGYDd6ftMe9abHQJip/ot+e17skfgj/kEgbzp1BOY6GW950T5
-	 Yv0oS7Ce89UXMG/QovUY4yIT3CKoKEJmlEmv0JU9JUktg102mquX7jjb5emSXr58Vv
-	 fp3QpI3eJ5VvT6AZwdft92OoNvhIwcNDIjHWnEB5N6gI6ENlQEDD1NWF7RpG5Y4vFw
-	 Mqmvz2VMWcEK6ah/cM/5pxsD/aszTERGRNxDArhg2oUKawES5YItfJzlUf1s8MXmf1
-	 j7tLI8Bisb3rw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7808F198003A;
-	Tue,  8 Sep 2026 11:25:49 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 08 Sep 2026 11:25:53 -0400
-X-ME-Sender: <xms:_Cigaje9FRO_OGuWBqzWBvHv5zWaO4010Dk337-2LRq7ZEWvWc8h1g>
-    <xme:_CigasQFOtA3bH0iFVK3KCvqrkZtptG4Jz92AkMpThKylse-J7Z0QqCaUFQjJpLpy
-    nmzB0gv75WNY_sPsgdR_sxaMOABYoZ95EHlIzrpunrjvKBtKvifUm0>
-X-ME-Received: <xmr:_CigaqmwrgW4QpFRWktIYM4j8UXE-LlpAJLPF-2BpiuwIZgbfvyoZR4-Nao>
-X-ME-Proxy-Cause: dmFkZTEb2T3SF9BXFaCq6Y7MiXTtJ1ovoHmlskKKyQz74Er/5FJa3tWOsXEjWGtdcJ4Go6
-    Ta0l/J3gvvprxj5O7HnzuAYqoQXGtcuHEGyCho/qrQD1FPdUR7Xf+EKDfUOaB9oXEzBRrF
-    t9VrvpJkYHKvWDkZDzWQJxJkPROr1SmDNami2TGx3knpupG+c1faSP3dh/FuLuR6OMQKqz
-    kn/xBFbt/vNohUevxk6tRPc3/HHyHA0y7CiwR1Z7EPnURPu3AWqoTfw8//6PgcsJZXqWDl
-    YpW2hISp/9iCrQcQd2xjm362PxVejFW0C28VwZ1mch3qpaiswmuK3UT2orIoV/JhxfAgd1
-    5qA371ZAr/otAXQgDnRnYGqrAl/Fd58jNcu+5+LSMULuayWiyyPBbamouZldJ36/JAUWIr
-    M/9ZbdhjM/LxxDYereX/96Pcf2Vv6bstoedRDGcxM8mKRgZr93gth/OwqP5qehi/9gGx+G
-    bRZSPOYSBgqFBU6Ag9OV33JDG2xImSJ0a9kFalv49g/FzdcwENOaeW3StmLrYD0wVguUrX
-    1jqQCOPr1mQtcu6KYIPLYY8E7TDo42PCbpXLGxEOzpOjEQ9mR4f7oNSiyFfbXtk3FzrsIp
-    yR5kAbcUZzJsKXda4T8BVMg1djPEYFS4YY/2p3Ndj+gNzeyo66GGY9IfVIMQ
-X-ME-Proxy: <xmx:_CigaoZOLW6ZiIRdGzCXzzjrEKo6fAGLDWyWuXJrqigHs0Kge3x1rg>
-    <xmx:_Cigal3_56a60cWkJrEt6_1tSxma3S79BtpJuzPGTm6-1kNJJ39gJw>
-    <xmx:_CigagoqJp27kMI6QFDj3K6glZU8fEDd-FvbDIokiag9uH4EeFe1kA>
-    <xmx:_CigahzTIxd3MDCQ4h5wGf4PDfn6iY_RCBQ-X5UUkcSY74WxE0Kn1g>
-    <xmx:_Sigavg6MMd9CFLhWO1YiuFkeTXtLp6gaHk61CmnNpkjK7NrDsZ1aWsi>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 11:25:48 -0400 (EDT)
-Date: Tue, 8 Sep 2026 16:25:47 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Yeoreum Yun <yeoreum.yun@arm.com>, Shivam Kalra <shivamkalra98@zohomail.in>, 
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v4 11/17] mm/huge_memory: move filemap management into
- the file split helper
-Message-ID: <aqAo4dFGofAJzkRn@thinkstation>
-References: <20260908-swap-thp-cleanup-v4-0-b532a3f20e71@tencent.com>
- <20260908-swap-thp-cleanup-v4-11-b532a3f20e71@tencent.com>
+	s=k20260515; t=1788881186;
+	bh=MUETNzuvyl9p/q2JvmY1Yyagyh34A5+QCqEncLEVPKI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=nJ04DpNVCcrMX8oWKLxk4+XYNWQz2zCPo/O/pCDRJv0cFP/YC3Quh9zd4ZkzpbvkY
+	 vdwE4LZ8G8j/0tAU+svItsmcJ3ITXIIzjlTtv4BIYPmhviRHtsSlAzeP3nBW4ljR7R
+	 ba0osdLKGW9nq7srMMTUPBD+znUokItT/+z8Az8E7ksYl3oDIcNyOcQlLnck5gzqY/
+	 TXBS97iEbYSOlJgDOnlpZVnUemBTdRF64Du+A5I/xBJNHMHxbMmrgNBPjGukCfWQBf
+	 /FHWh/bXaDpmqCN2CM0V9ZL4rNyrcONm0Rsd5Awx7ny8fXlRiUMRtw1B+oDwYh2eiN
+	 vUgA3g8v6YY2g==
+Message-ID: <54d6b1f8-7fbd-4a08-a9b1-a688f75d82cc@kernel.org>
+Date: Tue, 8 Sep 2026 17:26:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-swap-thp-cleanup-v4-11-b532a3f20e71@tencent.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/14] mm/hugetlb: use direct assignment instead of
+ folio_change_private()
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-5-6ae22f9d9272@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260907-remove-pg_private-v3-5-6ae22f9d9272@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 66ssojhwxzbieam5ikar9kfte8cwgkfa
-X-Rspamd-Queue-Id: 83EC580002
-X-HE-Tag: 1788881157-146109
-X-HE-Meta: U2FsdGVkX19TNrRTxwnTMjmlMycZbf/2OQCG9GiUTd1d1F3tG03XOFzz3ZzTkzbI7YtCrShtRTIStiVbr57du9ekwrmkOK3LWjjPVbyhIAnznxfwpAPNrsuy6v0jPF6GMEBgcVXFCaSJfX67B+HUV3HQx71q8oJelPoXqXOVOoSJ1SW76mcIApN/cuinMzNVatjAPyrwnK8USif/1ApQ68dXOkAHE90hlwBAn6KOI5MlG9b3nXG+3rPUpmrjb9YS9K7fgLPUMY4kcOQbRCEpIt1AOQM289ZRlPxW0UPCRPTjp45pxqdF0EKf3h+CwvqSLBLrkTYO8tp2AShq5Ol3vLp5TqJhqNB+dJjWV9VKu3Xuge/pTF0Ru3C5Ozc+N/1XY3lWL3vz4ILGa+zRrCDoL404sZpPKtB2+nm1LGL2cAYq/RTBo8GqtSg+jICvgSpLlAaiOGwuIQA/zv8vnIlgzSxnlhU5w50KApZyvcY8evpTPsoOwSGdqMrfrXetuNpzTm2WENyChKQIDacTeMru330J2sbq6cPILv+Mh29yCTkE4gaRC5ztE8h2CzLSSX1KBRSNfLlIfXFHaPeKCFK+MW0zoZfZ5/tElxF4fJnJhUqpITwqbXPu40QMtm7aQw/gKSEmC6CGidtd0BLJ0as0VrDbxPt66hZhNVLhuqfD1lWsZ4mEXbsPZUgEWC6NNjwnDHUmSyqTpZs7tpgr8LQwNHPJJGKMyvaVfYAf4PgQP4RHIgxOBHRa7XXLDLrwGIJwtiOdwIAlHwQgGH/HmWypHLWyZyLny3mqD6nkJTeBoxqVaNDWzQmVEvl5Im9ZQId9LhEAQS/kKic7LN2W0cwJZ+cHrp+lgrykITVLmmaijHBgkl1nja+rp0lQ4OkNglCzWAnKxx+q5JmINNh5/4KgmI1gZyDK6/kCsiLiDKNBBlKI8HSsteZWIY0Ene7psHiC857cvUb+1gzqyeJqrXF
- yfT5WDls
- q0uWbHGZ3MKjetmSAP3wNKL+Bip14cCYBv79Rhc5dyuGN/0f6X4889nGONkRZ9Z1s2YP43UzpnOyq8HjEKDbxdQKpPTmb8xIROHGRfT2Q06bF30F0WiuZqlQJHM504KebwdMITRuYPkIMauOZb7Gs7kCmVax3gXWC2LEI1UM8ld2zT22l6iF6AyEDinViQMMK2UYbwS03V6MAwMDObRsp5M3ZTK4ixfS+Ax7OL9kgiNMSha2EASR04P95hzPjOuAyc79lGrRS3SLM8/af6250HUTHhPrWL+RlVeATaRRmOIl3pUnqW6eEiiwyWeiVllko6se0+MMFMyI2N1n/teTJ3nIIpp4/LcYs6h47gzYbpZ49DjQs+NsMhqlrYA==
+X-Stat-Signature: jryhbeiord3msqfbq6pndcgcfihhojk6
+X-Rspamd-Queue-Id: 2525D20006
+X-HE-Tag: 1788881187-478208
+X-HE-Meta: U2FsdGVkX19xjqdXCTLvoFm/lqaLD+oUswdmBLpQe6tqMdfK6pXUg5pnXchH/n4NmLfABj6tK0zgEqg8jRcV3fnZZOFm3M5iibcDQDOYNFx7dYMtvB9hC0R2daSCMSkDrxTYxcJiFe/aHYADbJn9nnhFCkinfQpIs6vaFL4iRjIYo6tBUcVLu7OXv2MnAqLmjuLJr9qzNnWAKSNoVDUslXIS4aDEdMbce/UVq5n4efttoWQ4eUo4Dr53Q1ZGPKU06Bm/wqNgwcIjMtNHlOgYrYINZxUWnt2RJJKzR40aZii58rPXE05Up79S0DxGKCkYSu9/I3PJMaK5af+sJrDmE8w6jLrcasXDAl+OIYZgSCcqNRBmL3SRJfasO68YYrUquvnRb2as/JegCqGJ3MuPkcw1HD0bmnClO/WWYJiQ0URw5WiWEx9L3gaYiuTfjCqpBbhNtLihB5zbyHY+WhvK70gfTYULVBSK8nAY7Ey1rhD5rPZPffMfqFR9im5VQ9LtVH9Dcpq0of3wIoer0H2m9ttn1s4xOeeYXHjzDsen1JrWC7NauiszP90OGYHXyJKzwd31Wrz4w7qRDhkiIHpp7ExCD0uLx5BQ7SOLA2Zeqww6WJb0/B4K5BuAjLzB3tgEjYrZXW2/qpwoAq0OUKrujH7z4cJUN+Ap3pHlqPfbZTX4ujMfemVEn93OwUwLWcGaPV7MeYm0FPniGLbp+dANzHbnrkOXJNbCmo9tK+obwLo/Xb2W4IJ+mGNdYQCwzD3DYTgHCLQzoAGn8J8Ac/9sNNYIbdJrjLRGNRvaIEZyxHDAVGmY2E1T6GDagj9QNkSq3Z3+cHGupG2vDsyQCYUOsq5mOHQNwQsw6N2289PZABaCXCE2lr6UijC4GeyoFUKbefWZ286izUbRn14kPKBYwlyGfS9k6ArDWB8YT0AQbjJateFfMVmgvRDQHR+bo/YL0tNNM/EOJdDZon/Lotv
+ NCOqYogB
+ xFg4k6h3kw57xKXYZsHvuLjTs4D6hEc4yPxDPVD/atq16yuIsJ4UwaZUi12oLjGZGfGzeg6J5gSqz7jFvUO5cytdWVSK7WQVzcdpsxo0Tz9pDBU/DptrpgaX12Nsykq7r2FZj8AJ+ku0zPm5kWcrb3XDGvlOdrFgMQN1SV0qnjUvNbVxK2rxjtZjPVKp6QEDOZJ1SlYshTKVq43n5h91nQwzA1Ho9bPqPe51lNpm9agY5G8cvd14rkhGrRrEws/YVbtCcId2ZKR8OoosXmki2Z/Et4YSDLUVAtSznSVVZA1mftLU8i2bCFe8ovXjlupwLM1OWfe2GphZW7fPMy1cNEgmLmd5NV6hrM4x6MhsQwpZZdGlE/M81gQPokxEFhQhXbBAYworMxj6ucFtWg4syn9ru0T9uvP/TGAdV30nBoPoe76LRabY6S7sBxCz/GRJ3QAdbk+q3YxWYFHRY0w8k0Kf7p+P8soVrCY6SradHBo+y0t9ANEiffQ60+1Oau0m09AWciP6mA2DHZhHrNPlAs+Qvgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,19 +151,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 02:12:15AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 9/8/26 04:56, Zi Yan wrote:
+> folio_change_private() should be used along with folio_attach_private() and
+> folio_detach_private(), where adding and remove ->private content requires
+> folio refcount change. add_hugetlb_folio() simply sets folio->private to
+> NULL without refcount manipulation. Change it to direct assignment to avoid
+> semantic confusion.
 > 
-> Only file split needs the filemap and xarray handling and related
-> variables.  Move them out of __folio_split() into the file helper so
-> the helper is self-contained, and simplify the parameters.
+> It prepares for a future commit that remove PG_private.
 > 
-> No functional change.
+> No functional change intended.
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Assisted-by: Claude:claude-opus-4-8
+> Assisted-by: Codex:gpt-5
+> To: Muchun Song <muchun.song@linux.dev>
+> To: Oscar Salvador <osalvador@suse.de>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/hugetlb.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index a69bd463b1aef..08a538739d785 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1445,10 +1445,10 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+>  	}
+>  
+>  	__folio_set_hugetlb(folio);
+> -	folio_change_private(folio, NULL);
+> +	folio->private = NULL;
+>  	/*
+> -	 * We have to set hugetlb_vmemmap_optimized again as above
+> -	 * folio_change_private(folio, NULL) cleared it.
+> +	 * The hugetlb flags live in folio->private and are cleared by the above
+> +	 * assignment. Restore the hugetlb_vmemmap_optimized flag.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+"are cleared by the above assignment" ... isn't "folio->private = NULL;" as
+self-documenting as it gets? :)
 
+	"Clear all folio->private flags except hugetlb_vmemmap_optimized."
+	folio->private = NULL;
+	folio_set_hugetlb_vmemmap_optimized(folio);
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+It's also pretty odd that we use an atomic here, when just erasing all flags ...
+but that's something for another day.
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
