@@ -4,80 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCA7C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06636C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:12:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21B66B0096; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
+	id 0912A6B0093; Tue,  8 Sep 2026 10:12:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B835E6B009B; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
+	id 041EC6B009D; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4E076B009D; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
+	id E99846B009E; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7371E6B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C3CE1C28DD
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:07:59 +0000 (UTC)
-X-FDA: 85190773878.30.00688A0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C20146B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:12:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6028B406DA
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:12:34 +0000 (UTC)
+X-FDA: 85190785428.25.582677A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A6ADC2000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:07:57 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9A3842000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:12:32 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQGU4RuN;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788876477;
-	b=EH3yRW3Su3mv8xzokeQZvx6RlWQ8lVERxqxREKweSob5ksRdYo8F2Fhr8XSDC5qqhHLSef
-	5k0wQvbXqgUqtoqPxrwCV6qoWK9OEO0lScVJH31QdyDqxYtQz7W5bMG9pn8u/91i92piMJ
-	5ORXfbhwkBcPaE5SWeLA9VOPxRwToGM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQGU4RuN;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6F5C9hk;
 	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788876477;
+	s=arc-20220608; t=1788876752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4WFBW494Ued1je39zGeN2tdJow2EgtUwmTrd9cYNqk=;
-	b=ctQvZFuFNUXGKJLr/qqT0W3TEAxI4Y/I6UmVb3RG1UX9P85u1Wmr6zHbg/rz4oD40oMsyX
-	Wya9aLmtSJUwHFiNGHFjoiNHYEhjdrVng2/kDBWE+wR9wsUxSriZLdTAvVgPFtvPcV+RUq
-	glMTMze6qCd3OQ1BGqvYNCmpIu8gIc0=
+	bh=Y7QY+32xJuMq6Tz60T2FtAYLMwPxmKJa9EIw0naxNRw=;
+	b=IMsOro+mfd9wTCKaipr+G6c0PWBK+hJ7xwms6jCnI1yXzLsCwJVXS79heYf9HRFlmUR1rh
+	4uC/ttgiY7i1yf/hxQOA6Grpb98dz5FP/RB0asbDI8+oeUYXeNlGjvmWQ/4vQSCSDzboRJ
+	zBnL4cGJI3AlU4C24sivWW+TUX0ybE0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788876752;
+	b=eb1T6lsjrfIF5nXABCDZhGDipGjWlqTrqck8YXD5EWr8VC4h/0NrdNxtpi6IFuqO7cGn5p
+	hD0HWAVGgmyaTiH91+jEDurBXqEjfxiJ77/egVjX3JKx57baIBwnP+7hV6eCjES/Jv2iP0
+	4Zn3h58m4X7b1oZ3sabul8mwlCk6TkU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6F5C9hk;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B449601F6;
-	Tue,  8 Sep 2026 14:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE451F00A3D;
-	Tue,  8 Sep 2026 14:07:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1963E601F7;
+	Tue,  8 Sep 2026 14:12:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019B21F00A3A;
+	Tue,  8 Sep 2026 14:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876477;
-	bh=R4WFBW494Ued1je39zGeN2tdJow2EgtUwmTrd9cYNqk=;
+	s=k20260515; t=1788876751;
+	bh=Y7QY+32xJuMq6Tz60T2FtAYLMwPxmKJa9EIw0naxNRw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kQGU4RuNAJOY3rsUeHdoZ1orFmipJPWkwfJXBCa3wYKVxTgNb9DT9WtoGg3nfnWgd
-	 mJpV7XsVp10l98a7OX+BOYBcsQqqKcQS6n8mrWQdImuJTR5dRNX5InWjZyZOcEZZKG
-	 HfQqjUbU6drW3G0iyxhJw7VsBh/x4q71/fI3nejJloGv1cwjlE8dUAHlt4vJ1eDaAs
-	 0333NzULtWV4NvQZQxcO/U47nlo4Uf6jYh0MBD+U7kL37fhJtTHmz0OG1HNPXMLIv0
-	 TDnt+5Cpt8ji+rqowMPVVjN84maLB3/3hGzUWoHOrwFP3nY1zvhVvpxaOVi8fWWiKo
-	 MNjMhE4/9fHAQ==
-Message-ID: <211391a9-7283-498d-bef8-41ba5dfcc549@kernel.org>
-Date: Tue, 8 Sep 2026 16:07:40 +0200
+	b=Q6F5C9hkksHR3U/qP+t0jNS27VaZxxFP2ctszQifVzprISbqSQo7LQFXLrJFnIX1o
+	 Bafps7WKNOyAbhevxCim2zGutTnUOIDSifFGUGCiP9RwxASEYTPSF2tXGt+5AFtsRQ
+	 bRbuIfuVAYhAwBPbxXaTWAqOrlN/JwyhCpmyzSJuqnWuXNvEK6V0gdeOkP6z1D5xpg
+	 z5EMDrurGFQ3/kil1agUJxZyQJZ/6xB3Zotk2rMQmqW2hPUL8lXvudBSa0NDHTmxQ1
+	 K84k8y8+PPNx8ZBj80Ht1qxr0ljuwdeEVDsbdZElRqKWewvLo+314UzApBhluK51Mx
+	 O5trPvNcY9YMg==
+Message-ID: <9bc5787d-6106-4d0f-816e-cdf5a308abd6@kernel.org>
+Date: Tue, 8 Sep 2026 16:12:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v6 1/5] mm: Add copy_remote_mm_str()
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>, bpf@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, akpm@linux-foundation.org, andrii@kernel.org,
- ast@kernel.org, brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
- kpsingh@kernel.org, ljs@kernel.org, matt@bobrowski.net, memxor@gmail.com,
- song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
- viro@zeniv.linux.org.uk
-References: <20260908135302.74963-1-tasos.papagiannnis@gmail.com>
- <20260908135302.74963-2-tasos.papagiannnis@gmail.com>
+Subject: Re: [PATCH 0/3] mm: support splitting mappingless swapcache folios
+To: Kairui Song <ryncsn@gmail.com>, Zi Yan <ziy@nvidia.com>
+Cc: Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song
+ <kasong@tencent.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Nico Pache <nico.pache@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260805-b4-mappingless-swapcache-v1-0-b1d78ba257ca@zohomail.in>
+ <590B3189-5B66-4ECB-84CD-7B7EF18C0E54@nvidia.com>
+ <anNOroQdjQh7xmU9@KASONG-MC4> <DKIRYOJXLIYN.32KI06POZL7SY@nvidia.com>
+ <anZLkwwxHdhM2M2Q@KASONG-MC4>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260908135302.74963-2-tasos.papagiannnis@gmail.com>
+In-Reply-To: <anZLkwwxHdhM2M2Q@KASONG-MC4>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A6ADC2000D
-X-Stat-Signature: ycadhkqowfibne1z39ud46w9n7kfcnkr
-X-HE-Tag: 1788876477-786584
-X-HE-Meta: U2FsdGVkX1/qzUU1dwX+lLQw6x2bpR52ecVKbAMCI9OoC40NmvhZUj+rCnfXNX7dhc1BrlkHmua6n22PBPvq62zfvebmCLaIePKojuyQF7WkCV0QisnPKJCG3B5QBrH3mBsyEVFc9BUDvdSIesB3HLu4k8JHtt50uxb2veGZC4UqdXl8z9THGXKbP5he90Zamh22cCKyEZ7kfQN+uAvs1m2fJlEIq3DK7DyCZQt4ZQB5T+ai+QyblOo7XcktmMXurU8CaECdQQwV5R1CurSo0D2bl2NmMlUz2zofiG73AdPG9foM/d8/4XXq+VOyCCN3CNErFATH2LtHnmnejBAa+idyM0yebNH+1/cwx5E6A8FoCrwkvX2Q4yc/OYhdXkg0Y1eWotvvhCGP3P1FFnoF1kXJYRW9SWaRS2Lh/ax/6aRTiyobctB8mpVuLA1cOa6UEGepFJAMh3MtTvylLPhkcn9yfxKQEyrDYn/jEQCVVOWc4WQy1RXZIqwZtAe2soRdqgzDARfcJuN93QPkEJPLpgDcdiLn26p1xRfC7khhIcWbBw+msqDPb4ItubkTwmtu9hkFGTqf9tMtQnxEdeYWAjYfEQPkNHruDm3u6ScRCLHEWZp7boaNM/Uj+EQtVWEznvbMQoJSeTHNrKRz03mNjw4666OiQchtUryTL2B5A5wdzvQaPc52jC9NWhsPs8w/jMh50ZCKUQQCxfo+xAyqY8vKVuIgAak2LG7seOs0CY0EeO9SKtOueTnab4vlNLrB04DZ4bAsNg3tLov1s8vfdn6Fxr/dsAING5s2ZTiiV44muuYOLTHWyY5xVmZj4e5Z8p9H9mjVmiKbBSCXhNAntpWLvGSgdRa5/c9ja8pwyymGkQprrmZ+YLG4f1JBX0bgyHhqmFHTRLxr4Ld/S8dcJU74OFWPHzzxMgrePN7HO8953uX1Z5ODWo5O3cLMlOi1DcdQFoN6VQ6mKfllf9+
- rY9c+0fa
- gwb+3vFOGUJTaiYCPodqHXW4mllEGjABNtQ330kCtuijzmGll/KBSIvMPytOaIFeXAXtW1YMzEqOVq4ps2FjQAWgRMxrpFtTwCIJsqMY6H/psO/5fP5ScxVZ8xiEr9SioH+k0i97jehftNPywWzMqhMRUNSU2H8/DSyzw2LhyzfZWAdrTpJor8AefdSR1127NSMduyP+8LcH/xktqXVF81lwLK0c20CNipsD9RXy+uf9G82LbPqS/rqcP2W0cPOisEtFf9uQAnIhvpFiTP2sP/aHzGFDLy9S6n2ksQM7m1ieIlEr7CGrlAxcDsd6SK4iHJ4USWgG0qHmAM8Xb1oFgkYv0NK/C50YyJoTPHU1ti1GRVJiSFHPeWe8LRjoOWbfZh8oVZRi6gVoU/33CEDCn0NOcUriOvCwL0Y+I3C2B6m5eV8g=
+X-Stat-Signature: 6ebjt8mx7t49tdteyy5ddrb947m1aiw9
+X-Rspamd-Queue-Id: 9A3842000B
+X-HE-Tag: 1788876752-828783
+X-HE-Meta: U2FsdGVkX19vuU5lCRTvX20FD7E5vSJFP5XLxn7pxop4dxV9V43I5ZRJW03C/IoDMwoD+7lXPsz++C12MGypFTdbojVGOlgbJC9XAG9eYI6+Ab8kkRq+Eg/1Ppyeckprhj06xbhlqtzk2RFcmfMCYwjwGgEpphSvfbLtEfqPcvAb8Il9KLyzumKbXhCi9uHr6otKIyokHOqk/C3hn4nQcN/Ml6n3u/VF2Yqywc+xhyt7V15L4Hdggz4PL0ktICsVDrsebIcu95uota9pxkM45zUIGwt7pGSBzMXDh6z7qsPIAiQN7MIuWn4MJKLJwrOR4NcZXzlWLnWWb5C8k/J8Pw5lZSWzN3jZc82df8kofgkPLxBpnlbd+d2UaDgwOsV72wMm2zJhpAWBa/l8KnoJXKEJ5WPq224QoUzHGCF1vU8QHNM57qU1IO++XExJQrdOHJ3mJRdzyjUAmAXfDBGlpt2Xj1M6eapLRF3+K1A+oi//s57WHeonoeRaBRkYIRGVwfT63NGIoEVjVwR9nsMxRJBQVleDvbQklBFVu5q4O/UtFuM3BHi7xYfNA8N5gZMgAMDrjkKpvm6yZyhOIrWYWmel7Zl4cAe3CVaVvLW1x6kZlO2rWEf3+13+3s4ksiDGIWiWRIgn1DqXv+gF8415NVblCu/cLmUBMTp5YDobxPTFET6QhZWaZQmKggpxRBwBtqNahRiBZBWNx6s2Wz2RM2mFM/zeaw5cT80J8KLEV/wd7/+j2lnWpA7jSdaCVwpMvkAHjUccuhGCaqJ8T6INnR6Sn6XAtbjf5jpKCbQY15F0eOTmLVIU4r4Rf2BvmyoueJask5tYznJ7+bPL3591SRFzEbKP8U8nGmbqBpocfSBcEW0W9e4ZChm71/fZDo1FfVJC2Z4TiUp2RbYtMctpGHPx8H+scTwdhwhTxd2T3LK+pw28TDHoTt6/Yq7cf6o3/vnTwBCR+1YyrXig2p+
+ gODCLSTW
+ 9ULFDLEoFMyKXwf4i8HCX9NV4D4CbVJRmnAkQtL7vgXJxS3qk0D1dTziZWvX/7GfvpoZNN4c+a9qPpK0uQzoJa0CtXId8K3SM8Le+82hH9aDAEM/R2FoUCArmjEnq4PGQy1fVyz/8HMRDwIlgosoRwc6j7F9l1QB8vSxalAAX5bBDdWjvN8sBZV9drbb1rkIhUjAB3316eQGbGEKsHCSQMIdrBLA930CHZ/OEZgAkZMoVjYLK8CcNR/LpdpEK/6wc+iZt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,51 +149,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 15:52, Anastasios Papagiannis wrote:
-> copy_remote_vm_str() gets the target address space from a struct
-> task_struct. This does not work for an address space that exists but is
-> not yet associated with a task_struct, such as the mm held by struct
-> linux_binprm during exec.
+On 8/7/26 23:22, Kairui Song wrote:
+> On Fri, Aug 07, 2026 at 10:18:05AM +0800, Zi Yan wrote:
+>> On Wed Aug 5, 2026 at 11:54 AM EDT, Kairui Song wrote:
+>>>
+>>> Thanks for the CC, this is actually not hard to implement as shown by
+>>> Shivam, I just found the code more and more hard to follow and fragile
+>>> as we add more logic to it. And we don't have to reject higher order
+>>> split either which can be seen easily if the code is cleaner.
+>>>
+>>> Personally I think doing some cleanup first is better, I haven't post any
+>>> code as right now there doesn't seem to be much user of this. It will be
+>>> needed if more clean THP swapcache begin to show up due to things like
+>>> THP readahead for swap, which isn't here yet. I think I can send an RFC
+>>> tomorrow just for reference. I'm fine if we prefer to remove that TODO
+>>> using this smaller change first :)
+>>
+>> Thanks. Can you also help review this patchset? The changes looks good
+>> to me but I am not sure if I get all the details about swapcache handling.
+>>
+>> -- 
+>> Best Regards,
+>> Yan, Zi
 > 
-> Add copy_remote_mm_str(), which operates directly on a struct mm_struct.
+> Hello,
 > 
-> Use a common internal interface for the MMU and NOMMU implementations
-> and define both public wrappers in mm/util.c. Preserve the existing
-> copy_remote_vm_str() behavior, including handling zero-length requests
-> before acquiring the task's mm.
+> Thanks for the reminder, I got a bit busy so delayed for a day on that
+> RFC.
 > 
-> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  include/linux/mm.h |  8 +++---
->  mm/internal.h      |  3 +++
->  mm/memory.c        | 41 ++----------------------------
->  mm/nommu.c         | 41 ++----------------------------
->  mm/util.c          | 62 ++++++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 73 insertions(+), 82 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index dd09c438fa23..6f10ce315eaa 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3325,10 +3325,10 @@ extern int access_process_vm(struct task_struct *tsk, unsigned long addr,
->  extern int access_remote_vm(struct mm_struct *mm, unsigned long addr,
->  		void *buf, int len, unsigned int gup_flags);
->  
-> -#ifdef CONFIG_BPF_SYSCALL
-> -extern int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
-> -			      void *buf, int len, unsigned int gup_flags);
-> -#endif
-> +int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-> +		       void *buf, int len, unsigned int gup_flags);
-> +int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
-> +		       void *buf, int len, unsigned int gup_flags);
+> For this series I think it's functionally fine, just the split logic is
+> a bit complex to follow and we still have restriction on swap cache
+> for order 0 uniform split only. I'll have a closer look later. Also
+> let me know how you think about that RFC.
 
-Two nits I didn't realize earlier ...
-
-We use two-tab indent on the second parameter line in MM.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+How does this patch set relate to your split cleanups? Is it still applicable
+independently?
 
 -- 
 Cheers,
