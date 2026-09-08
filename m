@@ -4,109 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F494C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B1EC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CB5A6B00A2; Tue,  8 Sep 2026 05:59:33 -0400 (EDT)
+	id 9EA396B008C; Tue,  8 Sep 2026 06:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37AD56B00A3; Tue,  8 Sep 2026 05:59:33 -0400 (EDT)
+	id 99BF26B0092; Tue,  8 Sep 2026 06:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 245CC6B00A4; Tue,  8 Sep 2026 05:59:33 -0400 (EDT)
+	id 8DA276B00A4; Tue,  8 Sep 2026 06:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F3A7C6B00A2
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:59:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75D1D404ED
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:59:32 +0000 (UTC)
-X-FDA: 85190147784.01.CC4C041
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 660E220004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:59:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YR0UOmZK;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 65C546B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:02:59 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 029791C2116
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:02:58 +0000 (UTC)
+X-FDA: 85190156478.16.145AA5D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 020FF4000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:02:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ORm/0P/Q";
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788861570;
-	b=VncV9FPGbvISs+Kk/2QllzU574sVGi9FhxnM1LSs9UFU0azPQhtXipD8++/GYLqXG8IaLd
-	Cc4jPUgi9798FPE/IPi6TYgu6ef2TALXfsXDXU+tR2TxjJLB11kOUnHInYHpUulOy/QBJ6
-	zHLyNCqA1g3d8JQG2ccJAgkhKQs5K/Y=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788861570;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CHEe090zxcvX/G2IQLHQp9iXm/EoC7Qx7nHJQJ/rGtQ=;
-	b=Dd87u6wQRQaH1bKv9K26XFakpuDWn/FB/qx5uOo+MRDD65jYNIpjpxZeSoANsEYugIVdNq
-	d1NsOO99QpeIYFlrmo1UyZYALjbagSu17ef/HTUod3wRbGT/Q0Z0IU51wSicyyoovHPLFk
-	HmVbR4MuJlslEZ/5baw/rCE0ZIZdyBg=
+	t=1788861777;
+	b=VJnpNJZayr93/YsBpjvv5kYevL0GJooLZglg4YeOfh8tz0mMti5N5hKYCNjb4P0uHFf2ML
+	rFm1mkUdLHSGEE4PSkh462GlIv76xN/yF7e6VuwhzKaNhwdi5QvyiS7w5Bba0+MKpeOt8O
+	2KJrkkVYd+jOaIwsZrf9MN3A8fs1HVA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YR0UOmZK;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E6391476;
-	Tue,  8 Sep 2026 02:59:25 -0700 (PDT)
-Received: from [10.164.19.55] (unknown [10.164.19.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CBC43F7B4;
-	Tue,  8 Sep 2026 02:59:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788861569; bh=a/a9VuH1Pbu7fuqb4EF439JhWu4OMvquSWkjlVGi4tM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YR0UOmZKFbfAJ3SQSDswiFS+rXAWEo6USejgl07yJMtcUVzwUvoX92dfUQwwVpdX5
-	 EaS2HlcY5AR9bV7tQg2bFaeizuNwDp69wiztfvHe7QfBZ8M2HAbZx4+U2VfjisKvus
-	 ye1W5JquN+zfg/oiJuWT9J+cxec8MSXZ7ZVkbbDw=
-Message-ID: <88b48587-1f3e-479b-ae9b-67aa643e2acb@arm.com>
-Date: Tue, 8 Sep 2026 15:29:16 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] mm/vmalloc: make set_area_direct_map HUGE_VMAP
- friendly
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>,
- Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
- Will Deacon <will@kernel.org>, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- loongarch@lists.linux.dev
-References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-4-949b64a9f755@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-4-949b64a9f755@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ORm/0P/Q";
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788861777;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=UuKC4DMq3xslKnCBkWv0o/k3UCh4C/Q0S0CSXxs4Ybg=;
+	b=Y566i0mfDzJxwg8cAxU82mC5JkzD9E58B8JaqrGep5tG4PJAE/xFD51OWJ3+cciTcpapoe
+	RJcTQ13o7FbbvehbBFa8yRIkpeE0wxL1CRfb5vfZEH+kvwNJm8JEWJcwhzBGydToZ8Oep2
+	866Ah9loAX3gOAFzEmXh1t2d8qbkotk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788861776; x=1820397776;
+  h=date:from:to:cc:subject:message-id;
+  bh=lOenf34xndDiZJzMvpI/y4dJR0P8wkP4cRibhZ8Cg3E=;
+  b=ORm/0P/Qht9klfaVryermzPO6x0NWoTKs+GKDBY8s5bXH6C8IlmGCzf3
+   5djSc3EhVIXBYHlDvr4Chceu20gVcE10S7ROybp+wNW1x3vv7xu2Ks+j/
+   zwmS889waPUaWLyaiNDfbldIQCzCBVs/QBdJNZjepYefzPn3MgQJ5X+Gp
+   tjtDO4oPktJ5JzCwI05YsUsUYLA/0zrFs1aJnlLuX23El+23RJFjHY+BN
+   VgucUDdpRu3Enww7gJ1KQUH+Zxv9wt+1lLxaB7z8/Fe+HgNoL6fmE1kRu
+   3+41kRzWxC6jvzUQFheN4+fT1C+R1c+4qYjv4rjNw63A8Yb60/nTVxcA4
+   A==;
+X-CSE-ConnectionGUID: 7HLBlUc4S5ettG7bSV4aGg==
+X-CSE-MsgGUID: KMrPWyILR1KvSYqWX9iTlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="99852939"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="99852939"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 03:02:54 -0700
+X-CSE-ConnectionGUID: 69z3aZ3YQc6vTCP9kvNpNg==
+X-CSE-MsgGUID: CvDo7uGIR6W/UNHeQIyZ3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="274470861"
+Received: from lkp-server01.sh.intel.com (HELO dff15f1b2031) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 08 Sep 2026 03:02:53 -0700
+Received: from kbuild by dff15f1b2031 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x3sfB-000000001xF-3ykp;
+	Tue, 08 Sep 2026 10:02:49 +0000
+Date: Tue, 08 Sep 2026 18:02:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 9d3243fc689fef444f87e0a703b4c99653137e1b
+Message-ID: <202609081839.rwV5qR0y-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 660E220004
-X-Stat-Signature: o3xpnoibk7gxhjwcia3t8hqpmhyn7zhb
-X-HE-Tag: 1788861570-617018
-X-HE-Meta: U2FsdGVkX1/YFMSs5xgty8B5AlbWss2TFwIY6G5dgUI3c+xrm8uvQl574Q0hsTbu6nnqLwj79yrM0mBdSpssmHS/VKLGNKs7o6H6/qpthHriQPa1fp/zEZDSFP9fk5JwuTxhXia5M+R6EkgEB4Cdypt6YP5gpBRjaH3HNZ1+roPqZQ76nMP/cz0FF8AF1azJxVZfTSt9Afpo4JoIPt6s51Am05zJr2aZ/ehl6yun8M+/F74zLWki9vEDDc8iEUjywBN9i5IxPb1zmM9fJ2Flt+P/c0svzrY4FM9cShbDS/yUZrCkXGVZVPRBWIOISkTm9CIWmwLwb+ikxEwy8QmAPphDl7blDpRCuuhWRbKA+Yi7fvkX26lAo9bV5zUOL/QdI2IcBIFXPPdR8i8trJEeuYBzRvWrmonc2U2R3D+Rv0TMfGqGchPw3XC9RpROc0i5K8ZakjOcNtUojJsh9Z1C1qDdOCV14eIqJSl3/2KwZJOQSoR3jWvJGdwCKpJgK7WQbvaJcsAq9oMbiYWy5P6CDQevuh98O1nxqI4tsB8twtY18OH4u9lSEuYfMhgCHnLJJXgzSdM+n7AmWLrqgONaCaZo7Q9yZ0jykiFqZGG+rkNF17l2ZJ6D7IXvtIjwuclayLizVXe6kKxtShCf51BMBcp7VkKRI25qSX1vDSeiQx604lL3s5BNaiJf4Xd6ppgjVGuhlGVkyn72o3ywbnZDO5pmqNnQMDmiKpUDPtLLSFsTf53nw5aTVR2XVmMaao5BiAc7ilcqh43GFVKbc/AHSautAZi076KExgCrzXH0BY7nVs4QLrJWvztxf3a0uIQ5FU3yS/kyOidt61fCxcgqr9zgHFkQ8kmtZpxqpih6AgtpxBARmQnz7q5sUPIodKNnGxH2pUkqi3qbXJQoyr7tDLJBFOP67cO96if+r8njT9EVlW9yelTWZx9DmCy7M42bn6oG8AzvX+firqKAVSZ
- nwyvCdfs
- THvgDdfLz7UHAJDleXY91fFyBizNPa33LJolQwIgsE8RYCDS0jAK3Weuiihoh05AT44run5oBK+7Ll8GMBeNrUb29cwrtWPpK3/pkX29XQmTeERMSGA+2qxaZNcK1Z2y0xOl33N1BzUpQI33RN98QY4m7eyK6IBv/aPwLe4z7Q1jNnb6AXaTB8tPBvepzV1qaK41L4xPiykJFZ72IBYsGG4UzuEqbWYaxfqx18YyFwa7QWPzM22kQkRVHAlIlL539krrbp0nBJry32Fhpgoi73lfXThrxWQxqiZT5n3LgHhPWPaLuJjqwBWNeQDGVsmAKwLsHEFPH7jkLWUeYI5u4lp4glr7zi8UCuChQwAAFecZD3yY=
+X-Stat-Signature: jrenh6x8i13rsc1c6qdr4pf3qxp3gqna
+X-Rspamd-Queue-Id: 020FF4000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788861775-44754
+X-HE-Meta: U2FsdGVkX1+A98xMDSAChFN0qRP/jo4acV7xFSt7zzj3+t6Qq/HyL4frjvuNVv735c+VZVXmro/C163xXTX9xiYj3+0hHxrJlytBJ6hklYWdFfEq8Ce4z44OqPVDIp21KI0EyWsrYd0k60awTf5+7zLtk8Ntl8ekxZsycctPTx/fNfOOH8lpX73K3JZtoSA2/wtue0LsYzB8RtG39ttAl0p/KhhmDNN/vzlmX6Za1Hx1JJHSTsQAf27JFiIAJfgPLoX+qq/GHhcMHafLFB4B48vIC1Q6Jr0hxS3ShzYHquffsf/7d7DG98AbxZPqYY8c+p9fw5PHeyAWUzKc98pPwZpAYeMpfPNSol4GjMz3Tp4XlkuXaQvR7gzTPgRP+aXFR3CAXxlkiGfovSN/rvLB1XPFRN/G4hJQ63icqA7Xluw7clVAm242+N/y1bxsySKEtRqwAJ8n1mHmkGl5adTf7eTAFudR2gN+G2w4D+1x4z603vM4o0mSeBWOrJjuQdlEIgvOs/hJN+RxVeGo2OcMkPv7tebkoWtrQ/MIxAx5gzvj7pPPmmyB4yR17Y6kmj37pq3Xu++uxVY7fE7/9wMFfRw8q79NuvT6fIq3iCWyJd1v1zlXWdBBUOvTXOHM21IgF4sU9JtfdumTL9mdvz/mRm2FkT/usdvxrnBMe5AbnI6n/BvFOeFN91R3jBX4//MnSh9Gft6flILzmqXDaXgfFQbc5NyHRmXJo3oroSj0wuIYnR6JQmj4jMXty4GxefnZ/wcgdkCl7/RqaKsXIsAEgZdTmMpoY4o3AH8qS15Aaef27GPQi9WbaR4cdECZ6u69H7N1UPpjFewxG9TH1O+uRX5RsqrTl7u7joxvXNS4UEeOCgNZOtDEwZ/NuCK1/e54+Z89xdYLcKNi1JrbBnfwBEu/iYaq7C8nTPXBLEONNaRZSNA+GRQ/OB7XbDtcn3JoqzXL8CP9DWTHbpmUCso
+ s0FvME8z
+ 2wlfZM5tL3emwd2ae4nN2hwQUxpAODE7/P7+UuxpJ2S3jWey1TyYdE1kmw8k6r5SEIMHsWUa+kekpsYoi5ugceBFwn8r8Y++XwCLatwFj8nyUMG+uSFV9A8UrdtDm+EXI0qii6shhRi3JYUjVZAuu42k3sh4Ka89iqQR3tTrrhR4425OCj6tz9ooXfCEX8ek0kWr9FE0xJIoxgpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,66 +102,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 9d3243fc689fef444f87e0a703b4c99653137e1b  mm/swap, PM: hibernate: atomically replace hibernation pin
 
+elapsed time: 1865m
 
-On 03/09/26 2:58 pm, Mike Rapoport (Microsoft) wrote:
-> set_area_direct_map() always updates direct map alias permissions in
-> single page increments.
-> 
-> For HUGE_VMAP areas it's suboptimal. Not only the loop in
-> set_area_direct_map() needlessly has more iterations (e.g times 512 on
-> x86), but it also causes fragmentation of the direct map that could be
-> avoided for the HUGE_VMAP areas populated with large pages.
+configs tested: 79
+configs skipped: 2
 
-Correct, this would also help us on arm64 once we have ROX caches.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha         allnoconfig    gcc-16.1.0
+alpha        allyesconfig    gcc-16.1.0
+arc          allmodconfig    clang-24
+arc          allmodconfig    gcc-16.1.0
+arc           allnoconfig    gcc-16.1.0
+arc          allyesconfig    gcc-16.1.0
+arm           allnoconfig    clang-17
+arm           allnoconfig    gcc-16.1.0
+arm          allyesconfig    clang-24
+arm64        allmodconfig    clang-24
+arm64         allnoconfig    gcc-16.1.0
+csky         allmodconfig    gcc-16.1.0
+csky          allnoconfig    gcc-16.1.0
+hexagon      allmodconfig    clang-24
+hexagon      allmodconfig    gcc-16.1.0
+hexagon       allnoconfig    clang-24
+hexagon       allnoconfig    gcc-16.1.0
+i386         allmodconfig    clang-22
+i386          allnoconfig    gcc-14
+i386          allnoconfig    gcc-16.1.0
+i386         allyesconfig    clang-22
+loongarch    allmodconfig    clang-19
+loongarch     allnoconfig    clang-20
+loongarch     allnoconfig    gcc-16.1.0
+m68k         allmodconfig    gcc-16.1.0
+m68k          allnoconfig    gcc-16.1.0
+m68k         allyesconfig    clang-24
+m68k         allyesconfig    gcc-16.1.0
+microblaze    allnoconfig    gcc-16.1.0
+microblaze   allyesconfig    gcc-16.1.0
+mips         allmodconfig    gcc-16.1.0
+mips          allnoconfig    gcc-16.1.0
+mips         allyesconfig    gcc-16.1.0
+nios2        allmodconfig    clang-20
+nios2        allmodconfig    gcc-11.5.0
+nios2         allnoconfig    clang-24
+nios2         allnoconfig    gcc-11.5.0
+openrisc     allmodconfig    clang-20
+openrisc     allmodconfig    gcc-16.1.0
+openrisc      allnoconfig    clang-24
+openrisc      allnoconfig    gcc-16.1.0
+parisc       allmodconfig    gcc-16.1.0
+parisc        allnoconfig    clang-24
+parisc        allnoconfig    gcc-16.1.0
+parisc       allyesconfig    clang-17
+parisc       allyesconfig    gcc-16.1.0
+powerpc      allmodconfig    gcc-16.1.0
+powerpc       allnoconfig    clang-24
+powerpc       allnoconfig    gcc-16.1.0
+riscv        allmodconfig    clang-24
+riscv         allnoconfig    clang-24
+riscv         allnoconfig    gcc-16.1.0
+riscv        allyesconfig    clang-24
+s390         allmodconfig    clang-17
+s390         allmodconfig    clang-24
+s390          allnoconfig    clang-24
+s390         allyesconfig    gcc-16.1.0
+sh           allmodconfig    gcc-16.1.0
+sh            allnoconfig    clang-24
+sh            allnoconfig    gcc-16.1.0
+sh           allyesconfig    clang-17
+sh           allyesconfig    gcc-16.1.0
+sparc         allnoconfig    clang-24
+sparc         allnoconfig    gcc-16.1.0
+sparc64      allmodconfig    clang-20
+um           allmodconfig    clang-17
+um            allnoconfig    clang-17
+um            allnoconfig    clang-24
+um           allyesconfig    gcc-14
+um           allyesconfig    gcc-16.1.0
+x86_64       allmodconfig    clang-22
+x86_64        allnoconfig    clang-22
+x86_64        allnoconfig    clang-24
+x86_64       allyesconfig    clang-22
+x86_64      rhel-9.4-rust    clang-22
+xtensa        allnoconfig    clang-24
+xtensa        allnoconfig    gcc-16.1.0
+xtensa       allyesconfig    clang-20
+xtensa       allyesconfig    gcc-16.1.0
 
-> 
-> All pages in an area are always of the same order: either same-order
-> large pages when VM_ALLOW_HUGE_VMAP is set and all huge pages were
-> successfully allocated, or order-0 page when VM_ALLOW_HUGE_VMAP is
-> cleared or when huge pages allocation fails and fallback path is taken.
-> 
-> Instead of updating the direct map permissions for every order-0 page in
-> an area, use the area's page_order as the loop increment and update the
-> large pages in one call to set_direct_map_{invalid,default}_noflush().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-
-LGTM:
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  mm/vmalloc.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 5506b180f5c27..6ed6c160abed7 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3367,12 +3367,15 @@ static inline void set_area_direct_map(const struct vm_struct *area,
->  				       int (*set_direct_map)(struct page *page,
->  							     unsigned int nr))
->  {
-> -	unsigned long i;
-> +	unsigned int nr = (1U << vm_area_page_order(area));
-> +
-> +	for (unsigned long i = 0; i < area->nr_pages; i += nr) {
-> +		if (page_address(area->pages[i])) {
-> +			int err = set_direct_map(area->pages[i], nr);
->  
-> -	/* HUGE_VMALLOC passes small pages to set_direct_map */
-> -	for (i = 0; i < area->nr_pages; i++)
-> -		if (page_address(area->pages[i]))
-> -			set_direct_map(area->pages[i], 1);
-> +			WARN_ON_ONCE(err);
-> +		}
-> +	}
->  }
->  
->  /*
-> 
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
