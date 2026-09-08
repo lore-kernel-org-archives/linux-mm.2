@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9264FC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2949FC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:23:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A66336B0093; Tue,  8 Sep 2026 10:21:30 -0400 (EDT)
+	id 1B7FD6B0092; Tue,  8 Sep 2026 10:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A444A6B0095; Tue,  8 Sep 2026 10:21:30 -0400 (EDT)
+	id 18FB36B0096; Tue,  8 Sep 2026 10:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92CAE6B0098; Tue,  8 Sep 2026 10:21:30 -0400 (EDT)
+	id 0A68F6B0098; Tue,  8 Sep 2026 10:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EE606B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:21:30 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA3B5A0290
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:21:29 +0000 (UTC)
-X-FDA: 85190807898.14.54526DA
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CEB9910000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:21:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ee5LQ38z;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ee5LQ38z;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788877287;
-	b=TLPdmenXIFEXNG3RWHF3ZL426oUiN/OE9JjjCKaDaMiISAK/HUqs5Y5Hm4LxQGFnRTWvrh
-	89VZJox4xNcDbqhAeNkmU9F6sxuVzBWlJsbIFwWLv6aquixw1PBK7Svna5qHwC/6euzs/y
-	xcqVP84nLACSrx8jACo44XGCy6Fv1D0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D54A76B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:23:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BA671406B9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:23:40 +0000 (UTC)
+X-FDA: 85190813400.23.A259875
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 73EA214000F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:23:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rG4vWSnG;
+	spf=pass (imf09.hostedemail.com: domain of urezki@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788877287;
+	s=arc-20220608; t=1788877418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=elHR2dmgdiO2iJMqseykTVVlGqNYHDXkrEZm70hbhR4=;
-	b=Iq4BM6N+vD3Gv2zzCr1pNrfRMdewk1O+ueKh8dmPpcXcNrkvsUieXYpdV4xz+18BnWs2VB
-	3FgddpVXHzLzAKYhiE8HinKqd6+G3geuHrwSM7LnamV6nSd9TRMmTunEXNPnT/y5RS+02V
-	dK0Qkr0GohdTmUSU0i5vzotyt/3R52M=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso39614525ad.3
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 07:21:27 -0700 (PDT)
+	bh=SnF7FxdLIEQlswE9xvoQ5sUHHcQzYgPIRrMFvodMtWw=;
+	b=LFAsxRM6swjhWZx+HKyq1BcCEgnJIwrq3b45sy/yCXL1MamjxgCp+pp67vFwwUEm9h3jfQ
+	LttZ5Ey41pWIOX0kqmn2g7mSQRCC4Hw0qGToUGNLg75a727WObBdAgvrLbCX+mDIF8hqNw
+	TbgPwKaFJ8xGdTuJFrag1TePPO9nJ3c=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rG4vWSnG;
+	spf=pass (imf09.hostedemail.com: domain of urezki@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788877418;
+	b=1Gzry0v27xAKvHsPhbf/EzZ22sLFmPdgv2yS65VfTMPv79ypWQ/vJTU5qOM3pI9SpzifXD
+	TkxnVDY5DLmjCBZnifTS71fLq7ET9V8tPYrWFefqLntWbAzcqGrCwCHdxiCO6B0baX0J1A
+	2DKv7EEK+5321dMOTpOtAz/TQOStap8=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e04df8c46so5049739b3a.2
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 07:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788877287; x=1789482087; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788877417; x=1789482217; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=elHR2dmgdiO2iJMqseykTVVlGqNYHDXkrEZm70hbhR4=;
-        b=ee5LQ38zzT+z8rt/irVapStuHYg3Zb7HJerzwHYmGWbO3UkobMFBoV/ss6V2GGzc1C
-         yMDLV6SA0lrB2V7Ngo29JCfRCClzfB1kIsOG3P14dXFHx8VZ2K/H+Mxa704SBMGiibGv
-         9/z/blt3NbJ3zGXRWpniJ0AMvmrn45jHfnPeYpdDYDTLRKLxAs0lEgKYiT2l2o3u+6as
-         vK2d217lZRy1vtLqoPkCUYcCCU3fu1ueYI6UXZCd3kpddEtqLSYmoc5D1PqlNf+Dfl7W
-         oYVBJm6rrvv/sGtdRwm2lpWy7atEPB69lzCOCYiR1v4UKL0U0I9vCcviMexnjr5U9eKE
-         eDsQ==
+        bh=SnF7FxdLIEQlswE9xvoQ5sUHHcQzYgPIRrMFvodMtWw=;
+        b=rG4vWSnGqJx1ftmnkRnCXD3kqmgoFtqR6ArC84+b8fsqBIyn//8P/eXSWXadNSaTLd
+         bTDJa4c/FgbDAcKjQDQLyUALdEsLU39w7WZZd77/GaPUpDxGhH9EO9PZJCz9gBs5WnTd
+         KSrNUqnclpo2BZM8189DwvaVSOqJJCVavItnOx76it8T4v1sYOzDbuG/Oviybjg5SpzS
+         cLKEk5RIVOxqtFmCOFUXXPYlLZnluWQmqSKIXIv7CzTlketTA5MY+u3ZRLL8E2cVFqy8
+         0VwQ3pHq85J/mcfryO9G4H8zw5ehzn0WQhrqmIh1dMuqvN7RNPawMS0dAdCm7U4Z1PVz
+         MviQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788877287; x=1789482087;
+        d=1e100.net; s=20251104; t=1788877417; x=1789482217;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=elHR2dmgdiO2iJMqseykTVVlGqNYHDXkrEZm70hbhR4=;
-        b=I59p3ded+yiibOE53UUj5zd3io4ILRWQTFtAO2KhtWXs5A+BsRSLp8hvjMdNhC7B8M
-         FmMlIe27iEqHf/B9EyuCPOm68WLJy86fBU4ObKmUGJ7nrD7SNA8dp5yTO4syHw1ksY/4
-         rU17wi2bw1gO6f0QnxLJkGooAa/zaAxFik3yYwjNdZFq69uoTlxnLIfM86sLVbMQXCif
-         lCCTPt+oYJHv6nqH2WH/I+iwv33ajYuzGc3UNa5U6jVyiMuCw30qjphYe5EtJ09n1isZ
-         b6uRS2CN4IGUna8HINQj9UoGj1ZDaWiX+PZ+Dsvset6cyqcRRDIj92zLi5rTotoxUC+r
-         jRmg==
-X-Forwarded-Encrypted: i=1; AKwUvBwd40LmXYdHArkwQopyeb3NT/peaoOe84bMgoBss/R2rEB5/YcpCjLe2XqD8E3UUlf7dSnWpnmHfA==@kvack.org
-X-Gm-Message-State: AFuF++kPAZHt3wXwzenHKD4m9lib65W1oBc1a5w016zU2vCfF59dgiGK
-	jzMsBOLMusix1Io71QS2S7Ia0kJg84nD/hfOjiu+JuPveGC1dOiJk8S9
-X-Gm-Gg: AYBFou1/u6nSL5brruePy+VRoaj8zMehoIIcejKy0l/wW61IDk519V4qgXs/ZZBpz9H
-	Y1isP7wMhbZX8JPxwMBafcEHqEErLmf6ZcZvSC6gcM/4P9zGOL+7dfhf6/xhI2W1LnLAWF3oYEV
-	sNTecHA+J9LSNLjY9Ms0xvnnnJ0/bU0m6/NcNefV0HmPR6VbmVvhWpkYdL0LJbK/WoFNX6DLgXQ
-	pMnTqrdySc7cRMJ/E5U29za/1kybJf+Zp/3NYginFxbcOf7H8ucpDkfUWJ6llfhfHVcvpMTAhAx
-	EIuEyQ13WZwufUEMnhHqGan4CegXLHTeGD3tFikfnUglzuBlCxBxx5uOj+YQMYLxq2t3W2r9tIN
-	YHdyEAR7gQtIsVxhcNtnUCPzDl297SNOERHZcLJPe4m0UhMQZNuDfIJrKKzjBtrWjI6t/sZi+Xx
-	Wo4k9dWGgg0itICwiD5bIoBky3sV+cbDRKFPq+C6CZ8Q==
-X-Received: by 2002:a17:903:11c8:b0:2d8:d4de:fa80 with SMTP id d9443c01a7336-2db1235721dmr410393595ad.4.1788877286477;
-        Tue, 08 Sep 2026 07:21:26 -0700 (PDT)
+        bh=SnF7FxdLIEQlswE9xvoQ5sUHHcQzYgPIRrMFvodMtWw=;
+        b=Krrr7NYAQnWeqYFG6kwIjpTMgojtL08zf/nGsvMTOVgfa7fHqEAKFmstrOgxiolRxD
+         RnfW4ZRMxR3AVJJl/FEkU8xDtfO9SAlUhrkU0KRza+YSyXUdxT4jHV6YFOuMwWKcZ2Ca
+         a59Uwse1An3KHhQ5yu+OkvA1kJnIwqTr3HDT8yEQJ0c+hhOoOq5QUo6g5IFHYShAOM77
+         9HQ89RGHe2qq0gXNIMo39f5S1e80KYU3UncCGRyxqk8wSFEN5alVSKN8VTL4FTS6+jCQ
+         MGCSBY50jKG6MIPuBsmQ0q/pMLS/zIupTXZ0mf5fJ/tOZegW0/mepz6pYMKTAcVfD0LL
+         8pWA==
+X-Forwarded-Encrypted: i=1; AKwUvBz1QT8RaJmd8yxWYVhNxs4cIkkIH1dpOb6SzvKZkg8f5TxxXrvdhtoy7hVAsZoUJDG3iBVaHw4Rig==@kvack.org
+X-Gm-Message-State: AFuF++lp+xfYFZ82+zAuvjcJDQ1JTfnX6NwJjV5EivuDdOTZbBOWMJ0B
+	HLCHs5Qb8bEKQbeRphbQ+LPld80tZA6cnJc/uMzqe2iUYoVz9pzY9Kex2yrhetbm
+X-Gm-Gg: AYBFou2rg3Ky0ZtE7z1RYtQF8b7I6EfkSY66IukZVt8J83sqiPbioj+d7Xg06vUs37M
+	LSK1DS0TFk8XsOgaxSCarqsudVtav7kRqYrDsazpnUmbCbdD9d2JnP+jJMnbkRLpUupa03hXFzc
+	axxXkK7QNa7nTDa6uY+nePKDBfu1oj3nwkGkQyPRhNjcRph3PmZTHDM7kwxb9IEvXgi2dCoxuDq
+	dBKuLzemCUjUO+S00U3FnSZL3zO1I+5nHNjhO9uO2oy/sO8hdTtj4Od8n1w4D4nUGiP6Xb1EPDb
+	SgOG1d2KaDKHC5WE0qSUdySwJiTnN4gn66wcU5ycPK0lyiwfTsZ1HnMXbtzJpDbsKiJsRjhSpGZ
+	IpKtj4ljU+w/xsK0zvmCU43aqAMPqGfqb0hgkFVMnVsmCGOiD1Kb8YrodwjGcpxCJM1lTyJ5dV7
+	DVqvqOMZmMZZBLQDksWwmxx/73HX60ykkaVp5Pa4y0Rw==
+X-Received: by 2002:a05:6a00:1702:b0:857:726d:270c with SMTP id d2e1a72fcca58-8616dd51063mr41868561b3a.24.1788877416550;
+        Tue, 08 Sep 2026 07:23:36 -0700 (PDT)
 Received: from pc636 ([125.29.25.186])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db14841054sm61015055ad.3.2026.09.08.07.21.23
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8615404876fsm5590951b3a.59.2026.09.08.07.23.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 07:21:25 -0700 (PDT)
+        Tue, 08 Sep 2026 07:23:36 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 8 Sep 2026 16:21:20 +0200
-To: Hillf Danton <hdanton@sina.com>
+Date: Tue, 8 Sep 2026 16:23:30 +0200
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
 	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
 	stable@vger.kernel.org, Dev Jain <dev.jain@arm.com>,
-	Ye Liu <ye.liu@linux.dev>, lirongqing <lirongqing@baidu.com>,
-	Andrew Morton <akpm@linux-foundation.org>
+	Ye Liu <ye.liu@linux.dev>, lirongqing <lirongqing@baidu.com>
 Subject: Re: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for
  vmap drain
-Message-ID: <aqAZ4H8mauWw4JVM@pc636>
+Message-ID: <aqAaYhLcyzscOCxb@pc636>
 References: <20260905152717.11711-1-urezki@gmail.com>
- <20260906035027.2106-1-hdanton@sina.com>
+ <20260905153704.e7fe650d0226c3e20c1c8449@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260906035027.2106-1-hdanton@sina.com>
+In-Reply-To: <20260905153704.e7fe650d0226c3e20c1c8449@linux-foundation.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 73EA214000F
+X-Stat-Signature: 3d8miiss1hhff4ijbgwg59o5f75z16zj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CEB9910000D
-X-Stat-Signature: nicidgk67rumds4kopg6k7s1sufunpoq
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788877287-49130
-X-HE-Meta: U2FsdGVkX1/dZ9N14AzO0JBuUYhWHNpmb36VNzrhwYniIgZc+Ihl/D2MQ2RiMJlO+To1PeatkQ32/Aejmdl21MrrUS0lGH/pgmXLvSgAEo3+tOFMH1mAmnndBWI298yViJmthWlha4mT7Q1MOdXnowISM537rC6o46mNoG6KIf/nR7XCFvEsnXcoviP2KaehaEKGef61BwR8zI4g4Wne5goOt3+gIqn9SsFC64Kx8jZcPVyNjYdHEvoE6atYpdqE/EcZ4ssHzaE5YMryvs3GuK7R2290W0jO3vbmlFAQ1qxcnkP5FoNKOtcgqu2MT/g4SWhFzl6L4J4AOE9SgPuQrusLbgJOkG3Ae0Xy/8mI4Y2WV9/caikkaa2M6f4PBLuMtSk8HIuMPbwxH/mqdG12k1rcQgsFREbLrSWJR4XLvG0E+O3wK/ivhKseTeiMZ24/pT9J+AZT6mS/kuTC96Sm/BGtMJlPknnN6kLeJdSapruXL1VZBOscGJRY0EmDepDWL1iimaZGEW4V49dAngpZRPqvRERQn/Z7ANNTBBkoh823F3hX09ebZz9B49R/+UVJROXDjqrOwQRpVgLXtH1D9wFCTwzhpELjUxk39u/LG4qGa2GtQn0x/2uHhZ24Tmgno5LjHQXpGqM7b1e0w2TUSCDU46giuhRDkjJll1pawtGDsDOL1VJHGudVHJ/FZt8vZ4GC8/wtSopWlyxjcuMJv/tV1R0F/EJ9kze6NzmAVO+GeIYEO+bU315yLJDaiKw9rNhgqU8IU9e4361sfTZf7QJmb+fNt+O6l2l1pHLWRWyl77v3j5/ev80K/H26wdmCdlOWiKYU6WKz1BiQaLXBNPdE0AVlEqp1K5OITgC7V8WJ1ALgY2ZKGkdSgbmtqczgOdq/37W4D/eeC3oe71jCsujs85EcfdxRe7nd5bEx/rnRSDveCU0tGSjayQ7qt9q1YYgek5Sn4sgKbK3kQxE
- pdt6vnfV
- yddYPkN0ydzbkeFw/rULSxmzX9ItPW2pO3vf+9jH2Y0UKI9OOCJ9KEqEq0133vkN77sMOO9gDsI0zfQ2yqvgWC9dlj0kf5J7u1RkeL3qU+ksbV12wb4mxfuDCNIUWpZn6qhbSm0AFLYM+mNTvK+bgKJ1IrcNJIf9MGr+dAHCaNb1jw12pjBGm4PGouVmfliJxm8+mSaIbK4ijEJFJQY3qhap7ctldjj7ZTL7JVCPIyq3gq3HRRKv+KN9XJLJSsj1SjbEhsX3NhiNETSWJjThgTmg2lKVaCV8627bolEEmgebxbzx3RdPgzwRXAeTNg4WPCs/xwqqSHE2MDvjiPuyiycSmHSB14vDlvm5UeOAkWyoUNjyFumbFp5N6fb4DDsltzf3DvRieJ/sk6e2J7wxNYeavAgnLBJSDQo56Q0KcGMW0bFV0Q0khhxf/xw==
+X-HE-Tag: 1788877418-894086
+X-HE-Meta: U2FsdGVkX18MIaPFSRk01t8jWCR8w83fD38esTBGRp65JjJR0dVMZIeaTd/qHGuLcCbRY8itndkqErnf1NYGxQA/SKXi88FmQQfqWBOrV5wnTC7ZDgJrAxvVeFzK39I25yhbz5eGkqRXBhf0d7v9pJ37DYBR/a0d+GOgrAWIXePnXKaSXHITWJuzqoe9YbqcsD4CVB6ALJEqzEwXiNftKhZu7QTcVZtnE7k9C/I9k+rIcwF1WlxP+u/BbI4WTHU0lhH7qiEaUBxb5H3i53e1JI/zIMa/w4zGkRztEcxHM9nEAZdtti68AcexUgIS8vRvB/KqeIuJa74xN70WEfDppV0pJc2KkGTOZyMW+wFcwCDZTu43rMsoVn2nkgsK0WcMx/oRbHo1aJeggQ88Ua9eRjPlp50SsGsaS5gVcs4uDJdwRVN5Ky4U+wPn09MWcV3tWdlyGeIVdS8Q7+ptpBH8HYsb65Zy1ue8ZC7juNhrvxBPbeRhKWoVxWouO9bHXlmDwYz9Ro/0Ds7DK8fLUG6BfCz1K4zoKIcXnadEBLLkAlJDGSHUx3lkW2ZMB2lVsAfkVnoR5zcigBFxCcEk75EiE9WrOu3gd41fna4syQaRdhaLOfrbKxSRqm0GgJW6XUzs9w7118EqKKjpfMNzgA4SP3SgHzhCnvXp8FaGcm+vkJVAARB8EY96VW6yvhV0yzzrb7g6158CiWMTpl4JGwWK4rKIEcCdcikMwX6BrPJ03FelSN0vEZ+OcjLiyYnwtZp1XjGY3MVDYKLO6OmAdcKe1Ad/SNGkrKwUUBVF9Dg4Zqmqh9XRavbklo0qYrf9RDQTA/56QcImSli2QOZeu0aeOmNBCfnwnd3L+xJF3WbQ/cUg+llv9vqprMMMXdJ1tuRqGTpzdl5DfnBLLvIACGw4v+trI8RmqRFnetXpqO5js0vP+w8aHNNxVsSdNbcuLqnBLfoYPlsF8MaesP5+t/8
+ 1VU+aemp
+ r+LtV0ZX8DgKqsdz8+I7sloDJap4p5Mdb9mDuBLSLCdNK5m4jY6410GEGAf1DaIYeNUJYxLkrwrcwqEnhILC2P4KaoxzoD0dig4CAwKR4BIuzu7kpq4v1kfh+UNQ2w7JMCSGOA+k6nbQ6twPofe44RcP4md99MgY029UbEoYM74OUJvebJcPDa9b8tyrGe/A8+u4PmO1czeEPBdqd6NJPFbpYdGCQMiW6z9dG11rUA1b1WVMD1niksXeAuaZirdssVu0UBKhwmEPWIWfFtW7zw3Smnsct56rarT/P0RhIwuC2gY2P8U/bMz6s1B9zUtSWEBU8YeG+lkWifB+Nj9rNZRXZRT0OW2bvBxx/VWezt5du0rh2aBTO/Oa7wz4N7Yc+HTQqqCNNxit87eo/GSqnOmYQKaHDoHpg6TZ6wuIICyKg5URhYpCNW+1yRB42D6iaHxJBMjT82VK1a2hSe6GfHR3aGR8NjUovm08i6Mn+zAZFwx2OBwnUfXO1BFFg7vvFMd7DeXpNZkKltDo0buqlx7nNhCA8znF2lQe9uUO4xjYUkX8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,8 +123,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 06, 2026 at 11:50:24AM +0800, Hillf Danton wrote:
-> On Sat, 5 Sep 2026 17:27:17 +0200 "Uladzislau Rezki (Sony)" wrote:
+On Sat, Sep 05, 2026 at 03:37:04PM -0700, Andrew Morton wrote:
+> On Sat,  5 Sep 2026 17:27:17 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
+> 
 > > drain_vmap_area_work() function can take >10ms to complete
 > > when there are many accumulated vmap areas in a system with
 > > high CPU count, causing workqueue watchdog warnings when run
@@ -138,23 +138,35 @@ On Sun, Sep 06, 2026 at 11:50:24AM +0800, Hillf Danton wrote:
 > > on any available CPU, improving responsiveness. Use the
 > > WQ_MEM_RECLAIM to ensure forward progress under memory
 > > pressure.
-> >
-> If the dedicated worker will run for 4ms on CPU2 before the tick irq kicks it
-> off cpu, the system event worker on CPU2 has to wait at least for 4ms to handle
-> 200 events for example in 1ms, the net effect is the same as the current scenario
-> where 200 events wait for the drain_vmap_area_work to complete on CPU1.
->
-It is scheduling decision. We do not want to tune any prio here.
-
+> > 
+> > Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+> > workqueue. This allows drain_vmap_work to wait for helpers
+> > completion without creating dependency on the same rescuer
+> > thread and avoid a potential parent/child deadlock.
+> > 
+> > Simplify purge helper scheduling by removing cpumask-based
+> > iteration to iterating directly over vmap nodes checking
+> > work_queued state.
 > 
-> Different workers does not help to dramatically decrement the micro seconds
-> the drain_vmap_area_work takes.
-The problem of current approach consists from at least two problems:
-
-- doing progress under memory pressure;
-- do not schedule all workers on current CPU and let schedule to find
-  the most attractive CPU from its point of view. For example: less busy
-  RQ, less energy consuming CPU and so on
+> Thanks.
+> 
+> > Cc: stable@vger.kernel.org
+> > Cc: Dev Jain <dev.jain@arm.com>
+> > Cc: Ye Liu <ye.liu@linux.dev>
+> > Cc: lirongqing <lirongqing@baidu.com>
+> > Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
+> > Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+> > Reviewed-by: Baoquan He <bhe@redhat.com>
+> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> 
+> I think what we wanted here was
+> 
+> Reported-by: Li RongQing <lirongqing@baidu.com>
+> Closes: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+> 
+> so I made that change.
+> 
+Yep :) Thank you!
 
 --
 Uladzislau Rezki
