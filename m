@@ -4,115 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8713C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB96DC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7DAA6B0099; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
+	id E8E756B008C; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2EA86B009D; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
+	id E656F6B0092; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45986B009F; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
+	id D7C2B6B009E; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C0D6B0099
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B61326B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D8971C23C1
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:08:32 +0000 (UTC)
-X-FDA: 85190019264.15.CA62FBC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9DA5510000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:08:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGJOVAl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1B3F80473
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:08 +0000 (UTC)
+X-FDA: 85190023296.15.6BC43B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1ADDB1C0002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAE45L0T;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788858510;
+	s=arc-20220608; t=1788858607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnL+5+jjY/sqS7l0W4fKVbPZaIsWjtGfLtzgW1IG+uM=;
-	b=KHZQuTFRq4bHDn6rlqprTRAwKoFeK7TFdfUWN51j5+7o6L5QXMo9bvEhlH/31BgDQgjGLm
-	syzrdbPCZb1d5maVqFZguPwrI2w7/3Hgy0BmrNdDA3922fzN2zduybu1bz8a+HkAVGFRNW
-	vk4pqOy/ZN1n8uhGcooqF0mIlGTT6OY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGJOVAl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	bh=R0gSNJNsFiBELJzc2W3yE5oEemx5pk46RuJIr17mKUU=;
+	b=12BGdRcIe+3THT4nJniX4sxwj04UfhnigSgW7QqIN2qN0dUmbq5aJ8nuJKdxVcDii6lakb
+	ZKX4dTOrmxQqoFT0Ozo0/O64OLjAIwbeCRpsa6rJmVp7edSaep/k/rYpc6aKfcVjRyXZkx
+	lZPIig9sWNEnRH9cyTFCMvW/EysAzbI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788858510;
-	b=3YwMIS8WLWzKkEaco1ePtzpranxwQUCTlCdAbjXnh/BPQc2nIzpJpnFQ4WDGMzd1GXGlf5
-	nzsZ0qI+K63A7Gvjgr0Gr8fOe8GugdwiZRhl2tflpgpJVFKAh8Aq05aG0kRqT2D9WMgy3G
-	l/M07EraEVHMdtzkHeG6WZqCVMs33Ak=
+	t=1788858607;
+	b=hoyeLCxZP5Pfn1EfMmy0Iyfro61wRjj7Y5fRjsQ8ztlMS5k4KKCvGXxDbLUXs9y8H+OW62
+	oBmHVQbFcO3SYUN+Mrp8nN9G0dIPCuuPn6QEBxeOT8GdsZGQmrndNbQB17sp+BVzkFoKVE
+	wCzOXyN6OEwVwia972kCCqbcNNguwnA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAE45L0T;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 724FD4040A;
-	Tue,  8 Sep 2026 09:08:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA1B1F00A3A;
-	Tue,  8 Sep 2026 09:08:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8375160A98;
+	Tue,  8 Sep 2026 09:10:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569471F00A3A;
+	Tue,  8 Sep 2026 09:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788858509;
-	bh=YnL+5+jjY/sqS7l0W4fKVbPZaIsWjtGfLtzgW1IG+uM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JRGJOVAlCz0spfZIa/FLR4lJ0fF7DswkvbGxUsbqrHQ+L9iB9cNZPNPtk7G1HFwKr
-	 qOFCY+58wwnPlxiXFSJ8i6NVInfJP7/OLtLOC1t5d5tnQVjVQ27qDM6KWvzCGAZtNJ
-	 wy0PnwgtZxyDnGaMQ5mxO/8xZg5T0gnlhcB7msXzSmyJ9M0br5AkEKS8wUkEcgy088
-	 QQdC9QqZv1kQphTtxfCosDJPMiFKKvC2bv4JpvFROc5Byn41q0XvO9HZN62QR74ynj
-	 MGkwgnlgTXHI06uoJPk2CS49Typhka8ShzwrDwGxg92WRB0XarGVJkSS8wTxoX8wmB
-	 H6KlRUDkdO+7A==
-Date: Tue, 8 Sep 2026 11:08:26 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Saravana Kannan <saravanak@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
-Message-ID: <ap_QJG8EevX98SXa@orome>
-References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
- <apquUWgrD9C2jWQ0@willie-the-truck>
- <ap_HzwVp-6aOKEbJ@orome>
- <ap_OFQepcu26g88u@google.com>
+	s=k20260515; t=1788858606;
+	bh=R0gSNJNsFiBELJzc2W3yE5oEemx5pk46RuJIr17mKUU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DAE45L0Ti7ZzN2J9EggKEpXt9EOFC/xe7EhCLBEAgKZ1EKM0gpJTm6lUAH9Rv1Y/l
+	 Qb9gt8wqAJzrDQsE15lcnh+2LUSKHF7Y85tsfXTkApAmKRChoYKRr7LNH1NO5zCDxA
+	 DgSV71bDNblo942RePIiEaOET6DD2BAm6jQXNwGXYyYXCVrrPfTDwooEAWl2+nKYnh
+	 ROImd7jwopGGxZDYzhcgEHbseuZcsu9rqsTTi0oEx18R978jIBC68KJY6GiEvY9ucn
+	 ZPViZj8X62xbMqmZxsQcKY9LdenN66zHgBKx4TLNgSPHoQy5QHpClKrY1uem3vgjH+
+	 BNFhyDw3+tpqw==
+Message-ID: <41c824f9-aa04-49a4-9d0a-9ffba7b014b4@kernel.org>
+Date: Tue, 8 Sep 2026 11:09:48 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2wjx7nhywlavorzj"
-Content-Disposition: inline
-In-Reply-To: <ap_OFQepcu26g88u@google.com>
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 11/24] tools headers UAPI: Sync ELF headers with the
+ kernel sources
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6tdmte9rqffhgj7dmq5ajr3hy3ek1b6u
-X-Rspamd-Queue-Id: 9DA5510000B
-X-HE-Tag: 1788858510-140840
-X-HE-Meta: U2FsdGVkX18mDARTZmi9nibRX2f6tr9p/fm7zK7w+8pt3MwG8l99j4jVZn2GgAtxxI+jJkfBA5C+TMjbgiKIlmkSsC7DGTqJmghiReYr/VJh6W23B47VCTHt6hH6we7pffocy+xhg/Egv1mThcyaA9uLZHSP+04mmAFgG6/Kda/PDUUARjFTe+x1hoZAni5r7oDSVfAAI5ShXDflqMk0i30z8rTbzD7Ci4iGz5QU9I5E+pKrz5RHoZhlIIbHr7SYVHIfBUyZpw6Q8snzors1pkrViqiuIo2L3S5tE+AqBWqDwxm4gmYVi/bNHziL98NpHXYRDgx9bzq9omcUVwZr8MfmLXW7qSKjG9SPMQ5m6VGDxYYcuFCtD2HK1+HU2K0KXPThJJZAvlIBQPWIux0xKjJ1oRxJLjxYwZCOLtZYvQqwwK9XaP6iEONKjn++wkk6Yq13T+8epckR0b7tF1P5I+Zm0J/8oe7AWSNJ+WDKzUvO0x5d4HVcyJCgaFFMTYaQ02QzhEjUThFxTH+F/c7PSqpsteBMJLAFf08wtJEii44XS4lDaRt34qQeL/EAGk4RKHYOGge73jbRp8HHlkjoMgASdXr066Jh5WOTp3MKEhjOMfaKRL+ET1/cfR+NH7PNAdU+OtibgTCBxCB1zVAfLR84O3NhJlneCGYHfpdUhF1RFG7h4Aaq5ZjPPVFDOIHGsIFwtoAzUuwKDNkmOCP15oboV9MXmFVYE4WBEPocG/e8EMBQ00V1YhYTwj/axqgUzbF6hsxJMuEJI+oL1RiTeUhT6nz0aLtftBPSkYqtnd5Q7oeaf9sj0DfNNl4Y+ZQB5OJTKV1ZkHrcPjLITrKES+CwNABzqjjogb4aWVb1dJhzpstCd7tC+gRT7sR+xqQKikBSKP1cIGnhcrnUMOakoKGLEAXZdNObAAVISkd41VbR5Ad+2KjrWZqRETb72p/mFm7DtxzBZsRQZvdcAq/
- SgmetMuH
- T0Q2kHDt+FvQKn+0bJbIhI7NVZ7jw0JMcVD5QcsSD6YuYy4OPPVKkfBAeoR4TSMJqbLMbFfBUktJty4sgcHlhAKFhh+oDnf1C8u+92PHhkXo0dDm7EVsPAFT4kJm7+uv+y1PuY/t+XX/pRUTf4VXKpu9FdsCKoqkbIDWEALszSKIDTPCM0/1r5ap2cJ64gc/SSHivVVFjFYybDd+TAD55CX9HOtUfZUtztT9DE1q81oDLifw1gKrVsUPzjXWr5XUvmOhZiR8WXHGbVJHhouk7mKBg5a7ha7X5SnHo4ymcSVfk7yNHx8gbrkVJ1lzLusot7Yp0NY+ILWf1ACW4kbUeTL2wATpJ0ymPliqbJUTmhoX6CgPxsZPASrHgvfkaIoA6pAsleoUDCa4HP3bCh8rJaJwO196RxtA7OpXF3RoNcYm/b6g8eADXBRqQ3C7dDdz3p1PGGt44zyiYJ6E/IDFJU3zBm/hnfaEnlYYK61EqlHWh2TGGohffmP0o8D7ze4cq5I3W
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1ADDB1C0002
+X-Stat-Signature: nae911nqmbr39iajot6umdfij1aypohb
+X-HE-Tag: 1788858606-31524
+X-HE-Meta: U2FsdGVkX1+3xEuwWN2gDANKsOf2BgiLvfzNWkctL8Jf/qvvZOZO2Lh1NGDjUlhlt+fYS9qQz9iMvJAG1DzI7KNNPZpwfwzDaxg1PdijQXA/ofMJQy+JZiW51R3zVidkVixMheKFJs9HST9l1fnhaXTiQdjPrnXMhnAW6v0Qt6rQ3EWYfSd68Iyq0ZdXwK4LlhWzriiRGc9Cp6iveB/Y92+L0784LXqqL/uohZy8mFBT7xX8UwQDuckVBcIFETZzfJyDuzLZC9qr5ODtiMoHouaS8ACsa8K0ufvfH65SXsz58qZsxZMfdwwkcp2H3H+/WlAeYSyRp+kS+LyBLjTdVHfpbaj/TORGQXohNlfnW2KX1vEAutt9ETaExw6Blhav7UyUK3N+V7hX1gja9Mj+f95xYOS6EygiABYLNRtd7/vFWuuXoZmfsdOzSdeE94/QK8QpaDqfIHzx8ul07uuNmcHiNutslRRDCSiE81ceJYUOGZnMK5OLxqVczzT+Ir0Z1EgLfiHb2NGpXlrkL73u6NxLgOB3Ypw698KIU5JVG7f09+P6WSbJoFcTjf+GA6Vdx+/fK3I3SG8QGNAdB+HvypQXv1HBTxn9EQp93Xc6mneG0nz9oFr4LKvSHc4d62MlZwNFZ/uxZR6bL1nYKr8uYO5bnSbNzxiuQtRV7eC4btrslRraszqfTuYfXXyEWUveTKKM3UEF3jisW4DF6B7rOmeS07iZr3AMUZ/FfghrcFfJmDGOF1liOFw1LFhmTpzExcX8AVmRibnpcmtwaArdQqPooOYMYEaEmodmB7TNP4AG/OYAwmUCuSQkZfYzG5Avoj4+jw1nklZusopDJ6KlAc2aPTLzglAjh+Zf4Hx23RDkFer96OGXWkY96BjGTMkyWaodHiGWHo4ObAxsFch7c6Gn9CSAVs5FBCfjENx6iiNdSER7b7tH9LhPQXGX/NSrp7U9DAPaLW/yQoCI7BT
+ Ha1e3PHw
+ PNeaIijAd8zImOMNUGG6r5qjd7ZRfpGesypWsckpIPnwdvu0msfzt/vBpzPFHslFUKmevN0NGw3BgIwmOAl8M7Wq+cILBpN0WXnmgdZaO17SfSRQrNPhsO7Fr+Q1dYJIhmtWL70tkLHMrw70dqqYB5KUUbH7WSOdrh2Ru6MP/6XRuOy2AYIXw6lxP8MkjXC/dh/eFyDslz02EYyTNtl4vExRAxeBNGFSd22J5I4IwMLpF1Ykgv0qQSEiw9Th3we4Vc8CypqMJtFT1h45xGwXO6EgB7wcGOSPZAVfpe00yquaEphQsINekfarQAvFX4//YL2xVgkTK9Yn1CNNZ/nORQeTdy7zQk8eX8MElXT5F9b/H4UevNftXXDyg7wsbDjST6qodzFwDqbxBAEgeAPswtXLTawsz8Y/0cXUC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,125 +131,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---2wjx7nhywlavorzj
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
-MIME-Version: 1.0
 
-On Tue, Sep 08, 2026 at 09:57:57AM +0100, Vincent Donnefort wrote:
-> On Tue, Sep 08, 2026 at 10:39:17AM +0200, Thierry Reding wrote:
-> > On Fri, Sep 04, 2026 at 12:41:05PM +0100, Will Deacon wrote:
-> > > Hi Thierry,
-> > >=20
-> > > On Fri, Sep 04, 2026 at 12:44:51PM +0200, Thierry Reding wrote:
-> > > > This series adds support for the video protection region (VPR) used=
- on
-> > > > Tegra SoC devices. It's a special region of memory that is protected
-> > > > from accesses by the CPU and used to store DRM protected content (b=
-oth
-> > > > decrypted stream data as well as decoded video frames).
-> > > >=20
-> > > > Patches 1 through 3 add DT binding documentation for the VPR and ad=
-d the
-> > > > VPR to the list of memory-region items for display, host1x and NVDE=
-C.
-> > > >=20
-> > > > The set_direct_map_*_noflush() functions that will be used later in=
- this
-> > > > series are exported in patch 4 so that the drivers that use them ca=
-n be
-> > > > built as a module.
-> > > >=20
-> > > > Patch 5 adds bitmap_allocate(), which is like bitmap_allocate_regio=
-n()
-> > > > but works on sizes that are not a power of two.
-> > > >=20
-> > > > The of_node_to_nid() function is exported in patch 6 because it is =
-used
-> > > > in a later patch adding a driver that can be built as a module.
-> > > >=20
-> > > > Patch 7 introduces new APIs needed by the Tegra VPR implementation =
-that
-> > > > allow memory to be allocated at a fixed offset within a CMA area. T=
-egra
-> > > > VPR needs this in order to implement its own allocator on top of CM=
-A to
-> > > > meet the strict hardware requirements. This replaces the dynamic CMA
-> > > > area creation patch from earlier versions.
-> > >=20
-> > > Did you get a chance to see how this could work with Vincent's series:
-> > >=20
-> > > https://lore.kernel.org/r/20260902104712.2399797-1-vdonnefort@google.=
-com
-> > >=20
-> > > ? I think that should remove your reliance on can_set_direct_map() and
-> > > mean that you can retain block mappings for most of the linear mappin=
-g.
-> >=20
-> > I'm not sure if it would help all that much. Yes, if we mark the VPR
-> > region as LLMAP (or PTE_MAP, whichever it ends up being), it should make
-> > the checks for can_set_direct_map() redundant. However, from what I can
-> > tell, Vincent's series still forces page-granularity on these regions,
-> > so it won't retain block mappings at all for them.
-> >=20
-> > The block mappings can be retained for the non-VPR memory, so that's
-> > nice. It also reduces the amount of external prerequisites, but I had
-> > kind of hoped that we could go one step further and keep block mappings
-> > even for the VPR memory if the region happened to be a multiple of the
-> > block size.
-> >=20
-> > The recent addition of page count to the set_direct_map_*() functions
-> > helps reduce the amount of checks that need to be run, so maybe there's
-> > not too much to be gained from removing whole block mappings at once
-> > from the linear map.
-> >=20
-> > Thierry
->=20
-> I should be able to add PMD_SIZE mapping support to the series. That was
-> actually my original idea as we can easily force the CMA allocation granu=
-le to
-> be PMD_SIZE too.
->=20
-> I didn't implement it as I thought there were not much interest in the en=
-d (and
-> also as contiguous.c is always using PAGE_SIZE granularity).
->=20
-> But now as I have implemented a specific pool (and do not use contiguous.=
-c as
-> originally planned), if you believe it is important for the VPR driver, l=
-et me
-> see if I can extend the support in a V2.
+Le 08/09/2026 à 08:33, Thomas Weißschuh a écrit :
+> Pick up changes from the UAPI ELF header files.
+> This picks up general changes to elf.h, elf-em.h which was forgotten
+> previously and the new elf-r.h.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> 
+> ---
+> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+> ---
+>   tools/include/uapi/linux/elf-em.h |  71 ++++
+>   tools/include/uapi/linux/elf-r.h  | 696 ++++++++++++++++++++++++++++++++++++++
+>   tools/include/uapi/linux/elf.h    | 112 +++++-
+>   3 files changed, 868 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tools/include/uapi/linux/elf-em.h b/tools/include/uapi/linux/elf-em.h
+> new file mode 100644
+> index 000000000000..ef38c2bc5ab7
+> --- /dev/null
+> +++ b/tools/include/uapi/linux/elf-em.h
+> @@ -0,0 +1,71 @@
+> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> +#ifndef _LINUX_ELF_EM_H
+> +#define _LINUX_ELF_EM_H
+> +
+> +/* These constants define the various ELF target machines */
+> +#define EM_NONE		0
+> +#define EM_M32		1
+> +#define EM_SPARC	2
+> +#define EM_386		3
+> +#define EM_68K		4
+> +#define EM_88K		5
+> +#define EM_486		6	/* Perhaps disused */
+> +#define EM_860		7
 
-I don't think it needs to be part of a v2 and can be a follow-up. It
-should be transparent from an API point of view and merely be an
-optimisation for that specific case.
+Add a comment that it is /* Intel 80860 */ to avoid confusion with 
+powerpc 860
 
-Eventually it'd be nice to have, though it might also be worth checking
-what the actually gains are.
-
-Thierry
-
---2wjx7nhywlavorzj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqf0IoACgkQ3SOs138+
-s6FzZg/8CRaK7s6wzryx6ugtk3NLfiNV3oIjP6eXCrqWs4+dDSJ+em9X2MZpglTt
-8d7OMtEQVRUCKHW9Tf2fZKzqOYsmHzUi6kmnYAB1HB6kPDVl/0PyGbJsashsANGr
-WwElHEpCNRzyRLWSlx0Rtidf5pKqE0t2ukNMrye98cCHylazGo/2dNq5eUZiY0BG
-+K3Qjj9AWuwmDlL9nqXeABM9sChrIGXf9wDxQWazhynwKGybLvgGW0AGjvsvnj+f
-QUygrWY8D+op3RSBe4mDbt04WTak3A69NyLRc1OJ1GBqXk9OUO2Zj45Bf0sDBiZJ
-LyEOE7tm89kbZ8Pab12MkHhMcJDhqtAh110WyvHQTiiJc/CDuEHWH0u6ZffApO2h
-5W6gRmwNWU47ZpaOW6zVimH17m/EPfokHg1RWeyBZnsjkkdNyUp996slMCdTQe2X
-Y37UdVaypUvzdNH7Xl1yYwsR+XIHfD69y6PZCeXZ0xVKEAgLTIyLDAXgfGZNdd/c
-ZgyweB3MFKGMZJxgssr0Yg5CQUHC81SbGPoQv/AadQ7P395kJ6B5bdbyMocaOjuO
-11VeRD6K//LwRhYuMMpauRgJAqSwVNxXxC1t9xZoPPAqxTb57s5IC7X5B6akq+Dh
-env+3Gvg9+blLrpxgLpmJQlOOxKkfrM/yrV8JI1mly57R+g1d0g=
-=HSA0
------END PGP SIGNATURE-----
-
---2wjx7nhywlavorzj--
+> +#define EM_MIPS		8	/* MIPS R3000 (officially, big-endian only) */
+> +				/* Next two are historical and binaries and
+> +				   modules of these types will be rejected by
+> +				   Linux.  */
+> +#define EM_MIPS_RS3_LE	10	/* MIPS R3000 little-endian */
+> +#define EM_MIPS_RS4_BE	10	/* MIPS R4000 big-endian */
+> +
 
