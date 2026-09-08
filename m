@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E3AC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:49:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51811C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51E176B0096; Tue,  8 Sep 2026 10:49:06 -0400 (EDT)
+	id 7452C6B008A; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CF566B0098; Tue,  8 Sep 2026 10:49:06 -0400 (EDT)
+	id 6F5076B008C; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40C936B0099; Tue,  8 Sep 2026 10:49:06 -0400 (EDT)
+	id 5E3C46B0098; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E796B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:49:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B45CF1A0652
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:49:05 +0000 (UTC)
-X-FDA: 85190877450.04.2BD7AA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2B23B14000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:49:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otzDxKaM;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788878944;
-	b=LDsXYI/pfY+35CFwHYyPn5FFgjN4tK8trCdJ7r86wdSmzL8O4Wt0yW7pS51h4hHzUO7r5A
-	i8dKy+jynWrXwcH1dQs5NvxHZwTzlI/pgdszBqFt9u3PvYDvPhT0wKEzrU8lD8y1UTzVTY
-	z18s5ime/y9BIEVdbxK0eFl39ets5m0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otzDxKaM;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5446B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:50:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEF2E1A064B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:50:45 +0000 (UTC)
+X-FDA: 85190881650.06.052D20E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 30E531C0004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:50:44 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aRMevG6J;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788878944;
+	s=arc-20220608; t=1788879044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X+99Jcayi+nWYM1zL62pmOjFdwDFaLWV0ywtPPTSgRc=;
-	b=RqY9j3YusyOrW0vTDlf/f+SJ1dsgPAJ44SKAH7wpzrIqlrLKV7fWMUV7kXskBfLIkr6RaL
-	iEl9pNMGdYE1RKFpozdetgSVSAIEXE0ykXfkWxCxgZoiXcypha1Px3oh0n7WBLjnJz+Jaf
-	YaMWRxkRj4bVLZNw0Y5JAjeRfKXz2FM=
+	bh=1pQNrk3rJgyZaUFqdcMUHuETyCztvxyMaMetlGBU29w=;
+	b=mnvO2dJrTQcIfu2EitBqf9bGDbVZ/oKyHOF2LgrU3+6WX26eomC6Dgu+ElGyCvfPn1H/V/
+	AGZk1QcALaQntwyQf/9gtxUOrHK7x8sbDI/62N9nQMxqIkbROPb1sJg3xKdNvOUDeNxgRJ
+	1Efp4k0frP8D7fpvzAS9tu9K+y0Y2ZI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788879044;
+	b=8al++NCoYD02lHImYT6exwVj2QsyurhZ6xHahNI7fuA2bW1vBAMPEeZAExbnFOE7Ro8RgQ
+	nKtmdrjmtaoiz6tHx61ZaXcC7Y5GJ5Vtrj9kpZJXWw+DiY+qei3k/DhVfmXojfTq4lWUp7
+	48T6Icx8bcYhAAlH5Q2oWyy+O2dcN7c=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aRMevG6J;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A382B601FF;
-	Tue,  8 Sep 2026 14:49:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353461F00A3D;
-	Tue,  8 Sep 2026 14:49:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B9D741427;
+	Tue,  8 Sep 2026 14:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B191F00A3A;
+	Tue,  8 Sep 2026 14:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788878943;
-	bh=X+99Jcayi+nWYM1zL62pmOjFdwDFaLWV0ywtPPTSgRc=;
+	s=k20260515; t=1788879043;
+	bh=1pQNrk3rJgyZaUFqdcMUHuETyCztvxyMaMetlGBU29w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=otzDxKaMsEPo5BrTh9lku30PuCzo66+jUoEmpvNdOMJa+mEV0SykNq9Z6gLqExV1h
-	 cOZZQxrplmUWtetw0kDKb03j1d8R0zTPZTB6vRkvls2cQZv4B65o38aZMrKzbAbCOu
-	 3aveOxcjSZYbfLJf4tDSjdjbBBHPlzW3F4u7cSQ+YmXC+Upe06IiwTXJCGaBBu+ezP
-	 yVxQD9Ms9gBNq+fPKvVwN09Gv2HwPG8T3MlGY0PsXJawghAHcT7+04eHJUGo4qFYmH
-	 /FkWj5w/Rkaf38nZBXKNILzS7iinjA7szyqzaKSPydOajMCmaxycC63gDVj7785jb0
-	 u1AIDhfMppEzA==
+	b=aRMevG6JLVYkL0wBFdrn6ynusrO/tCacdQm5POZg/Xma+pc21b9eOr63hXqZVDX9f
+	 9nT477K6WHXvIvUqT6uVuj1B7p3WRGKeVzdI6hs+E0l6jIIrkMF9jHQR070UTCAahJ
+	 wZLx0jeH6LJZCeFZUcmwL0l7bnLW53+qLeHyhAUtk8AKUc7c+f9ZzWRSbpWD1g8+Qr
+	 YV790KYMzuV2tfcxOxFhTO8ZTE0z+WDRbsvhBlSxJ9exPaUwCLteDLpNsZX2a6J7sN
+	 xPU8xSOrnuQ0nySeg5/4X73+ayIqQxsMkHW42K+HrQ/syfaKwYG5fGZ0qKHfcdOlPI
+	 PfGAbb4pZTkXQ==
 From: SJ Park <sj@kernel.org>
 To: SJ Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	stable@vger.kernel.org,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] mm/damon: support access monitoring of hugetlb-backed memory
-Date: Tue,  8 Sep 2026 07:48:51 -0700
-Message-ID: <20260908144852.104829-1-sj@kernel.org>
+Subject: Re: [PATCH v4] mm/damon/core: allow esz to be set to zero
+Date: Tue,  8 Sep 2026 07:50:35 -0700
+Message-ID: <20260908145036.104970-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260908135156.97481-1-sj@kernel.org>
+In-Reply-To: <20260908135413.97570-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2B23B14000B
-X-Stat-Signature: 9zpyknnyushprxwbhmh5protxws78es4
-X-HE-Tag: 1788878943-518348
-X-HE-Meta: U2FsdGVkX1+/5bulcJe50L5E/r3VpP6B5dPVbDgPAqLPpibRgccE6mwe81kX19UKK5X0FY6aM+p4pgqaaWYWrfbN8RL94JIOlku0z7tna7splUDF+jYgDsZSF77Aq2xZ74OamkL/zop8xKQt/+d4//DoZzzH9CIpQNdWzQsq9egpo0kOBSeDpNXSHRU/SNKOTK9s+t+9bWH5ctvIBuDq+JQWIEW9X2T5TZpQ8sXZMBEfylYWRJxx5TcEqJgYhGnLdy1lcQbT/zeDa34Lds74K7ehyfstNL/A44JqvGiOgQeKd4ZpvpUhzea+of0R7iieIMcHUWTYY5xf4rUjtmcF+xOERpaWv8Z3Mu3O1+tH94vVIbb+tYJ/CVgsEFjUFZmtXyiO3TFOHUfM/9OF7Ny2EE4a7ogJeuCXDCNFhftYipisaYweQACZlliX5wc5UfpxBRMt2ETLvqRq+QsBVGYZmcBs6SxdI/DEQef2fPp/kFGnZyKgInmhTcqBD1CVNmhczmF3c2R5HoJig2URfghnYCBjIXQQIT6gE65Z4aN/v/bV6wZAKgbqH95DJrd9BzfRiLf8cl1mRDozt9ipzv10jsZ1b6w997VSgiEIItln8DrDlRXmDqkwzizdTvMnO4s77kOhUjXp21OoxJZFMn890J/iRIAXy9DDC90KnHhzuCAnxa2N+BqPAHfS3smM8jdVeIXHgBusCK+aEPxn0cVa3lrrZzBW8fVOCStZdaUrXWK5DSlhp+F1XWJrI1hag3lKppNExzy9BsieuthnckDLPvOBbUsE84Ml+H9UABcVAQfGN8rUgxCz+Fu5kG29lsxmlRxjWIR4uGwvZsDtfqGUCLmKhD71nj0vLTvRWdXxSm7ooAh5eKZMiQVMt+Rtyr/9l1ES3bkRwysHsC1ubpFjXND7kEmaTQsENikLfSpIxM/pcj3jV3UP0hn5bgzlA6NLDq9SgE7/QJFmY3e75pm
- b9OuKSgP
- 9Hf2Rs7pxkSH63BDiWUfISZQLq2Zebv1cih6kyZ1hClzBvbTs7RMZGgcoSh+IrWuFys/tRwqv0vcIGxlkSZIS6/C6BYoYSwrsXw4Pq2Odzi2COmusiLVRu09Fk7HEYdKK55e/82JL6d0l9GiSK8/RFfknuU8GV4Xidr1BCJtuCdIcrnoJGnYgLKxKr2uAC1FOkgAvjWHEl/4yuPVKXABCojiVi3kX+T9hsdmjHEbOUiEwlKg=
+X-Stat-Signature: jrgd38aa9zzgdm6r9z65gjjjg3aojf1b
+X-Rspamd-Queue-Id: 30E531C0004
+X-HE-Tag: 1788879044-226445
+X-HE-Meta: U2FsdGVkX1/S4l7V4ntGySWKQ3v/FUSRsM2sYftymH/5m4HuKJ/O8mEC8/TvpDRlpchOIKARZD9kI0iKq/nQfvQZEdxx7cH/f9I3sYzvmEiXewHljQDW/IDaTArgzo2KQ6raD9fUy5090JXSKAYuIYjE6ymV3abjvot+gJG2WFJ9jEw9NOiaEyicpi1/kbbD8G4WxdIoYWb2OSfK0/KydXpKddCVkWC/pDGnwDz5CFWBfIhticY7jd+dxFMoZFWzP5VtCEhNxNLyzEqJ8LcIXX9Las2f3aN1hKIW/kPhE1mgNmRIfmj46j0tZUzcjHfIBGZsJQlrHbsgyf1NULbsBmxxeLA+ob5b2U0FA8eiC2a2sLmkOnUZoRCYmZBdNCe5fA2rHBu8xoV+8wasb5S07WGahgGnaDvBzxSPVXgnp40v905O+FH7D8TC7x4bwm5MPv40RTw1R8jjYnZEOzgc3fDgIMZ4zEYNiqnaPobKf8C4AxyL5/dt3bs/Yw1kSJ1sfJpIv7C5xtJwCPMHcACdv+yByNBP/Z+BDVXGmc5EjnF28ux75XL99nwhlsT2Dlz5UbbLO2Yt6tUV42YY0yQrBIbN+ZvUW+bsFgxhwuTEHu5JqmuqKgjINHSdJ4EEm7tI78Cz+pnY+gOwlLnGvbMpOryn1Cxbi1iBKn1T2gw4c4nX19uVmxUkGHtkEiDEnZF1x33Z3LLnNKX5nIjwDYZfFL+yFNAfknLDayHgabOl5a2M42WyzYeWlmKajK7ZM1ol7dl0zH4VGB7xby/OpGxKq6ZpoumLmrV5QyMYitoiR5SDfGtCqrc16qkFeXI+4bTRDRD3mX3ftt0Z+POcg3M/9HzyEb83itoT9cZEaULrBvK/xMw4xl6q6CdCYYx8QLVlsg+SH2PAiR638G3w1XKX0zOcOWZB7oXfz7nWR1WS8bJHIGpICuZ4L8KaqbI5SEN6F9cU7GbUK1yIH3c3U1k
+ SpL+p9zc
+ eXUcefm9ySPp4GpmoXdNMTxeLmF1zZGkRnOq9SsfyYGWZ+la9/OHZlNDd8J2sHUgTKamygKvgKQDO2p/Z8AWaGObfbU1oR4bXLDOLSEbUZbln7R1j8iN/rbA3swnJoCt06lNnAzZOaPQrFzjsbKQgsm/mKFOc8LLJRKK6Hd9eOpx9L5glvYehpH69zB4DEw6mjHbgGOaRkl2dyz5r8ZBLW2HN1t1FI6P7krf9/B10Pk24gp9+BiRxEbthE2Jg+zS+Ya3u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,12 +94,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series relies on atomic hugetlb pte setup patch [1].  Without it, applying
-this series on mm-new will fial with a conflict.  Because of the fact, Sashiko
-also failed to review this series.  Sashiko reviewed the previous version of
-this series and found no blocker.
+On Tue,  8 Sep 2026 06:54:11 -0700 SJ Park <sj@kernel.org> wrote:
 
-[1] https://lore.kernel.org/20260907170358.100168-1-sj@kernel.org
+> From: Liew Rui Yan <aethernet65535@gmail.com>
+> 
+> When the temporal quota goal tuner determines that the goal has been
+> achieved (score >= 10000), it sets esz_bp to zero so that the esz
+> becomes zero.  However, damos_set_effective_quota() clamps the esz to
+> min_region_sz when quota->ms is set.
+> 
+> This is a minor issue, the main problem is that it doesn't match the
+> description in the documentation, which state that if the goal has
+> already been [over-]achieved, the quota will be set to zero.
+> 
+> Fix this by set quota (esz) as minimum as possible.
+
+Sashiko found a few pre-existing issues but no blocker for this patch.
 
 
 Thanks,
