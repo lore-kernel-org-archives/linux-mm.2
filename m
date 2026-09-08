@@ -4,121 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50ADCC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1478BC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1956B0092; Tue,  8 Sep 2026 06:12:52 -0400 (EDT)
+	id 089C96B0093; Tue,  8 Sep 2026 06:13:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A1B06B0093; Tue,  8 Sep 2026 06:12:52 -0400 (EDT)
+	id 061A66B0095; Tue,  8 Sep 2026 06:13:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF1D6B0095; Tue,  8 Sep 2026 06:12:52 -0400 (EDT)
+	id E94626B0096; Tue,  8 Sep 2026 06:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 361E96B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:12:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2A4C1204A9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:12:51 +0000 (UTC)
-X-FDA: 85190181342.09.4BAE365
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DF38CC0006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:12:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bobrowski.net header.s=google header.b=kAonQA+s;
-	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.215.182 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
-	dmarc=pass (policy=none) header.from=bobrowski.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788862370;
-	b=2OKWPjq0doY+3xKUNrKNk/I/mmhFJNW0cx5ueB5v0OWdJjpD2Zlegkr2VRFH6lAvAXKhaj
-	RCxAWfJ2UmwbXn/+Q5b/0bpZ+ttfyr2rNp4bS0HO7Mi+X+PXtObXSDYp18XqB6SUn2D3M1
-	YCCGEpqHW9SG8V1/fxbXVkmK0+ULZf8=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B74686B0093
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:13:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3CED71A04F6
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:13:41 +0000 (UTC)
+X-FDA: 85190183442.16.1AB8CCF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 692A31C000A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:13:39 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO5YyETh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788862370;
+	s=arc-20220608; t=1788862419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GhA9ASZ5myh78peIx89yYob/fVYshdxCIaZiQ5E+/oU=;
-	b=6Yfv1WCpT9gBJqGODGbyMAhZyLs1vQ8ss60Hf+2ZW8J2Xc16bzxnyMELYyK/RWLK6lk1WB
-	ICTDPM4O6Iv0eY3QvQCTYxIG5BoBSyfoNradjwkMZ2T4ymiPf8MVKzXiyEa6csJ+VRbX00
-	jkaHcsWxOXHT1Us3xqql8k2hqXRomSw=
+	bh=s5Rhz3vZATjbgv4L2KAACRCIbtaQyFKnS2m/CL22BH0=;
+	b=rgHqo9TOkZb10ERq52IDn1PCbzsRRLfRAan5u5avQPlFySW1i3mI4LTd6JoL1hj6s7dFNa
+	xEbM1bfme70e9bsS1JPRNeQ8RxA7cC9PwEf/oZfUdJ57QKknW5yMDImM6RWQNT/kSXjEhb
+	Ph9hpuRZ45897utiVg928zzXXfgDgIo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bobrowski.net header.s=google header.b=kAonQA+s;
-	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.215.182 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
-	dmarc=pass (policy=none) header.from=bobrowski.net
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc48fe04342so823752a12.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 03:12:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobrowski.net; s=google; t=1788862369; x=1789467169; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GhA9ASZ5myh78peIx89yYob/fVYshdxCIaZiQ5E+/oU=;
-        b=kAonQA+sPIuiiX0cAvyHe+SHGnRv9QEKbU0WzHHDxHgbaP1kzIOmqTxPRvb1/BO5pq
-         QfR64UyWFNk9vD4Jl+ZdMSiZ1ZwrZt40uOkQLdcPtSaMWgCifvKN4pygIdGcsmYF/3jD
-         ZkjJyWKrKaAVQ0JItxGx8cQdxtKFPDK/TTk0Zlmj3aSVycR/OUSP+sDfphxK0zS1pLJ/
-         HV9x5mPbIcbjpAZXSC4EEkLmjB9hjgUaZsDOSalkzbZCrxuoJzRRzAUKaJSIVuJC5P/z
-         avc7sAQ6OLgDqOuvXbCOawDuyomzHa6iHHZOxmRbXL26m5PJoKHK6ZXxU2rzSIYPwrHa
-         6sHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788862369; x=1789467169;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GhA9ASZ5myh78peIx89yYob/fVYshdxCIaZiQ5E+/oU=;
-        b=XjtCHtT68LwrJDkmDvjFqycdd7wC0NTR2tLWijueAvSrTlRblcgpMlkAVE2XbsxeUr
-         6PC5Mix1jm1yaTIxU40+bmtqzHBLPhGH9XdM5YMgZKu/qFFLfaoYT0m4CLviJLuKoOyO
-         wb2+GvatZ5tcjyOfujoSNq3jF6o0mUtPhkU8IuoWayzsewx0dfdXbJbKrR8MJXJImqLw
-         +tsKa/pKHKvpCqU2863UxQyps3OUTSbtEtPZPffo9MhfmuqhjOkpJ9Pee7PnEA0VJJW/
-         MsPktLvKME/1pfcHDrl5k/Aw0fV8ZuJC1gw6JHomBUETqF9xfsDVdNhrHoFwxuSZwO1S
-         1hqg==
-X-Forwarded-Encrypted: i=1; AKwUvBy43+zQZZBoDDecL7Dw1CiiqL41NP4GAT2Hg0vhLB9p7aXbmt+CZpBWQjY2Mk26LEIUSc/ANGJ48g==@kvack.org
-X-Gm-Message-State: AFuF++n2zUOvLGn9jelIGhJQ/vkm3bYhwNsLrsFJz9744eOOSnEbuumG
-	BYBeOCL2TB5tlYtPlcN/lPSJm/YqPVq19eGFneNnFN0fQUQmeOjHM82h5uRIRKtWcJz2
-X-Gm-Gg: AYBFou1uJCF4ZWBxa+LfJbZNxPq79ffu84e2EdT1rr/M9XP+bm8vMvK+zQiYsN4anA0
-	M0y0G1/VdfdVbAdTMaQJAPmYOsiQGZ6M7EOtJDjuCRI3dJ5fUKTLDDuMOFsRnEKu5UMtEJ3Yj8k
-	E/TLj8oNFSDSm3QGe8j97X49GE1T0mK2aw2paO2lpooL84s3a9haKr5/p3G4AMKxpe5gIAJjFG5
-	bW5M9Aw31KOUHSDw0x4msgAdqOrLXbxbUmfJBbzNT7HOQ4VgtnxihW+zOTL7DyL/WZxnG+/5J1l
-	o6cZUHywCc7xAQFVbsA2DHraGa/byXn0SQmKY5pezSlTG8gw4xsBJCCpBqUuWIOh7DD3xc5HdRK
-	smU/FjEk/iXqUkPENm+6RECeD2mNJpl6vFTYUxyiSbHDTPNbMZioea8WbnrdEzKL4cb4XzYylRl
-	1Q4uxk6H/M+EEpkKtLuzc8O1dQ3RDtBth3fuF0tLlWhzmRv+xoHTfpZIWMlvGkkhH4CfLOYe6ja
-	0LSNCSOzG/GRw6GtvGpkk8CsRNQWaca9XlLwG7L
-X-Received: by 2002:a17:90b:1e51:b0:399:ecd:d68d with SMTP id 98e67ed59e1d1-39b26260f7dmr38959127a91.22.1788862368635;
-        Tue, 08 Sep 2026 03:12:48 -0700 (PDT)
-Received: from lima-development (163-53-146-23.ip4.superloop.au. [163.53.146.23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b314cfcsm35093697eec.19.2026.09.08.03.12.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 03:12:48 -0700 (PDT)
-Date: Tue, 8 Sep 2026 20:12:33 +1000
-From: Matt Bobrowski <matt@bobrowski.net>
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Cc: bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
-	akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
-	brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
-	kpsingh@kernel.org, ljs@kernel.org, memxor@gmail.com,
-	song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH bpf-next v5 6/7] bpf: Mark linux_binprm->mm as
- trusted-or-null
-Message-ID: <ap_fkWbaG5u7UH7y@lima-development>
-References: <20260907165220.52431-1-tasos.papagiannnis@gmail.com>
- <20260907165220.52431-7-tasos.papagiannnis@gmail.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO5YyETh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788862419;
+	b=BQaLxp4JrR9b0UJBfMipPZrFLWI4Dk58xhmP+tTLFNdfeW+7klzZxemQr1LKY4+cQG8/d1
+	hpSR9YXtiZsonMjsyMgk+MoWTO4I4+8GYjCEtPhN6uRfM6ZhLOd19SAW3JlvO9uT9hLynW
+	i694K0S1bkkhD/0eb8yfWA7GvDMKpxI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 39AE6413B9;
+	Tue,  8 Sep 2026 10:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D794C1F00A3A;
+	Tue,  8 Sep 2026 10:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788862418;
+	bh=s5Rhz3vZATjbgv4L2KAACRCIbtaQyFKnS2m/CL22BH0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OO5YyEThil9/HPDJqoIpj1Ew48vNHqwYqwgFZG09fyVBdWNykF7HX/zrzOp1X+egE
+	 c0JHpYD0fJtjE2J/OxgDUrDOrwQGsqY8cKYgf9Nh4dgXFUaDA+mhh21BeAWQHvgO1e
+	 FybHHB8M0FbsEEaJmOKRedjFAiQ7Bg8NM0FrJfJQEVsIpxwd6RwIWX/W8mi8tMnKQ5
+	 QQQwz6oOprf0KFSJNTTbFexVcGiO+t8E/iKhnsPoayZz2HRcLGqURRC8hsWkOLVJx6
+	 Pp0/QHNDZOD2UpFdE/blACWUocYPjIbVp+2k06z5jDSVV0Q1Ql6tx3+Rae0mUR6ZOE
+	 aWiFMONpCEtUQ==
+Message-ID: <d6ca7f47-39bb-43b4-92d6-63ccc148ebdd@kernel.org>
+Date: Tue, 8 Sep 2026 12:13:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907165220.52431-7-tasos.papagiannnis@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] selftests/mm: Reject invalid test selections
+ before running tests
+To: Tianyi Chen <hi@tychen.cc>, Andrew Morton <akpm@linux-foundation.org>
+Cc: shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jsavitz@redhat.com
+References: <20260906135444.749144-1-hi@tychen.cc>
+ <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
+ <178886112560.138404.14562368683011041790.mm-cli-v2-1@tychen.cc>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <178886112560.138404.14562368683011041790.mm-cli-v2-1@tychen.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: f6jp133xg8bswardk9fsr16krcgnkhtj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 692A31C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DF38CC0006
-X-Stat-Signature: hr7u3j7x6aogjarob8n39dzj3km4j9kf
-X-HE-Tag: 1788862369-904764
-X-HE-Meta: U2FsdGVkX1/r05Y3+g0OJwkfNxoZIcxmvADesN4LlF72OR2lE1VZpcTnYCi59Yqy+kbiGxnsdxAglJzFJ/qOzXVi/cIeQnC/ODjZvYDSaFTRYNKNLqgnlrPyI34s8s0iBI2HHWyv/FXT9QIMu75E8LuBBe9fuVJ0qUSWOC2+rVMcBJkDTAyU2PkidQN7NmIWneE7R0SbzW0vOYxCx4LI5WSXebr2RJZD8i5s1eK2Lknq9kkFML3xv/k0wcn1Ii8OPe0ZoBdZzNrlBoixebkuSW9pJRJfirV6PIa8hE27L6apohNyFHKtdzwLlqVCblgex4iZtSY4Smvk+yVoltoqnIZTv43gaZClBu68h2kMlLIbJMbvRtNItkR++8pHcmMT5+aFUCiyT2DMUn7bPWxTxdA4KSCl93KZdT1q48JAZ1F87ByM/tV3/zQAeaMZ0Bxu8872wM1wOcnIAScnTILfIne491U9oTTeRsWzx5n1SJzXHi6SgWjytUwkZoKAL7Kj36TFsIlHWJp3ORHygU+E/m503T/l60PkYyXO2wGSYuKEYnSFCbRl3KbgxkBzzpph8NPPfok28mmNpxnSD5FJCFBSIp5R/Fu31dsE/2mMml4uCcERf3z/NYIb8pu9DiRoMHUuuNRD46cPzWOX4pcjBlWrY+L8oFcBV5qQvxTw+oJCzGzyALxJLJ9E9KxAIpzhlb9j94TxZekgShQkMgcroed+HSsejV3/KXmHSuuAEsAA21qFCRM+5Wa+Q/gxmVQ2XBJWwSPQhs4QE0QViIzRsK0REq9VGB9wTMfsEBj/sWBla/1Xpkb2AcXrFiqiqC0n6673rSC7jT0Qh7knq5cG2QEDRl3eOm0sV3RIVceUH8etytoQkfrM+/J8Q7V+26ceTo/OCwJXfF3Np7tw+FyNfPxsme0PnL0JGBQs54iBCYKAUPIvySeGqwCwczzRK1OFjJzgJE4epsSJ07mnt77
- CvAh9opL
- MW8aJVyK4rTTP05rq33/UHTDPPgocYfOp6JeckC6q8huO+gad//i/LjOYGWp1Rkr7hcJrimYtOmw+QonsNq3h9crPfYq1xkSQStLCJ72PQ2DDiOA2vepybYGdwcN1pgAJnMHjga6loO29eOW0p3pehaLLKPHe/94asspscgcBE3wd+cl6X3kXBo3lgnYjfkqkz1f4PxhMnCBzugedevACbwFL0MnDwx0G6pGErrJQChmQoMAz4HEjegVpEmWJw/lvSSBSKnxt9FAsfSahwi5YNKCvv+haY1LPvjS58WngVjjxG1sxQtLhXx1WYRlsnSo1HrxDrrR3/kg2Ox6M8+yljojnHQLzEuj0jdmjyD9nDx/Qk3N8J0TLr9APSC4Nq48t0s6aptDQnf/v/8m1w49DyHaltUeBooQa/raPXcGAAdzsSfglio2eLV06lUJ5WECKTiafP1REXpZEeM0um+9wwkO8qG141Yf5CMK0EVvowSHGWVbJ/3DEjmKIXMZ8yBSvlOtALqVEuQjiS8V2caQGUpgyvHd1KEuGrLE9WchslzKGDhU=
+X-HE-Tag: 1788862419-523712
+X-HE-Meta: U2FsdGVkX18yfRqsYOLEJoLlR5iWr/VSQCP2P77gF1NJ9dyphBErPUZ0idXC+3KWRMVyitLFMg/eWxDeVzHldfSUdG5hnhQOAlcuCfJH+DkhZS3fOKxM7Jpnl98mpvcEFfZJFZUMnjEesUYSMil543FxumV54I8rCknr1IsV7HLbgdIfQoQ+cLO2w0Qu5LH2cWDfw9hyl2HXci74Wt11drDMT1GIyJKSAaQc04fPW/hTKduJWI9kzcUkvMriybW1ygrJL3vwkLBdjaPN/hW5M+pNs5+bs88isAS04zNL8efRCuJdhWS3RXbSDHKQtd6lTX9iYK3x+pVYXH+7obYBBgk6QwyWzLIJbaNZhaxnN+oH/J5tVLPisX0KGsMVM+sY8clRNAmK5na+FUpVis+FmkTsXGUAM1kM0UYo2HQeX+Ojx7d/wi56LVXHqO4xqRz6xER/JePNjMOFkBaWPrh4wKWLhAZq2T/1Du1gDqLcz0fsvg7cE2txNs1F2yITGhPWslItZWrL4LeW5JVYkmwSrjQHsA8CXQKEzO2iJa8tdlohP+lzyk5anqb/WOc6Ci5xho+PBTuLbOp8XObitehbe8SsvhlULD3wNdFlWOJtFIoS1SBNUI7R0HJVZbJ8YxDSvlHCkV6J783thVdnqbmnwTsyhsPheiBTH0PTrjERBCoxQILHr1nV5BSFz2P2K1ckbHAPFp1n+UexcU9GLwKu9pgws+IYSUnU9H6GnkI11SEyOhNsBjI3CQ5gaLPA3ecAtFHxG+bas4TqN+z7eHRLVynI4IzxInrAlLjq5lKdFPSDdz2Re0jBFupwBNvx3uWrk/xcnE/zGtlhdhBNEm+7S3V7gGy8lO3D0SRY3W9wpnNm6qam15ccfk+0qaE+p6k+otS0bXFEEbLZ9z0gkC1NIw8a7aQC9gWpLHsctO3z3SViR6ioy5RrD9RoX7W2tstnRsfoPWDqZCAX8p1XMiy
+ 1et3MEzn
+ hYWdevmo6xo848ivX7GVIguIuDc1u/b5fCS/nDU/VD1ZQ0pnSqzgjIea11k6pbYhRb6CCPUzb/tlJpBts65suWnYx1+nezzNhZZX4noYF69rcEYL71oYvlUH73fJd9ADzgKaevLxUv7FRSCLSmvLmd27P+ELcOpBsjvIn+3AKyHi/LBw4MckzLwWV01NQMhWqztBj0+wTzkqCjKIp81kbKkG73O8nYC17wTL6Fkyni9scQVmesmBT8Mw77wZ77P1mbpLM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,51 +140,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 07:52:19PM +0300, Anastasios Papagiannis wrote:
-> Mark linux_binprm->mm as a trusted-or-null nested pointer so BPF programs
-> can pass it to kfuncs after a NULL check.
+On 9/8/26 11:55, Tianyi Chen wrote:
+> getopts reports unknown options and missing arguments, but run_vmtests.sh
+> ignores its error result and continues with test setup. An empty -t
+> argument also falls back to the default selection, while unknown category
+> names can silently select no tests and still reach setup code.
 > 
-> The field is either NULL or points to a live mm_struct whenever BPF can
-> access a linux_binprm. On successful exec, exec_mmap() installs the new
-> address space before begin_new_exec() clears bprm->mm. The bprm_mm_init()
-> error path clears the field before mmdrop(), and free_bprm() clears it
-> before mmput(), as ensured by an earlier patch in this series.
+> Exit on getopts errors and validate category names against the existing
+> list in usage() before any test setup. Reject empty and whitespace-only
+> selections, and normalize category separators so validation and execution
+> agree. Keep the default selection for an unset or empty VM_SELFTEST_ITEMS
+> environment variable, and preserve the existing standalone default value.
 > 
-> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-> Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-
-Feel free to add RVB tags:
-
-Reviewed-By: Matt Bobrowski <matt@bobrowski.net>
-
+> Fixes: 85463321e726 ("selftests/vm: enable running select groups of tests")
+> Assisted-by: Codex:GPT-6
+> Signed-off-by: Tianyi Chen <hi@tychen.cc>
 > ---
->  kernel/bpf/verifier.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  tools/testing/selftests/mm/run_vmtests.sh | 27 +++++++++++++++++++----
+>  1 file changed, 23 insertions(+), 4 deletions(-)
 > 
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index b5186e664aea..6799d9e080fc 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -6004,6 +6004,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry) {
->  	struct inode *d_inode;
->  };
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index d09f9f6a384..836c7454cba 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -96,26 +96,45 @@ separated by spaces:
 >  
-> +BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct linux_binprm) {
-> +	struct mm_struct *mm;
-> +};
+>  example: ./run_vmtests.sh -t "hmm mmap ksm"
+>  EOF
+> -	exit 0
+>  }
+>  
+>  RUN_ALL=false
+>  RUN_DESTRUCTIVE=false
+>  TAP_PREFIX="# "
+>  
+> +# An unset or empty environment selection keeps the default behavior.
+> +VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
+
+Who would set it at this point?
+
+Can't this just be
+
+VM_SELFTEST_ITEMS="default"
+
 > +
->  BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket) {
->  	struct sock *sk;
->  };
-> @@ -6058,6 +6062,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
->  {
->  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
->  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
-> +	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct linux_binprm));
->  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
+>  while getopts "aht:nd" OPT; do
+>  	case ${OPT} in
+>  		"a") RUN_ALL=true ;;
+> -		"h") usage ;;
+> +		"h") usage; exit 0 ;;
+>  		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
+>  		"n") TAP_PREFIX= ;;
+>  		"d") RUN_DESTRUCTIVE=true ;;
+> +		"?") exit 1 ;;
+>  	esac
+>  done
+>  shift $((OPTIND -1))
 >  
->  	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
-> -- 
-> 2.55.0
-> 
+> -# default behavior: run all tests
+> -VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
+> +# Normalize whitespace so validation and test_selected() use the same names.
+> +read -r -a selected_categories <<< "${VM_SELFTEST_ITEMS//$'\n'/ }"
+> +VM_SELFTEST_ITEMS="${selected_categories[*]}"
+> +if [ -z "$VM_SELFTEST_ITEMS" ]; then
+> +	echo "No test categories specified" >&2
+> +	exit 1
+> +fi
+> +
+> +if [ "$VM_SELFTEST_ITEMS" != "default" ]; then
+> +	# Keep the documented category list as the source of valid names.
+
+That makes sense to me.
+
+It's interesting what would happen when trying to run a test that does not even
+exist for the architecture. Getting some feedback that the test was skipped
+would be nice. But that's something for another day :)
+
+-- 
+Cheers,
+
+David
 
