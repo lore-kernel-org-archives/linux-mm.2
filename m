@@ -4,78 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BD53C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6932C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:24:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BA266B0092; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
+	id 09B456B0095; Tue,  8 Sep 2026 07:24:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46B6C6B0093; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
+	id 04CB26B0098; Tue,  8 Sep 2026 07:24:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35B216B0095; Tue,  8 Sep 2026 07:24:42 -0400 (EDT)
+	id E82716B0095; Tue,  8 Sep 2026 07:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F33816B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:24:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 882EE1404EB
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:41 +0000 (UTC)
-X-FDA: 85190362362.17.282E5E2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C21FF6B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:24:46 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53F4B1A054E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:46 +0000 (UTC)
+X-FDA: 85190362572.29.D52A98F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AC48210000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=URN9YlhJ;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7CCA080005
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:24:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Kt/T3D8X";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=URN9YlhJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788866679;
-	b=AbXO8sMIBRCZecpaWWl4cQoptqlFLJQ7pJa9nssB7cnE65J0Pm3i+H07rRvQqKxbKxHxTj
-	FExdK8H+5gbLEi/4zAQ4lDtAG7sHmsN46Sxk0yBmqJK3ChLzot4qlTjMJfwGJvuS3+G21g
-	pAr1JnzjRJSOocEY4fiH+oyIi5CFCSQ=
+	t=1788866684;
+	b=rqXFga7t/l+rPVVoVYQQTXFjrTpjIcoINC1sAH4SZaZGUl/Fy6XHChyylevuVDFu7IBfcX
+	U5F1TomX04IVRfuBkJ/4nyuC90pf7a0bWwtk5lLNF2fjMqExG1PQu9wCf4cbaUpdReJAli
+	PxwXXe83DkgH/HHQXuEZRVKqG5Cqxg0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Kt/T3D8X";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788866679;
+	s=arc-20220608; t=1788866684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mfTEZnUAqIu9snNugWvKz9NgMLsK8FTL3j9DOamLiBo=;
-	b=WRFDgSNwB5Vn8b3bcMW8KUvLQEPbY6yZHgZq6afFqamQ9kveU4riVF0HavNRC1Xpg7z4tZ
-	ANw0E9IKFrkIetDluznS2sp2J3ApkkFDdh7duCpUz1wUFo0oICLvYnmlLBroS3PXDqN3sG
-	hS6hEbiVCuPX+oDANiohts98ynty/UQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SN9pBsYau6XqA12Xdl8N5Dmjue89SDbE0U+vn84I9OA=;
+	b=aqCycWF1uI6e8H0G+BrAglGd6aIcDPTVmiZE9CBY5q2HVp4U1NmF2Sz0gYrKa6P7w1pfpp
+	jyZjvS0lnbGXpiYNIutHmBMzwb6GjLaCvhkib37yxKOgwnwvgy2hWJOyJ/Tkv30sK19XV1
+	NfM2rB1fIWAnXMqFraOT5HA3169Y4uw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB743438C6;
-	Tue,  8 Sep 2026 11:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520251F00A3A;
-	Tue,  8 Sep 2026 11:24:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CD82B43D22;
+	Tue,  8 Sep 2026 11:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485D01F00A3D;
+	Tue,  8 Sep 2026 11:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788866678;
-	bh=mfTEZnUAqIu9snNugWvKz9NgMLsK8FTL3j9DOamLiBo=;
-	h=From:Subject:Date:To:Cc;
-	b=URN9YlhJSN5Go9+FGDnDonQuzMD3QjcnwdGAyMqEVUEuGrKKUAmNP+q5CuHjZQlhv
-	 ClYVpndKK8xa9gqd6ICtUjHEKPCKLHvW9r7Q+P4WIMXlpW8IL7k1nv94wvxhY6AuEP
-	 ukXMuQPId/Ph4WCO8dCGMkLGNy7UjYnvjQqW9wOhgTvG03UU8cy870Bbr/pJVU6Ugb
-	 czHNQFEamstUcQLxJ45kh9iBiGnT7dqM2pYQxYxNWNSj4d7GtVeuq87TP/s083vsxW
-	 wo5+jRt6XykBmUJbIfzE29PaWRRRSlCpKz2zi0p03fCCsGHsC9o89ebsiDx7YKOwjy
-	 N7gXijLrRfYqA==
+	s=k20260515; t=1788866683;
+	bh=SN9pBsYau6XqA12Xdl8N5Dmjue89SDbE0U+vn84I9OA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=Kt/T3D8XZpEzIO2N4iiHbSPlr4ezP2rFGrKhB8FxNGJUjNIAUpTwD9HB2w4fSdRXB
+	 3d+G27lYP0VS4+TljcJccGORudcFm1kPDdz4/OEvCSMQ06hhm/tILmG6tXjv+fSxQy
+	 zMCIcl9up+LoaF/s+i3mqtqISioFKy9/BCXkdOX0OrxdQ5lfZVcnYbTsAy7l10FKw/
+	 DsKUhaVgrSL3QWN6+1haOn5hhpXGYybvQCKtSVfLx1qeHkhsUox0Tr1QG2JXGHkIYg
+	 UC6y/zN+LsXyYlH9dSgiyaqdJXFBbTQor3lMoBMTACgjNNtY5Gk5lqMhdnzWFhkCEo
+	 7x8z0YQX9TC/Q==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH v2 0/6] mm: make MAP_PRIVATE-/dev/zero mappings truly
- anonymous
-Date: Tue, 08 Sep 2026 12:23:37 +0100
-Message-Id: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
+Date: Tue, 08 Sep 2026 12:23:38 +0100
+Subject: [PATCH v2 1/6] mm: move drivers/char/mem.c to mm/char-mem.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7ZhSIkVX3MOwqGWAiUqbKWlUw
- t2tXMDle8l/f4VIwhThUqwglDiynzPoQwFusvNIyH1m0ErX6qw0Pm3AIJzsQthTwg+Jx5ut6t7
- UVg+ugTwNQgO/9uy1yzxxXLy895dU/uyfYCpRoT2ZxplKOXKmvZPM9Dh6GaHbtu0LSYzZrbkAA
- AA=
-X-Change-ID: 20260902-map-private-dev-zero-ba36d76a2fc8
+Message-Id: <20260908-map-private-dev-zero-v2-1-acc7b5625305@kernel.org>
+References: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
+In-Reply-To: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
 To: Arnd Bergmann <arnd@arndb.de>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Andrew Morton <akpm@linux-foundation.org>, 
@@ -90,22 +87,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3588; i=ljs@kernel.org;
- h=from:subject:message-id; bh=zyHpGOvJgvpz0CkPBa/akIw5hynneWmyWjMSuuPUPHQ=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLmfygo+B1t2+j0RnhubYNyxk894yWXTk+wjLpmZJv+b
- dZ8+XmZHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIRggjw7l1t97/8Au7PT/9
- 3i6li4KPmN+1PO1LVtjZpyG2rSJD+wXD/9imdwurPFYLx7Wv+dd8wuDq4X//qnfGBH2pUb5sYf/
- 0KgcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3650; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=QmSOJwju5TfiPg8slA7VLmMjfjzHO2fnrvsHpTcasuQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLmfyjcdzyWeZOE6yTvbwKf+P1jDhiwHK17HsCu8FHw7
+ pSpHKH/OkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR+cGMDA1rKx8/uvU/ObR5
+ C9+U0lkqDLvK95be62aedsT4ueG2cysYGXrNlfuezn9pcvO5e9qxW+tsvDTsSzwdDZrzPZyFtWf
+ fZwMA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC48210000D
-X-Stat-Signature: b6ttcprnbtwsj4iwc89nwk1fipsbdk1b
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788866679-640781
-X-HE-Meta: U2FsdGVkX1+gGpPpIfhJEEzNlyedtT64Uj9tODbxX75DbAzWaPsrABsfM/9IgxXuIKaw4sV9dLs5KeOgB9qb5NvWLP5qow1ZqyWJxMTI4c+Svh9u0swJMGIB1koF48Da0NvDHmRp0oZKhxTW4+xFWiX3qK6D6E4Qwork5AJGR0zfNKjDJY0iLnN0CJop/8BwamvTcNxNSoKTlxIFhFZGYE3Rh8UDO6QmJEECb7mUBlfVW+98DBEj9PAa0hnUIB8TsAP4TvGNWCtGuOHHuphN/0cITynphXvDPD163HWcTWNra1Xgu9NaXLdcAcScxJeuG9zcfTi1pKY6DqbZhOdtEciyNH1VI0I+UHxkpQzzz0H+NK/TjJT4QClwX+T31Mm2yTkOaUhUlc5gGedfnMaH000vqeLPFG8EdARdf1E60HUTztaV+FxuaFj990rDfaw4yyWKI2IZLJ/R2UY6QVWnzUphG3W4Y1cSQfJTSrdsPKLCWxClKy+zEhZBiuex/oVYTVObAHvnNFm56XRSyvMu91Nq8i54xJoJM5TfEHS0MRa0aFZyqOqgOu+NOUGGDpLQbb5M0SP1/naVxTA0FBRKvL08hYDCwGCUdIwIroPFnZRe96i0ih7OV6jJzVXMjuymvC6GVf1YXB6FnuWewTU3w4PcI9YjdB2o279K/+9ob6eNPAKNYH0QHJOS6H4n2KPs0OHvDaM0aN+pbCJm9UUKnALJBLM3jzDO09MiKV+cthNHMdO9KYsrqGy4LGugSqtOwH6P2OhTI5w3zZhsiwubRlhLYmLgOo1uBA4jUfLbxt9lUr60gjBalJmx3SjCOeIx3zwET8KpZM97ogaqw7wm0VhnXipuR4gOb06PBBpE7yZqXB4j254sxiNLZnIVnfIfn88B3Zzt4pPfEqKGQIRkQarnJIccnQZPg8fwI4F71yPtSqgaEf8SNBoB++YtJaeEYvJdKmay3KRflcqrZ3S
- tRblnj4c
- BHjHvD0kBnfkSahLWIutmP30zrwrM3JviaEoCWoDwKc0QY46emVboluN/69qXH+lidGw2a9x3aTBX8cJoNlAzhcvudFELy71jPMT7eGT8+gW964SiulHKnBIaq3FsyWD1B/u57DRtdj1pM7YOF/IUqc2rMLEoGQcfii8atxxYUJ/0lnDoouHZVY384bVOdiTTlx+DCrMsO6eNVd83D9eDSFYY1v0hBP1VHlZ5mYcmUobq31fOhwLQ0lJmcTnfoP1LKsZB7X98sXBibjYkqGVN+tLlj/g6ppz26SmjFZAh/xc4Bew=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7CCA080005
+X-Stat-Signature: amkwgrwobtjebcw3jjedqj4zciebct7p
+X-HE-Tag: 1788866684-992783
+X-HE-Meta: U2FsdGVkX1//RoNKovcqmTXfP2ACKalmATmxjrPRFYIsVZyWzB8xBcqDJUMJpx4WwITqCF7srOwRGtR368imkWNSzl3czvt4HOLs79CncwN+l9bmqkWsoWy06qodwfimuDpUp6+VvB01Z7cM9RG28qi68ZS+f2fDrWqfBKBFSanshvRjULwRnKsixe1k3NsWuY67RjJzKNwt5WFKcN0IeH5aF1UwYZgjc/I6gxIA9OMhN4AFNlIds2hQgp8fy0/9kiULLVovv5khJ+i0Z26hjqptfAkV2HuXMVFgaY0iKrgSR2Z/xw5mZnbhIryxkzEJrc5Yz4H/GNc1j4n5ewxL/wAZIsXrsXfCmgrWuSzgf+gp0JwegyL2uq6eEQdWy6a7yY76WETxFccH5Q49JUiUAnwAe0aLF+sezxzjAS1SkT4bBVGuOyI0WS7l9ZWc3Pk74i6pVEs2twFp1BfVXbx13MuECgwjOr7rzyaMqSJSOmpGNheVUafmGriHbhXqxzxCt3ydlmoJfhI65ngoyMEqkQS3yvmSnqXulEuTO3GVzrk55SSwgGCA8QvHIWpW9j+QxQ/iyw21OevSf9Q5Jx7MeVZc6T5ucUBb0FeMFzAyWlXaDdFbhHFIjDtmQFbcy4d+v2SKm5161Npl83119j9ze7LB9LQQ6/ptKK2KE5yRfCsLJgq+N8G0NS6AtfL/NvmTilGEiOq2eWvVFKkJCdxyIHjByIP6CLke6/sjGWNpI6N6yiG/mNY+cJeKil8Qd3AkShhyzw5OqD86yG7jk8Vc4Vg7Mms40iGYDG83jEZvcYEK8meWReU4aZNYNk/1Hi+71ut2rSYu8FBChcwFMzeM1X97HRPx0jtAiPOkhjU8PAXdKigefI51RS9Z2V9as17AmPB9EW+ZXifAELah6Ue7O/hbIPIS80yICa1kwNMe/dodgm9bkSHgzNIOhJugs3Nhdxe/FiEU0hjMnVmlQ3N
+ Qv7TCIlu
+ M5kFxiZsdAsBI/R592roqUg6uo910NOwWQC1Bm3yyRSHLcRMry2UC8U6FMcrj5DSPg6pE1IHDvVar2bQTCf4AgxHjzZAOBSecHRpgPltAV1vS2exFpipiuvr+ZZeLQ8PXzUxkMONXtGiyhhLtRuuFX2EFaZrh9ptRzM/v9ORZ8fw0c+zmlhTuq6KjbR6OfBN30/KwFylu+hhPQ2MUYGYgYu/RmG1U7yGHteuW2Oiy+RZwEgfW8oiQAvJLsuXGC/at3mnXtVcXrT03D4jWKDaZ7sJzXSTVl49MP9npbO/wps9gyzAHQlZMU+4ca8IO3foj63jhUOJKyXeW3EhUw6UCuaZenXdGGMTiyz2tBd+4j0A8Xug=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,81 +110,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Historically anonymous memory was obtained in linux by MAP_PRIVATE-mapping
-/dev/zero.
+The memory character driver implements several mm-specific features and is
+always compiled into the kernel, so move it to mm/ where it belongs.
 
-The canonical way of doing these now is mmap() specifying MAP_PRIVATE |
-MAP_ANON, but we must continue to support the legacy means of obtaining these
-mappings.
+Among other things the driver implements /dev/mem which provides raw access
+to physical memory, and /dev/zero which either allows mapping of a shmem
+region (if mapped with MAP_SHARED) or, uniquely, anonymous memory (if
+mapped MAP_PRIVATE).
 
-As-is these mappings are an unusual edge-case - they satisfy
-vma_is_anonymous() but have non-NULL vma->vm_file, and their page offset is
-the offset into the /dev/zero file.
+This change lays the foundations to allow MAP_PRIVATE-/dev/zero to be
+mapped precisely the same as anonymous memory is mapped as currently it is
+an edge case within mm.
 
-Commit 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE
-file-backed anon folios") causes all other anonymous folios to be tracked
-by their anon index (vma->vm_start >> PAGE_SHIFT at the point of first
-fault), leaving MAP_PRIVATE-/dev/zero as the outlier.
+Also update a couple of comments that reference 'drivers/char/mem.c' to
+reference 'mm/char-mem.c'.
 
-This series remedies the situation by making MAP_PRIVATE-/dev/zero mappings
-truly anonymous with !vma->vm_file and correct anonymous page offset.
-
-It starts by bringing the memory character driver into mm/ - this file
-implements /dev/zero, /dev/mem among other things and is already (as
-clearly indicated by its name) within the remit of memory management.
-
-By doing this, the file_is_dev_zero() function can be provided, internal to
-mm, which allows for positive identification of these mappings.
-
-Using this, first prevent any other mappings from mapping memory
-anonymously, then make these mappings truly anonymous and eliminate all
-code in the kernel that previously had to account for these strange beasts.
-
-Finally, it adds userland VMA tests to assert the behaviour and selftests
-to assert expected merge behaviour.
-
-v2:
-* Added tags (thanks everybody!)
-* Reworked comment about mappings not setting themselves anon as per David.
-* Fixed up test typo as per David.
-* Fixed up test close() as per David.
-
-v1:
-https://lore.kernel.org/r/20260902-map-private-dev-zero-v1-0-a578c730cec7@kernel.org
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-Lorenzo Stoakes (ARM) (6):
-      mm: move drivers/char/mem.c to mm/char-mem.c
-      mm: implement file_is_dev_zero() to uniquely identify /dev/zero
-      mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous
-      mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous
-      tools/testing/vma: add test to assert MAP_PRIVATE-/dev/zero is anon
-      tools/testing/selftests/mm: add MAP_PRIVATE-/dev/zero merge tests
+ MAINTAINERS                         | 4 ++--
+ drivers/char/Makefile               | 2 +-
+ mm/Makefile                         | 3 ++-
+ drivers/char/mem.c => mm/char-mem.c | 2 +-
+ mm/shmem.c                          | 2 +-
+ 5 files changed, 7 insertions(+), 6 deletions(-)
 
- MAINTAINERS                                        |  4 +-
- drivers/char/Makefile                              |  2 +-
- include/linux/mm.h                                 | 10 +--
- include/linux/pagemap.h                            |  3 +-
- mm/Makefile                                        |  3 +-
- drivers/char/mem.c => mm/char-mem.c                | 21 +++--
- mm/internal.h                                      | 20 +++--
- mm/shmem.c                                         |  2 +-
- mm/vma.c                                           | 39 +++++++--
- mm/vma.h                                           |  3 -
- tools/testing/selftests/mm/merge.c                 | 95 ++++++++++++++++++++++
- .../selftests/proc/proc-self-map-files-001.c       |  2 +-
- .../selftests/proc/proc-self-map-files-002.c       |  2 +-
- tools/testing/vma/include/dup.h                    | 10 ++-
- tools/testing/vma/shared.c                         |  9 ++
- tools/testing/vma/tests/mmap.c                     | 37 +++++++++
- 16 files changed, 220 insertions(+), 42 deletions(-)
----
-base-commit: e3b5239afe1b8f0194db7436b17c33e94c1988c4
-change-id: 20260902-map-private-dev-zero-ba36d76a2fc8
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2133aec4a200..ebadf4cef076 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17272,7 +17272,7 @@ F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+ F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+ F:	Documentation/admin-guide/mm/
+ F:	Documentation/mm/
+-F:	drivers/char/mem.c
++F:	mm/char-mem.c
+ F:	include/linux/cma.h
+ F:	include/linux/dmapool.h
+ F:	include/linux/ioremap.h
+@@ -17477,7 +17477,7 @@ L:	linux-mm@kvack.org
+ S:	Maintained
+ W:	http://www.linux-mm.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+-F:	drivers/char/mem.c
++F:	mm/char-mem.c
+ F:	include/trace/events/mmap.h
+ F:	fs/proc/task_mmu.c
+ F:	fs/proc/task_nommu.c
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index a46d7bf7c4c8..bb3bf66937b3 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for the kernel character device drivers.
+ #
+ 
+-obj-y				+= mem.o random.o
++obj-y				+= random.o
+ obj-$(CONFIG_TTY_PRINTK)	+= ttyprintk.o
+ obj-y				+= misc.o
+ obj-$(CONFIG_TEST_MISC_MINOR)	+= misc_minor_kunit.o
+diff --git a/mm/Makefile b/mm/Makefile
+index e7245cb88c66..2a3ec53d62ee 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -55,7 +55,8 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+ 			   mm_init.o percpu.o slab_common.o \
+ 			   compaction.o show_mem.o \
+ 			   interval_tree.o list_lru.o workingset.o \
+-			   debug.o gup.o mmap_lock.o vma_init.o $(mmu-y)
++			   debug.o gup.o mmap_lock.o vma_init.o char-mem.o \
++			   $(mmu-y)
+ 
+ # Give 'page_alloc' its own module-parameter namespace
+ page-alloc-y := page_alloc.o
+diff --git a/drivers/char/mem.c b/mm/char-mem.c
+similarity index 99%
+rename from drivers/char/mem.c
+rename to mm/char-mem.c
+index 63253d1de5d7..d2e575545044 100644
+--- a/drivers/char/mem.c
++++ b/mm/char-mem.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- *  linux/drivers/char/mem.c
++ *  mm/char-mem.c
+  *
+  *  Copyright (C) 1991, 1992  Linus Torvalds
+  *
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 255d69ebceba..c92ed17dbc4a 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2981,7 +2981,7 @@ unsigned long shmem_get_unmapped_area(struct file *file,
+ 			sb = file_inode(file)->i_sb;
+ 		} else {
+ 			/*
+-			 * Called directly from mm/mmap.c, or drivers/char/mem.c
++			 * Called directly from mm/mmap.c, or mm/char-mem.c
+ 			 * for "/dev/zero", to create a shared anonymous object.
+ 			 */
+ 			if (IS_ERR(shm_mnt))
 
-Best regards,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.55.0
 
 
