@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D5DC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59725C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:20:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71E3C6B008A; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
+	id 0C1D46B008A; Tue,  8 Sep 2026 04:20:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A27A6B0093; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
+	id 073776B008C; Tue,  8 Sep 2026 04:20:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 568FC6B0095; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
+	id ECB366B0092; Tue,  8 Sep 2026 04:20:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A48B6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:10:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2EDDD12044E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:41 +0000 (UTC)
-X-FDA: 85189873482.11.E868315
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 376A5A0005
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VuvCCa9v;
-	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C2F766B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:20:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5AD21A028A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:20:08 +0000 (UTC)
+X-FDA: 85189897296.05.8BD3799
+Received: from mta1.migadu.com (out-131.mta1.migadu.com [95.215.58.131])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 22BB44000E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:20:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xg67lryN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.131 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788855039;
+	s=arc-20220608; t=1788855606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LQ40bG3b0qEiWUXfmVaeOdjqlO0VS+wXll0EN2GKX0=;
-	b=25z5R+mloENRwgTLcqq5OLwbhaC4IXqlzdQUN+Zjt0EJHoTSM0J/Sk6UZcPU6BPbXDEbbe
-	2MhbEjHz4RpusuDGsFs4bGhF2pQPfvYCq7VU81w0HWvRxQW1N2zlp1CPadUOU+KC878Ru5
-	+hkkvMa5NV3JiKQQvQyA/1FQTyxY0sE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788855039;
-	b=moO/KQqDqsdN5LaMMaSTgKqC2tpJ9r01PUyVzka9SOPkUFkKHGmI7Zpo7BXktu3vJr3GeC
-	B/SmZ4pz5oYGCLi9nBBqcnjT+31lZTNOekn6HmHpU56eA7hWY6fz0iiAFRMsSWt4OHFoks
-	BzshP2H6LzkKLP+75FlZjr7A7/eJGdM=
+	bh=5rULyjEYB8jc20wwyAECU26R5DmQW+vLixPMPPn/ka8=;
+	b=Q0R6SMhD9zNNSJE63D85rG9dboYh0sSucEzBLiaNAVXZmcmnO+Ok40QVKQW3/TioFXw4wk
+	zmaMESUB7ocamZHG71JMJcnRiUucg9vX4lsnnxYQl59Ko/0yf5V5pZ/5/BiM8dRfKTTOhs
+	bAolEUFsghc5Dx5fGxJojJIO7S4wuek=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VuvCCa9v;
-	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5EAFD43A59
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC951F00ADB
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:10:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788855038;
-	bh=/LQ40bG3b0qEiWUXfmVaeOdjqlO0VS+wXll0EN2GKX0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VuvCCa9vusaCARP4kqjikR+bv6LqFhsoUvglKfI1pJ9AsquQHsudSXKaSRn8WciPB
-	 PU18JpWe+CCGQx6pgLnGpxBdjf9d+Mqnyw1E9xm4a2xJ9aDt7sm9IBOWx3+xaz5O9f
-	 2Ay4dvMkb9bSXsEADr3vdT7M8wxiU/jRORNkZoyRhXHNLqO1haqy9GfjsmUMdT66EI
-	 /nA3gQ0tWJ5CJnqoSdyAGbyi8ZDHkzxKrSvGBcabUcF1k0uQ+jmtd8hmMrk2ac067f
-	 Pv4LmFlyY+5QoFse7RhmSATPp2FEbb13AOVufv4NIVar572vARYJfyAfl/ECwAFfOy
-	 Xa1T0McJHfLpw==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c28fde3bbd2so211544566b.3
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 01:10:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxyfuscW25pWkYC4jOG2RwIp3dSwyBjhN0ahD6PgxUHmzzsdazXw2fOqRvlnFor4UiprSJzIs1y+A==@kvack.org
-X-Gm-Message-State: AFuF++nptzD32NogkbemeIS/dPnjCowdouzrMLH2y5afvcj7O/lUAgIv
-	zlhjVuA4FnPG6BPcS8PjZLMeRTlSvoBzgtTc1MmmOFNVLoUBatmWJb0D5baziJgHwQfgR9vpDWF
-	hb0ZMWY+8hUja8XYJ0S2o6lZDOdAtf8I=
-X-Received: by 2002:a17:907:940b:b0:c26:1691:b366 with SMTP id
- a640c23a62f3a-c261691b9d4mr944555766b.31.1788855036997; Tue, 08 Sep 2026
- 01:10:36 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xg67lryN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.131 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788855606;
+	b=hnGI9k2W9XZjjR5/cV4IOzZXtys0D85+ZgDI9nAZntE9dkk/EwEvTCxl2EQmExU01UGDCE
+	bgmSZ6BeN4XFnzkwJmG+Ml48z+/dJm6KPXxZlMDCCnHCKRVmGnlz4YiydsAFtc83WxqjRB
+	3+DEzlYdE+7wO7i7xOzV951HSplZ64k=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QMukAefZfPUgbpBQK+irv5yH2EpRpWK4MHebJsSatzY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788855601; v=1; x=1789460401;
+ b=xg67lryNA+Q2GIQcWChikiwvGDVB5I/S93Sd26sq96BTE/kh8Rzxg/uGEcWxjtJJy7gQuO0Z
+ 6xh21eSrq0e+k+xIAZ/gtYqzg0+08NwhNoIF5ongyhDH1TtWg4V6NuWZVFPVq4033Ah9vbQj5KF
+ 1w/5fxtvwaUdKVlmf6c+WHic=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e3be1945dc93c990;
+	Tue, 08 Sep 2026 08:20:01 +0000
+X-Mizu-Trace-ID: e3be1945dc93c990
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <99aac41d-a68f-451b-ae10-f7132bb7a291@linux.dev>
+Date: Tue, 8 Sep 2026 16:19:55 +0800
 MIME-Version: 1.0
-References: <20260907161938.1932355-1-usama.arif@linux.dev>
-In-Reply-To: <20260907161938.1932355-1-usama.arif@linux.dev>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 8 Sep 2026 01:10:25 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNr7jMYkWjaRYpQYkR8yQT3R5guV=2EXTfWBipAZ5kEqw@mail.gmail.com>
-X-Gm-Features: AcwNN1WdBn7Fr6APF4VR9MOEKeL7VFm43JjsPuRw9XMXiiE2ug9S5SNh0owgQu4
-Message-ID: <CAO9r8zNr7jMYkWjaRYpQYkR8yQT3R5guV=2EXTfWBipAZ5kEqw@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: don't fail a large-folio swapin whose range is
- not in zswap
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chengming.zhou@linux.dev, hannes@cmpxchg.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com, 
-	kernel-team@meta.com, stable@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, 
-	Longlong Xia <xialonglong@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/11] mm/sparse-vmemmap: move HVO helpers to a public
+ header
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
+References: <20260908030335.96549-1-songmuchun@bytedance.com>
+ <20260908030335.96549-8-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260908030335.96549-8-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 22BB44000E
+X-Stat-Signature: j1ppsexjfebbpfjpuy4mkuhzz41wsrxn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 376A5A0005
-X-Stat-Signature: r4h45gt74t9ftfkc71jdzhs8i19d9xo9
-X-HE-Tag: 1788855039-89690
-X-HE-Meta: U2FsdGVkX1+tbEH97SPRnkaNloFfrmsMBt1vZ4TcFYl53cT9lefvxy0sO0hFo4PXX2jVL31uhoE9gnmdTHJfjBLAHSB5i0OL0cxu3egbZUho/qOd6bwdgLIXSoIYO6DxJvFygwxagIrjD03ylmYddlQSdpHrlOL9VUB5FB5X6xi50Cuo0HABV8xp1h2vV6puD1afDpBRUZW6nNetg82gPMTvqe0uCycyZ9c4c40z9SjJxe0hiagG8cxd6E8J9ky3V3ntdW/Zb1pZgaOoI7vXXg46+Zr8Wg9N0wfmYczMuugyWS/hg6RGGEJN4gSxp8JGjm+xeGTl+JwbXPlfdYMMVB3TOZvETVsnAEyFjbS4mH9jz1//QjYmVGO23uJ83NOiTS/hwgyzGQqZl+lTfcLuc3i9xPjTzsgKKw8ONLKhpnjXD1S2xfX/u9r8enG2CvgS4p68lP+10seIvxs0gQqP4rQOdHztS0MJpEOTd8hmGnbAgLA55oJ1JBcP+0+UGMNtsHOWtcqtfeqAjIMbxANDm99X7Mzz1ZlB/QRT4gj2DvZAjEeP1/4Wj0cWxNtjyhQeq5yVZ0qxOCWLPcsiUz9WyWSVQz6qSNTreACaG+5gOpSehIerHhLjWcAb00OSDxbISO1oTee/hVp3CqX/NoW1YIjhWhiE2Apfc0H3V//FUyeYz8VY/JalS0aBLeaTIxVp/Ch4FDFmXBSs1Pw0vKAt//akYEb20Ppdq7XI/hvoDv/BERJ4I3cIO4BrpRw8VpyteLIJApJc8jd0Tt+J4jprPo9VY1nS8QMP3XKhJTtHcYipXgumhskZgdXSh/E/x5TZdPOEOjjpCz3P570YFsYRTdBQT18vUrahLXb8oMN3Rdwlq4xS83nbRA6159yAAuSn3CV+PR8PcES5IgpvRVVPfWwowV9K0yt5rk37YzUHbZ6D+jI0Rg1JdyIrIeV3EA/dt8KbSSLwFJwEnNzGr6m
- slvqKwu7
- 6FPuRplr76/iH9NIXVQI630pNNQzWHevH55O8SOz6t4NuzUnHLJwk80leZd4RVhpQOZHuQgPZnN+y8gkBfwmzp00VYFt91I0o16jGdc0elZ947+GIHQMQi7MvOFIBNF0lTJvnMoBLptojEsJ5S1Q0zqktMgHz/b6ZAXFUKPskr8+AEuz0Xe9nhuIi9ZJ9eXJZbc0GZjwaaHyjH3tVkYUJ0fpJPLUc5I1d0/2/c8m1Ts2SIl+bze7a9e4fIBD7apjZwI5OdObPcCxMNUOq8qEkwZ8rt9HVikizbOlupczIKpXAFNj07EHMb4GA3A==
+X-HE-Tag: 1788855605-996831
+X-HE-Meta: U2FsdGVkX18xWNw38oHZdNZRaLPDLtOP8maljVzl+tGeX9gzP4rlc4Ue0/EvKKrX+7k+mLwGo++xh3WSUFb0Uc2jIvp5cVOL2ZNXUl/yJKTIFTebN3Eu4x37/toa3ce+27O2DvkUG8TZL63wfti2kg8RQ9U6yHkJ5Ur8VwSoKgCV1CeZWNBP8HrmdTvZbtUkufdSmzoNpS7TYE8QQWz8MacnEKhuIaJ1kWOk87rt1muHucc/rGO5dn/eUEnQPW6b2+OBu2s6jt0VvSEWK6SORuRhRyttIieZOHyE95LH25mG8RIYHn0mzUr15Mxul5T63pSKtu/KhyqdNob9PZhfVr65pIkDO1Y+wDucqMiMcAIzxPnKnhHoHh9fuj/NJogGaqHdV6UB13WACcaRmW5Ir4cdJax92Tci0kY1IpYG7d9YfyVi4mKjLYZlIKEmGHJhTrdnHL9cBXq5buzeLFfdRDdTk0r9aQTLK+vwTzlUOktYyyJdjPLLgBBq6ZRikln2V57XJE/cDu4njgJ6OU6zGtSBIrNnvT7f3AhQ3UUwp/bsC0m6wOu595ndIgn2OFQshlV+f3JgOCh6THzvLDMcdH+4uPezLL6vF47K05xHMs9N2OJciqg0xAkMLmc8Ha0NzRYwLlUJdQ23/2LRBU6rx5oiz/uBJae61q77IvK3x0lXqwzBTMLC1EH8DYAZI2ukWwVAPqFb+8PSIswpHPluZ8e3xckKJex7+Y5DtJY+VFlP7nXzarITTU57oJs0/zS8gVZTj0J1YY6ksQa5Tj0f5aaEv8VGTooNim+nTOV3N51JM9YEc5AkchRS/NpDmMJshLiQS6JvlFa0piLKd9eHS6aYi8jy+T0WnVTYTl7vAnW0Wvxa6ajiyx2sckLc4rgs3nD8fpSFnFV9wrgWTJilttHoobLuf75Gt9tLaEBNtBmHJnJ3zwcwd+mUS/83YuDrYrXq1lOKWM0QeSrwRlJ
+ z72Y7oKi
+ wCF1/Q9E4Tf/DIUTOAndbHkLxsUVkljlIqYmaL+H82uXzY4BR6g6D2ZX3kz3TWu1d8IMLVrr5TQ5sBS9tBGQb8k/91FsOgV2YxvyP59jtl2AZfJanxmMbdUiROp81KqTjU4UJ5brvOFTTA1qqEMuQ/ddyl6WEDjiXv5SZYE5Yq3VWecTu4bN7j22A4GZk6O9hmfxdBXMRJR/YuuIN63HOVkl54NXxxL0bukNLybatAC8M2qzMpEUUgGFhiAqwWgTE8MyGVj0QdZZrFfgNcdqnyrVqVgOeC/Yue7G1RnwRFI1g4nU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,157 +99,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 9:20=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> thp_swapin_suitable_orders() and shmem_swap_alloc_folio() sample
-> zswap_never_enabled() to decide whether a swapin may use a large folio.
-> zswap_load() samples the same one-way static key again once the read
-> reaches it.  Nothing serialises the two reads, and in between the task
-> allocates and pins a high-order folio, which can sleep.
->
-> If zswap is enabled for the first time in that window, a large folio that
-> was correctly permitted reaches zswap_load(), which rejects every large
-> folio with -EINVAL.  swap_read_folio() treats anything other than -ENOENT
-> as "zswap handled it" and skips the backing-device read, so the folio
-> comes back unlocked and not uptodate: SIGBUS for an anonymous fault, -EIO
-> for shmem.  The data is intact on the swap device - it was written there
-> before zswap was ever enabled - and the not-uptodate folio stays in the
-> swap cache, so every retry of the fault fails the same way.  With
-> panic_on_warn the WARN takes the machine down rather than the task.
->
-> Scan the range instead of rejecting the folio.  The caller has pinned
-> every slot before issuing the read, so zswap cannot start a store or a
-> writeback into the range and the scan is stable.  If nothing in the range
-> is in zswap it is all on the backing device: return -ENOENT and let
-> swap_read_folio() read it.
->
-> A range that does have a slot in zswap is still refused, because zswap
-> stores large folios as order-0 entries and cannot reconstruct one.  That
-> stays reachable - a slot shared with another task can be stored inside
-> the same window - and refusing is correct, since the alternative is
-> returning the stale device copy.  Report it as -EIO rather than -EINVAL:
-> the request is valid, zswap just cannot serve it.  The only caller
-> distinguishes -ENOENT from everything else, so that part is a
-> documentation fix.
->
-> Fixes: 242d12c98174 ("mm: support large folios swap-in for sync io device=
-s")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-Acked-by: Yosry Ahmed <yosry@kernel.org>
 
 
+On 9/8/26 11:03 AM, Muchun Song wrote:
+> The vmemmap optimization helpers currently live in mm/sparse.h,
+> which is an internal MM header. That works for MM code, but
+> prevents powerpc from using the same interfaces without including a
+> private header.
+> 
+> Move the declarations and inline helpers to
+> include/linux/vmemmap-optimization.h. This is a preparatory change for
+> powerpc, which has its own vmemmap optimization implementation and
+> needs to use the HVO interfaces from architecture code.
+
+Make sense.
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->  mm/zswap.c | 58 ++++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 43 insertions(+), 15 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 37f34e406c8e3..fd36ac38e9a1e 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1571,6 +1571,32 @@ bool zswap_store(struct folio *folio)
->         return ret;
->  }
->
-> +/**
-> + * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
-> + * @entry: base swap entry of the range
-> + * @nr: number of contiguous slots to check
+> v2:
+> - Fix missing header dependencies.
+> ---
+>   MAINTAINERS                          |  1 +
+>   include/linux/vmemmap-optimization.h | 91 ++++++++++++++++++++++++++++
+>   mm/hugetlb.c                         |  2 +-
+>   mm/hugetlb_vmemmap.c                 |  2 +-
+>   mm/memory_hotplug.c                  |  1 +
+>   mm/sparse.h                          | 73 +---------------------
+>   6 files changed, 96 insertions(+), 74 deletions(-)
+>   create mode 100644 include/linux/vmemmap-optimization.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c7aaa2e4790e..2985286cbbbf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12096,6 +12096,7 @@ F:	Documentation/mm/hugetlbfs_reserv.rst
+>   F:	Documentation/mm/vmemmap_dedup.rst
+>   F:	fs/hugetlbfs/
+>   F:	include/linux/hugetlb.h
+> +F:	include/linux/vmemmap-optimization.h
+>   F:	include/trace/events/hugetlbfs.h
+>   F:	mm/hugetlb.c
+>   F:	mm/hugetlb_cgroup.c
+> diff --git a/include/linux/vmemmap-optimization.h b/include/linux/vmemmap-optimization.h
+> new file mode 100644
+> index 000000000000..492dc662aae7
+> --- /dev/null
+> +++ b/include/linux/vmemmap-optimization.h
+> @@ -0,0 +1,91 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * vmemmap-optimization.h
 > + *
-> + * Context: The caller must keep the range pinned, otherwise the answer =
-can
-> + * change under it.
-> + * Return: true if at least one slot in the range is in zswap.
+> + * Generic vmemmap optimization declarations.
+> + *
+> + * Author: Muchun Song <songmuchun@bytedance.com>
 > + */
-> +static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+> +#ifndef _LINUX_VMEMMAP_OPTIMIZATION_H
+> +#define _LINUX_VMEMMAP_OPTIMIZATION_H
+> +
+> +#include <linux/align.h>
+> +#include <linux/log2.h>
+> +#include <linux/mmdebug.h>
+> +#include <linux/mmzone.h>
+> +
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+> +static inline unsigned int section_order(const struct mem_section *section)
 > +{
-> +       pgoff_t offset =3D swp_offset(entry);
-> +       struct xarray *tree =3D swap_zswap_tree(entry);
-> +       unsigned long index =3D offset;
-> +
-> +       /*
-> +        * A pinned range is at most SWAPFILE_CLUSTER slots and is aligne=
-d to
-> +        * its own size, so one tree covers all of it and a single lookup=
- is
-> +        * enough. Scanning only part of the range would report a false
-> +        * "absent" and let the caller read a stale copy from the device.
-> +        */
-> +       BUILD_BUG_ON(SWAPFILE_CLUSTER > ZSWAP_ADDRESS_SPACE_PAGES);
-> +
-> +       return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
+> +	return section->order;
 > +}
 > +
->  /**
->   * zswap_load() - load a folio from zswap
->   * @folio: folio to load
-> @@ -1578,15 +1604,12 @@ bool zswap_store(struct folio *folio)
->   * Return: 0 on success, with the folio unlocked and marked up-to-date, =
-or one
->   * of the following error codes:
->   *
-> - *  -EIO: if the swapped out content was in zswap, but could not be load=
-ed
-> - *  into the page due to a decompression failure. The folio is unlocked,=
- but
-> - *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_=
-page()
-> - *  will SIGBUS).
-> - *
-> - *  -EINVAL: if the swapped out content was in zswap, but the page belon=
-gs
-> - *  to a large folio, which is not supported by zswap. The folio is unlo=
-cked,
-> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
-> - *  do_swap_page() will SIGBUS).
-> + *  -EIO: if the swapped out content was in zswap but could not be hande=
-d
-> + *  back, either because decompression failed or because a slot in a
-> + *  large-folio range is still in zswap and zswap cannot reconstruct a l=
-arge
-> + *  folio from per-page entries. The folio is unlocked, but NOT marked
-> + *  up-to-date, so that an IO error is emitted (e.g. do_swap_page() will
-> + *  SIGBUS).
->   *
->   *  -ENOENT: if the swapped out content was not in zswap. The folio rema=
-ins
->   *  locked on return.
-> @@ -1605,13 +1628,18 @@ int zswap_load(struct folio *folio)
->                 return -ENOENT;
->
->         /*
-> -        * Large folios should not be swapped in while zswap is being use=
-d, as
-> -        * they are not properly handled. Zswap does not properly load la=
-rge
-> -        * folios, and a large folio may only be partially in zswap.
-> +        * A large folio can legitimately reach zswap_load() with its who=
-le
-> +        * range on the backing device, so scan the range rather than rej=
-ecting
-> +        * it outright. The caller has pinned every slot, so zswap cannot=
- start
-> +        * a store or a writeback into the range while we look.
->          */
-> -       if (WARN_ON_ONCE(folio_test_large(folio))) {
-> -               folio_unlock(folio);
-> -               return -EINVAL;
-> +       if (folio_test_large(folio)) {
-> +               if (WARN_ON_ONCE(zswap_is_present(swp,
-> +                                                 folio_nr_pages(folio)))=
-) {
-> +                       folio_unlock(folio);
-> +                       return -EIO;
-> +               }
-> +               return -ENOENT;
->         }
->
->         entry =3D xa_load(tree, offset);
-> --
-> 2.53.0-Meta
->
+> +static inline void section_set_order(struct mem_section *section, unsigned int order)
+> +{
+> +	VM_WARN_ON(section_order(section) && order && section_order(section) != order);
+> +	section->order = order;
+> +}
+> +
+> +static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
+> +					   unsigned int order)
+> +{
+> +	unsigned long section_nr = pfn_to_section_nr(pfn);
+> +
+> +	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION))
+> +		return;
+> +
+> +	for (unsigned long i = 0; i < nr_pages / PAGES_PER_SECTION; i++)
+> +		section_set_order(__nr_to_section(section_nr + i), order);
+> +}
+> +
+> +static inline unsigned int pfn_to_section_order(unsigned long pfn)
+> +{
+> +	return section_order(__pfn_to_section(pfn));
+> +}
+> +#else
+> +static inline unsigned int section_order(const struct mem_section *section)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline void section_set_order(struct mem_section *section, unsigned int order)
+> +{
+> +}
+> +
+> +static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
+> +					   unsigned int order)
+> +{
+> +}
+> +
+> +static inline unsigned int pfn_to_section_order(unsigned long pfn)
+> +{
+> +	return 0;
+> +}
+> +#endif /* CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION */
+> +
+> +static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
+> +{
+> +	const unsigned int order = pfn_to_section_order(pfn);
+> +	const unsigned long nr_pages = 1UL << order;
+> +
+> +	if (!is_power_of_2(sizeof(struct page)))
+> +		return false;
+> +
+> +	return (pfn & (nr_pages - 1)) >= VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
+> +}
+> +
+> +static inline bool vmemmap_optimizable_order(unsigned int order)
+> +{
+> +	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+> +		return false;
+> +
+> +	if (!is_power_of_2(sizeof(struct page)))
+> +		return false;
+> +
+> +	return order >= VMEMMAP_OPTIMIZATION_MIN_ORDER;
+> +}
+> +
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +struct page *vmemmap_shared_tail_page(unsigned int order, struct zone *zone);
+> +#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+> +#endif /* _LINUX_VMEMMAP_OPTIMIZATION_H */
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index fda525bccf50..dff915e6c48b 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -38,6 +38,7 @@
+>   #include <linux/mm_inline.h>
+>   #include <linux/padata.h>
+>   #include <linux/pgalloc.h>
+> +#include <linux/vmemmap-optimization.h>
+>   
+>   #include <asm/page.h>
+>   #include <asm/tlb.h>
+> @@ -52,7 +53,6 @@
+>   #include "hugetlb_cma.h"
+>   #include "hugetlb_internal.h"
+>   #include "mm_init.h"
+> -#include "sparse.h"
+>   #include <linux/page-isolation.h>
+>   
+>   #define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 4a57e6c3352c..25c4e7d2664c 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -15,10 +15,10 @@
+>   #include <linux/mmdebug.h>
+>   #include <linux/pagewalk.h>
+>   #include <linux/pgalloc.h>
+> +#include <linux/vmemmap-optimization.h>
+>   
+>   #include <asm/tlbflush.h>
+>   #include "hugetlb_vmemmap.h"
+> -#include "sparse.h"
+>   #include "internal.h"
+>   
+>   /**
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 0db0379826df..d7a59167bec4 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -43,6 +43,7 @@
+>   #include "mm_init.h"
+>   #include "page_alloc.h"
+>   #include "shuffle.h"
+> +#include "sparse.h"
+>   
+>   enum {
+>   	MEMMAP_ON_MEMORY_DISABLE = 0,
+> diff --git a/mm/sparse.h b/mm/sparse.h
+> index 59b825df83b9..e511d99fc26b 100644
+> --- a/mm/sparse.h
+> +++ b/mm/sparse.h
+> @@ -9,77 +9,7 @@
+>   #define __MM_SPARSE_H
+>   
+>   #include <linux/mmzone.h>
+> -
+> -#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+> -static inline unsigned int section_order(const struct mem_section *section)
+> -{
+> -	return section->order;
+> -}
+> -
+> -static inline void section_set_order(struct mem_section *section, unsigned int order)
+> -{
+> -	VM_WARN_ON(section_order(section) && order && section_order(section) != order);
+> -	section->order = order;
+> -}
+> -
+> -static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
+> -					   unsigned int order)
+> -{
+> -	unsigned long section_nr = pfn_to_section_nr(pfn);
+> -
+> -	if (!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION))
+> -		return;
+> -
+> -	for (unsigned long i = 0; i < nr_pages / PAGES_PER_SECTION; i++)
+> -		section_set_order(__nr_to_section(section_nr + i), order);
+> -}
+> -
+> -static inline unsigned int pfn_to_section_order(unsigned long pfn)
+> -{
+> -	return section_order(__pfn_to_section(pfn));
+> -}
+> -#else
+> -static inline unsigned int section_order(const struct mem_section *section)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline void section_set_order(struct mem_section *section, unsigned int order)
+> -{
+> -}
+> -
+> -static inline void section_set_order_range(unsigned long pfn, unsigned long nr_pages,
+> -					   unsigned int order)
+> -{
+> -}
+> -
+> -static inline unsigned int pfn_to_section_order(unsigned long pfn)
+> -{
+> -	return 0;
+> -}
+> -#endif
+> -
+> -static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
+> -{
+> -	const unsigned int order = pfn_to_section_order(pfn);
+> -	const unsigned long nr_pages = 1UL << order;
+> -
+> -	if (!is_power_of_2(sizeof(struct page)))
+> -		return false;
+> -
+> -	return (pfn & (nr_pages - 1)) >= VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
+> -}
+> -
+> -static inline bool vmemmap_optimizable_order(unsigned int order)
+> -{
+> -	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+> -		return false;
+> -
+> -	if (!is_power_of_2(sizeof(struct page)))
+> -		return false;
+> -
+> -	return order >= VMEMMAP_OPTIMIZATION_MIN_ORDER;
+> -}
+> +#include <linux/vmemmap-optimization.h>
+>   
+>   /*
+>    * mm/sparse.c
+> @@ -139,7 +69,6 @@ static inline void sparse_sections_init(void) {}
+>    * mm/sparse-vmemmap.c
+>    */
+>   #ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -struct page *vmemmap_shared_tail_page(unsigned int order, struct zone *zone);
+>   void sparse_init_subsection_map(void);
+>   int section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+>   		struct vmem_altmap *altmap, struct dev_pagemap *pgmap);
+
 
