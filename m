@@ -4,62 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA5DC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77ABDC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:39:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 241426B0095; Tue,  8 Sep 2026 06:39:02 -0400 (EDT)
+	id 465C26B0099; Tue,  8 Sep 2026 06:39:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F2276B0096; Tue,  8 Sep 2026 06:39:02 -0400 (EDT)
+	id 3EEFC6B009B; Tue,  8 Sep 2026 06:39:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E1376B0098; Tue,  8 Sep 2026 06:39:02 -0400 (EDT)
+	id 2B7F26B009D; Tue,  8 Sep 2026 06:39:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBA3D6B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:39:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B4081C2489
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:39:01 +0000 (UTC)
-X-FDA: 85190247282.16.08D3F7A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BAF4340003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:38:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E98F26B0099
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:39:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5512C04E7
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:39:38 +0000 (UTC)
+X-FDA: 85190248836.23.9ACDA7C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EB01040002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:39:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z85uGoCq;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788863939;
+	s=arc-20220608; t=1788863977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8a2RIR8C+pXvuyjKz4spsyEU6STT7MYnkfp8ji2z+3k=;
-	b=FWV2P7RXH+8/N8X8jShBb23z4L/igCAI4cmmvQyYA6QoAKW8eSClXpRo1G2Ufz9IczVUJU
-	/IVjFICNeZyONQrqj3HIceQbFpk84sa5zA2HRbfm9+s3G8ZCfXw8Le1+UhkJu9fG4j9WTE
-	oRyVpujVbxeGDHiFR9pkYq1MIhOYWWI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YjJUbcma5aHPiCDKq7gAqglFN4GHXWVPea1PTRoIqQA=;
+	b=mbSRwZcXGCrfKKxEFCTOS7nzH1M/iOdHz31RRc4MZMfh9r5G8u4TmJokiUGCk0mVnNI/E7
+	1FkThk690rRr3HFQ0YwigjP0SiT5mL+gle5slcMsu1p5PFEm2FksodG9TI90gAmnGZXZun
+	HyrdDe5YxqfjgwKfPY40HnQLJHHBd/Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788863939;
-	b=uWIwmWrWSlmM15mS+KbBtZeFS9G38Wk38rR0SnQ84ONXmn3PnSGwGiMNOxwVPhFUwq+Zav
-	6ctOE8FP8uWLL0uK/6YWRIPTaIve63TC7gnjCayTi1FgSuFxuPz+2m1w6zm7dSHipOgjUu
-	UuMgdqXFSt/YV3Eoed6PmxFmm8YCZlY=
+	t=1788863977;
+	b=4GL2TRqcyCdYMy72Xqk2hDSuGxZhxQ0lwZohagCiZB05fUBtgFC6qSg556kr+DbrPd3xnG
+	HnidR3fpDKfF6j1nvYVCZRl/1vTkJuxSHXOtlvcUkQW/C+KiDwltYl9EJ4ChcWSD1Ag5KY
+	2ugBPkMpj8W8T+0i0+QS1fIvgMcNr8k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z85uGoCq;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1405D601DB;
-	Tue,  8 Sep 2026 10:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398421F00A3A;
-	Tue,  8 Sep 2026 10:38:47 +0000 (UTC)
-Message-ID: <a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org>
-Date: Tue, 8 Sep 2026 12:38:44 +0200
+	by sea.source.kernel.org (Postfix) with ESMTP id 228E242B97;
+	Tue,  8 Sep 2026 10:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6E71F00A3A;
+	Tue,  8 Sep 2026 10:39:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788863976;
+	bh=YjJUbcma5aHPiCDKq7gAqglFN4GHXWVPea1PTRoIqQA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Z85uGoCqW2p5OrfqlMbTAXWNhCWyeFTtc6hPJunew+AqwO8w3KB84dcM7HtTXc+Dp
+	 kIrVqA2uHjib4MQly5gG2sAWV4JPCDgZISbnhtgKcwHR0xCz3uoLmbPWy83eL6Z/Cn
+	 7Lv/ROM/uizyH06RQra7gnEsreWgzAfIm1COqq1/Jt9LqHb15MQ60SKteLfcaZSGfI
+	 3GWTl8KLB7IIHzthOvHejwNUNWLKZhaPmnBi5AvPtpnqb+e2YL/n96OxzCrewy3Byx
+	 lQOgGTIiQ5sPobSvuqfU6Zg9lgBvOxQl/s7HfzGNxSg2KmHXL0TCEKI4aeLa4S2kBG
+	 Aax0efOl35LZw==
+Message-ID: <610ebd79-3ad4-432c-ac92-b8956d7150d1@kernel.org>
+Date: Tue, 8 Sep 2026 12:39:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] set_memory: add number of pages parameter to
- set_direct_map APIs
+Subject: Re: [PATCH v3 3/6] mm/vmalloc: constify vm parameter of
+ get_vm_area_page_order()
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
@@ -85,7 +95,7 @@ Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
  loongarch@lists.linux.dev
 References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
+ <20260903-execmem-set-vm-perms-v0-2-v3-3-949b64a9f755@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
+In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-3-949b64a9f755@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BAF4340003
-X-Stat-Signature: 1wqaerozha83wokgrey913waexkuwwqu
 X-Rspam-User: 
-X-HE-Tag: 1788863939-230131
-X-HE-Meta: U2FsdGVkX18pa8A8AyYE6xQOkeiiz36MjA/1+/kmhAxJ83FSbiP4S51Uw/BopmvveNTPqWzLAaXMhnvGKJXRzWcq7JitEyl7MR2K+U9h2kTEcXEUVGlUSWXCgC2JhiH1AbGvj+pAiBOZ0vGaAFfOJMET+21lAxkGQYnwiNtEOR9cBpWM8R+QRxY/38VxXTuc9vOWxxv/8zC49iaeTMYfm5kSSL5nJbqTYGBTyqIZ+Y7++BQPOUl839cOWZSJbNOTo2kPqve7TDBm+FCTcEaqf0qsWqL/dsYPYnAPA/OAp+fuXNtHfZmSM8Y76FiDXMHAiVJCRFo/F7jRP3Be4U8uhCitiNlgpBJvdSwuyeNpH7wI+mu992dULEQwU+0Sr6sFRI1KYzLkStzKTbxakrCBh+mKnTy8g0k1Y19gWWdsUe3mUjcNrqJGF9raehCp5LVcUqhOKpm4VCE0ouQNEz7otaxQvOsZrdhXJTc7hKbmW910yqVgngt/4QYHMM7OMRcK5Cwn8eyaFAcAjr6quhyyVI/IyS+xg6tEa9Vz8SvVFf4UPJQ5mX6cqLny87u/iG+fvGMLSj/dNto2sD//4Yvw6t/aIf+9B6c8Knla3jv0IevUMclciivYTTzJjNpAdnbCgot45qv1bQtKVRHSNZIeiPf9tsPzpT+ZF8O8vVq+hFhJ6Ln7or5fOJ/wezCLPuzwDNQHGqK9kz0xHkZtzvxpuj/RzkKI6lHAqi1PMo6BmD2fjHyDVnpmElhPQjbdVZbdfHFZh27DhbbQHcdcTe/0rzKZEUUND6dUC5sba2M6+3tyaXUC+czDAHxArjdQoHo3pBmJ3q9oC9o0lQJgNsX/MZ+F0HTRNN0U6Di9IZJLQrhezHizGCSnw6vYem+D4bZHHviIOJczV/6w+zE8I9JsUEOFymJyVLA9tgREGNs+z2teHuIgCfT+49Ti4LsTKkB4cNgtut46LVDqScKFQ0d
- Cd7IfvV0
- TLoe9xcJe0s+uoiaM4+/meWLNdbDjm6N0myEoEzPTb88KGs1iO3/DovJ6s8Th9zL4BrqEsFEwmawOd7/Qu2nxkHBdqGDuixNqScgofQVXWA6NzjEhr2E8BMVDlQxE9PcvSUze7+JecGnSF5NqvXy5rCJ2yPxWx4aZMRtAHYilmch6i5/BzVuJR1Q/Zj3yApb2IMoL0SaVvBVE+LwMGJbxcC8Ekcc34henxaq4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EB01040002
+X-Stat-Signature: 34bs4iyokqruphp3wpqoimnd8c3qf4sx
+X-HE-Tag: 1788863976-707613
+X-HE-Meta: U2FsdGVkX19TR0lx+btEy+Cmjg1FuyqHNAzjsrog68gelOt4qu2UJsEsWUCkmSlIa8g3zexZEIcdZOvKmvTCCHeFkHDoMPxRG68RV91YikrtuB+E2fL6NEZi2+/LoWyc3SUuJM4a8vXZbs8Wc0Qy38NGdvJBK/3N5Tpw72c5yGNlvC/mydwDVwa8j+WcsVHsAxeEcyR1+FeOlhLPQ9RnmlLVDjIbGQfxnq7YT0LM53dUGTUy8R31+76DYJZWQfYrOEgFLJsAw4z+f2ifEszgiyQrnZhgI1qOw4mU3Ivm3kFD53m5/1mh7j+wL7HTomJG1PAWi6BQkC/yP72/NzKrWV0Hf6eesEZkyzYU9NHq4JgSYwz/gou5zAgVEX6VFJ2AU8ewiIKpDtv3PhRk0UxvZeyqhHGozDNWlMKztQcWitkYpZjqBoyDUrxyL4SEAZMrzBTPmjtM6aQ/mF9bn3Mu0O2P2OZ2PRH1RKI4pCaAXPWtKuqWgznX9pA8xOVyS/EcT0QOhg3/jqW6b/lFdtkvmYGGNC9Na/SojIlzNsILNHn7IvUfUaNei8jVGDybMQPVaxOnOZz4NXI7hjQJjonPeTDPRcmrIO14iICsczEm0Fwg7Kr9ym85IpxLMfzD5FcfqOUWDCvVn+vX1K1qynFdi3t4jtYR+t/6VdWPUhlTWG41zqGm6hbpIEFXakzbuBH8mEvDEveNBluS4oJ23xaAK1i2ce1BGKhTw1riFiKSkq1N21LUjiCaluGVHTZQRgPP5gYPcqJMLpvZ1Fty3w6jbTSNpMAczhk4yGA00VyrfkSyzfEvbgo7VwnrEE1SUQQwcWoyrXl4gbFL7gy5ZnoB1EOd8bH1IIPqAguxpAzYp+8q9PoZ4yIAjGUOKTAfC0SJqAnmpD67RPwh1fcrUPDZ7h+g9Ueu4Lvh2PebF8gJmQfClV/9WNSiHUVk1vFb6k3+xXKnqc/QMvEj6hOtpkx
+ +BUd8QG/
+ aehyMlhn5yN0t4RfyvbOj+e32dzPVMySOKUaMeaiewUYsHfUkC5QM6C/C+QiPIvA/xAU1Z6d+Qc6MrIhiXD2bbq6G9u2+om/XR3tcobHVSBtmXvJOszBcZpXjiPMBajH+BBIfUN2zsayczHBtX3/KT9cP2n441KGbDsyyerE7rfyZdDBvaX5hCLeMWYmODTCiKfkQj3hvwKYm98fb0tYKzxPFxNEtYvaoB62ceqXr8mWs7Ad3pjOnhw1Qz/IcGnR0GDI9J9uXg8Z6bEUh5/QRnoKU4q6xsXDqJAMglFW695e5wCbvurhsW+rNSDJi6HPmBv17Zsyl0eAYNGTV+3eTA4Rv53EjAITenqeZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,37 +161,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/3/26 11:28, Mike Rapoport (Microsoft) wrote:
-> When set_direct_map APIs were introduced by the commit d253ca0c3865
-> ("x86/mm/cpa: Add set_direct_map_*() functions") the single page
-> parameter made sense because the initial callers (vmalloc and
-> hibernation) had sets of unsorted struct pages that required changes of
-> their mappings in the direct map.
+> get_vm_area_page_order() and vm_area_page_order() do not need to modify
+> struct vm_struct passed to them.
 > 
-> Since there is an increasing demand for direct map manipulation and it
-> is also desirable to be able to update larger physically contiguous
-> mappings, for example an entire large folio, extend set_direct_map APIs
-> to receive number of pages parameter.
+> Constify the parameter.
 > 
-> As there is still only a handful of callers, change the existing
-> functions directly and update all the call sites rather than adding
-> wrappers for single page case.
-> 
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
-In general, LGTM.
 
-But regarding semantics, is it well defined what happens when an update fails
-halfway through an operation?
-
-I'd assume such a case cannot currently get triggered, but there is no
-documentation on what's supported and what's not. Or is there?
-
-Imagine someone performing an update on an area that partially spans two PMDs.
-While splitting and updating the first PMD could succeed, splitting the second
-PMD could fail. What would be the end result? Rollback? Does the caller have to
-clean up?
-
-I'd appreciate if we could add proper documentation with expected semantics.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
