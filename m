@@ -4,111 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F617C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:52:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97DFBC79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DE816B0098; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
+	id 83EED6B00A5; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98F376B00B1; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
+	id 816776B00A9; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A6E96B00C0; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
+	id 752EA6B00AB; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 65A6C6B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:52:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDDD81A03B4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:52:28 +0000 (UTC)
-X-FDA: 85189676376.19.39B911B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5E68E14000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:52:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MxGHPr/o";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FCCD6B00A5
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA95C1C20CE
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:59:23 +0000 (UTC)
+X-FDA: 85189693806.17.0FF7271
+Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C099FA0002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:59:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ntZ5KkZo;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788850347;
+	s=arc-20220608; t=1788850762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tQCExSqn1W0rL2KHHjcgog6hZgpy3PJqmFXUPMAfp8c=;
-	b=4RjyKZ8hYLNKWRW/80f3sXBwil3mqVj//CKkjOARt1BbSKkN7MeygDMYB4mzkpUodbcesy
-	XCzp40hTgVhX6/YCtGDJfZwqgPQB6hjipnm6blh2YiE+JOdAx8i7NEB1XjqeKSblKBjKKJ
-	nStWEz1zSxecfvZWx15W4qqgmHdXpDI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788850347;
-	b=aPeLd9sEdESRoKHkvEA3dqbzT9lKiokvdhPdIPbfS7bWzoTr8Qij1APR3SvgFDlNTzmUAJ
-	0QiWXdvlpER/0y3muAQJRZck8MlJ81FU26Xte7ASxQghSuTbR2eSrZ/9bdVFVQQjxoi4F9
-	J9QrtonxzI1thjx/YVsahPKwk7Ah4PU=
+	bh=TfNYm1uiseu4qTpQSsXJ4D+JYuSRcCGppQvoQ4b5vpo=;
+	b=a9G3UfaDG846ZOntUs2xNn8/bsMCU94vlGKeIdXjldoG7EeaImMXZeH6krTn/I2Dyp32Cz
+	SGf2OciOEt7JIhvkSLdGEX1XB23YSNC4Y59f6b5CSBxhX0rik706zf0nK+7Oz5trhNDG1X
+	/KMTti3p2aGM620SrwIW10vcLja/RqU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MxGHPr/o";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6FDA742EA1;
-	Tue,  8 Sep 2026 06:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9921F00A3A;
-	Tue,  8 Sep 2026 06:52:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788850346;
-	bh=tQCExSqn1W0rL2KHHjcgog6hZgpy3PJqmFXUPMAfp8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MxGHPr/o7Egzf7/M8R8Ao6xgWW828L9KjV5g84sSn7wi9vQ7ZcW0u0yYAkaDvectd
-	 mR4UMWwASyruj3B4tXUeARgiJB6uF8PJhd7Vk5pHsWytx6JL63jN1/RAI90iaZDj5v
-	 BSMATV5Tjnay2NldoJaKCaxkJf+B14z9AyDmY+MVafeEWhRzFRldWfi0CqcNr52USK
-	 953kOdfoLHavZRSp42M83cfpJ14CsK0C7vG3yQyKNcguUsP8lAJpH7cavlJCQtN9Gc
-	 1lsmIJCiWgIzHl6QoyQVlGhaNA5yh2Rs7v8dUZbABjex8SUJroXjJK4pnfLnMSZmk4
-	 hpWo7/SVN/Y7Q==
-Date: Tue, 8 Sep 2026 09:52:12 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-hardening@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>,
-	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [PATCH RFC v9 01/25] mm: Introduce kpkeys
-Message-ID: <ap-wnHAwfdX_b39o@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-1-743ad31b2c8f@arm.com>
- <178877845406.3691569.6930315020588094755.b4-review@b4>
- <3f6e7678-0784-4ac1-acb4-b128887803c5@arm.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ntZ5KkZo;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788850762;
+	b=UWdk36twuOtU5HuuiYZjt6MFOIgdWPmDIK6Ni0rk4Aio25J4tgY6PqGUREtdiw6Y/E/Ix+
+	8O5W1DncG7S29Bi3dXVyRyVHCjaUa66htVhxy2jnslE4rMJge4UUFXS/g/lvOgWuIHKcML
+	26/ATpESAH3+hVPh86eJgYpIE0ALhoA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/cMB1daxP3CSTnSwp/1Uz+ebWze90XSmIaF608egzq8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788850758; v=1; x=1789455558;
+ b=ntZ5KkZoNZa7UGrUHbwDL8jfssBjQ4M7w54aXSu1+oFDFYMUx/7PjxtlhC9GDHEYHIwAhJJH
+ ah9pqe4HGA13/I6dMME3GW3ImH2pledE+RXYuAzK3NA1MpLWfMr98hH9+Msu0LgrtYbTbiBZeDY
+ /RRNmHmJwu8BxIeJJ6pKGjW8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id cb524ca6967486f1;
+	Tue, 08 Sep 2026 06:59:18 +0000
+X-Mizu-Trace-ID: cb524ca6967486f1
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 8 Sep 2026 14:59:12 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+	ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
+ folios
+Message-ID: <ap-yQOH0pni-mfdf@fedora>
+References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
+ <ap9zPPughaSlfXM2@fedora>
+ <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
+ <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
+ <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3f6e7678-0784-4ac1-acb4-b128887803c5@arm.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E68E14000B
-X-Stat-Signature: 8u9zkk1zsqz9img1w7f5m785iqkfoyxf
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788850347-329627
-X-HE-Meta: U2FsdGVkX188IZJTk35xLnrbX6jmi9zSyQ5Oa5N62VV8qUyUiPY+CQB/z2WI13xh1ZlRBLpb5J51swWDuiwYiSVm7yNcAyIAcBJr+YA7vaJMkFZWg1WT6jLLzDQG2XS+EK8cPSmkZL1luz40rHXn4tTmC4A+zd27qVDPUQuEchaZVGdYhdJU87KYPqgXnbdUasBbydzGrLlqVb8d4ZeusyWD+g8Zq2vpmaDodsPSlblrLr/gHvpeUDxWYtl1S1VTmVjspCpxSc4/KFeKLe8bdIRgDZHK8nullpBoBbJyjAkix2FN0P0WTH2VgPz6hy8TMTJ0gHlp2/4r7zZrguguJcDEqd6fUeSl1toMDDsxN/lp6JU7WznGPk9CvotX6pELjjH3wGEUxXwtoKZ7Gp9XlYOW+zRufKobwoIq5oUKFO5+uGy0vAuM/0380dcl2N3XekYmlVaG4byVW8Y1L+iKIon0WAKk04IMTyBlGQkhpJhWbqRVgFPTg6M45D2oPcSJjUqLgHxsVoxRTEqnR93SAEL/fbcy2YgbX6WUWizRpCAvOSZW1VGhzAn2d1udix9DWk7O+ywsmDJgWj+2wY9evbqdPelUtsoW/V1g6+1qiMh2td8Oaz9vLmvSe0ZUufAZay46kZsHLDMQ/paCiyA6h43TeGnnDuMpB5RT5OS17i2Xk/hhnOZZ2xPzb1disGd4RNMuoihwd6UU46n/aTAGKow7ykp09v/fNhrAzFifgG8ow6pRvY2cFN9SVTKNHJZA4TzTHTucpALY+kxD4ivBEakFBqDIDmQ/0DK5UI/GrXL+H36OBfpqsF4h+hloXO6ukigemGHanGNdVUKTjqcd1ghcqaBgYEIzcPhcZIvpDPFAzovbU9vvIksfYon+xU0xgzmuOFQiTtcpUwfPg76EF+kCF5tZ4sxVAVbbpCQ8arEtyhipurNjp19PAMhaf+WKEdHfgcEd4cMFS/ThjLB
- 89g51Ab6
- HPhhXRCQwmzLBTq2vZ8wO/U8niav1VQLFIASaDDTlqthrDs8ScTAII7kGlH/loEJN4QyqiMJwRnJIa8bQw3Dpnl3axsyiX9xsTeseXL10guD9kIxawoYR65mzG7oIxkz0jhXJOKLa1/avzYYVoedgywRwc0z8zaqLzc7EF00oOn27DYTeu+iZgjj+/5Ebv4O04FdBB30/ROHfkbZVDufa3pAPOlrT8ulwCzdGCKmhl+errWxN9Z3cXVQRCrE2EYml7q5E
+X-Stat-Signature: c3kf7exo69njwgsziatinqoxftaa68ej
+X-Rspamd-Queue-Id: C099FA0002
+X-HE-Tag: 1788850759-819966
+X-HE-Meta: U2FsdGVkX19BRlfsPs8pr7Tn2Wt9cnpe4VzCP9TtJ+yMIzSxXo9YzcTjktkZO22QPT1jgvGmfbZZ/5AMH4Hg6Lt3fAtbuVqtlxcN7SKf6O8mU8gE+KbwFP/DTt61YzjFCz+01cLT/zaa1yo/ubkhpevTLUOkqtr8dpyQdNu5XTw7y3Gkr9ebHc74Rue1VAx/jxsmo93qgHor8ueIt744T+B2fPtGZcEFY7kH5Bw1i3Du3Edfm1+Y7icvyGg+kSWmQAZ7XInSO8wa2U5vm90EBKfj2mDuXJfL80SU/2WUUtEpastNj0Qifx7u3KUeJr2cgMOkAQ44wyLjXsOVihVjhJ4PTvO5y/BghfCz8NJF+yKhAqU/rXB9YZwYJD2iWM3wzaBzNAPs3xkz5+roUteeF0Fnp3iLYqkD+dHJU6i6idm7cnbbtRYA9CUXrVtFAe5ce5viqeeY5XzNLGzs9SZH85vq0enBjAHHRYpKcVKKUoVVw4gOI0dTEwKCGIZAqgxJ1gtPg/FT9edyRczUppjL97gJlh/k+gG9bpOskgKfiCkkX3wj+hjlpvyW7Ag/lz89zD23CbB7kp/GQa5L6R9G74BxJgPhIUGflINR5PH81I4bgaA5hUVeAEZhJa0ONsn2vT3My3ez/GW4UJ3UJJNAI1o34D2bdX51D7CKggoaiCDMuHFFmq9+RQNWv+dlFKdpwDYfxvptID+sxpt6XpkrojFxyIRVIBNvugJ3E3TqD3SJN4MgwMvRRX2NKZ2wFXesCHMZP9qN6rjsG20l+iPVEjQYteBe6zCZDxFx1xjndPkl6goJTjizoWlAWjZtd3X3ewcrOi2n0/6Z2g8+gY3g1Ok4uMSalRed8/I2KZAgbMUPmC9miOCJTvCopUiAeBl6eYNnAisdB+mLXZ4sJINoHWOPDmIsRcswM6FDyeFhs3AyvJLkwWu9WsG3GvFVEeHiJphHiDLAbrxnDug/Irl
+ Ka0wVdwx
+ ysIZAiaL6E73gAs5DHbkDrT8rbSVTmJKby/W+3kSZ4FD0+c3srLWXYsB/XqHP4BS6NVo5pKEOvWbxYGWEsL9EjJz4gyuLfoErK74lzt3Txelv0CFr0xi5geYn60KrY6sNlhBDs4WUJDQNi4N06IB9TBpbKbkt/JRx7Ry23s2AIBQWYG/zfV9DtJe19rdIuHNLl/jGvXLckjWmY3T0dMCulS2CWVDYuVZhKGSBLyVz3RUqAcFX/7J9TAIf95Z97F3yK/6kMDlBW9rsI/wVy4B/jQBf6hBNb8Et8ko3LJxVLeoFDuLS1bry8+KI1YOr8DGfvwja
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +99,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 05:49:42PM +0200, Kevin Brodsky wrote:
-> On 07/09/2026 12:54, Mike Rapoport wrote:
-> >> +
-> >> +#include <linux/bug.h>
-> >> +#include <linux/cleanup.h>
-> >> +#include <linux/kpkeys_types.h>
-> >> +
-> >> +/**
-> >> + * KPKEYS_GUARD_NOOP() - define a guard type that does nothing
-> > Nit: I'd suggest to drop "define" from all the descriptions, they would
-> > read better without it IMHO.
+On 09/08/26 at 12:01pm, Baolin Wang wrote:
 > 
-> Fair enough, but if we say just "a guard type that does nothing" is it
-> clear that this is a macro defining a type, and not a type itself?
+> 
+> On 9/8/26 11:03 AM, Baolin Wang wrote:
+> > 
+> > 
+> > On 9/8/26 10:34 AM, Barry Song wrote:
+> > > On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> > > > 
+> > > > Hi Baolin,
+> > > > 
+> > > > On 09/07/26 at 11:25am, Baolin Wang wrote:
+> > > > ......snip...
+> > > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > > > index 40d3f1b48a74..42c0a09938ab 100644
+> > > > > --- a/mm/vmscan.c
+> > > > > +++ b/mm/vmscan.c
+> > > > 
+> > > > Well, this seems to be based on Andrew's mm-new branch. I usually track
+> > > > mm-unstable branch. Maybe the subject should be marked as below?
+> > > > [PATCH mm-new] mm: mglru: clear the reference counter for rejected
+> > 
+> > ACK.
+> > 
+> > > > 
+> > > > > @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned
+> > > > > long nr_to_scan, struct lruvec *lruvec,
+> > > > >                }
+> > > > > 
+> > > > >                /* don't add rejected folios to the oldest generation */
+> > > > > -             if (lru_gen_folio_seq(lruvec, folio, false) ==
+> > > > > min_seq[type]) {
+> > > > > -                     folio_set_lru_refs(folio, 0);
+> > > > > +             if (lru_gen_folio_seq(lruvec, folio, false) ==
+> > > > > min_seq[type])
+> > > > >                        folio_set_active(folio);
+> > > > > -             }
+> > > > > +
+> > > > > +             /* See the comments on LRU_REFS_FLAGS */
+> > > > > +             folio_set_lru_refs(folio, 0);
+> > > > 
+> > > > This looks like a great catch, while the code change could bring issue.
+> > > > 
+> > > > Because move_folios_to_lru() relies on folios' flags to decide their new
+> > > > generation. You just cleared it before move_folios_to_lru(). This is no
+> > > > problem for rejected folios that are determined to be put into the
+> > > > oldest generation. But for those rejected folios that are determined to
+> > > > be promoted, this could be wrong. E.g currently gen window is 4, and a
+> > > > folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
+> > > > is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
+> > > > referenced bit, this causes it being put into the oldest generation in
+> > > > move_folios_to_lru(), this is not expected.
+> > 
+> > Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs
+> > to be reconsidered regarding whether it should rely on PG_referenced
+> > [1].
+> > 
+> > For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios
+> > either. Before commit 6cbdd9726fb5, if rejected folios did not have
+> > PG_active set by shrink_folio_list(), evict_folios() would set PG_active
+> > on these rejected folios.
+> > 
+> > [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1-
+> > baohua@kernel.org/
+> > 
+> > > The original code looks quite weird. It even prioritizes folios
+> > > that won't be promoted by `PG_active`. Do we need to change all
+> > > the cases just to call `PG_active`?
 
-Then maybe "helper to define", like cleanup.h does?
- 
-> - Kevin
+I would agree if we can. While I have one concern. A rejected folio that
+should have gone into the oldest generation is now being promoted to the
+2nd newest generation. In the original code, referenced folio is only
+being promoted to the next gen. I even think this is not a bug, but Yu
+Zhao intentionally did it: the coldest folio is moved to 2nd newest gen,
+referenced folio (hot folio) is moved to new gen but carries the referenced
+bit. Both of them seems to be treated somewhat equally.
 
--- 
-Sincerely yours,
-Mike.
+To me, I would rather move both of them to the next gen, while keep their
+refs untouched.
+
+> > 
+> > Yes. Regarding this concern, I plan to change back to the original
+> > behavior:
+> > 
+> >      /* See the comments on LRU_REFS_FLAGS */
+> >      folio_set_lru_refs(folio, 0);
+> > 
+> >      /* don't add rejected folios to the oldest generation */
+> >      if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
+> >          folio_set_active(folio);
+> > 
+> > What do you think?
+> 
+> Just FYI, after above changes, the performance improvement on zram is no
+> longer obvious either. I think this also answers Kairui's earlier question
+> about why I saw a performance improvement (which seems related to commit
+> 6cbdd9726fb5). Also, there is no obvious performance regression either.
+
+Hi Baolin,
+
+Not sure if it's convenient to do a little more testing in your side.
+E.g rejected folios are moved to next gen, but not clearing their flags.
+Then we can at least know which one is more efficient on yout testing
+platform.
+
+coldest folio      referenced folio
+---------------------------------------------
+max_gen -1         next gen + referenced kept
+max_gen -1         max_gen -1
+next_gen           next gen + referenced kept       
+
+Thanks
+Baoquan
+
 
