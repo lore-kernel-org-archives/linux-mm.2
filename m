@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1478BC79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:13:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9386AC79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 10:14:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 089C96B0093; Tue,  8 Sep 2026 06:13:42 -0400 (EDT)
+	id B13666B0096; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 061A66B0095; Tue,  8 Sep 2026 06:13:42 -0400 (EDT)
+	id AC3D46B0098; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94626B0096; Tue,  8 Sep 2026 06:13:41 -0400 (EDT)
+	id 9DA936B0099; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B74686B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:13:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3CED71A04F6
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:13:41 +0000 (UTC)
-X-FDA: 85190183442.16.1AB8CCF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C23D6B0096
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:14:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D458A04ED
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:14:49 +0000 (UTC)
+X-FDA: 85190186298.26.0A94725
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 692A31C000A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:13:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO5YyETh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3E56912000E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:14:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iz9xURpW;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788862487;
+	b=ODFCVT5GHdduxiOLId8nVOdgToHvIC1uqbI8YYFTWLMnz4tzo4fOp49RpsORW3wbWLVH3A
+	TOheclEcp8sHb4juq4ZSZWG98k6AySvy2lOeBd5u+HtT+JM4ia8udrJG5J6Vc8pGfL8EgW
+	vCjH3k2/x3rpS2U8aWUtKXodoYhUWJo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iz9xURpW;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788862419;
+	s=arc-20220608; t=1788862487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5Rhz3vZATjbgv4L2KAACRCIbtaQyFKnS2m/CL22BH0=;
-	b=rgHqo9TOkZb10ERq52IDn1PCbzsRRLfRAan5u5avQPlFySW1i3mI4LTd6JoL1hj6s7dFNa
-	xEbM1bfme70e9bsS1JPRNeQ8RxA7cC9PwEf/oZfUdJ57QKknW5yMDImM6RWQNT/kSXjEhb
-	Ph9hpuRZ45897utiVg928zzXXfgDgIo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO5YyETh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788862419;
-	b=BQaLxp4JrR9b0UJBfMipPZrFLWI4Dk58xhmP+tTLFNdfeW+7klzZxemQr1LKY4+cQG8/d1
-	hpSR9YXtiZsonMjsyMgk+MoWTO4I4+8GYjCEtPhN6uRfM6ZhLOd19SAW3JlvO9uT9hLynW
-	i694K0S1bkkhD/0eb8yfWA7GvDMKpxI=
+	bh=Cvq4qMjanLuwG3YSjMLX9OxK6QvsahWFeb4aWNdZaXM=;
+	b=bK5KJ0oQ/EP47DMBZHvnWHxkBBDdEHKpRI6CCv8xN1JJRa3gHrtqQTrt92d1pyrVo4/264
+	VVZU0UIM4dSB8+v6Y5nA4Z8rl1RcoEcFEpBOghzQbLE0HlSw8axh6l3CDDUXZMRVprkuGN
+	0FWPhNP8WKqIORI4pb8Szpo3qC57Co4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39AE6413B9;
-	Tue,  8 Sep 2026 10:13:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D794C1F00A3A;
-	Tue,  8 Sep 2026 10:13:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60E33402F9;
+	Tue,  8 Sep 2026 10:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E1D1F00A3A;
+	Tue,  8 Sep 2026 10:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788862418;
-	bh=s5Rhz3vZATjbgv4L2KAACRCIbtaQyFKnS2m/CL22BH0=;
+	s=k20260515; t=1788862486;
+	bh=Cvq4qMjanLuwG3YSjMLX9OxK6QvsahWFeb4aWNdZaXM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OO5YyEThil9/HPDJqoIpj1Ew48vNHqwYqwgFZG09fyVBdWNykF7HX/zrzOp1X+egE
-	 c0JHpYD0fJtjE2J/OxgDUrDOrwQGsqY8cKYgf9Nh4dgXFUaDA+mhh21BeAWQHvgO1e
-	 FybHHB8M0FbsEEaJmOKRedjFAiQ7Bg8NM0FrJfJQEVsIpxwd6RwIWX/W8mi8tMnKQ5
-	 QQQwz6oOprf0KFSJNTTbFexVcGiO+t8E/iKhnsPoayZz2HRcLGqURRC8hsWkOLVJx6
-	 Pp0/QHNDZOD2UpFdE/blACWUocYPjIbVp+2k06z5jDSVV0Q1Ql6tx3+Rae0mUR6ZOE
-	 aWiFMONpCEtUQ==
-Message-ID: <d6ca7f47-39bb-43b4-92d6-63ccc148ebdd@kernel.org>
-Date: Tue, 8 Sep 2026 12:13:32 +0200
+	b=iz9xURpWnnx+dU5/HrM8VQO5BbUDBW7rvyOLEuiLWetDXdQ8k9sBR4ImmLdNM+Dla
+	 N9Dfp7sOUwRPAKQbqdb/YMlpm5hpy6WKAwoioZvsKkWesFetbmX/dgCDD7SwWw0Sh8
+	 sdrThQmQVgTDomTp7h5cUd70qq67m8ahaB44eFW7y5LRfCBqUDMACXcX8xpnkJgR90
+	 ThiuAAAiaifndll5OnzG754tijKFWr3abF20Ynl6N13OEEvqTD5p/YrmKZ8l2+CuLy
+	 4e9UVv2pB0x39Ake1gvwn527QYcC2r9cUvKByu65tH2hoLFf2vOU18urhhaoqRuR1Q
+	 lT+RtcZM6i4Wg==
+Message-ID: <c8f3161f-0428-4f0e-a3bf-6ca72370b4fa@kernel.org>
+Date: Tue, 8 Sep 2026 12:14:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] selftests/mm: Reject invalid test selections
- before running tests
+Subject: Re: [PATCH v2 2/2] selftests/mm: Only prepare ptrace_scope when
+ memfd_secret is selected
 To: Tianyi Chen <hi@tychen.cc>, Andrew Morton <akpm@linux-foundation.org>
 Cc: shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, jsavitz@redhat.com
 References: <20260906135444.749144-1-hi@tychen.cc>
  <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
- <178886112560.138404.14562368683011041790.mm-cli-v2-1@tychen.cc>
+ <178886112560.138404.8930658836608223518.mm-cli-v2-2@tychen.cc>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <178886112560.138404.14562368683011041790.mm-cli-v2-1@tychen.cc>
+In-Reply-To: <178886112560.138404.8930658836608223518.mm-cli-v2-2@tychen.cc>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f6jp133xg8bswardk9fsr16krcgnkhtj
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 692A31C000A
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3E56912000E
+X-Stat-Signature: crcrggfe7s15hthmyzihogzk9w8tmxup
 X-Rspam-User: 
-X-HE-Tag: 1788862419-523712
-X-HE-Meta: U2FsdGVkX18yfRqsYOLEJoLlR5iWr/VSQCP2P77gF1NJ9dyphBErPUZ0idXC+3KWRMVyitLFMg/eWxDeVzHldfSUdG5hnhQOAlcuCfJH+DkhZS3fOKxM7Jpnl98mpvcEFfZJFZUMnjEesUYSMil543FxumV54I8rCknr1IsV7HLbgdIfQoQ+cLO2w0Qu5LH2cWDfw9hyl2HXci74Wt11drDMT1GIyJKSAaQc04fPW/hTKduJWI9kzcUkvMriybW1ygrJL3vwkLBdjaPN/hW5M+pNs5+bs88isAS04zNL8efRCuJdhWS3RXbSDHKQtd6lTX9iYK3x+pVYXH+7obYBBgk6QwyWzLIJbaNZhaxnN+oH/J5tVLPisX0KGsMVM+sY8clRNAmK5na+FUpVis+FmkTsXGUAM1kM0UYo2HQeX+Ojx7d/wi56LVXHqO4xqRz6xER/JePNjMOFkBaWPrh4wKWLhAZq2T/1Du1gDqLcz0fsvg7cE2txNs1F2yITGhPWslItZWrL4LeW5JVYkmwSrjQHsA8CXQKEzO2iJa8tdlohP+lzyk5anqb/WOc6Ci5xho+PBTuLbOp8XObitehbe8SsvhlULD3wNdFlWOJtFIoS1SBNUI7R0HJVZbJ8YxDSvlHCkV6J783thVdnqbmnwTsyhsPheiBTH0PTrjERBCoxQILHr1nV5BSFz2P2K1ckbHAPFp1n+UexcU9GLwKu9pgws+IYSUnU9H6GnkI11SEyOhNsBjI3CQ5gaLPA3ecAtFHxG+bas4TqN+z7eHRLVynI4IzxInrAlLjq5lKdFPSDdz2Re0jBFupwBNvx3uWrk/xcnE/zGtlhdhBNEm+7S3V7gGy8lO3D0SRY3W9wpnNm6qam15ccfk+0qaE+p6k+otS0bXFEEbLZ9z0gkC1NIw8a7aQC9gWpLHsctO3z3SViR6ioy5RrD9RoX7W2tstnRsfoPWDqZCAX8p1XMiy
- 1et3MEzn
- hYWdevmo6xo848ivX7GVIguIuDc1u/b5fCS/nDU/VD1ZQ0pnSqzgjIea11k6pbYhRb6CCPUzb/tlJpBts65suWnYx1+nezzNhZZX4noYF69rcEYL71oYvlUH73fJd9ADzgKaevLxUv7FRSCLSmvLmd27P+ELcOpBsjvIn+3AKyHi/LBw4MckzLwWV01NQMhWqztBj0+wTzkqCjKIp81kbKkG73O8nYC17wTL6Fkyni9scQVmesmBT8Mw77wZ77P1mbpLM
+X-HE-Tag: 1788862487-774901
+X-HE-Meta: U2FsdGVkX19o7lL2x/oez1Zxs33ixe9szf0LcMT8KgrkL5bc+PJGkFXZsbsDyFC+HD5jMAeVEyRsZ8ZhfCrKeX8Npi+BZvC7qJGPYNemyDm9gLwMege2mcl5ibm1YXUIWj1C8blKDDJMEsL22YpsfZkEKf9Gaz90s3+oathxdyvRvlP7VCmjQVX2k5nVsggYhYGC4ahHuS+vSjW2luvFueJ8N9bmB9E2260p2j/b800H7lO82qeT0mZyLmmP01kAAfxIwWajJBnhj7ywmvP1MuRnwZERVa0LGrTi3Kxj6P38XFFJ4wfPU38FzG3K7KTgPro0kwVEIZCnURiHSHgf6q5/eJXEoEoJTl5kovUupO4JvmmlzvM/VWHyyeVgo2f4wqL3XZKattcWL/vnrDh6wTjeC/5FIukXK4jdEYHMwP1+s8X9uBGG2qFQENTUHXwoGoOb0PbTrVQumSsJhwUyzA1HaqPmWctleg4v42iLss+C0MNc4BsmOCR+t3bSVa9uSou9rPJ8fKe7KQItGqhNPvOwJuunjzSIQo//Y7Hb4OKW9aQEnL5pinzrqpGmltGxYxGak9kVOgD5dTmJwpzqMT+/bu6phVgUDZmX85w13DPmvWGrsEnQQI9DID9v7HVjzYsH41e+gQIL8nxbOEBXrcpeakwEDoKSM2lOva3YtZr+SyMgdgvMbDhq720J646IdPIZSrY4TiiTX3BQBzgKKpcXy8Jng1DytTSgoFEUln1nWyarfCh5Xg68VAlxpO2verpib62HqW/eAJ+0nCUY7FKjS+55F8hjo/ZADmafQaiptanTNJFP14B4ZFJVU6L5Kb0Lp5Tu1h1ADhoXg/u10ZyQ8Njk50iepkcwY/mmGwRyCpvPyEeL/f90SWlGM/IhqUYd3OL6sTqGD1gJdaLvOhrhuhf439DVMR/U0a+1RuTqrGWHrziUEEIcaagY1/UXMnEiv+m4vbHThrIeTNa
+ iK4SiMkP
+ RVQITtByvZ/xL76aq5fKR96xO6VSlvStLHQN0JMuywvCw4mZCu6AwYMiG5uImUAoCyDrK3CpbvlsbX+0+5Hg3+tfkFwhTOfwh3Z69MghmXBvCrbFCdCsuOeU77KSPxl8bA+XANkbfLT6ryuyGmp+FeIrQi7VR/oK0gGMMz7P8WNwnsrB4diXJbGSnzdgOEIz9OOWfpKwQdViz4dJwVb+/+4VZ1fQbjC7sL3/7nNhuP57eS4JH97RmEvz/aK4l8NBLYP03IGKxbZPKu8aWwzraGxfP9RO6AJUj3484G5wSKCmwDz+YHmbqxY/ybOj1XCL55wpl0Fvn1IWAGEI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,80 +141,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/8/26 11:55, Tianyi Chen wrote:
-> getopts reports unknown options and missing arguments, but run_vmtests.sh
-> ignores its error result and continues with test setup. An empty -t
-> argument also falls back to the default selection, while unknown category
-> names can silently select no tests and still reach setup code.
+> The memfd_secret setup clears ptrace_scope whenever its test binary is
+> executable, even when a different category was selected. run_test() filters
+> the test invocation, but it does not protect the preceding setup.
 > 
-> Exit on getopts errors and validate category names against the existing
-> list in usage() before any test setup. Reject empty and whitespace-only
-> selections, and normalize category separators so validation and execution
-> agree. Keep the default selection for an unset or empty VM_SELFTEST_ITEMS
-> environment variable, and preserve the existing standalone default value.
+> Check the category selection before entering the memfd_secret block so
+> running unrelated categories does not change ptrace_scope. Keep the
+> existing executable check and the behavior when memfd_secret is selected.
 > 
-> Fixes: 85463321e726 ("selftests/vm: enable running select groups of tests")
 > Assisted-by: Codex:GPT-6
+
+We prefer
+
+Assisted-by: LLM
+
+now
+
 > Signed-off-by: Tianyi Chen <hi@tychen.cc>
 > ---
->  tools/testing/selftests/mm/run_vmtests.sh | 27 +++++++++++++++++++----
->  1 file changed, 23 insertions(+), 4 deletions(-)
+>  tools/testing/selftests/mm/run_vmtests.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index d09f9f6a384..836c7454cba 100755
+> index 836c7454cba..9932df252f4 100755
 > --- a/tools/testing/selftests/mm/run_vmtests.sh
 > +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -96,26 +96,45 @@ separated by spaces:
+> @@ -371,7 +371,7 @@ CATEGORY="process_madv" run_test ./process_madv
 >  
->  example: ./run_vmtests.sh -t "hmm mmap ksm"
->  EOF
-> -	exit 0
->  }
+>  CATEGORY="vma_merge" run_test ./merge
 >  
->  RUN_ALL=false
->  RUN_DESTRUCTIVE=false
->  TAP_PREFIX="# "
->  
-> +# An unset or empty environment selection keeps the default behavior.
-> +VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
+> -if [ -x ./memfd_secret ]
+> +if test_selected "memfd_secret" && [ -x ./memfd_secret ]
+>  then
+>  if [ -f /proc/sys/kernel/yama/ptrace_scope ]; then
+>  	(echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
 
-Who would set it at this point?
-
-Can't this just be
-
-VM_SELFTEST_ITEMS="default"
-
-> +
->  while getopts "aht:nd" OPT; do
->  	case ${OPT} in
->  		"a") RUN_ALL=true ;;
-> -		"h") usage ;;
-> +		"h") usage; exit 0 ;;
->  		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
->  		"n") TAP_PREFIX= ;;
->  		"d") RUN_DESTRUCTIVE=true ;;
-> +		"?") exit 1 ;;
->  	esac
->  done
->  shift $((OPTIND -1))
->  
-> -# default behavior: run all tests
-> -VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
-> +# Normalize whitespace so validation and test_selected() use the same names.
-> +read -r -a selected_categories <<< "${VM_SELFTEST_ITEMS//$'\n'/ }"
-> +VM_SELFTEST_ITEMS="${selected_categories[*]}"
-> +if [ -z "$VM_SELFTEST_ITEMS" ]; then
-> +	echo "No test categories specified" >&2
-> +	exit 1
-> +fi
-> +
-> +if [ "$VM_SELFTEST_ITEMS" != "default" ]; then
-> +	# Keep the documented category list as the source of valid names.
-
-That makes sense to me.
-
-It's interesting what would happen when trying to run a test that does not even
-exist for the architecture. Getting some feedback that the test was skipped
-would be nice. But that's something for another day :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
