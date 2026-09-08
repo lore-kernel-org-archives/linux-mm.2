@@ -4,94 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97DFBC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C60C79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:04:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EED6B00A5; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
+	id 8BCD26B0095; Tue,  8 Sep 2026 03:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 816776B00A9; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
+	id 8949B6B0098; Tue,  8 Sep 2026 03:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752EA6B00AB; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
+	id 7D15B6B0099; Tue,  8 Sep 2026 03:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FCCD6B00A5
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:59:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA95C1C20CE
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:59:23 +0000 (UTC)
-X-FDA: 85189693806.17.0FF7271
-Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C099FA0002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:59:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ntZ5KkZo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61B006B0095
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:04:22 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD050403EF
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:04:21 +0000 (UTC)
+X-FDA: 85189706322.21.F7389B5
+Received: from mta0.migadu.com (out-220.mta0.migadu.com [91.218.175.220])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BA726A0007
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:04:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=wyuan.org header.s=key1 header.b=YHq6NA4d;
+	spf=pass (imf25.hostedemail.com: domain of wy@wyuan.org designates 91.218.175.220 as permitted sender) smtp.mailfrom=wy@wyuan.org;
+	dmarc=pass (policy=quarantine) header.from=wyuan.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788850762;
+	s=arc-20220608; t=1788851060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TfNYm1uiseu4qTpQSsXJ4D+JYuSRcCGppQvoQ4b5vpo=;
-	b=a9G3UfaDG846ZOntUs2xNn8/bsMCU94vlGKeIdXjldoG7EeaImMXZeH6krTn/I2Dyp32Cz
-	SGf2OciOEt7JIhvkSLdGEX1XB23YSNC4Y59f6b5CSBxhX0rik706zf0nK+7Oz5trhNDG1X
-	/KMTti3p2aGM620SrwIW10vcLja/RqU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ntZ5KkZo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=fxBDo1fPJj8sCgf99NiKDqLk3Hd1vAViyxx1K6IoNOU=;
+	b=SFk9WsSBhQFEYaUQIDidqEG/FvfGj7xfh9al6yjftizSB1jnzd5f5AfDOFYj60OptJkcPW
+	ubiJzB0BExEWVOjI5/fuEe6nk3AdaU1doSc3ZHmeSMUJYR1l0BlSyjG0L14gKxgR5/obBv
+	iHrDm76qHE/yvOh8gqqRqSZpLWzIxqw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788850762;
-	b=UWdk36twuOtU5HuuiYZjt6MFOIgdWPmDIK6Ni0rk4Aio25J4tgY6PqGUREtdiw6Y/E/Ix+
-	8O5W1DncG7S29Bi3dXVyRyVHCjaUa66htVhxy2jnslE4rMJge4UUFXS/g/lvOgWuIHKcML
-	26/ATpESAH3+hVPh86eJgYpIE0ALhoA=
+	t=1788851060;
+	b=iE4/BC6q9kFhHy/uO8RIEKbkVqx++LxfHzbrnK7+p56z5POOq6H4wDUCy73P+v1bLmObyj
+	FKKkq0dfqHiNJWqtAN2JTEecBRvRhRcTi1ciwIiBy2FnNoCh6jA+GBrnuuypyqUW2N0tr/
+	mn/rqNsW7PwNrxMha94DPoJu75QDJKc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=wyuan.org header.s=key1 header.b=YHq6NA4d;
+	spf=pass (imf25.hostedemail.com: domain of wy@wyuan.org designates 91.218.175.220 as permitted sender) smtp.mailfrom=wy@wyuan.org;
+	dmarc=pass (policy=quarantine) header.from=wyuan.org
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/cMB1daxP3CSTnSwp/1Uz+ebWze90XSmIaF608egzq8=;
- c=simple/simple; d=linux.dev;
+DKIM-Signature: a=rsa-sha256; bh=HzjFTUzM1h8cKJKoYfscrnzwWcTkdgUAux0H+g1d+hY=;
+ c=simple/simple; d=wyuan.org;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788850758; v=1; x=1789455558;
- b=ntZ5KkZoNZa7UGrUHbwDL8jfssBjQ4M7w54aXSu1+oFDFYMUx/7PjxtlhC9GDHEYHIwAhJJH
- ah9pqe4HGA13/I6dMME3GW3ImH2pledE+RXYuAzK3NA1MpLWfMr98hH9+Msu0LgrtYbTbiBZeDY
- /RRNmHmJwu8BxIeJJ6pKGjW8=
+ t=1788851058; v=1; x=1789455858;
+ b=YHq6NA4dy1BvedmUYoV6pFx7iMGTguTfbNg1KKuWI5CWCwrL/N1G2vynZcVcCtWGiKRjakM0
+ bisyRJmjjFKfJ/RiBuURiMMjdkR60ME+O28Kvi+5IsXZN+jUq9lPQiysnf0j60hzm3sYn2mwhP3
+ Vyi9Pd3gwq1OHobwJoUPjUH1XGHQpnETOb2lr+KLkhXpU0K1AkXqOTVH1NlhQKolJclCVpQpaAB
+ O9Lg8pm3xNSvumCZXJFtApjHVLMserY7FPe6+OA+JBuCH9d7DAoxUUxL8T2+KK8l6ANmaT0Qc/l
+ lIt9N0iF3W1yCsaSGZzQzdgk1znu2SqPHfzbeYYRP2j8Q==
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id cb524ca6967486f1;
-	Tue, 08 Sep 2026 06:59:18 +0000
-X-Mizu-Trace-ID: cb524ca6967486f1
+Received: by smtp.migadu.com with ESMTPS id dade2e651a255ea7;
+	Tue, 08 Sep 2026 07:04:07 +0000
+X-Mizu-Trace-ID: dade2e651a255ea7
 X-Migadu-Flow: FLOW_OUT
-Date: Tue, 8 Sep 2026 14:59:12 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org,
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
-	ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
- folios
-Message-ID: <ap-yQOH0pni-mfdf@fedora>
-References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
- <ap9zPPughaSlfXM2@fedora>
- <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
- <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
- <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
+Date: Tue, 8 Sep 2026 15:04:02 +0800
+From: Weijie Yuan <wy@wyuan.org>
+To: "zhen.ni" <zhen.ni@easystack.cn>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v2 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+Message-ID: <ap-zYt-1qCBGKZed@wyuan.org>
+References: <20260903041819.1776630-1-zhen.ni@easystack.cn>
+ <a6ce8684-116b-42f2-a88c-154eb86bad59@kernel.org>
+ <a98bde94-d1fb-4246-b7c6-e64303d8388a@easystack.cn>
+ <5d4c247c-b8ea-4d3f-b2b9-d442d372fd03@kernel.org>
+ <6744bcdb-3456-4ba2-95a0-a58c354bfbfa@easystack.cn>
+ <ap-qDThi-NQgVXVD@wyuan.org>
+ <048d7470-a813-4252-a4f0-0ec29694f639@easystack.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
-X-Rspamd-Server: rspam11
+In-Reply-To: <048d7470-a813-4252-a4f0-0ec29694f639@easystack.cn>
 X-Rspam-User: 
-X-Stat-Signature: c3kf7exo69njwgsziatinqoxftaa68ej
-X-Rspamd-Queue-Id: C099FA0002
-X-HE-Tag: 1788850759-819966
-X-HE-Meta: U2FsdGVkX19BRlfsPs8pr7Tn2Wt9cnpe4VzCP9TtJ+yMIzSxXo9YzcTjktkZO22QPT1jgvGmfbZZ/5AMH4Hg6Lt3fAtbuVqtlxcN7SKf6O8mU8gE+KbwFP/DTt61YzjFCz+01cLT/zaa1yo/ubkhpevTLUOkqtr8dpyQdNu5XTw7y3Gkr9ebHc74Rue1VAx/jxsmo93qgHor8ueIt744T+B2fPtGZcEFY7kH5Bw1i3Du3Edfm1+Y7icvyGg+kSWmQAZ7XInSO8wa2U5vm90EBKfj2mDuXJfL80SU/2WUUtEpastNj0Qifx7u3KUeJr2cgMOkAQ44wyLjXsOVihVjhJ4PTvO5y/BghfCz8NJF+yKhAqU/rXB9YZwYJD2iWM3wzaBzNAPs3xkz5+roUteeF0Fnp3iLYqkD+dHJU6i6idm7cnbbtRYA9CUXrVtFAe5ce5viqeeY5XzNLGzs9SZH85vq0enBjAHHRYpKcVKKUoVVw4gOI0dTEwKCGIZAqgxJ1gtPg/FT9edyRczUppjL97gJlh/k+gG9bpOskgKfiCkkX3wj+hjlpvyW7Ag/lz89zD23CbB7kp/GQa5L6R9G74BxJgPhIUGflINR5PH81I4bgaA5hUVeAEZhJa0ONsn2vT3My3ez/GW4UJ3UJJNAI1o34D2bdX51D7CKggoaiCDMuHFFmq9+RQNWv+dlFKdpwDYfxvptID+sxpt6XpkrojFxyIRVIBNvugJ3E3TqD3SJN4MgwMvRRX2NKZ2wFXesCHMZP9qN6rjsG20l+iPVEjQYteBe6zCZDxFx1xjndPkl6goJTjizoWlAWjZtd3X3ewcrOi2n0/6Z2g8+gY3g1Ok4uMSalRed8/I2KZAgbMUPmC9miOCJTvCopUiAeBl6eYNnAisdB+mLXZ4sJINoHWOPDmIsRcswM6FDyeFhs3AyvJLkwWu9WsG3GvFVEeHiJphHiDLAbrxnDug/Irl
- Ka0wVdwx
- ysIZAiaL6E73gAs5DHbkDrT8rbSVTmJKby/W+3kSZ4FD0+c3srLWXYsB/XqHP4BS6NVo5pKEOvWbxYGWEsL9EjJz4gyuLfoErK74lzt3Txelv0CFr0xi5geYn60KrY6sNlhBDs4WUJDQNi4N06IB9TBpbKbkt/JRx7Ry23s2AIBQWYG/zfV9DtJe19rdIuHNLl/jGvXLckjWmY3T0dMCulS2CWVDYuVZhKGSBLyVz3RUqAcFX/7J9TAIf95Z97F3yK/6kMDlBW9rsI/wVy4B/jQBf6hBNb8Et8ko3LJxVLeoFDuLS1bry8+KI1YOr8DGfvwja
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BA726A0007
+X-Stat-Signature: nmh79e8run88rabujfzi83kayz64dwwa
+X-HE-Tag: 1788851059-901620
+X-HE-Meta: U2FsdGVkX1+dhzHv0wbn6GbxHjvGR96XD1/difyYTe9rTiYovDYyjDEI2fmYEpc5Vh1M2GrW2ksC9+Ao9owSxFbsO5useeq0pCi3oCUTB+uEoOWaeBJDxPinNVQWIixf/KRWAKXYvCCHvutaQPIguwyqQ4+Iy78mBUjKMFaQ/kuWIPyLHZvek/hJw+AMv2qIGoXBVNL8eOXKg4XEI71yCso9VVQKPF6Mf7lVGYIwD8TZqTASNQ2Usz0/8D4t6PFjpXNtzvu0UzyJd22X7FtiJ05JGSSe2KhOWCZ3tW54pqTT4BJ1aoKO832DMrLduhXyBdG+I19lz+flYNQyn1D2uCxTsbLAHv8rnf1gMfFATIoZ1OiAeoCQoWWagv2nvuP5s+gDNONKNgjri+GBj33tHs1V3c+j/t6bezDQ/FVQmNqvTqKKo7M2QRmx7sqK4NQugFKsuCGn4aULsQ4Fhm6lpTS0NIKzzSrKhXqCofqpoMPP/HsM/Ez8DMq7atG2qsAr6ptKPzCb0bNmBYTsRTS2QzThZffKz2/jM3r0Wyt7Qg75wHlMJJgsr08J7RKW+VgcBuaEzp0cWhJsgxqQK1s6SoRjQ+1Z9DoNcleJRHQo6HjgKwO1UEMyZQKk0d+TfaR9sVEjvCcUVJVIO2OvaBjBaWIZcDI99dkO6xclzporXWy+JmYoJh7GoL7iUZuGm0Yg+HYoaaMoRSb4a7hj90IDD49DlhhoSzZHYA420w03Hyc/HrSRiFRvg4aIxpco0i/lVLUpJA2gf6JWuvvWBkj9iBUpDUxZtASxMZJW54z8YmrQpeDK528qQ2O6rMUDoAQ2hzHqdd0Y2RUebOfBdgLSDypGFJLjozojhC8nhESF9X9UfXiYJmv7zsVu2UCTztplwiwHrvdvZs1nL1z8GWGHS1hvnUjHqNK2/TrSWAeSqDDkuxBGMOnUS2TGCsg0F+CI3bJLyZIoJU9QrbXIcgt
+ xnL/f4B+
+ zd2hT+A41w7gGB/5PEjtiVAwQvJZXGUg564EPNADtaNGrRJiWQS3kafEP6Sodch/IjFvYpNVIlUzqeW/iRNf/ijw+GeqjWfyX8Kx+/oAhFtpeR7tRplHsKaftpDwJK+/vXym997HJULR1OwTedNpxOSF2SuTUbsuJkRJ6zzuawn+g5Dn2PDPalziOWAH86u6UAxkwR/TV2sJKRzSOXLR36+OxSvDptAFSPr1Wtcbv1IAyUa1PGOy/KDSvph2IyZdyxmOvtJ40NowjqySKGnPPgXR8koa6kPX6O12z6JuTBJkfuY+6jQfGpBwJi4pjvJjcroqALAixMJDFOw+JtfNzBIPpSxHQ2laE1bV/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,118 +111,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/08/26 at 12:01pm, Baolin Wang wrote:
+On Tue, Sep 08, 2026 at 02:40:10PM +0800, zhen.ni wrote:
 > 
 > 
-> On 9/8/26 11:03 AM, Baolin Wang wrote:
+> 在 2026/9/8 14:24, Weijie Yuan 写道:
+> >  From an outsider..
 > > 
-> > 
-> > On 9/8/26 10:34 AM, Barry Song wrote:
-> > > On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> > On Tue, Sep 08, 2026 at 10:41:23AM +0800, zhen.ni wrote:
 > > > > 
-> > > > Hi Baolin,
+> > > > Sorry but your whole reply reads like a LLM slop. It took a lot of
+> > > > mental effor to actually try and engage with it.
 > > > > 
-> > > > On 09/07/26 at 11:25am, Baolin Wang wrote:
-> > > > ......snip...
-> > > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > > > index 40d3f1b48a74..42c0a09938ab 100644
-> > > > > --- a/mm/vmscan.c
-> > > > > +++ b/mm/vmscan.c
-> > > > 
-> > > > Well, this seems to be based on Andrew's mm-new branch. I usually track
-> > > > mm-unstable branch. Maybe the subject should be marked as below?
-> > > > [PATCH mm-new] mm: mglru: clear the reference counter for rejected
+> > > 
+> > > This reply was written by me, and its viewpoints are not simply copied
+> > > directly from an LLM. The LLM only assists with the wording.
 > > 
-> > ACK.
+> > So that's probably the reason. Your previous replies was indeed very
+> > much like the output of an LLM. Even if the idea is your own, after
+> > being "polished" by LLM, it's hard to read. I know English is not our
+> > first language, and it's not that easy to speak like a native speaker.
+> > But may I ask you did you read it before sending them out? I really
+> > found this bunch of overly formal content a little painful to read.
 > > 
-> > > > 
-> > > > > @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned
-> > > > > long nr_to_scan, struct lruvec *lruvec,
-> > > > >                }
-> > > > > 
-> > > > >                /* don't add rejected folios to the oldest generation */
-> > > > > -             if (lru_gen_folio_seq(lruvec, folio, false) ==
-> > > > > min_seq[type]) {
-> > > > > -                     folio_set_lru_refs(folio, 0);
-> > > > > +             if (lru_gen_folio_seq(lruvec, folio, false) ==
-> > > > > min_seq[type])
-> > > > >                        folio_set_active(folio);
-> > > > > -             }
-> > > > > +
-> > > > > +             /* See the comments on LRU_REFS_FLAGS */
-> > > > > +             folio_set_lru_refs(folio, 0);
-> > > > 
-> > > > This looks like a great catch, while the code change could bring issue.
-> > > > 
-> > > > Because move_folios_to_lru() relies on folios' flags to decide their new
-> > > > generation. You just cleared it before move_folios_to_lru(). This is no
-> > > > problem for rejected folios that are determined to be put into the
-> > > > oldest generation. But for those rejected folios that are determined to
-> > > > be promoted, this could be wrong. E.g currently gen window is 4, and a
-> > > > folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
-> > > > is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
-> > > > referenced bit, this causes it being put into the oldest generation in
-> > > > move_folios_to_lru(), this is not expected.
+> > So I suspect the LLM may have taken too much liberty in polishing your
+> > text, to the point that your replies no longer read like something a
+> > person would naturally write.
 > > 
-> > Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs
-> > to be reconsidered regarding whether it should rely on PG_referenced
-> > [1].
+> > The "Summary and Plan" in your reply in v1, both in its formatting and
+> > wording, looks quite similar to LLM-generated text to me. So I can
+> > understand why Lorenzo asked whether you had used an LLM. Come on, we
+> > all know what LLM writing looks like.
 > > 
-> > For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios
-> > either. Before commit 6cbdd9726fb5, if rejected folios did not have
-> > PG_active set by shrink_folio_list(), evict_folios() would set PG_active
-> > on these rejected folios.
+> > That said, I do not know exactly how you used the LLM on your original
+> > text, so please forgive me if I have this wrong.
 > > 
-> > [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1-
-> > baohua@kernel.org/
+> > Thanks.
 > > 
-> > > The original code looks quite weird. It even prioritizes folios
-> > > that won't be promoted by `PG_active`. Do we need to change all
-> > > the cases just to call `PG_active`?
+> I really can't distinguish the LLM flavor that clearly in English.
 
-I would agree if we can. While I have one concern. A rejected folio that
-should have gone into the oldest generation is now being promoted to the
-2nd newest generation. In the original code, referenced folio is only
-being promoted to the next gen. I even think this is not a bug, but Yu
-Zhao intentionally did it: the coldest folio is moved to 2nd newest gen,
-referenced folio (hot folio) is moved to new gen but carries the referenced
-bit. Both of them seems to be treated somewhat equally.
+Yes, sometimes I can not as well. But I guess the native ones can.
+So.. ;-)
 
-To me, I would rather move both of them to the next gen, while keep their
-refs untouched.
+> I'm sorry for causing some trouble.
 
-> > 
-> > Yes. Regarding this concern, I plan to change back to the original
-> > behavior:
-> > 
-> >      /* See the comments on LRU_REFS_FLAGS */
-> >      folio_set_lru_refs(folio, 0);
-> > 
-> >      /* don't add rejected folios to the oldest generation */
-> >      if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
-> >          folio_set_active(folio);
-> > 
-> > What do you think?
-> 
-> Just FYI, after above changes, the performance improvement on zram is no
-> longer obvious either. I think this also answers Kairui's earlier question
-> about why I saw a performance improvement (which seems related to commit
-> 6cbdd9726fb5). Also, there is no obvious performance regression either.
+That's fine. No need to say sorry.
 
-Hi Baolin,
+I know and understand that we non-native speakers would rather not make
+mistakes over these little language detail issues. But over-polishing
+can end up having the opposite effect. Keeping some of your natural
+writing style may actually be what the community prefers, especially
+these AI days.
 
-Not sure if it's convenient to do a little more testing in your side.
-E.g rejected folios are moved to next gen, but not clearing their flags.
-Then we can at least know which one is more efficient on yout testing
-platform.
+> My normal reply process is to first describe my ideas, then have the
+> LLM check for logic and grammar issues, and do a round of polishing. I
+> check the final draft once more to see if it has deviated from my
+> ideas, and make corresponding revisions.
 
-coldest folio      referenced folio
----------------------------------------------
-max_gen -1         next gen + referenced kept
-max_gen -1         max_gen -1
-next_gen           next gen + referenced kept       
+Sigh, so it is hard to know where to draw the line. Write more and learn
+more about "human-like" writing, perhaps. :)
 
-Thanks
-Baoquan
-
+Thanks!
 
