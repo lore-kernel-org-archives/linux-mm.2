@@ -4,87 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6192C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCA7C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:08:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C93406B0099; Tue,  8 Sep 2026 10:06:41 -0400 (EDT)
+	id C21B66B0096; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43BF6B009B; Tue,  8 Sep 2026 10:06:41 -0400 (EDT)
+	id B835E6B009B; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B33656B009D; Tue,  8 Sep 2026 10:06:41 -0400 (EDT)
+	id A4E076B009D; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 991516B0099
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:06:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F00A80616
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:06:41 +0000 (UTC)
-X-FDA: 85190770602.14.BA6D18D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5AB1B4001B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:06:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afMC32TD;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7371E6B0096
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:08:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C3CE1C28DD
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:07:59 +0000 (UTC)
+X-FDA: 85190773878.30.00688A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A6ADC2000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:07:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQGU4RuN;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788876477;
+	b=EH3yRW3Su3mv8xzokeQZvx6RlWQ8lVERxqxREKweSob5ksRdYo8F2Fhr8XSDC5qqhHLSef
+	5k0wQvbXqgUqtoqPxrwCV6qoWK9OEO0lScVJH31QdyDqxYtQz7W5bMG9pn8u/91i92piMJ
+	5ORXfbhwkBcPaE5SWeLA9VOPxRwToGM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQGU4RuN;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788876399;
+	s=arc-20220608; t=1788876477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7ftTctWhPE4n03ECx8E4+9NjKLH+G10qtgVnkb8zSA=;
-	b=v0WdFovEtH4D177bPSLFCFWz9YsuKXCdkB0T1tCuP32I3tOXjQKzoDE5S8/a4IZxHVK2EE
-	Gg+PnYtIK6sYVdHjgJDnftkHIo/oqyX6ppRGWevBq5eOlb7Wpgbdtn5Yn/ZEsy89jijj4A
-	C9+WcKhGOV8uV0dAN3TdcY2Jg2lwJmA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788876399;
-	b=oWx4lSMJlXQsJa6Mmqap0t+Q4tLqbKQAh8agN1Isr927rnCjNGbCUVH8lLsnszpOkqI4Fg
-	OIekJ5sZipJBA5KI314lZI/x8b3DxgXO8MWK4TaZGwVzaKFMaiHPHXVwyqs8PHMzB9FMdA
-	ikON64hR5SrKyeqg506eiT04e4V+1QU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afMC32TD;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=R4WFBW494Ued1je39zGeN2tdJow2EgtUwmTrd9cYNqk=;
+	b=ctQvZFuFNUXGKJLr/qqT0W3TEAxI4Y/I6UmVb3RG1UX9P85u1Wmr6zHbg/rz4oD40oMsyX
+	Wya9aLmtSJUwHFiNGHFjoiNHYEhjdrVng2/kDBWE+wR9wsUxSriZLdTAvVgPFtvPcV+RUq
+	glMTMze6qCd3OQ1BGqvYNCmpIu8gIc0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 604AC42E16;
-	Tue,  8 Sep 2026 14:06:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12261F00A3D;
-	Tue,  8 Sep 2026 14:06:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B449601F6;
+	Tue,  8 Sep 2026 14:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE451F00A3D;
+	Tue,  8 Sep 2026 14:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876398;
-	bh=f7ftTctWhPE4n03ECx8E4+9NjKLH+G10qtgVnkb8zSA=;
+	s=k20260515; t=1788876477;
+	bh=R4WFBW494Ued1je39zGeN2tdJow2EgtUwmTrd9cYNqk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=afMC32TDNkE67v7lovIBvQfJ4zhHUyUuV+5pkjYgCZC7n9fh/o5Dns9UOJjhpJ1yk
-	 1B+HkuSVULxNeZpQWxTuOz/G/ES1fp30nq7vG7JGMxcpnS9nHRq01l17+NNc1l7jSa
-	 Mkc9ECVeJzOPjX3DZvCW0rR+z+aHcb9wUbZG55vO3A6hg5MAgFn3zvEXTY8BmTrbwy
-	 f3Z0NO2wBygyC0LFXz4at8Gbk7MZ/o0HjjUR6/w7DXTpvEdIu6ki5MqjU3l5BpMXUp
-	 uzUwOfKYYOpZfWPLnPl1qzjGntiDe54xCzCOnR/8RbGCq1979ic0H0ioXSRR59ZCyE
-	 QawcocYU62log==
-Message-ID: <f41abfcf-82dc-4fc6-8dc0-c4d0ba6d8405@kernel.org>
-Date: Tue, 8 Sep 2026 16:06:01 +0200
+	b=kQGU4RuNAJOY3rsUeHdoZ1orFmipJPWkwfJXBCa3wYKVxTgNb9DT9WtoGg3nfnWgd
+	 mJpV7XsVp10l98a7OX+BOYBcsQqqKcQS6n8mrWQdImuJTR5dRNX5InWjZyZOcEZZKG
+	 HfQqjUbU6drW3G0iyxhJw7VsBh/x4q71/fI3nejJloGv1cwjlE8dUAHlt4vJ1eDaAs
+	 0333NzULtWV4NvQZQxcO/U47nlo4Uf6jYh0MBD+U7kL37fhJtTHmz0OG1HNPXMLIv0
+	 TDnt+5Cpt8ji+rqowMPVVjN84maLB3/3hGzUWoHOrwFP3nY1zvhVvpxaOVi8fWWiKo
+	 MNjMhE4/9fHAQ==
+Message-ID: <211391a9-7283-498d-bef8-41ba5dfcc549@kernel.org>
+Date: Tue, 8 Sep 2026 16:07:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-References: <20260707201735.4113107-1-joannelkoong@gmail.com>
- <20260707201735.4113107-3-joannelkoong@gmail.com>
- <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
- <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
- <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org>
- <amoWjOnPayHVQU9v@cmpxchg.org>
- <b93cde83-0ce3-4db2-8e53-29864027d655@kernel.org>
- <amtv0YRbSrN6iUEo@cmpxchg.org>
+Subject: Re: [PATCH bpf-next v6 1/5] mm: Add copy_remote_mm_str()
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>, bpf@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, akpm@linux-foundation.org, andrii@kernel.org,
+ ast@kernel.org, brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+ kpsingh@kernel.org, ljs@kernel.org, matt@bobrowski.net, memxor@gmail.com,
+ song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
+ viro@zeniv.linux.org.uk
+References: <20260908135302.74963-1-tasos.papagiannnis@gmail.com>
+ <20260908135302.74963-2-tasos.papagiannnis@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <amtv0YRbSrN6iUEo@cmpxchg.org>
+In-Reply-To: <20260908135302.74963-2-tasos.papagiannnis@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5AB1B4001B
-X-Stat-Signature: bbn5j15puixotpo3sfhibw16kqe7n4in
 X-Rspam-User: 
-X-HE-Tag: 1788876399-592575
-X-HE-Meta: U2FsdGVkX1+culck9hRJgrMAOSbbtmn3F1xgm6qGJULmVMARi3IJZLUyezky5/jpBxeSEUtjWufQnW1ipE0oUsUcq/Z3ldFk4dXIQRXS2TIqgWUYip81PAkcVJwqHDF7tuvCDUW9j5mvMgL9wwLMShGaPhuzVdQVsnCcrk6eA17YtlhJWoLHGGAdT8nyQ0UiYnRLk87PlcYckQ5W50rMPQx7o6niYITQ81UkUmwM/RgqOuzMkwjXWDzJY69BDpWhdELGIdV+1gpu6tIakRqfx5FOm/+aMDNBHNw/7CXGfbMiHMw2haVcB/GibkAd2ilE5cApxA4IAeq8dL9MdOVKkGcV7kzGipIXe6Rfi00mL5Q4CARrj57r0x11W1nBIOq5rgHPJDfPRKFe9ve91xQg2HKhLlFnpaed6uSm/3IUg51VcEQeaLV95HY87Qvp3VC8ColjFnr4O56jGZ8B1agJ0T1NGKnAio2DNQkEhy5iv1TdSx5aMlblUWpLDFTA6SHfxqmmpqxyOuaOu4mibo6/79e2eISjiTpGC/ltib40UN/hSQBj2z2DrnEjGk2WA436G4KudvlvPbJD7iW32ZC61lN2FOnWDChzOp8ugtoLTAV3C1lzg82vxvH8AnYADVFXoelhyA0Eahu/dttXIUhSE46LMjdpPMS3POHStwjQbj7+8sWeOM6j2IdYv/KIETFTjL353cDG4TglCHTe2Zk6FwsU0aXmm0WTxawSxXrv4Jlxq7pY2yuiJff+VmznHePQalsPkDf2cS9LTItX+fHpQkYQpSUQxmJlrCV/z1+xruCl1+TVZ4DL33Yx3xtCwMBwaoac1H1c+I9m+cW8/Ctt5d+cWMYD3qEkEhHk8ojYf/w+nZXfp8rKSVBlRGZ/4vL/t6+vk31W91DKe+sTPO6qYZ9ol+ppEaYtRo9WTeVjpWqHF9G9Eg246OuJDF7RDT4dpiyapzxMjaH9lGJm9sZ
- cvwjxX3N
- rNq22owkZKEScN2543xgimUB/TjatMyj1E2KHFwlMGLsFkXXm2VSK7TS3EJxa6Le6vODBJ05DS0TZB/hjR9KCNE3Ei6CTdwK+T+IsYvjmGIC24oqQVgpMAHrvUrYf7jpyhcaP/mJlT858Eiqw9dSQ16N2sVAuHpS21hiBGYlhTDjsxiX0IiGHF0HfKjPs92rv4WfYW7g+jaSbylOvQnKzeyfe+wXgYe5tHaLUD+XwBqfB4tTRReiT6wDI0bOs+Eaz1whtOXt215MEiUA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A6ADC2000D
+X-Stat-Signature: ycadhkqowfibne1z39ud46w9n7kfcnkr
+X-HE-Tag: 1788876477-786584
+X-HE-Meta: U2FsdGVkX1/qzUU1dwX+lLQw6x2bpR52ecVKbAMCI9OoC40NmvhZUj+rCnfXNX7dhc1BrlkHmua6n22PBPvq62zfvebmCLaIePKojuyQF7WkCV0QisnPKJCG3B5QBrH3mBsyEVFc9BUDvdSIesB3HLu4k8JHtt50uxb2veGZC4UqdXl8z9THGXKbP5he90Zamh22cCKyEZ7kfQN+uAvs1m2fJlEIq3DK7DyCZQt4ZQB5T+ai+QyblOo7XcktmMXurU8CaECdQQwV5R1CurSo0D2bl2NmMlUz2zofiG73AdPG9foM/d8/4XXq+VOyCCN3CNErFATH2LtHnmnejBAa+idyM0yebNH+1/cwx5E6A8FoCrwkvX2Q4yc/OYhdXkg0Y1eWotvvhCGP3P1FFnoF1kXJYRW9SWaRS2Lh/ax/6aRTiyobctB8mpVuLA1cOa6UEGepFJAMh3MtTvylLPhkcn9yfxKQEyrDYn/jEQCVVOWc4WQy1RXZIqwZtAe2soRdqgzDARfcJuN93QPkEJPLpgDcdiLn26p1xRfC7khhIcWbBw+msqDPb4ItubkTwmtu9hkFGTqf9tMtQnxEdeYWAjYfEQPkNHruDm3u6ScRCLHEWZp7boaNM/Uj+EQtVWEznvbMQoJSeTHNrKRz03mNjw4666OiQchtUryTL2B5A5wdzvQaPc52jC9NWhsPs8w/jMh50ZCKUQQCxfo+xAyqY8vKVuIgAak2LG7seOs0CY0EeO9SKtOueTnab4vlNLrB04DZ4bAsNg3tLov1s8vfdn6Fxr/dsAING5s2ZTiiV44muuYOLTHWyY5xVmZj4e5Z8p9H9mjVmiKbBSCXhNAntpWLvGSgdRa5/c9ja8pwyymGkQprrmZ+YLG4f1JBX0bgyHhqmFHTRLxr4Ld/S8dcJU74OFWPHzzxMgrePN7HO8953uX1Z5ODWo5O3cLMlOi1DcdQFoN6VQ6mKfllf9+
+ rY9c+0fa
+ gwb+3vFOGUJTaiYCPodqHXW4mllEGjABNtQ330kCtuijzmGll/KBSIvMPytOaIFeXAXtW1YMzEqOVq4ps2FjQAWgRMxrpFtTwCIJsqMY6H/psO/5fP5ScxVZ8xiEr9SioH+k0i97jehftNPywWzMqhMRUNSU2H8/DSyzw2LhyzfZWAdrTpJor8AefdSR1127NSMduyP+8LcH/xktqXVF81lwLK0c20CNipsD9RXy+uf9G82LbPqS/rqcP2W0cPOisEtFf9uQAnIhvpFiTP2sP/aHzGFDLy9S6n2ksQM7m1ieIlEr7CGrlAxcDsd6SK4iHJ4USWgG0qHmAM8Xb1oFgkYv0NK/C50YyJoTPHU1ti1GRVJiSFHPeWe8LRjoOWbfZh8oVZRi6gVoU/33CEDCn0NOcUriOvCwL0Y+I3C2B6m5eV8g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,97 +142,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry for only finding now the time to reply in more detail.
-
-Just to restate: I'm fine with an approach that defaults to not adding folios to
-deferred split queue, when they are never going to be deferred-split (according
-to the system config) :)
-
->> I don't quite understand the "a single fault", can you elaborate?
+On 9/8/26 15:52, Anastasios Papagiannis wrote:
+> copy_remote_vm_str() gets the target address space from a struct
+> task_struct. This does not work for an address space that exists but is
+> not yet associated with a task_struct, such as the mm held by struct
+> linux_binprm during exec.
 > 
-> Let's say you have a 1TB host with 800G anon populated.
+> Add copy_remote_mm_str(), which operates directly on a struct mm_struct.
 > 
-> The oldest folios on the list might be THP. The newest ones might
-> be. You could have a mix of basepages and THPs. The ordering
-> constantly changes as the folios are aged, rotated, reclaimed.
-
-Yeah. Some of them partially mapped, some of them not partially mapped. Some of
-them already-scanned for 0s, others not already scanned for 0s.
-
+> Use a common internal interface for the MMU and NOMMU implementations
+> and define both public wrappers in mm/util.c. Preserve the existing
+> copy_remote_vm_str() behavior, including handling zero-length requests
+> before acquiring the task's mm.
 > 
-> How can it find a handful of unscanned THPs in an ocean of folios?
-> Even if you mark the folio state, that's hundreds of millions of
-> entries whose state you have to check in the worst case?
-
-My thinking was that spending some extra time scanning in the deferred
-shrinker might be tolerable. The real problem is "some extra time" might be
-unbounded indeed.
-
+> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  include/linux/mm.h |  8 +++---
+>  mm/internal.h      |  3 +++
+>  mm/memory.c        | 41 ++----------------------------
+>  mm/nommu.c         | 41 ++----------------------------
+>  mm/util.c          | 62 ++++++++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 73 insertions(+), 82 deletions(-)
 > 
-> The lru lock is one of the most congested MM locks on large
-> machines. *Maybe* you can do it locklessly.
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dd09c438fa23..6f10ce315eaa 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3325,10 +3325,10 @@ extern int access_process_vm(struct task_struct *tsk, unsigned long addr,
+>  extern int access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  		void *buf, int len, unsigned int gup_flags);
+>  
+> -#ifdef CONFIG_BPF_SYSCALL
+> -extern int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
+> -			      void *buf, int len, unsigned int gup_flags);
+> -#endif
+> +int copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
+> +		       void *buf, int len, unsigned int gup_flags);
+> +int copy_remote_vm_str(struct task_struct *tsk, unsigned long addr,
+> +		       void *buf, int len, unsigned int gup_flags);
 
-Yes, that's what I had in mind.
+Two nits I didn't realize earlier ...
 
-> 
-> Maybe you can add thresholds where you don't scan if there aren't
-> "that many" new THPs just yet. That means magic numbers and reduced
-> predictability.
-> 
-> Maybe you can be clever and scan from the head of the inactive list
-> where (most) new folios start. You still need to skip over basepages
-> that faulted after. Skip over the referenced pages that have been
-> rotated around concurrently. That could mitigate some common cases,
-> but not the worst case.
+We use two-tab indent on the second parameter line in MM.
 
-Ack
-
-> 
-> The search pool stays enormous for the entire runtime of the
-> workload. It never gets better, never converges. It continues to
-> include every other irrelevant anon page, and every THP that you've
-> previously scanned already. A single new THP fault and the search
-> problem starts over.
-> 
-> I just don't see how that's algorithmically sound.
-
-I was also wondering whether the LRU could help with that (internal separate
-lists etc.), but I wasn't quickly able to come up with the obvious solution that
-would just work :)
-
-> 
->>> So I think reusing the anon LRU is flawed. It's fundamentally
->>> different needles in fundamentally different haystacks.
->>>
->>> If we can agree on that, then the lock contention problem has a
->>> different scope as well: it's a simple optimization issue, not a
->>> fundamental data structure arrangement issue.
->>
->> I don't agree yet :) But maybe I am missing something important.
->>
->> Note that the "simple optimization issue" is not so simple once you
->> realize what kind of a pain the batched LRU already creates us when it
->> comes to predicting the number of expected folio references.
->>
->> It's a pain I don't want to extend to other areas.
-> 
-> Since we already need to do it for the LRU pages anyway, isn't it a "+
-> in_deferred_cache(folio) extension to existing refcount checks?
-
-You mean, the refcount pain that Hugh is trying to finally get rid of for the
-LRU cache? :)
-
-> 
-> I don't want to sound dismissive at all. It's a problem. However,
-> 
-> - it seems way more tractable than the shared list,
-> - nobody has produced hard data to show that either is justified.
-> 
-
-At least for large folios we have a more reliable way to detect that a deferred
-freeing cache would hold a reference (e.g., spare page flag in page[1]), so it
-might be easier to detect expected folio references. Not sure about concurrent
-races when removing them from the cache.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
