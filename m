@@ -4,125 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB96DC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D649FC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E756B008C; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
+	id EDCF56B0092; Tue,  8 Sep 2026 05:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E656F6B0092; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
+	id E8D3B6B0095; Tue,  8 Sep 2026 05:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7C2B6B009E; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
+	id DCAFC6B009B; Tue,  8 Sep 2026 05:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B61326B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:10:10 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1B3F80473
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:08 +0000 (UTC)
-X-FDA: 85190023296.15.6BC43B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1ADDB1C0002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAE45L0T;
-	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BCA976B0092
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:10:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B20DA4A4F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:25 +0000 (UTC)
+X-FDA: 85190024010.01.A049C58
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 40CB120003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:10:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AYRFJTBT;
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788858623;
+	b=AkYeisADKPyUUyD66qWGXS50dwmolHcAGRseoAvbeCvIDuBnGDjvP/HwVD30XiJ+QfmBG6
+	D/+j6PFCqlWGMMdby9opwH657M7u2bJ9COFtH1I2RyyCrkF3dOj+YkZVxDhp8+lY1SmO98
+	r2n9SFdFUC2MJ4qxitnQndPOz498Exs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AYRFJTBT;
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788858607;
+	s=arc-20220608; t=1788858623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0gSNJNsFiBELJzc2W3yE5oEemx5pk46RuJIr17mKUU=;
-	b=12BGdRcIe+3THT4nJniX4sxwj04UfhnigSgW7QqIN2qN0dUmbq5aJ8nuJKdxVcDii6lakb
-	ZKX4dTOrmxQqoFT0Ozo0/O64OLjAIwbeCRpsa6rJmVp7edSaep/k/rYpc6aKfcVjRyXZkx
-	lZPIig9sWNEnRH9cyTFCMvW/EysAzbI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788858607;
-	b=hoyeLCxZP5Pfn1EfMmy0Iyfro61wRjj7Y5fRjsQ8ztlMS5k4KKCvGXxDbLUXs9y8H+OW62
-	oBmHVQbFcO3SYUN+Mrp8nN9G0dIPCuuPn6QEBxeOT8GdsZGQmrndNbQB17sp+BVzkFoKVE
-	wCzOXyN6OEwVwia972kCCqbcNNguwnA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAE45L0T;
-	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8375160A98;
-	Tue,  8 Sep 2026 09:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569471F00A3A;
-	Tue,  8 Sep 2026 09:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788858606;
-	bh=R0gSNJNsFiBELJzc2W3yE5oEemx5pk46RuJIr17mKUU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DAE45L0Ti7ZzN2J9EggKEpXt9EOFC/xe7EhCLBEAgKZ1EKM0gpJTm6lUAH9Rv1Y/l
-	 Qb9gt8wqAJzrDQsE15lcnh+2LUSKHF7Y85tsfXTkApAmKRChoYKRr7LNH1NO5zCDxA
-	 DgSV71bDNblo942RePIiEaOET6DD2BAm6jQXNwGXYyYXCVrrPfTDwooEAWl2+nKYnh
-	 ROImd7jwopGGxZDYzhcgEHbseuZcsu9rqsTTi0oEx18R978jIBC68KJY6GiEvY9ucn
-	 ZPViZj8X62xbMqmZxsQcKY9LdenN66zHgBKx4TLNgSPHoQy5QHpClKrY1uem3vgjH+
-	 BNFhyDw3+tpqw==
-Message-ID: <41c824f9-aa04-49a4-9d0a-9ffba7b014b4@kernel.org>
-Date: Tue, 8 Sep 2026 11:09:48 +0200
+	bh=QRXgI53iZJVJF7ZG0s8MRMI+roCGiNdA7rcbUkFE4g8=;
+	b=u8N73hkBBTkwmTjwEdg83HDNtJp5wQ8/ADL0zX2wahhPbVqPswm1JGRz/GWtWyquTatZeR
+	Nfcx6urUXAeseUWpdS+0Yqw7dVt9I/eGtHGUKOWEnk9pEHKzP4OrDhGWCr/1dz/xHcU0DH
+	l5uQ/c6J+I0dguHyolj3mPL1bnk6D0Y=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=cEdVml3tdgAFLckXNxgJNh/xEbh5hOuVY3ofUnolJE8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788858621; v=1; x=1789463421;
+ b=AYRFJTBTMRErdeMA1CK3kR4CwMN3MLFW8wukqG73SrltUt0t3nDf8atZSSCuJqh4goXkg0R2
+ pLm75rX89KeS87wxNYQWnIeb/a8f1J1Q63wrL9U4gqZeDjgEiHZd6NJsd+aonlJuEfPYdynTdNI
+ SAhqWMvbSEs+VmI90yrdjE0A=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 375bf685a1d0cbc9;
+	Tue, 08 Sep 2026 09:10:05 +0000
+X-Mizu-Trace-ID: 375bf685a1d0cbc9
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f2f1f7e4-539f-4385-a28b-1fde074cdeca@linux.dev>
+Date: Tue, 8 Sep 2026 17:09:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/24] tools headers UAPI: Sync ELF headers with the
- kernel sources
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+Subject: Re: [PATCH v2 09/11] mm/sparse-vmemmap: drop the extra tail page from
+ device DAX reservation
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Nicolas Schier <nsc@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
- linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-11-3a93791af1cf@linutronix.de>
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
+References: <20260908030335.96549-1-songmuchun@bytedance.com>
+ <20260908030335.96549-10-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260908030335.96549-10-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1ADDB1C0002
-X-Stat-Signature: nae911nqmbr39iajot6umdfij1aypohb
-X-HE-Tag: 1788858606-31524
-X-HE-Meta: U2FsdGVkX1+3xEuwWN2gDANKsOf2BgiLvfzNWkctL8Jf/qvvZOZO2Lh1NGDjUlhlt+fYS9qQz9iMvJAG1DzI7KNNPZpwfwzDaxg1PdijQXA/ofMJQy+JZiW51R3zVidkVixMheKFJs9HST9l1fnhaXTiQdjPrnXMhnAW6v0Qt6rQ3EWYfSd68Iyq0ZdXwK4LlhWzriiRGc9Cp6iveB/Y92+L0784LXqqL/uohZy8mFBT7xX8UwQDuckVBcIFETZzfJyDuzLZC9qr5ODtiMoHouaS8ACsa8K0ufvfH65SXsz58qZsxZMfdwwkcp2H3H+/WlAeYSyRp+kS+LyBLjTdVHfpbaj/TORGQXohNlfnW2KX1vEAutt9ETaExw6Blhav7UyUK3N+V7hX1gja9Mj+f95xYOS6EygiABYLNRtd7/vFWuuXoZmfsdOzSdeE94/QK8QpaDqfIHzx8ul07uuNmcHiNutslRRDCSiE81ceJYUOGZnMK5OLxqVczzT+Ir0Z1EgLfiHb2NGpXlrkL73u6NxLgOB3Ypw698KIU5JVG7f09+P6WSbJoFcTjf+GA6Vdx+/fK3I3SG8QGNAdB+HvypQXv1HBTxn9EQp93Xc6mneG0nz9oFr4LKvSHc4d62MlZwNFZ/uxZR6bL1nYKr8uYO5bnSbNzxiuQtRV7eC4btrslRraszqfTuYfXXyEWUveTKKM3UEF3jisW4DF6B7rOmeS07iZr3AMUZ/FfghrcFfJmDGOF1liOFw1LFhmTpzExcX8AVmRibnpcmtwaArdQqPooOYMYEaEmodmB7TNP4AG/OYAwmUCuSQkZfYzG5Avoj4+jw1nklZusopDJ6KlAc2aPTLzglAjh+Zf4Hx23RDkFer96OGXWkY96BjGTMkyWaodHiGWHo4ObAxsFch7c6Gn9CSAVs5FBCfjENx6iiNdSER7b7tH9LhPQXGX/NSrp7U9DAPaLW/yQoCI7BT
- Ha1e3PHw
- PNeaIijAd8zImOMNUGG6r5qjd7ZRfpGesypWsckpIPnwdvu0msfzt/vBpzPFHslFUKmevN0NGw3BgIwmOAl8M7Wq+cILBpN0WXnmgdZaO17SfSRQrNPhsO7Fr+Q1dYJIhmtWL70tkLHMrw70dqqYB5KUUbH7WSOdrh2Ru6MP/6XRuOy2AYIXw6lxP8MkjXC/dh/eFyDslz02EYyTNtl4vExRAxeBNGFSd22J5I4IwMLpF1Ykgv0qQSEiw9Th3we4Vc8CypqMJtFT1h45xGwXO6EgB7wcGOSPZAVfpe00yquaEphQsINekfarQAvFX4//YL2xVgkTK9Yn1CNNZ/nORQeTdy7zQk8eX8MElXT5F9b/H4UevNftXXDyg7wsbDjST6qodzFwDqbxBAEgeAPswtXLTawsz8Y/0cXUC
+X-Stat-Signature: 6n7pg3f3tnitmeuokf47ygyofotfngnb
+X-Rspamd-Queue-Id: 40CB120003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788858623-243233
+X-HE-Meta: U2FsdGVkX1+4istojaSJNU1mSE6+f09MxSVETKEUH4JO0y7Qq/uIhdFcKWo7qK/EMBWWR++CxRszOErE54h1QlnNy06/j+QonoIiWYaUkrMqjYCDP4o21SYIeIDD35dose7AxK0FwgrGgPWs86eau1/dnO7KMBjSuuU7u8vVytU2Co1wI+gpx8lWFwSfv1iUWUwhSUtA1qw1O2d44TqS92Khoia/w52TKABX4wNAONFNOQArtcy3Bfqyqx++JbdOOdW8WqKGTnEjoBNk4uGRKpydswE4LHlsmRimHzQm2oZ8rqXc/Aw4hsBX+3kry5ujSuiomE7h2MO5n715k6I/nmVPYx94gB+1EqlkNIuA9TP0ozY3IoQSNa00ga9xO19aTgJmMxK5ZdKXFdvjGX3CQeg/Lr+DQCpqV4EEOBIwZl+9i1e1Xsidnk9TUNv1sCli/9fsed4K9Krw2iHCAHzjW76nV14aYEwHbyZBziEWQeITdOLUH2CQsnkj4/9mUk/zNFUnCVwsT68lKzvePU9D7bwU2A0tTyVmcES98WIMCqQy7MCHIPnL1KwCJ5+t27BncqKFSL+SnP/XjHcIgC4zb+mjICqN3Hi9cKKG6aN8paBy0cA84u2v2+mrg1pgRUk01Emy/f4Pkv21Q1uPQ2N08sieHBsa4qCwz1nOCe3z122S7hOESvyTqn4UWK5i5Y+GKuc1QlXxg8y5IhriFXH59BxvcCi35qNRmGRBCjo6o0NTEj36/Tf47hO1Dr2gOVFF5ovZXBuLmZPgopbQhAVc/q+4lvTZ00Qd7fIiJ5doVIWfutENbw3mZtBZZ11kf6+TUHSvlfCSbveFko80JWQIICVHsrhbntPr+VVvzwfw9YKSv/BjYnPyyNqCZIHXvbHTSrfoPxgbL4r58CD4D95iuz46TL3okWD2HmLuMtoOeZ3ME5JICLv+2KyIGiVOdfIFh11DBjoWyyuNiig7HlD
+ euy230Nz
+ vfGLCNBP3Qifux5ANZff0uzQIhMrnSDjnIi/lOjeivj9N3yZozySQ843LBzstEUo+vz7NVRafPEwL7/44IkdhskyG1qDGQ49h9KIuzKFZ2qp33w4WMqV6mncWawSie5Pvx/3KRIiXKfFTFS4o1jwSidYlQiCXAH88eMAgl/KdZNpW511qiUd+ZQFnmoPF1RnpWTqpZSwHMsdeal4KI5VqbXxx5PrnSwmeLQ3L1+ZLi6wsN7sBcqRpTbjyCYJcqgkaWnvKEccPueaFqdKX0Xjcpp3cSaJ6Zzy/Xm7fKworWngTIoLLyJnAxBkrG98QlY2pphm+BHIwQYccIDLztf4Lijh02nTDHT6DnjVxSRFTZSkA0cw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,49 +101,201 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-Le 08/09/2026 à 08:33, Thomas Weißschuh a écrit :
-> Pick up changes from the UAPI ELF header files.
-> This picks up general changes to elf.h, elf-em.h which was forgotten
-> previously and the new elf-r.h.
+On 9/8/26 11:03 AM, Muchun Song wrote:
+> The device DAX vmemmap population still reserves one extra tail vmemmap
+> page after the head page.
 > 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Drop that extra reservation and let the shared tail page cover all tail
+> vmemmap pages after the head page, so DAX follows the same reservation
+> model as HugeTLB.
 > 
+> This reduces the reserved vmemmap pages for optimized DAX mappings to
+> one and removes the now-unneeded first-tail population from the generic
+> and powerpc paths to simplify the code as well.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
-> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-> ---
->   tools/include/uapi/linux/elf-em.h |  71 ++++
->   tools/include/uapi/linux/elf-r.h  | 696 ++++++++++++++++++++++++++++++++++++++
->   tools/include/uapi/linux/elf.h    | 112 +++++-
->   3 files changed, 868 insertions(+), 11 deletions(-)
+>   arch/powerpc/mm/book3s64/radix_pgtable.c | 46 ++----------------------
+>   include/linux/mm.h                       |  3 +-
+>   mm/mm_init.c                             |  2 +-
+>   mm/sparse-vmemmap.c                      | 13 ++-----
+>   4 files changed, 7 insertions(+), 57 deletions(-)
+
+Looks like sashiko's response [1] is a false positive.
+
+[1]. 
+https://sashiko.dev/#/patchset/20260908030335.96549-1-songmuchun%40bytedance.com
+
+__SetPageReserved() in vmemmap_shared_tail_page() marks the struct page
+entries stored inside the shared vmemmap backing page, i.e. the metadata
+templates that later represent DEV-DAX tail pages. It does not mark the
+struct page of the backing page itself.
+
+On hot-remove, free_vmemmap_pages() is called with pte_page(*pte), which
+is the backing page. That page is not reserved, so the teardown goes
+through __free_pages(), not free_reserved_pages().
+
+Right?
+
+If so:
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
 > 
-> diff --git a/tools/include/uapi/linux/elf-em.h b/tools/include/uapi/linux/elf-em.h
-> new file mode 100644
-> index 000000000000..ef38c2bc5ab7
-> --- /dev/null
-> +++ b/tools/include/uapi/linux/elf-em.h
-> @@ -0,0 +1,71 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +#ifndef _LINUX_ELF_EM_H
-> +#define _LINUX_ELF_EM_H
-> +
-> +/* These constants define the various ELF target machines */
-> +#define EM_NONE		0
-> +#define EM_M32		1
-> +#define EM_SPARC	2
-> +#define EM_386		3
-> +#define EM_68K		4
-> +#define EM_88K		5
-> +#define EM_486		6	/* Perhaps disused */
-> +#define EM_860		7
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 831c231a4a18..e7e751c48dd2 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1218,39 +1218,6 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+>   	return 0;
+>   }
+>   
+> -static pte_t * __meminit radix__vmemmap_populate_address(unsigned long addr, int node,
+> -							 struct vmem_altmap *altmap,
+> -							 struct page *reuse)
+> -{
+> -	pgd_t *pgd;
+> -	p4d_t *p4d;
+> -	pud_t *pud;
+> -	pmd_t *pmd;
+> -	pte_t *pte;
+> -
+> -	pgd = pgd_offset_k(addr);
+> -	p4d = p4d_offset(pgd, addr);
+> -	pud = vmemmap_pud_alloc(p4d, node, addr);
+> -	if (!pud)
+> -		return NULL;
+> -	pmd = vmemmap_pmd_alloc(pud, node, addr);
+> -	if (!pmd)
+> -		return NULL;
+> -	if (pmd_leaf(*pmd))
+> -		/*
+> -		 * The second page is mapped as a hugepage due to a nearby request.
+> -		 * Force our mapping to page size without deduplication
+> -		 */
+> -		return NULL;
+> -	pte = vmemmap_pte_alloc(pmd, node, addr);
+> -	if (!pte)
+> -		return NULL;
+> -	radix__vmemmap_pte_populate(pmd, addr, node, NULL, NULL);
+> -	vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
+> -
+> -	return pte;
+> -}
+> -
+>   int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   					      unsigned long start,
+>   					      unsigned long end, int node,
+> @@ -1297,7 +1264,7 @@ int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   		if (!pte_none(*pte)) {
+>   			/*
+>   			 * This could be because we already have a compound
+> -			 * page whose VMEMMAP_RESERVE_NR pages were mapped and
+> +			 * page whose retained vmemmap page was mapped and
+>   			 * this request fall in those pages.
+>   			 */
+>   			next = addr + PAGE_SIZE;
+> @@ -1318,16 +1285,7 @@ int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   					return -ENOMEM;
+>   				vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
+>   
+> -				/*
+> -				 * Populate the tail pages vmemmap page
+> -				 * It can fall in different pmd, hence
+> -				 * vmemmap_populate_address()
+> -				 */
+> -				pte = radix__vmemmap_populate_address(addr + PAGE_SIZE, node, NULL, NULL);
+> -				if (!pte)
+> -					return -ENOMEM;
+> -
+> -				next = addr + 2 * PAGE_SIZE;
+> +				next = addr + PAGE_SIZE;
+>   				continue;
+>   			}
+>   
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index a2ebe87e7654..969594074fd2 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5167,7 +5167,6 @@ static inline void vmem_altmap_free(struct vmem_altmap *altmap,
+>   }
+>   #endif
+>   
+> -#define VMEMMAP_RESERVE_NR	2
+>   #ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+>   static inline bool __vmemmap_can_optimize(struct vmem_altmap *altmap,
+>   					  struct dev_pagemap *pgmap)
+> @@ -5187,7 +5186,7 @@ static inline bool __vmemmap_can_optimize(struct vmem_altmap *altmap,
+>   	 * For vmemmap optimization with DAX we need minimum 2 vmemmap
+>   	 * pages. See layout diagram in Documentation/mm/vmemmap_dedup.rst
+>   	 */
+> -	return !altmap && (nr_vmemmap_pages > VMEMMAP_RESERVE_NR);
+> +	return !altmap && (nr_vmemmap_pages > VMEMMAP_OPTIMIZATION_PAGES);
+>   }
+>   /*
+>    * If we don't have an architecture override, use the generic rule
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 7a2e58d631c2..629420a83891 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1056,7 +1056,7 @@ static inline unsigned long compound_nr_pages(unsigned long pfn,
+>   	if (!section_vmemmap_optimizable(ms))
+>   		return pgmap_vmemmap_nr(pgmap);
+>   
+> -	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
+> +	return VMEMMAP_OPTIMIZATION_PAGES * (PAGE_SIZE / sizeof(struct page));
+>   }
+>   
+>   static void __ref memmap_init_compound(struct page *head,
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 0201877a7f80..e655d9d1348f 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -136,7 +136,6 @@ int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages
+>   {
+>   	const struct mem_section *ms = __pfn_to_section(pfn);
+>   	const int order = section_order(ms);
+> -	const int vmemmap_pages = pgmap ? VMEMMAP_RESERVE_NR : VMEMMAP_OPTIMIZATION_PAGES;
+>   	const unsigned long pages_per_compound = 1UL << order;
+>   
+>   	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
+> @@ -147,13 +146,13 @@ int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages
+>   
+>   	if (order < PFN_SECTION_SHIFT) {
+>   		VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
+> -		return vmemmap_pages * nr_pages / pages_per_compound;
+> +		return VMEMMAP_OPTIMIZATION_PAGES * nr_pages / pages_per_compound;
+>   	}
+>   
+>   	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+>   
+>   	if (IS_ALIGNED(pfn, pages_per_compound))
+> -		return vmemmap_pages;
+> +		return VMEMMAP_OPTIMIZATION_PAGES;
+>   
+>   	return 0;
+>   }
+> @@ -521,17 +520,11 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   		if (!pte)
+>   			return -ENOMEM;
+>   
+> -		/* Populate the tail pages vmemmap page */
+> -		next = addr + PAGE_SIZE;
+> -		pte = vmemmap_populate_address(next, node, NULL, -1, flags);
+> -		if (!pte)
+> -			return -ENOMEM;
+> -
+>   		/*
+>   		 * Reuse the shared page for the rest of tail pages
+>   		 * See layout diagram in Documentation/mm/vmemmap_dedup.rst
+>   		 */
+> -		next += PAGE_SIZE;
+> +		next = addr + PAGE_SIZE;
+>   		rc = vmemmap_populate_range(next, last, node, NULL,
+>   					    page_to_pfn(page), flags);
+>   		if (rc)
 
-Add a comment that it is /* Intel 80860 */ to avoid confusion with 
-powerpc 860
-
-> +#define EM_MIPS		8	/* MIPS R3000 (officially, big-endian only) */
-> +				/* Next two are historical and binaries and
-> +				   modules of these types will be rejected by
-> +				   Linux.  */
-> +#define EM_MIPS_RS3_LE	10	/* MIPS R3000 little-endian */
-> +#define EM_MIPS_RS4_BE	10	/* MIPS R4000 big-endian */
-> +
 
