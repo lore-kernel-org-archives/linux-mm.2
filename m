@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6884C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D978C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C6C66B0093; Tue,  8 Sep 2026 05:55:42 -0400 (EDT)
+	id B17586B0098; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1512D6B0095; Tue,  8 Sep 2026 05:55:42 -0400 (EDT)
+	id AA1016B009D; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F716B0096; Tue,  8 Sep 2026 05:55:41 -0400 (EDT)
+	id 9977B6B0098; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D33CC6B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:55:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53F80C049E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:55:41 +0000 (UTC)
-X-FDA: 85190138082.13.0025FC3
-Received: from out-zbxj-a76.jellyfish.systems (out-zbxj-a76.jellyfish.systems [198.54.127.76])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7A556180005
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:55:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=nIGz0OfO;
-	spf=pass (imf24.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.76 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788861339;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hWGFkYcxEIlLaqPllDwjUUW2jFww0HewQT0w18/ydMI=;
-	b=656AlpwIEDABQ9T4AsDJ2AzJewTbOm+iU7fQcNVEGE2efYtnzzd7eSwcSJdcPPIBcCxsvw
-	OEXJPp6kMCjeOqMExvpyHsqLoqvQMBHvpTnKYYGdqusRaB7MyGo+cEoZOse08Z8O0ha63B
-	SSF5B5DwY3f8T7IXo6ZIOWgp6R6GV0Q=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=nIGz0OfO;
-	spf=pass (imf24.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.76 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 771E06B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E77D6A04E5
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:55:59 +0000 (UTC)
+X-FDA: 85190138838.24.4D60F4F
+Received: from out-utut-a194.jellyfish.systems (out-utut-a194.jellyfish.systems [198.177.127.194])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 286B21C0002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:55:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=ArswRCrQ;
+	spf=pass (imf21.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.194 as permitted sender) smtp.mailfrom=hi@tychen.cc;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788861339;
-	b=IZntPNCDwA6UK2D4Mr5eXtr271VT2+SXwRw9mSAuFitA8SDMprw4UtS+Gi8kLUWckds260
-	6Y41PQWD9NUfvKk/KA9vbbt5ocxeHxt/WJ2iFwuF+rcN3KuelmeV8VILWz/LF+9AmyTQVx
-	zYXAtyhAILDdI3WE6xuEWK10Mzquz9M=
+	t=1788861358;
+	b=6uP+MXfc6ApVnofYNRttwyEz/ExngWftGt10yO+B5ydfg3SMYLIvVCCWSxzjPioMEO2hzB
+	ygtF5c5r5qdBbZkRQoykZyQC2TgHlruAhgi9FuNEE7yEnrKyKMsjdE495xyRgR5VK0GzGc
+	6SZBJazrdaWF76ODDgBHUyKJBuMjtcs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=ArswRCrQ;
+	spf=pass (imf21.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.194 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788861358;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QWwCCBEOgN/d9xYRLy5K04OOq5DsrGxdd2URY0hSlZU=;
+	b=cm5/ICtuwqBIXC10byHC9sxqNtdPnChb7WQ8SU8A6V+flDUdZX+iGfv5U1b+6tpYLyUvxy
+	JiIOGvOjtwOxNc6DWKJLfBbP1Vy7vV4LJ20do/HixXiZe6lRQDmfuig+36ZjqmV9DPS7Li
+	VrKcepOu8wUGTjOHiKWf7fCkfltzaLo=
 Received: from fedora (unknown [69.5.53.41])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hfK7P1Plwz2xLJ;
-	Tue, 08 Sep 2026 09:55:28 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hfK7k1b4bz2xN0;
+	Tue, 08 Sep 2026 09:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788861334;
-	bh=hWGFkYcxEIlLaqPllDwjUUW2jFww0HewQT0w18/ydMI=;
+	s=spacemail; t=1788861349;
+	bh=QWwCCBEOgN/d9xYRLy5K04OOq5DsrGxdd2URY0hSlZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIGz0OfOV3SNCEMiAGIXJXLmcg+yjDoGGUT4qvi1zY6IHV3T1pkIq0a8iVsZbVHqj
-	 wvzXgql0cZ6A+YKEZvxjCtJDXs1JVsfavFJ4rlTUte2YWJyGX3huaCyxuyLxTYKqKG
-	 7UDQgw5fvDTn52U2oQeGOsKwnYkf2n8mj3DOa0le612/jPYh2FuaO9FF6FXqycziXw
-	 a1v+HOvoDPemb1Pkjv5ZIR7LiWBCb+bDYsO0gWIczfkV38e3c7vrBsQBZmdmUH3XzH
-	 l+I/YTIPss3cEEI8e5Xkopbthy0C1ky1uhtGQ1SvNGDsePb5uOHUSYJfBhoeULIhTl
-	 PNSEe1dMf9LZw==
+	b=ArswRCrQYCbrhKI78k1+v4toddTLSUWrd+VepF7xzjNk7Y/rnuIoHpVBKZ5cvf8U7
+	 XVuLOAGvqGr4pKfb4BJGDKOjM6NPeQ2EjZnx/WTgosqS6Czhk9W0EMAXRNbPodj20E
+	 11CEoNAxo5gihgoGdAtydq7fdY6VKnWtj4bQdc99rIvi2JsbPIh99Kq5S8BLFioIGB
+	 tC0pfG52+ZYZNqyWzhjbZ+HlhqLh9r+d62u/jW0SP6XWDzkPHLyG3gZsThV7tMcc0Q
+	 pV+5c8HgmL+uK79/mNw8m4X30UTGtqqGyomU5IDiFDedZcqd9cXQ4fxa9CTNydZ9gI
+	 wp9P6pdAWUSUg==
 From: Tianyi Chen <hi@tychen.cc>
-To: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: shuah@kernel.org,
 	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	jsavitz@redhat.com,
 	hi@tychen.cc
-Subject: Re: [PATCH] tools/testing/vma: cover hole filling through __mmap_region()
-Date: Tue,  8 Sep 2026 17:55:16 +0800
-Message-ID: <178886112560.138404.17928228712742724255.vma-review-reply@tychen.cc>
+Subject: [PATCH v2 0/2] selftests/mm: Validate selections and scope memfd_secret setup
+Date: Tue,  8 Sep 2026 17:55:31 +0800
+Message-ID: <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <ap5pmX-RddQ-c90O@gremlin>
-References: <20260906144100.849288-1-hi@tychen.cc> <ap5pmX-RddQ-c90O@gremlin>
+In-Reply-To: <20260906135444.749144-1-hi@tychen.cc>
+References: <20260906135444.749144-1-hi@tychen.cc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
-X-Stat-Signature: yjk45b4gca3ihxof9r78w7h3gy1j9iob
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7A556180005
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 286B21C0002
+X-Stat-Signature: 69pfw54sxkopzkikx59rbnfditfwc85j
 X-Rspam-User: 
-X-HE-Tag: 1788861339-406358
-X-HE-Meta: U2FsdGVkX192NlBwrdZEqP7aOujZeVKgvIK2teWWUjUzItMLid1vq2u65CHdRUa3YJucN9w3L9FKJrW0PNx4pSJ8StDvmXvVVxSyEx/fMSrLnlla7MYyzSpIcoynwztq+bp8mE2iHZPWD1KeSRk3hCUIevZr3ZNYCI2GKvqDgJ+bagahsZcDRnO5DTfG+oYFpaz+FjZDGTo+IHwrujWJQqcZ/ZifUSN/ygBZWpWmZWQAfNxEyXrduHsqQ8HzMsAdSEgHrFIIp2xDOPO2TDY8hY9usGdSjJD39K24AwyKdlwUd+FpwikHH+jFZ/psrPhnODI0XjyQ6WICVO63SLOQ2NbmA/CMvwyn1/6s7eg4FA5rg5PIKgV6yp5Cm9Hom1gAmyeDgoxW4IQBubVPiASNKzTS0wyFKZXtaJVyUFWqS71r7TYZqNSw/AeeXE1W1p04lMu3oWpvfMSn+r/CeWsFDchH3TKIYcBCzgKqFrrfTZsXX7Z8cD3HinS/6tZwAH/L83tzs5D9iEjpzUpBrfsdRdCPtcX1kfvkRnBRyRuwBtJM43KDQfsF8FKDQWBf5uyCkXEHTRRUNgFFEXac63v7oJiMfg5ZBl8esIv2oFAwBk47/lyc28lgbU0WasUesGYWx6oM9hRNiPep/prjdNpNK7E2qKjAR5ooTXGUzs8SQ3kCMJIu6PoCWJGvygzobceXXWR2JbCUBHsVVJOZWiY8BHajUPY9x5uPhdUFSH8JQnGamMqs8G+1QIoE15CdWUk2x6f9xCpL1SUAiCuLvRsRZL25zOicpmkx+/ad/8xurue6zBI4qgyrtnVgkPU9yxA86syGQKPIINk59bf5ZPV0/FU+Jkg0Hm4gvVcrm1PiqsQ7llcE0KFfDqo0AK1/eTLcW4k+xv25x4hnUFay4t/ZMgn2KK/qqfBunVWvWcm3r9YbFXI0lslS8TOwTxlMIUt8OayXXJUm0PPSbQ97QlL
- uhpp4cu+
- 8PanqYC55x+8zxWkjG9gr/a6Lo4XidY45wN+6pUMCRNKmxu/kXipSX6EFwq9vVuCFoM202vja8/BpjIj6+Svtn6m0aiTxNYHMVqZ4KE7JyUl5Rh0OD0/I9hmlN/ybhjiPk2DywLPuI6cU/ie60uJtN+ZaGSXq8kDpgikWoU+6RYTG6ETWb2Q9txmzWWucysh/alffdo0Ts/LUeXndP698zSM4hGPAZv9iiM4rja+NSZsdUYlcOkVokw3TQCriPvaD5SgL87ltDPeJH+4TzoBo1UuVvaxpUk7aKPEBBypjs1epJedAAEAe+wLWtqCLsUkQwLBfKcjIzLVduZzxl3Kg06XEQKAEjlNkl/Zt80Fr2KkMmebou1Wejh+L7jCqI90Er25cmU9P7fMQ0sOSjmPB4oHQUkVN2ElH0M7SdcJZ3SDajygYHA32n9fk/jhnIRs9E1rA
+X-HE-Tag: 1788861357-752996
+X-HE-Meta: U2FsdGVkX18Ll7Ja+m30Q5ZPyR0q0Uz4WPfJpgHcdIolqoXiKdcqy83O8is/no7btOkftTvMacgUokr1w1LqmCvJrrZDOYQIqXZq2Kug43ZVivb2sxliRYPA0t+4PA0VW45QVh1/4q1J6T3yVIPjSrevCm3jT6ZUM3onooFZmfsNV8kkNhhKdOyrWCIDqvF0nY+j3rQ7Ql8P0iFugkXBlJDr9c7nuRR/3DjjWV6ZcNwwi2txF7dxl233EHHwmlxTIn1+YZYMfQiUejJoJyw+z9i2DcQRWKLYJfDxNZ3kIJxEpMydLOwal3xd7wJq3/bnjoB7CK1lqcSs+5zyO74+kYfVbsb4XaAxF8nct8xvD/p55Xa3hZSbn8C4lIPTYHVxL4I0HfXnNXCLUV+ed8xWs9yC4GLOKjSQd1hsNAMWLa65Wk8Bhq1A0fylsxhiIvvqX2ET3/QSk8C0Pny2Imfkgbd1SVy2xUMKjjVQTBQ5gKLg67wciQWYJw/cD9PEZI7nSB4/GRN1yAZyt+3i4TDcTqkzsQPHjFw5f8cKjvc66bnoXADOuGZSldcL1e/UYgN113qda1L9x23hWC+XZwYkoMnQC16SJlDM8j9HXWj0a45ZeGuMPkNCiy3cLCK5z+NSlqW3CUpM9PA6jVrafeROd2yvo8z6bjb4b+S1BFR0jkO2cGXNtedvCLpx4W+mPMcr9PwB0REBaAWKGsDnvWhn51gyJgvCHLFFIrtVICyqnyW9qsTKOLeluWFQjxcrLKUPg7r4fIwgvgwZv/6H/uAo/X+N+j7s++huVqvm+WUo3qLjR5GdtRskpNIdQf8lv8ke8CgZkf/V3bZ5P8uCJIHqLrwW9EkwjWG4jhirdY3XoAqrUkGF1JrtjHdl2CLcEWtU5ttKtaV6LndkdfeLPXn4LHc6WDMtvJKarKlnEQDOkiXYsiQbyzJ+CBSioFndKNSKlnBZYcoB2ruApj/CxMn
+ zmvnmKSB
+ NM6HvGSyVAbhSBMYjpPkMglZO+zrrmnHE0DtU8SKBKpWoXcdP4mbLTr5DFCCAMYegC2P0ndG+R+SZ5O1tKaqHl+IjgwOxKLg1ia9Y74kyOWC6CospE167narnHRRwQXSfYr+6X3TwCb9obyMk478cmiydNaD5tQ90Iq8aljxEYo4X36w10C793C9S0RlRzs9qAM8XycyEpYUPu8qQ6mqNSutR/e1S7LbJbmLy7X0UPGixDVmS2EuF/PAzoMlVNGQUJWOhLz1j6quCF8WNFz9pe7Y/ktc8njtpCOKfRUK0S6ZB1/+D82BsuNmnI7/QOxw1+GDs/6Qb3zBnEsAo3162OacjF//e4PBwg8xvV0orXFIQLX6Z4joVLRldIBr7y2d3aOB0LFiv5D9yhczBc2FpY+w4hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,15 +97,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the detailed review.
+run_vmtests.sh can reach test setup after an invalid category selection,
+and its memfd_secret preparation can change ptrace_scope even when that
+category was not selected. These two patches address David's follow-up
+questions on the earlier getopts fix.
 
-I have rebased onto mm-unstable and incorporated the requested naming,
-comments, const qualifiers and simplifications, while retaining the new
-/dev/zero test. All 29 VMA tests pass with ASan and UBSan enabled.
+Patch 1 extends the getopts error handling to reject empty, whitespace-only
+and unknown category selections before setup. It uses the existing category
+list in usage() and normalizes separators, while preserving the default
+when -t is omitted and the existing environment-selection behavior.
 
-The revised v2 patch is here:
-https://lore.kernel.org/r/178886112560.138404.17741948638665342936.vma-v2@tychen.cc
+Patch 2 gates memfd_secret preparation on category selection and executable
+presence. It retains the existing behavior when memfd_secret is selected;
+it does not add configuration restoration or otherwise change that test.
 
-Thanks,
-Tianyi
+Changes in v2:
+- Rebase onto current mm-unstable.
+- Extend the original option-error patch with category validation.
+- Add a separate patch for the memfd_secret setup side effect.
+
+Focused validation:
+- Bash syntax and strict checkpatch passed. All 30 documented categories
+  match the categories used by the script.
+- Parser checks cover omitted/default selections, empty environment values,
+  explicit empty -t, invalid options/categories, whitespace-separated lists
+  and command-line overrides of environment selections.
+- Twelve invalid-input cases and help were run through the full script in
+  a KVM guest. Invalid inputs exited with status 1 before test setup.
+- The real mmap category's three programs and memfd_secret passed in an
+  x86-64 KVM guest running Linux 7.3.0-rc1, including multi-category and
+  environment-selected runs.
+- The guest kernel lacks Yama. A disposable file bind-mounted at the actual
+  ptrace_scope path verified the shell's write condition: the old script
+  writes for an unrelated selection, the new script does not, and selected
+  executable memfd_secret retains the write. This checks script gating,
+  not Yama policy enforcement. Missing-executable behavior was also checked.
+
+This was focused validation, not a run of the complete MM selftest suite.
+
+Previous submission:
+https://lore.kernel.org/r/20260906135444.749144-1-hi@tychen.cc
+Review:
+https://lore.kernel.org/r/519ef70a-679c-455f-ba5f-3841730873a4@kernel.org
+
+
+Tianyi Chen (2):
+  selftests/mm: Reject invalid test selections before running tests
+  selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
+
+ tools/testing/selftests/mm/run_vmtests.sh | 29 +++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+-- 
+2.55.0
+
 
