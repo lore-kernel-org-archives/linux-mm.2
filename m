@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6576C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68533C79FAA
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:34:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8345B6B0096; Tue,  8 Sep 2026 02:33:53 -0400 (EDT)
+	id 85B1E6B009D; Tue,  8 Sep 2026 02:33:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BDFD6B0099; Tue,  8 Sep 2026 02:33:53 -0400 (EDT)
+	id 833516B009F; Tue,  8 Sep 2026 02:33:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AC186B009B; Tue,  8 Sep 2026 02:33:53 -0400 (EDT)
+	id 721E26B009E; Tue,  8 Sep 2026 02:33:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 41E656B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:33:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2D881203B9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:52 +0000 (UTC)
-X-FDA: 85189629504.23.F801CC2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 441396B0099
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:33:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D41EE1A03B2
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:54 +0000 (UTC)
+X-FDA: 85189629588.02.89C6627
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2FF0B40002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=CwOxcB8A;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=UvUYKzc7;
-	spf=pass (imf11.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1F96640002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=BBfchTQ3;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=epagOxWH;
+	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788849231;
-	b=CUsOiPe7k/Y52AGYfuKpnURsY5mbbUTGdsampCo5Y1bnhpn8KOM0jj/OaXdRWX+JYuws9K
-	b/Qd3IWQuuH2Rc6Hh3oSXoUoZIOS6gQH1zaFAuJpX/QwqJAYehjrPIUQ2NKt+arBJ782aW
-	cwkzMAbCKDu8LRrkxzGvD3L8uaF0DKo=
+	t=1788849233;
+	b=l0cT5lJWoFrubvnIVO6vPJAoXFr90Wn9BUVuHCovvvN07y95pI2h1lqtpW0yzgks2JMGhq
+	1BL5mBsD5EPacBfyHPGzIrr87fqFG3UFak0L1o+CbNTe0Sffge4fme73Cp4Gxo3xIjGubK
+	NEulZnlTjiuNaa6ZdyxXwQejb0qs+2k=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=BBfchTQ3;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=epagOxWH;
+	spf=pass (imf12.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788849231;
+	s=arc-20220608; t=1788849233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fTryvsBgAeqTDNlupTdhz6+byj4x0uN8hxYjIi8mWPU=;
-	b=EHF6Rw6HUo1DHVJ0dYMewneqdBF9x60kxtp2ThvajwLsGUOh+U1jHVlznNBUbunH9lT1wZ
-	lVNDs/gALd/6qQB7/eAYTQcyZxDitNfa3RHF+R9Vp3F/jGhGCKo+0zzbJrVAL+MDsgE87L
-	5S8IdOGUUj5DVL996dRozfkU1BPmWHI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=CwOxcB8A;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=UvUYKzc7;
-	spf=pass (imf11.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	bh=FawW0xiyyB3XDpeEil2328xu9JZeGaaUH29QSwtR0fg=;
+	b=2T95Q+HLj9MpTHqkj4PdgWXrhqg80kBEYJKe3TBHRaRttiYShcUrHJEwWRZAXWVm9SARHQ
+	ft19oZ8Y7iKEGPSp0Y18fQNOZZRu86zt/CFCiS4HQPo7cgk97CmpfO9vTsLs4t0IMU/ZVF
+	f2j/MdIFzN6abcpalFCqJ9wVwImaU0M=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788849229;
+	s=2020; t=1788849231;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fTryvsBgAeqTDNlupTdhz6+byj4x0uN8hxYjIi8mWPU=;
-	b=CwOxcB8AhS+rAzoxJxOQZHdTCbx79N6KAe69evSjNQbl8+rQOeBnH057j6GmLbV1DALhq8
-	17U86cF62BuTdyueeDeto2D3eKopssoZOXhfcShRfEm5vXV6EqTT598jVyGbc2eORkyLVh
-	OrwoiGkQRnDZ5E3ZEV6tw1/gABJPNjg4OfwRNlUx3ukssHhmiUBD9qEjMNgBfiYtN8PegH
-	fJT8dIULNkNCSoAbP1VkL7AglDnc0gE8QsTSkJtq+4VoaJqGXcwtWw3SUrOnTednE0pAqq
-	eJlyWNdWyLf6mcTMJcSduvMoo3qm72MxPilwuvS8hVqXRSHO5+8hOKLulZ6+Tg==
+	bh=FawW0xiyyB3XDpeEil2328xu9JZeGaaUH29QSwtR0fg=;
+	b=BBfchTQ31DifkjFqwb5y4n5BvOGW48DOyhiHYRpdPzrEQcn+IitYmXoSVnLWzvWa6lwHuy
+	sZD+8Y+YV+U5Q+RLLiaQuk6+JRBJF9vi1Y1DGh92/GH1x2M0Sy+puIE8ZRZhqgBqF9ZxcX
+	OVMEGjMH4cuC2Ih8qYPFGclgRGEjWPRnkw/+9BlYAZfTwu3dB+NLPwZ6JmOUFvLGShphqo
+	lpE6byOStxgm5iAG6jOHo0tEAOdE8cTToyKI6d+gadpfoJgZfZRrWhapeXH8p8WEX3WKnq
+	ZIRI/ePB8OFwnrq7FOJP8oo233EMrmmz/MJKwghMXEJPb8wamnhU9yuJgEsxpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788849229;
+	s=2020e; t=1788849231;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fTryvsBgAeqTDNlupTdhz6+byj4x0uN8hxYjIi8mWPU=;
-	b=UvUYKzc74oAN8gP1sKHkjA19TUNUTqCMuc0TKrdtCmkCKri8UrtRvdSUSmYYYqwSID6op/
-	x/iNcRKTPUHvcBDw==
-Date: Tue, 08 Sep 2026 08:33:38 +0200
-Subject: [PATCH v5 04/24] arm64: elf: Move relocation constants to UAPI
+	bh=FawW0xiyyB3XDpeEil2328xu9JZeGaaUH29QSwtR0fg=;
+	b=epagOxWHbraL4pZF2ABSEKqkk81eezIl8Gi009ltXa6+5yB+cGQ8VNDm3CyFBBc9mW3J0y
+	3loMMVZFFoRrE7AA==
+Date: Tue, 08 Sep 2026 08:33:40 +0200
+Subject: [PATCH v5 06/24] riscv: elf: Move relocation constants to UAPI
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260908-vdso-absolute-reloc-v5-4-3a93791af1cf@linutronix.de>
+Message-Id: <20260908-vdso-absolute-reloc-v5-6-3a93791af1cf@linutronix.de>
 References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
 In-Reply-To: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -120,21 +120,21 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=4332;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=4962;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=1i3Et1Jffcz0JOiDRayZilcvn94+w8pBUDpHzT1KG5A=;
- b=gk9oLI1obuvHKDYtmwIh7hRv/wNktDBEtLCnmMT6kMIL5ciJHyu+C7IEaeVwMOyG2DE4YvlNZ
- Q87Mb3y4KJ2C8RfQ2jmI4dzP+9h+ated8T54tLF6WOAYZo1VDmVkg+O
+ bh=A2KwwyE44rpRvMfg8HmJMKqJMXpNGArDCbHCP2lPOtc=;
+ b=BIFQBlA6uOHvotUFp7WcFcjkRWr4zWTBvAzopoDSHqbuVQn/0iY7yQ9cklHXDfQCbhw1lLP4v
+ +pw2vSBQ8BmAxY2zgjj9x+KL+h6I3EZtcmF2oBqsXSxkzdljxYY/Ns5
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1F96640002
+X-Stat-Signature: bko3bimadhz76psct7ihrnsdmw8m7id9
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2FF0B40002
-X-Stat-Signature: 6pd81w9n6bymxefm79ory3d3rtso6oeb
-X-HE-Tag: 1788849231-969935
-X-HE-Meta: U2FsdGVkX1/NA77l1ff484kxE3Wm16xWKFtC2sz99vGugTmE0Lut6pqM2apVjRJHVyO9d80G/fEydUwMZq5aqJKAY0oB2Rk7Dw3xflc8R3MTJ2rtj0K+8UZ2OAmf6LquABZftBGTk59tVsy2nnLXaXFM/M90bEZwjToRsJCS4AUJKCUVSxrvfxWZsoW46d6oicHCdzz77M5xkVEQpltOXEdajurjzeOYXCkz1hCqElVUaQsigeUm/Vn4QxfnYcCKgBVhGCoZPh3q1HtGtn7sed6ERovi3cQkK1e4vKojgnQnzosubkXPMW6n0q7My6uCIDUHzV6U63U9VYarbK6YF0PBSYnB8+eCYlZZ/7yIw40WFtkiGENF7uAQvZ/GSWcaDVkP9rMeqWdbHOasmKKxp1XVnqy6ynpsTI/yOqRdoGh9mNlCTy+rW84lM9/UunrBuA40zFQPX8tINcgIR1yPwhq1nsG/fHtNVXflDhe8OSi/ErrELnejWQQnIroVCmLkXbEo1J1dO7QsKmzB23FC/8KnuLxddc27y/yOKFi07amr+PRQVhALdvGeZzjVCI5A29h0CSBbJZdnpPCsTLlE1+BWAKiks6pI6JnOEGw0lOnSMLEChKKKCW2zVZPo4KYD3GEQJhEhFbbx0O7IaW7PEWv78cfFovUSul1QNS7bIRCPUsISCW+7nyVLiedGYdI3xYBJozXEtuc1m+2zrLmojHH8BF/ZhmpTG9izAmKjGOrNlrPF4EiuKwuTc2qHFk/P1qVMrEttyWARh1E3flmY1GLAXGCuH6atQEpp0ATm1Xrjqn7hSrd/+gZYcRIWJeWyKLL8PcrYt3kMElZHoMx3IjebkukkhUAgY99OrrYb7Rxv3SSh7Z290tge8Tcnr0hVaMteCCjRruR/KzrBAUHgLk79iQ0gAElJsTzP/4fK+uUkJBIOavNe57qw+wyuYfcIcHJQdeuaM83IUziWgkW
- AQY79ytj
- YnB25X+WgunnmrVtUNVCVPnU0U8wdugrdkP9Vd/gkHPBV+xgxVXsZZk33uEcDsLq+w3NNxnESjCmRF4zKqfzlL5l8paeEYIdWvJOFLRpxRC3kgLmM4XZnOV0iz1gL/rGbqREg79F+jEvD3K6ZZ2zusHk+jExvbk8bpJ9UIrNbwTlnRb5qAdbkgZlDxW6hJxnTexNIfhTqwNtJJMFGAE3pFex0nvq41LfopUYk5PPatVpzCwzNEU5++3m18ldrckGgCA4Y0QKr3fBHddJGeijsClaAF6MVXNnhp2HiJt24AApkyCVB0htSd8zUBe9bTrd14JfDRV4dKCbgm8rECvJ381T+kZlg815ebKytuYlpWsfGhtMjXQY/THwEWOBApyQsImBWsNbAaHm643QyZfoOGNeuA2twdlzw0WQlaSiEwm8+NqmeCG2uotRLv3qCXXf2Ut4heC06lXjbwwr6jteF3rQt8WZZDM5lIcKI3nG/il767WgS0zVQ1CJ5KatjLa7F9CI/HAxjw1UtTcZjJ200ldeMmCoXFQT2j423oAclDhYzgno=
+X-HE-Tag: 1788849232-94215
+X-HE-Meta: U2FsdGVkX1/9xJfn+8nQrmmgWrj6rEG+s0jCzKOiXjBZqg0PXvlSlvivyC6EwBQIu6Eb01n8IYIP65b/MasvvGZYoB/pFpT8ixt5Ww8WkMe50xc1luuG+NkDNYgXFHsuMO/GUeoCPpux8e1GR8ArU0896wAXJOLwfdbaBpU0rKx7s7vBKuAxZsjGZyh1k9cTYp0SB2TRUG8jLlT3/1IK9uPXgzuiv2xDAYzRQU2Tj82n49ws9L+BdhOlhh/4W5e5YzztGR1AscWq7y5ANUMMTJGJU91ygiUZkRhnSx1VAGQxUhtBQucXTUJRdlf7XRX8SeWN23xrD745BLeCPBbaZRVGQOcnqV/inQzTUZacjPYGwDY8yel4jGzmThUCPeb+EgfiKV23VElHGmUwzW6rpTaYdUXGFLQ74sywpTeQxjJjNcrSFD07Qamm13+VkvtSFXLgp1C0kJf2dsb96O/ov5Y1TbQqTKno4UCvtCY/Tw/dc3jC7Micwz3zaXD/Z2GWHjqIRSe6vtsNHbezPhS/Q21zxnXSWn8NUdMaL4SEe8FSWIMuQFgbXKTvt246Jd95/XbgxfhpTo+vrdQacvEz+NhxL+9sriNRPrH525o1bbC7K1WZAm+940XIvjow6eWSQBTpBClO61tL6wNUwGNvd0chiiDcTklAAS7PeMjikXQjvG9pyWIeBaI2m15wQf4qzico38Y6l97HmV5beby8ke8EEmL0Tx9RJw0YJz78Yt/id4IeZj0V0HfXgAQIeNK6znMLtgfj8p766AEcy3BiiInsrJo6axfTvUTbcNPod/XVyUfqIjsSev9hj8Oem+Ap5hY7Tullq8kC3iOnJbsuUYXU6bBC1lfk98N1MWZA8Rxvw2V/BodzqLEMC8e5OQcvNnVCFKDQpW1YCxS7Ex1JqUl8ylaHXGf5elNzslGoMYkaO06VnTe0/s7Cr/a2zaGBeaKwTpMTwPpBUvVkc+e
+ O1tTabaE
+ PxpECbYBki/bebixK7p25WN8r0hFMQLgBmO1y4HWpMXdLGN8dIraV1x/PTkJx/RpMp6xgXZJEpLLuw/NTm2cGGr3XYCe+ytyUcr0daQNVHV8xZ9PmPGIONREyWOIG1uYxcI83V+KuUK71RBaLslL64B8smUr5PxRPc5siy5ekrM9INzUqmYEJfS79f68el1eSQbRNbw7AciehmxF2LKpDz/Mq+BBU86ghMGF8JZZiy5X2We9zXrBGeYHJpz3OSIlSdkzhkZYqEhFUdLPlFW2cuXxq5zc0qtFuK0xtwAK7tu3L1LOYVjrS8qrYLdPYlCH603Ph7qgLKY4vDeMMi1x64FHKiAjYeunPbObrgynQ04iYug9yOL2aBDCxsdPJQr44acDPeFG1ojhCFq33xxUkrLToLnOB6dzZJYd+lqsXSkSnwmVUfj4Pw+17erijeStiAMFKqknjKzTP7uNKmHFuPUEgAB6irtYpXw6o9CI2TBLLtBCqZicSHCIwb2yAmSR8NgtToxReerbBlSGiaafcEJX9P7d7sYxabFMiiYDrj/s9MHOnunVK4WDNTbxR9Aub+qG6LYxsVKvYFUraxWT0gL13lN+/Jd69Dpb/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,135 +148,160 @@ process ELF files during kernel cross-compilation.
 Move them from the kernel-private architecture-specific header to the UAPI.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 ---
- arch/arm64/include/asm/elf.h | 54 --------------------------------------------
- include/uapi/linux/elf-r.h   | 52 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+), 54 deletions(-)
+ arch/riscv/include/uapi/asm/elf.h | 66 ---------------------------------------
+ include/uapi/linux/elf-r.h        | 66 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 66 deletions(-)
 
-diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
-index cfdf4c5ac08b..43f3763807a2 100644
---- a/arch/arm64/include/asm/elf.h
-+++ b/arch/arm64/include/asm/elf.h
-@@ -13,60 +13,6 @@
- #include <asm/ptrace.h>
- #include <asm/user.h>
+diff --git a/arch/riscv/include/uapi/asm/elf.h b/arch/riscv/include/uapi/asm/elf.h
+index 11a71b8533d5..05cf74a4a535 100644
+--- a/arch/riscv/include/uapi/asm/elf.h
++++ b/arch/riscv/include/uapi/asm/elf.h
+@@ -32,70 +32,4 @@ typedef union __riscv_fp_state elf_fpregset_t;
+ #define ELF_RISCV_R_TYPE(r_info)	ELF32_R_TYPE(r_info)
+ #endif
  
 -/*
-- * AArch64 static relocation types.
+- * RISC-V relocation types
 - */
 -
--/* Miscellaneous. */
--#define R_AARCH64_NONE			256
+-/* Relocation types used by the dynamic linker */
+-#define R_RISCV_NONE		0
+-#define R_RISCV_32		1
+-#define R_RISCV_64		2
+-#define R_RISCV_RELATIVE	3
+-#define R_RISCV_COPY		4
+-#define R_RISCV_JUMP_SLOT	5
+-#define R_RISCV_TLS_DTPMOD32	6
+-#define R_RISCV_TLS_DTPMOD64	7
+-#define R_RISCV_TLS_DTPREL32	8
+-#define R_RISCV_TLS_DTPREL64	9
+-#define R_RISCV_TLS_TPREL32	10
+-#define R_RISCV_TLS_TPREL64	11
+-#define R_RISCV_IRELATIVE	58
 -
--/* Data. */
--#define R_AARCH64_ABS64			257
--#define R_AARCH64_ABS32			258
--#define R_AARCH64_ABS16			259
--#define R_AARCH64_PREL64		260
--#define R_AARCH64_PREL32		261
--#define R_AARCH64_PREL16		262
+-/* Relocation types not used by the dynamic linker */
+-#define R_RISCV_BRANCH		16
+-#define R_RISCV_JAL		17
+-#define R_RISCV_CALL		18
+-#define R_RISCV_CALL_PLT	19
+-#define R_RISCV_GOT_HI20	20
+-#define R_RISCV_TLS_GOT_HI20	21
+-#define R_RISCV_TLS_GD_HI20	22
+-#define R_RISCV_PCREL_HI20	23
+-#define R_RISCV_PCREL_LO12_I	24
+-#define R_RISCV_PCREL_LO12_S	25
+-#define R_RISCV_HI20		26
+-#define R_RISCV_LO12_I		27
+-#define R_RISCV_LO12_S		28
+-#define R_RISCV_TPREL_HI20	29
+-#define R_RISCV_TPREL_LO12_I	30
+-#define R_RISCV_TPREL_LO12_S	31
+-#define R_RISCV_TPREL_ADD	32
+-#define R_RISCV_ADD8		33
+-#define R_RISCV_ADD16		34
+-#define R_RISCV_ADD32		35
+-#define R_RISCV_ADD64		36
+-#define R_RISCV_SUB8		37
+-#define R_RISCV_SUB16		38
+-#define R_RISCV_SUB32		39
+-#define R_RISCV_SUB64		40
+-#define R_RISCV_GNU_VTINHERIT	41
+-#define R_RISCV_GNU_VTENTRY	42
+-#define R_RISCV_ALIGN		43
+-#define R_RISCV_RVC_BRANCH	44
+-#define R_RISCV_RVC_JUMP	45
+-#define R_RISCV_GPREL_I		47
+-#define R_RISCV_GPREL_S		48
+-#define R_RISCV_TPREL_I		49
+-#define R_RISCV_TPREL_S		50
+-#define R_RISCV_RELAX		51
+-#define R_RISCV_SUB6		52
+-#define R_RISCV_SET6		53
+-#define R_RISCV_SET8		54
+-#define R_RISCV_SET16		55
+-#define R_RISCV_SET32		56
+-#define R_RISCV_32_PCREL	57
+-#define R_RISCV_PLT32		59
+-#define R_RISCV_SET_ULEB128	60
+-#define R_RISCV_SUB_ULEB128	61
 -
--/* Instructions. */
--#define R_AARCH64_MOVW_UABS_G0		263
--#define R_AARCH64_MOVW_UABS_G0_NC	264
--#define R_AARCH64_MOVW_UABS_G1		265
--#define R_AARCH64_MOVW_UABS_G1_NC	266
--#define R_AARCH64_MOVW_UABS_G2		267
--#define R_AARCH64_MOVW_UABS_G2_NC	268
--#define R_AARCH64_MOVW_UABS_G3		269
 -
--#define R_AARCH64_MOVW_SABS_G0		270
--#define R_AARCH64_MOVW_SABS_G1		271
--#define R_AARCH64_MOVW_SABS_G2		272
--
--#define R_AARCH64_LD_PREL_LO19		273
--#define R_AARCH64_ADR_PREL_LO21		274
--#define R_AARCH64_ADR_PREL_PG_HI21	275
--#define R_AARCH64_ADR_PREL_PG_HI21_NC	276
--#define R_AARCH64_ADD_ABS_LO12_NC	277
--#define R_AARCH64_LDST8_ABS_LO12_NC	278
--
--#define R_AARCH64_TSTBR14		279
--#define R_AARCH64_CONDBR19		280
--#define R_AARCH64_JUMP26		282
--#define R_AARCH64_CALL26		283
--#define R_AARCH64_LDST16_ABS_LO12_NC	284
--#define R_AARCH64_LDST32_ABS_LO12_NC	285
--#define R_AARCH64_LDST64_ABS_LO12_NC	286
--#define R_AARCH64_LDST128_ABS_LO12_NC	299
--
--#define R_AARCH64_MOVW_PREL_G0		287
--#define R_AARCH64_MOVW_PREL_G0_NC	288
--#define R_AARCH64_MOVW_PREL_G1		289
--#define R_AARCH64_MOVW_PREL_G1_NC	290
--#define R_AARCH64_MOVW_PREL_G2		291
--#define R_AARCH64_MOVW_PREL_G2_NC	292
--#define R_AARCH64_MOVW_PREL_G3		293
--
--#define R_AARCH64_RELATIVE		1027
--
- /*
-  * These are used to set parameters in the core dumps.
-  */
+ #endif /* _UAPI_ASM_RISCV_ELF_H */
 diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-index 001884641e77..cf931fc05afa 100644
+index 0d0dfaa7c724..02e420c255df 100644
 --- a/include/uapi/linux/elf-r.h
 +++ b/include/uapi/linux/elf-r.h
-@@ -61,4 +61,56 @@
- #define R_ARM_THM_MOVW_PREL_NC	49
- #define R_ARM_THM_MOVT_PREL	50
+@@ -314,4 +314,70 @@
+ /* Keep this the last entry.  */
+ #define R_PPC64_NUM		253
  
-+/* AArch64 static relocation types */
 +
-+/* Miscellaneous. */
-+#define R_AARCH64_NONE			256
++/*
++ * RISC-V relocation types
++ */
 +
-+/* Data. */
-+#define R_AARCH64_ABS64			257
-+#define R_AARCH64_ABS32			258
-+#define R_AARCH64_ABS16			259
-+#define R_AARCH64_PREL64		260
-+#define R_AARCH64_PREL32		261
-+#define R_AARCH64_PREL16		262
++/* Relocation types used by the dynamic linker */
++#define R_RISCV_NONE		0
++#define R_RISCV_32		1
++#define R_RISCV_64		2
++#define R_RISCV_RELATIVE	3
++#define R_RISCV_COPY		4
++#define R_RISCV_JUMP_SLOT	5
++#define R_RISCV_TLS_DTPMOD32	6
++#define R_RISCV_TLS_DTPMOD64	7
++#define R_RISCV_TLS_DTPREL32	8
++#define R_RISCV_TLS_DTPREL64	9
++#define R_RISCV_TLS_TPREL32	10
++#define R_RISCV_TLS_TPREL64	11
++#define R_RISCV_IRELATIVE	58
 +
-+/* Instructions. */
-+#define R_AARCH64_MOVW_UABS_G0		263
-+#define R_AARCH64_MOVW_UABS_G0_NC	264
-+#define R_AARCH64_MOVW_UABS_G1		265
-+#define R_AARCH64_MOVW_UABS_G1_NC	266
-+#define R_AARCH64_MOVW_UABS_G2		267
-+#define R_AARCH64_MOVW_UABS_G2_NC	268
-+#define R_AARCH64_MOVW_UABS_G3		269
-+
-+#define R_AARCH64_MOVW_SABS_G0		270
-+#define R_AARCH64_MOVW_SABS_G1		271
-+#define R_AARCH64_MOVW_SABS_G2		272
-+
-+#define R_AARCH64_LD_PREL_LO19		273
-+#define R_AARCH64_ADR_PREL_LO21		274
-+#define R_AARCH64_ADR_PREL_PG_HI21	275
-+#define R_AARCH64_ADR_PREL_PG_HI21_NC	276
-+#define R_AARCH64_ADD_ABS_LO12_NC	277
-+#define R_AARCH64_LDST8_ABS_LO12_NC	278
-+
-+#define R_AARCH64_TSTBR14		279
-+#define R_AARCH64_CONDBR19		280
-+#define R_AARCH64_JUMP26		282
-+#define R_AARCH64_CALL26		283
-+#define R_AARCH64_LDST16_ABS_LO12_NC	284
-+#define R_AARCH64_LDST32_ABS_LO12_NC	285
-+#define R_AARCH64_LDST64_ABS_LO12_NC	286
-+#define R_AARCH64_LDST128_ABS_LO12_NC	299
-+
-+#define R_AARCH64_MOVW_PREL_G0		287
-+#define R_AARCH64_MOVW_PREL_G0_NC	288
-+#define R_AARCH64_MOVW_PREL_G1		289
-+#define R_AARCH64_MOVW_PREL_G1_NC	290
-+#define R_AARCH64_MOVW_PREL_G2		291
-+#define R_AARCH64_MOVW_PREL_G2_NC	292
-+#define R_AARCH64_MOVW_PREL_G3		293
-+
-+#define R_AARCH64_RELATIVE		1027
++/* Relocation types not used by the dynamic linker */
++#define R_RISCV_BRANCH		16
++#define R_RISCV_JAL		17
++#define R_RISCV_CALL		18
++#define R_RISCV_CALL_PLT	19
++#define R_RISCV_GOT_HI20	20
++#define R_RISCV_TLS_GOT_HI20	21
++#define R_RISCV_TLS_GD_HI20	22
++#define R_RISCV_PCREL_HI20	23
++#define R_RISCV_PCREL_LO12_I	24
++#define R_RISCV_PCREL_LO12_S	25
++#define R_RISCV_HI20		26
++#define R_RISCV_LO12_I		27
++#define R_RISCV_LO12_S		28
++#define R_RISCV_TPREL_HI20	29
++#define R_RISCV_TPREL_LO12_I	30
++#define R_RISCV_TPREL_LO12_S	31
++#define R_RISCV_TPREL_ADD	32
++#define R_RISCV_ADD8		33
++#define R_RISCV_ADD16		34
++#define R_RISCV_ADD32		35
++#define R_RISCV_ADD64		36
++#define R_RISCV_SUB8		37
++#define R_RISCV_SUB16		38
++#define R_RISCV_SUB32		39
++#define R_RISCV_SUB64		40
++#define R_RISCV_GNU_VTINHERIT	41
++#define R_RISCV_GNU_VTENTRY	42
++#define R_RISCV_ALIGN		43
++#define R_RISCV_RVC_BRANCH	44
++#define R_RISCV_RVC_JUMP	45
++#define R_RISCV_GPREL_I		47
++#define R_RISCV_GPREL_S		48
++#define R_RISCV_TPREL_I		49
++#define R_RISCV_TPREL_S		50
++#define R_RISCV_RELAX		51
++#define R_RISCV_SUB6		52
++#define R_RISCV_SET6		53
++#define R_RISCV_SET8		54
++#define R_RISCV_SET16		55
++#define R_RISCV_SET32		56
++#define R_RISCV_32_PCREL	57
++#define R_RISCV_PLT32		59
++#define R_RISCV_SET_ULEB128	60
++#define R_RISCV_SUB_ULEB128	61
 +
  #endif /* _UAPI_LINUX_ELF_R_H */
 
