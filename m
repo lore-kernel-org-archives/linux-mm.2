@@ -4,178 +4,202 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6BE3C79FAD
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 20:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B56C79FAD
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 20:23:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E89A96B0095; Tue,  8 Sep 2026 16:21:05 -0400 (EDT)
+	id C43FA6B0096; Tue,  8 Sep 2026 16:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61376B0096; Tue,  8 Sep 2026 16:21:05 -0400 (EDT)
+	id C1B246B0099; Tue,  8 Sep 2026 16:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D50A16B0099; Tue,  8 Sep 2026 16:21:05 -0400 (EDT)
+	id AE32E6B009B; Tue,  8 Sep 2026 16:23:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF7E6B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:21:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3A0E316077D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:21:05 +0000 (UTC)
-X-FDA: 85191714090.04.B267F2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 77C42C000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:21:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AEp1REBG;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788898863;
-	b=sWTtuIqZe02wGGOzyVg85qznexTpr0exOuUKWmK2OBMqzwPyD8wBZFMBMlaUN5qWTJsK/p
-	aDFvQ7Cj1dgWZQlszNi2C+2cAO85QEeOf+zG6bsS/LBJ9ItvcmgvK1NfyzjBtlIte4sI4K
-	KEQDkBCu6ZuDEcBLOftLwIuDr1n9xWY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AEp1REBG;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788898863;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D8556B0096
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 16:23:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27177C0233
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:23:02 +0000 (UTC)
+X-FDA: 85191719004.18.5AABA7D
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1F8864000C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:22:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oTfIEuw9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of jannh@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788898980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MOMisn73rdVVhY8+AjzvTNNmNUkAEb20IWBzE7CPZUU=;
-	b=53m1lUMfyjXV3Sgq/DdvqOQqe/xHtF+d4LbnROEw5gUBZhLln3qcIlxM2zbMMhqqXU9LYj
-	U6n4amIGPhTaoA2dgDSZrcOmsJcJO4sNqZUQn6QsUneMft6ICLQd+gGvZxedDsRyvZtIvF
-	BDOeXZ4vleoxccBePL7wsBgajCu3QW4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C581E6020A;
-	Tue,  8 Sep 2026 20:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F2A1F00A3D;
-	Tue,  8 Sep 2026 20:20:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788898862;
-	bh=MOMisn73rdVVhY8+AjzvTNNmNUkAEb20IWBzE7CPZUU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AEp1REBGH+pakt3xHUNX2JKqVONYzgzvgZGlCes8VpWTcWPNIU+TMTKT2sVwlEKVf
-	 3d3HkthAX1FMsxxuYzx8BEFXz0VIq1fV7vOp89w+HJFBkSkxQzPGw8pf6KjunCOEha
-	 aAStY4j8dulgMJGDKYfg6byPl0UaLo7QmScwkKnJQEb6SoGID7WBqLjmi9Q6nJiQDi
-	 mFJrZqwN9amg72vbTmq5g4P0vaGZ3NaK3J55pnKuUo/GxMyGPJDy7MEpcYr2/8hWSF
-	 tX/1SpYavP4hBrQt3jwlo8PTcuszTSW3joN1et5kS8WFYzcq8/vxvnduS3NkwS0fQ2
-	 k0/tNEa3pZ2VQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 08 Sep 2026 21:01:43 +0100
-Subject: [PATCH 39/39] mm/vma: introduce and use vma[_flags]_can_gup()
+	bh=TsLhOzf+D46xHpyx683mbvtqY0bc9njzNbabbHNEj0I=;
+	b=FSHo4AabtQUfciDYOyBxmfdtiNpJKkYh4KUxr59nY4CdOT+EXDYuN0Wp2QRTQn2UMEAJly
+	T54erZWccgkW1yMfXrIcPAZ3h+ur+4ysSrbm7CzvWieezzDBMj9yikdjceSPn9IjFGJ4i3
+	yMhfY8JdPbmEqc7ZLXOIURYzAz+Jr0A=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788898980;
+	b=cMRNkgp1V0yp/DYOZnFEdA0/RnXHfB/B1rzx1TFAy/eju8wuIM2f9O/vxOSUGgSu+Y+aFN
+	MDt4jEk+pl6B71KvjYCxJXXCfn77V4IF1rKsSW/B+nMoHvzuYFWY3RDHV3uA5JVDwyU1HE
+	6NNAgvC0xFKa6pHynNkMKPPGYChNofA=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oTfIEuw9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of jannh@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca07so1745ad.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 13:22:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788898979; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bjUY8tRAC2f+XD+st93D9MqpGawodczq9eCeDuba1MigL8cybGYNe27EUIRZWONgos
+         UEHBJYuLbsEPKHHhCQKZ1r4yYQlIq4Y1gRqedljgecGZWg1/68FSEr2vYJH2gFoQ8Kt+
+         A+I65atgGmtQsFOhHYirrU8+WNNvyNfs1TC1JBoB2/+qDcrDzSbpXw6BN7Sr4y8JTFcv
+         kGrgmeKMIYHDc/UNGiUYvJPTT878uSAjcP+IYjvQo6yuAWGc4VW1B4QtFHolFkS0K84h
+         dxtmhtWV+nbdfw97q/9DRW2pYsx70vI1Oy4dJ/QoDP+fweorMZlyLwkhn+CnHMvQ7sr8
+         ascA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TsLhOzf+D46xHpyx683mbvtqY0bc9njzNbabbHNEj0I=;
+        fh=dlUTYNUhfOgE0AzDGFCRcNxTiAogLPgVcHMxqVCwS7Q=;
+        b=cDtWi2jRgxOD1XPn8+0/lmwtAGvsFevdBa96erc4D133IigA0MEb2JI+hGc38ku03t
+         lj0SwOAv5KlMRYpketzHBPw/BXY3XVPozcw97WuGhe83b+3oHdrZ8fpm9pZSeR4kvHwZ
+         TSklQAfjIMKmTKcgHPzdxq3XOqaeEH0mW9ElofXpXcjUVKdVWTGbpiRUHLPGf+WXNvXo
+         dFmduCmgGl+WLtg+yE1oR1UC+08vrSOFKl6/UHuyTVJIOLG+L9AoLCiWodINpWMQwWch
+         Nts80Aum48KOSlp5zwACME0s5vI1Dk7ov9haQKxKIc9VQBQuMEzoTwJaRwmaVSgLCvsW
+         wncw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788898979; x=1789503779; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TsLhOzf+D46xHpyx683mbvtqY0bc9njzNbabbHNEj0I=;
+        b=oTfIEuw9rsJj7/nodOt/Idmv7trr9/n68oJNTP8A1ckxPGtmgytOqNaQ+BsDFwXxi+
+         WMm9FYEZOaK0hUNI5p+ATYBjepBTgIwmzu5TPmmkWqI9tDuoEhc+PlQ4QLWJfMF9LgdT
+         v5+MwtaJtHN9e06p6SGWMMse7Bn6eKdakJwu+RHYIYtnp4lmf/jsEYauKFI3+jctnKH6
+         uGZ75ZspruIbt1vMXdEP4QSvClFdEOiTf0KsFHz+46NwTljhKNxv9RDx2z4Iwym5eXUs
+         UcmWjU2As75GKqKBQcnB9KYKO8t1BLS0gxnRkSpKoqBu0u2ZKZ109jqink3oHblS80Yu
+         TeAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788898979; x=1789503779;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TsLhOzf+D46xHpyx683mbvtqY0bc9njzNbabbHNEj0I=;
+        b=I9l7en4JwFtWY5JOQHpyMTuatkAMaNAvgoVMJmM0C7KQ5UzQ4qd+AUI4NXg4inAl7K
+         69F7qxcl1FjI/+RX2N95V5zh3d4Hnwgw+7zLqlg+21VTb4G5zEo2P68JLp2MP/AOnB4y
+         IiDg6leYcE4kFWHpXmzP8x2LXSV603H7rT0GfYk0NZdClGRrNjmYH2PNQR8AUg5zzXXX
+         NkI0ZcX5zgW/PYDTNolytNBqkGfB6vZRd3FH/vkucK8o8Ly2NIr0Uut3kZ1QrGHTF5fo
+         s3vQXgzEWZ1F6JaYs5J3E5SzW++mUOHpwnmSv+r5P0rO+4fKhwpoPCxyXJug5/4H9XpB
+         vWaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzmvZjpLBMzGVQ8xgY7LaNVCNQLniEI1fpc/liW1n6ReUl3poewHDWXiszDIcvU9h7fiQgDsd8nnw==@kvack.org
+X-Gm-Message-State: AFuF++lYH9msxKttJV3jmOI7DfXyKdX0u6wcS/+QyTw9JH0MqC5NR3lV
+	CRdOVK2SkZZcffV+G0Y1BfMyz1BW9euyRHFtyNrUlcXa5mnMyThQRTiDZLDIJC8+hqwH6dxZoae
+	1MkE6eeTQKa6G/qPm7bnLfjfHNlqw73DqEJ0gOXPV
+X-Gm-Gg: AYBFou1+/UHd4eu19rrKIJnMHtE48hBXJne5JkcCK+mX2nrkB2AxuonJKNS6iY+A6gD
+	aAk/fRKVQzP8lfNSklqc3LTLjGDZyttX/ccyAe113W9ANdi0EIeVUPI9YtpCZ5L5xmN9h4P0GWs
+	r74ozBZvwDIRc+vumxykiwOt8BHjlzGsx+IN32brfM0i7mUZ0Kebmsp7mu3CJxvsi1agD9orBhg
+	vRkvOvCLDWRdTACDN4yH4WYkS33+RQ1l5m+nMrB2cRqVx2b49Tt3YNJWP4c6N/jfYEK/zmO7eUg
+	KIKAtlSxMYJjUz5XEmp74OvL4T4qkVBxF/gXjbBv/7iRv7pCc06o4dltiMM7Fl+wDE3+udTQBCV
+	m3xntDp3Bp7gBQ3uGIbvYl2HpoiITbgGm
+X-Received: by 2002:a17:903:fa4:b0:2d1:1d3d:97c3 with SMTP id
+ d9443c01a7336-2dbfeccdf9bmr1436185ad.13.1788898978067; Tue, 08 Sep 2026
+ 13:22:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-39-dacf19cce22b@kernel.org>
 References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
-In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
- Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
- Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
- Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
- Miklos Szeredi <miklos@szeredi.hu>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
- fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6584; i=ljs@kernel.org;
- h=from:subject:message-id; bh=kPVMWaJCwo1lhrTWXad/wqA8hcD1f6brZZ1kpIuur1c=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIWZG6vmyVSwLU385PLJLOsm8wrPI48vnjnyrRcyfpXr
- QZ5rW9tO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR5KWMDE9+ar3kPPvQ5u7F
- 6lzR+P7LZzmWGP6c93zVo4ye57oHDxox/BU80L30947zd/l2STndnSQ2b77G82v3+VnlD9utDXp
- utJEDAA==
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+ <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
+In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 8 Sep 2026 22:22:20 +0200
+X-Gm-Features: AcwNN1W16jAho4HwK_fzY15wUA-qa4DGJ92-DrEx1Ojg_VFhiHj2JxDdZTxOKSI
+Message-ID: <CAG48ez3Ucb8HyhjC1-fijFiYJsnWcTLYHvJjzMyU710mgegxnA@mail.gmail.com>
+Subject: Re: [PATCH 11/39] selinux: reject writable opens of policy file, drop
+ mmap shared/write check
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
+	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	fuse-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 77C42C000D
-X-Stat-Signature: xeia41t4qmy16azohwj1ha9q5axe8r3r
-X-HE-Tag: 1788898863-125503
-X-HE-Meta: U2FsdGVkX1/FbngLY1eXfmf2ZgT9zDvYRQjc5XTRMxM9LSVDVhGdj3pO/88tMlyrm6gIMS0xnXehBqoSoS0Qio/6fehY4Yt5b8C3zYYQZYbwgeNu2F6i3Yz2eEC1NYc22/ZOGJaEIwmE5jsyc6AANByCVHMtg18WhADivFJvBeB663GSAwyvbHcZHfVAU5bom1YWceUak/S8mrFjSYJQ7aqeU0L2EraO8Os5ecH2/HaCJ3uKwsQOeZ+W6RsGpHqVgDov95D84EOPXOAQCwsh/3/u3GOcEB3JVNyfwKHoqONxKTVd8bOLOo8w8OiwmErMZFdjwdI6mHqJ6asXYF4J3pcADNnPvjW1IsYG8b+AsNaYVuhKMpEYuD8cAfEhaO6mGQzlAsxYfTuhgjrKEIeD7kVuCwoIY1sUcdOiUmLywPrGfXiKLnBXyEOnhvfnaJrB5o/XyzKGm+n+z6icPMGaUZemFL1btSUBtMOSiKDrtBKPJIoOMRofgQcYqssszIvOsa35BCHob32UYIJErTrTIyGNzuH1raAJXXfM0CkboGGkdwzH8af/huUw4q11kl37+g8wdYdw42ir6T1bc1DRp/HVuP7em/HrR1fsINPgRkJKxWzi8nyDSfDp1yJisqsmj0Z5B/8AVmQ7QSU2rgTu6AivL05MzBjS/90qVj23Y4TIPJ+0NITAvK6NH55Dfw4RPjDO5Coo+MqzJ8/bp7Q3+fd9CgLorLTH0aAZLmFcSt6G67JsMZkPXMvpguw0gBC+tikDVZMA538wpt0yNxThD4+gm3+PIToVjxT9JMuVcbooNUzx0t18r+6w0RZ+Q2ch7fhNf6XA/J3V43bM3wC2hgw8Se5XE3wq6EOzJJRDuDWpyhfExsFwvQ/mZvUHwKoet8FjNWg0FjJpH34aAFua0XXOVNt+CXK1QscftTwoKx+3alFDbFPkkSrNEMorPYnonz1Ft4GgmpVUb3d6+Sm
- uJReWkCr
- a/3kXG3vd+Zo8o58N50Htp8a3duqGQOHqLmDp9IhC4dY0V2dx9ZBbfegrgTlXTF7+JTM6lANmWcHDWiuEmsP0JzPIiMr4is9wYeE07N1Xc9gOeFX2BHU0s0MZEggDFrj8JR6IUL6HAR4KMCi9TDDOjel/Pa40br7kH8KVGZvf+PCnPKKRtm+EnHjXbEzbeWNXrE1qpeWJPZeq2oAuYl4qOEet5Kxg382Flcv3Lc+yPuP10BrkicvRQNCNu4RxD7WQDT+NBUxOjkCcH5Zw4mXTovglkxNC6Mg551xULAsCPvS4ARSOehcGZvoMdoxSGlhiEYVKVqWO6S/EHW6JJyvLZ/ndxuCTIOgY55OBGMZBqbhmpeSr3sDaOPgrsi3hcBXAf7mPuy+U7b9BlJInoYa88WwzNEOi0W12GIdwzYyIfFqj4Qo33VYiPWVsJUfnxIo5b1/tm9XkmcB9rduuI6UR+w+r2sexcL8Izac9xGzY7nUNgZsRRwaBnqflkxbvY54GUzaRL5uG/QYAN8zmU8RteGv/LL+WNIc0ZQaS/j7qTGIh+G8JXTYR0iPxSWuw2XKaB9yVIAcEm+RG4JFujLu094VUEMv/+tZYSsyMNuszy91H1g84P4AfiGWVUe5x0RB01gyKXHVxheqkR/BTta1qKCvnvx1W3Q4FxMKl65UV1w7CqI0B+7Ypn03+tIN+Dsy2JLDuuaX2DcaErigEISU54gUGk8cpqx9nXB8/zLPYtKMmB/eG34cD6lN5XnQ4WvprB2w6Jdv+OpekYdGTOEC1IanqDKk8G5DAlTmtdAI3OstqQwixr1iTOEw/yrnc9qYrgryJLNTYPJwfMDsn1K/O4pPdezeDqoRW7Fgm+ZzPAxCl/57F5PfTJMtk2AXvqbu//RAlh+f6My1FWxGYe+y3SfY749LLs3/xRlWwrqKOmpYbkDyKgjVAEygoDY80mCz9dIlCs0OtB32ZXEgYnhhgL97nMzND
- VLlWsWoT
- hrdCe4sbfozwq/Nkpd7z/cHKRimN3JOdiihSHabvOB30So1YlDgACJ9LIUyBXqD4dW9Hr4OH3IWYAfhsE4VqOZugk7C8aJZS91p9Vrju+DF1h96JDwNdBPomjgYHC46xWNh4zRr2sxWmxytrNmCxb737Crivf8zT4aDsFDVxQrlELASMOxpfFs0Rnx7MohGZ67Uhy2cmw5l6GpKDbsSpPIF7m/eCtbFBunm1YLT9pvBymEYlVIOIvI51AWkZpSC4Acc6SKgoe6YKUl9GBfe2pGN4gtbtz9qvE2DR3IlSpC767ThiT0NOtLSYbGEeo+g4+FjtBPjuTaaZ2JDFrXS0TbZBvQTXltNxWbik36ZtweDnbJFeRi+30fjTa0Ezj9IILATLl3MTh0uBPpIiNd9pl8jQLgCqggNH2KDcsbQD5xYyy1xxC7ZFzW4wcNVzpeWl5eFnbQ3CMh9rAkT/Dr0ieaeeaxO6RaT8UkT8Cg51BJdkXIEoYQvT7Devi02D/Vpf/OVOwDF7EJngou8nI+5aY7JvOYcZXKfZMDa3hlKwgcRhUDIHRXORTZaN6M2QlnL0YZ/qi7XKs3+sLeFhJtL16Fhh9WOOuZlo0ZfG5gsEiwbQxGBNPd20wZsP2XaoliHtS7K0ULoQ6EOS8QpiB26BewA7djUlmYV3wtKPdWYE6z4tSuKn13ObzFxSgIEknBG800bpk9nJwKbB764ciYMHQ7p5bsIGC6R2Dp/9w+MF1Vv67dWYQOMn2seHM/U8qJleZTbqMpxdBcdnHioFOEqxWHa6M7H9ARO/WXDGWoYjgQPooU5rMU3neX6onwWn3rneNvoSgSCDbYw6elLLoueztELxMby03dSxrVLhXI/d6gTneLrhzFnS17hK53omhvoEEw48XSyRK04LSa1mq5AAQnz9tV19gsSU2afPDZznT+fG9q+HX0MBLAWEvSNcoULiPmwFLrZNJqJyQawMCKxQe41bLj2ou
- vDI90Aal
- lv7M7MRha0Yhqx4wFp81kClUQjnv15pTwbfzuOjiDQx3yR2HpiOmyx1zb6Br5NBhkIL22sCTNPKASxPD+gKr35IZaKJ36LWsZahIL9+eUzJJ2+QViQnnIjEdUJuY4Ai8Cuq4YbXxVYCwj8uDGlPkZCUkHRH+voTOeOe8+YVMgDfRgYvufks0jkygKbOEr4K22GXrA1HUzXwLXRoPZvYTJeBtzWC9K6hkCRq1sb7dGYmT6zJj/XaRPYKs8m/MYvk9Ttp478SZE/c34d7YbnfdFvCMFtKLhRP4R5DaR7Zqr0fkg65zZ4YcNdF7ON0ELpCtkx4D3qAq4J0gVn/vgyYBgClMBoCQacn05mwbjkgvXXJuK9KZf9Uw/+/P8IZMOF5Vuoin8hPfRbrQvX2DXrKWblrp1hp6hEPhTiCriXBtI30iDZ4hT/RZiX6YSfCwAYl1k1h//MvvJcmM9zNRqk8z6mUxage2NyJIQhwVhi9yt6d0ePldauGeq2p7qQHsYqQc1HpCDVQ+RMDW2V8rJ8WNcN5SYhmmxk7JHuOA91p+6FbHdosh5LSLfu8tYqjd2+Y3W9zxXf4CMS5JQY684vxXe+d+T/GGlyYt/SdDcmR/TTSlrzde+r91a0xKO5f6rcK9SZq7sgQbrFoRC3U+bP6Ea7u6dON3JE91gIhfOF8a1dlNsLz13O+jbC5cCszUfxGeTe1XY0uJrnpHD5bEKgwCeItE9P/iQ2seVucpTWSQ14449NcgZeyt9BPUkahj691PI34kJkzro2wR7vpi2ncnwR1BIIbziX6t4FNbFpEVV35KT8MTp/zBUTrYkyR+coKuivdeqorPRbRVSJM+uNKq7o8bNPAxO08QzdNVCDO1AwUtX1h/mGSZkTt7rmrvYhKjS+WG/xnwsGSf+AOnQEYk2SwYyX8FLvEgfFtgTjP9lcvDGP5dj//Py+8njDe+A3EMfqEE7f9ajSqNUKAMxoKwDPSPAp4zx
- 36Nxfb5r
- K04p91RSp751piNT2KYdcJpDyrWqUeHIzDcuM11gHQN/E+p6jLM7PX4IzoFw4hO3E+At8aSBTqHMY9ZkAm6bipnrxfVivis+Ff++xNYajcuPbVScau9UPDHzXpJQtj63ma2n+gXRmoyc3131ibLPyjestEkCSJBRCm+N44f7DTPoMzv5FlhN1tPJkAylKDCkB6lz72tbjOQdiFtsaK2qs/Kuw/jWNT1yCLBvGX8xXcjkVXsDW6sicIKitxle3gQfBnwHqQ7Rlcv2zqoM09kQqi+YrdvmxmsgzQNL/qPgkxTata1NAShnDWssDpcB6tn7xdxgwMGBCtTMPC/HnNHiRV
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1F8864000C
+X-Stat-Signature: cx5qrpphrgppx1qgbwjo3xiziup8yndf
+X-HE-Tag: 1788898979-423171
+X-HE-Meta: U2FsdGVkX1+G4vhb5JHXry76tjMrzisnXKcJZugAz+2x6bdejDdW7rIuGWkCyMN2HjDmyrLL9zyTIAX3LR2xmiVpSXq+XW4m7HtrKaSWDmthTucIuYeqUYrBMowD6boR2XFV8/QkEN1ulpIg56uRAOQnu2yhBrRLZUnAUGOEdFrvVCd2zaKrbCeMl0JNY14BqHAtjVGFIPwk7hDf+u2Kg2lSlKn8omv2hqwthhaRp314b7NvJ/cSJWTQbWXmkJXRXrf7uM+sIYAoB6M/UmgBx2rfTylERwBBRF1uc/9JzHDEnTNoUvZw4KHFsQo6W5MRE3063yawf+dN0H34aVRX+sihfWfd4ucZ64/oYtlm0P2Rx7RKL3STFFdWWgEao3YI5BMz22rEC05paO102GxZ5p8lcAK72o0maxbEqV/Rqpp2ljhBjXgTJK+Z1zVG7UX7eiNclP7czbQfTrDhQb5VY7vFQqBydsckpVyFvZuinSdprBvYlDZpu+br55RI09CMIc50KuS2mvdClrEG04NlUeUMi1JM7kASvbEtk6Mi0fUzaX4zlN3EhRoGl1afbE1sog4LiTkiA6OCplL1gcF3PhjWCVJRc2akuieBVJq9opWE4812TbJee2LhpyjOYb019jK9GjAPUtTvKLhO+WGeBixCa7brMVibfF6WYO/dLwjxUc/DY4MJFaZ3JseSvzbb84Is+rSuLrV2UbB1focs7V/LxcjraHs0a+kGucoPK+tHQJ16ULYTtinbMOKOAP9My9ZyFF0Vb04Dpz4iYUwUhFeWow1Z95Ue+YMZCodOLjZekKsHhqtWy6V3YLITdAbTjrQP3bKkgfWyBQUoVhn+ibnDaGWNBOnXpH5RJntoJtFi3xqDWuqJ4LvBhAEpSemoxppN/p39fhHtEgVCQy8ycFTMxyob889wAyPoZFC6627lXx+KyB6Di1XmbBYycPv1+fF6iHO8+rP83yjh0LE
+ phKnX1gh
+ gLnwE6Uj+qNlwn9ynKl8y13kpDdNLRfTk3pEZi8aZ5zkk8cPasVjKZT7labK8IQGPg4DtZ1YiXqD2MymmXbw8bOhYDC6UeVKfsi07WTZZ1F/r5ma6jwfPl3gQQ2DPJ1RhXWjVD/ccwh8z/H47l4Q2lhDxuOS2xEWs3UL23VgoVDXVJMaIhO4+tWmiQ/8AR6X5A0loiQ8uGZbqqG9NpNmpPYNW5Cpr2npl7ye8uHHddM87+U5hZcnftr9Y06KuHqjT8Ht7yDfKZQ6F3IVGLPJFqgnFClgLG3as3rewGT6aGPDOMfRPDct+4V5AMcFFG5Gwkb2y3gEMAiq5Vo6iSmSjD8aYVoFd9WMnfudUAvrSZDboypoabC4v1G399NpdTbbjl/WOjWyox92UkvDotlaggvAm8sqYdFvX4wIa/tD19xWBMe3mwAKLVfhwArOMiEmNVL9gbkfIkaQjHYdjQayYUpMYeUTzPKGodqom83tttqm+XiE9qpkzLUHCCASzcHOOFRlnKoHbcY9y9dXe5GhwQFf94hmNNS1Bmwm3WEUBQD8SeQjZAf/0O7rTacnvDFrBvtIprkHDK8NWulB3Y0LjiLBz3NYMFBGGDub2ztIoMyi8tWdylHE0wPOLAcoolWa1oHUc9O3r0MB9dZIj93viRFRpoY2vNV2S97OzrKvsCuZh3pUChJrjZ7c+Gzdxz10TndjP/KDDibxysbOJXnuOV4rx70nO4Q1A6cuPMECbNhHACY1DobbNP2a+wWRWPr+MYdWFEu5fQDQRg6Ku3xSmMPsBEGTo6hXjpRXOLDV5FGgATiSllEihJclGX4I6TEBAW81MZUG/+18uZxByq1JyG1ISQgSjWjN4UnPR0O+9cQgq3RRjkbvmWJk9mzukrt/Lp9iAp3bQ8s8SpxrDDLTEMroWv4WjsxZUUXyqBBtRNJ1r5bvYqo51EiW/WTRIgejIr07kxU8FJirJ/2pcRA4lbRntsJgB
+ zDqfmi1Z
+ e4OH9Bm1aYx+MwHdaYOpiRClFVQVlMw2JZbfMQOTi2rh0Z8isfjVjxjd/toqncd1OVKyzE4gITY3Fz3opyAZdPu15ijbSNxQfSPV7AlG83geulOdBUyHjfwLVR7Wvvw/YWX8Tq5PTGiPnjgD2qXN0f+KrCE5new1ouafpAS/KZ/rtBOI545bKdD5p72ztj0ibRZngoi1KYWc4R5JPTmNCfQoIeK1I0NWisR8L3N1URCF8SwIJbwG1ZlhWijcmgjZi0oeEfYGd5rrHjvFty5X7G4HiVO6N123vNMwDbO1gowVhWGyHjpdg8Uc/L5piN4eJ4T2EPtcXsPDrpdCewm/ennEiP4fhaeHxdrvfWJ3O6OvEhB3dMRbx+Q/kR1Ioc/nBAxY1qmomnGJYXWE8KEPTkDeR2MiR0NOxELtM4F+MvJqoD1zdHHecXPLpCg5gzJ4vLFs8d8SUjGviqnbiE2WM6CNN+4R5gGAZknaHPtTLh2M4cHQHCwXGmoadJxDP2YdhuzPbm0BsDFnOaSw4hebKKSOxzpaKyO6HDFy77O7Ivo0b56eHwpFJc9EgtVOaUKFBaDz9jVeCmi0dthNqWYWHD5auRwVDgTt0p0vltmyCxSFGqMwEWRia1jMO4GPaFOs2aymE1+C/hJXs4Kju2H5p1RBA7ZDQzkqPuUbJkfTw6FZcKzRsZYqoUUYmPuKal+hszyW3V/U2gmuaWqluELGmD476IVJ+UXoHFzvgzm/PKIGMOuz7/qFxHLpq1euP6YQd/1+AHuMu+DhFlIfm12KOVMQCfjh5l5XqC9OU76G3bH8njZ1s9FlkDakFA7I/fLYYobdbKysOslDM+aZi6/G1d/9ksHzchG6uestwgK/1DF2VI2XVP+vdT/SSEMRJbYDXRJIkh1Mw/a4rSXBqPo2AIM50m7LKDUA15W94lO++MeCNnued9kszI08SiGHs27Us8bJKTkQ7WjHs/LkHWW18X55IBLGz
+ ituKf7Jl
+ 8Fayf2gwt07fEVK5ZY1nH+ZMLqSaQkdNA7VNTUuK619PCOgsMLnr3j9r6cbGYPuZNzW2Y+eATUZeKs2IRbB4yOUgUozZDj2UckamVCvz7VEDTh9DAPXUY+giimUk+iwSIPO8BZJC23yz/DhEgqe3zZA53/w3eSDInWqm00s008Vmir6YcL+49TQOFCo7GtruRZ52/5Wnny44CxNripQbLHmo+sl7Y6XEoCh+WqfjJsFG4qPdULRCAl0nIDfr0sq/JFrP1iqL9aG4xqw7EvSp2CEN9JX09OilNKESiQ6jLxPvP3Uw75Nm/JcK9KU8R3wM4xWQI1PZQfiB1kWN6mThxaMqdSSfsP/TmaJRKqy3JZGrwHFt1tpgjY9+pQmzNUEezmvGuLjrdFd4IGmwZanxUUfZErr6ak61kxVF9spcdVCMIbJQoLD+wvvxRXUU7BGI7JGp2C7YdJ/98i0VgayGBxK1cWbipQTZQ0SOIxP8y3uhUNrYzxHR0UtxCQoFPVcABr23c0Ex8XbP01BUBtUge6S+WLEmywGBTkcR+yJkdulJgSo0/LFFJR+rv3eGpp0fgEBrzATXNcWokE8HbdIBWc3f3cbq2Cbtg6XwTT46jxpD+vfaakewWTRklqiLdWLZhIsWIEurnL0BFmtvctvCR+MsRNJ+WwkgbgXbt9++7Kfy6m5ZLJM7JOE7sXQKn9b/lMFSc5gjjgAE+g/s2p8Q9VxiaKrNMdXh/L7eSZnSfAo2CFRECt/Klm17DD/PYzjYbjJxWb6FRStOgAsEO7RsMqbr83cLsPqqxfxZbJeEq6KYdDQwbtBz4NvEOr8ioyfPOBj6CZjANWQH4PuGkSZk6uM0g+mKt3a3sLtkaOrJBuBj0+PYqxkpn8lSQ3T0XiXH3rN4S8jdd5adH0v6CGhUM7BaFOKilS3KDLYRoC5xLur+L5+UOVv/33ZtBaZSh4z2TPTLLirD3xZ90Mkf8E9n1OurbyIKD
+ OoLkB6iX
+ LOe+hqTJC513PAd79sKdbBdr1I1oC0XkAwYL7fHuQsqgfbhYSCb6xwPt2kCw9fDitSV7O1GvvSiQOo8wQgJiJlC3QbT5vNo+ZFs+3+0a+XVfwy6wi7pVaZryMcXV2PAz2vFUJ5lNbCsNgStOTisl8ZB/vim2HLqYkQdNSypvUciiKv3nJ7JP/f9yx/RT/HSqsXh/ngSTcMQHH9CtSzCIPV8oPG+WQAmIjZSOLVc8D2CC2j3hE+K0PhNymHTUD/4sExKKd83NschJ+tdnjwFgbJu+xU2rJQpJ302FOxAoIQJMeTBji7zTVJx1H+Zr7+MeV8FzXseH8Dzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,191 +207,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GUP cannot be used for VMAs which set VMA_IO_BIT - because memory-mapped
-I/O must not be accessed on the user's behalf - or VMA_PFNMAP_BIT - because
-PFN maps have no folios which the kernel is permitted to access.
+On Tue, Sep 8, 2026 at 10:07=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+> The policy file has no write method and is exposed read-only (S_IRUGO in
+> selinux_files[]), yet sel_open_policy() performs no open mode check, so a
+> CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at open, a=
+s
+> kernfs does.
+>
+> The file can then never be mapped with FMODE_WRITE, so do_mmap() always
+> clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_SHARE=
+D
+> check in sel_mmap_policy() cannot be reached. Remove it.
 
-Rather than keeping these checks open-coded, abstract them to
-vma_flags_can_gup() and its VMA wrapper vma_can_gup().
+You should also be able to remove the sel_mmap_policy_ops.page_mkwrite
+handler, which is only for shared-writable faults, right?
 
-This is useful as there are a number of additional places within the kernel
-that need to check whether a mapping can be accessed via GUP.
+> This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping that =
+is
+> neither a PFN map nor a mixed map, ahead of the core enforcing that only
+> such mappings may do so.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Therefore, update all such occurrences.
-
-While here, drop a reference to 'special' and replace a use of the
-deprecated VMA flags API in vma_dump_size().
-
-No functional change intended.
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- fs/coredump.c      |  4 ++--
- include/linux/mm.h | 29 +++++++++++++++++++++++++++++
- mm/gup.c           |  7 +++----
- mm/hmm.c           |  3 +--
- mm/memory.c        | 14 ++++++++------
- mm/mempolicy.c     |  3 ++-
- 6 files changed, 45 insertions(+), 15 deletions(-)
-
-diff --git a/fs/coredump.c b/fs/coredump.c
-index fb21fb6703dd..9f729c594c47 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1616,8 +1616,8 @@ static unsigned long vma_dump_size(struct vm_area_struct *vma,
- 		return 0;
- 	}
- 
--	/* Do not dump I/O mapped devices or special mappings */
--	if (vma->vm_flags & VM_IO)
-+	/* Do not dump memory-mapped I/O, which may have side effects on read. */
-+	if (vma_test(vma, VMA_IO_BIT))
- 		return 0;
- 
- 	/* By default, dump shared memory if mapped from an anonymous file. */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b5784685272a..1902d4c77481 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1777,6 +1777,35 @@ static inline bool vma_is_persistent(const struct vm_area_struct *vma)
- 	return vma_flags_is_persistent(&vma->flags);
- }
- 
-+/**
-+ * vma_flags_can_gup() - Do the specified VMA flags permit GUP to access the
-+ * mapping's pages?
-+ * @flags: The VMA flags to test.
-+ *
-+ * GUP cannot access pages belonging to mappings whose pages are not permitted
-+ * to be accessed (VMA_PFNMAP_BIT) and must not manipulate or provide access to
-+ * memory-mapped I/O ranges to users (VMA_IO_BIT).
-+ *
-+ * Returns: true if GUP may access pages from the mapping, otherwise false.
-+ */
-+static inline bool vma_flags_can_gup(const vma_flags_t *flags)
-+{
-+	return !vma_flags_test_any(flags, VMA_IO_BIT, VMA_PFNMAP_BIT);
-+}
-+
-+/**
-+ * vma_can_gup() - May GUP obtain pages from @vma?
-+ * @vma: The VMA to test.
-+ *
-+ * See vma_flags_can_gup() for details.
-+ *
-+ * Returns: true if GUP may access pages from the mapping, otherwise false.
-+ */
-+static inline bool vma_can_gup(const struct vm_area_struct *vma)
-+{
-+	return vma_flags_can_gup(&vma->flags);
-+}
-+
- /**
-  * vma_kernel_pagesize - Default page size granularity for this VMA.
-  * @vma: The user mapping.
-diff --git a/mm/gup.c b/mm/gup.c
-index 66b306911703..f4d0cfcb602b 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1204,7 +1204,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 	int foreign = (gup_flags & FOLL_REMOTE);
- 	bool vma_anon = vma_is_anonymous(vma);
- 
--	if (vm_flags & (VM_IO | VM_PFNMAP))
-+	if (!vma_can_gup(vma))
- 		return -EFAULT;
- 
- 	if ((gup_flags & FOLL_ANON) && !vma_anon)
-@@ -1955,7 +1955,7 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
- 		 * range with the first VMA. Also, skip undesirable VMA types.
- 		 */
- 		nend = min(end, vma->vm_end);
--		if (vma->vm_flags & (VM_IO | VM_PFNMAP))
-+		if (!vma_can_gup(vma))
- 			continue;
- 		if (nstart < vma->vm_start)
- 			nstart = vma->vm_start;
-@@ -2017,8 +2017,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
- 			break;
- 
- 		/* protect what we can, including chardevs */
--		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
--		    !(vm_flags & vma->vm_flags))
-+		if (!vma_can_gup(vma) || !(vm_flags & vma->vm_flags))
- 			break;
- 
- 		if (pages) {
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 2f1e98c6b644..e9569b82a1f0 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -595,8 +595,7 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
- 	struct hmm_range *range = hmm_vma_walk->range;
- 	struct vm_area_struct *vma = walk->vma;
- 
--	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
--	    vma->vm_flags & VM_READ)
-+	if (vma_can_gup(vma) && vma_test(vma, VMA_READ_BIT))
- 		return 0;
- 
- 	/*
-diff --git a/mm/memory.c b/mm/memory.c
-index 9a38c7d4cc40..cb56d67b17ca 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2417,11 +2417,11 @@ static bool vm_mixed_zeropage_allowed(struct vm_area_struct *vma)
- 	 * be problematic as soon as the zeropage gets replaced by a different
- 	 * page due to vma->vm_ops->pfn_mkwrite, because what's mapped would
- 	 * now differ to what GUP looked up. FSDAX is incompatible to
--	 * FOLL_LONGTERM and VM_IO is incompatible to GUP completely (see
--	 * check_vma_flags).
-+	 * FOLL_LONGTERM and memory-mapped I/O is incompatible to GUP completely
-+	 * (see vma_can_gup()).
- 	 */
- 	return vma->vm_ops && vma->vm_ops->pfn_mkwrite &&
--	       (vma_is_fsdax(vma) || vma->vm_flags & VM_IO);
-+	       (vma_is_fsdax(vma) || vma_test(vma, VMA_IO_BIT));
- }
- 
- static int validate_page_before_insert(struct vm_area_struct *vma,
-@@ -7116,7 +7116,8 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
- 		goto out;
- 
--	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
-+	/* Only mappings GUP cannot handle are followed here. */
-+	if (vma_can_gup(vma))
- 		goto out;
- retry:
- 	pgdp = pgd_offset(mm, address);
-@@ -7310,8 +7311,9 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			}
- 
- 			/*
--			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
--			 * we can access using slightly different code.
-+			 * GUP failed, perhaps because this is a mapping it
-+			 * cannot handle (see vma_can_gup()) - such mappings may
-+			 * provide access via vm_ops->access() instead.
- 			 */
- 			bytes = 0;
- #ifdef CONFIG_HAVE_IOREMAP_PROT
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index aeb99c5933cb..ed444061631c 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2011,7 +2011,8 @@ SYSCALL_DEFINE5(get_mempolicy, int __user *, policy,
- 
- bool vma_migratable(struct vm_area_struct *vma)
- {
--	if (vma->vm_flags & (VM_IO | VM_PFNMAP))
-+	/* Pages which GUP cannot obtain cannot be migrated either. */
-+	if (!vma_can_gup(vma))
- 		return false;
- 
- 	/*
-
--- 
-2.55.0
-
+Reviewed-by: Jann Horn <jannh@google.com>
 
