@@ -4,109 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4490AC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4235CC79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 07:46:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 425A16B009B; Tue,  8 Sep 2026 03:43:33 -0400 (EDT)
+	id 5152D6B009D; Tue,  8 Sep 2026 03:46:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FC096B009D; Tue,  8 Sep 2026 03:43:33 -0400 (EDT)
+	id 4ECB16B009E; Tue,  8 Sep 2026 03:46:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 312066B009E; Tue,  8 Sep 2026 03:43:33 -0400 (EDT)
+	id 402686B009F; Tue,  8 Sep 2026 03:46:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D7DF6B009B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:43:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 231B06B009D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:46:31 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89D96140413
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:43:32 +0000 (UTC)
-X-FDA: 85189805064.30.AC2AA95
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 08B2714000C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:43:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8765403CC
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:46:30 +0000 (UTC)
+X-FDA: 85189812540.30.E620C62
+Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B64CA140005
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:46:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TqNJeRfn;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788853410;
-	b=WMgwrFKDsuQdKo4cI220yJs1crwKCgY31YbEp2rqO2EXh98nVr3i5ly7I/InZ5MCClUVGR
-	LUoQXm/FSvyRbZnmjvGO8kgpz4TYyDJXpv8V4F+RfsWG96TdYMsf9otBMOWYnzXAoVKFSY
-	+QKNAGtAgTMJVG0EKHQdMmHB6Hu0zwU=
+	t=1788853588;
+	b=5X6+rrvLgf5Qns0l5eJULQdpJx0zI2SvSOmRWGGq4RrumKCLCtNBlMHAsNL//2xJ6X6fUW
+	MvoaQPOOrnW0DX70EWYys1uQVf5E+A0EsCm0ZnN0fj8keTXk7sYaAtDx7dROYarJQ6+beA
+	vGqNQOivaUrJNAB7HExDk6GkRDgJdAI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TqNJeRfn;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788853410;
+	s=arc-20220608; t=1788853588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Q/vJAJj03S5pA2gqPN7KHZ5XejH+Ef2FdpdIzyqs8Y=;
-	b=cRNtB+QzbQCZwgfbVu2x/MGmZhhqp+Q5xJ0YcXlgvy/L2DqcnxzLy9CEipCE7P5ElxDz8X
-	zvKtM7z8CCvOkN7NgzujY5S+ALBITROMRkk8H5CXZT3BdA+4nKE02v6Myaq1xkdogaZZeY
-	Mp0BJFDR36uaT5Mw1PAjlPAksS2eh2I=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hfGBv4PwRzVcB6;
-	Tue,  8 Sep 2026 15:43:19 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hfGBv23GPzVcB6;
-	Tue,  8 Sep 2026 15:43:19 +0800 (CST)
-Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id F06E330A6E44;
-	Tue,  8 Sep 2026 15:39:14 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
- (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 8 Sep
- 2026 15:43:19 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Tue, 8 Sep 2026 15:43:19 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
-	<vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Shrikanth
- Hegde" <sshegde@linux.ibm.com>, Phil Auld <pauld@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "jianyong.wu@outlook.com"
-	<jianyong.wu@outlook.com>, Yuan Zhong <zhongyuan@hygon.cn>, Huangsj
-	<huangsj@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, Zhiwei Ying
-	<yingzhiwei@hygon.cn>, "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 20/23] sched/cache: Estimate utilization of the
- whole thread group
-Thread-Topic: [RFC PATCH v2 20/23] sched/cache: Estimate utilization of the
- whole thread group
-Thread-Index: AQHdNpMnbRlIzduVrECfPaikBnRoA7a5TZ6AgAsO2lA=
-Date: Tue, 8 Sep 2026 07:43:18 +0000
-Message-ID: <3994638d89da4fd58365cefe62ff94ed@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
- <20260828021156.785662-1-wujianyong@hygon.cn>
- <20260901144449.GJ776954@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260901144449.GJ776954@noisy.programming.kicks-ass.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.20.45]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sYYxiXN+Hb8rQ6JwFenQMkWjeUMFgmbC7eP4OQjvJIM=;
+	b=fYndhuw0ICEDVNFpL9/nDz+Y+0cuhjigN/GuYb4ZqjSCeFMFRl607Kxq1GBhe+269zCLct
+	AIhue7qgMRmnVVjeRIv7dv0uJYYuP9VdvQgVYG53McPhPR0yfED0FDUgFxQuX44aau9MAr
+	FfoHQWTFAvvdY654iAwREkoAs6/JqhM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ixBAYP3Du6CsKocLljvRGfCjKPRhF0PCatiq8iaNJ/Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788853587; v=1; x=1789458387;
+ b=TqNJeRfnlPGt5thwILWmaRYK8CK+vf+m//CuibP3MRNHd5H0PlyhI3O8jUpMHnmAmBK5/9yV
+ 35l41r+H7hf2qvrP0IJEhjF7O8US4lpcbNgsBYUezkwjfIbFonFA/PrdIN8FC7jLO1PT5LfGyaR
+ DOBKDiFjjLdhdg3R9MZXdFpI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 539c04568d93ce89;
+	Tue, 08 Sep 2026 07:46:17 +0000
+X-Mizu-Trace-ID: 539c04568d93ce89
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1fc41803-a0b3-48ca-84a6-caf965fb11f9@linux.dev>
+Date: Tue, 8 Sep 2026 15:46:08 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/11] mm/sparse-vmemmap: switch device DAX to shared
+ tail vmemmap pages
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
+References: <20260908030335.96549-1-songmuchun@bytedance.com>
+ <20260908030335.96549-7-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260908030335.96549-7-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 08B2714000C
-X-Stat-Signature: ks3r5z3uh316zsphjsadtsimnkz7kec1
-X-HE-Tag: 1788853408-732613
-X-HE-Meta: U2FsdGVkX1/4HWBfbEGp/M4YgoZr3Wp0os+cfmcikTP8FCbUzVPgNBF81ZBpwvlCYSTVQMmcOIFUikX+j5f81u99jb7UEY29fhtFHPcg64sEZIql1sqAfUgP++EYCCKjQCalQD1D/yBwU4lTzTf/iv+YthP49i6vH/5Sw0q6OwNDIMtf9hOZS7b3uT8Q7h6G62qpZvRG9xVZMENvLxLyNn/E2YvXcMiYUrFhhn89YrrJo+Zr2AuBiCKJ5FqYMY4t7VSrSF6YQ74Ou7Do8Yb4WX00dZWdlSFirgUKXZeEGQOx78cL8k+7wjB/lQPOMMppZI0xiBaDd73fgsr9nDJOFKhG0svCsHdqB3YEyiNReVlBRXNB3//0h2Gm0IcNYvYkdM4gFptsyyVGrh8qMMhgzLu4KDwh2nk1m4fQqwfWcCCw6eBkRMhNXTsXftSTq9Ub1u50mqbrzBg46kyiRQd5jqigYbpHPT07vKR+bfzcp5Aez0zD1ZoWkilP6A0WIRCebCOAFJldwMdfj9OipZ4CoPfOMQUovyFXBT4Vfvomn96rQjrnRUNoxSqC5UmydlwylhvBoOjstGrHgYxw/MBYsqKsuVkHLtatWMqGd0zPpD8EmFqpAuR4vLp/Yi1uMOyCtf8maD3oHOrSv/ZDng1Ws0AxsGrSyHiR9o0oZjsnodf4sTwXQPp+hBaxIpS1ITBuTqBKamSD/II4gqMiaDnkXqQzxrFJtKXVidgqHAbTXkDDvhYKF669FZXSGE9D2RmJid7Ok+WOSmPpZPQgB9RVR9NXDkaUElkkHTxc0+V2TUbN/p3wlm/DQ7KZJbGI6lG7mip/kFY9RNaUvhZAVJSiLat/u0hGXsbu/dwBECdvfzB6SUFXqECvtQU0g7FRUXn3bFCY7vo05/GJ8zOgUsXJAkUBiF5S8+lUzH+PZlvn6NLw5FdTPocEi5SlmRp0y6w6Vxddn4e8ZK4ejNaid4t
- 3hNSG2Wk
- hW5WqNMnu+QrJUUXSwlgxCyLDHZB5gK9IXr9IYX/MCOJaSR5ZAtfJXVdwgI8HBcU6ZQasFhqFpgmCy+u5fnD24pgYGojGvun/KtF0kBTtJ1OXDpZJ1SncGVifaXFQW6S24JpuIw5ZxVBT9IIaC/5ruJdRiTazo6j6yK+//3X0VGjx22Y4/eMTCmb6XScspEdPO/JuKOYATvxy7MrVuZ4DlUqPviXql6nu9Nfl5KbBopxwng7m25ZvVdwwegK9Ql8XzGou+MYDjZ5wlB00gjzJ65HeyADXYyDAfAOOwycRzFYpSmC9WSZvadlZAFnqRRjVMnJYgIdwyrYwxw+RkO2Bugjz9ulHfRYS4SNyyGthutnXMMy2HE+YeLn2KU7bN/zHsMPhZ3dLssvadiYbQntPf99zSMuqo+GEjmAak9V1ZiB7uFLouyRXmr/oQtdy0mba99b8AF1tBavkdgmnxxxuuDn7yxryRM3eiSMMPIbAkteyKbv/U34VIfkdgvlKqKepJu2MWoqn3ajWBoY9Dm3aPM3R347cewYEiZJChGPXCZ8RIPvEg1CJ5AxF4wi6+m2CKVqTuYzzbC5skSjS+8UF+wERXOHnDDLQl+5TiMXKGCHc8JQ1GJvzX65BYy7PxdJr01HRQW6C7xZHD6JEj7F/CfE+JWPv4uvFLt6ZxkvesL9hBeK/e949r3fFTagpazb4pGnbaXH1E2UKkNVSVL8II+PToMnkyfWd6bjn4CcDdcNzRTQzts050Njv6brqHFXGYXJ6mgjB7M2fmD5RNRyjB0QBNg==
+X-Rspamd-Queue-Id: B64CA140005
+X-Stat-Signature: brmhurgzzapfimrf9wu73uzkffdank7i
+X-HE-Tag: 1788853588-354202
+X-HE-Meta: U2FsdGVkX18V3tfMqrCTwaqeiuHpGaxK14gk4pAmN5GIMP9ANEQpcYa+gUYZ6SAb6VJRfToORW3633PR+adLT2hue7cX2oZG/MQOlzBkb3VYbFy1SdsZ+azGHpUdl7FI5twHVoGRIjgvtQHDVBYJCzJCfEyweRNeCeqpNXXbtiEhczwUf0MBKFT5E66q0A0I7JFJFH8tm/fZdvCdt/HAOsiMj6vXANBEG0zsmn/PevM5F03w+P0KpFN0nw9/KjYGyPOgDSmUvBojEYZr4svOpSVvSyIuoxIpjjTAOQkqaM2W+kFFAwHtEzUELo8v5EDo/c1jPX0Ofu4ARnf08JMw6pLF5nN/32xs5EjErxd8zOnKl+LZmFRwbSWF5MX91dshVcebLk5oumE6ieuRo8cRb4JKm6//Heb7hmx21VPR2Elsbw2CgrEZEgMaiCT7KhxviqsGE+jcMCnhRoR94Q/w3OEN5iwv6skjhN+/uKvNdbSpKxXHoWFli2ELbzuQR5StkwyfvP2AEBDBziN8b+wvtzdZn7unbarmqG40G08xUW7zyssB65zgD3U8uWfporF6ruYEXXuvObBmfBfGUe7nosJRtOUynX4z0Xa6JAzjIUgvU7zbqr7+qc4N8eQsMnJmVNOnkwY8KLloAxAa72JIiyR/n6BhYxhnLyhVbGunMJijC3LgmOwx9KzVAvSo/CSoVDUPOpeDDuIl/4i/C48742F2bg7Nfc6t5RTe87QZQ8rN+5snSAzZ+GOhNF5MwUqr4uGjrpf7jL/1dexO7gPAHZZ9wXiM49ZTAxHZ/jrGcreK2ZTxAt2K6vjJjcePsfEGvsE4xyEH0M0z/Om8cPzyJOGyCZpr8OMboGXK+Pxf78DBzfWOFX+HEfzIJiJljZ1S5V/446psw4nR6eRjCznKwRAUTEhUXwdRpzPBG9BblDWW9PiI7YrEm4x8DQmP/uWaMkjrDCMhUUiE9M69azF
+ FQffgSxO
+ 6zbAj4vLZUneafKGuKwdQQwuZWbMMOJ5SV22EekocN+ZL/qoM/xn7vwRPm5DOY1Y95dnywyuOvNUNseUOlCuwDWjIwnc2zogD7Xx9lW69S/HeNAexq9XHqRySh5/qOqjfMDrh4vG/wRfMZY1wFTsZvDhSqe5aGPAj2wUDL6I7GfRNo27kbc0+Ck0hvXohxXe5QPagG6DRQHQ+1shJ222027d8mZNV67kg6frRT1D2aA18S35D5MoJ6RIKE7u5izc2jOCr/TSV60cH3upvcYn2upWUhhhjJUwoxaqso9nvTtgJRMeIUtaBmYqkpNWTIDoYJ/ZDycYVNRaqK2c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,47 +99,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Peter,
 
-Sorry for the late reply.
 
-> -----Original Message-----
-> From: owner-linux-mm@kvack.org <owner-linux-mm@kvack.org> On
-> Behalf Of Peter Zijlstra
-> Sent: Tuesday, September 1, 2026 10:45 PM
-> To: Jianyong Wu <wujianyong@hygon.cn>
-> Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> <yu.c.chen@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Dietmar
-> Eggemann <dietmar.eggemann@arm.com>; Steven Rostedt
-> <rostedt@goodmis.org>; Ben Segall <bsegall@google.com>; Mel Gorman
-> <mgorman@suse.de>; Valentin Schneider <vschneid@redhat.com>; K
-> Prateek Nayak <kprateek.nayak@amd.com>; Shrikanth Hegde
-> <sshegde@linux.ibm.com>; Phil Auld <pauld@redhat.com>; Andrew
-> Morton <akpm@linux-foundation.org>; David Hildenbrand
-> <david@kernel.org>; linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> <yingzhiwei@hygon.cn>; justin.he@arm.com
-> Subject: Re: [RFC PATCH v2 20/23] sched/cache: Estimate utilization of th=
-e
-> whole thread group
->=20
-> On Fri, Aug 28, 2026 at 10:11:56AM +0800, Jianyong Wu wrote:
->=20
-> > +					mm_util =3D mul_u64_u32_div(cpu_util,
-> > +							min_t(unsigned long, occ, NICE_0_LOAD),
-> > +							NICE_0_LOAD);
->=20
-> mul_u64_u32_shr(..., NICE_0_LOAD_SHIFT);
->=20
-> will probably generate better code -- I *think* the mul_u64_u32_div()
-> ends up being inline asm and as such cannot optimize the divide
-> properly.
->=20
-Good point, will fix.
+On 9/8/26 11:03 AM, Muchun Song wrote:
+> HugeTLB vmemmap optimization now uses per-zone shared tail vmemmap pages.
+> Device DAX has not been switched to that mechanism yet.
+> 
+> Switch device DAX to vmemmap_shared_tail_page() as well. This aligns DAX
+> with HugeTLB by using the common per-zone shared tail vmemmap page.
+> 
+> The optimization is enabled only for DEV-DAX through pgmap->vmemmap_shift,
+> which is assigned when a DEV-DAX device is initialized. Unlike FS-DAX,
+> DEV-DAX does not modify tail struct pages, so sharing them is safe.
 
-Thanks
-Jianyong
+Got it — adding this description makes things significantly clearer.
+
+> 
+> Since the shared tail page can now back ZONE_DEVICE vmemmap mappings,
+> initialize its entries with PG_reserved for device zones. Also skip
+> poisoning vmemmap-optimizable sections while their struct pages may be
+> shared.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> v2:
+> - Explain why sharing tail vmemmap pages is safe for DEV-DAX
+>    (suggested by Qi Zheng)
+> ---
+>   include/linux/mmzone.h | 10 +++++++++
+>   mm/memory_hotplug.c    |  5 +++--
+>   mm/sparse-vmemmap.c    | 47 ++++++++++++++----------------------------
+>   3 files changed, 28 insertions(+), 34 deletions(-)
+> 
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
 
 
