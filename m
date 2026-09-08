@@ -4,148 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C8E9C79FB0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:14:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B389C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 15:16:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F00C6B0092; Tue,  8 Sep 2026 11:14:01 -0400 (EDT)
+	id 291BC6B0099; Tue,  8 Sep 2026 11:16:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A2496B0098; Tue,  8 Sep 2026 11:14:01 -0400 (EDT)
+	id 242B36B009B; Tue,  8 Sep 2026 11:16:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068E16B0099; Tue,  8 Sep 2026 11:14:00 -0400 (EDT)
+	id 131066B009D; Tue,  8 Sep 2026 11:16:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D9DC16B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:14:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 778F580513
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:14:00 +0000 (UTC)
-X-FDA: 85190940240.21.0E3FC3C
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1839DC0010
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:13:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=fAETnApx;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf28.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBE966B0099
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:16:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 669EBA074D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:16:36 +0000 (UTC)
+X-FDA: 85190946792.18.AE16EEB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 90315180017
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:16:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788880438;
-	b=ZLz5AQeo6PYFg3bjFPLg8x3U2dEaiVzdNb3Hi4dR1sT9dQC8/g/YZRyrBjuQR6+BRqSd88
-	Jdo93sah54PAO2JjTTbaY0Cb9Hpoc9h+b6GACVUt2YdnsLScDLob8/faUJ7q7zf9PtwyKN
-	GTzA+bptf+cXQRGv8vHXbAICi5+r55c=
+	t=1788880594;
+	b=PvOhx/nGP+LqJ7MhD+B4HNQdqbGZO6ahkFJJepils22rDbrlqRtYkcvA9PCcEZ+Ds4wKd9
+	CKa8nWpwPNofvfbDczCnMY+AV2AlKhaUZTJ92s9enK4FlZvAFaUYq+mFRN86pGa1d1kIuY
+	uFrK5iZ/MyPa/bSUTDSr+e5X1G/0KeM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=fAETnApx;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf28.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788880438;
+	s=arc-20220608; t=1788880594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b+dYGUlP4/NCA7NxfzDivtwOTsXnKhj8P8GD9GvMt1o=;
-	b=iOkzZ9tXu5N4yDzu2t5Jlm/qFgzdnohHYEKClwA//FMelF8zPwGZ3VE4T0Es6Qr5cuOw0c
-	xGW9mdNVyAJc979xdpTsKWUc4BrpliytyYCq8MrpdWpNOI9Ho49ATElGa+Ch5UOuJAW1TV
-	Xi4K5PCav5ZWUBuqdSl+wWn37mvjfiA=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8807440E01F9;
-	Tue,  8 Sep 2026 15:13:53 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id APiSMwsJLR9v; Tue,  8 Sep 2026 15:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788880423; bh=SihVXpN4VvNY3Mg5IOkHy8UfEsHqRfkcnelNTeVhEJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fAETnApxBEtfPuqHFKCgIL29nHx0Z2YHgAygdIUM8hU/Mz33/kA4ZUBeN/gRjrvau
-	 vtDllihc6pYSe5SXQwgoqpNhfk4/08/8KMfUsCAU9thasCFYYPKC5Y/pV7Y6XU69vH
-	 LNwlFlG04npY9qQKxVsZcrZnpWC37yTWxuzhzHRm5KpwYfkHvzNEQeiGPcvB58aLNL
-	 CiYr2yyCrB3Kpf/DVc891YwOW/34b2QLG1yPFPyiPhCi535fKHZgiFGNQiM2V+7vT2
-	 gPcZgp3ofWVjQmcjoKAe195uX42B3clf9ibePNVbJKWUY1oARNBH9aqSnI0FgzmH5W
-	 h3dWuWkymclGp3MUg9haChNnjvPBl3Zfv+FDejA3/AFf/CVXHWsWO5KDUQ2zEgeqt/
-	 YAh14BnniVfR4yGoNbbKeldMZUsNF3icLMOF+CXHFJzyhU2PGxTQ2922hXMjHxMdeL
-	 Z7VOvQUlIKK4Twu3A1MK/eNhNVBp3Aq4OXXBOciVJLy8/PcJIx0toX/zZ4lcn1jfV9
-	 ErcQYDZ5WCkd1WmQQESUO71elKnVOkkPTWwEHl1ZBofjxaMBHmYZWTaJGuyt7QqChy
-	 44ZU/2M46IVY51m5w2KmjWEiICeA6W5JNXmeJ3Nh9U8UDaWIWWakyv4XQKa/cqNpso
-	 4+S63J9RdOKwhC2R/OGeJJio=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2B8AE40E016C;
-	Tue,  8 Sep 2026 15:12:41 +0000 (UTC)
-Date: Tue, 8 Sep 2026 08:12:38 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-mm@kvack.org,
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Jan Stancek <jstancek@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
- to UAPI
-Message-ID: <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
- <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
- <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+	 in-reply-to:in-reply-to:references:references;
+	bh=8yHLq3RvqtdNHUaXQ1bxGbj1cSsC+//PVXrbKsrfw1I=;
+	b=KvV6gCQ/smTfb5IgtQAxHB283hl+CXr1rG63Qm2+f9x6PVq3CkHZixLNUzQCdToWXkI4n/
+	PCNJ27Eh66rWNZjayXbGKEYMdDTZBWuL149dMOSdlJE1mo2g/evfDFuna5ZznDAccWSWcO
+	/GgWpmlvXcuM3Cy2ctUjFh8VS8UHOXs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 67B3542E3B;
+	Tue,  8 Sep 2026 15:16:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F2B1F00A3A;
+	Tue,  8 Sep 2026 15:16:24 +0000 (UTC)
+Message-ID: <fb8ab0ac-87b8-44ea-87d2-006a7a7569f1@kernel.org>
+Date: Tue, 8 Sep 2026 17:16:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/14] xen/grant-table: stop setting PG_private on
+ pages for grant mapping
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ xen-devel@lists.xenproject.org
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-3-6ae22f9d9272@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260907-remove-pg_private-v3-3-6ae22f9d9272@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1839DC0010
-X-Stat-Signature: myrz8oukm6chbhty75c55o4g71seqo3x
-X-HE-Tag: 1788880437-267891
-X-HE-Meta: U2FsdGVkX18uIiyD8KWMf0WeY2t739p+31OmZ9eoj45iz5cPeuiH8/mJMyaIyKu1xb8VkXu6+8FScsuPqlEneFgYU+zgli9ahuF8GKswvDnG22W01U8eOqtDUn+UlBArRWokGJc6mb0j9O8rHgJ5FtTQKx8cuC8u1oBL1vgldcIR+5O7DgnUGS+a9p0dv5Tor4TDfGj/eECgf7k0TMlCu8KZCs2N1f+YQiNZJ6UD/H1FECENMyVe8dTf8uZwjSUUrymzfkA7QDANJwd4qyogeyOqqG26Wsz5fiDkndiGSZtg5/9LCT6cwymOyjzErbD31U+V2wSyuHgc3Ee9/jWjE/Fq8OVd+zFSZ696GnQCoPFYybBeUs8FkgsV4TJiO3HvAAZiTkyeXOYQMZsJO+wpzTF0OQiOUmnvGeTex1arX94/9a4+hnWblSHbu4ZECvMUii6X2IpS2nhl/cDq/J3CWyhTTaaDLDehtxLci9ROKPv/3q1wzn4EltV7SgdlMZ8mpOiYeVr1KwDWRfioMsklnzgyx34ovBJPweRPhjOftDiGezwiz3EP/Zzc1TjXYmClsD9iX1LlHkQPBrzB3s/nLb3P2cSJIcxXn1H5GStXOiVvc7Tci9uw0zY5Yan2NCFBh2URxu76jlavBALqW3UmEy5lTCe2/WyJmhgOTvzZOa/AVMH7zXpq06maRLFKFfRQb2tE8FpZv58VNRzlt67imd9PWA4Ib31RLgieNFLTaSPZNS6xJlL41kaCV7I1X3GkLHc2J+Rb5UDN0dvJef1jb42oQorzEC98lXZbUZDCGn7pucWpWjLEigPA1DErUXqfJdF/rA0hly7x74kR1mqJxmRJLOlUMBroDMtiF+9RbEj3SVxYKn97LqEWF4+fh7efeuWsxEI31do6ENLxyD0W3z3SDMqsgJ5H+ZBPZ2O9e0ZSM/XCzjheiJBYbY4ma/NXoAlwRoj/aHWVYoainy4
- fJ8QOqJe
- MOq3ov4HFSDrc1sr6Nh8dBhSmKBZcKOjyPMpR6dAsEiZ5uNwfIwM7Y2xWmAfO3Oo5bpU2HRg6CweBa1Gzclij8YcISjsgHp6ADwJ3zoC0UJf8jWoUQn2CQ40nC6+iU2IwTeYZNCessEyCcgXrBGny1WfMdgLAf/DcUSF0l9mmqiJZRylstFJgFziz0JbuKeZ9ptOe9rntLoxi3CbjuMOHeZ9fQvkkY57kMaH8+K4Mmoco3xkutMNeFIobutt6IMVjQqN8EZLL+FZuwVbR1JNdUlN/aFLx8sOd7AjrjGN0JpOXTMjtDjeclZbMe9AAWyWgwYymXXKS5yz6RAMel70+RgP+fkhYcJXP2stMQaKyS66NAQnV+KN1fS0T/1EJwgaNDQll8r81u8pjfZ89khtKWiKQYUvg//ae5+XVCVJp3obNq1jsDYVkcNelbVsdqx+9uyJ6Ir9KjR20Xv1GDur3EKuj1A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 90315180017
+X-Stat-Signature: ws41xtcwa7ndpgq9tmnnykrpr63g6xdb
+X-HE-Tag: 1788880594-347017
+X-HE-Meta: U2FsdGVkX18MLJdDd0LMtGNEDVHlfCHDRuV4K1cizQVv8fdgyo2+oWz/r3RFhaP/MadNdQK9ZV34WkSdHTtQL+nw3m10aqQ4RtGFHXt3/2MImb+8EG6ERYRjXtEriWFxm0woPvMwgu1Ud/EMeZm+8ABC8LuOvEXQ37LNyvgtim5nCsOH3F+N6m3euVK/53moM6Rouu7RFHAnwXE7nKCgCqubIyb45dH6UBM+gAF6tIylXYKC27ScR68WXh+hzirmTawM8TXR7fMyl+eCmMcROX+OOczely0xWETC1u6fHEiQ5MQ4L9TKrdTXJvTzWQTzU+ZgGgP9Kil+wfZghqyhCeaSqLDEOIrJOStPXhs/434sDYh/dhSgsXVYHRdzemTLW2uzseAqRs0Epad2Bb/TQDXSW+AHtcQ5zYjsKWlo4lTLvpcLqKifkgpvuB3Hr5l00t/hcbdSGp9lloNsCd4DaL3uhU5uuGaEhpNyLUD5rM5CATkhMAJKN1Wb6/OD0ZDMJLYPhafL+jJwPoQI9RZjLiB3AWkVm2/nk+ipEPALUiyktwBlEc4RuoXgmspd/LVzZtri07X1yeeAy0dECbmYgDJr4B0XWtp4GO3l1A6ZuFiUgXbqB7HYZm/zGQxFNQBCbaRWhzi9RFb3DhBH3YjVkziK8F4P/JL4U9ZkOl1Mf0w01cbLQD24YhphSya0Q+HlzDDXvk0IkfjgBt1hQbqkTqMhqHKdCnotpKxVpxYlnkpJeJ2fIgG0PGCAPFMHoiKQUIadioZ7ACTKRoldTKMWdG3n4GRy38+baROr/HNQb0xVieRWR5Lu8cmpXHPQ+v7fhH77Y9L7PbbrVo1whvKdYQ/XDIccBXS3OhVjBCB2NQCoJ00OtBLhucq3FTyDKVKUrSyXqYukym97EaQZxUKBq5uT+q6qMAhEATYK09Abub9jB+Or7blyaeMUanmveNXjXfzgUS5puQX6E6E5rjX
+ mSOK5UqL
+ cHA5r3QGSJ3D/0FMhot4whp1eVqFB/QidmzWVA1xvBShiXTFQZJopCaF/VwC/DhCFNkkNY08d1Pnb2eKP1WAOXW3eX7tMD0JtCZnh/xSriFJn2Cmu5GeHbfAueyKQusUpcuTQsepz/LyVwSOHeIGkhlq23OSaHvU/dmELPpoaj0WNUAfNG7bYUUuUV1axjplU4pqn/WBkGmyPLEMeWlLgKUVcB2ZwfOV4VvIr6EIkH0rbWB5OnYgNljAyIkl6YTyTkdFkdnucLQ2AxvwbUf2AyR/T5di4dEQ4oVf0RXnt6JmRaC/U3wxqolemr6SO8ne8MEq9PTeDxVqs7dONy73G6GQNp3s6H8esQCu4We6OI5lpXqpezQDEMX6BIDEnQfvCtstg8rCLY8MPg3k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,27 +144,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 04:26:00PM +0200, Thomas Wei=C3=9Fschuh wrote:
-> The existing, generic ELF definitions are there.
-> The ELF stuff in include/linux/ is highly specific to Linux.
+On 9/8/26 04:56, Zi Yan wrote:
+> gnttab_alloc_pages() stores xen_page_foreign in page->private. On 32-bit, a
+> pointer to an allocated xen_page_foreign is stored; on 64-bit,
+> xen_page_foreign is stored inline. Checking page->private != NULL is enough
+> to tell whether a xen_page_foreign needs to be freed on 32-bit and
+> page->private is zeroed unconditionally on 64-bit.
+> 
+> It prepares for a future commit that remove PG_private.
+> 
+> No functional change intended.
+> 
+> Assisted-by: Claude:claude-opus-4-8
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> To: Juergen Gross <jgross@suse.com>
+> To: Stefano Stabellini <sstabellini@kernel.org>
+> Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> Cc: xen-devel@lists.xenproject.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/xen/balloon.c     |  5 +++++
+>  drivers/xen/grant-table.c | 11 +++++------
+>  2 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+> index e7f74ea7cd5eb..fdb18348cfdfe 100644
+> --- a/drivers/xen/balloon.c
+> +++ b/drivers/xen/balloon.c
+> @@ -182,6 +182,11 @@ static struct page *balloon_retrieve(bool require_lowmem)
+>  
+>  	__ClearPageOffline(page);
+>  	dec_node_page_state(page, NR_BALLOON_PAGES);
+> +	/*
+> +	 * clear page->private before giving it out, since it might be used to
+> +	 * store xen_page_foreign info.
+> +	 */
+> +	set_page_private(page, 0);
 
-And putting them in UAPI casts them in stone. I wouldn't want to maintain=
- them
-forever if not necessary.
+Who would have set it to != 0 in the first place?
 
-> Also later in the patchset I want to expose the definitions to the
-> tools/ build. Exposing generic UAPI definitions to tools/ is a much
-> easier sell than include/linux/.
+e.g., gnttab_free_pages() resets it to 0 now before calling
+xen_free_unpopulated_pages().
 
-tools/ *copies* kernel headers on a "they're needed" basis. No need to pu=
-t
-anything in UAPI for that.
+-- 
+Cheers,
 
-It's even written down: tools/include/uapi/README
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+David
 
