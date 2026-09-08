@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96A3C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3286C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 04:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A99326B0095; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
+	id DB2066B008A; Tue,  8 Sep 2026 00:27:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4A7B6B0096; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
+	id D635D6B0092; Tue,  8 Sep 2026 00:27:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 938586B0098; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
+	id C78F26B0093; Tue,  8 Sep 2026 00:27:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6996E6B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:21:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF311A03A9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:21:25 +0000 (UTC)
-X-FDA: 85189295730.13.0121933
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A10B76B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 00:27:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43AB31C1FD1
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:27:46 +0000 (UTC)
+X-FDA: 85189311732.02.07FC704
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DB89E140003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:21:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RqqsGDNb;
-	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 20E9E180007
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:27:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rGXTvjNf;
+	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788841284;
-	b=hj3CKWyHm0nqGq3NQOBual427Xi/68ky8o+l5IooVEdkQyDJ9ZJ6yGetAwgZq1uK1U6+L8
-	/yU5ZaSgCTrt4mVfquODSDIaSX3lVB0MVwHfinwjPLHSE7fgqLlGR/78+VNNY8nY1fmYwk
-	3r5wSA40jJ8SLqZsOtah1vyIeVDDHk0=
+	t=1788841664;
+	b=wW0+oTgqr+y9ifkdisGlKeWmjBe+7WQLoN5R0gpnCx7jopN89WE3HbMh2FVnGw6iB/3Br7
+	PhmzcKI4Hvk3b4djJKPKF9hQVOnQ+x+Tkx4acPGfR6XwpIWEHbX25Yjnr8/tGJjaD1pgIv
+	MR+tHYfyigw4cgS5sAiQFlv3UREG8q8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=RqqsGDNb;
-	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rGXTvjNf;
+	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788841284;
+	s=arc-20220608; t=1788841664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5l2GsWMCXIa1zqfwvNfoBsJB+Pcrj54mJBjCGSkGnMs=;
-	b=o6ZULJOAHeczh1rFqKPZC3HrWAZOuqawpyfm+1heiFk2e3dfHsC0SNrvFXqAYc5t6pl1JV
-	P9tNTJ80K1bnvSCI8oUP91xWiQEEO9a0Rj3rjQBX8aTYlaRNWu0E+CGhTkkB4/972XZ4kI
-	pm8hk/+lQM8sCzURkR3u8A4ocMr/xyM=
+	bh=54x+ic7p5AvLCn1WaDLbC0t3N8vsMYyzJxRLU1kfPPg=;
+	b=XSzT46qRzduhWI7J98T/dVglyeEcLcv3KLotPH1FL9IOHMVsc9UpSkAdzeS7xrwRZAtAyS
+	z3Epf1r2PJa5uy9evS83c71iBu79iwBJx5w8jepOAbY72wpqp+tXa5IiGMbzJ7eRrFVRtb
+	l8MkCQRZAfgzEL4UpMpWXrOjACo/PK0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E71921476;
-	Mon,  7 Sep 2026 21:21:18 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 520A93F528;
-	Mon,  7 Sep 2026 21:21:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 847191476;
+	Mon,  7 Sep 2026 21:27:39 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A8713F528;
+	Mon,  7 Sep 2026 21:27:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788841282; bh=K0Wlf9u1v8EnKIQ5AhyaZte4Iwg0VOgbEUCSHSr2OBY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RqqsGDNbNtoGF8UaRD/lb3640ii0GOwPaqfaV9OUSkpZ8Pv7s0Ig+sx0ZF2WElmJL
-	 QGEE2st8jPLsPDEvCKixIHnvUwWRf3ky8NfQXwxbdzy1Pxg7G7hl8TrxYDz6qOTfHf
-	 UCxTossPmCnXFlVPRAx55tMMlqTM3W75gCtjdI+c=
-Message-ID: <943faa15-06b8-49ce-8b91-e4c1e2f22fa2@arm.com>
-Date: Tue, 8 Sep 2026 09:51:14 +0530
+	t=1788841663; bh=hQJkvNi3bb05p4k/wBr7hrOWhHO3OdgSFqaZH/K7Pio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rGXTvjNfsjYZ5xTnn8tyhlFX0kFcSi6jAtuHU6+/Kt9ZQdNKwjGhAiOza7Kt7ZXc4
+	 OUH3+1Dcia4bBZrF+87mn/ntKj0rOAVUloAmgg/kSoQk1iBamIQ4a7CUcJKuhm1cqU
+	 bUgvStjtQYXc+HMvAzXwFeJ1V9ac38ruBW8clF84=
+Date: Tue, 8 Sep 2026 09:57:39 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] arm64/mm: Move __check_safe_pte_update()
+Message-ID: <afwvof4qixu5rzkgnpj272ntazog4zpdm6sietwugljizmtmel@q7ldx23yngl7>
+References: <20260901065454.1906343-1-anshuman.khandual@arm.com>
+ <20260901065454.1906343-2-anshuman.khandual@arm.com>
+ <a70e45cc-dbf7-40da-81e8-ee6055f2692f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org
-References: <20260907081509.924979-1-yeoreum.yun@arm.com>
- <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a70e45cc-dbf7-40da-81e8-ee6055f2692f@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 20E9E180007
+X-Stat-Signature: qucajx5pjzr9co5edj3ynk6f1idiipud
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DB89E140003
-X-Stat-Signature: p8tdgh6kaf15ugbidp8f5wxbha1xqubz
-X-HE-Tag: 1788841283-93083
-X-HE-Meta: U2FsdGVkX18/8K33bY+QxXztR9AcUdQA+Duy83oLU9J7zOxUVLEXw8zwEtEGvkoqAVECNEUu6KVO0iO5h7hMjFXbe3BlOtpyA28k3p6rJkiginBXhWr3n1yD2wz3ZWyzZiylUObf/smDALchQ8h7QJO8WFJI6/nixyWUtTG/gKMd3LTVQSW+voDSkw3XL5Atgsq6CY7w3TCBCBnb1Rk6RB8hpp1MNabygpgf61uRG1BuqB4KiyI3JSbH472LG0ucApr9y0M0HWV5KMvlahk8qgbw1iiUirshTKKegyz/RnHz1HTSk2VzuR3xgn0rngdR+hRqDr9md+ICFk+jiZXpji4/EZhLwMlEhssB4ue92kqk5srGYNlvfG24k1Jfc3xIFLOKaIfHvARDq3ZT1OhyAj+bCP3qk/MWLZPAd8GWroRecErbfqDWKacQVA7o9sGuGipNaAhhScxwszE4nKO0n8J1IqQRpJySCi4gwWiTi751KfJOafczGUcisIa41AXFmv/yrVSUYps7c+0QKgXA0PEeD5C/eEFMsMnGuGGjQQWDqrgae9svfl3b7en+bnd2tqJBiD2xl8sVqSA3+TupLHV98mhJwvRpT+rNMAHEkHffm8PXraTSxBLoumWT0DyermUBs0QVcHoGnhi5BIIONmmAx8PCE34h6BZSaXv8afI8aLxv6TBIzi4gVQuyRfF8PrKClh5MAE8k7m4STCDF5iQS1PcZVMyDFnumZsa821nZPqCyrS1g9ntks22lTovQw6DbhnOX2QdzNj28gfbi+y96Mbs/rBosDcm5vZeWcKghqXgVQCi2yUovTDw/8yNeRxAQAYz1Wt2MJns7+ggPZqLJ2CqizbPE5/yhFZh7+vQQz6jLvDXMEs1PA1knT/oLzP1NxYoVq1HEx4Bek/qaBAfSBEB2dDHxgGgmC656sdnr10yOkYQazMXzOAPLcZALSB5v3uDxYUp0F4NHtJw
- 40txxThC
- RqjuEbVsIsc2lGZRWOGCrQyEq5LoB0NiEho3xt5zE9DSuAdegWIc6RQC6agVw/33lLEO0wDdFeRZorwzWBhLiwezQAi1nyJ+/FYjdsv3hYAkyXFeCikQDL67p54LnFIVc5p85wU5QzLhI4i15VJPUgxAfBZlV4PDG6YbMP2xJGI5Fxnj1exQF+jDEBLNt06sUNQVDqhcLqs4LlPsVE6lyBQw1+NCM7rQQAzqnEYphkX0tS6vTWAckRpMsjIQM+dUWZFRjnmvXrs1eIx4K4YD+laTCbs1NG22vPr+zIj05HcMLTUPxaKH0q+/T1D+3UuN4FeUtlhY/M1Q6P9r0o2V6xvC5ZqEC56Kxb9k2Xw/6hVKu/awytpkA4ygDmg==
+X-HE-Tag: 1788841664-394994
+X-HE-Meta: U2FsdGVkX18HkBWk+ir/zp48bF3ipCjMHk/5vy2YGYwf7nkOsQRnNFZy8XUQtJpmqNAW02yChU+RZAIGFwt3yaAKCsuppBY8jpT3FNKoCnbHE7sozNOmifYDc2YbUMWbo/5GEFMXlOMFBqGIc3qeKwxdyL7OYPOcD7v80PuFmx8KuhwWOKxcP1j78rP2yQzpd+yhiSNFlWYJe811yW3bU7LFzLhlEX3y/lkC1ymTdPHvi/SDpD84rlFzMOQZXYsH404R97rMs7rEjGaz5qP9p8K0boT6yZZlRDD5bi+nRymHu0RKa2FdSIK7S0FvnWy9AA1y+vtHG/zo+9YtiB1A884W/DtLsXHGw6v4GARCwZs1z3OuwYw5t0ZjQTdHcsnWO/Qa5pYNxjmAIZiVExc9IlCyct9oh/ADgz6BbFvLyThFf4p0tjg9KGVW+EJ6UWbE21+lnsH796VIryEBm9f9ZLLSoEP1pYsimKbtWOcnxxE4Vhy1uIjt7mLk7zsgCEBPnTdDo9bSktQ9+r9WdS7nqckTkuDowt2qN/MPQbxjfrLHPFnnPnsymhtK9FtSLYqVIrtOBicMVJ83Wlob9j5wUh4rVseuxSlHSH3qJyG6dp7cp5sMMIZQSJJeTECVNdAG063ZAALWMbafv/LyYwYj+Szl0Na7XJq2+oE5D2ypqdVGGGTXAGM6ZXPLZej7H83b6yg5slFFXshMobRpf8fBzm+fjx2EJB/hYsjfsXI7fcHMxLqE9O8AvT20DlN43/AMW3XuIypN4f76xi2/7+LPEcQlga7Deqw2gURwS5WQhmniEHktvZAg8HadNziLIR5aKLX2Elzvgu+qe0mqo3LMCG9NPDtXFd8GbCyIy0t2ct05cuuFYw7PcBTjsY0xmpvTFaE8o+eqKw9L/lYiDXBm0n4XkfATLWce3ZDU9WHXJLk7CgMPn5sNdNkFC3+w4paD6HG8bvo7kTcCWCghNxf
+ LrWJZOX+
+ LCRqGWvj3rlRciRjmDQAA49R6i1UrfmuE7Ghdnuzz7BzI5PnOSSHvG7MVVLdBJoNyTGt4BMAtDJvy6oxxijrN+b0ly9dTWgiR3SZQno6x1dSRCuIDj/kraZruqqfwK2Y7CVx9ZyZjmGW9tqiuC1yt9OSLA+bXVen49wEETCgSYadqmDIlEJlrxdH2enK/7wx2ArjmgBEdyC+xAPljNkvLbAboDnLjhXMTcAtew2Y0yTrM99LhyJrphX1KgaMyXngqHpY30A+0n0GKmpIs3mAAijFs4I0Y+YwPPz5YgHfqyklzO/OjSdqwXhOy8m73OHmSMWZXx5WBon2y/RuL+TqcTSZmYjio0EIVoAg34f0cIDX2kOsSE5QxtXNyROSF31wtNNRbzRSgaBI+zfCl+J0BCf2pb7BM+H6y01sfXVJFRApce/EmSMb/jLe3G62YPkIBNrv3/03VVquMRdFnupVeZXTxjsuZJx5P90/C0yI96QMWU3Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,78 +91,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 07, 2026 at 05:48:18PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/1/26 08:54, Anshuman Khandual wrote:
+> > The page table entry print helpers and related macros which are defined in
+> > <linux/pgtable.h> will not be accessible in platform <asm/pgtable.h> which
+> > is basically caused by cycling dependency.
+> > 
+> > Move __check_safe_pte_update() inside arch/arm64/mm/mmu.c as a preparation
+> > for subsequent usage of the afore mentioned generic MM helpers.
+> > 
+> > This does not cause any functional change.
+> > 
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > ---
+> > Should __check_safe_pte_update() be wrapped in #ifdef CONFIG_DEBUG_VM
+> > along with dropping off current IS_ENABLED() test. That would ensure
+> > the function never gets called when CONFIG_DEBUG_VM is disabled. That
+> > will preserve current behaviour as the inline function gets dropped
+> > when CONFIG_DEBUG_VM remains disabled.
+> > 
+> >  arch/arm64/include/asm/pgtable.h | 47 +-------------------------------
+> >  arch/arm64/mm/mmu.c              | 45 ++++++++++++++++++++++++++++++
+> >  2 files changed, 46 insertions(+), 46 deletions(-)
+> > 
+> > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> > index e89ec5f4787b..61fbfab3e06e 100644
+> > --- a/arch/arm64/include/asm/pgtable.h
+> > +++ b/arch/arm64/include/asm/pgtable.h
+> > @@ -387,52 +387,7 @@ static inline pte_t __ptep_get(pte_t *ptep)
+> >  extern void __sync_icache_dcache(pte_t pteval);
+> >  bool pgattr_change_is_safe(pteval_t old, pteval_t new);
+> >  
+> > -/*
+> > - * PTE bits configuration in the presence of hardware Dirty Bit Management
+> > - * (PTE_WRITE == PTE_DBM):
+> > - *
+> > - * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
+> > - *   0      0      |   1           0          0
+> > - *   0      1      |   1           1          0
+> > - *   1      0      |   1           0          1
+> > - *   1      1      |   0           1          x
+> > - *
+> > - * When hardware DBM is not present, the software PTE_DIRTY bit is updated via
+> > - * the page fault mechanism. Checking the dirty status of a pte becomes:
+> > - *
+> > - *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
+> > - */
+> > -
+> > -static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
+> > -					   pte_t pte)
+> > -{
+> > -	pte_t old_pte;
+> > -
+> > -	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> > -		return;
+> > -
+> > -	old_pte = __ptep_get(ptep);
+> > -
+> > -	if (!pte_valid(old_pte) || !pte_valid(pte))
+> > -		return;
+> > -	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
+> > -		return;
+> > -
+> > -	/*
+> > -	 * Check for potential race with hardware updates of the pte
+> > -	 * (__ptep_set_access_flags safely changes valid ptes without going
+> > -	 * through an invalid entry).
+> > -	 */
+> > -	VM_WARN_ONCE(!pte_young(pte),
+> > -		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> > -	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
+> > -		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> > -	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
+> > -		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> > -}
+> > +void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte);
+> >  
+> 
+> That implies that any __set_ptes_anysz() will invoke another function call that
+> will not be optimized out.
 
+Right.
 
-On 9/7/26 8:06 PM, David Hildenbrand (Arm) wrote:
-> On 9/7/26 10:15, Yeoreum Yun wrote:
->> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
->> When this macro is used in some test, test result would be strange in
->> the system where PAGE_SIZE is more then 4KB.
->>
->> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
->>
->>   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
->>     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
->>     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
->>     ...
->>   ok 1 Completed
->>
->> Remove the HPAGE_SIZE and HPAGE_SHIFT macros and introduce pmd_page_shift()
->> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
->> helper, read_pmd_pagesize().
->>
->> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
->> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
->> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
->> PMD-sized units, the test may fail with the previous size of 100 MiB,
->> which is not a multiple of the PMD size when the base page size is
->> 16 KiB or 64 KiB.
->>
->> After this patch, output of transhuge-stress:
->>
->>   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
->>     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->>     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
->>     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
->>     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
->>     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
->>     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
->>     ...
->>   ok 1 Completed
->>
->> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->> ---
 > 
+> You should likely keep most of __check_safe_pte_update() in the header as an
+> inline function (or at least the CONFIG_DEBUG_VM check), and only move the "slow
+> path" code.
 > 
-> [...]
+> Alternatively, make the whole thing #ifdef CONFIG_DEBUG_VM and provide an empty
+> inline helper for !CONFIG_DEBUG_VM.
 > 
->> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
->> index d09f9f6a384e..24aa1de27c25 100755
->> --- a/tools/testing/selftests/mm/run_vmtests.sh
->> +++ b/tools/testing/selftests/mm/run_vmtests.sh
->> @@ -360,8 +360,8 @@ fi
->>  CATEGORY="memfd_secret" run_test ./memfd_secret
->>  fi
->>  
->> -# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
->> -CATEGORY="ksm" run_test ./ksm_tests -H -s 100
->> +# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 512
->> +CATEGORY="ksm" run_test ./ksm_tests -H -s 512
-> 
-> 
-> Why the magic value 512? (desrves a comment)
-> 
-> A clear sign that the ksm tests must be rewritten to be standalone and just
-> handle this internally. @Sarthak
+> That's probably the cleanest, because performance with CONFIG_DEBUG_VM is not
+> really relevant.
 
-Sure David, I'll work on this.
+Agreed, I had asked exact same question earlier as well.
 
+> > Should __check_safe_pte_update() be wrapped in #ifdef CONFIG_DEBUG_VM
+> > along with dropping off current IS_ENABLED() test. That would ensure
+> > the function never gets called when CONFIG_DEBUG_VM is disabled. That
+> > will preserve current behaviour as the inline function gets dropped
+> > when CONFIG_DEBUG_VM remains disabled.
+
+Will fold in the following changes.
+
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 61fbfab3e06e..281a512f1fc6 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -387,7 +387,13 @@ static inline pte_t __ptep_get(pte_t *ptep)
+ extern void __sync_icache_dcache(pte_t pteval);
+ bool pgattr_change_is_safe(pteval_t old, pteval_t new);
+
++#ifdef CONFIG_DEBUG_VM
+ void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte);
++#else
++static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
++{
++}
++#endif
+
+ static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
+ {
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b5de4095d650..26f4cf7b753e 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -2408,15 +2408,13 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+  *
+  *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
+  */
++#ifdef CONFIG_DEBUG_VM
+ void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+ {
+        char pte_str_old[PTVAL_STR_MAX];
+        char pte_str[PTVAL_STR_MAX];
+        pte_t old_pte;
+
+-       if (!IS_ENABLED(CONFIG_DEBUG_VM))
+-               return;
+-
+        old_pte = __ptep_get(ptep);
+
+        if (!pte_valid(old_pte) || !pte_valid(pte))
+@@ -2442,3 +2440,4 @@ void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+                     __func__, pte_str_old, pte_str);
+ }
+ #endif
++#endif
+
+>
+> 
+> -- 
+> Cheers,
+> 
+> David
 
