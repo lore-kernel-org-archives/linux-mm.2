@@ -4,103 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533FFC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F268FC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78E4C6B00A7; Tue,  8 Sep 2026 05:12:27 -0400 (EDT)
+	id DA9686B00A9; Tue,  8 Sep 2026 05:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73EBD6B00A9; Tue,  8 Sep 2026 05:12:27 -0400 (EDT)
+	id D32806B00AA; Tue,  8 Sep 2026 05:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62F926B00AA; Tue,  8 Sep 2026 05:12:27 -0400 (EDT)
+	id BD6F96B00AB; Tue,  8 Sep 2026 05:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 42C946B00A7
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:12:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8955404AA
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:26 +0000 (UTC)
-X-FDA: 85190029092.11.5680DA2
-Received: from mta1.migadu.com (out-145.mta1.migadu.com [95.215.58.145])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9BDA040007
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H5b7n2t8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 963BF6B00A9
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:12:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10CA8120446
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:51 +0000 (UTC)
+X-FDA: 85190030142.17.7D09191
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8DC31120008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of johan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=johan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788858744;
+	s=arc-20220608; t=1788858769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XZu7aifbvatTgEqnvJnf1R0X/PHnQuQQyNt48EL1Sg=;
-	b=olv1cTXBPz1w6IM3NP/BYFvyLUusd3AyaSMx1Oj8URw7epOFxnzb3aCJtWRwlP9ufRsSjM
-	oRcmQDHn3a9c4T8Brgpp7Y3OumnY56eP86FFMoMRbqN8ezeFPx6iLy9eVMr+8sEYKiPTqp
-	l/0iVAOH11HBr8FNCMWySDjecSG4Teo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H5b7n2t8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NXUtrGqErAmBSxcAGqtzyGSPC03D3coR4YjaucbkEHU=;
+	b=yqAOyE8F8S3EH7KH6R4vA4Z3YuPlq9ZhQzSMPw7MiU6QUue90Nhib3jy7zbkaKoQ6D9cD/
+	ywrJoYqUEl5q//n2Q5UATXlO8ALl8CcvmJgjn4poNoxvxXRksCnBbJEQw87kyeKgBKCf4D
+	0R6aYGn32ZKUkqXrKhZ9p+0+AB942wc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788858744;
-	b=3/oIFGCF/NGlHNsSz7rMbeWtw0O+WaMJKFU7hFYIzLscFnmSo56wMSruWN/lV4XLJl9XfN
-	lbj8e5IpayZRWwXy28SrGApmZcJub8WWiLtdJ+aYNjWhqAFozakgv8CN6hLTfKJWN6Fin5
-	huEYqB93rIGNveY6ufQzg9rh7Ep6f2o=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kxPh0WuMikjVIxMhGlyVx6DHT10KZS3T52C5dULvHFU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788858743; v=1; x=1789463543;
- b=H5b7n2t8xEX7kB8ah1JxYVFXls5FQ2H1W8P3YqZqEeS1p5LmhzsbDAaSEaUxFa0y5wSwH1C+
- eUTJ6GoDjVhtEoBiBu9Cxf3XlEiZw1fWTV+Zw988vIV98UUZoZrjg5w+qJ9l7XZwZkMHaYpP1VQ
- rWWwPJHjD9AG6CFF7XB2SgQk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id e6379ba285176541;
-	Tue, 08 Sep 2026 09:12:22 +0000
-X-Mizu-Trace-ID: e6379ba285176541
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH v2 09/11] mm/sparse-vmemmap: drop the extra tail page from
- device DAX reservation
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <f2f1f7e4-539f-4385-a28b-1fde074cdeca@linux.dev>
-Date: Tue, 8 Sep 2026 17:12:07 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Jonathan Corbet <corbet@lwn.net>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EBFFB66B-86A5-43A2-95B2-37964D7D753C@linux.dev>
-References: <20260908030335.96549-1-songmuchun@bytedance.com>
- <20260908030335.96549-10-songmuchun@bytedance.com>
- <f2f1f7e4-539f-4385-a28b-1fde074cdeca@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Stat-Signature: ypup674zmm8fzbbee36zpuumk78ttjp6
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9BDA040007
+	t=1788858769;
+	b=JVnZs6SC4J0ZTXfgIc9hshyEFIKS1Y1h3bwW5hZqM/1kIPdPTlLgXd0AQoo1hSSlkV+L5m
+	ezZ8O3JeHRI6HEojssw8QEiFTj/NPrcTIkmEQ5v7pioxZsX1ulMHlwUUfU1AbiNM/uZJO7
+	8AnnUtBQEWirFG877nsvEkty/MGVo0E=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of johan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=johan@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 085E360AA1;
+	Tue,  8 Sep 2026 09:12:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89C01F00A3A;
+	Tue,  8 Sep 2026 09:12:48 +0000 (UTC)
+Received: from johan by xi.lan with local (Exim 4.99.4)
+	(envelope-from <johan@kernel.org>)
+	id 1x3rsU-00000001HWH-0VlQ;
+	Tue, 08 Sep 2026 11:12:30 +0200
+Date: Tue, 8 Sep 2026 11:12:30 +0200
+From: Johan Hovold <johan@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	accessrunner-general@lists.sourceforge.net,
+	linux-atm-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
+Message-ID: <ap_Rfkrp73Ify53T@hovoldconsulting.com>
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260830-usb-v1-0-aa349c302246@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1788858744-249804
-X-HE-Meta: U2FsdGVkX192Qs7zEEORmb+Sc/6V9777RJCsnDRxh/WMrcSo6Fu1hFdQBV7/66i1mUfs8cVENnV3QxpjGYSRlb1eepsrAkSOZYIjvi3DWPWEYhGGq0jFTI3L1dbCYfaE92k1o/r2jHV+uVVldpelpe0p232vkPK1H6Sy4utUuFW40dppSScQ9Zc3+CpcWN3/d+Sp5P6Ow+rZP15kl9oKr6oHL2e2iif3IuZHTQ5jPQOXWI3iQGiLdwqwYCzuWL0Dj9aARw+ruOVBRk/lQ5knqn/hrS+Bg1JpeQahOwqarY4tVR5QtF2OAsbH8NhmZLa7YPzUm1LJT7rD6xHV2plesZgPc53T6D2qlhesds4ia8Y5HKyKXzJm49mE2XZ1rwRLxGqeS5V0oIWM3ODwJkUSSRg8FwtKtvc43OegpQVAZeO6hcLLreF1e3ZjxulNBLLqSvYowf3WHKrIqvnp6xuYXosUut4rCW38eNTu2WtCo+kgcT9XtSfSUU1gSnNZqCk+UdL0TyfdhxtkjmDwd/EedY8AMQNsohUdRvc013Luj5tJKlnj7/MJaTD86MOdZUFV8V2ta/HqDr1eYaTSfAJ5hLhOC7uW3y28n2N403lU4gfdye6bRpHE96hXVrcCkGCRpb/t1GA/fYrOIFUZu1/4A04zRx1vt3wjlBdD8QvtcBvS+IXygNIUvuiwIOMgzSBvkqnO47T0uqqHb0XtD8QCNYcxGAA7Rna+PTz44icYVg3/1GZ1Ni/YuzxpUzrCVvLBkkzTeYZkXvKDm9roXCbIf7pMNWzUoR/fS8Urc/3biJ45KuFUIqC09f5hxtrj6bluYxZdCgfnXOhYGid8A9+nVh6nrOpN548IqGkeZ9Pm5mwQvZx8JbDFLfr0cLAaEezTxCugbrBCCNtdUU75JN62KRN7DiqNKRZHvDmEQjszi6yanV91lcVrbF0a9ZBwruNud28DEJ+iwe2ZPGCSvoS
- qhm6yYW4
- zq+Eq/6wPyTfgAn4esfYhE8FaP6keomFft8AOVupyqYtlpao4Tw13myVa6cnMMFObaH8Y4pEC2+GCDnMPcWC8T9toJZi84NRntlRtk3BxBCdnH3XOYPiGeBynRXEKqDWFXRps+bCzyt2A38rzQj7C0sdO4BJpjVPfwVjgImRCHk3NDUAD7fVUlAgT/cWkdtVTMtWVbek7G4m8wAvvaeEQc+UXr33SOAhgHsRo9077UipK+IxQAltlbJWFf1cEJmtGmhTOuhWQyfQsKqRZgRpbP57LCyX1vO2SbajpmeY8lNMV0ghLUl+iObe/1HB6Ml6FnMJ5atJhYUKxBxWMautEz/bKvsOp4AE+aA/x
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8DC31120008
+X-Stat-Signature: qc1bsnhqi4pw98odbuxofjm5ph71r8y5
+X-HE-Tag: 1788858769-406099
+X-HE-Meta: U2FsdGVkX19Ng5c00uG9EzE3itJO50DDX5hCFY+w1L/wFn/c4AxoK03tNfzqyB+NSC/OE3jDZzLoBNUf4r6/eMX7LEu94kVAOF3LYVQVMyO/ZCl1u6830cyjXKYuNG+Zig2aB/F5SGnMIyyrGn/qETMzIuLr/H0iHXI5hb0NK++cvjKPIaVdhsge3C+3lqtpQUBGZPjTlkyoLNHNxzv3WAW8xbzfAdZ18leE9oh5hLoDkCPkEGxlTtAftvWuzSLYy1ufQuMhwZMNKBNGBRa/M75ky0wM7IDXCHBFpXLjpxKEE2WyIdtpx90k1m6pVAHkJkPjJptM9D7WzJ8dxpoOeAAIUQqHyCz0bkk1sU+TVWwhaRMnRmuKDTQXLFhPYtpV1WGOvXAyITR38B/vmPs8VIreLA97g8oRgh9Cu+xcVpRHvWXrhkDP5dci9Yi+kJsAgm0bbcGUB1+2qOFzd/6Tv0IgyHHh6x8UqBgETFYXBoxzEXmgNalXlUUfBSiLF15H8QUSHfC6qE04XhzrWvKIRjjwy0Jp25oB6mzIPPUQb9iK1XNLkbFntWBtVI5Pwd1quWMOGtHly434Q42Zi0+SpRfB0T6iCtEiC2lBytxEF/0yMC673eHNIPdok7F2AOuoaFVGpIvg2sjA+6umuLDrWdYjNbv5SrVzY3gomUldFynuycWOhaMuftdcSyOBuyEsvTMabLPods6XwDFi0FkRzZM3QksrVG6igufQyqY3SBeDqJuByYTWyw2LNxk8DddTqjZC5j8q3uLEYjV7w90etXJl2qwf4WJUbmyTepqT8OFWRgaMPULnj5xBM6ZwBJZZZEVDfaOPPENbfa0/nTT/OEnbTrR37dCk/5ofya/CtU93JoAol0N6i7P4GGJIHal4+akBJv3mxP1VtTABpOkW2wdEkBeGW1WBpBjKEbqh3SlCYPhbLURyEFEJClDiFqJhrW3zhbHF8K8uhpLzSow
+ Wl+NrCvx
+ v0BhXfuREgAiiyY3VP9JBKAooxIT44EVVvmdZYHkH3kJ5AES1U5oKhNQm8tvJLIlSy9k968h6qHg2XCANMQ2RdEhkG1punh7t87NzDZbKKSp4qscGt7HGmX/1gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,62 +92,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Aug 30, 2026 at 11:10:36AM +0300, Mike Rapoport (Microsoft) wrote:
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
 
+> Mike Rapoport (Microsoft) (4):
+>       USB: usbfs: replace __get_free_page() with kmalloc()
+>       USB: cxacru: replace __get_free_page() with kmalloc()
+>       USB: speedtch: replace __get_free_page() with kmalloc()
 
-> On Sep 8, 2026, at 17:09, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
->=20
->=20
-> On 9/8/26 11:03 AM, Muchun Song wrote:
->> The device DAX vmemmap population still reserves one extra tail =
-vmemmap
->> page after the head page.
->> Drop that extra reservation and let the shared tail page cover all =
-tail
->> vmemmap pages after the head page, so DAX follows the same =
-reservation
->> model as HugeTLB.
->> This reduces the reserved vmemmap pages for optimized DAX mappings to
->> one and removes the now-unneeded first-tail population from the =
-generic
->> and powerpc paths to simplify the code as well.
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->>  arch/powerpc/mm/book3s64/radix_pgtable.c | 46 =
-++----------------------
->>  include/linux/mm.h                       |  3 +-
->>  mm/mm_init.c                             |  2 +-
->>  mm/sparse-vmemmap.c                      | 13 ++-----
->>  4 files changed, 7 insertions(+), 57 deletions(-)
->=20
-> Looks like sashiko's response [1] is a false positive.
->=20
-> [1]. =
-https://sashiko.dev/#/patchset/20260908030335.96549-1-songmuchun%40bytedan=
-ce.com
->=20
-> __SetPageReserved() in vmemmap_shared_tail_page() marks the struct =
-page
-> entries stored inside the shared vmemmap backing page, i.e. the =
-metadata
-> templates that later represent DEV-DAX tail pages. It does not mark =
-the
-> struct page of the backing page itself.
->=20
-> On hot-remove, free_vmemmap_pages() is called with pte_page(*pte), =
-which
-> is the backing page. That page is not reserved, so the teardown goes
-> through __free_pages(), not free_reserved_pages().
->=20
-> Right?
+>       USB: serial: wwan: replace __get_free_page() with kmalloc()
 
-Absolutely right.
+I have applied the USB serial one now, thanks.
 
->=20
-> If so:
->=20
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>  drivers/usb/atm/cxacru.c      | 16 ++++++++--------
+>  drivers/usb/atm/speedtch.c    |  4 ++--
+>  drivers/usb/core/devio.c      |  4 ++--
+>  drivers/usb/serial/usb_wwan.c |  6 +++---
+>  4 files changed, 15 insertions(+), 15 deletions(-)
 
-Thanks.
-
+Johan
 
