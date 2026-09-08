@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33E2C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34762C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61C06B0099; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
+	id 4FBFB6B009D; Tue,  8 Sep 2026 05:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11296B009B; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
+	id 485D46B009E; Tue,  8 Sep 2026 05:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD98C6B009E; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
+	id 375166B009F; Tue,  8 Sep 2026 05:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9390C6B0099
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2AA24804A4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:00 +0000 (UTC)
-X-FDA: 85190138880.03.EAF928D
-Received: from out-2uec-a117.jellyfish.systems (out-2uec-a117.jellyfish.systems [63.250.43.117])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4AC77C0004
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:55:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=KM+HATLl;
-	spf=pass (imf10.hostedemail.com: domain of hi@tychen.cc designates 63.250.43.117 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 187B66B009D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:56:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4A49404EA
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:09 +0000 (UTC)
+X-FDA: 85190139258.10.4C314EA
+Received: from out-2z4y-a139.jellyfish.systems (out-2z4y-a139.jellyfish.systems [198.54.127.139])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CBE8814000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:56:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=R63crrGc;
+	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.139 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788861368;
+	b=bkc/ZNiaXDjStL10x4bSsNpxIfrSVI4DwZT0myHlKe8GjKkDpL4y6fUtzlYQLW9XxgxCsw
+	l/L0nmplc2LPQLY1YISpPkUdB9wKdYyp2Gyx5RZtBP2dRh/EtZJgxCROUSZ0C1GT6BQFkC
+	reX/F+1F0QrE+Z+MrxywGomptk7Aqys=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=R63crrGc;
+	spf=pass (imf23.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.139 as permitted sender) smtp.mailfrom=hi@tychen.cc;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788861358;
+	s=arc-20220608; t=1788861368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F3A3Ti8zHULaJXvRQhe+IOMxiiKMtUoHgOGnDhRSZ4A=;
-	b=BLVtG2MDkNo6EUPe2HzfVVgRrU+rWY/eZk7wwGiD8A4W296xqK8s45AXzMVoWzMYBNchFj
-	/+d3QXYNJ0FcejwtehQ/KSBoqb0vGpo9YHKliKftQixQ49zrBCZt1d/+LCpF+hMziaJaIX
-	7ll8+jUKH8uRrotk7vWVGkgkq2psf4g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788861358;
-	b=UbQDJUr6BjqLIVF2/6VofCGdhhwjdI0UmFx6kgCTmLD/kv3klgCzooiaeTUl1NbGcn0yix
-	ZJ1rYjhMK4efpSu1Kn7EHF67Qo3LeaSTLWAOM4p/MUlyP267clghmzNP+GFAKwwP1BOjbX
-	K9Dj3uS2CeB2UI20NcsKRpFdiHPFU6k=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=KM+HATLl;
-	spf=pass (imf10.hostedemail.com: domain of hi@tychen.cc designates 63.250.43.117 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=none
+	bh=QYyjaZaYZ0ulE8KGtDF0yY+jHdpZ4CwTPAi26ZHz6sA=;
+	b=0BbvbN7WlnWhl77vvdh6LyvTPFPR7o7/WAjUQFRTu7XXf1kTiYGe1FDWYXVW+CfbaQ2njP
+	xZ0QSx2x+YOgE1U9QROsxXdU79/sSgrd+j1FRU8IAIPPbsXoPPSQMnemtB6HYrt/vkdn49
+	klZxf+I9fIiF4C6Iqapt8zbittWMSRc=
 Received: from fedora (unknown [69.5.53.41])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hfK7p3czFz2xMb;
-	Tue, 08 Sep 2026 09:55:50 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hfK7w4gBbz2xMb;
+	Tue, 08 Sep 2026 09:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788861355;
-	bh=F3A3Ti8zHULaJXvRQhe+IOMxiiKMtUoHgOGnDhRSZ4A=;
+	s=spacemail; t=1788861361;
+	bh=QYyjaZaYZ0ulE8KGtDF0yY+jHdpZ4CwTPAi26ZHz6sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KM+HATLl/00pp1TKFH+uuYnLDrMWkAQhZAz4OLB6hGUg/JZF04lHzvDhuT8w62o1b
-	 wpYFKfZLv82MXPqka7i99mVNrSCM+WAKrzPdWu9EjoAXArubeRPSPKVPCIxiQ2bfYt
-	 qHaVq/KoSiZ2F/JGwb+oAAylwdIZJm5TCk5ceCcCU+/MYa5gjpaFXQsjh6SrBWenSM
-	 3v5iKsOb+LL/A4Q/AVnhEg0fHUuE0TBAqbGx4uoNx+id3l6O4KAYyFzWIrpPMOYWjC
-	 puWR+mpAIflz0/mrPeOi3whEqXIUKorEty6qBzxx4KHni4kOgep7U2HqkG9KDz/t62
-	 HhNugY2aKGL/g==
+	b=R63crrGcCdkrcwXgLHdaG7kwwuC5O0uz1h6frkTokYuRe5xFYw6zJucYF/YYS/ftN
+	 kzWyjwF4DfLa9Pfzp+w3I0AWRtAslwmkHOjfoyKtl4ZIRbyO92d13DXdJ4vAe61yD9
+	 mLBg+AzvRQcuotLnRq0LYy9EH1xH005O4aqYZhTIEsCv2Z/HQQpxPLg+RdkHMu5dI8
+	 fUgwEFBpSEpNkUdmLbRL6wned7RO5MYjU9IRDv1LWb78bWs78Bshzm+97QT8oatrx2
+	 sbb4vs3pL14/jU+970eaH3l3iQ2+wzPq5SGAd7E41aXRVPTu/UAe95BrLpD1xEV5KM
+	 PuaOFQ8EMFG6w==
 From: Tianyi Chen <hi@tychen.cc>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -73,23 +73,23 @@ Cc: shuah@kernel.org,
 	linux-kernel@vger.kernel.org,
 	jsavitz@redhat.com,
 	hi@tychen.cc
-Subject: [PATCH v2 1/2] selftests/mm: Reject invalid test selections before running tests
-Date: Tue,  8 Sep 2026 17:55:32 +0800
-Message-ID: <178886112560.138404.14562368683011041790.mm-cli-v2-1@tychen.cc>
+Subject: [PATCH v2 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
+Date: Tue,  8 Sep 2026 17:55:33 +0800
+Message-ID: <178886112560.138404.8930658836608223518.mm-cli-v2-2@tychen.cc>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
 References: <20260906135444.749144-1-hi@tychen.cc> <178886112560.138404.1278745290043112298.mm-cli-v2-0@tychen.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CBE8814000B
+X-Stat-Signature: 5khmyn6ypygy3k1ey8sc8ai7jxttk5z3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4AC77C0004
-X-Stat-Signature: bk8uu4bp71pr6ben5ffdfeeboupox17g
-X-HE-Tag: 1788861358-428991
-X-HE-Meta: U2FsdGVkX1+YUgiIgsAEdjwhNtSwUPa9M0g/WsyqC5Z48kVEE95G8RwnpgNK6yEAxmwxf3cTNFEsJYXw+3BLdRhcUevFhHVBPF+H6M8+WPs+ZTFP4FlR8E42YwicErwA20zcIbFOfbn/jjOZ1lBQTBB3Sv7HbuwwS00tCJiziV6rsap4p183dTG4XaQrkQ9Ht1HQHthgIFIKgxRtBjJ2CXp7WXOcdfhyXGmG3B9Y3qSIQRzfJ5y0BdAnTUC3/VQqlm7AhhPHBdI05GomdCSICwnYaK8RZL1Y9ZLkZ4FoZXXUKc6fu+5mV2zPJhl677w1fBLsMKfLqj7xSY4dpgGeWE1AHBYbigLWh0iMlRRBRIdewDyM1q8773lkuARJZlIk3iwAzpp041EQyNApcAqC7w2eBGk5PrZvp7DOs5VUjagQ+X8NYTBcrz7Mtt5X6OCChpzAAbe5bAnWPPvZ415WV7PvMZe2wi3rBmNDV+F2wc+OTg/Jrm6eddvF4Yx2B8He29V2+UXwEdkfQDBoCl3MUWtc8OOnDvj+pPDXed0Muf2ZDVUkb9cEFY2jGaDpyAZkBm3etVaHQwerxd3DOs6lEtvMXFPx1f1oXj6A2uAmQeBrSOjkEs2lq8ZFKlqXWLikAArA+bpNl1PogX5M0tA1LDioFUR+8e3f1jLBkXntWrIz8KF1szhXfpNhtccK1EprPVgko5x+sBgLZdle6QgBCxi7USu2ZZqgApB9mpstehR/3+3v1GREMWlGlnCZ0twR9e0HfRtrBKE+6MrblNMMaBzVpox/cVOTZ8h2UZtXnL5LbZGHBFbpIlT/E6IVILdaKuzRAVVMlsrlceMYBlf9GwLKWu3Bs6X0O7H1czRR8zEF7hxVb+j5xUj4GxWhjSglCefIAkZCoYy2jVnOCj6lQnTgkqEEC1JDp4ERmcZp3wx79ekqTPJc5Ib1qAIvrzzJzNls0L6gZoP8th5kJHW
- EUf5Ev7x
- w3R+BZAhy5bQsazuUesOc7QELHNlcGkj/7Wi8Eo9luQSJJ1un3xV0ukCGPvb7Ev53yTcve1Vvan8GOmjapDAvG4jS1d4DwSA/eYpc61niL9lPTyIDEPOYgbGDmmAYMtQSfWV5vEF81dJwx9QCLlGjp5qVg0StPe+mQvqgQHOufe3xqmmuPXpc9F+WFd+8YWtzybfs6UEJ8c9ronNIJd58UUfRZluc0ZmhUzxk9czBfb0XnjgxalsrEo0O1Tsu3/K7Uyupor9UBf0qdx8e+vht/MWbZ+Q/EfgYqoSAfLkO63P7VlVrkZbbnv1QfIUfCeer1LVwUzAu+cXq2zWaVWLZ/Fid/g==
+X-HE-Tag: 1788861367-291701
+X-HE-Meta: U2FsdGVkX18ziBGhP1uybVR4VDnR3EOrZSUqQPVKUIDsnWzwgFmkM2oQI8+dxcWM3HL5K+aN9ywuRD1GonPwRN1pZY01kbgPf0S5w8WEIPSF/bvBtwpGC7OjT2oTa7ay3vNhbUFMqIB/tFiFKpYbDKd7XJCmaTY1vQPnN4GFX7kfnonMCtZq9JeASWbc3V3NyGNmp0KJpEhAEejkJ4X+HiYTXEU4FE3OzVCbz5bf7vWkg2pbHKAUntUej9bTugV5s3D7rB/6uApx/yKrTrMhxA7KGm0FJNzKgMjCX+h5nkK5wHjbbQdqhiz6oxBgJxrW7f6pIY9zT03DNtPOtif8RJB447QV+v6NnkxUTE/BF4MZOM7lRi3cUxwTsw6KeZkLzy6eQmn4Ed9Rt9sg3Xv1E9IxcSntBLlOAh4C68uhrstCrrVst5C0n8XPm+sGaZxqkdWe9TYmXxr0TGPh7axOboaW8mlqUwoFrR26FWJ/Ni5us3AHw82Jmskv0QfFfKMwv3BNuEBNc6Cr09id9fo0QK834mmSrGCufFlSawJ5d9JdCVzb62OAIQ9wfYiH+N8s7zDvZTHwqI+NVHEVvOVD9A6HG9fw6pGpIydnUvamUwN2mbTNLgiR5cKxMBIwut7vwvhc3MqneI4ylWbfr1eOBw7JZvc2oHVUgqj1+jf80jUnDkIBqgzj5z+nziK5ylkht+QWvJdluaFHXJWo4vtLBo1oMAy9CmLz2FADRP55d7h9yxNH32r5HWJ3T1K8Zf/Bw1MUkhuSfjg+KOuSU1Fq0Lwocbxej/CR+1gq9+x7aAYN1YTKzD+DBx1xxxCNDXu123VoDRI/kCkV2UWEhgBwvA5MjyEuJVN3kEFQSfqH8omj4o/pvfyDo7Ws41Z/vaFUwekXfEa25RsVe6hNt2oApn4z+9ce6addNFmXeSQ1ZacwIyR/Mu/Tswi7uIzGHQvxPXSYO23AoJNKfGUtNyM
+ 0XKlcT8U
+ ux/FF0GjkeAXs5Vc5uQaQaMn/eadkm0CvjCeAyol+vWQ4RlJAVL9FYKnU+HpaHRgdXO79WOijJRuN4HRzzBXu2AlsOy6PMwFv4/RkVue/hgvYQDNu+Tr5VNgjLn9ZVSdiP45vNY9oooraA8g/czO9spRFDrearSZTAL3d5GV/qqgtyxYxfQcDHtfFFJtE2KDByyiTE2gTha5PlVc724sgJap/FugbiiWaNti2mMYC/iTemF6IYKO1InbY1KkrE5mpvX7ycFI7cgXTvYTSqGa05jWkG87YKHq8edvXTbGt+OAJoUHwhLbzR3eQkA3XQD1Ulk85JS/apD7TLGJ/NlRbzY5XLl4nfrKmlzvcef0cjPyKCGhdN2db8+95+FBlg8NMmShZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,78 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-getopts reports unknown options and missing arguments, but run_vmtests.sh
-ignores its error result and continues with test setup. An empty -t
-argument also falls back to the default selection, while unknown category
-names can silently select no tests and still reach setup code.
+The memfd_secret setup clears ptrace_scope whenever its test binary is
+executable, even when a different category was selected. run_test() filters
+the test invocation, but it does not protect the preceding setup.
 
-Exit on getopts errors and validate category names against the existing
-list in usage() before any test setup. Reject empty and whitespace-only
-selections, and normalize category separators so validation and execution
-agree. Keep the default selection for an unset or empty VM_SELFTEST_ITEMS
-environment variable, and preserve the existing standalone default value.
+Check the category selection before entering the memfd_secret block so
+running unrelated categories does not change ptrace_scope. Keep the
+existing executable check and the behavior when memfd_secret is selected.
 
-Fixes: 85463321e726 ("selftests/vm: enable running select groups of tests")
 Assisted-by: Codex:GPT-6
 Signed-off-by: Tianyi Chen <hi@tychen.cc>
 ---
- tools/testing/selftests/mm/run_vmtests.sh | 27 +++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384..836c7454cba 100755
+index 836c7454cba..9932df252f4 100755
 --- a/tools/testing/selftests/mm/run_vmtests.sh
 +++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -96,26 +96,45 @@ separated by spaces:
+@@ -371,7 +371,7 @@ CATEGORY="process_madv" run_test ./process_madv
  
- example: ./run_vmtests.sh -t "hmm mmap ksm"
- EOF
--	exit 0
- }
+ CATEGORY="vma_merge" run_test ./merge
  
- RUN_ALL=false
- RUN_DESTRUCTIVE=false
- TAP_PREFIX="# "
- 
-+# An unset or empty environment selection keeps the default behavior.
-+VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
-+
- while getopts "aht:nd" OPT; do
- 	case ${OPT} in
- 		"a") RUN_ALL=true ;;
--		"h") usage ;;
-+		"h") usage; exit 0 ;;
- 		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
- 		"n") TAP_PREFIX= ;;
- 		"d") RUN_DESTRUCTIVE=true ;;
-+		"?") exit 1 ;;
- 	esac
- done
- shift $((OPTIND -1))
- 
--# default behavior: run all tests
--VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
-+# Normalize whitespace so validation and test_selected() use the same names.
-+read -r -a selected_categories <<< "${VM_SELFTEST_ITEMS//$'\n'/ }"
-+VM_SELFTEST_ITEMS="${selected_categories[*]}"
-+if [ -z "$VM_SELFTEST_ITEMS" ]; then
-+	echo "No test categories specified" >&2
-+	exit 1
-+fi
-+
-+if [ "$VM_SELFTEST_ITEMS" != "default" ]; then
-+	# Keep the documented category list as the source of valid names.
-+	valid_categories=$(usage | sed -n 's/^- //p')
-+	for category in "${selected_categories[@]}"; do
-+		if ! grep -Fxq -- "$category" <<< "$valid_categories"; then
-+			echo "Unknown test category: $category" >&2
-+			exit 1
-+		fi
-+	done
-+fi
- 
- test_selected() {
- 	if [ "$VM_SELFTEST_ITEMS" == "default" ]; then
+-if [ -x ./memfd_secret ]
++if test_selected "memfd_secret" && [ -x ./memfd_secret ]
+ then
+ if [ -f /proc/sys/kernel/yama/ptrace_scope ]; then
+ 	(echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
 -- 
 2.55.0
 
