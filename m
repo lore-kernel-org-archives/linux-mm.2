@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22481C79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:23:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CCE4C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 08:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13E146B0095; Tue,  8 Sep 2026 04:23:42 -0400 (EDT)
+	id 0C90D6B0098; Tue,  8 Sep 2026 04:23:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F7436B0096; Tue,  8 Sep 2026 04:23:42 -0400 (EDT)
+	id 0A0E46B0099; Tue,  8 Sep 2026 04:23:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0073D6B0098; Tue,  8 Sep 2026 04:23:41 -0400 (EDT)
+	id EF9796B009B; Tue,  8 Sep 2026 04:23:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6E496B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:23:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 377F640491
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6E916B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 04:23:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39CEC140448
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:44 +0000 (UTC)
+X-FDA: 85189906368.12.B3DE2FE
+Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3A0854000D
 	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:41 +0000 (UTC)
-X-FDA: 85189906242.29.4211808
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7E333100002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MVQe8hDh;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fgmBBoy2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788855819;
+	s=arc-20220608; t=1788855822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QAeFVTcvUJziK4VZgwcgg2e7VPqTP07F7DWRWoYMU18=;
-	b=oddYw6CEFLYDg6OrQnVL5lNgG1wXZ3NUt+poLfOCDhF03kCCOBz7IyeOvQSaghI8HI32UF
-	ZZfubiOA6DPEgwE20A1vzKNNCFgHuL2c0gCc9QuZg/XEYT/+HttN7VjV3+N3xm2ECatzMv
-	Bk4w39iT/zR26HnGep1GaSqiegBbvPI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MVQe8hDh;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	bh=0SABSe6rOV+QtbFiRX1AQqZaCJbEvBGQSLmwzJIFmAM=;
+	b=ArWjh69XeqRmkKISL94grkOgfd0DDEkV7JLJlvzLQJB0FzUnJbA9/3MpUxpYFZWDCZL5CX
+	mtjIzv8c1mxn8JNcjPTnW3LaSxjYyeVGkQv7WYQ6SEuduzyn3Nz9G8pt1r3EENAOezqzfn
+	6XWIW6a7xMQhIfNTYSI1KOPZBaZBtAg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788855819;
-	b=bec5gFdglIPOh0jJJaT3AUsb1zURLaSeVVzhYJ0cOa/KGTPoK59B+widGxyrQcudVP2PPr
-	rLQz/ueNTUNmksPVfQW1p0Y5WbrenWjER/BJ+UPS1VLvpPC0X4iEgvpAuu6Qb7tj5SIVRy
-	pBivwD5TzWEXlhzyQTlgYZoPXJKVZKk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4D541476;
-	Tue,  8 Sep 2026 01:23:34 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C92EC3F528;
-	Tue,  8 Sep 2026 01:23:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788855818; bh=1cshaF9KXvhKzHME6ySEbcQXIVVb85vLyjPK5BazCe0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MVQe8hDhvHDJEfbmH6OxwpGF7JrA+cKvf+eM5DA98nWOwzCUZt6oBa0ssa+ju3Mkm
-	 PCZGEsWp8AR9FtSmK+Qo2N+uilBWdwAAIOaMTQ9mz6x/Am4CuQBfjAZSq+dk3mEqXS
-	 bUqpSqAhr05lk48Y+WIvAfdG0HJ0Z8TvGxFO8IFU=
-Date: Tue, 8 Sep 2026 09:23:33 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	shuah@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
-	kas@kernel.org, sarthak.sharma@arm.com
-Subject: Re: [PATCH v2] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
-Message-ID: <ap_GBdbMIkasmVO4@e129823.arm.com>
-References: <20260907081509.924979-1-yeoreum.yun@arm.com>
- <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
+	t=1788855822;
+	b=7qb/9Mh807+R0dC6IEfSS5Mm4VMNHeTepYaNlv16U3lqidTcLY2N+YOxdS0kFgvaRskCHp
+	Iv/WC5s4Np6SIF3zcBePmB0PFzK1dBMOCeYQIIl2fjwRLcyzrd1knhA3EiDqHnZOcB0QpV
+	H/n4TP2BQgGEtFO6CorUzdl34Hdjhcg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fgmBBoy2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=XMTIRxiwfQqzh0MfBQr/FOHrV2r/u3kqI0wioYrdBLk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788855820; v=1; x=1789460620;
+ b=fgmBBoy24jouHn4NGx3Y/QVZrrQDsJ5nDOTIFF9nEgJa6mkY1XtZAoGGsWeaWr1E0+UWp0/z
+ awUKW4EJB7VTb5z4VcPf761x9edOJHc5bdMtCHVgkklRVuXfoMipt256vx4ztNLwRirFbGhKnG+
+ stoyuKdooZ0cwc5R3wSym6pw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 99ae5adff9099bc7;
+	Tue, 08 Sep 2026 08:23:40 +0000
+X-Mizu-Trace-ID: 99ae5adff9099bc7
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 8 Sep 2026 16:23:32 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+	ljs@kernel.org, ridong.chen@linux.dev, hebaoquan@kylinos.cn,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected
+ folios
+Message-ID: <ap_GBGDHkEzZ1Osq@fedora>
+References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
+ <ap9zPPughaSlfXM2@fedora>
+ <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
+ <67d9bbcf-2991-4867-8afb-14bad1cebf8d@linux.alibaba.com>
+ <31494361-406e-4874-8a2c-2c6f5cee5321@linux.alibaba.com>
+ <ap-yQOH0pni-mfdf@fedora>
+ <ccb8e121-bf5b-4bb4-a9de-fb5290998ddd@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9f8c6e91-c1c8-4ec5-96a9-9d6d4ab571cc@kernel.org>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ccb8e121-bf5b-4bb4-a9de-fb5290998ddd@linux.alibaba.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3A0854000D
+X-Stat-Signature: y5xj81qgnkx4qsquscwepooy9wcz3k8b
 X-Rspam-User: 
-X-Stat-Signature: g375p6x8faemj3975xbu1rb9emu5t4xg
-X-Rspamd-Queue-Id: 7E333100002
-X-HE-Tag: 1788855819-14133
-X-HE-Meta: U2FsdGVkX19XxKOdgMooAwK/bxsqeYa8SOEfPbYb//qTMLsrHVJHIadmabuYndqA9/Bd2+ug4izS+LKrEZkFzc9hYO0LOYz2wlajm9oIhTaBa1ov3b1iWCDIM5nlMl4Em5ohbrJ8yUm8WCRKwbyPpeXwD1hndt6314lAt9ai0MoFqUADdjkbx6/PCIo469Ov9H5aXrlMWLXNFp1DKDsyu+3LRbZ7VuR7Ayq+vhVBQSRMOVFBgdvfuNraEhUqceH6Qw2Iu3YuozXiWXHaKaOz9cYhd6GPMcRJ6WnzUPX/Col+wnsfE1Jhw1OWhwRkCs3dWEYtgxeoveYkPytQfUBnBCxh6E/DlnUsybtUlvjKiFH6s8uE5Gmn2pGNGgANO7Ga/LPs6q/0fI6HBRsWueXEo8O+r8QW3fgixBcC9ENKI2+L2PblJyBrhKmoWbmjBaOjA5wOil7fPRS6QwfqsZP8sAK3qqvxI9RUfDMFQqFu8K+4umhTOsJvoVdW8z0aW9EqTlcGsXQtBV5O2jqkWgY7jZg+nMJ2VypBmenCkpw5cDJYZLxdrtHAl9txPMQ9aO5ibxyVwEdgfdGEKdc9OONL1zK5vnueL+uB2gueRip+DQeuKQbrVDcMqDfRbjguTCIV2c+jlpCRHwUnuyq7W8eWiR6LwKzpE2I7w5u6fqOCA0PkXj0aKBBSF2olHMlxP3QcyPRPty8OGkUobBTzOg2XZUz3Z4KX1vHgpKb+xnDx8JDP2yQ2AEr66spJOozoEyyYi7x8+/9MiWOHsF4cfAN4ZIZSrBoUMWYlhiKBXZNNY2qEV+ctPpNoNmcRfawt0pMXfvDsZ3wIpkkA/JDSYemjZiO35EmAkc/ub+FRUsnB2d5NSFQRI/wH8KN5G1tfKc6j8Jll3FGQqHU8NMtcrKZK/63jvA36NYT3vv+hTk4Ot5TdkeeRcaEVqP4LaHmMITHhTwdr6JTevvHbYOGPRcf
- 0Mq9diQf
- f8dXQGoJX+oHQ1G2TT43tUPDUVdKpeRfoo4k+LwEpPCeGMSOjJ7u1hQBr17Yv7zmMzU/J7vRnWU6dyzzMjyh1fqnB+8svagCcMrXSaj7qmKcOu67cYNtEpc8DmfBGCwCVIEQuD7F8lEvgFcucvnSZQXUf95RyskvmTZeGmrOd7J/a6bY54cLiCC+yGZWQ/Mx8s56kzMCedqDlEPN+jhtkyaUOk3d7gka88YbUghOHXIOnZINMIJ9fc+dBX3TBMxEpHGwY7ZWo6oO6jRRYRY4Hmw0o6L1i0oUGGFgr4/LRWGDb4YpLWTRbZiPJ7A2oaa1HjLF1DAzBsH9J4BMUEU5udzQl+4aZQ/hIXDrRvCiHhqfOA6esJtLLdtlMkQ==
+X-HE-Tag: 1788855821-829284
+X-HE-Meta: U2FsdGVkX18DoYaoxgRiv1S2Dio/7fkkpcmXv8U7ggBGAzzSwE4fw95FNmqTO1pp2cbhPCHMVf4eCicwMGweGO9IK8N3S3G0DvrdLhipww+NSGQeAlmeEQ1spX7W43NgVCsCtioSVIWxJkitZGAa/AfbNuc4yT+uEw5zuX8XkgNlGlZMOWfbJu1Q8XY9LoIaW5QzwXJeNuKsrCmhg8A3NiAVmf1q/hsDJaOzgDoxGW+SSooh+plaaO26q7QgTWKu5/LpMsyHa2xgRbPq8F4Trlp+aojaN66gcJrjJbmFhhAc20sDwdlc43FHtmZqiQFYt8rvXHYPcdaYaVMvl5tR3QcCYfrI+Z9qGr2nGur3wfPulq868csofDLmShkaJErJ9yYSgbsr/srKu6n/Z3N+BI4Jx6vad8Xv/S5Cdxk1MF8T8UswlZDSjLXHfyJLnn4bCWEZFLpVQIdWZbWBEsN/++7wQ86OHl5ahUfrGXfA2p4cAfU3mcxpkZ9KaQY3TT7S8DQsIPKGue/FiVcf7E0mBvp/4vMo2uEIb7USLt7aQg9khRWP/ksQ8yE2CKGYVEc1BkpZ7HiJ6Np5JB0qNMQLeRQsAKMOIxM7ZIRItmkACX0Uix2pAmFSEgch+jccqe45oqFJQ5bg6kfBWhuhxaEynLitVQ0hvcVTiHks0aejETxB3QG3i/5f65l9rbiAPRMsElf6XL0I/4jWjC/8JAmLPw/UIfa0W400kPKW/CW1nR6++Ja6p9CnETnQoultwIK8w3l8zdT9LFoRhqUd2D0tH8n68KJnOCuOErWEleji3A2lOH9NQMecCk8S/1QKHfeEGuZNzCcZqJ1SyI1RjOZKYfudsHAXniBmedyu0bsTDvJlJQ8IKl+b88Nj6bAibBauG7axpnPc9PnwPOLMkjTBOQ1lZxTvv8CDHcRX60glAg2RWOTOd57ixLIkS67AQ/b2metDikBYIc35uxTE2Ru
+ 4w/naY/s
+ aKd20jvGNQr3YS1gQx39dyHCj0Htc/eKUkvG/fiZve90EZXoim36RrxKlwNJwfnAzjdUzwAmikkTrefgSJwlLTZoncIEDP/SSn5gRjUzjWPFJdoiK063+RofQT3KNXO7NvaPL8O5zYWAWk1w7nT/c5FyQMBbkyxNzTthvHnrLuBGL8OCy/P2fUxIDs+9cn7zdZAjwiNcth130vvuHMaujAl5kb/ivj5Z9vpRNzMFkb00IHUvGdyR5LQh3rupUlkhwjNcqWbW743RALIHlZxBsuoRskUgbECA9vJpUDWcP5r++SZRQiqgkeIkPWbvB6AIcflPt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,164 +101,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 04:36:56PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/7/26 10:15, Yeoreum Yun wrote:
-> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-> > When this macro is used in some test, test result would be strange in
-> > the system where PAGE_SIZE is more then 4KB.
+On 09/08/26 at 03:53pm, Baolin Wang wrote:
+> 
+> 
+> On 9/8/26 2:59 PM, Baoquan He wrote:
+> > On 09/08/26 at 12:01pm, Baolin Wang wrote:
+> > > 
+> > > 
+> > > On 9/8/26 11:03 AM, Baolin Wang wrote:
+> > > > 
+> > > > 
+> > > > On 9/8/26 10:34 AM, Barry Song wrote:
+> > > > > On Tue, Sep 8, 2026 at 10:30 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> > > > > > 
+> > > > > > Hi Baolin,
+> > > > > > 
+> > > > > > On 09/07/26 at 11:25am, Baolin Wang wrote:
+> > > > > > ......snip...
+> > > > > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > > > > > index 40d3f1b48a74..42c0a09938ab 100644
+> > > > > > > --- a/mm/vmscan.c
+> > > > > > > +++ b/mm/vmscan.c
+> > > > > > 
+> > > > > > Well, this seems to be based on Andrew's mm-new branch. I usually track
+> > > > > > mm-unstable branch. Maybe the subject should be marked as below?
+> > > > > > [PATCH mm-new] mm: mglru: clear the reference counter for rejected
+> > > > 
+> > > > ACK.
+> > > > 
+> > > > > > 
+> > > > > > > @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned
+> > > > > > > long nr_to_scan, struct lruvec *lruvec,
+> > > > > > >                 }
+> > > > > > > 
+> > > > > > >                 /* don't add rejected folios to the oldest generation */
+> > > > > > > -             if (lru_gen_folio_seq(lruvec, folio, false) ==
+> > > > > > > min_seq[type]) {
+> > > > > > > -                     folio_set_lru_refs(folio, 0);
+> > > > > > > +             if (lru_gen_folio_seq(lruvec, folio, false) ==
+> > > > > > > min_seq[type])
+> > > > > > >                         folio_set_active(folio);
+> > > > > > > -             }
+> > > > > > > +
+> > > > > > > +             /* See the comments on LRU_REFS_FLAGS */
+> > > > > > > +             folio_set_lru_refs(folio, 0);
+> > > > > > 
+> > > > > > This looks like a great catch, while the code change could bring issue.
+> > > > > > 
+> > > > > > Because move_folios_to_lru() relies on folios' flags to decide their new
+> > > > > > generation. You just cleared it before move_folios_to_lru(). This is no
+> > > > > > problem for rejected folios that are determined to be put into the
+> > > > > > oldest generation. But for those rejected folios that are determined to
+> > > > > > be promoted, this could be wrong. E.g currently gen window is 4, and a
+> > > > > > folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
+> > > > > > is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
+> > > > > > referenced bit, this causes it being put into the oldest generation in
+> > > > > > move_folios_to_lru(), this is not expected.
+> > > > 
+> > > > Yes. As I discussed with Barry earlier, lru_gen_folio_seq() also needs
+> > > > to be reconsidered regarding whether it should rely on PG_referenced
+> > > > [1].
+> > > > 
+> > > > For commit 6cbdd9726fb5, we didn't discuss the impact on rejected folios
+> > > > either. Before commit 6cbdd9726fb5, if rejected folios did not have
+> > > > PG_active set by shrink_folio_list(), evict_folios() would set PG_active
+> > > > on these rejected folios.
+> > > > 
+> > > > [1] https://lore.kernel.org/linux-mm/20260901220430.79810-1-
+> > > > baohua@kernel.org/
+> > > > 
+> > > > > The original code looks quite weird. It even prioritizes folios
+> > > > > that won't be promoted by `PG_active`. Do we need to change all
+> > > > > the cases just to call `PG_active`?
 > > 
-> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> > I would agree if we can. While I have one concern. A rejected folio that
+> > should have gone into the oldest generation is now being promoted to the
+> > 2nd newest generation. In the original code, referenced folio is only
+> > being promoted to the next gen. I even think this is not a bug, but Yu
+> 
+> That's not quite true. Before commit 6cbdd9726fb5, a rejected referenced
+> folio was also put back to the 2nd youngest gen.
+
+OK, I didn't follow your earlier discussion, I need take some time to
+fully understand that commit and the patch thread from Ehab.
+
+> 
+> > Zhao intentionally did it: the coldest folio is moved to 2nd newest gen,
+> > referenced folio (hot folio) is moved to new gen but carries the referenced
+> > bit. Both of them seems to be treated somewhat equally.
 > > 
-> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
-> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
-> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
-> >     ...
-> >   ok 1 Completed
+> > To me, I would rather move both of them to the next gen, while keep their
+> > refs untouched.
+> 
+> IMHO, I strongly recommend not doing this, and that's exactly the motivation
+> behind my patch. Because this is also being treated as a promotion, it
+> should behave like folio_inc_gen() or folio_update_gen() and clear the refs
+> after promotion. I think this is a fundamental principle of promotion.
+> Otherwise, ref-based promotion is already completely broken.
+
+OK, it makes sense to me to make principle of promotion strictly applied
+no efficiency degradation involved.
+
+> 
+> Next, I also plan to clean up refs in lru_gen_set_refs() as discussed with
+> Barry.
+
+Looks forward to seeing that. By the way, your discussion with Baryr is
+private or in public list, do you have pointer if public? Thanks.
+
+> 
+> > > > Yes. Regarding this concern, I plan to change back to the original
+> > > > behavior:
+> > > > 
+> > > >       /* See the comments on LRU_REFS_FLAGS */
+> > > >       folio_set_lru_refs(folio, 0);
+> > > > 
+> > > >       /* don't add rejected folios to the oldest generation */
+> > > >       if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
+> > > >           folio_set_active(folio);
+> > > > 
+> > > > What do you think?
+> > > 
+> > > Just FYI, after above changes, the performance improvement on zram is no
+> > > longer obvious either. I think this also answers Kairui's earlier question
+> > > about why I saw a performance improvement (which seems related to commit
+> > > 6cbdd9726fb5). Also, there is no obvious performance regression either.
 > > 
-> > Remove the HPAGE_SIZE and HPAGE_SHIFT macros and introduce pmd_page_shift()
-> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
-> > helper, read_pmd_pagesize().
+> > Hi Baolin,
 > > 
-> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
-> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
-> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
-> > PMD-sized units, the test may fail with the previous size of 100 MiB,
-> > which is not a multiple of the PMD size when the base page size is
-> > 16 KiB or 64 KiB.
+> > Not sure if it's convenient to do a little more testing in your side.
+> > E.g rejected folios are moved to next gen, but not clearing their flags.
+> 
+> I'm not sure what you mean by "next gen" here. If you mean the 2nd oldest
+> gen, I actually tested that too, that is, clearing refs after
+> move_folios_to_lru(), and there wasn't any noticeable performance impact
+> either (but the code was a bit hacky, so I didn't go with this approach).
+
+Yeah, I meant the 2nd oldest gen, while what I am curious about is moving
+them into 2nd oldest gen but not clearing refs. Clearly it's conflicting
+with your plan. Anyway, it's just a brain store idea, please forget it.
+Thanks for the sharing and detailed explanation.
+
+> 
+> > Then we can at least know which one is more efficient on yout testing
+> > platform.
 > > 
-> > After this patch, output of transhuge-stress:
+> > coldest folio      referenced folio
+> > ---------------------------------------------
+> > max_gen -1         next gen + referenced kept
+> > max_gen -1         max_gen -1
+> > next_gen           next gen + referenced kept
 > > 
-> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
-> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
-> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
-> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
-> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
-> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
-> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
-> >     ...
-> >   ok 1 Completed
-> > 
-> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
+> > Thanks
+> > Baoquan
 > 
-> 
-> [...]
-> 
-> > diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> > index d09f9f6a384e..24aa1de27c25 100755
-> > --- a/tools/testing/selftests/mm/run_vmtests.sh
-> > +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> > @@ -360,8 +360,8 @@ fi
-> >  CATEGORY="memfd_secret" run_test ./memfd_secret
-> >  fi
-> >  
-> > -# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
-> > -CATEGORY="ksm" run_test ./ksm_tests -H -s 100
-> > +# KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 512
-> > +CATEGORY="ksm" run_test ./ksm_tests -H -s 512
-> 
-> 
-> Why the magic value 512? (desrves a comment)
-> 
-> A clear sign that the ksm tests must be rewritten to be standalone and just
-> handle this internally. @Sarthak
-
-Acked. I thought it's enough to spell out in commit message but
-I'll spell out into comment too in this round not refactorying by me
-for ksm test.
-
-> 
-> >  # KSM KSM_MERGE_TIME test with size of 100
-> >  CATEGORY="ksm" run_test ./ksm_tests -P -s 100
-> >  # KSM MADV_MERGEABLE test with 10 identical pages
-> 
-> [...]
-> 
-> > index 4821a3563036..f75bf0bacd18 100644
-> > --- a/tools/testing/selftests/mm/vm_util.c
-> > +++ b/tools/testing/selftests/mm/vm_util.c
-> > @@ -21,6 +21,8 @@
-> >  
-> >  unsigned int __page_size;
-> >  unsigned int __page_shift;
-> > +uint64_t __pmd_page_size;
-> > +uint64_t __pmd_page_shift;
-> >  
-> >  uint64_t pagemap_get_entry(int fd, char *start)
-> >  {
-> > @@ -161,6 +163,9 @@ uint64_t read_pmd_pagesize(void)
-> >  	char buf[20];
-> >  	ssize_t num_read;
-> >  
-> > +	if (__pmd_page_size)
-> > +		return __pmd_page_size;
-> > +
-> >  	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
-> >  	if (fd == -1)
-> >  		return 0;
-> > @@ -173,7 +178,25 @@ uint64_t read_pmd_pagesize(void)
-> >  	buf[num_read] = '\0';
-> >  	close(fd);
-> >  
-> > -	return strtoul(buf, NULL, 10);
-> > +	__pmd_page_size = strtoul(buf, NULL, 10);
-> > +
-> > +	return __pmd_page_size;
-> > +}
-> > +
-> > +uint64_t pmd_page_shift(void)
-> > +{
-> > +	if (__pmd_page_shift)
-> > +		return __pmd_page_shift;
-> > +
-> > +	if (!__pmd_page_size)
-> > +		__pmd_page_size = read_pmd_pagesize();
-> > +
-> > +	if (!__pmd_page_size)
-> > +		return 0;
-> > +
-> > +	__pmd_page_shift = (ffsl(__pmd_page_size) - 1);
-> > +
-> > +	return __pmd_page_shift;
-> >  }
-> The interface is a bit inconsistent.
-> 
-> read_pmd_pagesize() vs. pmd_page_shift().
-> 
-> Consider renaming read_pmd_pagesize() to pmd_pagesize() in a cleanup patch.
-
-Okay.
-
-> ... or (better?) adding a size_to_shift() helper instead?
-> 
-> I think most places that want the shift also want the size.
-> 
-> So this can just be
-> 
-> const uint64_t hpage_size = read_pmd_pagesize();
-> const uint64_t hpage_shift = size_to_shift(hpage_size);
-> 
-> 
-> In size_to_shift(), you can just handle
-> 
-> if (size == 0)
-> 	return 0;
-
-Hmm, most of tests care mainly two sizes and shiftes --
-psize()/pshift() and pmd_pagesize() and pmd_pageshift().
-
-Would it be better to keep both kinda of helpers and
-add size_to_shift() helper for nother hpage size then?
-
--- 
-Sincerely,
-Yeoreum Yun
 
