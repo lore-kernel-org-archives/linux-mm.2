@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00017C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D51BC79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:12:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C436B00A2; Tue,  8 Sep 2026 05:11:57 -0400 (EDT)
+	id 5B85B6B00A5; Tue,  8 Sep 2026 05:12:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBD016B00A3; Tue,  8 Sep 2026 05:11:57 -0400 (EDT)
+	id 5900B6B00A6; Tue,  8 Sep 2026 05:12:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD1706B00A4; Tue,  8 Sep 2026 05:11:57 -0400 (EDT)
+	id 430256B00A7; Tue,  8 Sep 2026 05:12:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F0446B00A2
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:11:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FF3C160470
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:11:55 +0000 (UTC)
-X-FDA: 85190027790.23.51D936B
-Received: from mta0.migadu.com (out-31.mta0.migadu.com [91.218.175.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8C9B0C0006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:11:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wD93d/jD";
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1C98F6B00A5
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:12:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C27CC1C23C8
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:03 +0000 (UTC)
+X-FDA: 85190028126.28.5C1CC4D
+Received: from mta1.migadu.com (out-130.mta1.migadu.com [95.215.58.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A32BB40004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:12:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Hf/w6zly";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.130 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788858713;
+	s=arc-20220608; t=1788858722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5rL7nt0vYx1tBK19++uw+3dR4ZZzg6Cf5DDlpGW3nQ=;
-	b=4S8tqnz34HYmGvj+xo+A1fs76FPhxXXxAOLOZjmEdyBCE4E2CsO+53iWEPQYn3OZnobZwH
-	p8BwGQy3ps3ntcYt1tiHsYWJh1+ItjbT+0/I1Wb+r8yvnnwvJlSa/1LZX/79kZkbQV69ou
-	zKahsYFRtSMMC7VvkXmXV/7ACEJ+/+k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788858713;
-	b=69I0YdFdZdp+QSGtxZSnyKn8GOQjLNS/F2kfYw1++LeVA05poOwwqafhh/E+Zl6w5BX8mx
-	7TtsGV1WqDi3+iAatKRGlVY8dd9oTxZkHxwdjIwAXfN4CraHlQ+AQBsQM0X7liok/lGJKt
-	u8vo20P+9Oxte/UKzJL2/hoNZ9UY6u4=
+	bh=Y8VsrKy6Q/qXxZt7zaThAZ0bskzupbZYExLgFsfe9hg=;
+	b=Q1OfmD0J0GSpLdInq60xYpdKLVgdRosdt7oANXibhGSlBX9ckEXp0sGxCyeSKzIjYbHvRQ
+	7Gk/s4p59mGgcEBGLMGJcfGgavql/YKx0AnF0OpF9DRKqa05vSNAcG7jViy2b42YjEELJr
+	8ltkqe9SHRY9b9NI8YkdZXnOtgBkUVI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wD93d/jD";
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Hf/w6zly";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.130 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788858722;
+	b=KCOLr1c0Wh7QgxjPQgqRHPFZwpzhpMt2vVEOcaN4aXS9ptSPNxw1+v5RfIH978Mv4+fyq4
+	NkSGQ9TLc3JJkZq3za7yUiz5Q36aUby8kJVYxh50s2CPUUEcuNEkGnpQI85785xxA5a8zO
+	G+Pt6dfPcZT6P6GoY/8W97MFwoM5Csw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fhWEdSTjs9B2MAlTgThpgs2j4iGNoPGiSJakWwaXUGY=;
+DKIM-Signature: a=rsa-sha256; bh=EBhIOQ01JVGBYTx4py5LEFUpAIng0fMMcA8U93I2MOs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788858712; v=1; x=1789463512;
- b=wD93d/jDxGKweuS6SP0neFuPg8CIxfSQ4YsaJ0VkX3FvKgoyIlKDceE0oUVl9KBTQ0fFRMyh
- yPDJwQ8r4r2QiiobXPsvnOTdmyOALJ1zs4Gx33b2f/Y1sPOrUjIqcaP3xqpcPrwpnofATJ8M04i
- ilkM5LvQ8yvm40BeJBGjZPtM=
+ t=1788858720; v=1; x=1789463520;
+ b=Hf/w6zlyJxnd40cPrObbR5hkBJDd8ri4grclV+9v7tEe1NAkuO4pGbTcItI2iGJQxxAvnw42
+ WrU/BQd/jQkvVLNHVlY6pR+30qoYzCfkIQB3yA1nFnL0ef05PTlTql1gGrZYi20pvJDQFVhCnU+
+ tiB/2Tya3jf4pvuqRJNK/csI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 616980083be58a88;
-	Tue, 08 Sep 2026 09:11:51 +0000
-X-Mizu-Trace-ID: 616980083be58a88
+Received: by mta12.migadu.com with ESMTPS id 7013702cf0fa8769;
+	Tue, 08 Sep 2026 09:11:59 +0000
+X-Mizu-Trace-ID: 7013702cf0fa8769
 X-Migadu-Flow: FLOW_OUT
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Roman Gushchin <roman.gushchin@linux.dev>,
@@ -85,22 +85,22 @@ To: Roman Gushchin <roman.gushchin@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v9 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
-Date: Tue,  8 Sep 2026 17:11:27 +0800
-Message-ID: <06452a0d7722c92a38fdfd117954d244c3e52d0e.1788857915.git.zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v9 2/2] selftests/bpf: Add memcg async reclaim test
+Date: Tue,  8 Sep 2026 17:11:28 +0800
+Message-ID: <8bb6a02901de019b238017640bc62b100aaf7c1d.1788857915.git.zhuhui@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1788857915.git.zhuhui@kylinos.cn>
 References: <cover.1788857915.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: srxsi715iusz6wbn3apxmgzn1n5c47ea
-X-Rspamd-Queue-Id: 8C9B0C0006
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1788858713-511796
-X-HE-Meta: U2FsdGVkX1/8d+hz8eSVPLqVg1RPARZOBffFDJ7wOFjtWSeJeN+7BuDN1Q1COnmatW4kvu7X0gGqQNJlsJ2/OdAX2cK4vtv+TrnOcDRnh9QSR93VL3t/Ul+kMNbn+d47XWRyij8SCVKFa56WivWLO3ezshPONdz7gFnTjN1jYP6yrgPGbRZ80dzEmNMa5wqr0ZLAkD4zhWgNQi3NqISZDmPTzfT7KPNsJriTCfq/w1saKlmkSYlokoUS1O6OXcmFZQvEJZXnidNM/C9ExlWdW2dWw+LNg/DdAvzI+9V0JVJqcnxhBWgcd23XIpEQdRohm8VaarG3hsRusdDcanISSijxHwB+ooEsQQD8XJyQfW5zkbLUrRS/W7oP1Z53NqZxH4TIMzatQj7Kq25iWwtUqV66LYwJO4o7R8NEU9KxaQfZtcqEkHs6igRgZrB2XXXMp1pzT7PdQv/QT6iJew/EOdQUBUgw19b/NXSuwcND5uh4f1Zfg9Nou0EDSxQ11c1CR5mHYAoeMEBKpBScvIOpgLU+i00zpTpARNPlomZEUBDiBq6iSoGLRsWOwbO3WV5xcd9sTAeR/Ej8e4kkKRuGSSXKxtg7+R5RstFYSecHowaP9Pa0N90a3M5Doltryup2FbCpF/xI1sZkR8jXhi2TDLZAigx+TZ9QQSguUKlpkETCpiULtZr9AUrd/c6zCkzaFrVOrjGQ1ug+OrMqLbvYTW7cieS2HJu1THEz6s/ArCmwzgT2liQ6Wf7WIYxM0Lmh8c+h+8BweoiscAbtwFAtqbpxdrvlz/od3UUwA8hZrvvs+LgoVSFuB2k5bwEDBcCmlCkLNVxxzuNRp1jCpp2480YBZt+8XvqXyn10VUpPWRv9IlAPlkTAXRvAM+gdSR0skW561DTn1Xsxo0GvbkNIqS0ptGmIndvf4sxwRlzR2K21xVvwpvx7yDml8QsZ/3RHYKCyxwNuN3ts5zn8Jms
- nmOJxXiQ
- ZLklNBxAvxzWNZkPX6JH39EFtYtKUS6TWdFqzUunRJzw6IkhvXY8ffTGO1YpQMimoLpe+oGWd9rYuBUnk8XAWxiLqFrW5Nl2yidJPqh7UQK81WeYAlIU4LIKS4jocNIHCWdCaK7U0P5nGt8BcBqTsOXBUSKdRVYXvgy2UY0lsOvvCnQOHdZ6pEQnYEOloEcxMPoduMXqFCZ80GF2Piyqj/yUkWRcg9oCYpte9/oTftjRMvuc=
+X-Stat-Signature: jfwkqnx7994gb1zzr5se6dorzy9yin6z
+X-Rspamd-Queue-Id: A32BB40004
+X-HE-Tag: 1788858721-303658
+X-HE-Meta: U2FsdGVkX19RqCt4aL4pI6217lJnNmFnCINdaseM3VByp/vgux9Aohz+cP/IS7LpkieFhbeAiVmDIrfb8lgoiunYDi2U1ZGVR0FI+p3YdyN7sq1MYVKVAEGn8mGctMH5RTpZar11w8ZlxZibPtTt/BNmL6FYLeXYUoykbzmnsjdKdINJ6cijnjmr0mqATDagGuFKBP9yQ593vROrej6NIwCcZ1fJ91/NhZvRRzInz40VVpET6xu+q3r7zNhQTyEhK2/j8U+nWtNwdFyNyYW0rM6ky0tR49E80C8Y7bi3gpZK852uOzdC/I9b/mkysE0p/7KFZ2Eqlzo0t+Zn+mdhok/YYYqxG57N9/AGi168xz4rOWJwFdKJeAR4eYjJ/3BiIIKMJgnPFWTJnZiR25nmmv7YUE1UbPTJSiJhO6wrB7Xw0GtJ+iK8u0RMLS7wpv5HkshhclyXdJ2JfKp/mNhHdLyV2kD5O2bGWJp8+aRjovjHEeyFm0dYUQQ5KRHbqNqq2ihh+529O010niB9jjG7qKI1/tNHU4y68wZPXh2+ZlWu/WDh6Vy4acJtLfN8iCIbY1+vtPP83tzTeTOhFdsY4kk3jBt6lDp3GhmqqSzSlh3L63WBLJ7X905iMdwtKXaerLWOmPtTxMKiypmZrTs8z43Ben3qI9bXkQ6VyGkXNw7leEXGS0EUYTa+B9LZs5vnAoXu97/kcB+B0KH4JteyxuRqICUU7Aywl71FLjpBXYM9EH0WhWznXJMXungRB2K4BNwix5hgcxF5+hgWJNR0FxejZJ7YZUz0ZELfnwx4yDPAglvwTsQvgqmv/RRRt1I7voWfz6rlQvjJ73oLmZEoUhmLjdGUdBN3n2VnaTiMdgcSYK6SxHNM3y/G3CsuwUk1xWcKX0/vw37RPPd1nD9Z791gAkyiXWHanzfMpjBSV5x2mvQZDZ5WBSfTbuFJkcDMVSNpJ/8RdYEUMKFQJnT
+ pnb0f9wO
+ uXyLpL/0h4gudQaG5g48daLH/EXdlQN60cR76F7iqMjyCkY+F618ZXclcT7w4+/6JxnQVZiqs5y2tvoy4Jrpsmarqwp29q23vnO/3GKo06uMP9ZuxXQZ/4ItHBaR5y6Pzlxa8fNk3uJqVVhuwyNY739RDOQWjUeI8gPDGVsOz3zr8dOX1MbD0Ii7IYIKXh2+pjhw7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,165 +110,987 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-BPF programs can observe memory pressure on a cgroup (e.g. refault
-stats via bpf_mem_cgroup_page_state()), but cannot act on it:
-triggering reclaim on a chosen cgroup requires writing to
-memory.reclaim, which BPF cannot do. Add bpf_proactive_reclaim(),
-a sleepable kfunc which performs one proactive reclaim pass on a
-given memory cgroup, similar to a write to memory.reclaim but
-without retrying until the target is reached, so that when and how
-hard to reclaim is BPF policy rather than hard-coded thresholds.
+Add the memcg_async_reclaim selftest, which verifies that BPF-driven
+async proactive reclaim mitigates refault-induced slowdown under
+memory pressure: a BPF program monitors the refault stats of a
+memory-pressured cgroup and, once they grow, asynchronously reclaims
+another cgroup via bpf_wq and bpf_proactive_reclaim(), letting the
+pressured workload finish faster.
 
-Since some bpf program types may be invoked while holding fs locks,
-limit the kfunc to BPF_PROG_TYPE_SYSCALL only, to avoid deadlocking
-in filesystem shrinkers on the reclaim path. A SYSCALL program can
-invoke the kfunc directly, or asynchronously from its bpf_wq or
-task_work callbacks, which run in process context and keep the
-SYSCALL program type.
-
-The reclaim target of a single call is capped at MEMCG_CHARGE_BATCH,
-following the precedent of high_work_func(), the memory.high
-workqueue fallback, which bounds each reclaim request the same way
-and uses one work item per memcg. Note that only the reclaim target
-is capped: the actual scanning work and its duration are not
-bounded. Reclaiming more than one batch is left to the BPF program
-rather than enforced by the kfunc: with one call per bpf_wq callback
-and the same work item requeued for the next batch, the program can
-also stop submitting batches in between, e.g. once the target cgroup
-is dying.
+The BPF program also handles a dying reclaim target. Looking the
+target up by id is not enough: bpf_cgroup_from_id() keeps handing
+back a cgroup until its last reference is dropped, so the program
+checks the css flags and skips reclaim once the target is offlined
+or dying. A second test, memcg_async_reclaim_dying, keeps reclaim
+rounds running against the target, removes the target cgroup while
+reclaim is in flight, and verifies that reclaim stops on the removed
+target instead of reclaiming from it.
 
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- mm/bpf_memcontrol.c | 88 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 87 insertions(+), 1 deletion(-)
+ .../bpf/prog_tests/memcg_async_reclaim.c      | 686 ++++++++++++++++++
+ .../selftests/bpf/progs/memcg_async_reclaim.c | 259 +++++++
+ 2 files changed, 945 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
 
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 716df49d7647..2817c6db9a5d 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -6,8 +6,11 @@
-  */
- 
- #include <linux/memcontrol.h>
-+#include <linux/swap.h>
- #include <linux/bpf.h>
- 
-+#include "internal.h"
-+
- __bpf_kfunc_start_defs();
- 
- /**
-@@ -159,6 +162,73 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
- 	mem_cgroup_flush_stats(memcg);
- }
- 
-+/**
-+ * bpf_proactive_reclaim - proactively reclaim memory from a memory
-+ *                         cgroup
-+ * @memcg: the target memory cgroup to reclaim from
-+ * @size:  the amount of memory to reclaim, in bytes, clamped to
-+ *         MEMCG_CHARGE_BATCH (64 pages)
-+ * @swappiness: the reclaim swappiness, in the range [0, 201] where 201
-+ *         means anon-only reclaim; a negative value means the memcg's
-+ *         own swappiness is used
-+ *
-+ * Trigger one proactive reclaim pass on @memcg, similar to a write to
-+ * memory.reclaim, but without retrying until @size is reached.
-+ *
-+ * Only the reclaim target is capped: @size is clamped to
-+ * MEMCG_CHARGE_BATCH, following the precedent of high_work_func(),
-+ * the memory.high workqueue fallback, which bounds each reclaim
-+ * request the same way. The actual scanning work and its duration
-+ * are not bounded. To reclaim more, call this kfunc repeatedly
-+ * instead of passing a larger @size.
-+ *
-+ * The kfunc can be called directly from a BPF_PROG_TYPE_SYSCALL
-+ * program, synchronously in the context of the thread running the
-+ * program, or from the bpf_wq and task_work callbacks of a SYSCALL
-+ * program, which run in process context and keep the SYSCALL program
-+ * type. It is registered for BPF_PROG_TYPE_SYSCALL only, because
-+ * generic sleepable programs may run with filesystem locks held or
-+ * in NOFS/NOIO contexts, where the reclaim path could deadlock on
-+ * those locks via filesystem shrinkers.
-+ *
-+ * For asynchronous reclaim of more than one batch, driving the
-+ * reclaim from a bpf_wq callback is recommended: call this kfunc
-+ * once per callback and requeue the same work item for the next
-+ * batch, instead of looping inside the callback and monopolizing a
-+ * workqueue worker, and give each target memcg its own work item,
-+ * as high_work_func() does with one work item per memcg. Whether
-+ * to submit the next batch is up to the BPF program, which can stop
-+ * at any point, e.g. once the target cgroup is dying.
-+ *
-+ * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
-+ * smaller than a page, or (unsigned long)-1 if @swappiness is out of
-+ * range.
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+new file mode 100644
+index 000000000000..65f500684463
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+@@ -0,0 +1,686 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Memory controller eBPF async reclaim test
 + */
-+__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
-+						unsigned long size,
-+						int swappiness)
-+{
-+	unsigned long nr_reclaimed;
-+	unsigned long nr_pages;
 +
-+	if (swappiness < -1 || swappiness > SWAPPINESS_ANON_ONLY)
-+		return (unsigned long)-1;
++#include <test_progs.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <sys/vfs.h>
++#include <sys/wait.h>
++#include <fcntl.h>
++#include <signal.h>
++#include <time.h>
++#include <unistd.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <limits.h>
++#include <linux/magic.h>
 +
-+	if (size < PAGE_SIZE)
-+		return 0;
++#include "cgroup_helpers.h"
 +
-+	nr_pages = min(size / PAGE_SIZE, (unsigned long)MEMCG_CHARGE_BATCH);
-+
-+	nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages,
-+						    GFP_KERNEL,
-+						    MEMCG_RECLAIM_MAY_SWAP |
-+						    MEMCG_RECLAIM_PROACTIVE,
-+						    swappiness < 0 ? NULL :
-+								     &swappiness);
-+
-+	return nr_reclaimed * PAGE_SIZE;
-+}
-+
- __bpf_kfunc_end_defs();
- 
- BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-@@ -174,19 +244,35 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
- 
- BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
- 
-+BTF_KFUNCS_START(bpf_memcontrol_reclaim_kfuncs)
-+BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
-+BTF_KFUNCS_END(bpf_memcontrol_reclaim_kfuncs)
-+
- static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
- 	.owner          = THIS_MODULE,
- 	.set            = &bpf_memcontrol_kfuncs,
- };
- 
-+static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
-+	.owner          = THIS_MODULE,
-+	.set            = &bpf_memcontrol_reclaim_kfuncs,
++struct bpf_args {
++	u64 high_cgroup_id;
++	u64 low_cgroup_id;
++	u64 event_delta_threshold;
++	u64 check_ns;
 +};
 +
- static int __init bpf_memcontrol_init(void)
- {
- 	int err;
- 
- 	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
- 					&bpf_memcontrol_kfunc_set);
--	if (err)
-+	if (err) {
- 		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
-+		return err;
++#include "memcg_async_reclaim.skel.h"
++
++#define FILE_SIZE (32 * 1024 * 1024ul)
++#define BUFFER_SIZE (4096)
++#define CG_LIMIT (32 * 1024 * 1024ul)
++#define READ_TIMES 50
++
++#define CG_DIR "/memcg_async_reclaim"
++#define CG_HIGH_DIR CG_DIR "/high"
++#define CG_LOW_DIR CG_DIR "/low"
++
++#define CG_DYING_DIR "/memcg_async_reclaim_dying"
++#define CG_DYING_TRIGGER_DIR CG_DYING_DIR "/trigger"
++#define CG_DYING_TARGET_DIR CG_DYING_DIR "/target"
++
++#define CHECK_PERIOD_NS (2 * 1000 * 1000ull)
++#define EVENT_DELTA_THRESHOLD 1
++
++/*
++ * Timing for the dying test: after the target cgroup is removed, give
++ * in-flight reclaim passes time to drain, then wait for a reclaim round
++ * to hit the removed target. The keepalive reader keeps the trigger
++ * cgroup refaulting, and the timer fires every CHECK_PERIOD_NS, so
++ * such a round must show up within a few timer periods.
++ */
++#define DYING_SETTLE_US (200 * 1000)
++#define DYING_POLL_ITERS 500
++#define DYING_POLL_INTERVAL_US (10 * 1000)
++
++/*
++ * The workload files must sit on a regular filesystem: with swap
++ * disabled for the cgroup, tmpfs/ramfs pages are unevictable and would
++ * OOM the cgroup instead of exercising reclaim; they are also charged
++ * as anonymous memory, so they never raise the WORKINGSET_REFAULT_FILE
++ * events the BPF program monitors. Fall back to the current directory
++ * when /tmp is backed by such a filesystem.
++ */
++static const char *workload_files_dir(void)
++{
++	struct statfs st;
++
++	if (!statfs("/tmp", &st) &&
++	    (st.f_type == TMPFS_MAGIC || st.f_type == RAMFS_MAGIC))
++		return ".";
++	return "/tmp";
++}
++
++/*
++ * The workload children run after test_progs hijacked stdio, so
++ * anything they print is lost with their private copy of the hijacked
++ * buffer. The exit status is the only diagnostics channel that reaches
++ * the parent, so each failing step gets its own code.
++ */
++enum child_exit_code {
++	CHILD_EXIT_OK = 0,
++	CHILD_EXIT_JOIN_CGROUP,
++	CHILD_EXIT_WRITE_FILE,
++	CHILD_EXIT_READ_FILE,
++	CHILD_EXIT_TIME_FILE,
++};
++
++static const char *child_exit_str(int code)
++{
++	switch (code) {
++	case CHILD_EXIT_OK:
++		return "success";
++	case CHILD_EXIT_JOIN_CGROUP:
++		return "join cgroup";
++	case CHILD_EXIT_WRITE_FILE:
++		return "write data file";
++	case CHILD_EXIT_READ_FILE:
++		return "read data file";
++	case CHILD_EXIT_TIME_FILE:
++		return "write time file";
++	default:
++		return "unknown";
++	}
++}
++
++static int setup_high_low_cgroups(u64 *high_cgroup_id, u64 *low_cgroup_id)
++{
++	int ret;
++	char limit_buf[20];
++
++	ret = setup_cgroup_environment();
++	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
++		goto cleanup;
++
++	ret = create_and_get_cgroup(CG_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DIR))
++		goto cleanup;
++	close(ret);
++
++	ret = enable_controllers(CG_DIR, "memory");
++	if (!ASSERT_OK(ret, "enable_controllers"))
++		goto cleanup;
++
++	snprintf(limit_buf, sizeof(limit_buf), "%lu", CG_LIMIT);
++	ret = write_cgroup_file(CG_DIR, "memory.max", limit_buf);
++	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
++		goto cleanup;
++
++	/*
++	 * Keep the workloads from swapping out. With CONFIG_SWAP=n the
++	 * memory.swap.max file does not exist, and no swap can happen
++	 * anyway, so skip the write.
++	 */
++	if (!access("/proc/swaps", F_OK)) {
++		ret = write_cgroup_file(CG_DIR, "memory.swap.max", "0");
++		if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
++			goto cleanup;
 +	}
 +
-+	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
-+					&bpf_memcontrol_reclaim_kfunc_set);
-+	if (err)
-+		pr_warn("error registering bpf reclaim kfuncs: %d", err);
- 
- 	return err;
- }
++	ret = create_and_get_cgroup(CG_HIGH_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_HIGH_DIR))
++		goto cleanup;
++	close(ret);
++
++	*high_cgroup_id = get_cgroup_id(CG_HIGH_DIR);
++	if (!ASSERT_GT(*high_cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	ret = create_and_get_cgroup(CG_LOW_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_LOW_DIR))
++		goto cleanup;
++	close(ret);
++
++	*low_cgroup_id = get_cgroup_id(CG_LOW_DIR);
++	if (!ASSERT_GT(*low_cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	return 0;
++
++cleanup:
++	cleanup_cgroup_environment();
++	return -1;
++}
++
++/*
++ * The dying test needs an empty reclaim target plus a cgroup that keeps
++ * refaulting while the target is removed, so reclaim rounds keep
++ * starting and run into the removed target. The two have to be separate
++ * cgroups: the target must hold no processes to be removed, and v2's
++ * no-internal-process constraint keeps the refaulting workload out of
++ * any parent that has domain children.
++ */
++static int setup_dying_cgroups(u64 *trigger_cgroup_id, u64 *target_cgroup_id)
++{
++	int ret;
++	char limit_buf[20];
++
++	ret = setup_cgroup_environment();
++	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
++		goto cleanup;
++
++	ret = create_and_get_cgroup(CG_DYING_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DYING_DIR))
++		goto cleanup;
++	close(ret);
++
++	ret = enable_controllers(CG_DYING_DIR, "memory");
++	if (!ASSERT_OK(ret, "enable_controllers"))
++		goto cleanup;
++
++	snprintf(limit_buf, sizeof(limit_buf), "%lu", CG_LIMIT);
++	ret = write_cgroup_file(CG_DYING_DIR, "memory.max", limit_buf);
++	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
++		goto cleanup;
++
++	/* See the matching write in setup_high_low_cgroups(). */
++	if (!access("/proc/swaps", F_OK)) {
++		ret = write_cgroup_file(CG_DYING_DIR, "memory.swap.max", "0");
++		if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
++			goto cleanup;
++	}
++
++	ret = create_and_get_cgroup(CG_DYING_TRIGGER_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DYING_TRIGGER_DIR))
++		goto cleanup;
++	close(ret);
++
++	*trigger_cgroup_id = get_cgroup_id(CG_DYING_TRIGGER_DIR);
++	if (!ASSERT_GT(*trigger_cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	ret = create_and_get_cgroup(CG_DYING_TARGET_DIR);
++	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup " CG_DYING_TARGET_DIR))
++		goto cleanup;
++	close(ret);
++
++	*target_cgroup_id = get_cgroup_id(CG_DYING_TARGET_DIR);
++	if (!ASSERT_GT(*target_cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	return 0;
++
++cleanup:
++	cleanup_cgroup_environment();
++	return -1;
++}
++
++static int write_file(const char *filename)
++{
++	int ret = -1;
++	size_t written = 0;
++	char *buffer;
++	FILE *fp;
++
++	fp = fopen(filename, "wb");
++	if (!fp)
++		goto out;
++
++	buffer = malloc(BUFFER_SIZE);
++	if (!buffer)
++		goto cleanup_fp;
++
++	memset(buffer, 'A', BUFFER_SIZE);
++
++	while (written < FILE_SIZE) {
++		size_t to_write = FILE_SIZE - written < BUFFER_SIZE ?
++				  FILE_SIZE - written : BUFFER_SIZE;
++
++		if (fwrite(buffer, 1, to_write, fp) != to_write)
++			goto cleanup;
++		written += to_write;
++	}
++
++	ret = 0;
++cleanup:
++	free(buffer);
++cleanup_fp:
++	fclose(fp);
++out:
++	return ret;
++}
++
++static int read_file(const char *filename, int iterations)
++{
++	int ret = -1;
++	long page_size = sysconf(_SC_PAGESIZE);
++	char *map;
++	size_t i;
++	int fd;
++	struct stat sb;
++
++	fd = open(filename, O_RDONLY);
++	if (fd == -1)
++		goto out;
++
++	if (fstat(fd, &sb) == -1)
++		goto cleanup_fd;
++
++	if (sb.st_size != FILE_SIZE) {
++		fprintf(stderr, "File size mismatch: expected %lu, got %lu\n",
++			(unsigned long)FILE_SIZE, (unsigned long)sb.st_size);
++		goto cleanup_fd;
++	}
++
++	map = mmap(NULL, FILE_SIZE, PROT_READ, MAP_PRIVATE, fd, 0);
++	if (map == MAP_FAILED)
++		goto cleanup_fd;
++
++	for (int iter = 0; iter < iterations; iter++) {
++		for (i = 0; i < FILE_SIZE; i += page_size) {
++			/* access a byte to trigger page fault */
++			volatile char v = map[i];
++			(void)v;
++		}
++	}
++
++	if (munmap(map, FILE_SIZE) == -1)
++		goto cleanup_fd;
++
++	ret = 0;
++
++cleanup_fd:
++	close(fd);
++out:
++	return ret;
++}
++
++static int real_test_child_work(const char *cgroup_path, char *data_filename,
++				char *time_filename, int read_times)
++{
++	struct timespec start, end;
++	double elapsed;
++	FILE *fp;
++
++	if (join_parent_cgroup(cgroup_path))
++		return CHILD_EXIT_JOIN_CGROUP;
++
++	clock_gettime(CLOCK_MONOTONIC, &start);
++
++	if (write_file(data_filename))
++		return CHILD_EXIT_WRITE_FILE;
++
++	if (read_file(data_filename, read_times))
++		return CHILD_EXIT_READ_FILE;
++
++	clock_gettime(CLOCK_MONOTONIC, &end);
++
++	if (!time_filename)
++		return CHILD_EXIT_OK;
++
++	elapsed = (end.tv_sec - start.tv_sec) +
++		  (end.tv_nsec - start.tv_nsec) / 1000000000.0;
++	printf("%.6f\n", elapsed);
++
++	fp = fopen(time_filename, "w");
++	if (!fp)
++		return CHILD_EXIT_TIME_FILE;
++	fprintf(fp, "%.6f", elapsed);
++	fclose(fp);
++
++	return CHILD_EXIT_OK;
++}
++
++static int get_time(char *time_filename, double *time)
++{
++	int ret = -1;
++	FILE *fp;
++	char buf[64];
++
++	fp = fopen(time_filename, "r");
++	if (!ASSERT_OK_PTR(fp, "fopen"))
++		goto out;
++
++	if (!ASSERT_OK_PTR(fgets(buf, sizeof(buf), fp), "fgets"))
++		goto cleanup;
++
++	if (sscanf(buf, "%lf", time) != 1) {
++		PRINT_FAIL("sscanf %s", buf);
++		goto cleanup;
++	}
++
++	ret = 0;
++cleanup:
++	fclose(fp);
++out:
++	return ret;
++}
++
++static int
++run_high_low_workload(double *high_elapsed, double *low_elapsed, int read_times)
++{
++	char high_data_file[PATH_MAX];
++	char low_data_file[PATH_MAX];
++	char high_time_file[PATH_MAX];
++	char low_time_file[PATH_MAX];
++	const char *dir = workload_files_dir();
++	pid_t high_pid = -1, low_pid = -1;
++	pid_t wait_ret;
++	int fd, status;
++	int ret = -1;
++
++	snprintf(high_data_file, sizeof(high_data_file),
++		 "%s/memcg_async_high_data_XXXXXX", dir);
++	snprintf(low_data_file, sizeof(low_data_file),
++		 "%s/memcg_async_low_data_XXXXXX", dir);
++	snprintf(high_time_file, sizeof(high_time_file),
++		 "%s/memcg_async_high_time_XXXXXX", dir);
++	snprintf(low_time_file, sizeof(low_time_file),
++		 "%s/memcg_async_low_time_XXXXXX", dir);
++
++	fd = mkstemp(high_data_file);
++	if (!ASSERT_GE(fd, 0, "mkstemp"))
++		goto cleanup;
++	close(fd);
++
++	fd = mkstemp(low_data_file);
++	if (!ASSERT_GE(fd, 0, "mkstemp"))
++		goto cleanup;
++	close(fd);
++
++	fd = mkstemp(high_time_file);
++	if (!ASSERT_GE(fd, 0, "mkstemp"))
++		goto cleanup;
++	close(fd);
++
++	fd = mkstemp(low_time_file);
++	if (!ASSERT_GE(fd, 0, "mkstemp"))
++		goto cleanup;
++	close(fd);
++
++	low_pid = fork();
++	if (!ASSERT_GE(low_pid, 0, "fork low"))
++		goto cleanup;
++	if (low_pid == 0)
++		_exit(real_test_child_work(CG_LOW_DIR, low_data_file,
++					  low_time_file, read_times));
++
++	high_pid = fork();
++	if (!ASSERT_GE(high_pid, 0, "fork high"))
++		goto cleanup;
++	if (high_pid == 0)
++		_exit(real_test_child_work(CG_HIGH_DIR, high_data_file,
++					  high_time_file, read_times));
++
++	wait_ret = waitpid(low_pid, &status, 0);
++	if (!ASSERT_GT(wait_ret, 0, "low waitpid"))
++		goto cleanup;
++	/*
++	 * The child has been reaped and its PID can already be reused,
++	 * so mark it to keep cleanup from signaling an unrelated process.
++	 */
++	low_pid = -1;
++	if (!ASSERT_TRUE(WIFEXITED(status), "low exited"))
++		goto cleanup;
++	if (WEXITSTATUS(status) != CHILD_EXIT_OK) {
++		PRINT_FAIL("low child failed at: %s (exit status %d)",
++			   child_exit_str(WEXITSTATUS(status)),
++			   WEXITSTATUS(status));
++		goto cleanup;
++	}
++
++	wait_ret = waitpid(high_pid, &status, 0);
++	if (!ASSERT_GT(wait_ret, 0, "high waitpid"))
++		goto cleanup;
++	/* Same as above: the reaped PID must not be signaled again. */
++	high_pid = -1;
++	if (!ASSERT_TRUE(WIFEXITED(status), "high exited"))
++		goto cleanup;
++	if (WEXITSTATUS(status) != CHILD_EXIT_OK) {
++		PRINT_FAIL("high child failed at: %s (exit status %d)",
++			   child_exit_str(WEXITSTATUS(status)),
++			   WEXITSTATUS(status));
++		goto cleanup;
++	}
++
++	if (get_time(high_time_file, high_elapsed))
++		goto cleanup;
++	if (get_time(low_time_file, low_elapsed))
++		goto cleanup;
++
++	ret = 0;
++
++cleanup:
++	/* On failure, make sure no child process is left behind */
++	if (ret) {
++		if (high_pid > 0) {
++			kill(high_pid, SIGKILL);
++			(void)waitpid(high_pid, NULL, 0);
++		}
++		if (low_pid > 0) {
++			kill(low_pid, SIGKILL);
++			(void)waitpid(low_pid, NULL, 0);
++		}
++	}
++	unlink(low_time_file);
++	unlink(high_time_file);
++	unlink(low_data_file);
++	unlink(high_data_file);
++	return ret;
++}
++
++static int
++setup_bpf(u64 high_cgroup_id, u64 low_cgroup_id,
++	  struct memcg_async_reclaim **skel_ptr)
++{
++	struct memcg_async_reclaim *skel;
++	struct bpf_args args = {
++		.high_cgroup_id = high_cgroup_id,
++		.low_cgroup_id = low_cgroup_id,
++		.event_delta_threshold = EVENT_DELTA_THRESHOLD,
++		.check_ns = CHECK_PERIOD_NS,
++	};
++	LIBBPF_OPTS(bpf_test_run_opts, run_opts,
++		.ctx_in = &args,
++		.ctx_size_in = sizeof(args));
++	int prog_init_fd, err;
++
++	skel = memcg_async_reclaim__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "memcg_async_reclaim__open_and_load"))
++		return -1;
++
++	prog_init_fd = bpf_program__fd(skel->progs.wq_prog_init);
++
++	err = bpf_prog_test_run_opts(prog_init_fd, &run_opts);
++	if (!ASSERT_OK(err, "bpf_prog_test_run_opts"))
++		goto error_out;
++	if (!ASSERT_EQ(run_opts.retval, 0, "prog_init retval"))
++		goto error_out;
++
++	*skel_ptr = skel;
++	return 0;
++
++error_out:
++	memcg_async_reclaim__destroy(skel);
++	return -1;
++}
++
++void test_memcg_async_reclaim(void)
++{
++	u64 high_cgroup_id, low_cgroup_id;
++	int err;
++	double high_time = 0.0, low_time = 0.0;
++	struct memcg_async_reclaim *skel = NULL;
++
++	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
++	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
++		return;
++
++	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel);
++	if (!ASSERT_OK(err, "setup_bpf"))
++		goto out;
++
++	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
++	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
++		goto out;
++
++	/*
++	 * The timing comparison below alone cannot distinguish a working
++	 * reclaim from a no-op one, so require that the BPF program
++	 * actually reclaimed memory from the low cgroup.
++	 */
++	if (!ASSERT_GT(skel->bss->reclaim_calls, 0, "reclaim_calls"))
++		goto out;
++	if (!ASSERT_GT(skel->bss->reclaimed_bytes, 0, "reclaimed_bytes"))
++		goto out;
++
++	if (high_time >= low_time)
++		PRINT_FAIL("high cgroup not improved: high=%f low=%f",
++			   high_time, low_time);
++
++out:
++	if (skel)
++		memcg_async_reclaim__destroy(skel);
++	cleanup_cgroup_environment();
++}
++
++/*
++ * Keep refaults flowing through the trigger cgroup so reclaim rounds
++ * keep being triggered while the target cgroup is being removed. The
++ * child joins the trigger cgroup and writes the data file there, so
++ * that the file pages are charged to the trigger cgroup and actually
++ * come under its memory limit; then it re-reads the file in a loop
++ * until it is killed.
++ */
++static pid_t spawn_keepalive_reader(const char *data_file)
++{
++	pid_t pid = fork();
++
++	if (pid != 0)
++		return pid;
++
++	if (join_parent_cgroup(CG_DYING_TRIGGER_DIR))
++		_exit(CHILD_EXIT_JOIN_CGROUP);
++	if (write_file(data_file))
++		_exit(CHILD_EXIT_WRITE_FILE);
++	for (;;) {
++		if (read_file(data_file, READ_TIMES))
++			_exit(CHILD_EXIT_READ_FILE);
++	}
++}
++
++/*
++ * Remove the reclaim target while the BPF program keeps running and
++ * verify that reclaim stops on the dying/removed cgroup instead of
++ * reclaiming from it.
++ *
++ * The target stays empty; the workload lives in the trigger cgroup and
++ * only keeps refaults flowing so that reclaim rounds keep starting,
++ * both before and after the target is removed. reclaim_calls growing
++ * while the target is alive proves that rounds really run (the kfunc
++ * returns 0 on the empty target, but the call is still counted), and
++ * after the removal the skip counters must grow while reclaim_calls
++ * and reclaimed_bytes stay frozen.
++ */
++void test_memcg_async_reclaim_dying(void)
++{
++	u64 trigger_cgroup_id, target_cgroup_id;
++	u64 calls_before, bytes_before;
++	char data_file[PATH_MAX] = "";
++	struct memcg_async_reclaim *skel = NULL;
++	pid_t reader_pid = -1;
++	int err, fd, i;
++
++	err = setup_dying_cgroups(&trigger_cgroup_id, &target_cgroup_id);
++	if (!ASSERT_OK(err, "setup_dying_cgroups"))
++		return;
++
++	err = setup_bpf(trigger_cgroup_id, target_cgroup_id, &skel);
++	if (!ASSERT_OK(err, "setup_bpf"))
++		goto out;
++
++	snprintf(data_file, sizeof(data_file),
++		 "%s/memcg_async_dying_XXXXXX", workload_files_dir());
++	fd = mkstemp(data_file);
++	if (!ASSERT_GE(fd, 0, "mkstemp"))
++		goto out;
++	close(fd);
++
++	reader_pid = spawn_keepalive_reader(data_file);
++	if (!ASSERT_GT(reader_pid, 0, "fork keepalive reader"))
++		goto out;
++
++	/* Wait for reclaim rounds to reach the live target cgroup. */
++	for (i = 0; i < DYING_POLL_ITERS; i++) {
++		if (skel->bss->reclaim_calls > 0)
++			break;
++		usleep(DYING_POLL_INTERVAL_US);
++	}
++	if (!ASSERT_GT(skel->bss->reclaim_calls, 0, "reclaim_calls"))
++		goto out;
++
++	remove_cgroup(CG_DYING_TARGET_DIR);
++
++	/* Let reclaim passes that were already in flight drain. */
++	usleep(DYING_SETTLE_US);
++
++	calls_before = skel->bss->reclaim_calls;
++	bytes_before = skel->bss->reclaimed_bytes;
++
++	/* Wait for reclaim rounds to hit the removed cgroup. */
++	for (i = 0; i < DYING_POLL_ITERS; i++) {
++		if (skel->bss->reclaim_target_gone ||
++		    skel->bss->reclaim_skipped_dying)
++			break;
++		usleep(DYING_POLL_INTERVAL_US);
++	}
++
++	if (!skel->bss->reclaim_target_gone &&
++	    !skel->bss->reclaim_skipped_dying) {
++		PRINT_FAIL("no reclaim round hit the removed cgroup (gone=%llu, dying=%llu)",
++			   (unsigned long long)skel->bss->reclaim_target_gone,
++			   (unsigned long long)skel->bss->reclaim_skipped_dying);
++		goto out;
++	}
++
++	/*
++	 * reclaim_skipped_dying shows that the CSS_DYING/CSS_ONLINE check
++	 * caught the cgroup mid-teardown. Whether it is hit is timing
++	 * dependent, because the cgroup may already be fully released, so
++	 * only the combined skip count above is asserted.
++	 */
++	printf("memcg_async_reclaim_dying: skips on removed cgroup: gone=%llu, dying=%llu\n",
++	       (unsigned long long)skel->bss->reclaim_target_gone,
++	       (unsigned long long)skel->bss->reclaim_skipped_dying);
++
++	/* Nothing may have been reclaimed from the removed target. */
++	if (!ASSERT_EQ(skel->bss->reclaim_calls, calls_before, "reclaim_calls"))
++		goto out;
++	if (!ASSERT_EQ(skel->bss->reclaimed_bytes, bytes_before,
++		       "reclaimed_bytes"))
++		goto out;
++
++out:
++	if (reader_pid > 0) {
++		kill(reader_pid, SIGKILL);
++		(void)waitpid(reader_pid, NULL, 0);
++	}
++	if (data_file[0])
++		unlink(data_file);
++	if (skel)
++		memcg_async_reclaim__destroy(skel);
++	cleanup_cgroup_environment();
++}
+diff --git a/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+new file mode 100644
+index 000000000000..5033d5ec4c8e
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+@@ -0,0 +1,259 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include "bpf_experimental.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include <bpf/bpf_core_read.h>
++
++#define CLOCK_MONOTONIC_ID	1
++#define PAGE_SIZE		4096UL
++/*
++ * One reclaim round targets RECLAIM_MAX_ITER batches of RECLAIM_SIZE
++ * each. Each bpf_wq callback reclaims a single batch and requeues the
++ * same work item for the next one, so no callback runs longer than one
++ * bounded reclaim pass.
++ */
++#define RECLAIM_SIZE		(32 * PAGE_SIZE)
++#define RECLAIM_MAX_ITER	32
++
++struct bpf_args {
++	u64 high_cgroup_id;
++	u64 low_cgroup_id;
++	u64 event_delta_threshold;
++	u64 check_ns;
++};
++
++struct cgroup_memcg {
++	struct cgroup *cgrp;
++	struct mem_cgroup *memcg;
++};
++
++static u64 wq_high_cgroup_id;
++static u64 wq_low_cgroup_id;
++
++/*
++ * Statistics exposed to userspace through .bss, so the test can verify
++ * that reclaim actually happened instead of relying on timing alone.
++ */
++u64 reclaim_calls;
++u64 reclaimed_bytes;
++/*
++ * Reclaim attempts skipped because the target cgroup is dying or has
++ * been removed. reclaim_skipped_dying counts lookups that still found
++ * the cgroup while it is being torn down, reclaim_target_gone counts
++ * lookups that found nothing. The test removes the target cgroup while
++ * reclaim is running and checks that reclaim stops via these counters.
++ */
++u64 reclaim_skipped_dying;
++u64 reclaim_target_gone;
++
++static int get_cgroup_memcg_from_id(u64 cgroup_id, struct cgroup_memcg *cm)
++{
++	cm->cgrp = bpf_cgroup_from_id(cgroup_id);
++	if (!cm->cgrp)
++		return -1;
++
++	cm->memcg = bpf_get_mem_cgroup(&cm->cgrp->self);
++	if (!cm->memcg) {
++		bpf_cgroup_release(cm->cgrp);
++		return -1;
++	}
++
++	return 0;
++}
++
++static void put_cgroup_memcg(struct cgroup_memcg *cm)
++{
++	bpf_put_mem_cgroup(cm->memcg);
++	bpf_cgroup_release(cm->cgrp);
++}
++
++static int get_cgroup_event(u64 cgroup_id, u64 *val)
++{
++	struct cgroup_memcg cm;
++
++	if (get_cgroup_memcg_from_id(cgroup_id, &cm))
++		return -1;
++	bpf_mem_cgroup_flush_stats(cm.memcg);
++	*val = bpf_mem_cgroup_page_state(cm.memcg,
++		bpf_core_enum_value(enum node_stat_item,
++				    WORKINGSET_REFAULT_FILE));
++	put_cgroup_memcg(&cm);
++
++	return 0;
++}
++
++static bool
++should_reclaim_cgroup(u64 cgroup_id, u64 *prev_event, u64 event_delta_threshold)
++{
++	u64 cur, delta;
++
++	if (get_cgroup_event(cgroup_id, &cur))
++		return false;
++
++	delta = cur - *prev_event;
++	*prev_event = cur;
++
++	return delta >= event_delta_threshold;
++}
++
++/*
++ * A cgroup is dying once it has been offlined (CSS_ONLINE cleared) or
++ * CSS_DYING has been raised, mirroring cgroup_is_dead()/css_is_dying()
++ * in include/linux/cgroup.h. bpf_cgroup_from_id() can still hand back
++ * such a cgroup, because it only fails once the last reference has been
++ * dropped, so reclaim has to check these flags instead of relying on
++ * the lookup failing.
++ *
++ * CSS_ONLINE and CSS_DYING come from vmlinux.h: the kernel defines them
++ * in an anonymous enum, so bpf_core_enum_value() has no enum type to
++ * bind to, and redeclaring them locally would clash with the vmlinux.h
++ * enumerators. vmlinux.h is generated from the running kernel's BTF, so
++ * the values already match the target kernel.
++ */
++static bool cgroup_is_dying(struct cgroup *cgrp)
++{
++	unsigned int flags = cgrp->self.flags;
++
++	return (flags & CSS_DYING) || !(flags & CSS_ONLINE);
++}
++
++/*
++ * Reclaim one batch from the target cgroup. Returns the number of
++ * bytes reclaimed, or 0 if the cgroup is dying or gone or nothing was
++ * reclaimed.
++ */
++static u64 reclaim_cgroup(u64 cgroup_id, u64 size)
++{
++	struct cgroup_memcg cm;
++	u64 nr = 0;
++
++	if (get_cgroup_memcg_from_id(cgroup_id, &cm)) {
++		reclaim_target_gone++;
++		return 0;
++	}
++
++	if (cgroup_is_dying(cm.cgrp)) {
++		reclaim_skipped_dying++;
++		put_cgroup_memcg(&cm);
++		return 0;
++	}
++
++	reclaim_calls++;
++	nr = bpf_proactive_reclaim(cm.memcg, size, -1);
++	reclaimed_bytes += nr;
++
++	put_cgroup_memcg(&cm);
++
++	return nr;
++}
++
++struct wq_elem {
++	struct bpf_timer timer;
++	struct bpf_wq work;
++	u64 prev_event;
++	u64 event_delta_threshold;
++	u64 check_ns;
++	/*
++	 * Bytes still to reclaim in the current round, carried across
++	 * requeues. 0 means no round is in progress; the timer path
++	 * starts a new round by resetting it, requeued work only looks
++	 * at it.
++	 */
++	u64 remaining;
++};
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, __u32);
++	__type(value, struct wq_elem);
++} wq_map SEC(".maps");
++
++static int reclaim_work_fn(void *map, int *key, void *value)
++{
++	struct wq_elem *elem = value;
++	u64 nr, size;
++
++	if (!elem->remaining) {
++		/*
++		 * Timer-triggered entry: start a new round only when the
++		 * high cgroup refaults enough. Requeued entries skip this
++		 * check and only look at remaining, so the refault delta
++		 * is consumed once per round.
++		 */
++		if (!should_reclaim_cgroup(wq_high_cgroup_id, &elem->prev_event,
++			elem->event_delta_threshold))
++			return 0;
++		elem->remaining = RECLAIM_MAX_ITER * RECLAIM_SIZE;
++	}
++
++	/* One bounded reclaim pass per callback */
++	size = elem->remaining < RECLAIM_SIZE ? elem->remaining : RECLAIM_SIZE;
++	nr = reclaim_cgroup(wq_low_cgroup_id, size);
++	if (!nr) {
++		elem->remaining = 0;
++		return 0;
++	}
++
++	/* try_to_free_mem_cgroup_pages() may reclaim more than requested */
++	if (nr >= elem->remaining)
++		elem->remaining = 0;
++	else
++		elem->remaining -= nr;
++
++	/* Requeue the same work item for the next batch */
++	if (elem->remaining)
++		bpf_wq_start(&elem->work, 0);
++
++	return 0;
++}
++
++static int wq_timer_cb(void *map, int *key, struct wq_elem *elem)
++{
++	bpf_wq_start(&elem->work, 0);
++	bpf_timer_start(&elem->timer, elem->check_ns, 0);
++
++	return 0;
++}
++
++SEC("syscall")
++int wq_prog_init(struct bpf_args *ctx)
++{
++	struct wq_elem *elem;
++	__u32 key = 0;
++	int ret;
++
++	elem = bpf_map_lookup_elem(&wq_map, &key);
++	if (!elem)
++		return -1;
++
++	ret = bpf_wq_init(&elem->work, &wq_map, 0);
++	if (ret)
++		return ret;
++
++	ret = bpf_wq_set_callback(&elem->work, reclaim_work_fn, 0);
++	if (ret)
++		return ret;
++
++	ret = bpf_timer_init(&elem->timer, &wq_map, CLOCK_MONOTONIC_ID);
++	if (ret)
++		return ret;
++
++	ret = bpf_timer_set_callback(&elem->timer, wq_timer_cb);
++	if (ret)
++		return ret;
++
++	elem->prev_event = 0;
++	elem->remaining = 0;
++	elem->event_delta_threshold = ctx->event_delta_threshold;
++	elem->check_ns = ctx->check_ns;
++
++	wq_high_cgroup_id = ctx->high_cgroup_id;
++	wq_low_cgroup_id = ctx->low_cgroup_id;
++
++	return bpf_timer_start(&elem->timer, elem->check_ns, 0);
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.43.0
 
