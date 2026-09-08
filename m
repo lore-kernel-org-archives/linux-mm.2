@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B164C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8713C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BA996B009E; Tue,  8 Sep 2026 05:06:07 -0400 (EDT)
+	id B7DAA6B0099; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 892B16B009F; Tue,  8 Sep 2026 05:06:07 -0400 (EDT)
+	id B2EA86B009D; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A8266B00A0; Tue,  8 Sep 2026 05:06:07 -0400 (EDT)
+	id A45986B009F; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EE726B009E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:06:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B814D160469
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:06:06 +0000 (UTC)
-X-FDA: 85190013132.07.2BC63F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 248C512000A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:06:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JYrWkFPC;
-	spf=pass (imf29.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788858365;
-	b=uxsQ8wAP9ZvpycumD6G6iZmetjuXZTwGnchIkSDbdUsVzJ3WH9OUCe9RTZm1bhuUG50O9e
-	j/9HJFl+VqTs3hTosUODSYEvpI8IU0XlL7UFC2oizcup0LMm1fdn2n1ew88i6ojQAnuzJ9
-	8NGR5B6DNLqac2ajNp4I0xLWKZV47sg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JYrWkFPC;
-	spf=pass (imf29.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 72C0D6B0099
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:08:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D8971C23C1
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:08:32 +0000 (UTC)
+X-FDA: 85190019264.15.CA62FBC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9DA5510000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:08:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGJOVAl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788858365;
+	s=arc-20220608; t=1788858510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AX+7FxB8zQI4HWmkMOozVd16GP4ljWtJaR2TsbzyprU=;
-	b=JvyJDwgyyv+rXQPw6ysT43L3NECxQZF4YhMyiHSSedXxwhvy8HpCNCHjd8sDnr4PjdfAsT
-	pkzZiMi5FBL7ZjmqxjqIAN/fnkWZR0OOHCXqI2nJEuQQH1LQddBHxDImHW7PwIez/pzeTp
-	cw42WiPYDHOjIVa11ef+xyULea/qE7I=
+	bh=YnL+5+jjY/sqS7l0W4fKVbPZaIsWjtGfLtzgW1IG+uM=;
+	b=KHZQuTFRq4bHDn6rlqprTRAwKoFeK7TFdfUWN51j5+7o6L5QXMo9bvEhlH/31BgDQgjGLm
+	syzrdbPCZb1d5maVqFZguPwrI2w7/3Hgy0BmrNdDA3922fzN2zduybu1bz8a+HkAVGFRNW
+	vk4pqOy/ZN1n8uhGcooqF0mIlGTT6OY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRGJOVAl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788858510;
+	b=3YwMIS8WLWzKkEaco1ePtzpranxwQUCTlCdAbjXnh/BPQc2nIzpJpnFQ4WDGMzd1GXGlf5
+	nzsZ0qI+K63A7Gvjgr0Gr8fOe8GugdwiZRhl2tflpgpJVFKAh8Aq05aG0kRqT2D9WMgy3G
+	l/M07EraEVHMdtzkHeG6WZqCVMs33Ak=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E19E260A93;
-	Tue,  8 Sep 2026 09:06:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AC41F00A3A;
-	Tue,  8 Sep 2026 09:06:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 724FD4040A;
+	Tue,  8 Sep 2026 09:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA1B1F00A3A;
+	Tue,  8 Sep 2026 09:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788858363;
-	bh=AX+7FxB8zQI4HWmkMOozVd16GP4ljWtJaR2TsbzyprU=;
+	s=k20260515; t=1788858509;
+	bh=YnL+5+jjY/sqS7l0W4fKVbPZaIsWjtGfLtzgW1IG+uM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JYrWkFPCdWEPSJH4cIfkWL2PGgf2NCTn1HI3WLNDkla5VfmVA0JpBbh/4qpIUp0Yp
-	 IoY+25twEkLH7elroyqUuVV6DcdnHrpszENRNnxwyt2GKnMgm/4Q03ASscrcZg40b3
-	 Ubk4eFhBkGpjWX3xCKCZhlLiVqF3tv5u8mhpAGomSttsDDk8yWmsVONvfu8TAju6RV
-	 6WPuJUjmZwzSTEeojQF2YPHYWtx5i6zNiQG2RCmElIQQqewGZwhxSmxLRlSmFgP8Gr
-	 UmR5TzSeslYUV56Lerkf4IkwebNxuHeHzkWIjBrEEir8STlG9excW/k9Gpn57F+T0J
-	 9UB3P/4TmP32Q==
-Date: Tue, 8 Sep 2026 11:06:00 +0200
+	b=JRGJOVAlCz0spfZIa/FLR4lJ0fF7DswkvbGxUsbqrHQ+L9iB9cNZPNPtk7G1HFwKr
+	 qOFCY+58wwnPlxiXFSJ8i6NVInfJP7/OLtLOC1t5d5tnQVjVQ27qDM6KWvzCGAZtNJ
+	 wy0PnwgtZxyDnGaMQ5mxO/8xZg5T0gnlhcB7msXzSmyJ9M0br5AkEKS8wUkEcgy088
+	 QQdC9QqZv1kQphTtxfCosDJPMiFKKvC2bv4JpvFROc5Byn41q0XvO9HZN62QR74ynj
+	 MGkwgnlgTXHI06uoJPk2CS49Typhka8ShzwrDwGxg92WRB0XarGVJkSS8wTxoX8wmB
+	 H6KlRUDkdO+7A==
+Date: Tue, 8 Sep 2026 11:08:26 +0200
 From: Thierry Reding <thierry.reding@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, 
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
 	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -93,25 +93,26 @@ Cc: Rob Herring <robh@kernel.org>,
 	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
 	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, vdonnefort@google.com
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
-Message-ID: <ap_MnVK8NYvEtYHS@orome>
+Message-ID: <ap_QJG8EevX98SXa@orome>
 References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
  <apquUWgrD9C2jWQ0@willie-the-truck>
  <ap_HzwVp-6aOKEbJ@orome>
+ <ap_OFQepcu26g88u@google.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="i6qijyjefsd32euh"
+	protocol="application/pgp-signature"; boundary="2wjx7nhywlavorzj"
 Content-Disposition: inline
-In-Reply-To: <ap_HzwVp-6aOKEbJ@orome>
+In-Reply-To: <ap_OFQepcu26g88u@google.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: ukb79e5axw8ryscap9wdq7amwdcsqxhq
-X-Rspamd-Queue-Id: 248C512000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1788858364-785082
-X-HE-Meta: U2FsdGVkX1/4g65sM+83J+gvNAGJl+Ka3lFi5l5C0nVrg1s0uWSsFj2Ty17WUSWEpAVzJF41dVYCWK/kmxrS/Eqh4fA/3fYhforhRt4vjTFbkTi5UtS4+KtUf3styqwr/S3A8xbIXyIh/DN4YO8vm3jNexYG60W/hpZgcjQtN/5+MKNacwssLrB5ACH8xx+Q0FnAYOHLB9uB8FwXfWx5dKNsLrH2nwCYcwHq7WOP8WwsEbEFVkJx9kjwoUijydelMx/vZSKLipJhql5er2tQQnzQW8XYpW1/v00z4yC3CnbUxp4VcS1TGaAP9ylO7nXIbbX4SsBDVOLVLnFGd6EOqOkKTOK903BWvHN4wiY51GXcASUc6nrNB75R3H1zDFNmJFuWWjfXvReSDsItcO+onsSt8Yn+Ax5aAW7N7H12a8ziXq3evD0i7CS0n8HonZu/ZLfSv+RnAEtrAihvR6BRdLs0AV9FUQ3Jt1Yib6MXkennz5vrhPqBkfRonu8E1YTfwn3YW2vuln72cl+g2VFkuntdA+iMNCGmUPUs5Aj/0GPnJQzZ3+7ToUirnXHfzxKaqG+/TIsXb/J2YaRZpI/Mt/crKt3g+s/x5tZDwW+k0m/FzH7xDCxz+opFVHe5c0ooMlHvzIkyKJztkFpktPTIV61yQI7meyL30Uc3nxMewvasdcSIV4GT0hsSjzj62wvqWoRlM8iBPxbu0GlWb/p1zm5uRpwrcazIIrdZ/s4T5aZa9zar5whgUJAlhypPz599jVkiJuC/4ul592E9BFo2fBBweT2iL+/x3JAsviIuBlFhZSDX9A8fj1UMvh2jmLIdrPwA2IqGNlLA8KUe62FPnTBY76DnNfXogGd6/eu9/+9IJHTNB/CumPjqJfWNFLIV/caSdb+MYPOO9PRb2m8k4wTZzmWei/jA2S9hFzRpkG9p7uWg7H0g4LNNk4wplnUw+BrKPIbj7WsKDD5T6CM
- buMAlXZp
- GrPi+UMQp5fmIgArr6EHITQKPA/SC8q7tTfrC7s/Vevwl6+AQKTcaz5kZtZ5ZFLIxrh6+pEljp/3Hq3x20mTUP70LeI1ouu91U5iXEcs/nkxyc/u3sbFb+3pvCtP7fpEk9y/4VS+EF2H40TC8RWw78lD4dXSr8lBDd+agXnSWtOHHtdraUit41++vkV/Bitf6zkEeOeNw98jaW5bxNRtAApPZM8ve/jDbwBWldKvnyLfP+NNr8YwzpRoyAybx1RgJy71VPG6Zf5Ng95EMfra6J49VkIW5p2L11SKj86xwzXnIHVJBM7C8fl3qveep0XRoTULtFUofSf/xpjiaAwL/yhCfu4nXp+atSWIbY1NppaIr9fMzBsrbJ4f5h4zVX0+6vCrnNp3pjpTKFAAz8x3ja2cGfwTesbYhuG8vi2BSnf7F7qKpHPRtYKt6sG1Vw3WIS05Zlq9fX9o6B4dhHt9Sfig7BqgvWwZuhHCUlg2d5UIBx7tj+UyOcn2HZv0c6yXeq9JO
+X-Stat-Signature: 6tdmte9rqffhgj7dmq5ajr3hy3ek1b6u
+X-Rspamd-Queue-Id: 9DA5510000B
+X-HE-Tag: 1788858510-140840
+X-HE-Meta: U2FsdGVkX18mDARTZmi9nibRX2f6tr9p/fm7zK7w+8pt3MwG8l99j4jVZn2GgAtxxI+jJkfBA5C+TMjbgiKIlmkSsC7DGTqJmghiReYr/VJh6W23B47VCTHt6hH6we7pffocy+xhg/Egv1mThcyaA9uLZHSP+04mmAFgG6/Kda/PDUUARjFTe+x1hoZAni5r7oDSVfAAI5ShXDflqMk0i30z8rTbzD7Ci4iGz5QU9I5E+pKrz5RHoZhlIIbHr7SYVHIfBUyZpw6Q8snzors1pkrViqiuIo2L3S5tE+AqBWqDwxm4gmYVi/bNHziL98NpHXYRDgx9bzq9omcUVwZr8MfmLXW7qSKjG9SPMQ5m6VGDxYYcuFCtD2HK1+HU2K0KXPThJJZAvlIBQPWIux0xKjJ1oRxJLjxYwZCOLtZYvQqwwK9XaP6iEONKjn++wkk6Yq13T+8epckR0b7tF1P5I+Zm0J/8oe7AWSNJ+WDKzUvO0x5d4HVcyJCgaFFMTYaQ02QzhEjUThFxTH+F/c7PSqpsteBMJLAFf08wtJEii44XS4lDaRt34qQeL/EAGk4RKHYOGge73jbRp8HHlkjoMgASdXr066Jh5WOTp3MKEhjOMfaKRL+ET1/cfR+NH7PNAdU+OtibgTCBxCB1zVAfLR84O3NhJlneCGYHfpdUhF1RFG7h4Aaq5ZjPPVFDOIHGsIFwtoAzUuwKDNkmOCP15oboV9MXmFVYE4WBEPocG/e8EMBQ00V1YhYTwj/axqgUzbF6hsxJMuEJI+oL1RiTeUhT6nz0aLtftBPSkYqtnd5Q7oeaf9sj0DfNNl4Y+ZQB5OJTKV1ZkHrcPjLITrKES+CwNABzqjjogb4aWVb1dJhzpstCd7tC+gRT7sR+xqQKikBSKP1cIGnhcrnUMOakoKGLEAXZdNObAAVISkd41VbR5Ad+2KjrWZqRETb72p/mFm7DtxzBZsRQZvdcAq/
+ SgmetMuH
+ T0Q2kHDt+FvQKn+0bJbIhI7NVZ7jw0JMcVD5QcsSD6YuYy4OPPVKkfBAeoR4TSMJqbLMbFfBUktJty4sgcHlhAKFhh+oDnf1C8u+92PHhkXo0dDm7EVsPAFT4kJm7+uv+y1PuY/t+XX/pRUTf4VXKpu9FdsCKoqkbIDWEALszSKIDTPCM0/1r5ap2cJ64gc/SSHivVVFjFYybDd+TAD55CX9HOtUfZUtztT9DE1q81oDLifw1gKrVsUPzjXWr5XUvmOhZiR8WXHGbVJHhouk7mKBg5a7ha7X5SnHo4ymcSVfk7yNHx8gbrkVJ1lzLusot7Yp0NY+ILWf1ACW4kbUeTL2wATpJ0ymPliqbJUTmhoX6CgPxsZPASrHgvfkaIoA6pAsleoUDCa4HP3bCh8rJaJwO196RxtA7OpXF3RoNcYm/b6g8eADXBRqQ3C7dDdz3p1PGGt44zyiYJ6E/IDFJU3zBm/hnfaEnlYYK61EqlHWh2TGGohffmP0o8D7ze4cq5I3W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,122 +121,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---i6qijyjefsd32euh
+--2wjx7nhywlavorzj
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH v6 00/12] dma-buf: heaps: Add support for Tegra VPR
 MIME-Version: 1.0
 
-On Tue, Sep 08, 2026 at 10:39:17AM +0200, Thierry Reding wrote:
-> On Fri, Sep 04, 2026 at 12:41:05PM +0100, Will Deacon wrote:
-> > Hi Thierry,
+On Tue, Sep 08, 2026 at 09:57:57AM +0100, Vincent Donnefort wrote:
+> On Tue, Sep 08, 2026 at 10:39:17AM +0200, Thierry Reding wrote:
+> > On Fri, Sep 04, 2026 at 12:41:05PM +0100, Will Deacon wrote:
+> > > Hi Thierry,
+> > >=20
+> > > On Fri, Sep 04, 2026 at 12:44:51PM +0200, Thierry Reding wrote:
+> > > > This series adds support for the video protection region (VPR) used=
+ on
+> > > > Tegra SoC devices. It's a special region of memory that is protected
+> > > > from accesses by the CPU and used to store DRM protected content (b=
+oth
+> > > > decrypted stream data as well as decoded video frames).
+> > > >=20
+> > > > Patches 1 through 3 add DT binding documentation for the VPR and ad=
+d the
+> > > > VPR to the list of memory-region items for display, host1x and NVDE=
+C.
+> > > >=20
+> > > > The set_direct_map_*_noflush() functions that will be used later in=
+ this
+> > > > series are exported in patch 4 so that the drivers that use them ca=
+n be
+> > > > built as a module.
+> > > >=20
+> > > > Patch 5 adds bitmap_allocate(), which is like bitmap_allocate_regio=
+n()
+> > > > but works on sizes that are not a power of two.
+> > > >=20
+> > > > The of_node_to_nid() function is exported in patch 6 because it is =
+used
+> > > > in a later patch adding a driver that can be built as a module.
+> > > >=20
+> > > > Patch 7 introduces new APIs needed by the Tegra VPR implementation =
+that
+> > > > allow memory to be allocated at a fixed offset within a CMA area. T=
+egra
+> > > > VPR needs this in order to implement its own allocator on top of CM=
+A to
+> > > > meet the strict hardware requirements. This replaces the dynamic CMA
+> > > > area creation patch from earlier versions.
+> > >=20
+> > > Did you get a chance to see how this could work with Vincent's series:
+> > >=20
+> > > https://lore.kernel.org/r/20260902104712.2399797-1-vdonnefort@google.=
+com
+> > >=20
+> > > ? I think that should remove your reliance on can_set_direct_map() and
+> > > mean that you can retain block mappings for most of the linear mappin=
+g.
 > >=20
-> > On Fri, Sep 04, 2026 at 12:44:51PM +0200, Thierry Reding wrote:
-> > > This series adds support for the video protection region (VPR) used on
-> > > Tegra SoC devices. It's a special region of memory that is protected
-> > > from accesses by the CPU and used to store DRM protected content (both
-> > > decrypted stream data as well as decoded video frames).
-> > >=20
-> > > Patches 1 through 3 add DT binding documentation for the VPR and add =
-the
-> > > VPR to the list of memory-region items for display, host1x and NVDEC.
-> > >=20
-> > > The set_direct_map_*_noflush() functions that will be used later in t=
-his
-> > > series are exported in patch 4 so that the drivers that use them can =
-be
-> > > built as a module.
-> > >=20
-> > > Patch 5 adds bitmap_allocate(), which is like bitmap_allocate_region()
-> > > but works on sizes that are not a power of two.
-> > >=20
-> > > The of_node_to_nid() function is exported in patch 6 because it is us=
-ed
-> > > in a later patch adding a driver that can be built as a module.
-> > >=20
-> > > Patch 7 introduces new APIs needed by the Tegra VPR implementation th=
-at
-> > > allow memory to be allocated at a fixed offset within a CMA area. Teg=
-ra
-> > > VPR needs this in order to implement its own allocator on top of CMA =
-to
-> > > meet the strict hardware requirements. This replaces the dynamic CMA
-> > > area creation patch from earlier versions.
+> > I'm not sure if it would help all that much. Yes, if we mark the VPR
+> > region as LLMAP (or PTE_MAP, whichever it ends up being), it should make
+> > the checks for can_set_direct_map() redundant. However, from what I can
+> > tell, Vincent's series still forces page-granularity on these regions,
+> > so it won't retain block mappings at all for them.
 > >=20
-> > Did you get a chance to see how this could work with Vincent's series:
+> > The block mappings can be retained for the non-VPR memory, so that's
+> > nice. It also reduces the amount of external prerequisites, but I had
+> > kind of hoped that we could go one step further and keep block mappings
+> > even for the VPR memory if the region happened to be a multiple of the
+> > block size.
 > >=20
-> > https://lore.kernel.org/r/20260902104712.2399797-1-vdonnefort@google.com
+> > The recent addition of page count to the set_direct_map_*() functions
+> > helps reduce the amount of checks that need to be run, so maybe there's
+> > not too much to be gained from removing whole block mappings at once
+> > from the linear map.
 > >=20
-> > ? I think that should remove your reliance on can_set_direct_map() and
-> > mean that you can retain block mappings for most of the linear mapping.
+> > Thierry
 >=20
-> I'm not sure if it would help all that much. Yes, if we mark the VPR
-> region as LLMAP (or PTE_MAP, whichever it ends up being), it should make
-> the checks for can_set_direct_map() redundant. However, from what I can
-> tell, Vincent's series still forces page-granularity on these regions,
-> so it won't retain block mappings at all for them.
+> I should be able to add PMD_SIZE mapping support to the series. That was
+> actually my original idea as we can easily force the CMA allocation granu=
+le to
+> be PMD_SIZE too.
 >=20
-> The block mappings can be retained for the non-VPR memory, so that's
-> nice. It also reduces the amount of external prerequisites, but I had
-> kind of hoped that we could go one step further and keep block mappings
-> even for the VPR memory if the region happened to be a multiple of the
-> block size.
+> I didn't implement it as I thought there were not much interest in the en=
+d (and
+> also as contiguous.c is always using PAGE_SIZE granularity).
 >=20
-> The recent addition of page count to the set_direct_map_*() functions
-> helps reduce the amount of checks that need to be run, so maybe there's
-> not too much to be gained from removing whole block mappings at once
-> from the linear map.
+> But now as I have implemented a specific pool (and do not use contiguous.=
+c as
+> originally planned), if you believe it is important for the VPR driver, l=
+et me
+> see if I can extend the support in a V2.
 
-I don't think everyone received Sashiko's review, so let me discuss this
-here. Sashiko rightly pointed out that set_direct_map_invalid_noflush()
-and set_direct_map_default_noflush() return 0 when can_set_direct_map()
-fails and that code will then simply continue to work as if the pages
-had been removed (or added back) even though they weren't.
+I don't think it needs to be part of a v2 and can be a follow-up. It
+should be transparent from an API point of view and merely be an
+optimisation for that specific case.
 
-    arch/arm64/mm/pageattr.c:set_direct_map_invalid_noflush() {
-            ...
-            if (!can_set_direct_map())
-                    return 0;
-            ...
-    }
-
-Looking into this a bit, it looks like this is maybe a remnant from the
-early days when the check was simpler ("if (!rodata_full)", though I'm
-not sure the 0 return value made sense even then), but it seems wrong
-indeed for this to result in success when clearly the operation was
-skipped.
-
-None of the other architectures seem to have similar checks, except for
-clear cases of no-ops (like the address being outside the linear
-mapping, the number of pages being 0 or there not being any actual
-changes). All of the three callers seem to be prepared to deal with
-failure, so I think we should just make these fail instead of returning
-0.
-
-Any thought?
+Eventually it'd be nice to have, though it might also be worth checking
+what the actually gains are.
 
 Thierry
 
---i6qijyjefsd32euh
+--2wjx7nhywlavorzj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqfz/UACgkQ3SOs138+
-s6HbmA//a7qNERZAQ3yRWiydhrePbED3kRKv0HSv9N2gumrzKUdZsgRPZt9zq+tY
-jlGfE+pLkVxKn9OrAHS+c8ueItFNHkjdZbkMB9lYG0Wpclm5gpU11iBiiZtrzOHz
-WiEzKPtBJh4akwTJo0BLTQDqnf052vCmT1HW7/m51TmDBsYy531XuMqcF4V1cViJ
-L1KdyPc66KlBivmtcC0Kh0lVSbmsyS+SWJcxOvg+kwY8t02f68EHrUV9UTRgCmr8
-T5YO/ibccZVaey6WNDCqbdaQyUhHRzJNKuIrMGob5e49tDWOd4wB8Pa8CPMMgpUK
-3QPmfzDWrjHUimwGKdzu8R5LAk+zzEaxQMAlcaf3iEejg7WVY0DvDFA5m0Rbee8O
-BsryJINxaGuetAUqaF00N5UnCu5LreyjIiOFejWHY6BQM9oMlN0aBNnBMaozYOqF
-gvn9ioMnbVs4hhjggmGf7MOoKA87DU8Sb8JoZuZDTO51DrCB2P8gThFJHPkj7lgB
-hXjnzHdct/pO4qeaj6Y4FC63HBI58QoNMpmJGr7mZWeb5wWZQgj1Oobal1TbUZy1
-2G7m21x2Zegi9MmRwyS0XfXdGChMdxCttK0/XFo74Md1rKurzUjH8W3N2HdXTRrD
-DPvDE6pSnJSWnFNeDPebiamX72hoF000TpCe857/MUEH5n7Aamk=
-=GOLb
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqf0IoACgkQ3SOs138+
+s6FzZg/8CRaK7s6wzryx6ugtk3NLfiNV3oIjP6eXCrqWs4+dDSJ+em9X2MZpglTt
+8d7OMtEQVRUCKHW9Tf2fZKzqOYsmHzUi6kmnYAB1HB6kPDVl/0PyGbJsashsANGr
+WwElHEpCNRzyRLWSlx0Rtidf5pKqE0t2ukNMrye98cCHylazGo/2dNq5eUZiY0BG
++K3Qjj9AWuwmDlL9nqXeABM9sChrIGXf9wDxQWazhynwKGybLvgGW0AGjvsvnj+f
+QUygrWY8D+op3RSBe4mDbt04WTak3A69NyLRc1OJ1GBqXk9OUO2Zj45Bf0sDBiZJ
+LyEOE7tm89kbZ8Pab12MkHhMcJDhqtAh110WyvHQTiiJc/CDuEHWH0u6ZffApO2h
+5W6gRmwNWU47ZpaOW6zVimH17m/EPfokHg1RWeyBZnsjkkdNyUp996slMCdTQe2X
+Y37UdVaypUvzdNH7Xl1yYwsR+XIHfD69y6PZCeXZ0xVKEAgLTIyLDAXgfGZNdd/c
+ZgyweB3MFKGMZJxgssr0Yg5CQUHC81SbGPoQv/AadQ7P395kJ6B5bdbyMocaOjuO
+11VeRD6K//LwRhYuMMpauRgJAqSwVNxXxC1t9xZoPPAqxTb57s5IC7X5B6akq+Dh
+env+3Gvg9+blLrpxgLpmJQlOOxKkfrM/yrV8JI1mly57R+g1d0g=
+=HSA0
 -----END PGP SIGNATURE-----
 
---i6qijyjefsd32euh--
+--2wjx7nhywlavorzj--
 
