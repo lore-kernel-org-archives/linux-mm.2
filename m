@@ -4,114 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74CEC79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B66C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:22:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D18B36B008C; Tue,  8 Sep 2026 07:21:06 -0400 (EDT)
+	id A5B456B008A; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA2406B0093; Tue,  8 Sep 2026 07:21:06 -0400 (EDT)
+	id A0C026B0093; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B69DB6B0095; Tue,  8 Sep 2026 07:21:06 -0400 (EDT)
+	id 8D54A6B0095; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 901C36B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:21:06 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FA61A0534
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:21:06 +0000 (UTC)
-X-FDA: 85190353332.25.733BCBF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 62E462000D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:21:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GrB21XYO;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BAA96B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:22:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E7D831A0463
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:22:33 +0000 (UTC)
+X-FDA: 85190356986.07.EA30472
+Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B429520004
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:22:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ies7xEzQ;
+	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788866464;
+	s=arc-20220608; t=1788866552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IoqTyL+G5O6+fLL3cVLfgraMEyoqxgqBpPotfBdVQqw=;
-	b=Ga5n1gmsBTaj04kWeHDXMupfmn8NUNu0qSgrfghFD5lYg6GNvrhuASIIxZzaQhrKSaU1O2
-	2Co8caYoV10c1UQ2Kkdy5a4pLxKdqB+7MlELNHtbJ2S/qTfeJv9fTbjYbWSIrWDDvtM1pS
-	4pWj8+BnGcntUxytjnh38mQYmPNfWaA=
+	bh=kfFKgEaR5N0ccB7p1iUJntQYHPyNRYEKS50nvIP/hf8=;
+	b=MBn+PKJWi6CiG4rE0TLgwImEeugMQXuWRt/M+McjIbcxUdm1vm+tZXMJcRUDJenk2t1/h5
+	MgeUnL1Wg1my5iETG1pLTDS/uXDxVDY6PLNZ0V1w8cvtztZG2vOM8yJA8JZBeaXARttJT5
+	uJLIt64beLVdIcnKNLKIzAecLoHOwvQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GrB21XYO;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ies7xEzQ;
+	spf=pass (imf31.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788866464;
-	b=5q9Vol3fsRdCx1DxB/1PjxZqCAw3hnydiwfyaUGKTp7fczUf0/XXqfbC+OCvT+tiL7LZ8e
-	K6pnW7YX1NZSQxRjRvukgQMQ4ojF2Z3tayvfgFwnim/v4rEu7kOyym1W9rvAWLwx1QSrmj
-	rgHqw7yY+gJHFZcgUCP3Z+rX9XygfaE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46295404EE;
-	Tue,  8 Sep 2026 11:21:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB5F1F00A3A;
-	Tue,  8 Sep 2026 11:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788866463;
-	bh=IoqTyL+G5O6+fLL3cVLfgraMEyoqxgqBpPotfBdVQqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GrB21XYOLGrBo6gxEF8O+VDQ8P6Z7IJTIEyPD1wG1Gw99Ip3jQphLMVskjjJ/q1Ia
-	 NbKynFOkclfWFGjzL/ZGOj6A9B0MpoII6bIk2IMQMeQDRYFtKMRU9tUxJ1xQ8R6XhN
-	 wy+hJ5Tgq+0qcKo/HXlbIKH3KURAlURNS462V+YZ3LJlrToDIY9DtyC4wV64/AhYYL
-	 F15CVr74IcEypm11lfsqKgyCfH6d29iy96Wyv6dN/8FLMchUrk+YzXSYPL0GlxRixZ
-	 hhPGyoW5IRAxaXfGXElFzqrAoW5JwJ8z3PYtqX0rXQUBb6XRR5zCWyXaB9s0M98V+f
-	 qbnt/MWTQnd1Q==
-Date: Tue, 8 Sep 2026 14:20:49 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Len Brown <lenb@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	loongarch@lists.linux.dev
-Subject: Re: [PATCH v3 1/6] set_memory: add number of pages parameter to
- set_direct_map APIs
-Message-ID: <ap_vkSK_efv7ab90@kernel.org>
-References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
- <a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org>
+	t=1788866552;
+	b=SV+YFYZq1KxvOyskV/701Uj6r+kk/7kxoUSTLnPq/4N+RaD5y6g83NkMPGv7Q1AWpr/++j
+	Qz1HzirdaU1Bq03aGqR4Wci3t8ijq90r2QU/DMifU1eLrjaYSXySfMyF9P/BXttGO7NHC8
+	8cR3SADqERNypVBmw+yQ2PzETpmYY+4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ZZA+ZfYds4/VfNcL2acHrCCj6KTrChkpY0m87hvHxuE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788866550; v=1; x=1789471350;
+ b=Ies7xEzQJf7JxDZI/4u0i0dCM/tumbE7X7UkIPTCa8Z5ARLiHjNVkfxiZ3PFHwp96chf3NQU
+ dVIvz00L+tb2eBJs9D+tVhVjH08j1q+CO9C5+6xJMDiGR50gQGryYUZlA/6AjSIqP64De8daXGI
+ nLGXEd1Hr+gXT+pXN1droyn8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1cd0bb8d8965546c;
+	Tue, 08 Sep 2026 11:22:30 +0000
+X-Mizu-Trace-ID: 1cd0bb8d8965546c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <df053a08-6c9a-4e56-9ba5-bdfbf930331b@linux.dev>
+Date: Tue, 8 Sep 2026 19:22:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: fix size truncation in pagemap_ioctl test
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org
+References: <20260907135613.68692-1-zenghui.yu@linux.dev>
+ <9a21fc3c-1ca9-42a3-a044-6421f20341f6@kernel.org>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <9a21fc3c-1ca9-42a3-a044-6421f20341f6@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: rh6da7yo496t3yagr7cq6oosjp5ouys1
-X-Rspamd-Queue-Id: 62E462000D
+X-Stat-Signature: 3atmrdiiyy4pkzc3pcqjteagrrnyjwoo
+X-Rspamd-Queue-Id: B429520004
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1788866464-758712
-X-HE-Meta: U2FsdGVkX1/hENdMqfwf6SgXeVF/Y7nFKtNveyb5Z5rkcaEJiCuJrInZJ9FygWEb2/VRL3s/P5BFPPSEATqS9ZPOwJXG5/M9vJBq7I0EB6k2Es2O+UAzMf4CPV2NzRFqnpapXMoghuwGevccAL4QSntl8GFr+IV8oQQg+pftEu9FJ+um0t5UdF37HMugrI3l8G/PPP78PVnyV0jkuNqeL8x3X0QBtnhgetIKgrERLedAIl77IQCBPSuEgAGcBOTXusIRM1vg1xH1o1DAUcgmWonMreSCdtwSggtedPVlSH+zSSFc4kFNnqWm8o1Q93pDqBCPm2NqicNEs682ay1jVfA4ko2iU6n0qNxxRGjQdsVRLHM++K7cCmK3zSdWJUrLGy97eB5rtnRJuZkQ46C6CrAK2pioQkjca1SH5Rk7r5Uyi4sG0qgx/fFiA1Q7XXhoSNpEyxjauw+Le/tkNJUWXBUhmK2WPNXg2AKlAdz9Vla9aqh+aJ1RZkMLiEOsPi54/INc2SCej9/u3MK/8Y7/pC4QWVdwpGBLmj3vTzgiH+Ks6gURW2nTPtCZ8rail6mGR4Bh7+GOGxyADEMl9YlqlxSYNCBRWx4UFMhz2smXiM04zGwTIZm26aXxGC6VaS9q/MT6GHXDu5Pz+O+7iH848eAkTybKkkpmQHtLV8ouzcNiJmjSOvty7xb5m/gJx3qxb+Lob6kpqlq7OtjMZkE2JMqtkE+sbNikw9qojDZF+Ro8bSIsg+WMqSMedcHr8PMKSiA0d8rVKD8FZnQL1dJS7H2wA2mHui1cvPPs4c+vSq+6x37mRCXSWTLvPcamk0b3VsHUNRSZABW+1R2DV4o8xQK7WSOjitpt4obZ+hBvsQ1Ybyxr7WXYJHgjZg8EXaLQHfTgeCzUILnorFCVHVe5M1K8EGjckT0V3TwpStEFqXkZZDnep3Omb+qzSMGdMdky0S5x1otO5Pj/aA5Ammr
- WAwyKlKW
- oTKJ7cl+MYoUn029N25Z+OukmWIagKy3Bm0DBxNuASeHCPQnZOGwpm4lvyVe2JpKMrf6JNjVTW7olVN7IvO4+ZyiXZdqJviIgtxo17Ru1VNeyCsw4LixVfegb04Gj53QabqZJMsV+bOZNwQour/H5t6Q4aXpT41VTsnKs6SVbnuRLIp3CQql3ZS+hdTehbTHZLFhG5tbMCi4NGeZ8y1tOxn37FCqSBp9uPhsF6Teab0XTSS0qmIfvTtz5l6z9zq86q1jS6g9AaAAIST94GKoNGOU78imPPo6YadnL48EW82MX64PIse5zleAwTFU7h4TRNUf5UhdCO2J0YEU=
+X-HE-Tag: 1788866551-538795
+X-HE-Meta: U2FsdGVkX19So42nVrjcUPaZ1QCTLyVVMqGoS+GNY1ZPtcAA1QoCS4xS+oe6B5Y7+L311rkuRuKQ2JnxqlrKPySTox09HCR54b8/WiHJLLGptJVlimCc4BXOP4o1O0A3QOfQYgd33AseK6I0cDornseI+65cA8saexa4IUolav2v0DyTHMhQactlia8SuGvLzNcmtEtVrXIN81Tel0b8V+CGJGtvXSIJj7id+Asyf+bqtEP0i+BKY1cYMJj6yFMeiQtzg/2EQ9TdwmMNyJxvDs8N2LDTCdkb0EUqXqSsLhFVKtbovOua/0sJVk5AizWaoqzZVFZLR6jEcO1KnxGPVDAkg69Cscd4r+eRalKO5y/1F9vSz3l2w2+P5wyXAXD1EW2wSskSdqri/9Wv/qbdeg6YhyHsasQUekTFkxTJB8bMgtLeAVbFK3BILC8Sj5dBZqHP5vYD5SGogBTagCKZA/cLYaRcc3K1ikP38cm9pkUkag37dsmOjzbY17ho76tqsKrqPgoVShZZEs3Pp3uXb4dgnZECe6luRwrj4A1rqnZauwvQOzhC1i5c0K4SwkjiyqionqJQTeVNx7AscdKU1yxR/+mNXPUWg5PCCbcRR8O6SxUdQ3Zq6Hl4wuO87DUAGJOJk5AgiV2zs5+E2A3ePvALvNj9TBusO1oLouoC0qAik7NTB4EdjeiucngO7HZo+OPWzrU9Rt5LUcov5Mi8pZ81yZKr6CWB2pbhHCczdmSozdTmCbBmvFKMm6cuO3DvbAwJ3k2bvi5KlZr9UCn2Yk0u79Ua6+kyCBobqco+whPK4q4hPlJeIiAG4OTpbY+cdk6C4NwABxA+YI07Qp/+HnEkHbzjirNh+TFr4Y7X0MM2N0+nQhsSUc39ALO6dNSgYNIj7k2JMNj4c27arqifCyNGzJ2uFyiL3/yhE7KGlKyFR6ZLOtx6E3Ase+6vuxE+6lwpvBwgqDYMAqc0REW
+ 5Mg6Y3BB
+ zp3GkbVpJ8mnkJHD1VSGSopF6vc6TN0o0MiBJqEyPVlBi5MzcyJOId0WlE5XWS/5oMATC71f7zI275uYeRAwoshc30WkyvmswkCF4GrkQWeORbIIehLviqDe/CjKoF4jQ2obN4lsTJtGHJBtw7lalMOMy+7tXkGmKKdGK6SSnKtOo+mWPNjz2ZRKzH6Jb4FlddFp56VMlDbudO7t+2ON4/Cw7gc5M05r9daACBWd1iXcEZvu5nZ2cWnYkKwzR4Y5+zDXoZuNhvZ2vzxmkvznZKyRPnqvRUfeayh6lz8Hk1QiO6LcZzkC5XejjbiiaVJ6w3Qmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,61 +94,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 12:38:44PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/3/26 11:28, Mike Rapoport (Microsoft) wrote:
-> > When set_direct_map APIs were introduced by the commit d253ca0c3865
-> > ("x86/mm/cpa: Add set_direct_map_*() functions") the single page
-> > parameter made sense because the initial callers (vmalloc and
-> > hibernation) had sets of unsorted struct pages that required changes of
-> > their mappings in the direct map.
-> > 
-> > Since there is an increasing demand for direct map manipulation and it
-> > is also desirable to be able to update larger physically contiguous
-> > mappings, for example an entire large folio, extend set_direct_map APIs
-> > to receive number of pages parameter.
-> > 
-> > As there is still only a handful of callers, change the existing
-> > functions directly and update all the call sites rather than adding
-> > wrappers for single page case.
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 9/7/26 11:22 PM, David Hildenbrand (Arm) wrote:
+> On 9/7/26 15:56, Zenghui Yu wrote:
+> > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> >
+> > On arm64 with 64K base pages, the huge page size is 512 MiB, and
+> > hpage_unit_tests() builds a 5 GiB range (10 * 512 MiB) for its tests.  This
+> > exceeds the range of the int size parameters of gethugepage(),
+> > wp_addr_range() and pagemap_ioctl().  The implicit truncation to 1 GiB
+> > makes gethugepage() allocate a too small buffer, while the callers keep
+> > operating on the original 5 GiB range, resulting in spurious failures or
+> > SIGSEGV.
+> >
+> > Change those size parameters to size_t.
+> >
+> > Fixes: 46fd75d4a3c9 ("selftests: mm: add pagemap ioctl tests")
+> > Assisted-by: GLM-5.3 OpenCode
+> > Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 > > ---
-> In general, LGTM.
 > 
-> But regarding semantics, is it well defined what happens when an update fails
-> halfway through an operation?
+> Looking at pagemap_ioctl.c ... I think most functions should actually be "static".
 
-Just like other set_memory, it bails out in the middle if anything bad
-happens.
- 
-> I'd assume such a case cannot currently get triggered, but there is no
-> documentation on what's supported and what's not. Or is there?
+Yup.
+
+> Using size_t is ok. But then we should also change "unsigned long long mem_size"
+> to size_t, no?
 > 
-> Imagine someone performing an update on an area that partially spans two PMDs.
-> While splitting and updating the first PMD could succeed, splitting the second
-> PMD could fail. What would be the end result? Rollback? Does the caller have to
-> clean up?
-
-There is no rollback in any of set_memory implementations. It's up to the
-callers to cleanup the mess afterwards.
- 
-> I'd appreciate if we could add proper documentation with expected semantics.
-
-I believe it's more in the scope of  "arch, mm: create a generic
-set_memory/change_page_attr core" [1] work than this patchset.
-
-I can write (or maybe even slop ;) ) a doc about set_memory/set_direct_map,
-but I wouldn't want to hold this because there's not set_memory
-documentation.
-
-[1] https://lore.kernel.org/all/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org
- 
-> -- 
-> Cheers,
+> Also, in wp_free() we are suddenly using "long size". In pagemap_ioc() we're
+> also still using "int len".
 > 
-> David
+> Can we consistently use one type please?
 
--- 
-Sincerely yours,
-Mike.
+Yes we can.  This patch adopts a minimal fix for this specific issue.  I'll
+unify all size-related parameters and variables to size_t in v2.
+
+Thanks,
+Zenghui
 
