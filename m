@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED733C79FAD
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFDD0C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:34:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32B2D6B009F; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
+	id A09276B00A0; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 303696B00A0; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
+	id 9BA3F6B00A1; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F13A6B00A1; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
+	id 8CED56B00A2; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E42886B009F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:33:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 742018039D
+	by kanga.kvack.org (Postfix) with ESMTP id 5E71D6B00A0
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:33:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D726E14038E
 	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:55 +0000 (UTC)
-X-FDA: 85189629630.30.2DFFA3F
+X-FDA: 85189629630.14.D9F514A
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B32C1140007
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ugOOuW9q;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="An9/D7tx";
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 265FF4000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:33:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=ahR3dXuI;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=VZsZyyx6;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788849234;
+	b=hhkOlanWMFw/tjxzqOoVt0gnpqad7BkD1ezosKnceUJeCgDKsu5g0e3F3KLErzxtO2E+I5
+	B2RB5gfOWgRrvhTy0tv37SBY0/PNvwWY5JmtD7L2aejkPH8QB54ZqT5r9R2glw3L+dK9Ft
+	U+eJ2g7HSVlXipS7k5ExrnQfvQdf0ok=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=ahR3dXuI;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=VZsZyyx6;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788849233;
+	s=arc-20220608; t=1788849234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Cp0o8EDFYqgaI/CEiEvUg/mXT7EeRnDPR+/NOomvS88=;
-	b=6LyA2Pv+w3XzC6CkZPRE1Idv0MiKR3B5HScGmTbM3NQaMrQuT/W320R8EUtA65MkBnsiwv
-	nr+fIj00g/xirBsFJ5ufZuwYhsYG9PjnuZfNj9pm+y/24qL9BFlDkbTCeoSrby1fqVg9nE
-	FV3s+9cgeisHuiX0WaOJtoxCA46fzFY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ugOOuW9q;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="An9/D7tx";
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788849233;
-	b=PrlQj//uVpxz6M4V5NxwuR9vS7WaA1TT6geGg9h3gDzvTb5aan7+VacGwmZRhBdq6fsMLA
-	xItZbwxdjPDeVFWXslNFI2ojbnyPDyE+dveY66HZun0WxmZUGNjGYldwiTcmOuQpUWN/ZO
-	MSSvzb+oDNJgcgxu9Fj7pYq0O9y9Gkg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nJq6yR2p7bWWswQ+1JaEFwknbMonVxi+i+XtDlX1VJE=;
+	b=YLHUBfkN9WcWdPZ/1zdDCRk6Q5GqSDLY3FnB2AbiVy+Ol9145jNgo1uTFYPvjAaexxpJDs
+	bcA5Pp6U23sIcH8yXZBai/0nd8RTNdqltxv5uif0LMEj6qWMKBOKDFjaOng2DkvHe0sEV4
+	V1W6jep3Im7hv6bNwBzAD6WM3TDUoTU=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788849227;
+	s=2020; t=1788849232;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Cp0o8EDFYqgaI/CEiEvUg/mXT7EeRnDPR+/NOomvS88=;
-	b=ugOOuW9qKhAU3jefF5rh08PT3vrE2IXdbueWnqZqCpmyV5bvOudbWlrbHjpeje1u8xgjfv
-	AKlGo1M9CxgVkcWML1tdQGO/+Yr8wRNl4W1A12PQz3BNS1oUOkekAz+Ae2u3Y3gaWX6IOs
-	JtboaftOyUindIxACXrEnFvSVVXEFw0jfPd2Zaq9Wtkkl+YHzfskypxnguHiNVMOQLXuwJ
-	ChiyKIktCY98YbQi6nKlJ+gVx5YgpcujMOZYC1T+Yw0xzGUGXsCB76CVtAr/DucEjwjQ3A
-	sF3OFbYIbiqCePh0eg5o0M79ii6HYcWDmcoD0jLFasuMbIDQ6s/LvL3pagYykA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nJq6yR2p7bWWswQ+1JaEFwknbMonVxi+i+XtDlX1VJE=;
+	b=ahR3dXuIvmy9rLY/NaJKRHDCHK0nSGp3+7XiZcORdfSnIPwrsGHbO7bgDbz8h9Ed9Nqwm2
+	aoWGwa9rBrndpnaB9nw64Kj1w1m+8AUs44vqnM7PPYmHMeeEEo406mkBUaoKh9Hj8RAfv7
+	jjc7ulGhFOejma1EKD+dVfp5TS189yjYMsgnV7FxGuGah4BrD5a8ivX5lxTOo9D1pUlbi7
+	A2kvwa+AUJtq/vfQPN+lxM4XcUiIBNFikfImhIdNpNaFyr/x5u2PjfCgaPu7M+xUn5eqzi
+	by8lXtwRNpOWf3XzVgrg9kptObSnF4I4PxRDxSv6HilvMNkMswBwyTjPqcyvjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788849227;
+	s=2020e; t=1788849232;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Cp0o8EDFYqgaI/CEiEvUg/mXT7EeRnDPR+/NOomvS88=;
-	b=An9/D7tx9snxErbmaoktle4MclQvGq4BeA4eqME/OXmkgI1ozhe/GSz/tKB6Fu1fAZBtoW
-	ktDVIIqBQgCerXCw==
-Subject: [PATCH v5 00/24] vdso: Reject absolute relocations during build
-Date: Tue, 08 Sep 2026 08:33:34 +0200
-Message-Id: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nJq6yR2p7bWWswQ+1JaEFwknbMonVxi+i+XtDlX1VJE=;
+	b=VZsZyyx6tVMPgVUY8ZTFc6uDIAMDbc5w2oz5UFAf/4aF13Vb6IF0cflWvNHI9lzRI8DjSR
+	iNQZmO5z7gh/+JCw==
+Date: Tue, 08 Sep 2026 08:33:43 +0200
+Subject: [PATCH v5 09/24] MIPS: ELF: Move relocation constants to UAPI
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23Ny2rDMBCF4VcJWldFGl3dVd+jZKHLuBEYK0iOS
- Al+9yiBklK0/A/MNzdSsSSs5ONwIwVbqimvPdTbgYSTW7+RptibAAPFJFjaYs3U+ZqXy4a04JI
- DdQAaJhG40Zz0y3PBOV2f6tex9ynVLZef55PGH+uvNw29ximjkzWOuTly5tXnktbLVvKaru8Ry
- cNs8McRbOxAdxTOIQgfpAc9csTL0ZyPHdEdaexkohHGSj9y5MuxHMaO7I7mznrNFSoM/5193+9
- FRYP1kgEAAA==
-X-Change-ID: 20250428-vdso-absolute-reloc-a226293c1761
+Message-Id: <20260908-vdso-absolute-reloc-v5-9-3a93791af1cf@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+In-Reply-To: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
  Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
@@ -121,21 +120,21 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=5051;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=4382;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=HrYSsshejm3MdwopK0QyrP0YNb7baHfULTYkmKafnyk=;
- b=6vZ688HbgWJhdTRQDorQBzK+M44QpmiNq6teG+NERQLRF70axqHuYGFGpQXkaBAwsvu/byckc
- GVjxkQ/ryyNA0SOqbZDiyxRuUih42hmJ5lsZUQGQM/E4vA20m25CVaf
+ bh=A10H22cVXmPgY/NixL/2JhIgd7FK72hpu8GKd8hQAKo=;
+ b=qKSQneyNuKEBUb6rfiRCvkfACMHprRMYmjlZw9I/e5PmwvqMoWeNI3JR4y8qsFGqgWsmxafnd
+ O3IJy63bZaPB7kwaUolzd0zlzGxuCuw9umZ22crEBlrxXnL6ZfXMF3b
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Stat-Signature: rmtpps3z6m96xtezzi73sffqyxdh9z8b
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B32C1140007
 X-Rspam-User: 
-X-HE-Tag: 1788849233-80494
-X-HE-Meta: U2FsdGVkX1/v5u3SfdwW2kl3NjKQPsUdi/LI/KafYyEnyufPchXBXDbijL4aZdtGgpadwRE7+Ggpc7eDOiIzFZuK57FYqYCQUoZXIiOUtCEL9DeRDuchp33QsJl4f/VZasG7VeKAE5A2f3h+/66BAXqvhvHkhX/j+Z8QNr8ZniwOLH0fHcXXuclvVvePF7KpBfckv60KNFT2OygO/NmgOtmXfY64mskPEKKqxgtMZN4s7gP24AZ5Cfqe/zh8QkFAgmO5rT2qG2XvYz/zGcm4DSG+YTUZ/ZUmykKtKJ7eXfpy2sFhxV1qVX3N67UIRPXXu65+xkXPSPYpY9msPArR3zDkDUpgL9l48ZxVgWK77+Sdg+1/8pOjQdFHwF6iEnPDZWNXmEtmJQ4eE5EFal88Qfdkf+e9BJZgh4IdanHl3vqdkHDLzK07+7nmP9CvlC6BKZIXKra3tvNS7Fh1BCGNgWlWaqJAeRl+6WGLirNSfSPGZM3eMISIEvSr5BMlLIlobZi7ac8AibPeIp53mYwVqyhJhkisZqL/aEqlYxHUc7oERMSNDauH8uVrSn9/YubJE50Gk5JKStpUyQeWjkFLzwi/Rw/ZYH/KO2P+ALu8v1qdsqD3ev1bFtEJwb75IyYzd05/TtTUgdfdup2gXhL4i7rEesApRxfycklJjSGgdyZw49k/PXWxKrzO6FSkHKjmpWt57Zy0muqF3JVBKc9yEemA+PeS41sAdS7/u7XPSkLh1HC8VFeOuLtqdN6npczEmW6S6UhiQ1Mu8nMcV8sSZmWOf6KahmDQIDaoiaQnSxuzB4AN3VCdh+lBBPVAgzvNYG/LbwJtqgb+1c0aMhTtJG8Mv7YXT+8bw4Q7VE4Yo/Uzaih1m+FPuO9Q8WG0UgamfUfCxzgXk9eyrQvy2mGWLrgO/EgC6N6sGew8e/BZEnF6RkOYvFJ8JDzEV0m5J+ThA7LKh9WNdQoy9TC8AIj
- 2hxUH3/H
- fqVs5TlQd38Y/leawIbnTwmCpN4cFIqKp3PEAiNNwHo/aVt9tSr+KtAgWXAqLbOfw3uVLBdKooL8Lw415UnOIQTwIvsAFmTAFuHJ0/RGarqAXl51OKmfVdNQAg7vpjNvrNO0Vd2DXnNe3uOGzt8miWHbY3qdtWLXtLykvadwt/46XCzctCy5FB8vNO/4JWGu7Dngw0CL6nxHCFLdzKBR2aWx7tDXrglIuKEwwJZwiMpZYk/+U+6JHqrgsBz9/q5ZzlxdJhMCXBuFtnALz0Kbg7uWl23UPB+6mgy+qUbRI68fydDfzZ8xoAuIKHVsUotLjurhpkhFg4tNJaCt+OaQ4Z+ws24V9Bd3aS02bIo0TP8zsmwbW6wfZenaE8HeLmgY7lv8Gw8h420W22pGIcABh97whql4PfjKpVH1G60MJBEJZEw7wm03Bw/bMMZON9zIQhMHeU7S+iD4DEctT9/itOcC6n54L+xoTeJOY+g/uvP50ISBCnwj5PH4vBy0TlgO8m+ppCoOK//q/POKLpQytHSXeqW2u7zqIS1GkD+55YjET+x7YQbOPkdDa5zoPZAT6YBsF
+X-Stat-Signature: 86pheb9s1tssskcixnu6c9dxkq1zqqzs
+X-Rspamd-Queue-Id: 265FF4000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788849234-405288
+X-HE-Meta: U2FsdGVkX1+FGDxkv1KUg59Qak673UQZr0Qlc11JD1mWPTLo8l4nPRCD1cNjwxxrxFE6FCrbvMuMeEInDG6QDZIIB2LLK0kSNHZzo32sIB7PqRIEnUxcitK3kM2klk0H8t6OsP/qesSV3xDZnVo6O2bDBx4JJZ7MZ2FHd9VMzWaHNY+DLWKJWS4m9biMShKryG9Q4L+uwN5WvqKbRGMrs/2IYSYiBi20RXHXlFO+/qvf+YV6oEWBvRxvkjTDJphAutMTpXUQ/iHwJCE9LR/JFFcknuW80Sb2aljkS4CrAbiwJqBIvBeykCKlNOPnciePWyFsHmD3LDmEEvT+xDqLSYDU/e+QhwjhI/IOrPBgEdsWMHfP4sDHTy8t4kZhXy40mHBrPkplBdyuUAHjEx2zolloD6mi8Y4vnHqj7dMo6UmwnvdWG/YJaAWKJ01SyREZakhfiFRLjkk00sbV+OJLF2Rx491qwWBmAX0Cq6SJmxwQZ68v1L3kU9JicpCL1E4Cw5lAQGwEJHyAJ7DLQ83Vv7Wo3qrrZg3U+kL3HW6/lEw8ZIphU2ZeAV9RKOlvOeG5kKVyjSOc5cpSJXPdURDXUB5Mp1ev1h+pkVBKUFRuNmewcNAKhEeb/WteCP5wRIIa3juFWjM6wy1zGHky+EpflgBryyBzVXDl83CkZ+aZ/qv6QoK+v/YRPHCS9BwDSv+RKPdTGRupfOhDyvgvkFUK+m7YyBakaFz8jzpjL82t51vuFTD/ewTB/L1m55CcHUL0zWOHs7weUlgfZmwokKM77osAOMqgbLJqCvfHxzkedVNUYbxIcnHUBcQCsjiLluOLbG5ZFpr2ASgzRdqMAUVI0PlghQ9vVQoa/+5FHJfP50XZ2cbRnmYHVmWmtOJCk2OTE3FGlF27MHpRKb+l+yOFLdPMEcnTmWcwgvFoLD+U77jmKMYQvJtccGvbycLx8CbjX50l4zSLy+DiBZxherL
+ xh8Mq2XB
+ /KfjsIqIYU+e+KPbM7W5k+Vyp1r/Tv+25MBx3aO1TjWmv7Aeou89p3rTTbbu11gw16lWlT2NngCZ/Clh2kspDSWJgMB/bDgOjoVfYfBCAkqYuTXzewqaSYrxBtBZEzLa9oMVjOLSWu7PE33ztT2WmYOUYd6cEBKxjiSxlOLz8QEGiq2a55YmQx4RN1m0hQJLm6fQGKPMHXcB7yVAfPXK2a/qTron1v6CnnmEgCDTQPwtT4am0LLIq6hE/G/PSK2i2iny5BAnyclYh/8afijlubWKDayK2HJUPftTL8+KmXVvGEk1EPADeQVknDwvZq22KfHeslpzZwuyC0i8UESqW2kYMw17LZ0AgJtZd86MpV+gcQ1+dPHAVhY6fkIUCmdyFD1B8jemUzZ6tF7UfXq8CMmIXwFXtZVIJGf7uHv+0kQJjjD7Ws/WJKSVDzHCoOZnn1FVZJ1JRlOFqg8wGZATZHoCGGzmvKGf3z17H2PJm54zJCOLWdKONIa2DD8bUUczh57Ws3vnb4eQVcF60ldA5WaBpThKezKpepMOnDqZo4lCXstE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,114 +142,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The compiler can emit absolute relocations in vDSO code,
-which are invalid in vDSO code.
-Detect them at compile-time.
+These constants are useful for cross-platform userspace, for example to
+process ELF files during kernel cross-compilation.
 
-libc elf.h is missing some of the relocation constants,
-so make use of the kernels own UAPI headers instead.
-
-Patches 13 onward contain the architecture specific changes,
-interesting for the architecture maintaines.
-
-Kbuild and Rust folks: This contains custom definitions of hostprog
-bindgen and rust library commands.
-These are currently only defined inside the subsystem directory.
-Let me know if they should go into scripts/Makefile.host.
+Move them from the kernel-private architecture-specific header to the UAPI.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-Changes in v5:
-- Rebase on v7.3-rc1
-- s/HOSTRUSTLIB/HOSTRUSTC L/
-- Pick up review tags.
-- Also handle SPARC.
-- Build 'vdsocheck' during the prepare phase.
-- Drop now unnecessary riscv LTO preparation patches.
-- Link to v4: https://lore.kernel.org/r/20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de
+ arch/mips/include/asm/elf.h | 55 --------------------------------------------
+ include/uapi/linux/elf-r.h  | 56 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+), 55 deletions(-)
 
-Changes in v4:
-- Replace the inline shell logic with a dedicated build-time tool
-- Link to v3: https://lore.kernel.org/r/20250611-vdso-absolute-reloc-v3-0-47897d73784b@linutronix.de
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index aaef0eaa68d5..347e12584bee 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -70,61 +70,6 @@
+ #define DT_MIPS_HIPAGENO	0x70000014
+ #define DT_MIPS_RLD_MAP		0x70000016
+ 
+-#define R_MIPS_NONE		0
+-#define R_MIPS_16		1
+-#define R_MIPS_32		2
+-#define R_MIPS_REL32		3
+-#define R_MIPS_26		4
+-#define R_MIPS_HI16		5
+-#define R_MIPS_LO16		6
+-#define R_MIPS_GPREL16		7
+-#define R_MIPS_LITERAL		8
+-#define R_MIPS_GOT16		9
+-#define R_MIPS_PC16		10
+-#define R_MIPS_CALL16		11
+-#define R_MIPS_GPREL32		12
+-/* The remaining relocs are defined on Irix, although they are not
+-   in the MIPS ELF ABI.	 */
+-#define R_MIPS_UNUSED1		13
+-#define R_MIPS_UNUSED2		14
+-#define R_MIPS_UNUSED3		15
+-#define R_MIPS_SHIFT5		16
+-#define R_MIPS_SHIFT6		17
+-#define R_MIPS_64		18
+-#define R_MIPS_GOT_DISP		19
+-#define R_MIPS_GOT_PAGE		20
+-#define R_MIPS_GOT_OFST		21
+-/*
+- * The following two relocation types are specified in the MIPS ABI
+- * conformance guide version 1.2 but not yet in the psABI.
+- */
+-#define R_MIPS_GOTHI16		22
+-#define R_MIPS_GOTLO16		23
+-#define R_MIPS_SUB		24
+-#define R_MIPS_INSERT_A		25
+-#define R_MIPS_INSERT_B		26
+-#define R_MIPS_DELETE		27
+-#define R_MIPS_HIGHER		28
+-#define R_MIPS_HIGHEST		29
+-/*
+- * The following two relocation types are specified in the MIPS ABI
+- * conformance guide version 1.2 but not yet in the psABI.
+- */
+-#define R_MIPS_CALLHI16		30
+-#define R_MIPS_CALLLO16		31
+-/*
+- * Introduced for MIPSr6.
+- */
+-#define R_MIPS_PC21_S2		60
+-#define R_MIPS_PC26_S2		61
+-/*
+- * This range is reserved for vendor specific relocations.
+- */
+-#define R_MIPS_LOVENDOR		100
+-#define R_MIPS_HIVENDOR		127
+-
+-#define R_MIPS_PC32		248
+-
+ #define SHN_MIPS_ACCOMON	0xff00		/* Allocated common symbols */
+ #define SHN_MIPS_TEXT		0xff01		/* Allocated test symbols.  */
+ #define SHN_MIPS_DATA		0xff02		/* Allocated data symbols.  */
+diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
+index 3d9e3b57f1ff..0c6a8698f300 100644
+--- a/include/uapi/linux/elf-r.h
++++ b/include/uapi/linux/elf-r.h
+@@ -593,4 +593,60 @@
+ /* Keep this the last entry.  */
+ #define R_390_NUM	61
+ 
++/* MIPS relocations defined by the ABIs */
++#define R_MIPS_NONE		0
++#define R_MIPS_16		1
++#define R_MIPS_32		2
++#define R_MIPS_REL32		3
++#define R_MIPS_26		4
++#define R_MIPS_HI16		5
++#define R_MIPS_LO16		6
++#define R_MIPS_GPREL16		7
++#define R_MIPS_LITERAL		8
++#define R_MIPS_GOT16		9
++#define R_MIPS_PC16		10
++#define R_MIPS_CALL16		11
++#define R_MIPS_GPREL32		12
++/* The remaining relocs are defined on Irix, although they are not
++   in the MIPS ELF ABI.	 */
++#define R_MIPS_UNUSED1		13
++#define R_MIPS_UNUSED2		14
++#define R_MIPS_UNUSED3		15
++#define R_MIPS_SHIFT5		16
++#define R_MIPS_SHIFT6		17
++#define R_MIPS_64		18
++#define R_MIPS_GOT_DISP		19
++#define R_MIPS_GOT_PAGE		20
++#define R_MIPS_GOT_OFST		21
++/*
++ * The following two relocation types are specified in the MIPS ABI
++ * conformance guide version 1.2 but not yet in the psABI.
++ */
++#define R_MIPS_GOTHI16		22
++#define R_MIPS_GOTLO16		23
++#define R_MIPS_SUB		24
++#define R_MIPS_INSERT_A		25
++#define R_MIPS_INSERT_B		26
++#define R_MIPS_DELETE		27
++#define R_MIPS_HIGHER		28
++#define R_MIPS_HIGHEST		29
++/*
++ * The following two relocation types are specified in the MIPS ABI
++ * conformance guide version 1.2 but not yet in the psABI.
++ */
++#define R_MIPS_CALLHI16		30
++#define R_MIPS_CALLLO16		31
++/*
++ * Introduced for MIPSr6.
++ */
++#define R_MIPS_PC21_S2		60
++#define R_MIPS_PC26_S2		61
++/*
++ * This range is reserved for vendor specific relocations.
++ */
++#define R_MIPS_LOVENDOR		100
++#define R_MIPS_HIVENDOR		127
++
++#define R_MIPS_PC32		248
++
+ #endif /* _UAPI_LINUX_ELF_R_H */
 
-Changes in v3:
-- Drop already applied bugfix for arm64
-- Disable LTO for the riscv vDSO, as it is incompatible
-- Link to v2: https://lore.kernel.org/r/20250430-vdso-absolute-reloc-v2-0-5efcc3bc4b26@linutronix.de
-
-Changes in v2:
-- Link to openend (invalid) GCC bug containing more explanations
-- Refine commit messages
-- Don't fail on commit absolute relocations in debug info
-- Link to v1: https://lore.kernel.org/r/20250429-vdso-absolute-reloc-v1-0-987a0afd10b5@linutronix.de
-
----
-Thomas Weißschuh (24):
-      elf, uapi: Add a header for relocation constants
-      x86/elf, um/x86/elf: Move relocation constants to UAPI
-      ARM: elf: Move relocation constants to UAPI
-      arm64: elf: Move relocation constants to UAPI
-      powerpc/elf: Move relocation constants to UAPI
-      riscv: elf: Move relocation constants to UAPI
-      LoongArch: Move relocation constants to UAPI
-      s390/elf: Move relocation constants to UAPI
-      MIPS: ELF: Move relocation constants to UAPI
-      sparc: elf: Move relocation constants to UAPI
-      tools headers UAPI: Sync ELF headers with the kernel sources
-      vdso: Add the vdsocheck tool
-      x86/vdso: Enable the vdsocheck tool
-      ARM: vdso: Enable the vdsocheck tool
-      arm64: vdso: Enable the vdsocheck tool
-      powerpc/elf: Add 32-bit REL16 relocation definitions
-      powerpc/vdso: Enable the vdsocheck tool
-      riscv: vdso: Enable the vdsocheck tool
-      LoongArch: vDSO: Enable the vdsocheck tool
-      s390/vdso: Enable the vdsocheck tool
-      MIPS: ELF: Add more PC-relative relocation definitions
-      MIPS: vdso: Enable the vdsocheck tool
-      sparc: vdso: Enable the vdsocheck tool
-      vDSO: Automatically enable VDSO_CHECK
-
- Makefile                                    |  19 +
- arch/arm/include/asm/elf.h                  |  24 -
- arch/arm/vdso/Makefile                      |   4 +-
- arch/arm64/include/asm/elf.h                |  55 ---
- arch/arm64/kernel/vdso/Makefile             |   4 +-
- arch/loongarch/include/asm/elf.h            | 130 -----
- arch/loongarch/vdso/Makefile                |   4 +-
- arch/mips/include/asm/elf.h                 |  55 ---
- arch/mips/vdso/Makefile                     |   8 +-
- arch/powerpc/include/uapi/asm/elf.h         | 201 --------
- arch/powerpc/kernel/vdso/Makefile           |   4 +-
- arch/riscv/include/uapi/asm/elf.h           |  66 ---
- arch/riscv/kernel/vdso/Makefile             |   4 +-
- arch/s390/include/asm/elf.h                 |  83 ----
- arch/s390/kernel/vdso/Makefile              |   4 +-
- arch/sparc/include/asm/elf_32.h             |  43 --
- arch/sparc/include/asm/elf_64.h             |  44 --
- arch/sparc/vdso/Makefile                    |   5 +-
- arch/x86/entry/vdso/common/Makefile.include |   2 +-
- arch/x86/include/asm/elf.h                  |  33 --
- arch/x86/um/asm/elf.h                       |  33 --
- include/uapi/linux/elf-r.h                  | 705 ++++++++++++++++++++++++++++
- include/uapi/linux/elf.h                    |   1 +
- lib/vdso/Kconfig                            |   7 +
- lib/vdso/Makefile                           |   2 +
- lib/vdso/Makefile.include                   |  14 +
- lib/vdso/check/.gitignore                   |   3 +
- lib/vdso/check/Makefile                     |  34 ++
- lib/vdso/check/elf.rs                       | 498 ++++++++++++++++++++
- lib/vdso/check/vdsocheck.rs                 | 299 ++++++++++++
- tools/include/uapi/linux/elf-em.h           |  71 +++
- tools/include/uapi/linux/elf-r.h            | 705 ++++++++++++++++++++++++++++
- tools/include/uapi/linux/elf.h              | 112 ++++-
- 33 files changed, 2479 insertions(+), 797 deletions(-)
----
-base-commit: 2f737a133fad3808f9993f704fb27fd7791a0a41
-change-id: 20250428-vdso-absolute-reloc-a226293c1761
-
-Best regards,
---  
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+-- 
+2.55.0
 
 
