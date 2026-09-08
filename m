@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26216C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 02:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C9DDC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 02:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A9396B0098; Mon,  7 Sep 2026 22:35:15 -0400 (EDT)
+	id 398816B008C; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 259DD6B0099; Mon,  7 Sep 2026 22:35:15 -0400 (EDT)
+	id 371B96B0092; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 121D56B009B; Mon,  7 Sep 2026 22:35:15 -0400 (EDT)
+	id 2AE436B0093; Mon,  7 Sep 2026 22:38:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0F146B0098
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 22:35:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61D551C1F57
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:14 +0000 (UTC)
-X-FDA: 85189028148.07.2CF1F71
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0135D6B008C
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 22:38:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9069340396
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:38:15 +0000 (UTC)
+X-FDA: 85189035750.14.26403EC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8A239140003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EhPiuI3v;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id E456114000F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:38:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTPULx+T;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788835089;
+	b=7UpHBksYmqcMZitvV2Akp9GXtfHV1tKpBQwRvP/3LGnY2kmFoVujSpYDmJ6PguDm6GVUkj
+	ztxw0OROaOsse6grAI50y2iVS6msgrFa23qyLmuafVxBMr1MX5UBDPpBqZDKyv/YzGJOoz
+	ukjxJrI2IIq5+XZc1olVnkj0f2OgDfI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTPULx+T;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788834912;
+	s=arc-20220608; t=1788835089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eMmtbVHJ0q3i7VkqBKjhsBvkJHggSH9rxueG+47NtEw=;
-	b=TH18WUy+fXxnFicpMMxCeXQJ5g81UD//FYM3JTIv6I2OxIi4bQ1H89LOvb/0UxoLwk6sKS
-	q3tLeOXznfkFnuT1GYT0NPXz8vppl+BSx/V/ZosfuxnKbIvjWN0y9xpz7T6LsCWbwmRB3R
-	nkJg1tI6JmrgKSCpnsaGXECrltNXsAE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EhPiuI3v;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788834912;
-	b=pBdQiuvmWiI/76lzRtUuWh5AxI/uwNA9vfhOVrFLEiZNfOvs9hhuz4qaalQM30DCtCIl5B
-	J+75wP1D+Xyq27rNm6YIowbSjdaFov9mEFhP8IPfL32aWbRdNwKBdW4LHZ5dXrDnIM/rJX
-	2wRkMtcpTmzxafJ52sOAiATV837lpQM=
+	bh=efZgJABcoG5ggDnZhAKLlrjhxD8FD9hOCVM7mhQeFpU=;
+	b=Nk5AWDdbabOdb5vLy5m5TdUYHBgNpSMBnmJdP51NDvl4tcpjkp0YQUJxiFCQYu6su0t3+P
+	D1YPduOKwIrNuyN5hihQO8pkz/iMB5nXTdb6ih/veMPqpwrBsgP6tSwFNsCrP/oWO+6i85
+	7sHVkZW2r5kIMZzcJ6fqLSTGnQZv6T0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDFD9602D1
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C4E1F00A3E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788834911;
-	bh=eMmtbVHJ0q3i7VkqBKjhsBvkJHggSH9rxueG+47NtEw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EhPiuI3vzT+vj3AzZG46gCFz2og2UtKkIFYvMzir8gnnbLLJNSxTBDGkSOf1wrv2t
-	 bduAzR5i3GvIylk+Q90QGM4ER0q0KjXF38nq1KtSXKqN7S+fDn/9brt32SvBlyfYll
-	 /1XhjCTHWgn43Uhs6X+Q48PWqv2jSP0bdAiOjcnyRalVwn3FSEESOPvpzZav7+Xei4
-	 NlG0OzbFsFljHNJ+muzHLZ9WP4FjI7g1qVIGSIG71nJJ4xibsTJDzXziWFvc+UhItp
-	 onSiay6Qcu+c7LgxDI05C98Bb6+zW2XKGlzT9YOJTRf4v0YmxvkNzt6nlAzJq3A21n
-	 7QgpcijD/SJJg==
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-529a1ee0e62so50218501cf.2
-        for <linux-mm@kvack.org>; Mon, 07 Sep 2026 19:35:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy11Qzde164RCA9wh/bW3oN95tnX702kvW3E1j4/8YD89ysCFgsPR2oi3uYkQ1DOPQSVMSwWMPA5A==@kvack.org
-X-Gm-Message-State: AFuF++lw0FJZOmYb/Fncx0lnQ8QVPTOL+4GKzPGTSOh0HQydg+AaYIBe
-	MQl1z+Lc/xRO4m8bJskQO2l3w6gGCYHOFITuoea82kjR8uLfavPbcEfyaYuzfGv8cGK01pbUCpm
-	IEzJBJFobiysacylsO5PpHK0/K2ADzWI=
-X-Received: by 2002:a05:622a:4812:b0:52e:2d1a:6f14 with SMTP id
- d75a77b69052e-5305495fe41mr315608421cf.27.1788834910922; Mon, 07 Sep 2026
- 19:35:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <8e4db9a298c5ea6ccb192e274caed5b96f0cf022.1788751143.git.baolin.wang@linux.alibaba.com>
- <ap9zPPughaSlfXM2@fedora>
-In-Reply-To: <ap9zPPughaSlfXM2@fedora>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 8 Sep 2026 10:34:58 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
-X-Gm-Features: AcwNN1XJdP_8a8O34UwYY4Ts-BqbCBJU3Y_Odys9qaBt_-F_ZUk2tjclx1aQlnU
-Message-ID: <CAGsJ_4wn5ArqhG9w7gJY7X4G+Lg6=1teCb70dzPdN0k+5H8MbQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: mglru: clear the reference counter for rejected folios
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org, ljs@kernel.org, 
-	ridong.chen@linux.dev, hebaoquan@kylinos.cn, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4cny3aqmdrqomc9khug3zzaqurire77h
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8A239140003
+	by tor.source.kernel.org (Postfix) with ESMTP id 26580602D1;
+	Tue,  8 Sep 2026 02:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617D11F00A3A;
+	Tue,  8 Sep 2026 02:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788835087;
+	bh=efZgJABcoG5ggDnZhAKLlrjhxD8FD9hOCVM7mhQeFpU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=uTPULx+T8gxPX+bbiKHFilFF9EHAF5AWTvUS7p8r95JPYvApttPFOFq1Q9LEjEnAj
+	 szCy4LqZA05c07jaZhRlFjp7TftqHtTtWLy7c9Z364JLL/EmNXQ1q6NF5z0FAU9IqE
+	 g2oS/XYfXxYGZxjyaluL3wXd8edItcIwC69DoRZQ=
+Date: Mon, 7 Sep 2026 19:38:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com>
+Cc: baohua@kernel.org, baoquan.he@linux.dev, chrisl@kernel.org,
+ kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ syzkaller-bugs@googlegroups.com, youngjun.park@lge.com
+Subject: Re: [syzbot] [mm?] WARNING in swap_put_entries_direct
+Message-Id: <20260907193806.3f562237942e4156c3d4d53e@linux-foundation.org>
+In-Reply-To: <6a9f6350.6e6c5f9e.28f11f.0005.GAE@google.com>
+References: <6a9f6350.6e6c5f9e.28f11f.0005.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788834912-586889
-X-HE-Meta: U2FsdGVkX1/cLIsjF9oWRPCiYhkOwNfaryW8RewtwNxpik1jeb5O4PS6YYi/ibG5SbpJtxtSJr17t7RYl7I5WCqmTGB5jVq3zoGlbQ1kFyVEV6n3WWa7rxxs5AVNdxsO73GA+L3A8yEIVOsogwjg7Qdjt/7KQq69LTMckhG+SIP+Hf7BVIEyiHIk5ewwyjx55oBD8rbEjWhyvxmeOVFrDv60Sq5yDHvQVX6q1Lvfu2lpoS4zwQR/T/zRMoaCLeXxhRPjQQKrFYfMrV0kDSzr8uFtY9YXCWkfSiuetE8qTADe4xUNqywHrf6m8nzVidWX5W4iF/ZcVOAyP6543FlM/F+i1+n7or4gbYuBZTTgrxpOgi+W5/NMcjevM2IBcjmDI+AkFkUQAhIimDX/Tz9XzYWYOpq+3bMKLNzmTfgVJQW9wq/Y5kiSv/b+Y6T21otGocjNgiOr4RkXvjoZjGJbOOTzRhlDXFQFMzPzvhaBLQxdtzTvjsQ5cZP1H/Hh/eIEL17js3Bw52curSDOEwgZ44VLcfadyvyvIay2aUsGx1MbC9jD8RdOoOfMDjkvR8tJgWEh/Dj22EAFLGuTpKK7O0zXT21OW4QFb9LTue8NFcR09v1tpifW94TcXjkneTXJKE4VLYF+Yj5a2jzejUMuh2M769v3B+RzhDToUoF3vT53sNauHoc9VQn8akH3DHbhK6crdTkTfh9rD+isrGO/m70Geywweq4FIUP10Msr+7aqWjG5Wu9ogiFyOuwhPZVnqIIN04AJft7RQ4CTyrbIempcyfkA1KN5CCEP4sanLqNRXFL/5fIbxoCqMRGgsT5LlZiB/lUr1cmShp9QaT7MSZPRGlXvi+WDs6e7qKsnmAHIiO0scZhDAbWIIbTm4gt7rnjAOyMnzhwYYY/lA5TJ9wPUX845hHpf6/D2lUz9nymkbFF/wSQvjB7qC4TrCZYnk27LTOawJtBp5rgfdCE
- 3UfH44ne
- 9TKKZeOWr2KXxOHciQQxqdvyEp0TimIAo2Wei4s+gSgpFe9LKh8Rpt8CtRfEUD55e2uRRNsT345ADGPkgA8dStuNXAvVvamXIETRVTjvIWQ8pXwF8uqJpR8rjPPOx7jSVpoStVSBLM0SgdHndrNNDhz0Yx3ouYtCo/PxBa2c5qn1rwCpEb45lh++XZGLHJZEp9VpeuV/6uJyM06GryRdISLBXTW4YfIIdME0mSsiVqlFDQDJYTBeXkhd5ctLrDlqwzDBdB26cACHGpTY8fihbGzM7u1G3Jvv7ckkA
+X-Stat-Signature: pb6honyqw1af87rz9rs7wm5rwfyf7gys
+X-Rspamd-Queue-Id: E456114000F
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1788835088-282463
+X-HE-Meta: U2FsdGVkX1/r3JtwVKY5Z/AvqvplMw0PqF4VHoeIpmi0Z+GANfCXUmflQ8xYlzOjImgi/sARD4iStF1Z01XXiJ2xoU0on4ckc5rpiIYRycfLyOWkmGp6gqXeKh4WN5SghBppFFvmQgItpPsenTLvj8h21ytEKygHBLqDuK0uiKmy3VvAnpelDmU9iM0/GbXMm7QdJ0fCwFVIZBYFsMeF2j2btX1hxq/s7RKoRAkUFXTR3D+PYdwkZc3lOg9h30X4C1ZLnnRtEkZ5kDJjEKvyeZs/MvfrIGrMwjvEA8AE1qE++gs1OKpy/D3+zqJ40Pzenh66KPIf389SIxKAL+/P1PMcprBt9iy7Qm6j1Lc8PUS3uNmeBHDoojahhsK77gH+z8G5c4EyQ9ZcWeW4JYKcjg3DD1v4EvwpzCmGEU4AQSC8ZLY7V/2uUcqPGp5qtfjkMt3qDfWNQ5mzY7P3e6+wLr6nmQPhJrm3wDmoB0v8oJSOYqs2cd/vZN3qVz2TDe1Rb05i9AFSf/1TI4nU8hxWZFuCXyz1Jo+4ef5Rz6YA3j7xvgJL7t272DXbzolCEEXLZS4KjyYi3j6EGerRm1hnGWG3bQsYNYh6VtdnPIvTRtlZ+pb+QTTCdH+QG0K2/3szJznjfg1RsawodvAvxuTC0ssI2sEA2ZrqIgKY9bvsxZ3r6UPiiS+wAWAEE8TWGN7HDZkuOBvAlaFqdRnA4i25OBtI2UV2MOhMpF8rmQF//8C1PL7RU2hy2hOsw6thdzfv1HcFHlLxHA8QmsjwnpSFUSCLiLjik5owsNMvGQ6Q8rNopbB1mpQr75k3+B4km/I9tUCoE4yHB0kcXZ+N833wjJi5P1UwutpwaUr18oiK2jQkYnVq8k5BJfJ1VfSs7e2pgQ7GvsKuMNOopJiaoJEH52arZAd92ot+3TStUCmlDZ0WmpPdt55xGxQHypIOXV4YMgtzwaVh9zhv+JMesPY
+ xGL3LUMA
+ 08k3swNcNzXwZEuhFSaSWyuFqc8cRPvg3aTPmfuPZWlV7kIsyI/JOX8FKv8T31/yotNL/XpqD40HBt9Lbs13GrKHUKa2FA6cBe6TM0Pkpj1vOpr/Pd5HRzTcEXk/e+w19Qxbm5JSTVJVMEh8v0c0NTF/5+um0v7b9yePad3g34aSLzHZbvdrJb0zPKXBC+alj20k3S3wjaAdc2B60aY47A7XSwnmLkf3f31SMicu9r3iOz3kp4tRRkaDINevqvb0NsjS0ETRkn/jfMEBtptSqOpvhI5xT3pdRaFM9g+2iRhRBmqcSEQGlK5IhSjsFLrDFvfIcd76/BCT2ynDtMW4p0R86H3YHmXb6TxNnoGzKasD8rh/jMnKv9j8JRHXygnLy4TOBe0CHJWb2reGl32kJUl5h7NUTtB7Kqk0A9QJDpxGT5PSKnd6JyQFbSvKan5U3YIsbHya5c8WBMVtwsHHOZuUjIH8xXM1Oa9eSJmVSt890RjhSNRdxIOpXkdvyyDDjMxLDRT84RtnKFpQHL6P0GZIkbdZJ+z2VCHPmvZg92Tf7A/1SKea4EBjdaXFyT2gstFAafCmNIf+MbaYGjDUzmaVcR0Yy/4ZyupD79hwYW7QmA6807ierjdll29mq2ykShA7bgpPIwClS5h7qUsDexIRtN9ju64Nu3FOBZtxNclqPSMVwMWf4Za3WSf4raBjuBfcsEVgH7KicB75qwPysiDy4bthbR4LX82qJHC5YV3FCR53FWnZJ7DoJz7p1WXLMuOoVWeul4SZFTQEJ0AHzydZt4jlXrpizSVuByaZlhsB2ncCaoMZAjqQ/cC+3ca6F48v652KJ11AEjYmhF690vgWaFhZFoIJZauuHQQ6hPt6QmJ9Jgccs0Rvwu1+9jCw+GXO8plXrdcYJWcuVBomEktkMSPFi4DrbSiEM4uB9Mj+x06dga5u8A/ymu3UqYAQrb6WNASbJw7PxIzJkv7rfefL3uEFB
+ 1wuLPd3Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,51 +92,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 8, 2026 at 10:30=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> Hi Baolin,
->
-> On 09/07/26 at 11:25am, Baolin Wang wrote:
-> ......snip...
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 40d3f1b48a74..42c0a09938ab 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
->
-> Well, this seems to be based on Andrew's mm-new branch. I usually track
-> mm-unstable branch. Maybe the subject should be marked as below?
-> [PATCH mm-new] mm: mglru: clear the reference counter for rejected
->
-> > @@ -5021,10 +5021,11 @@ static int evict_folios(unsigned long nr_to_sca=
-n, struct lruvec *lruvec,
-> >               }
-> >
-> >               /* don't add rejected folios to the oldest generation */
-> > -             if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
-q[type]) {
-> > -                     folio_set_lru_refs(folio, 0);
-> > +             if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
-q[type])
-> >                       folio_set_active(folio);
-> > -             }
-> > +
-> > +             /* See the comments on LRU_REFS_FLAGS */
-> > +             folio_set_lru_refs(folio, 0);
->
-> This looks like a great catch, while the code change could bring issue.
->
-> Because move_folios_to_lru() relies on folios' flags to decide their new
-> generation. You just cleared it before move_folios_to_lru(). This is no
-> problem for rejected folios that are determined to be put into the
-> oldest generation. But for those rejected folios that are determined to
-> be promoted, this could be wrong. E.g currently gen window is 4, and a
-> folio is referenced, lru_gen_folio_seq() decides its new gen as 1, which
-> is the 2nd oldest generation. While folio_set_lru_refs(folio, 0) clear
-> referenced bit, this causes it being put into the oldest generation in
-> move_folios_to_lru(), this is not expected.
+On Mon, 07 Sep 2026 18:22:24 -0700 syzbot <syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com> wrote:
 
-The original code looks quite weird. It even prioritizes folios
-that won't be promoted by `PG_active`. Do we need to change all
-the cases just to call `PG_active`?
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    8ab1afb2eb24 Merge tag 'for-7.3/dm-fixes' of git://git.ker..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1034a125580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=85bc5cc2fc7394d9
+> dashboard link: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> userspace arch: i386
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8ab1afb2.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/4767b33b6704/vmlinux-8ab1afb2.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/aa0bdf390bbc/bzImage-8ab1afb2.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+> 
+> get_swap_device: Bad swap file entry 7c00000000000002
+
+hm, thanks.
+
+https://syzkaller.appspot.com/x/log.txt?x=1034a125580000 reveals a huge
+storm of I/O errors:
+
+[ 1175.396574][ T1132] ata2: SATA link down (SStatus 0 SControl 300)
+[ 1175.417415][ T1123] ata1: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
+[ 1175.421618][ T1123] ata1.00: configured for UDMA/100
+[ 1175.447991][ T1137] ata3: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
+[ 1175.456823][ T1137] ata3.00: configured for UDMA/100
+[ 1175.614247][ T5836] usb usb50-port1: unable to enumerate USB device
+[ 1175.647906][ T5108] Aborting journal on device sda1-8.
+[ 1175.651011][T12337] buffer_io_error: 18 callbacks suppressed
+[ 1175.651033][T12337] Buffer I/O error on dev sda1, logical block 131072, lost sync page write
+[ 1175.657294][T20237] EXT4-fs error (device sda1): ext4_journal_check_start:94: comm syz.5.3709: Detected aborted journal
+[ 1175.665579][ T5108] JBD2: I/O error when updating journal superblock for sda1-8.
+[ 1175.673842][T20239] EXT4-fs error (device sda1): ext4_journal_check_start:94: comm syz.6.3710: Detected aborted journal
+[ 1175.721163][ T5923] Buffer I/O error on dev sda1, logical block 0, lost sync page write
+[ 1175.723567][T20239] EXT4-fs (sda1): previous I/O error to superblock detected
+[ 1175.730930][ T5923] Buffer I/O error on dev sda1, logical block 0, lost sync page write
+[ 1175.731190][T20239] EXT4-fs (sda1): I/O error while writing superblock
+[ 1175.731223][T20239] EXT4-fs (sda1): Remounting filesystem read-only
+[ 1175.791874][T11112] Read-error on swap-device (8:0:516182)
+[ 1175.863539][T10850] Read-error on swap-device (8:0:364134)
+[ 1175.888507][T20241] EXT4-fs (sda1): shut down requested (2)
+[ 1175.908145][ T5726] Read-error on swap-device (8:0:332990)
+[ 1175.908919][ T5923] Read-error on swap-device (8:0:333014)
+[ 1175.909235][ T5923] Read-error on swap-device (8:0:313854)
+[ 1175.939843][T11112] Read-error on swap-device (8:0:356918)
+[ 1175.967225][ T5148] Read-error on swap-device (8:0:364766)
+[ 1175.979645][ T5724] Read-error on sw
+
+
+So I suspect something's wrong with shmem/swap error handling.  ie, the
+code which doesn't get tested :(
+
+> ------------[ cut here ]------------
+> !si
+> WARNING: mm/swapfile.c:2130 at swap_put_entries_direct+0x17d/0x1b0 mm/swapfile.c:2130, CPU#1: udevd/13167
+
 
