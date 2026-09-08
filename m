@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 747A6C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8E3C79FA0
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:20:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85DC46B0093; Tue,  8 Sep 2026 05:19:03 -0400 (EDT)
+	id D91B96B0098; Tue,  8 Sep 2026 05:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 835B06B0096; Tue,  8 Sep 2026 05:19:03 -0400 (EDT)
+	id D42E76B009D; Tue,  8 Sep 2026 05:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 773906B0098; Tue,  8 Sep 2026 05:19:03 -0400 (EDT)
+	id C7EFB6B00A7; Tue,  8 Sep 2026 05:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 59D1A6B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:19:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ED1EB1C23E8
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:19:02 +0000 (UTC)
-X-FDA: 85190045724.13.BE5B568
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6C4001C0003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:19:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A11346B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:20:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D4EBC04A4
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:20:26 +0000 (UTC)
+X-FDA: 85190049252.19.A9AA634
+Received: from mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2F9FE40005
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:20:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DHSoiI7i;
+	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788859224;
+	b=Usr9aER3ljXC2WsLqPG31su45Jfw/e3LgfJtVOtJZpJJN9OGRLHlFWTuMRFZ6W3a/upveU
+	hSpH4xeqrcfJh6oKl5iVxAew160a0nP3Y0ghThDl7BQi7jsUXbhrSlBL/CmKjo1i4k94iP
+	KVUX1+jJbgLyps8SeiYDp6JDFrR67/g=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DHSoiI7i;
+	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788859141;
+	s=arc-20220608; t=1788859224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jC952bHmiBBRZiJqd17i/7x1m+YVL1dngpkL95OZce4=;
-	b=t2TqT4pU3jsjxebk8Fzh85dUKii3UQgWENKOwbzMINef7jViPOsiP6Zc0FOc3bXU8pFezJ
-	RNsYour6HDzPvvd6IKdJulfq5MZ08w4GhZirRCTDHmDTSjtQ2SjsJuI1L4Yg/DUOj5TuEX
-	OBrmpRGScVPSg2NLMFw6uO9GW4bVF+o=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788859141;
-	b=fpEpYkwqTHD60bSoiJtIcQ/mVUPJZrLD9/2aA22L76fvEYwjlROkm3bkhEZl00vC0jiuZ6
-	F4zNyvO51oPngE0RlvP4lpZAUZXHDfeBLnqqCwn84F0tukUNpUKiaJSr6ehTKVvgMQ987l
-	tMNYP/Rrt1RuY7URzOaO4vGdqMd1OzM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9982D43A93;
-	Tue,  8 Sep 2026 09:19:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB201F00A3D;
-	Tue,  8 Sep 2026 09:18:59 +0000 (UTC)
-Date: Tue, 8 Sep 2026 11:18:53 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com, 
-	will@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org, 
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com, sumit.garg@kernel.org, 
-	ardb@kernel.org, david@kernel.org, danielmentz@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, op-tee@lists.trustedfirmware.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 01/10] memblock: Introduce MEMBLOCK_LLMAP
-Message-ID: <ap_RRSM7RBONvHaR@orome>
-References: <20260902104712.2399797-1-vdonnefort@google.com>
- <20260902104712.2399797-2-vdonnefort@google.com>
- <ap2_926WXr7uAYVX@kernel.org>
- <ap6I1FN_2ylRzFXH@google.com>
- <ap-74AkHSGXbFCF_@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zjQzRyEeJRjIxmN/yjc9b+g6tX1AMMhanHRn8PYv4Dw=;
+	b=Ac09h2cPIcB+GUe0DtFDfYJpMGTS3nGOpNxn+QR5wl36+WJBgWmAfOeOvoPW3DvsfEkxkK
+	8M5oLwCMxD5TlmVgtV8F3WpnaI0Hd0EX4Dl6whPRJnhEgnikWNl8EBCOy672CIBT7GjgSe
+	lUNbiN4SSJxEviaMWxeCaoSjGYn8zhc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5qZoCBZiXzbympZO5SLiimtaqd6GAU+iP1rCRMtmMRs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788859222; v=1; x=1789464022;
+ b=DHSoiI7i9PadDXaHGYYRM7Z6gCga6zhOKAeTrBQ41U24bO7hVSjCsx3DMUO3UO8dAL8I4AUA
+ pulanhEvckRq8pi4JFvxiZBxw6QqkEX1BHJaANSc/vDWIhEnYsj7NJ9REgsh4bnqzBwO1lPqsX6
+ /wANfbr8//vHAacdRP8xPPDQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6e276b89a933e5cd;
+	Tue, 08 Sep 2026 09:20:08 +0000
+X-Mizu-Trace-ID: 6e276b89a933e5cd
+X-Migadu-Flow: FLOW_OUT
+From: Hao Ge <hao.ge@linux.dev>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Hao Ge <hao.ge@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v9 0/4] alloc_tag and module codetag section fixes
+Date: Tue,  8 Sep 2026 17:20:51 +0800
+Message-Id: <20260908092055.115123-1-hao.ge@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ajtkrsfbue5mdrla"
-Content-Disposition: inline
-In-Reply-To: <ap-74AkHSGXbFCF_@kernel.org>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: hbf118r8y3dbcxmgu7aif64ydfown5a3
-X-Rspamd-Queue-Id: 6C4001C0003
-X-HE-Tag: 1788859141-849866
-X-HE-Meta: U2FsdGVkX191PpFvbMaRW5scQLiHOWlq9+1rLXRoL4ybgurjCjwydDYKxEDQUCYVUCh0tZxWQ6goSwwAEdcOC4mcgaSoNjoSXdVmY0NS1ei/84NQuvzAH//oimgVbTDmWBoefPvCmGZ6ysYZ57VWXTwJgtSW4jZOlPpQbDBNaN2IsKSYubZAjgxB7oU3oA3Nr+mQ2ptHjtaJLR4PST3lbJkNAfSwHte91xpA+eOij18Ey/uAhPr7DylY6mUZCq+nBqfvdfu4d3QCEv+7JemwXwFIcs0wxsZwnoRpySpCMBbrVR1xDbIQfh06ZZzEaOLNBN3iu912k3MgPlEH3rFxPECu3ou4TFfEDwWt0Jd64UMFfBaWCnoW32L4VtuQsWBeiWmtGWB9rWIK60v3dyFwBzzq0w4kXvkPUo9ocN7jLKyHbfdIMQgYOQP51ZzjVZail/q704G09Wt9hQtn1M9MxO7DGnocYv7f0Nk+Ejxxbf70DbZYa0NuSZa4vN/jeGat6BN7v0bAd3UxoPl/lJnA3kwuWzOFZrAc5uQLUt++cjf68BDy0qP6Ps2c+5IsxyIuZvOa005dn5/BUeHQXojIvdAQbEBzeu0DaqDcLfo97Q8mLeYF02GeslXch9XzwUdORGHshRvWt9FnYhyQep2VZBLngZi7dZ4DrxNlCqYTKqVflKdJc1KxQx57zjkfSoHj0j/2UnJze4d8x39E+HF5akoQHj70aVAX8U7mJMfliqohZ+oT16TQMLjB+vjefsB5rZ6oyyBJ61838Ud8UXibOlhprkHE2Uvhm5L4ENeWWfrF+OtmrodN671RbIzH661OscZceh+CEojUrmhQ/gLL6I+D2UPiDFYFZTqfJ8Zo0CH7UjjTFxbbIJ5wcZx/PUsKhb1pSo3PeesMQEyPpCIm5AH3Mic5F5COo3NakWoXVcyu73BOVUY6p1FFKb/m5+YfMEf2n42EN0WC1p0+9l8
- ajS0N1M9
- +BdTZn7j/zDSnpbhS1YE0h0AZ6N/TtUoqUt8Y07TuD9ECLO1c2RFIWYkvEsEMNf45xzQTEcFwJTlDpEZ+bkpQuylHI7CBEinXK+RJOSQ2Zp5RX8cIuyiDNJIE1RrvbLUfs58/fv3rmEFB16GDT8IsH7ZRa63TAwFibHi+o6ja1VBMQqtePuH1NLTm0oi/lq24j+mlbvaGq/lmo7TRor9ZWdWHHWgdv4dRa0TQadJolDpYXEXan7HbMoIkeNHtFF0pnPo7KqnmQHDN/fSa1E9uIv7frLbch31YnwvqNs+yanJaWQA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2F9FE40005
+X-Stat-Signature: af1xo6ixdrc8g5igpy4dk6yo4fthodkj
+X-HE-Tag: 1788859223-750686
+X-HE-Meta: U2FsdGVkX1+EftQIiZEuTrNaS7e1eBfHo+4OdY24+m8SqpJaoZi+BqjIauNrP2bs+mQqoVFBPxSAqiDZq7f6oOBs5kCe0PnY5J82fVNROBPyOM9bU+XccBHeCDF1NH7jeGGveS4hSrJcnSRtBoxk1sBMHS5Udf4Qld4WhTSGTXKtrzbeUGOH3pXZ/+1e4vGVkv2BaZtFXqMCOo5te24Ki5/gSLqXyH/8o+wv3uqQYspl4Ip1fM6KjFSTGtwmrvU11hZF6z/N03tM9yr5eEx6cEJTapF31UbvlL0PC3wYY4Ph0jXTLGbKELotgZ7Iy3mEfxnvygLvr1n6QjmsPeLlHF2xkiOjQhTRMF0bSAPA8HfbIx032NUw+FiG+PlCMefO0K1vWl8sWi56FRc9DfEejpewMWlpmID6mNeP+Fqgta8OExMYmArQRK6tgpOihy44oOXzZPI78cYP3NF2B0jYOa7k+Zg9TxeTkTlcp0TB3Sy90vk7NbN0U2FpoTRpCuHR0djlbg42w1vms6Zja3OGT2KPlMVzKzIchzLlYIQ5m3eXTVR4raiOH0BG0d4hPfsrl/Z1JloP9TPQ+ZIPImKDjDqe7nB1Kr+05iC0kciQhrDt3A0hkykQ9+CZKV4I50faPDMayjctKWOiPr/sxN/BbryFm7c7MvOMocBjsi2CkTHeIT37csDlaWdxQdlXLL2yzso20UwczTi/dzZpsv7wN0uDCHLMyVXnBg3yT0kil050g8TJuyKlP+Osv5eNwTA2hQM2IVU6gxZ/GZnlqNuchRp+B3y8yXUQdrlTPdeOIPq9xnEDxS+7MIJ3tagewDGm3beg24HS06yiDoxPyDs5LMNGVyQPyvNv7zbUiETSsl7+g9l47kPhVDVgvKLSQQLzEeV9uKfaQyGATPZQDZSM5lXd71fBfDuJVSfVAqmDNKI5gcjM3tWLRAIHbSFawaAJmuvbztCatmlUMbDAU2B
+ XzxauuIn
+ mfHZ3Dv2yYhXkUiBGTJZDDE0FR6D6cfwsIZYX+HGFHmH/zxbZXamYMdNUMZwZN1suevgClo3IcourW7o+uc2Gg8hh5mSzbPn+EIw4Wxgv+nEotGUGf8hD8wXZ9VNXhqauNGB+nbBiVfO+SWsI3EH/9sfGIyvlnDsvP6Nqcx300Z/pbaM6OJKqCOt7wSuRI9O3vu07anV0zdtVUZSBqEeeAfpDc3TtI+zWOIExg98rdK+Lqhn1naZej3XXMtki6CC7NwMWUcxeyqRDc+p9idXjihJFlSEV/h+JkT7Qr24tSinmpJFuNleuUYtgLLAngREmOMbshUjNKnhzWkS+lNjFaWsp4srs61lkFtJHMeuGtkRmw1Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,69 +94,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+I ran into an overflow problem in the module tag area. With profiling
+toggled off, the overflow check in reserve_module_tags() did not
+run, a module could load with more tags than the page flags can
+address, and re-enabling profiling then silently corrupted
+/proc/allocinfo. On overflow the fix shuts profiling down, releases
+the reservation and returns -EAGAIN, and the codetag section lands
+as regular module data in the same load, so the module loads without
+profiling.
 
---ajtkrsfbue5mdrla
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v9 01/10] memblock: Introduce MEMBLOCK_LLMAP
-MIME-Version: 1.0
+Review of the earlier series by Sashiko turned up two more problems.
 
-On Tue, Sep 08, 2026 at 10:40:16AM +0300, Mike Rapoport wrote:
-> On Mon, Sep 07, 2026 at 10:50:12AM +0100, Vincent Donnefort wrote:
-> > On Sun, Sep 06, 2026 at 10:33:11PM +0300, Mike Rapoport wrote:
-> > > On Wed, Sep 02, 2026 at 11:47:03AM +0100, Vincent Donnefort wrote:
-> > > > Keeping last-level mappings is interesting on some architectures as=
- it
-> > > > allows mapping/unmapping pages from the kernel direct map without t=
-he
-> > > > risk of splitting blocks which, under the break-before-make rule, m=
-ay
-> > > > trigger page-faults the kernel can't handle.
-> > > >=20
-> > > > However, mapping the entire direct map at PTE-level is costly. So
-> > > > instead, create a new memblock flag MEMBLOCK_LLMAP to enable the sy=
-stem
-> > >=20
-> > > I believe MEMBLOCK_PTE_MAP sounds more descriptive.
-> >=20
-> > The idea was to have something close from NOMAP, to emphasis it is one =
-or the
-> > other. But PTE_MAP sounds good too.
->=20
-> Could be PTEMAP if you prefer.
-> My point was that unlike PTE, "LL" is not perceived as last-level, it
-> should be looked up.
+One is a race. layout_sections() and move_module() both asked
+codetag_needs_module_section() where a codetag section goes, and
+mem_profiling_support can change between the two calls, for instance
+when another module load overflows the tag index and shuts profiling
+down. move_module() then copied the codetag section to offset 0 of
+its regular destination and clobbered the first section placed in
+that region.
 
-We were discussing the concept of enabling entire block mappings to be
-removed at once from the linear map, so at that point "PTE"MAP may no
-longer be accurate.
+v7 reworks where codetag sections are allocated, on a prototype by
+Petr Pavlu [1]. The allocation runs before layout_sections() and the
+placement is decided in one step, so nothing re-asks the question
+and the race is gone. The retry is gone too, on -EAGAIN the section
+is laid out as regular module data right in the same load.
 
-I imagine that in some scenarios we might be able to go to PUD mappings
-for something like VPR (say systems with a fair amount of system memory
-and we want to carve out 4 GiB for VPR, split into four 1 GiB chunks).
+[1] https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/
 
-Thierry
+Following review feedback from Petr and Suren the series is now
+split into four patches.
 
---ajtkrsfbue5mdrla
-Content-Type: application/pgp-signature; name="signature.asc"
+Patch 1 moves release_module_tags() above reserve_module_tags(),
+since the failure paths now have to call it.
 
------BEGIN PGP SIGNATURE-----
+Patch 2 cleans up the populate failure path: the reservation is
+released, module_tags.size rolled back and the PTEs a failed
+vmap_pages_range() left behind unmapped, so a later populate of the
+same range is safe. It carries both Fixes tags so it backports
+wherever patch 4 goes, which uses its prev_size.
 
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqf0voACgkQ3SOs138+
-s6EFrw//chVhQxMWtCxc+JK5ON8AveSiC1Dhl62Q8IhDi1Pr5AWMxC7K8li30qSy
-0r+vt3im7cyLAkLE4+kAZXtHcCV1288tZZErEnuotKkDkGDaDExBqr5yHlPseVq0
-2ekvvxz7mSRh5Wfxn5Tq+MYQcwUYACknVRhGjuplsa05oSZA7GWbViEHFVP25/Pq
-14BkCYqXXj/NfSceq84ukKSePfpEG9Jrmnl7Ey73eyGHNeRvziLQC7qd9MuHwiqp
-Jn9Geb830b3ufqnZK23k5BuEp/+lAGTkflZGTlEM5A6yTIEnvfVtpimFwGtHret9
-L0HZ/xg087+Wj7Kdgu/VjdftAzj81qqnKT8dpnGWH4SwsTLtcRDqxpNZatKlVJsF
-NJG1Q8yBEtB+KIIiSK/00K2im6bSroJoGbTljdLQVi/hjBkQuDHtugvyyycXYc5y
-cLPWS6i+0eG+IWvM+wGH7zWT9kvJeyYWh8jH4qk/J0sTkVlz5IY25AOerpGGdx4S
-slR0PSPzLmGm/uHHm6PpuJK8vjqKJkGmsLiXQ5XkrUgmOG8EkWHG9Uzx358zDsQg
-AYe3yJ0IiuCS2fketV+KzHy7VqFU3tC9kgkyrIO3PJSJLSVSeTVFNJ3WTUJTEBBb
-ztr3XvA0Jm7feoWXZzfW9fwBYnq+5ey+M+KDQ6qsCZGpgY7FCeo=
-=5bgM
------END PGP SIGNATURE-----
+Patch 3 introduces SH_ENTSIZE_STANDALONE to mark sections with a
+separate allocation, per the ELF spec SHF_ALLOC means a section
+occupies memory during execution, and the percpu section does, only
+outside the regular module layout. It was previously excluded from
+the layout by clearing its SHF_ALLOC, overloading the flag with a
+loader-internal meaning. The mark lives in sh_entsize now,
+find_sec(".data..percpu") gives stable results again and
+apply_relocations() goes back to testing only SHF_ALLOC. The section
+would now show up under /sys/module/*/sections/, but it has one
+instance per CPU and no single address to report, and the entry
+never existed before, so add_sect_attrs() and add_notes_attrs()
+skip it.
 
---ajtkrsfbue5mdrla--
+Patch 4 moves the codetag allocation out of move_module() in front
+of layout_sections(). On overflow reserve_module_tags() shuts
+profiling down, releases the reservation, rolls module_tags.size
+back and returns -EAGAIN, and the section is laid out as regular
+module data, so the module loads without profiling instead of
+failing. Any other error fails the load. The release and the
+fallback belong together, without the release rmmod hits the stale
+entry and panics.
+
+Tested on an x86_64 virtual machine:
+
+Booted without sysctl.vm.mem_profiling=1,compressed:
+# cat /proc/allocinfo is fine
+
+Booted with sysctl.vm.mem_profiling=1,compressed:
+# cat /proc/allocinfo is fine
+# insmod overflow_tag.ko
+# dmesg
+  With module overflow_tag there are too many tags to fit in 13 page
+  flag bits. Memory allocation profiling is disabled!
+# rmmod overflow_tag
+The module loads without profiling and unloads cleanly.
+
+Changes in v9:
+- do not export .data..percpu under /sys/module/*/sections/ (Petr
+  Pavlu).
+- move the populate failure cleanup in front of the rework, v8 patch
+  4 is patch 2 now. It declares prev_size itself, which the overflow
+  path of the rework also uses, so it carries both Fixes tags and the
+  two patches backport together
+
+Changes in v8:
+- roll back module_tags.size when the reservation is released, so a
+  concurrent load which already passed needs_section_mem() does not
+  skip populate for the freed gap (Sashiko)
+- unmap the PTEs a failed vmap_pages_range() installed, a retry to
+  populate the same range would BUG on them
+- zero the separately allocated codetag memory for an SHT_NOBITS
+  section, the tag area pages are not zeroed on allocation (Sashiko)
+- .data..percpu is exported under /sys/module/*/sections/ with the
+  boot CPU instance of the per-cpu area, and the interface is
+  documented in the ABI docs (Petr Pavlu)
+- keep a comment in apply_relocations() on how .data..percpu is
+  relocated (Petr Pavlu)
+- replace the "Based-on-a-patch-by:" tag with an in-body
+  attribution and a numbered Link: (Andrew Morton)
+
+Changes in v7:
+- split the rework following review feedback (Petr Pavlu, Suren
+  Baghdasaryan)
+- new patch 2 marks separately allocated sections with
+  SH_ENTSIZE_STANDALONE instead of clearing SHF_ALLOC
+  (suggested by Petr Pavlu)
+- split the populate failure release into its own patch (suggested
+  by Suren Baghdasaryan)
+
+Changes in v6:
+- rework on Petr's prototype and allocate codetag sections before
+  layout_sections(), the retry and its state resets are gone
+- fix the layout_sections()/move_module() race (Found by Sashiko)
+- release the reservation on populate failure as well (Found by
+  Sashiko)
+- only -EAGAIN keeps the fallback, other errors fail the load
+
+Changes in v5:
+- add Fixes: and Cc: stable to patch 1/2 as well, since 2/2 does not
+  compile without it (Andrew Morton)
+- restore frob-adjusted mem[type].size on retry instead of zeroing,
+  as s390 and parisc add GOT/PLT space there in
+  module_frob_arch_sections() (Reported by Sashiko)
+- drop the load_module() mem_profiling_support check; the percpu
+  counter leak is pre-existing and orthogonal to this fix
+
+Changes in v4:
+- add a new patch (1/2) to move release_module_tags() above
+  reserve_module_tags(); the overflow fix is 2/2
+- release the reservation on the -EAGAIN path
+- return -EAGAIN instead of -ENOMEM so the module can still load
+  without profiling (Suren)
+- reset sh_addr, mem[type].size and sym/str SHF_ALLOC before retry
+- skip percpu counters in load_module() when profiling is off
+
+Changes in v3:
+- use pr_warn_once() instead of pr_warn()
+- return -ENOMEM instead of -ENOSPC (Suren)
+- expand the commit message to describe the /proc/allocinfo impact
+  (Andrew)
+
+Changes in v2:
+- return an error after shutdown_mem_profiling() to skip
+  vm_module_tags_populate()
+
+v1: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
+v2: https://lore.kernel.org/all/20260804122038.190270-1-hao.ge@linux.dev/
+v3: https://lore.kernel.org/all/20260805090633.141001-1-hao.ge@linux.dev/
+v4: https://lore.kernel.org/all/20260810093955.153015-1-hao.ge@linux.dev/
+v5: https://lore.kernel.org/all/20260812054105.102637-1-hao.ge@linux.dev/
+v6: https://lore.kernel.org/all/20260831072104.120197-1-hao.ge@linux.dev/
+v7: https://lore.kernel.org/all/20260902081802.146145-1-hao.ge@linux.dev/
+v8: https://lore.kernel.org/all/20260907062414.106873-1-hao.ge@linux.dev/
+
+Hao Ge (4):
+  alloc_tag: move release_module_tags() above reserve_module_tags()
+  alloc_tag: clean up the populate failure path
+  module: introduce SH_ENTSIZE_STANDALONE for separately allocated
+    sections
+  module: allocate codetag sections before the regular module layout
+
+ include/linux/module.h   |   2 +
+ kernel/module/internal.h |   8 +++
+ kernel/module/kallsyms.c |  13 +---
+ kernel/module/main.c     | 133 +++++++++++++++++++++------------------
+ kernel/module/sysfs.c    |  15 ++++-
+ mm/alloc_tag.c           | 111 +++++++++++++++++---------------
+ 6 files changed, 158 insertions(+), 124 deletions(-)
+
+-- 
+2.25.1
+
 
