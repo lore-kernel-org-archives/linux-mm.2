@@ -4,137 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BB3C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:28:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A266C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2893B6B0093; Tue,  8 Sep 2026 09:28:29 -0400 (EDT)
+	id CCB3B6B008A; Tue,  8 Sep 2026 09:33:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2396C6B0098; Tue,  8 Sep 2026 09:28:29 -0400 (EDT)
+	id CA1E06B008C; Tue,  8 Sep 2026 09:33:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128886B0099; Tue,  8 Sep 2026 09:28:29 -0400 (EDT)
+	id BDEF36B0092; Tue,  8 Sep 2026 09:33:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA65C6B0093
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:28:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A7E71A06FE
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:28:28 +0000 (UTC)
-X-FDA: 85190674296.26.4E6C8CB
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 59D52C0008
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:28:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=eRzvCtnI;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JC68X4HO;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788874106;
-	b=yk3v4HFHR+6syEZNtsK9LElOFrgsOV4kXMsVka6RodPgAPQ8hF3AFHGGND3dZ9r3lP4Tab
-	+7Y4extfScOEJzKBL4yZI4q3tjGIJ9Y9dSi27DDudxwPaaLCzm54QxdEAepDeIyr5tVkqy
-	FcsL8JZP8p4Y/F54Z1u1/DtIJFhPyLI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=eRzvCtnI;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JC68X4HO;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 959206B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:33:20 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA6F01C23F0
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:33:19 +0000 (UTC)
+X-FDA: 85190686518.03.667E380
+Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8740016000E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:33:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nVi3+4EQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788874106;
+	s=arc-20220608; t=1788874397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XRGPzws2sb+9IlW6HXf+MYksDpUmRu+6YrbXkwnjRR4=;
-	b=0A/Ux8/dcDfBmEgaHTOcMKZsf2jPXPTm0dZfHww+/IJCsLmQWCnk4u65iifB1jg238HeFU
-	Xm6Y6oW97VxZf04lQtOAyokSNOLemQOgqZe/NnR3nOYMU7/vLQSTnqRs4QTVIvbvRBy9Dz
-	aMx3LSQWpruxjraq91AVp2rE1HPRKik=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id D6A67EC011C;
-	Tue,  8 Sep 2026 09:28:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 08 Sep 2026 09:28:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm2; t=1788874105; x=1788960505; bh=XRGPzws2sb
-	+9IlW6HXf+MYksDpUmRu+6YrbXkwnjRR4=; b=eRzvCtnIT9WujyoUL86zSn0Iiu
-	+jtlY65TKWG6j8D1S1gxW4Cw7mFn+hVNMri9+i3yndrEzfLTmrX3bX6HVTGf9ekN
-	MyKtYLHA1mPifWp7wUxfu7xV046blBlKgVYIFk958pA8wYSZGt1J462l6ag/kdpm
-	aAdeQIszxfs7tYMd6nM5mz3xFZGslPzbRQ+hfxIVT2m0fpVCARY4zKJqT9aw2OnL
-	lUaeBLDAj/rjeWjKNW+l4mans+y+BkZDlP071NMpYEcJry6oPk9oRoc2keUF/Q8I
-	dstCCj8ASNZ+cfYz+ttOWPFbu/iql51DhasrbEVFCQUFAmHon8qvxvvWDCrQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788874105; x=1788960505; bh=XRGPzws2sb+9IlW6HXf+MYksDpUmRu+6Yrb
-	XkwnjRR4=; b=JC68X4HOREoHolGlVwW95c6JK8RhKM9016RYWlO5K2MBkcHHcmN
-	J8R43kK9GWsapIiVnMJRLFFVSzcKJpMe6QnKzs1BARH5TQeiNh4EKE5lI49vTbTB
-	hOdT6y3nDBsrXOAmsCcs9aqg4x1XY95rhpSMhKoMW1cLS/AFtAqCZoZBhGv7LKBK
-	V7snfJoT8BZDNeEeYPEBnQ1BePnjatFosf1XpwxhyvzMIwG4bGPMN+Z21PTAqIwb
-	kE6Mj4vWdsHbwsx0IPRPJ0c4s2C1if9Zbcr7JPTtKhjT3iTwr+NlN2wVLnnpOASY
-	PLzA0ULPIy5D58Od8ggAGM4+A4ZXCshY5jQ==
-X-ME-Sender: <xms:eA2gauWIoOm-BxH17nKhSbmBnKdY1YLJJULHzvPYR72cF5mUKSW6jw>
-    <xme:eA2gao_x5tDUx0VnqLHgX7raPwOX6PpxBvDLsXU4ksOEPpDeVy1ohrZrQ7mzI7rsH
-    Iuevm8O_zLKaV0wrYGZFb5NwW3GWMBCEVdZxmvtk0d-d980O8IbFoAwhA>
-X-ME-Received: <xmr:eA2gauYMm5w9DcLDOR2rQjw9LmFjih9jTSEM8UQCqruMQw_AFrgedOwSzLs>
-X-ME-Proxy-Cause: dmFkZTFeNeMAsfC7S2yyN61sBWuwFqP6BekvQP3VemALp0/A7/88H6JQR+d7jV5Lg7u9uQ
-    PDn7I1Wo6qn/TFhatIEJH0B/epMmDLlvS5YxrZwCbDsjWEABLRnUDNVkwMQrZfQZGLJzzb
-    2ruAMIub5nUM8aRUsSZru2LzMu0kqf/aNAG243THYtV18G1C4XAxUMbFY2wuvSE7mEaPcc
-    anq0IKqBKTIUjUqYmQFMmmUhhYBUGDgm3c6GbxuZmdNRBKo52hbAfhsvZhpFJriV2TERk3
-    TU/JoUd+zwFxALYvoXobOt3jAyX9TC8x04xDgJ0yQoKmx3V7XWHi5qoYYfZjKtKaNzPTOA
-    9bQPQQz/KfM3zA0zLBzuuxtIspn87uVdhGA7qxiFCnMkH2e/xzVUxKHoxfJ2cuJ07CyeIK
-    NxHRBm3tNPc1SR8ZARock0ll/AK5nLhz3aVSdA3EIU129Qe+qbfa/J2Wmp1TFUo8P2DxZP
-    2Bp9XcDrkTvg2+vDKHVtWx5eb/qsSK7FxkK6ua3GRLuHfb86GcAbVycQ3BZlaXkAP9vCf8
-    WP0UulaZtFCyeYKL6BxbSq3/I9U675b4JnO6S4OE/eEUgduK/xf3TBxR4deTqIpCzuR3pp
-    cuucGaTXntGJutUKB8HuWGrfC5mrj20x3w53lyoVtRAWbRpu0bEqWNbwo2FA
-X-ME-Proxy: <xmx:eA2gaoe4_hNzTq9FNulk5EqsRd59-rb0HTf2E5vw0yi5CwxcvwDKOg>
-    <xmx:eA2gagr9e5UjuG4yuIPhb3JBFNledu3yHsZHaII6UXi74EN6aSgpjw>
-    <xmx:eA2ganBtaMbB0nLPrZ0u232MJVie4wIy_SwPQifgfZxQT3Myu5BLNA>
-    <xmx:eA2gamVGw86l5pzMku1SsCU6ktKuD4UD2snWQZcQxAUNttASl-KemA>
-    <xmx:eQ2gaiP-g920ppcxJH2BmuAMMUobh-1INqKnfuLIRltdm4m48Ww5Labu>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 09:28:23 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Balbir Singh <balbirs@nvidia.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Hugh Dickins <hughd@google.com>,
-	Gladyshev Ilya <ilya.gladyshev@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v2] mm/huge_memory: add folio_reset_partially_mapped()
-Date: Tue,  8 Sep 2026 14:28:21 +0100
-Message-ID: <20260908132821.1517475-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8EaFwKrHIUhKb3ksnKfh7mgfL04pr2lGPE/n+xdAnCo=;
+	b=vMXrnh13G5MXBFxw3eEH5yJCVX0YLHzOHxZZ5UVo/63Hdgn8veVLB5TCuu0+mpogOHRiH5
+	K9A9/Bcyr9RFRIXQvlgRPNVsXYCgmu7RHwc4ovC9kC9E1yu2R1f4MMma4i5qBmF2NTVIVd
+	NNO04pfXkhIJUVIoFkxeVLgn6S5NshQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788874397;
+	b=zo+pP4yutWc2/7fYmtwlbQt71NeC6+PB/yJb8vPrZpFuFzUK+ay00GL+NID0zsqfmXgFbW
+	uCQ5tr28kZzyN9gXOMnLfj4FFWwzLZ6/EkC7jKWCt/myGTP2ZmlLU7Lv1Mo23MFfQ0lQ+v
+	uDcY04S3Tn0M8gxIudZg9HtMCTSPNeI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nVi3+4EQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=tE5eScR3IxoTuSxmbp9k/zEYAX1sgNIFgHtL4WOiC5E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788874393; v=1; x=1789479193;
+ b=nVi3+4EQI5fpQPU/Ae6ayeuI/8Ca4hslOAAKMjvRjEvj5nY/6BsN/FziW1HV1kMVzaeiia9P
+ 3bjzs82e/Yuzvtvw+TLgZ8kjSAbdBootfntQcuwB92eHWN8+dBBgpbVRe9HpeAWdYwK6gS6g3cE
+ k/5mU1Qfbe13kIE91CPPKYag=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6d91044e4cfde672;
+	Tue, 08 Sep 2026 13:33:13 +0000
+X-Mizu-Trace-ID: 6d91044e4cfde672
+X-Migadu-Flow: FLOW_OUT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Tue, 08 Sep 2026 13:33:12 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Ilya Gladyshev" <ilya.gladyshev@linux.dev>
+Message-ID: <85b0e3c5f328e2c3779fda986fa19530ae9c77d5@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] mm/huge_memory: add folio_reset_partially_mapped()
+To: "Kiryl Shutsemau" <kirill@shutemov.name>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+ hannes@cmpxchg.org, usama.arif@linux.dev, lance.yang@linux.dev,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ kasong@tencent.com, hughd@google.com, balbirs@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+In-Reply-To: <aqAIFV4nOGPbWiDS@thinkstation>
+References: <20260907183340.1446132-1-kirill@shutemov.name>
+ <ap_Tjt5vxal-B8DP@gremlin> <aqAIFV4nOGPbWiDS@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 59D52C0008
-X-Stat-Signature: 8t4rcpabwwwc1o8g5jimkugjehtn8jtj
-X-HE-Tag: 1788874106-368084
-X-HE-Meta: U2FsdGVkX18qZyxg7TICyRskoUfd75yHbvr29S+9/+/2XY2oXL6wyJ2+mZH3FXA9uKJ1XPFx3khJ4W/i5kzKnh27pFsRbYnjbHI2uM0LfXhFa1bj3LAoUzcw2XxAItQ6kt5oOSFjLK9M70usyhAUHNjibA1l3P+XyHY5FVnb6dU4mjSjhN57I4ciRPlU67CbkW+Pc8wUyg0YOwnDEZK42sLf+W1FpclqyimLGEA2jF5HYke3EnXPavzFPGOChPkg/xu9g6HFMpfUDMeVBm/H5CkhLWSWJ2+gV3KdAJ9n8qOsHVroKpEQlAcnw29IuCyfyr/hJqmnpfrlL0+IqBtcQ0tecxrPpPJXe4SlFcLua0/4w23xuSGB1Uk2w4MaLpkhh1kNr+rvUZsDMpgrrYsETb2mwb2RbOPAs2F0tabQUqBDf/fdDj3MmLAVD967WCpacoKWoZ6u5YCjCb3qpYVMGAPM+q7DKa8q1jxwCzZzrTiL9T2/6jsWPeVr9Av4EjfcGHCkpnWwQlJ8gC9FL4mHom8ABKMf8atb5seaRnChmNHoXgU5XRssqoVeaweGzsh9ewmakrty6hvHNR7h+Gh2BPuxx5yTY0Dlgp0c1oO0uoIPvF3vIWoouYkv7Wd1cLxGlE3vtb/C5xW4tKtziFiZCmuX58AEA9p9FzJlSlwEe79XU/7rlmZo4+asdguhas4cPE0rYj9NSSqIqnaCGcqTeSFYxrb+BNlc2cYbOlo8locDSs939nFPXRTLOnNw9gT+TOY9oZRe8DbsSunEPNUXsoaDtxMTPdPy+2tbhXunlkMRYmYulF6zRuVtiM2KsMpxUkaKn5W3qnQPss+CNaDz3W8TchCfkvL1CQp6o8xGYR/GCs6gj1OeLDaucyfxYANcjRbdUO36fD8CPgq1iBMllhVoez473Hewg+Wh93c0VCN/ScUNlx9LFyhUsgQDsxa53CQiYynfjNmuFAokHfs
- hVgoL7B4
- 1DXdOW8kPb8CrAa2S74UT+xpX5hWZ9uEif2JuTWLVXchuU9SM4glG70x9DG6yxII1tkrOyH/WwC/uNzJnTsi0HlGcH0EnDF0YZWSSKoUJVOIN9+LUINHKmAvoGmcmQoM57KGfT8zZg3940dYZmq+yBqvG+YpfTCKYyHu88Rrc2Ffnk5IDLU0vTXBXyVe/vo92F6E5AilWTykmTChVZkroQCUFuaOUMhmgQFFmZdbi2c73Mo/PFj5R/eXDZCXXQ6Q52irncAooYH7QMt9SyqSwu6P06edh98IQO9PnKeXFVNhCCB5G5FUPRz95JME12+bxTFw1B5EsmnKWhogZIJJQ2iAkv7mEXPdEyEJN6bd/2cgg9ybz52irT/aMhzcTgWK5lBLggXXEXfG1sBHxite25xXHlgoGOBmD+q/d2j1hlh/kS4pNpwtrfab74eY8NbXwBg2jO5l+DBAIJ31UWrXZTk2n32G4WmWcmgePW24/6PMTgejeTxtHUPbvuX0xGaJSuYl80+pejbZS8dLEBNdg9axqXAKZXRXo8e16
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8740016000E
+X-Stat-Signature: g7rgqtwfwgzc8815qm3xueuh57csng8g
+X-HE-Tag: 1788874396-177939
+X-HE-Meta: U2FsdGVkX1/PqrRQNPRWPmhKJCJxfw9hp6xTZ744mkiI7sucbpq/r4kVbSe+lKQHIORguBZAVVxFwgg8SxSQG+i4Tx09zf5MMquAk5ISv/PWbmciIzyGifYEs5OkjkMiG2GSvu+PRF1xMki2IQFWycwSZgJ5TJTYs/sWNpR3YhMgy0lL2tMvKl3OWhrvT7xTq9Sy3osTFaBZWmOfIyzgeLTphj4DqRjbXFrBR5f7dZV8QiE/VP0gK76AupohW+uZZldkR1UcDNfCX7Lz0GmroIggTeAQwB29v4Y0n3YxYUpxjVSaoNs14mMUy1mmn27mi5MDueMX8T3bl+uirRonaWtJf3lGRli1aUCeI20h4YmUbN6eiubX5xT8a2ad4VYJNbE/7Hwr6T9RLGDStkAjqmgKBPYwRUCzZzeVfvT2zSM2FsjMlLIbzXGU52dlFd9zQBprOGVdE9nLeoSD5EoIR49qk7/aedT8IRD5/7JGQ+HL3itr8o0PJHmlsskw2EobLanTNgNrV6vZNq6y+yFK6n1+wWomkGhJYtjmrru/BduWlYFs7SIH/8eoz7l+FF54vmNi/B5VmmvrEdPUAKM9zZN4JS9BtGv/5Qfv+ThQ4lbUabsezBfm66EF35SZiex/kebDu43fDatHCamIA5Pm+m1VKNNDM0H14/bdKOFRFFBwo8CgRfybl7Z+wVg8XtSCDbKSJmmk2xQimi+p69aqMDgqE7unsNes9yM5bBSn22+2rcP3BEioVsLn+WekWlxyEK23e2VqVdmBa4bNCPLNq+YX6xXaGYSDD1eQXZ6GQuCSMRA0qjc7aBVyT4gFabYhgOXBvMiRytJKk/VVGP9DWJcKzJCdF5DYnMzdTQ3XYDJIP+gkVqfmPrniQryAzvEO6mFM1rYgzaDxTi0vTAFhjP//bOWWXRkLnUVIMT1GwTsucoKXGfJYo9PjPnOYGm5NtECzNhdypiji+e1mKVB
+ Mk9tgpH8
+ DmDvKBK9HbAZk23p0ngQPNq6xtdJaWy+25Se5q4HBQcUTJGrVb/nfIS5eWc/CUBacZyQKptbrGYngHxJpdwCEdG/dpC4l+/0OZiCJuuIJIabqRwbENH7ImosmN36geLGIRYthkB+zUBkalXub0+3bIlqYwg04OTUVR/jCQJeEojW2yq/MB+kAiRDRw5NxJJi5MLxVRYJxwat6Rp+dR1FlyDZtPn2X69x0LbaBYCB6EAaFawpu3OuslOT/f2VlT+F2prtq84h+KJUIhXaQf/XMPsUTdN+svXxDJV3VTmiC/hstvH94vhM1t9tqTKZtNniNCxL6vOOJGcDLreenbxvNG4tkpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,110 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 9/8/26 16:09, Kiryl Shutsemau wrote:
+>>> +static void folio_reset_partially_mapped(struct folio *folio)
+>>> +{
+>>> +	VM_WARN_ON_FOLIO(folio_ref_count(folio), folio);
+>>
+>> NIT: I wonder if we could have a folio_is_frozen() that'd make this
+>> self-documenting? As trivial as it'd be :)
+>>
+>> If not, then a comment like:
+>>
+>> 	/* Folio must be frozen. */
+>>
+>> Would be helpful.
+> > There is a series that changes how frozen is encoded and would be the
+> natural home for such a helper:
+> > https://lore.kernel.org/all/bb1cb750157733f897df2e261cad3d5c42acc172@=
+linux.dev/
+> > The patchset seems to be stuck. Not sure what the plan there. Ilya?
 
-__folio_unqueue_deferred_split() and __folio_freeze_and_split_unmapped()
-both clear PG_partially_mapped and take the folio out of
-MTHP_STAT_NR_ANON_PARTIALLY_MAPPED with the same five lines.
+JFYI: I restarted my work on this patchset this week and plan to send
+a new revision in the next couple of days. There were no problems with
+it, except for minor issues with the debug WARN_ONs, so I hope I will
+succeed with this plan.
 
-Move the block into folio_reset_partially_mapped() and call it from both
-places.
-
-The helper asserts what both callers rely on: the folio is frozen, so
-deferred_split_folio() cannot set the flag again under it, and the folio
-is already off the deferred split queue. The list check sits behind the
-flag test because order-1 folios have no _deferred_list.
-
-folio_order() is safe to use at this point in the split process: it
-still shows the pre-split order.
-
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Assisted-by: LLM
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
-v2:
- - Comment that the folio must be frozen above the refcount assert
-   (Lorenzo)
- - Assisted-by tag in the format coding-assistants.rst asks for (Lorenzo)
- - Collect tags
- - Cc Ilya Gladyshev, whose refcount series would be the home for a
-   folio_is_frozen()
-
- mm/huge_memory.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index dd66c6ad5af1..fae959633279 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3972,6 +3972,25 @@ static unsigned int folio_cache_ref_count(const struct folio *folio)
- 	return folio_nr_pages(folio);
- }
- 
-+static void folio_reset_partially_mapped(struct folio *folio)
-+{
-+	/* Folio must be frozen. */
-+	VM_WARN_ON_FOLIO(folio_ref_count(folio), folio);
-+
-+	if (!folio_test_partially_mapped(folio))
-+		return;
-+
-+	/*
-+	 * Order-1 folios have no _deferred_list. The flag is only ever set
-+	 * on folios that do, so the list can be checked after the flag.
-+	 */
-+	VM_WARN_ON_FOLIO(!list_empty(&folio->_deferred_list), folio);
-+
-+	folio_clear_partially_mapped(folio);
-+	mod_mthp_stat(folio_order(folio),
-+		      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-+}
-+
- static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
- 					     struct page *split_at, struct xa_state *xas,
- 					     struct address_space *mapping, bool do_lru,
-@@ -3980,7 +3999,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- {
- 	struct folio *end_folio = folio_next(folio);
- 	struct folio *new_folio, *next;
--	int old_order = folio_order(folio);
- 	int ret = 0;
- 
- 	VM_WARN_ON_ONCE(!mapping && end);
-@@ -3998,11 +4016,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 		 * leaves PG_partially_mapped set.
- 		 * Clear it here: the flag does not survive the split.
- 		 */
--		if (folio_test_partially_mapped(folio)) {
--			folio_clear_partially_mapped(folio);
--			mod_mthp_stat(old_order,
--				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
--		}
-+		folio_reset_partially_mapped(folio);
- 
- 		if (mapping) {
- 			int nr = folio_nr_pages(folio);
-@@ -4516,11 +4530,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
- 	memcg = folio_memcg(folio);
- 	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
- 	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
--		if (folio_test_partially_mapped(folio)) {
--			folio_clear_partially_mapped(folio);
--			mod_mthp_stat(folio_order(folio),
--				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
--		}
-+		folio_reset_partially_mapped(folio);
- 		unqueued = true;
- 	}
- 	list_lru_unlock_irqrestore(lru, &flags);
-
-base-commit: e3fc12b08aadde9cec7b3799ac0e0c9a1aa245c4
--- 
-2.54.0
-
+Ilya Gladyshev // foxido.dev
 
