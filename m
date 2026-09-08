@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78473C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A22CCC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:44:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84C3A6B0095; Tue,  8 Sep 2026 09:43:58 -0400 (EDT)
+	id 6CD656B0096; Tue,  8 Sep 2026 09:44:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 822606B0096; Tue,  8 Sep 2026 09:43:58 -0400 (EDT)
+	id 69D256B0098; Tue,  8 Sep 2026 09:44:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75FB36B0098; Tue,  8 Sep 2026 09:43:58 -0400 (EDT)
+	id 58EDA6B0099; Tue,  8 Sep 2026 09:44:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E4856B0095
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:43:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0505B805D5
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:43:57 +0000 (UTC)
-X-FDA: 85190713356.10.4B22E8E
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2D78B140013
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:43:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	none
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788875036;
-	b=fq+L6kIPp+Vz6asCTCXLUFaU5sHQrk7CseaA1PDB5JN4dL/6TKoVP1DoZN/x0WWjhwCEzs
-	KT2tb0BevkwD2WU4dJT3dn8Htrl5Mdgpi2GQDbDMoJCzBxHM96/fgInQAGW1BwLVlLVTBc
-	dY7l6+mOdCktdrsVNyNtmblGNYGIg7s=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 34CB96B0096
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:44:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D7F7A0700
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:44:18 +0000 (UTC)
+X-FDA: 85190714196.12.01BBA10
+Received: from mta0.migadu.com (out-81.mta0.migadu.com [91.218.175.81])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 61C24180002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:44:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fad6sxFg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.81 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788875036;
+	s=arc-20220608; t=1788875056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iiU0gQgIivxMXDl0zgbYhPk8oyM2E0DKZNUOWfXezPE=;
-	b=QwqD02VN84DEDxprFlR4Of9+4SoaohpEhYzfxl/K7fO55kk6RXV1PGXNXzGJCX6+WK+/kH
-	lAad8jYYiXvf7JocL9vy5g8Ip/C68T8GtnjTD+XEcpKfwgLe0JdUIoBAbBC4/dAfrJdG9y
-	mVdTHXQuqODNwnoIV7qWGIKVgXcOS4c=
-Received: from omf20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF027406A1;
-	Tue,  8 Sep 2026 13:43:53 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id EC2622002A;
-	Tue,  8 Sep 2026 13:43:49 +0000 (UTC)
-Date: Tue, 8 Sep 2026 09:45:04 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, David Hildenbrand
- <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo
- Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH RFC 0/2] mm/mglru: add tracepoints for aging and
- isolation
-Message-ID: <20260908094504.262faa76@gandalf.local.home>
-In-Reply-To: <20260907042447.2450663-1-ridong.chen@linux.dev>
-References: <20260907042447.2450663-1-ridong.chen@linux.dev>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=9wMvop6GAyoj7B3iuev1XT1EVHGgx5TnkYcJ+QBXhyE=;
+	b=OCr5b2NqmAdCG+9BwuoRYBe9DCT+XAgyxcszdZKaWRl0zsnz9HjSWx8c4ajARuP1Xc3wGJ
+	yWqXXea/E8DE+8CDvdjbyjxyzsLcreO+/rLiSSPV18S+ixB2YCEwtcr2yjQuf9zxG/sGIQ
+	R10QEzHeV+rE29B9FEjwdbXeetjW+5E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788875056;
+	b=lmMByHs8T7keWSNF5E9xZ8sC7iTvYzZLvzTVYJiMDYiOMunkoMpD+JGw+SrOGqW6vVrRo6
+	mityN12gZNoflxk/QtMqjJRoAq8hoz7lnSgLLgv1opAgNOqm6jLlxEjN7o62UaQg+E2yoG
+	b3JpyxmPE0HotMEj7CUFLvE0eYICqrg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fad6sxFg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.81 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=65dsR/AIsa1KwD07S3iIYP5bJ3Epc26abAu9BtMFUS4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788875055; v=1; x=1789479855;
+ b=Fad6sxFgcBzdmpNy3jWqhhFI1K0cG5IVG9G/qh60aeLcUnSIkZ3a3arHJ8sUWD1VeQD1Bu+4
+ j6mBw9BkctCkJudw7VzZgEQR8RvhCinzs3ntrpf084Fdc8S+lE0MCabmKv9iVeDGPojdlI/ugRT
+ xSz9X6BFTKQVx8oH2WfkiNsI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ce353f69015ecc17;
+	Tue, 08 Sep 2026 13:44:14 +0000
+X-Mizu-Trace-ID: ce353f69015ecc17
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	gourry@gourry.net,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH v2 3/3] selftests/mm: init page sizes early in pagemap_ioctl test
+Date: Tue,  8 Sep 2026 21:44:05 +0800
+Message-ID: <20260908134405.84448-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260908134117.84405-1-zenghui.yu@linux.dev>
+References: <20260908134117.84405-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18+1aPqEe+I0efvAIbVVaN/kC99Mx8Reec=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=iiU0gQgIivxMXDl0zgbYhPk8oyM2E0DKZNUOWfXezPE=; b=HpE5SGiiuxKj7bq47CkQ+++7aRTVn0JFl+Fm7gbccqwLXDVJwKpZKF92KDYlHPAW1+xCdsG7HM5kzci+/6vUjkKE/woYRWAr6bGuydlUiP0t0Y/H6Oadp5/KYwE/j2chH6ZUchcguZiLU7X2k5oY1Cqi6SAV7lVVl0CmyMCaZhg=
-X-HE-Meta: U2FsdGVkX1/QHc+GCH8y8n9WiheCPKUalAQc8N2Ac8+hSz2QrlRSsvCEAmTJaejt+PWh9DowvhMneXV/VBuCoyox8UCVAyTfvndQq9kRwZ3drGXr3F+NM+9RigwfOcodmN8NPpabS2ohcQKPS5VmW5SgvRrSbws9U3DySbWkx0eYQjIlhs/WH0nKqjFpMtJmViItE/JcOD2RXxHI11wrJfv1sm4meJ8CcZM0vLQuvDLsJpE+sLFRyJS2xLmKb0+J0ndB2z/8wdr73gXXQWRMUK0QkqC0WnPE6IOp+hfpE41N7GAbXxJn1eyLF+Ypgg5iUJ3rufdNV4YJ/cppdgR2SIDD7N8RocQxa6m1Mo63Ar6VnHZ0z7r3/tj+AJqdmyVh
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D78B140013
-X-Stat-Signature: ghmwifje766hkpe8hxg8fraf4fpcw3zt
-X-Rspamd-Server: rspam01
-X-HE-Tag-Orig: 1788875029-929189
-X-HE-Tag: 1788875035-455692
-X-HE-Meta: U2FsdGVkX19rPlnYy0Um2yZmn99/faYI/I6UfGNoMvxnmqA97/8q0rjSn7bDiCTyLd7xFGheeYCLmspOzgEdXErB4KELGZzQWijbH3eUBm9YjLpb6bWENmIXaRA1Q426Hpu7nV3If1exZB30+1kHO1qxBwZ9DHYDF0yO8n0/8ex1nOTQjRGgvnbOvrf/iI52R92clhS6KJkIfQ5eVI+c1/HfCGXmROibnoxncBC1pF1lnsn4kHm8gF6t4VwfgU/oTwKQJrJHkKlC9nJR11Z1GQPvuyZZMxICslhFET4hBpPEPVIJD4q0Ze0iRtGK0/IgVy6RyyKDJzeHqI0xbnfZQm5jigSQwAxaT+lE6Hha6Xnzs6Ds6d7erHU6Hi9vWkNA7uEiKUrZZMuaRT0qRNhPcZECALjOhEK3gSIQlj33e4f8oNymrscFmNCPpZBrbzQupVdAy39bT1J3bke3MHqv1PhWbL8PKX0UUkigOrbz0aaYNMMFlF1KsOUwKLKmOPol20AdY6a21s6nY4pT9mtEwqS1+UbyzVPKMhBj1JERR8C0LM5PesSrgrYQtVtxxdvQkEyc+cGCxTxlxgxnYnB7zYtXExwertIEWDfFJP5gT8llOaZMe5HqA54IcElBg6TUoXDaqQmr7JCHjTzDnu8B1XH6U4oXFszAklL456K7vQBJtiPVVA+rr+VNMictd3H41nj0iX7uRWYczhvhg8wpfC2NzxGKDdJfv/78VXXz+DCbCd3XQEhqBaSZvMxubYR6UUCqF4/7j3s+EN7xy3B1WKHrlP2A2ZIhXYPX5UV0FraX9/wAyaW8GvfpS+N78ltFdGLjyS7Ib4ZmPF16XpCNs+luFJFfq746mi41jMoVF1xyI0U4eLuNfgScII3hDHXYrieJw8vlqPcLRuoAPTfGlrn7Tdmr92IuGfW/JLdZpgbFhNBl2w15N/HcAQsHNpnjNgCbL/2jMabTtuEFZQS
- xPuK2gdD
- 15f+Ibb6E5Yy13M0T8xqSzU3KTmzUE3//AfWRy4pnyi58csFE0I5ioqRJIG4jwDoDMhDEMDH+MtNDyXi3i3xODmhXsHPLxmIkbukMAJw7G3hdxwA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 61C24180002
+X-Stat-Signature: kymtis3yo186sfsgmxepucz5os56qgg1
+X-HE-Tag: 1788875056-516753
+X-HE-Meta: U2FsdGVkX1+Ea4qqMS4HPRUmt8MWV2uUzLe6n+jixI6PeAkjvnpsEuDhsaSiFeLH4uxU0LaV0Hc2dZUU4zWn8tnypqa298vH55ijYwvntsfAqL/pqiih/e+7QKj0CEGeu5QJ+GhOR5H9Fdjkpr9oqcoZ9Vm/vj/cIQz/F4ciGXh+5R7+hTEghDCGaHsp+cIBWZTzspoopRUDJxQ29zq17fy8UAJtveefvVN18byDLlpF6nFUpdtg5lDgQZuKReLlCkbuqFvyaDbl+Xkxpab+egu/wkS4yPOVV+4ZrTQmHUsyxBAMSZ/RxEFNxq10It0kTIaQJocvSU+ZKnZJZgwg++0DozqvsIialaXe96CmjpwkUNV3TJOB6vFmIgYK8npV5HFl3WDsPj+Wc2IU/S5QmKws3tqYxbx/QglrgA82V/fAZrFz61ioA06RVKJu8ND6g652A8GJys2C51hdmmjAf+8U3Kr5+KdLw6uLXj0q1oFpXS2RtKkuz4gDGB2PHlhox8+AYMgMWvbfqXOTS/aoA+vNt7o4XoZupv0lJwMb85BNvvWfHkNuGQ2touueEqEpdE/tOA8JVDMoRKCAy+AvtkOp4nmAy+SUUbhKXuQj1KrpaP8UraIffAvpbB6oQJET159D5nFITuPYpfQT3Bph4LRPjUzrd54ecP7V6q/LVOVna14QASsO/CgOXceBKFQ9UbgHElaw1U/i4BJRorxU+jTgbUILtCZy++z82dXEQDcYDaces5J2d6dCv+V5UIC884AuSuZbaFWRhpit0R5ySeRdZjFqyJuGH+wo9NOnEanh/rfFlp6hbHzzKW/FEN/1414cicCLYzl44VjWtItkbyypcIYn2Pkh9HGTH08u6PhVl6MoAkEFFQ4xVVxhxZBFypW5rCkiXKw0RlXuyJoqK+mzQ/ZmIy08Yk+z546TzthKdA/PND6VvItR7tSQoo0psgHv0M3pmxHsAcuJemP
+ fZ+DK5tE
+ 6uMgcmWiT21pq012P2oIASnKopWhKm7+uFBu2dOvSf7Lf2ryJCtzwbucySVbcaqg489JujDFHGpVYzx/pj9xmmdEUWFcwCyhvCM6WEqGGS3Jxh3/p8b66SV1YCjK+L3eeuNYHWoXRDjDQArSrx7RhNDNwcSe/jYlP95Se0qYvicya/rHSPyJad8+nZsoBWWN03lKpk8MgNOvmferu9ibgvxNytQn+es02KEkY8/Hf0C0WFFQUtPICNY9ey1Ri14p0bLpzPVErqCCvhcgopWwJf2wf+TeKcxS8ri9ygHw70gZW8IzWq0hhNeZBqAPFN4yG74wz2m4G2UVRo7rTKgR3CzQIQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,16 +99,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  7 Sep 2026 12:24:45 +0800
-Ridong Chen <ridong.chen@linux.dev> wrote:
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-> Sent as RFC to get feedback on the choice of tracepoint sites and fields
-> before proposing them as stable ABI.
+Initialize page_size and hpage_size before calling init_uffd(),
+hugetlb_setup_default(), etc.  That won't fix anything, but it is safer and
+saner to get these globals set up before doing other things.
 
-I'll let the MM maintainers determine the above. From a tracing POV, they
-are simple trace events.
+While at it, drop the page_size parameter of transact_test(), which is
+actually unnecessary.
 
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+---
+ tools/testing/selftests/mm/pagemap_ioctl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
--- Steve
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index 1a87b7483316..d9a4fb782ecf 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -1489,7 +1489,7 @@ static void *thread_proc(void *mem)
+ 	return NULL;
+ }
+ 
+-static void transact_test(int page_size)
++static void transact_test(void)
+ {
+ 	unsigned int i, count, extra_pages;
+ 	unsigned int c;
+@@ -1653,6 +1653,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
+ 
+ 	ksft_print_header();
+ 
++	page_size = getpagesize();
++	hpage_size = read_pmd_pagesize();
++
+ 	if (init_uffd())
+ 		ksft_exit_skip("Failed to initialize userfaultfd\n");
+ 
+@@ -1661,9 +1664,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
+ 
+ 	ksft_set_plan(119);
+ 
+-	page_size = getpagesize();
+-	hpage_size = read_pmd_pagesize();
+-
+ 	pagemap_fd = open(PAGEMAP, O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_fail_msg("Failed to open " PAGEMAP "\n");
+@@ -1823,7 +1823,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
+ 	mprotect_tests();
+ 
+ 	/* 13. Transact test */
+-	transact_test(page_size);
++	transact_test();
+ 
+ 	/* 14. Sanity testing */
+ 	sanity_tests();
+-- 
+2.53.0
+
 
