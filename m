@@ -4,131 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D52EC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 19:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75591C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 19:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C2936B008A; Tue,  8 Sep 2026 15:30:55 -0400 (EDT)
+	id 4A1BC6B008A; Tue,  8 Sep 2026 15:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7736D6B008C; Tue,  8 Sep 2026 15:30:55 -0400 (EDT)
+	id 4526C6B008C; Tue,  8 Sep 2026 15:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 614986B0092; Tue,  8 Sep 2026 15:30:55 -0400 (EDT)
+	id 369556B0092; Tue,  8 Sep 2026 15:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 324AD6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:30:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FB8A1C2963
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 19:30:53 +0000 (UTC)
-X-FDA: 85191587586.06.F925CEA
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EE74840006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 19:30:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=IiVyBZsA;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CF456B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 15:41:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A825440765
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 19:41:06 +0000 (UTC)
+X-FDA: 85191613332.19.1B922B7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E557440008
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 19:41:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=JCnIX7pG;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788895851;
+	s=arc-20220608; t=1788896465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3WttAy6W0orVb3NoJtGLqG6U4/hKJf2+6iPVBiF/I+4=;
-	b=17WEzoZwJ//Wzd3KKDZl6RRO1ZhyMTDbRG3D9GWUaypZdoJbtAS0ghK/DoZg1+wFuuvuTg
-	r3f3P98KGtrIuRZ7YI/IZMinikePdLe7CS1rr4S9UbReb/aExWLtfXaeWgn3swHOjs9Min
-	yHBYQx1nFW8MYNUg4J/2MZ0D4zLMYRs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=IiVyBZsA;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	bh=JMIyNwi4mOEbrPioPuMzsrrfZiDIVseBoMCefJk2aEQ=;
+	b=MWrfC76KSO/ZqbtRDSBbTFI+c2KxjzV/yNrcM5hm0w+MFZ8GO14/Ftdp/7jWdzrh3MFRgQ
+	38uailD/jDj/fEH8GWmY/BftkyjeKxRoklMasuQIX/iUxPV8qRq6k8xlHLOBD99HtpYu7c
+	IbjjNqxjq+XNv5/BYjd95NQPRoJTGXY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788895851;
-	b=XZUyyhhOPAXqvHkwea1SnaM/EAfSK6CNV8mNeaeR7BvN4eNsWrWJ4RkxlH2o3Lv6di0T91
-	wFO3D2hy3z3hybhj1zvv+rYTmw7T6JP1aOpleprpqoVwBgh7HJXRuR+LvM99ONQuLlHofO
-	6pXe/9FNuudhS+zUi8Et29HcJTiMQ6c=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91053c27a91so25089826d6.2
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 12:30:50 -0700 (PDT)
+	t=1788896465;
+	b=UUoiGSGu7yQmSqmigvb0hXnGO+GGmK2wvGBrTlfPdZkT1pXZByrPX3ggpxOx7CaQY1V1KP
+	+6ZD9oZtwhRvdiVz1PZ7dMYyOUCrc2hZB0fLk29uDwoZFuHD6npOzxPa/IZjimdQvXgaEB
+	ZthmlYTc8A5aEZtd1oP1WGlSrVd4Go0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=JCnIX7pG;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 94221601DE;
+	Tue,  8 Sep 2026 19:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BACC1F00A3A;
+	Tue,  8 Sep 2026 19:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788895850; x=1789500650; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3WttAy6W0orVb3NoJtGLqG6U4/hKJf2+6iPVBiF/I+4=;
-        b=IiVyBZsAguxdinCyQr9jGLzweizWrn0WHsc8lkOc/TEjLCFlaoxfaSvhFzwHQJG0Do
-         0yuvh8iHo2oFYU0N9Nbkroetx6bKkpf0sj7jmp4hDRBPamaWgpQ82LEKxB6QXckt+P2x
-         SnSr/7XN7DovkgTk7iJVNiaJqBKUWnmgnv+fWpOJs6bb61uHvvwdMK7tWpsVztoT5EWV
-         HAwrveYRUYONRw/5SB2IPbJQKKL/lKwg7nqKoD0cTt5Akr9Gg/4p968I+PCR7CsPFEBI
-         tuJ0ICO4psVByJKieB9SbNTZu8TrIwJSTe6IfOP5GSkUysgMLpVIMSyPPKAVf6fJf7Fn
-         F2jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788895850; x=1789500650;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3WttAy6W0orVb3NoJtGLqG6U4/hKJf2+6iPVBiF/I+4=;
-        b=Msj5oLAGF5yfcnm+PvShBcYsNTIWjIKp2SCkjMCzxmWlcVifHSMGCVXRlauRxTtp6p
-         JFTIXWArhUcwvyjvcM1QScmELklYvWKnnyWD2vhOaxoCDHOBUWWM9aJytGPAsEvTsNmt
-         4o7XO13Pz7wYdUV2LvsWy/sAfEwn7RiusE1Y4eK3pBLonzfVQL13ZRXjr1OUCOoMkTI9
-         iZI2fw46i9OgL1BKoq5qJQLhtbeqkkSnVdSb8wQECEv9Lsm/XbqMOeRylRzUFa1gUPwI
-         h0wGrYVNwJxTR3/rpsGHx7z1L0H999JdyqJIDvQcW8LxIloDAI+f3U5Rorr9pdJ0HHBj
-         zTZg==
-X-Forwarded-Encrypted: i=1; AKwUvByc+EFV4ns9XlzQFOFwtA4of8hDHN2oHfjvCtmUEmFD7es1kbXVuGdIVQ+5JiDwVYmZKosjFBN9Tw==@kvack.org
-X-Gm-Message-State: AFuF++lTNJzt5sasEur/9eai+2UrABrZKervK9Y5K7eEr89WeITmsJuS
-	u51aed2xcj3XBsB56/+BBcxFGKXpu+KuBNksQqZNh0MxcLsewN5POWX6dkzvuyQDpY0=
-X-Gm-Gg: AYBFou3vGkE5wTvbx2IPqCVGOGkd3rxQCGYqXiuuJSTo4sqGrL1TIE+pdinZ6MOgnhs
-	QaX56QwplAVwctFWxriGsJdtNTikCyOhpUBz5ox0zSbe/M68MMD+2pKzpiKcksljVbRc90S4aDm
-	qZFA57hyDHyaOh1yz285U/nR7movCaIf6KxzLywPdmFtNyrXVMojuEAG1K1xRbW6KKtwgmlM3q6
-	g9D/HvP4vazkUwM1scBDM+5E/PYOa+7enKnwWhU8YIIf4VgbXmqtcJvJ5SKf/213hjvxrHbnMQ4
-	7t3boT2lBIagn6XcLWTUT0yT3Q8BPyMQ2TuWi/Yyt+gKgR9FwpFdrkqhZrpwUAdTv5cvIkqyZqz
-	gEvfQs0VdaoQpMYSK6VNkguX3I6iAQg4aND8Meb8hNPwn2OgPuQmpePdeHDVU7wG6P26NxNmOf4
-	CXFPwMJnIoeOX7ga/a0je1VjeTp1piFd/3CJuHGRmdZz6ZNPXdFpbQzxHWovI=
-X-Received: by 2002:a05:6214:20a6:b0:8f2:5a3e:c619 with SMTP id 6a1803df08f44-9103efc8ccemr388761516d6.4.1788895831865;
-        Tue, 08 Sep 2026 12:30:31 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910464bf898sm105133986d6.7.2026.09.08.12.30.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 12:30:30 -0700 (PDT)
-Date: Tue, 8 Sep 2026 15:30:30 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Nimrod Oren <noren@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <aqBiVp405v2srvSa@cmpxchg.org>
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org>
- <DL9XL8T6UG93.1T1NSJMI8PISK@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DL9XL8T6UG93.1T1NSJMI8PISK@nvidia.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE74840006
-X-Stat-Signature: e6odts11d4ofudtohg7jhx3stpfzk1mi
+	d=linux-foundation.org; s=korg; t=1788896463;
+	bh=JMIyNwi4mOEbrPioPuMzsrrfZiDIVseBoMCefJk2aEQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JCnIX7pGgvk9cNWaMNZY3FOn+byzKD3xZYjCqrE/ydXMNjBtitB1WdqVWc+YdUdax
+	 5HxL0Gf09cPK7vx/GnHTS9XAGIkZ3cBEA9Qr5OfLGRYskxvueM+Ndo3YQ78j90b6hO
+	 ejyg8yqXbqWXqRn7uqX+PZjqQoZsoTqmXjQ2Q/34=
+Date: Tue, 8 Sep 2026 12:41:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: david@kernel.org, ljs@kernel.org, rppt@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ usama.anjum@arm.com, usama.arif@linux.dev, baolin.wang@linux.alibaba.com,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org,
+ mhocko@suse.com, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: Re: [PATCH v5 00/19] selftests/mm: improve khugepaged coverage
+Message-Id: <20260908124102.4c874a8a63e50a1cc90e4bfc@linux-foundation.org>
+In-Reply-To: <20260908125105.1510704-1-kirill@shutemov.name>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ygf9os6rmqs5yh3awuk9bn7mbbu8qm87
 X-Rspam-User: 
-X-HE-Tag: 1788895850-221729
-X-HE-Meta: U2FsdGVkX19yVV0AS2W1cAK/tKEuIxH4rITBIt629jdomVmCUb9L2FpuEDd6lRlFA9+DU89SuoqtJ+1BJ2ZXdhbIWCIJZqXCzT/G0ZzzzrZrIpq2ccFCq9C0WZbZKtHA0fda2Piu7xJdKue0MgXvEGp4XdX+XzQmy1VOEFrWVYhtoi8NCyiUyC7Dtfedw33ytOvL6AlnfHvxoEyQ2qjt8/XbZ54mPEi/xrgZ6gtdvrwoMmA9WzQeeoPiZPR5wEk+gKdQvMIWmRk1W6sH4yWvE9/ffMhTemqucXMt4OUXDnW/SGfjHir+IJKJubGjbVf32siad+MsKmKheQikB0iPX5QQXXOKg95JGgXkqUR9JKy0D03hih4wCphWcUfWjsMmaZAW8FDBRSYpEMtaBQPvDdQRO91gg93A69vXD8yh4Pjy8Lpp//NIAqkPGZfDgPEyS52uvMNzNkXO0RcS10V13amE9SFjn2d/Woeex72hGmN4csvuBCBYyQp6ijX252km8yvYUAqi4xYBk7CzSZO9a4SR+TfC8wuhPVCK9MVQ6OJwUgggCgof/yS29v1nm/gFf2mz3qXt30c0GlvMQOJAUG90AiEzRTjM85Xe7ILHB+WNllTa2/3q29P4fqz73xso1vUZsnnJgh2fImAj4fHqElyTB428XTlYcVFBJmYsmxAeG1AevohIssBpX3DUW2Ale7ygDTX+EzVZi6rHwFTj1cUdoaDfHjVhzKv+clSbiZtjtiOZNKTMebgNC63lSjBBlLohYVdE3wRu2NpgLXSjFCewS/pVGW40EQArjY+2Ukmh802TRyOtCXSIp14HhGWbrDWfRP5EqzbsJkbori2BNIsx55fUkCzbU06T4TkEou1q71K/7E+4sTE5dK+IrygUN1yhrw8v6mtsS9+EJ21os9JiZLdWI4rToDGyeM4YuecstpNV7K4u+XwXi+6AY//9Od7PDl2iJWidgJ3proM
- cRu0GoEq
- T/yhnA22ywpQJCw2i/4jEVJVErdsOf5vLQgqzgnExvfc/c5OFX2OsXi83lY12PhOBXFtwO2+4S96q3ygnNfTf7quQTG35NVznSu2WLiAMM/0CamcxqmbydvJUXekI7Oi8c30i9Wf63AxpRnx90WNDd99nngB7qDN/EqEsdPR712Cs1cALx8C+Mf+NSwsMqv+QIqoEC2TObY8vTNImZNC3sqW3PYomXRfZQIyDhnnrrI+ELzSI7Ft832TXV6Ace2sM3mgBLX3iE53urp8tFbilfLqQ4X69Dr2gDA3+Zm8OhOTouXJbCV+VPUTobuJ95lfxPiIIpJsNO4sfLtz0lcbGaAaHgAJQTE6NQ+TV5r/7l87hYKf3PzPUGM5KvSxmnePgVgiHFBcQJVR0vojt9Y0W/3mz6vrhTy/ZLSr70E2ChXubV3IsMD+4YgNIUxk84INTxt588pTb9Ft1Iy0=
+X-Rspamd-Queue-Id: E557440008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788896464-208130
+X-HE-Meta: U2FsdGVkX18O9TU0Qd4O70uEx+bKjs3JPl68qYn0Ub0+yJT8v/NS3DfpEUQ/bE7lz7ItptnTUn81qTfuqlAvSXryWESlQEqd4/6DGrD2JPgEmo2nxwjiZRe6zH0bChHHiuOB+33RSXPfXdD3d5s21iLT6Fm2qGHO58EIgctdMbDRocQ5CdBqjqmguVMTYSxQjfoXfPO6QWk+Bvr02vV+RI8ESg82KMrkm4+nPp3aWlFWqfH+VHxNUDLcfoyGvKkDyEtqNf7NQQg/44icIPL6AchJFUsl1dwEbffzh6RPrWjDWb2/zBLXXF2kHJCFir5gELw2agpBZ3P/FfIe6+5L3LMnVMl/+iRa3I/qyO5rQa0AsrHdoLII20RvDmdcxDyVDeJOIjtXhk2Nhwo//FyPsGFyactpd6PhSZzzFk+uxBuefDnd1cLmAfAfjq5KEf4LzeWP+es0yaTfApMs1Br08phe4qd5th+XChB8/ZFNt3NfI84V96GUtzIbCGs4MMZ1ThzSxZ7Z9xDDHUQGBIgJ8DecQXozEI/e2/5J5N+plwwq1IIQqVOeMgufDw44USwbP6/jKgIonp829RpJBkSjPc5fn55BcYFTM9MUw0X6NgGI65PITwAJ5QMfz5EH19COiMJdKkRDp1g4lfs7QVilWSIPDI6msP64C233MUfwssWhyxg/yhWBqN8MoCrjFeCTgoESpIoLoNL/wtiPsNIw3nEBpajKGvcXGdIiV8dl1JsT9UPzxMjeBLxvSNcyhYmXLxTz1aLro0bPdH4k3X3ywB0YlcKcbUOasAvWzuDC2awZsvgwOtw7D6W1cz14LbrVseQOGB1Ucr2mYbWgm/asdno+3mqoPYsvm47ooKbFFUmoQ7pnNiHKdOTx9r0MIirfGf5LLo/EwL0WU+1t4rHCY0ABtU6w6eGyNu0A6impA5FUW99vB26KsqUpLHwSd6O1Oy5sviWGo5q7z+2ivnm
+ skYtaaL+
+ UFuSkymAFZRHq7+cRutcemVlqXqOGXXK/q7HB/DqSrnw513Nt6+bnUdPLBDFX72UJ8SviflE73rJ1VsJNJkF5p8U6mIArezLG++WrtQ2bk2YHh5NuqXkj2XH3CIY1/YgnwRBmj+CgkSTsQpTCHO+Mhva3ME/PLwMiQGhyaB96yYkqjfhQqILE8cSOrMGwe0m7ixfP+IMkUC8BbYdemi8SoUUeFgzTkXCMXyB2gKMekAiP0YcLsnJLKNwndhwVxRaStvXZR+V9KvnkjBN+LcmQqMsATgavl38K3vTYg1gWALAkhtKURKcoyIZcIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,13 +95,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 08:24:38AM -0400, Zi Yan wrote:
-> On Tue Sep 8, 2026 at 7:54 AM EDT, Vlastimil Babka (SUSE) wrote:
-> > Given neither of the patchset versions achieved universal acceptance, could
-> > we try just disabling all the automatic (re)calculations of min_free_kbytes
-> > the first moment the sysctl gets adjusted from userspace?
-> 
-> Sounds good to me. Johannes, WDYT?
+On Tue,  8 Sep 2026 13:50:46 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-+1 That sounds good to me as well.
+> khugepaged collapses to mTHP orders since 7.2, and 7.3 added three
+> selftest cases for it: the generic collapse cases run at one order named
+> by -c, with the result detected by counting folios of that order.
+> 
+> That leaves the collapse path largely untested.  The suite does not run
+> where a PMD is 512M.  A folio count cannot say where a collapse landed.
+> Fixed sleeps cannot tell "not collapsed" from "not scanned yet".  And
+> nothing exercises collapse under contention.
+> 
+> Close those gaps in order:
+
+Added to mm-new, thanks.
+
+Sashiko asked a few things:
+
+	https://sashiko.dev/#/patchset/20260908125105.1510704-1-kirill@shutemov.name
 
