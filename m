@@ -4,96 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8692C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 03:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1C6BC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 03:38:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E433E6B0093; Mon,  7 Sep 2026 23:19:42 -0400 (EDT)
+	id 84A906B008A; Mon,  7 Sep 2026 23:38:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1A576B009F; Mon,  7 Sep 2026 23:19:42 -0400 (EDT)
+	id 7FD056B008C; Mon,  7 Sep 2026 23:38:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58136B00A1; Mon,  7 Sep 2026 23:19:42 -0400 (EDT)
+	id 712036B0092; Mon,  7 Sep 2026 23:38:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5B8D6B0093
-	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 23:19:42 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40F54A0394
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:19:26 +0000 (UTC)
-X-FDA: 85189139532.28.77577F2
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6CF50160002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:19:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 44B196B008A
+	for <linux-mm@kvack.org>; Mon,  7 Sep 2026 23:38:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 220F3C036F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:38:53 +0000 (UTC)
+X-FDA: 85189188546.04.E311660
+Received: from mta1.migadu.com (out-12.mta1.migadu.com [95.215.58.12])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 098471C0002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 03:38:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fiwCzG6q;
+	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788837563;
-	b=6EJsiH51X5h0pR+zJlV2QfE95lnUsNEIXO0cqb8XVJkup2ILEEEXZM5Ax6qpC7q4Blce0+
-	IlI4D09QlKYZ4T4vOau7A0n60GyIPyPe358Oakug7eE2GSHjOlUHnD2sn5nfGbzZ3F5tF3
-	sk/vgW5WyxgczIiXbZyl8BweDWDSts0=
+	t=1788838731;
+	b=J5wn8f8n0F6J9LKBOc53yceu8yFlhctHqIJWC8W516WHxW+DhwxlqfhsQFvsza+Uq+yXb+
+	VJwI7KIOGtBBc4uyR8mpB00JS8uWN36JPH0S0bRyspQFtEwBvCMTZ43J7TBgjd4Oa7AUIn
+	tx+yO7KWDD6C0v5VNGc/Kmg+wTbXL8U=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fiwCzG6q;
+	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788837563;
+	s=arc-20220608; t=1788838731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vy/i9A6mkE1v5tC5uE5IThXyMBBe4xFvzxnC4IMvkRE=;
-	b=lxYm5ltTJBrduMchgcPXOo0won12OSuvUuYLiY0CZg8p+kHed1L+NnYmLJNjJzv1hjUSEU
-	L8UTQIVHYyuJ8eaP0Jor9o2j8/TiMKov3nHLk7CKMjokk8RqxuGwHEm+/5aQCq+s52RXOy
-	XKSegkZa1JRpHDhfSS/bsy790n1U+tQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
-X-UUID: 110f5742ab3411f19a56ed5b684f684d-20260908
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:35e9f908-a554-48eb-987a-073a9f7dc827,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:f2aa7d636663486bd5c464afcb28c61f,BulkI
-	D:nil,BulkQuantity:0,SF:81|82|102|850|865|898,TC:nil,Content:0|15|50|99,ED
-	M:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 110f5742ab3411f19a56ed5b684f684d-20260908
-X-User: liuqiqi@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liuqiqi@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 24674537; Tue, 08 Sep 2026 11:19:13 +0800
-From: Qiqi Liu <liuqiqi@kylinos.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rostedt@goodmis.org,
-	gourry@gourry.net,
-	Qiqi Liu <liuqiqi@kylinos.cn>
-Subject: [PATCH v2] mm: page_alloc: add missing hooks to bulk allocation path
-Date: Tue,  8 Sep 2026 11:19:09 +0800
-Message-Id: <20260908031909.91771-1-liuqiqi@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260907120949.418450-1-liuqiqi@kylinos.cn>
-References: <20260907120949.418450-1-liuqiqi@kylinos.cn>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mvLW1vHVw6yctp/bvtj48vciA0fw8Y1ns6IIReD+n9Q=;
+	b=BCMrmCGf0T5nrQ2VAULN+UvjB69a2EQTztkfycZETw8nw2ZcLjlE6mQtD2nviTwzXQkvka
+	lBxNLUFBcA+ipbv7SJvFmepxIJRnvEeMUeWLVwUxd8W012ugaSMZomNGgr9ZRPathkJfNF
+	pTdKVft1ntzB0sIapehg5Cqm6jdvA6U=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yhK03DuTQi1iPHr6VnhteNT4zGo9XBaXI4LIBpf19GA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788838729; v=1; x=1789443529;
+ b=fiwCzG6q5l2EK+C7ceQ7vW42PJuwLirLfMD6Kt0zDudO2PT6n3IXURopkigUDUXnCUWRp9Ro
+ iV7/a2fdjhtITqGk8gIKIqDcriwLoi2NlEgDwCrHFiImUxIP4C/Nb5PMrVKqodq8i1rLCy1edQn
+ 88G3ZvN9Fk7e1RhjnE9tfMpc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id d4daba85eac251dd;
+	Tue, 08 Sep 2026 03:38:39 +0000
+X-Mizu-Trace-ID: d4daba85eac251dd
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 8 Sep 2026 11:38:36 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add Baoquan and me as MGLRU reviewers
+Message-ID: <ap-DPHiQEnfp8hfw@fedora>
+References: <06e20ef4f603a4ffeafcdbf623ce2936281457bf.1788831480.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06e20ef4f603a4ffeafcdbf623ce2936281457bf.1788831480.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 098471C0002
+X-Stat-Signature: mbeg8z998jbn3zsm6wyrj3gzn6z8oyye
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6CF50160002
-X-Stat-Signature: dp13srow5jfngadwekmnmg3m3z1oct9a
-X-HE-Tag: 1788837562-365967
-X-HE-Meta: U2FsdGVkX18ZJVUypg2BthJUdNWESWeMH1PcwuS5lgUo6HDKVDml0mJ1Pw0BPhNGxOOLOlYPB5nv9sJq3DcpOzXtCIgx8m9zmXPBW48XvED3UD9zwv3MIr+kbz2YGY9JgaFC5SmUzlE3ZL/T9rAVEmkNeccmz9xHUqGOJ9jnk1sgl0LQw+xggeU7uxEiNKAwkfgTpgPrfUrOHut4GRfb1fCETrrf+7OP0CggNWvsqIu7cYxBLJOnFFrar4ikLpOHqnXn4JEpfCBZT1nqYjZevA1lfYsKA0agfrRZQIbXWssB0mdFkzKhubW4fq+2tDH/WWGlHF5DjAyapk6WJjZ2OBGmY9w+8pQhIKqMI6QMDHI1oDNVIK8T/1b06qPtlt+QzkX7/Sp7GJVInWVnGuZxOM5XLcy85rth+oW1+LRtPKMFPJ+P2SHSJPPmu1mNolDCIGX2hVX3hHYeNzS46ZLsejxgp7eZqwr8Oqf0FQ2z4kpTtlj/nHVykZLQfw/8pvCJeB231JYp9A0f6ztXeIbwFmwkxFEzT7GNaYaCdzvvVGGwScKyDMkuB0xFSUl6cNwAESNN7UCACHoYpDI9l9tJJr4Cvj3p4tgCObhgqw3a/tYrHclYvIYpRFTSiqJG3fsrkNtw0VqIXVb9vodkkZKWHPXoKRYa6aFg+J+zYmC4zFoIkS+8Lns3y4bZi0tltCoXCmm8QAkbaxep/8mKta2Wy3SbyYTYrmA67eOiaJAHoQE5oGwve7YFfQ0uXDArWYnAWCU8/KnvOomS6nLftjVOxdCfQVNzyfBW+xEb/UoHgY3DpUUCMpZPPq3c0EOdwE7FRAGgdhNT0jMVDX7mujmAWQeK4EZT7cAzkOv7rGZgxxTbpdQR5qbYggKq03BpWsK/iZimeXH35xqjPAoFnv1NNek1tL3SQOjZmDjV1vdBXdhmQJwAvqHoBVVuLPhnWt1xbux3yz+B1QtDoZKhc7K
- lPGaqFhF
- Gu97R0FoQiEbDbDlCXfxwC6lKNkB/bPnPfNUjOvo30RX0XxemMBx5snDPTQHqX9SkMFILDVAeZQnwdJsnSNFoi9a4RiF8ZqJP9KduYQjSlggyjAs=
+X-HE-Tag: 1788838730-576076
+X-HE-Meta: U2FsdGVkX192J9Ytph4mwjnNSny/Op7mAqZzkbAIqeiMGeuBvDooer6KREkZ0fFdj1h2b0Zu8OoMkl6JQa10K5En68OFEPuKphxgZbbwtZ7HY3FpRgV11ysfiiYxqLJJA5WxxMkZs/KK9yRnvr8r0j0WOVxFXHXpuUf3E1m+NQoMhGO9jYMQpwJZlCjb/wK8t9+t8Tgq1eTjYAp08tgrvKCQ9HfuQFpTTEaxFh1GXV6PjSA4SyI6VVc0H+0k1iQcyZVgMOCTKmWWQlTinT2C7p8g5ImCdlAGN4MRRmzrrWmMMOCMwDqwVYC5RUJ67EROXnggbnU6totuHd/Bo7HikIc32sqV1P0cQkXBKWPYJvmB/0IZh5r4b4y5RYWNkOMLKAr6Y40n+xjbT0AmT7dqNiQiQyKgv6/f6SMr5FVBq+Ppi6LMX+mrcxKBL6r/meLnQ788j9yLwxwABs0nL37fl/TIEaDK3wA1Z4vtD3kJ3I89UyptzkQpryhiUXvVCBLYfOVRF/aRNWGvhOead4DZJ0PaNbLJZ/OlSD9W6VEIs/Vm8ziV7oDFNJtNjt23cQmOdqGOvwbbCy+TGrmD4NAqGkQzhfamdAN/P2rnQJZmEPQub9k1369N6MXaD9udffHE/1QufxSfiNv3k71eTR4BgQfk5c9cYpcXjrGxHK0IZ7y+xaT1gHglKDhg6s90tc74IIXrpNhxhzUFCKf/PrqwcHlw+FkZD6n0+kh26Ntt2YG8BxDhxnKgcjSRzmZ+5tRAdK2/xBPAf0F3GY+2BAuZOk9Po/+3HlwCnCoi47JP1NIICKQbC09zA2XID+8T8caLJUNw6/JGS8u6rlvQWx6docYpHpAGtFlXT1dmHWO81jHjM88+dHbfnKPHCs5efgAzD6MI1eN/JXkXbyNuodhoI9hPtT7Z1z1MHHAtdRHmLCJXktRM/KZ+xK++C/hleoVNQxMZfRiLYQnOtppNU36
+ Q+/pqHiW
+ fIwDrZAbyLG/dSxIup9vYHm6l7K73y7PshanaKK9TcTqFUXnRQDvheJ81GRI8l97l3SKmMPDNAyydDiqZh+8IVx/7s2YBlXufNjZaXmBa7ePaUhrx+oM4qAIOcPb4w/lu48ojIO7c8+4kaY8JlbxEjUIS+f26vBm/hQ8qhBPl8jq2pUXOX1ruFpCE9dGHGEVmAlRs87GhJJhU5bz8hvFJMRI9FFHfi1RLenYyAuxQEIFYR8c/06DCru7Raf0hjhRqC3dJUV1F7bOkIrQTQ8BMQ1Ba+j29OcreIR3L4hv8p6agDYt/fDVXY2qneMlCGySdw0iDhG4ahW69cd4SOVUodzOLhlJyIloJEnBUabZggm5JsxwyOc9CtFlpiCnuyBJh4Lka6/o0OT/tkhAzrFMJybSuwgbLhVBQFnwhmJkVKydzAuUAYNe/0kB/2tkeCwjRfVN0fPZJbPFKoq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The bulk allocation path in alloc_pages_bulk_noprof() currently misses
-trace_mm_page_alloc() and kmsan_alloc_page() calls, leaving bulk-allocated
-pages invisible to ftrace/BPF/perf and leaving KMSAN shadow memory stale.
+On 09/08/26 at 09:42am, Baolin Wang wrote:
+> Baoquan and I have been contributing MGLRU patches and helping review MGLRU
+> related patches for some time. We will continue to follow MGLRU changes, so
+> we'd like to be CC'd on MGLRU related patches.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4d1ff4c76496..c558d5370dd0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17242,6 +17242,8 @@ R:	Barry Song <baohua@kernel.org>
+>  R:	Axel Rasmussen <axelrasmussen@google.com>
+>  R:	Yuanchu Xie <yuanchu@google.com>
+>  R:	Wei Xu <weixugc@google.com>
+> +R:	Baoquan He <baoquan.he@linux.dev>
+> +R:	Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Add both calls after set_page_refcounted() in the bulk loop to match the
-standard allocation path. Both are no-ops when their respective features
-are disabled, so there is no overhead in production kernels.
+Thanks, Baolin. 
 
-Suggested-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
----
- mm/page_alloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+As Baolin said, I will continue to follow MGLRU, actively review patches,
+and participate in the relevant discussions.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..02ba19f6dbb5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5280,6 +5280,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 
- 		prep_new_page(page, 0, gfp, ALLOC_DEFAULT);
- 		set_page_refcounted(page);
-+		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
-+		kmsan_alloc_page(page, 0, gfp);
- 		page_array[nr_populated++] = page;
- 	}
- 
--- 
-2.25.1
+Acked-by: Baoquan He <baoquan.he@linux.dev>
 
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+> -- 
+> 2.47.3
+> 
 
