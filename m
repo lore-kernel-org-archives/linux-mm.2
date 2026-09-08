@@ -4,130 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6D4C79F9E
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A8BC79F9E
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC3B16B008A; Tue,  8 Sep 2026 08:23:13 -0400 (EDT)
+	id BB5796B008C; Tue,  8 Sep 2026 08:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74A56B008C; Tue,  8 Sep 2026 08:23:13 -0400 (EDT)
+	id B66326B0092; Tue,  8 Sep 2026 08:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B632D6B0096; Tue,  8 Sep 2026 08:23:13 -0400 (EDT)
+	id A31366B0096; Tue,  8 Sep 2026 08:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E6986B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:23:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CA1340561
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:23:13 +0000 (UTC)
-X-FDA: 85190509866.28.0569D32
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EEBF2C000E
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:23:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7wCTODR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7wCTODR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788870191;
-	b=ae8pW9Gjepro7hBLGE5okK+MeBBCfek6kE5xHQtN5jNLBdf/j6vyoDWLRBKvXx+16rud27
-	5VB7F5xTSNLnvQmhzMzoEMESWUZKDyEXjWliwXPMyzmLEolszChTDIg2LQ00P0uIW5ZvBy
-	5VntcJl89pjA6eJChJ4pfmRD7wXdwu0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788870191;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 733596B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:24:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB1541C1E21
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:24:50 +0000 (UTC)
+X-FDA: 85190513940.01.A81F40D
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013003.outbound.protection.outlook.com [40.93.201.3])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 12DB720002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:24:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XJEE4hwY;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788870288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aKO8anCYGcnb/OXRQiI4kbt2lCHpmv4RnbnceUHiCXM=;
-	b=g4bj+PLedoNN/h3Yob2PFapM0Nmja1ynPoxCnGhpywFuSZ+FdHBBy8DqXRn2+gdFg7JXiy
-	ARZljcdO9z4geaPjOVwEnszpxMV3cyUzgta6JRtclINZtqBYcAx6Zv4Chrt1KYlEpHk7N7
-	a2f5hiS20FIHqq+lNgSebuDlgaZGjs0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0D32A43B0F;
-	Tue,  8 Sep 2026 12:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039841F00A3D;
-	Tue,  8 Sep 2026 12:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788870189;
-	bh=aKO8anCYGcnb/OXRQiI4kbt2lCHpmv4RnbnceUHiCXM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i7wCTODR9DtNGScr/lOgV/jBLSlWm9MCexe584RmY2Bdk58wqA5SI6qz7SA3Xs1oo
-	 TLu3+4EoYw10BCwJWk61BYzhyMMeclLerXeJg33JIn9DJuNnaJZUBr3Xv6w2VvC3GZ
-	 +hklwu3+UWB9ydzVS8uwukIuLiFiLkVRyBZ7GL0r0/jsgLs4pRkwAEjA+OQySkLuWn
-	 3upXGIdpCgJxtj40DyjL2fHq5X+rkNNbU9CyLJ98L5+7kIHxNLlORxaRPqThNJ2EnQ
-	 u0E0Bwy5CsmfLhj2wpaGKJORlZev+LybSh1KTY8FJ+aCUdv7bO22mCB/lN0PulT3Ud
-	 70PzNBCejvYQA==
-Message-ID: <9d614e4b-2ee0-46ca-9de2-b07539f3af22@kernel.org>
-Date: Tue, 8 Sep 2026 14:23:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: page_alloc: add missing hooks to bulk allocation
- path
-Content-Language: en-US
-To: Qiqi Liu <liuqiqi@kylinos.cn>, akpm@linux-foundation.org
-Cc: surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, gourry@gourry.net
-References: <20260907120949.418450-1-liuqiqi@kylinos.cn>
- <20260908102356.344075-1-liuqiqi@kylinos.cn>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260908102356.344075-1-liuqiqi@kylinos.cn>
+	bh=/JebeRBM2yWEvaAKT8yxwdAismABECoKt1r+3mPM4Bs=;
+	b=YXJ+jAh3nJSUqatB+j3wdpKoDhkU8W2M9/sjNtSQUYmpfWzOxHps9XvhU5Cwl4EbV9NLkJ
+	kEruJoBVr9uj+cOfC72ZgAfmdqJrevVOtvHbc+mRdPNtUKLRzuwHRCpYZNBJusUVd2+i+y
+	eWN7F3UywnZqUN1exAq1xJaGp2eAaBA=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XJEE4hwY;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788870288;
+	b=RO4TE8aXGcVEK1gfjnyeaZnhtyMFekMHg3k66oyqvKjtbN7MuJe8++A/7AyeW00Myleu7U
+	IEmE1E5SHTuUmyLdoP2n4XTIc60sMm7x/xVtCpt/QPUv52AEEw8dPkmMKAVwitKoSIi2WW
+	4Xj0D8xMHsZP2cI4ZKB2cfcZLSu8bVs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FC6en/IlDpR7GllTXmD9mU8qRWQnLQDSpHRZI6z1hOTWk/U4IFuUnOxprD+So1QC5fmfuvSK8jvAXo5BBO4L0EKrLx5Ayk/ehe06XtxGKfBE3OGjyLQqG/6j5TcQUGKHOo+XqjumFFrNCWg5KxMfMsHqcqXbP9gqr3Ejf+D17pFL3gkgrfhpocTsIC4esWi0kvUFcw8gPwUpv9mp8A/4HRr8GOTafYtG3Io8X5YxATmOkySpBoGq6wNWO9Eu0CSOWAzSgU5bXRSXNVpDqkmT02Z4Va4/R8xKwH+69yTHQk0i9aeZqP8jHeYJTQyl/0HMfGbcEINCyy+iiIeUnK+Sxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/JebeRBM2yWEvaAKT8yxwdAismABECoKt1r+3mPM4Bs=;
+ b=H621W3PAcT7LNa93CSZLvfFtArbcvSn0XMz00EJI8D5LeLQmF+bxfW62++WRKBWBj8//MwahJeJOF/aPtO8FouWCLX2SicjlBc2iJGVsEXN+QxRN11B8on/AFXHft/cZQ+uuxsIS7ltM5kqi9OH4KCn49HorxvfUWuz9eA2ReHAMTGDV7syaukPxIiqeQYH15BQCswaMX/XbXTe0F4fHYQnBwp+rPD3BfHFi2zf1v/q4gkAhPzcBYIHQLBt9Ue8/ustEKzZMZOWn8aZENWADEJfpbdGIwmhxqVVYg0o6BR7hjY76cl1lWDPyEctFDvtTCj6HzjFcaA0bwXGrrJiIEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/JebeRBM2yWEvaAKT8yxwdAismABECoKt1r+3mPM4Bs=;
+ b=XJEE4hwYBXiv5bxcOYDW/bUS65Vj/lZsebd7flDuZMA8XZXlZLjnX9TzMaRwZPjKqMnc6jWvAlZe5Tb7BOaMf/2DPcUqNTO/bXWF6FwKPMgSwTynNqYyZ0gGx0JRhvSgu42OCBtYEMmgNll95LzJuC5eO3xD+OI69tnzptKe0cOkyUR6RfAN9s033mxUHf5ysCpqShiD9Ti2KDY9LJHDUxWhkEPizwfE2w5P44phxT7APqR83BVs3DPSvV8MfWVCxGXRliymenKDw+XtWxbCqqv6nmmRTRr7co2Q55qpMaa85+t8KOcbZRnzr8SOj6UoNL4L94/JoeHhR7ePSxzR2Q==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH7PR12MB5594.namprd12.prod.outlook.com (2603:10b6:510:134::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Tue, 8 Sep 2026
+ 12:24:41 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
+ 12:24:40 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 08 Sep 2026 08:24:38 -0400
+Message-Id: <DL9XL8T6UG93.1T1NSJMI8PISK@nvidia.com>
+Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
+Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
+ <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
+ <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko"
+ <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Hugh Dickins" <hughd@google.com>, "Nirmoy
+ Das" <nirmoyd@nvidia.com>, "Dragos Tatulea" <dtatulea@nvidia.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+To: "Johannes Weiner" <hannes@cmpxchg.org>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>, "Nimrod Oren" <noren@nvidia.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260901190123.3511535-1-noren@nvidia.com>
+ <d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org>
+In-Reply-To: <d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org>
+X-ClientProxiedBy: YQBPR0101CA0203.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:67::11) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB5594:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6e8e776-08a1-4486-e648-08df0da427ed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|13003099007|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	q+tCZhs8EdEpG6weRS16+MNVz1xtKbeWznGKt0pMVoWX0GJvC8EeoiSmAt35t37tsGdlbK5N0xMEiY/5FGQQPLfBJATaERGbaWTua2pk2wxOV+vgcv9OlSLzLfqO0F2mY1iQwLm9/IvRqA2Em0kQjX9/ZOftkXINScx+mRtWU79nuNIVCoz9KvJBr4sD+Q2pXuL/NA+oW7GoatYWoyX9RcQjHLqBqwN3vaQn6H1LfNpdKcInlQo/Nh8dztIKmvSx+uOYvnwtbf4jHi7A9q9OSzOLlYR61rEDLgAaBieubgSOYSWnw6eUHct3yEQ2AsRPp6NEn2leLFQ8UqmF5kZXJHMDKttUGuCqR67N12AcOht+TNG1Fu5WSfCPKiRjJJXbPUpxI1grLKoNEHL/1XeN8hMirbFBIR6vq5Y014vnYjlFewkRdxbQZp1148Ct+rK5C+5FzjIxKLKUuP7yVjTXoYyKEqKnrWfHnDH51LFYqsjZMJgfvckArRZljtEfmEumEXpAp2EfCUT9PThSGaG8pEKrnvrHsjz72jHvcZ/6bF/x+JVjsgeJ8TkQRdVzydR30UpZlzETkZqGQkIfZgqe+lQ5JCCp0F69/potZ8Yt59p4zsgUy+sLOGK0qF/I20DNVB+VVYiJTt3uKI/D1IMl3Xo7AUxSrJHZR4ZGR1uXh88=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(13003099007)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c3FGNXVrb0NyRVArUW0wdEtjUGhTeWxhRlpPbjV3Z2k5TU1JUmlPdVlVbTRs?=
+ =?utf-8?B?REI2REprN3NBeWowMFV6d2QxZFF0SWUzYXZWZmxtZTIwN3VBa3I4VDZLaHJo?=
+ =?utf-8?B?OTRKa2F6ek9GRVIrUDk1OWV3ZUlVYlhhSUJBQW94WUdDNzNSL2p5MTVFQTZH?=
+ =?utf-8?B?UUJ1Q2QwZmhWbzgycERHNGJRbEdNVUV1R091M25wWFRYQURuM2FuZE5ZQ1BK?=
+ =?utf-8?B?QzVySzBBZkl3eTdBT3ZYMlJ5a3hvclNLQVBEbWFBdXNIT3FrWVBDbjRNdzBT?=
+ =?utf-8?B?akVLOUErOVF3RTVybHZIdHR4TEdodWpPZ3hjVjUyc1ZwZVV0cllYTXBmcUND?=
+ =?utf-8?B?N1NDOE91QldqS0s3Si9aNmdEU3MwUUtaSXhBYW5iT1VibWo4SncwUFA3bnUr?=
+ =?utf-8?B?MWVuMDhnSVFJeWQzcUp6cjlYY243bmd4aVJPU2YzazhmZm9vWVJTZ0p3QVFu?=
+ =?utf-8?B?OWRVbnViZjdCVmQ3QlpxUVdvbkg2WHhiZmJqRHVYWXZ6QTJGNDF5VEhUY1Rh?=
+ =?utf-8?B?bGtLR2g3SkdKOWJXNmFxa2JRU1loMUJpbndueTZMWFFIYnhqZXlxbWovazZF?=
+ =?utf-8?B?QXZadWlXeWNVK0RzTEVQajBrMHoyYURSY1dWanhrNUhVYWxoWkVFZ05iNGdP?=
+ =?utf-8?B?TW9BOTZnZTgrKzJnZE9GWlRndjN6ektpRG0zTVUxMllXY2RwZk1LUkdHcGFI?=
+ =?utf-8?B?TWdSR25RMXZaRjBqaXVJWXRVU0RkZ3RxZFlpai9xcDJlcW1oK0NqVW5FMm5X?=
+ =?utf-8?B?UUxXbXMwbWJMcGpLMjNDVVNEK1VFcjgwYzk5UjVhYUU1cEVlMURVb3hhUHV2?=
+ =?utf-8?B?cTF6TWZyYTAxaUc2NDRRcU1naUVtQ1hsODByVk1jQW1Wd1h3Q3AxMEFtNnJG?=
+ =?utf-8?B?OVB0WGxYd3M3bGNSVzNyc09XM2VFa21UeTI5ZW9hS01yejUvaXhObFoxcEov?=
+ =?utf-8?B?MlM3bTdmajRyYXBPbzdJYldSWEdhbkVQS3RwNHdWcTNMWEVzUnQ4SEN0eUda?=
+ =?utf-8?B?Qi90cytZcHFUcUxkOWJibXdETkN1QUZHTUtRb2FZMUJkWndtTXpodC9VQ3Jr?=
+ =?utf-8?B?RFN6eXYweldVVnVwOW1LRk9hdStiSlNRN0Y2WmRiNDUxZU52VXhKZHQySWsx?=
+ =?utf-8?B?K2hHUzNjUlZWQm1paFJwVm8vdldSODJBY1l6N0o5NHc5dUxFdWVkRUV2cUxr?=
+ =?utf-8?B?amhwRnRLd1UrM2x1U1dzYnU3SDE1UTd1QVpOR3RmVmhoNlgyaDBlTFd0UXdR?=
+ =?utf-8?B?bHJDWFlGL3lmWG5mdnU2YVYrbE50K2IyNkNSeDl0TldqRGJVaHdQS0ZvcjJK?=
+ =?utf-8?B?U1RyOHJPM2djZS9ZQUFLOEd5V3VHN3BDLzY5dExtc3V0Ym5NRzdCOStZWDFt?=
+ =?utf-8?B?Y3NjT2ZQVGQzR2hlL2ZtZ0FKWWNxcGpVTTRyV01TZWlPc0x3d1RMTVVBaG1T?=
+ =?utf-8?B?ak9SZm9nTWd3WDVLYVZwT3hxek54MmNFRGg5QThRdlRmV0FzWTRNQ1Rac1ZD?=
+ =?utf-8?B?bDkrSXppNzk2OENwTHlXN1l4M0FSV05FTm1uZlMvd2ZwMFg1clFxb3BWTWcz?=
+ =?utf-8?B?cW4ySE54Ym9UbnBSSlc5K3VPM0t0NUxNaEd5ODhnQmRNT21jeTYvVDNsd3Jz?=
+ =?utf-8?B?TTc2enFhZEpNSGRJT3pneW9IT1pHMDR6cjFFc0xpRTMwSEhqSnJSdFZjUVhM?=
+ =?utf-8?B?ekRPYWhyampMNENZNnpSNGk0bnZuTytWZjVRcEF1d1dEZWVmZXZvSVlWeUtw?=
+ =?utf-8?B?T3N2ZWUxaXdocEJWNCszTFhZK2NzQlhxRlFyTiswQ2s4YW9JeWJjcWVtWnRQ?=
+ =?utf-8?B?VDZWZHJudGtIbHp1R09OM2FXbUtEZnhHY2wwaFVYVVU5TzUvM1RkejZDSVpM?=
+ =?utf-8?B?YjhTMm5nSmdCUEU1cFdEWEZidnd1dm95enNZL2tETjJYbTFCTEVBVjgwZlEw?=
+ =?utf-8?B?ZkJSR1A1ci9iMTQvdjBieHEwME9IdkxPY2g3bDd2RVQxZ0M0K0hwTGQwRExt?=
+ =?utf-8?B?SmtUSlErYU1sSFRJSVByM2dQK2Y3NFE1SVpaODNoZm1UNUJ2MnpFTVVsaENp?=
+ =?utf-8?B?VmVtZFd1bDBVYy9laGd2ME1aczlNeGk3MzBzcGJuTW94YzdkZWFldTN2UkVY?=
+ =?utf-8?B?aVc5TDhWVGJ2ZXN6UmI4S01lZjFGSHpWNGMweFlLdUsvR1FGNVA2OWJXbnRx?=
+ =?utf-8?B?ajJjNXhJQkdWSWJCaDd1c0pJQ3R4Z1F3VWVqY21LV2JxWVh6d0xwNmM2MEtW?=
+ =?utf-8?B?NW4xOFhzUFRWNTNBUGNLNktYYjdyT3JFb0RNaGVHYUhjbGZ2anJxd3FvQXps?=
+ =?utf-8?Q?LRxEE0PjdtFn6O/hPy?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6e8e776-08a1-4486-e648-08df0da427ed
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 12:24:40.7542
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oR742Gfik4y/agxR4YiuT0hd1N5vVxxGynIw/g5Yqbix4dFRfDBSgBc/4+iNYcg6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5594
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 12DB720002
+X-Stat-Signature: guft9cm9n5n4jwwnzdputn479wisx8sn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EEBF2C000E
-X-Stat-Signature: dq3fshrir8wpb53m6xx3gs7ybcbh96fk
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788870190-460897
-X-HE-Meta: U2FsdGVkX19GpfwPOjsBhrAgCTpH5Pi4jClXQrTkGauRp1p+DVpfDht+NGp9L5whvlRedCxd+/DbQB1irFQOw/Tq5W8LX0BJ+9YcqnN+9D6zMDiFvGXavWfsO/UF6iEt4cdTXMF+MTwtRJxXv1RihX8wfcS49hmw6WOfCdDZjYwnaFmYoA+e/LPuf85kaGAs/ga+tlVxrMUusyuA1iAJd4uFwJ/p9MBIg/g0UAYZfEhaPHnJgGxnowWH1QD4Wd3FepIUuuA0R5PL7U3zOJXHVmMjmayyMu2sbHnx1L5wmP6hOJ9BpNP8FH7JfgyfQlDpFFWfABYWHsREM9qmHSXA8aH6YrrUS0uZtiX1hloG483ufG9QBqYbH1APlptMKjEE1tME9dFeteDQAH3q64swY8yzIuXLJJVeISRKnBMyV2NGZkalnzH3AvUY++6zV4ZkbHZHDNQDgZzmNSZl653t6n5f5FxDa4npIXIsxGvFFHy99F1LzC4gNnCWp9MHc8qjpwE56WwmjP88o5OhipwGSqMnv4084ysCr50OaoXKwCn1f6TPAzaQilxetc69pUCOc5OAVF1BZKaHnHQJZ6BqDQk83EbjdsXxbxi46n9ArvYcrfONVtfc7uAx2ArzYr6+yEsOMFbY8cv4gjau7FM+eKmgv6NFd7AXDLxAiJa4kxyxd8WCp/xLaf1YC81QUlH4hIo0tAc/pEIW9vAvv+wiuT5wmN9pUCcySQiIKswz6FE6c5DWjsWnIDun4RHZfXMzNWyIvrgO53yDaYEMw1+7B4XFPCCrF6HA8iZUw0a8DyOqVk9THtKjLWhvazfqJkmezxrI7I5JuzgbAZj4+X43myMy/aMSKofx8H2WGPYsVwcy5MS2p8grCGZ0uD1MSNU1AJZFHS8/xVOnIT/WyMPip4AqajqLi4JBbDEYZLjHv9E+WIGILVt8iiO214AckbgRYlUUwVZ9pzCI48auffK
- UAXKrCQw
- /XGKIErLVRzc1QrwMtlvp+jPDouah4u9DTk2r++1PjbmKJmMWDS9qQlQMKORqwHioyMr+gtBPv9Aw9NzfgcIVMen8XfIcweSNXXmQKV81orFfVlX0l8PvPsYGyl3bU3/htok7QhciwdxqhdfVgiQOpvy/hXuVQIwRG8VDypA5UoA/PSMUXCpQGfWByr8CS9GC7J4/2tXZI7cGju4b5l+y8Yy+c6jICJtCm9ybpvLRyDHpRWf7uAm7nPZ9ufjrP4EybflKRDV0taSB1vxJwBA0Qld8RN6V3qzLXnOxC7Pqj4hyjLVRgSe+bPXFWGi4XmBX6eibwknVt0GBEJK4MRfmc8QW/wjvv6Wgr9Wx5JlnsbSKMaNa4yTjnJi35ee0ng2RZuXDKjR2HIjXY+g=
+X-HE-Tag: 1788870287-697646
+X-HE-Meta: U2FsdGVkX1/KNSudT9WNQHbVfVN0fuaX7TeXNB4HhiGwXTw7wOpDnXvUQ4MMUYahgPzuxREKiE9C2+zAXovv7L+csk0y3Tncch5ZsCie3Nj8167LsrqUZND4+bzkRpordOLkRYE4DB0oee/YVd6Efr9IKptbFEao+wIn9Doi87Qbt9AKzT1otRQjOhpxEWf4W+KBqj7f5hZMW7ckEgPkLUZUzdEclus5LJc1SKH6JkPLh4AmsCuf4KOLNgcxekkb08q+tsJxVC6bdpV+0/0C27KASMjkNSCNJd6XItmqQQDAcuT+9TyvG9Jpk9pUqNVDHQDgLJ7EEzd8b2W9U5elKiVOAQy7zmHAPOowwbAkpp/PcawpQlE2zFx0yH2GGCaOZBY+eZsgwoFo+P8UefQDzCwlsUQQEC82exH8TRyJS1dw5sdI+CqZxXGBJTYkUMcfOdwbwTsNp7lnz6hUtLxDY8CGMSswRAJBZAs5FBqgQNZpJUWENRIKamG7G/rYFtAHuA1NpsX8z8GhIq5nkpu1UHwQI28IF1pNYevzOLZis0s5UVD6gL5dTYnnNoalYpl6gI9gJhUeA0I6yJkdF8cCMeHZKCS0tiw2jzdnV0fsbIot4vPZ0/paIR7pb6U/B5FeO/BdqTRhlXKk4XIQ8tjtma08/Pste8sx4gqFN5z1dtyyWKwJoLpgvSkfB7aO2Iv1B8ena51zY6zwToyH7UuHqlUky+rWrB+eQTnhueuARfJbyQ8yZ0tDw6BJkuxWtGoHDdvhxKlCsPtyFkkPGO7xJ8SuCZ/2fx0fAwrILTWHP8hA6ewxF+hOcFkczbFQDDl+tGYKKEjCQi3wL5/xjHyVh3zv1x8YRpLDO6vqC0aOa5KalAr4/ql+4IpTbILnjpfey+frKpB3tDgmv8DJW61N50A4uzWBb6+5qusGisrcPJgGzGShCFk1I6gZQcOe7UwMU4RL7L5DE1/Z9/3qHXX
+ 1jC/HHxt
+ tZzbyEhYognSoERAS/iNzuPpdo5HMj6BgMaHDNyMgvym2RLkPDrIMHFT3156K+EPkgMQPrfYu2K0drusMvxMI7uJMe922lyIZdOvMxZhP+hUN3uoMdb4Bbl7CrdtczL07+89dMNefNq4dW/bqHNmWM+ivJzA7ZTlhJwiHJ4rwGFg9cnbUP1h5JjQteS2W4iqomsCzlVCA8vtU4forvyKO20/0alUBzU13R461MYyrtT2s5VyqaEltGAvJa/oFjlCDjDKdN+C0sFOsu1iM7gOEfsilPbMY67SQLpuMdeaI5vwyfCyBZZkaCoBnRZwp8AtMHsHSQRZLec1i73JRajmHvYSwd7JvS3gzlSI6OQ7wWKNlJVT5ugd7cjjir5uGvRcZhvQqO0XY8daKPeANSLTiP5yRtmy0z+YS2c+JYE/XDZiaftSNLDPEUOzd0Ld9SOLJy9/mrXUgBA20piD+uHYO2uaXOpDIpjdAf5q7ctVl0d0K9AQCS5ETi+iw7euM3KsFwr9c7mrBeM+WT+N6NcDUpOAJ7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,41 +181,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 12:23, Qiqi Liu wrote:
-> The bulk allocation path in alloc_pages_bulk_noprof() currently misses
-> trace_mm_page_alloc() and kmsan_alloc_page() calls, leaving bulk-allocated
-> pages invisible to ftrace/BPF/perf and leaving KMSAN shadow memory stale.
-> 
-> Add both calls in the bulk loop to match the standard allocation path,
-> placing them before set_page_refcounted() for consistency. The gfp mask
-> passed to kmsan_alloc_page() is stripped of __GFP_RECLAIM because the
-> bulk loop runs under the PCP spinlock, and KMSAN's stack depot allocation
-> must not sleep.
-> 
-> Both are no-ops when their respective features are disabled, so there
-> is no overhead in production kernels.
-> 
-> Suggested-by: Gregory Price <gourry@gourry.net>
-> Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
+On Tue Sep 8, 2026 at 7:54 AM EDT, Vlastimil Babka (SUSE) wrote:
+> On 9/1/26 21:01, Nimrod Oren wrote:
+>> When THP is enabled, set_recommended_min_free_kbytes() may raise
+>> min_free_kbytes using a heuristic that scales with pageblock_nr_pages.
+>> Commit f000565adb77 ("thp: set recommended min free kbytes") added this
+>> heuristic to help keep pageblocks free and reduce fragmentation for THP
+>> allocations.
+>>=20
+>> The recommendation scales poorly with larger base page sizes. With the
+>> default arm64 pageblock sizes, the contribution per eligible zone
+>> before applying the existing cap of 5% of low memory is:
+>>=20
+>>   4 KiB pages:   2 MiB pageblock,   22 MiB per zone
+>>  16 KiB pages:  32 MiB pageblock,  352 MiB per zone
+>>  64 KiB pages: 512 MiB pageblock,  5.5 GiB per zone
+>>=20
+>> Even with that cap, min_free_kbytes can reach excessive levels.
+>>=20
+>> The automatic min_free_kbytes increase predates proactive compaction
+>> and many subsequent changes to compaction. Given those changes,
+>> increasing min_free_kbytes for THP by default is no longer clearly
+>> justified.
+>>=20
+>> Remove set_recommended_min_free_kbytes() and all associated
+>> recalculation paths. With this policy gone, min_free_kbytes is
+>> controlled only by the page allocator's default calculation and the
+>> vm.min_free_kbytes sysctl. Users who want additional headroom may set a
+>> higher value via that sysctl.
+>>=20
+>> Link: https://lore.kernel.org/r/20260831075635.2244437-1-noren@nvidia.co=
+m/
+>> Suggested-by: Michal Hocko <mhocko@suse.com>
+>> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+>> ---
+>> v3:
+>> * Replace the 1 GiB cap with removal of the THP-driven min_free_kbytes
+>>   increase as suggested by Michal.
+>> * Remove all associated recalculation paths.
+>> * Make min_free_kbytes, user_min_free_kbytes,
+>>   calculate_min_free_kbytes(), and setup_per_zone_wmarks() static.
+>> * Drop the now-unused declarations and khugepaged's page_alloc.h include=
+.
+>> * Drop the obsolete v2 documentation addition.
+>>=20
+>> v2:
+>> * Use a named constant for the cap.
+>> * Drop explicit linux/sizes.h include.
+>> * Update min_free_kbytes documentation.
+>> https://lore.kernel.org/r/20260831075635.2244437-1-noren@nvidia.com/
+>>=20
+>> v1:
+>> * Cap the final recommendation at 1 GiB as suggested by Lorenzo.
+>> https://lore.kernel.org/r/20260728202014.2517142-1-noren@nvidia.com/
+>>=20
+>> RFC v1:
+>> https://lore.kernel.org/r/20260716173504.760369-1-noren@nvidia.com/
+>> ---
+>>  include/linux/khugepaged.h |  5 ----
+>>  mm/huge_memory.c           | 14 ---------
+>>  mm/internal.h              |  8 -----
+>>  mm/khugepaged.c            | 60 --------------------------------------
+>>  mm/page_alloc.c            | 11 +++----
+>>  mm/page_alloc.h            |  2 --
+>>  mm/shmem.c                 |  7 -----
+>>  7 files changed, 4 insertions(+), 103 deletions(-)
+>
+> Given neither of the patchset versions achieved universal acceptance, cou=
+ld
+> we try just disabling all the automatic (re)calculations of min_free_kbyt=
+es
+> the first moment the sysctl gets adjusted from userspace?
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Sounds good to me. Johannes, WDYT?
 
-> ---
->  mm/page_alloc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..eac419eef697 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5279,6 +5279,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  		nr_account++;
->  
->  		prep_new_page(page, 0, gfp, ALLOC_DEFAULT);
-> +		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
-> +		kmsan_alloc_page(page, 0, gfp & ~__GFP_RECLAIM);
->  		set_page_refcounted(page);
->  		page_array[nr_populated++] = page;
->  	}
+--=20
+Best Regards,
+Yan, Zi
 
 
