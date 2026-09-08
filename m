@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C727CC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EEE1C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD6A6B0092; Tue,  8 Sep 2026 09:47:51 -0400 (EDT)
+	id 96A576B0098; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E846B0093; Tue,  8 Sep 2026 09:47:51 -0400 (EDT)
+	id 91B196B0099; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A504A6B0098; Tue,  8 Sep 2026 09:47:51 -0400 (EDT)
+	id 8305A6B009B; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7936D6B0092
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:47:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 15795C06C4
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:47:51 +0000 (UTC)
-X-FDA: 85190723142.05.3C975BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6643C40009
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:47:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEm1mdvU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788875269;
-	b=CR9v1qY/MucD6+pEgn2rulI8GjMlwkgH5aj73rv/XVm0cKXVb+PRLRVSuKhyFtzBQ2hQsn
-	vZxAmCEf1y9qpkP1NhKRGPspKw9N0t+8O6dVTj5ih0YNkro0YsMxKRioN5ojIUZLuZXi7i
-	v0gnzqO/JT8cUy1yUOzO/3//DeeqVeo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEm1mdvU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CE146B0098
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECE52A4C90
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:51:19 +0000 (UTC)
+X-FDA: 85190731878.13.C60FF01
+Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D58BFC000F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:51:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oPb63NSV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788875269;
+	s=arc-20220608; t=1788875478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=A0+1vx5ssYACbosB5yRUtT7K9nBFjhQE+WMx9lniBm8=;
-	b=qvLtoNsOfoImuD4B3mLmoSRn8NxtUw+5WQSD5oUgqdwP4VM5CB1aAkLSNNkDYfdpPZ0uFL
-	qt6V5pdkxC9OPYICqk5gq6GehO7lPDZuf58sexBD6XYSOpDWVc1fIb7mz8Xxulcyp6lN5C
-	Q9lvW8Zg7+mogx4V907sdqfbfNWaDUw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CE4A4195F;
-	Tue,  8 Sep 2026 13:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7C51F00A3A;
-	Tue,  8 Sep 2026 13:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788875268;
-	bh=A0+1vx5ssYACbosB5yRUtT7K9nBFjhQE+WMx9lniBm8=;
-	h=From:To:Cc:Subject:Date;
-	b=FEm1mdvUsgl8JbaTjjjXn4ngQWgIsDJ3WlnaMSAqxVKqgSnG7Zq2/bhxpaSfntSxh
-	 DXisyx9vnI26ygC2pzU0jYMrWh1Y5CAljaY7Fg7FWr7YUC56AmYoL7AqguQluP/0EH
-	 Tz6W2kk2AvP2uxMTz1dbgqsgK98Pvb71PEp3id/q/8ix53CNS+oz3BtzMTKVB3PiTv
-	 KXi/ecHyHZKN+aBMxAMTMiqqS6Lg2e0tBhY8Oglm9I10opPeGcQaTCxSe8CQhoCVIB
-	 XXu8TiHbpx/4rwgdyf2qhb9iLhYSBSUj5MzRXg28dMljsBkKHCY114h17Qx0YMuDfm
-	 ZgetKviUSsrtA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	stable@vger.kernel.org,
-	SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3] mm/damon/core: fix unconditionally skip last region
-Date: Tue,  8 Sep 2026 06:47:38 -0700
-Message-ID: <20260908134739.96919-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lIbLTlNRNZAXVtUeXdcU4aonrybJMLyfv8dVgq/DzRs=;
+	b=KZDxdbMqpT0SfTQUVBX15Q6gFlR3akO2t28I3BiceInAJvNiigsix9N5Heyu2Ytwl69Hdl
+	x9OhtT+EbFuxohqZmUVMfAc2fcJ/uaSh8V/24AcWZ/wf/NsqS5aWKKYyyuRm7L97ufYTMf
+	8OnPo56H1WLjSucIZeMMmAqg2WyShvI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788875478;
+	b=aoqlEupo1wyTJkXi5kbGNWQAJmM1c+4IWamJQ67pDWghM9Vo7uUbveiP2YgLANfUobMA5x
+	dyFzQfe7nx0CU5Ljyeqn5BoKinZZcCfbhswvVET/PfEh3HID2/weTdmMMY4c+T2BKYewI6
+	CGZD1AzY7xkVdHudAo7L4ULeniyy1F4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oPb63NSV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yAkATAbOR8BHFyRFOsELRt+fYAiuqFYEVcejaIN9a/4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788875468; v=1; x=1789480268;
+ b=oPb63NSVAM1cGM61r3OUh0VWBaMubfLs+kPoSFk9e7+oGzj0ePEgc9bgB4asCYi5sHCcAaRP
+ NWU8SJVHohPq/gjzQJUeOcCbNOIBmYtjjS1THrf3uAfm1tPHWli2HKeC0gJ2P3EHcJW3c6I9wGm
+ 3jlBD3YJb4AtNxO//+Wiblz4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 73574c6019326117;
+	Tue, 08 Sep 2026 13:51:08 +0000
+X-Mizu-Trace-ID: 73574c6019326117
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <13fefc5b-7148-48aa-95a6-7f64cf7c66d5@linux.dev>
+Date: Tue, 8 Sep 2026 21:50:48 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] selftests/mm: init page sizes early in
+ pagemap_ioctl test
+To: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, gourry@gourry.net
+References: <20260908134117.84405-1-zenghui.yu@linux.dev>
+ <20260908134405.84448-1-zenghui.yu@linux.dev>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260908134405.84448-1-zenghui.yu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6643C40009
-X-Stat-Signature: 4exwcnimfsk59bcjx8c5znm7n653z887
-X-HE-Tag: 1788875269-37660
-X-HE-Meta: U2FsdGVkX18O3gxuBdZ3lIZjdAnsL110i11F+UP5AI70wlxuaiP+SFqdZo/4c42d6rZWuTSIhuM/BYegS2CVICywb2hwcwdnhIfdM4HTlOazwTJw5EkdQ/uzQOuQMq9ko8uewzxVdAFHHa4/GNguJRSzcPRwaLcZBpi9Qo9sSJWIUSlv75YdquxzboCagHnSMIDyX4CwcPgOGAZPUobszvtS423bSOkY/YhPxNNwnYxIgUU6vbYfbMObwPbFI4w6pSvgjrWDwUj08LChAcaN1PRSko/4orgXF2EohbkWzIWj4838h21b5EHKyn90m4XCzrdYMf2DJcaDJBIsS3xjjLwTX+YnMaI7/tnzbiixD6Yn35y8r2twhlDQ3J5Na6B99ubgj4zZf1ezXgPqIBvMV5DE+3A5YGVZxU+bxlT0mkF5tz5AujEfMzW+zEsqW0RpV+wRjNBXziRbsZ9J+MZ7ToT+k4t0fy8L/5RVGtQ1GXkOdJIjcor1+5H7tpFCKb7g3m06zb0ixCcnQi2jL3oCnt2Jgb/HstYs8tFmH3EFGNgY9JSLYHsmhbFvOCdkmbQMtkgILk058sufbPSCJf2VbVfX4RmuA6tzuYNsTP1uO+4s1AWSit/dlea4eJNbwIQNBR2Fxcxoc2kkOoLrUrxDROGcLuVBpxpJyDQdKr+Be6PCkLTI9cGtaiklE7vJMZUkM2G+FaDWqCilLnxDrOkz8afX5fEbhMw2pbecH0lR7uRgJGmIHZuTmGEt09x6u7J7rs7AZEa0BSRIYSc9XSrhJ/QAvm240kWg7s7dIuqVHdUP4p/M0MqJhLEYRkaZKLByXMv7oWyqY4AudvkkswSA1lLRdz9lCL8pwtm/shbu9qvutfAldS9v5GhY2i0WipG4uTGy4hVtfNGH7TZNx52jP8XQLt9K1qJYep9wmhtDIfdGGy5hMS1RO15LBVz0cgFIFPcnhM1NCNquxjS3S8V
- amSKy+16
- dF/fCpzzJmcrYpxuJXoP8W6bQym/Pl0o0iEL6ednDIMv4KtGwM57iPYS5ibWKohVcYXVEHvDwU1Rv/WZol+K9u0pN+//7HPWc9RyBvjT+e/ZxIgV1W6AsONIkvZL/gH8Gy5016RyWRfaWCM5O7BVBlwNZDzdG+qh2e8rd0b5L6zq3Hcj3iJbTGKT7tgy9j0/FeV84B5hUh1cP6WVyPf2/747MnuixF7+C9/kVvqPsBPoz1kjUg37VRbOGjtUKHxg8DrNszOybXcyl3VWHVIKB5KRkBGBEwVc4cuaS0GA3wIW2bwn8QpzMpDlJ/A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D58BFC000F
+X-Stat-Signature: xshrm3g83qqetati15u43zbuudddapdb
+X-HE-Tag: 1788875477-110460
+X-HE-Meta: U2FsdGVkX1/8/HkRyzQlwm5SPeGzxhgd6Ib00IMvByvs5QputwADG0FikhEezM/o+PSmQOLJd17sW3LmQveTemCqJ+ywv3ax4L3lfAFHscamaIjsCrx2n7GEU+B742ayFKGg0yVxueHfbLZkNzpV2kDSqPuBq79zVJBo5zAazK+iyESHmI1dPBmQHgs+JrdKhJhHs1VE3HeeXmjV8MyXdDJg+fy5YuDcjmQLSb1kICULLx1PVxqYlWDI+fnoEX6KU1qHzF4djw6JWq7W030FxnpQzT30Ve7rUoiP47svVoW/d43CMkbfq91k/nkWszRip8i+yboLLhI3GAXw37Q4gj4zHcM6+plVCvC5rscxpAH3Cgb9BfLga3h0hSw+Cb1p82cA2sJrVxWgFjEntW+aZkJA6yjb79c2hv1g/6MsiOYgPSYMNcL7URa1ec++b1fBCnAOCYlkUY59b+oIchjJqC3KLV2Auu195PE2iH3uIDG7zgN1WcSZE4kLhq1ujVFGk2F9QOyVoypvGMlcjOXMAkGWgQTB4JVVoHg4NiYTvRLRL340dUepTB5LElcLYBl00IylQdmCv34jP4e/3xy8w6nlck063Rps3VCKlR1NMjh1wcSYiUnq197MH/yhphL83K6leI2aQWbpof5iwGyv9zB8Pqn1qpKM/QjbF9cUF6z2MFzNkw4mH3pP05pM/g0+i3EIrYwR97HFpJN7h/ZU+ilvesBFB5c5+WsgoRboPst34wuv14BXiRlNrYwdwsSFpTs+/LH81kGUbvTItYqGz1tWBk49+a1IkgXqrwMryNSHVNQr9YenH8jsKq2EMTGesVKrMUS/+kwcQXKTJeiBVRQ5w/zYTH17PrL26JUkrcslfM8h4BgkIPyq03HtSx4xotcDOTo6FS0pycxv5sUxRcVG4e7DiM4k4ZVE8dioN+fHC7ymcNMG25q0JoV2rImWZBszIOzNnXriB8s52b3
+ 1IX64IPi
+ ZXMGS5e0y1JlkmMOjGg8kHHDPzvfOSOvIpXsYuiDlC8s/DOtBqLVb3lExTzFxTNzT15TpqyoXXpRzel6yE9rdmpIZ1KDNkV3E/QiGmnkVhIkTyvtTQCHJnrs1p8Vbe+Dead3MdNVexwCrGxUBkd8bWZ3wK9j1bGTbJIv3L4bCA5qqVOk2f5RXj1DloJSIBnpQSh09b70TJr8oa7mmMMpiBOFHVcAbcSjhITKRI6Jb/qfKzpNOSd5iENS4uBeb4heI8mnwJPpvIOf3NTQuvnQSRRRAcZpJ+oxrZleR/MCzJnNLUPFKcCdh+MK4YZ4bO6jA+2sJApnZe7A6UlUpPOkTynpBsp8hyxX/spL0fKJkP12DOegj1hnclp8Cqc+z3jOyKKi5+15+H2/ycJ5paBDNM9n0gQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,121 +95,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Liew Rui Yan <aethernet65535@gmail.com>
+On 9/8/26 9:44 PM, Zenghui Yu wrote:
+> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> 
+> Initialize page_size and hpage_size before calling init_uffd(),
+> hugetlb_setup_default(), etc.  That won't fix anything, but it is safer and
+> saner to get these globals set up before doing other things.
+> 
+> While at it, drop the page_size parameter of transact_test(), which is
+> actually unnecessary.
+> 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 
-Once quota set, the charge_{target,addr}_from unconditionally skips and
-resets at the last region of the tracked target, so the last region can
-be skipped even when it has not been processed.
+See https://lore.kernel.org/20260628111329.9cfcd9c67925869307020aba@linux-foundation.org/ .
 
-Example:
-
-    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-    2. Quota is configured to process only 100 bytes per window.
-    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
-       addr}_from is saved at (Target, 100).
-    4. Window 2: The loop reaches R2.  Because R2 is
-       damon_last_region(t), the old code unconditionally returns true,
-       skipping R2 entirely and resetting the charge_{target,addr}_from.
-
-    Result: R2 is permanently skipped even though it has never been
-    processed.
-
-However, it is important to note that this is a very minor issue.  This
-is because it is triggered only when the previous window saved/kept
-charge_{target,addr}_from, and in the next window, all regions except
-the last region were skipped by damos_skip_charged_region().
-
-Fix this by only resets the charge_{target,addr}_from when last region
-is reached, only skips when it applied or cannot split.
-
-Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
-Cc: <stable@vger.kernel.org> # v5.16.x
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from v2:
-- v2: https://lore.kernel.org/20260830063159.6347-1-aethernet65535@gmail.com
-- Collect R-b: from SJ.
-
-Changes from v1:
-- Simplify example in commit message.
-- Add clarification regarding the severity of the bug to avoid causing
-  users unnecessary afraid.
-- Modify the patch code, each time the last region is reached, only
-  charge_{target,addr}_from is reset, but the return value depends on
-  the situation.
-- Modify patch's title from 'mm/damon' to 'mm/damon/core', since it only
-  changes core.c.
-- v1: https://lore.kernel.org/damon/20260828084737.290024-1-aethernet65535@gmail.com
-
-Changes from RFC v1:
-- Minimal fix, only fixes the issue where the last-region is skipped.
-- Add an example to the commit message to demonstrate that this error
-  occurs very rarely.
-- RFC v1: https://lore.kernel.org/damon/20260825124616.5129-1-aethernet65535@gmail.com
-
- mm/damon/core.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index a360c41cda89c..7e6cd405161d4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2452,36 +2452,39 @@ static bool damos_skip_charged_region(struct damon_target *t,
- {
- 	struct damos_quota *quota = &s->quota;
- 	unsigned long sz_to_skip;
-+	bool skip = false;
- 
- 	/* Skip previously charged regions */
- 	if (quota->charge_target_from) {
- 		if (t != quota->charge_target_from)
- 			return true;
--		if (r == damon_last_region(t)) {
--			quota->charge_target_from = NULL;
--			quota->charge_addr_from = 0;
--			return true;
--		}
- 		if (quota->charge_addr_from &&
--				r->ar.end <= quota->charge_addr_from)
--			return true;
-+				r->ar.end <= quota->charge_addr_from) {
-+			skip = true;
-+			goto out;
-+		}
- 
- 		if (quota->charge_addr_from && r->ar.start <
- 				quota->charge_addr_from) {
- 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
- 					r->ar.start, min_region_sz);
- 			if (!sz_to_skip) {
--				if (damon_sz_region(r) <= min_region_sz)
--					return true;
-+				if (damon_sz_region(r) <= min_region_sz) {
-+					skip = true;
-+					goto out;
-+				}
- 				sz_to_skip = min_region_sz;
- 			}
- 			damon_split_region_at(t, r, sz_to_skip);
--			return true;
-+			skip = true;
- 		}
-+	}
-+out:
-+	if (r == damon_last_region(t)) {
- 		quota->charge_target_from = NULL;
- 		quota->charge_addr_from = 0;
- 	}
--	return false;
-+	return skip;
- }
- 
- static void damos_update_stat(struct damos *s,
-
-base-commit: ab263dd200a7a9101ce3c1374fd23139f29cdac4
--- 
-2.47.3
+> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+> ---
+>  tools/testing/selftests/mm/pagemap_ioctl.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+> index 1a87b7483316..d9a4fb782ecf 100644
+> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+> @@ -1489,7 +1489,7 @@ static void *thread_proc(void *mem)
+>  	return NULL;
+>  }
+>  
+> -static void transact_test(int page_size)
+> +static void transact_test(void)
+>  {
+>  	unsigned int i, count, extra_pages;
+>  	unsigned int c;
+> @@ -1653,6 +1653,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
+>  
+>  	ksft_print_header();
+>  
+> +	page_size = getpagesize();
+> +	hpage_size = read_pmd_pagesize();
+> +
+>  	if (init_uffd())
+>  		ksft_exit_skip("Failed to initialize userfaultfd\n");
+>  
+> @@ -1661,9 +1664,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
+>  
+>  	ksft_set_plan(119);
+>  
+> -	page_size = getpagesize();
+> -	hpage_size = read_pmd_pagesize();
+> -
+>  	pagemap_fd = open(PAGEMAP, O_RDONLY);
+>  	if (pagemap_fd < 0)
+>  		ksft_exit_fail_msg("Failed to open " PAGEMAP "\n");
+> @@ -1823,7 +1823,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
+>  	mprotect_tests();
+>  
+>  	/* 13. Transact test */
+> -	transact_test(page_size);
+> +	transact_test();
+>  
+>  	/* 14. Sanity testing */
+>  	sanity_tests();
 
