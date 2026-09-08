@@ -4,99 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C10EC79FA0
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E61C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 09:37:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B9CA6B008C; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
+	id A56E76B008A; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A416B0092; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
+	id A07A36B0093; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65A0C6B0093; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
+	id 8A7A06B0095; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 42D6B6B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:34:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53C7D1A04B9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:50 +0000 (UTC)
-X-FDA: 85190085540.19.1B60E19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 53D8214000B
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mu2PzmkF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 566836B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 05:37:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D2BF31C204C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:28 +0000 (UTC)
+X-FDA: 85190092176.11.3E826B3
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 006F24000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:37:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dudD5dZA;
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788860088;
+	s=arc-20220608; t=1788860247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+dWSZPT2cSGadun9qNKyTf04I9xLfA1wAds+skSZwk8=;
-	b=MDKUWjTbb6mzeC2dSrLVVeFEQStejA76gtqywd5l4TsthB5PsSWnluKE7Ayt//Q27BAuZg
-	BVHhcuJe0ys8XfHCfEaW4gXMwhycpxzc1QEoZvJO2G49lVBnxO5zDZ54u6kDf8HoBcJsxi
-	FvfiHkuDTzhQ2qCHl88YndcbpHehjgM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mu2PzmkF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
+	b=lGVC5qeuXNrID2c6kuXwxTJlx9RQ/OsSlJ45vmgZEDyaniXkkJRD7sTDIMrcFmhSLzwEKw
+	NBIqQ/xOmWFHvVLE3f4r+Z8eIk6SdpFPX217/eEzGT2BqjEFOYY6lboK/alMajV8jlALeN
+	P6Bi4XgegVHhhNo2feGGZqNumhkDbds=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788860088;
-	b=2YvtOQ5wnvReRBYG3yGqmgSz9rzv7RY00g+mStxtCEeQAFGIuKRjB6RETZ5xD8oBfqtG6B
-	U7uT9BKsQnrKg5FIdMw453i90C+ibsVd8b15+qr7t9BqGxFYgiy8wCCh52v/DG7RcPKoMj
-	dZJlsekY4r1WP0n87ZdmhMihUFDLMpg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66083438C5
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA431F00A3D
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788860087;
-	bh=+dWSZPT2cSGadun9qNKyTf04I9xLfA1wAds+skSZwk8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=mu2PzmkFXSLVnWc9+80K+GhP2s/fN3B/m1e4latNf8K063Gep1oC3n5+jmKID/Skc
-	 4zgdN67dWdC2LmkWonYNXCZmdIRRxVFrLV2xrzZ4uvtAEP7BnJmuLvIKvrPhNwFXUt
-	 KKUeRpAFE46ilE+iDELbfSZPv0NQeudSQAQLjUyGSe1FHZBW47Igsohh9n+MnRyP1M
-	 FEkfhFBuyDIA2XFUg/5JXWZr63/rqp+enM8fkuXRVl8EkSGMbNHffhy9vgDcL7aee9
-	 gyEQ7xdo8BWnV86ftMar1hV5nW0zKqczrhuRtOxW45sFxxOFBM6J4BXrfFOhb8MY1a
-	 oAfQyYIkB1wPw==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930c0f9c1b1so420661285a.1
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 02:34:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzRxMbwVy86BUF6xujn+Tgyz2AmpiTIWnqvyNy763HPswEj34dcEicPjhu4ymR3WE+TumczgcZQkg==@kvack.org
-X-Gm-Message-State: AFuF++kj4gRLi9AP/OOJV9O5Zc85oU+g4eLElS5Nt1cZ5+v+z5y+aQJM
-	5o9fGFVB0MbrFsn3iAneMAAxg+skAcdvbIUnrHPxSXi3hCLQPonMEMrPwd3ZyKg+ZuDfOSqGvKq
-	rFs1Jve/qQpHJWCA740iMJWoiksQ/Kcg=
-X-Received: by 2002:a05:620a:aa0c:b0:937:2e9f:70a8 with SMTP id
- af79cd13be357-939804af824mr3279565385a.39.1788860086621; Tue, 08 Sep 2026
- 02:34:46 -0700 (PDT)
+	t=1788860247;
+	b=pLVmAgnhc1btv3GQssd6ANCLYWCXMDEt1g5jEmfnIgihg4xmeqB6ilyGGvv98aTleDGlIk
+	tQxldL8XsqPl3JyPfy3tDMhPT+Bj2KudhiDs2QXPHvzx+tDRdh3DgTFzsD+QfEakVY9NDv
+	Um/Fx+RotDJf868ogD1IJvp3qAPde3M=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dudD5dZA;
+	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8534d507f59so4615263b3a.0
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 02:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788860246; x=1789465046; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
+        b=dudD5dZAh/rNlsxpCgq1uNAj1Ro4cBDVx1hG53dK5Pfdgmm0e9b6f/Y/yCaKcT+c3N
+         1rv9reUpKP24x8yXLcKd5laitcs/dNnzFzT64T29VHwB2DR28sxj8OLfL7VCLyp+c6NA
+         FIx0wigpbpif27LpEGtg6HEIY4qdPeGoHw2aY4ioqjWsRmJ2CoexO2fYbxGmwxY58tgi
+         Bb3VfkayZ/Sv/ZLoAe4Zg+mYuitrdpoiDlcQS3nWFJ/CPB+6J7pD5XyUQw+94Pg9wyKX
+         zObAZH4HOv/yeyoVnohonz2yDta10aNYzpQcFpDMbYHP6JRnjefr0A9nX+G44pDrKT3R
+         7H6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788860246; x=1789465046;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Jdo8OnRnaSJ+QK5iLvvBRCC1dMO84Sr5WG2RzM3Vkaw=;
+        b=pCGkQy6iCk0KoLoHiZAzZWVietRsRQCscXNfi18J+MMjZQFtTtUViqLNZXNTfey2tk
+         0QM9PoIA59aTpawMEg7QyLvNyA4pLz8Zv0N7L73JHcdkV6kV+qUvYfJLwOC1vubjw+5F
+         DOuMU64F3nKuPZd7eGy3wDZQVf034m5j5vN1l+IYDjdHKYKTJnmJpB9YJiXYrUSP+wq0
+         EnFmlykQqOQep1ckny/t4g2Yw7nZDiFxwIQjO5MPainChqNpDyoSEv1/iEYNDdn1vtBM
+         SP4GAfjau4RXzBK9eqXZf25OLV7+c0GZ4rzsxd8sLDo9mewuZKwS2grdB0B0oKIqgIEZ
+         K1Rg==
+X-Forwarded-Encrypted: i=1; AKwUvBzUwc9vPtVJQkb4Xdj0o4kHnXh5/Cb4G75kAbz/FUeahCtR52R9ykdgM393v/HOW+mtA2NacigMAQ==@kvack.org
+X-Gm-Message-State: AFuF++nfcpvbZMl0t19EFlq5CWBeNc1eCaXe5mpzTWkRaoy0JYsPfdbf
+	qD6LWbwzP14cqIeDtMgcdncBCsSQ5RLGiunHJ6EEIER1QEF2jnXTN1Ay
+X-Gm-Gg: AYBFou2m7scchKIDGovI1GCjQhQGsuZtioAa+5GCZ2PqOTaVAL15hieTnn7YaupHqCj
+	8PfTMK0mywdyBifm1JFGu1VMMehJntUQg+brCd0Qb1cKLDPIravpXjBhvhLmr/37cuvGbbFf1D5
+	tPrKlw72WpLr4LNrfnu1IJ0LPAt1/yy/84A8FK/AUfSjjXPxWuMCCAcZYIXX8KU+oTYKcb7fYdQ
+	9hSFcLG5bcXyx65kgJGgHxK5XYI0UyZpBlrt45b7aMt7/LM+jkc3T6K2OGm9McMvQLSBK/qC3b4
+	bnihCDMSStCcHTpNJmtwesVh+ItUmiV9KZd3bboJmYs3ei7Pa5/c+GmvvmCLlBCrkTOb5AEllvz
+	hpDLHgh9m/2cATfhe8wPhUM3Gzv8PKiKFDvin+hYzYlUDbQ7TPtt168cHe7VxO2rkBYpZpHdUfq
+	lGn7y2pLns5stXk4KDd89+bkj8Ecie3flCbg/N0+TbXA+mqlD2MLMC7JUKgu4=
+X-Received: by 2002:a05:6a00:f94:b0:857:7337:5db7 with SMTP id d2e1a72fcca58-8616ac58363mr41402529b3a.21.1788860245006;
+        Tue, 08 Sep 2026 02:37:25 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8615292d875sm5324180b3a.25.2026.09.08.02.37.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 02:37:24 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] mm: swap: move LRU insertion out of the swap cache allocator
+Date: Tue,  8 Sep 2026 17:37:00 +0800
+Message-ID: <20260908093711.2364516-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260825135209.3135169-2-alex@ghiti.fr>
+References: 
 MIME-Version: 1.0
-References: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
-In-Reply-To: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 8 Sep 2026 17:34:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y7XRChHuquYj9brgTv9bugOVo14DmoaPFHam+vnmGnFg@mail.gmail.com>
-X-Gm-Features: AcwNN1U9qAXnbYyo19332yqF90SnZUuQ82rHyPQcT8THjupG7pojENqlZKkPEQ8
-Message-ID: <CAGsJ_4y7XRChHuquYj9brgTv9bugOVo14DmoaPFHam+vnmGnFg@mail.gmail.com>
-Subject: Re: [PATCH v4] mm: vmscan: avoid anon scanning for GFP_NOIO with low swapcache
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org, 
-	mhocko@kernel.org, ljs@kernel.org, ryncsn@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 6sy6k7htbe99f4u638nj4db3u3xokxiq
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 53D8214000B
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: stmbtf7csorxxp8gy8363up1ikhi334s
+X-Rspamd-Queue-Id: 006F24000B
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1788860088-205759
-X-HE-Meta: U2FsdGVkX1/J2hH04G/WfbX0yeNPir568bLemZjXkfscCXJ7gp1X8IXYc7y1oELf9OBr4nQWnZucKMl3LRu9mLw64zdMnU1WygP3RodX1kzWQnvYdZCxhnE04Xv5uP1IS+nyqLIyR5Rl9FLPp858+UMBdhEaKkC6I9E9P5Tp9aNGolJ+FjLwAyx085LeKTd9rbLN4hV91ryPQ6tMZgPM1S+0z/s/FTMhpzPUqpNhupM2cWYB2/5wZgf2AEoDvdmNA8TKB7SxktBOKIr8+hiVmgqnsjeeb9s+kRzYfYzmncST8k5SzpYwzL7/X/9py5CpGayw0KBqNm8xJFkOmiXIFRdzeHwWFArkQ3Vsy6QR2+uKM4KhjAlKbHq9isMOEfwKrk8OM6j6VcG+dOAepFBa3TMa1MF6VBokLXYuo2e464Ypx1uOCgPqlw373F6mUmhKxm/EOYFqJe8Q+hOKLUfyXnuvtSMvhWXt9X8i/tvduJMjy6KIk0IrhEpvRGR9J0e93LhA8+G9GiYbZYVJ82Im6HtTgGlxxCXbUNgihVIzqRElu5eKf5T9v2BwuSEjFCUu/Lhfvsu+voX9AfYEkE5H1gmo2SZ0eblJe6LrPYsEqsiwY9fmvt0vxQKNR4QrfgI8MklMHZDkNLijHIYRvuymCJFmCKYZ3YQoC7DUfaTTkko6UPurMTftw4v/qBY5dDGbuFsWLfKtmBh92zcCO/u1SVqmBYzR/2UJHBn2zJVspyPeBeSsCE9oFnjejx3ABa75YR3W1IjHaNuTKnc/lCrDrrDX779OKYZp1xPTSmYEwr8Q6j9KLm54OdC9FkbUyPQBzSxN0e31ItvAAuCcB0lDCyrGIy/HQfdtOs0TkdxvsmnF5Bs7A8cKbHTVD/6K1WIf79RLkzqKzIVVJSE7uL87+yLkDBCUm2+Ftm9a9qenb4J9e1MVnqyWt3M1lbNFKUdIuQl9/kGZ+BU1CX87KYQ
- QG9CkDNb
- cfZv763qXSvMaAhUFSBJZ+HvpAs9/33DmaZD6ABhPm5RKyG7coPXi2ZxuYncSC0sTq8j9Eh3o2DuVdPS/zZaYgLi65QX/9yiA6DyvMJ36HNPQk5GANORpp7XxVfBbRxD087MtgBg+m4iE+Wi9qWJRK1cySioNdkSA/ZWL3/DZn8FKVpYFewfmti7Nhb4DrPeJaee0nRnPhVfvDs48OJvZIrr6uBZbBDRjY2R0NTQGFhZs28ao7csI7hX34kSvBg4Te32WemmCZLNuZUnKde4d1Qa5t4559AwOZTa0QGxJ7xyxvhw31Zz7e23rbNApUVPnS3N13vv1ItkdHp4cxLfrVwrNJFQ6mi9s5eNeRDt40P7pFtKhtqTxPvJiDd5UUDtI2gPfkr8/50uk35nUExUhwRAgcQ==
+X-HE-Tag: 1788860246-154027
+X-HE-Meta: U2FsdGVkX19h6TA8YDVukuaRQCUVP8QwnwKBdpRFx09HawJr2FEo6kvXjXSmkMRihhtjYID0TiFTEicytG+Y1rjvaA7XRdU82scRQFzCINPf45d6aj1a4VhSjYp3/VPJBQ2QRLj9W7hwzLxeW364/JRGbZueopKtBKz9TILfEDlWsGXcT47ZLAd5PGPdTBkkZmrB59mV2P82TEaZqRUvF8hLaBAUuHrunSWViBMcumCzjnO4CoB8DpOejI5cY0HxDUSgJzrhj8nASmn1bbSgTDMb/3wVCmCR4Xl00xUQWQThBn0UJa4bdVrBjwfcvjSWlGhDo7cAF91CvgMrqpytdbOHwhYsPQnFrv1qMItiEa/lI4rltdrziLxuBOWEPrGBl8OmM5BOg91Wq64t97UC5ojX5MfGKQiPUfGHvYhgijXGEdRoe/xfk9p24DbYZUmcjWaCtgtzD6c9wEovlUyWsZULzh8sQJhDjgY021xtkPYFjfN+6LhAzAoy9UrDCvpsRT8XHgOJIuRZF5RKtE1sSHBuYkkLra5uhw+rtJxVN7gRcRgGbreZl2iRZcE35b2aop6/NI1SxeU0dA/TB6D2ZCDWMIUnH8xsxyGi7UXO3qLVNtNZB2rYYXY4VjJdpvcrj+Wo1q8/vEkGJ9eRPWLetwKIYD2fZyPeD2oCvMj9ahxFk4w+Wkhn7bO8pmADQ8t9av/qFj1ss3fKXWefGrws8a7Og6eLPzuHQtC/G8ykMJ0DAvWoIBf443LadcnjC4DgChamEefEfo+vNnsb3XIjK5nHsaIo6RwyaXzyLHZImIO//FgwTXz0tLbNNcaZvSSGy+fjzvSZGigrc4CnvSW4ygQ4UPsBSKgjq0+nF89D3lva7VJENyw89RSPWnDkksEejvNWq5UoJKxqFc1kfmVkQBLqWbAGVS3rIQAjY0/16qqtAZnUrucK97KdVrZtSLlMNK/50ODxWKgwWtmGpYa
+ SOaKDswg
+ +oC9WnEA9HNQTg0KJrz0t0cJSHceMCKjnZ2/GbPZZSWd386yuZB8z2Lpa9SYU9oaplDE1iwfUH2BN//1Sey67pNgvpaRiA8bWeD4YSgCy+qOR1DWxRbhaLQd2JzaPbGWndYEKjVvMY6uyllUH7Yu4cNo98WTaxKBI928AJ+ZhKgdsWe36hGubEuJqI5V8LsyLRp08Mp6fNu1xnP9UjZ1Xp6SYoJK9ZnswffTUArHWCSFDpXBQe/czeOFdEwo4qFcBylXNOF0oFwotBqxY6d+5f8QPvSa7x3WfX7pGHhMHPdP5Si4kLNVJlEUUjdMvgbKeRAUmgzTpqni4mrbkOwa3HCcJAYo77NCLNyMZP/mxI2546sfTtA5zc1CgRUtQprIHhomKNNdcBSwsn+ZaepOC1zl023AKt/6I1/eBeLTS8XIZnrDJFNaX60+sEZSfrQrngaDNQnBj/rcfgIcURhZ+dPhvFK52I41yB4E3eF6aVmSSen72eF26ubSMvR5kbxIDz5wF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,60 +146,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 8, 2026 at 2:27=E2=80=AFPM Bo Zhang <zhangbo0325@gmail.com> wro=
-te:
->
-> We have observed some cases where memory is allocated with GFP_NOIO, so
-> we cannot reclaim any anon folios unless they are in swapcache. We can
-> end up spending more than 150 ms looping in `shrink_folio_list()` scannin=
-g
-> non-swapcache folios without reclaiming a single folio. This is pure
-> overhead.
->
-> This is particularly true on systems using zRAM, where swapcache is
-> relatively rare. So let's check whether anon reclaim is allowed by
-> GFP_IO and whether there is enough swapcache to make it worthwhile. If
-> the swapcache is extremely low, we're essentially searching for a
-> needle in a haystack, so let's avoid scanning anon in the first place.
->
-> On Android this is triggered by dm-verity hash-block reads through
-> dm-bufio, which legitimately use GFP_NOIO because they run underneath the
-> IO path:
->
->   verity_verify_io -> verity_hash_for_block -> verity_verify_level
->     -> dm_bufio_read_with_ioprio -> new_read -> __bufio_new
->       -> alloc_buffer
->          gfp: GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN
->
-> Such a reclaimer can land on a memcg with a large, unswapped anon LRU and
-> a tiny file LRU (e.g. inactive_anon ~335 MB vs inactive_file ~4 MB, with
-> negligible swapcache). shrink_lruvec() then keeps feeding that huge anon
-> list into shrink_folio_list() - ~2400 shrink_folio_list() calls, ~93,000
-> anon folios scanned - where every folio is kept because it needs IO. The
-> 150+ ms above is one such single shrink_lruvec() pass (not accumulated
-> across a reclaim cycle), and it reclaims nothing; the actual progress
-> comes entirely from the file side.
->
-> Aging anon alongside file does have some value for a later __GFP_IO
-> reclaimer, so it is not strictly pure overhead. But that aging is only
-> deferred, not lost: kswapd and other __GFP_IO reclaimers still walk and
-> age anon. Spending ~168 ms aging memory that this context cannot reclaim
-> is not a worthwhile trade-off in a latency-sensitive path.
->
-> To stay conservative, this only skips anon when the swapcache is really
-> tiny - below 1/64 of the anon LRU - i.e. when essentially no anon on the
-> list can be reclaimed without IO. Whenever there is a meaningful amount o=
-f
-> swapcached anon, the normal path is used and anon is scanned and aged as
-> before.
->
-> Note this only addresses the traditional active/inactive LRU. MGLRU
-> selects anon vs file scanning in its own path and is not covered here;
-> fixing the MGLRU case is left as a TODO.
->
-> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+On Tue, 25 Aug 2026 15:52:05 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
 
-LGTM,
+> zswap writeback wants a swap cache folio it can free directly once
+> writeback completes, i.e. one that is not on the LRU (folio_add_lru()
+> stages the folio in a per-CPU batch that holds a reference until it is
+> drained, which keeps remove_mapping() from freeing the folio on
+> synchronous devices, and likely on asynchronous ones too).
+> 
+> So defer the LRU addition to the callers of __swap_cache_alloc_folio(),
+> no functional change intended.
+> 
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  mm/swap.h       |  6 +++---
+>  mm/swap_state.c | 20 ++++++++++++--------
+>  mm/zswap.c      |  5 +++--
+>  3 files changed, 18 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/swap.h b/mm/swap.h
+> index 77d2d14eda42..fc44daae1de1 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -304,9 +304,9 @@ bool swap_cache_has_folio(swp_entry_t entry);
+>  struct folio *swap_cache_get_folio(swp_entry_t entry);
+>  void *swap_cache_get_shadow(swp_entry_t entry);
+>  void swap_cache_del_folio(struct folio *folio);
+> -struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
+> -				     unsigned long orders, struct vm_fault *vmf,
+> -				     struct mempolicy *mpol, pgoff_t ilx);
+> +struct folio *__swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
+> +				       unsigned long orders, struct vm_fault *vmf,
+> +				       struct mempolicy *mpol, pgoff_t ilx);
+>  /* Below helpers require the caller to lock and pass in the swap cluster. */
+>  void __swap_cache_add_folio(struct swap_cluster_info *ci,
+>  			    struct folio *folio, swp_entry_t entry);
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 727a17ee7821..07418fc94f00 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -483,13 +483,11 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>  	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+>  	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+>  
+> -	/* Caller will initiate read into locked new_folio */
+> -	folio_add_lru(folio);
+>  	return folio;
+>  }
+>  
+>  /**
+> - * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
+> + * __swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
+>   * @targ_entry: swap entry indicating the target slot
+>   * @gfp: memory allocation flags
+>   * @orders: allocation orders, must be non zero
+> @@ -501,13 +499,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>   * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
+>   * @targ_entry must have a non-zero swap count (swapped out).
+>   *
+> + * The returned folio is locked and is NOT on the LRU. The caller must either
+> + * add it to the LRU with folio_add_lru() so page reclaim can find it, or free
+> + * it directly once done; a folio left off the LRU is unreclaimable and leaks.
+> + *
+>   * Context: Caller must protect the swap device with reference count or locks.
+>   * Return: Returns the folio if allocation succeeded and folio is in the swap
+>   * cache. Returns error code if failed due to race, OOM or invalid arguments.
+>   */
+> -struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
+> -				     unsigned long orders, struct vm_fault *vmf,
+> -				     struct mempolicy *mpol, pgoff_t ilx)
+> +struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
+> +				       unsigned long orders, struct vm_fault *vmf,
+> +				       struct mempolicy *mpol, pgoff_t ilx)
+>  {
+>  	int order, err;
+>  	struct folio *ret;
+> @@ -643,12 +645,13 @@ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
+>  		folio = swap_cache_get_folio(entry);
+>  		if (folio)
+>  			return folio;
+> -		folio = swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
+> +		folio = __swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
+>  	} while (PTR_ERR(folio) == -EEXIST);
+>  
+>  	if (IS_ERR_OR_NULL(folio))
+>  		return NULL;
+>  
+> +	folio_add_lru(folio);
+>  	swap_read_folio(folio, plug);
+>  	if (readahead) {
+>  		folio_set_readahead(folio);
+> @@ -683,12 +686,13 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
+>  		folio = swap_cache_get_folio(entry);
+>  		if (folio)
+>  			return folio;
+> -		folio = swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
+> +		folio = __swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
+>  	} while (PTR_ERR(folio) == -EEXIST);
+>  
+>  	if (IS_ERR(folio))
+>  		return folio;
+>  
+> +	folio_add_lru(folio);
+>  	swap_read_folio(folio, NULL);
+>  	return folio;
+>  }
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 761cd699e0a3..8163e6c5f76c 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1000,8 +1000,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  		return -EEXIST;
+>  
+>  	mpol = get_task_policy(current);
+> -	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
+> -				       NO_INTERLEAVE_INDEX);
+> +	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
+> +					 NO_INTERLEAVE_INDEX);
+>  	put_swap_device(si);
+>  
+>  	/*
+> @@ -1013,6 +1013,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  	 */
+>  	if (IS_ERR(folio))
+>  		return PTR_ERR(folio);
+> +	folio_add_lru(folio);
+>  
+>  	/*
+>  	 * folio is locked, and the swapcache is now secured against
+> -- 
+> 2.53.0-Meta
+> 
+> 
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+I checked the callers of __swap_cache_alloc_folio(). The regular 
+swap-in paths add the folio to the LRU after allocation, while 
+the zswap writeback path keeps it off-LRU for the dropbehind 
+handling in patch 3. 
+The new allocator contract is preserved by all callers.
+
+swapfile.c still references the old name in a comment — minor 
+consistency nit.
+
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+
+Thanks,
+KunWu
+
 
