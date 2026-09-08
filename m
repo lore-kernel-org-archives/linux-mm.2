@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A468BC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E77EC79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 12:50:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85DE96B0096; Tue,  8 Sep 2026 08:49:44 -0400 (EDT)
+	id 48EED6B008A; Tue,  8 Sep 2026 08:50:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 835B56B0098; Tue,  8 Sep 2026 08:49:44 -0400 (EDT)
+	id 466C76B008C; Tue,  8 Sep 2026 08:50:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 724146B009E; Tue,  8 Sep 2026 08:49:44 -0400 (EDT)
+	id 37F2B6B0092; Tue,  8 Sep 2026 08:50:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F8BF6B0096
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:49:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CBB7EA051F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:49:43 +0000 (UTC)
-X-FDA: 85190576646.29.A2A0B49
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E912B20002
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:49:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H21B48+C;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4BF6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 08:50:33 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A5851C2800
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:50:32 +0000 (UTC)
+X-FDA: 85190578704.24.5FAC6C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 62187100002
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 12:50:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMSl8cWl;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788871781;
+	s=arc-20220608; t=1788871830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N2rC79oE90b2dwI8Wn327CEOLpPVN9D2E6erew3jyVs=;
-	b=uRjgv44PkfJa/HWe3CfXbLAKqUYECl+QL5v+UZfPXNkBlXY1hLmaac/C149f7O/my6S266
-	jLxYzCHZlVDAtc1mRoq0OzIvAhMTR/F4MW8zKHCTNxRBWiqXJIyRQU4tO6QcrbvI238C9W
-	e8sOGZPsbFMR8pbnCiX2XJkb3pG2n88=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H21B48+C;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=lKBFZhPs/eGo1uvy79sNZrgCL1vNlvYuvk0BKQC0ZEM=;
+	b=Kwj1MTZkkEoTAO/NGi099wu+by2X7XPQQe4/b48Ex0w50P053DljpCqU/cy3p/Y0cNYULe
+	gKbvor5aw3ucJ8N6OZpi8H+sboh6qanzHxJ+M++mGGHo/Vm512m3Xp7wgiS1476j6qE+R2
+	dZStYoT1BSES94Lt6UdbhSSd1Ud7Vbg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788871781;
-	b=hVzogRFDMqj556VoYAva/Jl+0qUHNaS9QdlYDt70OY59hODZANdrVV7rvqjlTtrG1slhoh
-	UforVoZYDhxYaNVoO9qIiVsMzrv3XhigOqJ1pSqAz0UfapcObB6WBAWtFGeh1U+MJgRQ9y
-	vDKFq15k/JW/z4HOE4xrIs0FswgfSGA=
+	t=1788871830;
+	b=N1rmbHyVTb22LLUomrpZERpguJWvWW8DRwdQaF0Y47oEd9vN4Ui/dHwq8BMoKP/xL8Xh02
+	lwA494mmA90FfnTaZ3+cS77IYnYWx+63ZXClaPYIRWSGxlFBbIAXHL2aCBVF1Ox/+mkpiN
+	c6eTW4vcdj9Q+6w57RCx9PEptx+4KLc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMSl8cWl;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63E88601DB;
-	Tue,  8 Sep 2026 12:49:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE8A1F00A3A;
-	Tue,  8 Sep 2026 12:49:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4097340BF9;
+	Tue,  8 Sep 2026 12:50:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E3F1F00A3A;
+	Tue,  8 Sep 2026 12:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788871781;
-	bh=N2rC79oE90b2dwI8Wn327CEOLpPVN9D2E6erew3jyVs=;
+	s=k20260515; t=1788871829;
+	bh=lKBFZhPs/eGo1uvy79sNZrgCL1vNlvYuvk0BKQC0ZEM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H21B48+CODTED19M4/Omob27b4Id9ZDqXLmNXXJvVvZhlJ6+dBe1fEISd7C+nfkD0
-	 c7g3K1vJm5Oy5ezg5YgUGMFQUJKpzPnPVTgED6F3Ym0RVm+OmNAypwfr6bRukltTUM
-	 r1783v40mWOCxLs1YZV2HW4Mw7lR7dYq7fLSZsho32UVrp95SB8ONSGM9sQVzk1R7a
-	 QTDYn8GO5aZ2hhnPFWIkUkYn5xYhbtgFQMGDxhtEBWgpWijZBkN6KDVEw5VvA79qLD
-	 XDeCGhb23RijvvKmvCqBZ3je5AsnxF2SzPzPgvIytMHRf98jXxpokq6T9hjfXnv/RG
-	 8HoXeGAoD0x1Q==
-Message-ID: <e743b598-9048-440f-9124-72071c696679@kernel.org>
-Date: Tue, 8 Sep 2026 14:49:33 +0200
+	b=ZMSl8cWlZMT42GbWGlAWuzPvmeOJqJWUYg1qsIu94uFfoz+Te7zxeDYfXksLXAJ5V
+	 WYuV2oW/intOhz7QqS0OB5E3MqY4cinTQdtPvLsUXhXg+5If5fVdcFpL1PAq1LZWUn
+	 MNLqKWJI6OGqZlVtApYZ08dDdaTa25Un0TP+7Z1V4zuCvJfG9VivLOZtZBnc9Gz9aQ
+	 9PaeweDbuOXRgo9OZzNOCYAsgkT6cBHsJjn2EswgkbHR+aeartlg+PqJSLEIMp8aT0
+	 1zMHjbLzaYSTa23T22YJcnae5sBCdirvTOcp8Vutl0LGe/wmJ/ZOmc53SF5MdJqkPw
+	 SyDZxQ9lanGQg==
+Message-ID: <dccc8e21-ade5-4726-ae17-a7017f084a02@kernel.org>
+Date: Tue, 8 Sep 2026 14:50:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] mm/vma: only permit MAP_PRIVATE /dev/zero to be
- mapped anonymous
+Subject: Re: [PATCH v2 6/6] tools/testing/selftests/mm: add
+ MAP_PRIVATE-/dev/zero merge tests
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -82,7 +82,7 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
 References: <20260908-map-private-dev-zero-v2-0-acc7b5625305@kernel.org>
- <20260908-map-private-dev-zero-v2-3-acc7b5625305@kernel.org>
+ <20260908-map-private-dev-zero-v2-6-acc7b5625305@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260908-map-private-dev-zero-v2-3-acc7b5625305@kernel.org>
+In-Reply-To: <20260908-map-private-dev-zero-v2-6-acc7b5625305@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eaz8fm9wgd8o4zgo11rwxnimxg7mqhgt
 X-Rspam-User: 
-X-Stat-Signature: g7h96f7x7ugtyjod4twmcijn3ng9bcjn
-X-Rspamd-Queue-Id: E912B20002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788871781-253598
-X-HE-Meta: U2FsdGVkX1/j+yCbqWgRsG6yhj6tL/QH7wgICRzXlS1N3uM+AE6hcId4WXGzcO0dB28rgdWH0ViERJ7N9BkK7reNHSJWPLF2kVKPPRiF/lcSgbH6MNeVBETQU46pN7A1haVLEcpoRtYPQX0AHt7o5rXuJGADxWcsSy+9HSaMKemrcGFpngxMgo0fg1UMmpIS/UeMzhUcz+VJ+LX/vn79OfdTUZ5W5ab6cSJDlSxJJdMCL0Xjw2+Dh9m7DEVShs9VQTialUbhpJHQf7GoHopROfwPJsYlPuuDjz3vBJAFGvVoO8dErT4hvDG9dLmRQ1Ivpg9f9bFhw1d4L6xRshcnNjY6eP/Wp46qwJiujVMPYbjae1KuAR59+oy+Qe8ypNR2ZyHzFT3a694GF1RIlpMFchjsobn0wfK/EY6wP2p5Shwi2YG9fNtoDHS8xpZtxV9XRrz7+L4E87TNKBfDGXmba5I69mtgiLJK1AQvbCFSwbFwbbQ2lnHmfzOSCjrI2UlZRee2QwXK/defqJN2NYdz0zdAIoLbfSB5eW4AZdAFxq672toXEcDv9m4ru6oNx6x90aYrtJV/WHHpDmeUuRaRjpGilPnVGjHC8Rm41sdEi6bELzVgfeFthWRr/H6nd/u7DGwOjcxmrAMLNCk/PCPogVklYIBwsnFvwxzL2vnUmS9/0UtN3na+WujZx4mJnNZDjsQpVHs+zVxvGVHnHglYreEZxCC5ZELCcqXDbaHTYMMAyyZRhijxA33b7LMBbZJsSbAV39SB3q/k2GicoD0vrUgpTO+MeVQco5zfsgeDQKVlCcCF8+nf3j66b9dlVxxJIMt/bchsr/PBeDM3Tv51k6uGlwFnYIr5kELslhNeuEsG4/ZKl6advcuxEOXOXfvd6Gwn0sItNrHF2JqmPp8UR/DHb3is4j0utauSNcGOWx98iEK40hDK/Ra/dDmfMr0aEbhfzJg15X1xL8vye5w
- c5nhU8L0
- 9fdLH8IfFAbx42hZoWkecwzf6pm6kQpW8ZERHeasZyLo/Dm4/4WycAukF4T+jbg1kftFyOtd1cTvb2NhpIH5itn4loBqOKBvjTOsDzGD151P9xlnHUpkzWNJNk0uGVI9txebBmqvai5kUBtCQzWUv0QYI2QM83mfJ4jzyzAOdYZq3g/B2eiFqlKpIgDHAW9v5eNb4gVnne82GDIruXNhZ38ms/Lqg1m/gflPc5x+087lh4dQVsbAopA5hp0k+C7KUsGH2b/XjvogiDTSsGvC1oe8eqqREMFTzWLp0iJfipsBw9QlQjcu0p+RxQKcAVL9qzByyH3c8zA/S6qGyu2gMBafsqDPXEEKXEhdP
+X-Rspamd-Queue-Id: 62187100002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788871830-608450
+X-HE-Meta: U2FsdGVkX19OqdyEfYd4mtewhEJLraJyyfhuv75nO+2oJrSmrZpnheBQlyktq1Vil2Y9XeJi+fxM0aVKzagr2inakDY0MDcsVjNDsBO6t9aG9lPLdkUsCRRfBAJ5kGBpncjTEulBaVZGU1CJmQG3rrc7Rlsv3MDWJslznmDnzCNFzdCTGjQn7JJ/QMbnLitWLDmFEep99yPTOgPQL/wYyWoDGrd+eMpkdzQ3D/cmmMgo6NsIEPaqR+e2RPI7DLcrzjz4Iblkuae0c5jjoT8uXeTKcTFZZDBx9W6YX0IfGukWBv7UUKUhCSmRXM2vIXqsRmhpbt1GasMtgox6mccxSQ81BryPQscnH3tXcvUGUFcgKRaDqr+yGM73uw2w+f1/jtzdmqRpafs4JJwdJ6JaWn+y4AuQE6v0u8MjpOzIUncvb1hSD1dM4Ca6COmnDL1YVhxJmxXR+DMjsmU5po53b+YPesL74xBZSes+ytugDb5zaOnPvD1WzSLnkjRRwcp726cmWsAKN5YFRNowpWTucnuPrJcXvsHWkeGmPxxNxYO2Jnk75cczWzxL2yVCWU2UbWqueBs9dBGMDUu6RqypJN2KrNE8nlOpv5218OTc8C+R0EmM/ytwi5dqWT8RrUQapblARTEZPp9DNIwysO8dSthtAV/zw0/1idoUk84IOWMrkKb8iTqM9iEoPqcypL2B/z+p3btPTGlpRf3uUho9KDs3qUyZy2PCenlfLoBBENgg4CRSDijeElampjYSZ6Wp+aW5RRlwxuraSoXwybVCiYfOo1jyYqZHF2h9TfRsUtn1EQoAms/8eNvaFB92C1aVSgecivAQOcCUY5yiDyvc9wwoguotX4FzI4L+Di6lC9J6dMfBLXCoR7eMikNEKCsdgmx32qE476WCY7hpUKe1pTAlMthp8q0WVQQWClaVdP5IvKv7CaDoXATZS2ewYISXBJZXUbXEe4WkvbN2W5l
+ 7obpuEul
+ bQwiK/GP8PJmoPQ8w6+fK/6d5WQSPFjEsEKKHkyYkAUrhcSfO6K1NC0jv2cd+iC/9YgqfmYSdpgHXULWJHvslizhMKCV2XiVJlrqNI89geEHeMADhAeBrq/NZi6cyvterj+vbFENhxSPCaodWG3zU4vGBbCU/QAhJDFMy4wWzEfMtWXgruw5lLmFFrhqh+8j9OWUSbfFUHnsfWeLxHX21nOvmivaBSpf9vV/Ld06kgsF7kQTruemgb6vM2SYswFFlv6wgOBHaneqpMhM0NW0psNwZrWP2SK5FY+xeFBiNz6S7EGaHzoFgAlu1B2WVVyGEPaX6r+Fgr3UoMz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,23 +147,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-> +	/* Temporary MAP_PRIVATE-/dev/zero workaround. */
-> +	if (is_anon && map->file)
-> +		vma_set_anonymous(vma);
-> +
->  	if (error)
->  		goto free_iter_vma;
->  
-> @@ -2777,6 +2793,10 @@ static int call_mmap_prepare(struct mmap_state *map,
->  	if (err)
->  		return err;
->  
-> +	/* Hooks cannot mark themselves anonymous. */
-
-Wasn't this supposed to be reworked? :)
-
-In any case,
+On 9/8/26 13:23, Lorenzo Stoakes (ARM) wrote:
+> Assert that MAP_PRIVATE-mapped /dev/zero mappings behave like they are
+> anonymous.
+> 
+> Test both unfaulted and faulted/unfaulted merges with page offset 0 which
+> would not merge if the mappings were treated as if they were file-backed.
+> 
+> With the recent change that makes them behave as pure anonymous mappings,
+> the merges should succeed as their page offsets are equal to their
+> anonymous page offsets.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
