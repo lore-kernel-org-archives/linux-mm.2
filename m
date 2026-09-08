@@ -4,155 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E940BC79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910D1C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 11:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FA7B6B0098; Tue,  8 Sep 2026 07:55:58 -0400 (EDT)
+	id A9B2F6B008A; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ABC86B009B; Tue,  8 Sep 2026 07:55:58 -0400 (EDT)
+	id A71296B008C; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05D26B009D; Tue,  8 Sep 2026 07:55:57 -0400 (EDT)
+	id 987076B009B; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C072B6B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:55:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 707401A0550
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:55:57 +0000 (UTC)
-X-FDA: 85190441154.17.80DB42F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B02AE40003
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:55:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lpGDXF7Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 747F56B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 07:57:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13359A05E4
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:57:14 +0000 (UTC)
+X-FDA: 85190444388.07.EC18FEC
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3DA5FC000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 11:57:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=bobrowski.net header.s=google header.b=MVdgFRcu;
+	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.217.50 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
+	dmarc=pass (policy=none) header.from=bobrowski.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788868555;
+	s=arc-20220608; t=1788868632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YQfUobdb4z00WEwtnabznk2vNczJUBLHs2sPtjNr3cI=;
-	b=RigEsmBGK9FcXgYAiZrtQQfrQvuYqXM6ux6N9/noIQR0RjGIDIcXmw20cWHdeqj0lWHANu
-	i7qv3tarWawbJbUJaKWj72ZPPXJgitJtJXNi8XQm6nLtgcXyL5XOhcwO5Qhkjt8TPSr02P
-	nILtdragrXkVP203nTQkRfezgsNNTiA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788868555;
-	b=DH18trNJWUce6MVIGAYWUAzyg/pYFNMZasssUTCa6+/nrC2k7bILv9PREc4Plct+HCAai0
-	5EHBrbBIH8AdygZd/KdssK4l4tJsaoWStL2CSOTUQ8JfxfrW0kP+o9qQ26NfIk5MxboNAj
-	/mhixrcqiUugVaDmz+5rG21jVMwDf8M=
+	bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
+	b=nlnFpxMFt8pd6/XzgKE1iZTp+JgdsA2RTeAXCyvd3J0zsCwQDdDOqwPpx4Mn4+j1sVqxKG
+	aAGIP2s3KXC2cygmCLLETgHqtVjDBAMDAnS9Y546LLwkfUbMURr1tgaYqkLJEjfEdMHFWx
+	d+/9ToVNQLB3BNHmV0tuNzj+yvoZWtU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lpGDXF7Z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF71E60A99;
-	Tue,  8 Sep 2026 11:55:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96B01F00A3A;
-	Tue,  8 Sep 2026 11:55:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788868554;
-	bh=YQfUobdb4z00WEwtnabznk2vNczJUBLHs2sPtjNr3cI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lpGDXF7ZqLHduzl8FnziPOy44BLBHhC2Fw4f0jqmHQkKoysL/bVzIHC+FAe7sHw7Q
-	 jkocHRdaF0XzNj4f4PhKK93kmAF0iSVIiVQBbYfZPdmZHT4alxIAbfCODf6JWSb4LO
-	 MwoTcpezTjSOf7GShhM+TnQcNElLIb67uyP0XYwKTUG+OCwygDjUkHFMZQEHcinVRQ
-	 BQebwXbqAoK2cziX/sxNuAXk6q3CSoAjS+xNfEqMEoKs1lRGDE/xicTO/J4jx762XW
-	 F9VTD3V3103VvgiKmAuvnoNaijapfyIllBeaojqtCUKnCJmwj+700uh0TqrbiauV9A
-	 cMHAnXdOJcyYQ==
-Message-ID: <29e6d0d2-cdd6-4d59-aa6f-0073ac63eace@kernel.org>
-Date: Tue, 8 Sep 2026 13:55:41 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=bobrowski.net header.s=google header.b=MVdgFRcu;
+	spf=pass (imf28.hostedemail.com: domain of matt@bobrowski.net designates 209.85.217.50 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
+	dmarc=pass (policy=none) header.from=bobrowski.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788868632;
+	b=wgJCNuhXs2N0ELyvR/7e8IhqqSEdBVj5nSBAWFNvHpTm3IX9hMSSRXETOZ3wEex/3quAiz
+	ZdbPIuVywFOktqpegbiZaYarEu/woZ0tXr8TuaXqI+XEQ1T7uUp62OIAxHeixTWWD2dEcv
+	oAdsFf+TGaVW1VQ77tHT9MKx1K1JNz4=
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-784980b88acso1423783137.0
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 04:57:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bobrowski.net; s=google; t=1788868631; x=1789473431; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
+        b=MVdgFRcuyOUWqLwe7UAMlzNTCohKKokMKpY3VEE1G3OmDG4MuQMe+CqnuBqddVA0Yg
+         OCSEf+IhNZ5A7tIbxf3C8p/FcZz/IAL4XQipTdyKpqb0HCbCWKfaYpdvY2PjklfwcoaY
+         D7r/11ZqPIvx/cGaTfZZoUvZOGFvNQB04p/fcClhZ8j/orA2XvIa2cdsIv/3syA9FpbO
+         uKNBmGOZFB4pXohhYW+PLe6eZofquL4vTyixFZ6sTAKaloPdOZ+fciJxnFKfOsoxbulA
+         4iPY0Snu+v5VK+HPqwS3CsDJhlNg/KFDYqp83AVrypjuxpFKIHxgolF4hDcI5Gp1V35t
+         EbJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788868631; x=1789473431;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dGzdGIl2437Zrr1mgAS/9CkFREf8A7GElbXp8vqEddU=;
+        b=Di1CpuUAJyYkYVqk0MR3xouUXAjFx/Ite9mojJHfdFmKzKQ4G30kCqLegieIN2Cm7M
+         wu+iPw+z8FV7fVhy9Ul4p8C/DUWtQXSBoxqnK1hiQE0wFXiijvVPsuy3uYOQPH//NLja
+         Ik1k2T9PVL1w8tZwfx+pGFrMhVqwyTEAoqwTOZ6U7hobfPzdviXhZ3mj+5lsHKxP5eV5
+         af8FoOeWCtrNsMVVaUNppuOl1Ep0JPtwSMN7F1wRD076QeQgXgPBST6guSeUgFcOIYht
+         lYiA470S4k7ULjO5qmIgYl5xyjn7/ScWEIhpkiurO2ewITykC37VDZhqc2Ru0XdYbgMv
+         Gg3w==
+X-Forwarded-Encrypted: i=1; AKwUvBxjp4JZBW+6SrtXtOMhCRultJxFsQZbDIYFI28Zo21Rrqr8kHBLszbwdTjP67ZvwRBwfKDKVnCx3A==@kvack.org
+X-Gm-Message-State: AFuF++kASUloiCKpR3wP+XrO7uWU9+JbvKGddbxhmheVzbGPwce5R4E/
+	o9Hn9gKifENlNEKgYGq7lhBy8g34vN91aAzu3WrBlYyBvo6waIofePbaH4+WVJLO8Mfv
+X-Gm-Gg: AYBFou3JE3Xj+eChEHD2EykHrRDCDBs2POdwFh5uNLAkNyoC5pK0j4YyI4wGadWH8VK
+	RCehEZS0X9X6SUVPL/X0YcEv3aONc6Sk9bC9nzZ0N1mwxwDDCEjhZX5uZU1lmfvpGEOGxz804LN
+	WlkHzbyrtCRJkwlZ5NsAHATBOQzuHI+HctMxX+gzz/4gBDXBc6O/53rIvK+em1pwgOEctQ2HgVZ
+	5AhQwsBVspsSL5MZ291XDPmU3fibJQn/cEAaiaQUPT9wO4XUUkTQCNwL3WJRX3eav2Cz/YYcQiB
+	JQt/DGrZRXd3tV03PSdccVdwTtUSYjEPx8i3jJ3LhT4TDZiZpxqMXoK/QwBBpjVr10Z4vk5m2uR
+	LS2hA6qb8SGBGM2PzxeoEIq+hA0vsAO5Gmk9xUPaas/2Bccz1oRXbA+3BmjvE2ZW8kSlCAlMHL0
+	3gptMS/KB7zMebyUBz7dbGxrzInyYqIMwE6xhkJ3Wf0y7ay8/ygo5plPU469Acby3aXWJXz3WI0
+	4kLWMfomjoVZQZ83BAQxxL5p/03ktmPtWs9LRzl
+X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr9329411137.0.1788868631172;
+        Tue, 08 Sep 2026 04:57:11 -0700 (PDT)
+Received: from lima-development (163-53-146-23.ip4.superloop.au. [163.53.146.23])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-78a47ae301fsm8384438137.7.2026.09.08.04.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 04:57:10 -0700 (PDT)
+Date: Tue, 8 Sep 2026 21:56:53 +1000
+From: Matt Bobrowski <matt@bobrowski.net>
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Cc: bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+	akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
+	brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+	kpsingh@kernel.org, ljs@kernel.org, memxor@gmail.com,
+	song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next v5 3/7] bpf: Add user memory access kfuncs for
+ mm_struct
+Message-ID: <ap_4Bf61N4AtZWB2@lima-development>
+References: <20260907165220.52431-1-tasos.papagiannnis@gmail.com>
+ <20260907165220.52431-4-tasos.papagiannnis@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] set_memory: add number of pages parameter to
- set_direct_map APIs
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>,
- Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
- Will Deacon <will@kernel.org>, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- loongarch@lists.linux.dev
-References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907165220.52431-4-tasos.papagiannnis@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B02AE40003
-X-Stat-Signature: t1msbuqsb89eqd5yc7689gwx6kj18pp6
-X-HE-Tag: 1788868555-936552
-X-HE-Meta: U2FsdGVkX18EdJMT0aCfbiMtCj3IRhDgBZA4ZpN7cJVqW4btgB1uDFXi9e6ZTrsnJQ5p/cJ7KLPLoNwFQFjfyfDmngWplEZIjJRk9kft/wxbGOHfuS3xUS19wDRZzOnNZEhOPyeg7ki10XgRMS7Qjrd7rInLmQxuOzOSUBR34uNCU6jrH8sRx5ouPkhyXRr6WKBd04WGmBsyJu3XhkCevggEpZGXUNDiSQOP1zBlk9hGgUDQYZpVGayk7RfT6DYHldG8u63rOXyGbUiXnrWaN7l+J/q2T3SU8ShK1/llSEboiNN/FAcs4smZRcmDag8M/b/Xca6knxeTPXDAbVazfcXMkah2uQ6Js8Fe0mBTa7p6gNAliw/yB6BztZSijxOC7NcInZNRCp06UivGnd66x+8JllkLsjBU42SFEKJEGDT4iqqb3OVcIOQnFkwBM9hH/MvmLt/TkspLodxMiwOv1or46DJOGZyHKpNAUB5+wm0JKpfVRLxXAgmcdN5BYY+VHAFFClQFCM3e7DaWG9fHZGD8656apiACmhMT0o3CSxSa5PcFpipf3F7qGbc1omzRfgoFEy/JhUGxpAIUa3GAi4wA9hGhH/tpex+yvOwjLwUnvi6uONv1uTE54qh1SteyyHtI6lYBkKVC9STUW/1yU1EmqnxZ72Q0sbS4wQJeGvXHgniu0z6teybcxFdqKmMPpB9ALRgUo146VUkqu6DrQF3bT0gh8pJ7FMfGTp+NxRCWKac3+TvUuL237otlFuFdZVXnrOq9kCeOFVEXZKWrJtxNg8314UzonsQoHl2VKxz44T5zesrb67N3XU2PGLcfOUxvKd7BzuGdjfkpFxQchtpgHr5t8zm3RBjgxW/WlSRLf0poaON2fhF4EKL+0KbKh5bL6F5H22muarG6F2+C0OlMA5NF8e1Vdoj7e2lqnkd7VrXitvICV3gCQhwU4/aandnECHzYrJ5qpG/PrOH
- YWaOMZ9z
- S0yBNU7UwLxdY4jQlZZ0xjUXm7z4+ZPnsw2f2dzi0YEPb7OzF9pdCpTKb0/A6HeJs81I2vBv07GMqff/0zVSsfCEElwC6xw9rspdznvrUWaCkOd7VRO52oNkn8P7HwZup9SzqtuHiKbvFDjmIocRIJ4pxxvcV/SYL9FX3qRps2Tz4lLdkMzFDXFBVDqTXMpmih8YGVQXii0sAKHOADOgadLKG6YnXc0ar5I6hgCnOmBwubg4oyx2WZG7De5moGfKAbYoIt5RsC0AimKf1mowi9bnFuroOZWOwaVMxHu91Hbzf2Lgm/Wes8Q3OqHMV5xiACWAsB+adTpGVUtg=
+X-Stat-Signature: t1brbx55gtow5b85frocz7u345bzynkw
+X-Rspamd-Queue-Id: 3DA5FC000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788868632-338519
+X-HE-Meta: U2FsdGVkX19R5/X91IMxTePHRkcuYTo+/3tWxrXGpTaoU9rSjMwU9RzG/z2TXYskj7NDK6sBpFap0BtTYudhx9PLXYBtal15s2OFVrA8T3wGKeT4JIbr5Qkj58rbKwqWzaq8CIl0UlgpcwW5cf0fGKdIXJMSxlhQo6NBj0DtIqQ1OLtSya5MfdOGS8hB6SJi871im9RhKKu/OBSwcP8jweZda3NdRXWnON89hQ7ugdkVPt/W7uM2GuUt9+kWJ8jqadbSvKFVOoJQWNeL1KfieQNEvD7woAKvS/8U2F6Ox9hFDa7yGE+Uup2b+9IU1OcJWHwiDyA2myogp90JAUatJBiW5DbPagovtZkTjiN3sNX76gth9ntr2tWix7crNxgjp/5CmUSkQwYdYjrOY+7hfuIP4nW08yhNx3sjT7w/t/oanWg1XjMpRXPQ+pBL4t6Dff3n8/JhDqwSrvzB7zXu9C1HH/Tr1AX0gnJVHaW1DgQglc3hR8eNMDLChEORasRG+GYANba/lxPCpF7+0snpsgi+sGqmQsy1USO7SzJ+9g0oh58x7dOqEHFnmejt2Ybspu3viUcDNggAcn3elVuwHgLQNS2TokGWq8+zQzVDUBi5HbDKwjxnC5vIFbe0/amwrBB/QkK4p5+KAI0TGopOLr1Qd5v4ONyCkcu1OKkPBbLRIqY/XolCdwSr9B1w//5fdqgcJZ3np9autOfdeR0SpbCOc3Ddxc8PUpW3pZ3U1PAelrALHdZ/CLa/2fi2IwVlCE++E55pBx+SOaQ22ZDfm0wCo/6cS99PfmwwSmlZiQDw3d1+Qa0cGMzsRlK+Oo6+gVRpL2EKWk89XJFy2D4pDdGGBzeVBoyNak23Kpogt8GG0jsR7xOgESjC+cLkLeES8VsBxJmz5HwzIGbdJgjld1XH6Ty2MHopKuB94GKMfEfbSn7/8ZtCtnnZUVdMSAeooR+iEMz+XxtPPmJ+onR
+ Q5Llvid+
+ ZqPwJVG3qPy5efKE15vG4zTtfDDy7jsc9tpOhiP+MTHnYf/hWTcVE0OTrZxte/37d1RIGz/p8isDot55zQptzHQy5tKZYTVpiAXbz+4avXlYyEVh8UEpFwcKEEyXkJNbxr30hN8s2DyBlk7aO1qMHT7Qtb0FLCIcHZoGUuXK8HRSvCwExt+4Yn5gashdBkPqcZ03Z+C9nA/Ntd+9K1B4L1C+4pchsoDvSDxU8jZHEQOxKRSkIvVZE2HHZ1poreSSw7Y7qWLt2OHyPV636qVrRZGXGHwR0qLrQjqAYPnPdcLb99i9lwn7+w0WFwVPTXMM5OxqdBqWmqP7SEa0gAm5yFymwQS3ykmMJgeKyFxDTjdofggQBS76K4LECpcuspDjYqc1RnORSywavRIycVrS8KplYRr/bgnFhulrMVGU7wWfeWGhM9RG1LYo95AwLf5PtnVwFYccGk5+K9MFbEZsKYB/6Jw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,29 +126,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 11:28, Mike Rapoport (Microsoft) wrote:
-> When set_direct_map APIs were introduced by the commit d253ca0c3865
-> ("x86/mm/cpa: Add set_direct_map_*() functions") the single page
-> parameter made sense because the initial callers (vmalloc and
-> hibernation) had sets of unsorted struct pages that required changes of
-> their mappings in the direct map.
+On Mon, Sep 07, 2026 at 07:52:16PM +0300, Anastasios Papagiannis wrote:
+> On CONFIG_MMU kernels, when security_bprm_check() runs, the argument and
+> environment strings for the exec have been copied into bprm->mm. The new
+> address space is not associated with a task_struct until exec_mmap(), so
+> existing BPF user memory helpers cannot access it.
 > 
-> Since there is an increasing demand for direct map manipulation and it
-> is also desirable to be able to update larger physically contiguous
-> mappings, for example an entire large folio, extend set_direct_map APIs
-> to receive number of pages parameter.
+> Add bpf_copy_from_user_mm() and bpf_copy_from_user_mm_str() kfuncs. Both
+> take a struct mm_struct pointer directly, allowing callers to access
+> trusted address spaces that are not associated with a task_struct.
 > 
-> As there is still only a handful of callers, change the existing
-> functions directly and update all the call sites rather than adding
-> wrappers for single page case.
+> bpf_copy_from_user_mm() has similar semantics to
+> bpf_copy_from_user_task(). bpf_copy_from_user_mm_str() copies one
+> NUL-terminated string and returns its size including the NUL terminator.
+> It accepts BPF_F_PAD_ZEROS to clear unused destination bytes on success.
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Refactor bpf_copy_from_user_task() and bpf_copy_from_user_task_str() to
+> acquire the task's mm with get_task_mm() and delegate to the corresponding
+> mm-based implementations. No behavior change is intended for the existing
+> task-based interfaces.
+> 
+> Register both new kfuncs and mark them KF_SLEEPABLE because accessing a
+> remote address space can fault.
+> 
+> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+
+A couple nits here.
+
 > ---
+>  kernel/bpf/helpers.c | 142 ++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 113 insertions(+), 29 deletions(-)
+> 
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index b3cc5c8fc875..d3c564437ad0 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -32,6 +32,10 @@
+>  
+>  #include "../../lib/kstrtox.h"
+>  
+> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+> +				      const void __user *unsafe_ptr__ign,
+> +				      struct mm_struct *mm, u64 flags);
+> +
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+This shouldn't be needed. kfuncs are prototype-free by design, which is
+what the -Wmissing-prototypes suppression in __bpf_kfunc_start_defs() is
+for, and __bpf_kfuncs expands to __used __retain noinline, which are
+definition attributes.
 
--- 
-Cheers,
+Additionally, I feel as though any shared pieces of infrastructure
+amongst these kfuncs/helpers should live within their own static
+internal helpers (__bpf_copy_from_user_mm() and
+__bpf_copy_from_user_mm_str() or something like that. Callers should
+also guarantee that a live mm is being passed into each respective
+helper). That also lets the compiler inline them, rather than being
+blocked by noinline on both ends.
 
-David
+>  /* If kernel subsystem is allowing eBPF programs to call this function,
+>   * inside its own verifier_ops->get_func_proto() callback it should return
+>   * bpf_map_lookup_elem_proto, so that verifier can properly check the arguments
+> @@ -682,22 +686,15 @@ const struct bpf_func_proto bpf_copy_from_user_proto = {
+>  BPF_CALL_5(bpf_copy_from_user_task, void *, dst, u32, size,
+>  	   const void __user *, user_ptr, struct task_struct *, tsk, u64, flags)
+>  {
+> +	struct mm_struct *mm;
+>  	int ret;
+>  
+> -	/* flags is not used yet */
+> -	if (unlikely(flags))
+> -		return -EINVAL;
+> -
+> -	if (unlikely(!size))
+> -		return 0;
+> -
+> -	ret = access_process_vm(tsk, (unsigned long)user_ptr, dst, size, 0);
+> -	if (ret == size)
+> -		return 0;
+> +	mm = get_task_mm(tsk);
+
+I'd keep the flags and size checks before get_task_mm(). Otherwise a bad
+flags value or size results in us taking a task_lock() and an mm
+reference before returning -EINVAL. So I'd argue that you changing these
+semantics alone doesn't allow you to uphold your statement around there
+being "no behavior change".
+
+> +	ret = bpf_copy_from_user_mm(dst, size, user_ptr, mm, flags);
+> +	if (mm)
+> +		mmput(mm);
+>  
+> -	memset(dst, 0, size);
+> -	/* Return -EFAULT for partial read */
+> -	return ret < 0 ? ret : -EFAULT;
+> +	return ret;
+>  }
+>  
+>  const struct bpf_func_proto bpf_copy_from_user_task_proto = {
+> @@ -3658,6 +3655,100 @@ __bpf_kfunc int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void __user
+>  	return ret + 1;
+>  }
+>  
+> +/**
+> + * bpf_copy_from_user_mm() - Copy data from an address space
+> + * @dst:             Destination address, in kernel space
+> + * @dst__sz:         Number of bytes to copy
+> + * @unsafe_ptr__ign: Source address in the address space
+> + * @mm:              Address space to copy from
+> + * @flags:           Reserved for future use; must be zero
+> + *
+> + * Copies data from the user address space associated with @mm. The destination
+> + * is zeroed if an attempted copy cannot be completed in full. Unsupported
+> + * flags return -EINVAL without modifying @dst.
+> + *
+> + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
+> + * fails or is partial.
+> + */
+> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+> +				      const void __user *unsafe_ptr__ign,
+> +				      struct mm_struct *mm, u64 flags)
+> +{
+> +	int ret;
+> +
+> +	if (unlikely(flags))
+> +		return -EINVAL;
+> +
+> +	if (unlikely(!dst__sz))
+> +		return 0;
+> +
+> +	if (unlikely(!mm)) {
+> +		memset(dst, 0, dst__sz);
+> +		return -EFAULT;
+> +	}
+> +
+> +	ret = access_remote_vm(mm, (unsigned long)unsafe_ptr__ign,
+> +			       dst, dst__sz, 0);
+> +	if (ret == dst__sz)
+> +		return 0;
+> +
+> +	memset(dst, 0, dst__sz);
+> +	return ret < 0 ? ret : -EFAULT;
+> +}
+> +
+> +/**
+> + * bpf_copy_from_user_mm_str() - Copy a string from an address space
+> + * @dst:             Destination address, in kernel space. This buffer must be
+> + *                   at least @dst__sz bytes long
+> + * @dst__sz:         Maximum number of bytes to copy, including the trailing NUL
+> + * @unsafe_ptr__ign: Source address in the address space
+> + * @mm:              Address space to copy from
+> + * @flags:           The only supported flag is BPF_F_PAD_ZEROS
+> + *
+> + * Copies a NUL-terminated string from the user address space associated with
+> + * @mm. If the string is too long, @dst is still NUL-terminated unless @dst__sz
+> + * is zero.
+> + *
+> + * If the flags are valid and BPF_F_PAD_ZEROS is set, the unused portion of
+> + * @dst is cleared on success and all of @dst is cleared on a copy failure.
+> + * Unsupported flags return -EINVAL without modifying @dst.
+> + *
+> + * Return: The number of copied bytes including the NUL terminator on success,
+> + * or a negative error code on failure.
+> + */
+> +__bpf_kfunc int bpf_copy_from_user_mm_str(void *dst, u32 dst__sz,
+> +					  const void __user *unsafe_ptr__ign,
+> +					  struct mm_struct *mm, u64 flags)
+> +{
+> +	int ret;
+> +
+> +	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
+> +		return -EINVAL;
+> +
+> +	if (unlikely(dst__sz == 0))
+> +		return 0;
+> +
+> +	if (unlikely(!mm)) {
+> +		if (flags & BPF_F_PAD_ZEROS)
+> +			memset(dst, 0, dst__sz);
+> +		else
+> +			*(char *)dst = '\0';
+> +		return -EFAULT;
+> +	}
+> +
+> +	ret = copy_remote_mm_str(mm, (unsigned long)unsafe_ptr__ign, dst, dst__sz, 0);
+> +	if (ret < 0) {
+> +		if (flags & BPF_F_PAD_ZEROS)
+> +			memset(dst, 0, dst__sz);
+> +		return ret;
+> +	}
+> +
+> +	if (flags & BPF_F_PAD_ZEROS)
+> +		memset(dst + ret, 0, dst__sz - ret);
+> +
+> +	return ret + 1;
+> +}
+> +
+>  /**
+>   * bpf_copy_from_user_task_str() - Copy a string from an task's address space
+>   * @dst:             Destination address, in kernel space.  This buffer must be
+> @@ -3681,25 +3772,16 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
+>  					    const void __user *unsafe_ptr__ign,
+>  					    struct task_struct *tsk, u64 flags)
+>  {
+> +	struct mm_struct *mm;
+>  	int ret;
+>  
+> -	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
+> -		return -EINVAL;
+> -
+> -	if (unlikely(dst__sz == 0))
+> -		return 0;
+> +	mm = get_task_mm(tsk);
+> +	ret = bpf_copy_from_user_mm_str(dst, dst__sz, unsafe_ptr__ign,
+> +					mm, flags);
+> +	if (mm)
+> +		mmput(mm);
+>  
+> -	ret = copy_remote_vm_str(tsk, (unsigned long)unsafe_ptr__ign, dst, dst__sz, 0);
+> -	if (ret < 0) {
+> -		if (flags & BPF_F_PAD_ZEROS)
+> -			memset(dst, 0, dst__sz);
+> -		return ret;
+> -	}
+> -
+> -	if (flags & BPF_F_PAD_ZEROS)
+> -		memset(dst + ret, 0, dst__sz - ret);
+> -
+> -	return ret + 1;
+> +	return ret;
+>  }
+>  
+>  /* Keep unsigned long in prototype so that kfunc is usable when emitted to
+> @@ -4924,6 +5006,8 @@ BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
+>  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
+>  BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
+>  BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
+>  BTF_ID_FLAGS(func, bpf_get_kmem_cache)
+>  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
+> -- 
+> 2.55.0
+> 
 
