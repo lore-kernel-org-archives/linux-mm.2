@@ -4,128 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBDF9C79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 21:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC01C79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 21:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 998B66B008C; Tue,  8 Sep 2026 17:36:34 -0400 (EDT)
+	id ADE746B008A; Tue,  8 Sep 2026 17:42:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948656B0092; Tue,  8 Sep 2026 17:36:34 -0400 (EDT)
+	id A90206B008C; Tue,  8 Sep 2026 17:42:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838066B0093; Tue,  8 Sep 2026 17:36:34 -0400 (EDT)
+	id 9A5AE6B0092; Tue,  8 Sep 2026 17:42:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 562CB6B008C
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 17:36:34 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6F4D1207D9
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:36:33 +0000 (UTC)
-X-FDA: 85191904266.02.73DAECE
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A73D8140006
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:36:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="K OpgUND";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=wV82FlUi;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F5E06B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 17:42:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0F6BD14079E
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:42:52 +0000 (UTC)
+X-FDA: 85191920184.04.99A21E1
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 99820120009
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:42:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=ETKbjd3P;
+	spf=pass (imf29.hostedemail.com: domain of eva.kurchatova@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=eva.kurchatova@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788903391;
+	s=arc-20220608; t=1788903769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDbrLWkii0++pI81ymuGxKLFDP2vxoT7yk9xrVDS0G8=;
-	b=Ilp9uppuq+Vs5vc22e/IWMPxE++vjBzl8Iy/oSf59nfTyuQz+eP5Yq6/WBVtJMrEo99CuP
-	1dA15MO2ZReQ5y0IJedv8e94Ih5CMt8g67wRqLgVQzyJ2eGxM3Nvbbaqjjtsogl2CvhWH1
-	ZJQvBj5Yr5MQR5In6MDffUJiVD18/mQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O3DiMovYc6B1Qy4ylGXWdug+s2LRTGdo7r7Q/lm2Uiw=;
+	b=s4vDGRaJkV3ioshZg0VUbzZSYWSbWYXZGDSmEt+4qil4ITHZ9Luja76ElUU7SNyICz5uoV
+	DqYsD8mZUtjh8oI5roxrpyuZNtVZImXtlMut1bmQd1V+ndT/Fko9CqB8+EY2knpOfDliCy
+	31QBnpn9a2FPSKL9WaMEQP3tCmpxQeA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="K OpgUND";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=wV82FlUi;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf29.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=ETKbjd3P;
+	spf=pass (imf29.hostedemail.com: domain of eva.kurchatova@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=eva.kurchatova@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788903391;
-	b=xdxDMjKIjbU3ze+RjQ5RUVCZRmsfMFSY5etqyYscrKDv74NR6yoHBQZ7aiAdY/UAwVfygf
-	ZnnIb3mKnqAeycWyBqSni7AR4fBV5PqemXReuQLlz90fVt1d3qe1aGN4jxsXg2f5t6VdXA
-	suacB4nWCp1M51Kq6L69CYwb5GNjlJU=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 79B2B13003CB;
-	Tue,  8 Sep 2026 17:36:29 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 08 Sep 2026 17:36:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788903389; x=
-	1788910589; bh=rDbrLWkii0++pI81ymuGxKLFDP2vxoT7yk9xrVDS0G8=; b=K
-	OpgUNDeyogjhDImLoLAtUdF/3ZssahsLG9WdiQRBBDzG66H3Vd+NGmuS/thCVNXf
-	gbo1hHSzcAiwpU8y7Je/zwCgWqcr/LXvqg2S1bZecJGLFwmyZLyFFgl+oOIgbS2W
-	5Pm9hRvDtTrSG5CM0GirpIN+1DKYrXQT9NfxDPXeTOBMzr5Tvt3wZfxtfWgBNryk
-	jV2WIyAx+y9mG/weS4O5Pdg5eOO1Tvy19V1KiHFREYRk+1HYRqm0sgjRX2W1JqBa
-	sj2CIVsaq08lbdu+jCGnmpyGqbuy1amZ8Ht9WVC1EDe4Ri2rL+qB6BrOo8NX7vJi
-	27jmPQClIUADBHHG8Sw3A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788903389; x=1788910589; bh=rDbrLWkii0++pI81ymuGxKLFDP2vxoT7yk9
-	xrVDS0G8=; b=wV82FlUiMIWUPqYpEWiPj1Pt/M0c9MKTpOyV5DsKBZjtRsRTVOU
-	zTsqJfex9GRIni8/Ew0eJRvEmmpBLPJwKScHCeaZpX1f5j5Ex/1fKcnAYuLFCvER
-	EE5XCGPNEM7W7iIPyLdYFUV6naTszx3K7C6Y4llufj5AAUgxRMp9UvXAk6GaiYLs
-	vXXjfHsTgKMvHfteuzFTG9kweuqdAEwJhgWVR5c4l/CvIN3ZJ3NoCr+MTHoQ5o8t
-	7CKtbE6HzwH9/twNS1Q/Ma4TsQzfx+Sst/Qko3xiA5qeR70X9Qi2L4gKcwphGZR0
-	2txJ8F4RC8Y0Kaa8zX47Y/z1LCrfjjP5SZw==
-X-ME-Sender: <xms:3H-gat8C9LpFlc5fFz8jxLsSwp3qIpFezRk0P1TU8IUXFb2V1Mw2kg>
-    <xme:3H-gaiafVcGgtw8kf2CSA-PpZFVLMpiUxtlttDgNq-KDqerUR7HznKwHq4DtyMtq6
-    vplQqI26H-g5a44KCwR66blgk8lEzy9f8zoUKyyz5jYcaXAZQ7itsPs>
-X-ME-Received: <xmr:3H-gamFOcBhdWruI9XsUGG0NhzeeENajnqvFrWXo3bh0idqPaw7Tl-KF8iU>
-X-ME-Proxy-Cause: dmFkZTEs2RLI7ynlmKvNumBP+mhPrub9YUQB2IUepwl0zaqL6vmAlAHuu9hDfPkzsmvSt0
-    PXpI86qqrGdR+aos/9lYymlU9wbS9cEQVhvdsgaJyrJN8FURhOEtfp0GyCkiY7PCo/owg/
-    +QdaAAFc5pvs0UzgDJkFJyziwO9UuT7TsvqlYGGCeBlqnSa2xNtoakQoelpLZeo0k25PAM
-    m0GIcEhMVaf7ZVzu05/A9InZTCoLxYYIIy/gKTx6gBZtYrh2KdMJZJ521rbzuniB4KXnfk
-    8Ivqq6+j7+MI0IGymvJ4rVru4BV8d7yWehuOy2Q2f4zvCiPF0FRhTMrKTHvFQ4MhRk1Lfi
-    0YKx0KpxECVDHveerVIXmYguOP/shMUKufCJVheMoGqPSPsMBz3KHvZB5Im4zbOgD/NJtu
-    zdOZ4KFWnLbzMAqVMaBeADXSdsJ0GpoL1/dlOKzaXExTDDlUqNpi5mEjVS36Vdkig0XNI8
-    oxJevTtioI/63+2wzhUVsahMTEI2c0TSYso2Sx6//pXswgzPbg8e9/WZ3SYRuYHMYpfQkw
-    77/rb0YixJC4CxbxclVc8eYVzafwqZhhiHmOKs4FNGGRfqWtgakrXZqXFY+X3E+TeKbepA
-    IXl7oWkfIynnTKYXBonpxkLzeBN6WpzlTF+/KZeqTXIRSN3d38M+zQJ08WPQ
-X-ME-Proxy: <xmx:3H-gahdXeRDgSN9GSnAaAAwCTt4zYJdsrT38jrsSUyRuDV3EzNx1qA>
-    <xmx:3H-galJIb1WDBYBz-49_D7TleVc4vTGV5IgQYabhHyiuYiRi6qPYgQ>
-    <xmx:3H-gakOCOCpgOI0HfHvAboOfkDa8U_pgqehjmVm_u0ODg5a2KKVEbg>
-    <xmx:3H-garzM9-HkEVxYbQtJvNwUDfzy4nz6YPW_xDyBe150adtIGxB_sw>
-    <xmx:3X-gauveQnzy2RkHRocek98vCKLfIMYzjtZin8LINZnNozRi46lKEkkq>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 17:36:27 -0400 (EDT)
-Date: Tue, 8 Sep 2026 22:36:26 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, rppt@kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, usama.anjum@arm.com, 
-	usama.arif@linux.dev, baolin.wang@linux.alibaba.com, nico.pache@linux.dev, 
-	ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, ryan.roberts@arm.com, 
-	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, agordeev@linux.ibm.com, 
-	jgg@ziepe.ca, leon@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v5 00/19] selftests/mm: improve khugepaged coverage
-Message-ID: <aqB_XMEUElzeCc_H@thinkstation>
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908124102.4c874a8a63e50a1cc90e4bfc@linux-foundation.org>
+	t=1788903769;
+	b=mDVjujsRUPNs3mW3PD7B+j3eTYfjXcfT15+Xq1Rhuy5smSE88aKNIzper9fSBuPJz1EmsB
+	RvgUjpEmKV95QfA0JOwow5ygZyAN8Q0Jp3m/KsfwkKfWY0pHMZBXLdj4848viUlQbn0rJT
+	pemT2LfSNeVzzbRGbHaE0CM24Q6CUpc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=O3DiMovYc6B1Qy4ylGXWdug+s2LRTGdo7r7Q/lm2Uiw=; b=ETKbjd3P0aIS
+	zLSFZ4jfN+wofW8JHslFcmsD/O8r/7CEOqA2CgQBIibGHKTUOX8LU1w20IQX/08IABQFAVcKGRY/V
+	nvDD4NqKToHgZCbe7G868ys1SH3bS9dxZTs7KBtnS1i2+7iYdXqp/fauxBg24bSsnL4FoCwOJY7+v
+	/n7uAIcXQYOCNmidfaxypgH/uI+fb8kUwRqIC87TLKhn7EK3sKy/U6hmNqC+yN+7JDtOn5RVzEXmX
+	6o9I/XnywtrvKrzzmK3viVCj5TCSB7idsz7smYg52LiN0tQxYG5mm6wKDUH3FY39X2lGI7EGujwE7
+	AiWkOhwaUM4nj261WH+Csw==;
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <eva.kurchatova@virtuozzo.com>)
+	id 1x43Xv-002j23-0I;
+	Tue, 08 Sep 2026 23:42:31 +0200
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+To: SJ Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH] selftests: damon: add script dir to sys.path for PYTHONSAFEPATH compatibility
+Date: Wed,  9 Sep 2026 00:42:35 +0300
+Message-ID: <20260908214238.2680324-1-eva.kurchatova@virtuozzo.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908124102.4c874a8a63e50a1cc90e4bfc@linux-foundation.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A73D8140006
-X-Stat-Signature: 1t9hqsx3t1ow5fa65in4cz739dszni3r
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1788903391-808329
-X-HE-Meta: U2FsdGVkX19AzQa9oFhDd4IKStdlCH1kXQNhE8Ib/jevBAR/q1xQB4gfvv61cj/VYVAS2QO/2jixHYqri6fRgWA8NHF3xl7hdXhpkUhfW5Eny34X4bh3li5I/8JyHQg8T+nCyjuK7gVm5v7xCXrMadDcQWxSEVLDB1NiMbjK/IPU8v8quu+t/cnUGzuZWrerEyzdEKy9LGeP3aGvnpRGAgew4Zf6PIg/bAUkM3CR2YVn1DSWjFXlw8aFsch9GJ5d90sTSihY7LyJMOpWdGe1QE8gV6WqCqQ0GsBoAoip6ApvVkQFc9yAreHkaIX4pHpqQl1SWOVmblu5+ZhWEWkUQi1Me+70ttECwgtXy/6Rh59OJL2zfzY7gnOpJ4TDZfQSqExZe96Q0sDvgK6daNroq3ONMgjZkxFna83o+Uo37K5K5T/HOVRTF7vGXwBiPcCxB0tj6+4GT9CZ9Er8Z9I6IuNwqvXjUmtrMN6qE+IqWc/IVwIXLy9Fs7FEwMBLINU0w2wW6q1+W7myH6LcmZi/ORZsQLfWt2RLXXA1uhdhcoRvAi4C1vvzfWLGMIquW/9FPVkIak8DHuFQcn2LdW5M8vRqggLVnu50z4Sqx5LbQwEdg7TNdfWYnFh2Row0m6dt1BbCBCkTja4T+J8Its4vxh0tviDcbo8v22CNmV+KS2zsf5sfyPSWnSYsQNHSdmvdzUygA+0RnCAVD6r8jGoMW+aiMGyyqkcufgphgrEhHnXEzUg0B7SwnNV67z8gR/xMSYH3PqvAuujc5MItHN0YLPfZlnMUsapYiclyKCSQvtrW4eEZSgEL3+Y5XxNQw3Z83qzj6KFjM8t1mj8/3LSJ0DnvKgBdUBcsw4coCMD+ig13CZNRxopGutD+U44zH2ulooEMI5K8/aVizDBGlxucyB4R3Yi8ix08GxKKKXbZ/Hga5pBf0lIaZxgPNMaha2c7PHMrNi9rq4J6BOQLb7Z
- IYlSrm+B
- rLVbUHEkdEgUylgwBi6BDBHIVvDHjG7VFBEnyf/4+oSjPFPV17W3AP3XKUn6vmI+8VczWbFcdiEZcaE9MOgijsbKASNuvoTde6MvXfxy4KBvkPzsCsK0qWj9dqyG9JcPcxocOpbs14qQERtYiJYP2QQS/Zi+C6f4EeT9QMkaUlSczJ/rOjHXuKa/ir7YHlh4X5/IIAq2rwZvOKSrM4rJvX06Ju7FMHme3lTC7m8eJP0Wxw8bH0q/c5pYyyTwK9T/YnZK7Vc96/7gDKXwmi9ljOKDpvUzxClLqj2eCPM3D+ddB+4U46lv2zT+EoSQxBPWYIarwR5jqXVSNNhUBNrXhu9J6gVUo69+3YgMEIrZPkuyRzziy9QnOM6/NCOnWm4TrxZePWEZeE5dE/TS96uXoVJxmGPBSNN2MmUt2GehvMP9u5yHdJz0HFbZsSX28DlX42DaRsO1KnVlsRJFOESQooubCoFHkhnW/EglWMXj3KLivNHVmY9OEPr47fQ==
+X-Stat-Signature: 6xwtqorgk4jtxt4fmdan7s9mgg7utn3w
+X-Rspamd-Queue-Id: 99820120009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788903769-935707
+X-HE-Meta: U2FsdGVkX1+zW80S9dW1fAer6HnwSQpBTrBKLKvGXNq2fH5m24MTkLqAu3Ltk4il3QJ/UUfCNSDiBGM7aivppu1vFcgreGPYtykpso4E91zN1pPOTjXVfo6cHsG0mNDyf5JIqPa3LBdfne5ftybA6pdlprm5I9rscOiWJGFVHf1+pVjl7pslexCugR/4l5N2NHKVG1ZmckDPQnbXNH1LGDRz8NGUlt201rUPRJyfIgEEgc+Koc/biG1Gc+IPVdiWO2y8bdx8tzbnmwHA0nRoj0L8ud1clothII1dll5NNXXKbs4arR1AVRLdGTV6GPLWr9rNPv6aiDyxvNScNkYKXil12VuvKtBKpLUvGaVLZkdhY3+bhOW+GFXVuCP7Kk0e0Cz2hPzu/6swu2oTtG8HZifCWfSWN+fPQGLZr8O6euven3tQM6qzQOs4N2Mnf5LBtDuCGkH9mUq5JLC3CPdLkiVEGakhm3P6as8lrRw9qVKpgr/BDFZZCH3T1ypkbDxzi5i7UXwEp/p55V5sccXhJ5W9V/G3RkRJW/hs7kmfrSxqVDEyzNBwObJrtI/BG7VUHSkjUvgym5DzA8X6kUmZZlbyd/AEo9GFYEn1ugRnaKpY3fS/R+HdoMwGKg/M7rajJzcqTRWs7gyUo/v5ViuQ6PoAgJ1sJF1atbY7BY4KukK++zRSmluJvw4qiw0Rm3LbwmZuix6HqU4Rw6F2HnZzmz7UGwYS/Bi14dZqnHH+DtJNZF40U2TxaR+r/vVaqxBalH+njRsNBbKwEmzLGpQGvJ8oFUKwT7R0ApFazGtfE8GQvmz+44nSs4fX8FrblMaTQVuVywQ9UV9+r0IW5LVsqmo+JPScmMv3YYgWQ26FFklZHwXVuTutURqU+6rgEpYqWaG20GUvdGzu90dM+CTaDCHc4WiaFvrxWiyDBCcPkRyAGg63a0wGJwwlQZNR6Vf14TJqfzwUVPQQIC8KHjo
+ B87590Qi
+ qwJWp6kEvc8gOGVgDxXhLOia5AZE5TJe1049NQK8emAME/SFzMqRerjqII4rnpWJw52c6mTt4ODU+F/wygb4vBOHfoRRw+wPLNkyguEbiSNmzdvQVgyoofdpMHmsqO8OHCq2JBoxzoqjdQCFXUHWNgAJAsD0/W2hpK5//6X6BklTgnrBD6gChrqzcLozkIREfRCc2mVV4z8cKZRo/Ym38inIdI8ZV9obpYxLBCjykj5qooy0YpZZbAReK3kjJOaafzez0tI/W1LaGnoQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,32 +90,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 12:41:02PM -0700, Andrew Morton wrote:
-> On Tue,  8 Sep 2026 13:50:46 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> 
-> > khugepaged collapses to mTHP orders since 7.2, and 7.3 added three
-> > selftest cases for it: the generic collapse cases run at one order named
-> > by -c, with the result detected by counting folios of that order.
-> > 
-> > That leaves the collapse path largely untested.  The suite does not run
-> > where a PMD is 512M.  A folio count cannot say where a collapse landed.
-> > Fixed sleeps cannot tell "not collapsed" from "not scanned yet".  And
-> > nothing exercises collapse under contention.
-> > 
-> > Close those gaps in order:
-> 
-> Added to mm-new, thanks.
+Running these tests under Python's safe path mode, either with -P on the
+interpreter command line or with PYTHONSAFEPATH set in the environment,
+stops the script's own directory being prepended to sys.path. Some
+distributions (RHEL, for example) build the tests with -P in the shebang.
 
-Thanks!
+This breaks all 7 DAMON Python selftests that import the _damon_sysfs
+helper module located in the same directory:
 
-> Sashiko asked a few things:
-> 
-> 	https://sashiko.dev/#/patchset/20260908125105.1510704-1-kirill@shutemov.name
+  ModuleNotFoundError: No module named '_damon_sysfs'
 
-I've replied with fixups to the affected patches.
+Fix this by explicitly adding the script's directory to sys.path before
+importing _damon_sysfs, following the same pattern used in commit
+c3b3eb565bd7 ("tools: ynl: add script dir to sys.path") which fixed the
+identical issue for the YNL tools.
 
-Let me know if you would like a respin or the fixes in any other form.
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+---
+ tools/testing/selftests/damon/damon_nr_regions.py              | 3 +++
+ tools/testing/selftests/damon/damos_apply_interval.py          | 3 +++
+ tools/testing/selftests/damon/damos_quota.py                   | 3 +++
+ tools/testing/selftests/damon/damos_quota_goal.py              | 3 +++
+ tools/testing/selftests/damon/damos_tried_regions.py           | 3 +++
+ .../selftests/damon/sysfs_update_schemes_tried_regions_hang.py | 3 +++
+ .../damon/sysfs_update_schemes_tried_regions_wss_estimation.py | 3 +++
+ 7 files changed, 21 insertions(+)
 
+diff --git a/tools/testing/selftests/damon/damon_nr_regions.py b/tools/testing/selftests/damon/damon_nr_regions.py
+index 58f3291fed12..e55239813c65 100755
+--- a/tools/testing/selftests/damon/damon_nr_regions.py
++++ b/tools/testing/selftests/damon/damon_nr_regions.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def test_nr_regions(real_nr_regions, min_nr_regions, max_nr_regions):
+diff --git a/tools/testing/selftests/damon/damos_apply_interval.py b/tools/testing/selftests/damon/damos_apply_interval.py
+index 0f2f36584e48..0bf7768b2006 100755
+--- a/tools/testing/selftests/damon/damos_apply_interval.py
++++ b/tools/testing/selftests/damon/damos_apply_interval.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_quota.py b/tools/testing/selftests/damon/damos_quota.py
+index 57c4937aaed2..879115a499bf 100755
+--- a/tools/testing/selftests/damon/damos_quota.py
++++ b/tools/testing/selftests/damon/damos_quota.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_quota_goal.py b/tools/testing/selftests/damon/damos_quota_goal.py
+index 661e4ba4765a..fed033a0afdf 100755
+--- a/tools/testing/selftests/damon/damos_quota_goal.py
++++ b/tools/testing/selftests/damon/damos_quota_goal.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_tried_regions.py b/tools/testing/selftests/damon/damos_tried_regions.py
+index d6472e6a6e08..6941f87c10b1 100755
+--- a/tools/testing/selftests/damon/damos_tried_regions.py
++++ b/tools/testing/selftests/damon/damos_tried_regions.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
+index 28c887a0108f..625761c243b5 100755
+--- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
++++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+index 16fdc6e7fc56..36e7ae5f826d 100755
+--- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
++++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def pass_wss_estimation(sz_region):
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.55.0
+
 
