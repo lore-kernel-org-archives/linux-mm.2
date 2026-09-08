@@ -4,137 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18A9FC79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 496B0C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 06:35:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 883E46B00B1; Tue,  8 Sep 2026 02:34:11 -0400 (EDT)
+	id 6B1586B00BE; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B676B00B2; Tue,  8 Sep 2026 02:34:11 -0400 (EDT)
+	id 662C86B00BF; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74AE46B00B3; Tue,  8 Sep 2026 02:34:11 -0400 (EDT)
+	id 555046B00C0; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 45FF16B00B1
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:34:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 356A76B00BE
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 02:35:54 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0244A03BE
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:34:10 +0000 (UTC)
-X-FDA: 85189630260.24.60BC48A
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 19D7E14000A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:34:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=XPrer1rN;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=f9FPRGn6;
-	spf=pass (imf09.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788849249;
-	b=YrkYGy+HDLqUeXFhZxQxAyIi1PPHPJCZKJbhKZBnPlmpS6j93CHPvlJv6XMpI+qtNEfjFq
-	N1Eq5vUjy/50QV3iQ64a1ihOdA5luaWVnYD7DDdEBr3K3eW86fS328Iz/+6f2Fc12igvm9
-	W/68xEWSv5i899rROKyTS4BH81YEKpQ=
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFFF51C213B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:35:53 +0000 (UTC)
+X-FDA: 85189634586.24.FCE4F95
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 883FF40006
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 06:35:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aRfHG7fW;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788849249;
+	s=arc-20220608; t=1788849351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQENS+2l3jE9bZko+PkLsKR5sNnfI5HJVcqDCuCIVEw=;
-	b=BgEyUIcD9ZxoL5kc8EeFSvzu7p2RJRCtbe9ynKb8TnRaiHuj9jGC0xP/v+M/tjD7QPYRkk
-	izvJcNmVbwNRaso572Wt38HaBhzLvJ6u9ZojmdbMPRgDPsRqhnJvffgMC+ljJMZf68V6VH
-	PbvHfv9/nLEoq84Veo4cj2l4TBNKqWM=
+	bh=VcsRTcR7UvmGPi3UVltnJ8Mvdqg2EXaylPcDLJc0IKg=;
+	b=LGLzejFBHFtJnyH6J7NnVtLWQ662kie2QyXeZLVFQ6MPvoLiwRgWZ/3Mxuvh5rx4uS0FWB
+	JOTS/jSDdr5RScP04PKzNTtUxgv054FB+nv3MHgzhzB/GkLgpwLWw2/KZ/tjTKf9trYD/q
+	im8Nw2lBh+ZKIqSGccoT/LgNecpkRgg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788849351;
+	b=sPItiMnlfxXZ/T78D9uJZVWjxLTqD5LCN+qidnwpT+lQ/vXKMKhmPVB0G8QsYctOnkmff5
+	oU1RWNC42qRAacs/pav22y9MoYwiGTbfKyBMrXsjR8TeeCZOPPrwFlZ8WG3tq3rvte+20E
+	/v34YY1z1A25eKVJ0CRzo0NMCjKlOB0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=XPrer1rN;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=f9FPRGn6;
-	spf=pass (imf09.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788849243;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aRfHG7fW;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788849351;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pQENS+2l3jE9bZko+PkLsKR5sNnfI5HJVcqDCuCIVEw=;
-	b=XPrer1rNUAnaGlK6vBf4LguK9S6cEYlB8nZZrjRH44T0JYQMAKyYETb6FU7higRUl2aap8
-	WPSjupacb2z13S04FQ0SJwG7i5o+PC1OLnBB5YCADw0UGpC2KSsaA9trHc8qBOetMTQve0
-	NqaQl/n+ar+DEQjQWhkSInykqClLoMkc1uWPEodTVaq598SF88TtmGIx1H2fHIe1AwzdxB
-	0wspvPUe1V8QhduMDS69XofBa/hyc2iRwUnB8p3goy0lgh6Z7KeHRDqnvOkRg7zB8SW8Qb
-	FqrCyZ8Y06A671+Lr4boaBg9FZESkcMcbumRwfxWCaD3ADQPhCoX+US7aH30zw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788849243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQENS+2l3jE9bZko+PkLsKR5sNnfI5HJVcqDCuCIVEw=;
-	b=f9FPRGn66gCreVPpSFc3v18Vb8RE2PZIstfZMu10x/SOVv9mER00NGNKQm9o2b9lG/56PF
-	Oy/Vw7WBWfgQcDDQ==
-Date: Tue, 08 Sep 2026 08:33:58 +0200
-Subject: [PATCH v5 24/24] vDSO: Automatically enable VDSO_CHECK
+	bh=VcsRTcR7UvmGPi3UVltnJ8Mvdqg2EXaylPcDLJc0IKg=;
+	b=aRfHG7fWzBd01n+ZTmreTAQEzQYToYsff+nsr36ByOO61dJyTZQUUl1VcMkChkqi7TBvDG
+	w2Kb8yPTOBIMlNQ0C4pckLx2RGYFyf9i4QBzf7/ve7toNbhps07YVcRzMrkwCQrHAnyhv9
+	m4TzscQNEkw+Y9PCGEFXGlezOxQ/ozo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-gPbOnE8kP2O-yRJR4n8BJA-1; Tue,
+ 08 Sep 2026 02:35:45 -0400
+X-MC-Unique: gPbOnE8kP2O-yRJR4n8BJA-1
+X-Mimecast-MFC-AGG-ID: gPbOnE8kP2O-yRJR4n8BJA_1788849340
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 904731977647;
+	Tue,  8 Sep 2026 06:35:36 +0000 (UTC)
+Received: from fedora (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A93311955F08;
+	Tue,  8 Sep 2026 06:35:17 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue,  8 Sep 2026 08:35:36 +0200 (CEST)
+Date: Tue, 8 Sep 2026 08:35:16 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Gregory Price <gourry@gourry.net>, Ye Liu <ye.liu@linux.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>, mic@digikod.net, david@kernel.org,
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, gnoack3000@gmail.com,
+	ljs@kernel.org, sj@kernel.org, rientjes@google.com,
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, tony.luck@intel.com,
+	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
+	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
+	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, mark.rutland@arm.com,
+	Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <ap-spMNyMvYFga5k@redhat.com>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
+ <ap7dC-LWNaoPYJvv@gourry-fedora-PF4VCD3F>
+ <ap76-0-hN6CAcYXX@redhat.com>
+ <ap8mgnpE7D4TTrno@gourry-fedora-PF4VCD3F>
+ <ap8yoW37GY17pHYS@redhat.com>
+ <e618ace1-6a8b-42c5-8a97-44b39dd1a7c7@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260908-vdso-absolute-reloc-v5-24-3a93791af1cf@linutronix.de>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
-To: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Andy Lutomirski <luto@kernel.org>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Russell King <linux@armlinux.org.uk>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
- Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Nicolas Schier <nsc@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
- linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@redhat.com>, 
- Alexandre Ghiti <alexghiti@rivosinc.com>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=4650;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=8YBIXCqpUcZIhKo2ozvfdc454ybWMwplCW6yYOuJO9M=;
- b=QeYK3jQJuWSOc5ZUbflHX/mM5G6ZrF/wQ5dZ1MsnWSa5wV32FY94s+AgAEqJT3r76pNju6OUd
- jvOXRT9ewDOBI2Td8ZRhAKi0jUGb3Ma2dwo847OeLvKpvkhvaACA78Q
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+In-Reply-To: <e618ace1-6a8b-42c5-8a97-44b39dd1a7c7@amd.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: k0knV9sBER0BlBuHGwtfXiir6hBNPqxA-O-1gVzM4sk_1788849340
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 19D7E14000A
-X-Stat-Signature: 1j8bg8rsgnpfhe31anbbrmpoe1k9srms
-X-HE-Tag: 1788849248-837957
-X-HE-Meta: U2FsdGVkX1/ZcjxRf1JyRGynqj+gJ9c70DQcdz+je81Pqk6jIINOTgwLj9z7BUiyUtRi+UwEcwaCBuLH2fgoV2leUr7mse4e6XIsb5QzcsZPwuKkSfTKmTPKXQ8e46A8qgLdpeS6M5sjQT0lxbIz9KI+E6M8n/SGvIOgjZldT5BP4r1wg9J5MXzWupgkiFD/5gsM4bVEtqwbpphXKDgwl0al4xV45fudvjhDm0FummhvFj0NMPUUzt0rQMpu7xNCU01UKnUKZUfNH3b44J+vKai+BDXAUdsK0f4kdhRzUw9l/fgWbC8VRUch+roVfMnaWC/tGDpmEA7CvPReKpdmtWGRy+IU0uimI5ZBB+e6+BN+7J6qbblTEu/AgcWQs4R1mqy6hwWFqSn/QCnW9c/tnOhiqNNulcZnt4kyMNLqMRmuHcmt6Tr091tvVVk96kUMInkvND9pUjtOyP8+cBBXAm37uDzWk76QaxIjWhc000+Q3lpw5JN6lYbIahDc3P6iUB5UL+r7YMxwCateOA5cP4xgX2VrCgrasWTjW4RkfSGuB0mqJYTuSVM5IbQBq09uGcZrAW5QynsPJrPWU0FRc+3j76+1C+o7W/Q8SuqUcIQMnk5Ny1jxwInj1Wdy3hneyoVzj5Ut7W5BD5/s0s3YfzggVMcALk/1R5fYNlu8wzk7cOf0HYMF+bulZAcG2miH2bF3vsMJ5ge4V1P2KPDn5mBLXjHMX/uADqOV/ilY9nyH9HMU2cD+IzpHlnRoEK8PmT6guUcUoiweRHoerwshsP+ijqpJ7+iAAhu+xYwxQ5axVnYR0dgl35S8/puWeTuUyt9TxrC9ga4frGuKEhm8XbisHcVXZvwIuTwU4gzBWQ8I4TUJSB0Liy8RDkQrs44z7t1p7g9an8ygRzKX7jhlHSCqitGYTRX7vlet6o032gMfOizxcTXwPTWoe2tKcKNzJ3Q7Y1g59qPl0uhvNoU
- wt6itkj5
- Xn3qj3lORxXnPgexzCI7a19+PIwvFKWjpkR+l7G0H0kDbVDsY1ZfGOs0ELNrFf/VwSgb9ekLsuofHkeeM+cx+BSmZ07Tr3EZK4CgFcjRHdtzfq517nHVU8t/nfjrHlm/bqNhJLBfBrf65CaI1ZgUsEHsCPPjksoOahzxlAkTrET1xl0MaIQUvHqY0orUBHMaxdkxBuSrsy33v2S/z23L5RTHFsoUXmiMvj7iPeLT+LeW2qoFPrFoOPN0Bsz2ova4SUrgnZH04BYfaPSgRMz2h7VIA/xGXo3IbgxOqedIpvX5c/hfH3yNn6Fi108fJ2yMw7c3kwBBF2C3GWPVI9uDoh2QUbfZCgzh6QWzkIyWjjC0C7DV6lqnWbDXQkupf7b0un6Ps4q6iFCbVUDBLQNyvNiY51Qtt1of5wt4DquACbFUkX84pwpMAbTUlZRFKg7DUvJTB31wDxX3khfz0fjjN2wrm6ZR8nE7gFuNZ/SFbLJw3Q7yKGPDCmwQS09TU8lKA6tVOXFGZGG8rn6VAr81ABdiMDv35sm4g3uSWM6+ZfcqI4DnL2TienPmy+mI91d+Gphwcv4bHLpvGF2N/FSc9QZL+nJ9vK2nRND46tcA9pb2a20zcxCIupUqbdytFC9m5YUCStxlwdKefJCcOKQfxQnOeluOHKgooVO1HDtckCPmVHGk=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 883FF40006
+X-Stat-Signature: 69ma85xjq3gad9tzroje6y3bybpfa4gu
+X-HE-Tag: 1788849351-535443
+X-HE-Meta: U2FsdGVkX18zw29y+kStxYY/8/or8pLHdE0Qgsz9lvPisnxM89vAq8QkVc9JAAoN1MT/8fkbbCmbIYst40N8Y67uRF4NoyAmtgC2fSesMY1WDO9IL16Mpetyp9u6sjK4LDJ9h806AF8VkFc7y2K7qo4utLyFBXp/K+ioWyHeF1hg/cHpL8lUGHkbcS/vBFwcM7ve/n/Gepi9DKgI6XVgJgIF1/VWTDQcuyNVEAat9pN1xD0CXUaZxWGyL0az/tJuaJZtLbGTjr/9QUX1vrjjCBMT3PeWWhrEmghaeUKSJnHXZSe98ws9BOynux2y8LiyxT+nJiK+EiEHiSL+u6jBz0azV8NvE1aV90BBQ2kpNbkpfJhMhwWh0ND70wOIRG38a0Al8D42s7XCJLOfyLKPx+CcGAyI0OSqXf12slS7GOINptwUv2tY8ZRW5wGVRANb0sVD5gUq0jlTk06eZtcTfWi6yzNbZL3yO+E3i9IUnA/2Ysy0db5rgbYMF83FXdR42HgmWAPTLpLlDdeaZVzXaTOywJfCbfR3lvbI/+eoQB/q4G3zQQRGuCYkQIjZX0p0K5sk/DBS5xz90aAbZNlx9UCxAis3KjVgsP2tXZo2N+FgMy63Pd2QN+ULQFgqd+EEdFyNeMg50OhzK/u3gyto7l/fZe2C5OiJnsaZHNwzaOmfsYTJSDuYG3qHinDm55de7s517K8bftS7yrfxP3kfCykyVl8amuB3g6/t82oBGEmpciCt+D5UFBISsf/C3YgyvnSe/PP/ehIqI+oUjQYUFhJHYD0ENGaTyn9KaEn9Zo4yfDNjHPAFkyUQfJ0lb3bkO6uG8A+JGMO3mTQy085/50vNxAM30EsqkvwZFXMek+oQ2X01lZ3b3ZnOBWriH/eGOsPNdke6Fal8zdeYAwGuaTzbILcFdm4EanZp61tPqhRDWhk7vz+7sNxj3c1sfiSsY5mJ6kFbRWsF8h44syw
+ 5kS5YI4u
+ sctrYP6hVUS/y0SVY4SZI5COGx1D1F0vLtz8UvTrcj75n42RYic+kolLYpUIwIVRm4Qr7OIS6aX7u4sjPL22z6+W4DhiudwR5prztsvDHQ+HPKXGr0+83yXaJUJNSCfUmHmkAcF0Nv2uh8wU7zxYEG/1M1kj7QA8muKNnvFPcy1dD9BUAj+7olAjWkhTCzXcmOlUJwxiiRJgrV8Q+z+stuM2Wx3eHt2M4/OG4qMH6moUqDMm4Z7o1FsIgJfzKGGoFHXbCTqAenkw93qnebDfLLh3Q+fEqa3/k2Bqnj7CW3lJXM+mrN8jMnYftUfg7X4EkWrd3OGkAJ2YNy2IknFSDvy5vIXgqkbkGTM2v8L9tsNnEm08bCxOdNZpwht3hIUX1+dXi98IelOpGiGpjFHrSQYnW/h26exfWBc/TOzBRXACPJ5mvcy8zmRmyn2ekBt3/1hWqQj1NbhHv509mdTLjYUdMuhj9XlA6k+OxAwS2rryJGEmmIYEiOywZk59MRqHf4haMx+KML/pOYFRE421YL633wj8G0fNCNKLT1+tmaiSnDuSoUd7vT+knNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,153 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All architectures using the generic vDSO library should enable
-VDSO_CHECK. Now that this is the case, enable VDSO_CHECK automatically.
+On 09/08, K Prateek Nayak wrote:
+>
+> On 9/8/2026 3:24 AM, Oleg Nesterov wrote:
+> >> This might be my - admittedly shallow - understanding of scoped_guard,
+> >> but does scoped guard handle goto correctly?
+> >
+> > Yes, it does,
+> >
+> >> and why it's generally discouraged to mix cleanup.h and goto.
+> >
+> > Hmm, why? I didn't know...
+>
+> Apparently older GCC would allow subtle bugs with cleanup + goto to slip
+> by but clang has always caught those bugs and refused to compile so as
+> long as clang builds are happy, things should be good.
+>
+> Here is an older explanation from Peter:
+> https://lore.kernel.org/lkml/20260327154136.GL3739106@noisy.programming.kicks-ass.net/
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- arch/arm/mm/Kconfig    | 1 -
- arch/arm64/Kconfig     | 1 -
- arch/loongarch/Kconfig | 1 -
- arch/mips/Kconfig      | 1 -
- arch/powerpc/Kconfig   | 1 -
- arch/riscv/Kconfig     | 1 -
- arch/s390/Kconfig      | 1 -
- arch/sparc/Kconfig     | 1 -
- arch/x86/Kconfig       | 1 -
- lib/vdso/Kconfig       | 2 ++
- 10 files changed, 2 insertions(+), 9 deletions(-)
+Ah, but in this case the code is buggy, "goto unregister" jumps
+into the scope of __free.
 
-diff --git a/arch/arm/mm/Kconfig b/arch/arm/mm/Kconfig
-index 565988a66e98..6574659dfb61 100644
---- a/arch/arm/mm/Kconfig
-+++ b/arch/arm/mm/Kconfig
-@@ -950,7 +950,6 @@ config VDSO
- 	depends on AEABI && MMU && CPU_V7
- 	default y if ARM_ARCH_TIMER
- 	select GENERIC_GETTIMEOFDAY
--	select VDSO_CHECK
- 	help
- 	  Place in the process address space an ELF shared object
- 	  providing fast implementations of gettimeofday and
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1caaf4737f02..b5a51b0ef944 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -258,7 +258,6 @@ config ARM64
- 	select TRACE_IRQFLAGS_NMI_SUPPORT
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM
- 	select VMAP_STACK
- 	help
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 5dc98a4b9c7f..a21f51e5815e 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -213,7 +213,6 @@ config LOONGARCH
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select USE_PERCPU_NUMA_NODE_ID
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_DATASTORE
- 	select VDSO_GETRANDOM
- 	select ZONE_DMA32 if 64BIT
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9a3ce550c95d..e2eb9627bd14 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -107,7 +107,6 @@ config MIPS
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select ARCH_HAS_ELFCORE_COMPAT
- 	select HAVE_ARCH_KCSAN if 64BIT
--	select VDSO_CHECK
- 
- config MIPS_FIXUP_BIGPHYS_ADDR
- 	bool
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index f19e225cfc5c..2580e27e4328 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -330,7 +330,6 @@ config PPC
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_DATASTORE
- 	select VDSO_GETRANDOM
- 	#
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index f580d2afecf7..f8e26c4bed2b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -229,7 +229,6 @@ config RISCV
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select UACCESS_MEMCPY if !MMU
--	select VDSO_CHECK if MMU
- 	select VDSO_DATASTORE if MMU
- 	select VDSO_GETRANDOM if MMU && 64BIT
- 	select USER_STACKTRACE_SUPPORT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index bc12367a7b00..4b51bc6e8948 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -291,7 +291,6 @@ config S390
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select TTY
- 	select USER_STACKTRACE_SUPPORT
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM
- 	select VIRT_CPU_ACCOUNTING
- 	select VMAP_STACK
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 628bdfc2f088..ab77d3f2536e 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -114,7 +114,6 @@ config SPARC64
- 	select ARCH_SUPPORTS_SCHED_SMT if SMP
- 	select ARCH_SUPPORTS_SCHED_MC  if SMP
- 	select ARCH_HAS_LAZY_MMU_MODE
--	select VDSO_CHECK
- 	select GENERIC_GETTIMEOFDAY
- 
- config ARCH_PROC_KCORE_TEXT
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index ee0f2c401980..15fd9ec5ecac 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -305,7 +305,6 @@ config X86
- 	select HAVE_UNSTABLE_SCHED_CLOCK
- 	select HAVE_UNWIND_USER_FP		if X86_64
- 	select HAVE_USER_RETURN_NOTIFIER
--	select VDSO_CHECK
- 	select VDSO_GETRANDOM			if X86_64
- 	select HOTPLUG_PARALLEL			if SMP && X86_64
- 	select HOTPLUG_SMT			if SMP
-diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-index 112b42a5aeb1..12a640c78b72 100644
---- a/lib/vdso/Kconfig
-+++ b/lib/vdso/Kconfig
-@@ -6,6 +6,7 @@ config VDSO_DATASTORE
- config GENERIC_GETTIMEOFDAY
- 	bool
- 	select VDSO_DATASTORE
-+	select VDSO_CHECK
- 	help
- 	  This is a generic implementation of gettimeofday vdso.
- 	  Each architecture that enables this feature has to
-@@ -21,6 +22,7 @@ config GENERIC_VDSO_OVERFLOW_PROTECT
- config VDSO_GETRANDOM
- 	bool
- 	select VDSO_DATASTORE
-+	select VDSO_CHECK
- 	help
- 	  Selected by architectures that support vDSO getrandom().
- 
+Anyway, I agree that mixing cleanup and goto can make the code
+confusing or buggy, but this particular case still looks fine
+to me...
 
--- 
-2.55.0
+Oleg.
 
 
