@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32EFC79FA1
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 21:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01224C79FA1
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 21:34:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FB9E6B008A; Tue,  8 Sep 2026 17:02:26 -0400 (EDT)
+	id C2CAF6B008A; Tue,  8 Sep 2026 17:34:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AC656B008C; Tue,  8 Sep 2026 17:02:26 -0400 (EDT)
+	id BB6256B008C; Tue,  8 Sep 2026 17:34:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49B2F6B0092; Tue,  8 Sep 2026 17:02:26 -0400 (EDT)
+	id A7E456B0092; Tue,  8 Sep 2026 17:34:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 203DE6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 17:02:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C5A51207C0
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:02:25 +0000 (UTC)
-X-FDA: 85191818250.12.EB9D35F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A46C420008
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:02:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCRj10zz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EE766B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 17:34:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB986407EC
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:34:20 +0000 (UTC)
+X-FDA: 85191898680.28.82D10FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DD63580007
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:34:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFzo8BRD;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788903259;
+	b=t4dcwUMsoPcXlgPbW4V7Onm4N6mmRGevKAZUlmvMLUtEIkQ+RDsp6nRJXnI9YWljKbw6Dl
+	C3FG72Skh3KE3S4UjqdA9ELSbUUXQJjA0YHsRCzhkIsXMD8OGyrOOHAuOWyI23lfZbw/fT
+	Vajt3zDyO6rz4OLprjGLDlTX3hPWsNo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFzo8BRD;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788901343;
+	s=arc-20220608; t=1788903259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sUj2tGJ84SLrIUDajcfhUjeh5g/d0LaSfpAMYFutJ7Y=;
-	b=H0v/PCQsbUXoZL5z7qxbJ5O6T48tfJklfTK+tMojg0sz5f/FsXLA0f3KRVe6GFj7C39nzv
-	LcIov6UcYWsGghERewmQa5EqkiIXfSkbY7U2qjEkzijldHy940zsDkOePXbsCNCxHSrtzX
-	zE3JDf+2+Mg/khWeXHoViFhaPSD2K4o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788901343;
-	b=kaOHCWbJHA+5d96CkOvNAJI7xvzXaEMVlJ9ubzq++eKcs85jAjuOWyOupdcyka3WI05F6w
-	0Rc39P4DonzfzYNeiyK8gUbQRerNkFGilVNBHJvfXkRPRJclYLuHeC7GWypS8C0wNUsZaB
-	K0wG7+6sJhkYi8zRSLf6NgJdzhssqCM=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCRj10zz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	bh=GtOJUKKq1jpadgFWEDaPhCFzpzv9SFpwe1VXJg3VB0M=;
+	b=T/pTPftmuUyIcWgal9LmaosnIwhOLWiI9l0QfgPXj0pH9OWv/cR60ozh219uvpNIH8wbnI
+	+T+q6IktbCtxvldgEq83jBAZYNeZ9h/knhQUozbrCyVQ3zVida+oFPCDEF8Y9YqfzXFTzY
+	a0fNVLf1Te9MtKZQdPIdfwAlOECpg14=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CBEC601DE;
-	Tue,  8 Sep 2026 21:02:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D131F00A3A;
-	Tue,  8 Sep 2026 21:02:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C84B044540;
+	Tue,  8 Sep 2026 21:34:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D25B1F00A3D;
+	Tue,  8 Sep 2026 21:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788901342;
-	bh=sUj2tGJ84SLrIUDajcfhUjeh5g/d0LaSfpAMYFutJ7Y=;
+	s=k20260515; t=1788903257;
+	bh=GtOJUKKq1jpadgFWEDaPhCFzpzv9SFpwe1VXJg3VB0M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JCRj10zzlHMwLx+4DZ1w6ePXNa1xoU0MZyluycdxUvJl3W2DLiysbVUOUBYcqcsUg
-	 q2k8WBeuDnjrNiEVfogw+ntY0dBsBgn4kk8D06WyqJtmfY6TdUNPiTIQebOp7gZVnx
-	 /aRFjRCRPX4/qaaDDphcsL9rWNd8TqG05pQHmHDkMqy/9mRB66sZ+H/7ULGk5Y8f+2
-	 KKhAQzbMwFWtkPd5icTlTpFIYuQpHvywonf/F6OKBwXvvY5e6CODNUx+T5PvTB42Ip
-	 riAXNaMIEztZzyZija0aSXLxbgdCyZISc5a4ULWw62fQpBr8TSONRvN1MlHfrxHW8+
-	 r6Nz2e+0xtCug==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.ams.internal (Postfix) with ESMTP id F0114198003A;
-	Tue,  8 Sep 2026 17:02:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Tue, 08 Sep 2026 17:02:20 -0400
-X-ME-Sender: <xms:13egaiv3I5NU7VkxDzDwWakKBx8vLWSGAgFoGO2JwU1lWM-KeeqChA>
-    <xme:13egaoLrTAGAf8PKDwojN6-fnAt2cd4EKu1ADshk71glMBbS5cFtGKptEky8Wf1mK
-    DcE4DRcHGIKZ0-s35gl6A84yMKZ_cBAZlaKukZDnr17HgrXngKHGiyT>
-X-ME-Received: <xmr:13egao15JrCthvAwd8a67FoiaL1RBjeWvS1WTY6pLhSSX7ZYGuMumx-nnCk>
-X-ME-Proxy-Cause: dmFkZTEAILA6vc5JwE1AywUZhHj3jrCZoHnZLeOWd69ORmx0fD70m1rj/vEtHXnDNbZ/3S
-    JbZrhvU5i2gCAEseWg8ahCUqEo46O8afIzjj0LeuDxoGzqZkV4cyrGYUvzgqoZJBMTbuN3
-    jWKEzH/ZQxzy4VmBoZ/TyPXkyEjAB/tHZ0tKcccELp4/GxOE707NkBOG3g7PkbB1CzqEvp
-    0KtWO2dtBG8BGkW68TQrYp3sdyh7ETyZWTuT1ajiI1J4Dru/d8hD6yTvO4U44jWIhYkACx
-    rvPqpCBmfzl7xqOEdFrgQJTocBrtcyT7b7+4p5MkFHwVAlUgpoFxlnvSuXq+EVi/E6wyA4
-    jILJ2dkKz6ujRedUs17ko3DHmINS6jdEsRiP9kfTzh/RpKaTP7B5ZkQbqFKOd7D/vNQLbA
-    bK89aIgAq5FvDxLP48Lr78jJrP6NuZsN1fI4VZw2iDkD4ZnhKlbOkr7Afi5PePALdNioVI
-    LhnrDLQw8dZE2Idm2XTLoFEvPVu2uts0bwZvGqaSs/d+59+2ZmV3BM/ozt0gX0AzUHmmk5
-    v8xJQ8yq8yZghiLCvaLLa8E/MLHjrrHicKDlNCB/+dK59W2PDOeVCdVjazxT+ELm90imLW
-    SMgwKeJSPEkDdeizukYNUVo7WsuiX1HboFGYpxHaZAh8j6q4jV17QrpNE83g
-X-ME-Proxy: <xmx:13egatNAY0gyHF6R4MNJ2-Ya2RdYgFjVX7fJm3Fcf1lra-j6koLYgw>
-    <xmx:13egal61Vs39srGUNYlctXsK5TryErbfKl0XKBwTa_8pRfE2UQGiOg>
-    <xmx:13egal-4yhKJnXzCc2CFEPcDpLvaijicsF3Bg-Gacyubo9BYdlPyFg>
-    <xmx:13egaqj-pW7Huvu53CmtDnjJDCbTP068Poqs9cr4bS8Axsg-oopNlQ>
-    <xmx:13egahmeoFhUN6TXVAB1XzkQVfQz7gqe46pSSN2oPS23zCImg4QRCcmX>
+	b=XFzo8BRDbgtNiX+dR3OcDuWLER8t72A9JcFS0olSyJR6CBEcK0yLqR+hB88pZL6/i
+	 +UYhGNhKHNyvZB1xRib7IUCA/ym7/+horiqEonjhIJgQ/tJalPgEu6EXlbzQr+coPL
+	 e1YfXX1EqhBCGiIxAXqpgMu6Pb/swGZQvYw4nmlMkQZczJkj0dLQkjHvk9Tnbpy1GJ
+	 UIicFM/I03TNJXg7W+7gfy/eZLWo1MywwzriL54h9+3pyK03npOCfeReRuwk9exgmF
+	 fzvDeaWZQiUxa19yMHidrpO3tJtmvjdy1I4Yzo2wIcQNZsFAsy/JjeHTwj4SMXD31h
+	 Z4+EHG66YaNwA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 906FE198003A;
+	Tue,  8 Sep 2026 17:34:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 08 Sep 2026 17:34:14 -0400
+X-ME-Sender: <xms:Un-gapFhB61ADkoccmhw5zm3p4L_-s0gB7LN30qyJbomNicHe_cW5Q>
+    <xme:Un-gavDcwOJrFBXjr0l9ZobFutjRQJGWLcVJQMfUiyoBt3qE3WMRLfAp--Nck0wXp
+    nUvvwLve7fDxhaAR-1eFujtdfg_xeP350twh9Sq8It4odAYP0Ra1CrW>
+X-ME-Received: <xmr:Un-gamMZ1c5IzQpPpSGXsw383LIVg6OhQXIy4ZWSKhikfdO7hMPJkpD7bW4>
+X-ME-Proxy-Cause: dmFkZTFzOLvDypeviElLWOuzJgTrjQKb2l067aPxJf+6YK6KiDCLqa/rTRQ8/WwYVcIAku
+    BIqGuq5zN2G8/NEnmldE7QhtDwVEldJdgjTrBf1xzQ/16VTQVQleGitKJ60xXK19fSeF+z
+    hccMeomwHSVgp5FuA7vNQIIbZInDXfyOrlXCbtPyZog+XbW/Ig05+azXCR4lassCChfm9X
+    f3I0SW/NRHWzmqxX8y7cQRLObB04isVipRyfkuwy9HFXjZbOnYzPvRiDENMBw4svEUJkna
+    QO902UB3k5TIGQq2HL+A7pk0VJDbGSiMPbKds126VhPC25WfX460vT2nXa25M4xcJbAfH2
+    FIANWinp/UUzAZK5wQy+sUiaMHVvoTNcUkuhMXUxZ4/UqSjS/ozIWInevk3vMMAflOq5iu
+    RdkpW80h1DggVoHGTukKCRonQPGHUVSBxhCY663KmePpSZ1dLHOibMQEyMLyehzMotgwlw
+    D8SFHPHbpTShehmaQ/Ceg3zkTXXB0mFiUmG7GmAgTBICeLnJ+mTbc2HKKKBlnXThJi8vxt
+    YmNkHGczK7N7/pp+qrJqumc5Na+ykqNsRfSp1F15MMU6ajXj9lIztD74FCw3+oWpVSreop
+    DqmkjYI8B/43ktuBE7/Jx5r+sMp11Qbqklo7104vlX2VaAHhqPjCB+q0/iHg
+X-ME-Proxy: <xmx:Un-gavGSnym1vVk21acKtxemQTjXHz05a_LuwK-cz8irYvPyYaF9dQ>
+    <xmx:Un-gaiSgdJ0a4mSbE2mzi02WlFf4JZYOGp5ze04iN2mt2WnG4X9RFQ>
+    <xmx:Un-gaq2S_bIQtHBqtkYFxGP9Grv9lWKfGJdBTN9JCNChIIJAVDGQcg>
+    <xmx:Un-gat4FVzjedHcbzMxh90GiCnxo9prb0-glfobOJgdr6IKDwPe5PA>
+    <xmx:Un-gahc0Q7_251V2quE8Ln8nIdWTysNGIYrb0eiRIuscT1MyJf5_WE2b>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 17:02:14 -0400 (EDT)
-Date: Tue, 8 Sep 2026 22:02:13 +0100
+ 8 Sep 2026 17:34:09 -0400 (EDT)
+Date: Tue, 8 Sep 2026 22:34:08 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
 To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
 	rppt@kernel.org
@@ -101,23 +101,22 @@ Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
 	mhocko@suse.com, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, 
 	vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org, 
 	kernel-team@meta.com
-Subject: Re: [PATCH v5 13/19] selftests/mm: cover a shared-source collapse
- write race
-Message-ID: <aqB2ckEupUKnoJt_@thinkstation>
+Subject: Re: [PATCH v5 16/19] selftests/mm: add khugepaged race harness
+Message-ID: <aqB-ycE8MlVwZJ7I@thinkstation>
 References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-14-kirill@shutemov.name>
+ <20260908125105.1510704-17-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260908125105.1510704-14-kirill@shutemov.name>
+In-Reply-To: <20260908125105.1510704-17-kirill@shutemov.name>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A46C420008
-X-Stat-Signature: neieggwqoc3k4hmnmr163xojw9bh5bap
-X-HE-Tag: 1788901343-33980
-X-HE-Meta: U2FsdGVkX19se0dWgL1W6rsqnnSePUEib4zGJwx3X0ExXID/n/Gxax4lyMyqKSgjP5WWJu0wh0d8HcqdOFXA+enIu8htWgTe/1Blzb/QvYWJiB9e1Qi4HC526AgFSC1gQkand+cKiVT95qh4dG9rTDsmvFGM3Mjl4zFMvvdj4BJe1N7TsXcn0C3oBkn5drQT1+van0sasm0zkHbxqJ5lC8ktc7JNIUqCje8wILpROjKkWAJFpyL3gpbL2NLgxpFFkhR3S7zfuO+BVm5gQjpRlp2sRcxTBARYbmre5nGkjpyinqweXaBvR9sygwZuvkojbLh4U/kwmw6Z/OwjQMHvhZ6Z26C1dtGqNkkKXlhZgnGmL5Z1nNzDE3CzSmsOYhj+UBg0l+QRBRnSd4OxQ8ACy7zPpLRaUYJHxFkF68Z0wMH25cZP7Ly0CG3ztWS9hMnktHo3o/R2Wt5gMtBhIwyew0IjKTUnVJvc/0lW2K3jiY8nxeQ5DXLZpCavgh+mOAxS6yNlTgk8XtXooKldfU1eJPj6iLyxxyZlVz+i3/BiwCHTurybvsbvwJwBfo5Q8sx3hFbx4oJfMQbZrMDceQUDlVkxa5WprSDUdMHd8prF51zvZNEbJqx425C1QUNB0Qy26RvihLTri5+jE3KNytdkZvOWvfJejYl3xfEfM812cJpxzLftUcxaAYAYhWlxogoVItGv9jxp7sJC/6TAbl9wDWgNOY9XmqsKUrTbqQoxkLDCyU4OC3rpTZCAtrT3SezU5TmmFMJWWRV+D2ZHSPy1MvxR8AIwv7nMNgnM4GDaqGEOWIBKCYZ8ASp6NlcOoOBNGaJQtcpybAn9+z4/VvWKVJX8l8KG5UcfniqSk6Jrm/oYEQjVD49c2HcO6itrQsmUKSRiQijBgGCAEKz0s1lAwOyh+F+iC0WUd1pQZZF+3c4xIVVqBJsNsITRPNiWckQVMOtkosjvRyMD2EA1Gem
- IUvSfiM9
- v0L+QI6MiDSjk0TpYq2Uab+bPUQqjDGhQ4zRt0eYvO8oiUJBI6CKyzB3tn+y14X/JbowkpzwsIum8GDkbZW0r+ZbCrykdCZj9UWSqCA5EFRm9jOO9RdaWyT2Mx5hWfRUOXbVNzzZYWKif7P8sarhNm2k7RcagnvVCmiKuPjtWi0WqCG0EHr23mQugKM+0MfvGK11BTZyJ1XaV5PX3+5Lw0Ba6ms4BTnT3riGduCHA522XmTN1toOJLapoupsAlhagxUmOHWGL45Bwl5emG+kIiQkBZQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DD63580007
+X-Stat-Signature: 46x9yw96y88gsyxigcdnr596p7ctw851
+X-HE-Tag: 1788903258-420233
+X-HE-Meta: U2FsdGVkX19vfKEoKCpiegz2W8PZ39r2uwB77uD7Lemd6B8yy8DFmwYc6CheXhmgNn1whgSR/YU88/3SJZu2XOq57oKLcujmPJDuY6bbaLIeokPozoR9/QT5tqqXeQvB0BQqp6WOpPVqo+DjEYBjy7ED1IhsXQ0yrtWYcuzIWqZVstE6K192VX3bQFTDTfLWK0wTeiaTH7ed8g9xPiaOhEMKiINT3HqCXkRZXnGC2QKe7fVQJyq6p0Kj5s6d0nCZsuOsr3l9iTXXLHm3PY3FTq9rDFxp/PhcJOFwm4XgHBj71RCBJoIrjHg8dVxB1y3HScwUZoJqriaS70YzGqQG/OOgbqYmXCqD75Q3i6IpPp1XiDZlI34VX9/G7iRd+xSYm3mvqeco4vPQCrz/PMg52x4/Gbn58ZxQkh7SR4J0CNLoqxd2lOiQ8YqpaX+OWoll/K1EJNm2QCNxcwHKYMJjjIJ8mn98Kg/BJQ2Y2UfgqCFeMGIlQpUM8ABue0URX/SlSzAfdtTu5EJ7iB/mMPz2XZkImwNlh62WSWZnLOPwqF04fO/sirt9p6pFlw0Pnc+xUogEiyuWQCAvLxTcA645adM5yPz9d8zRvUFwnJ+3QEvy9V90COKy7rxomZpeC9/q/o/vVv7ZpjSFHGOdnxEbEIonRlfmb6AQzbZzRsg9i6JXeqLyFP2SXnb2ApBDqNkWGgGHg1O/bmp8dlczIohIOIJ5ufdB1GdqOw1ML1NwtDU53pgUdelsrJpDIFT7tWA8a6DAcL61O9MW1wPSIhacPSqpcfyIhS61WxxBOXGVMSoNV5zVbNRzWwbkPAFJmkBPgoyR3Zx3YUejrqBsMGs/OhIuE4vE0EAC+74zcq3CgPsvKewwI9dxy7ZKYfGfbYhe6R8Levhd/lemtb1q4eP4QhvDAKomD1rjNCGblMI5Hrfbjc95TkiTpBRlAVYyI5jMITokOTfswtGwXMxx66q
+ ar2Uy+vX
+ B3xysLG6wKWeTgW7zSkPXXh3W4zdlXSEbRo+rhB04O5VimgnMQm1wNr7HPHCJqN/ZZG9URNhAwrN3ZH/gMrKcZ5Nr5AQIL9kcjw5Y/VWfLdG4zJFr4/X7g1n2oZPz6HJM5DCHWKh3KiwnpQAIx7Rq8PdIlT6Io8TQvDrWhZNtpi3ExmKwNvTfm/HXssoraoXhEdzR6PbuPGZIOC76MTY9ZGvzxLek4vJrf/vx2RryvbaZlTP7eNzvuMy6SmgGXVfieeYRZ7ol+24Kg7QWIWtIxbpBKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,64 +124,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 01:50:59PM +0100, Kiryl Shutsemau wrote:
-> +	close(sync[1]);
-> +	if (read(sync[0], &go, 1) != 1)
-> +		ksft_exit_fail_msg("child never reached the collapse\n");
+On Tue, Sep 08, 2026 at 01:51:02PM +0100, Kiryl Shutsemau wrote:
+> +static void *mremapper_fn(void *arg)
+> +{
+> +	unsigned int seed = (unsigned long)arg;
 > +
-> +	/*
-> +	 * Unshare one page at a time: a burst would break CoW on the whole
-> +	 * range before the collapse starts, leaving nothing shared to collapse.
-> +	 */
-> +	i = 0;
-> +	for (;;) {
-> +		if (i < n)
-> +			ip[i * stride] = i + 0xbeef0000;
-> +		i++;
-> +		usleep(10 * 1000);
-> +		if (waitpid(child, &wstatus, WNOHANG))
-> +			break;
+> +	while (!stop) {
+> +		void *p;
+> +
+> +		p = mremap(mremap_area, hpage_pmd_size, hpage_pmd_size,
+> +			   MREMAP_MAYMOVE | MREMAP_FIXED, mremap_scratch);
+> +		if (p == MAP_FAILED)
+> +			ksft_exit_fail_perror("mremap() away");
+> +		for (int i = 0; i < 8; i++)
+> +			mremap_scratch[(rand_r(&seed) %
+> +				(hpage_pmd_size / page_size)) * page_size] = 1;
+> +		p = mremap(mremap_scratch, hpage_pmd_size, hpage_pmd_size,
+> +			   MREMAP_MAYMOVE | MREMAP_FIXED, mremap_area);
+> +		if (p == MAP_FAILED)
+> +			ksft_exit_fail_perror("mremap() back");
+> +		usleep(rand_r(&seed) % 2000);
 > +	}
+> +	return NULL;
+> +}
 
-Sashiko flagged two issues here:
+Sashiko pointed out that mremap() freed scratch area and it has to be
+re-reserved for next cycle.
 
- - sync[0] never closed. It is fd leak;
+Here's fixup:
 
- - wstatus is garbage if waitpid() fails, returning -1;
-
-Here's a fixup:
-
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 335f946eca61..c0a07d75a306 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1228,6 +1228,7 @@ static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *o
- 	close(sync[1]);
- 	if (read(sync[0], &go, 1) != 1)
- 		ksft_exit_fail_msg("child never reached the collapse\n");
-+	close(sync[0]);
- 
- 	/*
- 	* Unshare one page at a time: a burst would break CoW on the whole
-@@ -1235,12 +1236,17 @@ static void collapse_fork_cow_race(struct collapse_context *c, struct mem_ops *o
- 	*/
- 	i = 0;
- 	for (;;) {
-+		pid_t ret;
-+
- 		if (i < n)
- 			ip[i * stride] = i + 0xbeef0000;
- 		i++;
- 		usleep(10 * 1000);
--		if (waitpid(child, &wstatus, WNOHANG))
-+		ret = waitpid(child, &wstatus, WNOHANG);
-+		if (ret == child)
- 			break;
-+		if (ret < 0)
-+			ksft_exit_fail_perror("waitpid()");
+diff --git a/tools/testing/selftests/mm/khugepaged_race.c b/tools/testing/selftests/mm/khugepaged_race.c
+index c3478b5123e2..ccfe655b3ddd 100644
+--- a/tools/testing/selftests/mm/khugepaged_race.c
++++ b/tools/testing/selftests/mm/khugepaged_race.c
+@@ -209,6 +209,11 @@ static void *mremapper_fn(void *arg)
+ 			  MREMAP_MAYMOVE | MREMAP_FIXED, mremap_area);
+ 		if (p == MAP_FAILED)
+ 			ksft_exit_fail_perror("mremap() back");
++		/* The move back unmapped the scratch address: claim it again */
++		if (mmap(mremap_scratch, hpage_pmd_size, PROT_NONE,
++			MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE,
++			-1, 0) != (void *)mremap_scratch)
++			ksft_exit_fail_perror("mmap() mremap scratch");
+ 		usleep(rand_r(&seed) % 2000);
  	}
- 
- 	/* Finish whatever the paced sweep did not reach */
+ 	return NULL;
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
 
