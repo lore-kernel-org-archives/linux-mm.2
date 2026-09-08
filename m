@@ -4,97 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A95C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2856BC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 14:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00E466B0098; Tue,  8 Sep 2026 10:25:23 -0400 (EDT)
+	id 2A73C6B008C; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F01986B0099; Tue,  8 Sep 2026 10:25:22 -0400 (EDT)
+	id 27ED26B0099; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E153A6B009B; Tue,  8 Sep 2026 10:25:22 -0400 (EDT)
+	id 16D3E6B009B; Tue,  8 Sep 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C07FD6B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:25:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DC881A0735
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:25:22 +0000 (UTC)
-X-FDA: 85190817684.23.63FEEDE
-Received: from mta0.migadu.com (out-92.mta0.migadu.com [91.218.175.92])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D35A080012
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:25:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BLHTkZWw;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of alvin.sun@linux.dev designates 91.218.175.92 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788877520;
-	b=jl3D/YKDtYJVhZiCv0qCklevJzc73DDkDCaCZYen6urWN/mo14n4Why5mvtStsmMbjP4Ba
-	vmyJp30ZiX4atXbd98NEli2j/voVnfVP1dzn76yiC96alcfQ/27uO5GtqoY7ApWjyV3kPJ
-	mO+3/ArVnZBF5IR6CrH3iVxEvspEAxs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BLHTkZWw;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of alvin.sun@linux.dev designates 91.218.175.92 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F1E736B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 10:26:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8429EA071F
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:26:10 +0000 (UTC)
+X-FDA: 85190819700.24.5CCF046
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BAED510000D
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 14:26:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=ibCJ1vTa;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dujpHxA7;
+	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788877520;
+	s=arc-20220608; t=1788877568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qokz/QcV8DzkxVx83Y6c5zpNsWPK5pLg6OumoBI4uHE=;
-	b=Yv/CkP3zedSs/g/MgauG8tZ7WNeV52bQjQBNxgnwqxE9obZTtdkhz6vZCcpBHLyC45hGzn
-	EPBZ0M/uJga0MO1DesRXg2JWUD9MhoR2a/tuyvJWpxPQ8DbKpeTXgiBIxr3Q9RK65vxoOx
-	+aDbLxm941qOqa8sZNCcVmshluLhPU0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lB6ADInmwINs9qRDDS5D7SYp9+41Judvy+epNhkXocs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788877517; v=1; x=1789482317;
- b=BLHTkZWwAZnMFO/Ffsr6aTHz9ppgqAFccjizxrvZ8R0VjfJOVpULT+KUAGGUwRN0Pbaby88J
- eBq1d6as6h0pGO351r7455XjQTGfQxexFO+MFUVlFF+ju2/W8Vjgyorz/Ack1FrRqD8dvqdVK98
- sJGeycY2cGzbD19Pu4SVDvns=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a2bb85ab9f24cd7b;
-	Tue, 08 Sep 2026 14:25:16 +0000
-X-Mizu-Trace-ID: a2bb85ab9f24cd7b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <cbe03927-afdb-4558-9196-e57d899b8d01@linux.dev>
-Date: Tue, 8 Sep 2026 22:24:56 +0800
+	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
+	b=U6+nf0lr3R8vwwW2L/CkJeUOxgr02qIu+uSMbW/R95i0krpxTCsXMt4/IY6gkBYmRxouzJ
+	JtqhyTq1v+7vjxDh74xiyfgp8unPWVkK8K5oFBu22/3Q2WiSElFmJXt8JjyPCAz9RxokQJ
+	fTr1GXCeQ4JJba66TnyGNqPVmjiqxuM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=ibCJ1vTa;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=dujpHxA7;
+	spf=pass (imf14.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788877568;
+	b=YiRw8dql6Pl+c8JGBn5DPOn6bbifdGVh1hGnbXgOV5LvzQ+0cO4Z0WFBIybXISA/zSYAB/
+	rFvAzSHt3zP05s2zk2OjksGK2bkTfLhn6cvtNY7J6FixyIpUv/rCawFVDcTkIJa1JHmLCo
+	GEnWNp5z1ILFloq+McA35i1rca8qdkI=
+Date: Tue, 8 Sep 2026 16:26:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788877566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
+	b=ibCJ1vTaf2PfeTeGGS4CPdeCQlmt6p7aLY7mIyests6CYT2a6E4Mjbx9HP5VcqSFIGIDN5
+	lQzNq4LeidtkfT+EysNyxDj3JNRd+SkiSObbBLZntgveQTRfZuO3v/L3jsJBVUb2BH8YCM
+	7vKdLixe7hXeDeAfmTR73MLoheT6qddEqn0zSpdo08XfzCFSXasPoLv5PXY5oZ4uUtuuhQ
+	ue9dInv7mMssJZ5SEhI8zG40m/o1XMobx0JA0bqLkrd6i/I6QO8W9g5ozGh5HmdlKJSK+H
+	nBg3aR8ypjomfwqNmYevI/XWRU18YkOzSNQOVFvzM7BNe1wvopfv0uHl4KPu0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788877566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
+	b=dujpHxA7PKpeJCyeZiOagFVHrYS6MiqrupOYGFJ0EP4mlmR+jdnMRKg1XsL53yLYA37pen
+	ASTs5tXfWZYBIDDw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] drm/tyr: add BO-related ioctls
-To: Daniel Almeida <daniel.almeida@collabora.com>, sunke@kylinos.cn
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
- <FDEDAB25-FBF2-438C-9C1C-F72DC851E88C@collabora.com>
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <FDEDAB25-FBF2-438C-9C1C-F72DC851E88C@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BAED510000D
+X-Stat-Signature: 7bqnp59czkq48dsynfje6k16yeh9onjx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D35A080012
-X-Stat-Signature: ky81f1sjc61ihdt331w5szg9nqefsgdo
-X-HE-Tag: 1788877519-104346
-X-HE-Meta: U2FsdGVkX18Ii/jnWBqw06iBSAy1G8KdQ0jt2ppovdQm+3i3Xi8HMjX8Tf5TzuVvn7NfB8V4cYWws/dtUK5BLGp6UPfTyg+nONsi2TXm5SvxF49qvh+WQD+nwdiqImhMsny3r1VYPPDC87dIg9yn0Y/rtYTD/tchKhVyax0Z7/XojHcjX5s4YHDJXDuxTNCjWP1L8NuyJTa+MbhVp6V+2qTS+QC7eWT96P+u4rA0DgXesNneZ14uPt0wrfW36fMP9R7uYv9+iAUL3CMrJGyUhhcN+xuzFjW3C5++jw5ZjzQTEM7S02uTBuyI7D35aaQjvImp9FTrHXN1Qv1U3J7M1UJXmOi/B/6oAECWbv1Iq1E0WeGSpuqM/2AmQAmToBIGKF6yvr0uP2D1DoCTXmOfElDWEcTNleBPUheDuFB9WmiwlZ11y4a57oBtMFvbXrP5TsLJmnQ3EIEA4qImTh/y0vunuTJXBclzwO1Xuzp5fDXfmqNyI6Bj1afxr+4rDIfEfJo/o7MiMY/v9DtncxhAY9TMV79JqKBiY2klb3yVObwFP4Jj8impjvF9jH1IoRW0Djvzb8XDbAL9/PtEIX4by/dZfZxUhB56XjUbCNMbO6KeqaX2YAk6z02t6Cp3xaucUsfazHMEowVOl2IR7rgpKKfI0a4ReoFJ1fvzCfkAc/SCbDbQFgZXSZ65TGHJN2rJDH2XsTh7FMMpt+FAT3GzusvTu3twcSIi2dEGkcqsdI1ajzCIvqhxjUJEMonKYofKnwdY1P33vSfs2Vh2/MGRQ+1QPhbggUR1ALol7mNl9+zY4V4l7M5yE/+IYV+Q5L+2xXR4KCoeDvNPlJGWv2q1N3QZIF5Vxf/ZLiQNRGnhTHtZucd0jPQj6KCJLbZDA+/2c+RT3+KIXTIiCABwn6MpDExpcOvq8uO5Hprgd/5wnEstPmfmJs1Q7y13ehQ4sI4PX7G0TxhR+X+6ESYZfen
- aXTZHiFk
- JUfk51xdA2Wstngr17arMWACPCpur2s7yScH5cr1ff5Qt0SDw/olWONsJwYjZjuVlmLfEvVBucehcg2c9zG4v8+L9uMkdHoRaM6214a4wCC02sPxcfzHepyl2Efi6/g5Vv2ayreqw+0cOww5lBVZ6QETMZxrPBSOdKeGUC9/OgDFrtwoFHng17tvqtxEmd0SOQmc0WAO2sa0H2rpOQoOMJrqjPULLJVDcAAwNacuRxyCBwX3oJZAt1Nxkl7Ykb5QBViyZOfRBat/0XWjxGg7O3J74C3Ayd3kkPf0/pnIG657lJt66haspxDJTY8dBuduH1n5B2nXVrodEivhnbZUvTgmjuLCQxGkn4mZqVm5YaPEh8nsW2uXkq4Fzh3Hb+rrh7ziL
+X-HE-Tag: 1788877568-764564
+X-HE-Meta: U2FsdGVkX18iI3e16wnP75TMLsy8aphFxAyXhB9xH3Kpl4nLoDdE8Eu87rmGYYXwMIDjP9k7YWlDm0tUYuaGvx9l1aH/f/XQaZxYvaJ8/LlUs1qEVDSl1WAyjS2tTiQIV9L+2yaghy+aoFwb3ZWPaKqvyahNCi0a/pQdd0PsVlC5wtO+ec3X4YpzDOU2Zg2pOMGiuKAdDYpOq6j3bN8CPSFJWTDylVcrTgb3GUakAaA7WRfl3AwHchbLrw1Q0CLrizKXNCWgRXGgQYwGdbaZkF+HvzPI8z/tQ/KH3yzt+JH6N73YluaFSrHqY4j5wO2+pf1M1rTtjrRENLPSAfEl20BMj+AVB6OvWCCMRA+yxpA9NzhnRB3Fuo56CdcH7QXNc6NpwfvZUjSUdl5pvEC+b6cJK1+DacWAcGj21Nkb7fk+tz5f1KE7OVYoxwYqsRpAqbsyxK8DFQ61hHPuLuLogUC+GrStPeB4SXoqwC6drDSwf3eLOqhiITov7MU2jsDJwPlsH8spGNax1N/pXhkdhYA4XKjQYdV0oEoku0sgFc1Ebd0l0sJSNkTGwgK0Gp3oKr6cU/GpPcIAGmSs6+3TPJAsoo+IYx9vEQXeOBx2CNC5Ew4l+cHAaW65C0LPsZ4VKH6wkD8lMAb9CsHezYVRsSBUD4uvlpch5HJn1JstUtuO4ms3AYXdh1WzWeg57UT5bAUvpkapcFw4pBOld5YCM2A3Pm2k19r2mb2qFmJg+AdsZjL9mRXAombfabi1aYPHBgPWI2qYgqG7IVKNyLJBFfwIj/bk0edq15P/B5381wOtbPG+byGj64sJuxlJOJWb+7D5ZY/PfCiIlFfYwsUz3ZPEZTGTbByf4r/tk09/BUbgIhr1frhAyq7cQi/B4E5oT7xOVRGX/BILyyX0oDBuSOwAQtp7gFYyBXDcI+KbPAfQLl3xVO3qxUIedf6bTPbARJkYsgvFNI5f6eQw42J
+ e0P7erCU
+ xf/4d1uckBYRDMQ0Wc7sLYy+/eojzjmrXNuozdKpdi9/2oEHaVkb1fXD0DxEJ4DzmNxfPFrtb3LEm9ed1bNvBdjweDwj8u6dFudT2roL8cyvAYJ9ExR7Dza8MHj6Yr96OWSEOx+D3KsVtqPclEAp9mDt3CLLwXnnjyrhQ/1QWkGPIwdfm4qzlmwLIq1hFG2cWLEEVRTnJ/5HsjoVaEsPrPQQ6I90Ipy+DndYIf9dAxILyTBhZ3AMV3NGlxfGRKf/pfXDoBsCoEVoQ5CaMweOHd+IxxSPdeNcMpK0uTDhI5Qi6o+8B79IMYIM8SjRcLq0JvkDNClP/tYKEihjHB5zGfS7V8rDXByjNG7tcWalIp2H6zNyf2CN8HsTwvqSGygVF35XzlGvFNWeen0TcVOPtiF4D7x7AAD4ytU/Qod6E0ia6jOgS7GOEiRxLkyguz/rM0DqYnTmtVaes8Hgcshd0Or1X0EL1NYS3t6v5rRXXz1jeAcMjkIhdnJl3vPixM+4SkysF0OCG6wwRzLwO7HlNq02ceQK1WNgsYDiMhsLXFIn9JtE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,164 +129,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 08, 2026 at 06:55:13AM -0700, Borislav Petkov wrote:
+> On Tue, Sep 08, 2026 at 08:33:36AM +0200, Thomas Weißschuh wrote:
+> > These constants are useful for cross-platform userspace, for example to
+> > process ELF files during kernel cross-compilation.
+> > 
+> > Move them from the kernel-private architecture-specific header to the UAPI.
+> 
+> Why UAPI?
+> 
+> Why not include/linux/ ?
 
-On 9/5/26 04:35, Daniel Almeida wrote:
->
->> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org> wrote:
->>
->> From: Alvin Sun <alvin.sun@linux.dev>
->>
->> Expose buffer creation and BO mmap offset retrieval.
->>
->> - BO_CREATE page-aligns the size and returns a handle with
->>   write-combined mapping.
->> - BO_MMAP_OFFSET provides the offset for the DRM generic mmap
->>   path, rejecting NO_MMAP objects and non-zero pad.
->>
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> Same comment as the previous patches, please write a few
-> more things here about why the changes are needed.
->
-> With that addressed,
->
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+The existing, generic ELF definitions are there.
+The ELF stuff in include/linux/ is highly specific to Linux.
 
-Hi Daniel,
-
-Thanks for the review â€” your comments on patches 7 and 9 (the 
-conditional Reviewed-bys) are addressed in v2:
-
-https://lore.kernel.org/all/20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn
-
-Best regards,
-Alvin
+Also later in the patchset I want to expose the definitions to the
+tools/ build. Exposing generic UAPI definitions to tools/ is a much
+easier sell than include/linux/.
 
 
->
->> ---
->> drivers/gpu/drm/tyr/driver.rs |  2 ++
->> drivers/gpu/drm/tyr/file.rs   | 70 +++++++++++++++++++++++++++++++++++++++++++
->> drivers/gpu/drm/tyr/gem.rs    |  7 +++++
->> 3 files changed, 79 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
->> index b3145526ada06..fc8d11c9ba1ca 100644
->> --- a/drivers/gpu/drm/tyr/driver.rs
->> +++ b/drivers/gpu/drm/tyr/driver.rs
->> @@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
->>          (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->>          (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
->>          (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
->> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
->> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->>      }
->> }
->>
->> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
->> index 157bc40e1cac4..16abf2968299c 100644
->> --- a/drivers/gpu/drm/tyr/file.rs
->> +++ b/drivers/gpu/drm/tyr/file.rs
->> @@ -252,6 +252,76 @@ pub(crate) fn vm_get_state(
->>              Ok(0)
->>          })
->>      }
->> +
->> +    pub(crate) fn bo_create(
->> +        ddev: &TyrDrmDevice<Registered>,
->> +        _reg_data: &TyrDrmRegistrationData<'_>,
->> +        bocreate: &mut uapi::drm_panthor_bo_create,
->> +        file: &TyrDrmFile,
->> +    ) -> Result<u32> {
->> +        if bocreate.size == 0
->> +            || bocreate.pad != 0
->> +            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
->> +            || bocreate.exclusive_vm_id != 0
->> +        {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}, exclusive_vm_id={}\n",
->> +                bocreate.size,
->> +                bocreate.pad,
->> +                bocreate.flags,
->> +                bocreate.exclusive_vm_id
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        let size = usize::try_from(bocreate.size).map_err(|_| {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "BO_CREATE size {:#x} too large\n",
->> +                bocreate.size
->> +            );
->> +            EINVAL
->> +        })?;
->> +        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
->> +        bocreate.handle = bo.create_handle(file)?;
->> +        bocreate.size = bo.size() as u64;
->> +
->> +        Ok(0)
->> +    }
->> +
->> +    pub(crate) fn bo_mmap_offset(
->> +        ddev: &TyrDrmDevice<Registered>,
->> +        _reg_data: &TyrDrmRegistrationData<'_>,
->> +        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
->> +        file: &TyrDrmFile,
->> +    ) -> Result<u32> {
->> +        if bommap.pad != 0 {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "BO mmap offset pad not zero: {}\n",
->> +                bommap.pad
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
->> +            dev_err!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
->> +        })?;
->> +        if bo.create_flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
->> +            dev_err!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
->> +            return Err(EPERM);
->> +        }
->> +        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "Failed to create mmap offset for handle {}\n",
->> +                bommap.handle
->> +            );
->> +        })?;
->> +
->> +        Ok(0)
->> +    }
->> }
->>
->> fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
->> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
->> index d9ddcb287f52b..f404139f54f32 100644
->> --- a/drivers/gpu/drm/tyr/gem.rs
->> +++ b/drivers/gpu/drm/tyr/gem.rs
->> @@ -38,6 +38,13 @@ pub(crate) struct BoData {
->>      flags: u32,
->> }
->>
->> +impl BoData {
->> +    /// Returns the flags the BO was created with.
->> +    pub(crate) fn create_flags(&self) -> u32 {
-> I would prefer flags() instead of create_flags(), which reads a bit more like a constructor.
->
->> +        self.flags
->> +    }
->> +}
->> +
->> /// Provides a way to pass arguments when creating BoData
->> /// as required by the gem::DriverObject trait.
->> pub(crate) struct BoCreateArgs {
->>
->> -- 
->> 2.43.0
->>
->>
->>
+Thomas
 
