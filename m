@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34949C79F82
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:14:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215DC79F82
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:14:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B82D6B009F; Tue,  8 Sep 2026 09:14:04 -0400 (EDT)
+	id 2E3276B00A0; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4689A6B00A0; Tue,  8 Sep 2026 09:14:04 -0400 (EDT)
+	id 294576B00A1; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 331206B00A1; Tue,  8 Sep 2026 09:14:04 -0400 (EDT)
+	id 15D926B00A2; Tue,  8 Sep 2026 09:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C8396B009F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:14:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 99904406CF
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:03 +0000 (UTC)
-X-FDA: 85190637966.30.18B3FF3
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D37BA14000A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IdCUQYB2;
-	spf=pass (imf23.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D55D06B00A0
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:14:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 771B2A503C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:04 +0000 (UTC)
+X-FDA: 85190638008.09.214D521
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A578E18000B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:14:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lPw/po6N";
+	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788873241;
+	s=arc-20220608; t=1788873242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pZmngaVsUToRipCvkV5xzkVfvhYV30Q+0QWGu1nqLPY=;
-	b=AwEUSNeTF4OYZMXeOrPLIoNYktRPrwEUR0c23aaKkIqsq7d1VGRgG61qakIbI8QSB5F0i4
-	o+5KF19bzpO2TXXPegRf6qZ+F8EdNBtsH0MzqilXiHqtQ/oBruizDwJtZWNj9W3EHsuqyL
-	dOQhPWnRngm3+a4sIQIhhd49ZK8I7Ng=
+	bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
+	b=VJON2dPz/JUAJaXAfs6pXymJ4aA2UctfRY9PS/nQZeLa4/z9yoi75dXNiwen6oI13oxa/J
+	UJtrNP15UPOT4a8Pf1BH9ZHQ9zwhb5pFUJlTtbJDPvdUajYX9FSmoF8kdJvMXOWbqavz1W
+	VVpCsPv1C5CjOGaZM0rqEUtAqM3bF+c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IdCUQYB2;
-	spf=pass (imf23.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lPw/po6N";
+	spf=pass (imf06.hostedemail.com: domain of calebkan1106@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=calebkan1106@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788873241;
-	b=YbA29gvciUi4AhIva/pOmTPVKfVCYE/ShVQzsdYnSk/0BJXeN57i3dtwPPlZ16vc37FAqk
-	ggNEEgqUfZARUJGLzbOb5GKESiNcdN4StbE8z6vbAF/wLfuhpjLhxboR5DPVtrHLBmHAFM
-	e1I1lm9FCd80yTpAjtgImxPLg/WGX8k=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c250c6a6a6eso618545066b.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 06:14:01 -0700 (PDT)
+	t=1788873242;
+	b=hfyUZkjNDww6VCKQ8LTAby6MUKdtrI3YyZMx7LQ+Yh7hOGUBYPaSH8Ni03n2/kGxhHMu5a
+	QduBIoF1xP3OuWPldtNOsncY3PzSxWj+B+dsrBkElzwu4wSKj+A1Ze/A3r6nbLbxLoTgb1
+	bAaD4gYB8hEW5OXeSqR1J+TJDMQCXBU=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c250c6a6a9aso762660466b.1
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 06:14:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788873240; x=1789478040; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1788873241; x=1789478041; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pZmngaVsUToRipCvkV5xzkVfvhYV30Q+0QWGu1nqLPY=;
-        b=IdCUQYB2sEqFK/wAtEIDl5ar2wx+Fo/9OWw2WLRPMfDzIvisr7WBjvF517+fWpgbCK
-         jGSN4icz8NcHg+XcCiDmgL/RQFob514DyFaLyOPHTO4pwoAVF++liG2zOV1/oofyWS2y
-         CzT/aB24i5zs6oHEoP6AThIw/auKkYqQC3gnNqJJJRJsrZk0mblrDRRbp2ikImy+IE7Q
-         xLmqLtwxPSFDnh8yzVHyhwfapzQyYUWWj8oaEjiWmgKrync9mxquKOx+o4B6KitRSEr0
-         MDLSG2AI64ZtOH/hFEnunOrsG/9OHBylzDI5u8lVa5eOY+Ac0cynz8sQDqj1i1fxFgOS
-         5/CQ==
+        bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
+        b=lPw/po6N6OT4x/tYBPDhf+LAsOJ2eXzcX9T6gBxNXtHhx5HURwufml3EGP4aRK+/CO
+         pipfLNLTJqn+dEvkuRKgSjJHSb+4XhD9vEIApkkirkPdeEnxFOSFIBd79oxZt+sgOWqU
+         HBVLv/nFfTIOtSrN/gwg6m4e3kXGV+brRu2PmKHkuMV0zAlqS50c/m9bBDsmi1u7AWTP
+         6naF06D8lV8gynWAMPCw/G/2LYifPAy4alcKnsAgDKXeCwG1dFzztR3XPPYS5jLcq54P
+         fG1Hiy7xqBs4cNFaR1w/wZwRn/n0Z78kXqwY84K++CoJVIX9/2tRxpFkx90wAd6EbVB7
+         lreQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788873240; x=1789478040;
+        d=1e100.net; s=20251104; t=1788873241; x=1789478041;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pZmngaVsUToRipCvkV5xzkVfvhYV30Q+0QWGu1nqLPY=;
-        b=EV8gb6+K5khk0VeqVqJWH8F3SV7C6zj3PN3v7R1SucgZyAi68eHvaQN9ewG1kvjjIz
-         43LtH8D7j/ZRSaLneNlYISFRsa1i7Vgp1HlONzz8TMaInYnhF6rZLeoNByPVjR5QDRBJ
-         0H5Enrx3BBFdzGe/HwuFMyeI5BihRQdM40bCL/f597kDldh3JDqWkV1nPEdgmHclFsNE
-         90Gf5nhFQpzGGpWAGM+XlLIpIvB8vXH+qVRLnm/0ZB/gvB2LkTXrJmYn5O1ftVozeiBR
-         dzo2pGT1pirEts5UyTUvnQznKA0PfTmWPjh1QMRENg3sNcyd09HvFKX6As8FJ2313XOU
-         nW/w==
-X-Gm-Message-State: AFuF++k9CMF7Nrrl5IgzmQq24piQbBCZjpKjjrEPRPOdm+f1NHfPMSjG
-	jDsJG7JO8PJPLF3KN48XU4e8KkWny0ZEp6gn1lSKZyIMcRY2RybgCn7x
-X-Gm-Gg: AYBFou2ToymUM1XTuiQqaaVVyB834UR1kZ4i4ysxvlLvi1TniEcz6LC4AzBwEXNiz1D
-	zIRLTzaPK7GSjUtVqViuZr6i4WDMl2TdzkdX9hWQxgbkH/cx/r/5jVmBVMVCgDHlctkEuqR+pgw
-	zYACK+wMZO9CPB+HWh7emZgKa5C08JqKkZIu11ffYqn8W1d3FPYukZlTNI3JRlV7CnQpI02d5bC
-	yyEWHuyl5MOn+rksEHbC9MthY+gkUzvBqe4TXllWmV/gjyqVMZ12ILacBN6Dqsq7wuNOTeYfM6B
-	f6Q7xwbOTVrAH/qyXo+qA3f+tCOoW4LTiYuQmpxgIsg3wYjaFP3owxs1SLk3FRu3w8+QAN7D/em
-	ZjO3A27nRWlEhYIbvfvOSgdmPUSz1EpZD+JNDqVpNJhaIM98M4/nobJE9NbWrnIXnS0VH1ZkLPV
-	Q+N/lnGptQzo8MwUKY8z9TQ+gQ/gL3X7Us+KinO2G40OFCj28JRg==
-X-Received: by 2002:a17:906:2082:b0:c29:18da:43e with SMTP id a640c23a62f3a-c2918da084fmr93675766b.12.1788873240393;
-        Tue, 08 Sep 2026 06:14:00 -0700 (PDT)
+        bh=whtEbb8/XqGjTBPOJjMO+bu+KwkFFXfQbBIPnf5a/B4=;
+        b=iQIDKwNwNvy2N08lHZJ5RPKDCE8m5MvanK5/rGpiz69OYQRbT47yVEIYI6aGdFADz2
+         7bomiTzeNGaBDevp+mSOR3moN5akeEcdNJqn2Ti0cTbXLltcf8HrH/TNKzyymfOa8AMo
+         n8yNaRQldU89SWYu5bZ4x0j8/7n05pZCT0Ho6xGLXGfUZqc/1hZQ12dFw86MBMQ3GThS
+         tAcz/KS4DLql2IieQ8PU2npCUR7VqeTaNgMCAFD21YQ2c+6zkx9WpX9XRpNWVdXAPJ2l
+         OIQFSzpzlWBH/tdfrLepApUHBLoIJJa9KbfmvDVTlA6s1sSA0vFwFo/O5WDkOqAR1NkY
+         vc8A==
+X-Gm-Message-State: AFuF++m33WMpPox0N5j5jIHfkzq1VcLIQGkJjme7W+2O31DXhN4U6ICi
+	P+jBqzf/ErssWp7xYXmN4dnLxXbMRk55NV90WikP6gS2r8h4KjXNo4uU
+X-Gm-Gg: AYBFou1Gkg/AWVe5vIVJCx4HDFfGdRVWmbIMSNtsyh+BiHE0F10wbotTFUuG7kO4wR2
+	BcxdS0JXqnqfYa4WMVt8qcMyFaO3kOdx9eC1Srpq4vVcEv6geVH/6v3/DcvbywDYINHzlt5VtnC
+	FS5zfs1AJ9pFcwRz0Zd+p9lPPFn6GU38+QceCV6wPhDKb2O5AP7i+dR2KkP05SpQJn4mbFvlWaw
+	HDdtShXVZ8RHTNXH9hzCsuPXGyWS6LXxvP/ecIMSOnFg8Xyljn8ctKoPTWITngA3EgnzD09s5P4
+	/hg/uh7SlmVsOiPx/PFOiWjSERRdffuK46f4YhIdEABQ8ouI98FGZfnQ84Q/wFRjSnrzMfGHUdK
+	7IQASKBRtJuo32RhdFVlWwY2p+WokUtyCeu2A9skwwemY6KclUUXw7FkXaoSCANARVxi97iNulM
+	U5XRDm4t+Dw6Wi8qD9gM0JLF0Qc+aZlhqHHA8BssAgww3Oic1u/Q==
+X-Received: by 2002:a17:907:7b8c:b0:c19:49ee:19b9 with SMTP id a640c23a62f3a-c260cbfa1a6mr2202057266b.15.1788873241205;
+        Tue, 08 Sep 2026 06:14:01 -0700 (PDT)
 Received: from [127.0.0.1] ([2a09:bac6:37a9:1e5a::306:1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d6e1c93sm625170866b.63.2026.09.08.06.13.59
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d6e1c93sm625170866b.63.2026.09.08.06.14.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 08 Sep 2026 06:14:00 -0700 (PDT)
 From: Caleb Kan <calebkan1106@gmail.com>
-Date: Tue, 08 Sep 2026 14:13:41 +0100
-Subject: [PATCH RFC v2 08/11] scripts/gdb: reject trie-backed stack depot
- handles
+Date: Tue, 08 Sep 2026 14:13:42 +0100
+Subject: [PATCH RFC v2 09/11] stackdepot: add architecture hooks for
+ compact frame storage
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-stackdepot-trie-v2-8-1996d5cef732@cloudflare.com>
+Message-Id: <20260908-stackdepot-trie-v2-9-1996d5cef732@cloudflare.com>
 References: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
 In-Reply-To: <20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -109,14 +109,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Oscar Salvador <osalvador@suse.de>, Caleb Kan <ckan@cloudflare.com>, 
  kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A578E18000B
+X-Stat-Signature: wtz7crqty1euikbboawhqkr6w5zitfwg
 X-Rspam-User: 
-X-Stat-Signature: ja5uqcsb3pqx19aa6yz3xhqsde5k7h7o
-X-Rspamd-Queue-Id: D37BA14000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788873241-769846
-X-HE-Meta: U2FsdGVkX1+JvgqA+BhqpJIYjdePbyWFyn0aZW1H+ZiW55/v+0d3Sd9daj5FS9vJURgsc4X84Wi+Dr8H81YJ+kR39qHwLnc0cEQ3TE9pNHxqO5tDYUDmV21xHOZRQFZ3Ny8cD5Kea2tu2fdHZQq668dn/MSdJr07FV1xFiWxFa1HSgLlcUuudX38sNuEyyw9+UC1TPL6Ns6MxrlQBgCz3rfupWIJnYTIDdBrMqsSW8u/97Ddu4bYt9UDZyEInaVMwQ494HtWDy0/mLSl1HSPLWv1MeDMwTLn2iCpkPPBeyRU8dr9faTmQATzcmLBkkY0xPA2w7j+cZfQw+4An/edrpzNPXtwXCPP5zKWbdNfl6i1DYE57yvjKOLpbdq8wCj0cDO8yxeFvgWGBfZpdvEHIGj2WZtVmvZPkqwG0Z52JZf1LwbSLb4U56laNCEoN6554Zr1MlAXxme0KVeiEpZmomX8SRyICOVFfvHWjL2FryRChq2iOvUBGT2jttgjbbS1cAawUEn1yC9naiyXECjDNGXpxAR0SV13UTfap42yAeQmWkElE8MiP0N5JiHIRwo3+gEEbLMLjkcPAGDes6MDCik1uU5AaGQHlPi1HaKPD4E5mj9mI+LL5zLoJvuhn+PxlM/FVV+rgCKi4tVk8oS4OP5T5ieOXEyVvBMm+ua1nGiV1oHH6qyzFItdbo24ZMH0tGR7eVt1vM3Bq9t3de36OmZ8FuOQtUU/9h+PgvUHPZfj0EpEchqaJdD4UDIIedXClqGqxwSQ3pIluKbY4EaL+A6OGPcUrOe6CqRWYHk8vwt+6fHPn+lyCmfuvHov2j1cm7JrKK9YBfuTsJ3eIfpmWfmemf1ILTWSDsymu2oVeATjlRaaonNsmRkoNEP7Pw8+GF1gtkZr9K4j3cBm09GwiAbLITSfTMByZDu5VBtixyQ+9iBzD+cYltz1ZpioquuFOgT946ssTgX1D5R0Bun
- UspDECG/
- NLxoS8NQH6Zj7bgXni7J0YSV3VvzGivP476ii6XK/xYn1Tlj/fmH2frlho6gkpQET5rYWvXy7/znYeq8+doHQygQN6wieoMjYWDFnkmHjLg5zqc5fWL+CP9rT1gwHgtiVeEI4Jd2rEsC83HPFqEwafGqrubBSgIcn/N53s/7HRQdpw7CPXiRHxzzqowI+NaxxSrA91o3NelniFNcX/OJ4UQmutvOi2r9ka0HwTm0qPzzRQeV5/euw8lR+HBhY22VnnKWbhdQl5zVGyzgY3+QqNVUne0RJru/P3QWPXpAt1IXrZYt2Md9YhUMH7UYZzN6te8A9robiToYNmHvrqvbj5gOChmmpT57HwQW02tMgZlFex7m2cICBasaEoSQudO9LN/1g5juXxylnLKwo6oM8Ir3a6A1rwF231Vh3Ud6fw+9Dok5tU1eDXGfLRpGVBo7YOGbva3TxCjUDx2BOjrqf6RtfOpwb/bIbhYt5+d+FjmI3khn6TxALrSpauw==
+X-HE-Tag: 1788873242-52867
+X-HE-Meta: U2FsdGVkX1/yMiLyHczIMgXvBb6OuKEy8A+75BUqfgIUGBsMUDTomE6jAskiKVt4zJ/nfWoSfBe+8J5XBeKmzHI/baWyDpNOMUObuLaHMgy1Im+MCZhxWX04idsQN3Ug+0I8vm31YqMOdBMd8gBrWaX9wxC674RcyTLG/IEjYj0WisDJXkST8atmiJz6vfzpObatmRPseGJ4CsPj4mnda2Yqkgj2H0e3CLCcVHOP/tOR7sTU2zt4WNeIU7Pr7K2/KWtxybO9fbtsENdDRn+AgxYr/KreYeuh8OY1jec2SMPLIlK2oEDsA3gfeVsIyVdwdANou8GJeE5WsHaN7wYL0NM432NogPiogCXE61sqZrB5eCkBq4YiQHMUhj2mg7Zd3sMr7+pfSNVOUL89M/l6JnzbHFqRl2z8o/jp7x1dKhptMxC3YqKnEe6IxJaMeMOWKbrcfDfTghQTZ5hi/1kDsfVorxfG0ZGaeS6TDfT5cyjb/eH0zBhBPtZ6858bGB/gdMOsye/unfF2BD+kwJGW8GlJrMNR1Bh0IjiF9h75iUkNRZp/kl8Cjj+D4rG86amlElaX6iYiEoEAAKAaK81qYxDt4Eq2SpMBhOdsxLrTFZc0ryoexA8EyoV26R+WvVRP0M2pczZPyAEIRviiozWyoHTUR6HjuXhdzicUhquTvTUtSkyB88LA/Ok7p4VVBOpZbX3hLQYQN4i5CHRcguNepHsxtIcut5A0mwyWEvv+Rq3Mofwr3jQGo8FskJ7yZxeIDKzwc6qjW9rYYhIXOuqKumW5Uchg351rVoivRAd2wz+yns1wS8il6JgDMAXmpd/ga03/I0TS39lZHuXU3LJ9r6XPQaWy4LjvXGh+5BWFd63rP/MeEhQYORPLF3M/KVJ7DfSVynUladkjmiCbu6ZDB7ij/Y9faQ4Xe5i7wIbFLDAeoXmgksxAzoh72+kBgJYicFB18d5Tru6d0r1Glef
+ WqCkbeYI
+ 2drcNdzLOh/eHNYBiqtQIbHN+cDyeVG81zpELwl6JBg9k7Ri/6zGUKunVeq+enRyAimVoyX3pv3GZmhqMGJjm/0J93QngMghmNlcm13HC1iq/6Wqr8r9nqTuJ7DZHftceQ4P1FA3lJ21ylxBcahjHL1IGRNApUrGc+8I1GzSk4Jh7P0xHaiYwbKJ4yDZQp19JIzPdLm7iH7MpStweIKcV1FUQvuYUm3rBjrLqPoJ84e8nIlhaAdKyf41ntHKjMM90Ka7wLYgBM9cQmGiJBxYKy3Gdi5HAirHbMi65KChPMy7O1zaMb3D0BlzwakxEpjz0ZUrUcndNe4CGMgC78KfQqhLJ0spmZKJuwF33lqTMZnKvkjPibG4IwvB6UlG3Dp+cOWJun6gQBB7wW+n8pQO9d7x8rJ8Ip20ItDnv1OL42Huos9B9DzwQjKNJTQiogfN1GjMGxLd50hlDNDUS+uNVzQAzJp2/v4/JCfnX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,36 +126,285 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Caleb Kan <ckan@cloudflare.com>
 
-The lx-stack_depot_lookup command can reconstruct stacks only from
-contiguous hash-backed records. A later patch will encode trie-backed
-handles as dense stack IDs in pool_index_plus_1 and offset. Without an
-explicit check, a trie handle enters the hash-only out-of-bounds path.
+Path-compressed trie nodes can reduce their frame storage further when an
+architecture can represent kernel text and module addresses in 32 bits.
+Add architecture hooks that compress a frame only when decompression
+reproduces the original address exactly.
 
-Reject pool_index_plus_1 values above stack_max_pools before looking up a
-hash pool, and report that trie-backed handles are unsupported. Supporting
-them would require the helper to walk the side table and parent links,
-which is left for future work.
+Store arm64 frames as signed 32-bit offsets from _text. This covers the
+2 GB module relocation window without depending on a 4 GB high-bit
+boundary. On x86-64, store the low 32 bits when the upper 32 bits are all
+set. Keep other frames full-width, and provide a generic implementation
+that always rejects compression.
+
+Make the generic header available to architectures without a specialized
+implementation and wire it explicitly for UML. Add KUnit coverage for raw
+fallback, arm64 boundary round trips, and native x86-64 prefix compression.
+
+These hooks do not change stack depot behavior until a later patch adds
+trie storage.
 
 Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 ---
- scripts/gdb/linux/stackdepot.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/include/asm/stackdepot.h | 42 ++++++++++++++++++
+ arch/um/include/asm/Kbuild          |  1 +
+ arch/x86/include/asm/stackdepot.h   | 37 ++++++++++++++++
+ include/asm-generic/Kbuild          |  1 +
+ include/asm-generic/stackdepot.h    | 19 ++++++++
+ lib/tests/stackdepot_kunit.c        | 86 +++++++++++++++++++++++++++++++++++++
+ 6 files changed, 186 insertions(+)
 
-diff --git a/scripts/gdb/linux/stackdepot.py b/scripts/gdb/linux/stackdepot.py
-index 37313a5a51a0..82aeb9f532c3 100644
---- a/scripts/gdb/linux/stackdepot.py
-+++ b/scripts/gdb/linux/stackdepot.py
-@@ -37,6 +37,10 @@ def stack_depot_fetch(handle):
-     if handle == 0:
-         raise gdb.GdbError("handle is 0\n")
- 
-+    stack_max_pools = gdb.parse_and_eval('stack_max_pools')
-+    if parts['pool_index_plus_1'] > stack_max_pools:
-+        raise gdb.GdbError("trie-backed stack depot handles are not supported\n")
+diff --git a/arch/arm64/include/asm/stackdepot.h b/arch/arm64/include/asm/stackdepot.h
+new file mode 100644
+index 000000000000..df8959d59336
+--- /dev/null
++++ b/arch/arm64/include/asm/stackdepot.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_STACKDEPOT_H
++#define __ASM_STACKDEPOT_H
 +
-     pool_index = parts['pool_index_plus_1'] - 1
-     if pool_index >= pools_num:
-         gdb.write("pool index %d out of bounds (%d) for stack id 0x%08x\n" % (parts['pool_index'], pools_num, handle))
++#include <linux/types.h>
++#include <asm/sections.h>
++
++/*
++ * Modules are allocated inside a 2 GB relocation window containing the
++ * kernel image. Store a signed 32-bit offset from _text so compression is
++ * independent of 4 GB high-bit boundaries crossed by that window.
++ */
++static inline unsigned long arch_stack_depot_frame_from_payload(u32 payload)
++{
++	long offset;
++
++	offset = (s32)payload;
++	if (offset < 0)
++		return (unsigned long)_text - (unsigned long)(-offset);
++	return (unsigned long)_text + (unsigned long)offset;
++}
++
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *payload)
++{
++	u32 candidate;
++
++	candidate = (u32)(frame - (unsigned long)_text);
++	if (arch_stack_depot_frame_from_payload(candidate) != frame)
++		return false;
++
++	*payload = candidate;
++	return true;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 payload, unsigned long *frame)
++{
++	*frame = arch_stack_depot_frame_from_payload(payload);
++}
++
++#endif /* __ASM_STACKDEPOT_H */
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 8fdc0bd9ab6f..14778d2457d7 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -21,6 +21,7 @@ generic-y += preempt.h
+ generic-y += ring_buffer.h
+ generic-y += runtime-const.h
+ generic-y += softirq_stack.h
++generic-y += stackdepot.h
+ generic-y += switch_to.h
+ generic-y += topology.h
+ generic-y += trace_clock.h
+diff --git a/arch/x86/include/asm/stackdepot.h b/arch/x86/include/asm/stackdepot.h
+new file mode 100644
+index 000000000000..9a8d04fa8c1c
+--- /dev/null
++++ b/arch/x86/include/asm/stackdepot.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_STACKDEPOT_H
++#define _ASM_X86_STACKDEPOT_H
++
++#include <linux/types.h>
++
++#ifdef CONFIG_X86_64
++/*
++ * Compress canonical kernel text/module addresses whose upper 32 bits are all
++ * ones. Other kernel virtual addresses stay raw, so decompression reconstructs
++ * the original frame by restoring this prefix.
++ */
++#define STACK_DEPOT_X86_64_FRAME_PREFIX	0xffffffff00000000UL
++#define STACK_DEPOT_X86_64_FRAME_LOW_MASK	0x00000000ffffffffUL
++
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
++{
++	if ((frame & ~STACK_DEPOT_X86_64_FRAME_LOW_MASK) !=
++	    STACK_DEPOT_X86_64_FRAME_PREFIX)
++		return false;
++
++	*low = (u32)frame;
++	return true;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
++{
++	*frame = STACK_DEPOT_X86_64_FRAME_PREFIX | low;
++}
++
++#else
++#include <asm-generic/stackdepot.h>
++#endif /* CONFIG_X86_64 */
++
++#endif /* _ASM_X86_STACKDEPOT_H */
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 2bc00c67dc54..d8402a6afc70 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -55,6 +55,7 @@ mandatory-y += serial.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+ mandatory-y += softirq_stack.h
++mandatory-y += stackdepot.h
+ mandatory-y += switch_to.h
+ mandatory-y += timex.h
+ mandatory-y += tlbflush.h
+diff --git a/include/asm-generic/stackdepot.h b/include/asm-generic/stackdepot.h
+new file mode 100644
+index 000000000000..846975767bdd
+--- /dev/null
++++ b/include/asm-generic/stackdepot.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_GENERIC_STACKDEPOT_H
++#define __ASM_GENERIC_STACKDEPOT_H
++
++#include <linux/types.h>
++
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
++{
++	return false;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
++{
++	/* Generic code never compresses frames, so this hook is unreachable. */
++}
++
++#endif /* __ASM_GENERIC_STACKDEPOT_H */
+diff --git a/lib/tests/stackdepot_kunit.c b/lib/tests/stackdepot_kunit.c
+index 3c526791ef93..e4a7f1c83457 100644
+--- a/lib/tests/stackdepot_kunit.c
++++ b/lib/tests/stackdepot_kunit.c
+@@ -3,9 +3,21 @@
+ #include <kunit/test.h>
+ #include <linux/array_size.h>
+ #include <linux/gfp.h>
++#include <linux/limits.h>
+ #include <linux/stackdepot.h>
+ #include <linux/string.h>
+ 
++#include <asm/stackdepot.h>
++
++#ifdef CONFIG_ARM64
++#include <asm/sections.h>
++
++static inline unsigned long stackdepot_arm64_frame(long offset)
++{
++	return (unsigned long)((long)_text + offset);
++}
++#endif
++
+ static void stackdepot_countable_public(struct kunit *test)
+ {
+ 	unsigned long plain_entries[] = {
+@@ -125,10 +137,84 @@ static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *t
+ 	KUNIT_EXPECT_MEMEQ(test, fetched, expected, sizeof(expected));
+ }
+ 
++static void stackdepot_frame_raw_fallback(struct kunit *test)
++{
++	unsigned long frame = 0x1000UL;
++	bool compressed;
++	u32 payload;
++
++#ifdef CONFIG_ARM64
++	frame = (unsigned long)_text + (unsigned long)S32_MAX + 1UL;
++#endif
++
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_FALSE(test, compressed);
++}
++
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
++static void stackdepot_frame_x86_64(struct kunit *test)
++{
++	unsigned long direct_map = 0xffff888000001000UL;
++	unsigned long frame = 0xffffffff81234567UL;
++	unsigned long out;
++	bool compressed;
++	u32 low;
++
++	compressed = arch_stack_depot_frame_try_compress(frame, &low);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, low, (u32)0x81234567);
++	arch_stack_depot_frame_decompress(low, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	compressed = arch_stack_depot_frame_try_compress(direct_map, &low);
++	KUNIT_EXPECT_FALSE(test, compressed);
++}
++#endif /* CONFIG_X86_64 && !CONFIG_UML */
++
++#ifdef CONFIG_ARM64
++static void stackdepot_frame_arm64(struct kunit *test)
++{
++	long negative_offset = S32_MIN;
++	long positive_offset = S32_MAX;
++	long offset = 0x123456;
++	unsigned long frame = stackdepot_arm64_frame(offset);
++	unsigned long out;
++	bool compressed;
++	u32 payload;
++
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	frame = stackdepot_arm64_frame(negative_offset);
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)negative_offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	frame = stackdepot_arm64_frame(positive_offset);
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)positive_offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++}
++#endif /* CONFIG_ARM64 */
++
+ static struct kunit_case stackdepot_test_cases[] = {
+ 	KUNIT_CASE(stackdepot_countable_public),
+ 	KUNIT_CASE(stackdepot_fetch_into_roundtrip),
+ 	KUNIT_CASE(stackdepot_fetch_into_rejects_missing_or_short_stack),
++	KUNIT_CASE(stackdepot_frame_raw_fallback),
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
++	KUNIT_CASE(stackdepot_frame_x86_64),
++#endif
++#ifdef CONFIG_ARM64
++	KUNIT_CASE(stackdepot_frame_arm64),
++#endif
+ 	{}
+ };
+ 
 
 -- 
 Git-155)
