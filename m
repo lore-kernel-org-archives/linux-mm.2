@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EEE1C79F99
-	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:51:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E462C79F99
+	for <linux-mm@archiver.kernel.org>; Tue,  8 Sep 2026 13:52:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96A576B0098; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
+	id 265F76B009D; Tue,  8 Sep 2026 09:52:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91B196B0099; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
+	id 218016B009E; Tue,  8 Sep 2026 09:52:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8305A6B009B; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
+	id 106686B009F; Tue,  8 Sep 2026 09:52:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE146B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:51:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECE52A4C90
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:51:19 +0000 (UTC)
-X-FDA: 85190731878.13.C60FF01
-Received: from mta1.migadu.com (out-246.mta1.migadu.com [95.215.58.246])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D58BFC000F
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:51:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oPb63NSV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E431E6B009B
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 09:52:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 826C5120693
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:52:06 +0000 (UTC)
+X-FDA: 85190733852.17.51C034E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C44EB160003
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 13:52:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWAnosmg;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788875478;
+	s=arc-20220608; t=1788875524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIbLTlNRNZAXVtUeXdcU4aonrybJMLyfv8dVgq/DzRs=;
-	b=KZDxdbMqpT0SfTQUVBX15Q6gFlR3akO2t28I3BiceInAJvNiigsix9N5Heyu2Ytwl69Hdl
-	x9OhtT+EbFuxohqZmUVMfAc2fcJ/uaSh8V/24AcWZ/wf/NsqS5aWKKYyyuRm7L97ufYTMf
-	8OnPo56H1WLjSucIZeMMmAqg2WyShvI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SZt10/kbg4dBrQBGOpfHdt7lQPvcQoF9Yzt06P+161Q=;
+	b=v9YkXX8GCrXqqnjqJRTdmTnDpAKXQ5avEn5ToYGQLZaiMKGDz3GyhLIpAv/7LSU8AOVZ8y
+	YHYbZrylQrMxA9JJ4WUbyAkZ22ACougqjOjl+c6O3YAb5al6bYyYog9EUBrAWaGcsHnuh1
+	gorlFs2J+FGT9wlrtnxBWrPW9zE+Gs8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788875478;
-	b=aoqlEupo1wyTJkXi5kbGNWQAJmM1c+4IWamJQ67pDWghM9Vo7uUbveiP2YgLANfUobMA5x
-	dyFzQfe7nx0CU5Ljyeqn5BoKinZZcCfbhswvVET/PfEh3HID2/weTdmMMY4c+T2BKYewI6
-	CGZD1AzY7xkVdHudAo7L4ULeniyy1F4=
+	t=1788875524;
+	b=V/HicnpSZaGmXsCvt/qzXyuva+daI7PEZ8LulVSg77WrKz7/Zl+QccyiZa2U1SBt19xBSV
+	HG3Y3AbrTjD0yc/EDd6OcMGLgCc95EjRUnCp88e1yUib1Qg64TYsb9+7TgB/Rey/NKVRLH
+	Kht3qwHhNeRFZq5Av7yRvkBA16B0iJI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oPb63NSV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.246 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yAkATAbOR8BHFyRFOsELRt+fYAiuqFYEVcejaIN9a/4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788875468; v=1; x=1789480268;
- b=oPb63NSVAM1cGM61r3OUh0VWBaMubfLs+kPoSFk9e7+oGzj0ePEgc9bgB4asCYi5sHCcAaRP
- NWU8SJVHohPq/gjzQJUeOcCbNOIBmYtjjS1THrf3uAfm1tPHWli2HKeC0gJ2P3EHcJW3c6I9wGm
- 3jlBD3YJb4AtNxO//+Wiblz4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 73574c6019326117;
-	Tue, 08 Sep 2026 13:51:08 +0000
-X-Mizu-Trace-ID: 73574c6019326117
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <13fefc5b-7148-48aa-95a6-7f64cf7c66d5@linux.dev>
-Date: Tue, 8 Sep 2026 21:50:48 +0800
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWAnosmg;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E1B0B4163B;
+	Tue,  8 Sep 2026 13:52:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCF91F00A3D;
+	Tue,  8 Sep 2026 13:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788875523;
+	bh=SZt10/kbg4dBrQBGOpfHdt7lQPvcQoF9Yzt06P+161Q=;
+	h=From:To:Cc:Subject:Date;
+	b=KWAnosmgGjBBtakeFBzQt6a0+nRkTuo9pUfHhAak7/qUDiz8VM3IsGRE0XtHCboIy
+	 URa2FeypaVWmYTiTRiqOXIus3LM1hgLS3VoatWswVL4wJqT60k0TKrDyhWJxgihZEH
+	 4IivP5Ul/mhbjb/j9GpNx4Jp4QETmCGGUBv7HgK6l3YjN+CDtY+4TmhT4lHK9jmYua
+	 T0JQS3aSiNt7klBt13djiCz49JgylFilCtnAiqWfgedkwTnFN7pT+We0bh2mZmh/6J
+	 fuLqmhJLq/O84O8MISfe6EQlUM4e/p7hMsmOq0FkNttTPj512evi/FzSGJZcIIU3+y
+	 DtC9RnuIWWIyQ==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon: support access monitoring of hugetlb-backed memory
+Date: Tue,  8 Sep 2026 06:51:52 -0700
+Message-ID: <20260908135156.97481-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] selftests/mm: init page sizes early in
- pagemap_ioctl test
-To: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, gourry@gourry.net
-References: <20260908134117.84405-1-zenghui.yu@linux.dev>
- <20260908134405.84448-1-zenghui.yu@linux.dev>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260908134405.84448-1-zenghui.yu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C44EB160003
+X-Stat-Signature: 6sgi4m5sppa9xig98debm6h3oqnfwhg6
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D58BFC000F
-X-Stat-Signature: xshrm3g83qqetati15u43zbuudddapdb
-X-HE-Tag: 1788875477-110460
-X-HE-Meta: U2FsdGVkX1/8/HkRyzQlwm5SPeGzxhgd6Ib00IMvByvs5QputwADG0FikhEezM/o+PSmQOLJd17sW3LmQveTemCqJ+ywv3ax4L3lfAFHscamaIjsCrx2n7GEU+B742ayFKGg0yVxueHfbLZkNzpV2kDSqPuBq79zVJBo5zAazK+iyESHmI1dPBmQHgs+JrdKhJhHs1VE3HeeXmjV8MyXdDJg+fy5YuDcjmQLSb1kICULLx1PVxqYlWDI+fnoEX6KU1qHzF4djw6JWq7W030FxnpQzT30Ve7rUoiP47svVoW/d43CMkbfq91k/nkWszRip8i+yboLLhI3GAXw37Q4gj4zHcM6+plVCvC5rscxpAH3Cgb9BfLga3h0hSw+Cb1p82cA2sJrVxWgFjEntW+aZkJA6yjb79c2hv1g/6MsiOYgPSYMNcL7URa1ec++b1fBCnAOCYlkUY59b+oIchjJqC3KLV2Auu195PE2iH3uIDG7zgN1WcSZE4kLhq1ujVFGk2F9QOyVoypvGMlcjOXMAkGWgQTB4JVVoHg4NiYTvRLRL340dUepTB5LElcLYBl00IylQdmCv34jP4e/3xy8w6nlck063Rps3VCKlR1NMjh1wcSYiUnq197MH/yhphL83K6leI2aQWbpof5iwGyv9zB8Pqn1qpKM/QjbF9cUF6z2MFzNkw4mH3pP05pM/g0+i3EIrYwR97HFpJN7h/ZU+ilvesBFB5c5+WsgoRboPst34wuv14BXiRlNrYwdwsSFpTs+/LH81kGUbvTItYqGz1tWBk49+a1IkgXqrwMryNSHVNQr9YenH8jsKq2EMTGesVKrMUS/+kwcQXKTJeiBVRQ5w/zYTH17PrL26JUkrcslfM8h4BgkIPyq03HtSx4xotcDOTo6FS0pycxv5sUxRcVG4e7DiM4k4ZVE8dioN+fHC7ymcNMG25q0JoV2rImWZBszIOzNnXriB8s52b3
- 1IX64IPi
- ZXMGS5e0y1JlkmMOjGg8kHHDPzvfOSOvIpXsYuiDlC8s/DOtBqLVb3lExTzFxTNzT15TpqyoXXpRzel6yE9rdmpIZ1KDNkV3E/QiGmnkVhIkTyvtTQCHJnrs1p8Vbe+Dead3MdNVexwCrGxUBkd8bWZ3wK9j1bGTbJIv3L4bCA5qqVOk2f5RXj1DloJSIBnpQSh09b70TJr8oa7mmMMpiBOFHVcAbcSjhITKRI6Jb/qfKzpNOSd5iENS4uBeb4heI8mnwJPpvIOf3NTQuvnQSRRRAcZpJ+oxrZleR/MCzJnNLUPFKcCdh+MK4YZ4bO6jA+2sJApnZe7A6UlUpPOkTynpBsp8hyxX/spL0fKJkP12DOegj1hnclp8Cqc+z3jOyKKi5+15+H2/ycJ5paBDNM9n0gQ==
+X-HE-Tag: 1788875524-893080
+X-HE-Meta: U2FsdGVkX18NEKkjp9eqVDArmKmCoZfYo/MC5wkHbYogvaQ2XuAa5vzwup0pyvyGx7OZYIz4VY9iGLxFsxt3aVS96NyZlYATurwo4Y1TuAhUNcEGR32M/RDrlN7Fr1XKWW+UxsSC5Jgi51jca/2BIMb5nAh2QNTnvoYW8wpxpj/wu5jc4JpqqO4lrd2Dkx3dgTqm5EzcKrq2m0dNobUZAVUE0vRNUoTFw7o8IeXZr1/0rFezd0E6W5Klv83Iomm8O9Z0XHv+n3AsYfCMqVMulA9uBdCIde3J3xnykpOAgDzThHpIms/vnUugiEQ0R4/hylmO+qMJoyL2mBd+kVe/Mr0UVoS/99UT7K/bI8Su4TL9M8hK02FgHW/t6gp4nU8Xuq2z0gPKN2O4VUSCwYqS13PGkG2SSc1mD9n9dPsgDUhCOGj/oxA114afftitoGNh3vfez9O66WemygLYijJKhN96SsUHi1vZrLG3S7ejVuidBw2DunEw/lrrgUwM9sDbS2uzaFTiWQPECVU9oWyv8f+3HJ40T13ZoNe9ei9daPBOW20rNiJx8b4W2uJdMSE1HnBDL8qRnsRgY+m1FyP8lKWf3csg+ZE2EoxeLYPL/bq0cys9H58+g/WNHqf65nn2XiUKFoDExHt5FdaPPK+rpfwOD5CQrkwxUl+Nw0p5WeyOQLYV1w2OuLfWuFzjW9enwP3HWNOWRv3VHDk/dNlWHtMKMh5HPyyV8+1yVPGwKuFKK3JTat7RJ2EdII/tXFfHflNq0C1M9K6ixQFC556gVBTkqQFA/egK4HL1kNyGGCz8k3YXDrK5hvlMTD4fpzPzx3ciF5JwcgjrJ5SQub9F7pWTVANwi/KVGNLMyX4yMCAu5W3A2OjzNsXxhdoJ4ogO43imMSKU77d0q7xLn90seTn/FNRDBju+oytNLPJvbTtlc8txql1Z/48fOjqsE9uLQh9Jt2zaRGlUYAEPD5q
+ hrlY75nA
+ s+fYwXuPhLA7uRuOcvM4Niwgm83RNc5PGb/BvNRiH/mojxZix9UKalCcd1Bry8SkS2vol7PrUvn/mxYKzSotNgcfrkBLOBAWHU/729kRyWmrUKh2Lnez53UvXeXANF3h6ZAhZkhTcU1i0uPJet2AFOLCWTR6nLxxy1EtiUhlJGcUMShrs82GjEiiQl8BZoqjAV8zsyEMs8xxYWH03CDM5P94xJ3BGiYP0NzttE6hBorwEAd0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,65 +90,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 9:44 PM, Zenghui Yu wrote:
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> 
-> Initialize page_size and hpage_size before calling init_uffd(),
-> hugetlb_setup_default(), etc.  That won't fix anything, but it is safer and
-> saner to get these globals set up before doing other things.
-> 
-> While at it, drop the page_size parameter of transact_test(), which is
-> actually unnecessary.
-> 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+From: Krishna Iyer <kiyer@crusoe.ai>
 
-See https://lore.kernel.org/20260628111329.9cfcd9c67925869307020aba@linux-foundation.org/ .
+On virtualization hosts, most system memory is often backed by
+hugetlbfs.  On our production hosts, for example, ~95% of RAM is 1 GiB
+hugetlb pages backing guest memory.  DAMON's physical address space
+monitoring is blind to such memory: every access check starts at
+damon_get_folio(), which rejects folios that are not on the LRU lists,
+and hugetlb folios are managed outside of the LRU by design.  As a
+result, all hugetlb-backed memory is silently reported as never
+accessed.  In testing on a 1 TiB host, an hour of 4-thread random
+access over 842 GiB inside a guest was statistically indistinguishable
+from an idle host.
 
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-> ---
->  tools/testing/selftests/mm/pagemap_ioctl.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-> index 1a87b7483316..d9a4fb782ecf 100644
-> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
-> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-> @@ -1489,7 +1489,7 @@ static void *thread_proc(void *mem)
->  	return NULL;
->  }
->  
-> -static void transact_test(int page_size)
-> +static void transact_test(void)
->  {
->  	unsigned int i, count, extra_pages;
->  	unsigned int c;
-> @@ -1653,6 +1653,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  
->  	ksft_print_header();
->  
-> +	page_size = getpagesize();
-> +	hpage_size = read_pmd_pagesize();
-> +
->  	if (init_uffd())
->  		ksft_exit_skip("Failed to initialize userfaultfd\n");
->  
-> @@ -1661,9 +1664,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  
->  	ksft_set_plan(119);
->  
-> -	page_size = getpagesize();
-> -	hpage_size = read_pmd_pagesize();
-> -
->  	pagemap_fd = open(PAGEMAP, O_RDONLY);
->  	if (pagemap_fd < 0)
->  		ksft_exit_fail_msg("Failed to open " PAGEMAP "\n");
-> @@ -1823,7 +1823,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  	mprotect_tests();
->  
->  	/* 13. Transact test */
-> -	transact_test(page_size);
-> +	transact_test();
->  
->  	/* 14. Sanity testing */
->  	sanity_tests();
+The first patch moves damon_hugetlb_mkold() from vaddr to ops-common
+as a preparation.  The second patch teaches the folio mkold/young rmap
+walkers to handle hugetlb folios, aging the huge PTE and notifying
+secondary MMUs across the whole huge page size; the secondary MMU
+notification is what surfaces guest-side (e.g., KVM/EPT) accessed
+bits.  The third patch adds damon_get_monitor_folio() and uses it from
+the paddr monitoring primitives only.  DAMOS action appliers such as
+DAMON_RECLAIM and DAMON_LRU_SORT keep the LRU-only lookup and are
+behaviorally unchanged.
+
+This series is the first half of an earlier six-patch series [1],
+split out as SJ suggested [2].  The second half (the 'aging_flush'
+TLB-flush-assisted aging) is deferred: we will gather more
+quantitative data on the gap it addresses, including the workload-side
+impact of the flushes and the working set measurement details SJ asked
+about, and post it separately once the data is in hand, aligned with
+the ongoing monitoring preparation actions work.
+
+Per Documentation/process/generated-content.rst, this series was
+developed with the assistance of an AI coding assistant (Anthropic
+Claude, via Claude Code).  The assistant helped draft the code and
+changelogs, and applied the v1 review feedback.  All changes were
+reviewed by the human submitter, who takes full responsibility for the
+contribution.
+
+The series as posted here was regression-tested on its base commit
+with a full x86_64 kernel build (no W=1 warnings in mm/damon), the
+DAMON kunit suite (41/41 passing) and the DAMON selftests (15/15
+passing) on a kernel booted with virtme-ng.
+
+Changes from v2
+- v2: https://lore.kernel.org/20260902025700.17975-1-kiyer@crusoe.ai
+- Drop verbose comments on damon_get_monitor_folio().
+- Collect R-b: from SJ for patches 2 and 3.
+- None.
+Changes from v1
+(https://lore.kernel.org/20260830051407.50008-1-kiyer@crusoe.ai)
+- Split the first three patches out as their own series, deferring the
+  aging_flush patches (old patches 4-6) until more quantitative data
+  is gathered (SJ Park)
+- Drop too verbose comments on the hugetlb branches of the rmap
+  walkers (SJ Park)
+- Factor the non-hugetlb PTE young check out into damon_pte_young()
+  to reduce indentation (SJ Park)
+- Rename damon_get_folio_incl_hugetlb() to damon_get_monitor_folio()
+  and damon_folio_observable(folio, incl_hugetlb) to
+  damon_folio_acceptable(folio, monitor) (SJ Park)
+- Drop 'kernel' from the host-side monitoring example in the patch 3
+  changelog, since kernel memory is not LRU-managed and hence not
+  monitorable regardless (SJ Park)
+- Add SJ's Reviewed-by to patch 1
+
+[1] https://lore.kernel.org/20260830051407.50008-1-kiyer@crusoe.ai
+[2] https://lore.kernel.org/20260830180411.103772-1-sj@kernel.org
+
+Krishna Iyer (3):
+  mm/damon: move damon_hugetlb_mkold() from vaddr to ops-common
+  mm/damon/ops-common: handle hugetlb folios in folio mkold/young rmap
+    walkers
+  mm/damon/paddr: support hugetlb folios in access monitoring
+
+ mm/damon/ops-common.c | 123 +++++++++++++++++++++++++++++++++++-------
+ mm/damon/ops-common.h |  10 ++++
+ mm/damon/paddr.c      |   4 +-
+ mm/damon/vaddr.c      |  34 ------------
+ 4 files changed, 117 insertions(+), 54 deletions(-)
+
+
+base-commit: 7aef702c0e8b9870275f8ec9ac1d63dc1d254a2a
+-- 
+2.47.3
 
