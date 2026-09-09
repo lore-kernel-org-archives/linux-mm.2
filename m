@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46117C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89690C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:08:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51F956B00AC; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
+	id 71DE96B00AE; Wed,  9 Sep 2026 10:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D5B06B00AD; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
+	id 6CF716B00AF; Wed,  9 Sep 2026 10:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BE186B00AE; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
+	id 593CA6B00B0; Wed,  9 Sep 2026 10:08:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EF116B00AC
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EC45C0206
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:07:06 +0000 (UTC)
-X-FDA: 85194400452.10.5C69040
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 959FC140017
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:07:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZX+G/b3L";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CC0C6B00AE
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:08:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4FD261201EE
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:08:06 +0000 (UTC)
+X-FDA: 85194402972.19.72F03A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6963240010
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:08:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fHiQnsD7;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788962824;
+	s=arc-20220608; t=1788962884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COu9YXS5z+3bJ5HpL8E7btRECMkkRv1d0ERtft6U7Fs=;
-	b=XKvqfmzna/TULfWqx5b5hgU/yVSPQ3/JezTi3OPU4uxYIRab6PVIWPnsTGgdtDTjGVJr5m
-	QM2u/dRCQY7zn1grUpEd2o2KdvOxcI7QQvXWFbqm1o+tON/C9PRAxgUwo3wPYNwKnH1e8+
-	fRjTwh1Yz/7bFRYI2lEIZ4WRQJmwxTE=
+	bh=VDyWmM40aiKxKbQ6FoW/MOveUW0JhOGKh0dq4VK12n0=;
+	b=VVFeAJLF94/XY7E/RSN73H2PwbTzw3pL2rcLVl2oVf+gS4Km9Ef5MHRR7SgBG9C86CspPG
+	BbLZYBHigy4ZmxNrPw8ABLJumaRdGL2P6mvacfm8HQpCzDmwtjh2NGQye+wkz/Djph9D6l
+	E+1EpneufV+SEAKrO15tfG27PDMP1Gs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788962824;
-	b=LcMO7a5xaRCEb0J06u6GlWf1jrBkril/gT03OAoP+7CGijCGc6+ize/q1lrzk0aDr9+c8I
-	0by4yQ3UgpZuM3m15mifszDUgtvYZqPSX8cZ5wGaw2XMJkDt+DtGDWlw0+H1RF4qP0WBVo
-	P057AsIAwp3L2uPvy5YFuD1mKX8426M=
+	t=1788962884;
+	b=uiHfPu9SelXcX9K2hMt+EOLvG9UNtHrqSlHW/IRk+oP8vnziQN5l0Wdl2k3YRjRRfrSZfk
+	Bq4+QshimV8w2Kcl+qn6tKPbmVqVgGoJ6ObdoDNI9XM4FFV5UxUwWRUbB1NQGSM8zrtA2N
+	P7bYD0wcNjR2UNGGwAb9B5HXTrvqLmw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZX+G/b3L";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fHiQnsD7;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21F4060218;
-	Wed,  9 Sep 2026 14:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DD51F00A3A;
-	Wed,  9 Sep 2026 14:06:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DF9E43B94;
+	Wed,  9 Sep 2026 14:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9011A1F00A3A;
+	Wed,  9 Sep 2026 14:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788962823;
-	bh=COu9YXS5z+3bJ5HpL8E7btRECMkkRv1d0ERtft6U7Fs=;
+	s=k20260515; t=1788962883;
+	bh=VDyWmM40aiKxKbQ6FoW/MOveUW0JhOGKh0dq4VK12n0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZX+G/b3LxH3nXQffSaa9JMsaQS0gjIJ02uJISyRP0cZLQNBGxyIRDGZrns8jkWzN/
-	 gabIeV/0jMZF2bPMFRPMJrRfEmzW3m2/cePne404tI2mA+deOk+AzkvUlcVbinkIDV
-	 1xjmuzmsa5tFay60gdwZS49E/lnIjV+BbwxU4W83tWTJQucaxEQgd1bWnd9Vp7N9RN
-	 lAmhZsEwFcJHpDxDkvrpoGhkjAFfqCeBWPWugzkHC0RDAcnkdRCsxdKUgfWmZ0AshM
-	 Gf+mBjy0u34/cgjbY6MOSdT34Ybf25cjj160Ok0Dw2UJGILtTpyQP0PG0jvvseoi6e
-	 Pe439DbOCIADA==
-Message-ID: <4e0bec21-4f09-439a-ae65-66a95c1b4c45@kernel.org>
-Date: Wed, 9 Sep 2026 16:06:54 +0200
+	b=fHiQnsD74keMxuuA2tajHNZcaFeCB4NkxmK8z2CQ7BeRU2CpuTeQCmXhPg7N3FRV5
+	 EjuYtAjpIbsL3Ro+Z9NrrC+e8MazPnwsUteb74EApWrDV08qjGM/hUQfkcOxtWJSf6
+	 7rF6NYfn0N4Dp/Mc3H6QAUF2jZoYrbp+DZWKNTazmi/WhMkbIrjZzEzBWE82fXLyt0
+	 clmrkMabbXuBy/vXbGLcU6ib701LtotePPJghNZXVPYgi80eJmKVef9GFYXnfhxZJU
+	 kebP2Abi03MXzEmX+3WAYSf4jDdwPQewH5jBt/41TQWaEBl5kyEMblFBrEng1mEk7o
+	 ezXBT/E2eDUtQ==
+Message-ID: <0569af12-8e32-457d-9d1f-9b879d6485d0@kernel.org>
+Date: Wed, 9 Sep 2026 16:07:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] mm/swap: remove page_swap_entry()
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+Subject: Re: [PATCH v3 01/14] mm/zsmalloc: replace PG_private with pointer
+ comparison
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20260908-folio_swap_entry-v2-0-ee6d01dfa5e1@columbia.edu>
- <20260908-folio_swap_entry-v2-8-ee6d01dfa5e1@columbia.edu>
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-1-6ae22f9d9272@nvidia.com>
+ <60fe39c2-d92f-4bd0-be33-04d702f8f753@kernel.org>
+ <DLA1CJU4WHQE.3Q2C0RE1IW97Y@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260908-folio_swap_entry-v2-8-ee6d01dfa5e1@columbia.edu>
+In-Reply-To: <DLA1CJU4WHQE.3Q2C0RE1IW97Y@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 959FC140017
-X-Stat-Signature: 1m38rcgihd8smoopf3ff4awajsheu8cf
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788962824-976184
-X-HE-Meta: U2FsdGVkX1/8j8+4QFeqoxfGzlFsSLLfEpAoYcYpJ98BoYW9XmjkDQXxhprn3Y6m9BMwwVYVj/CFgU2zRHlj9KC1zlNhUubd5eNF3M4KfeiYcvxs75d1zXAklpKnvsRXAzcIPHCzdj852K/ST1jw1heVLGKMvsmH4oggu+KRSUCW/miticmqFHZNM7AJaRamXOjQ7MJWf3q+WoohFy6uSiXxy374IKGLlv9FK5z1UFRb1W8TGClskiL5OLstx3QDUoI9uUwRsOjnCgabfD7Y9VYhNTqQ6DWDUX1I28LtpFK+0DYSaJ9MOu0eh6tEcYbxoQfrMUDq6VyOtJP7gIVrwqnIPLfWjs5N7ZGKl3MIX902jhapRJBGijwcK7N3mYvA4NV2bcqL+344Opj0QbxgJgaEohqfHPx+MmTze1n0s6RCiySSziQK6HQxD5ydu96aTZqfyIhdWqm40ckfe7lDMQd9SX6XmuA/qQdmFIdh/lLKx9UiOA3cf9WP2IetdIr3P88s0mdFl7VnlkjKJPuWCJzpWGcHoVauHfggumuqgUnt00xvlAGklGXjtrmtAq3O7tnTQ0vQwubdjt1ZSaqfHsVh9qIZZH9nzatrndISM4EtQTivIygA1IKGTnc7Tp7zf3MjZMWZAicWDh0QBzlDyifLgxvqPeMewIlKNGIjxk4BAfIeBoqoSvtdHoAEUvDtmiwK82bjWlkj8GFwm8j2OghzPpS1xBiKBAtiQMI4EdSMSf28Fj/AK3hRhaVkct4BSPl488dVZH7L1pgBzVcNHNPzqVllmHtC9WNKhmABAe21cg0oLcnYDI++dNuPP6tL/KU73NAVHN2P0hBMh3WjTtX0UhAkUklFyjnHguQZCuGUGHIpaYv4j1QI9TCDpwoR6D7Xda9x/TY4ZqG454b9Jp2989EBEDiY/2bYtw+lWbPGr/lD11+VgXxhosL3e3Vww5qf49GqI3Jl4YTfOwv
- qjyIR6qe
- jJdHS4D92/894O2nub15qc2TGtK4szJnzmRkX81jiL8xsTOBNIDaaXt5FZGQbJu49prLMoHBficu+/2WETBkbXeyqSWXm6K3FCe/yVoDiyN2rd6jxKP2mGdsNoT6XgmQwJGUZseQqMW/E3NylRB6ObzXGQlOhjVib6emOWlDf/J5Bc1pO9ZrGiO3vLoUSfVxLRmlxw9NEgNvWTns2+aUxWGiYw9rVb08iRrkifCc1x57ikf3AOf3JPcvEMWnG2HcFO5g75YurfDmSoW8ICz8ugGd9aWC7vfziS/tXhjhUl0W3r35BR0zFwSXvh1ocGGBVpO8jhBW9rpmrhgc6GHNAimCrscekY3NoFsEB
+X-Stat-Signature: dzwexkmhahbx5i8x6pazkzdt3593etpn
+X-Rspamd-Queue-Id: 6963240010
+X-HE-Tag: 1788962884-6851
+X-HE-Meta: U2FsdGVkX18uXq2+uWTP9omLK/loG/UVafOlM+1uIE6x0Mf6UGtXk/D0sM5e/n3VLOur7/dxfU6tpbRmGmblEVOoN93KLILJSRJRgi2T5DljIoazd3garVP7ku7dPCaEUN+Qg7x1zbwFXQkAGNwNagedSYZiYo8miOVOuBTIi60No/3K8lj7KcsGcJNJLjcDX/IVTJERSVUQuZ03IEDRRWviNOsZwHbpQE5SZ92iuOuxZI5ktc2KoQQutsKRvqvFu0IVLI6HI/6Iyh080MCvXrv9AUUxnFAWlCJ74FObjq22SPG/F9bt09kzqotqG9r8R/6D0hKdkkaGmA/98eyuQjr/o+I8rP6p0pKtP/pthJ8a74lEscs/9ilRwwbHrixltp7jXtNApRLWEdHzYcOcrTLtt+C0ZGYK/86MW+s4OrFDQdE7gU5DKueKWkrky58HIkSO180T6vYT6nKUFYNrfD7Q+w16WtNK7YUN4C4/dRa+/apJMmLK8V8zfprDD/rArf6i7F8yJR0jk70RNt8ehiNRBQraH9VnASZ/MqFG/oVX8mEchOewIQxrvhQRsupTPuo0UCdMXxs6S+228uI/r6bKudIAoF0q1fxlpXm5IA906Tf7QgbvYy/aG5ejeb14Eol6vK7j1t5LVQZNxsaGiEFLkgmuJbxM0p+4ieGgnRmacNjLGLbPkyinJeAvoQvdlq7bhQlRzFfkC8Di7XnpfoMWzMl2ReQfvp/BWq6+adjh+ed8hOWduK2AiS00mLUFDfv5xfnbcaBVyCXA5U+QNjRp83q3J/q3UiBSLV8JrNtxu2g0Si7RE/80oHbftIDCXr14pwFUPxu4UQ0D8DK1YzgZzWbJOtcy7qY0OgbnNBBYJWccUg0sealOVwZIh71oKCqdo4m5qN5e0x+cOWHo0ErxQJlTvroV0otOI2Qq4rjxpgcwxuI3uigILBjKg2MqBpuuNPMQkGD4HBrYdWr
+ qmOGzH+x
+ m53gAPyvj3uq3FCPpKw9YiGnQizJAT+CUR5gVVM/9zSJ+cWnZpa9yWvIhqdLF6DDPRRmoaoAIR59GCcxp/KoGJ1LhTTgnVnlMZwyK5vnbGytx9vXv3CgcuMTyucqUIPiUMPsMTCObNcv8DKbv8Ai8+CY9FC0dDRqWjShF/IDUMJNdD7GKA5UUxOOSZuw22kQst4f5ESsZ2l9VJOgOLsgWcFljoJsvcjsDErBNMKppVbw5TqTV39S2s7sL2bvwnzDX1Egan/bN2xnmU4T+2bvcvCYxUs0jGewdXZ9hsK2YcxL0FppP+7BsIkHG/TroTHjFxu+xRmaioMheiyx0KwAcz8CIbF3jw8W2gJrfaHuhRgRnL6x69G6ynXX5MdpwrW2z3Hh91nW1Ea1Aik50L17xiXB6Ft1XoFCdomYqnqnLE1GZ+jOIGF7n7Do6cImNILNprX/Kpt/9fV/S+T8M1dnkuPRvDPVwxLv83J7SkADUhqoR6grmdneuhDm8D32xPFnmvkBxQLWibYmPHFHSvvhX0IUFnWG1aqmeFsbk7l/3qNdhJU3ZzbnPTFrc/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,11 +154,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 17:16, Tal Zussman wrote:
-> All callers have been converted to folio_swap_entry() and
-> folio_page_swap_entry(), so remove it.
+On 9/8/26 17:21, Zi Yan wrote:
+> On Tue Sep 8, 2026 at 11:07 AM EDT, David Hildenbrand (Arm) wrote:
+>> On 9/8/26 04:56, Zi Yan wrote:
+>>> zsmalloc uses PG_private to indicate first zpdesc in a zspage chain. It is
+>>> equivalent to check zpdesc == zspage->first_zpdesc. Replace
+>>> is_first_zpdesc() with zpdesc == zspage->first_zpdesc in obj_allocated().
+>>>
+>>> For get_first_zpdesc(), first_zpdesc is from zspage->first_zpdesc, so
+>>> replace is_first_zpdesc() with first_zpdesc->zspage == zspage, the second
+>>> requirement of a zspage chain, where all zpdescs point to the same zspage.
+>>>
+>>> is_first_zpdesc(), is only used in VM_BUG_ON_PAGE(), so performance impact
+>>> should be negligible. While at it, change VM_BUG_ON() to
+>>> VM_WARN_ON_ONCE_PAGE().
+>>>
+>>> It prepares for a future commit that remove PG_private.
+>>>
+>>> No functional change intended.
+>>>
+>>> Assisted-by: Claude:claude-opus-4-8
+>>> Assisted-by: Codex:gpt-5
+>>
+>> Assied-by: LLM :)
+>>
+>>> To: Minchan Kim <minchan@kernel.org>
+>>> To: Sergey Senozhatsky <senozhatsky@chromium.org>
+>>> To: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: linux-mm@kvack.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>
+>> Nice cleanup, one comment below.
+>>
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Thanks.
+>>
+>>>  mm/zpdesc.h   |  2 +-
+>>>  mm/zsmalloc.c | 24 ++++++------------------
+>>>  2 files changed, 7 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+>>> index b8258dc78548d..4fd81c2e80769 100644
+>>> --- a/mm/zpdesc.h
+>>> +++ b/mm/zpdesc.h
+>>> @@ -26,8 +26,8 @@
+>>>   * with memcg_data.
+>>>   *
+>>>   * Page flags used:
+>>> - * * PG_private identifies the first component page.
+>>>   * * PG_locked is used by page migration code.
+>>> + * The first component page has zpdesc->zspage->first_zpdesc == zpdesc
+>>>   */
+>>>  struct zpdesc {
+>>>  	unsigned long flags;
+>>> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+>>> index 825022a7a328f..24526185fd31f 100644
+>>> --- a/mm/zsmalloc.c
+>>> +++ b/mm/zsmalloc.c
+>>> @@ -290,11 +290,6 @@ struct zs_pool {
+>>>  	atomic_t compaction_in_progress;
+>>>  };
+>>>  
+>>> -static inline void zpdesc_set_first(struct zpdesc *zpdesc)
+>>> -{
+>>> -	SetPagePrivate(zpdesc_page(zpdesc));
+>>> -}
+>>> -
+>>>  static inline void zpdesc_inc_zone_page_state(struct zpdesc *zpdesc)
+>>>  {
+>>>  	inc_zone_page_state(zpdesc_page(zpdesc), NR_ZSPAGES);
+>>> @@ -476,11 +471,6 @@ static void record_obj(unsigned long handle, unsigned long obj)
+>>>  	WRITE_ONCE(*(unsigned long *)handle, obj);
+>>>  }
+>>>  
+>>> -static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc)
+>>> -{
+>>> -	return PagePrivate(zpdesc_page(zpdesc));
+>>> -}
+>>
+>> I would keep this helper, reworking it and moving all comments regarding *how*
+>> first detection works in there
+>>
+>> -static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc)
+>> +static inline bool __maybe_unused is_first_zpdesc(const struct zpdesc *zpdesc)
+>>  {
+>> -       return PagePrivate(zpdesc_page(zpdesc));
+>> +       /* Only the first zpdesc has its zspage->first_zpdesc set to itself. */
+>> +       return zpdesc == zpdesc->zspage->first_zpdesc;
+>>  }
+> 
+> That is the version I had in RFC[1]. But how it works is not only
+
+Ah, great minds think alike.
+
+> 1) "Only the first zpdesc has its zspage->first_zpdesc set to itself.", but also
+> 2) all zpdescs point to the same zspage.
+> 
+> obj_allocated() checks for 1, since zspage comes from zspage and
+> the requirment 2 is tautology.
+> 
+> get_first_zpdesc() checks for 2, since first_zpdesc comes from zspage's
+> first_zpdesc, another tautology.
+> 
+> I also had a version to spell out both[2], but Johannes did not lik it,
+
+yeah, agreed.
+
+> because it[2] is a "super predicates", making the required checks unclear.
+
+Oh well :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
