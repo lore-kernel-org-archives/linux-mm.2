@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345B4C79FA1
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1855AC79F82
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 02:11:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C9B6B008A; Tue,  8 Sep 2026 21:57:19 -0400 (EDT)
+	id CB21B6B008A; Tue,  8 Sep 2026 22:11:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 064236B008C; Tue,  8 Sep 2026 21:57:19 -0400 (EDT)
+	id C63C46B008C; Tue,  8 Sep 2026 22:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE6406B0092; Tue,  8 Sep 2026 21:57:18 -0400 (EDT)
+	id B78C16B0092; Tue,  8 Sep 2026 22:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFAA26B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:57:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BCEE1607E0
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:57:18 +0000 (UTC)
-X-FDA: 85192561356.28.F2547F8
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 47C0A40003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:57:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WYg9XNmx;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788919036;
-	b=7xVQAH+ltOWdc4hAMrIL081XMaanucNAFlMclhae16M1eo+zoRwqaJRAn7GepunsM3v+yL
-	7/cU/6RHW30GxtUslqM7c75eQ+QwELGDkqPWana/4/gk0kqXcJ6+8UjNKsYDVDA0H+RdhC
-	b6YnuIACVtSbSSIxXheMMBHiaoCsqDI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WYg9XNmx;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9086B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 22:11:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E0E3A083B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:11:05 +0000 (UTC)
+X-FDA: 85192596090.14.E13AA32
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5749B1C0002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:11:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TBWXfbMP;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788919036;
+	s=arc-20220608; t=1788919863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YJX4jMGPn68Bg3x4fB66fOlpPyQ7Wwc4MaKVzswffK0=;
-	b=T6iiAJezM5feb9viG51AMyygQqb0STSSV80Nyj2iS7+xqULRztINzE01yloxRrKyNRTqlU
-	9lcYbN5jMjA1NfFEc6wm8IpA1wxmxW3L8hxH0CVU8v0BEmhU5hYEm8QszPmgG6AlpHMaBo
-	JFzdOyXFrbs6UYErsWX3c3TY43dcGpU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788919032; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=YJX4jMGPn68Bg3x4fB66fOlpPyQ7Wwc4MaKVzswffK0=;
-	b=WYg9XNmxl6vWpDj7ZU7mhhAHh1K5x3hWbrRAg+JwLNRcrUIFMJH8ntrG1PVdhszW3bWoCHvycHkCCpkzhUuZEH5N38P+giJxDKNfSa98CvKCVYx8Cd0FW0f47OOwlAsqIS7TQGCY6aJuiLlpiNQoHhOcbbhMys81wrx1EWyRbDg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAdOQaY_1788919030;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAdOQaY_1788919030 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 09 Sep 2026 09:57:11 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org
-Cc: kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	ridong.chen@linux.dev,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH mm-new v2] mm: mglru: clear the reference counter for rejected folios
-Date: Wed,  9 Sep 2026 09:57:04 +0800
-Message-ID: <9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 47C0A40003
-X-Stat-Signature: yemj5fb3scx3hkayi7b7mecb435uysks
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mMSpRkJWb1wgpS9PsxD2TN7ZwnY7QPSvbK47zQ4NDI8=;
+	b=Od2MxNuxhvEZldyr8GxEU/BqHoSXojFZ8t1hRENn3PaKnCKYTNPmayvYI0RqBEV8NBcjzK
+	1tKGCJYva+1uYz2gz64rb+LKMJ7Dh831/MsLC0gg8VbQ4XzOYozVKK0QJmLpythsqHrc+u
+	BNTCuq2X9bUcTV1vlXmwo8sUHnxWxG8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TBWXfbMP;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788919863;
+	b=f75otDu2mq4/LDD+ZAh7zlqaKP/JJx2kEJtBowR5OTS6+Vkhwp3NTrNkc6bGcrvcHWYW9s
+	I95lMVOKhN2PxGg9JiFDSAZTIZi25Lug7n789NfFnwtrbYlesAvODYat+RSQmrpDbG+FzJ
+	s48T71otobsLn0Fvmppauh8O5Ml5/3s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B6FD4403D;
+	Wed,  9 Sep 2026 02:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDF11F00A3D;
+	Wed,  9 Sep 2026 02:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1788919862;
+	bh=mMSpRkJWb1wgpS9PsxD2TN7ZwnY7QPSvbK47zQ4NDI8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TBWXfbMPLS8g9kkKXMOlBKV+f849NpEd6kXPivu1/gkzm8jPDUILHgCBopFXMKiZ2
+	 EpnaYznFF14lACVkxuVV7nM96DplBqn+hHv2GvofhRmktc7O+1noxxv520ErN7Nj++
+	 O3+ttNW9LEyNWFW+BmXcMy05uaDkupzbjsydxpCk=
+Date: Tue, 8 Sep 2026 19:11:01 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: john <love_goo@163.com>
+Cc: liuye@kylinos.cn, hannes@cmpxchg.org, mhocko@kernel.org,
+ david@kernel.org, ljs@kernel.org, hughd@google.com,
+ mgorman@techsingularity.net, yang@os.amperecomputing.com,
+ zhangqiuhao@huawei.com, wangkefeng.wang@huawei.com, mawupeng1@huwei.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Wupeng Ma
+ <mawupeng1@huawei.com>
+Subject: Re: [PATCH resend 0/2] mm: vmscan: fix scan overshoot and
+ ineligible folio scanning
+Message-Id: <20260908191101.b6e5a5a52cb8efe8f3883a81@linux-foundation.org>
+In-Reply-To: <20260901084706.3784449-1-love_goo@163.com>
+References: <20260901084706.3784449-1-love_goo@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1788919034-888875
-X-HE-Meta: U2FsdGVkX19dpszP8XeFZWLe9EuvLZEHS3GaQYpFQ/93SHkN3EHCT3LzZYGEoAo5KyufoA8zK1x2R+uKqygB+Wbk3dOLVf39wDb0bTL5+JMX7kqFrQFo4zsHm4Zh+CYO3S76+/cjIdPKIticrH5g+cVkjphveszqfup2zAyzAgArR6peI4jjpg/MkaKH0TvnioQDqxV4h9P3SoFScl6s2NhvotESe2TSV1aSKxMf/9h78lmx/fH2s01uefLqfOHkpC6RcdVaq2tgM78aWbh1bxyfVWFZiI6EV45jU+9VUz5yWz/8hfaC9AyLULKqTPDzh0iZG4f5qWAx+IFG4UV5y8Gj2dEESKyush2MC7eonpn0QIRBmNv9PLzGJMStX0aIDlOPv0kOOMyb65uKZ42QQfrKAjMOpco82iNrI2xnVezfnZ3vzTMmSRqtWTyQtRLN9n4vGh0iD43WpGqXUJ5mC3iZGQfX7lDQDsFGN9P3Sf5qO6A/rebtT0mTY8RyY+PWaPDf1AuibHaTUob7jQoZuvQdO/Zi5BITDx/pXbq/IDvNzEf85Q6zHoBMn8YNL99jsViekHtyQFcXA7agqjQWHp8gf4krPYl001MfJqzYc0sCAVBr3ehOzs4U8U1O0kDEnqxMbnTe+JgAdS6fr/RtM5CFrowd7KtpQ2GNQtLA/hnt1HYHL8CJmzKVm+t8SoDPpo/wMygROe+0pD04RpO7qjYgtfVXJdeEoRuqZVaw1bkitMJHy+uG2rSFPs9NCNMxoyw1AjhJI0L0saYRq4jp5OmfMGjBpSCbUBVbZobGcByHP8paD0wGYC0YqwWkkIJJc0L6x4F1s2cqw4ORSG9oamREQcllCcBONXVL09PJ9+cNQA8v3KZycS9cvFaHxP++/ZSaOKOmtIgZ/k12kbCPLa2uSbkfH8uEId7kYYzs7Av4EMA1NHk/Py+hqorZjwLBJF0RuHJnIVU3RN6TZlW
- RLfQr8k3
- YjDfbd+g+tF6F2cU2PxSUWKTfpcEjGli6GHUk5iUGiDUBWkErMrWfVHvQBLbPmCEAtoer0ynJYHH9kU2GdexnC3E4n05NqRzHzgkADl7loOtH49kI4GliS5pkPIewHyck+TFzcB1/4uWKGW9fW62zWX7vZQrssdv2qfu/x/YIYbDSfmhg1lOYfNSE26/YXuXO9C8oLc/k8WkcSMB0+GSlWzatN3nMJclyQWs1z1JR+BKpA+zYRLexX/n6QDb/BcmCIlrQ
+X-Stat-Signature: 5x3nb6ani8wquagfh4rggnex7khoskzq
+X-Rspamd-Queue-Id: 5749B1C0002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788919863-146893
+X-HE-Meta: U2FsdGVkX19nZQfNotHyommM2+QmCmlt6ds+Hz4EGjs2532Dn1OIG2aHFjzaZuP1t9tzd5hbsgefbqrC0FSn3DNK8wdKc/5IcsIuBHFQ1W5NwuaLIjSlApXIsJt1FAtTs66L5ao3R42SXN5aQK1Hc+cDiflg5tDDSF3Aq69ql5ZtiMn1VV/Gbo/l0TMX4vU3Av9bocjYW/cKvvTWAFlu5JENkMZruxNhUw9JSlmxy3/F9N35zP/7DO5rTrxbcZrwc6kgAb+KqhH76wI/TCx1uMg4hCqFu6ztnbtMu1VkCQuRqdb6CnCyTPKZ75l/8KvgS3SrPEHPDQlYcxigQ1AOR2j2Iy2txgqUeawO03ZcRoPsw/1EltWezCiTKLsq4iV6YaBpVCmP48/Il9YY6ckNwaJMCEkxWMfsmkOz/lCommvcT+pUsi6OR7FiiLPT8KUuzfC8KC1VsamRKpv0fpFfHaUWdNhuNE+2TM9tylZw8gJqbvkohablc9jiHo9vM2PST0dCwLLRTdNk/jRSqpRtWvgO7LN2y5rOpOkIM9FQqlFwIFShckEScs5sJxPjY/ERE+1JCTcnWOWTHE6tiV0zCIfcTmgQdL+vvj5ZRuP7vqMZMl0lrrhKPxTkGhCjEJY8FPKl57u8/jA8+q/W0CARfkmSxTndBaMVCVCqJzfcrYCvv3CNjz45ftQYXccX1VWZHZ+u4DVrffbXG7IulAO8UhtOZObWsTtEgYrt4yLc2ccOAq3r5LecqCJHvKqHo0TdLNFhbPH3TD3QitFaAvVBQ7UImipIqSd4h+jkXWpjpVRawMg0azCKhWrrzFul/u7R80KP6Ah14b/7rsickhmZBmcyTptqMrxUjwd+oVt8um0prn2Rx2dfbxoyewFmCYIv76spR2YDzp4sJ2Bblgcfuycu997SL5/J8Xqgki5w+hy1VK513lycc8iHffZv5eLSKrUNZOKGZgkfq/cQriA
+ Klt/zq8e
+ 7tR3vRLhZ0gFa+bd6NMRFpueDGWfHkqS+H03+dTP2H6DBWM28ZWVuoaPEji3BCU/OaPDQ//JpEGMy8rWdyZRpDxyzMAv6mYb9NAUcj60JkPWfzEDRRLn1uIrr6mqz4uUyjeOOeDLcbPfCh1/3VvDMjUcBYBLOlx25cyVYwzHh61/z9x/qaNywV+q4NmwKFHjeq9Axf2MC9/C+R4M96PVmLa8uEVe/1mh+czBIDry/+GzgI0SPdABYDKxjTy4eksgu3KirSviJeXtRilWsJm3polETFP5/cNGRhutqRz+GRJ6vzg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +94,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As per the comment on LRU_REFS_FLAGS, when accessed folios are promoted to
-a new generation, LRU_REFS_FLAGS should be cleared so that the reference
-counter can start over.
+On Tue,  1 Sep 2026 16:47:04 +0800 john <love_goo@163.com> wrote:
 
-For folios rejected by shrink_folio_list(), we clear LRU_REFS_FLAGS and
-set the PG_active flag when lru_gen_folio_seq() would place them in the
-oldest generation. That's fine.
+> From: Wupeng Ma <mawupeng1@huawei.com>
+> 
+> Rebase to the latest v7.3-rc-1.
+> 
+> These problems only surface when reclaim targets a lower zone
+> while the LRU holds folios from a higher zone.  Normal userspace
+> allocations go to the highest zone.  The zone-skip branch stays
+> dead under typical loads.  Lower-zone-pressured configs (DMA32
+> module allocations, memory-constrained devices) hit the issues.
+> They inflate scan cost and delay the OOM.
+> 
+> shrink_lruvec() drives reclaim in SWAP_CLUSTER_MAX (32) chunks, but
+> isolate_lru_folios() may scan far more than that per call on a single
+> LRU.  The excess is never charged back, so shrink_lruvec() keeps
+> rescanning the same folios round after round.  When reclaim targets a
+> lower zone, the same scanner also keeps walking zone-ineligible folios
+> that can never satisfy the allocation, inflating nr_reclaimed into a
+> false progress that delays the OOM.
+> 
+> This series fixes both:
+> 
+>   [1/2] Charge the isolate overshoot against the scan quota so the
+>         next round skips already-scanned folios.
+>   [2/2] Stop scanning once too many zone-ineligible folios have been
+>         skipped, instead of force-isolating them.
+> 
+> Background
+> ==========
+> 
+> We observed slow, unexpected OOM behavior during extreme stress testing,
 
-But for rejected folios where lru_gen_folio_seq() returns a generation
-other than the oldest one (which can be treated as a promotion), we do
-not clear LRU_REFS_FLAGS. This can violate the promotion mechanism. And
-this means the rejected folio enters the new generation with stale, inflated
-tier bits, which can inflate reference counts and distort eviction
-statistics for these rejected folios.
+OK.  But why should we care?  Don't do extreme stress testing on your
+revenue-generating customer-facing computers!
 
-Fix this by clearing LRU_REFS_FLAGS for rejected folios. Of course, I need
-to evaluate the impact of the changes, which mainly falls into 3 cases:
-1. When lru_gen_folio_seq() returns the oldest generation for rejected folios,
-there are no logic changes, and they will be put back into the 2nd youngest
-generation.
-2. For rejected folios with PG_active set by shrink_folio_list(), we only
-clear the LRU_REFS_FLAGS and do not change the generation.
-3. For rejected folios with PG_referenced set, the original code would put
-them back into the 2nd oldest generation. After this patch, we will put them
-back into the 2nd youngest generation.
+IOW, as long as the stress tests don't crash the kernel or lock up the
+box, we can spend our time thinking about kernel behavior which really
+matters.
 
-I think case 3 is also reasonable, before commmit 6cbdd9726fb5 ("mm/mglru:
-use folio_mark_accessed to replace folio_set_active"), a rejected referenced
-folio was also put back to the 2nd youngest gen. Meanwhile, I didn't see
-any noticeable performance impact on my 32-core Arm machine when running
-'make -j32' to build the kernel inside a 3G-limited memcg with either zram
-or NVMe swap.
+Now, if these changes can be shown to translate into improvement in
+real-world workloads then they're useful.
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
-Changes from v1:
- - Update the commit message.
- - Clear LRU_REFS_FLAGS earlier.
----
- mm/vmscan.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Am I wrong?
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 40d3f1b48a74..1557679aadb1 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5020,11 +5020,12 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			continue;
- 		}
- 
-+		/* See the comments on LRU_REFS_FLAGS */
-+		folio_set_lru_refs(folio, 0);
-+
- 		/* don't add rejected folios to the oldest generation */
--		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
--			folio_set_lru_refs(folio, 0);
-+		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
- 			folio_set_active(folio);
--		}
- 	}
- 
- 	move_folios_to_lru(&list);
--- 
-2.47.3
 
 
