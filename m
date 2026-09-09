@@ -4,149 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D91C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BCA5C79FBD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:04:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7564D6B0095; Wed,  9 Sep 2026 13:04:14 -0400 (EDT)
+	id 0EDD76B0096; Wed,  9 Sep 2026 13:04:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72DAB6B0096; Wed,  9 Sep 2026 13:04:14 -0400 (EDT)
+	id 0CC116B0098; Wed,  9 Sep 2026 13:04:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61CAB6B0098; Wed,  9 Sep 2026 13:04:14 -0400 (EDT)
+	id E33416B0099; Wed,  9 Sep 2026 13:04:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4138D6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:04:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35DEA1A02B1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B365C6B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:04:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 163CF120283
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:04:16 +0000 (UTC)
+X-FDA: 85194846912.08.8547FAE
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EC040140002
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:04:13 +0000 (UTC)
-X-FDA: 85194846786.03.238E2A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6DD0A80009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:04:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KL7POgn6;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788973451;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D8vM5R88;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788973454;
+	b=qbPWe4kWOq5jiBUBrIU+3dICDXik+bMQ1xga8jBgpngNNQ2TTHv2C95Lc4r0hHjp6WqZiB
+	eRmi3VxuH0LD0wKmCuZCKtUdObRPgdnjWSj5UIH+l/8z0MTVGXTPY5v8h8tPXWYqtc3EHs
+	seETETePdRh5kWX83/5m41douV86MN8=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D8vM5R88;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788973454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkwv44ETJQmXMk/e//8L25kcENQTJgfQl/TVfQuISwc=;
-	b=hCvhkLG9ly7f1uUGy4JZBisnKtM7+Gcy6EyDN6vI5M43Zob6tayW7XGixQ0gy/McdD6IJ7
-	t//x/HelDBwifKwvDWRn8rRIBuheguVkKhPtgVT/ROuvpQNAdipg2pVtt0DhFQYJb1oMUC
-	D8UOxQFqyO4UrqsCFAp2bODv7Tin/UE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788973451;
-	b=DJph3hbgfekBVcjmX9cEOIEoXE8cKo96WXuunFze0sm8IZgUWtKZonWlqwim1jOejHwCfq
-	WjPLvIoQQCGPZHvaLCqT/r4ZeuSVmWV7M3aU3e3dXzkPEMELF/aRCmSoNcz0Uk/bIifLdi
-	KSWDNI12g45eUP4MzkUtQiWtU4Gcqg0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KL7POgn6;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEA1C6020A;
-	Wed,  9 Sep 2026 17:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA921F000FF;
-	Wed,  9 Sep 2026 17:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788973450;
-	bh=lkwv44ETJQmXMk/e//8L25kcENQTJgfQl/TVfQuISwc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KL7POgn61am+C0j55B/xe9I829GKFJnbqWM4Sc/9uo0gsewY7R4uvjHdTY0G8JyPr
-	 6s4jQGnZWL5sM9uC2hCRrnpFWpXaFpxgmfIpQLQj0r7sxzWAzGJa3hJdqToLmJ0u7n
-	 tRy8znb7vuPr1VTD6e+80AZIlRogFWzwb4pLcfqNoIzli/IEbE/4JkxtDsTf9KkcWh
-	 W/omgFBeAIX95D1F4PMYJq/8fyPFdUMvwRXjemECj2YM927HdL21W5BCrdwt0/JajC
-	 sYugAQRUycBh3DyaZ8TBz3341pDD48IrCkDOeQ4fRcRr3xh0APtnsMjoI9ZyAHdHS7
-	 wWwZtLa2i6Xqg==
-Message-ID: <fadb8870-37f8-46f4-aefb-c21bc3a31e5b@kernel.org>
-Date: Wed, 9 Sep 2026 19:03:59 +0200
+	bh=A/3n7+l6Hk+FAEPnBkeK4yLp6nphYfaKQMZLPlsMb2I=;
+	b=Ds85XpLxQRJmrnEwksRgy7nHLcJ+brO4BWZLR23WEY7g+uvduq+u4Q42XcLeOST+NugjhX
+	PqwVPeDA7gNatupoyr1Tiii+CqFLL5I6s/Wm5r3mI42eoqRP9wkqztxFGlyrRDQ5DL6Bza
+	+j0U8wPa7DBlclI19w5m2/krQ+uWE1o=
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-46f53c8a5fbso1984598fac.2
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 10:04:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788973453; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bbMuuHvYbZFUinF5d0ddFmfyE2Su4cfkkmVnISitq1QnG7Gm8ghWbvXSyVQir6Thd7
+         ZGvraOX2/onPaBeGnm4J3Pq+9rZr+5dhj9VuFAZxSsMzP6BC0Tk/rP7y4FEW0Hkfdypp
+         VQj0k1qbfiJOsBC9ojqtFkHgJ8f8dFsuoY7M+oXkR9hLwIaue35/sQNwWxK96/u+3JnX
+         SkbYrbwAmVjwD0UFnbfzpvZIiRKC85G76m1UwmoTiGcI5L5vDUf85EQ/nemH9cx2w0Rr
+         sllLDXTOXdoL8oHO9IzkLRMFgScPLZcQtlwRXGNnfcAGiuKpQ9X/pKK4TIDeIefLObZK
+         4v2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=A/3n7+l6Hk+FAEPnBkeK4yLp6nphYfaKQMZLPlsMb2I=;
+        fh=9VdaurY+BXZtRpex2JNZ51N0MirB+jG3/XM3ADWU5Dk=;
+        b=HLGgKkrnlOZAFK4Qg+3bsMEr44vN0ewXdL1ktbIydml/HkpyfS7Ck6ZoeHXdyHBfej
+         WCU88Ak/yNcJngXHRYnIpuDc7UmBMj0TbT+tN4ElzSk3G1HfNWE6o/K0rmKvRciFBjXU
+         z8jAl9g+CuzB4rPaYiUQJ0HquqK1WuLcKnzH6EjpmgIwLOG9nXVMdsT35hqxibQQKQY3
+         CD8jVeXlz1v1mlfb7N4jGsx3BNrLFOMUJShFGzQMNaolUFxtpAORT/UUBHNYsMifoR6u
+         fjNwoMsIsIhcLWyYH/pSweAk5nWY7b6J091H+7UuOx7SmrwKEB6920crmbuGe59vXXrT
+         7nbw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788973453; x=1789578253; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A/3n7+l6Hk+FAEPnBkeK4yLp6nphYfaKQMZLPlsMb2I=;
+        b=D8vM5R88ndjun+zCK3gY0NxTY03u9WoHBR6XPxKfVWRKiLOiY/bc3fS07SwHAR3bI7
+         2+12N/nDkkYygIvul4r5uAkiBiYYrIejLaU/upRTOfAUID3aC/cn61McoZGElzCBtoVV
+         NCvGfEJxliMaao+pDtnz8PBrZg2IxH9z5UY9PgiRc2kRtggKUYMUN48j3MSy8ifQOQQk
+         Ub2uIr3YERFkNF0YRYmP6oCsFp722ZC+XSsFBXVC0VS2sOlNesi/kF/xd+9a6jhlYO/F
+         q81BfIye33VvcN57Vyg8ngBER2LNH9TSYauCrG3HJaJNvQT21Tg3r6t5v1oUSTijyfo8
+         Gs3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788973453; x=1789578253;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A/3n7+l6Hk+FAEPnBkeK4yLp6nphYfaKQMZLPlsMb2I=;
+        b=dEKBUhaRbLQ0JWxmvk2nVznIWNlqXzAqWjXA6fjOCvZZ6XQmrUB4Kd2tcx7uanSM3I
+         0RJnrQbFZbypgxPhVtJOtXOB8Ci++m5kmq9sgIdxZNNCJeuslAMEfFio5NRUcv2WANJY
+         q1Xci6ozoEoTfVYKTDvyhASHH1/yN/0uVn8XhaTr/GDj9INZUJC3IZ6lHYFfQMBeMG6f
+         3y89qjDTfEU8wSjDVLLnicEP+/hFHM0WtaU4JBEEudEMIL+kE4GWvkQnvgQ6yAY44krY
+         J+xLXb/pX8h3MVrMUugxD5Fwd3Qyy1cnopzLqddL7U8IymiZrTF98KX22WsDejQX1fFd
+         Fpmg==
+X-Forwarded-Encrypted: i=1; AKwUvBxhQVmPajA2phXo8nv9xmmwucP3UDNzQwedNLGko/YyEJQqHjyEoERBO7wF30rCz9uBUSA1qHP1vg==@kvack.org
+X-Gm-Message-State: AFuF++mzx4WdFIZvTcCt/vtqLUOLRVhSFsIaOGsajloDIcTmIY1HgPIW
+	L2CdMow2s0vimngdNPTiSrbw4oH/plmCHhXm2oiQw/nTaZhbaYnPixv7awDVD0ALGwqvaVzwjz/
+	8IyPXl/Hxns8SX/726eC13wuZFddWT1yKfIn2Vo3a
+X-Gm-Gg: AYBFou1U+PicbbjShlydxsLCfSzhyZ/9ti36cJX0x80ToRZTjLBX8mqtWMHVvbFwrsv
+	km9YIJiFxO0qnUGjad8wO9Zty5bmzNFPxA9kK1Eg2H0vlV4Th3y9h2JkrtmeCQFvn7aetSZKUzA
+	oJvhcAfUim7OXUV/IzTlGj5b1QPMNX4dJJx+gMbLkYEoxZTePaXfy0e72kuD1yut+kzKGw9zt3L
+	M8AG1EEsvbfxdcY4Npp+4HPCTLvZJ5A4JYQx5ZzlteVe1e8oZIylWa/YBIuQSj4xu2MRRJY0ynu
+	r4qLCjUa+KTSHdKcVYfqSKhqEpQTGPsjgY5pd2jtMTtYiF+l6PZS7vdk8g8PyJXDcrSuIjUBAXj
+	PnKqh825za3Q=
+X-Received: by 2002:a05:6820:1c82:b0:6b1:6c44:d3b1 with SMTP id
+ 006d021491bc7-6b6fa8dca94mr19436135eaf.2.1788973451595; Wed, 09 Sep 2026
+ 10:04:11 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 10:04:09 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 10:04:09 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260904171412.191180-1-joshua.hahnjy@gmail.com>
+References: <20260904171412.191180-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 6/6] selftests/mm: add a GUP selftest
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260904123631.198697-1-sarthak.sharma@arm.com>
- <20260904123631.198697-7-sarthak.sharma@arm.com>
- <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
- <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+Date: Wed, 9 Sep 2026 10:04:09 -0700
+X-Gm-Features: AcwNN1V_OL5b4rKvClN1gT5AOJG1MUC1dn0rdqBCDNzmXm8Bb2nF-U4o4S_9uzM
+Message-ID: <CAEvNRgFfSJzvhrO7gEs1DVYV9ES0xjBtGJgqruFo-hSKUSnNZA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: hugetlb: Return -ENOSPC on memcg charge failure
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+	Hongxiang Lou <louhongxiang@huawei.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Shuah Khan <skhan@linuxfoundation.org>, jthoughton@google.com, fvdl@google.com, 
+	rientjes@google.com, vannapurve@google.com, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
+	Yanteng Si <si.yanteng@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: 1w4yn6iud1yg6y8m1cu455oxpur8911j
-X-Rspamd-Queue-Id: 6DD0A80009
-X-HE-Tag: 1788973451-754908
-X-HE-Meta: U2FsdGVkX18Q39UUtFcoSFFPSLtMlkX1JZViC/CQXUJQuAliigbgi55pEXOBcePkzQkNqLs5GElwbEl9H5+uaX94PVDTMThtroPue5LDG3HARckf5d0W8QnIWM986GNJjTdrM7Hnc3bbvg4UD3GHHZv0qY0SeId7PY4M3eqrrMgQAkwPkn0eSDO4EGFkmt2NmN8orNDo0qS1hqt3XBC4rcFZkADthbH4lnGKgR5EneU7BSrO0XgRfqt2ihFuZfOTHDRZYLZ6Nn7PQkTA5jgL4GoF9Dzyly2BqOhddKSbC5hgKMIKy/DIxa9ljmgz+gl8kschv7epIDdEryN/K4hViEIbqn6oZzZtoFzsC34cbQzwAySop6nxmROEZ/CEvYMJ/CqSG2M+EpA2S0TF1roKzGOpFe1Bg5lnDWbTpHPiCLwBLHZJ/lJH7LwySHr3ejWvz2gBB5Yxoehg++14Yo0kGCMIkPnt7dEiGNsA3HE/oAxboR4DmStjU9mnVLkSszFMLMiH3Ud4dg4y/8s7/5kY2DzMYM0UmQ4YTJKbBF7NktMp2X56z6xesRkqf4dtKFkCy0kenWFHJj1jfOXkgpHoSQ/uAqOwUOg1aZETI6tji0xBPdRUKkSlpzxrcR/SgYw+TRJndGXV7RNnHgfByUylIRCBnIrBMYtIimYrD4p5WMPaI/71xaFUjjE+vvr6hIuyTlNH6qC5YgmCsnbJiBQvsy3Br8XOiMLB7zACuPOeivX5E5j3/X6M573+M5DInL/pznZQGjVCVykpJUONHOyR7H+zBS/Rpv1K5lsGl2qr00K7NSQ0zo/7EeyOZ/Dhd4jyj8MyGWI73EsiL/1/8KvNjQdYy1u+lGS0DunfdlOAtDMEFAuV2N2z+LUMFTuEJMsedorZ/ft1NS3AKIbXrUvM9+bjWwuy6TyGZtKGPi9u753fw+EmsGaswh5bOJzPP8pUdyZGlyZqXwK/GRDe8OA
- fzqUxiI7
- LWtG5hmupTuQwAYlKFK9cAYAkI1L6Pmb9IeuhlAxt0FDoPKIO9lvnueuYgvjrpt2/Re+7CWn9tlAU/KqzVEI6dfVzpR+BfEahCzoJz4HyQaJkqkc6DPZm1IRhtwswg3nBXKUzVOgFi62E66QAtjeNw8z5ZbGYC7N2/VBgc/aIRFlT2D/blLZJdLN3xPl6MdcLhWqCImGy3pOydKnKLp8w/Dgk7/q5mrzp5SSm/IIKIHxFIrDE4U3YS8wh/oi9W3s7rPvp
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EC040140002
+X-Stat-Signature: 4buqw7n4t8bgcgez1wzcrgdp8wpnohpe
+X-HE-Tag: 1788973453-579408
+X-HE-Meta: U2FsdGVkX1/roO9e62DzXdxjgRYLSoD+N/hKEi/fyUBTECbEZAJYRyyI7CbnaPGa3U72yCVVEKKxs9wWrBP6r1uetDBKKOYQ1OisX/DZ99bSBfmCqfzuNreQ6/f0QMgAb19ksNKuMc2vrzHiGFzkStnLwPg+j2BcM4ffHHbCf/DspUIjTLAHNdOtwwhOrFrHp1u6ekVvv2N2hFHz4k2mdfiJ8qHg83a5oOxM0rInRBJzHvMyc3pF+xsa0SptTVYH158S47YDjxqinVRxE15ZNdWRcpNvcNIZMhTZXmn9C6Z+GtUlS5718/PPtI23O53qX5YnVhjarsd5kvpJuycz5K21zHSLINTjphD9TGiWgiqjm2yYr/CHcanH2/CE0oWBi4YGOPO62dy2hJ02Xml8TbT7Qroq9ZMqSObGPvrsJLL5OP0d+zZxW4aJ4TJEeFMU0wyXxu1VvHP72VHjcDV+lPl17BiNMP1yGQxcR9UWQ0zc0QSQoAhWEhXDvLSWpK9Beax8aUciHjqlhIFE7mOZj1dIyVSKj6IFke5LG2Eoh5hhJKR6QZcn4kSjvzSHeDYODtuMWGLvnyJR0le50D/Spp7WrZaSKmrfA+dKkGDlQgRA4AL/FRBJ1mgKTn0uk+68NJLPB/RrS5sNlhHBT1gDqJ+dh4RdiktYz+Ip+VO41Zxw3nQWUvGuhk6kjJGaJ4qRWFXXz/De7km0eTDtcwDvO6qNP/tf2zRPik73FwMCYkzaBI4451wKP83ggkop3GOdANU39BCA/I5913jKbxzc7oVVzg3Cgr+GLUi38xYeHU00CWoHpH2FGf2r03idvAFijpttyKgMn4diWOc7ouoYqzI16HiMiEdlGxiWnIuWuYK3yP8jiuHsg5ul5JwgPzmN0F+yYsWDPGSoNofH9jr9q5OFcS3pMMbpOjA5dKavT3uHSSm/LAJUclOyEp9JegxfN7/lQ9Z5wsYeSAHL2EI
+ udK1q7tg
+ B/xtI1OTb28o5YQCK7iPGJviOqTLkbPp1SgeZqo7Q0WOVVY2uLfnaDZj/EPuyjgpyubp7Dz2caSZk8HJMOXSOOO+Z63QvBeG4j7mXpg3yYvt/2c8Vnq8vZnkNMefHNHzAyqsuMe418hx5bKHjRXsP40oKs0IHDPFfAZtQ2p958RVil3wQJ2V3YT/EDf1TKN3j7r8Y8tjkwT54yG/BtfChlRiz4vVDQ3lq5pGY3XSUOGx106EkXpabFhIAqOMAyyXAuSS7VqOrQLDco9Cu/eMp7I5CFW/HgZ4HmU29ehAIGkN9SVBpyQ1BsjX+nw5qQ/KEaTJP8s7SX6Mj6esUb4klXkEhCteAPbUPIIPScq4PTb8E+WT87xQIxVh1gWbmJo6mATOZskyXT2WOJ5Kh+0L8EAy4svpFR3XbtyWoDUkm0ZVSMCXsZj9WxqHssGhctJP/Jb/NXqp6wv7WCntaHE1u3xDtug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,94 +153,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> BTW, I was wondering what it would take to:
->>
->> 1) Turn mm/gup_test.o into an OOT module (would we need more EXPORT_SYMBOL_GPL?
->> EXPORT_SYMBOL_FOOR_MODULE ?)
->>
->> 2) Move it to tools/mm/modules or sth like that.
->>
->> 3) Build it with the selftests etc
->>
->> 4) Remove GUP_TEST
->>
->> 5) Try insmod'ing it from the tools+selftests that need it.
-> 
-> This is an interesting change. We can keep this open for discussion
-> here. If required, I can work on this in the future.
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-Yes, we should in general try moving all test modules out of the core.
-
+> On Wed, 02 Sep 2026 01:22:56 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+>> From: Ackerley Tng <ackerleytng@google.com>
 >>
->>> +int main(int argc, char **argv)
->>> +{
->>> +	char *file = "/dev/zero";
->>> +	int fd;
->>> +
->>> +	fd = open(file, O_RDWR);
->>> +	if (fd < 0) {
->>> +		ksft_print_header();
->>> +		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
->>> +	}
->>> +	close(fd);
+>> When mem_cgroup_charge_hugetlb() fails with -ENOMEM, alloc_hugetlb_folio()
+>> currently propagates this error. This results in the page fault handler
+>> returning VM_FAULT_OOM.
 >>
+>> Because HugeTLB allocations are high-order and use __GFP_RETRY_MAYFAIL,
+>> they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
+>> without triggering the OOM killer (or having it make progress) leads to
+>> an infinite loop of retrying the fault.
 >>
->> I'm confused. Why do we have to open+close /dev/zero?
-> 
-> This is a pre requisite check. Every test opens and closes /dev/zero and
-> /sys/kernel/debug/gup_test of its own. So I wanted to check before
-> running the harness if these two are available, so that we don't have
-> setup failures for 60 test cases.
-
-But why /dev/zero? We should understand why that would possibly be required.
-
-> 
+>> Avoid this loop by returning -ENOSPC when charging fails, which maps to
+>> VM_FAULT_SIGBUS, terminating the process cleanly.
 >>
->>> +
->>> +	fd = open(GUP_TEST_FILE, O_RDWR);
->>> +	if (fd == -1) {
->>> +		ksft_print_header();
->>> +		if (errno == EACCES)
->>> +			ksft_exit_skip("Please run this test as root\n");
+>> Make mem_cgroup_charge_hugetlb() fault handling use a common error handling
+>> path, the same handling used for hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
+>> which also don't trigger the OOM killer and hence opt to terminate the
+>> process with a SIGBUS.
+>
+> Hi Ackerley,
+>
+> I hope you are doing well! IIRC, this is the same fix as the one in
+> [1] (in spirit) right?
+>
+
+Yes, it's the same fix as [1] in spirit.
+
+> I prefer this change since it is more obvious that we return
+> -ENOSPC right there and then. Since this is a fix please feel free to
+> add:
+>
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>
+>> Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> ---
+>>  mm/hugetlb.c | 14 ++++++++++++--
+>>  1 file changed, 12 insertions(+), 2 deletions(-)
 >>
->> Wouldn't we want to fail here?
-> 
-> mm selftests normally skip if the test is not run as root. So I tried
-> keeping the same thing here. Do you think I should change it to fail?
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 7857728457952..01b57f6d3b804 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -2823,7 +2823,6 @@ void wait_for_freed_hugetlb_folios(void)
+>>   *
+>>   * Return: A pointer to the allocated folio, or an ERR_PTR on failure.
+>>   *         -ENOSPC if cgroup charging fails or no folio is available.
+>> - *         -ENOMEM if mem cgroup charging fails.
+>>   */
+>>  struct folio *hugetlb_alloc_folio(struct hstate *h,
+>>  		struct mempolicy_interpreted *mpoli, u8 alloc_flags)
+>> @@ -2896,7 +2895,18 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+>>  		 * were committed to the folio and freeing the folio
+>>  		 * would have cleared those up.
+>>  		 */
+>> -		return ERR_PTR(ret);
+>> +		/*
+>> +		 * Return -ENOSPC when this function fails to allocate
+>> +		 * or charge a huge page. If a standard (PAGE_SIZE)
+>> +		 * page allocation fails, the OOM killer is given a
+>> +		 * chance to run, which may resolve the failure on
+>> +		 * retry. However, for HugeTLB allocations, the OOM
+>> +		 * killer is not triggered.  Returning -ENOMEM (or
+>> +		 * anything resulting in VM_FAULT_OOM) would leak to
+>> +		 * the #PF handler, causing it to loop indefinitely
+>> +		 * retrying the fault.
+>> +		 */
+>
+> NIT: I do feel like this comment block is a bit verbose, though. We just
+> want to explain why we return -ENOSPC rather than -ENOMEM, maybe we can
+> just explain that OOM killer not triggered --> retrying is futile?
+>
+> The change itself looks good though : -) and I don't want to block the
+> fix. We can change the comment later.
+>
 
-If other tests do that, it's fine!
+Got it, please see v2!
 
-[...]
-
+>> +		return ERR_PTR(-ENOSPC);
+>>  	}
 >>
->> BTW, why are we using HUGETLB_TARGET_SIZE instead of just using the
->> default_huge_page_size()?
-> 
-> HUGETLB_TARGET_SIZE is the target mapping size and
-> default_huge_page_size() gives the size of a single hugetlb page.
-> 
-> Using default_huge_page_size() would reduce coverage for 2MB hugetlb
-> pages. The old test set self->size to be 256 MB for the hugetlb case.
-> 
-> Now it was discussed in a previous version of this patchset that we can
-> derive the self->size for hugetlb case by fixing the nr_hugepages and
-> multiplying by hugetlb size, and thought 128 would be a good number for
-> nr_hugepages [1].
-> 
-> But in case the hugetlb pages are very large, eg we can have 1 GB
-> hugepages as well, reserving 128 GB is not a good idea. So I tried to
-> keep the target size of the mapping as 256 MB, as it was before in the
-> old gup test. If the hugetlb pages are larger than this, we'll reserve
-> only one of them. Else, we'll reserve (256 MB /
-> default_huge_page_size()) hugetlb pages, which comes out to be 128 for
-> the case of 2MB hugetlb pages.
-It's odd that 2M gets better test coverage than 512M or 1G.
-
-Is there really a lot of value in testing 128 2M pages? Would, like, 2 already
-be good enough?
-
--- 
-Cheers,
-
-David
+>>  	return folio;
+>>
+>> --
+>> 2.55.0.970.g62bdec98f9-goog
+>
+> [1] https://lore.kernel.org/linux-mm/20260720-hugetlb-alloc-failure-fixes-v3-2-7d2a169aa9ee@google.com/
 
