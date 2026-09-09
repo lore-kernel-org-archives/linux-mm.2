@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1D5C79FB5
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 04:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA147C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 05:59:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F4A36B0096; Wed,  9 Sep 2026 00:00:21 -0400 (EDT)
+	id 8BE456B008A; Wed,  9 Sep 2026 01:59:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47E526B0098; Wed,  9 Sep 2026 00:00:21 -0400 (EDT)
+	id 84A326B008C; Wed,  9 Sep 2026 01:59:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BB8C6B0099; Wed,  9 Sep 2026 00:00:21 -0400 (EDT)
+	id 70FEC6B0092; Wed,  9 Sep 2026 01:59:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F41F46B0096
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:00:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51A7D40854
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 04:00:20 +0000 (UTC)
-X-FDA: 85192871400.12.F234C16
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 98E95140006
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 04:00:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ug+EtDLP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 47BD36B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:59:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C6A44087B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:59:55 +0000 (UTC)
+X-FDA: 85193172750.30.D4CD0DC
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 979231C0005
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:59:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=CMEIGvTJ;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=VonGHAfq;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788926418;
+	s=arc-20220608; t=1788933593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EnBk09dXkcIcLsLMll4dE1qy96qjlCl4Bw9XNV8GeNc=;
-	b=xv47be/eGHcaKJwmorxuwrE53tFesjsRuldTcrgV7hTdeK+7G6Aw8lvFtkC9tr0MLvBrg9
-	hOTSR6QlSspkxbPdSMyEgjH3H6TLMOKKe3bO11Mzzx01rRB6bv4fhdhDNp43xRXTWw+SpW
-	k5eA3N/s9+Oyu+e5uyFrVdRRbCC7yeM=
+	bh=XfBuOKvuia8jKU4jKhI6ImQ24+OP+x2lVvStL9kHB6c=;
+	b=TDtE0VW2eIqQbE4Q9f5N3TL3Q1xncLLrNha1T5ON9jq5Dou5w5l6PWhY8OMrflxN+NLYE8
+	szd+69LOnGyIVA00RrsBdjHODHXTzVLpKp1DGnvoe54yo8EkKW0XRM58eWuJ637Vf1bQcW
+	TKoLAJc38i4L3mjIndrwl+/DMz9QI/M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788926418;
-	b=I2Ck5ObSQnL6IJAez15ulIYs6usdRq6lXPsc52VzxmkKvFFVhoY8V+eN5g82Vemfx5t2C2
-	/QmOF+yKyLzD6EQ7aBJq/MvJYlQ8y+vYdgYcKeNy5my4o9ZKHfojiE4KKVjnWjKM+gK1bv
-	cHZZ8WfL8QVf1g7OqDdMc4/7we5T/+Q=
+	t=1788933593;
+	b=WfugI6ZxKeYpJ1fo1K4XWaWAhPpz7Gv8gl/xzSNH6sbUd4RHvUflkrJNOOlHVnMl3BoN/L
+	JQzFhvQDbEKC/VdQHZ2/35feUulWyEehiIlj2yRcsoZiBA/7uhia+F/mqRc3Hz6vkR3J/A
+	T4rZP39s/WCzNrNn3fHqx/yH4sRMKPE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ug+EtDLP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EC1D1477;
-	Tue,  8 Sep 2026 21:00:14 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0382A3F528;
-	Tue,  8 Sep 2026 21:00:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788926417; bh=U8t03BH95uIReM5gGaLf+aJqwm/RpI+Qj5wFNcim6XA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ug+EtDLPJOfYjPOWsAmFFj9LTsUzGcUTlKj5w2+XZfk95JRIYfU2PaZcCUb8/j/cp
-	 FTk88wBGOJpq/uW/ersOaw782hG69BZfGZCvQppHf/hhjgkTTQazRsn4wTM6CwCf5P
-	 VTxYPV2buK/Cg+Tgtkge2y4SP+GHXDKVMk5c0y6g=
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH V2 2/2] arm64/mm: Standardize printing for pgtable entries
-Date: Wed,  9 Sep 2026 09:30:05 +0530
-Message-ID: <20260909040005.4148136-3-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260909040005.4148136-1-anshuman.khandual@arm.com>
-References: <20260909040005.4148136-1-anshuman.khandual@arm.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=CMEIGvTJ;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=VonGHAfq;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Date: Wed, 9 Sep 2026 07:59:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788933591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XfBuOKvuia8jKU4jKhI6ImQ24+OP+x2lVvStL9kHB6c=;
+	b=CMEIGvTJ+RpDUpaQX63YOGpF9L1xMeGi9s7P9EumAFOOXvZhDn04zc5cDcznjmEwFWcMKn
+	aV3mh9HSsioEvvDCuqmuPhxAz0EDxVz5FVZWfmObWfXRSybwQ1ZxDVQ4z0tJ5bj8HKl6QH
+	2LpCD9FeG6rAkLbfiSKloV9FiP1FFipkSzlhBo3Zplknr1ofEEQBBTOoi2c+qR7w1FFuf1
+	oLRZ1Ohqd/R7qrq1gOVWGdmCLZlvGzRsKpGh6crrwVT4V1hNIEeMZP96qZ+DAKQJ/Yh6qb
+	V/ykB9y+Wc32WJFwaNxXjYic0iDsUwgblz+2Yps3KMILiE5BRXmRKCLGA9EuDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788933591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XfBuOKvuia8jKU4jKhI6ImQ24+OP+x2lVvStL9kHB6c=;
+	b=VonGHAfqnQoueeh6Hl3Lomphhnqa2H/lUyc5Ke65gvgt5gNmjnE70KZBPhdx4hgXdpJF0U
+	tvpV+04d2I30q5AQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+ <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+ <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 98E95140006
-X-Stat-Signature: j93117o7gh5nbdtnswcdgtij6y7szmfe
-X-HE-Tag: 1788926418-333053
-X-HE-Meta: U2FsdGVkX1/6XUEzNaDR/IpUQr1PPZWrwaxbVnbLs4N9Gi6hWzZkTbUGYqh3F/sjXglrtLxKNmSyr1KI1f+q9Td6dsTzakC1le5Uyn4aC6YAYX6pU60qEjvxrP6/B4HiIIKT/3+tyT42Xz2ZoA0tVKWqoTpj5eedssU+1A8LieRaVw+4O2xaVRDwVbkrhiP1LYxkbOKsBRpXKSJ4WclkWcIkQX4jJ2O7Hu4T9a/GCq+krRDf7f1yNn9ushLuasNtMd8EMjkzwrxbNvQysEt18SlqfIbOWmjkhh0ItMXoApisv/NpeDu6TaFmF7o4dugwMdFHkg2Xo76HBmQcYDKgIpqv4qv6GPNf2ARucRbNY254tS0VTl7GgW12HlAo/6lCijxEzMDq0Z6hWBZrYOvsYquP5uEbLgGNz3LpCLrwVcN5dhU1hnllRMA1bOKhj/XnI8M8E+7kefQOgsrMjJykIsSPSATrelY3la4AdFfiipgtzi7JIu/yHeIPkofWS6L2NV86PwKnzHZ5bYaJEz2fSqTZLspRZNuFfbikUcyUUYsjA6sA161qWlXWEtK3aLLzcVNJUEdYav25kLcsyEyOj3XN/Qvyj/ynstXwzTzGOmoa4MnynP31/kSQj0B+EfiMS1rqyvhHiRox+zYgn9Lt48GQrTBruf6B0LDe6qCCoHnKXTPKFPYl8H7MuSoJRJA+FHd1GF0GUPBLOiKCLjyz+/SUEjU1T80lbKudzrzHPiW4UOwgxDQ9g1Z1ExtS8SikxQfU955xRrIzTGYI2zOa1mdLqtNpOo7dT4Lxo9aOmh4D1KSgVWlV3RQrdjkT3eGJZM1jPbgc05f03olagCgMDY8BWg24kkNrmPRKBbQ7HRevBOnnv/mKUDKkizkqckqXsTwJe10pwKuAljIeAK0cIpKLPd4TTYeuJVz+iGh+4ykXt7N63Ud21Yqx0FAK3RCSlYRYmjBxI3KAwCeSa+2
- k0jlwIqe
- rkAgwCJH5cGegLFmu3CPEl8FG1mJU6RMVolOJL7Ho3N8t2k8c56iSWoo4UuA/HK7UxueB1fIQopt8XGzBUeiYqeuINCtMbAq17THxoHRvVTSeHieKiCBcDzNNycCIrmduIB5y11WyJimkjTSi073VX33iliiE1hHBFomod51y9IE/e+HG+ivonnJ3+Mpv6laUnZClBDfOmUsHuYChJlos0tYtwA+SZpyYbJ8Bdn9MntO7f0dC2ozpQnaJ4bFuEHrbp0gR23Ds4MNWtxz6jIRpxquqpnqrQCoz4QNoxgttWdnMASPEyD0cWf7RwhiF5V3BSod4yaawCsTBZSfou799Bc1NTUtfcGAXshZsVVcbTm42Jdkh2Pe883cEhQ==
+X-Rspamd-Queue-Id: 979231C0005
+X-Stat-Signature: r8pt67yk16xtq6bpmebo9y3pmpjsyazg
+X-HE-Tag: 1788933593-458269
+X-HE-Meta: U2FsdGVkX1/mMZtJ9iL7qJ2/hJ7XKD6uhHOofN7APdD6OXiiv0v7yx5j72TsckooiP0gn54TJ+G0zy74eY3e7InGQhKlCcxqIuGHVb3NFQorpTlM3Sd1cFE/6qk2bsuCHgXqR9ffYpRq8e2OIghNRpjSdbHbxmoYdhkzEPlHtGNL0p7yN/jyzti9N2bFA+6xndT4lXmNvp/f58zDKiX4eyNpo1z2wxu9sGFU77AfsH0TSk4MwWvWXseOLMp+OCvAMrNwMQnBO2poAgVplelb5qfznLTUQR5kTb83pIYC28/FG9ymfmg2SXt4HvHOU3zOkq4JHCQ/RtIhThGDGht4tFSsCyqNSrS5HZT7nXZ0k3Xg3XsRO6mQccAu+55BILG9KnIosRnWEfSp3B3j5Z7KxhxiXeygRhNNR2x2wE1dOJ7O5GG1A4gVufiUbzWthr7P3bxMSEE2opUL3QJ2WPFPZdarQcCvr2Ik/dd2suFMIDrRBZlR7PDPdJgyVXVhI9X+43j4nurImpFwzWzgM3iUlAUxd3XyC2yYnWUD+NqxGzKwmsvCsK2YQMAQRHLD/9bd9cCKdfoC+nDo1iWe7oInSRvqpruAr4Vuxe2auf7cqTQsT2NPVF4IICM7/Mb3ys5jajtTK7I3sq1eitSBpxAdcs5nzQBd29PzTJAZjnEm7E/aE/aZRGRb5BWYiGgVJO9VBorfaz/gwdac1wJlS8nWkachgEJt4AtzywVmr4bwWNAzqTK5YX/xDYp/ZAHJ20V42yTjF8u2m66nU3dlYRq5DRXS1qyVCYFw9tEvX2XOHEZ+Yk4onrZqCM1PiDPV7p6jj33haC7KW08nuLgYBIv7a1Ne7OLkcrN/kiOpYnypfwL80DeonpQgxkiQnAK9yaOcbBS89RnaEozWL2OtRJFUqj8L+RtdQAQrC6Be8qgPSQTOXOOGOTps03i/dNNS1z8cKh4epSBbNYZaV4TA9xo
+ W4NQBRqZ
+ 9p+rawJgWD3Fctx26LwMCwxKQT69ozVVBlLvJUz181jYMfJtC/BES5KBa5/+JQLtROLymzELqCYUIeEUu52zaX5+TtzbeFrTFLXlOPpAoLadQH/KKpuHy2yXQSi3y/hXmloknH6Kv9iiIwCGGqKVzHgkoxOyh9M8lMUbMyMkU3Gg9amahW7pBDx5S94dcQyuKSoaWQMKTzd8syW6qzjK9kuP12TYNN62zNXUckR1sySkp2a9LLiy5ctiFIqx4hvoiaYui+1/6Qt6G2X3RjXNm916oFV7JEplsVT7E/uuz9OuAU+nIgNiWgi+9sit17A2g9d0vN2l5wbKvr07sW8IjcqvaHY9WhDrQ5BzJSLIB6Ko6yPvoSl65p73csA3KQ6fQmNek7mSuFFtYArCA83Qw6opPZST1yEP1ThSasqa2B3cqd3TZ9/1yRD7aW5yQeb0FQHIcnFJyqRVUiI1oaY+bNz1t+LqBHOYA5EUxfS1ouQpYys4EWa8O3ZWS8nfIPhu8TWLC7nMvIs7d7B3Ul9X7KQOgVWOaTiczEb/Egnt3EtSUv8hovNKrVt4qP52UlKKboNyq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,120 +131,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Standardize printing for pgtable entries using recently introduced generic
-helper ptval_bytes_to_hex_str() in core MM which automatically enables 128
-bits entries when added later.
+On Tue, Sep 08, 2026 at 08:12:38AM -0700, Borislav Petkov wrote:
+> On Tue, Sep 08, 2026 at 04:26:00PM +0200, Thomas Weißschuh wrote:
+> > The existing, generic ELF definitions are there.
+> > The ELF stuff in include/linux/ is highly specific to Linux.
+> 
+> And putting them in UAPI casts them in stone. I wouldn't want to maintain them
+> forever if not necessary.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-Changes in V2:
+These names and numbers are defined by the architectures' ELF specifications.
+They are already cast in stone. For example see Table 4.9 of [0].
+Changing them would break compilers, linkers, loaders and more or less every
+existing ELF binary.
 
-- Replaced pgtable level specific strings with pxd_str[] in show_pte()
+> > Also later in the patchset I want to expose the definitions to the
+> > tools/ build. Exposing generic UAPI definitions to tools/ is a much
+> > easier sell than include/linux/.
+> 
+> tools/ *copies* kernel headers on a "they're needed" basis. No need to put
+> anything in UAPI for that.
+> 
+> It's even written down: tools/include/uapi/README
 
- arch/arm64/mm/fault.c | 16 +++++++++++-----
- arch/arm64/mm/mmu.c   | 16 ++++++++++------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+That is the documentation for the tools UAPI headers.
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 75c3e463df2e..2cecf6ba6df7 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -131,6 +131,7 @@ static inline unsigned long mm_to_pgd_phys(struct mm_struct *mm)
-  */
- static void show_pte(unsigned long addr)
- {
-+	char pxd_str[PTVAL_STR_MAX];
- 	struct mm_struct *mm;
- 	pgd_t *pgdp;
- 	pgd_t pgd;
-@@ -160,7 +161,8 @@ static void show_pte(unsigned long addr)
- 
- 	pgdp = pgd_offset(mm, addr);
- 	pgd = READ_ONCE(*pgdp);
--	pr_alert("[%016lx] pgd=%016llx", addr, pgd_val(pgd));
-+	ptval_to_str(pxd_str, pgd_val(pgd));
-+	pr_alert("[%016lx] pgd=%s", addr, pxd_str);
- 
- 	do {
- 		p4d_t *p4dp, p4d;
-@@ -173,19 +175,22 @@ static void show_pte(unsigned long addr)
- 
- 		p4dp = p4d_offset_lockless(pgdp, pgd, addr);
- 		p4d = READ_ONCE(*p4dp);
--		pr_cont(", p4d=%016llx", p4d_val(p4d));
-+		ptval_to_str(pxd_str, p4d_val(p4d));
-+		pr_cont(", p4d=%s", pxd_str);
- 		if (p4d_none(p4d) || p4d_bad(p4d))
- 			break;
- 
- 		pudp = pud_offset_lockless(p4dp, p4d, addr);
- 		pud = READ_ONCE(*pudp);
--		pr_cont(", pud=%016llx", pud_val(pud));
-+		ptval_to_str(pxd_str, pud_val(pud));
-+		pr_cont(", pud=%s", pxd_str);
- 		if (pud_none(pud) || pud_bad(pud))
- 			break;
- 
- 		pmdp = pmd_offset_lockless(pudp, pud, addr);
- 		pmd = READ_ONCE(*pmdp);
--		pr_cont(", pmd=%016llx", pmd_val(pmd));
-+		ptval_to_str(pxd_str, pmd_val(pmd));
-+		pr_cont(", pmd=%s", pxd_str);
- 		if (pmd_none(pmd) || pmd_bad(pmd))
- 			break;
- 
-@@ -194,7 +199,8 @@ static void show_pte(unsigned long addr)
- 			break;
- 
- 		pte = __ptep_get(ptep);
--		pr_cont(", pte=%016llx", pte_val(pte));
-+		ptval_to_str(pxd_str, pte_val(pte));
-+		pr_cont(", pte=%s", pxd_str);
- 		pte_unmap(ptep);
- 	} while(0);
- 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 0b2d190d62c3..26f4cf7b753e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2411,6 +2411,8 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
- #ifdef CONFIG_DEBUG_VM
- void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
- {
-+	char pte_str_old[PTVAL_STR_MAX];
-+	char pte_str[PTVAL_STR_MAX];
- 	pte_t old_pte;
- 
- 	old_pte = __ptep_get(ptep);
-@@ -2425,15 +2427,17 @@ void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
- 	 * (__ptep_set_access_flags safely changes valid ptes without going
- 	 * through an invalid entry).
- 	 */
-+	ptval_to_str(pte_str, pte_val(pte));
-+	ptval_to_str(pte_str_old, pte_val(old_pte));
- 	VM_WARN_ONCE(!pte_young(pte),
--		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: racy access flag clearing: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- 	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
--		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: racy dirty state clearing: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- 	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
--		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: unsafe attribute change: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- }
- #endif
- #endif
--- 
-2.43.0
+Also we already have other, closely related, ELF constants in the UAPI,
+see {,tools/}include/uapi/linux/elf{,-em}.h.
 
+[0] https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build
+
+
+Thomas
 
