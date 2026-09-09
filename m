@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE90C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29EA0C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5497E6B008C; Wed,  9 Sep 2026 11:12:32 -0400 (EDT)
+	id 415496B0093; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 521A16B0092; Wed,  9 Sep 2026 11:12:32 -0400 (EDT)
+	id 3EDEE6B0095; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4381E6B0093; Wed,  9 Sep 2026 11:12:32 -0400 (EDT)
+	id 306CF6B0096; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 196016B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:12:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A26F71C197D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:12:31 +0000 (UTC)
-X-FDA: 85194565302.16.580E6F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DE23B40011
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:12:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FuNxumcj;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DE196B0093
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68309C022C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:14:33 +0000 (UTC)
+X-FDA: 85194570426.28.6CE8446
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9483C100009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:14:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/gq2E7S";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788966871;
+	b=RXyi2llAyEFxQLNkH+9J3svg+IvLRvyMaivPRe2P5Wbzcla5ZSFN6ckV1s0l2kYYNkQc+B
+	z3Be51bb6ZkOskapNpRzPdvNnDJjOOteKQblpbbm2Fq5bmUSonLVAPfbqJnYIjvWH42rtr
+	3myuM0vDGczGOwDPnAKR4kJvZIe1kv8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/gq2E7S";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788966749;
+	s=arc-20220608; t=1788966871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dQ4zaSpd9hBseSN7PJr6PUGSaD78UBfjGbysb66Jo3g=;
-	b=lZcsIeM3kOOKX5bne4yjNODRfruDJvY5AQUZH8zQBigxy3GE0ADlVWPyYbgWhgmrBofAic
-	wal0SSD48f84ParTq0Hc9idw50Xt0tc+ONqS52HT9RMiBMSTi7uzzo0kpykta+VyNQOVQT
-	pCKddQxDZX5hCtDBfI0zzcPMT7SL5+g=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FuNxumcj;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788966749;
-	b=vHARvwKupgQj4ghJAqe/L6b8HZNIMGJNklGmpkCsPwDjzVP/NTQ2WEGCZ065qSpuVIoFil
-	meGIiEZnaYupDyid+6FLTo5yeFXbFGWw27c9El/yPBlVOf73CD1BZPet6KxlDv/GIkzSsk
-	6f0z/76OH4HkjYVHp0H+w7XA4ByGIUQ=
+	bh=Kv/OdspUGtQWo1tas4EUrtKin7DPE1EY1vQkzcPdvtI=;
+	b=YShDJH/0XSTLlRoHUBGfZo9/BlPPZPovk6AOwSMX6sIZi9y1mBu6nqC4ycoDyszkMet+xF
+	AiJkgbtxU0Jx+qW+8fFuQrK0f5O63+xQK+xLufTf1pQRxIl0P+ze+q+Pm3pyYyq18qztaw
+	j1aiFLqQu/20ryzjvg2MITvDL56DqpI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 769D3601EF;
-	Wed,  9 Sep 2026 15:12:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A4C1F00A3A;
-	Wed,  9 Sep 2026 15:12:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FCE54019B;
+	Wed,  9 Sep 2026 15:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA221F00A3A;
+	Wed,  9 Sep 2026 15:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788966749;
-	bh=dQ4zaSpd9hBseSN7PJr6PUGSaD78UBfjGbysb66Jo3g=;
+	s=k20260515; t=1788966870;
+	bh=Kv/OdspUGtQWo1tas4EUrtKin7DPE1EY1vQkzcPdvtI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FuNxumcjhLbIUa4u7q0QITOPos6Jg58cZS6rJGrWsr8sUeAas/riDW9JQLodaznfl
-	 7n2ltLxLtajU6693I6gVoqJU/MK6syCuIJbFclrsjNsuxY0AXR+nL4YJkj5CrigRDg
-	 GOPnAkR8R1dHGkyjOEJf+At0Ld7Wn6d7+JgVHlnBH0Cnd4bixP9TjJmOWj17VZJo6H
-	 qcCEfiiRJDCJWw12uhnSl3L146NYIwJ6PALn2wFyyS/VypGipDuB5izoyE7k9cIDjI
-	 EXrp6x0pwZu6WvVS3ajxG7L6O0LaK3sfEItjEVT/6Obhm+N3Iz77DfviHAfIF+tPwr
-	 i63FsXDy+ZHzA==
-Message-ID: <04358f9d-3b64-47c0-94dc-f1ef19c22f78@kernel.org>
-Date: Wed, 9 Sep 2026 17:12:24 +0200
+	b=L/gq2E7S2ygrCzOjjfrwr2/GUgw2QA8h6flKLJ2Ed6zKRBUvibImsO4f0zm1Cv/o5
+	 wu2fstLod+x2eQRi5BkACBCFuZs1LTAab9jQ0fKAt6VKNbbEUAYlKsGmQTOAMnXSxr
+	 ZLlaQAFpiI9zSRjDaKXFo2voDCSapC8Fqe8da4P18MLlxscCWsq70cr4kjKj/q2Ck+
+	 qfHDyRvdDds/u94zuJxLZ5Un9zDx/Nv7YJsD+tzjRCwiM1QQGUiA+Om23dMuH6FU1h
+	 pQk/9ir8ZD/jbALU9VH2F//0i8UO9PECjhQVwsMEQA+scrPmKkVNB/OOe2GUVZTbOg
+	 3WfXfTIqzMo2w==
+Message-ID: <b058dbec-060b-4f19-8048-3951a32965a1@kernel.org>
+Date: Wed, 9 Sep 2026 17:14:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 1/2] arm64/mm: Move __check_safe_pte_update()
+Subject: Re: [PATCH V2 2/2] arm64/mm: Standardize printing for pgtable entries
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
@@ -76,7 +76,7 @@ Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260909040005.4148136-1-anshuman.khandual@arm.com>
- <20260909040005.4148136-2-anshuman.khandual@arm.com>
+ <20260909040005.4148136-3-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260909040005.4148136-2-anshuman.khandual@arm.com>
+In-Reply-To: <20260909040005.4148136-3-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uta19i3hcuyezcstrimgd995ffo1jdw7
-X-Rspamd-Queue-Id: DE23B40011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788966749-326989
-X-HE-Meta: U2FsdGVkX1+v37dpDz/9T/vyMWtBLW5gUub0kCAjIMIddPtupwP/MlLlK9P/GqGGYvFIXtD5eajSch0x34eAHkLhIyMsOeMyxpFp9tZqzHk5wBlgnkiDyP5t6LEIQeUoesQMPzwVgvuQG5p23ChUtfyOSLuXC465/16xOCtW+nGgpbgnQr04dp7CDweTf5wmSJx5ag1hRNhxA1aU53iTFKN+tl0vehuyvH8kyeAa+CX5Id1q7Y7H3qbFjLMHv8LVmDfWXWdyRpZnGlksar/DS5cWn9GfOo52EHPUacy+sY9iA4j1GAoQAVWgYF7vVL5+QGIvcdqXpc39RrpVAOSfirtgKgWYPjdIqPnh1esIaj8HzBO0Sk/Ah0sYjRPcAOdJgz/byCVbQEUhAihvV8wDXxHoVIq7HexV1opVLiFcL9TlkbeygKzqvdRGZjJfuZGIqqtUYcdMVpobmH9bvEf7E16xuPcVeUYxxDr1KXdPn1Ty9C/3UAJqj06SWg0mXXMRgNoEKkwuJDKKxmJ4G+OWlCgMMkcCJUYdQpZbp+EYWB+4MPa6hXHd2i4mly54Od31r9fa5vzpNP/8O+JxOX/aRDVCPJjiZ6ZTjNLwPbKSHEKHZ9KQt5NKYtlznC6LZ3SmpHpYJaJ2OTp/SFUeu+w6Gjy91Djp4JaB8tYzkp04r6iq/srodz2hb6tAIoaNN7VcBRgMoHejgZ2PqLZ0DEU1uozUsh2dJ+JMNvK00PyBIE/1apmp7g6nmaSbmwH9gSRH2Mr9zQ+QxoCCYeS13bZUvEYTSfTIx5vAW6ldhmybgPm/kjrcZ9CsaArTR27Rzkzpsai06V82vQZCD8vbGddJiqCuDLCaddpjSWXbMerzD5iVZzqfhMbZ1X6Mhcr+A1I2tPPb3VKwcXXi+WGfh3Drw1sIUjIRMRUq2k28ztcyh3vUFNZqGh1gFpYk2tHnckG+OH38jaFm6vVXcmJKS+d
- FgR/ur4k
- guYCJgxp1coDWbjvlZJTcBnseCToSeAUHGir1/wrUFFArKDJQ4ZFTirtdWBPAg+sjYkOu/gvyvpxGlielN4IRuW9+l34VYQ/6oRMqYDQLxiE1tauzDLu0RzCoK+wtLhaPoFGzkSXvpGqYgRq70I5BxvJN2YBoTSdFBu/2Grg34/N2HvyQ03UXhoRVT3MRNANRYMNvbGM7ZuKHK4j+0pKNQ2uZE6zIg5/l4jWIWYGuwh4H3oqOGM3mtEgT2A2XDUXn87PXDU591VjjAgMBiv2OMYYftTZDadY6fMHgS25H+X6WXGwbU8SoKZEtn7Acq9a8MV4FukpTuOecPYFiFABe2x9GMd4Y4RWc7FIrDQxUNs/vgm0Y9ZnUhfVCGTaoQe9WvrPPpIwsoRcBesxogSwX9loysACXN/RM8x9Gs7ZoGuLRkVEH+pA7DQ5Qj7xARbXnMm5O
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9483C100009
+X-Stat-Signature: 4jh5p8nfixc36juawmw13ycbiwpf6nx4
+X-HE-Tag: 1788966871-715169
+X-HE-Meta: U2FsdGVkX1+fIrNSdjaTrgFushpnlNTkEjeUxzWPPigcR3FIiR+uxR/xwEPxE57YXEdVztrcV5KjLj8srnIvoEcJGF6Cjr8t27pVav5oIb4EhYWzMZ1PgvfvqksYfN+yIZFfPWhFOTWzbETwAxhCV9FuDc2wwsWFlB5FZcxNfXLatz7qtRT0RS/si54+Dsy/I43yrGamtVlDfqqJ4wzQSw1Ucl9uCZYiAr5p/7UPETQ0JiqYcBJwyfna6GDBl25PEtaCQFvux7FW9x4bhBs3OKZ/MJoU9GPQk8cZbjVvOmAvtLgPr4DAwT45alCGydTLNfXLLtZhYi1I3PT38vFi39wqKb4/F2AROPFA9ph57/BJYSpx4luBmnc4JA5YZxpLJWa9rrsNqrPFRMJEu80alvs4QcjjT/uJHIASoWsywh8G86pwi0tHlAvmuLfFUJiQy5BopISh5RiZQgngjpGulvqZ2c0K1CEANmUyK4JlqU9gmCm36E4QPlkDyQzZIBeMuOqudeiaUDecW9UwkadHmm4dyuECLUu5migK3sHAkhP+EUlkhAUTPsfhnWuFiqVC7bsL7fmwhxW2IpldeYxWYnqYsA5Rg6bP+ury1cynK3i1EB2KOZctKPVzLdmpQ2XxE+twU5s9rnjlpnTdto4zSPWM8ECLq+bYfzcJKiiMJIF0r4I301sg1V1qxeWxsUsFzBdNVnzcds7mZqR9Hg+3q5VLLDqmEhT3sovwXXdoyZTpKeKc/9ONKF15ls4iLDTPCi6qyhX8RUOhtp4gOiCtRB+IsFmeoSsr7XJiCc0+2ZZJswiHpAtAi62hB/7v6+IhsHIkQ9ickhRq2TV9RXFbIH+mykaVQ0DMAluX0BvF/wFQCvC9K22CC9hoRyhNyQ/bBpHtmPAWQdpB/K46bPRyBxYFv5/9+dRc5ERfE+T4Q6Llzo08HS59aUIEmB6YvzedsH6DcdeXmxIBPXmZkS8
+ +JEqcuJB
+ RkUo8p29Vsivv0r1kg8luJjz3mEacitI3Sefd2u6vBCPpTiQAToCVHNwQ27KZmj+uQqUea0cRV8DKKwcIF8CDJwjU8Dqla7U8k4Ve1tcyF74wEgaqvgu0+vvkJi0AONvpTPhEfsoHwPKua9q+YjmCUzywnMrKEo5UfRwGcoh3QE6Oe1ck1vIk5GElAuRBD1zE2fv+bQHbpu4Gq1FpxHbZZJkpYN1j6BoBOHwDuq6uvyoxIEAqsmC97ZGctx9SUlE7ULT1fOzveM3w9fXeUPZy6LW1AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,131 +141,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 06:00, Anshuman Khandual wrote:
-> The page table entry print helpers and related macros which are defined in
-> <linux/pgtable.h> will not be accessible in platform <asm/pgtable.h> which
-> is basically caused by cycling dependency.
-> 
-> Move __check_safe_pte_update() inside arch/arm64/mm/mmu.c as a preparation
-> for subsequent usage of the afore mentioned generic MM helpers. While here
-> drop IS_ENABLED(CONFIG_DEBUG_VM), although wrap __check_safe_pte_update()
-> inside #ifdef CONFIG_DEBUG_VM that preserves the current code optimization
-> which is achieved via the static inline functions.
-> 
-> This does not cause any functional change.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> Changes in V2:
-> 
-> - Moved __check_safe_pte_update() inside #ifdef CONFIG_DEBUG_VM
-> - Added empty stub for __check_safe_pte_update() when !CONFIG_DEBUG_VM
-> - Dropped IS_ENABLED(CONFIG_DEBUG_VM) from __check_safe_pte_update()
-> 
->  arch/arm64/include/asm/pgtable.h | 49 ++++----------------------------
->  arch/arm64/mm/mmu.c              | 44 ++++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+), 44 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index e89ec5f4787b..281a512f1fc6 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -387,52 +387,13 @@ static inline pte_t __ptep_get(pte_t *ptep)
->  extern void __sync_icache_dcache(pte_t pteval);
->  bool pgattr_change_is_safe(pteval_t old, pteval_t new);
->  
-> -/*
-> - * PTE bits configuration in the presence of hardware Dirty Bit Management
-> - * (PTE_WRITE == PTE_DBM):
-> - *
-> - * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
-> - *   0      0      |   1           0          0
-> - *   0      1      |   1           1          0
-> - *   1      0      |   1           0          1
-> - *   1      1      |   0           1          x
-> - *
-> - * When hardware DBM is not present, the software PTE_DIRTY bit is updated via
-> - * the page fault mechanism. Checking the dirty status of a pte becomes:
-> - *
-> - *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
-> - */
-> -
-> -static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
-> -					   pte_t pte)
-> +#ifdef CONFIG_DEBUG_VM
-> +void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte);
-> +#else
-> +static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 0b2d190d62c3..26f4cf7b753e 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -2411,6 +2411,8 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+>  #ifdef CONFIG_DEBUG_VM
+>  void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
 >  {
-> -	pte_t old_pte;
-> -
-> -	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-> -		return;
-> -
-> -	old_pte = __ptep_get(ptep);
-> -
-> -	if (!pte_valid(old_pte) || !pte_valid(pte))
-> -		return;
-> -	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
-> -		return;
-> -
-> -	/*
-> -	 * Check for potential race with hardware updates of the pte
-> -	 * (__ptep_set_access_flags safely changes valid ptes without going
-> -	 * through an invalid entry).
-> -	 */
-> -	VM_WARN_ONCE(!pte_young(pte),
-> -		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
-> -		     __func__, pte_val(old_pte), pte_val(pte));
-> -	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
-> -		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
-> -		     __func__, pte_val(old_pte), pte_val(pte));
-> -	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
-> -		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
-> -		     __func__, pte_val(old_pte), pte_val(pte));
->  }
-> +#endif
+> +	char pte_str_old[PTVAL_STR_MAX];
+> +	char pte_str[PTVAL_STR_MAX];
 
-[...]
-
-> +#ifdef CONFIG_DEBUG_VM
-> +void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
-> +{
-> +	pte_t old_pte;
-> +
-> +	old_pte = __ptep_get(ptep);
-> +
-> +	if (!pte_valid(old_pte) || !pte_valid(pte))
-> +		return;
-> +	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
-> +		return;
-> +
-> +	/*
-> +	 * Check for potential race with hardware updates of the pte
-> +	 * (__ptep_set_access_flags safely changes valid ptes without going
-> +	 * through an invalid entry).
-> +	 */
-> +	VM_WARN_ONCE(!pte_young(pte),
-> +		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
-> +		     __func__, pte_val(old_pte), pte_val(pte));
-> +	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
-> +		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
-> +		     __func__, pte_val(old_pte), pte_val(pte));
-> +	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
-> +		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
-> +		     __func__, pte_val(old_pte), pte_val(pte));
-> +}
-> +#endif
-
-#endif /* CONFIG_DEBUG_VM */
-
-Might be helpful here.
-
-Consider the same in the case above
+Nothing jumped at me; once the stack usage does become a problem (I strongly
+assume we don't care for now) we can revisit the approach of moving printing
+into printk.
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
