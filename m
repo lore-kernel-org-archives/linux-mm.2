@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C67C79FA1
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 00:14:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED28C79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 00:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F6426B008A; Tue,  8 Sep 2026 20:14:27 -0400 (EDT)
+	id B3E056B008A; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A69C6B008C; Tue,  8 Sep 2026 20:14:27 -0400 (EDT)
+	id AC7EB6B008C; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCEE6B0092; Tue,  8 Sep 2026 20:14:27 -0400 (EDT)
+	id 98F186B0092; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2DE96B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:14:26 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 732641C2A62
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:14:26 +0000 (UTC)
-X-FDA: 85192302132.05.BAA130B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EED0120006
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:14:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=av2lBcXH;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A4596B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC328A52DC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:20:22 +0000 (UTC)
+X-FDA: 85192317084.14.B2636E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5B44220002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:20:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9xr8xsP;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788913221;
+	b=sbaE/MxTKCCHAsKinKft2BpmjzyHE06ov43VpdcAkwv9ZVJGVcpVT1Au8pjHj7K1yKZkNJ
+	c19PsyY1+2pfUvKiiJUASTmGu81tPN5r2fV8+DazMiFjNsF+4MLTxUzLcum4vwyDRUvkLM
+	eOxLfLXbwuZdvZGJblCglW+hN9IbVG4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9xr8xsP;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788912864;
+	s=arc-20220608; t=1788913221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FNI1Vu5xWgBc1XMbL6PII/w18t/G/EnGzJaA9l5f4go=;
-	b=OdN35jKiowzc/xozsGgURRwGOPnStRcy9Ivj03TrDCguhQ1CRD6k1kM+InawuHl3S1p+jy
-	uhE4wS+RCNb08nKKlDf6pULv4XdxqM48IGZtKA2UaCh9bccpfJ3J7onzC0FAoqCTNvuI9l
-	G6NM6QTwJB8TAVhWdcvnQ0GueszWZaA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=av2lBcXH;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788912864;
-	b=ANvApH44q86N86hWGzbqNS4CXQA7IqzFmMkMTzlzaFQEmPcD1Rw6jVOkVRHTUpmLekkV3L
-	hmIhU7K7yvEecacLaJlzhr51f2zUCW8yFeftPzGOppjF3sAZPaVIF311iarP7UW0G0YrFF
-	SkQ6ldOI2jOt62C/yNm1Mlt0FlOjpUk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GnjhAVP/V30TSMfLwyIvSXBQLxYlj9VOI1IVLcD+S/k=;
+	b=I5BMQYA8eUyFn+wflrD2+EiFPrwOqA6TVi11QI7q9dKAgglyvmRWGJe4dpgfk/BbKC1uB5
+	h1MycuQ9YvfW5dkkRdC3FqW9YBIu3hPc4dZnPIxpF1fp3pXm6Vutx5SfZi1eDjlRMAEv9n
+	FKITuX5rODMZDuCH2/3hDh93SdGCI/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44C40601DE
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC711F00A3A;
-	Wed,  9 Sep 2026 00:14:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C32F41355;
+	Wed,  9 Sep 2026 00:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD9C1F00A3A;
+	Wed,  9 Sep 2026 00:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788912864;
-	bh=FNI1Vu5xWgBc1XMbL6PII/w18t/G/EnGzJaA9l5f4go=;
-	h=From:To:Cc:Subject:Date;
-	b=av2lBcXHcLSDIN9vJqaTfDCpwq/aj0jcD77rR8IgRLZ8l6N36dfI6WINmE/76CkQ4
-	 n0PCsbttXl0PFUT2T3wFKpftgTWzFqNJHfOmDpLwe06wbOjJxFPaVJLP+qIAvwCilz
-	 TbXEpBV58ijMf/DhDgKPeqCO4nvzSuPhWAkhxbeWM+3na73XyqkBkc0UasUm5FsmAc
-	 oXSKLjOCjNGwg43JAlR9bN7Ozwx8TploFU+9adOOwy4TD6wu429fjVKEZ9+6epekCY
-	 Purk6XQbWa7IAXiD0akiZS1t9faNpd7l7l+oUAKFuTzFqLEMUwnQxRacLemKab/+WW
-	 8qJJXpcr6b6xw==
+	s=k20260515; t=1788913220;
+	bh=GnjhAVP/V30TSMfLwyIvSXBQLxYlj9VOI1IVLcD+S/k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=D9xr8xsPsQajrh7KNO3zQeEHBHiWOotHZ0SrQLVlX2ZYwElLcciKlJZwVz0Tjkvnr
+	 d+TRxaTBdCUUQWTQARSgAJPRFD7xNHX+fZz+gvoMyP4urTw/ADH7Sq2s+iqFsaFlBA
+	 S5/eWZIBHBJssqlUrv15QhPAS1VVHLGBZG9hjlV3oaJyYNkK/JLcZU7+4oK7SdFpoQ
+	 b9wKTHus37Jw4iTqhTW+daFZijKPBRYsnYd9lk3Ajf6L2V4iyt9QC1S1fkLqc0ufPQ
+	 5yg04sE+dc931sH6Zyy2MlAlFRqBN3I+t2TPXRrfpF4I2ZySTy9FtZA5xyn4ZmiJHs
+	 dKXDsajhL3K0A==
 From: SJ Park <sj@kernel.org>
-To: damon@lists.linux.dev
+To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
 Cc: SJ Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Fifth DAMON merge anniversary
-Date: Tue,  8 Sep 2026 17:14:11 -0700
-Message-ID: <20260909001411.107286-1-sj@kernel.org>
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests: damon: add script dir to sys.path for PYTHONSAFEPATH compatibility
+Date: Tue,  8 Sep 2026 17:20:11 -0700
+Message-ID: <20260909002012.111767-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260908214238.2680324-1-eva.kurchatova@virtuozzo.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EED0120006
-X-Stat-Signature: ybsf8em8ontt74byi7ac7he379kzmwhi
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5B44220002
 X-Rspam-User: 
-X-HE-Tag: 1788912864-79139
-X-HE-Meta: U2FsdGVkX1/Zc60XzZbPgQ5C5hUUSE6/AR0vkd2739RFurNEL17+zDgHSq1TWhT+UI4HjA1VTMbn8tHrOCXKDZ/EfWJv2lTxHEOqJIyWpDDmNH3yR7Looxokzdrb+9nhiWxGOS1KLKCQAovXQDTiE5AQ3LuzIKTccEMjkPh4T+EAiDPVeKQae4FkLyjoSlmNh5Ds9ayAXeBKioHgQyKRryyPFQiMZqYMswh69wDk+bbLoy+jzTBTrSM9ToOvXCxKXPUZWqQ3x1Z76P22Sq4L1vA0CX98nOwAW3wNWGU6FyVxj6TupcCqu8Q8B6K7AZpuLEG40UZQu7oSoLmtrc8p1DeCTYyn1nMCFe5xJ0wWiSiGCyIZqsY5eMsJj6zm8Kf+1L7faQ9QVlvYyhQ69H85R0PfjkN5EQb4azdUD5VdwGcimxWNsuCkiuN/kmE/GgNzrz+YxHtq5w6yK3l67z5JieIRf0sEf8MJsIUqrj38JugaQQuiUCdLLsnHtXoQNBm8eiTBaQgnMMb0Fjjpui6BQPeQxfJuWgmVdSuZ7ZGD1jxk91gdIIn8WZSw1jnrbxsCj1f1SCRSiOeysCLx6hjOfMa8+Dtr95d8GCXpbgpMXPo5efLr6Kq2mR2EvzG89M40CO2pmDpLhabTLTVa6asCp0ibVxf6QB313LrBv1A2z7XgrVSfSG3FggL4PsE5NBQ1/qNrOYmZxcGYd5N0CChbX+KiemqSSqHlK7sKhAihSyzX34N4ZZxV8qYXnAhp6Jba4JN2We8JgtXwIuErQa+G50B4nJI41aRzQaIqpLAEt2vbwZzeDsp6A74RBr63GV/fid7fWOaUNeQDyxO4DJ1qukXN66vKqZ9jctm37opz+8oh1M/8tkQnUMvMtFW7t1MiOmoGc0HJAddQHR674xCaN+YBXt7gAuJmRduKuW3FS7l0gxruRHHL2qb6H5Pt5HEl6HDMZcCn1v7LkFWA4xd
- OBi5Hlr8
- hmc+AONVYUsSO+Vks9WY86itv0s7y7d7306gssMzcj7D3TN0r2flNmvVChT65z43Vy9cnVqrlMxKXHK3apW37wS/OmMDcy74mK7aZqEKxlZir8Q2JRxq8HWNxaTISWQqOBljao5I/1UKo8k76NhRVvO9w7D144syRXH/YTWsTXoVW8PwG4Utumykc0ET9gZ5AnMRkPZu9nHD2zn2nY0oxi7QzHR8cpuDLnReq72yCww7U3MhOFQQWexvAFGIf8UJCnA2dOqETYrg5bwEOeJRUEzwSCGM1BF7exOE6zT91DCTs/sqJESoYYktcmU2P9R54/4QHeWJiMzgRJrIEgT7j3iN7ubztPr+3SigFgTAjBau9ZQo=
+X-Stat-Signature: 5o3gmoreepe9yi117n3ckrhf65ejnjro
+X-HE-Tag: 1788913221-267051
+X-HE-Meta: U2FsdGVkX1//F8SJLa04Xt/ZZhz84MWN5qw9ifYkOkMW8Uf6hjhgdwFkbIKLm0nOVESBAzln0lcvDACyRP7GUagKaR07utqht5M7BB/hEQMGq2mcfKhAW3jrooDYfVBZkzhS0FAX9IJjnw0oV0qxfPkfQxOtlfz4Khs6DzGqshmeq1Kib89bOgFTMGz7YiXG7fdVsX8VDyM87joca6DgTMHXcaKMll2RGiba82QdfIa0fnRP7q8tIQG8QQjEpf7suuRA3cthdf7cTuiQ3eapZg9CkUWy+jl04hs6Vg97fnP39hZ88KIqjQuj7gCXx1wmIf+sQGtYkD/vXD+f73SoHzjv3B6ifE9WlS+SAG2mGBEknEcr+m/ld6d2pMCPUX9Hj50XHhZJDJEqxS2qoe4Fbw4Q2HVe6p8R2WR6h4dfMPrbWC6TpjzCuVxiX4b04uJmuISmMkF4p110i367ly3ctX60HgV16KScZVZZ+39GuWbP6yqclfrlP3sg8H1I1JeeKCw9PmObVDFgqlxj6Tv7igXW5YU/iY+hODI5E2TO1C6ShbBVjsoLhm15Uw9VpFJAY3ZfDXk2RloU6hB8l90o9Os9kQZs+rgGZCokPNvZUkVzI9Tc64v3Du9oJceBszWklfbJEuhdZQ0Tp3IXqPdHvmGAa+ECpe7vV+pX7EMYA9JfoGO2nOMAJdegof9wwUn8MHQF0/JAXyqAkWbLv+XNeeldxzkBXzTcR/YMtp2i5BqKuXgwt5NKRPgQwz6ke+0QsKiH4Ohw8LVpntXQpKilKmD0uqp4tMY18nNsyM0NzrH5hdJMoDEG2ZMXJn1oGPCFySOuUcAtZanuEc79PhtkUwNpjxOtDSx9iObRf2zJNgPkwIwQh6GCKP9M3Z9MoMKZhgsgNXzsZyxldaJE94ElKLs6bjHVAtU3IWrCCNwzIFgA8rOiNCH94ktZpOuW2tCfpWNU/30D89cxdZlwDvK
+ AJnydU10
+ jdUkpbhSoNgYT953PLVh9oiTflZh/lQkn8pZGevcpKmJC2YkEHy5m9ey4PuIDvquVeKv+Mo6BCtWXvpwmoQ0EKkUGK+K/ZH7/vfBiLkhHmXcnVkqA2olKrsO12I25s9/C6+pckQJUtg/jjLVV34q6w7L2kT9FTmPtD/nfkS8ZG9ZCmgP52vN7YcTl4K2uyuiAeojT4IqPyEN9r6RlBLTH2vjMXHaOykOk7XZEdIHhZhzYxmUuYdoHfm7SEwJGQIGWCfOffMnEn6nh8/J0dIANgTJvOGw3IUR5ZHmQkp0+sSoESbHI3jWRvQDx4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,28 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Five years ago today, DAMON was merged [1] into the mainline.  The last five
-years were so grateful and incredible time to me.  I earned many lessons and
-friends, much more than I expected.  It was all owing to the great DAMON
-community.  According to my humble script [2], 143 people contributed 1,427
-commits and 49,123 lines of changes to DAMON in the last five years.
+On Wed,  9 Sep 2026 00:42:35 +0300 Eva Kurchatova <eva.kurchatova@virtuozzo.com> wrote:
 
-    $ ./lazybox/version_control/authors.py ./linux --since v5.14 \
-            --linux_subsystems DAMON --skip_merge_commits --total_only
-    # 143 authors, 1427 commits in total
-    $ ./lazybox/version_control/authors.py ./linux --since v5.14 \
-            --linux_subsystems DAMON --sortby lines --skip_merge_commits \
-            --total_only
-    # 143 authors, 49123 lines in total
+> Running these tests under Python's safe path mode, either with -P on the
+> interpreter command line or with PYTHONSAFEPATH set in the environment,
+> stops the script's own directory being prepended to sys.path. Some
+> distributions (RHEL, for example) build the tests with -P in the shebang.
+> 
+> This breaks all 7 DAMON Python selftests that import the _damon_sysfs
+> helper module located in the same directory:
+> 
+>   ModuleNotFoundError: No module named '_damon_sysfs'
+> 
+> Fix this by explicitly adding the script's directory to sys.path before
+> importing _damon_sysfs, following the same pattern used in commit
+> c3b3eb565bd7 ("tools: ynl: add script dir to sys.path") which fixed the
+> identical issue for the YNL tools.
 
-Huge thanks to all the contributions.  Hopefully DAMON didn't only take but
-also gave some fun and wins to people.  I will also try to give back more to
-the community.  I'm looking forward to the next five years.
+Thank you for finding and fixing this, Eva!
 
-[1] https://git.kernel.org/torvalds/c/2224d8485492
-[2] https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+> 
+> Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
 Thanks,
 SJ
+
+[...]
 
