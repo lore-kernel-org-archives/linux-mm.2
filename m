@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E689BC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA6D5C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:34:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B932E6B008A; Wed,  9 Sep 2026 09:33:57 -0400 (EDT)
+	id E0B586B0096; Wed,  9 Sep 2026 09:34:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B44186B0092; Wed,  9 Sep 2026 09:33:57 -0400 (EDT)
+	id DDC386B0098; Wed,  9 Sep 2026 09:34:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5AA16B0096; Wed,  9 Sep 2026 09:33:57 -0400 (EDT)
+	id CF2D56B0099; Wed,  9 Sep 2026 09:34:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8588D6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:33:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB7D11C1710
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:33:56 +0000 (UTC)
-X-FDA: 85194316872.24.F9FDF54
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B2D166B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:34:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09759401E8
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:34:06 +0000 (UTC)
+X-FDA: 85194317292.13.8797669
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 044932000C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:33:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TNKlq6KV;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 38B4840006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:34:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxAJ8TkH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788960835;
+	s=arc-20220608; t=1788960844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4kGoNxWFRU6HCIzI1KugsSHLIEvp/dTwub96govqYjc=;
-	b=VI6oGTvwfnWRuN1zKULmqk6m/8pCrk1+TkEWeA6YFL1CD5sCtZxNib1uxuQp1svj6TtQKk
-	cqAMYD9MHLBQI7LHvjzuSVnbExKaz13BQkwOVuO+lGZsHoBDXITNEiA2XKQPLSP3l2zkI2
-	3AopRZZbiO0Jph/un4RFh2CtQl3UEWw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ke7wbwtpCjUAwuxuLGTSFpELTF8GAXgQgWxJpOfKOlk=;
+	b=mX8kteO+12j0Y3js7D8slnaDM/E05MXG9UrQrWMltsfqptYhmNAxxsGir/bZO4l7hf8fU8
+	o9mZDoLl/dTvcTnCfPJJx+WTsEsmEB26jKzi0Ux+OJ+x8QRuLDnrfJ344ySQ0xr0aVkadf
+	nn+GtuXDUaedk/YTuAZ6qdmVZPFO+rA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788960835;
-	b=E4wEJCMn+RnlOIHkeQgu8Ke5Z9lKk1o4kvGIe2yZGvvRGbTAUZE5lhRz5DNq2CZeNRMYFZ
-	4jXmOLDbh7T5ZiHS+qN1Tpn/H/XXaZqfRsd4XOCKc0L5txNkDXpm6Z65myxecxKrWeF7QE
-	Ate0UZ9Nh1hJWqNZ00RfDDpKrGrhWgk=
+	t=1788960844;
+	b=WAUaKx2lCvbfQ410aOGeaNp1kjMj2ANYlDo5dRjMFGcYgb+dSEdHpZ9z7k70dppi4cufLr
+	W9YjxAubYd8q6Vdqb/bjinwFJ6pCmRO4MoQKgjBTzAlkEPW+eAGkVef+h7L51zc+0iMF6r
+	507cFdEH9+gSoNtOsEsLzjXqK3RUYPY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TNKlq6KV;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxAJ8TkH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3240D413CC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D31643977;
+	Wed,  9 Sep 2026 13:34:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A319F1F00A3D;
 	Wed,  9 Sep 2026 13:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D51F00A3A;
-	Wed,  9 Sep 2026 13:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788960834;
-	bh=4kGoNxWFRU6HCIzI1KugsSHLIEvp/dTwub96govqYjc=;
-	h=From:Subject:Date:To:Cc;
-	b=TNKlq6KVjWttZMKEWLatKFAO4yVaNxPWVw3qMV6BBI/kYD1tPUDN6XJav3JbpOI0w
-	 1hprAq+2eenRcnI09l3yL1lYL6zXbyMC8gBNgtJhzaQZeKvwYe8MkypIXcrK6BXzt9
-	 KAuFWsHgxKPm52QF7ikX3RmcjHIuSf+nbKnGVk6izAj7NCbL2WbWlDFlgMoDjrB8B4
-	 F9+MoCyfY54JJegtfkAEggcKD3zB5drGmrOEW7Ex4AlrRSMHt37+BsUQZjqcGDitxB
-	 Sq4dDWgOEN/S3D0k1F59cdF2/cASJZnLRy7gO1qr739Eo2N9TfgYGa3eNAdGydBxLY
-	 DMxERxjbgjhWA==
+	s=k20260515; t=1788960843;
+	bh=ke7wbwtpCjUAwuxuLGTSFpELTF8GAXgQgWxJpOfKOlk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=kxAJ8TkHym33fm/nM2JegElwmiyVwFZ0YNsgval5iLx/fAaFlApVsOrk21RqvhOTw
+	 bdhecW15KUMV8YzLqiIH9eH0nvy37ki3NSxffsRITrTO2nvb4Pw9r+uTw0uLYi2lQ7
+	 JEBxI1bdBIc9ph6Vw/Q+9p/SAbxsj56xU9uloikO5hpn+uFjATCy8MwIALXktyfQbh
+	 W5WZd1dLWstQKdJ/jti2Ep5zLEed9g5EExRVy6+g7zvzTrS0AIAUm/UJRTGFtCV7Ka
+	 eY+vCZsu9eFAyTywAl+ehZ3vRHLoi8Wm+gXFid62KNoMwvpJ7I4t9YT9ozLsk3Ok5h
+	 2B5UB6El4/WMw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 00/12] mm/sparse: remove SECTION_MARKED_PRESENT and further
- cleanups
-Date: Wed, 09 Sep 2026 15:32:53 +0200
-Message-Id: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+Date: Wed, 09 Sep 2026 15:32:54 +0200
+Subject: [PATCH 01/12] mm/sparse: move mem_section init to
+ sparse_extreme_init()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAVgoWoC/yXMQQrCMBBG4auUWRtI6qDFq4hIMv7qiI0hY0Uov
- btRl9/ivZkMVWG062aqeKnpIzeEVUdyjfkCp6dm6n2/8UNgl9hZidUwYjzKHTFPxdyQhBNvfWB
- ZU2tLxVnfv+/+8LdN6QZ5fme0LB+i5Ns1eQAAAA==
-X-Change-ID: 20260814-b4-sparsemem_cleanups-8bc4b47014c3
+Message-Id: <20260909-b4-sparsemem_cleanups-v1-1-008fc8d579fe@kernel.org>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
@@ -94,22 +93,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
  linux-fsdevel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2097; i=david@kernel.org;
- h=from:subject:message-id; bh=vPsWBsGCNqB0PxA+doAglYRMEh16VjGeSj5r8dRwLDY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJshNX/ehIHmeqvOUj9N235rfU7DPdcXX94eLKsU2R
- 3a9Ztz/sqOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJLJnGyHB5Uck2xv3X2Zc+
- f/3sukK4oePZ7Yx31LOszlz/FCXTUDuT4Z9Ra5iA8l79y07bP5+JjZq8eW+29lJb1wsRlyzm/ha
- x3scNAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1918; i=david@kernel.org;
+ h=from:subject:message-id; bh=tuizVE3zPZHpcM2HGG+m6b3SuJ7LR3VtKbc7zGfeEhc=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJqhf+8M6eYfkbV/5ZQszo18qzdtQdUrG9MjBH/tyl
+ 68/zXM4p6OUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJXPZlZNhr2Gf7Y/aN9uOy
+ Ru2WM1VWpqrOtt1qHfHiRc6HOeov9mkzMjzbsHlZRXPhkflTWh+3JPtvW87zXvjPD8mr2Ve0bPT
+ 4f7AAAA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 044932000C
-X-Stat-Signature: wjwepgb46njtnw143f84qqdhqe8atpfm
-X-HE-Tag: 1788960834-939640
-X-HE-Meta: U2FsdGVkX18fZXjfYGSy5NVo0Gg/0pKODrAFaQuST4e0wE+wqxg5yKGP8/A0ZCiFNTA2E4WVpMkdFpMagGrcEVL3dBh3rrIHhhMN/Vv/ZOlu4aJsVrYVzeNfcrlgDTRpgcPj2fn/BwwxhTY4SZPvaG4KmY9xzLE1r04z6fAVA2S1PtfKaRplNkNY8Vkfpq+MEN2+od4otAsC8C29Ghqs3wA8fbAifsJKm7eKsEUHpBMKBsL5h6Yt6I/8Fn0WovWd42Ua7dj2sPCbI753Lv3GV2q/kI9bTo4KeCWQyW4VsJ2bKIVNv+hD1eRH0lXYBzAT3GGyrU4NYerDZybyx2FR+gA4MlgJendag+KxzqAxEkvZT4loB2D0GT2kndxw3IUCOfPnl3C/pDVMbujVEvANZMetSqCOWORUbdaiSpZzcw0/426Pe1pPKR2BTu+I6Jejt4aS+75CXGKx6EYDFKnK+M6xf0HIi/eSJZ7gSkgXNCYlorJXCAb3Naojp5PQgDejwN6Xb8hXU0bxYlIB9TIRVE/wWRYIijQO3ItpGQP4K59a1MffwyFsSsxtJcUoF5b9mf9+lr2Ao8jKyd+DzcOnF0Qg89U4dgpGhZ4CP/4KfDSTOxTwF9z37qlsUZe7cS/emSAWXozo6nNfi8IFjX59zoaSgZMzEa78+hHT+rPMyGLbWQuJhkBmKvYP2Y0/FuQ0OD8x8Wg9S2YZrCTuKNj2nfUbwYi4GB/mNJ3lXItKaOxmFSjwJ3WyreDEhLUAwZQhffyCCS3KR1G6sa/75ieZBxtYgRXiSPMVOPZ1QtO/PKOiMcaWQ2QIcTVebmG9m4JcEFMjD5JnxImjYmQotKDvdgxW6lJ2V/Id1+YBgFwyNAyFSWctQopw9de8DsTTcKsDnmBNHAtYt0iLhRtjfy8SnJSblbJrtVon6K4/uE8YgQGRWqmKV6uKPnaA8qdSZiIi4Fj01tpQEtgYUlVj51f
- nTn8is0+
- F3/b7UnOlKh9wv/cYG65DJM6R/wUYffF7LCIgYx3vSYqFgG7fkiJ4xWX1Rdv0uZXVbqoXyPqhgIAFaLCB0iiuIejTiLOvoH0lqA9SUBgVq79P95bvjWsEI2x80p3afxuF/zvn8e5SAYP5SlFFbR7XIOsOER/nQ/HS/PNBdiPgxh1Hl3ofZsnQb3SOstwhvYtjaLSrQCTvw6PhnRsPp4QS8LuvQ0iQ/+oisSngm4iBEjIdHXpxwbmsALhV7gf19xxj+NusN3sTjBVDTti4tpNuppOBhM5cZtIWAnMKhfglKLyycH2v3zkbr4JIXTnN45agMUR8
+X-Rspamd-Queue-Id: 38B4840006
+X-Stat-Signature: ziksn4o3cjt3g9nzw95osnm7oibo9jr8
+X-HE-Tag: 1788960844-108834
+X-HE-Meta: U2FsdGVkX18GOh4UsYEhjO6kWLQOh8mld8z1Vf/GmiAqWiCF91Rp3TBXmWlz87KazyF+NkmIKaBa/WXn+Bjji6gYEajwFsRmgk9juq3rcoD4epMX67/0i7GmWzNGMtsLJVZKZtIkNCoUGeor4UHSehLGwlTwHOpa4KOVg8PdA1hU7Y/cpZNBMstPPL1u+GsSeB1xiMYmnEmZTxw8GAM58NSvg1qh0fZo/wLR5HpJexMvMDPIyi4gmbKIqw/NoulgS6HNUBlQtiEz0EA8E/S7WxV1MANii5ajIaTkamoU/RA2yTFi6MQHl9KNfbzxanC5sVluP31cEzLaLBiO7RoQRadvrvq8LJZx6iFSWJB5tC8V8hbUoIs5ZQLkCbRQx1N5uMCzqmc6bvad3yItIwScTpfdcG8wHa8EERnwTkBLFeJSkmexxfSzK3wsMTd+lk1Yqdnvdetx6JHE6QxyA6DRS42lDhw1WjYLG6leuh/WcbOIw0c3YkBP347B9j73prc8yIe9Laoh4itkA26HLUQyczM3cOQ6TF3OHMYkGg2C2iwI5Ct/BuLKN/iUqdNYCM/Vtw6dbQTwoT0j04/G77mQGgPZ7iaIl9uoaovOhgB+u5Z+bGf0H/zIEH9RoBq3gV5JXwDiEzsrbYO57u/jH0PPNfoJgTUfmomPzu142ot4t60KAzzOOqR8h67XmdUhrHcm5CLyXP2IQ8eUSHhquBonbgYJWx1rH5SeOlmrVF5tyoE9Ka+vcBQ4aHTl+2ZP1yXxomOH8zwl4nI+8VYeA2hIXsJZheEACkpQlx5hhzV4jHwaJt2BznjiVVVIHWUR9wlEfOfM5+/vp8C4YQ64TFa10QzhwaPiuyQmvuzHE1R6fvcMysT/vXCPch3zpN9kJqpHxFVBmHVAIVNLoIQmmnVPYv7i9FOAjgBDRnJJsMdYnUAAyfho9f+XslBvwesYUBMtGyhjLadqLyMd5SJ0xBr
+ 4B5bGimx
+ y+UdaXu6ZS9r8RKCCP/Iv6ovnKyaIH/kfh6EqmL/0rbmYirOFPQaIObCUEjgRN+T9jM+VgEXvWiaWU6v30+Q9m9Z9k/4H3/iSvFkoaLfSuWXy94Pyu7eszbBv3rLF2O/8kbgi4kWu4Y3ozZAKth5u9Y+HmjW2KlTxwNat8I9tKA2rzGLsGEj67iY+L0xfvkjn7LouQPYQuBlN2lUx2yj3rQKPn52zfadUTmNP890KrgeHzX1WCgDRGe1hxZkRQ54DCtrGJ5BV+qmPvLrlxMo0bNXF1W28DpNjuXDt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,62 +116,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SECTION_MARKED_PRESENT is really only needed during boot, where we
-can instead just rely on SECTION_IS_EARLY_BIT by setting that flag
-earlier.
-
-Some preparations for doing that conversion and some cleanups in the same
-(sparse) area.
-
-Tested on x86 with and without memory hotplug through virtio-mem.
-
-This is based on mm-unstable which carries Muchun's
-
-	"[PATCH v5 00/17] mm: Introduce section-based vmemmap optimization
-	 for HugeTLB" [1]
-
-A (possible) resend from Muchun should only result in smaller conflicts.
-
-[1] https://lore.kernel.org/r/20260825084608.47437-1-songmuchun@bytedance.com 
+Let's just avoid another pair of ifdef inside a function. While at it,
+switch to INTERNODE_CACHE_BYTES by just defining a fallback in cache.h
+as well, given that the x86 variant already provides one.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-David Hildenbrand (Arm) (12):
-      mm/sparse: move mem_section init to sparse_extreme_init()
-      mm/sparse: refactor sparse_sections_init()
-      mm/sparse: move initialization of section metadata to sparse_metadata_init()
-      mm/sparse: rename and cleanup sparse_init_nid()
-      mm/sparse: cleanup sparse_init_one_section()
-      mm/sparse: rename __highest_present_section_nr to __highest_used_section_nr
-      mm/sparse: remove pfn_in_present_section()
-      mm/sparse: move __highest_used_section_nr handling
-      mm/sparse: remove SECTION_MARKED_PRESENT
-      mm/sparse: remove flags parameter from sparse_init_one_section()
-      fs/proc/page: clarify comment in get_max_dump_pfn()
-      mm/memory_hotplug: drop CONFIG_HAVE_ARCH_PFN_VALID handling from pfn_to_online_page()
+ include/linux/cache.h |  1 +
+ mm/sparse.c           | 19 ++++++++++++-------
+ 2 files changed, 13 insertions(+), 7 deletions(-)
 
- drivers/base/memory.c   |   2 +-
- fs/proc/page.c          |   7 +--
- include/linux/cache.h   |   1 +
- include/linux/mmzone.h  |  43 ++++---------
- mm/compaction.c         |   2 +-
- mm/memory_hotplug.c     |   9 +--
- mm/sparse-vmemmap.c     |   3 +-
- mm/sparse.c             | 160 +++++++++++++++++++++++-------------------------
- mm/sparse.h             |  21 +++----
- scripts/gdb/linux/mm.py |   2 +-
- 10 files changed, 107 insertions(+), 143 deletions(-)
+diff --git a/include/linux/cache.h b/include/linux/cache.h
+index e69768f50d532..b6e857b985bca 100644
+--- a/include/linux/cache.h
++++ b/include/linux/cache.h
+@@ -89,6 +89,7 @@
+  */
+ #ifndef INTERNODE_CACHE_SHIFT
+ #define INTERNODE_CACHE_SHIFT L1_CACHE_SHIFT
++#define INTERNODE_CACHE_BYTES (1 << INTERNODE_CACHE_SHIFT)
+ #endif
+ 
+ #if !defined(____cacheline_internodealigned_in_smp)
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 9349ed6326c01..6a6d258862904 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -103,11 +103,22 @@ int __meminit sparse_index_init(unsigned long section_nr, int nid)
+ 
+ 	return 0;
+ }
++
++static void __init sparse_extreme_init(void)
++{
++	const unsigned long size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
++
++	mem_section = memblock_alloc_or_panic(size, INTERNODE_CACHE_BYTES);
++}
+ #else /* !SPARSEMEM_EXTREME */
+ int __meminit sparse_index_init(unsigned long section_nr, int nid)
+ {
+ 	return 0;
+ }
++
++static void __init sparse_extreme_init(void)
++{
++}
+ #endif
+ 
+ /*
+@@ -197,13 +208,7 @@ void __init sparse_sections_init(void)
+ 	unsigned long start, end;
+ 	int i, nid;
+ 
+-#ifdef CONFIG_SPARSEMEM_EXTREME
+-	unsigned long size, align;
+-
+-	size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
+-	align = 1 << (INTERNODE_CACHE_SHIFT);
+-	mem_section = memblock_alloc_or_panic(size, align);
+-#endif
++	sparse_extreme_init();
+ 
+ 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
+ 		memory_present(nid, start, end);
 
----
-
-base-commit: b02c77c78ff74d3d88ea614335ae833e01ed5d30
-
-change-id: 20260814-b4-sparsemem_cleanups-8bc4b47014c3
-
---
-
-Cheers,
-
-David
+-- 
+2.43.0
 
 
