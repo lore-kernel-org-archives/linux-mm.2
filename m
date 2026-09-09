@@ -4,155 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61FE9C79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:47:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F16C79FBD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C7BA6B008A; Wed,  9 Sep 2026 13:47:19 -0400 (EDT)
+	id B9CF76B0098; Wed,  9 Sep 2026 13:47:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09FF46B0093; Wed,  9 Sep 2026 13:47:19 -0400 (EDT)
+	id B4E156B0099; Wed,  9 Sep 2026 13:47:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF84D6B0098; Wed,  9 Sep 2026 13:47:18 -0400 (EDT)
+	id A3DFD6B009B; Wed,  9 Sep 2026 13:47:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA16C6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:47:18 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0E2E1402C4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:47:17 +0000 (UTC)
-X-FDA: 85194955314.29.545B952
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BAB0480003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:47:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A87fhsl3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788976035;
-	b=kgQfA2fgbZ8vnGOcM1WOmpqAcqEPngDmLe4unjQFQDq0XcQl9+iYce+TfHIfBxJoTe1oek
-	8f4sX8bFGU3A5aDEtJOOFGH+b2lZSIK5Vnz29GiNkpdUBS3b7mmtXVOOxd/zD80TRigg+Y
-	H0uVBM7ZbCuHQ0o+vHeFuV2OIy6szgU=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A87fhsl3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788976035;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 772166B0098
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:47:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6E101602FD
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:47:33 +0000 (UTC)
+X-FDA: 85194955986.12.A7795C8
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 28319180004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:47:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=DjRQeO6h;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=285f1qP6;
+	spf=pass (imf24.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788976051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cjBT/gijlT5nlkZYair5/Qqr3lqnucD6OCBJtzUzH/Y=;
-	b=CH1BjxVslI6ofqLnqFN9MWIkh6RERddT6/K8XI1Toe/KofjqDRmMRokvYBGS749tsnJOpg
-	djhU2EfrltIH6ygtNMR5KtYY6NBqJsKbGKC2bhN86t+VzHo2AwG8dzW+WC3DlWde/I2gYA
-	JyZEaUopprzRmUZ4tuz95OoNVvGmuLI=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48586861639so52452f8f.0
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 10:47:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788976034; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lp41uMwwOt+D1u9vq+FNpz3svi2RqAxHLoAGYIf7NyWkaVl9u2+DjW4N5yz0D1qnk1
-         QzyISVXG10n9sM2xbf/l7Z+VD61eHlbI0AwL7TSBieXApWuF6eiBPX5AhbdttUXEiTom
-         ZH8n1qPXnkMQ3qcTLevjMMeNdPugvIdakS2PKDyipDiXs13T03xLjWD2tcmdJgYATg7/
-         r5CS1XII+xnj+umWKP5YqtA/r+AmC9bshWZOPZbVyW7Jl2byzrIb+3fK88T8Qo45n4CE
-         2dHlvY4Ho58vEYojXDpwU0d+4bt+rS2NDfdjkzmoo93jBuHImSvHN7pTdO86+WIa4hdO
-         GNkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cjBT/gijlT5nlkZYair5/Qqr3lqnucD6OCBJtzUzH/Y=;
-        fh=Mtp214gM6JLO7+jL8vzbHCCMB+AwenrU5fn9kYJjsMk=;
-        b=DvvcPp4HjuJq1j0sTJ4sEnRVFmHlgfdHprEsx7kz0c8XT9KqeEeciE40PEap7ovROk
-         /eajHfn/U8D68+YZxSkUHc6ChIkYqx77/SBht9LSCQeYsJSrE4VYuqCyGVqDdCey/eG5
-         Ww1gS+rh37pMPB3RgwsnVCYKQ9aw0vzWx5JTzzJn5Ly7+PR7Y1+yhA3fhzexYQG5SoWi
-         AghXzgPoMHLU1gAPYnmypSHqKzTVPLg9xDzF3HshdOxkqxV6jg+0pcHH1dp4UzUCUI6y
-         Pj5h8Vurt7qDNP5qNAfs12WQ3nVB3VRQbyIZkHMC8E8yU17AXf1svYNBJIwhzzJscl8k
-         4Qxg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=aPEyuOHa2Xf8hImQXcpukM+8uHb3YA7v7XMeWMx3v/U=;
+	b=qWe0aGmjXPef+D+CLj93WvTkohR/bHvESc7IKcKHcYPdI2V2xzFgMUVXqUqToHl7031rM5
+	xngxn6fMQ+KyAuiZdusU8Nups3EzI7uN2zK/7tzIprjhNpZ2aqkN1nK/LxihgsqJC8qz1h
+	P6LBZk0RPYVuyz2OGFejdL1teELRgCE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788976051;
+	b=GtWhZWUB3y16X3VMrfw7dWjXoz/N9u8DNOpvtVY6ZEbSUe9ATN6oCPi+DO97ialMkaSpZO
+	zAyT4Wtg42WCM8MQhv0NqsIA8yT26ZHrdtKWf1d5qV5ay8DdKlUxpIQPPl6RnYl0k5RCgO
+	vEAHBrbyONDOpLR5J/hTw8GYRZgPO5U=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=DjRQeO6h;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=285f1qP6;
+	spf=pass (imf24.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689HS9FO298899
+	for <linux-mm@kvack.org>; Wed, 9 Sep 2026 13:47:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=aPEy
+	uOHa2Xf8hImQXcpukM+8uHb3YA7v7XMeWMx3v/U=; b=DjRQeO6hhGQ6ZYjAObJ5
+	/57qcPKnOwj1fymOVEV+nrbxT9iWnT5Bdyg31cdt6boDVmYsyuhwvfKfxvkKfoTD
+	Ll4UPjKBfzaaxj0H3M04AdKlciGt0q9P//CcKBoFBtJkdycJZtaE1uqSgMoUW3as
+	YCftzjHUlpEKNZyxh7TGR5BLLGwZ4+wGYmqBHBIBbfT8aMwdz2j2KOO6x8aDoZYk
+	Gp3amBJ0NYy0AO6OHdFKAKfJd07JJGvH/QUDn79JHP9mL2Fo7UzyARY3hAHRQbMG
+	/UXL5xzBCj9b7xfRivTDlni7o0R7ixrTI23YkRlAsEWpzfQb9N54FJxNnWE5tB8N
+	BA==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4gk4fh47sb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 09 Sep 2026 13:47:29 -0400 (EDT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90ceabcd64aso125253266d6.3
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 10:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788976034; x=1789580834; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cjBT/gijlT5nlkZYair5/Qqr3lqnucD6OCBJtzUzH/Y=;
-        b=A87fhsl30dHnzfZ4sBa0Hi465dY7UsSPvGoO/AxGuCGBbXk+YmOG2Dq+oj4c4vB+p9
-         /VH6uIHbgr3OsIIxx4COQWVEHCwrTyUQ2gOSrVChmJxAq+sHK9YcTiQ8oRG1feG2H+uv
-         L8p9B34pcipbDqqYG3ua9jvpxTmFhFNRn6PtwJbLddLGndQO4Y/Ub0objoX2JdZilJyu
-         Hg2wsiT3SputzHyOz+yBvgB/yLGuBZ7hdSOnsgmEBEHQuqkeGkssajNAxA9I3Wy8LReo
-         W3D4ASuRt+0Blrq2O6GxVr74D7alLN5T2L9Ol6wbtforIaplKlsNqSTiaTWlkSi3Gn7d
-         Iznw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788976034; x=1789580834;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=columbia.edu; s=lionmail; t=1788976048; x=1789580848; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cjBT/gijlT5nlkZYair5/Qqr3lqnucD6OCBJtzUzH/Y=;
-        b=l7ZKHI36/QI7rRHAZ2TdftCeJMNE+Vs6gE799qqHk8wNQkR8bziMHYFaYMNW+BG7EW
-         Hn5j+3SyZR1v5K6R+/M1YvCu5PmPjhsoYaaKwzByz30Dflaoj8H/cRU/uBKvpPxM7wbH
-         82AlP3I7irVZpHoTVYXoKjZh8xiFnyiCAC/MXHLLtwITLVutEwTbfMRiBR4iJdYOPP66
-         7vFNMikzs3HTXnga1o9BfqWdsvEU6B7BsQilBe8CkTcJueFlxJCBnHluSValnJz9nveX
-         Cvrez7kmPd+Di2z9gD8ApIdFfdTSEGucCG67hClnaq/AkmPNRQS9URFwaI5gXZYVxKiy
-         76Cw==
-X-Forwarded-Encrypted: i=1; AKwUvBxGtU0+QAAw0QvGjD4GXk4DU1TRS/UrwvTW/iII4zbam7BKj4qPcmP48KErhanCL0HtgMm31xhSaA==@kvack.org
-X-Gm-Message-State: AFuF++nq/ZJ/W+roBYZAXtB4Oqg2aESUAsNSMt6fSbESPshhc5hpYc+/
-	rcLVpQtmYJbu9hqKYfOcIdLfb9NvdWRxmWtP0ZdCj5aoCjrKgccYw11k0g5rWXc47SJg2OB+EJH
-	/e5Gctg8MkqvhFLC7d2Oql5YdchI8P4w=
-X-Gm-Gg: AYBFou2lDdW7XvpNEqG3WirLMERIrWykemFqAFIKonO4NA0YqqdArG2ii/a1Q5p/AAZ
-	eWkeEt719DCmlg2LYYiIEAH+97kYWeLrOOCEDRVSeLK1PZyh70KYLE2b5H6mVTfUeHhZNV3RSut
-	jaF9x/U4nrnIwkICMsN3h4QxRDpxdMeibGvcYZbuFgq68y9mKhxb/mEdksjCzPDwcmLDH5LGhec
-	qo9FdbI6Fn9RZS+VRDPhop/UB0+lBnj2e34D6UYKMHRkGrCqsoOYAJeBWkmf+3UdH16rj11apoB
-	ponpYxCD4wGH06IqMsJbFoooQomHlfmJJRnetm8u6bfkP0HM+u1FJtxjr+5acrDShgUuCreCAd3
-	6yQcIZMMuzPw=
-X-Received: by 2002:a05:6000:470f:b0:484:4779:bcd6 with SMTP id
- ffacd0b85a97d-486e0f6c735mr589913f8f.15.1788976033902; Wed, 09 Sep 2026
- 10:47:13 -0700 (PDT)
+        bh=aPEyuOHa2Xf8hImQXcpukM+8uHb3YA7v7XMeWMx3v/U=;
+        b=285f1qP6klSUDnB+/loKU4MEqhQF3rWXNu8pueCV2XFHPstdjd1iE8qAMyN+plqElT
+         li+QMenDkYzuKuxlPd14Bh7zrBo+HGns4KBg7uX5abGGlsK9QDQ/KoAdY+9PECCJRMdy
+         om9wOECIWdKeP4oThjSb92G0uLEh2XhwroU2eh3+iAIDPq4QlorJ05C8dqPgfwd0HGz1
+         2tl97lFQL2CC9rjRAVQpkTqFTxBZ5G8dzjYa4/7PldxZQtYHhJRlgY5HqoMqYpQjnaFR
+         7waEqlycMQDL7dbIg1SwgcfP3HAIq5QwfqGOd4O9nkXG1PfIZgnXG2mr8k0XZ/mpP3CA
+         3niw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788976048; x=1789580848;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aPEyuOHa2Xf8hImQXcpukM+8uHb3YA7v7XMeWMx3v/U=;
+        b=Acb24cFvEZiRuie8zs5/lcWFwur/ZbFJxZnHl17TmIZuInV/d3vzs3zKy6YE/patIR
+         3hitcbpOSPCEppOtsS/gL0Ltmf8LFKME31j5u5pF5G85k0oxlFQZWyfDCiGRMfao9JVG
+         OB6GfkI+uKqH9zv0wxZ5ITM6stJjHluKcCZhV4EchlwtjvSh2XdymqsnwMPAbrd4xqs/
+         y9S4Cn5bXTWtRbmIRGTAmVyGw7u/kxekmT6jIPMS0w9Yo9O19CQBoJcK0Qiz7hMKYPit
+         RyizdfXflvpoae5Kd2cDHY0tHExYEpf5ilI8Al8I8A7njnkB39EswaGTBz6UsDZNQAWJ
+         jvOg==
+X-Forwarded-Encrypted: i=1; AKwUvByy+OFHkOvwYi8/SRHr0g9nMYc4xbEr7jhWWfUU4zX5/2Bfrn5vxe8ACYuWATGfoukKc/f9IH5GEA==@kvack.org
+X-Gm-Message-State: AFuF++nPWIJgJUFzg5Wlc/JH8ioUYFBfbgtnluWq4H0Ryof5aYT2sRR+
+	UkHXSn3jxNWdLBzNVzhhsIs46kuwklt1/4lM+vjk5Wfx47LTtS/S5WOXEoo5oN8bnEY5rkZe8Sc
+	q3W9RVw6Nc2nF7HDo2d253fHDBJ8uNbkNJKMi7HGH5zgG6/EJ
+X-Gm-Gg: AYBFou3wnMeSD28EkmCVTPsOoQi43d4/RS+OddOwfS7jSp/6U8irbT/s6oEkUj89SQ6
+	QqL9IKMrlZrVOY+nlQ9BZanKZy64fWztFPEvxMR4nrX8wdTeQAThdKPY6kCK0cg0CW1F/hbVjOh
+	C3umvWpbyZxWxbxlcbWKAJF9hN+M2/PXPtvSROO+ON9NI6RwtYxs0mm9qPopwRB+0NgZlKqMevC
+	wEERicgA3J47HES/WRR2KyEjUjxv7hQvqpMMlFK2Akwad1CBh78umszK8H5KPfNBelCFUzaGlYi
+	8TNMu+l9Q2GJueFrzUBvPZjbk+C/VIzKpbB84jFcT4xua+zjYjDjqAIP22QQcax7IUVRY2ixKLb
+	eM8hn3k3piQBHsR5qtlGIhJvJCmhJ/QwQsMjreRqedtwuuGFcilqL
+X-Received: by 2002:a05:6214:5297:b0:910:345a:8bd2 with SMTP id 6a1803df08f44-9103f07142emr449128066d6.35.1788976047922;
+        Wed, 09 Sep 2026 10:47:27 -0700 (PDT)
+X-Received: by 2002:a05:6214:5297:b0:910:345a:8bd2 with SMTP id 6a1803df08f44-9103f07142emr449127266d6.35.1788976047298;
+        Wed, 09 Sep 2026 10:47:27 -0700 (PDT)
+Received: from [10.207.49.22] (nat-128-59-176-193.net.columbia.edu. [128.59.176.193])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9106412e038sm53426756d6.20.2026.09.09.10.47.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Sep 2026 10:47:25 -0700 (PDT)
+Message-ID: <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
+Date: Wed, 9 Sep 2026 13:47:22 -0400
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
- <aqBT_35E-eSoN_zj@cmpxchg.org> <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
-In-Reply-To: <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 9 Sep 2026 10:47:02 -0700
-X-Gm-Features: AcwNN1UaR9pHD2h6-LXbXZDQ7w46sDfAFt5QkIQi55ban0K1e2MIGYElY-fudaA
-Message-ID: <CAKEwX=NYoMH8pTKeCvA=XHFmmNVMeDz3mxbhp5q6-PxSTJ5wOg@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>, Chris Li <chrisl@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+        Gregory Price <gourry@gourry.net>,
+        Ying Huang
+ <ying.huang@linux.alibaba.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+ <178889163877.1334491.3646957026033534678.b4-reply@b4>
+ <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: PleO27al89rAXsVNwZYuBNXpAPTOITSa
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE5NyBTYWx0ZWRfX0o3m4Gigw/4i
+ Y5YVr9pCCxLlbSwE1VNeYnc130KI4YK9Z2WMQmMJkii1HYFUIi7bJSTy8Ly5qPLdzwc3LQ9OlHk
+ nvOrnmehBwVuiCmwtBIEWUc/egA2RxBrzRdQPXNpN81MltXkfxpv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE5NyBTYWx0ZWRfXwmzHxabeapQe
+ cAL9HBpuySQPXY7harH9Rg2sQeTYMqnVs4jXpd0k1wG3gymU/7+6sxuW2KkMs9EmXhtQEMMJFfK
+ 6OUhpkYX3dtQSDTNK4jmuAqIc6NVrRg2xkJkO458xdwNg5ulKpu5ceuaR013eW3GaWNzrjDsVo8
+ Fd8E+Hx1o3j4R8xu+tQ26W09Gjrg4OHMgkmZd/IpSLSX+r62Iq3NmR7DT/0gO+saltLLsReBu/J
+ YRf+a/HUya1YtsRHY+pPhubqt1U9ttVjdWiUx9RKgLVQcWeXtTQCgM3MdSvXm9/H1lQVj0Kr6Tz
+ R25N8Dfq6y8As7ZQyAngYNYYR9dAshpT6mmh8MY+PPwKwA5t+ttTXAPTnAhuyZuwWHMqrioZr5s
+ JOmIthCxsN5BCcXAr6/mQLybf0Qn5JLqMf7oRfUJ1L6XsyECBjEBYePFGvbvIVlA3BzWEH4Gpcg
+ PRyTWlXsO5wBQNwL5gg==
+X-Proofpoint-GUID: PleO27al89rAXsVNwZYuBNXpAPTOITSa
+X-Authority-Analysis: v=2.4 cv=LdUMLDfi c=1 sm=1 tr=0 ts=6aa19bb1 cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=fJxgZNdXt3opHMdyAp+FXA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
+ a=VwQbUJbxAAAA:8 a=FP58Ms26AAAA:8 a=Ikd4Dj_1AAAA:8 a=brY8mzgTOjc0s726uLoA:9
+ a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11900
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=10 adultscore=0 lowpriorityscore=10 clxscore=1015 impostorscore=10
+ phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090197
+X-Stat-Signature: ca1gjnoeidi8rmeacz6im5oeqw6tz1rk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BAB0480003
-X-Stat-Signature: hnspxwdn1rnqgwj3pfyx43m9uzaxhnn9
-X-HE-Tag: 1788976035-518833
-X-HE-Meta: U2FsdGVkX18Mq43XDuPec6DUpT+v450QBtRGSVAyKUEVH5UX8wjGeJ9rZWFbCCboIKJKQzKMve6+jdUiyNSBwJbLvYMKo0BJYe3eBalE0+oiPisAc4P+7tR4he7ChJA1LNbzLL0idaNdm1mb5oea0pN1G0tX+l6xecxcoQwT44wWkzSXgyvZlXIV+ApQfn7WhundnmCWoCl2O4zeHu/htZLzfJtA9+GiXqXVCGgIeBHDgZRJ/3VMUPCmBE915bdvjl+vIYNJotVvdqfqBSvFKPldcuc0kBIydXV0pNNGlHgFtFWmpyasC6lFcZ18hKbbC1z9tFSzr3GkDiemKHlzsumssvhued/rfb5xlUimjZdK3PtibLJfZTREFbI26bSlG9BR11SzLa0b+I3ZYKY04R44rrl9YntUTfhvZpeinmkwfFuE0HekbsUNk+YbiRzjZRcHAnPJTRCIoJS2afPaeU5aN1Rvq5UdRIrHmttMLqy2+JnY1MMFLGB0bjhTt87F866mlv5ZdBcrqTZxGCpJF/WCZwFMUg/XTMaPvceW7mZUmdKjpF5Ry9sFT/rtWVh5shFT+kImxtaz7s40FdPZW4pBg9M3xHw+C5aO3cJ3+BMc1gBwDT5lylWTJ26vKnb0JYVEc/+5V1gSN7DssPHEIaH3RHJnd6m+iDfF8B8mSx0qBuP8guSxwK84E/VihkAx3RE4I/u3ZnTLah0WqMzOYaB7voISDwrVB+2Mt5AQ1cUbjNAjM8ybYWw7KM3LzuuvPPVPtyyFmN5B95iMUVbhJPML6gJ718Y306XcV8G4o9bYiOCgOEc6/Tdj5foLIGe4ejUzKjJOxWmdrCdNCk+1a0vk/JksmYlfYmxTTusdHccyn2AU2A52HK9dRD9oWCaAAoJEA6T8AHHg58GejKrep5g/7jydjkqVn+USkfUTyyggg0ZPcJ2fGG2aqPgzHTD79HpsrZL6mnM8zuqlGIQ
- vXPwdrtr
- TlamB91nN6tQOLD2Y/AUJA4BpyPbpj2sbjEtbeAxbqJJ5ddjBK5/sVCxk1jpo//zQEzeWxvxIBOswEWtw+uJqZFj0JFfKolydhUFxTVXES38u84Wk322+Rh2CdR5sQhv/V1j3E5s9e9Hw50daQg0yQ0k/3AVAXZ4p1H1DwV63BGPnziLn+Nt0qaEclQ8IDONsSqT0wHKswFBSXdA5ejzWTxLYBPfTSgmkevoJqBN2i1y1tZDOzke2+kYBbBAoIBBBzU+0oYSRSjlGMPOjbPhZXoJYlCEAtn5iWsmP5AKBXbtjKkfM4HXCF5JkxVAhsqnPuqynI/SXB39j+TvxyG7CQO05reLGPAITuaxFnCgrQ8z+VOQ99knKv0z2M+U6teI7jZSzcY4Et+zr15vSe8j/Ar3eRN5fkFUdNdym8DgqGAxZShg3JKII4a07EkPRUKgbYN5yAbPLjXW24rp3rWq0y06PFGrVnuUNlCqg4799WIFmaKjb0ihBqWvvzDwC4oYv9MWxj1VygMrGBqD1rFHK1JDoLkLbHWzxSEwIDeiRJBwqvLzzTTYNpv6J21i//wbX7g8n3aMJCssYfiIhR9Mi8RuLVZIPJXnhtXdI
+X-Rspamd-Queue-Id: 28319180004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788976050-904414
+X-HE-Meta: U2FsdGVkX1/9tUlGQlWUvRTB8Se8aUgbyZN3aF+npjsGEZm6mmwhXfD2SVOI1yzjVMpK/4nXreIhue87lkV+g0qockBuCGNSL/uy8fdFaQRYlcz3USXXJC88C2jcRlkeGcBBGymD8KHo6Ikojg/G797sFjpYkRD2Xt+koQMMce8O1Y3mU06Nfwg06hSExlSQI8TcyVq8r+SYp/re01D4u379uTiaSjJOZ5DjkoTy6AwVn6NM8F5jeo+JL80DIsePMf9lYLNDLoQ4C+nKIqNvnuxQcjxXFSY4wfCP8Rs4hDk9ZK1em0Fw+1yBfzoRzPJA8SwMtJ6zADk87VH3/QP5sdtDSrDQW+92vpsrzdCUfKNGkutb1uRxbGCrdKhSy6Fq/YrdTTk088Vp7niusAV2DgPgQQn6yLgy/gw2E5XQr2bQpzvcvckrnWYEfHJrggnoyea6FxbaGiePh+YFuO0VPzvfMs5gtHS+204vAvHlgBjRhYQpIU+8TVBIByQr99cYsf2I/WB9/dN6sav89AMkYV+IonXrxjvLNQHr8o63OMw6T/y58WjiP+BXch4qUxpQ8S1H/RuJ1DS7jo26SedV1gUDDX4aw/6+z4LOBl9Cnvg1N9g2vAnWqngbL6S5X9pLthxFhsJwy1nI7dzB/rrJ9bUe96k6wNnM678xs3E50WyFe3ZQTG8u/mPsGdGxR58N2HMZKEV1MmsAR21fMqS1y5F+cQCnt/v+WT0xlzRloiOBlFI2KjdtMR2IWNxYSflhyJorZN/W34QeFNcu/GzlsuEgloVpBXGlWiuLq+aQ+97dWnk4BO2u6sAmBbOTfYF4X8VsGPGL0F7ZnekR7Rj0p22UsYVeRZakgPrRBLvFQqH+xvLSVBMHjPij65DEiYm4QZWa4cGoMZxesuXbCZC5xq30PZZJ9v0lt2nRWp4UGe1u1qDYPK5sIf955ByRuwhLndiRD7wtcVGF8aO2hBA
+ 2NQVdeXw
+ eedwXvjpw2XY+ODTPrSOh40Kxho9y6l93rrXpIAeU+hBDtqJNUp8rAmBJfGwJx3d5vshQX3bt0reljAWFZZDCDNLSOSwOT3xuX0U4WVEe9x2hNhRKy+9KeRuDHyZdwofGxNtemSr3cuzcsau/Pd9AoTgQpAeRKuIPbaZ8edrR12sdXhfKbibEe8CYKNdjy6zLwkdgQeXVXASboC3obaq0uQAVuixLp8Gs+BIKQxYM/u1gQuNlbe4cSB2VbYjYBIFd8vZosXo0JWJrfOh9ccSLE9p0wpuZVJ1+ityd8DQzaXGScR3/kwrVImiqYXJxQErXT0TOBGiDEx7GY1QxMVIuY+1glN9s7gaeKieKo116n2VyDU5sUxFf2jHHjCjHxbJ5Lg/O7koaYsCNIn3uCZldyR5qz1dT4uBm4sw8pPx4L5Wc7+MzyItIeAe1sWvaYcmc6QDorhWG4LBU3QbHgQ4ALokOZaN7X/AAr0fEUrLben2PCENKWV/OaIpSxM7flrgBKl9rA7dQ2Oy7fBQ5th72ZbZSCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,58 +190,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 9, 2026 at 9:41=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> On Tue, Sep 8, 2026 at 11:30=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg> wrote:
-> >
-> > On Mon, Sep 07, 2026 at 01:51:31PM +0800, Kairui Song wrote:
-> > > Where I've ended up is that unbounded growth is a real concern. On a
-> > > host with no memcg limit (root cgroup, and most desktop and embedded
-> > > setups), an unlimited pool means usage can keep growing, with no
-> > > admin visible ceiling at all. I'm not attached to xswap's percent of =
-RAM
-> > > knob specifically, but I do think some kind of bound makes sense.
-> >
-> > Swap space is just process virtual address space, no?
-> >
-> > Swap entries already have one or more page table entries pointing to
-> > them, which in turn are managed by trees of vm_area_structs. That
-> > means rlimits apply, overcommit protection applies, and OOM killer
-> > attribution works as well (oom_badness()).
->
-> I tested this theory. I spinned up a process, and let it spam 0-filled
-> memory + swap these pages out continually.
->
-> As you predicted, oom-killer picked it up eventually. The host was
-> (and is) intact otherwise :)
+On 9/9/26 3:48 PM, David Hildenbrand (Arm) wrote:
+> On 9/8/26 20:20, Tal Zussman wrote:
+>> On 2026-09-08 17:47 +0200, David Hildenbrand (Arm) wrote:
+>>> On 9/8/26 04:56, Zi Yan wrote:
+>>>> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+>>>> page->private != NULL is equivalent to checking PG_private. Change
+>>>> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+>>>> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+>>>> but it can cause confusion when PG_private is removed and
+>>>> page->private != NULL is used instead. Change it to initialize
+>>>> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+>>>> semantics.
+>>>>
+>>>> It prepares for a future commit that removes PG_private.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Assisted-by: Claude:claude-opus-4-8
+>>>> Assisted-by: Codex:gpt-5
+>>>> To: Jaegeuk Kim <jaegeuk@kernel.org>
+>>>> To: Chao Yu <chao@kernel.org>
+>>>> Cc: linux-f2fs-devel@lists.sourceforge.net
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>>>> Acked-by: Chao Yu <chao@kernel.org>
+>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>>> ---
+>>>>  fs/f2fs/f2fs.h | 8 ++++----
+>>>>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+>>>> index 9940a6cecf1a2..2f7ab5888b078 100644
+>>>> --- a/fs/f2fs/f2fs.h
+>>>> +++ b/fs/f2fs/f2fs.h
+>>>> @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
+>>>>  }									\
+>>>>  static inline bool page_private_##name(struct page *page) \
+>>>>  { \
+>>>> -	return PagePrivate(page) && \
+>>>> +	return page_private(page) && \
+>>>>  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
+>>>>  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>>>  }
+>>>> @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+>>>>  }									\
+>>>>  static inline void set_page_private_##name(struct page *page) \
+>>>>  { \
+>>>> -	if (!PagePrivate(page)) \
+>>>> -		attach_page_private(page, (void *)0); \
+>>>> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+>>>> +	if (!page_private(page)) \
+>>>> +		attach_page_private(page, \
+>>>> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
+>>>>  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>>>  }
+>>>
+>>> Very weird interface. Why do we even need the page-based interface still?
+>>>
+>>> $ git grep -E "(set|clear)_page_private"
+>>> compress.c:             clear_page_private_gcing(cc->rpages[i]);
+>>> compress.c:                     set_page_private_gcing(cc->rpages[i]);
+>>> compress.c:             clear_page_private_gcing(cic->rpages[i]);
+>>> f2fs.h:static inline void set_page_private_##name(struct page *page) \
+>>> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
+>>>
+>>> Seeing code like:
+>>>
+>>> clear_page_private_gcing(cc->rpages[i]);
+>>> if (folio_test_writeback(page_folio(cc->rpages[i])))
+>>> 	end_page_writeback(cc->rpages[i]);
+>>>
+>>> Makes me wonder whether we can just use the folio helper instead?
+>>>
+>>> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
+>>>
+>>> So naive me would assume that we can just get rid of the
+>>> set_page_private_/clear_page_private_ stuff entirely.
+>>>
+>> 
+>> I have a WIP series of ~30 patches converting much of the remaining page
+>> users in f2fs (including the below) to folios. Still have to do some
+>> testing and clean it up, but hoping to send it out in the next couple of
+>> weeks (in the hopes of eliminating some more folio_compat.c functions by
+>> next cycle...)
+> 
+> Indeed best to wait a bit before flooding -mm even more, it's rather a lot at
+> this point.
+> 
+> In the context of this series, it would be great if you could review whether the
+> diff I proposed would get the job done, thanks!
+> 
 
-Oh digging through dmesg - I did find something quite interesting:
+What it changes looks good, but I would go a little further.
 
-[12462.749663] ------------[ cut here ]------------
-[12462.749670] refcount_t: saturated; leaking memory.
-[12462.749817] ------------[ cut here ]------------
-[12462.759267] WARNING: lib/refcount.c:19 at
-refcount_warn_saturate+0x1b/0x70, CPU#17: zeroleak/76075
-[12462.759276] refcount_t: underflow; use-after-free.
-[12462.777208] Modules linked in: sch_fq(E) tcp_diag(E) inet_diag(E)
-act_gact(E) cls_bpf(E)
-[12462.786790] WARNING: lib/refcount.c:28 at
-refcount_warn_saturate+0x42/0x70, CPU#25: dmesg/76074
+There are only two more users of page_private_gcing(), which pass fio->page.
+Those could easily be converted to folio_test_f2fs_gcing() by passing fio->folio,
+which is in a union with fio->page. That would let you delete the
+page_private_##name() implementation in PAGE_PRIVATE_GET_FUNC() as well and just
+remove the entire family. At that point PAGE_PRIVATE_{GET,SET,CLEAR}_FUNC()
+could be renamed to something like F2FS_FOLIO_PRIVATE_{GET,SET,CLEAR}_FUNC() and
+all of this cruft is gone and folio-based, with no more f2fs use of page_private()
+either.
 
-Seems like it managed to oversaturate mem_cgroup_private_id:
+The renaming could be done as a later step, but I would get rid of the accessors
+as well in one swoop.
 
-struct mem_cgroup_private_id {
-    int id;
-    refcount_t ref;
-};
+> -- 
+> Cheers,
+> 
+> David
+> 
 
-We should either fix mem_cgroup_private_id to use 64-bit refererence
-count here, or hardcap the swap usage to below the saturation point of
-refcount_t ref. I'm leaning towards the former in the long run.
-
-This is sort of an argument for handling all of this transparently
-though - expecting users to know what the cap should be based on a
-myriad of architectural and arcane implementation details (which can
-change arbitrarily in the future) is very unreasonable.
 
