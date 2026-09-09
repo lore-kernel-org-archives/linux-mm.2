@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB698C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE4AC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:03:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D24006B00A4; Wed,  9 Sep 2026 12:03:25 -0400 (EDT)
+	id 732156B0099; Wed,  9 Sep 2026 12:03:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB816B00AA; Wed,  9 Sep 2026 12:03:25 -0400 (EDT)
+	id 709606B009D; Wed,  9 Sep 2026 12:03:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C12256B00AB; Wed,  9 Sep 2026 12:03:25 -0400 (EDT)
+	id 611366B009E; Wed,  9 Sep 2026 12:03:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 972C96B00A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:03:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EADE680286
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:03:24 +0000 (UTC)
-X-FDA: 85194693528.02.0F1C031
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 51C741A000D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:03:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Rmy+0WUn;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf19.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Rmy+0WUn;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf19.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788969802;
-	b=fusrMyz4tYu86Nso+db/yZxIy9ufq4T5R5zxxqfe4ui0zi2rsPrkWhX3WXGIC4rVHwKvrm
-	gNxIhsDE39Np4qTn34fBiQ3G5q2myGPAENGkDSXtygsc2gIVaU2s/LTi+9jOuvmmHiFhU6
-	KHmOcQthmGg3m4tyz/72lUswPoIeor0=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 404476B0099
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:03:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BAF1D120225
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:03:54 +0000 (UTC)
+X-FDA: 85194694788.18.28C3C2A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 248A640015
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:03:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Xj49+7p3;
+	spf=pass (imf27.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788969802;
+	s=arc-20220608; t=1788969832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fj4NPV2b5ddzadjwHBV/wDjDeqoVgqkR4d6YGILhwFk=;
-	b=SbCYCiXAETlU6p9jAqC7EnuuS9cfq6ZpQYZMjfY0DbG7AwMXWrJb/GdqHXERV2Tn09bBNd
-	bgDCt9tyreOFwjWmEX0gPj4oMU+eeAE3H0W5fzg3/8t8vUgESXth6zCqAWPLiR1DTfbmWK
-	WLrup5R08aKgTZzgcW+nsy3tK5ElLGE=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1gRN2666353;
-	Wed, 9 Sep 2026 16:03:13 GMT
+	bh=zpZ5q3Lvg1xWvJoeiUqhzWHsHj4i78kGVmqWnhEJ2ek=;
+	b=27DlbbSEJ3Rywuv6ZXrQw6NAuqis6sNkfz/0JmYML4qq8c7ynF52AX8jvjDY4mS5W7pb0z
+	fSPHMu4cOIICYHMnGoMoqTTnAwMGdR7PWOxiTrV+kE0sHt9BmryeikQZlk2aQX9sz7O+4f
+	y8tEct7s/mjPvAUtYQmZ5ub34qaFqF4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Xj49+7p3;
+	spf=pass (imf27.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788969832;
+	b=reT5oYXg0nvHSSDGygN5qJ2gA6xgPIm9oa+TRdazpA9JhPO/BKmdukc0rBdNV6l8CMySOj
+	TahYitCrYyTQxQ3ueL3l5xe//qoNbOIY1iumYnZxHpUMr0K6BVwigSfHz1OBUifGfz/EI2
+	oIjUG8twApTy9l2qOw68wAc7wS6R7e8=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1OVk3817316;
+	Wed, 9 Sep 2026 16:03:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fj4NPV
-	2b5ddzadjwHBV/wDjDeqoVgqkR4d6YGILhwFk=; b=Rmy+0WUnNw8usGhP8aO1CW
-	npxqOOkOr+WQDVMoE0dJ8RnucjRCKyXJ056PibXKf+kMZkEWCnqxbkYdOzHJc/eQ
-	b83gZjNzJ4jxda9nJBbw+wsiGJGrV9wnUdxYuupCP1TrKypfTv9IrbqdArEh89hr
-	d+jlgc06Ap82h5C7EWRv1g7e1zZp768wD3QmFD8hNcZOg0Z2DOuBdgNrhhhxwgin
-	JqMynF1fWVzsExjeGpXUJZO8URFQWJpAGeriUHFEN1S+CzS2i1V76IQVLp8rDa5n
-	oCajKQ20X7jplw/TRxp1nQDNcKdForaFPCeZt8p+YhwATmds5snniTYPOf3ydicA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=zpZ5q3
+	Lvg1xWvJoeiUqhzWHsHj4i78kGVmqWnhEJ2ek=; b=Xj49+7p3CQIuyMjDzhWkDT
+	acXUrW4z2wbuxUl1UruUzOsA5UKUkywcX/lbZXAC/BgZ8KXUQNyP+p0oMSNzS4hQ
+	P45VUu9cxHi7naxbGFwhijuYCkVBlZ4/UNxhRI8addOAULPA8e+GpAdP8TfT94ik
+	RCPluT2QfPcfyAzQSXLp/4IgAtnhL4WopnVVq7XMnwcrR91fgUQdp/cFWaCujzZe
+	9NlMY2hQXmjP1zvuM0WGm8P1xeyBHxlYVZN0VNsUJCHLlN8h2cjCTu3AAYnrLK44
+	8kGqOYAvX3IBXr3SujjrPkJmDLFLvMLXKzQJMl4QprzKfOs9asabigzWoiqHRTZg
 	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrxk7s-1
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbf46yqt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 16:03:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689FuErS001919;
-	Wed, 9 Sep 2026 16:03:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggwswb9mc-1
+	Wed, 09 Sep 2026 16:03:42 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689FuDmP021631;
+	Wed, 9 Sep 2026 16:03:41 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggymgk1f6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 16:03:12 +0000 (GMT)
+	Wed, 09 Sep 2026 16:03:41 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689G39aC50332008
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689G3d2m33947968
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Sep 2026 16:03:09 GMT
+	Wed, 9 Sep 2026 16:03:39 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EAE32004E;
-	Wed,  9 Sep 2026 16:03:09 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F38802004D;
+	Wed,  9 Sep 2026 16:03:38 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54CEE2004B;
-	Wed,  9 Sep 2026 16:02:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 220BB2004B;
+	Wed,  9 Sep 2026 16:03:27 +0000 (GMT)
 Received: from [9.61.255.18] (unknown [9.61.255.18])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  9 Sep 2026 16:02:58 +0000 (GMT)
-Message-ID: <7880f5d5-afed-4ca5-8da6-80893b572811@linux.ibm.com>
-Date: Wed, 9 Sep 2026 21:32:55 +0530
+	Wed,  9 Sep 2026 16:03:26 +0000 (GMT)
+Message-ID: <7ec296b3-d8d7-4f91-b11a-a45fb00ff09c@linux.ibm.com>
+Date: Wed, 9 Sep 2026 21:33:23 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/22] coredump: add COREDUMP_SPARSE to the coredump
- socket protocol
+Subject: Re: [PATCH v2 15/22] tools: sync coredump.h header
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
         Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -105,48 +104,48 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
         linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
- <20260820-work-coredump-sparse-v2-14-ba32dd718c51@kernel.org>
+ <20260820-work-coredump-sparse-v2-15-ba32dd718c51@kernel.org>
 Content-Language: en-US
 From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20260820-work-coredump-sparse-v2-14-ba32dd718c51@kernel.org>
+In-Reply-To: <20260820-work-coredump-sparse-v2-15-ba32dd718c51@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6aa18341 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-ORIG-GUID: 6aQP7RI23GsyiSTQxkmoZ8lYiasD9746
+X-Proofpoint-GUID: GFhov3K0UmVXEfyAMfX4ZnwEW8QovGEE
+X-Authority-Analysis: v=2.4 cv=DbEnbPtW c=1 sm=1 tr=0 ts=6aa1835e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=us48m2cYMFLMeAGhKtMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE3OCBTYWx0ZWRfX+7vrOXwUj/+D
- FKIsj97BObNt71OeFHogKWmOHpgkOcs0wN4GaLf8oslDqRCK6Oyl860LQD5JqtD+Ju00R8jNNoZ
- yjeSjfIzljV9RHY0caNOijuXhYbwBOM=
-X-Proofpoint-ORIG-GUID: -IYP7dQxPlEC9kq_1QMKZcr34Ex8paTO
-X-Proofpoint-GUID: 8uMRCQi-kmepLPnmlVejNAZPUGdU1KmV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE3OCBTYWx0ZWRfX9QhGXDWcGgf0
- Je75CZ5HbJKuStCslM3G3GKNNpCxomuuMx1X3ViHDdb5k1kLLgu1IMHMCvu/StDITo0uUhJuosW
- SID6RDMfJuI2sIuPELt3gEoz2Uex70L5/BqgMIzyfJ0LZeaIBKTrd7ZyFNaPJuYV4Tx0e9b14d/
- H/79VFqi2wgcUoM+jcVF17ltmHzsH8LC0+Uwx7daR5ZudnBuOeGbqv6o6RdW1W5J6dCj1Gss3mK
- 7SOqL4V+IuxdK3DmWXaVFfKnsxl/k2q5F7Uzj/Ef4qLtqdzuKcD7LeobMRWUlB6YidqD2Q0QEez
- jCvt7bCROfkpw3jFgvmquOMv8EBfHp97ZB8ah95H0QPQ38xDZt2QRICKhc7HCeAUUcKqub4FXoH
- slCl6bEEYm1B0bHGj0SHOTbfQcCUyrTDxcGe79h/1OyRQU9B+2gRq7RJohnAsaEC9HAJoeIpt88
- ep3N4knMrvkNbEHHPgQ==
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=n8dau6vL6JnBemzV1-QA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE3OCBTYWx0ZWRfX6Ur+0N0pYynt
+ vegJ8soGrYaGT+KupMFmH10QLeNcF3UgE0oahEn1xXRDPYCblxxBhkQ33014b8mFxD+JHguh9s5
+ 6OsURWVYHfO8dscojcNOVExxliVbWkTPvImReR+k0LuWND+Cizy3K7fevpz/K9xZbny9hzWy/Sm
+ yQAL9JKmhj348SMDdND8WvXMbqLtDKvPVqQopDurIM7vuvIZtAsakAQwRlP8zJkPtC27EcMfsti
+ s7lLrFovjfcW+UCDIvllFQR6shanqkhLefblN655wQ7xxlV9IloQfOJCDjAy1oR/oyOhd3MrBIW
+ 1Bi4tM6WsdfiNnRC4r3nhVJ5TgI7ew8EWaLI++thiizxf7/uqeCy9PGiBqloV4PbViJ/tN7i5VY
+ gW/ZZnkR/MYPn1x/IiwwzU+cwkgiHOKv7BmnTCmoGSm6wQBo1rgvorA8mepj7BWg2rWGpd48ptE
+ /Kp4wjQBP50MvLYpRSw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE3OCBTYWx0ZWRfX/W3uIapjP2UV
+ EdBAsP0J8GXmhW6MSt9dyqD2/H6Zn1/aY5YnaYUSdwlO6L/hyMfiiqR9aEDKoawKpf0bQ5DVQCv
+ t53HB/+NhRx4a12TKg0chm/gk7pjzvE=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 impostorscore=0 adultscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090178
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51C741A000D
-X-Stat-Signature: zt7t4uhgyuiu3pzbbm98ra88rpoagkkn
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788969802-796037
-X-HE-Meta: U2FsdGVkX1/Ij5hUGh+SUmsS+Uy44TRqITWamcSMTftAoqkxJNY+ew94pOHXeDu9pzE+951B5mIrv5mTd/RLfCqJ6WqrwjZs/s1z1sLyovGrLQbbyDzy4E9Td54FAo4ECitkGGm9uaOGbigujLzpjtfglQc7bRb71Yg+E/DA/ksrTVYs+xEL6qzYeSVL5jDU/sDFsmVmhJ7sWCs4TFU++giXHNEZRzAfA/kTIj0m4TTzdnGhF1wbzIREKCz/jm/Gv0qgNKYpQNPH7rkemqJks7L9Ddh37xSZzvRzk9H0O/fm9p5/AZO3C/7k6aJVu5p3Op424fuHZEjlVW2Z9gJRXARiSVrwlitQvwonTCz9QqkpCzxGmP8huIxulIm4fx1oBTbN0iUI5YnQ4/lgu9jOnMu6MQSzCAAU4IIeXXITnXhrBwgCiArD9UH5BtGePjuipYU64NDED9HxdjmfHCbIFhvW40WVd7CWAPqKtAE9yC2V4Bwo0YyNkOgVmSGJCVux6K1mFnVu7qpCnX2+R9w4/XbpyD83Dyli6gXlT3i63K9WJaDRxuRdiePBcQVaUO6s5F+Dz6KFie43oaRsBQQI9EuxA++Fu6e/L6NWnMdijjKX2mby/3qvCmNjBpDo5AEgv4XPmt59O3Fy/5JLn2p4IFogLizU+oUkpezBSWFGtpj6KOhUfuiJrl2s2R00OaUZUYbhxQ5zcN5kALn6g6fCQ/o/2bfZwBQaW97mvw3TqmfEKBk/LhkGnHtOxn7Brom4fhcm9WUAnBjwSgEIt+G42F4URDyOfhMfpmatjBfnckDF6bUGUA/Ctf/Un4ubIrmCob6y+XoSxRM9oazNmz1waQxlmddTVVSaZn/ZvZdR1CoAXHD62HMz4WVPThkMMjsfSKjIGq+p4pmng/BTNWNI5q2BxnZnq7YF+rWElS8jGCeCrXadR4nfDmgBi9ukwdJ1PTZlHTX1nu5dJOmoT5k
- Rc6Iz6ag
- 1tpeb5S/1lG+ocoYXCy4Ngo6mKd14o0nvAHswOX4eb1D9/0lzitNWhjeoLwZVS3+o0n9XLZ+FODXdv7H9VIgWipN1nY+GgLpdbRoSRbkFcrYkdEJ+ppfffM4tc/XGx3Zd34ClWGbvu46P29uLdy2EBOX7H+QQsvcmwbNgdoHloYDp4KBgj0tVOwPpaTUshBzpehs/5mGjnHlLRMauKcl4MopNR+k3L0OsE9mQ9SWTwEUSp6c4bZJK1hYlu2b2WFTg1InkY7TNYJnCE/gXFThlpIYGwMiaXotRZTrxY0oVEHWGAkEL2AJhzynZ/uUn4xSEuWFZ
+X-Stat-Signature: fj89d58r4qybu6649hhogjg67ehscwfh
+X-Rspamd-Queue-Id: 248A640015
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788969831-581396
+X-HE-Meta: U2FsdGVkX19PQ+m+0wU9YbUnQul3ORophF86M/xKcPLzJyiFITGxB6oK6pKoPS+iJvHy8cNGYPjWbnLaSDySrORA3s+i3dK9YUVZPPRIGxpIvwo5TIqQwi1CBGUoR4ZvHkK/TN1X0Th2FbNULRaXsnbOLVpDGzPdjBo3rFYf6uJxVYnaMNZHWOrEI5MluZavp/4oo2k2qLqomvVl3DFDSbmqQ6aViNvVJ/LjFc/JSNUVlsZ0riWR//oJruDZ0Z5Ci95TlH+Rw5tbI4j8TXZZGPgBtJ2TnWhZqH95G9rOuNbE/uhz3OAV5foHvNt4ipJ5dhoiddJxWr9xw2uGYdhQ77TWjjuRiRbUusGH/693XVO68Za9dr0FxPQ1oafQNZK4mBaQvr8yNDtkv2IUqBBngxxiScs+/gl25uCpsNMj6Ap8ROWQUp/b6wEn3sbcco+xtRrU9jfkILKC/HfndGoG8+CCel+shNNc/O/XmzL/X+SS6005wsYH9Vymyuec8sMkig3CVd/NHskQOccfQWL9rjp2FuTFJ9D7Qi+zcjqj5WX/rzwPOEgMXSFBLUU/yo03zqR9sXTTnvR0RZSFH4FU/30gvHR5Lv2s5ED4UI0qeJ55DZyeWVOi8PAwLPDfsDaC7QusP2hA3KLZemuwm8MC6lJebKuZBtBDMXonYPKf1RgZv6p2FouUBTn8QyEXhLkGcz5L/SevQ+D3ef6IdZtvrb6Q3RKLWFV3cRJaQqXDN6RQrKCyGi0b6QQ8OQp+Np9WIqdEDbjafa72jPdKxCo3gVwHpoX3jZ7dYMYRJ+dBix9qhSyc6UxYBHaIpOGnJ+rDKKHYaRtoWQIiBKTpQ00Pk3yht931RDfLJaTPv3a9LncheYkcCaLOlYLsTjTZ2ZgLiMiXYGb4xoCwWVP+Lj6JlNbUoOWt00QjuI8T7Gmv8En6wP3Zo6XqUuLyg/NSSAX6kIpJP6n/8xGmWLm57BA
+ WoJKhyXZ
+ BLAj1+bNQQgiQ0dqDtf4NM1fZXqPyn4bb7WzxeH8uBWyCT/EciZ56Z9z3v+qL0bTmTBpW26pFWsStcMyIAlNDFeK8XSuI5uX5JBFMfRomrQfC6O/m1B6autNo0333RmLjWyYoc18YEExMd6Bz4Uj1dkzg0Gxnk9uZLlnOPn7X5CQV6ZhmUmJAjh62IpkiHdBVMuAQJBOxbUX85Hd0F5Xp5P7fL35TgA8if1jbVzMm/TeqGJgaQ6jO7kveSoU4BWvXOLs9yAEvfPGWYrDNJNTumC3uuRCwbxWoUq0uPNyotdyrmnlCCg5mL506cPrwE97w2R7yz5g9//myF3X8OBmGuZArYQIZKAol8MRfpo5rHEOcyQIIg83u7dLnJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,89 +155,127 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 20.08.2026 4:39 AM, Christian Brauner wrote:
-> A coredump with a lot of unpopulated mappings sends useless amounts of
-> zero data to userspace. This is nonsensical. While __dump_skip() can
-> seek over them when the target is a regular file a socket cannot do
-> this. COREDUMP_RECORDS put the zeroes in records but it didn't get rid
-> of them.
->
-> Add a COREDUMP_SPARSE feature bit and a COREDUMP_RECORD_ZERO record
-> type. A zero record is a bare header that tells userspace how many zero
-> bytes were skipped.
->
-> So a hole crosses the socket as one header no matter how long it is. The
-> coredump server can recreate this sparsely. Zero records only exist
-> inside a record stream. COREDUMP_SPARSE requires COREDUMP_RECORDS.
+> Sync the headers for the selftests.
 >
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
 
 System: ppc64le LPAR (IBM POWER), Linux 7.3-rc2
 > ---
->   include/uapi/linux/coredump.h | 17 +++++++++++++----
->   1 file changed, 13 insertions(+), 4 deletions(-)
+>   tools/include/uapi/linux/coredump.h | 79 ++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 77 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/uapi/linux/coredump.h b/include/uapi/linux/coredump.h
-> index 0bd5c8662ebe..f3771861ca48 100644
-> --- a/include/uapi/linux/coredump.h
-> +++ b/include/uapi/linux/coredump.h
-> @@ -14,6 +14,8 @@
->    * @COREDUMP_RECORDS: send the coredump as a sequence of records instead of
->    *                    as a plain byte stream, see struct coredump_record_header;
->    *                    requires COREDUMP_KERNEL
+> diff --git a/tools/include/uapi/linux/coredump.h b/tools/include/uapi/linux/coredump.h
+> index dc3789b78af0..f3771861ca48 100644
+> --- a/tools/include/uapi/linux/coredump.h
+> +++ b/tools/include/uapi/linux/coredump.h
+> @@ -11,12 +11,19 @@
+>    * @COREDUMP_USERSPACE: userspace writes coredump
+>    * @COREDUMP_REJECT: don't generate coredump
+>    * @COREDUMP_WAIT: wait for coredump server
+> + * @COREDUMP_RECORDS: send the coredump as a sequence of records instead of
+> + *                    as a plain byte stream, see struct coredump_record_header;
+> + *                    requires COREDUMP_KERNEL
 > + * @COREDUMP_SPARSE: describe the holes in the coredump as zero records
 > + *                   instead of transferring them; requires COREDUMP_RECORDS
 >    */
 >   enum {
 >   	COREDUMP_KERNEL		= (1ULL << 0),
-> @@ -21,6 +23,7 @@ enum {
+>   	COREDUMP_USERSPACE	= (1ULL << 1),
 >   	COREDUMP_REJECT		= (1ULL << 2),
 >   	COREDUMP_WAIT		= (1ULL << 3),
->   	COREDUMP_RECORDS	= (1ULL << 4),
+> +	COREDUMP_RECORDS	= (1ULL << 4),
 > +	COREDUMP_SPARSE		= (1ULL << 5),
 >   };
 >   
 >   /**
-> @@ -111,11 +114,14 @@ enum coredump_mark {
->    * @COREDUMP_RECORD_DATA: the header is followed by ->len bytes of data
->    * @COREDUMP_RECORD_END: the coredump ends here, the header is not followed
->    *                       by any data and no further record is sent
-> + * @COREDUMP_RECORD_ZERO: the header stands for ->len zero bytes and is not
-> + *                        followed by any data
->    * @__COREDUMP_RECORD_TYPE_MAX: the maximum coredump record type value
->    */
->   enum coredump_record_type {
->   	COREDUMP_RECORD_DATA		= 0U,
->   	COREDUMP_RECORD_END		= 1U,
-> +	COREDUMP_RECORD_ZERO		= 2U,
->   	__COREDUMP_RECORD_TYPE_MAX	= (1U << 31),
+> @@ -30,11 +37,11 @@ enum {
+>    * member is set to the size of struct coredump_req and provides a hint
+>    * to userspace how much data can be read. Userspace may use MSG_PEEK to
+>    * peek the size of struct coredump_req and then choose to consume it in
+> - * one go. Userspace may also simply read a COREDUMP_ACK_SIZE_VER0
+> + * one go. Userspace may also simply read a COREDUMP_REQ_SIZE_VER0
+>    * request. If the size the kernel sends is larger userspace simply
+>    * discards any remaining data.
+>    *
+> - * The coredump_req->mask member is set to the currently know features.
+> + * The coredump_req->mask member is set to the currently known features.
+>    * Userspace may only set coredump_ack->mask to the bits raised by the
+>    * kernel in coredump_req->mask.
+>    *
+> @@ -101,4 +108,72 @@ enum coredump_mark {
+>   	__COREDUMP_MARK_MAX		= (1U << 31),
 >   };
 >   
-> @@ -130,9 +136,11 @@ enum coredump_record_type {
->    * If the coredump server raises COREDUMP_RECORDS in coredump_ack->mask
->    * the kernel doesn't send the coredump as a plain byte stream. It sends
->    * a sequence of records instead. A COREDUMP_RECORD_DATA record is
-> - * followed by @len bytes of actual coredump data. Records arrive in
-> - * order and leave no gaps. So @offset is the sum of the @len of all
-> - * records before it.
+> +/**
+> + * enum coredump_record_type - Type of a coredump record
+> + *
+> + * @COREDUMP_RECORD_DATA: the header is followed by ->len bytes of data
+> + * @COREDUMP_RECORD_END: the coredump ends here, the header is not followed
+> + *                       by any data and no further record is sent
+> + * @COREDUMP_RECORD_ZERO: the header stands for ->len zero bytes and is not
+> + *                        followed by any data
+> + * @__COREDUMP_RECORD_TYPE_MAX: the maximum coredump record type value
+> + */
+> +enum coredump_record_type {
+> +	COREDUMP_RECORD_DATA		= 0U,
+> +	COREDUMP_RECORD_END		= 1U,
+> +	COREDUMP_RECORD_ZERO		= 2U,
+> +	__COREDUMP_RECORD_TYPE_MAX	= (1U << 31),
+> +};
+> +
+> +/**
+> + * struct coredump_record_header - header of a coredump record
+> + * @size: size of struct coredump_record_header
+> + * @type: one of enum coredump_record_type
+> + * @flags: modifiers for this record
+> + * @offset: offset in the coredump this record starts at
+> + * @len: number of coredump bytes this record accounts for
+> + *
+> + * If the coredump server raises COREDUMP_RECORDS in coredump_ack->mask
+> + * the kernel doesn't send the coredump as a plain byte stream. It sends
+> + * a sequence of records instead. A COREDUMP_RECORD_DATA record is
 > + * followed by @len bytes of actual coredump data. A
 > + * COREDUMP_RECORD_ZERO record is followed by nothing and stands for
 > + * @len zero bytes. A server that didn't raise COREDUMP_SPARSE never
 > + * sees a zero record. Records arrive in order and leave no gaps. So
 > + * @offset is the sum of the @len of all records before it.
->    *
->    * The last record is a COREDUMP_RECORD_END record. It is followed by
->    * nothing. Its @len is zero. Its @offset is the size of the coredump.
-> @@ -153,7 +161,8 @@ enum coredump_record_type {
->    * type is raised in coredump_req->mask as a feature of its own. A
->    * server only ever sees the types it asked for.
->    *
-> - * COREDUMP_RECORDS must be combined with COREDUMP_KERNEL.
+> + *
+> + * The last record is a COREDUMP_RECORD_END record. It is followed by
+> + * nothing. Its @len is zero. Its @offset is the size of the coredump.
+> + * The kernel only sends it once it has written the whole coredump. A
+> + * server that hits end-of-file without having seen an end record must
+> + * treat the coredump as incomplete.
+> + *
+> + * The @size member is set to the size of struct coredump_record_header
+> + * the kernel knows and lets the header grow later. It comes first so it
+> + * can be peeked. Userspace must consume @size bytes and discard
+> + * anything beyond what it knows. It must refuse a @size smaller than
+> + * COREDUMP_RECORD_HEADER_SIZE_VER0. @size covers the header alone.
+> + * @offset and @len count coredump bytes.
+> + *
+> + * The @flags member carries modifiers that change how the record is to
+> + * be interpreted. No flag is defined yet. Userspace must refuse a
+> + * record carrying a flag or a type it doesn't know. Every new record
+> + * type is raised in coredump_req->mask as a feature of its own. A
+> + * server only ever sees the types it asked for.
+> + *
 > + * COREDUMP_RECORDS must be combined with COREDUMP_KERNEL, and
 > + * COREDUMP_SPARSE with COREDUMP_RECORDS.
->    */
->   struct coredump_record_header {
->   	__u32 size;
+> + */
+> +struct coredump_record_header {
+> +	__u32 size;
+> +	__u32 type;
+> +	__u64 flags;
+> +	__u64 offset;
+> +	__u64 len;
+> +};
+> +
+> +enum {
+> +	COREDUMP_RECORD_HEADER_SIZE_VER0 = 32U, /* size of first published struct */
+> +};
+> +
+>   #endif /* _UAPI_LINUX_COREDUMP_H */
 >
 -- 
 Thanks and Regards
