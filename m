@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20766C79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:18:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12DFAC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:22:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E3106B0092; Wed,  9 Sep 2026 12:18:24 -0400 (EDT)
+	id 0EB0C6B008C; Wed,  9 Sep 2026 12:22:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BB356B009D; Wed,  9 Sep 2026 12:18:24 -0400 (EDT)
+	id 0C9EB6B0093; Wed,  9 Sep 2026 12:22:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F13F26B009E; Wed,  9 Sep 2026 12:18:23 -0400 (EDT)
+	id EF46D6B0096; Wed,  9 Sep 2026 12:22:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1B056B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:18:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BCA2A41F8
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:18:23 +0000 (UTC)
-X-FDA: 85194731286.21.FBC2D57
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEA956B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:22:08 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 571C8C028A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:22:08 +0000 (UTC)
+X-FDA: 85194740736.04.32EA52A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5CE721C000E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:18:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="o1ral/CX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 84DA8A0004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:22:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZrTCyR10;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788970926;
+	b=uWdGKg8Vazb+DIXtcgXSrpNvZhQducPUXzTPLEYic9I97Pvgmwg1LXwXpBYBgJDzHgBV/u
+	y/oZ1rnrRLsNo35qV+/3OlUWRbEHQUuQEKYeP1YLEi/Zw4GtewQ3rmw5OjpDWIvWiybUP+
+	S+h5pvMFvNCYQYimONTVhqCjUSbrq+M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZrTCyR10;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788970701;
+	s=arc-20220608; t=1788970926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HyXKsyvomAP4+5xUKdpWvuWxueChSf/W0pw/XmgY1Cs=;
-	b=E/DZa7NhPdJ4z8ccKJkgqsw73MN7cyAbD+eEfqMB1tntD4ElceB8w42g/IzIZ4PR2ihGsO
-	wzqt/hQD7oYNw01DxIBOnZh0hH2ZoyipS8n0qlyoNjzizVfs8WSKLAsfVOvzh7zOnM8jTN
-	lshPalyiSi6Nxc7GW8PBfHPldAW0sK4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788970701;
-	b=VKfJg2qZA+G91JSoqFV+xaYLBVBV0qsYGHgdQaqbKBdmEz41bwMvnnXA7/CyJ34UEBK+Ri
-	bNNOzPB46lSiB4sLHPvubSZDpr6Cs3SH9IRk04IxmvvK3WxE/xKTlF664PM1r55Glwm+Dv
-	cd032xi48tBQaoETNRymnVfY09EDkyI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="o1ral/CX";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=gVDwXOjHBRzDJvfzuWQ8YBF5gQR9D+1WWpyCaQv2V3o=;
+	b=J1IaCltWkfNtF70I7c3oqbeUxG3teJKUr/WdB3lJnJOR1dbrBaJ9kIwsxVamwxVLm/Q3cY
+	KP6dnuBXFdhqfXgld+ToaRKYsMWyOU0J732pa+1LKI9G55d9yT7jpKxabmC1N6MZx0en/9
+	JKUtCDK8dUGzsmC1X7GXqfxrqjmY2M0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A4B141707;
-	Wed,  9 Sep 2026 16:18:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80631F000FF;
-	Wed,  9 Sep 2026 16:18:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AE7B04372A;
+	Wed,  9 Sep 2026 16:22:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E191F000FF;
+	Wed,  9 Sep 2026 16:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788970700;
-	bh=HyXKsyvomAP4+5xUKdpWvuWxueChSf/W0pw/XmgY1Cs=;
+	s=k20260515; t=1788970925;
+	bh=gVDwXOjHBRzDJvfzuWQ8YBF5gQR9D+1WWpyCaQv2V3o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=o1ral/CXD4X/fnI10rF5bNsFBS0O3npyLOcM/9WYX8ixwC5pJ1Hvm0bz89SHGylJK
-	 oWoqybpTMJ98En5CCBAd08JK+6v6M4KeeQKe394T7dBvMwipJCL6YkakDcFA+/71ti
-	 RufHHaydWT326j7bHQhwse69mevd/0OPJuTgxt4j10MfuienIrZEJ/RK304M0xF0Vz
-	 Uo8l8sNIwOyYe88CCHh8s2iFFi7+FlsyZVx7y0t7gdNvLJAWrEXFM1H4UEiQyNDcrE
-	 ZwE1+AZ3FXLqgGTF7EwLHmh+swp+qU7ANIghQ8gN/OaxGoH+VxXJqGvMJRBKtl7vl6
-	 sFFCsg0Ho+g1w==
-Message-ID: <f1a4356a-bef2-4769-8d5d-c8f21ebff47d@kernel.org>
-Date: Wed, 9 Sep 2026 18:18:11 +0200
+	b=ZrTCyR10x3uA4f65mS7hxAFp8ku7cHmrXCRqUuYsbGL3uzYAwaspVYHVCKykwDzHG
+	 faaXJvk923DDKhvvtU+iv4+5kdQfUP8VygglE4nhW97099K39oo+ozMIDbRDUYqwet
+	 45Gm7xjQYlElkuo1iaJwAsk3oZNcGVTko1+yY4xdapWhFd54tK5nKolOmYzVEHiPAs
+	 8nu650TEQ4Bg8zF+QTYLisbn57lwTKwIhc4+69a1C0QzJos9RfAJfyA9DEPipwgcX9
+	 NTF0Jt8pcsvEec51ZM2gvemKSDif6g0/ETu8SCkbrLPIo42SWvP6ZPKGnkowPOFQbf
+	 s/ySRFjiNb+Bw==
+Message-ID: <835cf37f-d0a1-4e51-a29f-a1b83d79a940@kernel.org>
+Date: Wed, 9 Sep 2026 18:21:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 20/22] selftests/coredump: put a hole in the middle of
- a sparse mapping
+Subject: Re: [PATCH v2 17/22] coredump: describe the holes when
+ COREDUMP_SPARSE is negotiated
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -82,7 +82,7 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
- <20260820-work-coredump-sparse-v2-20-ba32dd718c51@kernel.org>
+ <20260820-work-coredump-sparse-v2-17-ba32dd718c51@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260820-work-coredump-sparse-v2-20-ba32dd718c51@kernel.org>
+In-Reply-To: <20260820-work-coredump-sparse-v2-17-ba32dd718c51@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5CE721C000E
-X-Stat-Signature: wk9ey51mhoqhwf7ou6jcgjdduy3wz3bm
-X-HE-Tag: 1788970701-767526
-X-HE-Meta: U2FsdGVkX19e0i/JRvOQLdiGL/nbeLdNi0shLnexSHMeP5rFXl7gWN8iocxk33hOy4vG1ka2ifFqa0kjOSHwnehsox/ubhP5ZrK3MIyfqUz1lm/IaIrUjcFU+vxERfmr780uBaFP8s21DM7VyojvVWIbBEZwepuekXVcvd/5CUGmOl+ieqsN9J0jrKLHbbJ86VnRn4DcMdUoTHP0iGfGXxfaUiaqBP+2TPAtgyEG2vx4JxVGIIh/7iUdSJLeOf4oVvhk2wcWioULiCc60JceJj7BXF6SzJfXmWvlYXQx5fYAqJ76n9Ka7z6aZqZOc9HB/OSLcrVpbdnMSDiX90QPPl/qYutDArzIXAg3m7ddDfOK9ONmMqiJigPF7r5pnvPmV0/tdH07vEtEfGSUQkkdq5IvXFn/QWYe5PnVVJcMQHS5lLS92XY9APBEptOm9SRC2jkzsLoXluOZRQn1mrTSlRsmZHL1UbY3nXZ6Apb+af8QsgvozXyGyfjRKtkIJDmUGNMRYbMUOrWF6blIccYOqDGmv9qWB79oBIxx5GAQ3PbmjHOyJ6gtAXu3SJ1bSpSBSAsBgG+jqVHPGNtpHUMJX8k4QsqcSR3mO4O/3o30ZRyUW//I+sbHHXODv4l5ZHgMJ9yD7pV3n7/lwyxAWP5YYR6+JWouFcIUTcC8EWGWChWiGGxjlJtiT2uwDWu5pNFn5rx98uXpOSz8jsVFCDCmjOxozNgQKISdMqXC6hQWTS1VSfoV9dqCzcf9U4qR3fd1HnU1i6DFLx0HN06LrqCh/TJuTH+I/3pWIqeEpZaQCrXs1KJ9gFMC+P2XMi6NtGWsfvwaYsMeNKvF3JnZcVdUNUCgZPEFIh1aaJyIc65/flOXnKzWbm8JkpY2VIO98jFESMZP00qLK9wsqzKhp5mqfqneltJoPRN26gcTEJoDhqQIMFEoeX51/ZgYge0gyWrc8zwv5w7JiERolSSV6P1
- jKjK410d
- 4lciroS29cU5kiVgwSN7/pd1HyYd3v5lllgZ8GfFLpkDiKNtHOlnwElQS0uiaCqPKC6oqkfZd5Uf/68u1+CUxS5b/g4Bm8PqkMnQ2Esw4M1VdMtBLDnyXW2A6H0QEWxE99V31YqpOu/vXqB+QVnGnRTDGb7B9fLA9+/58PR+j3uMonc5DuEuYurwBQALTbSp+OhQOd+EAN9FJxedhI9nEIdf2h6m1pDso0zB3e50AeF3YpITT1lbshBmnhKYZ0HU+GRtFfuVIzwGrCY7aLMwcQ2sldO4puv8nyxTFurh4DlZsXD4732Ur+Ukcvw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 84DA8A0004
+X-Stat-Signature: uyaoaf97cks9fgimrtw9dp58iepzzhko
+X-HE-Tag: 1788970926-632800
+X-HE-Meta: U2FsdGVkX1/5tFMMMJOahC3/mx5LZKJKEaKJAtnnQVRPt5HvWFEp8DQpNKJ9nXz4aBCs/9nUY2uNIkneX3tq6QZjS1SdkY/avQVSg/eZ8dwfbGeuO6wMqxb5Pu0fUFAIqZZAKSBLjDXl3bBE7HKTkKMQ9jlBStpY3mK+qiisV1/j0GCwAmTQ1sFshuPUl/AgXNZ5NvFr95lo/EJGcvMFG0sMQ1PbY5cBdHoG4VCcAuLLdNNpKZX9MfzXO0CK4h2AhOovCfjYcXbOX5QSLHdePbGnWyPM72fByZb9x/RafVDljyKEvG8+hE1mcSL7VvdXQGpSpH6sp9t0Rk3FDmS4DR0+JTmX8ov1zLs1vhJsfoSPekS2NQjH+SOFeaacGMtet2/PgJBptQGDDo0z2bfKbMqB8ZUWmbSyAwV04j9g3MlhY0CfrKKVae2I2GGMNXSxJUV4UXVsb2A+1QS/qgcY0XTeqS0OelBadw8A+UTYSUZYoSGTTH5Us/HbNPMW5j7nl59tA0eryNmxJ6Yb9YWguxWK6/e7CYV2nfLkTPM1vV3Cm9CIeVXa9ilXh4aUTrcoUHhFlGd44mJazL+kPCsjgGwbkuUH4qI16o3OKVAkr8wRZc+HJybKl3dbyNR8ODks/ZAZ9C4ozk2P4uV3HIUDrRK9v9WkQoMCiUz8MxKLi1UYdcpt5EJNFXCdSHqoJldwvvqLABqN2SYfGHAEbFFHlrcSC4L1x2b9MicbFZaFs2Iv4adcDs87DpSzwSTqPCVafilujmHudeDqIDB8b82iQ12e20YCbCPFVttVDiCJqFgkXVm6JgHcjf3bFbacfEgM9NHgzTVo2BtMbYzoYGrETmOqgudmcqVchGvrJ9nIoJNDcpTGO5Ofxz+uGDOtPA6VHyJvJ0E+3WIZHzlGrEwbTrGvXzCKY35g0H6C+Ey+UaPQPQIvIzelyfBR+BUDLGFBo68ggmfh4oRpTR/Um/S
+ w4mxhUqe
+ IG7e2IPjCxKUgaXP3giJE73ITIhyACBrxIB6mxIA+lIWNxRz6aVV7rbqcDyRtkxHoZBpk3M3AB9wbQ9zt8a0B3SXGSubtcZqEnYoU7whYe2kWEkLU/S6AGMFcqHSJ6CxuU0Xx2+mUwQaupHSJ7EPyC2iggdwuFI0X/5Y6AO/xuv2ARghn27FqHI4TopzXaDYDMgbhZ5AZ+c2pDT5R4yjqznRhdFpW5SgZhKO4YozZ+mU6ejqEUd2hjUQ+Qvu2JEHko7C5rFPQ9yi8IWkui2TAVOsdad3X789AtYbx/CuqJOs/NxI4Nbbk+kL77J5D9gzb8m+5AaPhWJJotA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,55 +148,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/20/26 01:09, Christian Brauner wrote:
-> The crashing_child_sparse() helper touches the first page of the
-> mapping. That forces everything behind it to be a trailing hole. This is
-> easy to handle. Make the test more difficult meaningful by also touchin
-> the last page. This causes the hole to sit between two populated pages.
+> Make use of COREDUMP_SPARSE. Refuse it without COREDUMP_RECORDS.
+> 
+> Actual holes are sent as a record with length indicating how much zero
+> data there was.
+> 
+> coredump_write() flushes a trailing hole if the coredump is done.
+> Instead of writing the actual byte for pipes and sockets, collapse it.
+> This stops wasting a header with coredump records for a single byte. So
+> we now only write it when the coredump can be seeked. TL;DR a trailing
+> hole is a zero record like any other and the records still cover the
+> whole coredump.
 > 
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
->  tools/testing/selftests/coredump/coredump_test_helpers.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-> index 45d76fa0f469..89f3954c5607 100644
-> --- a/tools/testing/selftests/coredump/coredump_test_helpers.c
-> +++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-> @@ -58,14 +58,16 @@ void crashing_child_sparse(size_t size)
->  	char *p;
->  
->  	/*
-> -	 * Touch the first page only. The whole mapping is dumped because
-> -	 * it has been written to, but all of it save that one page is a
-> -	 * hole.
-> +	 * Touch the first and the last page. This will cause the whole mapping
-> +	 * to be dumped because it has been written to. Everything between
-> +	 * those two pages is a hole though.
->  	 */
 
-"hole" as in "no pages mapped"?
+I don't have a lot to add, the general idea LGTM.
 
-With THP enabled, this is not necessarily true. You can either size the mapping
-large enough that you get holes in an case, or just disable THPs
+What might still be suboptimal is that, for large sparse ranges, we'll do a
 
-madvise(p, size, MADV_NOHUGEPAGE);
+	get_dump_page()
 
-before write access.
+for each and every possible page in the range.
 
-That's probably the cleanest way here?
-
->  	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
->  		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-> -	if (p != MAP_FAILED)
-> +	if (p != MAP_FAILED) {
->  		p[0] = 'x';
-> +		p[size - 1] = 'x';
-> +	}
->  
->  	/* crash on purpose */
->  	*(volatile int *)NULL = 0;
-> 
-
+It would be interesting to benchmark how much that still costs on large sparse
+memory areas (say, a handful of GiB large).
 
 -- 
 Cheers,
