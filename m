@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C57C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A564BC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 948876B0093; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
+	id A04336B0096; Wed,  9 Sep 2026 11:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F65C6B0095; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
+	id 9DBFD6B0098; Wed,  9 Sep 2026 11:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E0726B0096; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
+	id 8F2906B0099; Wed,  9 Sep 2026 11:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 563556B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3179B120254
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:10 +0000 (UTC)
-X-FDA: 85194667740.18.A6F14B6
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C3A4F80002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=b2jD6ieE;
-	spf=pass (imf02.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788969187;
-	b=iDMRVhdS1c/pRC8mx60phcOtIahdESgavpHHkxhqMYtcP3sZcaUayv/H+SxfQ3AzOOz+hN
-	n6yFhKhQL6R2wiESXFSFlVkH6nG2xdZL+ZiDPJkgDyXVabpnPhGApiS2oDJsfKFaJOAEU8
-	2uojrCituJ0+xcLjGOokPSCbFDltffk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=b2jD6ieE;
-	spf=pass (imf02.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 665A66B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:53:34 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A56AC0236
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:34 +0000 (UTC)
+X-FDA: 85194668748.16.E108D18
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 829FC140008
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FkZShthZ;
+	spf=pass (imf09.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788969187;
+	s=arc-20220608; t=1788969211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJQ3f9xbjxMwuiEJ1zAsToahe8kVJn3m9fPpmaehrMQ=;
-	b=m12efxun7kZmtdVnmXYCOZ2AZUkm0tRWT6meQkmgc6YEDV8EOm0/pdPUDwLxKIU2T4Va3Q
-	BberjEMUTMxvxcd/ii6Ngr7qOnTnCfmU8n5WYpLH25zxqsHb8okbJzsNr5n5ZUZeZSSpwb
-	m2+hbLhyFF55xS3bLoXcnz2zcsCOaEw=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1aW83839613;
-	Wed, 9 Sep 2026 15:52:56 GMT
+	bh=9fEv8CVQ+LcrjyrEyKWNY8tE1ZC5nOC4fuPxuTwwtWQ=;
+	b=u/n3z9ywLpx5koq0+a0ieMxXWTI3CtG4rY5itcvb84SaCIC3yPUIgQKeV/ZJYHL9/KGsLo
+	o8vJGKXfKzD7qYpAkVERV+bFskW/bR/teUMpU0Ae0b5hCeM/7GozpzbViWL5iLPX+vkuIp
+	X1hCdcWZw8bssSygC0zlO2/UoovrmqE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788969211;
+	b=7cEZbiquGxMFCfXnibv2y0Y+5dm8P184EBbjZol4JOy4m2bMVX6n5ZlSxwOifASV2WKk4W
+	yWYUdzu9FHA+Gk4oE9GcJTVJYJizFvH9eTcJLlk88rc1mE6AOXwqX0tXEcvubxPXXK5fbU
+	Co5MvNzK4972y84tKWOoLvdb+vwNN8g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FkZShthZ;
+	spf=pass (imf09.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1hXA1930950;
+	Wed, 9 Sep 2026 15:53:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=aJQ3f9
-	xbjxMwuiEJ1zAsToahe8kVJn3m9fPpmaehrMQ=; b=b2jD6ieEKr5a47fTeuPlQn
-	sG2l2XYvTfMvncOLggdaCSR7xbtyEqqicTLk+J/qKKkTfPAjBJngsJgiCJzcpR7h
-	oSoGobuJP9zkOKRDReLcUdhm+2MYx5/1Uo/99uE9ekSsPWYp1Q9iBTfsjOD1to0g
-	aTBwqXF6o0KWcoK8vxOba7M1IQp/NsOVCU5qJnqaT3SvbC2GTesKTonbf2p6KXX+
-	M/J8nZ8lcoe5xnOPAtAocGZiPS3wVsxi0QNv/BFhG3XCHohMggZOgU4BvLnAf6tW
-	KU0sC1dY2f0eUZgzIQj96TdbGd+PlQKVJ3qknHj3MT+acj2qeGtV0JBTiltFvqWw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=9fEv8C
+	VQ+LcrjyrEyKWNY8tE1ZC5nOC4fuPxuTwwtWQ=; b=FkZShthZPf6z6Inxuhf+uF
+	iNXUzguRjPZq6PaXhqShCZ3McDp20T3UU5KU3cjMrWdZqtNCUuSuqfdkm8GvIvLF
+	dd72+XGKDtIjz69shK+IZlKQChWqyKHmF6exXT0UkgZBSqDxfU9Ur7ERBXMUX80P
+	s0bhDfhWZtFY8AxXcf0pCGiGI5KikMBri/OGHlqKcjofQOFEa0vOHAVhylAiOQpt
+	uCOLt6833VHDacYxqLq1mLTEtUp5aex8n856rgslbajZo+ccvWXcR2TgU4TdVmIw
+	4EHKN7jBzQE3ENXFaCKAqQK2azDDhu9EJCVqra+ip00luEloiWqmnR79lR7H0gcw
 	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhf6hcp-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbqk6vp0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 15:52:56 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689FfD4g030374;
-	Wed, 9 Sep 2026 15:52:55 GMT
+	Wed, 09 Sep 2026 15:53:23 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689FfE6N015367;
+	Wed, 9 Sep 2026 15:53:22 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggwdqk94x-1
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggwswb807-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 15:52:55 +0000 (GMT)
+	Wed, 09 Sep 2026 15:53:22 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689Fqpt649283520
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689FrJXq50987368
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Sep 2026 15:52:52 GMT
+	Wed, 9 Sep 2026 15:53:20 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCB8A20040;
-	Wed,  9 Sep 2026 15:52:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D9F5A2004B;
+	Wed,  9 Sep 2026 15:53:19 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80F0A2004D;
-	Wed,  9 Sep 2026 15:52:41 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 4CF0E20043;
+	Wed,  9 Sep 2026 15:53:10 +0000 (GMT)
 Received: from [9.61.255.18] (unknown [9.61.255.18])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  9 Sep 2026 15:52:41 +0000 (GMT)
-Message-ID: <371e950e-8d05-452e-b81f-57b120c370df@linux.ibm.com>
-Date: Wed, 9 Sep 2026 21:22:37 +0530
+	Wed,  9 Sep 2026 15:53:09 +0000 (GMT)
+Message-ID: <30360c50-0238-40e8-b598-bdfda1141cc8@linux.ibm.com>
+Date: Wed, 9 Sep 2026 21:23:06 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/22] powerpc/spufs: don't dump more than the note
- supports
+Subject: Re: [PATCH v2 02/22] coredump: refuse negative skips
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
         Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -103,50 +102,50 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
         Omar Sandoval <osandov@osandov.com>, Jacob Lalonde <jalalonde@fb.com>,
         Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+        linuxppc-dev@lists.ozlabs.org
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
- <20260820-work-coredump-sparse-v2-1-ba32dd718c51@kernel.org>
+ <20260820-work-coredump-sparse-v2-2-ba32dd718c51@kernel.org>
 Content-Language: en-US
 From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20260820-work-coredump-sparse-v2-1-ba32dd718c51@kernel.org>
+In-Reply-To: <20260820-work-coredump-sparse-v2-2-ba32dd718c51@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: Vpz_JMlA2xDilx_mOxqxkGzGaeHwxFvX
-X-Authority-Analysis: v=2.4 cv=RIaD2Yi+ c=1 sm=1 tr=0 ts=6aa180d8 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-ORIG-GUID: pYL1X5j4L64D3lhY8GC7_PxezJajFPeA
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfXyZQ2yeCYTZ8Y
+ 0zY5ztZt9jhIlCwPuIHMWYJZeFMN1RfSvZmQxlYKHYhZCliMI/1/l/3Wg0EpWXDDd6lWozX46Rp
+ BOsUhsvxP3K7Gf6k9YxbUWZBPcLY48o=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfX5MyolTbYyMTx
+ 81rdDfK4pUyI4nx4v6Y9Tq/r/gVfH0lueULm43ZNa2On7UJUzNwVwdVblnzuc6TdwypX9OVkabd
+ mY7Y+a3Um2ewoWxHnuzkeZMU9B9ZEx8zXreAkdyeB0s9N4qbY4sE3Mi+N9nw47/d2BRpkyMNGvD
+ 3NamjGc8COyszi5eNpC2WHmCm6ZnIaCNR9nVGU8PKzrDMBSZz7UZmsQZ2GC97VMvBlLdIC1rSRX
+ cnRoYJFT+Rf7HW7PJ/28KPLDCHwRT7HIo66pa7r9Oacak+UAvogwSvhdsx8cRtWmtDzjGv5q3Tx
+ MRgAeULZKoh4YyzTCo7msiB5MQSn0j7ly8YqteQYeKytKoC6USiarP/25m9uwlz0MZyki4TDtFE
+ 9HQGoeP/j1znxi3DPlsn/xA5Dz4ToJDJEyWtDxCPse+ktxUKAo6Dlm+UeqHdrTyl+tA5+qewgyB
+ 79OOPB5Pjo8vswDjYfA==
+X-Authority-Analysis: v=2.4 cv=JaKMa0KV c=1 sm=1 tr=0 ts=6aa180f3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=eMoGHGNclBrxslJz7JwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfX34hiaNYn2Z+S
- hgBtQiTobuQYrHJX6gsJIJBIG4ahe7XHwTJ42oLWMaT0s8cf1B+YuF/mpXEJLBqkdp/2SFe9j84
- Pi8F6lti/HQLUiGCf6P9l52iforvejg=
-X-Proofpoint-ORIG-GUID: LzRG8kMh5H0DvZ9UWi0BCwao6ubK88PV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfXz1c7miAXQplM
- bOIrKaACTzAPfh71wupQgNaUEJC1w4GSNp9qOunmjMij39MUwS7W3Tcyx0TSbCNk/gXRlznMPUz
- PhO0hpBGJdx35LI4z9D91L4uQv52BOffXpZWFXzAUhUO08mwVtQh6BFPe1yTLfvBeSyTGab2HJh
- zB2bThp33YnKXUubwGq1nX+vH3Hs6fqqbKE8EPnZBqRKY8tadMqacKispmzsFlM9+juxOsqWlrW
- lgXPIVziPYwJyQUdsRJjjfFntZkqMeRtz5LIMW6MWHUncY1OCec3GvSl8muQVkLC1gpiD+c42LX
- 6fpAXL78yIcJfiBqovqLeSlXzhcuJTUgCPlbEmZDuGdx8+lX0M7Ps2wK28IcED1FS/HfudXbTcB
- OiRsBxWuBXRJQQy8VskXVlXrttCU2CrIR/z8HCBhqwhKE8dY7pam8bXQ3aW97GLjZfehIjzV8Q2
- nkd3BjPMPT4mXtPAEfw==
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=0fa85O3lyfMzuANSHggA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: x7FvKhawyt97Kk1EQB6_XHSAe9xWv9Jr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- adultscore=0 phishscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090173
+X-Stat-Signature: m1jaqz8rff1z57qpuur3uehxmu4b1d49
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C3A4F80002
-X-Stat-Signature: 7dja3jziu51owyi4br9ky9tpkyufoe1s
-X-HE-Tag: 1788969187-647145
-X-HE-Meta: U2FsdGVkX1/nBxjpxmva6zIs2AARbMPZlXpBpCcjZUQ2+vAg38X5pPgPhUTjm0rY3qI1IZXnTgESqdAwga0zkpKx6FX8NbMmhPwhrE7xmRZ9BYKm9K5J/sHBm3RzkJBEoxx6/nZcfo1h1Rfzdhp2XdQ6ChxFFvAbRTPSzyus9hg2q5MYKPOf9mRIIbAG1R5V4a365JwUzDa7mxFSoaTkXcfmVGS5lE9ZYBIr4wnVOUJ8l8PlUauLqfoXg/nONz2GeaMn6r8ZaJyMQii4RPlnQYkEWDED7+72/Zm6yDQmkNhiA06NtZ4ZLANhyl8riziTARvcnfCV/J5EDVMprsntbEorVhar+J+NSciEkqhiXrJncdBiikIJcmfRHcmSxi930eyxQUeGBY8jbnacNoftjOfuMobczpYTdSpIxuNCl6DVkDfb4f03tge3GjpXZDJCiF1vqXmvkFojnJgSDozYv3QB+Gsrl+q6TNVKOlz3ZH9B1+oLGdy6ciNgbp2isXdC6ZH0XNKTIWPdBypuCVS0psJJliEQdc1ZZ2Me4pLzlYu9w5gABRjGZ+Sm02xiOfHapVqim1084mRJFeyUAbI8m/0dxpSSLVMh9YToBBV6Gl0L5D7PoD1s62p6ovTF48e2/CBSKsRmcM8aPxdxjQE3Cty8SJ9btqOenAE57Kny/dcFb3z3x9rkIjBo1VAZ1Ig3E/nfI5f/5nr21/u/yyUhOVzCxoI/D8wU6J5o3WpV9TwYNqi7EXJHnzz926h60VEdSFSIFoZRg+DPuN3CBklhsRnSsaw/Y/9pLwxIu9GKKEQq4snko92mTReRlreiV3ifHQysySD04lfcUJmWfMHeeEn7r72UdGBrCX1NfmjYmAxVML+OlJvLi9eh78s7V0q+LDyqNN2gKrJkHSgCKuZjMA5LTKZJYjHKPX22HawFLgvJ/keTgoJ5yLaoqdVqut5YbQ+iX/bhXABnSMkHPVQ
- OfcpFxoR
- k4sqDIYXhtXc+ELi/IaI+6DRYJq/TkW48LlLMa7uyEJsEpCB+rJD8CosFD8w0mxVRQaPx3w2zQL70nNa9gpeSEpzxM0FBCzD5BcBqniUXm4E0XVX8U/S6O+Kd1LE+HbcjIpuRZYek0VNORMkjBvgXRfN8fLqFiCADiN2/GfYjiPXZzDxtN8xoXvFxa15tM/AkMIKWYQNtSswoqes8xZfsuad/D4cfgPT4EWCPx1pJc3gskskx2zx7ts2Ix7UsJkGlAdUHtyw0cCKSWJ/k07n93ifGYZtJDZYa+tHYZxTJ7r3S+xCAYTUQzrGuaybcer0VjndJQoYGCogjEzphzLh1V0ZiDev3i4l62RSM3+qCEkxqIDcEd2rhqQBUFw==
+X-Rspamd-Queue-Id: 829FC140008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788969211-685862
+X-HE-Meta: U2FsdGVkX1+zoDMwwyzLbDumUIFZgCBJ6U8kVCJ74eF5sXEUpJO8wSDoNk6rL7du2ZPp3uGVCoy/Cb9XB4Gi8qEdyBrDDxGkLspnFxD5K5hIkYx3Fwa20PufI4Bf3DOlejuRp9yghfZlNSjv+USWJJn4Pe0zySaegtD4MV6hQNW8OTgJ+fiTziiko/fvsTJ1DXOK89ZPj93srzETNfiNqu1AGKMTDhWQ/iKykn3PltxkaaTK8EmHnLM533HZRKez09ny3jD/xYU6wYTitDF14Dx0f/zvUlvNvV49aXmUX7CGUsa6oW9z2tvghv1IjKQSgLxEo1rYnKdXIeMAkZgu8zcFlv5d4rNExPg2da4lyuOwoUtocExrg12HZTA2+tr9NGbhiETY+4b/xWvO0jt/s1tRTrYTL5/7G3El4zaQNgHD4ZJU8bwJIDb2akQ1+zQRUKDt6lWf3i8BJuZpkaz62Lcylg9+AINYWsH6E35RHUWsb99s3yxv9+zb/ohkBRpsDcBDHBJqkkj8jV95vuUpaevx/tl+4SutQS26NhXFkPMUOk9LHuFWBCZN3nE58eKUV2MZwZF7J35/67b1qh6k+XmITlLcUpq+HDH10FlCo+XFu0pPSEaZjpZDiKDl3fP1yR3xBYoYp21KB5kVqi+aqcL7qOlnlAAB1pSGils/+dajjqw7o7sdYJEU7eyF67Ehyg72tVE5X5UFQbfG6EhfRNPab0qoTA5ADhkj+OJjfrgRHlFFqzsgRYsuU+DMN330qzUORXjloemOnAWR8iQDiRQT79DoHazMRsAnbXuRM6l5m3iGfo0W6NGeFXLwlASe/wz9Fbgde1Do/N2I/J1+3rvQY6iYgEW/ukLToWI/3nVg598uAN8kAxEFyI2rpRo62SanVSILCOzSpR3Rx1Cy9y05a5MqXFLgdLNTkacbnLW+4j8I+ONKYDWtpewUJGsGocBtfo9oFPAkRj+GW3A
+ 2UtmROG4
+ MO1vn4ej4MWhigd3VRe9ziQ9q2LFJGfbWJsBtcU2aAh4TRkXqDVwjE3VcGv8m3KqoEI3GGGwb4x6CuaV74/RDjKRbuEC3p4F1v8iwNUQl7F5uS000j1ANBuGjh4bLlxv+GpxQh8zMWwlQO1Q9EGuvO1tBSKA/9acEGvMiRBG7pplVtoWIAxnLidM1+7ZHgoA2tygElbai1KCv2PjNLezykjIezJzdAXevo/aPOAm865U5KJpM5B/PEk3pNNMHD3EOacXeyWiw9bB5DK/qWEEf2X3F0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,106 +155,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 20.08.2026 4:39 AM, Christian Brauner wrote:
-> The spufs_arch_write_note() function puts notes in the header and uses
-> them to fin where the next note starts. The spufs_coredump_read[] array
-> provides the sizes of the notes:
+> The dump_skip_to() helper calculates a relative skip based on the
+> absolute positon of the coredump:
 >
-> 	dump_skip_to(cprm, roundup(cprm->pos - ret + sz, 4));
+> 	cprm->to_skip = pos - cprm->pos;
 >
-> In this call @ret is the amount of data the dump callback wrote. @sz is
-> the declared size. So the position moves backwards if the callback
-> wrote more data than the declared size.
+> That's easy to mess up for callers and one already did. This risk
+> endless zero PAGE_SIZE loops or overwriting already written coredump
+> data thereby corrupting the dump.
 >
-> For three note sizes that is the case:
+> I don't think skipping backwards has any meaning. So warn and refuse.
 >
-> (1) signal1 sets sizeof(u32) and dumps u64 via sizeof(ctx->csa.spu_chnldata_RW[3])
-> (2) signal2 sets sizeof(u32) and dumps u64 via sizeof(ctx->csa.spu_chnldata_RW[4])
-> (3) ibox_info sets sizeof(u32) and dumps a u64 via puint_mb_R
->
-> The note is 4 byte aligned. The dump_emit() call wrote the dump_align(4)
-> just before the note. So if @ret is 8 and @sz is 4 the position ends up
-> 4 bytes before the current position which means cprm->to_skip is now
-> negative.
->
-> For __dump_skip() with size_t that means the pipe or socket gets 2^52
-> PAGE_SIZE zeroes. This also means a file seeks backwards and overwrites
-> the four bytes that it just wrote.
->
-> Before commit 5456ffdee666 ("powerpc/spufs: simplify spufs core
-> dumping") this was benign because this truncated (on purpose, I
-> presume):
->
-> 	u32 data;
->
-> 	data = ctx->csa.spu_chnldata_RW[3];
-> 	...
-> 	copy_to_user(buf, &data, 4)
->
-> and after said commit things became fscked. So let's truncate this
-> again. Not truncation means the wrong bits will be picked on big endian.
->
-> Afaict, spufs is effectively dead so the fix probably doesn't matter in
-> the grand scheme of things.
->
-> Fixes: 5456ffdee666 ("powerpc/spufs: simplify spufs core dumping")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
 
 System: ppc64le LPAR (IBM POWER), Linux 7.3-rc2
 > ---
->   arch/powerpc/platforms/cell/spufs/file.c | 18 ++++++++++++------
->   1 file changed, 12 insertions(+), 6 deletions(-)
+>   fs/coredump.c | 2 ++
+>   1 file changed, 2 insertions(+)
 >
-> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-> index de7494748fec..6f86d87e3749 100644
-> --- a/arch/powerpc/platforms/cell/spufs/file.c
-> +++ b/arch/powerpc/platforms/cell/spufs/file.c
-> @@ -956,10 +956,12 @@ spufs_signal1_release(struct inode *inode, struct file *file)
->   static ssize_t spufs_signal1_dump(struct spu_context *ctx,
->   		struct coredump_params *cprm)
->   {
-> +	u32 data;
-> +
->   	if (!ctx->csa.spu_chnlcnt_RW[3])
->   		return 0;
-> -	return spufs_dump_emit(cprm, &ctx->csa.spu_chnldata_RW[3],
-> -			       sizeof(ctx->csa.spu_chnldata_RW[3]));
-> +	data = ctx->csa.spu_chnldata_RW[3];
-> +	return spufs_dump_emit(cprm, &data, sizeof(data));
->   }
+> diff --git a/fs/coredump.c b/fs/coredump.c
+> index e68a76ff92a3..ac4e922c9cb9 100644
+> --- a/fs/coredump.c
+> +++ b/fs/coredump.c
+> @@ -1261,6 +1261,8 @@ EXPORT_SYMBOL(dump_emit);
 >   
->   static ssize_t __spufs_signal1_read(struct spu_context *ctx, char __user *buf,
-> @@ -1089,10 +1091,12 @@ spufs_signal2_release(struct inode *inode, struct file *file)
->   static ssize_t spufs_signal2_dump(struct spu_context *ctx,
->   		struct coredump_params *cprm)
+>   void dump_skip_to(struct coredump_params *cprm, unsigned long pos)
 >   {
-> +	u32 data;
-> +
->   	if (!ctx->csa.spu_chnlcnt_RW[4])
->   		return 0;
-> -	return spufs_dump_emit(cprm, &ctx->csa.spu_chnldata_RW[4],
-> -			       sizeof(ctx->csa.spu_chnldata_RW[4]));
-> +	data = ctx->csa.spu_chnldata_RW[4];
-> +	return spufs_dump_emit(cprm, &data, sizeof(data));
+> +	if (WARN_ON_ONCE(pos < cprm->pos))
+> +		return;
+>   	cprm->to_skip = pos - cprm->pos;
 >   }
->   
->   static ssize_t __spufs_signal2_read(struct spu_context *ctx, char __user *buf,
-> @@ -1965,10 +1969,12 @@ static const struct file_operations spufs_mbox_info_fops = {
->   static ssize_t spufs_ibox_info_dump(struct spu_context *ctx,
->   		struct coredump_params *cprm)
->   {
-> +	u32 data;
-> +
->   	if (!(ctx->csa.prob.mb_stat_R & 0xff0000))
->   		return 0;
-> -	return spufs_dump_emit(cprm, &ctx->csa.priv2.puint_mb_R,
-> -			       sizeof(ctx->csa.priv2.puint_mb_R));
-> +	data = ctx->csa.priv2.puint_mb_R;
-> +	return spufs_dump_emit(cprm, &data, sizeof(data));
->   }
->   
->   static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+>   EXPORT_SYMBOL(dump_skip_to);
 >
 -- 
 Thanks and Regards
