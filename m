@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B78C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D17C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4D2F6B0095; Wed,  9 Sep 2026 09:39:41 -0400 (EDT)
+	id 16D2C6B008A; Wed,  9 Sep 2026 09:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFE926B00AA; Wed,  9 Sep 2026 09:39:41 -0400 (EDT)
+	id 0F7946B0092; Wed,  9 Sep 2026 09:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6346B00AB; Wed,  9 Sep 2026 09:39:41 -0400 (EDT)
+	id F00986B00AB; Wed,  9 Sep 2026 09:43:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E50F6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:39:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0AA1B1C035D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:39:41 +0000 (UTC)
-X-FDA: 85194331362.15.81E9C83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5A98420005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:39:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aLPoNRcJ;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C27CD6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:43:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE4391201F6
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:43:11 +0000 (UTC)
+X-FDA: 85194340182.24.60BE445
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 17DFDA0006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:43:09 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bYS5kG7e;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788961390;
+	b=DiFZS4ClxVMeCH2H8b3ckhoj2fOFERYh/hW6StBNRZhKiosXUfzKmShzJHLXNRslh9Wc/2
+	/TV8kcrWKR6/lKQEtqX3usB8jxcpl/OsGFLsjS93RnuwhcM2Mv4bUzBFiHxseZgcmD3yMo
+	vE3sc/fkhSNW9Xknuc0LVVhwWt/G8MY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bYS5kG7e;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788961179;
+	s=arc-20220608; t=1788961390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iP4r/Esf2pGXwRFwOfaFPtixVlzXtak19L1ZuCehHI=;
-	b=7swE/lrAgEnWPZGHXQ4SY4j5gdcLIh2rA+RwPP37E+Ej7HwGBeaEYfYH4Kp1F3rS/UeR1o
-	YMyxoZC8OI/9Lduay0PgmOF9OvRuF7IGxH0n/moTa6vDlZvy5Mx5lUIEBOCtYOSTzXunj9
-	f5U+acZxtMp1g436ja67xnIr0un7nJA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788961179;
-	b=F25F7qKwGiEP3UuOx4GQYBQG/6m62Xmpe0PA1RqR4kEiFVPcGp+OgMQMFbXF4un5NC6eCg
-	cDEA1J8kA7oPWAkCcgYgn1RjI+FChisJj7bev/QwZ5ydAnnx3eZ7ZgFxSMujBf81IqoGx4
-	lXm5liicuxcXHfYfmW6dbl/yKbr7VrM=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aLPoNRcJ;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=u9IzuLqDULcD860ya5R4OSTfR5VByrothjUZYfYv1/w=;
+	b=w4FogBZpEhYmC6+McuknoUE2N292rZfhiMd1ltB8nSY9yLJH+6+MguQWaez9ZglWPIAjxX
+	F98CccPrN/CxgJJyBSsaxzTs81oG1mVsmr8N4URFeL5086Z42CnQrrqGY9SorkvRuoaU4I
+	HzrBUDNWEamCNuw0fWXoZ5Cd2r/HDpU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B748860211;
-	Wed,  9 Sep 2026 13:39:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4BA1F00A3A;
-	Wed,  9 Sep 2026 13:39:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3823C433ED;
+	Wed,  9 Sep 2026 13:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA481F00A3A;
+	Wed,  9 Sep 2026 13:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788961178;
-	bh=2iP4r/Esf2pGXwRFwOfaFPtixVlzXtak19L1ZuCehHI=;
+	s=k20260515; t=1788961389;
+	bh=u9IzuLqDULcD860ya5R4OSTfR5VByrothjUZYfYv1/w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aLPoNRcJrIUL+1yqxoKS9+amtbp4r91seb6cACR5mTIDhpdc6wojfjfrTvCip5Glu
-	 tA7h5LfhL6E3cdvU+mtaMv36LFxeTn7cXy5YIvtuhuR1FyBs64qdeFCrBDIAu1eh/C
-	 IH0pR+3/vxzT3FMaHyneR1NIdYVAntqyeB1fpYiYh4QZq5ZGWsgi+avt6V6DFgbJzC
-	 QPOVxXnt+bRM9lkBejCdDiKLSUUL+oWMULfrXtNJ+Yhd6QxmbozNFQr9msKbjaC/Sy
-	 iM6lNn/cbUanuJCiCnm8KC0R3c923oFV9IZGvBgvEuaAxXL6jSzWrlNzAACXjnRwiw
-	 V/LNo3CKTkobQ==
-Message-ID: <c23b6290-a648-4a46-bcdb-044ca16f8ea8@kernel.org>
-Date: Wed, 9 Sep 2026 15:39:33 +0200
+	b=bYS5kG7e4E5j8HFOwgf2LIOyXcy4a25Yvc6Y3XLeFu/8a6PVFx5B8WYOyEcjewUmN
+	 jW04ZRymPTZpVDoUmqfDccKEUeB5BYifKEsEnkZLavCGdl1YJoXuSFHw5/iP4rh8bm
+	 b/MvS25hdYpQcmIDoxo8wNMc49Zag720BJ14WBnnXFMhIepMzJnC6cVPmBbqAGBmae
+	 L+O75kGdtiB9bCj3zQ3gHtPxeNhkWWZj3f/pVVO0w/X01GKjqpyFz119ULV9Ni8qKL
+	 GVGRjlcWOpw/1/1Wtk2u5XncOGCx2VsNxZiDLmLDr0/u7EhyVPP+jieu+t+3X8AojC
+	 Q4XS3SO9cicrw==
+Message-ID: <c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org>
+Date: Wed, 9 Sep 2026 15:43:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/17] mm/hugetlb: switch HugeTLB to section-based
- vmemmap optimization
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-11-songmuchun@bytedance.com>
- <67dc7ac8-b39d-4354-8cbf-f2a1c3a369ee@kernel.org>
- <82CAF33D-2482-4E8B-826D-8AF5E6FF8866@linux.dev>
+Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for
+ compound folios
+To: Hui Su <sh_def@163.com>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Balbir Singh
+ <balbirs@nvidia.com>, Zhi Wang <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gourry <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>, Alex Popple <apopple@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260817120758.669807-3-sh_def@163.com>
+ <4ead5df7-f000-4087-83e4-13aae036e0b7@kernel.org>
+ <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com>
+ <5ae7a11c-1db4-44cd-bf67-a98cfd5ca08b@kernel.org>
+ <20260909112049.3202956-1-sh_def@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <82CAF33D-2482-4E8B-826D-8AF5E6FF8866@linux.dev>
+In-Reply-To: <20260909112049.3202956-1-sh_def@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qp55dnkhinfrox5miky88afqipwcpmmt
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 17DFDA0006
+X-Stat-Signature: tak19oucd6tw8kwqhaugpit7ppiag4m1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A98420005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788961179-27120
-X-HE-Meta: U2FsdGVkX1/y2Ogy2OAdH37s8SUaQfZ6wRpzeqoD1Bp5CxazDERgWIn3oo5Q8f/yrkQZe3G2biJIcTL7DuXxhwDTcUU8Bz9D0Qo5jPo7TWmxBtCqSnDSBipWQ0qFP1JrLolLerZmOGPkbd5AkuSmITT1GRY6pUv/oMUeyHhjstt4duYKtOF3xj1WxWVc6UUGJ5UTiYxOohdPcAI5BCZVd/7xSEvNKrBHqAyj7MLcO8rXBTHqUcwBK6UsMh9oe/WYqvUHWN7JFjxbd06YKxwDxbyuH/BafaBpS/z4GXytTp8W4nD60sq9Qg4GOiD5ujr2EcXNfMu2uZwrlkFcT6uYs95Dki6q3VuXlyFwCGcUdyPFYEb6To21ilZMOX0+hb9Bp5e22OFHUtHtmmTt+mThJa24toRC1sjRsUxjOIQWp1AwFM67cxw9Y39loWWwcWA0Hm/1+fGYf9fyUepSI8a9VS5WfEywSuWbBIEv7P7afg9FgMynuP25K41HRlNn+3sX1sBaWLmN+3po74I6Ysh9ffjWUIU84HgAVlbSwstIauoszh7bFr5sFJqOIiE0gm7J0ypqsrGhPj3coRbMPjGtg+BClYiDE7AK/8dZad4qg1MknbUXwQuqb1vRsTgoF+aSFHXo7L+wJDh+/sNPFArDP3QllRgxiG1Q3/mkcT+9ELlTQ3ry/udbEOUaoMkWBFQvWMs8buasVox+e9XQwc7mPrTsbLSytKQhpNK+g8yeS/kKnvpwhohX2W/xAmsIkxVkMiND6Z+HRq6F57nWwe28U4Uhc6++R1sItKNGSkdZQFvyOhigzdPpJM2/+5AEsfv5K9ggO6INIFkYbU47/H3EbeyOZRnnUpq9vU7kj32a8LxivZeRe296ypOpci+4XjB5IQ2L2TmoDzdrNccU3BDUHt8ivGfGcHAewVGhaQ+jLv6MpLgSfUm4lJDI6cEhqdqS+juJnHS+sEnTxTiAyIz
- EaqaTZcL
- EOA7tXGv5meotObQziOJygTVBHDX8C70sO5l8y27auZU7mgK0+PkrXN6K7NpnrAnE6+F47b4vcDFz9x49XgCURQX/ePhjQT04SVEks7+W1qSfcygiRamYAi0cYeq7PIvDbS2IDCvQh1fTCW1TgZF9CwdnvmNZeZZO0mK6yOtG+gFeUEDMc7yiQkBFW07cA7NBJDY0m46JwowDgP2lIuGOSoG3pTZ9Ky/qhYkIkXtR0v0hJSTGCsfXHebteE2XUBrYzbdzhkxlFCPZpIa+Yxd1N9nFQWqa00auAjVT/Ruaf6kpvdhhAaL2pev44qJSrxg+ackgw+hiMaFD49ep/6ISgr1tFX7XdIcyRxYQxNAQouTzeZaRcA50cuiKj1XA715gTsbn
+X-HE-Tag: 1788961389-123724
+X-HE-Meta: U2FsdGVkX19GqKXLBNM5uMy6r8c44yygB86ZCUNcuJgQ25ZmIUZDPpcPMnq86ZjLMUup7oLHiDBIDHhPEjNuBAOFz/QzfsjrstfPriaQ0yTqn/BRfw2l1cYG1HGhlnCXrKTRLPuhzOSScwjkZCpc77XWXpkcahLVMpnAuVtxo/jasauIuAXSCmcgFANCE3P1GT0PrZ8/w7wEbhBO09izmA0l3Dc8AqmDlqIoFvRO8oq494p7WTXnjUzehizFF6ACBuR2w4Mv8KIRquQpUhdM113dV0w8X646VeS9pN/NBz7STmSKPtmh9ApY3WVUWTix+uF7efWPK86747jgzcBwL+LxPExkeiEzqdeEwexJO1FG9hLzM9UzSgJJ5GmbulUkFofxYcFsnWN7jp1lzCMykTRehIbo2HlistspzbJ3j8jbMNum/Zfxao7pigZWFxJkijgKTSKQ1sqTKYuf+sn/+HZ+LNRISNatAh/+uvMHh6pZ8j70lCpMqLRBpgVhPbBIcOzkqS2txccvEr+HqnIv+b+o0Vc1CqErwZvEYJ09h0cYbfA61hZcT/RejHM0kpsZ4/XzhSrI3j8LQeCDOHYpkSfTySPPVwDWm9hoHUMtgf2IGj+6IfPzp7vn29UrAJEEdQaJf7/ZdabPWNg3IrgPGqbUOcGH8vv4iy0dPFH03xhV0ZUdHIQ8YwzGYR5vH67IN9ESbc5C9w7iaxIphvnGFfmevQK7Rwi78Rlw5iqf+f6EWy8utiNEGDs+Aydj8AF050aEpnpJO8PNhLYgsBSRb0fpt5gG5yiZHcPhZv6hJgeN8W8ufL7JGgee1AaYPJ7VWfL4cbU6LckZPK643vmED/3pU4j4iwt+1WHSDkamePYjOoygqZuwR4hEamBrjLoAmHvWXu/Wqv5MTmrFXfsR4qk/e9Z5TR2clMoXU+JZrJZNlLBl4CojGLoixVK+PJ+PhLJH+DPyo31wjKq18Y+
+ KuvgFDED
+ JOy6aRyUTeIz/qhZ6Qkmq2uH1UC7hh3YSDEncYD8A5ZHeyoclPGajAftuqjs6Zeoj//ZdsgiTd++9+l8sRO9+9ylBdJ5SlMGf9zltUmNWh5s/3SrMr4RY8ilwG61uvCmNhJAEykTDCPvrb9CpUrLITQFzdg3ksootJ02+QkOF2wzC4YbuA61i4UUJdPouqmOuXbyYrKtCc/njBEAMdFrgGz31MU1VvVDVunsUGK5KfQD84lz9ShXpmTTzeqYEZp9hC92bGZJQ2Iiz5HgbBKXJEi2Kras1Imq3mxAwvQe6Kse27Ixyohsfa++3HsQ05QSrHBHo9LAZmwY/rcz6cBajQKQqi8n9PiCxqVD7qkL3yHWXN8REBzuZ2a5Z04mW8wEDG08h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,76 +147,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 15:08, Muchun Song wrote:
+On 9/9/26 13:20, Hui Su wrote:
+> On Mon, Sep 07, 2026 at 02:23:33PM +0200, David Hildenbrand (Arm) wrote:
+>> That's what I was thinking: because how should we partially migrate folios?
+>> Doesn't make sense :)
+>>
+>> If this cannot be triggered today, neither Fixes: nor CC: stable is appropriate.
+>>
+>> Agreed that we should just warn.
 > 
+> Hi David, Matthew,
 > 
->> On Sep 9, 2026, at 17:58, David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> On 8/25/26 10:46, Muchun Song wrote:
->>> HugeTLB bootmem vmemmap optimization still carries its own early setup
->>> path, including pre-populating optimized mappings before the generic
->>> sparse-vmemmap code runs.
->>>
->>> Now that the section-based vmemmap optimization can derive HugeTLB
->>> vmemmap deduplication from section metadata, HugeTLB only needs to mark
->>> the bootmem huge page range with the appropriate order. The generic
->>> sparse-vmemmap population path can then allocate and map the shared tail
->>> vmemmap pages without any HugeTLB-specific early population code.
->>>
->>> Do that by setting the section order when a bootmem huge page is
->>> allocated and dropping the dedicated pre-HVO helpers and related
->>> special-casing.
->>>
->>> This removes duplicate early setup logic and switches HugeTLB to the
->>> section-based vmemmap optimization path.
->>>
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>> v3:
->>> - Use the order-based helper for the bootmem vmemmap-optimized check
->>>
->>> v2:
->>> - Collect Acked-by from Mike Rapoport
->>> ---
->>> include/linux/hugetlb.h |  1 -
->>> include/linux/mm.h      |  3 --
->>> mm/hugetlb.c            | 30 ++------------
->>> mm/hugetlb_vmemmap.c    | 90 +++--------------------------------------
->>> mm/hugetlb_vmemmap.h    | 14 +++----
->>> mm/sparse-vmemmap.c     | 31 --------------
->>> mm/sparse.h             | 27 +++++++++++++
->>> 7 files changed, 42 insertions(+), 154 deletions(-)
->>
->> Nice cleanup.
->>
->>>
->>> diff --git a/mm/sparse.h b/mm/sparse.h
->>> index e4617f9c8876..049272aba84e 100644
->>> --- a/mm/sparse.h
->>> +++ b/mm/sparse.h
->>> @@ -16,6 +16,24 @@ static inline unsigned int section_order(const struct mem_section *section)
->>> return section->order;
->>> }
->>>
->>> +static inline void section_set_order(struct mem_section *section, unsigned int order)
->>> +{
->>> + 	VM_WARN_ON(section_order(section) && order && section_order(section) != order);
->>> + 	section->order = order;
->>
->> As raised previously "section order" is entirely unclear. If this is a compound
->> page order we should spell that out.
+> Sorry, I missed this earlier.
 > 
-> But I also have another question. Should I also rename the helper name,
-> like section_set_compound_order? or it is enough to just renaming
-> the field name?
+> This fix has already landed in mainline, but I agree that the API semantics
+> should be clarified. Partially migrating a compound folio does not make
+> sense. If the intended contract is that callers must not provide a range
+> that cuts through a compound folio, then treating such input as caller
+> misuse with an explicit WARN/error path sounds reasonable.
+> 
+> The reason I added the Fixes tag and Cc'd stable was that I observed an
+> actual KASAN out-of-bounds write with the HMM migrate_anon_huge_zero
+> selftest. The path was:
+> 
+>   dmirror_fops_release()
+>     -> dmirror_device_evict_chunk()
+>       -> migrate_device_range()
+> 
+> My intent was to prevent migrate_device_range() from writing past the
+> caller-provided src_pfns array when such an input is observed. That said,
+> silently stopping the collection is not necessarily the best API semantics
+> if this should be treated as caller misuse.
+> 
+> I will rerun the reproducer on current mainline and report back with the
+> result. If the preferred direction is to make this an explicit WARN/error
+> path instead, I can send a follow-up patch on top of mainline.
 
-Rename the helpers please.
-
-A memory section has a size (which is a power of two / order). The page order
-used inside the section should be clearly separated.
-
-BTW, I didn't mention it yet, but I really enjoy this cleanup.
+Yes, and please clean up the code in any case; the duplication should be avoided.
 
 -- 
 Cheers,
