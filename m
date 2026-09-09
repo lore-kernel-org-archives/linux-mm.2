@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18EF7C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C3AC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:23:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED746B008C; Wed,  9 Sep 2026 10:20:47 -0400 (EDT)
+	id ABB1C6B0092; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C5286B0092; Wed,  9 Sep 2026 10:20:47 -0400 (EDT)
+	id A92116B0093; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCCD6B0093; Wed,  9 Sep 2026 10:20:47 -0400 (EDT)
+	id 95A466B0095; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EFBAB6B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:20:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4563C401E0
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:20:46 +0000 (UTC)
-X-FDA: 85194434892.24.A037443
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EE196B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12973120223
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:23:25 +0000 (UTC)
+X-FDA: 85194441570.01.ADCBA91
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6765F140005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:20:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnHLaMAo;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 488CF40007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:23:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQiuCrQG;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788963644;
+	s=arc-20220608; t=1788963803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pNa+R32oRzIlggZcI4nA479nmzN6Ja3e5lLkInWTr24=;
-	b=ZlmCLZWlbrSZAeZveBP32mSmQWZlIDeiUSEgcBS8NOtZENm1FtTzN2H4xWusJT0PRyha1b
-	denx45fnL8uZWz3I19b0C1dbJnzE7yboWuiVdhubsxA+CIouVPr5+1GxZNF1gYxLkyCAWI
-	Rz15rMWpQ+zkhP9cQYcUxWDaCciQN2w=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnHLaMAo;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=i6W2FGwXgxwv6NRv5ZRSdh10FfBE7WUHV7rXrybSwJ8=;
+	b=O0ii5JnXdUzN/hfkZl3071cfiQh82pCUAjHMMRZiTFnPgc5Beayc2yXRUNrs/m0m/W7Fzb
+	0hp3LV9YvkarFoDJp868zBRaMP1qBa81WAoRk/VhHv6+ITSCAFEHhjiIlDWPjTItZPl82n
+	Q6ZfZ05TSbitUDtTvM25p8+WU99+iVA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788963644;
-	b=pbM8cm5XtUwQEr9mUOsbK4i39UyrtY7PQWuHF9eUkmVkGeRfYFhfksTJtuWicGuOUmK8Mv
-	rg+ioGnIn6nsunIejh3oYlZOhhg4rT6EnidSQ4D4KmYn95fhMW5qi2lqhG0foCflenbILp
-	QnnPe9RmDFlQfX0mdmrryhKwa0voHVk=
+	t=1788963803;
+	b=v71Hjr2quajTYpNhwXjYLuGKoBmr16snuyet17e6hxxFNLRdVJRTehZJrjbBEEkWrDr7IL
+	4VZG99nz+g2rL2uIDchZybjuTBmTt7v5DfaRSzcBZ7HSUNOGdfGuYgDV8vWcxlt0k/4EAX
+	gFAKaK6G8EUSomWDqzDCU3CAfnBNHt8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQiuCrQG;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CDC240BD9;
-	Wed,  9 Sep 2026 14:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844AF1F00A3D;
-	Wed,  9 Sep 2026 14:20:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60DA94359A;
+	Wed,  9 Sep 2026 14:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D312F1F00A3A;
+	Wed,  9 Sep 2026 14:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788963643;
-	bh=pNa+R32oRzIlggZcI4nA479nmzN6Ja3e5lLkInWTr24=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lnHLaMAopxlt4KS67LLWDWspk5zG17ntY3H9Pe2yIVsiFSE2BRoYW00yJg+xHoh10
-	 vuNVVQC2bfNK0nyBX1v9GN1Psf3WbkOKPt/kAIud/e0yPLkq0JCsdntmOD5i+4fY/Y
-	 Ml2/4whKkbL2iUhms0DZo9w4Hej2h47PsPoV74ZUvFvumYQzyJ4Z8ZXNQSLwcAc2a7
-	 kcdfu2aCv2kKeEPe/X0okGepxzVjumyPE0sHnCzfrTf8KARGjVRH66h7+/8ZjOKTGa
-	 kk2sXnk6fjbWqOFkprZPu77oQxxro0cxZu5khxthAUAiRK9hcw7Lb8/S3rgn407qQ6
-	 2GycK1VAQOOXA==
-Message-ID: <e31d07a6-52b3-46bd-8a1e-03238428a0d0@kernel.org>
-Date: Wed, 9 Sep 2026 16:20:30 +0200
+	s=k20260515; t=1788963802;
+	bh=i6W2FGwXgxwv6NRv5ZRSdh10FfBE7WUHV7rXrybSwJ8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=IQiuCrQGfz/BNM0KjlCtC6onVCVz8KRUfEkYfYaus7vqqG27w98ZjrAnsKsKOzPHt
+	 4fH96H8AwHsQOjwGzabUEx27K1X7KBLc4EqiSufWnxQ46vitgzJfGTBy28c7C4WAjv
+	 i9byds1do2aeLwOEdHAyfRQyKVWihBqcTTdDplc+OYOi9U7UlUaRe7tayrhF5DOS8W
+	 563z85pdqkMIzG9Mv0VEn2tXd6vjaelbCchqReVT/whqJRFnb23yL6aBQ9Sk1FahoC
+	 D3RCMc6ohPHre8ZPzLd+XuEb8mhS4HWwD7CVFSHJO7Yn6OsdQJPwWo5EIAGHMLllkJ
+	 bM9QojvCuIZvA==
+Message-ID: <fb37c097-4c12-4eb8-9739-e3513127eb35@kernel.org>
+Date: Wed, 9 Sep 2026 16:23:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/14] treewide: adjust comments on PagePrivate and
- PG_private
+Subject: Re: [PATCH v3 12/14] treewide: replace PagePrivate() with
+ page_private()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -84,15 +85,14 @@ To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Song Liu <song@kernel.org>, Yu Kuai <yukuai@fygo.io>,
  Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust
- <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
- ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-mtd@lists.infradead.org
+ Viacheslav Dubeyko <slava@dubeyko.com>, Li Nan <magiclinan@didiglobal.com>,
+ Xiao Ni <xiao@kernel.org>, linux-raid@vger.kernel.org,
+ ceph-devel@vger.kernel.org
 References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-13-6ae22f9d9272@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <20260907-remove-pg_private-v3-12-6ae22f9d9272@nvidia.com>
+ <afc196d8-8e17-4cdd-a6be-94b8816f2a57@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -138,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907-remove-pg_private-v3-13-6ae22f9d9272@nvidia.com>
+In-Reply-To: <afc196d8-8e17-4cdd-a6be-94b8816f2a57@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6765F140005
-X-Stat-Signature: t3othytx38bjric3dks31ou35ujf81si
+X-Stat-Signature: d5h5uyhejq6psuwzpf1nhqq4ta4k14m6
 X-Rspam-User: 
-X-HE-Tag: 1788963644-881169
-X-HE-Meta: U2FsdGVkX1/DSA4znUnpFvP8kDin48a4J0SMoMSEfKl+qtk3E7Hds9/XX0r3dKmphw+/VHZq5QEdj+xqUjiKCVmvbhfmYqZ7rRWS/w1gpD7Z39cS5hZ3eUQYGwwdltSmsm/NLg6/Nyy0GBY+VvtkxUEhQ6niubRx4ghRBcs8P/zJuPn79DLq7qVnUC6Cd3ESi230MXz+4AsTMna+OJCsSJaim4GIVM9gQF6o+JPLL+dcyczZP1SkZFoUHwre2w0+lzQSed9bQyw7kVYKnpaHYCCVEdLDTB8BCjp7soeCgIVEeOTNpmIH22zoCjoxbStPEbD1g4fBikl1LoRz4Zq8626KPzQRmaAdbX4Im3BKXNkIf3eknwWelhI09R/4pmvL8vYMiEVnvr1KXhm5gVOrOQhrPyRXV2OwdAnRjw9+1qUeB1TAr8jGQUWLpTRVFgZtQ/GmjxdY1oIpY3kdo3Iz799mMV8CyxxxHEHIK1YTwWRR0jm4WTgKb6sxT3MNJvjW4XX/FQUNrRgDp1GtQ54aKqffmJPOy+wrYxsX8KbzTODCm/u+KM4AzUmUxHRiZrkQbZNelVn8TyKIIwsmU5CLr6pVRWWTBSnjL+hiCL2xfv5cDt160k6E6zZ+1FNRetsUEC0H2A+Xn7nueJtMJQ5wGR0pmPTHxND9dfRlbcztfC5+6i5Uy1pm7UuvskCw3dFKKwqzFskMtxz6HTMTuctDMbX/6nud+6S+LtnIgVS15FxlAluhknFhRSGiUpLdK3ob++eAackUJSlyKRYWHtsckQmN98bDU/HOCUPTDRII7H8YkJhfZo9kXyTvL1IBwDSWDZMCquucptur39n67Vc8pzHABVjZcntI9Svhx3F5BFfl/14zZ8dqDU4+s06TqL3mAGPgaRjGOwbc8IT9PXHYVUtwiNsVKYvsmrkoLDMYkLJDW7FLKLNda6/BOsZkMjIXYWyfl3WUqz0EAFXrA1E
- 55TtmDKW
- Yth3TLmiF1PyUDIBokTSHdeGBbsSJ1pafB5DmwqONj7NCPjWa497/NE706UUMjm9A+CTfb/RzxreWmCJ8r3KSTClUveXspAUDu4KK3d2hEHFm0CFEIWm3zHAP532wWqTduMKM7FZojb9epD/6nW2ub95K8139Fp/l484yPXmJaAm5ZXyfqWABTBl0JUPAKXhY8LFKZ/EGRLrAgAY8pjvmwXwog/Kb9DSFXAouyT+IHEPQk7VPa4n4E3gXEz0viyaKEWjk4YPMcQ4T6O/z9roB23DkZzded4+oqJ+c+uFk0Odxl32EvdsaHCIsOVCfnfIDLmEInwUyAw1yuIYfrV6iUqd+yg8gZNBGEPid
+X-Rspamd-Queue-Id: 488CF40007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788963803-765770
+X-HE-Meta: U2FsdGVkX1/3n2Gkhi3RtiWxwV6E7te+R7+FqJstgIDdPToaoaW7DdQnA3gQFhiX4PxAdy+I4oZcAxeeTStvoMj9vZoi3yY6OF10yS345K+zDCvnBbXW3m03T3qA4pi3aCS4I3mU3/8F4/pGJQJ4Nt3M7DKWhyyg6t6DdzInTeD+18RB90PKsf+ONCGzR1CPBQ/Y2TFk1UQf2R2glDg2XkCH/oci7qk+lpnXZkWzR05iwpk+C+oiZ6pVsVLdZ4OYD2fBLeOk+Pbl7P74ewSfdyGaTAuKjh4g7mw7p1PjQ7Mohi1fdeMM7jXu16H0a4xlECloX+iuh/gdyZ9aj6BqRtoaF8J5qxz1BQgsi+ZGmwVIzz5mNZooBVl4+UMwWVXtAglV0+aLEVENsGIEnKnrwV46xY4uCWgAWxiq5JRXeaTIbFY25iOChLxRWMAeNClPVEFSXYQhc8HPf+WwUPF18q262tDSfPyNjP4i0hQxXyJs2ppBoX9AWI170N79/EtQa9c7oEF8xStrkvVgep9V9jfO1KyiSLlFqWdv7WcN0QjkyYaLLgRedpyGDrMKZQTkUQ61ttyJDksxcHNrrGbmVUcmN6/cBIpAMhNBy+NXgKk+ZtX58MTu+4JIAGhvIrMZBaMB0STHk5U6wnCzB7rgicyBTOWCHSPTaPbmnaL33gxl8OHc47OcwYvckRbFHGGG4WSjYvESqhelBSWEu8yAt8+wbjhWcd6u67w9u4cGothEIJEwknOBslNXq5rXY85QftevAuBVRejsJoKBZPwQhjvgjilZv0BYRyn8hnu6is00QCJWoVevyjODS5YPm6lyeMQgRizRfctBn+sYkfUSr7qfswW4Tb2XtArang3oMg6EJu22Z4MFvKMppVnpsPnC6BFAXKsmSuybO1dbutxmwKwg/cBcqYShp1YKUdCyRsfufTvVzQ1+P7pQAopTUHXSpdcoXoKsGwhCa5pWF3y
+ gTDNsOTe
+ Har6BOqh201O6F0LvI8XBEc9jU4lQiYmZ+J016Qi7T8YBrtP7LilUUw6TPf7ivVgE+FUNZUI7JigXFan3CcuazHr9biMNwrZVbeoFFsaKHhCxag7ohovkCwTCyZEJ9LaJzGydiawrPJ/z24aLcl8Ft2fIqAGkaQjqHBLl2Ed1NBgcW1XM9cksd6Zce2UZYnDv2/XQsjHzrWGPD+6he2IXq8zhrnUB1lUZkKajSZAULtYlM5n5HkXxrGC39JJVUa3NS97siz1OU6hNRFBxYwzjeroiQoeLEmLXNfKhY28osaIJRd2WuMkSA4C3udjzLeas1dal50c78+GfL8M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,12 +156,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 04:56, Zi Yan wrote:
-> PG_private is going to be deleted. Adjust related comments to refer to
-> page/folio->private instead.
+On 9/9/26 16:18, David Hildenbrand (Arm) wrote:
+> On 9/8/26 04:56, Zi Yan wrote:
+>> PG_private is going to be removed and its check is replaced by checking
+>> page->private != NULL.
+>>
+> 
+> You should likely clarify here that, for these users (the pages they deal with),
+> PG_private is set if and only if page->private != NULL. Consequently, there is
+> no functional change.
 
+Ah, in previous patch:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
++static __always_inline int PagePrivate(const struct page *page)
++{
++	return !!page->private;
++}
+
+So this is not about PG_private *at all* :) Best to clarify that.
 
 -- 
 Cheers,
