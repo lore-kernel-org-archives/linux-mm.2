@@ -4,93 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46DC9C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:48:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E2B4C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:48:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 101E66B0093; Wed,  9 Sep 2026 08:48:08 -0400 (EDT)
+	id 4FADA6B0095; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D9306B0095; Wed,  9 Sep 2026 08:48:08 -0400 (EDT)
+	id 4D3546B0096; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0163A6B0096; Wed,  9 Sep 2026 08:48:07 -0400 (EDT)
+	id 3C2C46B0098; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBE9D6B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:48:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D31E01401CE
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:06 +0000 (UTC)
-X-FDA: 85194201372.15.E438A5B
-Received: from mta1.migadu.com (out-37.mta1.migadu.com [95.215.58.37])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 29AFE180005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W0yCmiDX;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788958085;
-	b=bzKyu+4XQPbfIGt+iAVDLovoWzOZJWupRI2Vk9RMColhXXZ5zSALeQX5if4GAemwnLsC/2
-	fwRtayvY9gg+LUFpZN0p1KWtLBfE6gPODBnHidGqu8triQ2KH0xjHGyg4GNq7YAvbDCkJ8
-	APv01vB45yJ4McM0Bo6+pqmXbI0f+hw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=W0yCmiDX;
-	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1004A6B0095
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ECE1401C5
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:54 +0000 (UTC)
+X-FDA: 85194203388.25.90B0A12
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CE9C0180007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVevUqrf;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788958085;
+	s=arc-20220608; t=1788958132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eaXNOP3sa2P65zATx1RbdQNQ8ekR7kCiWonE5nTkMQM=;
-	b=UBCdvf6JSrPaxvNeJRMeMPDWvOqCwlcSGvYaLmQCt3mljveRwKfBuPIOeFM4MpBXl9QAhL
-	Nv1ZTO7tZV0uP+bhazKJ+oohpbhXA5t+BtnFWhAWZsCttxgs5UGDBZW6xaH0mGYhML0+Ym
-	rq1/Zr3ZfkpQ2079zkAOi8TKNB2SaMY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=y53Xk9bhjBTIXj1qHAyuohp/PrZA0avTM6UpmR+cniQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788958081; v=1; x=1789562881;
- b=W0yCmiDX9lZ45zMFQBltGBMWSA+Wryts6ERBRLO/S6rNbILU07JYXG0mSScxOEwveWmFUXWl
- h2FLXjkSnA5y7uOzHkU6zU4pG9zylucwtXGALfVv4BNWXlGUoykT3rkGEihrVyZHi3zpJESRE+w
- /ESESswo9dN7Mf3vU/iLB38A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cd2dbaa2e085f090;
-	Wed, 09 Sep 2026 12:48:01 +0000
-X-Mizu-Trace-ID: cd2dbaa2e085f090
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ec3f14f0-cebe-460f-9df7-537f49d70afd@linux.dev>
-Date: Wed, 9 Sep 2026 20:47:52 +0800
+	bh=WiiAwtPF6Pku3MR8Pkjyi8U+d6UdSbkK4PO/kbMV8OQ=;
+	b=UFEOh7bWwfA0svptL5fZd5Rcyeakh4+BnU3DSp5H8Bm8gjHV1vL2ljGHxUkC+YDLogqZdO
+	Ydam75aYCzx4hksBmFTzomaYlgFmTNilVMOMeQOOkzE8VktvaHUFgEiArJ9cjxwrNxIjGv
+	9ro21C8d4wOeTR5lZrZbtT0I8CaFdWs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788958132;
+	b=XauhQF/GMDoNDVDt75uAjghE+Gs/0bEO0rR6gduuxGgQ2DioD9OGhPfFqt4Ix8qNpN7nWS
+	EWCuM6zPN+fsyZcE+cRo68PpZovv5naHABwVc5vZgWhocz193NfaUkj3pV39VizVS72eRk
+	rWSYIA07+iPLZzfQ6umNulKyq30L7UA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVevUqrf;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EF00843D34;
+	Wed,  9 Sep 2026 12:48:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AD11F00A3A;
+	Wed,  9 Sep 2026 12:48:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788958131;
+	bh=WiiAwtPF6Pku3MR8Pkjyi8U+d6UdSbkK4PO/kbMV8OQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NVevUqrfuep5jObjd5o/zvYSPczEA7v7+UvplrdxdXCtSfnFwpi4z1WPkFyaLIWY0
+	 eDC4IcRjsOMO+wWGoMwArnhEAuCe6WwQdH3uukrUDOoIZGgK9+tLoFoQjdedi54r0q
+	 No6g/T9QZvdUGbrcdaLmX/UNnyOZN/qPHv8JMNuMODiVI3D5UYQkCc8l3oPIXN85eA
+	 O1P8QhR/jP1MQxFUX2h0VY2WEEmJVGBs0hsaDbTPPPTZ5AHfMMNCz7dawF4ClEuXr8
+	 A1YjORvfwzsnm+wkP6jJ/Pg3PFf4SePyCVT3V/3C3HpZAMmEJOPsixBxbO2AWrQw5Q
+	 Iu3VRVH3VjZ5g==
+Message-ID: <e6335c78-a20a-4024-8980-097a922eb257@kernel.org>
+Date: Wed, 9 Sep 2026 14:48:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/4] module: introduce SH_ENTSIZE_STANDALONE for
- separately allocated sections
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260908092412.115953-1-hao.ge@linux.dev>
- <20260908092412.115953-4-hao.ge@linux.dev>
- <76b5edbb-8231-41d0-9e7b-f965af13c324@suse.com>
+Subject: Re: [PATCH v5 09/17] mm/sparse: initialize memory sections earlier
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-10-songmuchun@bytedance.com>
+ <a2016390-28ce-4199-a063-d2e9101dacab@kernel.org>
+ <E54037CE-6CE6-41AB-A525-8BDCE55996AC@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <76b5edbb-8231-41d0-9e7b-f965af13c324@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <E54037CE-6CE6-41AB-A525-8BDCE55996AC@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 29AFE180005
-X-Stat-Signature: ct6gn335zic945rdn1t1zzkux7a5jnon
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CE9C0180007
+X-Stat-Signature: hojswa7en6udgpsi5nd8hhxqqp5xbugc
 X-Rspam-User: 
-X-HE-Tag: 1788958082-557418
-X-HE-Meta: U2FsdGVkX19c5pheBbf3t9SOddiJeNL4bPEWtMVqVDc7/e7h98+04v53IMBY58Uv3Fq8RV3YvadkoRexAetZV/K/+8PFwhtvngjZm8IQbC3VmNFfmWE+TxuvgI/MFvLsXino72fV5ps3MeohAoFXSuDAjdOmga9dvOdpJhwDk7EnVKde8/zPs8lajt3lsBuYF9eUzuJOLbDj78CpGIQqj7QR6QAcPg2YPy+Uz10l7p8CHLCvfRQDkfhc78Gj/vrMddFokcXHSWSXiAB9nKzAzCRR8T/YL58HayP0n3HR5tWv1rhfg8o8fy/WXlt9GhPIcolH9mkjcXSC9ulJKmuBOhauiV5iVdD6nI++LaJiJjY1N7mGE8qWH0peuKBs+2vhHHVFh2DPcYXw2IF8XgmJRE3jLg7k/uN2TUaaPvP/vIsimLrVJfQOXrRSKK060zzN1MqPYeh3a6QSOdKnGV31oug5ESV4tX+yVIOb+RM9MncsZNUmIkP7f/a6nZpd/VOqHbDCyuklteV0ogyage31PQI0pCXalLhSoG5FuBfZi6vwGjfrgBBJFRA57u2Cqt0ShZd7zB6vYZe4RqQxsiC+cJ4z/AZEYo2m0JPUhtWeh7K1MyTfrfKt83AJ13BoyKHZyB2UxbNKBKcQIPU5syjp/NPRue+MY5hlterPlG1P/dcJPTnedwrCMYWtMLXpdfzWKIhPSxb6bIqb5YLre0o7cJQlGNk5LyDdlMA0m8oT04vab6a8YuTsSV+VQD0kjuBHZaFpmf+Ktx8oiOEmHiGsq2CXzmpbZDFe770xjFjYnxLZxodYJXTMhsitALD6dujRyD4K1fahocQWPrARwQQHgY8AeT49n1edGH6tZyoR1AJ9358N1JbVfrRN7ue1YUezASfz1hDXul3JSkN7AAYEt/kVnm+ZL3yVzhCbRgLN5EewwQse+ZrIFy2rhMijBHBYA5dIYQuCEudBy24vKZV
- GkED9e0T
- wVa+6oQTehUwvVkII2wJCC9PWK4RbfJy5BXEXgLKIYlspSnJdB7YhEhXnMIgaO0QFApV9U7Ld02GpU71DSldKM3D3MLbu3j4SeUOa1wTCYa85YrMFDM27gwnY1kMBFc1rEfE8AFuQSY+F8sCXjwknU0ryGrCy0n5/NZ7KRp0AyXg8OOQwcciqc5+XvRc3dIaiclQZYcBWYBtCS0ZXssYCSMCxFYL1rL/bTURyNQDGHcA1Q97zhxSvYXoIIqr187WlJoxxcz+S1k1KhQ8//BHk8mxDhofiaMB+Q5en9ZRgsDm54kd7NJtifsvTBC0B6rGjzdEAxokXsEheRmauYlZby75Uxq8GD4x5Sg08E1+co62uI3JufOwbElKEeR/HgjOq4LbPOW9h6874ReiMYTJ3uPDz0Q==
+X-HE-Tag: 1788958132-65487
+X-HE-Meta: U2FsdGVkX19Vvm077IPyjRlYav2PkX7rxcW+9E0JGtSlnvx0EU6mno9iwXSIk+GT4aapH7svtmjW0je58D9izBxI13LrcFsGZgyVvXoEXQ1aqF+Skh9zRcGuELMWgojTcETReqwEQEHTjJ9CYH+CFwyWtOG6Ay9NQ3j5fgrwb8ySu+cRz+9CVllpXKyaacUxkAzvPcnwUvcurXqKZY/MrURlgbKnEpw5Ma/TMqzn92KfBLq/RcenrzV263bvwQdVus0IaUaOkaswZshVgm8mfRKC6vB9ZNuZLwjzzcJjq/9YQ1ureT8T8ScYgiDoHUHwAIxBpBo6b0dhMvCEkcbTdCSuqrjX/E2ffPIobP60NxC6uOSkQhwn6O9M9sR6REiVsxt2TlRWJFjZN3++g+IjAHYfYzdVH63IrJhN7xBzLP/gsgZi6xEJWeN6xkoLQJiComoUPHWePBFacQDyUldteNpEUxq9VWLzaH5CLFeau5n9dBdsi8r9OluafQxsfBUAQNCO8XBYbvYyq4aVatJ5tqA67eDmhXTaSu45aT3k7nTyOzsb2L7l/oMwmnenH0+sS5lWCtpJeNBu6EEC6jB/y4k84hFWCMqG4wKbvys8svnAw/2yuX/k1jVD5dbB/qfxZpy9flkAJPAaaVWrEZwbKDherGzoOL9uFcmzSYPYf2lOISby2TPiqwprWzU1KQ/g5THKoU2abGJ7CbvwGarIz+bJnOcLTrbKGSSaxBKlX7PQZX08tolz+kmtRUJOsoHC4slMwZWaCVHZ7io10JKSNBzvcnbl4mPMtXdLGW0dTJNAUMKrQMNEeXbuJ/298YsM/srvkjW8oK7lRM1gaEy9ox1p77/Ppwk/H2TELFnMHZ7DL5XA6xNjvTL/w5LJX7at9e5sxCdGuoUKRDMynJslb6h5zrHZbCUBvBPGgHijB4iVFl7PesrnodATbA8HRt3iO38fx3WQ70bvFBqY+WT
+ jhJN+GoF
+ FLPvyv/GcVpE2ofRGDuRdbWWhuiWA1kpkjKjs7Nmj7wklF1ZSUh7HqZphxWUD8mAvNQFr3OdyLUkh7UrkZoAVBRqHSYlcTuVEcTSHXqFo+OXezwLm6g9NfYH4GlbYBOHc+7JplwMh7tniB0H7UNpb+uFvRYelq1eS2ZyuyBsq8OSdcIztutWd4O37fmTfysETUWBM7fQ3IWNdSCOoD7/UjQ/UdqQ/cLGlCG7kqppjOl9P3VFDserOSOia8DgEPMiAjtGI2L3rODGmPG1mYIDkCtH7YN2Xp0jhv2qISPLHRRKeoz9oEeIr+VOdACOzjRhxjxtAjCzE0MhWJWVbLK9afgid5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,171 +146,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Petr
 
-
-On 9/9/26 19:30, Petr Pavlu wrote:
-> On 9/8/26 11:24 AM, Hao Ge wrote:
->> SHF_ALLOC means, per the ELF spec, that a section occupies memory
->> during process execution. Some module sections occupy memory
->> outside the regular module layout, for example the percpu section
->> with its per-CPU allocations. The loader currently excludes such
->> a section from the layout by clearing its SHF_ALLOC, which
->> overloads the flag with a loader-internal meaning.
->> apply_relocations() needs a special case for the section, and
->> find_sec(".data..percpu") returns different results before and
->> after layout_and_allocate().
+> 
 >>
->> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
->> allocation. The percpu section is its first user. layout_sections()
->> and move_module() skip marked sections, and apply_relocations() goes
->> back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
+>> I have patches to get rid of __section_mark_present() and just set them all to
+>> SECTION_IS_EARLY|SECTION_IS_ONLINE such that we can just iterate early sections
+>> and get rid of that PRESENT monstrosity.
 >>
->> .data..percpu keeps SHF_ALLOC, so it would now show up under
->> /sys/module/*/sections/. The section has one instance per CPU and no
->> single address to report, and the entry never existed before, so
->> skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
->> array and skips it too. No functional change otherwise.
+>> Apart from that LGTM, even though I don't particularly enjoy splitting us now
+>> having two init entry points
 >>
->> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/ [1]
->> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->> [...]
->> diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
->> index 0fc11e45df9b..49190deae61e 100644
->> --- a/kernel/module/kallsyms.c
->> +++ b/kernel/module/kallsyms.c
->> @@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const struct load_info *info)
->>   }
->>   
->>   static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
->> -			   unsigned int shnum, unsigned int pcpundx)
->> +			   unsigned int shnum)
->>   {
->>   	const Elf_Shdr *sec;
->>   	enum mod_mem_type type;
->> @@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
->>   	    !src->st_name)
->>   		return false;
->>   
->> -#ifdef CONFIG_KALLSYMS_ALL
->> -	if (src->st_shndx == pcpundx)
->> -		return true;
->> -#endif
->> -
->>   	sec = sechdrs + src->st_shndx;
->>   	type = sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
->>   	if (!(sec->sh_flags & SHF_ALLOC)
->> @@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct load_info *info)
->>   	/* Compute total space required for the core symbols' strtab. */
->>   	for (ndst = i = 0; i < nsrc; i++) {
->>   		if (i == 0 || is_livepatch_module(mod) ||
->> -		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
->> -				   info->index.pcpu)) {
->> +		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
->>   			strtab_size += strlen(&info->strtab[src[i].st_name]) + 1;
->>   			ndst++;
->>   		}
->> @@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const struct load_info *info)
->>   	for (ndst = i = 0; i < kallsyms->num_symtab; i++) {
->>   		kallsyms->typetab[i] = elf_type(src + i, info);
->>   		if (i == 0 || is_livepatch_module(mod) ||
->> -		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
->> -				   info->index.pcpu)) {
->> +		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
->>   			ssize_t ret;
->>   
->>   			mod->core_kallsyms.typetab[ndst] =
-> FTR These changes in kernel/module/kallsyms.c have a conflict with the
-> series "Ignore local labels and mapping symbols during module load" [1],
-> which is currently queued on modules-next, but it should be
-> straightforward to resolve.
->
->> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
->> index 01c65d608873..f64170344e69 100644
->> --- a/kernel/module/sysfs.c
->> +++ b/kernel/module/sysfs.c
->> @@ -62,6 +62,15 @@ static void free_sect_attrs(struct module_sect_attrs *sect_attrs)
->>   	kfree(sect_attrs);
->>   }
->>   
->> +/*
->> + * .data..percpu has a separate allocation per CPU and no single
->> + * address to report.
->> + */
->> +static bool sect_visible(const struct load_info *info, unsigned int i)
->> +{
->> +	return !sect_empty(&info->sechdrs[i]) && i != info->index.pcpu;
->> +}
->> +
->>   static int add_sect_attrs(struct module *mod, const struct load_info *info)
->>   {
->>   	struct module_sect_attrs *sect_attrs;
->> @@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
->>   
->>   	/* Count loaded sections and allocate structures */
->>   	for (i = 0; i < info->hdr->e_shnum; i++)
->> -		if (!sect_empty(&info->sechdrs[i]))
->> +		if (sect_visible(info, i))
->>   			nloaded++;
->>   	sect_attrs = kzalloc_flex(*sect_attrs, attrs, nloaded);
->>   	if (!sect_attrs)
->> @@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
->>   	for (i = 0; i < info->hdr->e_shnum; i++) {
->>   		Elf_Shdr *sec = &info->sechdrs[i];
->>   
->> -		if (sect_empty(sec))
->> +		if (!sect_visible(info, i))
->>   			continue;
->>   		sysfs_bin_attr_init(sattr);
->>   		sattr->attr.name =
->> @@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
->>   
->>   	nattr = &notes_attrs->attrs[0];
->>   	for (loaded = i = 0; i < info->hdr->e_shnum; ++i) {
->> -		if (sect_empty(&info->sechdrs[i]))
->> +		if (!sect_visible(info, i))
->>   			continue;
->>   		if (info->sechdrs[i].sh_type == SHT_NOTE) {
->>   			sysfs_bin_attr_init(nattr);
-> add_notes_attrs() has two sect_empty() calls. Both should be changed to
-> sect_visible().
+>> sparse_init
+> 
+> Maybe this one should be sparse_memmap_init? If yes, it could be another separate
+> cleanup patch.
 
+It does way more than that. In my patches I factor some of sparse_init out and
+call it sparse_metadata_init() -- memmap and usemap.
 
-I kept this part unmodified to preserve the loop's original intent.
+-- 
+Cheers,
 
-This loop counts SHT_NOTE sections.
-
-SHT_NOTE refers to ELF note sections, which hold non-executable
-
-metadata such as build ID and ABI info.
-
-I wonder if we could keep the current implementation.
-
-As noted in the comment above, the top part counts SHT_NOTE sections
-
-and allocates structures, while the lower logic handles control of node 
-attributes.
-
-
-WDYT?
-
-
-Thanks
-
-Best Regards
-
-Hao
-
->
-> With this fixed, the patch looks ok to me. Feel free to add:
->
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
->
-> [1] https://lore.kernel.org/linux-modules/20260820125007.22943-1-yangtiezhu@loongson.cn/
->
+David
 
