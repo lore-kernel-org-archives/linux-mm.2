@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2913FC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:44:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26C8C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:52:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 153C96B0095; Wed,  9 Sep 2026 06:44:32 -0400 (EDT)
+	id DE5DE6B008A; Wed,  9 Sep 2026 06:52:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12CA26B009B; Wed,  9 Sep 2026 06:44:32 -0400 (EDT)
+	id D968A6B008C; Wed,  9 Sep 2026 06:52:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068A26B009D; Wed,  9 Sep 2026 06:44:31 -0400 (EDT)
+	id CAC2C6B0092; Wed,  9 Sep 2026 06:52:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3ED96B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:44:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2638D1C08E0
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:44:31 +0000 (UTC)
-X-FDA: 85193889942.28.F3083A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 87E2740009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:44:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GECD5HUu;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0576B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:52:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03AEF12017B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:52:16 +0000 (UTC)
+X-FDA: 85193909514.21.6F09882
+Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5D42F1C0006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:52:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cnvljVq0;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788950669;
+	s=arc-20220608; t=1788951135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ef4yzVRUuSluKii/qI9TSB0cz48W9UzC0JbMj/d/8ig=;
-	b=qjdwn1yF1ENWzmQSAQD1PEbtu3oyoyeJYjJvV755x0h5TGsj6NLacjCp3zH8wi5InmS38X
-	nDHu2LvfivSRRZxefmvFmeuzGYklOwguEvenF4qrjTtHdm6Ay5Vo1LU8dCt6BFaoP4jj4W
-	SxHvI7zqMep+DEG9UlQmBgcv4/5jxx4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GECD5HUu;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=37DfUJIr4F+/OARye+gkW7xxB93nw/YNoB4aohgEgcQ=;
+	b=3m80Z+XJfp22HxK7HWN59/5CQTjBVhVqBDL9rxriLgDMlvZ/rEA0LqjGLYDS2VwxxjsBJf
+	9bHh2bYZq1/VecEePgwesRgxZ9LxyAbSsgXqs93gL2mrYdetABl98DcUn7pZvySjdKWbqU
+	dxN/LDFGT/jdswaNo6Ljq3tTwlZoE8M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788950669;
-	b=rmUPGLjF7u20uCHCb0QIYnS/3mG78H/d3Lg05v003FiPnp+Sms4wg+rjUrAjXSqb7lW+Dj
-	HuHOGGhhebzkDMd8DrBtfc2YhQIzcj2F6EvgwpKrlDDo+HJ6Lvns4Xgwe9h3LC0/Fzrp5J
-	kO3FdiBo2lyElNzBOZEGUK/q1eBuzzA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A4D6C43CFB;
-	Wed,  9 Sep 2026 10:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321E41F00A3A;
-	Wed,  9 Sep 2026 10:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788950668;
-	bh=ef4yzVRUuSluKii/qI9TSB0cz48W9UzC0JbMj/d/8ig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GECD5HUuvyNPXSw8KxwDdR1M8oKieYZqowA+LyZhHjKs3R0SCxAM5Axsm54iyjjKL
-	 5splZb7VgD1a7o/JfmeW8EDWuuKTtfAPBQiLIm74uAt5u5pxHt1HDaOVcjpnqEllrQ
-	 WOb7Nv60XAQ3V9Q5Jd+FH1zxH9+uKrBTh3FKl263U7nH1vGc8KKJkrHpAyLtl1FW2Q
-	 hKX5hjtnox9BYevBBumPAfo3AEkmqqYnsN2NOiQD+rqELqmFcJbs4+KNoG+WJ6rPAg
-	 Ty3e8aYmZc1mn2XypmXtyAdQwm7MQFMT+/WS3sQritV4rG4RwqPP2mYBmsTm/SLVTk
-	 ao3vr5oyYMozw==
-Date: Wed, 9 Sep 2026 13:44:20 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	t=1788951135;
+	b=GtADzJ9p6Oy7qLZe6GhJK9yr465jXn9R7RHHv75JdICLXJb+lM09ShqCpvzEHxoICZ2PIp
+	tJR23jlwFuvxRZ4tWzSvit5MH2YOO8B2A5C2dLgz4zajo/6oWsMsJZEVk4CF4f6E7XE5wL
+	KRiukt7TbR95hAnK+qaPUioZgadYoZI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cnvljVq0;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.29 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nLf/lRHoFum5m+0lJCGEXaO0612ccjY4r0VU9eyNeEs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788951132; v=1; x=1789555932;
+ b=cnvljVq0OO91PYbdYyvIns7BqFCjXF4akHP4++eztNzzXt6kYoLT9z0A2Hf8NDwRyh+QIByt
+ kNaom/wZbi3JgLq0ruOd1SK33i01JOYZtGveZSETlPOedeBqHS4ej2fp+kaNrHFdjBIL4qX4/WO
+ zIOYt8utbzG3LqBbEQLTX/S4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 5d49b818eb55d532;
+	Wed, 09 Sep 2026 10:52:01 +0000
+X-Mizu-Trace-ID: 5d49b818eb55d532
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] docs/mm: describe set_memory() and set_direct_map() APIs
-Message-ID: <aqE4hFXS0YHZKLEy@kernel.org>
-References: <20260909-set-memory-docs-v1-1-6065d3f208e4@kernel.org>
- <e173c341-eeb0-4361-9729-9b996c3db42e@kernel.org>
+	Michal Hocko <mhocko@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: Re: [RFC PATCH 2/5] mm: add a_ops->dirty_folio_range() and use the mkclean dirty harvest
+Date: Wed,  9 Sep 2026 03:51:56 -0700
+Message-ID: <20260909105157.1627242-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260903182943.662461-3-kirill@shutemov.name>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e173c341-eeb0-4361-9729-9b996c3db42e@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 87E2740009
-X-Stat-Signature: zypbtoypa9t1bogkmympfyoay9z33pjq
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788950669-625363
-X-HE-Meta: U2FsdGVkX1/bm9B+DRlBhJSNpc8VUZGTJCR+3eYT4ACicH61lyXLwB2QhTlLZHFXT3h0lHASqh5i1AC/WSYQWuCKr5cYTkAFiq3GMmjoXPC+o7dNHLVWO7yLoNEdldCDrF66vVrHHenUUnQaiH1UeoPrr0wJyODRfhydI2Y5W+sm7H3ePxBgM+OU/7g+2eXE/ILsjffdp3L15P5ILdnSxXmGevicE7YjmDDNHHVDFl3IXpUfdVHfhVpjElLPzNgc5oW6qV9QMi75+Wbul7tgyVt2qjI6hTgxmwQATvztinbC4s8gEWOFUMiIZNR45xMnKFFDolc0koHhordCr9M3yO8hVOE/S7KInSjck6OCXvgKULb2Y8Qnv4P1GkSmuXc8Sikh50hu0AsIe1azN2s76rK4uEQBGkCCtVfHvHemSw+ocShsFTEQzr/mswQw1YLzpsobefHN8OjiijKk94QOx+GTLnfbigx7JT7fSBj3QfpNle05njTewh9r02xrG7K9JDcD3sCX3ZuKrUjwWGsBH9TYWatwhJsjBfSBr0pizYWU8Lv+9X/EAU2QmTDSoot5GpSbMR94wxLqWHrTBCe7btOisMukoPGRURxO2lyor0x45ulQ/XhS7bFOsiMDQaipOaInkCekURuWOWa0idKOca4fqSJ8TjWOYoAGnhFTmQViIxRtoo/s2kXaN6tDoipmlUOp3GgPsUj+7WTiG9Fr7XMdR07ZYu4HJWvyy9Lkpc6fbK+tiWsH4iDntjwOCcpvMoIcUYFIky8U2Vc/MN5TMf4VKZJdNA2QM2uzoMxRQpg2zzrC3Q+9p7UmTOJ/HusbXcEmi+sT6zCpxTcozrRuAkI9ETAz7OGfOa0FUCIoOVaEzbnW6ScA8F6jzO8uG0owShNcOSMNqzlqq3iKQvUvxN3wjgXptOIx6BsXasj73aY/5YNWBz4l4LChbWAcVxPIjJBpR8mG8sHRvgWPP3c
- UnvNU1nu
- 8opx8gMjYBxrmIzaInJryMXW/V1pRaBMnvEED7RuLPmB8jih0cFI425nPmsRHdB/qkcIATRcxoM43xR1WauHbbKNhHnKUcmH2rwHiyjWRtXvVFsqIvznrxwqAcc+0Opul1j+0OSreNOM3xl8+pQnfDKRCehXeCEqZrYkc+53/GNJ3PJMTZUpEUnBsi32zQD3EGRJbZ8rge0TNJyAzh8DdXEgUwWAY+s8pb223ylxLdThMzi1yT24rWU8H0jQQDrNQjKqFBJwZqIcfchQ9xbZ82zVX3Mr59neK7VqDS/D2Urv9CHozJzEjzUxyAQVYQ02e+vWdWYlwFsw2goiEivTtEJpXnA/FS2sx5dr3
+X-Stat-Signature: ya4ou6wsy555jt1yo4srzh99i8d9zo99
+X-Rspamd-Queue-Id: 5D42F1C0006
+X-HE-Tag: 1788951133-687941
+X-HE-Meta: U2FsdGVkX1/gsAB1hhJEtxWEbrrGcxr81ObDWb+fDiPq9XX1WRTXNTXu/fSYumxjhnIVe2IC/yBTED9pNXO24wAeMHmp3MDF8gCN/Ipizv1yyZWLbg/mPVOgA6m+l0oZY4Xa+Br4+4mYyLGIFCrsPaXbI/x75yG2n1hl06l4YQu2a3uuIv/bfM+MHYp5+lBxooysaXRfaFV5CMaFE8+2m5vvKttfr8CaDbd3INKIoTaBchGcEuJio5ToWfAkYRXrI6YjdobiKWipWMsSkLllwAw5OL+Vs9B9xf3p6V7BwFd/hDTqeCBZiKr73l6Nz960odV5G+Dn6kMVxv6BPrsYA1hrsnas9pq4SlmtDCxEmqNYcUVB7rFBDYP9ychEKRGAj9Io3EiuTDfeAbP/BzlilDuRwD/BVaD1e/F8NFRLnxMvSnICnIo86mLPGIE8NkAShLQ1FTzHnJ0dKIlr2fLQm1uSAi2rCi5utvGogxF+HuhJQv4zZGHOaQREG8lBDYkEKwZhFKoZpBLLG/HtAJLLdKNlegHmIy5M7RxSIfV5WrK7tk+56B4sTdRvQy8o3yyOEQqkmUXx1TmEauKOdpZGyfTYPorQvRm1X9rNa1q1pt5frrx+ThwWoyOiSk0kXmUeVB6so4QBPMVysps0hew7PETYmyqaR2I4+6uejSWk3C/j/lr6aP0x8//KpcrxGgePMOxvj7Kf8Pxh5tZpttt4mc+V+02l7SIG+f/uGZ+nVtlWDZe8uwL2UEz+f+Zn03O1Twb9K/H8uJ0HoDNLQZbVMMgBI4OYg0d8PxW6sfoHT5SN79Mx3kbsh5RLyWOlEI5jMtgsWYPX/JBiiVKPsRp8r6GMqxhKHX1m+YHX7+0iXpeVMVImJLFAY2ijq5IVsvHVqvlIm9nhJ2YnlqamYeyA3MGJ+y7VQAl8lMgcE+c8aK4Ys6cDqgfxOZFYlpwDPvnkbsxt5XKty6XhxJQrKNY
+ vSjq5Cme
+ saHzwqp+EO6mVd0y0rE3mewPTpfjD5lnRJFBNxp3+YLdGPHPzE9gbheOzjDweOSZfvx8p7HD+BfunMmF/vPG3iVGLl5Hvk4kr6vcx8vJ4Ge2RLoMGwAsqjJZEOysEKYRd7WEngQ9f2ta6XWs1C0afjbNN1hgp8gNVzJIwBZrnJVnAkvOapqea+x/BiAYFG2AdDbHT1/W0bjCQmfxtxM+X+jFILnQJTFVDV96DiJ98Is805tRVA+/felfiYMxR/vUXtqd1twuAXcFXkK01U39HlTmMfA70kf197/N7qfY+GSNM9Xk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,49 +112,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 12:30:01PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/9/26 11:45, Mike Rapoport (Microsoft) wrote:
-> > The set_memory() and set_direct_map() APIs change permissions of existing
-> > kernel mappings, but their semantics are only described by the code, and
-> > that code differs from architecture to architecture.
-> > 
-> > Add Documentation/mm/kernel-page-tables.rst that briefly describes what the
-> > kernel page tables consist of, defines the semantics both APIs have in
-> > common, including the parts that are easy to get wrong, and lists the
-> > differences between the architecture implementations.
-> > 
-> > Add kernel-doc comments for the generic set_memory() and set_direct_map()
-> > stubs and link them into Documentation/core-api/mm-api.rst.
-> > 
-> > Assisted-by: copilot:claude-opus
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> > The semantics of set_memory() and set_direct_map() are currently described
-> > only by the code, and the code differs from architecture to architecture.
-> > 
-> > Document what these APIs actually promise, what they merely hint at, and how
-> > the architectures disagree.
-> > 
-> > The discussions that prompted this:
-> > 
-> > https://lore.kernel.org/all/a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org
-> > https://lore.kernel.org/all/5026dbec-0b71-4408-a78a-484a4b8e77dd@intel.com
-> > ---
-> >  Documentation/core-api/mm-api.rst       |   9 +
-> >  Documentation/mm/index.rst              |   1 +
-> >  Documentation/mm/kernel-page-tables.rst | 402 ++++++++++++++++++++++++++++++++
-> 
-> Before I read any of this, how much did you review and edit whatever the LLM
-> came up with?
+On Thu,  3 Sep 2026 19:29:40 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-I never send something I don't like :)
- 
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Every way of dirtying part of a folio through a mapping ends up at
+> folio_mark_dirty(), which has no way to say which part changed, so
+> a_ops->dirty_folio() dirties all of it. A filesystem that tracks dirty
+> state per block then writes back the whole folio for a single stored
+> byte.
+> 
+> Add a_ops->dirty_folio_range() and folio_mark_dirty_range() to pass the
+> range on. The new operation can express everything a_ops->dirty_folio()
+> can, so folio_mark_dirty() goes through it with a range covering the
+> folio and a filesystem needs only one of the two. Filesystems without it
+> dirty the whole folio.
+> 
+> Use it in folio_clear_dirty_for_io(), where the page table dirty bits
+> were being turned into a whole-folio dirty. It now collects them with
+> folio_mkclean_dirtymap() and hands the filesystem the runs that were
+> dirty. A folio that is not already dirty still dirties whole, because
+> the clean to dirty transition needs the accounting in folio_mark_dirty().
+> 
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  include/linux/fs.h  |  3 ++
+>  include/linux/mm.h  |  1 +
+>  mm/page-writeback.c | 87 +++++++++++++++++++++++++++++++++++++++++----
+>  3 files changed, 85 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 072d8cd09a0b..1d98b6c0b880 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -406,6 +406,9 @@ struct address_space_operations {
+>  
+>  	/* Mark a folio dirty.  Return true if this dirtied it */
+>  	bool (*dirty_folio)(struct address_space *, struct folio *);
+> +	/* Mark [off, off + len) of a folio dirty */
+> +	bool (*dirty_folio_range)(struct address_space *mapping,
+> +				  struct folio *folio, size_t off, size_t len);
+>  
+>  	void (*readahead)(struct readahead_control *);
+>  
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 87feaa5a2b78..7628262c17e1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3337,6 +3337,7 @@ struct kvec;
+>  struct page *get_dump_page(unsigned long addr, int *locked);
+>  
+>  bool folio_mark_dirty(struct folio *folio);
+> +bool folio_mark_dirty_range(struct folio *folio, size_t off, size_t len);
+>  bool folio_mark_dirty_lock(struct folio *folio);
+>  bool set_page_dirty(struct page *page);
+>  int set_page_dirty_lock(struct page *page);
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index 6c9c7ba89b8a..39b54c25a9fa 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2751,6 +2751,21 @@ bool folio_redirty_for_writepage(struct writeback_control *wbc,
+>  }
+>  EXPORT_SYMBOL(folio_redirty_for_writepage);
+>  
+> +/*
+> + * Hand a dirtied range of @folio to the filesystem.  ->dirty_folio_range() can
+> + * express everything ->dirty_folio() can, so a filesystem that implements it
+> + * does not need both, and a whole-folio dirty comes through here as a range
+> + * covering the folio.
+> + */
+> +static bool mapping_dirty_range(struct address_space *mapping,
+> +				struct folio *folio, size_t off, size_t len)
+> +{
+> +	if (!mapping->a_ops->dirty_folio_range)
+> +		return mapping->a_ops->dirty_folio(mapping, folio);
+> +
+> +	return mapping->a_ops->dirty_folio_range(mapping, folio, off, len);
+> +}
+> +
+>  /**
+>   * folio_mark_dirty - Mark a folio as being modified.
+>   * @folio: The folio.
+> @@ -2782,13 +2797,39 @@ bool folio_mark_dirty(struct folio *folio)
+>  		 */
+>  		if (folio_test_reclaim(folio))
+>  			folio_clear_reclaim(folio);
+> -		return mapping->a_ops->dirty_folio(mapping, folio);
+> +		return mapping_dirty_range(mapping, folio, 0,
+> +					   folio_size(folio));
+>  	}
+>  
+>  	return noop_dirty_folio(mapping, folio);
+>  }
+>  EXPORT_SYMBOL(folio_mark_dirty);
+>  
+> +/**
+> + * folio_mark_dirty_range - Mark part of a folio as being modified.
+> + * @folio: The folio.
+> + * @off: Offset of the modified range within the folio.
+> + * @len: Length of the modified range.
+> + *
+> + * Like folio_mark_dirty(), but tells a filesystem that tracks dirty state per
+> + * block that only [@off, @off + @len) changed, so writeback can skip the rest
+> + * of the folio.  Filesystems without that tracking dirty the whole folio.
+> + *
+> + * Return: True if the folio was newly dirtied, false if it was already dirty.
+> + */
+> +bool folio_mark_dirty_range(struct folio *folio, size_t off, size_t len)
+> +{
+> +	struct address_space *mapping = folio_mapping(folio);
+> +
+> +	if (likely(mapping)) {
+> +		if (folio_test_reclaim(folio))
+> +			folio_clear_reclaim(folio);
+> +		return mapping_dirty_range(mapping, folio, off, len);
+> +	}
+> +
+> +	return noop_dirty_folio(mapping, folio);
+> +}
+> +
+>  /*
+>   * folio_mark_dirty() is racy if the caller has no reference against
+>   * folio->mapping->host, and if the folio is unlocked.  This is because another
+> @@ -2844,6 +2885,41 @@ void __folio_cancel_dirty(struct folio *folio)
+>  }
+>  EXPORT_SYMBOL(__folio_cancel_dirty);
+>  
+> +/*
+> + * Write-protect every mapping of @folio and hand the filesystem the parts that
+> + * were dirty in a page table.
+> + *
+> + * Without ->dirty_folio_range() there is nowhere to put per-block state, so
+> + * any PTE dirty bit dirties the whole folio.  Same when the folio is not
+> + * already dirty, because then the dirty transition needs the full accounting
+> + * in folio_mark_dirty(), and for a folio too large for the bitmap, which the
+> + * page cache does not make.
+> + */
+> +static void folio_mkclean_for_io(struct folio *folio,
+> +				 struct address_space *mapping)
+> +{
+> +	DECLARE_BITMAP(map, 1UL << MAX_PAGECACHE_ORDER);
+> +	unsigned int nr = folio_nr_pages(folio);
+> +	unsigned int start, end;
+> +
+> +	if (!mapping->a_ops->dirty_folio_range || !folio_test_dirty(folio) ||
+> +	    WARN_ON_ONCE(nr > (1UL << MAX_PAGECACHE_ORDER))) {
+> +		if (folio_mkclean(folio))
+> +			folio_mark_dirty(folio);
+> +		return;
+> +	}
+> +
+> +	bitmap_zero(map, nr);
+> +	if (!folio_mkclean_dirtymap(folio, map))
+> +		return;
+> +
+> +	for_each_set_bitrange(start, end, map, nr) {
+> +		mapping_dirty_range(mapping, folio,
+> +				    (size_t)start << PAGE_SHIFT,
+> +				    (size_t)(end - start) << PAGE_SHIFT);
+
+folio_mark_dirty() clears PG_reclaim, but mapping_dirty_range() doesnt.
+Do you need to clear PG_reclaim here?
+
+> +	}
+> +}
+> +
+>  /*
+>   * Clear a folio's dirty flag, while caring for dirty memory accounting.
+>   * Returns true if the folio was previously dirty.
+> @@ -2875,9 +2951,9 @@ bool folio_clear_dirty_for_io(struct folio *folio)
+>  		 *
+>  		 * We use this sequence to make sure that
+>  		 *  (a) we account for dirty stats properly
+> -		 *  (b) we tell the low-level filesystem to
+> -		 *      mark the whole folio dirty if it was
+> -		 *      dirty in a pagetable. Only to then
+> +		 *  (b) we tell the low-level filesystem which
+> +		 *      parts of the folio were dirty in a
+> +		 *      pagetable. Only to then
+>  		 *  (c) clean the folio again and return 1 to
+>  		 *      cause the writeback.
+>  		 *
+> @@ -2895,8 +2971,7 @@ bool folio_clear_dirty_for_io(struct folio *folio)
+>  		 * as a serialization point for all the different
+>  		 * threads doing their things.
+>  		 */
+> -		if (folio_mkclean(folio))
+> -			folio_mark_dirty(folio);
+> +		folio_mkclean_for_io(folio, mapping);
+>  		/*
+>  		 * We carefully synchronise fault handlers against
+>  		 * installing a dirty pte and marking the folio dirty
 > -- 
-> Cheers,
+> 2.54.0
 > 
-> David
-
--- 
-Sincerely yours,
-Mike.
+> 
 
