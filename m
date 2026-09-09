@@ -4,140 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296BCC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 23:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9816AC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 23:41:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C9B86B008A; Wed,  9 Sep 2026 19:23:13 -0400 (EDT)
+	id 1123E6B008A; Wed,  9 Sep 2026 19:41:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07BE66B008C; Wed,  9 Sep 2026 19:23:13 -0400 (EDT)
+	id 0C3B56B008C; Wed,  9 Sep 2026 19:41:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAB556B0092; Wed,  9 Sep 2026 19:23:12 -0400 (EDT)
+	id ED0396B0092; Wed,  9 Sep 2026 19:41:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2E56B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:23:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0BCC160397
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:23:11 +0000 (UTC)
-X-FDA: 85195801782.07.8596F17
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CE34A100006
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:23:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BadEUA6T;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788996189;
-	b=xE46c/jPyO5+2CZY0oOUNjaS9UJWWYFKf3fR/fGqUfsAYNkr0vmVChyi2afAV2rIC+iGaD
-	9458wK3Mcha3GP866pvS3Oqd6MWMCB2kY4gFu55X12lhp9/BHT40kzbQ733L2/IeQrgX3d
-	AagM2l6XrWmwyqP92tDF73QP61DPfyM=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BadEUA6T;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788996189;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B74376B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:41:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95CECC037A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:41:49 +0000 (UTC)
+X-FDA: 85195848738.23.7762653
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DDA3E80006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:41:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nXRbXZKm;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nXRbXZKm;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788997307;
+	b=hzm1Q0PQpM/+jY9arTd62HtbPmdh34GrxKL4zI/ue3JgUSYAng3jhj+W/D57niR33h6BUo
+	wndLMEp1Tme5SD9agMm9mGKO5VOvbFK9IF3wbPtGCglNC+uq6t7ghS5s82ESTAC3RY2I6a
+	gSGmhGIgz/dzV/Ly748Gn0hEd1urouY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788997307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=En5tOZVEsf8OKBtyg5CL4cfCdUXCngpBo9ElWnq0faE=;
-	b=BPtiV0j2RcZBXgAbG4ARQjGJRPm53wVSv6sJQG1O4oNfYsvmNn/wv94ZDuot6WDi39nMBo
-	XVY+hcc/qXCc5QjZnStzrxbdf3njyV/wY+Ta1s/ltFbzOfaEpD+DtslP5bnaxFr2ecfpVz
-	sN2hy+kgI4xih6Q40ck32tLacPbKSGY=
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910ca5aa7so93709785a.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 16:23:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788996189; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l3B9G/c4Co9oknP3PM1DbmdggZQ561JLwCH2PUi95ZV2AXplggj+MWG6OBeM+lDFSX
-         hX37x2+UZ/mh8hMYVIxC46luRYvLvsSYvYHRaKPfStnNC34Yv1XKTPTuVCevAdzLqW+K
-         wKtc+pPUUgTlYKtjavRpIgUfQNl8HXqmrSLRcf1VxDchVy7qQv7o717A3BEb1ESTtGGs
-         FRS0HXWq5veRNDVo9T5tmjHUXdOguo5NEswXCkDcKvKfQQ6M14AAah1PqNMYADjxwayx
-         Ua90Z8rifNRwU+Lv3LPkMqanFeIYVPrUFnCQ2KedbGhlG05I3A5sqjI/7H0Y2uSjKIbl
-         TjZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=En5tOZVEsf8OKBtyg5CL4cfCdUXCngpBo9ElWnq0faE=;
-        fh=mBXKjdB16nq+Mp8kkoWyODipc/oR9amTNAMvcY4MG7k=;
-        b=rZ7xG5XPfRAr3cIKItXbta50WSgDtEocjgmGGoC1f7A1T0+1o2/8E9Ir4sYWkJouBy
-         82Wfgd5bWOm4whvxuJFI8CMi28oHGQZOSG8t+aDldEVpDyQrPWSoxbSn+HS8+IpID0SO
-         7VqGcMnOlqKV05fcoM3t1ghusNKYBQc7dAnb4PDbQNeYoS4fD0Btd7I9MfNG+Sf21fKA
-         eo2zolkau47H+pVFWoP71/8oCygHAy1NaIhqP3OwjUyujvdZG6naLooFBv3MjGDjsn5p
-         qsppFSYK9H7fq0iQjHgN1+6hcBlmpXFhdnRjIF09LXhwSq1QoEjP7DBrmYA8njlJBjjU
-         m1kA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=/7IOpadrhcRwpRxbqmeGZRwsgZAI2r5KwJqdOCsAZ4E=;
+	b=VqxpV4nVAmf+4sb01e6owtTbM+bM5lEU+z9NRJRgvAw56A9+1ws/XU9fQELoDv6s0p4aR1
+	ukFLGmS3RspOakf41zvU+Wz6D/INu7cgIarL99HYb2gyAXX+wbpXCARE8FxJ9GwpWhmVrV
+	fC9+GMebSS2rqXPh+/skXKC4WzFAYVs=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9399daa3c8eso366217485a.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 16:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788996189; x=1789600989; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=En5tOZVEsf8OKBtyg5CL4cfCdUXCngpBo9ElWnq0faE=;
-        b=BadEUA6TIyBCwu0jLm4/NOZQD8j7+doxiVVtuDz417AJ+foX+gwVaP8WyXSc1bfSAl
-         Phmu5oaAbFzKYewa2lCHMSZCY+QyRfzymGFOg3p3fmEIC42j7DnvFV2j527iexHUCnRI
-         PrWf/sahBXwaLAKDmONKJkIPYHwFq9h6ccLgmfWLsbwf+oKxB9YY26P2ti/H+dtG4ZD3
-         L6e871suddUhYFxgmvusXqvmRTWD+feOB2E9hlNMwQzZpOAOj3BqKj42xTlOCVKF/p3m
-         SHD6z56F4xx7FrqZTozAmX8MNWKGQZZS2HVp8v1chcxjiqwKXqEeVnyFGJtKS6h2ewO2
-         mFuA==
+        d=gourry.net; s=google; t=1788997307; x=1789602107; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/7IOpadrhcRwpRxbqmeGZRwsgZAI2r5KwJqdOCsAZ4E=;
+        b=nXRbXZKm9Gq//WAPNGU6jz4IwWkDoVBrlomQ4hybnCzipnleSem74XM5sULeXnnzEu
+         GNV5s8ClpUH/rttTGFz1F25szHSW4yYeHt7kaVoXT5oP4rtxaY59Li8L+psDlZcQpuK0
+         s8+/dX9M8olYZiPtlYLWre++jnYKmdcndsUc76omTT0APV3dulXROgw4ybK33ww5wgcA
+         EAW8PHnYBup4UH+Em44yXH7LAeqk3qtqbomMfJxIDmMH9wPq+Qzx8KdZgDqQeuhGla4B
+         AIRBieRpT0pwdIxWqo9nEkjX/rmqTdBtc3k5PMeDjbGzbPd+/Fvs973Fs1wTo9bl3Ign
+         OiQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788996189; x=1789600989;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=En5tOZVEsf8OKBtyg5CL4cfCdUXCngpBo9ElWnq0faE=;
-        b=dClh40GTgvcVn0aX/xSjFgBJrtqsiWD0EZuf7ITvMTLxUtLq1Cm1i5AzEGVju4k459
-         C489pxAGVGsszQzSR+TE6QUB2ATEdSO7byH9HH0ye1P/7vDnzgU5UuaRiTPsnGmt+2Ti
-         M27JfIpPhB+debyYuaI1y6I/cfGEK7JgByUAzBcJrfBszAWavLzgOxJ1loOLLUjSGYKK
-         h3eZFSGMTOmXOaxscXsV6k9jlMtahxrgwgM2QgFkcO+EoXKSfIEyFQxNAB3++gk3ArLq
-         AhuxmmaSJsFkpwfH2lIv5EftfjNVG/YXsJJmYuNib8KnDGuJzg+Y1X9uTS9gaPKm30IO
-         EOLg==
-X-Gm-Message-State: AFuF++kN3284V/icPR/O/nW2+h/lVmrNi/KVyIvOywKWy9xBU9aBPi9w
-	IZE8Wepz1IAh37pMxecYi2x/pbfouWbewTrimkVMZhc+xafZRd4RZ77x5kOiRZcrSoecvzaHUks
-	8W/1coQ/aNCUZ0IyDkaXaaDddbxNOFawfwZ+7vke/
-X-Gm-Gg: AYBFou1yZt9Vpmuu/xq0UeVJrp6Xme2c3VxM3W6qEV+howc1DzeCY5IX8ZU7366lAGj
-	U6s4yLCAtypGuzR5YclzPYe0Z5rL1l/lMGXCd1NKw93mt16LE3NXz9WSMoq+LfZHyuRATfLSwcj
-	tCNgcECdfeTI9HvCmEGEtH8CdaSc9C/fs58vQANN5dNB0oHLsMQn3r0r8C/L8y1k4KwvX77j3jn
-	reS8aE8FKeL7g/vJZLKfFvzcLYYbrtumGlDHI3l00cl8MQnxg+5g8MkN6+wdC+FPBRQ18B2Fksy
-	TCk3+jm1hPB12aZbAJEB7fAw66P9ln5wuCDzws0pFQWMpRtTtSyrDzk8WgRqQSfsAMO3kuPlKD8
-	VhNQmdoqvmGIuhBOU3Zff69SSVcnvSa2Vrm8gehsv
-X-Received: by 2002:a05:620a:d8e:b0:936:cd76:4d4b with SMTP id
- af79cd13be357-939d4a8e082mr635316885a.42.1788996188016; Wed, 09 Sep 2026
- 16:23:08 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 16:23:07 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 16:23:07 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
-References: <20260902194657.79075-1-gourry@gourry.net> <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
- <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
-MIME-Version: 1.0
-Date: Wed, 9 Sep 2026 16:23:07 -0700
-X-Gm-Features: AcwNN1XfBb1QvPKkl28AJUF1eJlFWixEPhPOQhdktuRR8-1JWKzX4sglljv8C4I
-Message-ID: <CAEvNRgGAQj1afTRRO+DpVTaSCTZic3K_x6ZfwvBLUbfara5v=A@mail.gmail.com>
-Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com, 
-	seanjc@google.com, akpm@linux-foundation.org, david@kernel.org, 
+        d=1e100.net; s=20251104; t=1788997307; x=1789602107;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/7IOpadrhcRwpRxbqmeGZRwsgZAI2r5KwJqdOCsAZ4E=;
+        b=Nw1d2lzztukyGP4Jt0kwg/m46OIe8Wv33WP7+kXO/gXm/dI/UT+2M70mmfZpDDdLl5
+         53EhgZaBrwyODFp9c3xKKml+4bfCjp3PXvG2eHDQ09a6xOX4P72goguGE9Up7r6rAGqT
+         p4r4pXSrCJC0UVh5DLJI1PhJOj6Bzp1ss86i5phTusg25uNJRirhxfPiKJqxX3WxhFpw
+         uATsVqF+A1RkCnLb4hpHRXfAAseD0v8x+F7spwLHDXCaUDEZfQZTee46lnB63tLfJwNn
+         dgqjeo+2PenSwbNyQLqfSTPGWLDLlfzEMp1FxMZ6P5pylVvPB0M5plrFDpFzIQKy0WLq
+         4uEw==
+X-Gm-Message-State: AFuF++k4v34neWFabmwU1d3n4cdjXY8TJKazWsfnNWkmX5hOem6Gz07D
+	HclPuqd7Vh/chE3P+ZufYnQ8z1SrmPajG1IR02KoWdJr3Lubzi9WnmJG9z4Kw5w7ff4=
+X-Gm-Gg: AYBFou3LBYDBeth1Cy+ViIWSmmmiKkDZmj8SZBEaEGpRSNsYAlOer9hwLrC97hdEOUF
+	azXWrHI/oBew23lHfk4yM21TCG3wwrFR4ptIKkIaCbNddI0N+POJhqqVg5lo969K6MWH96SWqks
+	9AcZj+48a+sQfRVlbr37sn6oSTsjHnPDf5njduooVwfeV+lHuJU7c3RX3I5/dX+AnJJhZKOdvKR
+	kn7mlhgQV5yY3ruDd/0S224I8ynVaM8uFviwxibFk7T++PdcOIGLTvGtxc5vaPUm3BDJX+HOQYH
+	X+L2MMFFBtWZuAjTy+4dVZgtuZyZeRiuXq1TAXKSw87irxmK6dwXFnOf4fwPYTDpDc07ce9pn0T
+	JTahJws0/8q97As5pEyHIo+LBFJT5IBr6ibBb87kd76xHD4QIonVp0WtLc0G7XKd2GJYqxLKXTc
+	/4vqG1XWtkt6sFcgSfm2D5WhoHjP+eqF6OVYLhsXtVW5LF7TBqOr3OKjaaY5jaRIMP8atg3F2Wi
+	D32WcA/ZBj8zTBFVJthhgvGZ7dZPcFHJh4eoPV/S0+NbDCVeJqxa7A=
+X-Received: by 2002:a05:620a:2a14:b0:939:16f6:4d01 with SMTP id af79cd13be357-93980371409mr3949925085a.21.1788997306930;
+        Wed, 09 Sep 2026 16:41:46 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939b0aa9a29sm795461085a.7.2026.09.09.16.41.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 16:41:45 -0700 (PDT)
+Date: Wed, 9 Sep 2026 19:41:43 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	pbonzini@redhat.com, seanjc@google.com, akpm@linux-foundation.org, david@kernel.org, 
 	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
 	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
 	apopple@nvidia.com, shuah@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE34A100006
-X-Stat-Signature: s9iocki33xm5749siy9xidprhd4r7tkk
+Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
+Message-ID: <aqHtS6yKokjnhz2c@gourry-fedora-PF4VCD3F>
+References: <20260902194657.79075-1-gourry@gourry.net>
+ <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
+ <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
+ <CAEvNRgGAQj1afTRRO+DpVTaSCTZic3K_x6ZfwvBLUbfara5v=A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgGAQj1afTRRO+DpVTaSCTZic3K_x6ZfwvBLUbfara5v=A@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1788996189-896664
-X-HE-Meta: U2FsdGVkX1+u5gN1i0F0q2WGgkDU/qEfXh5YhLRNXpjGPQUsT6QJuctWGsuzsQjyHNhV13UPMeMQvAtDVHPDITlecqCJXHw7zocLGGve0d9OxUvVWw3u5FbkY9lDvnpCMGb/bKR9kmHmomGbFqngXniTNTKtUkj6+c/El7UUv3mofhvXhkO7sPrSw2P6cC80cegtLPV6VHjnQndWPFX+iyr8Bw+/MdJjQUAS8AqLzm6M8WpJG7ThrUUjoMAi9PAY7KQxFmJSdybiT4z6UFvsVTUDtNjU2Y55Vji3S4GuU8r/BC8ck3S4CTLuOeOzPA0CXWoJ1ct5sjLEcjCCl0voItbyZl3SvNC4Dmu3xFVSCL5iWsycwtSjVm5lJoK8AGRWpSDMzedg1JFmukhGN8lLGSCYDqLPNq4lseQ5ITJLtp661A1yBZgbdrNWOgSulXk2Asdr0BMFrhQYF2XHvE0exbJezotB+Wj5lFlT2j7r2VRVXOfSSn8hCcxcVh1uHcxY8ZJlmBHrye+K+Mo+m4lIe6qpk53W/1DFZZB0EoJhCB6GKGzab0aeYqZPzP9gbiTWFQMqMjOgtup+jH9qkexLArQRzmJs/NCzWHT+A8ruqnyzpATW7FSeHYoLQCskUhYuq2po5P/eKilJYl3Ls0qkTFP4ZeSh35BWStmWvsYB9MPYN1UCL3fhrqKODBVS+TrBY2onIIPYEmgNX7D1tO8etiNHqxmGn9TZmgG1mLWwW0YhBSZtSzPUHs3R9qUf7XFPoVzsyi9OEv/Ac5TIPox/kvnuS33jhn83iCHhk2eefFRFPRRx4LnVq6hO8BkP7N4ZAyWcVvkcgplLo1h8KQXzDkrr/GneT2XH94Vp7bwBDtCNLWDi1Lo8L55tUuAZZvsi7oQGcORo3PIm/3mGKzcXuunO/4CsV5AMLjo4Cwq/OvXcimHv/o9+oMC5cxjEdUQdtUaiMcg3WOGlVswaHdo
- zYq0jDF/
- yVhw30apT3ZrsWEhAPP5lHei4aybfw7vN8UW1bxDj5laUaFbiOho6XrjF2B5LiTVOPLSG9HR6vKL1G8VY6GcQeD7ufMIw+VPdBWoS++irKQ1SPRRpD2Z9NO/61SPDv75DI2Ej+vYeBlXMKZfOg98X/SAWJxbZ67JF8Jhh6XRQUh2dO14h1GjXzsuu9yvgM/ZiXkdSs6ArWWU7dewE1DuYJGEpgZJlyXQL7Nu2kuqkNUw6AlJxUozxyvcw4V9R0XuwIpn8qUGEhppXnNWK6iX0Nl9KGzNcQxT/TPetDelAPGkafSOZ8kuoLU3qordRyaA8ndHejVdNc4u6fpPRIziicHwCK0qPYhOSZRwB39ZfvoBPLfBiszSLbJGh3Y+yv0NgcNi/oVLBesPIoCyi1DsX2uXha4At9/KTqfW1jL/lA519cAwmKl40GHAHbKshdhiTZAch4FoDnABXI9ran6boNzWLgKpWhO9C0gFV9D8brYFd9+cRxsdWpZBKJ7EQMC/v1BJCOhUXfb4MHls=
+X-Rspamd-Queue-Id: DDA3E80006
+X-Stat-Signature: 4r4o5juj476h5kkqdzsbpdcfp1yzo8mu
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788997307-953976
+X-HE-Meta: U2FsdGVkX1/G4M0LC0G3rcsh5CNDMVckTncbNPBH5+gBXSVTw1wiQUEJuDHEJEP2/mJnqqtTqAKqSlcXn/IitHwIMbDnzf0dwL9gFail1NoLlYC5E9vA3vb21Dc8Q02Gkbwqq354RY8sBMT18dVQS7MFDDUAzmZsGQfO21B4oVyhGFuCmH8c4SLeJu3/VZY9kEYErr6TIbGQ6r20HvKbZj5uucU5wAlVn3wTKnugtK4Dc2bm1FoUgIKdknGG4Vz5HxwTKygrsM0HDvZNxEYvZj0OsMyN75pip8Z1l0pndvMFGXsQEu7bMNdwkVN6l0U8EVpdj9v3QfPFqkhAphi5y7a6vjgoVepTRirGjSHDvc+8p7Bli/14mhGU0o7gxtmAI+CZYL5vKbB7t5WVtLmApgkU+f+1XtC1TkSuDdVD8JGjnhDT0+sOzH9cAedkSYfFeOBwOjejl19kUta/viBhkjK8Q7zUhrCHjMvaeIlIgnQd5VY3xVwVXnNquEmkDoDpBeY7TdC4IsiXvBL/RBsClRVtYT5Y8a19az4kW4ZzQZxtvKdCJWDJ0V987o0OpV3tEzdc2MTTiVxPvcwXwTM9UbGkhCnUEIoO9tC8KqCgWEIZl8YXIkH902REsXa+VlgJsL+D3zTHSxUs67CJp6ayMTH5Zx4R0j/eL3Ow2b1pHVgM5a7FHdOpBuAa/UCuvpOCNAmwytcijS+wBqy+TCcUhQDMVqQWC3PnZKle8P0yzzIWwIjZw1xO8suieaL94tJTZTrhrBBqCcxfz742xqGaNkQo/dogGPVchd9H2TNlpGQeBVrcrdlB5eg4eyQSJvim4oMrGkSc+29k1ssUqKrraAJOnYseIBPGoikD9upAXcbByfiIFnt0O8EP/dcri4tiT7MabGzsaC3t+7pqa8nvzBHC+IuBCUksHuYwJ0fkPLllJi5pN04e1eHAG5f/033lrNPf0TrINMZ2FQl30dF
+ jh76ziFo
+ cgbzcWmguvtFYn4HJ58NG3ICfNblC87yuSzHAf9nhcHHN1CrkKctsA4h8Clv2Mif5/yl8XXdpGomGb7MKNDonKfWkOVIcfpqZTNil0KoDAsLFKm+Dqw1tq9mYbQrv0z307yCYBa0MtAiBJGaAnelWQhq0tYqiVjAkb61WC58NtQlTwHpXgtyL7BhFuQz7ZE6PrCrK5SjanQUG8cy5C7I9gip9lOLIUvFL+W4VhchNHuAGHjLAeC/vY6+9ajjAXNyIz1bTzcq5BwuQQc01mFwSW3rkAZLWr9bcogILcFNP9zalaQlUySs+QIRrCS44S6W4bK8FQg5Yx7kg1aeaAekmsko2FGxY0lR1rkcKedtnH1gYfiIUk6Fv5WCognXlZBuwTW2n4bFzUd2vkzaALaxXrQvytMDjPYh987MoqDp4D5lzHULMkoaEngV9fQTG+IjGxPhAG1utsKuxsInGvKcFC6U7kchBqufEzl66YHtbWHH5xLaaGPdWZGTba8peqzBIoegQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,126 +125,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price <gourry@gourry.net> writes:
+On Wed, Sep 09, 2026 at 04:23:07PM -0700, Ackerley Tng wrote:
+> Gregory Price <gourry@gourry.net> writes:
+> 
+> > in fact at that granularity, the desired node may not even have eligible
+> > memory to host the task's memory.
+> >
+> 
+> We have a similar problem where we wanted only guest memory to be
+> charged a certain memcg. Currently guest_memfd memory is charge to
+> mm->owner, which is the thread's parent, so doing the fallocate() in a
+> thread wasn't good enough. The workaround was to have the fallocate()
+> done in a separate process (fork) and have the child process's memcg be
+> set to the desired memcg.
+> 
+> This workaround is kind of awkward, but could it technically work for
+> NUMA allocations?
+> 
 
-> On Wed, Sep 09, 2026 at 03:41:35PM -0700, Ackerley Tng wrote:
->> Gregory Price <gourry@gourry.net> writes:
->>
->> > guest_memfd allocates its folios through a per-inode shared mempolicy.
->> >
->> > Today that policy can only be set after the fact, with mbind() on a host
->> > mmap of the fd. That requires the fd to be mappable, and it cannot reach
->> > folios that are only ever guest-faulted. Neither holds for a
->> > non-mappable (confidential) guest_memfd.
->> >
->> > Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
->> > kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
->> > requested node and installs it over the whole inode, so every folio is
->> > allocated there with no userspace mbind().
->> >
->>
->> Instead of a custom API to ensure all guest_memfd allocations come from
->> a single node, how about these options?
->>
->> 1. Using cgroups/cpuset to constrain allocations (could be troublesome
->>    if the guest memory is not preallocated, unless the vCPU threads are
->>    running with the cpuset config)
->>
->> 2. Process-level NUMA policy
->>
->
-> for 1 and 2:
->
-> the intent is to put the guest memory on the target node, not all system
-> memory for a given process.  so the scope here is not the same.
->
-> in fact at that granularity, the desired node may not even have eligible
-> memory to host the task's memory.
->
+That is a very clunky work-around, I'm not sure it's good to formalize
+that kind of design as an expected user behavior.
 
-We have a similar problem where we wanted only guest memory to be
-charged a certain memcg. Currently guest_memfd memory is charge to
-mm->owner, which is the thread's parent, so doing the fallocate() in a
-thread wasn't good enough. The workaround was to have the fallocate()
-done in a separate process (fork) and have the child process's memcg be
-set to the desired memcg.
+Whatever the case, the issue of ineligible memory isn't resolved by
+this.  A node may be 100% ZONE_MOVABLE, and later entirely unmapped -
+literally no eligible memory for kernel allocations for the task itself.
 
-This workaround is kind of awkward, but could it technically work for
-NUMA allocations?
-
->> 3. Why not request the guest_memfd to be mmap-able just to be able to
->>    set a memory policy?
->>
->
-> the eventual intent is to enable this for fully confidential,
-> host-unmapped guest, isolated to a particular memory device.
->
-> Requiring a mapping to get node-placement is quite defeating the point.
->
->> 4. How about something like fbind() that takes an fd and offset range
->>    instead of mbind(), which has a prerequisite on mmap()?
->>
->
-> This was a consideration - although it has other limitations and larger
-> complexities associated with it.
->
-> Where does the policy live for random fd's? (inode? address_space?)
+> >
+> > This was a consideration - although it has other limitations and larger
+> > complexities associated with it.
+> >
+> > Where does the policy live for random fd's? (inode? address_space?)
+> >
+> 
+> Off the top of my head the policy would be saved at gi->policy, where
+> it's stored for mbind() now. fd+offset is just another way of
+> referencing the offsets to set the policy.
 >
 
-Off the top of my head the policy would be saved at gi->policy, where
-it's stored for mbind() now. fd+offset is just another way of
-referencing the offsets to set the policy.
+It makes sense for anon use cases like this, but for some random file
+where fbind() means "put unmapped page cache on node X" the story is
+less clear.
 
-> How is a reclaimed inode's policy handled? (lost forever?)
->
-> figured i'd start by reducing the scope to the narrowest and clearest
-> use-case, but I did expect to have the fbind() conversation.
->
-> I'm open to it, but it seems like over-engineering.
->
-> If you look at tmpfs / shmem, you'll see there is the option for a
-> default filesystem-wide mempolicy that can be plumbed, but i'm not sure
-> there's a real usecase for per-file mempolicies that isn't literally
-> guest_memfd.
->
+> > How is a reclaimed inode's policy handled? (lost forever?)
+> >
+> > figured i'd start by reducing the scope to the narrowest and clearest
+> > use-case, but I did expect to have the fbind() conversation.
+> >
+> > I'm open to it, but it seems like over-engineering.
+> >
+> > If you look at tmpfs / shmem, you'll see there is the option for a
+> > default filesystem-wide mempolicy that can be plumbed, but i'm not sure
+> > there's a real usecase for per-file mempolicies that isn't literally
+> > guest_memfd.
+> >
+> 
+> I see, can't think of other use-cases for per-file mempolicies either.
+> 
 
-I see, can't think of other use-cases for per-file mempolicies either.
+The only thing i've considered is something like GPU wanting a file
+faulted directly onto its node - but that's a mapped region, and that's
+handled by existing semantics.
 
->> This doesn't exist yet, but I'm hoping to discuss this at LPC 2026:
->>
->> 5. What if you could pass an fd representing a mount to guest_memfd at
->>    creation time, so to make all the allocations come from a single node
->>
->>     Step 1: Create a tmpfs mount, specify mpol for mount to MPOL_BIND
->>     Step 2: Get some fd representing the tmpfs mount, hand that to
->>             guest_memfd at creation time
->>     Step 3: guest_memfd allocations will always come from that tmpfs
->>             mount, and abide by that tmpfs mount's memory policy.
->>
->
-> This i think this is more feasible than something like fbind, but devil
-> is in the details.
->
-> I definitely think it's interesting and would love to chat at LPC!
->
+> >> May I know more about the use case behind this new feature?
+> >>
+> >
+> > see above - confidential vm whose memory is quarantined to a particular
+> > device, without placing that same burden on the host memory.
+> >
+> 
+> Is lazy allocation a requirement for you? (as opposed to fallocate()-ing
+> before the guest touches pages)
+> 
 
-Great! :) Cya!
+Yes, because eventually some kind of overcommit will be desired. May as
+well build it in from the start.
 
-Along the above lines, for HugeTLBfs we'd do something similar, and the
-mount's fd would also indicate the HugeTLB page size.
+Looking forward to LPC :]
 
-Relating to memcg above, this doesn't really help though, since tmpfs
-doesn't offer a way to configure memcgs.
-
->> May I know more about the use case behind this new feature?
->>
->
-> see above - confidential vm whose memory is quarantined to a particular
-> device, without placing that same burden on the host memory.
->
-
-Is lazy allocation a requirement for you? (as opposed to fallocate()-ing
-before the guest touches pages)
-
-> ~Gregory
+~Gregory
 
