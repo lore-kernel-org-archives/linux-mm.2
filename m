@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1656C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53D6BC79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0921A6B009B; Wed,  9 Sep 2026 06:25:15 -0400 (EDT)
+	id 689F46B008A; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06A2F6B009D; Wed,  9 Sep 2026 06:25:15 -0400 (EDT)
+	id 63AA16B008C; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4316B009E; Wed,  9 Sep 2026 06:25:14 -0400 (EDT)
+	id 5034A6B0098; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C77C06B009B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:25:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 410C5120170
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:25:14 +0000 (UTC)
-X-FDA: 85193841348.29.A20471D
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7255FA0009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:25:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PJNOmqlG;
-	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 371226B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7540B12017B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:27:49 +0000 (UTC)
+X-FDA: 85193847858.16.4ED89E8
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A9D9A40009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:27:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=anhniXZo;
+	spf=pass (imf01.hostedemail.com: domain of hughd@google.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788949667;
+	b=qj9OxyX6cP36sKIgn+EQRJGKsd3nECqZmKA1v2sm2S0m/9/crGutiGCIhpG2DgS61I5+re
+	whBX+97YxomsS9Pr384GDvBxQJAzieuUrK8vUspXakhrK9YeTMicNEqVlcoE2VjpbpbC3S
+	1rEGQxvgXhBZGa+PFmEaBNuSQxcQBSQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=anhniXZo;
+	spf=pass (imf01.hostedemail.com: domain of hughd@google.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788949512;
+	s=arc-20220608; t=1788949667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbn1aAX73v4jfLOAScY/xk2YxlfOe4UtWahA1Ug2y2k=;
-	b=liXpfmB3KBKA1XfoZuWh5C58G5SKEVeREh88MfHnUkPRwZU0YqsyWxhCBiqq7JBv265FX1
-	4Rg90TNsQ8oyKCeaG0rhcALz84CQvqgQltVjoLnuO4JEpMVpLCyJYenEMbreN59rdKL/+I
-	izgNwlnOQ21Pm85H89INBymklRt/0E4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=PJNOmqlG;
-	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788949512;
-	b=PfBHfGnM9aCti8FZO/qf+nyXFvGSc6eaBaiC5eGTIatJv47CSX9hJhm0R+PhgcAuGyfTLX
-	kzzi2UbDzTDB4c9Dk4lC91d7vZUEtGF+gp9Mz3TX2Q4usyf9UdSCBJiOxJB17uHrOMXTam
-	h9l41j/OzpciqyGx9dNIO1GV7vZWV+A=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8664769db58so36389207b3.3
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 03:25:12 -0700 (PDT)
+	bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
+	b=Q8mbpvudFeRczOBc3h4zyKSHWbgRooiyOZyz21h8koJWIITCCMNe+XPBjR7IlzwagX0kP/
+	J6HHELHgTEzqbN7uyM26EQOv0DRKELjFj3zaRicTDmmKYjL5hlvA1BSZ77iSNg9pGjRsve
+	0ljjPKRuNVclFlu7pnIp3SrNKCo803o=
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-66fcf87897fso4336564d50.3
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 03:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788949511; x=1789554311; darn=kvack.org;
+        d=google.com; s=20251104; t=1788949667; x=1789554467; darn=kvack.org;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tbn1aAX73v4jfLOAScY/xk2YxlfOe4UtWahA1Ug2y2k=;
-        b=PJNOmqlGvuxRqqmbmCmqvHYaoAvKY2K2cIgTB/iRF0KxsON+0Y/YxZlDbqbSw2IE9H
-         oTsEhDGLiXD4CgBH4/yyX0cIOuqw/QGpdsH/BlyHzUQ0fmhi4skxHdYHgm4sCPPltjdD
-         qfNsSknzMBNYwM27Q/oAfML8fa/KzYU59C9NVMRRcHuB8stLmaHWXenh/wu+VgS+gjIK
-         xy9s9WxVLPrDnKKg7XpglTCnhvQ7mGI87spzyMC9zndxYFHKih09JBExKLtzqLm6cJYs
-         QNlVuBxqCEacTsQ8OIoUaeOGveQXX61sn8XeaZ7Ce+j9xmp2UBL418SSeFEFvMhNh+88
-         FlMg==
+        bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
+        b=anhniXZo0fY1KlGkHYAKkettXgtBIZF6I10jOIKjUGobBcwNukSIQ7kFJcAi96V8l9
+         NpFWj1PFFPZ2NkdnfpKWEoOVuEpTRSBlk9vmk6Pt4ikK3fsHDn/PPsQXXANFiqxDOY1S
+         Hj/UeK8fdx78ldxG1SXlN6FRHUAd2OsQBeHrsV+Lcw/Vtijkl6hHtsCC33MYr0fIFeo2
+         p93SM5g4XrgQRB9aYU7Fv8Z5osF0f9UJXFYAHEDgUw41N6h8BQ/gDKWkp6D5fFCUPzv+
+         Iez4Q0xKTx0bWdDA/5bGStUdtohlaWyEjFi+mQ3wxCTyKfrMQ7UYoWGhwF22MwS9hDwd
+         tONQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788949511; x=1789554311;
+        d=1e100.net; s=20251104; t=1788949667; x=1789554467;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tbn1aAX73v4jfLOAScY/xk2YxlfOe4UtWahA1Ug2y2k=;
-        b=tDSrJY6gINiPFTWJ4EGjxs3Nn/Jd/d1eb9OweStTk3ccd37R9bfUJVorUYFVeCftPG
-         V54H6tw+0mNee4kOdGHdqDNHALbjDjYQVJu53HfrNGPnytng9j/CqktDHNXcWjVO2Dck
-         e4k/prQwoV1tImsinIndHbLetF/RuMhW02A0QeYgUF8JTX2vHLYdL2/cKe5oUKLIvqLd
-         tMEnT2Czsedz5FpWHRwqWH9u0AiBt2PYsd+hP7gKxRmNS1ENNQsNShUEdV2XDLoy/2Ra
-         FDLqWcHfTX4dJ7US76r3TthbdFKfU7w1vmH7l+VdVfDWhN+DYCJ0Q06zmEg2FfyNWxIF
-         ueCg==
-X-Forwarded-Encrypted: i=1; AKwUvBwco9v5U2ABtH9Lh/vH0V2MJ5biknAP5rLQLsB6LIGDgQtDGmA05a8XwtrVmTPhgIBDMEFpKPaJOQ==@kvack.org
-X-Gm-Message-State: AFuF++nVL+KozOr2vmts5pDqAAhohKmIyyA5AiEL0IzW1wGu8u3aJush
-	reRGJF73N184La8YBr9CsDvKNBxORNcU++r6x41QAoBKwT8IzgN3yzAFpZ3jlUsQZw==
-X-Gm-Gg: AYBFou0g+5KKOCAxCJt/qCUaIyonxkGZVBZr4riqGC40G0COpKUUYy9hcbmg4Iee8Kx
-	IqhYwAoYdqY79SHgAbPjc+TpKlOLQkAtlbfJqyPdfrQadpy3MLIJCHTYGMG4h5o/ZV766TxL9ao
-	Dm6zUzkMBAQ9MOcbEOsDX/anteTfk60S64vY2XdygoAycaXzD9lQ+FmcwbOsNMPiGKhDdQ6w92/
-	WAjkQRgY77SMNmhhbnQQfC8rLhoMd4ixo+ff1Agbj4dfkb4ti/D1zUo3AllC1IyFv+jf27KG28k
-	fVXyW55I3o3Okr/UfxWPXZ8gFmkJj9EM7e6O4/fiMTPtLVPjh9VMR26LFYc2wdWlQOkFBUIFwwh
-	m6yaBfylaEkqqT0/DzPuaPLFn+TFW5XsjZfiI0wWeaJzm2YQ546wAQQLwpgaRFq9EJfZqGffZ9N
-	7eePERBg3gR6/I5+tDkoDvAwIzvZOVSqsQj43VximNHrQo8nuP2EPSg9yayV3VrwdHg+00izplu
-	rQ2EbrTrhuEfmnDBUacjEalYkkZg/2KLPorKyovDCjyUAHLhh0hNheqbW68kJp1bDql7w==
-X-Received: by 2002:a05:690c:62c4:b0:870:96e4:6716 with SMTP id 00721157ae682-87127b36981mr130530337b3.28.1788949510969;
-        Wed, 09 Sep 2026 03:25:10 -0700 (PDT)
+        bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
+        b=M+IDP1XzlTdeEb6WVgHk5P5Y0Tw8BSGnt2Vnm1Kf+u9ixvXaLFTpDo5g/ST77tnFVY
+         Yf6x7HsA7UI5YwX6HWcyURCiu1sdzjQUgmiQo4+lHdU48IXN6sWjOdNFuNP1LYm5buEy
+         QPKvccDh+VkA9H8EeV2iFtwST5ZOzvWIZmUUq1t/8ERUCZAECjr5zt2Yblw6y6XO1Ixh
+         JyA6oARXTJwSaCbfn3e8AYzwNZrMlgMM5ngC310PGxaCaxbTrD2VLD87XRVepSPLWHyq
+         d8lmCzM19FDbrTJ6M//wI8Dt5DI7gpDgJVXYw7gvRJ+vq/q/tgcyfiyK/1iYTq56DgoH
+         0Z6w==
+X-Forwarded-Encrypted: i=1; AKwUvBwfMR4tfOa3Q9+Ric24zkHQl8f7WSF6KhKbgQkPij2vxXso3ZZV1xV8O//0cbjkUBbsig4UviMgig==@kvack.org
+X-Gm-Message-State: AFuF++lC5B3Jch4MAJP6oFr85CQri3O+OW7M1F4V4fNoPqIsxOAb5bBn
+	tiviPm3RDo8/j3YvGme4M7TLup3KsMuMyu61ev6JQ+99GACvJV07IOQVanMjbKtT1w==
+X-Gm-Gg: AYBFou0EDcmgaL8p2qv9VWuukIAQo6Li5TBjOdI3e0tor1UH++hczA9FT26fcaJ0LII
+	xS8MEGtnJ68XFxskxVves8Zm59TL7YrrNv1be8mNHUZFFfgnEa9Z8fFP/iSfOLQaP2iW5o8b38b
+	7Zz5AuH8t05AdBTTaLIYf/d668mE6+wqlD1cKlD6dwjH2cD+MWEUiMwvvFu/aCgI/5WP41u0oyh
+	u4TNd+YOsNDNBBoWJhMSQLBTcm9Fcc9vslVCIpXcooAj2SYMoNcZteYESXtMn79EDd8QU/Ouxo2
+	FrXYe8Bsu8Pou7ei8rfFylOdMG6wWV1zMmjy1Vp+8gxSueJU36gjkncKgVm+VI//162FxNnohGS
+	6TLhun2Ifs0yfyRcJd3iLLuOoIeutuuB6WKlmjxFSRGT180t1zsAn4i0/KzKkU55NgRsTPZjXWd
+	ihMaO8DuvlvmLCaSOMqgcufuFEhthp62/DruJf+ExERgR4shbT3r2rMxljlwULvbFNIxJR1xNjC
+	K0E70jYKB+ofmI2SwxshtuKYP18GyMTfti1YvbOaCf9+Cpadl3f3GpkQnRCLTiX5wuJsQ==
+X-Received: by 2002:a05:690e:48b:b0:66f:c1bc:4097 with SMTP id 956f58d0204a3-66fc1bc4874mr7597179d50.90.1788949666224;
+        Wed, 09 Sep 2026 03:27:46 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149315162sm107287417b3.12.2026.09.09.03.25.06
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-670febedc44sm2584559d50.11.2026.09.09.03.27.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 03:25:09 -0700 (PDT)
-Date: Wed, 9 Sep 2026 03:25:05 -0700 (PDT)
+        Wed, 09 Sep 2026 03:27:45 -0700 (PDT)
+Date: Wed, 9 Sep 2026 03:27:41 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Ackerley Tng <ackerleytng@google.com>, 
@@ -121,21 +121,21 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 21/26] block/fbatch: no lru_add_drain_all() in
- invalidate_bdev()
+Subject: [PATCH v2 22/26] fs/fbatch: drop_caches invalidate_bh_lrus() not
+ lru_add_drain_all()
 In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
-Message-ID: <0debd9f6-0ff8-31b0-4830-3a81ba56754a@google.com>
+Message-ID: <75e9b5b0-6a70-06df-ba0e-4d7bf841c0cf@google.com>
 References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7255FA0009
-X-Stat-Signature: g8hrc6kc38jxq76zy9jhsxyxeufhz6jt
 X-Rspam-User: 
-X-HE-Tag: 1788949512-896122
-X-HE-Meta: U2FsdGVkX1+CF+ZJlVhVL6G+dT2Vog+otmxFypa2jss5lNcGmjZwiTXFNUD8Zw5bGmJcXfqwvdmIYfBy5dKm0CpAGEPcnfB0dzUv2h6isEK5n8ZqqPZEHs5b7x1yJXu2kITIlBh4+6Pp/C225BkhCfgfOPf1HsRNAiiauNpKUuol5ALDX8epl7AEisAgpTaIy65hexyQ8HxOBkC0zvOGKRZgdi65q80mQ1A4Q1KPHPVzZfEFusBqBLsYDXD+N6OE6EFy57xrT3p+v9l7McbxnwM3b5lv0Ezgq1UzPmS7c1gvUzIfJyn/eouGkWwy6yInzl8WTK8ddN+Yrbqd2YRT6vuS4t9YtmDMGOHZSb1xCwuDmp6ry73oQATb/Pue10SWY6eDya/sp7aaV8nKAWDROB83lAPrG9bYJwMoA/oZJKFoj4l2DH0hTmQurbzYI4zq7bNzbOn8vSR4pfJ8ex5pCht7wFWHsnSZiV0dXtS5J3oVhERY3CKQJtXQd1JWAMq7ZLhcYw7Kqk3iZHEUy+xcvWb9a6hn2Dr+nPpOtUVACcX4G5cI+hDfXIF774XxzNROh74GI2DViBcO4iXN9mkQb+tTtAV0yilibVVY/QGu5k54zqMeCgrv2W9OqMogF2OACq5Adeuowr8rD2OzZqHTfJXnxfWHmDz3zT+QHxUZJWf0yYoX1Sn71voaq/gzYmCh1o+yIlOv4xq5rXex7Z5x+5eiNcc2/MjpRafLQTDzqv8COZ3ge1nuNstNCnZ1dt1jfNw3Nk2oj8yBfQ1VR36NxZFo4Pb5UZVSrThICnqEV8NFIc1nsUmSPcatxXqotg1Y4H/gPrGlEOr0ZQfppbqj/GzK9qlzSpTpQH1EhkguygPMNFMJhnhP38VuUop0rLq2+KRSUJquqqAvas+2CU1CsZDq1BlkEK1iFGygcXws/YLmL6IK2/7jBvIGgrg3EXu+uqyr+rLv171oy3U6NUR
- vSBWEINp
- BQ3ExnC+nLHpkntH9mmqDEZTgTYyMorQRiVkh56fWXmcfZYx2SkecFuPMWLic5p3Lb3P3a0YViEWSgCaR7XvkMKpmU1ZDHFkHG/OWshMVyr5IbDOOARRZZxt011NsXRACDNxrOvMBWonJfdJE96ZssE3mkRfCTVdPMBzdlsQMjHMsc7zxD85yTAL4FW6CXkaAZWTiZgzZTdGDZzPdjqIFH/hxVS7z5H3pwvR6p4aCajsJK5ceniu8kXhwmcvYg3w8myJqlQNViv9OvDL4B8gkofbqEJoyPD7zljHrBlKT0YZSVrqeUQurKPYN1A3lX62PW32W7gh/Vh3rl3zFMwO3twbxF+wGyGflpsD83Oc6aNB+f9rUGG5AgxpkOrqrFtzTJYCh12jan/5xTetpCYhcWAfNZ3gUxncwAZuU/szxx5Arhb8/IeGxLlJOaxApNm1BixEb1G9XyXU5XTovcXUyXiOTL8iJqrC3cO9u
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A9D9A40009
+X-Stat-Signature: 3czg94pz1nsb8cands8m38b937ncmyee
+X-HE-Tag: 1788949667-794787
+X-HE-Meta: U2FsdGVkX19+3fZFg6uK2ce/83m3cVQdlyJApilkWIVm0d4yVU/VQVeDGmQZA6h2tRw1n9EHKogJByHmqerDko2vL/KsXyyyrrBk+F/gJhHemZh2c49OdMh8kORDaPFipI03eDdBwQL+DXMNCcm1lBmc0fWVGyGlcP3dFulvTkckOT2Y5Hm2jyge+qE+NjlwVFcOVIH+h+f9x6fTlUaJBdGbWf12OyYRNesDxhkl51z/BziAoYwzQ9AaTOn9I6B2tQSR5kycrHor3w5NWz8yZwoAYPebAz297UuD5gm8OIK9eR5ko86wl+RMd50FrLKHDjtpAG3aaGYIHI1ydEN1HybyUwejaNk/0uyE44p7cf4jJy7xjV7ifGS1+eErz03yOvYq3toLzP/BbNY36qO5ITRBD9/OrLqCAlIKUVncuQF2l823Ly56HZkiq9ZCkfYTRMpgBrZE8A41JHKyfXwJUd4VmZExqe79+mLNQCaEI9jCCEIzY4jViQKQ8yu/3y13W5GE212W2J18xOEBf1W0R6wlSchyrKvMKtiNKhWjL2oKgSXkofpHIBo0evVXIH8eMOraFa/KIwsc8JMcQSUZ5R4uwREZ9l0Lm38jtsoTykopi5SwFJaPZenuwe4S14F+ikPOSOzaetx8H92Qu/SBAD75n25/A7loEVoHQ9wj7VN+zbyNtOBW0iSRQgWAuV2/7pOf7G72Ac8777PbJUmXQWHE+1VY2CPAdsxtERtwm9S0i+XtD/AC9WSGbJN8yATZ4roL/DpxfrZWrlEAOL1KFt9Q8BWz/+DzOGWSyeHzq3uwSvnwHs9g1zxZt0I1Gb5DUjkqj3s77awBdn+sAU5JNz0bG4535PqtZv9opy8uMfJLtW1P9wYh3URV9OIKqV4sxqOKQvZUIctwpxnmAODF3RJH59ieTosEcbOkRAtvibPj/SDZnrimkqh7WcSe1emXWqR748DE3nOXWnuvtQA
+ CZIoF/Ef
+ dhLaHHyd4li/b/5AiIl65jYD1Nf1zTpb62WnfJYFNl6+NkzOOqwKON20y93tNZleSCmiJHIOZEUFZ+KCf0PAbHK9iPj/YsplJ2y+OmgvHjWKzP9Qq0loSjydhqhKAMHQlqa2XFuYf5mGN+Q9y7JlsrXxQQWLojRRxMHkEGXhX8H2bK2TIXp5PLe9GEZItSRqQAcu4JnocMY1vAVBoTKITEYOp2KHJ+lg8V3I3HChro0VbxU6fsImxJ9uV21wv0Zpl/4xiFWU+yn9AAjf4dZ+RKPFqi42vrJhyB5oFGrh9cXLcGp6sG/Lgsh1uCDz8dIOIl4hr5FflsuIFviaAJbq6xbNdKjVfLFxCCiGR0jZ0SHuCJAluO34WseVHE/1S/+oxESc+WVVl1qFyfbjIF+Igc6ZepPfM3RAAN6EsRXlirLlcM+xV63FZYUyAyal5bldji2ICW+ult24qQPu48FHJkRnyhG+6wb7pziqmZmkAydjTf3Ud1UGgFGAAUDaSxe2p0OJp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,26 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-invalidate_bdev() has no good reason to lru_add_drain_all(), now that the
-per-cpu fbatch references are gone; but keep doing invalidate_bh_lrus().
+drop_caches has no good reason to lru_add_drain_all(), now that the
+per-cpu fbatch references are gone; but it may have good reason to
+do the invalidate_bh_lrus() part of it.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- block/bdev.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/drop_caches.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index cd8323083740..853545b29b7f 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -97,7 +97,6 @@ void invalidate_bdev(struct block_device *bdev)
+diff --git a/fs/drop_caches.c b/fs/drop_caches.c
+index 49f56a598ecb..054af78e6a2e 100644
+--- a/fs/drop_caches.c
++++ b/fs/drop_caches.c
+@@ -10,7 +10,7 @@
+ #include <linux/writeback.h>
+ #include <linux/sysctl.h>
+ #include <linux/gfp.h>
+-#include <linux/swap.h>
++#include <linux/buffer_head.h>
+ #include "internal.h"
  
- 	if (mapping->nrpages) {
- 		invalidate_bh_lrus();
--		lru_add_drain_all();	/* make sure all lru add caches are flushed */
- 		invalidate_mapping_pages(mapping, 0, -1);
- 	}
- }
+ /* A global variable is a bit ugly, but it keeps the code simple */
+@@ -60,7 +60,7 @@ static int drop_caches_sysctl_handler(const struct ctl_table *table, int write,
+ 		static int stfu;
+ 
+ 		if (sysctl_drop_caches & 1) {
+-			lru_add_drain_all();
++			invalidate_bh_lrus();
+ 			iterate_supers(drop_pagecache_sb, NULL);
+ 			count_vm_event(DROP_PAGECACHE);
+ 		}
 -- 
 2.51.0
 
