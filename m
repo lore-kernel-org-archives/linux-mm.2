@@ -4,124 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89F3CC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDF9C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:47:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2E126B0092; Wed,  9 Sep 2026 17:30:02 -0400 (EDT)
+	id 7189E6B008A; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A04BC6B0093; Wed,  9 Sep 2026 17:30:02 -0400 (EDT)
+	id 6A2836B008C; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91AB66B0095; Wed,  9 Sep 2026 17:30:02 -0400 (EDT)
+	id 56AA76B0092; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 622756B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:30:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 654B0A46A1
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:30:01 +0000 (UTC)
-X-FDA: 85195516602.03.39D54A4
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A3709140002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:29:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ELEKxtVn;
-	spf=pass (imf26.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 270EB6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBFE716037F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:46:57 +0000 (UTC)
+X-FDA: 85195559274.08.FBF1FEA
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E60A118000B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:46:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Bfg77qhx;
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788989399;
-	b=UJ1bh+YETmT9k7xKFv3PGIWm//Zhh4eRxpK9+LBFDPt8tw//5j3lk8U8yftViWYi0npRlR
-	0YueLLBkOoWVTpsrGzvLwWqHxD7sreS/wZZ16pwmYZAuhzaMomWtoFoFa5RHienrG8fjU6
-	Rvc3FURSwL0Z2dlNZzFcXAg/rYJRgAQ=
+	t=1788990416;
+	b=pOOdWEP2WqT8EOEspCvqmDyLamTozFXE1YtB8BAx1Ws/ppdgE24bKv70CXw6zx9hF0bSvd
+	NipmOMXBmNL5jlRUGTk+zPGAGh7Zz0vqSFncBFgE4WK3bItYz5ZdvsvrHphHQxbnirNCxR
+	gs527I+qaB9bvgsfA1zQeaiFAczlHd0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ELEKxtVn;
-	spf=pass (imf26.hostedemail.com: domain of trintaeoitogc@gmail.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Bfg77qhx;
+	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788989399;
+	s=arc-20220608; t=1788990416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=an1Tj5cri+dCWS5ANKI36kXHxQ7EkrCefVmdgblz/to=;
-	b=eIObQP58Pvh77YOzvC1f259bQV2iQTKEBN8B+I6PpbxZqFK2SygoPRDLgcB7G5GRhDHi9R
-	ZBo/VoctbVx5ZNTh+WVjtqsjcIZKNZrzxGbydODX6M8mVMh24kisfZCl1XKhkMILJSLMMa
-	DE+WtMPZpSg125jkRJK7goJiIF2AS9I=
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5c8386a01b0so159302e0c.0
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 14:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788989399; x=1789594199; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=an1Tj5cri+dCWS5ANKI36kXHxQ7EkrCefVmdgblz/to=;
-        b=ELEKxtVnAV44AEVI6zJr80YY4S8AYWAbuMjdCpPTHsnMMDaCicqgq5Rjf/MNuPlhgK
-         4Cf4P6WrkL1a8vLYj4zDcE2HSbtOUDxl05fdjQpJQhWeOBUUzym3iDmJdBidVLbp40R3
-         a1czMgsI8wqP2AfAzX0ELdceW2SA9jTvDY3PQ43URKn+4QHnYU8rk3G3y3iWHy/DEvct
-         8WVx5G4cGH3/nsrJdKC+sVLABrMu9INyIPPehdsc3Qob7k0/f8NJD0PflPuCWOSmEIsU
-         MJTUqpXsiV75W/anoOVdbXw3ZnrTafHrq0zblPGN558VV91JWQSWD4urNQwp88s7OTjv
-         NyFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788989399; x=1789594199;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=an1Tj5cri+dCWS5ANKI36kXHxQ7EkrCefVmdgblz/to=;
-        b=UAo7M5rga+fc4a3H1ZVAw53yjvqwABgbvEIdNiaWIteUeSoL6C61NU0D6oPzbu2L5R
-         ne23EFF2s2CbaPBC7Sg4VRK/0WaQNS3dxEHUM6jpTZwszHHyLLJ6OJ31KkZg6x07wW79
-         BzBNiGlRf5Sl7u3xXe9ElchejCw1yFWRtmXEfkSVc8iJQXx+kzDfByrYGQ5UfKDkQcri
-         JA6itADGuVv3XN6IlWbtjh1mJvH8TTmFW8kVTCSxiXfO3ezb1VpQvBgBxSUmBPEOCu1O
-         gjPUGJYkCZr/IhNpRkjhUUn5V1YWLDbZYocXQm+vg8DWCjJAtBprE0GlLTebcUvQV5SM
-         vMsw==
-X-Forwarded-Encrypted: i=1; AKwUvBzcrZHPPGvdnojeLvsrPC/aDOFN2wkvsbm5Eo41Q8PF50dgY3dUQCp75p9o3LB1fozYzDvsK0WXYA==@kvack.org
-X-Gm-Message-State: AFuF++nTUntPo0eZAJBphW3/r8XaJDA3JJg5wRlpdBcLjy1YUVzK8YIv
-	MORaduCDZhwhDQ02NkDiIQ2tHhqhBQ9Yux1KbZirCUEIIuK/hasOJGuH
-X-Gm-Gg: AYBFou06cyZQi/oCQgTCmPV1iPLbakQn5kA7BQDbpCmmCHox/La42ol1A1s8sAVycIJ
-	fX+RyGqIFL3XT59aVs8OlEODKXOtlO4c5YZKxPn+SUjrhAAHIJ0IE1+yrKHD/2xX/L6FTWFThJJ
-	4RE7h4IEJ+/+eyWi+7c+njGDN69EDuy5ypM3cVo0FrpkatVCXsAS1rDWWQ7jV70KMVMCpwdK79O
-	KR30Tezp/Oj1YCHVcNF6xDdRkOVszMRBn4nuVNMswMneNiacFIZTNjQyaPQiLlXYPudG+2eiKGi
-	5veVdth3ViguCANQ+3nkbmRhuRyefPbrK9F13oq20Hk7u+lQ0cduQNHeFCrhjojBE2BuxlmfTHk
-	GvmwAU5VaG1zQ3AMVvrE7LZY5aSHW4x9SjMe/DuOxFiApKh2quTcYnse898671ih13OAAKoLtp9
-	TdXnP64VN36ks9NBBU6uq3kcrSw5tUQMihGdpmM7tXFdQiIIO2c8y/TNF0c+BgeIaJMIuBZLW9l
-	OB9a19YTQ21E5grcFrwEgd4QODRHK99Qb6FwaxtaimuazbsQg+3wA==
-X-Received: by 2002:a05:6122:f18:b0:5c7:a814:b987 with SMTP id 71dfb90a1353d-5c7ed298f6bmr21767535e0c.2.1788989398659;
-        Wed, 09 Sep 2026 14:29:58 -0700 (PDT)
-Received: from fedora ([177.21.143.191])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c7ec35d85fsm13861007e0c.12.2026.09.09.14.29.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 14:29:58 -0700 (PDT)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	pfalcato@suse.de,
-	rppt@kernel.org,
-	surenb@google.com,
-	trintaeoitogc@gmail.com,
-	vbabka@kernel.org,
-	willy@infradead.org
-Subject: Re: [PATCH] mm: bypass datarace check
-Date: Wed,  9 Sep 2026 18:29:43 -0300
-Message-ID: <20260909212943.539665-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <aqFWqqvUEiie8cYq@gremlin>
-References: <aqFWqqvUEiie8cYq@gremlin>
+	bh=f6WNUc7+ccLtCGhgxedehU0mIM9y5RDc0/iE/jkmqtI=;
+	b=TLp1+ik0u3ChE8PuXog3JB3qHCL2ZMcjZQYDLLvTi+mSucDrc5a7v7ZNE0TJV3m9nneGvL
+	nEmmhGMEKs/SbtlSPonJ/1OH9w4F9e674tDpft/fafardxVBML/e9rNzPvAiT+rugF304I
+	vaJeRPTIRhhnRslr2WTQb8mwEruF5FE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=f6WNUc7+ccLtCGhgxedehU0mIM9y5RDc0/iE/jkmqtI=; b=Bfg77qhxtGC5hNL12v7G11D26v
+	PcgN347bttFKmlJs3saw2LMy5Dm9HZ05mQKT4Vs6Ewcvz/Ja6XyCuqW7bnmza0oHiIiUquT49JFek
+	UNZgChWp72DD5/QTWqEPXZg4k5HYipU+4t6dPPCfT61eCUjWZFeXAz8nBGnuzKRKqxgV9bq8rKVnl
+	SYZnDvMQXYlvoeSqpnTB9MCP5IJX1mfyOWWn64+h0dEMVcs2OUCEUS2ozbF65MZw5fMy4NWQPCTds
+	VIBdAjzRtxCqZHgpDwoJARhg2Nwetd3qJ2h0mCP5IVnKGjlksK8muVBthSusdvJBPwpXSeWHmYSof
+	c3f14PAA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x4Q7n-00000001iSG-37xT;
+	Wed, 09 Sep 2026 21:46:35 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2D25F300A9A; Wed, 09 Sep 2026 23:46:33 +0200 (CEST)
+Date: Wed, 9 Sep 2026 23:46:33 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ye Liu <ye.liu@linux.dev>, Thomas Gleixner <tglx@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>, mic@digikod.net, oleg@redhat.com,
+	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	gnoack3000@gmail.com, ljs@kernel.org, sj@kernel.org,
+	rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, tony.luck@intel.com,
+	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
+	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
+	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+	babu.moger@amd.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <20260909214633.GN776954@noisy.programming.kicks-ass.net>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
+ <20260908074228.GW4120091@noisy.programming.kicks-ass.net>
+ <20260909120911.39032d13@gandalf.local.home>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909120911.39032d13@gandalf.local.home>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A3709140002
-X-Stat-Signature: sctg94kja14zpifzshfxftmnrkemuytr
-X-HE-Tag: 1788989399-662254
-X-HE-Meta: U2FsdGVkX1+QEvu9igXHKgWgPbbpW55Zk0KCEy9vKSo/k9WO7ROJR2Zb5srockH57xKRCEF+aXY9/GzEpdenq+5k1pVHkrRa8kDg+j7irCH0WWBnHO1rBPNXEEclUUjS/8jIe0uM4RWvdpfLyj1nlsZns8WEe+sg6RCcoqZYmcrefrJgT8Qjvjj3JDXGvwk8hftMbc8D2PPwpbzaqAqNtDkPBaGYlk1HJZSsA1AIhQTZJ8M38GmPuTQ3dFHw+lEv3ysD02vID4MSPWZd9PZOWVFrTOJnnmunEuuK99JG08xYrA8j1OF8kcTnIScalra0pt7PEk53Fp5pKIpSU46L6EMWPWwJKOly9byb2p+F+qBScH6z7IW9GKZ2cwkAgwMRIFPMlYfXkF2JdfteUxkF2O0lI99dw+OQJYAz3edHzg8wCtJO022YEYxUUSOaCe34xSNrk1AtVP2nF+M0kHH5E6Iz5Or+lWElGDHeE82eChtETkr1yMZvQ1TRf2+AjlzuOFbWyle4X/ebGOYE76idzZotdLBTSJpzBNwXqMNZIsWvdqrkzA0bM6ISTlI2GwMTdOBCa75Jpk80g6zTTjYpX4rwTPARUKImclrHMcMHocZ/ITacuHVLzCRoONms5HZH3qao+/Q87kNY3FdFSDDMrIRcJYCu1+2M6y+Eg5OtaZwqDsD3qYRi//N8ovo13ofG+gnBrErBIJRO/r8hUclFLu+ttdIJJSb92RHCJ8cYXCCO0CbfRsSn4GK+1TfdEbancqFf7qGc/WXAukD8klDVmJnvCmq7+RkEXMexXr6GPan5GaLAisjKmp8zpF+o291YSPD9dPQZeB+t7x2CIE4zzKfsrBlRBY+/r6lR/xYAI+vP/E01TWuUPJfOaW57oEzUacGnvpLRKhiGT4XJSwsV6yAT196pYELrChelFgRXal/3wlUT83i1wY9/q1WKepfejaW6NOt7VYSRlgKph+e
- A8+ELJbg
- fDV8TmINNH/IyQHrqbSQgvAz9bNRAptR5AehZKE1K/ZngZaeZROz63PELX0KSIdkptSQEp8dou1DSeiZfoJUcCznfL8J51UFUetD0X4u8bn2urSK5UsZLPzVVt1X/uoCjF47iOhVeRVmqgBdx8ShjuxUFYHdz/p+u3JJ9JVWjeaJf3L3zzSOHGkLmHIpApcNnOR74Uzko0JlfvJIAP5w3QDodOweaKUxV4VN6eQuZJUrdNme6mYMzpSufFlzMjDUalCxkBe4gHZBYtDMyJMldzP/miZullVPYcX3J8+relSi3puNFKxvO29LmLYthocLNA9nyRcHlkJe73VxC3wejWkAL8kWkn3C40b48G/gIQHYrYfO0mQ3Rpj2Rdio2ac9p1rF5d7nyofjmxJFVdrdt87CSEqoiaQYreCeE0mZvSC3T2FH1aD/1Fm6Wmg==
+X-Rspamd-Queue-Id: E60A118000B
+X-Stat-Signature: ob4ozp7omsatz7juumrq833qdbjfutut
+X-HE-Tag: 1788990414-339968
+X-HE-Meta: U2FsdGVkX18TVdX4FQABjDxmX5zlDy6s70VDxyaeRPalw7mdCdXRO4pemmc2GhYkzUgdQokE4WuNv5ou2ZA8P3t5hQ/MSTawht4j3U/BtypM0U9caJFfKYGLp5cHidGs3MYEKnybjnEehawt3LspFsxwzuxhpwpuRrV2EbmEZ7XgtuZIVkI+JPeahsy+7W9adAC5H/YjDnCt2N7rPeD2ix5eb+2mYcmUb/F2X5rZDSNEXxYkD6pnC8UwnEOCchDHxj8hpYtXlNuXp5JPdik/gkvfm8VPROidtG3zDWlz8y0ba28BYa+jbJpFVR7+ofR2wuZEixjUJBV9fSW+1h8UD7QVHKvfLayc+aNQ6aPd+lh75ky92UBiLrQc1689+T5Cm7vhipGp4vHIh6xs1iKMJwAsYpHk9Mkw1WqgBFiqP7Av6Wqn40IUwg9c7Jo3BtXgARhuvuWGDzfXoDm//H7+7nUWl1+5KW8/R0TOlMfadq0sBVWqa8MmiNUJE7hAX+JlxWHAN8S4Nn4rTkDdIp77mU1eE2xLY72naLGHndIBU2bXOagwT1s+gW6+7N1NKl0YyzjV0e8I+C/2JcIfyih0pXM3YznOmnNNa4UAHWIRAzxsDOGvQqolbvrslQl1pVmlj/BpvVTIZuInSh9Mr8NQpCDXTcUIETYSgfQebH2jl+tRxMCTqETeBmgs/4ExJUByB3XrP1+bCoRBWG0cn5MsALZxsQobMz7x2uQT77oyCENETzgC5c7/ULGjmM1YD4c6B0a79AphBup+zXW7vD1opxZGuknVmLmVxw+Ai/TknTu/CWub6mTdrVva7j6n4egD2BMpDARnx1PLn/tb0ULSBFRlVii9PgcVa4WDODiQJLitN3pNIpjg5A1SLjzordTS/BIsNMeFyrEbHp8FYeiEb3bJtbIEqPzLa2GrDsVMAdkRI/ap1SHZhNFKSpqWnPTvwzbo9aADR1jrS5HBFgr
+ O6+48b8D
+ ScNOgwcXezHRtR+CUCTKEa3TbeMDQ7jzOAujbmGFyVjRWlgFckkG5gksPuebBoMJ0sP3u2rIyLuKGTlVOYbm7yX9abhWUQZHPpAJJuTvtXcDey/vtGxDUVO8x1HKAy4aDRuCpvu5SV24L7P7sQ5uZRF9fdGZ7CFkFgu8YDfMkKiD8ITKm/FepSOCsXZ9FBbnzRbhMX9tntAp6pVFlvbgM/mF1nWM+I/cfyRVY4+gkKm3WvGM/xkROHfX/S/my1kBK/QZVUr2dKfZg5QCvOObWXahnMRvHBCDEvLP6G2gTCv2IYAmP8r/nD/Kq6cBsOpKyoCj1RYo8/+XTIgopsUojX8QEHPDWw6B6RcFedfxAo2p72yj4YpH8LCxtHG+SVxLeahAmNDh43tRcZN3PqYG68bGtbju7jJb1G16u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,92 +125,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> I started review below but honestly this patch is confused in multiple ways
-> and it's not entirely clear you really understand what's going on here.
-I can be wrong, but was understand that due the order that the code was write
-probably the data race problem will not happen.
-
-The reader (__vmf_anon_prepare()):
-```
-if (likely(vma->anon_vma)) // lockless check
-	return 0;              // OK
-
-// if the check above fail
-
-if (!__anon_vma_prepare(vma)) // called the __anon_vma_prepare
-    return 0;
-
-```
-
-inside __anon_vma_prepare()
-```
-spin_lock(&mm->page_table_lock); //ACQUIRE semantics
-
-if (likely(!vma->anon_vma)) // re-check under lock
-    // ... alloc all
-
-spin_unlock(&mm->page_table_lock);
-```
-
-This is safe because, if `if (likely(vma->anon_vma))` return NULL, we will got
-the mmap_lock and then page_table_lock.
-
-The critical re-check inside __anon_vma_prepare() happens under spin_lock(...)
-with has ACQUIRE semantics.
-With ACQUIRE semantics , the cpu (or compiler, I don't know) cannot reorder the
-memory access acress the lock boundary.
-
-I'm right?
-
+On Wed, Sep 09, 2026 at 12:09:11PM -0400, Steven Rostedt wrote:
+> On Tue, 8 Sep 2026 09:42:28 +0200
+> Peter Zijlstra <peterz@infradead.org> wrote:
 > 
-> It's also basically implementing what we suggested.
+> > >  kernel/cpu.c             |  4 +---
+> > >  kernel/freezer.c         |  4 +---
+> > >  kernel/hung_task.c       | 11 ++++-------
+> > >  kernel/locking/lockdep.c |  4 +---
+> > >  kernel/rcu/update.c      |  4 +---
+> > >  kernel/sched/core.c      |  3 +--
+> > >  kernel/sched/debug.c     |  4 +---
+> > >  kernel/trace/fgraph.c    |  8 ++------
+> > >  kernel/unwind/deferred.c |  3 +--
+> > >  9 files changed, 13 insertions(+), 32 deletions(-)  
+> > 
+> > This is not something that can be applied.
 > 
-> So at this point I think it's easier if I send the patch with a:
-> 
-> Reported-by:
-> Closes:
-> 
-> tag -> you, this patch.
-> 
-> Thanks!
-ok, no problem
+> I believe you mean to break it up into individual subsystems. kernel/ is
+> not its own subsystem, it contains many different ones.
 
-> On Wed, Sep 09, 2026 at 08:57:23AM -0300, Guilherme Giacomo Simoes wrote:
-> > Despiste kcsan point to a possible race condition problem, this is a
-> 
-> Typos  -> Despite, point -> points
-Hmm, is not the first time that any person points my english mistakes... I will
-improve this point, thank you for yout jints
-
-> > safe race condition due the access memory ordering, since
-> > spin_lock(&mm->page_table_lock) have ACQUIRE semantics and ensure the
-> > ordering mapping.
-> 
-> This sentence is a bit confused. Acquire semantics mean absolutely nothing
-> unless paired with another operation and etc. etc.
-missing full stop, my bad.
-
-> Needs a:
-> 
-> Suggested-by: Pedro Falcato <pfalcato@suse.de>
-Yeah, I forget
-
-> 
-> Also:
-> 
-> Assisted-by: LLM?
-> The list below reads very LLM-ish so I have to ask did you use one etc. etc.
-> 
-> https://docs.kernel.org/process/coding-assistants.html
-> 
-> Perhaps given I am suggesting a lot here a:
-I don't have installed any llm (not even cursor), I just use a deepseek,
-chatgpt, etc.. to clear up a few questions. (maybe I should start use this to
-help me with english too)
-
-> There are other places where this check is done and etc.
-I would should checked this, sorry. Anxiety.
-
-Thanks Lorenzo for your review, help and patience 
+Just so.
 
