@@ -4,82 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2877CC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E53C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 329656B0095; Wed,  9 Sep 2026 09:49:57 -0400 (EDT)
+	id D08BC6B008A; Wed,  9 Sep 2026 09:52:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307BD6B009B; Wed,  9 Sep 2026 09:49:57 -0400 (EDT)
+	id CC8706B008C; Wed,  9 Sep 2026 09:52:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F00B6B009D; Wed,  9 Sep 2026 09:49:57 -0400 (EDT)
+	id BDE9A6B0092; Wed,  9 Sep 2026 09:52:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD3506B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:49:56 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 034651A0218
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:49:55 +0000 (UTC)
-X-FDA: 85194357192.20.DD21EA0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E0A46B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:52:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5FBB80207
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:52:25 +0000 (UTC)
+X-FDA: 85194363450.25.06555CE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 48D0380008
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:49:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDWFsZxX;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 26E6D18000E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:52:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rc/XpYW6";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788961794;
+	s=arc-20220608; t=1788961944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+I2D35fOAYnXCoF02914TKvXlI9D2AXKNijwzpONiM8=;
-	b=4bz3lU1hgWnJdyOUbB6j9NkIWGqgDHW5FxdUamC44RyGMtyS18pm682N5pBsSGReA+yoca
-	ETDYEul8uCX9jB1DK/UNEVhsAQHfltXlI4L3q48eMAloUE/MU4t5bIrULh3D+gLRjiPxDQ
-	TXrC5tKf6o7Mr5mKPfy/vlrWLlsA6kk=
+	bh=Kmq63K6J6IaLLBR/41fmMzftkZbpiaUzb2YtjOSoo0U=;
+	b=PJ9pPXZsSJMld31mBheRmlx3UqVbJyHqa0oND9n09DM6IV/Ph+gL8DpSKKxzmdrAMJV9em
+	pUPbSPw2gIjKfMCiO3Lyug2FrMX3JFvfZGsmqtt7sjly8VXqm86FF50Ms61m4kp4YMKD7g
+	Qe3hWZMYjf+CQMj2gIeJMvbNFbrgJIk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788961794;
-	b=Ie2EO8kOYuJoKcpyIs3R8tz7aHcsp9BCpuwG8eGrpMP72ONVmkLk1D7nzbnx5ma5b9xoIo
-	mlTdTF4kCfDW+WEccPxSve8a9Yp03dpWLoMpUBd01aDwl2xkbTpkoCB5zYmavT9LcKC/cU
-	jOm5fxyoqs/MmTAOhSS+QIIxiRNJDKE=
+	t=1788961944;
+	b=BrTvnbN4ClT3T+mbaeL0H/mhbAANMzIMPAwc9dncXB16UajLcnb84k5jpZLYSn6FOymUhW
+	tFXqrOM6QZ96z+qjUg9b9kLPe+fhnfivD6gs3Lwym2imuLKwNcI3ttfVrBXqR6JNNJqodc
+	UNQGVroMx+X1zZ27vyB0MiSeh4E5gAM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PDWFsZxX;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rc/XpYW6";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D11C66022A;
-	Wed,  9 Sep 2026 13:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396B21F00A3D;
-	Wed,  9 Sep 2026 13:49:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A774560211;
+	Wed,  9 Sep 2026 13:52:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC151F00A3D;
+	Wed,  9 Sep 2026 13:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788961793;
-	bh=+I2D35fOAYnXCoF02914TKvXlI9D2AXKNijwzpONiM8=;
+	s=k20260515; t=1788961943;
+	bh=Kmq63K6J6IaLLBR/41fmMzftkZbpiaUzb2YtjOSoo0U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PDWFsZxXJvJiwXVwqvtyXuWs9Up6ldtcBEiMHIMBsQBnJ3t8fIumrzdV5uWwg4QMM
-	 E8R/V4YZZID5FrDdTw8Cg5+/o/M+sd8X7/FwasmcNli7NUb/WT5ZbscRLoeglnucy4
-	 63CSeTR2izC5APp4Bpx2ZdEOoYMWLUXL9jZzYw26lcIz56MCHsZ9fMgSiL8iXY1ikA
-	 GToWzo7Kb6ILsYQHlzxEOd8SMf53oKOZ/TgRh2auRzjzKZnEhCpj5/bzSN90BIeVsr
-	 HmtMMkzSsXm/Za2Yk9G2E5f34L1A+tZwl85UChjjbxw6Lj4Lz+cJX3iN2jwldlshv/
-	 E4NECwsIf+WxQ==
-Message-ID: <7e4a9b02-4346-4526-953c-2a1f2eea87d2@kernel.org>
-Date: Wed, 9 Sep 2026 15:49:48 +0200
+	b=Rc/XpYW65T8AigmjkUpYPLbHSZ9iXw+bBBHqj4ua9Q2oTPZXtYWZGsYw4P+UOFXEn
+	 5Bttkz7GfSPJr/Vjdm5880Q9nk+FmJIrh5DInsvEW1R5FM8DmJvaGhSsNuPMxE7E1y
+	 JgP9Q9tE4VzRuEtYnS3oJRN7Xabxv/7BEH82ph2uywANQiWQQsgn2MNdXG6FLrSAj7
+	 4Ljse3qoohE7fRIu1f2osn6NaKOpTmebO5+K5E8/dADRwqdyg/T+JkE7eOpCSuov0s
+	 foVOnwwMQCXZ7GMCSmMeW3lfqC47NeyncHaRAI72S/lqru99uE2/3QDEKaDAzWgziO
+	 57ZeCyYKJlxBg==
+Message-ID: <6067ba05-82e6-434c-b717-93ea2fb7d853@kernel.org>
+Date: Wed, 9 Sep 2026 15:52:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/mm: describe set_memory() and set_direct_map() APIs
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan
- <skhan@linuxfoundation.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260909-set-memory-docs-v1-1-6065d3f208e4@kernel.org>
- <e173c341-eeb0-4361-9729-9b996c3db42e@kernel.org>
- <aqE4hFXS0YHZKLEy@kernel.org>
+Subject: Re: [PATCH v2 2/8] mm/huge_memory: add a comment to the open-coded
+ swap entry
+To: Tal Zussman <tz2294@columbia.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20260908-folio_swap_entry-v2-0-ee6d01dfa5e1@columbia.edu>
+ <20260908-folio_swap_entry-v2-2-ee6d01dfa5e1@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqE4hFXS0YHZKLEy@kernel.org>
+In-Reply-To: <20260908-folio_swap_entry-v2-2-ee6d01dfa5e1@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 48D0380008
-X-Stat-Signature: nxxqw4e5n95u1sr8axikjwkjj89c7qer
 X-Rspam-User: 
-X-HE-Tag: 1788961794-589087
-X-HE-Meta: U2FsdGVkX18U2Z5m4VVHg3UDskJ665DVSidilsnuwvKRKif8ouqbpMwVgmOwUIRI0m1u8tdfUbLXAQVjvehE8pkMbH4d8h2YphC5vSDv0y7ddYcbacUKOJP295MTbAMpwKnGYXN8PXnVm5br/hMJ3FFZwTdAvjolkC7NeudfudUVfNjNmkttBaZA105g/5NXe5j0DQ3SPX95HBtWmBaU3tnSJSPPy5Kv0g6sBRiNBxWwaLJnCw54YtpYWKWPiCapuaUc3+T12Z0cgqEpvu3J0+3a2KHnkyKK6fOLzJvbtSTwtvNZTn/e1LLkF+/Cb4g0BR4XXY8HszbwtP8nWgYilefSYez71e8zD2xcRgHqvjBAhhM7LQ/n8YdMjrE5EloiqY5w6ec4L69h9iA9BdHUbQjP0Bu8T4PiOL/lJjPl8jfvq928H/XSNuYqIO2bO/kocQ1fRxynIGqD++vi4gKgbMhQ30hXWa3x4ZNRRwpTbcqI+aCLCsiBm+63V0HK+0y42hMcc1n9WFvfjDkZQjYFdfO+0aeUW5qRu3xkHpX4/Gd+jB1f4xI2aJywXgnQwIO75zM1s5nf7nsvrQq4Zl6Fxkv2nEiHfC82a+SeGegmXLMi/ItpkDsIsC3ISMJmIUH19OnkZPLPwFdv9krciYoN/oKeKawpBEp8rEDJNgTE0yCXQck55HOxKauzt557xPCplgDuJDQvY0zTi8HkfssCvKQl7WIyY2l1G9ij2IoLPF1y5W2KuGQte5ZJNMWxaoMSIi2bEImn7EanTvROLcX8jxZHahF+eaUK0GcAIbdpaiYyQP6uNNzzSbZIr4i/jMwIPZvhTSEGcWiYWBQzP0cirv6QA/4GK8BvymL1TaH459MUeh7JGg5RW6fGUoNNFVuHIWzO4ZANHa8CcMBfMEF7vHHjHDqxUl+G1XAs4GgARNIxQ5LQo6dDMN5wb4ND3/fh5DlDZB6ezlJ3QM36TA/
- JIcjfeQa
- 9lwKxHT/BekWwY8LOCkfSX/7No2Rk8VDs+MImFppJMf4yhfAOK5RJaZ1Bz1TgC/wPbPOaO4noFZ08kKokEMyu98wZaXunFXlMpdHNkf2HG5YEMc1pg86W7VshQRO9aEIN8jvvz9xtiCQiCiZzaQ4ECWM7SPC9iFAe4aoizO3UI/KVMwzWMHK3KgTi0wQCozPctP+DSZR4ILCAQCAc839E16qQYjhVg9wTuSIdN4bwHomTBATzIpm9WYXiCIXp82ORKyK4oIKXCYz9yyCQIblRt1zq9s+cPqt/8pwijAU4+96S+Q7G8oqTbs4QW5QLtELbIB3PYgf6Ju42lQjcvStRbTrfoZ97AAiAV/HH
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 26E6D18000E
+X-Stat-Signature: gki9choso8uryqfw6x8p4ayfs6cruxb5
+X-HE-Tag: 1788961944-793582
+X-HE-Meta: U2FsdGVkX1+MkwbK82QX2L8rRzFimWlwhMIvvilp3ETHAOmEzid/MV41tcY6KUxqEaYiVzL7A+PI0Fdggps9HQanCLjfhWSGEH9V3mJwTIEhwCkO6zTj1D3vPY2j27UDGm9wYOSSp9rwdooVv9pndOaO56tNvzvYPRJTL2BrxmscEbWOCe09S5ts1KimK8JtoQS6ukFtDIv/qjMrNa7mMWLzYjUGH+qtHaenxWe8Yq1+6qxjGY3MN5AbHPMLQR6pYo/F5eGNrLUsO8i/H8tgsioeAyT0ORRm1HL2IWXdvp7GpgQBiAuIQUnfWlJX8xeiLw62JGZL5nt7rBsF4Cg5YjfhkuMfO7/vwtpfU1qlQR9A0GReHTIGwkrzFmSWIJr5I/ZA/F5URnqItQvDqdbzTbLaKtPi5iGnlLCRjqi7f6Y4a053U27vCHOswfGuYGvx9L3wIrsxAc4bLh2cLY8BQA2//p/RNE4VlweD7arXaDRisypW/a+M2ZRGtiS+QrlM5bFEGAgYse+ytbpAkPmGhvyzlBWIZdu7CGlLkqF1gRKQFG8yg2AzmX1zxQNAGDl4AEghyFUJ1rUERWRu5H1d7K+W/t+zWjfXhFpTqCpjxXBGVeNdLDVGGRwVc2ucuj8Be+I2W2DTBT9dN3s7rq7BjVIUkRHWj5yb3Nb1iCV0xAXWcdWeaIrvwkmixXeS64f2b+mEKwgOOhn+XdkiS3s9ikGXEggvx8kU6kxRcgYwXjWmiYKco5UwnVhbGhaG/RvhA7ZSS7JVaq+H7N+CTj3T16abpzTZhhT7CFgRaG+xHsIQy5MMVWa1e7APsXx/8nAffMZPkgXVctTMROXQz1thhyUYWIfpJ7coon7uUQ3eY9wU3CeskxESdXozy44jjlTlF0RFs/8CatHL9NsRF9VpCEO6lVDNyTgFxnMZUHTOMNIZmEQWh0A0GNeg1k5X6PRCp+4YKuQxlTNyRGieWAx
+ d2uCRo4+
+ fQqRQCsl16GctDNxEKuBDovjd5QAp/5Y8p4C7bhK6BqGCGeXGaJQ1OgJu9DJSQ7Dj91PCDkmzRDxhsgMkA1zkwthe4d4GaW4kh9fj51LNiNI1pqteUYJQ0cu6GTWy1/CBhnmSGSd3ozfUsvLa404TUpSA+ykDOVsBopcbnlDQN312TO9gwDyAg0leSfmJymeZq0Kmexo4xC096OW/aWsll3Trv8gHm0Eg8E3CaxC4zDe2HXtuqi3SQcuS+Wyfh2Rkh0mjqBGq8AMzy9B3zYXKuoro1Z6Tn9GHiTYEb1Ind7UBBu6j8/9tzU29jbp0aVIQqxcTz7IVvIAOWzE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,45 +154,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 12:44, Mike Rapoport wrote:
-> On Wed, Sep 09, 2026 at 12:30:01PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/9/26 11:45, Mike Rapoport (Microsoft) wrote:
->>> The set_memory() and set_direct_map() APIs change permissions of existing
->>> kernel mappings, but their semantics are only described by the code, and
->>> that code differs from architecture to architecture.
->>>
->>> Add Documentation/mm/kernel-page-tables.rst that briefly describes what the
->>> kernel page tables consist of, defines the semantics both APIs have in
->>> common, including the parts that are easy to get wrong, and lists the
->>> differences between the architecture implementations.
->>>
->>> Add kernel-doc comments for the generic set_memory() and set_direct_map()
->>> stubs and link them into Documentation/core-api/mm-api.rst.
->>>
->>> Assisted-by: copilot:claude-opus
->>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>> The semantics of set_memory() and set_direct_map() are currently described
->>> only by the code, and the code differs from architecture to architecture.
->>>
->>> Document what these APIs actually promise, what they merely hint at, and how
->>> the architectures disagree.
->>>
->>> The discussions that prompted this:
->>>
->>> https://lore.kernel.org/all/a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org
->>> https://lore.kernel.org/all/5026dbec-0b71-4408-a78a-484a4b8e77dd@intel.com
->>> ---
->>>  Documentation/core-api/mm-api.rst       |   9 +
->>>  Documentation/mm/index.rst              |   1 +
->>>  Documentation/mm/kernel-page-tables.rst | 402 ++++++++++++++++++++++++++++++++
->>
->> Before I read any of this, how much did you review and edit whatever the LLM
->> came up with?
+On 9/8/26 17:16, Tal Zussman wrote:
+> The swap entry of each new folio in __split_folio_to_order() is
+> computed by hand from folio->swap rather than with folio_swap_entry(),
+> because the folio's page count is not valid while it is being split.
+> Add a comment explaining this.
 > 
-> I never send something I don't like :)
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  mm/huge_memory.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index d1ce061601bc..1fabdcbd8c8f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3763,6 +3763,10 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 */
+>  		VM_WARN_ON_ONCE_PAGE(new_folio->private, new_head);
+>  
+> +		/*
+> +		 * Not all folio fields are valid during a split, so open-code
+> +		 * the swap entry rather than using folio_swap_entry().
+> +		 */
+>  		if (folio_test_swapcache(folio))
+>  			new_folio->swap.val = folio->swap.val + i;
+>  
+> 
 
-Good. The rather excessive doc patch arrived rather fast so I had to ask :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
