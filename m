@@ -4,91 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDD4C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6483FC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D9F26B0092; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
+	id 5C06E6B008A; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98B126B0093; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
+	id 571EB6B0095; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87A536B0095; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
+	id 4607E6B0096; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 276AB6B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6612CA0309
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:18:11 +0000 (UTC)
-X-FDA: 85195033182.17.630C5BF
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8894F18000C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:18:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hdjrczZf;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B1B96B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7648401E2
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:21:13 +0000 (UTC)
+X-FDA: 85195040826.18.CF95F90
+Received: from mail-yx2-f8.google.com (mail-yx2-f8.google.com [74.125.224.136])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 84A2440004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:21:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ASNgJNKF;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.136 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788977889;
+	s=arc-20220608; t=1788978071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/kQrjWDVP8VToFUSa5vLPEZUGkwzjIEup3NeNcSxnh0=;
-	b=wlje+vbyi8pIHHQd9t9kCDl3eA6JhVAqjS9tr8I5k27OXblkx6yK31GYp30H850M86daEZ
-	HAqOJm9PKXc12bXblOQW9VV3JgLhlTY5noKn1NPTutNZs1NNi1ENZPhD+8xpQQww2PfMsw
-	z1wQjON7ENPeRPC1ghAB04+KFyKWgh0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788977889;
-	b=tO0vLz/J992MiJcoFH75AYEWB96t5aVBzRRP5EfZdHztmoLFG3SK/gGU6O77Of9OObQNJJ
-	hKLPTMbhD5y/fe9XQZdOls0h7z0iq+8AV8AS6+S6tjGtlAuVs+qQowjGuJIULyWJ6cIkvt
-	wrZ2KM5GqwiTL47/7hWCyo7jkbl8ioU=
+	bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
+	b=iWa7pkIdylgnoPNxhPY72cfBy2Zl4DHgISZbSQfAZAcojHr+YFMiN99ERP7kZOeRVES1MB
+	2v/A+AqDmSi3QpMSgkeASJ+TX5Ssjc0FhBWB+Ys0yvrun4AcQIj3PQ557tOoWDdgomZ5Su
+	LKeUu9wgUAkY0pdA8Y6JDcLi6jVVHbw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hdjrczZf;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=a5KoTsru4QeX3ourrXoG/HiW8Ls4AkpUlsNfQy7SGEw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788977884; v=1; x=1789582684;
- b=hdjrczZfkw2I5j0slrseLFrL0HLbRNdtQMFQrsNdzs1bYi1PYj8Tjts37DA6V9VJp7HsbDBE
- gqTGEV5KgS4kurpr3VBG0GruXhEvKyTmyOTlL/SjpO7Lybk0tvVNiNmK9wY329ZL5cjWMmleOqu
- 7L1Y0TMcv1+gqiBUoDXBAtLc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 7a7c3fb00e682847;
-	Wed, 09 Sep 2026 18:17:54 +0000
-X-Mizu-Trace-ID: 7a7c3fb00e682847
-X-Migadu-Flow: FLOW_OUT
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
- <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport
- <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
- <mhocko@suse.com>,  Jan Kara <jack@suse.cz>,  Tejun Heo <tj@kernel.org>,
-  Dennis Zhou <dennis@kernel.org>,  "Matthew Wilcox (Oracle)"
- <willy@infradead.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  bpf@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
- drain pass
-In-Reply-To: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
-	(Josef Bacik's message of "Wed, 09 Sep 2026 18:01:07 +0000")
-References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Wed, 09 Sep 2026 18:17:45 +0000
-Message-ID: <7ia4ik4ep9va.fsf@castle.c.googlers.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ASNgJNKF;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.136 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788978071;
+	b=nZK8i6oVyBG0XUbyEjNhJzrZU0Czuvxx5EydgBKCfOGQ9BDJxvwipp22HcyCcRdAdkUM9i
+	TM5AU9hYh+EAjy/1l7j1cSPG7V4YWHu1STgRhMxf3n2PDwhIawpgC5L2unv3kVm8XD5N19
+	naqb/D5sjOstjTlEDpKkeleAiv5fpXE=
+Received: by mail-yx2-f8.google.com with SMTP id 956f58d0204a3-66d0f3138aeso2186703d50.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 11:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1788978070; x=1789582870; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
+        b=ASNgJNKFi/VMeIih7pHFBvYgmQVKxzFvK7rItXvGXcJLZ5P6hGX8WhAX1Sn//LWXfW
+         1Udhj4b4QUp38lH4in/nud64Gm6n5suy3Li5JX1ywTxrU32hrKyXiVERx75ATvfjinc5
+         yDQeUQOs0YyqZRB1jUySaJC4/lDgyZ8Rc24TkU3I7Hc57y/QVCPEFbyhiPgr1L8nxSQe
+         1evBiEgWjzESprOKMjoYIGPyHFaBpqtUV78rtJ2uSp3x4s/+kbGNl6Dm1pvM+fGtg41M
+         aRrxXs3ladTs4G041pc6lgnx7BdEG6W3pmwYy9iK2ArQQ+vmt2uJW0fdgRvOYftm3orw
+         Btkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788978070; x=1789582870;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
+        b=N7zMoUqXeHZilFCMZ0Vkylu6JUsNRerZdCcz1yccmOfyUNalGC+nBOU7+IDu5Z+Ith
+         cc0qgAtW17GWuBJMw8/SDOIZwXHRbmMXCq0HHJoa6zBuEUKB1vdM7QyGab28UsNDuqh8
+         C9ktQG9mj7hzdE12nv5SfxpCg7Be9PoaEqyjNPDWnG2dCgMYkDIgnPxzPHfGjSzTRS2B
+         OHRhHM7+CpaTTMw+7sjTXucHbIVkd2Lpyqey9EBfG6c+pB/x/ZBRahb2P85S3JCBVfS8
+         tW7PsKwH/ea4zBHBVVUkD/Z8i5gd23rbafIVI8Nbq60Ee17okxhv+m+fZOQrXjJ5e2R1
+         KPEA==
+X-Forwarded-Encrypted: i=1; AKwUvBwrqUfNznxJ8WacSTyhYki5ndkQQVSSHl7bLGF7gjqEFvDvrmjeX61fH3EsbrlWK7owFBl+66evrg==@kvack.org
+X-Gm-Message-State: AFuF++kb15FuamUsrGQD7J5hjPZ7beT3100YhHIh9TsIas7UN91laOhw
+	XSAlbmg+glRdNAKBAub30hXKxZ5mCF47S9WFipOAe5Kq/84SIwVfzq+lF5QH3kq58Gs=
+X-Gm-Gg: AYBFou0GHEqK8Bi4Yx6xLFHEDIg+2BsHEL6JMZO8kHI46eMBjov0jyy3MmXbUq7KO8s
+	Zdnjrp6ZuU+5qytZNmwnQEqQErODEPzcOdSe8YUQguXkhHsqMw9YzO8nuv8SmmQwuloKrLJ1TGG
+	ljQOLBLvmjuDLjU5PGDoMMkNAHQNjK/+k8d2GhAQAOB7mNa1L+Yd1bH71ebax5jpBD0VZMqZLIB
+	EEd2iquNZBBCSXHnpuuVO3AOgw9IQ3K45AwzlR6wP3K+UjY5IkVbChgbvYPSfejeWegTeONS0UQ
+	67Gx+sClHA/EFDlV+SvwcWlxChknjbo8Aexb8HQ8mkZ2jwfUg+u77BstUl9oLW7DmVzcqHdhgPX
+	JDrOLoOb7+D9E0DslVMFZpu6rYBnKsIY8TnhvIeyV6ig0bqSfPoQPGbBR900JRmWbWPJbe4r0Mr
+	NbWAKKzL4c1P30xlHOWMCTb94q1PKf5+/Fig2+ekFOGhEybDkHvA7PdXK+2OuZgrULMzTNrYo=
+X-Received: by 2002:a53:e447:0:b0:66f:c1bc:c081 with SMTP id 956f58d0204a3-66fc1bcc626mr7160601d50.73.1788978070364;
+        Wed, 09 Sep 2026 11:21:10 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406871b6sm152808526d6.32.2026.09.09.11.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 11:21:08 -0700 (PDT)
+Date: Wed, 9 Sep 2026 14:21:04 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] mm: memcontrol: drop kmemcg_id and use the memcg
+ ID for list_lru indexing
+Message-ID: <aqGjkGA7XeYEHA2T@cmpxchg.org>
+References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
+ <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8894F18000C
-X-Stat-Signature: dxa5uf9cumr67pkoqrbk9bm1acixa15h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 84A2440004
+X-Stat-Signature: wx5woxyszaunh3ptdsu9y1k5cn8ci18e
 X-Rspam-User: 
-X-HE-Tag: 1788977887-405378
-X-HE-Meta: U2FsdGVkX1/y/5KRphk9kq0qQ6/Q3TpHrj8DVXHMe5ezW1W1ojturVc4leIf8ZmIb/9qcMDrMRQv1dxXDRDgQRpWBi6jSEUG2TIN06FnzSpkyfnXCyNYKu+M9ehOK+dKnwa4fNtFItvLTLDIRssabsiv0M6wDOOaFkp+jx0BAdpEDhR1WddJc9QoycW1Y9NEvs4WWAb23AmmDmWQQlY9ZbvU+bMJO2emodYZWk0/bqFq3UMrG8hzAm5rlPMeGvbOPwlY/0KAlDDNqz98jyl0GEMoVvg/4F6Sw82+qjMiaCr0kiCJP/p/UTK39m03Yl4rcHkvuWBaJAGSvrNQbqN1eZjyNXvIKUqHOax6f6sKgwKJfCDPZYWfWqN9OmD1dVQ9gAxtNePtiL6gN/Zm8uKhuu4F+vlgDMe4ZrXIhh3hA44VDh7zuTqInXRT99M/2kBrAHzrgR7eR4vtEA7GC45MIs9lNsKdoFNiUaOzHgTkb1jDs3wspi4K/4Ll5uTktpL3FgFROBFuLjzTrgyYxLkG7obXCConYqET+qXd01/hYU7PMTLnpAn5UeKpoMURxAakGBMtRyVZTfGKh65foLAKQQ8AyPrSz2PmAMBoq4vvUi/cp1BrwTHzAv+0E48yrUwBG3+YARcoE//K3G+DFykgkaI1g2anTbxmllh1cdJHDn/PEciqREBKCll5fEgJNlzPdZ6WoB0yD7euUXjT0t1Zn6U/8VVF04U3REZZTmZojfus7Rpw7Vw4l3oNMtYIr+dPlnT8fnKE6N02hMzFcoCwx+X4du8c2H2NFaVQQwsO1AByJaGTUXzV/DNDbECRG5s0jbvhwUCg0HTg+t/JpIRSUbJ6fu7VdLnW0R/0NFX2AXiprj8Gv1Ynz7L84u1zfK/WxJ8QkS1y1NoL0LRItVavYV40SPo49Rr9FqRgmEKX7e2VLHMe86shP4gt5/Tq6p91GR39TYsWh6UGUxcWU6V
- m6grww9W
- pIogpMgqYcmJIKg6n5e1yCTTlHnE7lIlSBAd2IMgOBZPSi00X6tIlTcY6fu8pmSvxRKYzOXhL2EoF7klVC6WY5yJl8a3wnX0pIPKdDnp9a+DUmR2uoeeYg6t0Q+FfEch4tDBPINw4hAL8IbG8hzP1eIoY1kZeNyf01VkzI5iK+WcEPXeIHvEDmqqoPTOm3uNgznKAS6BQT4T5cloMDmFJna1itTaLdwSGW4Dj9K3yu9jXSxd/v7r5qICe8VV1nMR0A5D5vv+V7bRpuJePbgnbksP49A==
+X-HE-Tag: 1788978071-169901
+X-HE-Meta: U2FsdGVkX19+vUQfCaldY7XsaHne2tHU+eQDeyKASDRTCOEwgT0shmr7hEF16kr6JfGtYAFxefpJCQ4qBM4L0Dfm49ethOMQMSLBk7hqzS+OrMlYZNYSQrT5jezDJjwrgAqpcRuDsEbX/iL74q3G28Z/mINGSQHpA5HFaCgXvx+IU+8juiYT5a/MrmodqOH7gn/B9g0plY1TPuCgOyppiFf3sBtFoRdg6duxFfJfZP430JgNNnAbbwEdl5KPPIMfydV2l7/8F3NL8i5yZ4nBJ4epBQZvBluPzOS6p9ebBNNVD6sutqsS9dJdq19h2957nNxi9ZMI6OirqaxFerXLYnPQqhU8rjD/t1BBVMFYhk51nw5ckV5qkHoLL8m/HnRTxjQcdJsprcppr2Csz1iM5OTz8VMxm6O2+8hgmgwMI2c6tHgiBIVbiwx8b10MgjRhoyXOf53KRgt56y21h7kOnR9Pf+mW75/9/x/Lh3u2CKJo8fvqZonlOtxxGj3EXweD+Po/FWrwsjVngY9DL8M83grj3nF2Ly5FHLtKNx5y4L+iygMZzY6M/0PkqWASkuBMxf3pwLnpUf9z7y9wjx5VLEUf2KRL1plEC3YUNBup2OVWNa8ltKqCCN5ekqVPrPwwm3da5iGNixfI0/YEkx0shfkedorIlg6paugOYMAvFjmqcQzt8W4fYj3n2dUyvhmZxCS2u7Plaj/6zVAt7s3Yww4LspRN1GTgEG/IWfAtU9RNQDfSk/bDN6kiu0Hxu9aW2ACw5e/u1wyqcvzCtnuLc8LX12XfGSWDnpHcJqZVOl42NDwPbOMO1FVbXEyurQkkdyOoRq/RHzjbAKnnweVyFPojxnG3Ey4xUZ+GgOCba1MV8oQ1jMvv2Z+nisSIjsxXT7CiL9pL8Pe5wv3q5KbzL6X4WmfsxCzRciBpHHbE8MIX11+paZwpTNjqzMcKitnbJUEAkZZXEXqnokXyJNz
+ nxjxLeJu
+ dDMmcbwpFTaaTMQOLflK4OwcDirer6HIjw7TMMjpPyJfz+03atH54+d1nB7QA0ENTqWGPIbZK5BTenqBXqzwkWyNzN6zfvx4EwvpnedM9f/Ps+3muY6dywAXXxcRmSFWjOghSSubBvOkgK2VI1NVF/TqoDYjo9meAsd3JHuzbFa1SUfWX8bEd8xp/t/tqrhN8k/F0rK/5oltePC+ZrnXYbk7mVGpvIB09fwUW1h8+vrQabG9IL+DYIMO0aNRN1Wn153hsW+fohNwZKeGejUS6RFzdr8fpXWBAtmjLXr4RO5X6k7cj1dG8CKwNHtEwyQ8uxJlj1LbE062/tK6gEO0vAuBr9tcwp+r8kK97JeE8wXeyG/oZV4//h3sHkt0Pj4aYkY042YAVp4/5g5yLiD/hMKWx61dOH0HsAq8I7TS42jC1vaODkUajPF3t1u5FAZEp0g20BmFLBa1w9U+bID/dJB6IcMOmxWMcxGNG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,58 +132,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Josef Bacik <josef@toxicpanda.com> writes:
-
-> cleanup_offline_cgwbs_workfn() drains a dying cgwb by calling
-> cleanup_offline_cgwb() until it returns false, with a cond_resched()
-> between passes.  On a CONFIG_PREEMPTION kernel that cond_resched() does
-> nothing: _cond_resched() is a plain "return 0", and under
-> PREEMPT_DYNAMIC the full and lazy modes disable it.  Since commit
-> 7dadeaa6e851 ("sched: Further restrict the preemption modes") those are
-> the only two models on the architectures with PREEMPT_LAZY support,
-> arm64 and x86 among them, so the drain loop never reports a Tasks-RCU
-> quiescent state.
->
-> A worker draining a cgwb with millions of attached inodes runs for
-> minutes.  On a 6.18 arm64 host in lazy mode the cgwb worker drained one
-> dying cgroup's writeback domain for over 11 minutes.  A BPF program
-> unlink (bpf_trampoline_unlink_prog -> bpf_trampoline_update ->
-> unregister_ftrace_direct -> ftrace_shutdown -> synchronize_rcu_tasks())
-> waited on that grace period while holding the trampoline mutex, 42
-> tasks queued behind it in D state, and the hung task detector fired at
-> 614 s and panicked the host.  Any BPF or ftrace detach during a long
-> drain inherits the drain's length.
->
-> Fix this by calling cond_resched_tasks_rcu_qs() so we do not stall out
-> anybody who calls sycnrhonize_rcu_tasks().  We put this in a do { } while
-> loop because if we have many small cgroups cleanup_offline_cgwb() will
-> return false and we will never call cond_resched_tasks_rcu_qs(), creating
-> the same problem.
->
-> Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/bpf/9d444098-7c03-4163-af12-bd0a79a51443@paulmck-laptop/
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+On Mon, Sep 07, 2026 at 07:01:08PM +0800, Qinyun Tan wrote:
+> kmemcg_id is a copy of the memcg ID assigned in memcg_online_kmem(),
+> and is only used as the list_lru xarray index.  With
+> cgroup.memory=nokmem the assignment never happens, so every memcg
+> resolves to the per-node lists.  The next patch needs the index to
+> work under nokmem as well, so drop the copy and use the memcg ID.
+> 
+> The ID works just as well as the copy did: root and NULL still
+> return -1 and use the per-node lists, and the ID is only released
+> after the list_lru reparenting, so a stale or recycled ID can never
+> reach a live list_lru entry.
+> 
+> The early return of memcg_offline_kmem() under nokmem is dropped as
+> well, so the reparenting also covers lrus that stay memcg aware
+> without kmem accounting.
+> 
+> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
 > ---
->  mm/backing-dev.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> index cecbcf9060a6..18e999053bae 100644
-> --- a/mm/backing-dev.c
-> +++ b/mm/backing-dev.c
-> @@ -910,8 +910,9 @@ static void cleanup_offline_cgwbs_workfn(struct work_struct *work)
+>  include/linux/memcontrol.h |  8 +++++---
+>  mm/list_lru.c              | 10 +++++-----
+>  mm/memcontrol.c            |  6 ------
+>  3 files changed, 10 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index fdf4812e1d818..edeb287978934 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -254,7 +254,6 @@ struct mem_cgroup {
+>  #if BITS_PER_LONG < 64
+>  	seqlock_t		socket_pressure_seqlock;
+>  #endif
+> -	int kmemcg_id;
+>  
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+>  	struct list_head cgwb_list;
+> @@ -1775,12 +1774,15 @@ static inline void memcg_kmem_uncharge_page(struct page *page, int order)
+>  }
+>  
+>  /*
+> - * A helper for accessing memcg's kmem_id, used for getting
+> + * A helper for accessing the memcg ID, used for getting
+>   * corresponding LRU lists.
+>   */
+>  static inline int memcg_kmem_id(struct mem_cgroup *memcg)
+>  {
+> -	return memcg ? memcg->kmemcg_id : -1;
+> +	if (!memcg || mem_cgroup_is_root(memcg))
+> +		return -1;
+> +
+> +	return memcg->id.id;
+>  }
+
+This is a private ID with lifetime only guaranteed for online
+groups. Reparenting happens right before it dies at offlining right
+now, but this is not a great dependency to have.
+
+Use mem_cgroup_id() instead and just get rid of that helper.
+
+>  struct mem_cgroup *mem_cgroup_from_virt(void *p);
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index a4522ca93ebcb..6fd4e9af84396 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -502,7 +502,7 @@ static void memcg_reparent_list_lru_one(struct list_lru *lru, int nid,
+>  					struct list_lru_one *src,
+>  					struct mem_cgroup *dst_memcg)
+>  {
+> -	int dst_idx = dst_memcg->kmemcg_id;
+> +	int dst_idx = memcg_kmem_id(dst_memcg);
+>  	struct list_lru_one *dst;
+>  
+>  	spin_lock_irq(&src->lock);
+> @@ -536,7 +536,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+>  		 * allocating a new mlru since CSS_DYING is already set for this
+>  		 * memcg a rcu grace period ago.
+>  		 */
+> -		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
+> +		mlru = xa_load(&lru->xa, memcg_kmem_id(memcg));
+>  		if (!mlru)
 >  			continue;
 >  
->  		spin_unlock_irq(&cgwb_lock);
-> -		while (cleanup_offline_cgwb(wb))
-> -			cond_resched();
-> +		do {
-> +			cond_resched_tasks_rcu_qs();
-> +		} while (cleanup_offline_cgwb(wb));
+> @@ -551,7 +551,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+>  		for_each_node(i)
+>  			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
+>  
+> -		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
+> +		xa_erase_irq(&lru->xa, memcg_kmem_id(memcg));
+>  
+>  		/*
+>  		 * Here all list_lrus corresponding to the cgroup are guaranteed
+> @@ -566,7 +566,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+>  static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
+>  					    struct list_lru *lru)
+>  {
+> -	int idx = memcg->kmemcg_id;
+> +	int idx = memcg_kmem_id(memcg);
+>  
+>  	return idx < 0 || xa_load(&lru->xa, idx);
+>  }
+> @@ -602,7 +602,7 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+>  			if (!mlru)
+>  				return -ENOMEM;
+>  		}
+> -		xas_set(&xas, pos->kmemcg_id);
+> +		xas_set(&xas, memcg_kmem_id(pos));
+>  		do {
+>  			xas_lock_irqsave(&xas, flags);
+>  			if (!xas_load(&xas) && !css_is_dying(&pos->css)) {
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 7ce50bccf1264..619d4c1f2e8f2 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3780,17 +3780,12 @@ static void memcg_online_kmem(struct mem_cgroup *memcg)
+>  		return;
+>  
+>  	static_branch_enable(&memcg_kmem_online_key);
+> -
+> -	memcg->kmemcg_id = memcg->id.id;
+>  }
+>  
+>  static void memcg_offline_kmem(struct mem_cgroup *memcg)
+>  {
+>  	struct mem_cgroup *parent;
+>  
+> -	if (mem_cgroup_kmem_disabled())
+> -		return;
+> -
+>  	if (unlikely(mem_cgroup_is_root(memcg)))
+>  		return;
 
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Both of these functions do very little now and the asymmetry you're
+adding on the mem_cgroup_kmem_disabled() check looks odd. Please just
+inline them into mem_cgroup_css_online()/offline():
 
-Thanks!
+onlining:
+	if (!mem_cgroup_kmem_disabled() && likely(!mem_cgroup_is_root()))
+		static_branch_enable(&memcg_kmem_online_key);
+
+offlining:
+	memcg_reparent_list_lrus(memcg, parent);
+
+The root check is unnecessary because roots are not destroyed. But if
+you'd rather not make that change here, keep the root check, and leave
+its removal to a separate cleanup patch, that's fine too.
 
