@@ -4,95 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0B2C79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F190C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:31:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFE986B0098; Wed,  9 Sep 2026 05:28:35 -0400 (EDT)
+	id 789E16B009E; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E84A16B009B; Wed,  9 Sep 2026 05:28:35 -0400 (EDT)
+	id 714686B009F; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08D26B0098; Wed,  9 Sep 2026 05:28:35 -0400 (EDT)
+	id 5DC546B00A0; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E9026B0098
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:28:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E003D1A015D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:28:34 +0000 (UTC)
-X-FDA: 85193698548.17.BFF2E19
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9AE19180009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:28:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=fqO8rMb3;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 307A26B009E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65EAB1C03C6
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:31:54 +0000 (UTC)
+X-FDA: 85193706948.23.C6EE9FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9B4F81C0003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:31:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FAlhbD7/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788946113;
+	s=arc-20220608; t=1788946312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9lkQQXf5XYtCcdnsfgeCGlKVAE7OhiLAhG9JfwG3Lk=;
-	b=VBM8Q38LShmN2SgMdB7/nhyIjNAEHbKpUguRf/COlf1GCqFoYcyK0ItDTl+HpgNmHAmZPH
-	EBx1ihZLucDF3qPnaekA1VhdK6uMhrRbenxNm0Zhy0ZsZPpHWluWjqvMIHIJccUlJn472l
-	2vhoCC1ng4KxOw4TUKRNawn7xiDpwhU=
+	bh=NFgdN8VYLiotA1X6CX/YGSNfCUyM0k24sUOYaVWvi8s=;
+	b=yxHVlds8XsmXJ3FNOzufVx38qKQohCbSlUChsDRmFjh3wMWkXvCS75wY/a+ENmb37XHhme
+	B+ak+6SxPEgbxIa5/HDQzMmtJZnS8fHdRsR//xdvLWtwqEIxfTJQxWCSg0GxFNbDo5jEHh
+	NoIKN55NjaW2cL97h2OnCkdzlAKgFsQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788946113;
-	b=ydej+6AWyeDbNihWrnSZekoquwEi6e+hs3PCHF4YGzCBemNiuNwEZFImhYNy8rRor8IP7+
-	t+12xUde4BJ6LiznrT5EWwbHKER97cV1NTzBAZfI9sc0pVxyZ+/SGglVUr+z0HuAurpBd9
-	TCyCz6sDHsrqF5bMC3WzX446MdpF9A0=
+	t=1788946312;
+	b=R8eCkPUl+V1GVsu38VVWritO8anQQx3TW3pKUz5zo5UoCfHUs+Y/Ulm+KN6jXXOFrRN/vu
+	iqV0M7eCBV1UM8A6X8CuAD9Tz8TM1avw2ZuG90bQ58g0RBaXUuDdxQH6p9mL0gs2sDvqOk
+	rbHIHMuVDHlT4s3qBm6N03hnbqIa/GE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=fqO8rMb3;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=F9lkQQXf5XYtCcdnsfgeCGlKVAE7OhiLAhG9JfwG3Lk=;
-	b=fqO8rMb3HlVD+32HaLHoJ8RBkcSU2TDanLzf76vQO2uJlP70eaN2O1NtS+oKrG2yJa9OVZQpU
-	jjtGxV/XWUiIa/xsFV7hgOV3ubrj8bgGYCq4MD7j5TCLNk3nLPbbOiDPUJsOx+sRgChW8z2NApD
-	jtx1eUHX7kp1Vu9J/r6mCqI=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hfwF34pMrz1prQs;
-	Wed,  9 Sep 2026 17:17:27 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 921854056E;
-	Wed,  9 Sep 2026 17:28:23 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 9 Sep
- 2026 17:28:22 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
-	<ryan.roberts@arm.com>, <peterx@redhat.com>, <dave.jiang@intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH 2/3] arm64: simplify pmd_special and pmd_mkspecial
-Date: Wed, 9 Sep 2026 17:00:17 +0800
-Message-ID: <20260909090018.1991485-3-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260909090018.1991485-1-tujinjiang@huawei.com>
-References: <20260909090018.1991485-1-tujinjiang@huawei.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FAlhbD7/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE47540B70;
+	Wed,  9 Sep 2026 09:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3211F00A3A;
+	Wed,  9 Sep 2026 09:31:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788946311;
+	bh=NFgdN8VYLiotA1X6CX/YGSNfCUyM0k24sUOYaVWvi8s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FAlhbD7/F+IcjEEV7rddqYf4nNhaQaTfs5c3xo21KMjITdNOeFjAZSWZVKaNaYWmL
+	 wMocD3eSNpcoYKMuoMoziizaDhGoMMmvjgIMXen0QypHfn/FnFlyqPvwjm8m8Ash0b
+	 2124ADpW42GpbGrOhi0VlcZFAMz346d5LY354EuLixaAlJVI/pJfGkfdksC1RuudwS
+	 x9F0o9gyEeInbzy1PuRoJpJrsFxH0vBJCu3TmD7guzmA0kyF1m9Lcv5JvbykUJdUrA
+	 4RCiNmgSQaL5maYkDiBZroV3NlgMq3ZyMIArG0LpIEX10pNHdftre2gqAgLp2S5gwg
+	 4m/K1qxZswUeQ==
+Message-ID: <5562d89f-29fc-4a35-aaaf-b8aaf49f6cdd@kernel.org>
+Date: Wed, 9 Sep 2026 11:31:45 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9AE19180009
-X-Stat-Signature: 46odzisuo41wqk1ajaxcfkyum1mdxsmz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/17] mm: Introduce section-based vmemmap optimization
+ for HugeTLB
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260825084608.47437-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788946112-625812
-X-HE-Meta: U2FsdGVkX1/hhfmewNIm6i/phhRvsjqFIYZoJB01/TU/jstfsJfA9H1RvVl3Tlry+U6GKHyjntyx9YtwjFFmmvwM+ElZuhNwsefFJQatztrV9gW9bMqkSBc4+ym7Ata2vrXFbxfw0J24v7QODF1GG3WjvEiQ5qZaB4p32NC7MDG79t7s/gCpmVkr3aUiOLH1dD6MaOJ21XOgcBb8EKkhIZrZ4td8sHbLUOVknWVmvN/Jvf+RTFRZtQhfFuJa8FeO9lN4IXNiMqONUdwAqZ3taCIXkiEFAJ5o1Yu9I5KxQcGMeJYo5Z8yKEI9bMwrvw+7Ac3sxsVcFtO9VgtGc0Tyebq91fCQMp89Is6kE46Orj0TNlGl6hpwG6vdGWkeQUge0aGXF77EawrNGxfVsutJea8ECZXofOyEJgv+yAXy0Ro4KyDxtXyMfecmyX4/W845f43avwJijHBGn/LTGaw+f/ErQL2tIXT1STXl3Z2Ne6+LeX+qP082hBJRdCZiXc5IBmMvALZSMsB+eph039iUsIz6JPjK+9EvRHOFz152Lf7HQM9AjiSMNTGsbMj4rXvkb5ZRHPkQ+lEDHdtlF4gXXasz2+SrVCfo5qp+hAqjjObZ/nz24mVf7TeELXDrGtPKO0OwOv/Kzm+M2VTMA35GbR3t0B+B282NqC3o9sd+hPIqSURXqyNE0LbyJzrHvbR1HrdJwffKfVzuPa2natT4bRrImbezG/7OTRyuTuc3kddtD0DdKbY2CjyoSJICUFtKvq9fzeQJpvCybO/qdjvE5U5nl15FyavTevyaQgOIyD7485+6lpeqvq3QyFGYt0+68XRhu0EnYL9rZ/Xr+NQDqrvQRFvSo4AG6M0TF+IjGcliEv4k33V+rtfcI6/MmirE9h+Vpgbkgb9F9OR/PB/xMafi5vobcx33Rb5IqZRS/+Nc0c5doxOBWQu8YTWA7Sg7PI9wGDT6biR99WKNJ00
- faTik4fy
- 4AGaoW+Gu2WfDYGqG5E1GFF1+djRjY3VG5XBW+Q30eIaN8EOw3Ygt4YIMePwJWjbHflo5m3YLe+tlc4Hb29YEpP3Dmbl5NgCNhdtP5I5gCiR9jv2k+daUtfcKeTfMYmLab8QIzNl3Tm8qw/GnBfNBqpO51dW0gM8qC35nWmojWIp7KkLmbNNVbHioxIyTemOl7QAv+W/lu+YH6/cpDYMwl/iAZPizPKlw9CA6wbvih4f+oBYIRUKuw1GesuhMeEIY8xoMWr4GO6byS7JqdyYp7MrroQ19ftBIbW9alumkmYsLeURf6Nrpyhv1d9DnX1/+44Lf8z3i5hr23YWXLmVe7+SNog==
+X-Stat-Signature: 6o96nwdqinhebmamwk5b438hb3uwta5e
+X-Rspamd-Queue-Id: 9B4F81C0003
+X-HE-Tag: 1788946312-152415
+X-HE-Meta: U2FsdGVkX1+878zVs+R0Hv4sO2yp5EFW9PVyxOXKY8KtyYNRUCGH3V3TF+dA3pDxI3EH1pRyjMQlUAUudhF9/jRe7/CO5Zc0wIu11iW/bRnbfZ7Xq2vZ8P4q4d5GkJEgWMEXjZK1IzDtpPkmgu1upzvHo2LMCINP9pyEcX3KSMb57Cmv/mIaFidzsHn19uIFBrV3neTeQ/Lm1oWnqntSJg1XNfGBlZ0SrdSPUjjYe3WaLv9zx4eVe4Xo/ZFmrK7CYP4PM/XVBF4DTuhwf7ngQr53ZUxSUjdnROGBSkBiK4K2rLfIIaT+RcEX00YX5akmyK2bfqyBNrAH+zHxZxCuCOUhCyNL8Ug9hFH4dZOBQvvVCwquhM/176uguXxsNjzG/oW0kSaqmHyyJmZxqUTXmaV6HjExLqzrpOFHb/0VP20AihGiPDBfB+P+NRprZpDp1HpQubjytvLe/4dv6Iafe/vG9nrfBrGb2D0DoT4LQP0KxdYjDs2MK8R3GDyL691tupz6kEkGQtgYaVS5abtLAOtiptfJpnsiGF8JOyykFevl79gyhHs84LUeiCj2fRa5ix3AwFOLLLHROxD0jOnPBoveqPjVmzpnw5YBpzLa7M8xzMejw4YqAAurkV0ZdJZ0m42oWvq+fuUVDKMLrS2UtN0r2qN9U1viYVssiSHqygat3c4M7RHHmvPNaJ8nJWAtRyYwnVyr7w6dKsk907qLegSp01k9DVlJ5jHwymK/Mc4VCIyKj1xDI6h1pK72Uveq6iNNjG9vI792aB0IUisfP1Iw6jHhIsEDRbnNs/gIrI+EeTJfZQkyGXk7bU/0lqiteZo5x8fODH1LckRbQzNKTq1kso5ZLWHtWmp3dPP+z8RZPcYCEpOzgO6PMtOQ8iQxMco+cIcChY5Rg/bt9rlxol0kpCStWNJ+oPjJsqekn2qNs/2N/EhlAD7OucRM5aaKtVy7XtPu7aHPNkt22JN
+ 64XZ3N+p
+ mluKEbxTlw89R5SnBjPZTcqmo5qF2MzXtiyQ3ZfJUWuwTyHG89CiVUXoXT3HIhPoDn4cs2E8E32RHVmAxkwgrIgYMKS5HKofx2hMyjFSgqs6r48gTf3xLC8b5Gl+ntDex/Y8XyaY+NAre44S9yL9kElfSww4FJkQ/PWSqz8HqfuBLwdLPfCgCk9vLIm/IszhAKVTNZmkPOGrTHRAUpWqut3DGTHNdkgyBg47cL0mcbMawPddjn+GoRpu4I5SgEbnYPdb1Vas6Q2md7ImdGqzgOvpPEsXT2azfrYgOVpJZrA0HLMr6hz1GrIgh8gX6IsZyDJH/NlvR4VVWeQhyUV2+dbBeUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,53 +144,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use pte_special() and pte_mkspecial() helper to simplify pmd_special()
-and pmd_mkspecial(), and kill unused set_pmd_bit() and clear_pmd_bit()
-helper.
+On 8/25/26 10:45, Muchun Song wrote:
 
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- arch/arm64/include/asm/pgtable.h | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+Rebasing some of my sparse cleanups I have pending for a long time, I stumbled
+into severe conflicts with this, so let me take a closer look.
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6000905a2e86..427ea3d2bac7 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -243,18 +243,6 @@ static inline pte_t set_pte_bit(pte_t pte, pgprot_t prot)
- 	return pte;
- }
- 
--static inline pmd_t clear_pmd_bit(pmd_t pmd, pgprot_t prot)
--{
--	pmd_val(pmd) &= ~pgprot_val(prot);
--	return pmd;
--}
--
--static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
--{
--	pmd_val(pmd) |= pgprot_val(prot);
--	return pmd;
--}
--
- static inline pte_t pte_mkwrite_novma(pte_t pte)
- {
- 	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
-@@ -619,11 +607,8 @@ static inline pmd_t pmd_mkhuge(pmd_t pmd)
- }
- 
- #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
--#define pmd_special(pte)	(!!((pmd_val(pte) & PTE_SPECIAL)))
--static inline pmd_t pmd_mkspecial(pmd_t pmd)
--{
--	return set_pmd_bit(pmd, __pgprot(PTE_SPECIAL));
--}
-+#define pmd_special(pmd)	pte_special(pmd_pte(pmd))
-+#define pmd_mkspecial(pmd)	pte_pmd(pte_mkspecial(pmd_pte(pmd)))
- #endif
- 
- #define __pmd_to_phys(pmd)	__pte_to_phys(pmd_pte(pmd))
+> This series is split out from the earlier, larger series "mm: Generalize
+> HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+> vmemmap optimization across HugeTLB and device DAX, this subset addresses
+> a single, self-contained step: making the generic sparse-vmemmap code
+> section-based optimization aware and switching HugeTLB bootmem pages to
+> this path.
+
+
 -- 
-2.43.0
+Cheers,
 
+David
 
