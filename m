@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA9CC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC5EC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 241E26B0098; Wed,  9 Sep 2026 11:35:36 -0400 (EDT)
+	id D75D16B0099; Wed,  9 Sep 2026 11:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 219256B0099; Wed,  9 Sep 2026 11:35:36 -0400 (EDT)
+	id D1F266B009B; Wed,  9 Sep 2026 11:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1084F6B009B; Wed,  9 Sep 2026 11:35:36 -0400 (EDT)
+	id C0DAA6B009D; Wed,  9 Sep 2026 11:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DCF726B0098
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:35:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F0B291C1B3E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:35:34 +0000 (UTC)
-X-FDA: 85194623388.17.A7249D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4600E100004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:35:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B8tXXPP0;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7296B0099
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:40:24 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2946CA01B3
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:40:24 +0000 (UTC)
+X-FDA: 85194635568.08.4EE02A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 50037140010
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:40:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b67FWDHV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b67FWDHV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788968422;
+	b=WFQWTL5fC4OLDMSv45/ozX37YkVwCsRPAw7w4M6mM/CCRl80Jc2q/kRJH/KrM68KDC+Hkn
+	4qX19yxUVWfXyCwHzPog2ZQuioiOPCkHa6qkALqV4eH74lAkEOU2hvVRjgGTtKHmIQkqHM
+	EPPlpWUIIik2O86BhHUhVBV2Bqa7CEA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788968133;
+	s=arc-20220608; t=1788968422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uh93x1YF/dEaPyXWzFbI73dZS8rpJkADyL58fkB1FYU=;
-	b=IAxrHdJp/hPuxU7LxtYUWJf/UICqDONFzRFNddwPjoyM7f+4g1+f8IQHXKNQ2EWeZlqJh8
-	Ze/cmDTMoHKxQUYQyop1Up6GQjIf9rI+ceO6fbNGSmraii/u6M8BhmkuZQnJNeSO+4gBH/
-	jkOYHcOAwGC1eCj3VMtOdfkEQmj0pdQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B8tXXPP0;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788968133;
-	b=0eez6dUeKgfup9Cu+e6hNmuwYc+ZV0fYheRYj5DFnVWv1e05lyjkRye16oCsF4gUSpgCnt
-	WdBftSTmPR9nPDN5ydnhgL/wClgdsm8X9rs7LwQsf1A6gfdxIrmuNXL53HvuOXlSJqT1XZ
-	kS/Q12iO+H8+CekVO+5Ul+akIgd2U28=
+	bh=AXYYQlIGAZBrAHu4CUr6VQDiXrusLKFHKO4tw/xbR/o=;
+	b=jyI4cFVQWrh3mbZuEr/UgadUElD5ktVEtIyhVzT2fqdm9S+24F6GN+3ko3rQO2JKINp6tQ
+	nYfAQjg5zjwsCvLVsOrUC14QKngYXe8GSJ964oe2VO5e5T/kblagm/9kQ9CX2JMnGCFhbf
+	TxEP+5QoBDcR4c8bH1oEvdzTLtmaxTE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9273E60202;
-	Wed,  9 Sep 2026 15:35:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870621F00A3A;
-	Wed,  9 Sep 2026 15:35:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60D8341443;
+	Wed,  9 Sep 2026 15:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5D41F00A3A;
+	Wed,  9 Sep 2026 15:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788968132;
-	bh=uh93x1YF/dEaPyXWzFbI73dZS8rpJkADyL58fkB1FYU=;
+	s=k20260515; t=1788968421;
+	bh=AXYYQlIGAZBrAHu4CUr6VQDiXrusLKFHKO4tw/xbR/o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=B8tXXPP0BpNZCnZ6D6dQeWWfG9eCaCcLp1iGPfB7DFfT+ATRDi8hxrzJjm0UIJWID
-	 6OOcroK7SZ5KAWqwBjOU7ychXay7xhZCjUJWqnvA2HLCB8qdRLU7SoQ8IEIgTwWed7
-	 Bw2SKj1yugxKiwOlo5T55L2Us/XLRZNiRFUpRp/tDkHI+7loZUpfPCuiuV1P40bYzX
-	 gemsILP/z4wH2hbB+0Cs/bsJMiEIehCS2IE9dZ/8+RenT1ybJ+fSgCgkaTjGsCyUBz
-	 xj3gs4FgpTBFUEnQQGFnaF3zZyLCInbnln1VTOdXEaGH1E5lrK00ebKwI28JeiJ9bP
-	 XyQzu4+v48ZJQ==
-Message-ID: <10b49972-dab0-4563-a3a4-c3549d9f553d@kernel.org>
-Date: Wed, 9 Sep 2026 17:35:13 +0200
+	b=b67FWDHVrvKlADudVooPhLmJOQAbQa4r/JfwC9gUSiN2XwdjDzXh8PDhLIbwBJ2Bl
+	 N6Vzk3XSxn9iwept0h4EbsT1QjEwa1ArTZoWsrAUs3sRxTkLtG3u6Tqn48pqVF4w42
+	 Hbr0VynPh2dln0S6/KgjarMmfPtDZf/8puPSLa3d6dAowUIbor3F3E8wZW4gfkHAy7
+	 ioBnUGH/HGUgh73jIHLXiP9er2c5LG71oVhLkOGVgFSr+kjgVMlPqHXLGlxCQA7ZS5
+	 LcMe5V5KBReJ3ihsKdA8eubDNI8HqYBjN9XKnu0HuBHiiD05yVhAVNYtvLFO27T70K
+	 2JOkNN9/OsV+Q==
+Message-ID: <26f620c7-043a-4cb3-a74b-29069bded0dd@kernel.org>
+Date: Wed, 9 Sep 2026 17:40:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 02/45] KVM: guest_memfd: Use kvm_mem_is_private() when
- populating guest_memfd memory
+Subject: Re: [PATCH v12 12/45] KVM: guest_memfd: Always fault from guest_memfd
+ if in-place conversion is enabled
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -103,9 +103,9 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-2-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,17 +152,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-2-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ds56uzqd6rc893eo7gf89c11sdh7b1b6
-X-Rspamd-Queue-Id: 4600E100004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788968133-449360
-X-HE-Meta: U2FsdGVkX1++3CtWLDbcN8/4drEJtclfA3AqQsE08WSmscl+N8UAI17yeglUmrR0Mg6AJuJJc1ft1KJ3oJ84QbxHYVDHrk5eoeIUlh2gKXl3DgqKk3Y5NUm9kKIENGdYIA8LCr0R+VqvrHrdu4Jx0FAnwPP48xWJQS79mIUFad+NsVX0KqmVLYCbiloDziKBieoP+pFPwGXCM94jZP5WGkQQFMSi5VWklPu9xcwNYjwAgJ8CX0dwfgQWjh37bzhE166b+OBjcVdZwjscuOL9qlvfsaSYJJ0deZXRlPgRbXAMAUoGCzXygdEHSxbGWdlHD59WtTfdfWv+O0aLN0IOk1Hr70bTrYFBtsc5F4Yw8cKqgyE0qX81pWR+2Z8xwN8ou5Png0wko+OmyxYNnxBaCXiAGlH8KMr6wK3KYrKMcybmmF1FfyVavZPSl48ug78/VFRSglATYxVx+MeA8ku8gg9xye58llQOsdB/nwWNeum6CW/PA1xcdBIK3np9YgA01AHUEAmml/JTce1A/M+BoCEBySvKklcnhFCIaputIi3UsSJRHEkUhZaBGjy6jz13tdiUQ/AMD30B6PbhxdVMj8fx8MPrDeOFxxFeM2UrkOVTmJPt2bhz9giBD6sJ2QDHxJkc4bWr7fB+/HWzHT5bUhMfC1cCdtRc2CWQ4VujctRr6mS1+yDnTvVMWitHAifs4CufkJ8Mity+V9J23ceAiMH2NizaZNwpQDKloBL1u1kab2FuDBmWeOz4ewiYKO/4I63o0FJ7bwkc/yfpb+fqFeEno+eNuraij5nRIKoxtnq+IhMgFpp4wJLSmUNoV0j/iBkhVMAk5ERjFHWQASqxrG4OhYPRjYCxxFUe2kGFKEsZH5LfQMiAD0LXVVPX9O9c9lV6S5chC9aqGac+t8NQb4Z7IjCRB92V6Azy6rdt7F9OwDQ8by/QlmxQeyt//nnT8E+XitOwrPdKakPC475
- lJxqNNXz
- Wnykp9Sgf4NWcmd2DNLhSGhc/dhYdFJQQujvnyWbwlN8OSJS7of64D3QavKNIMvBYitwxpTFtb+ON3VO4VKHrlYH1ThFCZ/TSN8ECTP+Vtihxz12lwhPcYS4wT2s2fEdmPdprU8OlNwy5HdsIC/YESXCq1JSY/qMwHY1l+psq1ZR1797xW7SDqH9aAwCvjdED1P23LSXne7z438IfD80O+lmmmZnt1f0pR8YWOesiS5RMS+Tau1QIwCDLj821L20qok33ZoYutBLU8xjjOXkbK00GUITZHGZNV7wbCWLfPx/JG8bKNKuatYxG8fKVrBEbpScYccCh7lc8O8rqRuZN2PcF8hpIdnqbzjEyt7ch/prtQMtRSCE0Jt2GQw==
+X-Rspamd-Queue-Id: 50037140010
+X-Stat-Signature: 3mur5rxy14xz1wuhf63i9ynyrtafzoz5
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788968422-310504
+X-HE-Meta: U2FsdGVkX18uweuV4lzO98MY9yctZCedLPjmmoBqEvI8XS7tDRPPxM0Mp1UnGZh7jifjeICACqRJkjgvU0rc8U3GlghB6NkWSWgVTT5Qb/kRMHz7S633jhhu3wxvGkYhOcqw8uUY/j5KPCoztEZzoJr3eeUBObg5C+v+8SWiKeqNYBkz6ecldOlsgcROlByTjYMMZjShCwvU6tqbdBve/TD5N6+ZsTtiEEUxqjWz3FBFRXCO1YuUBHtsuBTHSy8unz83gZ8XpdVDpq2S2BXur3aVuLv9Lu7upjQmmFnlzvCoLxB0FHJ+SA6lmMRY+GuOo22ziFZNp6KTtlC4iU4EW1SLbujmftC1wRKtxJnYCcnsWlwWd8gEItqHjVYgrAegWc6lg23z4/lTTVViLMhVRujH00nAQSQh5BVbMUsSL6EsCfFl7VFuY3O83ckRm8sYcgYWs+BJ0emEktOwV5AbS+gXWg26FGg74g3jbwE+Sd8X0gg7FNln78mY591/Ft3kQsOUX2XiQ72InaBKfRSBtqfunjmYmFbABa4l90WTSEsCkOog6t6d5r5+SXaiF2pYynTFz7n8P5RT5730wCUQAjfzLlmfYrPTNYEoFuMsalN8eMslKn9Ds0mdKADUVBZ19cUBpLOqqShTERtwQVIyvyyaoDW5aGmTzg2F85fu7ijm9xJKRFELE6/f6cuCAFpPq/4bQYTogf3PoC+Db7rSPw0UKF2/7Rt2OSFqdZ8qay3OHwARBZlvWly0Jl2+WZs1aMBZbjXJFjai/QeNpSvC0AxYy3NOo+wqd2uR0b76uOwWVnX/xHgkdmbwrz2Fa5GXkH3X9H7SqoCSxhGkCOBO+wy2Eqqzd0Bixak+VtLLgcxSCEZ34w72aj7OMVI18cUJUXY6CArQob3xz5O6XGQk5VkczgNcCq7Y5YgD3eWlz9ghT4mMqZQDg42LP1pZEL8g0crVz7xgVrGTWxsv5CD
+ Um8G77nA
+ eOnH4V/Z+doX2bz8CB5+eBgTeDdTE/OjRpsPmybVh9XNJPpHhZjxBjUumxSuIX6A4SPj97alYGQZKr7xUsD1j5uXZ+BNYcTbEnx656fs1jELKqDHFLDIEkYw11ZyMOBlA3jLt3Pwr8LmmqUoz53zL6E/Smff2XTj4Bi6I8cl+OQJC0OtVUTEcq28cP3CTf7r2lYWBp/nE3CgCoM5vv/izCWg9i0ePTRYPZxPRlliv5eqHU6d71wrO3vEk0gpGA5MRqtI9bk2kHrsm5JLi+cDRtJlfWKjFMGwMNUotHREEuOxOaitIMeAT8d07yKrmCVRZjBnQA394vXIdm/rAt6Nf2SLIsgrzAGhvfnWT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,22 +171,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Use kvm_mem_is_private() when populating guest_memfd instead of using an
-> open coded equivalent.  In addition to simplifying the populate code *now*,
-> this avoids the need to provide a range-based gmem lookup API in the future
-> as well.
+> If a guest_memfd memslot is created but the guest_memfd does not have the
+> GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
+> memslot's userspace_addr.
 > 
-> No functional change intended.
+> Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
+> guest_memfd's memory will be used for both shared and private memory. With
+> in-place conversion, guest_memfd will be the only backing memory for the
+> memslot.
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> No validation is performed to require userspace_addr to be a mapping from
+> the associated guest_memfd because even after validation, userspace is free
+> to remap something else at the provided userspace_addr.
+> 
+> userspace_addr will still be used by functions like kvm_read_guest(), and
+> if userspace_addr does not match up with the corresponding memory in the
+> memslot's guest_memfd (whether userspace_addr points to the wrong offset or
+> some non-guest_memfd memory, etc), that is a user error.
+> 
+> Requiring both shared and private memory to come from the only associated
+> guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
+> operation on a guest_memfd, the invalidation is now guaranteed to be
+> invalidating only memory mapped from the given guest_memfd.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
+
+Yeah, that matches what we discussed in the call
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
