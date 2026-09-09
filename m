@@ -4,108 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6517C79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB54C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 082866B008A; Wed,  9 Sep 2026 13:09:32 -0400 (EDT)
+	id A974B6B0092; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032896B008C; Wed,  9 Sep 2026 13:09:31 -0400 (EDT)
+	id A75786B0095; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB1D36B009D; Wed,  9 Sep 2026 13:09:31 -0400 (EDT)
+	id 9846C6B0093; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D38CC6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:09:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 02C311C1C7B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:09:30 +0000 (UTC)
-X-FDA: 85194860142.04.83E9C29
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 595CE1A0007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:09:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YNyzfKHe;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 68AD16B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B694A140274
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:11:11 +0000 (UTC)
+X-FDA: 85194864342.29.A546775
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CA9468000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:11:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WiPFH+c5;
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788973769;
-	b=Gf9DiU3cMzemonzML8/ePpiAG7lGG6zEr0BYPNAVWtHnc7STlWds06EU8ZexRes4JlhK6y
-	d4VzAQZ0QYsnATylrDOl6xu1by/mNi5sEr5RxYStcfRmxTG+eGmm0KJssdpH3ZDdeJSbWK
-	iyjByqd5sfEpvhTYUjCKQYTO3pyHZ2Y=
+	t=1788973869;
+	b=5wGH8tWFSSS+GbwqaHi1rRVJ9PJgXex+BUEY0LSNgLZ6mfpf87OTaiK5QBCSu0A5ATlXRr
+	DbYRkBqSU27kTM4kgo8DPooWhwyurKkjHShjdElnQNWkzdeT0R4IN5YWO6l3MGH+lcT4fE
+	HidIyIVed2j9MkrES0MTIzA/YMuxpsA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YNyzfKHe;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WiPFH+c5;
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788973769;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788973869;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aV+nOwJ5Gj3tu2lGPRWNLzdJqg3QTrStyGxv4qGWJgU=;
-	b=y38zJsbolPAiw/IpJKFJaGbsG2kwGFHyuSy7YcdblwFO2KAvDSLiOC+m1p+2yhmq6fX3kL
-	5Ca4dDKyUrXqGfQN/85GWcH7GleBRKPTX3E0FoeIYxmjGyoY9sRLWmxtgpUD3SiuAFwos2
-	nJNiRbtFz3whJy8U7/TyvU6ATiOAq3Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88D1B4180D;
-	Wed,  9 Sep 2026 17:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662051F000FF;
-	Wed,  9 Sep 2026 17:09:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788973768;
-	bh=aV+nOwJ5Gj3tu2lGPRWNLzdJqg3QTrStyGxv4qGWJgU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YNyzfKHeuXIUl+W/PcDxkZrDmdeG6hDakZVShiQRZ0O44JliSmf+yf1kfjBnQgVch
-	 0tBQrA472BNig++FCUMuqjk1MRmRqMi+xYDALklMdKjCvpuviMyndXZO9d31bg1BGT
-	 DEuPtbx0DZPB9A19Ix+oR8Q7NjsLYs2iSJfA49SpjWumUDl7sEL9Leth0Hs4KoEazj
-	 J43gzrNFR5NUo3aPVBvgjZXdsoc1c9u/6ACOAogC1vkflSUwZgPM3XRaiDN4NGeBa/
-	 OwDKgrxtyjjf026wXT8dlONCA7Bb9FWePmO1mOSpztlmT70NkdyBMl1y80u4Mj7Pvl
-	 kyr9Qb39RBb1g==
-Date: Wed, 9 Sep 2026 19:09:19 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 02/12] mm/sparse: refactor sparse_sections_init()
-Message-ID: <aqGSv_VPT1IKGgIs@localhost.localdomain>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-2-008fc8d579fe@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xUVcp/tZ3YOJJ4jicZ/dLHm/X+vZ/dm1xN1530DBDTQ=;
+	b=Z/qyWrjEEp8Bhw5YwY0pQ4JmvkLDtEAi8kMYbf3YguBfs8UEiH8Jau0Y1VDnp3IvD0cJiQ
+	k1BjCY3vCl4AOv9qQS+ja3V37+JCvauE4dYlrEMg1V2NG4h3Jb/MOcTTjBMsb9jvXOKx4y
+	SM6XbqYGP2wS9ylQkkBTcbJbY6YuB5A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B575601F1;
+	Wed,  9 Sep 2026 17:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D2F0EC2BCF4;
+	Wed,  9 Sep 2026 17:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788973868;
+	bh=JJXmwYHmUvSusX1DyThNrlPnFKXOBGPTJbxZczSEH3E=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=WiPFH+c5aXnBsj8wkEMV7Y305soM4T+rwThTExLfU5+9TIqfKfh/OL0fpxbe8685V
+	 8CRi3oxfsrPW7DZT/25U8DszFgh5BOleHYqgA+zr+LRCOq3FMOtpawMIOStH3wHSkX
+	 t0CFOllTuK2xrcraW1Oa7MgqGmJRnH9I5roCJ5pZ64HEhvVZNZKSOcb0TZ943jLtoe
+	 +l0E5Vei37KuQsFGRCgP7WxW9mQDFLJ2ECUMt8p4XMIQd/mSuxOrahHJh4A2KwPqM8
+	 Aw5FXx8GdhpD3BMNHFFMzDegMASlL1G8KbhK+HEcTAxMhU3l0DKIDEM4m8G7GLRQzV
+	 zwBOKoDaYwlKg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8DF3C79FB6;
+	Wed,  9 Sep 2026 17:11:08 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Subject: [PATCH v2 0/2] Fix bugs in HugeTLB allocation when
+ mem_cgroup_charge_hugetlb() fails
+Date: Wed, 09 Sep 2026 10:10:59 -0700
+Message-Id: <20260909-hugetlb-alloc-folio-memcg-charge-error-handling-v2-0-4b4a8a19a7f7@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-2-008fc8d579fe@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 595CE1A0007
-X-Stat-Signature: wjwx78usdt88tyuk8nc7xg5i1ppc78ex
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACOToWoC/5WOTQ6CMBCFr2K6dkxbfgKuvIdhAWUokxTGTJFoC
+ He3kngAl9/Lm/nepiIKYVTX06YEV4rEcwJ7Pik3trNHoD6xstqWutYGxqfHJXTQhsAOBg7EMOH
+ kPKS+pD6KsEC67QPNHoqqtFhmFouhUOnrQ3Cg12G8N4lHigvL+xiwmm/6c9m/XasBDZhhVefWm
+ dx0N8/sA14cT6rZ9/0DFpRMqu8AAAA=
+X-Change-ID: 20260901-hugetlb-alloc-folio-memcg-charge-error-handling-5862e632e5f5
+To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+ Hongxiang Lou <louhongxiang@huawei.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Peter Xu <peterx@redhat.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Shuah Khan <skhan@linuxfoundation.org>, jthoughton@google.com, 
+ fvdl@google.com, rientjes@google.com, vannapurve@google.com, 
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ Wupeng Ma <mawupeng1@huawei.com>, Yanteng Si <si.yanteng@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788973868; l=5588;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=JJXmwYHmUvSusX1DyThNrlPnFKXOBGPTJbxZczSEH3E=;
+ b=Tr/DEN/PwN2tkgr39zD84Od1pqwQlrkuQNp87eW1zgxYaBQ1Pqn6UK2GbphbhIn6yxjTKonO1
+ zZqU5F/yQqoC+3UlrG+86rEo67cdhKkBSu8Kyr7wcqY2R9pLYLnzDEy
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-HE-Tag: 1788973769-135257
-X-HE-Meta: U2FsdGVkX18c55YJYzsS2jDZrfuyNhRJP4rzy/0XNkO4lyhpLOJ4iddbwLXvEYbT+UaMbp/zaBrf/n1jexB8PeDFDGPTxA+Wt9/TiIUGbrRQfCgNAKK/L0FWva+VHpHiLM/B8G2f4dHiH0I/ZnHDSaUjyZRzslnKFBeS78Mh4aP+7TnFNgpqgOInMMFBWSJgyFHyaLJLEmhgLiyGiA6lHoccGNwujUe3k9SfKG9HRklUMWKui7L9nDj/LFyHwIw6HqVWIkaVcsmFCvVM3FuroiYaj4BHeLk+Iqh70TUh9zJZTqoeFIFzxVIiKhrYhGAGOH3INtjjx3uJfp08V+VwI/enGICcxTE0ijFUjK/pn2Qfq3U0IAZdIYwpPvht+EhNiCS4XWSHkhYxgKSqMt3RECdUx9vxfEJXYLqEEajdw8ocjvbMgd55FmC9TSJUeNpyeOJzWaQf1zU1gw5sP0y+6yX8rBHQLB3auN37SvuzdunPZdJmp7t4EKzd9hVwQ1X1NcjjXYIcDf8pEJCBpWw+IZs0IloUI7hEda1DwDWVIQf7kZkOIc3k4q4z8b6LOEaO4OSS3MRctdkskz1bm0Hi2nU2PPjDmBw4zgVM1YArXMIkad0RUImVNL0gTosTSk/yKllJm+X2rkdL5lHaDDgbIbxMBTuFTrl+DhQLK/9JgszSmMlPoDZCO96NUtx9+9t2eYTGYfvlY8aOwPjbNUJK84zVCe0x2/SKH8bUWX70cyjBzDinDqA6Hey2de50Pf9u1A89tfWelRb9ws/4Dq8l6/mmBXRpA34+X8hyfWV/Dj+fJsTO7ZrdBURmvc1nMAtwOPDr2DyMC1EmTKnDPA70FXQ5bOxgIPb4FerscWSPptw6VHpYdV/JQrQvRA7iZltfUUn1qOnBvAN350RUS+n9O5Rzo6z4aSvBn3/+TFxD1WGFMuWS1DN2+r13Dx+SDo2mzs/7Fm9LnDQt42u2yt7
- eL/LUZgW
- hFVNLIKjCpsU1U0yfVSV1IXQsDoI8mKBY/v726o/tRmMpxXATmlcYRc9lU9ZAzHigFjsF12YG8ZClc3a4ak+2ZF65yzcvg1J74dU8aZpKYMp1K9AfeijggC/mbSA70g0LjuTuX0xeDAeKTv/OqEsv7e65eDPJjPL/HgjH+vf+VwBA1YGVtuXqxrYBmpB0pko8Cd4G4X+9Xm2Ijw/egizXzdAyXDrLbFOL1FWlYDjn0AT2siplqDQVnHJApbNl1NWMAzY0laEfkZDemLCJip2OyKkaKFkDGttv6ozj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CA9468000C
+X-Stat-Signature: f91kwroqns9hwhr7hh74aaafdp7xqxtc
+X-HE-Tag: 1788973869-265267
+X-HE-Meta: U2FsdGVkX1957fiGBKIRfwd1wY3Cn6GJe2tpiUgbSe53y0QDaP4ebfE5iInD+CVH3mPNFTptCly3SLVFXpVRZXhpF1IAvm/7ARwgrPVvsl/7fKIxqsQ6kk0GgM3a+CvGaK/jjzXold47yBS9XiRhWfWHv1elBittkGNtmcILbWOKw4Kr5yJvpFkxh+qt7kG5dKE+X5hmfza6i7DEchAGFk0xgGZ3SGXPP3Pp/PIuz+ebIYD7CJBA+l/j4dVpJphWOeqlX8OkVzSehSmANillVUlzBdCT9aUNhyLY2rx1txAcph342jkbLbBiZIaRDJFpWhquWCd0x9vxTbQoEGwy1DdwwGl0w9gXHrgenBAvfNuKuwoyD/bXCiv6N0e+DSJ1kJ3XyJdCxHdZyXVrhcSsOnnafKZ9RV28wKiNizgZgSFJGH8y0Kcejxlbef4CIMOSewG9kjflxGA03Qwy0CjwRM+wWXeJ//M9x1AlUYXvxjy9EGDbIY8u15KbDFfMbLCUUhomzaW1ZbsDRqDhmeIn5tNl/x7uOfZUBq+Py4G3XzP1HmE7IDUhwDlJSNrcnZnL7SLEl4gacSV3R3K2dC5QabEQB10DFTx3oWhw4pp6n/vVmLnlkRaCu+ovckZvR8EZwS0LmnXYGtJJOqBFrWjn6LPdsaMR9wxTjbA4T3FA9L8zALCutKA9j8V3cqm6TxtR++ni+ECytnJ0f6j9/asGENGQqkvMUFh8quxnQhk+A9SjUb3dbAU9tnl2iX0refBxgrw/UqT5vLiXr3f5oc5Y3k0X8AicgLIG52rsXsmdL7v56RiAj72FV1ARJ/epY/zr19UAD9gntn/fUpr6e0NiNyDkxQsIt6CbLX4Ah/8uT0Df50I0/3T8OXB4UYapHEcmgcgnB+LP6euByhY43jrn08a1BI/KoFD+BCtjoNLHuitxlUo4fyDsMY98Atm484Ue8KELoZEbqOrA1Zr6TBr
+ GKnFpoS/
+ FW5SK9iu7NFPcavT550G/BXkl/qI53i/+P6Fczu+Ip/n2T8ZkqDl1CCWVB/9C2mQEWFZUxX4Tl4DC5cjj64SXbG3hJItOP2S36VkGe0dsfhygVSn3NCEpV8q+k/JL4f6VoeJv37iuWpzroE/RsbDs9525mmvcYMC5lACuwxdJ8Eci4BKhtYb5qHIuxmKcbzQknADZH+Art9kfW+fX9qBjuRyOImh/0tcd07fn+nr754w2wa8aG47gWRoYAuK7QbloGDAc4fuaqI+V1II6ujHF1c0AVyhJz75ChRE5rTER9SXMnU+uO6d+B6TRO1gcMalfXB7nZaYY2/VVXBOwB4JhgDUsdJyoHUemnNFHroXFhSxry/y/HGNRoQ8kUuS8WqKQNgAHoLHKLxj1hMyN00XY7/yv8Xm4FxzfuxQpaNQ0wu7LCkPkqGBhSS8OIU5s88zQCOTHFjq8J8p2IK2QSS/jEc1jmo2TJujSyt93BNlzfsngcvjTQRbGI1xL4xuRp6otdL1mbNyfXmECTCqudROWjWzpSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,34 +123,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:32:55PM +0200, David Hildenbrand (Arm) wrote:
-> memory_present() really identifies+prepares all early sections so the
-> initialization in sparse_init() can properly iterating them to
-> initialize metadata.
-> 
-> Let's just inline memory_present() into sparse_sections_init() and
-> cleaning up the code a bit while at it: make it clear that we are operating
-> on pfns.
-> 
-> Note that we call set_section_nid() now only if the section
-> was not already created earlier. Now, there is no more inconsistency
-> between what we (temporarily) store in ms->section_mem_map and what
-> we store in our section->nid array.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+In hugetlb_alloc_folio(), when mem_cgroup_charge_hugetlb() fails, there are
+2 issues:
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+1. free_huge_folio() expects a non-refcounted folio and will
+   VM_BUG_ON_FOLIO().
 
-Not sure if it was intentional, but it seems we lost the "Initialize memory section ..."
-comment.
-Do we want to put it back? Maybe for the folks that are not really
-familiar with all the memory section's inner stuff?
+2. -ENOMEM is returned, causing an infinite loop retrying the fault.
 
-Besides that, nice cleanup :-)
+This patch series is a subset of patches in [1].
 
- 
+Note: [1] was applied on an earlier version of HugeTLB allocation. In that
+earlier version, VMA reservations were not undone on
+mem_cgroup_charge_hugetlb() failure.
 
--- 
-Oscar Salvador
-SUSE Labs
+5737df3826dee: ("mm: hugetlb: refactor out hugetlb_alloc_folio()") fixed
+that, since returning an error from hugetlb_alloc_folio() causes
+alloc_hugetlb_folio() to execute vma_end_reservation().
+
+In [2], an earlier revision of [1], "mm: hugetlb: Drop refcount before
+freeing on memcg charge failure" was named "mm: hugetlb: Fix folio refcount
+mismatch on memcg charge failure".
+
+[1] https://lore.kernel.org/all/20260722-hugetlb-alloc-failure-fixes-v4-0-88e8b81970dc@google.com/
+[2] https://lore.kernel.org/all/20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b@google.com/
+
+Changes in v2:
+
++ Made comment before returning -ENOSPC more concise
+
+v1: https://lore.kernel.org/r/20260902-hugetlb-alloc-folio-memcg-charge-error-handling-v1-0-e3e8942c141b@google.com
+
+Here's a reproducer to trigger mem_cgroup_charge_hugetlb() failure:
+
+static void write_file_val(const char *path, const char *val)
+{
+	int fd = open(path, O_WRONLY);
+
+	if (fd < 0) {
+		fprintf(stderr, "Failed to open %s: %s\n", path, strerror(errno));
+		exit(1);
+	}
+	if (write(fd, val, strlen(val)) < 0) {
+		fprintf(stderr, "Failed to write %s to %s: %s\n", val, path, strerror(errno));
+		close(fd);
+		exit(1);
+	}
+	close(fd);
+}
+
+static int is_hugetlb_accounting_enabled(void)
+{
+	char spec[256], file[256], type[256], opts[512];
+	char line[1024];
+	int enabled = 0;
+	FILE *fp;
+
+	fp = fopen("/proc/mounts", "r");
+	if (!fp) {
+		perror("fopen /proc/mounts");
+		return -1;
+	}
+
+	while (fgets(line, sizeof(line), fp)) {
+		if (sscanf(line, "%255s %255s %255s %511s", spec, file, type, opts) == 4) {
+			if (strcmp(file, CGROUP_PATH) == 0 && strcmp(type, "cgroup2") == 0) {
+				if (strstr(opts, "memory_hugetlb_accounting") != NULL)
+					enabled = 1;
+				break;
+			}
+		}
+	}
+	fclose(fp);
+	return enabled;
+}
+
+static int enable_hugetlb_accounting(void)
+{
+	int ret;
+
+	printf("Attempting to remount cgroup2 with memory_hugetlb_accounting...\n");
+	ret = system("mount -o remount,memory_hugetlb_accounting " CGROUP_PATH);
+	if (ret != 0) {
+		fprintf(stderr, "Failed to remount: system() returned %d\n", ret);
+		return -1;
+	}
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	struct stat st;
+	size_t size;
+	void *addr;
+	pid_t pid;
+	int enabled;
+	int status;
+	int fd;
+
+	if (stat(CGROUP_PATH, &st) != 0 || !S_ISDIR(st.st_mode)) {
+		fprintf(stderr, "cgroup v2 not mounted at %s\n", CGROUP_PATH);
+		return 1;
+	}
+
+	enabled = is_hugetlb_accounting_enabled();
+	if (enabled < 0)
+		return 1;
+
+	if (!enabled) {
+		if (enable_hugetlb_accounting() != 0) {
+			fprintf(stderr, "Could not enable memory_hugetlb_accounting\n");
+			return 1;
+		}
+		/* Re-check */
+		enabled = is_hugetlb_accounting_enabled();
+		if (enabled <= 0) {
+			fprintf(stderr, "Failed to enable memory_hugetlb_accounting (re-check failed)\n");
+			return 1;
+		}
+		printf("Successfully enabled memory_hugetlb_accounting\n");
+	} else {
+		printf("memory_hugetlb_accounting is already enabled\n");
+	}
+
+	/* Enable memory controller in subtree */
+	fd = open(CGROUP_PATH "/cgroup.subtree_control", O_WRONLY);
+	if (fd >= 0) {
+		(void)write(fd, "+memory", 7);
+		close(fd);
+	}
+
+	if (mkdir(TEST_CGROUP_PATH, 0755) != 0) {
+		if (errno != EEXIST) {
+			perror("mkdir test_reproducer");
+			return 1;
+		}
+	}
+
+	/* Set memory limit to 1MB (less than 2MB hugepage) */
+	write_file_val(TEST_CGROUP_PATH "/memory.max", "1M");
+
+	pid = fork();
+	if (pid < 0) {
+		perror("fork");
+		return 1;
+	}
+
+	if (pid == 0) {
+		/* Child: Move to cgroup */
+		write_file_val(TEST_CGROUP_PATH "/cgroup.procs", "0");
+
+		printf("Child: Attempting to allocate and touch 2MB hugepage...\n");
+		/* Allocate 2MB hugepage */
+		size = 2 * 1024 * 1024;
+		addr = mmap(NULL, size, PROT_READ | PROT_WRITE,
+			    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+		if (addr == MAP_FAILED) {
+			perror("Child: mmap MAP_HUGETLB");
+			exit(1);
+		}
+
+		printf("Child: mmap succeeded at %p, touching it now...\n", addr);
+		*(char *)addr = 1;
+
+		printf("Child: Successfully touched page (bug not triggered?).\n");
+		munmap(addr, size);
+		exit(0);
+	}
+
+	/* Parent */
+	waitpid(pid, &status, 0);
+
+	printf("Parent: Child exited. Cleaning up.\n");
+	rmdir(TEST_CGROUP_PATH);
+
+	if (WIFSIGNALED(status)) {
+		printf("Parent: Child killed by signal %d (%s)\n",
+		       WTERMSIG(status), strsignal(WTERMSIG(status)));
+		if (WTERMSIG(status) == SIGBUS)
+			printf("Parent: Child got SIGBUS as expected.\n");
+	} else if (WIFEXITED(status)) {
+		printf("Parent: Child exited with status %d\n", WEXITSTATUS(status));
+	}
+
+	return 0;
+}
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (2):
+      mm: hugetlb: Return -ENOSPC on memcg charge failure
+      mm: hugetlb: Drop refcount before freeing on memcg charge failure
+
+ mm/hugetlb.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260901-hugetlb-alloc-folio-memcg-charge-error-handling-5862e632e5f5
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
+
+
 
