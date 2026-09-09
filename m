@@ -4,98 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4837C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 20:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E02C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 20:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A800D6B008A; Wed,  9 Sep 2026 16:07:15 -0400 (EDT)
+	id 46C666B0092; Wed,  9 Sep 2026 16:11:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A570E6B008C; Wed,  9 Sep 2026 16:07:15 -0400 (EDT)
+	id 41D276B0093; Wed,  9 Sep 2026 16:11:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D496B0092; Wed,  9 Sep 2026 16:07:15 -0400 (EDT)
+	id 30BD06B0095; Wed,  9 Sep 2026 16:11:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A0C06B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:07:15 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 069811C1E58
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:07:13 +0000 (UTC)
-X-FDA: 85195307946.01.29F2483
-Received: from mta1.migadu.com (out-117.mta1.migadu.com [95.215.58.117])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3261A14000A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:07:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PCRRj0kW;
-	spf=pass (imf23.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.117 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1C76B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:11:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76E2980317
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:11:10 +0000 (UTC)
+X-FDA: 85195317900.22.1A5AAC2
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9DE0E40003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:11:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a3YhvLvu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a3YhvLvu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788984668;
+	b=WMtfq4OceenP9+WfaxvPPfUXITvguZMaoDYkn2xS8dIevm+5SE1p3mtSzcg7tA1TW87d9W
+	dGux3JH6UO7iPK6m85xO6bglMU95vdhkhdn+5A2NvoqgA0VeePRGDrW3aTaPzWf2uLaBcu
+	A6aa1XXZ/QBImcZAnPDMKbUVtvUyp4g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788984431;
+	s=arc-20220608; t=1788984668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BoAO8xH5PIMRwA/Kfo9Esj4O3/Me5AzxgWN4yQPbIcs=;
-	b=Bt8w3/ptSJke/IUEakF0cybpSv/ZeF5/XUJwnvwG0lHrcOc1gy+2ikJ0VPmh+JM9DlPnW6
-	j4jQo9u6TpYZTCiFWfnGRoni5o3yJUqYwWTgj4sO08IRRI13daHKlX5pBM7dGwaDI9vvIF
-	SfvVGRYl8yZCYesktr8PJF33EfCJlLI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PCRRj0kW;
-	spf=pass (imf23.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.117 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788984431;
-	b=qlSrTki1luX6tjeeO01XYw61I/3S6b+7Ao+873RMSkKOlOUYwxCiZMrQwfCftf4VgQaaoh
-	WXe+WyDqjygt2h0N+l5O3g445EEMGLfeKG7hQkzqeFIzugtPb901BYybEq8uWtD6tZxukD
-	qug55juUeF+TvdmYL8Po6aCygfpJcE4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OiDfq17QAZlSyhJb6xUWTPzHFTNiVBbD2d9LR/t1Ipc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788984424; v=1; x=1789589224;
- b=PCRRj0kWKKwpfIqAaP/+SG1CoXIuaUgKbVCd1lRHj73sXblIwBE157D2INvF3Ju1BzVjWhvt
- Eo5A/s3fQ0LCczJrksv3JEUsx6fWX+4nUcfHCz/26RpZXitiZ+7MRCm5mpzM1SzB+EIfMUb4i1y
- bsCEOuQwZ1sLa/GH+6tCsqss=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 04bb54aa1bc2000a;
-	Wed, 09 Sep 2026 20:07:04 +0000
-X-Mizu-Trace-ID: 04bb54aa1bc2000a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d8d4de31-79ee-425f-8759-92a1ebfa9d0a@linux.dev>
-Date: Wed, 9 Sep 2026 13:06:54 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v9 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
-To: Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>,
- Barry Song <baohua@kernel.org>, Geliang Tang <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1788857915.git.zhuhui@kylinos.cn>
- <06452a0d7722c92a38fdfd117954d244c3e52d0e.1788857915.git.zhuhui@kylinos.cn>
-Content-Language: en-US
-From: JP Kobryn <jp.kobryn@linux.dev>
-In-Reply-To: <06452a0d7722c92a38fdfd117954d244c3e52d0e.1788857915.git.zhuhui@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3261A14000A
-X-Stat-Signature: 56ogmz8czcnfk4htdsof7yxxzdehuui7
+	bh=/nqOuwsqgg0fRM3HpI/iUpxVRO339G5Gp0/QcOudjtY=;
+	b=nGjH/EIT+EHQZUqZsjrg+RJc+FdXjKzBv2v+1AUnlMkP71dx1Pvo36bRbdtcqWktaQiFQP
+	IgKLHEnpFseUd17XmniSA3NfDBWmR8rI3mntEhPsNDk+9tlPDagkuim1NWvwrI1Ycjy6hC
+	Lr4oujbhOdVl31d4y3S8r7fnj90BM+U=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d944747d41so70375065ad.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 13:11:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788984667; x=1789589467; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/nqOuwsqgg0fRM3HpI/iUpxVRO339G5Gp0/QcOudjtY=;
+        b=a3YhvLvuDrxoETyV8W7sBLmrMD9G2E0JnrdMPTevx9OMl0L9l568vcpNIFbWvAuXvl
+         D7w3Q/Bf4ziNPdUV/2ZuqUPo9iswSmMmuktEx++HhilSAewzYGE1QxNBVaQIJVtdf7px
+         pBe6HOtEzkPtxOIh83lVHfcqZiaLmgIr0XxYKr9gvyV++cev4wypzbIpoVnp2ib4KJGs
+         WAxp/v/v72IQB11wQ1fJW1d4QIB130h9di78KNfbi8CUZelgCLSiMbSZsCS+vUJ/vPjI
+         XoZJa9Avmt9MJnW5oPDUctWNEeBPf2VZdTgk7DRhLCC/rsA1Mmmhx7ItIzZbRbyrjQrh
+         nXwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788984667; x=1789589467;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/nqOuwsqgg0fRM3HpI/iUpxVRO339G5Gp0/QcOudjtY=;
+        b=jjAuUZUycDek59G6QPEcyTr2vKBIWWVfvkHcMnAXHEBZgKZDNZsO7MfoeIChzUsxIa
+         /GAB/mrIeP702VSc2/sb6y996iTRe2B7x2DnQzv6WraZStspwc3B0pwJNeTsbvHByoZ1
+         ZV9rmf+zzk8ikRL+OC6hmflFjLVomb3HT/HKzQNy8W8lNGzcdq+8vH+GWFME3Bqowejj
+         SZZYuuHeQ0RxCRczJuNGTdc1Aonmd4xGhL3K3leoQ++jk8Tk3cO9W4PwOsy3E4ZsXtjK
+         BKJf0n8GNH4R1rk24BBX06+8KgfMJe9i3XsrP+zFpPtgQMlfQLltVq73L5DuKfcX2BG0
+         p13g==
+X-Forwarded-Encrypted: i=1; AKwUvByH+Es1mpJt+RPtPZ+aKmSrf98tGFLN4a3S+TXdRD4KRHohMIhfDDt5XfjMgWPBN3DWikRNyiF8Zg==@kvack.org
+X-Gm-Message-State: AFuF++mevc4QdqfoGmdw8fJ6eBPIVfrHSSyYMcCnQzylncJx+uaQPVz2
+	Ip8oviNK+5XEifcLQ0FhBolv/97gbi7iYQ4tkqxJzdYLPLLpA8XM8S9J
+X-Gm-Gg: AYBFou2vQ/g/f9pTpIb2Bw2oH8pkjBV3/GF9LkN0KPToQfSYDB0B//csUMGc+G5J92w
+	XvHj0DwcI8nT3vkRT5bFKAHTokXMrqpo1hAnE5gjqTeoxSXcFe1ELUG6LX2J42N+Q3HMpq/lsRc
+	qfAkxJ8i5QE7W0g3oVfm0e2dhMMgw7pBN5V1l9ozmosLf4FHxXAGAxvBKWEi8xiG5cxLaUYi/W+
+	A8rw6JJ3gWYe1lL3MxHeYaGfC5CY3AT0374OX5/+hcNOm4f7jymAM4Saq58GChfyn3toHa5aply
+	TjFS4WjtNzDIW8DprDCtZc8mwGWn8wuc7n6TeLlD1DRgDV9/d8plPxBzSen0gXVwvL84Ntv69vH
+	UiU3Ub0ncMJAfN/7VdaMIWaXKwrGLt34+TH02jxXZbfqES+dTEzs857qjP4eAX/XHaLXF9W/Rh0
+	XhcTlnaFK0xYH1XHt4K41f8Fh9C2+B7TLcxGDEjCwnwHO13/qPhRhDupJQpydvbFZUcZxUlSlWR
+	V/itJkmEyxeFKq9gIuBuaxPd3U027KywdHWfE7TPW0MYpTVb7vbjmbL
+X-Received: by 2002:a17:902:ef44:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2db1259d1f8mr510415315ad.14.1788984667252;
+        Wed, 09 Sep 2026 13:11:07 -0700 (PDT)
+Received: from mars.local.gmail.com ([153.246.84.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db63c00837sm41962775ad.40.2026.09.09.13.11.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 13:11:06 -0700 (PDT)
+Date: Thu, 10 Sep 2026 05:11:03 +0900
+Message-ID: <m2cxum423s.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: akpm@linux-foundation.org
+Cc: tasos.papagiannnis@gmail.com,
+	linux-mm@kvack.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/nommu: Reject wrapping ranges in access_remote_vm()
+In-Reply-To: <20260909001341.6a7c3556259f7cf9a79c1da7@linux-foundation.org>
+References: <20260909064231.18693-1-tasos.papagiannnis@gmail.com>
+	<20260909001341.6a7c3556259f7cf9a79c1da7@linux-foundation.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1788984428-459942
-X-HE-Meta: U2FsdGVkX1+5QF0BSMAJ9/73lX0l3iqy477Mz8b0ClUaoCfcfloxK1qtO8/2dPKbnQDALPy5miDHKq3LqlEjo9JoeRQnbqKneeLGe3xS7pt8tKqHfxwKPqrlZQeVYLgNh/WgAjWCb5gbzWEJZNKQKPrvi9Qo4PcmQSFH8imVquCByh3nnkPfCdYQwWY50pB2AxR7ZeWNbVbQolxww/Qc3YSeNiWYllPTPLbdzZxrnpqgcRydGHBY+BaBavSqRrVqFHGDms7HIyLZEHzq+u4unnLLR8a+MYIRhS+PqhQRwrGWeXORE921BoAVSwRjFACToRPYPt+h7hCGW/qKdAFokukEE08c4lgDpvu/Aw7vgfXwQ1zn7ycAs6RxurD+ZedZBcO+rKxJxR18Etii6nAX3jrA1fdZmve+IsMJtT6GwD73uGXWHTSQVS3pR7uQisetn4/+AyiV9FV/UuiIkaa/mylYzfSLbY+QRCZ5kSIdwbwRNSaHNyTeaVMSYM+XDUH6ENMf6OtXHjeIindAXSbe61Y0izpEyCA13R6v+QyIMIx8ol7PMGkdsejSgsWkThQK8FxYg/ND7pS8W+6UPXZ0r/x+FWQMwFh6QaiKY/lqhHJgrKZJ4JRvNybp334oa3GyssoBkG0F0Jden14fsO7ZZu8sXF/QtPisP/gDW44VcqD/xFpvCFLGMUXLsKezdEsPd5CRW8OWcgXSA/s3UZi87wXBAN3VAJ0ahdXaYJkZm3Agg9RSxz5ghsFnwe08wvPfy7ZqqyVmQ27hom3ECdsIq7qEFtu17Ly0gtC/96R7jPAaU6Y5cHRPmzWqKaN9M1WY7ay8f/yIZtGCeDBAJqfzehLvPrt1eJ9BmIxLDMRp3wLbHsFvY1UJVr1w/YYbRPFqJvaUu7eN3KHHOrlgSehRItuaUdDFA1IlJuEkd7hAGuc6uc6JFk80d+t2DgH70GeRdb8wHrFntudzvaKUVN0
- PplwTQQ4
- pG8iItZJpbtlCnwS25S8jF8GzlvaiUsxIlzyKh1UBDsbPIAh/olaJBxsVhuLHfiehLAg1zn7pGCs4aZFt5EZKNChvmFOmMf2DPktx9Ut1VYn9Kt/WMYCmX0QiCh/sbyjK+QJO5uCPIOSkgl/9sOCdomvhYFqGvw1YonEOmGuNwJQYcHNIZ9NRjPUgmdGnbZWnLkMbHEYIvJhxcRQ1xqf/Szl5TpjGPf43gabxtJXg8cEXqdc0NNLkZ9ff1iCIGQ6qtN2kDhjE9IewYDBCiCBYUsle+hVB/fERmAMQTtWPpJ5zIWFmSUxhW29ZrCCuFwzXPZgE
+X-Rspamd-Queue-Id: 9DE0E40003
+X-Stat-Signature: 1dyx1b8uq15yoinkm9rmdpqsq3kit4g1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788984668-640282
+X-HE-Meta: U2FsdGVkX18TqqypzdmThOE8RJoC39BhVFN7xdnfN11rkQqj+ztKk4G1ghcDil5cg9WnNz8z3j3CdwTmKv6CtQh6Z3LBxT492ziPrxeCSfzOw+X3BjGRVbpg6Uc22wKFP7XxWRHIFf7Wg99BNde1GWIv88n8bc99dUBlOMp6wIIplcC1Lx4Jl8iekskPkCVVTKmlzfXVq07aanv5EvNgBq3Td/fGkmE1NmpGJHF6nEjyEkcKG5oe+u99ebis8MnpqpO8H+kESXUYYF4/MkTfmtk5EgiNOFjNbtOoNy5h5EB2aJq5vY5GsLcIv9rrXZa7cSPmJSrTjVAA6rnE0vAnZHeVIajnxGk+8Xf5yx3hLbUOAUochSPHVxDnRGpfJT73GsxZ3d7wS2jqszZh5lP1TaKg8Zxi5llARJY0YabWN/NJEinO23zDYmLtU0J2Zq535893sZrZzDWjuXkz82QRTPYebLY0rCYFQHPsMDXCZ5Dvptqvn4Sjsxnvbrhgvi/gyvMdk7rQ4pKTfze1wAs7IXehetWlajpcCMa4LIB1Ck9mpAXwiELxcNFYvd0Lkr0fy6ADSC6afeTCFbdR2D4k6unVLv6huNA7gQ4U5GtmU8DynXZX9rI56vqwcpeZ7XqyBMFWbnjhJw5LZR2d2Ng6iqJ2b3UhrQ2FF9Iu4eW7OcjHVQVIpf3oXTjVwL94i/hKkoBfpzMZWso8CfJNpHmSHZAOd9FCuwM0BN6KO7b2+DjnRm0m1C2SL7ksQt7fv3DX0UJwJLZygwPJ/lPLV8FzfvRtXX5KFhy27KtRrFlWyXvSNoP2x1j7pQM0YX2VlDfsCzSszHIan6HMKzAWLSicVlAldX84IP3WEdrV81lgp2bxA0OnkyfUxoigM40pcRXW+iiaicdbA7/esgmXTTsWw8HpqLR4EphqOalx1xL4RmYiNjaICFJthfPic+DzHi7PUpzeVs8E1KJpNmtPLoz
+ aJH38K7I
+ ibo6gDXg7f13SiJPZ54yXA4sS1pALc3D5hcrOmi00wehxoo8+R+5rdRiT0UrHHuh/U78EVhGbggBsrR/G0Z+NX4mOATuzcnMOq4MhGS8oW1EzMMn8QHY5o3MsLsiRU4MgNS42pG5vTP/ikeX/8yKeGf0yhjpge2ZSWk62rA7FM662wPi76hWHtlDwB558iDTFDyqGnNAp9NZOljvOzYS4sxbxGOnFHC4zfJtwWlpvNt950fzQJD6lE25HwbIONwlrIs/Cjh69BstEkKn51dncE7wA/fQHWCUtS8d3nh4CJ63KHKHJO/VT1keINXOodCXJmrBC2G9w2v37fAVGQoMmZ0qhHpSL8PapXqVZxr9rKOTPQQ/QFXVabEQbDTKA0DHdSWUnbcqRz1h2n3fdANzwejt4UdrhfgZ0ynk92zqS1tdcPcjqO49ag/AgHa+FKTaEaSSKYn6CKN6ykh/9WozsJ9fryJdqmbJGtpTeGKP1xzY0lbOHmAHuVrarpc7uAl5uu9S30xPufKyb5YRNscm5CzIvHgRPWn+J0SavtGW1V+MrLY4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,193 +123,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 2:11 AM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+
+Hello,
+
+On Wed, 09 Sep 2026 16:13:41 +0900,
+Andrew Morton wrote:
 > 
-> BPF programs can observe memory pressure on a cgroup (e.g. refault
-> stats via bpf_mem_cgroup_page_state()), but cannot act on it:
-> triggering reclaim on a chosen cgroup requires writing to
-> memory.reclaim, which BPF cannot do. Add bpf_proactive_reclaim(),
-> a sleepable kfunc which performs one proactive reclaim pass on a
-> given memory cgroup, similar to a write to memory.reclaim but
-> without retrying until the target is reached, so that when and how
-> hard to reclaim is BPF policy rather than hard-coded thresholds.
+> On Wed,  9 Sep 2026 09:42:31 +0300 Anastasios Papagiannis <tasos.papagiannnis@gmail.com> wrote:
 > 
-> Since some bpf program types may be invoked while holding fs locks,
-> limit the kfunc to BPF_PROG_TYPE_SYSCALL only, to avoid deadlocking
-> in filesystem shrinkers on the reclaim path. A SYSCALL program can
-> invoke the kfunc directly, or asynchronously from its bpf_wq or
-> task_work callbacks, which run in process context and keep the> SYSCALL program type.
+> > The NOMMU implementation of access_process_vm() rejects address ranges
+> > whose end wraps around, but access_remote_vm() bypasses this check even
+> > though both functions delegate to __access_remote_vm().
+> > 
+> > Move the wraparound check into __access_remote_vm() so it applies to
+> > both entry points.
 > 
-> The reclaim target of a single call is capped at MEMCG_CHARGE_BATCH,
-> following the precedent of high_work_func(), the memory.high
-> workqueue fallback, which bounds each reclaim request the same way
-> and uses one work item per memcg. 
-
-You can end the sentence here at "fallback" and remove the rest.
-
-> Note that only the reclaim target
-> is capped: the actual scanning work and its duration are not
-> bounded. Reclaiming more than one batch is left to the BPF program
-> rather than enforced by the kfunc: with one call per bpf_wq callback
-> and the same work item requeued for the next batch, the program can
-> also stop submitting batches in between, e.g. once the target cgroup
-> is dying.>
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
->   mm/bpf_memcontrol.c | 88 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 87 insertions(+), 1 deletion(-)
+> lgtm, thanks.
 > 
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index 716df49d7647..2817c6db9a5d 100644
-> --- a/mm/bpf_memcontrol.c
-> +++ b/mm/bpf_memcontrol.c
-> @@ -6,8 +6,11 @@
->    */
->   
->   #include <linux/memcontrol.h>
-> +#include <linux/swap.h>
+> > This is originally reported in [1].
+> > 
+> > [1] https://lore.kernel.org/bpf/4ef240a5bea36ff84df9589671367832860795159386a4c8fba546a0fa8b786f@mail.kernel.org/
+> 
+> Ah, bpfbot scored one.
+> 
+> Sashiko might have found more issues in there:
+> 	https://sashiko.dev/#/patchset/20260909064231.18693-1-tasos.papagiannnis@gmail.com
+> 
+> I'll optimistically cc Hajime Tazaki, who has been doing some NOMMU
+> work recently.
 
-You can drop this since internal.h below pulls it in.
+I got a similar review (from Sashiko) that current use of
+!vma->vm_file isn't appropriate and should use vma_set_anonymous().  IIUC
+that case happens only (I may miss something) with /dev/zero (via
+mmap_zero_prepare()).
 
->   #include <linux/bpf.h>
->   
-> +#include "internal.h"
-> +
->   __bpf_kfunc_start_defs();
->   
->   /**
-> @@ -159,6 +162,73 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
->   	mem_cgroup_flush_stats(memcg);
->   }
->   
-> +/**
-> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
-> + *                         cgroup
-> + * @memcg: the target memory cgroup to reclaim from
-> + * @size:  the amount of memory to reclaim, in bytes, clamped to
-> + *         MEMCG_CHARGE_BATCH (64 pages)
-> + * @swappiness: the reclaim swappiness, in the range [0, 201] where 201
+I also had a patch but am currently waiting for Lorenzo's input for
+his work on /dev/zero, which mentioned in his reply.
 
-It's awkward to point users to a numeric range and one magic number.
-What if you changed the associated macros to an enum:
+https://lore.kernel.org/linux-mm/an8BlTgk7sc5vFJ1@lucifer/
 
-enum {
-   MIN_SWAPPINESS = 0,
-   MAX_SWAPPINESS = 200,
-   SWAPPINESS_ANON_ONLY = MAX_SWAPPINESS + 1,
-};
+Thus 3 comments of Sashiko (all about vma->vm_file) can be addressed
+in future, and are not needed an immediate fix.
 
-Then these would be available in vmlinux.h and you could name them in
-the comment above.
+I wish to ask this to Lorenzo too.
 
-> + *         means anon-only reclaim; a negative value means the memcg's
-> + *         own swappiness is used
-
-You reject anything less than -1 below. This should say "-1" instead of
-"a negative value".
-
-> + *
-> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
-> + * memory.reclaim, but without retrying until @size is reached.
-> + *
-> + * Only the reclaim target is capped: @size is clamped to
-> + * MEMCG_CHARGE_BATCH, following the precedent of high_work_func(),
-> + * the memory.high workqueue fallback, which bounds each reclaim
-> + * request the same way. The actual scanning work and its duration
-> + * are not bounded. To reclaim more, call this kfunc repeatedly
-> + * instead of passing a larger @size.
-> + *
-> + * The kfunc can be called directly from a BPF_PROG_TYPE_SYSCALL
-> + * program, synchronously in the context of the thread running the
-> + * program, or from the bpf_wq and task_work callbacks of a SYSCALL
-> + * program, which run in process context and keep the SYSCALL program
-> + * type. It is registered for BPF_PROG_TYPE_SYSCALL only, because
-> + * generic sleepable programs may run with filesystem locks held or
-> + * in NOFS/NOIO contexts, where the reclaim path could deadlock on
-> + * those locks via filesystem shrinkers.
-> + *
-> + * For asynchronous reclaim of more than one batch, driving the
-> + * reclaim from a bpf_wq callback is recommended: call this kfunc
-> + * once per callback and requeue the same work item for the next
-> + * batch, instead of looping inside the callback and monopolizing a
-> + * workqueue worker, and give each target memcg its own work item,
-> + * as high_work_func() does with one work item per memcg. Whether
-> + * to submit the next batch is up to the BPF program, which can stop
-> + * at any point, e.g. once the target cgroup is dying.
-> + *
-> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
-> + * smaller than a page, or (unsigned long)-1 if @swappiness is out of
-> + * range.
-> + */
-> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
-> +						unsigned long size,
-> +						int swappiness)
-> +{
-> +	unsigned long nr_reclaimed;
-> +	unsigned long nr_pages;
-> +
-> +	if (swappiness < -1 || swappiness > SWAPPINESS_ANON_ONLY)
-> +		return (unsigned long)-1;
-> +
-> +	if (size < PAGE_SIZE)
-> +		return 0;
-> +
-> +	nr_pages = min(size / PAGE_SIZE, (unsigned long)MEMCG_CHARGE_BATCH);
-> +
-> +	nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages,
-> +						    GFP_KERNEL,
-> +						    MEMCG_RECLAIM_MAY_SWAP |
-> +						    MEMCG_RECLAIM_PROACTIVE,
-> +						    swappiness < 0 ? NULL :
-> +								     &swappiness);
-
-It would read more consistently if it was "swappiness == -1" here, since
-you reject less than -1 early on.
-
-> +
-> +	return nr_reclaimed * PAGE_SIZE;
-> +}
-> +
->   __bpf_kfunc_end_defs();
->   
->   BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> @@ -174,19 +244,35 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
->   
->   BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
->   
-> +BTF_KFUNCS_START(bpf_memcontrol_reclaim_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
-> +BTF_KFUNCS_END(bpf_memcontrol_reclaim_kfuncs)
-> +
->   static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
->   	.owner          = THIS_MODULE,
->   	.set            = &bpf_memcontrol_kfuncs,
->   };
->   
-> +static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
-> +	.owner          = THIS_MODULE,
-> +	.set            = &bpf_memcontrol_reclaim_kfuncs,
-> +};
-> +
->   static int __init bpf_memcontrol_init(void)
->   {
->   	int err;
->   
->   	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
->   					&bpf_memcontrol_kfunc_set);
-> -	if (err)
-> +	if (err) {
->   		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
-> +		return err;
-> +	}
-> +
-> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
-> +					&bpf_memcontrol_reclaim_kfunc_set);
-> +	if (err)
-> +		pr_warn("error registering bpf reclaim kfuncs: %d", err);
->   
->   	return err;
->   }
-
+-- Hajime
 
