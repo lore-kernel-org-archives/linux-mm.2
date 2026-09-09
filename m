@@ -4,133 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5296C79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4BF9C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:16:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42C96B0099; Wed,  9 Sep 2026 06:15:39 -0400 (EDT)
+	id B7F4E6B0096; Wed,  9 Sep 2026 06:16:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E138F6B009D; Wed,  9 Sep 2026 06:15:39 -0400 (EDT)
+	id B56D16B00A0; Wed,  9 Sep 2026 06:16:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D299A6B00A4; Wed,  9 Sep 2026 06:15:39 -0400 (EDT)
+	id A47CE6B00A4; Wed,  9 Sep 2026 06:16:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A9C346B0099
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:15:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3AA0E1A0179
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:15:38 +0000 (UTC)
-X-FDA: 85193817156.25.27765D7
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 433F81C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:15:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="E Mk86vK";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=xdqi4c4T;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="E Mk86vK";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=xdqi4c4T;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EDA06B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:16:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2A6314017F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:16:24 +0000 (UTC)
+X-FDA: 85193819088.19.6827C83
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0869CA0005
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:16:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Qz70umdd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788948936;
-	b=w+9euAruuqgnpxO3EFL9yJse/ViHJpdhxNnAV6LPsjAFpfGPwglYxSq/TFPQ0s/Z2T0iLe
-	rs0LlxltKu0PK91IUbcjamKVuNl0uxdRQy6AHn55N62m4I49G7klKqK/R2+d0li7v0dwba
-	X67yxcMiIopYKQ0aiMtV1bxucdzExz4=
+	t=1788948983;
+	b=ma4wdOlJzymdxDgS/EIq3v+mtImamwWUaVrYuNDaTOlWs9b5IJtu+r65J4NeVf/91/9Yj0
+	zWrh6+nhpujnTcsxMWJc0zfYEpemErBjqqH17AYLp6ORRFoGTnRVZJ88iofyfpxEBUARwV
+	UG//WxfIeZU1zUFECWNFZ/a7DGT1y5A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Qz70umdd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of hughd@google.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788948936;
+	s=arc-20220608; t=1788948983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0bA2UOwepFFOmS/bv5Uzc5Fj7QM31mNBWzJWBJpT/A=;
-	b=Q9oCTr+YNuGSrQ5QoZQ0J8B6i2CiDwuMnhev2yhBWTqyiVF/Oaj/hwoEFmObjoX1bJU1oD
-	uWE37+4hrP+Be4v1r/Joe/iKC/5abLVPzdw2cTzc3ojiJhphdteQ8gkzTxQCa5uoQblk62
-	aQ2Fvo3TJIkKwJ2OGk9F/A3Fa791SVk=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id C315C138023A;
-	Wed,  9 Sep 2026 06:15:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 09 Sep 2026 06:15:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788948935; x=
-	1788956135; bh=l0bA2UOwepFFOmS/bv5Uzc5Fj7QM31mNBWzJWBJpT/A=; b=E
-	Mk86vK/XwrtS9J37WZuFfmJ5SVpJDHDZ6hEJ8/IXG30fs2WD+B0ufH5VZFUTp292
-	jMOuh/xKSUtcqZ8hiBLpOyvteE1BuGHOG9HvywMlI0hwEgaDKys2a9XzQ+sEkqHO
-	M/+cZ7LVwJlZceL0cUnyGzzcwnYBvfy5fJ/D8GTLBmRcLfG3+Ke4EVFZcSZs0JXk
-	/8ANZYCWLjLkbXkfZrFoXWcY1Bakady40rjSUvlJjLPsnPDnTF6F+XewmrE9LrHK
-	YY6yyOgfO5sIcvhdh7BMc4wPd65vHXtSLOG3WGiV6Gzobzei7naXe2nLiNybLrgW
-	O+G0HaVbH/9HzzShnYDtA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788948935; x=1788956135; bh=l0bA2UOwepFFOmS/bv5Uzc5Fj7QM31mNBWz
-	JWBJpT/A=; b=xdqi4c4TC2EKOMc6mxGpNWM+fvaddmCXeGS11XeaRuRt7M2BDEW
-	BuJchR8oIjLZm3fGlpVcP9diLG3tV9CGFpJUFy35p/wAFFZiQ5YyDfSM+7FzSsbD
-	VjYTsKfRLJJC54Tgip8/mqeGmVdqEy1bCKlIDw6FcxcTx3q83FF17sWqbWu1EB7H
-	JtrtZ00WLoSx9PFCyg35BDGSfOBmNm36KL8mrMnZ0Y7PhhxmkCQBQPLzW0DZc1IA
-	TIF6kHMha7NNegTal9MhKFzn0xYe2yfjC/q3Hb70tKT9TKu3EvL1QPZvdFV5x0EM
-	tsb6RDHlagupN5u+hXBiXeP6HVmNNaD8d9g==
-X-ME-Sender: <xms:xzGhatUAaFDvmvipLNsi9G-JyJiuqY3hJG3-0yKVcQbeJrZNbNeNFQ>
-    <xme:xzGhavk_0CYEIW7IMPC9Dy57zl-oCd9JwmD5wyz6D8b95RYoVoa9Se2ks43X-sgAw
-    AkOCsABGQCHUeD8YSuKjkolVLIps1hhCe4m2tkpToPzIk6xcbc-9MM9Fg>
-X-ME-Received: <xmr:xzGhatun6zlTZCxkwaSgC4dgy4Obno20MG8dP9UM38mxvYOpl5WVmqvP3Q0>
-X-ME-Proxy-Cause: dmFkZTEUqK0n663bU8dHG/gXAim5or8IDZuAMT9spUIRS7o1wQxh4f32BZUUt41uBSxvbY
-    DWEH4wBzf4fX/tU6Fe9b/UvDQQ0roIkvnNsTesZI9aPxwEDI8S2XaBrAFOz/JVvzPWk4GF
-    0W/CnzpEgT1GukTwvX2x5EynFNHqZa91yCXtlA6py88ymBFZ0qGpBPmnBWEroBPrxOoZ6J
-    PqxtX3nPwiTYzSUIvS++f61uroxeRxzzZwFRBYthF8hRDAgYghR75AEnzTZbKrjRQCYzoK
-    UupKJGVHx02xDqQX/sBTbIoAS8d0ijH6w/AR1PW2zkt8ss3DkUpKKE6dfOB3tro1rsAmBf
-    uHeBeKkb7LoD3Po4skHeQe3Uspt+l3Gq1VlrJ5a6fnnbHxbUcjlKfrCAKqxE9l418CYF5J
-    HQs0518a8Aoh8vHgCOZY7J6rYFMHe6HIBNE5Dl4MUNHCPW473nmVgiIW8SyUqM2YYkMiOf
-    mLjR+f4JylidrCUHOGtjuAgJAPK+CsuC/1dSGLw9TfW2GGosMYDNHuzQw7SIsjb/70JD/5
-    EJqKYT+G60OzjQ2RhQsUxYnlrJQrsIT2h2yFJvKMD18gPCH5dM9Mtc6XusEacbzsurMclR
-    rq2n8fJ2FFEHXk9Zhzcu1t9gDC2A0BWbL6yHfCHptYj/aZGmSLMR8s6FE7nA
-X-ME-Proxy: <xmx:xzGhaohW7Svp05zxtpu383xfOj-Pvk0PxIihb73lf-TLnh53Z-dxsA>
-    <xmx:xzGhahS9zW_QrY6EM3-A7DeAA5QdQkwfNHnGvMKkU5VmfsTMFFKGkw>
-    <xmx:xzGhao8sGJPohqw-JMDg1l0cmRId1NX0HquDq7G5V6woFP4IOUBRPA>
-    <xmx:xzGhatJXlaFAqYw5pHoqdjpnQwXwaSHjo69R-pUidKf5nnXBAvar9w>
-    <xmx:xzGhaoByYJea67cl2E40ENZtIHPA_Y36Cmd5EhNgYpInH2bg06n7cfBf>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 06:15:34 -0400 (EDT)
-Date: Wed, 9 Sep 2026 11:15:33 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: akpm@linux-foundation.org, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Carlos Maiolino <cem@kernel.org>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/5] mm: sub-folio dirty tracking for PTE-mapped mmap
- writes
-Message-ID: <aqEwlUNIYYUEfdje@thinkstation>
-References: <20260903182943.662461-1-kirill@shutemov.name>
- <20260909100240.635595-1-usama.arif@linux.dev>
+	bh=Ovd1KkFuD5rQg51sP3+p0bllsBxKk8b6qXB17QYO0U0=;
+	b=3M5wAnu0mRAbYXSERQk36jR4i2FX3u4DbWb3rmSbucH8jOujhtFkIVC1F0cw0ig6ScAv9i
+	izuSzFAJ7kdTmgvjUUMCkaYXFl47HIUBFyLnFIa0+HNmiryW9DHG8pSQ1QynI5vaLMWgmJ
+	HudD8reiKe26er9m6gyySdPBKn+p6js=
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d46e4cdccso8725617b3.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 03:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788948982; x=1789553782; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ovd1KkFuD5rQg51sP3+p0bllsBxKk8b6qXB17QYO0U0=;
+        b=Qz70umddysFrkrVCfFvowL969jU2j3L71JDYX1bNrLf4dJhyy/zjv00lEtrqEVv1rF
+         3xkSDYuUzwIvUuy1AYOqdHethzSKKV329Bkwzm6Kj1ZvLygu9QsAopndZr0QxXYzvLe9
+         9M7IesUZeATsrnsolRYF9FzFRoc5jAF7PNQ7hYYkkf94QyM8iTpLZ8SfMpMaR7fl55Cu
+         0MIyjTfG+BAu288UWBk2YZWRXQDARfmQyZALYlXkLGvc/GPGlprP6gSBpzkk6d6NufqB
+         gYnHyYQJdCOPgx2OFlt1NjRCVOPx6zqb92kzZK0y3JYgdojmwPdGAj6vwHaY/hd+gVOh
+         eh0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788948982; x=1789553782;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ovd1KkFuD5rQg51sP3+p0bllsBxKk8b6qXB17QYO0U0=;
+        b=LX+6LEygf5lB143x9syeWF2ZWIQRcpPWdMkAHvlu22G2E/iCw4VwrsNq3zcEItJXdw
+         2hKyzFEeQqem7NgoGWkymzrCBpSU8ygNEG2E+pC6YGGLT3tAe2nBjWA0qQwBIKnKsuMa
+         ADrU1YbwwEskcakueF01sFN+poTa8yGHG9MV8XGO2Z2ZU4Kr/a81AzB+soVnUVrqAQ1W
+         8eGdFiatZVWXXOTTHGJK5NXBllazpthXll/kUQgmpWmclFF9oDG1NFWhoMMpg+NY4134
+         8T8o1f35cT2lNGgxs3xZBxncjkz8I0C0Pvz448EVFpxRHtUPQ644nEwlxGXKvD5G+pbp
+         jDZA==
+X-Forwarded-Encrypted: i=1; AKwUvBzWEBK6TQHzx0CYxPWDKGeINdtYXCgXE8P7mn/6K6raWES3bluVhOUXQliLN46BZLwfXbtwbJALHw==@kvack.org
+X-Gm-Message-State: AFuF++m97+tp0S5SvDCmc9l3NWzTBG4Vv7ume/LVYtzV7H+pOEhBCbHu
+	Wr7mV4Rz3xOOcaiOyfw3Kmc8Vkq36gvWSd162E3tyuyUhm8Mj74lxZW+MhKSlZyIdg==
+X-Gm-Gg: AYBFou2sSllYQIKmSptCJwDuFUkCC1pgfKuHL42eWs2931nBzcchJmXwO1eyOGALM8W
+	IDfsNe6M0sRXhRRmP6QHklRsvjump9P/3uHGsfRw6AJaapXHXC7sKizMGjhwHiAKZk0RaIEkn7+
+	c1Tz+lRmRmRZIwUoNwy5wRwru6WS3ZM1RUh1Pw6wKLbfVicrBOOdz8e978DYzWi5uEk+7SHJyr7
+	vgeGTxjyDF1dHND1xTKxWZfofwLSkKgUc70bbrWvi9qTUpNEcFcLadQxijWRYbY/tG8fUYEPwCl
+	NhEnuKvDbVRocj8bM7boxTP176SNBVSdyI9B+mpGMk2QapSOgifg975b01GJAmV838ygyKfg+Mb
+	T3PRcUZn2fK7Tk5N4bVm3HeRI826q9Fs73L/aMT/VKKDHUfzrfFjXJj7X0yCeLpB1lod/nr9vNX
+	W1YVRxhdyQ8UxUkAM9JfwKbgx18YQ3/Lvi674Ivbp8KFGWd7APNY/+suaVsocgkqPVS/Estp3gZ
+	GX3mhFPmWXvhqr5kpPSDaDZ8vuwQ+WAICVGhUNzpastkDrCwli8bhZ9HKs=
+X-Received: by 2002:a05:690e:484b:b0:670:f743:6eb5 with SMTP id 956f58d0204a3-671030a9c66mr1404195d50.19.1788948981459;
+        Wed, 09 Sep 2026 03:16:21 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb4912962sm11717181d50.12.2026.09.09.03.16.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 03:16:20 -0700 (PDT)
+Date: Wed, 9 Sep 2026 03:16:16 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 17/26] mm/fbatch: no lru_cache_disable() in
+ __alloc_contig_migrate_range()
+In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+Message-ID: <84ed3bf8-da32-3447-0577-052c5d1a56b2@google.com>
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909100240.635595-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 433F81C0003
-X-Stat-Signature: op6f55wgfuqngksp9o51b3dejfs7buon
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788948936-236209
-X-HE-Meta: U2FsdGVkX1+YCUT6D68dqY2hT7eXe/DpjQgkFUR+y9nGrw4Wu0Z+XgG5jkypXW9mi7pBQVakHG+hiwd4CzyPxw9ag/tzfXMb+yQ1sMoY6icB/Psxk77fyLLuSpKjvHue1NFoiWIpy4TwqsqgP25fe1FmA61RrgPzGU1w1Su061ofRIKqFWE1iqq8Huifs7At61ZgCn5Qzv8Sk3a+Q/kgJ+PtsaU7PuxnyUu/tNLmAFJe9pevkoiTAgC13PdzfxdCf6tUSMRlF2091aWBAOu+w4M9K9RQyqCXXj+y5rFI11NqlsULrHSsizv0IEUJyRz9xKgKGyELyxu0iEZfJ7MEgl4Hy2vX/jU2JVMbrKXQGabywF72rVksCoRbp9A+TlbkHngk1UGlO9/rr4khnAfrxOAGNaQZOxImfznSwzZXlwZBU0PmxDtot6ekWsRILK20ytCivRiQXJ4l/+jpNvGdQrygtPnSuUDGuyT6yBmktJgzFtztrNpCChPY3EOds39aSsQ+BbyFTq+EjAE9AelGTmjvsCVQgd3ns96UFz7a5U6I1UP3t0+d1535My5fR5gZLFvIzrARoohQDDTUc6CgBdybuVQ5hM+plcGXM2myvHzgUt11PbOYM/lARIH9t3x1wLBivwwT9NrHtosEK3yWNgBLCIen9i1ftTS2S9deY2qCwiWdB20Ff+vam1CBRcccEEXog4x369nAuQNcH1VwhRhTkNBB3asxI8bxmCXjCHfHGJwsU94jAGwgg9pg1I06pvqOFSaLjylCX+Ij3bz2uu/RB0QhK7Ff5UcKhapVuAace5Hiv9oEYBII4Alhy0sOVZTvDeQRE/RRuUJPc/1Rfsu3S9tHoXEhsn6oBXhGngBExjvAl6tlQzixgnpLFzZ3ZE8iiWgRqDphoCL/kcQMNnovepGrw6sTSTUaRqDsaxxaMs0/zgXsGK6XatsGRIROPKvnSlLo1QRx912YJsK
- Je7EEvix
- NA36oTutealryAW0/zrHjhTG4V8s4ZzEI3TLoiLGLKTBz712++cl7UELnOc8cNY75my8TGnrf2a7YE6qaxTIQIPIiNN2ViKOhmlEiwiK+ucUDBGZlZplK9AxKMSR63H54aOEBk6rV94ywRJgLoL3bBA9yti+USAav68wpxScfykG88YKO36Xburhl3HaxVDCNsGgS0kDdmpp8ncf2gLjNnzz87uU1XPZIO5Nk2e4dSICR5SFi7pWL0ucfllK/R2bnSDMr0iI4KWnxESmMbNsgHQTM6xwlMeM6IMF13+6E57l8PsBM8VHGiQkf820lQUCIDIGFyuqCNBXn1UfSQXW1g4XlmQ50bkjiqbTxEuradbDjCZTTXzDftnAFPShH1SV/UzitwMUytLiSSV0faJbJ3XwaWXtTPSFgmI3PQtCDphHHGbBqX6zDWEdEFq3OJrALJFBjN3TEvGhd31f3xrWONtnJ3Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0869CA0005
+X-Stat-Signature: cfahhk9k648w63ytkhra9uki1gzx8azc
+X-HE-Tag: 1788948982-971586
+X-HE-Meta: U2FsdGVkX1/PlFzKyKubfSbDuFHP1ehBMDh4mY7fybwWpfa9VWldVMXh/EUG8PeVEtia5WZ/bd5j7fRlx9yNv90POLY+YV52do3iHCQeRgUwOzNL0QOaTM+IPqeoxXnHXE1OO5a8oQW0Rpg7fgtY0Aw/Q4MkvmyFEPXzSJz5rk6taxMTOF8sMmYZ8fEpnGIswzjPySko4YaJASRD/IG5KghJ5pzcgFWkG4weI1u1llV4CdJX6wpWmDhjyvc8wpcmNKwa6YL+mKjXNOhaDSFmCnUkuocd2xj94fSlM7eFLb8IISgbQCdq/sPFgA0pKBdtPwnvukVN4gRn+9t/7MIVhn0W7NOQ7gWgskgKcb0+gFQPFe0xUPE3VMUYWJjLkZOZfpu+0pSyCd0SYVdl75w1nqSJztjSHvexTAOz1xoLSqS7a72nQ81WlqwqS0WLCkTzKyYYzdRRCFzjuugv1rT6+U4CBUY4341m01Mxmq60ELwdeeuVumwYkP8qyZXq44T83BkS/s1zl7gXT3fOiuACdiIlm2BFojlI3tbapApkSw2+ifA9dpUgVDQBxyBzuVAqXpu1kEUytxsE2HT1ayWisdqGdhv1TW6rYl8MzcDPCz21WRk5cujRl5Ft/9OcrjKxgL3mXD8JiLRGDVtIGaGAykvzyc8jN5FEgIQItEntYz51FrlDuc0vAdPyys7CaJDvC81ykDeuqNnytczX9FnYaEwRvaBXK8tDArWyBj2cxjdmaEcAzUFU4x/8+OTGLHkeCgwRsSV8aoWBbasLA7S20isKhiN05Oc8YYKqGj7AhMlO7qx85Q4RUBCu0MO97rNkNT+q2EEo/MzZff1qOo3JkHSSk7xhz9UqVaJbSHRpikW4WUHn1gfDIj4qHc+wSK0KicmGDtms11ka2EvQrNv+e9C6b36k8VnHq42XokS3OyAeks7iaAKlfIPo//9ZKbu4kByNc7pgjV6JLkidgAO
+ 6LSjlscX
+ 9Yzr6vKzveBVMKIuQYck7Lu06XjCJ83/m152tG9RwC2voRTmHtxysxwHmA2+7dXEWgfNap01uy9MwbjVUtWKS06hgXKyVtVYWzsZ3UyLYg0eyL+v5Txyhmu2TKkWJWPJdC58oInAQBNOeQRJNnUh2Wgwu89YV1cB5+26o1u0DyQ2TNZIb/i74/lYxd67woFC981UI9/7cvoktk6E9boh4vJNQyZ3DcBCF3YrB+eTxWEecOVz8ioO/RSJIqMzHr4pk+nDm8YgU8GA6m6tPjDKKPIVXnFUf0lstFiGT27iE7A6/EalplvcgY+OngGKG8ffy0tfEKAb2ovY0D1TOuNDpUfTP76E58oP02qmoZrR4wuTCd5OT5bcdAWsjLAwEx2Z0D2ZeanPJ+WsAI9toXVMj8kxE2GuBKF37TVmunbD16lj91JIW7ZAR9v0XUBmaoOiClNh0K4Gpaa8BKVe/gpWcUhRvKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,50 +143,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:02:39AM -0700, Usama Arif wrote:
-> On Thu,  3 Sep 2026 19:29:38 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> 
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > A store through a shared file mapping dirties the whole folio. With large
-> > page cache folios that turns a 4K store into 2M of writeback: one dirty
-> > bit per folio, and writeback has no way to know which part changed.
-> > 
-> > XFS already knows better. iomap tracks dirty state per block and
-> > iomap_writeback_folio() submits only the dirty ranges, and the buffered
-> > write path sets just the range it copied. Only the mmap path throws that
-> > away, because iomap_dirty_folio() covers the whole folio.
-> > 
-> > Narrowing the dirtying at page_mkwrite() time does not work on its own:
-> > set_pte_range() batch-maps a whole folio writable on the first shared
-> > write fault, so the stores that follow never fault and never reach the
-> > filesystem.
-> > 
-> > So harvest the hardware instead. folio_clear_dirty_for_io() already calls
-> > folio_mkclean(), whose rmap walk reads pte_dirty() for every entry of the
-> > folio and throws it away. Those bits are the only record of which parts
-> > of a large folio were written through a mapping. Collect them there and
-> > hand the filesystem the runs that were dirty, through a new
-> > a_ops->dirty_folio_range().
-> > 
-> > All of this is about PTE-mapped folios. A PMD-mapped folio has a single
-> > dirty bit for the 2M it maps, so there is nothing finer to harvest, and
-> > it keeps writing back whole. Keeping shared write faults off PMDs is a
-> > separate patch and not part of this posting.
-> > 
-> > On a 512M file in 2M folios on XFS, storing one byte per folio and
-> > calling msync() wrote 512M before and writes 1M after, with identical
-> > minor fault counts.
-> 
-> Hi Kiryl,
-> 
-> The motivation makes sense to me. I will look into the patches.
-> 
-> Just wanted to check, the above xfs example, is that on an ARM host?
+Remove lru_cache_disable() from __alloc_contig_migrate_range(). It does
+not now benefit from lru_add_drain_all() first; and gains little benefit
+from invalidating buffer head LRUs first, since 5.0 commit 80409c65e2c6
+("mm: migrate: make buffer_migrate_page_norefs() actually succeed").
 
-No, that was x86. But the math is the same on any arch with 2M THP/mTHP
-in page cache and 4k PAGE_SIZE.
+This will be more controversial. lru_cache_disable()+lru_cache_enable()
+were brought in for CMA page migration, see 5.13 commit d479960e44f2
+("mm: disable LRU pagevec during the migration temporarily") through
+8cc621d2f45d ("mm: fs: invalidate BH LRU during page migration") - I
+guess the testing there must have been on a 4.19-based Android kernel,
+without 5.0's buffer_migrate_page_norefs().
 
+It's possible that invalidating BH LRUs perhaps 0 times, perhaps N
+times, will average out worse than invalidating 1 time and stopping
+everyone else; or that folio_test_clear_lru() failures manifest more
+than before (note how folio migration has retries on raised refcount,
+but isolate_migratepages_block() no retry on failed test_clear_lru).
+But let's give this a try and look out for regressions.
+
+Don't delete lru_cache_disable() yet: leaving stale folio pointers in
+the per-cpu fbatches, with folio_try_get() yet to come on them, would be
+bad for memory hotremoval: the lru_cache_disable() in offline_pages()
+protects from that.
+
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/page_alloc.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..3e085a25a776 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7147,8 +7147,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
+ 		.reason = MR_CONTIG_RANGE,
+ 	};
+ 
+-	lru_cache_disable();
+-
+ 	while (pfn < end || !list_empty(&cc->migratepages)) {
+ 		if (fatal_signal_pending(current)) {
+ 			ret = -EINTR;
+@@ -7182,7 +7180,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
+ 			break;
+ 	}
+ 
+-	lru_cache_enable();
+ 	if (ret < 0) {
+ 		if (!(cc->gfp_mask & __GFP_NOWARN) && ret == -EBUSY)
+ 			alloc_contig_dump_pages(&cc->migratepages);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.51.0
+
 
