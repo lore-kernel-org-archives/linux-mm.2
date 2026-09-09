@@ -4,142 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E7F7C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68708C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:02:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C0406B009B; Wed,  9 Sep 2026 10:56:27 -0400 (EDT)
+	id 314446B0093; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 997CC6B009E; Wed,  9 Sep 2026 10:56:27 -0400 (EDT)
+	id 2C48D6B009D; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0966B009F; Wed,  9 Sep 2026 10:56:27 -0400 (EDT)
+	id 1B45A6B009F; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 575436B009B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:56:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCE0E160242
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:56:26 +0000 (UTC)
-X-FDA: 85194524772.24.F5D16DE
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0393180007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:56:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=d+gRKHyr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788965785;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D761E6B0093
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:02:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1B2180244
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:02:15 +0000 (UTC)
+X-FDA: 85194539430.18.49E701F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 40D3E1C0003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:02:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UeN7pksa;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788966134;
+	b=8mZFo/BIHtHjcS/7vEXtrdXMUlLtk7SgFvg4pl7eqVWtbPTmn6oEdFpOHnFV7fSMvt5zk4
+	7CF26ZoOK15Oz6fEG4hVx9z/qLmnJmiQtPsOhdhNXv96byTAj74652dcfhJIC5YmTVvcAl
+	NKsGrh57qQcj1pr1g1/uLxgz6LJ5wbU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UeN7pksa;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788966134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/EzsJ2XbIJCRg08piphlkM3GNGt42SpypDAM2KpYbBo=;
-	b=hs7vDw5n52PvA5aAqBY6T6woOJnazU8pD0wEt131uM7eN57A8rtj07LrNI3X6e1pnmEqak
-	BZedZrDGPmsBGIgBXSMx52hv5Yxb6fT2sKmYuUCrMtsbsclWI9lP21twMkCufwLtTnYz6T
-	YER8rJ/XSxWKXDPk2qmduPbvnkFvylU=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=d+gRKHyr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788965785;
-	b=Tqa+EMo05a5BsdeFS3wbbDaqltK4Sv4HmBr1FyFMYGblKYgjfb+CDThUsD3GMB6spoCtDb
-	CBERcHZffYjgMPajoJ3ZGkXm7MxPePS/xS18ydtRgfui9KfI5MxVutaUrGiQBqsS2hBPOr
-	GnrRk/736YsbzKX4tHY7K0DRb/PexRI=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd6185db7so13766975e9.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 07:56:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788965784; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nua7SomrxPECE8qFItxhqH0y3arsc96aNf68BWe4spZVMu7SV6pQLmE0qfGwrRSTvS
-         sYI4KizcftMWGcf41EwPVmsohfyzYtoCp4N353dk7Kv4qVVuChzRFTcju8gfdIXszDfu
-         eTJZrVHsfmO5fBx5GmwCjE0Peadf6fdfgwrxX+NoyEmFvaGFW9b7IOyT1n7jXiCwPB0n
-         Mdce+2x9OH8Pt2UfF4RGbY4OepbtShMFcic5ysp0HcHrrpMeNp/LueTRyWvjhA6g7rtS
-         19SLEUhyBlFUkFmFvIXniketxRGAsW70QnHrCGV/LQFsgMcQ2D43pPd1ZWEdop3KVZ/2
-         hifA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/EzsJ2XbIJCRg08piphlkM3GNGt42SpypDAM2KpYbBo=;
-        fh=G91UfuH0EpQz8lXX6FUq9yiu5XbYGpM51h09zCcZzFE=;
-        b=lynGMOu5aMkH2q1s/kCMCkagEfZn/tUZ0ZE6n34GEO1FSHj8VFO4+hj/mH+bbMOPID
-         vON6s1NAfUF0NbA9nI5KZUtKVje6kgxOxMIT664nqjRLUTF5GbsrEPUrXrqFSEhrnrcm
-         zBpvAwS4js/45dwM5zkIn9KQphGKXDy/FnF0U9cUK2FOPjQzuEGSncTHfp1pxp74WPPw
-         fmsU+geq1ReDpS6VcdzytscPMsPnyB0mO3Wgr9FWCuHvdG52/G+q19O+DN1CjRJ2n1Hj
-         MaBIKHyKWhLdcK2ejU+C/LBwNc0gD6eukgZOnZ4fl8eRKqcrG0MUZRW0R8zTKf0h1XdB
-         OmEg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788965784; x=1789570584; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/EzsJ2XbIJCRg08piphlkM3GNGt42SpypDAM2KpYbBo=;
-        b=d+gRKHyrKwIYdr7tClfh4i5jVUnnhqRlkK6mg4E3lCh4JcLApJM2LbIEpGM0dCEPbM
-         syJPs7EA7d3mRsm6mdOHjG6YZzLHT20t0nBJVP7i+rbvM08hST+5V5pHgzsCgRcWo7am
-         gO4+n0TZFk80qH3cyo80TPUOE6UYxVfoZhnzkZntptvKR0ZbVgMrugliyG5sGPZHN9wD
-         Hbg7l8a4VLJwA0AnWtUuG0wXBi4TN4k1crJYE96Z3aKRswREMSwYs3Kk23WMZEIPiAQG
-         SAhdh7Vf5EKw7DvcKhtSSaVv5CYtOUiEeUhJwmbCrtfEp03nHFAZBKs/I4mQPmgNVpEG
-         r2DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788965784; x=1789570584;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/EzsJ2XbIJCRg08piphlkM3GNGt42SpypDAM2KpYbBo=;
-        b=dVmhOqvGqKo11mgxGeKve0UVGpz9qJXCN/e1hubN2Fn/2TknZfpIY0H4W+B8jrXlhX
-         8ABwvg8PrpW8ONb6/n+o7ee+xIwOtM4UKhYqVFONyWWhvCZtOadMw9bNhCZSkxCVSNcU
-         DA2zHDlH3iAPlJ9sh55Zb/jLb/ELXPBTlHEzvDOzE492e/CVBMIF6/XyTpbsUuql11eW
-         S4RybXWCDGmmFSZmB7LDynTJ8BqG2z72tILo7LAPifI8ruOVqnlphh0rPmr2oK+WJavv
-         DxNg0PLRM6BRa5iWTRoXjZoHF+exGUbrwo0jhajy8CfP+2aj9WoDVm/mRRRXHJzLNmVK
-         7pgg==
-X-Forwarded-Encrypted: i=1; AKwUvByz6rOK32nJWysjsTVRgyBpbuHoOKf9T/EsJc7pDpl9Eia3rOEl/rCG6cHxRo9DzI8O9/S+bDYm9A==@kvack.org
-X-Gm-Message-State: AFuF++li2cl/Y4QunqTzEjcsw7S6qnCE4epCrTmPi2f7UihpIc71Sa5/
-	zRAFZUsirAoZpFip6DQg6vYu8SFbrEVz2O4sBgHYyVcrot7X7QYhzf1qGboCI/rA2+TxXtD+A3m
-	Hy/qN6W9zdmhobXWVPWDaESxSNyfq7gs=
-X-Gm-Gg: AYBFou0OrR3aW0un0djGrXuQhBaM7g3GdJel5lDD1We4CzfIhuMo81E9FIJx5aISTXe
-	YEBfKcvwgvj3SPg5GHb4vfE/Q62bwDlkT3Z+oXv2/HDE1or5NTmJkAOa6cC1DpTBfyp6fX5/yb1
-	rm4Tncmoie+SX04ACBvJzWtPM4jiNuuR3A2Q2k2/8DrT7/lA1TODU7t9oKtrm+xmnnMFPFsYnHk
-	4iYtuxkZvBDOGnDJQ907vUTNnIM9Wj2KkLK+IPvMc5aCcniQAzCC3MH76ON74QjsKD6hNL8GiEe
-	LNgxo6wVmiY1o1yn1LY3vSaL5Sf/O2Ak37txkwLoBxNIjfxoTF54HyB2SDxD3z+FwI7cj5uWT3M
-	Q+ee4n2S4M3MqXiTcKwQ2rg==
-X-Received: by 2002:a05:600c:4752:b0:499:59fd:dbfc with SMTP id
- 5b1f17b1804b1-49d175439dbmr143483155e9.1.1788965783309; Wed, 09 Sep 2026
- 07:56:23 -0700 (PDT)
+	bh=3KfExOA8KS0crEDl2q+9ULW4PP/JesVC+N5DhTICNJs=;
+	b=NCKvV0FtCp1abXZnlUJ1VN3UdohX8ttCtvgcmeS0WL3G+Ai87NCgHM3U0d7ZSj2DGAZYPy
+	pOnZ9IMdD/pdw0UIMeUbNpah8C/b2e1xGxguCBM78hPHrZ86XIpL5+53kPmZK+o7CV6fnl
+	GL1H8mf5/YsI5sG2rnlyDKDIqjErths=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 993756020A;
+	Wed,  9 Sep 2026 15:02:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4401F00A3A;
+	Wed,  9 Sep 2026 15:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788966133;
+	bh=3KfExOA8KS0crEDl2q+9ULW4PP/JesVC+N5DhTICNJs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UeN7pksaadSHMoEPfMk+ZajCW7TpStgfP3pR1FX98wY2nSvCyBtlgh4lBomgTWT1K
+	 hWWiqRn3jREcRJUiJseRXfiYhvS+Q0sy0u4yjQ5ijDmeEkkVXk/Y+KR6iQuMZ3T2oc
+	 lyoG8GepmPSZNc0eLwoWreX1prlhobT7Nwn7/YTRFy9McMoDBwxzV4TIBcxSo7bTSJ
+	 pcAJJSg7bRf7YqfWFqeTWRHhXldo9uS/+EX+uP9aI++4pAcpKtzzHrFGf1Z57epXlk
+	 dYZL2I8XyMCDE13937q0egdsqFp+vA14izbde9eAOtLY7L5xM9ERgL4mfsrDHqN74r
+	 KVfRpbU3j28pQ==
+Message-ID: <bef8f543-ffa9-4cc6-8a7b-6118daf14f76@kernel.org>
+Date: Wed, 9 Sep 2026 17:02:08 +0200
 MIME-Version: 1.0
-References: <20260904033503.4067283-1-qinyuntan@linux.alibaba.com> <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
-In-Reply-To: <20260904033503.4067283-3-qinyuntan@linux.alibaba.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 9 Sep 2026 07:56:12 -0700
-X-Gm-Features: AcwNN1XRJdmkw63mXOMob49BAlRwZ-fncp2bctcYyRkWfOoIpHMzKSC7_xtXJwE
-Message-ID: <CAKEwX=Mim0apjf9qkFPABWz88juQ2Wc+6hY9RAXdBevq45FBmA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Xunlei Pang <xlpang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 RESEND 0/2] selftests/mm: Validate selections and scope
+ memfd_secret setup
+To: Tianyi Chen <diannaaav@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Joel Savitz <jsavitz@redhat.com>
+References: <CACGbirSdR30=YTPQGN-=202jZqiF8gBSewhq+K_fTSNpq=DMhQ@mail.gmail.com>
+ <CACGbirTZFsyQhOszpfiHhrd7Red-L_Z_=ke7DbRDe5SQfzi9Pw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CACGbirTZFsyQhOszpfiHhrd7Red-L_Z_=ke7DbRDe5SQfzi9Pw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 40D3E1C0003
+X-Stat-Signature: k5u5qgdheu85uuknpoib5buq8bwuhipw
 X-Rspam-User: 
-X-Stat-Signature: 5jj4rin4yx6wdm1i1xxn3suc1e5booe1
-X-Rspamd-Queue-Id: 0393180007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788965784-752961
-X-HE-Meta: U2FsdGVkX18MMCzBK+N7sSKfmMU8HvUSHTg30dAgvyeCxnfCWCR9hMBO5APxfLAzF50Kkd34m8RBXoCv4HVoAidbu0GJ25s3iCwSv8BV0mZWthnb+V6RhzIQlYbeOaDICBGmVeuAYsSAGx5f8kNrT5Xh+IIbxzKH0rdeLYujPuBJbtijC4yy1ylVehGnHS9EaQFPt/+dBA/4c7sa5NaIeq8I3041iB15moPszOkPkRyk94CpIrMZXCjzQnnQHL9Vcb+4vw9ixksm3OdL54CGMlm+z78R2OvSht3S9QupPkAWHZm90TDgq/jF6BrJ+vkx0l6CRODTVy3Qq946pelArCAukbHjlz4heHjcHaLUPIomE5Uru9Q5VRVT/BRKk2FQY/TbywQyZkZYnUFcKTFt47Nyj0b/pI6IerxD8UVw3WseKZsQRHVVlhC5ecpnGBopS4DRRxWhrCRMrLgkohJcf82Hl7Thv1dvhiy3DbWVpjJj1S0vx9SsrLnH4P7x83JYX21gY+Z0WKZH8m+HNdNsDcO641TYqDwTDz204GAGlEZjO73ISjsAgXoLKj8ZpcZ6KgcAzgf92K2sOABXaQDYQvSOQGqe8wnAVgM+EULOv61Y/Rp+ZP6VoIafHxo+N9NL0dHq0815my+TkAe+VEL/PJqiTsZRfheImEjV8yPQZQYCg7rtNiy6xizZenRY2nxG4d1FpJiMdnPbRHG4S7SbgeM0bqmBc8G8qu0UOyd1qXyUnAbaSt96gSMZFgMedcDXSnY9hgQGN4c9ov34odC51XAKqKZhT4fz8HZprWAl7sF1nPvvRB+B6amciRYPQqN+tQEfkSqNW0TdKYIJYSmp772DF+ra3FRMkN55X5qW3FtBMXbln+pDF/UH2CQieqZId20YfpNEsQpYC+86xGWAyaC3NqSx4iVjTSA/z4vHT5lHcjQeIrM1NV7ff9GzsT5bDy5akx/xlfjT5hlRZhu
- nkUIyv1u
- gEhSuTask5PrIdPIUT8mWBfejfKdR0qTl1BYswd2kVRfNTCijMIzMRdaVIVq45wlO537wDj79Zl/OmZgQRzDocJMATxCQK6LClPnyDMpeAv1iHOpOBmbFKoyVIZySmP3qzkHOf+6tGQlvJWlPP8uTt6EgBcxgCSiqMUbretkwP0JtCyKzrzokNMgHjO3tqvGV85qnJYRH/ftlPkKQ6bh9sf8zkvOnKXEX6kA7arExYo/VUDz7cPpFTrE3ZFt1e5Qpr7JfRrDnzHvjx38Y2issqUvhK9nr3QovM5EiiWtbucN/w7TWJbXOqj+3m5jfbMK1GgCE4P4l8syDf1C0OsZQ8csWDGHaKvRgaWrgOSVdzETWaQwCWa/zw1LwipVOfefwdSRiX1gELp27ewOhzgbNW4jE5yiwAtNvyHCJBkCWFhlUNlTbLwK5IjQWiYAadC01G+kocKFax7dOWppUMX3j2NlVKh7f0ik8gK7HTq9vK+x01Y549uYhzwZNSb9M0+C4OaKiAFpAdy/IInuYcRbgk1FF1Cu3f3A3UTVygrwBy6tZ4JNiIegxOeHyEUfaHKweEU3W
+X-HE-Tag: 1788966134-805210
+X-HE-Meta: U2FsdGVkX1/25OXWrtI47/CZJ/yMENTZKieIhosWv05Nsr2FSh6+lByB6kr8Y5LAy1P8o9vvbsJ02aCtqUff6JZvK8je4crIoSTPx9eg365QTis74Fmfas9WU2sGSXNa6R5Mwy1eJLRwOWiioTeANdAVAwSYIG0paECBINTre8hR0KVJ6DntLoCd00CSU1B5al6ltnQk1+apm2ODFQhOxoG4Vw1z3ANvk7jnTO0Ha1Eis+KWnJ7ifGgulj3IcOMv8EZHK312ckxNQKMH3Ia4t/SPOdUul9RlpLTMeCPng0qOTXv0ztwQc1hwHzfVnT14KQYqqZ5v330Jv8gwWW0sXQONoGgoxmBvw49LwYpb3B1MrUHhibxqq1sYlMTV2x1Z6nKZAeBdGHhPBpAU8n8YZfYuvL60xaDrzSBd7dxFOKmLXsQesQRJgDvrl7boXC4Qqj/pEgs5DevQEwY8XcikmyAmSz/ohEujw2K/PnhQJYrFgiHIfOJlO3rqRYw4vJhPa5UmXIMttkilHa+lcQCRt+517C1oXGL+bLqv2jwGKTSS3jV0UQwQJVkxrxoSyJJZkdnjDciVHp6/cEiw2mL64hjqMPxUgToOoz+817JyN8BfmJCfq/II+onAdrz2X+l+zdAm9sbUa2+n9e7DlpWzKtGSknES+Ln0RJVcL6OaGlKdMfALtZSZ4BKmVgi+ldJTTZHvqX5V3juEp81H9Mm3FMkWLBKMPYurOMN+HNBUktq1HgR/5AAl4Ik8U1Gj37iJePrn3ceag3jvFhOdoAWqxNAUAit0aNK42UqNFxw3y4KT7U1o567DBUIqe9NS1EPn+lxJslCOhE9zhOxiuTzO7uHIWZGkPX3VANehQtdvZKWa/KYjNtLHw8ckMTEodLmW7CJvejyXEM6i/hN1QLL44X52FsB9elmu/bQ5b8AKuWp/G/7pyuFjwapXjrPJRZ9RJcgTMF/5l8JkqNYgaU5
+ 7vV7QKNL
+ IF9I2N7iETczApL3vMWkulTH9v8ZUbJ5gJufoCf7rSV7LJFUwnfxCbsmjeFwrSA7tQzbZxoVMLBkZd3BHNMQgzlFng2+uTqskffJGVqUJJN2F8S8xCRcHHHUsvCLVZs0uofFpfKFco0r4CzeuqCae8WaFM8RhFlLkecXm5ncPDi9WPIF/8DG7NOiUZM7DLl4Nsr2hlcYZN/06b6m+Vd8TRbQvWdbVADXwtDEYHeQOpRAvtFAiBbkbdaSikvxOEgbmzc12wIt4bnbLQ7A5PS72aAEJQi2ZvnF8QwtMWHoq0sa6HfodPK5jNc8QP7QnjF61kwdFdxVuN8U0bwyvwNmQOVXjqyI68P0HnEWi39mHDhZrTPOe/kOyEjV7+VekCbu4eGdX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,35 +141,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 3, 2026 at 8:35=E2=80=AFPM Qinyun Tan <qinyuntan@linux.alibaba.=
-com> wrote:
->
-> With kmem accounting disabled (cgroup.memory=3Dnokmem), memcg reclaim
-> never invokes the zswap shrinker: a cgroup under memory pressure does
-> not write back its own zswapped pages to make room; they are only
-> written back by global reclaim or once the global pool limit kicks in.
->
-> The zswap shrinker is registered memcg-aware but without
-> SHRINKER_NONSLAB, so under nokmem it is treated as a slab shrinker:
-> before commit 03375203e1da ("mm: do not allocate shrinker info with
-> cgroup.memory=3Dnokmem") it was skipped by the !memcg_kmem_online()
-> check in shrink_slab_memcg(); since that commit it is demoted to
-> non-memcg-aware at registration.  But the zswap shrinker is not a slab
-> shrinker: it tracks zswap entries and resolves the owning memcg from
-> the folio's objcg, independent of kmem accounting.
->
-> This was noticed by Michal during review of the patch "mm/list_lru:
-> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
->
-> Mark it SHRINKER_NONSLAB so it keeps its memcg awareness and runs
-> under memcg reclaim with nokmem.
->
-> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@lin=
-ux.alibaba.com/
->
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-> Suggested-by: Michal Koutn=C3=BD <mkoutny@suse.com>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+On 9/9/26 16:54, Tianyi Chen wrote:
+> Hi David,
+> 
+> Following up on your review:
+> https://lore.kernel.org/r/d6ca7f47-39bb-43b4-92d6-63ccc148ebdd@kernel.org
+> 
+>> Who would set it at this point?
+>> Can't this just be
+>> VM_SELFTEST_ITEMS="default"
+> 
+> V3 makes that change: the default is initialized before getopts, and only
+> -t changes the selection. An explicit empty -t still fails validation.
+> Both patches use Assisted-by: LLM, and patch 2 carries your Acked-by.
+> 
+> I have resent v3 at the start of this new thread from my Gmail address
+> after delivery problems with my previous address. The patches are rebased
+> onto current mm-unstable without changes, and the focused parser and VM
+> selection tests passed again.
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+That is new:
+
+$ b4 shazam https://lore.kernel.org/r/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb+9Q5SZmY-=Vug@mail.gmail.com
+Looking up https://lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/
+Grabbing thread from lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+Analyzing 4 messages in the thread
+Analyzing 14 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+  ✓ [PATCH v3 1/2] selftests/mm: Reject invalid test selections before running tests
+  ✓ [PATCH v3 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
+  ---
+  ✓ Signed: DKIM/gmail.com
+---
+Total patches: 2
+---
+Applying: selftests/mm: Reject invalid test selections before running tests
+Patch failed at 0001 selftests/mm: Reject invalid test selections before running tests
+error: git diff header lacks filename information when removing 1 leading pathname component at /home/dishy/linux/.git/rebase-apply/patch:6
+
+
+-- 
+Cheers,
+
+David
 
