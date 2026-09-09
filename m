@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D9A5C79FA1
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:37:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE9DFC79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:45:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7C26B008A; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
+	id 57DE96B008A; Tue,  8 Sep 2026 21:45:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78686B008C; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
+	id 5083D6B008C; Tue,  8 Sep 2026 21:45:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98D7E6B0092; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
+	id 3D2E36B0092; Tue,  8 Sep 2026 21:45:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71AD56B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA03A807A9
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:37:37 +0000 (UTC)
-X-FDA: 85192511754.29.7547315
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CBA86B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:45:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E1261A0827
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:45:20 +0000 (UTC)
+X-FDA: 85192531200.14.6F04745
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 095F0A000A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:37:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n5kLNgGa;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf16.hostedemail.com (Postfix) with ESMTP id B5BB8180003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:45:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IGTljDXw;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788918318;
+	b=Awni54Z28KdFis7+79UKLSqjCVdXxDM0Hmyt3aS9KdMBsvlCDH2m/QxInBwFnuAP+FCri0
+	DkWTm0AvKBWzHysqvzbsX8vUJ8mxZ9+Hzf58A6yuDpuDiAk6BojyS0GoIFhv9Xmh0StAJT
+	j2iGaSobeScrNd+E0uSvueAXlV3Gcck=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IGTljDXw;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788917856;
+	s=arc-20220608; t=1788918318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCl8v/e1Ribr5OQ7F4L+L+/USm7rKZv5e/AFPktfvKU=;
-	b=pT+jZhYLrcnSrBokkpkL9LelElmFr5JMrMdsCRsjqWylwMEX3jMVCoCOjEiFOWVrGSE00n
-	c60/AvyGij2PEpgsrVuBvENG3LBn+qLynQFQpVuVYaQUm37GteBizR6ks1ZnfZ/ITVZ5ow
-	FKuy8KLjuB4wKfwqCNDeTq1znCxGLyY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788917856;
-	b=uL0d0oL41MFTalEKLXs22kpBEDG85YocsTl6ux0eKKF9jNO8qkN1g9ITN8Z46/UiMdqexR
-	a1uDfAaqab9wtFJQuqMEPVON+a0hWvSPfS3uaQAdXpiQrNaNoRSHRUuZx+g+yQrQ8cRJjE
-	L2My4Q0gzWxuJVG7XZ3ZmQU8VJJcZrc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n5kLNgGa;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=tp3dXhAy5jR6y6z8B8hfuKasJOA/kRC+FrcfbplZSPw=;
+	b=m8udy0kshtsPu07X+9eAZH0TLhLwb7ShKBmtd1rZYeSDMDENUR7L9vMwKbt6BAhiFwXI4v
+	FsOex0M83Um5aiAzyy7DhxBPgywHsTa+XtpQz+YLNFqmfbzmIHRQcHA1XJqD+P11sjeoKK
+	XC7rNRbqifVK9gjd3MDH69Bwcqunk8s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C28340BCC;
-	Wed,  9 Sep 2026 01:37:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1021F00A3A;
-	Wed,  9 Sep 2026 01:37:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 993D1408C4;
+	Wed,  9 Sep 2026 01:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46D71F00A3A;
+	Wed,  9 Sep 2026 01:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788917855;
-	bh=wCl8v/e1Ribr5OQ7F4L+L+/USm7rKZv5e/AFPktfvKU=;
+	d=linux-foundation.org; s=korg; t=1788918317;
+	bh=tp3dXhAy5jR6y6z8B8hfuKasJOA/kRC+FrcfbplZSPw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=n5kLNgGajilivzKNxr6qpSIgTRetxyb3x1+BtrqXUEygI/I48nTe9K8FN47vE6BPq
-	 l8cyhTCo38RYUFtxqC0HV7fQZFi9cdyBW1Bi79JzbR5/zRai0NsGs9IfChmrGG928h
-	 fo/AjnTJ+Bm2lpDcwwzrX3dydmVtfdPEu6j9I9bY=
-Date: Tue, 8 Sep 2026 18:37:33 -0700
+	b=IGTljDXwgWO0FriKqdwJFtPwF4QskmkLh1pQ2+3IPqHdcjNgnrUbTK/OI7mrSSwQQ
+	 hx/vqsHOSMfoCqwnOJMQqb12JTW/Pczsmtdwzg/3yJc8S0UKEzUUjhUAx6q2c1x6JF
+	 wQqqLdHznKYFGH7WFtTIn66xXVi5PzmW0nR/aEJ0=
+Date: Tue, 8 Sep 2026 18:45:16 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
- Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lorenzo
- Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu
- <zhuhui@kylinos.cn>
-Subject: Re: [PATCH v4 0/4] mm: workingset: fix the shadow node budget under
- MGLRU
-Message-Id: <20260908183733.ea115c9f8e6f88220d1b9b5b@linux-foundation.org>
-In-Reply-To: <cover.1788837625.git.zhuhui@kylinos.cn>
-References: <cover.1788837625.git.zhuhui@kylinos.cn>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, Muchun Song
+ <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Randy Dunlap
+ <rdunlap@infradead.org>
+Subject: Re: [PATCH v2 00/11] mm: Switch device DAX to section-based vmemmap
+ optimization
+Message-Id: <20260908184516.c026438445ff3db78ee120fa@linux-foundation.org>
+In-Reply-To: <20260908030335.96549-1-songmuchun@bytedance.com>
+References: <20260908030335.96549-1-songmuchun@bytedance.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: on7qzr8xn7hebb5a1m8zkpadwkwrob4w
-X-Rspamd-Queue-Id: 095F0A000A
-X-HE-Tag: 1788917855-373481
-X-HE-Meta: U2FsdGVkX18ZmBHorrG6KI6qxrhrE7nnxvrJofDgaf4mACWKEYeVvvg26dp2/MP9PDDaLuwvmiOOjoU2g4xVNKyTaJyEMM47CDOARq0C5rVzYBtlMBnN/XWTEIxDYa14002llbGw8WWkLzkBxeTWfgo4wsw6mcPKbxIqNC3oDYD9OMHFmx59bM2TJCJdRrz/zwhA0rYnvfB3TxBnm9b+qTaD0gTnKm/MKzztARNIvvgp6yYdMhOujoBpqbiR+ndcTxB4HYBJyHRVU3HD+rIyeg5NSNXJ9f2hLU1gj5znNB2gPG4kuzqHhbYDmEcNU8gx1iJDVfwSssn2CU9hCQYGfjiGF9M1HTtL0z10AnkGe60JDOpUHT05CP7zU8TiEmiA60hGKdsBMHEM8IFRAt39dvn09c+bQvbm4UF3iyk+MxHthOh5x2EtoBxpFbs9u66MWkFLkWE1iVWrMnjPr2KuAN8sfDorwzoBwG00C5qpxz23GbObl97go3/S1J1A+HCw11hNGAtKn03RVlyc6I2Ej1xoAH5fL+JiiDMk9x4h+REBQqPxaweV/6ObOZk64/8EXHT2XwrFmgh0xylU54arCrDgJ92DtXAVJ+suyxFH2u3HZDcNivmKftxBBO7vXKozbv2z78jNOuYcOU5rXZKQy0jONnuE0+4ohsmEZMEZylYyUy+xoCuu7lKL+se59KlQS9nOBd0Ipw7abNkK1kE7glh7BYXIiSxqRJ7Z6aK4lBq+pvUWkl4MxFn/KUquCaEMqHU6rmKS//akQXNYBGpk4TPh8hv9nWWdDEUheSzKx2Zvg0/1rd2KLRtXtZYVhK7D5YHY7uQsCTg5gCpcKqPuEZPzUvDeSQNT+8y8LPa7gDOUiDDRjrAJ5/rj+Gd9DJasRkKF1/Kga9mpDCRBcRKCclzqBX5FA5PI22HuMLzjA5LoAq1a5682CxNSZ7V0R+Wxgv9sN/JED3E5yffi2rT
- BNam8gtC
- rYgU1PNdCNkgWM/f3x3DqWU/ImXMuskDsdphrkwfQelj1eMpPu9jlokZrv4WiYfKl2yD9ma+HStWXk+yX1kZGTsUCpTEG3yEUYVhjlVgmr+arGNNzA2NI4Rhs5DGhtb1G+6PnuxPf4FC+bi6kf3e3UEmBQ17x9JRyOrOpCG45t9l//YSS6tzljwG9H1LlmmcL8xLzNBshsZPDqaHjvbpdJx/rY6+5ofjtcgUX9KpNUMiUkJDevhSBWm3Exgaa/W0H4kUz
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B5BB8180003
+X-Stat-Signature: ywgdwsacjcb3a4c5fxc3ewy5r8c735tj
+X-HE-Tag: 1788918318-457543
+X-HE-Meta: U2FsdGVkX18+cm+xA0atT2JH6CJX7uPwjP4Z92LaGBsB/H1knwmbY5c1BZlMu5e3olbO7imX7zpFLlB4yJUQpEJa6H6XZOHAQa3cgYcmCHxcZpQyM3PYyRxqpYEba13vW9GvxZME6VdPCwfaXdbestjbkaRpOtPlEfux3EhK1gJFdIGZzii2t1LuE9ry0NI0yhC+ZppHarQcwHqH4x2cbVGA3wBePYgkhYyTNjS9AayR0FWryii4vFcwSKogFjqsWFQa2Q0k3TeOoc2/b8v+/cTEuJMGiJxmQVhADsyqVGbi25O/NABLNruQx9rqsO5aJY5xkBGr79t5JJf20kffLMr//u+UF8DJhk2L8WRWIOgnhqqvK6BqgM8wzQTh6EmCTUPjVyJBjKR/vGUAWoncPDufcSjj+Z9k9evVDFR6/KPJGgiramx2tOQ1Uj5RX8JRYsEmTFSnOUG5x7BhZzAAMxTvYYDQRw+QtZgRbvVPFuwW1X8WjoGrT2VI5k7flI3Ke8MibAGzCH9xn+jBJfrl5b0tjpoPolFx/b5WTLq+rV+kKHP9ip81drdJXO7AXvqjX001hj5fcxMcFCZz0jFkLlCHkkCGd8+EfqVYy1u22ZNS7kclZ9ENLt5LA2uoLXjPm76S7mNW//3EL8EQtwM2Fg5vi+984ZnLMdvb2ELvtVA0R+BJjEGm8Wcf/9HESaXPYSOaC7Jf39tyP/w1t2w/uUDbKT+4S2th36d8c8+KXbidAZvVRNf6jp2+QS6R+I+ShvzvMOtrKnY0pFbZpjWuuU4g5iP9m7aq5W1fOWF5mMki6GkGNWbGmTenk/Gvu+PzRVzQCYMp3jH6fkz80d8le7y7lDdsDH7S5eLQEX+w62yf/qfxQmLvQ/ZlAmq1gf8O9Gk763se6LPf+VtlZJbMfc0dU3UX2ior6PptF/DSY5Sa19vtygrHNm9ANOA/Sy7IajYaIAbA+tlwBSkWUTi
+ nqOCoWra
+ JRwy/oDEkB24sUnTEs929rwql5iCQfs65+XDgEitoXmqhqaJGmSicgWru8ssUiFb8AFCMPR/p2g/RAueAsSlE8jrQNx3/ycwDdIbneGo88iZdgVAwRa7XrC366JJ0oUR1pUkSnCwGR/JZSGB4yEq6uXq4FuA4NDyiyG5JYjaXz4IKNNz/9us2yBtwKr2u0/vIkvb9RFeXRKHOXWQe/ahHdSNxydUmuyt64zJv3zyNmCLqHaR5/2AXy0V+u6EaEL9TgL3qo15PLRpwFHv8we4tRShg3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,50 +97,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  8 Sep 2026 11:41:10 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+On Tue,  8 Sep 2026 11:03:24 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-> number of lru pages") broke the workingset shadow node budget under
-> MGLRU: lruvec_lru_size() reads mz->lru_zone_size, which MGLRU never
-> maintains, so count_shadow_nodes() sees the evictable LRU lists as
-> empty and the shadow shrinker reclaims eviction tokens almost as fast
-> as they are created, losing thrashing protection.
+> This series is split out from the earlier, larger series "mm: Generalize
+> HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+> vmemmap optimization across HugeTLB and device DAX, this subset addresses
+> a single, self-contained step: switching device DAX to the section-based
+> sparse-vmemmap optimization infrastructure introduced for HugeTLB.
 > 
 > ...
->
-> Performance testing
-> ===================
 > 
-> The test script and the raw results are available at [1].
-> 
-> Environment: 10-vCPU QEMU guest, 8 GiB RAM, cgroup v2; 7 runs per
-> configuration, medians reported.  Workloads:
-> 
->   w1-anon-churn: single-threaded anon fault/charge loop in a memcg
->                  (MADV_DONTNEED + re-fault, no reclaim).  Every touch
->                  is a real fault with charge and memcg stat updates,
->                  so it stresses exactly the fast path patch 1 changes.
->   w2-file-churn: file read loop under memory.high pressure
->                  (reclaim-bound, noisier).
->   w3-reparent:   reparent accounting sanity check.
-> 
-> w1-anon-churn (pages/s):
-> 
->                  classic LRU          MGLRU
-> base             4393028              4377122
-> patches 1-2      4385996   (-0.2%)    4352887   (-0.6%)
-> patches 1-3      4381832   (-0.3%)    4377053   (+0.0%)
-> 
-> w2-file-churn (MB/s):
-> 
->                  classic LRU          MGLRU
-> base             8277                 8226
-> patches 1-2      8226      (-0.6%)    8123      (-1.3%)
-> patches 1-3      8157      (-1.4%)    8294      (+0.8%)
+> This is intended to be the third smaller step toward the broader HVO
+> generalization. The wider HVO consolidation between HugeTLB and device
+> DAX is left for follow-up series.
 
-Am I misinterpreting this?  This difference is probably within
-inter-run variability?
-
+Thanks both, I'll add it to mm.git's mm-new branch.
 
