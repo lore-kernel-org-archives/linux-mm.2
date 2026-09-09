@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B9BC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A033CC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:45:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 124D06B0095; Wed,  9 Sep 2026 02:43:04 -0400 (EDT)
+	id B3ABA6B008A; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AEB66B0096; Wed,  9 Sep 2026 02:43:04 -0400 (EDT)
+	id AECB76B008C; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8706B0098; Wed,  9 Sep 2026 02:43:03 -0400 (EDT)
+	id 9DA6E6B0098; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C457C6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:43:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD650A00AE
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:43:02 +0000 (UTC)
-X-FDA: 85193281404.12.C498DC9
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3A5FB1C0002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:43:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yj8IIijY;
-	spf=pass (imf18.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 723926B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A99B1A0111
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:18 +0000 (UTC)
+X-FDA: 85193287116.05.6475461
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4987F1C0002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhLgczlC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788936316;
+	b=2l5AKj7DXGitw15gjnpZt5ogJWwyD7QQB6VsMzuz3EzgbsWyD1OkmxXiWeLSY+mh1IwtBc
+	n5+H5Bf5AN5+CXSUFOK3YD5PhAExnYsi72WfOGUhI8jHJKf+s7K15LcfZjbn5wa8uiVk8r
+	0N87pidUPMWQpjNqqoqSTbn5Qp8/KbY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhLgczlC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788936181;
+	s=arc-20220608; t=1788936316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
-	b=v8fDRnTgisNssOpTcBszZn5ZWf3QIogCeHaLOg9QmzOOYgZF2S46o57jJniLa9fvlSG9WK
-	L7vW2RCP1Rce3yagCTFHHmWLTUZRO//8BL7NAVzujiIZDrJS9MwGYM/5ZoMDqV4XcEnOY4
-	Idx2LB/IJHbn+18GhUe96JtqXoqc+iI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yj8IIijY;
-	spf=pass (imf18.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788936181;
-	b=xO8xMwlvc9LvIs9F1AbYqmOSKRrfoicg8AAU6rUS0n3vwOZiPEHisPLBTEBgPjP2Wpxqtr
-	yaNr9itPeezKa73q5IcSU476h54RB8CR0Nt28BysUvmsH8prAceOMB/4tI4nRHjgveKOcp
-	ZEFJPb2x8U5VAuT4scn5lHLESK/S0p0=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f96c5b722so3856461f8f.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 23:43:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788936179; x=1789540979; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
-        b=Yj8IIijYqD0oA23XWQCleBlbuZeg1W3BrrpWc9eA/PJQLtZMXRaOWpRFAk/+LyeWXq
-         i3B4tNlbC4l7PCuW+03ImUO3/BBiNL/3uqEUj6Omi9yV1AjfgGg2FV+4cts51HM0u4Zk
-         BYy5uE+8+7c0noGaZIkf+BtkhzGE8Jl71HGJfWVO0HB3ez/KhHdMxrPf7bD7JdvPlAo7
-         09TCZTT6wXwsWGxcq9dqR25WoarZ2QQ32SM60/2WCWqOD1Qj90T7BTa11qHk3lus58Ky
-         l1CUhS3EBShH8ooTInKGkVB+wAZ+0DYyWlaR7Qw4CLXyknl2QyCK2X2bin6RifXmhrrd
-         eNeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788936179; x=1789540979;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
-        b=VnX7OmbDdvcZfGHCL17ZWz+WHCHVRyZNZy8xQnH3vZX+ZtE8PJypDhHJQXyxzECYtv
-         lhvfk6c/3RucXhFYZIdmNsmhR6x2uTbJetmzw+ybRT08Yi/rbLMA5A6Vbd3ob1bcsFUy
-         H4WnfJ1ihENrgFxfsAMmccom0SKZqIQh81VHjW/lJbL5Okj6iwj8oTlxoeAmKaGhloRR
-         5pNXm35qaXpbRH32lFWfCYTNmgr/+fa1M+BLgOSFQcPuq8zSRAWp8ylcbcTicZdtb8Rn
-         kCe+TghRvTpb3QxUCagRoIMtWNAZSrkTvw9mig210ykaM86j2HrN82PYSkt/aH2+Xg8R
-         5dMA==
-X-Gm-Message-State: AFuF++nNx5hSOvcoagpAVHUFWNYT8aHdoI5JiNn+dnGb1y7ZPbfvz7vH
-	YGg4q9r3ywaeP0RZmfeGgXnfK1r1wSOe4SXjm+erSBNanDWrlF1CUCIIOnVKKYFBuME=
-X-Gm-Gg: AYBFou3aZ500yzgEOBoAhpFIFTY8TCjMHyo2CuzaPYH0DY7d8fTNRlUlqO0r2WJ6imY
-	UxECklcXkbyqQCcjIE9CVDJExcL1gJZAypQxMswnQoTFKXNcVRKJoLlKqH7c6n7MsvbqLWCBU1n
-	7fTm5iF0HWFeeksEB4E3uUHCioDyG4Gl3QbAtyzQy6SYz3SE2L8UQkQnseCnsMJUzcLsyDYBh2q
-	MqkZNZc+Tjl0Ggo23LIVKrh8ooRNP9PJbYqrIXhIOx7inG79BXMWdQxWqR0cqoZTeCOwdMsCR8g
-	si5HyD4TXXB2HAgEtgFf+jDZ+sAy4//jadXvHfTpb4lXR8aM4wpnFgFqtMv+mp3hgL9cnGFK4Gv
-	oTwGgfsNshlojgSVH+P/+FkBD8zZzqpwt1Nfh4Ary609OVyH2IGqmAcW/rCMaQkpBLnyKqIrEG7
-	wqsyNWLL4gpPiQSeX4O9G62suiC5ohjpI1uWGDltYP7RQzWuZ3xnAasdnjvctttEbk78CfFd7Yr
-	y5foAnRbUhj
-X-Received: by 2002:a05:600c:8b8c:b0:49c:e3ad:41d3 with SMTP id 5b1f17b1804b1-49cf7f4aea6mr327332105e9.0.1788936179364;
-        Tue, 08 Sep 2026 23:42:59 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b5f:900:ef25:2f4:1792:4e6f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20dae82csm25030745e9.3.2026.09.08.23.42.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 23:42:58 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org
-Cc: bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	tasos.papagiannnis@gmail.com
-Subject: [PATCH] mm/nommu: Reject wrapping ranges in access_remote_vm()
-Date: Wed,  9 Sep 2026 09:42:31 +0300
-Message-ID: <20260909064231.18693-1-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oXtI965ppSTiwbT7ipKM86YtHUyLj5gqRIWr+nTAhBA=;
+	b=L4c24TSyx31eDQ2Qc9SdnYfeRVUxrz3Z/R6sWrHjCEIYUCwkMYDvTobo38uHVG4N7SKCc0
+	h8V7Bz153StSI435U2TelESLfTpUhHzoJsNmTZy9KVXtycQx1CYnzPiM8JBwBARur1Sv8N
+	SJGzA+KuB9mVdcA3NIYADwXPu4ML1Xg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AE31D44791
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CA41F0155D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788936314;
+	bh=oXtI965ppSTiwbT7ipKM86YtHUyLj5gqRIWr+nTAhBA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IhLgczlCdWxFSegmkDizxcGCljjux3VJc/i0FEoY8gH2PXRUq4Ssn7Y30byvlShQN
+	 gFCDQfZx7fm+duVZJvytrkcjU5b3C1wT8mzuIhcBd5/MFvOZQyvXERSN9mv0tAiSgL
+	 5WRfo91cKBLXK0RSm9JXUt+1ypLzXGa+Hxid0r3sBUmNRgra8ny+lsL65oS3vB3jxA
+	 uEJYCwVriFGytJVB5DZHLBxlxTvbZghw6a4Bnz3Pvg7GkJJXLdhx07aTck1sFxDWZw
+	 4LFA6J5OxT6k7ridJrBHWXdlH9Ah/Ag33l3q6SpLU9s+DxJEMH8jlYgovnNHbGED7H
+	 D9MjCaVN42fpA==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9399798cdd2so254795085a.2
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 23:45:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBymBiKzgsSHTeBWIIAYn8BdTPH5dBiYsz93MrRhV05ckDcQotUppZQllBZf6gJqt3U4b1AQC59F2w==@kvack.org
+X-Gm-Message-State: AFuF++kZ53tCNgc6uINOUbCfYLh4CpdvITbF93si6WsQ4zkJ79a3yklz
+	CT13T+99SYDs2zi11OowtNEvGj7qbPiaPXR6IAtwIfswFYHkjByZC9CDN+yAZrFacJBqhNlRwTY
+	UXh2XojtZxeIxp64ldWz90lRcqxxe/C4=
+X-Received: by 2002:a05:620a:811f:b0:939:6dea:374b with SMTP id
+ af79cd13be357-939804f7c81mr2852075085a.47.1788936313658; Tue, 08 Sep 2026
+ 23:45:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260907042447.2450663-1-ridong.chen@linux.dev> <20260907042447.2450663-3-ridong.chen@linux.dev>
+In-Reply-To: <20260907042447.2450663-3-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 9 Sep 2026 14:45:02 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VgWoJtkBN10FObnIaNeshFsBlYP68mFG3ghCEpyRhlhxvLD1TMEuEii5k
+Message-ID: <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/2] mm/mglru: add tracepoint for inc_max_seq
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 6oiqsmcphyg137ek4hwpmeqyqj6ucapf
-X-Rspamd-Queue-Id: 3A5FB1C0002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788936181-490728
-X-HE-Meta: U2FsdGVkX1+xZLMgjMhZLpEjCJE1R8zFFW4ESs5W9LOO76RxNuOWcjdDL2HlVshoXZW6LakF5wA+EU6IBW9Doqc0XmexhOYGWn+WYerpDxAExoTu89fn6OQOzkpghRVwEA/wkc0ofbUDBcM+yHbW6lw7BweTDhuKkZ4G98SnALz4RkfpMV2z3cPHZ97TNymfZse/aM3eOal8jgRrsmMnITyef8dd2vI/cxjyckwfYEw2FvbHMYL8Nzdm11Vt431mVB23X7Z8lP0UsbPoY6sSzlL4LaLWBaAjc5CaEVMQO30OfOsXG6ifAAMXcFzu0ZMQypd4laeCqjHJo4CMvkf6qgBWGNrUwmGcy6cDQ4fw+6GF3vRC/NglHwg1xe8rfI/eaIzPzETybUlxBsv120sS5MjIoy0bN/QwN1gOI1ShgeQ7z7dDNB61FrruGSLiCwZCgbCZKyLOEDiUth7G+9IR9CjVJYL3j50CMdvXN/V/khj/d4O/b16VcvRcsOdht9Du52jVDIeYyvpp1FOVotTou/puBvZs1eVNuTVnCUi0PHEKY49lmKZabDwIsBvbwkYjsZan9hlEjZiGWIUb4M3hzuTJT16F3qn5EE5BwgzU4D1KYrl45tEv6QIEq+K9gYfIB9ab5yHB5TwjKdSFntqNI2kYF4B3XIgbL7mOgPVS7GxL6yxl5tHIgggWDUUMdabmQ2v6GFr6a1iVSUuaVYVeZ/osuwRv7LVGD/MRAI51IB0MyFL1WDWnsL2REILdl6PurI31GIXV26eYOD0InN0XCkORVJUxenEDmD2ketb7SpMzzrQL7JLCUb34zycxzbLlIUVtEuPrS7M7BKkx0gYOIvyU9kZ8igbMtRZpdkxDP4/977Cx81OaJKmgtnyeLorU5jGL4e7eeXGrrlX5EvVLGPKx9se01+eemR6GWz0+DN9kETX7mr3X1p6Hkcela9ZEat3zTbpGjMCyfrxbQ7l
- rVrz4npE
- elxzWmPhxtpotL0Yk9SKw+x/X9AM4IY+fP5XlTKHQZUa17gGqeCQVSO0O2UJV8rshHTL/zpKy+2Fg89fzFuMXJjJnA4k5N7quMbevR66Au2ffwBUubALKHgc9/wSxQ7D4pO3qJKnBhdRwW9YbY6JIy1D2+gQamVaCvsoTAw3qAHY+5npxj+4Sl6LGTgo7H52K/pN4rYIHtg6x99lQ2jSefuxOjZgBfr4FFbCxNrZeubp0Ma5xsM+oFG8IFPtwSF1BI8u9Qn+K2YTDXFCg0nMaM6BkV+N+ft7SGE/jRZ8XJQX3dJOgA4VMpnyWQS/TFoPt2Pv4yRm8mi57mzA9NyiONeyNfdvVeQBL52TEo/5PYgokroC29YAO8Uf3JiBg9QvctKDfGbg+zvotLqnLqV6OqIjOakE+G6WHqyeKf0ebTZfJ9CMpcFW/wCaVECl9QKfYFcqSoHGU5riotkHRoBUBy3kbtTYA7/VaXA6F2xDjnP4TobMX9JwGq3qC+Gi5PbW9tNCOeS9BSdPFC9ZExldNt9WBuNfdkzvkQ1BKIYoXDnvCnHkMbbvirxegPx2tpOcdpBJU
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4987F1C0002
+X-Stat-Signature: xs3kewct8pnjdyjgi3sisw6j73dtboqg
+X-HE-Tag: 1788936316-289089
+X-HE-Meta: U2FsdGVkX18VOP0sPwE9SsOJwzMFTqHVqU/irJUKm3De+ok2Zw1Rpd21W4RmzhYrUxP+117xPHE7IHOCIfCeTcsqxtWQJowImiuhxy6eHqYUKV0VvteVyJ89Fvbc+tpmB18VvRFMpI4Y03JMLQtWCgG5s11E+UyPkC8HgeCoBjMwsnoBPyANTL+BEKRCa351LaNkJLOmxgFgPhpG9j5qLDH/02Wneecc9ftGK4I/z+ro277+f8//BK1pgwndic3ebQNfS0ZKPqIbnNgmQp2BBw+E/BmDwe5VAYZzWv3Pfr1KXSw2gt5HQAIdI94Uuvolpw7nDJMQK/vVgWULQLoEaxaDds/B93ErCvGslB8YekOFED9gvy+vzirCBs0DK1dByqEPaUXq0DwNion4ZfJFp0rlbR8jc4oni+V7yAQWJK9eZLk3hJT3d6YTPHsFjYqmsRhrR32csj3R89wsyUeYy3UAfUwQVLQiWB++HFrqrtVg9jXFBKD1TQScUZ3OxuzIhPzCHg7mt+a/VvH1fyICDABjf34fAAf0i7cEuitF71AVig/RIVQJNb9ta+mNPUQKSYki4pOvLN2UwfTJvpAeoDIdScUbtx6vAJthDVtviOxF6jT0hvWMMm6/O0nZ/wGqWiQ37gia1eQ965vilYBE5i56LWuzzLIXNiEe1ZzWHz0JCzyRr/UOlhE6Xsz5a3FEeL51wggMSmQCUZgYGbXQPa7wFIDmnJ9IUQiyOjQ48ISUj0PD/5roQd9P4n0BRCbwk114Os6+XUoTmOTRxt1nnj4vFJoGwSwvmJg7pg3vt0XnN1nbyD7LuxgXCR4F0tqR/vdlP2mpUIZnkmLtJxLFDH3SJeVJzSyE0OaSOIJUbHIKkLFVEn4hmynZ3dKgeX6sTya+isu+wC1k8dWo+HWqIon8P87bksAfDSjpp1mR98FOLXWJxprT2aUYCU1JUup0tdtTBG6Mmqm2cqcSKAD
+ 31QmlJkT
+ muxyVZZxpqrvo//EAcqsVCVt5SBjyRaRCTGTsoh0mmE+BpWZHqyRzm8OMo3SZfzhNCx/ZQBmYCRictXsK1Vl+EJP9meA31sP0IJN/hiZkJNUC5SFIlHw0NQ8Ewdm2P57pqV0M7yJ99KVJcvOP4vslMpX6jpHjsEOZ31XWgkxw6f0oaCPNZu53/HgA29FKNS4nE+0Sz7Lg33vyg4CfW5hPTU9pPC5ecdYjNhRJw8nV5kVD96/+20vNMe8OtgTeetU54O86iVfkS01wFeC5S/043ndD9jrxKTW+bbof2Qw/h/lZwy6114Ct4ICNHyW2Y9vddZrdBn9846r72yGYM72CoiAyvrcAFvktMerAxoR4zOrY5Wg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,50 +109,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The NOMMU implementation of access_process_vm() rejects address ranges
-whose end wraps around, but access_remote_vm() bypasses this check even
-though both functions delegate to __access_remote_vm().
+On Mon, Sep 7, 2026 at 12:25=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
+> youngest generation. There is currently no tracepoint on this path, so
+> the moment a new generation is created, and how the min_seq of each type
+> trails behind it, cannot be observed as it happens.
+>
+> Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped, with
+> the memcg id and the new max_seq alongside the anon and file min_seq.
+> Paired with the mm_mglru_isolate_folios tracepoint it makes the full
+> aging-to-eviction window observable per memcg.
+>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>  include/trace/events/vmscan.h | 30 ++++++++++++++++++++++++++++++
+>  mm/vmscan.c                   |  4 ++++
+>  2 files changed, 34 insertions(+)
+>
+> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.=
+h
+> index a0e3cf75294b..ab93c2f4b318 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/include/trace/events/vmscan.h
+> @@ -439,6 +439,36 @@ TRACE_EVENT(mm_mglru_isolate_folios,
+>                 __entry->max_seq)
+>  );
+>
+> +TRACE_EVENT(mm_mglru_inc_max_seq,
+> +
+> +       TP_PROTO(u64 memcg_id,
+> +               unsigned long max_seq,
+> +               unsigned long anon_min_seq,
+> +               unsigned long file_min_seq),
+> +
+> +       TP_ARGS(memcg_id, max_seq, anon_min_seq, file_min_seq),
+> +
+> +       TP_STRUCT__entry(
+> +               __field(u64, memcg_id)
+> +               __field(unsigned long, max_seq)
+> +               __field(unsigned long, anon_min_seq)
+> +               __field(unsigned long, file_min_seq)
+> +       ),
+> +
+> +       TP_fast_assign(
+> +               __entry->memcg_id =3D memcg_id;
+> +               __entry->max_seq =3D max_seq;
+> +               __entry->anon_min_seq =3D anon_min_seq;
+> +               __entry->file_min_seq =3D file_min_seq;
+> +       ),
+> +
+> +       TP_printk("memcg_id=3D%llu max_seq=3D%lu anon_min_seq=3D%lu file_=
+min_seq=3D%lu",
+> +               __entry->memcg_id,
+> +               __entry->max_seq,
+> +               __entry->anon_min_seq,
+> +               __entry->file_min_seq)
+> +);
+> +
+>  TRACE_EVENT(mm_vmscan_write_folio,
+>
+>         TP_PROTO(struct folio *folio),
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 771fe6827939..3c806a57d113 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4065,6 +4065,10 @@ static bool inc_max_seq(struct lruvec *lruvec, uns=
+igned long seq, int swappiness
+>         WRITE_ONCE(lrugen->timestamps[next], jiffies);
+>         /* make sure preceding modifications appear */
+>         smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
+> +       trace_mm_mglru_inc_max_seq(mem_cgroup_id(lruvec_memcg(lruvec)),
+> +                                  lrugen->max_seq,
+> +                                  lrugen->min_seq[LRU_GEN_ANON],
+> +                                  lrugen->min_seq[LRU_GEN_FILE]);
 
-Move the wraparound check into __access_remote_vm() so it applies to
-both entry points.
+I suspect we also want to know the number of pages in each generation,
+similar to:
 
-This is originally reported in [1].
+/sys/kernel/debug # cat lru_gen
+memcg 1 /
+ node     0
+          0      25672          0          85
+          1      25672          0        4249
+          2      25672         21           0
+          3      25672          0           0
+memcg 19 /A
+ node     0
+          0      23036          0           0
+          1      23036          0           0
+          2      23036          0           0
+          3      23036          0           0
 
-[1] https://lore.kernel.org/bpf/4ef240a5bea36ff84df9589671367832860795159386a4c8fba546a0fa8b786f@mail.kernel.org/
-
-Fixes: f55f199b7d76 ("NOMMU: implement access_remote_vm")
-Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
----
- mm/nommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 498e01ee40b0..ed44510e3770 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1674,6 +1674,9 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 	struct vm_area_struct *vma;
- 	int write = gup_flags & FOLL_WRITE;
- 
-+	if (addr + len < addr)
-+		return 0;
-+
- 	if (mmap_read_lock_killable(mm))
- 		return 0;
- 
-@@ -1727,9 +1730,6 @@ int access_process_vm(struct task_struct *tsk, unsigned long addr, void *buf, in
- {
- 	struct mm_struct *mm;
- 
--	if (addr + len < addr)
--		return 0;
--
- 	mm = get_task_mm(tsk);
- 	if (!mm)
- 		return 0;
-
-base-commit: 0d9ff90a5422cc7509258aaaba1e7481df4d332a
--- 
-2.55.0
-
+Best Regards
+Barry
 
