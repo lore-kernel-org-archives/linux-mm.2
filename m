@@ -4,131 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83760C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04904C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:29:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 270ED6B008A; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
+	id ECC796B008C; Wed,  9 Sep 2026 15:29:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 248566B008C; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
+	id E7E6C6B0092; Wed,  9 Sep 2026 15:29:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1381A6B0092; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
+	id D94746B0093; Wed,  9 Sep 2026 15:29:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAB346B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:28:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62086802FB
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:28:52 +0000 (UTC)
-X-FDA: 85195211304.08.56A551E
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D9354000D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:28:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026082801 header.b=KGmenuJ4;
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788982130;
-	b=hmvzrjfrYcBrtUhlyVF9FDJE4gIB1suJYvfKUW4C1emlMjn/iP4MfIwQjKDlYuWhuIPRfz
-	Rb8loeamnNX29NG/QkOKTUWhLLdwUMvs4uhJ5iGUXeoAzDcv47TuHYpDixxYdfZCR8cYef
-	TgMFt+95g+xOD+cfH+hliOMuRC3bN40=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026082801 header.b=KGmenuJ4;
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9E5936B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:29:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5C44A454B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:29:33 +0000 (UTC)
+X-FDA: 85195213026.12.9F10F24
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6770340003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:29:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=STWDOwvH;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788982130;
+	s=arc-20220608; t=1788982172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dm9wpz4h++ofzecnaqGunBw1Zr0gciiuIEIuRKgM8Ow=;
-	b=ntnKVSX1WGiMwzTCDUQkofHiUwUfwkI683H0EDNjyCWw9mMynmewn1yeHBs7lAXIMHKq7p
-	zSEAcC687TTWOhT/n7qqE2JuPmVVDrcMHnKQ8dAgJRCvPkoqwx110IKGOCwmsDhOxLgqeY
-	IS6tdc2IOmlDTB3F91kCI0h9CU3k6Fk=
-Received: from ehlo.thunderbird.net ([172.59.162.201])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 689JRcBm234939
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 9 Sep 2026 12:27:39 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 689JRcBm234939
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026082801; t=1788982063;
-	bh=dm9wpz4h++ofzecnaqGunBw1Zr0gciiuIEIuRKgM8Ow=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=KGmenuJ4WDEIJmD1OjtLBCTBIwmOPf5WXdqCO5NhxzNk/PRMxxRdYtCQ/e9LiQrbV
-	 5nqhJq3gZmxqektEkouPM43IJ+O+eLEDDnkzku4OU8RnhJdWNoOzbcM86CqUSS8cda
-	 TGHj1Sj2JK1rzrE8/0GlItXDBmcjxoplXEs2uNG488VNDWTtxr1RHdwo+/ZC/5FRv+
-	 Wy6lT+Qfy6Lh4xU4ePky/daoK1IUOfrPNaz0BFP5rM0ouPsB86TVM+rt/GpXFp601e
-	 VoZGbeqZhFA9YU7x21eyffmZrBwUa7PfRZVyvemk05/BdqUB6bb3V5JxF/PsdotOYc
-	 tTrjTgSh5/hig==
-Date: Wed, 09 Sep 2026 12:27:30 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Borislav Petkov <bp@alien8.de>,
-        =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-CC: Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
-        Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
-        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Jan Stancek <jstancek@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_02/24=5D_x86/elf=2C_um/x86/?=
- =?US-ASCII?Q?elf=3A_Move_relocation_constants_to_UAPI?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de> <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de> <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local> <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de> <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local> <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de> <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
-Message-ID: <F9786718-8378-443D-A21E-77E057B62BB2@zytor.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=TuWPVdDC6KLV9X0G86DyVuhThUGHGbFifN6SO+5vHpU=;
+	b=6D/G2DWeSndvHazsZEDwJVRWyxSGunFtfkfoAaK6NvXIvbNVqNYjjpKXw+4Ak6qQx+iwbn
+	BlaWbGzdoy4W/3xRzo7AMjCvL2/eK/OPSjCIDNt43lZtOdLI2YiOSs3G4jLFtwmK7tx32m
+	mP/b6TPJU8wdhseuQTFR2TWjcogc8o0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=STWDOwvH;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788982172;
+	b=D4+iMWDu9VPXveR0CyyYTRbSbc12Lm96e5S9H8Lw0TC8cG+PUvh5xfwAXI1nt939hsGK7+
+	F+gMS0s5usJv48kNYjsICkJURZnAI0LAaH11sEhk+tk86yAvAo9+KT5AbiNgg2PT5qq6X9
+	Rbi8DMT5K2wMRV5ZwKgzhhyBZx+TFEI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788982171; x=1820518171;
+  h=date:from:to:cc:subject:message-id;
+  bh=xzfWP/TVVBxMP3dUwP2H+KfdNNLSmSz0v0xO+M2s2js=;
+  b=STWDOwvHP+F67rx9Gm7lQS8D2NGpNXXHGFV6/5EK0l8lDVqDmmO4/PZu
+   +L63mf1SGNiCBUW0dxG0UeFrXuXc5OGmn910jgvMB2RbvzpVCNz2QWXKT
+   Bj6UU/lSgqz4AOkX5r4Z5s+n/ZHpVJDFtpbH2jqK1bC7HYLLwXTXrzp/X
+   g92JvjHPGcI171TeDxnixeaK5HGaTfmcInbjKCrwC/fkfafSUxSO83Fid
+   RC3lgxZXgGQ+PdVv3yxp6N6GhU3OBxAaGjO4xxCmbVfy9G9pN7PunDqFb
+   O4VpSnCYOo3RN6jPq3Yf5ZxLu5fDQxtgF8v0urQfbz/3PF6Z53ZVfSm9y
+   Q==;
+X-CSE-ConnectionGUID: 2jkxZ5DURtKf2Ck3G0ss0Q==
+X-CSE-MsgGUID: a0rnQMcXTC+lsAgKenP1Wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="100939903"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
+   d="scan'208";a="100939903"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 12:29:30 -0700
+X-CSE-ConnectionGUID: U2YWfNcASp6WxK6fcf/CHw==
+X-CSE-MsgGUID: 4I9LEY48QpyPWbVMGDitUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
+   d="scan'208";a="274927121"
+Received: from lkp-server01.sh.intel.com (HELO a3e91e2cf319) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 09 Sep 2026 12:29:28 -0700
+Received: from kbuild by a3e91e2cf319 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x4Nz3-000000000r0-3a93;
+	Wed, 09 Sep 2026 19:29:25 +0000
+Date: Thu, 10 Sep 2026 03:28:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new 356/376] include/linux/mmzone.h:1692:10:
+ error: call to undeclared function 'NODE_DATA'; ISO C99 and later do not
+ support implicit function declarations
+Message-ID: <202609100351.ALNh2KwC-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6770340003
+X-Stat-Signature: yberouwazht6cikxfkqkzyj9c3x9k8an
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3D9354000D
-X-Stat-Signature: oz8kpwe98jtjazwixuaz1om488w36qfy
-X-HE-Tag: 1788982130-606242
-X-HE-Meta: U2FsdGVkX1/izYX83XCLZLo+RMfUcJ7oOA8Ah6//SMlTf9KY/mblCtenzyR+kvo9npoZJamcdg0Ta6w3bx4k6I+RHt3wp1UJg4j52hVHZuF6jH+vf+QjkAeKEADnwWsv9T0P+JJPIOK62F6U1a4IhplBZjxcYvIMWjgaoitWtSKzNAErp4vHKNuyESVv0X852HgGbEYc2mvf44+fmEdLOjURrBO1BiTQ8mtlidj7R+CeatDNzXAWXxWrFXm/HEDWrKI1wbq39/G7Gnv5K9Y4LVR1M7bpfm0DK5GIfAssXIMGAIwC9rh6ibfoZccd+wxQkAxRzHu29xBro9kf8tS48dnoyuLEwDQkhU/vCIo56JP7GhP2Py8n25qAGaGpYkndfBN3BsJgBfvaWDFvscZvwUMeufB8XcI9j1LwBvslz4x8v7LOmGagsXDI//aH1hG4Fe8ohwGZn2/aN6Jtv3gQf4rhtiZaUIuFJIh1GaVSDfrY6dUPOas5QkkNUNQKHtlD+ECSnsmoYtUR9oeMlHaY1Kl2zq436oQSjSzPCMfDNra75MdZBATeGNOAJWWAnqqzVpIAlxboi/A+K9mXOVQ9xWwF17Whvj01iHgpp2Nxu/Qyr+JC7NIMt9oQ6GpXOWRB/h8RK+uVwf64mO8405mffNL0HjX8r8uxnGn7GXFp9fcIt0ygfrdQgXBxNjxTT6d9qTdFGnehZuyEnHpWk5vgXOEFW1zdIPR+qJqG1jf7mBQIaQ8xTZ3nqjq9dih7ZAi4z+ioycMMiE+W+bS3yFq7PKVD0Hf6xuchHJ6SJ1aenatn9N/lsGYqEs2rsBfjDR07ic6N6tZW0iYjFX8p6PMTBdb0XTgXr5O71O2fL8v5BwuRZ3Yb+glFBBYO0TDPm5E4pRIfAtQPUn+cNei/ZZoL3cUJJgJDdsGajPDyOCydlY2Kdnb4/PCj76KIXVRinLfvKeA6LlrgKS3ERSoHBz8
- eL77fH3z
- fa2mRiG2rx3M/FuRok+9u9UwC+qBYfkx5GroW3md2VmoIUo8zfMNqxw8+D4dJ5hsga8Z0sWCDcnmkIGG2lQVyj9ZQFuoj3ggY7GIkoqKZY4V2HRcbwvSz2CAG6bA/nE2XVxbxxznnn+s7Pu5TCCpXO0HXJ4Vu+3ulaRd7qu3cXl/mGYb1jvY02apMKmpqU4EdIdLZ6BpsbG/Je8qe2ma+9ixsNVa9g08vRIEgUKLqcT7Srd6yNrstv8kgIyuGaJeqUM1Qy1PYAA79ID1gKGbM9Xj7KWaeHm8KfShNiiDZX4uBvQixS2z+axYB3ScDbtvFmJSjLxUy069yPgqzxcFFSABn1LKy5+6+WtHdKklBOMV+eb738MBgfcXfO4g3Vs2krX6q3BZ4IogPWxsL9FznrogokCj0eJHIcxfb
+X-HE-Tag: 1788982171-13189
+X-HE-Meta: U2FsdGVkX1/CnfoWW4x/eWF+CSgD1M+6C2fXQS/pRzz3WDfGyNoCoZoVuykA7U9WKSQz/4abOe/ci7rbkfRpR1ptBtJsEl3gQ4HZTx1Mg4zZL9l4j8wF94s/zaKuJCKaQ5co+ovSSSuiym8YUO5GcRqGfVDmKOBIGB21jdZIiZVVh6rmzV+xz5wnw3UhNw/7fpfOTAFspAwWuQHd2FVlI+r7cE+hOVi7fbe+F+na6/CMRsr6whiT7mIymFfHX6yuknGRnc00jX/QoKr9rj486FozcoI0aMe4lL6Sas8eFu0bQ/Y9xzxGoyQlWHNPnGi1rhZWSsOXYpHAgnxiKopRZCCPHK3HsDfEnF4r0yAOwfmfmyPPBOc9yrOzDA8hNyI7ESgpHENnov6JCfwQ/yRVSRP6TMfvagih41ri7laBffsPSBv/9m5pRtndyST8xvpcVOZLh0p2Xzab+av34r2jThEKs5B2OShzSJjM5JIxKu9UVHEHmw6yPFJq3c9Wi+QyS2ttZTdaXzvCH5WQYatmL4vAVpufbVemkL9XKVOMfGEgw/WORvLkLAMhOxg51SIIwKUdbvLlJEe3K7a1j3v62W2us0DrbSoy+hsoM7TR+MYokS1aK/4/PFrRZJyKkVJLdG1em7dbKEF2RXsA7lUOPcw1L9QlJ2na8R9r+nsxclAHBlpmTfXuOXBUFy1iOHLykaxu4ubJyWt85s9o6n3d/IK8NwByYAQuy1ksbW9d8LGzmcmenA/Dwaz8ZooBCGHTrQnp8asqvv+ShiHFLxyJrGUtuNI2msX9OKiB7ckTdsuRDrR6U2WgkNsAzjPsJTmc2QVrBxDc1kF5ikg0YXAc+EgXT9uf9EyBxUPnPjaaycJ0JFbiXvsUisS2bF3SPmqnd0KbqpJPXWKjhvYeFhOTS5gc7IKgRKPY3GrjwD4J4pr3dlfd2ipEMBejxSXPdSwjyDO4JcxfafraRcuU8Km
+ 98WMzNwL
+ 1Gf7hack177ekOfuDsqLzYO/1WZImn2zDwREaX9C/ds+S6aOYCOUWuPJxaPgJO2OSzTce5LDXKvpYitNX4ACIvTUWRFO3sy7ir3yAXt6W+ssr6hZoD5Yi2eYUnpMgFGCUywwenPs0iiF1FbPOVjNgU6QdrcskqEgnHwconkHS0lbjpKPvy48ON1oZ6QRofGE0Yq2paCfQdrwQdYgVCPrHLn8z0WSbUsjJbD6Ss3C4OASZ/X2kvoG2PS/2QwYz07JpEEdszIju35Brybms2RUaWE6zL3D4zDM3Qi8lR8Q5vKr41mWbsLdHA537W6G+pu33TTvhxKxd/+Pwo9NzWMdCZIsXn5kR68hRWKRWBdDkdObYQZs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,70 +104,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On September 9, 2026 7:49:30 AM PDT, Borislav Petkov <bp@alien8=2Ede> wrote=
-:
->On Wed, Sep 09, 2026 at 07:59:51AM +0200, Thomas Wei=C3=9Fschuh wrote:
->> These names and numbers are defined by the architectures' ELF specifica=
-tions=2E
->> They are already cast in stone=2E For example see Table 4=2E9 of [0]=2E
->> Changing them would break compilers, linkers, loaders and more or less =
-every
->> existing ELF binary=2E
->
->So?
->
->Your goal is to provide them to tools/=2E You want to provide them to
->*everything*=2E See the discrepance here?
->
->> That is the documentation for the tools UAPI headers=2E
->
->Did you even read that file?
->
->"Why we want a copy of kernel headers in tools?
->=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
->There used to be no copies, with tools/ code using kernel headers
->directly=2E From time to time tools/perf/ broke due to legitimate kernel
->hacking=2E At some point Linus complained about such direct usage=2E Then=
- we
->adopted the current model=2E
->
->The way these headers are used in perf are not restricted to just
->including them to compile something=2E
->=2E=2E=2E"
->
->Just read the damn thing before you reply=2E
->
->> Also we already have other, closely related, ELF constants in the UAPI,
->> see {,tools/}include/uapi/linux/elf{,-em}=2Eh=2E
->
->Srsly?!?
->
->You moved them there:
->
->commit 626fd35278295fbb21f2da331cd8028e9738d965
->Author: Thomas Wei=C3=9Fschuh <thomas=2Eweissschuh@linutronix=2Ede>
->Date:   Wed Feb 26 12:44:46 2025 +0100
->
->    tools/include: Add uapi/linux/elf=2Eh
->   =20
->    It will be used by the vDSO selftests=2E
->
->
->Looking at the rest, it looks like some elf bits got exported, you added =
-some
->more and that ship has sailed=2E I still think us providing headers is
->completely unnecessary and it will come to cause conflicts eventually but=
- hey,
->not my problem=2E
->
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   0bffe67ab8a72b3725cc31c4b525709bd3a3e223
+commit: 6ebb1b77696e9870a9621c0cedee2508357cb480 [356/376] mm/sparse-vmemmap: switch device DAX to shared tail vmemmap pages
+config: x86_64-randconfig-123-20260910 (https://download.01.org/0day-ci/archive/20260910/202609100351.ALNh2KwC-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260910/202609100351.ALNh2KwC-lkp@intel.com/reproduce)
 
-I do believe there are *some* headers that would be reasonably to export t=
-o tools/ beyond what it is in uapi; a major reason for that is that the too=
-ls are suffering from a crazy level of internal inconsistency right now=2E=
-=20
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609100351.ALNh2KwC-lkp@intel.com/
 
-Basically uapi =E2=8A=82 treewide =E2=8A=82 kernel, but also treewide =E2=
-=8A=82 tools common =E2=8A=82 tool-specific=2E=2E=2E
+All errors (new ones prefixed by >>):
+
+   In file included from arch/x86/kernel/asm-offsets.c:9:
+   In file included from include/linux/crypto.h:18:
+   In file included from include/linux/slab.h:17:
+   In file included from include/linux/gfp.h:7:
+>> include/linux/mmzone.h:1692:10: error: call to undeclared function 'NODE_DATA'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1692 |         return &NODE_DATA(nid)->node_zones[ZONE_DEVICE];
+         |                 ^
+>> include/linux/mmzone.h:1692:26: error: member reference type 'int' is not a pointer
+    1692 |         return &NODE_DATA(nid)->node_zones[ZONE_DEVICE];
+         |                 ~~~~~~~~~~~~~~  ^
+>> include/linux/mmzone.h:1780:35: error: conflicting types for 'NODE_DATA'
+    1780 | static inline struct pglist_data *NODE_DATA(int nid)
+         |                                   ^
+   include/linux/mmzone.h:1692:10: note: previous implicit declaration is here
+    1692 |         return &NODE_DATA(nid)->node_zones[ZONE_DEVICE];
+         |                 ^
+   In file included from arch/x86/kernel/asm-offsets.c:10:
+   In file included from include/crypto/aria.h:22:
+   In file included from include/linux/module.h:20:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/x86/include/asm/elf.h:10:
+   In file included from arch/x86/include/asm/ia32.h:7:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:10:
+   In file included from include/crypto/aria.h:22:
+   In file included from include/linux/module.h:20:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/x86/include/asm/elf.h:10:
+   In file included from arch/x86/include/asm/ia32.h:7:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                                       ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:10:
+   In file included from include/crypto/aria.h:22:
+   In file included from include/linux/module.h:20:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/x86/include/asm/elf.h:10:
+   In file included from arch/x86/include/asm/ia32.h:7:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      99 |                         set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:10:
+   In file included from include/crypto/aria.h:22:
+   In file included from include/linux/module.h:20:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/x86/include/asm/elf.h:10:
+   In file included from arch/x86/include/asm/ia32.h:7:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     101 |                 return (set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:10:
+   In file included from include/crypto/aria.h:22:
+   In file included from include/linux/module.h:20:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/x86/include/asm/elf.h:10:
+   In file included from arch/x86/include/asm/ia32.h:7:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                          ^         ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+
+
+vim +/NODE_DATA +1692 include/linux/mmzone.h
+
+  1689	
+  1690	static inline struct zone *device_zone(int nid)
+  1691	{
+> 1692		return &NODE_DATA(nid)->node_zones[ZONE_DEVICE];
+  1693	}
+  1694	#else
+  1695	static inline bool zone_is_zone_device(const struct zone *zone)
+  1696	{
+  1697		return false;
+  1698	}
+  1699	
+  1700	static inline struct zone *device_zone(int nid)
+  1701	{
+  1702		return NULL;
+  1703	}
+  1704	#endif
+  1705	
+  1706	/*
+  1707	 * Returns true if a zone has pages managed by the buddy allocator.
+  1708	 * All the reclaim decisions have to use this function rather than
+  1709	 * populated_zone(). If the whole zone is reserved then we can easily
+  1710	 * end up with populated_zone() && !managed_zone().
+  1711	 */
+  1712	static inline bool managed_zone(const struct zone *zone)
+  1713	{
+  1714		return zone_managed_pages(zone);
+  1715	}
+  1716	
+  1717	/* Returns true if a zone has memory */
+  1718	static inline bool populated_zone(const struct zone *zone)
+  1719	{
+  1720		return zone->present_pages;
+  1721	}
+  1722	
+  1723	#ifdef CONFIG_NUMA
+  1724	static inline int zone_to_nid(const struct zone *zone)
+  1725	{
+  1726		return zone->node;
+  1727	}
+  1728	
+  1729	static inline void zone_set_nid(struct zone *zone, int nid)
+  1730	{
+  1731		zone->node = nid;
+  1732	}
+  1733	#else
+  1734	static inline int zone_to_nid(const struct zone *zone)
+  1735	{
+  1736		return 0;
+  1737	}
+  1738	
+  1739	static inline void zone_set_nid(struct zone *zone, int nid) {}
+  1740	#endif
+  1741	
+  1742	extern int movable_zone;
+  1743	
+  1744	static inline int is_highmem_idx(enum zone_type idx)
+  1745	{
+  1746	#ifdef CONFIG_HIGHMEM
+  1747		return (idx == ZONE_HIGHMEM ||
+  1748			(idx == ZONE_MOVABLE && movable_zone == ZONE_HIGHMEM));
+  1749	#else
+  1750		return 0;
+  1751	#endif
+  1752	}
+  1753	
+  1754	/**
+  1755	 * is_highmem - helper function to quickly check if a struct zone is a
+  1756	 *              highmem zone or not.  This is an attempt to keep references
+  1757	 *              to ZONE_{DMA/NORMAL/HIGHMEM/etc} in general code to a minimum.
+  1758	 * @zone: pointer to struct zone variable
+  1759	 * Return: 1 for a highmem zone, 0 otherwise
+  1760	 */
+  1761	static inline int is_highmem(const struct zone *zone)
+  1762	{
+  1763		return is_highmem_idx(zone_idx(zone));
+  1764	}
+  1765	
+  1766	bool has_managed_zone(enum zone_type zone);
+  1767	static inline bool has_managed_dma(void)
+  1768	{
+  1769	#ifdef CONFIG_ZONE_DMA
+  1770		return has_managed_zone(ZONE_DMA);
+  1771	#else
+  1772		return false;
+  1773	#endif
+  1774	}
+  1775	
+  1776	
+  1777	#ifndef CONFIG_NUMA
+  1778	
+  1779	extern struct pglist_data contig_page_data;
+> 1780	static inline struct pglist_data *NODE_DATA(int nid)
+  1781	{
+  1782		return &contig_page_data;
+  1783	}
+  1784	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
