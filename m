@@ -4,79 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29EA0C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A3FC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 415496B0093; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
+	id 4B6B46B008A; Wed,  9 Sep 2026 11:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EDEE6B0095; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
+	id 467D06B0096; Wed,  9 Sep 2026 11:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306CF6B0096; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
+	id 357B56B0098; Wed,  9 Sep 2026 11:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DE196B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:14:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68309C022C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:14:33 +0000 (UTC)
-X-FDA: 85194570426.28.6CE8446
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9483C100009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:14:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/gq2E7S";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788966871;
-	b=RXyi2llAyEFxQLNkH+9J3svg+IvLRvyMaivPRe2P5Wbzcla5ZSFN6ckV1s0l2kYYNkQc+B
-	z3Be51bb6ZkOskapNpRzPdvNnDJjOOteKQblpbbm2Fq5bmUSonLVAPfbqJnYIjvWH42rtr
-	3myuM0vDGczGOwDPnAKR4kJvZIe1kv8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L/gq2E7S";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10B446B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:17:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A7D012024B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:17:14 +0000 (UTC)
+X-FDA: 85194577188.30.FB550D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D38B9C0008
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:17:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJwf8pIJ;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788966871;
+	s=arc-20220608; t=1788967032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kv/OdspUGtQWo1tas4EUrtKin7DPE1EY1vQkzcPdvtI=;
-	b=YShDJH/0XSTLlRoHUBGfZo9/BlPPZPovk6AOwSMX6sIZi9y1mBu6nqC4ycoDyszkMet+xF
-	AiJkgbtxU0Jx+qW+8fFuQrK0f5O63+xQK+xLufTf1pQRxIl0P+ze+q+Pm3pyYyq18qztaw
-	j1aiFLqQu/20ryzjvg2MITvDL56DqpI=
+	bh=yMpwt5jk08Xm5DwGlNwjV3jDkm0c7VN2w5E4BNJFyJg=;
+	b=emxXdO4ajkKS8hfxfux9r1tMnmjrIvECUmIXvLAKWY9Ou+oQh24ZENtgGOlZocqxujtkTy
+	TkgOTbPE3WO/HeMXsKqTVVf6qx+ipH0V0uwUEFT8sOlAJiRJxjLLIZGRqQcJS33Eji/kSU
+	S7c857732sPExnZ6C8a5Kw0nrmlo9eQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJwf8pIJ;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788967032;
+	b=CWNRAOQpI9bq7vtyb5zXZqoTumohL2LjGMWgVEB1RhayCKF1D91K+omrX02bR1U2x2vv1m
+	HF2N53M6HA5CgvlO59SCfXP8GGlicBZmjgzo8JiEmEm6p6h2n8QecadJSBuuzYqzE+7N8W
+	PdJ3ubrqvdzljnG2NwqY5eiCGtQohQc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6FCE54019B;
-	Wed,  9 Sep 2026 15:14:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA221F00A3A;
-	Wed,  9 Sep 2026 15:14:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 34297601F1;
+	Wed,  9 Sep 2026 15:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB451F00A3A;
+	Wed,  9 Sep 2026 15:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788966870;
-	bh=Kv/OdspUGtQWo1tas4EUrtKin7DPE1EY1vQkzcPdvtI=;
+	s=k20260515; t=1788967031;
+	bh=yMpwt5jk08Xm5DwGlNwjV3jDkm0c7VN2w5E4BNJFyJg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=L/gq2E7S2ygrCzOjjfrwr2/GUgw2QA8h6flKLJ2Ed6zKRBUvibImsO4f0zm1Cv/o5
-	 wu2fstLod+x2eQRi5BkACBCFuZs1LTAab9jQ0fKAt6VKNbbEUAYlKsGmQTOAMnXSxr
-	 ZLlaQAFpiI9zSRjDaKXFo2voDCSapC8Fqe8da4P18MLlxscCWsq70cr4kjKj/q2Ck+
-	 qfHDyRvdDds/u94zuJxLZ5Un9zDx/Nv7YJsD+tzjRCwiM1QQGUiA+Om23dMuH6FU1h
-	 pQk/9ir8ZD/jbALU9VH2F//0i8UO9PECjhQVwsMEQA+scrPmKkVNB/OOe2GUVZTbOg
-	 3WfXfTIqzMo2w==
-Message-ID: <b058dbec-060b-4f19-8048-3951a32965a1@kernel.org>
-Date: Wed, 9 Sep 2026 17:14:25 +0200
+	b=bJwf8pIJ4fb1VkYkGkn9jh7csMatHoWRsh0+x4jVPH0Xe9SW2SoX9ayXbWiM1jjfx
+	 ZXeT4klcknZmthc19OrMRbF2BfbAWxXM84R4e6zrJEKFF+G9OyaX/X7nRQ9SECaAaG
+	 FaPkfhLbpb2f941jVa2RWNEaQYZzOfX5ba5d+eSI+Li12enPOuHkTPVHeCgm4drkhC
+	 oDYHixZdVpzaIHG1i3Ylq0eWuQmM2mt2KAKLOp2EkANf4qRa54hMQ9jVE/RRti3DKz
+	 p7qho55XczRF5YGnwYYsa1XCBpuCil2sblZsIrRL3PVE2i6xWNeHm13J/mJhc32VOO
+	 QlJrT1YNvbzkw==
+Message-ID: <91cf8129-d705-4ebd-b420-129bab7ed261@kernel.org>
+Date: Wed, 9 Sep 2026 17:17:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 2/2] arm64/mm: Standardize printing for pgtable entries
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260909040005.4148136-1-anshuman.khandual@arm.com>
- <20260909040005.4148136-3-anshuman.khandual@arm.com>
+Subject: Re: [PATCH 1/1] mm/ksm: trylock the mmap lock in the unstable tree
+ walk
+To: xu.xin16@zte.com.cn, xialonglong2025@163.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, chengming.zhou@linux.dev,
+ linux-kernel@vger.kernel.org, xialonglong@kylinos.cn
+References: <20260909110228828hKTCgUeuZkOujOBaVtUcL@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260909040005.4148136-3-anshuman.khandual@arm.com>
+In-Reply-To: <20260909110228828hKTCgUeuZkOujOBaVtUcL@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D38B9C0008
+X-Stat-Signature: ifwghhcc5htfqzx7wprcr4rbigqjntxt
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9483C100009
-X-Stat-Signature: 4jh5p8nfixc36juawmw13ycbiwpf6nx4
-X-HE-Tag: 1788966871-715169
-X-HE-Meta: U2FsdGVkX1+fIrNSdjaTrgFushpnlNTkEjeUxzWPPigcR3FIiR+uxR/xwEPxE57YXEdVztrcV5KjLj8srnIvoEcJGF6Cjr8t27pVav5oIb4EhYWzMZ1PgvfvqksYfN+yIZFfPWhFOTWzbETwAxhCV9FuDc2wwsWFlB5FZcxNfXLatz7qtRT0RS/si54+Dsy/I43yrGamtVlDfqqJ4wzQSw1Ucl9uCZYiAr5p/7UPETQ0JiqYcBJwyfna6GDBl25PEtaCQFvux7FW9x4bhBs3OKZ/MJoU9GPQk8cZbjVvOmAvtLgPr4DAwT45alCGydTLNfXLLtZhYi1I3PT38vFi39wqKb4/F2AROPFA9ph57/BJYSpx4luBmnc4JA5YZxpLJWa9rrsNqrPFRMJEu80alvs4QcjjT/uJHIASoWsywh8G86pwi0tHlAvmuLfFUJiQy5BopISh5RiZQgngjpGulvqZ2c0K1CEANmUyK4JlqU9gmCm36E4QPlkDyQzZIBeMuOqudeiaUDecW9UwkadHmm4dyuECLUu5migK3sHAkhP+EUlkhAUTPsfhnWuFiqVC7bsL7fmwhxW2IpldeYxWYnqYsA5Rg6bP+ury1cynK3i1EB2KOZctKPVzLdmpQ2XxE+twU5s9rnjlpnTdto4zSPWM8ECLq+bYfzcJKiiMJIF0r4I301sg1V1qxeWxsUsFzBdNVnzcds7mZqR9Hg+3q5VLLDqmEhT3sovwXXdoyZTpKeKc/9ONKF15ls4iLDTPCi6qyhX8RUOhtp4gOiCtRB+IsFmeoSsr7XJiCc0+2ZZJswiHpAtAi62hB/7v6+IhsHIkQ9ickhRq2TV9RXFbIH+mykaVQ0DMAluX0BvF/wFQCvC9K22CC9hoRyhNyQ/bBpHtmPAWQdpB/K46bPRyBxYFv5/9+dRc5ERfE+T4Q6Llzo08HS59aUIEmB6YvzedsH6DcdeXmxIBPXmZkS8
- +JEqcuJB
- RkUo8p29Vsivv0r1kg8luJjz3mEacitI3Sefd2u6vBCPpTiQAToCVHNwQ27KZmj+uQqUea0cRV8DKKwcIF8CDJwjU8Dqla7U8k4Ve1tcyF74wEgaqvgu0+vvkJi0AONvpTPhEfsoHwPKua9q+YjmCUzywnMrKEo5UfRwGcoh3QE6Oe1ck1vIk5GElAuRBD1zE2fv+bQHbpu4Gq1FpxHbZZJkpYN1j6BoBOHwDuq6uvyoxIEAqsmC97ZGctx9SUlE7ULT1fOzveM3w9fXeUPZy6LW1AQ==
+X-HE-Tag: 1788967032-862365
+X-HE-Meta: U2FsdGVkX190MSrc9Ejtl1A90HMqIk2kGYgbymTqkEoY3W9i0YJTSTUzFJGVnC+RwQlvSGEcY/D0y7XJWSKOEYZ/6Wi+J2iqOWUKv7+jy8uQxdCn8fDe/zvBpWUcuJ252eydn1w4T61nPiyTGKtKhQs9rf+dWtXMvpYADMFawfXVktzXAIbi0Ht0805ZFZtDfMrng0CggT9CONXp+NShCw+f+hCMwSfGgKEql3yQyYb1z8Ki79OdI1qFEhkkJBNM0FFFYM4y9+S5qigyXTLL4IPJRKkHb2wwAfT3/nEXB/yDy+NmiPUACM+Z+QuRnWue6EaLWw/CVNf2Ts9pyZQSPypodpN+24xJ19eoo4aZ1TzWM0L/XWme+sdSLCn2A5PzE0OoKKdxB4W9kvok1ZCiaFrb59wQwhjS4fnkPxafJQUow9lDN0BMjkKmVykN/l7bnOXIzcO9M8NVtqAjcLoOVEEUzP9uSsQkY6xOUbe7/X2TtuqVm0t/HsTGtGGyWfQqMQ+3D2wjmVSf3qZ81t1akJDrVZ/VZJsEV8xpvwlawQB8YGr6qRv8SCPXfc2tUXjDLVCChpLzX6bbwxrqO6PGEHdAUlgGd/bcJHSvxs1zUN/76gT7bXrl/uiBKZ5oh7LxGFu4aYFDAFPY/3b22bAqnLWZ6OsBKP60eUd0gIbyiIWh8HVOdgNjQCd/6WB0a3ytaCnkam9Pvd4SJNf0May6jl5tAPcVeHWTnt2LyVhQLiFcF0zOUM/XUKrWAQGqAT/y3pr7f4+yZc4+CM5Bx22+5v9f7MvHClMdIRHo3zb77R4e4sI/ed6I5cPooY9RNUZ0RIFvMFelq99qOJn0hiO1vMgzzFJNMr9tIyE3f11MkbpwfMGoAuH8EU2+UPYDyfvvwaAG6LevkaNkXI7g8uYinGTl2F0CElzoaJxJ79+kYiFjpsUUmE/KZcXkh2/v4WRkQcpZgdGXYkyx3Kdnait
+ de0NOpUH
+ GK2oDmI4Ig5oXs7UORvCa1utJtE3q863CTmjWaA8H6v/4Y1hjzzJC/cd1FZxIdcZ/J4fLH+k07rLlA9+w8O8NC0TsSz8JVz0Bl3RqjEK8Ak83oVGYYXAaC5FPB+lzXeCX3vRrBU1jKd9uJPeLFrpVsrl21Dw7wT0MqNvQ0ogRSgfvgCvzOGjaabylp82oy0K3bzNnIViMcM7JIC7th3EBIGtZrdlW0OGztlulPL5Ge7DBZwrBse/m1VBRzTvotkW5F1WK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,22 +139,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 0b2d190d62c3..26f4cf7b753e 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -2411,6 +2411,8 @@ int arch_set_user_pkey_access(int pkey, unsigned long init_val)
->  #ifdef CONFIG_DEBUG_VM
->  void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
->  {
-> +	char pte_str_old[PTVAL_STR_MAX];
-> +	char pte_str[PTVAL_STR_MAX];
+>> index 49d48d1e0998..3cfb09a926ff 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -820,7 +820,14 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
+>>  	struct folio_walk fw;
+>>  	struct folio *folio;
+>>  
+>> -	mmap_read_lock(mm);
+>> +	/*
+>> +	 * We trylock because we don't want ksmd to wait for an mm that is
+>> +	 * busy changing its memory layout: we prefer to skip this page and
+>> +	 * let the next full scan retry it, like the folio trylock in
+>> +	 * try_to_merge_one_page().
+>> +	 */
+>> +	if (!mmap_read_trylock(mm))
+>> +		return NULL;
+>>  	vma = find_mergeable_vma(mm, addr);
+>>  	if (!vma)
+>>  		goto out;
+>> -- 
+>> 2.43.0
+> Sorry, NACK
 
-Nothing jumped at me; once the stack usage does become a problem (I strongly
-assume we don't care for now) we can revisit the approach of moving printing
-into printk.
-
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Agreed. Likely the answer is to switch to per-vma locks here. All we do is a
+folio_walk_start() to look up a page, that's not too crazy :)
 
 -- 
 Cheers,
