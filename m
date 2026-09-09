@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6483FC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F067EC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:22:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C06E6B008A; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
+	id 045596B008C; Wed,  9 Sep 2026 14:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 571EB6B0095; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
+	id 01D5F6B0095; Wed,  9 Sep 2026 14:22:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4607E6B0096; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
+	id E78446B0096; Wed,  9 Sep 2026 14:22:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B1B96B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:21:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7648401E2
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:21:13 +0000 (UTC)
-X-FDA: 85195040826.18.CF95F90
-Received: from mail-yx2-f8.google.com (mail-yx2-f8.google.com [74.125.224.136])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 84A2440004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:21:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ASNgJNKF;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.136 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C635A6B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:22:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22664A0309
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:22:26 +0000 (UTC)
+X-FDA: 85195043892.17.D49BB65
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1150940003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:22:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MIEw72oB;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=MIEw72oB;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788978144;
+	b=uSTLE2LXwL5GSMSXQvV4cN7CbiwVOg5iJU+T/ugrlN2uBAn1/37sXuca+I/timPGeTDvN8
+	Eccx3YID2M5F25Ew6+kkqhYvdxQKiN+ZLfguz3kP5VsaZbxZeBsFq0xL4cQiPqFYUFfrGC
+	Rjb1iOeFvfkNLndMURiWSXa8UZofNNo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788978071;
+	s=arc-20220608; t=1788978144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
-	b=iWa7pkIdylgnoPNxhPY72cfBy2Zl4DHgISZbSQfAZAcojHr+YFMiN99ERP7kZOeRVES1MB
-	2v/A+AqDmSi3QpMSgkeASJ+TX5Ssjc0FhBWB+Ys0yvrun4AcQIj3PQ557tOoWDdgomZ5Su
-	LKeUu9wgUAkY0pdA8Y6JDcLi6jVVHbw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ASNgJNKF;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.136 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788978071;
-	b=nZK8i6oVyBG0XUbyEjNhJzrZU0Czuvxx5EydgBKCfOGQ9BDJxvwipp22HcyCcRdAdkUM9i
-	TM5AU9hYh+EAjy/1l7j1cSPG7V4YWHu1STgRhMxf3n2PDwhIawpgC5L2unv3kVm8XD5N19
-	naqb/D5sjOstjTlEDpKkeleAiv5fpXE=
-Received: by mail-yx2-f8.google.com with SMTP id 956f58d0204a3-66d0f3138aeso2186703d50.0
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 11:21:11 -0700 (PDT)
+	bh=mdfhQUoai9I947DZmJ0Mq2HjjU3s4/4qoMH6601twbc=;
+	b=M5lovKWDlYjAiSf7R6zscCY4kG1h+dM1LK1D8JrmZp83musQJoGqkHMNJ2RXOCe56zbxAJ
+	Rz1uMJoPO5sraunNUOx7t+kpL7JaMY+x6ENsFUnCZ9524JIYVbOVO6UTc4Gm6dEQiTtA9x
+	kFZj/c72WB+x7TeCZmOhTWBSNYZBZ4o=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66bd7857841so6769955d50.3
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 11:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788978070; x=1789582870; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1788978143; x=1789582943; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
-        b=ASNgJNKFi/VMeIih7pHFBvYgmQVKxzFvK7rItXvGXcJLZ5P6hGX8WhAX1Sn//LWXfW
-         1Udhj4b4QUp38lH4in/nud64Gm6n5suy3Li5JX1ywTxrU32hrKyXiVERx75ATvfjinc5
-         yDQeUQOs0YyqZRB1jUySaJC4/lDgyZ8Rc24TkU3I7Hc57y/QVCPEFbyhiPgr1L8nxSQe
-         1evBiEgWjzESprOKMjoYIGPyHFaBpqtUV78rtJ2uSp3x4s/+kbGNl6Dm1pvM+fGtg41M
-         aRrxXs3ladTs4G041pc6lgnx7BdEG6W3pmwYy9iK2ArQQ+vmt2uJW0fdgRvOYftm3orw
-         Btkw==
+        bh=mdfhQUoai9I947DZmJ0Mq2HjjU3s4/4qoMH6601twbc=;
+        b=MIEw72oB7r+GWQbiQ4XfaUY0e2/eyWU1/pNRCy/spK6PGvSoif4J2BXWG1/X/0I5Cy
+         x3B1KKqeF/MmRTwangWdbN0gKPtLHDmc06u7IFjzVpKdWE3icQIuJdnJcAqoGRKEuNPp
+         zADku6Pmnc35TZzZtMrlDbP2dLmqJx1LoErj4o3Olv6URhrrKSA/+FePzq94ffEd/aUB
+         oeiwvcfrYbyJO1DE79gbR/NwLjEqE1Iln0sH5C9qm4WYkDNh52uQMMRU3LeanTfDqssc
+         bGLvz13hKebkfJ28bUtvTHMjd0mgIl7vaItMApleQGM1ryd31asobpgX+MIDVwoBtefO
+         KG6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788978070; x=1789582870;
+        d=1e100.net; s=20251104; t=1788978143; x=1789582943;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CUMCov5LhTuYJkVeQH8wQuxKR0Qh1nB1q0JH2zRc7+s=;
-        b=N7zMoUqXeHZilFCMZ0Vkylu6JUsNRerZdCcz1yccmOfyUNalGC+nBOU7+IDu5Z+Ith
-         cc0qgAtW17GWuBJMw8/SDOIZwXHRbmMXCq0HHJoa6zBuEUKB1vdM7QyGab28UsNDuqh8
-         C9ktQG9mj7hzdE12nv5SfxpCg7Be9PoaEqyjNPDWnG2dCgMYkDIgnPxzPHfGjSzTRS2B
-         OHRhHM7+CpaTTMw+7sjTXucHbIVkd2Lpyqey9EBfG6c+pB/x/ZBRahb2P85S3JCBVfS8
-         tW7PsKwH/ea4zBHBVVUkD/Z8i5gd23rbafIVI8Nbq60Ee17okxhv+m+fZOQrXjJ5e2R1
-         KPEA==
-X-Forwarded-Encrypted: i=1; AKwUvBwrqUfNznxJ8WacSTyhYki5ndkQQVSSHl7bLGF7gjqEFvDvrmjeX61fH3EsbrlWK7owFBl+66evrg==@kvack.org
-X-Gm-Message-State: AFuF++kb15FuamUsrGQD7J5hjPZ7beT3100YhHIh9TsIas7UN91laOhw
-	XSAlbmg+glRdNAKBAub30hXKxZ5mCF47S9WFipOAe5Kq/84SIwVfzq+lF5QH3kq58Gs=
-X-Gm-Gg: AYBFou0GHEqK8Bi4Yx6xLFHEDIg+2BsHEL6JMZO8kHI46eMBjov0jyy3MmXbUq7KO8s
-	Zdnjrp6ZuU+5qytZNmwnQEqQErODEPzcOdSe8YUQguXkhHsqMw9YzO8nuv8SmmQwuloKrLJ1TGG
-	ljQOLBLvmjuDLjU5PGDoMMkNAHQNjK/+k8d2GhAQAOB7mNa1L+Yd1bH71ebax5jpBD0VZMqZLIB
-	EEd2iquNZBBCSXHnpuuVO3AOgw9IQ3K45AwzlR6wP3K+UjY5IkVbChgbvYPSfejeWegTeONS0UQ
-	67Gx+sClHA/EFDlV+SvwcWlxChknjbo8Aexb8HQ8mkZ2jwfUg+u77BstUl9oLW7DmVzcqHdhgPX
-	JDrOLoOb7+D9E0DslVMFZpu6rYBnKsIY8TnhvIeyV6ig0bqSfPoQPGbBR900JRmWbWPJbe4r0Mr
-	NbWAKKzL4c1P30xlHOWMCTb94q1PKf5+/Fig2+ekFOGhEybDkHvA7PdXK+2OuZgrULMzTNrYo=
-X-Received: by 2002:a53:e447:0:b0:66f:c1bc:c081 with SMTP id 956f58d0204a3-66fc1bcc626mr7160601d50.73.1788978070364;
-        Wed, 09 Sep 2026 11:21:10 -0700 (PDT)
+        bh=mdfhQUoai9I947DZmJ0Mq2HjjU3s4/4qoMH6601twbc=;
+        b=NiMV6LrkvvEDnJNm14dFWSGChDCH/bki4LrLpUZdDNwfTkIrq0zuxU+nTdwOWfsYuw
+         W92mDaV/5IeqxUUUlu/nUCZaCHuixUAdnjAAauF00sZJm9gya4/ne9/eGuGmkMLZ/xOx
+         Bx6lXfC1/j2zr0OpbCqOghy1OdrNvMp6FjtoyTC3WVe8f+r6iN7UAXkNwd9Weq9uwcK4
+         7P7RkxpWm96LxNuO5q2sYmnW0T6F07xT+mPPt8iJ8AhdxtPQxm2gLiupJ4YH3jHGG2d4
+         8LVrpKdp1yk1GLvo46CusylPP0+T11R7hYkeJTb2x4F4bUE8de39G8tY2CMSqlyC86us
+         NinA==
+X-Forwarded-Encrypted: i=1; AKwUvByo1ePXgVcBjLMoocxaXs7rtDmEIltc563QtkO6xXgkl4CP08D0snniTgLItB4AHrbSOOFZnO+8uA==@kvack.org
+X-Gm-Message-State: AFuF++nOqWRAXL92h9pci3U2Wvkj7eAZKOaAxBeprc3EaKlKTyPYzWwy
+	0pk1TX1dkv7YmOhGZMNtMaMLp0ISTEri2flj9rQACu1dyngnyoE4ZIF7RxZ4qhkz7p0=
+X-Gm-Gg: AYBFou02nkA4dgtUl3pyjDV+JIO+RGW5keIUEUf5y+4ZaNcWhSvKHvpX+Trcc5LZq3H
+	uNglXmYfcv1uSm7D/AJ6Mp7YwYSSDd+kOXCOgMo0xvmrjFLK00yKY9lsWTlufW7YRQtelK/BqJF
+	z8+tixtzDQiQ7c2hs966T0hvBGh8gEAv0R5e6TVQ+b6MFy0xx8dyqGyX/aF7QFnpZ80VYvyfEyN
+	GOkLMl0xrDFJ9v4qXtLdrATe8hb7cOkUSDF2+HtvSogBCrOC39l0YXPPQTQj5UwS++kaRBSaI+x
+	VJltX0Kt9T89eGBHWlXUONvnMlMUM70p5rmk6zTbhIVGtycgsU/XGhyfvM/yAgvj9Ew0OuZuBT9
+	7JTL6+NGDCJnY3vAw99qmvA/t1NFeA+XBnm4wDJPLMVEYgY3QdZiFOO3v8y/uF/3LfKPbVN0Lsa
+	H/0nYJe5eS1n6WTSr7UxdNSkmqyjBcjCMMam9bT2MRFjqIXq3WXLhRVCczQQzH0eWeU4mv1A==
+X-Received: by 2002:a05:690e:108a:20b0:66d:28d7:c33b with SMTP id 956f58d0204a3-66fb5ad93b6mr9645565d50.40.1788978143182;
+        Wed, 09 Sep 2026 11:22:23 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406871b6sm152808526d6.32.2026.09.09.11.21.08
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040694c35sm149647686d6.36.2026.09.09.11.22.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 11:21:08 -0700 (PDT)
-Date: Wed, 9 Sep 2026 14:21:04 -0400
+        Wed, 09 Sep 2026 11:22:21 -0700 (PDT)
+Date: Wed, 9 Sep 2026 14:22:20 -0400
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Qinyun Tan <qinyuntan@linux.alibaba.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -108,23 +108,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] mm: memcontrol: drop kmemcg_id and use the memcg
- ID for list_lru indexing
-Message-ID: <aqGjkGA7XeYEHA2T@cmpxchg.org>
+Subject: Re: [PATCH v2 2/4] mm: list_lru: keep per-memcg lists with nokmem
+ for NONSLAB-backed lrus
+Message-ID: <aqGj3I87H6MnAZRQ@cmpxchg.org>
 References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
- <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
+ <20260907110111.2286932-3-qinyuntan@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 84A2440004
-X-Stat-Signature: wx5woxyszaunh3ptdsu9y1k5cn8ci18e
+In-Reply-To: <20260907110111.2286932-3-qinyuntan@linux.alibaba.com>
 X-Rspam-User: 
-X-HE-Tag: 1788978071-169901
-X-HE-Meta: U2FsdGVkX19+vUQfCaldY7XsaHne2tHU+eQDeyKASDRTCOEwgT0shmr7hEF16kr6JfGtYAFxefpJCQ4qBM4L0Dfm49ethOMQMSLBk7hqzS+OrMlYZNYSQrT5jezDJjwrgAqpcRuDsEbX/iL74q3G28Z/mINGSQHpA5HFaCgXvx+IU+8juiYT5a/MrmodqOH7gn/B9g0plY1TPuCgOyppiFf3sBtFoRdg6duxFfJfZP430JgNNnAbbwEdl5KPPIMfydV2l7/8F3NL8i5yZ4nBJ4epBQZvBluPzOS6p9ebBNNVD6sutqsS9dJdq19h2957nNxi9ZMI6OirqaxFerXLYnPQqhU8rjD/t1BBVMFYhk51nw5ckV5qkHoLL8m/HnRTxjQcdJsprcppr2Csz1iM5OTz8VMxm6O2+8hgmgwMI2c6tHgiBIVbiwx8b10MgjRhoyXOf53KRgt56y21h7kOnR9Pf+mW75/9/x/Lh3u2CKJo8fvqZonlOtxxGj3EXweD+Po/FWrwsjVngY9DL8M83grj3nF2Ly5FHLtKNx5y4L+iygMZzY6M/0PkqWASkuBMxf3pwLnpUf9z7y9wjx5VLEUf2KRL1plEC3YUNBup2OVWNa8ltKqCCN5ekqVPrPwwm3da5iGNixfI0/YEkx0shfkedorIlg6paugOYMAvFjmqcQzt8W4fYj3n2dUyvhmZxCS2u7Plaj/6zVAt7s3Yww4LspRN1GTgEG/IWfAtU9RNQDfSk/bDN6kiu0Hxu9aW2ACw5e/u1wyqcvzCtnuLc8LX12XfGSWDnpHcJqZVOl42NDwPbOMO1FVbXEyurQkkdyOoRq/RHzjbAKnnweVyFPojxnG3Ey4xUZ+GgOCba1MV8oQ1jMvv2Z+nisSIjsxXT7CiL9pL8Pe5wv3q5KbzL6X4WmfsxCzRciBpHHbE8MIX11+paZwpTNjqzMcKitnbJUEAkZZXEXqnokXyJNz
- nxjxLeJu
- dDMmcbwpFTaaTMQOLflK4OwcDirer6HIjw7TMMjpPyJfz+03atH54+d1nB7QA0ENTqWGPIbZK5BTenqBXqzwkWyNzN6zfvx4EwvpnedM9f/Ps+3muY6dywAXXxcRmSFWjOghSSubBvOkgK2VI1NVF/TqoDYjo9meAsd3JHuzbFa1SUfWX8bEd8xp/t/tqrhN8k/F0rK/5oltePC+ZrnXYbk7mVGpvIB09fwUW1h8+vrQabG9IL+DYIMO0aNRN1Wn153hsW+fohNwZKeGejUS6RFzdr8fpXWBAtmjLXr4RO5X6k7cj1dG8CKwNHtEwyQ8uxJlj1LbE062/tK6gEO0vAuBr9tcwp+r8kK97JeE8wXeyG/oZV4//h3sHkt0Pj4aYkY042YAVp4/5g5yLiD/hMKWx61dOH0HsAq8I7TS42jC1vaODkUajPF3t1u5FAZEp0g20BmFLBa1w9U+bID/dJB6IcMOmxWMcxGNG
+X-Rspamd-Queue-Id: 1150940003
+X-Stat-Signature: 19keayw8ro9gpg96o4x41znodwwfpmg1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788978143-841274
+X-HE-Meta: U2FsdGVkX1/uQV0UPfgK+zgNFcbTPZ/uCGBi8ju1keGvYpJXlyOcv0y4ajyB6vckowPnAdO6mQSWQd6Zj9y6Jvb/MIj2MB1/Bgm3e2tJkDxhJdeTbsregkS9migYuOtEmF4xv1+vHCKUoda/iT/WmXl+HkP1QlkqjaHs9ed7vJoRHYGvTVOSUS4bu2RRP4NqSWbzjg/5tbIUhJy7FbYWo69BaZ455i9ReTT3/I+Jn9kWDMJktp+bxUIDKkTcGZEPPJUISHDRD2mq/Qlo2EJNShJ39Oq67g1rtnGvzQ6nNxtNHN60Mn9uc5wA0X+0SOu+9dqtWLL+SR+u3Svhi6y4MXEkRWu49llDqXa7weriNd3kAePdmZaZO1kL+fkSZ8eq2sVclkYt6h90JSrJ6KC31LS1dHPPziL3jr0yjVvcxxI78zpQqilgejyLmGU4XlZ2IZarqoJ1TcuUEFn9ccGmeK3tvlL06JzapWBq2ef9OYiG4WcYG3n5saQma2w9UaVEe+KazReHoqnN09nGX7WWyyNlQqlze4h9a4lA4th8UGL2UuTbTI3zO9y29d29L3FqabMhRssm1D9we9y5TU4YECsDQJ7ZEhUXKRKltr86g7EWzsAUqRxmEdDbvlq1TcOEXExyFEslFao4iGoX1SBLSdkrdVwOzHatgTwhFh5SVE36XOo5TliZAsJsV9XChoTNA9m9jgKO08hHiQVEHtrUruJsirHe1Wu2IUn/qCLJWwdBgLAZ+ebFEDnUDTTdInGiulRk/OQ8hYqFWmlHKMZtbda+SRrN8mOJtnHiWTtrHh2Inp755vNNWjipqIetANiC/2KU/yVmw6qWhWLPbxHkOnqGF0hY8wsRZZF5Ee5K/L+2/9GhCrzXFoHQo3e9yf14O3U1xfPIeiuDS42Yb5rbn2653Mvy4Gqf2x4vacTZ5xh1tR/C68iImRtNoGs0RgRrNi/6LY6asvAFt374Ff/
+ 7goV5cf8
+ 0FrMU6xWECW5b7gnjg1CVcJ0uSgdlmbvIMTRq2/CdN/r3649n/qG9UvD5w8mUUHNIxHk6q4QsNpiU3RgUst1LKeTpffcZ+evCs4O5JITgfSgmxZQRyZtsyYzNTAO5w4N/ro7NhWhOhKQag1iQR5EEg2W6bPHP3A/YKvH05TpvkQsTUBrezZElTZzzemcKw+PQkJxxGZVvzAjm6kVt/58iyhip4W44z5Lc8HbtabbCyTfQjkHZHQ67Bg0PofZuAsbp/dDgXV4oIBlVRkQSTeoPtOOHqm7Zpj3mQs2Et6wpwdah3n3ECD8vvtLp1gy6jxb5Gig2kIh74xN5tN/7n3UG2IpfjtEnJvTTxFEG8ogjBOT66zs5f5iZednodr/ud8wo46EEOCXIKlNVIyA9PwFaFL81L6UEaA/1J0eIlNJVUcKXP7CjZq05H7c19TLjJUjdz87PEPk0tXNdlmUK/8qUTq8zgXjULjU6TQdDDAD1vYM2GQk60w5F4q4KTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,148 +132,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 07:01:08PM +0800, Qinyun Tan wrote:
-> kmemcg_id is a copy of the memcg ID assigned in memcg_online_kmem(),
-> and is only used as the list_lru xarray index.  With
-> cgroup.memory=nokmem the assignment never happens, so every memcg
-> resolves to the per-node lists.  The next patch needs the index to
-> work under nokmem as well, so drop the copy and use the memcg ID.
+On Mon, Sep 07, 2026 at 07:01:09PM +0800, Qinyun Tan wrote:
+> With cgroup.memory=nokmem, __list_lru_init() collapses every list_lru
+> into per-node lists.  That is fine for slab objects, which are not
+> charged per memcg without kmem accounting.  But a lru backed by a
+> SHRINKER_NONSLAB shrinker, e.g. the THP deferred split queue or the
+> zswap entries, holds user memory, which is charged regardless of
+> nokmem.  Collapsing such an lru loses the per-memcg view of its
+> objects.  Reclaim can no longer target just the cgroup under pressure.
 > 
-> The ID works just as well as the copy did: root and NULL still
-> return -1 and use the per-node lists, and the ID is only released
-> after the list_lru reparenting, so a stale or recycled ID can never
-> reach a live list_lru entry.
+> Keep such lrus memcg aware under nokmem when their backing shrinker is
+> registered SHRINKER_NONSLAB.
 > 
-> The early return of memcg_offline_kmem() under nokmem is dropped as
-> well, so the reparenting also covers lrus that stay memcg aware
-> without kmem accounting.
+> This leaves the savings of nokmem intact: slab-backed lrus (e.g. the
+> superblock dentry/inode lrus) still fall back to the per-node lists,
+> and the per-memcg lists are allocated only when a memcg actually holds
+> such objects.
 > 
+> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
 > Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> ---
->  include/linux/memcontrol.h |  8 +++++---
->  mm/list_lru.c              | 10 +++++-----
->  mm/memcontrol.c            |  6 ------
->  3 files changed, 10 insertions(+), 14 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index fdf4812e1d818..edeb287978934 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -254,7 +254,6 @@ struct mem_cgroup {
->  #if BITS_PER_LONG < 64
->  	seqlock_t		socket_pressure_seqlock;
->  #endif
-> -	int kmemcg_id;
->  
->  #ifdef CONFIG_CGROUP_WRITEBACK
->  	struct list_head cgwb_list;
-> @@ -1775,12 +1774,15 @@ static inline void memcg_kmem_uncharge_page(struct page *page, int order)
->  }
->  
->  /*
-> - * A helper for accessing memcg's kmem_id, used for getting
-> + * A helper for accessing the memcg ID, used for getting
->   * corresponding LRU lists.
->   */
->  static inline int memcg_kmem_id(struct mem_cgroup *memcg)
->  {
-> -	return memcg ? memcg->kmemcg_id : -1;
-> +	if (!memcg || mem_cgroup_is_root(memcg))
-> +		return -1;
-> +
-> +	return memcg->id.id;
->  }
 
-This is a private ID with lifetime only guaranteed for online
-groups. Reparenting happens right before it dies at offlining right
-now, but this is not a great dependency to have.
-
-Use mem_cgroup_id() instead and just get rid of that helper.
-
->  struct mem_cgroup *mem_cgroup_from_virt(void *p);
-> diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index a4522ca93ebcb..6fd4e9af84396 100644
-> --- a/mm/list_lru.c
-> +++ b/mm/list_lru.c
-> @@ -502,7 +502,7 @@ static void memcg_reparent_list_lru_one(struct list_lru *lru, int nid,
->  					struct list_lru_one *src,
->  					struct mem_cgroup *dst_memcg)
->  {
-> -	int dst_idx = dst_memcg->kmemcg_id;
-> +	int dst_idx = memcg_kmem_id(dst_memcg);
->  	struct list_lru_one *dst;
->  
->  	spin_lock_irq(&src->lock);
-> @@ -536,7 +536,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
->  		 * allocating a new mlru since CSS_DYING is already set for this
->  		 * memcg a rcu grace period ago.
->  		 */
-> -		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
-> +		mlru = xa_load(&lru->xa, memcg_kmem_id(memcg));
->  		if (!mlru)
->  			continue;
->  
-> @@ -551,7 +551,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
->  		for_each_node(i)
->  			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
->  
-> -		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
-> +		xa_erase_irq(&lru->xa, memcg_kmem_id(memcg));
->  
->  		/*
->  		 * Here all list_lrus corresponding to the cgroup are guaranteed
-> @@ -566,7 +566,7 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
->  static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
->  					    struct list_lru *lru)
->  {
-> -	int idx = memcg->kmemcg_id;
-> +	int idx = memcg_kmem_id(memcg);
->  
->  	return idx < 0 || xa_load(&lru->xa, idx);
->  }
-> @@ -602,7 +602,7 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
->  			if (!mlru)
->  				return -ENOMEM;
->  		}
-> -		xas_set(&xas, pos->kmemcg_id);
-> +		xas_set(&xas, memcg_kmem_id(pos));
->  		do {
->  			xas_lock_irqsave(&xas, flags);
->  			if (!xas_load(&xas) && !css_is_dying(&pos->css)) {
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 7ce50bccf1264..619d4c1f2e8f2 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3780,17 +3780,12 @@ static void memcg_online_kmem(struct mem_cgroup *memcg)
->  		return;
->  
->  	static_branch_enable(&memcg_kmem_online_key);
-> -
-> -	memcg->kmemcg_id = memcg->id.id;
->  }
->  
->  static void memcg_offline_kmem(struct mem_cgroup *memcg)
->  {
->  	struct mem_cgroup *parent;
->  
-> -	if (mem_cgroup_kmem_disabled())
-> -		return;
-> -
->  	if (unlikely(mem_cgroup_is_root(memcg)))
->  		return;
-
-Both of these functions do very little now and the asymmetry you're
-adding on the mem_cgroup_kmem_disabled() check looks odd. Please just
-inline them into mem_cgroup_css_online()/offline():
-
-onlining:
-	if (!mem_cgroup_kmem_disabled() && likely(!mem_cgroup_is_root()))
-		static_branch_enable(&memcg_kmem_online_key);
-
-offlining:
-	memcg_reparent_list_lrus(memcg, parent);
-
-The root check is unnecessary because roots are not destroyed. But if
-you'd rather not make that change here, keep the root check, and leave
-its removal to a separate cleanup patch, that's fine too.
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
