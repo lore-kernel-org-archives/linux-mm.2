@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B25C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDD4C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:18:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F08866B008C; Wed,  9 Sep 2026 14:16:59 -0400 (EDT)
+	id 9D9F26B0092; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E92A06B0092; Wed,  9 Sep 2026 14:16:59 -0400 (EDT)
+	id 98B126B0093; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A516B0093; Wed,  9 Sep 2026 14:16:59 -0400 (EDT)
+	id 87A536B0095; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4A416B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:16:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F617160302
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:16:58 +0000 (UTC)
-X-FDA: 85195030116.16.6044AA0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9395C140010
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:16:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F84p0yyr;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 276AB6B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:18:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6612CA0309
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:18:11 +0000 (UTC)
+X-FDA: 85195033182.17.630C5BF
+Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8894F18000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:18:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdjrczZf;
+	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788977816;
+	s=arc-20220608; t=1788977889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rmS7BNxOqmi+BeNsZ4oZ5oXHisCR+XOxA/iRVryaknE=;
-	b=7UY0hEjtpu8gf/ukD3ucATz69VoffN36Eqs285/grVQBGvFLruwLka7tE3UNEjMvF6YwdE
-	+AAyFP0AjJHBJAQaHhCbxidmdqzy34/YzHvr91sHb7v/lMjNSJGzZ1Qfwf3PkEguGQbffx
-	1v3IrLQcPERkVWfL9PPjRDblAoz9o0c=
+	bh=/kQrjWDVP8VToFUSa5vLPEZUGkwzjIEup3NeNcSxnh0=;
+	b=wlje+vbyi8pIHHQd9t9kCDl3eA6JhVAqjS9tr8I5k27OXblkx6yK31GYp30H850M86daEZ
+	HAqOJm9PKXc12bXblOQW9VV3JgLhlTY5noKn1NPTutNZs1NNi1ENZPhD+8xpQQww2PfMsw
+	z1wQjON7ENPeRPC1ghAB04+KFyKWgh0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788977816;
-	b=x8Dts8DsMSULnkwPU8sv18rJaY4Z+hr5gz2/TwGQJ2w2F9QHa1l/XQ9QaS6VVznGJn4alv
-	UB67qK4dEiesNh3rJBMlVCJCOWYZPBoJ8lS3rAyogr1fuzIlGBesMMyZB0kn/0UJveGMYO
-	Lp81dOrwEbDp7sQ/I9QpPSS/RnVSlcs=
+	t=1788977889;
+	b=tO0vLz/J992MiJcoFH75AYEWB96t5aVBzRRP5EfZdHztmoLFG3SK/gGU6O77Of9OObQNJJ
+	hKLPTMbhD5y/fe9XQZdOls0h7z0iq+8AV8AS6+S6tjGtlAuVs+qQowjGuJIULyWJ6cIkvt
+	wrZ2KM5GqwiTL47/7hWCyo7jkbl8ioU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F84p0yyr;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1BE54600CB;
-	Wed,  9 Sep 2026 18:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962401F00893;
-	Wed,  9 Sep 2026 18:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788977815;
-	bh=rmS7BNxOqmi+BeNsZ4oZ5oXHisCR+XOxA/iRVryaknE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=F84p0yyrHbvT3bpXj+VWGL3evahoR6zG0wTE9+bL32gjOuuHYOcp5jRBCTbBmoesc
-	 nUKlyiNo9zgpaA1uQE+puCh0ulCe9TAqCoBisChJDtgib1rgRlKWc7+knS+n4fuz4S
-	 7nSvSwwxqSBsjpa10PXbYDQrFUAV4uGXkFkb2cegO3tPzaqvJNFR9GsDup3MBJdb/o
-	 fei0wlIm+cnIeuSWoNfnkZ1S+pAZI84YMz6dsergpXxLlscYpxsi9ZysTp12TVyTtQ
-	 b3Y46Ko+oZeGMBiX61KqHlpy4oI7w2IMj6zZPs5hTSlM2IzjYjJGpK1FxVMWDoLj8y
-	 b9Pscs7SP3o2A==
-Date: Wed, 9 Sep 2026 08:16:54 -1000
-From: Tejun Heo <tj@kernel.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdjrczZf;
+	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=a5KoTsru4QeX3ourrXoG/HiW8Ls4AkpUlsNfQy7SGEw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788977884; v=1; x=1789582684;
+ b=hdjrczZfkw2I5j0slrseLFrL0HLbRNdtQMFQrsNdzs1bYi1PYj8Tjts37DA6V9VJp7HsbDBE
+ gqTGEV5KgS4kurpr3VBG0GruXhEvKyTmyOTlL/SjpO7Lybk0tvVNiNmK9wY329ZL5cjWMmleOqu
+ 7L1Y0TMcv1+gqiBUoDXBAtLc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7a7c3fb00e682847;
+	Wed, 09 Sep 2026 18:17:54 +0000
+X-Mizu-Trace-ID: 7a7c3fb00e682847
+X-Migadu-Flow: FLOW_OUT
+From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Dennis Zhou <dennis@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
+ <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport
+ <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
+ <mhocko@suse.com>,  Jan Kara <jack@suse.cz>,  Tejun Heo <tj@kernel.org>,
+  Dennis Zhou <dennis@kernel.org>,  "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  bpf@vger.kernel.org,  stable@vger.kernel.org
 Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
  drain pass
-Message-ID: <aqGilhgcEd0qaHjI@slm.duckdns.org>
-References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
-X-Rspamd-Server: rspam04
+	(Josef Bacik's message of "Wed, 09 Sep 2026 18:01:07 +0000")
+References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Wed, 09 Sep 2026 18:17:45 +0000
+Message-ID: <7ia4ik4ep9va.fsf@castle.c.googlers.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8894F18000C
+X-Stat-Signature: dxa5uf9cumr67pkoqrbk9bm1acixa15h
 X-Rspam-User: 
-X-Stat-Signature: 331tscyym5rwzhc5uyzoxmupj7d6mjgu
-X-Rspamd-Queue-Id: 9395C140010
-X-HE-Tag: 1788977816-103036
-X-HE-Meta: U2FsdGVkX1+obqBTYbgX0bhJmd1s4Og1seAZAH37wmHX9UlmPcSwM7MPpcYYPh+HYxWUU6bEfArw7EfTpiqzk19PHjdJgndeHlIwrOlIqSR7Io3DURo5hrHibAHtZXKdNUlqJ1NaSMCQzQZLO/r4HQ8gxHzwFSghWDc32Xh31EfhLDmcEtHO5TdwihxHU0mve1qyZdH20ybdK+D+M42a5wJ3wDjIQD22w11/RoEi7GkS0y7ggGICPtkJlVRHpw4hs9TQ0ZtOHKMevJXk6pL9YsRLG70CSj6C9OHzY8WxN3+wizcC3w2D86lI89fxacUhf8Lui4MpfGYyVLOzZnNBmxWQ1E5bO3kd4QScFs6oyUUN522EwCwWQ5ljXECXTo5AH9ZkKu7D+OVfybWs9iR+j4hjKep0G4AznNk6+L6Rgtf8+dytm6R0IFsfSPNXHhACw+RzkMIGoccr7/EoE1+uLXj1TJTWX2z9/OwbLmqDxSRh8CL8uvfPFDvGPlxT3czUHSKczKaCIGIJVH+GPKsQ/XnEJF0pRjWqwdwwWFifT41q5mi8de4/kWmeAQtigAQG3Wy/jmja3Cq7X5zZAwygjOc6dfb/pFsaS1/3fgkHHbyXSftQo0Q3p6byKE5lL48UO/U8aLcMj17mQ7VVfpTUzdeUM4W+FxIP9iCeICLyK7oPlY2sSAEO63eK6lPkuq0VZk5s2njTISrgtMQPrrvzWBt81X5IL2sFECvdZdQNiqN2E/IG6ogCBeCUsH9tiy4rAqUQae1kkVOLMN3VwgcexUBijQI8CCWl0/Kgb8qwOdDKyAMpnmoaVt/Ko/N95G2NpM4AkRq8ivN3tPehkD8vQAlSkUhZF3fM0SGV1WNpNWCn4zWGWizrV84yQtHdFmIFY/VpBHLVHa1fIk14UoGULmM2gKvkw3tut1cPmYVnoPUQqZ45sMLzTU+wGPRsRlmPHwQ5ynYEONoYtpW+IwD
- 7fJZabBE
- zjqpGd+uORDVwQJ2oAbHoDUrOD31WPqC4OQ8HbVkVgZVUAphdz8Nwaq0oeY0YPp/gi3Mo0ZQUf2aS7+kMSZ5fafJQnL3mgM0kAtA3FPTWvkOuE8ASMcZd6G4bmXm4ptCEcPRB3RWgoohqkbcUbWz4Y/kfDOGRT3gmW44yzkUfypqxqQh9mKUEpBUvI/sT8cVex06/d4YbOR0H4ze7alUg2K+rVSkOeuEppLNrciKaV2N8J5XjfkKxzFNIJgt59q0qF7xSOQmbsgMdYRiSXXUpHbAnP+YBo066jE7J3b7ViI2Yypg=
+X-HE-Tag: 1788977887-405378
+X-HE-Meta: U2FsdGVkX1/y/5KRphk9kq0qQ6/Q3TpHrj8DVXHMe5ezW1W1ojturVc4leIf8ZmIb/9qcMDrMRQv1dxXDRDgQRpWBi6jSEUG2TIN06FnzSpkyfnXCyNYKu+M9ehOK+dKnwa4fNtFItvLTLDIRssabsiv0M6wDOOaFkp+jx0BAdpEDhR1WddJc9QoycW1Y9NEvs4WWAb23AmmDmWQQlY9ZbvU+bMJO2emodYZWk0/bqFq3UMrG8hzAm5rlPMeGvbOPwlY/0KAlDDNqz98jyl0GEMoVvg/4F6Sw82+qjMiaCr0kiCJP/p/UTK39m03Yl4rcHkvuWBaJAGSvrNQbqN1eZjyNXvIKUqHOax6f6sKgwKJfCDPZYWfWqN9OmD1dVQ9gAxtNePtiL6gN/Zm8uKhuu4F+vlgDMe4ZrXIhh3hA44VDh7zuTqInXRT99M/2kBrAHzrgR7eR4vtEA7GC45MIs9lNsKdoFNiUaOzHgTkb1jDs3wspi4K/4Ll5uTktpL3FgFROBFuLjzTrgyYxLkG7obXCConYqET+qXd01/hYU7PMTLnpAn5UeKpoMURxAakGBMtRyVZTfGKh65foLAKQQ8AyPrSz2PmAMBoq4vvUi/cp1BrwTHzAv+0E48yrUwBG3+YARcoE//K3G+DFykgkaI1g2anTbxmllh1cdJHDn/PEciqREBKCll5fEgJNlzPdZ6WoB0yD7euUXjT0t1Zn6U/8VVF04U3REZZTmZojfus7Rpw7Vw4l3oNMtYIr+dPlnT8fnKE6N02hMzFcoCwx+X4du8c2H2NFaVQQwsO1AByJaGTUXzV/DNDbECRG5s0jbvhwUCg0HTg+t/JpIRSUbJ6fu7VdLnW0R/0NFX2AXiprj8Gv1Ynz7L84u1zfK/WxJ8QkS1y1NoL0LRItVavYV40SPo49Rr9FqRgmEKX7e2VLHMe86shP4gt5/Tq6p91GR39TYsWh6UGUxcWU6V
+ m6grww9W
+ pIogpMgqYcmJIKg6n5e1yCTTlHnE7lIlSBAd2IMgOBZPSi00X6tIlTcY6fu8pmSvxRKYzOXhL2EoF7klVC6WY5yJl8a3wnX0pIPKdDnp9a+DUmR2uoeeYg6t0Q+FfEch4tDBPINw4hAL8IbG8hzP1eIoY1kZeNyf01VkzI5iK+WcEPXeIHvEDmqqoPTOm3uNgznKAS6BQT4T5cloMDmFJna1itTaLdwSGW4Dj9K3yu9jXSxd/v7r5qICe8VV1nMR0A5D5vv+V7bRpuJePbgnbksP49A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,9 +96,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(cc'ing Paul)
+Josef Bacik <josef@toxicpanda.com> writes:
 
-On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
 > cleanup_offline_cgwbs_workfn() drains a dying cgwb by calling
 > cleanup_offline_cgwb() until it returns false, with a cond_resched()
 > between passes.  On a CONFIG_PREEMPTION kernel that cond_resched() does
@@ -115,7 +107,7 @@ On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
 > the only two models on the architectures with PREEMPT_LAZY support,
 > arm64 and x86 among them, so the drain loop never reports a Tasks-RCU
 > quiescent state.
-> 
+>
 > A worker draining a cgwb with millions of attached inodes runs for
 > minutes.  On a 6.18 arm64 host in lazy mode the cgwb worker drained one
 > dying cgroup's writeback domain for over 11 minutes.  A BPF program
@@ -125,25 +117,22 @@ On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
 > tasks queued behind it in D state, and the hung task detector fired at
 > 614 s and panicked the host.  Any BPF or ftrace detach during a long
 > drain inherits the drain's length.
-> 
+>
 > Fix this by calling cond_resched_tasks_rcu_qs() so we do not stall out
 > anybody who calls sycnrhonize_rcu_tasks().  We put this in a do { } while
 > loop because if we have many small cgroups cleanup_offline_cgwb() will
 > return false and we will never call cond_resched_tasks_rcu_qs(), creating
 > the same problem.
-> 
+>
 > Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
 > Cc: stable@vger.kernel.org
 > Link: https://lore.kernel.org/bpf/9d444098-7c03-4163-af12-bd0a79a51443@paulmck-laptop/
 > Assisted-by: LLM
 > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-
-Acked-by: Tejun Heo <tj@kernel.org>
-
 > ---
 >  mm/backing-dev.c | 5 +++--
 >  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
+>
 > diff --git a/mm/backing-dev.c b/mm/backing-dev.c
 > index cecbcf9060a6..18e999053bae 100644
 > --- a/mm/backing-dev.c
@@ -158,15 +147,7 @@ Acked-by: Tejun Heo <tj@kernel.org>
 > +			cond_resched_tasks_rcu_qs();
 > +		} while (cleanup_offline_cgwb(wb));
 
-The patch looks fine but this overall seems fragile. cond_resched() was
-already marking "stuff that can take too long" but we need to use
-cond_resched_tasks_rcu_qs() if it can take *really* long. There gotta be a
-way to make this more maintainable. If always doing tasks_rcu_qs from
-cond_resched() is too expensive, can it be be gated behind something cheaper
-e.g. some tick based test?
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-Thanks.
-
--- 
-tejun
+Thanks!
 
