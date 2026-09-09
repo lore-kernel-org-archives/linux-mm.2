@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7BACC79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F413C79FBD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCA9F6B008C; Wed,  9 Sep 2026 13:29:58 -0400 (EDT)
+	id 405FC6B008A; Wed,  9 Sep 2026 13:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7B886B0092; Wed,  9 Sep 2026 13:29:58 -0400 (EDT)
+	id 3B6D06B0092; Wed,  9 Sep 2026 13:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92896B0093; Wed,  9 Sep 2026 13:29:58 -0400 (EDT)
+	id 2CD006B0093; Wed,  9 Sep 2026 13:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AF5D6B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:29:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2098D802A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:29:58 +0000 (UTC)
-X-FDA: 85194911676.02.79CD8AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7BBD62000B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:29:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7puuK3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788974996;
-	b=6zQYaj4TqFgX1TBEMYDMYg4cnDgTpFb2tZlGHoFwh0PVOQ5z/rGjg+BV6xDob6v+NaeuN4
-	2kKtbfGPGC70AnvUJpodzte3a8BnD7wehQO3rpg3yGWiJJGdFKBWZVrjgJxf8nbLI1Q3dg
-	71Zsu5g/rDWvseb1PidunttNPygfGVk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="P/7puuK3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 14A126B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:31:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 565C540286
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:31:45 +0000 (UTC)
+X-FDA: 85194916170.14.8B921AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AD25B40016
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:31:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2aybex3;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788974996;
+	s=arc-20220608; t=1788975103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0w9/jZ373p7P3D897CyML/dHbeXZJ5LRmmudsSZnbA8=;
-	b=JiT4TSa+1COt2TghIfwe8dJjzyKYpqzdUM4t2ZmgDj2WqEFJGXJa73w2Dxx7FMr7dl7TQZ
-	a05H2czzHk8EilO3EeC12yeOJAjljqzQr5lrxxHdvkMjyv9i0/MqgyAfOmKdeq3uG3d1wE
-	+PihSMrLxRxUycDw3h+bILL3nVtvpfE=
+	bh=0ubKjcUHJ8BQDEwwualgzTahZHaTSfH4i57++l4iDsE=;
+	b=aKNRpekttCgot+dSGUzbDc0s4dFoNNbWKhUbkbkZK7KpFqXcUTM2TcJFZKOWVGYSFF34KO
+	qX/8ioPpemUgz7zt8Ch0ynrdtjxT4TClWYjz6d+GUO5tViVNjQSq2J0BGwagVpD7XAVGgJ
+	B2OMAUi4BdokgqNKgAUzHVvj5K4kSjc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788975103;
+	b=eTXavtYo5a2Z17heYiB0shdiVo4wkfswRrUxNT+D8TwdC+IffHZZOMoysgjHDh1h7M6tu8
+	4S5U8R0BHbRSAiiGCJ7DHIuJeXha7gp4hH2XCsVhqRc5HJ23cEIkzUiLVkoRb8BCN1zVvS
+	kMe0SmiX6HFPTG1BiTW3osj64rSxP4Q=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m2aybex3;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D9F0600CB;
-	Wed,  9 Sep 2026 17:29:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C0A1F000FF;
-	Wed,  9 Sep 2026 17:29:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C58A0409FF;
+	Wed,  9 Sep 2026 17:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333FC1F000FF;
+	Wed,  9 Sep 2026 17:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788974995;
-	bh=0w9/jZ373p7P3D897CyML/dHbeXZJ5LRmmudsSZnbA8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P/7puuK369h+/RU0Upssw7MVtmraj0x6Rj9zF4O6OgWZnlNJihorghvvebmE9Cyjd
-	 ++IFKHfLwUDTfoSBpciBhMePZ4wD/JAyGV7PmX6HI9abSqFt5dEYcEDSgtGxvIE5+7
-	 BBs/6zXUasvCCFpAEHb6QW41wuplou4Y684LOjzVz0+r3V3jYQ1EQd7/nDbQQS+vo7
-	 ur3Dfzuu+MK25g7g/uQxaEWKYMcL9d/bKaN2gqDMFRCcN8r0F4s+hz0/nBrG9FHH1t
-	 nek5fYJ5rszq0OtkMVVnrYHYqogjM7ZUr73J243o4dR70lvbj7XD4qVNqSH+G3fQI8
-	 WV9HdsOf/6hQQ==
+	s=k20260515; t=1788975102;
+	bh=0ubKjcUHJ8BQDEwwualgzTahZHaTSfH4i57++l4iDsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m2aybex3X2RAJXPixBts2jyvWtg7abtHlmkNtumHVYjajCSdO+TTS0vt7NuUZa+ED
+	 u+oo/zEfcmYwmSFc/bU2p5oE3US3YBdd7yZVlM4HJAe2nOXHLNUcpSJQ0kdVMimmUc
+	 7M7nmVvUJUHHccsh3Qv/X+6UEd6u1wa3Q6r6AHH356SUSRi2rqlNX2n0F4YisRygFC
+	 hZ3VC7HzkMVzeP9QNI+2l3RssjnwC3GSwxbDniSPL4jbNA++YlNjfObQ82VGeCZhaJ
+	 BGtAvoOA/uLjSPjr2VqQp6i9cYOnRkw9DvcGEwxsxsISI0GZp8PL3IQRgZmxmJZKlJ
+	 3KYIfDGsjSBQw==
+Date: Wed, 9 Sep 2026 20:31:37 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: linux-mm@kvack.org,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
+To: Tianyi Chen <hi@tychen.cc>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update memblock tree URLs
-Date: Wed,  9 Sep 2026 20:29:40 +0300
-Message-ID: <178897497730.1618256.3526476873258774957.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831102143.69265-1-rppt@kernel.org>
-References: <20260831102143.69265-1-rppt@kernel.org>
+Subject: Re: [PATCH v2 0/2] memblock tests: cover low-address allocations
+Message-ID: <aqGX-ZhxsJppfNpi@kernel.org>
+References: <20260906144011.848898-1-hi@tychen.cc>
+ <178874362959.1415955.18132997964995947947.memblock-v2-0@tychen.cc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178874362959.1415955.18132997964995947947.memblock-v2-0@tychen.cc>
+X-Stat-Signature: gnmh9i1a9ew3q7gkroptyibf6kcx4bdp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7BBD62000B
-X-Stat-Signature: tgptewcj1rxedah69mi7ft4oim6tqtmt
-X-HE-Tag: 1788974996-281748
-X-HE-Meta: U2FsdGVkX19or7C/3KcSY5QfiV6WNwGM8j93rUwjzbZOjz6dmZNnI50ri2SCreK1RQCd6mom1PWbLtzhfIkCciqemFj7mszSSKvgf6R1FLsfdjSi5GWqeSt/pRE8ujAiS7TEmBTh6lg9l+8a0Fbf/lg1/URBCafKsxAP8HDWUdUM9SCMXqpf8wrKlpIwCbizGg+kFasaLKpvCls3mcLUazTOVePIIK/j+UCzJiEM13rzcQMow0mDkqYjZQ6xgZ5KNVkhc3qioVH0ZWBDCFD/OwAgVEUK3LZ3QWp1IgX9bN3mcSDJJUyvHep2ik+YjINPIiBN4gMmHbhCj/bmM3ohgBaQzerCTtbJzJVe1+m6Op1uz16bo2L+MDIzObuvQquBIjfsKcdeGV8JLA7xuMonG1FXRP2zY8/ERqE2qNBC3VwCn6owJIJkCliu7fNbM36hcMNaMI9u6pMHKCPmunmCsRvTc6NIODV7QgZv/64MvBavl9Ogj+CZhJuB6zqM1GzdSUVEBiNwOZbDg9PZfk3tahZMftDoDRhzFKEuAodxCv3Jo+MczfxKw8Uul/GdopWvcBlMJ9Crn1nrPR0P4YlHJLmKpskB2k9slDYempeE/k/yWY59b22lgAO72cgElM3bHvCvd3VngBS7xweFQaExjJNkSbGtEO5xb+U/HigHE3rQBD6CitqNlr5tyXAnjkBiI/UzyzKHEl73G+/dTBFMx1SRJdH94t8b2woK7TNXawWGUQJtA7IhZeaze3Fz4ix6dA5H2vOmuwPsXi0Uwjhzp3q9cktUu2T+cMBw+MWVMg6sx2MHyvfdSGNtOZF+3XLP9bRSjdQ8VaPY2M3HzeJLxW/PqFqEql5tw0on49yhjJQbwUQ2tkBwDSpkHxIEcozr9ZnSR7PWGY0+zDYgxGzN9+2xAJvs3iP9BQjwb6iMdSrQZ7yQrvqdAVEuUfn9hirlfiedFriB93lVxfwvk6q
- ne8zdQiI
- 2e5tUPtji6CniHjfy9z9ADZg5MWzobIQqFGb4ZhI5OB4e6nl8J1VjjnIMezVHzlSsgEiJKSbVl1HBYHw5TtLZPY1ywYZEmyn6iNeFVXi8ZmhGRCyB1dF5yB6kXM1tFKasiYJ2ZmqpSYhfDNXj8iBwftZy6tf9RkTnrjWs3ZbKw/YU5D73SFDcM0/hyq4jTPBMGN0OO6hK/3qYFxBMXxvtVJhGLv/KNDmtTho5xVstfUjdtmY=
+X-Rspamd-Queue-Id: AD25B40016
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788975103-726379
+X-HE-Meta: U2FsdGVkX1+DFiwNef4M/wqpl6EPxncO13WRB0B1DywOQ6UcI95LLcLz/vCKI/R/Q5NinABkFGa2yXXwqtOqFej5kmXo5SAtJKLvXD1WPIr5KI/2wytB0tqNRoP4o6XCX8xmcWJiigGbdm9oiITF37bQm+H3OlJOPsKdZiaIsjSnJEJU1X9Jf1OXXlaG+hhpxhQjnnQsKteLJpWQiiFzm98Z+KyU2CuBWgSdbUgY+IblBbj61bdJKxkNTtUxt//pcxYCc/f/VAUxomzsw+4SNSvar4V44uzafZka9KIE+2TN8kNgu0tDyx4NEeLCWeHqO1pSCdYzTl7Bn2fJicKSzZMXL6p3fnp1qEQuPnadK2+rgMRtwD3ion9wFl3ohqg62RdlXZTA1s4l3ilAgTsgbwJ5IHxShWa6z4nXeYZVQcoCUubqfgyG/h8NgnxfvUjlqu14sx3Q4qHDkVTItm2MUzzMLi+77zs1S6EYeOQMCYYDrjeUV2jIvPkbJ/fYbZkjn3Yu53ISg3lfe2dqdT8xxTsAo/Kxtc/lq8+CYzX8O+SBB2sziZYgYhpRP4BzP6EMJebtJ9Kn3r2KGbZ37xEMDZH1OJsxEhFiKYdfLuRZ87u+K0lE8k0qNZi+Ap1eJmgZzI3hm3HG321Rqs4+oaZNwa/jBRdryV7+JENcLXwR8MlMw6Fzid79OuERNsgrib1uE8w2tar146P+alWeQDSuw1PmNe9BoPQvtNCqUiezasHRUAY1Ku/zb0X5aOr36wrCbOeEpZVuaPPcAu48m7FhtD+hED+2oDAtcOOK74RZsbznlYVhqw+/LhQN32y2zNGNeHiykZuq20kDw+TwiouQ9KLCqApj4fk4niuoiUqs0Xu3VbIJVT+qAybfMC/9i9mfFQq1I5+liHLxtEHfsAE0d/+yx2h3Uzn7pq24CMSaMKQL5rs4mRqLilwH+omuMYppJZRnSL+4F9o2ccQ+Agx
+ XvOKloSH
+ aRKPIibrcoq+R/H1Sx7niCeQz/zMZGPpez03vGkQnnD4bGSB/l6017WxdLdxwZzBKnfWCXcPKMPxeg9RHU6XPa/UdeWeDeuGp6L7OyZmGmyNa4UZK89jXmiYcZsflNdEXjKEtwS0x1U3B/oL74nQ+28faQK98vO0+IrDfKVafsvBct3JdiFBML02pRyRJjAvONlsYwO7upWU5sSaPbvh7CaDWGZ2LKm7n4ZuQ5l8xd7bZjG+qfYzg8So01Yl8MHuVAZreVg+6U6zxIcIPTdBx8rZA8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,23 +91,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi,
 
-On Mon, 31 Aug 2026 13:21:43 +0300, Mike Rapoport wrote:
-> memblock tree moved into mm/ namespace at git.kernel.org.
+For the future postings, please don't send vN+1 as a reply to vN.
+
+On Mon, Sep 07, 2026 at 09:20:31AM +0800, Tianyi Chen wrote:
+> Model a low allocation limit within the dummy memory registered with
+> memblock, then exercise memblock_alloc_low() in both allocation directions.
 > 
-> Update the T: entries for memblock to match it.
+> Changes in v2, following Mike Rapoport's review:
+> - Clarify why the limit splits MEM_SIZE, the region registered by
+>   setup_memblock(), rather than the larger PHYS_MEM_SIZE malloc buffer.
+> - Explain why the malloc-backed base still needs alignment.
+> - Describe the boundary in terms of the last usable byte and clarify
+>   that reserving low memory succeeds; the following allocation fails.
+> - Update Assisted-by tags to the required tool:model format.
+> 
+> No allocator or test behavior changes from v1.
+> 
+> Validation with the existing Makefile and ASan/UBSan enabled:
+> - Default, NUMA=1, 32BIT_PHYS_ADDR_T=1, 32BIT_PHYS_ADDR_T=1 with NUMA=1,
+>   and MEMBLOCK_DEBUG=1 with NUMA=1 builds passed.
+> - Each configuration passed both ./main -v and ./main -v -m.
+> - A separate BUILD=32 run still hits the pre-existing
+>   memblock_free_near_max_check assertion in basic_api.c, also seen on
+>   the baseline. This is distinct from the passing 32-bit physical-address
+>   configuration above.
+> 
+> v1: https://lore.kernel.org/r/20260906144011.848898-1-hi@tychen.cc
+> Review: https://lore.kernel.org/r/ap3LTQlKTpDbAEJZ@kernel.org
+> Review: https://lore.kernel.org/r/ap3NJsaG10rLDVpd@kernel.org
+> 
+> Tianyi Chen (2):
+>   memblock tests: model the low allocation limit within dummy memory
+>   memblock tests: cover allocations below the low address limit
+> 
+>  tools/testing/memblock/Makefile              |   3 +-
+>  tools/testing/memblock/README                |  14 +-
+>  tools/testing/memblock/TODO                  |   5 -
+>  tools/testing/memblock/asm/dma.h             |   6 +
+>  tools/testing/memblock/main.c                |   2 +
+>  tools/testing/memblock/tests/alloc_low_api.c | 148 +++++++++++++++++++
+>  tools/testing/memblock/tests/alloc_low_api.h |   9 ++
+>  tools/testing/memblock/tests/common.c        |   6 +
+>  8 files changed, 180 insertions(+), 13 deletions(-)
+>  delete mode 100644 tools/testing/memblock/TODO
+>  create mode 100644 tools/testing/memblock/tests/alloc_low_api.c
+>  create mode 100644 tools/testing/memblock/tests/alloc_low_api.h
+> 
+> -- 
+> 2.55.0
+> 
+> 
 
-Applied to fixes branch of memblock.git tree, thanks!
-
-[1/1] MAINTAINERS: update memblock tree URLs
-      commit: 6e33dc90df108c76899dc544a42d17adcba61668
-
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-branch: fixes
-
---
+-- 
 Sincerely yours,
 Mike.
-
 
