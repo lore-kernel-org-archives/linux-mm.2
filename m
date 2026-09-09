@@ -4,138 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F6FBC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85667C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7A56B008A; Wed,  9 Sep 2026 05:42:21 -0400 (EDT)
+	id 77AF06B0092; Wed,  9 Sep 2026 05:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AEAD6B008C; Wed,  9 Sep 2026 05:42:21 -0400 (EDT)
+	id 724C16B0093; Wed,  9 Sep 2026 05:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DC96B0092; Wed,  9 Sep 2026 05:42:21 -0400 (EDT)
+	id 63A966B0095; Wed,  9 Sep 2026 05:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 26BAB6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:42:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 312BC1C0669
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:42:20 +0000 (UTC)
-X-FDA: 85193733240.03.3EA12AA
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 16C3C180004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:42:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sqe5GzcY;
-	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788946937;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ZhIjaKSKu0jnDwRfSlp/FTaG5xLy46pxEQXC6FqYeA=;
-	b=tVVD60qKxiKIK2cU1inz10u22p7ywVdrir814rHQUclBV+MILHBnPszOfSviiJT0i5yNB0
-	2oTxVkCxUvuOLC238X6owCTQijaneU0aQ9HSeg1FzJRZ78MMtsKxMyh6Pb1mutCg98Q9u5
-	OjyrOYTp+fQUQNjIqstf1fUtJ4hFuUc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788946937;
-	b=OWu7K35R48mWezaXuuyFUYa7mYKR5J2WwrGYvpkwPu6PkUQQaV/JkncKGStfflrKFzkR+r
-	5AgmInQwb8Cyyt4OM469AAi/V4wpnAUglqGcSvozrIyGCWZCawPWTERGufYftev3OZu6Oy
-	cCiOZoNJDJy0CiQHaKt4YRmgggsXDD4=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 378C06B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:44:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8689612016C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:25 +0000 (UTC)
+X-FDA: 85193738490.29.26FA1B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9328A4000A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aGCVbomS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sqe5GzcY;
-	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66c70f69d3fso5315969d50.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 02:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788946936; x=1789551736; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+ZhIjaKSKu0jnDwRfSlp/FTaG5xLy46pxEQXC6FqYeA=;
-        b=sqe5GzcYY3mc2w26V2AHh+bWds33WRrih3J+WzS1Oo+QrV0d+WTwH1ptYhpbZrr76r
-         9Wc+xR247QEyJiotIOJzGrYlrrz9p2is0V3QgpoL7lDXkD2s+LE1hzmsNIOP09WWa1Rc
-         5N6CC10+4Yvj5wK1VyUr5PBHWg4vUplA4WZzx9hu0mAKzIC9sGXDdQyVW8mPh8+3sciZ
-         xYWJf4UkDnN/loxvMF44O7Y4GOLYTL85wDkHEy3OU86Keyisu6TIElBVrIV5qON2Sh/Y
-         7g1XFp7Msx0xZNw+AMpNuVeSoFOB7QIicWd1Qe1pinV91UZbl/IkHH8Uyy0BEONSTdCn
-         FCAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788946936; x=1789551736;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+ZhIjaKSKu0jnDwRfSlp/FTaG5xLy46pxEQXC6FqYeA=;
-        b=JknlukPo+oFezEjhsER9MN7CZY3QVJO1ggC7bSIMAI0DhfQ28cgj3E/RLDkGeti1/n
-         I4TQT26BWs+v0H6hhYgs67L7z8Tnn1Oe5+ofY2g4nhC+CDljK5gXEY+lGzZWvcDz+SpH
-         u4R/rf0jQNV4eRIo6IE63adD73JTqCXEyqQujajOU4kvQ+xzBIUH7mkUtDBLr48fNACw
-         G7T3HgG4hpcOEa+HyamKmTxcHkrF097tp9GBrABBt3vN/KV7oTTABVF21rqsnAYpuoBl
-         jnBTAkp0lc/pyQq/+hvYRO0wiFguXrsxCZMeivCTpnmkxiGui/RAQMUQf5VByIOuxC8E
-         uvzA==
-X-Forwarded-Encrypted: i=1; AKwUvBygQ5nBlJpKOAE2prbQ+fWf8vjkhD92WUpSQH0I8j34I+V8vlyZ+UGaTEsZtZIJknjU72FrjDBqJA==@kvack.org
-X-Gm-Message-State: AFuF++lvkyb+9WEr0kb14Rs+Ri6/tNPNuZNCygotXQrQfB1vr/42SmL8
-	cRlkReZmNJsNdkatcdZIxab+gLxSVpLLVjNRpEh89jXbT/1eKNDOtmD+0jBv7YoiVA==
-X-Gm-Gg: AYBFou2LXev4aDBqo46FaRaYgSdvNe+IaDjpZct21VLXnwDomTwRFDCpLCcYQRU7HNN
-	L1VPzPrutsWlaDRa0tU7uJCgKihcB0hJo3CKwdBi7rDyvYd3eJik8TpFEgZFK1y5xQ+NNFFfkpF
-	IOZA7bZ92QMJZ8avfVIzzXUpsAakmNY3co9YriHfr76KAtLcGD/OkMCr+FxcUAfsz4Be7ONr61I
-	nD7o1NDkhXAknNYpO/RSmUIUC4AlY1OrXv8KumYB2BxJ+ZknoNDwDd/rWUX65uuxjne40Wk7dxr
-	krZWliMm4vi7OiMkS6IIhSKGk4SIgVaXDmdRyM5zyy5tR6uDyVE9+XjJfWTkdr1TaGj645VLoI5
-	GIKqcPbkmFPY0o9VrD14cjqcOsAZosWdr6HWulkIe5u+SepemyNkkE5RjzJvXIzDG3VLlz1d9Qv
-	3rLCoeDHqzzI6BvKxT25mtq33uJvgNxs27WvOqbd7hw4f5nj5eZ77OLltkMjtJjVxfdXvcWlOU1
-	A0H+1HvmxMJ8ekNSemg4D+fmWdtH0iykXh4osPYAFj/MyTZPLZ3D/OvyH09
-X-Received: by 2002:a53:a043:0:b0:66f:c1be:3187 with SMTP id 956f58d0204a3-66fc1be358emr5989382d50.94.1788946935368;
-        Wed, 09 Sep 2026 02:42:15 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb47a8b8fsm12141411d50.2.2026.09.09.02.42.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 02:42:14 -0700 (PDT)
-Date: Wed, 9 Sep 2026 02:42:10 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 01/26] mm/fbatch: remove !CONFIG_SMP special case of
- folio_activate()
-In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
-Message-ID: <b482561f-6620-d41d-eea0-a7f2a05cc444@google.com>
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aGCVbomS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788947063;
+	b=Z02p7rcO2yHDivmemgLSjlFNMXuMOawbkgbixjoM/VqZ1qQP6ITPHjWtZanHs2unXP7NEd
+	rCUdl1f+eKOTV40/xMBqEvxI9+stiaQD7RqaijNC9vLkaYkf35M4o7tX4VdOLhTVJZjn9j
+	4dEIDoohkzGTdQ0zMlyfmqKWu9y0KwU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788947063;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ceF2U38uXuHKPgJcmUxfM6+scb+3tzvHBYKiqk50Z4c=;
+	b=DzxV8g+UPclXr0lQ9e8yzC1fZYIZpuRilh7Fxeyo4sw5ruIxLXZkBDEzdhs9yLteu4Ed0m
+	PYyW7KZSM6W4Y/RApZhlAVjKGKcy2JIAEdeP8iGKohp1yvEnN1Z3IxKVaus4wuPwwQBD6h
+	gpLeEvndTBV1H1n4BCCkyXB4mrwCaNs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AEE2240467;
+	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 84301C2BCF4;
+	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788947062;
+	bh=p/FFus9bKe5tMEJQcywlfhVh8H2JBkhG45wwhRpVejU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=aGCVbomS++Z2D+pnl6D6I/WvraSgdcxXB1PWnieNuY/YFqXVDyDvx4gwD8NdKxola
+	 gKTEE8wsE5zssmRlKcXpsHX7LI5eMEdSl27dwgmRx4FLy+falJR15j4VpoCOJzQdK+
+	 nX2QkvLvz5aInYezpjesG2lqKKRw+C8f94FDj//QntD8/grEncLgLKvxBb8LgZ5eyg
+	 0O5jLZYx2yNWn5XQb/SQaTjaefeiNOinx/XKBmUpe5MCFMb9YXQTu0BUz8Pw27o38Z
+	 YJfB2EYHFS5rGI2WFHBGRmGDzGAcKiVnKPmF3J7wBBNBqGDYpNzNZclxeia/ptaKi0
+	 RGm2ekaof4N5A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E507C79FB6;
+	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
+From: linuszeng via B4 Relay <devnull+linuszeng.tencent.com@kernel.org>
+Subject: [PATCH v2 0/3] mm: page_counter: move hierarchical protection out
+ of struct page_counter
+Date: Wed, 09 Sep 2026 17:44:18 +0800
+Message-Id: <20260909-descriptive-name-v2-0-d7dd7c099049@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: wsocgthgh611agfuotejfzsu1483irih
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHIqoWoC/32NQQ7CIBBFr9LM2jFAkwquvEfTBcLUzqK0AUI0D
+ XcXewCX7yX//QMSRaYE9+6ASIUTb6GBunTgFhtehOwbgxJqEEYY9JRc5D1zIQx2JaReK9vP5qa
+ 9hzbbI838PpPj1HjhlLf4OR+K/Nk/sSJRoNRKm0G6p5D2kSk4CvnqthWmWusX0JWKTLIAAAA=
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+ Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Jingxiang Zeng <jingxiangzeng.cas@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linuszeng <linuszeng@tencent.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788947061; l=4455;
+ i=linuszeng@tencent.com; s=20260909; h=from:subject:message-id;
+ bh=p/FFus9bKe5tMEJQcywlfhVh8H2JBkhG45wwhRpVejU=;
+ b=hJTwX6JHH/uUOp9uHufT3TwNsMm+bWbW8cQjl9xqdJC3KPtmdS0V4dRJcPJJbMw26XXmcfYw6
+ f4kAsSPB1svC72rIgJlJBLAxwUHAIMyEP1iKgbuGtVIe8pJCi+QT/mm
+X-Developer-Key: i=linuszeng@tencent.com; a=ed25519;
+ pk=6K54xRzYIRWqatrAPy86M4E0MsI92BVJBhXwz5NdC74=
+X-Endpoint-Received: by B4 Relay for linuszeng@tencent.com/20260909 with
+ auth_id=1017
+X-Original-From: linuszeng <linuszeng@tencent.com>
+Reply-To: linuszeng@tencent.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 16C3C180004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788946936-496694
-X-HE-Meta: U2FsdGVkX1+o6uo1UcXX/OF574KonPNoySjCVLHhgDzzG8FSgzb+eOdNbaqS+7oAn7f0ePuRHGBg1iL0M24Xl0ukQ5T6NGUpNML24+iL05WZPNoV82U+UrWFfdYskjziCuBov02VGkv5HMLWcf+bXfc1rY4Kn7Bfs1Yddnna60dIWYDYd3eXMATs/5IGFBg2VJnpkaq0Pe2exDKe41afpP6bGWgCjdf+SovvmHq/HfjSAM9brdpXF0LcHldirm5ZkDg/QVia9UPaajcucTDN+hr6ZkE61NoyROcElTovF2fSy8J3uO+CItib9thTE4CbauqwO8sEOrk9kGm6dqLFGPeqmp4Qbl1T4qBjQvijl0i0gfqGV8ePoRRMalxExUIk8yOUsIUmfPtwdlE9nVelGZ4xhl52yBA6ZhNmWcMTkwgE7wKp3++GSp2hg+KhD076GqPXKiuj3+kD4q5ng8K5i6jX1tLzD2eHK2KhEUg2ipQVHoa7HcIc3tls3rZVV1Y+In1v3dNv8mT6xkeRPh6d7HpskzAj3Q/aAlUpMgkz/bCa7SsO7fdP/3YqhWsNLbQxhKu+gFlwbSz2JRME1z00nLrJtx5+lPUxT/SAt2RAKLmWzDygHRZg/tGA2sy9Fn3/lG3TXmsbyj/IeA2pAv85Pupl6A9WPX2QwSdeSYcSYOBYA3JE2pOCcyP0whegK2L8AsHqlx8ga1D13dCtSCfco6sytplgaRuXQGi7oFLxt57Zalx8ZaabgoFNxS8V1e+I0haXd5IfZ1FXcURi6W/oAiBZzaCNzpseY4a6KoEyFAzZq0tNn6Iz0f0x+a/G2TcypXw4OgybXNX2roLY8qedfg41m57ayFVfFac4LqZYPE3zr22I35i1TGWcISMrcIkamOFOGHqSvJ4UeHdyKuDAs18aBd1K+FPE2oRFBE6OZedwj5rIqHl1sJgmSJnLaorSxxzag5+Vu6zOuU7Talm
- ThvjWV3B
- rv6GXS7Qmh0cKscpq8Nu7nVTMNpVwUyBcUZy6iT89+5UiZqc9XyOMCCLWCR5yV2PumRU1E94YDElw7JoVowK6HLoPJhDLhyC/4gYFg9q5YYS81mIKH2ixQgb1ufu25n2LihQ1velQ7ocZZlvFL1p9A4aFw84EaRdPVmqb9kIqwnX3R/1XxQt1mvuMKMb1I00Dh1GGzibr4u85iDPTs7jcgnNvcYNvZJUrQ7L+tTUT/5bqdPXdI/30b4zjQIw4PHHdmEmr3cDT58lzzWOUneUkp1wMyRXdOZvsycsFGsX40IUGpTHO7NfIPXcLYvJoukgQyazJYQBep+9bJpGMonWcbTqmMy9GWVvKyBkN7BUYRvo/eKwqnJ6hvs9aE1w1pEd1OyH+Ic7KXb7069ndjBEQjnoZZHJJKPU7kxmfGYDqH0+MXo/TIoL1ZRD6bZYaqjTgZHMGO7gbBTpeQbSN6gi0S85iW9n83+07hpA4le0oWuA/yYTPJSzGlTJqF2c0mH0wwSalJErqxAeOSt33QyCE+sKA6x78pgoY6Avr3ya2Dt1Huyr1DNXsKMJ6GhyRoPECPFtDH3ICB8azcpq96/udVAgOOg==
+X-Rspamd-Queue-Id: 9328A4000A
+X-Stat-Signature: oh8k56pqc33yj5jm4awfiphck6f1ajou
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788947063-138375
+X-HE-Meta: U2FsdGVkX19WvDIP/GBCZ/n94NEQp67mZiVDGngdEFTNbPq1PhXxl8L9Vm2Ph3QLORGjJv3Ga7ouKe6kzJd5nPyA/mrAytzUxbFSznwqcxc6TdjRgf7b5SNPCr3yyL76sJNJmU1zEnxUaxywOh53gesMA+qpDXGje1W2OczzMNWlL2GsBpinzRYBowsqKQEIZzmL2TFE2zLEuss4jB16DrLs6mxygYDbla49dcwK7oRR+kJHVZ3+GQRZv8tLzcM5AXOhJezPd7tGu1pbBkETP9PIBaaIK8XrVMBy+xV46olyHf7MYDWF7nyGBGFIl7T7DvKiF4lxqiy9bMo2qSeFVLUvg2dSfunZFrLqW4orVtJYM1oIgyV0V4mhuVR/AbJ2uUW9Zqqr4FvNItv+8g1+CbETthNakqjQAHHoHVTt1mOJpTftZLjdDAniP4qiTnK5y+pD1DdjHRFozGFbBd9lgdCmzdylv0JQWkL9vdw0ufh4SqfDEX3DcUZfQluI3UP7oMf69193AqOYCzy3mtoM+EI1KMbtmejrb0u3etOPO21p85kt3lmUDZJuuyUrA2yxqjqcGp41V1MI4Qxiz9GFCOLVYRGEv7CQaoOqyzh702OD0zxggQqzauYnrTBhHRYHPNLzv3o+PC7X1/JQtRwBxT2pfFRY9P4Z02jC+NgDrcXuB4yOwBQigcH78FeR96Ley1+ayfWzoqT9FTYriHHGycxZM/+0Y7eCI8lHoun2k7JeHqI28xEVwE4mR1RNRXOqowh6M/AIAtAcT1osc+O4CS0/rNi0HPy219u+yFutKsO/Om3E3PhJYrg3Aj8zProL70nolQI5vb52vacYF4eL2flQ3pInv3Uwn8RmBJ9Oor0oTZEmu2FvXXlIVSgedUe/DonLhIF8PxWqtRezBr/93e5uWa6OCofhPeRORl+S+rk6Y6zaq7nazzVJg9XdrW20eSm5/QPfBZWFP8RaJWw
+ ZZ9r/QUb
+ RWMzaw+HEDIQGEM4xnJnhR09lPk3EHgLabvhPakseOkdHBK9xcm8HYDItTsfjy8wzHK5iraQHOEWLH9kprkX5oXdi7H+2YbHlsjmjeSqBKKKZNyi6Bg1aZCWwYjtGzXvysrqgpggt59Hm+uLv/8T2kAvM20mKRxW09yadW82ZjJXldEkOm3C2QunnmW+cjB6nB0J3R8CKPkPLvknj6JOU7lkLXziG41JyUVKZD2z1RtXSRc1FJqIhTKXet1G5UEDZgNEExrQhEMwzwt6HjR2G5jVBgPmzr+axjdBEJIuQ1nqYWftiJYh7+lImuivN48pV+5jktsXvTd2EzQuKV/PcnI2KqIB6Nq6JlrGik87XMDWeCuHujAxKoY7XKRpbwGA1I6gl7iM6Lqa05gx8O/S7BS415tHWaXeLnZ0I8TYfuQ40JILQE+Kd+aEWaKCHDRdOZ5T0VDb6eCRNdcmB4H63ANFmFdZzG707FDkafwQBY8nuflCdlO7UqzChySSMhv2bn6+mCo6/aEyR5unO81z6QWTdCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,127 +119,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-3.0 commit eb709b0d062e ("mm: batch activate_page() to reduce lock
-contention") brought in an ifdef CONFIG_SMP around activate batching:
-https://lore.kernel.org/linux-mm/20100805140755.501af8a7.akpm@linux-foundation.org/
-shows a sensitivity to bloat that day, not any incompatibility with UP.
+Hierarchical memory protection (memory.min / memory.low) is built on
+struct page_counter today: every counter carries the full protection
+state - emin/elow, the protected-usage trackers (min_usage,
+children_min_usage, low_usage, children_low_usage), the configured
+min/low values and a protection_support flag - although only the memory
+page counter (and dmem pools) ever participates in protection.
+swap/memsw, kmem, tcpmem and hugetlb counters ship this state around
+unused.
 
-No other batching here has a UP alternative, and it's a bit confusing:
-simplify mm/folio.c a little by removing it now.
+This series moves that state into a dedicated struct
+page_counter_protection, instantiated only for the counters that
+actually support protection, which shrinks struct page_counter by one
+cache line.
 
-Certainly we can reduce UP bloat (and/or 32-bit bloat) by, say, lowering
-FOLIO_BATCH_SIZE from 31: traditionally 16, 14, 15, then raised to 31 by
-6.9 commit 9cecde80aae0 ("mm: increase folio batch size"); or by giving
-just the static per-cpu folio batches a type of their own with a smaller
-array size on UP (1? or a little batching worthwhile even on UP?). But
-not right now, it's orthogonal to this series.
+Patch 1 adds struct page_counter_protection and links it to struct
+page_counter through a ->prot pointer (NULL when protection is not
+supported).  page_counter_init() loses its protection_support argument,
+and the new page_counter_init_protection() attaches the context.
+Protection stays enabled only on the cgroup v2 hierarchy, matching the
+previous page_counter_init(..., memcg_on_dfl) behaviour, and the root
+memcg keeps it unconditionally.
 
-And I suspect that the old ifdef led to lru_activate being placed last,
-whereas it's usually the second most popular fbatch: move it there, to
-match cpu_needs_drain() comment "Check these in order of likelihood that
-they're not zero".
+Patch 2 migrates the read/write side of protection onto the new
+structure: propagate_protected_usage(), page_counter_set_min()/low()
+and page_counter_calculate_protection() now operate on the protection
+context, and the memcg and dmem accessors (mem_cgroup_protection,
+mem_cgroup_below_min/low, the dmem below_min/low helpers and the dmem
+eviction check) read emin/elow/children_*_usage from it.
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-By: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Patch 3 deletes the now-unused fields from struct page_counter.  On
+64-bit the structure drops from three cache lines to two, one cache
+line saved per counter.  For reference, pahole shows the layout before
+and after (x86_64, 64-byte cache lines):
+
+    before:                                after:
+     0  usage                               0  usage
+     8  failcnt                             8  failcnt
+    64  emin                               64  watermark
+    72  min_usage                          72  local_watermark
+    80  children_min_usage                 80  track_failcnt
+    88  elow                               88  high
+    96  low_usage                          96  max
+   104  children_low_usage                104  parent
+   112  watermark                         112  prot
+   120  local_watermark
+   128  protection_support                 size 128, 2 cachelines,
+   129  track_failcnt                         11 members
+   136  min
+   144  low                                (the protection fields moved
+   152  high                               into struct
+   160  max                                page_counter_protection,
+   168  parent                              72 bytes, allocated only
+                                           where protection is used)
+   size 192, 3 cachelines, 19 members
+
+The four embedded page counters of struct mem_cgroup all shrink by 64
+bytes, which translates to 128 bytes saved per cgroup once the one
+embedded page_counter_protection is accounted for (2176 -> 2048 bytes
+with CONFIG_MEMCG_V1=y, verified with pahole).
+
+No functional change is intended: protection semantics and the cgroup
+v1/v2 behaviour are preserved.
+
+Signed-off-by: linuszeng <linuszeng@tencent.com>
 ---
- mm/folio.c | 40 ++++++----------------------------------
- 1 file changed, 6 insertions(+), 34 deletions(-)
+Changes in v2:
+- dmem: fix up prot.parent in get_cg_pool_locked() too, so bottom-up
+  created pools keep hierarchical protection.
+- Drop the orphaned _pad2_ padding and its stale comment from struct
+  page_counter.
+- Link to v1: https://lore.kernel.org/r/20260909-descriptive-name-v1-0-1828961cb01a@tencent.com
 
-diff --git a/mm/folio.c b/mm/folio.c
-index 50a6dbe55998..c093ca900a3e 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -48,12 +48,10 @@ struct cpu_fbatches {
- 	 */
- 	local_lock_t lock;
- 	struct folio_batch lru_add;
-+	struct folio_batch lru_activate;
- 	struct folio_batch lru_deactivate_file;
- 	struct folio_batch lru_deactivate;
- 	struct folio_batch lru_lazyfree;
--#ifdef CONFIG_SMP
--	struct folio_batch lru_activate;
--#endif
- 	/* Protecting the following batches which require disabling interrupts */
- 	local_lock_t lock_irq;
- 	struct folio_batch lru_move_tail;
-@@ -283,15 +281,6 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
- 	count_memcg_events(lruvec_memcg(lruvec), PGACTIVATE, nr_pages);
- }
- 
--#ifdef CONFIG_SMP
--static void folio_activate_drain(int cpu)
--{
--	struct folio_batch *fbatch = &per_cpu(cpu_fbatches.lru_activate, cpu);
--
--	if (folio_batch_count(fbatch))
--		folio_batch_move_lru(fbatch, lru_activate);
--}
--
- void folio_activate(struct folio *folio)
- {
- 	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
-@@ -301,25 +290,6 @@ void folio_activate(struct folio *folio)
- 	folio_batch_add_and_move(folio, lru_activate);
- }
- 
--#else
--static inline void folio_activate_drain(int cpu)
--{
--}
--
--void folio_activate(struct folio *folio)
--{
--	struct lruvec *lruvec;
--
--	if (!folio_test_clear_lru(folio))
--		return;
--
--	lruvec = folio_lruvec_lock_irq(folio);
--	lru_activate(lruvec, folio);
--	lruvec_unlock_irq(lruvec);
--	folio_set_lru(folio);
--}
--#endif
--
- static void __lru_cache_activate_folio(struct folio *folio)
- {
- 	struct folio_batch *fbatch;
-@@ -628,6 +598,10 @@ void lru_add_drain_cpu(int cpu)
- 		trace_mm_lru_add_drain_tp(cpu, nr_folios);
- 	}
- 
-+	fbatch = &fbatches->lru_activate;
-+	if (folio_batch_count(fbatch))
-+		folio_batch_move_lru(fbatch, lru_activate);
-+
- 	fbatch = &fbatches->lru_move_tail;
- 	/* Disabling interrupts below acts as a compiler barrier. */
- 	if (data_race(folio_batch_count(fbatch))) {
-@@ -650,8 +624,6 @@ void lru_add_drain_cpu(int cpu)
- 	fbatch = &fbatches->lru_lazyfree;
- 	if (folio_batch_count(fbatch))
- 		folio_batch_move_lru(fbatch, lru_lazyfree);
--
--	folio_activate_drain(cpu);
- }
- 
- /**
-@@ -759,11 +731,11 @@ static bool cpu_needs_drain(unsigned int cpu)
- 
- 	/* Check these in order of likelihood that they're not zero */
- 	return data_race(folio_batch_count(&fbatches->lru_add) ||
-+			 folio_batch_count(&fbatches->lru_activate) ||
- 			 folio_batch_count(&fbatches->lru_move_tail) ||
- 			 folio_batch_count(&fbatches->lru_deactivate_file) ||
- 			 folio_batch_count(&fbatches->lru_deactivate) ||
- 			 folio_batch_count(&fbatches->lru_lazyfree) ||
--			 folio_batch_count(&fbatches->lru_activate) ||
- 			 need_mlock_drain(cpu)) ||
- 		has_bh_in_lru(cpu, NULL);
- }
+---
+linuszeng (3):
+      mm: page_counter: add page_counter_protection struct and init API
+      mm: page_counter: track protection state in page_counter_protection
+      mm: page_counter: drop protection fields from struct page_counter
+
+ include/linux/memcontrol.h   | 15 ++++++---
+ include/linux/page_counter.h | 73 +++++++++++++++++++++++++++++++-------------
+ kernel/cgroup/dmem.c         | 21 +++++++------
+ mm/hugetlb_cgroup.c          |  4 +--
+ mm/memcontrol.c              | 29 ++++++++++--------
+ mm/page_counter.c            | 61 +++++++++++++++++++++++-------------
+ 6 files changed, 133 insertions(+), 70 deletions(-)
+---
+base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
+change-id: 20260909-descriptive-name-e382a3f978dd
+
+Best regards,
 -- 
-2.51.0
+linuszeng <linuszeng@tencent.com>
+
 
 
