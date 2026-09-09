@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFBCC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EBF0C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:35:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4699F6B008C; Wed,  9 Sep 2026 09:34:53 -0400 (EDT)
+	id 41B516B00A1; Wed,  9 Sep 2026 09:35:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441836B00A2; Wed,  9 Sep 2026 09:34:53 -0400 (EDT)
+	id 3CC016B00A2; Wed,  9 Sep 2026 09:35:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 384126B008C; Wed,  9 Sep 2026 09:34:53 -0400 (EDT)
+	id 2E2D46B00A3; Wed,  9 Sep 2026 09:35:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 139646B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:34:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44B2CA0239
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:34:52 +0000 (UTC)
-X-FDA: 85194319224.22.BB38817
+	by kanga.kvack.org (Postfix) with ESMTP id 0E0326B00A1
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:35:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68D63A01EB
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:35:01 +0000 (UTC)
+X-FDA: 85194319602.25.BC2EC8A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6B7421C000C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:34:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIoHTTPA;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788960890;
-	b=LGtsRH+RX+wSSfeQfRr156lchM/C0HyN9nT5DtUDI6L7R8P57HudPbGPkg4wX281+JAMOF
-	tgi+JaOGkFjR2+2TXjdTfPu0tNB4qes9H+L7KqAsz/zY62tIBjEeqzncoXR+9M8F4FG4GA
-	r0UsvQHnmNWkLsCnwil4Fj0x2Ga9Z5I=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIoHTTPA;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id A3AA18000E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:34:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRsmgCIw;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788960890;
+	s=arc-20220608; t=1788960899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7PN1IUhSiINmj8se4l4JjZpqC9NFR6pyb0CVD1i9OUw=;
-	b=Hkg/Xu4B5uCc5NcUnCKAaCDlIDxEh1j974JNUQPF7jx6uH3nFq00nKPu+2slBHoSHxB1vA
-	vUW44I9T21R5fGI1UH+SH5QrKM9hlJ3yATaDfHPVXyVL7791wx4EU/pHi7GX1EvHrJI0qs
-	PAmvw8+ohkx4TQJG45oNIHbqVXkij+0=
+	bh=RbrTaD0MOwCU/dADLtwS3cqKnDKmO0natjZctaLbG/M=;
+	b=an0HBsS3v56qMN/vZo7qpmlFhAQxwoB4y75KtCA6+Uc4bM230HeeI0nvydsc835AudAYFd
+	bQRjQYbrU2SJUkrTi+VW5wePqrev3070wGOpbnyQWe239FWTjydbl7xjb8uQG6uwi2NtcI
+	VDEjrPQdnNinC//tFbM/bi46ew1wbB0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788960899;
+	b=vipEFwZS17BHh857Yt9ej9nd26F3bGqB2UDDGnassgOq2S1xuMVbLluJkENd87WDRWsg8R
+	KvXjCc1Dqmm92OsbLboMaOikz2bA5ITVCeLVPDkEN1sfPB3sPceXPtZTQyXb+W7NlqfIfr
+	scyGr5EAlCrrjMSWYZYPZBcgKUY8DiI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRsmgCIw;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9E21413CC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 037AD40582;
+	Wed,  9 Sep 2026 13:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9AF1F00A3A;
 	Wed,  9 Sep 2026 13:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EDE1F00A3D;
-	Wed,  9 Sep 2026 13:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788960889;
-	bh=7PN1IUhSiINmj8se4l4JjZpqC9NFR6pyb0CVD1i9OUw=;
+	s=k20260515; t=1788960898;
+	bh=RbrTaD0MOwCU/dADLtwS3cqKnDKmO0natjZctaLbG/M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kIoHTTPAUt43eRitH91WceQSKtW/bnO0DsunOWkKihNYd/TT4n16yoEXPoL7Ttm9v
-	 E7gprzEbl0f7YRxISlwllUWnaB0OKQSmS0xcjOC1zAFl5XJ1rCnR2aGCbSo+Lb4osQ
-	 0yMDnt+yLEJeJkDCoBsEAk22lqqKD00F2VpX20tr6exOlYobDWufPg8N0bHsAZHnNW
-	 mGvhmaliePQkYXReT6AVNhIznC18ECGJ8kOaV/3HkVgcDIYTsuIcn06yOVzUJP1Or9
-	 sfcTGZOONZU6H6SnH1ms+/x3/csSerKpLL5WpiNLSFH65Js/Sj3S/a4irbU70T20Ef
-	 aOOZo8EgoypAA==
+	b=BRsmgCIwY0Z931Vf0ZjC6k0U+yWVRAZCHkkhlcXWETlu88ySO3sCpKrVMlBV0iwfx
+	 uhI+WzvqD/3YQ8SMBuVeKSS3n9hx1GEVvZRBQVN+UZ6ykgBxwlGQRStGr9ZtQLU75j
+	 5aH0gGEiUG3K64WjEPowzkxXP0T0DJT7FbdoM/VRe8+Cqvr0qaOBmdfjtxHK8E99jh
+	 mCxckMTz3aD1mk4SOj53r+ZG94HF+mDeSiNjqjkOPLTKlbPE9tnTT1lHzT53+jY59q
+	 em4ZD3q2xBchOgXc3/a8fw6iE6JpLL9tOd3EhDpAZ+Z9UGFQ1cTGuOHPZ35dJw+hKz
+	 ndwC/p+XCnE6A==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 09 Sep 2026 15:32:59 +0200
-Subject: [PATCH 06/12] mm/sparse: rename __highest_present_section_nr to
- __highest_used_section_nr
+Date: Wed, 09 Sep 2026 15:33:00 +0200
+Subject: [PATCH 07/12] mm/sparse: remove pfn_in_present_section()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-b4-sparsemem_cleanups-v1-6-008fc8d579fe@kernel.org>
+Message-Id: <20260909-b4-sparsemem_cleanups-v1-7-008fc8d579fe@kernel.org>
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
 In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -93,22 +92,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
  linux-fsdevel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3550; i=david@kernel.org;
- h=from:subject:message-id; bh=mW1IouhiQ9wKrEiRlJmNZfNFYgNpZy9MK7BrqFqJBso=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJhjt+K15+5FExW+Nhc9aPAxOq727k9J291GdSHh5F
- INK0Au+jlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACaiUcPI8Ndc3j9wvsG86jv3
- PwS2ifdN+B1TWf8jNPVm87eqn/UbuxgZtuXck7xmXMy6aIrQXJ9/JdnXLvhcnHklOPNWIqveQhd
- ZbgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1038; i=david@kernel.org;
+ h=from:subject:message-id; bh=DA7ADutddsFmCEjmK+yDurz/oaDpzdkWvjLNiIYgvvA=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJhj9LT/1YHOplEHQxz9GrwpNzSyZjmz2tmhef2zS3
+ OZzJVmKHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzk5BqGf8bHdbuE5Vl+1wfJ
+ rk3bxv5+Da8L//f8XY1WufOf/10fz83wV1ZXYe3Dd1PSZ0bz3Ofq3hL065LbnIjrSodf/jx98dm
+ sNawA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6B7421C000C
+X-Stat-Signature: pf9rfmc6eex64xabgkj5aqfj9i96reod
 X-Rspam-User: 
-X-Stat-Signature: 9wgjeht5y71k765pn489qgmp97j41qub
-X-HE-Tag: 1788960890-740314
-X-HE-Meta: U2FsdGVkX1+YFqDA0YqFOnHMXuQ1huynq6K5BmfKVA7KYVBD/mskU3Ez8EKoITC/yyP+GyXanpRf/J3gISP6kIvE73dHmsMLmrnNUd5styJhk3ian8aF/5OFvPlg+ybO5XdsnZCfVEX8337qI3s+6U2lJl/nnHOWyJcyo8uGU1KKYjyaBDcumiYrk7Jn8crb8btiopPACGT6oNYVM3TJXLcUaLARndFQ0AldVbKM7Hd6isJaARj4vY0u+0ziHYC37oWmoq3QxhSu1AIgr62Zrqy1jFSgU7vVuBA2EfuAyviDXYz1nWVXCD42EAO/Bw8C2CGeB/i0JNDUVPtOCK0zUOzgud9XZHgmb4hIMomWjX/Jf2ylXqLujSRh61AEVG5uSbuT6gvaMK7Zu2QkWIuuZFf/SpAbaWWsvL5qIalEdQbWH5VKeb8RyiTyhSS+KUU0DgcOKJKDIGPxDzGIkUAk5zGv1wyqPlaB60GLfnIfvHwut8Gn/6CviN29SdjBp2M9zRsnuNOIfGDkp/qnI6wlcdd9TsnpK7Lo7cfRKrb/rddfu6l+iho6lvBqY8uyT2iX2O0cTo0XQDD+nbiTfQCwu2uWgLpuHfQGng91W4W86z53gZV1s+8KBs6nDL7iQfJ2AdCFytzsLJH8PaKgivHhB4o0XwtHb7YruDjC8haPqKkWxypi/hx9iY9udEugYj1sBa8G6kyQlB7JEPFbofNTBYerBLUn23pndhuXXQUvb7pDmKV5Mo0rf9vtwWy0kIV1T5/TPEPitynzNNRC/ElF8re5uIQzGLTGhF5duq78pzCqQYBubpAtgSuHWKm8BNPxiEvt/tY2KjtRzh9E8jl1igWWu4r+DGkWuUGwxD4fcoIIYx4VQk1Og+m1KtdtPIFyc+Wk+/Nmt0CnnprMN2mTAbNjF5jIjxvVTvxEY/chy8y9TNnfDAjbVKp7OnYksjVXSPcvQ55Hc8Biuq9hJTm
- w2Jdu3Uj
- Vt/8DN5+hIbsNEin+CuN+rB9TMwLn6CPJYoEINN8wrY+GD2NMkPAaeroJ8txXZbf0yjHkHsVZxohnrHO5IQI6KnmjThbHml6F+qUsy/DD1RnHqdcC4GXGGzdksOS0y/oGuqfxb66e6yCzBxMoZbpa7JZprMX66/Cj9uJSxi2s/RJ0TcM7ByLDIVEOEMipQGFbkjHPPJ+b8aCtwRiY8pmYvlXZhQJ+j7wzpX56UtIzf/zZQn0T6/rg0UD1wSeCwh357KsSGQfrHLb++CStGkE3qeFpOvZz2HWWYGNZ
+X-Rspamd-Queue-Id: A3AA18000E
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788960899-588923
+X-HE-Meta: U2FsdGVkX1+2tSMoI++T1cAC+fmDuHhe9yTYt+bNi/hmwH15wpregQBdm9PuOi7fZZWfhxkyZXS/liCdIRyBAwhLd7Wd4qpkzT/nPylEcJ0OGjMaysDcsscfPPGGPG25myjA3EjSVlsT/Jt3/A7XzYw1Xs8Acu/hx8FkEM+hePBs0oK+rx4mzphc9/Yvv2iwEO9HV9djF6OUd+6I156yhiOs5u7JvJaZvQkksUqBKXOsXPqlorbBMf9Ki4IBdj+VQ/FuAWSBFFx/QCb4WW/cnGbXKkGzNvCNpVdm7S6IJ0oFUUQ6Vq8BLOnl2CGtpxidiOJiuwxqBYBm7yYuoHkyghK6Avde2+/H+T4Fb+xaAFA4o1WB8UajmKy5uDPl0tiWmz8WMMye0q3RhC2SJMJR2fkb9X3Pz65gU+q2Up0ni+9ChcqvbxYQ8Aywx3mbGsb6Jwcn3Q2x7Z1LYEuYKAuA8PqXTegC/1RO3SGzThsQt0U5dOGjjDBJ1o7puSpG4HWpkdanaDpouIoglukdTvjkATHXFDyZz7WIHw1xjJ6n5gyOUDbVQZ+1hF/VAFof7rkB2Gf13qCxIRgK37fGQ7/O3lJDkE6NcmtcJ5i9J9Ferf/wxgWVNjnDaPWdbytMmKvUwi3CpYfEmhcSaD2GGjyv73JGsY26BHTltFtr4PArIikNgR45HONF/snQnPg+nT0LdmcX6saN2U8VWbqNFeiTHD/dJS5x0caZ29PrsiI+D+HAVj3ux/9d6zixOHbrMoEwLaL3w3W2pYkQN7hq+iYJgQDs+8/PI50yJESqpjnXDN7Gu+vVbxc/Zz2nXXIcEGTZ9HdCRcV1AzrEgNZ1I9S+76OB3LNIKYX4xpt8j7zUV4myplqy1loKJdCe4hKxngh/+Zmkv1wqCT6TJcRRHwS/JIZhKXZTdMXJTaMlss/cYEL2JUJSEn9nvckZAGsy9cSqQdjqqcNaRLmsYjTTBqg
+ XxaRnbh/
+ u8fWpZmHVkyLeaSwZLUNCEBNd+QnJkncHXd1Tgsw8aW3KaxvOXpkWBA1NUI5X6iYd2wT7TV5v1t7ryQotnc47VoDoYDIYqZDnVCW9WommNriIBRKrFm0+Y2i3aX6jO/DfMl5mzJHCxZhvrUbVuWCfMaSM+C+QYWKb9k/hQ7nM773npw9xEri+RcpDkVnVchc7vAMiIh26UqUGmCXDjP+F+ryJVhuH3wYTu75Hpf2520891ZJ2Zl4Urk56tMjrCnowroDASL98kGadBL9aB/OjaxSUv9DilRU3OTlP+8kCN4zcDsLSQORLjt/yrIIiaP4yXLjjbvKFKVrSsgXsQtpt0kRSMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,100 +115,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for getting rid of SECTION_MARKED_PRESENT, rename
-__highest_present_section_nr and clarify the comment.
+Unused, let's remove it.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/mmzone.h |  6 +++---
- mm/compaction.c        |  2 +-
- mm/sparse.c            | 12 ++++--------
- mm/sparse.h            |  4 ++--
- 4 files changed, 10 insertions(+), 14 deletions(-)
+ include/linux/mmzone.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index c9ae7991a8b20..19296e8ef44f8 100644
+index 19296e8ef44f8..e0fac344f6ac2 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -2170,7 +2170,7 @@ static inline struct mem_section *__pfn_to_section(unsigned long pfn)
- 	return __nr_to_section(pfn_to_section_nr(pfn));
- }
+@@ -2315,13 +2315,6 @@ static inline unsigned long next_valid_pfn(unsigned long pfn, unsigned long end_
  
--extern unsigned long __highest_present_section_nr;
-+extern unsigned long __highest_used_section_nr;
+ #endif
  
- static inline int subsection_map_index(unsigned long pfn)
- {
-@@ -2269,7 +2269,7 @@ static inline unsigned long first_valid_pfn(unsigned long pfn, unsigned long end
- 
- 	rcu_read_lock_sched();
- 
--	while (nr <= __highest_present_section_nr && pfn < end_pfn) {
-+	while (nr <= __highest_used_section_nr && pfn < end_pfn) {
- 		struct mem_section *ms = __pfn_to_section(pfn);
- 
- 		if (valid_section(ms) &&
-@@ -2324,7 +2324,7 @@ static inline int pfn_in_present_section(unsigned long pfn)
- 
+-static inline int pfn_in_present_section(unsigned long pfn)
+-{
+-	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+-		return 0;
+-	return present_section(__pfn_to_section(pfn));
+-}
+-
  static inline unsigned long next_present_section_nr(unsigned long section_nr)
  {
--	while (++section_nr <= __highest_present_section_nr) {
-+	while (++section_nr <= __highest_used_section_nr) {
- 		if (present_section_nr(section_nr))
- 			return section_nr;
- 	}
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 4994e200bbecd..f1b2060eb2016 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -216,7 +216,7 @@ static unsigned long skip_offline_sections(unsigned long start_pfn)
- 	if (online_section_nr(start_nr))
- 		return 0;
- 
--	while (++start_nr <= __highest_present_section_nr) {
-+	while (++start_nr <= __highest_used_section_nr) {
- 		if (online_section_nr(start_nr))
- 			return section_nr_to_pfn(start_nr);
- 	}
-diff --git a/mm/sparse.c b/mm/sparse.c
-index f84bfceb53060..2b41ae36f20b8 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -164,15 +164,11 @@ static void __init mminit_validate_memmodel_limits(unsigned long *start_pfn,
- }
+ 	while (++section_nr <= __highest_used_section_nr) {
+@@ -2351,9 +2344,6 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
+ #else
+ #define pfn_to_nid(pfn)		(0)
+ #endif
+-
+-#else
+-#define pfn_in_present_section pfn_valid
+ #endif /* CONFIG_SPARSEMEM */
  
  /*
-- * There are a number of times that we loop over NR_MEM_SECTIONS,
-- * looking for section_present() on each.  But, when we have very
-- * large physical address spaces, NR_MEM_SECTIONS can also be
-- * very large which makes the loops quite long.
-- *
-- * Keeping track of this gives us an easy way to break out of
-- * those loops early.
-+ * Looping over all memory sections is expensive, especially if NR_MEM_SECTIONS
-+ * is large but only a fraction is actually used. Keep track of the highest
-+ * section number we ever used.
-  */
--unsigned long __highest_present_section_nr;
-+unsigned long __highest_used_section_nr;
- 
- static inline unsigned long first_present_section_nr(void)
- {
-diff --git a/mm/sparse.h b/mm/sparse.h
-index 744ae29002f5e..7c5d82ceb7142 100644
---- a/mm/sparse.h
-+++ b/mm/sparse.h
-@@ -114,8 +114,8 @@ static inline void sparse_init_one_section(struct mem_section *ms,
- static inline void __section_mark_present(struct mem_section *ms,
- 		unsigned long section_nr)
- {
--	if (section_nr > __highest_present_section_nr)
--		__highest_present_section_nr = section_nr;
-+	if (section_nr > __highest_used_section_nr)
-+		__highest_used_section_nr = section_nr;
- 
- 	ms->section_mem_map |= SECTION_MARKED_PRESENT;
- }
 
 -- 
 2.43.0
