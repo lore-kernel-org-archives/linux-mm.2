@@ -4,138 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53D6BC79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56FE9C79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 689F46B008A; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
+	id 099586B0095; Wed,  9 Sep 2026 06:28:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63AA16B008C; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
+	id 070A86B0096; Wed,  9 Sep 2026 06:28:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5034A6B0098; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
+	id EA17B6B0098; Wed,  9 Sep 2026 06:28:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 371226B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:27:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EA76B0095
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:28:46 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7540B12017B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:27:49 +0000 (UTC)
-X-FDA: 85193847858.16.4ED89E8
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A9D9A40009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:27:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=anhniXZo;
-	spf=pass (imf01.hostedemail.com: domain of hughd@google.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788949667;
-	b=qj9OxyX6cP36sKIgn+EQRJGKsd3nECqZmKA1v2sm2S0m/9/crGutiGCIhpG2DgS61I5+re
-	whBX+97YxomsS9Pr384GDvBxQJAzieuUrK8vUspXakhrK9YeTMicNEqVlcoE2VjpbpbC3S
-	1rEGQxvgXhBZGa+PFmEaBNuSQxcQBSQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=anhniXZo;
-	spf=pass (imf01.hostedemail.com: domain of hughd@google.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F25C016017F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:28:45 +0000 (UTC)
+X-FDA: 85193850210.16.420B437
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4FF8E140003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:28:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kleZA+60;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788949667;
+	s=arc-20220608; t=1788949724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
-	b=Q8mbpvudFeRczOBc3h4zyKSHWbgRooiyOZyz21h8koJWIITCCMNe+XPBjR7IlzwagX0kP/
-	J6HHELHgTEzqbN7uyM26EQOv0DRKELjFj3zaRicTDmmKYjL5hlvA1BSZ77iSNg9pGjRsve
-	0ljjPKRuNVclFlu7pnIp3SrNKCo803o=
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-66fcf87897fso4336564d50.3
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 03:27:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788949667; x=1789554467; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
-        b=anhniXZo0fY1KlGkHYAKkettXgtBIZF6I10jOIKjUGobBcwNukSIQ7kFJcAi96V8l9
-         NpFWj1PFFPZ2NkdnfpKWEoOVuEpTRSBlk9vmk6Pt4ikK3fsHDn/PPsQXXANFiqxDOY1S
-         Hj/UeK8fdx78ldxG1SXlN6FRHUAd2OsQBeHrsV+Lcw/Vtijkl6hHtsCC33MYr0fIFeo2
-         p93SM5g4XrgQRB9aYU7Fv8Z5osF0f9UJXFYAHEDgUw41N6h8BQ/gDKWkp6D5fFCUPzv+
-         Iez4Q0xKTx0bWdDA/5bGStUdtohlaWyEjFi+mQ3wxCTyKfrMQ7UYoWGhwF22MwS9hDwd
-         tONQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788949667; x=1789554467;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0mZ5Gk4/1Pu5bK3S+WjW2BlP4j/qxWTHvLM7mSgUCfk=;
-        b=M+IDP1XzlTdeEb6WVgHk5P5Y0Tw8BSGnt2Vnm1Kf+u9ixvXaLFTpDo5g/ST77tnFVY
-         Yf6x7HsA7UI5YwX6HWcyURCiu1sdzjQUgmiQo4+lHdU48IXN6sWjOdNFuNP1LYm5buEy
-         QPKvccDh+VkA9H8EeV2iFtwST5ZOzvWIZmUUq1t/8ERUCZAECjr5zt2Yblw6y6XO1Ixh
-         JyA6oARXTJwSaCbfn3e8AYzwNZrMlgMM5ngC310PGxaCaxbTrD2VLD87XRVepSPLWHyq
-         d8lmCzM19FDbrTJ6M//wI8Dt5DI7gpDgJVXYw7gvRJ+vq/q/tgcyfiyK/1iYTq56DgoH
-         0Z6w==
-X-Forwarded-Encrypted: i=1; AKwUvBwfMR4tfOa3Q9+Ric24zkHQl8f7WSF6KhKbgQkPij2vxXso3ZZV1xV8O//0cbjkUBbsig4UviMgig==@kvack.org
-X-Gm-Message-State: AFuF++lC5B3Jch4MAJP6oFr85CQri3O+OW7M1F4V4fNoPqIsxOAb5bBn
-	tiviPm3RDo8/j3YvGme4M7TLup3KsMuMyu61ev6JQ+99GACvJV07IOQVanMjbKtT1w==
-X-Gm-Gg: AYBFou0EDcmgaL8p2qv9VWuukIAQo6Li5TBjOdI3e0tor1UH++hczA9FT26fcaJ0LII
-	xS8MEGtnJ68XFxskxVves8Zm59TL7YrrNv1be8mNHUZFFfgnEa9Z8fFP/iSfOLQaP2iW5o8b38b
-	7Zz5AuH8t05AdBTTaLIYf/d668mE6+wqlD1cKlD6dwjH2cD+MWEUiMwvvFu/aCgI/5WP41u0oyh
-	u4TNd+YOsNDNBBoWJhMSQLBTcm9Fcc9vslVCIpXcooAj2SYMoNcZteYESXtMn79EDd8QU/Ouxo2
-	FrXYe8Bsu8Pou7ei8rfFylOdMG6wWV1zMmjy1Vp+8gxSueJU36gjkncKgVm+VI//162FxNnohGS
-	6TLhun2Ifs0yfyRcJd3iLLuOoIeutuuB6WKlmjxFSRGT180t1zsAn4i0/KzKkU55NgRsTPZjXWd
-	ihMaO8DuvlvmLCaSOMqgcufuFEhthp62/DruJf+ExERgR4shbT3r2rMxljlwULvbFNIxJR1xNjC
-	K0E70jYKB+ofmI2SwxshtuKYP18GyMTfti1YvbOaCf9+Cpadl3f3GpkQnRCLTiX5wuJsQ==
-X-Received: by 2002:a05:690e:48b:b0:66f:c1bc:4097 with SMTP id 956f58d0204a3-66fc1bc4874mr7597179d50.90.1788949666224;
-        Wed, 09 Sep 2026 03:27:46 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-670febedc44sm2584559d50.11.2026.09.09.03.27.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 03:27:45 -0700 (PDT)
-Date: Wed, 9 Sep 2026 03:27:41 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 22/26] fs/fbatch: drop_caches invalidate_bh_lrus() not
- lru_add_drain_all()
-In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
-Message-ID: <75e9b5b0-6a70-06df-ba0e-4d7bf841c0cf@google.com>
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+	bh=60Fn9vMhQz6j6ntR/n7XOI7vJwXbXBwP3B0Uhh6u4UA=;
+	b=vTFhPDSB2nJ7O+olpd3GQu5n0MLy8AaRy+WAKgDfhHYeT5nxnmN0RWJsgH/jwSzB5rrQyp
+	QObGaJOIQCcBR3LOJ3s9uk84Ld9GejuxC7c4JPHKRmqMcqpe2AYaUls3tVOktq3qQ+qvSf
+	DZdzePhb0VL8nbLJ6v4Iln/I+Pb76NI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kleZA+60;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788949724;
+	b=aluEZS3eBDGiyrFKMiUmSfeh4AIa48hIQEduboS2dXHHT78kRTS6jctxxEuMJ0/LGL+8Bl
+	2snuRnYql6TtQjgnnp/T6+2exNDWp3iYhI321IaeY44NhsD1YsgJ70WPLpx1sQlKEKp1kd
+	Ry4hTEhLCRzFKrHwd7dpt0NcZ+xGBpY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D5906601FE;
+	Wed,  9 Sep 2026 10:28:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB001F00A3A;
+	Wed,  9 Sep 2026 10:28:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788949723;
+	bh=60Fn9vMhQz6j6ntR/n7XOI7vJwXbXBwP3B0Uhh6u4UA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kleZA+60Lv1tfMbYFJryHNYaxLvlrFE2+5CgNbMl9BGqJAtpLWeJK14WrfabM7HgB
+	 jKR3YR2lUmigxbTGGVo+xzupsc0LiNpO/q7mJuTEfPnt290ils3CF9HVcMeoXTYNdx
+	 XnjfsTVL4mxfeUk9lFPmSVOzUeOMbaFWdj4Q7Dco5LVTWtutGUKyYWuSKUX5IcSHXk
+	 1ziRbbjHSpqnDANaIwOf3/jrb8hP42S+t0OCol2OoLhW9VdnwLTYliwoInXkCavkJU
+	 9XndRQymonbcrswFomGGDHqDGULXj/10mx5rDVkKq4WvbRk9cDqmNb1xe7VGxJb68n
+	 xrVrMzli4FCcg==
+Message-ID: <b8e23456-00af-4097-a769-210a087d2b90@kernel.org>
+Date: Wed, 9 Sep 2026 12:28:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
+ filtering
+To: "zhen.ni" <zhen.ni@easystack.cn>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260907082620.2083838-1-zhen.ni@easystack.cn>
+ <79548641-25f3-4ec3-a549-782fad168962@kernel.org>
+ <6e8bfb0d-d595-4e6b-9536-0323ada57e25@easystack.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <6e8bfb0d-d595-4e6b-9536-0323ada57e25@easystack.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4FF8E140003
+X-Stat-Signature: mpg1szadqk7twjb7tx9kwg3crzjqxpm3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A9D9A40009
-X-Stat-Signature: 3czg94pz1nsb8cands8m38b937ncmyee
-X-HE-Tag: 1788949667-794787
-X-HE-Meta: U2FsdGVkX19+3fZFg6uK2ce/83m3cVQdlyJApilkWIVm0d4yVU/VQVeDGmQZA6h2tRw1n9EHKogJByHmqerDko2vL/KsXyyyrrBk+F/gJhHemZh2c49OdMh8kORDaPFipI03eDdBwQL+DXMNCcm1lBmc0fWVGyGlcP3dFulvTkckOT2Y5Hm2jyge+qE+NjlwVFcOVIH+h+f9x6fTlUaJBdGbWf12OyYRNesDxhkl51z/BziAoYwzQ9AaTOn9I6B2tQSR5kycrHor3w5NWz8yZwoAYPebAz297UuD5gm8OIK9eR5ko86wl+RMd50FrLKHDjtpAG3aaGYIHI1ydEN1HybyUwejaNk/0uyE44p7cf4jJy7xjV7ifGS1+eErz03yOvYq3toLzP/BbNY36qO5ITRBD9/OrLqCAlIKUVncuQF2l823Ly56HZkiq9ZCkfYTRMpgBrZE8A41JHKyfXwJUd4VmZExqe79+mLNQCaEI9jCCEIzY4jViQKQ8yu/3y13W5GE212W2J18xOEBf1W0R6wlSchyrKvMKtiNKhWjL2oKgSXkofpHIBo0evVXIH8eMOraFa/KIwsc8JMcQSUZ5R4uwREZ9l0Lm38jtsoTykopi5SwFJaPZenuwe4S14F+ikPOSOzaetx8H92Qu/SBAD75n25/A7loEVoHQ9wj7VN+zbyNtOBW0iSRQgWAuV2/7pOf7G72Ac8777PbJUmXQWHE+1VY2CPAdsxtERtwm9S0i+XtD/AC9WSGbJN8yATZ4roL/DpxfrZWrlEAOL1KFt9Q8BWz/+DzOGWSyeHzq3uwSvnwHs9g1zxZt0I1Gb5DUjkqj3s77awBdn+sAU5JNz0bG4535PqtZv9opy8uMfJLtW1P9wYh3URV9OIKqV4sxqOKQvZUIctwpxnmAODF3RJH59ieTosEcbOkRAtvibPj/SDZnrimkqh7WcSe1emXWqR748DE3nOXWnuvtQA
- CZIoF/Ef
- dhLaHHyd4li/b/5AiIl65jYD1Nf1zTpb62WnfJYFNl6+NkzOOqwKON20y93tNZleSCmiJHIOZEUFZ+KCf0PAbHK9iPj/YsplJ2y+OmgvHjWKzP9Qq0loSjydhqhKAMHQlqa2XFuYf5mGN+Q9y7JlsrXxQQWLojRRxMHkEGXhX8H2bK2TIXp5PLe9GEZItSRqQAcu4JnocMY1vAVBoTKITEYOp2KHJ+lg8V3I3HChro0VbxU6fsImxJ9uV21wv0Zpl/4xiFWU+yn9AAjf4dZ+RKPFqi42vrJhyB5oFGrh9cXLcGp6sG/Lgsh1uCDz8dIOIl4hr5FflsuIFviaAJbq6xbNdKjVfLFxCCiGR0jZ0SHuCJAluO34WseVHE/1S/+oxESc+WVVl1qFyfbjIF+Igc6ZepPfM3RAAN6EsRXlirLlcM+xV63FZYUyAyal5bldji2ICW+ult24qQPu48FHJkRnyhG+6wb7pziqmZmkAydjTf3Ud1UGgFGAAUDaSxe2p0OJp
+X-HE-Tag: 1788949724-242132
+X-HE-Meta: U2FsdGVkX187oFdFsuZQIt5X6N7+OF1Q7CWt8Kh9Ekk0r/fFsRkztkBtWULqpFBP1EKXXzBCyAVpvVqt6xR6xFbtIXCB93125oDau56i6VOw6yr6JyHnkvt+A5R2pGQyjrZuWPBuE3tKuBBbY5nPP79vNnE/uYz0DsH7wuoPput8oa6lgqQsOuTDORzZtS2lhXWQvuoUzhrtTFDNLBA0WjLtz0vmigjdoRG+jCByuC6h7WgAGpFbj58ypLRUZrKGTa2AVDpwXXv8aC/xQs7vYkwW8wbHaLVcxzfxCxQ3L/Y4OtEmeaMnshO19zxPmlnMt88udLlqerbSPXRGdDPOx1xTZWta4Mr+MTDPrbW2EQh2DTYvKoHHu84FhEzGGoxvjIr1XTOnYLHN4c5FBFEs/M07zH/X57kftRGtYgNEZL/7Yjbs3nje1XiHZnI2TSWodQs9yWA2zSQ88mgQh18wIgZvzsWGDMtZMFzM5oTTBiQD5EJS8OFUVpO8teMkL68xG+KcN1b3pj8wzGJVdJRazGE/k9+cjyB937zfR8OTkCqvucpd+uRS4kmplPy4YSIwAD0t2S2xxOgN16MTTixOSwyqYORyqaziZkEO91OiCqoYLOsZHJC215qeOxX1Md/TBcQVUEYc8A6nJGhqXclQDqq59GVTrnuSBhDFlY76+SHc0sJNJwVC6++QsC6b2QKmW2RDhRNdMvab8buhdJXoGkrvppWSOdXROGqYMX13NE1WKlP4Al7L1/xF2bt/Ri3nMsA+qFDivKQ4AQpJuoaFkteQy1lUr1y4LACUhnDuK534Vb7nO4S5DI6Q4RDvMEdQA1oeDVv1sO5Kfy/Rj7rgU23V8t4UDbfA7qTaWnGYlnjBSImKc5vnCSx6Bw10vMq7y/Wy1hUv2gNL6tL+IzM3togon0QlM6MQG1sdsz27X8L1UkhpOlx15EPY1Oh3kj9m2J1cfPz7BvjImZ6WOsC
+ dLv+IYlj
+ AE0ItK+1OHRdj753bZe058FXf+ENZ9zs6amyhR3xar5t1IBbHizw/umctqq9tI9+H9ixHvrU41d17VRN2tK6bdJBiHwi9KLrjrfPVhol3Kk0aF2viYAdneGbc7vqVAJrn+VHU3/TGFrTtRoHxTiw3saVld5xmfl+A3VkUzRehGHMlP7Vaz64xVeHhSVNyvUqkv+M6h9Ze09IGPsFVpnyLSC0FEnivpERRUTi5geR5REs3U4cGptTqvgJoKjNlNtfpsDjfq4QcieGZQu6auwQ/TJ6oYdCfGEhO/YwMKsBb/Yw+VsnVQzyzBwngQcujy5EzV7/PgORAp9Fzyn7y2hjUKHuA6bVfgfjFeXaL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,38 +147,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-drop_caches has no good reason to lru_add_drain_all(), now that the
-per-cpu fbatch references are gone; but it may have good reason to
-do the invalidate_bh_lrus() part of it.
+On 9/9/26 04:35, zhen.ni wrote:
+> 
+> 
+> 在 2026/9/8 22:30, David Hildenbrand (Arm) 写道:
+>> On 9/7/26 10:26, Zhen Ni wrote:
+>>> This patch series adds process and memory cgroup filtering support to
+>>> page_owner. Following the previous series that introduced print_mode and
+>>> NUMA node filters:
+>>>    https://lore.kernel.org/linux-mm/20260707115411.1714314-1-
+>>> zhen.ni@easystack.cn/
+>>>
+>>> This series adds filtering capabilities to page_owner, allowing users to
+>>> filter output by specific processes and memory cgroups. Users can now
+>>> filter page_owner output by PID, TGID, COMM (with wildcard support), and
+>>> memory cgroup path. This makes page_owner debugging more focused and
+>>> efficient for tracking memory allocations in specific contexts.
+>>>
+>>> Targeted filtering provides significant performance benefits on large memory
+>>> servers by reducing both execution time and output size. By filtering at the
+>>> kernel level before reading, only relevant page allocations are processed,
+>>> dramatically reducing the amount of data that needs to be handled in userspace.
+>>
+>> page_owner is used for debugging. Why do we have to add kernel code to make it
+>> faster?
+>>
+>> How much faster are we talking about?
+> 
+> On my VM with just 2GB of RAM, the raw page_owner output takes real
+> 0m6.178s. Filter it down to PID 1, and it drops to real 0m0.286s. Handle
+> mode takes real 0m0.938s — roughly an 85% speedup. I've also tried this
+> on a 1TB server, and it's very slow. The numbers would look even more
+> extreme.
+> 
+> You're right that execution time isn't the main concern for a debug
+> tool. But that's kind of the point — I'm trying to optimize the current
+> execution flow of page_owner, reduce unnecessary overhead, and make the
+> tool more user-friendly (especially for servers with 1TB+ of memory).If
+> the user only cares about a specific slice of memory, why dump
+> everything from the kernel side and then filter it all over again in
+> userspace? Might as well filter at the source.
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- fs/drop_caches.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Because it results in less kernel code  :)
 
-diff --git a/fs/drop_caches.c b/fs/drop_caches.c
-index 49f56a598ecb..054af78e6a2e 100644
---- a/fs/drop_caches.c
-+++ b/fs/drop_caches.c
-@@ -10,7 +10,7 @@
- #include <linux/writeback.h>
- #include <linux/sysctl.h>
- #include <linux/gfp.h>
--#include <linux/swap.h>
-+#include <linux/buffer_head.h>
- #include "internal.h"
- 
- /* A global variable is a bit ugly, but it keeps the code simple */
-@@ -60,7 +60,7 @@ static int drop_caches_sysctl_handler(const struct ctl_table *table, int write,
- 		static int stfu;
- 
- 		if (sysctl_drop_caches & 1) {
--			lru_add_drain_all();
-+			invalidate_bh_lrus();
- 			iterate_supers(drop_pagecache_sb, NULL);
- 			count_vm_event(DROP_PAGECACHE);
- 		}
+And less kernel code is good. Unless unavoidable.
+
 -- 
-2.51.0
+Cheers,
 
+David
 
