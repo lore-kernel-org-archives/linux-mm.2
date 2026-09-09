@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F86C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 22:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DAC9C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 22:55:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A765F6B008A; Wed,  9 Sep 2026 18:50:09 -0400 (EDT)
+	id 5C50B6B008C; Wed,  9 Sep 2026 18:55:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D9E86B008C; Wed,  9 Sep 2026 18:50:09 -0400 (EDT)
+	id 576046B0092; Wed,  9 Sep 2026 18:55:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87CDF6B0092; Wed,  9 Sep 2026 18:50:09 -0400 (EDT)
+	id 43DD56B0093; Wed,  9 Sep 2026 18:55:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 582C36B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:50:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCBF51A038D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:50:08 +0000 (UTC)
-X-FDA: 85195718496.18.85CCEDD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 06C31A0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:50:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+PeqIpW;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788994207;
-	b=OdXXvbVRbqwsgCXkbURyWQ5G9YO02j/U5EhtP6w9jryBHCe8ofBRvOLBguUl+KHPvsNyG+
-	acOPZIiHU37OAJd+5IgY86Uuux3DXJuNkDbLJ6add13bYj5Chv4BYvdJWVTppFsPrx1LvY
-	+9YP4leglCK19utNO0GKRgPAKcp8J6M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U+PeqIpW;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D0C86B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:55:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 895AD140357
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:55:04 +0000 (UTC)
+X-FDA: 85195730928.21.9B25C64
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A103D160006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:55:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aMaZpOvm;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788994207;
+	s=arc-20220608; t=1788994502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uakFVAIIg+dbHdGGvnXSLW6H1vVCapIuu4+L13nJJjk=;
-	b=s0iFq1FenvqBhpiJSb0tz/cjQLsI3NIJ3dV4/nPqJs1aFp6ltaclj8ie//q8DR2/JmI9WP
-	cY8lqL0u5f0ziKPSZLVXM2T0y+FcLS1pK63iheh4fP2R+WRwq+NglhzuCToYGBgVW2cjp1
-	NhJHES1sa/C1PkHJGuOVi6DnEWMTHkw=
+	bh=JJKtsP/R+XzqNSFd2tRI6ryvg6jMdWPMorma0LHyLvM=;
+	b=OzzU496faPZAPyEdEljf9H38srZSYFJhEOv+WHbgBvnae/wG9CpMAOMOES4QqImzD/xTF5
+	4Sb7cywSL8xdBQY6lka2hVzHTS9Is79niiamzZ6OPTTqm7rsy5/Lm9JNE3hdEcXGWjkDgK
+	woawAnZzsESZrIdH66jH/2H8FHUWF3k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aMaZpOvm;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788994502;
+	b=HvpTOMuboPcTIIHTPfoVqCDaL0ei39VrSVf6X+AUgQ0pzAZxruXpoOzSRujaQ73Zzl4byC
+	s0jAEpKe8H+1RydjQevLKcWiXREu3K0d1rvaUIKd0hNQwzxI1uiWIRNDBkZvgeIzevkZY2
+	aDvsABCAc3qTgjGC3UwnB8l9EQr8zkU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A0DB600CB;
-	Wed,  9 Sep 2026 22:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B7B1F000FF;
-	Wed,  9 Sep 2026 22:50:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7FE2640501;
+	Wed,  9 Sep 2026 22:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E50C1F000FF;
+	Wed,  9 Sep 2026 22:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788994205;
-	bh=uakFVAIIg+dbHdGGvnXSLW6H1vVCapIuu4+L13nJJjk=;
+	d=linux-foundation.org; s=korg; t=1788994501;
+	bh=JJKtsP/R+XzqNSFd2tRI6ryvg6jMdWPMorma0LHyLvM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=U+PeqIpWC5DBh7q130lXHtII8ntvQj6lTQyojE9Aa4ICHDsKDcddEAQ9+1CLiYlQc
-	 x7+ZxQ1yV/yDo+LuIT+OC5chsw2pvOUEhzMvkqoEDtuzInX/VCiD9d2qRnqjPiAo10
-	 TfAJHc5TmbunSfpK8c7oUec5KvYaPajoE1nEE1Sw=
-Date: Wed, 9 Sep 2026 15:50:03 -0700
+	b=aMaZpOvm+QJmid1g9VQpesLwijn9I+3Mz/AtivHJ8/EHdkXOoJaPDgBMaemYqcPFD
+	 3JLeqfZWFYUMNaXd92PhUa/bNluE7+9cvlizDnghCFWi6xP6ZeCehyZhYtlUHtGxFw
+	 wD1v3gA0Q4uFK8IV9pVCtqjgW3ATTmG6frpHUzfk=
+Date: Wed, 9 Sep 2026 15:54:59 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: ackerleytng@google.com
 Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
@@ -80,23 +80,26 @@ Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
  Wupeng Ma <mawupeng1@huawei.com>, Yanteng Si <si.yanteng@linux.dev>,
  fvdl@google.com, jthoughton@google.com, rientjes@google.com,
  vannapurve@google.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] Fix HugeTLB subpool used_hpages tracking
-Message-Id: <20260909155003.e6c2f4fe3c0bbee3b34578fd@linux-foundation.org>
-In-Reply-To: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ Zhao Li <enderaoelyther@gmail.com>
+Subject: Re: [PATCH v2 3/4] mm: hugetlb: Fix subpool usage leak on
+ allocation failure
+Message-Id: <20260909155459.dbf9d67ae21a72935bb863d9@linux-foundation.org>
+In-Reply-To: <20260909-hugetlb-subpool-always-track-used-v2-3-30c5d83b572a@google.com>
 References: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
+	<20260909-hugetlb-subpool-always-track-used-v2-3-30c5d83b572a@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 06C31A0003
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A103D160006
+X-Stat-Signature: ssy7y8hquh5de3npc79s3ejxdik4dywj
 X-Rspam-User: 
-X-Stat-Signature: qxshwsi16ayt8wewup1b1yr85yy4axiu
-X-HE-Tag: 1788994206-129946
-X-HE-Meta: U2FsdGVkX18tjYb0mR4Q1uxppSeomJZFOJQEmXw2S8kZ8hSSfd0TZG0yx0HQlb34WA/MF4JGPqKNFbUwGNZa5bNeNi1eSBPxpmcXPzRptNwhWsU/MkKdu8P+1ld1KtiQXKxEpGz6lOrDjLIjvlCMiwrl2HgXG//gkkhcUZruvpDh1c45sP787aCJKWywE5Hn3eEm4gf8CnybvJX2dFBPl4VcOHzRZq8ci81hWb3RlIZR4bd6DVQw3d0Oick0zdYnTZFfUsBB9ETqFbI0H3aYj+rsDcTtiLnBmi7Ufx2bbKC9DFsTpAMzyXm8p9YT1AYVSKFa+nKAQKOG4L9PKknIKVBBJePgj+cx4vwu4uIfAmBtfNgeIj6RLuVMRj74hS81rE4TRGWGYcBjJJPwvZ+/fClT9FPq+XOq4kUbsjtoFAUEf9x5Gzj/FhK7QRcs51E90ozEOlgwgbThFS1tWGNw/uBXfCkfPA7laPkjXWcj8/CYA2szImpkVJUXXqshEE28PRfAVFwFjYrdCoCERzu0zSM161pIm+31ZdHSjhWBEH0wQ534E34mAs+3N2njYSRdNZusVaARvXcEgqAAC7jSmC6lnAHClOk4ZtkheAG7hKaiOZivSiAkcGvfvBHcCEjR7x4rtkUYjqRd8NmFzuBdDaqUYxKPqsdXGDtVB8UW4Ez+Q/jNIyWS7F306Mkvo85fTtkxnYMI5IBreqV9TYgp7mHZboctc5M0a193Ij6kUkh61AqGlvlUuKmLjzblIf63Cz59n3YfLgVZr2W+PfLZpgJl6PWJfkDzIHBnvRZVO/7dlJPk/hBqqmv9M4oBwRgw9wQNWgAQm3QlWc+0gJR2UebCWzZj+PfNxofIjom1hHvMgGAOjTn1tk7Kdm7GYq/XF8+8CVf9sBE04Kj9LsVBsgKINcitxI8Z2KT6fX5lrZTTfDUUH5ftghQuiTvA3UXfUEKW4tSmkf+ED4vjOF/
- nuxMHhzi
- INvxfkvP9kr7LU8VeSZXx5kOQf1IKS7GeYEUQTjPIpkJlRKt4Npbaojxszk+dpvCh8xyfGB+WSvcKeLKR76O00/zIDdG08EuTiJlypZpTznpqlZJJMsxbj92QBGVQVca/16oe8RijfAlRKRXj4GySAeLrHOHkV8/bakwUOqIbopBEggGHnJtBkVJ4+R1+hFMYd0AdUUJwhC6IW49RznW1gj20zGPgPpdAdzHNC9BE13Y2/puYtXCJM9S4z32FlGh2E2O/D0sBRXg9tpm/bgbOOu5IaS2AOv2UnTzZ1/uNQu0SgNcbEuJI96lRzSpsnbClVlyrk7GjK3hq4b+qyjlCSmMFYCXDZ6vgWD6lsSGHGzFzizW2lLVu2Wzs6jiYLbhf5gaU2OxpgwnbDPxjoFPQwlOjKinWjPSjF66GP42p4OgQDDaTEyvN35VHd5wiL919dtSBJtFQ0Ub5zsk=
+X-HE-Tag: 1788994502-208399
+X-HE-Meta: U2FsdGVkX19DcKp47Laabg9ceXJKU0NpgMQ9rLP4QsWJRl93Oma3uvoChtJciRg4ARcQy7Olvr69CTo+XfA+t+MKIbelcbv9ZyPCSdIdtrdvL5L28YY/sMO2ptmAhkjjidkCc1FMVHXxnFP7pL4cbvAUKdu85AkcHzsmr0wkHagjMDErTZEzbuU8ttRSbveVEtv2OJwoNx+hys++cszIQcG69DHaAofvaJiIp/VYpKysDZPFIr6N2e+slHF4vBmwxpfACg7/URb0npbxFmoaNuYMVSJo54QLfBrjAhMF+rINwp7QKZ7QqmkGEqIf+EqSb1GVrUmZYAAQ4lEjYgGNLOaW3LLVYonWxzYCNnFRY6/dOCqC+1iHrRYYFDBTW0RXOTU5j9wy8e6XG4Bzalg99Powk5u2KuE9D76/sTmUlQiiy1mACmN3uvzNf6+qw4cCiwotYdoCukRekAHhPB5xxwIORdb9HRziCKhKZY6eTw6qHcgelmVmTAfoHf/h6bJlPMP7gB1QkD+4qPzq6JStNmvx1cSoMXrHtB6zfTSXQFyR2kdf+Xo4P7onEPtE2ISK7KwrnO6iK7Liu6b6vgszA4/q3yi5leNFxALlFMbUlPDSfaodDWHRz6J1Q4nd4MWND43HjAayIGzHZFjDBZwyT7j/yWN28u/0/e+En3RMEQOJUNSeD8EBS+uEFqCU/Fbbo4Gqjctu4IyWUnD2TzmZXB6bfuDwGU/eX0qQVirqvMnLDH+lInGpLLnfBjaTxCT50DgIqFUoNwma79KhpE/QwC+uOuNLTMQU/Y7glDZcrPeGxbNj6I/3ZUd08MryPZny6pLu8lDHo2fbVlmyM0lb67WvNrIDXWs5QUbaGGnAP2XrGkEj201LuieobzZP5Gt0MlEJu0df6M+xbdmLdO3vVAhSRzx4VHl6ep1CcsoYAwMQaKWrXPkV/0A/I6wHH5tIW1tqc67t1164CMXuKd5
+ qCjOz60e
+ KFLErtSy9DqINt55Hr1Dz2+5ZgncAQ9kycDWb1x8OHJpijDnUEVELK7Pwazn4gpuAbjCAxYkOivY6YcGXG6gJZTYicfsN6l5+tpQJi/QTX+P6SwdOU0v+4QY+hQeN4yMS/XCdmn1r0ANgo8+xWfVTo/ybAgVudOmCx8F/R0fRFLnF5LrarCEA8MP7AglFKNOJCkm70Xyr16Cbtcrm4xyn+48qxeDXES28VW9vFtiRgtTUTSi5b7e9+P3InGIE+aNe03nHsMlXq4Rrq9C19TkAzSzvylQhtcddq56BKevtTzWA5M99fMC35G9/p/ccr9ftuZe+V2LzOg9qdRMPwB4Kx8U3iS3TMEa4RVEviojTbondBM5vQ/I3nWdoipXF4VCxxM3SfFY6pkf7nHG5NSjm2iOzfbj1frdsCayn5RmLn/j0bOn++z2bbax7NJMylIvxPZPIAlOly/5iRM4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,32 +107,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 09 Sep 2026 14:49:25 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
+On Wed, 09 Sep 2026 14:49:28 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
 
-> HugeTLB subpools currently only track used_hpages when the user configures
-> a size limit.
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> This is buggy since when there are existing allocations from the subpool
-> that would have satisfied the minimum reservations,
-> hugepage_subpool_put_pages() will still restore a reservation to the
-> subpool. See below for an example of a false reservation.
+> When folio allocation fails early (e.g. buddy allocation failure or
+> cgroup charging failure) and a reservation was not used (meaning an
+> unreserved global page was needed), the subpool page acquired during the
+> allocation attempt must still be returned.
+> 
+> Currently, the subpool cleanup error path only returns the page to the
+> subpool if a reservation was used. If no reservation was used, it skips
+> releasing the page back to the subpool, permanently leaking the subpool's
+> used pages counter.
+> 
+> With subpools now always tracking used pages, always release the page
+> back to the subpool whenever a subpool page was acquired.
+> 
+> Opportunistically rename the local variables tracking global reservations
+> needed and global reservations returned. This clarifies the accounting:
+> a value of zero for needed global reservations indicates an existing
+> reservation satisfies the allocation, while a non-zero value indicates
+> new global pages are required.
+> 
+> Adjust global reservations using the difference between reservations
+> needed and reservations returned to properly handle races where concurrent
+> threads interact with the same subpool.
 
-That sounds annoying, although isn't clear how this affects end-users.
-
-> In addition, the subpool is considered free prematurely, is freed, and this
-> ends up causing a use-after-free.
-
-That sounds alarming.
-
-Do you think it's best for us to submit [1-3] for -stable backporting?
-
-Is it feasible to come up with a set of small little fixes to get
--stable out of trouble and then to prepare broader updates for our
-ongoing mainline development?
-
-If it's "shut up Andrew you're always saying that" then OK, I can take
-that :)
+This one conflicts with "mm/hugetlb: fix max-only subpool accounting on
+alloc_hugetlb_folio failure". 
+https://lore.kernel.org/20260428113037.88766-2-enderaoelyther@gmail.com.
 
 
+> @@ -3074,13 +3074,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  	return folio;
+>  
+>  out_subpool_put:
+> -	/*
+> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
+> -	 * during hugepage_subpool_get_pages.
+> -	 */
+> -	if (map_chg && !gbl_chg) {
+> -		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+> -		hugetlb_acct_memory(h, -gbl_reserve);
+> +	if (map_chg) {
+> +		long gbl_resv_put = hugepage_subpool_put_pages(spool, 1);
+> +
+> +		hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
+>  	}
+>  
+>  out_end_reservation:
 
+Here.
+
+I presently have Zhao Li's patch staged in mm.git's
+mm-hotfixes-unstable branch, awaiting review.
+
+What to do?
 
