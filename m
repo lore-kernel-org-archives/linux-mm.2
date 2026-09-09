@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D2BC79FAA
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 07:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D318BC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 08:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9B746B008C; Wed,  9 Sep 2026 03:59:50 -0400 (EDT)
+	id D5B936B0098; Wed,  9 Sep 2026 04:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4D566B0092; Wed,  9 Sep 2026 03:59:50 -0400 (EDT)
+	id CE3656B009E; Wed,  9 Sep 2026 04:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A62A26B0093; Wed,  9 Sep 2026 03:59:50 -0400 (EDT)
+	id B356F6B009B; Wed,  9 Sep 2026 04:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 89C5B6B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:59:50 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2547A2526
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:59:49 +0000 (UTC)
-X-FDA: 85193474898.22.EB18E75
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4B6A1120008
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:59:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MxXiNHnL;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788940787;
-	b=AISKknCMwKe5kgWJgb24tbYl9XGBs6b/n63rfF0v8qEwC/IPNVe2DyboGVE0ujArBThE6K
-	uRQOWX4q2E77P+oWe+3dSziRZC8qKupqw3tOVSKYQl+QN03qc46yeHl7Fj4EIedRjON3hu
-	Wg6wcTsVpvteDklGn0S02v3HUi6Gjv4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MxXiNHnL;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7CA166B0095
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 04:08:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CFCED140138
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:08:57 +0000 (UTC)
+X-FDA: 85193497914.12.49BF102
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C3969180004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:08:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWMdBwOp;
+	spf=pass (imf24.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788940787;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788941335;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6iMogKsJpJLzu7jIG3AYM1I4VcnaUwvvNkpOH+pgRCQ=;
-	b=1Bje96Y1PjNMz71g70jJTr+OAKFaZItpepfeMehEND4883JcgkmBZN4RYfUYwY1nHD3Gw/
-	itKSo2pgB3/SWpBTUc4wrxple2KF1vVsLaKWu1AVsgZdhIoe3AB2488S3J/arSBtp5Qcc3
-	6wEr1gU2xcaqpt8nhA6tH82VU8cQYBc=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788940780; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6iMogKsJpJLzu7jIG3AYM1I4VcnaUwvvNkpOH+pgRCQ=;
-	b=MxXiNHnLW1w9oMpT+yHcl+4tmkqANJXAD2biJo/Of/POsvkAc7WdL9rMp9ngukhX6a6qaOVSeSwgpvG7XwxmdN8PrMoukQtcMjreicXsmvuU1dYAuS/xYIUIW2quhzT/+ABFyFOOxvIXyIYsdUhm0ct5YQWcmTUDeBkt36M/wJI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAeEKQO_1788940777;
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAeEKQO_1788940777 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 09 Sep 2026 15:59:38 +0800
-Message-ID: <6ac7ea7d-38ae-45eb-8d98-f626951a43cd@linux.alibaba.com>
-Date: Wed, 9 Sep 2026 15:59:37 +0800
+	bh=46UK+C3C1aufdpfNsref3IQVBQz4f3MDc9zGdeSot9w=;
+	b=KfyQcBlyVhWxINFiaeheTnFslaX+2gmH/b6NjYysiAnt9FNvSQDV9/zXViSd4GvEbvc6V/
+	r1h2x3fzla1fwYUn/ETHr0Eh2Qnp24hkYj7xyjhTj1KDM3y0JiByThiDkHdMtzKKUVaoHj
+	Iyw/iySFKzn/EmmTcvPbtYwThEpO80w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788941335;
+	b=7IkVMybdJxabe4QdkTwIxK25JeyI0CKJL5sP8YZRzNqPAVeKySPZqSb+2MlGbNMHAu4nKi
+	s4jRmdra+yZdKGxJiWa3lxISdB6jE0uCeQz6aVJrTS4tXlzJ/eXlf3/JUNaYMFvBvKFMMH
+	QpURf8CZowomISTNoPCIOkPvKYBdEGY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWMdBwOp;
+	spf=pass (imf24.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3628E43FD4;
+	Wed,  9 Sep 2026 08:08:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 076EFC2BCFC;
+	Wed,  9 Sep 2026 08:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788941334;
+	bh=6TzhKGBDJ7pbrZU9h8xUtrlAlOsHH5lCkVc0spU38o0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BWMdBwOpiXO7gWgis6xTMfMXtb6p2Chqk/85MAfKH+s9tPONFVVUl/go6G41ECKDz
+	 K5cPguVvLFHEzj4UYORXKtKocwgd+q76LuNLsPtZbeePFTLQZsYGLGd83+W60QNxTm
+	 9savIGuWuKON9Q4EDPR0/H1dKXC3UsHMdU8YY/kibGI8LtAeOrgOsC4mJnXBOtCNOo
+	 gPOhtF6a76aZBckrKmj+4cZvT6eonI1Yc6RigPWgpUeSal3inBY+2GS9bY6ZZwvX4m
+	 g2K0KD49K64W4qWOZ1NdxyOYc8KI1mVu4sEA1UAzvZ29miJwRjbhwxCMGZjOkYbh6A
+	 pnUaJZo97i+Gw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6E1BC79FAA;
+	Wed,  9 Sep 2026 08:08:53 +0000 (UTC)
+From: linuszeng via B4 Relay <devnull+linuszeng.tencent.com@kernel.org>
+Date: Wed, 09 Sep 2026 16:08:51 +0800
+Subject: [PATCH 1/3] mm: page_counter: add page_counter_protection struct
+ and init API
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/19] selftests/mm: scale khugepaged's collapse wait
- with the PMD size
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, rppt@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
- nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
- kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-4-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260908125105.1510704-4-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260909-descriptive-name-v1-1-1828961cb01a@tencent.com>
+References: <20260909-descriptive-name-v1-0-1828961cb01a@tencent.com>
+In-Reply-To: <20260909-descriptive-name-v1-0-1828961cb01a@tencent.com>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+ Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Jingxiang Zeng <jingxiangzeng.cas@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linuszeng <linuszeng@tencent.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788941332; l=8585;
+ i=linuszeng@tencent.com; s=20260909; h=from:subject:message-id;
+ bh=1wFRnQOuFC9+hyLr95p4v1CFKGYCINxy6AlxrIpkY6g=;
+ b=SYxVmZxEybjRCC68BWSV0jn1SuM64pYTybJT7N/J7bviMVmFAfn3MOQmKi6qB6IXGY+LXIEiA
+ jbhHrKeUi5/Ao1fyrA1AQaDeBB5axgHleT2R8kVDL7+2VqcwFztKv++
+X-Developer-Key: i=linuszeng@tencent.com; a=ed25519;
+ pk=6K54xRzYIRWqatrAPy86M4E0MsI92BVJBhXwz5NdC74=
+X-Endpoint-Received: by B4 Relay for linuszeng@tencent.com/20260909 with
+ auth_id=1017
+X-Original-From: linuszeng <linuszeng@tencent.com>
+Reply-To: linuszeng@tencent.com
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B6A1120008
-X-Stat-Signature: tuhzn5a33u8rys559o7p68iztk517epr
-X-HE-Tag: 1788940784-931867
-X-HE-Meta: U2FsdGVkX19ZLkcZKMeAHaqu+GVydjivyRoKIOikDklqTdUKCgUKVcN/15J72rWjcy8ptQrlzoeRbyDWwntswHZzMFrpz7034y6qMNDkEft9zL9IOD4VOrfACIML4ksUJaT7mV2CbbQRbyT3LENlm+x42o+KqM3zITvnU91LrqTysB7TH9b4ptqRZzLLNiuafEPzRf2EvYcnrnCyvWJJOxTAXrtA26k+PeaDAUuNKaiRvrXGSd15C4sl6F8iEY9o4XAcyNBDNFdRr8MclsxLjXDSvy7Wox8+I8aW2YJB5XDBWDG08fVW7NF9jlc9JxiHu+VRgRcKldo08OU9EeXlR1aXZvqrmcwUUH2qxThb0p1ORD+r0rMaTFsYEVLUO6N3Tuh7Ib5H+41QY4utP7MpYLRt9nZXyOn148qY/Cofj9o9WPDqLXrMz6tiuTt5pXxBFWhXh/L9JtGZ5Q910ThLftlvArwwkAAz4MIt+pU2QwQ8bmoi5xsQT6TvmmNnFKtszUy0szPSCm0EeapR/XCVmPmnESIS1dKJr2opM7RUaNMsOF3lWHY+PBASO8mxC53f0w/5D7ol0VNOZAT5CS6G4TqKAl7kvszs7uSkhH2iU8nWTZmhIwugCOJdVa9oqVYWULMIIbLowu0LDAsozTKzPOLTuDNjCCLUU97SGCGyx2uZ7NrqlbN3IM6sBnxVP5O7VECPa8YAU7szXAKH+0yaoMbiLju5wk0lTZ1AluurtNK0I8aKVnOQBOowzQP7OA7TVuFMQalDVKwF4R0bagy6nDtllLhX+WaeJT7pES9rl1/pTyQ+30oLi6Mg1+z7US83+1PcZwyf0+4RoyDCr/29hDorbjmBnUptXerBK6h0PIkX8w0DlxmXGJC824fuIBYRj/dj+UqePdxL1L0wx5CM3KsXjwvaYuX3N8oDoMIIUATvEp75Xd1Sn2W3jBwstrwFsJSP4x3WwOnpNNh3iRy
- aRq76uI4
- ZFwhCyjRkYdEVQOgfnSaBYprfZ6DhTee99XRNThuprhQRxjmSEC1Oqi1MZEK+lt5SSu6AOzPzHfhw3umyMRci6tV/QHb3kRJA5qpHlfI3Ho3lD9mvZNozk0J9d/6XHMpAlqdJgF0l2RIS9R2dYsqmpQmvmzgamraOOIXTLbTn7uelBvQJPXCPU3niTqXjW4CBYRKX5HeWh7dpTf1J08mdzPM/FILtbB3fggw4JJ4HaW7m5TYhOQJQJrTOiqtlKzqmFKxq34pWVQeAmQNIULkAzs9JCV0EoFL8r5iJ0ecxt4IdiUBBf7jQD/+cKp5WRWy85o9R4+4nhVvRGDWwxebLJN1quG2eElzckVafhDQOXGREm23FtgnHQefCqzhYKMiWNLvV
+X-Stat-Signature: 44p61f959qpncgmrgtkswnbbra46ohss
+X-Rspamd-Queue-Id: C3969180004
+X-HE-Tag: 1788941335-785287
+X-HE-Meta: U2FsdGVkX1+nr5/D4pk8FDYuyXHxrpYAEQYDIqR3sxl4+u/up2EVFQyhyrGRaJ4HIOgjWIngifOLfPwy1T+u9Y3Hcp2WZfwXfA9PxkrTKKO0l5o1kUxbFIyVWCyAxa/9IzQcmYpjopRYn4SWhBScVDvotc0ID1CCCzwF2g0e+Y4Fe706hBu2zV3abv5tgaEs/VmFTuTSlq8b8Rs1jp1bRY6LfC+Vz/kbJWllaP7CQbjYbFdEuuVByMdtjCaXKF+IIqL97ToKIdojUjiJ5dS02kcgCch7h0VUFWUt0RcboiuaJYa7DEu0QOjb+/bpa5HeoVDwKTqLZvHJkxFQpZ8e0rZ3MEUzTg6aPwtevZQu0g9TEDP/6Kdq106BPYewKeThV+nVwvIy00Z2Eu4Io7gHT32PvZwtCrf3CsFpu1u2S7NNbVQYncYoraP6qFZUxdKwUJ3GTNW81WmGKDjL7W3BZGsnowFTtNukIg6KMG0b7ODbnNjIO4prxO5R7yqUXB0UfcRCmsVcOgSVwWGFZOhXoi3G2qZ3FOBvUZc2NAIHm/6li7w2a1ee0/lBOZmLGSAibeW90L2g6NMEJGj7Y3W6rjeBIrGafctRljupGz/Pos7bmEdOBrr7FHWx+VKYlGqizA87GJMge9n1kvi62JuhKyvrF6M8xT5l4qqh1MjAWJoqevRvtyprTAxfXwId/cOyFxzI5TJLXy8+zl+Q0fPPnkg2Z2A8rbatWsPqPLD5JPjtMJIezWt+lrdUavXKjJZaaEWR5NSRJP+Kunocvbw6trgY3uKLrt5AVrztga3xTL0vWYL0X9kf5PgRp66cGit5RX9ZJ+ZG/pEyD8L46HvN/AgXXfoseV2wqwYF2ibTuotZcH/ide/syILx8lonVaqfJqHLpz5HyS3XesYnVFZ3VEQefe53znsAjtLzg0e2e7IPcfdZkqySfsEesQggqBMpJrzxSFIZAgrNG9iUEUo
+ YXXh+O+s
+ nA6ehD0w0WSvjqVFZ2rcRu0LYxekmw4yW3rCseeCrQU2rRzP8sDQINyAIDG8WqSPooBW0SW19+/g1edz+lcrAO7YFMj7ZAIc8DHcqbmxcL8PrXhIezobomXiV9LeBrjcC1KNKMvvMUMvddxbci0gAunVK3kmp7LKxPtnRblSZP6RVg29L6QuwJUVD1cgz9J9fK73tOtkJe65kosG+zX7Zb7bZL1oRULm5e/eirAHpX0O77avikBmowyK6qAgraZbAI6fgC2AIcSnhuhUwfcMXXouOp3d3/lWZpg1WfZYuFw365JQdHIpDPiHcNIYZ0EEt/H4malOVfFER/9k04EhSAsY0EAZzCYrRlTEbtCZCGha9xjazVYZ5eH2ic3UWjEL2/WJKVY8Zj6jObYK+blKFKp1ePfqJ0GtQSxrHVZsxje7d4COtyRtU32yHt+kNJewIxdebLer+V2BPgN1FQeIA6MzDIPhTTg412e3i0FWqKS+HmuraMJwBBmcpZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,61 +119,240 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: linuszeng <linuszeng@tencent.com>
 
+Hierarchical protection (memory.min/memory.low) is only used by the
+memory page counter (and dmem pools); swap/memsw, kmem and tcpmem
+counters never participate in it, yet each struct page_counter carries
+the full protection state.
 
-On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> wait_for_scan() gives every case the same three seconds, whatever the huge
-> page costs to build.  collapse_full() asks for four of them: 8M at a 2M
-> PMD, but 2G at a 512M PMD -- arm64 with 64K base pages.  Three seconds is
-> thin at that size, and the case has reported a failure for a collapse that
-> was still going.
-> 
-> The timeout is a ceiling on a poll loop, not a sleep: the loop stops as
-> soon as ops->check_huge() sees the collapse, or as soon as full_scans has
-> advanced by two.  Raising it costs a passing case nothing.  Across 80 runs
-> of collapse_full() on arm64 with 64K pages the wait was half a second in
-> 73 of them, with a tail to two seconds.
-> 
-> Keep three seconds as the floor and add a second per 128M collapsed.  A 2M
-> PMD is unchanged, so x86-64 is too; a 512M PMD gets 19 seconds.
-> 
-> On arm64 with 64K pages a passing ./khugepaged all:anon takes 49 seconds
-> under TCG before and after this change.
-> 
-> Assisted-by: LLM
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->   tools/testing/selftests/mm/khugepaged.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 1ca7c6978571..48e0040d53b4 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -556,8 +556,11 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
->   		int nr_hpages, int collap_order, struct mem_ops *ops)
->   {
->   	unsigned long hpage_size = page_size << collap_order;
-> -	int full_scans;
-> -	int timeout = 6; /* 3 seconds */
-> +	unsigned long bytes = (unsigned long)nr_hpages * hpage_size;
+Introduce struct page_counter_protection to hold that state, link it to
+struct page_counter via a ->prot pointer (NULL when protection is not
+supported) and switch track_protection() to it. page_counter_init()
+drops its protection_support argument and the new
+page_counter_init_protection() attaches the protection context. Like
+page_counter_init(), it expects the rest of the structure to be zeroed
+by the caller's allocation.
 
-We already pass in the 'len' parameter, and its size is also 'nr_hpages 
-* hpage_size", so you can drop the 'bytes' variable. With that,
+Protection tracking is only enabled on the cgroup v2 hierarchy, matching
+the previous page_counter_init(..., memcg_on_dfl) behavior.
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+No functional change.
+---
+ include/linux/memcontrol.h   |  7 ++++++
+ include/linux/page_counter.h | 59 +++++++++++++++++++++++++++++++++++++++-----
+ kernel/cgroup/dmem.c         |  6 +++--
+ mm/hugetlb_cgroup.c          |  4 +--
+ mm/memcontrol.c              | 21 ++++++++++------
+ mm/page_counter.c            |  2 +-
+ 6 files changed, 80 insertions(+), 19 deletions(-)
 
-> +	int timeout, full_scans;
-> +
-> +	/* Half-second ticks: three seconds floor, plus a second per 128M */
-> +	timeout = 6 + 2 * (bytes / (128UL << 20));
->   
->   	/* Sanity check */
->   	if (!ops->check_huge(p, len, 0, hpage_size))
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 058ebd73ff16..ed863f4ed233 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -195,6 +195,13 @@ struct mem_cgroup {
+ 	/* Accounted resources */
+ 	struct page_counter memory;		/* Both v1 & v2 */
+ 
++	/*
++	 * Hierarchical memory.min/memory.low protection tracking for the
++	 * memory page counter. swap/memsw, kmem and tcpmem counters do not
++	 * support protection and have no such context.
++	 */
++	struct page_counter_protection memory_prot;
++
+ 	union {
+ 		struct page_counter swap;	/* v2 only */
+ 		struct page_counter memsw;	/* v1 only */
+diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
+index 07b7cb12249c..b81f16702764 100644
+--- a/include/linux/page_counter.h
++++ b/include/linux/page_counter.h
+@@ -7,6 +7,32 @@
+ #include <linux/limits.h>
+ #include <asm/page.h>
+ 
++/*
++ * Hierarchical protection (memory.min / memory.low) tracking.
++ *
++ * Only the memory page counter (and dmem pools) participate in protection.
++ * swap/memsw, kmem and tcpmem page counters never do, so the protection
++ * fields are kept out of struct page_counter in this separate structure to
++ * save space in the common case. struct page_counter links to it via ->prot,
++ * which is NULL for counters without protection support.
++ */
++struct page_counter_protection {
++	struct page_counter_protection *parent;
++
++	/* effective memory.min and memory.min usage tracking */
++	unsigned long emin;
++	atomic_long_t min_usage;
++	atomic_long_t children_min_usage;
++
++	/* effective memory.low and memory.low usage tracking */
++	unsigned long elow;
++	atomic_long_t low_usage;
++	atomic_long_t children_low_usage;
++
++	unsigned long min;
++	unsigned long low;
++};
++
+ struct page_counter {
+ 	/*
+ 	 * Make sure 'usage' does not share cacheline with any other field in
+@@ -41,6 +67,12 @@ struct page_counter {
+ 	unsigned long high;
+ 	unsigned long max;
+ 	struct page_counter *parent;
++
++	/*
++	 * Hierarchical protection context, NULL for counters that do not
++	 * support memory.min/memory.low (swap, memsw, kmem, tcpmem, ...).
++	 */
++	struct page_counter_protection *prot;
+ } ____cacheline_internodealigned_in_smp;
+ 
+ #if BITS_PER_LONG == 32
+@@ -49,18 +81,33 @@ struct page_counter {
+ #define PAGE_COUNTER_MAX (LONG_MAX / PAGE_SIZE)
+ #endif
+ 
+-/*
+- * Protection is supported only for the first counter (with id 0).
+- */
+ static inline void page_counter_init(struct page_counter *counter,
+-				     struct page_counter *parent,
+-				     bool protection_support)
++				     struct page_counter *parent)
+ {
+ 	counter->usage = (atomic_long_t)ATOMIC_LONG_INIT(0);
+ 	counter->max = PAGE_COUNTER_MAX;
+ 	counter->parent = parent;
+-	counter->protection_support = protection_support;
+ 	counter->track_failcnt = false;
++	counter->prot = NULL;
++}
++
++/*
++ * Enable hierarchical protection (memory.min/memory.low) on @counter.
++ * @prot and @parent are the protection contexts of @counter and its
++ * parent page counter respectively. Only the memory page counter (and
++ * dmem pools) call this.
++ *
++ * The remaining members of @prot (emin, elow and the usage counters) are
++ * expected to be zero already, so @prot must come from zeroed memory.
++ */
++static inline void page_counter_init_protection(struct page_counter *counter,
++						struct page_counter_protection *prot,
++						struct page_counter_protection *parent)
++{
++	counter->prot = prot;
++	prot->parent = parent;
++	prot->min = 0;
++	prot->low = 0;
+ }
+ 
+ static inline unsigned long page_counter_read(struct page_counter *counter)
+diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
+index 4683f3d68022..e33d807cdea8 100644
+--- a/kernel/cgroup/dmem.c
++++ b/kernel/cgroup/dmem.c
+@@ -88,6 +88,7 @@ struct dmem_cgroup_pool_state {
+ 	struct rcu_head rcu;
+ 
+ 	struct page_counter cnt;
++	struct page_counter_protection prot;
+ 	struct dmem_cgroup_pool_state *parent;
+ 
+ 	refcount_t ref;
+@@ -426,8 +427,9 @@ alloc_pool_single(struct dmemcg_state *dmemcs, struct dmem_cgroup_region *region
+ 	if (parent)
+ 		ppool = find_cg_pool_locked(parent, region);
+ 
+-	page_counter_init(&pool->cnt,
+-			  ppool ? &ppool->cnt : NULL, true);
++	page_counter_init(&pool->cnt, ppool ? &ppool->cnt : NULL);
++	page_counter_init_protection(&pool->cnt, &pool->prot,
++				     ppool ? &ppool->prot : NULL);
+ 	reset_all_resource_limits(pool);
+ 	refcount_set(&pool->ref, 1);
+ 	kref_get(&region->ref);
+diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
+index ecb6e0b7819a..7fdae504cfc6 100644
+--- a/mm/hugetlb_cgroup.c
++++ b/mm/hugetlb_cgroup.c
+@@ -108,8 +108,8 @@ static void hugetlb_cgroup_init(struct hugetlb_cgroup *h_cgroup,
+ 		fault = hugetlb_cgroup_counter_from_cgroup(h_cgroup, idx);
+ 		rsvd = hugetlb_cgroup_counter_from_cgroup_rsvd(h_cgroup, idx);
+ 
+-		page_counter_init(fault, fault_parent, false);
+-		page_counter_init(rsvd, rsvd_parent, false);
++		page_counter_init(fault, fault_parent);
++		page_counter_init(rsvd, rsvd_parent);
+ 
+ 		if (!cgroup_subsys_on_dfl(hugetlb_cgrp_subsys)) {
+ 			fault->track_failcnt = true;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 86ff580c7018..ffa1ced3baae 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4267,25 +4267,30 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ #endif
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ 	if (parent) {
+-		page_counter_init(&memcg->memory, &parent->memory, memcg_on_dfl);
+-		page_counter_init(&memcg->swap, &parent->swap, false);
++		page_counter_init(&memcg->memory, &parent->memory);
++		if (memcg_on_dfl)
++			page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
++						     &parent->memory_prot);
++		page_counter_init(&memcg->swap, &parent->swap);
+ #ifdef CONFIG_MEMCG_V1
+ 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
+ 		memcg->memory.track_failcnt = !memcg_on_dfl;
+ 		memcg->memsw.track_failcnt = !memcg_on_dfl;
+ 		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
+-		page_counter_init(&memcg->kmem, &parent->kmem, false);
+-		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
++		page_counter_init(&memcg->kmem, &parent->kmem);
++		page_counter_init(&memcg->tcpmem, &parent->tcpmem);
+ 		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
+ #endif
+ 	} else {
+ 		init_memcg_stats();
+ 		init_memcg_events();
+-		page_counter_init(&memcg->memory, NULL, true);
+-		page_counter_init(&memcg->swap, NULL, false);
++		page_counter_init(&memcg->memory, NULL);
++		page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
++					     NULL);
++		page_counter_init(&memcg->swap, NULL);
+ #ifdef CONFIG_MEMCG_V1
+-		page_counter_init(&memcg->kmem, NULL, false);
+-		page_counter_init(&memcg->tcpmem, NULL, false);
++		page_counter_init(&memcg->kmem, NULL);
++		page_counter_init(&memcg->tcpmem, NULL);
+ #endif
+ 		root_mem_cgroup = memcg;
+ 		return &memcg->css;
+diff --git a/mm/page_counter.c b/mm/page_counter.c
+index 450543f4b318..38cb99f5f50e 100644
+--- a/mm/page_counter.c
++++ b/mm/page_counter.c
+@@ -15,7 +15,7 @@
+ 
+ static bool track_protection(struct page_counter *c)
+ {
+-	return c->protection_support;
++	return c->prot != NULL;
+ }
+ 
+ static void propagate_protected_usage(struct page_counter *c,
+
+-- 
+2.43.7
+
 
 
