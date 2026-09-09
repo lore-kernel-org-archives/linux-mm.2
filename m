@@ -4,134 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F84C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EF9C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:26:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7541A6B008C; Wed,  9 Sep 2026 08:23:03 -0400 (EDT)
+	id B604E6B008A; Wed,  9 Sep 2026 08:26:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EC936B0092; Wed,  9 Sep 2026 08:23:03 -0400 (EDT)
+	id B37E06B0093; Wed,  9 Sep 2026 08:26:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4C06B0093; Wed,  9 Sep 2026 08:23:03 -0400 (EDT)
+	id A27016B0095; Wed,  9 Sep 2026 08:26:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 331606B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:23:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81DBC1C0918
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:23:02 +0000 (UTC)
-X-FDA: 85194138204.17.B3611F6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 068C7A000A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:22:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xMWzteXn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZMbUSxJ/";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdHebBXT;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YNAOxb7a;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BD996B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:26:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D191E401BE
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:26:01 +0000 (UTC)
+X-FDA: 85194145722.15.F0CA9B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EC85CC0003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:25:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BScMIUn9;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788956760;
+	b=0maHBYhJmGRKcWpN11UJlDU/1S2SQdKofyAD+LpKxluq2ThOemzWiDN6QKCpzTCQL2TrTH
+	ZAUNZIKeVviGBZxQ590Fgf93MSmpLgt3Tvj/9p+EMLfqPtPsoGzrfoby3WN5MeBWMTgi2F
+	NsLeDykgB1LK1fmpYsAGahkAafc3PXo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BScMIUn9;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788956580;
+	s=arc-20220608; t=1788956760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=081DfqZYJ67fRJ5TkbDWVgSiZBa+jC0p668G6F1xrBQ=;
-	b=3HrMREMxHpJHX0iwqNzCBtWBpAevduSWCiGDS7eO4pcsef6lcCdkWCNi70Wa39cDkJe98f
-	pYmBPoqsE1TF5KW7hTOWU1Mc2iWOgl7YRa1rStajQjGsaY9QvqyCMMXJ3Jd3Gz+tRMyDO3
-	S2R9Ly01FVaHuEMaHCYGsBwDkADocJQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788956580;
-	b=f9KEEK7uetd4HG0EOtwRs+/Os4D4I9bVkjeLg4azGwZ/ECvBP/785DcxhivVT2AFMMaFVT
-	A7+oDZngX3naxEcPlQK7IC4D984qIXPq1Y+TJdgc/AL3SfpMwNLEThFkhClUw0SgBsRHS9
-	FAsp+B/6wKys/dTn96YIqRU+6xBZiJY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xMWzteXn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZMbUSxJ/";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdHebBXT;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YNAOxb7a;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F12FA1FB08;
-	Wed,  9 Sep 2026 12:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788956574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=081DfqZYJ67fRJ5TkbDWVgSiZBa+jC0p668G6F1xrBQ=;
-	b=xMWzteXnfOvr7W/s7ivuFQmm1nlxThsjWE0HAkNslw1uwfBaLlsryFeMB2s4CbjmZDvyaH
-	Wm31pN6IPVn4hegx3fOi8jcTG/TmG1AM66E1zoK7U8uuPEA9g3mBS2byIK1N9dCwcO89Ry
-	RHcXcT3kKrkvX5g8l6nRqb2i+YE5hZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788956574;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=081DfqZYJ67fRJ5TkbDWVgSiZBa+jC0p668G6F1xrBQ=;
-	b=ZMbUSxJ/GVHkPN16J2Fs02WbLJnnhKmXXfDL8RE4Z1tE6k6D8ZT/xDlGUtx9Y46Xv9nChp
-	AaD/CISA+VhJ91CA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788956570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=081DfqZYJ67fRJ5TkbDWVgSiZBa+jC0p668G6F1xrBQ=;
-	b=zdHebBXTZQjkq3KtkxN7ruIv0KBfyUtw9VqFEBn/pTJsh4tmTd6+B3lpoejpP9nCPYYiFW
-	z9mDDum2fy6LC0jACYDUf9mtnJ45Ya+qi4/hp5zT8X3TkKmicu2Lc2rH5sACjhSmSYUX+L
-	8fbuepQB/rJvg4bFoI5fXUq6g/RPi1I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788956570;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=081DfqZYJ67fRJ5TkbDWVgSiZBa+jC0p668G6F1xrBQ=;
-	b=YNAOxb7aa8SvbTfib3kKfv+UtI8CkNa9qTIJjYiWbTDqJBScyo1FrwAmegiA4nD7++exuL
-	oK1huHaABmBohyBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C93D213185;
-	Wed,  9 Sep 2026 12:22:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DrsZMZlPoWpWMgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 09 Sep 2026 12:22:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4C6C3A1341; Wed, 09 Sep 2026 14:22:45 +0200 (CEST)
-Date: Wed, 9 Sep 2026 14:22:45 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, akpm@linux-foundation.org, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hughd@google.com, 
-	baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz, ziy@nvidia.com, 
-	bfoster@redhat.com, joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com, 
-	yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	wangkefeng.wang@huawei.com, yukuai@fnnas.com
-Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
- large folios
-Message-ID: <2fu7s7ewyeal353zaum3dzn3t5vcqu5hff7u4kcogcvl77ksur@omxo5kvwi4w3>
-References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
+	bh=SdOqLRxV95bI5IZka8zmrojbtJaO7I6k0UmQwWBwPus=;
+	b=iKA0taP3rICt9f/f4fmoOsof2yxCYT+MYpH8hxfczmelIK74e4DZU1G6RuvhFbqY8//irR
+	nTGjLDhoLp0LGq1pYKPE4+YK5WhlW8RZf1cgXrTNnDjTmTKi4Y1CwJASgeYDIDEggmgn7u
+	uzlkP0F1oXSpjuKEJOAUgbxKsv6J2Vk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A64C411D7;
+	Wed,  9 Sep 2026 12:25:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE611F00A3A;
+	Wed,  9 Sep 2026 12:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788956758;
+	bh=SdOqLRxV95bI5IZka8zmrojbtJaO7I6k0UmQwWBwPus=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BScMIUn9axRAmLIfx9jWVcCKGgcpMi1cOTaSdHR+Suxkd6THPECJO6DFz8yTc7Nq3
+	 ITO/9uwEYpMJ/Dk8XClTJlm9vsumhjpAJ27fvSsk5IyREmVO1D6nH5MOUkD69HvorG
+	 vjPBuGSeN6lJe8P/yg1/4u2betNHORGKYPQIG53D4yPrskhFJlXeE0h/t/1FOLEc0R
+	 VM/+eMecxqP+dFfrH3c1s9zEpKe5TJBvwdizBsp7ktyuzFq894L5rzLb94+vd14sdB
+	 z5TCe+NAgwE9CObpXIkHF4Axv0PmpsINQ18yH9eewWWG2MW6EJZodFCS5riuJ1PcPr
+	 DrxLF4YVezt5Q==
+Message-ID: <296bf543-23e0-417a-a729-c222392a1777@kernel.org>
+Date: Wed, 9 Sep 2026 14:25:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/26] mm/fbatch: lru bit set, no extra ref, while
+ folio on per-cpu fbatch
+Content-Language: en-US
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
+ <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Yang Shi <yang@os.amperecomputing.com>,
+ Yu Zhao <yuzhao@google.com>, Zach O'Keefe <zokeefe@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+ <61e15506-940f-3532-5fc9-4086f7612c10@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <61e15506-940f-3532-5fc9-4086f7612c10@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ua1r34sanonf46q1doj5ij616uex19h9
-X-Rspamd-Queue-Id: 068C7A000A
-X-HE-Tag: 1788956579-707992
-X-HE-Meta: U2FsdGVkX1+PJh4U5p4aV5K1IiWFOADAVUeDtY+bHEFW+tBL13rnB7oNl1KBwDAGjQbR4xDYXtUuDK8tnoBFX+BHGjZ5K53ok6usuBLd3kSITkqCj+5m9iGegxD9lpEg+WzKw5oF7+ty+2XPSn8e7KMf8pvY07c1aZSeVVNiz5rf0vHTzEZGGok7wfAHQkKGz2yLiob2EMZtaT8r5W+DigB+/WYZ0AUEMnX6+1bE0cIDlcZoBvz9QWPliBB/m/ejNHPsCRS0VuMUUJKuIf+ZEw1nOS368MoHzgoGpMj7n3voxAoaP0cTTrfLEfbMGpobjr6Zk8k/bqf1Ds52P+yGnJSeXq2xYVgk+cM+Ka40ytV0hgDFpMjmvi80NjNTwHMfVZr9mmfmVAANbyxHyfxnHD9MiWh9rH3rgCnaXglPUEsiqDcYDXYSeRhCfU/ejftrJVHDrTcr+6fJTla6xheGosXzZJFRrl5xLKjaVnNAAtn47WsI/nKYb49OrqgVExrH2xpl9Xlvt0vnpHnSliwqe3NuH4F9sgcvQ/dS4+V/iSp9rzcp5NTcSywq1IDBUUzA7z4/jo1iwmyqRkhu2kqhoUeD/y/nH1E94WEgVA+0lLjeQ1rhVh2zStkakwmF5cmMgO2qKzV7ZuasgnWyk5xcev9ac/FkPNU30DLPt3HAjnAHK30T31oZpL/kI8AfIOmmP5rT/78+0GIczslfExTU7BFUngrYo5Jd3ua9VSo4bHrx2+gCGeFxJhFQ2iDdB56zAQ+Wvq1BsryC11jyo4E5Yp88RKNpho4/fE0Dce67/8V80kQvoVS9QcWB8yEW3jjtJl2+AbWkmroLfM1b6XGCko0qBb4waf7qkU3OExhv0hmRVR3U6V2JpOl3+cGO6PRerOlmL2gnUrxq14222lokNuzJcSuoZK8lWzWB/AnpnMgNP0gKB6MaqfZWP5cHznCxp0B05LzQ9TAsLsxrX2h
- oe4M1jSZ
- A4XiWE1zr7cfcZajUrQlqV/sL2NHYB+AeBQljTts32GJ2FhSjLxZav7XnVRJ0x91IOLd0OUKpZmYgRNNA/ebNhw6siezLltIxqqTq9wcTjNhOY/IQ+MHESXW4lku1QSJsooZWWJd73puRn338OEkr3J3SkUMDCwojLVBba6KpwK5eE66rlvQJMzsrBsRzCp3GXr2eiuF9zKKKGakpe/b/5MCAUsJYy0QEvwnFPaODdubH2ClUcsMqPfV8dp0RGDoyRaTCSItalNJGCqccWyb68TzjjzDGy98lm83UQiz/H1mc/LORZxGo2GUSq4Jj/L3oC1OYghAUPgaQwUOsRFX8npcoj27BLBbi75EEHPG5soN58nPJE6pjRlYHdZ0NpB/UDw7yfviIUjXd8ygJ1dsxDBajsGuj/Qm5VSJFPqhjw6Ry9dqMYqX8SEFULg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EC85CC0003
+X-Stat-Signature: awmyh1yh6z8kybw5n58xir4g57cnyzck
+X-HE-Tag: 1788956759-980301
+X-HE-Meta: U2FsdGVkX18sV93sr5TL2n2KGEMrr8+RuyHHaUOmNqCpfNAlNKcfwHHvIimDq+leRn5j5AnjZTBpjn+Lp3+es4SD6mD46Sko/6wgn+4cVDEHp9JKjlUD7vC9eFOj+1q6rFBWz/tVtFf21wlxK8kJFmQCE13srnd7Gt+C3MYjwVxRrqCu/fsN2aUuEdnTMa/cjZkYgZ/F3yu3/G6Tke4wpyD0aXC2lhlf5V2InB3TpZ+tWSrPIgCCljNNFB4lx0U7Svg4eUr12cnRcVoYiBcujOgKVIFLjZydjaRHKxRnaaofgGbkY07XHPMkTWM3/dVFdr3roW2aDZoff81r7H1uiC92sp3qEQgYodPbx5reYkZ9R2+FEXLR4qRyC+2O8GVJJyE5HYUgB9qb/H/w7i6RB4/v/8XjLvYcQvlrslUsZ6dTtICe4gkd+gXqznKunhRFs3p/nAqni0GVTXzlU80dkCgVEkEnerJNYqjbaaCirCYDBJO8XxqIONmvnSco3Ki0ViZIbhbIBp62LQOruWunE3fAocSsyB+0Rs9g0hHKlrt2LYSBKe5elhIHD48ITVg3QHeAXdN0xp9iqsSor3nP0PycnP6HYkiDIN6QxZYoRQnG8vHkyslW4iBS0EzZSnFuMTaYMzTgWvVCmky+ukoT9m7IyCm1BbjRWv/c4Jkr17RL5naZsNJON5JGFCoH5eAqJrNFqBsjQdd3aNQqdo+cUgdIoTm2Y4Mf0H4PlzU+Rwjb7iNfi9MvLnBBHKvrUZtPFXtV/N3ZzI+ON6SKNId5bxDpuUnKUGiDWuKuaOOxbo7w5Kte206U16qg5hn84kZljvnY9UHha9ydPRXM8IRG2dvfhUoBIUK8dheK+wIUo05xcOye2L3zcooZMKbpjqjNPGamgfFMFhHEqCzfdljX0rOPjQHecaNk/+wicfM5ZkRA//NlDBZrdeN2wAlei50rlNagDGqJJiasSSSVxSW
+ 6ksCNkho
+ HsIKpjd8EgZAfWeyn5tRt3mRuOm8UpKVaQJAMiNyk7E9/d8GHhtz8kvySJ9fbpcH9Q5eTfiYJZSYtJWUtNRrrG9SFgAJkHv/UKjNb8WssosuS3PqzDmd06GEsOnwwp6VGKwXFYfjfiTpKd+NR/grtVc4VcwBJ8sjF/Chjy1ZLjhD0Xi4t66QVjSG9rY5YAqFgjK4aLcW0RuoJVNHFXtSPdTblSMR1LU8Q3VX00rSRY1qC4zkMQknBTvaYo++1e1N0F9gGvUg8Uwp8Ey3NfY0YWQxWA+Fu0y5BICvCLp1BRSTB+OY8nWhrA7pjcm1oha4XyCVR0xeFxJkBlTor3vz2b9LVvahAMonI/+Cvrelp6TVB+9M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,346 +157,345 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 09-09-26 14:23:39, Zhang Yi wrote:
-> From: Zhang Yi <yi.zhang@huawei.com>
+On 9/9/26 11:49, Hugh Dickins wrote:
+> Treat folios on a per-cpu fbatch as if they were already on the lruvec:
+> with PG_lru set, without holding an extra reference. This will enable
+> the removal of most lru_add_drain() and lru_add_drain_all() calls soon.
 > 
-> truncate_inode_partial_folio() splits a large folio so that the caller's
-> truncate loop can drop the in-range sub-folios while keeping the
-> out-of-range tail. The first split at the punch start edge is
-> non-uniform, which leaves the sub-folio at the truncation end edge as
-> large as possible, this means it may still straddle the range, holding
-> both zeroed in-range and valid out-of-range data. The function then
-> attempts a second split at offset + length to isolate that tail.
-> 
-> If the second split fails the straddling sub-folio stays merged. The
-> function returned true unconditionally on all exit paths of the success
-> block, telling the caller it was fully handled. The caller kept its
-> default end and the truncate loop truncated every sub-folio below it,
-> including the merged straddler, discarding the valid out-of-range tail.
-> 
-> For example, a 4-page order-2 folio punched from offset 0 to the middle
-> of the last page:
-> 
->   truncate_inode_pages_range()
->     truncate_inode_partial_folio()      # same_folio == true
->       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->       2nd split of folio2 fails / cannot lock
->       return true                       # BUG: caller keeps default end
->     end = 3
->     loop truncates p0, p1, p2-3        # p3's valid tail is lost
-> 
-> This became reachable after commit 7460b470a131 ("mm/truncate: use
-> folio_split() in truncate operation") replaced the atomic split_folio()
-> with folio_split(), whose non-uniform split can partially split a folio
-> and leave the end edge merged.
-> 
-> It has gone unnoticed because a dirty large folio normally carries the
-> filesystem's private data, for example buffer_head, so
-> filemap_release_folio() -> iomap_release_folio() returns false on a
-> dirty folio and folio_split() aborts with -EBUSY before any split,
-> leaving the straddler safely unsplit. The bug is only reachable on paths
-> that produce dirty large folios without filesystem private data, and it
-> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
-> attached.
-> 
-> In addition, even when both splits succeed, data can still be lost when
-> the mapping's minimum folio order (min_order) is non-zero. folio_split()
-> stops at min_order instead of order 0, so the sub-folio containing a
-> split point stays aligned to 1 << min_order rather than to a page. The
-> original success path left start at the page-aligned head of the range
-> and set end to the exact page index of the end edge, neither of which is
-> a folio boundary in general. Either one could land inside the large
-> folio at its edge, and the truncate loop would drop that straddling
-> folio together with its valid out-of-range tail.
-> 
-> For example, a 64K (order-4) folio with min_order = 2 punched from
-> offset 0 to 36K:
-> 
->   truncate_inode_pages_range()
->     truncate_inode_partial_folio()        # same_folio == true
->       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
->       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
->       2nd split of folio2 -> [p8-p11, p12-p15]   # success
->       end = p9                           # BUG: p9 inside [p8-p11]
->     loop truncates ... p8-p11           # p9-p11's valid tail is lost
-> 
-> Rework the contract so the caller is told the page range to discard:
-> 
->   - Return true only when a split occurred, false otherwise. This
->     clarifies the existing confusing return value semantics.
-> 
->   - Add pgoff_t *pstart and *pend out-parameters that receive the page
->     range fully covered by [lstart, lend] after any split (or none),
->     i.e. the pages wholly within the range and safe to discard. They are
->     aligned up (pstart) and down (pend) to the mapping's minimum folio
->     order so they always fall on a folio boundary.
-> 
->   - Rename the byte-range parameters start/end to lstart/lend to avoid
->     clashing with the new outputs and to separate byte offsets from
->     folio indices.
-> 
-> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
-> &pstart for the folio at the start edge and &pend for the folio at the
-> end edge, so the truncate loop drops exactly the fully covered pages and
-> never touches a straddling folio that still holds valid out-of-range
-> data.
-> 
-> Suggested-by: Brian Foster <bfoster@redhat.com>
-> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
-> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
-> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> Recognize such a folio by 0x02 set in the folio->lru.next pointer by
+> folio_add_lru(). Then lruvec_del_folio() (aided by "lru_add_del_folio")
 
-Looks good to me. Thanks! Feel free to add:
+I admit I find the name lru_add_del_folio() quite confusing. What it does is
+AFAIU try to delete from a folio_batch, which is not necessarily the lru_add
+one?
+I don't have an alternative proposal ready though, naming is hard.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> can pretend to unlink it, and folio_batch_move_lru()'s lru_add case can
+> check whether one of the others has already moved it to lruvec.
+> 
+> (That bit is also used in a transient way by set_page_pfmemalloc(), to
+> inform interested callers whether page_is_pfmemalloc(): but those callers
+> are in networking, not putting folios on LRU; and accept that any use of
+> the page->lru field already erases page_is_pfmemalloc() information.)
+> 
+> Let folio->lru.next point to the lru_add fbatch entry, but this is now
+> just for debugging: it seemed to be important for folio_batch_move_lru()
+> to distinguish fresh from stale entries, but then it turned out that it
+> has to processs them identically.
+> 
+> Activate, deactivates and move_tail, holding no reference on the folio,
+> might come to act on a stale folio when the fbatch is drained: but it's
+> acquired by try_get and test_clear_lru, so safe even when suboptimal.
+> 
+> Reclaim is not an exact science, and there have been no complaints of
+> missed actions since 5.11 commit fc574c23558c ("mm/swap.c: serialize
+> memcg changes in pagevec_lru_move_fn") introduced the TestClearPageLRU
+> protocol: so don't expect complaints of a few surprisingly taken actions.
+> 
+> Signed-off-by: Hugh Dickins <hughd@google.com>
 
-								Honza
+Tricky, and I guess my questions below will betray I didn't grasp all the
+nuances...
 
 > ---
-> v1->v2:
->  - Export pstart as a new parameter so that the generic and shmem
->    truncate paths don't need to recompute the start value from the
->    return value. (Brian)
->  - When min_order is nonzero, align [pstart, pend] to the inner
->    boundaries of the folio to ensure they do not point into the middle
->    of a large folio, which could otherwise cause valid data within the
->    folio to be incorrectly cleared. (Joanne)
+>  include/linux/mm_inline.h |  25 ++++++++
+>  include/linux/mm_types.h  |   6 +-
+>  mm/folio.c                | 119 +++++++++++++-------------------------
+>  mm/huge_memory.c          |   6 +-
+>  4 files changed, 74 insertions(+), 82 deletions(-)
 > 
-> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
-> 
->  mm/internal.h |  4 +--
->  mm/shmem.c    | 13 +++-----
->  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
->  3 files changed, 67 insertions(+), 38 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 68db5abd0a4c..6e6ad3187378 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -627,8 +627,8 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
->  unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
->  		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
->  int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
-> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
-> -		loff_t end);
-> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-> +		loff_t lend, pgoff_t *pstart, pgoff_t *pend);
->  long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
->  unsigned long mapping_try_invalidate(struct address_space *mapping,
->  		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 89a1495e55f7..4efbbbba5da5 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1175,11 +1175,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  	if (folio) {
->  		same_folio = lend < folio_next_pos(folio);
->  		folio_mark_dirty(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-> -			start = folio_next_index(folio);
-> -			if (same_folio)
-> -				end = folio->index;
-> -		}
-> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
-> +					     same_folio ? &end : NULL);
->  		folio_unlock(folio);
->  		folio_put(folio);
->  		folio = NULL;
-> @@ -1189,8 +1186,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
->  	if (folio) {
->  		folio_mark_dirty(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend))
-> -			end = folio->index;
-> +		truncate_inode_partial_folio(folio, lstart, lend, NULL, &end);
->  		folio_unlock(folio);
->  		folio_put(folio);
->  	}
-> @@ -1258,7 +1254,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index 621c8653d8f7..8420b1276535 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -343,6 +343,29 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
+>  }
+>  #endif /* CONFIG_LRU_GEN */
 >  
->  				if (!folio_test_large(folio)) {
->  					truncate_inode_folio(mapping, folio);
-> -				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
-> +				} else if (truncate_inode_partial_folio(folio,
-> +							lstart, lend, NULL, NULL)) {
->  					/*
->  					 * If we split a page, reset the loop so
->  					 * that we pick up the new sub pages.
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index b58ba940be47..d88a1b159084 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -206,35 +206,41 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
->  /*
->   * Handle partial folios.  The folio may be entirely within the
->   * range if a split has raced with us.  If not, we zero the part of the
-> - * folio that's within the [start, end] range, and then split the folio if
-> + * folio that's within the [lstart, lend] range, and then split the folio if
->   * it's large.  split_page_range() will discard pages which now lie beyond
->   * i_size, and we rely on the caller to discard pages which lie within a
->   * newly created hole.
->   *
-> - * Returns false if splitting failed so the caller can avoid
-> - * discarding the entire folio which is stubbornly unsplit.
-> + * When @pstart and/or @pend are non-NULL they receive the indexes of the
-> + * page range fully covered by [lstart, lend] after any split (or none),
-> + * i.e. the range of pages that are wholly within [lstart, lend] and so safe
-> + * to discard.
-> + *
-> + * Return %true if the folio was split, %false otherwise.
->   */
-> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
-> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
-> +				  loff_t lend, pgoff_t *pstart, pgoff_t *pend)
+> +enum {
+> +	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
+> +	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
+> +	NR_LRU_NEXT_FLAGS
+> +};
+> +
+> +static __always_inline
+> +bool lru_add_del_folio(struct folio *folio)
+> +{
+> +	unsigned long lru_next = READ_ONCE(folio->lru_next);
+> +
+> +	/* BUG_ON(folio_test_lru(folio) && folio_ref_count(folio)); */
+
+Maybe do it as VM_WARN_ON_ONCE() and then it's acceptable for mainline and
+gets excercised by bots?
+
+> +	if (!(lru_next & BIT(LRU_NEXT_BATCHED)))
+> +		return false;
+> +
+> +	WRITE_ONCE(folio->lru.next, LIST_POISON1);
+> +	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
+
+Is this a test for unexpected LIST_POISON1 definitions (in which case
+BUILD_BUG_ON would work?) or a test for a race that should not happen,
+however with a very tiny detection window?
+
+> +
+> +	/* Ensure folio->lru_next visible when folio_set_lru() called later */
+> +	smp_mb__before_atomic();
+> +	return true;
+> +}
+> +
+>  static __always_inline
+>  void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
 >  {
->  	loff_t pos = folio_pos(folio);
->  	size_t size = folio_size(folio);
->  	unsigned int offset, length;
->  	struct page *split_at, *split_at2;
-> +	unsigned long min_nrbytes;
->  	unsigned int min_order;
+> @@ -384,6 +407,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
 >  
-> -	if (pos < start)
-> -		offset = start - pos;
-> +	if (pos < lstart)
-> +		offset = lstart - pos;
->  	else
->  		offset = 0;
-> -	if (pos + size <= (u64)end)
-> +	if (pos + size <= (u64)lend)
->  		length = size - offset;
->  	else
-> -		length = end + 1 - pos - offset;
-> +		length = lend + 1 - pos - offset;
+>  	if (lru_gen_del_folio(lruvec, folio, false))
+>  		return;
+> +	if (lru_add_del_folio(folio))
+> +		return;
 >  
->  	folio_wait_writeback(folio);
->  	if (length == size) {
->  		truncate_inode_folio(folio->mapping, folio);
-> -		return true;
-> +		goto no_split;
->  	}
->  
->  	/*
-> @@ -248,9 +254,10 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  	if (folio_needs_release(folio))
->  		folio_invalidate(folio, offset, length);
->  	if (!folio_test_large(folio))
-> -		return true;
-> +		goto no_split;
->  
->  	min_order = mapping_min_folio_order(folio->mapping);
-> +	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
->  	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
->  	if (!folio_split_or_unmap(folio, split_at, min_order)) {
->  		/*
-> @@ -259,38 +266,67 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->  		 * for shmem truncate
->  		 */
->  		struct folio *folio2;
-> +		bool tail_isolated = true;
-> +
-> +		if (pend)
-> +			*pend = round_down(pos + offset + length,
-> +					   min_nrbytes) >> PAGE_SHIFT;
->  
->  		if (offset + length == size)
-> -			goto no_split;
+>  	if (lru != LRU_UNEVICTABLE)
+>  		list_del(&folio->lru);
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 6d815f6440c9..fe6220b97cf3 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -85,6 +85,8 @@ struct page {
+>  	 * WARNING: bit 0 of the first word is used for PageTail(). That
+>  	 * means the other users of this union MUST NOT use the bit to
+>  	 * avoid collision and false-positive PageTail().
+> +	 * Bit 1 of the first word is used by page_is_pfmemalloc().
+> +	 * Bit 1 of the first word (lru_next) is also used by folio_add_lru().
+>  	 */
+>  	union {
+>  		struct {	/* Page cache and anonymous pages */
+> @@ -410,10 +412,8 @@ struct folio {
+>  			union {
+>  				struct list_head lru;
+>  	/* private: avoid cluttering the output */
+> -				/* For the Unevictable "LRU list" slot */
+>  				struct {
+> -					/* Avoid compound_info */
+> -					void *__filler;
+> +					unsigned long lru_next;
+>  	/* public: */
+>  					unsigned int mlock_count;
+>  	/* private: */
+> diff --git a/mm/folio.c b/mm/folio.c
+> index b9dc4f5e10a6..e743cd539b9e 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -152,57 +152,34 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+>  	int i;
+>  	struct lruvec *lruvec = NULL;
+>  	unsigned long flags = 0;
+> -	struct folio_batch free_fbatch;
+> -	bool is_lru_add = (move_fn == lru_add);
 > -
-> +			goto split;
-> +retry:
->  		split_at2 = folio_page(folio,
->  				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
->  		folio2 = page_folio(split_at2);
+> -	/*
+> -	 * If we're adding to the LRU, preemptively filter dead folios. Use
+> -	 * this dedicated folio batch for temp storage and deferred cleanup.
+> -	 */
+> -	if (is_lru_add)
+> -		folio_batch_init(&free_fbatch);
 >  
->  		if (!folio_try_get(folio2))
-> -			goto no_split;
-> +			goto split;
+>  	for (i = 0; i < folio_batch_count(fbatch); i++) {
+>  		struct folio *folio = fbatch->folios[i];
 >  
->  		if (!folio_test_large(folio2))
->  			goto out;
+> -		/* block memcg migration while the folio moves between lru */
+> -		if (!is_lru_add && !folio_test_clear_lru(folio))
+> -			continue;
+> -
+> -		/*
+> -		 * Filter dead folios by moving them from the add batch to the temp
+> -		 * batch for freeing after this loop.
+> -		 *
+> -		 * We're bypassing normal cleanup. Clear flags that are not
+> -		 * applicable to dead folios.
+> -		 *
+> -		 * Since the folio may be part of a huge page, unqueue from
+> -		 * deferred split list to avoid a dangling list entry.
+> -		 */
+> -		if (is_lru_add && folio_ref_freeze(folio, 1)) {
+> -			__folio_clear_active(folio);
+> -			__folio_clear_unevictable(folio);
+> -			folio_unqueue_deferred_split(folio);
+> +		if (!folio_try_get(folio)) {
+>  			fbatch->folios[i] = NULL;
+> -			folio_batch_add(&free_fbatch, folio);
+>  			continue;
+>  		}
 >  
-> -		if (!folio_trylock(folio2))
-> +		if (!folio_trylock(folio2)) {
-> +			tail_isolated = false;
->  			goto out;
-> +		}
+> +		if (!folio_test_clear_lru(folio))
+> +			continue;
 > +
-> +		/*
-> +		 * split_at2 may no longer belong to folio2 due to concurrent
-> +		 * split. Retry to find the correct folio in case it's still
-> +		 * large.
-> +		 */
-> +		if (page_folio(split_at2) != folio2) {
-> +			folio_unlock(folio2);
-> +			folio_put(folio2);
-> +			goto retry;
-> +		}
+> +		/* Do not add to LRU if it has already been added */
+> +		if (move_fn == lru_add && !lru_add_del_folio(folio))
+> +			goto restore_lru;
+> +
+>  		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+>  		move_fn(lruvec, folio);
 >  
->  		/* make sure folio2 is large and does not change its mapping */
->  		if (folio_test_large(folio2) &&
-> -		    folio2->mapping == folio->mapping)
-> -			folio_split_or_unmap(folio2, split_at2, min_order);
-> +		    folio2->mapping == folio->mapping &&
-> +		    folio_split_or_unmap(folio2, split_at2, min_order))
-> +			tail_isolated = false;
->  
->  		folio_unlock(folio2);
->  out:
-> +		if (!tail_isolated && pend)
-> +			*pend = folio2->index;
->  		folio_put(folio2);
-> -no_split:
-> +split:
-> +		if (pstart)
-> +			*pstart = round_up(pos + offset,
-> +					   min_nrbytes) >> PAGE_SHIFT;
->  		return true;
+> +		/* Do add to LRU if not already there (move_fn skipped) */
+> +		if (lru_add_del_folio(folio))
+> +			lruvec_add_folio(lruvec, folio);
+
+AFAICS the previous code didn't do anything like this (and move_fn could
+skip or not all the same?) , and I wonder if it's now (sorry) load-bearing,
+or an optimization?
+
+> +restore_lru:
+>  		folio_set_lru(folio);
 >  	}
-> -	if (folio_test_dirty(folio))
-> -		return false;
-> -	truncate_inode_folio(folio->mapping, folio);
-> -	return true;
-> +	if (!folio_test_dirty(folio))
-> +		truncate_inode_folio(folio->mapping, folio);
-> +no_split:
-> +	if (pstart)
-> +		*pstart = offset ? folio_next_index(folio) : folio->index;
-> +	if (pend)
-> +		*pend = (pos + size > (u64)lend) ? folio->index :
-> +						   folio_next_index(folio);
-> +	return false;
+>  
+>  	if (lruvec)
+>  		lruvec_unlock_irqrestore(lruvec, flags);
+> -
+> -	/* Cleanup filtered dead folios. */
+> -	if (is_lru_add) {
+> -		mem_cgroup_uncharge_folios(&free_fbatch);
+> -		free_unref_folios(&free_fbatch);
+> -	}
+> -
+>  	folios_put(fbatch);
 >  }
 >  
->  /*
-> @@ -413,11 +449,8 @@ void truncate_inode_pages_range(struct address_space *mapping,
->  	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
->  	if (!IS_ERR(folio)) {
->  		same_folio = lend < folio_next_pos(folio);
-> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
-> -			start = folio_next_index(folio);
-> -			if (same_folio)
-> -				end = folio->index;
+> @@ -211,8 +188,6 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+>  {
+>  	unsigned long flags;
+>  
+> -	folio_get(folio);
+> -
+>  	if (disable_irq)
+>  		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
+>  	else
+> @@ -273,7 +248,6 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
+>  	if (folio_test_active(folio) || folio_test_unevictable(folio))
+>  		return;
+>  
+> -
+>  	lruvec_del_folio(lruvec, folio);
+>  	folio_set_active(folio);
+>  	lruvec_add_folio(lruvec, folio);
+> @@ -289,37 +263,12 @@ void folio_activate(struct folio *folio)
+>  	    !folio_test_lru(folio))
+>  		return;
+>  
+> -	folio_batch_add_and_move(folio, lru_activate);
+> -}
+> -
+> -static void __lru_cache_activate_folio(struct folio *folio)
+> -{
+> -	struct folio_batch *fbatch;
+> -	int i;
+> -
+> -	local_lock(&cpu_fbatches.lock);
+> -	fbatch = this_cpu_ptr(&cpu_fbatches.lru_add);
+> -
+>  	/*
+> -	 * Search backwards on the optimistic assumption that the folio being
+> -	 * activated has just been added to this batch. Note that only
+> -	 * the local batch is examined as a !LRU folio could be in the
+> -	 * process of being released, reclaimed, migrated or on a remote
+> -	 * batch that is currently being drained. Furthermore, marking
+> -	 * a remote batch's folio active potentially hits a race where
+> -	 * a folio is marked active just after it is added to the inactive
+> -	 * list causing accounting errors and BUG_ON checks to trigger.
+> +	 * XXX: It is curiously difficult to recreate safely the old
+> +	 * __lru_cache_activate_folio() optimization (folio_set_active()
+> +	 * directly if it's on the local lru_add fbatch): revisit later.
+>  	 */
+> -	for (i = folio_batch_count(fbatch) - 1; i >= 0; i--) {
+> -		struct folio *batch_folio = fbatch->folios[i];
+> -
+> -		if (batch_folio == folio) {
+> -			folio_set_active(folio);
+> -			break;
 > -		}
-> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
-> +					     same_folio ? &end : NULL);
->  		folio_unlock(folio);
->  		folio_put(folio);
->  		folio = NULL;
-> @@ -427,8 +460,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
->  		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
->  						FGP_LOCK, 0);
->  		if (!IS_ERR(folio)) {
-> -			if (!truncate_inode_partial_folio(folio, lstart, lend))
-> -				end = folio->index;
-> +			truncate_inode_partial_folio(folio, lstart, lend, NULL, &end);
->  			folio_unlock(folio);
->  			folio_put(folio);
+> -	}
+> -
+> -	local_unlock(&cpu_fbatches.lock);
+> +	folio_batch_add_and_move(folio, lru_activate);
+>  }
+>  
+>  #ifdef CONFIG_LRU_GEN
+> @@ -410,16 +359,7 @@ void folio_mark_accessed(struct folio *folio)
+>  		 * unevictable page accessed has no effect.
+>  		 */
+>  	} else if (!folio_test_active(folio)) {
+> -		/*
+> -		 * If the folio is on the LRU, queue it for activation via
+> -		 * cpu_fbatches.lru_activate. Otherwise, assume the folio is in a
+> -		 * folio_batch, mark it active and it'll be moved to the active
+> -		 * LRU on the next drain.
+> -		 */
+> -		if (folio_test_lru(folio))
+> -			folio_activate(folio);
+> -		else
+> -			__lru_cache_activate_folio(folio);
+> +		folio_activate(folio);
+>  		folio_clear_referenced(folio);
+>  		workingset_activation(folio);
+>  	}
+> @@ -439,6 +379,10 @@ EXPORT_SYMBOL(folio_mark_accessed);
+>   */
+>  void folio_add_lru(struct folio *folio)
+>  {
+> +	struct folio_batch *fbatch;
+> +	unsigned long lru_next;
+> +	bool full;
+> +
+>  	VM_BUG_ON_FOLIO(folio_test_active(folio) &&
+>  			folio_test_unevictable(folio), folio);
+>  	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+> @@ -458,7 +402,26 @@ void folio_add_lru(struct folio *folio)
+>  			folio_mark_accessed(folio);
+>  	}
+>  
+> -	folio_batch_add_and_move(folio, lru_add);
+> +	local_lock(&cpu_fbatches.lock);
+> +	fbatch = this_cpu_ptr(&cpu_fbatches.lru_add);
+> +
+> +	/* Storing this address is only for debugging */
+> +	lru_next = (unsigned long)&fbatch->folios[fbatch->nr];
+> +	/* This mask will do nothing on 64-bit */
+> +	lru_next &= ~(BIT(NR_LRU_NEXT_FLAGS) - 1);
+> +	lru_next |= BIT(LRU_NEXT_BATCHED);
+> +	folio->lru_next = lru_next;
+> +
+> +	full = !folio_batch_add(fbatch, folio);
+> +
+> +	/* Ensure folio->lru_next visible to folio_test_clear_lru() callers */
+> +	smp_mb__before_atomic();
+> +	folio_set_lru(folio);
+> +
+> +	if (full || !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+> +		folio_batch_move_lru(fbatch, lru_add);
+> +
+> +	local_unlock(&cpu_fbatches.lock);
+>  }
+>  EXPORT_SYMBOL(folio_add_lru);
+>  
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index afbb5974bd22..c7510d875433 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3995,8 +3995,12 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
 >  		}
-> -- 
-> 2.52.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>  
+>  		/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
+> -		if (do_lru)
+> +		if (do_lru) {
+>  			lruvec = folio_lruvec_lock(folio);
+> +			/* Move from fbatch to lruvec before lru_add_split_folio()s */
+> +			if (lru_add_del_folio(folio))
+> +				lruvec_add_folio(lruvec, folio);
+
+This is not mentioned in the changelog. Why is it necessary now?
+
+> +		}
+>  
+>  		ret = __split_unmapped_folio(folio, new_order, split_at, xas,
+>  					     mapping, split_type);
+
 
