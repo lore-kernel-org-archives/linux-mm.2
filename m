@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C844C79FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8382C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:11:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D07FC6B008C; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
+	id 36B446B0093; Wed,  9 Sep 2026 13:11:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDFFF6B0093; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
+	id 31BDB6B0095; Wed,  9 Sep 2026 13:11:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C4E6B0095; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
+	id 232236B009D; Wed,  9 Sep 2026 13:11:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EF976B008C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E54726B0093
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:11:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDEA8A3073
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:11:11 +0000 (UTC)
-X-FDA: 85194864342.08.0372D5B
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EDBC402BB
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:11:12 +0000 (UTC)
+X-FDA: 85194864384.21.B16EB5F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EE84940008
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0848A20010
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:11:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VmAksmPa;
-	spf=pass (imf11.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NKGrHxS1;
+	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788973870;
+	b=Sj2frmcRYwpji+dHUDcZSMcUL/XrHODO714rruzqrmcXYNF23RHwxiVgShDjuagRIRqXoQ
+	vPIJITOaRioOduDwJsa/UHK2EUeCxSKR1gFe9x2aNpXTuh6m3FEgRZ7/KIBsmC3NT9au1M
+	VZ/lydfFYCuZZGQfW0ioj8JJ/o5eIoI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NKGrHxS1;
+	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788973870;
@@ -35,46 +45,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uKotk9/whV3BxhLRUceKE5tMwWdNG7b/AXhBJiB9tH8=;
-	b=i1VKuVlTK4RYx0/Fq3K4GnFph+3Js91EsJshaU4yAuHq3G/2pMxaR5Xmy7gzkwUlGooHEd
-	Mx8qPokUGBMGArb44TQEC75/Dv25ftKVwRnhcx5p0I0mOp7jv4tRhDhTtGDQzXMmwXl7np
-	e3stf7VZt+bFn8YWSS0WEmE0QD7fT58=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VmAksmPa;
-	spf=pass (imf11.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788973870;
-	b=6ZfRt/0/GYkXFQOtpK/7TseIuXsONNr8nuu87imUpDShWd2i55OqnNGGUxTZr+N5WL7+lY
-	gQXDS+51s98Lqn3hgZzJq85fnaduGX5xG40eTN47dCBrUpHzLqFBnY9/fNL6mOemljRr9e
-	c4InVtr7+ce/KhVG30I9tmvIBEYJ6MQ=
+	bh=rJTEbdSiRoD1a7OqH+BfbV91/NXOsC8g5HlpxdMNyoQ=;
+	b=ntwUMrUk2AvUHpaNykmuPwtX3gDQHAgPakOAG86uvf+D+8gmZnk3BDzslCOWbN9z+zaN9p
+	POgWTM8j7X4TKxD7mlk5/3Cs+PBcwbKkHwqdPbvfIM6WxN2w7JkXQl9DpflLuVRBRGhhjS
+	WPBJm4fv3zFjDNScqHnDM9nrKYq95rQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3305F4450D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 28D1C43E08;
 	Wed,  9 Sep 2026 17:11:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 109AFC2BCFD;
-	Wed,  9 Sep 2026 17:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 02402C2BCB9;
+	Wed,  9 Sep 2026 17:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788973869;
-	bh=5nP3SABh7khN0k7YsgDDCUFgWm+k/354IDRR6uf5BpY=;
+	bh=BHXEO/5ApGc8onZolC3w/bocqaSCrODRqIh7iaYmj5M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VmAksmPaODm6zzhe9HR1j4cII72lhpikhFZxWcW/l60t9hnfbxjdgPSMyR425+YyY
-	 RFLityF9xzDPGTya3J3lhi8BZqxxY3POBFMjUXKz6jBzdntVwlpPCxwdWyytdlklqz
-	 aH731ahR6rjt7XR4sWl5JIfKAbMcnwFL296V599iAMbwUNsGshp5d5DPPANSCZN/wt
-	 KpG8OXysJllfLLf8h3a1kogIxyOGiqvu+xEm2mmqxDZhtpEyzMtXalfKvghWSfseJg
-	 0BeMjeWgbx+s6Ok5l29qjezQFysz2zeUNdwPCkNJv2O0uAFVit3MNihZ0NAQ7kpvfq
-	 BKHmXiqFAjnwQ==
+	b=NKGrHxS1UroPb5TIhDI3V+HA2cKcmATt/ptd/6h0S05YwRQeG6yCVM7ZgxEp2aPQW
+	 rMldgq7YcPws1UsQ0pYMiLf73YoGVHt/R7yjrsCcXfyy96gDI7B9HGyk4xOr6EOqMg
+	 d14kGmVVkCfLgMliF9JSFjcafMStrQqbqJWxSy4ffquEzlUZhotTK+IfDmsV5ToJ03
+	 43lIbWygXQbdXy3rZaWptnNKd/wqYrZUYEXiFJK6g25BfBp1Hwbe2FVsFjkjy+JA4m
+	 ti3alMa16YLFwrya6ccZyMaN0agsrHavAmrbj4cpUpudi6G1RK167m7JP41PSdPno8
+	 rhkfZpXVGJ3sg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E47E9C79FBF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D077CC79FBD;
 	Wed,  9 Sep 2026 17:11:08 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 09 Sep 2026 10:11:01 -0700
-Subject: [PATCH v2 2/2] mm: hugetlb: Drop refcount before freeing on memcg
- charge failure
+Date: Wed, 09 Sep 2026 10:11:00 -0700
+Subject: [PATCH v2 1/2] mm: hugetlb: Return -ENOSPC on memcg charge failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-hugetlb-alloc-folio-memcg-charge-error-handling-v2-2-4b4a8a19a7f7@google.com>
+Message-Id: <20260909-hugetlb-alloc-folio-memcg-charge-error-handling-v2-1-4b4a8a19a7f7@google.com>
 References: <20260909-hugetlb-alloc-folio-memcg-charge-error-handling-v2-0-4b4a8a19a7f7@google.com>
 In-Reply-To: <20260909-hugetlb-alloc-folio-memcg-charge-error-handling-v2-0-4b4a8a19a7f7@google.com>
 To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -95,25 +94,25 @@ To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788973868; l=1354;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788973868; l=2084;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=RCk4FUhHtfR9+WkuFadogmxvoeEME9GEkAvOLYp7r3U=;
- b=gBpcMiO0hmn63lrRPn7N0MR5W2dOzYOn5xT2nETVl+UJrZXPV8t92Dbe0aMohlnvWSzSzqKO6
- Lcdbw5LVxr6DJq6Hl54+GpzcN4ODPHZbPRq6605zAFWp8ctP3310CTf
+ bh=wQGY2NqfleEKP3GcsIVv3hSYGK81wAt8iMtpppoPYIU=;
+ b=ow2acPS/0lBc9uXTMEil/vfmmYchZdQPHwRPGUjyngNjaKdtya97UdQiXuHsJi/izJCrBL90Q
+ x1jKApeeIl+A9bXU7EeN28MfQNXGvQh+Hma84jQ/IKEgnDjk7aUriCZ
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EE84940008
-X-Stat-Signature: 5pt4tkztc4nuitpjyjxhzdt668m5ytn5
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0848A20010
+X-Stat-Signature: rwaoag4i7srouq5requ367egyktsfpbn
 X-Rspam-User: 
-X-HE-Tag: 1788973869-626158
-X-HE-Meta: U2FsdGVkX1/RyJQJDGHI0MGMugXhwoW1MHY3YdsTdq2Hb4k0zifUdPkKI/rUWFRtJuBJwf0SktwIA2MCgfr03JxZ5yB4Yd0t1hmzvt68GtRKsq1W95UMyr7AvLlggCN91NEVjbY31dqGLrUBupGAvqzTY1mUwqJDL3z1R2a1b/7OD4iJG6jz8vydrs0qIBzZxZcAo0Wr1qXFs5hp44T4lHU2O4T6Pg/BJnOj1mWAWq/aY9OUBhl812HG1WfJrSnHpYUJAwhic8B16dg7QO46B8TPWhdEFqvCNpKQ8v2g0hvRyU2zc8wTdMGbmawkZV/aIIQhmmr58eh4VzpPEl8w9sVnZypSlE9BFeAB9ynasBVdHpZoYzwk7e4CjwU3QGQfFp9yAqgAnb8o8wDJBmMIDRY+8II8fL2H4qequmLBEv1ieZxfELJ8VbYXEx1aORSHSyz9kFKVzyhCH5nefhDy17fSeATX5IbspPoYAji2hxWEwR1Pp8LM3kuPvCcJZLxHSFtHVzEYRyXuCocefqt22NtvIl+Row2Gi2YEVQP40/OhQS8C3dGCond9nbUKQaltwp7qUzOlp729EUMOHGPydul1n20TLzekCOMkPUWX0mJ8R/xqebthS2GDS3v0v1CfEPU/mnZxD+gN9DqskJNR0B7CEqXyBPSpWxLX2MJ/ze69B8itRAWoPpsCUUzfGdE1VVArWdZPM1LhXUcv6lZWMx+DNbtJjrWs/CEqjkmvrLsYe0iy/7PWZiwo3LPSwp72i+pxohRm8lOPfKmRmiAi3apjf6Nam3lSJshiYS1M8cMO10xjj0NURuax0GiMZ0UezkfX5Jo6H5peq4J0NfTazqTenvcwBNnAR8Qd9NpAUpc3aDQmd6a3M5B/idW2/zWqPbB2NqfEl3ONR7F3PzUEwYcCqU0dNzd214PPv8sF49LQbGOt3Az43uINljs525ig4c8uuof8uuTT1S1e4ds
- CnLmh4Ey
- sYiToVU2KAgiPtPQhldOXI10vFT3gIUiiX6HHvQKr3FxC7BqhRFpsFVgu5dVzxb14BhFS0AV3FNuF6oNN5r6RqGWV4jxE3spb3/8LcwICG+eYfTzus4DYJylzwJ4Ackxm9O7ClVzqQQw1tDwZqNzxjByf+s82Ga/Qnw8BqQxVeNJ49HQ3Oebq8NkzKCigVg8wNjjND/nBHbDQ58G86Ox7fiiMEHgHfLeMaLWhFstS6oyYxICzgtY2zm5EAjBwbcP7ALCI8olxhPLHCXNaIXO5DPcf9bpJxJM3O6776WfkuyAyTwBO787A+21LoWnRccKVShJAzyYXuOu+Bf1G0FJJziNZVSqTRSmcs5aW/qwVGMQKuiyuGIjQJSAWYT8ET+17yNQ+8h1ZzHIoGYINfVGzDgoyinE/K99uoRaKaGJ9kI4a64Yh8k04YNiIhCtM7FD9wL1IOXX35cHRBF/zsqnEaTLkwrTDzYyJy9sQF7C8iz0ijQ4E5u4f41rAsojxL0BtXQgM
+X-HE-Tag: 1788973869-965545
+X-HE-Meta: U2FsdGVkX1+e1roHKe8644kMW94f5SKpZDkT0I0PLIQznc9L69vGOtzKFMGReMTmLH53R3Yt2mhuOKft7/TxnQ4kbHdkW5J2xt0/nXr4oQ+4aW+zTfTY0/a8f4AXGxVRcMe5IJw3kNIfcSmp4SfVO3Sy0hLFCejDFhl06eQxp0GdElxQT9g+fWOpIYtnxziNeLo/3nsaEBPg8T5TmCajV5/7yW0EYTMF8vW/h2vautCoJttmedTtN+jXeJBpn15VlJLqqo7EsMFnDuCrPhuqphNF2eU7TTTJPdcF++56FTGXA9KEPfOUMYAWX/xNzv4tiNEUL5txDfDPwfTepLp2/BuS3s1PEoxpuPfBZQsMqA3rd6I0QkjoLzpRJ4htrpFV0m3v/XIBN0vae06dOCh45dJFhiI5WIjUzoGdMkOn4OY4U6aEkDm3595krHpp0afj3l9OQFP02K3pIfJ65d6bV0vxPebqlksZcxq92RKKJmbeSLyJx1ivqf8wOj+Bt7kRGcPWTJFblA7x9L/gp727nCgmc89xkaROOw2eTzzFCSA/t3QQ3ztqaDZo3toA7/C414yzVpirKQX1ogKmGcxYmZ7dg1ip9g5y5YqrDqs8yLA5JO76m9Y607HTCgK5UdnUkUnJEZvdgVBCCcj5m4Zl4WdvHo08LzrgR/TV4wWYKEikta9/PqLkPsWODMD7ZQXHibNulapFjkPGHYu/ZhbKkY5AFy7OyLcW/VGHmPkrrw5K9Z9DszpesV+i2dXZe4A2wpvpOMQiRZc/VRAVPXhRYdk1tNrPJwESpBCLHhxXW143sZAvFpW49r4SzT8Yjsnm2AzhjnRi0W9X/Z5SvCGeIlIt4OCFBvlVEapFPMb6xFka2kVKMYSrA+ZfM62IhuJT80u9eMRToW9sYKfSrLo1UEy9RFUHxVasewYfOH4R0Hy2wKbHeGDBAAtOeT2Di0LEMADvOji61bGAwVCm7d/
+ iIipWTEi
+ aKmZ2ssdj1OrfbO3Ac9+dCioYZVGPz+63EhlKM15tvnu3wsOSW6Nlb1vEKHZkeZTk+5h32L4JEazhpakCsfoLlD8YjizCu8dBfzqVz+uFyDC/tnW989dpDrWyhWuOGx5L4F1C+PrMZMBYyHKsiH5b6PUY3+eJ/VqSFcUF6LQTfIDEVMZhNMTiiMZVKbbiIuHlAgf7Z1wG0G7fBkdjuSvUwAMTHRnGE7m07+m73w4b9bb089Yf6WFkWrcio7hmbTRjMNKPgnxKJva4BQFRx7wyMNMvRqcqmLy5h+qMMO3AvmxCtV+0JF354ZlPw1la8a2yaF9X51NpN0WPrTF+htqZQdQMZSDP3QcAlfrjniXBs83g7HnAYK2MXY6CdpojcrBAaevU52aQ0Ae2/yY+aa/gNK3/5j01X1Yo2il6giwupOf35c4Pw7eiCrhWPs4lyV5BQLINL5Gwh0DwYFmSxiPboAEcSfpKQ891b37KzhqDoGKEQqBHA3fj+/9Upe7v8OAcdi5u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,18 +122,22 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
-its refcount set to 1 via folio_ref_unfreeze(folio, 1).
+When mem_cgroup_charge_hugetlb() fails with -ENOMEM, alloc_hugetlb_folio()
+currently propagates this error. This results in the page fault handler
+returning VM_FAULT_OOM.
 
-The error path calls free_huge_folio(folio) directly, which expects a
-refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
-triggered.
+Because HugeTLB allocations are high-order and use __GFP_RETRY_MAYFAIL,
+they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
+without triggering the OOM killer (or having it make progress) leads to
+an infinite loop of retrying the fault.
 
-Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
-the freelist can corrupt allocator state later.
+Avoid this loop by returning -ENOSPC when charging fails, which maps to
+VM_FAULT_SIGBUS, terminating the process cleanly.
 
-Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
-reference before freeing it.
+Make mem_cgroup_charge_hugetlb() fault handling use a common error handling
+path, the same handling used for hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
+which also don't trigger the OOM killer and hence opt to terminate the
+process with a SIGBUS.
 
 Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
@@ -142,22 +145,34 @@ Reviewed-by: Muchun Song <muchun.song@linux.dev>
 Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: stable@vger.kernel.org
 ---
- mm/hugetlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/hugetlb.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 522487d341841..f5b853a5377c2 100644
+index 4f6f58bf3db6c..522487d341841 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -2891,7 +2891,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
- 	lruvec_stat_mod_folio(folio, NR_HUGETLB, nr_pages);
- 
- 	if (ret == -ENOMEM) {
--		free_huge_folio(folio);
-+		folio_put(folio);
- 		/*
- 		 * Skip uncharging hugetlb_cgroup since the charges
+@@ -2825,7 +2825,6 @@ void wait_for_freed_hugetlb_folios(void)
+  *
+  * Return: A pointer to the allocated folio, or an ERR_PTR on failure.
+  *         -ENOSPC if cgroup charging fails or no folio is available.
+- *         -ENOMEM if mem cgroup charging fails.
+  */
+ struct folio *hugetlb_alloc_folio(struct hstate *h,
+ 		struct mempolicy_interpreted *mpoli, u8 alloc_flags)
+@@ -2898,7 +2897,11 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
  		 * were committed to the folio and freeing the folio
+ 		 * would have cleared those up.
+ 		 */
+-		return ERR_PTR(ret);
++		/*
++		 * Return -ENOSPC, since retrying the fault is futile:
++		 * the OOM killer is not triggered for HugeTLB.
++		 */
++		return ERR_PTR(-ENOSPC);
+ 	}
+ 
+ 	return folio;
 
 -- 
 2.55.0.1007.g17ff1f9808-goog
