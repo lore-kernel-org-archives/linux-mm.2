@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12FFC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:17:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B29F7C79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:18:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90EE26B00A4; Wed,  9 Sep 2026 06:17:24 -0400 (EDT)
+	id BF6686B009E; Wed,  9 Sep 2026 06:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BF6E6B00A5; Wed,  9 Sep 2026 06:17:24 -0400 (EDT)
+	id BCE976B00A1; Wed,  9 Sep 2026 06:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6A36B00A6; Wed,  9 Sep 2026 06:17:24 -0400 (EDT)
+	id ABD906B00A5; Wed,  9 Sep 2026 06:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C3846B00A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:17:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3C1316016E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:17:23 +0000 (UTC)
-X-FDA: 85193821566.19.664AD2B
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C935740004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:17:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=g9v+IJ0I;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788949041;
-	b=KBRcyaol/Y6eO4XkKBepjLDRk13eFzjbYDgXcr7jtUXeainwpFE0FioOk2tDMj/GJ6+WAu
-	5yx9HB/Pa4gAUGpnJL8Sw0YcpZs2/o1qlAiQYIsLhwv1ZoX91ZLHVI6IYIAQjsiuO858be
-	zGw/oIcrw14dsUlGKMXeHBjecdo4+eI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=g9v+IJ0I;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 864216B009E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:18:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1CC91A0007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:18:15 +0000 (UTC)
+X-FDA: 85193823750.13.0115BA2
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 299F3100002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:18:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A9mOXGqG;
+	spf=pass (imf05.hostedemail.com: domain of hughd@google.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788949041;
+	s=arc-20220608; t=1788949094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K9TQ0wBr48lwedZK/j5nLOqNZEnam2jeudD0oRNqYxI=;
-	b=y+Cr0R7U65GpAEWc0I4wMSBLHeYu4oGKXkHgdS8QBrs1E28KAqmHAvtEgKdJD4UNERw/K9
-	34IbmCYZrGPIOBB6TZ4bL7eTo/nl8i2qs64UGkDpRnGQG4dj0Aozpx8McErLL8fFLEafEi
-	aIyiLYUbPM7OuxAAxWj7MiHN8u4Xr7w=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788949036; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=K9TQ0wBr48lwedZK/j5nLOqNZEnam2jeudD0oRNqYxI=;
-	b=g9v+IJ0IzwAEhs00oCH+KdRcDCZAwaG2TZ+ihqKIwPVytuXtaJJJGxOgK+Ku9+pc84bZW5H+rNWmcqd0jaS/ETbcGAkfJQwvb/6+MtbQiKqxu1/f3Heylec1e25OrxQBdpr+ci5WK1QYEXq2HArtXKHmIQpEjGeqBcnkYKccRIY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R241e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=26;SR=0;TI=SMTPD_---0XAefvwB_1788949032;
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAefvwB_1788949032 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 09 Sep 2026 18:17:13 +0800
-Message-ID: <7a2b0427-674b-4a7c-9727-8b078bce0afc@linux.alibaba.com>
-Date: Wed, 9 Sep 2026 18:17:12 +0800
+	bh=Vqq1bLSj+HyikJMGO2+S/zPhjWI8z39VCLxfhn2Q3b0=;
+	b=wJRMZGSYycMTh4U8xHCuuMxLVqf5gQbzeZe7uRF8N/OiDhRmrecew6pKXCXjK+pqJm+heA
+	fcKGN2Gh8zLK0qTZ1DFobFuti5RtNrE8+/pSrttj33m/5h9O9LGn4gUD96jQOnyTos2Wp7
+	nZNUB8ZMO/6KF9LTSKpNqp6/rob9Dso=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A9mOXGqG;
+	spf=pass (imf05.hostedemail.com: domain of hughd@google.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788949094;
+	b=QnRJnE2F0nXTUpnOZfopE5i26gKYJ/ra/liRbhdbs/gMbhcznPJq36cFIEquaGmE1jK4L1
+	vZPM/4f5NUXne3GDojm+v3fwFKwvbR4hUHSyoodKHrCdzfJgct70hI5EDchYPeW2Y+GzuC
+	aFC+Nef+xKTI46d1QQ0K/Ec/TirRMJ8=
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-66dbce0b639so4335053d50.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 03:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788949093; x=1789553893; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vqq1bLSj+HyikJMGO2+S/zPhjWI8z39VCLxfhn2Q3b0=;
+        b=A9mOXGqGNvxqdB1kTaSc/gb9jIyDFnTCCF2NhUGgKenGlElqg8f5Z3j1gLO+rekjc6
+         eLksNwLaKjnmLJwZ0PEse7gF7CNKRvi4nxeZqqzTSrL3ewUl4hsBpyk9wIjHR5d4lvZX
+         CuxDoDtycuY+6ff1efzWmvPNl7AHluIyengrmbEJPBCQ5WtKCr9d2JLtnOnZ2UEF4JZp
+         jPaZmfNzMI5nDA/izDrU31HVcV8ztH+I2wrfXVyLTYkbVDAtU9Ob+uPCk7uIlY1Fph0f
+         ya7Sm7+lrPHd/rGZJ5IqlztA3kGz3rYPVEeC70jhurvgj2KtDNQerYSYf8j3d0QinMdH
+         q/NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788949093; x=1789553893;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vqq1bLSj+HyikJMGO2+S/zPhjWI8z39VCLxfhn2Q3b0=;
+        b=mHWi1JLJgWWfuIGh8m2DVSfOlLPFn0u0ZtBxEhR0HeJihvXdXbnPiI5Fl83E4PPJ+o
+         pqqxZT4y8hIDrbyuQ2cl7MGuW8m7id2k6kyWVAG0d6wj7YDiZu5nG+0IIf1cQeoqUPWj
+         aFOdZ65q3XoEWw21egNUUoXLLFRP65qgUxxKRsmHG1imgMgoEBC7TZ0Xksnt0cBnVM0i
+         ZtGKjl1pRCo+bY6Uwtpe1vWm7XDhTHgl2vu5Nnie1Wqnrt5ksNS0N6sa6YbhIetC6zCY
+         MBO54dqr47ZKnvGl0bkT7QlfTk/Xwf8Ing0N/sjBHodNmOyERhPo0kzWwGbOIapNL4j+
+         LjLw==
+X-Forwarded-Encrypted: i=1; AKwUvBz5E3IMd2UPgu0oA0dxcNv+21BGD1MkR7rGUuhAxlaKhbU3tydeOPXmW72OodAlNIHGRVzddU2qJw==@kvack.org
+X-Gm-Message-State: AFuF++keAn19jzelLdm+E7mi3r6oxBKbkmuN30dbVZ8qCwsITdsP7PH7
+	vbCt1hhy5Wx/W9NWO1NQfQIIOqrI05mjxJrWCyQEyZffXksi4kg8QhG+C/XC4avaMg==
+X-Gm-Gg: AYBFou0KovnfESCfNWKJk2+NP7GS8Zjpfhbvn6BVSSpZJyImwYIjJ5rTZuuia2dmytx
+	Ybg5PaKpm2bsv0bZmBJzpzn4N0A8gxESERWcZVgMzLtLx2YgmdD1kG+4D2tsjvDnZhq83u+Xvud
+	EEK2VoqQRasyh0mWEr6LKErUqXEQHyiUOFRNBILK8A5sQ+xSGkoDaxwmfcwupMxv6X3U1rF/G1b
+	pJuiTlyjcSugB2V7L0o2UFiI1aL/t7OcZNggSWA2syEIdpWFg7WiO72mzWM7N3aIS1MFy1+phK8
+	11UxVt2WfQKdPysIMaIrnq9HA3JyVgP3gA/cwHV5ulKa99K6+9M80f48YD3tFJ3XL0Sol+4sSgE
+	b5NinHipfbB+wAHKtb4TFi19Q4WGOobrDMUSTcOcrcNBlcGS2AIg1KfDPpLCX0XeAQtV2D4GEnL
+	mZ6OjQmtAZFbi1dLqyHpACUNC36rBY22S8b4u+lEZUOJEczxVmNlsUK24C1yZ2pIxdj+K/lPmNa
+	lXOuk/Z5CyGjrqaCmTSpl+oyrS0UFqyDRhvrx4iyM4fcMsM0OvPeNkrTQs=
+X-Received: by 2002:a53:ce92:0:b0:66c:c638:8e88 with SMTP id 956f58d0204a3-66fb58dcc41mr7649439d50.2.1788949092561;
+        Wed, 09 Sep 2026 03:18:12 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48d6ea5sm12216161d50.7.2026.09.09.03.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 03:18:11 -0700 (PDT)
+Date: Wed, 9 Sep 2026 03:18:07 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 18/26] mm/fbatch: remove lru_add_drain() and _all() calls
+ from various
+In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+Message-ID: <3af1563f-1db3-5974-659a-41463ad7a4c9@google.com>
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/19] selftests/mm: scale khugepaged's collapse wait
- with the PMD size
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- rppt@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
- nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
- kernel-team@meta.com
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-4-kirill@shutemov.name>
- <6ac7ea7d-38ae-45eb-8d98-f626951a43cd@linux.alibaba.com>
- <aqEvyYMGaPiyW_Tt@thinkstation>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aqEvyYMGaPiyW_Tt@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C935740004
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 299F3100002
+X-Stat-Signature: x884tq18jfog3cpag9f5yo484h33ayx4
 X-Rspam-User: 
-X-Stat-Signature: bgqwkymny3kexizuw6fz8zb7ef474b3p
-X-HE-Tag: 1788949039-790806
-X-HE-Meta: U2FsdGVkX18F0TIW9sDjimrutdvKb7A9plsAij0da2EzZnmcOSRCaanTTZTaCrgi11UI4w1usKMlxLIjFtv0v5ItuL1k1kNwVTnshUaSJzDT1th8l8nhhKtVrjA+4CMvUKJwu4l8riqy0WrJpEJzUPX//hPu/tbqrd4R3GFsxQZHuTQ28qq2NaY5sqYQeuaMBc6o8GUKGEXn5h0q1JKeN8KSoYOOKH0+4noXH1lVX4RzxI6iomWR+RL5JAGFpO++izYuSc3+wLBaEPXfn6QEl6BS8LEKOsWBvgLGl8R1koa23zDbYupmDF/VLt9IBp+qDlIVWJsGUdLCHsIYOYBrK2bPlG3k8Upq4QaizO2sRQa4mn0toTKtySwN6fTcUXnSzRWOBUpwqxcpP2/LLUFEq0e3dOPHvWtVzRR76Vk912XPGSpuKn0FCZjHyKCtcx04SbXEUdqmpBBH0G0o+iQvslcRL/gucc6KwIlj4+7EQVP/E3yvrDGICjQQHdKkEdy/KjMxg/fwXghodf4xRUaYiQAhd9+IePwS/JYspweWki4ZkffMSsU90Uh0ZtrOZxCocrEkaPjUaRzF12hKv3ueoDdN4yToo+LgG0fi7sXjohkSIU8AgMgq/WiFC9kInrQaBeeM+ZIqikv4rEc8RHFy2d7udV3qU3sl6nH3BiexsG4i9W/jT1kYPAsYqYzFxH3HLura8zZhJ+IFJE4RMByuLqPGusaSOJEBGBSdrlH2vltV9587upQBqVG4npqCoR//9F4YdvKwOBbhXtlFHNaVhpF4Jfjom8vgtLh1GUuIZShgiE7ZpATamDBOvks24qO7nI4HcapVNXsxYuPkfm8lxF/Ci1ZPVzhXurm62wqaPrM4CRupSnvX2n96+qsu6R6TW5h7XH1IBVswImxyNxyiohBQqEX29q2e0OJrhYrpe2OrU1LVKXCOa8saDhvv5ttz74t3vnKMBF3n4GMTnHE
- 1FBTD/0a
- BwkorNi8qMpwbTn9H5iKFgIwEBVeLfir5wq9axHyJoNYpjCfQPx6AN4GKYKXONpe3zmlIskD9UJIjR9a72jcGnWVVwtJZpHgML3En8/SdWNp+mEwi1Qrv0L194tpE+USzSYoUmkRaQIjm24OOPw8aSDtHcT4AGt4f+wE8uVwSZpegi/qwBDGBuYa4v0r/g6zGyof2Brb670EpF60X5vF9M9EYGIMnMOkF+HMq2a8JFLxshXsLpo+BoXla5PmcXaMKzWwNThoNoRg03C29VcOqwhReTG5zzcPIdHI40WldB9Q9fMXrA10Ra0Cn6l0VfzE3Xd7nSQwVEo7yZXcm+DRKrt2O+SBruj74IZNAxpUZRKtWjOx0EqUO2Lkw5aAuZ9+Yd2D5oOCE9x6c/619s2ZaJefNOA==
+X-HE-Tag: 1788949094-964429
+X-HE-Meta: U2FsdGVkX18J4JWCCj4O0n4ZXvXjRGVUQLzOqG/uo9Y36xcEA3+642mvE5/4IRisDkeLNuRd02OMwx50j9HxV3jldMd9URdRA9yQJbn+BbV9Qse/qq5JSr3SLPIRJByZog80d0nrmywBYGL3O4Xl8JEF+4TZ6Nk7Uoxh8arCzCmHml+BfIfJiKM0cyvkQmS0fBSs/NwCdXERnI1L5+CXy4J5lMhV6Gf0dFUnU3ltkRoWn4bZwsBR9KyYlLkxinkcUhlorWkXYAScKZv10H8laFh+ToJOPR32g/KKOWXt4187oPyBj0oSB7H0ERNTSXOGPMqjY7H4LIuBEV3USiUa+6xJCuSDO2k5FkBNnl6wGoWos586I7fH9KwRpSyGhCInCwwz1/PhqECh3fnkvzM55KaL1tTIMZxAdtV7sapNlCiVfkmNPN++anrtsM5nnnLajY+yNNO+gFlO158IYoPPX1IZv+7r2gxz4gNABC4X9etln+8W88LwOAan5Ytz9cX7+/ks5bpIHvyv8Spo7C6pTDKunQGF/qo6qkHHgcvYAVKvbF1PfIvsDonWby/dYVt9Xh1e/E5dgAAn8zHf61iX2DlkQSuA2IIRIixJHUVaKC8LoAKdsUXnMAPofKG5SXJg0fBf06/bPbSdlcL3AGL8Qcrrqn84vYYhEsbsPO8g9T8d1LP5GALEZaQSCN4Z8DJAA3KTppdr/w/Bmbww/xpjhoJ4hYhoVbxCykJAn1G2E3Ci6JINRQQ3qQ6cQTVp/juwBdB+RMkIVzOXXLYKInmv6CludfPtqlRGICoershzVIFOgsCrJPAX5SJjHZNsBAELny3liIatkICoG0seKt5grNJnpJopR2RfsQbgTBqrQNwNYw39458S6OSJZ9zYLsViQs0jVnhRnKiJcaTN4gYjrNRmFkXY3j3T9Cph8MxBA68SPn2CuGe2LejpssVTOPWPwcLtU6sYauoAcOotNnO
+ /K82+W+k
+ dt49Tf42K7PyTa8t9BW9U6dhMu6ZE5dKgPGESohrGEDRjwDOKkNy6IWy0/lTa6fSNvHzQi+f5t6lfQTOLeG7TqeaNKtGgwBQj30Po9x/ae51NaNJgQquwsIfwiTGsHFzDbkrzIW7MP3ezv99CpjtJtHirYXZMpRMIb7o8MdqZzwWja97tcOrbAH8CADXVE7+tqfHDthEX0M8u5LjCMyjAPUTT2MurESU7/A8aCEry2bAtwDSqVRxLg/AqaJh7kWEgjoSGacI27lp2xftaAUFQoSVofaJX+62pZrcUzwUdcoCjPFo7LxoZOBshjPMjfIUl/QgoRBMaw7WMo/A9Zi5amEM3m1oXsdwaE3a4fvybk8h+JZn/DOzLiA/SuMtXDwgnUDbzhMnt0gSzZLtcT2aCBEAnny1NIMXJF4Iok7h1kmnpFLj540HXTG9BS7fQIG8ZnkWGGFz9u2Wxc/7ms0W3Spkn4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +143,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Splitting into little patches gets tedious: now that folios on per-cpu
+fbatches no longer hold an extra reference (and have the lru flag set),
+most calls to lru_add_drain(), and more importantly lru_add_drain_all(),
+should be removed.
 
+Remove lru_add_drain() from compact_zone().
+Remove lru_add_drain_all() from compact_nodes() and compact_store().
+Keep lru_add_drain_cpu_zone() in compact_zone(): it was always a bit of
+a hack, a cheap way to get a local_lock() around pcp drain_pages_zone().
 
-On 9/9/26 6:09 PM, Kiryl Shutsemau wrote:
-> On Wed, Sep 09, 2026 at 03:59:37PM +0800, Baolin Wang wrote:
->>
->>
->> On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
->>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>>
->>> wait_for_scan() gives every case the same three seconds, whatever the huge
->>> page costs to build.  collapse_full() asks for four of them: 8M at a 2M
->>> PMD, but 2G at a 512M PMD -- arm64 with 64K base pages.  Three seconds is
->>> thin at that size, and the case has reported a failure for a collapse that
->>> was still going.
->>>
->>> The timeout is a ceiling on a poll loop, not a sleep: the loop stops as
->>> soon as ops->check_huge() sees the collapse, or as soon as full_scans has
->>> advanced by two.  Raising it costs a passing case nothing.  Across 80 runs
->>> of collapse_full() on arm64 with 64K pages the wait was half a second in
->>> 73 of them, with a tail to two seconds.
->>>
->>> Keep three seconds as the floor and add a second per 128M collapsed.  A 2M
->>> PMD is unchanged, so x86-64 is too; a 512M PMD gets 19 seconds.
->>>
->>> On arm64 with 64K pages a passing ./khugepaged all:anon takes 49 seconds
->>> under TCG before and after this change.
->>>
->>> Assisted-by: LLM
->>> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>> ---
->>>    tools/testing/selftests/mm/khugepaged.c | 7 +++++--
->>>    1 file changed, 5 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
->>> index 1ca7c6978571..48e0040d53b4 100644
->>> --- a/tools/testing/selftests/mm/khugepaged.c
->>> +++ b/tools/testing/selftests/mm/khugepaged.c
->>> @@ -556,8 +556,11 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
->>>    		int nr_hpages, int collap_order, struct mem_ops *ops)
->>>    {
->>>    	unsigned long hpage_size = page_size << collap_order;
->>> -	int full_scans;
->>> -	int timeout = 6; /* 3 seconds */
->>> +	unsigned long bytes = (unsigned long)nr_hpages * hpage_size;
->>
->> We already pass in the 'len' parameter, and its size is also 'nr_hpages *
->> hpage_size", so you can drop the 'bytes' variable. With that,
-> 
-> They are the same for the PMD contexts, but not for mthp_khugepaged:
-> mthp_khugepaged_collapse() passes len = hpage_pmd_size, the range scanned,
-> while nr_hpages is the number of folios asked for.  collapse_single_mthp()
-> asks for one order-N folio in a whole PMD.
-> 
-> That matters on arm64 with 64K pages, where the PMD is 512M: with len the
-> single-mTHP case would wait up to 7 seconds for one folio, with
-> nr_hpages * hpage_size it gets the 3 second floor.  The budget should
-> follow what gets built, not what gets scanned, so I would keep it.
+Remove lru_add_drain() and lru_add_drain_all() from generic_fadvise(
+POSIX_FADV_DONTNEED), but still retry once on failure; remove outdated
+comment line from mapping_try_invalidate().
 
-OK. Got it. Thanks.
+Remove every lru_add_drain() and lru_add_drain_all() from khugepaged.c.
 
-> Does the Reviewed-by stand with that?
+Remove lru_add_drain_all() from KSM's scan_get_next_rmap_item() restart.
 
-Yes. Please keep my reviewed tag.
+Remove lru_add_drain() from wp_can_reuse_anon_folio() and do_swap_page().
+
+Remove lru_add_drain(), lru_add_drain_all() from migrate_device_unmap().
+
+Keep lru_add_drain()s in mm/gup.c populate_vma_page_range() and
+faultin_page_range(): good housekeeping after a bulk operation.
+
+Keep lru_add_drain()s in mm/madvise.c: the ones after a bulk op probably
+do want to "Push any new pages onto the LRU now", and update the stats;
+the ones before a bulk op may be trying to stabilize initial conditions,
+or to minimize draining under ptlock.
+
+Keep lru_add_drain_all() in memcg-v1's mem_cgroup_force_empty():
+it probably does want to push onto the LRU and update the stats.
+
+Keep lru_add_drain() after bulk op in mlock_vma_pages_range(), partly
+for "Unevictable kB" accuracy; but remove the lru_add_drain() before it.
+
+Keep lru_add_drain()s in swap_cluster_readahead(), swap_vma_readahead():
+they do want to "Push any new pages onto the LRU now" (akpm 2.5.46).
+
+Keep lru_add_drain()s and lru_add_drain_all() throughout mm/vmscan.c:
+it works on LRUs, so it does need folios to be on an actual LRU.
+
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/compaction.c     | 12 +-----------
+ mm/fadvise.c        | 17 +----------------
+ mm/khugepaged.c     | 11 -----------
+ mm/ksm.c            | 12 ------------
+ mm/memory.c         | 14 ++------------
+ mm/migrate_device.c |  9 ---------
+ mm/mlock.c          |  1 -
+ mm/truncate.c       |  1 -
+ 8 files changed, 4 insertions(+), 73 deletions(-)
+
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 1290b9170cb2..5944094253b0 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2652,9 +2652,6 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ 
+ 	trace_mm_compaction_begin(cc, start_pfn, end_pfn, sync);
+ 
+-	/* lru_add_drain_all could be expensive with involving other CPUs */
+-	lru_add_drain();
+-
+ 	while ((ret = compact_finished(cc)) == COMPACT_CONTINUE) {
+ 		int err;
+ 		unsigned long iteration_start_pfn = cc->migrate_pfn;
+@@ -2969,9 +2966,6 @@ static int compact_nodes(void)
+ {
+ 	int ret, nid;
+ 
+-	/* Flush pending updates to the LRU lists */
+-	lru_add_drain_all();
+-
+ 	for_each_online_node(nid) {
+ 		ret = compact_node(NODE_DATA(nid), false);
+ 		if (ret)
+@@ -3036,12 +3030,8 @@ static ssize_t compact_store(struct device *dev,
+ {
+ 	int nid = dev->id;
+ 
+-	if (nid >= 0 && nid < nr_node_ids && node_online(nid)) {
+-		/* Flush pending updates to the LRU lists */
+-		lru_add_drain_all();
+-
++	if (nid >= 0 && nid < nr_node_ids && node_online(nid))
+ 		compact_node(NODE_DATA(nid), false);
+-	}
+ 
+ 	return count;
+ }
+diff --git a/mm/fadvise.c b/mm/fadvise.c
+index b63fe21416ff..f788a5020384 100644
+--- a/mm/fadvise.c
++++ b/mm/fadvise.c
+@@ -143,27 +143,12 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
+ 		if (end_index >= start_index) {
+ 			unsigned long nr_failed = 0;
+ 
+-			/*
+-			 * It's common to FADV_DONTNEED right after
+-			 * the read or write that instantiates the
+-			 * pages, in which case there will be some
+-			 * sitting on the local LRU cache. Try to
+-			 * avoid the expensive remote drain and the
+-			 * second cache tree walk below by flushing
+-			 * them out right away.
+-			 */
+-			lru_add_drain();
+-
+ 			mapping_try_invalidate(mapping, start_index, end_index,
+ 					&nr_failed);
+-
+ 			/*
+-			 * The failures may be due to the folio being
+-			 * in the LRU cache of a remote CPU. Drain all
+-			 * caches and try again.
++			 * Retry if any failures, in case they were transient.
+ 			 */
+ 			if (nr_failed) {
+-				lru_add_drain_all();
+ 				invalidate_mapping_pages(mapping, start_index,
+ 						end_index);
+ 			}
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 75639298efc2..d09f848d3591 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1236,10 +1236,6 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
+ 	if (pte)
+ 		pte_unmap(pte);
+ 
+-	/* Drain LRU cache to remove extra pin on the swapped in pages */
+-	if (swapped_in)
+-		lru_add_drain();
+-
+ 	result = SCAN_SUCCEED;
+ out:
+ 	trace_mm_collapse_huge_page_swapin(mm, swapped_in, referenced, result,
+@@ -2320,8 +2316,6 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 					result = SCAN_FAIL;
+ 					goto xa_unlocked;
+ 				}
+-				/* drain lru cache to help folio_isolate_lru() */
+-				lru_add_drain();
+ 			} else if (folio_trylock(folio)) {
+ 				folio_get(folio);
+ 				xas_unlock_irq(&xas);
+@@ -2335,8 +2329,6 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 				page_cache_sync_readahead(mapping, &file->f_ra,
+ 							  file, index,
+ 							  end - index);
+-				/* drain lru cache to help folio_isolate_lru() */
+-				lru_add_drain();
+ 				folio = filemap_lock_folio(mapping, index);
+ 				if (IS_ERR(folio)) {
+ 					result = SCAN_FAIL;
+@@ -2975,8 +2967,6 @@ static void khugepaged_do_scan(struct collapse_control *cc)
+ 	bool wait = true;
+ 	enum scan_result result = SCAN_SUCCEED;
+ 
+-	lru_add_drain_all();
+-
+ 	cc->progress = 0;
+ 	while (true) {
+ 		cond_resched();
+@@ -3208,7 +3198,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	cc->progress = 0;
+ 
+ 	mmgrab(mm);
+-	lru_add_drain_all();
+ 
+ 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+ 		enum scan_result result = SCAN_FAIL;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 49d48d1e0998..890e2c51106d 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2625,18 +2625,6 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		advisor_start_scan();
+ 		trace_ksm_start_scan(ksm_scan.seqnr, ksm_rmap_items);
+ 
+-		/*
+-		 * A number of pages can hang around indefinitely in per-cpu
+-		 * LRU cache, raised page count preventing write_protect_page
+-		 * from merging them.  Though it doesn't really matter much,
+-		 * it is puzzling to see some stuck in pages_volatile until
+-		 * other activity jostles them out, and they also prevented
+-		 * LTP's KSM test from succeeding deterministically; so drain
+-		 * them here (here rather than on entry to ksm_do_scan(),
+-		 * so we don't IPI too often when pages_to_scan is set low).
+-		 */
+-		lru_add_drain_all();
+-
+ 		/*
+ 		 * Whereas stale stable_nodes on the stable_tree itself
+ 		 * get pruned in the regular course of stable_tree_search(),
+diff --git a/mm/memory.c b/mm/memory.c
+index 8b0c2c735d3d..e9e2199ba5e9 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4313,9 +4313,6 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 				    struct vm_area_struct *vma)
+ {
+-	const bool maybe_in_lru_cache = !folio_test_lru(folio);
+-	const bool in_swapcache = folio_test_swapcache(folio);
+-
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && folio_test_large(folio))
+ 		return __wp_can_reuse_large_anon_folio(folio, vma);
+ 
+@@ -4326,16 +4323,9 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 	 *
+ 	 * KSM doesn't necessarily raise the folio refcount.
+ 	 */
+-	if (folio_test_ksm(folio) ||
+-	    folio_ref_count(folio) > 1 + maybe_in_lru_cache + in_swapcache)
++	if (folio_test_ksm(folio))
+ 		return false;
+-	if (maybe_in_lru_cache)
+-		/*
+-		 * We cannot easily detect+handle references from
+-		 * remote LRU caches or references to LRU folios.
+-		 */
+-		lru_add_drain();
+-	if (folio_ref_count(folio) > 1 + in_swapcache)
++	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
+ 		return false;
+ 	if (!folio_trylock(folio))
+ 		return false;
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 009bfa8b212d..7ece4ca0654a 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -575,11 +575,8 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
+ 	struct folio *fault_folio = fault_page ?
+ 		page_folio(fault_page) : NULL;
+ 	unsigned long i, restore = 0;
+-	bool allow_drain = true;
+ 	unsigned long unmapped = 0;
+ 
+-	lru_add_drain();
+-
+ 	for (i = 0; i < npages; ) {
+ 		struct page *page = migrate_pfn_to_page(src_pfns[i]);
+ 		struct folio *folio;
+@@ -600,12 +597,6 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
+ 
+ 		/* ZONE_DEVICE folios are not on LRU */
+ 		if (!folio_is_zone_device(folio)) {
+-			if (!folio_test_lru(folio) && allow_drain) {
+-				/* Drain CPU's lru cache */
+-				lru_add_drain_all();
+-				allow_drain = false;
+-			}
+-
+ 			if (!folio_isolate_lru(folio)) {
+ 				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+ 				restore++;
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 97134eff6b56..971430e6251e 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -424,7 +424,6 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+ 	vma_start_write(vma);
+ 	vma_flags_reset_once(vma, new_vma_flags);
+ 
+-	lru_add_drain();
+ 	walk_page_range_vma(vma, start, end, &mlock_walk_ops, NULL);
+ 	lru_add_drain();
+ 
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 4151f7a167e3..7ea5d513f76a 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -571,7 +571,6 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ 			 */
+ 			if (!ret) {
+ 				deactivate_file_folio(folio);
+-				/* Likely in the lru cache of a remote CPU */
+ 				if (nr_failed)
+ 					(*nr_failed)++;
+ 			}
+-- 
+2.51.0
+
 
