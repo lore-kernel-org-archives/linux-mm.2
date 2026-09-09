@@ -4,97 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57F6DC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34375C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 22:14:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 704156B008A; Wed,  9 Sep 2026 17:56:39 -0400 (EDT)
+	id C2FEA6B008A; Wed,  9 Sep 2026 18:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5186B00A0; Wed,  9 Sep 2026 17:56:39 -0400 (EDT)
+	id BC0256B008C; Wed,  9 Sep 2026 18:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F1EB6B00A1; Wed,  9 Sep 2026 17:56:39 -0400 (EDT)
+	id AA9E46B0092; Wed,  9 Sep 2026 18:14:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41F276B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:56:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAA661601F3
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:56:38 +0000 (UTC)
-X-FDA: 85195583676.22.8644BE2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DF59140003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:56:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RaoWBPZU;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 744796B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:14:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C21061A0376
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:14:40 +0000 (UTC)
+X-FDA: 85195629120.11.4CD8B0C
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DF27440007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:14:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Q/AiMuBB";
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788990996;
+	s=arc-20220608; t=1788992078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=9c2KME4UizAQchKXSOTOeJLr1Iyu5g05ePM082XYKVA=;
-	b=BIRi4mD0sky4xuzEslXd5Hx0/dVXRnuGI0tvpQpVOD5rIEH5wZFRZPMZ4YWPZ3NKN/dqkf
-	F/1AAex8UBFdAq8XRMb3NE3xbDGwttGLbNhf4mEXm6Z6Tr/oYcJHCDRVOoffVd9QifP/Gy
-	TD/TNjCIwRBv3JY/4RVsBINvkrB1Kis=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C5NkJw6oWjdsiphJVaybRhCdoPAeWbsi0cRS0OiEPYM=;
+	b=3rymPBR3CVYQHcvCFgdoEN7qU6aDw136c5lGcTemRtiXfPrJgTp/KTsOo8QYphgHhf9lO/
+	Apbenkaw199Wi7ILoeUPcPtzjhUsoD2YT8GDJL+/4CzkiOjg4ZDUpR5LHamdYv/E2wAqRN
+	O8gW5d8wpMJDcajjO2+g3vqCXITkSGs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RaoWBPZU;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Q/AiMuBB";
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788990996;
-	b=3FdkuxKz7xB/PuwowgNc6m0XHbJCa0en7SN0qoZEgb3yazkPaG03nk+x+dAxnRGjCWzRlC
-	3bvle2nL3JMRAlRX8XpTf7pRdxhkD+tkBfmWhKkGweGgMu49OvFPKhrE/0Q3fFB6ZGdd8p
-	2hSheByxcHA5e+IYrEpdVlvMLZjIaZs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788990996; x=1820526996;
-  h=date:from:to:cc:subject:message-id;
-  bh=FfcwknCvOB14lwM6tB+YRx4KGEn8x/b3vHavrs0EThc=;
-  b=RaoWBPZUPew33dp0LH5xzqT2aApD69LAbKavrCkaOXkpAzLpgRnRa1AN
-   KV0l58+/o8q2X2bd6HIDM6Yjn9TicwND57SBNNAqzdYDsi5zyFbuTdw9N
-   Dma0stCEQQn5GJ+amUTheTdKnll7zg69BK5EPWyedDOz77MeYIfssP3il
-   PM46IcZHIPQ5EvpGJdPyrveeDJcfdg9ZJUa03rNxrVKO1PhLGl+Q50oyR
-   fKs8Ve2XNUs+7W6qY9SeZXfCoZfNqf0Abca3TgrzgZZ2Y/+1qAKHuPAtI
-   nnXYeBcdhYX62/+EfDnGmUFIz3qo09M1kkcKwBxKmZQY0Mh4A7P7ejfJN
-   w==;
-X-CSE-ConnectionGUID: 3Z4vNB6MRD2hkDpP+Q4C8A==
-X-CSE-MsgGUID: oA+X5435QP+Um7jSgH31Rg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89449337"
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="89449337"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 14:56:35 -0700
-X-CSE-ConnectionGUID: Snj2jEi4QeuWOhXtZogyJw==
-X-CSE-MsgGUID: pp+WCcJYSwCjka1r3bQ+7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="275583826"
-Received: from lkp-server01.sh.intel.com (HELO a3e91e2cf319) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 09 Sep 2026 14:56:34 -0700
-Received: from kbuild by a3e91e2cf319 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x4QHO-000000000z2-2sFx;
-	Wed, 09 Sep 2026 21:56:30 +0000
-Date: Thu, 10 Sep 2026 05:56:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD REGRESSION
- 0bffe67ab8a72b3725cc31c4b525709bd3a3e223
-Message-ID: <202609100517.0DrzxrW4-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DF59140003
-X-Stat-Signature: n9ziknrdojhwfmefzqupgukwq7pkoaz6
+	t=1788992078;
+	b=cXT3DhY4AjFibp0oJb4Nhp5UqOuVFFVrK4YJuCQRtoKOTcLxOB3v1eg5vLbMmLKJX1YxKD
+	HlXcqKQjzZdHQICpmhVFTbQK9lOX564XpHZJZEFKDcNUnWmTlKB+s3G0vV+pL29j6pMwvu
+	u5hMHvmj4dP13l7cRZxVbY1fQG2p93g=
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc6db0aso9977366d6.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 15:14:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1788992078; x=1789596878; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C5NkJw6oWjdsiphJVaybRhCdoPAeWbsi0cRS0OiEPYM=;
+        b=Q/AiMuBBTne+ulBBiGxwm9R9xdkF22Fe7TpsbuVu+yDDMohGO0TBeSJb8X95ExAaQc
+         S3S4e3XNm2GFi4BJBMRrlNridxjKsRQCeQB72ZztzteTW1eGoOzNdUENI6wWyzWLIIjS
+         gdVVbUrXoTFFOQehPPpLstws4PI1/7Soh9T4gAA8oSQLG+4Uw5r73KnFQLR9NRsVSyV2
+         nkntcOzyn+HzFe33P6qUWeB8csirLt0xMWu06rnCXQ7suQKioRWGVEQTRapKv/7mdgqY
+         M/F/a2D3+3OeHKEJjNS+63cNG6IBBcwur5ow8ir9vwuJu8NSQ5veHuwbAQeen8YRwFUt
+         7I1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788992078; x=1789596878;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C5NkJw6oWjdsiphJVaybRhCdoPAeWbsi0cRS0OiEPYM=;
+        b=tNUQ9k8kQsVb3cLPQNDIsdFM/hviTtxyPikxHB9FAg2gca1VpdyVimVzbOvG8tWalE
+         lG0Yvp0YnxNOuCZxJVvvCUc8V+ubF+mfeMifZsaawOzEitbDgUFFllkysUGdOiiCSjIW
+         JDWy8iS3JMExZRKxaHrSVUVs+OPGuqan72blm+lFfzT9hQ62FP6ndrr5kAvex1Vz+SGN
+         jndZgnGhnCRJEHsnvuhGKaVL41veRKM+eyq1+heb+qOy8zvYj1arSvRZNfxB9bTdHK4J
+         foVI/zv9p+47Z5RwsP5OXCD/NAYzJZvBnGAEiJHX9yNq9zN6sOOGYvj5zLlF6ZL4CrqK
+         42gA==
+X-Forwarded-Encrypted: i=1; AKwUvBwIbBNzWNnlJAmYGQrZMPNd4A+dDtyIhp8d+DRAXhQtbRTHRfsYJYoOiNgS3aRKuRf1hMHfBEfZOw==@kvack.org
+X-Gm-Message-State: AFuF++mKud3exx5vSCSnhIoMDLKXgF/bcFzqKhu9ub+DYo9watP9fm7Z
+	HXsGOnWmDN6ENEovZ+uZMhnTYJzJdWplDTEULX1ft61d4oZl3uLsHMyEtpgEhjxQjxI=
+X-Gm-Gg: AYBFou3IdvDTqEO7skBOGvD1mPFEfDwL/fnvgmpm6/JMmhx1V53mk5SdWuVsQRiTR5j
+	eXyHgRRxrg3aO4kNqX58PH9E7qccYZgE4nR9noqAQWBGhOXgb3Rp+BGTOsk7iOLpxR/6SLeE/lR
+	c8Jcn+otGKMye/GPLRODx8j7/1HYf+7jcPH0FGS1YbufnJZ6Dcy5tBE8dDbhrR0dfhv5pkHqxZa
+	IFab//jYVLxnxRLnIR3L8JlzJYN33/5kvH6Z3hnbhhy4jh/LUD5/0niy8NSI5TMIxi+7ZxiRxUb
+	/lxcNQfw63PRXjouB4EdrxyCEr+VtN0gSchOrEWREHIJxBwzr1ezXg0IejpOGAaWvaXyehqLMtz
+	d3mj5lDBh1wwQQroeGy2q80QeQjF8lAMcJXc3Odxt0+W4kLygbNNc7W23vO7o9DsYciH91XZSzG
+	xG2zg3oRjFHqbnbwYZbsoQ1SFvD0pUJKKuWg090xPifhVLRYc1zshKS2aBfPGyyesbCyDv4uZJf
+	fqNgO+ChQtxf6zx3YqGYrCdnJ4uqsPq5ahVKtCWNagbXzS+s12Fwrk=
+X-Received: by 2002:a05:6214:761:b0:8f2:fbb1:cec4 with SMTP id 6a1803df08f44-910d104c019mr49748076d6.19.1788992077664;
+        Wed, 09 Sep 2026 15:14:37 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406475f5sm151951376d6.9.2026.09.09.15.14.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 15:14:36 -0700 (PDT)
+Date: Wed, 9 Sep 2026 18:14:33 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>, Ye Liu <ye.liu@linux.dev>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>, Michal Hocko <mhocko@suse.com>, 
+	mic@digikod.net, david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	gnoack3000@gmail.com, ljs@kernel.org, sj@kernel.org, rientjes@google.com, 
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, 
+	tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org, lance.yang@linux.dev, 
+	pmladek@suse.com, longman@redhat.com, mathieu.desnoyers@efficios.com, 
+	jiangshanlai@gmail.com, qiang.zhang@linux.dev, dietmar.eggemann@arm.com, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, mark.rutland@arm.com, 
+	Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
+ for_each_*_rculock
+Message-ID: <aqHZ7lZQnugGJ0ig@gourry-fedora-PF4VCD3F>
+References: <20260907081334.1152889-1-ye.liu@linux.dev>
+ <20260907081334.1152889-6-ye.liu@linux.dev>
+ <ap7dC-LWNaoPYJvv@gourry-fedora-PF4VCD3F>
+ <ap76-0-hN6CAcYXX@redhat.com>
+ <ap8mgnpE7D4TTrno@gourry-fedora-PF4VCD3F>
+ <ap8yoW37GY17pHYS@redhat.com>
+ <e618ace1-6a8b-42c5-8a97-44b39dd1a7c7@amd.com>
+ <ap-spMNyMvYFga5k@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ap-spMNyMvYFga5k@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1788990995-977014
-X-HE-Meta: U2FsdGVkX18lDDakbp2vi1PrwN3HoWLnEENmzbs1m0GsWDmobp28yHWpzzFKwOgh9uZC/qR0bwRXOe65/EOoogmA2YZ4p6jlW9bZynlB4yC7lWacS4og1zk2rNGcXrifmZiJyDD5sSmBsN13XxninBglfNLDqTsc1MmqD0lnqz1cXA/NMQmIJAqk0PeQ1oh1HHXpIOqlI7jT7/bGA9bKxJu1gl3j2I2V0RHLIbJpnas60zafX8o+NPZP+ub9pP6ZaGECYFSDa+BGpZWGTFDXAsi2DgNTSvmqDCBdn9JiJRgOw9WNE2/MGYcTGtxhmivrbfUEDz+iINi6kcJtvJkcF8vFxyWBW9SNWq+x9UPHrX2cNX3FnZ5B9LGkpVgRAVT8Ud06EO0wVM7Fr+nT47vi8w56W2wgxtaNvHUXL2R4jDYvHMA7RZrOhm15lUBNmVj1stx/ghSwRUiPMhDL6KFqJv//4xqOR6D8XcoTyEYlqSrh/JYfcGJn3k9/SKZZEKVuA4C4sfacIVuxelVyhpRoxr2bwdsMCnGCUwv3jPFrz4I3NFT09O6zdVUuKPLO6Kbtp2iPctckiChqWN0fOzHIODis7AEw60GxFPA3LKQDA16G0OAmx6uCxCPhQMhNEHNGGEK7K/VVl0jJbCk4fny2gNuNkScH++BbzA4jy+2LgfKCIBB+HJgiZT0AFLDa0AVCpWVUUUdMRGOSSTZfMOC+pJEnuzFG6Dm35SVI/9MamE3m5myxiw9C9O8qoqdQGLgTHXPkbEqkEqz52sSQTkoRrbUFjxKxXFh8PDzTVxfjeXA1mKZ0WDSOaQwUILhc51PybjVRDaYN1PRXra9hKOZN7pIxKXaA1o2vlX5cOIyXOUMCqwc0+7Dc+3PRTfw//yhlSCukGeScHS/XKx/HZJzfEWsyBUY+vbIVM/J29vcp4UVud5X+5Z++WVjMPn+tDDTJIdJBeX4NWY8fUGyJfms
- 2VreZCPf
- 2fQJ04TcHoFMgJRpAzIidAyTWGs7HsjySW8QfDVLNZj4tLZdERFmBND45nfRztEllBgf9+7q8svsUH6FaAdWkVnTvhi5MjfI7vSGL9Kz99Lm5pMKqaQv8tCr9FkIneOY+hPR2TGpWcBRJ8Xn+NbwULc6Ohks4dUlaZlM+6678eco5aWapRv6aWgvIGC6XoWcL7/h5b7+GfNb8e6csBC/hlHuEdx8RG2X49ZBt
+X-Stat-Signature: iboctftp4j1x9e5m1pqzxoao495p7y7n
+X-Rspamd-Queue-Id: DF27440007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788992078-289586
+X-HE-Meta: U2FsdGVkX1/D9A8tG4QZNIkAQQcoPG4vBidUJlovYWX47aaMN+wYKr5+YxwuDahOmM9XMUtlZFa1OmuJclipAdkps0sdjpb/7Jxnhk9XRSa9IPtbiVtjgTedXwUFOLmzsyOVjXfWhhLVOFEEHGHIwm1DSO/cQE1vNKHpN43iS1y7mU494BiDPpcKSy2KoXEinvMK6Ib84Vkw9K30NEYcX6qqZyIbNPC/OeWF9stje6CKjYCfLidqU8necoH6veTVHXcEM0GIWzESdSNmpbISQ2wDkfnZHVbwju5gHL30NTm2LBihDaT0q1nkXP0AF0RiucBBURisNM+cA5Y3kpfQC7wCo4Pkd41VYCbz5cVYCv9PN/EnQGVjKeLP6xdYlC30do94xC5+Q5QJnguicDOdqoUoySL/0cj5Zc6fEgvOctzHqchFax6jbUs+YW3i2fmYXGlnBFgYkTiGeEH6USfUXLWcEH+Ip/DfBM2IkjFGqbtM67HSpqC9mXaJ4WAlsJLqChK7r6EHCl45/jxpgMYpZRY4TDWrOTgef0JvEqrA6L8/NE9ubeALsDeD9Cq9J+G6xVD6LYxxvxx56V9fudKC5IOWDfkPa2xBrDGZkpVnygfwkFE9C6bY9FsiJ4o+P6HPr2Bg4CSk4lni299NTEHtmh9LRytIptZisYWBCpN6+lDqFuFezKTXNsAiJc4FY/WpZQ78eKSTi5LyJoj/6oo6f5f68RH7F1GL0BKufg7tZGdUCFRZAqwiSJtR0SCpehpGvrIftdj7sEWWUU4gxw8AOO7uH8ZeAl3mr0FiQaDmqbgtaitNX6I5zOJ2RWhUv7ZWcrmSiDpDmlJA4XM8sOf7y0dhSvitNU8C5CxLuUt7yqBYyyIm0A0GBbwtJDXi5O+AIeWDG+cw1Tfcb4AQ91jUWsPDw44IjKZI7KImGDjtuXyPPJJI1rfaRA060nh6vxlSFgHgtYg2n4YlqG2tV/l
+ BDcwoduu
+ w6oancdOAgioJEGfUuPbaNzRiPuUu5G0yq7efAzH2X971GYZVnRZ4tTkE72nTim1wClRipnfjXSzm1EVu4q34xSszmkmY3VzerECBwBHpz8gsfk9OQepDVv+uwd6Iqv8Tb/buTPeYIqYBAscjEvyNXkuPLal1bY/cmlBycIBnl13dtRS9LsE9xjIUmq6e5Z/4RMkWtGmY44eAAFWV6yGlLye5nreokPfyqg/95HJg39ZFBG0HJMhtPe14MUJeLWvU8Brzm1BqSc1qa9JLZcpUJZ1Y6Vjch5+3TM12euUS+lfPWhBzxOfvhEcUqNFbfpXlHhri0HHyg1YBnjWhTBJC/8tcXXpHb/SHj5H3BR0FehutIqAiqf+2AmRIhdQgFw3Rmxab79uacbdWCAeLRfitip1KWDVnDu9+GIzo5N80zplPzpenbwJ+hVr3FyrO9qttub9PWKd9dwp8ipK2YVpf0//kVZUnTzgdwZ8j2MoKvhd/Drd8rQKlvZ7iPwXPytrEx7wxscfGdFFX8Nc02igH/IMGFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,102 +147,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 0bffe67ab8a72b3725cc31c4b525709bd3a3e223  mm/swap, PM: hibernate: atomically replace hibernation pin
+On Tue, Sep 08, 2026 at 08:35:16AM +0200, Oleg Nesterov wrote:
+> On 09/08, K Prateek Nayak wrote:
+> >
+> > On 9/8/2026 3:24 AM, Oleg Nesterov wrote:
+> > >> This might be my - admittedly shallow - understanding of scoped_guard,
+> > >> but does scoped guard handle goto correctly?
+> > >
+> > > Yes, it does,
+> > >
+> > >> and why it's generally discouraged to mix cleanup.h and goto.
+> > >
+> > > Hmm, why? I didn't know...
+> >
+> > Apparently older GCC would allow subtle bugs with cleanup + goto to slip
+> > by but clang has always caught those bugs and refused to compile so as
+> > long as clang builds are happy, things should be good.
+> >
+> > Here is an older explanation from Peter:
+> > https://lore.kernel.org/lkml/20260327154136.GL3739106@noisy.programming.kicks-ass.net/
+> 
+> Ah, but in this case the code is buggy, "goto unregister" jumps
+> into the scope of __free.
+> 
+> Anyway, I agree that mixing cleanup and goto can make the code
+> confusing or buggy, but this particular case still looks fine
+> to me...
+> 
 
-Error/Warning (recently discovered and may have been fixed):
+Seems jump-out is ok, thanks for the confirmation Peter.
 
-    https://lore.kernel.org/oe-kbuild-all/202609100351.ALNh2KwC-lkp@intel.com
+I do agree the general improvement is nice, but maybe worth considering
+taking cleanup.h all the way if we're going to use it - that's all.
 
-    include/linux/mmzone.h:1692:10: error: call to undeclared function 'NODE_DATA'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    include/linux/mmzone.h:1692:26: error: member reference type 'int' is not a pointer
-    include/linux/mmzone.h:1780:35: error: conflicting types for 'NODE_DATA'
+The improvement is clearly welcome.
 
-Error/Warning ids grouped by kconfigs:
-
-recent_errors
-`-- x86_64-randconfig-123-20260910
-    |-- include-linux-mmzone.h:error:call-to-undeclared-function-NODE_DATA-ISO-C99-and-later-do-not-support-implicit-function-declarations
-    |-- include-linux-mmzone.h:error:conflicting-types-for-NODE_DATA
-    `-- include-linux-mmzone.h:error:member-reference-type-int-is-not-a-pointer
-
-elapsed time: 730m
-
-configs tested: 69
-configs skipped: 0
-
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm           allnoconfig    gcc-16.1.0
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky         allmodconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    clang-24
-hexagon       allnoconfig    clang-24
-hexagon       allnoconfig    gcc-16.1.0
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386          allnoconfig    gcc-16.1.0
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-20
-loongarch     allnoconfig    gcc-16.1.0
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-microblaze   allyesconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-mips         allyesconfig    gcc-16.1.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    clang-24
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-16.1.0
-openrisc      allnoconfig    clang-24
-openrisc      allnoconfig    gcc-16.1.0
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    clang-24
-parisc        allnoconfig    gcc-16.1.0
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    clang-24
-powerpc       allnoconfig    gcc-16.1.0
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    clang-24
-riscv         allnoconfig    gcc-16.1.0
-riscv        allyesconfig    clang-24
-s390         allmodconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    clang-24
-sh            allnoconfig    gcc-16.1.0
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    clang-24
-sparc         allnoconfig    gcc-16.1.0
-sparc64      allmodconfig    clang-20
-um           allmodconfig    clang-17
-um            allnoconfig    clang-17
-um            allnoconfig    clang-24
-um           allyesconfig    gcc-14
-x86_64       allmodconfig    clang-22
-x86_64        allnoconfig    clang-22
-x86_64        allnoconfig    clang-24
-x86_64       allyesconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    clang-24
-xtensa        allnoconfig    gcc-16.1.0
-xtensa       allyesconfig    gcc-16.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+~Gregory
 
