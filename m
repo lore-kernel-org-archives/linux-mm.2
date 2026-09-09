@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D29AFC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D982C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:54:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC0AB6B009B; Wed,  9 Sep 2026 08:49:24 -0400 (EDT)
+	id 6149E6B008A; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96D56B009D; Wed,  9 Sep 2026 08:49:24 -0400 (EDT)
+	id 5C6196B008C; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DADF86B009E; Wed,  9 Sep 2026 08:49:24 -0400 (EDT)
+	id 502586B0093; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC6C6B009B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:49:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E79DA3E6E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:49:24 +0000 (UTC)
-X-FDA: 85194204648.19.D9F12E8
-Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1D8821C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:49:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="aOkZ9Z/z";
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 317836B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF6241201CC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:53:58 +0000 (UTC)
+X-FDA: 85194216156.18.1C92860
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2681A180004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:53:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5KnmFHIB;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788958162;
+	s=arc-20220608; t=1788958437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gwmrN2mYyNJNdILxjJwJqhCmxOdcDqPQvJ3lpVAOlP8=;
-	b=w92CDk2nw1JO2XxsRZx5PEMJITJivqZwAIQ+HSw76GOaKs4LHEpGwwZyymOBdJ8PLnAkDY
-	4xSoqpWX5amrBTmoLqrrqRyTwRbb5TIMd6HQlNGmNgN465+PJR76c1hrWimj2ZXWjhODNZ
-	MVTxXL8ywM6BbY6xagCl+ORHYFmxejk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788958162;
-	b=uVPOEPzlXpOP6vL9v84BQv5Iafa1BwXWrNM+jl48asg7fRTuttNr+M8XlTaikBeP7R99uY
-	76C7azLFnwa5En5V6Z/dvOTo9cgSpKwR60xRY5chPoWWez92lWfsKhIPPs+NDB569nCVlZ
-	OAHhYE34nVjLF6/nIF7G2Ogru7hKhhY=
+	bh=8zA/uvS+1bISn3KdOd6ALIL3rCXFqboQ+r31zsr//9I=;
+	b=0AZtt2xkYf74KSoGJ1WvvCEg6OYqIoxlCEGzWsAfJPUYOrKjX+SN5esycbViYhYyyabq0G
+	+h4JhEvyorw8nbkT9NBFupE6b4P8J044BA/SKiStJda1oKjNJCZ3mheD6ABxabKcOElLS/
+	X3LTQnbj5CkBTW+Ifhh0JLjlJI1kBr8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="aOkZ9Z/z";
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dGY2NR/veKXrwGFTi9kg06zDcIsbympO6hwDTaiEiaE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788958160; v=1; x=1789562960;
- b=aOkZ9Z/zGmBqs7CdSYi5drnM+J5UqK0Ra3AufNX/c8+yJZoMoPmiWDQNfQjJrn/MruH9lnMe
- pRnvQadvv89PNRdnKDErmd/bUCQomm/Wd3Se4xf44lUzqMNcxX9fpvHSzDN9beS2L58mlOKmwex
- yDSBYP9IWkx+ZqHB+SDN7uMI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id d526acdc7f8e315a;
-	Wed, 09 Sep 2026 12:49:19 +0000
-X-Mizu-Trace-ID: d526acdc7f8e315a
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH v5 04/17] mm/sparse-vmemmap: initialize shared tail
- vmemmap pages on allocation
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <f57dd255-9468-4280-8a7d-c262147e4645@kernel.org>
-Date: Wed, 9 Sep 2026 20:49:02 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C544ED19-39C8-46BC-B716-259D0C732AB4@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-5-songmuchun@bytedance.com>
- <f57dd255-9468-4280-8a7d-c262147e4645@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Stat-Signature: ai3i1bexmecz8owbama493fzszqhzoxs
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5KnmFHIB;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788958437;
+	b=jvqDKinWeQJI9hvbhEjDCXQa9lVpoMN2GjdI59FYH5CxIgbjNMiq8zLlwi+9d6/w0kzF7I
+	a6bWQ+jUy3aaBWrfCsyfrxK7MalbdPn4cwLxNyxXfUEW16pWe5oXQI0q4SJuRNDllNLoe7
+	MFB4dkuDoYlvvW1++ktbcPgNr0fRDtY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8zA/uvS+1bISn3KdOd6ALIL3rCXFqboQ+r31zsr//9I=;
+	b=5KnmFHIBmxlIxFNixOrEJndcF0glx1wdKduYlLxdq9WQnMgGLS7W5j0+XJi4i78joVt+4xHDG
+	+yTztquy5fmVwKjR1CSwG87rzsDvmMzzwpoKUe0FULPp4axLuCStnu+jziubJQWHsHUkdlHhX/G
+	QHdPKO5yGgQ1d6Z7vKgkK5U=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hg0nR5bH7z1T4Fq;
+	Wed,  9 Sep 2026 20:42:19 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7ED2C203B8;
+	Wed,  9 Sep 2026 20:53:51 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 9 Sep 2026 20:53:50 +0800
+Message-ID: <8861d061-a54d-4773-9cb6-23ae1d8c777e@huawei.com>
+Date: Wed, 9 Sep 2026 20:53:49 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: zswap: avoid unnecessary xarray lookup in
+ zswap_store()
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
+ Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
+	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>
+References: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2681A180004
+X-Stat-Signature: rdinh6iamc4tqypbxwmzijqbik5hsiz5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D8821C0003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788958161-713823
-X-HE-Meta: U2FsdGVkX1/dlrQiHCMbwKdtz7Mp3VnxmdKo2kavbDgktMseWI0c6pN5P/HsCsx1wRePQ793HAITex6AdfTM7eeGgK2R0C6+K3bmtaTLAU1jAYUfnqfe2koQC+72Jqy9YS+VVOjcOOcROiBf/u7WXYa/7+ZD0yHi6aUXcfKOYr/VfeV3PRpGLvSfIKeyg95gl+Y0KLSYPXT41M4OZSaTEBY2eliRsZVB4v3DC+nHKPETEvhE1z7DQ+R55jLjbCHVr0tpaLsOvmZDknw8us0fzYaAyhuxdVg/5S5fxLkCqDlYIJ5pXiJGerwK6+1h0flqZtxHU1ft6JpUVOb66JHGLpXvMUhJXS0VgYbr6LHNA880vABnQ86lVHYe5BuNJRA1H0iOm9avJJmEvczaaFBePdODKv9SDfnx1XElFzzHSVxOLUBDmlqAGu3Q+qRO/jxyoOC0fUnAVu1GTbJEGNBXX1eP/ss53LarffqPqRucEIXzxpMro1K2b/Itw/wi+Qhx4eq6DftorkoPd56JJ0qdr6v5tkqAiyyb7+uQFtcA9oF7xHEufQehZOq5XhSl1P9Ll7ENtLaxHZiBbkMQaLgfQZokNO0t7CuRzwwOcMRYUGH8nxaj2YpSTRBqucftfitEwAw2Bxy543dEa/pphDpeGLj4H7m++qrq37mlBh80HAUO0q5Zr+RrmjGAR5HT+MwCNFbbUTAeN1ID4K9j1NlK18xoVeX/zM+J+JFcOPOCBHBeRb/ak6R5LQg1w0m2gZehKopuALAWplXZ4CUn8sv70AygbcSgt6yudhgWBmE7/9/5cmCMR1t/19aUdWJn7q8cAVgRgvWJGSLokThvnmaWZDEye5j/DszLgm0IC2jWNBwGfr6V5+TsGlJ4v0Isg7SlEQKomahUql0l+t83UslPrH/AJhCU0TMBjpBTUcflyAR1SmMLwsGZJYuGFbBwQbsIB4/FF6cGM8b0gZuyrqp
- fgQ/Uqb5
- ZxBnl57Jk5rxp4rNOVC7qHj8f930XUvagdrs8Zg0TplOvEzm0h+QMeB45PhtjhyiR0LQLe4xnSx/3zvmg8ru04eHTtMVVy0IJaDo5+uCI+iXt7v554Lg9GZ+HMDB5U/fN3MdpYzdcpeREGrhnhil/6hunQvSTX09i8FURbhLh/goQ22GVGYja87EpYiL57BqnHQBO54XiCKyAW0dOdorHMeP2d5tuxjT4tWbOItQfvD68rySEnYOx+wqRb1sLsFu6S0GOib7mHThKmhWC/qt04uPdEmRVi512EgYQ5c7Jw9qcLFsaAc2shHut0ol8gZ0aPZNRe8Aq2deCf0qG6GMFZutC77TwFcmFF5OnLuW6PbBjNrg=
+X-HE-Tag: 1788958436-251408
+X-HE-Meta: U2FsdGVkX19J7ZX8Vqr3yq+u1ikE8l+MG5pTtHY+pmRAKISladaQ+fjbdVKJB3gIQJ/QjWAHsY7Ua9ThO2QMxPr+tRi3igQOlBKOneX0QerpHDfnE0gB+IugVyJHi68b6nhKJaYMpvnskVf42ieqVd93FWl+2bWGV1FArb6dxVMyh+dR2U8rKNLYy91gI8/+pRiMEUgaU+1rmV9jrUk1SEvxr2ayV6im5/JukT5FTP3xkHkhpzbyybqcwffRlhFHg9OnNICfWSip5kfrbtO1KKeomlJuDga1ygecmA6dKy1ugM1sYcwuoN0F3BWtAG6Ahb51ma3sGQ6HGb86U34ypuXbLEvXak8G64oh9Ej/Jh25UM8itdXvFtMs93FfkPdbGy3KKmWmkFbxSURj0Ec26GhFleyinB71IyN51Dm4OoqxNkCK+adG2B8u234wLD4B/I7uyXrLc0fl1LkH02u5EzXYf/L6wDFBloEDUcylDlFOc6e/ggtYtVtxpk1cL84yxaeKcYHiLqHAy/bg9LDBkPj38B0u8bHUjAAexxybvHvgYnZbptTrCSSBpggiHkGQHqnMJps/G5qLD19yb2/0AVBTaCCazpPBoRxGByDjekR99UqtavcmknE7qj5GuPgNtVz13F1EQTOjd7nZy0Z4nN14uUXVdeNBgPlskVIEu+htMdqqZcVzPLTIPSXrE8d3Iyakg+HBPGJSqaNxifatL+zy1lPraSBMP5VSi9258H8Bo/a2EYpxo9UFpnOPAuKVXKOYjvJuezgHdyo5CjN5s6BhWWoynupnGCKr+9Lwj1LEHxnt6zqlVO+r3S96qaC386MjIueTKSvwaVh+Th0dOCCkV8lSD2MTIK/DqVc9qm3Stmv0CEg3Yd5CbtjXhT1ZRhJ+WS35rFBqTwisgKhhNY+zrFTpLulUo3n3Dyv1wRTS9j2sL6LR/9/XK+iQkVyFdWAtwvOZlt0Ns6K1tA7
+ dGl9MFEr
+ MC/eEhS7ePdrheQjTRRzFO+McLXxWwtPUlu7d0WYthplhfEXxMYanEQSyQ7vmGwdpfqchcCATgcZ+zITCgN76OpsSJGaE07qQW1LuC7PRLxKWdJhqYJev19rxP0lmreImQknvOwSh/nqStnVlg16EoWQBf3V5TA/7eIHIv0sPMDVQn9JEq4WirVuUH5w8/TMKwGj9rX6ck0xrRJ5kwVC0Q3PRIm3+PsfjnMsUiO79sCHLyVDVWkqF3OstdBiYNAX85OSz95bnIAYqpHO8Dnd4/aj5RweBCu6QfBQ58SPXP9CBAs6TX3KDagHwvxAbpdDBk+NSvSw3DV7M5GnptxuSVr21ze2bb1pJ36BhOTNAbVp3F9ADhOa4/eP23mi77NgJPTQl5ZT1XHAIQDLrAuI6eh2Wzo1+zcnc2Wm0Y2W/Kfeh/BfrFRhciFg1JkrGtWLJb8Hf8HhVRPQVNxOQjBuHbPd8TSLE4y5YTfWdk92t8DX+eErUZkeHcxV5P4gNlGDSRRK5oG7m7XVL6nySJ5p8NQd7yidOdXyljCc8Xc7KPeuKxBHNsVKZQNLbRp6tesKCsdzY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,56 +102,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Sep 9, 2026, at 17:39, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 8/25/26 10:45, Muchun Song wrote:
->> The shared tail vmemmap page allocated in vmemmap_get_tail() used to =
-be
->> left uninitialized, because memmap_init_range() would later overwrite
->> it.  That forced users such as HugeTLB to defer the initialization to
->> their own setup paths.
->>=20
->> Now that memmap_init_range() skips shared tail vmemmap pages, =
-initialize
->> them immediately in vmemmap_get_tail() with init_compound_tail()
->> instead.
->>=20
->> This moves the initialization to the point where the shared tail page =
-is
->=20
-> You are not really moving the initialization? I see a new =
-initialization being
-> added but none getting removed.
->=20
-> Wouldn't hugetlb_bootmem_struct_page_init() have to be updated as well =
-(as the
-> comment you are changing indicates) or what am I missing?
+On 9/9/2026 8:35 PM, Kefeng Wang wrote:
+> zswap_store() falls through to check_old and walks the swap xarray
+> even when zswap is disabled. Add a zswap_never_enabled() early return
+> matching zswap_load(), and reuse zswap_invalidate() whose xa_empty()
+> check skips empty per-area trees to avoid unnecessary xarry lockup.
 
-Strictly speaking, this patch adds initialization rather than removing =
-it.
+Sorry for the typo, should be "xarray lookup".
 
-I used "moves" from a logical perspective: the initialization =
-responsibility
-now shifts to the allocation point (vmemmap_get_tail()), making the =
-HugeTLB
-side redundant. But since this is a preparatory patch (the section order =
-field
-isn't set yet, so the skip logic introduced in patch 3 doesn't take =
-effect =E2=80=94
-meaning the tail page would still be overwritten in =
-memmap_init_range()), the
-old code cannot be removed yet. It is cleaned up in the follow-up once =
-the
-switch is complete.
-
-Thanks,
-Muchun
-
->=20
-> --
-> Cheers,
->=20
-> David
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kairui Song <kasong@tencent.com>
+> Cc: Nhat Pham <nphamcs@gmail.com>
+> Cc: Yosry Ahmed <yosryahmed@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>   mm/zswap.c | 16 +++++++---------
+>   1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 5d0d8bd72193..fc6c5e0db5e4 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1488,6 +1488,9 @@ bool zswap_store(struct folio *folio)
+>   	VM_WARN_ON_ONCE(!folio_test_locked(folio));
+>   	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+>   
+> +	if (zswap_never_enabled())
+> +		return false;
+> +
+>   	if (!zswap_enabled)
+>   		goto check_old;
+>   
+> @@ -1545,15 +1548,10 @@ bool zswap_store(struct folio *folio)
+>   	if (!ret) {
+>   		unsigned type = swp_type(swp);
+>   		pgoff_t offset = swp_offset(swp);
+> -		struct zswap_entry *entry;
+> -		struct xarray *tree;
+> -
+> -		for (index = 0; index < nr_pages; ++index) {
+> -			tree = swap_zswap_tree(swp_entry(type, offset + index));
+> -			entry = xa_erase(tree, offset + index);
+> -			if (entry)
+> -				zswap_entry_free(entry);
+> -		}
+> +
+> +		for (index = 0; index < nr_pages; ++index)
+> +			zswap_invalidate(swp_entry(type, offset + index));
+> +
+>   	}
+>   
+>   	return ret;
 
 
