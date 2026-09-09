@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E96C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB973C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:08:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56DFD6B0092; Wed,  9 Sep 2026 09:08:31 -0400 (EDT)
+	id DD36B6B00A3; Wed,  9 Sep 2026 09:08:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E856B0098; Wed,  9 Sep 2026 09:08:31 -0400 (EDT)
+	id DA9306B00A4; Wed,  9 Sep 2026 09:08:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40D3F6B00A3; Wed,  9 Sep 2026 09:08:31 -0400 (EDT)
+	id CBF2A6B00A5; Wed,  9 Sep 2026 09:08:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 201C96B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:08:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C6DA1201E4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:08:30 +0000 (UTC)
-X-FDA: 85194252780.14.BC86F8D
-Received: from mta0.migadu.com (out-225.mta0.migadu.com [91.218.175.225])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6969040009
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:08:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SqpWv98C;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC3496B00A3
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:08:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C1681601EC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:08:37 +0000 (UTC)
+X-FDA: 85194253074.13.0F944FB
+Received: from mta0.migadu.com (out-234.mta0.migadu.com [91.218.175.234])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C49212000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:08:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E2QXc9Kd;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.234 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788959308;
+	s=arc-20220608; t=1788959315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7y4HH2VRe/FSmMF01NlsAvlf7d1cnUj9I2kV2MHWYw=;
-	b=fRNfR9O5Rrgw+NdLVJKBYxMy5d84UkNn0gm6eVvG3lEb3BHBotDXw+/87pHsHCkD7fYvGN
-	1Pgk4BBQmPYR85KzboYRV6ieTBA4X6Xd51PbYn+DKYG6lHIFegKgJeycP3H9BQmMWGbnDw
-	WHMiPZUS+0+F9+zHojUPTkvQORmDcXg=
+	bh=d2y/dIV5tPGOfJuIl5SfYxpTegneI+xoglz4aoff884=;
+	b=mkio484wnxdk6hirOf7Dg+j9N3LsOxPh6TOTnuO9SfKCEcoUYvgv4UKbcTdIfmnzpGDodj
+	X/e9n2AiHcnK3l539OV2kBBgVGKbHXgiFtFHKUfDKJZwNXF9szJMqSO2ckQ1QB6zG62bR7
+	0tN/P8Ri5cVXlDe+g2u1yjgj9t6WBFk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788959308;
-	b=rZhSzT2zLwF8MLOxl7SKaZ8mAHrzo5vva3P04CGBIFY5UHrObJGorQLpXM6Yhqjhc6ySeT
-	aZGTWKATln0m6q35PulukkJ6rxzK+jkwnbDrLRZb20szvPguxvOlaQ73G8VLve271cm6N+
-	t3q9SheuT7ul/7mXiLFYNu0vVDXCDvU=
+	t=1788959315;
+	b=tJDetu1O3KW0ww3/BWsav2inDipe/nQ3sX+EPVEDhtGrEqGAa3ALdb8si//F7M8OsWtdiW
+	wPudVUGUWSmJSDLCxHAIYg5UJ3o8JnJtVByNGG/AgdhLJNpyaiJ4ChOHh6LoDJjbE3P6ID
+	khaMNXgMNpyXkV9nlGKtTfy5zPnMOuA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SqpWv98C;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.225 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E2QXc9Kd;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.234 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VhlFjNAgQI2Jtqxdp11XUFniGZMKsYGwyqeIsjbkGdA=;
+DKIM-Signature: a=rsa-sha256; bh=bbsRBPS39F1qCvHS8TXrx+bY+bmKnc5cP2dNW7zwNzE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788959301; v=1; x=1789564101;
- b=SqpWv98C61R76bJ0zUrMa/dUYoDYli14Cu7Sz2NGtXopPX3r0MU39mdYsfsxVAcN0nIXkHZB
- iDpYgU6xxC+1nMXUk9M4EJPCHIPpCUSVYrqxdZ4RPhIqRh0+meNClDCpRd33JuUrmJn0ZAzk0IJ
- KsweRhAgxCuHVDoM9FQKa/ME=
+ t=1788959313; v=1; x=1789564113;
+ b=E2QXc9Kdfido1pjPy4dtaU+WZvszdY1lADRjeK+e67nSqWVjMWnFs2z8Tv0OUeYpzgok+C7W
+ F3lRO991HIKiWDR4SAwT83eMpa+7n44z44IS2GtKilUGlBxZaamTKytWn3DJTPRyGNmY4gSfN2r
+ RDiobjQ9O4twlBVLeTZSxPSM=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 25b253702b94a6c9;
-	Wed, 09 Sep 2026 13:08:21 +0000
-X-Mizu-Trace-ID: 25b253702b94a6c9
+Received: by mta12.migadu.com with ESMTPS id 04d50cffb0466e00;
+	Wed, 09 Sep 2026 13:08:33 +0000
+X-Mizu-Trace-ID: 04d50cffb0466e00
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <7dbba23e-5530-43c4-9c44-20108cd0cef5@linux.dev>
-Date: Wed, 9 Sep 2026 21:08:09 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/4] module: introduce SH_ENTSIZE_STANDALONE for
- separately allocated sections
-From: Hao Ge <hao.ge@linux.dev>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v5 10/17] mm/hugetlb: switch HugeTLB to section-based
+ vmemmap optimization
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <67dc7ac8-b39d-4354-8cbf-f2a1c3a369ee@kernel.org>
+Date: Wed, 9 Sep 2026 21:08:16 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
  Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260908092412.115953-1-hao.ge@linux.dev>
- <20260908092412.115953-4-hao.ge@linux.dev>
- <76b5edbb-8231-41d0-9e7b-f965af13c324@suse.com>
- <ec3f14f0-cebe-460f-9df7-537f49d70afd@linux.dev>
-Content-Language: en-US
-In-Reply-To: <ec3f14f0-cebe-460f-9df7-537f49d70afd@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <82CAF33D-2482-4E8B-826D-8AF5E6FF8866@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-11-songmuchun@bytedance.com>
+ <67dc7ac8-b39d-4354-8cbf-f2a1c3a369ee@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Stat-Signature: 59skkzsqwd9u1eo7n84xnfkotxzu5ewr
 X-Rspam-User: 
-X-Stat-Signature: qmwamsag5ibjnf4epu3rwm898z37crum
-X-Rspamd-Queue-Id: 6969040009
-X-HE-Tag: 1788959306-129091
-X-HE-Meta: U2FsdGVkX1+OxubWeKftlqG0y3Pl5H1ARmFhv2A1djwuGC+0DdJrYTC3vvRqtPqA2uhu3oKFok4yyE6EyNj+ncmSOMnIio+Ng5a1XpdhKi/KeZvuWITsNvu7yCd+htwZwk2QJHxBBOwSkEgbSq0z4xz7m7UnmKiLflmDPmswQYw93QfwVGvQCZFCxE/Jm9ilBzgJDdv7Jr7qMOk6saGWVRnzWcFdVaI1Pl+jvj0DRAkrUIUkYDN6TP93BOvogkjo1TfXe2LPKgn4D/c5mBLgf7UrZibxiBGkfi8tJy3AXKR3SWyIl2OtcjnHGalrviyRzmCSwyPCZlDT2P3aSfLEapIsFuVYowpJmh3fQZ78G6uT7x8nAPmQEBA+9sA5oVGQNlvT00s8p9bOllDuJ/XYxobQR5A6KzsSn3O/mhOcZqiF5Hy2z8XWtGXTkd67Mcn4TyXAjDB1j1hqxc+R2YiC7kAROAIeoeeC77C6uW7iIsRJ68vPwy9NnOX2g/tDN5JkHKvV8EFpX855Cm4lOyWQarCoOZ04UGJYHLiMbCA4ZIPKcsZUg8qiNFyCmHRUnd0pldg1U215dzDhF1w9qeTFoXvXNHfKEGi9BP9tYbrEBkJAtcytLDio6cXJhQu/vvi/+ZjYDi11r51ojh1IcZ89Y/++l9IF+LH8CL3CR8Qsl3xVg8R520yZx5rqtdveKHQGPLT7+D+9MhglayExUAyxe66TpzcNbaiM7jcHyDfJdXlUKXyfOMNjGdseFRoGKohFkmPCfZL0hgfyukcd9jSpzNHiD5y2vkGNMLdCqQ/airw4XBAKyq3MkXJDlCmNnIE8OvVfCCNyweAC1mSVlpASogxysg0ngnWmBPbPhKdG07aABK1dTtOFiNb1QsGiblGAGwRz8i56Z5xS+qMNWAdQzYgS32RrUf+Ru5/1G7r03GqSXn2gk0QRXunamDuIerX8ItR5ict7HMJ4rmKA9nv
- jzh6gwps
- H1iVZoxFG7LnAKUicq9gzasD1wLs8O91IYfUXkwr/cEJew5Pr0jD24JwQM+4tdEL7KqBupb0IMVRKpMbuu1efcxiKCmwh576dDkV+yG0aAPW9LIFCmIqxmNq/b18vPnYjR1Hlf2sehRYS7KrCFpPo9F4GwVfhTSUB9Az3uVLhwfWQBJd3nn8rwgFbVyu1PzhyjluJpbNEDXuqlJhtmxBvCXNCvxHG45mszRo8qfqc4xP1P7bG/UEUxTeueGTRdoxcC17OL2y2ZKeezcl/wakUTzJd9tcBVOAjoKsWuJ4QfysI5Tah0NHVMf+p5Q7X5oQ35LAkYA3saJh0abUMNadAW4j+aNXE/In6Jw/eVP0G2KOpbk4w7GbXCjIyp1KQ8pFvvhZcpjFcHJmU+muHuy2wgJn527z06tYvEkLmhG2o0GnKrwXcp8hn5RKA1A==
+X-Rspamd-Queue-Id: C49212000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788959314-971009
+X-HE-Meta: U2FsdGVkX19UqoJvyV+DenflEuKQ1UrzGWlWFVYQLEQ8XQWvE4lvYhCqLKvfOdp+rEW8hK9MfnEBx62xYUKNJLowg8BR12ilW7synb6Gf7e9MB1vZLjPh0QFOdSpfmqXq97bdw3IJPkz+15KOVpR5MysSEWOWUu9zawOG4T0xh1xU7BwLFAsWAed10q7tzf4Bnr1rcx0CPoijwrGEJyG65tkLMRAqxDrchDochfwhGASfLBsMtlOr1uvX2nlC+clWycVxtIWbQwdFMxnzfT4FJ2dtd/DpnozNFuqnbn+mVcZ9SAA3U4t1MZxIArIV3euag79NPd6kH2dHYx8xovtDRQv6/H49xEReGQim0TMjATszfr5ZfSWGKpYumQyjgxo0bMjopks/urrglofzeGDDP+D/5HGbGGk6L06vf8vwtO3SVZXmSCO14mhFS78yzNeAfeQAcC9UzvjEiRxyh1fqKw3vZ2rnt8Rp49TgcRl0VZs9sjzIA6IEMD7WVvWCzakz5y3AYr/RIMxqe0qERyR/RpJxO2eX/weaMWGaaz89hKQ+J068BgSf65E/qpGtX4KJcuWBYqz0k7OSdjZjocVo2GaVKA8Gl6bNw3sh77uZKsUYWP7EGCQSaxYSRzeMtC0JbaNoyXGuBeZKKxfCMVSPKuZeZvsQ8ofIeOyE+zRup4aoAmePMjrmdIG+hHcGy+eQ4vUFJaMEil2oA4DuRPCAT+Sc0qrXVWLOuAn8sgptGb+xl7CjKbY34tFyVBiXN1NnmhjKMlVAzxuBUuJVcjwB7XLj9aEyDvZhJXChAN8rIopxk6S9/AJsgzC5E/h2gb8rq+MTD55/yU23YoqYL0f0m4FPORAESQH4cCVbEL/vQw5LZeDvSx47z8Px6o8smcueKJBqkyWtR+Guq4y1CgLkMEigrm8IQOKzNQfmiXlnBsWf6Hs8f7DiM+ohYzqcIZp6ci0mloNectxidTP4Az
+ l7RGe6IL
+ 3nxJO/CZZ2U5IAaspx1DvuxNTvftmW3sVYvUXIgh64nrtjVPa1toMpJG0cxDb6HpbAFB60rs+tkBnvzRBa5d9U8NGPk068Boz4ps+MynMFK5BwS3o/W4U2ynyGIT6YX2wIaEYUOG5JEvg5p1VO7N6GB/3j+FBhmRqOVZ2LDGYxG/GgBhEvA1nsDq0bweWuq89E5HmxLGFAHvJMsoNseaWrst04+yRrG6jvq16vXginMhaVvT/pBpn3B0dCSv/PSwJrA1DmiXaRlzC4t1WS3GtyKaoRRYYp6Y4TIc46wpdaB5kcUBiShJNqCQGX17vVhxqj1/7urHwwWLEi8/3UxEuPLtwDmefXALW/EzlNi16CRRAZxzfm/5G38TEjoLjQJE8CN2j9pvb8LvjfDU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,206 +106,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 9/9/26 20:47, Hao Ge wrote:
-> Hi Petr
->
->
-> On 9/9/26 19:30, Petr Pavlu wrote:
->> On 9/8/26 11:24 AM, Hao Ge wrote:
->>> SHF_ALLOC means, per the ELF spec, that a section occupies memory
->>> during process execution. Some module sections occupy memory
->>> outside the regular module layout, for example the percpu section
->>> with its per-CPU allocations. The loader currently excludes such
->>> a section from the layout by clearing its SHF_ALLOC, which
->>> overloads the flag with a loader-internal meaning.
->>> apply_relocations() needs a special case for the section, and
->>> find_sec(".data..percpu") returns different results before and
->>> after layout_and_allocate().
->>>
->>> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
->>> allocation. The percpu section is its first user. layout_sections()
->>> and move_module() skip marked sections, and apply_relocations() goes
->>> back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
->>>
->>> .data..percpu keeps SHF_ALLOC, so it would now show up under
->>> /sys/module/*/sections/. The section has one instance per CPU and no
->>> single address to report, and the entry never existed before, so
->>> skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
->>> array and skips it too. No functional change otherwise.
->>>
->>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag 
->>> compression")
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Link: 
->>> https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/ 
->>> [1]
->>> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>> ---
->>> [...]
->>> diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
->>> index 0fc11e45df9b..49190deae61e 100644
->>> --- a/kernel/module/kallsyms.c
->>> +++ b/kernel/module/kallsyms.c
->>> @@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const 
->>> struct load_info *info)
->>>   }
->>>     static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr 
->>> *sechdrs,
->>> -               unsigned int shnum, unsigned int pcpundx)
->>> +               unsigned int shnum)
->>>   {
->>>       const Elf_Shdr *sec;
->>>       enum mod_mem_type type;
->>> @@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, 
->>> const Elf_Shdr *sechdrs,
->>>           !src->st_name)
->>>           return false;
->>>   -#ifdef CONFIG_KALLSYMS_ALL
->>> -    if (src->st_shndx == pcpundx)
->>> -        return true;
->>> -#endif
->>> -
->>>       sec = sechdrs + src->st_shndx;
->>>       type = sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
->>>       if (!(sec->sh_flags & SHF_ALLOC)
->>> @@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct 
->>> load_info *info)
->>>       /* Compute total space required for the core symbols' strtab. */
->>>       for (ndst = i = 0; i < nsrc; i++) {
->>>           if (i == 0 || is_livepatch_module(mod) ||
->>> -            is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
->>> -                   info->index.pcpu)) {
->>> +            is_core_symbol(src + i, info->sechdrs, 
->>> info->hdr->e_shnum)) {
->>>               strtab_size += strlen(&info->strtab[src[i].st_name]) + 1;
->>>               ndst++;
->>>           }
->>> @@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const 
->>> struct load_info *info)
->>>       for (ndst = i = 0; i < kallsyms->num_symtab; i++) {
->>>           kallsyms->typetab[i] = elf_type(src + i, info);
->>>           if (i == 0 || is_livepatch_module(mod) ||
->>> -            is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
->>> -                   info->index.pcpu)) {
->>> +            is_core_symbol(src + i, info->sechdrs, 
->>> info->hdr->e_shnum)) {
->>>               ssize_t ret;
->>>                 mod->core_kallsyms.typetab[ndst] =
->> FTR These changes in kernel/module/kallsyms.c have a conflict with the
->> series "Ignore local labels and mapping symbols during module load" [1],
->> which is currently queued on modules-next, but it should be
->> straightforward to resolve.
->>
->>> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
->>> index 01c65d608873..f64170344e69 100644
->>> --- a/kernel/module/sysfs.c
->>> +++ b/kernel/module/sysfs.c
->>> @@ -62,6 +62,15 @@ static void free_sect_attrs(struct 
->>> module_sect_attrs *sect_attrs)
->>>       kfree(sect_attrs);
->>>   }
->>>   +/*
->>> + * .data..percpu has a separate allocation per CPU and no single
->>> + * address to report.
->>> + */
->>> +static bool sect_visible(const struct load_info *info, unsigned int i)
->>> +{
->>> +    return !sect_empty(&info->sechdrs[i]) && i != info->index.pcpu;
->>> +}
->>> +
->>>   static int add_sect_attrs(struct module *mod, const struct 
->>> load_info *info)
->>>   {
->>>       struct module_sect_attrs *sect_attrs;
->>> @@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, 
->>> const struct load_info *info)
->>>         /* Count loaded sections and allocate structures */
->>>       for (i = 0; i < info->hdr->e_shnum; i++)
->>> -        if (!sect_empty(&info->sechdrs[i]))
->>> +        if (sect_visible(info, i))
->>>               nloaded++;
->>>       sect_attrs = kzalloc_flex(*sect_attrs, attrs, nloaded);
->>>       if (!sect_attrs)
->>> @@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, 
->>> const struct load_info *info)
->>>       for (i = 0; i < info->hdr->e_shnum; i++) {
->>>           Elf_Shdr *sec = &info->sechdrs[i];
->>>   -        if (sect_empty(sec))
->>> +        if (!sect_visible(info, i))
->>>               continue;
->>>           sysfs_bin_attr_init(sattr);
->>>           sattr->attr.name =
->>> @@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, 
->>> const struct load_info *info)
->>>         nattr = &notes_attrs->attrs[0];
->>>       for (loaded = i = 0; i < info->hdr->e_shnum; ++i) {
->>> -        if (sect_empty(&info->sechdrs[i]))
->>> +        if (!sect_visible(info, i))
->>>               continue;
->>>           if (info->sechdrs[i].sh_type == SHT_NOTE) {
->>>               sysfs_bin_attr_init(nattr);
->> add_notes_attrs() has two sect_empty() calls. Both should be changed to
->> sect_visible().
->
->
-> I kept this part unmodified to preserve the loop's original intent.
->
-> This loop counts SHT_NOTE sections.
->
-> SHT_NOTE refers to ELF note sections, which hold non-executable
->
-> metadata such as build ID and ABI info.
->
-> I wonder if we could keep the current implementation.
->
-> As noted in the comment above, the top part counts SHT_NOTE sections
->
-> and allocates structures, while the lower logic handles control of 
-> node attributes.
->
->
-> WDYT?
->
->
 
-Sorry, I've reconsidered this. I think changing it to sect_visible would 
-be better.
+> On Sep 9, 2026, at 17:58, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 8/25/26 10:46, Muchun Song wrote:
+>> HugeTLB bootmem vmemmap optimization still carries its own early =
+setup
+>> path, including pre-populating optimized mappings before the generic
+>> sparse-vmemmap code runs.
+>>=20
+>> Now that the section-based vmemmap optimization can derive HugeTLB
+>> vmemmap deduplication from section metadata, HugeTLB only needs to =
+mark
+>> the bootmem huge page range with the appropriate order. The generic
+>> sparse-vmemmap population path can then allocate and map the shared =
+tail
+>> vmemmap pages without any HugeTLB-specific early population code.
+>>=20
+>> Do that by setting the section order when a bootmem huge page is
+>> allocated and dropping the dedicated pre-HVO helpers and related
+>> special-casing.
+>>=20
+>> This removes duplicate early setup logic and switches HugeTLB to the
+>> section-based vmemmap optimization path.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>> v3:
+>> - Use the order-based helper for the bootmem vmemmap-optimized check
+>>=20
+>> v2:
+>> - Collect Acked-by from Mike Rapoport
+>> ---
+>> include/linux/hugetlb.h |  1 -
+>> include/linux/mm.h      |  3 --
+>> mm/hugetlb.c            | 30 ++------------
+>> mm/hugetlb_vmemmap.c    | 90 =
++++--------------------------------------
+>> mm/hugetlb_vmemmap.h    | 14 +++----
+>> mm/sparse-vmemmap.c     | 31 --------------
+>> mm/sparse.h             | 27 +++++++++++++
+>> 7 files changed, 42 insertions(+), 154 deletions(-)
+>=20
+> Nice cleanup.
+>=20
+>>=20
+>> diff --git a/mm/sparse.h b/mm/sparse.h
+>> index e4617f9c8876..049272aba84e 100644
+>> --- a/mm/sparse.h
+>> +++ b/mm/sparse.h
+>> @@ -16,6 +16,24 @@ static inline unsigned int section_order(const =
+struct mem_section *section)
+>> return section->order;
+>> }
+>>=20
+>> +static inline void section_set_order(struct mem_section *section, =
+unsigned int order)
+>> +{
+>> + 	VM_WARN_ON(section_order(section) && order && =
+section_order(section) !=3D order);
+>> + 	section->order =3D order;
+>=20
+> As raised previously "section order" is entirely unclear. If this is a =
+compound
+> page order we should spell that out.
 
-sect_visible stands for the count of externally visible note attributes, 
-so the code
+But I also have another question. Should I also rename the helper name,
+like section_set_compound_order? or it is enough to just renaming
+the field name?
 
-above and below can align with each other.
+Thanks.
+
+>=20
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
 
-Sorry for the noise.
-
-
-I'll rebase onto modules-next, apply this change and push a new revision.
-
-I'll also add your Reviewed-by tag.
-
-
-Thanks
-
-Best Regards
-
-Hao
-
-
-> Thanks
->
-> Best Regards
->
-> Hao
->
->>
->> With this fixed, the patch looks ok to me. Feel free to add:
->>
->> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
->>
->> [1] 
->> https://lore.kernel.org/linux-modules/20260820125007.22943-1-yangtiezhu@loongson.cn/
->>
 
