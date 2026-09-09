@@ -4,109 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715F8C79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6FB6C79FBD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52F176B0095; Wed,  9 Sep 2026 13:23:00 -0400 (EDT)
+	id 9E9E76B0099; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DEE26B0098; Wed,  9 Sep 2026 13:23:00 -0400 (EDT)
+	id 9C1E46B00A0; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F5CA6B00A0; Wed,  9 Sep 2026 13:23:00 -0400 (EDT)
+	id 8D8716B00A1; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 20F9E6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:23:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A9D521C1CC2
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:22:59 +0000 (UTC)
-X-FDA: 85194894078.15.B29E992
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 600106B00A0
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6761802B3
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:23:24 +0000 (UTC)
+X-FDA: 85194895128.08.654B63E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 127291C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:22:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WR7t8OlH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0638420002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:23:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDYa0m6y;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788974578;
+	s=arc-20220608; t=1788974603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=APFjnB8AM36hLAYS9rCRFu3o1ig09AcvIwPP4JmZhlo=;
-	b=B6QfsT6o0gj5db0vheCOgxjxOeFetJrPnvz+C5H0SeVx0m9GM4i4O/WBwC4u0zqwyKSftD
-	iFLWapqRzrbQcnMSFtDy+H+GZEkfz0dxVNgbXtZ+S980syS9VIZp798AdcQ3XUzxadsdBq
-	VBXw7BxcMxn8VJ+GvDZ1L+0c+fnEO38=
+	bh=MCHSdPZk4zbn59kxK4VxfMJiTngtjItSycfJsFzJGs4=;
+	b=fMSuDsRAUaWpN3bAUcHsL2WijuUb+m91zuGG2t5Y8+9UCvrKotkDlCxz6acXeuf5bgdfw3
+	QW7SzJG/jQtSDSxujbREs8yxzceqHqnq6utnfSeUW7tL52B46Qir4OaDFSkROktMt5/O5d
+	ExhFcU3hE/+4rtIvT7K2LqobmTJEv+M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788974578;
-	b=SrEXQHCz81W5tNEJDAnrrH5PvjssM/oBstzVAFN85gaSSx1+WPetffcFRnXNp1fIy/3G5o
-	LrIywSbZ9YG03jeR+qGQwUe7F7DCCV/WE8F8O2hOYx5ami5bhxp9WVTxk1YHePWn5sZx8o
-	WfTE9SKrO2vygJf6IvzbljUKsLdEbUs=
+	t=1788974603;
+	b=D7rIrJky6LJzCWJnzMd3qkaItOc6F5hljhhHMGKaNKGFqxG4Hd196aaokRRuyVjYe2IH99
+	VkQMDugNl8oRp4+7hZGaTJTfROT1rbSaT7LX+WG+sJQLLlTVbplU2felZia4in5Pcv4Uvw
+	4SQnKd3Fb1xMrOG83KeZYPMn/rYb1gk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WR7t8OlH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDYa0m6y;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4662142DCF;
-	Wed,  9 Sep 2026 17:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963121F000FF;
-	Wed,  9 Sep 2026 17:22:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D8EA43D6A;
+	Wed,  9 Sep 2026 17:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563E01F000FF;
+	Wed,  9 Sep 2026 17:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788974577;
-	bh=APFjnB8AM36hLAYS9rCRFu3o1ig09AcvIwPP4JmZhlo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WR7t8OlHQCRXlT5je2S1lLwbE8AzuJZBKD/8FK3wkq5Fir3ksRyBj2zMBwpsqYgrO
-	 U1fmgjXiWynIo4WdB1D8oXxw6jHkuOqLmp3ftm/vO2NIg2PmXKxcaIdiJta/knURAY
-	 lAceIrP6EZKyszeO0snH+/ydcGLLMI9epoQ78DAygI+dviHOmBB7ucRFFQdtOlnRMf
-	 6v9+ScTBkVopWm+GwwJmvyReMTjK/TBNXcEhOranbgn8mtYnWckfC5hQWiY5q5ptFO
-	 kZ8O1UE988pLxsCSvlNeDmGAWmfWmiYEJiV/vylICesLReEZxQZK/9HQ63+FWFP6Z3
-	 0g5BfbncEglHA==
-Date: Wed, 9 Sep 2026 19:22:48 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 03/12] mm/sparse: move initialization of section metadata
- to sparse_metadata_init()
-Message-ID: <aqGV6JDZwfWa-UD7@localhost.localdomain>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-3-008fc8d579fe@kernel.org>
+	s=k20260515; t=1788974602;
+	bh=MCHSdPZk4zbn59kxK4VxfMJiTngtjItSycfJsFzJGs4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bDYa0m6ymveTw0HTGhDflIHkFJVZ6GnutFwAxlS0dnTV93M0i+vTGPjDB/xLJrUNQ
+	 1a0DPsSCrlJe2SPeOdeGGqCukduQ+BHvb6mMYVy4+V4ZLwJWeT2XDAckf22U215/P7
+	 hUHXF+M1stjZ7/4DPBQw9qxLMfak2L3FlpuRHlpJ+c/2EgbEpz2gLU0GyRgmO92zlA
+	 ZNKBf+MuuUntdCZet/bCi1BSWnv0+EUx0ZcJJd6V4JezjZRGitiNmaGuuxRIZk+BGw
+	 SHxdlwNKF5h85NTEXdvIIhjzcNbqGPJEdvLZVa73xGq4hC7cfgCi68gUdJfX87c1eO
+	 MlaqchPPFVn/Q==
+Message-ID: <19e428e5-d8bc-4abb-b052-e23442464cba@kernel.org>
+Date: Wed, 9 Sep 2026 19:23:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-3-008fc8d579fe@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/5] proc/task_mmu: read proc/pid/smaps_rollup under
+ per-vma lock
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
+ willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260907063918.3432401-1-surenb@google.com>
+ <20260907063918.3432401-5-surenb@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260907063918.3432401-5-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 93byxpmoobo5b1c6gd36esh8e6cuf6m3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 127291C0003
-X-Stat-Signature: d8se5smgt1a67bdwdtd5wjt7t1gyqyje
-X-HE-Tag: 1788974577-368648
-X-HE-Meta: U2FsdGVkX18qYgmB6c5inY6T/XpKN0M69vnGdR6i7h24JzXeY12zseW6p7wx0v18Rtj48ght/nKnpOIwvqOJaNdK7jRRpqAPVV3Vu+CI8IUfAEm0aQ3JCOy3TkpiJoaXFYAa4mGJqXhALa9BznzMFZdjx7DCREt8cePtsGHehSI7afbH54CcWs+ofLT1ti6FAyy3JLCO8/1wZ6/zpPMjs9DytrN7urfVD402gG7pjkBKllS8gWNMNtaNa/lAmOYs7Pzn3S5GPP0DJvYi/zsnIssMwd8QAV17CJCS4dzCLB/SACGW6XtGlx7dHholXsYAgQ0mPGVRVR/MwqwvveQJdl+rcQpZliXTfyv/1VTSay83Ah6g8QMziOKMhpHbYDWu1lw/g6pl0dPz89shkl3ZGAbUZHY+eExkyBuFaC4id0lvdAlhcnFmen2579cvRPSjutavk0zTqmgH8XYJd0tgGVeaYPQPaVve3wx58A6Y44vGF/COyvuAliOeL0UcZi49vFuWaX8lbugGQFpJq7rdKZNS2Epe2Cp3Rrzuyih0jAKTS8ieKWoi+xbfak/ppdvSB39BP8hbGVty6b51pJ9jGafDWz40KV2uriFH5dNZ5QOZvo71/wkt3vUtUZLhTgOSd3BLCWzsrgrwZQ87P1T3KFGTol5qNHEgvfouVTUYqg6+Zt+aOBTZwVOY0hvGciix0YhXP2r8aIcN3cX4bIpYmnS1Rw6nu+9XpuToQH0IydPdd2GAm4/cP2rX+gqxlZryOKaTvBKBfuQ9XDarpfCAVe+bcp0IErz1gsjlou1i2+DaLMgY7xO8lLqIN85Bxsc8vP40ZX6gGbv9IisuD8WkXrnUz18dhmtNvhYTbNDYPfALB4P0jE+G5jvD/6X8Ux+MzcA4zrgwuHL6NgZ6SNvDUIDbRk4nQOZKcIyO32oPjb4u4kLg/WxRv4/OQ3qRK3vaE4jo94yb5ecOyfu4p+X
- ianAvnXr
- QOMBEn+8Ya5TkE6hSYpbpfv1C7bTsnBEqMfVa+Xhai75xtfGlzkbC66JTJ9s92+l6UWVEV7EnNDYGm5xYez4QUehm2iWOWxNhZwNJBn73dg8kaDarPpX0Yb0lSHivL7OeRJeWVNDEUQ/xy9qU3sLm2FEuMCYUyIxtvoiL+4v9nFrhfYi+rXMOD8Sc519UQCTvqEaVD5gGfGCDf8rgjgRMMy9PqdNEIYoNS2IpOMAyAqVvUEdGW1FbRvMbnjuZ6zZ+Z2HuYa5ULtM7VqPWuxAAiT4I7jGyKwLLYRD3
+X-Rspamd-Queue-Id: 0638420002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1788974602-888370
+X-HE-Meta: U2FsdGVkX196lkHOKHdjv758UP7EQ/VggD8gkW1bbEY6+NaqBAY2/Xinv0cQVgQqhSpOvrm7vswI/jRAaFc3UDL6qWlKHulYHkmXDjpAW8x8me8moFRAiBUVGKAriRQiI0YLJIUN/UFNAqhMWFjf2NbjOEQ5tVdnbfq+926xaGdLiXNsIKiHRJeQ1gar7CX0/npOKEr2ARO5dtCOgpJuD4QC3vEO8Hn1Rvmp5V6LwmRvo4WGIyGWC5JOsG+n2MIrmEcqSonzqBdR466fytSb+kxAeqUv+WRRgs1BsysivvBTKPd++ItEYhmUV3QiuqfxzcHCEsVsk1+IotEwrfypaOFIjrNxZRhZlBP7Ujtiq+uLSo0L+AlhwAuVDT32FHgcAYUMFTMScIkgnGExg60V3vf24iqoYQLKYNyoRO/kq69ecirbpEbL8i40ZpAJpd6nu2R2wLix0RxmgJqBdrDLpcqMTpayJPy/o6x51Lj7eBig1wFwLrc2HyDbkrbANkhuDgjK/51lb01mj/z+Hap24EXERtuwluRi/eCJ3s7cBlflZWPD6FUZUT7FlhvhSd+iPnWx0VgGwD9NiD3Qm91nSSy0j+9SYr9F37/0WHyYRHWkbU6/1lCKGcs4tT9KJxjZgrlTlo8QrmgNDPZAklsYLhczPQKDf4ZfglhY3lPRsy2uohafoIlY83FEwCyeywX37LaWXqXDneIXuPmoUQ3j2FMRJyjak6Y58J+1888HHj/LBaaV+r1lTM6hY6QwnVmVcxuVfqyDK5wGOYyDk5iUG0uxr6aCNoJaNlDsXpAzVOYdk2aw8Yi0oJ2HBHQjyEpDoUBaHF270yiiTRIKgafku0HOM22Oj1ThTqbIMBwn+8G/IFrIUvj/ddKmmJBqBWmNidJNhXJv4RgvWnuuZX9Rj9X7hQZnB8ZlLoXfGVHXjAWS7G6j3FQfoYJg3Get2wMyFOPSjxJ7SDkxFlgTTRk
+ g9HuVrLe
+ Iz22MxteBpxvQQYYV5TZ+FNLGOEQh9e2b2Gm4gf2EOI2h2SCJskBkH+ewtAav/3FH/KxJysKwSZrub370/If/3K+Mcv/6yiBiayJYTpEBi345Jriqy8rgQFHYCU9M97Plk/ecLqeeIkugWXcVZqzs4rSxvdB0uvBEwS7Vks6b//g0hO9TvBN9FyJLs7/jqiwxAvC6vMWXCg5JTISxvJfiM4lfQw46lk/OBcBdab9R+S9pSAMhqK8ibWMh7iQdDqT0RsrU3nMWkwN/yyjOgn2ihdgEXjzfDIU1XtppBwM3N1D9B7g2mY35EBEV6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,21 +141,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:32:56PM +0200, David Hildenbrand (Arm) wrote:
-> Let's move the code responsible for initializing sparse metadata (usemap,
-> memmap) into a helper. Cleanup the variable while at it (e.g.,
-> "map_count").
-> 
-> Drop the rather obvious code comments.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+> -	vma_start = vma->vm_start;
+> -	do {
+> -		smap_gather_stats(priv, vma, &mss, vma->vm_start);
+> -		last_vma_end = vma->vm_end;
+> +	if (!IS_ERR(vma) && vma != get_gate_vma(lock_ctx->mm))
+> +		vma_start = vma->vm_start;
+> +
+> +	while (vma) {
+> +		if (IS_ERR(vma)) {
+> +			ret = PTR_ERR(vma);
+> +			goto out_unlock;
+> +		}
+> +
 
+Can we add a comment whey we break (and not e.g., continue) whenw e hit the gate
+VMA?
+
+(I seriously don't kmow ... should I know? :) )
+
+> +		if (vma == get_gate_vma(lock_ctx->mm))
+> +			break;
+>  
+>  		/*
+> -		 * Release mmap_lock temporarily if someone wants to
+> -		 * access it for write request.
+> +		 * If after retaking the lock, already reported VMA grew or
+> +		 * merged with the next one, smap_gather_stats() will gather
+> +		 * stats for the remaining portion by starting at last_vma_end.
+>  		 */
+> -		if (mmap_lock_is_contended(mm)) {
+> -			vma_iter_invalidate(&vmi);
+> -			unlock_ctx_mm(&priv->lock_ctx);
+> -			ret = lock_ctx_mm(&priv->lock_ctx);
+> -			if (ret) {
+> -				release_task_mempolicy(priv);
+> -				goto out_put_mm;
+> -			}
+> +		smap_gather_stats(priv, vma, &mss, last_vma_end);
+> +		last_vma_end = vma->vm_end;
+
+I skimmed over the remaining bits, hoping the VMA lock experts will review in
+detail :)
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+
+David
 
