@@ -4,79 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1860AC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F637C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 327A36B0093; Wed,  9 Sep 2026 11:33:08 -0400 (EDT)
+	id DB2B56B0096; Wed,  9 Sep 2026 11:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D87D6B0095; Wed,  9 Sep 2026 11:33:08 -0400 (EDT)
+	id D8A4E6B0098; Wed,  9 Sep 2026 11:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE436B0096; Wed,  9 Sep 2026 11:33:08 -0400 (EDT)
+	id C529A6B0099; Wed,  9 Sep 2026 11:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 006D16B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:33:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 918791C1BC8
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:33:07 +0000 (UTC)
-X-FDA: 85194617214.15.2DE253D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CE7DF18001A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:33:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mdoKkC1M;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FE9A6B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:35:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9ECEA42E2
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:35:14 +0000 (UTC)
+X-FDA: 85194622548.17.B1F7EC8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F10788000D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:35:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckd3bN3Z;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788967985;
+	s=arc-20220608; t=1788968113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zTLAQxDUOUQ/JjETmKVNF6qdkHlKlo/iHhk8XqStnV4=;
-	b=cf0z6a81uWKJ0dwarcCBwr6OdChviaM1UJCcauliBNTYpCz/v+VZNFMgLlvSaCk2DtZKJ7
-	JMmIW3dNBGxWU3yVZuHd0lYkhLRWo+xS2+X+6Git5zWb7PBDPp5ohOKOUPWXX4HNRu+8Tc
-	20JHJN6hMv1Ie+WObOoS6mhtY4m/COI=
+	bh=xj5P1Cjd9irB4BUOsfOHGIxVo3gJHi6q3o3BRLAUlrM=;
+	b=LPUM6a+6TxcNFoixPm/i2/uFCppf/zvkkPm6npix73pMvwVs5znlxQkKT/3u0Wv1iyJuq1
+	4dIJo1MlE2z5P71PW8xlOgBhI/VL0T2vByuJOaq3bbwQJL1f8GWssLc89Th4hZDxYXhK9D
+	16sT946rCbTvR/dJhIQDj69R51FOlvs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mdoKkC1M;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ckd3bN3Z;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788967985;
-	b=r6L0osjI4j02FprSiruicSir4C4I7cqy+EyzQJtah4YKl/FFh3D1Yehk/nbaaO7A93hIMv
-	IaLNcuouDZdNMI/pNOe3SPHQpnRDDHGRrhxyQvSpz+k9UF9OZQlwAkqig466pdGY38CU2E
-	jKxxpC1I7xdHIIpc7z7T1pN6at98wqY=
+	t=1788968113;
+	b=EABr3459ZHsDMyuqV1yS7p+BvLJ2QWZfJQZfKJuVg/h3W1bkvP4Aou959K2pkB4Ph2o3eE
+	nNE+16GiTJ4tY9GEQh3Xz5MyH8xDPiLbj8ubD8dAxzHKcpmZJ3yht/qJf8Kbnm12vLNjtz
+	TYKgrWoR4hV4Bpmf0O2NYD/oTmGT93o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5011D601EF;
-	Wed,  9 Sep 2026 15:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92EA1F00A3D;
-	Wed,  9 Sep 2026 15:33:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BB4341954;
+	Wed,  9 Sep 2026 15:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191301F00A3D;
+	Wed,  9 Sep 2026 15:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788967984;
-	bh=zTLAQxDUOUQ/JjETmKVNF6qdkHlKlo/iHhk8XqStnV4=;
+	s=k20260515; t=1788968111;
+	bh=xj5P1Cjd9irB4BUOsfOHGIxVo3gJHi6q3o3BRLAUlrM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mdoKkC1MJoVOKplWs0WlxCyIl8WGhJfTItz9wea9ZyfLYML3xpRa3vNQa9pqQR8wV
-	 v0izGXK/UUOr9vqXe7ivZwHijDPYv1AT5q9ybgfKYJGNu131LaXTfxBOOQvDD8B6d/
-	 D2YCu56boH6D9ootgOvKSzOo8s3D6LGqIyLno+0sGrKrjaRX3S7CzfAFuKSNbgJswY
-	 QYuYB1rEm4if2VRholu7YVZpTRfymEIijWN4zomaMidS/yagUqT5W57RBGuiAo7sdF
-	 EfC5vLcQrjfmD7oe6CXsKTzr1n5i79Hczh2fYa9ovGirQH5DhTO17KpiBuAwg/GGhV
-	 J5A0BwThP1J1w==
-Message-ID: <17f49997-2bca-4e1e-8d58-bc95e25b9a23@kernel.org>
-Date: Wed, 9 Sep 2026 17:33:00 +0200
+	b=ckd3bN3ZBsVSMEnnFHviWt7dllTHTgykVYrIZMkd7W2vUKKUCgePCf65XS2sM98lX
+	 Qre8UzhEfTBMyw5wJ5X+7M/4kE5evGsK7cd1QkWeCxNvzqPpxbWg4ehHniu+1/ykw0
+	 asx5+MVfKRElxSINUvPSkNJDcreFgZEOBrSHVP0Kc6H2/aVk5HftReDcq4lNZUgjhV
+	 lpLgubOZFtll6VhDJCF4y+SOJuXrn9nSKAxyFQ/jogDZ1vVjkiAhpxZgKYZjEpPZKg
+	 K8EqCmZYf+jj2635P6MAVMgB9x/Gk/vRISsyVa4GSF4qweNESa7itJUAurLqwjkmdZ
+	 tqivnhL9dbvhA==
+Message-ID: <cb436d84-6787-4745-8f5d-5d0617ec0643@kernel.org>
+Date: Wed, 9 Sep 2026 17:34:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 1/2] selftests/mm: Reject invalid test
- selections before running tests
-To: Tianyi Chen <diannaaav@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Joel Savitz <jsavitz@redhat.com>
-References: <CACGbirTvSoSeNSpMCBiifTdRKKDsKbgk7nfvh=09fHw2b0M4Ew@mail.gmail.com>
- <CACGbirSjNMD1mijDWRp4gLcw-6dJsErrF_jgjwr3nO-geBb1Sw@mail.gmail.com>
+Subject: Re: [PATCH v12 01/45] KVM: guest_memfd: Optimize away conversion
+ overheads via dead-code elimination
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +152,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CACGbirSjNMD1mijDWRp4gLcw-6dJsErrF_jgjwr3nO-geBb1Sw@mail.gmail.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-1-85e5fd25252a@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ze6ze4y47opso1647rmng5suycwi4dqh
-X-Rspamd-Queue-Id: CE7DF18001A
+X-Stat-Signature: 4o38k645ht34sa4cktnsxbcuj5y7exek
+X-Rspamd-Queue-Id: F10788000D
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1788967985-232926
-X-HE-Meta: U2FsdGVkX191RXDnI5ZKBCkIn6NRFoZdhXTctfEuqw9riUYEqoIHfskHaIxNaWj3Rtb+6VJ4+GyGoExOmgnFNkWcTeT7hLW3ONqEss2NzmEBlq4O4KcFJtdk8OQiSlEGeKYItylR9wZmENMXcytmkFdYocyp8r7D1STpLZGC0qwdsTRBvtYc4vNdRo/7LdNIMCmufqIYfgDAa1iFzAaCzYKAwIuaN5UwIuBmusbgJ7o0x6UtU9pk7m+Fc3uossB+da14BjCHnz2yyBvv8ezNwRI6OP1ebGj14W5pv4d4PjXSsMo3P3MkLWk9erea74kpUH3eR4Q6smh0EeIBqzy8cuF/+9IfDAVB9HLFsiiRblrHuLSCG03b84PdlpX9bLkmjU5xmuP4otnMpnrsOJ3cTkRs5pzXDc4E/mpsGwPHwWlnWonXYNjaRKV0vwwT9Q3NSai3fQy7TlD2Du353+Th7p/FQ/4yjLasW/mk89UsIfsFi+mQMtJ/m8Hv+BrQpXvpa7myodVomnb5s/WA5pYdvW7VmlnTXRX/yFimi+1jQdqGwRmI3XZ3KLnatVSi36DposyUCuBZD2sLmrtTHZOu4nXlj66u0Faq7jKyOl3dhEcQjjQVxNeXgIHavArFCaCtljWGdbNvGQlt1hJ4JraWo5pxswB+02uThSUsnDSXz+nJwwwoZQRfa0LUrCHUTO3yLjnnpOn53JyYq+TlbE9Bttjpj5i/kKhfVANDkkQayrcFAQX3FfCaoPwKQLV47f2Vg9l4fKD+cY8id44TvSY+O1BclSbIAT9HRC+Nc+yXc5o2gFN/d8II9w8bt8xyjujWZLSqRxf6kVu/n8Gt0XnpDwVGzrH+JBzhSu0LSsZyB2dPqG0VadvKTO4sjrsJO/ICw+3m4kfZ48tVOh4ldc87J6n1XfM2uBSmHqqcTyeMh8RS06iwpOowwk8IsYVKoyNa4oiynPfG02I2PenZZDI
- gZ3YRyDj
- 5nCXww3tY7YRBwfZZj+IzNsAgqrXlgqB+kHEFPRPlbywDeE0UuakZr1fpfvOxxoIpAaHmLDaovolBj0ZqmPlZrbjnCnX+fQVgL3XMgjckocfUVBheN6un8Eu5VpgIYi7JIJM5BN+YbKgdeqAmH4BZUMWemsIcsR/MJ4ErAH2c3xL3KXWGCuFowpKBG4S+f3lmqqcJruAjDODoUO7l8Q5EHgzpRk0/3mDbg0HLI8iWjMuUg2dHTkfLDjsHumHkQ1AXQwIm
+X-HE-Tag: 1788968112-176829
+X-HE-Meta: U2FsdGVkX18LGQhedksgTFazwldA3fA5XrLPOPgUYtV5OiJ4cUnKKr4Gcx5h39LaGjxxrX/apbaTx5jHJFbKB8zjD1u7zJsjKvhejKZqLHl+sFkxmNkPCAxV9C7wKFj7T3NAvoKJ9XYRN7RKrzPlgKK+01PCrOw+W1SSHknasbMuVCypnUUMPRTVhEVnOn0XTDp6X9+ny9k6KmV9cMvdL21UZeOYDzDKBDkHE8zUJoAr8vNVdA08mw0vCfxZj9f3BtctSwLbM/Z+h1cU5nODhmeAodnthebClGxpkLUKN/b3R1Ti3Ii7A2D11Vrfa4lAMjYSDV6lIPWjyOViO2e3sSA6STB8NxD1sG7LAfWgpxzo0zFup6CRxHPfVnQNHhGQFhzGTDzVBuPzPW74Iz6BKHlyhmnGAnfy+nP5dmPTfAwC6s/naT7nhTn9+sljUv4QoGokJzR+6vgbhl7sQTj0RoZdE7FqsMsWMACSKIuY5b+STbPFblMgck+wf/9INFimUycfvrAJnSouIkFkSP4wN5q7m/LX+ZFY1envkqQiyH62NIDlAImjC/cpYW7yFlAVIauwb5UY7eQAQ6KlbvHDwZd4bptTio0QilqDDNWWtp8l1gtbcdco2gbek3ZihbYmfSE1G+vf3yEK3+/Z6KWl6Df1pyiFj9W2qaCqBhESLG7XrXUmz0sp6M8HpfKEmGuq4iRINJK4W3wLyhdpGNUP+DzQLALtJ6ZwsGir+Zc6vpLbo3HxjrY6iBsZ3cW8ZaNW6qtukm6jmcHt34AfoJpdLD4GPZ5AXeCU5kjoBQds65NcTmVkr4/PKJkqL25oXRDkIvWm2NaPUROeaxiQntlPU+/NZjqbdKLLORWF/Xzo/tVJpba5pKpMO9WyHP21MdKYStLgFQiipJAwHce9/Ifl/8jBnDcMaIEE4x0WXCCvPdljnB/T6P58j3FBBf47VKQuSWsAH4Rgx0UdcK58CbY
+ 03kw9pTS
+ KAj2GeArRC28N2waGR1Fk9vayfYfFXw/zpB04EtufBPFG2DIIavEv+6C3HGDq41C4keuz/0OD64PHyLsK2zsY9kBbQHV+D5f5iio3BDakf9V8l3V51yZJ0ZkhyyhpXbzCtMyoxA4Q4RvNRX+SkFNqg7deCNkddWx4BA7ZL3RgltAEeCwBbSKkBRg3lhfoq7Zr2RqIhctHTa9aTAE5HUen+5Laiy/kfYaWUQ05QOT+ccUkos3L9OoV4Cg6aoP5RC3ZM5AXDTZcmBDNYmENsPlmeKyIygtmxGIrdwZsz8+RIM/HFHEsqZFEQUdLYZoaGjuhZy5YnhnCFFV1KDtmRboqBOxwJw6UbXpMhH7/fO+ylJzxbghzTaenPUWbU6sOh6nod06X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,14 +170,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 17:23, Tianyi Chen wrote:
-> The unchanged patch is attached as text/plain to preserve long lines
-> and whitespace during mail delivery.
+On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+> of arch hooks related to converting memory between private and shared, as
+> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+> pure overhead for TDX).  At this exact moment, the overhead is negligible,
+> but that will change when in-place conversion comes along, at which point
+> to-shared conversions will "need" to find all affected folios prior to
+> calling into arch code.  In quotes because very technically that work could
+> be pushed to arch code, but that would bleed guest_memfd details into arch
+> code and would be far worse than adding yet another kvm_arch_has... hook.
+> 
+> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+> rely on dead-code elimination to eliminate the call to non-existent code
+> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+> 
+> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+> Suggested-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
 
-So, b4 was able to apply it (and I briefly played with it and it's fine), but
-for review using attachments is bad.
-
-How did you send out the previous revision? Through b4 or git send-mail?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
