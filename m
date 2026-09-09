@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D06C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3397AC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B5986B00A6; Wed,  9 Sep 2026 09:35:32 -0400 (EDT)
+	id 359EE6B00A9; Wed,  9 Sep 2026 09:35:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68E2B6B00A7; Wed,  9 Sep 2026 09:35:32 -0400 (EDT)
+	id 332166B00AA; Wed,  9 Sep 2026 09:35:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A35F6B00A9; Wed,  9 Sep 2026 09:35:32 -0400 (EDT)
+	id 26E7F6B00AB; Wed,  9 Sep 2026 09:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DB9A6B00A6
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:35:32 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F6D61A01ED
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:35:31 +0000 (UTC)
-X-FDA: 85194320862.21.8EFDD22
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 040F56B00A9
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:35:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 538431601EF
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:35:40 +0000 (UTC)
+X-FDA: 85194321240.04.F902CD0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C03F214000C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:35:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FwyGU5F9;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9AD7714000E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:35:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIGyAPDE;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788960938;
+	b=jQDDvCTqfW+M8OST2ccODhfI8b/imfcQOqk4NVybxm9pZ3QdRi1B8dXiopdRObXM9fo2ek
+	iwVWFFYnb3ttQOv/4zSbMe9aOk/SzGo8eWm8egOdfR7WFnOugaSY2v1ZEJ9HLjkbPp6JcB
+	YxVmrUbgtDUGwHb+qoDxq6BqYyO0y6g=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIGyAPDE;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788960929;
+	s=arc-20220608; t=1788960938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yZNdkM0u6O9tZXo2WJInVc9+4wXdTph9vPW/LWef/ec=;
-	b=7q4HuSMkB7uXcD3jJgyJ1EDMkXAoCXpRFnT8dXM3KrHurv1TJElqpV53sBLds8BfixdtYj
-	/n8QwM8RjT/CT8bO1wwmY+awQC0BIIMf9WtW2wd8Ia3t5chfoRCrCnwlz2edKfxrT5fHV7
-	XI6gBXK+lAd7wwbjUxddka7Ga6nZeWc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788960929;
-	b=i0zd689wQNr8oARn4lR9VoAWpG66b1rBf9D2rBv5HolVA8Y8MxDeMO0TcKEsUy5Dlm9Htq
-	EDINGiuPTqtU36qjPcvJXNS2BCcRBTuTDiJ+sSr1PC3l5sbhBAO0mbDl6EV/sVbP2CC/Ub
-	GgSjS++vZzThvnzjzAmFykLdlhtmscc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FwyGU5F9;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=H1aBakRnV2iGUhIOAlr/N+D/FmN54uy58dpZhC/x4NY=;
+	b=3dnOQ21EOiT61WDE2uUu9g2CcPdJxkdXNO9Pepp4pa93VYaSITmmJ1GQxrXNWZfxdUqhCf
+	tPb16xhPuh+Jhr/abEe4pNEhHb2ay7Ab7M3dAqe1E7I8VhSKbmg8C+6lfw8tMcUrRhY7bF
+	c1lLLLOcQcFGPvrjiP1iJcQgzQedNyI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 326E3400FB;
+	by sea.source.kernel.org (Postfix) with ESMTP id E7DE9423CD;
+	Wed,  9 Sep 2026 13:35:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50331F00A3F;
 	Wed,  9 Sep 2026 13:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887071F00A3D;
-	Wed,  9 Sep 2026 13:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788960928;
-	bh=yZNdkM0u6O9tZXo2WJInVc9+4wXdTph9vPW/LWef/ec=;
+	s=k20260515; t=1788960937;
+	bh=H1aBakRnV2iGUhIOAlr/N+D/FmN54uy58dpZhC/x4NY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=FwyGU5F93doyR2e+TPh/mdOmwUgenFtb2TP+XJNz3h+GAaop9V50jXt3fURujWDff
-	 844XCCU9pS4FYYnocBM040shpJTZzg1504KOaOOFjpbpw6yaW55hBDNAYN4gZGelNJ
-	 ihdNcRxfV8z+R21OYQncFMNeyXGi+GqxojxD1Tm/awQ61Cf9zcEYnvtz6c6YoVCuYP
-	 /esXF2U5FYahncfNaVAfyyVTJnnSJ0XZCY9E+GO1YsW+vTrPyS7LyiXQWGgTPzPtBl
-	 mg0S8dObY9asNAhWG1oHEKPZyQtyrW7lNHEdnMQUc2zcEPuLc1MbVJ1iDeqhPEap3W
-	 2q5EQjdyVe0IA==
+	b=VIGyAPDEKWd20kwvIUqot+xQIE1FKSVvgNyZ/BCaSBYBZ4/l7RmtwfUKsLtebNCZC
+	 KUyOuqdC7+6aDRTaV1D3LxHQ9jcb8ulJWjSiHbeVDIaV9LTxKQtl2kvyiCOKuiOd0B
+	 Rl5dwNfAArIAw6DLBbH8KfEbMCs1DGQKausO5zq8k/HjKGOfi9RcFBbS5TrbaolCAp
+	 bgFnI7XplUYPs4LONuG6s/f7TGDl+N+VbjGs2+CKIMZSFpZ6igjtJ9E7jJs+bJJ+yy
+	 PXooZ4itjy+6yrPhTiIiI8A9nIgqzsg18kC/pgJBbg/o6baV8bGpycq2hlzZs2JIsO
+	 OMjP5QzdY7mLg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 09 Sep 2026 15:33:03 +0200
-Subject: [PATCH 10/12] mm/sparse: remove flags parameter from
- sparse_init_one_section()
+Date: Wed, 09 Sep 2026 15:33:04 +0200
+Subject: [PATCH 11/12] fs/proc/page: clarify comment in get_max_dump_pfn()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-b4-sparsemem_cleanups-v1-10-008fc8d579fe@kernel.org>
+Message-Id: <20260909-b4-sparsemem_cleanups-v1-11-008fc8d579fe@kernel.org>
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
 In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -93,22 +92,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
  linux-fsdevel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2131; i=david@kernel.org;
- h=from:subject:message-id; bh=DckWm817GDohe+Jpj0X2/MGpAnLdf0iSl2oq+0nv+DY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJpiGJ8Q3l91f3ndj9/ytd25uOvJENPJiXveMnvgJG
- rPSNjUYdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRpzEM/6yXpcS7z3Bcy9Bt
- 3ZL/dF3H7HstSeYHrDlieadzlPUnLWf4n2HY+OJTruOio0Fd1m7VdgLyj/v/cjssvHlvwbyEwKr
- /vAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=998; i=david@kernel.org;
+ h=from:subject:message-id; bh=elFTRUDefqtCYtZsGvjwDH8AmlVM1CM5zJvcDj1v4k4=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLIWJphmno7ZtaEjffuh/wH302o/Tb+27Zvs1DvC0Q0q6
+ ftjn2RrdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCR6NmMDMtvbK71sotI4+J/
+ o3Jcb+/Hh59sA5ctevyKp9qXn6c0LZPhD6fr25qaNd2XSyMTtt5Kf7j1029HxWYPp81f1I45Zey
+ 8yQwA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C03F214000C
-X-Stat-Signature: r83febts4ojh1hpby6ss354ac9bxm51e
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9AD7714000E
+X-Stat-Signature: y9mcjikrnggw15n11jbpwbo43hi9xz9h
 X-Rspam-User: 
-X-HE-Tag: 1788960929-654782
-X-HE-Meta: U2FsdGVkX18pohloaYh1waNMwpuncB4eQQuW72Z2Dxv9GEZcAcowIc52+8InPLN/7Fut9jTE1/PGQ2QR16wjXC1EKLKjAKT+FoMIosmYnyNep1AzkicwHz6beM3RXtL4aex+2OF1fzPL4NZ1W+4aa5tWWLWCEbaaa7Wg1vY1chP1DLkmt6Y9Rini+6Yj4U05xh3Ml3fVW/JhxA1NNQclkxFFkpAYdIAiU+rTl1Rc0M64koT7AuRdQZDVmTbWYxp9PftIpUVuTxyMUwK2BCSVLPanuNlvvBgFKVjgHAVp586qDQERwnMPEm1jhXWerOg8maFeH7MLRQXTipjyIRhoY4pLR3SsG3iJjumBrHfw5NOi7qmrcpkoAhR556cvwgoIff+RQVInWkaViWtOEubU4UddQ5I32+pPTQHVyqJNRAG6C6DiAexwQJpS+SbYI6oC3k8rdNcxt2KJAurbBlOdkbFgcqqBQe41lCdsv4AjTsGeQVhMU2OlUlc8+UgfPiROJ5Y1JT3FOyUd87INr1+ERGXqwU/teEtT4qBfQBVV2AlegKbptrsFE4KmIioGna+iC/bs44SqV91uy/HbQrp7gQElcI6b4q78+TG/4Ul3Czcesm4ObY99u7Z1PNTcp5YMFTiVPpV2V9wvr/eRYfa4qO/+8ufoSkatrWZaZbJdvDjEpum+XCrqdKerMYDg2roJQNpEFAbzZM98eLRihYEc8AMAuC+Vjyda4+na2zLB0zanUBhsikJd72WUblEiP+Mib07DjP9waGLbSAagluDcrJ/tqrU3mvPMfuea4cQjSO9QiIcK2RHmfjxvddzz57FSxEXoeaokIjbXL/2J0HziYvfl33gooV/bJHHh09S9TwlMVPJ1ONSLZXjMh9S7RzbRlsZDgy40cFaCJALfm3fBdD8fUbAmNgxySIRKRbgANU0Eeltfi7XM1a5unEHN0mLjMR0Pyw1UDwMwuD2drfw
- IcJai6Vr
- znbwPJr11sZfegs/yfnMH9o10Y/tHmpQ/sJNQLlHDoodZXLTMz8jfsP6lUUqFwabS3Iht+AdtgcehqzIb9wjYdeh/jviNHtLJWvhWZNojdV+uH+SJwZ5swNQ3cXMYqZ1m22cvlxA/l05S+8YiAZYfqx+yqtLypcJDZCjVRwUx0kWI4w8Xm4XMU7wc119m4W+tZ3fjQyHytBBmUvgSaUjZFXt44yInwkim906FqV3+AFvAOVcN44p1jevhAHVqXnIPW/IFblJwHlKqwt94b6pdZYMfEpRlSsrg5P16
+X-HE-Tag: 1788960938-90680
+X-HE-Meta: U2FsdGVkX19iZe+A4NT3+gIO3bXfDY+cDakRk0Z6+7dddP+q7g/ZJryX7uWD5F8qLMU7BZHwIG9kuiyizEu032q6I0JFSlDUswooWEQGjQOQ+pLIOOgaZGrha1HM+Tpx8C4OtvbYalvcvNkN2Arq8rbd9PZhAa0ViIsju7keP8D2HHnu0tdDBAiofoFVG4EcqdYzI8qvJbViOcf4QMcoH+LKIwHAFvkoRtEnnR9WuFJb+T9rZq/y7deb7l+MeSJl+wZ48I1xxeC0zLghRbGol5lvGRVD33WBJl3cBhetrIfS7sDYQnf8K6JS6fvzeMWC96wH2s4UEfodhvTMo6a7RrYYw02iBh8GhfbOwOiTOI5TXSQjolamdxuVYdulzxq//CDhaMr/AhkeLppD6DElcioKvXlrs0vsw/7vxbd8FZOjkLRVBdh8GzqYgfUink2UeJS2Lz7ILk5KTy+5lEX7QSk6E5P7FUuwWHm+RCD68gE+W5pIRa8lWazoIOZBE84yZuF0OxPeVpcUoT/j3gW2ix7AGeez9o6gLNnPRhnUNeh+cM5Mh3Spm4HZlatMguDUlAhye07qDRg/JCe55/DE8+R1YbZ+hTsRwJJqlhmedjSJxifgkRkFxBWS2UKuqA4VsBXxIzDSdXHGJ9L+6icUPcPKi7epXpmdcp4mkJdDSoXii4aas0ZCaFi/5lTAnaHcCS6MVIMA1iHNDVtA7TkV/KaeXpUAwnHUMhDtTve0hh05AIVxBvs7YfmTgMbw5THMdBOS0s17Q7APM3+TSXY7R9mT8R8hS8x6upeqi9BVhKS+/Usvpon1FyjJbCWQY7rEdeaLJ5rAqbifpcXSYQPMqbvWMJs1u5xgRGUndowSR9V2NQIZaVizsP7QvbErN+Cgzv91Xi+Rsna85FC9KgLJiSHv0Txt8b9wsZ7ltn117b34EWaXuPmUL2iD9RWLYY044Rh2O4+4Xv4oE95odV9
+ dvM8LhMb
+ cPiuZP7fEYxSPpaq/qIItqfDsuu84H8HWWfqttvj94S7u/t0LFSELUTFc2zrxilt00bNwqf9wj/yqJTinpW8mokbXaB9qyHFOZejTVfZf0+tz5KNypgt7cbyXAmy1qxE4FcyfoEcNLxgc/cm5k/CMmudlcjSNxSR6PnqxbIS119Tj7QDWgFjaGnkR5u6hGIK93flxMDvBzJTzKVr+PwtVubhW+Oa8P1/pnR8c8beJVSzWXJNmcMxaxLFgiyEtg0u9fOr5h7GOkajXEi3Qe+Uy6o/XBgCQBjTS+aNuQggWwfZN+HE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,64 +115,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unused, let's remove it.
+pfn_to_online_page() will only succeed on some PFNs within the same
+section, not necessarily all. Let's make that clearer.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/sparse-vmemmap.c | 2 +-
- mm/sparse.c         | 2 +-
- mm/sparse.h         | 5 ++---
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ fs/proc/page.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 5aba058df6b67..25d3472972363 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -894,7 +894,7 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 	/* Align memmap to section boundary in the subsection case */
- 	if (section_nr_to_pfn(section_nr) != start_pfn)
- 		memmap = pfn_to_page(section_nr_to_pfn(section_nr));
--	sparse_init_one_section(ms, section_nr, memmap, ms->usage, 0);
-+	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
- 
- 	return 0;
- }
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 344acaaed94db..d2e7c21319e27 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -245,7 +245,7 @@ static void __init sparse_metadata_init_nid(int nid,
- 		memmap_boot_pages_add(section_nr_vmemmap_pages(pfn, PAGES_PER_SECTION,
- 							       NULL, NULL));
- 		sparse_init_one_section(__nr_to_section(section_nr), section_nr,
--					mem_map, usage, 0);
-+					mem_map, usage);
- 		usage = (void *)usage + mem_section_usage_size();
- 	}
- }
-diff --git a/mm/sparse.h b/mm/sparse.h
-index 03351f2467e34..f45dd280db6ff 100644
---- a/mm/sparse.h
-+++ b/mm/sparse.h
-@@ -91,7 +91,7 @@ int sparse_index_init(unsigned long section_nr, int nid);
- 
- static inline void sparse_init_one_section(struct mem_section *ms,
- 		unsigned long section_nr, struct page *mem_map,
--		struct mem_section_usage *usage, unsigned long flags)
-+		struct mem_section_usage *usage)
+diff --git a/fs/proc/page.c b/fs/proc/page.c
+index 260772b20bd99..6856ff3e3cf28 100644
+--- a/fs/proc/page.c
++++ b/fs/proc/page.c
+@@ -31,10 +31,9 @@ static inline unsigned long get_max_dump_pfn(void)
  {
- 	unsigned long coded_mem_map;
- 
-@@ -109,8 +109,7 @@ static inline void sparse_init_one_section(struct mem_section *ms,
- 	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
- 
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
--	ms->section_mem_map |= coded_mem_map;
--	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
-+	ms->section_mem_map |= coded_mem_map | SECTION_HAS_MEM_MAP;
- 	ms->usage = usage;
- }
- 
+ #ifdef CONFIG_SPARSEMEM
+ 	/*
+-	 * The memmap of early sections is completely populated and marked
+-	 * online even if max_pfn does not fall on a section boundary -
+-	 * pfn_to_online_page() will succeed on all pages. Allow inspecting
+-	 * these memmaps.
++	 * If max_pfn does not fall on a section boundary, pfn_to_online_page()
++	 * can succeed on PFNs beyond max_pfn within the same section. Allow
++	 * inspecting these memmaps.
+ 	 */
+ 	return round_up(max_pfn, PAGES_PER_SECTION);
+ #else
 
 -- 
 2.43.0
