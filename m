@@ -4,172 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C915C79FB9
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF7CC79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326C36B008A; Wed,  9 Sep 2026 05:15:46 -0400 (EDT)
+	id 1060C6B0092; Wed,  9 Sep 2026 05:16:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D6AD6B008C; Wed,  9 Sep 2026 05:15:46 -0400 (EDT)
+	id 0DF3D6B0093; Wed,  9 Sep 2026 05:16:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17AC66B0092; Wed,  9 Sep 2026 05:15:46 -0400 (EDT)
+	id 01BC06B0095; Wed,  9 Sep 2026 05:16:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D93786B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:15:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BCE01C046D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:15:43 +0000 (UTC)
-X-FDA: 85193666166.27.3320523
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 28B9640002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:15:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pc0mftNO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pc0mftNO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788945341;
-	b=dZFcCLlGaAPxtGcAup/zTGhugwdA/K2KIQfP62zxdQGmtd+TLifl83HstAgQD13iA0xJXf
-	QlQAOVJX4zXyzF9ETfHDdrlfBZY9zh+98X92x5u8ddG2UnduE9hd/fDRengRhSKYBHPcxC
-	sY2WioWIX9pKduA/oqmpVDcAKXbIY2w=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D54056B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:16:31 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4FC4A305A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:16:30 +0000 (UTC)
+X-FDA: 85193668140.07.6794076
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 53F0940003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:16:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XHx1oSBb;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788945341;
+	s=arc-20220608; t=1788945388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WMLhSTvOXcO1Feh9yCp+cQisLkpmflOTkHs5UzK+oYo=;
-	b=kWaJ7Usr/9xiViP9///8fl4Gj2AaZA8NEpRY+HiKRpAWaEBU6QI9RsRXlDPryRaKk/1W0f
-	a+LhwggXCHNfUKb/Hz4sMRxk6eDqGlfXJiL/+zw5qAk9vNy9cW7nYiuqivVMyOFynek93b
-	hGiLJWjy2PpFDqrcyTsXR6QyZHwPXAQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 154F744095;
-	Wed,  9 Sep 2026 09:15:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7981F00A3F;
-	Wed,  9 Sep 2026 09:15:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788945339;
-	bh=WMLhSTvOXcO1Feh9yCp+cQisLkpmflOTkHs5UzK+oYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Pc0mftNOGdEc0Jfw1CtI27FfIQdaxAWsEoGtS00NSboMWgpgq6kMB1PacEkMsCWVE
-	 PyBSbte/xncgLgVpiZhfgsZGVbt+xRz3Hc8kbcATJH7G3L2lJ8aalj/R+Aqd6dmX5b
-	 5eg5id4TZ80FMMxsUU2JhjgG1tYJRqytdCJUhIr89SM9fK++Q2AG0nlQDtmg/8dhUN
-	 0IyRNrUW4GQusS5tQLUvQke7ZfU0WLTad249E94UR52ddvrJGL2nfYN7rtII5ZqTNh
-	 iI75Q95afgEguW3TjBoNFF2XDSC2ycRoFQVeNeDMOy9GE8TTAngS8Q4tHYSzej4vlC
-	 2tOKgwOhoDyjQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8E752198003A;
-	Wed,  9 Sep 2026 05:15:16 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 09 Sep 2026 05:15:32 -0400
-X-ME-Sender: <xms:pCOhapxWpL0GHjdR-LbSmt6pcF7cQoj_8cQ33xSeM7XCtFENM-sJEw>
-    <xme:pCOharWahP24PRQXVvE8eeNQnV55db4J_vp16cj_Z8GibP0d05qa3LF6G7CXPobAn
-    HafKDVhWfjWxnJEZOfi_ZDCv10ZgG4I_C318m3ajUCuz5cvYfve_vGy>
-X-ME-Received: <xmr:pCOhat43rLqB-KpS4v-iRR2MbmJvziGj4K3533xcWcE-RHBMlP2xBju_wd0>
-X-ME-Proxy-Cause: dmFkZTFpC8WONluUuvc7dpKb99eg92DQ33MSjEt2sNv2fC237wiMixhMca33e2LldrnTRH
-    U75C+KLC/q/LoK5zKzpXIyjFwS1b+E/++uY5aiYodIxAbg9BZ6O3CC6cd1SXYaFEulw8KR
-    jAI6ffm11DtQZdknyCWUWVFfuLXw2xt2y4TrUuW5CEhhTR/K3eTVLpp8QK1B0crMmfDXeu
-    uwu487939XxAxC04N1S97FZttc+sKd0M0bqZu5+zU/yY2Z2X+w/t7eOM75eiUIDwrFyGW9
-    VO3+XGBW9eUcOQwzMaEf6se6jBI4E1kU1BTvjozT7XN+z/WzRNjCEoYCcDV/y4SRQAjlN1
-    UJij+//6ITDtj0vpJtsxh3nZgt0K5pHTh0hy5Hu48Cov+xYJKliDjhUO5TEvuCAqjsq3SO
-    OxyGdCaNbHBZZb7IXgcT+pITOfdPxsCPlJyBoTr8Le9pMNL/ZTHnXi+/DIJXF17DMcWZIh
-    YM5LVoGds+47feWKyzGfEzTv1rFYfFtyh3h/v0wuQgBr2xOdBApwONTAMblqFbOLbUS27j
-    NPYBYul31i/zyEEbO83Lgkbp30doOoaMXPcKhFs3Rw8N2hrubUNjgoPgAP5Spz0uSYcxe2
-    FDFitH4FhEvRxWxK0irW8E1NKmcImw4MXKQVOJjCI5K3tVhOemySCLVfbAmA
-X-ME-Proxy: <xmx:pCOhajUqd18ClRcyZhFPHIYrAAp0-S3k_bVdXd6KZXOebWFu8gPWvw>
-    <xmx:pCOhaj7UC-S4UPOWxzOF-A3gNv5YI2PWLCUOMVoriXtNaMxfx7RKrw>
-    <xmx:pCOhaqmC_kf4Hp2GOeEHEjH5DxULoNK2H7t84K4BezfXKcQz_belGg>
-    <xmx:pCOhalZ7HrNwAby95sPa7N21RVub9YHPEGD6aBYbpelxVLHh1XK2sw>
-    <xmx:pCOhauEse5Mk8Ax8FZCi-GcbyLxH-H4DbMf7YweCkQjDO4jCkVmia0fm>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 05:15:14 -0400 (EDT)
-Date: Wed, 9 Sep 2026 10:15:13 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- 	Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, 	Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, 	Usama Arif <usama.arif@linux.dev>,
- Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
- 	Geert Uytterhoeven <geert@linux-m68k.org>,
- Dinh Nguyen <dinguyen@kernel.org>,
- 	Simon Schuster <schuster.simon@siemens-energy.com>,
- Jonas Bonn <jonas@southpole.se>,
- 	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>,
- 	Yoshinori Sato <ysato@users.sourceforge.jp>,
- Rich Felker <dalias@libc.org>,
- 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Paul Walmsley <pjw@kernel.org>, 	Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, 	Alexandre Ghiti <alex@ghiti.fr>,
- Russell King <linux@armlinux.org.uk>, 	Vineet Gupta <vgupta@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
- 	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
- 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, 	Peter Zijlstra <peterz@infradead.org>,
- "David S. Miller" <davem@davemloft.net>,
- 	Andreas Larsson <andreas@gaisler.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- 	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
- 	Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- 	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- 	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- 	Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- 	Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- 	Sven Schnelle <svens@linux.ibm.com>,
- Richard Weinberger <richard@nod.at>,
- 	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, 	Arnd Bergmann <arnd@arndb.de>,
- Vlastimil Babka <vbabka@kernel.org>, 	Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, 	Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, 	John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- 	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, 	linux-m68k@lists.linux-m68k.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- 	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- 	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
- sparclinux@vger.kernel.org, 	linux-alpha@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- 	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, 	linux-um@lists.infradead.org,
- Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v2 11/12] mm: make userland page table freeing RCU-safe
-Message-ID: <aqEivRP0LmJZcgEx@thinkstation>
-References: <20260908-rcu-pagetable-freeing-v2-0-1f60b64e878e@kernel.org>
- <20260908-rcu-pagetable-freeing-v2-11-1f60b64e878e@kernel.org>
+	bh=P9a6AchFeClJ0X2mXxJBaf6V4wwK/h2PfVSfYzesQn4=;
+	b=qlcYv/DPz6mOb5FkaM2przkdTNnOB0kHkb7WvmRLMy6wvQ9tnJ5sxXQYhaN6fAgDq1R4Rx
+	lS5au1wHJ6GgGq4fUEHv+RcZIj+EMWtiobuUJqq8BSUJlSGMxB6+q6+EJIAasezgWlgRUD
+	fZbOriff6KFfwK3/Dnk4HHVFTUs0G10=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788945388;
+	b=SVrvXj3w+QtnW1SBYWsA/7+WYW97tnf5Zb3Yeo6kfpqeBE7+37PaXwDr2yk+wFRSrZP5a1
+	UyfHiyYPj/qZz+TFYzxoZmGI+r4Vho5n9xzA3Ur/9eZSrV0EUvYfuZAIkVdHcOjE3vbLMo
+	DjhwINGQ1JHEVmkdQolYG1GJoSeIeb4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XHx1oSBb;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788945383; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=P9a6AchFeClJ0X2mXxJBaf6V4wwK/h2PfVSfYzesQn4=;
+	b=XHx1oSBbDO8Lw3r86QcMVbiAgf11UIL0IdAKCuzX5qj8UhFMmg3tftoGSvHGTgHJgpYJO5yZs47vuuTjUl9yJY+1l7NP4IRW3FPjeqvnOav8XLLEguSVsst9m7I0WOhP7EH+tQqPJ0DIgXel8A0askDui+Ym4CauRnuEoLH6lnM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAePNMm_1788945380;
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAePNMm_1788945380 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 09 Sep 2026 17:16:22 +0800
+Message-ID: <9fd65a16-51d6-4c21-91f0-f278479316c5@linux.alibaba.com>
+Date: Wed, 9 Sep 2026 17:16:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-rcu-pagetable-freeing-v2-11-1f60b64e878e@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/19] selftests/mm: move is_backed_by_folio() into
+ vm_util
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, rppt@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-8-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260908125105.1510704-8-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 28B9640002
-X-Stat-Signature: pnbiadwd5q6gf37ce77mi8sngj8h3uz3
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788945341-493775
-X-HE-Meta: U2FsdGVkX185CHDLTR+wR/l+9UfFNJbtvqM9C7hV/O3CzPox5WM4zrnopXBx149Ev74P0ni6azvKRP6s+D4xHgrtLqM9k9h1ZDlzeZ8jnVYPB66n+B/psmVt2MErOAeGYlVGZ8AmZOImcgopeokeF6iCU2h6Wjhbee1hucSEl/sWrun9OPzPHvDn7lvW7X1lnwokdcMbNB7pITP4MVv8C8kiDNefwnze1d1rXESMcvH5G97l+dZT5iwuB2kIUdd2wIXowFdzhAGOPcxWr6f8XOlsMsfhO3QnaixJe0LQjSrVz1NxsuRxAjs7+CirN4tYmHOPD2I3m4bL7dmlZoDvYSVFwZ7USQF4W6LMxseh6aWYnByITG7V5qZ3EXykeHW9jXzx+HYtU9PjfdpFJ5Tr22s1yEKCSovVVcQXmqS1CS3HsrhXhITYmL8ZsNth6qKHboiA19o2BCIOdqPu/2zaZi865LZ2cUhXEfncK06356JUduddnBdROO/lZe8jAEGyqmGUfd+w8trvhIwnqg2qPzAoc9Iln4HckZzlX657x+60YRQtHUqBiBIvciiMyNpHk7794vnuDYwXzhObE67Sy1KANEllPE3ILWyuU1EDHXxwGROojcu9JxUxSVGMvHS9QkQp5deokXtfqkjKSx+thkgRjASUUmLsifDb4g4qaprOfD0yZqjXCkB9bA4FLWYUFhy+9oqwtMawV2uhPqcH59mgeNYAL4lmlV11N9QRFxj5bEIAQKE4gJfdflatiG/uUcR7fAvqT7YXWJhl6zY1y/WLHEAo1ED1c4A4GzpuYpsMYzpGaRvAOpmx1C0lJos116RZIpNhXXATKRJo2ppxlEqcB6uayo6dISKymmophuyuOkjZh53Q7Z3PmX8RYcWmHdnallyzMsOAP5XaMyQLx7zwbqQjUVX8HcOUWKvW0wb0URI92jcDhyd/8XDaB8kAYZnNvzbRDLYSwe5lVzc
- VMQ1+wcR
- 63gNrc5/JBMogVxvyWAUvTbHN5h4aqFnruHyNOqTiJOfjhNODEJlJXeFrXLSQhqK3ZYQawM2vVKxomt9jgiroliVNOdeqgCnMkHmsUEwK/mIpOEx97yEmqthcPnSi70KSQ52BMcP740+6GE+5NQ8n0J1QkIZS4xEzTf65sf4uaCxOtsm+vpQy50NguwEG+TLKgSJOIKmjy4Q3CqMh3nAqYOD/yHtxvSsTZJejO/IuBulpxULSvELBAocSk1KEhMjB0YTy5YNJX+8B+rZHoRlTmjl9ddYwruu0lBCGA378LNASbod0lTuqxppW1DcqCOld2E7FXJjgNRbIw2HxcdPi5vHqA8rpwO7jic0o
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 53F0940003
+X-Stat-Signature: 95f6ik145scdr15y48ikx1h1zrksrbsr
+X-HE-Tag: 1788945386-49070
+X-HE-Meta: U2FsdGVkX18/cdI5cE9DKdtOGZsP3BqaUw0zxp9dv458oT4Vt58UiUSVvvZ9FZz/K0RHoYs9wbhi/mwxzbUpeCQXZ7biorWVfeQZFhdY6O86IiEedZjbIj5qFW5INFsafQZNzgmax4JJUawuABawHHTN/yxtewbVyYG9aMbKmoXlb/uRy8WL80cgZTdFQxvedgQp08PBdtFfGkoEP1XxTJX2NIQzeSCplQKMdIBbR/HjSkyAOaLyFB8avhVG3lh9JRqsLUyGBFZ9fxtTBDueL+uym+khEiDD3Bu5Vd1cavQ+702xB04BOhDXWshU7TP7BzPKZGe9jaoGX3Ci+1E3ZfRew+NWyxVBRqbzgbT8CyxFWfRlc+VpNA9erRQLzjhvua03oAjy/U0FFUrOgXD/t7pZDgjY8LiYXHXtEknM+bGwHEOawjgW2m7oLkosQAxlPvx3bJSmQj1FW6BQ3yNcFKoNNXC1XRX9x2eh2Zbbc3QJCefPQNHkYzF7t9NLImRIptMHoaxMLZRhHnXX6URc/uft+PoaDaXgHcbKQKiQXLJbKBdpFBfsIxBDnSTAR+zhLTWHHwIgBwM+IGGtedjCgPdV1U2JPLtxcPe+b9pnrckI78x3JPkTj2ZR2NoYj10xlWBGYcWfx0a3OKn1mm7qe+Io/I4oGLj7+cwJ/JXPb5Az+G6iqR00QNw9oau5dNHhuJKT1nwvG4oIPd63j0SfLyXWTijXdgO/OspUg+ols26pKUHOy+w1dYQdISUCtckq+E7WEBmGPEZWcPwEurd5UihScLBPV3Bzqrryi6WiJqC4P/U7GZuz8rpHXUt+p81jtONTiLiyqhty/J5CdA4m/XUEj1GUd8Wu7RVHCiezeuu1+kwYnwRxnOTi5JPIf5jz2y7ajqz7e4OAZmmXwZIe05dVFJWmk5ztuH1ji53VwqNH+Q6H3VRePkgDdsjHA3n2UV/3HGCeTqXKrZom69w
+ aiaPQDXs
+ ST3BGdQcaJ0uFzAJ66JqT9Yz5QHhWeLZUCerXTVvY9Td5xaatz7cqAh7CMFe/ZGKIpsiKvE+DgFg+FbNOUTiJUlgBmAFOvjGkqpEiq8hmfw9ja9M/uGFdS1hpYvVuMDSZ+wry+nglULYZmXUlMUQo8S2bzZEwX+5yEPASxP9iTeQqp0D6UDm10QBeRlo7ltg2O52tSNkF5hiX4tYs1jFoxWhYS0FVjPQLEAWu1hLIMVoo6y0Dnww52CFsTDxJUzZ8p+7Ni0lQml23qOazbxcg0F3hmkN3RqeCnOkgBOFJpY4r55sSZXy/1nK/a+u05Zt4wizS+Y+RhdmPDjrvoVWAwsaiqbvWNIJZWvs68ntCGcWvDLdG0m+2SJUUL+4WyhPD6TgY5iwaHiAO3Qr5GtKi6QEDhNnynxHk0DqzfJhPOEXJUBma8e+0yHji95DXO5AQ6HDJlvjUvMQb37I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,64 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 01:32:20PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Now every architecture has been converted to support
-> CONFIG_MMU_GATHER_RCU_TABLE_FREE, this configuration option no longer makes
-> any sense to keep around.
-> 
-> Therefore remove it, and remove all the dead code that existed for
-> !CONFIG_MMU_GATHER_RCU_TABLE_FREE architectures previously.
-> 
-> Additionally, CONFIG_MMU_GATHER_TABLE_FREE is no longer necessary, as all
-> architectures instead use CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE when a custom
-> __tlb_remove_table() is required, so remove this too.
-> 
-> A number of architectures only enabled CONFIG_MMU_GATHER_RCU_TABLE_FREE if
-> CONFIG_MMU was set, however the mmu_gather logic only actually does
-> something meaningful if CONFIG_MMU is set (mmu_gather.c is only compiled in
-> this case, for instance).
-> 
-> As a result, there's no need to gate any of this logic on CONFIG_MMU
-> explicitly.
-> 
-> CONFIG_PT_RECLAIM however does have a strict dependency on CONFIG_MMU, so
-> make this dependency explicit.
-> 
-> Additionally, correct comments to remove references to non-RCU page table
-> gathering and make it clear that this is not 'semi-RCU', nor has it been
-> since commit 1fb3d8c20bfa ("mm/mmu_gather: replace IPI with
-> synchronize_rcu() when batch allocation fails").
-> 
-> With this change in place the kernel policy is now that all page tables are
-
-You missed s/all/userspace/ from v1.
-
-> freed after an RCU grace period, and thus it is now safe to unconditionally
-> perform page table walks under RCU, safe in the knowledge that page tables
-> will not be freed underneath the walker.
 
 
-> @@ -151,24 +148,15 @@
->   *  This might be useful if your architecture has size specific TLB
->   *  invalidation instructions.
->   *
-> - *  MMU_GATHER_TABLE_FREE
-> - *
-> - *  This provides tlb_remove_table(), to be used instead of tlb_remove_page()
-> - *  for page directores (__p*_free_tlb()).
-> - *
-> - *  Useful if your architecture has non-page page directories.
-> + *  Page directories (__p*_free_tlb()) are always freed via tlb_remove_table(),
-> + *  after an RCU grace period (see mm/mmu_gather.c).
->   *
-> - *  When used, an architecture is expected to provide __tlb_remove_table() or
-> - *  use the generic __tlb_remove_table(), which does the actual freeing of these
-> - *  pages.
-> + * This serialises against software page-table walkers, including architectures
-> + * which do not use IPIs for remote TLB invalidates.
+On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Checking that an address range is backed by a folio of a given order is
+> useful to any test that builds or collapses large folios.  mTHP collapse
+> coverage in the khugepaged selftest needs exactly that.
+> 
+> split_huge_page_test.c already has the building block:
+> is_backed_by_folio() reads the compound head and tail flags from
+> /proc/kpageflags to classify the folio behind a page.
+> 
+> Move it into vm_util so other tests can use it.  No functional change.
+> 
+> Assisted-by: LLM
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-Indentation is broken.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
