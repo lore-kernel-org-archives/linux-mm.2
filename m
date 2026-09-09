@@ -4,120 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34647C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1C43C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:00:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CBF16B008A; Wed,  9 Sep 2026 07:57:56 -0400 (EDT)
+	id 933E36B008C; Wed,  9 Sep 2026 08:00:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07C626B008C; Wed,  9 Sep 2026 07:57:56 -0400 (EDT)
+	id 8E4DB6B0092; Wed,  9 Sep 2026 08:00:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EACEA6B0092; Wed,  9 Sep 2026 07:57:55 -0400 (EDT)
+	id 7FA846B0093; Wed,  9 Sep 2026 08:00:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA336B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:57:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A8F914019D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:57:55 +0000 (UTC)
-X-FDA: 85194074910.11.45E3AEA
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 624F1C0005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:57:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="eNngV/io";
-	spf=pass (imf22.hostedemail.com: domain of trintaeoitogc@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A4A86B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:00:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A18B5C01DC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:00:37 +0000 (UTC)
+X-FDA: 85194081714.23.33A61DD
+Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 986334000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:00:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tJxIezej;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788955235;
+	b=40I+ZqxAcPtE/lu7+mgETC984cOpTSjZ11GsbwBvtW8Sx3IejE2RElfaXV6fweRsTVERyH
+	lojWs8dFxL/vqDkvuOcjgG/igY1iFKHMQtUBsdbpRuJlx7yP6I8Yo88lSqzUrur3acPG4g
+	rQ7kxY4fM3VUGoR4if9BrHQJwlSF1tQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tJxIezej;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788955073;
+	s=arc-20220608; t=1788955235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
-	b=4wFwKITMD9eNhP/xCAIGW8wMgLGSo0d5smeUV2iXEUbVAo7+zSgsabwagrJr8VEBFLC6AT
-	pSr6QGbKKqF4fiwWhzErsl0M7aG5gV2knOJdiLUfLaJbydBX7X2rToYURX8PW9HmEsMM1E
-	tNYOXcL8K1BYUCWp7RvyxGgHBylTu3c=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="eNngV/io";
-	spf=pass (imf22.hostedemail.com: domain of trintaeoitogc@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788955073;
-	b=D1u9v1nr/0a9k7RYabmRrypUdfbZvd+qsni+U5cSwpoM/YbZj+o2lCNhggHtsCiG5bJf5X
-	fshV8MUg4mHu3N9uHAsSZEKvWNXmn6WE/lqCD/M+QFkKAfX4tZsI3YdTVmM6r6QKVx7pPR
-	uwzy3GbTACEnvch4i91pbwPG7ufjqmM=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b9184fa80so114852a91.2
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 04:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788955072; x=1789559872; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
-        b=eNngV/iop9YjcqyD3svGD7dUxC/MVnkOOgDzoe9EiG0YQJKLVUpGQhEs9ruOmOeUmF
-         79e7Wjv1dDQYJFB9/Pl5QMkN1/tJodhLaTG37FvRaZKUswHxG4T9+DiYNo550VZmIrhi
-         QW7DMIP9rRFVKIxJHnQXhsDWZtWFCqcWg4G0DtfWCEJbvHgxiOm5OEfPUwZDcQDxf+yl
-         W2mcCIpVRcXgXmTv5Y++51178OsXMXoOYVAHJ2b6VjZzZ0ijGKv2cTMTjdeqf8R5Jlqf
-         RuKC4Fcf85wY9hupyLUUnboxmXAkUtS04cZ+weS91uonLMWmj+4YKZwDqdn48TR8V6YN
-         naOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788955072; x=1789559872;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
-        b=CdffmstrsI+rkNhbjjkezpjlRwBkTRI9K1lvBYh0aaC1Vxa19/dBeJmMclxuNyyYeD
-         QMDXbmQ2jvDp7qmAYmyGhjR3UlY9YVFCXr+hF53+1KW9TGMUs+3Zh52IHU0SlIfrF/en
-         Tj7bVROtUFo3MEok3+d8Dr2X4xIFZaxwMN3AaNW890ihcr/bqgDmOMrkGEOK68qChN9u
-         u9XlEzDbW+ytJ+NwDpkglPB3IUvDA+TsrukNP1Ddi6e9ICS9gYibyz/JRca3DW2YV6Pa
-         aNYaN8CRBmAI16bDqncGjPK3LEW352xSWy57TkKf09DkKk0Ul+T1/cQFFfC1eXTxqOmr
-         /HLg==
-X-Gm-Message-State: AFuF++l6R7EbKw/k3896cV6zvj6q+yQiBbVuiRadxEKsYodLAK2EckDZ
-	5SVbxUsuP4IRZ7hm+bhmUpnnDuiddpmTMEFc9nTdROgmE+2f29bl6c7I
-X-Gm-Gg: AYBFou3ogsadctvDmH0Jfg+N15eXMtpVO0LSoNlStjOa0HMZXHmcIlx5c9n45ra9W2P
-	aiZDItj6BvT61JBPLMh1KXhq91nCeUm5o67TYuRUy+YYii2A15BfkxNhalf/x72LJ+AhpF2bQuj
-	/roci/RT04aekne/p+GimAbDoz07TC9u50gKEVOkOAXkLT0+4r6umu+6ais5YB5LQQ9YzNZvlfH
-	rtLGLY5bK3/+u9JhTfpw8QoyGPlBBwOtJmYPVgZrLhAXIyRHCnVipjKrnAO+VVRLzV6glcm+BtN
-	l8ZjRR/h6QIhpoIzgaDTEXqvxpY46J2RATMg2ZjoLdH5TYGQ/Lhl40M6WOYjuNSgCPn0xucEIPP
-	UMIyUYeLF0/Zd0U0/Qo32FP3EQRm0K0gdyCDqEKo9rEDDWtTqoN8dKl960RFiPPa8AAXLNKPOYZ
-	vanA52zmEUiDWtsWBA8UyDRzf51b6aMOz49qWQr0GbhnUfCTQooX0ZYPBhqDCWtu3M9N6yDI+ZU
-	Y43JhhQ548jWx3j3YixyHh3xooAWBKEINm2Irku2YwQRHWeZj/CPc4Mso069s41
-X-Received: by 2002:a17:90b:1d8c:b0:398:b46d:48c0 with SMTP id 98e67ed59e1d1-39d70baf4acmr444308a91.18.1788955072012;
-        Wed, 09 Sep 2026 04:57:52 -0700 (PDT)
-Received: from fedora ([177.21.143.191])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143240d86c3sm39619067c88.0.2026.09.09.04.57.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 04:57:51 -0700 (PDT)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	pfalcato@suse.de,
-	willy@infradead.org,
-	lance.yang@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Subject: [PATCH] mm: bypass datarace check
-Date: Wed,  9 Sep 2026 08:57:23 -0300
-Message-ID: <20260909115723.528501-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=09spd/RvJ2R2Jg+UtcW9j/yS/Dzb5BqcpmAriHc5wNA=;
+	b=DyIrZu6tFsJjP1yTAcJACkseW7ZxYaALvqJ59mpq7FKYbfPqwxeswC75zTwgUzg90MyfPU
+	tzkqu6YK3WCcEm1Qdm9hMfMI1YR4BxKQhmjkAixn4GX826thaZxQrSqYrKyu3WOdtorUgD
+	UaDYa25lhxrQYAQcazVWZwftVBcxiMA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=SwCnXXsaf+fnrTsFYwqQVitrQ3IBYAM246XJcfjgCMM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788955228; v=1; x=1789560028;
+ b=tJxIezejdWMqrldv6KuK3+fv2knycsSL08OcGIXbQcrWpeKJxiOcmvIDo61qepZxkHiQHwMf
+ 1B7v0f3MJt7UViXmPHBNLm+sSxSr7ZLQnZPgW1PJ3ZaZSfUBRm67ruzvU0rexSzLZPpUlK3Wig3
+ Q5wNHqLCbafhrS4OPTRHEwhg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1d4edfe393dee372;
+	Wed, 09 Sep 2026 12:00:26 +0000
+X-Mizu-Trace-ID: 1d4edfe393dee372
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <102f6ff6-46f9-4734-a056-694eb2c0129b@linux.dev>
+Date: Wed, 9 Sep 2026 20:00:19 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/2] mm/mglru: add tracepoint for folio isolation
+To: Barry Song <baohua@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260907042447.2450663-1-ridong.chen@linux.dev>
+ <20260907042447.2450663-2-ridong.chen@linux.dev>
+ <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 624F1C0005
-X-Stat-Signature: hugyzbmpaj8nau3huu47q9xni8ink8in
 X-Rspam-User: 
-X-HE-Tag: 1788955073-750713
-X-HE-Meta: U2FsdGVkX18+Yrb73hUN9/tzOcYsgk21c7w/+bsQQ7GSdxz6C0XSaGheT7KVpPKNZedXEqAK+e6wjb0Ron7mXez34dQsG2fHyYCyUWVSK8+zIOQVWlV2hxZr22H71MXZ59bA0QzSGhnKyo+/ThqGXDod8K0Ps93a8Jhfx2FFp92JWTryuTZ5NXJwmNcPG18ngS7P32expFKaffgFFUSA6pzCo//gG2zncWBaf0Up7iP3vHFRC43NGx9Nsj4riOrINb9Xie5QWpnqgbjMUOhvgoifHempfwztAMfhfqZM70gGxxu0wpeSVbmyv5BtemwHEm+B0Gtw4d7VwZ09FhXoo2fnkVnn6p5+0XPOc4cMEOEAHjR/9orjEzVPPbeOY1m3aY5/8Pt5f+HXH1VXb1BdJA+SYstWarwyZqgIuhcjCFPdVwVkBdUICGJZftIAMRSbOM3fkFNw19f9t6p0in5mPEUbNJGAYNyo+e2yely5tLyDSWDw9mKeHPrQmPDjF7fYoqDV1YqYh+pnEZsG5ujPVXY/kQ1dTEbFH/5ON/vUSvYDkGaNscUIWmYUFn2AGF6+zxuHeguxzY3jlCALjJpwKe8qGrpsJx08FasH7/4fWT4V7TXDdknNW+LHNiaa0xrc4TOjVEey9+kM3F/f3D0/2oMfNkIA1lbNAU+LzWt1yAvWD+z5YA06JJsWT+M/T1HynhaKg1LnjpoLVI5RChn5yDsUUc9dl5E1VMNKFtszlV5Y7mEPuavSEgzfEC27iSqfD5Z1cvVl7qLnGGeSD0m628YDP76xWAMkM221+L9BHz81/JAAzi1dysvsqB+Ubc36RfDuwCQBldC9nhtOxdsIpnxVVaNK6yfZGs2uCSRIobhcH4Wxuny3o5o9PxGiklB7Cgn93ZiKf8mnJLOVoRcY2Kp0JKcwjvwS9jXE8/pdvVU+dyGsvpj4i4xEwDrISdnzDRsHQ3U4DRmeT8+PIaP
- JSigH6Te
- 4n5u+UcUZMKqRBwwFq9TggWlFhaBZplvqciSE1x1quH/rjNzbslr1ifin4jx82oLK51/6M4YeUvtP5tGNEBACFubQul41hYohkbFm8Q4uoqXgszKi878yaRqWkHymw6eajh/2XQ6D/PzUlvvghmFom/yFCEC8WkadXPFOzJqs1fIB6dSWY41Ow11YHb7HlOhuZVGWRA5Q6+pb86mnxspVWA0Mi+NvNw1abFwo4fxW2XCiNH5P0ZFfxs9HnBJPBRqJDKedYiNEKKWVbBs++BTnfchK6zBYUK+qEktE2JT3qdQJ42Jqyez1QNBTOV/bVtttm4l72HbQKIAfYWZQm9DD9FxAONcKAzWBte5ma7GkdrKB89YEAZsrLkCqM3lWf3WF8DzJ5rh4XJuhJJiG2lxMlU4KSQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 986334000C
+X-Stat-Signature: 5bahfzs7sqjj83xnydsbaqwdrraot1tr
+X-HE-Tag: 1788955233-543197
+X-HE-Meta: U2FsdGVkX19UgZhnpGrlLpd9xQd5PzYkWfUYTpft5uo7VgSx4lgkvR7HvWLwl9paI0bUuADFO4+Ag6Sv+1sLbH9QyT+ebGX+sFFnZJMWZdz5lY9uPi0Au35NWStZVpNUgwSMWRHAcoe+WdBRuguiNNuBgpVAzv7DkFTP5elBuwUXZ6qUgVRf9D//0wfaWz+mePsmkpO6VzL8U/u3ks0UUYuWn/HCNfYSkIZHym3qZI4Jr2ANn2XE5eguoRLJ36Pqm7CTVTqNdw2jp3duvoFI41COtiwCtoVK8lVxMz5u5t1rPWuljTuz0bR/zIy3SqEpFlqTEWfbSx/H3Jd5xYAVxjdAGt/YUdUTFWAPkLe5ve9RXwUoPBLVqK/ikIvo+jigYwz68orr/YPuKhmf6phk9YIx4CGB7gvh6WtX5J5WfvsG0GLtCnZQ9uScJdb0Ke5VCn0cuG+WnI/MKa+QnNvJtv0Z6rw9HoqC5QpbMGp2zil9O/1PAtjVAJvs8KOtUMzVQ5CrdqfSF+WaAphVgiI5YZLT8xzPE3Sk7JXZ0ywcxFbkOjck6pfqHgKX3g9/fRxXRkm2b0LEe7o/BPJ/uNajnZa3RYJU/0Z48Yvv5WWaB4++EQJ3UfjuNsmqxHEChFdqyazPg5ZQUcU+JPc3zXHbTDAzBnwYHtePGAt0p6HcBwLuw+P3GBMN8zTSktx2rNALzBBv3vui6hwyddgmsmeSzQIWWuPI1u/IZkDj07xL/7KOSNi1CTGcWmoxPc00r1s1CItUDoGl66Fmg0M/IBX4D+anvUuT+VfkYi0VMoVrV57G2qfeFMz4CyDjt75pM19MG8bEAnfc02JPzUVlmI77nDeaAMU+w36aeuIvzKxmWzOuSyUPCejOcqKRYvmAdLOGFRtD4pWFqLlIyJANOa2Kq5VJThgM2VJPEyrTERyhYjPdd2fhHgONIF6pD4Eeh8gCvZRrrYTGs1cejdyuGEA
+ NcvJovBp
+ rM9kagU1kAl4/8joHQiq/5q5VuLTq60erIsaAxyG3O/C+5wGi0oToDX4CzgF2aX6Vfr0SYCEnbL3izoABO+3ULcM2RCk8+akE3TC0mVGSvPi1j+tGdFsSMHleTL8QDPlV2sxzWBvlwX88OrAVM2kUnZGOc9D+LEWScv7NX8jyUB6Db8JXw/OvPYq7dwyN+SbxEjoJl5U5b1EL3XtpY8ve4n7zERVMvg1KMs5W9TunzvQ3LR2osCgamjXULwvC4zHQ8Urrf1Ern8+1WiqbkekpxEB7xjbbdWYIVhor1QFbGzSc384KcyVe3CXKKOlepLBazBqy1nllxO6+hs4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,60 +102,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Despiste kcsan point to a possible race condition problem, this is a
-safe race condition due the access memory ordering, since
-spin_lock(&mm->page_table_lock) have ACQUIRE semantics and ensure the
-ordering mapping.
 
-Create a new function called vma_is_faulted(), that return a
-data_race(vma->anon_vma) to bypass kcsan
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- mm/memory.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+On 9/9/2026 2:40 PM, Barry Song wrote:
+> On Mon, Sep 7, 2026 at 12:25 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> MGLRU's scan_folios() and evict_folios() emit the classic-LRU
+>> tracepoints trace_mm_vmscan_lru_isolate() and
+>> trace_mm_vmscan_lru_shrink_inactive(). Those predate MGLRU and are
+>> indistinguishable from the classic-LRU path: they carry no generation,
+>> sequence, memcg or swappiness context, so a trace of an MGLRU run cannot
+>> tell which memcg a given scan/evict belongs to, nor how far reclaim has
+>> progressed through the generations.
+>>
+>> Add mm_mglru_isolate_folios, emitted once per isolate_folios() call with
+>> the memcg id, the type actually scanned, the effective swappiness, the
+>> scanned/isolated counts, and the anon/file min_seq and max_seq. The
+>> min_seq/max_seq triplet ties each isolation to the generation layout it
+>> ran against, which the classic-LRU tracepoints cannot express.
+>>
+>> This is emitted at the isolate_folios() layer, which is MGLRU-specific
+>> and has no classic-LRU counterpart, so it neither changes nor duplicates
+>> the existing scan/evict tracepoints.
+>>
+> 
+> I have no objection to MGLRU having some tracepoints. However, one
+> major concern is that the code is changing rapidly, so the tracepoints
+> may not be stable. We would need to maintain them as the code evolves.
+> 
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 6b8280cfc1db..d85d67927400 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3800,6 +3800,25 @@ static inline vm_fault_t vmf_can_call_fault(const struct vm_fault *vmf)
- 	return VM_FAULT_RETRY;
- }
- 
-+/**
-+ * vma_is_faulted - check if a vma has been faulted
-+ * @vma: the vma to check
-+ *
-+ * This is a lockless access that may race with __anon_vma_prepare().
-+ * The race is safe because:
-+ * - The fault handler ensures that the mapping of memory is ordered.
-+ * - If we read NULL, the caller will re-check
-+ * - The page_table_lock provides ACQUIRE semantics for memory ordering
-+ *
-+ * Return: true if vma->anon_vma is non-NULL, false otherwise
-+ */
-+static inline bool vma_is_faulted(const struct vm_area_struct *vma)
-+{
-+	/* Lockless check - safe because we re-validate under page_table_lock */
-+	return data_race(vma->anon_vma);
-+}
-+
-+
- /**
-  * __vmf_anon_prepare - Prepare to handle an anonymous fault.
-  * @vmf: The vm_fault descriptor passed from the fault handler.
-@@ -3819,8 +3838,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	vm_fault_t ret = 0;
--
--	if (likely(vma->anon_vma))
-+	if (likely(vma_is_faulted(vma)))
- 		return 0;
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
- 		if (!mmap_read_trylock(vma->vm_mm))
+Indeed. GEN-LRU has been available for several years now, and many vendors are 
+already using it, so adding tracepoints is a necessary step.
+
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>>   include/trace/events/vmscan.h | 47 +++++++++++++++++++++++++++++++++++
+>>   mm/vmscan.c                   |  9 ++++++-
+>>   2 files changed, 55 insertions(+), 1 deletion(-)
+>>
+> [...]
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 8409ea4bbf37..771fe6827939 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+> [...]
+>> @@ -4876,6 +4877,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>                  goto retry;
+>>          }
+>>
+>> +done:
+>> +       trace_mm_mglru_isolate_folios(mem_cgroup_id(lruvec_memcg(lruvec)),
+>> +                                     type, swappiness, total_scanned, *isolated,
+>> +                                     lrugen->min_seq[LRU_GEN_ANON],
+>> +                                     lrugen->min_seq[LRU_GEN_FILE],
+>> +                                     lrugen->max_seq);
+> 
+> Maybe `scan_folios()` would be a better place for this, as it can more
+> directly reflect what we're doing for each type.
+> 
+
+scan_folios() already contains the trace_mm_vmscan_lru_isolate 
+tracepoint(traditional tracepoint), but it lacks any GEN-LRU-specific 
+information. Adding another tracepoint there would be redundant. Therefore, I 
+placed the new tracepoint in isolate_folios(), where it can capture GEN-LRU's 
+specific details. Additionally, it can indicate whether a fallback to the other 
+type has occurred.
+
+> 
+>>          return total_scanned;
+>>   }
+>>
+> 
+> Best Regards
+> Barry
+
 -- 
-2.52.0
+Best regards
+Ridong
 
 
