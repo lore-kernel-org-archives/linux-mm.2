@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2CE6C79FBB
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46117C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD3AE6B0095; Wed,  9 Sep 2026 10:06:54 -0400 (EDT)
+	id 51F956B00AC; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B851F6B00AC; Wed,  9 Sep 2026 10:06:54 -0400 (EDT)
+	id 4D5B06B00AD; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4D176B00AD; Wed,  9 Sep 2026 10:06:54 -0400 (EDT)
+	id 3BE186B00AE; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 77ABC6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:06:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3AF2240227
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:06:53 +0000 (UTC)
-X-FDA: 85194399906.27.8901709
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EF116B00AC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:07:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EC45C0206
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:07:06 +0000 (UTC)
+X-FDA: 85194400452.10.5C69040
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6DA2B180002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:06:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jy5PQ6A4;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 959FC140017
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:07:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZX+G/b3L";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788962811;
+	s=arc-20220608; t=1788962824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FR+7pa9LwLkwiguZhNawLcP+YYzJNH9nHx9g6zcIIqo=;
-	b=wA2gaJQbceQYfGsgLx7m3R07sA/giory1Dn9RoW9zoQCIrP/SkY+Gj6cBmkkKGMbzGsP6Y
-	eBKJGAbWg5Uwep+2PVlt+2EgwXboK9EBhTHqF8/qs8u65kKe62LLmxJS7jgZvmelQZPW9N
-	wRQUQugTls61q8xxpNJdzMuiA5AXnIw=
+	bh=COu9YXS5z+3bJ5HpL8E7btRECMkkRv1d0ERtft6U7Fs=;
+	b=XKvqfmzna/TULfWqx5b5hgU/yVSPQ3/JezTi3OPU4uxYIRab6PVIWPnsTGgdtDTjGVJr5m
+	QM2u/dRCQY7zn1grUpEd2o2KdvOxcI7QQvXWFbqm1o+tON/C9PRAxgUwo3wPYNwKnH1e8+
+	fRjTwh1Yz/7bFRYI2lEIZ4WRQJmwxTE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788962811;
-	b=0ncKpmnA4BLv5yLCW/t4yoHjoe/6DlcXve6DUpajDwNTjA8IyPjk7KfrhLO2J3VnafVK1L
-	P6ygTn5bAqzDfgKtWsoxVXmx67JMQGn9maRFVso7gbcBeBQHJPX3dOhG5lPGoA5Xs9JSPr
-	Z/YAxkNIBwi7k7MRVz5JZKrdp9yidqw=
+	t=1788962824;
+	b=LcMO7a5xaRCEb0J06u6GlWf1jrBkril/gT03OAoP+7CGijCGc6+ize/q1lrzk0aDr9+c8I
+	0by4yQ3UgpZuM3m15mifszDUgtvYZqPSX8cZ5wGaw2XMJkDt+DtGDWlw0+H1RF4qP0WBVo
+	P057AsIAwp3L2uPvy5YFuD1mKX8426M=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jy5PQ6A4;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZX+G/b3L";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 098D96020C;
-	Wed,  9 Sep 2026 14:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4ED1F00A3D;
-	Wed,  9 Sep 2026 14:06:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 21F4060218;
+	Wed,  9 Sep 2026 14:07:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DD51F00A3A;
+	Wed,  9 Sep 2026 14:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788962810;
-	bh=FR+7pa9LwLkwiguZhNawLcP+YYzJNH9nHx9g6zcIIqo=;
+	s=k20260515; t=1788962823;
+	bh=COu9YXS5z+3bJ5HpL8E7btRECMkkRv1d0ERtft6U7Fs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jy5PQ6A4YSE1RykG0zJz9SnpqYHGFZ5nvPFmy74Kav172ISEdr2CjmR4Vqf0EaJU6
-	 zRB8gEpXGfNksV4pslTnCRt0LEXWd7O3iaLyNVpNqLhD7F6HGcbgZ3fM7zqdR2QckS
-	 67N+0aci8ikzhdqbt4KQG/u4QljVLEihCPdEv5gy1MA1cN/GWy++ou2t6Ucv4un+vc
-	 d+ZGU5LBZ4B9FKLf0cULE/80gPf5O9Qax2H3iCV8gvOuyYFTXsD9JUkTqbtGRINnYE
-	 sowzc7rpdDCrgvJ03vWm8uvTlZxIM89KSC9AmCRP49qvlyHNYjb9ScTUw+SqTiVHgf
-	 8q8ht0UFxWYag==
-Message-ID: <95b88b81-c970-41db-90ee-1efaae7420b8@kernel.org>
-Date: Wed, 9 Sep 2026 16:06:39 +0200
+	b=ZX+G/b3LxH3nXQffSaa9JMsaQS0gjIJ02uJISyRP0cZLQNBGxyIRDGZrns8jkWzN/
+	 gabIeV/0jMZF2bPMFRPMJrRfEmzW3m2/cePne404tI2mA+deOk+AzkvUlcVbinkIDV
+	 1xjmuzmsa5tFay60gdwZS49E/lnIjV+BbwxU4W83tWTJQucaxEQgd1bWnd9Vp7N9RN
+	 lAmhZsEwFcJHpDxDkvrpoGhkjAFfqCeBWPWugzkHC0RDAcnkdRCsxdKUgfWmZ0AshM
+	 Gf+mBjy0u34/cgjbY6MOSdT34Ybf25cjj160Ok0Dw2UJGILtTpyQP0PG0jvvseoi6e
+	 Pe439DbOCIADA==
+Message-ID: <4e0bec21-4f09-439a-ae65-66a95c1b4c45@kernel.org>
+Date: Wed, 9 Sep 2026 16:06:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/8] arm64: mte: pass the swap entry to mte_save_tags()
+Subject: Re: [PATCH v2 8/8] mm/swap: remove page_swap_entry()
 To: Tal Zussman <tz2294@columbia.edu>,
  Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
@@ -88,7 +88,7 @@ To: Tal Zussman <tz2294@columbia.edu>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
 References: <20260908-folio_swap_entry-v2-0-ee6d01dfa5e1@columbia.edu>
- <20260908-folio_swap_entry-v2-7-ee6d01dfa5e1@columbia.edu>
+ <20260908-folio_swap_entry-v2-8-ee6d01dfa5e1@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260908-folio_swap_entry-v2-7-ee6d01dfa5e1@columbia.edu>
+In-Reply-To: <20260908-folio_swap_entry-v2-8-ee6d01dfa5e1@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m5awzwkhsepcafnqkmfej841a9wrfsc3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 959FC140017
+X-Stat-Signature: 1m38rcgihd8smoopf3ff4awajsheu8cf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DA2B180002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788962811-3413
-X-HE-Meta: U2FsdGVkX19u9zr8iYQTm0MJwRK3lNNdsE1XYeDqmAt+rD34o34g4s9HjGYImhPknM/cmAf/KC4REyFPrvyKE35ceRAD1LSsa/E3F1+9oE7X6ADWhy8k+FLC9yIOTXg0K3D8BM8RyxP6pZLR/c8ZL/4ZfpIXc0seLkbI61yizeQDL5AJFlFDMfTgrUHpcL9jBojOsXIo5aWmiyOJ5BnXosyVvYtqiEWxx/NzkOvuno9ucsMEmFTe9lpue02u0UafuxKT4Ri8pgYTyOt7U/nsmwvDWbT3MLHTc1SG9Il44vLyrHX7J0CONaq4aNGcT4U3IlxWmjhMf3FDzArvXxfpUTWPScZwJaCZFp+qGDV/ZkwcoOOBWPmiXx3eLe8nMAlpvPqL1yrzgbOKUdHMInVoxtVbYM2llT8N5IyMbYQaMJG31DSI3CD3S+hLkwkawe7fNtyY58OVJcawLEHU4/RXvG+Txh9dqMzTYxiut3EaqaUNoTzufuwaJAKtuiw7MqfctCpB2WOq+UJBldCIiDwZ1J9qKNyy2DZI8q1o5xjcKkmEHeNKSDa57QDMV6ygN6hOfhrtDxYfJbeFU5ofs7q+1JF/VV4P2ETKgdYJpBQ3EEFB1KnAMIkR41t29AAF/U5u6/87RUwBnund/YQnnyrgWjgVaWzw6U7C2w+2HkFkDVLgdXbORghEIP0RzwXyPDd71heT7UMMJwgjYOLmuBYHrupD9/BmK77bBY+ErSXspIuYw5ZKQg2khilEqVJVf80D7ChYgMz844T/Y1i7nSv6FeqS1S9NFdAtKmu/XTgU1lLhG96kJ7xVng4hP7naWNHEVFsL8Zr+O4IeH9BW3YDsJPqqkM/6fdy8dFHtmR0jGi/8NU95gXbKeCEWiuG93mvtq7bBZn+k7E3/5+MaKtKdl+zJFIDfr1mCcGIKQTGvcwASknlNNqv2KdZ6gnuCuaUqjuLwnbH/Qd0lDBNNli0
- rtBNf5l0
- qwYOWELfhmQO1ukYHZCt02mU5MmU0U/foLPIiAdI+AEjn2zzTPegZ7JhbSMnjOyggLpyoBpR3UuLaMbZK3hnkGkiak2R7nAUa3GjSJQZNAWehXF8U3zoAyu0NZEfSWG5Fp/JRr7c3R7+aWZARZIiqgK6mxebxHRpcqTP9GgJRV0K2oYRzk64r4Ob5ElOdSDhcnY+MTIHamaN8dfxYGEmKiEahgThY+xkftizV3glzwpNUwYesk/kzyUamg7djWbxnkcjUtsgPFLRdqekpYUw1lG/g5zWoZbdFsENqWFxlFcDrnW+XbH5iQkGwAcMdseHVMgJNJLL2sw/B3Uw=
+X-HE-Tag: 1788962824-976184
+X-HE-Meta: U2FsdGVkX1/8j8+4QFeqoxfGzlFsSLLfEpAoYcYpJ98BoYW9XmjkDQXxhprn3Y6m9BMwwVYVj/CFgU2zRHlj9KC1zlNhUubd5eNF3M4KfeiYcvxs75d1zXAklpKnvsRXAzcIPHCzdj852K/ST1jw1heVLGKMvsmH4oggu+KRSUCW/miticmqFHZNM7AJaRamXOjQ7MJWf3q+WoohFy6uSiXxy374IKGLlv9FK5z1UFRb1W8TGClskiL5OLstx3QDUoI9uUwRsOjnCgabfD7Y9VYhNTqQ6DWDUX1I28LtpFK+0DYSaJ9MOu0eh6tEcYbxoQfrMUDq6VyOtJP7gIVrwqnIPLfWjs5N7ZGKl3MIX902jhapRJBGijwcK7N3mYvA4NV2bcqL+344Opj0QbxgJgaEohqfHPx+MmTze1n0s6RCiySSziQK6HQxD5ydu96aTZqfyIhdWqm40ckfe7lDMQd9SX6XmuA/qQdmFIdh/lLKx9UiOA3cf9WP2IetdIr3P88s0mdFl7VnlkjKJPuWCJzpWGcHoVauHfggumuqgUnt00xvlAGklGXjtrmtAq3O7tnTQ0vQwubdjt1ZSaqfHsVh9qIZZH9nzatrndISM4EtQTivIygA1IKGTnc7Tp7zf3MjZMWZAicWDh0QBzlDyifLgxvqPeMewIlKNGIjxk4BAfIeBoqoSvtdHoAEUvDtmiwK82bjWlkj8GFwm8j2OghzPpS1xBiKBAtiQMI4EdSMSf28Fj/AK3hRhaVkct4BSPl488dVZH7L1pgBzVcNHNPzqVllmHtC9WNKhmABAe21cg0oLcnYDI++dNuPP6tL/KU73NAVHN2P0hBMh3WjTtX0UhAkUklFyjnHguQZCuGUGHIpaYv4j1QI9TCDpwoR6D7Xda9x/TY4ZqG454b9Jp2989EBEDiY/2bYtw+lWbPGr/lD11+VgXxhosL3e3Vww5qf49GqI3Jl4YTfOwv
+ qjyIR6qe
+ jJdHS4D92/894O2nub15qc2TGtK4szJnzmRkX81jiL8xsTOBNIDaaXt5FZGQbJu49prLMoHBficu+/2WETBkbXeyqSWXm6K3FCe/yVoDiyN2rd6jxKP2mGdsNoT6XgmQwJGUZseQqMW/E3NylRB6ObzXGQlOhjVib6emOWlDf/J5Bc1pO9ZrGiO3vLoUSfVxLRmlxw9NEgNvWTns2+aUxWGiYw9rVb08iRrkifCc1x57ikf3AOf3JPcvEMWnG2HcFO5g75YurfDmSoW8ICz8ugGd9aWC7vfziS/tXhjhUl0W3r35BR0zFwSXvh1ocGGBVpO8jhBW9rpmrhgc6GHNAimCrscekY3NoFsEB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,20 +154,10 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/8/26 17:16, Tal Zussman wrote:
-> arch_prepare_to_swap() derives a page from the folio only for
-> mte_save_tags() to recompute the folio's swap entry from that page.
-> Pass the entry in directly with folio_swap_entry(), matching
-> mte_restore_tags(), and move the page_mte_tagged() check into the
-> caller so we only compute the entry for tagged pages.
-> 
-> __mte_invalidate_tags() loses its only user, so remove it and call
-> mte_invalidate_tags() directly in the error path. This removes two
-> calls to compound_head().
-> 
-> No functional change.
+> All callers have been converted to folio_swap_entry() and
+> folio_page_swap_entry(), so remove it.
 > 
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
