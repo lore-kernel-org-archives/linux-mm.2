@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC2AC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 704E9C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:02:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B899F6B00A4; Wed,  9 Sep 2026 06:01:36 -0400 (EDT)
+	id 6F79E6B0096; Wed,  9 Sep 2026 06:02:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3ABB6B00A5; Wed,  9 Sep 2026 06:01:36 -0400 (EDT)
+	id 6CF546B009B; Wed,  9 Sep 2026 06:02:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A503E6B00A6; Wed,  9 Sep 2026 06:01:36 -0400 (EDT)
+	id 5E4FA6B00A6; Wed,  9 Sep 2026 06:02:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 82EF86B00A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:01:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEDE3A38BE
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:01:35 +0000 (UTC)
-X-FDA: 85193781750.27.21EFCB4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38AD86B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:02:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F08BC017C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:02:29 +0000 (UTC)
+X-FDA: 85193784018.29.0428603
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0DC7240013
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:01:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CPTlmLpd;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 87BB520007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:02:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFOOX+3A;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788948094;
-	b=gRszyqTk5Yr0GiEH+X4TqN2rOsFrzyNKniWkqDxRHWsB/V76ebLuN1OIa4Kja+cp3b6Lrv
-	ZP1GLr0CI6cD4YhG0F80C2YAYJhJcPij1MvfqAi29wRVpqeysm9JuF6kRgs21I6bAYYkYe
-	GJaJwArsNR1WmDqfWlPR4t6EGyoJ6Lo=
+	t=1788948147;
+	b=zgkb4mK6ifiF+uXfZD7WT44lSLX4xO/4Lv/sH7rJMLu7uUyXYhLE6hzWC7byLf6CWQUX8p
+	vtTMac8NWtPCx7tcDvnd0EzBefyDLrFy8r5CR/Y6Jum1U6sb5SjiWjFCmmkcWbM088p1GC
+	kxazwERLPzdpFpXbJM+NnU6xUT1VqKQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CPTlmLpd;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gFOOX+3A;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788948094;
+	s=arc-20220608; t=1788948147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=50crNXE5RPe0jaXCbPjDytOJ0kKcHrcQdEPYCvw1FdI=;
-	b=TMXshe+kfmZJ5SlUEHHhlktjaqlokUxG8EZCetGiDjPrumKGPm/Op65HavWugkBdQ8Y4jq
-	qcs2fdVzYbzYfreue6XrUVXAKeQuTmmNOvrCB4Roer27dJR8178nNqHLmWAak9PyTppnE9
-	iUfoEJ6jR8FjBJvjZNgArSZfWKTipr0=
+	bh=X0uP+0cj79KaCixwgwxQKgMJnKipY14y4v4fdTbG7Ys=;
+	b=2zEgCKFOMSmWzr5Q3mkpD/2VLbcH8oKW39+YHxxZtMl5f8hzCPqsQdXIlARnZK/3Q08IkP
+	KNVxQS5ak3oWspEyWZ7QNrqwxWW5ewdf3gvEIXGv6Bxv6ipBtK/F4gOzcV87964hbJRf+W
+	RSP7f8tgLOAfg7n3QJNgd56QSRJbHp0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3A48E6022A;
-	Wed,  9 Sep 2026 10:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF501F00A3A;
-	Wed,  9 Sep 2026 10:01:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 187DD60214;
+	Wed,  9 Sep 2026 10:02:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877D51F00A3D;
+	Wed,  9 Sep 2026 10:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788948092;
-	bh=50crNXE5RPe0jaXCbPjDytOJ0kKcHrcQdEPYCvw1FdI=;
+	s=k20260515; t=1788948146;
+	bh=X0uP+0cj79KaCixwgwxQKgMJnKipY14y4v4fdTbG7Ys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CPTlmLpdtRe13Z/QNkefitntnzkSGJ0UFa/dUjSKGCx8ubF3aINeJRYUIvneVno7u
-	 Nii27xkpOI5cQ3jjji1qFPnENW550TEBdl8WssIPiTFo3X+Ra3xvOSspwGhqd3gMhV
-	 xDO2U0kQFtvWxWaxRcWJJ3Tt6gKvtFFTNogaEoOeGsRA6ZPZDl6TP7bcshjLV1ks8C
-	 bpFgKFI9LVMaFK/5nUv2V0qyPOUDQs23NImXg50CxqbIf7lnNr1W6/wUSZUEhWJRsb
-	 ZpMW5w9cit1n0QySPbq7Lp25lW4VsATDNYQ30FviV2FVuS0K1dKQ+9iQYf5x13Ah2h
-	 7mdgruxK3kRhA==
-Message-ID: <e57a6b75-24b3-4adc-9257-f578e86b6256@kernel.org>
-Date: Wed, 9 Sep 2026 12:01:27 +0200
+	b=gFOOX+3AfDDVRimOa28Nq5M8IgdH0PlOZdxlLdqs6he1fA5hYWYmLd5t8+8knu1Ve
+	 AZDJemU+ucgwuO9iNruG0N+abhYTRRH7DM+sWkN36ICgds3cLZMI/4C8waXwpGHHGQ
+	 bKqV1j9dVhsAmqfrSmVjEkcmMBMA2b7t8gT0wWw7o9bnTNmSHtPL5ukgJaWXGfbBCK
+	 iKMvPjEtiOdXzHl+xckLp7wUtu2LjgaNbcsv6X0y8P248mERgYQ2LURYcAeLvd5hlL
+	 aCw1dXKgrMPooY26V8ECACEzta9cwBxSBmS0dR2Rb26I0ii3RRgx6C1F5Vov8fGOph
+	 W3u1mWVhQq4XA==
+Message-ID: <4a71b9dc-b7c4-4400-81ef-eef6805e320a@kernel.org>
+Date: Wed, 9 Sep 2026 12:02:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/17] mm/sparse: inline usemap allocation into
- sparse_init_nid()
+Subject: Re: [PATCH v5 13/17] mm/sparse: remove section_map_size()
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
 Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -80,7 +79,7 @@ Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Muchun Song <muchun.song@linux.dev>
 References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-13-songmuchun@bytedance.com>
+ <20260825084608.47437-14-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260825084608.47437-13-songmuchun@bytedance.com>
+In-Reply-To: <20260825084608.47437-14-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0DC7240013
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 87BB520007
+X-Stat-Signature: b6oz5c41dqf7jt3nezy66451i6n9yaow
 X-Rspam-User: 
-X-Stat-Signature: ihiihp6tm4rtnd48n63eowb3tukjqkei
-X-HE-Tag: 1788948093-951137
-X-HE-Meta: U2FsdGVkX1/bnUKBTp6JdFkqSIlRk/FTFkLhHQArQztwUzzefnCQYzxaXQ9P+BbBUlFg4iWrawS2jhcEggPfFlvxmz2oS8vfq9UUL8GCMrvgMZ/DQLgWo+tXQEg4vvEpiWLVvfc1Eit4hI4AhZdAlazHqqgiWG1cmN2UD9pXDlftEwU0Lx9Q+99DJIJDQ1xy9e3XBuTW6p+K8MAqvlz61o9qEaNY9CisVFGkhMg8Vn7mqBzo1AV3+kuLvgL79v28b3ylL8IxSaNEO5gol7dwpL0/mzGNG8ptX5Qc9wtPVwidmCsWer687YF1mUNlRYhsNY8S9Zrhq4hacH0CBoY7jcLdcA3p9v9AjDG5KBu7hbWwfreF1gcCOJCwtLe6R50n3TUvlWL6iTXa+J6fBc4dtMZ0tuImQk2yvYcnuAe8XzSzhWhYh1XuxBpFwdUZT63JL2B9sWtYWaZPlst8hd8it1ipFJ+RamG6+iI03x6mTHHzCPa9G0ym5DQkXTOA75t/p/ek9yJdWAJE1yzKFIAMbmvBI619CRXw4UuQyqW5dEt3OZG6+vsckFg27Jl5vPiNUaZXHymuogfwCE1bXYdWlm3lqU+4tTPZ39VzO9NeU7JV7peI+4I+dG55dYTmahumGLYEZYqD8oddWbiA30qErNxGOQC8gOK4lKlhn9bk83dQUdXYjuVGbON/jl1ZIkVk3VI7rLeeXEthL6Hzwkf0qYW70cbFql747pw1GBv+ruXoYCqtuCmAOXvjAN4PrwkZg8PrpQ//9TD1pnHS/7eSL2shj3twMTmQRiGoN9MLQZNjD1YEOSH08gz+dIVL5j0a9I8Z21GXX0aD++at918h2zhtbphGOy5B5puCCKUhPAvGkel3CTXUMXvzgquPYemRvDCGgs1X/UymHjHJXiPIsulGv1PmfewCqkmOJCP7XiNm8nqObpBocmvj3BhJ0+CsGlcE/BXbDDKBw0BPeJs
- ePK/CH3o
- j2YE3t/RuWIAaOoBEqj4gq9TMBCyMGpMaYDpF6Doq7JmrN4QbuHlTi+S2mYv7DU1QeDZtFuWb4+kN1NqO+aCSn7QgcQeH4vWpdDGWQEY05of/o38/HvCMLQVqv9x4GGtRLGDoun562Ly1VWdS+Njd9A9PAHX1LLMMJ1Vft6pMsP0w0kuZ85K8vzgkgic9UH0LzTZXawje414Q7icd2Yh8WXDIF3X5x/Nnc3PkPyzL8cvUJmv36nZrfaiDc3qes9l8INibO4yJ0GX1e0e5wnlHpVVQtD9VATVGaz/GLxl6haU5SQNKgVAr2ly2tPEfG5bUZ2aWWhG7KfrWgMlsrj+TLOHw8a7709Gxvyn0wVYUt/h1D8dCuIrLqdJ9H08GST3g/kX1c+TUbudNQQsPNPE0czjsC08qslXr7zQ4v75dYE26yuo=
+X-HE-Tag: 1788948147-848712
+X-HE-Meta: U2FsdGVkX1+HiFrCmXQdCiJSWooiPVVSY/bAY64FeuEwmffntSbBUiu7pzfChjb8De/mrm218pGRbmh4+PcLsq62UqVI9IkB0qO+JLdNk6ayHxTK0FnfsxfUoSJ6ozBGeqr+lyte6JhrAiVLnqZZh00K4EPhts+0WbhckVCGvGldYwtCOqkR8h5uWmmAXDZmzogm7aCaSZZHdFa5tB4dAZ1Whi3SukzQMTIFl/MUvt4UhKytJ85x/E6MYONJ4CCMcxy4OWxvbppZqY58DZnRXxhOM3Iffa8OPW/WGXQnFZKZaeTeGUN3IBYhznWas7GByHmS2N0kStgi11D5fQnM6/p8NzZViuVX1fJA8eF9wZ2o9MpK0IJAttaLrv+mHMsGEjpDC1W6aySxi6rR0XY8BSzGQhw+IBfQas7OqnaJgWoiqpfN5gb6I28+/z2h4IpFl4LjZf7TqzJcyLktHka/UT2skyaFbrgqVuJPem8aLZcMyxV3nmYQ+7J7RBXwyv8y++hM5oJRqmeAaZQqy+ZWk5rCjSgYgUrNitwASGweJYRjVfbe89srs63dOxY3Zf9gnEeH3tacILNxh3JsIYeraTRZw1RXMnRMT7VO2eZ/TBmazo6mHwsIZ4+58en5JfeWs47JvX5KMfK3SmbrrlxTJ6jz8WnEzbepZ25Va3WVMN6bQESfuKMYZM8F6O598h1iQTbx9txcrWxyZWPhnsDiG6pGdf1scbDVxPlhERN/PCjwJgwgyjmthCWzrmBEnjfM35/rUdLnAWjQPPFqYlH782aKVY2u/bm0DPxD2s3PqG3aDFxu87yenhCR9p0C36qzMLpLeDVR8KPhoixJO85VDSa49/jbnS1ywaVW71k0/E6z9z8Ydd3NEH36soLTZ1TLuK7nZJTTDJt+VYi104+BkoOEZbY/wsl89Gg+tteSXfJfBPTs+Tzu+ndjIg2w+KaBxN2SRqzERAElPXKDPKD
+ FPs0PRaQ
+ gu04OuTAaCYALqQjevWLHw7Z/UMas+7MtqCmv4LddLDJq8GhrxxzJonPIs/QIKsgG6OU5/yMh1RgalfPxb6vpNZr3TE/ZpdjMmXSDXX6jFtPN8hXl9vublf7AVBEkg7v/ynv00l5tEaTjVsaTLSMUYZg8zIPzqoNFnmZjBYDXz3KdBc/5kJ0z0WAhbdAGMhgc/SYZ4du4lkJRz0Ux7fJmkOge0oCEBMhHskUGf9JlxKROvuLq17jDiY7wHFTmdxuwhecHZnIZhHMtzxCB2+1t/5YA9ti1TDXfF6wo2++nyefeovIiEEuzu/FoHBZkYZ+gM52kkCMuv1+IfKy4p1svP4Bpc1KtstHL89EajSss9yF9gngolvjJ6nj1ebvUgKvuQFS2d2abUA8UYY1Vrx8VutfHaFpNe5jiR6A5l4s9D9aTkL0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,12 +145,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/25/26 10:46, Muchun Song wrote:
-> After removing SPARSEMEM_VMEMMAP_PREINIT, sparse_init_nid() no longer
-> needs the transient sparse_usagebuf state and its helper wrappers.
+> section_map_size() no longer provides any shared logic.
 > 
-> Allocate the usemap buffer directly in sparse_init_nid(), pass it to
-> sparse_init_one_section(), and drop sparse_usage_init(),
-> sparse_usage_fini(), and sparse_init_early_section().
+> After the sparse-vmemmap changes, its only remaining user is the
+> !CONFIG_SPARSEMEM_VMEMMAP path in __populate_section_memmap(), which can
+> compute the size inline with PAGE_ALIGN(sizeof(struct page) *
+> PAGES_PER_SECTION).
+> 
+> Remove section_map_size() and inline the remaining calculation.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
@@ -159,10 +160,53 @@ On 8/25/26 10:46, Muchun Song wrote:
 > v2:
 > - Collect Acked-by from Mike Rapoport
 > ---
+>  include/linux/mm.h |  1 -
+>  mm/sparse.c        | 15 ++-------------
+>  2 files changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 441bd39eab73..b19711b6dbc6 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5140,7 +5140,6 @@ static inline void print_vma_addr(char *prefix, unsigned long rip)
+>  }
+>  #endif
+>  
+> -unsigned long section_map_size(void);
+>  struct page * __populate_section_memmap(unsigned long pfn,
+>  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+>  		struct dev_pagemap *pgmap);
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 7096d8e13802..9349ed6326c0 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -209,23 +209,12 @@ void __init sparse_sections_init(void)
+>  		memory_present(nid, start, end);
+>  }
+>  
+> -#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -unsigned long __init section_map_size(void)
+> -{
+> -	return ALIGN(sizeof(struct page) * PAGES_PER_SECTION, PMD_SIZE);
+> -}
+> -
+> -#else
+> -unsigned long __init section_map_size(void)
+> -{
+> -	return PAGE_ALIGN(sizeof(struct page) * PAGES_PER_SECTION);
+> -}
+> -
+> +#ifndef CONFIG_SPARSEMEM_VMEMMAP
+>  struct page __init *__populate_section_memmap(unsigned long pfn,
+>  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+>  		struct dev_pagemap *pgmap)
+>  {
+> -	unsigned long size = section_map_size();
+> +	unsigned long size = PAGE_ALIGN(sizeof(struct page) * PAGES_PER_SECTION);
 
+While at it, I'd make that const.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
 
 -- 
 Cheers,
