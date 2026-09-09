@@ -4,114 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3E2AC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E10B0C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF4CD6B008C; Wed,  9 Sep 2026 15:39:12 -0400 (EDT)
+	id AAA596B008A; Wed,  9 Sep 2026 15:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD2B6B0095; Wed,  9 Sep 2026 15:39:12 -0400 (EDT)
+	id A5C396B008C; Wed,  9 Sep 2026 15:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE27A6B0096; Wed,  9 Sep 2026 15:39:12 -0400 (EDT)
+	id 94ABF6B0092; Wed,  9 Sep 2026 15:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5CF96B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:39:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 582CE1C1DD6
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:39:10 +0000 (UTC)
-X-FDA: 85195237260.08.14E3A52
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 64FD240007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:39:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b="b/7kytel";
-	spf=pass (imf07.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D95E6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:48:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09EAD1A0329
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:48:43 +0000 (UTC)
+X-FDA: 85195261326.07.F8E0694
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DB02018000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:48:40 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=dwPEQtMe;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788982748;
-	b=fUnIWha9rzz/sFCzfi92AxpqyWrs/cYK6wwHZrPrgqK2xsW39gaPgji9DoG4yzxvTNzhA5
-	+KA5Ozr6sLsN65GKtbJU6te665twOshFBm3e35aFae+fURmjXv69WTBoZ1T42AWOl/11kp
-	cYaKl3JocKGUIM9+EU0j5x2Lbwt3rDY=
+	t=1788983321;
+	b=LfjzEiIPbne1GCtOxQSIdTxsBU8If/I7aI+RUOxmyINLSXY+3E3h8XMVFEmEKEJba5YGNZ
+	RKDWtBR6hwP23osu7LL8wVzbjVL5skFp8Q9umz5guIGHg78/I00MMvbb4+kuTlwc++dMWd
+	Ks9sLvtASXmbeNPFdhwEwSU4Ond6/oI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b="b/7kytel";
-	spf=pass (imf07.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=dwPEQtMe;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788982748;
+	s=arc-20220608; t=1788983321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1GUgXHgHoEl56pUUuNlJgXsrmqq8UKwhkWovOGCgHHU=;
-	b=ozJwfbK/Me5f2Bx19ANhY0wg9mFL5LHUqlQh/qD10Qz6I7dTSybDOoOQeAhs3gCXPyLs6g
-	wFWlqDIvf4dpkoAesyVZOjZ3SEpReSnwGkdKP4z0OEis7AObxir8WpjiyzyU7aU9M+rQS2
-	8ofisFnwtNnp0mYiJnJ/267TzhIv2zw=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-52d8679c149so11413091cf.2
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 12:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1788982747; x=1789587547; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1GUgXHgHoEl56pUUuNlJgXsrmqq8UKwhkWovOGCgHHU=;
-        b=b/7kytel+erTM/8BUVdnEWh7u9cVP7daLn5aBLNqo6C0+VIOvljGGfTCd+YVvgjCEc
-         jAFFP8KSW5T27s0ythKEtrXnn5I0wBx6m1bDI650kJe/sg8Dqn6i0zm+10JoEepwKhEo
-         yKQVH+7oTsiWJ0RBs3MiG1d10b3sYoPXv3+5tsiAdzuVhPXaHKuuuoH57oMsqTqAzE5m
-         YN1CJN5PwG18gyn8H+zUQphDX6VQqLB+n3ooUBMVoxOnTQH/qZ87tNDimLFmZeAJr8sa
-         nGas0lI7oHFuTdiBzu5IYfGl+AqCRb85KXUc2KBwhPkUNC3eDABlNYIRB+HlN+hrCucf
-         DNGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788982747; x=1789587547;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:subject:cc:to:from:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1GUgXHgHoEl56pUUuNlJgXsrmqq8UKwhkWovOGCgHHU=;
-        b=eXyzTyZ5xZsThGyp5UfEEid99AFXiD24Ok8Wa/xIojqbJ6kE7Hi2ZIe8hscKk5FHsD
-         crG27/icDBS1LvcJtEss42w7LpSHOYN56YquOTghq0pP7ZuBPPtmjmfWD0tZyijSWyVu
-         AfuVhmjiwtUeDnBIevDNGkFdIRJsF75QBHiEly0LHh0H0/gz16GIKlYGvc8fmzkbZIR6
-         jWxqwOfsApq9E1zU+KBKDCzyU2pIByRUfQcxOEuYEAPnKyNJhxlPBHy+UiWHp0VSZ/dd
-         LC2G+WWfEKvXbahW3pUqKPdOa6A20HRSVNMH4MH1p7z6owdPdHj6ib4vPhMoYRUgSZe1
-         r13A==
-X-Forwarded-Encrypted: i=1; AKwUvBy6jPg/g1+xQPr7XtErX8LOpTqM+/1olqdZSs5HpkBFQZyAyeZxoZH/Lfeggbn5M37a9+6uhptgiQ==@kvack.org
-X-Gm-Message-State: AFuF++kNI8SkROVz+broejIkD1bDdb4UklKjExegvclhH/F+46T5duNt
-	xa9rkrs+WeaYpRst9gKBrWkng5LXVJhGmy+X8suVV76nvX1G0rVEm71ksa/scM2/qMQ=
-X-Gm-Gg: AYBFou1w6JG2Rf4/wxoWcXiKRw/ElNlDUiA7nSXDNvWC/lJ7TYOV5SBQpaNtFDWY/8E
-	9CWECYL17xqM4qdJAoVKmsbRmNN5w8AKGNcEZG4Z3Q/5wiAetLIANF+eYF9GDeVe7xVgkfkUy/A
-	OjzhAAZKzWyFv7QkZFNJYcKXNAqfCuCdp6Rq5ugJJ+sdz9bvSsl2WLPE5IOEumjc7trkhx6Ifha
-	RYv8MDTE5gY0L/Fekg92I3VeVpOlgcpDfdU5z9IEHS6dZ6J5qm3dTNSwIQAG5csc0bNIaKrbASz
-	hcg8/TSCE7piD+jUPm794nITGJDJfpLxAvaVUmeylJahpDruKO1C4NvfRPg4P3M00681h9p2kY9
-	/VNCB7lLZjjbFjclIzxixe5P8182yEbytNjbNemtSI4MxpueAaKkRuIGbtlGWt7ZxU0TLLO97um
-	E5B8Im2c2F9DXv5CcmM5JsTNzD89OngJP9qmA+1T8vLj9/EmPLILpkEYVYUltHeaeyoMq2bW1Mw
-	aE60dUl+NLNfwjETvcTTsv6ShgVZH3xNswjEXzq359esS0j7tj5RmxSaTDHEdFTVVw=
-X-Received: by 2002:a05:622a:1247:b0:52f:f472:bad1 with SMTP id d75a77b69052e-530549f9b59mr430060511cf.33.1788982747305;
-        Wed, 09 Sep 2026 12:39:07 -0700 (PDT)
-Received: from toxicpanda.com (ec2-34-228-114-98.compute-1.amazonaws.com. [34.228.114.98])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530541c94ddsm151964851cf.23.2026.09.09.12.39.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 12:39:06 -0700 (PDT)
-Date: Wed, 09 Sep 2026 19:38:20 +0000
-Message-ID: <20260909193820.9aac7888ba9d@toxicpanda.com>
-From: Josef Bacik <josef@toxicpanda.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Paul E. McKenney" <paulmck@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, Roman Gushchin <roman.gushchin@linux.dev>, Dennis Zhou <dennis@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb drain pass
-In-Reply-To: <aqGilhgcEd0qaHjI@slm.duckdns.org>
-References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com> <aqGilhgcEd0qaHjI@slm.duckdns.org>
+	bh=J47hfMemV3x17DwbT77P3iNi200v7sArNBFyj4FIEqg=;
+	b=qZS3Mq+bQnTvcTNicY1lyWzgbwkHR/HbkOETdz7/7WvS9FNWyblOstuY8rQI0ARHcy57WY
+	fHz92rb8k0F6+B56Rrpoog352biikKZadQh77D4Lc3dpZcWmVApqt0iU51bom7lDO2r8SA
+	+8K0aZ2+zjeGJa82g0uKf+x53CYbboQ=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3887A40E02C3;
+	Wed,  9 Sep 2026 19:48:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bnu2s_xtow5o; Wed,  9 Sep 2026 19:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788983306; bh=J47hfMemV3x17DwbT77P3iNi200v7sArNBFyj4FIEqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dwPEQtMeNA/0X4YLMHgzSgsrJEReG+/8XquiXTEMnDnzYNtgPhOSI1ZuSGGmf+uhU
+	 V5oLCoI78r3zgomqpkBhYGGK+og2znQrV4khKuBGPQqxLpck4AnonixUBFFT+OQ9pO
+	 XoUFWUpeutEqUWw6qWZlF4MSezuaZDbfmEkEMesoxESuMOiVSVBIpvn/lv+oZivGlF
+	 NbJK5pOApwMB2U2u72e0KDAnjAnnVYBqW7hqQCjgkPVGWIyW67likuKOr8KL2iCigy
+	 wfxOcixBxel6j9y0nGeCklkkuo9SS7BzFZrMmfwjY0x8ZNHxCfzFe8nm3kMfbW2SkQ
+	 hVt6NGm6loU4cNhNTVlWkweLsqiDVWKEfmcR69gNzENXWQF+DAqzhl1dooy8yRdyQ8
+	 hzYMVbv7DEaFBzo345o2SdVnqq8Hbvr6zEs3Jz+soHKZ00hNuarCPD8kKht9ZWHhDX
+	 K6qLog8avAPiAmQEstoo2bUscQYMRoJj1G/FpwnavifIGACdSvVBx3KQXFGuPZFI6C
+	 LW+eR2FIosDuuKNbgs+V1Q5Aiz3ngAXwHI3OctVEHffGJL4rAUmbrTcA7D2mTokDP5
+	 cDqR90QAouoVLFeoaPRexpBIoBjUfItvei9H8egAwCVgnmg67MgfJgP2vnIu6Np7cO
+	 rVr0gT+x4+ZZPc8QFps0Hbqg=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0329240E01ED;
+	Wed,  9 Sep 2026 19:47:23 +0000 (UTC)
+Date: Wed, 9 Sep 2026 12:47:20 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, linux-mm@kvack.org,
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Jan Stancek <jstancek@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260909194720.GCaqG3yPjDmwKikdIQ@fat_crate.local>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+ <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+ <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
+ <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de>
+ <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
+ <F9786718-8378-443D-A21E-77E057B62BB2@zytor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 64FD240007
-X-Stat-Signature: g49nwxjqqez1531uzqwngf3wx88jp14j
+Content-Disposition: inline
+In-Reply-To: <F9786718-8378-443D-A21E-77E057B62BB2@zytor.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DB02018000C
 X-Rspam-User: 
-X-HE-Tag: 1788982748-387793
-X-HE-Meta: U2FsdGVkX1+Qs7wVjXglC2sw7OFltD4lsJm9RJXv41qzwdYqTg7pyJIrDKpgvu+kvN+SGdR2ekCKjri3rZNL5+ZYpCfNylvngVn8I0fE4jgwKi8vOeBK3V2M8p2yZ9AZOPAlZbBnAV4yooA44AnciIZbJ8+GV/fXcskTY/3cFSgnthHPMGJY9U8fGjydSQJGGfLzgQRq6Xbixd7CHnT7q+CA+9ZAd62f9RQ2K093wfh6t9ZLNVzjkXBZVQc2U9r9EARBsl4Zq0OAAM5a0prfFJHPJ49Y0E5etgI2Ti61h1ckhcvBqEjbFkCnOL56eShs1a31nKmj5XUGUHku2RkW1TmqBgM9+BD61mjm44YEst5jfz9biADJypCFImCEHdzwe7LcJKvp/64Jgdw93hJN4aYi7OoW7M8WqBJqGvDueTOJKn7DgQ1U4hA0XKp8/TL5wxU8bdEgvkCbyjp7DAwe/7mZeUqBx3BHRzhRSBBMinKqFCz0GdFBEY01Ymp0q1B4YFUGtqS2GvIv3Bt9+i/SDxwip3b9LvBxAqk9Fj8s82wjOu2TaYBgj5SvFrQOeJui6qMRvTBfqEFcxbsBk5v/sEnmWOGQMT6mPaXwFBbNcJkxayhaYDwioteXk+3puJhXKFNxBMfiyXvVtWaDp3mJJoHoMSFGZvE1fhqkfs0U2lvcKQwQS70lkD+RUFN97gigbMnyvmbcQeyaLbKFm25Wj+4UPJbl6n8O6oYsY4ppTAQzMvxiSbYIYq2wz8Y3WWdEgSYGfCphHa28yo5OnQfr4/d1A8GB+hpnaRmn77FTbnGvPeiXqAYDsTTs2nved6Xf/ZvU7K16lluIOXL58mM4i1SHpp62Jcq47ElUHUsZf/AbMiMI+gr33luuTviInnIwYfQB2LGrC4oCi6T2z2zGjAJO/AwB3v7xdunLGbTqxoqNN1Hn37+2iwV5OtKkWFaaOmHDAet54iowMNkXcLz
- T+i0JxNe
- e95sqrkUBGS7KLrUBKifV45pZHaC4y8+vQJPysXXyb58hLrmX0XogyMc2COnfLKO7/6PZMZzvuNYQwDYjmntgEffetDD2e0XyHJR8KObSDMCxsFNAE7G2RH1nEnfYUiK+8PvDMP4fGmNHxtmoy0ihmAcLidoS5YqZ+LIvKy9tqL2sgUCrlCm+1YIAU2JyrGj9ivyJ6PnClqtJf+xPBsRjH9xwkYw2rybI1Jg2Rl38uwe8a3xdPcJ+HAf8Nk2oa5ezpUpG/JnBvbXFrpQg4j1M6EE/BfuSXjjrsWumljmIwhhTsic0UCZFwN+NRhjtvSOxeoS7zZlahmqFDhm+IQUD3PL+q0Xx03SeCOlmyRKGShHGlr9c34ALxnyf8PgHvpc66xQ6rGsys7m0MjWMU1vevhT4lw==
+X-Stat-Signature: 7h9ozbo3btwmag8r8c17cmnfyen6uk8r
+X-HE-Tag: 1788983320-59050
+X-HE-Meta: U2FsdGVkX1+MTAV3JTyXBY2OzY9lPCtGMY8yhrUBT0/J+v1MxrVMQnXFulzzmNoIYIAuByfkkABt0fwDKnCipzIQricm/0GplsQj8MkhBiUuICtVjA5/U3bxbnoh6xWgOar+VIhkq+atFNccH7yT0Tv0IJ/sOx99lDXQgsciy2m0XLz7GzPXuCO3fd9YlAJm+OgTt7ZunUbO/B9U4AbAU6MHm3n7D7XO/ZoyzfCAqDKj+fLd8QMwdBJ0RxCsN82NuSf0mMlDFhSX53Nwfdiq+H78zrIcl+XDY2So+TfgPTN1Rg6SIXquVnZuedYUT0Q+8G8WOeU/Li0PRd8QCsb6nq7ztDBKRKYxOLidkxJL/JU/PP8r+O59ewR+4StayZGyPgUVxqaeZPy4FNjX6gzc5U4Urah2807R1HEc/BcuuAGfVyEN1zyApahGkAAYd+jYqcQEHyJkESzEZzcqK6k2ebnbO12Nc2kUZqjK0bJ9Jq0WhUMeIDcZBPV79wVVaTlyGgPRPzaPweYqBmLFHBIGbPYxkCx6J35cY/wUPlVhP8PgcYi9BUIbGrCqrwHOb5fUcjFKlZ4u+Ebi6rC7ZwZaA7w+/vFwrWGu7uJ+q+BbTm1woFq095Z7l4MJq6hPMyUVaDYy62LN3aZC1r9iEwEbrHM2v7BNHOOYr12XR47z1hE7cbCCDJD1v1A6mUhTehk2LjCu+o+oRnNxbo3P51qMH/JZAZEBa8so04vx1EH8esOBjS/qaYlpaNKfgjAD09bfpkiazjwQNImdye1hjapjaHs9L2JM2TlrzrLVuLZYeR3PvN+MA+pd5Arhxk/QmQowMwgdhlpVIKlY6wAVYe4oCRZvEX7QhWbSGPhhFrFiDqClR8eAF0DNK3HXwLTwjCPssjvY3Z2AlF81AIcnGMFD8YwVxG4kAQ1uPzCHjBxvYeHpRG+6KzzZHqTeVJoDn6TSweIIhDHidLppvV9SaTG
+ rTaVNzAJ
+ cCkEsS08nvjP9AWs7rbUJSfIZr3icCNb6VBeMDTorR0U5+0H/Ukm/2LOjXJMMMXqIpARNpd7QPSdNyC/wUKfkR8+RCRvvm4xFRKCWtstnxNbXS2B/3qwEHAFDWr/02aOqdNMZoKrlpR+18O1MeYOJKGuCT/RhG81660TPIDJuh1AC6gg+hKndtrCmvjElGniy/aIA+7lDdxC0QjM/cyK3keDNUGN/Swe8aiYk0SPSQTXe51prd/Nh4DycfGxLyJXYihpJyT7mYkBplE5uCckzEMlVJpc78YN7MGUXE+8rKvNVE7G5+2wnXzc8QmYOGIaypwnbekcVo2yBm7PJo+pQN5Vl4OZmGajNn3BVqJNCkmEMaBnE9O1O7sCoCiZ1zaU/duoNFKRUEuBNvLAibe52+PBHaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,33 +155,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 08:16:54AM -1000, Tejun Heo wrote:
-> On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
-> > +		do {
-> > +			cond_resched_tasks_rcu_qs();
-> > +		} while (cleanup_offline_cgwb(wb));
-> 
-> The patch looks fine but this overall seems fragile. cond_resched() was
-> already marking "stuff that can take too long" but we need to use
-> cond_resched_tasks_rcu_qs() if it can take *really* long. There gotta be a
-> way to make this more maintainable. If always doing tasks_rcu_qs from
-> cond_resched() is too expensive, can it be be gated behind something cheaper
-> e.g. some tick based test?
+On Wed, Sep 09, 2026 at 12:27:30PM -0700, H. Peter Anvin wrote:
+> I do believe there are *some* headers that would be reasonably to export to
+> tools/ beyond what it is in uapi; a major reason for that is that the tools
+> are suffering from a crazy level of internal inconsistency right now. 
 
-Yeah I agree, it is fragile.  Every long running loop in the kernel that
-only does cond_resched() is a potential multi-minute synchronize_rcu_tasks()
-stall now that cond_resched() is a no-op on the preemption models most
-people actually run, and playing whack-a-mole with
-cond_resched_tasks_rcu_qs() at each site as we trip over them isn't a great
-long term answer.
+Well, as long as it stays "internal" I don't mind.
 
-I'm working on something more general so we don't have to sprinkle
-cond_resched_tasks_rcu_qs() everywhere, but I expect it to be controversial
-and it's going to take a while to shake out.  In the meantime these are real
-bugs that are taking machines down today, so I'd like to get the targeted
-fixes in and to stable while the broader discussion happens separately.
+What I do mind is this unnecessary and senseless exposure of headers.
 
-Thanks,
+-- 
+Regards/Gruss,
+    Boris.
 
-Josef
+https://people.kernel.org/tglx/notes-about-netiquette
 
