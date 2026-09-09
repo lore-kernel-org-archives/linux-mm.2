@@ -4,165 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42D4C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C57C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:53:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED7D6B008A; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
+	id 948876B0093; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A777C6B0093; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
+	id 8F65C6B0095; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917436B0095; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
+	id 7E0726B0096; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 566D66B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E7EDA425B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:52:33 +0000 (UTC)
-X-FDA: 85194666186.04.61C7C61
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AE8C94000E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:52:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQBsMdka;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 563556B0093
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:53:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3179B120254
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:10 +0000 (UTC)
+X-FDA: 85194667740.18.A6F14B6
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C3A4F80002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:53:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=b2jD6ieE;
+	spf=pass (imf02.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788969187;
+	b=iDMRVhdS1c/pRC8mx60phcOtIahdESgavpHHkxhqMYtcP3sZcaUayv/H+SxfQ3AzOOz+hN
+	n6yFhKhQL6R2wiESXFSFlVkH6nG2xdZL+ZiDPJkgDyXVabpnPhGApiS2oDJsfKFaJOAEU8
+	2uojrCituJ0+xcLjGOokPSCbFDltffk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=b2jD6ieE;
+	spf=pass (imf02.hostedemail.com: domain of rnsastry@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=rnsastry@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788969151;
+	s=arc-20220608; t=1788969187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u91uFesTnFbGp/0SROsL3Fce0KUie7u3CWxoraS7oAQ=;
-	b=jsFMcFzANBjy6Ho0876zbP6QMyxuMbdn7Z/rquCQITdFgDjaq83QVXo1oXEJErwzpBucOv
-	wAArRGkCGuwdKC1M0dv9DB+Eaf3A2lxTn3bJU3wlEclcG3npW62VSJq4m71v+XT3hCgH+k
-	ypkHImshqMFXhb1J7/v86fwhWBY3vMI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788969151;
-	b=mI2H9rKHgBhgGpj7sj6tbwyRtWx56Qqr5y1870bDvCk87qAf4NB4TnBeEL8bCWJXpY02it
-	6cKcHU3SuVUekHRchi05niHXiJoS9N4W/R7f6lsc14/7UtAux1Bf4kSzDD84kPhrtb1vB3
-	kTyE77kM9nWuZ0mEPa6/XCSGWL4Yrb4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQBsMdka;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C50C643CD0;
-	Wed,  9 Sep 2026 15:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D481F00A3A;
-	Wed,  9 Sep 2026 15:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788969150;
-	bh=u91uFesTnFbGp/0SROsL3Fce0KUie7u3CWxoraS7oAQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FQBsMdka6q3yJt4PU5XM/w8brLU7gUN6lqri9XYHBVnNyH62B5rbtWvnsDcuDDstR
-	 yUYGausmecFcZ01xcp9jcXh6Ho5wsTQC/KHLYEhhxTdAcpoZL5xbh02s+2mdoJKJ3H
-	 Cp0MTYHR4h+lAxicsGveorC67zzpo0UPgSBxoxYCK68UEpTQW1y77SCx6ZwpV/csrz
-	 raXx29Z1Se41gtjEI1U2vIhXIn7MET8plb8HrdSDx/6+Iyyu8xI3OQ7cdLk6+LSork
-	 xm7TREyRSVsrnCKckGjwZONbqeCoEzk9VmOK+gkVKpkdILm+SY4p/AoaYniCXdOkqG
-	 ruQAOmRiKrwxg==
-Message-ID: <13f2c56c-b55b-4245-8190-7038f4eab98f@kernel.org>
-Date: Wed, 9 Sep 2026 17:52:10 +0200
+	bh=aJQ3f9xbjxMwuiEJ1zAsToahe8kVJn3m9fPpmaehrMQ=;
+	b=m12efxun7kZmtdVnmXYCOZ2AZUkm0tRWT6meQkmgc6YEDV8EOm0/pdPUDwLxKIU2T4Va3Q
+	BberjEMUTMxvxcd/ii6Ngr7qOnTnCfmU8n5WYpLH25zxqsHb8okbJzsNr5n5ZUZeZSSpwb
+	m2+hbLhyFF55xS3bLoXcnz2zcsCOaEw=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1aW83839613;
+	Wed, 9 Sep 2026 15:52:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aJQ3f9
+	xbjxMwuiEJ1zAsToahe8kVJn3m9fPpmaehrMQ=; b=b2jD6ieEKr5a47fTeuPlQn
+	sG2l2XYvTfMvncOLggdaCSR7xbtyEqqicTLk+J/qKKkTfPAjBJngsJgiCJzcpR7h
+	oSoGobuJP9zkOKRDReLcUdhm+2MYx5/1Uo/99uE9ekSsPWYp1Q9iBTfsjOD1to0g
+	aTBwqXF6o0KWcoK8vxOba7M1IQp/NsOVCU5qJnqaT3SvbC2GTesKTonbf2p6KXX+
+	M/J8nZ8lcoe5xnOPAtAocGZiPS3wVsxi0QNv/BFhG3XCHohMggZOgU4BvLnAf6tW
+	KU0sC1dY2f0eUZgzIQj96TdbGd+PlQKVJ3qknHj3MT+acj2qeGtV0JBTiltFvqWw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhf6hcp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Sep 2026 15:52:56 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689FfD4g030374;
+	Wed, 9 Sep 2026 15:52:55 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggwdqk94x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Sep 2026 15:52:55 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689Fqpt649283520
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 9 Sep 2026 15:52:52 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CCB8A20040;
+	Wed,  9 Sep 2026 15:52:51 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80F0A2004D;
+	Wed,  9 Sep 2026 15:52:41 +0000 (GMT)
+Received: from [9.61.255.18] (unknown [9.61.255.18])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  9 Sep 2026 15:52:41 +0000 (GMT)
+Message-ID: <371e950e-8d05-452e-b81f-57b120c370df@linux.ibm.com>
+Date: Wed, 9 Sep 2026 21:22:37 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 01/22] powerpc/spufs: don't dump more than the note
+ supports
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
+        Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Omar Sandoval <osandov@osandov.com>, Jacob Lalonde <jalalonde@fb.com>,
+        Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
+ <20260820-work-coredump-sparse-v2-1-ba32dd718c51@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
+From: R Nageswara Sastry <rnsastry@linux.ibm.com>
+In-Reply-To: <20260820-work-coredump-sparse-v2-1-ba32dd718c51@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Vpz_JMlA2xDilx_mOxqxkGzGaeHwxFvX
+X-Authority-Analysis: v=2.4 cv=RIaD2Yi+ c=1 sm=1 tr=0 ts=6aa180d8 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=eMoGHGNclBrxslJz7JwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfX34hiaNYn2Z+S
+ hgBtQiTobuQYrHJX6gsJIJBIG4ahe7XHwTJ42oLWMaT0s8cf1B+YuF/mpXEJLBqkdp/2SFe9j84
+ Pi8F6lti/HQLUiGCf6P9l52iforvejg=
+X-Proofpoint-ORIG-GUID: LzRG8kMh5H0DvZ9UWi0BCwao6ubK88PV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE3MyBTYWx0ZWRfXz1c7miAXQplM
+ bOIrKaACTzAPfh71wupQgNaUEJC1w4GSNp9qOunmjMij39MUwS7W3Tcyx0TSbCNk/gXRlznMPUz
+ PhO0hpBGJdx35LI4z9D91L4uQv52BOffXpZWFXzAUhUO08mwVtQh6BFPe1yTLfvBeSyTGab2HJh
+ zB2bThp33YnKXUubwGq1nX+vH3Hs6fqqbKE8EPnZBqRKY8tadMqacKispmzsFlM9+juxOsqWlrW
+ lgXPIVziPYwJyQUdsRJjjfFntZkqMeRtz5LIMW6MWHUncY1OCec3GvSl8muQVkLC1gpiD+c42LX
+ 6fpAXL78yIcJfiBqovqLeSlXzhcuJTUgCPlbEmZDuGdx8+lX0M7Ps2wK28IcED1FS/HfudXbTcB
+ OiRsBxWuBXRJQQy8VskXVlXrttCU2CrIR/z8HCBhqwhKE8dY7pam8bXQ3aW97GLjZfehIjzV8Q2
+ nkd3BjPMPT4mXtPAEfw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 phishscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090173
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AE8C94000E
-X-Stat-Signature: eoopz7cwo3ux4mt6p5oy9z864yn531e3
-X-HE-Tag: 1788969151-462800
-X-HE-Meta: U2FsdGVkX19FlH/7BD7FVHZfauSyHs9c8ytNBYXGrJ4rb0SUnDRuix65ZKg6rPPsrfR+NXKkbxUKKX19jmIAyegGcp8unsmA9He1LxQmgOhl9wDo1AP3577AXBZPSnkECb8TJCa3QcbgwOA5up8eSmzBcHvD4QIh1jnxeAvd7VRVG9+oIUFcETBekK5W2xdP9sl63DMwyVzcmQnucAkHzBR6FOH81avdZZFZzLJ25peMJUxJt1MaX2QZMbrpzYMcIEqjdZ9KZwnIqwGgq/W3r6CzwILZs0Xg/AEG/J99qMY4AHSbBQPjw+KHqk5/TtH7QjVlS6Ve5VhzcP5qZ6e6/nCrOVmuGLZEs72FYvX0owre9cbDevSaS7Mt/h2YShlbpoxpy2OJY0c6lQPln487OD2febonC3/FCGKhikFAtjsvFncMLpnrnpuGYEGuzppcl7ehc77b7krnZt4+geUueByOaYEqPNsLUAD56mIeewP9PHTOrskroMr2etMgafaAtUdzK2OUWV/TjhGJoXnV/Mq3ZvzDtEsA9fW9Fb3diNFz5d0eyM5gOhX7NFRGJ3i8prdVNAckvXn1/lfdmBmqJPVY17vwY/t+T5XAdGBxSIMWW0pTO0IWOQVKIhXK0h1jvKOFVJkk6vQQzwq5NIWswt10nfDlqxr6bhT282nNoKY4NqzsmGjmr3s/BktK8tVhstdOtaC5BkMY9hLflhgK6FITpL0YCkVVqNdqV17NARvpgtxcMR9JA0V/stpQcQoJ8zCK8dfwKKkqWS7dJMzChfc7GMrja8rnm6FPv8l/mJepUKMbE5bJhmbvImsJTsCL8fCNbZ4duDTbX+IkAEGeh8mq1KXvGCG+6T1z3ommmApYUh8dkW0UFEDSLYxyl+UGZWTzvZQun0vvKH/b1hqGh7PBmTLx0QB41TQvHBSkn7+N6tNukuImpFc/VZ3dwTMo+i6/tr+dDFhnxLADK7v
- BDl0CWMv
- VA+zKW846ygyxNzYflLY8TnqUf0uRe7t9QmhsV+U4tSolcj+Ldl0SB+Z6W5RvXIeaGUUuWypcBLMjz4fU7+ugL0/pjjZq8oc/GYTI+t7lHgprXgRK5sAYSxnJ8pdZIDY78CsaCd/PGASeAKXwSTK7/A44U8R7HHcF7J3LE9lYti89+kmT7CIjqsnwpjD/hGNcB/q+XzqlpejEyelRjKsqWto3FFVk00avVsYl2q8Twwxr6VunOkMU49IjwFqTXW4JxwZ3gyyes8Pkkg9ja5G72pAmBqA8xaArkT/TAXi5gejnDi5dmrxpvpQswmibtUB6wr/gRhCzSvvo778=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C3A4F80002
+X-Stat-Signature: 7dja3jziu51owyi4br9ky9tpkyufoe1s
+X-HE-Tag: 1788969187-647145
+X-HE-Meta: U2FsdGVkX1/nBxjpxmva6zIs2AARbMPZlXpBpCcjZUQ2+vAg38X5pPgPhUTjm0rY3qI1IZXnTgESqdAwga0zkpKx6FX8NbMmhPwhrE7xmRZ9BYKm9K5J/sHBm3RzkJBEoxx6/nZcfo1h1Rfzdhp2XdQ6ChxFFvAbRTPSzyus9hg2q5MYKPOf9mRIIbAG1R5V4a365JwUzDa7mxFSoaTkXcfmVGS5lE9ZYBIr4wnVOUJ8l8PlUauLqfoXg/nONz2GeaMn6r8ZaJyMQii4RPlnQYkEWDED7+72/Zm6yDQmkNhiA06NtZ4ZLANhyl8riziTARvcnfCV/J5EDVMprsntbEorVhar+J+NSciEkqhiXrJncdBiikIJcmfRHcmSxi930eyxQUeGBY8jbnacNoftjOfuMobczpYTdSpIxuNCl6DVkDfb4f03tge3GjpXZDJCiF1vqXmvkFojnJgSDozYv3QB+Gsrl+q6TNVKOlz3ZH9B1+oLGdy6ciNgbp2isXdC6ZH0XNKTIWPdBypuCVS0psJJliEQdc1ZZ2Me4pLzlYu9w5gABRjGZ+Sm02xiOfHapVqim1084mRJFeyUAbI8m/0dxpSSLVMh9YToBBV6Gl0L5D7PoD1s62p6ovTF48e2/CBSKsRmcM8aPxdxjQE3Cty8SJ9btqOenAE57Kny/dcFb3z3x9rkIjBo1VAZ1Ig3E/nfI5f/5nr21/u/yyUhOVzCxoI/D8wU6J5o3WpV9TwYNqi7EXJHnzz926h60VEdSFSIFoZRg+DPuN3CBklhsRnSsaw/Y/9pLwxIu9GKKEQq4snko92mTReRlreiV3ifHQysySD04lfcUJmWfMHeeEn7r72UdGBrCX1NfmjYmAxVML+OlJvLi9eh78s7V0q+LDyqNN2gKrJkHSgCKuZjMA5LTKZJYjHKPX22HawFLgvJ/keTgoJ5yLaoqdVqut5YbQ+iX/bhXABnSMkHPVQ
+ OfcpFxoR
+ k4sqDIYXhtXc+ELi/IaI+6DRYJq/TkW48LlLMa7uyEJsEpCB+rJD8CosFD8w0mxVRQaPx3w2zQL70nNa9gpeSEpzxM0FBCzD5BcBqniUXm4E0XVX8U/S6O+Kd1LE+HbcjIpuRZYek0VNORMkjBvgXRfN8fLqFiCADiN2/GfYjiPXZzDxtN8xoXvFxa15tM/AkMIKWYQNtSswoqes8xZfsuad/D4cfgPT4EWCPx1pJc3gskskx2zx7ts2Ix7UsJkGlAdUHtyw0cCKSWJ/k07n93ifGYZtJDZYa+tHYZxTJ7r3S+xCAYTUQzrGuaybcer0VjndJQoYGCogjEzphzLh1V0ZiDev3i4l62RSM3+qCEkxqIDcEd2rhqQBUFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,47 +155,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On 20.08.2026 4:39 AM, Christian Brauner wrote:
+> The spufs_arch_write_note() function puts notes in the header and uses
+> them to fin where the next note starts. The spufs_coredump_read[] array
+> provides the sizes of the notes:
+>
+> 	dump_skip_to(cprm, roundup(cprm->pos - ret + sz, 4));
+>
+> In this call @ret is the amount of data the dump callback wrote. @sz is
+> the declared size. So the position moves backwards if the callback
+> wrote more data than the declared size.
+>
+> For three note sizes that is the case:
+>
+> (1) signal1 sets sizeof(u32) and dumps u64 via sizeof(ctx->csa.spu_chnldata_RW[3])
+> (2) signal2 sets sizeof(u32) and dumps u64 via sizeof(ctx->csa.spu_chnldata_RW[4])
+> (3) ibox_info sets sizeof(u32) and dumps a u64 via puint_mb_R
+>
+> The note is 4 byte aligned. The dump_emit() call wrote the dump_align(4)
+> just before the note. So if @ret is 8 and @sz is 4 the position ends up
+> 4 bytes before the current position which means cprm->to_skip is now
+> negative.
+>
+> For __dump_skip() with size_t that means the pipe or socket gets 2^52
+> PAGE_SIZE zeroes. This also means a file seeks backwards and overwrites
+> the four bytes that it just wrote.
+>
+> Before commit 5456ffdee666 ("powerpc/spufs: simplify spufs core
+> dumping") this was benign because this truncated (on purpose, I
+> presume):
+>
+> 	u32 data;
+>
+> 	data = ctx->csa.spu_chnldata_RW[3];
+> 	...
+> 	copy_to_user(buf, &data, 4)
+>
+> and after said commit things became fscked. So let's truncate this
+> again. Not truncation means the wrong bits will be picked on big endian.
+>
+> Afaict, spufs is effectively dead so the fix probably doesn't matter in
+> the grand scheme of things.
+>
+> Fixes: 5456ffdee666 ("powerpc/spufs: simplify spufs core dumping")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+
+System: ppc64le LPAR (IBM POWER), Linux 7.3-rc2
+> ---
+>   arch/powerpc/platforms/cell/spufs/file.c | 18 ++++++++++++------
+>   1 file changed, 12 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+> index de7494748fec..6f86d87e3749 100644
+> --- a/arch/powerpc/platforms/cell/spufs/file.c
+> +++ b/arch/powerpc/platforms/cell/spufs/file.c
+> @@ -956,10 +956,12 @@ spufs_signal1_release(struct inode *inode, struct file *file)
+>   static ssize_t spufs_signal1_dump(struct spu_context *ctx,
+>   		struct coredump_params *cprm)
+>   {
+> +	u32 data;
 > +
->  static bool kvm_gmem_has_outstanding_references(struct inode *inode,
->  						pgoff_t start, size_t nr_pages,
->  						pgoff_t *err_index)
->  {
-> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
->  	struct address_space *mapping = inode->i_mapping;
->  	pgoff_t last = start + nr_pages - 1;
->  	bool has_outstanding = false;
-> @@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
->  	folio_batch_init(&fbatch);
->  
->  	next = start;
-> -	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> +	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
->  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
->  			struct folio *folio = fbatch.folios[i];
->  
-> -			/*
-> -			 * Outstanding references are anything other than those
-> -			 * from the page cache, plus 1 temporary reference held
-> -			 * by filemap_get_folios() in the folio batch.
-> -			 */
-> -			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
-> -				has_outstanding = true;
-> +			has_outstanding = __folio_has_outstanding_references(folio, &drained);
-> +			if (has_outstanding) {
->  				*err_index = max(start, folio->index);
->  				break;
->  			}
-> 
-
-Having the folio.c bits go upstream early is certainly cleaner; without Hugh's
-series an ack from MM maintainers would have been sufficient, though.
-
-In any case, on the revised patch with only guest_memfd changes:
-
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-
+>   	if (!ctx->csa.spu_chnlcnt_RW[3])
+>   		return 0;
+> -	return spufs_dump_emit(cprm, &ctx->csa.spu_chnldata_RW[3],
+> -			       sizeof(ctx->csa.spu_chnldata_RW[3]));
+> +	data = ctx->csa.spu_chnldata_RW[3];
+> +	return spufs_dump_emit(cprm, &data, sizeof(data));
+>   }
+>   
+>   static ssize_t __spufs_signal1_read(struct spu_context *ctx, char __user *buf,
+> @@ -1089,10 +1091,12 @@ spufs_signal2_release(struct inode *inode, struct file *file)
+>   static ssize_t spufs_signal2_dump(struct spu_context *ctx,
+>   		struct coredump_params *cprm)
+>   {
+> +	u32 data;
+> +
+>   	if (!ctx->csa.spu_chnlcnt_RW[4])
+>   		return 0;
+> -	return spufs_dump_emit(cprm, &ctx->csa.spu_chnldata_RW[4],
+> -			       sizeof(ctx->csa.spu_chnldata_RW[4]));
+> +	data = ctx->csa.spu_chnldata_RW[4];
+> +	return spufs_dump_emit(cprm, &data, sizeof(data));
+>   }
+>   
+>   static ssize_t __spufs_signal2_read(struct spu_context *ctx, char __user *buf,
+> @@ -1965,10 +1969,12 @@ static const struct file_operations spufs_mbox_info_fops = {
+>   static ssize_t spufs_ibox_info_dump(struct spu_context *ctx,
+>   		struct coredump_params *cprm)
+>   {
+> +	u32 data;
+> +
+>   	if (!(ctx->csa.prob.mb_stat_R & 0xff0000))
+>   		return 0;
+> -	return spufs_dump_emit(cprm, &ctx->csa.priv2.puint_mb_R,
+> -			       sizeof(ctx->csa.priv2.puint_mb_R));
+> +	data = ctx->csa.priv2.puint_mb_R;
+> +	return spufs_dump_emit(cprm, &data, sizeof(data));
+>   }
+>   
+>   static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+>
 -- 
-Cheers,
+Thanks and Regards
+R.Nageswara Sastry
 
-David
 
