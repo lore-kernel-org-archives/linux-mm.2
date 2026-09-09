@@ -4,114 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E898C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7BACC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:44:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 923C76B009B; Wed,  9 Sep 2026 05:44:27 -0400 (EDT)
+	id 2B97D6B009D; Wed,  9 Sep 2026 05:44:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA2D6B009D; Wed,  9 Sep 2026 05:44:27 -0400 (EDT)
+	id 2918B6B009E; Wed,  9 Sep 2026 05:44:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80EE86B009E; Wed,  9 Sep 2026 05:44:27 -0400 (EDT)
+	id 182166B009F; Wed,  9 Sep 2026 05:44:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1446B009B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:44:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2129CC017F
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:26 +0000 (UTC)
-X-FDA: 85193738532.05.D5CFC0C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2E151C0007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hj8TJM05;
-	spf=pass (imf28.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D75E26B009D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:44:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7E151C0819
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:43 +0000 (UTC)
+X-FDA: 85193739246.15.4EBCEF6
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C63B9180005
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:44:41 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tY8OL6y2;
+	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788947064;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788947081;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BzQmrkDX5/+zmSF2Jp4vpwCxz8tFdqAXZC9u/LDK6UA=;
-	b=eIFhoVbngynUxN9e4Eq2h5GmPHslEdh5mebRA1A7W3dH8P2EELym+ZeBswIgTaTfEujt2L
-	xlcMoHhBMT/BBc3975Ouzz4GzVmEkFINzxM4YdeAb+P1Cziw9rXBIbblhKS+Xdd0d3szdp
-	x7NlmD4RjkBDExjerMymMVe3YlB2sgk=
+	bh=l/77qcoGASc/bcotpYpu7s8Toxgxo4GzXR5d/4rRuxI=;
+	b=xeUBWBKTOkHc1J0xz48QC4dtpmtUV5WDZRx+dvxLWIX1UuDcUGqiqvi4Tq0sHtQ+T/qXTC
+	YUK48WaKwtxyfZJQQpcMIYNV8h5HqJcUN8ZuiFZVhAnwufi42Xjm9Ejz6oZ7OIKgxWPLhY
+	GHU/WJmSrsKo8vpoONG4SMQTqi+nRyg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hj8TJM05;
-	spf=pass (imf28.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tY8OL6y2;
+	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788947064;
-	b=CfPKQ2mSvUdIVnlXxJ/sHxppvY1NC2nte1BkrtzxYNwjiqKObiz3E22HvSgUaAaQticiSi
-	A3n/wA8279r1AUbJVCXaRAI82PHWIJir7fQApTt3weXzPyJMnZnIR8SYVSy4nrhlRzKita
-	5bT6t42Vcs3YEXEYQnHeMti4zDlPfD8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EDCC66022E;
-	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 967D2C2BCFC;
-	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788947062;
-	bh=DzE6a8ucUIKezdLyiT87i1fHKPmzHSKWoTm6ztJGBrE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Hj8TJM05RMbUz9l8edeAbgRMFTc2BxpJxnU49GGVlssA5yqJhzTXQWVFa75FQQdPO
-	 J4YNpewm/4ro6Y07XRGNqQL9cyOySQMVgEjUxIke3w8Oo3Fb4DdRSEuUgrbsnrzlNb
-	 1PHUoFfpWtXrr4dtkw8qbvWyPKKVq2GmCyMVn9YQouAr1HiKc8i9a7oSWwU1y7WLvJ
-	 htEEwBsrMUDiJiPqabaUxG/VxfLFjo8rmBkvgao1rD7D105RjhTVaetCJDL26KiXap
-	 xXAGno8zLj2EJFQvj9BbhsxFkOa/Wyda2kvb6t8qeqAekqRjR0ruPXiwwYxelzU18l
-	 zSNvHb8QC44ww==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74424C79FAD;
-	Wed,  9 Sep 2026 09:44:22 +0000 (UTC)
-From: linuszeng via B4 Relay <devnull+linuszeng.tencent.com@kernel.org>
-Date: Wed, 09 Sep 2026 17:44:19 +0800
-Subject: [PATCH v2 1/3] mm: page_counter: add page_counter_protection
- struct and init API
+	t=1788947081;
+	b=A3fzK0qqGoEcp2+8nZT6AJVTW8/hHnkULsdY+NzGrUXHHEnpvor/2YkzzbJUXhLWku/16U
+	aAlIJWKQ+MboXfCFS91RMO0dmtzu+mtcBbnr02zwA4VRFaUJCZJVfKGPiwj2+Y5Qt6cNTw
+	kDafBcfMlcgH8GmrrWcm+tjbBPfyYF8=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-86162c086f8so53598767b3.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 02:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788947081; x=1789551881; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l/77qcoGASc/bcotpYpu7s8Toxgxo4GzXR5d/4rRuxI=;
+        b=tY8OL6y2qsYWo1zjGaHwT2i9bnNppBRhr4ODSrWKxIPoGhykGNccmILt/7VBxz5C7H
+         D+9OGYu9o/Jc+vScMguwZiV3pv72tBGsYhTVqELokvDzpZghqcVrV2TkohAzJRCi4tRe
+         odSG/u4gdkCe7r6P6h9ZObV3g5olJQfe9BFfqshpr+2We1xf1HtNnYsh8dItlnEdE+4p
+         gpEepp0eH4ZeJtJH8b/cebRhWjnyRs7NKD6uH3oRQdJN5AKadmlVSfYcyCpaMn8869QO
+         pV67UfOZ+MJ/Q7S+ot6s5u1RKpAUYZ1UvvLnpQnSuqVSrcSngUcOOUPoNZTCPdTe0cLf
+         3fZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788947081; x=1789551881;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l/77qcoGASc/bcotpYpu7s8Toxgxo4GzXR5d/4rRuxI=;
+        b=nSY3TZrfpvKKtiKRy2ulUbKh69N8exdp3dN0lxDeMaYO3cGuYNc9PDKyw/7A0yQk+m
+         LmttPJC3YbCMwAhhYjE5N/3BmzlUfzLwqwOH4kZx/JTH7+GDSXML+oVhyWJfZ6yFHoVF
+         TnfQ15+fJHj7drIWHXz2sWV1nEFTVqJKwhD5uU42o2mODofYzqZSbQ7yMQ6S8kTobYqY
+         MoUOUAggVVkZxPWNCcg1WGs9pvdFFvq1SP5ufSJ0KRDpsx2pScJ19A5KBf9dNag1oxcg
+         bXrzlmWRLBhdX7lV8s8HxOhj7GQL6CjoRqLH271fAVk3DiUlc1LDqt5SS3Ml7NR/HrQs
+         CJsg==
+X-Forwarded-Encrypted: i=1; AKwUvBxEzEPArQpkc/2wXdf2qGrIRbrSN+mxuPZDGq7Oet1ky2WGAbzDOR6aXOYnTv2VV9/tt6f0o5H7xA==@kvack.org
+X-Gm-Message-State: AFuF++nuYy5xpwaCuDITLXc9S6/VvRZ/lFywv4Q8aO9WF4UfXs3saS6K
+	12/knB3Y/TskI1D/MSKeUrEf/V3bRTsdYeQ5pcUg6UJZGA6r2/+/b2jevsJpKT7tZQ==
+X-Gm-Gg: AYBFou21P+MlmQgfnmFWbN1aBLD+bpgqm3ChlEC6uL8DAscbrngSSqjPs6BAS0B6q4r
+	ttqWkMdA5fSGkxZ3ELlvJLZH9qRQXgeWsgRRHx16ZJHqjIbtaxue6DeWJZGBkysxqrThyeXICBR
+	dw+DlgTJJ2JCV0xnGdrJmRx/7lRNOWjEPAdsUKz4SBuyO8NzRxHRTOmlagQEpsJGGiwE1CwZJnO
+	VOieAc5goHBt/9x0yKaSVfnqVNSct4QBuwiR4uKjqJSPPPEQWuq5Cvc9cAGlMzHduFh3NCAZNw1
+	raTgyQz7pTNDwRAl2Jz0i8mwRtZder9hdh/Bi9T2eAZ5mz87ex1w7aovyoPVH9pQRyaj6K5inZ5
+	7wr6B9wQFo6sLlnWOgsn0p36ysAfR/0eZCgVtWxr8Lxfd3Err+2n94jSEzNesM0N/1tSMKvCggS
+	0hMK4pGulTbWvjmer2Ah/a7C+pU554oUmaj7FJ9LuNWvcoyXw6VOWWOTCW+FVQwT7XhFqu/a9Ze
+	E6U0XPAxIdEKhnfLBUVjbOPANv9s/IiV45sVXALsk/G8DbBL64ZlJ4O5zY0
+X-Received: by 2002:a05:690c:a84:b0:7f0:38f7:6ca6 with SMTP id 00721157ae682-86e6d7905ccmr129247067b3.5.1788947079991;
+        Wed, 09 Sep 2026 02:44:39 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-873194f76e3sm92930227b3.5.2026.09.09.02.44.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 02:44:39 -0700 (PDT)
+Date: Wed, 9 Sep 2026 02:44:34 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 02/26] mm/fbatch: allow folios_put_refs() to skip
+ xa_is_value() entries
+In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+Message-ID: <c441176c-33b7-c8f8-fb7f-51774e1fd853@google.com>
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-descriptive-name-v2-1-d7dd7c099049@tencent.com>
-References: <20260909-descriptive-name-v2-0-d7dd7c099049@tencent.com>
-In-Reply-To: <20260909-descriptive-name-v2-0-d7dd7c099049@tencent.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
- Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Oscar Salvador <osalvador@suse.de>, 
- Jingxiang Zeng <jingxiangzeng.cas@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linuszeng <linuszeng@tencent.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788947061; l=8820;
- i=linuszeng@tencent.com; s=20260909; h=from:subject:message-id;
- bh=qRo7579G0THOdatUrKxYMO5fc5xqKHZM+hDjreNI4ZA=;
- b=sm9aZHKSL3UgtbwsCx3EepH0eABzrIRsPuV/OQa6YtjA4YYenyUMrOOwjC/BuCeTXIw+F2a4w
- E94ynhOvlhRA+SfoBNns+mQRxSsyDGgong2OQVembX7Fcbr5Hz7AA6T
-X-Developer-Key: i=linuszeng@tencent.com; a=ed25519;
- pk=6K54xRzYIRWqatrAPy86M4E0MsI92BVJBhXwz5NdC74=
-X-Endpoint-Received: by B4 Relay for linuszeng@tencent.com/20260909 with
- auth_id=1017
-X-Original-From: linuszeng <linuszeng@tencent.com>
-Reply-To: linuszeng@tencent.com
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2E151C0007
-X-Stat-Signature: 8irwpb6i9mhnhm455dyg9cm7ab3n1d54
+X-Rspamd-Queue-Id: C63B9180005
+X-Stat-Signature: gk735na5upx5mwkucziysisiij8y95kt
 X-Rspam-User: 
-X-HE-Tag: 1788947064-402506
-X-HE-Meta: U2FsdGVkX19u09Q3eY3unBOxizev74oJh8XtTZJEPI6hhHj/RVPiuwj3pSUoT4P8yk2m0wKSvfl1qRg7kVMT2utZ3EmMfuKsFnD3cyXcz0RJ0x6+iOcG4XDXJvvN0gpB8gcdi7G3i9CWx8+ax4dVz24VT3NYYQAwmWwmbjWfZWhZ/xMde31HxhLmn2m3NucBeto2uvQXQX8J1YdHlZDz9b8FD3//pTtZv32lZOKcD75PKGetLs5r2UL6igbLncOm+wwRO5VxlZuOtjF8on6oo04FmATNTNSoDf+1sq/T0OoIAo68JpV7YB7VL1oXnhgIMUQG54WA7ZWWFyiMrUnbJ1SzzljnhEyDfZ1I4IXGarvpfxXuuPrJOOQc6ZZpQzaK35jMGPnf16/16HRNT6li3qYAcNZfV/911MIvFIEzpC8pLCo38rpA/dVTKLQK6WjKk/d4NpdC+BiRJM7JviFOwBVdvBq77amOrUXb+LZ1H63KEZggd9BKEqjVoERjUGrxmVVnJWHgiprMyZwEN6oKtb2NGQTKbobNbYn5VCARSWSlgMNTx2cOyR03FJQNVD6SOsqlLCPQNcpfACUfVeXRgxb5IQ3k9KkEtiincJ1AxKUGUmuIKg0jQh6yJ8mal5q2Vxkq8+ABUQ+uyw7LFSg2EQgJ32WxyNjmVCJRkfXW1hx056qIxuBaCBU6DielSf1XWaZFJJIOlJvBQCMUi0lJwpskMSHBVvP7F+IZRHO8rtf98OWSQt3FcDkTIEobpITKi3DopwO+mJd8NOdxaz+1XK3lwajEoctdb5V51ZeIb5O5VtCdIcfQ2hTDXy8KXjJA9zRoTfAO0ciWUiagk7kiDeVMva6lCuY7Xr2xI4ZGhrISrShoDc8XqLE8pmdWknnfFuescNggBzwR/pBozNZy50zrQcYc5UmIRn0CSC2sYKQpX3ZrLg+PhcI66iUuToIG2hn7DodF9Ziwm8bEQ6Q
- ZC8XxMNy
- dradssmPQvzyjqDgxlbBLvOjgeNABHKjR6Lwpoz43k0D0/ja1TKzOmo6Kqp6u6T9wOSA0ea6Y/31o48zczEG81nKiD+8CxS98j2FqwdgZwmvPF2yKUTtm2bXvwnwdST1/gJ14d55sr/oUqszBFLMSbHeuTYpZBfTJ8PaZF00mgAYZQ0TDypu20uZkVqoFkpXSaJZ32lA8CaPbkUR74fSSXPgGD8xXhsUEdCzfIoTTBvSrs9ItfHdlLqOPrZ1IoxSTVb2XzjR1NyiCU8qXhCrgmVy5Qb+dOr9jJ96V9ym5I2ayFOcJ49JkLTP32H0wl37ACpOS5YqXfbJEkDRCDwAoJK3/GG5/Feeutzz0HE2ESXTfPFZjDOkfsLk/GUQzdGMgszOxoZP8Bo8d7KA/axfM87Lsyiiby+yc5A5gZNuGyf4/d8ZFPjiWSrdjpWouqClp1vuxo8giryfmFc0VJtFMTNkKiWnQ9GQXy6+H89kOINh8gz/5ro2a5QTRJg==
+X-HE-Tag: 1788947081-348390
+X-HE-Meta: U2FsdGVkX1+tY7g/8L7mMiFExSSZCG3U76rD3BeJU1OxK72MWhvbwRmXB1Wb6XotpSfdeHdb0/m/Fq1U7xwZebmm4qqWnqd1OaSuBrL+WQBfY6MF5m/A2fsfxC1V71n1WlzH7sCupQUTmvjt1xVHfyrXO+2F4y3b2khinqBp//bRZ+hkwz/76E7maUMa9M8CI/QqbsDbI918ygeoH5k8ntgFvFHVfYaXhoSS/s0834Wpd50ZJ2lQ3VujFms3cjpZmM5YCI6URnO2vxhCALTNiP9d7Pz4WK1FyoWHMjpYD+dPt12uVVVtXUbSmYBEbixBs/AmEaIqCbm7CpqbLwpxatuMdiin/ShewOkNyJAvgMcwWiKiJh2rwtFU19lVwFHb5Vw0taKVEMucG/+obPYNbdZYOugmUcqwsdQaJvBxQ7d9/S5GCALO8GxjbMdrosHrerAFbO6EppC+7kn/Gb5S5ydz0/PNFSCkRQMGX+ZmUpP5YK0WSwUAebl6lij4S0EIsHOU30cczwoJJQp6zWqwTA3t0AEED2ckGjgPVA+OOVvJKfak04JlBeaJ0hLpTloL6LIBM7Rnw9JCKswp+J5m/PF2/9Kb1kvcxoREpw5/aGwlWJz/dbHWKxKhjyzJu42tIf59ItwsIXVeNpWv2YpYhWX4v1LF9cTKhgBJsqIygks8wUdkp/65lUoHvLHk6q7vH1jX63r0xBk2mUgCk0PrI9dwz8zsf3CgxXTL9+9/9utTRhzTXahRQOpd67HZQ5IDP3Tt7JsPhvGwoH5YXYH8xXdLGKzHOfKyCHgx4/QyHeZek+Qxb+pDTIEoFEk+gjG18YasLuokQ2ZWJG++LrgBDL32R2kgl4jMhxOWkPuAPB/ETEqE3zzzepgIzmvfL9HPTz5hPKq6bk4XmX5+KInxT7rOyy8eYtQz6+G7F9kPlF/BF48Hrp8tHAfAMfn/sQS0X9t/JWcusvObADXGeO0
+ hlXsnt3m
+ wjzrJL+TK7oqswp/cwqfSLGUDI6sPsYm59JUzlKxpByGZ5AZk4YSnf7725YLGvvmH28RKv0+sNGKWRXPni1RVvsadyFKLBDVQuxZZPVKR1j0LbQg+5+Lph2KqE06uJqlV6TJbV73Nv8iVxn4apsmJwKLPmOC7STZ9Zdji/85kwu8ZCLCmd/GJSRQwjATB48Gj2akmw1lN2j9EHUOtQoAEBhpTBq0yVnzX73qFmOOVJ7PdpPJEE94uKZKvtG7btMGURWoFNQXUaF8/A1D7Xib9YUwTuCLfc0wM/EP6qJoZ7UCPKhUIUU751ojTS6rJpJo+zE/HKyPoRDfiEdgTdtnHo2KjDPc60AeL8tj718o8lPGm1JNbXISsAaFkx+X5QutVmEwHML8dpjw3SUhWqgJgC2MKXdHy0Bim6NIokUp8p2daYEP+NPxwuH7nqPd/bVAiKPWGt0f+XHgyr62/j1z2x0QwKUPwXrPcgHfGvZ2Ax1MDlcXlQjX31+wyDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,245 +143,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: linuszeng <linuszeng@tencent.com>
+Let folios_put_refs() (hence folio_batch_release()) skip xa_is_value()
+entries, and therefore remove unneeded folio_batch_remove_exceptionals().
 
-This commit extracts the hierarchical protection state (memory.min and
-memory.low) from struct page_counter into a new page_counter_protection
-structure.  It introduces page_counter_init_protection() to attach this
-context, saving space for counters that don't support protection.
+It made some sense when introduced in 3.1 for shmem swap entries only,
+but workingset shadows popularized exceptional entries in 3.15, and it's
+silly for so many sites to be squashing exceptionals out of the fbatch,
+merely to suit an inadequacy in folios_put_refs().
 
-The dmem pool allocator now points its counter at the embedded
-protection context, and the pool fix-up path in get_cg_pool_locked()
-links the new prot->parent the same way it links cnt.parent, so pools
-created bottom-up do not lose hierarchical protection.
+But remove exceptionals on leaving truncate_folio_batch_exceptionals(),
+one of whose callers then passes the fbatch on to others less tolerant.
 
-No functional change.
+No longer essential to this series, since 7.2 commit 9669b87065a6
+("mm/lruvec: preemptively free dead folios during lru_add drain")
+allowed folios_put_refs() to skip NULLs; but still an improvement.
+
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-By: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- include/linux/memcontrol.h   |  7 ++++++
- include/linux/page_counter.h | 59 +++++++++++++++++++++++++++++++++++++++-----
- kernel/cgroup/dmem.c         |  9 ++++---
- mm/hugetlb_cgroup.c          |  4 +--
- mm/memcontrol.c              | 21 ++++++++++------
- mm/page_counter.c            |  2 +-
- 6 files changed, 82 insertions(+), 20 deletions(-)
+ include/linux/folio_batch.h |  5 +----
+ mm/folio.c                  | 25 ++++---------------------
+ mm/shmem.c                  |  2 --
+ mm/truncate.c               | 16 ++++++++++------
+ 4 files changed, 15 insertions(+), 33 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 058ebd73ff16..ed863f4ed233 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -195,6 +195,13 @@ struct mem_cgroup {
- 	/* Accounted resources */
- 	struct page_counter memory;		/* Both v1 & v2 */
+diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+index b45946adc50b..e1cc8ae023f1 100644
+--- a/include/linux/folio_batch.h
++++ b/include/linux/folio_batch.h
+@@ -22,8 +22,7 @@ struct folio;
+  * The folio_batch is used to amortise the cost of retrieving and
+  * operating on a set of folios.  The order of folios in the batch may be
+  * significant (eg delete_from_page_cache_batch()).  Some users of the
+- * folio_batch store "exceptional" entries in it which can be removed
+- * by calling folio_batch_remove_exceptionals().
++ * folio_batch store "exceptional" (xa_is_value) entries in it too.
+  */
+ struct folio_batch {
+ 	unsigned char nr;
+@@ -100,6 +99,4 @@ static inline void folio_batch_release(struct folio_batch *fbatch)
+ 	if (folio_batch_count(fbatch))
+ 		__folio_batch_release(fbatch);
+ }
+-
+-void folio_batch_remove_exceptionals(struct folio_batch *fbatch);
+ #endif /* _LINUX_FOLIO_BATCH_H */
+diff --git a/mm/folio.c b/mm/folio.c
+index c093ca900a3e..ad6c64a4c22c 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -964,6 +964,10 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 		if (!folio)
+ 			continue;
  
-+	/*
-+	 * Hierarchical memory.min/memory.low protection tracking for the
-+	 * memory page counter. swap/memsw, kmem and tcpmem counters do not
-+	 * support protection and have no such context.
-+	 */
-+	struct page_counter_protection memory_prot;
++		/* Skip any "exceptional" (workingset or shmem swap) entry. */
++		if (xa_is_value(folio))
++			continue;
 +
- 	union {
- 		struct page_counter swap;	/* v2 only */
- 		struct page_counter memsw;	/* v1 only */
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index 07b7cb12249c..b81f16702764 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -7,6 +7,32 @@
- #include <linux/limits.h>
- #include <asm/page.h>
+ 		if (is_huge_zero_folio(folio))
+ 			continue;
  
-+/*
-+ * Hierarchical protection (memory.min / memory.low) tracking.
-+ *
-+ * Only the memory page counter (and dmem pools) participate in protection.
-+ * swap/memsw, kmem and tcpmem page counters never do, so the protection
-+ * fields are kept out of struct page_counter in this separate structure to
-+ * save space in the common case. struct page_counter links to it via ->prot,
-+ * which is NULL for counters without protection support.
-+ */
-+struct page_counter_protection {
-+	struct page_counter_protection *parent;
-+
-+	/* effective memory.min and memory.min usage tracking */
-+	unsigned long emin;
-+	atomic_long_t min_usage;
-+	atomic_long_t children_min_usage;
-+
-+	/* effective memory.low and memory.low usage tracking */
-+	unsigned long elow;
-+	atomic_long_t low_usage;
-+	atomic_long_t children_low_usage;
-+
-+	unsigned long min;
-+	unsigned long low;
-+};
-+
- struct page_counter {
- 	/*
- 	 * Make sure 'usage' does not share cacheline with any other field in
-@@ -41,6 +67,12 @@ struct page_counter {
- 	unsigned long high;
- 	unsigned long max;
- 	struct page_counter *parent;
-+
-+	/*
-+	 * Hierarchical protection context, NULL for counters that do not
-+	 * support memory.min/memory.low (swap, memsw, kmem, tcpmem, ...).
-+	 */
-+	struct page_counter_protection *prot;
- } ____cacheline_internodealigned_in_smp;
+@@ -1069,27 +1073,6 @@ void __folio_batch_release(struct folio_batch *fbatch)
+ }
+ EXPORT_SYMBOL(__folio_batch_release);
  
- #if BITS_PER_LONG == 32
-@@ -49,18 +81,33 @@ struct page_counter {
- #define PAGE_COUNTER_MAX (LONG_MAX / PAGE_SIZE)
- #endif
- 
--/*
-- * Protection is supported only for the first counter (with id 0).
+-/**
+- * folio_batch_remove_exceptionals() - Prune non-folios from a batch.
+- * @fbatch: The batch to prune
+- *
+- * find_get_entries() fills a batch with both folios and shadow/swap/DAX
+- * entries.  This function prunes all the non-folio entries from @fbatch
+- * without leaving holes, so that it can be passed on to folio-only batch
+- * operations.
 - */
- static inline void page_counter_init(struct page_counter *counter,
--				     struct page_counter *parent,
--				     bool protection_support)
-+				     struct page_counter *parent)
- {
- 	counter->usage = (atomic_long_t)ATOMIC_LONG_INIT(0);
- 	counter->max = PAGE_COUNTER_MAX;
- 	counter->parent = parent;
--	counter->protection_support = protection_support;
- 	counter->track_failcnt = false;
-+	counter->prot = NULL;
-+}
+-void folio_batch_remove_exceptionals(struct folio_batch *fbatch)
+-{
+-	unsigned int i, j;
+-
+-	for (i = 0, j = 0; i < folio_batch_count(fbatch); i++) {
+-		struct folio *folio = fbatch->folios[i];
+-		if (!xa_is_value(folio))
+-			fbatch->folios[j++] = folio;
+-	}
+-	fbatch->nr = j;
+-}
+-
+ #ifdef CONFIG_MEMCG
+ static void lruvec_reparent_lru(struct lruvec *child_lruvec,
+ 				struct lruvec *parent_lruvec,
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 897fa2b61346..1f2809adec54 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1157,7 +1157,6 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 				truncate_inode_folio(mapping, folio);
+ 			folio_unlock(folio);
+ 		}
+-		folio_batch_remove_exceptionals(&fbatch);
+ 		folio_batch_release(&fbatch);
+ 		cond_resched();
+ 	}
+@@ -1277,7 +1276,6 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 			}
+ 			folio_unlock(folio);
+ 		}
+-		folio_batch_remove_exceptionals(&fbatch);
+ 		folio_batch_release(&fbatch);
+ 	}
+ 
+diff --git a/mm/truncate.c b/mm/truncate.c
+index b58ba940be47..4151f7a167e3 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -53,7 +53,7 @@ static void clear_shadow_entries(struct address_space *mapping,
+ /*
+  * Unconditionally remove exceptional entries. Usually called from truncate
+  * path. Note that the folio_batch may be altered by this function by removing
+- * exceptional entries similar to what folio_batch_remove_exceptionals() does.
++ * exceptional entries.
+  * Please note that indices[] has entries in ascending order as guaranteed by
+  * either find_get_entries() or find_lock_entries().
+  */
+@@ -95,7 +95,7 @@ static void truncate_folio_batch_exceptionals(struct address_space *mapping,
+ 				dax_delete_mapping_entry(mapping, indices[i]);
+ 			}
+ 		}
+-		goto out;
++		goto squash;
+ 	}
+ 
+ 	xas_set(&xas, indices[j]);
+@@ -113,8 +113,14 @@ static void truncate_folio_batch_exceptionals(struct address_space *mapping,
+ 	if (mapping_shrinkable(mapping))
+ 		inode_lru_list_add(mapping->host);
+ 	spin_unlock(&mapping->host->i_lock);
+-out:
+-	folio_batch_remove_exceptionals(fbatch);
 +
-+/*
-+ * Enable hierarchical protection (memory.min/memory.low) on @counter.
-+ * @prot and @parent are the protection contexts of @counter and its
-+ * parent page counter respectively. Only the memory page counter (and
-+ * dmem pools) call this.
-+ *
-+ * The remaining members of @prot (emin, elow and the usage counters) are
-+ * expected to be zero already, so @prot must come from zeroed memory.
-+ */
-+static inline void page_counter_init_protection(struct page_counter *counter,
-+						struct page_counter_protection *prot,
-+						struct page_counter_protection *parent)
-+{
-+	counter->prot = prot;
-+	prot->parent = parent;
-+	prot->min = 0;
-+	prot->low = 0;
++squash:
++	for (i = j + 1; i < nr; i++) {
++		folio = fbatch->folios[i];
++		if (!xa_is_value(folio))
++			fbatch->folios[j++] = folio;
++	}
++	fbatch->nr = j;
  }
  
- static inline unsigned long page_counter_read(struct page_counter *counter)
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index 4683f3d68022..a4bac0d5ac3b 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -88,6 +88,7 @@ struct dmem_cgroup_pool_state {
- 	struct rcu_head rcu;
+ /**
+@@ -575,7 +581,6 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ 		if (xa_has_values)
+ 			clear_shadow_entries(mapping, indices[0], indices[nr-1]);
  
- 	struct page_counter cnt;
-+	struct page_counter_protection prot;
- 	struct dmem_cgroup_pool_state *parent;
+-		folio_batch_remove_exceptionals(&fbatch);
+ 		folio_batch_release(&fbatch);
+ 		cond_resched();
+ 	}
+@@ -732,7 +737,6 @@ int invalidate_inode_pages2_range(struct address_space *mapping,
+ 		if (xa_has_values)
+ 			clear_shadow_entries(mapping, indices[0], indices[nr-1]);
  
- 	refcount_t ref;
-@@ -426,8 +427,9 @@ alloc_pool_single(struct dmemcg_state *dmemcs, struct dmem_cgroup_region *region
- 	if (parent)
- 		ppool = find_cg_pool_locked(parent, region);
- 
--	page_counter_init(&pool->cnt,
--			  ppool ? &ppool->cnt : NULL, true);
-+	page_counter_init(&pool->cnt, ppool ? &ppool->cnt : NULL);
-+	page_counter_init_protection(&pool->cnt, &pool->prot,
-+				     ppool ? &ppool->prot : NULL);
- 	reset_all_resource_limits(pool);
- 	refcount_set(&pool->ref, 1);
- 	kref_get(&region->ref);
-@@ -480,8 +482,9 @@ get_cg_pool_locked(struct dmemcg_state *dmemcs, struct dmem_cgroup_region *regio
- 		/* ppool was created if it didn't exist by above loop. */
- 		ppool = find_cg_pool_locked(pp, region);
- 
--		/* Fix up parent links, mark as inited. */
-+		/* Fix up parent links (counter and protection), mark as inited. */
- 		pool->cnt.parent = &ppool->cnt;
-+		pool->prot.parent = &ppool->prot;
- 		if (ppool && !pool->parent) {
- 			pool->parent = ppool;
- 			dmemcg_pool_get(ppool);
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index ecb6e0b7819a..7fdae504cfc6 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -108,8 +108,8 @@ static void hugetlb_cgroup_init(struct hugetlb_cgroup *h_cgroup,
- 		fault = hugetlb_cgroup_counter_from_cgroup(h_cgroup, idx);
- 		rsvd = hugetlb_cgroup_counter_from_cgroup_rsvd(h_cgroup, idx);
- 
--		page_counter_init(fault, fault_parent, false);
--		page_counter_init(rsvd, rsvd_parent, false);
-+		page_counter_init(fault, fault_parent);
-+		page_counter_init(rsvd, rsvd_parent);
- 
- 		if (!cgroup_subsys_on_dfl(hugetlb_cgrp_subsys)) {
- 			fault->track_failcnt = true;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 86ff580c7018..ffa1ced3baae 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4267,25 +4267,30 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- #endif
- 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
- 	if (parent) {
--		page_counter_init(&memcg->memory, &parent->memory, memcg_on_dfl);
--		page_counter_init(&memcg->swap, &parent->swap, false);
-+		page_counter_init(&memcg->memory, &parent->memory);
-+		if (memcg_on_dfl)
-+			page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
-+						     &parent->memory_prot);
-+		page_counter_init(&memcg->swap, &parent->swap);
- #ifdef CONFIG_MEMCG_V1
- 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
- 		memcg->memory.track_failcnt = !memcg_on_dfl;
- 		memcg->memsw.track_failcnt = !memcg_on_dfl;
- 		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
--		page_counter_init(&memcg->kmem, &parent->kmem, false);
--		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
-+		page_counter_init(&memcg->kmem, &parent->kmem);
-+		page_counter_init(&memcg->tcpmem, &parent->tcpmem);
- 		memcg->tcpmem.track_failcnt = !memcg_on_dfl;
- #endif
- 	} else {
- 		init_memcg_stats();
- 		init_memcg_events();
--		page_counter_init(&memcg->memory, NULL, true);
--		page_counter_init(&memcg->swap, NULL, false);
-+		page_counter_init(&memcg->memory, NULL);
-+		page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
-+					     NULL);
-+		page_counter_init(&memcg->swap, NULL);
- #ifdef CONFIG_MEMCG_V1
--		page_counter_init(&memcg->kmem, NULL, false);
--		page_counter_init(&memcg->tcpmem, NULL, false);
-+		page_counter_init(&memcg->kmem, NULL);
-+		page_counter_init(&memcg->tcpmem, NULL);
- #endif
- 		root_mem_cgroup = memcg;
- 		return &memcg->css;
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 450543f4b318..38cb99f5f50e 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -15,7 +15,7 @@
- 
- static bool track_protection(struct page_counter *c)
- {
--	return c->protection_support;
-+	return c->prot != NULL;
- }
- 
- static void propagate_protected_usage(struct page_counter *c,
-
+-		folio_batch_remove_exceptionals(&fbatch);
+ 		folio_batch_release(&fbatch);
+ 		cond_resched();
+ 	}
 -- 
-2.43.7
-
+2.51.0
 
 
