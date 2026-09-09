@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D69EC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 23:55:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1E4C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 23:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D1606B008C; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
+	id 17C9D6B0092; Wed,  9 Sep 2026 19:55:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6817B6B0092; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
+	id 10A866B0095; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 570D76B0093; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
+	id E4A286B0095; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 331D56B008C
+	by kanga.kvack.org (Postfix) with ESMTP id B5F006B0092
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:55:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CA81A4826
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:55:49 +0000 (UTC)
-X-FDA: 85195884018.17.045F129
-Received: from out-2z4y-a131.jellyfish.systems (out-2z4y-a131.jellyfish.systems [198.54.127.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5161E80004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:55:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=EPVxsCbz;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.131 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788998147;
-	b=n4N6NnDHr2LolVo5kZ4U/zEAmpk8iN+RioVD+1HgYaLc+u/mX+Lc0nLAeIQJfIY287F/9w
-	Zl3t2SrgslGitXh8hfe8gLR13Irrw2IO5JbZ+J2nHzrS8XY2tIrrt48bqc+GHCdfKNhibD
-	T+hhY2BQE68mJKOocJHMkF0tg4A376A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=EPVxsCbz;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.131 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7D3A140388
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:55:48 +0000 (UTC)
+X-FDA: 85195883976.22.30906E6
+Received: from out-93wp-a34.jellyfish.systems (out-93wp-a34.jellyfish.systems [104.207.68.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 04D4FA0003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:55:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=a9jIM5nT;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf15.hostedemail.com: domain of hi@tychen.cc designates 104.207.68.34 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788998147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1z3Z8gwjIPEJ7RUurdh1RsBPbnoHaInN21ppueWrqqM=;
-	b=A8mBdaba5E9JAcEJr1vpR9rI8d7mm+ckilpfsHMDfJBmG2u//l3UieSDXtpek89kMulrhT
-	9yfVqLJSaHuV0534vCaKJCOqHXdCiTgx5W5JYXYxLb/ttlOWya5gwbXherOUz5J8m/cj8y
-	Wjc+L7FtspGsT9ULMpu0ILBtXdkthXs=
+	 in-reply-to:references:dkim-signature;
+	bh=T7jd44gstMNeWdAHdpYwxJzLjuFnV0LDcX+sE500ubQ=;
+	b=XFtTtBFz52GJT5qrMgtToGVkhMLy7TOYP+mZjLweo4aZsJJ9sozjv+jbjJk3lognYm+KSN
+	muN8OWgSc8+mOPd7V6v4JdfxxGVZp4b9Vn7zTs2ccgGViK/1zmggewUe1X+2W3L39URplH
+	lTFIijH6Iban7uwC61r9R/sULSxLqAU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788998147;
+	b=CZsUx2TKh9LxFIa1n6RIwR3ImE6sUaDZ1ZxFtCWOMaOl/pcabcAOrJqkBcLvKZ2ILaOTzd
+	yetjXJvvOWVFZFdJU06cOxBgevVOAkW5a7y1fglYFnOF/gzdiyP2RWUHgj0IuOCwqh6P+n
+	ohZP7jrnN8VQkvUeQiKzPtR0EjfA5Y8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=a9jIM5nT;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf15.hostedemail.com: domain of hi@tychen.cc designates 104.207.68.34 as permitted sender) smtp.mailfrom=hi@tychen.cc
 Received: from 192.168.5.7 (unknown [23.142.132.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hgHkC2CxVz2x99;
-	Wed, 09 Sep 2026 23:55:31 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hgHk55JQSz6tmK;
+	Wed, 09 Sep 2026 23:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1788998133;
-	bh=1z3Z8gwjIPEJ7RUurdh1RsBPbnoHaInN21ppueWrqqM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPVxsCbz1LPCAxLcZgiOsedsqzRRSGjZ6JPsEEA3TU9opRqGOLKW1p4c0+eucT89d
-	 NItqVcuK+XOGakvFLMit+6z1tLJ/W3cmGARIC08kiOws+MBQ+zGpPOc/eVf/WVIHaP
-	 RPkEsj/tYWB0ooWque7FrnfbaXXq62hOQTxko82e/IGb7/uFrjK/AGzZLJP6kY3BQk
-	 ixVsilravnf4s+bNp9usLKRTuv84plip8G8S9uYuyLWJ5YdUYGJR6dFMDt4Qt5t899
-	 9PY2un3xwUcOUENCndcyt0aXFdpkdyN7VUtxv1dNdidS3egif2+IRBKW+lgpjmQXvL
-	 p3gsrs4zGGfMA==
+	s=spacemail; t=1788998128;
+	bh=T7jd44gstMNeWdAHdpYwxJzLjuFnV0LDcX+sE500ubQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a9jIM5nTa3UtzmDc+kqmLj5+pq3c9Y2ff4yr75Bs00QT0Ro97NRjPG/oJs49cshDz
+	 SjGlj7dIiKJWhZ40CYre31lJuKzgXF60iHXLhQNyazzn365iekR2txbjTkY1NwR+sE
+	 CgyKZE4jvDNt7COpdXb3UrP5nshXvi/dTWgEKeLjVv/5/PITuetL4TVTDUl/1j/buh
+	 73+cLDhnQkBDDhGVOsvmwk6+bIWV5f3FKqp3e2CirpwLzK3Otsq39DfpsjH39GpyfR
+	 OUjWiwqPMDtVtYfYNHyN7cN6k4iHF3eLbbMyP0NECtcYlHz7NPRy2tK1U4kWcAKRuH
+	 2121/wgboGZCQ==
 From: Tianyi Chen <hi@tychen.cc>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	hi@tychen.cc
-Subject: [PATCH v3 1/2] memblock tests: model the low allocation limit within dummy memory
-Date: Thu, 10 Sep 2026 07:55:28 +0800
-Message-ID: <f16c272cd52316b83c35d87987b4d8687c4a3182.1788997523.git.hi@tychen.cc>
+Subject: [PATCH v3 0/2] memblock tests: cover low-address allocations
+Date: Thu, 10 Sep 2026 07:55:22 +0800
+Message-ID: <cover.1788997523.git.hi@tychen.cc>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1788997523.git.hi@tychen.cc>
-References: <cover.1788997523.git.hi@tychen.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5161E80004
-X-Stat-Signature: 6sm9ftun74n46m7qen8orzm6zagfoyiy
-X-HE-Tag: 1788998147-775848
-X-HE-Meta: U2FsdGVkX1+dnhK10BeNMsjBhxzCbJigM0Xg1eebgujEr0Lx07mtRS0lF/SC32FIE33MXc98t/Hmn9Ml+Nib218M26vNvH79TjuqAhXhe3L6MNKCaHKqJePCqbBC19bC9SjioPrlNFB6gV/mKHCXU+2BspQNb6r5SMLT0gS5J8c5FoJ2zy+n7ucmhsvoZU2B80dZtZXmP8cHKTdh46oB0GOkVukVRxF9vk8zhAfaxnPcj2nyJ5vJLDZffs4RMs6zQpBr9nB34i7+J2Gks13kBkFeB4JVZWR3rPZkIi3RYZAuqs6xb9Rs0Vs2iaMeMjHFUrtNxZWLtccQGVWUt9ReZNoptcXbUOg/KKp/LFmbjaSoNv5KXUtnCFy3uJgYNnPtqFtq3ekh3b6S1PRVNHOm0UW82NyaTZ+Vqjnb04TVPoSHZggrgbPQww3KhhlNvKonHxNm4vN6GvFry2P0Wr46PWguR0SgwU346mO4X+aTyuUaMERw5dETxXZxUk9X1pPIQT+zlK1hBu5kiRu9jru/w4zrAatEsN808e3kbJrLjSz4RLaixxCMcuv5QQk6o7yaxIMwHs5V8TSET4StBobWPYAL3WJ5pc62OliuQPbwJmyRb9eIgZfUOK7FmvVCYE/Wof7O/ov0r+TYZkWDXoJDNcFSlRc6jJp+3QptoqUcDJo4VW7qi5jby7kTYOlTrRtcKS8tscDlLtW4O/ZbuyTvI2eEQ4qqX3lGN2ySsZoSA/1YsSiEl/+QHgYZohbutiNFRFCsvvYpL6IKqRuFpU1V39Uys96IUF3EfeTAuqfKvuFyUzYmFMyZoqkiVIdujCrRxtnpsW19XhN8FdYMmIjoTjn1N5CngCqnp884WAcMUmrH3k3cHps6uHcA3cjJeeuY45pMXAzqNJLY9t4GjWBkifztgPZY222H2sUxT+A8u5PWbdiYexiFNsn+mM9tFq50jWczvHtKTUwlpz10VSF
- kKkd+78C
- 6h+M2BumKqR0bTogY/eFiRrYToukwVqa+S2mTRCPEV+lVoQXb5fzjwtJSVUsv6QN4oBqkydtqsV0uzH5VvMbHiD1XDhXbNm3lMPKMcL2iPLPR0Srp8lp3YEDEyUlJxFzEjtpxX38l2f2DIIIjW1iEibadkHgrGMuHVpns7z3wtDQBHM8WxkbrDv/AmHFLyEm/nQ7uTalEha1VYYn/ufjhFJEVbs4C0P8ucwwrrP9YBipzXmJ1sGZ8rnuEbyCIa3mZu/2ZNcn4k1OKPEXLyiIMIeG1TCoqLIl6q8bYCA2DadtmikLLaQz27cwqJaK11ScP2xVRszzpZS/83C26EaxHbmMtRU8ruMNqW6rj
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 04D4FA0003
+X-Stat-Signature: 79s11qf4uqqx49weofkchc7dozs46hx8
+X-HE-Tag: 1788998146-611452
+X-HE-Meta: U2FsdGVkX1/IWVkFbU/noATx188wN55A1vBPg+rFpTfMZkcFfzNilZmkwfWHE2sgsfFLHTU+fT3RThCe+6n/4bpMg5Qs3oaPG6aL8TT5B/WW/hAtp/AF2f2EtqLgCJv6YLAYOn6d7DQpZyPYm9jEITnKDD7JxvJ0u3gEB5zrPOvE62Uvr1qkkLuwmJANpwptCm2ISgqic8lmIhAK6LBWNZFfDRdSl6wMD1iLx7xR7C4rx6bFz/QiLM7MxfJsnXBmA2lf6YxWujESoz6PkfS80lkC2mRn/MxGwd+cvPG68Kz2fvNIutwgW7viarvpsju6zi8ZbVQ2pn9xhGbr05oxNvfAfiZhV7wt+9T7mHw0PwXnY0OOzk2hUOygkwh9wnqYX4Ms/jBXWuNA/ufvYfrROGKu94aV1G6hAEJ14+Nclhvzdst5efnScsAMEGjMO5PLa3RdFhZfAlL/+SYzBr3MCWgWj80TOu7xj444VOrJcwZ/dGI6kYQeCF2idLhMwylhyyTUuERScEnOSLrmFFGA08CvPeRT543fiIlZhvi3dJDFO4PHyxVcaT1V8Koty+h+rwvdABJ9AU1Lp8zJDTu1jiGqfsW/9ox2pVqnOLkak2JTLVSqbnL7jLTn4PDPbS5R4UtGsssdWtb2L/r6rnX09210/6WP9pZ2k6WUeSVEwv7MEUJ6H4a03gBJNDWZGIadcmdEa4M4G30GvXP9WHEeCBdSzpLZVUrcrhOqCLFAdWvwz33hH8bMBdtv+Sy/9ZJiy0E++CHTfcS1AdN+5Iwzw4JNCtfMDyfUDLkFlcCgJ2QpBPLZyr6EDBUHR2RT4gJxlPmRX9rNvQddw4a+9w/wfTxGpfZxcK2TVXCMhKDF3Z9wKTqyvl8T8bPsVgs61jKTBWw2v4767ngvz2WJGkijRs9mQfrKwxioJpIxi4wcH/DADsXyMpsrc4ZMk8dzurj+5NGs4ODkX4T5fpeHhxA
+ eBhyL6/3
+ BPER31jox+n+cAOxt+q364VRbqmR7+OAshRSuncU3zWxsqkbBELi98QXIa32BZj2nJtHKj7DXhbQfscwYAF/GQ/kwjq4m41CzlNG26BEtWt2vMfXJ7l0FV/u0uCQmuv7EpH6epijuLXdedYGfLGDLJVYQ2TaSYdZcrV2pI7ZHbcyRDOKZd/gGaV/tCPfHBrE4mTwWcc0gFkQIO2+vMM0KUlLxT/hrsuuruTTU3YoLCVsGJX9njVd9sncPMQ7Aeq88cDs5Mi1fu5X7K5ZuuPTtcU+82Z7a6CYai7vHASXayoAUWqDC7XpiOS5y34TdTctc+oicrni+ZZD0nfvH//8zeNtPySl+zwzMNh8btzLJeDFFFNc0iitTlGQpQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,55 +92,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The simulator represents physical addresses using the address of its
-allocated buffer. That buffer can lie above the default
-ARCH_LOW_ADDRESS_LIMIT, preventing meaningful memblock_alloc_low()
-tests.
+Model a low allocation limit within the memory registered by the simulator,
+then exercise memblock_alloc_low() in both allocation directions.
 
-Use the architecture override in asm/dma.h to place the limit halfway
-through the memory registered by setup_memblock(). Resolve the limit
-after allocating the buffer, leaving registered memory on both sides.
+Changes in v3:
+- Describe the low limit and simulated RAM alignment directly in comments
+  and README.
+- Use Assisted-by: LLM in both patches.
+- Start a separate thread for this revision.
 
-Assisted-by: LLM
-Signed-off-by: Tianyi Chen <hi@tychen.cc>
----
- tools/testing/memblock/asm/dma.h      | 6 ++++++
- tools/testing/memblock/tests/common.c | 6 ++++++
- 2 files changed, 12 insertions(+)
+The pointer casts remain unchanged. With BUILD=32, pointers are 32-bit and
+phys_addr_t is 64-bit: the tested compiler sign-extends a direct cast, while
+the conversion through uintptr_t zero-extends it. The direct casts also
+introduce compiler warnings, so this revision preserves the existing
+conversion behavior. There are no executable code changes from v2.
 
-diff --git a/tools/testing/memblock/asm/dma.h b/tools/testing/memblock/asm/dma.h
-index 13ff8e5d22ef..6607408dcf25 100644
---- a/tools/testing/memblock/asm/dma.h
-+++ b/tools/testing/memblock/asm/dma.h
-@@ -2,4 +2,10 @@
- #ifndef _TOOLS_DMA_H
- #define _TOOLS_DMA_H
- 
-+#include <linux/types.h>
-+
-+phys_addr_t dummy_physical_memory_low_limit(void);
-+
-+#define ARCH_LOW_ADDRESS_LIMIT dummy_physical_memory_low_limit()
-+
- #endif
-diff --git a/tools/testing/memblock/tests/common.c b/tools/testing/memblock/tests/common.c
-index 3250c8e5124b..ac032610a56e 100644
---- a/tools/testing/memblock/tests/common.c
-+++ b/tools/testing/memblock/tests/common.c
-@@ -118,6 +118,12 @@ phys_addr_t dummy_physical_memory_base(void)
- 	return (phys_addr_t)memory_block.base;
- }
- 
-+phys_addr_t dummy_physical_memory_low_limit(void)
-+{
-+	/* The low limit is halfway through memory registered by setup_memblock(). */
-+	return dummy_physical_memory_base() + MEM_SIZE / 2;
-+}
-+
- static void usage(const char *prog)
- {
- 	BUILD_BUG_ON(ARRAY_SIZE(help_opts) != ARRAY_SIZE(long_opts) - 1);
+Validation with ASan and UBSan enabled:
+- Default and 32BIT_PHYS_ADDR_T=1: 189 tests pass in each runtime mode.
+- NUMA=1, 32BIT_PHYS_ADDR_T=1 with NUMA=1, and MEMBLOCK_DEBUG=1 with NUMA=1:
+  272 tests pass in each runtime mode.
+- Both ./main -v and ./main -v -m were run for those configurations.
+- BUILD=32 builds without warnings from alloc_low_api.c. Its runtime still
+  hits the pre-existing basic_api.c memblock_free_near_max_check assertion
+  before reaching the low-allocation tests.
+
+v2: https://lore.kernel.org/r/178874362959.1415955.18132997964995947947.memblock-v2-0@tychen.cc
+
+Tianyi Chen (2):
+  memblock tests: model the low allocation limit within dummy memory
+  memblock tests: cover allocations below the low address limit
+
+ tools/testing/memblock/Makefile              |   3 +-
+ tools/testing/memblock/README                |  12 +-
+ tools/testing/memblock/TODO                  |   5 -
+ tools/testing/memblock/asm/dma.h             |   6 +
+ tools/testing/memblock/main.c                |   2 +
+ tools/testing/memblock/tests/alloc_low_api.c | 148 +++++++++++++++++++
+ tools/testing/memblock/tests/alloc_low_api.h |   9 ++
+ tools/testing/memblock/tests/common.c        |   6 +
+ 8 files changed, 178 insertions(+), 13 deletions(-)
+ delete mode 100644 tools/testing/memblock/TODO
+ create mode 100644 tools/testing/memblock/tests/alloc_low_api.c
+ create mode 100644 tools/testing/memblock/tests/alloc_low_api.h
+
 -- 
 2.55.0
-
 
