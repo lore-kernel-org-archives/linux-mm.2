@@ -4,137 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61154C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:13:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22FA6C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 16:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 547DC6B0093; Wed,  9 Sep 2026 12:13:23 -0400 (EDT)
+	id 0DC866B0098; Wed,  9 Sep 2026 12:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F94C6B0096; Wed,  9 Sep 2026 12:13:23 -0400 (EDT)
+	id 08D976B009B; Wed,  9 Sep 2026 12:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C08E6B0098; Wed,  9 Sep 2026 12:13:23 -0400 (EDT)
+	id E97776B009E; Wed,  9 Sep 2026 12:14:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1444B6B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:13:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 947BCA0299
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:13:21 +0000 (UTC)
-X-FDA: 85194718602.28.F8A7E56
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 99395120004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:13:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dnf1NR9m;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788970399;
-	b=y9B+8YGp8OFHjYZc3nKC5X8EM5RLBF3ILtH+Ow216KQR7qDBE5xwqbVRk1FfH6vff4UgaE
-	/xjewDu3YYr72Gs9Sy+TA0Z6Hjyb6bVPnB8qwp0JPkhb3I4m15GNdibR8/vhx+xf240VOW
-	OwxjyjecbwJEMr5ZPHn8k7O0Dw3dDoE=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dnf1NR9m;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788970399;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2446B0098
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:14:38 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4DFDEA02A4
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:14:38 +0000 (UTC)
+X-FDA: 85194721836.01.1DA9757
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 73A5940006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:14:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IceWVHmo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IceWVHmo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788970476;
+	b=f9KCLqD3EhMa9kq/XcEMoCeC36qOP176OWKlHhD2j72shGUoX+WdN/vpELpoSfkv/MC/JS
+	LfqnVOodTiRdkoIMrVhVUMQVkh3CmzTedvzitQYTm0ei0o/dZZD+QGYqXnmNfRBA/3P6MX
+	/9Suv5mvdbPyuBE/VsHLjkzBDteh2rE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788970476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XwFK4mYyCKUvttrF+B6WpML2yr4ZZ0VuePy6xRS9Uvc=;
-	b=TrXzHnWN1X7XlMlBgy4AsbANIRsAhgzFQ6LF5Pl2EQs/F5GUsG6ggFK1YJOXcMs+t5y/jU
-	DurhMCz9aW0rgLsHo3A6BdvcTUHYOcroR9KnWnSPP67R8RKLTCxlyhGQG4OJlK58lArp1T
-	XE/t7CgIHHS9NP5peVecd6HKEYIG7ig=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5306706e89dso306581cf.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 09:13:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788970399; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CxvqFYHuDSsSZ6dSC56EaKB640OaTFhfI3g47znXhR864TfKcUrsN1vEQxylQ3r5Zx
-         DczRoz/34AgwlSz+8mhENVwmJxHDsvLr3KnhR8ik9Nja2+FMD7ne2X53tRwnSwk+3F6v
-         Qkump/QO4RLwSXm5cC+/o8o0RJo5Xj4KwSjo0LaiOfIP4v5XbZsWOXEJjheuyw0McSzD
-         p8YW8G4q8J+ube2SfzGovNHJ0RDNuFJOcaTquDjruMWxPVwuzEMUfjSpJ4HiJ80QGFDc
-         TeRl++ZFYtNcguom3HPG4fD4ma/76IBbOkYX10DbbQbta8S/rxwm4m+w5VlJTRiodeqQ
-         Pb4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XwFK4mYyCKUvttrF+B6WpML2yr4ZZ0VuePy6xRS9Uvc=;
-        fh=KupfGLUK/sDcw3NLFQZ8ziv5p69Tpy2JHwq0VZ365E0=;
-        b=KIJYd40fWWdhuOAbxOfbrBtaekrzidiH77sGZqeXzLlKKCBQi1p4RvhFqUOSEmJcQS
-         k/XXLjaUjyuFBqFWPxWFEzyIhUxHfx4j8qgvwWqxS+u3HyQwgriJ5j4p7CMC1mluGHPF
-         sTJ8oesbzxzAmYhOP2wKyLJuwmUUCp8r2UjJrkvOy17rGATA8qdcnPO8k/lcMIYSP4iD
-         ooPOm+1xOqqwzlcOjqs0LlsTbjq4g7wRRu1BqNgvIjWBzuJdUo0yal4YEW2bhIeKDr+2
-         QFCmDlwVN5cZsBZ1M3crkuM64T9/n5Mxvl46rgAPtSEgnFYSMeERvQAX9a55FKb7OmML
-         MYNw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788970399; x=1789575199; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XwFK4mYyCKUvttrF+B6WpML2yr4ZZ0VuePy6xRS9Uvc=;
-        b=dnf1NR9m5Deiplz757N1y2i0XxLHxDusvitu0PRy3Jcs/HzZC5u2zIgUGr7Px6/HDq
-         0EhAM7/0b9aCMKARoK/ec44mik9gXkUzRO6MtMSUnxHJGnacWala9PaOv4Vh9UiyJR2l
-         fyrGMdhApJh79x+obnXKVsasJHE7Au9+d1m3sQ0hqvlvrXFk0F7BhvXdkgynRol9Wnk8
-         a9B+1rd3td29OkZ1V+0ERRzjMLIpPnD/U9mTVBeDElOqmg5SwyVy9TIHhk0/SrYVqtud
-         TFO7DIZFS+PxBnAc6HKMR0WuIOeQ56DVKPWscXMb+xEhw1cg8eOfZdGqD6ux337+uY3v
-         8Npg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788970399; x=1789575199;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XwFK4mYyCKUvttrF+B6WpML2yr4ZZ0VuePy6xRS9Uvc=;
-        b=VQpqaJvsSv96na4/cXtnrPfCHS9IJ7LWNIk4zs5/Fw9zLgKnX2x83CGPArVkjlKEHG
-         E/DymLsJ+BcAy2VKm9lHnkhZqhqQx9zeMkumohIBHiBjvLkNsj4XWIWFGTtk92xgwOVO
-         RRg6eXY+by54TQiOXAokpCZt85FeGIbenyJ3VtmC4ZeGHI4EqwYrrgLBPQoqPQrfStiQ
-         jN1AxR7NRfFsfeyzYI+RUE+2EW5sw/d5Tq9gRrpAL8KLFnfo8LeiLHnoS651ACKcK+Wl
-         hNKEQWHwfWtkaOQH5x9jk72Rnb+LmOGrezH8m/HlcLtK7Onqz/BZ9I5xtSQdA692uz0r
-         zWoA==
-X-Forwarded-Encrypted: i=1; AKwUvBwY9vjsNkwZYcpRNn1oTpIfkQ8GxZnoHu2RQe9xL9CRYs8VZcaoyuBu0cTYjDnl1L5DXSl4PUviJQ==@kvack.org
-X-Gm-Message-State: AFuF++mqEg73m9u5/9mOuLI361DC69mZchSldJ8ZuRHr4mILhX4Czwro
-	sqFTiT9Cctkg877gB3kr70ok7KCw51MeTNLnGjWxcOjhqpSUOZXoGxxtrGfdfRVtN5VxawW+x3U
-	Oi4vpLCV1F4K9j4UPN9BpKgvCUVIw/qg6FcZws4dS
-X-Gm-Gg: AYBFou3jTnQ5yK5wv0lI2yYxk5Gn0dGSD9csgrmAnYhv5O/IWeKlEyWjF2UoiZ1bXGM
-	sDZ/uSfkjgYITdR8VJmlYqyozf95hXB4n/+IK2R6DuVbGcAeAzV6rA8gg/4Ui1zizfQrvEOcNMS
-	7IHFfW5jwjAnUMj/uu06BuV46nW48Wv0ojlCKoEE/JrMjsMcF0D9wwlhPMsgD5RxzTHCCViJaEt
-	4+BiavzbIFA6X9AfsTkN1/Dgtlzw/pWltQoul2EHfk/WYTYijUTzj+2D4TZXIwxFfUCaZJ/ToK/
-	i7epRhdK/G/sNUm6Z7eqbg8CWyfO+kq8FIUQ1cwyqFIYetU2f3vzKZ0cPA==
-X-Received: by 2002:a05:622a:1453:b0:51b:ff0a:2048 with SMTP id
- d75a77b69052e-530a5e02d7fmr16768441cf.3.1788970393225; Wed, 09 Sep 2026
- 09:13:13 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=775SKgoqof+z2XIDfdiaCpzhNyAFKXPj7d/O+IRrlAM=;
+	b=TxW9YFOJPS4z9UOYS+6kxOFfhrsfvSnD875wodUFkVrEkI/KEY5GTSfmmQLnYjI1EIuSBX
+	iWT+CvfEJpGQW7J9TkEZiz1H7yczBsJ+bfdJeBIeM71vLxsHtCeyRNc/fCdW+fpm2h0Rqu
+	/f8o2+IpCEB5zMaCMZgvLD5D4KxeFko=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2DB5A601EF;
+	Wed,  9 Sep 2026 16:14:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FA71F00893;
+	Wed,  9 Sep 2026 16:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788970474;
+	bh=775SKgoqof+z2XIDfdiaCpzhNyAFKXPj7d/O+IRrlAM=;
+	h=From:Date:Subject:To:Cc;
+	b=IceWVHmo/IVqpnZHGDeATDW51S7y8ARvNJulfo16yDzC6Q0v8M7Wc/t4OqLmA71t/
+	 Bd29RC92KUCpOeIul5i4JZ4NOcvUdWz73W7mLApUDljBGETQP0t0s6qrC7224MrguD
+	 /4/H3OpMI/Ijj+K5CARcSBB3gFWWgnNkfWRZAcH23f3A4PZ5X6YLbp7BZqxXQ+xRbN
+	 7sgOhJ/RLcj6yQ6Qsu3JTPYoboytcpfUdIWTV9GvF8K9+XAhX2mHXsHgtR8x+A1qwf
+	 sBBakAs2igNr8P/WGCrJrgnTKTN9kdSLpqpxJ21R/EYuhvBrNlruMwzkKwyImfrgXi
+	 5Ndu8iRn6n2Dw==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Wed, 09 Sep 2026 17:14:19 +0100
+Subject: [PATCH] mm: implement and use vma_is_faulted(), silence KCSAN
 MIME-Version: 1.0
-References: <20260907063918.3432401-5-surenb@google.com> <20260909142527.1601051-1-usama.arif@linux.dev>
-In-Reply-To: <20260909142527.1601051-1-usama.arif@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 9 Sep 2026 09:13:01 -0700
-X-Gm-Features: AcwNN1UYQKF7D0D2WK-_ZwM2Lbn4QfF-4TdU4tR2zDAe1K2ZBIa-EoqKfU4N3fc
-Message-ID: <CAJuCfpGOnSMPKMLVCO=JkcaahRvBU_1pNdK7AR5N3QKBARh4Ag@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] proc/task_mmu: read proc/pid/smaps_rollup under
- per-vma lock
-To: Usama Arif <usama.arif@linux.dev>
-Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
-	vbabka@kernel.org, david@redhat.com, willy@infradead.org, jannh@google.com, 
-	paulmck@kernel.org, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260909-vma-is-faulted-v1-1-3a701f48984a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDSwNL3bLcRN3MYt20xNKcktQUXePUFAMDE1NjU0tzAyWgpoKi1LTMCrC
+ B0bG1tQCvEaHFYAAAAA==
+X-Change-ID: 20260909-vma-is-faulted-3ed004535970
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, 
+ Harry Yoo <harry@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=22839; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=F1Cqr5bYz52mtQsEFqKa9KfWlTYapDbrC+J/+BdN23A=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIWtt4LSXNlEdz28rGlqMqLol31S/X7GOZdyhWIO+xfs
+ rVx3QHRjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkzD2G/1mvJCw/23SvWB3w
+ 4eNMthWnnb83tvqyqa9Uurt4pd2qizaMDBu6nkrs7lh+6NDzFw9i5m17+m47q+6hbUcnyy84OjN
+ W6wIHAA==
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 99395120004
-X-Stat-Signature: u635hseohsqkyepayo4arbzjqopzga9d
-X-HE-Tag: 1788970399-705179
-X-HE-Meta: U2FsdGVkX19K5g8cEm9SRegr6GXNjjMweZg4HaCE8CSQlVFMamOIRQaUO6cRdLj+pJC5lvahGdLmEm3Fp3MdlG2OyICMh5DcX2Jd7URL4IjPRkWVNFpLIcryMELYeZ3hWnoXv4D4IM2TGjIGCEQ5+HrZBbjVb7yM+gWEMVNtYrewDvPB/cDKTcOp+clszzA1WMqBOLzLy9Wae00RVhEoMXD+RBSJTf94ZXSfN9lgIcVzIiWhfhOnMBJXBhFcRO3yWe1QbU+Tm4loWYXRFrvqItJiI2ejrMMCEUcQbvsR8NxQi9k2xEZXSChTfHJ+S5TORqoZnpdLU700Ihd8ATKrdQmr7nfZfknyA0+epFA9E/NgRAL1fSWYhui+TifBHlwAOzGrV42nqOm06qA90FaB1LQph4cMZx7jRoMHKGEWHiLy4bKeiefLZ0HeJRjaZydAEHCYUJhb1bn4mmci4W4H/fLdahRA97HzVTl4j90SoIf5lca/7EzAJjf5xDSk825HdFJLX9wOV3w9CEtQ29l6NBltZSjQ+S/pn36sTnUMSRvTBxRxWm6wyO276dQCkzV35a0/TP2ceCaf23vUlLmgO8IeFgeLvPfK4PmOoKgSqwysFTPG7BKdpm/U4vQrtOz+gg5ChjbIwGEEve2H6hhCb5GM/luo3m94b4saoihs1lQS0iH9eQvyHTb8zBl70gM9UacO4S9AUDY1Pq+pP69CrDD+AekdXE6Xib7a9AUi3fRVw71Yj49z9SoLJKpQ/O6j5l8X3DPMhbhmIAUr0iQHgAE/C7i7FQ7XS6ozdp6ynEXOZWuEAdpij6op8j39phsN+zNe2q4/Lrn3XE0h8DSPeJ6qGrBA3gDdXvFNXIFk3l2Z+uBcdOJA9gVvxQPoUY5BF720LUQJpjlAlXLRrDQC4bHpb8CqTA37TEQtpA04qKCgdpjNMFT6UtHqDdjKFlIpBMnN7Rv0FwlfIXbiQYQ
- CikeMT/1
- n0Tf9qvWX8zVO5a+UyVmoqdr6R4lS9or2nAL8jEcpAydQSZZVAVn1tYnuHoI5hN8E1h54fPtH6HOZKkGBSZsM2QrU19+O7lPhDLIrksV1ijNXPWXjoDvuP5QaSQ4m9TV6SJxIYVynCueZ65AqqynB7mQK+PcQMm0e3pWIj2Ls/Ch8Y2iB2K54zUOr+c3ZNCMV0qhX9rsHSTQna0Vp0P4s8FThLhHCBPMqPcI8gEG3muDUr64S9S9A7bKqQAOJiZm8Vil0gJkMQ+X29zrVOEcz5w7+fhvIrQcHPLa+I/4ozbgI73POoHH1xlkEMmVkWWCE1yESd//n/Wj/e4Q=
+X-Rspamd-Queue-Id: 73A5940006
+X-Stat-Signature: fed8xrq14o6cacph8acoc73kaxhr8ou9
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788970476-204113
+X-HE-Meta: U2FsdGVkX192efEJDXd6zcfHTqDpHNDUXhmx867FEzMKCtwGsRHMyE6NyGKuHUq85tBn4AcZ4n2OP2Y8WHkCMrLq2ZS1tL9yvCHR+fXm3GKdvaol8neuivaX4IBAEXz+IjbwZloH4NynVpvl17wTCXUbK9v7gI3xUas4aocPEPydtzblb+nH8xob3d3ZuHINcofuqyVZg3Argzd/OJfHRTnXY7K/cc1Esh2S0qILnynZn73mwUXacJBKMH0ZnQTmbDYdbVAKRUhFgtyrAF/LZOY9jYDEBt5e4yqZn5ofdJ8CJ70J55RoIhfvi1vmzSLJ6ov5xipL2ujN9zrHf2dsyAT1onr4rdEM4OFOfK5KLsl9Z/G3NWWzMUTSZKjjvQNiQ//MHVHR4U/Y/ms+OgApwEoQFUl9Qz0/p6zJKb6/AYh/LcSQhr5c5L2rjM+aYDNeH6WVr1o7ScJh80aFezpFxkA+uwti3yUcHQhoRnyA08Uctd59Fr2/KhPXhqi+YaaH0lIwRzXoZaOxg7X+Mm4weAMWDCdqxvKzEbtQPm9DZ/7KIFTdzKHE4z0sX6yGKTKSPu0LRHtsrEyptAYWqP0VeMiEHcCEvDGYrwEU3aKsBJ1f6OrQ+ixJc/szicZx1Pn1eQTFJoVyDGzXD6Iy1M6cMCkogc6gqZNvwKEHtGKMgpFONm9GAkPRyKjOLmRblysCfozFGTBUnSspai9SQF7A7nS2dnBRLplNUi65N8x1vpsdphwXQWtc6UO00d1yl17QvZ5j+stP9KdVPthPHDw/Kzj5q8ryRt6A9G2uAa36hjlMc7Fyc+dPK66k0mI13ccRUxh/k2mj4+K2AnyNfFn0j0K68Z/AkhZM9KIFakjbWjDR6Xs/2+mgM96Ywf30E4DWhIY6Hnew9UNaPdGqAk1SvDMlYsn6WZ2cvn4v5HIPRnmMBu9AYf82KDg5kEqioJUfv/gzdGd7uO+IlMkMUZ+
+ bGprpx3D
+ 2nWyUx3/6L7I98Ucp8EajdL+DZJg0RzwDb0OGUZ00EId6nJ8gEb5Ull2cAXJG7vW9CEXx2LkfWR1u3N/VfD8Nd/4mxE10YA2NIUvsVmgkao177hih+vF8D6Opj59aHvg/1Ru2U19pbsh9NcDrNIjk/bS1JDSQapIPWgWKG9ztv5Y+E7Iuc3yBdg42NSkm19OOS4oVqXr8osGKlSvlb+PTrWZb9uLVAiVVhy5Fjs5IbjnH20mpTl0ZbCdiEx2a8V/UzUt1gDsXEL0kQbJQsr0+5YAHvTOJsq4yVv1GFhfh54Q0CuUYaVvi6YaHbYmNI7Oum7gY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,382 +117,603 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 9, 2026 at 7:25=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> On Sun,  6 Sep 2026 23:39:17 -0700 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > proc/pid/smaps_rollup can be read using the combination of RCU and
-> > VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
-> > required to safely traverse the VMA tree and VMA lock stabilizes the
-> > VMA being processed and the pagetable walk.
-> > Note that we have to keep the logic to drop mmap_lock on contention
-> > because even when using per-VMA locks we might have to fall back to
-> > holding the mmap_lock.
-> >
-> > Running Paul's contention benchmark [1] shows considerable improvement
-> > both in median and in the worst case latencies:
-> >
-> > Execution command: run-proc-vs-map.sh --nsamples 20 --rawdata -- \
-> > --busyduration 2 --procfile smaps_rollup
-> >
-> > Baseline:
-> >    Median   Minimum   Maximum
-> >     0.174     0.161     2.553
-> >     0.174     0.164     2.663
-> >     0.174     0.165     2.664
-> >     0.174     0.166     2.679
-> >     0.174     0.167     2.691
-> >     0.174     0.168     2.704
-> >     0.174     0.169     2.729
-> >     0.174     0.172     2.741
-> >     0.174     0.174     2.745
-> >     0.174     0.174     2.755
-> >     0.174     0.175     2.790
-> >     0.174     0.177     2.809
-> >     0.174     0.179     3.096
-> >     0.174     0.183     3.144
-> >     0.174     0.184     3.158
-> >     0.174     0.185     3.175
-> >     0.174     0.185     4.568
-> >     0.174     0.198     4.821
-> >     0.174     0.214     5.143
-> >     0.174     0.251     5.220
-> >
-> > Patched:
-> >    Median   Minimum   Maximum
-> >     0.007     0.007     1.952
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.957
-> >     0.007     0.007     1.969
-> >     0.007     0.007     2.065
-> >     0.007     0.007     2.075
-> >     0.007     0.007     2.146
-> >     0.007     0.007     2.195
-> >     0.007     0.007     2.223
-> >     0.007     0.007     2.259
-> >     0.007     0.007     2.488
-> >     0.007     0.007     2.562
-> >     0.007     0.007     2.599
-> >     0.007     0.007     2.697
-> >     0.007     0.007     3.030
-> >     0.007     0.007     3.075
-> >     0.007     0.007     3.145
-> >     0.007     0.007     3.225
-> >
-> > Remove now unused lock_ctx_mm() and move unlock_ctx_vma() next to
-> > unlock_ctx_mm() as they are logically related.
-> >
-> > Remove a long comment about 4 cases that we handle when dropping the
-> > mmap lock in the middle of VMA walk due to contention. The first 3
-> > cases explained there are handled naturally and only case 4 needs to
-> > be handled in a special way, which is done in smap_gather_stats() by
-> > gathering stats from the portion of the VMA that has not yet been
-> > processed.
-> > For posterity, moving this comment here:
-> >
-> > After dropping the lock, there are four cases to
-> > consider. See the following example for explanation.
-> >
-> >   +------+------+-----------+
-> >   | VMA1 | VMA2 | VMA3      |
-> >   +------+------+-----------+
-> >   |      |      |           |
-> >  4k     8k     16k         400k
-> >
-> > Suppose we drop the lock after reading VMA2 due to
-> > contention, then we get:
-> >
-> >       last_vma_end =3D 16k
-> >
-> > 1) VMA2 is freed, but VMA3 exists:
-> >
-> >    vma_next(vmi) will return VMA3.
-> >    In this case, just continue from VMA3.
-> >
-> > 2) VMA2 still exists:
-> >
-> >    vma_next(vmi) will return VMA3.
-> >    In this case, just continue from VMA3.
-> >
-> > 3) No more VMAs can be found:
-> >
-> >    vma_next(vmi) will return NULL.
-> >    No more things to do, just break.
-> >
-> > 4) (last_vma_end - 1) is the middle of a vma (VMA'):
-> >
-> >    vma_next(vmi) will return VMA' whose range
-> >    contains last_vma_end.
-> >    Iterate VMA' from last_vma_end.
-> >
-> > [1] https://github.com/paulmckrcu/proc-mmap_sem-test
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  fs/proc/task_mmu.c | 153 ++++++++++++++++++---------------------------
-> >  1 file changed, 60 insertions(+), 93 deletions(-)
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index 3351decd1172..641a155b0c61 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -130,28 +130,12 @@ static void release_task_mempolicy(struct proc_ma=
-ps_private *priv)
-> >  }
-> >  #endif
-> >
-> > -static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> > -{
-> > -     int ret =3D mmap_read_lock_killable(lock_ctx->mm);
-> > -
-> > -     if (!ret)
-> > -             lock_ctx->mmap_locked =3D true;
-> > -
-> > -     return ret;
-> > -}
-> > -
-> >  static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> >       mmap_read_unlock(lock_ctx->mm);
-> >       lock_ctx->mmap_locked =3D false;
-> >  }
-> >
-> > -static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
-> > -{
-> > -     lock_ctx->locked_vma =3D NULL;
-> > -     lock_ctx->mmap_locked =3D false;
-> > -}
-> > -
-> >  static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> >       if (lock_ctx->locked_vma) {
-> > @@ -160,6 +144,12 @@ static void unlock_ctx_vma(struct proc_maps_lockin=
-g_ctx *lock_ctx)
-> >       }
-> >  }
-> >
-> > +static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
-> > +{
-> > +     lock_ctx->locked_vma =3D NULL;
-> > +     lock_ctx->mmap_locked =3D false;
-> > +}
-> > +
-> >  static struct vm_area_struct *get_next_vma(struct proc_maps_private *p=
-riv,
-> >                                          loff_t last_pos)
-> >  {
-> > @@ -1376,12 +1366,14 @@ static int show_smap(struct seq_file *m, void *=
-v)
-> >  static int show_smaps_rollup(struct seq_file *m, void *v)
-> >  {
-> >       struct proc_maps_private *priv =3D m->private;
-> > +     struct proc_maps_locking_ctx *lock_ctx =3D &priv->lock_ctx;
-> > +     struct mm_struct *mm =3D lock_ctx->mm;
-> >       struct mem_size_stats mss =3D {};
-> > -     struct mm_struct *mm =3D priv->lock_ctx.mm;
-> > +     unsigned long last_vma_end =3D 0;
-> > +     unsigned long vma_start =3D 0;
-> >       struct vm_area_struct *vma;
-> > -     unsigned long vma_start =3D 0, last_vma_end =3D 0;
-> > +     loff_t pos =3D 0;
-> >       int ret =3D 0;
-> > -     VMA_ITERATOR(vmi, mm, 0);
-> >
-> >       priv->task =3D get_proc_task(priv->inode);
-> >       if (!priv->task)
-> > @@ -1392,89 +1384,60 @@ static int show_smaps_rollup(struct seq_file *m=
-, void *v)
-> >               goto out_put_task;
-> >       }
-> >
-> > -     ret =3D lock_ctx_mm(&priv->lock_ctx);
-> > -     if (ret)
-> > -             goto out_put_mm;
-> > -
-> >       hold_task_mempolicy(priv);
-> > -     vma =3D vma_next(&vmi);
-> > +     rcu_read_lock();
-> > +     reset_lock_ctx(lock_ctx);
-> >
-> > +     vma_iter_init(&priv->iter, mm, 0);
-> > +     vma =3D proc_get_vma(m, &pos);
-> >       if (unlikely(!vma))
-> >               goto empty_set;
-> >
-> > -     vma_start =3D vma->vm_start;
-> > -     do {
-> > -             smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> > -             last_vma_end =3D vma->vm_end;
-> > +     if (!IS_ERR(vma) && vma !=3D get_gate_vma(lock_ctx->mm))
-> > +             vma_start =3D vma->vm_start;
-> > +
-> > +     while (vma) {
-> > +             if (IS_ERR(vma)) {
-> > +                     ret =3D PTR_ERR(vma);
-> > +                     goto out_unlock;
-> > +             }
-> > +
-> > +             if (vma =3D=3D get_gate_vma(lock_ctx->mm))
-> > +                     break;
-> >
-> >               /*
-> > -              * Release mmap_lock temporarily if someone wants to
-> > -              * access it for write request.
-> > +              * If after retaking the lock, already reported VMA grew =
-or
-> > +              * merged with the next one, smap_gather_stats() will gat=
-her
-> > +              * stats for the remaining portion by starting at last_vm=
-a_end.
-> >                */
-> > -             if (mmap_lock_is_contended(mm)) {
-> > -                     vma_iter_invalidate(&vmi);
-> > -                     unlock_ctx_mm(&priv->lock_ctx);
-> > -                     ret =3D lock_ctx_mm(&priv->lock_ctx);
-> > -                     if (ret) {
-> > -                             release_task_mempolicy(priv);
-> > -                             goto out_put_mm;
-> > -                     }
-> > +             smap_gather_stats(priv, vma, &mss, last_vma_end);
->
-> Patch 3 made smap_gather_stats() reject starts below the VMA, while this
-> function initializes last_vma_end to zero.
->
-> The first ordinary VMA is therefore skipped. lock_next_vma() can also
-> return a VMA beginning after the requested position, so the first VMA
-> after every unmapped gap is skipped as well. This causes
-> smaps_rollup to underreport RSS, PSS, swap, and the other accumulated
-> values.
->
-> I think you need:
->   unsigned long start =3D max(last_vma_end, vma->vm_start);
->   smap_gather_stats(priv, vma, &mss, start);
+Provide a function to abstract the common task of checking whether
+a VMA is faulted in or not.
 
-Oops, you are right. I didn't realize the first VMA would be silently
-skipped. I'll fix it. Thanks!
+A VMA or mmap lock must be held when calling this function. For an attached
+VMA the transitions between unfaulted/faulted state are:
 
->
->
->
-> > +             last_vma_end =3D vma->vm_end;
-> >
-> > +             /*
-> > +              * If the VMA lock is not taken, we hold the often conten=
-ded
-> > +              * mmap lock. This can happen if we had to fall back to t=
-he
-> > +              * mmap lock.
-> > +              *
-> > +              * To relieve pressure, check if it is indeed contended, =
-then
-> > +              * temporarily release it.
-> > +              */
-> > +             if (lock_ctx->mmap_locked &&
-> > +                 mmap_lock_is_contended(lock_ctx->mm)) {
-> > +                     unlock_ctx_mm(lock_ctx);
-> >                       /*
-> > -                      * After dropping the lock, there are four cases =
-to
-> > -                      * consider. See the following example for explan=
-ation.
-> > -                      *
-> > -                      *   +------+------+-----------+
-> > -                      *   | VMA1 | VMA2 | VMA3      |
-> > -                      *   +------+------+-----------+
-> > -                      *   |      |      |           |
-> > -                      *  4k     8k     16k         400k
-> > -                      *
-> > -                      * Suppose we drop the lock after reading VMA2 du=
-e to
-> > -                      * contention, then we get:
-> > -                      *
-> > -                      *      last_vma_end =3D 16k
-> > -                      *
-> > -                      * 1) VMA2 is freed, but VMA3 exists:
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA3.
-> > -                      *    In this case, just continue from VMA3.
-> > -                      *
-> > -                      * 2) VMA2 still exists:
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA3.
-> > -                      *    In this case, just continue from VMA3.
-> > -                      *
-> > -                      * 3) No more VMAs can be found:
-> > -                      *
-> > -                      *    vma_next(vmi) will return NULL.
-> > -                      *    No more things to do, just break.
-> > -                      *
-> > -                      * 4) (last_vma_end - 1) is the middle of a vma (=
-VMA'):
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA' whose range
-> > -                      *    contains last_vma_end.
-> > -                      *    Iterate VMA' from last_vma_end.
-> > +                      * Even though we previously fell back to mmap lo=
-ck,
-> > +                      * we try taking VMA lock for the next VMA, since=
- it
-> > +                      * might not be under modification. In the worst =
-case
-> > +                      * we will fall back to mmap lock again.
-> >                        */
-> > -                     vma =3D vma_next(&vmi);
-> > -                     /* Case 3 above */
-> > -                     if (!vma)
-> > -                             break;
-> > -
-> > -                     /* Case 1 and 2 above */
-> > -                     if (vma->vm_start >=3D last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, vma->v=
-m_start);
-> > -                             last_vma_end =3D vma->vm_end;
-> > -                             continue;
-> > -                     }
-> > -
-> > -                     /* Case 4 above */
-> > -                     if (vma->vm_end > last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, last_v=
-ma_end);
-> > -                             last_vma_end =3D vma->vm_end;
-> > -                     }
-> > +                     rcu_read_lock();
-> > +                     reset_lock_ctx(lock_ctx);
-> > +                     /* Resume from the last position. */
-> > +                     pos =3D last_vma_end;
-> > +                     vma_iter_init(&priv->iter, mm, pos);
-> >               }
-> > -     } for_each_vma(vmi, vma);
-> > +             vma =3D proc_get_vma(m, &pos);
-> > +     }
-> >
-> >  empty_set:
-> >       show_vma_header_prefix(m, vma_start, last_vma_end, 0, 0, 0, 0);
-> > @@ -1483,10 +1446,14 @@ static int show_smaps_rollup(struct seq_file *m=
-, void *v)
-> >
-> >       __show_smap(m, &mss, true);
-> >
-> > +out_unlock:
-> > +     if (lock_ctx->mmap_locked) {
-> > +             unlock_ctx_mm(lock_ctx);
-> > +     } else {
-> > +             unlock_ctx_vma(lock_ctx);
-> > +             rcu_read_unlock();
-> > +     }
-> >       release_task_mempolicy(priv);
-> > -     unlock_ctx_mm(&priv->lock_ctx);
-> > -
-> > -out_put_mm:
-> >       mmput(mm);
-> >  out_put_task:
-> >       put_task_struct(priv->task);
-> > --
-> > 2.55.0.979.g7e5102b832-goog
-> >
-> >
+       Transition        |              VMA/mmap Lock state
+ ------------------------|-----------------------------------------------
+   unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
+   faulted to unfaulted  | write lock
+
+So vma_is_faulted() never provides a false positive (the lock precludes
+it), but if only a read lock is held, a negative result must be re-checked
+with mm->page_table_lock held.
+
+Detached VMAs cannot be concurrently manipulated as they are removed from
+the maple tree so require no guarantees.
+
+Use data_race() to silence KCSAN about non-existent data races between
+concurrent vma->anon_vma read/write on optimistic fault tests.
+
+Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
+dependants.
+
+Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
+preparation callers which test vma->anon_vma directly to use
+vma_is_faulted() instead.
+
+Note that the lockless read in reusable_anon_vma() is doing more than
+checking whether the VMA is faulted - it is returning the anon_vma to be
+used on fault, so this check is not altered.
+
+There is one odd one out - file_backed_vma_is_retractable() - which holds
+neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
+
+Therefore just add a comment to explain why the direct vma->anon_vma check
+is required.
+
+Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
+Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ include/linux/mmap_lock.h         | 12 ++++++------
+ mm/huge_memory.c                  |  4 ++--
+ mm/internal.h                     |  2 +-
+ mm/khugepaged.c                   |  3 +++
+ mm/ksm.c                          | 10 +++++-----
+ mm/madvise.c                      |  4 ++--
+ mm/memory.c                       |  2 +-
+ mm/mprotect.c                     |  2 +-
+ mm/mremap.c                       |  4 ++--
+ mm/rmap.c                         | 22 +++++++++++-----------
+ mm/swapfile.c                     |  2 +-
+ mm/userfaultfd.c                  |  2 +-
+ mm/vma.c                          | 29 +++++++++++++++--------------
+ mm/vma.h                          | 22 +++++++++++++++++++++-
+ tools/testing/vma/include/dup.h   |  2 +-
+ tools/testing/vma/include/stubs.h |  4 ++++
+ 16 files changed, 77 insertions(+), 49 deletions(-)
+
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 00eae65b74bd..03e1eb136111 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -273,7 +273,7 @@ static inline void vma_end_read(struct vm_area_struct *vma)
+ 	vma_refcount_put(vma);
+ }
+ 
+-static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
++static inline unsigned int __vma_raw_mm_seqnum(const struct vm_area_struct *vma)
+ {
+ 	const struct mm_struct *mm = vma->vm_mm;
+ 
+@@ -288,7 +288,7 @@ static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
+  *
+  * Returns true if write-locked, otherwise false.
+  */
+-static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
++static inline bool __is_vma_write_locked(const struct vm_area_struct *vma)
+ {
+ 	/*
+ 	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
+@@ -344,7 +344,7 @@ int vma_start_write_killable(struct vm_area_struct *vma)
+  * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
+  * @vma: The VMA to assert.
+  */
+-static inline void vma_assert_write_locked(struct vm_area_struct *vma)
++static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
+ {
+ 	if (!IS_ENABLED(CONFIG_MMU)) {
+ 		mmap_assert_write_locked(vma->vm_mm);
+@@ -359,7 +359,7 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+  * lock and is not detached.
+  * @vma: The VMA to assert.
+  */
+-static inline void vma_assert_locked(struct vm_area_struct *vma)
++static inline void vma_assert_locked(const struct vm_area_struct *vma)
+ {
+ 	unsigned int refcnt;
+ 
+@@ -410,7 +410,7 @@ static inline void vma_assert_locked(struct vm_area_struct *vma)
+  * With lockdep disabled we may sometimes race with other threads acquiring the
+  * mmap read lock simultaneous with our VMA read lock.
+  */
+-static inline void vma_assert_stabilised(struct vm_area_struct *vma)
++static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
+ {
+ 	/*
+ 	 * If another thread owns an mmap lock, it may go away at any time, and
+@@ -445,7 +445,7 @@ static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+ 	vma_assert_locked(vma);
+ }
+ 
+-static inline bool vma_is_attached(struct vm_area_struct *vma)
++static inline bool vma_is_attached(const struct vm_area_struct *vma)
+ {
+ 	return refcount_read(&vma->vm_refcnt);
+ }
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index dd66c6ad5af1..e8f00d58e4d7 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -264,7 +264,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	 * Allow page fault since anon_vma may be not initialized until
+ 	 * the first page fault.
+ 	 */
+-	if (!vma->anon_vma)
++	if (!vma_is_faulted(vma))
+ 		return (smaps || in_pf) ? orders : 0;
+ 
+ 	return orders;
+@@ -2176,7 +2176,7 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
+ 	pmd_t orig_pmd = vmf->orig_pmd;
+ 
+ 	vmf->ptl = pmd_lockptr(vma->vm_mm, vmf->pmd);
+-	VM_BUG_ON_VMA(!vma->anon_vma, vma);
++	VM_BUG_ON_VMA(!vma_is_faulted(vma), vma);
+ 
+ 	if (is_huge_zero_pmd(orig_pmd)) {
+ 		vm_fault_t ret = do_huge_zero_wp_pmd(vmf);
+diff --git a/mm/internal.h b/mm/internal.h
+index da14c56fb24e..50049daaae4b 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -325,7 +325,7 @@ void unlink_anon_vmas(struct vm_area_struct *vma);
+ 
+ static inline int anon_vma_prepare(struct vm_area_struct *vma)
+ {
+-	if (likely(vma->anon_vma))
++	if (likely(vma_is_faulted(vma)))
+ 		return 0;
+ 
+ 	return __anon_vma_prepare(vma);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f49a6710933b..360e0de4aa74 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2117,6 +2117,9 @@ static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
+ 	 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+ 	 * got written to. These VMAs are likely not worth removing
+ 	 * page tables from, as PMD-mapping is likely to be split later.
++	 *
++	 * Can't use vma_is_faulted() here as the VMA may be stabilised
++	 * by the file rmap lock.
+ 	 */
+ 	if (READ_ONCE(vma->anon_vma))
+ 		return false;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 624f37975e12..7e83ddfb081a 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -777,7 +777,7 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+ 	if (ksm_test_exit(mm))
+ 		return NULL;
+ 	vma = vma_lookup(mm, addr);
+-	if (!vma || !(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
++	if (!vma || !(vma->vm_flags & VM_MERGEABLE) || !vma_is_faulted(vma))
+ 		return NULL;
+ 	return vma;
+ }
+@@ -1241,7 +1241,7 @@ static int unmerge_and_remove_all_rmap_items(void)
+ 			goto mm_exiting;
+ 
+ 		for_each_vma(vmi, vma) {
+-			if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
++			if (!(vma->vm_flags & VM_MERGEABLE) || !vma_is_faulted(vma))
+ 				continue;
+ 			err = break_ksm(vma, vma->vm_start, vma->vm_end, false);
+ 			if (err)
+@@ -2691,7 +2691,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 			continue;
+ 		if (ksm_scan.address < vma->vm_start)
+ 			ksm_scan.address = vma->vm_start;
+-		if (!vma->anon_vma)
++		if (!vma_is_faulted(vma))
+ 			ksm_scan.address = vma->vm_end;
+ 
+ 		while (ksm_scan.address < vma->vm_end) {
+@@ -2882,7 +2882,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
+ 	if (!(vma->vm_flags & VM_MERGEABLE))
+ 		return 0;
+ 
+-	if (vma->anon_vma) {
++	if (vma_is_faulted(vma)) {
+ 		err = break_ksm(vma, vma->vm_start, vma->vm_end, true);
+ 		if (err)
+ 			return err;
+@@ -3034,7 +3034,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 		if (!(*vm_flags & VM_MERGEABLE))
+ 			return 0;		/* just ignore the advice */
+ 
+-		if (vma->anon_vma) {
++		if (vma_is_faulted(vma)) {
+ 			err = break_ksm(vma, start, end, true);
+ 			if (err)
+ 				return err;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 73c2901b9adb..6645ec4df277 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1156,7 +1156,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+ 	 * as part of the VMA lock logic.
+ 	 */
+ 	if (vma_is_anonymous(vma)) {
+-		VM_WARN_ON_ONCE(!vma->anon_vma &&
++		VM_WARN_ON_ONCE(!vma_is_faulted(vma) &&
+ 				madv_behavior->lock_mode != MADVISE_MMAP_READ_LOCK);
+ 
+ 		err = anon_vma_prepare(vma);
+@@ -1619,7 +1619,7 @@ static bool is_vma_lock_sufficient(struct vm_area_struct *vma,
+ 	 * check overly paranoid which is safe.
+ 	 */
+ 	if (vma_is_anonymous(vma) &&
+-	    prepares_anon_vma(madv_behavior->behavior) && !vma->anon_vma)
++	    prepares_anon_vma(madv_behavior->behavior) && !vma_is_faulted(vma))
+ 		return false;
+ 
+ 	return true;
+diff --git a/mm/memory.c b/mm/memory.c
+index a2a63ae0967c..5924269580f0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3915,7 +3915,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	vm_fault_t ret = 0;
+ 
+-	if (likely(vma->anon_vma))
++	if (likely(vma_is_faulted(vma)))
+ 		return 0;
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 		if (!mmap_read_trylock(vma->vm_mm))
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 2888ee638d87..b3eb21207426 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -817,7 +817,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 			vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
+ 		}
+ 	} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+-		   vma_is_anonymous(vma) && !vma->anon_vma) {
++		   vma_is_anonymous(vma) && !vma_is_faulted(vma)) {
+ 		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+ 	}
+ 
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 7c368440fafe..7a85be854f74 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -144,13 +144,13 @@ static void take_rmap_locks(struct vm_area_struct *vma)
+ {
+ 	if (vma->vm_file)
+ 		i_mmap_lock_write(vma->vm_file->f_mapping);
+-	if (vma->anon_vma)
++	if (vma_is_faulted(vma))
+ 		anon_vma_lock_write(vma->anon_vma);
+ }
+ 
+ static void drop_rmap_locks(struct vm_area_struct *vma)
+ {
+-	if (vma->anon_vma)
++	if (vma_is_faulted(vma))
+ 		anon_vma_unlock_write(vma->anon_vma);
+ 	if (vma->vm_file)
+ 		i_mmap_unlock_write(vma->vm_file->f_mapping);
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 0a3952706faf..c0c5fb43970c 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -208,7 +208,7 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+ 	anon_vma_lock_write(anon_vma);
+ 	/* page_table_lock to protect against threads */
+ 	spin_lock(&mm->page_table_lock);
+-	if (likely(!vma->anon_vma)) {
++	if (likely(!vma_is_faulted(vma))) {
+ 		/*
+ 		 * Make anon_vma fields visible before anon_vma is published.
+ 		 * Paired with an address dependency in reusable_anon_vma().
+@@ -246,21 +246,21 @@ static void check_anon_vma_clone(struct vm_area_struct *dst,
+ 	VM_WARN_ON_ONCE(operation != VMA_OP_FORK && dst->vm_mm != src->vm_mm);
+ 
+ 	/* If we have anything to do src->anon_vma must be provided. */
+-	VM_WARN_ON_ONCE(!src->anon_vma && !list_empty(&src->anon_vma_chain));
+-	VM_WARN_ON_ONCE(!src->anon_vma && dst->anon_vma);
++	VM_WARN_ON_ONCE(!vma_is_faulted(src) && !list_empty(&src->anon_vma_chain));
++	VM_WARN_ON_ONCE(!vma_is_faulted(src) && vma_is_faulted(dst));
+ 	/* We are establishing a new anon_vma_chain. */
+ 	VM_WARN_ON_ONCE(!list_empty(&dst->anon_vma_chain));
+ 	/*
+ 	 * On fork, dst->anon_vma is set NULL (temporarily). Otherwise, anon_vma
+ 	 * must be the same across dst and src.
+ 	 */
+-	VM_WARN_ON_ONCE(dst->anon_vma && dst->anon_vma != src->anon_vma);
++	VM_WARN_ON_ONCE(vma_is_faulted(dst) && dst->anon_vma != src->anon_vma);
+ 	/*
+ 	 * Essentially equivalent to above - if not a no-op, we should expect
+ 	 * dst->anon_vma to be set for everything except a fork.
+ 	 */
+-	VM_WARN_ON_ONCE(operation != VMA_OP_FORK && src->anon_vma &&
+-			!dst->anon_vma);
++	VM_WARN_ON_ONCE(operation != VMA_OP_FORK && vma_is_faulted(src) &&
++			!vma_is_faulted(dst));
+ 	/* For the anon_vma to be compatible, it can only be singular. */
+ 	VM_WARN_ON_ONCE(operation == VMA_OP_MERGE_UNFAULTED &&
+ 			!list_is_singular(&src->anon_vma_chain));
+@@ -273,7 +273,7 @@ static void maybe_reuse_anon_vma(struct vm_area_struct *dst,
+ 		struct anon_vma *anon_vma)
+ {
+ 	/* If already populated, nothing to do.*/
+-	if (dst->anon_vma)
++	if (vma_is_faulted(dst))
+ 		return;
+ 
+ 	/*
+@@ -327,7 +327,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
+ 
+ 	check_anon_vma_clone(dst, src, operation);
+ 
+-	if (!active_anon_vma)
++	if (!vma_is_faulted(src))
+ 		return 0;
+ 
+ 	/*
+@@ -384,7 +384,7 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
+ 	int rc;
+ 
+ 	/* Don't bother if the parent process has no anon_vma here. */
+-	if (!pvma->anon_vma)
++	if (!vma_is_faulted(pvma))
+ 		return 0;
+ 
+ 	/* Drop inherited anon_vma, we'll reuse existing or allocate new. */
+@@ -405,7 +405,7 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
+ 	 */
+ 	rc = anon_vma_clone(vma, pvma, VMA_OP_FORK);
+ 	/* An error arose or an existing anon_vma was reused, all done then. */
+-	if (rc || vma->anon_vma) {
++	if (rc || vma_is_faulted(vma)) {
+ 		put_anon_vma(anon_vma);
+ 		anon_vma_chain_free(avc);
+ 		return rc;
+@@ -864,7 +864,7 @@ unsigned long page_address_in_vma(const struct folio *folio,
+ 		 * Note: swapoff's unuse_vma() is more efficient with this
+ 		 * check, and needs it to match anon_vma when KSM is active.
+ 		 */
+-		if (!vma->anon_vma || !anon_vma ||
++		if (!vma_is_faulted(vma) || !anon_vma ||
+ 		    vma->anon_vma->root != anon_vma->root)
+ 			return -EFAULT;
+ 		/* KSM folios don't reach here because of the !anon_vma check */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 01e7b6b046b6..0cb8359b70dd 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2705,7 +2705,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
+ 	if (check_stable_address_space(mm))
+ 		goto unlock;
+ 	for_each_vma(vmi, vma) {
+-		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
++		if (vma_is_faulted(vma) && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+ 			if (ret)
+ 				break;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 79cc7b546f13..ece86d452b54 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -145,7 +145,7 @@ static struct vm_area_struct *uffd_lock_vma(struct mm_struct *mm,
+ 		 * We know we're going to need to use anon_vma, so check
+ 		 * that early.
+ 		 */
+-		if (!(vma->vm_flags & VM_SHARED) && unlikely(!vma->anon_vma))
++		if (!(vma->vm_flags & VM_SHARED) && unlikely(!vma_is_faulted(vma)))
+ 			vma_end_read(vma);
+ 		else
+ 			return vma;
+diff --git a/mm/vma.c b/mm/vma.c
+index 55917d097933..c9e2192047f8 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -100,7 +100,8 @@ static bool vma_is_fork_child(struct vm_area_struct *vma)
+ 	 * parents. This can improve scalability caused by the anon_vma root
+ 	 * lock.
+ 	 */
+-	return vma && vma->anon_vma && !list_is_singular(&vma->anon_vma_chain);
++	return vma && vma_is_faulted(vma) &&
++		!list_is_singular(&vma->anon_vma_chain);
+ }
+ 
+ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_next)
+@@ -140,7 +141,7 @@ static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
+ 	VM_WARN_ON(src && src_anon != src->anon_vma);
+ 
+ 	/* Case 1 - we will dup_anon_vma() from src into tgt. */
+-	if (!tgt_anon && src_anon) {
++	if (!vma_is_faulted(tgt) && src_anon) {
+ 		struct vm_area_struct *copied_from = vmg->copied_from;
+ 
+ 		if (vma_is_fork_child(src))
+@@ -151,7 +152,7 @@ static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
+ 		return true;
+ 	}
+ 	/* Case 2 - we will simply use tgt's anon_vma. */
+-	if (tgt_anon && !src_anon)
++	if (vma_is_faulted(tgt) && !src_anon)
+ 		return !vma_is_fork_child(tgt);
+ 	/* Case 3 - the anon_vma's are already shared. */
+ 	return src_anon == tgt_anon;
+@@ -190,10 +191,10 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+ 		adjust = NULL;
+ 
+ 	vp->adj_next = adjust;
+-	if (!vp->anon_vma && adjust)
++	if (!vma_is_faulted(vma) && adjust)
+ 		vp->anon_vma = adjust->anon_vma;
+ 
+-	VM_WARN_ON(vp->anon_vma && adjust && adjust->anon_vma &&
++	VM_WARN_ON(vma_is_faulted(vma) && adjust && vma_is_faulted(adjust) &&
+ 		   vp->anon_vma != adjust->anon_vma);
+ 
+ 	vp->file = vma->vm_file;
+@@ -430,7 +431,7 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ 				      vp->remove->vm_end);
+ 			fput(vp->file);
+ 		}
+-		if (vp->remove->anon_vma)
++		if (vma_is_faulted(vp->remove))
+ 			unlink_anon_vmas(vp->remove);
+ 		mm->map_count--;
+ 		mpol_put(vma_policy(vp->remove));
+@@ -500,7 +501,7 @@ static bool can_vma_merge_right(struct vma_merge_struct *vmg,
+ 	 * We therefore check this in addition to mergeability to either side.
+ 	 */
+ 	prev = vmg->prev;
+-	return !prev->anon_vma || !next->anon_vma ||
++	return !vma_is_faulted(prev) || !vma_is_faulted(next) ||
+ 		prev->anon_vma == next->anon_vma;
+ }
+ 
+@@ -670,7 +671,7 @@ static int dup_anon_vma(struct vm_area_struct *dst,
+ 	 * that is it is unfaulted, we need to ensure that the newly merged
+ 	 * range is referenced by the anon_vma's of the source.
+ 	 */
+-	if (src->anon_vma && !dst->anon_vma) {
++	if (vma_is_faulted(src) && !vma_is_faulted(dst)) {
+ 		int ret;
+ 
+ 		vma_assert_write_locked(dst);
+@@ -720,7 +721,7 @@ void validate_mm(struct mm_struct *mm)
+ 		}
+ 
+ #ifdef CONFIG_DEBUG_VM_RB
+-		if (anon_vma) {
++		if (vma_is_faulted(vma)) {
+ 			anon_vma_lock_read(anon_vma);
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+ 				anon_rmap_tree_verify(avc);
+@@ -1019,7 +1020,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 		 * simply a case of, if prev has no anon_vma object, which of
+ 		 * next or middle contains the anon_vma we must duplicate.
+ 		 */
+-		err = dup_anon_vma(prev, next->anon_vma ? next : middle,
++		err = dup_anon_vma(prev, vma_is_faulted(next) ? next : middle,
+ 				   &anon_dup);
+ 	} else if (merge_left) {
+ 		/*
+@@ -1957,7 +1958,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	 * If a vma has not yet been faulted, update its anonymous pgoff to
+ 	 * match the new location to increase its chance of merging.
+ 	 */
+-	if (!vma->anon_vma) {
++	if (!vma_is_faulted(vma)) {
+ 		anon_pgoff = addr >> PAGE_SHIFT;
+ 
+ 		if (vma_is_anonymous(vma)) {
+@@ -2369,7 +2370,7 @@ int mm_take_all_locks(struct mm_struct *mm)
+ 	for_each_vma(vmi, vma) {
+ 		if (signal_pending(current))
+ 			goto out_unlock;
+-		if (vma->anon_vma)
++		if (vma_is_faulted(vma))
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+ 				vm_lock_anon_vma(mm, avc->anon_vma);
+ 	}
+@@ -2431,7 +2432,7 @@ void mm_drop_all_locks(struct mm_struct *mm)
+ 	BUG_ON(!mutex_is_locked(&mm_all_locks_mutex));
+ 
+ 	for_each_vma(vmi, vma) {
+-		if (vma->anon_vma)
++		if (vma_is_faulted(vma))
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+ 				vm_unlock_anon_vma(avc->anon_vma);
+ 		if (vma->vm_file && vma->vm_file->f_mapping)
+@@ -3458,7 +3459,7 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
+ 	 * Similarly in do_mmap and in do_brk_flags.
+ 	 */
+ 	if (vma_is_anonymous(vma)) {
+-		WARN_ON_ONCE(vma->anon_vma);
++		WARN_ON_ONCE(vma_is_faulted(vma));
+ 		vma_set_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
+ 	}
+ 	vma_set_anon_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
+diff --git a/mm/vma.h b/mm/vma.h
+index e97bd2dfa786..70cb00f441ae 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -255,6 +255,26 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
+ 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
+ }
+ 
++/**
++ * vma_is_faulted() - is @vma faulted in?
++ * @vma: The VMA to be checked.
++ *
++ * A VMA or mmap lock must be held.
++ *
++ * It will not give a false positive. However, if only a read lock is held, it
++ * may give a false negative, in which case it should be re-checked with
++ * mm->page_table_lock held.
++ *
++ * Returns true if @vma is faulted in, otherwise false.
++ */
++static inline bool vma_is_faulted(const struct vm_area_struct *vma)
++{
++	if (vma_is_attached(vma))
++		vma_assert_stabilised(vma);
++	/* KCSAN gets confused about the optimistic check. Silence it. */
++	return data_race(vma->anon_vma);
++}
++
+ static inline void assert_sane_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
+ {
+ 	/* nommu doesn't set a virtual pgoff for anon VMAs. */
+@@ -268,7 +288,7 @@ static inline void assert_sane_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
+ 	if (!vma_is_anonymous(vma))
+ 		return;
+ 	/* If faulted in, could have been remapped. */
+-	if (vma->anon_vma)
++	if (vma_is_faulted(vma))
+ 		return;
+ 	/* OK this is really an anon VMA - expect virtual page offset. */
+ 	VM_WARN_ON_ONCE(pgoff != vma->vm_start >> PAGE_SHIFT);
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 16c09dac59d9..17505bcf9cf6 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1179,7 +1179,7 @@ static inline struct vm_area_struct *vma_next(struct vma_iterator *vmi)
+ 	return mas_find(&vmi->mas, ULONG_MAX);
+ }
+ 
+-static inline bool vma_is_attached(struct vm_area_struct *vma)
++static inline bool vma_is_attached(const struct vm_area_struct *vma)
+ {
+ 	return refcount_read(&vma->vm_refcnt);
+ }
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index d6136e19a8af..e3bb52bc2d92 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -302,6 +302,10 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+ {
+ }
+ 
++static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
++{
++}
++
+ static inline void ksm_add_vma(struct vm_area_struct *vma)
+ {
+ }
+
+---
+base-commit: b02c77c78ff74d3d88ea614335ae833e01ed5d30
+change-id: 20260909-vma-is-faulted-3ed004535970
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
