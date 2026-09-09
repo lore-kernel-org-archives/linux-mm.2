@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF2FC88E41
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D52F0C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A7896B008A; Wed,  9 Sep 2026 08:42:08 -0400 (EDT)
+	id DCAB46B0092; Wed,  9 Sep 2026 08:43:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 058FE6B008C; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
+	id D7BB46B0093; Wed,  9 Sep 2026 08:43:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E897D6B0092; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
+	id C946A6B0095; Wed,  9 Sep 2026 08:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C52FF6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 149991201CD
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:42:07 +0000 (UTC)
-X-FDA: 85194186294.08.31E677F
-Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5D44C12000D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:42:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="xSw/p9ko";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="xSw/p9ko";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788957725;
-	b=fGLnWwmRHri1kcUXAbQPMbZkwPKrCdo+RMPOicB7ZX3+K7UpwXtwRb7EnkQgANZpui10fc
-	ukIUAA0tFzRIq3Vuy1ZsbMlbIvlQ2FSi4xj9pix7kVpJQbf6LFQyezg36Yc+i2/GNrfCiK
-	DudobB0J3WGPs7IGsgrernLz9uq1dsc=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 994136B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:43:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C15711401DA
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:43:40 +0000 (UTC)
+X-FDA: 85194190200.25.63BFBD6
+Received: from mta1.migadu.com (out-60.mta1.migadu.com [95.215.58.60])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 16942140008
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:43:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rJAONsKd;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788957725;
+	s=arc-20220608; t=1788957819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=snhqTz2LjFDSbLT5152KG20Lm+T1/CJL4YkuUA0oW58=;
-	b=d6co8jpqKmvC6ANm1GBOs0yEsmGt5JvGUcs93444POoO4205r5rUXHQsp4HfkOdRm/ld1B
-	Xnp2pOruZFVLp+y1vpfjf8/PKSFuwpYONhFOzyCUq7oh93ovm5hzuuCfLYMpOyYoX0vjzW
-	w8fGXgI316hZZs+a6GL2ntg2BU37vu4=
+	bh=/7UknrQ67b7g3uRRQUzYs8NMpxkz/uJA2wLrvf88538=;
+	b=JQkW1QBdPcIw0LvnHKYQONUqpyFowQiDUcBYxz7pxrY2dgUj3KsFODI+LTdg/8v1t3E46Z
+	5IX/EXcoQpASKaUXwFr8UC0Kga6AUgUyZlC3a1yt8N0L4tSx2kA9B/sgONo+WZxqJ1pWvM
+	qyxvb8Y/po4OCaw1tcCm39JJjrpBSTU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rJAONsKd;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788957819;
+	b=s9VqmmXXmTb3CU7A60z98ui3Dn2fOkydnscp2bliFxjG5zACqH+kh7WtWQbZliQmmYTaKX
+	lhK8D8qhgoWv1HWSy1PU+o/0byJ6oiz6wOeWfq7bkVqAUAPh75nPwgprIibBVweRJ2o0LS
+	zmgfjtR6FnZ91psy8IFJI4hmnTnkhiU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=d8jOBmpijeiru+KyfV/xClA5cJs9GP6kquk0D6tgcF8=;
+DKIM-Signature: a=rsa-sha256; bh=jqiubL+tagB99Gjb+Dzn8xdJMbDXci+TetbI3A6BRTs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788957720; v=1; x=1789562520;
- b=xSw/p9koyXMYiY/Qog7jA4msd62ZO1zS01MvGoNJGhzgBvgd6QI5r2qZStT2MCI0q7SVE5U5
- O9Y/pe02GxroT3564z5wwVwFuDSLUmhC/O+G+sksM2vA/ln6DkQybF6mWOisfUu406a36G5rk4E
- IENzYujCEIkY6opp74ZSb6nI=
+ t=1788957814; v=1; x=1789562614;
+ b=rJAONsKdu+sg+H/uk6gTd2G/TsAB/Jc0+tG+jAvP/PyL4wDIrKwqC9W5BhDm4PVsESHGmtAs
+ yDh+KXYaTxl+Btmbn5r7SvHvuxrMi5B8DF7n91yeQcRcBDvfzXJsqrWksFQtfDZJL3GETqFjEJ4
+ cIdr3XgOPyxygcWJ5tvCqfZQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id addb3024c47d7683;
-	Wed, 09 Sep 2026 12:41:59 +0000
-X-Mizu-Trace-ID: addb3024c47d7683
+Received: by smtp.migadu.com with ESMTPS id d2d73bfd903f7147;
+	Wed, 09 Sep 2026 12:43:34 +0000
+X-Mizu-Trace-ID: d2d73bfd903f7147
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <acb81c51-318b-4a00-aad9-515929076662@linux.dev>
-Date: Wed, 9 Sep 2026 20:41:49 +0800
+Message-ID: <ebd30222-01db-491f-852c-bf5261f95f47@linux.dev>
+Date: Wed, 9 Sep 2026 20:43:23 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/2] mm/mglru: add tracepoint for folio isolation
+Subject: Re: [PATCH RFC 2/2] mm/mglru: add tracepoint for inc_max_seq
 To: Barry Song <baohua@kernel.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>,
  Masami Hiramatsu <mhiramat@kernel.org>,
@@ -81,22 +81,20 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
  linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
  Ridong Chen <chenridong@xiaomi.com>
 References: <20260907042447.2450663-1-ridong.chen@linux.dev>
- <20260907042447.2450663-2-ridong.chen@linux.dev>
- <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
- <102f6ff6-46f9-4734-a056-694eb2c0129b@linux.dev>
- <CAGsJ_4wxZ0pc0UMAXe3xKW0=PTzYv31ieoJa1v01SoLczPVOCA@mail.gmail.com>
+ <20260907042447.2450663-3-ridong.chen@linux.dev>
+ <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4wxZ0pc0UMAXe3xKW0=PTzYv31ieoJa1v01SoLczPVOCA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 16942140008
+X-Stat-Signature: 5cczy5abqdn35gpkijf8qxmao4e5njur
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D44C12000D
-X-Stat-Signature: r8oxyi49s684nyf19b7b1i3z5x67z6hk
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1788957723-114628
-X-HE-Meta: U2FsdGVkX19G2kWSpKR0SgFhSB5bTvl1pyZtr9xCIsGyJ8S9w4fTNua6aE4tIyy7uspEuV/m8LnacCG8O7SKmZtWsHY6R2dOLCbeAa+9+/2jhmmLdAx9mtijrAKTOzHHJ/fdBEHonBYI5tMLZj3biiZwZiYf8kC7FOBb4pIM0+Z8DcwhDcJUjz+ltoPOocxBfKbFpcftoX/acfDhRhEoftSOy2L+YaU2EmZuKE8nWCHZ4Aull5L9EBBNJp1q+qbh4DnJNgouLOLUfrUKdy74pBLmOL4kbSQyt3QgdHjgvsKMrs9kCFf7jE72ZXN/7giXmtFRnTAhduh909lFtR81jqdueABNQnAZib6wedMYofs2N5dOrbSMfFBFhk2AJ3KYxxG7gaTvB79HDGKzG3QKqQIDGaKUqVxA0733waJ8jNU4vMrI69p1RV1iZIMk1eGRbhlO4hi/DgmXSXz3mxzw6xZ9hAb+7UpUuydUxMZlYQbK6Thiuq/JttBpzMJlnClmTwA5MhRhC98BOkN6oONsHrJ8kjKVVKCQ57Y6LEcQBqPBuV1blqlFNE8Q/xKfwSZlj9/ZZty6Dehgj5V41VHWLbvHycWGFeOOmycKNZcCcTYH6XOStHxR0I6AVSIElOq2tD04QaB1E9QQRn6V9wLwCAvUupi8+sGRxf61K/zzLJEy+CNl/xNSzITWzt8dOkn2zIVaWiLcr60yaS7BduH51AdV8BH0wWHuQOC1ZOe3rIAjH6M72Jv+KBecTYJ5wPQNhEvLAxTpIwMi5Ab+HpInBJjtnrhJl+cc05+jVUkdHJnP/lMIrDrKBevbmeoWJBGjpzlAdx88dFyFYR8hWNaxF3XZSB2ximIWwXYmj+i9Sz9xkIWODOG6nuBWNUnTuf2kXYN9KLHmRC9oNQ6F6r0okb0E3yOc14L+0VAbJgt98vIddn3Rp3PxDQ5XAN9RZSTmh7jaiEXg1p3QvjdOTUo
- mmmfmoVT
- eTs/Q5TM8hmKuvAhDaLBSrtcj+N+wksSE7IeTwXxu/NbSlquBdWHpHtHMixgpi2yGfvLcevngK9ArGKB1GB1fv1YhOlQAQSP7tjdPtLYbNUJ6mB7gckOVUXQyKUusUcH41bPFouxb8fUlrG/b0UPJHvkZc9avNj7MWEccNopc3fx1YEbo3AeclxR5rLCt0UoaOcNF5u9f7DlvdrIZRRicxC8p/cUK0VAbuznkLOf0bQco8AGFcPA/PQvLanmZIW+RJ4c2gdAb0PPUfcN6+aH0Nl4D7OKm/bMOcfUrBNG32Pee+8R5YsGnzl4aZLOoGU/yd3cIz/QacfwIG5gyryLn/uSPe969ejJCIShhfCtvw3Xg2JE=
+X-HE-Tag: 1788957816-293289
+X-HE-Meta: U2FsdGVkX198m386EZCyzop/hrJs8GeAOGb5hE37wGXC2n6/vdriyetfpL99h5XiPgQnv1BippQI5DBVSRedMnUv1hr6lIhkI/ozAQchejUl2eOpMfFHUoiA26qID7MALSo/q30ZS5URavGU/NInihmDv/yYM9epPSIzY24dm1LvOAFXUXOgJDB945zggAplGhDMGRaOxWXvq99RSrqQwiELSWGqvUoC9WgAgC39MCDmharO3rF9KZeV/AEbYGmX2sPxbNE8ap9qFmuAo672WV6tV/bbp6qVyExIQbzOYUYKPyyDIJxchNE1wetTNZIBDJu1ouOMBZvcn2byRLHGyfNShYpIbiAtPCY0t2TwO9+UcgMeRVSPC0Ethzc/QHgFBL8y9Q+f+kXylS5FZmLifDAyiJdxzlrbSpy+Y6PXJ2OUcDBWLlJG5m8yPTsxHGDjvHcpTDMkXF/VaE04eW3heUfYrpnUzjdFxFlO0yhblBSY4Ai6H3QdO5kjSJxHSRgKscCGTlGMcmK0k87H2XJthIH7AiIWipwLCisrx+v3H1/6MgopDxH84EzXwZnvx1zLQIJusNK/Tgh7hdjcsTB6bnennj3yySl0RR2RIaJqWzFaDEv00AGtx7vuiBKpCo5CsntC0L9kRKCgiGDCI0pEsGVbPWBJB0KWUHqF21bTzu35l5SJq/J52DFEWIv5Q79+m5rHIseXDlm1cC4ISsNygVJGeb2irNa7iOHASqh2V1zpCnElVAo1YfCafl7ydMB1v9Ch/302opfIh9IvzRExUf+SFrMhHJz5wrh448qYY5nd5UQbXU73pxa37R2YsGpSIufzgjQ0ay4WscwFFRNuqVMIrxBq3kemdDqgAV/mhtS93A3eCJdGCrdUUDYO8sF64uTtAP0oCkT7ePQamgVXNJNUHpDqpd4c3rIXshIMlzSpO+5YWpdanWpSiZWLt5AF14NDFDHMQn2XllIgPpB
+ 8hy9S6VD
+ O1UJib9N8EUfviIjnQP0O3brLViOR5Q32q8DEmZLr5rNf8pY3mBuR6yWiqr+AvWyXzRG5Ur+zYHmeWTc/5buojCK64ijKJuJawlU/pcd3qLR449OcbM8Ky3pCa9LmXe0xYdb0Zid/0kr6XTgCmg6yQsSv+RfptEsUYmB+iAL9GsFkvb8bnugZqOfH7HGFZZcNEGFUKr6rKQnvV6XZH8zQ2f0Bx8dXv2ERcTgcJYtnwdkcgqg9cjEhO+2SGVZV9YTnE+CmIg7fNeq7zIx6h41Y6jnp6g9GgwVzTwItSOv4FBtRtspzJrGOSZIICTSTyBwN2gsngtIUU+P3ZUwLUUL3VG9fUkZmoMcdiJtK4n1MSy5OaHshZ3eoIN0KIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,99 +104,102 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/9/2026 8:11 PM, Barry Song wrote:
-> On Wed, Sep 9, 2026 at 8:00 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+On 9/9/2026 2:45 PM, Barry Song wrote:
+> On Mon, Sep 7, 2026 at 12:25 PM Ridong Chen <ridong.chen@linux.dev> wrote:
 >>
+>> From: Ridong Chen <chenridong@xiaomi.com>
 >>
+>> Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
+>> youngest generation. There is currently no tracepoint on this path, so
+>> the moment a new generation is created, and how the min_seq of each type
+>> trails behind it, cannot be observed as it happens.
 >>
->> On 9/9/2026 2:40 PM, Barry Song wrote:
->>> On Mon, Sep 7, 2026 at 12:25 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>>
->>>> From: Ridong Chen <chenridong@xiaomi.com>
->>>>
->>>> MGLRU's scan_folios() and evict_folios() emit the classic-LRU
->>>> tracepoints trace_mm_vmscan_lru_isolate() and
->>>> trace_mm_vmscan_lru_shrink_inactive(). Those predate MGLRU and are
->>>> indistinguishable from the classic-LRU path: they carry no generation,
->>>> sequence, memcg or swappiness context, so a trace of an MGLRU run cannot
->>>> tell which memcg a given scan/evict belongs to, nor how far reclaim has
->>>> progressed through the generations.
->>>>
->>>> Add mm_mglru_isolate_folios, emitted once per isolate_folios() call with
->>>> the memcg id, the type actually scanned, the effective swappiness, the
->>>> scanned/isolated counts, and the anon/file min_seq and max_seq. The
->>>> min_seq/max_seq triplet ties each isolation to the generation layout it
->>>> ran against, which the classic-LRU tracepoints cannot express.
->>>>
->>>> This is emitted at the isolate_folios() layer, which is MGLRU-specific
->>>> and has no classic-LRU counterpart, so it neither changes nor duplicates
->>>> the existing scan/evict tracepoints.
->>>>
->>>
->>> I have no objection to MGLRU having some tracepoints. However, one
->>> major concern is that the code is changing rapidly, so the tracepoints
->>> may not be stable. We would need to maintain them as the code evolves.
->>>
+>> Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped, with
+>> the memcg id and the new max_seq alongside the anon and file min_seq.
+>> Paired with the mm_mglru_isolate_folios tracepoint it makes the full
+>> aging-to-eviction window observable per memcg.
 >>
->> Indeed. GEN-LRU has been available for several years now, and many vendors are
->> already using it, so adding tracepoints is a necessary step.
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>>   include/trace/events/vmscan.h | 30 ++++++++++++++++++++++++++++++
+>>   mm/vmscan.c                   |  4 ++++
+>>   2 files changed, 34 insertions(+)
 >>
->>>> Assisted-by: Claude:claude-opus-4-8
->>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->>>> ---
->>>>    include/trace/events/vmscan.h | 47 +++++++++++++++++++++++++++++++++++
->>>>    mm/vmscan.c                   |  9 ++++++-
->>>>    2 files changed, 55 insertions(+), 1 deletion(-)
->>>>
->>> [...]
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 8409ea4bbf37..771fe6827939 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>> [...]
->>>> @@ -4876,6 +4877,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>>                   goto retry;
->>>>           }
->>>>
->>>> +done:
->>>> +       trace_mm_mglru_isolate_folios(mem_cgroup_id(lruvec_memcg(lruvec)),
->>>> +                                     type, swappiness, total_scanned, *isolated,
->>>> +                                     lrugen->min_seq[LRU_GEN_ANON],
->>>> +                                     lrugen->min_seq[LRU_GEN_FILE],
->>>> +                                     lrugen->max_seq);
->>>
->>> Maybe `scan_folios()` would be a better place for this, as it can more
->>> directly reflect what we're doing for each type.
->>>
+>> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+>> index a0e3cf75294b..ab93c2f4b318 100644
+>> --- a/include/trace/events/vmscan.h
+>> +++ b/include/trace/events/vmscan.h
+>> @@ -439,6 +439,36 @@ TRACE_EVENT(mm_mglru_isolate_folios,
+>>                  __entry->max_seq)
+>>   );
 >>
->> scan_folios() already contains the trace_mm_vmscan_lru_isolate
->> tracepoint(traditional tracepoint), but it lacks any GEN-LRU-specific
->> information. Adding another tracepoint there would be redundant. Therefore, I
->> placed the new tracepoint in isolate_folios(), where it can capture GEN-LRU's
->> specific details. Additionally, it can indicate whether a fallback to the other
->> type has occurred.
+>> +TRACE_EVENT(mm_mglru_inc_max_seq,
+>> +
+>> +       TP_PROTO(u64 memcg_id,
+>> +               unsigned long max_seq,
+>> +               unsigned long anon_min_seq,
+>> +               unsigned long file_min_seq),
+>> +
+>> +       TP_ARGS(memcg_id, max_seq, anon_min_seq, file_min_seq),
+>> +
+>> +       TP_STRUCT__entry(
+>> +               __field(u64, memcg_id)
+>> +               __field(unsigned long, max_seq)
+>> +               __field(unsigned long, anon_min_seq)
+>> +               __field(unsigned long, file_min_seq)
+>> +       ),
+>> +
+>> +       TP_fast_assign(
+>> +               __entry->memcg_id = memcg_id;
+>> +               __entry->max_seq = max_seq;
+>> +               __entry->anon_min_seq = anon_min_seq;
+>> +               __entry->file_min_seq = file_min_seq;
+>> +       ),
+>> +
+>> +       TP_printk("memcg_id=%llu max_seq=%lu anon_min_seq=%lu file_min_seq=%lu",
+>> +               __entry->memcg_id,
+>> +               __entry->max_seq,
+>> +               __entry->anon_min_seq,
+>> +               __entry->file_min_seq)
+>> +);
+>> +
+>>   TRACE_EVENT(mm_vmscan_write_folio,
+>>
+>>          TP_PROTO(struct folio *folio),
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 771fe6827939..3c806a57d113 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -4065,6 +4065,10 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
+>>          WRITE_ONCE(lrugen->timestamps[next], jiffies);
+>>          /* make sure preceding modifications appear */
+>>          smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
+>> +       trace_mm_mglru_inc_max_seq(mem_cgroup_id(lruvec_memcg(lruvec)),
+>> +                                  lrugen->max_seq,
+>> +                                  lrugen->min_seq[LRU_GEN_ANON],
+>> +                                  lrugen->min_seq[LRU_GEN_FILE]);
 > 
-> if `trace_mm_vmscan_lru_isolate` is located in `scan_folios()`, that
-> would be strong evidence that `scan_folios()` is a better place for
-> adding a new tracepoint for LRU gen.
+> I suspect we also want to know the number of pages in each generation,
+> similar to:
 > 
-> There is no need to avoid this location just because we already have a
-> tracepoint here. In fact, I think this is evidence that it is a better
-> place, not the opposite.
+> /sys/kernel/debug # cat lru_gen
+> memcg 1 /
+>   node     0
+>            0      25672          0          85
+>            1      25672          0        4249
+>            2      25672         21           0
+>            3      25672          0           0
+> memcg 19 /A
+>   node     0
+>            0      23036          0           0
+>            1      23036          0           0
+>            2      23036          0           0
+>            3      23036          0           0
 > 
+Thanks.
 
-Good point.
-
-Thank you very much, that does make sense.
-
-> BTW, `isolate_folios()` might be deleted soon, depending on how we
-> improve MGLRU and on some ongoing work from Kairui. But `scan_folios()`
-> should be long-lived, as we need to scan folios in any case. Therefore,
-> adding tracepoints to `isolate_folios()` doesn't seem to be related to
-> the stable ABI concern mentioned in your cover letter.
-> 
-> Best Regards
-> Barry
+Will add.
 
 -- 
 Best regards
