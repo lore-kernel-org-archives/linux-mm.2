@@ -4,119 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CB03C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97D1C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:51:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 940C56B0092; Wed,  9 Sep 2026 17:49:43 -0400 (EDT)
+	id C02BC6B009E; Wed,  9 Sep 2026 17:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CABA6B0098; Wed,  9 Sep 2026 17:49:43 -0400 (EDT)
+	id BB4FB6B009F; Wed,  9 Sep 2026 17:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71DF46B0099; Wed,  9 Sep 2026 17:49:43 -0400 (EDT)
+	id A7D906B00A0; Wed,  9 Sep 2026 17:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EA9A6B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:49:43 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7632A6B009E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:51:25 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 058CB160362
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:49:41 +0000 (UTC)
-X-FDA: 85195566162.29.1053FDB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0A1BE100002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:49:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bNHx/EH0";
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788990579;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95B9C402E6
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:51:24 +0000 (UTC)
+X-FDA: 85195570488.29.D6D0BBA
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A7B6340007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:51:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=O1aM4qix;
+	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788990682;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IbnXfxn2Gx4VFcrGbx5BMqvSOzop5+o0kVczGL+oaUA=;
-	b=4rUGO/npWXL6xkBv6bdclrujXo9LwvcCaYIGabhcpIvGVhYMGyDyOUNL5NQsEkIL0kxeAv
-	dy1tYuuYQE/bX09Xvoi7W/KV4B5JBIRDUWxGqo+P7ZqMLpt+EosWgJ+BIhD/toPvy6paOe
-	2Qm3un2URE1VQu8ypHjTxIPN4X2dQX4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788990579;
-	b=BuIlX99CB4azyynCg88av3pSPmTe6UZoqGR69BHGMJRWJ7p+1Et9aMUh8ifr1RA+YFGP1u
-	8ODJwXCvEDLsL8W2LLtV5cjJzsOMtKpCqC/vDaIjRJq0y7In1hk+Lyhx+R7sgk6/fyTXqz
-	ai8LNYaYeATSUrApPtH4surbX8ztRio=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bNHx/EH0";
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26B95444E7;
-	Wed,  9 Sep 2026 21:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ED555C2BCFB;
-	Wed,  9 Sep 2026 21:49:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788990578;
-	bh=IpuMmCTHCH6IIMy98L5rBZSj/YgZOfEudC6ymLrW5rQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bNHx/EH0Cb/hdSNbAr+oD0OQovE5QEj0dxlpPO3XinstfZhmjO9wICxnPHSmm/dJ+
-	 cc7ia0kzDRkO3zzhv8nHqzIR2gGA6KAngFpMyRaqFmoDIrt+n6Me4leX6j0dsS+S9p
-	 IZa4dKmY2Hs2LSmxqzXoO9eROJc55i+jgu7z0RwF6yDTD5Tzd9xaYCmjSi8Rs5sX9d
-	 F4dWuQ9ZeqgM9WZIRiiUFuW0w1l+lls0hHWzOBzbFCNTVas2wybWzv0eBch9NsrP03
-	 Nomi8NeA0qdb9bJmNXVc+KPR7Ue8j+kIIt3LCwYkx57cQZyzB1dQirLfqdXcJeAMyj
-	 XoFwWIsgbXEWQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE74C88E41;
-	Wed,  9 Sep 2026 21:49:37 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 09 Sep 2026 14:49:28 -0700
-Subject: [PATCH v2 3/4] mm: hugetlb: Fix subpool usage leak on allocation
- failure
+	bh=A7p9WWZeWPUSCEcOXg2XJofz7nmB+pP1oglnGvljEvQ=;
+	b=w54plddwzYJ5LUG46ET2BiltQTz1LVJgDEZG9SMwe3do2bsQesoCpa1+A+QIxEUPsVtjHg
+	okrg9HUT/0/5C+vAFnfIkZN1G8aqNPkMu5eCRAOzR+1RdWlFiNr+x8X6Qru3LcnY9o2hpb
+	46HxuUdKGtfVF4IzGizRP8rsP72Qkeg=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=O1aM4qix;
+	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788990682;
+	b=wR3SdfwBOsZgelUT4rjKOrYMDTZ/TUvk52W1/LpsYFEAuAR3tLRtdXAdvthnzezy0cuHA/
+	/WuwGOk/CyFn+6QKxfIceJOyqp2uoXtnGk1uSqbczH6+w59VMGiFKIX/MxOX+wQg5/2TrE
+	8L8whXBSiHeFVcaP67mOoaUvLYvkK08=
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5307425f44bso28451cf.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 14:51:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788990682; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BPBexX2Wv127LJ2/hl5GzB7QpL3RgBwF0sySF3BtQzCuzvSu/QrX976x3xfF2hr9G0
+         AFkbP6QBcHrF5/QGSaTc5PfW82phmECd349T6YjduGpkvo2nA5/3cJ+lKT+J1BGSJjeJ
+         9ljTMbNuB9f69AnN488MlGD0e29aESDNnbp41Kj4Lon1kTXo8zxxnk+mHD8M844X8+dP
+         GbNGSBohPy0BjS6DWFm2isN/P3H5/mykzUVECw/KS3CC97ZzWEMj86m5XBrnvu+0mywX
+         Deo/nDISYx7eP3RZmwNuhJrKqB2/qm3qIG+hMyXUL7g67J2DUq/lWHzwm1Vtz3uw0WdT
+         sqTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A7p9WWZeWPUSCEcOXg2XJofz7nmB+pP1oglnGvljEvQ=;
+        fh=GKnEQlg3uITWE/dXuvYoEkPzRNdVD6f/WjFZMRTW/fw=;
+        b=R0dOZDG59vdqAOCST07cE9qLc0r9XDkT1doTBJqwYa6h6RGelhF+Mh1IjqEXZ0PDUi
+         eJvYjrp9zOPLMve4av342XHVdLQ7YSiA55qIuK7Fl2X2a+XqZxmZcRkucfB76EM1txTH
+         QQtfg0UXlRSyrdGxAvaaX2pfZ/DJNbKrDOK+gZauKIobJcYAPhAhCVjWUDnX/Y1zfa5K
+         zQUTkZfMIQuhhcRn0k1vUZ0Bx2ou4HGKAjamKPhBgeFpi/baImB3yTHMQEkYbSJSL+Xq
+         DKduLWWZRXrunV9ta56imnrLVKtRxd6Iz/JOI7y+o94FcEmpg2cS9X7AWdIglT840s+b
+         pP2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788990682; x=1789595482; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=A7p9WWZeWPUSCEcOXg2XJofz7nmB+pP1oglnGvljEvQ=;
+        b=O1aM4qixz0CPl4drUG/7WEe0lL4YdCibtQ5mMAnH+FaXE3iR5ASQqTH8oWW0onz3+y
+         cNn5WxVkMK7PrzFvgDLU46VA+6Aohp0dPi3sr/KCWWb7RcLOy2BZGh1gK5ieBxCJsCZt
+         +6fn4SQqqt5CyO1pzrDdPBxDNhlQ+ogTyDWu8xQakvmhmyRumv5cXNBKTtFbquCPzYmb
+         xEhnmtuEPGhuEUw2WBH25atyGDh2LNGOlugaCNInz3dhPuaJ1bodqTtY7S1lnZzw3xlk
+         4MSb9cO547XEdLrfHMtKOW0y06hkQgPZmEVtjHd+l2ygFSQuWk+0TjY/Hzq2g61Hsgdj
+         tMKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788990682; x=1789595482;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A7p9WWZeWPUSCEcOXg2XJofz7nmB+pP1oglnGvljEvQ=;
+        b=ZIlS00N3uBetC3+CghwRxJC4Yolt8IYozgCPMK67QLuIf2mmn8QqzCm1/fKGH1jFXq
+         3a+PyzCnTfFV/6tjsoYSSbHJ+pLRSs4UxWg4Q8CLhdoKJn5qVvsy/elEfQ8svBNprp8I
+         N1qLmJJa2tEiA58WDlGq8vYbmEjKyGRHgKIF+m9BDLCbvBkgM3z9sDu4VRo/aELYgMDW
+         /jyPBkLusml0zStosTQHImNXaBIEe/ITyKRngFzQI7HARirfsB8g2jm+Uenr22DCu2+W
+         CaZeA8TWTm6nYBX6C/dRNyil7yK4JQvu5E9oMoBLIm6DMjZgq51cxNDDFLCWwo5OsAlv
+         H+Jg==
+X-Forwarded-Encrypted: i=1; AKwUvByB1SCgDga3ZI0jRrMgLAHixrVb9/TxLmAhrj8qL2JiFWi5xICYnjP2kLfbvCNGg7SOl0qG+ustqw==@kvack.org
+X-Gm-Message-State: AFuF++naG5p9EQzg8biQJjF+4QK2hO3TN4ClXSDbrVz8CSRMpeCa+hkN
+	kKSJ+FszaLPZxdI29RKxlppMKrJwahdR0rqKeWhmJwyMJEa8OV7LDzGmptj5ZaRXJ9QBCDZPsA3
+	E99h5WtZfbyupeSCqp6F91OCQp/HhF9s6zaddIWLx
+X-Gm-Gg: AYBFou2/n5GZhcQ0GineoYoKugrC63b/b9tO7RzUeHO5y/NJDyyRGQe3HA7ome58vlQ
+	jS0o9VFrmwDrOQpplPY3XxBAUv8p174abphOvD5MqsjI+Hn88Fs/8rCic5i3o4pPb6CLH8aQofh
+	EQYDexDxMCSJyBtRDIsjz46i8PQY7Islw7TMyl3GxratDb7gH5cAvGnhIk4nsmYoc7z2OHd6pwA
+	WSAzEmPg88Wb4VNC2g1lj8GFxdi3jTXiU9qmE3S+619rMG7ITwA9RGCzHZ9Dy2evKDB5m+uCUdg
+	G8zz445YzoJWbzCsCR5/BGMN+ghJJxFqIl0WrQoMKD78miuChieOrsm+2A==
+X-Received: by 2002:ac8:7f81:0:b0:52e:1e8:21f4 with SMTP id
+ d75a77b69052e-530b62adb08mr929301cf.5.1788990680995; Wed, 09 Sep 2026
+ 14:51:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-hugetlb-subpool-always-track-used-v2-3-30c5d83b572a@google.com>
-References: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
-In-Reply-To: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
-To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
- Hongxiang Lou <louhongxiang@huawei.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
- Peter Xu <peterx@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
- Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
- Yanteng Si <si.yanteng@linux.dev>, fvdl@google.com, jthoughton@google.com, 
- rientjes@google.com, vannapurve@google.com
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Ackerley Tng <ackerleytng@google.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788990577; l=3569;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=cYJ89cnWWYewpfV2xJr1JZku8Dzt8E3hqm4GB5Ws6/g=;
- b=saJolngd03Eu0+scYnu3x47RfGTgFmOprIS5lh7xp/uDq2/hCD/CKZYbPTtBY4n9Hn7uqo2rO
- V8dm6FOIsbRBfyagUeDDamv2dWK3Q7IFZscOJPx3Tg8l77vta/SfUMo
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A1BE100002
-X-Stat-Signature: meoxjdhyip3p9ny65rqjgmkfwjsqhum5
+References: <20260907063918.3432401-1-surenb@google.com> <20260907063918.3432401-4-surenb@google.com>
+ <4825a2fe-f064-45d7-a7c9-e98de7efe86c@kernel.org> <CAJuCfpFL_g7tELjT8p8ExM3tX_v2gNDM9rRKwwefPV_KW=fHfA@mail.gmail.com>
+ <8e643f51-a47f-428e-9443-678326288fa6@kernel.org>
+In-Reply-To: <8e643f51-a47f-428e-9443-678326288fa6@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 9 Sep 2026 14:51:09 -0700
+X-Gm-Features: AcwNN1WhVGNfB-pxrRcwKFTO2y3J4tLY_kHnkGoYanjTzogNBsN7pKUja62KieY
+Message-ID: <CAJuCfpEYdj=u0wczKRrsB8uDkbSzPy+hrsCo9TW9-3J3r3p0xQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] proc/task_mmu: remove special-casing of
+ smap_gather_stats() start parameter
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A7B6340007
+X-Stat-Signature: gke7yd4pgcufjnsgn7ektjnyeynh67n1
 X-Rspam-User: 
-X-HE-Tag: 1788990578-828577
-X-HE-Meta: U2FsdGVkX1/hq8iBbCZdGATXTnl/9xI/TeWvf9tbslcAQ55r1V/vElFM+DgCs4+9DbI5DChgIyKxEjuzakdBuUF4EoaTtnQqOHByfN8YCbZ08xHeeOFDlv9yTOmOfr9XzkjmPYZXiEzitSfaFobcw70902AAxXO8wN0zChuRqmIrBzEiXb1OyKMJmwaotUt3d+SM9ycdYwfoGy0hw3MPEvcPxMbvRpKfxg6Y1hc8YYkBNTjXnSN31g3sB4O6h5VnlXWrdYHCbqAOWfdnR8TiDSNst7w0fTJOpodydYTrsCf5R8IiKslo99a3qIMjNx2pIsOw+EDv1Iazu+mE7A/or5KpPcFhpHsCUG2IRfI8g7G5Ud3neL5N5EqeCmjt6yW4HULT36FAadKrZwS5JnLVx3JS0goFoypgusTyzY79gwHnmhnJ3HykfChgou6Zn5UVQ60jfjmx6S0EaOQe7/0jwRumRZymCIW9sUh5zUdUx0rv8b0Thq0iJxHaUetQCGbI+TiUQgueHJddxfc/c0oWHLLPtdLAef97I9T73olpDZUqBz2u1hZz6PetUrhFxirvmPMt+yNsiGP5x68SQ8GdHdK/zPDmlIaAa1ERb0FcbHEqNoghrjOsHA3e/SWidK75cJcPPkrDqA9IBDVnYCOGR/T41BCEMSKVID8HBNTcVIUtUFAhAnm7+s9mqPA9ZiCzW2QIwAHGxAMwVajM2x4uDD4g+55mRFiBhdQbRQ6nY9GJxChrdUHENo7r3HUhFne4LQGWWhWVi0U2B+VeCZpyRoxs+vBMUkOijFd1QRRWLxtHc5ThH23yMFWaqNeeKGOjQFgF5KXQgCJxJa7UnjarPUsI6pY6Q4u8GexDH7U43OsA7nmRqcRBbLfs7PlcnbOLYWLpTNQsnGwbgnVnb7sdqF2/QWQ6LhfOtOr5f0J6YE0vjGAL5qmgDTW2B4n4vfSlX78sFeHLzX31el/iggz
- /QMqBjJ1
- euL1FQMA1cfQ2Lo/NUFtVfSSPOwvRNv1AoRjRFdVMm2Ae0343uvLavpkBDCbwG6xeIqQnVvrmlMLnocBt3LYz/gAxEA7w1PauSkY10H40sDcw3Svbz4mC6RsKcZF1qo9HHSoVZh6XSUspJG2igJxI/g8gRpbct4GAUW3Q1ilTNCwy2Eh/zq/sJZ28VMhmLVkCwJ7T44Yd6T9xaCN+ZccCoFw4puV7w4caXkVwMPC3n/objEQQrlV42EC4x/0dkSLnUgd3k7Pxpo78q26T5WzUI2p+C/GXPN/IKs4Eqru4QISjsj3qh4MJmUZgP+KiLSwiolPB1jiynsFLVbJyzkFeGWYPsGZBgGK4bbwcV1tS2Rv7LOAJAkvW8aFKZHDSgQmw+RxGth+/ltH9CXt87EGUnQJRbcdo0T/Bc4zbU6/WxRmAM7bYDztysRck4gXhSldqNNa15JCi0gzVEvTtUmLmHMShMpoggpJU9+Nb
+X-HE-Tag: 1788990682-832103
+X-HE-Meta: U2FsdGVkX1/cmtzJnE19wtKcNq+e88reaQq2a9u5hS3/hTbwkGWWexp4OEHO44lpTtu0ImJ3YWOn8oSh2bYPTvqMBfypZlsK1F7q3enNGS2uaUH7xPUg5uEpbx+lyW77voCJ5z92KGaAJSmTYyXl8+My6QDyA5g0+r4URvY70WmdiRqJkZVWsKdpLRHBz/M9jCPyqNUrHYgmfaCLtTtyNjm6OdJJ6BOY5/807QT6AMzuc2v2aeU9uMVNNdNc3l/eisvjdRoQoZhZiCCmkVbfICRYWs37rOcpnGev7wLtrq2Ka4XT0RGNtbFDHSnFI13YFSv/f9r1uakbqeMHlukftG2tyvYUDjhQTxZFomcmGY5QFs0ACaMJh860hlxnf0zAcTOrJCZlMvM4USnPq658geTe7ffBxkE/pgDZavxicOAw9mXQfqH9/ryvEF/M1rjP0vJvlcpFvFbk6NHVdbpf4nDL+s3UATNq2ELe12ddev0/lreNxT6Dvt9Er4ArWTbcwuKZjTFbcMDL8XIsPGSN75YcMoqUb7+Nztmo1TCqb37xmw+qJMZjE6QxcSg1VfXaDOCFdaH0G48bp0GqCk6mwD9Ym91CYG3ZEYsloy+eDY4t5BzAxNLfakbG595VeUuJqSspvxJItCVaQqkNzfjczhNjhyCqopOhb9u+8bgfdxga7WVZera0tBYSNdNsVGcUjW88h02Xyfrk13bZCa89lGq6S5fw80lWQyyVr7Q5eUTmLJx2h6MO5BDE0OEJyMdFy/KEisuAPoscmrrkrPtNij06guHHMXuAMcGQtAi7oHRbW5WwApnvItMAoOvVvX5Ccte1QsxxgTR1bKGHDpKo3x+XYxLkr4L+Hwfdt/1jPC5kNBaTO21CHS5QFhailv/HA9V3iIJYkwD1/OAWJDqM+Sos/SDbi700b1WICxlCKpANwWrKndXmR3BH+w9pTdS9TQN8Onh2dP16daDc3DM
+ pDpz7f/i
+ JqtIB5pw+gFDFJ+ajw9ADUPv7hMns3m556TbYWc70JFYxWCM08nYlvIf9/0PT6p85JZ5gJbaSpxm0hnocGMSmF2QwrnmzzNREgkXydKzznQQyq/vnFBug18WKKPuHkbhvHjD8yFtjmQS8e04ggZdtuP5+Je2mGRhvE/8klG4TriaHn/hF1tBP8xM6L+CdUmBRuDIwiH2OvxTIHpxJ5MH3wkMqCMdHzt+0yfn57Zr10QbadVdm3y0GN12WbVRu77cSFnK2H5DUsL3D/TFA0oGjzJWmFHzqEXi9EqUKHWsZB7tfXgty1GT92Pg2G7e20ncO6oYgdxL0ubERJco=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,105 +144,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+On Wed, Sep 9, 2026 at 12:16=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/9/26 20:28, Suren Baghdasaryan wrote:
+> > On Wed, Sep 9, 2026 at 10:16=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 9/7/26 08:39, Suren Baghdasaryan wrote:
+> >>> smap_gather_stats() interprets its start parameter to mean vma->vm_st=
+art
+> >>> when it's set to 0. Eliminate this special interpretation and pass
+> >>> vma->vm_start explicitly when needed.
+> >>>
+> >>> Since smap_gather_stats() operates within a single VMA, we can replac=
+e
+> >>> walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
+> >>> which is simpler and also can be called while holding per-VMA lock.
+> >>>
+> >>> No functional change intended.
+> >>>
+> >>> Suggested by: Lorenzo Stoakes <ljs@kernel.org>
+> >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >>> ---
+> >>>  fs/proc/task_mmu.c | 40 ++++++++++++++++++++++------------------
+> >>>  1 file changed, 22 insertions(+), 18 deletions(-)
+> >>>
+> >>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> >>> index 9908ba32f180..3351decd1172 100644
+> >>> --- a/fs/proc/task_mmu.c
+> >>> +++ b/fs/proc/task_mmu.c
+> >>> @@ -1246,20 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_pri=
+vate *priv)
+> >>>       return &smaps_shmem_walk_vma_lock_ops;
+> >>>  }
+> >>>
+> >>> -/*
+> >>> - * Gather mem stats from @vma with the indicated beginning
+> >>> - * address @start, and keep them in @mss.
+> >>> +/**
+> >>> + * smap_gather_stats() - Gather mem stats from @vma.
+> >>> + * @priv: proc maps private state.
+> >>> + * @vma: The VMA to gather stats for.
+> >>> + * @mss: The accumulated stats.
+> >>> + * @start: The address from which to start.
+> >>>   *
+> >>> - * Use vm_start of @vma as the beginning address if @start is 0.
+> >>> + * This gathers stats for the whole of the VMA unless the lock was d=
+ropped
+> >>> + * and VMA grew or got merged and we found it again, in which case w=
+e only
+> >>> + * gather stats for the remainder of the VMA range.
+> >>>   */
+> >>>  static void smap_gather_stats(struct proc_maps_private *priv,
+> >>>                             struct vm_area_struct *vma,
+> >>> -                           struct mem_size_stats *mss, unsigned long=
+ start)
+> >>> +                           struct mem_size_stats *mss,
+> >>> +                           unsigned long start)
+> >>>  {
+> >>>       const struct mm_walk_ops *ops =3D get_smaps_walk_ops(priv);
+> >>> +     const bool is_partial =3D start > vma->vm_start;
+> >>>
+> >>>       /* Invalid start */
+> >>> -     if (start >=3D vma->vm_end)
+> >>> +     if (start < vma->vm_start || start >=3D vma->vm_end)
+> >>>               return;
+> >>>
+> >>>       if (vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
+> >>> @@ -1279,20 +1286,17 @@ static void smap_gather_stats(struct proc_map=
+s_private *priv,
+> >>>                * Unless we know that the shmem object (or the part ma=
+pped by
+> >>>                * our VMA) has no swapped out pages at all.
+> >>>                */
+> >>> -             unsigned long shmem_swapped =3D shmem_swap_usage(vma);
+> >>> +             const unsigned long shmem_swapped =3D shmem_swap_usage(=
+vma);
+> >>> +             const bool shared_or_ro =3D vma_test(vma, VMA_SHARED_BI=
+T) ||
+> >>> +                                       !vma_test(vma, VMA_WRITE_BIT)=
+;
+> >>>
+> >>> -             if (!start && (!shmem_swapped || (vma->vm_flags & VM_SH=
+ARED) ||
+> >>> -                                     !(vma->vm_flags & VM_WRITE))) {
+> >>> +             if (!is_partial && (!shmem_swapped || shared_or_ro))
+> >>>                       mss->swap +=3D shmem_swapped;
+> >>> -             } else {
+> >>> +             else
+> >>>                       ops =3D get_smaps_shmem_walk_ops(priv);
+> >>> -             }
+> >>
+> >> Horrible, horrible code, really. But not your fault :)
+> >>
+> >> I think we can just make the shared_or_ro less odd by just checking fo=
+r cow
+> >> mappings (as described in the comment).
+> >>
+> >>         const bool is_cow =3D vma_is_cow_mapping(vma);
+> >>
+> >> ...
+> >>
+> >>         if (is_partial || (shmem_swapped && is_cow))
+> >>                 ops =3D get_smaps_shmem_walk_ops(priv);
+> >>         else
+> >>                 mss->swap +=3D shmem_swapped;
+> >>
+> >> That's almost in a form that I could understand what's happening.
+> >
+> > Hmm. So, are you saying that !is_cow always implies shared_or_ro? Or
+> > maybe you are stating that vma_is_cow_mapping() was the actual intent
+> > here?
+>
+> So the comment says:
+>
+> "For private writable mappings, we might have COW pages that  .."
+>
+> Which translates to:
+>
+>         private writable =3D=3D vma_is_cow_mapping()
 
-When folio allocation fails early (e.g. buddy allocation failure or
-cgroup charging failure) and a reservation was not used (meaning an
-unreserved global page was needed), the subpool page acquired during the
-allocation attempt must still be returned.
+Ok, just want to make sure I'm not missing something subtle.
 
-Currently, the subpool cleanup error path only returns the page to the
-subpool if a reservation was used. If no reservation was used, it skips
-releasing the page back to the subpool, permanently leaking the subpool's
-used pages counter.
+>
+> >
+> > shared_or_ro =3D VMA_SHARED_BIT || !VMA_WRITE_BIT
+> >
+> > is_cow =3D !VMA_SHARED_BIT && VMA_MAYWRITE_BIT
+> > !is_cow =3D VMA_SHARED_BIT || !VMA_MAYWRITE_BIT
+> >
+> > so, !is_cow would impy shared_or_ro only if !VMA_MAYWRITE_BIT always
+> > implies !VMA_WRITE_BIT. But I think it's possible to have a VMA that
+> > has VMA_WRITE_BIT but not VMA_MAYWRITE_BIT, right?
+>
+> VMA_WRITE should imply VMA_MAYWRITE
 
-With subpools now always tracking used pages, always release the page
-back to the subpool whenever a subpool page was acquired.
+Ah, good to know.
 
-Opportunistically rename the local variables tracking global reservations
-needed and global reservations returned. This clarifies the accounting:
-a value of zero for needed global reservations indicates an existing
-reservation satisfies the allocation, while a non-zero value indicates
-new global pages are required.
+>
+> (in sanitize_fault_flags() we even disallow write faults entirely if VM_M=
+AYWRITE
+> is missing)
 
-Adjust global reservations using the difference between reservations
-needed and reservations returned to properly handle races where concurrent
-threads interact with the same subpool.
+I see.
 
-Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Cc: stable@vger.kernel.org
----
- mm/hugetlb.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+>
+> For example, a
+> > driver can create such a VMA to allow writing to the VMA but to lock
+> > its content once mprotect(PROT_READ) gets called.
+>
+> I don't think that would be valid for a driver to do. But it wouldn't mat=
+ter
+> here because
+>
+>         shmem_mapping(vma->vm_file->f_mapping)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 9eb9f3442574c..652cfb55c6e6e 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2957,7 +2957,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct folio *folio;
--	long retval, gbl_chg, gbl_reserve;
-+	long retval, gbl_resv_get;
- 	map_chg_state map_chg;
- 	struct mempolicy_interpreted mpoli;
- 	gfp_t gfp = htlb_alloc_mask(h);
-@@ -2996,8 +2996,8 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 * Or if it can get one from the pool reservation directly.
- 	 */
- 	if (map_chg) {
--		gbl_chg = hugepage_subpool_get_pages(spool, 1);
--		if (gbl_chg < 0) {
-+		gbl_resv_get = hugepage_subpool_get_pages(spool, 1);
-+		if (gbl_resv_get < 0) {
- 			ret = -ENOSPC;
- 			goto out_end_reservation;
- 		}
-@@ -3006,7 +3006,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		 * If we have the vma reservation ready, no need for extra
- 		 * global reservation.
- 		 */
--		gbl_chg = 0;
-+		gbl_resv_get = 0;
- 	}
- 
- 	/*
-@@ -3017,10 +3017,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		alloc_flags |= HUGETLB_ALLOC_CHARG_CGROUP_RSVD;
- 
- 	/*
--	 * gbl_chg == 0 indicates a reservation exists for this
-+	 * gbl_resv_get == 0 indicates a reservation exists for this
- 	 * allocation, so try to use it.
- 	 */
--	if (gbl_chg == 0)
-+	if (gbl_resv_get == 0)
- 		alloc_flags |= HUGETLB_ALLOC_USE_GLOBAL_RESERVATIONS;
- 
- 	/* Takes reference on mpol. */
-@@ -3074,13 +3074,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	return folio;
- 
- out_subpool_put:
--	/*
--	 * put page to subpool iff the quota of subpool's rsv_hpages is used
--	 * during hugepage_subpool_get_pages.
--	 */
--	if (map_chg && !gbl_chg) {
--		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
--		hugetlb_acct_memory(h, -gbl_reserve);
-+	if (map_chg) {
-+		long gbl_resv_put = hugepage_subpool_put_pages(spool, 1);
-+
-+		hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
- 	}
- 
- out_end_reservation:
+I was obviously overthinking this :)
 
--- 
-2.55.0.1007.g17ff1f9808-goog
+>
+>
+> I think we could simplify the comment as well to:
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index e671b4fd8dedd..4b7e7089cafa7 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1303,12 +1303,10 @@ static void smap_gather_stats(struct proc_maps_pr=
+ivate
+> *priv,if (is_partial || (shmem_swapped && is_cow))
+>
+>         if (vma->vm_file && shmem_mapping(vma->vm_file->f_mapping)) {
+>                 /*
+> -                * For shared or readonly shmem mappings we know that all
+> -                * swapped out pages belong to the shmem object, and we c=
+an
+> -                * obtain the swap value much more efficiently. For priva=
+te
+> -                * writable mappings, we might have COW pages that are
+> -                * not affected by the parent swapped out pages of the sh=
+mem
+> -                * object, so we have to distinguish them during the page=
+ walk.
+> +                * In CoW mappings, we might have anon folios that are
+> +                * independent of the shmem object. So fallback to the le=
+ss
+> +                * efficient mechanism in such mappings.
+> +                *
 
+Sounds good. Will update.
 
+>                  * Unless we know that the shmem object (or the part mapp=
+ed by
+>                  * our VMA) has no swapped out pages at all.
+>                  */
+>
+> --
+> Cheers,
+>
+> David
 
