@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D01BC79FB9
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAAFBC79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560DD6B009D; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
+	id 81C7D6B0095; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EC4A6B0099; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
+	id 7AF0A6B0098; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B9AF6B009B; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
+	id 55FFA6B0095; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C0856B0095
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2944E6B0096
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:28:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE3971A015B
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C85DC80141
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:28:32 +0000 (UTC)
-X-FDA: 85193698464.29.E8583BB
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EB27F100003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:28:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6gk98iMQ;
-	spf=pass (imf14.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+X-FDA: 85193698464.20.D2611D9
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E00A040002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:28:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ldFaxn2U;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788946111;
+	b=XmCqgLYZ3n21FS5NNgIbI9Z1j1j+zzSyY0uW2QMJkQFgLRPYM7SbIKcoP3amzJoNAEArtg
+	X4rV6mHQyUU40wmVAq4NEdFcyX7Bi13EUV5A9nMgXVmvGioELTj5xIN5034xYN8BwtWg6e
+	8bh9zmCCK+ZgOMtx1W2HR6r4edrTtVE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ldFaxn2U;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788946110;
+	s=arc-20220608; t=1788946111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vq7c/Hvo/1Zm+J68rStWCQQNc5Z7oKaUjk4qiUyJp1Y=;
-	b=bbDTbf0nUcVrTlkE6yKRKcHR2Z5/7DvDvr/mllLX23Zu4b44yBjYazn1Ztwa7cD10bTfbZ
-	0Efg8o1aX/2lRXx6JBGpQU/AEdAfu0oqhDySPA5EypPMSCha4bXAXHHzP/XLoXCNxR1Uwu
-	5fQ53t2dwc7ToKpiIKiIxg7mCHTnhWI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788946110;
-	b=jN0Dl1/bT10iefXqKo2QxYmGUYdSyrtvLOpSTd68t0UDiY0YdrdNJ8PDTbTeMTKNHz//OE
-	fkpzIkBDuMC7+LYNpTQ7iYkyLI5uUN1/gzdNCPxcxZguHIKaenWf1RTLnPBV+YyvVF5lPG
-	kNVN63nt9ALpRYB1GlTujglA0S5QsMc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6gk98iMQ;
-	spf=pass (imf14.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uD/le38L7H4MWPEqTkCfnYrHEznDm74M/5CQRYxFSEw=;
+	b=5t2wfu5S5NzAeEiO3SWk4/9i0m4szmwGetcLuoJs/rNZbfz2bsnPvrEf98cBptlyxEVWQV
+	/WgEMF1bIHC4R99lyROhW7bt1L3+4nXmOrerSPdaabf4sOsOK/ZEasQU7EdAJtGztmuNWW
+	EQdc8VB9UPmz5pyV4fguCa9LsXsiMws=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=Vq7c/Hvo/1Zm+J68rStWCQQNc5Z7oKaUjk4qiUyJp1Y=;
-	b=6gk98iMQGo1gYBiiYU1dJBNw/Pj4RPpuBoLrnCud96ixy2LzEuPNHyX5ExdD+1MWqOMQazx+a
-	wDmZqNjofk4sDgLF9E/t0cZgC4EpqbL0RHb85jIguPzGJC3wRlxmRRDyGKrMY8+jtkO/fDhJ8QQ
-	skPTxlhKqpoKzNZKWSU3VQk=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hfwF536cLz1cyTS;
-	Wed,  9 Sep 2026 17:17:29 +0800 (CST)
+	bh=uD/le38L7H4MWPEqTkCfnYrHEznDm74M/5CQRYxFSEw=;
+	b=ldFaxn2U3xz8nsmyFbzrsh4qQ6czzb/jEGiOl8c/LzX2rZ6q7TMtvticJzcTl847AE6rxoOKO
+	Ae0y15A+0xqy5c3moeVm/5+m9Vu1ncHjgMaoUM4MeE20xIOio5xgiLsfWnpmanQhXVxUn2pMtCQ
+	CV+sHlpS63nq3Hg1f49vzJo=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hfwDL75Tsz1T4Fq;
+	Wed,  9 Sep 2026 17:16:50 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CE5D4048B;
-	Wed,  9 Sep 2026 17:28:23 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7D78040575;
+	Wed,  9 Sep 2026 17:28:22 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 9 Sep
- 2026 17:28:22 +0800
+ 2026 17:28:21 +0800
 From: Jinjiang Tu <tujinjiang@huawei.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
@@ -73,26 +72,24 @@ To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
 CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
 	<tujinjiang@huawei.com>
-Subject: [PATCH 1/3] mm: define generic pudp_invalidate() implementation
-Date: Wed, 9 Sep 2026 17:00:16 +0800
-Message-ID: <20260909090018.1991485-2-tujinjiang@huawei.com>
+Subject: [PATCH 0/3] arm64: Add support for PUD THP
+Date: Wed, 9 Sep 2026 17:00:15 +0800
+Message-ID: <20260909090018.1991485-1-tujinjiang@huawei.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260909090018.1991485-1-tujinjiang@huawei.com>
-References: <20260909090018.1991485-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E00A040002
+X-Stat-Signature: 1q8xknos965xe67n8cdtoauwidqz7fme
 X-Rspam-User: 
-X-Stat-Signature: 3rkk688ttiip36t97qrnemj5imenhztp
-X-Rspamd-Queue-Id: EB27F100003
-X-HE-Tag: 1788946108-213770
-X-HE-Meta: U2FsdGVkX18k/dVveR6WtGAoiuGOb4qlutUSpi8ix2xK0tR9CObx5NWToxSJHndOcHop/+7jXnqbvaJ+k53wm3rgwtpyxc8k093Mae4LDrnq5WiGjE4a1Tnhju5isgjV75wPVI4HrRauv1CJDNvJAjRfRZVzVXS8b/4Ad2CLjjyC7XmQfkFmyN1uiTfsXP7n15bLo6OVhSwJ5feVxZGLck4eWCA/fIsgGOT4JDapjT8b4FSEZUj4CRlVk/avys0lFTqTS8AC+on9xDoQsujVZyxusemxIzotyFl6plNTyNlqt90OtrJhMNuNI4U1sJ8QtcHPbP308O08bYPuFk8AEb31uaW4+iVIozKbSRtumvESmhC5Z5gfnZhVSum1yHns95r+XBBfzXVt1qj3Ph5+nBT0UMCvc7QAmE5Lg6bYDBoRN3xvmkDwiv2KyG+hjFRztFYkgeHf07xuo9UBwGEI4B7YNjxSwPkV1rFc25oUrJopKPHCuSH1h31TS5917mZ1nppMv1Px6gR5kxPak8kSY9jMauzr9Ds4cZm3jkj6VP/IEu9P56j+N8Bvet+PeSe4ivgHcToPH8eai/p9KIM+zS+fVu9GOKoGgg60at+PlJpaBJAWR5mKKmBrjnTCU9QaVMOsIT27UYssZnoFGMIc/1BulAJqHs8L1AWw+4EDZJfNaW2ubjVcud9QLRTpx6v5jmcLQjCUA4bNgcUNQoA0np72adRxlNP+ZR/A02BZKcfJn3ZR8WStenF4UaKIh7DWu128KTPiYU3TtjEaVsu8mal/RiBNUXupdIu7T+0Y+yWlzN5lArQtQ3m8FdPknA3w9IMdvJy+pqJ/HgFUAqz7gV+vDABFKoii+DU390yIl1lkCxfwFzIDgQ9KDwpK+TO3Ggu2mODTYgto0heyHyzvqffm56S2PgMhFM35SRtYrNwIt7yRFR4BNUcpO3nxMzSPv1o7RjKFHg9M8y7hye4
- uPZuz50n
- 5PxNsODhM9upeTNbR0VX0oMioX7DeDXDcaXPkfVoN7e/mv8+RlkG06Nrew5zS65Hr8qs0oN/iMB5F2vXYGtwjYaNSk3tiPSwEF3aZugds7SAXIq95ak+lz7iK6UTgH9h7kNJju/HiMSnDWkbKkAJ8V7MYyusOtwG1VeINLjtnifi7Lj0BiSSNKpEcfF62SDe/aX5SPQM6tAHePRwh1xabjWLxj9Vfme2nkIFC8UjGCrctYDHMEjWz2qHKy3+UfUSa6P61HnTY1Z4dstSuK1wauixd6/2t2WAXfywz6Kdrd+a/mUWfHcZWuPKb2aDZK/gKBXvdeBlSAtbJuZFSeTCDohAxxw==
+X-HE-Tag: 1788946110-833596
+X-HE-Meta: U2FsdGVkX18B9xurJs3Zby/3fBkiJzu+f7GOhqXwnE5w+JLfP0/KoW05c+rD5BmRceGrNm2RKFBIczITyecQqd8SpY9lxi+APza7Rw9Rdt6lTtfyQ29IXI9ZF4gOQ95uthyMI8lv/bW8FA6kwPf4JgE0KzByAKkpbDDEohxCIugS+/+2L4wWI1VB3hi1c5OIoLHsquczQclzqviVR/G1N4+cj5qytH2aA25jEPAd72+XJ8VEor0kll3x49n90IccRr1dNG8L5Rhp71cqIMA0TWWYUdZYO+tyxWIKBRXTWth3yi0nnnxMhIbQV1LwacLfdZ9c+lbu2fnuJ8AqEHe5SSEGCZvYnOevBM+5qUr6d+d27jOqUCfQWU+bnRew0d6PBWOYceMzRJlHwAKeOzYq2PS1rnH5aMpN1GbZDTZA1927zoGwJVcQRRoubruuZNSxgs6XOCrXXBgBOq1XRaYqA+n+CcYy2kbIPlZHkaIYtXBxgoieX433cHXy89xGzGwUhZYXlPhtuScVZi86ikqBWQH2r39PUrlCxloW5IqIgodUEzE5TFtRnAWBRWgNtx0ZI5dU1zLSTWdv5QoQDAF4abZoUX8RMtkRkCMDterSVq3LtuFkNRI0XcmEtRoVUw6oqjg0eaDRpIFYIbBYn+No2XQ225inzz8o+ymKy+Ev2PpgWkBgxZRB+jqU1Ojlz5JnB90j9SoN+IqLSga8deC/qeY6+wa2BNwOmpv9jdc8sRBm0o7BFGruPRu+4fQXc/V7Q7Bg2zXXMHse6nkJ7n3/iHbBcTQXVPc5w8LT0Mx4Fetunj19X8yKFG24VnpEiDwjL0O9sO5uKz5rCGoUMGowueA6eDvraCrnqYHYjL6Yc2Xna4+fbTjG94SQkECOir9GQpMc1dKKSW90hS5tkCq92g5H2FBBzEwhnGF4JGw0J71+6UDz77KoXVhS8Mv6FNhTA46zthmcPXyiVtcRojC
+ m0lUpCK4
+ 29BzMatAzg6YnL9zIazE6OCkj3035/2be+WDIp6iDbgfS8gqQseWjqdbM2Ofw9mu8l0BycfrQGHJQQ6Cn2c5Qy3K7M0I4scwtNqgw2mGcEflohH5UmiprfPabE7cn77QMimHcbISRgNAeb4gfnPrL5yEoud/Jl07y9HGR13/7KooDmAE0nQtDPaawM4+DOW/Z8sG7KaICT+d2ED5OD7NO/+ZTNnscbllAgTSwaJzZATkC1SH2xo34n09MS0LLU3yFJUwA5G8PefBqPNgYWyKdkyOWQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,150 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-x86 and riscv have identical pudp_invalidate() implementations. Move it to
-mm/pgtable-generic.c with the __HAVE_ARCH_PUDP_INVALIDATE override guard.
-PowerPC keeps its own implementation. In the later patch, arm64 will use
-the generic implementation too.
+This series adds PUD THP support for arm64, enabling PUD THP for DAX
+and pfnmap.
 
-No functional change intended.
+Patch 1 moves the identical pudp_invalidate() implementations from x86
+and riscv to a generic location so arm64 can reuse it.
 
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
+Patch 2 is a minor cleanup that simplifies pmd_special/pmd_mkspecial.
+
+Patch 3 adds the necessary PUD page table helpers and selects
+HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+
+Jinjiang Tu (3):
+  mm: define generic pudp_invalidate() implementation
+  arm64: simplify pmd_special and pmd_mkspecial
+  arm64: Add support for PUD THP
+
+ arch/arm64/Kconfig                           |  1 +
+ arch/arm64/include/asm/pgtable.h             | 71 +++++++++++++++-----
  arch/powerpc/include/asm/book3s/64/pgtable.h |  1 +
- arch/riscv/include/asm/pgtable.h             |  3 ---
- arch/riscv/mm/pgtable.c                      |  9 ---------
- arch/x86/include/asm/pgtable.h               |  3 ---
- arch/x86/mm/pgtable.c                        | 12 ------------
- include/linux/pgtable.h                      |  7 +++++++
- mm/pgtable-generic.c                         | 14 ++++++++++++++
- 7 files changed, 22 insertions(+), 27 deletions(-)
+ arch/riscv/include/asm/pgtable.h             |  3 -
+ arch/riscv/mm/pgtable.c                      |  9 ---
+ arch/x86/include/asm/pgtable.h               |  3 -
+ arch/x86/mm/pgtable.c                        | 12 ----
+ include/linux/pgtable.h                      |  7 ++
+ mm/pgtable-generic.c                         | 14 ++++
+ 9 files changed, 77 insertions(+), 44 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index f4db7d7fbd5c..55d33c5537f1 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1419,6 +1419,7 @@ static inline pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm,
- #define __HAVE_ARCH_PMDP_INVALIDATE
- extern pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 			     pmd_t *pmdp);
-+#define __HAVE_ARCH_PUDP_INVALIDATE
- extern pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 			     pud_t *pudp);
- 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 40b1ed4f3ea8..327fa378032b 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -1159,9 +1159,6 @@ static inline pud_t pud_mkinvalid(pud_t pud)
- 	return __pud(pud_val(pud) & ~(_PAGE_PRESENT | _PAGE_PROT_NONE));
- }
- 
--extern pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
--			     pud_t *pudp);
--
- static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
- {
- 	return pte_pud(pte_modify(pud_pte(pud), newprot));
-diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
-index 9c4427d0b187..156e385e7db4 100644
---- a/arch/riscv/mm/pgtable.c
-+++ b/arch/riscv/mm/pgtable.c
-@@ -154,15 +154,6 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- 	return pmd;
- }
- 
--pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
--		      pud_t *pudp)
--{
--	VM_WARN_ON_ONCE(!pud_present(*pudp));
--	pud_t old = pudp_establish(vma, address, pudp, pud_mkinvalid(*pudp));
--
--	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
--	return old;
--}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- pte_t pte_mkwrite(pte_t pte, struct vm_area_struct *vma)
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index d5f4917c1edc..97051c02385e 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1387,9 +1387,6 @@ static inline pud_t pudp_establish(struct vm_area_struct *vma,
- extern pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma,
- 				unsigned long address, pmd_t *pmdp);
- 
--pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
--		      pud_t *pudp);
--
- /*
-  * Page table pages are page-aligned.  The lower half of the top
-  * level is used for userspace and the top half for the kernel.
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index cb03f5a2b243..0945908631dc 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -519,18 +519,6 @@ pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma, unsigned long address,
- }
- #endif
- 
--#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
--	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
--		     pud_t *pudp)
--{
--	VM_WARN_ON_ONCE(!pud_present(*pudp));
--	pud_t old = pudp_establish(vma, address, pudp, pud_mkinvalid(*pudp));
--	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
--	return old;
--}
--#endif
--
- /**
-  * reserve_top_address - Reserve a hole in the top of the kernel address space
-  * @reserve: Size of hole to reserve
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c093c119e5a..32173005b087 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1318,6 +1318,13 @@ extern pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma,
- 				unsigned long address, pmd_t *pmdp);
- #endif
- 
-+#ifndef __HAVE_ARCH_PUDP_INVALIDATE
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+extern pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-+			     pud_t *pudp);
-+#endif
-+#endif
-+
- #ifndef __HAVE_ARCH_PTE_SAME
- static inline int pte_same(pte_t pte_a, pte_t pte_b)
- {
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index b91b1a98029c..ac1175d9a59a 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -217,6 +217,20 @@ pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma, unsigned long address,
- }
- #endif
- 
-+#ifndef __HAVE_ARCH_PUDP_INVALIDATE
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-+		      pud_t *pudp)
-+{
-+	VM_WARN_ON_ONCE(!pud_present(*pudp));
-+	pud_t old = pudp_establish(vma, address, pudp, pud_mkinvalid(*pudp));
-+
-+	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
-+	return old;
-+}
-+#endif
-+#endif
-+
- #ifndef pmdp_collapse_flush
- pmd_t pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long address,
- 			  pmd_t *pmdp)
 -- 
 2.43.0
 
