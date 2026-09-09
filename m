@@ -4,151 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A63C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:25:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0008FC79FBD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:25:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55B256B00A1; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
+	id 051386B00A3; Wed,  9 Sep 2026 13:25:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5393E6B00A2; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
+	id 028C96B00A4; Wed,  9 Sep 2026 13:25:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 448196B00A3; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
+	id EA8176B00A5; Wed,  9 Sep 2026 13:25:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F2586B00A1
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E8CB1C0A9F
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:36 +0000 (UTC)
-X-FDA: 85194900672.06.C09C04F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C6D8740006
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp8ty+5V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CAF6E6B00A3
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:25:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C29E12027F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:41 +0000 (UTC)
+X-FDA: 85194900882.20.33A051B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6DD3A20008
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Np2zHsZY;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788974734;
+	s=arc-20220608; t=1788974739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mn85r7VDgTlh3aUR+NGvwOWOBcsUrlMRqggXVv8xvpI=;
-	b=oG77zZA2hAVZvMQSsZow2w9WpBkE8AiLvhkna3OQaNYxQGXxC8xn9kYwi3HJKMG75q0hw5
-	gxxWBiO4jeLxfVJ4g/GPDUz5veH/GQjVFhXNnw7kD8vwRVpfpPKdlQBaegS77fb9C+ZfDI
-	jAqX5QY0R0aSZVmyl9KN7V3sjPudDV8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788974734;
-	b=UFu6B0GZYw0POdhHUbfacNjgYzMcwA8Jb2+Klf3yW2LUbJQO3glzuGIKig2VST/o3HylD3
-	4g9FWTEaqiw+pFiGCWBzxrfGasJ2hUW0VodpiUXnrUMB8h0HzNtYbQi/fTLVMbmSSB4e9O
-	dLUKRSp+60umT54prCeJWT8aErk72aQ=
+	bh=Pubbd2dNu1LQzdMpKfGD1I+IW+yVdlfvOm5SQzKSwOA=;
+	b=Ia3PcuzLvJuKIfYguq45Hv97cQkkQaV2h/NOhUWSGNwdHVadLQK8Pz3CqhNxRVX2MrEONB
+	4YKciMwNjHGA0MK6OiPoKh+f2XghSJRLphNLCOPfNyQ5r69iUnogrf+DlRWDced464R2cA
+	CLvxxrO4LTAOfpZCvdNjFhuogHNjUY4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp8ty+5V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Np2zHsZY;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788974739;
+	b=j/Hipe0/v4mnk+UotckEAJ91iwxN6GbWqFuHTVPhxljlRT7hLCS2o1YH3JXNhk8MLa5dqZ
+	IgLTNFnDpVplvzYyK5yfTL6Z8qmSWd2hYP6n5GJ/9zonHgH/D68KKucdeDQOppaIir9Z2B
+	udB4f073WvqXmR0//oYjM3VAPslq7Ic=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1CDF1601EF;
-	Wed,  9 Sep 2026 17:25:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57CE1F000FF;
-	Wed,  9 Sep 2026 17:25:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D2AE043F2E;
+	Wed,  9 Sep 2026 17:25:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1130C1F00893;
+	Wed,  9 Sep 2026 17:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788974733;
-	bh=Mn85r7VDgTlh3aUR+NGvwOWOBcsUrlMRqggXVv8xvpI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Zp8ty+5V1ia71Mih2o0WCo4SvqrBSau3a3X2hA5v+mvi8+//uxn2FjZkddDnC7VvS
-	 /N0vjuc+qH3EySkZSoF+4PQBzqiZWFgvitMo3EKvQfcwihVrQ8j4CC9S2sXH0sJMRY
-	 kZnoMm5zO/OLzxDfV3XwYv7hxekZ4yDw+ZiE3ID398Piujj6SxaSEpEuGKnPQzng7V
-	 im8KLuKMu9GEs++nCaLuFvSyTKp4ODr1aRuWfUctDgDxoF4VmU38iAMfBtd0XF4I2P
-	 O58/p1v2PYelPTKbY1f0bZlxrfGM9zF72WAo8bmsCCnwMfP6itnmlfJrUgFRapGa+w
-	 icq/BG3dxXKtw==
-Message-ID: <2b0a6809-bd88-4133-a002-7a9acb2a973e@kernel.org>
-Date: Wed, 9 Sep 2026 19:25:23 +0200
+	s=k20260515; t=1788974737;
+	bh=Pubbd2dNu1LQzdMpKfGD1I+IW+yVdlfvOm5SQzKSwOA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Np2zHsZYyQkXFsoQXHrepxlLGabd+RY/LBmPCa+qEqed8bCT4ZETBek7x/fepo2cf
+	 chc0NHhTyWBOo6MGAe1MrYbgn7rNMGHB+e1UrAiQxAUHgqiXvdoqS10NF4irGfKGVI
+	 OZJQwaSiCY2nNlmpzquIIfCMsl9L+cAJww6j7RQg4rEeYoATXyukmi6ZDsLquBc5uv
+	 jbodWLtGPjBeZ5BJD1s91Ykdq+MH+S8UREAaZvPNBRWDpRr0ED+x0Ok8sayWFcQ6pQ
+	 54ujIFeehVia5phkoxeM18mkzVx3GTUC3a4BKwkk6m7ri25RP/Lk54BM9PfdUa/6sZ
+	 QZyhRCK3nIy1g==
+Date: Wed, 9 Sep 2026 20:25:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v9 12/25] mm: kpkeys: Protect regular page tables
+Message-ID: <aqGWhJjE1VUZf8_3@kernel.org>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-12-743ad31b2c8f@arm.com>
+ <178877845406.3691569.12554855722197968629.b4-review@b4>
+ <bdba5b54-8733-4d47-952d-e1bd958a1ead@arm.com>
+ <ap-6PZqGZHhPD6u1@kernel.org>
+ <00e97c75-eef1-4587-b299-ab07591a07bc@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] mm/swap: add folio_swap_entry() and
- folio_page_swap_entry()
-To: Tal Zussman <tz2294@columbia.edu>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20260908-folio_swap_entry-v2-0-ee6d01dfa5e1@columbia.edu>
- <20260908-folio_swap_entry-v2-1-ee6d01dfa5e1@columbia.edu>
- <d0aa1ccd-d99f-4fa5-98c2-21cea0f413c7@kernel.org>
- <cf9a0873-5ef1-4a5d-ba16-8ba3583ac8ba@columbia.edu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cf9a0873-5ef1-4a5d-ba16-8ba3583ac8ba@columbia.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00e97c75-eef1-4587-b299-ab07591a07bc@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C6D8740006
-X-Stat-Signature: jriapy8zyh396rubw9nsj7m8hx9gjg7u
-X-HE-Tag: 1788974734-854465
-X-HE-Meta: U2FsdGVkX19vixfUYw6RoJEetgh8nV452RL3y3POZYp/iIVApl9pApffShwh/3LkqCdRKxBumF9bMDinR6ctHpb2KsyGsEJVSOJZ3zNbGzbnghQLp9jEUpTGhLV2Pmxf5knYDUK9D43I6zTadEBfKk7crAz1yZQHwUkCi0aQ54idhG+lmdo4PkHBtY6QO2r74FrBSANRM3a1BXjJijCx8j66oEjKY9NW+0hGkp1pI6mUAkfLtymLqd7eW41ok3/ZUPy272Sd3hNy8YVc05A50lXv12Jd2vNAUHPY/aRSl+Axcma08avN2pDlUW0j9r8vZTM7oThhQxQPtUSKmiG2iWoTZynuwKKSGL9fBUXxpRB9ItaO3Lt0Ul6p7m2iura0OJFIohzSshBN7UibFfPsEBdP0qF8kox69CftOeFoV3rVQhDZXECoXbsV04Wp4XfwJbcT6ihVzueB3UFwQXwSWMc2jEJ7VWUvpEKtO/kF+T7K76UeG82n6sk50zIuVNpU2PS+KLwboCKn11QVe1Tfz7oyTDlrYJGXNUsPy1DnD3PfASfq4l0ye9ku7y8KppKfZiZzVV1WGZH9U47duDH0vlfrsNWjdCmXioPU4LAn149QWuD39CmR3CylWLu3vyWj5JHOQXMFkAyRCBUDUKmhVOQKDxVJMgN5zvDgs373MuV05HdjzWFt5ExEnM3ZuyW8b7ItJL8aPl3BP0l1lonLPI6PQFDeltiniu0L3Gl3h8IYRC5VwxxYSnGyIJCwbkxrVmJHtxGspnV3XueI59hjfvQA/MIqYxRCWe9MCHTxlvDQe2Kj/TquKtj56GVcvl16qOkx439RMplS0fGs5lzQ07aA/ph+50hFi2Xf0Hj240fENVKUcZDjejEg/CNEyJCbAWDNIFxqFBKsKUwisoCuTwNtgbXaaMwxCls0zTslD6xdRCpXm2XgLgsIh3yUXlKu+HV+S2OBhaaiTvLInkd
- cT12sk0I
- TJZpmS8tWkYLbZ3lBT1VFfSaFfG6KtyCC5/+CvGLn6d79kAbrhGi5FYhjRlVHs4PiuX/5IIRqRMtBq1KGs5oEIXrIAlR24kzPbGV93LkA80OXyqq8FwUUcmGu3Uxi6kdUBqyapkfOar3zho9JcMZbFBBf1Cq+eiT4LkiUr+PxbxJSoEIKpK+LHEVwWE1U5ke/cLOKXYBRZJf1HIeZHYnFuQs4M1myXIdk/kQiGTITsVP53bk6hXPMjxjHiqZ3tn16pyI12FuWd2ctWjx/XERy7rSnjkmO5iDFYG2vWTItESTLuIjaoBhPiqPf/w==
+X-Stat-Signature: 8c7nqi15miiy8tpq8sgdqfwo8dok3jku
+X-Rspamd-Queue-Id: 6DD3A20008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788974739-686794
+X-HE-Meta: U2FsdGVkX1+GMFuMWYd/ZELATnvACuP/8+o1poQku0+SNurU+JpX6+Hb80KxuKBCYNiacW3tMDzjPbUIDRp1l3t8l0ZZRWTZ5XyH34nNolXozGukk8CZIAGzBb6WFoQVz+ko+uQEaN0GAv6ivHSfso6Ga/TZ4efH0R1Y3B4f8PTHgPvgLvaYeyAu4qIwkVPMHyCVsdS7XcN9B1eKG3ndYITir3/Ejv/SlGiHv5OwYcqtJlpns1X9QbQKWvHvxG8kWiedvGkx5DNzG9OBff8TnSQm9bUg+gy5rWNNr8eToanggU7iLQEY2NG1rBD2iTl7QZTMcwIdlmOESPYrTIn8DhDSWb6PH6a8SN5NpUgxVCCN/FtrbleghI7n0KOxo1Ot1KMBauzArjv2UbjpHUIlhzb2raMPgJt9csESaqCfdJHuE0xFM8RFp6sGYf6yaeTkzUrIFTd3m/eksUGWqfHe9bcuoDJbQOHbvE53pxQYNrtXzUHIHGYSsVNN1UBoA33ACVijsGWN8nXY0EUpIIF+Syp2omd2ufPGc+OI47yzQNTBD2dy1SouVOGIXagWDJGDJz9EGwLbbcJjacrxt0Nnbyzwjv/Y9quoT5/g9uOi24MSA0wxLcxHGLxD19K5/FVmwLfw83o+ucVMVH6wQxB5vereLXl9QAO/8z34zL4tf/K601RJ9vPUbPifBziISnuy3U0ImEy2BQQrVQgFL4+6aFUimGFDepZ7d9kpXuH686XIUpBYcmBY//6z9m6hn6j6Z8u9t0okUi7gsAHQwvDlAd5HlxizycYaO0fMjAvn32+shkyct/O9aBMCj652+5NGXmcqGz0vThTtwG4z1mD2KnolrSrB3dXQqeK95pX61mjGXB7ExsSUDjxiCT1CXsXi63hCJF2Xl2MuM9eVniTuIwAIRXlyGRBT86XnX1LtIyu6hQjsGDoLSk0oHt7x0Gai5v6ILw8es/WIpGYGhZX
+ M8SMi6uI
+ P/McwSEOsDizIl7gg3Xqa7hET/94zONjEpe4em8QZyQkGimP1mEcPe6Z2ThrNrCBZEnDR5mFVhXtJn5rLodtSU01UqU3WUZJOoRUrD+4B/yhVSVxPPjglc9SoQXHQhMJS6Neqq/4HOjdylBlS1YL5jw7jj5W7LVsAmDhiRNfMyJ5AdUpEWx2wTyKKDWhbcGT6Prjbx+7bkCvKjwBzhBjqDqIkM9VIdcz50YWcidPuCgQhkISm9g0rYYGNyTXp71gDVWAa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,90 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 19:21, Tal Zussman wrote:
-> On 9/9/26 5:00 PM, David Hildenbrand (Arm) wrote:
->> On 9/8/26 17:16, Tal Zussman wrote:
->>> A folio in the swap cache occupies folio_nr_pages() contiguous swap
->>> entries starting at folio->swap, so a page's swap entry is just
->>> folio->swap plus the page's index in the folio. page_swap_entry() hides
->>> this behind a compound_head() call, and callers that already have the
->>> folio sometimes open-code the arithmetic instead.
->>>
->>> Add folio_swap_entry(), which takes a folio and a page index, and
->>> folio_page_swap_entry() for callers that have the page.
->>>
->>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
->>> ---
->>>  include/linux/swap.h | 33 +++++++++++++++++++++++++++++++++
->>>  1 file changed, 33 insertions(+)
->>>
->>> diff --git a/include/linux/swap.h b/include/linux/swap.h
->>> index fc290e29e4a9..1d979e76e78a 100644
->>> --- a/include/linux/swap.h
->>> +++ b/include/linux/swap.h
->>> @@ -272,6 +272,39 @@ struct swap_info_struct {
->>>  	const struct swap_ops *ops;
->>>  };
->>>  
->>> +/**
->>> + * folio_swap_entry - Return the swap entry for a page within a folio.
->>> + * @folio: The folio.
->>> + * @idx: The index of the page within the folio.
->>> + *
->>> + * A folio in the swap cache occupies folio_nr_pages() contiguous swap
->>> + * entries starting at folio->swap. The caller must ensure the folio is
->>> + * in the swap cache and that @idx is within the folio.
->>> + */
->>> +static inline
->>> +swp_entry_t folio_swap_entry(const struct folio *folio, unsigned long idx)
->>> +{
->>> +	swp_entry_t entry = folio->swap;
->>> +
->>> +	VM_WARN_ON_ONCE_FOLIO(idx >= folio_nr_pages(folio), folio);
->>> +	entry.val += idx;
->>> +	return entry;
->>> +}
->>> +
->>> +/**
->>> + * folio_page_swap_entry - Return the swap entry of a page in a folio.
->>> + * @folio: The folio containing @page.
->>> + * @page: A page within @folio.
->>> + *
->>> + * The caller must ensure the folio is in the swap cache and that @page
->>> + * is part of @folio.
->>> + */
->>> +static inline swp_entry_t folio_page_swap_entry(const struct folio *folio,
->>> +		const struct page *page)
->>> +{
->>> +	return folio_swap_entry(folio, folio_page_idx(folio, page));
->>> +}
->>> +
->>>  static inline swp_entry_t page_swap_entry(struct page *page)
->>>  {
->>>  	struct folio *folio = page_folio(page);
->>>
->>
->> "Return the swap entry for a page within a folio" vs. "Return the swap entry of
->> a page in a folio."
->>
->> yet only of the variants has a "page" in the name :)
->>
->> A bit confusing.
->>
->> Not immediately sure how it could be done cleaner. The minority of cases seem to
->> use folio_swap_entry.
->>
+On Tue, Sep 08, 2026 at 12:11:57PM +0200, Kevin Brodsky wrote:
+> On 08/09/2026 09:33, Mike Rapoport wrote:
+> > On Mon, Sep 07, 2026 at 05:52:32PM +0200, Kevin Brodsky wrote:
+> >> On 07/09/2026 12:54, Mike Rapoport wrote:
+> >>>> [...]
+> >>>>
+> >>>>  static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+> >>>>  {
+> >>>> -	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+> >>>> +	struct page *page;
+> >>>> +
+> >>>> +	if (kpkeys_hardened_pgtables_enabled())
+> >>>> +		page = kpkeys_pgtable_alloc(gfp | __GFP_COMP, order);
+> >>>> +	else
+> >>>> +		page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+> >>> Can we make it a sequence rahter than a branch?
+> >>>
+> >>> kpkeys_pgtable_alloc() does alloc_pages and then sets their pkeys, so I
+> >>> think something like this should work:
+> >>>
+> >>> 	page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+> >>> 	if (!page)
+> >>> 		return NULL;
+> >>> 	err = kpkeys_pgtable_alloc(page);
+> >>> 	if (err) {
+> >>> 		__free_pages(page, order);
+> >>> 		return NULL;
+> >>>
+> >>> with if (kpkeys_hardened_pgtables_enabled()) folded into
+> >>> kpkeys_pgtable_alloc().
+> >> I agree this would be less ugly. In fact this is pretty much what this
+> >> series did up to RFC v5 (albeit in the ctor/dtor instead of alloc/free).
+> >> We could go back to this API, *but* the big issue is that it makes it
+> >> impossible to use a smarter allocation strategy for protected pages.
+> >> Patch 14 in RFC v6 [1] will give you an idea of what such an allocator
+> >> (with support for large blocks and splitting) would look like.
+> >>
+> >> As discussed with David H we're first trying to land this feature
+> >> without large block support (fully PTE-mapped direct map), but we do
+> >> want to support large blocks eventually [2] and I would prefer the core
+> >> API to be already compatible with that objective. Very happy to hear
+> >> about suggestions as to how to avoid the explicit condition in
+> >> pagetable_alloc() though!
+> > We could unconditionally replace alloc_pages_noprof() with
+> > kpkeys_pgtable_alloc() and make the latter choose the right allocator, but
+> > that's not very nice either :/
 > 
-> Yeah... I considered naming them folio_swap_entry() and folio_swap_entry_idx()
-> (or a variant of that) but I liked the page version more. I can update the
-> comments to try to differentiate between the two a little more if that would
-> help. How's "Return the swap entry at an index within a folio"?
+> Yep I also thought of that but the naming would be really misleading...
 > 
+> Maybe, maybe, introduce __pagetable_alloc() that is a simple static
+> inline calling alloc_pages_noprof() if !CONFIG_KPKEYS_HARDENED_PGTABLES,
+> and otherwise checks kpkeys_hardened_pgtables_enabled()? Less ugliness
+> in pagetable_alloc() but even more further down, not sure this helps.
 
-I guess we should call it "page index" in the doc.
+You are right and I can't say I have any bright ideas.
+ 
+> - Kevin
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
