@@ -4,151 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C3AC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD5BAC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:25:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB1C6B0092; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
+	id B9C6D6B008A; Wed,  9 Sep 2026 10:25:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A92116B0093; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
+	id B0ECB6B0095; Wed,  9 Sep 2026 10:25:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A466B0095; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
+	id 9B0016B0096; Wed,  9 Sep 2026 10:25:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EE196B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:23:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12973120223
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:23:25 +0000 (UTC)
-X-FDA: 85194441570.01.ADCBA91
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 488CF40007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:23:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQiuCrQG;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 742596B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:25:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A446EA0255
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:25:41 +0000 (UTC)
+X-FDA: 85194447282.18.47BE124
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 45B238000D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:25:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KChA5PLT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KChA5PLT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788963939;
+	b=iygaNZhv0rKMfc7LQM6s0Ke1/truBJvZeoJdZzcFKyHfLwNJfxuxW6LBk+SIr4n3vZkrw/
+	Fmloh+J/dt1mWHFhQV2fXZemuULKt+QZjTQQcVP8VnV6F/MhSYqfgvtuanYPi/Wm7XuwiA
+	YRhB3RW6u5s969ITzCmKUO95Ez+2U2s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788963803;
+	s=arc-20220608; t=1788963939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i6W2FGwXgxwv6NRv5ZRSdh10FfBE7WUHV7rXrybSwJ8=;
-	b=O0ii5JnXdUzN/hfkZl3071cfiQh82pCUAjHMMRZiTFnPgc5Beayc2yXRUNrs/m0m/W7Fzb
-	0hp3LV9YvkarFoDJp868zBRaMP1qBa81WAoRk/VhHv6+ITSCAFEHhjiIlDWPjTItZPl82n
-	Q6ZfZ05TSbitUDtTvM25p8+WU99+iVA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788963803;
-	b=v71Hjr2quajTYpNhwXjYLuGKoBmr16snuyet17e6hxxFNLRdVJRTehZJrjbBEEkWrDr7IL
-	4VZG99nz+g2rL2uIDchZybjuTBmTt7v5DfaRSzcBZ7HSUNOGdfGuYgDV8vWcxlt0k/4EAX
-	gFAKaK6G8EUSomWDqzDCU3CAfnBNHt8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQiuCrQG;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60DA94359A;
-	Wed,  9 Sep 2026 14:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D312F1F00A3A;
-	Wed,  9 Sep 2026 14:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788963802;
-	bh=i6W2FGwXgxwv6NRv5ZRSdh10FfBE7WUHV7rXrybSwJ8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=IQiuCrQGfz/BNM0KjlCtC6onVCVz8KRUfEkYfYaus7vqqG27w98ZjrAnsKsKOzPHt
-	 4fH96H8AwHsQOjwGzabUEx27K1X7KBLc4EqiSufWnxQ46vitgzJfGTBy28c7C4WAjv
-	 i9byds1do2aeLwOEdHAyfRQyKVWihBqcTTdDplc+OYOi9U7UlUaRe7tayrhF5DOS8W
-	 563z85pdqkMIzG9Mv0VEn2tXd6vjaelbCchqReVT/whqJRFnb23yL6aBQ9Sk1FahoC
-	 D3RCMc6ohPHre8ZPzLd+XuEb8mhS4HWwD7CVFSHJO7Yn6OsdQJPwWo5EIAGHMLllkJ
-	 bM9QojvCuIZvA==
-Message-ID: <fb37c097-4c12-4eb8-9739-e3513127eb35@kernel.org>
-Date: Wed, 9 Sep 2026 16:23:13 +0200
+	bh=TqnOoBMPyjBKLaPzCFKipDo5MnAqUhfg/53HlF80ZU0=;
+	b=m7k/cOvFRLHNFkQPgHvZYawkVLcSIBolj5GqRTf6g33JvvaLMvrQXC38tktNrV9JCSlCQX
+	PBVs2vVi5mCLL0eK9/wv3m8wD56Gg/2e0sEBySIUTKtxUu8ZopZxEzk8HqXNnSLZcFXjxi
+	ECqHDQO6cPLlHWEh0/hOg0mblNZ/iTg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=65Vd1i575pVwFDqS0HjAKVD37s76Yk2EfVlhKLF5ST0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788963934; v=1; x=1789568734;
+ b=KChA5PLTPKUOIRTqIcchHU+xoTSze9zXsMyJi8mdnc357VRf3FKeKWU3PX81BQTcVJ+3c8e7
+ 6oUrJxKV2dKloDn2YSVkyE5pJnIaPYLGKUF5qJ5Zhj05XUOAKdGRYM4X7LPXGbdO0Zz3DcyQzk9
+ eQvKR9wIbnL/vTTPOerrDckw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 54d0913fc2edb7e6;
+	Wed, 09 Sep 2026 14:25:34 +0000
+X-Mizu-Trace-ID: 54d0913fc2edb7e6
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	david@redhat.com,
+	willy@infradead.org,
+	jannh@google.com,
+	paulmck@kernel.org,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] proc/task_mmu: read proc/pid/smaps_rollup under per-vma lock
+Date: Wed,  9 Sep 2026 07:25:26 -0700
+Message-ID: <20260909142527.1601051-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260907063918.3432401-5-surenb@google.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/14] treewide: replace PagePrivate() with
- page_private()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Song Liu <song@kernel.org>, Yu Kuai <yukuai@fygo.io>,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>, Li Nan <magiclinan@didiglobal.com>,
- Xiao Ni <xiao@kernel.org>, linux-raid@vger.kernel.org,
- ceph-devel@vger.kernel.org
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-12-6ae22f9d9272@nvidia.com>
- <afc196d8-8e17-4cdd-a6be-94b8816f2a57@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <afc196d8-8e17-4cdd-a6be-94b8816f2a57@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: d5h5uyhejq6psuwzpf1nhqq4ta4k14m6
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 488CF40007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788963803-765770
-X-HE-Meta: U2FsdGVkX1/3n2Gkhi3RtiWxwV6E7te+R7+FqJstgIDdPToaoaW7DdQnA3gQFhiX4PxAdy+I4oZcAxeeTStvoMj9vZoi3yY6OF10yS345K+zDCvnBbXW3m03T3qA4pi3aCS4I3mU3/8F4/pGJQJ4Nt3M7DKWhyyg6t6DdzInTeD+18RB90PKsf+ONCGzR1CPBQ/Y2TFk1UQf2R2glDg2XkCH/oci7qk+lpnXZkWzR05iwpk+C+oiZ6pVsVLdZ4OYD2fBLeOk+Pbl7P74ewSfdyGaTAuKjh4g7mw7p1PjQ7Mohi1fdeMM7jXu16H0a4xlECloX+iuh/gdyZ9aj6BqRtoaF8J5qxz1BQgsi+ZGmwVIzz5mNZooBVl4+UMwWVXtAglV0+aLEVENsGIEnKnrwV46xY4uCWgAWxiq5JRXeaTIbFY25iOChLxRWMAeNClPVEFSXYQhc8HPf+WwUPF18q262tDSfPyNjP4i0hQxXyJs2ppBoX9AWI170N79/EtQa9c7oEF8xStrkvVgep9V9jfO1KyiSLlFqWdv7WcN0QjkyYaLLgRedpyGDrMKZQTkUQ61ttyJDksxcHNrrGbmVUcmN6/cBIpAMhNBy+NXgKk+ZtX58MTu+4JIAGhvIrMZBaMB0STHk5U6wnCzB7rgicyBTOWCHSPTaPbmnaL33gxl8OHc47OcwYvckRbFHGGG4WSjYvESqhelBSWEu8yAt8+wbjhWcd6u67w9u4cGothEIJEwknOBslNXq5rXY85QftevAuBVRejsJoKBZPwQhjvgjilZv0BYRyn8hnu6is00QCJWoVevyjODS5YPm6lyeMQgRizRfctBn+sYkfUSr7qfswW4Tb2XtArang3oMg6EJu22Z4MFvKMppVnpsPnC6BFAXKsmSuybO1dbutxmwKwg/cBcqYShp1YKUdCyRsfufTvVzQ1+P7pQAopTUHXSpdcoXoKsGwhCa5pWF3y
- gTDNsOTe
- Har6BOqh201O6F0LvI8XBEc9jU4lQiYmZ+J016Qi7T8YBrtP7LilUUw6TPf7ivVgE+FUNZUI7JigXFan3CcuazHr9biMNwrZVbeoFFsaKHhCxag7ohovkCwTCyZEJ9LaJzGydiawrPJ/z24aLcl8Ft2fIqAGkaQjqHBLl2Ed1NBgcW1XM9cksd6Zce2UZYnDv2/XQsjHzrWGPD+6he2IXq8zhrnUB1lUZkKajSZAULtYlM5n5HkXxrGC39JJVUa3NS97siz1OU6hNRFBxYwzjeroiQoeLEmLXNfKhY28osaIJRd2WuMkSA4C3udjzLeas1dal50c78+GfL8M=
+X-Rspamd-Queue-Id: 45B238000D
+X-Stat-Signature: wqchz7wquhajiw3tfr5ipe6r1xhms5e6
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788963939-772481
+X-HE-Meta: U2FsdGVkX18Cn/li0HTRIw9Jk1aqZFo97n8sXOUw/QYIPXe1amJ0IlL1gcdwdTTJ7WJxwODn5t6KHzvc6Bg/d+aaQqJesPvcupvTNJbbWDQIfs3VdYWb6oHuv4WcSljsyoShtgcPwpHATAPQ/gLwOFsLy3a4RmTXvHAmu08Q4A3DrUYTgIq6z+KlvEsHobc1nr7+H67TsUpCspJ/gILnNM05SxsatKWEwcR4vfPz0tUgFBu1pRrJe4jHc0S4IiLrWIzptWSHz/QLsvM7kQXbknvne/BISzmQRlxbDG+UkaB+iG5CmnYg6P4+XMw8BpzNY+9bABno0++S27ujsEv0IQXe46RSEdDJawQy1/XUP4LcKkIfZqAQDofaaiSgA634p3T4SnJw7fqW+Au0iWiJl351/yzod0SwrO5jGPD5eH/Wbf4KtiUwtLiVZYD+q43IKyw9Q7EccdQRLDJ8YUKAUUO+t6x0Mw4QO5NLmVUIpdyQi2q66x4RWovXrFKie2JFb1oBdKg3ik6rQe55lndigG0RNVhqmsKfK0ctI1D/Aiv8/aw8/ZGFo2iLhcUX1YjgE1Kb5ZEa5JQHLC3gMYpm+6BLjR6Isjaxi01PfKDQps8lBLFmRKg77a/opynm/TK+VHMHkvb7Au6O7WWLG9qNt6novm9lnon4QO3Yy6qAEnsA5fMtJdYqM66KDZQKqt+xOHBampf6mmMg8sBcS9UdsaRRaci8OrWCriA207/wIEoE+FwvUCK921RQH2F0Tn6f5GSDL0DwmtjhkRXbA6uYtXHZOAIY0JH1dFcSIi1AcrIvxjaJvNOhNxo5RXSKqVJvNUgJoiCA0Yant4gpI3fhj8jcInJtJclkHI2NRFNor3hAhaArriG6tsFMwdFUDw+bN21nYTkG3XW225bD6asOeZlflMVnolRoeGIiLEP2/4Kp4Qw8Rlo9qG5ZNKn1qXdS1p4wKwR40wpq6tFmTYu
+ 8RJs7981
+ A0WhGjCQ2NcEk3bWEdhrOQ/o1VxbOC2DXeWeXBAH4Lu8Hn90RGKGQRi97Rzr1ldba+tkNcBmJaDRTZmbMKydoHJF0VWuJEanZ9IVQtpOXal4dGCGS+cJ5iRuAljjqbR1abJejpEYidwKxlCAw4rjULNvVcYbzV1wwxUUfpouYnM2oMQDSiv5oIq2XkVK3gsS+CduybqLa1f8Zu7HVs4u3TrmeuEqzpbSmSBBR9FRXbUteYiMuM5qMEgksf3AEP/KgoAqg3qHR8gq6D83Wcy3N9dEkgAJRhKhQZJpwve/fNp0AzvcIhptr5GmFj9devBTDp/E6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,27 +99,353 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 16:18, David Hildenbrand (Arm) wrote:
-> On 9/8/26 04:56, Zi Yan wrote:
->> PG_private is going to be removed and its check is replaced by checking
->> page->private != NULL.
->>
+On Sun,  6 Sep 2026 23:39:17 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+
+> proc/pid/smaps_rollup can be read using the combination of RCU and
+> VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
+> required to safely traverse the VMA tree and VMA lock stabilizes the
+> VMA being processed and the pagetable walk.
+> Note that we have to keep the logic to drop mmap_lock on contention
+> because even when using per-VMA locks we might have to fall back to
+> holding the mmap_lock.
 > 
-> You should likely clarify here that, for these users (the pages they deal with),
-> PG_private is set if and only if page->private != NULL. Consequently, there is
-> no functional change.
+> Running Paul's contention benchmark [1] shows considerable improvement
+> both in median and in the worst case latencies:
+> 
+> Execution command: run-proc-vs-map.sh --nsamples 20 --rawdata -- \
+> --busyduration 2 --procfile smaps_rollup
+> 
+> Baseline:
+>    Median   Minimum   Maximum
+>     0.174     0.161     2.553
+>     0.174     0.164     2.663
+>     0.174     0.165     2.664
+>     0.174     0.166     2.679
+>     0.174     0.167     2.691
+>     0.174     0.168     2.704
+>     0.174     0.169     2.729
+>     0.174     0.172     2.741
+>     0.174     0.174     2.745
+>     0.174     0.174     2.755
+>     0.174     0.175     2.790
+>     0.174     0.177     2.809
+>     0.174     0.179     3.096
+>     0.174     0.183     3.144
+>     0.174     0.184     3.158
+>     0.174     0.185     3.175
+>     0.174     0.185     4.568
+>     0.174     0.198     4.821
+>     0.174     0.214     5.143
+>     0.174     0.251     5.220
+> 
+> Patched:
+>    Median   Minimum   Maximum
+>     0.007     0.007     1.952
+>     0.007     0.007     1.955
+>     0.007     0.007     1.955
+>     0.007     0.007     1.955
+>     0.007     0.007     1.957
+>     0.007     0.007     1.969
+>     0.007     0.007     2.065
+>     0.007     0.007     2.075
+>     0.007     0.007     2.146
+>     0.007     0.007     2.195
+>     0.007     0.007     2.223
+>     0.007     0.007     2.259
+>     0.007     0.007     2.488
+>     0.007     0.007     2.562
+>     0.007     0.007     2.599
+>     0.007     0.007     2.697
+>     0.007     0.007     3.030
+>     0.007     0.007     3.075
+>     0.007     0.007     3.145
+>     0.007     0.007     3.225
+> 
+> Remove now unused lock_ctx_mm() and move unlock_ctx_vma() next to
+> unlock_ctx_mm() as they are logically related.
+> 
+> Remove a long comment about 4 cases that we handle when dropping the
+> mmap lock in the middle of VMA walk due to contention. The first 3
+> cases explained there are handled naturally and only case 4 needs to
+> be handled in a special way, which is done in smap_gather_stats() by
+> gathering stats from the portion of the VMA that has not yet been
+> processed.
+> For posterity, moving this comment here:
+> 
+> After dropping the lock, there are four cases to
+> consider. See the following example for explanation.
+> 
+>   +------+------+-----------+
+>   | VMA1 | VMA2 | VMA3      |
+>   +------+------+-----------+
+>   |      |      |           |
+>  4k     8k     16k         400k
+> 
+> Suppose we drop the lock after reading VMA2 due to
+> contention, then we get:
+> 
+> 	last_vma_end = 16k
+> 
+> 1) VMA2 is freed, but VMA3 exists:
+> 
+>    vma_next(vmi) will return VMA3.
+>    In this case, just continue from VMA3.
+> 
+> 2) VMA2 still exists:
+> 
+>    vma_next(vmi) will return VMA3.
+>    In this case, just continue from VMA3.
+> 
+> 3) No more VMAs can be found:
+> 
+>    vma_next(vmi) will return NULL.
+>    No more things to do, just break.
+> 
+> 4) (last_vma_end - 1) is the middle of a vma (VMA'):
+> 
+>    vma_next(vmi) will return VMA' whose range
+>    contains last_vma_end.
+>    Iterate VMA' from last_vma_end.
+> 
+> [1] https://github.com/paulmckrcu/proc-mmap_sem-test
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  fs/proc/task_mmu.c | 153 ++++++++++++++++++---------------------------
+>  1 file changed, 60 insertions(+), 93 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 3351decd1172..641a155b0c61 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -130,28 +130,12 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
+>  }
+>  #endif
+>  
+> -static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> -{
+> -	int ret = mmap_read_lock_killable(lock_ctx->mm);
+> -
+> -	if (!ret)
+> -		lock_ctx->mmap_locked = true;
+> -
+> -	return ret;
+> -}
+> -
+>  static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	mmap_read_unlock(lock_ctx->mm);
+>  	lock_ctx->mmap_locked = false;
+>  }
+>  
+> -static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
+> -{
+> -	lock_ctx->locked_vma = NULL;
+> -	lock_ctx->mmap_locked = false;
+> -}
+> -
+>  static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	if (lock_ctx->locked_vma) {
+> @@ -160,6 +144,12 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+>  	}
+>  }
+>  
+> +static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
+> +{
+> +	lock_ctx->locked_vma = NULL;
+> +	lock_ctx->mmap_locked = false;
+> +}
+> +
+>  static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
+>  					   loff_t last_pos)
+>  {
+> @@ -1376,12 +1366,14 @@ static int show_smap(struct seq_file *m, void *v)
+>  static int show_smaps_rollup(struct seq_file *m, void *v)
+>  {
+>  	struct proc_maps_private *priv = m->private;
+> +	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
+> +	struct mm_struct *mm = lock_ctx->mm;
+>  	struct mem_size_stats mss = {};
+> -	struct mm_struct *mm = priv->lock_ctx.mm;
+> +	unsigned long last_vma_end = 0;
+> +	unsigned long vma_start = 0;
+>  	struct vm_area_struct *vma;
+> -	unsigned long vma_start = 0, last_vma_end = 0;
+> +	loff_t pos = 0;
+>  	int ret = 0;
+> -	VMA_ITERATOR(vmi, mm, 0);
+>  
+>  	priv->task = get_proc_task(priv->inode);
+>  	if (!priv->task)
+> @@ -1392,89 +1384,60 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+>  		goto out_put_task;
+>  	}
+>  
+> -	ret = lock_ctx_mm(&priv->lock_ctx);
+> -	if (ret)
+> -		goto out_put_mm;
+> -
+>  	hold_task_mempolicy(priv);
+> -	vma = vma_next(&vmi);
+> +	rcu_read_lock();
+> +	reset_lock_ctx(lock_ctx);
+>  
+> +	vma_iter_init(&priv->iter, mm, 0);
+> +	vma = proc_get_vma(m, &pos);
+>  	if (unlikely(!vma))
+>  		goto empty_set;
+>  
+> -	vma_start = vma->vm_start;
+> -	do {
+> -		smap_gather_stats(priv, vma, &mss, vma->vm_start);
+> -		last_vma_end = vma->vm_end;
+> +	if (!IS_ERR(vma) && vma != get_gate_vma(lock_ctx->mm))
+> +		vma_start = vma->vm_start;
+> +
+> +	while (vma) {
+> +		if (IS_ERR(vma)) {
+> +			ret = PTR_ERR(vma);
+> +			goto out_unlock;
+> +		}
+> +
+> +		if (vma == get_gate_vma(lock_ctx->mm))
+> +			break;
+>  
+>  		/*
+> -		 * Release mmap_lock temporarily if someone wants to
+> -		 * access it for write request.
+> +		 * If after retaking the lock, already reported VMA grew or
+> +		 * merged with the next one, smap_gather_stats() will gather
+> +		 * stats for the remaining portion by starting at last_vma_end.
+>  		 */
+> -		if (mmap_lock_is_contended(mm)) {
+> -			vma_iter_invalidate(&vmi);
+> -			unlock_ctx_mm(&priv->lock_ctx);
+> -			ret = lock_ctx_mm(&priv->lock_ctx);
+> -			if (ret) {
+> -				release_task_mempolicy(priv);
+> -				goto out_put_mm;
+> -			}
+> +		smap_gather_stats(priv, vma, &mss, last_vma_end);
 
-Ah, in previous patch:
+Patch 3 made smap_gather_stats() reject starts below the VMA, while this
+function initializes last_vma_end to zero.
 
-+static __always_inline int PagePrivate(const struct page *page)
-+{
-+	return !!page->private;
-+}
+The first ordinary VMA is therefore skipped. lock_next_vma() can also
+return a VMA beginning after the requested position, so the first VMA
+after every unmapped gap is skipped as well. This causes
+smaps_rollup to underreport RSS, PSS, swap, and the other accumulated
+values.
 
-So this is not about PG_private *at all* :) Best to clarify that.
+I think you need:
+  unsigned long start = max(last_vma_end, vma->vm_start);
+  smap_gather_stats(priv, vma, &mss, start);
 
--- 
-Cheers,
 
-David
+
+> +		last_vma_end = vma->vm_end;
+>  
+> +		/*
+> +		 * If the VMA lock is not taken, we hold the often contended
+> +		 * mmap lock. This can happen if we had to fall back to the
+> +		 * mmap lock.
+> +		 *
+> +		 * To relieve pressure, check if it is indeed contended, then
+> +		 * temporarily release it.
+> +		 */
+> +		if (lock_ctx->mmap_locked &&
+> +		    mmap_lock_is_contended(lock_ctx->mm)) {
+> +			unlock_ctx_mm(lock_ctx);
+>  			/*
+> -			 * After dropping the lock, there are four cases to
+> -			 * consider. See the following example for explanation.
+> -			 *
+> -			 *   +------+------+-----------+
+> -			 *   | VMA1 | VMA2 | VMA3      |
+> -			 *   +------+------+-----------+
+> -			 *   |      |      |           |
+> -			 *  4k     8k     16k         400k
+> -			 *
+> -			 * Suppose we drop the lock after reading VMA2 due to
+> -			 * contention, then we get:
+> -			 *
+> -			 *	last_vma_end = 16k
+> -			 *
+> -			 * 1) VMA2 is freed, but VMA3 exists:
+> -			 *
+> -			 *    vma_next(vmi) will return VMA3.
+> -			 *    In this case, just continue from VMA3.
+> -			 *
+> -			 * 2) VMA2 still exists:
+> -			 *
+> -			 *    vma_next(vmi) will return VMA3.
+> -			 *    In this case, just continue from VMA3.
+> -			 *
+> -			 * 3) No more VMAs can be found:
+> -			 *
+> -			 *    vma_next(vmi) will return NULL.
+> -			 *    No more things to do, just break.
+> -			 *
+> -			 * 4) (last_vma_end - 1) is the middle of a vma (VMA'):
+> -			 *
+> -			 *    vma_next(vmi) will return VMA' whose range
+> -			 *    contains last_vma_end.
+> -			 *    Iterate VMA' from last_vma_end.
+> +			 * Even though we previously fell back to mmap lock,
+> +			 * we try taking VMA lock for the next VMA, since it
+> +			 * might not be under modification. In the worst case
+> +			 * we will fall back to mmap lock again.
+>  			 */
+> -			vma = vma_next(&vmi);
+> -			/* Case 3 above */
+> -			if (!vma)
+> -				break;
+> -
+> -			/* Case 1 and 2 above */
+> -			if (vma->vm_start >= last_vma_end) {
+> -				smap_gather_stats(priv, vma, &mss, vma->vm_start);
+> -				last_vma_end = vma->vm_end;
+> -				continue;
+> -			}
+> -
+> -			/* Case 4 above */
+> -			if (vma->vm_end > last_vma_end) {
+> -				smap_gather_stats(priv, vma, &mss, last_vma_end);
+> -				last_vma_end = vma->vm_end;
+> -			}
+> +			rcu_read_lock();
+> +			reset_lock_ctx(lock_ctx);
+> +			/* Resume from the last position. */
+> +			pos = last_vma_end;
+> +			vma_iter_init(&priv->iter, mm, pos);
+>  		}
+> -	} for_each_vma(vmi, vma);
+> +		vma = proc_get_vma(m, &pos);
+> +	}
+>  
+>  empty_set:
+>  	show_vma_header_prefix(m, vma_start, last_vma_end, 0, 0, 0, 0);
+> @@ -1483,10 +1446,14 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+>  
+>  	__show_smap(m, &mss, true);
+>  
+> +out_unlock:
+> +	if (lock_ctx->mmap_locked) {
+> +		unlock_ctx_mm(lock_ctx);
+> +	} else {
+> +		unlock_ctx_vma(lock_ctx);
+> +		rcu_read_unlock();
+> +	}
+>  	release_task_mempolicy(priv);
+> -	unlock_ctx_mm(&priv->lock_ctx);
+> -
+> -out_put_mm:
+>  	mmput(mm);
+>  out_put_task:
+>  	put_task_struct(priv->task);
+> -- 
+> 2.55.0.979.g7e5102b832-goog
+> 
+> 
 
