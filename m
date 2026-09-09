@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDF9C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 824A7C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 21:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7189E6B008A; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
+	id 6FF0A6B0093; Wed,  9 Sep 2026 17:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2836B008C; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
+	id 680FC6B0096; Wed,  9 Sep 2026 17:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56AA76B0092; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
+	id 5229C6B0098; Wed,  9 Sep 2026 17:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 270EB6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:46:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBFE716037F
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:46:57 +0000 (UTC)
-X-FDA: 85195559274.08.FBF1FEA
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E60A118000B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:46:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Bfg77qhx;
-	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788990416;
-	b=pOOdWEP2WqT8EOEspCvqmDyLamTozFXE1YtB8BAx1Ws/ppdgE24bKv70CXw6zx9hF0bSvd
-	NipmOMXBmNL5jlRUGTk+zPGAGh7Zz0vqSFncBFgE4WK3bItYz5ZdvsvrHphHQxbnirNCxR
-	gs527I+qaB9bvgsfA1zQeaiFAczlHd0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=Bfg77qhx;
-	spf=pass (imf06.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id EFCCD6B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:49:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25E081C2022
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:49:41 +0000 (UTC)
+X-FDA: 85195566162.20.53A7EFF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0E61320009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:49:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WAxtSjUX;
+	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788990416;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1788990579;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f6WNUc7+ccLtCGhgxedehU0mIM9y5RDc0/iE/jkmqtI=;
-	b=TLp1+ik0u3ChE8PuXog3JB3qHCL2ZMcjZQYDLLvTi+mSucDrc5a7v7ZNE0TJV3m9nneGvL
-	nEmmhGMEKs/SbtlSPonJ/1OH9w4F9e674tDpft/fafardxVBML/e9rNzPvAiT+rugF304I
-	vaJeRPTIRhhnRslr2WTQb8mwEruF5FE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f6WNUc7+ccLtCGhgxedehU0mIM9y5RDc0/iE/jkmqtI=; b=Bfg77qhxtGC5hNL12v7G11D26v
-	PcgN347bttFKmlJs3saw2LMy5Dm9HZ05mQKT4Vs6Ewcvz/Ja6XyCuqW7bnmza0oHiIiUquT49JFek
-	UNZgChWp72DD5/QTWqEPXZg4k5HYipU+4t6dPPCfT61eCUjWZFeXAz8nBGnuzKRKqxgV9bq8rKVnl
-	SYZnDvMQXYlvoeSqpnTB9MCP5IJX1mfyOWWn64+h0dEMVcs2OUCEUS2ozbF65MZw5fMy4NWQPCTds
-	VIBdAjzRtxCqZHgpDwoJARhg2Nwetd3qJ2h0mCP5IVnKGjlksK8muVBthSusdvJBPwpXSeWHmYSof
-	c3f14PAA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x4Q7n-00000001iSG-37xT;
-	Wed, 09 Sep 2026 21:46:35 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2D25F300A9A; Wed, 09 Sep 2026 23:46:33 +0200 (CEST)
-Date: Wed, 9 Sep 2026 23:46:33 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ye Liu <ye.liu@linux.dev>, Thomas Gleixner <tglx@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>,
-	Michal Hocko <mhocko@suse.com>, mic@digikod.net, oleg@redhat.com,
-	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
-	gnoack3000@gmail.com, ljs@kernel.org, sj@kernel.org,
-	rientjes@google.com, shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, tony.luck@intel.com,
-	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
-	lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
-	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
-	babu.moger@amd.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v2 5/8] kernel: convert process/thread iterators to
- for_each_*_rculock
-Message-ID: <20260909214633.GN776954@noisy.programming.kicks-ass.net>
-References: <20260907081334.1152889-1-ye.liu@linux.dev>
- <20260907081334.1152889-6-ye.liu@linux.dev>
- <20260908074228.GW4120091@noisy.programming.kicks-ass.net>
- <20260909120911.39032d13@gandalf.local.home>
+	bh=niSYalp/OzFowRa1XzYKAXzPBKrpCkIvvO6JxEmnQz4=;
+	b=Gkf8xXVBCC4l/0OD+u6Nj6O5EWIU6/2HJn/ueFhyoYxTQ92gbgYfMo/6gUMjyWxrRo2xYa
+	iJ9Vd8pVJp+/n+GW2jtDK3dJow7KiVL0ZT2+w58t/Gg60dfVgpxST9YwAp8SohpL82vHH9
+	y5khYoc94mHE9x0C+FiJTW7lBm3ZYpw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788990579;
+	b=4OnKecCbSCEOMU7TwNHITte4YL87v1gHlfBVg61jo0SMCKVoc0OP0UsYKXfDHMh6RnakiO
+	iK0OAUijUU/xk79BcB6YwY9oBCVNM6DkbIug1uEthSOZMy3rBQqytXIoUwMjgK+EJolZdh
+	RZ2k3dHGXi6xTAKqPJSpjXNTYbiHLCw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WAxtSjUX;
+	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1498443BD8;
+	Wed,  9 Sep 2026 21:49:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DF104C2BCF4;
+	Wed,  9 Sep 2026 21:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788990578;
+	bh=95oqh24GgfcuS7voUTlH+bgV8KCd93u3lATunNdh7lc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=WAxtSjUXMBGV4ctuJag3LGh+Vpl+1bPhqBR6L3h2Rn6KUP3s0/hK6iek6h0Oeu7ql
+	 FsTt3GgxPMbp2I/sjNCLovy+Umal2gqut6WseSq+kMASHJ6qVIPZI0sGg4Ca38RCph
+	 7vWeLObZyDMDexhloBG+P1O1oAirnbs3BQaaaAhxSGQIAKUwGMtYMOclC+LOVbcKZw
+	 5BjBVlMWIP3f8dUqqjeUdy8fybatLgsI2d5nye/xCG5td1BFOy5PWYNJk+2Wj3i4bw
+	 m+YD5O1WZaUgnsxlp7c1pFx4ixm4q7LzK3aj5bOKh+YHQX+UP5Gab3/TWAcmHGRUQj
+	 LAs6cJe+vBP0A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC182C79FB7;
+	Wed,  9 Sep 2026 21:49:37 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Wed, 09 Sep 2026 14:49:27 -0700
+Subject: [PATCH v2 2/4] mm: hugetlb: Fix out_put_pages subpool reserve
+ calculation
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909120911.39032d13@gandalf.local.home>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260909-hugetlb-subpool-always-track-used-v2-2-30c5d83b572a@google.com>
+References: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
+In-Reply-To: <20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com>
+To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+ Hongxiang Lou <louhongxiang@huawei.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Peter Xu <peterx@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
+ Yanteng Si <si.yanteng@linux.dev>, fvdl@google.com, jthoughton@google.com, 
+ rientjes@google.com, vannapurve@google.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, Ackerley Tng <ackerleytng@google.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788990577; l=5067;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=4Uw5lcnuyxNZEYs1i4bs32YYkWYGwj+suwGu5wWpSr0=;
+ b=AG1QU4HeP/mW1//FjtrLg1NUFFPPsKl+Vw49MmQk1MolvuvY4jhtcxZpJTM6OV/lcwiexL1Lu
+ pV7YB87lkkXDTk8QtwhmGVwJn5ojAoN+EKTpOnaMeJoOxaWgD3NrtYu
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E60A118000B
-X-Stat-Signature: ob4ozp7omsatz7juumrq833qdbjfutut
-X-HE-Tag: 1788990414-339968
-X-HE-Meta: U2FsdGVkX18TVdX4FQABjDxmX5zlDy6s70VDxyaeRPalw7mdCdXRO4pemmc2GhYkzUgdQokE4WuNv5ou2ZA8P3t5hQ/MSTawht4j3U/BtypM0U9caJFfKYGLp5cHidGs3MYEKnybjnEehawt3LspFsxwzuxhpwpuRrV2EbmEZ7XgtuZIVkI+JPeahsy+7W9adAC5H/YjDnCt2N7rPeD2ix5eb+2mYcmUb/F2X5rZDSNEXxYkD6pnC8UwnEOCchDHxj8hpYtXlNuXp5JPdik/gkvfm8VPROidtG3zDWlz8y0ba28BYa+jbJpFVR7+ofR2wuZEixjUJBV9fSW+1h8UD7QVHKvfLayc+aNQ6aPd+lh75ky92UBiLrQc1689+T5Cm7vhipGp4vHIh6xs1iKMJwAsYpHk9Mkw1WqgBFiqP7Av6Wqn40IUwg9c7Jo3BtXgARhuvuWGDzfXoDm//H7+7nUWl1+5KW8/R0TOlMfadq0sBVWqa8MmiNUJE7hAX+JlxWHAN8S4Nn4rTkDdIp77mU1eE2xLY72naLGHndIBU2bXOagwT1s+gW6+7N1NKl0YyzjV0e8I+C/2JcIfyih0pXM3YznOmnNNa4UAHWIRAzxsDOGvQqolbvrslQl1pVmlj/BpvVTIZuInSh9Mr8NQpCDXTcUIETYSgfQebH2jl+tRxMCTqETeBmgs/4ExJUByB3XrP1+bCoRBWG0cn5MsALZxsQobMz7x2uQT77oyCENETzgC5c7/ULGjmM1YD4c6B0a79AphBup+zXW7vD1opxZGuknVmLmVxw+Ai/TknTu/CWub6mTdrVva7j6n4egD2BMpDARnx1PLn/tb0ULSBFRlVii9PgcVa4WDODiQJLitN3pNIpjg5A1SLjzordTS/BIsNMeFyrEbHp8FYeiEb3bJtbIEqPzLa2GrDsVMAdkRI/ap1SHZhNFKSpqWnPTvwzbo9aADR1jrS5HBFgr
- O6+48b8D
- ScNOgwcXezHRtR+CUCTKEa3TbeMDQ7jzOAujbmGFyVjRWlgFckkG5gksPuebBoMJ0sP3u2rIyLuKGTlVOYbm7yX9abhWUQZHPpAJJuTvtXcDey/vtGxDUVO8x1HKAy4aDRuCpvu5SV24L7P7sQ5uZRF9fdGZ7CFkFgu8YDfMkKiD8ITKm/FepSOCsXZ9FBbnzRbhMX9tntAp6pVFlvbgM/mF1nWM+I/cfyRVY4+gkKm3WvGM/xkROHfX/S/my1kBK/QZVUr2dKfZg5QCvOObWXahnMRvHBCDEvLP6G2gTCv2IYAmP8r/nD/Kq6cBsOpKyoCj1RYo8/+XTIgopsUojX8QEHPDWw6B6RcFedfxAo2p72yj4YpH8LCxtHG+SVxLeahAmNDh43tRcZN3PqYG68bGtbju7jJb1G16u
+X-Stat-Signature: 1yhcutfaocrbwc1xfj1ugdmbma5bt3ni
+X-Rspamd-Queue-Id: 0E61320009
+X-HE-Tag: 1788990578-848554
+X-HE-Meta: U2FsdGVkX18RR/qoUfBlvndLqEiulMmW9nifHXjWEZ6YFZyMkyG23FBKBofheAWhVRQHtb3BmvgcZ50VFnh6XkHwKQNNd2jZT/Cdk81FoQ3UnxKHvbJ05wPIlsrOpuZITWyb4RHZD8A17sFm31rtfAo2Ek259VKbFMFnvQiHiauEYM93pju0LBL+ACoYZIJlQzcXenAY1QKnVltkoCDRaaOW2IfpzOHnXuLsQcYE7Vbl7Kcv58CmadcZCPKzPrZX4K/URLfF4/e4XlKJKcVrxMNm2TlTY87SkWB7BQtGwXE6HzaZJK++hGe0UdZgXSdBm96DZJK3/wE/0Wi+y6wuIy0CVfpetWwZ4WtkntASesvZsLIrPXRJncxr38heWuO8PjxJIuLNOII6dH4Lq91cNC/F2ZzrXCjiBB9VbshWvVHIi/8pMLXT0KWuJfkS599ZxQR4zYJJPOHUduonAtfFGndzRaEDI6SP5XtZ9zcHb0vski8uHxkhg6TKQ5EYfXahMRzJv8ZCqo3sApHSvQiyMJt1PD9m/2AEXLcp2Oi6QiPrTbCvtkMtHTg8hQuQ1hYylXXp7TZejXTAdRyd1u13Fs9KeBrfEmXoNYaettLtQ2EbqASq+XNTN200eNvvm0Vk7nwAhUW4sVMhm4mpp6YeQrW8tc+WgUAZmsrqwFmwUI86J4QrvCHyGW2H6Wmvisj+Z3sePIPRcyDI8Oo96QU2G2UiUbE8JI+m0cx2Lkn0HeEQn6bkkxRbwPeog/JpHPVmBrTw6L11mSA5j/jkWKV1DxXd5jTx8mZmDE8Su4ID+0uubBIujXQflNGG1saCcwkO0ZrCfwbMCfYXMOFVA6LgGylnzQhWOIGsAkdxR5Kda8BUnYKRRsCk8+TZZ9RrWmyJmitHTQHZsOUlfTcf+IzZJSb5ixJ1BgTPWlTMueAJSiCUjGeyOmrw2SKQSityy6p090aacMbtzpcS59Qp5bl
+ KE5hLOF/
+ Td0KEjER0+nGM6xfYh6lDLkn8pGzC/hJWMkrQ0g4faW81RLwiycbiIH0Kzd5Rgt72w6A90hKrGkmNFm6VNUosQqlBeTVE4Vi2Gh0xG9SBZ+QMFe82ly0OiOGihm/YChqeOZ6pOCiZ8QEUbCPSllJ5+pFMMCFn+5rPp6MvRq/dcCTbNyhDC9BMUtC0M4RB3ilUyykpvxF5MWZNi9+LPQp1g69ETxvypsz/VOe+uT5Zo/faY341DSSsdg3CGlGhUoQlIhjx85/g8Vr/K3tB61yuH1u95NZ5JYvASj0e80xPPpxoB/S6/8Z4YvcM73NW9PES1vEhpU9lvR+uyXS8gh6RgQDAllSjGnwu9p3+gP3XYO+gwXxct1k9FRcSs7C5Om/P/YOyIlSIJ2FHYVNRECQ8URJsIwuq+GiNlmXdj+tiQOittba14BLPIBUwvLnsa/QpGT4rk9Kw/myxkBbp731t+McQCrr5PM8WZWoW+VMms4ofsVaelQEVv0CLLBmx7o+FbhET+uWgOPPJ/ZPmRfaNgYxtog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,25 +124,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 12:09:11PM -0400, Steven Rostedt wrote:
-> On Tue, 8 Sep 2026 09:42:28 +0200
-> Peter Zijlstra <peterz@infradead.org> wrote:
-> 
-> > >  kernel/cpu.c             |  4 +---
-> > >  kernel/freezer.c         |  4 +---
-> > >  kernel/hung_task.c       | 11 ++++-------
-> > >  kernel/locking/lockdep.c |  4 +---
-> > >  kernel/rcu/update.c      |  4 +---
-> > >  kernel/sched/core.c      |  3 +--
-> > >  kernel/sched/debug.c     |  4 +---
-> > >  kernel/trace/fgraph.c    |  8 ++------
-> > >  kernel/unwind/deferred.c |  3 +--
-> > >  9 files changed, 13 insertions(+), 32 deletions(-)  
-> > 
-> > This is not something that can be applied.
-> 
-> I believe you mean to break it up into individual subsystems. kernel/ is
-> not its own subsystem, it contains many different ones.
+From: Ackerley Tng <ackerleytng@google.com>
 
-Just so.
+When reserving pages for a mapping fails during global accounting, the
+error path rolls back the adjustments made to the subpool.
+
+Currently, this rollback was performed in two separate steps:
+
+1. Returning only the portion of reservations originally satisfied from the
+   subpool
+2. Separately adjusting the subpool used pages counter for the portion that
+   was requested from the global pool.
+
+In (1.), because the used pages counter had not yet been decremented for
+the global portion, the subpool observed an inflated used pages count. If
+the mount was configured with both a minimum size and a maximum size, this
+inflated count prevented the subpool from recognizing that usage fell below
+the minimum size guarantee.
+
+As a result, the subpool failed to restore its reserved pages counter and
+instead returned that a global reservation should be dropped. The
+mount-time reservation is permanently destroyed, leaving global reservation
+counts depleted and causing an underflow when the filesystem is eventually
+unmounted.
+
+Additionally, if concurrent threads modified subpool usage during the
+reservation attempt, calculating the rollback amount using stale local
+variables could cause global reservation counts to diverge.
+
+Now that used pages are always tracked within the subpool, return the
+entire requested page count to the subpool in a single call. Global
+reservations are then adjusted using the difference between the
+reservations originally requested and those returned, fixing the issues
+described above.
+
+Fixes: 1d3f9bb4c8af ("mm/hugetlb: restore failed global reservations to subpool")
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Cc: stable@vger.kernel.org
+---
+ mm/hugetlb.c | 49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index e72e22f887478..9eb9f3442574c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6676,12 +6676,14 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		struct vm_area_struct *vma,
+ 		vma_flags_t vma_flags)
+ {
+-	long chg = -1, add = -1, spool_resv, gbl_resv;
++	long chg = -1, add = -1;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+-	long gbl_reserve, regions_needed = 0;
++	long regions_needed = 0;
++	long gbl_resv_get;
++	long gbl_resv_put;
+ 	int err;
+ 
+ 	/* This should never happen */
+@@ -6756,9 +6758,9 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * the subpool has a minimum size, there may be some global
+ 	 * reservations already in place (gbl_reserve).
+ 	 */
+-	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
+-	if (gbl_reserve < 0) {
+-		err = gbl_reserve;
++	gbl_resv_get = hugepage_subpool_get_pages(spool, chg);
++	if (gbl_resv_get < 0) {
++		err = gbl_resv_get;
+ 		goto out_uncharge_cgroup;
+ 	}
+ 
+@@ -6766,7 +6768,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * Check enough hugepages are available for the reservation.
+ 	 * Hand the pages back to the subpool if there are not
+ 	 */
+-	err = hugetlb_acct_memory(h, gbl_reserve);
++	err = hugetlb_acct_memory(h, gbl_resv_get);
+ 	if (err < 0)
+ 		goto out_put_pages;
+ 
+@@ -6785,7 +6787,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
+ 
+ 		if (unlikely(add < 0)) {
+-			hugetlb_acct_memory(h, -gbl_reserve);
++			hugetlb_acct_memory(h, -gbl_resv_get);
+ 			err = add;
+ 			goto out_put_pages;
+ 		} else if (unlikely(chg > add)) {
+@@ -6821,26 +6823,21 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	}
+ 	return chg;
+ 
+-out_put_pages:
+-	spool_resv = chg - gbl_reserve;
+-	if (spool_resv) {
+-		/* put sub pool's reservation back, chg - gbl_reserve */
+-		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
+-		/*
+-		 * subpool's reserved pages can not be put back due to race,
+-		 * return to hstate.
+-		 */
+-		hugetlb_acct_memory(h, -gbl_resv);
+-	}
+-	/* Restore used_hpages for pages that failed global reservation */
+-	if (gbl_reserve && spool) {
+-		unsigned long flags;
++ out_put_pages:
++	/*
++	 * Return all that was requested from the subpool, let subpool
++	 * tell us the new number of reservations that need to be
++	 * returned to the global pool.
++	 */
++	gbl_resv_put = hugepage_subpool_put_pages(spool, chg);
++	/*
++	 * There may be a difference between the number of
++	 * reservations to consume and the number to restore now if
++	 * there are multiple threads interacting with the subpool -
++	 * restore the difference.
++	 */
++	hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
+ 
+-		spin_lock_irqsave(&spool->lock, flags);
+-		if (spool->max_hpages != -1)
+-			spool->used_hpages -= gbl_reserve;
+-		unlock_or_release_subpool(spool, flags);
+-	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
+
+-- 
+2.55.0.1007.g17ff1f9808-goog
+
+
 
