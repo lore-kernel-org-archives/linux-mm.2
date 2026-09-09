@@ -4,140 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20A9DC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B907EC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 10:01:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2658E6B00A3; Wed,  9 Sep 2026 05:59:53 -0400 (EDT)
+	id 93F556B0098; Wed,  9 Sep 2026 06:01:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20EFB6B00A5; Wed,  9 Sep 2026 05:59:53 -0400 (EDT)
+	id 916E16B0099; Wed,  9 Sep 2026 06:01:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A636B00A3; Wed,  9 Sep 2026 05:59:53 -0400 (EDT)
+	id 82EBC6B00A4; Wed,  9 Sep 2026 06:01:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E04B96B00A3
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:59:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E75E4A018D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:59:51 +0000 (UTC)
-X-FDA: 85193777382.09.670A429
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2EFBE140005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:59:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCi04qAE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788947990;
-	b=oLLJuqGdTRXnXaJX1+d32LL4XsJQMbBGm3IipqWxmDPlrpKVB0PKG2BHTswNMeGi8K5n5P
-	TRhWhib6V3AWbTCW+7njC/5GIQERQ6KaA0YFERZQHFJDCgJnbWhq0/r9FKMkn9uBFtFw0y
-	vkVr4kvas6Q6gdgfFFabh/I9lua/fNE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCi04qAE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 636A86B0098
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:01:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 352BC14016F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:01:25 +0000 (UTC)
+X-FDA: 85193781330.10.4C322C7
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 94272140013
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:01:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="rqB/UWXa";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788947990;
+	s=arc-20220608; t=1788948083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N8OfBKj6c21YzZNj+ukA+Gq4PS1zlEulIVEv6QtMuPU=;
-	b=Cq6orL4d9uCQsY6A84O/k8oJXyAmDbPHlj0u+2Mn6J2+sBv/fnfOoJ6TI9hxoX64KRQPok
-	gabr6n4eJWuwaIDQ/VhrV1jhI6lz4PZ5ALWUl+sWQi93bhTpK5ZK1ohzrEcxvXoEWVOglW
-	0qYTNmIpGPhaZFpE1dP1CUJzl2nxAgE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ACE9360214;
-	Wed,  9 Sep 2026 09:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106901F00A3E;
-	Wed,  9 Sep 2026 09:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788947989;
-	bh=N8OfBKj6c21YzZNj+ukA+Gq4PS1zlEulIVEv6QtMuPU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kCi04qAEJQPwqy9h8EcMQz2yRB2+xAu7J2h5HL+PrpbtsKC/dG0EEEmqARw1peuqS
-	 Ywg1S9F9VJhRGlUKsRRSsWW/vmNrR4Zbs/zOTncFIJFLknroMcVHH6KvnXvxaYeKaY
-	 gdTG7KMNsvngPp7MPWtbowgFZGpCDSi8582T3RMpTE3bE0QTW3axd4lh9a8cvLYzlq
-	 rRgZ3R5idwVQEBozc7k2HenYJyftxXWYe5MJ3mWv0okW3nEiIiXZfJAfbblM/ssF+3
-	 ckg5uxryFiFazmRPzxdFSTloRFmvoGIzBut6yfhWu2oy2dpD5P+vwMzwr0P9DY39+d
-	 Sm6wxlure1mkA==
-Message-ID: <f1a0caf7-754b-44a1-880b-75433ab34659@kernel.org>
-Date: Wed, 9 Sep 2026 11:59:44 +0200
+	bh=rAhR1QM/zeuhEomiumpssWgA9rCCG1Ag1irSYP33RaY=;
+	b=kO++VZ+X5OHzZP/OGMRRAADUSnV/fbqzqOes/SYbVKqADnIc2sjjEUKAhOZxShiOEYbuiJ
+	lkzVLMa4hwhTN0gWvFdTJKd14y/vt63uDfyHldabquynYqRW7z3P6zOmf6DCaG5sSfnXyq
+	ydIPnbv27H799CMGsHSk53U3Li7Xffo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788948083;
+	b=h74wNTc8RHAb1OsxWxVBBYEXcmLW6Ke8jcwLzxaXXBhzB71hB0P4jKfjgx7/fuh9B+Vg3L
+	QltiuSZhIiJTcdRL1yv2h6EskdU+0vHcthiDZm94h0lGxby3ka9mSKQGm3aW+J8K3FlMZj
+	93w2S0+K8Dn5w/TYYDDNhMZebGmQfiQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="rqB/UWXa";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788948076; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=rAhR1QM/zeuhEomiumpssWgA9rCCG1Ag1irSYP33RaY=;
+	b=rqB/UWXa2fZI+xuinX/rhU3iAORGmuzaLhK/eeY8CYVEOtvRt9BdFXzYWIwQmUEHJzTkeuXB3V1dcmX54zR8IIekqJw3WqIM5qWELpGdncawfFZYKvK3FE39xJO6dSNRzkoMf/La6Rz3iJlpzBTfOQ/Y5riCjiRcf2ivby+E34I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAefrqA_1788948073;
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAefrqA_1788948073 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 09 Sep 2026 18:01:15 +0800
+Message-ID: <feb76c81-db9d-4a36-9a31-0b2b31e3c3fb@linux.alibaba.com>
+Date: Wed, 9 Sep 2026 18:01:13 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/17] mm/sparse-vmemmap: remove
- SPARSEMEM_VMEMMAP_PREINIT support
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-12-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260825084608.47437-12-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 08/19] selftests/mm: add folio-order check for address
+ ranges
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, rppt@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-9-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260908125105.1510704-9-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2EFBE140005
-X-Stat-Signature: 7ex933j5mut3bd6ytfdus463h8kbmet3
-X-HE-Tag: 1788947990-455627
-X-HE-Meta: U2FsdGVkX1/Jj4fhw3Bj1D5vOF0zMIthZAa9Yl67sQMuc9KIiBNMAlVfRbQLoOkjsqlkg5ObQmFx8oCVWBvUweeoGg7NSimDeuRzHBb7tiHl0CtYcqY75IJEtmJ+OlOxIOJ4D+5N315xShxoPCdD/EHigFpw8n6/d9XNu8o2OawO2902AQExn9dNxRQEx8F/rjZodnLL4PB57YVQ2xggM68a0+jFOKcBH2N0LcTcrBYklD5VS013yK3lv0tCaq7nIayEkjLXzP+fa8eGzB+jIe/JkNs/kQhF2RwIkwiuSDFcL7ObuZ70RoVGEz3pKeAv6U8FydLgErtuRRVjaJIoW+XQpro3mMXjAIKVu9KKpf1VsSzC4Um3MyaXhFdCKtmO+XM2i9QjZFYq+NDBse86BVW4NdgVZqjNZ3iMPIPUzYg+0Ka9D0tl1VxFsv69sjMl5wGzT81hcp34mm1fzOn26HA29jpNdvyVx5ZgkMIVWVbMQBbSHdloqFdQadNOm2E/PFOaRQtXV/bDuUOwYeJxR3+1OS6U2rnBK8J51D/SupAu2Cu2ARfQnm/XVJcINXa2ipPnClxYi0XikAun8AHypzFEei0tpzHokNEYlLWoMxmTmKVKjTHoF5oeQTf9Pjs6fr8ken3hhOuKbuslRsPeVOIHaonghy6W4dLn2Eg/SJwB3gkzFNMnzA/vQoK3CKAwQ1uURadSFKf7BBNp4EqOA9oPg0GAhtXp6o1SYZJ3HSMLR27Nnroztf+kNS7vzhcBMe2J9fKS3iJSy7Ozrgrxc/1sanDLQih4EiMQULncL7mxEuX78T8I0kg8NzU/JtuoignuqPLr8sJj08P3AiCFF+8vO45btjljKL+WLbvgMwKMt1H481f2dwNq0t4Mo6p2xl5A0/Lgr0hvGOL/BU9NJQh3qPM6AZixdZRAF5R7Ji7S3KtjyZKvBAW07O9hsa51aE+TzsvPigKBEbsc01a
- 0w558+Eg
- ktorGspiu8mHGmATEIKMVF69b05lDw0MGwKDSvBdqKKKgCXFigl/d5P8g9crCDcgMtp/D0HvcMdpijvdjhjkdUGx8vaGOcYiSkgVwkJUN7IdYgFpj4fssYfeYd6llvnraR2Ng4an9ycBylAtjmUJ47Sa5psFkYIH/OCf0K5bl+uyw73Uv7WS9gvEyvuSNaA0BoBwAXFh6QytPLeI8dppDLX864kbSuvgQbOz4ptDX47AmAv73LP/0XP0IcyPlyfz28WPIJXw5ucQqDRYeQl72xQ/6njwJUdofOi8t3A7MihWsnvk2iMjvxYB6u5qbvxIIiPxdQANA/83MExUwtu4+wHr/kvNLKR5SMiUjpx668T8kffcDidEJ1qGixqAIUfMzLTo3dqjHuHwj4Wy8aARFO/EUQdlrrF3009Fm0Z0/6fleMBk=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 94272140013
+X-Stat-Signature: nydexrtm86ajo9xior7394aqqgpobtyr
+X-HE-Tag: 1788948080-17867
+X-HE-Meta: U2FsdGVkX18I9315eGK55M4I1hiUeQon24a0g/aJqim5SanguG26Pk9PVLvlb5fpCLwazZ/k0WSrhSuLysneRLAGSbHPmeyE25nn/9HVDCziwrifhF4WV/vWKspLX7ppe5h2LlYlUIFLsGVcsxE105xRREOYqH1Snf2RVkiSHFHRAvCmY/HLYm+OJNe7T1R9JHkjjtwXRKq7Y7650EviSkByZki8ELlo0H/73E6Hq0Fcf67sm9Wqr9auOYJ8idiFrK1Y+KmolzXo++mpbge8gKStgfvyl2DOXl5vz0JiujO9zRkoOY9y9vJ59q4O8MIqXH+74y6LJdHxYkofHiD0Q1Q+FvAVcaC7rKBnEqyWwhszoKDyS+m6FJfplmWDd1y8ZjPkFLW79VzKqpzOdgV8p66pLRs3IPxU1JwkjcE5J1r5MIzCo8RoncaRKrbUmH7557SUKTVMAxRBgfz5eby7KO1Oa6F7sc7YmW6Y4a60MRNA8mfMlLHZbYqwyLV3lyZBlQGAe/zjb9pf08m2NPBHNlB5mY8DAPWSYOpieP8EusSe66ur1sGk9i70sa/SRsO7SMwxciqYwrS73iUZhr8EB1VC0g2fqV6U3d5u30hl4LoKue9uZXv2i1KsNm2tPybPtgf0OwxlJvlnjbOgDYHdfPZce8ipeMS4ooYrfbxOVtAP6jXwwwLbuzvwGuy8GA7Lu1I+5xqFsY7Uq/riTomsMSH2Fn7lWSqPqagS6gzbVyaKLHwiSxeNy4Gg5yjPOox5oQDhSGxYa3Cy/tKx8yDEca9Zc0wjFUo5vHJaxrOkAGrirOdXqHhVXR3L7dWX+69vdQMdhuaatPC+9u3CQQSPQ+c0NQWI/Ozi+7C+Va80cdrXd68ANYPk4DZusD0L3NtxkCzbwUkUvi7ocOY/PU2TkdWxUZVreTLVr27ahRH6fbadcS6bhUpWzh6og2NSnaemwHSUZg3FN6LKIEOFzHm
+ HLPlZWA8
+ c0Qu3zUmbLpRdt/CXD8ZYIyULdNm0wd/SPMK182vmdaMwBJXq/JRMw4Rsk4otkKLR20ZAgvukQNQfO+ihX4SO5ero858E8weOUjoxJJShN105I2OaEaXPU9QLeSofF7C9HbqLZYeN9R2+3zJLzPWdS/KFULi0n+OYsJecfugrwq0+O9K9I5EBm7MFM67lZDZMMLZ3Phcs78sy3HwQwUeeUwdr9bH5ZLZ6wIDetz0WFk1XDxt2J+IdLZz79b3aFJhkY0KUBfhRVdrBFBODYEH2XmHNDwDI/fhP13MyXZQWRVy/GeND35RACohbiaRguCaYXDP3Jp4Ne8b9UGK/GoHWqKUVzkZDsinXgFsUavvzoZl7g9aR5DRdzeU5VQVFaGSTdqfSJ/IAJ0uYuElxNreh+ZCGyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,26 +94,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 10:46, Muchun Song wrote:
-> SPARSEMEM_VMEMMAP_PREINIT existed only to support HugeTLB's early
-> vmemmap optimization setup.
+
+
+On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Now that HugeTLB bootmem vmemmap optimization uses the common
-> section-based sparse-vmemmap path, the sparse initialization code no
-> longer needs a separate pre-initialization mechanism for vmemmap
-> population.
+> An mTHP collapse test needs to know that a range is backed by folios of the
+> target order, and that they sit where a collapse would put them.  Nothing
+> answers that today: is_backed_by_folio() classifies the folio behind a
+> single page, and check_huge_anon() reads smaps AnonHugePages, which only
+> accounts PMD mappings.
+
+Have you checked check_large_folios() in vm_util.c? It seems to meet 
+your requirements, or am I missing something?
+
+> Add is_range_backed_by_order().  It requires every folio-sized, folio-
+> aligned part of the range to map one folio of that order, head to tail,
+> with the head at the start of the part.
 > 
-> Remove the related Kconfig symbols, section flag, and empty early hook,
-> so present sections always go through the normal sparse setup path.
+> A part backed by two smaller folios fails, and so does a folio mapped off
+> its natural alignment.  The mTHP cases need both to tell a collapsed range
+> from the one beside it.
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Assisted-by: LLM
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > ---
+>   tools/testing/selftests/mm/vm_util.c | 47 ++++++++++++++++++++++++++++
+>   tools/testing/selftests/mm/vm_util.h |  2 ++
+>   2 files changed, 49 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index 3ea42a7a2a3e..4947612e8b3d 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -552,6 +552,53 @@ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+>   	return false;
+>   }
+>   
+> +/**
+> + * is_range_backed_by_order() - check that a range is backed by @order folios
+> + * @start: start of the range, a multiple of the folio size
+> + * @len: length of the range in bytes, a multiple of the folio size
+> + * @order: the folio order to check for
+> + * @pagemap_fd: open /proc/<pid>/pagemap of the range's owner
+> + * @kpageflags_fd: open /proc/kpageflags
+> + *
+> + * Every folio-sized, folio-aligned part of the range must map one folio of
+> + * @order, head to tail, with the head at the start of the part.  A part
+> + * backed by several smaller folios fails, and so does a folio mapped off
+> + * its natural alignment.
+> + *
+> + * Returns: true if the whole range is backed that way, false otherwise.
+> + */
+> +bool is_range_backed_by_order(char *start, size_t len, int order,
+> +			      int pagemap_fd, int kpageflags_fd)
+> +{
+> +	const unsigned long nr_pages = 1UL << order;
+> +	const size_t folio_size = nr_pages * psize();
+> +	char *vaddr;
+> +
+> +	if ((uintptr_t)start % folio_size || len % folio_size)
+> +		return false;
+> +
+> +	for (vaddr = start; vaddr < start + len; vaddr += folio_size) {
+> +		const unsigned long pfn = pagemap_get_pfn(pagemap_fd, vaddr);
+> +		unsigned long i;
+> +
+> +		/* Not present, or a tail page */
+> +		if (pfn == -1UL || pfn % nr_pages)
+> +			return false;
+> +
+> +		for (i = 1; i < nr_pages; i++) {
+> +			char *page = vaddr + i * psize();
+> +
+> +			if (pagemap_get_pfn(pagemap_fd, page) != pfn + i)
+> +				return false;
+> +		}
+> +
+> +		if (!is_backed_by_folio(vaddr, order, pagemap_fd, kpageflags_fd))
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>   /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
+>   int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
+>   			      bool miss, bool wp, bool minor, uint64_t *ioctls)
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index 56a28ce7d029..e509fc4012a5 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -99,6 +99,8 @@ int gather_folio_orders(char *vaddr_start, size_t len,
+>   		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
+>   bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+>   			int kpageflags_fd);
+> +bool is_range_backed_by_order(char *start, size_t len, int order,
+> +			      int pagemap_fd, int kpageflags_fd);
+>   
+>   int uffd_register(int uffd, void *addr, uint64_t len,
+>   		  bool miss, bool wp, bool minor);
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
 
