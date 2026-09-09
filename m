@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6031C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F8DC79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:07:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B522C6B0099; Wed,  9 Sep 2026 13:06:20 -0400 (EDT)
+	id 4EB6D6B009B; Wed,  9 Sep 2026 13:07:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B29A26B009B; Wed,  9 Sep 2026 13:06:20 -0400 (EDT)
+	id 4C3026B009D; Wed,  9 Sep 2026 13:07:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A40A06B009D; Wed,  9 Sep 2026 13:06:20 -0400 (EDT)
+	id 3D8BF6B009E; Wed,  9 Sep 2026 13:07:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 87E5C6B0099
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:06:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 732A1A02EC
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:06:19 +0000 (UTC)
-X-FDA: 85194852078.11.405F347
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E6CD40006
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:06:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IggdMfSa;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B97D6B009B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:07:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1F12C0288
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:07:16 +0000 (UTC)
+X-FDA: 85194854472.20.A8F3B8C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0032D20009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:07:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nxcbi68h;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788973577;
+	s=arc-20220608; t=1788973635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=If0/S6KcKK48ZbdSVC4TjnVNIBdTzJOLF8VEmurBkLA=;
-	b=54tW8viQW2Wu8itq0hR0eWit/clCd1Z9QJHCQ1ajlkfiplry2h3aWrRMRZpEYr1Yk6EgxS
-	e/fd3hgC6lF0CLNDO5OK7CKED2hioEntDwIJpLguhfQ9A2QMlh4X9BRJWyMVOv9gSiErQX
-	QXHObAmKyFEDZTGhDtiIkUzvvY2yGmE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788973577;
-	b=0YxpfLeIPLMUbfo5s5yyAr2FZicYZdzSFGaAC0GuIAs+Q4vHhRJXiFIXs8dYokz4yhgSvP
-	bomw49SRJOqjeFezMEkHbEww6MPG5MAnWHacr6zgghwNkM7IdxQEHdnDpNSCynk3IPUC8l
-	+3N0TrUgPQOw0OMZLW8qhxZu0VvqNoI=
+	bh=Sf4uTyqT87ku5vwudo11FLL7Lqrs0P0zt+IQw+/sbcE=;
+	b=32Vi5qgTYPrmphJC257pm6gnACQmZRP66ClXs4M7KtI2nW+qzfTZY5dFB+/acYefSCjRzQ
+	ceUb1hrrKD1HIAnTjkCxuWK6BLo+pBmVWuEaMIeBWsWZhHr2xwgMkedE3dFijAf9KaDHd0
+	jJTixXm6CNDuPoXPwBK6/pgXtsJNGII=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IggdMfSa;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nxcbi68h;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788973635;
+	b=6Z0bYLW5mYy+axjAaP/RNGbKizi8XPCiZYAFVMioHJZD4ajBfbCpVx+VDdnkwbtnfYbtve
+	fiSm9C/g3qliZnDm2Bs0nI4qJ1dP44+0y3MonCkBoamrw3aDv4BzPnrlihIS63ElTq00Qo
+	CNshVmSEv5XQ9HYv1oWogm0CJnc1B9E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E96F743CE3;
-	Wed,  9 Sep 2026 17:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169751F00893;
-	Wed,  9 Sep 2026 17:06:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63F3660200;
+	Wed,  9 Sep 2026 17:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD2A1F00893;
+	Wed,  9 Sep 2026 17:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788973575;
-	bh=If0/S6KcKK48ZbdSVC4TjnVNIBdTzJOLF8VEmurBkLA=;
+	s=k20260515; t=1788973634;
+	bh=Sf4uTyqT87ku5vwudo11FLL7Lqrs0P0zt+IQw+/sbcE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IggdMfSaHa7Q8elzFmjHlZkkyzf6XOy7XdsBUbbfeImPOd47OZIfAxxU9DwlogF+8
-	 XVPM5EulM7RmsQpjdvUgg1VHyA3anBumcALCcFT9qK8ioW2IsgWpqf7007MFKBwKZl
-	 XAalbdg6lmmOW52HgKdOXnxn45DJ61z5W/NZsxyrMNRZV5jXiz+pQZHWxDsds/BAbk
-	 aJNGeXInh832Pfew4X72X/tfrqyGkIiF2Iqmk8Vjwsqz4Lr8idkwEHGD9QmztS90dO
-	 O7C3bLNpHmDdGaVZaWaq7kFMRCxdhc+GSDdXV3OlPNCoME9IIzvIhLhwOmK00I0OeR
-	 9oh4YvC3GtBow==
-Message-ID: <1d5011f8-26a1-41e1-bb9d-8d72c08b8fe9@kernel.org>
-Date: Wed, 9 Sep 2026 19:06:09 +0200
+	b=nxcbi68hK3D5ptwb/7Tb6HNdafqiy74gebgeHLIX23sJcb/zttGk/laJdPN6faHzQ
+	 fc6a9zRR7C68uGT0PhhyCqJlsfF8LLptOtCn4gGx1CS4RRq5TTRztZc14dDQTM64AC
+	 uT4SN9+bXKNAolpYaCheToAqF5mOLbh/CoUyes8LwzdV0deqW3QWaGoM01ORkeHdkL
+	 Fb/lFHCDMCL+07pjiRFZpF7O/NoGWAEK3H0hfMEq6avAQ5hurA1YUE8UxlOFYf4rVN
+	 5keKNkX62+JUOiuAw7ACxEIy8HBCP0NWSWRnom++dJI8CMHLFcoVbFgkHpnYsskkvV
+	 6WDCe9Cl/7dqw==
+Message-ID: <4964f874-3f3c-464c-9977-0d004f6ffdbd@kernel.org>
+Date: Wed, 9 Sep 2026 19:07:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] proc/task_mmu: remove unnecessary helpers
+Subject: Re: [PATCH v2 2/5] proc/task_mmu: remove unnecessary inlines in
+ function definitions
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
  willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20260907063918.3432401-1-surenb@google.com>
- <20260907063918.3432401-2-surenb@google.com>
+ <20260907063918.3432401-3-surenb@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907063918.3432401-2-surenb@google.com>
+In-Reply-To: <20260907063918.3432401-3-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7oadhfd5993j1jydfqy7gumfjp6swd3x
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0032D20009
+X-Stat-Signature: 4z9nr5sf6e4d33kmctrjmdqfdytkhiuo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E6CD40006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788973577-181773
-X-HE-Meta: U2FsdGVkX1/FRa6IxwgzQn8QsToTICw9j+nzpKxJ3A0utfZSHaVXETru+dyAnP7r4/5PfYKm3SM6virkPRp37ldc87YgTgr2aRnlk2WF6Y9vQ4HQsd5v1At4gdxckyDlrH8IHSUkPfwJvq3Obb4x0mdyT7jLIOuA8qkVo4AyqM3WiSPg59PVcwi5bXijZOapMRZn4Ys7uAZcaTjPFeTcSSiUiUJvOa9Em3Au8LrzHFLZUaExnH35PNpjDYTZTKMzBB/1YFNiJYkmG1pPXSq2TcMSIjFHS4FuL3twhtTBii7rHiqduhkfItQSSO9uFFL2JmPqDYQiCnDXn95AmM0hy99zQIzLtys8Q1taDT5bF1A5JQl6yImLvo2dIlU7UvFG3aRP3SuF6zhvnFZITvu4vnOP0mTkqbYX0i30spbLUGe/FTLXQZg+2N+KopQhHJyquDnIatZpl9daubXBaE+t+MfpS5b3JkDv9cBs33w1DYl9kHa+1FsEtMfInzyDU1kJIXFw0aKzsd9VETzu+bzf6dT8xs/sRVk52SN4hST7eGjn0rsBTnSPQnsDUD1rMVEwWSVR13h7cQCH0p+Wpbauge8ziqUneyvHedtHbKL/u8KZiDUbkzpe77HL2KEq9H6+hMvmEWoBwvs131GkdRXJBQyRBFKKkC4//8sO/ZBaFz6pI5WBjVk0dsEMBID1/B9cz6rnfwr9iStC3x4bxX7Eus1zAp4y6XheZL9cga8U828etbiJvqpMeyVqoU8U0mF8HPbei3vuK6NTia6/yx9Khc0J7CGrWGKFCgHTcX6eRsl58QCSXOLp1J/BJrbO8DzFX/RGTvE/vfgDckXzpYEP65ukBzZEk/1u2b3aAj7XrUYNtTLGrcxmdljlvd3/7ifu5JnoUs5ncZBQFSXnS8ROZUsg1QuvfknvH8J4JOKbW/Pz+nuF0nSI7tsnC1w7FzOno6pQCAGQ74bQcDefF+E
- RDEgyA8x
- DmsuM4SYgknplvmbrzWFXHrDeyGGRaWiC3qf2RuGKodVPeUKO5jbtFS/LWmJLV6o7kVOyxITp4rkoS5Hx+hAmEe8zqmmChtCFum8Fj25NNqABvbhySNf0Hn3rTj0+CdPYWpy9uIbCHPx1d6IQy5mstxrZpIiYHjG18tLO9oNSdrojV9zmdCrfRjn3oPuHjt090jrqmmuLKiSD45053eaxZhNYwYduz/iziBep3HbK32ndMdkX+veal0FFGDjV77ujA8RLsuOsOiGlVDxF9mypGyAFONoz+88MCAr6FAlCf8UmXGdWVW+ErEprH7/Cgyb1ZgvgK/NJQtcDTLTP1dFttvjZrSXFsSnDmmpF
+X-HE-Tag: 1788973634-215461
+X-HE-Meta: U2FsdGVkX1/OeiGbcmPmAIR1kHmquXxcMCqC/tDIiB85PWBoqrfD0JEfEKPSOPPxz0YtDMm57KpFzX8FxsE6Agh4tmXTyHZ2UaCyd/tXkTIdl73fKlxC4iW/q4T2fDOgf04mAfSwgSHfJMenEO+3qBi//9RYdRza2RDmIiUuIiSI5WeIwoakB1hQoRKZlrAH73rQNZGfhLJzZm4FPCn70t6yrqukGbkSTjfVqho63uuwE1EqZwXqoWIxsV5UdfU4dezlqWaRtvc250M88aaoXA9JptsrRz0Gu75l9BB2vNCZejzTgIyWEgFF91r2C5y73E+bB2KEY/2plVXv70rM+LQgkii+AEAXpZ2Q2tdfwXOp3yMPbjpymXugzmQGmmVGkm9iWBUsna9jx89lRcTZV8BLeWE4o0ICtvYzuGid6ogu19nJg0e5rL5FiUDMwbOWOy1umlaPfuJtPKAr3y7cAck1ULvyIH5Q0xIketOibV0YcPlGgOP+QOfXzaLX2iFIQ1r9PiJGlmyKe04rGpw45BkLEq5X9FeIXsP8aLuspfd3jLJu3YV10eTD8JnG/KG7pSVDq7QLtFMsWG3OG9VhEmMmpsXnr/pAZOtkhDqzuSmCg5rohllmtqOk2U2R+0iDDtheMe5pbdPaRuVC1oFaHao8fuOsDv7S+bolfWY2LWgIsliTzKWG0BT18rdbtfVGF70WjedjZW14eDBWOxJIkRPGWodVsKH98Wwgnu/UljRMsiOGacDR7Cu4vPVPZDpa8pJjZd9zJlH8JpJKwn5JxHsDKoKHU+lMaxSUpI4wbOPx2J+DiWQr+yJZgpwDIKejfafZMC/OMSnoEjyzO14Ikxt302VzRPuWUJcYcbDHV50/3bn7RUiW49yAY9Ydi/ZaL3iIE3YcsJ1NRc/X9De4TFeimcahXbPDcKxfcb+qo5ttZ2VQM14tTJWmaqvo+m76Dat/IOM23jpuZSvm4aI
+ ieu2e9Pm
+ z6wM+ReWuldzEewKDKx9UN68fFn1IdAPk1/dsnaCDaW2ahkVJloOxmjqf5Muq6ZeObOZtlTJM47Q3XEVVtegTUWJe+KV85xf2V4vRSjCGB3EtSkxPkCq4F0hGOCWVNSC+b3R67ejUCm7woi2dwE3msq+t20cYmlvcUGjjYizSztsWX9w0UUmxogeeHnUPeB08nHx84zVbO2m7sVoKkjEfRUAFg5GAdAytIhDaWoQUt3KTzr7dpLCqNBwDOkWjSL2myJCUupetICzKb2MXFmYX/8IRtQd7rlrUWK7YOpqsarHBtf0dABz/8lLl7lRJggP/kJRMzk00f7GNwbE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,21 +142,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/7/26 08:39, Suren Baghdasaryan wrote:
-> When per-vma locks were behind a config option, a number of helper
-> functions were needed to simplify the locking code. Now that these
-> locks are universally available, we can do a little cleanup.
-> Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
-> query_vma_teardown() helpers.
+> It was pointed out in the previous reviews of this code that many
+> functions are specified as inline, which is unnecessary as the compile
+> can make that decision by itself. Cleanup these definitions.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > ---
+>  fs/proc/task_mmu.c | 32 ++++++++++++++++----------------
+>  1 file changed, 16 insertions(+), 16 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 2f500d639db5..9908ba32f180 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -130,7 +130,7 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
+>  }
+>  #endif
+>  
+> -static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> +static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	int ret = mmap_read_lock_killable(lock_ctx->mm);
+>  
+> @@ -140,7 +140,7 @@ static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  	return ret;
+>  }
+>  
+> -static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> +static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	mmap_read_unlock(lock_ctx->mm);
+>  	lock_ctx->mmap_locked = false;
+> @@ -177,7 +177,7 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
+>  	return vma;
+>  }
+>  
+> -static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
+> +static bool fallback_to_mmap_lock(struct proc_maps_private *priv,
+>  					 loff_t pos)
 
-As Usama says, this could get picked up early independent of the rest (maybe
-even as part of the other patch set)
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+If you touch these, please convert them to two-tab indent.
 
 -- 
 Cheers,
