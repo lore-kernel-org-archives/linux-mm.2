@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1BD7C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:47:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42D4C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C4E66B008C; Wed,  9 Sep 2026 11:47:32 -0400 (EDT)
+	id AED7D6B008A; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64E4E6B0092; Wed,  9 Sep 2026 11:47:32 -0400 (EDT)
+	id A777C6B0093; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFAD6B0093; Wed,  9 Sep 2026 11:47:32 -0400 (EDT)
+	id 917436B0095; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 267696B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:47:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A75D4160275
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:47:31 +0000 (UTC)
-X-FDA: 85194653502.15.9ADB5F2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 566D66B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:52:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E7EDA425B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:52:33 +0000 (UTC)
+X-FDA: 85194666186.04.61C7C61
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C25F5C000E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:47:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U3hCuoRu;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id AE8C94000E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:52:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQBsMdka;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788968849;
+	s=arc-20220608; t=1788969151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UPlEwDATkKsdnhPipJ/RnZzY8Ea9kWNibxkB8VtNG/0=;
-	b=7jdxjvR6vud5Tz00oBb72XPBk4UJd+cCK2d5jbVAF5tWWylcFgS7dW6IRUWo0Yx2Mlh1GG
-	02mK3/7F5sNKmYszfaIFAOHDvStOiktUIVRA9QxtdaDkiaEwLYk+tA9OusB01c+65h0O/U
-	R/knQX5S2ELiFR3zs/nHwwIP+HX9IvA=
+	bh=u91uFesTnFbGp/0SROsL3Fce0KUie7u3CWxoraS7oAQ=;
+	b=jsFMcFzANBjy6Ho0876zbP6QMyxuMbdn7Z/rquCQITdFgDjaq83QVXo1oXEJErwzpBucOv
+	wAArRGkCGuwdKC1M0dv9DB+Eaf3A2lxTn3bJU3wlEclcG3npW62VSJq4m71v+XT3hCgH+k
+	ypkHImshqMFXhb1J7/v86fwhWBY3vMI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788968849;
-	b=6mVKTbM69csVUYvWXdL0vh1uxw4Z52AIi1NsiJUJqnDZlNI31G8sMtEz8h2hJpYXS0I3UF
-	P4EozVyZwIHNGFkEa/XgFubjztjIOUQBwh41XHCzuOoFDU5bv8uT2+GaZeqr3MOJjAstbh
-	2SUd2wBdoMRsOvHCUiqdwZH1WwvMRwk=
+	t=1788969151;
+	b=mI2H9rKHgBhgGpj7sj6tbwyRtWx56Qqr5y1870bDvCk87qAf4NB4TnBeEL8bCWJXpY02it
+	6cKcHU3SuVUekHRchi05niHXiJoS9N4W/R7f6lsc14/7UtAux1Bf4kSzDD84kPhrtb1vB3
+	kTyE77kM9nWuZ0mEPa6/XCSGWL4Yrb4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U3hCuoRu;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FQBsMdka;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7E8743C8B;
-	Wed,  9 Sep 2026 15:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2261F00A3A;
-	Wed,  9 Sep 2026 15:47:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C50C643CD0;
+	Wed,  9 Sep 2026 15:52:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D481F00A3A;
+	Wed,  9 Sep 2026 15:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788968848;
-	bh=UPlEwDATkKsdnhPipJ/RnZzY8Ea9kWNibxkB8VtNG/0=;
+	s=k20260515; t=1788969150;
+	bh=u91uFesTnFbGp/0SROsL3Fce0KUie7u3CWxoraS7oAQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U3hCuoRuyOU4wAxDDZm3tqdyOYQ78j7gRNdobasTRZ3EyQ1BOVPWRhY4lOwidY6lo
-	 jq7/GojnIOSmrMOZPidFbFfVXltqqH3hfyKAwIoSo7hIvZWMS12AMK1eTt4Icp05Ps
-	 JQjzUXEXm7//EFMSL5ari8t3V7m5xzxzctzZmvfkBzmk92jg/g4Hfh5ihWaKQ/WXZ8
-	 EDZp+Cy4KdsgXxo8l9uIDUArYMHe+dXYGoIlLsxIpPjshMXO6NyowsV73R9NqaowsS
-	 9mKET6R5YNCOe7BOvcBMmZWibyg1/HGmGF4bHeaXacxPQ7N7hXNuof4OonTVGbPLlS
-	 jd3+jD0Y+b5Mg==
-Message-ID: <c47b91f2-6c95-4def-93d2-edfcadad5a23@kernel.org>
-Date: Wed, 9 Sep 2026 17:47:07 +0200
+	b=FQBsMdka6q3yJt4PU5XM/w8brLU7gUN6lqri9XYHBVnNyH62B5rbtWvnsDcuDDstR
+	 yUYGausmecFcZ01xcp9jcXh6Ho5wsTQC/KHLYEhhxTdAcpoZL5xbh02s+2mdoJKJ3H
+	 Cp0MTYHR4h+lAxicsGveorC67zzpo0UPgSBxoxYCK68UEpTQW1y77SCx6ZwpV/csrz
+	 raXx29Z1Se41gtjEI1U2vIhXIn7MET8plb8HrdSDx/6+Iyyu8xI3OQ7cdLk6+LSork
+	 xm7TREyRSVsrnCKckGjwZONbqeCoEzk9VmOK+gkVKpkdILm+SY4p/AoaYniCXdOkqG
+	 ruQAOmRiKrwxg==
+Message-ID: <13f2c56c-b55b-4245-8190-7038f4eab98f@kernel.org>
+Date: Wed, 9 Sep 2026 17:52:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 23/45] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -103,9 +103,9 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,17 +152,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-23-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C25F5C000E
-X-Stat-Signature: 99wx8tupr9nqwbmnji5fx68y49e9nw5r
 X-Rspam-User: 
-X-HE-Tag: 1788968849-510083
-X-HE-Meta: U2FsdGVkX1/W63WUdzBFTH4OMqpmXbClWterZnQoIppcWSvRRHVyn4vHI6AV56oyD1qSc2gMJJhUx9GspKpx7GJmLSVvVJau4n59woqPhUB5wlCEcFtngfOwTVRilM4AYbMQTP3ZI8rH+ZFsmL2U+r0E9j7CWMwkanwVp8qz08V8wX/fughLBQReTefpCpS62UjHwouOK7N/CzZ3lxa8lCDUyW3GHUBUXDMw/Nmu7eZ/YFIs8ArSMqngBEF81EKtfJdvK2kIyg8HlF1CXEFclKggeOV5MHgAnLrTGgTid5CVbNzlNX3+EyW8fHXHUH39V6O/5yD4pgNaGOT5AEAyV8UI4M42d3plP3PXYD6VBLpQJEL+/v4gg7dw2pHEIJcEKj1YT49crKdTfccdGZQzeG0IiHo2dg7vVAa2rmHskD+/BngKWb3uRz5o4OQwP9ZfiiJ36HvoPDGCq/63f/d87gLX+UukqRI72IYXQwLbt7e6YDb8ZVsMOTGnaOSh4LsrFGxu/Sv/3DCWkIRtWcjikdAdBlepACWUoL00IPYTCJUfh8r99XsvaxBsVL6wHobeQb8GRI1ooPpBDBU7eXs+7wzZaxq1BN65Udbb9CYMRxH6s+yCrcFOtuD28/ZR1Sh7RcNSBDssP6f1Fk0bx1+3OFgwzm9hqv5cCSiEMnPMzg2j8/L/uw6aLBhrxKZp0vxRyHvJEqbQC8bVMfq+nQqgTCgMdQeWXqbJpVqdX//t0EUCoYUOevVPjsgiuNLM/1+Pg35nQ/agkK5F1f/4tp0/ZnN46B74KfVOEAdo00dwYkRg/D0iPefDXjQ/lmUduH+tLfVEmoekuJ7kdbj4txy+OcsoAhL2sik6BQjT58shlREdkLzh6cxI5gbsLtC8SPUPo7y+ZHxC89S0NkRrIXnltoQEYReSZsESs9JBQVHYNP60LD4eaBJP5z3vhJkjkaYFWcQO3HOZW47Vy6TQUNE
- ep1iE58p
- Xd9+Ktv6IQTJdHiCHkkU+GUA/5+pUteFZT48sCwkj1pBKQKkLD7bbN2EStnepqfiuG0W83aiRsyMOXpNSbT1TgGAZKMkhL03QmZVm8vyRYaGoCDGM82Ultb/bYfDIKEot74jDQVA/gN6XgvHAmNlUWiFnKET2BYFl/5a6WMbf8AG23SoJTA6zHLU3jkuFLrNNVyGzNgKCSVM2sNyWgn2cwGjwPynBVPVHFeBeXURa3WuP2dkXy00OOCLbyE02ayRSyJrk8SL2iY7JFqwxdZDb0AEginBzPAFmJgfcGvCxhiZkbQtBPBpTVpt0WTRC90X7DTLLTd/NfIWWy6P2c2OGMyc8rFemvpG6OCCQ
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AE8C94000E
+X-Stat-Signature: eoopz7cwo3ux4mt6p5oy9z864yn531e3
+X-HE-Tag: 1788969151-462800
+X-HE-Meta: U2FsdGVkX19FlH/7BD7FVHZfauSyHs9c8ytNBYXGrJ4rb0SUnDRuix65ZKg6rPPsrfR+NXKkbxUKKX19jmIAyegGcp8unsmA9He1LxQmgOhl9wDo1AP3577AXBZPSnkECb8TJCa3QcbgwOA5up8eSmzBcHvD4QIh1jnxeAvd7VRVG9+oIUFcETBekK5W2xdP9sl63DMwyVzcmQnucAkHzBR6FOH81avdZZFZzLJ25peMJUxJt1MaX2QZMbrpzYMcIEqjdZ9KZwnIqwGgq/W3r6CzwILZs0Xg/AEG/J99qMY4AHSbBQPjw+KHqk5/TtH7QjVlS6Ve5VhzcP5qZ6e6/nCrOVmuGLZEs72FYvX0owre9cbDevSaS7Mt/h2YShlbpoxpy2OJY0c6lQPln487OD2febonC3/FCGKhikFAtjsvFncMLpnrnpuGYEGuzppcl7ehc77b7krnZt4+geUueByOaYEqPNsLUAD56mIeewP9PHTOrskroMr2etMgafaAtUdzK2OUWV/TjhGJoXnV/Mq3ZvzDtEsA9fW9Fb3diNFz5d0eyM5gOhX7NFRGJ3i8prdVNAckvXn1/lfdmBmqJPVY17vwY/t+T5XAdGBxSIMWW0pTO0IWOQVKIhXK0h1jvKOFVJkk6vQQzwq5NIWswt10nfDlqxr6bhT282nNoKY4NqzsmGjmr3s/BktK8tVhstdOtaC5BkMY9hLflhgK6FITpL0YCkVVqNdqV17NARvpgtxcMR9JA0V/stpQcQoJ8zCK8dfwKKkqWS7dJMzChfc7GMrja8rnm6FPv8l/mJepUKMbE5bJhmbvImsJTsCL8fCNbZ4duDTbX+IkAEGeh8mq1KXvGCG+6T1z3ommmApYUh8dkW0UFEDSLYxyl+UGZWTzvZQun0vvKH/b1hqGh7PBmTLx0QB41TQvHBSkn7+N6tNukuImpFc/VZ3dwTMo+i6/tr+dDFhnxLADK7v
+ BDl0CWMv
+ VA+zKW846ygyxNzYflLY8TnqUf0uRe7t9QmhsV+U4tSolcj+Ldl0SB+Z6W5RvXIeaGUUuWypcBLMjz4fU7+ugL0/pjjZq8oc/GYTI+t7lHgprXgRK5sAYSxnJ8pdZIDY78CsaCd/PGASeAKXwSTK7/A44U8R7HHcF7J3LE9lYti89+kmT7CIjqsnwpjD/hGNcB/q+XzqlpejEyelRjKsqWto3FFVk00avVsYl2q8Twwxr6VunOkMU49IjwFqTXW4JxwZ3gyyes8Pkkg9ja5G72pAmBqA8xaArkT/TAXi5gejnDi5dmrxpvpQswmibtUB6wr/gRhCzSvvo778=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,78 +170,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Allow the user to disable KVM_VM_MEMORY_ATTRIBUTES even when KVM supports
-> PRIVATE and SHARED attributes, and expose gmem_in_place_conversion as a
-> module parameter when per-VM attributes are supported.  I.e. let userspace
-> enable in-place PRIVATE<=>SHARED conversion of guest_memfd pages.
-> 
-> Provide both a Kconfig option and a (conditional) module param so that
-> deployments that use a custom kernel can fully disable per-VM tracking,
-> while not forcing distros to ship two separate kernels in order to provide
-> backwards compatibility for downstream users.
-> 
-> Don't allow running VMs with mixed tracking for a given instance of KVM,
-> i.e. disallow toggling the module param after KVM is loaded, as the extra
-> complexity needed to handle per-VM behavior far outweighs any potential
-> benefit.  E.g. neither TDX nor SNP supports live migration, so in effect
-> the requirement is that existing deployments that want to support both the
-> old and the new models would need to tell their VMM which flavor of
-> tracking to use.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> [Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
-> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  Documentation/admin-guide/kernel-parameters.txt | 25 +++++++++++++++++++++++++
->  arch/x86/include/asm/kvm_host.h                 |  4 +++-
->  arch/x86/kvm/Kconfig                            | 14 ++++++++++----
->  virt/kvm/kvm_main.c                             |  5 ++++-
->  4 files changed, 42 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 68647ff4bdd24..b5719714458fb 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3156,6 +3156,31 @@ Kernel parameters
->  	kvm.enable_vmware_backdoor=[KVM] Support VMware backdoor PV interface.
->  				   Default is false (don't support).
+
+> +
+>  static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+>  						pgoff_t start, size_t nr_pages,
+>  						pgoff_t *err_index)
+>  {
+> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+>  	struct address_space *mapping = inode->i_mapping;
+>  	pgoff_t last = start + nr_pages - 1;
+>  	bool has_outstanding = false;
+> @@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
+>  	folio_batch_init(&fbatch);
 >  
-> +	kvm.gmem_in_place_conversion=
-> +			[KVM] Controls whether KVM enables in-place conversion
-> +			support for guest_memfd and tracks the private/shared
-> +			state of memory per guest_memfd instead of per VM.
-> +
-> +			If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-> +			ioctl on guest_memfd file descriptors and disables the
-> +			legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-> +			private memory state tracking. Only the
-> +			KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-> +			per-guest_memfd tracking; other attributes remain
-> +			per-VM.
-> +
-> +			This parameter toggles KVM's in-place conversion
-> +			capability support. Whether a VMM uses separate backends
-> +			or out-of-place memory management is determined by
-> +			userspace VMM design.
-> +
-> +			Note, this parameter is only available when
-> +			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-> +			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-> +			conversion is unconditionally enabled.
-> +
-> +			Default is Y (on).
+>  	next = start;
+> -	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> +	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
+>  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+>  			struct folio *folio = fbatch.folios[i];
+>  
+> -			/*
+> -			 * Outstanding references are anything other than those
+> -			 * from the page cache, plus 1 temporary reference held
+> -			 * by filemap_get_folios() in the folio batch.
+> -			 */
+> -			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
+> -				has_outstanding = true;
+> +			has_outstanding = __folio_has_outstanding_references(folio, &drained);
+> +			if (has_outstanding) {
+>  				*err_index = max(start, folio->index);
+>  				break;
+>  			}
+> 
 
-With the doc fixed
+Having the folio.c bits go upstream early is certainly cleaner; without Hugh's
+series an ack from MM maintainers would have been sufficient, though.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+In any case, on the revised patch with only guest_memfd changes:
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
