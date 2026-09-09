@@ -4,89 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B029C79FB5
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 02:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5C1C79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 02:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38EC46B008A; Tue,  8 Sep 2026 22:54:23 -0400 (EDT)
+	id 878866B008C; Tue,  8 Sep 2026 22:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3672D6B008C; Tue,  8 Sep 2026 22:54:23 -0400 (EDT)
+	id 829306B0092; Tue,  8 Sep 2026 22:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27BF96B0092; Tue,  8 Sep 2026 22:54:23 -0400 (EDT)
+	id 719A46B0093; Tue,  8 Sep 2026 22:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B99E96B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 22:54:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DC211C2AA0
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:54:22 +0000 (UTC)
-X-FDA: 85192705164.07.D73253B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 82FD720002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:54:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AwGlbLg2;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 480276B008C
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 22:58:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C17261A083A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:58:32 +0000 (UTC)
+X-FDA: 85192715664.02.C28A297
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1C7BA40003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:58:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HJ2yyH2J;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788922711;
+	b=VOr6zbwZoBB69xBZJYFgFPqUhzaSPxFvpRIBCSsZCj2XnzLRiZHmZD4cG+4ysD+YIOmS2K
+	Bqy9SYx6aMMP+dvCNLRFejd4jCxqAfAUxu5eCgKg3X2A1GNPWsVYCp5WabA/rrM8AYpB5y
+	joRqQjvLTrUuLMaed2hVUZcQuMyvUbI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HJ2yyH2J;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788922460;
+	s=arc-20220608; t=1788922711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L77adGrO+YLnIDMLbqVq3WjXkrZq6e7pkRIlmk3uZ/g=;
-	b=d6P1IM0niItwVbSecJbBO75+tZiMJvqHC0AzEd/khFnuVlepRL4YHFGNatorNROQ26kc6B
-	CBhRsc3SC3ZrIG5hv2lBN7HxkekpWXtkP3cvWRzgjUPwPAp68Qy48JtylpXWFaIqauzNcL
-	r9t0wWBopCsTP4YUuiOIgm1eHtkkgQ8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AwGlbLg2;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788922460;
-	b=EqLmfXfOTllt7G+AlSewRqTWkyOuLEJ7WPMh4iPxBWLga6J7bJceGBdlW7qzVQpOIoykNa
-	ikH9NL0WKOc88JkbHAvZskn7ADmw2xcSH1sJPPt6jtZzOVokYLaH5btKWr+TWNSTuHPNs5
-	mOS8qII3v7SZRlk+HZOVwOLNzh0Nzbs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D60F7601FD;
-	Wed,  9 Sep 2026 02:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F181F00A3A;
-	Wed,  9 Sep 2026 02:54:19 +0000 (UTC)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gc/4LmELTKxt6hwR9Cs57QnS0HmHAvtDF3Qbdi4WaKk=;
+	b=Wknomlq6auy/KKj5+9DSzHbIemGRFwWaNKRal1IEBylhaVhwZUCIbErD641m022OEFIq63
+	DTshy4zMfMiAX5L4ut+szqV9Ome5+SwZbaLnvivLSH2dXAUrTrHYsPOewKyo2qtECg6g8N
+	nMwhph+XTLQ8c95dzxkm1181XBPgqs0=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb752so586874a91.0
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 19:58:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788922459;
-	bh=L77adGrO+YLnIDMLbqVq3WjXkrZq6e7pkRIlmk3uZ/g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AwGlbLg2cKsA86/YUdIRMXJZCaG67B++2lBKT0134dY4vyEt7LUemrP/hPQppBzy5
-	 ME5FIXbl9rLktZSBWDe83M7akRVNmmjHhzN7Y37bu2/NiEnkd7E9P/Yjt76n6Jo9g2
-	 3IWvJMbr0wTRxmdmA1p0gSTRA7lXmQ7tl5QjmMV8=
-Date: Tue, 8 Sep 2026 19:54:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com,
- vivek.kasireddy@intel.com, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hongfu
- Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH v2] mm/memfd: fix hugetlb reservation accounting in
- error paths
-Message-Id: <20260908195418.c5ef0f3fbc2b3bec405cd652@linux-foundation.org>
-In-Reply-To: <638ae9ae-2cbc-47a4-85fd-52b67b74e351@linux.dev>
-References: <20260903030134.7407-1-hongfu.li@linux.dev>
-	<20260903132158.a2d6f965477220838d884bae@linux-foundation.org>
-	<638ae9ae-2cbc-47a4-85fd-52b67b74e351@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1788922710; x=1789527510; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gc/4LmELTKxt6hwR9Cs57QnS0HmHAvtDF3Qbdi4WaKk=;
+        b=HJ2yyH2JjA40dPpfeUzihGXO20GhqSPNB9aksue0D5ouF6Q04Gg9onH3JPnWoOrHaV
+         Lle9Niktry3BuRsHjXLNfXjGt3vDPujuI6U1w2yM0KPNrmmSr8DarzjOz1kFt3enaTuJ
+         cZBhH1129rcNxkynbGgWhpKDEdPFhBHC7Ah5tnzlcAIZJgGtkjBQuTmI70fO+dnnF4ZJ
+         VZDIlqE2rKia1UO3DoJll2De1Jp9QAKyPw3/DB8lLSctwugBk3Ej1fIc/HUYDiI20Jpo
+         cwj5ITrDIldJX935NoC/ePh1QAK4hMWMAQ3Mdz7Spn9Wz4r3b3sEDGZ0idszmgu1FTyW
+         9SSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788922710; x=1789527510;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gc/4LmELTKxt6hwR9Cs57QnS0HmHAvtDF3Qbdi4WaKk=;
+        b=SflPkXDsWv+7E1MQJOQijSED0p4jEQQ3ZY9bbnINMGq8TFbRlAxAzKa2GrQu0y05Yp
+         4/rfseG9tgcall+wTtL6KE3K0/S3T50MG98p6c+n9o42WJmqW6DHcx9z5dLMr+0KQGzQ
+         72uu02YhJfPePUDTKDeDlS+WfAWe5TWF/G2zFbRPCez6bFo7b8LPSvsrB03F8fDwTXf3
+         7XlCxL1q0LTN45ngbYjMRprp0NJfbUjsLBL6ReUaXTuBC+7Bz+cdYXF4jQmb/u0y+Ekx
+         ZO/LoNRUF/XeDzUH8NI8Kv5mMJwl9U/sLlAIm6kpOajRMLklvQSgZF0ZK2PPapE4qZqE
+         B0Gg==
+X-Forwarded-Encrypted: i=1; AKwUvBwoF0ByJPJq5bkXzVO2URTflRMjCFYsEIe+pxlmc8Lv6MFv4DBnZ+FsMQJ7go3z9mml5abHrWnRJA==@kvack.org
+X-Gm-Message-State: AFuF++lV8c7wdnhvRVdGrUo6kJ/mSAkqhqwhWcfXp6O5Qet2bmfBYuH9
+	Z0c9+aLC/uCi3bURSqz64+cDI3CXrvpqWqaqbm62/NQui8gy1mwSwYDF
+X-Gm-Gg: AYBFou2PiRiyNUvquddflEvYiw8Tk6/OG7FUxvZ8JkXeOMrZhH77tgMLODu8dOLUQHs
+	xf7BDK1Zchoh8h0bfG0uZr7fQeqMy2vs0oc4UKp6VSJKWE392P+vRC8AmPIrFfcKq49CSkaaAjL
+	aDrJcQQuUFIoBZgjLyCO2f1+6ibHR41LwkgCamHZif95wBkh4m9fK2heFHv/qkIBkgPa6oP0RNo
+	8j1n4QEt4MZ5CW5/ah6FLI4nRjrHL+37zsMFzNQPEHME36VjOppQWMNmwNQldgClQ91Ix6Se1kc
+	0MBETiqZwdP463UOciS3kP5TDexgHJiG5EXXRoL8Q4gSEOdQ2sqLIaY2hVTA87KYndqLAu+n8u5
+	wLNLKO8y3KDKX564uV1I7Hh3/JrqNsJuPSv6ir1xjHJEpDquKlI5qTqw21QZwb0drvJEjT89bzI
+	ArHM0dFBsf1hequU5hiPn7c+oR8BcPXqUKft5Rxo4NW4b6Ut0Qha2ZKMOi73GHyBZXULzhRQ7xN
+	3cuz/Tsrx8BPA==
+X-Received: by 2002:a17:90b:5485:b0:396:b918:c2a with SMTP id 98e67ed59e1d1-39bac34a3cemr4635597a91.12.1788922709582;
+        Tue, 08 Sep 2026 19:58:29 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c39451sm35077172a91.7.2026.09.08.19.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 19:58:28 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	zokeefe@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH v5 0/3] mm: khugepaged: fix tracepoint UAF
+Date: Wed,  9 Sep 2026 10:58:00 +0800
+Message-ID: <20260909025804.3233645-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1C7BA40003
+X-Stat-Signature: 4szj95uccb8pimyhxh6ap3ocq1edsnug
 X-Rspam-User: 
-X-Stat-Signature: yu4jzhb9xf11nknh4yf8gn4gky5nadwm
-X-Rspamd-Queue-Id: 82FD720002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788922460-465927
-X-HE-Meta: U2FsdGVkX19EZICCzCNGqp3HZTPCRH4HS+sZ+2wJ3nD89YithF0YRVLkFpzuHhhg4E1/sETQivNuUlQbt54AKoxrOPSR9EAgPnrhXVCN9sAUm4VFIMdMtOImLqR2Rz+DhOyH00Wyu0K+NFNn2UXTnbAsL7N7AAnHXIYIKs46b7LM9eJY8nEgg5e6VEzKZUsNfmX5O/F0T+bg49yzOHHiZeDzX7QULsneHSys/f7DG2wdBT/9YlCEvVAp0Mbucy24zrhVCl8DMgu2G678GYp+S6REWpH65qtE/sv6XjbJ9XSU+J22WjC4BJi6XNzUwJGsfv8FKf5lvhFqdCJTUzjVNcs11GBehPR9nekkwbLrwFT8vltA7+L1pnrc46JOhaP5k+BLXSiXss2pUBC2AZNwIieSFtpahKHEr4TePOZEHzi3oec5UgxNvzJOl5X8wNEeAFVt/wR6CYmjvL881q4i58VkHaNtQuUpzTIIvUov10VmmXuMvFeGU9TtM67uZr0qk6LLMvf1eQ74+QKOrSC5XkOfmJyeVs7jxem5Mpq2h89DqTfNdhavMo6SaXydqvgo64NTDa1ULuMI1o1UD2uR1VONcFX2wBQD4+q0RwZaIGLi5n2Djv3rpu5qpQ8CReQOd8AgWWNRfUUxSB6udbh/hou6xwjgMk46wnkJJUECx1hN+Nd6RNq7FDG5nv0Nt6lmTX0RnkyNxrDX7pUDWE2btlf6sLVg8aJyh3/ysU34J3LFVKToUxiii5guHEwR6S1y2t62NnHw5CxXw+0LcnrQcm7ny2m7xZNQdINyDjvm+jYMW2ynMn3pmGS5WCt+eSM2svNn4jYBQEDEoiTUuLtKggVlXUchKKBsq70OU8y2lQ4SnmPlFPnmWXrBrC4qytRVWRfOo2cYX/HhtqYoUHI3+FVZ75ste2//eSUq0py/nlb96EqOmtvZtwv8lb9cc9dBf1xsrfuEI9lO31L7Yb1
- tM3B4MUS
- ypox0Vi+byxQ3glbxKpR21UrcAu7jVBWHrIxAk7BoD+vTFpPR5oBb111fClBVzQopB8g2/E5w592NzT+TiT03B3ujGzgKNbNmcHv5YVVrO63uXN9aV04m9yJJXuc2Z57RWqTfo00cBYNdjvOis6fC+N+F/OOnO10raGmed7rdJHAocx5UIIKME7xqBWURZJ3XrDQVPXuUcl68b+lKRZmmt1s1CBukICV9Q5Sr1Pi3Y4beYZUK0aMsqB5pMw==
+X-HE-Tag: 1788922710-744168
+X-HE-Meta: U2FsdGVkX1/kHn+hVOeeX4eviTTeQPU/yiNnrLEQR13XwawS1stmHozn5S7WewlCK4/IjomJDWPxnfddvOAkTKsMz5B344BMWaHZzcOdKcvAKbxxHCNwwBiRWpgaxLAZ8coA9e0zrhPTsGE420v2o+halRr2XKwFWzm8+os4VzG8cOpPTxk2wq7DUqzWEdtzXzvU7yFVFGUEVx5cNLZ6cYcd+SmTvf/NfcRtX0am7Njs04w87n5uOaLev6uxblJQ+MdZQFC9SsAb3DyK6WTPy16Abypnk6sU9645jzv0Mv6exBqoA85nljayX76k22wEMjmaxZV8kAYw3gVC9gMBEQD38BgRFJAY7ogAi+qlhlEf4UsN1xpYM5KsL7RRn571XYmWJSSo+CSmIWy9X+mCDoiQwyjllOkLYDXP+g5BxOI4/k+hS5FldNB3Dn8dFM1cBuf2KXt/Ati7Y77tJue40SEDqox2ikn1ouH8WBuvBqPE/DpjX74rmr8vWcGprRymi2hwIKOGboWKGi0sQBCoEsipjS0+W2ljNmbGdg6f20di541JCDYuOjFpUcx0MEWlr7JrUxHeUaKavFDjFV6EG8Ui9Nq3onzsDhmcNDNzgAuptQaDR6tfjsE/gk36au9o48es1bp3EH9z3lt1L94RePuYfrsxtrAykxs3L+QGQTuw4XUGNmldAtTNhjUOEpzABF85OxyoHOtQ44YFERPU6jWwEn4KKAggHHBpk9sgBPRWDMZ7G/+xY0owvbffUqU0qnAhDR6e7xItgD//QHQijMYjUn2yZXQNa1pmSG6JdXwIhmn8x0aVyjsxl8wVYVxjMKnaGM53wzhsJ/NfOs0SOWix5vxPJex2uODrbIGHfh9Tv+y3h9UA50xDY4UH+t+yY+HnMKid5o26ER/OZkjYjlculObUfo28HOoJA5bOcNjXVZWMQhvEwu5Ow2n0rwpJVqs4OK2NBhE/w8sirdH
+ TVnLbIv0
+ xRcTwK0nFgbGRdi7nIdwK8V5g3m+C4PVcsIOGKnbEjvtSS0OOtEbxaekygKdSlfP0pY6lVYghae+9kVs2IsUBCfi7KYVrfsVAKLt5JpPV1uL2rlcwKlCXPEuYh+NyXfGDntpM83uPgepjSnPn8a4uC47npc2BnYSMk0Vn0slQoLjozOoFS9SMzLF3i+YD4vErrtasSZnA24pvaYanZ+HNxWC1kD1NEbNiHq7EFuh+qsur6j7Q1Vw8pxljglRhXhkdjYgD5SNFFbi2hZpdZSQraaSRDFNHvQKC/B+M1wFM/z0GBLB1GqJ1AuLM3BmPlp7N87SM6BQJ2UoCSV/sjfF6wpSqbJpWLn6et0xsO5DgVZrbBRANmjNMX2kleFPEv54Gfwj+qOb5qN+Y8VQ2TaSGl6vkqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,30 +126,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 8 Sep 2026 09:35:23 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-> > To help people understand why we propose a backport and to help others
-> > understand the impact the fix will have upon their system, I'll paste
-> > the above into the changelog.  Please send any necessary corrections.
-> >
-> >
-> > Please also update your prompts (if using them) to ensure that the
-> > changelogging includes this info in the future.
-> >
-> >
-> > I'll queue it for testing and shall await maintainer review.
-> 
-> 
-> Thanks for the detailed explanation.
-> 
-> I've updated the changelog to include the userspace-visible effects
-> and long-term impact as suggested.
-> 
-> Would you prefer that I send a v2 now, or should I wait for maintainer
-> feedback first?
+The khugepaged tracepoints take a folio pointer and call folio_pfn(),
+but by then the folio may no longer be valid: freed after folio_put(),
+folio_unlock() or pte_unmap_unlock(), or not a folio at all but an
+xarray-encoded swap entry. On classic SPARSEMEM, dereferencing it oopses
+khugepaged as soon as the trace event is enabled; on other memory models
+it merely prints a bogus pfn.
 
-Well, it's been five days.  There have been 200,000 patches since then,
-so this series is at the far right end of the asymptote.  Resend when
-convenient, please.
+Pass the pfn to the tracepoints directly, captured while the folio is
+still pinned, closing the use-after-free windows in
+mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
+mm_khugepaged_collapse_file().
+
+This series is based on mm-new + revert v4.
+
+V4 -> V5:
+- Use a single trace statement.
+- Collect Acked-by.
+
+V3 -> V4:
+- Only trace the PFN if it really was problematic.
+- Calling the respective trace_xxx() functions separately on success and
+  failure.
+- Set new_pfn once after successful alloc_charge_folio().
+
+V2 -> V3:
+- Place folio_pfn() inside the xas_for_each() loop in PATCH#1.
+- Already defaulted the pfn value to -1, to simple it in PATCH#2.
+
+V1 -> V2:
+- Instead of passing the folio, just pass the pfn directly.
+- Using the folio_pfn() before dropping the reference or the page table
+  lock.
+
+V4 : https://lore.kernel.org/linux-mm/20260828055926.346744-1-vernon2gm@gmail.com/
+V3 : https://lore.kernel.org/linux-mm/20260824092935.73892-1-vernon2gm@gmail.com/
+V2 : https://lore.kernel.org/linux-mm/20260815051924.194810-1-vernon2gm@gmail.com/
+V1 : https://lore.kernel.org/linux-mm/20260811133655.267739-1-vernon2gm@gmail.com/
+
+Vernon Yang (3):
+  mm: khugepaged: fix swap entry value to folio_pfn()
+  mm: khugepaged: fix folio is used after pte_unmap_unlock()
+  mm: khugepaged: fix folio is used after folio_put/unlock()
+
+ include/trace/events/huge_memory.h | 18 +++++++++---------
+ mm/khugepaged.c                    | 21 ++++++++++++++++++---
+ 2 files changed, 27 insertions(+), 12 deletions(-)
+
+--
+2.53.0
 
 
