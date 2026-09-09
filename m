@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 940E9C79FA1
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 03:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639A4C79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 03:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B184B6B0098; Tue,  8 Sep 2026 23:02:45 -0400 (EDT)
+	id 4E6866B008A; Tue,  8 Sep 2026 23:11:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC8476B0099; Tue,  8 Sep 2026 23:02:45 -0400 (EDT)
+	id 470C56B008C; Tue,  8 Sep 2026 23:11:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A050E6B009B; Tue,  8 Sep 2026 23:02:45 -0400 (EDT)
+	id 35F266B0092; Tue,  8 Sep 2026 23:11:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 860736B0098
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 23:02:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17919A0867
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:02:45 +0000 (UTC)
-X-FDA: 85192726290.25.2D22459
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 78B971C0002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:02:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DC8E6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 23:11:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7927E140810
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:11:43 +0000 (UTC)
+X-FDA: 85192748886.28.43C033A
+Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BB31320003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:11:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DsBF3/YL";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DsBF3/YL";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788923501;
+	b=lWNipZ3MYhNvWHfOlxDXHdOGCS6BJnDGB7FYSlrtM0Od/SRBHoktNy2qmXm0J3wpQSjrfL
+	rQEhRx/XpSaAiEjXJHMp2IunHSj/49Kia3jsIkJU9VZJSvJEZdqs8/zKh568uZTyj2YI9x
+	Ah14D3Vme+7nL8lbStFz2Y3EUdyvmnA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788922962;
+	s=arc-20220608; t=1788923501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xQC+PgI8Y5//qvtK1W6gj74UDgLgWDjILX+LO/GHtjs=;
-	b=aRIl5FXHQDNq+nwamCCiCIuCyQkCfoqfZXwbq0VByytRBu1J7oln7kFmdIJClp4wYgvYgF
-	W3i9OAeW1D1Z8MiFVjQsKECBNOv+mZfR73UDjgAUatUhUpRogiHritSKLL8twO3t6hoohU
-	b+f++BIQSiAY1SByJ+DoHcakPdDrwCk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788922962;
-	b=cHKOi69LNkARn91zfoY9oOWU0zHRzvhQPKNw9tmK2pzSQ80UB6GO+JfsfCHspK6oNGbTM4
-	2rSxiTFLlSW1Vzcqnd+wIyqqqDG9iuWJq9zZYJj8T4TGP5yz95AwxCA9epDyrllwAVB9o/
-	M5gc/TcOJpjzG+tktHlMstOS2/gpxSw=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hflwX34ncz5B100;
-	Wed, 09 Sep 2026 11:02:36 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 68932RtR001931;
-	Wed, 9 Sep 2026 11:02:27 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 9 Sep 2026 11:02:28 +0800 (CST)
-X-Zmail-TransId: 2af96aa0cc44b03-7eb1b
-X-Mailer: Zmail v1.0
-Message-ID: <20260909110228828hKTCgUeuZkOujOBaVtUcL@zte.com.cn>
-In-Reply-To: <20260909023507.1408925-1-xialonglong2025@163.com>
-References: 20260909023507.1408925-1-xialonglong2025@163.com
-Date: Wed, 9 Sep 2026 11:02:28 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <xialonglong2025@163.com>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <linux-mm@kvack.org>,
-        <chengming.zhou@linux.dev>, <linux-kernel@vger.kernel.org>,
-        <xialonglong@kylinos.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxLzFdIG1tL2tzbTogdHJ5bG9jayB0aGUgbW1hcCBsb2NrIGluIHRoZSB1bnN0YWJsZSB0cmVlIHdhbGs=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 68932RtR001931
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 09 Sep 2026 11:02:36 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AA0CC4C.000/4hflwX34ncz5B100
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ysVGVBCV8TAeaH+TrG0tbZQp2AZkNa4ckYY8TcN+4N0=;
+	b=OdJIJ7eMqrFEPqEKWJZ1GHduKlGqdX17CfaAoVmLlPJm69khTx5Q6ub9qLHw4xlFxC9Hld
+	+dB8c6gqGUwGvjyiyfmwxexr+nCfkiYuOoUBfpgxr391lh5jfwTYNesV8KogZFpQdFjC7f
+	KCERuKYTEzx751ToIj8iZ963NPEyZCo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=f2j1DxoU0lmQ/fI0keOTiQxFdQCddTWeKdh1RnG9jVs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788923496; v=1; x=1789528296;
+ b=DsBF3/YLqCSlUXnHTz3KHa8Laa7Xz1N/pgRB7PE8d4SKKlLthWbLI3FWJUHsHD+oAOG5hoy6
+ BBqR+yqXUOaxjP5O94XNcUcfXDZL1TpY/Fs3gJBucU0Fl7HjDZLL9rdpRiL3JZHBGPrg0nnvTA1
+ LoSF1rYQxo8K1hP1VSXY+Gw0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id aba1175d2e6d8a11;
+	Wed, 09 Sep 2026 03:11:36 +0000
+X-Mizu-Trace-ID: aba1175d2e6d8a11
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 9 Sep 2026 11:11:33 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+	david@kernel.org, mhocko@kernel.org, ljs@kernel.org,
+	ridong.chen@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-new v2] mm: mglru: clear the reference counter for
+ rejected folios
+Message-ID: <aqDOZe7oM5_3p0lK@fedora>
+References: <9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714.git.baolin.wang@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714.git.baolin.wang@linux.alibaba.com>
 X-Rspam-User: 
-X-Stat-Signature: obdiq3y1ou3yxs7b6c8jjqdgdqy13pr5
-X-Rspamd-Queue-Id: 78B971C0002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1788922961-808705
-X-HE-Meta: U2FsdGVkX1//92axjYfrymo1e57EqkEXTy9d0HERvulb2/GmmCNbRiHxjCxaZ4B6ZKB5AeQSmMj5EGyJ/TMmERaQsnzsDUzNptopxkeTeI89AS+Fxwq9THdKQwOsr3MK5r8trMb5MweK4TYUvgaqzCFENZHUPnqMQa8fGoBy6Yia7p0JuREUydpEDYi6cphjzGjw+R2QOuhkgdK7BOcit5uzN38q9HgeUd7RRdRGVti9B241M7HUaS2mls4iqmuhcrP3OMGYIthfH50sCX0sToVFUhRud4aYnG3WGbcluI24HdrE9RB5exVFxEMNEjt/TvaL9+pdUEiYHa7KxIb0V2UKrcU5R6AFSz+tm7n3OOhGPVoqBQ6wd3t7qiRzQOV/bhAMzsh97LK4+LAOux0bcJp8tj7fbO1vjypDlKdVoF9FmLacKoPh0VYEBEinHksnUqBLQZkhmUhhtDqozwau0raQx+Y/enZGK8w0oMWF/0r0X3e/iqP/jkeEgUxzHa/CyeLRw7uAUqb5q4a/jtWEyHfzpMhcHAKQfa1WJ9Z7Fnix0NzQcapiTlcdFuYeifQZDgCfth1cUQybgB2R3gNPbiTm8v1SVaNXIw799aRzOPUhFMtYEsUaVSVjrMY1MPatuCwkXMVuFR5MB7JZrYo1tU0kuf90kE5L17ZadQORcm+Pg+a1bZ/Jh8WBwKYxBrWzncxzaTdhAC08gJyEqEbccSGeoz56DzaEd/N6jWZtXxoTj2Xs1wpz3lsK8BSrbP9HkwmhEHONT3/5YldIwyqIlpT1cHsKLFaaJn6+EzUtHCA6enUJYar6tvTujmOobgAAq4Fzau8njL2vaHW18pJEyLcsYu55mIr6aU54z5eE87AZgR0KKYolbb++PllVewhfRmkdfnnQ09bgK9YxvX9nlNUGON0PezbTaWcBFzhvyKYQw8AvOrUGb+x05Adq6qrO4fOET/2IXmIZK19xwPd
- EyDugs+K
- Ldjeofd8v/mq4jsWHZZNbFqcCR4LK3hYCuy6eDPlBzz3Xn9uItlBbSLEU3Wz6+OW8Me5gibplV7EAOLohr2/Fk0dPNqBBk00FyhJo6T9PiTPe6nsuJwApHZr4CrygdVRjeTsEMxZJgRYzjjGvNp2spf5g9SgJsc7dc7rR
+X-Rspamd-Queue-Id: BB31320003
+X-Stat-Signature: pjs7qrzrkm1iuauoiju3assyr7cbx84w
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788923499-218274
+X-HE-Meta: U2FsdGVkX18DRJEVWzMRZpRZ2CxlwZE9MZbwSFaHgncC/yqC5edA+5ofRaK83W9oaWfIxY1JqLD8XunIqlHSsuRwF1krCkv8LnO7yOdpx1ru/CUTOdbZaGjUwzauyf9/nqF+JqkmiphWWANOWhAZzwZruq8jY977M06yOhVUI0RbIfnF6B11kFtur6Y3FOdnFUkFfwp2d5R6EkylmDyXhTTgUF7pgh4AbHt9Vhpkg3LEH8bLu1wGvom2/OUBI0B3H29rx1IrE7uKJTVXcw+3QpR4XwH3bFdpqZ4u8cmPAICrh9pAwW0e/fzTqiCSvBR3MkPvrc2BG/0eWEdXQHSQrfweNp/BbpGsug3qZCjEhBOxu7TFtCTLpMWXJw3xMt+EZTvXMNIpTIvfVBTd29YtKg7wP/l/dqWWIfJJlu+JMZ8AdDlXW4QfJ3FOPDjhfHChwEr/RPDVfUdZ5u1Ck5MCIIfiIY2t/JoUknwLfyjpaCKvHIJLfRpF3z8aQcujvoXnQca9Ck6Oh3+rJNK9IbraJUYmlrrXKhFh6WFxcsZkdYiiqXdKra51rWP3/rhVRXX0g0TlWoFvt7kEJtDNZGJhf8PUL20uCizcjLNNzvi4iJy69a2fCtivvYgQBQVaRbqQnFey7Rl6A1PilDuMI7IkHWn0oUpp52mdhyTn8ABXV86hMqfDSZPDCi8DvJLjGpaLAFm29N07maagbfZ8D25ZaL1OAVBt6PqxdZwGKvtFPY51YEV4TXTYHcZalxd4iFNe5zPmVayhfCNEOUNbvKgfMpo3TmsEpbG16OBtx1ICoKIi0u5j3h3/p8iXd/DEGPvpDz7PB5UwKYDl/IRIqT9yRmPTTTwuc2yV3eKxskLXTgDTRWBBIxH55Z3/m74iB5oi0eBOWeZxFTwbPzbcTS7fWFGRetWLO7D2wrwUjDI7qSmsenamvqDb9sFx2KtOT2vjVcttHf8r7QFx3v3R8YE
+ bVxunbNh
+ MMJrFk/ijwZoIew4R5SIGA3ijCrXQz/lKu7H05v8xBU97xNvBGICp9bhcygSO/AhaeaL+T3OtdBFrgurZ72cc5bnvigUE8FDXZWvYQ8nyANGyBnq/vEAYTVdT1il++p3f0Lep7ycHhaCkJKqfWDI8RH/ATaYG2iCKqxn/PU4hFRVeW8KJtPqnT0VK1k5/N6p7exsQ97qiGzfgTHHx5sGUcywSlPbII/NDIO4ExHJrrpmqpbhK2x0UaCIAdtFaDEOq4DvUKyJS+Hydks4Qx40SytDQRlAoeEQ0U6Fa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,93 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> From: Longlong Xia <xialonglong@kylinos.cn>
+On 09/09/26 at 09:57am, Baolin Wang wrote:
+> As per the comment on LRU_REFS_FLAGS, when accessed folios are promoted to
+> a new generation, LRU_REFS_FLAGS should be cleared so that the reference
+> counter can start over.
 > 
-> Every node that unstable_tree_search_insert() descends through is
-> revalidated by get_mergeable_page(), which takes the mmap_read_lock
-> of the mm the node's rmap_item belongs to. These are taken while
-> ksmd holds ksm_thread_mutex, so a single mm whose mmap lock is
-> being written to - a process busily mmap'ing or munmap'ing -
-> stalls the whole scanner, for every KSM user on the system.
+> For folios rejected by shrink_folio_list(), we clear LRU_REFS_FLAGS and
+> set the PG_active flag when lru_gen_folio_seq() would place them in the
+> oldest generation. That's fine.
 > 
-> Use mmap_read_trylock() instead. The trade-off is that pages of a
-> contended mm may need more full scans to merge; in return, ksmd
-> latency no longer depends on unrelated mmap activity of the
-> scanned processes.
+> But for rejected folios where lru_gen_folio_seq() returns a generation
+> other than the oldest one (which can be treated as a promotion), we do
+> not clear LRU_REFS_FLAGS. This can violate the promotion mechanism. And
+> this means the rejected folio enters the new generation with stale, inflated
+> tier bits, which can inflate reference counts and distort eviction
+> statistics for these rejected folios.
 > 
-> Testing, on a 4 vCPU QEMU x86_64 guest with ksmd at
-> pages_to_scan=100000 and sleep_millisecs=0, 5 runs per kernel
-> (median reported; baseline is the parent commit):
+> Fix this by clearing LRU_REFS_FLAGS for rejected folios. Of course, I need
+> to evaluate the impact of the changes, which mainly falls into 3 cases:
+> 1. When lru_gen_folio_seq() returns the oldest generation for rejected folios,
+> there are no logic changes, and they will be put back into the 2nd youngest
+> generation.
+> 2. For rejected folios with PG_active set by shrink_folio_list(), we only
+> clear the LRU_REFS_FLAGS and do not change the generation.
+> 3. For rejected folios with PG_referenced set, the original code would put
+> them back into the 2nd oldest generation. After this patch, we will put them
+> back into the 2nd youngest generation.
 > 
-> 1. A contender process registers a 64 MiB MADV_MERGEABLE area of
->    unique pages and runs two threads looping mmap/munmap of
->    256 MiB, so its mmap lock is held for writing much of the
->    time.
-> 2. Once that churn is running, a quiet victim process registers
->    32 MiB of 2048 unique pages duplicated 4 times.
-> 3. Sample /sys/kernel/mm/ksm counters and ksmd's /proc stats
->    every 0.5 s for ~2 min of churn, then stop the churn and
->    sample until the victim finishes merging.  The same phases
->    run without the churn as an uncontended control.
-> 
-> Results (median of 5 runs):
-> 
-> - contended ksmd scan rate: 11,473 -> 58,397 pages/s (5.1x)
-> - contended victim merge time: 10.4 s -> 1.7 s; the contended
-> - contended ksmd CPU per scanned page: 13.4 us -> 3.5 us
-> - ksmd time in uninterruptible sleep under churn: 78% -> 57%;
-> - uncontended (control): merge time 0.65s vs 0.62s, scan rate
->   259K vs 247K pages/s and ksmd CPU 3.9 vs 4.0 us per page,
->   unchanged within ~5%.
+> I think case 3 is also reasonable, before commmit 6cbdd9726fb5 ("mm/mglru:
+> use folio_mark_accessed to replace folio_set_active"), a rejected referenced
+> folio was also put back to the 2nd youngest gen. Meanwhile, I didn't see
+> any noticeable performance impact on my 32-core Arm machine when running
+> 'make -j32' to build the kernel inside a 3G-limited memcg with either zram
+> or NVMe swap.
 
-Sorry, I'm not fully convinced by this approach. The performance numbers
-indeed show improvements with trylock, but I'm not sure they translate
-into real user benefit. Users typically care about how many pages KSM
-actually merges and how much memory is saved, not just how fast ksmd scans.
+According to our discussion in v1 thread, the patch log clearly states
+the justification, and the code change looks good to me. Thanks for the
+effort.
+
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
 > 
-> Assisted-by: Zcode:GLM-5.3
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->  mm/ksm.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+> Changes from v1:
+>  - Update the commit message.
+>  - Clear LRU_REFS_FLAGS earlier.
+> ---
+>  mm/vmscan.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 49d48d1e0998..3cfb09a926ff 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -820,7 +820,14 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
->  	struct folio_walk fw;
->  	struct folio *folio;
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 40d3f1b48a74..1557679aadb1 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5020,11 +5020,12 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  			continue;
+>  		}
 >  
-> -	mmap_read_lock(mm);
-> +	/*
-> +	 * We trylock because we don't want ksmd to wait for an mm that is
-> +	 * busy changing its memory layout: we prefer to skip this page and
-> +	 * let the next full scan retry it, like the folio trylock in
-> +	 * try_to_merge_one_page().
-> +	 */
-> +	if (!mmap_read_trylock(mm))
-> +		return NULL;
->  	vma = find_mergeable_vma(mm, addr);
->  	if (!vma)
->  		goto out;
+> +		/* See the comments on LRU_REFS_FLAGS */
+> +		folio_set_lru_refs(folio, 0);
+> +
+>  		/* don't add rejected folios to the oldest generation */
+> -		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
+> -			folio_set_lru_refs(folio, 0);
+> +		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
+>  			folio_set_active(folio);
+> -		}
+>  	}
+>  
+>  	move_folios_to_lru(&list);
 > -- 
-> 2.43.0
-Sorry, NACK
-
-Also, this change feels a bit too blunt to me. In scenarios with even mild
-contention (far less than the heavy churn in your test), ksmd could end up repeatedly
-failing to acquire the mmap lock and thus fail to merge any pages for a long time.
-That could hurt KSM's effectiveness for ordinary workloads, not just the contended ones.
-
-Besides, there are lots of mmap_read_lock in one page's searcing and merging of ksmd, such
-as try_to_merge_with_zero_page, try_to_merge_with_ksm_page and so on...
-
-I'd prefer a less aggressive solution that avoids stalling ksmd without starving page
-merging entirely. Maybe considering it together with smart scan? Need to see other
-suggestions from other maintainers like David.
-
-Thanks,
-Xu Xin
+> 2.47.3
+> 
 
