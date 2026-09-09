@@ -4,77 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20CEAC79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43ED7C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 13:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 394A46B008C; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
+	id 6A09E6B008A; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324DF6B0099; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
+	id 652836B0096; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20CFB6B0096; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
+	id 5681A6B0099; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2CB6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:05:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 42D00801EC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 296756B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:05:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E355401E5
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:05:54 +0000 (UTC)
-X-FDA: 85194246228.06.B9F03FE
+X-FDA: 85194246228.18.5EC6CC3
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4D74AC0006
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4E2434000E
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:05:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="tnpVQ2I/";
-	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SCHv2xXp;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1788959152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g8SaUqrPyh2Bv1Oc+EsXzswvobS611/PIEK4DTAvYjU=;
-	b=zunc86z/P3IcC8fb0Ou4G47mJEo1rmpfOkPPPCIvuSVmR3NBkEqxnDF12t+86OaQcFxEv8
-	NjnzsBAlClBaE87iXUvKl718ZjE4wkCT3K9DDQPXBwtFIn/CQBxS+ul/Leabh9QncgB/6o
-	hKYt0DmhDWC4bP/lkzxO/QmWv7mSA2o=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YFlbwOUaTYTpmzRCwo3A4gN794fb+Hu6KI6v7Kc1WAo=;
+	b=WPc1GP8cFxJXKNSEfM6YPfMHjh0zYRYu66o6z3SQErbEEybZc4QUxAWXaGwHvfZraJ0YNP
+	5GiZT0sgK5m7pvyARUWock2Ip0nHn+9itbv8DluAUXrKOo5ZR9yBOYekK5SUHIm4sJgZxG
+	WDv/245AbwP6QhMnLwXvBehgE22aFLo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1788959152;
-	b=j28k390DCT6TtMzT53V9KKcrphdm6xBh8/CS9HBQUh7FmdaV8R/FQVuYgq/9u3i8MUZAzt
-	4IhuJd42F1pI5P7swuiPwGo/FPgQM9Ulu0hBMX6GKrOtfI4ZFUc4/XL53TJm5CnM2vPO69
-	WAgP1yVxqYE/PN8W4EACsj+yA+KpU5c=
+	b=LIm0Dym15XZZSiTrLarpp/eIz4WKUvU1YsJPutyqjGbDAQjA5/mpDThlFYAUiPSJrqHPBC
+	k6mEeoArdlEDxQa34obrqydQIJ8MR1yMc1OntxVA+HAA63jw4AYEOXNqGdbvhXrN1pPX12
+	tlMUQBHue0ra6CDAUNzVoOLFbZBiWUI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="tnpVQ2I/";
-	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SCHv2xXp;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=g8SaUqrPyh2Bv1Oc+EsXzswvobS611/PIEK4DTAvYjU=; b=tnpVQ2I/ZDmLTviYSnpv64WTuk
-	5iOP2Gea5kpJUxZwHvdX2chpJH/neq3K+2apfI2vQtBs0dcb69DDGW4GEaSzLoYkpI3WgxIr5hQWk
-	kFZvQ+iIsKz7YmY4TY7cO1nNRTBicm5AHWl0ip8S08SRfE5qBr/jEwLoXIDmqts1GESuJg89S2PZj
-	klWg+s1MeAnkb+L9km/Qc98OFKA8lombXdQG/GGR4HJO3/WyNv8SXAKwLzkRtVPm6yge5fFa7mdE+
-	mTzf8ad3ClkTE1gveUm6FcxVYjuTx03KNVHhZltnA3sj3W+/dNjicltZaJs858d84VZNRljsIOsUW
-	UOISwFzw==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=YFlbwOUaTYTpmzRCwo3A4gN794fb+Hu6KI6v7Kc1WAo=; b=SCHv2xXpEY/t6LyYuHR2v0GOQ+
+	WhzT9t5hmqeq/XQszVbAUaIqIQgPwEn7kN9V5EtI/rDx8aAO1VzTJ8U4EuN0D47XqELv5umpqzB5o
+	I0aNkW05z7CR+VCt72cZgvOfPMVvw74GHvk1IJZkp1RC8HLvscxTeAgCGbvhccYP4A7eHgFgo+jar
+	Nx3QqLLYglA34GdCrYdR2LQ8/yqIpLPXMGn7vLHZSEuYKq06oW4f05smMUpCmvZnMU7Rsnx67JBMJ
+	NvYE/BwYDzfC0R7m01Kkk2ioW8xSTA5iYTN4QJO63G8gg4EjtpOja89C23iWXJRei3uDXRokI7rk7
+	YaIG8BrA==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1x4Hzo-0034dV-28;
-	Wed, 09 Sep 2026 13:05:49 +0000
+	id 1x4Hzb-0034d0-0v;
+	Wed, 09 Sep 2026 13:05:35 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Wed, 09 Sep 2026 06:05:21 -0700
-Subject: [PATCH v4 2/5] mm/memory-failure: libstub: install the
- poisoned-memory EFI table
+Subject: [PATCH v4 0/5] mm/memory-failure: keep hardware-poisoned pages out
+ of the next kexec
+Date: Wed, 09 Sep 2026 06:05:19 -0700
+Message-Id: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
-References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
-In-Reply-To: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
+X-B4-Tracking: v=1; b=H4sIAI9ZoWoC/2XMy4rDIBSA4VeRs84paqLGrOY9yiy8nDRSiEWHt
+ CXk3Yd0FtPL9ofvX6FSSVRhYCsUWlJNeYaBdQ2DMLn5RJgiDAwkl5prKXG6XnKqecbzlHEMNnr
+ pouu9g4bBpdCYbo/d8bthMKX6k8v9cV/EXv9GRpjX0SKQow2KolNKWNt/RfLJzYdcTrCfFvmve
+ ynetESOynStsYK6nvSHbp+1ftMtctSjsaHzmisfXvS2bb9tZeAYJQEAAA==
+X-Change-ID: 20260622-hwpoison-kho-fc9db2ada8ba
 To: Ard Biesheuvel <ardb@kernel.org>, 
  Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
  Miaohe Lin <linmiaohe@huawei.com>, 
@@ -93,31 +95,33 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
  Breno Leitao <leitao@debian.org>, harry@kernel.org, kernel-team@meta.com
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6886; i=leitao@debian.org;
- h=from:subject:message-id; bh=05MyTSGHE/o1BoN7JT8ZUU1a9DWMs95W/eAkbNG9wbw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqoVmYWfxLsAK34UQi8yLrAWOt4rdGV5oD4DhJ3
- IcnxPiESsiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqFZmAAKCRA1o5Of/Hh3
- bSimEACahq1zxDH2xwtJpY6LTrQ/oIuZKPmJl8R1Vk+GerIev1DJU2oHC1f41ZRsxGGeLUaQ0gu
- kffzmDr96qzvZdMzEIr9USYRZiblIw4iC44rUB1gLhAJ2n75gh1MeVoDHHAvHHzuxbb2WyW6Urp
- wNVsqRaeGTPydnPjhI9kEXhNtqI9APjXvJnKaQHJrr54siJvNTnRMxXFG77dz6/4yZFLUMxgeMy
- eZVvcV1BqbhV4rpdH7xMmo7VbQjl40slz2HUaMXmHYrJkFfpFSsHstWDqIEG0MTy0oziVttbtBE
- ZqNdsP4tp8w1zUekqITA/wTimxCoaCEy3+HhjeDOgIpjUSlrxTLv8Y7GEVnQvdXKvOhKT6eFkee
- da5bl6HXPvDmDJc48UhYoEcd9ezb2WLn/YLBnEmyPu7JJrYMPChMxWRJj38+gvZ4yDKXAqgR6Ta
- X/5g+oBLHUTqqOKKceE5QQWbaFg9OawPCAUsN4fzr4TM8FUTQ+tQ9OcBBj9mCs3UmOxlKy3lvr3
- zquWHz69oOstdGIiFevVvMJygRRgYi1P2bfD+ETLcpWU3jikpFvTkH7UM3bqapNGOJd8uInGXZ4
- QlicDmR0xMkF4E/0O8gU6Kti+92Pk1ZGLGJqHgKC+eOvNhNYgFMiY16RnayZ/QiYJas8vxjS+sO
- JSb9+lYP0FlVjfQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12085; i=leitao@debian.org;
+ h=from:subject:message-id; bh=G/5j7rsIscbBgBtneBLPilSXxmgZFKIcKtKDiTsarp0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqoVmYl9SbuMuP5HAxzSTBwcLXjL7RVuKAhOYM4
+ 8yu4TlDU8uJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqFZmAAKCRA1o5Of/Hh3
+ bSBlD/9lyXRbwoaUVm+8hoQ4AGBuTiFce+sWIsQ6XIQagnb7NASp7qzUOeWpZ951HGxuHLag+2X
+ +jDalCAoNwgkbl6kPXBb0jRpXqg2Jdj5aA5JYPkLbCpoQ/NlxKJGwRg0Un+x8iJ0QczcY03sKMi
+ kDRcMfabcv4XGujBdhHW3P4yY24ZgieFng2lIOZeHPefpvh/6wsSqpjQKeGLDjVKdadhQ5NoKxN
+ jD7/Iax41/lqW1bFYK+3bejhTktVn3OiZkiAfCArDe4wDMPFuOjZ9SVg5uxgGelhqzjpk7deB85
+ 1jip2gReEfTidWu2aUcUZm1AOpHkGenWeuB2hSPsUrfQRuLbaei9TwpPy9t50aW10/YWXcp6EvT
+ G4H07cTR6ydYLx6I+VInD4cjwkGgycHghfxVBvPonhdB17unzVl9Szq6EOed6C0qSikiigbrYAA
+ 2d+vrezRXQLnarE6y+7FmgHGFqdYfR4omtqytX/ilw7J/GdnEkllIZlNgb9QVyZBPbklVsn+oUr
+ rST+SRjE/crj0UlagVI8JTTDqSa8F+wvMaZ8HfF9cISMb1cZKW6cP+a2h7C34BOaCDCVypbie0r
+ M71mO4d3fk0YMYlqj9eR1B3yJjjz/7XMzGpPaYZIgfqLroF6PJ/jq7lrkxGitoU3qNHrlww7+bH
+ 8pHWkQr67T24Ocw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4D74AC0006
-X-Stat-Signature: 736k1wbybo9qmbowr5y9c1cazh4dw7nd
 X-Rspam-User: 
-X-HE-Tag: 1788959152-2224
-X-HE-Meta: U2FsdGVkX1/bNES6qVddiAvi6O8lmJa5IaYg3fDm7MHMaq0YUUstpAjG6lD2L4f/mGl0/EVtAjaCo8EbbHOVvXqQrnzd7MnH+gMp70uWyqgNUTDyzr4Y0aiz0KPt0BhPfggYKDyNzjLlr9NC9/0RkNiP6UtBESFi6abmk0cSQwo6QX74YXJ3g93/6MCdGC1pZ3UTW4oC8r9XkKMBitG6Pz2x4FW5CU1avMq+hzjUf/l5S10CbphjBJ7BTBeC56zC0g6klMFaOyZSKNx4hD8F+7Sqy2dCKfuTEeV5XmDTqhDClynVJPODKjtXUY+4YMzQ4jP2lb4H96RfgYqSwi603CtaepXRUrr8Wru4c1ZdjGmctwnfmklyxROY6K7LRGWUdVIH9qUr+ZlKHnJoF1ab6eOYCti1znZ9JeUpGkjswqpaFOtb8YKxm/gNSW7R54AZIZiVZzyDqfPs5+bQeCbO8o1iIViDHLojx88l02kr3JANc8RVEw7Q20atnAyHscvY7huFnwQWMN/OWvs7VTynRhvDl2N4gvy+yLuv+lYNwFtxibu0eG9YrlOsCiD0eczgHq20Jihuvbn5LfOOHc5shsohWPrksGuldC/cITbbDaIcBIFdReHTY/OVY/xkLoIEApSQgyrsVeyaqwy1eBITokEdDB6o8aMUrGonknC1qj7ZJbxS6Zr6/eqI23HhqnCAo7nVll9478wfw4arsTPYbDELZrS+heUfNGcPFj7HeyBWA9Q3AwYJbzCTvCuiS4n1DoFADisaKY5hDFF2yr/lk99K+CF2Nn5VTFymALJ+6hApj4j/s3+YHDI0FTqA/oeGDzWwroFlCz4C/IDfRE4uuMrUQQJQ/pWi3yw2nOO8nd1tlJUMHDxmxBZuvHw27jDefVFR3enL2LGtDuvvFxaU1GMeu9lytt8HPGTu/e85prQGsK4RG4I15CZGYh/Leo8XoEi3wzs5lwTQ+1HMq8N
- la1DIEQ/
- K9lXFEe1cOWJkjYzmSkTmMGeW6aD94e9Z8u8edfa1KqDFqEiu4MXvQWtkQEds6eq4SFj+IZpb/5zcVyIvETE20dmLa2DPqlKe31RQ+uRXfdMqPwcD2ib5Cjv50SIsmeQmHgA2Fz1GhsORZF+STsxieCBMDWZ9QBNZ7m36u5QELJ8k8OQcSdLmrWN3gWKW0w4gnxjMhWUF3kvBx7of2Rxnnhhnm1AE3QR47mQKLXL0qO2TxWOlkF42lJhNXu9tnIqrdfFekfyehipYOoPhpKbOWcMqnQZffugQhYNvBE8ayPpzVCH8fZhvdOHTvXrNfUtWINvscURbMPorO/Naw3RzG2NTtlqJrIqnzkVwFGjn7haBGfE=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4E2434000E
+X-Stat-Signature: 5ktr83b178xb37f4ua34smjcib1gjszn
+X-HE-Tag: 1788959152-642429
+X-HE-Meta: U2FsdGVkX1/0RUKZsNf1V2Q8F5iIW/HcEqm7L6jZEa1ZDmgnX109SHwwLMmxLrJjdquzvLY2pQdriJ2Hdbq4IFAGg/E37gorINV6jg9c8hW8K137dp07rn5v9cpgUXnSqKf72ammUH3L9k2/SmfFcyX8l3/p0TsFFoT0VUnMkm5FNVY6TIq84xc2EqOe1X0upSQsQDBBwuo9lr+LWNU9jdgsXXsUv1UiR5FKV75LGybIWpbtPZxT9NNVG7gIOLgkhByt9683CsgfSGMCEW+Puc3VtpEHH3jiwX7yYmIu/bqFZTFKd2I64fgPMbdfpV4kx399+/snZs0vL+n1lHKN1oYWb3LIPnFOc50fnvkXVqwvcc1SSLbmDieS9Xmd4S4VVvnJsCLtVYtIVxPEeJZpzvhtofkRZb/U5pDUChQ1TVNsvo1+lSAsWt/qJtJg5PllSWeAKqtVrcHLqDSGzR2LzqxF/mGfW/IJcxZSEaW+vrtGak8b9k9xxa1vz05P5ytud5Z9JeouvWPOtaUuuQbHaPNDqzerH08X5vI0E7hut4yS94L405P+iSDJ60ahTMqz/yHAT76MM17kURV5viSxmMIqfv5shDj3H57rALry2EMW3vkQUE6HEv3c8ENdG1WuQrtk+4uvwKdLGQSM8m099Rmar009+5+wo5ZvVskliAoOMpHYMLSpEH6fCYuY6czDEaRrLbbYKTtC3qaLqLhdS2jw8Hed/+6MPe7p4nAGGxzmH9dErx88t/y5d8XIsM8Fawa3yhbOoWnNn8f9c2IgTHWeeDGlLwuZLcIb6V+yZhIFmzgrmNUc6KXaIHdK0JWjfyxNnEAmbiOBDFp4dj6JQKmilN67tyoXa5dyI48OnjIqo6s43OMgKWv6+uauqSBMA6oJHrkC6PWFRhjDRWF3CTneF1Z1L8NZzCSc8pTQE7ky2ZTGe49GSa804OYSPLhw0ADIePy5UwUB5D5IOTL
+ vx442KD8
+ rm82Z33pMqHApTPv7Fsy33MuyDhPAWfqJMiK6b2JuOrdmEbAQ2RqoW5auOSslwESWx9N6THyDbMYo9BgjwwM/2IijxvwunrKey66PIMeQAQqe7oLo130LrJ9rw00rxGmyQVd1Zpe8+zsoSuzIKPXntNVFWwVhe/USC6VmS3tA/1MdtAtEywxVBL8cSVUwvnuu5h8IGQqpcNyw0MqLWOoPHpzuxogpHMYVJ8fxLXIlWme/bWdB7uuSKLxPfuTOUFmONuQMG8Cim8DdgOyjtKFc71c4s7MBda33AH7pSt/KI6pTdN5merHOTKLyhZLqyOUc+P8FXri4K0vD7E6FhMpXhMBM57kp8FTRfomypy0W+PlskrVcsveY7/51axPYXNjp+TmZqGWNKPbBa704/jAmxSW75jNxx9X84rHVnTxco/UR1fCmzxDpCl/Hnp0ZmZVtT42X3zVJuyZ2gfKj5gQoqa6WFX+X9ay2EkFgZMJzr6ekQcoK+lyR0eMgx37908YHrtGVyBcMEVBAQmNmPw8YQtPqCO9gPnRiBZxGZPn5OkRozKffNNdueHriOxrnBkHff0DJvI7rQpbmZbI4/xRKfFjtqxENI9zPliG5QtgK39rURQyuZOAF527ZAvKeIOCzR+TpGFP2mRnx6euwQa1WcpqPwhbBMmBMkURjMMs6lMmjWMQC0cE9iLmYYXyt9FpCtmxvjb5CtZ1Dbikbj/R21VIVBlBYKcFUZLcyvetzdbCwyzdc4iVw38mcqFYCPsZZPL68F7+TkhM3wueJNP9klbc12OegzSQm3//gcBR+VoJuadSoszyWPkcHXGxyJ1IpF++e3LiFz2RkP7dq9LSEmKfqNAcXXvJcnfO87XLkzj+sF2vPgcdwTEzudu7HJcY15dvj437aRsWdu/0tnQ3GlQq1ZQw4qPEB/d8A6704qQ3wHjl5f8KSz5ZL0fKoaKA3c5260D5SsXSg9UwoJgAYBMqQkPBp
+ H04+prtv
+ uLYn8e54K/VgJB268fVV5pPoNd/z0jtOMzxxzM7m2IcBQ5DRiCbMvnm8UR3zII6MsPmXuxzXLFWvsVfXhtUErbzph5Lp0MhHP/cJBkQQwLz5SzzTbi0zyPmYFSGAdSWhD+YFwrRdDq5rmWC9t1dkx36ofJ/DACF1SQXUcbj/C5gSAhCxTn7C7Be+zVfvoI7dfxUQ/zDjPt7ZMcnDC8LL8otKAQDxzklk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,197 +129,264 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A EFI config table can only be installed while boot services are still
-up, so the stub has to create it; the running kernel can only flip bits
-in a table that already exists.
+Problem:
+========
 
-Size the bitmap from the span the UEFI memory map describes, which
-efi_get_ram_range() walks since the stub has no max_pfn. Bit 0 covers
-the bottom of that span, recorded in phys_base, so a machine whose RAM
-starts high does not pay for the hole below it. Memory the firmware
-hot-adds later sits outside the span and is not carried across a kexec.
+When a page is hard-offlined due to an uncorrectable memory error (multi
+bit ECC), memory_failure() sets PG_hwpoison, unmaps it, removes it from
+the buddy allocator. This information is not carried to the next kernel
+that is kexeced. The new kernel kexecs and trip over that bad memory
+bank _again_.
 
-One table has to serve every architecture, and they do not agree on what
-becomes RAM: x86 decides by descriptor type, arm64 by attribute. So
-efi_get_ram_range() does not filter at all and spans every descriptor in
-the map. Sizing wide only costs bitmap bytes; sizing narrow silently
-drops the records for every frame outside the span.
+Why now:
+========
 
-At one bit per 2M that is 64K per TiB, and 256M at the 4PB x86
-architectural maximum. The 2M granule is called "unit" here, and the
-table carries it so the granule can change later without breaking the
-kernels already reading it.
+Several industry trends make this increasingly important:
 
-Allocate it as EFI_ACPI_RECLAIM_MEMORY so the next kernel does not take
-it for free RAM, and install it empty.
+    1) DRAM is getting more expensive
+    2) soldered / on-package memory (LPDDR, HBM) is becoming more common, so a
+       failing part can no longer simply be swapped;
+    3) memory is kept in service far longer (at Meta, DRAM lifetime is being
+       drastically extended).
+    4) It is more and more common to kexec instead of full reboot
+    5) Increase of memory per system with CXL
 
-A table installed by an earlier boot rides the system table across kexec
-and is reused as-is.
+What was done already:
+======================
 
-x86 does not go through efi_stub_common(), so the generic stub and the
-x86 stub each need the call; on x86 it has to come before exit_boot(),
-which is the last point a configuration table can be installed.
+In order make linux deal better with the problem above, I've done
+already fixed a bunch of stuff in this area, such as:
+
+1) Panic on unrecoverable errors, instead of "printk and carry over":
+https://lore.kernel.org/all/20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org/
+
+2) Respect poisoned memory at kexec time
+https://lore.kernel.org/all/20260812-kexec_posioned-v6-0-e477887086f0@debian.org/
+
+Now, the natural follow up is to carry the poisoned memory information
+to the next kexec kernel, avoiding tripping over a known "bad page".
+
+Proposed Solution:
+==================
+
+Carry the poisoned frames to the next kernel in a new EFI configuration
+table, LINUX_EFI_POISONED_MEMORY.
+
+The table is a bitmap with one bit per 2MB of physical memory, modeled
+on LINUX_EFI_UNACCEPTED_MEMORY. The stub sizes it from the EFI memory
+map and installs it empty while boot services are up -- a running kernel
+cannot install a configuration table, it can only flip bits -- and a
+table inherited from an earlier boot is reused as-is. That is one
+fixed-size allocation, 64KB per TiB of the span the memory map describes,
+with no list to grow at runtime and no chain to trust at parse time.
+
+The mechanism is architecture independent, so x86 and arm64 use the same
+code.
+
+Each hard offline sets the bit for its unit. Soft-offlined pages are not
+recorded: they are still functional, and were offlined predictively.
+
+The next kernel takes the table into use from efi_config_parse_tables(),
+which vets the inherited header and hands the table's pages to memblock.
+It is EFI ACPI reclaim memory, which x86 leaves out of memblock and so
+out of the direct map; the unaccepted memory table is handled the same
+way for the same reason.
+
+The frames themselves are poisoned in __free_pages_core(), as each block
+reaches the buddy allocator. That is the one point every producer passes
+through -- memblock_free_pages() early, deferred_free_pages() once the
+deferred struct pages are up, and generic_online_page() at any later
+hotplug -- and it is already where the unaccepted memory table is
+consulted. A block covering a recorded frame is dropped whole rather than
+freed, so the frames never enter the allocator instead of being taken
+back out of it. They end up in the state a frame poisoned by this kernel
+would be in, so everything that already understands PG_hwpoison covers
+them -- including the kexec segment placement check from the series
+linked above, which is what keeps the next kernel image off these frames.
+
+Blocks run up to MAX_PAGE_ORDER and a unit is 2MB, so dropping the block
+writes off more than the unit itself, and MemFree falls by more than
+HardwareCorrupted accounts for.
+
+Granularity is the trade-off: one bad 4KB frame costs a whole 2MB unit in
+every later kernel of the chain. In exchange, a row or column fault --
+roughly a quarter of the DRAM faults reported in [1], and potentially
+thousands of 4KB pages scattered over gigabytes -- collapses into a bit
+or two.
+
+A bit is never cleared, which is a known limitation: it stands for a
+whole unit, so an unpoison of one frame cannot tell whether the unit as a
+whole is good again.
+
+Known limitations:
+==================
+
+In order to keep this patchset digestible, I am making some trade-offs,
+thus, this feature has the following limitations:
+
+  - Memory hot-added after boot is not covered: the bitmap spans the RAM
+    the EFI memory map describes, and a frame above it is not recorded.
+    Same gap the unaccepted-memory table has.
+
+  - Memory preserved across a KHO handover is not covered.
+    kho_preserved_memory_reserve() marks it MEMBLOCK_RSRV_NOINIT, so
+    memmap_init_reserved_pages() leaves those struct pages uninitialised,
+    and a frame there is neither free nor PageReserved when the bitmap is
+    applied. Its record is dropped, and the frame goes back to the
+    allocator once the owner releases it.
+
+  - Without a memblock reservation, early boot can allocate over a
+    recorded frame before the flag is applied. The frame does not reach
+    the allocator afterwards, but the memmap or page tables may end up
+    sitting on it.
+
+  - The per memory block hardware-poison counter does not include
+    inherited frames. memblk_nr_poison_inc() finds the block by pfn and
+    memory_dev_init() has not built it yet, so the count is dropped and
+    the block is later created reading zero. This is not a big deal,
+    since I do not expect the kexeced kernel to try to unpoison the
+    page that came from previous kernel. The only downside is the fact
+    that kernel B will not have a proper counting of how many pages
+    are poisoned (they will be invisible -- aka 0).
+
+All of the limitations above can be fixed in follow up work. I am trying
+to keep this patchset the foundation, with that work done on top.
+
+The series is five patches:
+
+    1) add the LINUX_EFI_POISONED_MEMORY table
+    2) size, build and install it from both stub entry paths
+    3) record poisoned frames into the table from the memory_failure() path,
+       and hand the table to memblock so it can be reached later
+    4) answer whether a range covers a recorded frame
+    5) apply it from __free_pages_core(), as each block reaches the buddy
+       allocator
+
+This was initially discussed at
+https://lore.kernel.org/all/ajut_LDQGYCShApx@gmail.com/
+
+A special thanks to Kiryl Shutsemau, for feedbacks and suggestions.
+
+[1] https://arxiv.org/abs/2408.15302
+
+To: Ard Biesheuvel <ardb@kernel.org>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: rmikey@meta.com
+To: kas@kernel.org
+Cc: riel@surriel.com
+To: kexec@lists.infradead.org
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 100 +++++++++++++++++++++++++
+Changes in v4:
+- Poison the inherited frames from __free_pages_core(), as each block
+  reaches the buddy allocator, instead of walking the bitmap once from
+  mm_core_init(): with CONFIG_DEFERRED_STRUCT_PAGE_INIT most struct pages
+  are not initialised there and the poison was silently lost (Kiryl)
+- Hand the table's pages to memblock at parse time, the way
+  8dbe33956d96 does for the unaccepted memory table; it is ACPI reclaim
+  memory and touching it through the direct map faulted
+- Add phys_base to the table, so a machine whose RAM starts high does not
+  pay for the hole below it (Kiryl)
+- Size the bitmap from every descriptor in the memory map rather than a
+  descriptor-type list, which was x86-only reasoning (Kiryl)
+- Drop the max_pfn clamp on the inherited bitmap size (Kiryl)
+- Drop the stale memblock.h include (Kiryl)
+- Link to v3: https://patch.msgid.link/20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org
+
+Changes in v3:
+- Poison the inherited frames from mm_core_init() instead of reserving
+  them in memblock, so everything that keys off PG_hwpoison sees them,
+  the kexec segment placement check included (Kiryl)
+- Reserve nothing in memblock: the page flag is enough, and reserving
+  per unit that early runs into the fixed region array (Kiryl)
+- Drop the 1MB cap on the table and the unit coarsening that went with
+  it (Kiryl)
+- Size the table from the memory types arm64 turns into RAM as well, not
+  just the set setup_e820() maps to E820_TYPE_RAM (Kiryl)
+- Make CONFIG_EFI_POISONED_MEMORY unprompted, so it is on wherever its
+  dependencies allow and nobody has to decide (Kiryl, Pratyush)
+- Fold the top-of-RAM helper into its only caller and make it static,
+  rather than adding a generic libstub API
+- Fold the table build and its installation into one patch
+- Spell out the known limitations in this cover letter
+- Link to v2: https://patch.msgid.link/20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org
+
+Changes in v2:
+- Replace the growable linked list of 4KB entries with a fixed-size
+  bitmap, one bit per 2MB, modeled on the unaccepted-memory table (Kiryl)
+- Record hard offlines only, by hooking action_result() instead of
+  num_poisoned_pages_inc(), which also fires for soft offline (Kiryl)
+- Allocate the table as EFI_ACPI_RECLAIM_MEMORY, so it is not System RAM
+  in the next kernel, and reuse an inherited table instead of installing
+  a second one
+- Validate the geometry of an inherited table before using it
+- Cap the table at 1MB, coarsening the unit instead of growing it
+- Restrict to 64-bit, as the unaccepted-memory table effectively is
+- Never clear a bit: an unpoison no longer un-records the unit
+- Split the table definition and the stub installer into separate patches
+- Link to v1: https://patch.msgid.link/20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org
+
+To: Ard Biesheuvel <ardb@kernel.org>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Thomas Gleixner <tglx@kernel.org>
+To: Ingo Molnar <mingo@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+To: x86@kernel.org
+To: "H. Peter Anvin" <hpa@zytor.com>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: harry@kernel.org
+
+---
+Breno Leitao (5):
+      mm/memory-failure: efi: add the LINUX_EFI_POISONED_MEMORY configuration table
+      mm/memory-failure: libstub: install the poisoned-memory EFI table
+      mm/memory-failure: efi: record hardware-poisoned frames into the poisoned-memory table
+      mm/memory-failure: efi: answer whether a range is poisoned
+      mm/memory-failure: keep inherited poisoned frames out of the buddy allocator
+
+ arch/x86/platform/efi/efi.c                    |   3 +
+ drivers/firmware/efi/Kconfig                   |   8 ++
+ drivers/firmware/efi/Makefile                  |   1 +
+ drivers/firmware/efi/efi.c                     |   8 ++
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 100 ++++++++++++++++++
  drivers/firmware/efi/libstub/efi-stub.c        |   1 +
  drivers/firmware/efi/libstub/efistub.h         |   6 ++
  drivers/firmware/efi/libstub/x86-stub.c        |   2 +
- 4 files changed, 109 insertions(+)
+ drivers/firmware/efi/poison.c                  | 141 +++++++++++++++++++++++++
+ include/linux/efi.h                            |  22 ++++
+ include/linux/mm.h                             |  19 ++++
+ mm/memory-failure.c                            |  18 ++++
+ mm/page_alloc.c                                |  25 +++++
+ 13 files changed, 354 insertions(+)
+---
+base-commit: a9d7ced84989ec05be09b4b8428759ef60450a0f
+change-id: 20260622-hwpoison-kho-fc9db2ada8ba
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 48f93f7758e9e..5cbe675491333 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -774,3 +774,103 @@ void efi_remap_image(unsigned long image_base, unsigned alloc_size,
- 			efi_warn("Failed to remap data region non-executable\n");
- 	}
- }
-+
-+#ifdef CONFIG_EFI_POISONED_MEMORY
-+/*
-+ * Find the base and top of the memory, so, we can create the bitmap for
-+ * the full range.
-+ */
-+static efi_status_t efi_get_ram_range(u64 *base, u64 *top)
-+{
-+	struct efi_boot_memmap *map __free(efi_pool) = NULL;
-+	u64 ram_base = ULLONG_MAX, ram_top = 0;
-+	efi_status_t status;
-+	int i, nr_desc;
-+
-+	status = efi_get_memory_map(&map, false);
-+	if (status != EFI_SUCCESS)
-+		return status;
-+
-+	nr_desc = map->map_size / map->desc_size;
-+	for (i = 0; i < nr_desc; i++) {
-+		efi_memory_desc_t *d;
-+
-+		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
-+		ram_base = min(ram_base, d->phys_addr);
-+		ram_top = max(ram_top,
-+			      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
-+	}
-+	if (!ram_top || ram_base == ULLONG_MAX)
-+		return EFI_NOT_FOUND;
-+
-+	*base = round_down(ram_base, EFI_POISON_UNIT_SIZE);
-+	*top = round_up(ram_top, EFI_POISON_UNIT_SIZE);
-+
-+	return EFI_SUCCESS;
-+}
-+
-+/* The size of the bitmap */
-+static u64 efi_poison_bitmap_size(u64 span)
-+{
-+	u64 bytes = DIV_ROUND_UP(DIV_ROUND_UP(span, EFI_POISON_UNIT_SIZE),
-+				 BITS_PER_BYTE);
-+
-+	return round_up(bytes, sizeof(unsigned long));
-+}
-+
-+static struct linux_efi_poisoned_memory *efi_poison_alloc(u64 phys_base,
-+							  u64 bitmap_size)
-+{
-+	struct linux_efi_poisoned_memory *pm;
-+	efi_status_t status;
-+
-+	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
-+			     sizeof(*pm) + bitmap_size, (void **)&pm);
-+	if (status != EFI_SUCCESS)
-+		return NULL;
-+
-+	pm->version = 1;
-+	pm->unit_size = EFI_POISON_UNIT_SIZE;
-+	pm->phys_base = phys_base;
-+	pm->size = bitmap_size;
-+	memset(pm->bitmap, 0, bitmap_size);
-+
-+	return pm;
-+}
-+
-+/* This needs to be done while boot service is still active */
-+void install_poisoned_memory_table(void)
-+{
-+	efi_guid_t poisoned_memory_table_guid = LINUX_EFI_POISONED_MEMORY_TABLE_GUID;
-+	struct linux_efi_poisoned_memory *pm;
-+	u64 ram_base, ram_top, bitmap_size;
-+	efi_status_t status;
-+
-+	/* A table installed by an earlier boot rides the system table across kexec. */
-+	pm = get_efi_config_table(poisoned_memory_table_guid);
-+	if (pm) {
-+		if (pm->version != 1)
-+			efi_err("Unknown version of poisoned-memory table\n");
-+		return;
-+	}
-+
-+	if (efi_get_ram_range(&ram_base, &ram_top) != EFI_SUCCESS) {
-+		efi_err("Failed to size the poisoned-memory table!\n");
-+		return;
-+	}
-+
-+	bitmap_size = efi_poison_bitmap_size(ram_top - ram_base);
-+	pm = efi_poison_alloc(ram_base, bitmap_size);
-+	if (!pm) {
-+		efi_err("Failed to allocate poisoned-memory table!\n");
-+		return;
-+	}
-+
-+	status = efi_bs_call(install_configuration_table,
-+			     &poisoned_memory_table_guid, pm);
-+	if (status != EFI_SUCCESS) {
-+		efi_bs_call(free_pool, pm);
-+		efi_err("Failed to install poisoned-memory config table!\n");
-+	}
-+}
-+#endif
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 235c9738da2d6..22a315e2814a1 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -179,6 +179,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
- 			 EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP);
- 
- 	install_memreserve_table();
-+	install_poisoned_memory_table();
- 
- 	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
- 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index fd91fc15ec810..44436869c4efe 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1169,6 +1169,12 @@ efi_enable_reset_attack_mitigation(void) { }
- 
- void efi_retrieve_eventlog(void);
- 
-+#ifdef CONFIG_EFI_POISONED_MEMORY
-+void install_poisoned_memory_table(void);
-+#else
-+static inline void install_poisoned_memory_table(void) { }
-+#endif
-+
- struct sysfb_display_info *alloc_primary_display(void);
- struct sysfb_display_info *__alloc_primary_display(void);
- void free_primary_display(struct sysfb_display_info *dpy);
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0bae0f06b6763..3136132b9628a 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -1024,6 +1024,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 
- 	setup_unaccepted_memory();
- 
-+	install_poisoned_memory_table();
-+
- 	status = exit_boot(boot_params, handle);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("exit_boot() failed!\n");
-
--- 
-2.53.0-Meta
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
