@@ -4,162 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CF60C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83760C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 19:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47F826B0092; Wed,  9 Sep 2026 15:18:33 -0400 (EDT)
+	id 270ED6B008A; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4301F6B0093; Wed,  9 Sep 2026 15:18:33 -0400 (EDT)
+	id 248566B008C; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F80C6B0095; Wed,  9 Sep 2026 15:18:33 -0400 (EDT)
+	id 1381A6B0092; Wed,  9 Sep 2026 15:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 00A346B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:18:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 271A4160315
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:18:32 +0000 (UTC)
-X-FDA: 85195185264.13.9FFAF22
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013052.outbound.protection.outlook.com [40.93.196.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 29E04100007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:18:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="aAX/Wmph";
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1788981509;
-	b=4/mCCFrgUh5Pf28Phi1fdPfxssqhlHDlw3nsWqv7X3qDOEYNo2b9iMCzlrcf8ONMHFxS6w
-	Q8sNtedyCtqrFUI3lLb8vRJrZCljOHbRwXcZaEWZrkrISA/N/G6wpr+35dj9RzIhHHqY04
-	4OaKma+OpTyANU126iqxUizeLydPVpA=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="aAX/Wmph";
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788981509;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DAB346B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:28:52 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62086802FB
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:28:52 +0000 (UTC)
+X-FDA: 85195211304.08.56A551E
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3D9354000D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 19:28:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026082801 header.b=KGmenuJ4;
+	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788982130;
+	b=hmvzrjfrYcBrtUhlyVF9FDJE4gIB1suJYvfKUW4C1emlMjn/iP4MfIwQjKDlYuWhuIPRfz
+	Rb8loeamnNX29NG/QkOKTUWhLLdwUMvs4uhJ5iGUXeoAzDcv47TuHYpDixxYdfZCR8cYef
+	TgMFt+95g+xOD+cfH+hliOMuRC3bN40=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026082801 header.b=KGmenuJ4;
+	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788982130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iJEq536MlzWpFQuYNdRP2gLcQQ/2eCj7l818RizapKo=;
-	b=HPWlCwVTKLpOAC05DMOygfrgWojG/I3Li3/hbNholy4YGIyp7NXZYDWFu1lYriu4bBPQj7
-	ge8fmOkIuwVUHv8XCQtdlMcUF2OBfA7l8l5OTlRge3846TV6NEMXO8tnBWqFMMM6s9iqr6
-	xgHLyDcrylAmKkhgbHD59hg1RGqFCsE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ukmCwRqK+r3YYsA6/gQw8Owcd5uNbVX8ealioevAcMq8Tja0KqRJl7i6Ha736Ntu8BjMXx/mCwx9xhmmxB8KEZT32IQhjnbsVFJkjb8TqXgBMv1Hl73D45mYEh9qUBNIB7EjqalbjPym4NPU7jktcemN3NCjPhUo3GyIqyC3tsSRolA0O+0WEvoPxreBaBLvvVosfYTILdOCW+v9B9kS8qG4/OilYDeU1joevW7/RTE8Cz+H7BU5+ehJiWh7eu2Z/EJUzwyA65yTyoQN5xo64DAw6MDqMxXhd4241V0wV6LY37nNe/2EuCz5OPCgrPqlzx4kXgGWCEVGosMc6LWr1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iJEq536MlzWpFQuYNdRP2gLcQQ/2eCj7l818RizapKo=;
- b=xQrraDByiql3T5uW0efxXoEKp60z617B3N86ePrHOEzvrecYIQ+m5t8XMpT/sraTb2PrIyc3+RqXILuPG6SZVdC/HrRQWnHdAbQ55r0sFt/5TNbgCep1gfprQxrpgEMj8I2E77JTqKwjfemnf63nH2dy2n5iivcOolLqvIyl43WSgo64lmno1+/zG3qGgJYhtXNQxTzyrURqpCkf3b+L16uKS8VA3G99mL+Xybzv/X4Bt7rPL6Rlh99EowatpXu46BwqYYToeUszNDmQhHngdpZkmk9UfKasnKFAa6mwpKK2fqRsochWfzZVafUahaAPfDTCMcIS2YgGH0OTlvtwvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iJEq536MlzWpFQuYNdRP2gLcQQ/2eCj7l818RizapKo=;
- b=aAX/WmphqFw0d1v4NSXh0N66mJ0Mewz0zXesyejI7Pi4z9mZGr+b1/VQ6aDA+xlDDzbkyYQcscWGweDND92B6ln33LckEQvCzkaYpgOVpQDU8c8rxrCOOAin2WvcP8wVRLJ77M0XnRyrEnEwpmvrukabq9ItYaqdZKTYg8YoVpCbESB/TldE8dlfjPqGsK6o/iqvnO/uuC+lO040ywXYRG23K3B4i9W3bysoNl5dJ/mHeiCESlxR80G+wsyRKAV3JoBsMiAnEgPUgGFBDe5j5KBlpm0xdpW3BEwjDH4LDqGwjXghzxEuxSc9+fKEbib8lO+7nQOe/HOvU4xWiZUVhg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by BY5PR12MB4180.namprd12.prod.outlook.com (2603:10b6:a03:213::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
- 19:18:22 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.007; Wed, 9 Sep 2026
- 19:18:22 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
- willy@infradead.org, jack@suse.cz, bfoster@redhat.com,
- joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com,
- yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com,
- wangkefeng.wang@huawei.com, yukuai@fnnas.com
-Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
- large folios
-Date: Wed, 09 Sep 2026 15:18:21 -0400
-X-Mailer: MailMate (3.0r7028)
-Message-ID: <6F18C9FE-3599-4C6E-99F9-767BD7AC8E3B@nvidia.com>
-In-Reply-To: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
-References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9P222CA0023.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:408:10c::28) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=dm9wpz4h++ofzecnaqGunBw1Zr0gciiuIEIuRKgM8Ow=;
+	b=ntnKVSX1WGiMwzTCDUQkofHiUwUfwkI683H0EDNjyCWw9mMynmewn1yeHBs7lAXIMHKq7p
+	zSEAcC687TTWOhT/n7qqE2JuPmVVDrcMHnKQ8dAgJRCvPkoqwx110IKGOCwmsDhOxLgqeY
+	IS6tdc2IOmlDTB3F91kCI0h9CU3k6Fk=
+Received: from ehlo.thunderbird.net ([172.59.162.201])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 689JRcBm234939
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 9 Sep 2026 12:27:39 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 689JRcBm234939
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026082801; t=1788982063;
+	bh=dm9wpz4h++ofzecnaqGunBw1Zr0gciiuIEIuRKgM8Ow=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=KGmenuJ4WDEIJmD1OjtLBCTBIwmOPf5WXdqCO5NhxzNk/PRMxxRdYtCQ/e9LiQrbV
+	 5nqhJq3gZmxqektEkouPM43IJ+O+eLEDDnkzku4OU8RnhJdWNoOzbcM86CqUSS8cda
+	 TGHj1Sj2JK1rzrE8/0GlItXDBmcjxoplXEs2uNG488VNDWTtxr1RHdwo+/ZC/5FRv+
+	 Wy6lT+Qfy6Lh4xU4ePky/daoK1IUOfrPNaz0BFP5rM0ouPsB86TVM+rt/GpXFp601e
+	 VoZGbeqZhFA9YU7x21eyffmZrBwUa7PfRZVyvemk05/BdqUB6bb3V5JxF/PsdotOYc
+	 tTrjTgSh5/hig==
+Date: Wed, 09 Sep 2026 12:27:30 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Borislav Petkov <bp@alien8.de>,
+        =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+CC: Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
+        Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
+        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Jan Stancek <jstancek@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_02/24=5D_x86/elf=2C_um/x86/?=
+ =?US-ASCII?Q?elf=3A_Move_relocation_constants_to_UAPI?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de> <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de> <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local> <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de> <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local> <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de> <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
+Message-ID: <F9786718-8378-443D-A21E-77E057B62BB2@zytor.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BY5PR12MB4180:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d6fb7b1-5fa9-4124-0f24-08df0ea71cff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|10067099003|6133799003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	I2rA4Ze3ZAqUL1WWmu1F1ArqgJeMAtqLB7EpyJHLHFbOArP3K/TTWhNm5v8oykMN+GqH0DCPeB8klXrs33aQGJequ3p2IwWrjOOmDKgooW3qMd80g3ge0SAAQ1rxx3aniY2dUPVL7CFjOaz3MCznHvnz700xgyQbSP3KIY4BnITN25B+SB9EeLndbgRX3cZOZW5Uk/x1SJs2CbhDmqLEh8TWdep9Ql+MMCC6v4pKezgAKK8vpH1eAx5GFibyJ81dJ7gtmIcU1c8NdZuaDzM77nj9EiJv4+GB/54woTz+Zzlz23746GNaHyW7fKh9XT6SdePy8WJv2/Xm/tn4vYAPlJalT9REHf3LUUJHEHcG6IuTNmQqqA+4UyUA34OzFVscNBSYyVD2FxKxEGYLeNcRO+kRgrMn1MWi8iucuoJQzjWjNnRIjzsu1WY2z+DFx7zehvxO7Kye4R5suQ172SE4QAB2wrb+BEyM7asGLuoyfRX9NFGCqgAucfoWbvYDsLGFDdi8zFxqgk/obGbxsLIWM1TGVJcOVulrZFnBQErfs+3AkN8Lv5MuN+aew8TSbapfxKQdhOyDOh4Uc5KTQQIMSfEcXTx+jVofi5bcrJ/EnfX2lYAGhXvVpqYpUoENqaIWOlAw1zIW/rrDjvTjKs8ZyzJxeD+va01AJzqUYB+N8Cw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(10067099003)(6133799003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eUvi0nXnD1/Kikb5lrmWNT5sJFhA4ufI2mn+bxeaBn6vk6HSGHffbxC7U1IP?=
- =?us-ascii?Q?jQPJ/31Ujd/vBakq7GDAnXD4nPVC8vLwI2YUk0fTH6C6kkRv5ZA2CV3LY3iC?=
- =?us-ascii?Q?tzJOEIfLJzVeMsc/aj+Q83WeTJmg7w2VKL8Kq0fzYl7lEjxzHVKq2crDDy/w?=
- =?us-ascii?Q?OYZdGiWt56BSoHw6Epxa2JK8Xx8Dp/7619nL8toXZYGxYsVqsdJSROFV3W7S?=
- =?us-ascii?Q?tXzuELXu/AX3ighKkmHUWl2xYnUr7LPH9bK3ZAkf/84qo9+ImCaxs6RQYuL9?=
- =?us-ascii?Q?fz2UG02aOjEP74ziMYTJjwJbsyH09kOl3ZuAYylU5ishZaEIKGc3QWyg+HFQ?=
- =?us-ascii?Q?cTTSfAMY8UPkU6i2DEiKs7r6Ib+Oar2UX1VYjAmlI3b03a1Runo6ZhwBW3sk?=
- =?us-ascii?Q?iO97A5cvNfF0wCuGWX9eay1t9oJtBHdROnBH4T/QhpDpjrOIrOqCuo14DeMe?=
- =?us-ascii?Q?qeAo1P+xq/PP00Nx6kkJlNq6gKK9duzx3UmufhmWcgP+vS4+srpicX6YmS/n?=
- =?us-ascii?Q?E5IepBNPeVTKYDfGdKvlA9kNHRc+h11LcE5THi2IBGGoMJ6hY2Al3brf9A2I?=
- =?us-ascii?Q?ENGaW53hF45GzcAUCtAO/Kyvb/BAt3XY6uDS2KR75jeSd+rARQyVtBnnuyd0?=
- =?us-ascii?Q?s8RhgIqxm7qc7A9Yz6Echkck2GxNrI5pcmwkrHM9sDAJK7qnYXzXWXkYypam?=
- =?us-ascii?Q?kiEcOh0lxfRBpjVSaWUCDWZl6gP45NtimcVsDw1e+UzaKGA94X5d1oDsw/VW?=
- =?us-ascii?Q?Y7zwAclQ9bJ/KplpQ9XYNBqDTftjOQggEMyzBTQSvE9PBI8nHl4gqK8/y+Mq?=
- =?us-ascii?Q?FZnT7EdrPmFnWrpN7AFKlvQMUrIML3yk9kADukn9XCQ0gDQB5tj3poEm9661?=
- =?us-ascii?Q?HC5PdpGyea2KoPRNIwDinidD9GrfqDDSTIdre4ab1FxtNnG8M5OP0/rDzr+l?=
- =?us-ascii?Q?ulxUMX+7uR9TqlJiyZ9kNyxLKBtV39euCc8dXJs3QGfO79ihJOYnqykDSehJ?=
- =?us-ascii?Q?kD9WNPU5aB/RRBb9AGl3T+7q6ElyzByc34OAfBx/pImQlA/kqPo2rzuPfPsk?=
- =?us-ascii?Q?3lkYa4KRUjsC8YcNSnHg5bJ8RDMvL3FoxLjx4O2rmhk2ALvFgbRAOHkf2QYG?=
- =?us-ascii?Q?aRg91GJyyXsL8fFAeoLGJ73B1TYjXuMSnuZqF6+4PnylwmgwAnLdY40Jopqc?=
- =?us-ascii?Q?2hCyey0Gsm17hrlajqZQvUGe7pg2Tb6/h6PFzz0dfiisn7iYbBUZnxpNzM6E?=
- =?us-ascii?Q?edK/6JgjwaARvbmc1QCZ44fND/WFlQgqcaUXjFquKHcXf9NuvDzZOIEFriTq?=
- =?us-ascii?Q?D7XySq9u03atWfcEeZcqy9GlLFKAJPRxFvJenKiWUMRIPeZCBTeOrP2Z9u4N?=
- =?us-ascii?Q?5lteuDi/QFXPTacf5szyepqkAy+cTSuY5EMULNpGQaiSI8fcEarr2Q+NFU88?=
- =?us-ascii?Q?Wbi5YDXlj6HlOLOjfx/ceW+drYHcFZtSzW+wwUCcwM67LwFiiGroaSYBEI3Z?=
- =?us-ascii?Q?sqhlRepNk7jBxDAXgqp7U6lV8jH/RdVQ+/ZwkUQczXFwlPhQ+wUBRFU3w7zp?=
- =?us-ascii?Q?m62OaApPT1XLnQD6kqcRoM0z7T3AniqltyMpZBC058WnyXENW2YsyZQm84Sy?=
- =?us-ascii?Q?o3TouQ3A3DhwaG2OOmGHpgtlmIcJSdvBufpgrGx1tnELyRl+TqMyUARvqRS7?=
- =?us-ascii?Q?ZNRoSyRNWPq3WEYtBdyGkekI/HqacAhtYSFiZrKOTWNVi1j9XVp9FNWWiLeT?=
- =?us-ascii?Q?8nUCVP2c1Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d6fb7b1-5fa9-4124-0f24-08df0ea71cff
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 19:18:22.0594
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RRE1oDmMTG1YWqTA5GujCaKdgMguIx2IqXzIJEZte67vPgJRpAfvhTOyI/bSZY96
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4180
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 29E04100007
-X-Stat-Signature: egiym66kp53kd1qkiegmaw6ct6abddiy
-X-HE-Tag: 1788981509-398781
-X-HE-Meta: U2FsdGVkX18JT5HlY4gKJ1mqNHpeHZZdGw0SnZIVJOktIB9wssc7yKlfoStXMqWF9ESr9rGCih+AZOJkjZiHcIZKiHnGZ9H5d7Ax79XWHqaLwftZIWbVwMt7fU0RASs1BJzfGcQWX6kSeo/bpwHGDGABec+cqJbHC1AavJr5M4KFIiZjYoFjwakBW3Aq9PjEN2rFrCInVBiHQNcoPDty9B7sq+1fxmzrN6Ssb8nfflruxc3uXkM1KGIHB4CI3ertOlPy6mJjs5F8Sx5Y+5zCmvFN8bSuakQ2lvcpkFMjXndTfKKY4i2B5qbnIg13unxUZumRpDvPAf5t6Lpsdoc8HOQcozzdBKRKDSJUCqKqCMvXGPGrKK2HwzwThhe/z6JAOlzP2AZaN0sRe3hx1xnUNxusTHBtcy7x/WmVbVEEESECpzG+56EUKXkvHYpCV1W6sQwdvkfF8tQuVk1ZsHogJG7lFD55XQVBQVs3t39rRoLoQ/PAor9ycV3IaTPBb7icerjQt0z84gBQqRb5TsKodRWfXie/eYxhVZfjhXvdjw3NL66pv/tlSQR/gyJ0j/OmmiBqRQ9BNnUWJJDt6FfEQ3joG92N3GnTgU1mf2daB45fKczUyedH6qDgd4vSAWW7YliDK8coGxgqeExOIoFaQQszehP54d8+j1DTVzN71YCZ1+mZ6h9vJEFqy+hlf4M5UPWdBSJLFoI/D6VrcBM9hSJWo3lZ/LZRbxViMSIH7v7R26oGHJMrWR4xUf5fQbkPtk0nTzzoM6THWB4LM3cVZnWwXOaRpsMNWVAnEXDe+rN7/v5YYV0zX9Hgiys5j5H+b9v+uQrFuXAyvLGwYcs4QEDmupgf9qKQuJWE5thHIcVjxCg9CbQIS6vm6DmZgti6N0fTSWwcreglc9GH8qp14RNq0pAJN3eYliCXDYFtEGtTEpUW7XoBY+mtQdxeAqUjnQZCX4n0sp9bVyJ3iEk
- mYlyIKdo
- FMxcfDOcFSnEHXtXKkcRBbg1SQz0QeQr+azEZHyfwxCQme/EPUKu4y0Pg8/ZQaGXnc0Mcgl7rHhQR0d9FttIdOoCxQd0rFDEWzWUYj8DohaNwl8jgXVp87dGfK1ns7BLEVohdpVsbqefAxTb41iBLawtxg3U0RnPs9hKH9i85665dzbKXIDgivbrMiSRFSAPgmKrGeOyHn57OQkCnHG+uDZaeKX3wlJeLQjLn0HhEJEEO1L5Gv9BChCKLB76Ff72B9RLv67YZJuEr/xOQfKEqRWPuXfz7vdxgpW7B+6wVcDzf9AXy4inHD4/hVzkMqHdqHv2NpUWrs7z1VO+hWXMeD5RGy/CkO2mGtRnSGyTjfKB7lZO3g6e4LVcL6BgeKjnIcmqUak3LxcAbHyc=
+X-Rspamd-Queue-Id: 3D9354000D
+X-Stat-Signature: oz8kpwe98jtjazwixuaz1om488w36qfy
+X-HE-Tag: 1788982130-606242
+X-HE-Meta: U2FsdGVkX1/izYX83XCLZLo+RMfUcJ7oOA8Ah6//SMlTf9KY/mblCtenzyR+kvo9npoZJamcdg0Ta6w3bx4k6I+RHt3wp1UJg4j52hVHZuF6jH+vf+QjkAeKEADnwWsv9T0P+JJPIOK62F6U1a4IhplBZjxcYvIMWjgaoitWtSKzNAErp4vHKNuyESVv0X852HgGbEYc2mvf44+fmEdLOjURrBO1BiTQ8mtlidj7R+CeatDNzXAWXxWrFXm/HEDWrKI1wbq39/G7Gnv5K9Y4LVR1M7bpfm0DK5GIfAssXIMGAIwC9rh6ibfoZccd+wxQkAxRzHu29xBro9kf8tS48dnoyuLEwDQkhU/vCIo56JP7GhP2Py8n25qAGaGpYkndfBN3BsJgBfvaWDFvscZvwUMeufB8XcI9j1LwBvslz4x8v7LOmGagsXDI//aH1hG4Fe8ohwGZn2/aN6Jtv3gQf4rhtiZaUIuFJIh1GaVSDfrY6dUPOas5QkkNUNQKHtlD+ECSnsmoYtUR9oeMlHaY1Kl2zq436oQSjSzPCMfDNra75MdZBATeGNOAJWWAnqqzVpIAlxboi/A+K9mXOVQ9xWwF17Whvj01iHgpp2Nxu/Qyr+JC7NIMt9oQ6GpXOWRB/h8RK+uVwf64mO8405mffNL0HjX8r8uxnGn7GXFp9fcIt0ygfrdQgXBxNjxTT6d9qTdFGnehZuyEnHpWk5vgXOEFW1zdIPR+qJqG1jf7mBQIaQ8xTZ3nqjq9dih7ZAi4z+ioycMMiE+W+bS3yFq7PKVD0Hf6xuchHJ6SJ1aenatn9N/lsGYqEs2rsBfjDR07ic6N6tZW0iYjFX8p6PMTBdb0XTgXr5O71O2fL8v5BwuRZ3Yb+glFBBYO0TDPm5E4pRIfAtQPUn+cNei/ZZoL3cUJJgJDdsGajPDyOCydlY2Kdnb4/PCj76KIXVRinLfvKeA6LlrgKS3ERSoHBz8
+ eL77fH3z
+ fa2mRiG2rx3M/FuRok+9u9UwC+qBYfkx5GroW3md2VmoIUo8zfMNqxw8+D4dJ5hsga8Z0sWCDcnmkIGG2lQVyj9ZQFuoj3ggY7GIkoqKZY4V2HRcbwvSz2CAG6bA/nE2XVxbxxznnn+s7Pu5TCCpXO0HXJ4Vu+3ulaRd7qu3cXl/mGYb1jvY02apMKmpqU4EdIdLZ6BpsbG/Je8qe2ma+9ixsNVa9g08vRIEgUKLqcT7Srd6yNrstv8kgIyuGaJeqUM1Qy1PYAA79ID1gKGbM9Xj7KWaeHm8KfShNiiDZX4uBvQixS2z+axYB3ScDbtvFmJSjLxUy069yPgqzxcFFSABn1LKy5+6+WtHdKklBOMV+eb738MBgfcXfO4g3Vs2krX6q3BZ4IogPWxsL9FznrogokCj0eJHIcxfb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,91 +136,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9 Sep 2026, at 2:23, Zhang Yi wrote:
-
-> From: Zhang Yi <yi.zhang@huawei.com>
+On September 9, 2026 7:49:30 AM PDT, Borislav Petkov <bp@alien8=2Ede> wrote=
+:
+>On Wed, Sep 09, 2026 at 07:59:51AM +0200, Thomas Wei=C3=9Fschuh wrote:
+>> These names and numbers are defined by the architectures' ELF specifica=
+tions=2E
+>> They are already cast in stone=2E For example see Table 4=2E9 of [0]=2E
+>> Changing them would break compilers, linkers, loaders and more or less =
+every
+>> existing ELF binary=2E
 >
-> truncate_inode_partial_folio() splits a large folio so that the caller's
-> truncate loop can drop the in-range sub-folios while keeping the
-> out-of-range tail. The first split at the punch start edge is
-> non-uniform, which leaves the sub-folio at the truncation end edge as
-> large as possible, this means it may still straddle the range, holding
-> both zeroed in-range and valid out-of-range data. The function then
-> attempts a second split at offset + length to isolate that tail.
+>So?
 >
-> If the second split fails the straddling sub-folio stays merged. The
-> function returned true unconditionally on all exit paths of the success
-> block, telling the caller it was fully handled. The caller kept its
-> default end and the truncate loop truncated every sub-folio below it,
-> including the merged straddler, discarding the valid out-of-range tail.
+>Your goal is to provide them to tools/=2E You want to provide them to
+>*everything*=2E See the discrepance here?
 >
-> For example, a 4-page order-2 folio punched from offset 0 to the middle
-> of the last page:
+>> That is the documentation for the tools UAPI headers=2E
 >
->   truncate_inode_pages_range()
->     truncate_inode_partial_folio()      # same_folio == true
->       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->       2nd split of folio2 fails / cannot lock
->       return true                       # BUG: caller keeps default end
->     end = 3
->     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>Did you even read that file?
 >
-> This became reachable after commit 7460b470a131 ("mm/truncate: use
-> folio_split() in truncate operation") replaced the atomic split_folio()
-> with folio_split(), whose non-uniform split can partially split a folio
-> and leave the end edge merged.
+>"Why we want a copy of kernel headers in tools?
+>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >
-> It has gone unnoticed because a dirty large folio normally carries the
-> filesystem's private data, for example buffer_head, so
-> filemap_release_folio() -> iomap_release_folio() returns false on a
-> dirty folio and folio_split() aborts with -EBUSY before any split,
-> leaving the straddler safely unsplit. The bug is only reachable on paths
-> that produce dirty large folios without filesystem private data, and it
-> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
-> attached.
-
-Thank you for fixing it.
-
+>There used to be no copies, with tools/ code using kernel headers
+>directly=2E From time to time tools/perf/ broke due to legitimate kernel
+>hacking=2E At some point Linus complained about such direct usage=2E Then=
+ we
+>adopted the current model=2E
 >
-> In addition, even when both splits succeed, data can still be lost when
-> the mapping's minimum folio order (min_order) is non-zero. folio_split()
-> stops at min_order instead of order 0, so the sub-folio containing a
-> split point stays aligned to 1 << min_order rather than to a page. The
-> original success path left start at the page-aligned head of the range
-> and set end to the exact page index of the end edge, neither of which is
-> a folio boundary in general. Either one could land inside the large
-> folio at its edge, and the truncate loop would drop that straddling
-> folio together with its valid out-of-range tail.
+>The way these headers are used in perf are not restricted to just
+>including them to compile something=2E
+>=2E=2E=2E"
 >
-> For example, a 64K (order-4) folio with min_order = 2 punched from
-> offset 0 to 36K:
+>Just read the damn thing before you reply=2E
 >
->   truncate_inode_pages_range()
->     truncate_inode_partial_folio()        # same_folio == true
->       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
->       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
->       2nd split of folio2 -> [p8-p11, p12-p15]   # success
->       end = p9                           # BUG: p9 inside [p8-p11]
->     loop truncates ... p8-p11           # p9-p11's valid tail is lost
+>> Also we already have other, closely related, ELF constants in the UAPI,
+>> see {,tools/}include/uapi/linux/elf{,-em}=2Eh=2E
+>
+>Srsly?!?
+>
+>You moved them there:
+>
+>commit 626fd35278295fbb21f2da331cd8028e9738d965
+>Author: Thomas Wei=C3=9Fschuh <thomas=2Eweissschuh@linutronix=2Ede>
+>Date:   Wed Feb 26 12:44:46 2025 +0100
+>
+>    tools/include: Add uapi/linux/elf=2Eh
+>   =20
+>    It will be used by the vDSO selftests=2E
+>
+>
+>Looking at the rest, it looks like some elf bits got exported, you added =
+some
+>more and that ship has sailed=2E I still think us providing headers is
+>completely unnecessary and it will come to cause conflicts eventually but=
+ hey,
+>not my problem=2E
+>
 
-Should min_order > 0 fix come as a separate patch first? min_order>0
-was introduced by commit e220917fa5077 ("mm: split a folio in minimum
-folio order chunks") and it is before folio_split(). The old
-split_huge_page_to_list_to_order() can cause a similar issue?
+I do believe there are *some* headers that would be reasonably to export t=
+o tools/ beyond what it is in uapi; a major reason for that is that the too=
+ls are suffering from a crazy level of internal inconsistency right now=2E=
+=20
 
-
-<snip>
-
->     i.e. the pages wholly within the range and safe to discard. They are
->     aligned up (pstart) and down (pend) to the mapping's minimum folio
->     order so they always fall on a folio boundary.
-
-Basically, to fix min_order issue alone, truncate_inode_partial_folio()
-needs to align pstart and pend to 1UL << min_order?
-
-
-
-Best Regards,
-Yan, Zi
+Basically uapi =E2=8A=82 treewide =E2=8A=82 kernel, but also treewide =E2=
+=8A=82 tools common =E2=8A=82 tool-specific=2E=2E=2E
 
