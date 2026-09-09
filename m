@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09AD0C79F9E
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 00:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0CEC79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:14:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0001D6B008A; Tue,  8 Sep 2026 20:45:34 -0400 (EDT)
+	id 0624B6B008A; Tue,  8 Sep 2026 21:14:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF2916B008C; Tue,  8 Sep 2026 20:45:33 -0400 (EDT)
+	id 0137F6B008C; Tue,  8 Sep 2026 21:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2F336B0092; Tue,  8 Sep 2026 20:45:33 -0400 (EDT)
+	id E6BBC6B0092; Tue,  8 Sep 2026 21:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC48E6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:45:33 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04DAA806BE
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:45:32 +0000 (UTC)
-X-FDA: 85192380546.04.7BE423D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 63E8FC0002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:45:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NRMTXI5L;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C8ADF6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:14:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B3BDCA4F55
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:09:09 +0000 (UTC)
+X-FDA: 85192440018.29.6107291
+Received: from mail3-165.sinamail.sina.com.cn (mail3-165.sinamail.sina.com.cn [202.108.3.165])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A2F01C0004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:09:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=uZzmhvOi;
+	spf=pass (imf21.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788916148;
+	b=654U+2V9n/XuBhm4XaELjcO9p3VIVIgjbU5bqteejvOuEOGkaswL6ro12lc6Eiwz5QZEm5
+	f+X+hIAvmTKaa1F6F1Jjg4hbR0ErxVD5D63DOvLWvEyIdyu74VAxIkUARuVpGjU9lVK3nj
+	9NHmgLJ2Iu3wsNdU4qHtswt50af5DEQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=uZzmhvOi;
+	spf=pass (imf21.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788914731;
+	s=arc-20220608; t=1788916148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNopAaAzl4l7FgpL2NX3Esneyi/PfV8GDqKzg7A+eWw=;
-	b=wbGJ4qPO8r83CphNRj283GHOQ8qoVfTC/p6wupF3JwUBq2KGN0kCQtG91noia3oMbtQD7l
-	T1lzcOYnjFgBngKOWUmMJIfy8hMoWjOzaK6eEhoZyjlvmoMYV+1emFmNNDawmKhC1UjsPc
-	juFSJYwvg4i/YQnot0cU8BanFEoVXtQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788914731;
-	b=gCRQqMq5LXvRJvQVHkqJ5IpLvJ4cQV/gutBFPdSM9Dz0s9vJBDH1QLS6e9DVoJfYGPfv98
-	esymaPaDVH+d8bU2GClyA8om/YEpj/CnddKgC7tg5W3m9IRwVZcOdlz++8s+hc5HP/ACUR
-	0QkmQx+/VMeJJjgAFG7MbL/7WxtVBCs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NRMTXI5L;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3FE9601FB;
-	Wed,  9 Sep 2026 00:45:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540891F00A3A;
-	Wed,  9 Sep 2026 00:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788914730;
-	bh=ZNopAaAzl4l7FgpL2NX3Esneyi/PfV8GDqKzg7A+eWw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NRMTXI5LTdLH8UBQUVL75Ne4wsGyyqbLlOWfIZh8O5U92WQbxbNUZ0tyc9cMVwhj8
-	 4C9Yt1aAExJ2jT+xMlwTtu24XMlk07ApGbQ3LXvjfjeppJuT+9iBJvrx4snpx3QR1k
-	 20hZHkLkCl20E9nF/dFDNVyuVimE+CGV8bhjVFsbnxmJJ53XrlT9tFfuf5Mp/5Yy9o
-	 w1klF/NP7eKnJOFW4VLKEgnxmWJZAweD7BKR8oX+Z8GasMv8Sr9Ci6AkK/lErrRbuO
-	 kfftRhUZGaHSzN8mSs7LRZOTAv0Oz2tflAz6ylMd8ky9ERtu+pH9BnYhbgY6Pril96
-	 OEigpzFjTAHTg==
-From: SJ Park <sj@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shuah@kernel.org
-Subject: Re: [PATCH] selftests/damon: ignore test-generated damon_dump_output
-Date: Tue,  8 Sep 2026 17:45:22 -0700
-Message-ID: <20260909004523.112863-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260908162716.85648-1-zenghui.yu@linux.dev>
+	bh=aHVS8CUETuqc99kyRiaPpcp6T76S/sIyd8jzjUtNfVk=;
+	b=vAzL3eHUNz6bMM/emRID6NSHAhxraRyTEt7NcDL9wMaasVakmXONzbiY8zRr6XtMgtBX2q
+	0IjlJPf7qLqZr2hgr2vCkc2B/b6md+bugatRLagh6kJYcdUOwSKp3aa+VG9fG2gqyXpyOe
+	Tt3SSH2CouhNwgAoFkWX6/wa5VWX4KE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1788916146;
+	bh=aHVS8CUETuqc99kyRiaPpcp6T76S/sIyd8jzjUtNfVk=;
+	h=From:Subject:Date:Message-ID;
+	b=uZzmhvOid4ISGYd3nFWGYJBc7CTaaB21nTYN8BWcYENrN1pE3b+Aaypc2uIeI8Kus
+	 ZL3HPgIRT/qH4mLK7lhsz1KHaZrF3wPAc81NV/3FDXzoyfVwDejAoK7HsFK26Vcc2K
+	 YuMLJeCEhZW3wEPHBb1liGz8RSv4iTB6JFicF3OA=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6AA0B1AB00002892; Wed, 9 Sep 2026 09:09:02 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 6773796685274
+X-SMAIL-UIID: F295AA5A7FAC4670AF833F38B4C45503-20260909-090902-1
+From: Hillf Danton <hdanton@sina.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org,
+	Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	lirongqing <lirongqing@baidu.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for vmap drain
+Date: Wed,  9 Sep 2026 09:08:50 +0800
+Message-ID: <20260909010851.613-1-hdanton@sina.com>
+In-Reply-To: <aqAZ4H8mauWw4JVM@pc636>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9A2F01C0004
 X-Rspam-User: 
-X-Stat-Signature: qhtisxob4szxnkuwzt45y8orjjuuyor1
-X-Rspamd-Queue-Id: 63E8FC0002
-X-HE-Tag: 1788914731-535062
-X-HE-Meta: U2FsdGVkX19bxh2YNzG6t37m/xuPj5Pk2dbhalhiw+6I+y2RHom4e0HqzSVbLsG8pqmmRw6pFAFRCs08raG3KCOEw3vE8DN8bcw0EMwhCn02jbG2EjcAf00CGTKSfdGeB47aNAPsqhwHNd5hk+BKdwUJv/9e9gopX88ZI6Wo8t/Ch/Ube/dvpNHGeYLi8TUpjeks+g6n3r/UeS2hGjU3SH0jgnqkGUmGWUAiBMWBaojeRnLLtMkKScFMQmCczMK+I6twmSVaVyCw8Riw7uPB9pKdRoRElFymp9vgm5BsiziDx+WoeqDTP6zvLAAH4LIZOF8GAfNO1/CRMDQyFE03yOxkC8IGMoZgpkT9jpt9YK6etOCO0wA4hIpzZYp8cwU6stpy/PW1DM+jLAX/3Kpk8erGJ4MkUVmJgi0CAO5Cq1mSwWnIq5tWYrRsTVbN0KMdjXmz7w3mI+c7Igvlety/6LLG/Ju399fyNz5Rsl3KxbHReJq2cQvtWnOh73cWx/FlAolfXcFdmcv/OYT8m4lPAxIrehdGyFdiwNndwiMYZ8pI/RDZvzv4x0kUuMI7qMIixfa24UDaBBlZQpPzeo/HZju+oBXoryxld2gsWWIQ8qzsCfGFr1rysPArurTree5covXuQgFsKhzAR+2a5+5LJ514mzIFLEQlGZML9NR+1M0aAzXhoOiJnKH0ITuyCvTE+24jEsY5ODddQKLxG5+mhA43/RHJl7r47Z/cVuksCuT8Sy24qmyPmZ8gUsHLQbWJ9+Q/VdmgpV3o0I9GeqfPGWUCj5jujW+4zYZ+frBvNuk/nxrTFEmiTLG/oBcJkbpqJjLpnT++K1i74dI0Lp4tQIx/aKxcaSVMirh9sfe+gN94FrbdbXvPVfW01/DQeePNsje1wbDVcari/RHaSZXQCYSozGfZtEX/lpVjdeGb/zF7XS2vLEVfgUXfCXvHuiO6kwSusgolT4sa431YUik
- eXZnIcd7
- ckzUG1OGUWXwovjpQY3Jw0kEd/FgkKGJLy8xufHUeU9aJTx2F2fRncSFrf/73SiE19PBCnzeltYGGvAXdV887phCW0bbj/2vwpz7zs3rg845wKuoMdE2enCii1JOLDkVLl3/Hn2R4oDYcGsy12dlPRMiLuarcF7dEEjUffWlCX154I4sxlOP1QZxB57JEHpPE4YFI3E+dWgKKXQh3PiEISj8JY/HjQird+IxuKo5CkUgJatf+w+FynflCE4g9lHPZ4ZcpocrqHCqNHI02wAPYx5gzC1Ued3BlC1Hx0Q3pSwl4IXDryvvsJ83FnnK8UntwjBvoBQxGmOQzaWBhkG7xMdrv8A==
+X-Stat-Signature: 9juf3oe419jbxggpyzj5rn1cjao3bx1t
+X-HE-Tag: 1788916146-838480
+X-HE-Meta: U2FsdGVkX1+69LEjilqeOWkG7i/+trL5/zR/YqVDljuoZKh+oAAKlzcszdR9Iub+oir8uRJvnYE64kYgVUoFrg9iIqBTBg+BHxDeSDWdiPyx9m0lVCvFGv02jQvMRWtpTv3BeYbhklclsbJ+U1Azsj2LfVAY00lCqFtrp5gHYh1/xlm1Xp3M+QCiYUzCx9SRpvTQ8O2XBonSM+3WnRWQiYtjtDCmQVylIv2+pAtM6gtPyW57rZv502IjKbb5pQjF7jM0SBGBRZeZmEvTlb97HcCOPXB+0eyLnk4CNMjgmAPDGnwMeclfqilx3JZjgZWxB+Zn7IYvugqsNaDZW/oomM+I92plInfcG0y+zMV31dc0nZmCqHvZ8C4x95QgBTeQ+iUIfkqntIgfwnC74BlOiTLJJkuOp0LTra+GNE5LEqDJh5uHsPSmj8qU3a34tEcoSQzkKAyDMo2aJE9n/RHrsFpuUv77yytzwBBeD9WMZ5+84wC6ENZ0XNBeqvJ4ZWdnrij+dVoKGpg+RwI6xIL5h9btYSuGmDFe7O39mG3X4AE73l2dCZmdfcb3aUJt9xHC43CsP7eoah3VR1l5cGhE3TEodcJtH5iOs4/eTriJA3aPlg2kr6aBsKsHZJPI7kgfU+ycJOAyFL/9UHnYXB9frYwl0Rexk6FlRCFmJDzpEyHyogQoka+zvqDkPvWE0cUZyZu6Y/VzPp1dInr0gqwUNBDJDgg0egAK2w7xtIGKWuisBAc2FcmCn0UAELVs2SklKZ5SFkDvbAORMJLc7xHy/ffF0CqlYvWbypVqj8wYUKt4Zj5/U4WYG0qPCGzaAsxlhgaw54aM2NlWMFqE98oPUABY8sGN/HBmH4W3UKFwz7+klTWQbkg74u8wInBNb0L7yvgz/cDSQGsUCCadjW+VAZJ6geYpdZt257lwxyVttvn9t2ruHl8q5Swt39KbVxUYnBLXKp5G909Bpm2JEfJ
+ Ek8gVdEl
+ hXzkllWUaKESAbyEng4CaGq9uBdWyJg3rNbnSgsOGKIj0F93sFzMPOqs5bP9hFXAE0mL+8MXx4VH8gUxUm5FTYcUB+wY5I+EJNswdQQXcrYv0EVvnGtxci6P3RM0sUbJKLydTZcGq5ukQAjSMFL+P1CA/Da2l+u9FAHd/lGW0Vl+xz9hVsYhGOg9cmCPxgKad2MgIiAGDVd7KdhMPQyI/a8OsEKfcM+rxE4yN3W5fRAURKxyosIVGkRzLATmsKTmPDV17rkaAzDf1iLxbBYQwisbkpq/X/6NHJ0/pzOtFrXUqI/ZAlb7Gm/3mkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +92,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  9 Sep 2026 00:27:16 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+On Tue, 8 Sep 2026 16:21:20 +0200 "Uladzislau Rezki (Sony)" wrote:
+>On Sun, Sep 06, 2026 at 11:50:24AM +0800, Hillf Danton wrote:
+>> On Sat, 5 Sep 2026 17:27:17 +0200 "Uladzislau Rezki (Sony)" wrote:
+>> > drain_vmap_area_work() function can take >10ms to complete
+>> > when there are many accumulated vmap areas in a system with
+>> > high CPU count, causing workqueue watchdog warnings when run
+>> > via schedule_work():
+>> > 
+>> >   workqueue: drain_vmap_area_work hogged CPU for >10000us
+>> > 
+>> > Move the top-level drain work to a dedicated WQ_UNBOUND
+>> > workqueue so the scheduler can run this background work
+>> > on any available CPU, improving responsiveness. Use the
+>> > WQ_MEM_RECLAIM to ensure forward progress under memory
+>> > pressure.
+>> >
+>> If the dedicated worker will run for 4ms on CPU2 before the tick irq kicks it
+>> off cpu, the system event worker on CPU2 has to wait at least for 4ms to handle
+>> 200 events for example in 1ms, the net effect is the same as the current scenario
+>> where 200 events wait for the drain_vmap_area_work to complete on CPU1.
+>>
+> It is scheduling decision. We do not want to tune any prio here.
+>
+The difference your patch makes was checked without prio cared.
 
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> 
-> sysfs.py and sysfs_no_op_commit_break.py dump the DAMON status collected
-> via drgn_dump_damon_status.py into a damon_dump_output file in the working
-> directory.  Ignore it so that running the tests in-tree does not pollute
-> git status.
+>> 
+>> Different workers does not help to dramatically decrement the micro seconds
+>> the drain_vmap_area_work takes.
+>The problem of current approach consists from at least two problems:
+>
+>- doing progress under memory pressure;
 
-Nice catch!  Thank you for finding and fixing this!
+Though in general a long running workqueue work is a wart, exceptions exist when
+mm is tight. Just like kswapd that becomes a cpu hog, it is the right thing to do
+for drain_vmap_area_work to take more than 20ms.
 
-> 
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+>- do not schedule all workers on current CPU and let schedule to find
+>  the most attractive CPU from its point of view. For example: less busy
+>  RQ, less energy consuming CPU and so on
+>
+Nope as UNBOUND has nothing to do with cutting the micro seconds the
+drain_vmap_area_work could take.
 
