@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F190C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:31:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E83EC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:33:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789E16B009E; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
+	id 989C06B008A; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 714686B009F; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
+	id 961846B008C; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC546B00A0; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
+	id 850B26B00A0; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 307A26B009E
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:31:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65EAB1C03C6
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:31:54 +0000 (UTC)
-X-FDA: 85193706948.23.C6EE9FE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60EA56B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84AB01A016D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:33:38 +0000 (UTC)
+X-FDA: 85193711316.14.E782274
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9B4F81C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:31:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FAlhbD7/";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id B35B21C0003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:33:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahdV/XU2";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788946312;
+	s=arc-20220608; t=1788946416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NFgdN8VYLiotA1X6CX/YGSNfCUyM0k24sUOYaVWvi8s=;
-	b=yxHVlds8XsmXJ3FNOzufVx38qKQohCbSlUChsDRmFjh3wMWkXvCS75wY/a+ENmb37XHhme
-	B+ak+6SxPEgbxIa5/HDQzMmtJZnS8fHdRsR//xdvLWtwqEIxfTJQxWCSg0GxFNbDo5jEHh
-	NoIKN55NjaW2cL97h2OnCkdzlAKgFsQ=
+	bh=SLdffO2d9oL1IoLe1z/izylXPi/WCd92jfvx6mYcYdY=;
+	b=wutxcPGr7/4RwTzh0XgsAah9x//YWxjbQ5RbFFtjEv773bbec7Wgm5a4fsr1tQP+J/Xs8A
+	iOef53HBegI1gGiqKJ1aV/zcIrYwLIYJ9I9HXp4hi5nBn6omMkRzjYG7omgGRdtlxlOpaQ
+	4nG27RdOoif8WCr9Tf8LahJlZYek5no=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788946312;
-	b=R8eCkPUl+V1GVsu38VVWritO8anQQx3TW3pKUz5zo5UoCfHUs+Y/Ulm+KN6jXXOFrRN/vu
-	iqV0M7eCBV1UM8A6X8CuAD9Tz8TM1avw2ZuG90bQ58g0RBaXUuDdxQH6p9mL0gs2sDvqOk
-	rbHIHMuVDHlT4s3qBm6N03hnbqIa/GE=
+	t=1788946416;
+	b=ZiBcx/fb997Wtnok+WljaXtT/iY3YFvoDNFmwfHA+biRAhDuMTw3kHngSQskksZBx+jebs
+	Ndvnlr9Sg17B1aH8njc4TDRDubSofr+NnQ8p6M45SK82mUfh8TAgzRAheFXs0rcc7SNcsC
+	TRct0pzeiPnd53PWH5i950P8SvKR+yw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FAlhbD7/";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahdV/XU2";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE47540B70;
-	Wed,  9 Sep 2026 09:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3211F00A3A;
-	Wed,  9 Sep 2026 09:31:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E018A4045C;
+	Wed,  9 Sep 2026 09:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728381F00A3A;
+	Wed,  9 Sep 2026 09:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788946311;
-	bh=NFgdN8VYLiotA1X6CX/YGSNfCUyM0k24sUOYaVWvi8s=;
+	s=k20260515; t=1788946415;
+	bh=SLdffO2d9oL1IoLe1z/izylXPi/WCd92jfvx6mYcYdY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FAlhbD7/F+IcjEEV7rddqYf4nNhaQaTfs5c3xo21KMjITdNOeFjAZSWZVKaNaYWmL
-	 wMocD3eSNpcoYKMuoMoziizaDhGoMMmvjgIMXen0QypHfn/FnFlyqPvwjm8m8Ash0b
-	 2124ADpW42GpbGrOhi0VlcZFAMz346d5LY354EuLixaAlJVI/pJfGkfdksC1RuudwS
-	 x9F0o9gyEeInbzy1PuRoJpJrsFxH0vBJCu3TmD7guzmA0kyF1m9Lcv5JvbykUJdUrA
-	 4RCiNmgSQaL5maYkDiBZroV3NlgMq3ZyMIArG0LpIEX10pNHdftre2gqAgLp2S5gwg
-	 4m/K1qxZswUeQ==
-Message-ID: <5562d89f-29fc-4a35-aaaf-b8aaf49f6cdd@kernel.org>
-Date: Wed, 9 Sep 2026 11:31:45 +0200
+	b=ahdV/XU21+mGhwldu2hspAkKmm3G/Pdk7ZP7FMpkYSl+VgEhXZ9h5Xoe8L1IlIyn8
+	 Lw3boxLMaHBmtMYJ/z+hyo8B1ErAzgFTbA2aW+Z2kshp3KZkZjLpEP52qbXrScEunL
+	 lqsMz5xQIWAL6AkOUi0FoXisNE+JfsMSsKI3XTJ6pLTeIETN3P/7hmr8Lvo/zi7Uuz
+	 B/GkJd+1JnPO900+EM1QO3CodSYd+hnYsQIua+CqcZbaiNGT5aOEQEjP36packx1uU
+	 aWUNIEdmOlEBDmLTztIjJi7tHgzx/tyBpXn0109kpG4Nh4CUeHoxJY5ZdCUmxgIk9x
+	 ZAnyvFbtvGD5w==
+Message-ID: <f37fbaed-3a92-4f7b-abf0-98e30d853070@kernel.org>
+Date: Wed, 9 Sep 2026 11:33:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/17] mm: Introduce section-based vmemmap optimization
- for HugeTLB
+Subject: Re: [PATCH v5 01/17] mm/sparse: relax struct mem_section size
+ constraints
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
 Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -80,6 +80,7 @@ Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Muchun Song <muchun.song@linux.dev>
 References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-2-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260825084608.47437-1-songmuchun@bytedance.com>
+In-Reply-To: <20260825084608.47437-2-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 6o96nwdqinhebmamwk5b438hb3uwta5e
-X-Rspamd-Queue-Id: 9B4F81C0003
-X-HE-Tag: 1788946312-152415
-X-HE-Meta: U2FsdGVkX1+878zVs+R0Hv4sO2yp5EFW9PVyxOXKY8KtyYNRUCGH3V3TF+dA3pDxI3EH1pRyjMQlUAUudhF9/jRe7/CO5Zc0wIu11iW/bRnbfZ7Xq2vZ8P4q4d5GkJEgWMEXjZK1IzDtpPkmgu1upzvHo2LMCINP9pyEcX3KSMb57Cmv/mIaFidzsHn19uIFBrV3neTeQ/Lm1oWnqntSJg1XNfGBlZ0SrdSPUjjYe3WaLv9zx4eVe4Xo/ZFmrK7CYP4PM/XVBF4DTuhwf7ngQr53ZUxSUjdnROGBSkBiK4K2rLfIIaT+RcEX00YX5akmyK2bfqyBNrAH+zHxZxCuCOUhCyNL8Ug9hFH4dZOBQvvVCwquhM/176uguXxsNjzG/oW0kSaqmHyyJmZxqUTXmaV6HjExLqzrpOFHb/0VP20AihGiPDBfB+P+NRprZpDp1HpQubjytvLe/4dv6Iafe/vG9nrfBrGb2D0DoT4LQP0KxdYjDs2MK8R3GDyL691tupz6kEkGQtgYaVS5abtLAOtiptfJpnsiGF8JOyykFevl79gyhHs84LUeiCj2fRa5ix3AwFOLLLHROxD0jOnPBoveqPjVmzpnw5YBpzLa7M8xzMejw4YqAAurkV0ZdJZ0m42oWvq+fuUVDKMLrS2UtN0r2qN9U1viYVssiSHqygat3c4M7RHHmvPNaJ8nJWAtRyYwnVyr7w6dKsk907qLegSp01k9DVlJ5jHwymK/Mc4VCIyKj1xDI6h1pK72Uveq6iNNjG9vI792aB0IUisfP1Iw6jHhIsEDRbnNs/gIrI+EeTJfZQkyGXk7bU/0lqiteZo5x8fODH1LckRbQzNKTq1kso5ZLWHtWmp3dPP+z8RZPcYCEpOzgO6PMtOQ8iQxMco+cIcChY5Rg/bt9rlxol0kpCStWNJ+oPjJsqekn2qNs/2N/EhlAD7OucRM5aaKtVy7XtPu7aHPNkt22JN
- 64XZ3N+p
- mluKEbxTlw89R5SnBjPZTcqmo5qF2MzXtiyQ3ZfJUWuwTyHG89CiVUXoXT3HIhPoDn4cs2E8E32RHVmAxkwgrIgYMKS5HKofx2hMyjFSgqs6r48gTf3xLC8b5Gl+ntDex/Y8XyaY+NAre44S9yL9kElfSww4FJkQ/PWSqz8HqfuBLwdLPfCgCk9vLIm/IszhAKVTNZmkPOGrTHRAUpWqut3DGTHNdkgyBg47cL0mcbMawPddjn+GoRpu4I5SgEbnYPdb1Vas6Q2md7ImdGqzgOvpPEsXT2azfrYgOVpJZrA0HLMr6hz1GrIgh8gX6IsZyDJH/NlvR4VVWeQhyUV2+dbBeUQ==
+X-Stat-Signature: 4eu4sjfb4fziwnowbs93p395xabkeydj
+X-Rspamd-Queue-Id: B35B21C0003
+X-HE-Tag: 1788946416-952384
+X-HE-Meta: U2FsdGVkX18DFbjqe6quI7GNTP7v1taevEpzOyFAIVRb9VeSVzzhWTRQkPAu79nOtarlC8IFL1Y49tI76vfgVN1w5WycLJ4hBoeBFptxy60tDu872288hhJW374zUb7blEtpqlwuCbLgyeMcPD8esGb5xb8peTKSXiKfkmVWxHVBrNWQ1gR8HLaM4SRvuev5ic50mzmo9pA74RK8fg7UykyzwdTH5M4Vctg0KpBRplFRZyLIXwPKj7n6SIHsYxVP5JmScERROZnMVt94S8qTJGFCfsDA2d5KU4sM1kLhEdy6AwZz/EmN2heS+/W/J8zsR6YCajTmc5ZJX1tGtobZpO84V/IJqbXw0Zaxk5O9GlPPNgFXD8/6AdwHkymFZKM1lQrqLg4HLMNTzXcw3ZF6AOfkwIgZJj7MZo49XBpGu1Enbc1VW7vhdYG6lslS47IxOx4hieWKvoBWvt7x6KvJBEeY7o4hDa77Ib00pioymZbkZ2vswvHadS9eSgAXbNHJh878s3rUtoUjUaRs+pE3+j0p+Ajb5RvRCtvMTSo+s2G5t+ElWCHQGtSW7vbiMziZrNlX0PvXI9EYFyOeaIXrUa3Sdb1F46uq90Ke76QExZOjDbqb3/8XjFa5/0xy4cM55nD1r8s/ZGRLJ9B7o0AL08+WaU9UUrffrKpYpWyhWk9rjUcp5HZeYrxMtppHBFMWxTSfD2ICN6Jd+TrymH+o325aqiYaVcODIAmx3hulWJcqsVXsUuVJMUpaD4WGVNa3ZyC+CimZp9xXEAC1HDThxoqZsTWBMAs1CRxi074G2LZdd0PGpp9N2Wy00a2T99kuWEv5ow0NUAwLnBU4c1cvdpaIimG9WEhdSHeiRFayXNrv742JD+qLDEcddBtRyIIwGcyO/5YfFtEiinlRW17G4rX56rQuY7iC6BnQpofMfIx4j3UVL7pDCr7kgGuVAzwzXLbXt73jIIyB+6mAMKE
+ zSGBDDbR
+ FueyKRT39LzRu7RUAPjWnSvwR9jUZ63TjjfTJI5laZQbDyNUvPs2+CFtwQiUqLoDudRDM/qO3axR3KERP2EzeE3POkzRzY3Jje+CMLZPCvy7ocDaITzJ8QJueaBtks48QTEmnQVrlZm2dFvtqRv8+l+AmasItLPrkWJ98j5Xd2KHql50ncFfgH+DlOKP4Bk/gXxZCOiy5v4TL/3Q/mRkjRly0qM8H7PELD2B8jWQCzfG6oXaurAnYH7ixs+Njadqrr7Xm71ZzuM9/HbeNuVTXSOrIeob5hcAiE3txlmcT/2EtChl8ajsQhMzH34UgIujutmNv3uDdJwy2Jk4wfPLwZXl7xNmKcCRmLeSGztaV8QYzngeEyLAeMMdf983pwl5V+9We7cSCCtUzRIqvj7mT7F5uYBTtig0PjCvtQrPxnbzkfUA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,17 +146,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/25/26 10:45, Muchun Song wrote:
+> struct mem_section is currently forced to a power-of-2 size so the
+> section-to-root lookup can use a mask instead of a modulo.
+> 
+> That requirement makes future extensions harder than necessary: adding a
+> small field can require configuration-dependent padding or layout checks
+> just to preserve the lookup scheme.  Keep the lookup correct for any
+> struct mem_section size by using a plain modulo instead.
+> 
+> Do not leave the layout entirely unconstrained, though.  Keep struct
+> mem_section double-word aligned so modest size changes, such as adding
+> another word-sized field on 64-bit systems, still keep a compact and
+> efficient layout.  If future fields grow the structure beyond that sweet
+> spot, the lookup remains correct; only the exact layout efficiency
+> changes.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Rebasing some of my sparse cleanups I have pending for a long time, I stumbled
-into severe conflicts with this, so let me take a closer look.
-
-> This series is split out from the earlier, larger series "mm: Generalize
-> HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
-> vmemmap optimization across HugeTLB and device DAX, this subset addresses
-> a single, self-contained step: making the generic sparse-vmemmap code
-> section-based optimization aware and switching HugeTLB bootmem pages to
-> this path.
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
