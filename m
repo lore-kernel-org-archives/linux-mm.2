@@ -4,129 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68E88C79FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D09CC79FBF
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 18:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 903F26B008C; Wed,  9 Sep 2026 14:28:45 -0400 (EDT)
+	id E0E136B0093; Wed,  9 Sep 2026 14:29:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DBD26B0092; Wed,  9 Sep 2026 14:28:45 -0400 (EDT)
+	id DBFCA6B0095; Wed,  9 Sep 2026 14:29:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0A96B0093; Wed,  9 Sep 2026 14:28:45 -0400 (EDT)
+	id CD4FA6B0096; Wed,  9 Sep 2026 14:29:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7B06B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:28:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3D8CA030A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:28:44 +0000 (UTC)
-X-FDA: 85195059768.05.A1F5E26
-Received: from mail-qv2-f7.google.com (mail-qv2-f7.google.com [74.125.230.135])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AD28414000F
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:28:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="VQzL/O+V";
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.135 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788978523;
-	b=PSD7pjq0MJ1nuFjn4Bcwq5FI3BbTH/4Sv7m/SP80m1tY4tUgV5yWXjiqcMwUPsKGVkLNq2
-	V4IArxQeRsro4fMABh4VAv8UnNnuS7bwBonCu18hPKcxRH3y+fffxkgXKYftxZJj8O08UM
-	b7oXc4YWtSMJtop+93Mrz1ZUvp01hq4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="VQzL/O+V";
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.135 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788978523;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A5D26B0093
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:29:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDB9A1202CB
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:29:26 +0000 (UTC)
+X-FDA: 85195061532.14.9CC63F6
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D290B1C000A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 18:29:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Z+/PU7pE";
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788978564;
+	b=f2hOC/i5xqh0P6+fVidV0Xe1Iw/lkWtalRlDUQagn4f0F1aNBiOODyomg7tiNCFeBp4zDB
+	5Vx/9uODsSTCGBJOIMwA0x9sC/N3cml88SqHNpmtygqSeCdEFyMEKT586RKfQABB6FGzea
+	JIb7VQ5SE7DOSfBNvDqhwiJwTnUbL88=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Z+/PU7pE";
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788978564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IC8+CYBpTjyEX77+0CoRP0GmnJOZZWZXdKNBjQTGBi8=;
-	b=yeCfQ2Ycaa+wB/HyS6cqQqyQS1ttDCUb630SgW8PrQoXZLmwQ2z07GdybvDCB/Euwq2f62
-	TdVOvbCqGbT4F9tY2lrD8RDCUefHlsIroStrFZzgM81QXsmCDpWXHM+OFj8ylzEhikS3mQ
-	9aZsbfSSsRsDFAgsZd0k8OnVDQIL19A=
-Received: by mail-qv2-f7.google.com with SMTP id 6a1803df08f44-90ccffc2654so36646606d6.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 11:28:42 -0700 (PDT)
+	bh=O80U+VoanmQGpDG/i4GPzQW2Nc5FZMWWwqpPOFq4e5M=;
+	b=r+6B5YVY+9lTByGqdjUKQO/jX57mCzFtDWef0tQLAri8e6QEsVR7x2V2rlqrFvBcs6r94e
+	oas1k+swK6D/hW8RDpfCxAQg7ypiU9UZ38NG5XjY1Hpg//Gp+3qsN0JRXXg04XVHgRPNHA
+	Rgwu5KDmpEOJ6fYN+vFfax3FBYaYd7U=
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530411c7ee1so341081cf.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 11:29:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788978564; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Yq81FT7Vz6Q8/ICMAPuxrep+q/4BbJh6xK5C1aNa90OjiPCqTW+h78FHh9kHY/GXL8
+         QoYmi7nQcQd48WRqhSXS1NkqN5gExlyaCJlDO2/A71cOwCrHdfeX/aLHtISHy/Y6V5Pr
+         MF/OgZXpZZsaO2UbPqt8KrWtfSD5BbvOfIY50FwqgxyTRCSzOiqOb+Gw2sPT5HuMDPgR
+         m/eHYdT7Ka9yJ6bRS8kFO8KSzFUzlEeLHrP8ZWuWuP57o6rZzWB78gd0wj8nPzFH+Fl3
+         vj1Vmg2vPO04/BHo8fdC647ISlW9SGz2mC2d2EbDTP8LW2sRqythW+gptwIc+5i6gu88
+         MucA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O80U+VoanmQGpDG/i4GPzQW2Nc5FZMWWwqpPOFq4e5M=;
+        fh=dCNcG/yynyoHFE+28iKAkJDj0Fis28KDmniJhop9ReI=;
+        b=mgxFl7+bVlC7HSO1XQEwFwY77YNK6g7lpnYcLR/yFAJDWbr4kR/Aot0fJNTItf8e32
+         XzLNeVVIrACm61/N3Jp/OI981Ni97xd7jSqX+Fb3i5HpfTlwjZ+/30jMXGwIF/1377fA
+         Uy0x4umTBLPyOB5qgPfiWZf+la/xSOEO+ea9hyNe/0VnvEQN/QQnpe5PUnTJOi5VyuvS
+         y69WHQnZuao7GE4z47afWBeR7M1z1UsRoTuxZ9zuE8LxjU9CkKJBRixoYLgT+5esCpKO
+         6Wy44fPPS1QhFQsng+gwu+KiwXOV/2KdcNQBZKgMDXxloKeJP4E4ZlE+jm8zQMEEtFVu
+         GPMA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1788978522; x=1789583322; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IC8+CYBpTjyEX77+0CoRP0GmnJOZZWZXdKNBjQTGBi8=;
-        b=VQzL/O+V35RYebkycMotlEExzuKVUy1ZzHlRE9ux9lh9AZmHqZuOMLQR5F9s8zbMgz
-         aFHvCZ058MAJ9eYT1KOp34qWyieGxr5baxt6YInDt5iXXuKUXEgX5NCCM7J/IYKBRw39
-         B4lR9+Wev6wAyNaIxVcXm2EiaHjO8BigH8aXUGxI7cL8ZOZ9aajHdSXgx+ougn/l4asT
-         gqekF2qCPVIGDn8ZykngG2Fz/vNjfaPNGHy/cJEyNVl/Y861lWbdpL6/oOtSrR8LPdRK
-         tYX/AlI6Qy38RX1ZgoscvGu5MGFC66bSWsI+XJ/gVKZZBy02WWIs99xCystUyZ+Tdg70
-         n5jQ==
+        d=google.com; s=20251104; t=1788978564; x=1789583364; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O80U+VoanmQGpDG/i4GPzQW2Nc5FZMWWwqpPOFq4e5M=;
+        b=Z+/PU7pE5dAsaVKNez+bB+ZyMBO5ucC/ggpQJw1LB9XUD0AikJmF1VbvdpQxyzY9ai
+         GyKENnLBvYWIb2V/6MacSUSIXBlWbn9lpx1Tgq3vf1RVBJlM/2HOn1HiMGBwu/r8lPNk
+         LCpBtVOb8vUV/yxTI1Tw4KR8JEzjkpNFZjC2Mu8axt/2pIXhJSRnU9wZk8M+/v4OauUD
+         ArZccH2xQprOwr1wCboY3MfKqOwax0x2fzgx8uG+KLOItT6aoSEpQ/0S+LDQrRgF4srl
+         KkFMqJ+l+19jL0LMOKh8yCKJFnb2G/AuXwr+/hqQuceNugsrVo6Yif6g0HpLhVgQI3gb
+         hXAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788978522; x=1789583322;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=IC8+CYBpTjyEX77+0CoRP0GmnJOZZWZXdKNBjQTGBi8=;
-        b=JyOR6xjSUzRucgF6wwV0n/RWKn9Z/03QKN+CVrgfs07GfWOEW2r7top0Fn3zkGEKE4
-         AUPQWG6Gy2LWLsPsn77c4lXU5Y6Uve6Y0zKDZ41dEXPzu4NGtMgUu+xrZS0wDb+lC+NI
-         wC+sEwS8XbYLhlfW9eJisyWDjVXFk8ppF4pZgmRTF+/gKNQlLxlV7D9qFkKhWsxQ5Yox
-         bo+dNu/ksBj1lEGF2Q8IlFkPdjfAFZx3wdIjitqoldFuOfXPCZ5ashv01o2SczRWu0QP
-         FQO2ZNPCd/RDYpKn4fnb29YKlnv+R51JsKyKQ4/qpHGX5X8qhRocL9YD4k4qOC3VSziD
-         2Vow==
-X-Forwarded-Encrypted: i=1; AKwUvBzDkuJxJs7vNe9kl7BBG93wv4by1jC16xVgyTLOlYqAg9MVLLeBofcrJW7GFFcFsmMx4to1KZkJgg==@kvack.org
-X-Gm-Message-State: AFuF++mF5/rFKnpfHO0+iQSvtXUGS2QI+ryks5WT2DNDd//CvVaAdP9J
-	XRP/tnSX/E+i4uQWjlyitZG1afcQh9fOCbdX/X/KgwnPHjvFvzB99Pet4ppKrfSBtpw=
-X-Gm-Gg: AYBFou3kNCqPC85iHce0n9bS+YxCwPZPrD4o9HatytYCcCq+LjlAuZp8n0DLeCypuha
-	9CcvhJ/eMNgqF1+OtgGDU2uKP7wpab5S581OsqFx7rKUEgVqlbyRsHtdG9aCeVQs76VYKt1OpFn
-	lruc1tPImKEfFeJjHUEIXe5YoQtVm/iVho99i+zMNEyBSUObqccANa5z8eyvBY72kR+rUc32YkB
-	q7FXVktvXHk2fv3D42amw2ob0JyXmK2rWFRUJVepAGHx4AHhhs8ic9RsaRu7h9ewm6RKr1E9e+/
-	/ITfEDxBPenqCtXl0MqAI4JFB4QsdAStKu6gJ+DlejVcwPl19hzpu1NbKmeEn4vQGwHh3WrG3EX
-	b1JfghSJow5C2B1YlqwKKtM4D8sfxRSRzQaoLiEfTB0WXzmM6Rz/01KdKsupuUwKLiaAe75GOZK
-	/jPr8R5HcG/b0f6XuV1auI3cjBAhRuyi4+MCubbrsFPEV3rvYDqCH1D/YAMo72aac1p3fMMQ==
-X-Received: by 2002:ad4:5c65:0:b0:910:74ec:8892 with SMTP id 6a1803df08f44-91074ec88f2mr36395556d6.6.1788978521419;
-        Wed, 09 Sep 2026 11:28:41 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406bf8c3sm150409236d6.48.2026.09.09.11.28.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 11:28:40 -0700 (PDT)
-Date: Wed, 9 Sep 2026 14:28:39 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] mm: thp: restore SHRINKER_NONSLAB on the deferred
- split shrinker
-Message-ID: <aqGlV7NjxrFPYtRH@cmpxchg.org>
-References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
- <20260907110111.2286932-4-qinyuntan@linux.alibaba.com>
+        d=1e100.net; s=20251104; t=1788978564; x=1789583364;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O80U+VoanmQGpDG/i4GPzQW2Nc5FZMWWwqpPOFq4e5M=;
+        b=CXPWDxOEBH52vbn6RZWgu0wMqNAjqqXgL5j2b2uAist2+ukLC50iCC79+kwQlBbNN5
+         DekjA3pfqV0Rkrrn7DnQNTl/Xv3hX/1qYVV44KjpwCx8Xf6bEVAqrO65fQ9+89rbKkmT
+         HWC3tFTiMcwIjhSY9/GXCIkmBsYRidvwa3YbrN0ItmNWKSJseFgSZNPWJ9d8g6qgyPkA
+         KnHnhZGwqKRackdcyqF85pqOYTOygRM5uL2G292uUJ8EucpFtuRrBjujpikWrKMsWW04
+         1Msmd4FGyHnQsVPFkYy5QyA40PLk3D97JUAiVBlKr4lpLx0kqItCWgFEB2BJ5unkjRVX
+         yyVg==
+X-Forwarded-Encrypted: i=1; AKwUvBw+4wNou2bJBqmR8oiAhmDZpiLEjMNDzBSzX0CXHNMi2B6wGmcPu5hzr+FMqHmjz9Q6y8TB9rcMxA==@kvack.org
+X-Gm-Message-State: AFuF++nVnjI8bh8J4OG2BhQTBoi9JImU8d1bRy3bJ2M4/843ZQIgARPf
+	Oozf0xSeAPPQxZoDfH4pAzzft+jl9n9DzU5CqEZ6Bx9Yx1dG8DpQZTkEE67GJpr8wxdY21yLIGp
+	3jwNNj+ZvDDSGjUz2hH8ffKaIaaBtCl8ih44cboq2xDBC+iPfjKvi78H4
+X-Gm-Gg: AYBFou3QXJWYp2fhOM3rdJEQFN7vG+unH3DrkbQqYRfmVFr34xsqgLD5hDgjXO30giJ
+	WXwQJxzoBlAKkyWZpOUHxu73i9mY3BXYWegwzuaGIbaZ9vhdNW0dwwVLrQFIeHJvLmKN2AkNdLW
+	/3TbdiKT1Yt3uO1bFYoU4FA0GVqqoJdq3iYrEMI19hwjzTSRY9RfPnnnXwvlR/qb7fFUI6Hfviu
+	JHwIUKT29ffbaLNKzJYPSmwq8y6y6iHbtehuDXoJMhrEanSQmjYYpbT559lif5xZUG/oepKmRkN
+	TpPiLjnaJFknbbJuwdbOsibLDSkcwXX5idZPwaLZ3u4jql5u4ZJP9J3Beg==
+X-Received: by 2002:a05:622a:250d:b0:52b:4ec6:52ba with SMTP id
+ d75a77b69052e-530b48fd11fmr591111cf.6.1788978563357; Wed, 09 Sep 2026
+ 11:29:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260907110111.2286932-4-qinyuntan@linux.alibaba.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AD28414000F
-X-Stat-Signature: g3ju8tfos1uzeiy54rzsrxfqczmri35j
+References: <20260907063918.3432401-1-surenb@google.com> <20260907063918.3432401-2-surenb@google.com>
+ <1d5011f8-26a1-41e1-bb9d-8d72c08b8fe9@kernel.org> <CAJuCfpH25ML1+hdhTtZUoSjgrNcGv9HbQD8o5UErmAdW-7C8Bg@mail.gmail.com>
+ <855cb221-cd57-4226-9c98-6a66454d3e62@kernel.org>
+In-Reply-To: <855cb221-cd57-4226-9c98-6a66454d3e62@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 9 Sep 2026 11:29:12 -0700
+X-Gm-Features: AcwNN1VQzVaIrt4CsqSl4wbBcmo6cgneSWi70hN4qsyBG-j4NAiE3BNAF6eDoQo
+Message-ID: <CAJuCfpGFYjs7pAstoRhPOWFbi5PdiX10mqBzOBpuJ8qQN_zsQw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] proc/task_mmu: remove unnecessary helpers
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1788978522-414647
-X-HE-Meta: U2FsdGVkX1/NcRUQohiOHN22paoPiXuqqXc23JLCB2+vpuzae2FEOTAjjVKHX6O4VJiqQJYCQT0WqWvDkCZ6w1k470h+4naXD4fs9tvxUgaS3sGKCZotWMaV48T/2alvMQ1O6CRfGpEraVfvSaX5e7jDkZoT9SJTFVgyBmf29U3xxWtRTD7hX7NjDbXqkZ1KOamcDQmDB/KyzRaRmux18CavRmYyURkZC0x81lscFS2g6gWzfZ+ZTwaxnscm0PDNVZ7vJAOSKNL9kCuAi6/pR1D0AKTzfXniTJu+Fgh/FU9NfFW/uLP4vax9Nx1D5GyM7Drntzi5PfdknzWNCm82TQ5cOANIb6RBSblWjs0FiCaBrS9ZXpKtlZ0W5PCGOdHfAU5+xSDzx5iftwsR7kjnEGmQi0CD6+8mL8k5SgEBA5cm7rNgCh4tSkAtyig1aSOyG5Yf4RA05i32vYTX9+3RGfNY6NhL6yAf2bdaKFxVFwcPvn/G9Z+0rq9GBYgAKLMXVVoagJLnipCNaEIfHDZt9AKqbint5W8wmz7buG+AVEuC9lCaE/MXbDojAzvFINvrNfAGxk5ZZbJVo2u+PT0hunz1bQZbZuofGHru/04SpwaozJWnU1NpVz3g6iWS10mZjpt/5lpuzOMkGkfHcVCm3xSmfrDEqlFA510OwJqWggtDC6RZRE8dKmoRfwizxPBJDb26LVwwAdBHz+XzGLA4WR+OEmDAzKYNkuq2DJqCVtZ2i93S4DEXhGaCj8MYTkPw7t2xsagyU4LuxDkMrndecbtDBQUEj2UR5aec9wX73JmZq+GLxurlrIAxzhITNDBZuyZdoQKZ4JvlOWR2yEDUYFM7jyNlP5pLWFWV/67tN3WvYG3KMROVNLLdX9Z7cf9EIyToHBCpMzQHSfNtrQm/SUpACEj4qeILm51KeDJvnjJW2TSP8qEd1OYr/RhZLywFsvDzQAPVbjpItct4dPp
- G2K0/BoN
- SohZ/OiTv2RtAtfTq44Up4LOMfUqK0KWZi4VVTUC/0+bBzL7eGPKiU/pcUnhpn6D//varzyy8/B+1mdZQIUq7dFghEN2gTYdEi6imkfmqC7Abl1cl5/rmgTf9QPnEPZj1R366d/EVo+nHOJySTtw9GlOYOM0JWmNOTwnZOZPOfnzxKX7Brh6NXH+kJnG2uiXhX52art5/C1wh0SNIxFoCUBxZ2PA3gCZb3Bj0E8Vc7dkuAE8011vOZC5EIV/QALAcihEcWIRv/l5vu+T4WqOzEYJaS3Km4Z2IhT6Ty0Q6vKNJ+gatgJ+UXvgUFSeFGfhYIbe8nVi2c/gxSnw9EXmfoh4Af/X6nlKl4hLe8hgEHZobD3NR+aB4ClwAvFfPIEqtt1zG8Uc9PwTtDuq8L24iKkj95hxU4PHZs+rzKxj2azET2PIdoUpvjsrisjFSJu9W9zKDiwqKucNBvi+7rw6ftglv7iSs8stHiFycJheVw7sECFK+i8jV0kOCoccEj317aTbcSgZdFle+SnTBmpZ3UxbuwWIaVEFz/vyz59FaWCXFcsKEGFxITEE+1H1QD9MKsafHvCGjuDTeMlHEL57JC2UIAbrmYnIy76IVpQrU2chpQrACaIhamqSXBg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D290B1C000A
+X-Stat-Signature: jbqefnrorm8akrzfpj6gj5qi51itbusm
+X-HE-Tag: 1788978564-510885
+X-HE-Meta: U2FsdGVkX1/qhhLlHnWtdIagsCLJEdCe2C1vN0rfLOU8i34nPREI2OO5Pgo/AKRnvtGPeL66VnF4PvVSVLbupWIjMOZugKl2UUUc88cVjJKtLCnwl/22IyCZySJgJGXHOAwk2eCc8WRw87bqr3Y+iIUfE8D3jh7wCMDz8N19BXuh/NsaVkXcVheGHyaFLGG/yVYHbIBbV5GXKkku2HW5HAXm1xPg9HNlXuqVKwYKmGf+sHcsHv8Rts8tFWJexh2yIIZrpUWZbnR4DveXRcv0eb7lPj6CQcTaHD4D5vr3HXlT/4YngolZrwb70+8oeVHZZ50XP8yFnYxSPM/mS2rX5SNmq+AGyvFi659V+LtCOUBtB6rvClsNw8E7561aZHuhh5QtNYykTlNtNH8iHa/8gqdckoWBg2yTcd4vmr63umT3ODqw6ZJZAyjN2znz8QAZMfMmGABhouaRp7igzCtuZb22I/YknGaGVBeF3lGvlzwo83N9A39PHLlRDyK8R512fon26vX53ev2ab/dyMzmw9v1+5CIFfDdTQUVamY+3TMRdgCt86P/x4ybhn8M/vOIT3ehDfFPE7fBYBVjeexmmJM0pr3R6Qj8121RBoTiKZvru73XR5QwXPiqVdExx/cQGXgd6ozIwqpokXZQjMrFQCs/d688BdJ8xRZoerE631G56u7C73PG+TAh+vzKaRoWMw8tzhHfvoGcv2QIINgYTTkOuWLexIESGAQxjCyYwRrE0J41Xt5HzucPbhX4Qv8lFNPhSxzC/YWREuoL1AGiumVRVlnrPGViCTvANIBWiYh3mUr3Bb9e0gneZukuRKk5TIbr4QtP1uVQpqBRD4IDJ5L51u/v9Mmd5t10BIhvQbntL6w84e/MpRKbPdJeW0dA8nVS4UmbxCBlJIViESI8njXRHSZQmfpHGP1VuyjPNfRCmXgdrvA2s0sLnRGhCaUOTGKk11OtcUyFpHB0yIs
+ 3yBrDhVA
+ ctKGilyAm4FqRECMrI7/Ae241x+ETn3EA5tLMIbVD04dS8VjzAytGM/dKCDaOOOQALPGu8ydjMNApWK9HjE1bpISs7qE4gj4zD9gNQ7BjKSwMhExNPIwdFpgXV8nQo7U7vkXGpS7CGqc3MMx4W533eAx2McErqzNdIdZ2Vrt8AXUNrbHUln8ppqnCQgp/F5mdMsYRDTE6OksWb7gQ9oHWHiSdAhcwmtQnN4ft6rPi73t9B0DboF5FcdoRphNT3LQ0TLipXadtDCOYr+OLZ0LD5MOB4PCxIBz4we+UgVhVK4VqCNmbuk5oW9SiRZinAq8VDV9V+pByoIKjKV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,41 +143,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 07:01:10PM +0800, Qinyun Tan wrote:
-> On a system booted with cgroup.memory=nokmem, the deferred split
-> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
-> partially unmapped THPs are only split under global reclaim; memcg
-> (limit-induced) reclaim never splits them, so a cgroup under memory
-> pressure keeps its underused THPs intact.
-> 
-> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
-> split shrinker to list_lru"), which re-registered the shrinker without
-> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
-> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
-> precisely so it would keep working with kmem accounting disabled.
-> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
-> nokmem and the shrinker loses its memcg awareness.
+On Wed, Sep 9, 2026 at 10:17=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/9/26 19:13, Suren Baghdasaryan wrote:
+> > On Wed, Sep 9, 2026 at 10:06=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 9/7/26 08:39, Suren Baghdasaryan wrote:
+> >>> When per-vma locks were behind a config option, a number of helper
+> >>> functions were needed to simplify the locking code. Now that these
+> >>> locks are universally available, we can do a little cleanup.
+> >>> Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
+> >>> query_vma_teardown() helpers.
+> >>>
+> >>> No functional change intended.
+> >>>
+> >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >>> ---
+> >>
+> >> As Usama says, this could get picked up early independent of the rest =
+(maybe
+> >> even as part of the other patch set)
+> >
+> > I can post the 3 cleanup patches separately from the one that switches
+> > to using per-VMA locks if that's preferable. One downside: I'll have
+> > to wait until the cleanups are picked up before posting the last
+> > patch, as it depends on these cleanups. Please let me know if I should
+> > split them anyway; otherwise, will keep v3 as a single patchset.
+>
+> Let's keep it as is. We can reconsider if we realize that the other patch=
+es get
+> stuck.
 
-Here is the reason why it was dropped:
-https://lore.kernel.org/all/ah9PGv12mqai84ES@cmpxchg.org/
+Ack. Thanks!
 
-After your patch to make list_lru expand for NONSLAB shrinkers, it can
-be restored.
-
-> This was noticed by Michal during review of the patch "mm/list_lru:
-> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
-> 
-> Restore the flag.
-> 
-> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
-> 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Suggested-by: Michal Koutný <mkoutny@suse.com>
-> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+>
+> --
+> Cheers,
+>
+> David
 
