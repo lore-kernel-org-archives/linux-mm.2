@@ -4,90 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21888C79FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3DEC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:15:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BE8E6B0098; Wed,  9 Sep 2026 13:15:01 -0400 (EDT)
+	id 01F786B009B; Wed,  9 Sep 2026 13:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ADCB6B0099; Wed,  9 Sep 2026 13:15:01 -0400 (EDT)
+	id F323B6B009D; Wed,  9 Sep 2026 13:15:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C36C6B009B; Wed,  9 Sep 2026 13:15:01 -0400 (EDT)
+	id E221B6B009E; Wed,  9 Sep 2026 13:15:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E773A6B0098
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:15:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2217E120296
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:15:00 +0000 (UTC)
-X-FDA: 85194873960.01.9248141
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6712410000C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:14:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TectydSl;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788974098;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AED8C6B009B
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:15:40 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0AF88C02BD
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:15:40 +0000 (UTC)
+X-FDA: 85194875640.07.5112DCB
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 099041A0012
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:15:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pdn4DDgy;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1788974138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DmOHtlkwAibVRWrf6jBbqPon1+V1g3DbJrK8wybEPH4=;
-	b=DDlq4nib7Iv6oHDR/5BHVuPUdLpAE2ZExi3HnS5P8yVTgj9+cjNPGa7Vn1/BYY5IzlFgT/
-	4AazW7H8dbggdlXjgOHZnclRPqiQRHI9up99oQyjK8iHne9rgMFYjYZgNq9gKfs+xLY69x
-	WKWjqUcUgs2AF4pZ/Wbh2yBOb9ksPmo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788974098;
-	b=MUFZ3/U5oOU21qWavuEiy0uman042Wm/XSYpkvCxziSE4JRQa4BYjz7FYcjNy1CeOu7op4
-	KzRNiV64vhJtuXfSxd1aUCEyixJdA8DG5TwsQsGkZR0PQx4Jat5vD01I4B7e+F31hj3fxc
-	ADINri+ooomU+saV//EPh+PhHJ6cUx8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TectydSl;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D41340AED;
-	Wed,  9 Sep 2026 17:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495661F00893;
-	Wed,  9 Sep 2026 17:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788974097;
-	bh=DmOHtlkwAibVRWrf6jBbqPon1+V1g3DbJrK8wybEPH4=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=TectydSlKEMFQH6KGXygMaQ3DW+SZaJsyqJFazoo0mTTnNYx+TmNnHUPNyqVX4gM4
-	 C2YCSjECs604S7NxtZrXnlYKG8CYodJdKRhYMCysYLIpom8cOULCW1vdZc24molrsM
-	 rqr/X+bZa4rtB5A8zZr/8ElSNzntXYc4pLP3aX0LE+QK+1Lm88Xt/ebWicHFeCMIU+
-	 xV7wG23kR7GWuukN/0pq9mDemnwpvzQPjmfA6eMbYTactNi5CwVJv4WZcN4j45SulA
-	 c4RBRdIReCUs8hOqAQG6WaHcaPFh48LdJ8edfmh4A2YescnwILX+cxaHQHo9PwenGg
-	 P5q0VbXjAvPWw==
+	bh=mKUmBDe2b4FLQdJcR20tHldduUrJACzKAwyQg26uG2s=;
+	b=4ia2GwOiFCoxskRIITdA4fUi9VYu1cx72qsNGfS9Yx63vJBXH63mFpXHna96ly1yDpYvkR
+	8IEZeGh7U06znganvn6H+wKDE24q4H0FFTmFZq/anVnd/1ElEVWeJq1b6XRMn0lsyGzIcF
+	h+9HZMKrLfKrupV7K2HK0a+3V7BttFI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1788974138;
+	b=Z0eTFyzKDiWzP6zEgfZ8T7AdSOn1RMZAihollBcnWnV41Ic3AKz+J48na5ESGx01skUOHm
+	zJULeTWTWzKpR8/uref7M0IAEyxeei3ngRREQP71twDsoyAFOtIoP5TgH5uqVx/kAbyZMY
+	Aa1bHtZykSmPY9PiT1uMqIpn7hlfIUU=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pdn4DDgy;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-53012819c04so284471cf.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 10:15:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788974137; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GlCcPQOMmU2rB3J178hFkWpYlXIThDsHmEl31FNaLnORUupGNWHD1dpvHUBsLY3YdL
+         IvRTRS9Z5IsXcDajuqTBOyzDw6t+hLTRbZ7LgeKL+eutjEz9UYiGp2MI3Wx+WlBKaIvy
+         92YShkv77cvMU3Mceeza3P7OpvJZRJz+T8IczkMWnTXWs2UW4MbSWbpB+e+j9YqezW2T
+         8IJWPUsnAjTjlrxtM5JMH3csTe/3uFmBFJ07HGPc3EGc7ss+/pzV1+v37u32cG5aG3fi
+         mAdZe0OgGwxAUev+NgSvxudb8vKNkRBYA1Q9MbWVb123Hc8XW31peo2GCSx0jcSM6mvr
+         PtPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mKUmBDe2b4FLQdJcR20tHldduUrJACzKAwyQg26uG2s=;
+        fh=tSrTTNn4tMaMHjCuo/bIPn9lt6iDoKQBhZUzlmDpTS8=;
+        b=dzjxfLcN1/3OfEVJugvjz7dedHFv7FzmzAKQhwTac80gY5jF6+birFO4bvHySyqESV
+         6rCCORqobIn1lmFEkz5fxExF7ogz/UhOdn1btD7YfhGqH4BbaSBmoHLWuy210DXXkrOJ
+         nrkCBNO8iresRKtVsow32i3Wc2uf76l/mEjYcPnbhakL25DmddmOCHbt/nU5PmcoDgOS
+         4oRuG4hOCyUtq9LpF2dirPlFqaqoosgPhL0qbdPFluZ5n7JtWjle1bOpTTmM8QJoteKw
+         V2fxWBvwR7Lcco600O2P+CUxeEvZM8ee0BpniupQqd2BRXoMCHg+NiPcoQH2DP5UCy8p
+         vtcg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788974137; x=1789578937; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mKUmBDe2b4FLQdJcR20tHldduUrJACzKAwyQg26uG2s=;
+        b=pdn4DDgy7TgkN9GT9wJJzW3etO73proy5T1xCcRwHXUHGNd/lQoSuy3LyddBfQXhpk
+         zro7buf9uzPHOzIJo8cZn/dSQQV9fVf3R+DgOzkneRsc9eeNlltmnCWzDogrvI2nX6/R
+         Fone8BM/k5SA/afIyClo+Nj6uiUAiaTHxsx6/7Zi5nLdPfE2LNFliUcd18u4LYyfu9K/
+         S0F9HuVGSaNNRHmdwoPE1XMlRG6sWk0CrT174lC5hJ9owwFtrjaUF5gmxHpDMnykdB4c
+         /E8FCq6SA9oFgYcbCgfUCpftm8ddt5fjukvQFM+RoP+saod63l/RakMJp1bFmo6XTHO2
+         hV2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788974137; x=1789578937;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mKUmBDe2b4FLQdJcR20tHldduUrJACzKAwyQg26uG2s=;
+        b=GnOcLU6uJeML9luNBzoA3mPs8aiHH9b1ePtdxgauLSpLayurDwnu36WEUuGVFkfXLy
+         TGL4QIQygv8dOpb7lF7gjOp7/SUG4RwwjndcQNfM+K+9K+n0qzLqwWvmomgVyU6UnO6e
+         Vn5FOIaTWR5D2FLizCwlS0KvIV16uUgFH2blZhHoUjbBgSztdweFH8pnN4d1vjsZejm+
+         4Ta/L0QQvAzFVFAdoie644ACQnEnvQEVBUelUtMsyRwnr6OfnIx1uyQJI9sH3+7epXBf
+         CehqZAmJRRpIEycSx6jqak+jIPkGzkO0j4weWIVNbRdkaIP4vhvhPYPDf0f3HUqmssKW
+         0Mdw==
+X-Forwarded-Encrypted: i=1; AKwUvBz6RLoYyTBIzHOQpXnv2q+mh3FaHwDTMSm3ISQg5GALvRyLu4VxvVAQTOl6mWMdBybbhhrzvio20Q==@kvack.org
+X-Gm-Message-State: AFuF++lR9Ww/0NnRt34ziWT/tQOpd3YQBgZ00R85lrQNes2LPl2ENKql
+	gC7S9gxxj+/XpxXzSGstBJO2xflIlkgxMjkINMfj23EQq/a20REqhmX1pfA4FZisqGTQdCnlrq+
+	u/LUfESEF+bPPDJZPdpVLSQlvxbOtTKZEYCNpunDB
+X-Gm-Gg: AYBFou2Dzu24UsJlvA9v4SHUqxdrKSol8OFkSCxE4PVb1NTnWxNBKhv6dfUwmYhl/tY
+	LerrruBuoroH2fzVX0xOPeIug/rVyW5GGbQ7yiSD7SGOmmTfCDF1FBZcI9dBsILqheYmYjxrA5Z
+	u+m7uTyrh7ZBbvE9lLpBUXeUNGItghvg4j1Dtbkrird4bC+HInSn6mWSAPXrnKjyKeSTBmXsnBE
+	qpjR3ryd8fg+BzipU5GzgSzTBdZUAkucL7mG8E/+tyafVi1/ZAdGkfyWdMcmKhhKswPpvOfG/n6
+	CIcD5tQ8rXMFxlzrfzkT6uPwiI2j2SbpEK8CDy9u4sfxosmknrJV2FK9sbtmzR/Y+TMl
+X-Received: by 2002:a05:622a:a1b:b0:530:5ed7:50f0 with SMTP id
+ d75a77b69052e-530a5f51176mr89211cf.13.1788974135518; Wed, 09 Sep 2026
+ 10:15:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 2/2] memblock tests: cover allocations below the low
- address limit
-From: Mike Rapoport <rppt@kernel.org>
-To: Tianyi Chen <hi@tychen.cc>
-Cc: rppt@kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <178874362959.1415955.5009708808960886376.memblock-v2-2@tychen.cc>
-References: <20260906144011.848898-1-hi@tychen.cc>
- <178874362959.1415955.18132997964995947947.memblock-v2-0@tychen.cc>
- <178874362959.1415955.5009708808960886376.memblock-v2-2@tychen.cc>
-Date: Wed, 09 Sep 2026 20:14:50 +0300
-Message-Id: <178897409075.1489479.6187209873282102376.b4-review@b4>
-X-Mailer: b4 0.17-dev
+References: <20260907063918.3432401-1-surenb@google.com> <20260907063918.3432401-3-surenb@google.com>
+ <4964f874-3f3c-464c-9977-0d004f6ffdbd@kernel.org>
+In-Reply-To: <4964f874-3f3c-464c-9977-0d004f6ffdbd@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 9 Sep 2026 10:15:24 -0700
+X-Gm-Features: AcwNN1WWr8U2hfUDprfzdhTtlvlOsxUFMQbj8KtH7xWoq0JQsfsSVRf58XyzXHk
+Message-ID: <CAJuCfpFJHNq_iCHuzDC0a8CT-AsPLHgnZ0=hVAvVhax_Q6GjOQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] proc/task_mmu: remove unnecessary inlines in
+ function definitions
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6712410000C
-X-Stat-Signature: t7myhckfasqxp6rmbyrzf6py838qmmy6
+X-Rspamd-Queue-Id: 099041A0012
+X-Stat-Signature: 1otrxj85dzywmy3rfq1jdaw351nk9i8n
 X-Rspam-User: 
-X-HE-Tag: 1788974098-513540
-X-HE-Meta: U2FsdGVkX1+quk3dpz0N+KBU/yhjGffQogg3+MESqUxQVIlW2vYy55H7Y3PchwbKEqBKWXiTh0USF9RGu5WoSumwLfxf4jE1ibG2bqMbG8TeMiq2lDEAXkcuuJ4SuGOGVMaUYI3RI6k+y3Q4YfmhydZW8NTLdJ/dxa8Vevt4d1juaTBiihZwmxwiSL9Z0k8IxLxuLZxKl6mWxlHaZA2RHkZcfoBX22HFZ/ahSSPaBafo8lBaIRMyuEmw0xVUYPJDYcerms/a2Z+WpcfBocyi8r/JwfESrSqezEnVIi2GqEKAYuEJXR8tIKi7wxjhmcBq1EdgyGn30qsmeYm7UATcUUMud58eeBDfGyUvwlA3ls1btVfANUsdiNn1y7+QvbTR94/Skjo9BeHoRg7CmU47AWfAqj6XlZPYy1G29x44CqRRm9B3/dtSlIIp2PIFXmPanT3qrl53z6c37xDANFwBMCpPoTazHmI+paimaAHCi2kzfi/eZos0RO6SeECmdNn/apF16BYLFEQ2bYKdDk2cK7oIefC9Ndernjv2R/A8dodoOox9GJBzSqECTeqEmgfYC0ovihZnJX+O7WLPowf7BII9jwL27/d6BYFqr9SczGykGYgV+093OAcVQsl5F/8y4AseMfvKvgfbPmteWOz01rjpAKg2P4FXLFvJkrtdLDr6xi8jt0e88Qxnt0QYVX2aoPswO047BuPDMj/MN+1qFYvY9LocPe1ywV+RT1kBQqnD3MSBYs5gpYeGZqEDmIi1AUJZ8hWCo06SG5vg2U2fEiobAneWOUBtt/69Px9tGXyPXm/bNw7gypQUzE77/u4GS18DLk8XWvtBgP8DAQ8sZD/uoYa08GT305jXON8RVpJmr1Fy7BGstnN04ibfGOsTIBwGYZb72lSAtWsJ2IP252GRBPw/TfjOt+C3I0LTAYwelMHPGdpFQO2yZYYRJup49mK81jM7ZzSNJEgmsUE
- 3KWuH0xk
- 83+yjm0yDr2XGVGKTTs6buAIDOQQrthwGy/TOqUCWy9IsTL8QYnY6CQhiy26v7SFVSQm8hfrtpJ/N5vyjhhVnb1AnpKPAChvjndD1vYM8V+/M2QExaMIil5C9E9pmzrjNznkNWT1k+Luac5AD6PeEPLJt4bxU6oZs6zR+wqZ4lgZwqyeaspExw2Z0+iu/KiQ0AtYwu+NK2g3n6TkszZEHc8LvrQ==
+X-HE-Tag: 1788974137-237870
+X-HE-Meta: U2FsdGVkX1+NcHeON28AQBIQafaKahaWCBsLAe1gR3Z2KExVW8tF96phM9PPoXsvqkDl/g3dBrog8BGNCwaZfllwnW8Mx0g1HxgDUWkO/fAjbj4gve8+4IT5tWLgF2Z4pvavLQ9//eyjXfTSJHbiflGcc7roapIAsBwNMYUD8DCGsSYw2a+whtKl/4m916+DtrvZ8sA9GJHR+JFarwchWo3haeGnb04YTlRsdDE4zMg4UMnXZp1Ojr2qDrdFCbfz9ppJcLhzCxr2MJuqzhmAIJVIHrNziwJ7shVrkpavZmGoURcFm1jlNo8c3nf44ymCRmjG+J/ctCbnKCY7KA/MUt2iAumm0nfSe/4r6i1GL9+F+MOonFl1xkhk8G5Pbu4nxqzwrIVNzW0bRPx8iygVavorpURhpJ0MjlQsr6aQyVqAs8M7pVAp8fNTuDlviYOa6DPM77OrTBGZa8uZJzGQE+DA3CC4BNeStP4RitPFkRVhl84ctdcn2PsH9EJUMAk+hGI1e90JTO/FthbaPjp4O5z7zlZ8yBQJtzodXoIyYYBD4eLujJlCTWQe2RK6bpBTbTdKh74zOkf/Od1ifkvlRXVlDZNLKHm8CXKbf00EItvFlup+U2CTE7F1fj0+djbctOfS2n8r53oGYijQL4bk6ozZeZz6qN7MkLsuzYyb0ihfiiwcLT6AdXCCIaO95A5L2shyoadwB4ZnaZKt27LbQUOi8yo3LqGpBishYv36R8FYnzpsj7mY9HSMe/eLJVzrpOGLXyXj9S0dHJoARsEGLn0wDZ97ro2OKVSOFzeIQDJxB1Vc/APSfT8uM/ywAXVj04JeuDYpE3Yrl3RR1wI9aixmui+IhKzlc6zC0H7nOrZH8Dze66xbMt2HI+U51lLNVJY50MEt/J7zVtaZ2zalTY1ZUBlEQFTaNsXdpnholUdgmr/ZSq1dY3DN6AGAtpPTZ8VMHhxBhNW2sqP7H66
+ fiNs4aSu
+ v+aFQwrWYgiTLXD5LOJ3xRvJEv5lN27gx1MmBrsy2t2478zglxcyohurFMNbV04JCd7295ZymqxgJoQ6sh/a7QrVfgNqtlJoyMIuIGMRuI2ivnpSPJD9IgXe+QIVqtNV+ktbvDVh4hCB4Bdz8Oh3LwcJNAAcyNIyn8oIzwa7iWEUZ6hdnhoDrO2HUoUCT66moGATrfb8uYwFCs39jnIwpzwtZ8a2Y9q1mLtHX+timtN1VFYC6i9jsoRzGDc/JgEW5d2YJKHS03NTNF++HWthVHbU5h/wYLmqKuHKKtyy+X8ug45PvtsNqAZKoLsc+fFbpnzJC9nW7d5x9Fec=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,155 +143,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-> Add memblock_alloc_low() coverage using the simulator's low address
-> limit. Exercise aligned allocation, an allocation whose last byte is
-> immediately below the limit, an alignment constraint that prevents
-> fitting below it, and fully reserved low memory with high memory still
-> available.
-> 
-> Run each case with bottom-up and top-down allocation. Check zeroing
-> and reserved-region accounting as well as returned addresses. Verify
-> that an unrestricted allocation can use the free high memory after
-> the low allocation fails.
-> 
-> Document the registered memory range and its simulated limit, clarify
-> the allocation boundary, and remove the completed TODO.
-> 
-> Assisted-by: Codex:GPT-6
-> Signed-off-by: Tianyi Chen <hi@tychen.cc>
+On Wed, Sep 9, 2026 at 10:07=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> diff --git a/tools/testing/memblock/Makefile b/tools/testing/memblock/Makefile
-> index d80982ccdc209..20524fcbe3c72 100644
-> --- a/tools/testing/memblock/Makefile
-> +++ b/tools/testing/memblock/Makefile
-> @@ -7,7 +7,8 @@ CFLAGS += -I. -I../../include -Wall -O2 -fsanitize=address \
->  LDFLAGS += -fsanitize=address -fsanitize=undefined
->  TARGETS = main
->  TEST_OFILES = tests/alloc_nid_api.o tests/alloc_helpers_api.o tests/alloc_api.o \
-> -		  tests/basic_api.o tests/common.o tests/alloc_exact_nid_api.o
-> +		  tests/basic_api.o tests/common.o tests/alloc_exact_nid_api.o \
-> +		  tests/alloc_low_api.o
->  DEP_OFILES = memblock.o lib/slab.o mmzone.o slab.o cmdline.o
->  OFILES = main.o $(DEP_OFILES) $(TEST_OFILES)
->  EXTR_SRC = ../../../mm/memblock.c
-> diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
-> index b435f48d8a700..13b7f58b2eed1 100644
-> --- a/tools/testing/memblock/README
-> +++ b/tools/testing/memblock/README
-> @@ -67,13 +67,13 @@ memblock
->  |-- tests
->  |    |-- alloc_api.(c|h)         -- memblock_alloc tests
->  |    |-- alloc_helpers_api.(c|h) -- memblock_alloc_from tests
-> +|    |-- alloc_low_api.(c|h)     -- memblock_alloc_low tests
->  |    |-- alloc_nid_api.(c|h)     -- memblock_alloc_try_nid tests
->  |    |-- basic_api.(c|h)         -- memblock_add/memblock_reserve/... tests
->  |    |-- common.(c|h)            -- helper functions for resetting memblock;
->  |-- main.c        --------------.   dummy physical memory definition
->  |-- Makefile                     `- test runner
->  |-- README
-> -|-- TODO
->  |-- .gitignore
->  
->  Simulating physical memory
-> @@ -101,12 +101,12 @@ There's no need to explicitly free the dummy memory from memblock via
->  memblock_free() call. The entry will be erased by reset_memblock_regions(),
->  called at the beginning of each test.
->  
-> -Known issues
-> -============
-> -
-> -1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-> -   ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
-> -   memory of the memory_block.
-> +The simulator defines ARCH_LOW_ADDRESS_LIMIT in asm/dma.h using the midpoint
-> +of the MEM_SIZE range registered by setup_memblock(), rather than the larger
-> +PHYS_MEM_SIZE backing buffer. This leaves registered memory both below and
+> On 9/7/26 08:39, Suren Baghdasaryan wrote:
+> > It was pointed out in the previous reviews of this code that many
+> > functions are specified as inline, which is unnecessary as the compile
+> > can make that decision by itself. Cleanup these definitions.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  fs/proc/task_mmu.c | 32 ++++++++++++++++----------------
+> >  1 file changed, 16 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index 2f500d639db5..9908ba32f180 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -130,7 +130,7 @@ static void release_task_mempolicy(struct proc_maps=
+_private *priv)
+> >  }
+> >  #endif
+> >
+> > -static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> > +static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> >  {
+> >       int ret =3D mmap_read_lock_killable(lock_ctx->mm);
+> >
+> > @@ -140,7 +140,7 @@ static inline int lock_ctx_mm(struct proc_maps_lock=
+ing_ctx *lock_ctx)
+> >       return ret;
+> >  }
+> >
+> > -static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ct=
+x)
+> > +static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+> >  {
+> >       mmap_read_unlock(lock_ctx->mm);
+> >       lock_ctx->mmap_locked =3D false;
+> > @@ -177,7 +177,7 @@ static struct vm_area_struct *get_next_vma(struct p=
+roc_maps_private *priv,
+> >       return vma;
+> >  }
+> >
+> > -static inline bool fallback_to_mmap_lock(struct proc_maps_private *pri=
+v,
+> > +static bool fallback_to_mmap_lock(struct proc_maps_private *priv,
+> >                                        loff_t pos)
+>
+> If you touch these, please convert them to two-tab indent.
 
-"rather than ..." part is excessive
+Ack. I didn't realize that's the preferred formatting.
 
-> +above the limit, even when malloc() returns an address above the kernel's
-
-Why do we care about what malloc() returns here?
-
-> +default limit. The limit is the first address an allocation must not use;
-> +an allocation's base plus its size may equal the limit.
->  
->  References
->  ==========
-> diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
-> deleted file mode 100644
-> index c13ad0dae7763..0000000000000
-> --- a/tools/testing/memblock/TODO
-> +++ /dev/null
-> @@ -1,5 +0,0 @@
-> -TODO
-> -=====
-> -
-> -1. Add tests for memblock_alloc_low() once the simulator can model
-> -   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
-> diff --git a/tools/testing/memblock/main.c b/tools/testing/memblock/main.c
-> index 278f9dec50087..9a96e178551b8 100644
-> --- a/tools/testing/memblock/main.c
-> +++ b/tools/testing/memblock/main.c
-> @@ -4,6 +4,7 @@
->  #include "tests/alloc_helpers_api.h"
->  #include "tests/alloc_nid_api.h"
->  #include "tests/alloc_exact_nid_api.h"
-> +#include "tests/alloc_low_api.h"
->  #include "tests/common.h"
->  
->  int main(int argc, char **argv)
-> @@ -12,6 +13,7 @@ int main(int argc, char **argv)
->  	memblock_basic_checks();
->  	memblock_alloc_checks();
->  	memblock_alloc_helpers_checks();
-> +	memblock_alloc_low_checks();
->  	memblock_alloc_nid_checks();
->  	memblock_alloc_exact_nid_checks();
->  
-> diff --git a/tools/testing/memblock/tests/alloc_low_api.c b/tools/testing/memblock/tests/alloc_low_api.c
-> new file mode 100644
-> index 0000000000000..1ea5a36fcf0d8
-> --- /dev/null
-> +++ b/tools/testing/memblock/tests/alloc_low_api.c
-> @@ -0,0 +1,148 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +#include "alloc_low_api.h"
-> +#include <linux/align.h>
-> +
-> +/* Allocate at the first or last aligned address below the low limit. */
-> +static int alloc_low_simple_check(void)
-> +{
-> +	struct memblock_region *rgn = &memblock.reserved.regions[0];
-> +	phys_addr_t size = SZ_64;
-> +	phys_addr_t expected;
-> +	void *allocated_ptr;
-> +
-> +	PREFIX_PUSH();
-> +	setup_memblock();
-> +
-> +	/* malloc() does not guarantee SMP_CACHE_BYTES alignment. */
-
-I'd drop malloc() and say "simulated physical RAM isn't necessarily
-SMP_CACHE_BYTES aligned"
-
-> +	if (memblock_bottom_up())
-> +		expected = ALIGN(memblock_start_of_DRAM(), SMP_CACHE_BYTES);
-> +	else
-> +		expected = ALIGN_DOWN(ARCH_LOW_ADDRESS_LIMIT - size,
-> +				      SMP_CACHE_BYTES);
-> +
-> +	allocated_ptr = memblock_alloc_low(size, SMP_CACHE_BYTES);
-> +
-> +	ASSERT_NE(allocated_ptr, NULL);
-> +	ASSERT_EQ((phys_addr_t)(uintptr_t)allocated_ptr, expected);
-
-Isn't (phys_addr_t) cast enough?
-
--- 
-Sincerely yours,
-Mike.
-
+>
+> --
+> Cheers,
+>
+> David
+>
 
