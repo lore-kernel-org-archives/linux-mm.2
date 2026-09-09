@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC192C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF2FC88E41
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD27D6B008A; Wed,  9 Sep 2026 08:36:24 -0400 (EDT)
+	id 0A7896B008A; Wed,  9 Sep 2026 08:42:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C83576B008C; Wed,  9 Sep 2026 08:36:24 -0400 (EDT)
+	id 058FE6B008C; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B722A6B0092; Wed,  9 Sep 2026 08:36:24 -0400 (EDT)
+	id E897D6B0092; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0F36B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:36:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 944F8A01EB
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:36:23 +0000 (UTC)
-X-FDA: 85194171846.17.0EF0544
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 645364000B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:36:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=FeCJS5Hx;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C52FF6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:42:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 149991201CD
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:42:07 +0000 (UTC)
+X-FDA: 85194186294.08.31E677F
+Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5D44C12000D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:42:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="xSw/p9ko";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=FeCJS5Hx;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="xSw/p9ko";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788957381;
-	b=LD8aPMZBiMMxgXQ+J+B804z3NDusAcPTU82XC8V+0FIyCblh5AFEu4SjXcQH79m7LMB6kz
-	PPOwh7mosg11367nsd2HGzCQZuuFwSPIh5Fgrlt74Eoa6tLugxYDBp9qESXVyFsujGIg5S
-	AKDp5AR642xg25VDSqgXJdc9gSisaFY=
+	t=1788957725;
+	b=fGLnWwmRHri1kcUXAbQPMbZkwPKrCdo+RMPOicB7ZX3+K7UpwXtwRb7EnkQgANZpui10fc
+	ukIUAA0tFzRIq3Vuy1ZsbMlbIvlQ2FSi4xj9pix7kVpJQbf6LFQyezg36Yc+i2/GNrfCiK
+	DudobB0J3WGPs7IGsgrernLz9uq1dsc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788957381;
+	s=arc-20220608; t=1788957725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=m9Hb4vfngA9EQWN3H9npql3AFIz3Fr2ZElykfb77wSQ=;
-	b=mW+5e+x2G6g6CRaL9dXEoB8IOafZ1YserUfskHOrJXFzmyWOOQjs9MOqAQxjjOkr86yrTz
-	T+1E9e8sK6CAnFwKrduLoecmZRstdQgQppcjUKzr8XYVJcpQaLgtiDWNICcWNx3EFh/sMW
-	7SmYkELWOQkFwG798RRF2OYwYkeiB/o=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=m9Hb4vfngA9EQWN3H9npql3AFIz3Fr2ZElykfb77wSQ=;
-	b=FeCJS5HxJdhI2N8puR38OXCUpj+o+fHAr4Vbs93htfVq0hxYDS1M/6WGhLTxMwL1a4yaV94eY
-	8KuBoVlX+q9laLA9vWFXz6G/xzp2dkOwTdgfyZFW153WSeSFw/OznZlt5UYgl2qsgjYZtT4dviR
-	TqG07Lgl2BEem61RX4B/oLc=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hg0PS1l2Qzcb3G;
-	Wed,  9 Sep 2026 20:25:00 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 070BD40538;
-	Wed,  9 Sep 2026 20:35:59 +0800 (CST)
-Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
- (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 9 Sep
- 2026 20:35:58 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>, Chengming
- Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Kairui
- Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed
-	<yosryahmed@google.com>
-Subject: [PATCH] mm: zswap: avoid unnecessary xarray lookup in zswap_store() 
-Date: Wed, 9 Sep 2026 20:35:47 +0800
-Message-ID: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.55.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=snhqTz2LjFDSbLT5152KG20Lm+T1/CJL4YkuUA0oW58=;
+	b=d6co8jpqKmvC6ANm1GBOs0yEsmGt5JvGUcs93444POoO4205r5rUXHQsp4HfkOdRm/ld1B
+	Xnp2pOruZFVLp+y1vpfjf8/PKSFuwpYONhFOzyCUq7oh93ovm5hzuuCfLYMpOyYoX0vjzW
+	w8fGXgI316hZZs+a6GL2ntg2BU37vu4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=d8jOBmpijeiru+KyfV/xClA5cJs9GP6kquk0D6tgcF8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788957720; v=1; x=1789562520;
+ b=xSw/p9koyXMYiY/Qog7jA4msd62ZO1zS01MvGoNJGhzgBvgd6QI5r2qZStT2MCI0q7SVE5U5
+ O9Y/pe02GxroT3564z5wwVwFuDSLUmhC/O+G+sksM2vA/ln6DkQybF6mWOisfUu406a36G5rk4E
+ IENzYujCEIkY6opp74ZSb6nI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id addb3024c47d7683;
+	Wed, 09 Sep 2026 12:41:59 +0000
+X-Mizu-Trace-ID: addb3024c47d7683
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <acb81c51-318b-4a00-aad9-515929076662@linux.dev>
+Date: Wed, 9 Sep 2026 20:41:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/2] mm/mglru: add tracepoint for folio isolation
+To: Barry Song <baohua@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260907042447.2450663-1-ridong.chen@linux.dev>
+ <20260907042447.2450663-2-ridong.chen@linux.dev>
+ <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
+ <102f6ff6-46f9-4734-a056-694eb2c0129b@linux.dev>
+ <CAGsJ_4wxZ0pc0UMAXe3xKW0=PTzYv31ieoJa1v01SoLczPVOCA@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4wxZ0pc0UMAXe3xKW0=PTzYv31ieoJa1v01SoLczPVOCA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 645364000B
-X-Stat-Signature: pxejqp7os81hcfpehbq711piateyw13h
+X-Rspamd-Queue-Id: 5D44C12000D
+X-Stat-Signature: r8oxyi49s684nyf19b7b1i3z5x67z6hk
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1788957380-32451
-X-HE-Meta: U2FsdGVkX19Tkw5dyFJNdpL4IJHM0GCDXIDcHIwD1DFqE6e5VVnAW7W0jzLBmCqYkEpj9S8ZvsWNCOXI47RZ1WRZubELwCf8/ZeyAyQmYl8WjM45M0K6r5/9oSYRHOcf+kzNb87ic0FiGO7uf93JPf7EgKD9xQ5DVV8nRMHdRi2L+tvGcNMaQkFInGtmXGIR4mx0WNoSfJ8x1Da1dslGbytF4pZwR/xpW8EXU2VXqdnFtWRjr6wYZ7VC9+HzrJlTSJlxtZzLqU4zdYPVgi1XIfAAjVii2fFsCTiuCIVRtzGeKNmo0spvrH6da2uFvsFniw7xdD/dCG2aVjk0txOZMEhW3AeHJ3YaS11ht8FxYsTsVV4q4AghcZXkdduHROU3BHmAfR1n1Q+aliyGqM3yJXYvB3cbdPwi8Ii1ATDDid2QnnbgkBxXhNEbq6YHcFuYXSJTmPi63dhchvqPs9AZhSA9MoTT9ZnWrrBO8SCRlxVQRPHRPvxKvcIBTatV2J5wTaVQvIjxEPDh8cAPSgkdLLO2GgwyUb9/bmouwBJ9axCur+aW4rcweE/f0XGwJ+wBWVo1gDujDyVi1a8OcMjpYbXnJAkSpn2u7db6JnNM8h5fKaRKzk587RjxjlA6hcG/X63pjHHL2E293ZIFcEHN9/ZkcJcwPO+B+ya97JrBA06gkAUAUwT4QRgdrtomITN+yVoO3Jkshj5o+Ae3ofucTaMIgTOlydepdN4SbIJ+kBzxn5d14lMaQ6knWGKT2JOHabcW/iiKG6lakb3lLPB59ziX8Qly0jH/spsl/q0HaSWmEgchT83DlajtbGjsypIYH9PR1TudiQlsjjPaCWWvdfiorgqhMT7DUc8hZ/TZWgLluS8wrgklMRJ+qNommgOKVgmDjvnk+wSITT4uSPJ7CAQWOqnbrZvLyuG1Zv2FNSqf6tR7LpeYCwb/Medjqgk+NCAGQEzDKzw8ZJafFb+
- KasbFVyx
- PMmsfWy1sKuGMnizgvTrmaQvZpyhjZkV4r1+Ume7UmEEVmf/PMKzBQZ+wQ2hgCIbutJ7VV7WpvdauP1HDBT4n+w6zTRqtr433uo6det276B5EkCgwKuAr0HGs7dYhDtj1vYJwsJlLc64z11tIAO43HdTx+JYgu1jYaTPrdhmBsqkksusZttdQuUpvQnqBmJ+A+FXhTk19jbmBiu49F5p+giMky6rM4VCZnycBk6QuLy2F1/Az1fAVfRi9CFk9hpcHXbAq3tINrKnswt9PPbhikMB31K4Bikqg8B38RMHTAGZwe7JvJot3vGL9wXJndRValZKj5+CuysrWWW9afDL4FTW76G4W/YpSUNkgDsjKhKMU0n/vx/umZtR7b/MnOXlaDWsgxq9SlAVgZ4KeS38saLn/LNF3nXSS+mCFphevRyOYD8zAHQIDSuor8hmf7tlnSwQRTjfosRbOV2cFkvh8rOaa5tufqos/gSGK82xeWYRjRG2rIlb/jsxcGUs/9sjV/XQHRf6HoI6xc/7uZIitAiIfm7KzBhVh86i0Dm9AMoHk4wUxpN6fmHjEqMp7hW5J5kna
+X-HE-Tag: 1788957723-114628
+X-HE-Meta: U2FsdGVkX19G2kWSpKR0SgFhSB5bTvl1pyZtr9xCIsGyJ8S9w4fTNua6aE4tIyy7uspEuV/m8LnacCG8O7SKmZtWsHY6R2dOLCbeAa+9+/2jhmmLdAx9mtijrAKTOzHHJ/fdBEHonBYI5tMLZj3biiZwZiYf8kC7FOBb4pIM0+Z8DcwhDcJUjz+ltoPOocxBfKbFpcftoX/acfDhRhEoftSOy2L+YaU2EmZuKE8nWCHZ4Aull5L9EBBNJp1q+qbh4DnJNgouLOLUfrUKdy74pBLmOL4kbSQyt3QgdHjgvsKMrs9kCFf7jE72ZXN/7giXmtFRnTAhduh909lFtR81jqdueABNQnAZib6wedMYofs2N5dOrbSMfFBFhk2AJ3KYxxG7gaTvB79HDGKzG3QKqQIDGaKUqVxA0733waJ8jNU4vMrI69p1RV1iZIMk1eGRbhlO4hi/DgmXSXz3mxzw6xZ9hAb+7UpUuydUxMZlYQbK6Thiuq/JttBpzMJlnClmTwA5MhRhC98BOkN6oONsHrJ8kjKVVKCQ57Y6LEcQBqPBuV1blqlFNE8Q/xKfwSZlj9/ZZty6Dehgj5V41VHWLbvHycWGFeOOmycKNZcCcTYH6XOStHxR0I6AVSIElOq2tD04QaB1E9QQRn6V9wLwCAvUupi8+sGRxf61K/zzLJEy+CNl/xNSzITWzt8dOkn2zIVaWiLcr60yaS7BduH51AdV8BH0wWHuQOC1ZOe3rIAjH6M72Jv+KBecTYJ5wPQNhEvLAxTpIwMi5Ab+HpInBJjtnrhJl+cc05+jVUkdHJnP/lMIrDrKBevbmeoWJBGjpzlAdx88dFyFYR8hWNaxF3XZSB2ximIWwXYmj+i9Sz9xkIWODOG6nuBWNUnTuf2kXYN9KLHmRC9oNQ6F6r0okb0E3yOc14L+0VAbJgt98vIddn3Rp3PxDQ5XAN9RZSTmh7jaiEXg1p3QvjdOTUo
+ mmmfmoVT
+ eTs/Q5TM8hmKuvAhDaLBSrtcj+N+wksSE7IeTwXxu/NbSlquBdWHpHtHMixgpi2yGfvLcevngK9ArGKB1GB1fv1YhOlQAQSP7tjdPtLYbNUJ6mB7gckOVUXQyKUusUcH41bPFouxb8fUlrG/b0UPJHvkZc9avNj7MWEccNopc3fx1YEbo3AeclxR5rLCt0UoaOcNF5u9f7DlvdrIZRRicxC8p/cUK0VAbuznkLOf0bQco8AGFcPA/PQvLanmZIW+RJ4c2gdAb0PPUfcN6+aH0Nl4D7OKm/bMOcfUrBNG32Pee+8R5YsGnzl4aZLOoGU/yd3cIz/QacfwIG5gyryLn/uSPe969ejJCIShhfCtvw3Xg2JE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,57 +104,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_store() falls through to check_old and walks the swap xarray
-even when zswap is disabled. Add a zswap_never_enabled() early return
-matching zswap_load(), and reuse zswap_invalidate() whose xa_empty()
-check skips empty per-area trees to avoid unnecessary xarry lockup.
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
----
- mm/zswap.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 5d0d8bd72193..fc6c5e0db5e4 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1488,6 +1488,9 @@ bool zswap_store(struct folio *folio)
- 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
- 	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
- 
-+	if (zswap_never_enabled())
-+		return false;
-+
- 	if (!zswap_enabled)
- 		goto check_old;
- 
-@@ -1545,15 +1548,10 @@ bool zswap_store(struct folio *folio)
- 	if (!ret) {
- 		unsigned type = swp_type(swp);
- 		pgoff_t offset = swp_offset(swp);
--		struct zswap_entry *entry;
--		struct xarray *tree;
--
--		for (index = 0; index < nr_pages; ++index) {
--			tree = swap_zswap_tree(swp_entry(type, offset + index));
--			entry = xa_erase(tree, offset + index);
--			if (entry)
--				zswap_entry_free(entry);
--		}
-+
-+		for (index = 0; index < nr_pages; ++index)
-+			zswap_invalidate(swp_entry(type, offset + index));
-+
- 	}
- 
- 	return ret;
+On 9/9/2026 8:11 PM, Barry Song wrote:
+> On Wed, Sep 9, 2026 at 8:00 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>>
+>>
+>> On 9/9/2026 2:40 PM, Barry Song wrote:
+>>> On Mon, Sep 7, 2026 at 12:25 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>
+>>>> From: Ridong Chen <chenridong@xiaomi.com>
+>>>>
+>>>> MGLRU's scan_folios() and evict_folios() emit the classic-LRU
+>>>> tracepoints trace_mm_vmscan_lru_isolate() and
+>>>> trace_mm_vmscan_lru_shrink_inactive(). Those predate MGLRU and are
+>>>> indistinguishable from the classic-LRU path: they carry no generation,
+>>>> sequence, memcg or swappiness context, so a trace of an MGLRU run cannot
+>>>> tell which memcg a given scan/evict belongs to, nor how far reclaim has
+>>>> progressed through the generations.
+>>>>
+>>>> Add mm_mglru_isolate_folios, emitted once per isolate_folios() call with
+>>>> the memcg id, the type actually scanned, the effective swappiness, the
+>>>> scanned/isolated counts, and the anon/file min_seq and max_seq. The
+>>>> min_seq/max_seq triplet ties each isolation to the generation layout it
+>>>> ran against, which the classic-LRU tracepoints cannot express.
+>>>>
+>>>> This is emitted at the isolate_folios() layer, which is MGLRU-specific
+>>>> and has no classic-LRU counterpart, so it neither changes nor duplicates
+>>>> the existing scan/evict tracepoints.
+>>>>
+>>>
+>>> I have no objection to MGLRU having some tracepoints. However, one
+>>> major concern is that the code is changing rapidly, so the tracepoints
+>>> may not be stable. We would need to maintain them as the code evolves.
+>>>
+>>
+>> Indeed. GEN-LRU has been available for several years now, and many vendors are
+>> already using it, so adding tracepoints is a necessary step.
+>>
+>>>> Assisted-by: Claude:claude-opus-4-8
+>>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>>>> ---
+>>>>    include/trace/events/vmscan.h | 47 +++++++++++++++++++++++++++++++++++
+>>>>    mm/vmscan.c                   |  9 ++++++-
+>>>>    2 files changed, 55 insertions(+), 1 deletion(-)
+>>>>
+>>> [...]
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index 8409ea4bbf37..771fe6827939 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>> [...]
+>>>> @@ -4876,6 +4877,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>>>                   goto retry;
+>>>>           }
+>>>>
+>>>> +done:
+>>>> +       trace_mm_mglru_isolate_folios(mem_cgroup_id(lruvec_memcg(lruvec)),
+>>>> +                                     type, swappiness, total_scanned, *isolated,
+>>>> +                                     lrugen->min_seq[LRU_GEN_ANON],
+>>>> +                                     lrugen->min_seq[LRU_GEN_FILE],
+>>>> +                                     lrugen->max_seq);
+>>>
+>>> Maybe `scan_folios()` would be a better place for this, as it can more
+>>> directly reflect what we're doing for each type.
+>>>
+>>
+>> scan_folios() already contains the trace_mm_vmscan_lru_isolate
+>> tracepoint(traditional tracepoint), but it lacks any GEN-LRU-specific
+>> information. Adding another tracepoint there would be redundant. Therefore, I
+>> placed the new tracepoint in isolate_folios(), where it can capture GEN-LRU's
+>> specific details. Additionally, it can indicate whether a fallback to the other
+>> type has occurred.
+> 
+> if `trace_mm_vmscan_lru_isolate` is located in `scan_folios()`, that
+> would be strong evidence that `scan_folios()` is a better place for
+> adding a new tracepoint for LRU gen.
+> 
+> There is no need to avoid this location just because we already have a
+> tracepoint here. In fact, I think this is evidence that it is a better
+> place, not the opposite.
+> 
+
+Good point.
+
+Thank you very much, that does make sense.
+
+> BTW, `isolate_folios()` might be deleted soon, depending on how we
+> improve MGLRU and on some ongoing work from Kairui. But `scan_folios()`
+> should be long-lived, as we need to scan folios in any case. Therefore,
+> adding tracepoints to `isolate_folios()` doesn't seem to be related to
+> the stable ABI concern mentioned in your cover letter.
+> 
+> Best Regards
+> Barry
+
 -- 
-2.55.0
+Best regards
+Ridong
 
 
