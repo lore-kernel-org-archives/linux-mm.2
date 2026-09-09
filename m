@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E2B4C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A71C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:49:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FADA6B0095; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
+	id 5BE486B0098; Wed,  9 Sep 2026 08:49:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3546B0096; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
+	id 59BBF6B0099; Wed,  9 Sep 2026 08:49:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2C46B0098; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
+	id 4AB976B009B; Wed,  9 Sep 2026 08:49:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1004A6B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:48:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ECE1401C5
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:54 +0000 (UTC)
-X-FDA: 85194203388.25.90B0A12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CE9C0180007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:48:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVevUqrf;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 227366B0098
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:49:07 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D4FA1C08A4
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:49:06 +0000 (UTC)
+X-FDA: 85194203892.15.8092039
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B857040009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:49:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihpsg7zT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788958144;
+	b=jrYtJn72aQkAYBoyMYXrl54R8S3cqEuP0jQ7aW3oNDlqNwLWSlKW9Trv672X57AdF41oCG
+	bVtzicEai2Cl6+WUtBSnJJoCTiIdvT7qNDMdbrhjgjxkO7yG1JZeIV13F06rm/R5gCxRLV
+	TJHBLMhf8bsg27rFcnRNqnk7UB94cmM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihpsg7zT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788958132;
+	s=arc-20220608; t=1788958144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WiiAwtPF6Pku3MR8Pkjyi8U+d6UdSbkK4PO/kbMV8OQ=;
-	b=UFEOh7bWwfA0svptL5fZd5Rcyeakh4+BnU3DSp5H8Bm8gjHV1vL2ljGHxUkC+YDLogqZdO
-	Ydam75aYCzx4hksBmFTzomaYlgFmTNilVMOMeQOOkzE8VktvaHUFgEiArJ9cjxwrNxIjGv
-	9ro21C8d4wOeTR5lZrZbtT0I8CaFdWs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788958132;
-	b=XauhQF/GMDoNDVDt75uAjghE+Gs/0bEO0rR6gduuxGgQ2DioD9OGhPfFqt4Ix8qNpN7nWS
-	EWCuM6zPN+fsyZcE+cRo68PpZovv5naHABwVc5vZgWhocz193NfaUkj3pV39VizVS72eRk
-	rWSYIA07+iPLZzfQ6umNulKyq30L7UA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVevUqrf;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=UeqpL36l3dlEIn9tPEeks2LG3oiHF6m9Q3Dm+vsjlY0=;
+	b=bsGpxKrf9STR/vwCOpbEcyvLQ6PJEE8ehwj5OGDJRoy7ZSZhFn2YXVUgYMKQbZSQkF79Lg
+	cIwOVjNpcOjP3jWs1a8vagWWNkrRJ7/5RCfWmzLvsO0/PxlOs/QEX5b7aU12bKSMap6vAt
+	XG/QQBcz6qT2PiqouuVx0HBwlVZ3YLI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF00843D34;
-	Wed,  9 Sep 2026 12:48:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AD11F00A3A;
-	Wed,  9 Sep 2026 12:48:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EE1060211;
+	Wed,  9 Sep 2026 12:49:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA2C1F00A3A;
+	Wed,  9 Sep 2026 12:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788958131;
-	bh=WiiAwtPF6Pku3MR8Pkjyi8U+d6UdSbkK4PO/kbMV8OQ=;
+	s=k20260515; t=1788958143;
+	bh=UeqpL36l3dlEIn9tPEeks2LG3oiHF6m9Q3Dm+vsjlY0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NVevUqrfuep5jObjd5o/zvYSPczEA7v7+UvplrdxdXCtSfnFwpi4z1WPkFyaLIWY0
-	 eDC4IcRjsOMO+wWGoMwArnhEAuCe6WwQdH3uukrUDOoIZGgK9+tLoFoQjdedi54r0q
-	 No6g/T9QZvdUGbrcdaLmX/UNnyOZN/qPHv8JMNuMODiVI3D5UYQkCc8l3oPIXN85eA
-	 O1P8QhR/jP1MQxFUX2h0VY2WEEmJVGBs0hsaDbTPPPTZ5AHfMMNCz7dawF4ClEuXr8
-	 A1YjORvfwzsnm+wkP6jJ/Pg3PFf4SePyCVT3V/3C3HpZAMmEJOPsixBxbO2AWrQw5Q
-	 Iu3VRVH3VjZ5g==
-Message-ID: <e6335c78-a20a-4024-8980-097a922eb257@kernel.org>
-Date: Wed, 9 Sep 2026 14:48:45 +0200
+	b=ihpsg7zTtPBvi4+Os8u/1ED3tUrdC9elm20t4ZSzvBE9Bkx4e6b7G1ij7jXXses4N
+	 2P5PWnIJ7hACkVVCEhrCtdfGv1nIq8YAOhgwcd+wgfkpib0lD1YcLByZ7rgA5qOppM
+	 70MsqMVlNj4SfK5N/oZQ0WexzasmdicY9pWcO5mU31Q5E6d7+WH/OMoMbKv56uhqfr
+	 oShcWJy2lXM7w/ywj0JU41Hr8OoM4FxpTgq7iiZEWvb4eNwcvsUgLkBwQ27HL/INuX
+	 2YSSUzuIbpCilwu21fzlQsl/3MYNNg7Lzv0aymQKMIqSljSl+P2XyhINnen+7hbBrJ
+	 TYkY3cgk4OjIg==
+Message-ID: <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
+Date: Wed, 9 Sep 2026 14:48:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/17] mm/sparse: initialize memory sections earlier
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-10-songmuchun@bytedance.com>
- <a2016390-28ce-4199-a063-d2e9101dacab@kernel.org>
- <E54037CE-6CE6-41AB-A525-8BDCE55996AC@linux.dev>
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+ <178889163877.1334491.3646957026033534678.b4-reply@b4>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <E54037CE-6CE6-41AB-A525-8BDCE55996AC@linux.dev>
+In-Reply-To: <178889163877.1334491.3646957026033534678.b4-reply@b4>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE9C0180007
-X-Stat-Signature: hojswa7en6udgpsi5nd8hhxqqp5xbugc
 X-Rspam-User: 
-X-HE-Tag: 1788958132-65487
-X-HE-Meta: U2FsdGVkX19Vvm077IPyjRlYav2PkX7rxcW+9E0JGtSlnvx0EU6mno9iwXSIk+GT4aapH7svtmjW0je58D9izBxI13LrcFsGZgyVvXoEXQ1aqF+Skh9zRcGuELMWgojTcETReqwEQEHTjJ9CYH+CFwyWtOG6Ay9NQ3j5fgrwb8ySu+cRz+9CVllpXKyaacUxkAzvPcnwUvcurXqKZY/MrURlgbKnEpw5Ma/TMqzn92KfBLq/RcenrzV263bvwQdVus0IaUaOkaswZshVgm8mfRKC6vB9ZNuZLwjzzcJjq/9YQ1ureT8T8ScYgiDoHUHwAIxBpBo6b0dhMvCEkcbTdCSuqrjX/E2ffPIobP60NxC6uOSkQhwn6O9M9sR6REiVsxt2TlRWJFjZN3++g+IjAHYfYzdVH63IrJhN7xBzLP/gsgZi6xEJWeN6xkoLQJiComoUPHWePBFacQDyUldteNpEUxq9VWLzaH5CLFeau5n9dBdsi8r9OluafQxsfBUAQNCO8XBYbvYyq4aVatJ5tqA67eDmhXTaSu45aT3k7nTyOzsb2L7l/oMwmnenH0+sS5lWCtpJeNBu6EEC6jB/y4k84hFWCMqG4wKbvys8svnAw/2yuX/k1jVD5dbB/qfxZpy9flkAJPAaaVWrEZwbKDherGzoOL9uFcmzSYPYf2lOISby2TPiqwprWzU1KQ/g5THKoU2abGJ7CbvwGarIz+bJnOcLTrbKGSSaxBKlX7PQZX08tolz+kmtRUJOsoHC4slMwZWaCVHZ7io10JKSNBzvcnbl4mPMtXdLGW0dTJNAUMKrQMNEeXbuJ/298YsM/srvkjW8oK7lRM1gaEy9ox1p77/Ppwk/H2TELFnMHZ7DL5XA6xNjvTL/w5LJX7at9e5sxCdGuoUKRDMynJslb6h5zrHZbCUBvBPGgHijB4iVFl7PesrnodATbA8HRt3iO38fx3WQ70bvFBqY+WT
- jhJN+GoF
- FLPvyv/GcVpE2ofRGDuRdbWWhuiWA1kpkjKjs7Nmj7wklF1ZSUh7HqZphxWUD8mAvNQFr3OdyLUkh7UrkZoAVBRqHSYlcTuVEcTSHXqFo+OXezwLm6g9NfYH4GlbYBOHc+7JplwMh7tniB0H7UNpb+uFvRYelq1eS2ZyuyBsq8OSdcIztutWd4O37fmTfysETUWBM7fQ3IWNdSCOoD7/UjQ/UdqQ/cLGlCG7kqppjOl9P3VFDserOSOia8DgEPMiAjtGI2L3rODGmPG1mYIDkCtH7YN2Xp0jhv2qISPLHRRKeoz9oEeIr+VOdACOzjRhxjxtAjCzE0MhWJWVbLK9afgid5A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B857040009
+X-Stat-Signature: bxaxc45orgb39t6x8nahftc81k5f85yx
+X-HE-Tag: 1788958144-788488
+X-HE-Meta: U2FsdGVkX19VJQ3AqUXaL7U00W1awTAbKCiqOxkGVZ3HkQM7rBkXar4ixoriiT8fuzLzcPEHcFeM3Ycq04I+t69AaKsQkBzgEAvcUtDUJDJr63twc+JFcuWaCmS45KPJxabfzaa8M48BdRg/fuZnXNItvwlnypXpb5j1mKldAK2RMu6b/anlDZXJr2TcWaX86roLK8K4s7/szJ47Ptm5LjDJn0NgCtbZCjF8atYMDsqbPVfqx2PA8Jqlm18d4hbq+n5WpqSlpEF/jdmXNcHciuqa9i5nqMLc5uAP6IJ+Ek4BsR6I5MVESyd+xhOggY7epv0ioLg7S0F0LOIlogTZBUtoTHx/CmFxswth7euVxMOr8ZyFaLsikw6EODxCeYSX9v79ia5fwtJlRstXC+sKGI4jeLzMu8S/F2QyFvDkTjdL0M4p4kNmdrmpTl06DY8Nt7C4dIpdLJikqo+EE3tRb/fhgtZtejJumsAXbLfGmliuQiz/TW+QblRkAqmoPenpf4GP5zIseMwSHOq5sTm40Mq2Gt/PJKkmDx4nBlmQT4ZhPREqZp7eKwcpZas58LV9aLAO+DrzN2TgXfOaaDjlfr6aVvFsBiG2Pubw5TMH5OabGK7TtzlH1JMsPOpMfJecI7nwAUMj05ik/BkeQ1ExAh5ni2Ch6l4t8bV2i8hnRmGo107HAtLXOaNJtvyTjxkXXqZJwe1KvyWd8QaXyVEa0vsqRPr6CmfkwfjnG71gdzmln2SacUOqCjK/bFBqUSWbZd3af7XS131LV5RG9Rg0inxysxgFZf3o9vZfH7uSE1dLcfCeRb7MCY+qJlLiTUF3m5+C/YheNL6gE+ZsN7YCmUJbhS9wMPKe7KWxN7vC0TX+jZgf9J03jM4zAj5cQYyKe681DE616uODDUAfgL9NgJLcB9ka29owemc882WSUmSInyiJjDRHcknoAVnkvFZqsgBSHTSwnLIpnPLa9qR
+ qFE0Z+yi
+ qmKOsEEukVt+L7zIAwcnbtXqke7K3wbrJf77wfbCGrTV4sJJl+NAsVRuUmD+UbAeJrbmSUnHq8tW1S40CMml9J+MXEEOZbjbBM21BnMdNlltJwgv61G3P8965WGwTS78EkruF8OgsZRmOzEizVq1Ubs9SVot0uxAlCxCmnEtYJoIx4ATH74pcb2f0HbCPnPRFmnWHVXAjOw8U9rZkABdH6QpWL5UI8s9NEZiPHHYXU2eLQFkVxQAYzrua3bhyFdr46kqTTxcUOOBSCSdy/wIEHEO+E/hEXACY0yFQ2ZRA593wl8Uhh1jR5VVwKMf2MFiq0962GKgTzrybCu4JhCPZhTHmKAKVV8F41jOr/OkVX+oXT1jp7qebelgx/+TH55Ple8fl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,23 +154,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
+On 9/8/26 20:20, Tal Zussman wrote:
+> On 2026-09-08 17:47 +0200, David Hildenbrand (Arm) wrote:
+>> On 9/8/26 04:56, Zi Yan wrote:
+>>> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+>>> page->private != NULL is equivalent to checking PG_private. Change
+>>> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+>>> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+>>> but it can cause confusion when PG_private is removed and
+>>> page->private != NULL is used instead. Change it to initialize
+>>> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+>>> semantics.
+>>>
+>>> It prepares for a future commit that removes PG_private.
+>>>
+>>> No functional change intended.
+>>>
+>>> Assisted-by: Claude:claude-opus-4-8
+>>> Assisted-by: Codex:gpt-5
+>>> To: Jaegeuk Kim <jaegeuk@kernel.org>
+>>> To: Chao Yu <chao@kernel.org>
+>>> Cc: linux-f2fs-devel@lists.sourceforge.net
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>>> Acked-by: Chao Yu <chao@kernel.org>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>  fs/f2fs/f2fs.h | 8 ++++----
+>>>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+>>> index 9940a6cecf1a2..2f7ab5888b078 100644
+>>> --- a/fs/f2fs/f2fs.h
+>>> +++ b/fs/f2fs/f2fs.h
+>>> @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
+>>>  }									\
+>>>  static inline bool page_private_##name(struct page *page) \
+>>>  { \
+>>> -	return PagePrivate(page) && \
+>>> +	return page_private(page) && \
+>>>  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
+>>>  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>>  }
+>>> @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+>>>  }									\
+>>>  static inline void set_page_private_##name(struct page *page) \
+>>>  { \
+>>> -	if (!PagePrivate(page)) \
+>>> -		attach_page_private(page, (void *)0); \
+>>> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+>>> +	if (!page_private(page)) \
+>>> +		attach_page_private(page, \
+>>> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
+>>>  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>>  }
+>>
+>> Very weird interface. Why do we even need the page-based interface still?
+>>
+>> $ git grep -E "(set|clear)_page_private"
+>> compress.c:             clear_page_private_gcing(cc->rpages[i]);
+>> compress.c:                     set_page_private_gcing(cc->rpages[i]);
+>> compress.c:             clear_page_private_gcing(cic->rpages[i]);
+>> f2fs.h:static inline void set_page_private_##name(struct page *page) \
+>> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
+>>
+>> Seeing code like:
+>>
+>> clear_page_private_gcing(cc->rpages[i]);
+>> if (folio_test_writeback(page_folio(cc->rpages[i])))
+>> 	end_page_writeback(cc->rpages[i]);
+>>
+>> Makes me wonder whether we can just use the folio helper instead?
+>>
+>> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
+>>
+>> So naive me would assume that we can just get rid of the
+>> set_page_private_/clear_page_private_ stuff entirely.
+>>
 > 
->>
->> I have patches to get rid of __section_mark_present() and just set them all to
->> SECTION_IS_EARLY|SECTION_IS_ONLINE such that we can just iterate early sections
->> and get rid of that PRESENT monstrosity.
->>
->> Apart from that LGTM, even though I don't particularly enjoy splitting us now
->> having two init entry points
->>
->> sparse_init
-> 
-> Maybe this one should be sparse_memmap_init? If yes, it could be another separate
-> cleanup patch.
+> I have a WIP series of ~30 patches converting much of the remaining page
+> users in f2fs (including the below) to folios. Still have to do some
+> testing and clean it up, but hoping to send it out in the next couple of
+> weeks (in the hopes of eliminating some more folio_compat.c functions by
+> next cycle...)
 
-It does way more than that. In my patches I factor some of sparse_init out and
-call it sparse_metadata_init() -- memmap and usemap.
+Indeed best to wait a bit before flooding -mm even more, it's rather a lot at
+this point.
+
+In the context of this series, it would be great if you could review whether the
+diff I proposed would get the job done, thanks!
 
 -- 
 Cheers,
