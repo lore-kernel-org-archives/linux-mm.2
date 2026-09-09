@@ -4,79 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6FB6C79FBD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A63C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 17:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E9E76B0099; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
+	id 55B256B00A1; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1E46B00A0; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
+	id 5393E6B00A2; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8716B00A1; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
+	id 448196B00A3; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 600106B00A0
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:23:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6761802B3
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:23:24 +0000 (UTC)
-X-FDA: 85194895128.08.654B63E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0638420002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:23:22 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDYa0m6y;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F2586B00A1
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 13:25:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E8CB1C0A9F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:36 +0000 (UTC)
+X-FDA: 85194900672.06.C09C04F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C6D8740006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 17:25:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp8ty+5V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788974603;
+	s=arc-20220608; t=1788974734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MCHSdPZk4zbn59kxK4VxfMJiTngtjItSycfJsFzJGs4=;
-	b=fMSuDsRAUaWpN3bAUcHsL2WijuUb+m91zuGG2t5Y8+9UCvrKotkDlCxz6acXeuf5bgdfw3
-	QW7SzJG/jQtSDSxujbREs8yxzceqHqnq6utnfSeUW7tL52B46Qir4OaDFSkROktMt5/O5d
-	ExhFcU3hE/+4rtIvT7K2LqobmTJEv+M=
+	bh=Mn85r7VDgTlh3aUR+NGvwOWOBcsUrlMRqggXVv8xvpI=;
+	b=oG77zZA2hAVZvMQSsZow2w9WpBkE8AiLvhkna3OQaNYxQGXxC8xn9kYwi3HJKMG75q0hw5
+	gxxWBiO4jeLxfVJ4g/GPDUz5veH/GQjVFhXNnw7kD8vwRVpfpPKdlQBaegS77fb9C+ZfDI
+	jAqX5QY0R0aSZVmyl9KN7V3sjPudDV8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788974603;
-	b=D7rIrJky6LJzCWJnzMd3qkaItOc6F5hljhhHMGKaNKGFqxG4Hd196aaokRRuyVjYe2IH99
-	VkQMDugNl8oRp4+7hZGaTJTfROT1rbSaT7LX+WG+sJQLLlTVbplU2felZia4in5Pcv4Uvw
-	4SQnKd3Fb1xMrOG83KeZYPMn/rYb1gk=
+	t=1788974734;
+	b=UFu6B0GZYw0POdhHUbfacNjgYzMcwA8Jb2+Klf3yW2LUbJQO3glzuGIKig2VST/o3HylD3
+	4g9FWTEaqiw+pFiGCWBzxrfGasJ2hUW0VodpiUXnrUMB8h0HzNtYbQi/fTLVMbmSSB4e9O
+	dLUKRSp+60umT54prCeJWT8aErk72aQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDYa0m6y;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp8ty+5V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D8EA43D6A;
-	Wed,  9 Sep 2026 17:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563E01F000FF;
-	Wed,  9 Sep 2026 17:23:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CDF1601EF;
+	Wed,  9 Sep 2026 17:25:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57CE1F000FF;
+	Wed,  9 Sep 2026 17:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788974602;
-	bh=MCHSdPZk4zbn59kxK4VxfMJiTngtjItSycfJsFzJGs4=;
+	s=k20260515; t=1788974733;
+	bh=Mn85r7VDgTlh3aUR+NGvwOWOBcsUrlMRqggXVv8xvpI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bDYa0m6ymveTw0HTGhDflIHkFJVZ6GnutFwAxlS0dnTV93M0i+vTGPjDB/xLJrUNQ
-	 1a0DPsSCrlJe2SPeOdeGGqCukduQ+BHvb6mMYVy4+V4ZLwJWeT2XDAckf22U215/P7
-	 hUHXF+M1stjZ7/4DPBQw9qxLMfak2L3FlpuRHlpJ+c/2EgbEpz2gLU0GyRgmO92zlA
-	 ZNKBf+MuuUntdCZet/bCi1BSWnv0+EUx0ZcJJd6V4JezjZRGitiNmaGuuxRIZk+BGw
-	 SHxdlwNKF5h85NTEXdvIIhjzcNbqGPJEdvLZVa73xGq4hC7cfgCi68gUdJfX87c1eO
-	 MlaqchPPFVn/Q==
-Message-ID: <19e428e5-d8bc-4abb-b052-e23442464cba@kernel.org>
-Date: Wed, 9 Sep 2026 19:23:16 +0200
+	b=Zp8ty+5V1ia71Mih2o0WCo4SvqrBSau3a3X2hA5v+mvi8+//uxn2FjZkddDnC7VvS
+	 /N0vjuc+qH3EySkZSoF+4PQBzqiZWFgvitMo3EKvQfcwihVrQ8j4CC9S2sXH0sJMRY
+	 kZnoMm5zO/OLzxDfV3XwYv7hxekZ4yDw+ZiE3ID398Piujj6SxaSEpEuGKnPQzng7V
+	 im8KLuKMu9GEs++nCaLuFvSyTKp4ODr1aRuWfUctDgDxoF4VmU38iAMfBtd0XF4I2P
+	 O58/p1v2PYelPTKbY1f0bZlxrfGM9zF72WAo8bmsCCnwMfP6itnmlfJrUgFRapGa+w
+	 icq/BG3dxXKtw==
+Message-ID: <2b0a6809-bd88-4133-a002-7a9acb2a973e@kernel.org>
+Date: Wed, 9 Sep 2026 19:25:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] proc/task_mmu: read proc/pid/smaps_rollup under
- per-vma lock
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
- willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20260907063918.3432401-1-surenb@google.com>
- <20260907063918.3432401-5-surenb@google.com>
+Subject: Re: [PATCH v2 1/8] mm/swap: add folio_swap_entry() and
+ folio_page_swap_entry()
+To: Tal Zussman <tz2294@columbia.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20260908-folio_swap_entry-v2-0-ee6d01dfa5e1@columbia.edu>
+ <20260908-folio_swap_entry-v2-1-ee6d01dfa5e1@columbia.edu>
+ <d0aa1ccd-d99f-4fa5-98c2-21cea0f413c7@kernel.org>
+ <cf9a0873-5ef1-4a5d-ba16-8ba3583ac8ba@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907063918.3432401-5-surenb@google.com>
+In-Reply-To: <cf9a0873-5ef1-4a5d-ba16-8ba3583ac8ba@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 93byxpmoobo5b1c6gd36esh8e6cuf6m3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0638420002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788974602-888370
-X-HE-Meta: U2FsdGVkX196lkHOKHdjv758UP7EQ/VggD8gkW1bbEY6+NaqBAY2/Xinv0cQVgQqhSpOvrm7vswI/jRAaFc3UDL6qWlKHulYHkmXDjpAW8x8me8moFRAiBUVGKAriRQiI0YLJIUN/UFNAqhMWFjf2NbjOEQ5tVdnbfq+926xaGdLiXNsIKiHRJeQ1gar7CX0/npOKEr2ARO5dtCOgpJuD4QC3vEO8Hn1Rvmp5V6LwmRvo4WGIyGWC5JOsG+n2MIrmEcqSonzqBdR466fytSb+kxAeqUv+WRRgs1BsysivvBTKPd++ItEYhmUV3QiuqfxzcHCEsVsk1+IotEwrfypaOFIjrNxZRhZlBP7Ujtiq+uLSo0L+AlhwAuVDT32FHgcAYUMFTMScIkgnGExg60V3vf24iqoYQLKYNyoRO/kq69ecirbpEbL8i40ZpAJpd6nu2R2wLix0RxmgJqBdrDLpcqMTpayJPy/o6x51Lj7eBig1wFwLrc2HyDbkrbANkhuDgjK/51lb01mj/z+Hap24EXERtuwluRi/eCJ3s7cBlflZWPD6FUZUT7FlhvhSd+iPnWx0VgGwD9NiD3Qm91nSSy0j+9SYr9F37/0WHyYRHWkbU6/1lCKGcs4tT9KJxjZgrlTlo8QrmgNDPZAklsYLhczPQKDf4ZfglhY3lPRsy2uohafoIlY83FEwCyeywX37LaWXqXDneIXuPmoUQ3j2FMRJyjak6Y58J+1888HHj/LBaaV+r1lTM6hY6QwnVmVcxuVfqyDK5wGOYyDk5iUG0uxr6aCNoJaNlDsXpAzVOYdk2aw8Yi0oJ2HBHQjyEpDoUBaHF270yiiTRIKgafku0HOM22Oj1ThTqbIMBwn+8G/IFrIUvj/ddKmmJBqBWmNidJNhXJv4RgvWnuuZX9Rj9X7hQZnB8ZlLoXfGVHXjAWS7G6j3FQfoYJg3Get2wMyFOPSjxJ7SDkxFlgTTRk
- g9HuVrLe
- Iz22MxteBpxvQQYYV5TZ+FNLGOEQh9e2b2Gm4gf2EOI2h2SCJskBkH+ewtAav/3FH/KxJysKwSZrub370/If/3K+Mcv/6yiBiayJYTpEBi345Jriqy8rgQFHYCU9M97Plk/ecLqeeIkugWXcVZqzs4rSxvdB0uvBEwS7Vks6b//g0hO9TvBN9FyJLs7/jqiwxAvC6vMWXCg5JTISxvJfiM4lfQw46lk/OBcBdab9R+S9pSAMhqK8ibWMh7iQdDqT0RsrU3nMWkwN/yyjOgn2ihdgEXjzfDIU1XtppBwM3N1D9B7g2mY35EBEV6A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C6D8740006
+X-Stat-Signature: jriapy8zyh396rubw9nsj7m8hx9gjg7u
+X-HE-Tag: 1788974734-854465
+X-HE-Meta: U2FsdGVkX19vixfUYw6RoJEetgh8nV452RL3y3POZYp/iIVApl9pApffShwh/3LkqCdRKxBumF9bMDinR6ctHpb2KsyGsEJVSOJZ3zNbGzbnghQLp9jEUpTGhLV2Pmxf5knYDUK9D43I6zTadEBfKk7crAz1yZQHwUkCi0aQ54idhG+lmdo4PkHBtY6QO2r74FrBSANRM3a1BXjJijCx8j66oEjKY9NW+0hGkp1pI6mUAkfLtymLqd7eW41ok3/ZUPy272Sd3hNy8YVc05A50lXv12Jd2vNAUHPY/aRSl+Axcma08avN2pDlUW0j9r8vZTM7oThhQxQPtUSKmiG2iWoTZynuwKKSGL9fBUXxpRB9ItaO3Lt0Ul6p7m2iura0OJFIohzSshBN7UibFfPsEBdP0qF8kox69CftOeFoV3rVQhDZXECoXbsV04Wp4XfwJbcT6ihVzueB3UFwQXwSWMc2jEJ7VWUvpEKtO/kF+T7K76UeG82n6sk50zIuVNpU2PS+KLwboCKn11QVe1Tfz7oyTDlrYJGXNUsPy1DnD3PfASfq4l0ye9ku7y8KppKfZiZzVV1WGZH9U47duDH0vlfrsNWjdCmXioPU4LAn149QWuD39CmR3CylWLu3vyWj5JHOQXMFkAyRCBUDUKmhVOQKDxVJMgN5zvDgs373MuV05HdjzWFt5ExEnM3ZuyW8b7ItJL8aPl3BP0l1lonLPI6PQFDeltiniu0L3Gl3h8IYRC5VwxxYSnGyIJCwbkxrVmJHtxGspnV3XueI59hjfvQA/MIqYxRCWe9MCHTxlvDQe2Kj/TquKtj56GVcvl16qOkx439RMplS0fGs5lzQ07aA/ph+50hFi2Xf0Hj240fENVKUcZDjejEg/CNEyJCbAWDNIFxqFBKsKUwisoCuTwNtgbXaaMwxCls0zTslD6xdRCpXm2XgLgsIh3yUXlKu+HV+S2OBhaaiTvLInkd
+ cT12sk0I
+ TJZpmS8tWkYLbZ3lBT1VFfSaFfG6KtyCC5/+CvGLn6d79kAbrhGi5FYhjRlVHs4PiuX/5IIRqRMtBq1KGs5oEIXrIAlR24kzPbGV93LkA80OXyqq8FwUUcmGu3Uxi6kdUBqyapkfOar3zho9JcMZbFBBf1Cq+eiT4LkiUr+PxbxJSoEIKpK+LHEVwWE1U5ke/cLOKXYBRZJf1HIeZHYnFuQs4M1myXIdk/kQiGTITsVP53bk6hXPMjxjHiqZ3tn16pyI12FuWd2ctWjx/XERy7rSnjkmO5iDFYG2vWTItESTLuIjaoBhPiqPf/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,49 +156,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/9/26 19:21, Tal Zussman wrote:
+> On 9/9/26 5:00 PM, David Hildenbrand (Arm) wrote:
+>> On 9/8/26 17:16, Tal Zussman wrote:
+>>> A folio in the swap cache occupies folio_nr_pages() contiguous swap
+>>> entries starting at folio->swap, so a page's swap entry is just
+>>> folio->swap plus the page's index in the folio. page_swap_entry() hides
+>>> this behind a compound_head() call, and callers that already have the
+>>> folio sometimes open-code the arithmetic instead.
+>>>
+>>> Add folio_swap_entry(), which takes a folio and a page index, and
+>>> folio_page_swap_entry() for callers that have the page.
+>>>
+>>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+>>> ---
+>>>  include/linux/swap.h | 33 +++++++++++++++++++++++++++++++++
+>>>  1 file changed, 33 insertions(+)
+>>>
+>>> diff --git a/include/linux/swap.h b/include/linux/swap.h
+>>> index fc290e29e4a9..1d979e76e78a 100644
+>>> --- a/include/linux/swap.h
+>>> +++ b/include/linux/swap.h
+>>> @@ -272,6 +272,39 @@ struct swap_info_struct {
+>>>  	const struct swap_ops *ops;
+>>>  };
+>>>  
+>>> +/**
+>>> + * folio_swap_entry - Return the swap entry for a page within a folio.
+>>> + * @folio: The folio.
+>>> + * @idx: The index of the page within the folio.
+>>> + *
+>>> + * A folio in the swap cache occupies folio_nr_pages() contiguous swap
+>>> + * entries starting at folio->swap. The caller must ensure the folio is
+>>> + * in the swap cache and that @idx is within the folio.
+>>> + */
+>>> +static inline
+>>> +swp_entry_t folio_swap_entry(const struct folio *folio, unsigned long idx)
+>>> +{
+>>> +	swp_entry_t entry = folio->swap;
+>>> +
+>>> +	VM_WARN_ON_ONCE_FOLIO(idx >= folio_nr_pages(folio), folio);
+>>> +	entry.val += idx;
+>>> +	return entry;
+>>> +}
+>>> +
+>>> +/**
+>>> + * folio_page_swap_entry - Return the swap entry of a page in a folio.
+>>> + * @folio: The folio containing @page.
+>>> + * @page: A page within @folio.
+>>> + *
+>>> + * The caller must ensure the folio is in the swap cache and that @page
+>>> + * is part of @folio.
+>>> + */
+>>> +static inline swp_entry_t folio_page_swap_entry(const struct folio *folio,
+>>> +		const struct page *page)
+>>> +{
+>>> +	return folio_swap_entry(folio, folio_page_idx(folio, page));
+>>> +}
+>>> +
+>>>  static inline swp_entry_t page_swap_entry(struct page *page)
+>>>  {
+>>>  	struct folio *folio = page_folio(page);
+>>>
+>>
+>> "Return the swap entry for a page within a folio" vs. "Return the swap entry of
+>> a page in a folio."
+>>
+>> yet only of the variants has a "page" in the name :)
+>>
+>> A bit confusing.
+>>
+>> Not immediately sure how it could be done cleaner. The minority of cases seem to
+>> use folio_swap_entry.
+>>
+> 
+> Yeah... I considered naming them folio_swap_entry() and folio_swap_entry_idx()
+> (or a variant of that) but I liked the page version more. I can update the
+> comments to try to differentiate between the two a little more if that would
+> help. How's "Return the swap entry at an index within a folio"?
+> 
 
-> -	vma_start = vma->vm_start;
-> -	do {
-> -		smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> -		last_vma_end = vma->vm_end;
-> +	if (!IS_ERR(vma) && vma != get_gate_vma(lock_ctx->mm))
-> +		vma_start = vma->vm_start;
-> +
-> +	while (vma) {
-> +		if (IS_ERR(vma)) {
-> +			ret = PTR_ERR(vma);
-> +			goto out_unlock;
-> +		}
-> +
-
-Can we add a comment whey we break (and not e.g., continue) whenw e hit the gate
-VMA?
-
-(I seriously don't kmow ... should I know? :) )
-
-> +		if (vma == get_gate_vma(lock_ctx->mm))
-> +			break;
->  
->  		/*
-> -		 * Release mmap_lock temporarily if someone wants to
-> -		 * access it for write request.
-> +		 * If after retaking the lock, already reported VMA grew or
-> +		 * merged with the next one, smap_gather_stats() will gather
-> +		 * stats for the remaining portion by starting at last_vma_end.
->  		 */
-> -		if (mmap_lock_is_contended(mm)) {
-> -			vma_iter_invalidate(&vmi);
-> -			unlock_ctx_mm(&priv->lock_ctx);
-> -			ret = lock_ctx_mm(&priv->lock_ctx);
-> -			if (ret) {
-> -				release_task_mempolicy(priv);
-> -				goto out_put_mm;
-> -			}
-> +		smap_gather_stats(priv, vma, &mss, last_vma_end);
-> +		last_vma_end = vma->vm_end;
-
-I skimmed over the remaining bits, hoping the VMA lock experts will review in
-detail :)
+I guess we should call it "page index" in the doc.
 
 -- 
 Cheers,
