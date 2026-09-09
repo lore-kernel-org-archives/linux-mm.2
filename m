@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C2ABC79FBB
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D056C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:06:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D07606B00A4; Wed,  9 Sep 2026 10:04:20 -0400 (EDT)
+	id 0D8106B008C; Wed,  9 Sep 2026 10:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB7D26B00A6; Wed,  9 Sep 2026 10:04:20 -0400 (EDT)
+	id 089696B0092; Wed,  9 Sep 2026 10:06:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B80286B00A9; Wed,  9 Sep 2026 10:04:20 -0400 (EDT)
+	id EB9216B0095; Wed,  9 Sep 2026 10:06:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F9F6B00A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:04:20 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B6ECA0248
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:04:20 +0000 (UTC)
-X-FDA: 85194393480.28.6001365
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 83FF81A000F
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:04:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YpeBgT0T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C797E6B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:06:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5639D40208
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:06:48 +0000 (UTC)
+X-FDA: 85194399696.04.F6AAF5B
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA2821C0007
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:06:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=rcsC1nVJ;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788962658;
-	b=IBFUDTkFTw+1GkU22NMan5t1p5hXIMDukxpCf+Nz1ZGhsYHOuHsxCYJFxDTI27zehhqv1d
-	lZ7/qkg1IarbCXnZEoZlHx6sdiw5FapLv4Z4cw2sbPeNFOG6Lv7Q0wsM5G2p/t+P8qbuDB
-	nmvzLrxAWJdvNYWG5oGQaghFVV/936Y=
+	t=1788962806;
+	b=YTP4k/m/ROt3308irYdcR0nAPwJSYtaz3QwBiLlBWphHfAGrRX2NMXAVSj/ZJpZNYEZKXS
+	Au+VDkrPJeacsz/twJJ7pxSSZX44QxYDh1VM0S3DDBH40hz9u/H5UAPb4nHJdB2uVZ/VfU
+	xDTf0luhrVt69OnC+cEknW+n1cfMoY0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YpeBgT0T;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=rcsC1nVJ;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788962658;
+	s=arc-20220608; t=1788962806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XvOnZdXRT1oYcTh0OqGiqvrYhRphtRi0kIGud2JHRJM=;
-	b=WEYta4RvTY2R0GlFw3aEp2yPI4mwJ3ID47k0Za9KLPZhL5+NjOA/8xrD7OFqUYhpkNoxBc
-	FdHfHiNZ6ZkDg1AOihhkZRDctiw8wB/0Q07BaIhXfNCBYl9t1O2t0CtgJ6wnnp9DiHepXi
-	llCyxXxbz+isVxGqOwrpAdsz4qJcu9I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDD6860230;
-	Wed,  9 Sep 2026 14:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6441F00AC4;
-	Wed,  9 Sep 2026 14:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788962657;
-	bh=XvOnZdXRT1oYcTh0OqGiqvrYhRphtRi0kIGud2JHRJM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YpeBgT0TICnF9MYO0bH+bAV4LO6GtLbLvnZxUU498U1z4TDRjxPYX9wrjCOoKBK5w
-	 9BUwtDs6dvIvZmcX/YVZsqzwTYUSkZfs9xIdWyodB8lh8uSypybKybSotJVPFBc8JW
-	 FcN1vV1M6Gmy2wT/pr/xXUUN9hDuRYtuKSofh+M5BxYKboIU+vn1G9Fsia9p0pYFiG
-	 hhv0ZaukGfgqavbwglUUouF/XvDlZPgwHubXyQTlGQy3TKJOB9I7srQDivvOljYx4T
-	 tHYh0CgN1Y+NIrYjKleZUa3ZHTFXWTiMXwVxXrM2edkwU4uJyEfKeso+SGNAJyGx95
-	 x2FLIyVii9osQ==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH REPOST 5/5] mm/damon/vaddr: support pgidle_unset probe filter type
-Date: Wed,  9 Sep 2026 07:04:07 -0700
-Message-ID: <20260909140408.104699-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260909140408.104699-1-sj@kernel.org>
-References: <20260909140408.104699-1-sj@kernel.org>
+	bh=ARyHcdAb0HLmyx/eDFN86Rb81gJGVIXThCIEa265DUA=;
+	b=DWlGXB7ibIwlXt37DrfFF4gyM/bC3BwrcJVJ5N7GtXttva5M/omYgQX2WMRR+5hImipn5Z
+	B/dE75fUL+pcVFnCA59jsapAxmJkjVXm8NIUp7voAXngm/44YpLagePLqMk/gPCMGteVSt
+	mq20ELUhtEqIdpOqkfrjISNQHNuSlpE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ARyHcdAb0HLmyx/eDFN86Rb81gJGVIXThCIEa265DUA=; b=rcsC1nVJ458PkGkasholnKxN6Y
+	8410oN/kuEDXUbOFmM+71oC19ElLRGi06Vt5lELxPN2NRrvCvoeFrsuLjkPROFDyV4u3NzsHyF0Dw
+	4EQKOZ0A4I5dZd4/wWWTiaK8hrAjVAFqM33pEkIiQi5D4RBK54/6Ywa0Ltduv+4JyaWasZgqS3bhm
+	pPivoqW8OISS6nImyYN3ZxQ2g6tRDXdHf0LegFyAOOcbpFXay9V6Q3b6/OKIBV7i4y9Kf93r21acK
+	b5ht4rH+nV412qx7B1mw5ATercq3FkeW0Sku5yJAxhNUuXQRReH+Ypx4/wZnjMY5NPNXqRIGMa9Ru
+	AE5xkGuw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x4Iw9-0036hX-08;
+	Wed, 09 Sep 2026 14:06:05 +0000
+Date: Wed, 9 Sep 2026 07:05:57 -0700
+From: Breno Leitao <leitao@debian.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Michal Hocko <mhocko@suse.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Borislav Petkov <bp@alien8.de>, Suren Baghdasaryan <surenb@google.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Zi Yan <ziy@nvidia.com>, Thomas Gleixner <tglx@kernel.org>, kernel-team@meta.com, 
+	rmikey@meta.com, harry@kernel.org, linux-efi@vger.kernel.org, riel@surriel.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: Re: [PATCH v4 3/5] mm/memory-failure: efi: record hardware-poisoned
+ frames into the poisoned-memory table
+Message-ID: <aqFm1ep0mIlJpA-d@gmail.com>
+References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
+ <20260909-hwpoison-kho-v4-3-359313564495@debian.org>
+ <20260909132128.AD4D01F00A3A@smtp.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909132128.AD4D01F00A3A@smtp.kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA2821C0007
+X-Stat-Signature: 65ugyayajb3zywnydnjdugot8qz578uq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83FF81A000F
-X-Stat-Signature: f6aqrpc3z39qktidf3w9eoombujm6q15
-X-HE-Tag: 1788962658-657539
-X-HE-Meta: U2FsdGVkX19yrnsdphYw9R4ewqtsZftZfRlDKN6I31FjvyMWp2zpphi6Re7SFQwg+4YA+BNqwSSdfgjOYTTgW1e5g6UujWkdJOF1u5PgxFvQrdg5oGcQ3HKW6fNXoIABbhtBxQs+UVZvXfJSc37M5r4N3wLtc8ikt3fzBgR+FO2LlfwsNbYKHd9+tFla1XGW5OP4av43NWhBMPG3acMLGwjXRWc8kDrFPdtJcKAo7dLcGqGpRtBh4iiRTpAGOr++NCUPhnBdO7p+uiZU//zFnszur+qm+EwdjyOLq/AYwr8f0SH7PjQ6Do9nwi1etGFDrOQCqtvKkkdwfzYnEzCO5BHqexOvVSHMSwB+GzYgJXcTHSwMBtgAVkPKlrEPHw++guFZcfaL4vXYpn38UzMkApEQ3GMtPpPZtOnH0XraDxtc4SPpu7xmLzDkr8iCC1w8Xvd/sI2klN67l2a6hWmhKY326XNCop9MVuQhXN5NdZhF96sa7fVQBQH+5bHu3YSTRQ6W06sK4GvZQxnfS+3acAJjXIRwXMssoeU3wpXQI+9ZS2EKJCxdlDNnEJwVj4H5qsb3T/2h2WJasu4uBnG30U1Lve2o8yfPUlUv4zYF/iVgvTSjOvZS0J3bMFoVu48P/kMydgw5NtHE8mhOj0O6Nx5ui5cInr81kWbpFXWxruNIT6rErgEp0OE3oklITJybzryt+hw0ZfO0Za/Hp5fyICMkASS7TuHAwOv60tX2+SlNyK3b2mHGlyZvpft/tAL2YP0rn52kG+8pdZkhBbQd5UIrVTkhRMSLgWTOfMkSRTQzR7sLheVjb8rzQCcT9xso1cZipCdlKmOkqBPCzze6K1v2RUNS9kejuoIDUO4d5PU19Rvtj8ruN8HNA4PEm31cQed6Z7faaIgXABTiIlMEUq/0QWbCJHCSWYAdzuM3N+WpCMUz3c6Ls0chdEPWo6eYbmrA6lRpG0HxNC77MVR
- 6ZKMIOiD
- Xeli/p8TXZSkfIS3En5Id6eggCy3sZ+bQH7+rVY+BMoqsHsehWdZ+pJzLTUaitMh+Z+57x8VxR02BRmPon2ciec1AHq2KdH/Y5ovcqsCo0T0ISjJqyDhrCWQTpnN/t2I30pjGHtWlKvG7qAoatkxdwAbEkYF7hK5zFdd39axIpIQJj1PwXqB4oy8XRcJeYafFAynV7RGuE4GWLUW/BBoD1yaMglARtMh8sVvTnVW8XXtmlq/bzyP3V+JEYBo07yNipicrDwgeXbAUwrbSrgyULIgqqA==
+X-HE-Tag: 1788962806-524259
+X-HE-Meta: U2FsdGVkX1+Tl+DtYIXz8HAYtcnTiwBgtlyyb40EQ/iQqWoWNHdAslxSS4Nh+by4kS4UyWD2vhtoRZ3zm4/SWlkvIgElNJUJAHKV4D4pPWd6pRHYvkMzhbbptHSiWzTi7cWkkxklT7USBKMO+xtW4dG9wyTLQgmVeoYRYxvdYz+UJDnYijndVd3XOs8hkUjx8CPp6CmgP58lt7xFzBuNZRvjf9g/7N87sAuKTLpPMsJq69fwrlkOWa8mCaSExgIxP9pi2tg8qSGNsWxJLJOHEKdhOtkyp5LUDFfzZEqtDn20O8gMC3A1LfMFxGaeTCKa2tiCGLAbPGchGLs1+Jlr5H+A/sCuQqv2D0VtoHjWHPdDtLdqUfq2QW0EfYP/ZFO/si3z3xoxnQ/C7CwNe9se/u1CRKR42QgFhAhmYqde8Wgsd18hrDGvb0bR4mbclVKDG9dIq1kGd6lwNNjP8dVAqhjxqcTpZmA9yiJm5UiYX0sIgUDEmiatQS4E/iWg+vF+W4mq0Okqkhe7kU8sb9ZlLZivrkhdhfi5snfNzQldr4pbT1VINNi6VqRDa3ncovRjgDnyHp3B+h66BD8ihSPpW/kwVMCibqbvlG9qgEsZo2mvyiNIYLqpYyGAOITNRE61f3TiXcKU88FMjYLip37RivqoghTC9aiyMxDMR/K9GQy1Xn+RUfYxYJMF5EECEBuBVqANLjoy48duU5pqt0uvcWDHn63OWIKG/L4S9jGdlOuCtu02jPxez18QwefOhe7BZZ0AvL7oxBx2z8ILio644prxOoJjMZ7l9VdLNkJe3obgq3hEjwkLhENQjMsBrWqm02MU6vhXY4jmo0LtbidB+gzDnl6MmXQtr7yAdFvx+IDyjcswNXAApPpkB0TUVVpk7kcIzfH2w32mW1HDFMunyiRsGkLkQRYeTFjxr8vSTEe2BUlo48rHy1RIEWkUYaQtJ6Q9QOWD1Rt5fd6kNjl
+ W1ArwbRV
+ /eP3ukGeWgg4ZYcrAAe+ADoV3H6jP993uY5bMPaneJfkyCFhxA1suesiMH3cONhv+wtfKi+Q1o8/TyWQ07KaYK2WzxlRJboWUsT+4eIIZEpNqmhBjtlUpXVeHOZxji1d2qm30pv5QRxcUQkrlM8brYot20KnveZFcz2IQapVs9jzJlp2mU1K/H2kcB5nahpwldZUqKWeah7GykA7H83z5Wkv7rm4Kak4Ny+12+U+36TUvNgvvfOrzLf8ZHhmaRn3p7oEhr5ojPxxTbQZEMCiPTHwKIJFgSApc02TvtJvPdHwoB1q4yavY+Fs9hhy8dOtzrFIuGIcRQUDg/xP/GBdorCZe8a3zBiVgpLn/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,118 +106,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON virtual address space operation set (vaddr) does not support
-pgidle_unset probe filter type.  Add the support.
+On Wed, Sep 09, 2026 at 01:21:28PM +0000, sashiko-bot@kernel.org wrote:
+> > --- /dev/null
+> > +++ b/drivers/firmware/efi/poison.c
+> >
+> > +	/* Whole words, and a bit count that can be taken without wrapping. */
+> > +	if (!pm->size || !IS_ALIGNED(pm->size, sizeof(unsigned long)) ||
+> > +	    check_mul_overflow(pm->size, (u64)BITS_PER_BYTE, &nbits))
+> > +		return false;
+> 
+> [Severity: High]
+> Does this validation fully protect against an excessively large pm->size?
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/vaddr.c | 55 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 7 deletions(-)
+I was clamping the table before, but we decided to drop it in the last
+revision. See the discusion in here:
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 45239f05e113b..9a38dc89a156e 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -522,13 +522,49 @@ static void damon_va_prep_probes(struct damon_ctx *ctx, bool set_samples)
- 	}
- }
- 
--static bool damon_va_filter_pass(struct folio *folio, struct damon_probe *p)
-+static bool damon_va_young_addr(struct folio *folio, pte_t *pte, pmd_t *pmd,
-+		struct mm_struct *mm, unsigned long addr)
-+{
-+	bool young = false;
-+
-+	if (pte)
-+		young = pte_young(*pte);
-+	else if (pmd)
-+		young = pmd_young(*pmd);
-+	young = young || !folio_test_idle(folio) ||
-+		mmu_notifier_test_young(mm, addr);
-+	return young;
-+}
-+
-+static bool damon_va_filter_match(struct damon_filter *filter,
-+		struct folio *folio, pte_t *pte, pmd_t *pmd,
-+		struct mm_struct *mm, unsigned long addr)
-+{
-+	bool matched = false;
-+
-+	switch (filter->type) {
-+	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
-+		if (!folio)
-+			matched = false;
-+		else
-+			matched = damon_va_young_addr(folio, pte, pmd, mm,
-+					addr);
-+		break;
-+	default:
-+		return damon_ops_filter_match(filter, folio);
-+	}
-+	return matched == filter->matching;
-+}
-+
-+static bool damon_va_filter_pass(struct folio *folio, struct damon_probe *p,
-+		pte_t *pte, pmd_t *pmd, struct mm_struct *mm,
-+		unsigned long addr)
- {
- 	struct damon_filter *f;
- 	bool pass = true;
- 
- 	damon_for_each_filter(f, p) {
--		if (damon_ops_filter_match(f, folio)) {
-+		if (damon_va_filter_match(f, folio, pte, pmd, mm, addr)) {
- 			pass = f->allow;
- 			break;
- 		}
-@@ -543,13 +579,15 @@ struct damon_va_probe_walk_private {
- };
- 
- static void damon_va_probe_folio(struct damon_ctx *ctx,
--		struct damon_region *r, struct folio *folio)
-+		struct damon_region *r, struct folio *folio,
-+		pte_t *pte, pmd_t *pmd, struct mm_struct *mm)
- {
- 	struct damon_probe *probe;
- 	int i = 0;
- 
- 	damon_for_each_probe(probe, ctx) {
--		if (damon_va_filter_pass(folio, probe))
-+		if (damon_va_filter_pass(folio, probe, pte, pmd, mm,
-+					r->sampling_addr))
- 			r->probe_hits[i]++;
- 		i++;
- 	}
-@@ -574,7 +612,8 @@ static int damon_va_probe_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		folio = vm_normal_folio_pmd(walk->vma, addr, pmde);
- 		if (!folio)
- 			goto huge_out;
--		damon_va_probe_folio(priv->ctx, priv->r, folio);
-+		damon_va_probe_folio(priv->ctx, priv->r, folio, NULL, &pmde,
-+				walk->vma->vm_mm);
- 
- huge_out:
- 		spin_unlock(ptl);
-@@ -591,7 +630,8 @@ static int damon_va_probe_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	folio = vm_normal_folio(walk->vma, addr, ptent);
- 	if (!folio)
- 		goto out;
--	damon_va_probe_folio(priv->ctx, priv->r, folio);
-+	damon_va_probe_folio(priv->ctx, priv->r, folio, &ptent, NULL,
-+			walk->vma->vm_mm);
- 
- out:
- 	pte_unmap_unlock(pte, ptl);
-@@ -615,7 +655,8 @@ static int damon_va_probe_hugetlb_entry(pte_t *pte, unsigned long hmask,
- 
- 	folio = pfn_folio(pte_pfn(entry));
- 	folio_get(folio);
--	damon_va_probe_folio(priv->ctx, priv->r, folio);
-+	damon_va_probe_folio(priv->ctx, priv->r, folio, &entry, NULL,
-+			walk->vma->vm_mm);
- 	folio_put(folio);
- 
- out:
--- 
-2.47.3
+https://lore.kernel.org/all/apGWUWi5-RbhFHpe@thinkstation/
+
+> > +	start = PAGE_ALIGN_DOWN(efi.poisoned_memory);
+> > +	end = PAGE_ALIGN(efi.poisoned_memory + sizeof(*pm) + pm->size);
+> 
+> [Severity: High]
+> Can this computation wrap around if pm->size is maliciously large?
+
+Yes, but that means that someone was able to write to EFI memory to
+update size?
+
+I can definitely BUG_ON() on "large"  pm->size, but, I don't think this
+is what we want here.
 
