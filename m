@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91431C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 20:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E4D1C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 20:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD8506B0095; Wed,  9 Sep 2026 16:13:03 -0400 (EDT)
+	id 9A1FF6B0096; Wed,  9 Sep 2026 16:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A895A6B0096; Wed,  9 Sep 2026 16:13:03 -0400 (EDT)
+	id 951BB6B0098; Wed,  9 Sep 2026 16:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99E5A6B0098; Wed,  9 Sep 2026 16:13:03 -0400 (EDT)
+	id 8912D6B0099; Wed,  9 Sep 2026 16:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 77ED76B0095
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:13:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D90934030B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:13:02 +0000 (UTC)
-X-FDA: 85195322604.07.D12F89D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 35A5F40004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:13:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ysd/kTgA";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62C6A6B0096
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 16:13:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E6E6C1C1CCF
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:13:50 +0000 (UTC)
+X-FDA: 85195324620.18.2B49849
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4C0AE10000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:13:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=juCmX3GX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788984781;
-	b=HKz57QrbgzQAfX86zu8jaVpDvVL9vLGl51Iz6V1kuhIcKyUrtYeXastt4L/wX807PyfHui
-	TPC8aNnQ9w+dkCRVPThi16ZeQBWPBNoGhm5c+qThxG9eKpVZGVnBhhJYttBJMQ7JXaWLGu
-	/FHxM7o9+qsRk6nOiwpIIpeYPhcIFRY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ysd/kTgA";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+	spf=pass (imf05.hostedemail.com: domain of "SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788984781;
+	s=arc-20220608; t=1788984829;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nkCROJGmCSID5J3EY7M78lHWx0S0ZOsvo3WsTjTa2PE=;
-	b=gf7I4KpKA0VCx4Iwi4ycnD6LDsWXad4gCqggkvZH6HoVSOlONqKZmjTibmSHqdJhiaBwMg
-	hsAhLwW235Re7f6S0n0bVFuA3NDjWQMYkRZHpivF2ueEoOKT/+u0OcjeXDpxHa2bKas/wl
-	pqXg9xef+fYxhZRyQvyjksD5BiuFT+g=
+	bh=MQv84SOaC1a4xRlHxd7KhcwiZ2JQHsHJb8U+J0I2g0I=;
+	b=jKt+rWJSS6zgXPNv/wm6IOkV8IZRoMLIQykI5wldnSCydbwWjzz0RUZnxkFkldnItCeK55
+	kAdgM76Bd2d8kECHWDR6T2GByiicU8RVSbJZlcQQiDBa208GuZJb7S5+BxygLz1tF3zYYM
+	6/rXzvE6zPtO/qHfjUUNxoJ2JDN2mQc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788984829;
+	b=U5+JlRotOTu8D4jc2VfryrWo4tacsZVDoiifE3KslVuKo/vSkZyxKXzBX5ubVlNSs8TYnX
+	djxbWkZvdnktDefVAPq4Cj7q18wGhzgK3E5UmTd1vfc588zj215UZ1AkbIhaPZn6fXk3WZ
+	76+SOv8pECa0BNG5kU5gC8iRjTHECzE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=juCmX3GX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of "SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=B23o=HB=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAC45600CB;
-	Wed,  9 Sep 2026 20:13:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE741F000FF;
-	Wed,  9 Sep 2026 20:12:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 67BB140643;
+	Wed,  9 Sep 2026 20:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C171F000FF;
+	Wed,  9 Sep 2026 20:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788984779;
-	bh=nkCROJGmCSID5J3EY7M78lHWx0S0ZOsvo3WsTjTa2PE=;
+	s=k20260515; t=1788984828;
+	bh=MQv84SOaC1a4xRlHxd7KhcwiZ2JQHsHJb8U+J0I2g0I=;
 	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=Ysd/kTgAgLyUrOsMKu6uj6c92r8HOe4mmu5KgvdKGgbuUHS8sjrYbrGofEYKTiPVx
-	 xUtHICG9VeB11il5KfTzApgWiMDhYNTCQR/p1tfAzXsQxwKn38pDWcLCmFXphnHCst
-	 atPLvH/Y2hQFwhHzDJCBHNUWO8obouQ5v/bSiJC4rLphPzLQTeUr93cUaxZDT2YSRR
-	 4OudDUbPP3S+Jk9WF7Ei0lU2inuVYtYS7KplVE93iQ9McLs3/4uFBRopyan2SdTUSj
-	 YlKGcGFieO1QmAn/ktA4ObWl7Q5vLMS995+JKQnPl7G9Uj34wBP/7afR5QjSC847we
-	 EAubBzM3qBKCg==
+	b=juCmX3GXvi8gIcx9x1MqG0xHSRRFzOMy8j7taPhO0tbXRINSpeYHoyx3DvxXaGnlX
+	 wqfo1OeB5lKOS4RDH4yrNYtQ1wVY/vrDlELptYhLFIiiafuhqzwg6j2KqCAVzA5Wzi
+	 oy9k45btmuQT+ifPsLG8iPkCIOHZ4jzntrmTDY2Sg9I3VWVQGOotJML075qjZrmTuf
+	 +djMyNK12BEtbJTOuA8s2E36bZZGfdsKyYXZzza5W0Z1BZOqjILooMvwlLu5kUPU9e
+	 U4mmiccNQi7ixtQFukkHPRKfh7E9+QHCgKUc06cDEpvCDAMjN8KdGxoUBWQNiT/Qn6
+	 vHB572M1U95wQ==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 04BCFCE086B; Wed,  9 Sep 2026 13:12:59 -0700 (PDT)
-Date: Wed, 9 Sep 2026 13:12:58 -0700
+	id 1DE61CE086B; Wed,  9 Sep 2026 13:13:48 -0700 (PDT)
+Date: Wed, 9 Sep 2026 13:13:48 -0700
 From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -84,24 +83,23 @@ Cc: Josef Bacik <josef@toxicpanda.com>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
  drain pass
-Message-ID: <d49bd6cd-0670-47ba-b8ef-e3e8c0d49830@paulmck-laptop>
+Message-ID: <004abd0b-7ded-4b2d-87ab-7f8fd6f6cc8e@paulmck-laptop>
 Reply-To: paulmck@kernel.org
 References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
  <aqGilhgcEd0qaHjI@slm.duckdns.org>
- <16d13239-8911-4597-bfd6-18aa02135137@paulmck-laptop>
- <aqGv7R4LTmlrW6QI@slm.duckdns.org>
+ <20260909193820.9aac7888ba9d@toxicpanda.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqGv7R4LTmlrW6QI@slm.duckdns.org>
+In-Reply-To: <20260909193820.9aac7888ba9d@toxicpanda.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 35A5F40004
-X-Stat-Signature: bbsmgb11i65cmrmxp5bayiq4o4efaoab
-X-HE-Tag: 1788984781-579422
-X-HE-Meta: U2FsdGVkX1+dUKIDMZ7MZmV+Dxn61RqN5lK4AsdHLBRcjMQPbXMQx1IJBLKbkdtmmRavB71DXgP+UxMtjl2bwavODQezREujRfNYf+C/HvvH+jNgUswbC+LZN+sc6ygfeYSVoXEgScJZpj62hQIxUZH2/HSWtGtgsE42KwI3a75dnhnAohppB1YKCMpFP9wjY+SYxwqC6fboNaIoV4x0mI/WHRaE3FfUz18K096Zlwjgvw8vFyv/HdwgOtsHxlbHSZSy1Z0T3fm2IGqBXyYijYzkAP9jhogEudW9kEORhCkvwmtsDKH7AD50cv6ChzIjTeaznXGi/tLgLSr+DczJ/D86Dc6vh/aK6b4Jku9tMq70+0/9H//05sUxZhnHiYrAZpEqobaSgTEidox32oIWFgfjrABSGow8V7dmUZC6BI/G2yFywvQAY4tMfgrjWo7Keq+tI+7sceB1cr9UviRqsQMDztw+WGcyArIxWEWpqK8A9n2ObpWDdKxh8xdtoM8KEUQFGmQEpBIFH4w2UyainAE/oYrezc+B5hhWl7IUzkb66WLuMvjSOJ5Luj+J6IqE41sJkMnfx4YhsoXtIkfkA0SGXkzWJPb3CLxzXKtLFyc7LbozllQHoYEZ16YTcIGuB6o/2Z/XGlSF3vH77+mEOK5n2WIPHOkDs4t4QBd/a+qg+e0UCm3+W22I464+y5KwEt/xZY4l0Vk0EUNiElx+XJJ9PhDpCrI1HAZUEGaUmzwKC1Y7VDXWjhjNsTB37uaXim69jijPY39PlXvqF2YKib58WkjE8KDzdtu5etpiGfLq7xPLziDa2vhCtIQRPlG6A/nfJRQbKv+F/izlJ+/G9FMCOvaVjW3VWO67nI/TWmAmN2oY53BAHHXpEz95jZfGQMSlz0jmArLOG/QKfSzgXvQtoMDCJARAL2/pLMSbhp3+EoQEMBCWiNsbIIS2RdBg0Q7jvoRcK9Xpfn1yIc6
- BWrWF0RY
- 1eJ3L16txzMTsRRR2pZjvcsjAYNoZbYLKRZAazVhVMrJ4z3QDMHPutHlVoyheqLxSRHK7GVKaAiG0a0e5cWaPVuhOe9DUeUr+m8SmtQ4YKX3ydHGVuJQGl0egJYwkaV3dvpFaIxgAuxuKVMEFf9DiK9H/Veq5hmKtT07PoH9/JE/dTQk2mjtKecvVgsQvr2RFhwitT7I2FARuMOgxK6fAMa4EpzgNtSdeDmNKiLc555XW3fU3O2AeVrx4oebCxm4WxCLUqY6dW0wpxkEJ8uPf/FuqcdPQCHant4MmXCP7tgslO0cBdeB+wN12zseXrksJjQimLE40WBbk+l1kIEF6xBqyck160vfOiwwLDidukU0h08a9l+W6DhDDnjK1xly5R6GHLs7V5Z/lWXmSW7T4igyYlmkfoYK2zZ6wrto0oaHYRJPEtgwoNLka/mEUBSflTPfsN+Mwmeg9MndyCIXmVbvUVZYchA988+fhgOosmhgMyrnb8cnBwtxApx0CidRtZ513OP/C/l+yMuQxIudLSBMijtY5YZITY/JjQguQKKX3lCachxety86FAwDxBaTC3pt16LL55EoiBVpdyztk56K8EoSEg3eorv0PAEPNsPWIQoS5RwZK5T2aM6LtPxpGDah/qP4puqH3Q/K0s/GDnqOnGgkaDnJ827q+OqP0BIAj/d+xv4mYQf/o1by7wGDm5yxTcxGSIi6P2sw=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4C0AE10000C
+X-Stat-Signature: 9toti3e1zuqidy14jno5wpii7srkczg9
+X-HE-Tag: 1788984829-594836
+X-HE-Meta: U2FsdGVkX1/lNSxvnaTCvtDmrCIRyfGIleNIkIfL7S621m0BNKIYFNrS+jf/BZaKMT5Tvtzt/Q2HeKYnwHhISizPBH5Z8IMIlprv5JUwaEnO17vSGaLViXZURrQzdbFXD7fhw4Tok8/cCxGjQFKwimQq31Y5wEIwJ4NkKftpTcoT7JyYQFeJj5QyJ+CpanGWlWizD728c1ugZE6AyuatvJhy0AXqo1WWxQB1nHkQ3FRqgkgJBZmzuIMJL9B+OCwp7jjJgd49bdc5yJtacWZCoNVBm3+ddqH31i6mF8Fa897H/dDrvq5rYx7ZH1x8ihLh6s2wKXTpDjaxYm6gx6bRP9XlkspRYUxdFDQXmFJRzenUkxLrYO2uaK7mtt6XHoBSSONq3CALB6u+Jss9UQulLT2pqwiEoVfhBxJM7s4d8hEC2S0sc/GJiPvh9MGpBT3Kdd1DYt0Srw7yXFaeuPXTRmoAd6krZuFjaQxrAhR6y1svYQ2AGAPejAeVqBuHEhg3mZw1JGKEnc8mZCwzYBICOxANNvpb1YDkvN89RA2oitQo+l72cLCXk+Hv3NwtZdrYEy67zvENS+DJd3blqnikitjP0aTQVXh5GKy0Kz8BOmRsBARWrUqqZoqjN3bzvn6oErb+wVgO39zIAkOvk0rzEvCJuicX3zpagC3PAZUloZIIrhu/TUV2zTqT+HFUgBVF1FgQDSVjkS9lkYZmBWZ/30A3IZyv46mYTXL/fLyRjJ5M6+ukBpxkwVFyURkKS6fKadTcBfW6ZEuCc/VoGd0pS+FlfxQM9iuG2dUQCdQtrgGaQjU/xB4EVLUF4pBLGRlo7u57wrDO/MwIb6SHhWHb6uKAf7AkgbNadbOB5FoJz+j+U9WvzG9SZ1bkSbPodlZ/AZZg0ZB9ewBguSgJwQj6ZffX2TADeIN2rFG5oFAJOxYvpoFGqJDO0tRoVikAloZldGmcaBU30WCk0MKMrnh
+ 2UV1pl2Y
+ l6KT057XhXOuEpbrhThMfJvBvxMF4E/p8TbX3OeBcpETGzInocOSjqAaLSuT1Yf9CG446849lYguEFSa13qosCkZSY3xPEiCWqeFj92xVwvN9w4TZXkOL440hv3bi3D4o0xw1ONrAWl/lR8VFW76/xO+/4W2CJXJFcS7vN86yhsl1EuceyYHJVfV8ocjD8WCNjulWwETj3rBKPYgfANS+CKYlr5qodmb0tCmJ+xp45Uy2ij2PfXdARERYQuqP16PMp3MlTX4vsiYl6nuyzeWF+Sq5wW+p+4lEdZ1c2J7nZ5cpusA5W8PJMUMGgpzkLka5VdTT3PQ/GobrxeUJP0VzrM/rwiUZBvUjHjQvanDSCAWgPgbnrb+h4gkYl02Rp6z9ZKOKmTKw4E726Qc6qBsK1h8aPHxGPE8buscx3S/iqhxoad1th7J5Mizfm4Z5VagITJrRmB60quiWU4wPbu/gukWs6GSHwQ63MhYiAFp0SfEgr+d8ZhJkwB4XUM331MM9FEbbg0rar4NgEb9hc9mXk5Wn0Nv0KPgaotsJ0NOqq+0cgjwT9tucYH/ra/DMencgdFh+JGUPwwnHQudqKgCXjvvzNODJgjv5cf3MpB+NAK/qNk0rNnb5kk25oLNplv/EbytUEPM4H4uWPOSDOqj4yc0W3t3bhG3QqhWTdDa+SZkCXD7oCSXj0dDlVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +107,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 09:13:49AM -1000, Tejun Heo wrote:
-> Hello,
+On Wed, Sep 09, 2026 at 07:38:20PM +0000, Josef Bacik wrote:
+> On Wed, Sep 09, 2026 at 08:16:54AM -1000, Tejun Heo wrote:
+> > On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
+> > > +		do {
+> > > +			cond_resched_tasks_rcu_qs();
+> > > +		} while (cleanup_offline_cgwb(wb));
+> > 
+> > The patch looks fine but this overall seems fragile. cond_resched() was
+> > already marking "stuff that can take too long" but we need to use
+> > cond_resched_tasks_rcu_qs() if it can take *really* long. There gotta be a
+> > way to make this more maintainable. If always doing tasks_rcu_qs from
+> > cond_resched() is too expensive, can it be be gated behind something cheaper
+> > e.g. some tick based test?
 > 
-> On Wed, Sep 09, 2026 at 12:03:20PM -0700, Paul E. McKenney wrote:
-> > > The patch looks fine but this overall seems fragile. cond_resched() was
-> > > already marking "stuff that can take too long" but we need to use
-> > > cond_resched_tasks_rcu_qs() if it can take *really* long. There gotta be a
-> > > way to make this more maintainable. If always doing tasks_rcu_qs from
-> > > cond_resched() is too expensive, can it be be gated behind something cheaper
-> > > e.g. some tick based test?
-> > 
-> > This is the business end of cond_resched_tasks_rcu_qs() in preemptible
-> > kernels (in which cond_resched() is nothingness):
-> > 
-> > # define rcu_tasks_classic_qs(t, preempt)				\
-> > 	do {								\
-> > 		if (!(preempt) && READ_ONCE((t)->rcu_tasks_holdout))	\
-> > 			WRITE_ONCE((t)->rcu_tasks_holdout, false);	\
-> > 	} while (0)
-> > 
-> > This is pretty lightweight.  Adding a jiffies check would likely make
-> > it more expensive.
-> > 
-> > Or am I missing your point?
+> Yeah I agree, it is fragile.  Every long running loop in the kernel that
+> only does cond_resched() is a potential multi-minute synchronize_rcu_tasks()
+> stall now that cond_resched() is a no-op on the preemption models most
+> people actually run, and playing whack-a-mole with
+> cond_resched_tasks_rcu_qs() at each site as we trip over them isn't a great
+> long term answer.
 > 
-> I found the following thread for why there is a separate variant for
-> cond_resched_tasks_rcu_qs():
-> 
->   https://lkml.kernel.org/r/20180224151240.0d63a059@vmware.local.home
+> I'm working on something more general so we don't have to sprinkle
+> cond_resched_tasks_rcu_qs() everywhere, but I expect it to be controversial
+> and it's going to take a while to shake out.  In the meantime these are real
+> bugs that are taking machines down today, so I'd like to get the targeted
+> fixes in and to stable while the broader discussion happens separately.
 
-Well, that was nine years ago.  ;-)
-
-> The rationale was that it'd make cond_resched() expensive, so I assumed it
-> was relatively heavy. If it already comes down to a single test, I'm not
-> sure having a separate interface makes a lot of sense. There isn't some
-> semantical difference between the two, right? Anything which takes long
-> enough needs to do the tasks rcu qs, and that is what we mark with
-> cond_resched().
-
-And nine years later, I am still good with cond_resched() implying
-cond_resched_tasks_rcu_qs().
-
-The people wanting to get rid of cond_resched() might have a different
-opinion, though.
+Looking forward to seeing what you come up with.
 
 							Thanx, Paul
 
