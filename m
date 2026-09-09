@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5207BC79F82
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D9A5C79FA1
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 01:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C8E16B008A; Tue,  8 Sep 2026 21:32:01 -0400 (EDT)
+	id AC7C26B008A; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47ABE6B008C; Tue,  8 Sep 2026 21:32:01 -0400 (EDT)
+	id A78686B008C; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38FF56B0092; Tue,  8 Sep 2026 21:32:01 -0400 (EDT)
+	id 98D7E6B0092; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1665C6B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:32:01 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FB431607DF
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:32:00 +0000 (UTC)
-X-FDA: 85192497600.11.542A6F3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 71AD56B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 21:37:38 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA03A807A9
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:37:37 +0000 (UTC)
+X-FDA: 85192511754.29.7547315
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BBB711C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:31:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dPeLNOU4;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788917519;
-	b=D/A9/EycNk8MKM5SXcmvbdvFXi/YwyjAmQdLGFVhmKGz2/SPwHukUVlvg6k5cnx9ubzLai
-	WmB6lfSFjmNl+VvPJJCvbr/ODM5xhFS2aLzHwb/WuABBbcoTleo2mYxSP87zb5B8D+CWTB
-	2/elgpUI6PSynd43FBdGhurc+bkeGyU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dPeLNOU4;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 095F0A000A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 01:37:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n5kLNgGa;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788917519;
+	s=arc-20220608; t=1788917856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E6Jg5xIoexoZAriiCVovYZ0qFnPKz2yjpLiaN5i1W4w=;
-	b=7nF/PMeNFsZuHpNIKtJn9d35kbFryziy0bZdCG3TZXDlZWxIaH2V1+vk7hrRclZUdEL7U3
-	dIYCwP0t63NVz29ct75fe4INKJTGmNFoaQ12QkPMKTBTrh0D3iM6WlZv/Uw8AY0sd91aau
-	dVhZVzdXKPVwpYLR1MNi4rmgb/TKKwo=
+	bh=wCl8v/e1Ribr5OQ7F4L+L+/USm7rKZv5e/AFPktfvKU=;
+	b=pT+jZhYLrcnSrBokkpkL9LelElmFr5JMrMdsCRsjqWylwMEX3jMVCoCOjEiFOWVrGSE00n
+	c60/AvyGij2PEpgsrVuBvENG3LBn+qLynQFQpVuVYaQUm37GteBizR6ks1ZnfZ/ITVZ5ow
+	FKuy8KLjuB4wKfwqCNDeTq1znCxGLyY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788917856;
+	b=uL0d0oL41MFTalEKLXs22kpBEDG85YocsTl6ux0eKKF9jNO8qkN1g9ITN8Z46/UiMdqexR
+	a1uDfAaqab9wtFJQuqMEPVON+a0hWvSPfS3uaQAdXpiQrNaNoRSHRUuZx+g+yQrQ8cRJjE
+	L2My4Q0gzWxuJVG7XZ3ZmQU8VJJcZrc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n5kLNgGa;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9585842B71;
-	Wed,  9 Sep 2026 01:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203B01F00A3A;
-	Wed,  9 Sep 2026 01:31:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C28340BCC;
+	Wed,  9 Sep 2026 01:37:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1021F00A3A;
+	Wed,  9 Sep 2026 01:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788917517;
-	bh=E6Jg5xIoexoZAriiCVovYZ0qFnPKz2yjpLiaN5i1W4w=;
+	d=linux-foundation.org; s=korg; t=1788917855;
+	bh=wCl8v/e1Ribr5OQ7F4L+L+/USm7rKZv5e/AFPktfvKU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dPeLNOU4iXquobDjstLplfC2jXo6o18xmbbGcphLdK9D5cmpMqZS2UVuB3JOZji5d
-	 OGMH4imFVETAs9tjHhLyJhip8JDjOyk4+toRqp+2LjdYyVm1j2gOt80V7JK5Vyuip7
-	 4qCWDeEldXq5FBqxlV+UBvb9y6lnU6DZ5a8VOJ4Q=
-Date: Tue, 8 Sep 2026 18:31:56 -0700
+	b=n5kLNgGajilivzKNxr6qpSIgTRetxyb3x1+BtrqXUEygI/I48nTe9K8FN47vE6BPq
+	 l8cyhTCo38RYUFtxqC0HV7fQZFi9cdyBW1Bi79JzbR5/zRai0NsGs9IfChmrGG928h
+	 fo/AjnTJ+Bm2lpDcwwzrX3dydmVtfdPEu6j9I9bY=
+Date: Tue, 8 Sep 2026 18:37:33 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: hannes@cmpxchg.org, baohua@kernel.org, kasong@tencent.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, david@kernel.org,
- mhocko@kernel.org, ljs@kernel.org, ryncsn@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
-Subject: Re: [PATCH v4] mm: vmscan: avoid anon scanning for GFP_NOIO with
- low swapcache
-Message-Id: <20260908183156.5f1fcd990ee847589197aac4@linux-foundation.org>
-In-Reply-To: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
-References: <20260908062649.1045883-1-zhangbo56@xiaomi.com>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lorenzo
+ Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu
+ <zhuhui@kylinos.cn>
+Subject: Re: [PATCH v4 0/4] mm: workingset: fix the shadow node budget under
+ MGLRU
+Message-Id: <20260908183733.ea115c9f8e6f88220d1b9b5b@linux-foundation.org>
+In-Reply-To: <cover.1788837625.git.zhuhui@kylinos.cn>
+References: <cover.1788837625.git.zhuhui@kylinos.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BBB711C0003
-X-Stat-Signature: ck3tpdqk3yaa7rsgayd1j31ncrbngfsg
-X-HE-Tag: 1788917518-331269
-X-HE-Meta: U2FsdGVkX1+MTjltJOaO7EtnUB1DQbCKubpJbBrIbP3u+NbA77SUt7SjcdNrWRkwBpVf9q6JOyPJAws6Zh0Nkm+1uXGA7Fsqp2XN/f73cqhrL4LgoK4yE79XCfmZ8Ylu2WZrTK4eUUzHMeiQ0NyOwZnVTt2NOkuSbTbgZoFsq/tXTPMvARgXpPxnW/BvFwwZ56w6Vm3w/tIGqBAuK3vyRxaC0Qvpg3Yp7h6mLpzsljQnCkYZuxx25+z0nzv6ZiLBN5XslzzldsN92OV5jmHWyEpbpx5jGCxsyuCuQO7HW+jKrPMk862/OwbH+L1bwJmbOkTeiGFVarW258P1UBfBfF7K5Yj4sNGyDOK19wJ3WWzD3H3XW08BqgDo0QWBdkhqOo1bszGHg+CBivORWw1/AtDTwzeNtq5UtedKs86enknQUbOhP776DMJ0y0xFUmLf6eW+V5aeAQJbQ0psZU3WkFzi8adBzizSHefeypseOdiDsZGmxxijVVo+GbxpIC4dFpb8UyTnuPjyk+KXJhx9Cy0ex4D+0JTIl63vMH2AD1Z1zFnLGKaIQs4BDYxk3saGa2JSr9QjqsSUrkoM4SuNNHNUuHMp6G51tkseBBNjSxBjk81VNfjSH0pxriajjn2pT1niA5s75AIcuTtSXBPC/f2wb3WWzfnpNHaw3iCgfsL75ZqnLP+UbuCdcAsgr35hGY7qyvpnqlLp9GIRci6xKB/5/qg6HRB6iKo33lmUfFZqMykQiRpudqfrYPwmIwdyFcTGjkaXjvYHeUet6Ln4TsJPLwuM+6CChKf3DIU1wxgXUkddF6OvL3SUu4zhTMihU/o6VnTVvh95px8dnBh9knmR6K1ZJW6dFA0AyM7JDNSvXHRnxXHWbvUZ8fyBXmk9cVnXtW0p6EXPLXB0/uIuXtH13TrMl3OHQkfUOnygytjGtjLODiZCPkKZxmoSaz0y8J7GgbwnpLPJtRLO37N
- XdBYob9v
- faCb5+Zy+OABnjsJVmZzoXCQlzrRjG/mtOU2/2dTeHOqcaLccMznVU7FlLB1AeyLPArBnGbURecdHZJ3V8u+G4GmyU4Lprg5IU00sX4olvNy/rSox9OUjFLBKnkI8Zlum2qll0jD4KL+WzEpgzMcWOud+ODAcV0I+B7YLhvjcsRGMhR2jys0KEjsZggSbAfdV2/HKzKhSbuRuZSCvJuFD5J2nomHf8YUhJCi5/RcbG4KYkHfSDu5DU9h5x5Yn2qVQaEpvfPZAn1DjDUuQLKsVnhONVPAjxo3q/AQbbW/9yZZtLxUSlnqW7kH9r/lxtwO3LOjw
+X-Stat-Signature: on7qzr8xn7hebb5a1m8zkpadwkwrob4w
+X-Rspamd-Queue-Id: 095F0A000A
+X-HE-Tag: 1788917855-373481
+X-HE-Meta: U2FsdGVkX18ZmBHorrG6KI6qxrhrE7nnxvrJofDgaf4mACWKEYeVvvg26dp2/MP9PDDaLuwvmiOOjoU2g4xVNKyTaJyEMM47CDOARq0C5rVzYBtlMBnN/XWTEIxDYa14002llbGw8WWkLzkBxeTWfgo4wsw6mcPKbxIqNC3oDYD9OMHFmx59bM2TJCJdRrz/zwhA0rYnvfB3TxBnm9b+qTaD0gTnKm/MKzztARNIvvgp6yYdMhOujoBpqbiR+ndcTxB4HYBJyHRVU3HD+rIyeg5NSNXJ9f2hLU1gj5znNB2gPG4kuzqHhbYDmEcNU8gx1iJDVfwSssn2CU9hCQYGfjiGF9M1HTtL0z10AnkGe60JDOpUHT05CP7zU8TiEmiA60hGKdsBMHEM8IFRAt39dvn09c+bQvbm4UF3iyk+MxHthOh5x2EtoBxpFbs9u66MWkFLkWE1iVWrMnjPr2KuAN8sfDorwzoBwG00C5qpxz23GbObl97go3/S1J1A+HCw11hNGAtKn03RVlyc6I2Ej1xoAH5fL+JiiDMk9x4h+REBQqPxaweV/6ObOZk64/8EXHT2XwrFmgh0xylU54arCrDgJ92DtXAVJ+suyxFH2u3HZDcNivmKftxBBO7vXKozbv2z78jNOuYcOU5rXZKQy0jONnuE0+4ohsmEZMEZylYyUy+xoCuu7lKL+se59KlQS9nOBd0Ipw7abNkK1kE7glh7BYXIiSxqRJ7Z6aK4lBq+pvUWkl4MxFn/KUquCaEMqHU6rmKS//akQXNYBGpk4TPh8hv9nWWdDEUheSzKx2Zvg0/1rd2KLRtXtZYVhK7D5YHY7uQsCTg5gCpcKqPuEZPzUvDeSQNT+8y8LPa7gDOUiDDRjrAJ5/rj+Gd9DJasRkKF1/Kga9mpDCRBcRKCclzqBX5FA5PI22HuMLzjA5LoAq1a5682CxNSZ7V0R+Wxgv9sN/JED3E5yffi2rT
+ BNam8gtC
+ rYgU1PNdCNkgWM/f3x3DqWU/ImXMuskDsdphrkwfQelj1eMpPu9jlokZrv4WiYfKl2yD9ma+HStWXk+yX1kZGTsUCpTEG3yEUYVhjlVgmr+arGNNzA2NI4Rhs5DGhtb1G+6PnuxPf4FC+bi6kf3e3UEmBQ17x9JRyOrOpCG45t9l//YSS6tzljwG9H1LlmmcL8xLzNBshsZPDqaHjvbpdJx/rY6+5ofjtcgUX9KpNUMiUkJDevhSBWm3Exgaa/W0H4kUz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  8 Sep 2026 14:26:49 +0800 Bo Zhang <zhangbo0325@gmail.com> wrote:
+On Tue,  8 Sep 2026 11:41:10 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-> We have observed some cases where memory is allocated with GFP_NOIO, so
-> we cannot reclaim any anon folios unless they are in swapcache. We can
-> end up spending more than 150 ms looping in `shrink_folio_list()` scanning
-> non-swapcache folios without reclaiming a single folio. This is pure
-> overhead.
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> This is particularly true on systems using zRAM, where swapcache is
-> relatively rare. So let's check whether anon reclaim is allowed by
-> GFP_IO and whether there is enough swapcache to make it worthwhile. If
-> the swapcache is extremely low, we're essentially searching for a
-> needle in a haystack, so let's avoid scanning anon in the first place.
-> 
-> On Android this is triggered by dm-verity hash-block reads through
-> dm-bufio, which legitimately use GFP_NOIO because they run underneath the
-> IO path:
+> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
+> number of lru pages") broke the workingset shadow node budget under
+> MGLRU: lruvec_lru_size() reads mz->lru_zone_size, which MGLRU never
+> maintains, so count_shadow_nodes() sees the evictable LRU lists as
+> empty and the shadow shrinker reclaims eviction tokens almost as fast
+> as they are created, losing thrashing protection.
 > 
 > ...
 >
-> To stay conservative, this only skips anon when the swapcache is really
-> tiny - below 1/64 of the anon LRU - i.e. when essentially no anon on the
-> list can be reclaimed without IO. Whenever there is a meaningful amount of
-> swapcached anon, the normal path is used and anon is scanned and aged as
-> before.
+> Performance testing
+> ===================
 > 
-> ...
->
+> The test script and the raw results are available at [1].
+> 
+> Environment: 10-vCPU QEMU guest, 8 GiB RAM, cgroup v2; 7 runs per
+> configuration, medians reported.  Workloads:
+> 
+>   w1-anon-churn: single-threaded anon fault/charge loop in a memcg
+>                  (MADV_DONTNEED + re-fault, no reclaim).  Every touch
+>                  is a real fault with charge and memcg stat updates,
+>                  so it stresses exactly the fast path patch 1 changes.
+>   w2-file-churn: file read loop under memory.high pressure
+>                  (reclaim-bound, noisier).
+>   w3-reparent:   reparent accounting sanity check.
+> 
+> w1-anon-churn (pages/s):
+> 
+>                  classic LRU          MGLRU
+> base             4393028              4377122
+> patches 1-2      4385996   (-0.2%)    4352887   (-0.6%)
+> patches 1-3      4381832   (-0.3%)    4377053   (+0.0%)
+> 
+> w2-file-churn (MB/s):
+> 
+>                  classic LRU          MGLRU
+> base             8277                 8226
+> patches 1-2      8226      (-0.6%)    8123      (-1.3%)
+> patches 1-3      8157      (-1.4%)    8294      (+0.8%)
 
-OK, thanks, I'll add this for testing and more review.
+Am I misinterpreting this?  This difference is probably within
+inter-run variability?
 
-With trepidation.  It's easy to play whack-a-mole with this code:
-improve one thing, worsen another.  Unfortunately the "improve" step is
-apparent immediately whereas "worsen" can take years.
-
-So, as I said, testing and more review.
 
