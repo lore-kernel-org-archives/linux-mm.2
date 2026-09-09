@@ -4,73 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FECEC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 07:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2059C79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 07:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 062446B0096; Wed,  9 Sep 2026 03:47:21 -0400 (EDT)
+	id CC7A96B008A; Wed,  9 Sep 2026 03:51:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0134D6B0098; Wed,  9 Sep 2026 03:47:20 -0400 (EDT)
+	id C77C26B0098; Wed,  9 Sep 2026 03:51:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6BAD6B0099; Wed,  9 Sep 2026 03:47:20 -0400 (EDT)
+	id B8D346B0099; Wed,  9 Sep 2026 03:51:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C7AE16B0096
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:47:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 928D06B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 03:51:28 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFC2C160124
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:47:19 +0000 (UTC)
-X-FDA: 85193443398.21.4D90324
-Received: from out28-111.mail.aliyun.com (out28-111.mail.aliyun.com [115.124.28.111])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0378040003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:47:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of yehuaisheng@open-hieco.net designates 115.124.28.111 as permitted sender) smtp.mailfrom=yehuaisheng@open-hieco.net
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5818A26E4
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:51:27 +0000 (UTC)
+X-FDA: 85193453814.21.473ADFE
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 96A4A20006
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:51:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uTxKO25Q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uTxKO25Q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788940286;
+	b=cv0CFGHXnf3L2hP4srQPBbOxxmyQvYidswfa5T/T6M8A3hYJah20TRLHM5Oi0I4XltlkpV
+	Nwgb3u9JwWGMwDOmz9WkyqL1/3CG7bPkrDKakbz+lf23mKElRNoHjLqUQ/LizhNUPOMqRW
+	8XHM/5WA/Lb1pEE2wGyUKZXRALqRAKQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788940038;
+	s=arc-20220608; t=1788940286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=95zWfEmjhzDirzcYCEa7YW848gMiOajBkWPJK2r0zSA=;
-	b=fgYlK6bXu0tyVd8uWy3s7ixzY1SAcyRUjO7RLzm0lC7KWfYejV8vV3ARKH3KZOUwg4PGQo
-	+Whf14nDZTYRVpnxXRN3JwjdWQ97tNGddlK/gPPU+uqFLWEP0XfhLXNFUG38d+1ORsmngR
-	kvGkwuMkrrTqlAt0bmiw9LJBFNXAnxs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788940038;
-	b=OboGk4Fiyb4LMLSrTOPYRcpijzRll0IqiVLzrvNJ4k4ezbKl7+xXqnEXOEEfK+xsXQ5uEh
-	ay0Gt4gGvs++kDQzUQcj8LjmZb2yAbhrZq5w0SH41ulTFDcbR3qQFDm2FmAJK8TX7GYR5O
-	INzih1DItGciCVKLgZK4bH2smEWX8Uk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of yehuaisheng@open-hieco.net designates 115.124.28.111 as permitted sender) smtp.mailfrom=yehuaisheng@open-hieco.net;
-	dmarc=none
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436956|-1;BR=01201311R611S83rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.172705-0.00782085-0.819474;FP=18101722540256330983|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=yehuaisheng@open-hieco.net;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.j9KD.hT_1788940023;
-Received: from centos9p-03(mailfrom:yehuaisheng@open-hieco.net fp:SMTPD_---.j9KD.hT_1788940023 cluster:ay29)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HgcVAsu0rPX72TNTb7TtYB2tqY78GbkTnwUYgQz1Gq8=;
+	b=WUKVVgX7l+vcURrjS+/7pniDBdziJRTVuftUk+sm8x3w5R77lqtxcJ4Pl06dwO/tJ9rmgJ
+	vgopFGNrf/G7rJDzNfJ1Yq3dJVeyB4YgcCJ3EO9Yig19vONExN5Qf37O0stSDqV2ETNbxt
+	/olvoIKK9AkKCAQp4KYy9Nfx4FW9Oxo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788940279; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=HgcVAsu0rPX72TNTb7TtYB2tqY78GbkTnwUYgQz1Gq8=;
+	b=uTxKO25Q3lp4k/cz11UHz7xs3eo5AZMNGXlVh3BPRLQoDE7vDuj1Mh25s61gOSTw9/NEk3AaTRZylx/vjSbiBwo5lwDBSe5EulAUWAcVJ7e3LJAebE1KFmaSnye7BVb8aGndPVifiLV43c81TQaGeOrMFJvRA5tZzu9GpfHQW18=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAeEI2m_1788940276;
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAeEI2m_1788940276 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 09 Sep 2026 15:47:11 +0800
-From: Huaisheng Ye <yehuaisheng@open-hieco.net>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	linux-mm@kvack.org
-Cc: david@kernel.org,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	Huaisheng Ye <yehuaisheng@open-hieco.net>
-Subject: [PATCH] mm/hugetlb: account for allowed nodes when gathering surplus pages
-Date: Wed,  9 Sep 2026 15:46:42 +0800
-Message-ID: <20260909074642.7308-1-yehuaisheng@open-hieco.net>
-X-Mailer: git-send-email 2.52.0
+          Wed, 09 Sep 2026 15:51:18 +0800
+Message-ID: <238965b3-c512-48f8-8dbb-08a76cdbcc48@linux.alibaba.com>
+Date: Wed, 9 Sep 2026 15:51:16 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/19] selftests/mm: skip collapse_compound_extreme()
+ where the PMD is too large
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, rppt@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-3-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260908125105.1510704-3-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: z96t9n9pxii5j8gkhnuoijkz1e41xesp
-X-Rspamd-Queue-Id: 0378040003
-X-HE-Tag: 1788940036-157896
-X-HE-Meta: U2FsdGVkX18XZzIBRmWmzuZz+N+9fPAZMCqyC2K45ZkUgybsfm3msRE7lvqx4jVqEh/J7b2/mUk3vThUNZWxL/UxREKoPA/bdfSNxiIQf4omYG2CydaJ0/bBNmY+bAIBN9MTA6F2HDjMAri4lV0CNQi+NHu6XHxrYuurscZp4Sbppw59XuDj6zQje26Ba6Xe9bMSYYX5C9KazjDBbVlrrU+ea5/NyLjNX9fMXbapWfASThLx5xQrBBU3FYcWiEmk/3lapTulRoNFIXS/AXpusJ1gZg4g8DkWYrCr5Jzo9Cii11kqdFzb40lBRUTwqv92yYSqNsFSvF52oAfTFU7oOIFDvw49w9ezhm84S0KoMpUL+Dq7aCa219HZnpPfvtUh6PIp5FmN0ryRQcOIs1a1QO6Qk9/tBThlfP51REOIOp/dT9SMzAzZXMf0IM3hGBNG3FhPbGhJYQ9Ha82igdbWlFqZbujSMAjpKjvMPSU0VF9GA9a8+/wB5AjAto9cGhgaPLiz/Uso/amFWQ5kaLHj0YfpeGtVi34cp9FhETC6wd5Ad1Xm1jX9VtItW1EBkOzS2L5StpMtTPTHheSX7VbfhnsTcuk2R+Hfi7NX90ZirdatSVn+hz8aWkG8p4oLqRF5kPNcnGbuOdBoNQ1QAIWmDQGWhdN8xP9OcsZie49rTNCBL/kcApyECzUOG2DuigF1cdWSCn3fv/mlPDtS8TehqnCxTHLmP2kxBlkW4seo+UITAuxs9yQzR4vb5NUADEJRgAIviLYiGQaYGE1iq+WJmDoAFb5YcDhm3hzGmyEku84QaDH3Bb6PGB4rumI9YuBJ7hA/fomaL1ygmMx0jQkv4I2Qsxpw3S+V8hhXqb7vSVnlCBZQlldkPpl5mfI+jgf88XiRf8yTTagyZMShHvzuYS/6mffCZWsI8dKtqCKOEChjAzov8j2rs8qJKcTlu0vpGUnD+AfvbZFozeg8XLf
- Qr2lI2My
- fvcmPXpIMcPG/yiMkjfrHOQFwfPTHYC3JOUN11CnBec3vjb08HDk8wKnw6ojjO5ceIrk0K5K+BtEfIL0vFZKBc+JfCRVNDIgP7UpLwdkMGbTrOPmjpuBdCbBoEej+SQLzSwAt20zuXo1pUc6y06ciTeStO3knvBqRTuT0aKCBLmQ0uw2Okut+FHWqxw==
+X-Rspamd-Queue-Id: 96A4A20006
+X-Stat-Signature: 9wy5o6rm64kcbaots9mqibugcydswyp9
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1788940283-564168
+X-HE-Meta: U2FsdGVkX18Il9WQgyDG9F8uGHxc8VW36XZarpYliQywqtFRAvflFj75YE5+OAEnpdgdhzHZiIxG11Ht4Ea6LHLU+5833J6c2me2a38gPkU7vqdoT49ruraemzix26XZ+bF+h84SDDuyFtEhXzbjGLNTHiJNUddsdExQtGmzxSrSBYfk9GbXFuEwVvxUu4r+64InjAxaaoftptrKgZ/yaNnYsu+/1LISO5wA8Tai4r0ojkYi7BKaI1OeoNerZi3Av5lYeym5ces/iuVWR6HM9I2OxsCRJrkaWq5qlptOaSOVKJ49OHnQiwmHwJPloZHs+5ksp2Ru7MM/8btKTm1uus53akgNlLELOcpZcDwsIlxIMQY8reOT72ZkkYju4BfNXB/DUZ4o1exeanw2avu4yHgZCbhqufaPCR1iL3mZwYZZtbzmKCFrTzNN0LRk4tSjpskanhN60PmePTneZ1UFSYrBM6PKhFrZlx0iryhkW3nfjGf3im5NE3gi8o+MPZQPRxE9Plw76ZJ2l+SM5x4Q10eU6rkgDkhtyJkz1xUcRgo4BB6S55qaT1h+FLl6xqF5WFVsC2tsql4aj//5rrSGjYXaeT+aRtXoJ4CSlLCLWO4GRMJrMQsdRsv9FOQqVi+et0zVqWUuywFWWB0ZELX953Y/tJ9KL7VcQCt7yc/CS2+TPZ7HXB4591ANc1wCCMfnxWRZcT4KOHEEDBX+p4sITwl9FaqqLjxuIL+MuD6GQHN2Q0OQiGZwGasrVUuTvOnJNkjsbPahQrjcwhSP1mvTjZ4216GY0Ii7gnM6Cr7Wm8LnX+UGv0GlDts56I5V22FmNhnHDRkR2IERlBP/HlojqU10v3IcBqYLuQWsgREyyUYycbmEl072Ysx8jXMew3L4r2FsXYnAiV80F/vh9SqmqFCeiwy+YOHXBUZ3ey431BbXPPzFJyMYulkby6noUE82wANZ1PSRF7DMBTjIs3w
+ y6aJIBpc
+ MVd7KAa4vyCs6VHf2XkL0piBfVV8k/VBMZVhSAeSGX2kle5WwfnQHX0t0VtcsorHJP4KFjrfGr6u8QJvgip+f3rCDpHNnb3Gd8vYQ6K43poc+qBiQDEqWbm+Rl5DnOXhVwBit+Xv3pcpzWF/TUBohz4CdexGUl9D5aLNf/4dSHvj9PYkpHgOp5XBUjLON9rLawxVHY1kI04754KMsCRrDIC4f7V2ftRWVsr5ZlIGR4Tk0etWdGmgcT2shCOZulZ+CmaQw/T1smgrz843LpZbVEBfeZkDDrf2nx3lUnqI8obAgOJaEvHcGqfOYBoLkGcjTTuKQEWlbVvK2NEjTzD45brQBf+uwoNgJ2bySYspYj74lFp7K+kQ1jsBp/0iA16ogtPwXZR9a75s/OapPO8Wx/zUSiz5snTRKfsMWEsyW1NB9tb/jt+X+klzH6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -78,110 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hugetlb reservations are accounted globally, but hugetlb_acct_memory()
-also verifies that the current cpuset and MPOL_BIND policy contain enough
-free huge pages to add a new reservation.
 
-gather_surplus_pages() calculates its allocation shortfall from the global
-free and reserved counters. If the global pool has enough free pages, but
-those pages reside outside the nodes allowed by the task, it allocates no
-surplus pages. The subsequent allowed_mems_nr() check then rejects the
-reservation and mmap() fails with ENOMEM, even when
-nr_overcommit_hugepages permits allocating surplus pages on the allowed
-nodes.
 
-Calculate both the global shortfall and the shortfall within the allowed
-nodes, and allocate the larger of the two. Include surplus pages allocated
-outside hugetlb_lock in both calculations when rechecking after reacquiring
-the lock. These pages are constrained by alloc_nodemask, so they satisfy
-both shortages.
+On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> collapse_compound_extreme() builds a PTE table full of distinct PTE-mapped
+> compound pages by cycling hpage_pmd_nr fault-time THPs through mremap.  It
+> therefore needs hpage_pmd_nr PMD-order allocations in a row.  That is fine
+> at a 2M PMD (4K base pages) or a 32M one (16K).  A 512M PMD -- arm64 with
+> 64K base pages -- makes each of those an order-13 allocation, which the
+> allocator cannot reliably hand out even once, let alone 8192 times.
+> 
+> The failure is not a quiet one: the case calls ksft_exit_fail_msg(), so the
+> whole binary stops and every case after it is lost.
+> 
+> Skip the case where the PMD is larger than 32M.  The MADV_COLLAPSE cases
+> still cover PMD-order collapse on those configurations, and 4K and 16K
+> PMDs are unaffected.
+> 
+> Assisted-by: LLM
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-Easy way to reproduce this issue with 2+ NUMA nodes system:
-
-  # echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepage
-  # echo 3 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
-  # echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages
-  # cd tools/testing/selftests/mm
-  # numactl --membind=1 ./hugetlb-mmap 2 21
-  TAP version 13
-  # [INFO] detected hugetlb page size: 2048 KiB
-  # [INFO] detected hugetlb page size: 1048576 KiB
-  # 2048 kB hugepages
-  1..2
-  # Mapping 2 Mbytes
-  Bail out! mmap: Cannot allocate memory (12)
-  # Planned tests != run tests (2 != 0)
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-This fixes hugetlb mappings when, for example, a task runs with
-MPOL_BIND on Node 1 while the existing free huge pages are on Node 0.
-
-Similar issue also could be found in ltp if the free pages of global pool
-reside outside the nodes allowed by the application.
-  # cd ltp/testcases/kernel/mem/hugetlb/hugemmap/
-  # numactl --cpunodebind=0 --membind=1 ./hugemmap10
-
-Signed-off-by: Huaisheng Ye <yehuaisheng@open-hieco.net>
----
- mm/hugetlb.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 7857728457952..b078953099fe5 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -116,6 +116,7 @@ struct mutex *hugetlb_fault_mutex_table __ro_after_init;
- 
- /* Forward declaration */
- static int hugetlb_acct_memory(struct hstate *h, long delta);
-+static unsigned int allowed_mems_nr(struct hstate *h);
- static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
- static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
-@@ -2224,6 +2225,19 @@ static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
- 	return NULL;
- }
- 
-+/*
-+ * Reservations are globally accounted, but they must also be backed by free
-+ * pages on nodes allowed by the current cpuset and MPOL_BIND policy.
-+ */
-+static long surplus_pages_needed(struct hstate *h, long delta, long allocated)
-+{
-+	long global_free = (long)h->free_huge_pages + allocated;
-+	long allowed_free = (long)allowed_mems_nr(h) + allocated;
-+
-+	return max((long)h->resv_huge_pages + delta - global_free,
-+		   delta - allowed_free);
-+}
-+
- /*
-  * Increase the hugetlb pool such that it can accommodate a reservation
-  * of size 'delta'.
-@@ -2246,7 +2260,7 @@ static int gather_surplus_pages(struct hstate *h, long delta)
- 		alloc_nodemask = cpuset_current_mems_allowed;
- 
- 	lockdep_assert_held(&hugetlb_lock);
--	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-+	needed = surplus_pages_needed(h, delta, 0);
- 	if (needed <= 0) {
- 		h->resv_huge_pages += delta;
- 		return 0;
-@@ -2277,11 +2291,10 @@ static int gather_surplus_pages(struct hstate *h, long delta)
- 
- 	/*
- 	 * After retaking hugetlb_lock, we need to recalculate 'needed'
--	 * because either resv_huge_pages or free_huge_pages may have changed.
-+	 * because either resv_huge_pages or the free page counts may have changed.
- 	 */
- 	spin_lock_irq(&hugetlb_lock);
--	needed = (h->resv_huge_pages + delta) -
--			(h->free_huge_pages + allocated);
-+	needed = surplus_pages_needed(h, delta, allocated);
- 	if (needed > 0) {
- 		if (alloc_ok)
- 			goto retry;
--- 
-2.52.0
-
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
