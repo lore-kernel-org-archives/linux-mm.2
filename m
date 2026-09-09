@@ -4,124 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC2EC79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34647C79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:57:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96AE76B008A; Wed,  9 Sep 2026 07:47:38 -0400 (EDT)
+	id 0CBF16B008A; Wed,  9 Sep 2026 07:57:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 942CB6B008C; Wed,  9 Sep 2026 07:47:38 -0400 (EDT)
+	id 07C626B008C; Wed,  9 Sep 2026 07:57:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859026B0092; Wed,  9 Sep 2026 07:47:38 -0400 (EDT)
+	id EACEA6B0092; Wed,  9 Sep 2026 07:57:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5736F6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:47:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3D9F1A01BF
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:47:37 +0000 (UTC)
-X-FDA: 85194048954.17.9166EC7
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8DEF3A0005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:47:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bFVT+I9y;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of petr.pavlu@suse.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BBA336B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:57:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A8F914019D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:57:55 +0000 (UTC)
+X-FDA: 85194074910.11.45E3AEA
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 624F1C0005
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:57:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="eNngV/io";
+	spf=pass (imf22.hostedemail.com: domain of trintaeoitogc@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788954455;
+	s=arc-20220608; t=1788955073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TIfeIpZ4OJ7Fe6X5EWfuqkVso3+rNzjQrB57cPZXMxU=;
-	b=Y0Hpm2tvRKeWcAqeHYAzSrVC3lnAgopAVpPbqQdTpYPqZ3no+AgOK0rzAwTeHmo3R7sptU
-	zE7rLrYQcxO5ZF+VIduwnVsV6m+nEheJH+SMYVab9QKjJ++I9cAkFn3sF+/QPNTSYx7/UX
-	RSUkL/reYnaFGjkHSZLocDKCny8xRlw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788954455;
-	b=rsl++MHp5hio2zWa28pM1RLQHxdhOPRrrm5nrCGctbKCR/u4rc86E+o66AO0qXynfDmyvu
-	ftvaWtasQ+80XOIOoUY3iV3J0Cmsh5wpTWMiVvo735kp3Axsqn3HMPoas1R3oR61P1ldaM
-	wa4f+lL0gNESo7TPtJJC2D78JIH3gRk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
+	b=4wFwKITMD9eNhP/xCAIGW8wMgLGSo0d5smeUV2iXEUbVAo7+zSgsabwagrJr8VEBFLC6AT
+	pSr6QGbKKqF4fiwWhzErsl0M7aG5gV2knOJdiLUfLaJbydBX7X2rToYURX8PW9HmEsMM1E
+	tNYOXcL8K1BYUCWp7RvyxGgHBylTu3c=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bFVT+I9y;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of petr.pavlu@suse.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso934525e9.3
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 04:47:35 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="eNngV/io";
+	spf=pass (imf22.hostedemail.com: domain of trintaeoitogc@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=trintaeoitogc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788955073;
+	b=D1u9v1nr/0a9k7RYabmRrypUdfbZvd+qsni+U5cSwpoM/YbZj+o2lCNhggHtsCiG5bJf5X
+	fshV8MUg4mHu3N9uHAsSZEKvWNXmn6WE/lqCD/M+QFkKAfX4tZsI3YdTVmM6r6QKVx7pPR
+	uwzy3GbTACEnvch4i91pbwPG7ufjqmM=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b9184fa80so114852a91.2
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 04:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788954454; x=1789559254; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TIfeIpZ4OJ7Fe6X5EWfuqkVso3+rNzjQrB57cPZXMxU=;
-        b=bFVT+I9y49Srk3ZUgGxx+yGX1HCjHlOkfvIWJckqmC4y3Xx2RGdo/YhH98+6FYnPVc
-         0AH1fIGc0F8rC2vmxYJZpLfOQh3cXhCe/gNCGzFIv6jmpMzbjHXUpBPpQG0eMM/bkymX
-         BfVT9d90s77LNN24ZI8p48jDaDbyXYoi9w2FjvwwFn/6wMyKgPb0+kAq0fJhnAUavA1S
-         tbMN4vmg/HY+GKZT0f5hI9Qub30RAHKugq/E0UMRERKgI5TsmmHg1YpojQByKE/gw1T+
-         tYp1QuqLaxo0mPGE5kYBRXJv0buF40faO0Qw/+raSywVx9/UrDZ4+fS1JdasRemBRkUB
-         uX+A==
+        d=gmail.com; s=20251104; t=1788955072; x=1789559872; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
+        b=eNngV/iop9YjcqyD3svGD7dUxC/MVnkOOgDzoe9EiG0YQJKLVUpGQhEs9ruOmOeUmF
+         79e7Wjv1dDQYJFB9/Pl5QMkN1/tJodhLaTG37FvRaZKUswHxG4T9+DiYNo550VZmIrhi
+         QW7DMIP9rRFVKIxJHnQXhsDWZtWFCqcWg4G0DtfWCEJbvHgxiOm5OEfPUwZDcQDxf+yl
+         W2mcCIpVRcXgXmTv5Y++51178OsXMXoOYVAHJ2b6VjZzZ0ijGKv2cTMTjdeqf8R5Jlqf
+         RuKC4Fcf85wY9hupyLUUnboxmXAkUtS04cZ+weS91uonLMWmj+4YKZwDqdn48TR8V6YN
+         naOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788954454; x=1789559254;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788955072; x=1789559872;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TIfeIpZ4OJ7Fe6X5EWfuqkVso3+rNzjQrB57cPZXMxU=;
-        b=ezYli7bgCscyKg6KIDAMk0nEzM+UwBTQVB/JaYXpiSp5yjdwrqlhKAyVJXPZK3bKCm
-         K6cKF7lowx220CBjj2Nz3zCufiGf59U+H1YKyCkZSsgGS0MbTCrXetDhjBNEvUniSjDI
-         paeJBfBouA5rV2g9O/SZfTRIpCEdaYPou5qtJIneG6vT8M2vo2notUIosod3Nj29GZRS
-         +G60wuZd0PLt0+5+ewfs0w4a1e1yAr0Yb+Au68adVzoMs8c03gKNgvodQd/SAm13qhTp
-         42XCZRdtSAIlqZbfoFPgeabnRc16iiMiG8wgBrHOextfy3a4B8++mIosnrCt8di+1g32
-         apQA==
-X-Forwarded-Encrypted: i=1; AKwUvBxHrD8FI16f3msPuYvjF69aYpKmul8TT+SqAy/VDaPnpRnolD8q3eNPfE4MN94DAkf8AVFZi1f/1A==@kvack.org
-X-Gm-Message-State: AFuF++l3pWdoZNZprDgrWMTGqkqpNYeBMQX7APZ5OsHWo9dcpbS00iJW
-	gxkNWKTTiuaj9uxtq/UJhhou4bnsojDEZDJjnsCmRNLJ2/3V8LE+U++ypPpWzB5o9MI=
-X-Gm-Gg: AYBFou02QCXkXnmQnF7YcpsER/sxRjRNSDLPy2fGvnUZcnhEQGrwTQDtJaL0CTqzM49
-	37yexCMMfRBiQVE4rGKvJd8TyU0PFaOZhn4ZE3qCxR1mtr+rQSkAy9bwSBHT9D/JmjzB00z0eTP
-	Y8t1ZyPzyqSWwonsREhmLMDhhrL4lw/lHEVfTNva4lBladcq9Rrj5Ivcm0ME91ljKuZS5ANGuxF
-	UJ+B84ut5sKuGNwVpPUS/QSUg404vflwtbsi51SzQ6eBtWNcUCv29NpZM2jJofIwYBxa9oa0ZuM
-	2b2CdBaavWaKvYFDxbDgpJ9PHQD9k2FlHt2opYhVuwvIMmiVWOkFStZhq8u0QwxOX6xyMYngObR
-	ATt7SYIUOalxVEbyEt0lU1XJMV0/0aluBrwOmi0El0iVwbGb0NzOYN5n4uTGC1dXQTfNsda+6mM
-	PPUY+qIF04LY2QE/ZM5JCkHR8C6eptKuA1HRgGYVW30SB63/iCWuE6QJ1cNBW9BgTC7uFS/fSjO
-	tNurJolBXsaTMcOQ0GUzLt7jTFrwmgZhdw=
-X-Received: by 2002:a05:600c:5307:b0:49c:f617:7cf with SMTP id 5b1f17b1804b1-49d25871d73mr12852825e9.0.1788954454028;
-        Wed, 09 Sep 2026 04:47:34 -0700 (PDT)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf7740d44sm1017732865e9.15.2026.09.09.04.47.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 04:47:33 -0700 (PDT)
-Message-ID: <eef32841-26f1-4ea3-9915-67a60ec2752c@suse.com>
-Date: Wed, 9 Sep 2026 13:47:32 +0200
+        bh=skQiOQP7wKiwMIoirY/KNv9X3P0+d+Yd863CB9w3fDY=;
+        b=CdffmstrsI+rkNhbjjkezpjlRwBkTRI9K1lvBYh0aaC1Vxa19/dBeJmMclxuNyyYeD
+         QMDXbmQ2jvDp7qmAYmyGhjR3UlY9YVFCXr+hF53+1KW9TGMUs+3Zh52IHU0SlIfrF/en
+         Tj7bVROtUFo3MEok3+d8Dr2X4xIFZaxwMN3AaNW890ihcr/bqgDmOMrkGEOK68qChN9u
+         u9XlEzDbW+ytJ+NwDpkglPB3IUvDA+TsrukNP1Ddi6e9ICS9gYibyz/JRca3DW2YV6Pa
+         aNYaN8CRBmAI16bDqncGjPK3LEW352xSWy57TkKf09DkKk0Ul+T1/cQFFfC1eXTxqOmr
+         /HLg==
+X-Gm-Message-State: AFuF++l6R7EbKw/k3896cV6zvj6q+yQiBbVuiRadxEKsYodLAK2EckDZ
+	5SVbxUsuP4IRZ7hm+bhmUpnnDuiddpmTMEFc9nTdROgmE+2f29bl6c7I
+X-Gm-Gg: AYBFou3ogsadctvDmH0Jfg+N15eXMtpVO0LSoNlStjOa0HMZXHmcIlx5c9n45ra9W2P
+	aiZDItj6BvT61JBPLMh1KXhq91nCeUm5o67TYuRUy+YYii2A15BfkxNhalf/x72LJ+AhpF2bQuj
+	/roci/RT04aekne/p+GimAbDoz07TC9u50gKEVOkOAXkLT0+4r6umu+6ais5YB5LQQ9YzNZvlfH
+	rtLGLY5bK3/+u9JhTfpw8QoyGPlBBwOtJmYPVgZrLhAXIyRHCnVipjKrnAO+VVRLzV6glcm+BtN
+	l8ZjRR/h6QIhpoIzgaDTEXqvxpY46J2RATMg2ZjoLdH5TYGQ/Lhl40M6WOYjuNSgCPn0xucEIPP
+	UMIyUYeLF0/Zd0U0/Qo32FP3EQRm0K0gdyCDqEKo9rEDDWtTqoN8dKl960RFiPPa8AAXLNKPOYZ
+	vanA52zmEUiDWtsWBA8UyDRzf51b6aMOz49qWQr0GbhnUfCTQooX0ZYPBhqDCWtu3M9N6yDI+ZU
+	Y43JhhQ548jWx3j3YixyHh3xooAWBKEINm2Irku2YwQRHWeZj/CPc4Mso069s41
+X-Received: by 2002:a17:90b:1d8c:b0:398:b46d:48c0 with SMTP id 98e67ed59e1d1-39d70baf4acmr444308a91.18.1788955072012;
+        Wed, 09 Sep 2026 04:57:52 -0700 (PDT)
+Received: from fedora ([177.21.143.191])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143240d86c3sm39619067c88.0.2026.09.09.04.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 04:57:51 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	pfalcato@suse.de,
+	willy@infradead.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Subject: [PATCH] mm: bypass datarace check
+Date: Wed,  9 Sep 2026 08:57:23 -0300
+Message-ID: <20260909115723.528501-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 4/4] module: allocate codetag sections before the
- regular module layout
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260908092412.115953-1-hao.ge@linux.dev>
- <20260908092412.115953-5-hao.ge@linux.dev>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260908092412.115953-5-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 624F1C0005
+X-Stat-Signature: hugyzbmpaj8nau3huu47q9xni8ink8in
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8DEF3A0005
-X-Stat-Signature: j57acnb355nqnpbwcatytydw3gzytdha
-X-HE-Tag: 1788954455-831075
-X-HE-Meta: U2FsdGVkX18FjGFkOEVWQhMDBg7gVOHDCrZiQfg5XuPKJs8qxC1MiQg40+jxgsM/I4uEgM6dZBX74ab5mhyDM7KhA6MAp8XSZm+ES02L/SpNoytR+g3xIMlqnDTEILYn4OHVWYzH365d1I0sU4oNE03Wllxelfm9Ncn2IBo4uaEpeUZxOX41umrmcvhMdGtRvgzuKRM/Oz5Mg/C466BHJF1O+SLGx4bwwALoohvaJOG/aps+SQkzFDtfH+xwJRALsKdxq7FiJFCHRgn5Xsz3OzzDAXfcJH+WdA4cDPRPieEWl2fLVcqIXdpUuoNebXL3TYqUC/+rg5qQVq6u95JOZiFQAH9orK+nT8z/zB9ExkE+F7ZBXh/b14HjMS5R79tyKE/dRsk2ecEzFBQ/ZTjqPOnD56gBji8FMuVPVKXhM+We1gxLSaDHW/fYdVMPUwYSp73/HfsO5ON6GhsyOc58PwXHWC9qk02J9MmdOtGB5sVBCoisqbHWwdFwbz8sG9jzKOsYcgvPihzlS+OVZrtO4QbgBjIq8ty+JoMvoDbTCs0znQKh9gv3dgunMgdf6R8lubN3ueLnTONRfkVl/wsxEZHElD+qOmKX4UDaJ9FG9ZhfHxPIhpA575oKyvGlE1WlezcS8BeSLpicTw9KVYSGxkgn0SjyM83pQNJ6vhoG51ckzeXwBZZO1vPart6HfVo+iUWJXj6yATVdGpaJuXMQ3InsIS3uOXMToUyj4e/UD4F0Fi4qwvj33bLlilCoJveyb0+Cn16mbHSnO3wOHrfWD4hAZ3dcfNWZxicBd7xr7L04V6yioMxyGd+Xl9xkGKY2Xs9yXp5qzG53IFZpqSWKEnqFS+C3A4Z3XYjjYLQ39KVGChbIedGIr2qSllpz0BDcjul7MbkwtlbfHaq8EKDK5tAlSDoH5xRHSWOn1LbsXtCcj7P9ZiTyPQYTj5iwtJCyky9NsWzKw5aV9xjerZ+
- PBZHqxbq
- Y7ciO+ImadRF4+74f+JUvHHcwuZBp+KByu64mQxn65ay2EZR+kqCqIZMvYx/aYSAGFNPu+qhC8PGq/fa4eImCkxOA504RAeZX6vvFfOdpZCth9Etd0bfIV/P8Dqfzbu5C5wa1/3irnUWU9eu+0zWlnYzkMwkIrWwdXfJxPd14/KWvzTPg4HHS3kqpMugZ19XmOJYXbQGgxH8zm/PM+v6b3Qypk6OGEe3BHH2j9BpkKO4nLgw5VzWteAYdwjdrspKxwsRMS9cQ8vb928bYDaogxAk6Do4tgIKGoa5fivagYl1mmZNgtx+SGufiHpWejLeqEZN4pgc4IETb+Xen5BwFWSKSxNMH5EefilJMnpUxOG/LNVD2yOk4NydE+8M5gt8Xm4eZevGALyWe0UGAKRGNTv2ZMg==
+X-HE-Tag: 1788955073-750713
+X-HE-Meta: U2FsdGVkX18+Yrb73hUN9/tzOcYsgk21c7w/+bsQQ7GSdxz6C0XSaGheT7KVpPKNZedXEqAK+e6wjb0Ron7mXez34dQsG2fHyYCyUWVSK8+zIOQVWlV2hxZr22H71MXZ59bA0QzSGhnKyo+/ThqGXDod8K0Ps93a8Jhfx2FFp92JWTryuTZ5NXJwmNcPG18ngS7P32expFKaffgFFUSA6pzCo//gG2zncWBaf0Up7iP3vHFRC43NGx9Nsj4riOrINb9Xie5QWpnqgbjMUOhvgoifHempfwztAMfhfqZM70gGxxu0wpeSVbmyv5BtemwHEm+B0Gtw4d7VwZ09FhXoo2fnkVnn6p5+0XPOc4cMEOEAHjR/9orjEzVPPbeOY1m3aY5/8Pt5f+HXH1VXb1BdJA+SYstWarwyZqgIuhcjCFPdVwVkBdUICGJZftIAMRSbOM3fkFNw19f9t6p0in5mPEUbNJGAYNyo+e2yely5tLyDSWDw9mKeHPrQmPDjF7fYoqDV1YqYh+pnEZsG5ujPVXY/kQ1dTEbFH/5ON/vUSvYDkGaNscUIWmYUFn2AGF6+zxuHeguxzY3jlCALjJpwKe8qGrpsJx08FasH7/4fWT4V7TXDdknNW+LHNiaa0xrc4TOjVEey9+kM3F/f3D0/2oMfNkIA1lbNAU+LzWt1yAvWD+z5YA06JJsWT+M/T1HynhaKg1LnjpoLVI5RChn5yDsUUc9dl5E1VMNKFtszlV5Y7mEPuavSEgzfEC27iSqfD5Z1cvVl7qLnGGeSD0m628YDP76xWAMkM221+L9BHz81/JAAzi1dysvsqB+Ubc36RfDuwCQBldC9nhtOxdsIpnxVVaNK6yfZGs2uCSRIobhcH4Wxuny3o5o9PxGiklB7Cgn93ZiKf8mnJLOVoRcY2Kp0JKcwjvwS9jXE8/pdvVU+dyGsvpj4i4xEwDrISdnzDRsHQ3U4DRmeT8+PIaP
+ JSigH6Te
+ 4n5u+UcUZMKqRBwwFq9TggWlFhaBZplvqciSE1x1quH/rjNzbslr1ifin4jx82oLK51/6M4YeUvtP5tGNEBACFubQul41hYohkbFm8Q4uoqXgszKi878yaRqWkHymw6eajh/2XQ6D/PzUlvvghmFom/yFCEC8WkadXPFOzJqs1fIB6dSWY41Ow11YHb7HlOhuZVGWRA5Q6+pb86mnxspVWA0Mi+NvNw1abFwo4fxW2XCiNH5P0ZFfxs9HnBJPBRqJDKedYiNEKKWVbBs++BTnfchK6zBYUK+qEktE2JT3qdQJ42Jqyez1QNBTOV/bVtttm4l72HbQKIAfYWZQm9DD9FxAONcKAzWBte5ma7GkdrKB89YEAZsrLkCqM3lWf3WF8DzJ5rh4XJuhJJiG2lxMlU4KSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,41 +125,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 11:24 AM, Hao Ge wrote:
-> Whether a codetag section goes to the codetag region is decided by
-> layout_sections() and asked again in move_module(). A concurrent
-> load can shut profiling down in between, and move_module() then
-> copies the section to offset 0 of its regular destination,
-> overwriting whatever is there.
-> 
-> Decide and allocate in one pass, before the layout. Allocation
-> errors fail the load. On a tag area overflow profiling is already
-> disabled, so -EAGAIN makes the section fall back to regular module
-> data and the module still loads. The reservation is released and
-> module_tags.size rolled back, so a concurrent load which already
-> passed needs_section_mem() does not skip vm_module_tags_populate()
-> 
-> An SHT_NOBITS codetag section is zeroed explicitly, the tag area
-> pages are not zeroed on allocation.
-> 
-> When profiling was toggled off the overflow check did not run, a
-> module could load with more tags than the page flags can address,
-> and re-enabling profiling then silently corrupted /proc/allocinfo.
-> The check no longer depends on mem_alloc_profiling_enabled().
-> 
-> Based on a patch by Petr Pavlu [1].
-> 
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/ [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Despiste kcsan point to a possible race condition problem, this is a
+safe race condition due the access memory ordering, since
+spin_lock(&mm->page_table_lock) have ACQUIRE semantics and ensure the
+ordering mapping.
 
-This looks ok to me from the module loader's perspective.
+Create a new function called vma_is_faulted(), that return a
+data_race(vma->anon_vma) to bypass kcsan
 
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ mm/memory.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
+diff --git a/mm/memory.c b/mm/memory.c
+index 6b8280cfc1db..d85d67927400 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3800,6 +3800,25 @@ static inline vm_fault_t vmf_can_call_fault(const struct vm_fault *vmf)
+ 	return VM_FAULT_RETRY;
+ }
+ 
++/**
++ * vma_is_faulted - check if a vma has been faulted
++ * @vma: the vma to check
++ *
++ * This is a lockless access that may race with __anon_vma_prepare().
++ * The race is safe because:
++ * - The fault handler ensures that the mapping of memory is ordered.
++ * - If we read NULL, the caller will re-check
++ * - The page_table_lock provides ACQUIRE semantics for memory ordering
++ *
++ * Return: true if vma->anon_vma is non-NULL, false otherwise
++ */
++static inline bool vma_is_faulted(const struct vm_area_struct *vma)
++{
++	/* Lockless check - safe because we re-validate under page_table_lock */
++	return data_race(vma->anon_vma);
++}
++
++
+ /**
+  * __vmf_anon_prepare - Prepare to handle an anonymous fault.
+  * @vmf: The vm_fault descriptor passed from the fault handler.
+@@ -3819,8 +3838,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	vm_fault_t ret = 0;
+-
+-	if (likely(vma->anon_vma))
++	if (likely(vma_is_faulted(vma)))
+ 		return 0;
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 		if (!mmap_read_trylock(vma->vm_mm))
 -- 
-Thanks,
-Petr
+2.52.0
+
 
