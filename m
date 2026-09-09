@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68708C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0648C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 15:04:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 314446B0093; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
+	id DC5D86B009D; Wed,  9 Sep 2026 11:04:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C48D6B009D; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
+	id D77756B009F; Wed,  9 Sep 2026 11:04:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B45A6B009F; Wed,  9 Sep 2026 11:02:17 -0400 (EDT)
+	id C8C9B6B00A4; Wed,  9 Sep 2026 11:04:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D761E6B0093
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:02:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1B2180244
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:02:15 +0000 (UTC)
-X-FDA: 85194539430.18.49E701F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 40D3E1C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:02:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UeN7pksa;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788966134;
-	b=8mZFo/BIHtHjcS/7vEXtrdXMUlLtk7SgFvg4pl7eqVWtbPTmn6oEdFpOHnFV7fSMvt5zk4
-	7CF26ZoOK15Oz6fEG4hVx9z/qLmnJmiQtPsOhdhNXv96byTAj74652dcfhJIC5YmTVvcAl
-	NKsGrh57qQcj1pr1g1/uLxgz6LJ5wbU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UeN7pksa;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A53546B009D
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:04:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8E0CA0264
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:04:27 +0000 (UTC)
+X-FDA: 85194544974.08.AB0486E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BAC0E180016
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 15:04:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZylIcvBH;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788966134;
+	s=arc-20220608; t=1788966265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KfExOA8KS0crEDl2q+9ULW4PP/JesVC+N5DhTICNJs=;
-	b=NCKvV0FtCp1abXZnlUJ1VN3UdohX8ttCtvgcmeS0WL3G+Ai87NCgHM3U0d7ZSj2DGAZYPy
-	pOnZ9IMdD/pdw0UIMeUbNpah8C/b2e1xGxguCBM78hPHrZ86XIpL5+53kPmZK+o7CV6fnl
-	GL1H8mf5/YsI5sG2rnlyDKDIqjErths=
+	bh=iaCx51XLgCN8swqlh0PQM0NitDh9OeH7sXEe5ved2kI=;
+	b=B0A6l8yGn1PcrzT9paQfVuPDAkll7LRaWIEWGXqPQcWevhKm650X9/AsyVnvVBQzXgfUCt
+	ZGXod3P+E32jr0D15EM6etGIG/XuZo+QE+ptwoLXnvuUzzzCzXMnZVQAis/1CXZ7YdLg5w
+	sBYPhIgXzioiW5m8eEabP9t760E6PJY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788966265;
+	b=oiqwuu9+7F5VVEhRR5lMrV2I7B+j3a6DDi5oxWL//xq2lRbbyL/pzKqZc9Q9j2BfZWjTke
+	R/xaSQweh/N6+0aDWnkcad6VV6mvsx64r5NBHiAaXR+J/VGQ1V5nyUbQyw7axr8TKlGpcT
+	m9EbZCL7fSnVuIBK0fzR0++LpUSDFEU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZylIcvBH;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 993756020A;
-	Wed,  9 Sep 2026 15:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4401F00A3A;
-	Wed,  9 Sep 2026 15:02:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D549402D4;
+	Wed,  9 Sep 2026 15:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83621F00A3A;
+	Wed,  9 Sep 2026 15:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788966133;
-	bh=3KfExOA8KS0crEDl2q+9ULW4PP/JesVC+N5DhTICNJs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UeN7pksaadSHMoEPfMk+ZajCW7TpStgfP3pR1FX98wY2nSvCyBtlgh4lBomgTWT1K
-	 hWWiqRn3jREcRJUiJseRXfiYhvS+Q0sy0u4yjQ5ijDmeEkkVXk/Y+KR6iQuMZ3T2oc
-	 lyoG8GepmPSZNc0eLwoWreX1prlhobT7Nwn7/YTRFy9McMoDBwxzV4TIBcxSo7bTSJ
-	 pcAJJSg7bRf7YqfWFqeTWRHhXldo9uS/+EX+uP9aI++4pAcpKtzzHrFGf1Z57epXlk
-	 dYZL2I8XyMCDE13937q0egdsqFp+vA14izbde9eAOtLY7L5xM9ERgL4mfsrDHqN74r
-	 KVfRpbU3j28pQ==
-Message-ID: <bef8f543-ffa9-4cc6-8a7b-6118daf14f76@kernel.org>
-Date: Wed, 9 Sep 2026 17:02:08 +0200
+	s=k20260515; t=1788966264;
+	bh=iaCx51XLgCN8swqlh0PQM0NitDh9OeH7sXEe5ved2kI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=ZylIcvBHV+U8VgjaR/O7ELvyeen4wPPHN8964DOH5QZKh5rmflA4IOcxhW/LYp7KI
+	 Rdl9H1oD6GmHKu7FKKR4bp6nnod5loXrYKJXsjs/dp02Lc4DzVXjMjDHJIyptd+QQ4
+	 ubsOVRM0mErynwKlB7bBdINIFlBhLJbFGmyZdaUqwOyYQdk92qykS5UEWzDU8HD+rG
+	 u8MkrMCrZBpTbeaYGnK+hffFIJ8BlfC7czrsVp1IgzL28X4ezxDXbb99qRv+4LBRH3
+	 GikdImAOqhznXmqK1mJ3l5zzJwJ6S8n/96tG5S9YEKHyH3iZBnD2s5TJ4PjHrGyJXv
+	 1569KuDR5mzXw==
+Message-ID: <c991727d-ad63-46ec-a281-d09980ff08ca@kernel.org>
+Date: Wed, 9 Sep 2026 17:04:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 RESEND 0/2] selftests/mm: Validate selections and scope
  memfd_secret setup
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Tianyi Chen <diannaaav@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
@@ -77,7 +78,7 @@ Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
  Joel Savitz <jsavitz@redhat.com>
 References: <CACGbirSdR30=YTPQGN-=202jZqiF8gBSewhq+K_fTSNpq=DMhQ@mail.gmail.com>
  <CACGbirTZFsyQhOszpfiHhrd7Red-L_Z_=ke7DbRDe5SQfzi9Pw@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <bef8f543-ffa9-4cc6-8a7b-6118daf14f76@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CACGbirTZFsyQhOszpfiHhrd7Red-L_Z_=ke7DbRDe5SQfzi9Pw@mail.gmail.com>
+In-Reply-To: <bef8f543-ffa9-4cc6-8a7b-6118daf14f76@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 40D3E1C0003
-X-Stat-Signature: k5u5qgdheu85uuknpoib5buq8bwuhipw
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788966134-805210
-X-HE-Meta: U2FsdGVkX1/25OXWrtI47/CZJ/yMENTZKieIhosWv05Nsr2FSh6+lByB6kr8Y5LAy1P8o9vvbsJ02aCtqUff6JZvK8je4crIoSTPx9eg365QTis74Fmfas9WU2sGSXNa6R5Mwy1eJLRwOWiioTeANdAVAwSYIG0paECBINTre8hR0KVJ6DntLoCd00CSU1B5al6ltnQk1+apm2ODFQhOxoG4Vw1z3ANvk7jnTO0Ha1Eis+KWnJ7ifGgulj3IcOMv8EZHK312ckxNQKMH3Ia4t/SPOdUul9RlpLTMeCPng0qOTXv0ztwQc1hwHzfVnT14KQYqqZ5v330Jv8gwWW0sXQONoGgoxmBvw49LwYpb3B1MrUHhibxqq1sYlMTV2x1Z6nKZAeBdGHhPBpAU8n8YZfYuvL60xaDrzSBd7dxFOKmLXsQesQRJgDvrl7boXC4Qqj/pEgs5DevQEwY8XcikmyAmSz/ohEujw2K/PnhQJYrFgiHIfOJlO3rqRYw4vJhPa5UmXIMttkilHa+lcQCRt+517C1oXGL+bLqv2jwGKTSS3jV0UQwQJVkxrxoSyJJZkdnjDciVHp6/cEiw2mL64hjqMPxUgToOoz+817JyN8BfmJCfq/II+onAdrz2X+l+zdAm9sbUa2+n9e7DlpWzKtGSknES+Ln0RJVcL6OaGlKdMfALtZSZ4BKmVgi+ldJTTZHvqX5V3juEp81H9Mm3FMkWLBKMPYurOMN+HNBUktq1HgR/5AAl4Ik8U1Gj37iJePrn3ceag3jvFhOdoAWqxNAUAit0aNK42UqNFxw3y4KT7U1o567DBUIqe9NS1EPn+lxJslCOhE9zhOxiuTzO7uHIWZGkPX3VANehQtdvZKWa/KYjNtLHw8ckMTEodLmW7CJvejyXEM6i/hN1QLL44X52FsB9elmu/bQ5b8AKuWp/G/7pyuFjwapXjrPJRZ9RJcgTMF/5l8JkqNYgaU5
- 7vV7QKNL
- IF9I2N7iETczApL3vMWkulTH9v8ZUbJ5gJufoCf7rSV7LJFUwnfxCbsmjeFwrSA7tQzbZxoVMLBkZd3BHNMQgzlFng2+uTqskffJGVqUJJN2F8S8xCRcHHHUsvCLVZs0uofFpfKFco0r4CzeuqCae8WaFM8RhFlLkecXm5ncPDi9WPIF/8DG7NOiUZM7DLl4Nsr2hlcYZN/06b6m+Vd8TRbQvWdbVADXwtDEYHeQOpRAvtFAiBbkbdaSikvxOEgbmzc12wIt4bnbLQ7A5PS72aAEJQi2ZvnF8QwtMWHoq0sa6HfodPK5jNc8QP7QnjF61kwdFdxVuN8U0bwyvwNmQOVXjqyI68P0HnEWi39mHDhZrTPOe/kOyEjV7+VekCbu4eGdX
+X-Stat-Signature: 48gdndnbt8o5spfqq6j3aoffqj8krdyu
+X-Rspamd-Queue-Id: BAC0E180016
+X-HE-Tag: 1788966265-295015
+X-HE-Meta: U2FsdGVkX19nwaWd/ELf1rjln9ANigW7pn851xAstRUw/6YEQQAt5x/O9X62RzopVgDJZw5M93YoU/DbpqpyIH1K5B1zoLE6ueDdjlZViDbvdcxilbs4y1cuLxqnb2eLBCz7JCMkCLjPe8tH12O3pAHTaauWTQkUCHCOQCU49+M39XiJOlisowhUeG0AH6veuzm9Xfmgrzq7zFw455RmRNZxTdDQbiJg6xggJjA7FFQ7KG+USrtfh8towiUwP/xeC5nAHaj+z4svCIfSWOhvT6UQpPzygFkaxyo5axFuL64kqGoDIgcEs+x6+cFWcm45F8gjy121KAIhfNKvcQdiTU+JyFc3JVSfaIrzNAJumOLsvqAcgp6b28KYWJrZcnag/rB/orf8yq2q5vZVSAI0u4sHd1ItYscu0ptXXZT3Y8fJMAr9zL1xtgYfupNFhCxMiOrOMnrWuU28mRCUyIUCCXeiRG7cRO/vk/QknWjyN3qZcd0XX7S79LidE/Ykv1KEXXp9QUbRQIcvZqF17Q3e/QqKrj2uNJqKsLQRrJqcUgG7nEQSSP4DtOe4spRgCIz2kudF21NqArhYLf8L3AYTkMp/zPuSMly1PZ1DKfLQT0ZPE3We0VEgjbqcdN6VXKkjO/xjX81eIg8JZ6rJ/5U964r6ZYGAaHnLzLlN+aPYj8m2liL75Lr8vqZRl2eLeSDjsLxQNEI5Fa3N7dW+zjKciZ/O5DGA7i3LutNyJ1p7nEyHyZYkgCI2vR2jqORjaypgidD5uVUNN9jl+rnRhENxGKk5dAi3CvVQgcJXjPU07nSRE89+vuOyQpzI0h+4z17IiuBNUoi+Gcb23ss/kpuM5CUZgqjROB5pYwf0aC0aCr5hgrdd02Nqg+ah0s3VtQYkR68vRq+1iTNOUHCVQu0VHYM3r6rlYyO5Q8YZH+KOVjFx1Tgt+yZ7UAI87uFZrINAJXH4DlFL6ahdfrlVcnK
+ RSBSSeOm
+ X14rlLzF4LLsaL9uX8nSyg19qVBHcYgmSH/IJADYQwqSFsmL+pvlRqongxuIG4GXmwQucHxaLgYSMR0Sn+gb97V7SVxqEKO70fFWhA9iCfMN+Y0TFYFWdgKIoqCV/yEVRuXVI+FQjGolmUJMD5e26GcNIZErxX7sU5F5b20lLAhSql/2qVHJpADwvIg7UIU6jyxjAN5jmuJIG1lW8LGozTVm5qAlIn462UdRRGsw9t5mufjLJX7G0ve3XibOX2PbZqwubVA+QdrmiPe61krKT3g0tGS7nogPj0WyzutUNywDePtFDD9d98zOdpmyi6rfOniyrJqO9CvEaMT6I/IQB9P6x1n+56+Ab+3xLFgzequ8WcVv6JnV1sz5aac1Nr9TvDh5A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,47 +142,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 16:54, Tianyi Chen wrote:
-> Hi David,
+On 9/9/26 17:02, David Hildenbrand (Arm) wrote:
+> On 9/9/26 16:54, Tianyi Chen wrote:
+>> Hi David,
+>>
+>> Following up on your review:
+>> https://lore.kernel.org/r/d6ca7f47-39bb-43b4-92d6-63ccc148ebdd@kernel.org
+>>
+>>> Who would set it at this point?
+>>> Can't this just be
+>>> VM_SELFTEST_ITEMS="default"
+>>
+>> V3 makes that change: the default is initialized before getopts, and only
+>> -t changes the selection. An explicit empty -t still fails validation.
+>> Both patches use Assisted-by: LLM, and patch 2 carries your Acked-by.
+>>
+>> I have resent v3 at the start of this new thread from my Gmail address
+>> after delivery problems with my previous address. The patches are rebased
+>> onto current mm-unstable without changes, and the focused parser and VM
+>> selection tests passed again.
 > 
-> Following up on your review:
-> https://lore.kernel.org/r/d6ca7f47-39bb-43b4-92d6-63ccc148ebdd@kernel.org
+> That is new:
 > 
->> Who would set it at this point?
->> Can't this just be
->> VM_SELFTEST_ITEMS="default"
+> $ b4 shazam https://lore.kernel.org/r/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb+9Q5SZmY-=Vug@mail.gmail.com
+> Looking up https://lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/
+> Grabbing thread from lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/t.mbox.gz
+> Checking for newer revisions
+> Grabbing search results from lore.kernel.org
+> Analyzing 4 messages in the thread
+> Analyzing 14 code-review messages
+> Checking attestation on all messages, may take a moment...
+> ---
+>   ✓ [PATCH v3 1/2] selftests/mm: Reject invalid test selections before running tests
+>   ✓ [PATCH v3 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
+>   ---
+>   ✓ Signed: DKIM/gmail.com
+> ---
+> Total patches: 2
+> ---
+> Applying: selftests/mm: Reject invalid test selections before running tests
+> Patch failed at 0001 selftests/mm: Reject invalid test selections before running tests
+> error: git diff header lacks filename information when removing 1 leading pathname component at /home/dishy/linux/.git/rebase-apply/patch:6
 > 
-> V3 makes that change: the default is initialized before getopts, and only
-> -t changes the selection. An explicit empty -t still fails validation.
-> Both patches use Assisted-by: LLM, and patch 2 carries your Acked-by.
 > 
-> I have resent v3 at the start of this new thread from my Gmail address
-> after delivery problems with my previous address. The patches are rebased
-> onto current mm-unstable without changes, and the focused parser and VM
-> selection tests passed again.
 
-That is new:
-
-$ b4 shazam https://lore.kernel.org/r/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb+9Q5SZmY-=Vug@mail.gmail.com
-Looking up https://lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/
-Grabbing thread from lore.kernel.org/all/CACGbirR9PNt4uhqJFATsOWnwmsNb-v8zau-Rb%2B9Q5SZmY-%3DVug@mail.gmail.com/t.mbox.gz
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 4 messages in the thread
-Analyzing 14 code-review messages
-Checking attestation on all messages, may take a moment...
----
-  ✓ [PATCH v3 1/2] selftests/mm: Reject invalid test selections before running tests
-  ✓ [PATCH v3 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
-  ---
-  ✓ Signed: DKIM/gmail.com
----
-Total patches: 2
----
-Applying: selftests/mm: Reject invalid test selections before running tests
-Patch failed at 0001 selftests/mm: Reject invalid test selections before running tests
-error: git diff header lacks filename information when removing 1 leading pathname component at /home/dishy/linux/.git/rebase-apply/patch:6
-
+I think what's happening is that something in your mail sending path wraps long
+lines and breaks the patch format.
 
 -- 
 Cheers,
