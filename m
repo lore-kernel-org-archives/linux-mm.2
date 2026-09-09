@@ -4,104 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF062C79FAA
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B9BC79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:43:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE2046B0092; Wed,  9 Sep 2026 02:40:24 -0400 (EDT)
+	id 124D06B0095; Wed,  9 Sep 2026 02:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6CC36B0093; Wed,  9 Sep 2026 02:40:24 -0400 (EDT)
+	id 0AEB66B0096; Wed,  9 Sep 2026 02:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95D6A6B0095; Wed,  9 Sep 2026 02:40:24 -0400 (EDT)
+	id EB8706B0098; Wed,  9 Sep 2026 02:43:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD3F6B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:40:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B5C231A00EC
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:40:23 +0000 (UTC)
-X-FDA: 85193274726.19.1818CEA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E2744A0005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:40:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVHaqXLd;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C457C6B0095
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:43:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD650A00AE
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:43:02 +0000 (UTC)
+X-FDA: 85193281404.12.C498DC9
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3A5FB1C0002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:43:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yj8IIijY;
+	spf=pass (imf18.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788936021;
+	s=arc-20220608; t=1788936181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DUIpC49PUmusVJC7vwQlTM5YfwPWfFaooGvwBV89sWs=;
-	b=1+7s90kR/jKv2wWgM2SxKSblWDoyllABu4Y/lT0MtZZfNzLh90VzB/X21SP/VEYAcmlUhK
-	RU7vWDdH5tw6A9b+12o67+cet/fM3fb9g9ODThx+DE8WamIPQyMsREPLCKe0GfQkwtSt5B
-	fudBLpWlkLyYkNaNPi3vBGSM+lNUpis=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788936021;
-	b=OS4VSUWJ89G+V1oj2juzBuZBVAxIImCWcDJnoP5PEOikFh/35zwkwsViXqV6Pz3LHOCptK
-	rO0a4yXyrPfFml5BiPz40KKDKhJsPJXgQH9e55jvhIpnMe1IbWAphoLTLu/5ESXXonQLqx
-	25kzC2ruDfnvnX9JVFupqINjrqu6vh0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
+	b=v8fDRnTgisNssOpTcBszZn5ZWf3QIogCeHaLOg9QmzOOYgZF2S46o57jJniLa9fvlSG9WK
+	L7vW2RCP1Rce3yagCTFHHmWLTUZRO//8BL7NAVzujiIZDrJS9MwGYM/5ZoMDqV4XcEnOY4
+	Idx2LB/IJHbn+18GhUe96JtqXoqc+iI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVHaqXLd;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4629160214
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0121F0155B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788936021;
-	bh=DUIpC49PUmusVJC7vwQlTM5YfwPWfFaooGvwBV89sWs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=kVHaqXLdNh1pWSRvnWeYdjAvn1xp9g+a9Xl3QZ02PKRnj6PWvpa49/L1tmuwZ5hyx
-	 FDdwRtA3893Bl35MWF0aT4BsdPxizB/uV5kpgpurt3+aVVki7Z8itlBm5V5E978Uas
-	 WaFdSw4tKUOT9IU26xle1shTB+lnI5CsCVgE4X2qPCWfsX5h1D+6kPtHUUSpybsQ3G
-	 cy3j8e5lNy5yLsnT2WqEo8yVW6iBcvNscbZ+pUTwg3+DQUnVkhmL7qX7EIeNf4s81Y
-	 Zxsf1BWCAboPGnDibMtAEG8jZZSXwjuvkFhZfsV0Kx+NSSEc9pghTXLEPsE/izwXqf
-	 nWEXRZI/nRojg==
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-939b8a5584eso195551885a.0
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 23:40:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxDb86ZymXLxEJgs/0q+8FdberRCcBIfj27Hl2IAvN9y5FbC+ekAN1W3S7WYJ5HXckcuVZshis9VA==@kvack.org
-X-Gm-Message-State: AFuF++m+TKQKj3rOk8o5L7f0CXJKh62qHoVXVwXjl30rWAcs3ayd70+3
-	ZoHXxL+hHoBj6sxv5K0eDI6/6+i+D7Y/COJMYKSfb5wVsvR34LRr9nKVUruW8quXHs7B5cQKwkX
-	+/9ne7qkfXXLO6MPDdCQGiueAsb0CyKo=
-X-Received: by 2002:a05:620a:9502:b0:939:6de8:43d8 with SMTP id
- af79cd13be357-9398048ebcdmr2825220685a.44.1788936020200; Tue, 08 Sep 2026
- 23:40:20 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yj8IIijY;
+	spf=pass (imf18.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788936181;
+	b=xO8xMwlvc9LvIs9F1AbYqmOSKRrfoicg8AAU6rUS0n3vwOZiPEHisPLBTEBgPjP2Wpxqtr
+	yaNr9itPeezKa73q5IcSU476h54RB8CR0Nt28BysUvmsH8prAceOMB/4tI4nRHjgveKOcp
+	ZEFJPb2x8U5VAuT4scn5lHLESK/S0p0=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f96c5b722so3856461f8f.0
+        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 23:43:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788936179; x=1789540979; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
+        b=Yj8IIijYqD0oA23XWQCleBlbuZeg1W3BrrpWc9eA/PJQLtZMXRaOWpRFAk/+LyeWXq
+         i3B4tNlbC4l7PCuW+03ImUO3/BBiNL/3uqEUj6Omi9yV1AjfgGg2FV+4cts51HM0u4Zk
+         BYy5uE+8+7c0noGaZIkf+BtkhzGE8Jl71HGJfWVO0HB3ez/KhHdMxrPf7bD7JdvPlAo7
+         09TCZTT6wXwsWGxcq9dqR25WoarZ2QQ32SM60/2WCWqOD1Qj90T7BTa11qHk3lus58Ky
+         l1CUhS3EBShH8ooTInKGkVB+wAZ+0DYyWlaR7Qw4CLXyknl2QyCK2X2bin6RifXmhrrd
+         eNeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788936179; x=1789540979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=34EbQ0kkkdVKw0vcmyhvRZJ8gkzUUK1Hj8AwcwAqHQY=;
+        b=VnX7OmbDdvcZfGHCL17ZWz+WHCHVRyZNZy8xQnH3vZX+ZtE8PJypDhHJQXyxzECYtv
+         lhvfk6c/3RucXhFYZIdmNsmhR6x2uTbJetmzw+ybRT08Yi/rbLMA5A6Vbd3ob1bcsFUy
+         H4WnfJ1ihENrgFxfsAMmccom0SKZqIQh81VHjW/lJbL5Okj6iwj8oTlxoeAmKaGhloRR
+         5pNXm35qaXpbRH32lFWfCYTNmgr/+fa1M+BLgOSFQcPuq8zSRAWp8ylcbcTicZdtb8Rn
+         kCe+TghRvTpb3QxUCagRoIMtWNAZSrkTvw9mig210ykaM86j2HrN82PYSkt/aH2+Xg8R
+         5dMA==
+X-Gm-Message-State: AFuF++nNx5hSOvcoagpAVHUFWNYT8aHdoI5JiNn+dnGb1y7ZPbfvz7vH
+	YGg4q9r3ywaeP0RZmfeGgXnfK1r1wSOe4SXjm+erSBNanDWrlF1CUCIIOnVKKYFBuME=
+X-Gm-Gg: AYBFou3aZ500yzgEOBoAhpFIFTY8TCjMHyo2CuzaPYH0DY7d8fTNRlUlqO0r2WJ6imY
+	UxECklcXkbyqQCcjIE9CVDJExcL1gJZAypQxMswnQoTFKXNcVRKJoLlKqH7c6n7MsvbqLWCBU1n
+	7fTm5iF0HWFeeksEB4E3uUHCioDyG4Gl3QbAtyzQy6SYz3SE2L8UQkQnseCnsMJUzcLsyDYBh2q
+	MqkZNZc+Tjl0Ggo23LIVKrh8ooRNP9PJbYqrIXhIOx7inG79BXMWdQxWqR0cqoZTeCOwdMsCR8g
+	si5HyD4TXXB2HAgEtgFf+jDZ+sAy4//jadXvHfTpb4lXR8aM4wpnFgFqtMv+mp3hgL9cnGFK4Gv
+	oTwGgfsNshlojgSVH+P/+FkBD8zZzqpwt1Nfh4Ary609OVyH2IGqmAcW/rCMaQkpBLnyKqIrEG7
+	wqsyNWLL4gpPiQSeX4O9G62suiC5ohjpI1uWGDltYP7RQzWuZ3xnAasdnjvctttEbk78CfFd7Yr
+	y5foAnRbUhj
+X-Received: by 2002:a05:600c:8b8c:b0:49c:e3ad:41d3 with SMTP id 5b1f17b1804b1-49cf7f4aea6mr327332105e9.0.1788936179364;
+        Tue, 08 Sep 2026 23:42:59 -0700 (PDT)
+Received: from dell-desktop ([2a02:587:4b5f:900:ef25:2f4:1792:4e6f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20dae82csm25030745e9.3.2026.09.08.23.42.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 23:42:58 -0700 (PDT)
+From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org
+Cc: bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	tasos.papagiannnis@gmail.com
+Subject: [PATCH] mm/nommu: Reject wrapping ranges in access_remote_vm()
+Date: Wed,  9 Sep 2026 09:42:31 +0300
+Message-ID: <20260909064231.18693-1-tasos.papagiannnis@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260907042447.2450663-1-ridong.chen@linux.dev> <20260907042447.2450663-2-ridong.chen@linux.dev>
-In-Reply-To: <20260907042447.2450663-2-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 9 Sep 2026 14:40:08 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
-X-Gm-Features: AcwNN1XF81pARNfV8NupKBE8bmsecrn-XPHu6HZ3n4QG9cW4OnnnSsqVFmMC4Qw
-Message-ID: <CAGsJ_4zT0HcbkQjdPFPBeaqbGcYp4WE6sghDzz=0evhhupCs3g@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/2] mm/mglru: add tracepoint for folio isolation
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jbc5gi7tttbo8e5bptkgbz67jgc4z4rd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E2744A0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788936021-751254
-X-HE-Meta: U2FsdGVkX1/Q7/8tnW8MCBoyYtFXpiMOilkJIDQLKDUgdmkiGZ/j+YKZytn+4yYqGj1uWPpnDfHC8HiOgOqB/NLZD7oCpTxRrZnZhdiLKWt2GfcMLt3IMWA5RIhBjnNmpmp0bf5QmUi5LFn0JwzpFRCgfZFfUjr4wMhNsCFOg5OdCVMtk2AKyuC6hWRuU65gImYvneTgUuXLbn4Kv0lkIFLoMphPZpWvVADb2XJ7dtPoNfhNRjKRkw6k0LzlNqT0Qv+PTomCRYdc9VdREypxwO/HeB182sNprxJO6FG03daBg9n6epHDykFSxAd5tn/Myk859dCvPAAG90I7Bq5vzk4sDHTLYJCOpw++sq3pzGyUFQXbk0pKMqtuoIjydrga9H0u2QOtrcVfZ3ZzkRk5Xwko+JLK1zOK8vb3khHoG8sRRu7uOFZgEzS0g/kv+tbNhb+RQf8FClDU/dsGRxIxXLWtRFPBj1PBE9ph0ROwfl8uxzY5Re5vqZP75Q4Ymn+uQ4/DHaIp1V/Se9JVrYtjK6pXRQlnBSwax8HjHRgfJuJlfSLlTnFhqcQ/CpKyTXakE3u+fj4e5YW8BgC7n7CTSSrrZksrP84pdoTbyWK8zBjjvXEbw4KiVzCMjPUuKZ7WQEcjYKx569/7fFtDw4BBNnjtbRPyypuh5Ee1bJb8IrBOwfsC/2SBpm8YqHw3ut7Xu1TuVaCglbX/PZ/KlfoxiiwXiV50MJn5dDJ+j0+4WU8JS8xwPWXWI/OeKPBoMU1APCn+OistF5nyrIYJL2/r1oXGGKFOSxPXtp6X953GqoST1U39NOT7oKbY4pPeTNMhGx8Kly8lAhEP99KHscY2y0G+U36oUQDWOmnd0/czefoiKcOAsx63pz1ouBPezl5yWH41xCJahiFgVeOOUsnYdP2/wi2hTIGM7Eh8T6WNFJYp75eHtHKsRMc4otUJ3+L2VIkwQnetkxipuqEUs8f
- 6PtVKeJD
- GwanbWZqhDpMzoCUe65ICNUQCwc+j5eMuXCusM8IEehrQyRNJU72wlpJ8PSrewcrtmmdjR9Hx+Ht34VvTVCgJ/+6WVL6BVrTXY01aOg6kAmfrE8JVu9+MSOPoWa7BW/GR0eT97T6CkhDp1vehd1cz/wm7eO7mIC74NxypB5qcCmMUs+xCx/MUsx0H7NXGhSDGasHEUZRj5tWmsyg1QpNpUfk3Xc1C/2aB3cYnn4MgUSG4jPeuxWnnSHGcBi34IJ61XEfkCPysVcoAWPAC0wPOy+p5jLEP7Euigmz3sMuwKGC4nMwI2CEiQC11GA==
+X-Stat-Signature: 6oiqsmcphyg137ek4hwpmeqyqj6ucapf
+X-Rspamd-Queue-Id: 3A5FB1C0002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788936181-490728
+X-HE-Meta: U2FsdGVkX1+xZLMgjMhZLpEjCJE1R8zFFW4ESs5W9LOO76RxNuOWcjdDL2HlVshoXZW6LakF5wA+EU6IBW9Doqc0XmexhOYGWn+WYerpDxAExoTu89fn6OQOzkpghRVwEA/wkc0ofbUDBcM+yHbW6lw7BweTDhuKkZ4G98SnALz4RkfpMV2z3cPHZ97TNymfZse/aM3eOal8jgRrsmMnITyef8dd2vI/cxjyckwfYEw2FvbHMYL8Nzdm11Vt431mVB23X7Z8lP0UsbPoY6sSzlL4LaLWBaAjc5CaEVMQO30OfOsXG6ifAAMXcFzu0ZMQypd4laeCqjHJo4CMvkf6qgBWGNrUwmGcy6cDQ4fw+6GF3vRC/NglHwg1xe8rfI/eaIzPzETybUlxBsv120sS5MjIoy0bN/QwN1gOI1ShgeQ7z7dDNB61FrruGSLiCwZCgbCZKyLOEDiUth7G+9IR9CjVJYL3j50CMdvXN/V/khj/d4O/b16VcvRcsOdht9Du52jVDIeYyvpp1FOVotTou/puBvZs1eVNuTVnCUi0PHEKY49lmKZabDwIsBvbwkYjsZan9hlEjZiGWIUb4M3hzuTJT16F3qn5EE5BwgzU4D1KYrl45tEv6QIEq+K9gYfIB9ab5yHB5TwjKdSFntqNI2kYF4B3XIgbL7mOgPVS7GxL6yxl5tHIgggWDUUMdabmQ2v6GFr6a1iVSUuaVYVeZ/osuwRv7LVGD/MRAI51IB0MyFL1WDWnsL2REILdl6PurI31GIXV26eYOD0InN0XCkORVJUxenEDmD2ketb7SpMzzrQL7JLCUb34zycxzbLlIUVtEuPrS7M7BKkx0gYOIvyU9kZ8igbMtRZpdkxDP4/977Cx81OaJKmgtnyeLorU5jGL4e7eeXGrrlX5EvVLGPKx9se01+eemR6GWz0+DN9kETX7mr3X1p6Hkcela9ZEat3zTbpGjMCyfrxbQ7l
+ rVrz4npE
+ elxzWmPhxtpotL0Yk9SKw+x/X9AM4IY+fP5XlTKHQZUa17gGqeCQVSO0O2UJV8rshHTL/zpKy+2Fg89fzFuMXJjJnA4k5N7quMbevR66Au2ffwBUubALKHgc9/wSxQ7D4pO3qJKnBhdRwW9YbY6JIy1D2+gQamVaCvsoTAw3qAHY+5npxj+4Sl6LGTgo7H52K/pN4rYIHtg6x99lQ2jSefuxOjZgBfr4FFbCxNrZeubp0Ma5xsM+oFG8IFPtwSF1BI8u9Qn+K2YTDXFCg0nMaM6BkV+N+ft7SGE/jRZ8XJQX3dJOgA4VMpnyWQS/TFoPt2Pv4yRm8mi57mzA9NyiONeyNfdvVeQBL52TEo/5PYgokroC29YAO8Uf3JiBg9QvctKDfGbg+zvotLqnLqV6OqIjOakE+G6WHqyeKf0ebTZfJ9CMpcFW/wCaVECl9QKfYFcqSoHGU5riotkHRoBUBy3kbtTYA7/VaXA6F2xDjnP4TobMX9JwGq3qC+Gi5PbW9tNCOeS9BSdPFC9ZExldNt9WBuNfdkzvkQ1BKIYoXDnvCnHkMbbvirxegPx2tpOcdpBJU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,69 +118,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 12:25=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> MGLRU's scan_folios() and evict_folios() emit the classic-LRU
-> tracepoints trace_mm_vmscan_lru_isolate() and
-> trace_mm_vmscan_lru_shrink_inactive(). Those predate MGLRU and are
-> indistinguishable from the classic-LRU path: they carry no generation,
-> sequence, memcg or swappiness context, so a trace of an MGLRU run cannot
-> tell which memcg a given scan/evict belongs to, nor how far reclaim has
-> progressed through the generations.
->
-> Add mm_mglru_isolate_folios, emitted once per isolate_folios() call with
-> the memcg id, the type actually scanned, the effective swappiness, the
-> scanned/isolated counts, and the anon/file min_seq and max_seq. The
-> min_seq/max_seq triplet ties each isolation to the generation layout it
-> ran against, which the classic-LRU tracepoints cannot express.
->
-> This is emitted at the isolate_folios() layer, which is MGLRU-specific
-> and has no classic-LRU counterpart, so it neither changes nor duplicates
-> the existing scan/evict tracepoints.
->
+The NOMMU implementation of access_process_vm() rejects address ranges
+whose end wraps around, but access_remote_vm() bypasses this check even
+though both functions delegate to __access_remote_vm().
 
-I have no objection to MGLRU having some tracepoints. However, one
-major concern is that the code is changing rapidly, so the tracepoints
-may not be stable. We would need to maintain them as the code evolves.
+Move the wraparound check into __access_remote_vm() so it applies to
+both entry points.
 
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  include/trace/events/vmscan.h | 47 +++++++++++++++++++++++++++++++++++
->  mm/vmscan.c                   |  9 ++++++-
->  2 files changed, 55 insertions(+), 1 deletion(-)
->
-[...]
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 8409ea4bbf37..771fe6827939 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-[...]
-> @@ -4876,6 +4877,12 @@ static int isolate_folios(unsigned long nr_to_scan=
-, struct lruvec *lruvec,
->                 goto retry;
->         }
->
-> +done:
-> +       trace_mm_mglru_isolate_folios(mem_cgroup_id(lruvec_memcg(lruvec))=
-,
-> +                                     type, swappiness, total_scanned, *i=
-solated,
-> +                                     lrugen->min_seq[LRU_GEN_ANON],
-> +                                     lrugen->min_seq[LRU_GEN_FILE],
-> +                                     lrugen->max_seq);
+This is originally reported in [1].
 
-Maybe `scan_folios()` would be a better place for this, as it can more
-directly reflect what we're doing for each type.
+[1] https://lore.kernel.org/bpf/4ef240a5bea36ff84df9589671367832860795159386a4c8fba546a0fa8b786f@mail.kernel.org/
 
+Fixes: f55f199b7d76 ("NOMMU: implement access_remote_vm")
+Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+---
+ mm/nommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
->         return total_scanned;
->  }
->
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 498e01ee40b0..ed44510e3770 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1674,6 +1674,9 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+ 	struct vm_area_struct *vma;
+ 	int write = gup_flags & FOLL_WRITE;
+ 
++	if (addr + len < addr)
++		return 0;
++
+ 	if (mmap_read_lock_killable(mm))
+ 		return 0;
+ 
+@@ -1727,9 +1730,6 @@ int access_process_vm(struct task_struct *tsk, unsigned long addr, void *buf, in
+ {
+ 	struct mm_struct *mm;
+ 
+-	if (addr + len < addr)
+-		return 0;
+-
+ 	mm = get_task_mm(tsk);
+ 	if (!mm)
+ 		return 0;
 
-Best Regards
-Barry
+base-commit: 0d9ff90a5422cc7509258aaaba1e7481df4d332a
+-- 
+2.55.0
+
 
