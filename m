@@ -4,125 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2E4C79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4AAAC79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:30:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FF946B008C; Wed,  9 Sep 2026 07:25:16 -0400 (EDT)
+	id E553A6B008A; Wed,  9 Sep 2026 07:30:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D0086B0095; Wed,  9 Sep 2026 07:25:16 -0400 (EDT)
+	id E062A6B0092; Wed,  9 Sep 2026 07:30:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BEAD6B0096; Wed,  9 Sep 2026 07:25:16 -0400 (EDT)
+	id D42DB6B0093; Wed,  9 Sep 2026 07:30:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 349B36B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:25:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 950A840197
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:25:15 +0000 (UTC)
-X-FDA: 85193992590.24.119DF60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 197D8180005
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:25:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCsVcikz;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AD02F6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:30:58 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08CEB1A01A6
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:30:58 +0000 (UTC)
+X-FDA: 85194006996.10.EFE2670
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 426E04000A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:30:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RRybbNra;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788953114;
+	s=arc-20220608; t=1788953456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=inNJzZhlDskfV4tobMRa6NUvX+KktI2JxAaJsuypEcU=;
-	b=iDj45f6PXrtv71Ws+G7+Rd01B6u4URj16LJY+0NipGBSCKSRLFLWqp1yPq3SLRVcJpjP2S
-	01zLageLWCwHsW/PpJIQrbF0LpimBqMsA95jhdjyCqEbm1qOJz2k8VLvjtGOAboxROVdTB
-	zq9l34f/ctNZRiRhmOe4WxJ7HiJDkSo=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCsVcikz;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=kql9G2zdyt6ZJFywS3ZVlugu5+he5hLWWrL/U7LDx3k=;
+	b=eUAOR8r7CyWSanntcwqA064mlSJ4IBWB5K0/A26rK9+apaZkwdMg1eXoLBXIo81RyioVuh
+	aY4NMDnqVIFpvwO0lG/KyaqdjEFj/bh5BFP999z0FGCdxrOb0s1HRRg3kCtblvBdIJITaO
+	OkMqGPjrwGKf/Zjy1VvptiL17+bnkig=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788953114;
-	b=2NFw7J18lhsxXJDndkcDOomQ02jMEswm1utxDKFWavdFyHaPTwJa+lApiuI02DgU8cPZ+o
-	9LJzMFiLExhCPqy8gGADoxPwRCT7eHGJcNHjYh9D8oswOz4dkenVMolOMIeVK2DknUOW78
-	x23OitlT7igEgmuiCm/6ZEG7SgkLDbA=
+	t=1788953456;
+	b=o8U7lgH6BXjng9yI/d+YbJBCX2cjVL38JWGYE4wZg+sYLRCE1WQ06JCT5XHNxZsHXb1zJs
+	7JsMYbjGoHMyylcD6zQUy+Uf0Q3Y4UbAEejyvXYgMAzJA8DoNeuEkB2a7etTl4KupCJQZm
+	EOBnXdwb5OA/Hqvt3kQCo1m/2iEpbdU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RRybbNra;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 08BF160211;
-	Wed,  9 Sep 2026 11:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8571F00A3D;
-	Wed,  9 Sep 2026 11:24:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 288CD40270;
+	Wed,  9 Sep 2026 11:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298341F00A3D;
+	Wed,  9 Sep 2026 11:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788953112;
-	bh=inNJzZhlDskfV4tobMRa6NUvX+KktI2JxAaJsuypEcU=;
+	s=k20260515; t=1788953455;
+	bh=kql9G2zdyt6ZJFywS3ZVlugu5+he5hLWWrL/U7LDx3k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YCsVcikzxNnvBT0Y3c5qUMcZq6CnjiF9LAucMz9KUDz/X8rycnl20TJiMBuTV44C6
-	 ciuJ5X0Mary0o+RdhTl8tWHSISMo1lGTn+IXwhIQfs7dZg1NC//UvrgDFVVFH2BXXg
-	 wGSvIxQ/NBgeVTkoO77PEhxG5tF/kt0hk770YdbvA7jzYldeFCi6gaAA3Ie47dGZ4o
-	 rDioSU8ROD/U0Ex4wV585kl0B6XRkVhfL48+PBTUa/l0vXguhxnOvt9I9np0ualYy6
-	 L7k5zESC+bnaJX5hWbMNkzgmSv0XEtgXO0Eiy5hQl/cIt/eJwNjq2z/FZB7YFfjxHL
-	 0pO6lgM9ge/7g==
-Date: Wed, 9 Sep 2026 12:24:48 +0100
+	b=RRybbNral0sY22hhcoz6HaIyVeKE2oJFiF6t95RxLBLSdu/Oa4wlNWDh9LmfJ9Eed
+	 iXwnxBS8UvyhyyE57jKgXr/6tickVpe3ztp4AHyPlz4bRgvGI9kDAB45C6BDzhdjCJ
+	 8DanpZOh1L/5Q8EsGHQgey7kpOgynNjhYAF+g7ykpmkbABGn22U4EdFzyf/dJ5NRAf
+	 nLKHz+pBsV8i9UA0K7CWArOItY9MyIUuLYt9vfX8Rwn1o795fOI2TbavG9pep8JZ1d
+	 nEnvD1icU25l0X3w9kcBw+Zg5tB344SlJxTioXR+W8Y3BjJw9sSlwXW8OX5rUYPVZy
+	 /RQC2Us4m8B+w==
+Date: Wed, 9 Sep 2026 12:30:45 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
-	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Mark Rutland <mark.rutland@arm.com>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Marc Zyngier <maz@kernel.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v2 00/12] mm: make userland page table freeing RCU-safe
-Message-ID: <aqFBXNYGa5cktCeJ@gremlin>
-References: <20260908-rcu-pagetable-freeing-v2-0-1f60b64e878e@kernel.org>
- <20260908141543.8180b60400d38b70d249949b@linux-foundation.org>
+	"David S. Miller" <davem@davemloft.net>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 27/39] mm: rename is_vm_hugetlb_page() to vma_is_hugetlb()
+Message-ID: <aqFDKJlj76O1hR2R@gremlin>
+References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
+ <20260908-b4-mmap-prepare-vma-flag-sanify-v1-27-dacf19cce22b@kernel.org>
+ <20260909130141.2c5d250d@p-imbrenda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260908141543.8180b60400d38b70d249949b@linux-foundation.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 197D8180005
-X-Stat-Signature: w78st86win74zmuqa1bx8phgqibjzemj
+In-Reply-To: <20260909130141.2c5d250d@p-imbrenda>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1788953113-671233
-X-HE-Meta: U2FsdGVkX199igxMgnmkRj3JB1SG4oudhzzUMTAlq+EttVFeZUsoIKueOh6P5UdUWglu4/9iALs+sLU6T12oQuE5z2dsjMnbEVzH8CVS1oIm415bEBULmYEtRnkODkndO3QDDtan1MMwRl1+vM3OSywPmDsuedO9ld1hIwC7kJJWj2+breJMxQn+Sb70kR73Zonvt9G46ahltfOLjTkLAfb1cimtL788gZUesSiF7lNh7uYOgIj4dOxu63OfgnibBMT6yz/TvAT+LtXbrpw8Xm9xDuJPznPgmhEydWLkXKSl0Gp3IzPPhmai1Rkc/giGxb/vDN29het/plS5XaitV12fUerkD5e8mXN+6x4QjjZ+8nfaHXUg4HEGB6jiXMOMtush3q547tsLnnQw36fZI7B6gCHY4pAawskMy0nRq1ssJgwVSn6ZilwAxkyZMJ6s4yjdX0kzKcyVL9OOqcsPpLtfiW+U6n8owii01Ql70sTKkhpRPGmVISSC8GxpggUTJR1j4FiSpZ1qPsjtcPmU8+fFd1dwXizdjOIVVw8UKAuIvjgCj4b2NxQAG/Ktr73W/yslcL7EoIo0RGVvJGPj2FwJbnQu8B9zS66Oi9Svzk4hR1sgfZoPyPTmiUhdndAEu2WnYVL/1HBHcn27yhte7NDYYwXy0wazfO8Iu5kavGD2Au6DnUUx0sHjVm8rat9UkNdPb+5Rq5cgBhftf/NpP5e0Zw1xEgtHzHqfdifLa86aVkdFrXdok682dFqTj79pe+ied3WodaL/f8kONMhkSe6O/Jza252zqmLea7oqx/4WbTRgwzKeeTZu4AjLu6Pf6rwDAnguwO7foeVRjvLbdlLwhKGW3qzM4+EixwhwqaW2k6zUiXWuprAETmfq0hhDrmldN3+ZlsBLZNv6jZsY9O0MBg3agGlDgAIhLOYFIPz3gw3FAdmbvWoaU5nJeHmHWMOtvCAaVxjd89xstgk
- TalpFoQb
- iX+ZRzfKRZXAPOZwft5nsHbvfRiu9k/t3rPXEKUma0F+9iKGO/iGUyhJUH3Kr3wOn4kvCjKk92QXG6UseKixIQ0Lif1RjYo1NWJxaBhr38SNvP25pODjKmIGMkyOIEOENErkx6Mhp6PbrWCMMlCqVWN5sXp3BtOxW8QgtG7zRO9C0PM8pwUkTcZLL7bZQet0ZQJ97N9vRAjmwyqnyRrwMLImaLAZrl5RJ9l2uxW80hdCYWLmR0pVc3EuvG+FIlLkC9kSkZtrfKzxKkM3N9CA6weiuxcUT0BzJkZa1g71SLM3CwO1of1sp/TzfE+ZeXcISmGYgb/P0/l05QIhWi6HgWPotoFNOACNFzClG
+X-Stat-Signature: 8jm5jetnc8pnub3jsm9rjktnkicuugpd
+X-Rspamd-Queue-Id: 426E04000A
+X-HE-Tag: 1788953456-333896
+X-HE-Meta: U2FsdGVkX18Q79CRpOzhoZRyV1mJiP47gqaD00k+4mOK0MOZDvZ9hhtPi7S0oZermDU5aB7FgOG9Hx9cgLDFl1y43z80m+EUkKpQ3b8gnUcl5n5cicOY8vEL7CXvZ9eFoiFUklNRyfxAFurDDimrEMh8Ep52Gs1hHBxpjnNamE4Uv+Mj9d6/Wr7GCwe1V+SAFFLwa9aitIt+3yMyhL9dAplFOjqz8lhCK0rGqgwAjYbRVLBxdRo5N+CPKwSE/CDqcpu6qk9asMEWuBzELL+zko+WFGD/63CiBrRdKfwOLHa/qDYpfsmaVXhCVeZNeOeX5nI0j9cax8QQuZny71eAXu40Au/27Po6qe+4GD1LjZkoBT6Z+YYKtUZmZ7luSwi4G3ldzTI/AE6Ak/9ZGYhdOEIQkXZZ34Ak6E8R9DjgfgMu/7GGartS1wx6tDU1GjIIJsahPtJfrin4QyPK3avtc0RlfIVxLC3cLz3zoyPITGx9/avj+XDwMchhTbOjjACEucVHTPKgVeEvLLbjntsOoSzFrLApR4kQI3mhn8RGixnPp1fANCMUrktmCZDJyRqpEK1n61ewj3vHSffufFY3c8rHy5Mazv0ESp5KCXa7RT+s0uHhi4/MZojWla9iJh/lFQ5NjG+dSM/WWK6dNx8YJuDF0v0UMu6gPUPMkQifbqRObVzIEcZpyKwWSgK3ck7WULcUinoxWP1QASzc5VdtKwVZAsfoJXc4RZWRnAjlqaJ4kRZuDl7hJ2UGRJ9mj0/KrmYFWVKtyDNGyAkCNnr2cd8gmYG8Q2JqjBe1GAW7KPGEoQ7KF99s/ABFs2ZSIHURWwJ1M38zOpmJI1umd3yOqoJL/7DyvDHdy/ZPrYI/QobcHDh97UE8j46BXh3bQIfxVb7BB+R7ZZ44eF/XlCLKV7O6IuFYKRVl+l1BbPN6Oh0L7A/ii0p37c1Wry5bST/KOliV54ncLQhLukt0Ftp
+ iWy9qO3c
+ wNwpB3Cawtwz9qNGOAbANIhob+W7vYj/qz3XU2Bo9VU3H0ijkbBnYNPNOeIOxc4qVHSOp6AIkoRP2nEI1a8TO2WNXxy1OyUCZH76uzqUL7at/dcB4lwtDxfRS7qWbe4M2GM0g1Euc4uKqagiq5oLVO6E1ytKiQ2dz5KAqUtYyYKVWUfknKR78FJ/CksVexLYyg6aQv0WmYX1oXSGi0s/Z6w+lp9wGANEJ55kpuy0ma3GsHTyGs/OEaFuBM8ntqkKbYrAKggaWkjy8+qi+OkR3/kx8kRz7G8/CpeoxGCSDbxdhW3/YZi4aB/Gi1mDY4o2dUG6n2aUjEcwqzc77MYeWDl1YNeWeMARAPGsq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,43 +103,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 02:15:43PM -0700, Andrew Morton wrote:
-> On Tue, 08 Sep 2026 13:32:09 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Wed, Sep 09, 2026 at 01:22:07PM +0200, Claudio Imbrenda wrote:
+> On Tue, 08 Sep 2026 21:01:31 +0100
+> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 >
-> > The majority of architectures in the kernel defer page table freeing until
-> > an RCU grace period has elapsed, this series converts all remaining
-> > architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> > altogether.
+> [please note that I had to prune the CC list quite aggressively because
+> my SMTP server was not happy]
+
+Yeah sorry about that, I already pruned the list a LOT from what b4 wanted, and
+still ended up with a ton of people (I consider maintainers for stuff I touch
+the minimum cc, but also added mm reviewers).
+
+>
+> > The is_vm_hugetlb_page() predicate is badly named - the mapping can span
+> > more than a page and it is inconsistent with other VMA predicates that
+> > typically are prefixed by vma_.
 > >
-> > This is important because it enables safe lockless page table walking under
-> > RCU alone.
+> > Rename to vma_is_hugetlb() for consistency, and while we're here update
+> > some VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA() as to avoid unnecessary
+> > oopses.
 > >
-> > Doing so allows for reduced lock contention, avoids lock ordering concerns
-> > and enables fast, efficient and correct page table walking as a result.
+> > No functional change intended.
 > >
-> > Additionally it removes a bunch of code and architecture-specific behaviour
-> > which is always a beneficial thing to do.
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
-> Thanks.  It's early and unreviewed, but this is mainly an
-> if-it-compiles-its-good thing, so I'll add it for exposure to the
-> build/checker universe.
-
-Yeah largely, and I have done additional testing for cases which need it.
-
+> for s390:
 >
-> > However some arches required extra attention - sh-X2, m68k-motorola and
-> > sparc32.
->
-> OK.  Please lmk later if you think additional reviewer/tester attention
-> is desirable in these areas.
+> Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Only really the fancier sparc32 setup which can't be emulated [there's a call
-out in the cover for that one!] :) though sashiko found an issue with that that
-is now fixed.
-
-The other two I boot tested locally under emulation with no issues :)
+Thanks!
 
 >
+> but please see the comment below
+>
+> > ---
+> >  arch/arm64/kvm/mmu.c                      |  4 ++--
+> >  arch/powerpc/mm/book3s64/radix_tlb.c      |  6 +++---
+> >  arch/powerpc/mm/nohash/e500_hugetlbpage.c |  2 +-
+> >  arch/powerpc/mm/nohash/tlb.c              |  2 +-
+> >  arch/riscv/kvm/mmu.c                      |  2 +-
+> >  arch/riscv/mm/tlbflush.c                  |  2 +-
+> >  arch/s390/mm/gmap_helpers.c               |  6 +++---
+> >  arch/sparc/mm/init_64.c                   |  2 +-
+> >  drivers/gpu/drm/drm_gpusvm.c              |  2 +-
+> >  fs/coredump.c                             |  2 +-
+> >  fs/hugetlbfs/inode.c                      |  2 +-
+> >  fs/proc/task_mmu.c                        |  8 ++++----
+> >  include/asm-generic/tlb.h                 |  2 +-
+> >  include/linux/hugetlb.h                   |  4 ++--
+> >  include/linux/mm.h                        | 19 ++++++++++++++++---
+> >  include/linux/rmap.h                      |  2 +-
+> >  kernel/events/core.c                      |  2 +-
+> >  kernel/sched/fair.c                       |  2 +-
+> >  mm/gup.c                                  |  4 ++--
+> >  mm/huge_memory.c                          |  2 +-
+> >  mm/hugetlb.c                              | 14 +++++++-------
+> >  mm/internal.h                             |  2 +-
+> >  mm/madvise.c                              |  4 ++--
+> >  mm/memory.c                               | 12 ++++++------
+> >  mm/mempolicy.c                            |  2 +-
+> >  mm/migrate_device.c                       |  2 +-
+> >  mm/mmap.c                                 |  2 +-
+> >  mm/mmu_gather.c                           |  2 +-
+> >  mm/mprotect.c                             |  2 +-
+> >  mm/mremap.c                               |  6 +++---
+> >  mm/page_vma_mapped.c                      |  4 ++--
+> >  mm/pagewalk.c                             |  2 +-
+> >  mm/swapfile.c                             |  2 +-
+> >  mm/userfaultfd.c                          | 26 +++++++++++++-------------
+> >  mm/vma.c                                  |  8 ++++----
+> >  mm/vmscan.c                               |  2 +-
+> >  tools/testing/vma/include/stubs.h         |  2 +-
+> >  37 files changed, 92 insertions(+), 79 deletions(-)
+>
+> [...]
+>
+> > diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> > index ff63ffb1dbd2..3f6783b93e67 100644
+> > --- a/arch/s390/mm/gmap_helpers.c
+> > +++ b/arch/s390/mm/gmap_helpers.c
+> > @@ -102,7 +102,7 @@ __context_unsafe(/* pte_unmap_unlock() not instrumented */)
+> >
+> >  	/* Find the vm address for the guest address */
+> >  	vma = vma_lookup(mm, vmaddr);
+> > -	if (!vma || is_vm_hugetlb_page(vma))
+> > +	if (!vma || vma_is_hugetlb(vma))
+> >  		return;
+> >
+> >  	/* Get pointer to the page table entry */
+> > @@ -139,7 +139,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+> >  		vma = find_vma_intersection(mm, vmaddr, end);
+> >  		if (!vma)
+> >  			return;
+> > -		if (!is_vm_hugetlb_page(vma))
+> > +		if (!vma_is_hugetlb(vma))
+> >  			zap_vma_range(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+> >  		vmaddr = vma->vm_end;
+> >  	}
+> > @@ -247,7 +247,7 @@ static int __gmap_helper_unshare_zeropages(struct mm_struct *mm)
+> >  		 * proof to catch unexpected zeropages in other mappings and
+> >  		 * fail.
+> >  		 */
+> > -		if ((vma->vm_flags & VM_PFNMAP) || is_vm_hugetlb_page(vma))
+> > +		if ((vma->vm_flags & VM_PFNMAP) || vma_is_hugetlb(vma))
+>
+> Would it be possible to replace this ^ with !vma_can_gup() ?
+>
+> (obviously not in this patch, since vma_can_gup() is only introduced at
+> the end of the series)
+
+Sure, I could squash that into the 'use and apply vma_can_gup()' patch. Will do
+on next respin!
+
+>
+> >  			continue;
+> >  		addr = vma->vm_start;
+> >
+>
+> [...]
 
 --
 Cheers, Lorenzo
