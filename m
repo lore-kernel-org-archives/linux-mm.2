@@ -4,140 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E83EC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A39C79F8C
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 09:34:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989C06B008A; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
+	id 82B256B00A0; Wed,  9 Sep 2026 05:34:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961846B008C; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
+	id 802BA6B00A1; Wed,  9 Sep 2026 05:34:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 850B26B00A0; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
+	id 718D16B00A2; Wed,  9 Sep 2026 05:34:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 60EA56B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:33:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84AB01A016D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:33:38 +0000 (UTC)
-X-FDA: 85193711316.14.E782274
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B35B21C0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:33:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahdV/XU2";
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5075B6B00A0
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 05:34:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20032120159
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:34:06 +0000 (UTC)
+X-FDA: 85193712492.05.153A18D
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8F94D4000E
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:34:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=qGFwFM9t;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788946416;
+	s=arc-20220608; t=1788946444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SLdffO2d9oL1IoLe1z/izylXPi/WCd92jfvx6mYcYdY=;
-	b=wutxcPGr7/4RwTzh0XgsAah9x//YWxjbQ5RbFFtjEv773bbec7Wgm5a4fsr1tQP+J/Xs8A
-	iOef53HBegI1gGiqKJ1aV/zcIrYwLIYJ9I9HXp4hi5nBn6omMkRzjYG7omgGRdtlxlOpaQ
-	4nG27RdOoif8WCr9Tf8LahJlZYek5no=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788946416;
-	b=ZiBcx/fb997Wtnok+WljaXtT/iY3YFvoDNFmwfHA+biRAhDuMTw3kHngSQskksZBx+jebs
-	Ndvnlr9Sg17B1aH8njc4TDRDubSofr+NnQ8p6M45SK82mUfh8TAgzRAheFXs0rcc7SNcsC
-	TRct0pzeiPnd53PWH5i950P8SvKR+yw=
+	bh=UV0/+f1l1BoLThd42Ew9ojQmpG98ujp+B6DNFtXMLB0=;
+	b=RPb1R4Lgv5icL0pTnCR21kvxofyRPN7dJYwFfdTGx+iEMlNdeZjVjMjr6oKAFCwYPRiX68
+	Q6FgGqBahW3ctI4JDzNZq7vQu87O3TuSOJebdVB7jKb6qguOC2e9y852b2yS783LbeyONe
+	3AFBmThKNk0veqXDhZ+scp1cx3f2L0Q=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ahdV/XU2";
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E018A4045C;
-	Wed,  9 Sep 2026 09:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728381F00A3A;
-	Wed,  9 Sep 2026 09:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788946415;
-	bh=SLdffO2d9oL1IoLe1z/izylXPi/WCd92jfvx6mYcYdY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ahdV/XU21+mGhwldu2hspAkKmm3G/Pdk7ZP7FMpkYSl+VgEhXZ9h5Xoe8L1IlIyn8
-	 Lw3boxLMaHBmtMYJ/z+hyo8B1ErAzgFTbA2aW+Z2kshp3KZkZjLpEP52qbXrScEunL
-	 lqsMz5xQIWAL6AkOUi0FoXisNE+JfsMSsKI3XTJ6pLTeIETN3P/7hmr8Lvo/zi7Uuz
-	 B/GkJd+1JnPO900+EM1QO3CodSYd+hnYsQIua+CqcZbaiNGT5aOEQEjP36packx1uU
-	 aWUNIEdmOlEBDmLTztIjJi7tHgzx/tyBpXn0109kpG4Nh4CUeHoxJY5ZdCUmxgIk9x
-	 ZAnyvFbtvGD5w==
-Message-ID: <f37fbaed-3a92-4f7b-abf0-98e30d853070@kernel.org>
-Date: Wed, 9 Sep 2026 11:33:31 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=qGFwFM9t;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788946444;
+	b=eQavoIpEsVL1LDGuX8rd0XdKF3Oe9cWEBUCCphV/y6kEnZTFV8y1vGouGMbaVULG0eAcYr
+	L9URSr/bGe+HDv+iWMxA3AeuJV9Z8ptnYeOvr9VvMkQgxPcHXNxvnp63pFVEjzcsg365Hc
+	pizyU4RvjB/zEbuN5ej7ju9kP4/YKSw=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260909093401euoutp0250b9a9a2388e6dc00f47f54902d9caf0~TnU9pet751633116331euoutp021
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 09:34:01 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260909093401euoutp0250b9a9a2388e6dc00f47f54902d9caf0~TnU9pet751633116331euoutp021
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1788946441;
+	bh=UV0/+f1l1BoLThd42Ew9ojQmpG98ujp+B6DNFtXMLB0=;
+	h=Date:Subject:To:From:In-Reply-To:References:From;
+	b=qGFwFM9tX/POMB+cQXb+N3gFZtllUteEnaYW/feAzpisaHwTmSrLknMNODUX+2+UL
+	 QIFUXIjgsWhk54Q+6dHd5FmBOwbLGezgtyHlrwzcYMHn381fM3QogCqd6nesWjrxad
+	 bsOo4TD+5t/1/mAha5R/CuffwjY9IqfOmSLpPYhM=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260909093401eucas1p1978a50cffbadcd28189328b8a35181f1~TnU9aG9Mo1629716297eucas1p1H;
+	Wed,  9 Sep 2026 09:34:01 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260909093358eusmtip199556b4956c3d189eaf7446be74818ee~TnU7Tv7y41967519675eusmtip1Q;
+	Wed,  9 Sep 2026 09:33:58 +0000 (GMT)
+Message-ID: <c694433e-4006-40f9-81a0-f1de58f0c93e@samsung.com>
+Date: Wed, 9 Sep 2026 11:33:58 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/17] mm/sparse: relax struct mem_section size
- constraints
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-2-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2] dma-mapping: use exact allocation for DMA pages
+To: Qingfang Deng <qingfang.deng@linux.dev>, Robin Murphy
+	<robin.murphy@arm.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon
+	<will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, David
+	Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
+	Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+	Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260825084608.47437-2-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260903012914.312305-1-qingfang.deng@linux.dev>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-CMS-MailID: 20260909093401eucas1p1978a50cffbadcd28189328b8a35181f1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260903012931eucas1p1d558f849340fa7b92074201c28f7937b
+X-EPHeader: CA
+X-CMS-RootMailID: 20260903012931eucas1p1d558f849340fa7b92074201c28f7937b
+References: <CGME20260903012931eucas1p1d558f849340fa7b92074201c28f7937b@eucas1p1.samsung.com>
+	<20260903012914.312305-1-qingfang.deng@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: 4eu4sjfb4fziwnowbs93p395xabkeydj
-X-Rspamd-Queue-Id: B35B21C0003
-X-HE-Tag: 1788946416-952384
-X-HE-Meta: U2FsdGVkX18DFbjqe6quI7GNTP7v1taevEpzOyFAIVRb9VeSVzzhWTRQkPAu79nOtarlC8IFL1Y49tI76vfgVN1w5WycLJ4hBoeBFptxy60tDu872288hhJW374zUb7blEtpqlwuCbLgyeMcPD8esGb5xb8peTKSXiKfkmVWxHVBrNWQ1gR8HLaM4SRvuev5ic50mzmo9pA74RK8fg7UykyzwdTH5M4Vctg0KpBRplFRZyLIXwPKj7n6SIHsYxVP5JmScERROZnMVt94S8qTJGFCfsDA2d5KU4sM1kLhEdy6AwZz/EmN2heS+/W/J8zsR6YCajTmc5ZJX1tGtobZpO84V/IJqbXw0Zaxk5O9GlPPNgFXD8/6AdwHkymFZKM1lQrqLg4HLMNTzXcw3ZF6AOfkwIgZJj7MZo49XBpGu1Enbc1VW7vhdYG6lslS47IxOx4hieWKvoBWvt7x6KvJBEeY7o4hDa77Ib00pioymZbkZ2vswvHadS9eSgAXbNHJh878s3rUtoUjUaRs+pE3+j0p+Ajb5RvRCtvMTSo+s2G5t+ElWCHQGtSW7vbiMziZrNlX0PvXI9EYFyOeaIXrUa3Sdb1F46uq90Ke76QExZOjDbqb3/8XjFa5/0xy4cM55nD1r8s/ZGRLJ9B7o0AL08+WaU9UUrffrKpYpWyhWk9rjUcp5HZeYrxMtppHBFMWxTSfD2ICN6Jd+TrymH+o325aqiYaVcODIAmx3hulWJcqsVXsUuVJMUpaD4WGVNa3ZyC+CimZp9xXEAC1HDThxoqZsTWBMAs1CRxi074G2LZdd0PGpp9N2Wy00a2T99kuWEv5ow0NUAwLnBU4c1cvdpaIimG9WEhdSHeiRFayXNrv742JD+qLDEcddBtRyIIwGcyO/5YfFtEiinlRW17G4rX56rQuY7iC6BnQpofMfIx4j3UVL7pDCr7kgGuVAzwzXLbXt73jIIyB+6mAMKE
- zSGBDDbR
- FueyKRT39LzRu7RUAPjWnSvwR9jUZ63TjjfTJI5laZQbDyNUvPs2+CFtwQiUqLoDudRDM/qO3axR3KERP2EzeE3POkzRzY3Jje+CMLZPCvy7ocDaITzJ8QJueaBtks48QTEmnQVrlZm2dFvtqRv8+l+AmasItLPrkWJ98j5Xd2KHql50ncFfgH+DlOKP4Bk/gXxZCOiy5v4TL/3Q/mRkjRly0qM8H7PELD2B8jWQCzfG6oXaurAnYH7ixs+Njadqrr7Xm71ZzuM9/HbeNuVTXSOrIeob5hcAiE3txlmcT/2EtChl8ajsQhMzH34UgIujutmNv3uDdJwy2Jk4wfPLwZXl7xNmKcCRmLeSGztaV8QYzngeEyLAeMMdf983pwl5V+9We7cSCCtUzRIqvj7mT7F5uYBTtig0PjCvtQrPxnbzkfUA=
+X-Stat-Signature: 5ap18ffa8ijqr9esptfja8p7zt5uc1xg
+X-Rspamd-Queue-Id: 8F94D4000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1788946443-154598
+X-HE-Meta: U2FsdGVkX19bvx7Z5UWoVnUD4z0pzqptQ3cE9D8D9xL0/4MhGD1wgeCCWgYiWwQWsQD1Iip6lrm+bhMkBPH+FVVwhxgjYeCfocbCuExeEPp2uaXJG8nALoBzRnNUmtQ7JpDlHKrEZmqGu95qgZAxt9UO6iTL1iEnq4CsJ/LGTHyOgpIAJdvf/wLkVcBcKMXpOQoVjvznpKqu1MF226vm+mD46FQj6JslU1pC1t2ZO5AvAmHx7l8wg4gXld+ehfJDtc2mb0oyrpWRYedKgVf8iIsDIP7fjHVpeq7qxmpXe/WdbIViTacTRA5d0y9kcCQ12QblSk8i2jky2c4L85bzWLqcYToctlgyeYvtSkaRezw7yJvYgIIsDyUHUO0ymqtJoNMi8d3Kt2OvaeN6wgC3ImaaOQ1vvou8EnTfAasTvm7CIggeeE7hn7ogkuaWM9BcTtNiYNXXl8GvW/2Xdy6vzHmNkaHwqEIYTbKfeuBiA21h14ey6g1PD4ki/qtucjxmmwQJ4wFOhybzvKywPdshjlGLpp4BztDdvl7hegGoojBxTuhVJoXLZP41WWgEAEk0oOft2rCu8clxzrDMtVLn7pJlqbBbaa53A+BfYF8lDc015Vu2eJeo8gH09Rkp9uyVb1py1+aYoD9hhkajUlQ5wV0u2NN2m/v9A02Vv3gMMoluu//dgHRbcZAVIFcRpgugG/mWK+j5Hs+aw8Il+kifqlTQY5Gj6ofrkOMltbaBDiPmhV9ENR6LtnCqCp4NQX69CchW8D0AWGlfpA2Y1/qAeU0JdFvgI7ZzRkT0FhNQZ0Zh455RUsY/0wZ97Mg+J7dkLDq6CuP5zgshJ0jRV0t4cXNNfq9IbpiWWtVPqNflWkQvi5uShkaMyT2xNcdCc6wXxwSVQFH+0uIWRMNOuP3FCORRzGGlHmdK5BYPOwROk3kjzD7Y2gZCUAlq3Sfhbwpo/LYLy2vRF0K3XWA+BQW
+ urKUYnmC
+ Nycd8GUuPABYB7cmfcLk6XbBMBRoRn0RdCyVSQuIvjKUKgwsp8woQ5Q5RF6dVyKdkAtha00pMB8AOHmg/5bZtVZi//hqfm3pSVt/+CEDirDp78/eJytQKunuyE/AGdFQNniB2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,30 +109,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 10:45, Muchun Song wrote:
-> struct mem_section is currently forced to a power-of-2 size so the
-> section-to-root lookup can use a mask instead of a modulo.
-> 
-> That requirement makes future extensions harder than necessary: adding a
-> small field can require configuration-dependent padding or layout checks
-> just to preserve the lookup scheme.  Keep the lookup correct for any
-> struct mem_section size by using a plain modulo instead.
-> 
-> Do not leave the layout entirely unconstrained, though.  Keep struct
-> mem_section double-word aligned so modest size changes, such as adding
-> another word-sized field on 64-bit systems, still keep a compact and
-> efficient layout.  If future fields grow the structure beyond that sweet
-> spot, the lookup remains correct; only the exact layout efficiency
-> changes.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 03.09.2026 03:29, Qingfang Deng wrote:
+> DMA page allocation fallbacks use alloc_pages_node() with get_order(size),
+> wasting the unused tail for non-power-of-two requests.
+>
+> Use alloc_pages_exact_nid() and free_pages_exact() so that a buddy
+> fallback retains only requested pages.
+>
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Applied to dma-mapping-for-next, thanks!
 > ---
+> v2: drop __meminit to fix section mismatch
+>
+> v1:
+> https://lore.kernel.org/linux-iommu/20260901085348.53140-1-qingfang.deng@linux.dev/
+> ---
+>  drivers/iommu/dma-iommu.c   | 10 ++++++----
+>  include/linux/dma-map-ops.h |  2 +-
+>  include/linux/gfp.h         |  2 +-
+>  kernel/dma/contiguous.c     |  6 +++---
+>  kernel/dma/direct.c         |  8 +++++---
+>  kernel/dma/ops_helpers.c    | 11 +++++++----
+>  mm/page_alloc.c             |  2 +-
+>  7 files changed, 24 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 58c624513cd4..8f262c83802c 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -1628,10 +1628,12 @@ static void *iommu_dma_alloc_pages(struct device *dev, size_t size,
+>  	void *cpu_addr;
+>  
+>  	page = dma_alloc_contiguous(dev, alloc_size, gfp);
+> -	if (!page)
+> -		page = alloc_pages_node(node, gfp, get_order(alloc_size));
+> -	if (!page)
+> -		return NULL;
+> +	if (!page) {
+> +		cpu_addr = alloc_pages_exact_nid(node, alloc_size, gfp);
+> +		if (!cpu_addr)
+> +			return NULL;
+> +		page = virt_to_page(cpu_addr);
+> +	}
+>  
+>  	if (!coherent || PageHighMem(page)) {
+>  		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
+> diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+> index 8fae2b7deb20..3ef3003713a6 100644
+> --- a/include/linux/dma-map-ops.h
+> +++ b/include/linux/dma-map-ops.h
+> @@ -143,7 +143,7 @@ static inline struct page *dma_alloc_contiguous(struct device *dev, size_t size,
+>  static inline void dma_free_contiguous(struct device *dev, struct page *page,
+>  		size_t size)
+>  {
+> -	__free_pages(page, get_order(size));
+> +	free_pages_exact(page_address(page), size);
+>  }
+>  #endif /* CONFIG_DMA_CMA*/
+>  
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 872bc53f32ec..aa4601805f21 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -329,7 +329,7 @@ void *alloc_pages_exact_noprof(size_t size, gfp_t gfp_mask) __alloc_size(1);
+>  
+>  void free_pages_exact(void *virt, size_t size);
+>  
+> -__meminit void *alloc_pages_exact_nid_noprof(int nid, size_t size, gfp_t gfp_mask) __alloc_size(2);
+> +void *alloc_pages_exact_nid_noprof(int nid, size_t size, gfp_t gfp_mask) __alloc_size(2);
+>  #define alloc_pages_exact_nid(...)					\
+>  	alloc_hooks(alloc_pages_exact_nid_noprof(__VA_ARGS__))
+>  
+> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+> index 66093460584e..90937dc7c627 100644
+> --- a/kernel/dma/contiguous.c
+> +++ b/kernel/dma/contiguous.c
+> @@ -451,8 +451,8 @@ struct page *dma_alloc_contiguous(struct device *dev, size_t size, gfp_t gfp)
+>   *
+>   * This function releases memory allocated by dma_alloc_contiguous(). As the
+>   * cma_release returns false when provided pages do not belong to contiguous
+> - * area and true otherwise, this function then does a fallback __free_pages()
+> - * upon a false-return.
+> + * area and true otherwise, this function then does a fallback
+> + * free_pages_exact() upon a false-return.
+>   */
+>  void dma_free_contiguous(struct device *dev, struct page *page, size_t size)
+>  {
+> @@ -476,7 +476,7 @@ void dma_free_contiguous(struct device *dev, struct page *page, size_t size)
+>  	}
+>  
+>  	/* not in any cma, free from buddy */
+> -	__free_pages(page, get_order(size));
+> +	free_pages_exact(page_address(page), size);
+>  }
+>  
+>  /*
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index da665ca22d5c..ea64453d7370 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -120,6 +120,7 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+>  	int node = dev_to_node(dev);
+>  	struct page *page;
+>  	u64 phys_limit;
+> +	void *va;
+>  
+>  	WARN_ON_ONCE(!PAGE_ALIGNED(size));
+>  
+> @@ -133,9 +134,9 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+>  		dma_free_contiguous(dev, page, size);
+>  	}
+>  
+> -	while ((page = alloc_pages_node(node, gfp, get_order(size)))
+> -	       && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+> -		__free_pages(page, get_order(size));
+> +	while ((va = alloc_pages_exact_nid(node, size, gfp)) &&
+> +	       !dma_coherent_ok(dev, virt_to_phys(va), size)) {
+> +		free_pages_exact(va, size);
+>  
+>  		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
+>  		    phys_limit < DMA_BIT_MASK(64) &&
+> @@ -146,6 +147,7 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+>  		else
+>  			return NULL;
+>  	}
+> +	page = va ? virt_to_page(va) : NULL;
+>  
+>  	return page;
+>  }
+> diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
+> index 6b5f9208d31c..5cdf3f60cf47 100644
+> --- a/kernel/dma/ops_helpers.c
+> +++ b/kernel/dma/ops_helpers.c
+> @@ -67,10 +67,13 @@ struct page *dma_common_alloc_pages(struct device *dev, size_t size,
+>  	phys_addr_t phys;
+>  
+>  	page = dma_alloc_contiguous(dev, size, gfp);
+> -	if (!page)
+> -		page = alloc_pages_node(dev_to_node(dev), gfp, get_order(size));
+> -	if (!page)
+> -		return NULL;
+> +	if (!page) {
+> +		void *va = alloc_pages_exact_nid(dev_to_node(dev), size, gfp);
+> +
+> +		if (!va)
+> +			return NULL;
+> +		page = virt_to_page(va);
+> +	}
+>  
+>  	phys = page_to_phys(page);
+>  	if (use_dma_iommu(dev))
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c4dc61ec663e..d3a135dfcdd3 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5637,7 +5637,7 @@ EXPORT_SYMBOL(alloc_pages_exact_noprof);
+>   *
+>   * Return: pointer to the allocated area or %NULL in case of error.
+>   */
+> -void * __meminit alloc_pages_exact_nid_noprof(int nid, size_t size, gfp_t gfp_mask)
+> +void *alloc_pages_exact_nid_noprof(int nid, size_t size, gfp_t gfp_mask)
+>  {
+>  	unsigned int order = get_order(size);
+>  	struct page *p;
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
+Best regards
 -- 
-Cheers,
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-David
 
