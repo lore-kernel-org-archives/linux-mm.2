@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED28C79FA1
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 00:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FD3C79F9E
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 00:38:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3E056B008A; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
+	id AEB376B008A; Tue,  8 Sep 2026 20:38:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7EB6B008C; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
+	id A9C5A6B008C; Tue,  8 Sep 2026 20:38:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98F186B0092; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
+	id 98B586B0092; Tue,  8 Sep 2026 20:38:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A4596B008A
-	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:20:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC328A52DC
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:20:22 +0000 (UTC)
-X-FDA: 85192317084.14.B2636E0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 772ED6B008A
+	for <linux-mm@kvack.org>; Tue,  8 Sep 2026 20:38:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78674A0843
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:38:11 +0000 (UTC)
+X-FDA: 85192361982.13.0E80921
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5B44220002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:20:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9xr8xsP;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id D196140003
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 00:38:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RJDbuH4X;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788913221;
-	b=sbaE/MxTKCCHAsKinKft2BpmjzyHE06ov43VpdcAkwv9ZVJGVcpVT1Au8pjHj7K1yKZkNJ
-	c19PsyY1+2pfUvKiiJUASTmGu81tPN5r2fV8+DazMiFjNsF+4MLTxUzLcum4vwyDRUvkLM
-	eOxLfLXbwuZdvZGJblCglW+hN9IbVG4=
+	t=1788914289;
+	b=BpCP5FoV1MJQh68EvxGtmluXE3rw3LJddN/vsjPI1Awq7T72OvFi1jh1evUM9mJpAD/zV9
+	hJDNsVGtKCmAXFlVGp3wo9mLzyToFZYLHeu0jLV8+N6cxpTSBNU2+lqGUdcs91k689XG7B
+	Hj04FGtUGyL3ikF38h+imKyMcVmtz5M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D9xr8xsP;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RJDbuH4X;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788913221;
+	s=arc-20220608; t=1788914289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GnjhAVP/V30TSMfLwyIvSXBQLxYlj9VOI1IVLcD+S/k=;
-	b=I5BMQYA8eUyFn+wflrD2+EiFPrwOqA6TVi11QI7q9dKAgglyvmRWGJe4dpgfk/BbKC1uB5
-	h1MycuQ9YvfW5dkkRdC3FqW9YBIu3hPc4dZnPIxpF1fp3pXm6Vutx5SfZi1eDjlRMAEv9n
-	FKITuX5rODMZDuCH2/3hDh93SdGCI/Y=
+	bh=LW2YRdHu/X4/AGFVGhsWuCM7o9IYlbhU7Z1SrOilMgY=;
+	b=nPzuCQiLJ+0cy02Gbh7PWTMUUFh6VvDEHEIwFveTs/ErZ8jb11jb1/3J9e7QznZ/vcZ8uV
+	s9r9CJfB74/ha1kdy9TEn+w5ZKQNI9nhhUj91JtfK1ZeYD3XHEqr9rsKrKIWRS+YQ0DKdU
+	sGEnVtUndJN34VyoHmwLRFZb7YeAmcA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C32F41355;
-	Wed,  9 Sep 2026 00:20:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD9C1F00A3A;
-	Wed,  9 Sep 2026 00:20:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA2B740B4F;
+	Wed,  9 Sep 2026 00:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D81E1F00A3D;
+	Wed,  9 Sep 2026 00:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788913220;
-	bh=GnjhAVP/V30TSMfLwyIvSXBQLxYlj9VOI1IVLcD+S/k=;
+	s=k20260515; t=1788914288;
+	bh=LW2YRdHu/X4/AGFVGhsWuCM7o9IYlbhU7Z1SrOilMgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D9xr8xsPsQajrh7KNO3zQeEHBHiWOotHZ0SrQLVlX2ZYwElLcciKlJZwVz0Tjkvnr
-	 d+TRxaTBdCUUQWTQARSgAJPRFD7xNHX+fZz+gvoMyP4urTw/ADH7Sq2s+iqFsaFlBA
-	 S5/eWZIBHBJssqlUrv15QhPAS1VVHLGBZG9hjlV3oaJyYNkK/JLcZU7+4oK7SdFpoQ
-	 b9wKTHus37Jw4iTqhTW+daFZijKPBRYsnYd9lk3Ajf6L2V4iyt9QC1S1fkLqc0ufPQ
-	 5yg04sE+dc931sH6Zyy2MlAlFRqBN3I+t2TPXRrfpF4I2ZySTy9FtZA5xyn4ZmiJHs
-	 dKXDsajhL3K0A==
+	b=RJDbuH4Xd8C32OmTjQnl1Ekc1TagPeVNucME62r/LSxjMqbUS/NpGkKhLw7X77v+t
+	 wMD2iRE4JvWPJckS/fJD5vdKocCwK6cSiFHPfLDFm5QCeOdDBUuqXySJuzh+hN4jIL
+	 QJNwBLPpS66PBzJrC250WUOOlP7t5iDk9EddOCFqwsDJ7tkjd/gnVXUWP4NksqxE3f
+	 PA1eV110rvY3PDvvKKUlioPKp2SknHbCSGVw/xhVwLX2zGKcypjNbH7ZZTrctTlWFl
+	 VODweHOCKjSH0rM3I6byMsrxpjMyiMMkucPr1NxyRySHFGmzpeEO1O3IwZgiupc0NQ
+	 qHZVDDlRkOWIw==
 From: SJ Park <sj@kernel.org>
-To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests: damon: add script dir to sys.path for PYTHONSAFEPATH compatibility
-Date: Tue,  8 Sep 2026 17:20:11 -0700
-Message-ID: <20260909002012.111767-1-sj@kernel.org>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] Docs/mm/damon/design: clarify when qt_exceeds increases
+Date: Tue,  8 Sep 2026 17:38:00 -0700
+Message-ID: <20260909003800.112569-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260908214238.2680324-1-eva.kurchatova@virtuozzo.com>
+In-Reply-To: <20260908175105.42558-2-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5B44220002
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D196140003
+X-Stat-Signature: uqhg6j466ro5gpota3kojuwutcdm7k91
 X-Rspam-User: 
-X-Stat-Signature: 5o3gmoreepe9yi117n3ckrhf65ejnjro
-X-HE-Tag: 1788913221-267051
-X-HE-Meta: U2FsdGVkX1//F8SJLa04Xt/ZZhz84MWN5qw9ifYkOkMW8Uf6hjhgdwFkbIKLm0nOVESBAzln0lcvDACyRP7GUagKaR07utqht5M7BB/hEQMGq2mcfKhAW3jrooDYfVBZkzhS0FAX9IJjnw0oV0qxfPkfQxOtlfz4Khs6DzGqshmeq1Kib89bOgFTMGz7YiXG7fdVsX8VDyM87joca6DgTMHXcaKMll2RGiba82QdfIa0fnRP7q8tIQG8QQjEpf7suuRA3cthdf7cTuiQ3eapZg9CkUWy+jl04hs6Vg97fnP39hZ88KIqjQuj7gCXx1wmIf+sQGtYkD/vXD+f73SoHzjv3B6ifE9WlS+SAG2mGBEknEcr+m/ld6d2pMCPUX9Hj50XHhZJDJEqxS2qoe4Fbw4Q2HVe6p8R2WR6h4dfMPrbWC6TpjzCuVxiX4b04uJmuISmMkF4p110i367ly3ctX60HgV16KScZVZZ+39GuWbP6yqclfrlP3sg8H1I1JeeKCw9PmObVDFgqlxj6Tv7igXW5YU/iY+hODI5E2TO1C6ShbBVjsoLhm15Uw9VpFJAY3ZfDXk2RloU6hB8l90o9Os9kQZs+rgGZCokPNvZUkVzI9Tc64v3Du9oJceBszWklfbJEuhdZQ0Tp3IXqPdHvmGAa+ECpe7vV+pX7EMYA9JfoGO2nOMAJdegof9wwUn8MHQF0/JAXyqAkWbLv+XNeeldxzkBXzTcR/YMtp2i5BqKuXgwt5NKRPgQwz6ke+0QsKiH4Ohw8LVpntXQpKilKmD0uqp4tMY18nNsyM0NzrH5hdJMoDEG2ZMXJn1oGPCFySOuUcAtZanuEc79PhtkUwNpjxOtDSx9iObRf2zJNgPkwIwQh6GCKP9M3Z9MoMKZhgsgNXzsZyxldaJE94ElKLs6bjHVAtU3IWrCCNwzIFgA8rOiNCH94ktZpOuW2tCfpWNU/30D89cxdZlwDvK
- AJnydU10
- jdUkpbhSoNgYT953PLVh9oiTflZh/lQkn8pZGevcpKmJC2YkEHy5m9ey4PuIDvquVeKv+Mo6BCtWXvpwmoQ0EKkUGK+K/ZH7/vfBiLkhHmXcnVkqA2olKrsO12I25s9/C6+pckQJUtg/jjLVV34q6w7L2kT9FTmPtD/nfkS8ZG9ZCmgP52vN7YcTl4K2uyuiAeojT4IqPyEN9r6RlBLTH2vjMXHaOykOk7XZEdIHhZhzYxmUuYdoHfm7SEwJGQIGWCfOffMnEn6nh8/J0dIANgTJvOGw3IUR5ZHmQkp0+sSoESbHI3jWRvQDx4w==
+X-HE-Tag: 1788914289-814412
+X-HE-Meta: U2FsdGVkX19vgiQ40c27GvRYN3b3VmwbwNJJaZoF12ufmUA06Z4BD+02y4aKeSzToZY5mPgTHMxjaBbhjn/WzOGM9C/tsF2SnlWkd/UmDqDfuSC71mE90h7F6oH8UVlg7ieXgxKGIctf/cf/EIfhZ1aNYbtqA+FlPeRFYQFvJyfmWKqmmmRrjr/PZcQM8j/I3hZFExTt39wh9WZ+sitilwavzzfpsuK1DlAkQ7oi7UmR4txZ6UXvxZ0ZVE+jgOuuh9dtQ685dUovekp49eIDZ0hSMGDTiK32oQ/nx07WT71z1XhLpffeacL9n71EoWub9XhYjzyyFKFATtB4oK2YV2FRIXjBI3AE17DQGQgdxXTKuc3tBnf1vcdhZxpwvpBY3Erl5i9MD9u/EfDZdOLtGw13aD/YcEBhhvzkDr+kNdzbnqpmh4nMPBBLteSQL29HhN3u8Ix1iS5LcA/aHH+JJLMUFEsxaNRIcfVLZzMTfXKzDv6Pih9Kwn3C1tn8iR3U/UzF4unSEPi+rFyJ4ucJRP6N99nw2zLlklXxboRyq+Ja0iMLzMFclUv/r5rwwuLTrCzNDcWDZUyslbLL+Vr76AUIfnMNjcb18gIbNJcFKUGZR1rXYk3v7gD5vFpaYhVtoO3L+hej1qUowStrsOTSiWimpgF2hznWEcVP3clVeMgLl0eIamvhZv/WoP2YIF1JG1Rc2DV5rLbqnyBKDPbpMyUpPjSrw8UllyGi7igppqplrYo2Gtu2/Ak/Pc3etLViS3YXmogXnpzQJEsmBBRTwuDIHNupVh4TY5TsFybYcKsxTVzkqu02GiCnYZSe3W+LXXQp8A5Cr+zcLGMuNQNk3gb7PC11pTTaVp+htMaeKLn/IFt6MU819eAbwm1fVUn8JmvvdefXGoxSESTnsnWSfZ7zhMOkdcP3AFfTPQF8XV1R36vy/iXFsNfKi9MPQOKjx2E29gzuEESuo0b95z+
+ 8cNP9rrc
+ dclMooDpzJxQp4bm2PdxXD+OQ1AJppHl5PSIlpaYbu+xUdZIXjs81kzowyaDftr9V10HY3DufAt3CcY4xGeoSN/f8DokgfxDCVH6dE3o3PkJ4sIKcARAAaW1uUZ68D7R0eolzXCLFt10+tG6YV1lDS350UHdVJHPGNC03KkXBpIqlTQ2wIJ4zC4t7DPbGjwBIkhtu1OcFhW2Qw9qcL+sAia6Q4I1CoeMIal4wrVlGqXAlE9OkChLQB3gWFFRsjOjyM6giWa4ANEjHjLDB8CWvKmx6GWi2qQtsAYxRTWdYgMrT050zSJEpUUiaKWplNHHxRsGbyVyForHzvAmiG7qi/BAWAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,37 +104,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  9 Sep 2026 00:42:35 +0300 Eva Kurchatova <eva.kurchatova@virtuozzo.com> wrote:
+Hi Liew,
 
-> Running these tests under Python's safe path mode, either with -P on the
-> interpreter command line or with PYTHONSAFEPATH set in the environment,
-> stops the script's own directory being prepended to sys.path. Some
-> distributions (RHEL, for example) build the tests with -P in the shebang.
+On Wed,  9 Sep 2026 01:50:23 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> qt_exceeds counts how many times the quota of a scheme has exceeded.
 > 
-> This breaks all 7 DAMON Python selftests that import the _damon_sysfs
-> helper module located in the same directory:
+> The value can confuse users when the effective size quota is zero,
+> because a zero effective size quota does not always mean the quotas are
+> unset.
 > 
->   ModuleNotFoundError: No module named '_damon_sysfs'
+> If the quotas are unset, that is, both ms and bytes are zero and no
+> quota goal is set, qt_exceeds never increases.  But if the user uses
+> the temporal auto-tuning algorithm, the effective size quota becomes
+> zero once the goal is [over-]achieved.  In that case the quotas are
+> still set, so qt_exceeds keeps increasing once per quota reset
+> interval while the goal stays achieved.
 > 
-> Fix this by explicitly adding the script's directory to sys.path before
-> importing _damon_sysfs, following the same pattern used in commit
-> c3b3eb565bd7 ("tools: ynl: add script dir to sys.path") which fixed the
-> identical issue for the YNL tools.
+> Clarify this on the design document.
 
-Thank you for finding and fixing this, Eva!
+Thank you for keep working on this with patience.
 
 > 
-> Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> ---
+> 
+> By the way, I found a thing in the design document that confused me.
+> 
+>     temporal: More straightforward algorithm. Tries to achieve the goal
+>     as fast as possible, using maximum allowed quota, but only for a
+>     temporal short time. ---> When the quota is under-achieved, this
+>     algorithm keeps tuning quota to a maximum allowed one. Once the
+>     quota is [over]-achieved <---, this sets the quota zero. Useful for
+>     deterministic control required environments.
+> 
+> I'm not sure if "goal" was accidentally written as "quota" here.  Would
+> this be better?
+> 
+>     When the goal is under-achieved, this algorithm keeps tuning quota
+>     to a maximum allowed one. Once the goal is [over-]achieved, [...]
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Good eyes!  Yes, seems it was only mistakenly written in the way.  Please feel
+free to send a separate patch or include it into the next version of this
+patch, whatever better for you.
 
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
+> 
+> ---
+>  Documentation/mm/damon/design.rst | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index d036340dae8a..e083b74d618b 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -863,6 +863,16 @@ scheme's execution.
+>    completely tried to be applied.
+>  - ``max_nr_snapshots``: Upper limit of ``nr_snapshots``.
+>  
+> +``qt_exceeds`` is increased for schemes with set quotas when the quota is found
+> +full at a quota reset interval boundary.  While the quotas are unset,
+> +``qt_exceeds`` never increased.  However, a zero effective size quota does not
+> +always mean the quotas are unset, if the ``temporal`` :ref:`auto-tuning
+> +algorithm <damon_design_damos_quotas_auto_tuning>` is used, the effective size
+> +quota is set to zero once the goal is [over-]achieved.  Since a set quota of
+> +zero effective size is always considered full, ``qt_exceeds`` keeps being
+> +increased once per quota reset interval in that case, until the goal is
+> +under-achieved again.
+> +
+>  "A scheme is tried to be applied to a region" means DAMOS core logic determined
+>  the region is eligible to apply the scheme's :ref:`action
+>  <damon_design_damos_action>`.  The :ref:`access pattern
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+I think the clarification is better to be added to the 'temporal' quota tuner,
+since this happens only when it is used.  Maybe the clarification could also be
+shorter.  For example,
+
+'''
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -775,7 +775,9 @@ There are two such tuning algorithms that users can select as they need.
+   fast as possible, using maximum allowed quota, but only for a temporal short
+   time.  When the quota is under-achieved, this algorithm keeps tuning quota to
+   a maximum allowed one.  Once the quota is [over]-achieved, this sets the
+-  quota zero.  Useful for deterministic control required environments.
++  quota zero.  Useful for deterministic control required environments.  Note
++  that the zero quota is a valid quota, and therefore ``qt_exceeds`` :ref:`stat
++  <damon_design_damos_stat>` will keep increasing in the case.
+
+ The goal can be specified with five parameters, namely ``target_metric``,
+ ``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
+'''
+
+What do you think, Liew?
 
 
 Thanks,
