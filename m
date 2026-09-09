@@ -4,124 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13668C79FB8
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 08:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE47C79FAD
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 08:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C256B0092; Wed,  9 Sep 2026 04:32:23 -0400 (EDT)
+	id A4B6A6B008A; Wed,  9 Sep 2026 04:51:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0656C6B0096; Wed,  9 Sep 2026 04:32:23 -0400 (EDT)
+	id 9FBE26B008C; Wed,  9 Sep 2026 04:51:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBDC76B0098; Wed,  9 Sep 2026 04:32:22 -0400 (EDT)
+	id 8C42D6B0092; Wed,  9 Sep 2026 04:51:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3B666B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 04:32:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D8B64014C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:32:22 +0000 (UTC)
-X-FDA: 85193556924.17.AD271EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 33620A0003
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:32:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpRVrNuC;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3CF876B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 04:51:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7D921A0136
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:51:25 +0000 (UTC)
+X-FDA: 85193604930.26.3491C9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D01B140004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:51:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mTmQVz9Z;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788942740;
-	b=B/M+t/xOn1yBwewnLK/+Wh2WqvMhvdeqCW+7FBj68z5+yLKDOFj/rh+3HFuzT2R3+YwBaI
-	Fc2IK0MeO3StmmBwswQ2asSLLGVxYB9BBEHRpFZYDrIadW0TPXZzWPcriu+0AoDm7jx0l7
-	D7JD01NfAhsgPRz31cJrJwWrs7Syr54=
+	t=1788943883;
+	b=mTKAQYtqKsMQ6vYCcTsgVMOmwdu/YH0wdTrpcb/mX5s+/keGiI4POqw9ZcBQg7+CkfyuJ7
+	ZPd4bkBMl5rSKVX1Kd9/gPfPm8g/v9R270r4G0aq3MlhiS0LSDetu72kS2n98/Zg9xh/fY
+	ef5rsgAeZLiMZHDd5VeJV7kijAEt79g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpRVrNuC;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mTmQVz9Z;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788942740;
+	s=arc-20220608; t=1788943883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gQb5JmxZ0Qe6CqSOm8aU31RKgc13uigRQat4ijgMv5g=;
-	b=QiIKEe4QMhDEaYqzl0yAj+CyhWdO4c7+Q/b6xI0zdBYT+NSqTTbCIebuibeGMlTvNKtRZX
-	oDfLiPH6aafdLy6yx9JmOPIQCxvTK2mRmMDUHbMc2VUux1KtKjAMSJm7g0s1ZVsDKOibQm
-	o9QML1/HKUW8d1guUz3irYxlX1hc5kc=
+	bh=mnk0hPT4sffETdV0mh4vAIasNMlh24tjM8SmeuoAs+8=;
+	b=S0LbH9eeoqJXqzgaPLwkZt85Yp+ZISYXs2ii3DeNfYSqv53bQfMyjgknYcKDHNqQiI/kz1
+	/f0RDp9f0LAzmu/5j2PV6GgJpVx8pis29HQ+JiG6qA+vNYlyeCl/D0pPT0lU0bSwv2kNgE
+	PR5RRD5Q48//3eDjnSH6bB9aYH1uihU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B894D6022A;
-	Wed,  9 Sep 2026 08:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F5E1F00A3A;
-	Wed,  9 Sep 2026 08:32:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D62D84059B;
+	Wed,  9 Sep 2026 08:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30301F00A3A;
+	Wed,  9 Sep 2026 08:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788942739;
-	bh=gQb5JmxZ0Qe6CqSOm8aU31RKgc13uigRQat4ijgMv5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mpRVrNuCbiYPGBCXwIl2Uck00ne1+/3Q/Fv77IEuqy37gWNELOXyO7MJgYppLb9mg
-	 jq4HEj2qp61rmCuPGx9F1DCsDvzjR4RCQptO/5nRmDMNnyNz29I/2bpt1NhENdbi1P
-	 2o1z3zZF8+rFKXtQT918yG6wN1OjE6kNUnQhLn8ijp6j9Bny9GlJxme8rjO6Jn0h9+
-	 rRZ0i70LSRCJYbEsp62gfc+8Xc3C39F6Gf4En6htyzi3e2DFufaBlfyOXzdqICuX5f
-	 NSOGKNB6xKIXCULSUa1+bZ2DMO9iLU9hlMIJBAHnPAn6H39VxpgxK2OsDYIRfiBDwz
-	 xGcsLHxA2rsng==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 04A9F198003A;
-	Wed,  9 Sep 2026 04:32:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 09 Sep 2026 04:32:16 -0400
-X-ME-Sender: <xms:ixmhapBAkuku58ph4ImY5x8HTVPR-a-GHKAjHxGYs6i6BiyvN3qKJA>
-    <xme:ixmhaoUBIzF2-XTqz7Q7XsZGfUlu1qp45g0XksgG4xE2nvHasOECB1sdiTsl2pO5l
-    5GTTpQq5vkhAHq3zb82uLYnekB3t8N4-_vt0SV7VfMF4kFYptJbgQJR>
-X-ME-Received: <xmr:ixmhajJkKcLS2mz5yC2nM9WoVWg0BrBys96tr8i4aSAb0w6YWN2RHC2QFDU>
-X-ME-Proxy-Cause: dmFkZTEa2vldEggdEtHpw8yPdhwCuH7pRJBb9RsrLsD2yFmnjIBvi4LSmi1+fPsBQuYbj4
-    E1kgGLriuiXtzGGyPjxHIE8WkxV1amP5nSmc2hlMfnzYczx1VVzSWXfiUb+MMAUCaO+wBf
-    kngiaudPMNXdGDaTdWhzYha/rQRzY7G7hO2gKWvcmIITfUr++w+fz7Ts74FLZQ8G5PnsFA
-    o6nqU0hohLcc80EVsNQJj162+Ryg1GuJrSdu4MyDXdV2qNQM69VAIDJTKqQoGIjeVRiPkA
-    XPvShuHApELamEYQhCPs8BdUdTtGsNF9ExW2oaDo4YBPLv7N6gCGtu/4QY5C3a/ra8BZBq
-    PHQW4ZN0AD8FCgPiZ6uvULlKEm26eTIuOD29lLn40JxD5TZGyOPSZBPeRjPoR0RPZgqNSG
-    GASc8/TMxhnUJht36f5AV8dZHmgy25t+BdhiVQcGMYiu8LzO4p0TO1D0DCsbGeSwwcOt/s
-    leuAPDN+XeIxUwVRn/+JeqHi+vyV1ztJxLkeVNwnCPklvWVhKh99UE/l5DaslnlbpdT3Bk
-    HJugQYWSiF90Eo2xUFb4h/6nDLcUBxMjXNnFf1plkeU8WH5SAW/UOtaN/Pt/TppS5AniQj
-    ceYi5Jw4bc8XDT2qofLQV0N8qAgtvzT3d9E96PCd4VLuH9L/s5yreuo1oozg
-X-ME-Proxy: <xmx:ixmhapnBRQeKBI6JefPUyoGVKdLmRUfd0mee4Z6wkbE_kF5KZhx_GQ>
-    <xmx:ixmhapbF4_h0SWwvVgvjBuFYcMTM0Y4EnmGfPv0xqI8cl9xP0E4SfQ>
-    <xmx:ixmharjVrk24Ly5lce_-Ir_xpNjsbaLymW8W_sU2dY5NnSp-mDd6gw>
-    <xmx:ixmhamR_iJQgddaEJeo83whkibJKXPIzgBVxT4Su9buLDfaZxIPKyA>
-    <xmx:ixmhakMNi6fJ72wgmOz3jhfeJDxhBWXrW3IrYidVt2TZmtZd34Op3lN4>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 04:32:10 -0400 (EDT)
-Date: Wed, 9 Sep 2026 09:32:09 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Yeoreum Yun <yeoreum.yun@arm.com>, Shivam Kalra <shivamkalra98@zohomail.in>, 
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v4 17/17] mm/huge_memory: drop the redundant mapping
- argument of __split_frozen_folio
-Message-ID: <aqEZd-M4x9lmyMqy@thinkstation>
-References: <20260908-swap-thp-cleanup-v4-0-b532a3f20e71@tencent.com>
- <20260908-swap-thp-cleanup-v4-17-b532a3f20e71@tencent.com>
+	s=k20260515; t=1788943882;
+	bh=mnk0hPT4sffETdV0mh4vAIasNMlh24tjM8SmeuoAs+8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mTmQVz9Z9Hv34x6rP0CcXhb0TeSpmKy5g/ZD1EeY+4l3Q2I/Z2n9wrk8EhABbHu25
+	 DIjn0hPfgQ6fXerAzAziLllB4L2j7CuRZ7waS6Y+JmtS1fraWkUlgyUOAIEiQGC+o+
+	 DsE4HpXV1D6BrQC4tLTSIhXSAD1+m8q+sO1cu6pF9qhfw5uJbamI5TpSE1tRKFhhn8
+	 /oK5u3T1fN5dyaDBh+U86KZLdIOMGU+wKGki3jIztCT7F6R36GQn4Q4pF1HDxc5Y34
+	 7OsdIZThb2D5EZhyRQqLbRZxbBdSoaLhy34DijqwwZwFYe3Xe+ZFzUbvjRD10zb+aA
+	 ombHMJdHimuhg==
+Message-ID: <dff624e7-0c64-4c90-ba50-fec3e6337c1b@kernel.org>
+Date: Wed, 9 Sep 2026 10:51:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-swap-thp-cleanup-v4-17-b532a3f20e71@tencent.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>, Salvatore Dipietro <dipiets@amazon.it>,
+ linux-kernel@vger.kernel.org, hch@infradead.org
+Cc: abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
+ blakgeof@amazon.com, brauner@kernel.org, dgc@kernel.org,
+ dipietro.salvatore@gmail.com, djwong@kernel.org, hannes@cmpxchg.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+ rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+ willy@infradead.org, David Hildenbrand <david@redhat.com>,
+ Christoph Hellwig <hch@lst.de>, Brendan Jackman <brendan.jackman@linux.dev>
+References: <20260904115629.3993331-1-dipiets@amazon.it>
+ <8cc503d9-04a1-4d90-874c-ada6c0ac5147@kernel.org>
+ <DL6MKKOOL5DX.1R3Q77UTXBFYT@nvidia.com>
+ <be13228a-f35e-4868-9b56-6452c34abc60@kernel.org>
+ <DLAFND3OZSN5.2QM9WPRWMQSZ0@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DLAFND3OZSN5.2QM9WPRWMQSZ0@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D01B140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 33620A0003
-X-Stat-Signature: msuyb1kzueec7i5b19eajewsjy3eshde
-X-HE-Tag: 1788942740-25387
-X-HE-Meta: U2FsdGVkX18fRd3SGQI4vi56jJOJaQ0nUsUUV5U16EeNmTkAQV9k1fJ9ySvpqqJBkOVgDW0BHk7sh0f3F/irERYh9enf0FS/E9Z50k1iqL7d4mRD7pEvSI+90D5y6Foaf8CMqsTZnp9Tf44ucryBPTu+GbisLhmxDrrrYtRfRJaFJYFZO43tB/ZNRP+95Ga6/niQ4OVdiMjkDgzH+ArUtn6JcSioCueO+n3oRHzVFLYxMPQDCVbco+apNlyiHM+PAhc3/L6BVxvdzy+mrUvY7gzs/RNNJjeqdFSuCQyto9dfdDgSwaZ9+TarrEn+tFsBFio40r36qwNSd0OBQHdl51SSbEzJ/lw79WpimUD8X9ixMiZpV6ZJzxkvd827c3TzmldfKlWyv+yrkq3a3C5UiTqB8eEBUpxM/PQIJBGn4/3guIfsbzpSRa4VfGGpQGNR+10QnowR9G6WTugfXbd/OWInXA5efIQ9JJ5dKuK65tjF1oAephHR3+qwgb52z53GIvQm/e5BGbV367zn6SHGc0sUKIpDpbG0cwVEhadkrOeVFENRJbR3wNN4at6HAsqPxg3l3MN4SwR9Q8LNZiDhdtwx3Tnxx0IoY+F6gWMjdiQYqQ0ZGp5CIN7pKOEmZhbBfrLvSFMfPYsShS3GBw/Uyuw/86pi10B7DE39IcpdHkRVUwXV2KAjGfBfLYuA//+T1/13ID4jMJoIZp28UiU9o76uDRi5KkNl1N8ZgOLQ01prs0t5eXSLr9I82f0Z7mVgi08igaYX5lp+5LnwisMwh+XVKAsgzfsSa+AkNy5nKO9gLTFNXsk+K0deRNJ0CecGc4fZyhKNnfkStnbdKbtiJYX9t1XuvOPTtJ0RA++OdM1uhvizi67C14uk5OdGZbk4ZGkbGCgGIwmz+wZERGggrgYXCEnnLC9pqSHzdOsCTF6PYNGIJDB0QSwK3mqM56CORsAQS/alnd28aajeArq
- Y7Lj4fhw
- Ol5wWW0wsdtqqRzcpXiYYnoJggaMbmCMRLBPz6EURdDhartq1AYNwH87nJq4B6xPYYOadcH3jTeQLFCDsVaTJFQlMgRzaW5TsMlNHR7gSgSykwEd0ORweHqkOE+ytTVvXmWwA3uPbM3Lefj1QTgp8KhXQz6xCU/U4DczC4nWtisHTQSB36DNE2PgvBq9fd8USXP7Mm4V5kStuykW1P8tcjuAA7k2VAr2sYJoZfi3UqHlNAY826+5vr3862MOTH7HLQOobSnboP4iEQexi3YmODCwNMi5SPdHvhaBaXwTjc7vRhJ98rrZ7qSY6d8Hy+LENMWmK2VqzrG6saydritRRo+LGZzTLCuU3zm0Q63vxGXkhoqdEfzxeWpYceN1277ve37DbD0hsFk9lGA/fcXQps1eURE3R9bD6X4vf6Pk2mnDl0TLFbErworvs7tD9RhlMjS2fg9o8dCuZ7T8=
+X-Stat-Signature: 8sy9nqdqbo9o9gk9hou7xhdn4ntmjng5
+X-HE-Tag: 1788943883-690930
+X-HE-Meta: U2FsdGVkX1/Qi12+gSWTo42/QiccXLjrPcTzBM9PmKUce1bHXJ+8mYsZp6mRe/zITnunj7UE1Z9L/kfe3KwLCXMJFHyqWxU8Of5NaMr03poDcZoT4wxEdk9iBaGlR663niHZ6WS+Lmry8hhbuY8NM5mcS8GCsiXdgpttPTGeg6vN6YdMLcZRuyXpDRrI/84MXJ8Cy9Hx28uxmbyvdIQGnJRDMLS5rKFWtoWAiXVQF8BTlcjqe5AZpjnyB906TZEtRnNLpNtyoZg8pk2qd9NktsF8jj8onw2Dbx4MC0YlOTUXzdlbtl/JMEYYyWkz6Ts3O62MDfT8iZGe9xrv3VAuc/O99YhjPMOB9eAQpc8VCQmCNnFJqD7hbv+iKxyXNRAnoXtsHVSJ6gOslVztLF2L6fn9Hp+ErtAdlu1SWYe+uByMZaSO75pej0DZbcUeIhnCwvpluAoD5e8c9ohBmLALqBK5PYRYu+bs7PHJ7NUWyGgC3hBLH7Ts4ncUWrFcsLXKbIVLqpZlDlZ1+Fpz9NSEllaA02dWsp9tbYEJrwbod71fO6CilWzb+o4TCF1LRPw9CnGDWFNitGDHI5DEqE0/4OVu9Q57i6tcvJ2I6X7YD9yDqU/Wp296GIRCeToQSD4uDI5BusDKGe0KZHl1Xc4fqUj2fPmCj/q6RV+D8cGOYdb6XKJhd51FsL1HBUlXPPwmYw+P81YscBbjuUj4E2vuUqvskLsRjh7OJ1lZJkH172q0Ges68FUTUgkT9/w9f31iGkEinyhUvGekt6gQfjtYiDh7uAwcIDyQOpcmLlPQxz2ykRT9/w7g22JfMg7ZP5zXJOYTNDSNpBg91uRfZfnmul1J53lvsYr/i4auWnGN1GlNtDfD0utLlqu+gI1AEWT13KqpbHawUXxWGeJ2is1AnBvUkga6zgZ1dueWWTYBVhlePPHatzpB39FEVdJrvomGzq/uGylyCCVoUe5zC1d
+ f/htM7OX
+ o/Jmkm2q1LZvBPImkAIbhIYjZLaQ0gZvfnBHmbtajerhnCtK2ZyQsZV0U3C7qPAYF+RArKDFjEqmD+mX0cwZVdmFf00qBqRy7gP70plSWE29biHnebaxTcG37U874bIykUKB5fHHU8Qe5tm7Qc+HJIIK+ar5yrxGEqGRCyWDHo5e3GVitPsC7w2i1+AjHbYTFumlrziEXCemWeEWAnTdJNRcviyQGHeAPkktjv61h/vrfDWtLSQyROGZ+RMJS0AZzEtvqL5Ybu5MzrU1OrALHBUQDq5wXz00pRaQ8d6UJNx8ORb40XCzRYbJBhCSr9th4eZ0EAZHTLu6UF/FG0QYjNr5SOjZMkC15h618/pBn5pI8gOSNzZUS4OQq+5K3Qe/K6GUsrYXUfKSsjigbon+34HqEr3z8UpWu8zmj5XeQ2djxP/eBggPbpAdnN7QfaUzSzJHPO+XSXxc0H48HW7O1Yn5Ckw4SE1WmbMSwNK2zFGq+0R9IwroMz375l4QOlD2ZVZN+D+u01Es0C8vamEXil50D5/pskXGyYZIerQQsXoH5VnRoxJ5nLLdWAqjZu35I1CTfFWhn7T7cSZOQN61GrZHsmJ0RBhZsX0j9yqGluidIDePjNIBeoVBDy060TryyR5othi3OWldr8WyiS6AzEpdBp9NNy/kuAhMOwhEVb5OZJMF+gPcbxfFoMOe4efsCipgI7ZYCnVGjyUX68n/wK/Gyviz27ZDR6LNrOU8O+OAwJ29s8NFlpmu0Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,24 +144,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 02:12:21AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 9/9/26 04:33, Zi Yan wrote:
+> On Mon Sep 7, 2026 at 3:30 AM EDT, Vlastimil Babka (SUSE) wrote:
+>> On 9/4/26 17:08, Zi Yan wrote:
+>>> On Fri Sep 4, 2026 at 10:11 AM EDT, Vlastimil Babka (SUSE) wrote:
+>>>> On 9/4/26 13:56, Salvatore Dipietro wrote:
+>>>>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>>>>> introduced high-order folio allocations in the iomap buffered write
+>>>>> path.  When memory is fragmented, each failed costly-order allocation
+>>>>> enters __alloc_pages_slowpath() which runs direct compaction and
+>>>>> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
+>>>>> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+>>>>> 
+>>>>> The root issue is that direct compaction is too expensive for hot
+>>>>> allocation paths that have fallbacks to smaller allocations.
+>>>>> __filemap_get_folio_mpol() already marks higher-order allocations with
+>>>>> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+>>>>> failure.  However, the page allocator still attempts full direct
+>>>>> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+>>>>> aggressive when the caller will simply retry at a lower order.
+>>>>> 
+>>>>> For costly-order allocations with __GFP_NORETRY, clear
+>>>>> __GFP_DIRECT_RECLAIM at the very start of the slowpath, before
+>>>>> can_direct_reclaim, can_compact and the nofail checks are evaluated.
+>>>>> This makes the entire slowpath treat the request as non-blocking: no
+>>>>> direct reclaim, no direct compaction and no drain_all_pages() IPI
+>>>>> across every CPU. kswapd (and in turn kcompactd) is still woken further
+>>>>> down for background defragmentation, so compaction keeps working for
+>>>>> long-term system health while being removed from the latency-critical
+>>>>> direct allocation path.
+>>>>> 
+>>>>> Allocations that also request __GFP_THISNODE are exempted.  That flag
+>>>>> pairing identifies the local-node-first THP attempt issued by
+>>>>> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
+>>>>> form transparent huge pages.
+>>>>> 
+>>>>> Test environment:
+>>>>>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>>>>>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>>>>>   OS:        AL2023
+>>>>>   Kernel:    v7.3-rc1
+>>>>>   Database:  PostgreSQL 18.4
+>>>>>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+>>>>> 
+>>>>> Results (average of 3 runs, TPS):
+>>>>> 
+>>>>>   Config                   Avg TPS      % vs Baseline
+>>>>>   baseline (no patch)       59,408       -
+>>>>>   With this patch          155,409      +161.6%
+>>>>> 
+>>>>> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
+>>>>> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
+>>>>> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
+>>>>> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>> Cc: Michal Hocko <mhocko@suse.com>
+>>>>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>>>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>>>> Cc: Christoph Hellwig <hch@lst.de>
+>>>>> Cc: Dave Chinner <dgc@kernel.org>
+>>>>> Cc: Ritesh Harjani <ritesh.list@gmail.com>
+>>>>> Cc: linux-mm@kvack.org
+>>>>> Cc: linux-fsdevel@vger.kernel.org
+>>>>> Cc: linux-xfs@vger.kernel.org
+>>>>> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+>>>>
+>>>> I guess this will have to do until unlikely(we figure out a better API)...
+>>> 
+>>> We could add a "new_gfp = gfp_policy(gfp)" to adjust input gfp based on
+>>> various policies we currently have.
+>>
+>> Maybe with the help of alloc_flags to avoid the limitated count of gfp flags.
 > 
-> The mapping parameter only served as a non-NULL check to detect
-> whether page cache entries need updating.  The xa_state pointer
-> conveys exactly the same information: the anon split helper passes
-> NULL and the file split helper passes &xas, which is non-NULL iff
-> the folio is in the page cache.
+> But alloc_flags are not exposed outside of MM, so alloc_page*() users
+> are still limited by the existing GFP_* flags. Are you suggesting
+> alloc_flags could be an addtional input for alloc_page*()?
 > 
-> Use the xas pointer instead and drop the parameter, along with its
-> kerneldoc entry.
+>>
+>>> Even better if callers can do that
+>>> instead.
+>>
+>> Not sure about burdening the callers (e.g. "every filesystem should do X"
+>> etc), unless they are some intermediate wrappers within mm itself.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Not all callers. I assume gfp_policy() will only be used by advance
+> users who want specific page allocation behavior without knowing the
+> details of the page allocator or changing how the page allocator behave.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+"without knowing the details"
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>> For example, THP (but only anonymous?) is now handled in such a special way,
+>> it could be a candidate. But I also have a vague feeling this was already
+>> done in the past. Worth investigating perhaps.
+>>
+> 
+> The number of wrappers can grow if different users have different needs.
+> Some might not want direct reclaim, some might not want direct
+> compaction, some might not want kswapd, and so on. I am not sure we want
+> to add wrappers for each.
+
+Yet all these are the details?
+
+> For this patch, the caller can use gfp_policy() to strip out
+> __GFP_DIRECT_RECLAIM based on the conditions and pass the adjusted gfp
+> to the page allocator.
+
+I guess I'd need to see a concrete example to grasp this fully.
+
+
 
