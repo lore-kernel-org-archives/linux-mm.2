@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D982C79FAD
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CBBFC79FB6
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 12:58:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6149E6B008A; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
+	id 337636B008C; Wed,  9 Sep 2026 08:58:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C6196B008C; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
+	id 2E8036B0093; Wed,  9 Sep 2026 08:58:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 502586B0093; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
+	id 1FE2C6B0095; Wed,  9 Sep 2026 08:58:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 317836B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:54:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF6241201CC
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:53:58 +0000 (UTC)
-X-FDA: 85194216156.18.1C92860
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2681A180004
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:53:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5KnmFHIB;
-	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 054A16B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 08:58:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAC8516016F
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:58:32 +0000 (UTC)
+X-FDA: 85194227664.10.4E15056
+Received: from mta1.migadu.com (out-37.mta1.migadu.com [95.215.58.37])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 147D51C0002
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 12:58:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kpiWHW+P;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788958437;
+	s=arc-20220608; t=1788958710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zA/uvS+1bISn3KdOd6ALIL3rCXFqboQ+r31zsr//9I=;
-	b=0AZtt2xkYf74KSoGJ1WvvCEg6OYqIoxlCEGzWsAfJPUYOrKjX+SN5esycbViYhYyyabq0G
-	+h4JhEvyorw8nbkT9NBFupE6b4P8J044BA/SKiStJda1oKjNJCZ3mheD6ABxabKcOElLS/
-	X3LTQnbj5CkBTW+Ifhh0JLjlJI1kBr8=
+	bh=+53+2vjJaQFoCiKj+C56qien0jFLMDUHHh3iJ/cgrBw=;
+	b=Wi3Uztw/yJN8OjaMQC1mNM7AH5aLNiV2Ikszs/wvtBYbudY9H4D43KXaWHBx/hLc36MZDN
+	fbfvwR7X4Dsmky0uG1j2yMsrIX4+PZbeq+6FCY31TjbEjUHcklpqGhZhuV+FzjcuWOLG8C
+	Sw6mt5VnLk0h7lEaE1/yL0VFtLY7nY0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5KnmFHIB;
-	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kpiWHW+P;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788958437;
-	b=jvqDKinWeQJI9hvbhEjDCXQa9lVpoMN2GjdI59FYH5CxIgbjNMiq8zLlwi+9d6/w0kzF7I
-	a6bWQ+jUy3aaBWrfCsyfrxK7MalbdPn4cwLxNyxXfUEW16pWe5oXQI0q4SJuRNDllNLoe7
-	MFB4dkuDoYlvvW1++ktbcPgNr0fRDtY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8zA/uvS+1bISn3KdOd6ALIL3rCXFqboQ+r31zsr//9I=;
-	b=5KnmFHIBmxlIxFNixOrEJndcF0glx1wdKduYlLxdq9WQnMgGLS7W5j0+XJi4i78joVt+4xHDG
-	+yTztquy5fmVwKjR1CSwG87rzsDvmMzzwpoKUe0FULPp4axLuCStnu+jziubJQWHsHUkdlHhX/G
-	QHdPKO5yGgQ1d6Z7vKgkK5U=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hg0nR5bH7z1T4Fq;
-	Wed,  9 Sep 2026 20:42:19 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7ED2C203B8;
-	Wed,  9 Sep 2026 20:53:51 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 9 Sep 2026 20:53:50 +0800
-Message-ID: <8861d061-a54d-4773-9cb6-23ae1d8c777e@huawei.com>
-Date: Wed, 9 Sep 2026 20:53:49 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: zswap: avoid unnecessary xarray lookup in
- zswap_store()
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
- Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
-	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>
-References: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk300003.china.huawei.com (7.202.195.93)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2681A180004
-X-Stat-Signature: rdinh6iamc4tqypbxwmzijqbik5hsiz5
+	t=1788958710;
+	b=lC4FvsHHfKR+rz1aHWR9wyYCmcLNgAL4Y+Ef+b60LwmsQZIrHzudKJjWnaLPzgQQo07DAb
+	KxL4H92M9a8DidH8Xk+LNVUX9KXhsZYNJSzv9B/BRAavoon/4PBEj/WZYir3slnrILawhQ
+	dYLWm2dD+sroz/+m5IPK9c6gj+IVLWg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=+53+2vjJaQFoCiKj+C56qien0jFLMDUHHh3iJ/cgrBw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788958704; v=1; x=1789563504;
+ b=kpiWHW+PKUzOQnFxZqUeS2tTgUacZxuC1o/xnmCU2+iPhwEmnX52wK3+exNOJTiawZt/TYuw
+ yAFtm9meUKfqcUSKDdZnCjPlq9zcCpWBzAVj/UKEAPV6htl/8ZZl7DAkaaKSuCaaYU6eMbBX01V
+ oVhfdrOc+jOwrxRGNZPvmnao=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 256877c780270637;
+	Wed, 09 Sep 2026 12:58:24 +0000
+X-Mizu-Trace-ID: 256877c780270637
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v5 09/17] mm/sparse: initialize memory sections earlier
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <e6335c78-a20a-4024-8980-097a922eb257@kernel.org>
+Date: Wed, 9 Sep 2026 20:58:08 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7A0F5F1F-F724-478A-A34A-E9F9771E2EB7@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-10-songmuchun@bytedance.com>
+ <a2016390-28ce-4199-a063-d2e9101dacab@kernel.org>
+ <E54037CE-6CE6-41AB-A525-8BDCE55996AC@linux.dev>
+ <e6335c78-a20a-4024-8980-097a922eb257@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 147D51C0002
+X-Stat-Signature: 4qyrz9biextajc3yhi4oy57o67mqsqdb
 X-Rspam-User: 
-X-HE-Tag: 1788958436-251408
-X-HE-Meta: U2FsdGVkX19J7ZX8Vqr3yq+u1ikE8l+MG5pTtHY+pmRAKISladaQ+fjbdVKJB3gIQJ/QjWAHsY7Ua9ThO2QMxPr+tRi3igQOlBKOneX0QerpHDfnE0gB+IugVyJHi68b6nhKJaYMpvnskVf42ieqVd93FWl+2bWGV1FArb6dxVMyh+dR2U8rKNLYy91gI8/+pRiMEUgaU+1rmV9jrUk1SEvxr2ayV6im5/JukT5FTP3xkHkhpzbyybqcwffRlhFHg9OnNICfWSip5kfrbtO1KKeomlJuDga1ygecmA6dKy1ugM1sYcwuoN0F3BWtAG6Ahb51ma3sGQ6HGb86U34ypuXbLEvXak8G64oh9Ej/Jh25UM8itdXvFtMs93FfkPdbGy3KKmWmkFbxSURj0Ec26GhFleyinB71IyN51Dm4OoqxNkCK+adG2B8u234wLD4B/I7uyXrLc0fl1LkH02u5EzXYf/L6wDFBloEDUcylDlFOc6e/ggtYtVtxpk1cL84yxaeKcYHiLqHAy/bg9LDBkPj38B0u8bHUjAAexxybvHvgYnZbptTrCSSBpggiHkGQHqnMJps/G5qLD19yb2/0AVBTaCCazpPBoRxGByDjekR99UqtavcmknE7qj5GuPgNtVz13F1EQTOjd7nZy0Z4nN14uUXVdeNBgPlskVIEu+htMdqqZcVzPLTIPSXrE8d3Iyakg+HBPGJSqaNxifatL+zy1lPraSBMP5VSi9258H8Bo/a2EYpxo9UFpnOPAuKVXKOYjvJuezgHdyo5CjN5s6BhWWoynupnGCKr+9Lwj1LEHxnt6zqlVO+r3S96qaC386MjIueTKSvwaVh+Th0dOCCkV8lSD2MTIK/DqVc9qm3Stmv0CEg3Yd5CbtjXhT1ZRhJ+WS35rFBqTwisgKhhNY+zrFTpLulUo3n3Dyv1wRTS9j2sL6LR/9/XK+iQkVyFdWAtwvOZlt0Ns6K1tA7
- dGl9MFEr
- MC/eEhS7ePdrheQjTRRzFO+McLXxWwtPUlu7d0WYthplhfEXxMYanEQSyQ7vmGwdpfqchcCATgcZ+zITCgN76OpsSJGaE07qQW1LuC7PRLxKWdJhqYJev19rxP0lmreImQknvOwSh/nqStnVlg16EoWQBf3V5TA/7eIHIv0sPMDVQn9JEq4WirVuUH5w8/TMKwGj9rX6ck0xrRJ5kwVC0Q3PRIm3+PsfjnMsUiO79sCHLyVDVWkqF3OstdBiYNAX85OSz95bnIAYqpHO8Dnd4/aj5RweBCu6QfBQ58SPXP9CBAs6TX3KDagHwvxAbpdDBk+NSvSw3DV7M5GnptxuSVr21ze2bb1pJ36BhOTNAbVp3F9ADhOa4/eP23mi77NgJPTQl5ZT1XHAIQDLrAuI6eh2Wzo1+zcnc2Wm0Y2W/Kfeh/BfrFRhciFg1JkrGtWLJb8Hf8HhVRPQVNxOQjBuHbPd8TSLE4y5YTfWdk92t8DX+eErUZkeHcxV5P4gNlGDSRRK5oG7m7XVL6nySJ5p8NQd7yidOdXyljCc8Xc7KPeuKxBHNsVKZQNLbRp6tesKCsdzY
+X-HE-Tag: 1788958708-922614
+X-HE-Meta: U2FsdGVkX19Htvepp8OWx1rYpw1DO0+nqowzJqqFlQU09HLqplN0pbLN3LsG0wavpP+qKs7vI880VvQAK1X2jlPBUvXoepqRRlLxdRRWBmcJIBjhuS+kQ0vO5lA4j1TnB7F2SbqMDBwXkuxYZkv9hykTIPLf1lCA0jkcDUsPDCYayxIqnYH4YZopRLGjjtbOvoR7XbGC/hazVpj8z7dfMPbBM8CVnjC5kLg13EqCcREZQudis42u9XKC+21Rnujz0dTwkJ4hjZOvSCPGcf+IyvKbLLpKTG5EhPhvUfmKHv9ZLwlB+QFqPI0PREAwK93s/W55ecXcHOxx/2paQtOc+yMD+jgvxtClzS/uZ6GSb2avzAN8p47ag1AubYhM2e71wkVLo7boK8gxA7Oj3haZWO9AWrZhJKelnZ2RA2/RVXEDYhTsHXVQo8EjNOvPGislsbRYR+ZNuJtto8ZAO3WhxpQgDq1BPKKjINd5evZHGRn9PugHn/A2ThucghZu/pdmYJK3KkKsaXhSGqmFifQ7UxCLkpDl+o8uSELn8ManM4KTtFiED8rHNHiZxdFlEWsFRq269HfCFdAHRj7j9nYwm8J34FMplTKG6mwD+ZRYJ4t1yseJhMebxTwOEZV1g37hVywUo1JU/q1pj+y1h035kMuomegySVPgiVZiyPHKrDzo2cHFtaOznxE9qMcjkyfaluspkTJnR6wZ368MSzO2GwchSNu6x9mjzts9f/HvYvsEIR6O3FcWAQCpSYxC75Y/fZ35ygDILs337Q5t0DMJd9wzIJDyscRrOpqsPfjWgpK1S4K/fbTCfgky7N+0opGNOdsbTZaN4vRf+pqHzZqE6qW2rJSLyFquvZ7vLX26H/T4Q0UhGCzbFjV53x7T/KiKyno3TROsDHGhkLvOIUXibgR2JTJ5mtYE7KJrQVCsG7VLX/n+VixI+aHgLUnEKGb+QCSyW9fojdBk7pZYKuZ
+ q1s8g/RB
+ eZF8B2CRbh+EROR2Bal4KZWOczU0kphs3jZm8TiPrT42gHva7t+MN5C4paQOQWGTC7HXPdGV2Cj7anhbUzcibs+SBCUt22odL/IX4+bPshYRwptW8RT4jR0b76nVN/yo7QGZ0ZaRDnuPRQotJNVKI0gIFsXu++K4zox2WeiLLtNnrIeCFq3b3069T2TDJ/1xJtzWhluJJpT34RqKBkDn92dhXf3Uw2NbomWqhGmGiHenPXKBiRdpDrb45WICtWe3Eg1O2qVwq7ASPsCzkal/GDC8B+xOZhEL/4ByCClM0qYGdEAal/Fhh0VEZPC3UqMRa8PMHC4xdJerKqbwhEXKYleqF6SSiq3xHNH1afdwOztSbRuo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,59 +108,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/9/2026 8:35 PM, Kefeng Wang wrote:
-> zswap_store() falls through to check_old and walks the swap xarray
-> even when zswap is disabled. Add a zswap_never_enabled() early return
-> matching zswap_load(), and reuse zswap_invalidate() whose xa_empty()
-> check skips empty per-area trees to avoid unnecessary xarry lockup.
+> On Sep 9, 2026, at 20:48, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+>=20
+>>=20
+>>>=20
+>>> I have patches to get rid of __section_mark_present() and just set =
+them all to
+>>> SECTION_IS_EARLY|SECTION_IS_ONLINE such that we can just iterate =
+early sections
+>>> and get rid of that PRESENT monstrosity.
+>>>=20
+>>> Apart from that LGTM, even though I don't particularly enjoy =
+splitting us now
+>>> having two init entry points
+>>>=20
+>>> sparse_init
+>>=20
+>> Maybe this one should be sparse_memmap_init? If yes, it could be =
+another separate
+>> cleanup patch.
+>=20
+> It does way more than that. In my patches I factor some of sparse_init =
+out and
+> call it sparse_metadata_init() -- memmap and usemap.
 
-Sorry for the typo, should be "xarray lookup".
+OK, I'll leave this part untouched since you've already done the perfect
+renaming.
 
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Kairui Song <kasong@tencent.com>
-> Cc: Nhat Pham <nphamcs@gmail.com>
-> Cc: Yosry Ahmed <yosryahmed@google.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> ---
->   mm/zswap.c | 16 +++++++---------
->   1 file changed, 7 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 5d0d8bd72193..fc6c5e0db5e4 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1488,6 +1488,9 @@ bool zswap_store(struct folio *folio)
->   	VM_WARN_ON_ONCE(!folio_test_locked(folio));
->   	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
->   
-> +	if (zswap_never_enabled())
-> +		return false;
-> +
->   	if (!zswap_enabled)
->   		goto check_old;
->   
-> @@ -1545,15 +1548,10 @@ bool zswap_store(struct folio *folio)
->   	if (!ret) {
->   		unsigned type = swp_type(swp);
->   		pgoff_t offset = swp_offset(swp);
-> -		struct zswap_entry *entry;
-> -		struct xarray *tree;
-> -
-> -		for (index = 0; index < nr_pages; ++index) {
-> -			tree = swap_zswap_tree(swp_entry(type, offset + index));
-> -			entry = xa_erase(tree, offset + index);
-> -			if (entry)
-> -				zswap_entry_free(entry);
-> -		}
-> +
-> +		for (index = 0; index < nr_pages; ++index)
-> +			zswap_invalidate(swp_entry(type, offset + index));
-> +
->   	}
->   
->   	return ret;
+Thanks.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
 
