@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A9B0C79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02BCCC88E41
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:04:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47B876B008A; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
+	id BF5FA6B00A3; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4058E6B00A2; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
+	id B859D6B00A5; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7CD6B00A3; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
+	id A46B76B00A4; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CD856B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B2AA6B00A2
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:04:19 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 615B61C1496
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A807FA40EC
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:04:18 +0000 (UTC)
-X-FDA: 85194393396.20.861587F
+X-FDA: 85194393396.11.DF8B56A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BD80EC000B
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1416040009
 	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:04:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilhVuhVB;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bZV5HI9n;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788962656;
-	b=SVbZFomVRLXt8NsqXFw5yrDSCU2z8nfK40tpyWCRoFgbw6FjIMbUu4BUM9pN4Mwrb+M6rJ
-	QQc+mpns77y42dKOkirbCPAHks+EC56eWyvj17oa3wnva/xYFRGOZLSxEWu2Yqj/WjcPDF
-	yKJcmdcz5AN422pIy1BvbPG/Z2qm7qI=
+	t=1788962657;
+	b=rRyu2yevu+RcaVgB8EPHGFRoFcN0+yplQ9HBENVOyu9p3/GNqstd+bMrquXP6rAQnWol7s
+	xb2fvhBlmu9XJO/FbSUErAh6dqGwpUZsd2r3q8YahyOLM6+BxDTXAuMGWynZSDX6/VJlf5
+	FbMBlG2SGcZE2EwqvVkA7qui903VicY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilhVuhVB;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bZV5HI9n;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788962656;
+	s=arc-20220608; t=1788962657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0TEnmWZc64GLgME/HU4PH8uoWioXFjP2oNQKmspGLrg=;
-	b=RslNV8cocJ74MJXIVE4dI2074xv8760k+zf24e8pBvkIyiHYvqqAQZOMzbgcHBG0epJ/6L
-	Unp9ql9HZC2DqJpQMaJEtq2c88OtCY8OOsiFVNk/Cf7rcaoYd/VV1GybFCNBzsVVp9CUMI
-	eHUYD6WtbzqHLCMopQZmM5aunuyUlfc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jEjB5+SmYpe1jV4B6kvt1MmnXfzrPfDtBLhTiuYoc8Q=;
+	b=WPi1v7TC3LLhj92PgvSTLNBaXmHSMXeGbACBad0FhA3sxKMd7YAKPzmTcwxopjeOVn0cRq
+	lFFKAmDsR6/cfVCLODR3ODUs7Kcs1Rz6WTTvtr6rmRc2nqJLSuOGkDS0wwkLLpA43QJ9uO
+	/4Kas+fHzwIbFy/wzpDqL0PnUMLc6T0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4000360219;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BDC26022D;
 	Wed,  9 Sep 2026 14:04:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15531F00A3D;
-	Wed,  9 Sep 2026 14:04:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C98E1F00A3E;
+	Wed,  9 Sep 2026 14:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788962656;
-	bh=0TEnmWZc64GLgME/HU4PH8uoWioXFjP2oNQKmspGLrg=;
-	h=From:To:Cc:Subject:Date;
-	b=ilhVuhVBN3yAGSIn/p7Mf8a8gcAax2xpCGzuaD1tpKQUcGpXEF8UfJRd8KHzAOJTB
-	 sO1UVLv5h55RxzglTvE3isMsY7RF30otVRvGy6ccjtWXoXknGHJo9X/u4oj4TckIIq
-	 JAiJjGspAVnH2YGsywpGaDKIcFWsLYsWv27kjpAkmmbuRO6NXF7t/W+im4LmG7+Sgs
-	 qY1Ka6bSoKizFn8AHRfME2aqjzwfub7eZiU3CFvYawe5TRnE2YAG5c/jdTrlto1E9N
-	 QTzC/d5nLqNFVfNv3JcvOPRLU9SWOTLHirwZvV2Rh9WzY97eOy2Kn0FgX0inGSQSFr
-	 T5Jh+FxZCgSuw==
+	bh=jEjB5+SmYpe1jV4B6kvt1MmnXfzrPfDtBLhTiuYoc8Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bZV5HI9ni1qoer7WyAzgqHcmDNXDCkP6yMaAYv82nIdNvytJfea+tswZdYH/n1kO3
+	 xH7HiXbus+CJ24iXvAlS7zz0lwENIoJbFTO+7k8wHFv0svv2VFMyngh0Tua+XCQtpB
+	 5MUrRIVoRkGncsFxs8GUMJy3gm0VfYD50LMM4KPxP9foxpkK2dCzb9KzieqYur3UTl
+	 XPZ00hyL15YOnYCbN9O6hw2aKEafU+JExRoW8OiygrC51XPE5g2gM35psx4KhXauEz
+	 q6Vsff2H6UqTxk+kbF0srjTUBtktHrEQJtd1lL1q2FnsG9HARhT4ubEgpeHNoePYL5
+	 NZMGkA26dKDDg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH REPOST 0/5] mm/damon/vaddr: support {prep,apply}_probes
-Date: Wed,  9 Sep 2026 07:04:02 -0700
-Message-ID: <20260909140408.104699-1-sj@kernel.org>
+Subject: [PATCH REPOST 1/5] mm/damon/vaddr: support prep_probes
+Date: Wed,  9 Sep 2026 07:04:03 -0700
+Message-ID: <20260909140408.104699-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260909140408.104699-1-sj@kernel.org>
+References: <20260909140408.104699-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BD80EC000B
-X-Stat-Signature: 3q8i9gu3ddckkybpynfae83d8j6i5qw8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1416040009
 X-Rspam-User: 
-X-HE-Tag: 1788962656-839582
-X-HE-Meta: U2FsdGVkX19s12Lr7Vp8Id1tNF50oi526uhh8DHHnB336LWKeP5WtB5YeTvM9MuquVZCdSFRI4QnjRfgZC2ZCN+5drRqhJ00vWKtLPN4gf/Sk7ALa3YpOWqsga0d+86o1ex/BBhKOrJywXQMnJLLiqiqiEuLuax5RhBq9M5AXxrzqeKIoI40JuRGj6NR36T6HiNN9ukPEMriqgvz/BFn+P9ZiFKclaJJVmRhXwsmLYbA6wN7X28V9aBer4j/is1lK7Eg+LGmzTe0pIwQ1uQZT8A5aqpLwBq+3LiVA/8uKs/1BvhJx07LlrWBo3OQw4Vk1LCu4EGVaAArLhLd7huMVVT5yaz3xBfWMLaga5OhKF12jIg+ec5DDh97vD/4yZJe59fDE5mt/exSkVkq/g9i53dJnHOZPlnybxoueaOUtDXAE+e/2RZLKKiCrxKtDQtTolQOvWW9gD3AqeQoaQoFND3kF9nQtSxlUxZUchxl0miNqVKtif90w6mdxasMO26E2flk/rjxcsCrolr9eqGTJnLDwQA3X0TVeFfgBaUyUG7N2arWnbEsrVCTUWl+YfXabADuyyME7mD1OIjJW5bt7hA7rRcLr0AeAZ9cIr1oJoS5cA2ukHip8OFUyAdLDFsNGazqUTSboAggZt93ZUhs6UIZp/HJD1F3jBwMqUUOM+j8r8oxP5pUjijtVjJYZQxbT35xLdICaKtBIbX9WqbvOi+gdzFXlUnNONGXjK4zmI468EFRern4Z/sVEWDza/xAiBNcqWKKq+tl0sgLZZ4jxdx5z/saRFos/FbxGfhdIwiW93vUnURb+xs2qBVtcLezUGLhwwvu9kr/ld+4wQS+N5I80tNK87gkZdcfa0mo1MtwC/OveUlBvKB4xstqzVX5JE70BKdWaqs1hVC08xeMmAi8hAAEEt6yf1UUJPbs7AR3/Gv22Dx18PgIwppxavdAwi9/0ECmim37JQw2OJR
- 5WYNzvjA
- wDlSEuC4wr2b98XlU57FonCGYnk3TN/gUE7rg040YcjRJAd5i6Dzt9+ExbjYMv4XfIis3nnOeG4a+5ad5FfF2IX0jXIREXaNCziKsnHzqywC66Yn9NCtMrBz2SHm833tMgfFJ4JSvvvGciYzsKIqs4u3JlKbTbItxADIyfRyV8eukn9o5/zE5KBeUDJt/t6PavyCq3hRUHNwREVnRbOLKlDXbDSM5hMSRCc9+9F8D2U45P0IT3DjlyS05KpT7XIQImI11O0E8akAHyoKU0Kie9j+wZsgHAxq/SnJC5arW+O6AV8M=
+X-Stat-Signature: rsbkw7pqw9xtkefjaxibg3ifcku1kkmx
+X-HE-Tag: 1788962656-167991
+X-HE-Meta: U2FsdGVkX19ZmOlpIz90Sg7hZK+VB6svydESeAexGTGZXIEhRSexY2hHqO6WjyCUxqjQJyReL86/HCSCLJCtvxFaO4WyRZ5r9F00rAwGl9MC8oaAwy3p8V8H4zJtOyflPTm869i+cXqa2EGCxwCxQ3L0c0sWvCuUbN6bwwpLX8ZeojRf9PBMj/1ERwamdau1GV6dqhzMq6dFlt+xU8BKHet35GB/KYKBUr90LPOgK107SfxuHzT3NzzqohVYCP07+mlxsPoeKtzNLlvyiUX3tSJKWrjnGtrm/0U8FvQeHDtE8UW7Cly+SUkc1w+oHemX9BUvEj4nKfvn4Sv23NVWIJt/9qF/YEWHb1DzGYbkG9jY0sXqjIGEaFtNwFQx+FLyN4/r/1u+ITvq5UWabBrxu3+hz4G2UWT9JL2HPt9b8vfoxCvh0itBbCPinzlrPOW634a2TSL+xVNSNy6+APXEsP90Y8YUslurspzZ0OBw6IecGHlK4WPFppbUisF929MnjuAi6IKOu8asSAXcKFfBs9OE97qLQiJX2dIi3Dm279tpD6P3fzm3yByTcYuPNOUqt1P2LOrwrP2/inQZhWrtRh9WhkdkOCUd+pFgz7AZUP+GMjH+aw5Xp48E7st3G3xdVBKrp4tBtFErk9uXyLiNkxf4Zo300fhf+umUsQawLNquBh+3H7pF3Idv0bhCQ3fqCCIG73ZIhNgeXkc97rG9eKUIVy9/9uvDvtUfpEIltfucLno2NJ2MsNfm6hI3523xPv5HLA7aHngGqbiCIUAhzyn7pupDGYIuq9mtf4+49yjJsldVKbv9d3iuJi5vL67LXs7+wQbSr7fDSTZTWzoSc0krD1Vt3lH4IIt3RzvEoIY7CRJuZQY1Q8P/WLyAZercEsb6R0DN3bFAL16rd182ua7TYwH1PGm3iYm03ZZp0vfLIam6S4icaD+MC5peEzAviP7Vv6fAu+kX7mi2Bju
+ CEzszndm
+ DWcD256uL7kV9nm22fW3M4CrFcgi3r9GSF7Yvm5FxiSt8hJhesV8EOwyMseN9S8LhpxLx3rS+2eTlOzCXvbbqktRfh02F0bU2BPESijppDDkNKpi3+POUw8WsbEL6FkMcGpfU/ezslKGEBkXIRoFiMhwYeuboAKPTiyJr4bXHjKBU4soyTLXHcFlOSY184gjSCB/W9sE1BgQnI7fj+VD5iMtl9ctWF749T9fKv/MLqUi8A8L4n826pZTIO+y+qNyb940/ChjyPPgpzRVACM44Op4Iag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,121 +92,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON supports data attributes monitoring.  However, only the physical
-address space operation set (paddr) is supporting it.  Add the support
-to the virtual address space operation set (vaddr).
+DAMON virtual address space operation set (vaddr) is not supporting
+prep_probes.  Add the support.
 
-Patch 1 adds prep_probes support to vaddr.  Patch 2 moves probe filter
-handling code in paddr.c that can be reused by vaddr to ops-common.c.
-Patch 3 adds minimum apply_probes support to vaddr.  Patch 4 extends the
-support for hugetlb.  Patch 5 extends the support for pgidle_unset
-filter.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/vaddr.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-Test
-====
-
-I confirmed it can capture ~48 mb working set of masim in vaddr mode,
-like below.
-
-First, start masim [1] to access ~48 mb memory at a time, in the
-background.
-
-    $ ./masim/masim.py run \
-            --config_file ./masim/configs/stairs-50mb.cfg \
-            --repeat 10 --quiet &
-
-Note that the config says the working set is 50mb.  It is 50 million
-bytes, so ~48 MiB.
-
-Start traditional access monitoring of masim's virtual address space
-using damo [2].
-
-    $ sudo ./damo/damo start $(pidof masim)
-
-Confirm it can capture the ~48 MiB working set as the 4-th region on the
-snapshot.
-
-    $ sudo ./damo/damo report access
-    heatmap:
-    11111111334[...]3000000000000000000000000000000000000000489999997777777743333333555556[...]8
-    # min/max temperatures: -1,150,000,000, 80,009,499, column size: 6.963
-    MiB
-    intervals: sample 5 ms aggr 100 ms (max access hz 200)
-    0   addr 85.355 TiB   size 55.703 MiB  access 0 hz   age 9.500 s
-    1   addr 85.355 TiB   size 18.984 MiB  access 0 hz   age 6.700 s
-    2   addr 127.183 TiB  size 278.516 MiB access 0 hz   age 11.500 s
-    3   addr 127.183 TiB  size 7.570 MiB   access 0 hz   age 900 ms
-    4   addr 127.183 TiB  size 48.133 MiB  access 190 hz age 800 ms
-    5   addr 127.183 TiB  size 54.977 MiB  access 0 hz   age 1.700 s
-    6   addr 127.183 TiB  size 55.113 MiB  access 0 hz   age 6.700 s
-    7   addr 127.183 TiB  size 37.902 MiB  access 0 hz   age 3.900 s
-    8   addr 127.990 TiB  size 120.000 KiB access 0 hz   age 11.400 s
-    9   addr 127.990 TiB  size 8.000 KiB   access 70 hz  age 0 ns
-    10  addr 127.990 TiB  size 4.000 KiB   access 0 hz   age 11.200 s
-    memory bw estimate: 8.931 GiB per second
-    total size: 557.027 MiB
-    record DAMON intervals: sample 5 ms, aggr 100 ms
-
-Stop access monitoring and start probe-only mode access monitoring.
-
-    $ sudo ./damo/damo stop
-    $ sudo ./damo/damo start $(pidof masim) --probe_prep set_pgidle \
-            --probe_filter allow pgidle_unset --probe_weight 1
-
-Confirm it can also capture the ~48 MiB working set as the 11-th region
-on the snapshot.
-
-    $ sudo ./damo/damo report attrs
-    heatmap:
-    00000000113[...]40000000000000000000000000000000000000000000000001111114999999533333336[...]6
-    # min/max temperatures: -840,000,000, 330,002,000, column size: 6.961
-    MiB
-    probe prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
-    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
-    #   size         address       age           probe_hits
-    0   8.000 KiB    127.990 TiB   8.700 s       0
-    1   120.000 KiB  127.990 TiB   8.600 s       0
-    2   55.543 MiB   127.183 TiB   8.400 s       0
-    3   110.008 MiB  127.183 TiB   8.300 s       0
-    4   55.352 MiB   127.183 TiB   8.100 s       0
-    5   55.605 MiB   127.183 TiB   8 s           0
-    6   55.691 MiB   85.355 TiB    7.900 s       0
-    7   54.430 MiB   127.183 TiB   7.900 s       0
-    8   50.391 MiB   127.183 TiB   6.900 s       0
-    9   18.879 MiB   85.355 TiB    6 s           0
-    10  52.844 MiB   127.183 TiB   3.500 s       0
-    11  48.039 MiB   127.183 TiB   3.300 s       20
-    12  4.000 KiB    127.990 TiB   8.500 s       20
-    memory bw estimate: 0 B per second
-    total size: 556.910 MiB
-    record DAMON intervals: sample 5 ms, aggr 100 ms
-
-[1] https://github.com/sjp38/masim
-[2] https://github.com/damonitor/damo
-
-Changes from v1 original post
-- v1: https://lore.kernel.org/20260906184417.96621-1-sj@kernel.org
-- Rebase to latest mm-new.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260905202634.88102-1-sj@kernel.org
-- Drop RFC tag.
-- Rebase to latest mm-new.
-
-SJ Park (5):
-  mm/damon/vaddr: support prep_probes
-  mm/damon/paddr: move probe filter handling to ops-common
-  mm/damon/vaddr: support apply_probe
-  mm/damon/vaddr: extend apply_probes() for hugetlb
-  mm/damon/vaddr: support pgidle_unset probe filter type
-
- mm/damon/ops-common.c |  32 ++++++
- mm/damon/ops-common.h |   2 +
- mm/damon/paddr.c      |  23 +----
- mm/damon/vaddr.c      | 232 ++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 267 insertions(+), 22 deletions(-)
-
-
-base-commit: da659d141e9797b3a2e5d0e2b457bfa4e8a8cb2d
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index af9e1b82454cc..20f4784f17817 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -483,6 +483,45 @@ static unsigned int damon_va_check_accesses(struct damon_ctx *ctx)
+ 	return max_nr_accesses;
+ }
+ 
++static void damon_va_prep_probe_region(struct damon_ctx *ctx,
++		struct mm_struct *mm, struct damon_region *r,
++		struct damon_probe *probe)
++{
++	struct damon_prep *p;
++
++	damon_for_each_prep(p, probe) {
++		switch (p->action) {
++		case DAMON_PREP_SET_PGIDLE:
++			damon_va_mkold(mm, r->sampling_addr);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
++static void damon_va_prep_probes(struct damon_ctx *ctx, bool set_samples)
++{
++	struct damon_target *t;
++	struct mm_struct *mm;
++	struct damon_region *r;
++	struct damon_probe *p;
++
++	damon_for_each_target(t, ctx) {
++		mm = damon_get_mm(t);
++		if (!mm)
++			continue;
++		damon_for_each_region(r, t) {
++			if (set_samples)
++				r->sampling_addr = damon_rand(ctx, r->ar.start,
++						r->ar.end);
++			damon_for_each_probe(p, ctx)
++				damon_va_prep_probe_region(ctx, mm, r, p);
++		}
++		mmput(mm);
++	}
++}
++
+ static bool damos_va_filter_young_match(struct damos_filter *filter,
+ 		struct folio *folio, struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep, pmd_t *pmdp)
+@@ -911,6 +950,7 @@ static int __init damon_va_initcall(void)
+ 		.update = damon_va_update,
+ 		.prepare_access_checks = damon_va_prepare_access_checks,
+ 		.check_accesses = damon_va_check_accesses,
++		.prep_probes = damon_va_prep_probes,
+ 		.target_valid = damon_va_target_valid,
+ 		.cleanup_target = damon_va_cleanup_target,
+ 		.apply_scheme = damon_va_apply_scheme,
 -- 
 2.47.3
 
