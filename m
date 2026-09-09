@@ -4,99 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6430EC79FB6
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:18:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A8FC79FB9
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 11:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D9746B008C; Wed,  9 Sep 2026 07:18:15 -0400 (EDT)
+	id EDF4D6B008A; Wed,  9 Sep 2026 07:21:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B11B6B0092; Wed,  9 Sep 2026 07:18:15 -0400 (EDT)
+	id E8FC66B0092; Wed,  9 Sep 2026 07:21:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0756B0093; Wed,  9 Sep 2026 07:18:15 -0400 (EDT)
+	id DA6CF6B0093; Wed,  9 Sep 2026 07:21:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 24A296B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:18:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53EE9C013D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:18:14 +0000 (UTC)
-X-FDA: 85193974908.27.49D9B5A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B4E7840007
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:18:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYEQtAN5;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B20C46B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 07:21:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4866D120199
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:21:16 +0000 (UTC)
+X-FDA: 85193982552.03.3D618BE
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 09F5510000C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 11:21:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LUr8XyeN;
+	spf=pass (imf05.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788952874;
+	b=5Szs7SkXk2ojHIoEy+SlDxeDls55cPDkeD1ppP0CgN8NJFVFk9KWqMjEjPCG4B7CPAMAfx
+	sSmu1DFUtOax7Ywi2Z3YwNkgip99JCq6qR0/kQCor9ctBhwVCuwL5YE+2SgqpZSfCWOGq4
+	wayfszRSRz7bB+fhxj6tqdeg/to25iI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LUr8XyeN;
+	spf=pass (imf05.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788952692;
+	s=arc-20220608; t=1788952874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOEjwSnsDLGfG/pdeBNOVWeruweXwfJsxl7v7zv3/yY=;
-	b=jejA0xLmoraX1OXpJCblFALYbMXaE93xemxG3gkbiiHrpWS1WL8M3wM/SkgEXVXNzpqjr/
-	twBS3/ciKNDO/qqwqZoaLFAUTF9ltbSOh/sVrb20c5m34vN9EG12EdpUrm5PpUakmQjEw2
-	+J3bkkEdtZKSx8sZPrhWQne88ZZGxa4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788952692;
-	b=jmaGlAtlBjs/snNNvgAdkVQRi+X3XkQf1j6spJ44yHFmBsZ8E07eI31rd2zbXEEBrONyhJ
-	ODNbB98zGQ3aFI51lO3CYyFk3E3oNW2vz3kydWyE7dq5uRyNoKHMRn0cPWfS5mVPfKg3gj
-	lxXeU/vJyKmYq7GqtQfNxuMEZfOtIiM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYEQtAN5;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D5E95439AD;
-	Wed,  9 Sep 2026 11:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58591F00A3A;
-	Wed,  9 Sep 2026 11:18:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788952691;
-	bh=zOEjwSnsDLGfG/pdeBNOVWeruweXwfJsxl7v7zv3/yY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FYEQtAN5KmjTi1SPWjCLNXNqio0wiGEDLX4TLQjBVpZfHG7P1KfnyXuYvshcFpa1S
-	 B88U316k4f8BizNr3hFSBOxDd8cJZr6XPwT9l9/0v3VCoc4OHM6bNxB42X0HwTPkTX
-	 Z0JhFCO2OTJ653bQH13UfQn9EEIXrjHMqV3g+ZwMLnG3vNsnOwSI2RhmpSi7bayd80
-	 0Aj3rIGzOj7DqyKVvq9owikr+ZgBTi6Uglul2byZHt29aUPqYs5DAjbzfO1ULdk4nW
-	 BW+Z1xwRgM+Be/vH8ixBWG1Dp0FaNGtcrS+ixLXtXwzbMyOK0sBQn39/QlaVyFovYw
-	 XmfmFxwOK8ycw==
-Date: Wed, 9 Sep 2026 12:18:03 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Nimrod Oren <noren@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Hugh Dickins <hughd@google.com>, Nirmoy Das <nirmoyd@nvidia.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: remove min_free_kbytes adjustment for THP
-Message-ID: <aqFAOLrybtyo6dd1@gremlin>
-References: <20260901190123.3511535-1-noren@nvidia.com>
- <d202dcc3-d7d7-4e98-a9a5-3137cfbfd041@kernel.org>
- <DL9XL8T6UG93.1T1NSJMI8PISK@nvidia.com>
- <aqBiVp405v2srvSa@cmpxchg.org>
- <aqEUdmYnnQQRC8yl@gremlin>
- <20260909113836.6cbe8d17@pumpkin>
+	bh=OIAyl4+9WuxFicDuaMQcuZ5CFN1J9J/6GS7zLNL6wDw=;
+	b=6imzNFTJ1NKcoJKAtjKQQ+rQTzpHc9hnKLhVIUCnexuV4wJMsu93IgpJfihG4MPMn8YWFN
+	LT6v4R00Z/JMHBc9JpdhAB/8aBmag0/Oh52Ex1sYzFMh+lEqn2k3QSm89rfaNZFQuqG7eS
+	JhSlYyVkaT3onWBxwrpfgHJTkRSWGnU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=OI
+	Ayl4+9WuxFicDuaMQcuZ5CFN1J9J/6GS7zLNL6wDw=; b=LUr8XyeNZQnXdaBAn4
+	py8csMlVVOPLVrPhKvVaywjrnbeERNTOd/cdN1SzyWeKf23M84GWv3CUimsuxb36
+	cTJefsk47jpFDWX6gnpir8AzuoKMwBY+HV4nieEuhqbJjSHHZ3tFl1EPZLMPI1Q3
+	FvY5ehT/PjxeNdcetLDZqCkEc=
+Received: from localhost (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCnESERQaFqJi3hQg--.17578S2;
+	Wed, 09 Sep 2026 19:20:50 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Zhi Wang <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gourry <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alex Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for compound folios
+Date: Wed,  9 Sep 2026 20:20:49 +0900
+Message-ID: <20260909112049.3202956-1-sh_def@163.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <5ae7a11c-1db4-44cd-bf67-a98cfd5ca08b@kernel.org>
+References: <20260817120758.669807-3-sh_def@163.com> <4ead5df7-f000-4087-83e4-13aae036e0b7@kernel.org> <apESOAPVzggWmbcJ@gsse-cloud1.jf.intel.com> <5ae7a11c-1db4-44cd-bf67-a98cfd5ca08b@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909113836.6cbe8d17@pumpkin>
-X-Stat-Signature: x6bbpp38e5yxf6q6czhwrnxkht11udan
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCnESERQaFqJi3hQg--.17578S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CrWUGF1kWryUCrWDKF18AFb_yoW8Gw4Dpa
+	4SgrZIyFsxWFWYkFnF9F48Xw1rWrsxJa4Yq3Z5Gr90ka1rJryFya40g3yDur17W3yIvrW8
+	X3y2q34UCF15Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5KsbUUUUU=
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6hJXtmqhQRJoxwAA3u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B4E7840007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1788952692-510903
-X-HE-Meta: U2FsdGVkX1+RDdtmKhYMaZV3pubyCoMSXTs3fiwDGSMKUq3oc+ewzsVWTDZj/3xgSor5GDiGyDfcUSG7bCK1Pf0+oH7dHDp4ypvdyFFwTmYGB/Ra7C9G/nA6VHkxxQEYjJFmC6ddAGeT8O0kMTIZJrTC/j4Dx80BF1jvmGE0JcT8HHe8xF47K/ol9w306Q8ojIIHUgMradhNY+TwJmXVe9/3ntdYCj8Zrc0jc6c230Vt9JjT8n/bUfEP7yWJTVrZAf9QXbi0uRwFD1c0+RsNo7E5IW6u4PK7XiB4DQlHPyVf8IbvvzLApEKmtrALad3R8CVbv98NhXIkPRSJiNy3s7V+Lb/hAv0eX8eIeKp5/BXc2I0NeFoyUV7F8QDY/Ywf5gXHMI0oIYiN3y6D/+Xc6AvTkQ6/dtJ2OTdvnpoCdvsNpPrja6WdUGhxg+daxDz3D8+iAmcHBPLE6Zj4q0tO1IFznKpAe3X6P/Y6ZmuwWJnHZPKdobq2Mn9YxUWecpi6sz/Bh3GSMvOlx2Qv/Z8WDdgiR3MYBDj18Sq7+0EX6DehbnR92sTAePs/Ik1hWfAqkjg0pv7OwY6cOSThkNX0BCkZEPdi5LpmZ5kyCgDHtMO6oaShv7Ynn9GejePxWvqd7u3Id9KI9ySsrGJ24Pm15qb1PwOp2Y/xVSUXZN4TAyFRlJR/Q+dkQHpt0twOhGxNqLdCZCluSWeUtDRRjpFPtCAdc734O6KhvyFeyQ2SnsCT+mKK4WFEjAI42ufShX6n3tslE9XEcLjpyHg41/O/mPjEILHLUx6Is1Obj7eizCgKuGtX6Z6/6MXe82uDZsCaqv4mtZ9qZFpkK6GNtRoCYAjsBIlrvABE+qwV7uuKUlpRVrIc5rdp+pKkPqZ+d9Fdw+gPcGkn+xiZgOmr/ayaPO8BoMLSF8ugDz+FEUAZCwjQRbQXwZzWLAZQoDxbpQB9m5cDE099GwgL2ssYdqM
- RcI5DB6o
- 9UcjvBlMH0J1I+SdxmGtWB7MDKVEgXrQABjfVcYHTtPh6A/CHmnVrwKNmzxtmwrRnKY10qPM/poFNIsugoAKzRH1I5jxvRAKMr19SKRtsvfkRuvRXOEAjiXTMIILp3iBxhLtV9NwxC0gM+bmb5ECZanSTrbKExvxe9U97d1WXzuYouOX1sfCXNtJDLP982iEROoZIo2myZG7HQPIEG5JX8HcxELEippwJWtAPx/4/QbLBWZN5+66RQyAmw46oeP3pMW1NE9YKoUIo5Z9n6I5DFph+qqLgwngUd+hOW+I+u1VAWFIkphdlB7sd4z1qEk0E0gGhS+Gfj+Mm++uxIl/K2jT3WnTaE8RSvJs7Sjphtcrj3tZzUK/vCT55yYqOPVLS104f/0LgQf7Xn98pw+HIamzWOA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 09F5510000C
+X-Stat-Signature: fax5kmo8mow5hwa677kgraj69qqiqw8c
+X-HE-Tag: 1788952872-448300
+X-HE-Meta: U2FsdGVkX1+qrrHUaZFOrcoHn7guQYIGdRyW2pIugEwKUIfercBUC/1ntpg/XdjzuGFh5pzvyIZYNaZ4nnSmAnREMsMU4UFlZt2r+0+kTuRbb9pug9ZfgKW9Qnu2EXsgc8J/Bv0YAA99IvF7dGrwVG9qTY3P/kuwQzVbfjSDo5Oo5hFOrsfQ0U7MJgqlNZExgeN1fZJSO6LFkwXjf3volW89JVUEnjqn67zxON8hDnWT1DZlT2iGCOtOxHTRo45G+Q7//1p2rCQRNLbFPIp6T2+W9Vf4OcK2uvhF6bRbdr3qu3eFlfApPo3b4bX0489HKPMQBuP6ZHLLwhjXEFEqz27rZLS9sVUnkGdzVRwlUqCewoS0t7iNcGDDgu06MNLrW53TJeK1FDkyr3Xn3pXqtNrV/fCredG7dlGi+3CrA4xmgZUE84aV9gI1wU5CVKdvk274bfjD0zCm2walw9qsplrbt4wGJqxYZL+fhcnzv0HFykUeXIQi42zDKD6wCP4UcA+YSxnm4607kgQEO02x4IH5Dbr5aci7Asz67cvenWPoum0XDrePOe2seS9NnQph2q/L5nDkb6hPu77yH87yQctIyGAocUHjdtVROYBoHZZ/owQ8fpdls3sawcixMQMHwK5cqPQJw1ry9Y/mFxUdL2woGh9AEkMFkZej/MwQy32fWrE0tuPk3Osf+TtzxzGN3PI6vqVsvMpDq3yur4XpH2pz1aW72Wjh2VkfOno0R1v5ifzGeZPb1PPGEGQDXPdWY0WBPRZ3axuj83TYujZtYxqW5ZUOOgjMfQvrnWeGlqWWeDtdUQbEIy8GBjhOoiuLCHAAN3iHby9WP7jtBUYpKnWeWOI1QVYy5jo5GLDgB/L3fMrlRuGv/jy4GOjk05dTzVGvbXMSqEcLCy7hJL4NHyU+C6xmRx/HcREHgkbbl+R9ZdovLnB1xL9fh2FFeIjDFTodEXqLXYYcEyLbcxA
+ FY6nJROc
+ IAdHF3dAZROAbjFC16Itz2hnQLF5p6+22NqlaJNzO3cQPUFVdZKm5tyR9s1zkUkiosQvd1cLQeBtG6U/QmXBvXodi2aAqMRGpJ12pq/Yhs+May61waPcWAcBODx6llhgWHoZWHINzCCtETepP5eEm1/jb2XEB4Y85AC9AGrkZ+TzkHPpPU1hmUeAojO6F2wNKynfQQcHCO59LHsfm3eTBckz9aqZKIiKYguLr7qzhMVx20hk2SCrhdRitF6R4cD5z6GV9weUEcczg+c7YymzjYKHmPCnEyEpDAe85trs2cVky4tmYS9Z8iuHMK4a9kCj2Ex42lOaZ2SP7+fWW08Q4D8BogaEpPQii7FrZdH8vh+BiTXw7mKSb7SoJ4cOQ3kvudS84HuWywmB65j2KuzZEwzHJOWKH/E3Psqc+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,41 +101,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 11:38:36AM +0100, David Laight wrote:
-> On Wed, 9 Sep 2026 09:11:04 +0100
-> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Mon, Sep 07, 2026 at 02:23:33PM +0200, David Hildenbrand (Arm) wrote:
+> That's what I was thinking: because how should we partially migrate folios?
+> Doesn't make sense :)
 >
-> > On Tue, Sep 08, 2026 at 03:30:30PM -0400, Johannes Weiner wrote:
-> > > On Tue, Sep 08, 2026 at 08:24:38AM -0400, Zi Yan wrote:
-> > > > On Tue Sep 8, 2026 at 7:54 AM EDT, Vlastimil Babka (SUSE) wrote:
-> > > > > Given neither of the patchset versions achieved universal acceptance, could
-> > > > > we try just disabling all the automatic (re)calculations of min_free_kbytes
-> > > > > the first moment the sysctl gets adjusted from userspace?
-> > > >
-> > > > Sounds good to me. Johannes, WDYT?
-> > >
-> > > +1 That sounds good to me as well.
-> >
-> > Me also! :>)
+> If this cannot be triggered today, neither Fixes: nor CC: stable is appropriate.
 >
-> You might want some method of restoring the default behaviour.
-> Maybe setting to 0 can be used (if that is just silly).
+> Agreed that we should just warn.
 
-I suppose the concern would be an embedded user for some reason enabling
-CONFIG_TRANSPARENT_HUGEPAGE and then defaulting to THP ->madvise and getting the
-bigger reserves before somehow disabling it after boot.
+Hi David, Matthew,
 
-But I'm not sure if this is something we really need to worry about?
+Sorry, I missed this earlier.
 
->
-> David
->
-> >
-> > --
-> > Cheers, Lorenzo
-> >
->
+This fix has already landed in mainline, but I agree that the API semantics
+should be clarified. Partially migrating a compound folio does not make
+sense. If the intended contract is that callers must not provide a range
+that cuts through a compound folio, then treating such input as caller
+misuse with an explicit WARN/error path sounds reasonable.
 
---
-Cheers, Lorenzo
+The reason I added the Fixes tag and Cc'd stable was that I observed an
+actual KASAN out-of-bounds write with the HMM migrate_anon_huge_zero
+selftest. The path was:
+
+  dmirror_fops_release()
+    -> dmirror_device_evict_chunk()
+      -> migrate_device_range()
+
+My intent was to prevent migrate_device_range() from writing past the
+caller-provided src_pfns array when such an input is observed. That said,
+silently stopping the collection is not necessarily the best API semantics
+if this should be treated as caller misuse.
+
+I will rerun the reproducer on current mainline and report back with the
+result. If the preferred direction is to make this an explicit WARN/error
+path instead, I can send a follow-up patch on top of mainline.
+
+Thanks,
+Hui
+
 
