@@ -4,89 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33B4AC79FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF35C79FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 14:18:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E85A6B00A4; Wed,  9 Sep 2026 10:10:57 -0400 (EDT)
+	id 5A82F6B008A; Wed,  9 Sep 2026 10:18:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C5306B00A5; Wed,  9 Sep 2026 10:10:57 -0400 (EDT)
+	id 5802F6B008C; Wed,  9 Sep 2026 10:18:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 500116B00B2; Wed,  9 Sep 2026 10:10:57 -0400 (EDT)
+	id 46FFE6B0092; Wed,  9 Sep 2026 10:18:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3193D6B00A4
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:10:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A2CCC023B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:10:55 +0000 (UTC)
-X-FDA: 85194410070.18.3D98B02
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 64C7F2000B
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:10:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R1mlK8DV;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 249186B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 10:18:42 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74036A27AC
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:18:41 +0000 (UTC)
+X-FDA: 85194429642.05.11E8859
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9DBDB120009
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 14:18:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jBV9vu/+";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788963053;
+	s=arc-20220608; t=1788963519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B1G0RE11rFuDv8wSwFJPMwA6T59xz3vA91P/lORF3w8=;
-	b=oga4wLZ97q05mVOFf8zqIL5bH0R9AFhGPaFTWx6+vLS9EuXvBFqDSDY++PN/PAc7UglWab
-	t/4x3B9p7RZ1GuW0yvzS42PXPZegInHtjLGjM2I6iCxsWENBMcmzH/uzJSKCRyWgYtFilb
-	IhcH77oGxwDtsDx06KY+sb6UZxKN/MY=
+	bh=X08fjZM7RBobs8taxaav9ECpncRKwsgdKENAu88U/cw=;
+	b=Kcgdn2F0Qsax1IlI0IN+TyTZDen+piJHjidviEVm/ye8aIaKndELu2dLzQIVTktGowshHT
+	xLuz79M9tmC45Q2uD5NgkHgcAGNtmLtp9hU/U9d03cwEcsTyN1N9/AJI3yh1sOvCHUFKhi
+	S3RR6FN7WJVGScR7oB7dR6Gay52NN2c=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R1mlK8DV;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jBV9vu/+";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788963053;
-	b=MdC3jurq6RvT4/DltFtOQVBufqKnVs2UEiP6pSUNx0GYA4IdFBNkNBX3UPs/5d2XBwuSOr
-	M8fDDxPmmMHXxbzc/agslR8tC9qjvTQ0HWza+u7azUcgtk4dXS0D5CwhBBrbYyoyIbpv9m
-	javPl3LJZgPM0lAXR1mtiEgRmiyJEho=
+	t=1788963519;
+	b=oN7u/Z7EkmL4E/zeyqXUbp41B3sWQEaoIE2NdgsGKLVDG9ETGFyp9i0c11xmVL/2v4RtoS
+	i1S+ryl7/JYzx9K7byU3KjlgnSTPoi0eoK6E/d1y5YkEAJ4pUhm5I+WacM+vUSdAPLmDok
+	Y5keEw9lZwDdN03yHIeh9tLhNAF/e9A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 072C06020A;
-	Wed,  9 Sep 2026 14:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B101F00A3D;
-	Wed,  9 Sep 2026 14:10:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CEC26408F7;
+	Wed,  9 Sep 2026 14:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FC61F00AC4;
+	Wed,  9 Sep 2026 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788963052;
-	bh=B1G0RE11rFuDv8wSwFJPMwA6T59xz3vA91P/lORF3w8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R1mlK8DVE2PwiOkw+/PXbEwPI21LrBP20p7j9w8UB8vjSkz4wNAMoCcNY3JqrVsab
-	 2tsWexYVhqmjeQc3ujZWA6SYioFZC4WB+fjA0OOa/M62Ch59BRMZb9/XiGSDYxPugr
-	 uDSsjGy0qnDN/EFRxKLPOk9NAV4BSbMCrDIJxvpq3NwjJKhjH6//MfgCj2i5+8oHni
-	 /eNwclIaDsuUgH4qTdf4+RgartRtTRGnmtI0Iwv0ATTX1O5US6KLMcIuG1EgenBPPv
-	 sLJWWSVOc0OOrw5aXPSjAnZa/WhBuM7Iir0l8BfPQ6m0hOcvC/O5QR8346dGR6OyII
-	 fVyUXLgzv7utA==
-From: SJ Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lian Wang <lianux.mm@gmail.com>
-Subject: Re: [PATCH v2] mm/damon/tests/core-kunit: improve nr_samples_per_aggr test isolation
-Date: Wed,  9 Sep 2026 07:10:44 -0700
-Message-ID: <20260909141045.105514-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260909070711.2448346-1-kunwu.chan@gmail.com>
-References: 
+	s=k20260515; t=1788963518;
+	bh=X08fjZM7RBobs8taxaav9ECpncRKwsgdKENAu88U/cw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jBV9vu/+PUjSA8EfGZJHnTbzSojvvSdorQ5pRUDYPv/81JFP66GR/g5iYBWc1zq4e
+	 dOqm35fhJ3mhVN9bmhWeDeqC0pQ0ME2zXBkwXZy9PVITMLv5J623/DdYfiHBrtQKBb
+	 QqJKfqgW+oqcg2G5748bn/irz3p84Sap6TZn+9NFiXfS+Vf0NL6i5li10zDbJ76N3Q
+	 UW8LQRt+XvnbIZOFYoxPLFJ3jhjG5aU/1ukQ+cZ0/iCiVymnaMT4VgsOZfEyLsfOWb
+	 0f9fmig/kwTnVdp3VgSjvoAR3qRVdt+CoUdcQNzZtlSRGxDZnFPrFVR3eX0XZx3dG+
+	 Z274TGHNWTqvw==
+Message-ID: <afc196d8-8e17-4cdd-a6be-94b8816f2a57@kernel.org>
+Date: Wed, 9 Sep 2026 16:18:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/14] treewide: replace PagePrivate() with
+ page_private()
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Song Liu <song@kernel.org>, Yu Kuai <yukuai@fygo.io>,
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, Li Nan <magiclinan@didiglobal.com>,
+ Xiao Ni <xiao@kernel.org>, linux-raid@vger.kernel.org,
+ ceph-devel@vger.kernel.org
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-12-6ae22f9d9272@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260907-remove-pg_private-v3-12-6ae22f9d9272@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: brntr93bgh6w47nt4pnxfow45ggbhnbn
-X-Rspamd-Queue-Id: 64C7F2000B
+X-Stat-Signature: bphmoa44emd5mcpt18inb1xdq8symkg4
+X-Rspamd-Queue-Id: 9DBDB120009
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1788963053-622367
-X-HE-Meta: U2FsdGVkX1+JjbymnH0L8NO47FQFx7lUB8WoY+VmnXuZNeLBd0Wjmfb9ljDhaeyOM2+Fc+Xp1kUr+JHfzJCClUqBFH2h3Y26OtB9u8+2NpijDSRmMiJtb7eM0xRR6S3MwVO2PbNHZu+CTM5zImgMjnFPOchOH7eoC6PhfqjSjUvaIucOuLiDy+cYunR0NbT1cirk78c5OBIOsQxufduWyif4KtI3cxK35BUKD5vWEoImmlcHZbHLrk0NC/C98ygjVEEtnnNG7RfbqjSaYadyD55YRqf74GMfhaPVpySG8D8uUg43C0t5qntE1SWqe0qppTtVuWQB74q7GN6ki7WRbpw9CTXy/PxC8aySn3qyexTfiBnD7Vu/Vk8IJHNLN1jsC2+9eRgAOTVt9xKsT/ojlzrhih8wIO/p4yaehSZLtN5qkVNpSZKXbw9eiq7wzMYE2sJMSVbJFBF3WSeIUQ35Pc2GCej9gbzatJQ5uvA8J1mtN+Er5DNKJRseYEK5OLOKsZfVJKyCLsWln8f3mA1osW1Tti+Ah64L5nXpHN78dREDGp6b/JVZPb/2i2lFcRNRkePY0YX9L26nVYouDp5LxWw5J4e5sNkRrA8vEydiO/QVt7NXiCq9SeSkLzAAL/PfVYxMAbdjJRNrnlTBhJHSH7y2HlU7pHsYvLPpOlzNagJeVUq+hHFjPV4iYBnU0TQuM1H5lPI5wMHHiVjMaNXGRpkEHu0/poZWiyCMLdAlQXOhqphV3ACrF156z04Id+KO4fTj1QnQu+Jb0As9E6d2H4kqJnrySfAUQ6l4XEqinKr1hzm+74PV0v7snsIagZbfZPb1klKQLhyw26oT8P6KjBcq2OZEghE2csfGdJnvCYzOh+by0lzzQ8bLRlz4VRq2LpmJBBzrUTQufBP3+SI8M5fyBUJ/vgXH5fib9xKd0I2CHm1zVp2thsr6gt/YlTIN9/6PZ3T5JKbuJvy8Hx+
- zM0IJoKa
- wbva5eLNEC0Otz6Qq8WnFZcsFSqxvLJXxR4izJMYtPYKzOg3o78FLo+4ky7RV0VUMAM5BJYng5e+O2+yRLAREPyATapD0j3z+FgJICPKTxPAVLQ3YJz1pcf/tX7LBIEAnLrhr99WtU/F3BRQsGX1hfrkA3RPL8c5zf6H3jrutFIYojNlxgij/irmJwjcBia9AAxipCU49k1FhE9wzEYYDYl7T/3bGAkr83D4H3SZcB2fQorq949NSU4WtadCDCx1RRsKXhmdfGTAdjLe/alwctopcyHtPN1myrNJf7ReEUfo0aZ2xRS52QHAAHZyznS/fbmZnr9zXruJ9E19JnV0Q0c5q84k2tD0TMBupJD6IsDsPpT8NpMsjeAnsvzuwN+kN/NZxsY6ptHx4JjFEh5l24+yPNw==
+X-HE-Tag: 1788963519-329422
+X-HE-Meta: U2FsdGVkX19nPgoG6hZKZ6+XL1nogpzVt1BIwz1gRirFHC3PIM+z/CPaOKCM1DAwTAqMSPPgnkxta6+GymcgPYP2lX+MbGI3DmTRm4i5ts+7109QZ1FQ0uVRvNWA+V+m62y3HSZcoWxZVGHvaY+sqauN+qqbPiIWnve7QqeEeJGCAoTiqkaZC3JbWYMZY5U7dbGwfHLJnmLKwhpvewoDpE7fAKl+86BB0MVqDu/l0G6FUQnDBwnfR76vKY5mNYURQvve/jKq/nj2Rm8bKHfepoLXleEGtZFmUm+Sjdqw6tTvoKkQnGwVxBwhE0wX+QJJmtn3VJg39y9mjA6zSbsxA2MZnOW44u1GZnEc8x2yv+W9Cc6yckhLXap/dixSU7GiLoHgMdte69aJddYyzjtvfrzhVfL/aQqLy3uAycSPLQx2T8FU8iJhsnzr+/6m2nZ9aGJL1sVhGy4GvRYCiA/6g8N0GAM+YxUFa6alQytun5OxYTBtwT8xVY5HFqw6MFho8sWG86UQhULWnLiNZXffoaWXdATuSAVmXXKMs0wrlkS/9HUr1Bhp6nDie/jY8KK6751inUo78LI/4s1wi7wJAy+UfIrCFV92+cRfYn9pOHMCo4rpK3QeC4A8jXBWGCaDXIqPq+EPd8dDj1HH6paWeJOv14hNWnZo7XbTR5XihiNgv9LBfGGf12XVznBPtfRvNwl0B7XwHjiw2cRrN3mYzhjCGLzfkWqRia3tyqObk5dY66or08y+zUSMlnCNbHBOFBGkeB2Z/0CukiqKjRhtzUxKd0afof6JJC+bu6+Sl0AVh8+oKPmCj3UfU5CtdSs8QZt5Jydkjv2F+FS9uVHqViPJYu/BUxj8aOl1wuiy2vCN+5AOIMAfnaF/9gGI/F2b2yw0gE4QR5vcmv5XVYInxPV8Jl1JzuXUNY+KJYpvw4fbBuOrrwm6TpSzHrXKmF9LLKsZ44reQkjLyQshCTe
+ xOICEDrI
+ 9BffGWHS/X2qj7hGdi9tBV9O2rm7k9bdX/kfnh/I/DhUObcGy9sxNIa52cSlrh69lSzXtcQVmhi9wjAGXQVi9KatztBHVaO1aqluq/39U0kA58cHC3QZ+gHSLjG4ojQpVe7jgUNPHXIJ4W3AgMuvOUTaY4C3obwHPKnI1YEVNKZZMp9U/wrL1zLFknF4otg610P0F+QWfJ7VdiuwbzZwE/2sDIAltV639CD+Zrf/PUfRqdzUrlALY3XkaDdrkd7uP3RUMFj653s/w3/fsagp0ML0BraMjkYo9vM/1ullI+vTdPXfRGNEFDIJgREVndBr6xobw8n4/7C7QruM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +155,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  9 Sep 2026 15:07:11 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
-
-> Test the zero sample interval case with a non-zero aggregation
-> interval, and keep the zero/zero case to cover the zero-result
-> fallback.
+On 9/8/26 04:56, Zi Yan wrote:
+> PG_private is going to be removed and its check is replaced by checking
+> page->private != NULL.
 > 
-> Also make the overflow case use an explicit sample interval so that
-> it does not depend on the zero sample interval fallback.
 
-Thank you for improving the test.  This looks good to me :)
+You should likely clarify here that, for these users (the pages they deal with),
+PG_private is set if and only if page->private != NULL. Consequently, there is
+no functional change.
 
+> Replace page_buffers() with page_private() and delete page_buffers(),
+> since only two users left and both can be converted to use page_private().
 > 
-> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
 [...]
+
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 657c2cb0f8811..fad17df1d5082 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -70,9 +70,7 @@ static int ceph_netfs_check_write_begin(struct file *file, loff_t pos, unsigned
+>  
+>  static inline struct ceph_snap_context *page_snap_context(struct page *page)
+>  {
+> -	if (PagePrivate(page))
+> -		return (void *)page->private;
+> -	return NULL;
+> +	return (void *)page->private;
+>  }
+
+I'd even split this up into 2 (or even 3) patches:
+
+1) Remove PagePrivate usage in ceph
+
+2) Remove PagePrivate usage in md
+
+3) Inline page_buffers() and remove it
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
