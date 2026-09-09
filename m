@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A033CC79F8C
-	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:45:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A55CC79FB5
+	for <linux-mm@archiver.kernel.org>; Wed,  9 Sep 2026 06:45:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3ABA6B008A; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
+	id 631B66B008C; Wed,  9 Sep 2026 02:45:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AECB76B008C; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
+	id 5E2476B0098; Wed,  9 Sep 2026 02:45:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA6E6B0098; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
+	id 4FA056B0099; Wed,  9 Sep 2026 02:45:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 723926B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:45:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A99B1A0111
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:18 +0000 (UTC)
-X-FDA: 85193287116.05.6475461
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4987F1C0002
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhLgczlC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788936316;
-	b=2l5AKj7DXGitw15gjnpZt5ogJWwyD7QQB6VsMzuz3EzgbsWyD1OkmxXiWeLSY+mh1IwtBc
-	n5+H5Bf5AN5+CXSUFOK3YD5PhAExnYsi72WfOGUhI8jHJKf+s7K15LcfZjbn5wa8uiVk8r
-	0N87pidUPMWQpjNqqoqSTbn5Qp8/KbY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhLgczlC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C7AF6B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 02:45:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB545160117
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:29 +0000 (UTC)
+X-FDA: 85193287578.02.A63EAAB
+Received: from mta0.migadu.com (out-218.mta0.migadu.com [91.218.175.218])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9D81E40004
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j3eVYzJR;
+	spf=pass (imf12.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788936316;
+	s=arc-20220608; t=1788936328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXtI965ppSTiwbT7ipKM86YtHUyLj5gqRIWr+nTAhBA=;
-	b=L4c24TSyx31eDQ2Qc9SdnYfeRVUxrz3Z/R6sWrHjCEIYUCwkMYDvTobo38uHVG4N7SKCc0
-	h8V7Bz153StSI435U2TelESLfTpUhHzoJsNmTZy9KVXtycQx1CYnzPiM8JBwBARur1Sv8N
-	SJGzA+KuB9mVdcA3NIYADwXPu4ML1Xg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE31D44791
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CA41F0155D
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 06:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788936314;
-	bh=oXtI965ppSTiwbT7ipKM86YtHUyLj5gqRIWr+nTAhBA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IhLgczlCdWxFSegmkDizxcGCljjux3VJc/i0FEoY8gH2PXRUq4Ssn7Y30byvlShQN
-	 gFCDQfZx7fm+duVZJvytrkcjU5b3C1wT8mzuIhcBd5/MFvOZQyvXERSN9mv0tAiSgL
-	 5WRfo91cKBLXK0RSm9JXUt+1ypLzXGa+Hxid0r3sBUmNRgra8ny+lsL65oS3vB3jxA
-	 uEJYCwVriFGytJVB5DZHLBxlxTvbZghw6a4Bnz3Pvg7GkJJXLdhx07aTck1sFxDWZw
-	 4LFA6J5OxT6k7ridJrBHWXdlH9Ah/Ag33l3q6SpLU9s+DxJEMH8jlYgovnNHbGED7H
-	 D9MjCaVN42fpA==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9399798cdd2so254795085a.2
-        for <linux-mm@kvack.org>; Tue, 08 Sep 2026 23:45:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBymBiKzgsSHTeBWIIAYn8BdTPH5dBiYsz93MrRhV05ckDcQotUppZQllBZf6gJqt3U4b1AQC59F2w==@kvack.org
-X-Gm-Message-State: AFuF++kZ53tCNgc6uINOUbCfYLh4CpdvITbF93si6WsQ4zkJ79a3yklz
-	CT13T+99SYDs2zi11OowtNEvGj7qbPiaPXR6IAtwIfswFYHkjByZC9CDN+yAZrFacJBqhNlRwTY
-	UXh2XojtZxeIxp64ldWz90lRcqxxe/C4=
-X-Received: by 2002:a05:620a:811f:b0:939:6dea:374b with SMTP id
- af79cd13be357-939804f7c81mr2852075085a.47.1788936313658; Tue, 08 Sep 2026
- 23:45:13 -0700 (PDT)
+	bh=ss/fd7CoRDmHqqk6ygxFDyk+tFe5fP03rVfekoXKgVg=;
+	b=OraLopW/f+UpORKiZOmpJBGRe4x8dMzsjit536y6GEG/yOUIv7yqdaH6kv09j97zvMzbAZ
+	WRksEuHPNMbXDC2EWfFM8pmnz4spbucE5uP5VOuzF1msdG/dwm+uF+izZD+/XrST/34CC/
+	vyW7nHxWSETQggnHSOf0XCt1P/GYLog=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1788936328;
+	b=J6aFobG48oL+MTJpUdH5Od1smarHlMhBPWuF4yUP92L2I8upCoSRl/dtNu9NqN2PE05M7z
+	kxqMSgb8Zaegy0T4OGFKIZlBO2gY9fVn+f2bZorO3g6Nu9f/orfpf+//ezwEh3svC2QGhz
+	7NeapJzui1q+lM9cMqBA0MLRN/Oo558=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j3eVYzJR;
+	spf=pass (imf12.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=oTBpNY7hw7Wf7aDEdyGbqp7ST1teTAUXIET1OkGaVu4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788936323; v=1; x=1789541123;
+ b=j3eVYzJRDP4GuwDpk1yAzHJdHeOy9WgKtiCl6wojdnOYSSQYKj74Ze4IE8uZMBTffhl0yVEg
+ 0g76LWdQpAcp1yt1dkPOsXcAIBwRB6+Jj/p/QLt0UmKmLZdtwSgMtUR3G1lQ5vgQmgMbqfwYwcT
+ GAu5tQEiBO8r9XugGs76VhSs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ed883708a2057349;
+	Wed, 09 Sep 2026 06:45:19 +0000
+X-Mizu-Trace-ID: ed883708a2057349
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <7d47a955-eee3-4a93-bf8d-210eefa59f0a@linux.dev>
+Date: Wed, 9 Sep 2026 14:45:15 +0800
 MIME-Version: 1.0
-References: <20260907042447.2450663-1-ridong.chen@linux.dev> <20260907042447.2450663-3-ridong.chen@linux.dev>
-In-Reply-To: <20260907042447.2450663-3-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 9 Sep 2026 14:45:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VgWoJtkBN10FObnIaNeshFsBlYP68mFG3ghCEpyRhlhxvLD1TMEuEii5k
-Message-ID: <CAGsJ_4zvJmdiicZAefUyjn4RjP=hBxE95fjpR9HM+SFJ8S_aCQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/2] mm/mglru: add tracepoint for inc_max_seq
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: fix ptrace PEEKDATA check in memfd_secret
+ test
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, James.Bottomley@hansenpartnership.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+References: <20260908025111.34562-1-hongfu.li@linux.dev>
+ <ap_N7u5DbIk4FEeZ@gremlin>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <ap_N7u5DbIk4FEeZ@gremlin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4987F1C0002
-X-Stat-Signature: xs3kewct8pnjdyjgi3sisw6j73dtboqg
-X-HE-Tag: 1788936316-289089
-X-HE-Meta: U2FsdGVkX18VOP0sPwE9SsOJwzMFTqHVqU/irJUKm3De+ok2Zw1Rpd21W4RmzhYrUxP+117xPHE7IHOCIfCeTcsqxtWQJowImiuhxy6eHqYUKV0VvteVyJ89Fvbc+tpmB18VvRFMpI4Y03JMLQtWCgG5s11E+UyPkC8HgeCoBjMwsnoBPyANTL+BEKRCa351LaNkJLOmxgFgPhpG9j5qLDH/02Wneecc9ftGK4I/z+ro277+f8//BK1pgwndic3ebQNfS0ZKPqIbnNgmQp2BBw+E/BmDwe5VAYZzWv3Pfr1KXSw2gt5HQAIdI94Uuvolpw7nDJMQK/vVgWULQLoEaxaDds/B93ErCvGslB8YekOFED9gvy+vzirCBs0DK1dByqEPaUXq0DwNion4ZfJFp0rlbR8jc4oni+V7yAQWJK9eZLk3hJT3d6YTPHsFjYqmsRhrR32csj3R89wsyUeYy3UAfUwQVLQiWB++HFrqrtVg9jXFBKD1TQScUZ3OxuzIhPzCHg7mt+a/VvH1fyICDABjf34fAAf0i7cEuitF71AVig/RIVQJNb9ta+mNPUQKSYki4pOvLN2UwfTJvpAeoDIdScUbtx6vAJthDVtviOxF6jT0hvWMMm6/O0nZ/wGqWiQ37gia1eQ965vilYBE5i56LWuzzLIXNiEe1ZzWHz0JCzyRr/UOlhE6Xsz5a3FEeL51wggMSmQCUZgYGbXQPa7wFIDmnJ9IUQiyOjQ48ISUj0PD/5roQd9P4n0BRCbwk114Os6+XUoTmOTRxt1nnj4vFJoGwSwvmJg7pg3vt0XnN1nbyD7LuxgXCR4F0tqR/vdlP2mpUIZnkmLtJxLFDH3SJeVJzSyE0OaSOIJUbHIKkLFVEn4hmynZ3dKgeX6sTya+isu+wC1k8dWo+HWqIon8P87bksAfDSjpp1mR98FOLXWJxprT2aUYCU1JUup0tdtTBG6Mmqm2cqcSKAD
- 31QmlJkT
- muxyVZZxpqrvo//EAcqsVCVt5SBjyRaRCTGTsoh0mmE+BpWZHqyRzm8OMo3SZfzhNCx/ZQBmYCRictXsK1Vl+EJP9meA31sP0IJN/hiZkJNUC5SFIlHw0NQ8Ewdm2P57pqV0M7yJ99KVJcvOP4vslMpX6jpHjsEOZ31XWgkxw6f0oaCPNZu53/HgA29FKNS4nE+0Sz7Lg33vyg4CfW5hPTU9pPC5ecdYjNhRJw8nV5kVD96/+20vNMe8OtgTeetU54O86iVfkS01wFeC5S/043ndD9jrxKTW+bbof2Qw/h/lZwy6114Ct4ICNHyW2Y9vddZrdBn9846r72yGYM72CoiAyvrcAFvktMerAxoR4zOrY5Wg=
+X-Stat-Signature: 78wd7mryzzhg9tu5xhd5j1tfpbqw1ykz
+X-Rspamd-Queue-Id: 9D81E40004
+X-HE-Tag: 1788936326-616420
+X-HE-Meta: U2FsdGVkX1+YDrpKbu6RW0n4Jcn7z+oDq4BIZpVm8hCz2CrRyCN6ZUlntGANr4MhO169DjLyVgsEsHpaEQLxKbzGCSy/K775KsoKLQloV5V2Zte+GUG9NZ1UMyxVEM3s0WcceP+Vcw11VY0aa33LT9NN0Jg3amnnlxf/uE1j/l5TVWrSq9UtEZHAY/pNrdNy3HqFnvvlRcd1p0XABVs4OzDSkSE1Vprozoe6w6ZJFrnYnNF4Zoz6mXGyZI0fgFCRNmvRXpl4xTa3xe4mcWMNyrU/8hV7mjEynnGT/OufNBPYaTUONBOVvgFhrvWramNyytT5Cmayr9jh7QcdNEsn0296yAK4+VYqpqhmTjdD9AhsmPOnMuWZyUcaOplrCWJE/mfZRHLJuw2vdNYRvKd6IIV9sGClI9f+ALKmicFPBBnqYCBHdK2Ut/KBKyTX+HXLfkGUsltYH7pOLw8/qKdta9LpkY52fA12fw8s6CK9MFDbKe/GzmeJucNoa2n612mgSu7C4ykY5ouAtk0TVZ+KX90tOSUKRTyh65I1V9J+ur8Mc7yXdZDwCuxdtyKtLbKoBE0vHLvvIrmF/tjpRtixsF7a+ugxiPtl8BQ3xSc07PGaUa5ub9oGCdP1u0xx6SRjqBGBzol/7yhyUbwExC84NFi3oA8VkV+tYpbk2ydbUnjORQ0TXE68Xs6UtNDogUtYGRq32Zmr44hckr5JWX9GOFVzvoU0X/h3S8VcENP1Mthv0GoGJ1YtZqwZL9CEoM8IrdY+QZWX94cpXFt+3zoSr+oh1o/xWtEiWNw9gqZYP7Au1TqvZD7eU3Y9cF+oTojFC17T6UP8mYrkYuTK+H+xFO5ecm8sa95qibeJQBZksVthBt8x+jdg8r15YVf4LVYB+eUvo9WjUaVZZc4AUPYWkbz78LTeoDf0rNQc0OgiXvxFbpZQMEWMMqyKRtHCtYL/C2T+cuh2UREw97SKXhr
+ 0+/1Ot/G
+ Qt0jVTDxBS64nm8fck+yN9JzlaeG2YeKOFlPtnJEU3lwnBXJV4iUhUexMJ71Gi+SJAaFeb+e3vNNfH6LZYbokg6lAjJZd7W5utPl1tfXIAW/v/z3RPV2ss51xXfGuXSu2qDIjYg4dkoXMSEzleuZ5ng7Z+HvMphgSYyDXQWz4w7k4dAs6iC6wN/UMcijklHIhqpskBoKKgqj+vJuzSUH6f69w9r2T/irTBpcZ4UO6UlkY9YuVscTsCjnztBEFKdXkuco+80bSM3Fwdqdg4GBOBX9AORv227uamJ7yVz6+F/RQAWnssAhFr3GvKU+zPiQtwUOhb/STephDOPn1mbTgCwC6j9mg5xD1Phbp5VEi6hGa82U34ddNEcAYSxeZXj2OIRLcbkOK2uE1C4Vn3AYVjg/Wqo9Y89U4rpZv7L6uIRU5kd/RL/CCu29P5mLDOexCEhfecaq3XQeRx6M4k1rTu8gOfgqwCSiUO5Sjgl0WgUQMAgzYdOEcnYLzIC3Aw2RThKwhUGp0FL1t9RD7fycBo3TBGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,102 +95,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 12:25=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
-> youngest generation. There is currently no tracepoint on this path, so
-> the moment a new generation is created, and how the min_seq of each type
-> trails behind it, cannot be observed as it happens.
->
-> Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped, with
-> the memcg id and the new max_seq alongside the anon and file min_seq.
-> Paired with the mm_mglru_isolate_folios tracepoint it makes the full
-> aging-to-eviction window observable per memcg.
->
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  include/trace/events/vmscan.h | 30 ++++++++++++++++++++++++++++++
->  mm/vmscan.c                   |  4 ++++
->  2 files changed, 34 insertions(+)
->
-> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.=
-h
-> index a0e3cf75294b..ab93c2f4b318 100644
-> --- a/include/trace/events/vmscan.h
-> +++ b/include/trace/events/vmscan.h
-> @@ -439,6 +439,36 @@ TRACE_EVENT(mm_mglru_isolate_folios,
->                 __entry->max_seq)
->  );
->
-> +TRACE_EVENT(mm_mglru_inc_max_seq,
-> +
-> +       TP_PROTO(u64 memcg_id,
-> +               unsigned long max_seq,
-> +               unsigned long anon_min_seq,
-> +               unsigned long file_min_seq),
-> +
-> +       TP_ARGS(memcg_id, max_seq, anon_min_seq, file_min_seq),
-> +
-> +       TP_STRUCT__entry(
-> +               __field(u64, memcg_id)
-> +               __field(unsigned long, max_seq)
-> +               __field(unsigned long, anon_min_seq)
-> +               __field(unsigned long, file_min_seq)
-> +       ),
-> +
-> +       TP_fast_assign(
-> +               __entry->memcg_id =3D memcg_id;
-> +               __entry->max_seq =3D max_seq;
-> +               __entry->anon_min_seq =3D anon_min_seq;
-> +               __entry->file_min_seq =3D file_min_seq;
-> +       ),
-> +
-> +       TP_printk("memcg_id=3D%llu max_seq=3D%lu anon_min_seq=3D%lu file_=
-min_seq=3D%lu",
-> +               __entry->memcg_id,
-> +               __entry->max_seq,
-> +               __entry->anon_min_seq,
-> +               __entry->file_min_seq)
-> +);
-> +
->  TRACE_EVENT(mm_vmscan_write_folio,
->
->         TP_PROTO(struct folio *folio),
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 771fe6827939..3c806a57d113 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4065,6 +4065,10 @@ static bool inc_max_seq(struct lruvec *lruvec, uns=
-igned long seq, int swappiness
->         WRITE_ONCE(lrugen->timestamps[next], jiffies);
->         /* make sure preceding modifications appear */
->         smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
-> +       trace_mm_mglru_inc_max_seq(mem_cgroup_id(lruvec_memcg(lruvec)),
-> +                                  lrugen->max_seq,
-> +                                  lrugen->min_seq[LRU_GEN_ANON],
-> +                                  lrugen->min_seq[LRU_GEN_FILE]);
 
-I suspect we also want to know the number of pages in each generation,
-similar to:
+在 2026/9/8 17:03, Lorenzo Stoakes (ARM) 写道:
+> On Tue, Sep 08, 2026 at 10:51:11AM +0800, Hongfu Li wrote:
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> try_ptrace() treats PTRACE_PEEKDATA return value as a boolean
+>> check. A successful read returns non-zero data (memory filled with
+>> 0x55), causing the test to incorrectly report PASS when secret memory
+>> protection is broken.
+>>
+>> Check the return value against -1 instead. The test should only pass
+>> when PTRACE_PEEKDATA fails, which means secret memory protection works.
+>>
+>> Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
+> Not sure if a fixes is warranted? But I also definitely don't think a backport
+> is in any case in case :P
+>
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> The change LGTM afaict. Though I think a comment should be added. With that
+> addressed:
+>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+>> ---
+>>   tools/testing/selftests/mm/memfd_secret.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+>> index c55d84c5e613..dd08a3a1ef14 100644
+>> --- a/tools/testing/selftests/mm/memfd_secret.c
+>> +++ b/tools/testing/selftests/mm/memfd_secret.c
+>> @@ -145,7 +145,7 @@ static void try_ptrace(int fd, int pipefd[2])
+>>   		exit(KSFT_FAIL);
+>>   	}
+>>
+>> -	if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0))
+>> +	if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0) == -1)
+>>   		exit(KSFT_PASS);
+>  From https://man7.org/linux/man-pages/man2/ptrace.2.html#RETURN_VALUE :
+>
+>         On success, the PTRACE_PEEK* operations return the requested data
+>         (but see NOTES)...
+>
+>         On error, all operations return -1, ...
+>
+>         ...
+>
+>         PTRACE_PEEKTEXT
+>         PTRACE_PEEKDATA
+>                Read a word at the address addr in the tracee's memory,
+>                returning the word as the result of the ptrace() call.
+>                Linux does not have separate text and data address spaces,
+>                so these two operations are currently equivalent.  (data is
+>                ignored; but see NOTES.)
+>
+> OK so we expect this to fail as otherwise that'd be a violation of secretmem.
+>
+> Feels like maybe we should add a comment to that effect? :)
 
-/sys/kernel/debug # cat lru_gen
-memcg 1 /
- node     0
-          0      25672          0          85
-          1      25672          0        4249
-          2      25672         21           0
-          3      25672          0           0
-memcg 19 /A
- node     0
-          0      23036          0           0
-          1      23036          0           0
-          2      23036          0           0
-          3      23036          0           0
+Thanks for the review, and agreed on the comment: the test only passes
+when PEEKDATA fails, which is easy to misread, so I'll make that
+explicit in v2:
 
-Best Regards
-Barry
+--- a/tools/testing/selftests/mm/memfd_secret.c
++++ b/tools/testing/selftests/mm/memfd_secret.c
+@@ -145,7 +145,8 @@ static void try_ptrace(int fd, int pipefd[2])
+          exit(KSFT_FAIL);
+      }
+
+-    if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0))
++    /* PEEKDATA on secret memory must fail, else protection is broken. */
++    if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0) == -1)
+          exit(KSFT_PASS);
+
+
+I'll also drop the Fixes: tag in v2 since a backport is not intended.
+
+>>   	exit(KSFT_FAIL);
+>> --
+>> 2.54.0
+>>
+>> --
+>> Cheers, Lorenzo
+
+-- 
+Best regards,
+Hongfu
+
 
