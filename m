@@ -4,137 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A37BDC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:25:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C223C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE6976B0098; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
+	id 2750A6B0092; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBE9D6B0099; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
+	id 2254B6B0093; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFB546B009D; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
+	id 114156B009B; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A4F26B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CDC6180454
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:25:04 +0000 (UTC)
-X-FDA: 85197469728.30.1F68C13
-Received: from mail-qk2-f1.google.com (mail-qk2-f1.google.com [74.125.230.193])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D5A7E1C0007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:25:02 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F9Xd3kNR;
-	spf=pass (imf20.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.230.193 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789035902;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2DA6B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:26:47 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C5D0A04D4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:47 +0000 (UTC)
+X-FDA: 85197474054.28.B66EE10
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 93AB5140008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMkwwheO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789036005;
+	b=bzYpKZIIPBScZEvX1wMcz3PqBRSX789BeznNAqkD0CLeHW9vXoc7C4u+5InFnZ6BksrDHT
+	5g3SzIa01OiA0uK0Gk+vdNTcYVmSUPRdVs4tYP/kihLpZT/1vY5pRqhPQRJ/creD8r0xft
+	enqouZVhKgm7uuJVnoyGghANzSi53v4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMkwwheO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789036005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
-	b=qjlqJ0H66cYc8v6W6DwC7AYTtgmBUxTL41dSGKGn/Pc4l3/ppdC/95Hszt3HZrla2MmSyA
-	cDSRXMLD5KARleUNyd9uaawd6zkl1TqUN6pDYGYuAElrTScGerNIgUTn0KCFQ+gkoFNdlt
-	6mQuhHGUwf6FnkrZmDbTg1lvbwpnZSg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789035902;
-	b=iBhL79xc6mUy6kF7ThhhKwXRSd26kPc3z9g8edyX9L+scdEjULT3c+YiQ0b1L7+nplm+cB
-	Z0sVMDkIFtdHySvgatOiMMudiP17yi8P8mMSZRcbr+1n2xHgZsn5PKWEeF8L4CyQ98hT43
-	e94CiZf62q9SNB4Q1jHZhZQpxHED460=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F9Xd3kNR;
-	spf=pass (imf20.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.230.193 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qk2-f1.google.com with SMTP id d75a77b69052e-53096696963so21073821cf.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:25:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789035902; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KEW6x2GWtvfIurqBNJ8RKmW0MOsUXLSUyIq0SZYQjgYwO3H2XW1TseT4XPmjBaR0IR
-         7mbhT6VoGZmUcuzKVSLMtA3pW5DThnRQizz/gYGrAmWaCTvtktNVJDqPPyMiJm4vJcP6
-         WdMm2OjagQuTIZMkRgiNPV7Sfbs2bV/4rZBdUZLFsW2PM7hbhF4TWGFMMLouWLcwxwzK
-         X+tq3acLQyVbtk+nhgnUu759v8teJQrTwX4ca5JdFbaI/LSFZQTA9XiyJSXAxiByAHab
-         qdXSjxD8mZRq8De01pHrrruCd57MivdSeseed/gwPqFuAeYHBftsYliIejM2YMMDUdBV
-         nOKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:dkim-signature;
-        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
-        fh=3G1Gn87MJiV+uJ+X5p9mX9j9Lq0vfnr34oPw8x9sw+8=;
-        b=NQHjQAz2kjxIJCLpuCCyIpkVifd7QIvKHeOvBGPI76MrcG4w689GDFVQe3RP3eajch
-         pYEghopyOdMqcNn1BxzYA6slBesYTaKK2jJRsAtfg4VwwfgwYgUgQovkzqnLxUuta0oa
-         bsZhBRe50G0FRxWTJSXtyJbXXeqYJm5kMBTxh506M4SoTM9eLuBEdQ6zb8/rnUYSo/ci
-         RS3E8TNIwN0axAnjidN5vnv82NUBoDIf2NukOwP6BtbYgNGyZMQoGwtL3AIdmSHX1VxD
-         YdNvNGaq1BY+mwSOtYwce7Zu0RaglWBbbYlrBO3nL3yVYdEfwegyYqNtV3DZZpmlKGck
-         9/xA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789035902; x=1789640702; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
-        b=F9Xd3kNRIR9YqqyhvL3iSwjUzGCw5sxfy5kGdqKPNjgKgLun7p+JD1Ezhg6Ew+FIlI
-         5VuJl3FEvmg72k0jUM2L4M1Lu3a7bcBaothiaq+J/hANwgrWCHk2jSwTR9ITNgn1mW5Z
-         ZchJZACFa10b8CJYXkLJGfnHB4yNaACyAmBmX2iOnE1sU8VRCVUN4ttc/ycVL/50q/MG
-         x5s9VXOmjU2gYhE+wwuNhJeoLJ90b984blKid2TJRdSutumfrdcD3jXXdiQ8fQM8Lv95
-         tD9tA2Bop4sJrtW4wn5F3WMqZb8d4jByRTrVBdCM9vl9DV5UHWbxTo6uHguN1lqWVWQd
-         dcvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789035902; x=1789640702;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
-        b=DEKc9i3ix5bffjdByohBPKpO49SIv24XtvzWIBjEC2uuJlIqm2wyFhBjValE0XPMqu
-         XJba3N/qgv+zkBKsLiNS6BiNUestLEmzT7a4ksxBnCynEiXJT2AC+YtqLHKnp4Jf8Tcc
-         CtwvtR0y0JxnXYwUfKRUAVxKq4/mmEC9jsYxoU6t6qKTO7JxqEv1AG0OhX7kSSLQMnuX
-         NI3YMXJDIlutojLSFc7l60Tr7BW+5W4qzAhrzh7EQ11AHsR9dal3GFtnIjJeiQnTxwFj
-         PelS+wiIDkgtqtbf82jKuEyqKPtlbZEt1qTEJdKnEh79KEHm3yxKZKQ9pjkg/XmH1i1M
-         o1fQ==
-X-Forwarded-Encrypted: i=1; AKwUvByqynvlZIxkYepvGGfEP72OBCIv7nfXcSpiZwcR8GAqm+Vfo5LrbfY1QC3X5tS7Xk8G2kcyxWxl0A==@kvack.org
-X-Gm-Message-State: AFuF++kSLHmBBI72VT6UZu6fozaBFSZBGsWohVNZIvXUKEkdDdJA2QmI
-	Cv12e/dlgMbBUs6OCGvFDTlnNuzWeJq2hwLHlWwKm1fhQUE0FF7f8/EecIhQkEjuv/d53hc0sst
-	SF7d/hQZkHW3M9QqwgWEboD4BFwbBfM4=
-X-Gm-Gg: AYBFou1yfXh978nUKf+LXXlr2CrGRO4TahKfFdXI2Mtv7589S5G+OHe4mooygus/JH6
-	jBY4GgcgthW5yvx/p/ZfhI96IzpAUyn/qZHZNX3htMga5+P+ZPVaF/ohws7C80PAFRtsO+JnMeZ
-	AUJ3NZ0BUveyknWwUXMovxjPRv5+L4zrWO3dea+TMD+EDtDP1uyvJsSM08ZbRONaWJs4aRmC3NJ
-	SnQXTO9B68wS6yJxnUBuC0Lhe3j13nYUUm4kwS1Pfib4p2azHaAGQTV8o7XXOZ0nB1K5KFHWeCg
-	yLeKuPbhbBFG/Xy7zez0EPcwnt19QH34QG9QuNTjemwsfJPQje8cKQ==
-X-Received: by 2002:a05:6214:c6c:b0:90e:978e:1c5 with SMTP id
- 6a1803df08f44-910d0cd306dmr100407746d6.16.1789035902071; Thu, 10 Sep 2026
- 03:25:02 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 10 Sep 2026 03:25:00 -0700
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 10 Sep 2026 03:25:00 -0700
+	bh=DT5UfZsIsx+FkEJ4a4b5UteE31Gu0sGDdcOKTLS/7TY=;
+	b=lIdcos302DKXGbI9e+fp+8FTHInUuwsdsnvDO9jvMAWrtXCkLlBnYRGSogQvfhSVOkATJx
+	OEm+KlJHUWGRRdlKvRA9CiBoOGdIUGybOtC640oFeDEIVBXZNG5GhjGsFOkCUEHJWn4P1i
+	ATNFyzY+YLg/wkRzQ3lHLZpsjECyYe4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D6CB60204
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042231F0089D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789036004;
+	bh=DT5UfZsIsx+FkEJ4a4b5UteE31Gu0sGDdcOKTLS/7TY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=UMkwwheOSxfsgB+2pwkb/FKbjrd/3fOSXwaMdvKXkooqrLwPV/RwcZ3p1UdEk1e8D
+	 jzPOfkmVcZtp1p8CLDVhpOb5Lwfv8jLWGhamPvyqzEZyFiE2XyyMSy4AotzGN4Jjh7
+	 v53dKtW4hawvCE8obnBAI/b6pU7C/p+SfSfpaV0q47ev4mQmzI2TrKKjHX4bknP4Rq
+	 bP89ribbR+OL4oS6NayrV9r9DigUNNEWCVfggE9Idjw2W28NQN2uo84njhgiilRuG7
+	 duPhwxFwQf3psnNdysG+UIpywYKQCTiAwCZ+JnPCA17bpEw848Rrf/5FeUtH8RpKO5
+	 YypU0GRLqL9iA==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2544ff970dso1047313266b.2
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:26:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzfD6n81bdXfyf3+ShvYQf4C6OnTpxMMpaz96Sd8Xi2pPg32MJCDHwQjOwca3yvd/qlRhLZaJFkcQ==@kvack.org
+X-Gm-Message-State: AFuF++nj78USNBXqt1nU//kmtyLYoc91hKyIoo6L5k2czUmLs8qDPC5r
+	ZIpxHRF9foetnwg+hg+TJ6622R4PmfnhmzXecgHD1BXzMLYwmwLyYdii5t2dinZIv2//w2xxTNi
+	BuI0MKk1eHWjmjehCmDrcZvV2vf7K7Dw=
+X-Received: by 2002:a17:907:1c22:b0:c26:1649:47a8 with SMTP id
+ a640c23a62f3a-c26164956d1mr1492741366b.30.1789036002867; Thu, 10 Sep 2026
+ 03:26:42 -0700 (PDT)
 MIME-Version: 1.0
-From: Tianyi Chen <diannaaav@gmail.com>
-In-Reply-To: <17f49997-2bca-4e1e-8d58-bc95e25b9a23@kernel.org>
-References: <CACGbirTvSoSeNSpMCBiifTdRKKDsKbgk7nfvh=09fHw2b0M4Ew@mail.gmail.com>
- <CACGbirSjNMD1mijDWRp4gLcw-6dJsErrF_jgjwr3nO-geBb1Sw@mail.gmail.com> <17f49997-2bca-4e1e-8d58-bc95e25b9a23@kernel.org>
-Date: Thu, 10 Sep 2026 03:25:00 -0700
-X-Gm-Features: AcwNN1U1KzJJqcIpSm1ihT2K_s37DAftiuJeICzH9uiCZ0P912OBUId5Syhekfg
-Message-ID: <CACGbirSm=AZtAVwJAZRZt0JAGGUGVOCUQVqu-EcEiiGC-=+vJA@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3 1/2] selftests/mm: Reject invalid test
- selections before running tests
-To: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Joel Savitz <jsavitz@redhat.com>
+References: <20260910095449.715183-1-wangkefeng.wang@huawei.com> <20260910095449.715183-2-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260910095449.715183-2-wangkefeng.wang@huawei.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 10 Sep 2026 03:26:31 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMV4VrjdgwvEYX1oVGmOZOvLnKgk=1pWntrZONeea1+Pw@mail.gmail.com>
+X-Gm-Features: AcwNN1Uppy8p7EXaP6t7dNjcw5vdnjFOv-8ZypbVBnCBcynvBZuxhgtOTcEqS7s
+Message-ID: <CAO9r8zMV4VrjdgwvEYX1oVGmOZOvLnKgk=1pWntrZONeea1+Pw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] mm: zswap: pass type and offset to
+ zswap_invalidate() directly
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosryahmed@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: hnswkdj8chtb4xuby3bxa4ke7p8gp4fc
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5A7E1C0007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789035902-779842
-X-HE-Meta: U2FsdGVkX1+oQiOmWzP0LUlNwFNerwBW6nxsWBhjKWuBQxayI+6uEqFIWJHtnDXbKjnNmbYYkmFjBmbCmJGsxQmi6Q1uL3BWj9k6eJtWZj/cdNMCMDUXhbaFr3arAjR5beMsDDLhkm7d6t2an4ilChExXnrtt8v28mcz934xerNHetLUDN8LzjsjxzfHsWtvuJAopJY4xM7z39v13JfFnWWfMLD2mteOrXv5OVD3nkiGfMoPFEaD13H6PNYzlron/CBgM/Ey8vExrxN6H/QuLxFRTxLfKriOeKQIkzJx72KCXvIOfd92eWLskJ5JJQaBpLkqWgf1sqCXlokurhAck31O8jn06wEivqk/wofbdhJFK+QZwhWW+kl68SR3r/6oHpyEi1jDUvDoG6hxf9BSkF54r3Jy6WRIdK6nK6mhnVCHqMczbGEB0yrWreLAOqeYFoohrl4fL+1x6fVQMWwQQtjttIteVH1i8AtoFl//0lKIZ11JurwwDBtegGey2VBgT0LlJQle0G5qHdzuqs8+S73dDZiz1Ed4VYQEpJLA/5T2DR1qNh427BB2rcqaZpjU/bu/h7uXhCDxMUbk6vq509WyDQN/fXCHr5xzWi+jGeVlPZu+SDL8SJqTykAKPuetfKQMLHrTC4r+XEospJ1PsV6ZOH7JEBe1SLLNAP/9sgvhF5MaRxr5DSWkvaxXOjtGlR5eFiUoluxquCIdsOozm+ynTh0cHY2pdm8x99kOfo2njIht+fDPs8T29Qpw6iCu7i+yS7qTUPeTfCXK8btCga6R+BCSLKdoVtZB4TP7LriMTTv9NSHuIf7PZ02wr5idjYjI8YiaQF9EOe8Udv3coIUexZ1+ctLFNaQ4A/PHNRYYeRWM39RoZCW1LKirdOhsSxTx72MDW6xr1D6jYosPZEZSZ1cNpppNV2xpzEIrPNT1FWND2CBmfW/gfywItgFqlwDOKAnNKwzrgpLmWie
- 9Qw0mOov
- A3EGtbBqbACvU7xdnXWarae3HAq7CEPtcvh1yM/QlO24sMANjFUWvbiHYZ4cjMNJsb7gV7TfcLYzrR877U6zIchGu4XE997No1tA2hI+XjqemyrbbqNdEWc54f8c2sOOAqhbPf6Zg9rlzs2mwVFPiThFmiMlAhxEbn8v1dbmCvoySw2nKAy6BBE0yp7S5AhoAyLQe/AmuSjjjGkG3T6Uql4InR85899qM5lFXYwndA5VFQhp6pSzIxxZWy6BF8DYs6rhlL/qJ3WLutMS0Wc8bYTQhCZ67S5o+P3ibWBZqywhOPALwZWJgfxBypS10QKZ3ZnEII8RIP6tZGIZy3kGmlOFJ0pfdo3592QiLhAsDbnwqe04EFP54HhfEVPJliciw6/5tXeFFKgZj2B/KqwX94zWZot6vrQ/gHb0UsKlqn+pWUT25Cvhg5j622Ug5Bi7qZDOXksPS8BACFj8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 93AB5140008
+X-Stat-Signature: yhjk9pouzfj4qowmq1r4ej3jd9zs5j96
+X-HE-Tag: 1789036005-700951
+X-HE-Meta: U2FsdGVkX19rzCmNCX9ud6gTisStHsVS7W9ISnlC6piR1KNemNRjSRDrQH/1s2zM6qOpXAVhAEZTN7nRz3O4BcZfVFZkPkO8POv6elRcdJxIhAVXGR+CR8k61DoPQgUlRgLNkLdZwb9r7WQPCUwalfmuITB5gnyKokRpFxL/ngSZDJvb7/XjYu8jQzuGiyRRMQKGdnDF3hC/IfnGkQXzLcIHGErhGYtR996WykX0KEbKsZ6k9VG9cGxNLTBXG0apGxOhT4jNWdEC+drKq9E7RyE22HG3Ee+pwLE9hlDeMm+HFnQ5rtBj20X4r1CUrks2tTGRGxx1ShWorGtWl4o188NRmgNgyirkHEq1xajyuQUZhfabvww4YCpnHEmMTNNy1QuvFWFJ5zxW7CqpkZ/1kuNqXsjvRVXHeua0sgmpRE5q9r5tVpmJ6R4nfip/ZCmYRzZ9rBZ6FLzonVWqtTTYXEEVWd+DGkRg928fAF9WqfWiwc2lPZSo5OrbEUMswDoiO7kAFvg4oo/HDnHhJ21MDkHkFAvlIJpE/bGsqDwgv2usWfKloi+kMmXF1KBii3PxTQbxf3+gP3KedJAvIZ0mbnOSXqFTvTxgohUNLvh5jpIL921kbvRHo9gt6rn1d/ZSTypUFfjhwB6O0tGI084o+myO47GuRS7CXAVvmPOwQwCCoY+vqE6SicjJlm72qHqFQT0Jkv22OTDcL4p6kCCj/wadN46C7G/D/9D34eJR95NUHhoDoQXR9kQGAYJ4Oged7NeK3R2GNauFvj9hawVhRnJ4BrAE5DWI0ibzGw7OCuxqX0JfPcVt195h7ohzXzwjUsptjQCSlxDXyHUOJpoqNR9IYUGCIcfaHsJxudTjimAw8ynNUWLSnfrF7mlI9KDFH63W/0fpFw8Sm7MQ01xj/PCOKWa4kcc1EuSH6w0+2q69Fuswpd4IdcP0CSIYRByVkW1Ps2GxE3jSAV6xLka
+ 4dSCG/za
+ wSL68Vz5TvaczuPhjo4+zNX+25zXEKsLPL6l16Jt6HZXj+VKgxURLrUvjQgR20iVLeQcWbEspSSBK5hU+A4h1GeR2Q6NrI4PsfiktQ2NTp/pbzL1m0myUfchpkClivmkX7r9Td/UH9HxUz+duhfE548bGfZq5pY8z6EwmShAbv0Y7fIO+TMxz3RlnyEXbMy225gkDgfLWu09CSgmSRbiSw66a0Hxq4hNNcAvSQfFVA9/CWyI35Kj18OA5XmsAT/P8ZDHt32E9+4Z16BqWrpSGaApTr/All8MU7T05XGVNqIKsGv1nhusCngA09dSTHcItgwClnRrbhv31MNP1kKHw+BnV7VLhc+4gm3LwU4AYhKg4QNGFeMCVV9soriB2Gjz54vmq4YEv0lNNlyj4miUaKlKhojAbtrisu2MEy7+pZyz9stevezLj9owGsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,19 +105,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Thu, Sep 10, 2026 at 2:55=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
+.com> wrote:
+>
+> zswap_invalidate() takes a swp_entry_t only to unpack it right back
+> into type and offset.  Both callers already have those values, so
+> pass them directly and drop the swp_entry()/swp_type()/swp_offset()
+> round-trip.
+>
 
-> How did you send out the previous revision? Through b4 or git send-mail?
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org> ?
 
-The v3 sent from hi@tychen.cc on September 8 used git send-email via
-SpaceMail SMTP. The inline Gmail resend on September 9 used Codex's
-Gmail connector. The patches were generated with git format-patch.
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-The Gmail Sent copy was intact, but the copy received outside Gmail
-had wrapped diff headers and altered whitespace. The attachments were
-a workaround for that sending path. I agree they are inconvenient for
-review.
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 
-Thanks,
-Tianyi
+> ---
+>  include/linux/zswap.h |  4 ++--
+>  mm/swapfile.c         |  2 +-
+>  mm/zswap.c            | 14 +++++++++-----
+>  3 files changed, 12 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..463bdee5c1e1 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -27,7 +27,7 @@ struct zswap_lruvec_state {
+>  unsigned long zswap_total_pages(void);
+>  bool zswap_store(struct folio *folio);
+>  int zswap_load(struct folio *folio);
+> -void zswap_invalidate(swp_entry_t swp);
+> +void zswap_invalidate(int type, pgoff_t offset);
+>  int zswap_swapon(int type, unsigned long nr_pages);
+>  void zswap_swapoff(int type);
+>  void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
+> @@ -49,7 +49,7 @@ static inline int zswap_load(struct folio *folio)
+>         return -ENOENT;
+>  }
+>
+> -static inline void zswap_invalidate(swp_entry_t swp) {}
+> +static inline void zswap_invalidate(int type, pgoff_t offset) {}
+>  static inline int zswap_swapon(int type, unsigned long nr_pages)
+>  {
+>         return 0;
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 05d3408396f9..ba71905e4d46 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1319,7 +1319,7 @@ static void swap_range_free(struct swap_info_struct=
+ *si, unsigned long offset,
+>         unsigned int i;
+>
+>         for (i =3D 0; i < nr_entries; i++)
+> -               zswap_invalidate(swp_entry(si->type, offset + i));
+> +               zswap_invalidate(si->type, offset + i);
+>
+>         if (si->flags & SWP_BLKDEV)
+>                 swap_slot_free_notify =3D
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index a12b6452a225..420c405d0402 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -228,10 +228,15 @@ static bool zswap_has_pool;
+>  /* One swap address space for each 64M swap space */
+>  #define ZSWAP_ADDRESS_SPACE_SHIFT 14
+>  #define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
+> +
+> +static inline struct xarray *zswap_tree(int type, pgoff_t offset)
+> +{
+> +       return &zswap_trees[type][offset >> ZSWAP_ADDRESS_SPACE_SHIFT];
+> +}
+> +
+>  static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+>  {
+> -       return &zswap_trees[swp_type(swp)][swp_offset(swp)
+> -               >> ZSWAP_ADDRESS_SPACE_SHIFT];
+> +       return zswap_tree(swp_type(swp), swp_offset(swp));
+>  }
+>
+>  #define zswap_pool_debug(msg, p)                       \
+> @@ -1659,10 +1664,9 @@ int zswap_load(struct folio *folio)
+>         return 0;
+>  }
+>
+> -void zswap_invalidate(swp_entry_t swp)
+> +void zswap_invalidate(int type, pgoff_t offset)
+>  {
+> -       pgoff_t offset =3D swp_offset(swp);
+> -       struct xarray *tree =3D swap_zswap_tree(swp);
+> +       struct xarray *tree =3D zswap_tree(type, offset);
+>         struct zswap_entry *entry;
+>
+>         if (xa_empty(tree))
+> --
+> 2.55.0
+>
+>
 
