@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41F63C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06D8C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6119E6B0093; Thu, 10 Sep 2026 07:23:27 -0400 (EDT)
+	id 131786B0096; Thu, 10 Sep 2026 07:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E9F86B0095; Thu, 10 Sep 2026 07:23:27 -0400 (EDT)
+	id 10A2E6B0098; Thu, 10 Sep 2026 07:24:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8F96B0096; Thu, 10 Sep 2026 07:23:27 -0400 (EDT)
+	id 0218C6B0099; Thu, 10 Sep 2026 07:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7AD6B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:23:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B368A4E8C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:23:26 +0000 (UTC)
-X-FDA: 85197616812.02.0FC1850
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ABB9C4000A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:23:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T3rhYIz5;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789039404;
-	b=CWvjwhnrmF7UcaJO2X7m6sfFJNyi+jT/es4RZMfrrReyVCqRJI0H5UnbfeBUVm3OHnW9nC
-	d8PUm9Malc9j6ihlmfqyFSTLSxq8Q8+NfL3IaynKkLRvyKO2rV1elsg2m0lZZqdTeNxyu2
-	gCu9mKHF8Vx2m9Zg5f37PyA6x6FdvfM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T3rhYIz5;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id C77666B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:24:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 590DA1404B7
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:24:28 +0000 (UTC)
+X-FDA: 85197619416.11.D08B626
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 87B5E1C0008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:24:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c+VdKMTZ;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789039404;
+	s=arc-20220608; t=1789039466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E7/3v1GrknKuNpa0yYaqMVP9wTXrVL+HTHd5G2Rj/ek=;
-	b=D9E4aRZF8Y7LI7TnNlmLwkvRQOyee8ZTclImgCVU2P1Tf001sppG76aX5ieH+fxfQH/QX1
-	82rT68C78BjtNGkRjx37MIHGbewBASj+pskgrDwl+mz3gN9idVb5Adr44te2b/HtjI2oVY
-	8cRnaNH3qPh8ZBQFNo1+M2RZt5PvEcg=
+	bh=D8lcb2nj5Qw+R2h/P0sXPBSrOuWk4kRlxcimVGz/6uc=;
+	b=K1jO33vnJ4RaMFj71VN32KWKQBPhuIQWn3cIF8B4/GNO+Y+ewtb9Xl8VeBKsP87oEvKje/
+	hzsQ5rPSI1pQC9O2WtHOcfk+hqX3uGg2VNQ0uKIv+v+iNzZ0gNIbbhRdCWNYXax8ezxm9v
+	O8HLpGc1meiWJ+UqgW4hr1Bb0xQD09E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789039466;
+	b=S8flCKmm5fKEs6a10bPawKMHyXH+TFHnoowbcCov7HVO/JijFRNFfo+uEytcaiviUTrkHs
+	ZuI/X0ky9Lhuws+aLRC0ThlN4duP2l24SAMmu0k/geFriDOw/o67zVXKiAw39JGpmEZdY4
+	1Jzfv5O+WTmgG+qwtikI76LofNJkENM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c+VdKMTZ;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37936600C8;
-	Thu, 10 Sep 2026 11:23:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B2C1F000FF;
-	Thu, 10 Sep 2026 11:23:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EB2841215;
+	Thu, 10 Sep 2026 11:24:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E651F000FF;
+	Thu, 10 Sep 2026 11:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789039403;
-	bh=E7/3v1GrknKuNpa0yYaqMVP9wTXrVL+HTHd5G2Rj/ek=;
+	s=k20260515; t=1789039465;
+	bh=D8lcb2nj5Qw+R2h/P0sXPBSrOuWk4kRlxcimVGz/6uc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=T3rhYIz5fx4UnQc7d2+m4sOw4xu3ZxZUB0E80NBL18sW9+9WMQ67dISO1JSlPXoeS
-	 jOQN6mnNAw1nZEaDb5LKyGaEWEeraVRLSOdqf4GO7hafNZ38TVyupvSSykhaSmTlNg
-	 rRYBTw6A1kYU2N6fqMt4DmW5o9Gbq3o0IQVwfr7pJidlimblOGVB9wdjafhkPn56wO
-	 1XZcx2g9U7tdh3J25sTNvwsHnhrvPVYZwg/2+qu/mXfYXsdVVKLZI3MgO4rmlmtA5Q
-	 IMmFqzjwdUeKSPte2qodIvgLEvNrLWxwiIbdsuVlY9UH1SjXlUuBI2hgoij07i0huA
-	 C88IYINGacJUA==
-Message-ID: <9750125c-49b4-48b1-adab-3a1cbec4255a@kernel.org>
-Date: Thu, 10 Sep 2026 13:23:15 +0200
+	b=c+VdKMTZQ/uO5Mf/ZmrRZ1jhqqlUW+oRuXyXaXjT6xqCIEI5zWcPjhGXnkfV14n94
+	 W39+6DQ95wE3xgFYkI09MnVXNlKJyymdRZ1bm1IMuI3vuRful0+ig/zVU2VHwAtLX7
+	 dXoyF40NkApa79X324P9AKBcE+efTSKfGCfW7q7bu5VSMT6r3QDpp1FZg0qqRU6BwJ
+	 pK8zPKHy4O4qHAyc6U5EHgZOlXN3BEjm9FmTjfMNJM8PU2bfe65Eu9dz7TBbN5PwZc
+	 Gv6+G37ITEeP5kcyoQVFEXv++15r1ncXxqvhtHVo5CT1yOGSc1xMMrWmgo+WTAYeoF
+	 d9D9zxr7ArzvA==
+Message-ID: <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
+Date: Thu, 10 Sep 2026 13:24:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] kselftest: mm: fix some failure of
- split_huge_page_test
+Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
 To: Yeoreum Yun <yeoreum.yun@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
@@ -83,10 +82,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <b923f63c-db7c-4ecb-949d-368bc6311626@kernel.org>
- <aqKHHWKvOonYZPy0@e129823.arm.com>
- <21e0a933-63b6-42b4-8cd7-df05b0c9acfc@kernel.org>
- <aqKRdIjAYB2PEwRN@e129823.arm.com>
+ <20260907-fix_split-v5-3-822b810458bc@arm.com>
+ <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
+ <aqKOVGECsCNtSMIV@e129823.arm.com>
+ <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+ <aqKS7CP67X4h6NiM@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKRdIjAYB2PEwRN@e129823.arm.com>
+In-Reply-To: <aqKS7CP67X4h6NiM@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 87B5E1C0008
+X-Stat-Signature: oieg1jz4zb4j8ijkac4fnj386tx7en1n
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ABB9C4000A
-X-Stat-Signature: 5yt1htbffxkzaiohk3x4pucpndswpk5t
-X-HE-Tag: 1789039404-818349
-X-HE-Meta: U2FsdGVkX19o4MN6nSsDY5XT+NgltmtmaXrUeA3pj4khc1lmPkkJfgVzN8GTsjZ+18tmRPdewRz4BFeLveB7Wt3o/vNR2igKJVW8jPR+Xl0fD2bvMwargoKU4lAjKLcaGGNz91/mTVfeP+rXVR26SL4zCP0rGVUYSU09u/G+O81rvY1aW2UELOPHJgvOwH2rHOZaB0AEJkN5mpqty+KB4bqb/GdZAliaLvx3TcVb4lNsC4/bHHJ8sMrHbc5oNk64ctSIzUBkvDF4wwVx9Vbcf1dCmsEm2PFfc7ZX/dguBtxUg5S7I4rakbP2e8X3R8krA07KtyOknZCxvM6GnX3EemxXPmtZNh9mFcBTfjhtqCoo+PpVLDFjgrb2cIdvsDv1LC9+kNP8ImOnC2fcBKaAA+NR55rK5a2uvnubh6Lgd+t/Fm8EUtIzjhHcZ0XZyJPtuJ1uTQMLT+rs3FbNOhBMY9pcJgjsvBsmueMpjgM4qqimn2G2nilB861CUZOIFgu7RCJc6KDXac/kvC5+b4XPvRQaoVoHKnQsHN1WEIchIezUR9bFXXEREIxOfxSWWGtkTQg+ciYQrRtQNp687Rzsqpgw7VaWGL9+1cxNVi+rAj7V+yyn3LR96lMAeI+EexR8QEJ8zpZ1hc99TZxolN7GJjUr462Kig6Vda9Z5OoNcYu/8zQJba9T0Mf9f0cdMRQt/EJP+GJDCUrhBjVYmW5tggmEvSUSGw3QtmvE+xPxA3o111TQUy6Em1Odw+53+FQ6pyiH8bV2ASEzpWBdA50BlAW3whzHh2B15yTCQqzRPOYZ98BdOliWPX7gfFr6H3H3un4tC7y2VafXG1ohw2aGpb60/8KPxwhyKlY2DZNFrMW9kEsMJKCNx9fI3jHLC8hlUIJsaMJI+lUN9atyMMHZjWvck0E12+P78qTBmf5scRDtZZwZ2hhLRQpTIJ4/fM7gsyqFZawIoOhkr7j7y0g
- OKKGjtMq
- WsMWxRqzvnLTkN4Ai8ik9zCMwqBLUI1MizgqUX0jdNNou1YlVYUHxHdG0243UR5SYZVQBFQmtq9MXMqTF1tzao7wKVv3KFtTn/JkN34K467++J+ULHIYc+WVHZB5g4wS6+jQm5UQaAm1suhNyZAXC9yrx3AKylaNzus6TAi9AVWoofPz1EPqdCofw2xrx2XWDn/5Va2KLN5/6ADGEy/qZvH1quTbau4h+lpGz7z9ERN0NNz+BWk/m0YUgUEbltYfwCw7GDcz97pHN7cFCeMDI042X8jafwUsAyXWjv/+HADA/XfOQFE/6XZ5TzQ==
+X-HE-Tag: 1789039466-466832
+X-HE-Meta: U2FsdGVkX1+fgJQtc6Pz0fk6ndAHYyQ1HKUCtFW3ere01H9lYl6qiUtcjMGuqym7x9OUJ0x534d/ChVQpMDCn0W0Dla8r7Mh1+K8EIVATG1cq3bbs+a+pK23PlY9ojlx3QQhHo6VZsbgV3TxJ1tb1W0Uy5B/TfFQP4VsjD0T/As4ySpeFYuySiC6QeOJAGGkTA9sEmWnkIFAII6dIppk+xXmjsF5cE1qsTVjB6VxvqJ7KUpDu2n2ucdsiDfnZWLgO9TPIhhkJCtQOzBKBZD1WbUJtMfCi3bbDlRjoQgaF9Y9kvpStZBHTYipLKhppXifcC4O0rgnCHVyzbocI1jkWV4GzutdnGZMoKiLZEpiTktFpeZNojzCUMixUZPQDi56nbLowE1mIw7eHcoPlXTbymQo/grGC7s248GY22YwlRbskVPJkgr40u+B0XIr7lqu11MD+Od9oyyEPKaJrRsr/jlQD6SH24IP1smjP43HLofPLwWGOD0zVtgoEgFFk4yWOurn9j1kHYy7WWB8jh4rIZfry1riN4eb4GHOqvmhtdQli+YCb1R+t0+Gcc41urbGopPFpODKtT3VamCCHngzc5f9hQ+svgNALJRLPEntS54PrDFlzyHscZsFVqAnP2q8fe0NeVOPh8CE5BdokwcApEgYi8sVCzbjcODVe3aQTtzkwLlBJkxrlJpHcdCra5f9yfjlcsvp/IMSLExTsjFQ47pouBFGZL8pekgbZW0f76RxP5KWeSirJB2XpYoN2ymhAmRWyBY4m4dPOsMEMWXJ5GMcAvvxABkiA+X1gKQdZVDE/6967HdBon9fk4Fznat88jeuMIRwl6FGFvNEUK7cDcyhKgAO3paDmO6dl1j76s3j+iIVdZN5Nvto9AjQUMuoGn5VZvgC4yB2DQUjCsAtZ24I+gWhFKqpJq2ydb6w95sRSRyWGmYWMJZoFL0ZL7a40VV6VvtW+83URCI+kgr
+ PuMP5z8e
+ RExS+YoRK5m8q+hM0JSe1ZKrnT2JIWPUJN8JrrbYc5Ct7iVb+CkcgbdW7kctU8PU2DlWj5aqukRP0bGWNuqmShATMGDYre+0GlBhNc+HpRxzV31skytjzwXuhIAhBvzih0QO1ncZV7fpHFj0GPSfFvmuVSiVbuKzF8mYMBSzeWNZOw+c8j+EfzARbMmNP0QKv7TJ38KyDfh0w19c6gs5dOZQptvIFhznueiyrOkhaOMD0NmWBvmREC+XAh9G7JeBlHqwnajC+awSBsUUNc4BOL4Yjx7OPSuyVBkucaBh2DpxLMe04I76OGy5zogMIPXlPgwmKEa0CrbQ5ulo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,53 +151,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 13:16, Yeoreum Yun wrote:
-> On Thu, Sep 10, 2026 at 12:45:39PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/10/26 12:31, Yeoreum Yun wrote:
+On 9/10/26 13:22, Yeoreum Yun wrote:
+> On Thu, Sep 10, 2026 at 01:14:42PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/10/26 13:02, Yeoreum Yun wrote:
 >>>
->>> Well, users currently for using /proc/self/smaps are for check vm-flags:
->>>   - guard-regions where using check_vmflags_guard()
->>>   - pfnmap test where uses check_vmflag_pfnmap()
+>>> Since there is no interface to get vm_flags not via /proc/self/smaps,
+>>> It might be good to have it for preventing unwanted VMA merge.
+>>>
+>>> And might be useful for future to prevent unwated VMA merge.
 >>
->> Most vm-flags should not be an issue when it comes to merging. The only
->> exception are vmflags that do not prevent VMA merging.
+>> See my reply on why vm flags are generally not a problem. Just like other
+>> properties that are not changed during VMA merging.
 >>
->> So it's VM_SOFTDIRTY and VM_MAYBE_GUARD. And I agree that for guard-regions.c we
->> likely have to care such that we don't merge by accident with other VMAs (guard
->> regions).
+>> Let's not perform random code changes without a clear picture.
 >>
->> But that's independent of memalign.
+>> And just to emphasize again: VMA merging could already be a problem before
+>> memalign() internal changes.
 >>
->> ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
->> ASSERT_FALSE(check_vmflag_guard(ptr));
->>
->> could be problematic on its own (unlikely but possible).
+>> (also observe here how we do a MADV_HUGEPAGE, so this is all rather arbitrary,
+>> which is not good)
 > 
-> Yes. That's why I'm think it would be good to use alloc_isolated_mem()
-> in case of ANON mapping for this case.
-
-It's really only guest-region code that needs this.
-
+> As I mentioned in my previous reply, what I’m trying to prevent here is
+> a failure when checking, immediately after memory allocation,
+> that a specific vm_flag is not set.
 > 
->>
->> For other flags, you really only have to find the smaps area that covers the
->> given address and look at the vm-flags.
->>
->> Or am I missing something important?
->>
->> (merging vnas with VM_PFNMAP is impossible right now IIRC)
+> Yes, I agree that this could have been a problem even before
+> the internal changes to memalign(). An unwanted VMA merge could already
+> occur at the time of memory allocation.
 > 
-> No. what I want to say including the patch #3 is for the above case
-> where you point out -- ASSERT_FALSE(check_vmflag_guard(ptr)).
-> 
-> Since we don't have any interface to check vm_flags execpt smap
-> and for memory mmaped with anon would have a chance to merge,
-> We need something to replace memalign() with preventing unexpected VMA
-> merge. 
-Only for the cases that actually really needs this, which is in my understanding
-guard-regions.
-
-And I repeat, this is not a memalign() problem.
+> So what I’m trying to avoid is a test failure where, due to such an
+> unexpected VMA merge during allocation, the subsequent check that
+> a specific vm_flag is not present fails.
+Which is only a guard-region marker problem?
 
 -- 
 Cheers,
