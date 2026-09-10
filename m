@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3CA2C88E4A
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF4CC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E56F16B0096; Thu, 10 Sep 2026 05:20:58 -0400 (EDT)
+	id ED37B6B008C; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2E946B0098; Thu, 10 Sep 2026 05:20:58 -0400 (EDT)
+	id EA4036B0098; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44986B009B; Thu, 10 Sep 2026 05:20:58 -0400 (EDT)
+	id DE1E86B0099; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B52686B0096
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:20:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C4D8A4D16
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:20:55 +0000 (UTC)
-X-FDA: 85197308070.20.AE4DA67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 767F980005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:20:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8N2gmLV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8N2gmLV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B8E956B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3CC01A0497
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:21:39 +0000 (UTC)
+X-FDA: 85197309918.23.451BDD9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4077FC0008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:21:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SWenu4/b";
+	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789032053;
-	b=bSgxPnmM5sJsST8n7NuMgrBWqL+eRIiG8keHctv1g+aglgnlDPZV2x3taUOaPb3GujcKx3
-	kbyQ7ZWQpOELgfFeZzShUN1FZYh/QwmjlLy+HqNur25JQorrhA64MYySOYy5Tk09P1y5Sg
-	/JE1/Gj+kGqSoEe2AavHNjcUoEgxZe8=
+	t=1789032098;
+	b=4mSuOszuLvuBJV+gb2K5fdT8Hm1z94XtyYjwLFORIP+sz6n2TEIz9DlLrhGuWvFdCiBC9i
+	qdPmExagtxan8U1rC/X4asvBOdbxmv8bmQGRQT4BKxR6u1cW83EHXmSdgwahFUv6zqUzv+
+	HMUfCkej5S/wM05y9JZJcTFk+jpLVRg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SWenu4/b";
+	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789032053;
+	s=arc-20220608; t=1789032098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IqTjSSKuqTCF1mU8hfCM689lnN+IiDNFzRzwjltxKp4=;
-	b=Z3LcKJag0QmJevKaPgJkfBSWh3kJoooL74J68Z5G+wB9jvIstvLahwx3LQ2rdSaMg5XLE9
-	XY9aY9oC3v7I+5evUBKZQDMGGXGPL2zrg+w5QxxC+jskt3OeGBOPRpzbfxR1chibeLL71E
-	KMFsGQkT2vet8mcwUkVF2BPKLnhajFI=
+	bh=etegQPhHDYYXKpgN5HhrDD3ja2BilOp/q9xebohgcXg=;
+	b=f3GICh9k5x9pqlwbRdWHOHb/J95cvoj8lxW8cNLwnjgN6YPn30CTo1DdQp0hSv2zlxmpU+
+	JxZ01pky6AlmugEzV7NlbQcl/yyvcCurRWlbUQ6Gx6cxr0l52oK9sIKs6Cjjtk8Qkrmszj
+	puTpLekngftv3FaV3PBN2zq/jwHsmVw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A25F7447AA;
-	Thu, 10 Sep 2026 09:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093E71F0089C;
-	Thu, 10 Sep 2026 09:20:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B25FB600C8;
+	Thu, 10 Sep 2026 09:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2DF1F000FF;
+	Thu, 10 Sep 2026 09:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789032052;
-	bh=IqTjSSKuqTCF1mU8hfCM689lnN+IiDNFzRzwjltxKp4=;
+	s=k20260515; t=1789032097;
+	bh=etegQPhHDYYXKpgN5HhrDD3ja2BilOp/q9xebohgcXg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i8N2gmLVcVLG7tk5zvPtWOdiSMoN32tL5GsqkLrRd18I3N040Vz+EpntjxKI8GGC/
-	 3GG2/Y6jNKHeIQGAzgzZboy55guFHdxAap2VEXM7+Hn0PUM5fa6hz/W9p8CuWdiLFG
-	 GO6AWH15nOsBuy8Wi/XvrwB9ss9ZBjzkK4Jb0HSSkZwxONsSGmApur62G/NYhepnJc
-	 4EJy47RXybU5ElqT1iPuKX3Nj4qLQrXTcEd207cZ0O+sbqKvCE5XjLqGK1zBTkzB4m
-	 Cj2RFcnsW5kswVAV4Bylz3zuTJH4CVikBQKKCaHAITtv8cvIoYHkO2KjGQo3NCJz3B
-	 MPbI3ZovEV9Vg==
-Date: Thu, 10 Sep 2026 10:20:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lance.yang@linux.dev, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@suse.com, pfalcato@suse.de, rppt@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, willy@infradead.org
-Subject: Re: [PATCH] mm: bypass datarace check
-Message-ID: <aqJnU1OtGhPBg2kF@gremlin>
-References: <aqFWqqvUEiie8cYq@gremlin>
- <20260909212943.539665-1-trintaeoitogc@gmail.com>
+	b=SWenu4/bhQp/ebHqQ47mZ8ttape8v/6aPUf2kjB/Ld/j9zBiWoVDmMFM2WXUeFpA4
+	 Tz4kQl6h6D02ibEHqRfMCGmzm4F4W385fd4iPw4EV/b0R7FrEPUyPOdgqYghnwGSlg
+	 wlCNkIv6fYWAYcTfK4O6DgrRMLRvCHdb42c6Z5fPxcblq5pU74lnZfaSijO4QJtgql
+	 XWi5JzunvwkhvBE8/kV9Y4Q9psgLSZ8fOLaxugK+zflWpyfdSLe5ID2gv+8YzALlTs
+	 DNEG/urmvrS21JPGf+b18of+CcOKc6HBFiQHYWy3kARa8VmrNDWDGEakhoATI6H2NQ
+	 gKLgojcgqTT1g==
+Date: Thu, 10 Sep 2026 11:21:34 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v6 04/12] arm64/mm: Export set_direct_map_*_noflush() APIs
+Message-ID: <aqJjL-kDfl2_wwHG@orome>
+References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
+ <20260904-tegra-vpr-v6-4-79042cfa8de5@nvidia.com>
+ <aqJFb3VtsYtnIa1c@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nc5ni6zymi4hrk6h"
 Content-Disposition: inline
-In-Reply-To: <20260909212943.539665-1-trintaeoitogc@gmail.com>
+In-Reply-To: <aqJFb3VtsYtnIa1c@infradead.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4077FC0008
+X-Stat-Signature: 9utgqo3epw7bi3jjwwrrhcdxyz43xcsy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 767F980005
-X-Stat-Signature: 1a9a18eqyp61537x83stobe8kxkt8cce
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789032053-164209
-X-HE-Meta: U2FsdGVkX19y8nZcO3VEHFDEg2Nu/751oesjOZKPBv4sVoz+zMkUojUL0/6w+UYU8pNR7hseFwvDNX22x7LUkewjMdwUqoa3rECG3X0cv/AxzTh95JZfCFycnCSxEKVwDwqLcizr6SMwoZS1ngyv2uCGACjXu2/TPI1F4HjTnpqpMnuh4/pOjIxM10kkDK4hzf6x0Oc/SQ4ZVGd0OKdG3Ng5pVCSJZRGkdbAY9pty368Z91+idb6Tfj6yh/n9+7x/97RTQJshFAYNGIyU9Akf0B0AyMTvrROb6yZVp4Ob4EMYP3dXZEyHgU0F/zXwr6Io8m8ESKZOq36IYZb9R1OjSXgI3HwcL5i0vfKmKGUHcrqtXlrOA1QqYu1BPN1BIWjafZBT8B3ICuZoLPri9RMK+4hqvxwK2/ZS6v5RsL4R5UyZosPmkR4ZGoH2a7EFAWH6iiHUz99LZyCtQ7IhRRdiR8to8lgVmY6AjdCfm034/TcbijqWdo/Bk00WVBPh3925dX68+4bHBhA9WsymLnafzC0O0Gix0BFnBnORqupP/jMpeBD65gtIEESrofRb3wlBWzFWdEpOkqSvp1p8aWB/wJoV+CmvIsNVeXUiBzlbPf53Z3Hkdg3tRs3yfRBILzfXL7WxeGoc4PdXaxBOKZxooovPnjkBCYCS2gEPImw3v8IcS56MkFhHGKanUp30vbJuBLHQUaR+br9DWTNYccOZBUBeWiQ6t3hgHtbPBNDkGGc5CQiNNM+bUhcFxKSYGJk17QtTgqykRe4AO+GSvwVGIFlrylFtBiUt3vhdFQpXRnMyCFa2MGkklRu6sC262vvSjwOqhRhYWUB/mykV9RmpIFu3iybyMEwA69aZUvpo7jgbpPCk+/QHSCT8fAV8g9m0px4YrfBDDDAmwKMGHix+RWKBGNsGTZc86c7t9im1WgdBaQcH34PDasjyqofcKQEM/IW0chtsorYMmO7VCP
- FraJpy0d
- 79R6LqBADgNbMBKXryfJvUtBE8dRMGIM05XCxIxq5poB9Meo3wA3QWU3OqjEiBa4jh/wSoMl5yj70vEICbMEFjhl4azVBsdtVtVz7HGUl3UiEXYiRfazhX65D4WgLVkvY31wKjBftIVtenvjTIehKygoJ9CNh1MACoK3DRHo+avi2YU4O93bkL5vFhM2ywselXDbIWjLvXXpET4kU6SVYBLrZF+HuAIQwCYJbbbAuU2vrv2rxj21Snk1CQmkgXL8z84Ixv/wrixLZijU9AZoKnt3Id8cKHqo8tefEyaTlsLxxL1SG5ew4nlAVrR4bHUEH2Dnp/lgFaaR4OqE=
+X-HE-Tag: 1789032098-252905
+X-HE-Meta: U2FsdGVkX18lUv++V2tVgFkOm5J46+fiC0yejBAJBdWz+Jp9I6g0EkjsF60TCYgdsB3HRM6vYglnIWN4A9euiYmopRPvFXDN5cjXvlQHowTX0FNmTIhbjIk/5pFEE2wCr5U95VLRqmz8hhOk6ps4q+Iaia70D/T0OjsH4dA6GsX1U7o7cnIdujw4j5G3E5W6oqmxQn6pPQaxgFMCB421O78HDI1M7kXjeYibJI7e4u0dQQlEIn7kEf6ydvom4UhBgFKWj7KWry0Y5zSQW7GTHANogT6vDSrZ/0S/EWRroFwXiGNupt4QrAN9fcxYOrr70u1wYtZkdPKr3n8MUwol2vgw1mKUX7iLckUSvBYzIMieAG9GmKlnF7Rvwz8xq+HgXU5ZvuQ2JpGwtBNg/j3Or4eVeKiwzZ6f9EwY3eWly6x9SVUu/9uMxmZJBN0gjftZ/PaZ3Tq6ewLyvQWWteTt2IwKq0LgVssHPeEa5KOENXMi8etAS74YIN7DxBSu1+p0RFxdHOCHfplVbUPJ1jt1bjDbRcNzF8reipUQvTIKAAJY8DIff/kNoDmN7AUBEU2uZllJkPHpokT2QjR452s1mpup77rN+cgXrcqsCkXxpOxRTc+e7rgqIp+5sQ/xxbN6iS3bhLdM0z7im3vK80wNRB/FRKvAvqBA45Q2lk+afLU4W58hnJ1V40KCsLGYCrtA223ZG4ww5HaETvbYqmj/F0Edh3Re5KcOCyrbeTf75fnyNOK1UO3mrMTjQkfXZ6wKVGJ16uxqymAyg4ACSYie+SMxTAjebW34NTVi//TjdrzPT0T87kd2QOpj24tIflyHUZ+Vwi9lHvZloKo/rubU/jTXhdlv8iudAJHyBSIlv5VyRq9EPp9Fhny34nD8vUEJalguMTnUWnOL2AxAgj8I7sdu+Z52wSMRXP+DD0H2SATduzgla35IfMH9UAasmwazAOmDurexTgiQnG/GTM9
+ FcFlYy/2
+ 8wPppFMKKNN2oH05ORWX0fnVaSE1U0azcYMHV7W+p7pf4sLvFuJhqLRwtGp3E4t15h6L6nYdtlRDQr3kbLFqvjhJ4PmUchcYCFUtdOnooAS8mwmLIHM0Q/v44dePNFAfQ20wrIYdMvfzNKqVn/NUFcRoqWcmGPbivP3fx59xAFTdR34oAGblgGDOwXwYHDoJxcKy/Vk6gqy5TaeyHvKiifesehWP5kaji/tuEsIeahHvEEKimPwaKcZ1QGuBiIBuItZhyJBrJaH2+Cvd+G7gwobt2TjMM8lEqJlpE0mpUWf/jlqILtOk2IraiO5BPoLH3SqQyTrQLPWeE++FkaVCNGHlRoF81wrLLZ9A7yTjlCWtvBv3QEQl9ISqe++Oc7JHNDa6WH8PbNC90kaWY6mFJOoATRQXK42iwh7pEUxUToT20HtW379JQmx0srQVjslSVoJTSARNsm/pbZ6Gkaez9srJsMpa5vt8fvyHq26CtIMsGaQHTu7mE2kzZxsuC7bwOniVpeQLvrHmV4X3mC437ImNvHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,136 +119,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 06:29:43PM -0300, Guilherme Giacomo Simoes wrote:
-> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> > I started review below but honestly this patch is confused in multiple ways
-> > and it's not entirely clear you really understand what's going on here.
-> I can be wrong, but was understand that due the order that the code was write
-> probably the data race problem will not happen.
->
-> The reader (__vmf_anon_prepare()):
-> ```
-> if (likely(vma->anon_vma)) // lockless check
-> 	return 0;              // OK
->
-> // if the check above fail
->
-> if (!__anon_vma_prepare(vma)) // called the __anon_vma_prepare
->     return 0;
->
-> ```
->
-> inside __anon_vma_prepare()
-> ```
-> spin_lock(&mm->page_table_lock); //ACQUIRE semantics
->
-> if (likely(!vma->anon_vma)) // re-check under lock
->     // ... alloc all
->
-> spin_unlock(&mm->page_table_lock);
-> ```
->
-> This is safe because, if `if (likely(vma->anon_vma))` return NULL, we will got
-> the mmap_lock and then page_table_lock.
 
-I mean yes but it's complicated (the anon rmap is like this all over, it's
-complicated for _everybody_ which is part of why I am working to change it).
+--nc5ni6zymi4hrk6h
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 04/12] arm64/mm: Export set_direct_map_*_noflush() APIs
+MIME-Version: 1.0
 
-There are 2 cases basically for _attached_ VMAS - mmap/vma write lock held
-(you are the only thread that has access to the vma by definition) or mmap read
-lock held in which case it's an optimistic check that must be re-checked with
-mm->page_table_lock held to get exclusivity.
+On Wed, Sep 09, 2026 at 10:51:43PM -0700, Christoph Hellwig wrote:
+> On Fri, Sep 04, 2026 at 12:44:55PM +0200, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > Drivers that use this may want to be built as a module, so export them.
+>=20
+> That's one of the worst commit log ever.  No, we don't just export
+> core symbols dealing with the kernel direct map because
+> "Drivers that use this may want to be built as a module".
+>=20
+> For one exporting this at all needs a very good justification and
+> not just hand waiving.  But more importantly if we can't avoid
+> exporting it, it needs to be exported at the tightest sensible
+> scope.  E.g. for a given module if it is so special, or a namespace
+> if it's not that special.  But in doubt we should have a proper
+> core abstraction instead of opening up direct map manipulation to
+> random modules.
 
-And it turns out that _all of mm_ screwed up some aspect of this also see:
+Fair points. In an earlier set of patches this was abstracted behind a
+set of set_memory_*() functions, modelled after set_memory_encrypted()
+and set_memory_decrypted(), which I think I'd still prefer, too.
 
-https://lore.kernel.org/all/20260908122924.554373-1-tujinjiang@huawei.com/
+Is that more along the lines of what you had in mind?
 
->
-> The critical re-check inside __anon_vma_prepare() happens under spin_lock(...)
-> with has ACQUIRE semantics.
-> With ACQUIRE semantics , the cpu (or compiler, I don't know) cannot reorder the
-> memory access acress the lock boundary.
->
-> I'm right?
+Thanks,
+Thierry
 
-Well the issue with acquire/release semantics is that instructions that are
-outside of a critical section can be re-ordered within the critical section.
+--nc5ni6zymi4hrk6h
+Content-Type: application/pgp-signature; name="signature.asc"
 
-See my analysis here:
+-----BEGIN PGP SIGNATURE-----
 
-https://lore.kernel.org/all/ap6ybQeSg_rrmC95@gremlin/
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqidpsACgkQ3SOs138+
+s6GwVg//eIawY/jpVU95C05IvqaJG4LAKMlyvX0vCt0yTbFrsPQhY7RDigfanDMo
+ycZhJCp/jyLprOkhxYEUmbLqCr6cn+5taI7LSQYIjkP+XRbG7rM7vYOynCANDeOS
+uvUxtRu/8HlB0epcBAco9xhyX6Orb7w61HB8DspHAB/maQpHwCg8ce2/etTREXvK
+qXc3uVrtfrsVNKgZgNtSuHcYX5NyIIwuNKc7rwiU+Q3EFcYAF3RpG6XCrncuKajI
+GReiAWqBsyzzgM93zbemv3DKjbQkqVBl2fSZzTeguSv5KrJnFFd6n+JnHpHMPQPJ
+gg6l3zWb7P8nlPRtlEJh87sNZJ3F8nVYStP5WpaCgjFDW5WrMcTTj/SBKMQqeroe
+tgGkEMSMZAew1mtkyy5v0oaaialjMZ7796mpFs9J5GZv1PilvW/3Gn7D91zK4Yii
+N923BVwEz9EnkPER42dP9AfLUCDE0lwc4A5t7ezgKbOKLXUIfDN6zlZe3jWQ6LO3
+ALOl0JSYvlMX2izpQ4Pyl0/CSFHa5im5+5+o734Ql7U0mBOfpYYziOfPE9NJg5Xm
+hINUJ4RiAi1x2e7iP05HqJutCO2hXPdalSnK5rzuosZjqma4SvMo/Ma1P7bcFkJw
+2WDAAeRbtHk8qNOioz1Kp3UhdQCwFSP9Wa5RAtfvrmhE1X5Ap8I=
+=EeFB
+-----END PGP SIGNATURE-----
 
-(Again we were all confused about it! Memory barriers are very counterintuitive)
-
->
-> >
-> > It's also basically implementing what we suggested.
-> >
-> > So at this point I think it's easier if I send the patch with a:
-> >
-> > Reported-by:
-> > Closes:
-> >
-> > tag -> you, this patch.
-> >
-> > Thanks!
-> ok, no problem
-
-Thanks, sorry about that but I feel in general, it's super sensitive and
-confusing this and it's the best way in this case.
-
->
-> > On Wed, Sep 09, 2026 at 08:57:23AM -0300, Guilherme Giacomo Simoes wrote:
-> > > Despiste kcsan point to a possible race condition problem, this is a
-> >
-> > Typos  -> Despite, point -> points
-> Hmm, is not the first time that any person points my english mistakes... I will
-> improve this point, thank you for yout jints
-
-No worries, I make typos all the time and have no excuses for it :)
-
->
-> > > safe race condition due the access memory ordering, since
-> > > spin_lock(&mm->page_table_lock) have ACQUIRE semantics and ensure the
-> > > ordering mapping.
-> >
-> > This sentence is a bit confused. Acquire semantics mean absolutely nothing
-> > unless paired with another operation and etc. etc.
-> missing full stop, my bad.
->
-> > Needs a:
-> >
-> > Suggested-by: Pedro Falcato <pfalcato@suse.de>
-> Yeah, I forget
->
-> >
-> > Also:
-> >
-> > Assisted-by: LLM?
-> > The list below reads very LLM-ish so I have to ask did you use one etc. etc.
-> >
-> > https://docs.kernel.org/process/coding-assistants.html
-> >
-> > Perhaps given I am suggesting a lot here a:
-> I don't have installed any llm (not even cursor), I just use a deepseek,
-> chatgpt, etc.. to clear up a few questions. (maybe I should start use this to
-> help me with english too)
-
-Ah sorry, there's such a wave of it and the list seemed that way, I guess
-because you had it help on the language it flagged it up :)
-
->
-> > There are other places where this check is done and etc.
-> I would should checked this, sorry. Anxiety.
-
-Understandable, this is delicate stuff!
-
->
-> Thanks Lorenzo for your review, help and patience
-
-No worries! :)
-
-
---
-Cheers, Lorenzo
+--nc5ni6zymi4hrk6h--
 
