@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B44F6C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12999C79FB7
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:43:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 796666B008A; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
+	id 23FE76B0092; Wed,  9 Sep 2026 23:43:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7471C6B008C; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
+	id 216CC6B0093; Wed,  9 Sep 2026 23:43:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65D0E6B0092; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
+	id 12CF66B0095; Wed,  9 Sep 2026 23:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 452976B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 710201A03F1
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:35 +0000 (UTC)
-X-FDA: 85196457990.21.754E067
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B073940004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=nebusec.ai header.s=google header.b=G4+2eKYL;
-	spf=pass (imf04.hostedemail.com: domain of weir@nebusec.ai designates 74.125.227.140 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA5396B0092
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:43:42 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D9E4803AD
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:42 +0000 (UTC)
+X-FDA: 85196458284.20.8F37662
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6732140007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=nebusec.ai header.s=google header.b=J3WnzGiY;
+	spf=pass (imf11.hostedemail.com: domain of weir@nebusec.ai designates 209.85.216.42 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
 	dmarc=pass (policy=quarantine) header.from=nebusec.ai
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789011813;
-	b=sV2FacFmm4sXVtb4AXb/o8UvN7Yrl8kdRIQ6X2RLTEnzx9NA8bDnVcacH2bqvQS5ABvLiA
-	kZuJ6l2gJCqB9yf8X+Cy3EjuEebMyA2KMCzZJX2SjzVTfwIngpTE6iGLV4fRZl4rwWqkvr
-	iamFNXVuGyFPeCetdywzMYyRQFiAjy0=
+	t=1789011820;
+	b=FGoYaeyO61si0KtUyZFuNztit2C5BQL3TrNlyiHoKgSkHrc2AY+kYqLdVILSA9DyWF6CSP
+	GRGfOPYn/oflEgESCfnZN7kP6bnIBV2QYND21DWG/8dPHW6Ays0iG3pYGbJHXxpKb5FGe1
+	x709hFfiQKx2FWBTtQz5bgJWeoIwUx4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=nebusec.ai header.s=google header.b=G4+2eKYL;
-	spf=pass (imf04.hostedemail.com: domain of weir@nebusec.ai designates 74.125.227.140 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
+	imf11.hostedemail.com;
+	dkim=pass header.d=nebusec.ai header.s=google header.b=J3WnzGiY;
+	spf=pass (imf11.hostedemail.com: domain of weir@nebusec.ai designates 209.85.216.42 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
 	dmarc=pass (policy=quarantine) header.from=nebusec.ai
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789011813;
+	s=arc-20220608; t=1789011820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
-	b=ZYbCegANujV8G+FuCkKaIjKB0z2ARuNcdtLPYk/sckSSf1Agwyf8ixzCzEfk63Dr3wjSvq
-	WmkHTSe54kIIIp7M6QMfwExAJRaoPhp38a/rR0vGQR36r7v7UtwYxJdfHBo3+K6g/cPk3T
-	pnluzqXefz1WygtUx/RO9UDvFjf2kkU=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccc02279so892913a91.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 20:43:33 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ydxvuCpF8MX31xaXDcVB+798sPkM4DfyIgw4BQpeeWU=;
+	b=xx8M4PhBZatRVLjmjGY0RyZFZTPIB15h5CkTWsYFe3gcADKtXh1Hbynftq15rrydLAyPRv
+	cWRmJd3Td1mfp9gY8sqW1YyJ9wvuj1U4/HHn3L80wJuhDkEXlsuCvRhHxVy69mhcqqwdl0
+	+8JIn1tcJti/BpcbGY+MIDICMPX8oUw=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-381b831d535so10410296a91.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 20:43:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789011812; x=1789616612; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
-        b=G4+2eKYL1YrqDwLQmandfMbYgYV3itZk6MeiMqRdfhZd9fsHIidKOmQlrF1dHnpb3c
-         OsxJOITXdKvU4CY+giIR9+RvyuGyhtLGK4+7goprKgaNRwZtn6J6KzL3uk7xh26DF1U0
-         te96nbLZexCeVOTap98HvIP3hKMQyUT20ZWc/IRoSj76/o8n4Y9IPpROy6T0s8Ng3a6F
-         GUcgsRn5bxpLldt52xWiiIRhRXng0K8tLUXjiGOWqbFrwJTpreF5NjOR9ttNz3ao80az
-         23WZiwDRrKwxTJSOiAVOKH1q9T1frbqXL4qy6oPriDPCsTm2dNd6YSRLlvWhsqjDyISE
-         AmMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789011812; x=1789616612;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1789011819; x=1789616619; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
-        b=ickUM3DkG7T5pu6lllJX1TwSOTusKFhOLJeyg15eliWLET75rcBRfZ4eWrV6sIZWSJ
-         Ne74IHcN/mKkczXwkULcj7RHTgr3xYIf8bPxtoBy5JaEP+MhCwLi1j4ChYvT785vlTwD
-         yFVtRvxc+WWSFLvjTTkCsNrBBB8todLwCU/5XtpAoMjnIpnlYhJLnwNpIVUyujdjFlt/
-         3wsYomjOB0QYygvFXk4CrMHmuloUKcvzGdXWgB3dKYsd1BJ3dgLq8huN7Fj/Qmi93JB5
-         e5ml3tlhaanTfSYvRQ4xaCDTlxc34Yi+/oY3rSuXfIXTu/jLmj2g7g/AKhnlAx3GIeSK
-         5sCQ==
-X-Gm-Message-State: AFuF++knpz/sSrsZ71M3HsF+ci3RJkabAVJsdL+nszEcGF7PKDTqcNRN
-	P9pCtlwjrLpBo/BfkrvURl9uy83eqmHPLAmG0rNEpAHjdX/xPkdZWtzWNDLhFfBF9YhxF+8bYN4
-	qxryNypuKHes=
-X-Gm-Gg: AYBFou1W6g2d8RrXwqxxlEpjf67e/OyJTa8pbYlakSqQmnY4qfhOPKYQ8bodhIKx2ST
-	Sunlz94IJ1HL3lJYSWs7rhAkWUIuAdKe5aIiwyvhSGKUk3pP6Xrza2xV8V27CfNAdUl5Tb0sKRx
-	sKDpfjuDaXzeJKt3JqhhiPe0jmnGsl0uWu70yUqJmaBZFfdpwDlyXLPnj+lWG3CxoKYgqP4LUJB
-	susqaMR09lB2LtZ0DOhw1h/FQAnSKRZHF9kk+QwNl3weKdh64R+6UynMpIeyQsZkvZ5JOmsERb5
-	zox0eLxReNLSef9cKcAXNkr6jIK/tVjDnN0jYMMhhjL3GCEoq6Wl1TyniOomSA400xPXnwP5zrr
-	q1QitX8h8241m7e+aiRwkfn/gx6b1NDaVjfH4o51ayoFMSUPrxlgtTiREP6CMF1iKPEbmY7TRcL
-	+cFKW+syT0zspWeXZdTwupu2sn4hdrWCdflWOC5fQ/Gy7dkbU8k93lMPbZfJxaQyXFBX1xuOgHd
-	qv3UtK1Xg==
-X-Received: by 2002:a17:90b:52c6:b0:39b:3510:49e7 with SMTP id 98e67ed59e1d1-39d7063e857mr7318672a91.0.1789011812384;
-        Wed, 09 Sep 2026 20:43:32 -0700 (PDT)
+        bh=ydxvuCpF8MX31xaXDcVB+798sPkM4DfyIgw4BQpeeWU=;
+        b=J3WnzGiYC4P368LyC4YXSS+CjrXyZCFSuAtNd8q3bDnrEMIY2KhQZuee1hDx3ucBUL
+         fto0keGokGw9ZgYvHWHwHl/F2BXTz236bjJ9xrcet/YvoFR6nXLt8WgWWbNeXfb9y/9+
+         uuq29HwUep8fL6QmEakZEvBnAg6fKvBj1U6vF5hThjS8oCFgtAOHqQC3gJftFz9DweS+
+         /dqE/g+mxZSw6wSOD07hWgQda274gM5xPM19nuiphFuipFFxTwTZpmYkpLYZ2HQZCy+r
+         dgQzx3BcL0oO++iUh42vGqyByRtpVfsIRdQ11wmFkk4eNFuCVooMlNSxG68rJIm/mwD5
+         wxuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789011819; x=1789616619;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ydxvuCpF8MX31xaXDcVB+798sPkM4DfyIgw4BQpeeWU=;
+        b=nJ51hDGUIoZUo/JI7AZ1SmOzeV3LyQqhKMPiXnPbRpUHBizhBDRie3ff+OgnmYUlcg
+         WQoAZ5LMw3MG8IsAUK7TRwSQEsKtvYaTkef7xeEaoPoyoD00Q9OBbnjgO6snvyI45RHD
+         T/egWPe7xoTlPX2zMcCCmMKmlUeiF5W64sDjXphJYqFb5pdtKlik5iRU/duV/8nmR912
+         mTbaHPtbN6ancUpxpVkbZKbY+97pVIADWPvPLow+5K4SIU+cFuJfRoRu+X8Ze9m9pF3+
+         V14eZPNVgq/PS0IUmilWBo4hXfnfXSPv2A03OOcaa3Hyq439AUStH9qJwPhdMwn7HSbO
+         U3ag==
+X-Gm-Message-State: AFuF++kEjt1uYuqFFBOZHp9rg4UgM//2WTSe5MeBeHfaVS8Aj7uk8u4A
+	w0hsNUQsVIEBnMUVEPB4rKJJt0nQ6JvsLnsG2e93DcXDSJZrH2iRgo8g8B9Qu7ZyQQsbtV/Os7G
+	XF3PbtFZwX8g=
+X-Gm-Gg: AYBFou1iYq0Bj8CBKYnPWBWypMOAbYo9ZlmC1POGvMQtg1iq/qMPH5Bnl/ALzilFoe6
+	1f+tCa7a+xgfmg5b2xU27LykmkgxWcGPgM4ozfgVaLWJEBhnjHRXP6E1phZLebVMSERetbv7kmR
+	jm89VG6xbLBxSylio20GbIA2DfESRdJkNxaTF53SI+/p9NJfGp6ROMrIMjU4Mads8HoRGjxt/wT
+	kYsC/o2J/3Hj8IpQYPNZshbEGkqZbE08qANeTYy1qOgfML6GxzmInLeh7yM8cSivgqNsPeHNnqW
+	bM2aQEn9A/5UTmg2aN0AB2xSYREQfF+wOFQDrTHKSC4Hf+eR411XAJkdCIWMOA3vJXY5YfyzSQ4
+	goFu4nDLf+H9g5o3E2m5Dfou468RJc1tZCzkp/TQGA85UM47PmMa5rpaNZNHL1Sy7zpdOgMsfo0
+	QSJl/N4hB2DohtulCsWRKypKy/Ovp/jfehRJfKZrGtq0sK+yH5XvtGiTpLvFcnWfYOWyv8Z24Sk
+	ciD5aHY3g==
+X-Received: by 2002:a17:90b:5148:b0:39b:ac66:bbc with SMTP id 98e67ed59e1d1-39bac660f43mr13398793a91.7.1789011819097;
+        Wed, 09 Sep 2026 20:43:39 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc2e1sm2916192a91.1.2026.09.09.20.43.26
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc2e1sm2916192a91.1.2026.09.09.20.43.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 20:43:32 -0700 (PDT)
+        Wed, 09 Sep 2026 20:43:38 -0700 (PDT)
 From: Ren Wei <weir@nebusec.ai>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -104,20 +105,22 @@ Cc: akpm@linux-foundation.org,
 	vega@nebusec.ai,
 	rakukuip@gmail.com,
 	weir@nebusec.ai
-Subject: [PATCH v3 0/1] mm/memory: constrain generic_access_phys() to page boundary
-Date: Thu, 10 Sep 2026 11:42:49 +0800
-Message-ID: <cover.1788842306.git.rakukuip@gmail.com>
+Subject: [PATCH v3 1/1] mm/memory: constrain generic_access_phys() to page boundary
+Date: Thu, 10 Sep 2026 11:42:50 +0800
+Message-ID: <e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1788842306.git.rakukuip@gmail.com>
+References: <cover.1788842306.git.rakukuip@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B073940004
-X-Stat-Signature: ehakzx6nwkn3x4g4ic94ho6dnbo1y5dh
+X-Rspamd-Queue-Id: 6732140007
+X-Stat-Signature: y9qwhsub5j9jhfqma3j83rhs7t4o6gzy
 X-Rspam-User: 
-X-HE-Tag: 1789011813-404910
-X-HE-Meta: U2FsdGVkX1/GpV+yvCwc8zU85kCyW7DlxJdPc4U8HV4fsgEN45+JezIVYnKn3rDkPnSSaBuLWGITlnlZc8aPqEBIGXXEe3bEjB6RYVJn4kfgxjgzUq+MQzV1DFWgP2UxGAKura5yJWnjVyj9jgewDEju/woNeimWg03sJOclvmXtAXV05kwxgoFHXhBgs5mUBLX3IJP608hcP/QhA6JW+gkRoYnX/IWDzRx6Tv3mpc91xFllc0yqu8Whn8wd1DzsQxFitKIMDAePGIyO4u0ySx33QVQyffGNETHTXS9yDI85oX1NIrqFo5Bpcblgs1pveu00V0LodhtZx/bMWR95pfVIhpTiAwyvtAcGgmNqguE8QcORhnURwzqXlaGPZcbZ8ipaJnh4qYoCAhVwR+I3CiF8rZgfj9Gz6qkhWJWEtQ+/n+z+m+zwd1EiiD5iAPd1MO5ykK7FnH8gCULRWz+dK88eu82F1QMkB/rz/hbHl5QB1yPEX8TLasLaesL/FBIrPAeH/85oQKYStP2hSu+PPzGIybfroWJ4725IvIClLA9OXereNGibqlvq+zGsA1P95M1mW88r2NE4rihywIcgaFibBdngpqHpJ+fCMdDtx+cPxyYRIVxwVRH0pI8+d1T73JVNpA/CDHG++3gOE94q1W9IhynebC7Wya111fIp1k7lLtT84g/TJW8dD/7NhGKzN1Q0L6SNcd2uqVgG9EWTXn5iiYAxKJaDkkPkVqUQPbVHSjZJ3KI6ONvFs9kQpLYBKSBJS8O/gFIkuGRmosQnX7XDoUBrzh4WGWaNeNrKtYlo/QgwIxx2kjFEpfjeVe6Pgbp5MvOZmngeGBUaL8iSSpf4p4yCONe9j4omppV0MlkZn3fmSqyjfJEa+TmVGbt8LgSU1NYpo+mL6OIQLqtatpLfS1Wk5FcnFhgpzddKx42Q1eqYgVSDhp93Cg7ung32Ov0qTxD6UNrfjsBRy7q
- N0ScZEan
- iglo+WxCD+dbwdG5AIajemWBP4sadOiAhsrxPF2uazTDSrPgcWnK73xkAavfCRc4f4VLXek50gOyFzV1+4QJiss++3QfsuT29xEwHZKq+8t0wqrFBxMGWPTfTT8J+1Qljov8FRmnPMpetLsjeXM3/3IfYUijP0B/oWKc1/hxLOkzt4isSxs60kcOvuRhHhelGIYeL9fepM+c9u5oQnXt5HE2uxsF9hEAiVfZonsXRK+Nomf4wW9Y0LxUZroQsf9WBXiP2uD37rtRx+pnmqMCn4c+KMA5D0JANyg2H5fAqK8jjr5jirt792Zap+E7F4x6UMSm6TcWwXFNkPiE=
+X-HE-Tag: 1789011820-602219
+X-HE-Meta: U2FsdGVkX1/Zz2toIKcbklsZPzp9LNy+wFkO+pqmQQT4Y6XwthsnPZ90cM64o361cBCF+Kxrmbdt0Sl2mwfhvQrfGVvHANrQVtiRKfEQlj5nTRSCYW0Q7I/7Wmg2BXJCd3ERrqJ77EB/B2gsMFzYnXBkkgFsoz3lSoSzsMmBJJIyaO26vkjdh7C0cxDKUIRyROn9UHbQM2OQiLogBGIWjN6a8eR7e6iDypI9Z+7d1HXzRojfDi2vOnkai5qmBWQ7kC8mCTq5o2I8YkY9aaHMs45oRG+zxkZMg1TcUoMgmlwMD/iL0/CoK9EwiYvwZYPQBBtrJ9MPzd8//4ifKgqRex+Y5buYX0ZiqqE1jouOo+mU1HLtGdysMxKo9tOYtaPr8bZao59zCp1Po9ae9wwfa/zgoribQgJETyYYlC7rzHMDfFPLZDLYaS93hnwI3jofofPXTo/aMtoTsrFFgOQEfSr6tOekoFyOxWuCsLPgcdYcLRLrbX6HoL5Cx9yMgo+014z+5hSUT+DHaBSQ6xqZ9RPTtAGMlfY0i4Yj2iJgcclJIs2sPa9O20dbepqkNVr8wSIL7wm9Hbju97PllTMNbaCY2rZToWKPyZhuuTAYSar7KfFenK4RHO3UKGJtIXdMoq7gMsYEoehN77ViiMLntQ2ibw2HP1AM77XhVQUKmlkyR2H8po6fPb1P8aAiMedv0cT1lVPuAg/1A9CfY5doQBjK1o+Xv3nY0Y3kn+djsMqxr+b/rYyCEvj8ueFHPyXGfnXiF16uDcWsQgFqu4K41u0FdsTT93GRfXmhmC2ObWOU8k08IATLOj/zm0jK7rHfkKjlgl8gC7fuzECNp2atZnAfLQyIciV3766qcxnfDYSO78C/XhL7Fmrz+vJqlAmR5aVlbNoi3b2L2jk6ryb/Q2jzkYoftmu3hTG8oj2RDgV8MXoKmCiSznEYWlxan7fImR23nUPwkBoYT10c8EF
+ GGCsBaf7
+ jdusfC7LWEiRpx7XCosSO+tjKv0g7O5pRQu0mFVATuw0SNkGE+Q7h7ttZzBHc2jExdK2BV0bh/k5ksnuojV919xvX/TX4XDYo0t2Yi9XhBpfLYsf+u6Dy7zYSlO/fFe5gLLBnIOSnr5YnsNFszVBsbgVdGAvSLvBLkio6MNXU4AZZs95PNgtD+9zZyCqGYTIZkPERmkkHQAAGNtBzlxiiAChSkymKAKY/Vlksfmkkd7m6K8qBZTdxbQSyz7P9GuJ7IbzIvpg452mDeIM0MDTJXa8Z2zhKxI02n3RAXt4htjcP1C59u5sOSK0tXXkVVQtuG9xbmAvZduCgIx8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,29 +130,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Luxiao Xu <rakukuip@gmail.com>
 
-Hi all,
+generic_access_phys() improperly validates the memory access range: it
+only validates the start address using follow_pfnmap_start() and passes
+PAGE_ALIGN(len + offset) to ioremap_prot().
 
-This patch addresses an issue in generic_access_phys() where accessing memory
-across page boundaries in PFNMAP VMAs assumes physical pages are contiguous,
-which can lead to accessing unintended physical memory or exceeding VMA boundaries.
+This poses two problems:
+1. In PFNMAP VMAs, consecutive virtual pages are not guaranteed to be
+   physically contiguous, and individual PTEs may have different access
+   permissions or writability.
+2. The mapping may cross VMA boundaries if len extends beyond vma->vm_end.
 
-In v3, we address review feedback from David Hildenbrand on v2:
-1. Revert changes to __access_remote_vm(): Capping the access length to
-   (PAGE_SIZE - offset) inside generic_access_phys() is completely sufficient,
-   as __access_remote_vm() already loops over the requested length and handles
-   short transfers.
-2. Drop the redundant 'len <= 0' check.
-3. Add an explanatory comment clarifying that accesses are limited to one page
-   at a time because follow_pfnmap_start() only validates a single PTE.
-4. Regarding min() vs min_t(): min_t(int, ...) is retained because len is a
-   signed int while PAGE_SIZE is unsigned long ((1UL) << PAGE_SHIFT), which
-   triggers a compile-time "signedness error" if plain min() is used.
+Constrain the access in generic_access_phys() to at most the current page
+boundary (PAGE_SIZE - offset) and map only a single PAGE_SIZE via
+ioremap_prot(). Since the caller __access_remote_vm() already loops over
+the requested length and handles partial transfers, it will naturally
+iterate over the remaining pages.
 
-Thanks for the reviews and guidance.
+Also add a missing (resource_size_t) cast during PFN re-validation to avoid
+truncation on 32-bit PAE systems.
 
+Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <weir@nebusec.ai>
+---
 v2 -> v3:
-- Drop modification to __access_remote_vm(); capping in generic_access_phys()
-  is sufficient because the caller loop already handles partial transfers
+- Do not modify __access_remote_vm(); capping in generic_access_phys() is
+  sufficient because the caller loop already handles partial transfers
   (David Hildenbrand).
 - Drop unnecessary 'len <= 0' check.
 - Add comment explaining the single-page limitation (David Hildenbrand).
@@ -160,13 +170,45 @@ v1 -> v2:
   size leveraging the existing caller loop (David Hildenbrand).
 - Map only PAGE_SIZE in generic_access_phys().
 - Add missing (resource_size_t) cast when checking args.pfn (Andrew Morton).
-
-Luxiao Xu (1):
-  mm/memory: constrain generic_access_phys() to page boundary
-
+---
  mm/memory.c | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..74fdf29c9c7e 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6974,6 +6974,12 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 	bool writable;
+ 	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
+ 
++	/*
++	 * Limit access to one page at a time, as that's what follow_pfnmap_start()
++	 * guarantees; expect the caller to retry to read larger ranges.
++	 */
++	len = min_t(int, len, PAGE_SIZE - offset);
++
+ retry:
+ 	if (follow_pfnmap_start(&args))
+ 		return -EINVAL;
+@@ -6985,7 +6991,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 	if ((write & FOLL_WRITE) && !writable)
+ 		return -EINVAL;
+ 
+-	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
++	maddr = ioremap_prot(phys_addr, PAGE_SIZE, prot);
+ 	if (!maddr)
+ 		return -ENOMEM;
+ 
+@@ -6993,7 +6999,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 		goto out_unmap;
+ 
+ 	if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
+-	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
++	    (phys_addr != ((resource_size_t)args.pfn << PAGE_SHIFT)) ||
+ 	    (writable != args.writable)) {
+ 		follow_pfnmap_end(&args);
+ 		iounmap(maddr);
 -- 
 2.43.0
 
