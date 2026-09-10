@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B98C79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4385C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5E96B009B; Thu, 10 Sep 2026 06:28:38 -0400 (EDT)
+	id DC54B6B009E; Thu, 10 Sep 2026 06:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B292A6B009D; Thu, 10 Sep 2026 06:28:38 -0400 (EDT)
+	id D4F2F6B009F; Thu, 10 Sep 2026 06:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F0A26B009E; Thu, 10 Sep 2026 06:28:38 -0400 (EDT)
+	id C19466B00A0; Thu, 10 Sep 2026 06:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 80A616B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:28:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 161ED12048D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:38 +0000 (UTC)
-X-FDA: 85197478716.08.54CF89A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED576B009E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:29:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 608B5C046B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:29:57 +0000 (UTC)
+X-FDA: 85197482034.26.38306BF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3DE4514000D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMGTjKFy;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8411340003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:29:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S9GC3kog;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789036195;
+	b=VfN2A3AzK9vYClPdPLQk/dsZ5XhE6ipdrTEaac7KoGHkKrUM3y3cT4dLJQkkgc/otNtxMv
+	L50SWwHM39ohjOS29vqP1EBXrWmF3nxzkQFjTrvvbA1vvbErT4MI4BcRJTtRTK2HOXco7S
+	52W1TmXKS2BxHoJG/Y/48zd3/45HPTI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S9GC3kog;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789036116;
+	s=arc-20220608; t=1789036195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5PNE4Oc8m/boMk7rVlesoKeh38WqES9ULRjRRxGrRY=;
-	b=TJj3mzLAshIDG/jJhOkUoDT0UstRESWm5Gu9MxIKVDwtYZJ5KLBUlH4CX0e3rHWAPEEMBy
-	BoP9Tlpp4/e7I54cxuTpxt+5S4HDbwlfz9cytpbRT4T9R4+SBI9vUhSm5sma4MUrkjhthf
-	gaProkNP+1vvNsW6Kz+25nEoHEVWYMo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMGTjKFy;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789036116;
-	b=xMRj7eaOYvr+/ezngGh5y0G3LBbUaHG5ErWoZ1estvK+S/r9citzin0lFL5249p+ZsqSMg
-	3u5cJl/fEdhzgY1Btz0ZaZG/Y+yWnjGpG6HLwrfOh9Reaj2L5KK2GH8Gt+CZFFMZdf+ijD
-	yb0r810mNio1+GNcys8Lq6UpvGrVVKs=
+	bh=oveMNeUrmJZ29ZNviuMiJJWANA2s4nEX43fa3S+xa0I=;
+	b=BNL1GGWGJhIqyiyqhw3yb1T1UeD+xE+SKvZl3r8st+uN85LgcwGpT3qHhGntlbErruOdBH
+	NpmPBW0IY9r25xteKCBmY5ZlK7zeabeRjYpuSJF6+vhomoUFKD3vWmibGrwnu3l7m9l4Rn
+	v1VgCTopUlKYng0XIGOETxbTInH7+lg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 605E9413F5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448E11F000FF
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9723A43F97
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:29:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDC91F0089F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789036115;
-	bh=s5PNE4Oc8m/boMk7rVlesoKeh38WqES9ULRjRRxGrRY=;
+	s=k20260515; t=1789036194;
+	bh=oveMNeUrmJZ29ZNviuMiJJWANA2s4nEX43fa3S+xa0I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QMGTjKFyu+yzuaXECM0D5cJA3xz2OgTTPUZC5ZcY6J1lTjGBckw11iPbj5SzkOeVV
-	 s+R81M3GYCX0s4qNPmnPfXMcqHliDYyD9/nwOnjBvWnJuYGvf7mXqJCJDhZUliBGXN
-	 mjSwQpEXbOeeP4BrrdvNe8HJ0vBKIJHv/nkiUh6f5GtZI3cRtWLfDDacAbxzRRieUz
-	 p3T6fP6gd2WZu5gD2mVd+q6tew7ahTOXEWJRSqhL4wjZ3axEtMWKX1aNHM2wkPbD/X
-	 89yE3XPbAgG6PYiwB/mPijf4QvWz0ZY6wJIv9TFwuLjH98cDkubja4Jex0DpEZQQxx
-	 SxZAvNavWY6CA==
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1eso384067866b.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:28:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzVGJTrItcJPcccfTjtBq5XEKV2Jo0xo2xNlZ8bhyKcA7TqrHGV3MiEpSHEzh14gbGp1JFIduR0+A==@kvack.org
-X-Gm-Message-State: AFuF++kgc/HsrVs4uSAhTjkLCzHyGg553DDFdq+5DpmR0TDpP70VRXtd
-	js+B9QAmcOv55H9HAjsjs6BKVhja3T+iBVKHdBktQfI9sr0SZ0mXSJZ7ibAbk2JlxCf6rGoo9Rs
-	RnwF46494QR7Ao2WvKFtPCyZkwSeQeIc=
-X-Received: by 2002:a17:907:c50e:b0:c29:450f:bdbe with SMTP id
- a640c23a62f3a-c29450fc2d9mr470331066b.16.1789036114182; Thu, 10 Sep 2026
- 03:28:34 -0700 (PDT)
+	b=S9GC3kogX19s8Kr3tqkKvpQaO2ZvCvHo7fhjkBzsKbMvCGogcIvuAMuQFSisOVhtp
+	 yDcz4G96eKdeERXpuTk+A1q4LQM43cUaF6Cwv02g65kbc8MuuYbgOlbGW+fHAREjKf
+	 ehKfualGGWVneGql7agFMrfL8ZaVudJ4vRCbv6xIbm8T4nJbQOx4woy8UbO74wDVd0
+	 CAQ4InlYtp9NH37BO9xio8s0Ithk1N3Ci06ToK/w87VmAdRwqpg1qWWu3ntIH8ndRr
+	 CusaRPQg5GJMh5+NAsQv8Hf2xcF3Xyd0GkY1P4VAPCScGNENK3WvlTvGTUZfrSri9I
+	 liobeqWxHyo1Q==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c2949ed8cc3so38295966b.2
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:29:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByI6vZ1AW+/T2efiRbyFiSFSDPLa+a9QyCXJe690Rr2pQ5qro9O9aZfVpDzgo1zU9dNcQVc318y/w==@kvack.org
+X-Gm-Message-State: AFuF++nL1HK6MvjnOxO7mVPX8OO6D0IeC8Et2dyF6JeVuvrfnDOu+dty
+	yav+a7Sz2cosUVMx1L0llcIcrV0hMLZ950E+eGiImRhf3TPhPAN58sen5MpFaFO5CY1fkbpoSrC
+	SjI522ODhwGAKHpRT4bfaQqcYoouxTis=
+X-Received: by 2002:a17:907:7294:b0:c26:19de:9139 with SMTP id
+ a640c23a62f3a-c2619dea0f1mr1667945066b.44.1789036193376; Thu, 10 Sep 2026
+ 03:29:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260910095449.715183-1-wangkefeng.wang@huawei.com> <20260910095449.715183-4-wangkefeng.wang@huawei.com>
-In-Reply-To: <20260910095449.715183-4-wangkefeng.wang@huawei.com>
+References: <20260910095449.715183-1-wangkefeng.wang@huawei.com> <20260910095449.715183-5-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260910095449.715183-5-wangkefeng.wang@huawei.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 10 Sep 2026 03:28:22 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO4JJdyjuenzCkNyN=YibvcAVBnDN9BVts6TecWtpN7XA@mail.gmail.com>
-X-Gm-Features: AcwNN1VqXDtkRkPL5YdAGkCGXvy3z3BcrYUoxPk6bXZNX-U2YT3RfyUsL-oRdS8
-Message-ID: <CAO9r8zO4JJdyjuenzCkNyN=YibvcAVBnDN9BVts6TecWtpN7XA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] mm: zswap: avoid unnecessary xarray lookup in zswap_store()
+Date: Thu, 10 Sep 2026 03:29:42 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP-bGU8Hr+0ah9vpxWJBdbw+wTGMuC8+pTOHa+9XaeU+w@mail.gmail.com>
+X-Gm-Features: AcwNN1UWjAkh3tl1VL5ir2FgKyn0HvzGcn9Dfy9effq8RWWzvvTCiQzZb9ctKcw
+Message-ID: <CAO9r8zP-bGU8Hr+0ah9vpxWJBdbw+wTGMuC8+pTOHa+9XaeU+w@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] mm: zswap: skip zswap_invalidate() in
+ swap_range_free() when zswap is unused
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -89,14 +90,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 	Yosry Ahmed <yosryahmed@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3DE4514000D
-X-Stat-Signature: qqgf8ynn5nx54azckjjekdg7n4899xjw
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8411340003
+X-Stat-Signature: 1qt633ipkteo39gk943dz6q7wrzo85y3
 X-Rspam-User: 
-X-HE-Tag: 1789036116-413947
-X-HE-Meta: U2FsdGVkX1/mJpM23Z9aGlwI6d1JfT93nJ4b8zZysufwQdLqxsfYQx5bRmK+eSA6+meMyKAYFtN2iBczrc3EkwWlv7RQm4cWxmVlAwgjdiIoixP6HC+m/CKYMGClOqzWZI6hYXNtBCbbq5aoo+CWw2NUNUWlA1arQ6QQJxK5JWSnYeB4CALFLgsaG6Od/fb0GZKvn8xxtU/CM2iaUzDbXqK5McV/Svvi1jWEkb+mKJE2iOwyqeO4bY6jf19ujWZ21kMmWtWlChHKvcB9sByiJndYhDXnOmLQZrwo7oXLGed5JlT1Boksw2fZmCmBLgXYDZ6ZRcKmgI+EFKk09YeiNe//J5DtdfuMNWedF8bgzls5docTfO061hqDQkDtt9BMUk9Q09XEhbKi++u25fUtqDOL+OgX81Ry17qhGbwJ8SmbgCW49yojBZGaIVhWqtD7HA1/bo1/l955wC8UhZVLSy3aP2JvNQxz2lw6b8dh0r7VBNHSKFBDFeLyK5omIszzLvEzsAv9g0llljoG+mKPVNZjpI8Yyi6RCZ2kcskcDabmv3y0x/+tBmEwGt4jA9QWOaMAFKS+f32QpqrmrirrBhbFNPAsOvo6WLLmaVflQYj2Mbse/RpyxehXBNIhP4C62V+Xum5QAHn9Ln5YbJvI9mbiviLVURGWOqs2DNZ8SRMnY+NcA9xQm6z3Ctu3giE/rG8i/330MCuOuy12YlYJBbG3TOTaJ6IbsXYbYA7IMAVt0Qcis95sc1cb9BULfSJx+GW1cCgGofJGEZX6GWUoi3pmvmZPaVPXCxo+yKVkO+QW77raffmCkQxSTX/WKMdGsFAlWHxRJBA+ghTD/DCf2FYOPYUVnkxMRJtPJ+LYeQBKg9hBcbXkQDzFQIaMoXUPsY+qJrJ6S1UI/Sx6JDAu8xkNO02EY37fYi5WIKtGruPfmahw29m2Pq6RNBZEkAWFS4wDgFmsair+6jxf3C7
- BtXa2MTl
- eb7SQc9a2/0eyQ2AWXplsNsIECJAkEnWzoNtGRbPGaYGGQTLpfGKAjsMqrXFvJCmDnkHfDJfQ4xTSSQPNdPig7iJQ4Z8mWsP7Y2iOH4oTSRtf+QMZ/8OMV+8j9Ji73Mr+wapAvMN8CxIZ6NeTUxZLLlJEKk7S4i1ooBIcpTb825ohcMKWTPNKwcsDzWHR0WTQYl6fMNuMTPDHp4C+Q4JGCbMsJM0NgVBe8JcoTp8xT9lSl2v0xWaFG7Q4QFW8UhglJ4GfbPHWnfkpwByzn/RAvwNWKOpWud1dOiPJGG7KXSRqZjMe/Xt4OTrkHo5/ciVfECFZc5uggKVFQyWoHxfM5SVE95ofBWfS7DZtuKTLusOdlwHDAl/lr/NYIQI5fXJf5ukclPsqd2E2WIEG0XMgpluQB82WHm+acsHJe0B+vuEcIPbbrJN50kiAG19m3oNbCPFknZbekpPfuxI=
+X-HE-Tag: 1789036195-624313
+X-HE-Meta: U2FsdGVkX1/02Zv8NXTN23lMNpXHsNoAg9rZavpbCb1GmkJiqncZN33g1wvmbmlwRYlwy54DUCaDHPf3A5bSVCb3yMzjp75AfgEWL8HdbXLHBo67F4XfCOyIV6nrYyF0a/PnlPHFFpsh6DX/K6jhaqEouJqxG9T29uPPVuQL0hGlrMHNtRxT6ZJn37c4WpwBaiaLV0FMvwCeEHQAFnb0ItPo/uwQvTe/ScnTYfPEU9U8BFwd9zVljTZE0g5qelPPJSBpK7eC815Gl31t5AuwAhaKXxwHZdWc4jRzaLaEn4YVYeZjQrleJPynpUgN338rxZNV0oyLNRUkEjuubrN7o1jobiKX9/ib9CLl0MghopenmySmBkCVlUz8+CmrQWymFroxS1B5CIRYZcNPCXa9z5vPDwdmhggvzj8gzf1Ki9IqaVZEH195rJ9uOuTMw/UZ1rRvh5RBg6Zb/45BabxMP/cL8u7EqeQAsl6qWsK7NxqTzGCipfv79BGNhNvs1UowjK34TK6siJebhgw8nZfY2g0rPZMV+DoZQxe/V81SuuWhfLzrKa2Wqtb/Gn6+LDEDntr+MOjRPhssB/pbHTxF8ya2g2M9Nts2tvpG/R8pUTLbtZ4IUIC5ncwtA7E7OGulbE2GG77qv4ExW3ZgydX3tKa24Mj/dHcJtyQvsRHw83IyA3iu/cmYiCuCKs1O4djcH7k+XMCkN+ZFDx4t/wczvFwuk2NuVRe8dhglpRRkzdiL+3P/W0n039ojFmZCE18BguyUO8TIF9OPB1cB8fJkLy5m+4DFGIL4vnh2e1ld1vc1pH/FK4jYIC/QiuJJPNXmlczzxTIIk2OK5N0GuChLqQ9DmBZN7tz5lyrQNpxfptEbbdX0mI5dmkI85hryo9NMC2g9WKYIui/FB3cvIyIFrrDGVbqHC4bzFPBoSenF4iMq01VQEKFrCGQR8vwABz6whuF43/aoRLNU2Ybbq4G
+ m7x/oMtN
+ I0NtktHmMUiTkA9Gr/tduHv2vDdUX89FnkMQPsUrThNE3y94NDWi787QMjwtPsSLCdsr32NpxJcqLQmKRe1DC0BK+2/FU3YG7+HYIfPdwjbozix1Z8wjS/k/NEcCOnCDoppB+k6HO9U91x+HxN2gGR6Nd7elVYh0VSQdRqxJto1W6DDUcI/QdnYAHuWMxafaNhB3g7QvT/BJ5Ijj9rlVK9gyykS5cq8Yfj7WzM9uFbR1Mko6XNlpIPDY6Szvq0uAcaphh/UoX8/TtfJF2kb4kin5KbESOpGMTjHvxJhE2w8ED5auji2SRcYoXMLzSaWCtwU4sDHZmET/EBE5YPTp1/wMm/WChSKsh15VMdiN/TpdnU1q93I24jTKDzMbkXjz+Xa06
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,33 +108,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Sep 10, 2026 at 2:55=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
 .com> wrote:
 >
-> zswap_store() falls through to check_old and walks the swap xarray
-> even when zswap is disabled. Add a zswap_never_enabled() early return
-> matching zswap_load() to avoid unnecessary xarray lookup.
+> swap_range_free() calls zswap_invalidate() for every slot being
+> freed, even when zswap has never been enabled. Guard the loop with
+> zswap_never_enabled() to skip it.
 >
-> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-
-Acked-by: Yosry Ahmed <yosry@kernel.org>
-
 > ---
->  mm/zswap.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  mm/swapfile.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 2c06e4e0e130..6197aa71e33c 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1492,6 +1492,9 @@ bool zswap_store(struct folio *folio)
->         VM_WARN_ON_ONCE(!folio_test_locked(folio));
->         VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index ba71905e4d46..505592051924 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1318,8 +1318,10 @@ static void swap_range_free(struct swap_info_struc=
+t *si, unsigned long offset,
+>         void (*swap_slot_free_notify)(struct block_device *, unsigned lon=
+g);
+>         unsigned int i;
 >
-> +       if (zswap_never_enabled())
-> +               return false;
-> +
->         if (!zswap_enabled)
->                 goto check_old;
+> -       for (i =3D 0; i < nr_entries; i++)
+> -               zswap_invalidate(si->type, offset + i);
+> +       if (!zswap_never_enabled()) {
+> +               for (i =3D 0; i < nr_entries; i++)
+> +                       zswap_invalidate(si->type, offset + i);
+> +       }
+
+What if we add the check in zswap_invalidate()? I understand we'd
+avoid the loop here, which is nice, but I wonder if it's actually a
+measurable difference.
+
+If we keep it in zswap_invalidate(), we can probably also skip patch 3?
+
+
 >
+>         if (si->flags & SWP_BLKDEV)
+>                 swap_slot_free_notify =3D
 > --
 > 2.55.0
 >
