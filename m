@@ -4,131 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06DAC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB8DDC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:52:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B199C6B0095; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
+	id F3AB16B0093; Thu, 10 Sep 2026 09:52:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF0596B0099; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
+	id F12386B0099; Thu, 10 Sep 2026 09:52:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E2C16B009F; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
+	id E50CA6B009F; Thu, 10 Sep 2026 09:52:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75F536B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97F30404E9
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:39 +0000 (UTC)
-X-FDA: 85197987798.19.FA1297A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A2C6F40003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j00D8+5W;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CA5DB6B0093
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:52:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66DC7402E6
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:52:16 +0000 (UTC)
+X-FDA: 85197991872.15.1B8C6A8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6A12D10000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:52:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vARC6GeL;
+	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789048237;
-	b=nmzuzuYqIxxmNveOxLKsRMDy7y/7iHPv36w4Aovl+VnJCFuIRnXlLGZKtkTiUXl1e+sNSZ
-	ohJrgbkmCYKaAfeu/RTUdCOydzuOlxCskP8cyeAS0uPNqZp/3Tk9L51yrUlsc8P8dV3OaQ
-	Pi6EfTplYE8u7P9L9TzE951rC8TCl2U=
+	t=1789048334;
+	b=6Kn5k0TvM5GXdY8oI4d6hFB8OrFYT5OW5ZCdMOUdc8du66+JFO6fj/5AFwIihBT8EmmjGh
+	16qbk/GlXKodBk9d0SxwyFkpwKDPi3r7xZhKE/m+7YAkNBnE9q3wxtwywbeOn2D9lb+B/d
+	lF7Apuc+Oa0Lqvj+DbgMbK/6ooiJawg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j00D8+5W;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vARC6GeL;
+	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789048237;
+	s=arc-20220608; t=1789048334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Zyq+M8PkbCuol0oMRfsYKnJaMSeruYuwwQ+Za3eJWc=;
-	b=LmdmxEyfMn9sInkkPLUBJAFgnup0apTckfRHyvBRYqFKNT8YAnf1rrhX/8g9rsCCWTjWHM
-	2DxUWY8O0znCzKMRKtw1Haa4WYMNC6wZNXM+35y8V+p8Ryh73dVSK0BZGdTftcivZTPylr
-	gajcGoSRExhgcukiDN/q/5+w3jcU+P8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E6B060200;
-	Thu, 10 Sep 2026 13:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81471F00899;
-	Thu, 10 Sep 2026 13:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789048236;
-	bh=2Zyq+M8PkbCuol0oMRfsYKnJaMSeruYuwwQ+Za3eJWc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j00D8+5WBvvgtePwmcUTZwR4/e9jpT6UAtMI2fuh6T2E2K/qQbB+NrWmtZtkevve6
-	 P628D+mJt4eG1F46p3oSH3FmkM9ZreGsoBxKPr+UEonN/lktvXOOKV+OSLSblr6Gvv
-	 nFIFoj9cIzsV9VKSq1smcUrIoKHLokLRpaq/tIlbe3AnyWhVv06uCY0F5CH7k3rV9V
-	 xbZ8jPnKkUH6xCWCEC9jIa26pJOeLA7I1mFKUfaU7XPUAKGzX39aKiPZ74a0BF/+wi
-	 CuD1Y4zG2v2k+y8srQVIu82NX4RiaR21voioo0Lzn8vtsLlIGM43OXjZE988H7GC6Z
-	 hSTXsRIS2AOcg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 3A580198003A;
-	Thu, 10 Sep 2026 09:50:28 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 09:50:33 -0400
-X-ME-Sender: <xms:o7WiapMA5ZYLv0l1u-q3Q948NDdNTquzrCza38GpTucWddg-gkiFAg>
-    <xme:o7WiajAWLh850YP4Dl5hCV6ce800SEVdqzdNFw4ZbeW1-IpUeP533TvtF2m2TCEUt
-    NN5ff3HUKBjsqJ87eFUY08kkJXZ9QiJZtvql2BU2tWfYwROzbLZ7DQ>
-X-ME-Received: <xmr:o7WiashDBVKK0Au7xbKcz9IaHDZz-ELoWkklmHj2W4_IkxtxhKia6wiMHVo>
-X-ME-Proxy-Cause: dmFkZTGVBT71C7FGJ01T6J2UqH+Pi6wNZKGiTgwF7S9p/aCc0zCAXAuAMT/w3/NjT0H+7r
-    7fm9ak9wYpA9hlu1uygj5ql4In2cxLpabYHyYjdRq4Ex09QbfWhwYkSlUWEiEgKDtFlk6E
-    DKclzpl3GoADoRIKuxrLqLu7GHhh62DsLl2kTqbAAsipMyXMHV1I+aP0vA34B2aG8VHg0K
-    3YFXtDtxd398gCYFU3vtCJWK9kir9GxrwKXs64iv7yMKNFLP+RLrDApV1kw3PY4ilySoxm
-    r+mGzrL7lncFxihhj4CmZT7LwPmAgAQWUV5TG00b2op39e9fFzrAVDvVYP+koiS5eIOxaf
-    kAB+AbhujOvkvSZHTmblWNjGtUeTnXowRYMfFTBAf0Ty0JmlfPwLKju26jupTYYyyyHLGQ
-    EIy7bUWY+ekXNOf1jLx6+6yfibq9Fq7Tj8B9ob57uTKlVDYbdtn9MQ2RZCavmWjTlVAWlN
-    1S4HeDEXt+KToZfW7hup78qC7dlSB/Co0S/+3f4mXzrrhu8nM6qXfDm7mIIubCxO3uDsPG
-    1c1EVQMGPUMGfO0imDSXS//8tqxsQiDANNsdyb17XSemT9Kxp+hf0vrCUx//sqxk6V2DE/
-    zEJwPeL8LDYLn64IHFe6VRdZV1BWeR3slFsBpRm+MEgh0mqZapdcRaZAKSUg
-X-ME-Proxy: <xmx:o7WiaodoCCRhHCWSxmavRGtYkaYzJYKkPfChMHziTVVuCZrGexCTgQ>
-    <xmx:o7Wiag3ljJ85hhKeoFRel9qlCTYVDm1s9CywIdUbF_NH5nFUVSFk5g>
-    <xmx:o7WiagoiAWdDHfmcZst_Qg6VpEm0wCEdAKLj8GgVRoid-FMHxUiqeQ>
-    <xmx:o7Wiaq5R7zggsCVfMakZkc8OwEVaxisUBMSsDcBXg6VrqZgwf68SXw>
-    <xmx:o7WiaoW_pbmF3eyny5h1PeM8bM3RlT9iuVvY40Dblgakh02vu1wnsX9x>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Sep 2026 09:50:26 -0400 (EDT)
-Date: Thu, 10 Sep 2026 14:50:25 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- 	Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, 	Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- 	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Xu Xin <xu.xin16@zte.com.cn>, 	Chengming Zhou <chengming.zhou@linux.dev>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Chris Li <chrisl@kernel.org>, 	Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, 	Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>,
- 	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>,
- linux-mm@kvack.org, 	linux-kernel@vger.kernel.org,
- Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
- KCSAN
-Message-ID: <aqKzUTPbh1qcKs4a@thinkstation>
-References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
+	bh=8Hw99+skKmn9AdtNdvtGkcpzpWEaSoMjqxT4jOANVrY=;
+	b=IhmVNFUa8VkRYvRDg4k/iNnsT6H+jJfznf01Z3G1mlMC8j9fsp69zZ6dgIzL4ZLKnC/Kji
+	RNYydPoHwa93dIRSVae2QKHb0R5+p0jfpjGJTG0JfW4KUl/1FmcalraAaR5ILf/kXBy+aV
+	Dj0+VyF076FhJvaru/5sP76yOBCaYFE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A05201570;
+	Thu, 10 Sep 2026 06:52:09 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC7FF3F59E;
+	Thu, 10 Sep 2026 06:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789048333; bh=BLeoWk5uxGFQ/YEtzA3yICYffhVnHkWffEkn9ZTAC5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vARC6GeLbF1eSnLStgikeBQEfsKezRxmbdmUGMAx6++HTEpu/3HCtHdfmAzI3UZYc
+	 ac1ZRP+v5TZhF0i9kwYvN7wTSjvRUVod9/iUe8KlZZ7IVsrEGN3Dl568ewPpLEP2sq
+	 UNWVhKw5mm0nYzLAp6lUmqqigrSBI4rzGyLgwXfM=
+Date: Thu, 10 Sep 2026 14:52:07 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: ;, Re: ;, [PATCH v5 3/3] kselftest: ;, mm:
+ introducealloc_isolated_mem;
+Message-ID: <aqK2B_ehcrcGM-kV@e129823.arm.com>
+References: <aqKOVGECsCNtSMIV@e129823.arm.com>
+ <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+ <aqKS7CP67X4h6NiM@e129823.arm.com>
+ <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
+ <aqKU0-Gm4yh78F3V@e129823.arm.com>
+ <d6f2e6b2-9dc9-4f02-be37-14329c1a6798@kernel.org>
+ <aqKfjqa6ye2AOU5k@e129823.arm.com>
+ <11a36d52-89a0-4f43-8a51-a4930e171ba0@kernel.org>
+ <aqKj5ojQ3dabOV5g@e129823.arm.com>
+ <8d27168e-5443-4073-bc65-24ddbe32e29a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A2C6F40003
+In-Reply-To: <8d27168e-5443-4073-bc65-24ddbe32e29a@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 11cg3dzjpeesz774611zbpag1d6rpndo
-X-HE-Tag: 1789048237-159187
-X-HE-Meta: U2FsdGVkX1/IvlWjgmEA4vYA89NLMl9zDdXpl9QE69Tdk47SJ+IZ2WeVQYPpOVXG9MCytpXuwyT/DpVo+Pw3o+UuA9+bCLzou4oVY7nd2I0Pfa0Wrba/8LVfIwWw9QcrXpGhjDkdCyW7MMIIkfWwqPTQ8eo6aaXLpmf71RskH7JfxT94aBIrJhGLjtvI2+EnznH8l10rdTtUikLQTMV1XUcYvy1OTcxteAHJHI8mtFLOOjxNEA4KZ7I4aImKJwUlQV5EEkBFKnr63WU+dgN21vTyN9o3bsbWxDGLpHvn/lbZB/QIZvcdo2DVU9zzSGBWBJ2laGZuX4aC7t2M46XJYgwRJuJ/htyUiOLiag5hhz6N7EKNY+BNOInbuT5P1TfQnbPt8tkM6q8J+T2t1shwgS+Xax9is8brcBna4c3JyTrKsWKzb6LaWrogT+rEcVmqacBbcuMspd8SQe71ChV1UCX5RfC6VKJq5VBZs58htGpiWuOU87xa/FD8/KLpgdzzWwKBqgKRGL6ZEHAcXRqH7UkCen71PSA6MdfNbRa2XieaCC6Z+c5PI40S/bZDorWpf4QEsmR4n3QU5T6gP2tP739fBW4n13n1v5+FMYG7m30NpVg+uRCwWyw+VvHQdZJzn5gDANbSNmzQ2sCIiN0riT2KRDpuw3uftBrtB7WM30uWdOVN0fHnMxRVuWqAPv+8Ywuju40qiVvd/l6Xrh1uN3MYUSY7tPKxPoKS387QKpa5+dATLsof9aSHPA05JEkxRehfQxr7tbAParPc/zVLe64zshtzoOhAgrRYlXp6yZvQOPC1OVLoBHNrBiZmN/bhdgwrE3hUhULLcnTEcX8ymtYC1S9134bYt6gkFM7abtAVPUDJM48JmvcpGBby4KnogDvnY6SOi+S4YJAi/iRsQIcg5j2gi3FuzMgPbIiFi5ETNcD9zL6aNkOAL1YBtHysnYoSYnk9D34OA7dOBu4
- uxt6WNdg
- xX6aSN4f3wMMY0Qzqrxuocf8X5RhmD5nkIM0osGKkzRJqTytPPnmJ+0QNSA7p3qpfX8CuQDTaIAEJ/0pJZ2qTdtcg8+yV17ykAXZBygSgcTO/Zt9Xxqvsv9tELTxfshrwnS7Za9O92V0e98vwvx4VQyGOSDCJCdiiwQ+XRUOP8PBgelsmfmVnuCzpM5RsJilyIMSZbOZHWWMaEgMCBulRYiT8GmBXnq1yrxOd3LEdqbLguMrmzvRruYKKnaME2sQaXHocAR273xE5ShLK1StZQfe9Q3Yo3L0w8GBGirUgISNqT9WU711yPtGWxkJpScEJm4Ot69att/NUQBYoZxpPgEtzs9AwdqE7YaE7bHo5/ZN7WrRih7jdj9/M5A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6A12D10000B
+X-Stat-Signature: aozjyyjxamj7erswgc5nzjuotwu5ashn
+X-HE-Tag: 1789048334-555695
+X-HE-Meta: U2FsdGVkX1+jyKSAiQ27jDtgr4e9fbEbVvu/3uhmcL+uwRNnCJDf3ZuhldcYKRNvvk5y0vweKIQoentLmfDM0tMyqCdIVhtm15dJoG+UmzMx9ZRI2MBvoyADomAcFSPqXMkkfQxwEpzTfsYIbCxa1vuwfSiYBPXflDTIaKRA7H3W+kTRhadjv8nyW+UYCood6Le4CZNognl7QSeok1d5U7dpkQhKSju0lRnmZ/lPyIJOkALcTabesJGuGOp84rjqsfNgDkpdJVo2JOjw+Q1plqu+lpDOEjXcFs5UnFoc8tnkvVxcfrFFdknFbe8hFRrLXXipF8sVtozLcdemLmnGkh3n0vJEsPE7tY2eQZQ9pRxZq0cQVRloV/EGk/IHmLgfh+ZCgZlCoLeAGKXiMOljmHvu0onD77GgXD84meNYmr9JmvafYko+0S41Fw01Lzo7TWF6kKvBSQNUjttKjCxgwDPlGREpfV12MCEAsuir5WXYwwCU2+tmnyWOZiy/tHXSr47MwrNaVb4jZTnx2wXlRecY4JzQnCf0/oSsNuGNl5zxM5tUDYSCPIFr4nhvenMRV3chEY6zsSftNLNqQriFS27i0UYtSONvevXDAnXVaveKIf10qw/1yKJ0EqqNjbW7TsS2w4Fv4bR6AxosCUstu7NFgddzkntzeKP+1x1H+QJYykI8JsknUzrUfX7rv0PXLsrVnRMcqXqfcqB8ZH7d/8VuQrzxhIgTyZUeW0pC/XHvZC7tHNfUAAGAWgUppyaAX54RPpCnT4QNbZtAOJQRwlzpzRfypnMQW+rPZWjW2rSxJ2W1LYgf6lGCOvYH5FAAfF4iLw75ceiHsC5gdLKeGICh/FOGLPDc5/N/hTkdNi+BpeTdNb/vpvcLG/j4kTHDh37fdu+9EOz8Nk+0Hqj3PVBjNgoPWUQ2voUqYerGE1qZEtWKWPPxJLbQoIjK2q9cBbgVWRjWqBF3QtLqDkV
+ IyBtzh8U
+ THFZ0I3zAr7vF2L7IT6OmcPZ9DvEE/ern+u+0ccG1Ubo//ks1fvr1NJtXgmKqzGAxhQJdWc/xlbnVvIgeHJE8JM1DFrFsQRX9f5U48I+PNwNoJ63apEOZvcHEknksnVVH4RdjNiGGRi2Qt/k5IV8XkVk7xPgl23wvhV+2AJYw6J9gbL7SQ9lu43O34Bdif6mcTpgCCkrNp576qJXOA0rjsGl/njiR/MhaBxpd95Wly/jm9nV6FUkkbN8TLCuld0c5uj7DQ7wBCmyNqgP5CNfmpX8+E8qdXFX+wPU3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,74 +110,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 02:18:35PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Provide a function to abstract the common task of checking whether
-> a VMA is faulted in or not.
+On Thu, Sep 10, 2026 at 03:14:36PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/10/26 14:34, Yeoreum Yun wrote:
+> > On Thu, Sep 10, 2026 at 02:25:40PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/10/26 14:16, Yeoreum Yun wrote:
+> >>>
+> >>> True. I overlooked guard bit is sticky.
+> >>>
+> >>>
+> >>> It's enough but alloc_isolated_mem() could be modified to allocate with
+> >>> PROT_NONE first and then change the prot.
+> >>>
+> >>> It seems whether make a helper or testcase should write the code
+> >>> properly in case of unwanted VMA merge.
+> >>>
+> >>> IMHO, instead of testcase write them all
+> >>
+> >> So far I am aware of exactly one test case, which others do absolutely need this?
+> > 
+> > True. I'll respin with your suggestion.
 > 
-> A VMA or mmap lock must be held when calling this function. For an attached
-> VMA the transitions between unfaulted/faulted state are:
-> 
->        Transition        |              VMA/mmap Lock state
->  ------------------------|-----------------------------------------------
->    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
->    faulted to unfaulted  | write lock
-> 
-> So vma_anon_tracked() never provides a false positive (the lock precludes
-> it), but if only a read lock is held, a negative result must be re-checked
-> with mm->page_table_lock held.
-> 
-> Detached VMAs cannot be concurrently manipulated as they are removed from
-> the maple tree so require no guarantees.
-> 
-> Use data_race() to silence KCSAN about non-existent data races between
-> concurrent vma->anon_vma read/write on optimistic fault tests.
-> 
-> Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
-> dependants.
+> Don't get me wrong, if we'll need this for other tests we can add helpers. But
+> for a single user adding a helper is not really worth it.
 
-If you end up respinning anyway, this would be a natural separate
-prep patch.
+No worries. Since I thought there is no use case right now except the
+test, I've agreed.
 
-> Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
-> preparation callers which test vma->anon_vma directly to use
-> vma_anon_tracked() instead.
-> 
-> Note that the lockless read in reusable_anon_vma() is doing more than
-> checking whether the VMA is faulted - it is returning the anon_vma to be
-> used on fault, so this check is not altered.
-> 
-> There is one odd one out - file_backed_vma_is_retractable() - which holds
-> neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
-> 
-> Therefore just add a comment to explain why the direct vma->anon_vma check
-> is required.
-> 
-> Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
-> Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> v2:
-> - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
+Thanks!
 
-I don't particularly like vma_anon_tracked(), but naming is hard...
-
-From quick grep, it seems you missed two cases of direct readers:
-
-  hugepage_vma_revalidate():
-
-      if (expect_anon && (!(*vmap)->anon_vma || !vma_is_anonymous(*vmap)))
-
-  vma_needs_copy():
-
-      if (src_vma->anon_vma)
-
-Worth fixing? If it is intentional, add a comment why. I don't see it.
-
-Anyways:
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely,
+Yeoreum Yun
 
