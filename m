@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D5EC79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E4DC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 883CF6B008A; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
+	id 3F3E86B0093; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B186B008C; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
+	id 3A4DD6B0095; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 773326B0092; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
+	id 2BABA6B009B; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4798F6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2F0112048E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:23 +0000 (UTC)
-X-FDA: 85197566286.24.816C829
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 16BF218000D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXMfGLih;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038202;
-	b=zWcoYcks8kjsuVJkP6Iklej5WHwY8RKilwIw+cw9gQ1RTK1BD8deYpd3RpTA2g4UYlivG3
-	AnlxAx5w0c9NA7y9tBodzeO2Pa8HiDmB/46auYkXnCzpxEpV/Yr2n/UkwPsenytC/F/EJQ
-	JYBpPQWDu+owGDIiFd26qvRgjptNrEo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXMfGLih;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0494A6B0093
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:05:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 903641604B6
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:05:37 +0000 (UTC)
+X-FDA: 85197571914.08.512431E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B073B4000C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:05:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9P4brTB;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038202;
+	s=arc-20220608; t=1789038335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xs5N6d4Q3VeK4CPw8sjumPscyGSXs4KBPkCsQSrD/Fg=;
-	b=cdyhL8jor386xqlrIMjkgpGC0WLDzTqBnUYbNACkdhl623Foc1h3d8ZlvdgJjEN6nqUfUE
-	0pwzLydgtDUNpmPH3xqQLm+FtMDvohQ8cgL7yxO5afmIbb2WJUF4QbR4xSfSvykMf1u73e
-	qBZt+zHFgL/PHFa50SoujebOFvisflo=
+	bh=9YZk2wCzZD7ud7nbBKJ04FWJsPn8EDTK/gTOXxFQNOk=;
+	b=Yqiy9JHF45EOv35yk1MWUHZD4xwButIrSNPWFoz7lVccHPDDrWS84ytmi2MZ4Z/op1ulI4
+	SPu+Wbb4By7EbktD0CZUzWTi7PtaxnZ1K2KxBQpOcb/eVnUWl3+RYpWV8QsS5MzyFBouD1
+	xq+v/2lG7vlYpqhC6vdEXf7HpXIyVXI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9P4brTB;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789038335;
+	b=k75RkHhtDH2kS6Ia8QjJO4SNuWPzNuaEOmP6JCP9XacQTwiDtwQJy8mWAE+CIaRbETilm5
+	FUp7+30zwgKoJJ8eGeCkzEjHNyybiDY7bb3X/IGhioch0WnzhgUHRd9kRIkwxWafeFkgJV
+	XlF9PiRRr+0pU3R/N885DpA1Qup/Ygo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9CA48600CB;
-	Thu, 10 Sep 2026 11:03:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B37C1F000FF;
-	Thu, 10 Sep 2026 11:03:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FFE941FE2;
+	Thu, 10 Sep 2026 11:05:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0541F000FF;
+	Thu, 10 Sep 2026 11:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038201;
-	bh=Xs5N6d4Q3VeK4CPw8sjumPscyGSXs4KBPkCsQSrD/Fg=;
+	s=k20260515; t=1789038333;
+	bh=9YZk2wCzZD7ud7nbBKJ04FWJsPn8EDTK/gTOXxFQNOk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dXMfGLihXvyR0gahQ2AIkqMeQkGub8BMfOB+ZZ98l5ud+Ms7cAsxntVKUZ1utDJEM
-	 nQ4//pg74UjHHC8mPasRfMu8FSDkOatRrczqiiC3LaTIfHBHPmv858G9GISLwMrdX3
-	 5t3/073kFkvaDHBaTdhFkEOMDmGpUKKC4E2Cj0V1n40/0ffKbTF+hIGUn0USrigbVC
-	 D6iE/rxT2btCRdq9PqG7qeHgFtHMEe2GvT962NY0ILA2s/3pNyarm41S82N//cyR8P
-	 iMhJW8tTmz6rcSiviTtdveTTrlyb320BlmbnPfWLAUCYZfF23wyaCs92UlD0YEhg6S
-	 GHLaU697xvBxQ==
-Message-ID: <bc96d00c-f343-42d2-99fa-e1f5fb11a72e@kernel.org>
-Date: Thu, 10 Sep 2026 13:03:06 +0200
+	b=O9P4brTBs+SaRO9GQMBGP55ozrj8eS/wvn34kbSVOVVvQGSv+4hQWqHtjF2Onz9AN
+	 /ZlxWsqUVNcxSq+6K2ChEbK2QSC0ahYV+IaDzTtpnV5KIEA34pSjHKM/7MiMMaRg4N
+	 6NGjbWhVcr++iGsRLdFZbdsf/hVDhqjrx8QWxMfTYgWBo7qhIU0H+PuySBwNV8ZW74
+	 Z7DtwGRBvklEoKCi+kEiUWK8uvvtvZFWP+zSaQfmwL4UlRv+cX3UlhBnZjUnzZtiEi
+	 0Jq8KHz8OyRyjw2fZOKgZ3v9cRudaLuE0woLzUhit0+rbKiNXIUYldYZPMLGJ25LzP
+	 fQeVdpHeQUxsA==
+Message-ID: <4b9f8ff1-8b9d-45f5-9012-b648d6e16689@kernel.org>
+Date: Thu, 10 Sep 2026 13:05:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 13/21] x86: mm: use pgtable_level enum in
- effective_prot_pXd()
+Subject: Re: [PATCH RFC v3 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum with
+ ascend order from PGD
 To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
  Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -100,7 +100,7 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
  linux-openrisc@vger.kernel.org
 References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-13-5d8f5b17c25c@arm.com>
+ <20260902-dummy_ptxp3-v3-12-5d8f5b17c25c@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902-dummy_ptxp3-v3-13-5d8f5b17c25c@arm.com>
+In-Reply-To: <20260902-dummy_ptxp3-v3-12-5d8f5b17c25c@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 16BF218000D
-X-Stat-Signature: 6hsx5q58ytnykze8decjjt9rkrctkpfp
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B073B4000C
+X-Stat-Signature: qnoywzcck1tf8amgw4rmjkrgusn848yj
 X-Rspam-User: 
-X-HE-Tag: 1789038201-442326
-X-HE-Meta: U2FsdGVkX1/NN8HsbnLVCcXlrCAZhUFlD9CduBSAfDNU/pg/FuWs2xFonumWFp35gF9pBtUrGvr3pbIeKv+DFojpqPnn91X53LJN+nFNeLzopEo/0SVkuvOMfFmEMp+eAdnJ0APDfgiaAcwV2dpSW5kICeUcdZY9+/ZbHI36l06W/kmMSSL8qF5dE8BV2rOYoKDjLYo1yxZ9jFZuXEn9T164nj1llounSTCekJyrBFc81C2WiSr0vsvf9tWAeMZC99DJ9mH7bwAjYXKKokKcyXevyRVuxcxdTLhDFAr3zkSNnMn6HcxZT4QMK4o41A0P8HammO5d4JLVnCmkRBcy4y7bosP1GfaDtVoH+bK+9t/j0rklswMnQWFwn/cQArMIllZIgOfMSHdZfPfhKedo6Sy2uYk1DkSNRPRql1bwXsS452QdaIiiB43rH4GyLuXXn4U8cZTDCnwXa89RWqt/nd4yzIJbMWIaCoFOAmJYPyvOmxRoQBR0DBXrLQMuliSXCv8taCkwms2vmk+vORX1xGIRtJi0HpBZi4di/QQqHblpqI+kY4LeUjmbI5rBARNaQrQDRwWK5fKxRFEFF+BNX/6zSD5YT5ONZyg9esLktTZPeFjNWa5XA6TjK98TWWpNVfpxRJ5yfLpsqNebiKgyWr8ck3Yos4/9lwORp/tovtddM7On2jSD0/vCAKF64aBKoKe/RdSx6AOiWrcmgn4QfBHLePU3FKtfOI3az2yF+eo88UHABBqCO/WxIxF/5ctP8iAdEmUTcgDzKWMPwuzswL1/gyWClP1SKad6V+ENZMnBsFoDovzrlGyAZABVS/NimTu447xXbKP2n0olI0IixD2sRl7cEbSzh8CrAHsbHyPqCC3Mr2XAxd63LxsN/YQLH+IskJiv7yLSCnan39ryRiXVwr8YOJQccjmqCLENyZtqhk7sFS0k/OJ1a+d4V76gNCpXCRQuYdas9GYOB8v
- CD0HJ2bS
- PDBFssm+4QuGYcfIxjuETo0EGm9dlvtNqMcH8/dl6/4EOvfoV549nOLa9ulgOtE1GcHUOuzmiYlTj0bQ43Z3utaGzcaFZK2nLtVeFNnw3nPxHM6t6LoNoUb3hkNTt2Scy4axljtah6IUm0NzQRHVAJ706kjdae0zgIhX/TVSxUJBcXB+GnUFuNV9q24rqjALHJS6aobO+GSyd17E/yC5NWFLG78rmD6QMZANHhQ0lHOGINTMyR349OeRmGEig/Teh6N7d7HvBUK1XeSsuP1W6SWj3Xl0l6PXv/sPYQuXkC9ZscuQEcza5H/9OC29PkTdyGLKsf1D8HaQuoYgy4r6YaUI1fkFDVV6tJudeC0gixTRsZaDFa2a6F/Uxli+RDZNWTzKB6zwa61+zUyc=
+X-HE-Tag: 1789038335-301819
+X-HE-Meta: U2FsdGVkX1+udpxq6JeR2SLgU/jW2P6i+qV3G/mrIgKb5mvFX1UdxgEAb8T3TvvryDHefGrvd/oj/ggpzaoC8s5EwCaDNREtJlME1nfhXL6dMxnWqUPAvgLi684YfjpGC1UGWbCqy00qlzMDIqA5vBoMvkbT/t9twG1oVV5ZTXv23CH6FmFxEd9iMTWQMlohUhMvO2jUaEI5mug+RRqhnmlWu10CUoCk80G4f0edhDMATM37nD6qStg4/Hb8wTIQjaiNhe5bO9gESKnoMylpLbBXDxEo9lHbxqoU3G2DgjPkkh6unRAMVmQSnZWVzVJoojtmu8d8BNKF5jvHxnhwLbpNVoZbUBEXb+yW3p0y/9qKhlKR6+1l3U3i1Qctd81sABKmQXJ+ZYcplaxuMUr205FXjL3SXDBN5yunrcH/yoW6hK+UNSFADxTZKcv3RkJLlI3sbPH9MxtKrpOteb2AWbXRa7fPDRRnqla/WlxgKi7O3SA54Hn8CYyASES7h8L+vTLoPObWZ3DIJmHTpfr0+R9ViI39P5mEw6k9L+WAdH20OOp73MMgG8p7084BQnYvbrzp1moKokiqzngt1Xvp5vsHkDcvpovdsGePKb3N6pHWSoWToQR3xy17k1qxkGDL5yhTE9yniYw6migR4NDUQkQycfe0Z+qtJSwaR7iZSVCJKy7RCvPWjM++onEfFwH3L8oWI9shbDjSgca+MG9sYcTimnsE/5MelCY0IFhND3orU/WfYzHXQzpc7By1UoCF+q3fZXnoq8gxsG01bpFGWDUfMEmVR2sNu4L9L34SFXlCZVr3A6VlcPD24v1lpwIVe+8+7ADU5q2gVjzS9gp7qsxY3yDUtxhAKz7ByCQ62elXEFNwGxn+JyUDCwINdbk/XR+/ojOPVvuNzRwsx7JMydj6XHCTBl2HNMj37+HZCMPbRQarSM7Yk9PnRbDgKphtvt3laYyVxEKIm54MhSS
+ uePP3JSO
+ E162uKjBgcy1cHFfaxM0WRsrSupFZppKd787ZEkn73tgm5KWS229NirOt+tsViZ88Plg89UH9UtbeQPcVuZZYlC72fr5PW5HTOTgLOUOLSx9p1N2X6b9FIvg26n0pST6Z7qqiQ1YJap+VbVzXGxQ+dY062u0HVgZlm5I3uGw01MFOH+5g439x55vdfpTj88PO5/cETS19FburOorkOaTNHnAju8tAVQWq7RiYZCEzKGSr6OYOM6vKws/GkLzXP1AZyEoCzwjhDDaRiUwiyBpmUq+GNT5ojiFPOk7fAMBF+IS669bPopNItzkZcT7Su22R8JIUdL1okxPR2gmJZi7QyS94cy1TI5VYztdFXtQaHWuDA5iVnqUPIKqs+M5379WdHScK2u69Ab8jDQs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,10 +166,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/2/26 13:56, Yeoreum Yun wrote:
-> Instead of using hard-coded integer in effective_prot_pXd(), use
-> pgtable level enum.
+> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+> from their intended usage.
 > 
-> There should be no functional change.
+> Intuitively, higher page table levels should have smaller enum values,
+> but PTE is currently assigned 0.
+> 
+> For consistency and cleanup, reverse the enum value ordering.
+> 
+> Since there is no current user relies on these numbers to be ascending from
+> PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
+> direction of the page table walk.
 > 
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
