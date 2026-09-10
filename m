@@ -4,138 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3614CC88E42
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECA5C79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:40:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CAA36B0098; Thu, 10 Sep 2026 11:36:02 -0400 (EDT)
+	id 690EB6B0099; Thu, 10 Sep 2026 11:40:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 352FB6B0099; Thu, 10 Sep 2026 11:36:02 -0400 (EDT)
+	id 641826B009B; Thu, 10 Sep 2026 11:40:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A386B009B; Thu, 10 Sep 2026 11:36:02 -0400 (EDT)
+	id 548E06B009D; Thu, 10 Sep 2026 11:40:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 048106B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:36:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90B3E1C21BA
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:36:01 +0000 (UTC)
-X-FDA: 85198253322.21.9EB559F
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8E83540009
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:35:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YSh2Cpsf;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789054559;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B5E06B0099
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:40:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF22512056C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:40:08 +0000 (UTC)
+X-FDA: 85198263696.04.3B5829D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C7A821C0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:40:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e74Wo8lc;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789054806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ou5xudsvhJbATEEDYQzliV91yFmtfTC9oO8glygvNSs=;
-	b=fvNx+yO+G20Fw7Ds7kfsubTM9SvWnBiZsyZoa6qoDjuEJtbbLgYl3qdCzCvYIebbgq8xrr
-	WfJfDoJMy+OUSDpzx3kdENXbkMo7s+zW3eqo4NtyN54Xpk8m9WxvAaHIcC52+zkIXslNLt
-	7C3jAKyHzr0lz5a+HQkhu7y2BtkMaNw=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YSh2Cpsf;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789054559;
-	b=WwuqQsgxNgZUddnjJAOxEaBA4rSW1jLlFa92kQfjfj4YlY3bOXvz8vjH7kRUjuixB+bk63
-	jb7qeKYtImGHqx/aDLkUZ7xDpj/Xz+97eujBEcFdzdbqIvLBHOaTD62DO7i/TehlugZwQG
-	GdmtqyKH1bEEI1SuAwUwhaxNO1d8Ico=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-53012819c04so255811cf.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:35:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789054559; cv=none;
-        d=google.com; s=arc-20260327;
-        b=O6yAQXADO8T+WKYnruiKKmeF6I4/jmEMwEInujGPT7LuqUkT4xgnrbfiL43x8bqbA1
-         xcsIzWW+t27EL8hFZy9SCWXvvFjG0EYZuPocEuBpSCNSfhJx6XaHLmS/bb96wWU74RYV
-         vXakZxqkhI64ccAH0FybYaXlmYbSnDqotsi1e9N+37e+yeUT+qXXEhenTTFlrvvPhNAc
-         zKXXfqGVNGN+Qk0klLmebPEPdOa4+eAm7N8SK5/Ib5vA9o1R8mIvGZoukO75azT9pd3Z
-         g/Qx3L/Oy2MfF0JbzZ/IVzvgMgaKYfceSivEjcj2DJ6ro7FHgAIlTAmp2zBBONGPiLr2
-         kXeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ou5xudsvhJbATEEDYQzliV91yFmtfTC9oO8glygvNSs=;
-        fh=HTwnAdgEuXfqcf8rZHIK97g7CH6//ixRGiFUQ/lUVRo=;
-        b=O4d+CBU4BrNq7HMwheeAv9m5yzcdTbJlFIqIE7hLW7T/ZGapXgcNbS2zjKYlgQfG2T
-         1tmBZqU1PAKKKxeQp4tDAOHcJm/lCLMRzqUx9T188f1/pp2JBpLFaPehj34CYDcfn+/8
-         UC9DgRUaECl9rnEwGFk3uYdVkzo0kPc+Dgln8QLflmObgCmKC05pN/QDne9G5mXXp06u
-         kBOQWiqTKzrlG3iKiNb4mO4hV74o+WU8a7DdLfr8W2FUUgRKv+3zY/TGETAc6oKHrklV
-         LpKFX/Y1OdVGfzcTp0MTYHlbESlE14ChemYYWU6NQWmTrzePYM1CU2b/+c9/Spp6DLfj
-         0AHA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789054559; x=1789659359; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ou5xudsvhJbATEEDYQzliV91yFmtfTC9oO8glygvNSs=;
-        b=YSh2CpsfkHDrDxDrrkWitudjw8sAUf47KFYj7J0MMEKfU6Nf88RzK4oF9BBx2WZ/wl
-         iXu2Y8DwDQQYLf6ZHzfqjlcdWoaLKdT/4F/z7CIy23xJeXvLD5qZo7ZIfZD1XSxhzkRW
-         rfZybxHgava0P+hVXzfI6s0/xpG5ygY4bVGC7FMrql0OW4mqxJ24MNYcbbWg0+WsGv4+
-         6WyqCLLwjWZ0oM/IWQzEFtGvPNrJmZrBKbE/oO1+3Pupf2XjCfXCdnmau0cbYHl+4RuJ
-         VEy3lReaF0BnkIh+E5Uopp6eBpFa3VGHScyDPzD/5fW1bnGH+UNAdFb/PbVZtasyv6iV
-         TFiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789054559; x=1789659359;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ou5xudsvhJbATEEDYQzliV91yFmtfTC9oO8glygvNSs=;
-        b=tIr4dZ4vwQGr8YXPQcBLlJLT6FxAgeB1RIgn1FXCMMwQBbKXeFlc1yIIowaHLKb+yN
-         THSAXyFtu9GvGg4hG6VQHHw7FPdV0ZDYLSDymIXb8JqVIAFHa5kl2plCKTQmujBPj6v/
-         LyKgmcyycF1a5iDYFP7nLVr7o6nU++/jlubhDEzPdUfR0U4PIa2ETG+Z6hA2DgaGyXU/
-         jZ/1RvRx01Uh7OOsAKaJtSeDMIVj6g+wg1GIeivbNO25OkIfj6AUzvC7/pLpCG5xVWeS
-         my8NJ0nuUv530O4HdJuRgJ+STENg9e8F6uydOl17znpQvdIQS5s3eMxSYhPNqJFTijnc
-         jvCw==
-X-Forwarded-Encrypted: i=1; AKwUvBwsbvmQbwJ4lgIRhGfZ7kTDw5G8HYZJ+fV2I9glvQS3EIVbyHovP3DzMugl69zoNGKUtgNOY21C1g==@kvack.org
-X-Gm-Message-State: AFuF++lYRzoAKpz9Vqhz3RXp0Mtj7wUqeSS66ADw+DhFjXNz1brbEChZ
-	QluSA3EvxG5SoeEt4zysnDTO1HD+GEi91ImDZuHIkulqr45bvol2+rNQh/dZDbFWzoEfd9rO8Vh
-	W5BOeBqY+BzjSJ9eeQq/fjUBQEbhpjHKFei4Ouk39
-X-Gm-Gg: AYBFou1x8x1fcfPOKuNjWak4MiP97OCHIzrCRwiMJ4jClg/eHhBAivl/8TdoV5tqtIw
-	IENoM9LLmEBVWK0h6FX9C6vuEGWm+0TDwn3+5LF8OJymf8bS17OTMFjR1RHOAyMVGIhpDt74q8N
-	fnGKlTH0UkV96RhjHYLrQQz/ivLFRyB+TSt3E4DQDd47G6FnsBw2t/bJg/vH3oKMosgmKSUQqP5
-	XRMRkqWaT0jrXXPGsFLvxVzGjp4tw2Ff1nk/2Xp94s2PxegsIhgnOqJ5tv62eDLQ/D0CID/yJLY
-	uJ+clxG0lUUbedsstDH/r6EtbygRRA/n9rjsH/xw43eUhmW9RUYrakLqDMDPtw557BF8QonqQ5u
-	peD9aaYJLqQ==
-X-Received: by 2002:ac8:5a48:0:b0:52f:4a75:f840 with SMTP id
- d75a77b69052e-530b62a9367mr15603781cf.9.1789054557815; Thu, 10 Sep 2026
- 08:35:57 -0700 (PDT)
+	bh=dKt7ZEKAOjaYK5zl0yDCbXzIcJB2UTW/n2o2nRszZxw=;
+	b=rlDaLrc4YasXA9KyM104NemU0Rl95neA8VBwfSQQcjhL83y+wqO0nqcUsaRRcb6mE5HKnh
+	3G3wIk9fKlk1UZp0pLMc1vic1Rv6Qkmhwmh1zx+EK1YYsM0b0ttvuW4xrjBQAXqYSwPR8l
+	9K4FsDFuYX5a8MG4o6GwycdMjURZwMs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789054806;
+	b=FvmHULObOtDb7Hcoxo/+erZm+a7epQXoFLkrdE01yHox7v68l6Xxb2h1clI2h9Mhfsb7AP
+	x1CGPWLoXsX76Iv8PV+AVTGeB/wa0Ml4irufaxm1Go+e1wXL1DvyicA5m0uGdsyt1Jb7Uf
+	FOayy4/NzhUt01gOWcHrxnwwdjwPKBY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e74Wo8lc;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 11A9C42A87;
+	Thu, 10 Sep 2026 15:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EAD1F000FF;
+	Thu, 10 Sep 2026 15:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789054806;
+	bh=dKt7ZEKAOjaYK5zl0yDCbXzIcJB2UTW/n2o2nRszZxw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=e74Wo8lcuGe66beVgh35vTlfSYjYOgh1yT2IubpqbRHkqSfEo99s9FnukaQpFAXDf
+	 wpW8zlA0dQBZjoe0mr6Kj6t6SSFwzBbQPFg3W77sH9yTeA2qoPqwykEXKbrhyGqnRl
+	 l9XolbhPhNbEPtaBYJluX/7gRH2QtiV0U01CrCWqLaJfXhT29XPKKznJAY3bgoMjCs
+	 wE+xHtGEm/BqkZfqvvayRvtQFwuKa2mW2mfbomTRVbAy+BiVUDAbD0/KXQ1a06GQUv
+	 y7/Ye4s90QvzUUIUjSyDMAO7uDGaHBdWma/l8LxnQFPXMLrYEQJZifkrDdiFaY9o6l
+	 bPR/IdBsvB+nw==
+Message-ID: <a144c84d-bf82-49b5-b9ad-0f6938fd9b4b@kernel.org>
+Date: Thu, 10 Sep 2026 17:39:58 +0200
 MIME-Version: 1.0
-References: <20260907063918.3432401-3-surenb@google.com> <20260907164931.131215-1-usama.arif@linux.dev>
-In-Reply-To: <20260907164931.131215-1-usama.arif@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 10 Sep 2026 08:35:45 -0700
-X-Gm-Features: AcwNN1X-343PX52UP9R_xuysezFhln2YO94sOY9W4QKq0I6lyVc17ep5qSeO2A0
-Message-ID: <CAJuCfpHh1pmbhyJW5E2MZsGyMu7daW8aXvJD4A9_K4TRPt18jA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] proc/task_mmu: remove unnecessary inlines in
- function definitions
-To: Usama Arif <usama.arif@linux.dev>
-Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
-	vbabka@kernel.org, david@redhat.com, willy@infradead.org, jannh@google.com, 
-	paulmck@kernel.org, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8E83540009
-X-Stat-Signature: dceoudrb59767q16xg975agz35r5dyrx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
+References: <20260901052950.3284540-1-yuan1.liu@intel.com>
+ <20260901052950.3284540-3-yuan1.liu@intel.com>
+ <20260904073856.5r56imgrwtpe56wl@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260904073856.5r56imgrwtpe56wl@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789054559-675194
-X-HE-Meta: U2FsdGVkX18mJhxbCgziJbTPsfcBVAAE4amAZboExjVItDPHVHkstVY1FIuiYLehCzUzPQFCMPZ+rsd4yYKPDziC6JQwX2B84YA9/Yi3VaBZChEDFwSisEd4u1tckib+yMzC8/ZUDIayY19LoEtU1YbsP7HhAFpkXjhoBk9RhfuVvw7vDtSiKW9v+2j+b1HrK0MBGk7O3vWDcCR9BayXhqzPIDvn31T2NjV10oCrsBEozSI6fs8cxL/rvPlxat0pCqLZMjx4zZF85hXel2RTIjOfJjTJQsiVtR02DacDzPLFF5K1sKYvgeeYKAm/8q8e59GprjxvpgE8AOVwhbr6V8ZDd8eRGfMZSnzhEDg6Rx9G5VQSFlC40S6oP5BbtNcdDtvQq7m9j4GOp3XXcDu16BOmmXsqi4TNv4byjF44zm+NCbuiPEbYCn+T1iSCpZ6XmIotIPc+C7DPurXDDQ5uKjPy7Y6OF+NWL0oMnpcuzl642l7Xj7f2F6J/XZZEnMNr4qSgn2jXKzZ2k9FYTw+7THaXJyyu+lWl894Ve0P9O4UnDRRO0u0g0YijeHqXY45Qof/i0kvkRik2l4BxQJTGtlDS3BW8WQCD+yKljJrV6p03utc98MjR/HlPSsHkbgroKmbKJ+zIs21t7hFZ436ODw/vQlXezW58NkLIJCybhCFN8Pdrvwotww9o/OMZBdYxQyWKKjneteWSqGFXTJZnXJFGuHZsZ6BDvH4b7Wp2MiiK9n5IAp1ysYVuKqSQgDPmMDdP/AinOC54gS0S4HpHFD5L8PV96hqYk7JjPwru39fvhhnm9f6SexnSHuWNpor6f4eUYrPq/abKaRUPzobgkVd84n+GH6+G9DlkHXdWgWZjGmasaYtCNdRhYoo3TyZ07NR9ycGoyOtW38IexCtTPOHSuu4cL3QsyN0a8bYZ8G2sjBRbodKESZdCdNVJK029Tb+PS+4PRbYi1NwQjTK
- qqf4n1sQ
- m1HtKRnYoWvkST+bVR+QOZAmQow2DhbceGMSlJ26WHajoHd4wWHXQqggdPtcFy4pPTFy8wLTGMvvarMXO33bs1bsX6RbmPD2l20hY+tSoobrGuTVRg3zHOVPSRPJxZM4I2hUD4jqx+rmSIm/ZrDu/8dbEvlG62thNe1bbZMeDJylqxyuf1lTe+qTDPl491SbRab0xmHNDERD5cGR3DyOvVoSO0T156ihaU1csvL/Lu9eeBrHPwxtPNvlmUwO63wWgv2bIkBup0QvcVS5XT3yZy5m9CXLh8SCrPne7I8hOEmMO5hMqTmBykSDugQ==
+X-Stat-Signature: x1qgsrmf3w9o5w7xnmqq8dxfindr7kf4
+X-Rspamd-Queue-Id: C7A821C0006
+X-HE-Tag: 1789054806-887281
+X-HE-Meta: U2FsdGVkX19cGBoH3xJkyaVggigMs12aYkhVOhFoTmEcb4VcvKmhTwzfptJsMIdfaz/fea+SPu6T9GMv7ZVekxxPbLawiTQUcjOX8e2J6+xwNaosFomvneKE4/eUksWdINuSHaAsbXcDmD8Xc/weoN0oCLq2J9PjEyqeO8DMmr1lSzDX0Z4jncNZM/6UMrQQVXyb0eRhfNXmue5DGe1K+q2gxDKQyke0mSGFApRbLIzDVVducnzPIYsrivjvIKzy8WQi7BO1H3rZ1rriPwwR59zv2j99BlpBP/R0v46u7fKiGYZ0yUb46I4HKgeuqD1e6X+4u1BhvHqX3+RDIzQYjwGBygNNSC2FQMri5FKn23Ie/x5QZpnWOPVrcvpd5pzU3Qvn2jUcKb+544KULKE0hdygv7XVJhlZO2e+J054H4+I5igkAJg9GidKk8jPc75THJx5mWqH2761BDUdgSMNfF8Xv+wThl4OT4XYH7J/oLo8FTfiE0EY77vFxE6/FySBug9NaJYBdm46xPQZYSfPTN/v9+JTpk5SEQT4wxz1BYdhkleeAsSHv7eLzCgXdhjLkywYZ6aw6JnWFNN6jnwKZ2yNkBubialtBAy8tVx9i00xUaDDkdTvXXTtixyfclvOlYw6pqqzgfGRwrJspRjmrIohiqH43XLXGDbY2jyAlprsbAFZEn8HrDjzAvwDdZsgsTc0kQky8tUpFGGFsyA63OhsMoLacw/tbY5VWV2/kV0p30iWIaywHkgZvG4kk/CBbZtCycHOfnRCsOPqeRPBYZevBUxQQdfcQJUBkcoBIC55v2gzvpFB0oFDRg/V3Z0MDZSdVWKXkomIctT47UdfUrgNMUZMgjipOg0IH7uhC/OHMq+IkGieihOonWNNJLuU6m05qf3SMJ2gE8XUFDZEaL6MC3MtDF6iU96F3JvGf2tSZwiQlRC3Zzm3Vsx+QduEPLNv6zDjsv7kXBZT3MC
+ yjcxStU4
+ vVXQyAMt1Nl/VlgQT36TtGrvgHsgt9w6pg2pG2TJQhy0EBINaqONmTyu5dAdZWyeTLFj6Rv4z1SFtvK8lCkaSbm/mQe18YC9OkB4fLTvYUk16HHzw+wwbO313YAWF+iwJjZq51pn7yIVECRhxUDKKEfXzGkkZ7xVvd9Ml7BclauaBxRu4r4ftBGIbsv9PuhRN0j/zoi+uMbkBoZ4VP/dLqsmgJaEo+cZdZd9VGwK9sfnQy9c1Uyh5aUI69DWvkSY7892RlK++e5/npmwVv8pyBd2PkZzakVwA8ndXmGRzNtCQx1vvqfKkonQJOcEj7HHVxGAQ9KgWze+LbD7ndLQlnFm4erGpS9W5WpSZ1YKgRRlaYwVCLLKAB2O3nYkYtBHYpUuR2KZdhkRWEpNYOFTpVRZ9aXkgTsPjq5htZtNTvBYJHx8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,188 +143,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 7, 2026 at 9:49=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> On Sun,  6 Sep 2026 23:39:15 -0700 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > It was pointed out in the previous reviews of this code that many
-> > functions are specified as inline, which is unnecessary as the compile
-> > can make that decision by itself. Cleanup these definitions.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  fs/proc/task_mmu.c | 32 ++++++++++++++++----------------
-> >  1 file changed, 16 insertions(+), 16 deletions(-)
->
-> Most of these functions would be inlined anyways so should be ok.
->
-> Curious if there was a change in binary size with this?
+On 9/4/26 09:38, Wei Yang wrote:
+> On Tue, Sep 01, 2026 at 01:29:50AM -0400, Yuan Liu wrote:
+>> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
+>> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
+>> to rebuild zone->contiguous. For large zones this is a significant cost
+>> during memory hotplug and hot-unplug.
+>>
+>> Add a new zone member, pages_with_online_memmap, that tracks the
+>> number of pages within the zone span that have an online memory map,
+>> including present pages and memory holes whose memory map has been
+>> initialized and for which pfn_to_online_page() succeeds.
+>>
+>> For early boot memory, pages_with_online_memmap is calculated in
+>> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
+>> included in pages_with_online_memmap, and hole PFNs for which
+>> pfn_to_online_page() succeeds are also counted in
+>> init_unavailable_range(). For hotplugged memory,
+>> pages_with_online_memmap is updated through adjust_present_page_count(),
+>> which is called during memory online and offline operations. When
+>> spanned_pages == pages_with_online_memmap, every PFN in the zone span
+>> has a valid memmap entry, so pfn_to_page() can be called for any PFN
+>> within the zone span without an additional pfn_valid() check.
+>>
+>> The counter may temporarily undercount when pages with an online
+>> memory map exist outside the current zone span. This can only happen
+>> during boot, when initializing the memory map of pages that do not
+>> fall into any zone span. Growing the zone to cover such pages and
+>> later shrinking it back may result in a value that is too small.
+>> This is safe, as it merely prevents detecting a contiguous zone.
+>>
+>> The contiguity check using pages_with_online_memmap is stricter than
+>> the old pageblock-by-pageblock scan. The old set_zone_contiguous()
+>> iterated at pageblock granularity via pageblock_pfn_to_page(), so a
+>> zone could be marked contiguous even if a subsection-sized hole
+>> existed within a pageblock. The new check requires
+>> spanned_pages == pages_with_online_memmap, meaning every PFN in the
+>> zone span must satisfy pfn_to_online_page().
+>>
+>> The following test cases of memory hotplug for a VM [1], tested in the
+>> environment [2], show that this optimization can significantly reduce the
+>> memory hotplug time [3].
+>>
+>> +----------------+------+---------------+--------------+----------------+
+>> |                | Size | Time (before) | Time (after) | Time Reduction |
+>> |                +------+---------------+--------------+----------------+
+>> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
+>> |                +------+---------------+--------------+----------------+
+>> |                | 512G |      36s      |      7s      |       81%      |
+>> +----------------+------+---------------+--------------+----------------+
+>>
+>> +----------------+------+---------------+--------------+----------------+
+>> |                | Size | Time (before) | Time (after) | Time Reduction |
+>> |                +------+---------------+--------------+----------------+
+>> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
+>> |                +------+---------------+--------------+----------------+
+>> |                | 512G |      36s      |      9s      |       75%      |
+>> +----------------+------+---------------+--------------+----------------+
+>>
+>> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>>    object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>>    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>>    qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>>    qom-set vmem1 requested-size 0G (Unplug Memory)
+>>
+>> [2] Hardware     : Intel Icelake server
+>>    Guest Kernel : v7.3-rc1
+>>    Qemu         : v9.0.0
+>>
+>>    Launch VM    :
+>>    qemu-system-x86_64 -accel kvm -cpu host \
+>>    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>>    -drive file=./seed.img,format=raw,if=virtio \
+>>    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>>    -m 2G,slots=10,maxmem=2052472M \
+>>    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>>    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>>    -nographic -machine q35 \
+>>    -nic user,hostfwd=tcp::3000-:22
+>>
+>>    Guest kernel auto-onlines newly added memory blocks:
+>>    echo online > /sys/devices/system/memory/auto_online_blocks
+>>
+>> [3] The time from typing the QEMU commands in [1] to when the output of
+>>    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>>    memory is recognized.
+>>
+>> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+>> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>> Reviewed-by: Jason Zeng <jason.zeng@intel.com>
+>> Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+>> Reviewed-by: Pan Deng <pan.deng@intel.com>
+>> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
+>> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+>> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> ---
+>> Documentation/mm/physical_memory.rst |  6 +++
+>> drivers/base/memory.c                |  7 +++-
+>> include/linux/mmzone.h               | 48 +++++++++++++++++++++
+>> mm/memory_hotplug.c                  | 12 +-----
+>> mm/mm_init.c                         | 63 +++++++++++++++-------------
+>> mm/mm_init.h                         |  6 ---
+>> mm/page_alloc.h                      |  2 +-
+>> 7 files changed, 98 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+>> index a09407d72973..2e67e8b23a99 100644
+>> --- a/Documentation/mm/physical_memory.rst
+>> +++ b/Documentation/mm/physical_memory.rst
+>> @@ -480,6 +480,12 @@ General
+>>   ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
+>>   is initialized by ``calculate_node_totalpages()``.
+>>
+>> +``pages_with_online_memmap``
+>> +  Pages within the zone that have an online memory map: present pages and
+>> +  memory holes whose memory map has been initialized and
+>> +  ``pfn_to_online_page()`` succeeds. See the comment for
+>> +  ``pages_with_online_memmap`` in ``include/linux/mmzone.h`` for more details.
+>> +
+>> ``present_early_pages``
+>>   The present pages existing within the zone located on memory available since
+>>   early boot, excluding hotplugged memory. Defined only when
+>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>> index 5eead3346f1e..28f9503f6a71 100644
+>> --- a/drivers/base/memory.c
+>> +++ b/drivers/base/memory.c
+>> @@ -255,6 +255,7 @@ static int memory_block_online(struct memory_block *mem)
+>> 		nr_vmemmap_pages = mem->altmap->free;
+>>
+>> 	mem_hotplug_begin();
+>> +	clear_zone_contiguous(zone);
+>> 	if (nr_vmemmap_pages) {
+>> 		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
+>> 		if (ret)
+>> @@ -279,6 +280,7 @@ static int memory_block_online(struct memory_block *mem)
+>>
+>> 	mem->zone = zone;
+>> out:
+>> +	set_zone_contiguous(zone);
+>> 	mem_hotplug_done();
+>> 	return ret;
+>> }
+>> @@ -304,6 +306,7 @@ static int memory_block_offline(struct memory_block *mem)
+>> 		nr_vmemmap_pages = mem->altmap->free;
+>>
+>> 	mem_hotplug_begin();
+>> +	clear_zone_contiguous(mem->zone);
+>> 	if (nr_vmemmap_pages)
+>> 		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
+>> 					  -nr_vmemmap_pages);
+>> @@ -321,8 +324,10 @@ static int memory_block_offline(struct memory_block *mem)
+>> 	if (nr_vmemmap_pages)
+>> 		mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
+>>
+>> -	mem->zone = NULL;
+>> out:
+>> +	set_zone_contiguous(mem->zone);
+>> +	if (!ret)
+>> +		mem->zone = NULL;
+>> 	mem_hotplug_done();
+>> 	return ret;
+>> }
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 94f9c3ff5416..7bfb871d6344 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -1043,6 +1043,21 @@ struct zone {
+>> 	 * cma pages is present pages that are assigned for CMA use
+>> 	 * (MIGRATE_CMA).
+>> 	 *
+>> +	 * pages_with_online_memmap tracks pages within the zone that have
+>> +	 * an online memory map: present pages and memory holes whose
+>> +	 * memory map has been initialized and pfn_to_online_page()
+>> +	 * succeeds. When spanned_pages == pages_with_online_memmap,
+>> +	 * pfn_to_page() can be performed without further checks on any
+>> +	 * PFN within the zone span.
+>> +	 *
+>> +	 * Note: this counter may temporarily undercount when pages with an
+>> +	 * online memory map exist outside the current zone span. This can
+>> +	 * only happen during boot, when initializing the memory map of
+>> +	 * pages that do not fall into any zone span. Growing the zone to
+>> +	 * cover such pages and later shrinking it back may result in a
+>> +	 * "too small" value. This is safe: it merely prevents detecting a
+>> +	 * contiguous zone.
+>> +	 *
+>> 	 * So present_pages may be used by memory hotplug or memory power
+>> 	 * management logic to figure out unmanaged pages by checking
+>> 	 * (present_pages - managed_pages). And managed_pages should be used
+>> @@ -1067,6 +1082,7 @@ struct zone {
+>> 	atomic_long_t		managed_pages;
+>> 	unsigned long		spanned_pages;
+>> 	unsigned long		present_pages;
+>> +	unsigned long		pages_with_online_memmap;
+>> #if defined(CONFIG_MEMORY_HOTPLUG)
+>> 	unsigned long		present_early_pages;
+>> #endif
+>> @@ -1694,6 +1710,38 @@ static inline bool zone_is_zone_device(const struct zone *zone)
+>> }
+>> #endif
+>>
+>> +/**
+>> + * zone_is_contiguous - test whether a zone is contiguous
+>> + * @zone: the zone to test.
+>> + *
+>> + * In a contiguous zone, it is valid to call pfn_to_page() on any PFN in the
+>> + * spanned zone without requiring pfn_valid() or pfn_to_online_page() checks.
+>> + *
+>> + * Note that missing synchronization with memory offlining makes any PFN
+>> + * traversal prone to races.
+>> + *
+>> + * ZONE_DEVICE zones are always marked non-contiguous.
+>> + *
+>> + * Return: true if contiguous, otherwise false.
+>> + */
+>> +static inline bool zone_is_contiguous(const struct zone *zone)
+>> +{
+>> +	return READ_ONCE(zone->contiguous);
+>> +}
+>> +
+>> +static inline void set_zone_contiguous(struct zone *zone)
+>> +{
+>> +	if (zone_is_zone_device(zone))
+>> +		return;
+> 
+> After this patch, set_zone_contiguous() is only used in two cases:
+> 
+>   * memory_block_online()
+>   * page_alloc_init_late()
+> 
+> If I understand correctly:
+> 
+>   * zone_for_pfn_range() won't return ZONE_DEVICE
+>   * there is no ZONE_DEVICE memory populated at this point, device memory is
+>     populated during do_initcalls()
+> 
+> So we don't expect ZONE_DEVICE here?
+> 
+>> +	if (zone->spanned_pages == zone->pages_with_online_memmap)
+>> +		WRITE_ONCE(zone->contiguous, true);
+>> +}
+>> +
+>> +static inline void clear_zone_contiguous(struct zone *zone)
+>> +{
+>> +	WRITE_ONCE(zone->contiguous, false);
+>> +}
+>> +
+>> /*
+>>  * Returns true if a zone has pages managed by the buddy allocator.
+>>  * All the reclaim decisions have to use this function rather than
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index 9f19876ec3ec..100941d1b828 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -549,18 +549,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>>
+>> 	/*
+>> 	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
+>> -	 * we will not try to shrink the zones - which is okay as
+>> -	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
+>> +	 * we will not try to shrink it.
+>> 	 */
+>> 	if (zone_is_zone_device(zone))
+>> 		return;
+> 
+> One question not closely related to this patch.
+> 
+> This check is introduced in commit 7ce700bf11b5 ("mm/memory_hotplug: don't
+> access uninitialized memmaps in shrink_zone_span()"), at that time
+> pfn_to_online_page() couldn't handle ZONE_DEVICE pfn correctly.
+> 
+> Then commit 1f90a3477df3 ("mm: teach pfn_to_online_page() about ZONE_DEVICE
+> section collisions") enables it.
 
-No change whatsoever:
+That's something different. pfn_to_online_page() will always fail on ZONE_DEVICE
+parts as ZONE_DEVICE pages are never online.
 
-W/o this patch:
-   text   data    bss    dec    hex filename
-31321399 9024030 1127028 41472457 278d1c9 vmlinux
+We'd have to hand-code some check similar to what is done in
+pfn_to_online_page() to deal with collisions in online_device_section(ms) and
+provide a custom shrinking alternative.
 
-With this patch:
-   text   data    bss    dec    hex filename
-31321399 9024030 1127028 41472457 278d1c9 vmlinux
+But given that there is no actual demand (nobody uses zone->contig there), it
+doesn't really make sense to add support.
 
+-- 
+Cheers,
 
->
-> Acked-by: Usama Arif <usama.arif@linux.dev>
->
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index 2f500d639db5..9908ba32f180 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -130,7 +130,7 @@ static void release_task_mempolicy(struct proc_maps=
-_private *priv)
-> >  }
-> >  #endif
-> >
-> > -static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> > +static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> >       int ret =3D mmap_read_lock_killable(lock_ctx->mm);
-> >
-> > @@ -140,7 +140,7 @@ static inline int lock_ctx_mm(struct proc_maps_lock=
-ing_ctx *lock_ctx)
-> >       return ret;
-> >  }
-> >
-> > -static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ct=
-x)
-> > +static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> >       mmap_read_unlock(lock_ctx->mm);
-> >       lock_ctx->mmap_locked =3D false;
-> > @@ -177,7 +177,7 @@ static struct vm_area_struct *get_next_vma(struct p=
-roc_maps_private *priv,
-> >       return vma;
-> >  }
-> >
-> > -static inline bool fallback_to_mmap_lock(struct proc_maps_private *pri=
-v,
-> > +static bool fallback_to_mmap_lock(struct proc_maps_private *priv,
-> >                                        loff_t pos)
-> >  {
-> >       struct proc_maps_locking_ctx *lock_ctx =3D &priv->lock_ctx;
-> > @@ -194,7 +194,7 @@ static inline bool fallback_to_mmap_lock(struct pro=
-c_maps_private *priv,
-> >       return true;
-> >  }
-> >
-> > -static inline void drop_rcu(struct proc_maps_private *priv)
-> > +static void drop_rcu(struct proc_maps_private *priv)
-> >  {
-> >       if (priv->lock_ctx.mmap_locked)
-> >               return;
-> > @@ -202,7 +202,7 @@ static inline void drop_rcu(struct proc_maps_privat=
-e *priv)
-> >       rcu_read_unlock();
-> >  }
-> >
-> > -static inline void reacquire_rcu(struct proc_maps_private *priv)
-> > +static void reacquire_rcu(struct proc_maps_private *priv)
-> >  {
-> >       if (priv->lock_ctx.mmap_locked)
-> >               return;
-> > @@ -1230,7 +1230,7 @@ static const struct mm_walk_ops smaps_shmem_walk_=
-vma_lock_ops =3D {
-> >       .walk_lock              =3D PGWALK_VMA_RDLOCK_VERIFY,
-> >  };
-> >
-> > -static inline const struct mm_walk_ops *
-> > +static const struct mm_walk_ops *
-> >  get_smaps_walk_ops(struct proc_maps_private *priv)
-> >  {
-> >       if (priv->lock_ctx.mmap_locked)
-> > @@ -1238,7 +1238,7 @@ get_smaps_walk_ops(struct proc_maps_private *priv=
-)
-> >       return &smaps_walk_vma_lock_ops;
-> >  }
-> >
-> > -static inline const struct mm_walk_ops *
-> > +static const struct mm_walk_ops *
-> >  get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
-> >  {
-> >       if (priv->lock_ctx.mmap_locked)
-> > @@ -1572,7 +1572,7 @@ struct clear_refs_private {
-> >       enum clear_refs_types type;
-> >  };
-> >
-> > -static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned =
-long addr, pte_t pte)
-> > +static bool pte_is_pinned(struct vm_area_struct *vma, unsigned long ad=
-dr, pte_t pte)
-> >  {
-> >       struct folio *folio;
-> >
-> > @@ -1588,8 +1588,8 @@ static inline bool pte_is_pinned(struct vm_area_s=
-truct *vma, unsigned long addr,
-> >       return folio_maybe_dma_pinned(folio);
-> >  }
-> >
-> > -static inline void clear_soft_dirty(struct vm_area_struct *vma,
-> > -             unsigned long addr, pte_t *pte)
-> > +static void clear_soft_dirty(struct vm_area_struct *vma, unsigned long=
- addr,
-> > +                          pte_t *pte)
-> >  {
-> >       if (!pgtable_supports_soft_dirty())
-> >               return;
-> > @@ -1620,8 +1620,8 @@ static inline void clear_soft_dirty(struct vm_are=
-a_struct *vma,
-> >  }
-> >
-> >  #if defined(CONFIG_TRANSPARENT_HUGEPAGE)
-> > -static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> > -             unsigned long addr, pmd_t *pmdp)
-> > +static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> > +                              unsigned long addr, pmd_t *pmdp)
-> >  {
-> >       pmd_t old, pmd =3D *pmdp;
-> >
-> > @@ -1646,8 +1646,8 @@ static inline void clear_soft_dirty_pmd(struct vm=
-_area_struct *vma,
-> >       }
-> >  }
-> >  #else
-> > -static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> > -             unsigned long addr, pmd_t *pmdp)
-> > +static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> > +                              unsigned long addr, pmd_t *pmdp)
-> >  {
-> >  }
-> >  #endif
-> > @@ -1846,7 +1846,7 @@ struct pagemapread {
-> >
-> >  #define PM_END_OF_BUFFER    1
-> >
-> > -static inline pagemap_entry_t make_pme(u64 frame, u64 flags)
-> > +static pagemap_entry_t make_pme(u64 frame, u64 flags)
-> >  {
-> >       return (pagemap_entry_t) { .pme =3D (frame & PM_PFRAME_MASK) | fl=
-ags };
-> >  }
-> > @@ -3388,7 +3388,7 @@ static const struct mm_walk_ops show_numa_vma_loc=
-k_ops =3D {
-> >       .walk_lock =3D PGWALK_VMA_RDLOCK_VERIFY,
-> >  };
-> >
-> > -static inline const struct mm_walk_ops *
-> > +static const struct mm_walk_ops *
-> >  get_show_numa_ops(struct proc_maps_private *priv)
-> >  {
-> >       if (priv->lock_ctx.mmap_locked)
-> > --
-> > 2.55.0.979.g7e5102b832-goog
-> >
-> >
+David
 
