@@ -4,98 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE89DC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:48:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4ABC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:50:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3AE56B0092; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
+	id B15946B0096; Thu, 10 Sep 2026 10:50:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE4256B0095; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
+	id AB74A6B0098; Thu, 10 Sep 2026 10:50:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE5D6B0096; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
+	id 98DAA6B0099; Thu, 10 Sep 2026 10:50:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F0876B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E090FA039B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:48:05 +0000 (UTC)
-X-FDA: 85198132530.29.C1DAB2E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2C602180016
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:48:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZS2dzQ+N;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789051684;
-	b=UiiOGqE5TU5oxfi58zE8DO9B9TTJHsl950HPLBfI8WLZraZ42drn9ZfR69Sq3Di8TBiqjU
-	OzmcameQJ+b1+QkfCVoys/QCVW+7TgiqzBb6G5KTUHfOazY0m6zFsfq8gk27ODWaRaDp2v
-	EloxwPgRuhR5QyU/yEBFTzqTpRNZZ90=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZS2dzQ+N;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789051684;
+	by kanga.kvack.org (Postfix) with ESMTP id 6ABA36B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:50:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3F7FA058C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:50:52 +0000 (UTC)
+X-FDA: 85198139544.24.1ECEA66
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CD59640008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:50:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hlfQLRxU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789051850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B8LvULR1C7zHsgbEpOUrhn3DOAKTICCIgCcp9Moo1AI=;
-	b=oRqh1QbPynIAPKL17MCmX8xB5FjjddJhYnFX9KonChcgnSyaSiZFmljTHIDro299SI4I7L
-	YYlSB8j0ZhwNz/lUMKeUokmzoXY8rhALEra7ZnYXKojl0jd4cdmVII1HxHu3hBWRJgrisp
-	PJ19+sNN+BeJZCcpnshfBdCVMEF4mAs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48613438A7;
-	Thu, 10 Sep 2026 14:48:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601061F000FF;
-	Thu, 10 Sep 2026 14:47:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789051683;
-	bh=B8LvULR1C7zHsgbEpOUrhn3DOAKTICCIgCcp9Moo1AI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZS2dzQ+Np0U4OAn0VVXIzCeZ5ieBiFxzuXO32HXGZjox2imU5YQqAvF8SDv3+HvpB
-	 NxKzJ7t53F+QsLxd/CAKfh/ceBGbni9Duv70Wf65QpPhB0zouKNuCKjxwxHBz7Ulrb
-	 YX/D12ZD9xp4XqsIIVhy+Pz4Q98Vhg7jVxbdMioUiDrhm08tGlgTlHSNBC5ULoSm7P
-	 RjDqnY3JtId+Xe4grDputbR5RuXHVt8PwdzEvcy+eynCsYB2Ookav39t3u54y4bkvh
-	 iX1Yd4WaL2lpHCK6hln10VYqPdfl55bipsdfB0oRiHwHmEfLJXIjbCAbdjH9fkO7ly
-	 YP/fvHYNEODkg==
-Date: Thu, 10 Sep 2026 15:47:52 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 12/12] mm/memory_hotplug: drop CONFIG_HAVE_ARCH_PFN_VALID
- handling from pfn_to_online_page()
-Message-ID: <aqLB0Fe_bCRSph9E@gremlin>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-12-008fc8d579fe@kernel.org>
+	bh=7fo5EGqeU1K9oWeUdrFJ6Uc8xV6Lo6ckrOaUTXHreas=;
+	b=K+VDdvnGsNypU4GpCdpSwlWQUJlRs4Q6tsaxpN1p8FDG+5iVHoh5Nve2dLr4/e4fW7OvKG
+	R9gRk2V8BxVIaCGUoPdLYwsyMYm/LU4ZNa/m0My1LVvGN1MOme54a/E+m8GYeD251pST/D
+	r7mKD6oQSEDZ5NQakdoE33Vp2dDK3D4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789051850;
+	b=Z+pvRfO9eQtTz6jUidPzW7eWi+lBN4vtWJ0jDrfx9jmNuZfmlio9w5WLQuFg7GvKPoAapX
+	Yyh9kon1hIvu2o/bAruwL4QBKO5zRqGlvfJoD/O5PhPNGinG3DW6NEPPrdbiGcnj+SvFlo
+	FrHfCiVHrTEWpvzfBHMQHWu0Tm4AS5w=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hlfQLRxU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5307425f44bso248831cf.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:50:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789051850; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fbKovrhy53aIidaAX95qBztnK9npSd/b/w6x6tQelWPOnv4ji7VUyuWxcM3CYrsu6E
+         M2hUmkneEyxFFfRzSSYgGSso2KN6NtNYW9DXKRIylVfYL+6kDUFjXqfH4RdaExvYeRnm
+         aM+oyPXqLZLK68aiI2TOHw7HjPTZPZvlKNkrW/055aJL2eU2tTU0nvQB2DkcqOYVd1gv
+         uT0sM5M4vVuHiteyRTwck9AB8+0SMCczNyjS5T5gOW0mLKzKG2UVRpIV5id1+hWZmYk3
+         Q6RFNasIiuu9bIGNsUBY3pMiy3D6cfG4aR6Mf/1Sx21jlBWc2CHpIQK/w26Zws4dxeF8
+         KYcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7fo5EGqeU1K9oWeUdrFJ6Uc8xV6Lo6ckrOaUTXHreas=;
+        fh=STAXURySf+/Zby23qE0gTCVslhkCrPYaF0Okf/xDr3M=;
+        b=hDnATebKM9NtDV/Mb6AP3LXvaP2hVd4irxhimoBOiJ5yyI8Ma3uN13eTjPGy5a0E49
+         sGDj75+8JRi3OvOfDvFbiIwVdEJZQOMRPmr9mhRYMcw8cYA8nmH+yEl+6ZrQut/+xOHE
+         8rkmbeUP3s6/hMypBERn0plsZ2Brb8c+7RRERTwNPdZnnpXSJU7X502B1/H54KmO6Cti
+         xuZZg1m5+csleP9XAOXtxM7FVIvTZ36aXG90WgYjGvZkA+IigyesB7+K3aymSRMInXjF
+         +ix3+F+rvWjrgksrHKav71fhv1PP1m7uJOeToL3VSJijajncRG6n0NfzXM35satjHrGK
+         YqdQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789051850; x=1789656650; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7fo5EGqeU1K9oWeUdrFJ6Uc8xV6Lo6ckrOaUTXHreas=;
+        b=hlfQLRxU8/V9EJ1ZHGgPE+/3WyH0Tau89+4QPiVOmomANg4NMhGf+lRvDqBtkGF0cq
+         u+QC91DyGOIa+vmhj5hBU0ePLCDr4QW6jvulEAXXqxXOV5bzR0xZzqlqHvRQQrZ5FRYC
+         Th1aY0CYEVGTXze6X65oIRRUg3JtwRnTP6QvbJTVvRDVR/ncdIYGkEdjVpxsjd9Pn/EY
+         Py05vldKuAyTVa3xrJBtXR+PfJ1dNNnNkIW70GQZDxmp/XiVeXrctQbSoAqTTFRTOXRY
+         Kv6SQsO0jVPAxFG7nwUaza31iB7WrGc0zDdVZ7Ut3CA02Vv8D1zZNyR0QoZFUzAwdpB8
+         BpHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789051850; x=1789656650;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7fo5EGqeU1K9oWeUdrFJ6Uc8xV6Lo6ckrOaUTXHreas=;
+        b=HlEWwHIOLCZ5gnDyy6wkF5qYnldNDsqJfWu9O4nP5mCc9hKA3CNhNv4m78RfgS07zg
+         fKr3jl1o5TqRR0Q9OENIqybVzvNFGITK9JxRvpVXtmLCyvfLcM0/i+lP4eoWyBoS3OHU
+         olSXc7pn1qot8QSNKeu4onZq7QVCBwjG0uhMoXXY5clFnB2/s4iFDoXrrAjmCdhMLJZu
+         lZIlI8j3rJMKmmw+FsKjdJlnMVrT3TkD9HwFCcxo5fWWhkYNs6F6lxniiGM5Se/9QN0g
+         jZwA5ONbo5p0eftdUJfgHRZD9un40mYWU2IiqJszsLwWm6vWBskA892OHucWVprknEbm
+         BJbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwg6ad9b1whjopjoqOCkQL0/xT0xolyBYLPSXfKn5oI+hrHq9YWmg0cSquG0NNZT5kPADkg5+D2jQ==@kvack.org
+X-Gm-Message-State: AFuF++nA836r16tQ/qau47pjTwt6nGcyRXBPTh7LH5xU8nQG2QbZ/tm0
+	FfYgoI7N+U9wlU6m9ODRanoHSmarnOLc0ffE8x2bEDGMQp4bSCb34jr5UQkU+KO0XkgMkdiNZGS
+	fJ1pQAJbJfVe/pMFGBqg2ekIdnd1M7BzRIOhR7+qI
+X-Gm-Gg: AYBFou3rFIJgX3ZRgeWFlXWLCvlTYy8pZmy6s319sDUEm6vrXSQDzP8kBiO9SDHTEoM
+	9SlGBGbINsluWV4zFmJO+V9OgaF70xg7J4K3PABWu+8j2KBoYHLLa+h6CcQHvbea7M+3bjtcU3I
+	Tb+i/dHTnfbhsH4p6TPMgfX3wGxah+erc2BlDOackulXg+pI1qfXSvPGaFflhOIa2cX/ueRWlKR
+	RIYR0o6SZmh5wH4ZJcCkgW03Pkg7A+ql5fVW3a9AswqKa1UfpBZrEXKKk3zxTZpvTjS36xod48L
+	RQuawp5MKJSgfze/oHYijgJxTN9nM/6gNkWaKK/SE0MtjlrQv/dbBmHABD3+XzsVCZJlob4dMj8
+	sBZqzzezjivYCBci4Ek+Y
+X-Received: by 2002:ac8:7c4a:0:b0:52d:9d62:6163 with SMTP id
+ d75a77b69052e-530b62adafbmr17198241cf.9.1789051849244; Thu, 10 Sep 2026
+ 07:50:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-12-008fc8d579fe@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2C602180016
-X-Stat-Signature: 5kgjh5ezi8hf9prmp9ne4mq1s5nmaz54
+References: <20260831203056.838265-1-surenb@google.com> <20260831203056.838265-2-surenb@google.com>
+ <a4d74575-65d5-46cf-bd2d-dcabf2543811@kernel.org>
+In-Reply-To: <a4d74575-65d5-46cf-bd2d-dcabf2543811@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 10 Sep 2026 07:50:38 -0700
+X-Gm-Features: AcwNN1X_jRm0tBBbAYUSIvnyhEAYCX6eOrOg0SRx_RaTXlhhkG6R2zUlwcvhFQ4
+Message-ID: <CAJuCfpEFmf0V0OuAkEPSpzYA-WScAjmNg2b6CJg7Z3WH9h6Qdg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/5] mm: Make per-VMA locks available universally
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com, 
+	Liam.Howlett@oracle.com, ljs@kernel.org, willy@infradead.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com, 
+	aliceryhl@google.com, arve@android.com, cmllamas@google.com, 
+	christian@brauner.io, tkjos@android.com, dsahern@kernel.org, 
+	davem@davemloft.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1789051684-539500
-X-HE-Meta: U2FsdGVkX19YGgUapqwMPQaMO9+saICT0RasG8rX1z8jDE5THv1UqN3izonJ7mxWh64of93AemJSPiBJt8dRuWp9FEY7wmh7kSnWbq7WPOocNe72nY/9AEUuNO2tNSd5kpeJ4KHVzXqHdWejH6dmEvhSZTZCLnnzqpdpT4hUFKMNSuRHrblWz9R/aVzEklrgd3pycqc8kpOwoKBcllrDJQtfZeU0k77QMnbQetdwDYepWBQ5hXwyVaYkys7C2SyLiMB4VGBlKAKhQzxobrzDTCZCMec0ZzcQkCBdehck2Gw5Mk5YvpobFvVNWQ5m6mwnSdQxhmTdtUV+PVmkR26kZEtplbPp/IwTt/RegkapA8ggKlryRJyj9MzAkilgdLQgnvqII6zX5hPzvb5an1TEjVC2zZuMAfKiF/kq84Hk4H80K40LTtGSta1f79YfP3OjNMcLZxvzU7F0oB2WEXKbqQT6DkJ5pA4QJ8cO7SgOXlSi3m+dCL3aol9+PSgpOIch1nXVQgAzk9VVyarvgOpfctHfcFiTij3mCg8jAwluH7WhafVovdGZEZfznqnlyRurXwLmWmkx8abrloPi/XzdeuaLfs93LWWHwUs5M7TM8iA6EdB4m+IYw3631d0Gix7Xbt7ZylYaHB0j8IlAS9VYIjaSNs8k5/ehx7Rj48aUMFKGUyQAl+c1mntRGO8dMOugqXKynacUKzEiCX0/Rqck8xSuwxJtF3WBXC5YFbWZpR7SiAypY0MP9yX+ufXP+pgZezO0+OTiB2EY/C7oKOLTwq6sJcPC/tYjAzEk9bPAZ3mJ3fQ4/HD6nVUkpIqY77kp6sL089uHDXOIuVl3zSBkAJaykh1o8VyRwKuz+D0cfEo+ttZa8bpnVkWFyI9pMFdI1mRNpuAiC0A072qYBmQRim3Ww2s2pK220FSNrbkQ5x8JqG2r+A79lxt+Fk+4yFznN/alyc5+8fn5rblnQYB
- hjfcv0et
- YPxJe34cDSvxUDobgGNR5ohyEGZ0wEXn0dVH5t+fThmwfumQ+0NTVTHsH5SYynx5V6B1QPa/VFhM7NFYXIPEujuTSryOsvUCXYYJbylS8kL+2kY148SERgaR+0V1AyJBzXJudiGoWz4WBIq6uUCYmWToJ+khErm8BGeU7MpXEufJhSwyezl5X+midtOW5OIqNA7yi1vf/dN3FVrdj0pQawv2KP218kRF7kKArJvAmKkh7ti5gfTfX4n25D+zL94eekSVUJuNy1sfTq7VBlIynHxM7ibVeVAH8CEw4yO5NkgZgL8a4G1vEJ/bTmTrjIyOox75ED2AstMK7DRE=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CD59640008
+X-Stat-Signature: 965gdpbtsu8suzyg54e8y8o9b9d5b4up
+X-HE-Tag: 1789051850-162752
+X-HE-Meta: U2FsdGVkX1+3EKOb6tZgRxr7960eKGrLdOk6nXAn9TeCyfLkS+i9VRC7K6lLBvUwJxzFOKggUPVji7iraHwe9tTj1c9qDT4u3WwQuKjAo/AmoHQa5dBMsGmfrBP+//OK45ghRQRQVXJiWsMEhhrnY76Eoc72yjkEg62vVlal2SCtodJ5Im6JVow5aP+k1wjAMd2GNnxBxNuNCSJSNzVcBU0ZSeW75a1mShbZse/oYkEXxMIPvXyDqw8vKQqdqkuUshLZFlBDAwDnP425U7pB2yC0mnEOG2QFMj8HsPflch2Z0QJhYdGkMmgOxIZDR6lG5NpZTxOy5YCuWBkLtgZXNaYWn9c9XXOrzsqq6sy6I1Yt+kDGsx0yrLWNBcrcwvcM/X0uhNAmiBdzt9J60uZNehyjItEIzOyuj7teNBVLbvR1ExhUPpRoZOUcxQgUMMHGcFOdESnCPySim7MoceNoLQzbXUJduVYW9hFXKP4UBzckW8RDL9ujl6/gMFSJCF8+rXX2r7WXpFWxl+AiewwHm5Q7Cryvt+Bx1QCzTZw4oxM+iuEJ0aPxIt5dNNs3jmaaNqusajV5AwMM+KGkmO2V+CBDbVUdnBP4dgE7cA0VptLakB1SwoQEwKMg8UWSXUTZ3tL+6RE+rkvoxcY6c8PYtZ0KZ407DGWcVRZPl+K54GjVf3HAw9QaL1IuaIPFx7jzJZ/jBwxiCBq/JIHmaBm9UGQWuIoA/PeDLWORmJ/jSgM/ieVkcchVI8d/uLYnArJQBpbQ8QLwfMl+8SWEdrnQWqoGg8VvDH6AiWj7vPap5uZQtAd7l1SBOU1p0lwJasglluqSuIWkjuX/Nbu/P+gcB7yhJ+GsYoPOHiaaVi2242Yh3kyNSnNSd1zz5iARD3cr8lc5Ue17wdVLEiSMj3/2Ga9yXc5n3cEFVeYV2OKziwBRtDewYKiWFMY1NTYXUChsjHRMd5sTlK2F5yZjlH3
+ 0suLz+qr
+ IuY4RhaSmoWVdp8YnIatMn4ALXlDndBALu0B2YWwmqHVOTLVyCkq2ik6pt9EfpFc4ubfisDnprw3dMtV6cy2PDgYY23mnr7pgH0PNikWZMxp+J8L5NgLOX0UBfgzaNnlTV+l1doVa9MU89guQHr/Mh3sOyWuzvwaxMEe80zJsXJ9BRtmtUF0YnahD/JOhUCmtF5eBlhP0Hp62nta9kIQoqw8H44Cj32VNPrCt8+3oygftlxRSEheYymp4uDq9+1QJpzlAOrOow3KFcqf+p+ZyLXfkCaMybJ70XaT8TIvC0MSaB2VXfNZLnK+p8RpZLlJ61U87IyrDB2aHpajNEVW0ow4otUik4GxSHt/akcL0TOB+Njo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,100 +146,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:33:05PM +0200, David Hildenbrand (Arm) wrote:
-> Drop CONFIG_HAVE_ARCH_PFN_VALID handling, as CONFIG_HAVE_ARCH_PFN_VALID
-> is never used with CONFIG_MEMORY_HOTPLUG, as the latter depends on
-> CONFIG_SPARSEMEM_VMEMMAP. Make sure it stays that way.
+On Thu, Sep 10, 2026 at 3:09=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 8/31/26 22:30, Suren Baghdasaryan wrote:
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
+> >
+> > The per-VMA locks have been around for several years. They've had some
+> > bugs worked out of them and have seen quite wide use. However, they
+> > are still only available when architectures explicitly enable them.
+> > Remove the conditional compilation around the per-VMA locks, making
+> > them available on all architectures and configs.
+> >
+> > The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> > when the architecture started using per-VMA locks in the fault
+> > handler. But, contrary to the naming, the Kconfig option does not
+> > really indicate whether the architecture supports per-VMA locks or
+> > not. It is more of a marker for whether the architecture is likely to
+> > benefit from per-VMA locks.
+> >
+> > To me, the most important thing side-effect of universal availability
+> > is letting per-VMA locks be used in SMP=3Dn configs. This lets us use
+> > per-VMA locking in all x86 code without fallbacks.
+> >
+> > Overall, this just generally makes the kernel simpler. Just look at
+> > the diffstat. It also opens the door to users that want to use the
+> > per-VMA locks in common code. Doing *that* brings additional
+> > simplifications.
+> >
+> > The downside of this is adding some fields to vm_area_struct and
+> > mm_struct. There are likely ways to optimize this, especially for
+> > things like SMP=3Dn configs. For now, do the simplest thing: use the
+> > same implementation everywhere.
+> >
+> > =3D=3D Considerations for NOMMU config =3D=3D
+>
+> Echoing what I commented on v6 after v7 was already sent (not realizing t=
+here
+> was a v7 after my inbox got flooded)
+>
+> Maybe the NOMMU "support" could have been had in a separate prep patch (w=
+here a
+> lot of the description below could have been moved), making the patch its=
+elf
+> just mostly a removal of code.
 
-So argument is:
-
-mm/Makefile:
-
-memory-hotplug-$(CONFIG_MEMORY_HOTPLUG) += memory_hotplug.o
-
-Is memory_hotplug.c even compiled at all?
-
-mm/Kconfig:
-
-menuconfig MEMORY_HOTPLUG
-	bool "Memory hotplug"
-	select MEMORY_ISOLATION
-	depends on SPARSEMEM_VMEMMAP
-	depends on ARCH_ENABLE_MEMORY_HOTPLUG
-	depends on 64BIT
-	select NUMA_KEEP_MEMINFO if NUMA
-
-$ cd arch
-$ rg HAVE_ARCH_PFN_VALID
-Kconfig
-1762:config HAVE_ARCH_PFN_VALID
-
-arm/Kconfig
-94:	select HAVE_ARCH_PFN_VALID
-
-arm/mm/init.c
-121:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
-
-arm/include/asm/page.h
-178:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
-
-m68k/Kconfig.cpu
-23:	select HAVE_ARCH_PFN_VALID
-40:	select HAVE_ARCH_PFN_VALID
-
-arc/Kconfig
-463:	select HAVE_ARCH_PFN_VALID
-
-All of arm, m68k and arc are 32-bit arches so by definition MEMORY_HOTPLUG
-can't be selected.
+Yeah, that would make reviewing indeed easier. I guess current
+structure is the result of me adding NOMMU pieces to the pre-existing
+patchset. I don't think it's worth refactoring but I can do that if
+you insist.
 
 >
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-So LGTM and:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  mm/memory_hotplug.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
 >
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index b428da66d279c..58ce35cb48f57 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -344,6 +344,8 @@ struct page *pfn_to_online_page(unsigned long pfn)
->  	struct dev_pagemap *pgmap;
->  	struct mem_section *ms;
->
-> +	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Haha nicest way of removing some later code I've seen. Just make it not compile
-if such a thing happens :)
+Thanks!
 
-> +
->  	if (nr >= NR_MEM_SECTIONS)
->  		return NULL;
->
-> @@ -351,13 +353,6 @@ struct page *pfn_to_online_page(unsigned long pfn)
->  	if (!online_section(ms))
->  		return NULL;
->
-> -	/*
-> -	 * Save some code text when online_section() +
-> -	 * pfn_section_valid() are sufficient.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID) && !pfn_valid(pfn))
-> -		return NULL;
-> -
->  	if (!pfn_section_valid(ms, pfn))
->  		return NULL;
->
 >
 > --
-> 2.43.0
+> Cheers,
 >
-
---
-Cheers, Lorenzo
+> David
 
