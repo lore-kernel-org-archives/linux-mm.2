@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF8FC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2D7C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33A686B0092; Thu, 10 Sep 2026 08:57:04 -0400 (EDT)
+	id E374D6B0095; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EB6B6B0093; Thu, 10 Sep 2026 08:57:04 -0400 (EDT)
+	id DC0ED6B0096; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3456B0095; Thu, 10 Sep 2026 08:57:04 -0400 (EDT)
+	id C132A6B0098; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E54AE6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:57:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 58AAD1C250B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:03 +0000 (UTC)
-X-FDA: 85197852726.22.E6DEF1D
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 86FAA40007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AVRWZlZi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=diannaaav@gmail.com
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AVRWZlZi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=diannaaav@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789045021;
-	b=lMaHOHBqlBoUPRC72wnAXNcZvPgnN5Y2hRbObOghaFD86dw6RexEx+mDUkfFyfHwsM2hvh
-	a6pYC0ueThdYF8wVhwObc3hxLZ4uhPYQancRZbixpsTpGRYXgCGR/NYLM8wuHO4fAzH64u
-	xQFv9fotvoJViXf8elUgyF7IGC1It94=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9810B6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1A3CA4F47
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:06 +0000 (UTC)
+X-FDA: 85197852852.05.D34EB13
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2BCCE120009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CMKkmGIg;
+	spf=pass (imf29.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789045021;
+	s=arc-20220608; t=1789045024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HVOi/Y3C1iRUwyA09cZKyOyweLLbf7+xSIA4QpyhUZQ=;
-	b=a9QM8X8T6WGgmPyWcDrtJ8VkBThEG9EEb6MqxLCGuvB7ZgfZ80DLJq0MzNEJmfcCZ1d7Ji
-	Vt8yWsYtVAUvh/GqbOIcC+E0izFw1V4p49IytPc8JRJ7t7wZWRc1sAWg6hVbg6jPERAaUT
-	6vX74f9v6LNdHvUAQ53avHZs+OOF3EY=
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-399213ef56cso3088783a91.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:57:01 -0700 (PDT)
+	bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
+	b=2QFKziTz0QfEgLFBIytVWduIX24a1AS1b1OvJXECnHyzfQZaei0pmue4REouq8VRRK1NKc
+	WUvV4zRFfJs8ftwgrQg31G3+O/HIwtKxgOtIYpyqfxhNALx/XFh2y8ewOBY0sXSyTNCcik
+	A5uisQCq0FxOmPwZEFEsplmcFqmL/88=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CMKkmGIg;
+	spf=pass (imf29.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789045024;
+	b=I/0o/Gb832qLnup8CD+D5LOX+gEJYWkmLLIITJN7TnzQsmaFHpOjb8yWozpHlP225ZoFO6
+	y3zYGoZRh+TCqhnoDPO6rcqas4RyUdvDL9LVd4X6a8Q0vk1g/gufAg8vdklxpU887o69xt
+	1WWtfFjBBBdijTWlPI2+qW0KAL5kduk=
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-396a51b2605so2892791a91.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789045020; x=1789649820; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789045023; x=1789649823; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HVOi/Y3C1iRUwyA09cZKyOyweLLbf7+xSIA4QpyhUZQ=;
-        b=AVRWZlZisJkGpZ2G5ddbDiJV+Ut9MIf5wk9CPuLLPASPbdlNrSYtNUVal+5pdH2cvJ
-         1QT6EopfIzbvOvs1Fn01LnsJIiMq1rZIKSq+oQusQvpv3lzYhATVZFmhKXbzFets1Xu/
-         ff1bmsHwNRCTVnEwZFzx9wqSSBsP7f/U0Qpo1puj/47DA3XhZS0E37bo6KMNyxLvaUot
-         RqYArL7fHHZRrGqdPEV/jRsHokwViGKjiBov3x9jNUb171jINFS4eUP0MUjmvFxhTdGq
-         JabVi9Iv57eGPOMi7jW3s1NA+HDapo3IJLRQaPSwTpY1ugDtF45nWSJ/cRTfYc4HATsX
-         M5GQ==
+        bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
+        b=CMKkmGIgxgeEpzVDr4A5pklbdDubX7IB877oVZLOzPU++BlI5Tof3nxDMtKCT8l/yj
+         Eq8eJygaPxdT7aZIZ5XXi8H34xVWW7lRC1jHHGCrLhrJ+bcJOnJvZCeog/v1m5uA5RYo
+         KeNV9WH2q6B4XNy0inRQ2deQfdYF9/RL45q9igj/9anA8hY42tU33ELIt7Yh4xlRks2s
+         FtYNiQb7RtCh5MNScIyMwivZXzIHiDl0PeaeK1txFKHPenIn+YOkVn3brgqvmqrXUZIA
+         quCcHkI3VzjUxpBrCLQjfVnQCG0Q123Vxj9Ff7Py9h+SorXSv4FOm9Y24CwafyDGZ72Q
+         XRbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789045020; x=1789649820;
+        d=1e100.net; s=20251104; t=1789045023; x=1789649823;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HVOi/Y3C1iRUwyA09cZKyOyweLLbf7+xSIA4QpyhUZQ=;
-        b=Uq6c3kRO2/6KvLbY+AygJCd55JfqjTLsppRjFcruQ2lHLCVv+wNoh+hGTO+QR5HKlr
-         XUzKD9gj6+azPFDCkhHarRpbDab9i2NLcWphEc/lCe2qSTeZmn1aVXw6eeUAjpSLvfPl
-         8zQr6ofNdqhEttjWI3Q69csx7I4e2fS6LTDlt4XwyB9X+ZJeo0j96trOoNFvx/PCLYs/
-         jYc9fhZJWI9XDCTv/0ci9cX87dXGH8XyTqHg8t9zrco9g2uw9mt1rcX1rsXvM3AUU6d+
-         loHQ7FA+msuEKlwZZF6LBR2cPm9/E1b7B9oEtr08nukWJi5ZD/MMlOsydFMn77GOitjB
-         vMmA==
-X-Forwarded-Encrypted: i=1; AKwUvBzhQHtJzzJqfu4T+XbvPGCeitrr8qhk/7Tp24y3o5oR8Eg4aKMrX3CY8QKyo5o1aVH9IZpoh42kEw==@kvack.org
-X-Gm-Message-State: AFuF++nKI37DXGpPgIigjWiGHYh9x1qrdfy2OOyH8Us4fGvwLAbVJJT/
-	d5tJZoCQiCzl8cTDhJSjjqAbWge9mQdqQ8N+G1wZP9Qr/4BCgiwtCW3r
-X-Gm-Gg: AYBFou13TclpNyhQMHoHSF+w3l7X/iEIIZ+gkWXLK8T1bYG4cq4nnU65GcS7XJBcmjA
-	zPRewKvLMtf5tmiVpk4iSIFBsq6a4z2+rdAWBR03JD3A0sbgZm7+a89TEzu2LmYOZc1+if5QtJr
-	6dSBZ6MDTso15LXCiCKUYgFi9XKjP1GxlNsBfzY4DU5SNsyLCEVdTRNePzVxjCF6nb3NEAWMj7Q
-	H9Og+FhXg7otJmhbZTzdNBscbyxbWDX9Q25kdOgyEmP0voggtOe2p0LWoOa/b/FFcEbzd3VVKaC
-	J2/J6bBFZ9fDK2DUsontTGEu67qcWsxMhCOxvthASYUg1B9XoEK7pTe6FnHh7oJq/50iwIUCSJm
-	j7OEjXNhLGvVNKxhf1kkdrG/4xFARB4r8xAj0foNUegRz2Ou936rxgwoKn4rG21AcEE1KR3Ma6h
-	gv0waXt+9hBPzd+Z274PoD0iurc7NCMqk4/LAU9nh+nzp9EkjbFGoyzVKAxUeBa83dV7Scpw==
-X-Received: by 2002:a17:90b:4fc5:b0:37f:e1b6:4c7d with SMTP id 98e67ed59e1d1-39b26190c25mr61000735a91.6.1789045020263;
-        Thu, 10 Sep 2026 05:57:00 -0700 (PDT)
+        bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
+        b=hCtnoeiAVuEUPhZPHR5VZWmTixoIA7sDD5K1HYpJiCS0U+6VO1M0KVoxs4UyIFMULm
+         wWiEcc87TDwFyAOuVmeZbEcmrIhtu1fUnZU5h0K1vluKpR6YCvuflroRveGIPufB8r9G
+         +ffVYATXVOuhraJ7s18iJmj2kUK43MJSKWl6mMcW8gcpKo8UnquR5aGKaCfbuElh02VJ
+         p90/cqV1fSRKLjIvUZwGUgm23ZXY9gPV55SJGBrarPYh2RbkIRWJfkbmHFBOBfEYO47q
+         DJjr5yd0zfLdwQTFYW+obT7LA5lB+0ojC3XB1JNSp3EgrcxyLL5DZ+YLbgyfwNcKt5Yr
+         5qZg==
+X-Forwarded-Encrypted: i=1; AKwUvBwLGawEIlbIB/FTOZ7RFCeVHWVzEG4N/wMidTtiRhkPeyyN/omJlmhW291STM6CQMEDg6hDLlZXjQ==@kvack.org
+X-Gm-Message-State: AFuF++me1zfDJS2xDwjh/+y6ACrH9gBEMHAKrXeesdsvM+TKpyYvt5uq
+	mbYVcG6Y/ZwGrWzfpzOuk17bSZFJfdmRqzV/yZJwXsNZV/N3Ex0PM+sB
+X-Gm-Gg: AYBFou0KqHDy38wliq9CiWSA2+ZqPlep9t+R83pcUHMzFbSCianQXbx+Qci3pky/Qd4
+	+rwH7zzVGgWO+m+4UOElfQQLqLPV+IQ3QoUhTAST2ppLK6skFLtxh02LcLK4m5ePvk+LyEwB5VU
+	wwdv4tGlOzzjs+Q8A1+AtaTtGP6rsVXbl7ZIlzMzy+X92a08ZHorOoGLKNdZaY0Sqd5CGBFp427
+	fU8EdtQ5U1q6XHJq0xv4Qdl/9ZD7gvcVC7d7YPVaZ3NPIC/CuwESQoWwW65qaiLI3I9vDgnd+AO
+	3xMnZydlPHGWI8mAh351uhqXyNNwTDo2lfX6o44FA6Ow+uFczqz2wEIJiSsGd81jJOby04ciQuX
+	O45HyxBkNEMmMOtAfsTTqm7FlDzPaWAT3qfRexK1tRh8qTiuVQwzBrKk49I7gfSHFqmFlRL4O11
+	epINMd/jxX+8GSFvq5gzsWU4fdRAHWhqt+GXGwO+m3CqCx8vz4gWXGQygn3Q==
+X-Received: by 2002:a17:90b:2d0b:b0:398:c794:ca26 with SMTP id 98e67ed59e1d1-39b263167f7mr60407420a91.25.1789045022916;
+        Thu, 10 Sep 2026 05:57:02 -0700 (PDT)
 Received: from fedora ([69.5.53.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e9014cbsm4800488a91.16.2026.09.10.05.56.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e9014cbsm4800488a91.16.2026.09.10.05.57.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 05:56:59 -0700 (PDT)
+        Thu, 10 Sep 2026 05:57:02 -0700 (PDT)
 From: Tianyi Chen <diannaaav@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -98,22 +98,22 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Joel Savitz <jsavitz@redhat.com>
-Subject: [PATCH v3 RESEND 1/2] selftests/mm: Reject invalid test selections before running tests
-Date: Thu, 10 Sep 2026 20:56:44 +0800
-Message-ID: <20260910125645.285866-2-diannaaav@gmail.com>
+Subject: [PATCH v3 RESEND 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
+Date: Thu, 10 Sep 2026 20:56:45 +0800
+Message-ID: <20260910125645.285866-3-diannaaav@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910125645.285866-1-diannaaav@gmail.com>
 References: <20260910125645.285866-1-diannaaav@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2BCCE120009
+X-Stat-Signature: wqsjx7b3mp4jrg4xn1juaygc7u46w3ij
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86FAA40007
-X-Stat-Signature: hdz6wi63tuzp7kfjnf4yc3ag5xa8mhu7
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789045021-521218
-X-HE-Meta: U2FsdGVkX19Q+lTN8TpoEnwoQbTQHcvNbxea4Ct+YIMQ7PhBWLKGHWk2dpwjPtBMD9CAPgAtBbwjXEOQ8lbvYaHcJXRKSzmH/cjGL9j82b0apWJKfrdITOADqqEzFlbBo4pZluatbeUYdvIE+dnF04mHGourIVIsniX4Spc3x9aun2QGubQORsr6k+I/fAY3fq8Bqg5IpCRTTJHecbdrBUst8bTe3mPpdeEEJqNq4x3z//C2Uyf0s1np/JmgNM4bJ/w3LAiHWi+mgzxWoM8hY9HeDFvy3XKOQPEJniVRhNjmGzgACpmo6+yn8AqCrvH0l/gky2ZmogxPtkkgLFmH1l/YSi3g/Fc7J5OqUzrAZJjq3L54v2YhLnku/Of6JD7teT4ZAzFFpYQUOf/N4listcKREsZ9ZzpIV0fiDifUN2IX7oklGbJ+Y6pwgBqtbeo52XmcPveg8G9NJ/OhDq2j2svrSheW1R7e6xAMmhZhQ1+Uf0izosOCvCFMbarWNA3neo6Ksya+eUIGKkQcBB+7QwZzyzbJ5Lq6R4dj5cv2mQfKItw+Ho8XLtdbzNjOwSbV+uBn3wIWFw7qKnxxHoVVgzyHHkKNcUNk5iroK44NiAKoKuRuF7FvT2BGiqIYYMjq1Ezkaps9Aof5rIZyksua0O5dNdnLD9Q4tPjukTBwPEhaqfJaIS0LJvaDYHYqh7T/52wQ6IPUR6E5UUyjIDT39gNdlr28qqFuPzwKssEyPdAosqGqLSd1+xLHJ0DPlOc18CaNJyZZeqjELB/oszEj6bmqbjppoE9jzKEKcNVlbYeyp2wX4UjuRuBlgwR3QDUAjOcULn62YnAFTtTddiqacuJLMtNVFonv2pHdlMycL8oppFpCyBQUKCzSEjvqW7W0l0K7hmtwPv97RyxKBMn+BSQFNbzAlHDN4TWAR/cmaXSxJnpnr0Hx+bFlXpbtSj5MLYqF92EVteOoa9KfqGC
- aw4W6N1O
- 6HF6QDFhVtHRhjSISHboJACqhxUNuZjqg6THOKgntrunFMMR2Z5M/GpqvuRRO2SLaD82HgDjVM0CTD3k54hsDmbyH0d4pSFN/A7CHJNkNctpt0d8Hn/iYTOh4y4UsvnP1foJx2wjjL/NAa3Va6+T7fHTn3GozWerDZTki/LGADjH1NC9CFgNtWjwqUau5MHpf6LPqDPm23CBFCnVZPKidYv2iGGxr/QDC1OGodf6zl0TizIhARvWAevxXW23G9mo3ha4956l+/uVdy80C2ceYKFb+Ztw7SYaNU3e5wgOnCjt7YpX05dNsFjR2V6iCV+XNih/kAutse0ufSLX/8pMbjEd5szfIiM5q8U86xLggJEe59dl46eWR+A95rsMP5oodS2nr
+X-HE-Tag: 1789045024-673606
+X-HE-Meta: U2FsdGVkX1/i2XOCrsjVaAiMkUL419uq3WOu6A1yJIvTsvApK5s/A0g431W9Wwo2fwHr8sUWX4QxQjDBBMMLlawPYId0QncJR0N6fhu9hnd3xlRh0gvR308y4rZRY749Dmaf8rpD6dAK4n8V/fsa5TlGeu0O6Y1tjKkY+VAr+RZQ6s+iMsTIZtCwK9aQMSxVOYfFkuL5FaQy402Nq7MZ8tCmWWirDwPzvMBgNsFG/ULikTNVUiNaDjsBTA6ZBmX1Fj5VFpY88LZAMkJtTVKP0HLuzhVoGN2qI3jSZHvBEMUxWgJD3PYYv9GGmIlli8Z6SRpysiMszpGpQGls/2Ovc6kl71e/doYcA9W0UBoLy13ZHuDl3xHdCqK/qSC0c1pVEOD5ZBIMejVc9ft59cMetKxCUXzkK/Z1SPT66MBZPLH1yT3sFHNNNlzevpZOvCcXagwXtoKsCv8ckUq7pvdDA07P2ShnzOWkO2B8b1QrLVH5Vx+EEVxI/nFGXcTpERzfGIzaV0lzz1ELeve3I51PhDhB1rxZfm79EfBeHFGJx8OlfhRC1nuasx/Rbx7hdhu3kbUfYCel1r7YOt6X6fxfXCvch2441x5FIFiCN1E7ZqEINwHaYyH/bn9dP1qD575dfoBHHfFyw4XR97CQE4fp4crZ1ArZ70Xy6lIjon+e3izHBX5zBoJJnyjUF7YzonxY9Ye8DQKuTTcBqlzFYheXXCwmaCqqK8TqxEQXXh6ekwhIWP7MoRoZKT19j9AG2dY1pkyrhvdkPNSd5Slbx7YzGj+6txi9ZEn1IOko8fi7XTIF2A2+y138Uj2fGSqby+8WjSEiH73kxZ1X91dOrnzOxyaH9kBjcEnR4eBVPepeNOeZI6IR1npwEoUneGstTKV4Qz/kuTu4jE3jURQZsHHzog7HEyGGrxUEWMegwvfbRHJPcGaJFf3gjGlYLZOoC/wuDJP6qjt6r/mQPOha+vn
+ Om1ZjGRb
+ UHIuIzxFHol4jE04rMPU9a9BeNpK6EYLVM0+ZNXfsrtLU2QboBflx0V+zwAuw3dyVeVEkJncJL+7eS9JJ5Tf0w4GeYioFQ4PwMpCk0dbTsSFAlhKX6/AQqqYW8bpka+ScmQX6/66Ox3GPIXr3GdRhcDn0NzmshJDu/2MGcc98kW62Mw2qQN0nw+f0t8PZmTicYAtJgWn0M6wsRL4bhs3ROep40qPR2unv/11G2QbzVdyYNhOG4I77hXycllpgPsSug9PMP88ztRIbL01vUoGIlGaFC7tV3rNNZyFrp2UfmJaPdtZVOFvGyuRYeq2u9QWbV+NWo/9yuGirwcY/K6dVH5nRBnfZw5NPJzSRw7La2/oJ9TXkKZKpCLqVUJyv+FpHJoILV+cx2t2nUv6zpHCKXnysBg9e+7LlotXdPQSzcZgGWyoXopNKH0eS83KnuQL3gSKvrC/E07i3opA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,77 +123,34 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Tianyi Chen <hi@tychen.cc>
 
-getopts reports unknown options and missing arguments, but run_vmtests.sh
-ignores its error result and continues with test setup. An empty -t
-argument also falls back to the default selection, while unknown category
-names can silently select no tests and still reach setup code.
+The memfd_secret setup clears ptrace_scope whenever its test binary is
+executable, even when a different category was selected. run_test() filters
+the test invocation, but it does not protect the preceding setup.
 
-Exit on getopts errors and validate category names against the existing
-list in usage() before any test setup. Reject empty and whitespace-only
-selections, and normalize category separators so validation and execution
-agree. Initialize the default selection before parsing options so only -t
-changes the selection.
+Check the category selection before entering the memfd_secret block so
+running unrelated categories does not change ptrace_scope. Keep the
+existing executable check and the behavior when memfd_secret is selected.
 
-Fixes: 85463321e726 ("selftests/vm: enable running select groups of tests")
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Assisted-by: LLM
 Signed-off-by: Tianyi Chen <hi@tychen.cc>
 ---
- tools/testing/selftests/mm/run_vmtests.sh | 26 +++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384e..9e62ab4c6775 100755
+index 9e62ab4c6775..9bbef9410ccc 100755
 --- a/tools/testing/selftests/mm/run_vmtests.sh
 +++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -96,26 +96,44 @@ separated by spaces:
+@@ -370,7 +370,7 @@ CATEGORY="process_madv" run_test ./process_madv
  
- example: ./run_vmtests.sh -t "hmm mmap ksm"
- EOF
--	exit 0
- }
+ CATEGORY="vma_merge" run_test ./merge
  
- RUN_ALL=false
- RUN_DESTRUCTIVE=false
- TAP_PREFIX="# "
- 
-+VM_SELFTEST_ITEMS="default"
-+
- while getopts "aht:nd" OPT; do
- 	case ${OPT} in
- 		"a") RUN_ALL=true ;;
--		"h") usage ;;
-+		"h") usage; exit 0 ;;
- 		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
- 		"n") TAP_PREFIX= ;;
- 		"d") RUN_DESTRUCTIVE=true ;;
-+		"?") exit 1 ;;
- 	esac
- done
- shift $((OPTIND -1))
- 
--# default behavior: run all tests
--VM_SELFTEST_ITEMS=${VM_SELFTEST_ITEMS:-default}
-+# Normalize whitespace so validation and test_selected() use the same names.
-+read -r -a selected_categories <<< "${VM_SELFTEST_ITEMS//$'\n'/ }"
-+VM_SELFTEST_ITEMS="${selected_categories[*]}"
-+if [ -z "$VM_SELFTEST_ITEMS" ]; then
-+	echo "No test categories specified" >&2
-+	exit 1
-+fi
-+
-+if [ "$VM_SELFTEST_ITEMS" != "default" ]; then
-+	# Keep the documented category list as the source of valid names.
-+	valid_categories=$(usage | sed -n 's/^- //p')
-+	for category in "${selected_categories[@]}"; do
-+		if ! grep -Fxq -- "$category" <<< "$valid_categories"; then
-+			echo "Unknown test category: $category" >&2
-+			exit 1
-+		fi
-+	done
-+fi
- 
- test_selected() {
- 	if [ "$VM_SELFTEST_ITEMS" == "default" ]; then
+-if [ -x ./memfd_secret ]
++if test_selected "memfd_secret" && [ -x ./memfd_secret ]
+ then
+ if [ -f /proc/sys/kernel/yama/ptrace_scope ]; then
+ 	(echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
 -- 
 2.55.0
 
