@@ -4,102 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AEA9C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 433D4C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:06:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FA4D6B0092; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
+	id 472AA6B0095; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CE86B0093; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
+	id 4228F6B0096; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 201106B0095; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
+	id 311786B0098; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1CFD6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:05:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A87E12043F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:05:32 +0000 (UTC)
-X-FDA: 85197420504.28.A9A61AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 750D4140005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:05:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzBHpLL7;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 095766B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 910C2A04D2
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:06:25 +0000 (UTC)
+X-FDA: 85197422730.11.F250D1F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B7C71C0005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:06:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahs5XVOE;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789034730;
-	b=fFQlqFh37Sw4IWNK7KV6VhLy3lH8z/5tFbV67KRAxqoee6aoozq/uOgpJQzC7mEJ70Zyz3
-	tijDzeU177yN/NHvwtpvlZR09tAu6xzMt+h1V+xHEt1YIawbUciI4w5HvPUhV47jqGwVvu
-	SxE/t9ti/D5IjBme1nGKEQTTLg6pdbM=
+	t=1789034783;
+	b=hyq9+i2mZ0ADDrIlWNvwPEMu992JYJXnCiJoz0FZVXQdB3jvWHKRtJSvX8t8OzEccm7Fo8
+	PIkJot6s9yBE2ZFYgu29N+lE07gwiltEEGHWZ8Tuzk5vkpWjStcwsNdkuE3vu1874dJQ+r
+	8byGWNuGnAP758moAz/DR9emjSLhvU0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzBHpLL7;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahs5XVOE;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789034730;
+	s=arc-20220608; t=1789034783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
-	b=4eImy9R8yitWO/Eszoll70FbiyheiqiZGVNGHd/OcSPaO8yR+IZB7d02FhjA8QdPdSlmOk
-	41CQSg/TwUgifHSZuko8EztQIuHW3gU1bbXV9t04vghgOlgbYBOk8WfYMOuy4sNNc1huEL
-	x/wID3rC83UwU1E4wm+SYhl6aFPkUik=
+	bh=r2R4POrVaFZfBJpe2LHKJm8IR+bpnnr27W/5UBFn18I=;
+	b=5yyersaIBKMCX2bSX2SuBTNhTZb0DWToA52fivqSiuBX9ghK0ebHU3KbDuoj1FVz1l/ne6
+	tAG7dgfeVVA3HY5rXKCZy6woFYnXXVbvoneo+VR+bqzRrfo1uGvLPdBUaiZXMb+SH/2ZAL
+	5UCYYxFRd70DXBnE4Pnavv6Dh5uXVME=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 08014600D4;
-	Thu, 10 Sep 2026 10:05:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A3C1F000FF;
-	Thu, 10 Sep 2026 10:05:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0CF8940F8A;
+	Thu, 10 Sep 2026 10:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EBF1F000FF;
+	Thu, 10 Sep 2026 10:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034729;
-	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
+	s=k20260515; t=1789034781;
+	bh=r2R4POrVaFZfBJpe2LHKJm8IR+bpnnr27W/5UBFn18I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QzBHpLL73o0QRHBq1BtDWHfKhjgH7vYQlOQTmd/7CsBCnteHkCGmQ//nhe1xBe+XC
-	 B+J/EOTATm18+r68ByFk08E1DHO/jGR+rAnUx1rseFVGhpIozwzwFhzDF7sOLJLeQ+
-	 I9XUGlHlf+t7B+P5tn0YTppgcLchcfIELLFXodhjEkX4ufh+VLtkzkBdboHmg+39OE
-	 6g/BYc6mcelHh8Dvj1YRbZL2cncQvh7KDpBKn2qNLUqTx/qsd0Ozx7Dp6POJfFAdiR
-	 tfvp/PiJB/ZsLE17ZTAn6ACIgPYGEels8eKnoLC09LSAs9Q4EgK8NWvE4szHuqmUUQ
-	 HqOFKQ1qoF9QQ==
-Message-ID: <e0120f1a-d53b-46a3-9542-030212250135@kernel.org>
-Date: Thu, 10 Sep 2026 12:05:15 +0200
+	b=ahs5XVOEXP0b8QXCo8p21pDywAa2MZx9irZbCY3Ffn+ZVpxm3+TCFZQAQ+l5cjIAp
+	 DkgSIFEH1yP5SsDZxK2SzKVoTtZ8W9bRF0LRN5xST3+/9/OTsht1kV+c7vZfhiL9dO
+	 r98m4KnvJ1knih6llePAtjuHBJl9ZDFKzSmQIemjuupJKwdSR0xCsCu5Ii1OIa+unT
+	 QfzQDsl0nKnPOGz75Lu37DlDXOBY+MNUkw+d6SmM6K4cdueYlLuBIui/x3nz/dB4vz
+	 yemKwiobHiNyFc629PPq6vS5cxnvc2XGTkC091X//uhhQrp4Rp748m86ZOTNwD6Erc
+	 P+ConinppiWzQ==
+Message-ID: <d2f4e7fd-b077-4150-8b2f-e81435d04408@kernel.org>
+Date: Thu, 10 Sep 2026 12:06:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/9] KVM: guest_memfd: implement folio migration for
- non-confidential VMs
-To: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Chao Peng <chao.p.peng@linux.intel.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>,
- Vishal Annapurve <vannapurve@google.com>,
- Nikita Kalyazin <nikita.kalyazin@linux.dev>,
- Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>,
- Ashish Kalra <Ashish.Kalra@amd.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Peter Shier <pshier@google.com>,
- Jim Mattson <jmattson@google.com>, Ricardo Koller <ricarkol@google.com>,
- Ira Weiny <iweiny@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>
-Cc: linux-fsdevel@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
+Subject: Re: [PATCH v3 0/2] mm/memory: improve insert_pages() error handling
+To: Avi Weiss <thnkslprpt@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1788022178.git.thnkslprpt@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
+In-Reply-To: <cover.1788022178.git.thnkslprpt@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 750D4140005
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B7C71C0005
+X-Stat-Signature: jpji16q17ams9ca5gtjq3toswtm5pp4f
 X-Rspam-User: 
-X-Stat-Signature: jrr9mpgoksbqo43qgezy83sge9ht71mf
-X-HE-Tag: 1789034730-974309
-X-HE-Meta: U2FsdGVkX1/d6anPcic2TN3AwDROWUuhYqjI9Eb/TgZwdlbfYgz0fV8Te7rwFpLAxkdGl0lf4Vd3eQduxbt4XLq4Z7pfFaIlYnM8HzQwM3HUWvyEXovA6wDKCWwCguKQqwuJHjpKWnRqNvzE6rD/x0+DKXJzvf6671bdz7c9BexeYN51rcooVXYFHZgfrBGMGjy29Ik79LjeEIUHpRbNL0oRTMWF9oDwZYpBhhblJKy1U3E2keeN69AAexHFiOiYNp5rHsJqzUm5DcB3Og1xoO19yapna+Xifg2RMMlsB3TTxKhLhe6Wi1GLpbcD+7O/1aWKlEf+MFEWMVQzA2jj3wmzYQZvi4BSLZ0TNPwc9XuRdfMNvBA3Qvcm8JRpVr7LjSF9evpYAXubNvoQ6ApFhx5VFz+w87Q8H1u7S6KgkvpaxjOMXYgpruQrebbLdN9DjJV+1D5bSJNk7MZ2tXvBPMxBxiQe8jd1044gzMcTRzSPHiRiD9gg0+1xN3BpgOM4XeEwNY0Jx051ko+NNwtC1BdCxryeezjstndr+TqCh3H1IreVZ1Ng3C/lhVz5rto3JDkktppKoMVARb7PxVWReE7zMSM0ST3s+nL5c/WQfXBYJMw20r8N1rxJRtdXX+6Gr51ktVF3JIQFcqWtHPp7zmm0MMeG7gEyvBAdJJ/6vmumT8X3zgpNcWo0auvk5Z/RqvdDJFoBmphrEr/fcOCIywc8sRa/77atwZUCi1lCh4t5hrog9PoQKM/fv/KMfUXeBdnbNoNFMvM+hjch6a05NXIsJdRFE1LLfS/JT/+TKdHjlkkVdqHdZvQa+ajjqnWORI4n+MMRAzozcJ3oCEehST2u72zaoAgVhufe6plYBG8BpY7Ar9koAmALYM9frvPSIC/SBCpDQkKGBitnlmSmMjFjeegIckkD4DsnkGwvMnMsnHvMOS49OJl5FvOlE3FkhB1BeYJN+xGZlOQ48td
- jHkwed2u
- t+Rwa0HPkAYosDFRWxGzgyHjfyZSNNmJm7/zOs1i5oa+ZbZbCteFcWVP6ZyWqU6aWmFOI/cxLTd+qCkcg+ze1FS5J34L4wIei8lBTdKkDVER3IPToddHzmPyIodQvtKLLioy4oCQwHERD+sMlzvKHPRcd3U2GuWvq/InLKNVRHhQsfiENDYTepkxN4Ztl6CI9Ws2hETAvEUSTuekxj4XxOouqNsWoJWodernPhi4WHuLAF3hTbVeLudA2jVOn/1RIjxUrIBv7xcybjYcZkU15HEd4ZaXwIciDpkGn2PLtUr1GL8pcG9vWnNldaul1Gkslees0NjCIaAiJ5D5QsskRFyMmYIQF3rQkaC0W+1R0Jw1Ja8qeSTTRdHhfPRDZ1iYNpLBvGnGnJA2CXpaDDjmqUwh26g==
+X-HE-Tag: 1789034783-658996
+X-HE-Meta: U2FsdGVkX19d8n6l1QAIEUN9zYxBMONyxx84swGnaicjPUd0yPpcGrXDHBWaOrzBixq7KccbAiiXT4557kh800ZJpewrnEnjjb3AUz1X1UgKFZ6gHH5qqid/CcAPwdC6MLiOc6zqYchj9lankn5HgIgWXH9xK7ILYvDHd0LhyPw52H8eE6ik37asLZFIYxY7QQUC+slvap4NOdOC7QO0NvveYJebBZ1OwSdKv4LSY34PkYYAHdkZ4VbA3OjSd4S75cmjpT+NEQ25hIhyu+udZupKSyvN+ymTtcRdWrhW1bYJWt4n5jdHBHkakryeHIQwlKoKaUEu6xs710PyeoM9cMQamhdc79+fTVhKzyYQ3wR6FcyYsDNBAn99hD0FY7J5emHIf89XONMdUbpz0RuWGEctaJHdWfejpvz1k6+nn3rgHhi61PAQxWt8GeQhZfEM+SpKQr5/KXUtVmvd9kNhkG8rgsYnx4n7Yi+UczTaIN4ERqKRz74xo5aAuIJ78OCxyfXgyLzt2hr1rqKa1X5iooCi8Re/g1O1v83qwWiXKsfGhVBNky8TGcZT+AjUKM2Tu0AStn12gFBwkl5js2cWmoTSamFsQHiOelzCgFTjY0IgpJUkaGLJGuVPtd3IbXsfjXodyCX2L70rdtpH1e88NmmoyDwwRIg+nargJliAP8rok1YQbBAagDeOGqBX0PX+S4wK+NYiGcFVZ+HEKKRbT4lzQFwKjooNfhEL38CoP1ySbXmWtfsO+yn4sTDm1Njor8RCzypJ9l9y7QHGtxhoSOGxsjxzAzLBmoWODcbKKkfpXOqW+7PeZXtp7DVZXH5kgb5Rp0IqsK/votXMHP2lVg6uYuTa1L5/rRHX08isOLMRXFG9sw7GM8Da6rC6vMnJNLjb5k64vKRVPs+HiGyQU47B73UcatJYmsPUl9CcDyBQawygJk1SYgkgV/W4Xqa61cn2SPjGBVBo6ysarCl
+ tDVltAuo
+ XPK+0JmtxS6/YDjYYMOSh1eRCU13dRx0cab+MBwmp3r9WfIXUr1cdzuWFF9G7HBD0we9+ZYMR4y871JoGJCUBKBrrttMDA6yqgXdIXgAUS61i6b0ZFany9EnIuRbahzN+zCxQb+3p1x5xxG075mTFcu2YWeqM5eSh3PtPhyvreC1dpYt61jpFg+vE9vLxLXHG0mgF2tQFtZ7qFoNRqoQHAdheAM3g+vcApyz6rZgaIJTtv5HCjVxz1V+ezSrUNG+hQ8cSZ5Cy2JhFr1etTef+qUVfZK16yGwFxQWszOeekzVCzlRY59rBAt+m9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,74 +141,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 08:40, Shivank Garg wrote:
-> Implement kvm_gmem_migrate_folio() using filemap_migrate_folio() for
-> non-confidential VMs but don't enable it yet. guest_memfd mappings
-> are still marked unmovable, so MM never calls it.
+On 8/29/26 19:11, Avi Weiss wrote:
+> Improve insert_pages() error handling.
 > 
-> MM invokes ->migrate_folio() callback with folios already locked and
-> acquires the invalidate lock afterwards. kvm_gmem_punch_hole() takes
-> the invalidate lock before locking folios during truncation, so
-> taking invalidate lock in migration callback can cause an ABBA-deadlock
-> situation. Use filemap_invalidate_trylock_shared() to avoid this.
+> The first patch simplifies error handling by initializing the error
+> status to zero and assigning error codes at their respective failure
+> sites.
 > 
-> A subsequent patch adds an opt-in flag to change the mapping to
-> movable and enable migration. Non-confidential VMs can use
-> host-side copy via folio_mc_copy(), whereas confidential VMs will
-> require firmware-assisted copying before they can opt in.
+> The second patch returns -ENOMEM when walk_to_pmd() fails. A NULL
+> return from walk_to_pmd() indicates failure to allocate an upper
+> page-table level, so -ENOMEM is more appropriate than -EFAULT and is
+> consistent with the subsequent pte_alloc() failure.
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 36 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 34 insertions(+), 2 deletions(-)
+> Changes in v3:
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 169f75f95433..583341d593c9 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -488,13 +488,45 @@ static struct file_operations kvm_gmem_fops = {
->  	.fallocate	= kvm_gmem_fallocate,
->  };
->  
-> +#ifdef CONFIG_MIGRATION
->  static int kvm_gmem_migrate_folio(struct address_space *mapping,
->  				  struct folio *dst, struct folio *src,
->  				  enum migrate_mode mode)
->  {
-> -	WARN_ON_ONCE(1);
-> -	return -EINVAL;
-> +	struct inode *inode = mapping->host;
-> +	pgoff_t start, end;
-> +	int ret;
-> +
-> +	/*
-> +	 * Migration invokes ->migrate_folio() while holding the folio lock.
-> +	 * Use a non-blocking trylock to avoid inverting the lock order with
-> +	 * truncation, which takes the invalidate lock before locking the
-> +	 * folios.
-> +	 */
-> +	if (!filemap_invalidate_trylock_shared(mapping))
-> +		return -EAGAIN;
-> +
-> +	start = src->index;
-> +	end = start + folio_nr_pages(src);
-> +
-> +	kvm_gmem_invalidate_start(inode, start, end);
-> +
-> +	/*
-> +	 * For non-confidential guests the folio is host-readable, so
-> +	 * filemap_migrate_folio() can copy the contents itself via
-> +	 * folio_mc_copy().
-> +	 * For confidential guests, this would need firmware assistance.
-> +	 */
+> * drop the walk_to_pmd() rename following review
+> * use the mm/memory: prefix consistently across the series
+> * carry review tags from v2
+> * rebase onto current mm-new
 
-I think this is all more closely related to mapping_inaccessible().
-
-If accessible, this is just trivially true that we can support this.
-
-So I would not comment on what to do for confidential VMs for now, and limit it
-only to the shared-only case where pages are accessible.
-
+Double-checked, LGTM.
 -- 
 Cheers,
 
