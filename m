@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB572C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:33:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 803C6C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:35:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDF736B0099; Thu, 10 Sep 2026 10:33:10 -0400 (EDT)
+	id 810FC6B008C; Thu, 10 Sep 2026 10:35:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6DA6B009D; Thu, 10 Sep 2026 10:33:10 -0400 (EDT)
+	id 7C23B6B0098; Thu, 10 Sep 2026 10:35:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACC916B009E; Thu, 10 Sep 2026 10:33:10 -0400 (EDT)
+	id 6D87D6B009D; Thu, 10 Sep 2026 10:35:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 804CE6B0099
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:33:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A41FA40389
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:33:09 +0000 (UTC)
-X-FDA: 85198094898.07.8F39110
+	by kanga.kvack.org (Postfix) with ESMTP id 535366B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:35:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F00841A057B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:35:02 +0000 (UTC)
+X-FDA: 85198099644.13.1494D1D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F3FFD8000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:33:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GEBarzsa;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4AA0A4000D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:35:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oni/6koP";
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789050788;
+	s=arc-20220608; t=1789050901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mzNbcMB0p1eY0jFGMUsfswHJRjfiaKQRPsj4bDo0LJw=;
-	b=nnUrOeD1YsxmiZE3BTuK89p5sPRzs3/mYRPW5D0SoQn5h5vKfJHMZ/gO9R2DomTz4Y+POf
-	geNPA1W4RrHPxbLBlaJj6VfJgtGQZNobnAk3+zl2ALbl5zMf5p5KPqHwrR8CK+Y+pirpnN
-	ZSlhbcgRKdmIZq+MpH2JEtlyf8pow5A=
+	bh=yqJhoyGyHJP6091fs8CPorGbMcEbisH8T+p5PtFRPtQ=;
+	b=eIkkJaPfU/vJ581xbjP80Q3lzLrNrzDHLA4FmJTQRrgGncPXXDCkh3hmut6J99i+/JyRKV
+	CPl2GXrWVTHa5kWBohBbevp0cfrP/95qk+6qgVx71ZKGG7k6+9p3qaqb84osMk6DInCT5i
+	98zex16OxdhxAqhvDLUcENDkXG4nObs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GEBarzsa;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oni/6koP";
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789050788;
-	b=xermfq/7dyT4RcDSRcUPggxaTxO3iTj0c6YSfobIIALZ02C5YDsrBL3ZmCJSf1dKTEJWRA
-	qXCr2Nhxp4TgOAGm6WzYWmm/DVsAlAhnL1ifo9rEKV5xf1peaIQoZKfbfFUE2JXyoOot3H
-	lXyY1YlkSKs14B4LbkmLl/e5KhnF5f0=
+	t=1789050901;
+	b=M968eXOELbILP8n9QzpZKIoR+ht9vxUnrHiOWGUphhSK/fEAjHI+7nKY03D7TCgRNT7xL6
+	5eeV/qFDBgl2Nc7fkaztx4H6jUMhEIHmvOOhl5O171l7j6lD9WwLMThvhe/4PtHTgY/6x0
+	npMQg9GAdPeJGjkM1VHU9tfH4UZJCdA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2641E418F6;
-	Thu, 10 Sep 2026 14:33:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5656C1F000FF;
-	Thu, 10 Sep 2026 14:32:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 719F4415B3;
+	Thu, 10 Sep 2026 14:35:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182601F00893;
+	Thu, 10 Sep 2026 14:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789050787;
-	bh=mzNbcMB0p1eY0jFGMUsfswHJRjfiaKQRPsj4bDo0LJw=;
+	s=k20260515; t=1789050900;
+	bh=yqJhoyGyHJP6091fs8CPorGbMcEbisH8T+p5PtFRPtQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GEBarzsaT/GfzNrEw1IDRcdc2Qi0z6RKPkaAX+irMV1fAySbMqtNp/r7WYAtWlxfa
-	 l3imiHeM/NxsuPRGU8OkkBuYY1c5w+2J0g4wjwX2QsglvTKjc+S3jJvaZd7CQv8++S
-	 3E5z/N6S904KA/e+KOP67vV4XKI/FSODkKMiVx4S5PYKHysvIm6DbONe6+TXkarxZz
-	 LTaMtBZ79JK5EJJ4BnVoV3Y1SwXRjtvoyhTrLg3sImW9ITHVpwqjLjHTOj+QuweXrH
-	 lgOauZIYiV5A4zwAtlEZEa61OpwegJ6FPItysFxgJXrzzLRYiYqGkSYj/sMlNflbt1
-	 Ni9OnEb92Lu1w==
-Date: Thu, 10 Sep 2026 15:32:56 +0100
+	b=Oni/6koPplPswfXrbVStzvD8BZnPMK7/76eM+7w6wrqlEmb5xa12DEsFgxA/zTkgU
+	 loc/Pa8KbIYCVvhH0SrreuqsAooZJ+A0MmyWanzPVIvVJgoeL6/jxO59IH74sXO55n
+	 rYqC2aI1Z0DKoTcmeXrVFHdjTJTzOfJ3nNRTvBx9S51pnj7xHVpg2oUH4BRrAQmQBC
+	 +GcQcj7dKvvrvkMBVVmAp27Z6utx8cNPIGqNtPi9MNtz/UJiGVYPpDgMP0m9ijacUv
+	 CdI89qXab5ILhisHh4VfSpPjtWJa+u2ea+DkZZHl2CEuIR5NvbytiQ0c9k4+EZO7fN
+	 WJCFuP1DPybHA==
+Date: Thu, 10 Sep 2026 15:34:50 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,22 +79,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
 	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 09/12] mm/sparse: remove SECTION_MARKED_PRESENT
-Message-ID: <aqK9S1hBpPnujgz9@gremlin>
+Subject: Re: [PATCH 10/12] mm/sparse: remove flags parameter from
+ sparse_init_one_section()
+Message-ID: <aqK_yg8L-BbovObs@gremlin>
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-10-008fc8d579fe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-10-008fc8d579fe@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4AA0A4000D
+X-Stat-Signature: 9637ufufayjnhbexoeo1g1dt3sxsjuqk
 X-Rspam-User: 
-X-Stat-Signature: y91iqciefjn9emxubgy1t5khwtfwcdwi
-X-Rspamd-Queue-Id: F3FFD8000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789050787-683946
-X-HE-Meta: U2FsdGVkX1+CwoTC4rWCHsBwsEGWhT+UxcP3K35vT2uNrgSsRHfaZHpfD64Xougphtma8VsmjEhzcqXHDA/JHyqiyfcxb1x8rA9RnlQyCwomRp8qufcrLAiScK9ZBTr5UHBK+AU5lVwMYNYcJCVZcFGJ+yxZL0HNzlzzWylkxtuwTtBMalogNew/AtcFLnOY7NJbny6QVPCh5H2mUWCrESGZkD8g02JwFJhnIteB1uv5CuCeAiqv/uJ5De+/mocRYunCvAAnOQMUjOQv3yEOM74Gx/ZslAD6b6MKmCoywtXP81eyBU5NRmk5mHQ6QUnYVdMsYSaAaBanCJJBuMaBWjvaaodolotLZIBvx8Uk3bkBRwqkHPcWc1RrSGyeiEip2Q+RtjxhLuOyvQaNn0tBVlOCHAScpeXwmynMPUO6Dnfjz+ILWhKTevxn1jyDG60h5inBWYmlKX1Y36oBbH4Cv3wPHGPF4Tobkn8chuOnSKIUrGTDI3FD7S8XQLJ7L5d4Jmr4h6X+xwNc9dD5IV/NIAIg3dfY/iuiFrs49yjSCjllbg2V3KisAYE8jDm3qbXTbOWyRQyAIneuMwOSK6N9lk7aek1UtGoyN/LySAPjkcl5UnmwvrEE6CEQoA6DB5w6eRLyzcSy2wfYMfSeIoi2AkD+Ec8HGeOXyqAdttjiXo5dv4ogEGno5tyMoSfJZe1/XYiiWrXFDusMohuaWrJXidCQILnDt/rJgGlayU1r0JZAwdvcxtxIjWM9ZzFPl1UM2ATibghpFNEuAma+Lpfte8G8tZVTMsdg1umUedToudrvkhMEEI2fgi2TWnAGEDvVWKTwVQj3oGZhFzopZs+Vm4kO3B1CO72bHH90xEEHIqpi6kibb4+rhgNXM7TZKQvxa5B0YFGNhVg21WpzjRZZkJv/6tLEqq0Ta6QN8dBKiudy5nYzxg5bxHjduMy95OlijuNKUbOQd7rjhdsi3nh
- SeIiNQnE
- FKaxJ9iBqxu/JVx4a59ca9iOA3ckHHlDlMkUb1qn5ArCDFIlsSYq28LDXXNOHC2MWbD1KyDzbTzreqe52O556ahMs4xNJM71jmOfsNCM0DVBaICbKtnhEiMi7ra/1wdCrM6Vs/0vZ4VMWZsBpnbB5EOiy5bHlmN7uzgCzWEOrQFQdwYr24v2+G3BJ+yohg9zHrgbp4Y226aSjWW8opJ89hxZSvxzNFwXpQv+hSywWCm6xmkNdYjH7/BVkScKIdwNACrGk6RSWXEIVgWvaBAove8z4XCQqrCy0xP1SQUvkgz88trHXIOK4lK9eJtXMDKlocJvGCEQPrpqiqqJCc31t5boeOP3EIxqE6EqI
+X-HE-Tag: 1789050901-261503
+X-HE-Meta: U2FsdGVkX1/H6imwRbzfIgClg1PvGrKRQIOGcKdZC1MAbtmOdJ6JrgaUtJLOqWb0FO5kl3MypSbltEgpJP2jXrTvFBXryyaLWXr3ymnWuO+XxI36EYi27hSvDJy+kYz1l2kNWOJAscx+KV/1RKHsy2jnhD9i1ZM8OrOBApVNw2cgvsK36BzbJL1o7b3xca6h/YC1GmWr5VxtL+2lnwa+Hx7XkCkKYoTZfzUFUDldyq6jUb9yaMTIxMu2azjIZF2NgBPMgUPwtrQmSaboZshWescyx8JLtnqQ/OW/iR0FYGxf8WtQpZJW7kEQBadWkSd4fMCQCnaELSKLTmwP2brDr/Sme51JwbM8l20v5Qljwtpf52F5WXacoSEMDZUmwdWvwMYdUSDj7S+nBUcKIW9/OMub4+hUO/4iDSr1BlBxadmmr5XHM53wuZFxZYd2wiSQp++FfnZU2iVdkRv/YVXJ2R6Q/CKZjExj1wXO8PHeiAEim+Yj7E/BRFDdPVH7/dfbrmlTJJXMmkkdyg6m2/XaYbKgb7aT6XuWNY5RSBGeCdJhz3qXwF5oJG+72sSmnMmAwy30SD/pQf/Y3Lf9lQhR3cBMwa9AYLxSDgP0+eemGF+VVXNxD+BAPET/1dkUWMV9m1ZgBJsddbdxuaGY/OB7c1SCelG7reQMOj2WLecWvSbwwFLmlLR17dKQNiBgk9ahWE+hy0Ekvs4jKiJ5pzCu0wkd6u9bb9IJCy2KLTsdb7u91sVEE8js09WO0nHvJGPKzV+laLwd3SUKure9oTmj6GcsXgmLe3r0gn8pltyzNRTVPILY75n86JAJsiUVLQFwmr6yaErmXFBkLNxD0Xq2shHDVeG2Wq3KdelmGoo8hJzoUq7iiz47gPOTHIvt8VjxXaFs9NMFK1qaCzi1T6dlZaA25MPRm522pguq1Hu4RI69UH+pj/NiVB5cKRlMXzTVTL+0XVrAKvjtVb1EObk
+ m1Ide9dP
+ m8pG5z5YNR25eARClIqcdQyz17AHBcIUbiw7/KbcAA8cvmZIja1aETZCTKJiv9wgiB9DtFBBWdJ9FwxFvYj+bEAdi/Aj2iNiTbB6ls3hZP4fhKytyyTIwz9zIxAhy6/M2TtrTBf4Ol6Yk3NEseogaY3pNzDwUWDuNZsfS2kHUM5MXw7wmABT+o7yZd+lhDU2fBuNqnnUygRUXa+OqGIk4p+YsRg0XASQlxKo8fKi6ktUX+gNg/diEo5gC+y1WX4bw5EhfJ9N2mo+rvxZPUW4lrKLd9yzLuQkR/U0v4vxmyS5FSnOLXec2qkNtP0t0pRvmKhJs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,258 +103,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:33:02PM +0200, David Hildenbrand (Arm) wrote:
-> All present section iterators run before memory hotplug added any
-> further memory sections, Therefore, we can simply use the SECTION_IS_EARLY
-> flag by setting that flag earlier in sparse_prepare_early_sections().
+On Wed, Sep 09, 2026 at 03:33:03PM +0200, David Hildenbrand (Arm) wrote:
+> Unused, let's remove it.
 
-Hmm? sparse_prepare_early_sections() doesn't seem to be a function that exists?
+Might be worth saying because of the changes ;)
 
-Do you mean sparse_sections_init()?
-
->
-> Get rid of SECTION_MARKED_PRESENT entirely and rename
-> for_each_present_section_nr() to for_each_early_section_nr().
->
-> Also update the gdb script to use the updated value for
-> SECTION_IS_EARLY.
-
-The change seems fine.
-
->
-> No functional change intended.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-With commit msg updated:
+But this is a nice change, always good to remove params/code if possible... :)
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-One small question type comment below.
 
 > ---
->  drivers/base/memory.c   |  2 +-
->  include/linux/mmzone.h  | 27 ++++++++++-----------------
->  mm/sparse-vmemmap.c     |  1 -
->  mm/sparse.c             | 17 ++++++++---------
->  mm/sparse.h             |  6 ------
->  scripts/gdb/linux/mm.py |  2 +-
->  6 files changed, 20 insertions(+), 35 deletions(-)
+>  mm/sparse-vmemmap.c | 2 +-
+>  mm/sparse.c         | 2 +-
+>  mm/sparse.h         | 5 ++---
+>  3 files changed, 4 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 5eead3346f1e3..b0338de2f1d82 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -972,7 +972,7 @@ void __init memory_dev_init(void)
->  	 * block so that it can be covered.
->  	 */
->  	block_id = ULONG_MAX;
-> -	for_each_present_section_nr(0, nr) {
-> +	for_each_early_section_nr(0, nr) {
->  		if (block_id != ULONG_MAX && memory_block_id(nr) == block_id)
->  			continue;
->
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index e0fac344f6ac2..62cff59dd80c4 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2084,7 +2084,6 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
->   * accommodate SECTION_MAP_LAST_BIT. We use BUILD_BUG_ON() to ensure this.
->   */
->  enum {
-> -	SECTION_MARKED_PRESENT_BIT,
->  	SECTION_HAS_MEM_MAP_BIT,
->  	SECTION_IS_ONLINE_BIT,
->  	SECTION_IS_EARLY_BIT,
-> @@ -2094,7 +2093,6 @@ enum {
->  	SECTION_MAP_LAST_BIT,
->  };
->
-> -#define SECTION_MARKED_PRESENT		BIT(SECTION_MARKED_PRESENT_BIT)
->  #define SECTION_HAS_MEM_MAP		BIT(SECTION_HAS_MEM_MAP_BIT)
->  #define SECTION_IS_ONLINE		BIT(SECTION_IS_ONLINE_BIT)
->  #define SECTION_IS_EARLY		BIT(SECTION_IS_EARLY_BIT)
-> @@ -2111,16 +2109,6 @@ static inline struct page *__section_mem_map_addr(struct mem_section *section)
->  	return (struct page *)map;
->  }
->
-> -static inline int present_section(const struct mem_section *section)
-> -{
-> -	return (section && (section->section_mem_map & SECTION_MARKED_PRESENT));
-> -}
-> -
-> -static inline int present_section_nr(unsigned long nr)
-> -{
-> -	return present_section(__nr_to_section(nr));
-> -}
-> -
->  static inline int valid_section(const struct mem_section *section)
->  {
->  	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
-> @@ -2136,6 +2124,11 @@ static inline int valid_section_nr(unsigned long nr)
->  	return valid_section(__nr_to_section(nr));
->  }
->
-> +static inline int early_section_nr(unsigned long nr)
-> +{
-> +	return early_section(__nr_to_section(nr));
-> +}
-> +
->  static inline int online_section(const struct mem_section *section)
->  {
->  	return (section && (section->section_mem_map & SECTION_IS_ONLINE));
-> @@ -2315,20 +2308,20 @@ static inline unsigned long next_valid_pfn(unsigned long pfn, unsigned long end_
->
->  #endif
->
-> -static inline unsigned long next_present_section_nr(unsigned long section_nr)
-> +static inline unsigned long next_early_section_nr(unsigned long section_nr)
->  {
->  	while (++section_nr <= __highest_used_section_nr) {
-> -		if (present_section_nr(section_nr))
-> +		if (early_section_nr(section_nr))
->  			return section_nr;
->  	}
->
->  	return -1;
->  }
->
-> -#define for_each_present_section_nr(start, section_nr)		\
-> -	for (section_nr = next_present_section_nr(start - 1);	\
-> +#define for_each_early_section_nr(start, section_nr)		\
-> +	for (section_nr = next_early_section_nr(start - 1);	\
->  	     section_nr != -1;					\
-> -	     section_nr = next_present_section_nr(section_nr))
-> +	     section_nr = next_early_section_nr(section_nr))
->
->  /*
->   * These are _only_ used during initialisation, therefore they
 > diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index e62e6aa07f126..5aba058df6b67 100644
+> index 5aba058df6b67..25d3472972363 100644
 > --- a/mm/sparse-vmemmap.c
 > +++ b/mm/sparse-vmemmap.c
-> @@ -890,7 +890,6 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
->  	page_init_poison(memmap, sizeof(struct page) * nr_pages);
->
->  	ms = __nr_to_section(section_nr);
-> -	__section_mark_present(ms, section_nr);
->
+> @@ -894,7 +894,7 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
 >  	/* Align memmap to section boundary in the subsection case */
 >  	if (section_nr_to_pfn(section_nr) != start_pfn)
+>  		memmap = pfn_to_page(section_nr_to_pfn(section_nr));
+> -	sparse_init_one_section(ms, section_nr, memmap, ms->usage, 0);
+> +	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
+>
+>  	return 0;
+>  }
 > diff --git a/mm/sparse.c b/mm/sparse.c
-> index 2d0f2db34f4cf..344acaaed94db 100644
+> index 344acaaed94db..d2e7c21319e27 100644
 > --- a/mm/sparse.c
 > +++ b/mm/sparse.c
-> @@ -170,13 +170,14 @@ static void __init mminit_validate_memmodel_limits(unsigned long *start_pfn,
->   */
->  unsigned long __highest_used_section_nr;
->
-> -static inline unsigned long first_present_section_nr(void)
-> +static inline unsigned long first_early_section_nr(void)
->  {
-> -	return next_present_section_nr(-1);
-> +	return next_early_section_nr(-1);
->  }
->
->  void __init sparse_sections_init(void)
->  {
-> +	const unsigned long flags = SECTION_IS_EARLY | SECTION_IS_ONLINE;
->  	unsigned long pfn, start_pfn, end_pfn, section_nr;
->  	int i, nid;
->
-> @@ -196,9 +197,7 @@ void __init sparse_sections_init(void)
->  				continue;
->
->  			set_section_nid(section_nr, nid);
-> -			ms->section_mem_map = sparse_encode_early_nid(nid) |
-> -							SECTION_IS_ONLINE;
-> -			__section_mark_present(ms, section_nr);
-> +			ms->section_mem_map = sparse_encode_early_nid(nid) | flags;
->  		}
->  	}
->  	__highest_used_section_nr = section_nr;
-> @@ -231,7 +230,7 @@ static void __init sparse_metadata_init_nid(int nid,
->  	if (!usage)
->  		panic("Failed to allocate usemap for node %d\n", nid);
->
-> -	for_each_present_section_nr(start_section_nr, section_nr) {
-> +	for_each_early_section_nr(start_section_nr, section_nr) {
->  		unsigned long pfn = section_nr_to_pfn(section_nr);
->  		struct page *mem_map;
->
-> @@ -246,18 +245,18 @@ static void __init sparse_metadata_init_nid(int nid,
+> @@ -245,7 +245,7 @@ static void __init sparse_metadata_init_nid(int nid,
 >  		memmap_boot_pages_add(section_nr_vmemmap_pages(pfn, PAGES_PER_SECTION,
 >  							       NULL, NULL));
 >  		sparse_init_one_section(__nr_to_section(section_nr), section_nr,
-> -					mem_map, usage, SECTION_IS_EARLY);
-> +					mem_map, usage, 0);
+> -					mem_map, usage, 0);
+> +					mem_map, usage);
 >  		usage = (void *)usage + mem_section_usage_size();
 >  	}
 >  }
->
->  static void __init sparse_metadata_init(void)
->  {
-> -	unsigned long start_section_nr = first_present_section_nr();
-> +	unsigned long start_section_nr = first_early_section_nr();
->  	int nid_begin = sparse_early_nid(__nr_to_section(start_section_nr));
->  	unsigned long section_nr, nr_sections = 1;
->
-> -	for_each_present_section_nr(start_section_nr + 1, section_nr) {
-> +	for_each_early_section_nr(start_section_nr + 1, section_nr) {
->  		const int nid = sparse_early_nid(__nr_to_section(section_nr));
->
->  		if (nid == nid_begin) {
 > diff --git a/mm/sparse.h b/mm/sparse.h
-> index a3af4967fd5c5..03351f2467e34 100644
+> index 03351f2467e34..f45dd280db6ff 100644
 > --- a/mm/sparse.h
 > +++ b/mm/sparse.h
-> @@ -114,12 +114,6 @@ static inline void sparse_init_one_section(struct mem_section *ms,
+> @@ -91,7 +91,7 @@ int sparse_index_init(unsigned long section_nr, int nid);
+>
+>  static inline void sparse_init_one_section(struct mem_section *ms,
+>  		unsigned long section_nr, struct page *mem_map,
+> -		struct mem_section_usage *usage, unsigned long flags)
+> +		struct mem_section_usage *usage)
+>  {
+>  	unsigned long coded_mem_map;
+>
+> @@ -109,8 +109,7 @@ static inline void sparse_init_one_section(struct mem_section *ms,
+>  	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
+>
+>  	ms->section_mem_map &= ~SECTION_MAP_MASK;
+> -	ms->section_mem_map |= coded_mem_map;
+> -	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
+> +	ms->section_mem_map |= coded_mem_map | SECTION_HAS_MEM_MAP;
 >  	ms->usage = usage;
 >  }
 >
-> -static inline void __section_mark_present(struct mem_section *ms,
-> -		unsigned long section_nr)
-> -{
-> -	ms->section_mem_map |= SECTION_MARKED_PRESENT;
-> -}
-> -
->  static inline size_t mem_section_usage_size(void)
->  {
->  	return struct_size_t(struct mem_section_usage, pageblock_flags,
-> diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
-> index 193a88d763abf..73d637d28c8e6 100644
-> --- a/scripts/gdb/linux/mm.py
-> +++ b/scripts/gdb/linux/mm.py
-> @@ -76,7 +76,7 @@ class x86_page_ops():
->              self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
->          except:
->              self.SECTION_HAS_MEM_MAP = 1 << 0
-> -            self.SECTION_IS_EARLY = 1 << 3
-> +            self.SECTION_IS_EARLY = 1 << 2
-
-Seems a bit strage given the code is:
-
-        try:
-            self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
-            self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
-        except:
-            self.SECTION_HAS_MEM_MAP = 1 << 0
-            self.SECTION_IS_EARLY = 1 << 2
-
-Whereas other variables must be available with no try, e.g.:
-
-        self.PAGE_OFFSET = int(gdb.parse_and_eval("page_offset_base"))
-        self.VMEMMAP_START = int(gdb.parse_and_eval("vmemmap_base"))
-        self.PHYS_BASE = int(gdb.parse_and_eval("(unsigned long) phys_base"))
-
-etc.
-
-Is there some weirdness with gdb? Or is it maybe because there are some configs
-without these symbols maybe?
-
->
->          self.SUBSECTION_SHIFT = 21
->          self.PAGES_PER_SUBSECTION = 1 << (self.SUBSECTION_SHIFT - self.PAGE_SHIFT)
 >
 > --
 > 2.43.0
