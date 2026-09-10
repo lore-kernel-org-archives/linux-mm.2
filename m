@@ -4,151 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E3AC79FBB
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:35:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D73E1C79FB7
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:40:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE41B6B0095; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
+	id E0F886B0096; Thu, 10 Sep 2026 03:40:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBC6F6B0096; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
+	id D79376B0098; Thu, 10 Sep 2026 03:40:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD32E6B0098; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
+	id C60936B0099; Thu, 10 Sep 2026 03:40:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D54B6B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6084A046F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:35:44 +0000 (UTC)
-X-FDA: 85197043008.07.9DB4626
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 03A54C0007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:35:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArIWktUn;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4CBA6B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:40:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE1FE140459
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:40:25 +0000 (UTC)
+X-FDA: 85197054810.15.9D0AB21
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 93C8E180009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:40:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hObn2qOa;
+	spf=pass (imf24.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789026024;
+	b=LxokXcLD3omzqPKWP3W6PvH6ZIyUcFG45RP30KeCIz765MowxxgPiH1575EOevsB3gV1cB
+	pR5umpS8ctnyN4K/XeXwqZDDSGu7GTzA/kH/Q2h0weJWINpEC8Vm4fRtwM9w76AtQYWfMB
+	v0VnlqZ8OJUf84fOaWRrdggmOhQaLh8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hObn2qOa;
+	spf=pass (imf24.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789025743;
+	s=arc-20220608; t=1789026024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EhU5FRjwx3bIRyO70+0m2ZMAFaFYcoutIHjPJPwpjb0=;
-	b=7Oy9LE9CMXo4ImLH5zeT8jGpAJ1LHjl7eE9OjCgNXDwiIpV+J33tf+0gjY0drcKQtPOGQJ
-	kdjuGnmEXnaQvNp5tzgS4Pf43/wBR8g70pnyI+ehuGb3N45EolVKhTtCa6AypUzf61Hsnl
-	dIvuaYWGtozZW0DKazStxBYTOLZK2jI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArIWktUn;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789025743;
-	b=ZpjSiZ9bOk+5Jq+qtsdtmWTIs3QMjUW6lXOm3hR0WO1rZu8Hz5Y1A4xFnb8SFnOs+uU5qw
-	IeLOPbzfta/EuW1ELkSQPl2terDz1xekQqSh9v7M3MNEu/tb6IqMwo3zFEJ7nEG6n36u9L
-	CEnzjTtMD/5ISPb209fQkCzCoCr2ICg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DEF041531;
-	Thu, 10 Sep 2026 07:35:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C231F000FF;
-	Thu, 10 Sep 2026 07:35:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789025741;
-	bh=EhU5FRjwx3bIRyO70+0m2ZMAFaFYcoutIHjPJPwpjb0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ArIWktUnX4ZHRqyfQgODDI08WST8EkyZQTS8kC93Se4E6H+syeu0Dr629/uyOcxo2
-	 9lgDK7KIdqL6gH8zdsEKDMnghdylnYh/hgGmgjgckV3SuyLN3390WGB6RPcog6iZXu
-	 OO/XEJi6e4/AaARzYg+An6QISxOXdndN4CKx8wDo6NDo49Xtm+zM83zuqP9ojMdyrh
-	 FJ/tn4Bjrr6I7LVgrjwJ+mjKKJsCdyQlGI2Yo0hTds7SKfO0E1tm9OrFvbQ/gVzmbP
-	 h/8wPEBM75as9OPp4JVezB3s3pKMrQs7tyHW2vQVnUqHjb6/TvJQN6QSyeroQtw2rI
-	 5jj8kC6v1vixQ==
-Message-ID: <927c0ec3-4183-4355-9269-721d79f4983c@kernel.org>
-Date: Thu, 10 Sep 2026 09:35:32 +0200
+	bh=nO/KQnopE23Wizv8xSIWVHEQPNqM2xv6VOHjFuXQ9M0=;
+	b=d4Qty+W1MK2UhkgjJxmFPmTx1oerMgfEeDiswfAz4pmOx7JvFaTkz+yKxtHITQngiNlRW3
+	t0hyRPQRCThuulX+E6YBEH7DeII3kjLqfWAaA8AdqnAj0H61Z6TtshaFem2OwBKUKs8VJc
+	QYUfTNuB0DHb/Qlb+oRvcqyBYeWW/5Y=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789026019; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=nO/KQnopE23Wizv8xSIWVHEQPNqM2xv6VOHjFuXQ9M0=;
+	b=hObn2qOaq0A3X+0I/izOXtHdCNfRASbw87T3QgCGYi/yv0rN3eSrFnWlHLyezIN5IwoEcadQzCazc6zLqKLCAChfDQWtc7zcupV36M6SD9i9XAHWHzFGFyFT0PuKhz1TCKJZKb9Q3rnGA1C9ZDxtYdilA/PtlNmrvgt0M1uS/0I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XAgyQpm_1789026012;
+Received: from 30.178.84.157(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAgyQpm_1789026012 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 15:40:17 +0800
+Message-ID: <de74c87c-b52f-4310-b3f7-9a64b1b01eb1@linux.alibaba.com>
+Date: Thu, 10 Sep 2026 15:40:12 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
- <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
- <178889163877.1334491.3646957026033534678.b4-reply@b4>
- <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
- <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
+Subject: Re: [PATCH v2 1/4] mm: memcontrol: drop kmemcg_id and use the memcg
+ ID for list_lru indexing
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
+ <20260907110111.2286932-2-qinyuntan@linux.alibaba.com>
+ <aqGjkGA7XeYEHA2T@cmpxchg.org>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <aqGjkGA7XeYEHA2T@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 03A54C0007
-X-Stat-Signature: ubpnxtn8iq1448rcjbz5u7y976e6airc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 93C8E180009
 X-Rspam-User: 
-X-HE-Tag: 1789025742-910491
-X-HE-Meta: U2FsdGVkX18uo4DTC+4mR7+DnnyHMb3gaG3s4udLNtgB1Cw5PMqzyyXxhbmXRCw9d3i6cR2pZWN0O0jX+x35UvazzxMvQWArxvG02McqDSvRUjHXp1/k80rwVqZcziI4rCYTehlu3zknT1fOLrDOGsXue5dHSlP5V4TrRu8YyJfjNvNYadE4Fg8KtRU7MVtjxqNA/OdDMHy55Qw9WmVzk81HzrcjFddkLnqLXXVQVzjsVEcO79woU8HarCira+rmilrG+xMQZDNNxT8sf3euJ2jaSodVmzuXJEDIdbMkVuAZmxXIiHPu1Zphwg0vKd/oKgVq/tcybDhakp4R1W9LwIb2jROOjhQJydkO+YwkJSdxOQBARy2hPsy/qPzHiUqfLhGey2pjumd8SaKe2sNANyT/MNicRzdSi62JrCsJeJq5X0l6fan0C0WtjmXabWzrSbLEzCxe+eGUpbLZA0Sn/Gk4lDrSbhzq+nXC3uRK3Zw5yZpAcfjGxOsBFbl/Q0gXwrOl6DWBMCm+odMQ2h5LGq5cyGmfnPK8cGwWcRfR4ImKEv/fTHUviK1Fj738BNryKJHQW9rZrC8bATI1yLAWti5FHoxn8GWiyBgvXpI/PXv+q/2hCR4GPsoXv+kYjPtfGr427o824MPEWLRan2eo+pJR4Td1OI7C6Mada5YqJuQbU/zBoYIrzxUhUZNKZOE2o6b+veZ8pk0taMu21gdtOpKqwpC6mQ5cRof3pSG6wI+FPIJCTFPZO7psuHroXNrQH1Vff1MtIrtoNpKS7Q0XvzPNeXG2vdnnK++lbznaGDxZdS3fOLvgxiKTi/X2oNEwaS1yI7xKYk83uCjvt58p9Gt4x5lIp4AviTsOFR/ZIyFAxB11A/g/lKdFNCSNQUkPLr4QCdJ2gn4d/8Nf9zONtXKT2ja8Lr0yIpnqDT3KFAvpDGbHc/D6x/KJ3IsdH6pW4mQUXv0oSf2lMe78zVL
- tTVrsXN+
- mo7mCbidjcVxoQ4c/7NcN/rBSw3IM47vKx2jlz4BcLXJkI1FI08lvGFtO0bmCxzE28FiwYY88YGtd7HssL6Nq0WSRdVka68XMibYKH/ZAn0fAaz5XhZOltr3A0+5pSoWgRPLcjblgPl/AG/ifJfQL5iPWy//jzShrGrispBjTmQs/niCOyvLj4SnqrBO5j0Ywyd8fQFZRvWpQ+EunJj+shP1pPt0Dn0U5j5BRv2V1+8Gi+F4DW2nhK6iVfnWqaki5HlYwcLgkcmeixb6hq5XAc/xZUoXr3dMCusC1zGj7DKEKqjYIR6hjBicAPg==
+X-Stat-Signature: kh6ynyds6jtr6rpznag7g5416rsrkdps
+X-HE-Tag: 1789026022-804106
+X-HE-Meta: U2FsdGVkX19xaQ9IvYJC8LATGJxl+6VVK4QJzr5pkxWtLCfXi2neD6EMM+pheCrLh8NVTkpMMNFJyd2c/pyr70sQJTrvBfp2tNIOnUL42xSZN5LqO9dBYzKH48jWiy0rHuD9FhTe5dlV2PZNOdCggH99feho4JGS8cNkqTVkSCFzCWWqQcRsmSQI0zz4D1oxIRDoPhyNhnMpg0g02VD1VhpWJiKnQVQKvHPu+VkGbhm4KC0lYYCsCpnvFUV6h51AG8u5k9PCqQpPauRNPzQZ8mdEVWpW9ni5kT+clTMTpdICfXAfbB0W2bwfF9R+y5IKraZ+oz+kpcDjoDtuSIlHpaYqsEyDV5EO9H+TinG3tHjMdSwdQZi6vX5neXfJ5RMeXO8YLg8dFJn97GF+QYvNlk2xU8sI9ucO1CRob1EsS98STMFHfh/ZkN8zwP0yIp/bHa75MMPFdnMFbR6bMCQw59rPPoh+XNp4Wg5HL1H3KnT/Vjl2I8gWxtZ81QLxbct0syM80xfkGPJvf8V8SJb5431prZNPS1lNACLPyY+SnggxyB3ks5h7NrP6FaFcL56O292WDlcRCwalPynB1IzQD8Yc61yANhiqbTO6C4FvAJp8YBijRl+VL7o6Wa/qLMFOGO4pGJJbWQC+IM5xHY7ufRB6PlwKo+HDZQWaiuSeu5XmxYtGIVrFClx5jnrueeW/ADjRvTpf4w5cK2qbRI+qE4yoaHKk6U74DATAiE41hnsJfeMfESfsGggiS402KUAFJmxVFxcp3EJ+mvpHoRN5c7BP1vIWYdILfyGFoqjpEzFFTdZuUjQ8KaWp3Ty+pgZij8XMNmqH4KJsITjFRPWVdy9nm8owxjIZ1tAP9pwuy2ZQ6fDWQdc6nPU1mSWPat69n0w7Rz4MT6sHX00Es1/piOSlQ2WOprZQUPYxKxG2w0yTbuOiBGnLTxg6MUk5tRD6hJE8GR8y7hFlOopV/nf
+ VD6Il/P5
+ oweSqm+4/ywLZYF54e37+5LjpaKqafLFybrmz52BcmV6/Mnvw06/Bt2j7BZWlxlpvdKuryyVBuwltdCxK8e0meMLKgCHHXBj8lYQY5KkBlazFLlmnQu0cgOj4bLNCLyhdrAVv/JtOYWdOTZe7EZ8mfPvMcBQzmIPqO5jWKd5nGn6uo9bZozeOx+1TIOPl85Az2zkLqgbyhY2/TS7UoHQ0W7mzywo+BUfcFfaOVFBRNZeAJXMTG8jXUCXx3KUEiDrhMwTOsKWHHHa/kcd3EDkYAQVD3pLgaoCalg6StQkQIaVo72TC4NRws0u9uXLfrkKqw/U4Gb3XJhQSgqoQMSeSXOffc6B+JJQRxPGA0gHJT6GGkU4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,45 +98,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 19:47, Tal Zussman wrote:
-> On 9/9/26 3:48 PM, David Hildenbrand (Arm) wrote:
->> On 9/8/26 20:20, Tal Zussman wrote:
->>>
->>> I have a WIP series of ~30 patches converting much of the remaining page
->>> users in f2fs (including the below) to folios. Still have to do some
->>> testing and clean it up, but hoping to send it out in the next couple of
->>> weeks (in the hopes of eliminating some more folio_compat.c functions by
->>> next cycle...)
->>
->> Indeed best to wait a bit before flooding -mm even more, it's rather a lot at
->> this point.
->>
->> In the context of this series, it would be great if you could review whether the
->> diff I proposed would get the job done, thanks!
->>
+On 9/10/26 2:21 AM, Johannes Weiner wrote:
+> On Mon, Sep 07, 2026 at 07:01:08PM +0800, Qinyun Tan wrote:
 > 
-> What it changes looks good, but I would go a little further.
-
-Thanks!
-
+> This is a private ID with lifetime only guaranteed for online
+> groups. Reparenting happens right before it dies at offlining right
+> now, but this is not a great dependency to have.
 > 
-> There are only two more users of page_private_gcing(), which pass fio->page.
-> Those could easily be converted to folio_test_f2fs_gcing() by passing fio->folio,
-> which is in a union with fio->page. That would let you delete the
-> page_private_##name() implementation in PAGE_PRIVATE_GET_FUNC() as well and just
-> remove the entire family. At that point PAGE_PRIVATE_{GET,SET,CLEAR}_FUNC()
-> could be renamed to something like F2FS_FOLIO_PRIVATE_{GET,SET,CLEAR}_FUNC() and
-> all of this cruft is gone and folio-based, with no more f2fs use of page_private()
-> either.
+> Use mem_cgroup_id() instead and just get rid of that helper.
 > 
-> The renaming could be done as a later step, but I would get rid of the accessors
-> as well in one swoop.
 
-Yes, either as part of the same patch or as a separate patch. Zi, can you take
-care of that? Thanks!
+Hi Johannes,
 
--- 
-Cheers,
+Thanks for the review.
 
-David
+Right, the copy of the private ID carried exactly that ordering
+dependency, and the cgroup ID removes it cleanly. mem_cgroup_id()
+it is.
+> Both of these functions do very little now and the asymmetry you're
+> adding on the mem_cgroup_kmem_disabled() check looks odd. Please just
+> inline them into mem_cgroup_css_online()/offline():
+> 
+> onlining:
+> 	if (!mem_cgroup_kmem_disabled() && likely(!mem_cgroup_is_root()))
+> 		static_branch_enable(&memcg_kmem_online_key);
+> 
+> offlining:
+> 	memcg_reparent_list_lrus(memcg, parent);
+> 
+> The root check is unnecessary because roots are not destroyed. But if
+> you'd rather not make that change here, keep the root check, and leave
+> its removal to a separate cleanup patch, that's fine too.
+> 
+That makes sense. I'll send a v3 with these changes.
+
+
+Thanks again,
+Qinyun Tan
 
