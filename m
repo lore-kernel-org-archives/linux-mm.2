@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94A53C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CA3C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A017A6B008A; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
+	id 6FEAC6B0093; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D9626B0093; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
+	id 62F2F6B0092; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8045C6B008A; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
+	id 43AD16B0098; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B51D6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89738120456
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:58 +0000 (UTC)
-X-FDA: 85197393876.30.715D671
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1AEA11A0002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zprR1cA+;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789034096;
-	b=5iFtrvT3H9c/LHmZUR10geDfqB2kGsQeK7Y1r28IDNu2WuKQ+DblbNQMjT4RHuSsKIZBgU
-	aN/gnBV2ulCZc/1HTuKApejmi5fzz2N2IqLxMP2sH7G29+TXsyXMU5jdDdHAoCgwypHZKm
-	v6N4zv8x8gSt4qPHRiQcmjr3qFdQpbI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zprR1cA+;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2320B6B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FD8BA4D86
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:59 +0000 (UTC)
+X-FDA: 85197393918.27.159F0FD
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8B26640006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YYWHaFmm;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789034096;
+	s=arc-20220608; t=1789034097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YYH8YVqAhKFLmpEdImn2etJ5CxjXZ66KHXC3hb3Jua8=;
-	b=AAsJIiw9lDtJ/ej7T73pSo2im0jwfvtMlYt/KMD00WZfcb090qeN/QJN+rRNf65yu9Y799
-	+GAioImBfFuVSH/grJZqsHL5noC3KoR/C/nnLR4Nf+stnPtMMiwHsCROMsAEu4F57szHdn
-	MbzBKJnMGj4kUdKAukJ3ni2qmkGhrqw=
+	bh=BOaCqBD7Arbba0pL8GlDbZU8Y5xx34em/O7wohUgSJU=;
+	b=IcNiDofbd+bUSXOYsKBkR5cIkSMiG1Dy/h3YxcRDB9vsD/2zxMbDw7Y3k0U2NnRMcF9jAL
+	RV4dtdccIL06esAQMeWUbuUavx9kbKjD2YzcmiC5q/qGT4xDRFvAcy5jaH8ic46LjolWRb
+	yEyIUAOCXLA6A99HNXPZ8OlOjKTlQ6M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789034097;
+	b=t8DJJ9sBkJUmzq5F3jHiuvudN6rpKe0FaJMDlIsQbCSX3dbVjur6ifwMCd0i+NG3GUjcAA
+	BbG/1JGMc5VvKKAn61g6X3hYroaJA92dyVw+moz69hiYVNgyswJzSMpXsgHJb0RAw1iL+R
+	5gBrD2CP7a+We4MLCBnMvLt9VwcWlDE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YYWHaFmm;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=YYH8YVqAhKFLmpEdImn2etJ5CxjXZ66KHXC3hb3Jua8=;
-	b=zprR1cA+H71rOCGihI9cnn13m8SrmuaTpDU5s4vj/J47DpSKPeOy+pu+xINwQdqWn66YzqW7B
-	61GYohavpx8UaHbHJvUc70hiYFGWiKUOW1EBv75OG0gzZSnIIOLMug4y5zO8fxyzlzd3N7Vb1Jg
-	d38E5HnfhBZDxwLgl589lzo=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hgXmQ6N7Sz1T4MG;
-	Thu, 10 Sep 2026 17:43:18 +0800 (CST)
+	bh=BOaCqBD7Arbba0pL8GlDbZU8Y5xx34em/O7wohUgSJU=;
+	b=YYWHaFmm/UO0YVCZKyR4wsGGyN+W4Sm/UVbWsWXVwKKmMZG3GIOF6E7E15RBh2JBle5rZQTkO
+	WNh4qxvvNr8BnnlMmLMHq3G/RlQmPSWQBlp+n1dF6fzOg3vF4Z7EIuH/zcOdkq8Z/0QM85U9hqz
+	ivLMA1skX3EY0LY8Df6ry00=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hgXmv4STDznTx7;
+	Thu, 10 Sep 2026 17:43:43 +0800 (CST)
 Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id D6E4840591;
-	Thu, 10 Sep 2026 17:54:51 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 309BB40563;
+	Thu, 10 Sep 2026 17:54:52 +0800 (CST)
 Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
  (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
@@ -72,9 +72,9 @@ CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
  Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
 	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, Kefeng Wang
 	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 1/4] mm: zswap: pass type and offset to zswap_invalidate() directly
-Date: Thu, 10 Sep 2026 17:54:46 +0800
-Message-ID: <20260910095449.715183-2-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 2/4] mm: zswap: reuse zswap_invalidate() in zswap_store() check_old path
+Date: Thu, 10 Sep 2026 17:54:47 +0800
+Message-ID: <20260910095449.715183-3-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
 References: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
@@ -84,14 +84,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk300003.china.huawei.com (7.202.195.93)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1AEA11A0002
-X-Stat-Signature: dn4ibha6u7enght9fmn5gzyk7i7qgeuc
 X-Rspam-User: 
-X-HE-Tag: 1789034095-294290
-X-HE-Meta: U2FsdGVkX18hNGSfsabT37H79NqAdkveYQKhNSHXtrRMr1I7WP2lYh4HevX4QvIR+OeHioNt0qjvT8FPq2hXbe2Tm0CupYaIELnAQGGd8QH3fss8eg4h2ft3vv0mRuIac+YqdjeIPpGVGUCRzIgRlywEn59i3A9Wi5K4GGMOMQA7j8uuxS+Tc9+2RsEaNsklB6zzCTKFWlkZXTdo3PP1b1edDIf/kEufzmKY6MAxxf2KHdihQlaWMGr4ge4iCliBVlVOQWOpDFaO5sM/E7BhIRsOPdPvyEeCCfMKEXWSSvEvFbXAzlITi7LvXw8c8SEoEiiwogLQCV2KO6BG7kgsoYLR2SSrovPtmqM74zpdEvGsp3z7ynzj41Qxef/LCb2zwUGvH5jmnwZcc2ZRmCW1rDTAP7HIY4aYRbTXDrMkeriPMPCoph9jkDJrgqnqoLpQ49wI8AOUxrbPqCSdXToiGemk39bQb6HTn6gnQTk57yGhZ6F8KLhmFdz9fXfkjzXVWY5+xgf6o3nyX5H0KHZqtQjTPC96vtR9ra0Q9psGHBf8unaM129ckcrDbW/3xRJSK7U4Yzlx9eSiRGcoKEQt1fQ5oXj1jZIipf/L5HxXuwFCNOai6/Zt6y4EXXco5arwZEf6m7Ji45YNe0+8BohbPOtKS0MXdAIurf2KzZBI5d/HIaAnUQZRDkSk/k1uJQi2MPXmv/LodP521C+nKyBaA9lsPRF9ldHyu0h4alRg28jY7TGhO94fCIamoD9pSkoNXl3rFkCm60XF+s6ZHZlFjOULS+VEf26vkd0uPrp1/+dG8mIa8Co666AWC/7ocgAVimCHv7BC7hnLy9Jy67Sdj34vOLdkt1LbsSqTnl/lunHME0SmrFaax/qHBZmXG8xGMfHXMNALLHicwh4C7LXzooSUZCd7G75QMGCEB19vC0O4WJf5QvfdAWs642hhkLj01V95/JK8PbYIbPjFj6J
- h1M0VUFZ
- 62UR7cVXrwrNsB8n0GwZs9eobkthSIArynkV2yvJrS1qfRANUgFyH0GAEec0fWFJ5hGju4e7LHu70CLeC8dNIn2GiBnlta48tybjYb75n0djjnbt3AY82NoJxGqyvsXsIPRPh90gtxaIe0+TdxTGae+0I5UROJK80RgzP906dJ22ox/IajArG9Kg93vcjZzbtn/xzEt2JuMxHuLpWwxbnnM5tjaxE0ZPBJB5dxTNMyUifqh2M32RuBR9mzfuSj6RYi8zJ2Aboik6kPLNYzMBCdo/+PmhjrPz0JxH+M1sG7ektsohU/TVuoh31Y/igST3zL0zKRhoZG53O5cAwz0A8m4cMNA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8B26640006
+X-Stat-Signature: td8bx95tjgxdghjphc9hebh7z7utosqh
+X-HE-Tag: 1789034097-120094
+X-HE-Meta: U2FsdGVkX1/fFHQb18QK+CPyJUsopUO8WegwST49bZGKm3rXe5UeAOjwOE8LTHe+ExekA8JGN3hHD00oygUuVzb77zO78PKZ6kcM/pFt2FUuz7NsfLYc0HOlQSkwNUihGwL2QSBwrL8YmWobiJ2EPpurEy3jvMjLE0OmcGptzJnappHG3Y8xgcW6yTOJN5AVYY7MNnRu8tGO1fyuKFyYSb43s6aXFzQxsR1yFNyW4VmRVIE2s7/VaE/dOXy5yhzv7Rjq4lw46Yz9gAMzWxXMKskWBP1PS2era7hohowUJUyRQIxovK4DN4av2kTmgRWFl1d+mvZ4vIAWoy3G5/l5XFwi2ypXtudo1oIoH1oW7g64Os3/bp5KhoM6C0IYU6rrCWiUf2tO/ZmO863/Fi3r34bqzXIrkAgnK8k+c17hRTBZa2Uf9bi7TEbhqq3DIT46arRWt9u0djqqZV769TZXa0dXw6YWrKAgf2sqEcW5yLRsUN/MGdUP9NyOgXP2PvA7eldPNtrB/hP0kouY3fHPsIr5LBW0Lk4n5c5NQGr6oDvnrjRnoxy0mDAXGy4DcwRK9a2lRtYby+gsjRhezO//OB04XDjx8ovH8mHkMHemwmQfM/mI1Dos2N4bD/ZmOVDLtInmXOrFxW8dkwmZa83Cd7qAHCecbiD/N4PvdznxeCkv8+aS/uKjGlk9SbQPRJACK+6x9HwOQoBuK9EtM/Uah0Wa59x+u6YY1w+Vomzyu6GzLF+Bvo7h8WRIOzpWWLHIrRPyF9wztX0435CQbWDUBdGmjgXamDAAeEJCuHi3uYlddgxawZDuqUNWWq8bg3BUUFmKpmPLlDwe2O54cHSv7YFRhDo2dNMDNluSJOg0Wgig8MyamO/XS9IzeVb/yyHvfAPp4FTpnwxtmGnrrCdRzwTgKPyjwUTfryVeyPPxVt1GDmpyxguRNMic4L1ykAX/Sw6LRiTFN/+b9or+9/M
+ e2w6Aoxt
+ qphKETokT2YsMGFRaNxvvo1TopzUElvhcr3TcPDjOnU2zBjHQy5PtN2Y7KGcKj7lAsg7Ae0scKf73LOUt2i52WmZjvV0UrgnnDbHn9NVITI3QbMrAkadpGFElNgnElJ6nDlieJnQZVHIor2EaXerqZkO0O+CPS1nt+drVkM7HLzk4e6234e1OknApJeXVSLY4qh0/p8GGUT+8VKkDvItbumsciXe+vdO3FxrZQa3Kb+t5kTN/itqlvT9+0qWLbBN1HXrc/7z4SKn6ZGDUKKAC8kK0zdGPCzfEucQfLXpm9WFv/lYnJXlI5g+8FBzVMjYDxNCMbe4p3Cs6bFlOenXeHZKq6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,88 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_invalidate() takes a swp_entry_t only to unpack it right back
-into type and offset.  Both callers already have those values, so
-pass them directly and drop the swp_entry()/swp_type()/swp_offset()
-round-trip.
+The check_old path in zswap_store() open-codes the same per-slot
+xarray lookup and entry free that zswap_invalidate() already does.
+Reuse zswap_invalidate() whose xa_empty() check skips empty per-area
+trees to avoid unnecessary xarray lookup and code duplication.
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- include/linux/zswap.h |  4 ++--
- mm/swapfile.c         |  2 +-
- mm/zswap.c            | 14 +++++++++-----
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ mm/zswap.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 30c193a1207e..463bdee5c1e1 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -27,7 +27,7 @@ struct zswap_lruvec_state {
- unsigned long zswap_total_pages(void);
- bool zswap_store(struct folio *folio);
- int zswap_load(struct folio *folio);
--void zswap_invalidate(swp_entry_t swp);
-+void zswap_invalidate(int type, pgoff_t offset);
- int zswap_swapon(int type, unsigned long nr_pages);
- void zswap_swapoff(int type);
- void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
-@@ -49,7 +49,7 @@ static inline int zswap_load(struct folio *folio)
- 	return -ENOENT;
- }
- 
--static inline void zswap_invalidate(swp_entry_t swp) {}
-+static inline void zswap_invalidate(int type, pgoff_t offset) {}
- static inline int zswap_swapon(int type, unsigned long nr_pages)
- {
- 	return 0;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 05d3408396f9..ba71905e4d46 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1319,7 +1319,7 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
- 	unsigned int i;
- 
- 	for (i = 0; i < nr_entries; i++)
--		zswap_invalidate(swp_entry(si->type, offset + i));
-+		zswap_invalidate(si->type, offset + i);
- 
- 	if (si->flags & SWP_BLKDEV)
- 		swap_slot_free_notify =
 diff --git a/mm/zswap.c b/mm/zswap.c
-index a12b6452a225..420c405d0402 100644
+index 420c405d0402..2c06e4e0e130 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -228,10 +228,15 @@ static bool zswap_has_pool;
- /* One swap address space for each 64M swap space */
- #define ZSWAP_ADDRESS_SPACE_SHIFT 14
- #define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
+@@ -1549,15 +1549,9 @@ bool zswap_store(struct folio *folio)
+ 	if (!ret) {
+ 		unsigned type = swp_type(swp);
+ 		pgoff_t offset = swp_offset(swp);
+-		struct zswap_entry *entry;
+-		struct xarray *tree;
+-
+-		for (index = 0; index < nr_pages; ++index) {
+-			tree = swap_zswap_tree(swp_entry(type, offset + index));
+-			entry = xa_erase(tree, offset + index);
+-			if (entry)
+-				zswap_entry_free(entry);
+-		}
 +
-+static inline struct xarray *zswap_tree(int type, pgoff_t offset)
-+{
-+	return &zswap_trees[type][offset >> ZSWAP_ADDRESS_SPACE_SHIFT];
-+}
-+
- static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
- {
--	return &zswap_trees[swp_type(swp)][swp_offset(swp)
--		>> ZSWAP_ADDRESS_SPACE_SHIFT];
-+	return zswap_tree(swp_type(swp), swp_offset(swp));
- }
++		for (index = 0; index < nr_pages; ++index)
++			zswap_invalidate(type, offset + index);
+ 	}
  
- #define zswap_pool_debug(msg, p)			\
-@@ -1659,10 +1664,9 @@ int zswap_load(struct folio *folio)
- 	return 0;
- }
- 
--void zswap_invalidate(swp_entry_t swp)
-+void zswap_invalidate(int type, pgoff_t offset)
- {
--	pgoff_t offset = swp_offset(swp);
--	struct xarray *tree = swap_zswap_tree(swp);
-+	struct xarray *tree = zswap_tree(type, offset);
- 	struct zswap_entry *entry;
- 
- 	if (xa_empty(tree))
+ 	return ret;
 -- 
 2.55.0
 
