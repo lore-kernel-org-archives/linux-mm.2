@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A37DC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB939C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C4896B008C; Thu, 10 Sep 2026 05:50:25 -0400 (EDT)
+	id 8057F6B0096; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6766E6B0092; Thu, 10 Sep 2026 05:50:25 -0400 (EDT)
+	id 7B7EE6B0093; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B8C6B0093; Thu, 10 Sep 2026 05:50:25 -0400 (EDT)
+	id 6CBC56B0095; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 33EA26B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:50:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73A3A80452
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:50:22 +0000 (UTC)
-X-FDA: 85197382284.25.6517EA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B3A8340005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:50:20 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iXU/ICQx";
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789033820;
-	b=bgXxmEFtWMQI7OK9rBJ5bF6gHs6lIJPJ3Eoi/Yo4g1Dfxlu7IyTZLX2zthTKW/R6tHIm4u
-	yjw51pxB50lvGUWqq47YjMDvXG86F/kwy1uxrUFQNaxN9OliFa/4we2PaOoQTsrTXlL5FS
-	5CtnfgTjQillLEg71Yy8VKDlhkovPgQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iXU/ICQx";
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 452216B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:54:59 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D964C1C2311
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:58 +0000 (UTC)
+X-FDA: 85197393876.12.D1CB3B6
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 03E851C0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="UDS/rL7w";
+	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789033820;
+	s=arc-20220608; t=1789034097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+muI1Y++JAFHBJSAeF9UgkoNUlxYs81VMFK72BiNI8Q=;
-	b=gxMr5HgIMVAENqYPOVhtLOoOyN2tJZ+r7VjaF6mtnbBjk0h8qswbe8u382emHuUlcHqzgr
-	8+EEnSB5XAYWM5vb11XfE3L1itSw3/1q2NHWfgEtAKzjwsGk01KD94+JtzG1PG2FsAGSGD
-	SJs+tsesfrs5s9+DcPNN1CO8+6t97Jk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DECD440F0C;
-	Thu, 10 Sep 2026 09:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C871F0089A;
-	Thu, 10 Sep 2026 09:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789033819;
-	bh=+muI1Y++JAFHBJSAeF9UgkoNUlxYs81VMFK72BiNI8Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=iXU/ICQxczIvc0UXPeHKVCCyAbyrOUnU28ptUDZtcUkKUshVpMQecMXSxoJfLo2y8
-	 tLHwnte/wRhOF3BSyZe4lOs9Va5P1R95418z+3EO3bsGo0h8ovmkIrijsO1HYcOr98
-	 Z+yp4LVKWS8UiOn8DM6OoE4YVEHGLmZWeRxTH5kTF6x0hBV8zZxGllJekHEdzEoBIv
-	 kbbt+84OtF64aQPTikgs4DN7nFHRTAnIcxs7AYRZVwSuzCk7W1swrWwIPIouZgA3X9
-	 Mh8vHTdS4hY3j/QroBuuqMR/JP3hgbnEPIlvnraDWpTclm8ozqf263IuJqeqOkYYp6
-	 TRgx0mM8LsjyQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Alexander Graf <graf@amazon.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- Kamalesh Babulal <kamalesh.babulal@oracle.com>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-mm@kvack.org
-In-Reply-To: <20260909103001.2423403-1-kamalesh.babulal@oracle.com>
-References: <20260909103001.2423403-1-kamalesh.babulal@oracle.com>
-Subject: Re: [PATCH] kho: docs: fix scratch_phys debugfs cross-reference
-Message-Id: <178903381353.3691424.1681861521367117461.b4-ty@b4>
-Date: Thu, 10 Sep 2026 12:50:13 +0300
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=q0Uwc7DoOoWl6jVbsiR7FzzVVx44shFaIKR15OkfT68=;
+	b=KXZajHA6EzlO+yONr8RH9RcVWk28MVreTvWxQskrih3Rwi2m5GTNdblBqZHsBK9Hs46FhO
+	qfkfccSwAT/uq8u0m2eXm8ZFei1y0Uf/Rrb8Ad2oTUKPQVF362Zaf8lf9OqJOklKS4gLPn
+	Wj1M7FIUztn3KG1GaR2qjF/qDh5IiJI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789034097;
+	b=OULL1dSeWar1oBDP8n2bTDxDr6etk+lEEOPh1x+/LscMG2gsDIaF0jpI5lFAMJhB1E4zNL
+	tkFqZjZyUf/4sDDzU+exIyVLLVlldmWMiibeFWNnRDEu7a9jCvJoQPJzjmfkvt977Cbj5C
+	xNI3CVMcxF5M69ShzEAI2CSQxMhm1Zo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="UDS/rL7w";
+	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=q0Uwc7DoOoWl6jVbsiR7FzzVVx44shFaIKR15OkfT68=;
+	b=UDS/rL7wJIwPrKexyfz1npirmayP+pRCFF4oKZB9MFOLDUx+okqAsQwvA8CcfN4WiFgaT7wUe
+	PZtfx69bx02KjpU9ikvRbZTlH+rjZvTkTdYTPOnhYDunPoGdEmENnz1t9Lh9Iwp7VDpxTBC36mJ
+	f1cp+/gQkdJZrJuSiHcjPTQ=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hgXmq5yZ8z12LHh;
+	Thu, 10 Sep 2026 17:43:39 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 77DAB40577;
+	Thu, 10 Sep 2026 17:54:51 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
+ (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
+ 2026 17:54:50 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
+ Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
+	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 0/4] mm: zswap: misc optimizations
+Date: Thu, 10 Sep 2026 17:54:45 +0800
+Message-ID: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Stat-Signature: 7jteardxakirrprifo14yswwfkbouptg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B3A8340005
-X-Stat-Signature: nfjy6zjykk75przofu6jhd45dbrpsun5
-X-HE-Tag: 1789033820-663461
-X-HE-Meta: U2FsdGVkX1+pc7dDxIFbWJAjz/QxQMd22meJffXK1AI6R94PEnyqFjj5zCU8CRulgAu3lwV+9ScK3Qt7AzKAnHe7pqNu11O3WovUfGsm2s/nIAT/4dxwnzb/7W+vjeua9yD5ecdX45FKSfPjtSuu14odBl1jsHXMiYL1gXCYpVuGKjbBFb41doR93fjZozySm8DFqrNAnhMSNXjApmi1AyZg1boqdPcqlADqsh2k6sAePbq08i2G7GNX46A2mCOwKc+hRvJTqfYSZNSE/bm2c3E42tKfWkpN+TV0qE6s1zZ8V5POUqQhmbHrxoqZA0HDCE1fdsmqCgi1GhLgXpLdpoYhamaj10ookl0fhhDiB5uHjLB3+4ntD+J9ek9ppmsEdSrsKWc0qUIxCMTagl07V3zQb0aWB+1Lh5AahqZEUD/QF3G8Z7RMSY+sM7thXf2gSRlX6NyEa0PIRnz8FnKef2MPUZB17HZvY+M2RcKv660mRk8Jtgbz+PE2KBuLDOyVLFA3srIgWD9zvj6+GKX2/I92PSnw3ONaLsQY9UdPQQL1PaRllJ4BkvJ1f2uPaKjexGT+VwuCHKi0vS6olTee4ck2vSYqEhqqw84ewwK670vs+vutcN5GOnNPsG+rjzUMoI9U/9o1YWWq9ElFmPQ1AEHV+uTUoI+zpdVhbbcnNNkR9do6a9Vkwp4iwFo9RvORbD3cZ5sUsrahI1PX/Cwtt2phR4Io8GnMaeLgUJzFHSn/+kOB7Z5scU9/yiVt5QhlQ6i6tD/e2/jxP5EvOR7iTVdK+e2yQTMigFUmPpURFo+IbQjSFcDqrP+rtj26rnWPCR/usebJdhsFyBoZmuVEqf8jQbQqpzyY5uRzpeYX0vUX2IHQ7hBKH0PjeWvkCqPecFNQYL8Rlh7BxWmj4NdPAEU/M52z3MVT2C2pxW0jJM9mYjJfbjKtuWyuzHc57dHijLUDfGlbgrfjwHsP5Gf
- 6hLsTk0/
- e+8LQQN+S8JIswuBm4Ky2anAkoAOB6qGq4iFa8cc0pRmSiS6fz4XiZi2rDKNKSeeurbiube1adwBCwynCcT9dixPN+Z8xE5qaDUn6VMFyADJrdliHsWrHa7uPl75SxZDIQZkPYh2V/BKUFRD/SOTm+Hh3iCV/JIubDgaktAF2nHiKy8/dDJvgA2CVeM3FhVVoafTbl/VscW92HWxdoRI/g0R3/DilyHQHxA7zabz4Z5NKBVkZbIuReOja/bIjSG1j/CKni/Jd01ZAPWRVIna3NC8xYhK1sFWGakVY
+X-Rspamd-Queue-Id: 03E851C0006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789034095-308753
+X-HE-Meta: U2FsdGVkX18qlUKKxiY++HICSHMv1qsUF31CcXD2aXNsPj4vvGAEXtTxtOAdYE3fdKPUIHwBes6HTY3STT9LGGm3nJNCgizmkIppsi1ClIwqv0hhEpltj0IrXK0Om45OA+dxEbkGGYm6x81I/oMujIohA3WK6amXKlSqqeRqVMoGP2AhcMmyeeI5C0qjIq+UBymvZqMTj+wnD3vW1WnbUMkKA3VxW3YAheod3itbXT6pVDjTghuvsQeNacScnalcu2YScGpO0RAF4TwvuHuOXHbuP4P+UnnsB1hACY5EFCDm8aJEkTlB47v1oSrzZByAsDM1PBEOWZPHs7JnDcsXfJpf/IBxAEuBGAlF1o+Fgx6PqLuN3yMiyJB7qSXxMCQepg09pmwSsyJTEBZ0SxdwS1J95YczurchBIXAI8IpDtSCpEvJqbZrs6qo8CWtRxWy1DjXQmcJItSuntflmn2Sxc4HxqEw9oVfCPn73aRzt1dadfdRyhnbu9eD2mv7zpf2FTg6qzUqHp0s94HvsrY1GYUkMRPD47b4oxqLAmZO5icpBAzkNYWSSFIF8QROPjTwSzGltN3IfhOOcHZnN9TvIT4tV72NnK/e1EGDrp8kJ671EcAtekY0QveoA7W39Z1J7EpIkmrhrss2NQA3zhEtRkIqgMt6Y19TTPH1USE5wXg52Cz1dFp89VSC/0MEBF1uRKMShX7tCEUKYX6uRJkcSKyEufRAC4Zs9p+uXwtbuDdjVNLqxteM1LKg0cR63yCRgZINk3LjGjH2EZnv2dIBroRNR1BweabcpNjNvOYZ8Ocbzi8a2gbEausTz1yZFvFVih0bUR5rkm67oro2WUqWW2ru3GWGJn+OddfThi+5pr8rgh4LL8kNehFm/JhbFm4IObaeMNqPzNiZosfLREmE52nAZAWRqhTRJlqeQZhqXL1rMnL86QT+1TrQZTR2x2Mw5Zp1G6A671dpywaErCH
+ 71Iyb6sI
+ edlKI3HPzzIEIfPAEbwAdAvByYud5BgWDtVNJTzKOWYEqtlYvM19copOp66mRR3aX/wEaX7vbFDmD9iH/wWP0uEJ0xw1eJqRycaVPSHaqc9z3zy+VlxWyTpn10jyYNp2i2SGHIThHCZUGdYaSqA/G/H6eXisqxI4s0+RGH3+JzJ70gIIjQ31v4v1I/TaVM1bl9SJJZoSgkKjXxUCZHBLJUugBNquJNwTXvD8o0V2dbR/eT8ewlEqdCnh2xEHST+dbFnDfoKQxEVU8T31wb/P0mcdLjFX+n1QnfMH8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +96,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 09 Sep 2026 16:00:01 +0530, Kamalesh Babulal wrote:
-> kho: docs: fix scratch_phys debugfs cross-reference
+This series cleans up duplication in zswap_invalidate() and adds
+fast paths in zswap_store() which now skips redundant xarray lookups,
+while swap_range_free() skips needless zswap_invalidate() calls.
 
-Applied to liveupdate-7.4 branch of liveupdate/linux.git tree, thanks!
+v2:
+- split patches and refactor zswap_invalidate(), suggested by
+  Johannes Weiner
+- add patch4 to skip zswap_invalidate() in swap_range_free()
 
-[1/1] kho: docs: fix scratch_phys debugfs cross-reference
-      commit: dc645f2db7539352404525dd1b80236520fb39eb
+Kefeng Wang (4):
+  mm: zswap: pass type and offset to zswap_invalidate() directly
+  mm: zswap: reuse zswap_invalidate() in zswap_store() check_old path
+  mm: zswap: avoid unnecessary xarray lookup in zswap_store()
+  mm: zswap: skip zswap_invalidate() in swap_range_free() when zswap is
+    unused
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: liveupdate-7.4
+ include/linux/zswap.h |  4 ++--
+ mm/swapfile.c         |  6 ++++--
+ mm/zswap.c            | 29 +++++++++++++++--------------
+ 3 files changed, 21 insertions(+), 18 deletions(-)
 
---
-Sincerely yours,
-Mike.
-
+-- 
+2.55.0
 
 
