@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22484C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33ED6C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:15:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3494E6B008A; Thu, 10 Sep 2026 06:15:12 -0400 (EDT)
+	id 45CEF6B0092; Thu, 10 Sep 2026 06:15:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3212B6B0092; Thu, 10 Sep 2026 06:15:12 -0400 (EDT)
+	id 433526B0093; Thu, 10 Sep 2026 06:15:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210FB6B0093; Thu, 10 Sep 2026 06:15:12 -0400 (EDT)
+	id 34A436B0099; Thu, 10 Sep 2026 06:15:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DFDBA6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:15:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EB6340488
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:15:11 +0000 (UTC)
-X-FDA: 85197444822.25.6443A8A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 130926B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:15:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52388A4610
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:15:49 +0000 (UTC)
+X-FDA: 85197446418.06.EE60798
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7B88C14000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:15:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n7SPAcaH;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 862AD16000D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:15:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gv5fyVsy;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789035347;
+	b=EgAL8Q4nPFQ+PZIpum9zcD/llru+KLZhISAmseU2KJpBYjF6oohSAZB/PmhFkBmw04p6dY
+	mPW7YKU8BRnR1rYs57DJ4jG1O0sEn8w7KFNVSA8rZCtjaIw8EZ9EovTGAD7z7+2gsA3xK9
+	ajmH0FAgOA6D8yla5jELmjeuezEFdhc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gv5fyVsy;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789035308;
+	s=arc-20220608; t=1789035347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1jf2BnWKgFOqshUjBVM616Rin+QQtnz67oQ0yj2zIc=;
-	b=0vBjc3ARE40TaS9bxdHTwsbnujlYSd1zBXAy1/D8MfEAl1opfToVo6c/Lnh3x5OjEJVkVh
-	hg8YGL4HIZj1/YVt8XTd0WecI6Y+0oUgEVrAGLHMq0LTxhLSJFOY3YObC3mzTFPrABzUOS
-	/WYJcpcD0cbqtl8r4/YSzSbZfkDozJk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789035308;
-	b=BwZ9GfpTwaxXlYd/tXIlXQp1B6CyjRsKBFbAjOYxOu4XYhrxk/FLEkZJoZ2uBCFvOcP7CR
-	RnBNX266fAfH87AvivGUzKYnhVWDdZb4wXW+diaYSkMMiyVRrMuL/EAJSz7kvla4F9zKgK
-	mGFBUvqVmlETVoOwdOX6ImqUuY+h+/o=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n7SPAcaH;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=J+RbngQimsasuZ1zEF2fUuFweIotw1Um8Y1N5tAyMhQ=;
+	b=ssTaYjP0RSTBs0dTFS2yNUVx+qbqEDJZSEm2xbKh+LgsaZ5/O/oRfgokSblO1miULbEE6c
+	ZFchuiwdggrlpTLCgNOSsPf4GHDqTKO3LcdPcz5JowELPGOarrPzGIdwUwlrUKVNdMh2du
+	OHnh1U2GlzyuxE73eGtvyWcl8RcgldQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 901ED407CE;
-	Thu, 10 Sep 2026 10:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B671F000FF;
-	Thu, 10 Sep 2026 10:15:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C45924185C;
+	Thu, 10 Sep 2026 10:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6321C1F00893;
+	Thu, 10 Sep 2026 10:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789035307;
-	bh=v1jf2BnWKgFOqshUjBVM616Rin+QQtnz67oQ0yj2zIc=;
+	s=k20260515; t=1789035346;
+	bh=J+RbngQimsasuZ1zEF2fUuFweIotw1Um8Y1N5tAyMhQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n7SPAcaH7guQHXLUvHt39zDD7VkfvXNXJxyLeKOSy6F6EQiJypZAgI/aIPywPRu1T
-	 FOdHJXQrZqg4xzP+8jCUJpEZJfZsnIirc/JEBSmf0Bvoe5qD/BQjspvW5umqigqNqW
-	 wDf192w9WWfKoWcdXfD9l6arb01LZhr9HMEOsKq6ypf/m2cx8gpcqFdCvPynkVeSt7
-	 kDttdVXNtjltJR1LghfDXasLKOWUBgieqp8yckKTf6PZ+mhtuTsXmGD+q0kJuDFIFl
-	 ve8bNEN2iu219o7QnElPB5wznFdMu6Wk04HHNueiYZMtk9WuNkfJiqiRwv9aht1MbU
-	 rD1uHTMkNiTLQ==
-Message-ID: <b923f63c-db7c-4ecb-949d-368bc6311626@kernel.org>
-Date: Thu, 10 Sep 2026 12:15:00 +0200
+	b=gv5fyVsydlN77cN504+9qhijPZ/xYE+efFyMRBFVYdQzq+W4Z5flqI+tMbBqCOxpq
+	 S1MlDoi9sQG0kBV5rkBA7DAQaCXanGvukpUv1Qlu4T3uvn5P/GY7JGGLB0GtfGpNJ5
+	 JkCZAHoooDHyFogj6DKFuf+Y8e/uGsdLi7+piowUr+0QM7mk00cmQeJQbbgRY5j7j9
+	 UcS6XKRKPIpp8HdHV83aiLSkOU08bcXfTkrgJHcgSIe1On1t4piwXp6zrAm3PQZ+2j
+	 GS5+8e6gbHzKh5qfhrp31hiN1+V6ISpDBrKZ08Se2x9VxAS+RzXfkt2ZyTIW9+4TfI
+	 ASJvnWg25XKvw==
+Message-ID: <d5131f23-075f-4e00-941e-aa0d34e2e89c@kernel.org>
+Date: Thu, 10 Sep 2026 12:15:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] kselftest: mm: fix some failure of
- split_huge_page_test
+Subject: Re: [PATCH v5 1/3] kselftest: mm: prevent random failure of huge page
+ split for khugepaged
 To: Yeoreum Yun <yeoreum.yun@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -83,6 +83,7 @@ To: Yeoreum Yun <yeoreum.yun@arm.com>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
+ <20260907-fix_split-v5-1-822b810458bc@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907-fix_split-v5-0-822b810458bc@arm.com>
+In-Reply-To: <20260907-fix_split-v5-1-822b810458bc@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7B88C14000C
-X-Stat-Signature: exphecj6cqqdbdunutmjjwa6c5zq5yhe
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789035308-223281
-X-HE-Meta: U2FsdGVkX18AZUnMcnZpU4ydOJe0EO3jdaLcvUOtzu1JyhrmRBYyXnEnTsIOJc4mxDvdv5rNfWdT1gYxBxuziNH1UuE14asdsPIAYbc23lHhVloW9bMKc7/1aVDGK5b8jazQRyd/Cc1M3o8FHooKxDS4D95XuMh3oj0GHK9OSdU56Kymi2Gke+uXc24b8T/GUmQ6Vhkxc5ofHy8PtWGUvbE0Qfr9eC5Hn61blIXzVAIroAswTY8p+N/qIUYvtpAeudXlstosm6aAKRDmJMe2xbWM/ARDPtoy71KqD/utfv6MERNMIEQjzPYYIk94dqjj0DpM+p07m+tX5kHhOSaAMPTJ3IVAOaTzy7ujV1H7hptxXi5iNpLPLCrWTIiZ58+/Y9qG2IiLNrSSlbWJFLmoUlbqqP2LTMN6emrlE6C6ltjLgigqmcedrARzROswD6qn1wto4Im2GzGad/th0jZQ3VFikmbYbM2LKKDKfxb8qmmoVO01P/t6/cABTCHyHf/GoIUNnAE7hWaauKgkXTblHT+wV1aRcnfBHGCZ7AZzPhKjqIUeleK03wJ4M/lmULeznGZU14AquwptI9Ia3p+Onu0ZyHBLCrlRk/6/OWx961hBMYzdCwYGzyzp/TTT3eVqijv08fn0+QSiQPtYS8ZA2ZPPSDXmof5QC+pe9Kh7OgLypDVJEva7LTnxvLEG+e4UnXXQU3+MRG1HM3+iTVI9DouP6luctL0j7zHSqQ7QdrR81EQaXhoyxWSzhpEi7oCXHqA1tDLMtxhZEyuDSBNZ7lbmB+9r1sS7y4BOBHxgf8lnq3HeI7u5lwmXc/Ba5QEdzis6sLsSE4v5kr6I6BBbABwRPZ/IOBiTUknc29g244IzOSdE97kvmKoKz3ZCSMFJNAhpK+9UzQwb4w9RjrjZKSabXTgNXD/pY8Xly6vQr2wrrexq19O38LLONoLx9QnEMZkkN8wkauFO0jr/sM9
- VSj9GoCN
- ReoJek6bEN1+QgCN7bqozLnBmBJRQRt4IIbJQN4RO1bA0FshZnu+IXxlk+Ymw5f3w7S54DF1kUGT5a3IohJ9O9+V4nV1ld84BhCxrSx7ypt+vDShvoSRgmYZY90+vJH6w8wFDR/kXdQ9nzpOmCB+oQ8Piqxl+Ebvl3FkayAC83glRP74jT3a+2zSxrHnJ2s0/+7zpa+hSs5593hILOzhLGo12QjXx2OjhE1MeljIFoPL1pVduYULgUS93UbTiO083ykpPIj7pCBDvXMuC3E+snoapgMVujRqCaCJgT+UuLz1hBJ5HjGnmPgVx2p0K4vguVLotaMrdknTS6fA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 862AD16000D
+X-Stat-Signature: aoz7uawnw5ob5hdidqoeoj5ps6qthhai
+X-HE-Tag: 1789035347-993002
+X-HE-Meta: U2FsdGVkX1/USYp8L+t1NsAErocauDTmqtiNa7B7I1nVzczTGRGOLz9ZRDh9OM7U3biqOXPz/C143EogdQeUyy57kUPzXaD2WiS4Q9onHg3D6zJHx/kEiUWuMbmrN+heSvcXf7STZ1mK1RTn9oKDh6G8dyQ8f7lTHISg1otYH4lFXNMVDmuLutokKEEybggm57+w9wJP+OMxCm+/Y/l/qNbIBmKs2GTJOiopA0ePGoFt6oc7ot3Fa7OYwqmiGvQtxEmszz/Dd8a3s5L5biYJb4AyLH23RwbNVeok4s1p8pg2mpTkCYAuRzfcNpadYo9mpB2pPezrpKikVSWxO6k+SeVZc9K+jJlJiBHUjqgc2atFMg2lj76zY0z7nbOFv85dRfwMwoL2eRqk3J9XwqOa6L3mxRHufOfKRmhYnw/34rM88nlZ3FhkT2KW7x0KZ6PetBRlMFsiEL2UlKUbsVOjxTLgYg2eaI54J5tVRtIFl6sWj2urse2ZKO5P0WgI/WnSfCyj112mFly1K+gjS+0Pw4RmcLD3BMklkFQujfmlkzREOxzU1J5cvdi+cwUZHhyUvwSMZ8j3LxrmRsJ9dSg/bdNOjdVaREbx/zjI1FJEjdh89z5/eTZBkTA/iwi72UPTMxu1qJNpAZzZ9iFYXUSxPIGIaxx/Sv+4L9+4eO3+frZSVHEnGFI/NY3J9LyNZeJ0vHuno3mYCXT+a6a8AtIZgInYxmTWkqvJ8SquKcjNdP8E2b9aiRPV08qYSeseLPpV4oAZwncjOQSRc1Tmjj86vNtz9NyASA4irkAOA0wXlItHf1y32VmmMvGG/O+UU2GOzAUpeRelY9DwopvRgZqyif7ceHH83u8LB55ggyjljdAdbn6FOBHtVm0Vxpv4QyzjLj8wx0eqAnOPNpqk6RH+XZ/OTaN1oZZ4SyDibbY7xWaY7gTs/aH1iogTH4eqCBBJW7K0zJryRThHt+jYVR+
+ gEyEBYVq
+ YjtVTz/yp+MURjUXNImTFHbvUPC5zL4xSnDJslsKXqWJp2x22WiF11Dlv9UTdRj4sJWKpBCoDKzmz0pPEmwYRlpPxixEhsKclmJUt70beRbu50nv4oSBSzmtpjfSm++NOPic9LxzWXEozrl1gcx4Bt2LS3apYc1nLA0Srz5PwhP+KIR3sJg17iU8zH/JKboIaJTStYq+ejfVMcKr0d3XpymRQcPjzu+2AJ1Npogor2nfgANgYz7iHge44NsvS7nOY+flXmUTkBurbfcWO80Tol1PApgkTBw6AoTTYnjA2lJ3vJJJK6w3hETi8ZA8jF4WiRaKVm7lob2JArt2ZXMV4cPCNgv/EabQWIZQtSQ1AwB2Xtms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,44 +149,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/7/26 10:19, Yeoreum Yun wrote:
-> split_huge_page_test can fail for the following reasons:
+> There're some random failure for split_huge_page_test when khugepaged
+> collapses pages into pmd again which had split by the test.
 > 
->   1. During the test, khugepaged may collapse previously split pages again,
->      causing intermittent failures.
+> Prevent the khugepaged's collapses for split page by setting the
+> mapped pmd-huge-page with MADV_NOHUGEPAGE before split.
 > 
->   2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
->      glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
->      made by memalign(). The underlying VMA may start at a different address
->      from the aligned address returned by memalign(). Moreover, a subsequent
->      madvise(MADV_HUGEPAGE) call does not split the VMA because it already
->      has the same advice.
-> 
->      This causes the test to fail because the check_huge_xxx() helpers
->      incorrectly require the address returned by memalign() to match the
->      VMA start address reported in /proc/self/smaps.
-> 
-> Address these issues by applying MADV_NOHUGEPAGE after faulting in the
-> huge page, preventing khugepaged from collapsing it again, and instead of
-> relying on /proc/self/smaps, use /proc/self/pagemap and
-> /proc/kpageflags to detect huge-page mappings and large folios:
-> 
->   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
->      using check_large_folios(), since only the mapping type matters.
->      This identifies PMD-mapped huge pages.
->   2. Otherwise, use check_large_folios() to detect large folios. This
->      covers mTHP cases.
->   3. Check the folio flags according to the type of huge page.
-> 
-> Also, current usage of memalign() would result memory area may
-> unexpectedly merge with an adjacent VMA, causing tests
-> that inspect it through /proc/self/smaps to fail.
-I'm not particularly happy about this.
+> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
 
-Relying on VMA merging details rather hints that we shouldn't be using smaps to
-query some stats/properties.
-
-Which exact things are test querying through /proc/self/smaps? Could we convert
-the code to just query that stuff through different interfaces?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
