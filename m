@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A84C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AC85C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:31:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E22E66B0093; Thu, 10 Sep 2026 10:29:42 -0400 (EDT)
+	id 60EAC6B0095; Thu, 10 Sep 2026 10:31:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB786B0095; Thu, 10 Sep 2026 10:29:42 -0400 (EDT)
+	id 5E63F6B0098; Thu, 10 Sep 2026 10:31:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D104A6B0098; Thu, 10 Sep 2026 10:29:42 -0400 (EDT)
+	id 4FCF06B0099; Thu, 10 Sep 2026 10:31:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC10C6B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:29:42 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD52080508
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:29:41 +0000 (UTC)
-X-FDA: 85198086162.28.DEC5EA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EE86F40006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:29:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jFrgqnzN;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 219C06B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:31:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3F9B1120548
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:30:57 +0000 (UTC)
+X-FDA: 85198089354.16.E008B9C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4904540016
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:30:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C+NhKwxf;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jFrgqnzN;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C+NhKwxf;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789050579;
-	b=ymTFvrrBnPEdqwCZnGbWQXRLNUiGYbq0touSVhbM2Rai0wC7VxExWN0CzN44vHbQacVwYi
-	CXv67zGU1Mp1rxMOtasDbF/SN+1zIY1kMobyBMDQyh4JOkcu7smNmIsZLEHASDF9gfT2bb
-	/WAl8yfP7VtHccZ43fjfh6sInfizpno=
+	t=1789050655;
+	b=SAGPMoGDSUdYee07/mlWHQ61ikRfmCw0G1Bh1Cw7JSG2fSOV8T12NPBTdoSYnlsiL/rpIS
+	FvV6mpPv8RK9iQHXIfdwDr7JRyLekH1YXCogK3dYAdz5rl15j7z9sOf849bILEsADN2jD9
+	NAzwd+TAMa5l94hSTc6sKbZ4VpQwlDQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789050579;
+	s=arc-20220608; t=1789050655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KJRcwygGYVy4dG4Ps+nSG/itUpNyDb3m6x+mKKxOpsU=;
-	b=vhVOpq9yL7ieEIW2yQB33z5eA9tCQz1WQb4MFS+QXEmG6+aR8t75VdqbrGGtfPITayvMfH
-	sw6P6oUFtwDt2Z7EPzgTBIw13W0wOwmGaQBzcfSKccObJCMQkPH8bEyNyHrFZXPZURgIiP
-	2/Ewi9Tn96ynAKVf5OFxaSHS6QEVXok=
+	bh=QYIjJzkgNcf/L8IdAlVc5CxNGSBjCKsHUzlpJK8zVLA=;
+	b=OQ89sCSed/9L/vwBsf1vL+iL5FyQ7VimVhEC2324GECJ30NN/G0Aoqrc4vmRjsueKrFCsK
+	mA05fuy18nUjw8QonZ4/7jRr90O+bjHnPkRf7enZMgr69AZDG5jlnElP86pjT5gCBF3b5Q
+	bs0lxAo1m9+ukW7XDDEmaN0HnmXWLNU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DF67600E2;
-	Thu, 10 Sep 2026 14:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A84E1F000FF;
-	Thu, 10 Sep 2026 14:29:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BEC1418F6;
+	Thu, 10 Sep 2026 14:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14821F000FF;
+	Thu, 10 Sep 2026 14:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789050578;
-	bh=KJRcwygGYVy4dG4Ps+nSG/itUpNyDb3m6x+mKKxOpsU=;
+	s=k20260515; t=1789050654;
+	bh=QYIjJzkgNcf/L8IdAlVc5CxNGSBjCKsHUzlpJK8zVLA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jFrgqnzNMfKfIqZq85rz4WdNfx04C3O3Dp4Bb69/hOroxT7QgNDyLykc3ghRiyvnQ
-	 xRXrrOv5ZKqLIutXp2SFgHlLTxEIj2TtRuAdk3UQr74vvNmqbsllhqSPF6n4iclkCu
-	 OuTPNZjlnd81hIL3R7K9Af0KytaiIbXfLf5Qb+G5ZD0rjXJe0xAbPSCLfsQDmjg1CJ
-	 e6YgqUNul6/tTbVIqy9W8sxPcbx98wgcaT3g16KMoKNG0+Oc1p6uF2zrnpoFW0r8X5
-	 UeLr9jrK4Jrb6qYy+TlPtk1IA1czEk1tfoIBfo+TeiiPTPFFYFNm7Uv05CVM0iQ6lb
-	 e7BGQ2lLXwFrA==
-Message-ID: <86fcc776-b919-4ad9-8abd-a61150dee3b9@kernel.org>
-Date: Thu, 10 Sep 2026 16:29:27 +0200
+	b=C+NhKwxftOndxbZynkT9flhdKmqwHy/1toG1XLj2OU1G58MCD12nAwLOIhGGZffUa
+	 AkRl65KSKyX9avFrOtHTOShpKJiVFO9OWw540xAJW2ldjVX8bahRSaXcbakvPiVE6X
+	 xQWEzmmDV5MP+RSKvhFEVX9A7FZ1YcY5WhB2lJtnnzuBMg2yd2/1mhk38AseGdM4h1
+	 BEJEdyGAeJlI/33+zLCOswq8O/T611SDkNYOyWXz0THnaju4i0LucLbGX650EmuqTs
+	 TGVNI7c+s3GZAxvObikqWisVQNc/Wtqeh8KoI54CTVf9iO1E55s1tLKKFsBF7Dfnhn
+	 u2oqY5ERBi/0w==
+Message-ID: <44f7ce5c-b75c-4c44-9202-1d2d3a1de965@kernel.org>
+Date: Thu, 10 Sep 2026 16:30:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/12] mm/sparse: rename and cleanup sparse_init_nid()
+Subject: Re: [PATCH 02/12] mm/sparse: refactor sparse_sections_init()
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -88,8 +88,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
  driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-4-008fc8d579fe@kernel.org>
- <aqK0S1OT5csJFIq1@gremlin>
+ <20260909-b4-sparsemem_cleanups-v1-2-008fc8d579fe@kernel.org>
+ <aqKo5vHZbDhzrUZL@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqK0S1OT5csJFIq1@gremlin>
+In-Reply-To: <aqKo5vHZbDhzrUZL@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EE86F40006
-X-Stat-Signature: pqdrm95oojtbgu9zdkdupexjhpif478q
+X-Rspamd-Queue-Id: 4904540016
+X-Stat-Signature: awcn9jtdfmfdackrpjcaazu9utkm4yd6
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789050579-558087
-X-HE-Meta: U2FsdGVkX19FtxH9UfpQ0a3cWnqkv2VEMgxgic7hIAnysBZXog54V2ZT5Pf4qZeYz8HUQ7WggmquYsDsKI7hRTiwy4kOMJ28qqZirR1VgTi0Al8EcdPUelatQqVSTFepXoGDv9RaN9t8BWBM8QJ2JXnnNgedtK95EzlmfRVpEtm9RhrQJE9LON829FiN3vKt1KbZ5BJxEX4e6kan8CNsMo+liZMc9XlBITID92TDOtyKanIJHgcEmOPruatN3ktsepy79WqAvvw2p0t53YXWGeM6Yypf24ge5TtHNjzYR54tp+llvuqCxATzJy22/yiR/h1V55MAwWzdaLVgy7vQ+fkh3HQR4kmxfn8ATp2HbANStTa9Ocv5Ld8DotDQoVRpXO5PpjdbMqoo453YD5YN91eOBQ23Br0R1qsrzyhfOEBo4EB8ayBMFFczfjS78KT5pilw7btmNG1aI+UHU7MnMt6AXWOcMNtJA04xGSvsk5WpVsgFligJWX6t3D8cP42CKDhukp4V6K5OT/DxD8ExiMOQQgqYiC6s7zrwOfqFJmVxaSVsFZbxDU4oM61aGCQwaehGKRqmOlPYdTLY1+yCSJfHu5UdPQ6fDYsztrcv88IUYu6Bkb0sFaiJVukbWQcvqttVGTdWt8qtuRbIlI9KCWu9l6vOpGz6ZRCRodAqZW2xKnB19yFKHoge0Urdh1Pz3SBIQ9S7zkfGAAUlhcdgNld3HSDdeB5y883JIB4eZOca91DpniHHbZuYteAMHl/wX4f1Hqokcpj+1BLZH2CSnTsKF0vxXSd8t63DDNJF8Y/nZA+p+Cxy1+7/SXKCELJE661tDGqxHFZVurM6FVbg49XD3X4bORGKN8JCZaiWL4OUEFqCyQdU5/8sXEFnrG0aFfDxnBdyVn88iPTVr52VnuR5Vxy8etnDnxelE+/IDV5VVoKyDKztVAQNsrmn11PGX/KDPQr7YakdF+Ry7my
- XOjAM0kp
- wchp2G9srT/rJ25uc0AaWvSHvKQWhkzL0BUA2li5b9BdW8S9TqFuEgI2s2IHWNaS3JkBa6ogvV8+hsmQ1MiWXSEXzbNeBhG4MdC5SweKfdeAVeoRlvKe6kjA1URgqFsAFQhWD4YN4HriLtiMx/OiGTy3KaXKDCHc+VHNJmA8a8HOdroNboIBzeca5g+iO2MrVtTvSfpj8vRe1c4OXYotkyF7YI1CGdVWjjrgw3O26F1SvLtlCST2Y6ZXrcTHg9biv9vLS7Wrze6o4M0wyRo4sndq0/paDnPGl//JLSv+GUsdS6rsVa+iIOFLYgTyPz6D8eGqNOsbtdXQ1DDc=
+X-HE-Tag: 1789050655-392126
+X-HE-Meta: U2FsdGVkX19dD/r2t80Kby4wU3Dzp1dsE7RrkxuZhN16AitN6OyPYLELm239DGIAhSwdFd/rrkQ1nhNQ3W8EpecsR6zVeEDUNrH2E47WbK/gujE18W5gnXJM9LPp/lvUSoasVLpcdBdzZnglWulMnJrqJ/blu2iaT6xMAjoSn6rvWX2I7cEHceSQas7RO3dqMYXxLFCEl9yukyIlt48fjm70EV62g9ElyxMPX2FeRdh47CqNvf6Ku3E3jmKG/YZ7TWP9ukVqSYkktsjL+okK3hki1yT2rDi9FZFGFrJXCxMeW1EWfF2a3Qn0FUWUm+cGzjnXWhUfwiqq1twjUlWco0rKKChpdbJQxwDAmkBCNvRbaCdtvntmD7834wmGUJ4FnMXysn1JYU3ZkLLm3DM/NDtkCtfltPFuD9nUqUf0OXCdo2TSWgLkmmnD57hqOcCdbH2PKpcqOqPvrFMJgyOEOCsywFZipHAqe8DnZX/JkLdNKB5k+ek3w6A/PTulJLmN4lPhuiCg//To0FtXFvZbo7RB9ZLTCR8Xb+rKvAA1vNoyfjX3AkTCzCTps4+pd97KH2dK3P972uFWIxVSEX9qlG1dyOdkt5R8NHBbM/KtI2Hd58eCkCEF2/peOVoU94+NwnGtRgaxeuqet6iENEdxLv6Qd/+RVDErAMMK+Btdl6Bdx30Fm698ikrNJZBgDdKyBl2tSEuASnDJo7owE3i0LG4XiSmMt1HpAWf6WHVM9N2Li4ml1iCyOp0raPMRnkD+XAuMs3q+wK7tmlaMwy902Afq53gYydXX1xTlG1PaD1p0XI5FGev5zIiTt1U6vMlxzYNYE9hZVOHqQYJ2HPjgpGzFv3xnmWtpcL7VBj5pKm5w/UyQwW1MdmhEC6/epv9Zsi2KkwwYBYAjlUt4oqou9V2daC5ZlI3BCPndpwadCfHpa7wGVAbMH9QqFVmkD1LlIrP5ahn5a218UtzHi6P
+ 4lYwuuL9
+ 5qxurMi4UqbkTCtB8p3FnsZlNGvWPgPSh4NjgMogFKNSUh3xb9qknRvmcHPa9MLo6/w1eoEaPbY8pOilSwrlSX22aoMmwGDFyfieHSUXxEZLIs/5Y30ff0e//1EE20ZjMGplYRDm4IQP8toHyW5vUhotjAATNKuEVokdmltruaSYj1Hcv3fhY5bTbq8blzd+K3j2iy5SQC+lB3YD0k+HJnTtt1MeLOWEkxRslnihra9iAxiU3EeYpDT0uWLmeaTlJsTpTeaqVjc0npjyGl2notVGbWoex8Eis63NtHk4VqGS/A+2KfOFlvAblHYwdstiB4ibfK2uwOnWPFN7bkVyx7Ar3ck9CZYWswVtvMdO7dZooTF0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,60 +154,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 15:46, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 09, 2026 at 03:32:57PM +0200, David Hildenbrand (Arm) wrote:
->> Let's rename it to "sparse_metadata_init_nid", avoid the "pnum" terminology
->> and drop the function comment. Further, rename the "map" variable to
->> "mem_map" for consistency with other functions.
+On 9/10/26 15:29, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 09, 2026 at 03:32:55PM +0200, David Hildenbrand (Arm) wrote:
+>> memory_present() really identifies+prepares all early sections so the
+>> initialization in sparse_init() can properly iterating them to
+>> initialize metadata.
+>>
+>> Let's just inline memory_present() into sparse_sections_init() and
+>> cleaning up the code a bit while at it: make it clear that we are operating
+>> on pfns.
+>>
+>> Note that we call set_section_nid() now only if the section
+>> was not already created earlier. Now, there is no more inconsistency
+>> between what we (temporarily) store in ms->section_mem_map and what
+>> we store in our section->nid array.
 >>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> LGTM, one nit below.
+> In general please keep move/refactor steps separate. It makes it harder to
+> review when two things are going on at one time.
 > 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> But I guess in this case the diff wouldn't be that different.
+
+Yeah, I actually want back and forth here and decided to keep it simple.
+
+> 
+> Anyway seems reasonable so:
+> 
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks!
+
 > 
 >> ---
->>  mm/sparse.c | 41 ++++++++++++++++++++---------------------
->>  1 file changed, 20 insertions(+), 21 deletions(-)
+>>  mm/sparse.c | 41 +++++++++++++++++------------------------
+>>  1 file changed, 17 insertions(+), 24 deletions(-)
 >>
 >> diff --git a/mm/sparse.c b/mm/sparse.c
->> index a85a9c3840f6c..f84bfceb53060 100644
+>> index 6a6d258862904..36e3d854febc5 100644
 >> --- a/mm/sparse.c
 >> +++ b/mm/sparse.c
->> @@ -222,37 +222,34 @@ void __weak __meminit vmemmap_populate_print_last(void)
->>  {
+>> @@ -179,22 +179,27 @@ static inline unsigned long first_present_section_nr(void)
+>>  	return next_present_section_nr(-1);
 >>  }
 >>
->> -/*
->> - * Initialize sparse on a specific node. The node spans [pnum_begin, pnum_end)
->> - * And number of present sections in this node is map_count.
->> - */
->> -static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
->> -				   unsigned long pnum_end,
->> -				   unsigned long map_count)
->> +static void __init sparse_metadata_init_nid(int nid,
->> +		unsigned long start_section_nr, unsigned long end_section_nr,
->> +		unsigned long nr_sections)
+>> -/* Record a memory area against a node. */
+>> -static void __init memory_present(int nid, unsigned long start, unsigned long end)
+>> +void __init sparse_sections_init(void)
 >>  {
->> -	unsigned long pnum;
->>  	struct mem_section_usage *usage;
->> +	unsigned long section_nr;
+>> -	unsigned long pfn;
+>> +	unsigned long pfn, start_pfn, end_pfn;
+>> +	int i, nid;
+>> +
+>> +	sparse_extreme_init();
 >>
->> -	usage = memblock_alloc_node(map_count * mem_section_usage_size(),
->> +	usage = memblock_alloc_node(nr_sections * mem_section_usage_size(),
->>  				    SMP_CACHE_BYTES, nid);
->>  	if (!usage)
->>  		panic("Failed to allocate usemap for node %d\n", nid);
+>> -	start &= PAGE_SECTION_MASK;
+>> -	mminit_validate_memmodel_limits(&start, &end);
+>> -	for (pfn = start; pfn < end; pfn += PAGES_PER_SECTION) {
+>> -		unsigned long section_nr = pfn_to_section_nr(pfn);
+>> -		struct mem_section *ms;
+>> +	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+>> +		start_pfn &= PAGE_SECTION_MASK;
+>> +		mminit_validate_memmodel_limits(&start_pfn, &end_pfn);
 >>
->> -	for_each_present_section_nr(pnum_begin, pnum) {
->> -		unsigned long pfn = section_nr_to_pfn(pnum);
->> -		struct page *map;
->> +	for_each_present_section_nr(start_section_nr, section_nr) {
->> +		unsigned long pfn = section_nr_to_pfn(section_nr);
+>> -		sparse_index_init(section_nr, nid);
+>> -		set_section_nid(section_nr, nid);
+>> +		for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+>> +			unsigned long section_nr = pfn_to_section_nr(pfn);
+>> +			struct mem_section *ms;
+>>
+>> -		ms = __nr_to_section(section_nr);
+>> -		if (!ms->section_mem_map) {
+>> +			sparse_index_init(section_nr, nid);
+>> +			ms = __nr_to_section(section_nr);
+>> +			if (ms->section_mem_map)
+>> +				continue;
+>> +
+>> +			set_section_nid(section_nr, nid);
 > 
-> NIT: Could be const?
+> So the main change seems to be calling set_section_nid() only if
+> !ms->section_mem_map (and obv. calculating ms earlier), as described in the
+> commit msg.
 
-ack!
+Yes! I also played with having that in a standalone patch but judged that it's
+not really worth it. I can move it to a separate patch if you think it would be
+better!
 
 -- 
 Cheers,
