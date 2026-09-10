@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8DFEC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A175DC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:14:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B206A6B008A; Thu, 10 Sep 2026 09:13:43 -0400 (EDT)
+	id BBEEC6B0095; Thu, 10 Sep 2026 09:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF8516B008C; Thu, 10 Sep 2026 09:13:43 -0400 (EDT)
+	id B969B6B0096; Thu, 10 Sep 2026 09:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E876B0095; Thu, 10 Sep 2026 09:13:43 -0400 (EDT)
+	id A85466B0098; Thu, 10 Sep 2026 09:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 724106B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:13:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90511C04F5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:13:40 +0000 (UTC)
-X-FDA: 85197894600.07.925C301
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 574CC100016
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:13:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqAwcaXh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789046018;
-	b=Yw2e2Ly+XGK9EKY4+IW7ukp4FXJ5nh/7TyVugqblRYlonIs/nsDs/YLxUirFGJ23lUKOWB
-	fsKccNtHWPzNcqpn8YLUd+CWtTo5Ytw6l4ej/hcJ7SPMhEq5ZfgeoJCCn/Wh9qVbE3qURY
-	HyT+ZqrO7Mgj1fJOm8+C2Rxmvw4aCfw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqAwcaXh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F0B6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:14:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E60C91C2520
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:14:48 +0000 (UTC)
+X-FDA: 85197897456.24.45F2627
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 143F84000D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:14:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O1UWoH0w;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789046018;
+	s=arc-20220608; t=1789046087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M03ebMR2GKtikJbVp9or77lbtsT5C8bLQjQstJD9IH0=;
-	b=oWZeTx6Eb5rwcKdvvcD0Q8CR6r0qovG7n0HCYDuFPu59vymYRMWBejc9m0IZcaQivXhy1o
-	GAaVb9Hv5bzaGgMNL1+XYqoexIHWb3V8wpup3EbvWgNdgJ8m4dpoH2Ot0q2MTVMuwLezga
-	61KI+RfRJaBun5SEhnwmUm/WWXUccsA=
+	bh=obrsEf1MMzEije3mF7OvjrrlMFk7kbRaeS4alytnrZA=;
+	b=iQAoV6odLSMINN1wwUOvDRQNfUeWGiPcfTu73YBKkkGVel32k/O4APb4b+flVb7rm2/EKo
+	6MwaMw6sJAwJH6Fs4PGP5p2qMDBZd1pIOMaEAVOI/KGUHFphxshYiwW/++rf22RMtS061n
+	ek5cfPRuuupBKs9vBkuomZjQrEqMcBs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789046087;
+	b=psFced/yMQQLbueuEANkbpQ1YeDPPA/VJ8s9cEWvYQ4RdBi2QHkDXnj3f4F1XM2uHvsSYD
+	Qz3X78dD6pEfkW6y5hF9lyV3MNPNV5n4jsP/lAnQ3ZO6Ly9ZxhIdwioe9eqAp4/I/HP0CH
+	ee9rrLH9PDIObD6oCpvIw0O1Z+CguLY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O1UWoH0w;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B1FD43C7F;
-	Thu, 10 Sep 2026 13:13:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416C01F000FF;
-	Thu, 10 Sep 2026 13:13:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 64963600E2;
+	Thu, 10 Sep 2026 13:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337541F00893;
+	Thu, 10 Sep 2026 13:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789046017;
-	bh=M03ebMR2GKtikJbVp9or77lbtsT5C8bLQjQstJD9IH0=;
+	s=k20260515; t=1789046086;
+	bh=obrsEf1MMzEije3mF7OvjrrlMFk7kbRaeS4alytnrZA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hqAwcaXhDzP+yYjnbYdR3g1bT4aceHrBAgY/kWg1c2IIMDwKU8Dgoyl3FeIJskkTf
-	 q9lQ+AoPFumCh12tvrOwwxIFYJkwL3mcZ4HAGeEqLYBwvHMersfljYsEowmwE1lFrk
-	 VODA8neke1SK7KST2MZMFJe2YpE5Gahxjeh+dlaY7GEAK1AWkDja4ZZuApeVWqcvBd
-	 EYbr5EzErcvNmYtl0E6fS2UGEH3S5A08tlBbh/9j15OIs4zI/SJKUrQL1LL9sAbM6O
-	 6by5bkxMXZgcEWraEFa/Nv8Yhy/HYlw16OWa3sUwHiDwqGYnvDQZfrC0yh5bjex3Ky
-	 K4gqbtwTJv+kg==
-Message-ID: <ff5ac35e-1dfa-483c-82b1-0e542a850550@kernel.org>
-Date: Thu, 10 Sep 2026 15:13:26 +0200
+	b=O1UWoH0wjxnkd0+6YaNDY/1W8OkDpvWuJwac8Ox+sLdrh2d5ZeNWuC552Ce3xc6OL
+	 Lerke7gJsYZX24q11I5HKpfvO17Ai28S+4dD2G5Xhx3uOfQruwhU9n4u3f5dCTNKc6
+	 lEjiFdilNrqqyf6ZK3giQ8X08NnunzlK6mWbdt616AQ3aDdFEigHIm44+JrAigQMJE
+	 sgfMLJrYiJNVrOiE2AcZZoSq26Ng1A4Dynn7jetvjnO9gMCFBvXh4NWGOHXEThUjNf
+	 gabXjDTR3V5R+OkhxLRjN6Hg3RcUBvRNgfzZ2KbnwGBckpsv0FdDIJ54mYyqNbU8Ni
+	 k4kak9nneVsAg==
+Message-ID: <8d27168e-5443-4073-bc65-24ddbe32e29a@kernel.org>
+Date: Thu, 10 Sep 2026 15:14:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] mm/sparse: move mem_section init to
- sparse_extreme_init()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
+To: Yeoreum Yun <yeoreum.yun@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-1-008fc8d579fe@kernel.org>
- <aqKnDa6ukWwAXs19@gremlin>
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260907-fix_split-v5-3-822b810458bc@arm.com>
+ <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
+ <aqKOVGECsCNtSMIV@e129823.arm.com>
+ <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+ <aqKS7CP67X4h6NiM@e129823.arm.com>
+ <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
+ <aqKU0-Gm4yh78F3V@e129823.arm.com>
+ <d6f2e6b2-9dc9-4f02-be37-14329c1a6798@kernel.org>
+ <aqKfjqa6ye2AOU5k@e129823.arm.com>
+ <11a36d52-89a0-4f43-8a51-a4930e171ba0@kernel.org>
+ <aqKj5ojQ3dabOV5g@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKnDa6ukWwAXs19@gremlin>
+In-Reply-To: <aqKj5ojQ3dabOV5g@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 574CC100016
-X-Stat-Signature: mde44cmoa11rmq5h3x8idx7ra8jgkwgq
-X-HE-Tag: 1789046018-764363
-X-HE-Meta: U2FsdGVkX18LltcFpYczWHm6FV84j+cAOfccwOVWDL0yy9VYNCRVAWXVgZ3Ukhi49nv0cmjxX0PIJi2TxPxk5lj+o2NR7090M6lYPgZrdupbVeIyNoxg2AV8BTVUSPoatbnJSN+z1YNhbF8tcJjjzbwnNBBd2m83a4gUOBP1pDCAwqj8Ik5EL+lkzeLtSGSNWkQqnSzWFo+ZolbFdDCqScOJNtq6uxzBtTKBZWqFX/+PXQ9qyadYrQLEKqHS5oGhTE56xUoqFVGG0UWt9S3HPkerATfj4wNz8qGx1pvQjiu8GmJSmf16glfaFCcgfN2Hz8C67Y1QBB77KKVZ7uLJIRRFd28M2CuP9FzPCsbAKKfa/SrzjNu4iwp4TlIPDwqIOg1X18RXPEVNQt1bpOOQ4iel8xVihbXDS/W3qNYKOw5cfwJdctK+tcqz6JzOt3pUwx7o0nVm2YABCp6V6GTy1Vfy08gKV8e/nU3ldRBvSTpjYfn/vSxEuKguGgv4nl0NeqkGe0Ujtmt9ZJH9nkaa5KessLtwu8XSOvTeM5Mq4pcCniHwuzUpIdwKRsQyMQ0O6YlJ+hU3JgM0wZQ79mt1sWgz2OPkDN8DQDmuBBMZL88z4sj5RmVqWljU/+KCCjfY8dAMxV+Gnyuv2Y2U7PNLOfvL6fUp8609gOFiDRKXZrGgC4B9h0GnhC3GLbSC3SamYjI49BaMtpf62bNCHUHrpMdKoroonl8mMrmxqZdGuhLA6iBHyuE1sDpXWeP20SZorC4hxd/CkU2uFK2W15XkllPIKBvleRWleHbKwZCEat6mChIT/iGKa1yU4SEr5/sLJ60wOGGwqK7X4qR2MLnG+8AjG8riUJGfCD6fvTuCQdmJM2Usf0PYrA814NfvCsbfhuGfM8akXL9JS3PbNnoQOKvw4xlzb+kg3c25lzEcfQSVBatDMR7rnY5wCP8V2po3+wCE0JpN3o1UmsHQD92
- XqNi7eKd
- c2NUfihIdHGmjuNvKg+/Fu50UtbJzCLKUnJ00Ml+emegSQyVPpLXj6octaO2A/csJQEjaXHrrmPM1huznzIS7jc7HVGeDvLc4qYtrHNu7k6O7dMXR2kw5p99GgYycRJ9kcxOyh1KWbxfi92xvMYBeqPZrk1HOfYVvAy0hnapqZ/e2BiI+9zOxw2C7YC5CqVCVvawlS6eJRnYBFpkPY2OSyqwGenM+e9EV6DNUMoY+HeIujgqmbe9eGIbIIE/XCc0pGqop/Q68xoHN2gGdumNJEYWv12XexDPxjJwseW1n71Uj/RVLyS3xKYKz/W/QGrtJnaZJezXLDE4jL80=
+X-Stat-Signature: k33diswpsm99wxfco7zbqpcfhk75yqht
+X-Rspamd-Queue-Id: 143F84000D
+X-HE-Tag: 1789046086-432587
+X-HE-Meta: U2FsdGVkX18WiitgXfyHNmMTfvQCJIWcAndyPPrX2P98r70RLtqYfHtp3Tp3mQY8h/X4l9udTX2Q/rEfHn+VbNt19/06QWbTxmtciARnH3cYiD6lIIp9hI/ohJQztqUebv0y9gKulj+2FiJ3WLYt5M42Be05PO5k966zo0SqujYGMYUaQ4LemdUkrsa32jjHSjodywln5XR55Lxno2auklGDV7JaffaZUEzukC2L7HYniyg4gqfYM0JlcgUnlJklVA5ZTfThqYZpvGHIydB24N3LE8nxi5wphr4usci5qpSqusYBvFDT+QHCoUqfv1a3ZB3GoLbNnhkudUPhhHdZ3Xe4i4YuMKJ0Zuadx+dTszdFhlDvR6VMWVo4lFQqM3fmIW/EJfdl3+iToXxM0LYSoP9C+pGovM1FiGa1OOTWxwF+OZGpVAMrHZkgO3t5vI6fGR1Rx37Ir44DJmh2c2/Egutfe693qZT0SC4g2p61k/ZXLd2rJqicTS+1hYPpSzcpJVV9dlLZ439s8wNfFJ+BCRf9p+Kyilrc2uFG6MSE8PfcNYxP0b5kOgtp92ISO5EyT5AaUnWzxOXUmwEkQfcZaAcsrlm5LXfJO7aKbhvMRoZufwdtAzQgekAoe1M82wbN98NCxE05SQ4FK/tpv5pB9Oc6FOptl+YdeJ5dhsBTeBeDOPBqTEcjtDE5JJXRUxw2sd6U/NpAwQ8p0htBbiFWMBMcVZWRPP7Jzq0lsVSJae2HNjx2yFIW80UhHPfxu0nqL3SN/Jk4rzLPIA/dpZB3VnSGr0H1bwyTp3zi6YqmhFowb8ryEfK4ohU+AcQxXlVeLu8ax4ecjzrfzHKCo0dot3Lg2ezUTnD96pnbkadkQpOp3M2u95Hwq9siLzq5cRkBxV80xt5jnQiv/i0LH1YkdxNDUJvy5/Fw9bLwvdrY+yJYnYqHiP/Su2jAF78COa2cmR5a97S9TJIX7YelNwt
+ GNZcR329
+ nCV7T5+/deGbFM/z9c7vsSQJVinZMDyAB3XWmVOkXuqLBNn3PGQf7LVofnzAQap+ocQkw27XsSf/gE+Rg7pdxHNOdZs4w7dYYV/GeBnKWkrUuNEPBrz62IQPWYd0inG8Mxidqk47xofuFdvCsfsH/op63iNkYS/aOd5iSLbbUQ5VmZ8bcMIMkecIuy3/TcweiIV46FU7xV0V4pyGUQ5ytEbR5Ka31RRaB71HBTyYVSWtj9XMg1qLx9Kik+hNZ3HQFfjz2d1OjemJ0TaIVB3W2lyb036365gH3r3mqdi2RcyYILjK0/eLGiFLvRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,43 +156,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 14:52, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 09, 2026 at 03:32:54PM +0200, David Hildenbrand (Arm) wrote:
->> Let's just avoid another pair of ifdef inside a function. While at it,
->> switch to INTERNODE_CACHE_BYTES by just defining a fallback in cache.h
->> as well, given that the x86 variant already provides one.
+On 9/10/26 14:34, Yeoreum Yun wrote:
+> On Thu, Sep 10, 2026 at 02:25:40PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/10/26 14:16, Yeoreum Yun wrote:
+>>>
+>>> True. I overlooked guard bit is sticky.
+>>>
+>>>
+>>> It's enough but alloc_isolated_mem() could be modified to allocate with
+>>> PROT_NONE first and then change the prot.
+>>>
+>>> It seems whether make a helper or testcase should write the code
+>>> properly in case of unwanted VMA merge.
+>>>
+>>> IMHO, instead of testcase write them all
 >>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> So far I am aware of exactly one test case, which others do absolutely need this?
 > 
-> Nic ecleanup, one nit below.
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
->> ---
->>  include/linux/cache.h |  1 +
->>  mm/sparse.c           | 19 ++++++++++++-------
->>  2 files changed, 13 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/linux/cache.h b/include/linux/cache.h
->> index e69768f50d532..b6e857b985bca 100644
->> --- a/include/linux/cache.h
->> +++ b/include/linux/cache.h
->> @@ -89,6 +89,7 @@
->>   */
->>  #ifndef INTERNODE_CACHE_SHIFT
->>  #define INTERNODE_CACHE_SHIFT L1_CACHE_SHIFT
->> +#define INTERNODE_CACHE_BYTES (1 << INTERNODE_CACHE_SHIFT)
-> 
-> NIT: 1UL?
+> True. I'll respin with your suggestion.
 
-I decided to replicate the existing
-
-arch/x86/include/asm/cache.h:#define INTERNODE_CACHE_BYTES (1 << INTERNODE_CACHE_SHIFT)
-
-If the shifted value would ever not fit into an int something would be 
-going really wrong ;)
-
-Thanks!
+Don't get me wrong, if we'll need this for other tests we can add helpers. But
+for a single user adding a helper is not really worth it.
 
 -- 
 Cheers,
