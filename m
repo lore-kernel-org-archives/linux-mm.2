@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 433D4C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:06:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3846BC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:09:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 472AA6B0095; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
+	id 293086B008A; Thu, 10 Sep 2026 06:09:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4228F6B0096; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
+	id 22C746B008C; Thu, 10 Sep 2026 06:09:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 311786B0098; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
+	id 11AFE6B0096; Thu, 10 Sep 2026 06:09:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 095766B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:06:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 910C2A04D2
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:06:25 +0000 (UTC)
-X-FDA: 85197422730.11.F250D1F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D92396B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:09:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FDECA4DCB
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:09:13 +0000 (UTC)
+X-FDA: 85197429786.25.A08B9CB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B7C71C0005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:06:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahs5XVOE;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8086E100009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:09:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAOxyzNV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789034783;
-	b=hyq9+i2mZ0ADDrIlWNvwPEMu992JYJXnCiJoz0FZVXQdB3jvWHKRtJSvX8t8OzEccm7Fo8
-	PIkJot6s9yBE2ZFYgu29N+lE07gwiltEEGHWZ8Tuzk5vkpWjStcwsNdkuE3vu1874dJQ+r
-	8byGWNuGnAP758moAz/DR9emjSLhvU0=
+	t=1789034951;
+	b=aMNECFNE/2xzZvqYHX3opnD50iGTtEdJILWTN2HRJuJjCNsNtBWA7FXfmTWPFRkIjSJLDf
+	Oj0N2/quxA0Hq+OFoBSi95PjZxbbJHPBmMXvIIN82GSc6iVG86rW2T7Q3a+kUQ2II7qmEG
+	tgAbo6nED6OnLfC52HiQ9zgaOBaRRyY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahs5XVOE;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAOxyzNV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789034783;
+	s=arc-20220608; t=1789034951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r2R4POrVaFZfBJpe2LHKJm8IR+bpnnr27W/5UBFn18I=;
-	b=5yyersaIBKMCX2bSX2SuBTNhTZb0DWToA52fivqSiuBX9ghK0ebHU3KbDuoj1FVz1l/ne6
-	tAG7dgfeVVA3HY5rXKCZy6woFYnXXVbvoneo+VR+bqzRrfo1uGvLPdBUaiZXMb+SH/2ZAL
-	5UCYYxFRd70DXBnE4Pnavv6Dh5uXVME=
+	bh=b9PGX3cvQTKEp1StomMC/PUuNY3LIk1gdRQb5hd00+M=;
+	b=EkBbhsWPHAQwF+me6r2GEftj7BUzWKBeeLqWNhQgf7/+kzQTVNkIfM6ebHemh6xUgBIGTb
+	uNWVSUOqWzDxk6NIiWRBRBL1sC/4yp1HaK9AH3B7Qe3p/Dit23KlvvhlNOLMErSp+S7wR1
+	OPnq9vpisSv8qOOHpdPD3STSSGNHYnM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CF8940F8A;
-	Thu, 10 Sep 2026 10:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EBF1F000FF;
-	Thu, 10 Sep 2026 10:06:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 973DE413CA;
+	Thu, 10 Sep 2026 10:09:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8C31F000FF;
+	Thu, 10 Sep 2026 10:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034781;
-	bh=r2R4POrVaFZfBJpe2LHKJm8IR+bpnnr27W/5UBFn18I=;
+	s=k20260515; t=1789034950;
+	bh=b9PGX3cvQTKEp1StomMC/PUuNY3LIk1gdRQb5hd00+M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ahs5XVOEXP0b8QXCo8p21pDywAa2MZx9irZbCY3Ffn+ZVpxm3+TCFZQAQ+l5cjIAp
-	 DkgSIFEH1yP5SsDZxK2SzKVoTtZ8W9bRF0LRN5xST3+/9/OTsht1kV+c7vZfhiL9dO
-	 r98m4KnvJ1knih6llePAtjuHBJl9ZDFKzSmQIemjuupJKwdSR0xCsCu5Ii1OIa+unT
-	 QfzQDsl0nKnPOGz75Lu37DlDXOBY+MNUkw+d6SmM6K4cdueYlLuBIui/x3nz/dB4vz
-	 yemKwiobHiNyFc629PPq6vS5cxnvc2XGTkC091X//uhhQrp4Rp748m86ZOTNwD6Erc
-	 P+ConinppiWzQ==
-Message-ID: <d2f4e7fd-b077-4150-8b2f-e81435d04408@kernel.org>
-Date: Thu, 10 Sep 2026 12:06:17 +0200
+	b=BAOxyzNVBmdk0w4Ok8N6GqK+3kwon4WEcnxstz+r/TqzWTPlAHxm+HOGFc01l/A77
+	 RQTg3M3ldGn4sB9a9QHOqudnvyDNwWz4Qvp+9FfBqU5zxaRIQTIQ48juQh+1laj8sL
+	 w/5VaC34duOFKT4kTvGC9QsZO1IwYZsuFzjo7XJTUUkViDCw4cZgBrjT+HU2g3+oOI
+	 IuwbNPTaPc87hlZ24/4dYFFFL+bl+5rg79QkXtq56ZKwhU4YPOIcGG8SLKPpEi5csw
+	 HU6JWoPT4olrK0Xm5qRwntLlk5vV6MU9bPsYT5MHC/mlTY9BxWf53tdHfC41G9ngs8
+	 xEfpJ+9TdcOhQ==
+Message-ID: <a4d74575-65d5-46cf-bd2d-dcabf2543811@kernel.org>
+Date: Thu, 10 Sep 2026 12:09:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] mm/memory: improve insert_pages() error handling
-To: Avi Weiss <thnkslprpt@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1788022178.git.thnkslprpt@gmail.com>
+Subject: Re: [PATCH v7 1/5] mm: Make per-VMA locks available universally
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
+ willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+ jannh@google.com, aliceryhl@google.com, arve@android.com,
+ cmllamas@google.com, christian@brauner.io, tkjos@android.com,
+ dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20260831203056.838265-1-surenb@google.com>
+ <20260831203056.838265-2-surenb@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cover.1788022178.git.thnkslprpt@gmail.com>
+In-Reply-To: <20260831203056.838265-2-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B7C71C0005
-X-Stat-Signature: jpji16q17ams9ca5gtjq3toswtm5pp4f
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8086E100009
 X-Rspam-User: 
-X-HE-Tag: 1789034783-658996
-X-HE-Meta: U2FsdGVkX19d8n6l1QAIEUN9zYxBMONyxx84swGnaicjPUd0yPpcGrXDHBWaOrzBixq7KccbAiiXT4557kh800ZJpewrnEnjjb3AUz1X1UgKFZ6gHH5qqid/CcAPwdC6MLiOc6zqYchj9lankn5HgIgWXH9xK7ILYvDHd0LhyPw52H8eE6ik37asLZFIYxY7QQUC+slvap4NOdOC7QO0NvveYJebBZ1OwSdKv4LSY34PkYYAHdkZ4VbA3OjSd4S75cmjpT+NEQ25hIhyu+udZupKSyvN+ymTtcRdWrhW1bYJWt4n5jdHBHkakryeHIQwlKoKaUEu6xs710PyeoM9cMQamhdc79+fTVhKzyYQ3wR6FcyYsDNBAn99hD0FY7J5emHIf89XONMdUbpz0RuWGEctaJHdWfejpvz1k6+nn3rgHhi61PAQxWt8GeQhZfEM+SpKQr5/KXUtVmvd9kNhkG8rgsYnx4n7Yi+UczTaIN4ERqKRz74xo5aAuIJ78OCxyfXgyLzt2hr1rqKa1X5iooCi8Re/g1O1v83qwWiXKsfGhVBNky8TGcZT+AjUKM2Tu0AStn12gFBwkl5js2cWmoTSamFsQHiOelzCgFTjY0IgpJUkaGLJGuVPtd3IbXsfjXodyCX2L70rdtpH1e88NmmoyDwwRIg+nargJliAP8rok1YQbBAagDeOGqBX0PX+S4wK+NYiGcFVZ+HEKKRbT4lzQFwKjooNfhEL38CoP1ySbXmWtfsO+yn4sTDm1Njor8RCzypJ9l9y7QHGtxhoSOGxsjxzAzLBmoWODcbKKkfpXOqW+7PeZXtp7DVZXH5kgb5Rp0IqsK/votXMHP2lVg6uYuTa1L5/rRHX08isOLMRXFG9sw7GM8Da6rC6vMnJNLjb5k64vKRVPs+HiGyQU47B73UcatJYmsPUl9CcDyBQawygJk1SYgkgV/W4Xqa61cn2SPjGBVBo6ysarCl
- tDVltAuo
- XPK+0JmtxS6/YDjYYMOSh1eRCU13dRx0cab+MBwmp3r9WfIXUr1cdzuWFF9G7HBD0we9+ZYMR4y871JoGJCUBKBrrttMDA6yqgXdIXgAUS61i6b0ZFany9EnIuRbahzN+zCxQb+3p1x5xxG075mTFcu2YWeqM5eSh3PtPhyvreC1dpYt61jpFg+vE9vLxLXHG0mgF2tQFtZ7qFoNRqoQHAdheAM3g+vcApyz6rZgaIJTtv5HCjVxz1V+ezSrUNG+hQ8cSZ5Cy2JhFr1etTef+qUVfZK16yGwFxQWszOeekzVCzlRY59rBAt+m9g==
+X-Stat-Signature: zsxgr7nen7c77shjqisbk15439cu665o
+X-HE-Tag: 1789034951-818845
+X-HE-Meta: U2FsdGVkX1/FV8gualKNZSYmsXbCE8Hb2Y+yPBIPykPKhhRaWwDUrqpNgCSXM3c3N1juP1cJNYKc+J0f8ufajaYiSkH1GF4siGCcAbt8K8jupf7Sp1wJMQJECEzZ2ciPW12dJiXkkAjq8HkaQ/suUul5It+ulwSJrz0vh+u2r8En2w9f6nBIaoPYjj6NsaNHx9+96II3kewRmabGNPE58Wp/ZmEfVIhLIIsx6LfDF15aFoDsoHvB9cKLy1EvM2hs2buWaHeuiqkmkeqxCFG0TMJuRQ6Vexf7pS2DIOamT6nsi/5rmzXUnojszpxXZNMsmmudE4X0HlD4pyPDJVJazR2ffb9I5hYVRKUBV80zvqpWzSCW+y6pqXKOhqrg4D1L8v8j9PSU8LsFJ/Afnzw/eDLerwBzfDUan2dLQIIRkvIu0Qt1KhyZj0ohN3PK9K2vovaCAtU7I/sL/gEonGVaFtULc5UAE+JUIvxnVdAsBf8Ob8VSElnSzqTB1hSRgQwbsfzWXILc60FpplPGLO7jcuk4ar9MUZgBOSJEYU3A4iwIPumdQlEFMxinAS1F9PUQe2TrZ3g+jYTecJQafmvg54dKCdofhg/u+PPo6SIOkvUkPefrG6uRa0+CMD8zAxZA+BzcGeRL0cii2N7sd3r1B3SVLBokq9SJUpv2anck+X7qK51H3h7Z4OYJizlgqWSxQCjzBUd3NcF/tpyhxiPCIRoHVwN/WBtfv63ybeODkGXMIu9h3uaaJMqo/vkMNqE2MRLiT+qaQ6MTfVexpK/ucr+7giEsEhnfoMGdtaQWVj6bTu8mTFY5qwB4DrWYnZVT7up5578DxZ3O48J8cIKRFXPXOx5jfmpGY+1WZrIjhpEFRqoXcn8+4CDiCzTSzZZxEyk/TZvcEkYtnUpDevR8tfGtakycDljvKrxnb7CYp3v+5I0jlBz/3LqHx60NDVETBhsJoXvS1+fm7mz6Uau
+ gMJjPt5e
+ oWIGXGojG8X2F1in8LMIxzXXQ3laNRbEXz2q9IvWu+ntYAMkscYceJgNZNMm/4PJZnCcmDJPgSlaovBqgoXV4Fsigxi5nv0yjGOmH+XzAjAjn5Lh4PxUx85opsV9l/Q8RRZSBRI1FfrJKZjoiHrBleFW8+AJrajpKJX8ljNOxA9LpSOzHIUKNQUrSXHpuHKCIBSQzKnvOrW1RyO4oxle+WYjX8FZpRcep5Z2yRmyGgHsV/zi54S4/Jy6w/TbtHAkxZFDLFYmXOQKaFwaf89lLPHqvxHHhEkR5f0aXQIldasCPpgtxxxVhBkjf/uY4lXmjod2u0Dr9uk1h0lota98wTMmQX/GxChcIqMzMfK80AqDo1XEeNE3JH0QDAV0tnZ9L2+tq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,26 +142,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/29/26 19:11, Avi Weiss wrote:
-> Improve insert_pages() error handling.
+On 8/31/26 22:30, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> The first patch simplifies error handling by initializing the error
-> status to zero and assigning error codes at their respective failure
-> sites.
+> The per-VMA locks have been around for several years. They've had some
+> bugs worked out of them and have seen quite wide use. However, they
+> are still only available when architectures explicitly enable them.
+> Remove the conditional compilation around the per-VMA locks, making
+> them available on all architectures and configs.
 > 
-> The second patch returns -ENOMEM when walk_to_pmd() fails. A NULL
-> return from walk_to_pmd() indicates failure to allocate an upper
-> page-table level, so -ENOMEM is more appropriate than -EFAULT and is
-> consistent with the subsequent pte_alloc() failure.
+> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+> when the architecture started using per-VMA locks in the fault
+> handler. But, contrary to the naming, the Kconfig option does not
+> really indicate whether the architecture supports per-VMA locks or
+> not. It is more of a marker for whether the architecture is likely to
+> benefit from per-VMA locks.
 > 
-> Changes in v3:
+> To me, the most important thing side-effect of universal availability
+> is letting per-VMA locks be used in SMP=n configs. This lets us use
+> per-VMA locking in all x86 code without fallbacks.
 > 
-> * drop the walk_to_pmd() rename following review
-> * use the mm/memory: prefix consistently across the series
-> * carry review tags from v2
-> * rebase onto current mm-new
+> Overall, this just generally makes the kernel simpler. Just look at
+> the diffstat. It also opens the door to users that want to use the
+> per-VMA locks in common code. Doing *that* brings additional
+> simplifications.
+> 
+> The downside of this is adding some fields to vm_area_struct and
+> mm_struct. There are likely ways to optimize this, especially for
+> things like SMP=n configs. For now, do the simplest thing: use the
+> same implementation everywhere.
+> 
+> == Considerations for NOMMU config ==
 
-Double-checked, LGTM.
+Echoing what I commented on v6 after v7 was already sent (not realizing there
+was a v7 after my inbox got flooded)
+
+Maybe the NOMMU "support" could have been had in a separate prep patch (where a
+lot of the description below could have been moved), making the patch itself
+just mostly a removal of code.
+
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
 Cheers,
 
