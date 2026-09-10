@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4D4C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A023EC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:03:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BAAB6B008A; Wed,  9 Sep 2026 23:52:27 -0400 (EDT)
+	id 8A3456B008A; Thu, 10 Sep 2026 00:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BAF6B008C; Wed,  9 Sep 2026 23:52:27 -0400 (EDT)
+	id 87A816B008C; Thu, 10 Sep 2026 00:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 581B56B0098; Wed,  9 Sep 2026 23:52:27 -0400 (EDT)
+	id 798716B0093; Thu, 10 Sep 2026 00:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 285456B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:52:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 577FF1C21D8
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:52:26 +0000 (UTC)
-X-FDA: 85196480292.12.6385675
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1674040004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:52:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eB6tfGQK;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789012344;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=dvmSpjNBwM/l5YYIZQ4u1G0WtcrVvNTeI0Ux7fKRycM=;
-	b=HPRn5CH8p7xQQiNIt3+FOOOGoRySMBryaa0xiCjn8Ep50PZ/o3z/v25yUpk7F8Q7aOocP7
-	99v7Xh//xW9VcgqHUQ0mwFip6TG0+27T/NJpYB58bmNZ4iukjHf2nT8jFDRPR59HyU7GsC
-	fOi3HJhbFu+09mrDK5kod9b0bKBI9IA=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6048B6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:03:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FF5B803C5
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:03:30 +0000 (UTC)
+X-FDA: 85196508180.20.7A600EA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D70F41C0003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:03:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M1QIO72J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789012344;
-	b=D3MT3DGW0ABr0fZ828PjfLM0jMIyzQJ7iIXgOQDJtG/bD7VvzqNkTZULOHSevj4UJD0XXE
-	FgxCMHmsANGpsAJJcbhaVMAfN1f1opaWkki8MtGl9UbGdhCI3fNtsBiooqaQmloeOerX2v
-	7DBmyU7SJn0FMPKJkYRdoKRUEFvP0Hw=
+	t=1789013009;
+	b=SDtZW+uOsdglnWy+fzf8ktICWnLtzjGaU4/EqplGi4wnk+ivs3hoJKdjvfvlRhilFsxFVw
+	FdrRCjd14hGLN+jSm9vfovNomLsRoPvoLsKAJV/3xtGgvZsoaMHt3v34lWL3zpXb831Waz
+	TccVgOtI/t5e7lxQind/oDkmBBzbNMY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eB6tfGQK;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789012343; x=1820548343;
-  h=date:from:to:cc:subject:message-id;
-  bh=AlyXlczZVXfEJTEgbEv/drSMEZaRF5vCLVVb87MgeFs=;
-  b=eB6tfGQKdYUWVL1z3kBGXZ6nhvgXc1czKHdtZOOpGhtauYaSRW+kei2V
-   yoXmGJOoQwiKzCo5+807aAVUvzIGEulNlY9hQa+mipxApVQfZ/mhIdcpW
-   0Zr94KS/SFDluXbNgelUWONBihM8hh031j48C/eZqcDzBgtM4bYdLfl/1
-   /K5T31dKkc2+mRjHHsmdlCnvkx8QOZBWSdojs9p2gyVy03VBGxOanSnN8
-   23aQE5RluxW+K3r9GVLX0dCczWqUf4XL3ga0idvinVQlUBg29UZv2A+Ty
-   KyCtAI/Z5wkTTwjs/TDdMacApJP9BeDlMCdyX5jzRu7X/jnybc7aEreyZ
-   g==;
-X-CSE-ConnectionGUID: MKBRkjYnTcmxudQStI97Cg==
-X-CSE-MsgGUID: rxUkCqQ3QJesSZ5mvBg03w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="100114807"
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="100114807"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:52:22 -0700
-X-CSE-ConnectionGUID: C8q7CC3JQd2iqSCefA/pOA==
-X-CSE-MsgGUID: 12/fdbYgTd+P1HhUvr1OEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="309763862"
-Received: from lkp-server01.sh.intel.com (HELO a3e91e2cf319) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 09 Sep 2026 20:52:20 -0700
-Received: from kbuild by a3e91e2cf319 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x4Vpi-000000001Li-0ip8;
-	Thu, 10 Sep 2026 03:52:18 +0000
-Date: Thu, 10 Sep 2026 11:52:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH UNVERIFIED WARNING
- c68a982815dcce5464e3bf2a31ac94f5146c04ca
-Message-ID: <202609101108.e0boW3mW-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: p7x8furnmaxyremkpj3s5weeoqhyj94c
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M1QIO72J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789013009;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Fn16+s8pwcYwe1UkQ7UDOCdjo2v9pEURHMCmkbI/wZ8=;
+	b=PvPZyD+wfEWebe3jUQuPMbouESpWiSQxCzwLm/LTdQw3qY/gcZ9ug+zAhEwnDACNtRMKF6
+	he7XF3/RoDgQSzza2+6s5x7Q2f3ZQjzsiwxNZkay8ZDOjcZgbF5A4h0nlPtZV8uSDeFRLi
+	erWLXTuvHiMM5VEvO18auuaXt9IcoNI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A3F464095F;
+	Thu, 10 Sep 2026 04:03:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040261F000FF;
+	Thu, 10 Sep 2026 04:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789013007;
+	bh=Fn16+s8pwcYwe1UkQ7UDOCdjo2v9pEURHMCmkbI/wZ8=;
+	h=From:To:Cc:Subject:Date;
+	b=M1QIO72JqahmYJFMMNlIMQFzyCFsdczpPacaK7qHuYZX4FGpU/oSyhQKjHP8Kxotx
+	 hSPFeoxoZzdjbNdvp/UuyhRNCnLunbScnvmVbvlIUqErb4WsnrJ2vDpDZ/6EhiTIt6
+	 r7Uk7sJ9lATr+kSB3vFANmxkRC8QamEwm6JnkUcBig26Cpvtag5k2zIf4S5E/GoFwV
+	 a6nU/u0Lt6k379cF3yK7qYEZ7jdZ8TPezo+PVB6CrTnSXY5vOWMTPRAfE9eZnds+0p
+	 PYJAMuxQ2sg3DKtmMi83PmfFoO24OCYgrj5OEI+1qcu+SIwBDTioJWI+MHDsMpvWmF
+	 hbr+M5UkyE75w==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2.1 0/7] mm/damon: introduce probe_hits_wsum DAMOS core filter
+Date: Wed,  9 Sep 2026 21:03:11 -0700
+Message-ID: <20260910040319.147037-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1674040004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789012342-697833
-X-HE-Meta: U2FsdGVkX19FM+N6SLC+apGcE7mgNgfttmw+LatfCejBY7PnEtvJ86BphdZBvkDD+xE9YM7GCC1StD5Oyi6e2kMjhFI/cdbYs1+fIY7wczIJOJAOg4DHuCBRd+PCCbA1zA4BZzlHiwkTXhSjzlE6HPHM6O5020nX5sCrKnGr/KRdtd8qyBWJpTvVk5IktigzL+4eG03MSv0gnxvWm99vNZllVB0dHqgF9mz+ugzBv5vUP6+c9prXrcDaObt6K8n4NtWkwm/UCAYzcCTM+K+YRwPiqGND6LCzi416EHd7uywnMCU7atJ1YcdlIQPuWEkN1XVe7QlS8J3QrEwNAn/DJnMeelqfJCYTKxHnWTXYfBETxsSuOBz0lAnU1nPjAFBs2JAqEmwj6VvgB+o2IqinnsBx/zgNH7z/MLL+GlT7Nv5XiobLN+J8P+79GotvLQxD+8w4xds44UqTaYOrDzMMZcbqS4TwgkMsl4gnhr6N953w2Nbmlp8t3d8e3gCsRJNGLUBQrVuMJq8e70jWYmIOXK9Eb+MwTQC39SG6NK2+UQWhVgodShHdDHZ6jIF/fIc5rwm4+ltyYSTxm6k8BHLnR4akvS08FlsKQ7vxG5P/RJLmo3vpl2rJOgao1ZlxOt+u45U6/MptR0s/59KCyIFGNWRX1uXV9FV/MHyfTc6bKdbMxIJlYcCT1HVhsAtv/l91yYKDTRK93l0IihYTLFZEixjRdFKHxCRHRX89zcn9B8EL3Gt0ApFH6OR9S7zREo4XdJl2NiXYabQAxQgYejwPelaJ3JK1h71PZVpAz+knTaU70w09Ptz5JEEGbP8O7TckeCAxu6ee9XA31UOI4XKxugL0zJkCa84ZU/VreIkGaPmjTQP3lqGwrk6Yt01mKtdCnQQhidZkeV2urG/TFVb1odzvFyfLmQNleyxj1UQG5S2ZRMwHay5tQRtrKzqG4YyY11pn8wra7zlVrDtYKXC
- ehzhbiru
- U7ffMOC7bfmsyL1JuRt1ZT8KhtEnrpsKdx+zi2Ju2q4IzGnR4nZV+f/iO1EFfVEudmMtByE45fJPGQN625POwSHOXfLaocIUtAZDaw74EZVd+HEvRl+ZT1EvVEpmRSc5IutcNjltexT1l0QQaYYXKwrMGVrbwU10OftJobR3VaZlOKGTmiVxiXZMHWSOvMG80bFieZOZ3Ai7YjAjCahAvsBvturjbDB8rM7x5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D70F41C0003
+X-Stat-Signature: w8iqkniod57onqncpys9hbo9t43c5jse
+X-HE-Tag: 1789013008-788519
+X-HE-Meta: U2FsdGVkX1+FmL9Ze3Hw9rVfx28AAdCaeB56RgZLkcf3OzSvGBebLz6wAiTky1S7SLtJPXQYRN6+Z2OeMYYC2ds89s6U9j3rkbR1ORUbci15fOuSonBbB0FVHEqcl2ooaolnI6X/BA5VG0xIvcGAGDJjgOz78m8vEyoHrmDQq4EJyf1dmSb5anTOCTBwNo+iXtQ+27JAly/vfz7Zjf0zw4ma+mF3bnCP2hFRuPZcP0eF0iYkkP4kDT7bMuRcmmQjr+b/Mhucx48UPGcUSP76E8BSvazpN1VK+kXyqq9MFAr5VTPy4h+nRgjRgblzhqmltmMdSK74s/IjfA8+qldMXFxAVgi4HkdKfQEsow4cSKobPkU1JmNZ3/dRa6TwbZd9v8BK3QxPt+j/c8SHLXqLPUnb1AmChXLfvFzo5r2s3Fxh7SMcFyz82+SFEuKwNaxY+599mnUwHpiZpQzTTYPnHOfC+80XIp47re8/TtIe6lJH17SU61jtuxjH21Jz/rQ7TOUCYLB4K7c/c6vPGQ4UdU7VhSs9kaMGDvnc1Fmov3snL16wmLuCXA0PxAFEykboHvxCF5TEkkL9x8xayNI+vkWyStn4vT56X9iHBLaYDMq87X+F2YdYHIrVAiudUPuUaiH/5+KcPGvUO50IB6osgvPuMwpBDkfa8EcMNyiYINGxPRYlHwh+oLRknYZkOEfHj66cQmdWBZPAycQCgwiaK82SgnbMrf9Mx5JnnjmC+J/FqXVjmhcNrqS1WP44ddMy6eitH3nZO9O2ayuiFZi2mOexcHLfVkBHJK+HXMkeiP5h+l47iTDZgp+kmSdJAXKaJTHa8RhZTP4edEJoe61zOA1cfe3AW7klxDqz3bq/sn958dnsUHZAbauILLVzbXuGRlXfT2RkioOje8G/jRmy7wZ/70FI+fcylttaSrg0Chr1tmKANu+uPGKaQS732kcno8OFtIyR8NS+Z6mLr5p
+ 7J3zwKIs
+ kPp11QPP5kZ7FKTn/LAfjUgiIB4NIlWi3+wT3kAQ9Ha5JezxDgpJaNhCuzTu09ylE9bwZYLz6IYW5V83rZCmuBHZ92tlv8TI+tDgzubee82jNwcU7t8y+JrIRFJ90JV5x+37t6fAvMv37ZnyqPD84fbuL3MGgd1Cfkf2LuR3lXq8sG3k+mZYw9JNfG30gYBdlUp5Y4dIpp/3VkTG7Ucn0/K5qMTYFvvwjAp9j9HpfOVBBaaE94FiOTxVxUmG8XpNg4l+6pu70FvWYWLAAgLemiZW+Y68yGzTITyH/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,161 +102,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: c68a982815dcce5464e3bf2a31ac94f5146c04ca  Add linux-next specific files for 20260909
+DAMON can do flexible data attributes monitoring.  The classical data
+access monitoring can also be done using the attributes monitoring.  The
+access event is just one of the data attributes that DAMON supports.
+Users do monitoring to make some actions based on it.  DAMOS is a
+feature for automating that.  However, DAMOS cannot utilize the data
+attributes monitoring results.  It is still Data "Access"
+Monitoring-based Operation Schemes.  It requires users to set the target
+"access" pattern.
 
-Unverified Warning (likely false positive, kindly check if interested):
+DAMOS core filter is effectively the same as the target access pattern.
+It is just a more generalized and flexible way of describing the
+operation action target region.  Introduce a new DAMOS core filter type,
+probe_hits_wsum.  It specifies the filter target based on a range of the
+probe hits weighted sum.  Using this, users can apply DAMOS actions to
+regions of specific data attributes pattern.
 
-    https://lore.kernel.org/oe-kbuild/202609100404.snOqfc72-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202609100452.olYH79h9-lkp@intel.com
+Note that the classic target access pattern still works.  Hence the
+target nr_accesses range should still be properly configured.  The new
+filter would be used in only data attributes-only mode.  In the mode,
+classic access monitoring is just turned off, and therefore nr_accesses
+of regions are always zero.  Users could simply set the target
+nr_accesses range to include the zero nr_Accesses regions.
 
-    drivers/gpu/drm/xe/xe_guc_pc.c:1254:9: sparse: sparse: Trying to use reserved word 'return' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1261:9: sparse: sparse: Trying to use reserved word 'return' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1269:9: sparse: sparse: Trying to use reserved word 'void' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1272:9: sparse: sparse: Trying to use reserved word 'if' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1276:9: sparse: sparse: Trying to use reserved word 'void' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1279:9: sparse: sparse: Trying to use reserved word 'if' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1282:9: sparse: sparse: Trying to use reserved word 'do' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1289:9: sparse: sparse: Trying to use reserved word 'do' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1379:15: sparse: sparse: cannot dereference this type
-    drivers/gpu/drm/xe/xe_guc_pc.c:1386:15: sparse: sparse: cannot dereference this type
-    drivers/gpu/drm/xe/xe_guc_pc.c:1400:17: sparse: sparse: Trying to use reserved word 'const' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1403:9: sparse: sparse: Trying to use reserved word 'case' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1407:17: sparse: sparse: Trying to use reserved word 'const' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1410:9: sparse: sparse: Trying to use reserved word 'case' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1413:9: sparse: sparse: Trying to use reserved word 'default' as identifier
-    drivers/gpu/drm/xe/xe_guc_pc.c:1420:9: sparse: sparse: Trying to use reserved word 'default' as identifier
-    fs/ntfs/mft.c:1065 mft_bitmap_alloc_free_rec() warn: mask and shift to zero: expr='bit >> 3'
+Patches Sequence
+================
 
-Warning ids grouped by kconfigs:
+Patch 1 updates the DAMON kernel API for the new filter type.  Patch 2
+extends damon_probe_hits_wsum() to do the calculation based on moving
+sum.  Patch 3 implements the filter type in the core layer.  Patch 4
+refactors DAMON sysfs interface internal data structure for efficient
+reuse of data structure for the probe hits weighted sum range user
+inputs.  Patch 5 updates DAMON sysfs interface to support the new filter
+type.  Patches 6 and 7 update design and usage documents for the new
+filter type, respectively.
 
-recent_errors
-|-- arm-randconfig-r121-20260910
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-case-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-const-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-default-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-do-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-if-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-return-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-void-as-identifier
-|   `-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:cannot-dereference-this-type
-|-- csky-randconfig-r122-20260910
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-case-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-const-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-default-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-do-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-if-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-return-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-void-as-identifier
-|   `-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:cannot-dereference-this-type
-|-- microblaze-randconfig-r132-20260910
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-case-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-const-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-default-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-do-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-if-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-return-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-void-as-identifier
-|   `-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:cannot-dereference-this-type
-|-- parisc-randconfig-r132-20260910
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-case-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-const-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-default-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-do-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-if-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-return-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-void-as-identifier
-|   `-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:cannot-dereference-this-type
-|-- s390-randconfig-r131-20260910
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-case-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-const-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-default-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-do-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-if-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-return-as-identifier
-|   |-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:Trying-to-use-reserved-word-void-as-identifier
-|   `-- drivers-gpu-drm-xe-xe_guc_pc.c:sparse:sparse:cannot-dereference-this-type
-`-- x86_64-randconfig-161-20260909
-    `-- fs-ntfs-mft.c-mft_bitmap_alloc_free_rec()-warn:mask-and-shift-to-zero:expr-bit
+Changelog
+=========
 
-elapsed time: 781m
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20260907171218.101430-1-sj@kernel.org
+- Rebase to latest mm-new.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260906210513.106895-1-sj@kernel.org
+- Fix kernel-doc typo.
+- Use moving sum based weighted sum.
+- Fix wrong range saving field names in sysfs.
 
-configs tested: 70
-configs skipped: 0
+SJ Park (7):
+  mm/damon/api: introduce DAMOS_FILTER_TYPE_PROBE_HITS_WSUM
+  mm/damon/core: extend probe_hits_wsum() for moving sum based
+    calculation
+  mm/damon/core: support probe_hits_wsum damos core filter
+  mm/damon/sysfs-schemes: rename sysfs_filter->sz_range to
+    range_{min,max}
+  mm/damon/sysfs-schemes: support probe_hits_wsum damos core filter
+  Docs/mm/damon/design: update for probe_hits_wsum DAMOS core filter
+  Docs/admin-guide/mm/damon/usage: update for probe_hits_wsum DAMOS
+    filter
 
-tested configs:
-alpha         allnoconfig    gcc-16.1.0
-alpha        allyesconfig    gcc-16.1.0
-arc          allmodconfig    clang-24
-arc          allmodconfig    gcc-16.1.0
-arc           allnoconfig    gcc-16.1.0
-arc          allyesconfig    gcc-16.1.0
-arm           allnoconfig    clang-17
-arm           allnoconfig    gcc-16.1.0
-arm          allyesconfig    clang-24
-arm          allyesconfig    gcc-16.1.0
-arm64        allmodconfig    clang-24
-arm64         allnoconfig    gcc-16.1.0
-csky         allmodconfig    gcc-16.1.0
-csky          allnoconfig    gcc-16.1.0
-hexagon      allmodconfig    gcc-16.1.0
-hexagon       allnoconfig    clang-24
-hexagon       allnoconfig    gcc-16.1.0
-i386         allmodconfig    clang-22
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386          allnoconfig    gcc-16.1.0
-i386         allyesconfig    clang-22
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-20
-loongarch     allnoconfig    gcc-16.1.0
-m68k         allmodconfig    gcc-16.1.0
-m68k          allnoconfig    gcc-16.1.0
-m68k         allyesconfig    clang-24
-m68k         allyesconfig    gcc-16.1.0
-microblaze    allnoconfig    gcc-16.1.0
-microblaze   allyesconfig    gcc-16.1.0
-mips         allmodconfig    gcc-16.1.0
-mips          allnoconfig    gcc-16.1.0
-mips         allyesconfig    gcc-16.1.0
-nios2        allmodconfig    clang-20
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    clang-24
-openrisc     allmodconfig    clang-20
-openrisc     allmodconfig    gcc-16.1.0
-openrisc      allnoconfig    clang-24
-parisc       allmodconfig    gcc-16.1.0
-parisc        allnoconfig    clang-24
-parisc       allyesconfig    clang-17
-parisc       allyesconfig    gcc-16.1.0
-powerpc      allmodconfig    gcc-16.1.0
-powerpc       allnoconfig    clang-24
-riscv        allmodconfig    clang-24
-riscv         allnoconfig    clang-24
-riscv        allyesconfig    clang-24
-s390         allmodconfig    clang-17
-s390         allmodconfig    clang-24
-s390          allnoconfig    clang-24
-s390         allyesconfig    gcc-16.1.0
-sh           allmodconfig    gcc-16.1.0
-sh            allnoconfig    clang-24
-sh           allyesconfig    clang-17
-sh           allyesconfig    gcc-16.1.0
-sparc         allnoconfig    clang-24
-sparc64      allmodconfig    clang-20
-um           allmodconfig    clang-17
-um            allnoconfig    clang-24
-um           allyesconfig    gcc-16.1.0
-x86_64       allmodconfig    clang-22
-x86_64        allnoconfig    clang-24
-x86_64       allyesconfig    clang-22
-x86_64      rhel-9.4-rust    clang-22
-xtensa        allnoconfig    clang-24
-xtensa       allyesconfig    clang-20
-xtensa       allyesconfig    gcc-16.1.0
+ Documentation/admin-guide/mm/damon/usage.rst |  4 +++
+ Documentation/mm/damon/design.rst            |  3 ++
+ include/linux/damon.h                        | 10 ++++++-
+ mm/damon/core.c                              | 20 +++++++++++--
+ mm/damon/paddr.c                             |  2 +-
+ mm/damon/sysfs-schemes.c                     | 30 ++++++++++++++------
+ mm/damon/vaddr.c                             |  2 +-
+ 7 files changed, 57 insertions(+), 14 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+base-commit: 569e5184af6e299ec0e1f44cde89c2c2bb309a9e
+-- 
+2.47.3
 
