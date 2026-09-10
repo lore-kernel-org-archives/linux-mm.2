@@ -4,96 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB38C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B44F6C79FB7
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:43:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD4A56B008A; Wed,  9 Sep 2026 23:29:30 -0400 (EDT)
+	id 796666B008A; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C855B6B008C; Wed,  9 Sep 2026 23:29:30 -0400 (EDT)
+	id 7471C6B008C; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B52A36B0092; Wed,  9 Sep 2026 23:29:30 -0400 (EDT)
+	id 65D0E6B0092; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 891F76B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:29:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21B29C03B5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:29:28 +0000 (UTC)
-X-FDA: 85196422416.06.33FB926
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 28B0640008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:29:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Yjbwx+9V;
-	spf=pass (imf07.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 452976B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:43:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 710201A03F1
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:35 +0000 (UTC)
+X-FDA: 85196457990.21.754E067
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B073940004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:43:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=nebusec.ai header.s=google header.b=G4+2eKYL;
+	spf=pass (imf04.hostedemail.com: domain of weir@nebusec.ai designates 74.125.227.140 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
+	dmarc=pass (policy=quarantine) header.from=nebusec.ai
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789011813;
+	b=sV2FacFmm4sXVtb4AXb/o8UvN7Yrl8kdRIQ6X2RLTEnzx9NA8bDnVcacH2bqvQS5ABvLiA
+	kZuJ6l2gJCqB9yf8X+Cy3EjuEebMyA2KMCzZJX2SjzVTfwIngpTE6iGLV4fRZl4rwWqkvr
+	iamFNXVuGyFPeCetdywzMYyRQFiAjy0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=nebusec.ai header.s=google header.b=G4+2eKYL;
+	spf=pass (imf04.hostedemail.com: domain of weir@nebusec.ai designates 74.125.227.140 as permitted sender) smtp.mailfrom=weir@nebusec.ai;
+	dmarc=pass (policy=quarantine) header.from=nebusec.ai
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789010966;
+	s=arc-20220608; t=1789011813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TEznphyxn1qeQSYeoLfnXmS+cZcuPR9YWMNrjN6++Os=;
-	b=QUVDUnmQ7ljapS902s4MLg6ewWLwKqVwHXk4zeZELYqeJM7RnZou4SwdEIPLf49oSMqwrZ
-	6x2ml9tAMTHyBtfCF1/ZeFtcldHWB8PpiCyqVbcPsATHOhmFNXkU7/zTzIhDG3CMfP3t8Q
-	G4szelHD5+xgtqLZbk2qmm4xFp72rUY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Yjbwx+9V;
-	spf=pass (imf07.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=yi1.lai@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789010966;
-	b=PTH2h4RVxYOHDVK4Qq6qM4FoNnQSuaBnlG7CjNYz8LqgnP/A7ohaAovtOYn/vd3FjK0gN/
-	vq6bILinqV2JtowNcphUvhbSCbUtoPYHIE6PIMgmTClIUIPGEunmer4rQNfotU9vcqMdEn
-	00uVwD7JXwGEIb+6EjKDI6AeKYvoUdQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789010965; x=1820546965;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=R5ZmA9ZvPvP1QNDogTCVyoFtS7h5Z+UX4hS7ENIPH24=;
-  b=Yjbwx+9VWLaibPWG8CJDr03Q+5iAeLlqg6jUxSLUqhF0JKOjmPfaeblh
-   GAFYwipaO/BgdTov++Fbxh+3XVcXPZcjvsB2Us++5COoQ5aot9haiokK5
-   l3yfgH+SU3qcxaWtk4X4+n7hNZ5rRgArHogHyCnwbgPBW4hUkBoJdoQX4
-   KyxIT1jSO/R6kXnh3Hz/C8H2l5lMcC59tnZwtn29NOA+yTjBFiJgTFM8d
-   sXCAoOTvUDzVPIC9XOviIbTTelyC6wUzHV6q62fdj3tOamGaT01N9dAm9
-   lyLUl8lFkrYK7K28XOvy9Nar2LMt/zKOJh3fNhAvNI9M2mrJE7EHMjeG+
-   A==;
-X-CSE-ConnectionGUID: QP+tJFXFRdaRjl6iSyjZmA==
-X-CSE-MsgGUID: Ux7PA+cgTcmAbQWRPPdCyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93276733"
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="93276733"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:29:24 -0700
-X-CSE-ConnectionGUID: Gg1zQX4CT9aLpslbT2VlIw==
-X-CSE-MsgGUID: Kd1uG4YoQhqLtUm6gTu4iQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="275646486"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:29:22 -0700
-Date: Thu, 10 Sep 2026 11:29:18 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	yi1.lai@intel.com
-Subject: [linus:master] [lib]  f4806cc63c:
- INFO:trying_to_register_non-static_key
-Message-ID: <202609101106.771b567e-lkp@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
+	b=ZYbCegANujV8G+FuCkKaIjKB0z2ARuNcdtLPYk/sckSSf1Agwyf8ixzCzEfk63Dr3wjSvq
+	WmkHTSe54kIIIp7M6QMfwExAJRaoPhp38a/rR0vGQR36r7v7UtwYxJdfHBo3+K6g/cPk3T
+	pnluzqXefz1WygtUx/RO9UDvFjf2kkU=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccc02279so892913a91.1
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 20:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1789011812; x=1789616612; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
+        b=G4+2eKYL1YrqDwLQmandfMbYgYV3itZk6MeiMqRdfhZd9fsHIidKOmQlrF1dHnpb3c
+         OsxJOITXdKvU4CY+giIR9+RvyuGyhtLGK4+7goprKgaNRwZtn6J6KzL3uk7xh26DF1U0
+         te96nbLZexCeVOTap98HvIP3hKMQyUT20ZWc/IRoSj76/o8n4Y9IPpROy6T0s8Ng3a6F
+         GUcgsRn5bxpLldt52xWiiIRhRXng0K8tLUXjiGOWqbFrwJTpreF5NjOR9ttNz3ao80az
+         23WZiwDRrKwxTJSOiAVOKH1q9T1frbqXL4qy6oPriDPCsTm2dNd6YSRLlvWhsqjDyISE
+         AmMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789011812; x=1789616612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nJlp1UkIyQbijZqk79bIeYyS07EBb9nqsi5pK4uVRPc=;
+        b=ickUM3DkG7T5pu6lllJX1TwSOTusKFhOLJeyg15eliWLET75rcBRfZ4eWrV6sIZWSJ
+         Ne74IHcN/mKkczXwkULcj7RHTgr3xYIf8bPxtoBy5JaEP+MhCwLi1j4ChYvT785vlTwD
+         yFVtRvxc+WWSFLvjTTkCsNrBBB8todLwCU/5XtpAoMjnIpnlYhJLnwNpIVUyujdjFlt/
+         3wsYomjOB0QYygvFXk4CrMHmuloUKcvzGdXWgB3dKYsd1BJ3dgLq8huN7Fj/Qmi93JB5
+         e5ml3tlhaanTfSYvRQ4xaCDTlxc34Yi+/oY3rSuXfIXTu/jLmj2g7g/AKhnlAx3GIeSK
+         5sCQ==
+X-Gm-Message-State: AFuF++knpz/sSrsZ71M3HsF+ci3RJkabAVJsdL+nszEcGF7PKDTqcNRN
+	P9pCtlwjrLpBo/BfkrvURl9uy83eqmHPLAmG0rNEpAHjdX/xPkdZWtzWNDLhFfBF9YhxF+8bYN4
+	qxryNypuKHes=
+X-Gm-Gg: AYBFou1W6g2d8RrXwqxxlEpjf67e/OyJTa8pbYlakSqQmnY4qfhOPKYQ8bodhIKx2ST
+	Sunlz94IJ1HL3lJYSWs7rhAkWUIuAdKe5aIiwyvhSGKUk3pP6Xrza2xV8V27CfNAdUl5Tb0sKRx
+	sKDpfjuDaXzeJKt3JqhhiPe0jmnGsl0uWu70yUqJmaBZFfdpwDlyXLPnj+lWG3CxoKYgqP4LUJB
+	susqaMR09lB2LtZ0DOhw1h/FQAnSKRZHF9kk+QwNl3weKdh64R+6UynMpIeyQsZkvZ5JOmsERb5
+	zox0eLxReNLSef9cKcAXNkr6jIK/tVjDnN0jYMMhhjL3GCEoq6Wl1TyniOomSA400xPXnwP5zrr
+	q1QitX8h8241m7e+aiRwkfn/gx6b1NDaVjfH4o51ayoFMSUPrxlgtTiREP6CMF1iKPEbmY7TRcL
+	+cFKW+syT0zspWeXZdTwupu2sn4hdrWCdflWOC5fQ/Gy7dkbU8k93lMPbZfJxaQyXFBX1xuOgHd
+	qv3UtK1Xg==
+X-Received: by 2002:a17:90b:52c6:b0:39b:3510:49e7 with SMTP id 98e67ed59e1d1-39d7063e857mr7318672a91.0.1789011812384;
+        Wed, 09 Sep 2026 20:43:32 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc2e1sm2916192a91.1.2026.09.09.20.43.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 20:43:32 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	notasas@gmail.com,
+	vega@nebusec.ai,
+	rakukuip@gmail.com,
+	weir@nebusec.ai
+Subject: [PATCH v3 0/1] mm/memory: constrain generic_access_phys() to page boundary
+Date: Thu, 10 Sep 2026 11:42:49 +0800
+Message-ID: <cover.1788842306.git.rakukuip@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 28B0640008
-X-Stat-Signature: 6yr9un9uw9t9s69c7yznu7yxg8akugrm
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B073940004
+X-Stat-Signature: ehakzx6nwkn3x4g4ic94ho6dnbo1y5dh
 X-Rspam-User: 
-X-HE-Tag: 1789010964-874020
-X-HE-Meta: U2FsdGVkX193yYVb49Nczc5f7eHaURahRc+4nc0M+EgcWHeh1IUwUsYsajpuxx2SVzWo6ZFlIdrP2oR82MDzC8fkGg1hgaS729lbA1LfeKqavYVCXai+4IPv3f9fTSTgqGxLTCeFjyulFcPImvN3qXiJvHqaDGyRcS2SHuAElBBEdWpQZHBLiNq3JzjYCEA/Mi2rGWEyJTa1slEu5dVUES/isWQ2TZUyq4ttjv8OwMM9q2yT8od/zdFTP36RqYx2f1e5zF9k/1dqEOWnVOF8SvU5ruAes70rePb1bOUw+YyLs05fxlBy84FzXXQIkDWQRf/EZ58NhJMDGMRZwTDUNCQzh85GtPPzQhmbH3VNPIE1W6ShPMPmy9c/ZLFeLNDiNff9pRtL3N3AFUuJWsUa6TYkn99aa/eQ1hgUN6ObEJsfN5JESS4w/guulm7ynL8L+ivMtbxrYCatjk84ad+NxoFimOvCz5lZSfXWElZwN2VBI/aiqRWkQI4MLxC502qVogp4S0GuRIBIlWRLfLptHVWLQlW3O3iAVSqcAjJKHCxXIkX9YT3CoAoGqZkmOx2rd17AsxJ5Natd5r1c23SuYwzgPzxgBsbTnIqRoXiZLe0kbO37ElFhWO3m4YXCTKlDGha2QlZqm1oUKy8SfuWnUBdnXqk481HZ8JR7pKcOjARqhmlaSgarNoBJZ31NDr12GMvDC0zGkOefIsuM2P3zKp3C0Hz1A7LuevwcROW0RAZmKVNK4vLJ8lCZypW3CnFcAlyw5HO+odLx/Hj1KHHHanKS4OiBhmTEHKfELr4gu6vgb7hzdMtyrwEhH1e4xVtkXCtn1cH1xVXtqy5SmBVxzHrFePyHowcDdgyjiUXYRq9PSaLpb+DrRw48KNAqRYgMo6h9OfejD4UFXhIVZYSiVSg2yGTdiGgqhLuIzSXkVGU5su6TWjddA37CN9VLqlmmUftNzaQZjHOsMMcigtQ
- 7yOrOtyF
- Tgo1cuUMY22datO2FLzGQo8grXTJ7bkdnrSFl0kFG7DBt3wMDJCGJf8wE5BA3FsEo6vkTPSlKICmQve5TWG3tGegGycc06yly1Yfq+BPTkMqrNY2A0bCkUrPc+CJ6Qf9QFKAUBXyhMvH9Eol0DSgIzzca6s4jPoEfwzCKP3n2bIhkwZxT6QYxQozHX9FFiF6/n0TWA/QDdpNFe55DBICXZpUxmOwLswONkiI6dmiu1glqTO5aBXBXGa/vbePsTckOeR+obXM7+pKbgimxVKdIBEFHTqeUFMLGXnHCHusRSH54EDsX2DsEyKXg8rGvNpqI3deR9Q8l4yp9Y6y50IUQlJr0CwIx1ctLzvZJhKQv/RZOQUUuLtIKxmbWfQ==
+X-HE-Tag: 1789011813-404910
+X-HE-Meta: U2FsdGVkX1/GpV+yvCwc8zU85kCyW7DlxJdPc4U8HV4fsgEN45+JezIVYnKn3rDkPnSSaBuLWGITlnlZc8aPqEBIGXXEe3bEjB6RYVJn4kfgxjgzUq+MQzV1DFWgP2UxGAKura5yJWnjVyj9jgewDEju/woNeimWg03sJOclvmXtAXV05kwxgoFHXhBgs5mUBLX3IJP608hcP/QhA6JW+gkRoYnX/IWDzRx6Tv3mpc91xFllc0yqu8Whn8wd1DzsQxFitKIMDAePGIyO4u0ySx33QVQyffGNETHTXS9yDI85oX1NIrqFo5Bpcblgs1pveu00V0LodhtZx/bMWR95pfVIhpTiAwyvtAcGgmNqguE8QcORhnURwzqXlaGPZcbZ8ipaJnh4qYoCAhVwR+I3CiF8rZgfj9Gz6qkhWJWEtQ+/n+z+m+zwd1EiiD5iAPd1MO5ykK7FnH8gCULRWz+dK88eu82F1QMkB/rz/hbHl5QB1yPEX8TLasLaesL/FBIrPAeH/85oQKYStP2hSu+PPzGIybfroWJ4725IvIClLA9OXereNGibqlvq+zGsA1P95M1mW88r2NE4rihywIcgaFibBdngpqHpJ+fCMdDtx+cPxyYRIVxwVRH0pI8+d1T73JVNpA/CDHG++3gOE94q1W9IhynebC7Wya111fIp1k7lLtT84g/TJW8dD/7NhGKzN1Q0L6SNcd2uqVgG9EWTXn5iiYAxKJaDkkPkVqUQPbVHSjZJ3KI6ONvFs9kQpLYBKSBJS8O/gFIkuGRmosQnX7XDoUBrzh4WGWaNeNrKtYlo/QgwIxx2kjFEpfjeVe6Pgbp5MvOZmngeGBUaL8iSSpf4p4yCONe9j4omppV0MlkZn3fmSqyjfJEa+TmVGbt8LgSU1NYpo+mL6OIQLqtatpLfS1Wk5FcnFhgpzddKx42Q1eqYgVSDhp93Cg7ung32Ov0qTxD6UNrfjsBRy7q
+ N0ScZEan
+ iglo+WxCD+dbwdG5AIajemWBP4sadOiAhsrxPF2uazTDSrPgcWnK73xkAavfCRc4f4VLXek50gOyFzV1+4QJiss++3QfsuT29xEwHZKq+8t0wqrFBxMGWPTfTT8J+1Qljov8FRmnPMpetLsjeXM3/3IfYUijP0B/oWKc1/hxLOkzt4isSxs60kcOvuRhHhelGIYeL9fepM+c9u5oQnXt5HE2uxsF9hEAiVfZonsXRK+Nomf4wW9Y0LxUZroQsf9WBXiP2uD37rtRx+pnmqMCn4c+KMA5D0JANyg2H5fAqK8jjr5jirt792Zap+E7F4x6UMSm6TcWwXFNkPiE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,73 +125,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Luxiao Xu <rakukuip@gmail.com>
 
+Hi all,
 
-Hello,
+This patch addresses an issue in generic_access_phys() where accessing memory
+across page boundaries in PFNMAP VMAs assumes physical pages are contiguous,
+which can lead to accessing unintended physical memory or exceeding VMA boundaries.
 
-kernel test robot noticed "INFO:trying_to_register_non-static_key" on:
+In v3, we address review feedback from David Hildenbrand on v2:
+1. Revert changes to __access_remote_vm(): Capping the access length to
+   (PAGE_SIZE - offset) inside generic_access_phys() is completely sufficient,
+   as __access_remote_vm() already loops over the requested length and handles
+   short transfers.
+2. Drop the redundant 'len <= 0' check.
+3. Add an explanatory comment clarifying that accesses are limited to one page
+   at a time because follow_pfnmap_start() only validates a single PTE.
+4. Regarding min() vs min_t(): min_t(int, ...) is retained because len is a
+   signed int while PAGE_SIZE is unsigned long ((1UL) << PAGE_SHIFT), which
+   triggers a compile-time "signedness error" if plain min() is used.
 
-commit: f4806cc63cc65bd752fd72d84937614dca6504ec ("lib: test bitmap vs IDA vs Maple Tree performance for region allocations") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+Thanks for the reviews and guidance.
 
-[test failed on linux-next/master a9d7ced84989ec05be09b4b8428759ef60450a0f]
+v2 -> v3:
+- Drop modification to __access_remote_vm(); capping in generic_access_phys()
+  is sufficient because the caller loop already handles partial transfers
+  (David Hildenbrand).
+- Drop unnecessary 'len <= 0' check.
+- Add comment explaining the single-page limitation (David Hildenbrand).
+- v2 Link: https://lore.kernel.org/all/cover.1788531737.git.rakukuip@gmail.com/
 
-in testcase: boot
+v1 -> v2:
+- Drop internal multi-page loop in generic_access_phys(); clamp the chunk
+  size leveraging the existing caller loop (David Hildenbrand).
+- Map only PAGE_SIZE in generic_access_phys().
+- Add missing (resource_size_t) cast when checking args.pfn (Andrew Morton).
 
-config: i386-randconfig-054-20260822
-compiler: gcc-14
-test machine: qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 4G
+Luxiao Xu (1):
+  mm/memory: constrain generic_access_phys() to page boundary
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202609101106.771b567e-lkp@intel.com
+ mm/memory.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-[  157.121248][    T1] INFO: trying to register non-static key.
-[  157.122147][    T1] The code is fine but needs lockdep annotation, or maybe
-[  157.122147][    T1] you didn't initialize this object before use?
-[  157.122147][    T1] turning off the locking correctness validator.
-[  157.122147][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.2.0-rc4-00086-gf4806cc63cc6 #1 PREEMPT(full)  167be1ded5cf2d764b5931072317f04af057210f
-[  157.122147][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  157.122147][    T1] Call Trace:
-[  157.122147][    T1]  ? show_stack (x86/kernel/dumpstack.c:319 x86/kernel/dumpstack.c:337)
-[  157.122147][    T1]  ? dump_stack_lvl (dump_stack.c:94 dump_stack.c:120)
-[  157.122147][    T1]  ? dump_stack (dump_stack.c:129)
-[  157.122147][    T1]  ? register_lock_class (locking/lockdep.c:984 locking/lockdep.c:1299)
-[  157.122147][    T1]  ? __lock_acquire (locking/lockdep.c:5237)
-[  157.122147][    T1]  ? __lock_acquire (locking/lockdep.c:5112)
-[  157.122147][    T1]  ? lock_acquire (locking/lockdep.c:5872)
-[  157.122147][    T1]  ? mtree_alloc_range (linux/spinlock.h:342 maple_tree.c:5800)
-[  157.122147][    T1]  ? __lock_acquire (locking/lockdep.c:5237)
-[  157.122147][    T1]  ? lock_acquire (locking/lockdep.c:5833)
-[  157.122147][    T1]  ? mtree_alloc_range (linux/spinlock.h:342 maple_tree.c:5800)
-[  157.122147][    T1]  ? _raw_spin_lock (linux/spinlock_api_smp.h:158 (discriminator 1) locking/spinlock.c:158 (discriminator 1))
-[  157.122147][    T1]  ? mtree_alloc_range (linux/spinlock.h:342 maple_tree.c:5800)
-[  157.122147][    T1]  ? __lock_release+0x42/0x140
-[  157.122147][    T1]  ? kvm_clock_get_cycles (x86/kernel/kvmclock.c:80 (discriminator 1) x86/kernel/kvmclock.c:87 (discriminator 1))
-[  157.122147][    T1]  ? ktime_get (time/timekeeping.c:321 time/timekeeping.c:455 time/timekeeping.c:973)
-[  157.122147][    T1]  ? vprintk_default (printk/printk.c:2494)
-[  157.122147][    T1]  ? benchmark_maple_tree (region_alloc_benchmark.c:136 (discriminator 1))
-[  157.122147][    T1]  ? region_alloc_benchmark (region_alloc_benchmark.c:197 (discriminator 1))
-[  157.122147][    T1]  ? benchmark_ida (region_alloc_benchmark.c:124)
-[  157.122147][    T1]  ? do_one_initcall (main.c:1347)
-[  157.122147][    T1]  ? do_initcalls (main.c:1409 (discriminator 1) main.c:1425 (discriminator 1))
-[  157.122147][    T1]  ? kernel_init_freeable (main.c:1445 main.c:1658)
-[  157.122147][    T1]  ? rest_init (main.c:717)
-[  157.122147][    T1]  ? kernel_init (main.c:1548)
-[  157.122147][    T1]  ? ret_from_fork (x86/kernel/process.c:158)
-[  157.122147][    T1]  ? rest_init (main.c:717)
-[  157.122147][    T1]  ? ret_from_fork_asm (x86/entry/entry_32.S:736)
-[  157.122147][    T1]  ? entry_INT80_32 (x86/entry/entry_32.S:940)
-[  158.731005][    C0] clocksource: Marking clocksource tsc unstable due to frequency skew
-[  158.804793][    C0] clocksource: Watchdog               kvm-clock interval:            63117ns
-[  158.871025][    C0] clocksource: Clocksource                  tsc interval:            62703ns
-[  158.935843][    C0] tsc: Marking TSC unstable due to clocksource watchdog
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260910/202609101106.771b567e-lkp@intel.com
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+-- 
+2.43.0
 
