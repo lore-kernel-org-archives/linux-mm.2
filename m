@@ -4,142 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E6CC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 728ABC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:45:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF6F06B0092; Thu, 10 Sep 2026 06:34:54 -0400 (EDT)
+	id 815676B008A; Thu, 10 Sep 2026 06:45:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD366B0093; Thu, 10 Sep 2026 06:34:54 -0400 (EDT)
+	id 7C69C6B008C; Thu, 10 Sep 2026 06:45:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD4606B0095; Thu, 10 Sep 2026 06:34:54 -0400 (EDT)
+	id 6B50B6B0092; Thu, 10 Sep 2026 06:45:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C5DC6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:34:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 30981A0463
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:34:54 +0000 (UTC)
-X-FDA: 85197494508.25.7DF23D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5E59D40003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:34:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MSnkxusa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49B646B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:45:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 829E4A4D4F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:45:39 +0000 (UTC)
+X-FDA: 85197521598.17.2037486
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 83368C000E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:45:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="F dAfoBX";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RmGKVhSf;
+	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789036492;
+	s=arc-20220608; t=1789037137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPoAJQ8RVtTcl+HZmeHhbo2ptnfrxfTfihttt1e6Wso=;
-	b=YCtOsmPxJJMSS4Pd/unkMqLCbBgwvataC1uHb7dZkhGfe9AP1ZULZRHaMUD1O7J3AtiVLY
-	hra4UT4S6UgdpxNGf1HJzsbB1I0T6s48hUrkxLy69i1rz2hSHZ9hhSSPxgVyXEm9PhoqgX
-	3WcbGC5aiJ7ZObBG+cOXjABIgW//jPc=
+	bh=ZYgQzfa2ctP1UICDBHl7m4arCSxFxSkit8FF1mVtkqU=;
+	b=O7WiBjsNnpKk9bjf9kzOKGk7MWTGMloVAyo9JL7yMWUz56ed7tnSPyeN3h9fNbSmYVrAc4
+	2C5ksg/6IJYMy3sIeD4NhKi0TFu+OqHBgRIVn7hxIECBPTglTobLn2xU1RlHjPUBOG6gIb
+	6YBGoU6cbdjwT67bop28ydvoITbCXjM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789036492;
-	b=zkeOoA7AlkUXyg3G2StR+cN6VLya8BxGdNMbtc/4pzkL5qM5IqA1eoLiZO6raZuGlTNe5B
-	OmBJL7FV7+NPrl88TmruMRMdxtDR3Op6aR07ZYZp9YT0j0Txvtd6MLTZ4PYO4uxEy0silB
-	ogGE1Y7hmTr+KbQjwuf35TI0df12VrU=
+	t=1789037137;
+	b=kfCNt75/IKfeUE9v3F24gqfAn7QI9clUNBQuqelYacYq1udEE9R+7DRf3dGt7uSEyd391O
+	S3iWQVE2TbmUSY8obpeN+r+CJ6kfLt+GikBORvkUV7U9O+cPA/qikIfudx9PQYSf77P2wk
+	spsVuogvneM16ulqON+M//ZIzvJ+uew=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MSnkxusa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D417400CE;
-	Thu, 10 Sep 2026 10:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5583B1F000FF;
-	Thu, 10 Sep 2026 10:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789036491;
-	bh=xPoAJQ8RVtTcl+HZmeHhbo2ptnfrxfTfihttt1e6Wso=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MSnkxusaee5aoWIGIGQi7pPtsnXjreNTB0RV3NddkGoNuvcRSiSt7ifMpT+wuVWQI
-	 52PLeyPiZRMdWMUpiqFDaOsUGPXqlzlasC5Sa1NC+N7Ej0gotbzJ9GQyNzPa8LVvsu
-	 xgg6uSvaN/+4DkCIGIJFLFle890YE1jVcqgyeqWvQL/jXgUSqGHq1gzX287vGcgO1l
-	 rLnh/OxXJtoglp1HuAWl0mXm62CVgpWLMZbB5W0OccpF0RrYIVruwsMy6RrL9cj3lh
-	 mhWC0q7fVr3ZndwP2s6pZUViv1rhdis1W4/otlQ8HgrMuJOPOr4zDIl7ns5NIKsTsf
-	 3yBhtGZcSQKww==
-Message-ID: <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
-Date: Thu, 10 Sep 2026 12:34:43 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="F dAfoBX";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RmGKVhSf;
+	spf=pass (imf28.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id BEBD0138037C;
+	Thu, 10 Sep 2026 06:45:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 06:45:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1789037136; x=
+	1789044336; bh=ZYgQzfa2ctP1UICDBHl7m4arCSxFxSkit8FF1mVtkqU=; b=F
+	dAfoBX4AFXFQNQNyJ4iIIMmtIQpz5kX3rzgchRvXVNWGV6sQGY8YJT8N93ucoBpc
+	tBNXjeY7vNbS2Dj7qwj9wJGxgkvwe9bb0FXmhrlset3Ng3gncoTmLDR7w2zwlgSr
+	+Sb+I7shLqMMgFW70uudbRpDQ8SSHMWQX9h2pW3huX+vJmzk1hoOeCZpH9o1A9+I
+	g/idStTOaG1+GQz4y853QQp3M+2LCuC0nB68Uft8MaSfM6h/BqQGxLA38z0PeQJ1
+	F2JfLwdIl0doRpmX4fyrcd0oPvu9X+xIXeBWgPjtv9+27TF3SKybmVXanKJgAsXZ
+	m9DyJNK11W/ghf9vJzziw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789037136; x=1789044336; bh=ZYgQzfa2ctP1UICDBHl7m4arCSxFxSkit8F
+	F1mVtkqU=; b=RmGKVhSf855Dtaopl545RstTURk1eyeXbJk0rz1lc8kD2L3Rcpz
+	BtczOMR+IFNuoqyM+YTdp2hdfFO4UWU5cnwGmwutbYKycEs+dJKjQQDEFO5YxuBb
+	SqijZELFYmwd8Nl4bN2tpbrT7nCLXy/TuPvHfVeKpfWC7YBJxJZzK73uPiXmnR0L
+	9iDDJcEhijs53rmTUwOTLXVcUaGgj7VjCHgfW0sLxin6OSTru2+Jc2Vg+YixIz4c
+	0gNVQKcoajcF80ORo7sDCEUVmCod7ekqxYc5UmAYEg3K70TiNns+iCGGq06qTsSp
+	yyuwrkQ1gmzbzOawyxy3wYR2rTBFC8FkOLg==
+X-ME-Sender: <xms:UIqiaprW4RWq-sJxdABzaweJCI0aZGJ6mAOM2uA0PZZvv4Y0bH60xg>
+    <xme:UIqiasXHNn9xPQaWW5x2ckXZFRrm6bRtFLuN8593ZiSwf97CycBgYMVui4f7lempg
+    Y8HUKeR5fBqzgHlVSOwok-luoGyv6-0Fl7hrJbQyW8SdLCoEVQrdQQo>
+X-ME-Received: <xmr:UIqiahR0YZAyg9ogTPmjBcYs8-AI2C2g8q1WL99GNb5xl-oGQjTSz-F57-Q>
+X-ME-Proxy-Cause: dmFkZTE87Z+QS4xVAJvYfxA5lQAfXmH0aCot7TBmx0IaDvGmQHEsolxxhNS5RvvVKSmZ36
+    P5I61EVYH0sxtNzv6UfnGLrkEFvP4iPAR0jI1D+kk+/PF/Y1RJ5kj2xDd0ncg2Sz8CraWk
+    u+L2Iwu2cZRENajCgjruyidgflkJUEH77Rb6BIFzoc78t6Sw4WNd8m2f0OyKzLQQt7eSn1
+    g9f9ONyeUvOBi9rFwsP4OA3kPHdUz07PfjoaqmSVhELKJ2wz+dS9LGUpQZBrRzWyqWANAd
+    5+/w6NQUhzp3wSMoGE7FubkoTz7CIqwm8JKTAIuYvVwxZ+0HZo2V1psyjnWjFV6VYa46Yn
+    rIqtEnsSrEvQmvGZ9UmpuPRJiZt56xT07GoBSKpbzwiX6Ex9nCbDsJhXu98FV8NtuFL9Pq
+    Tg7Yji7Ydde8GQW9Z0v2E53sk/3QWEyCBI29M6r7KbzNMeiOsgNmwBtyMZLA4mD9uxxleD
+    pMkJFr1kNbQXMrZT4vlPMVPdBtbtrSwX5fwqJ4FQ07fPiW8EHURvX2UUemct1+YYitB2Su
+    IyBuDHMrXG6Azi6KnPGHcu2voQV45mnpPmULjn6PkQzx/BvOEcuPgc4830i3yMsnrgIF0q
+    Sq2Ay8BNNa6JPBhkZL8Qw4CDgRuB8klFITV+mOil2L8sOmho43qUcytcmsEA
+X-ME-Proxy: <xmx:UIqiak42CcUGK_F1X5V-_t3ofOwXq-9uDYKPX6iYFcyEXlbZb-xpgg>
+    <xmx:UIqiar288PFupx6D6bghvoXnWAcNDMcJixd1GNI_eE2xZEb_a0yjXw>
+    <xmx:UIqiatI1kzi2JvBbobn9t6KjZkMd1iWLjZj5dkWIBK0EtKZgG_i_AQ>
+    <xmx:UIqiap-6vAXf4kE-F50L3GYPNzty8L5f-Y0YmaY4633H3aGblG4Lpw>
+    <xmx:UIqiauV-lOCqk1XflcOqoA2znnd7vJOkZY5ZbmFSz-vkxPXHL_G1ywK_>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 06:45:35 -0400 (EDT)
+Date: Thu, 10 Sep 2026 11:45:34 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	rppt@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev, nico.pache@linux.dev, 
+	ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
+	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, ryan.roberts@arm.com, 
+	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, agordeev@linux.ibm.com, 
+	jgg@ziepe.ca, leon@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 08/19] selftests/mm: add folio-order check for address
+ ranges
+Message-ID: <aqKFXlpSELmCtt-z@thinkstation>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-9-kirill@shutemov.name>
+ <feb76c81-db9d-4a36-9a31-0b2b31e3c3fb@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-3-822b810458bc@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260907-fix_split-v5-3-822b810458bc@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <feb76c81-db9d-4a36-9a31-0b2b31e3c3fb@linux.alibaba.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 83368C000E
+X-Stat-Signature: 3naqqdpk9tq9zc64kxxkwqw7bbbf1cpc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5E59D40003
-X-Stat-Signature: y774wtfuwfok5f35etdwu8nnr83auomr
-X-HE-Tag: 1789036492-941820
-X-HE-Meta: U2FsdGVkX185s5IHD3QDCqDXaxrFo8FfT20/k8VQhs6aoYLjghGkh0a7wruCu2/fkp7pOiOGNRVrqzB4+WLpHAPQYcQ+0jA7UELZMdKsNa/f5pmuJMFzvSKBMNNpBPQWX8pZ5u1lFWoNTRVsijyhLDZJKkLlrpBo6Zgm5o3rJi+KXG9c+Ys9SXD0oJx6mHHJk8+Wij6XQK0qicTPYr2JhxHxUIZV3RbChSMh/aYP/whQZ56ELFUJlvZx7fCbji6J7Bap11K91UB3HXIsoJ5FgpQ7eRTrVo5O3vXjD926k6HZjJ+a/eQDkdKSFyZ4lKUw/0NMPKoD2Sz0XevW/MO2mrO90+2zWmyoXhh+6OYU6xgFap82ykv0LqaMJrbGbWPyrRK+yx7IEI2IhWft318Pp6h7oFJNZ8GTOpYxEpOe4zBTXAVO9GiNk2z0aTzZRSDGlpG2Eoc6PsFuu9V7S9fECMFGC6pWVOOOMz7Fkb1arxVtC4J2nhTiZTwcnD5ZAUyT8RRhS8tBykrWGFtbVtGiLHcvye1lhxyhjz+Ke8Sd37rU8Krb/QwKwBMpWHZuuWw6D9SFSkjN/2HfwexaBxS7dB+bjlz0rG+AmHLYITxohAa+BsT2p1bb7cOCCN7OktKxe2sdnbT0IOol4AcKqLpFNu5A8fjMchueH9raG5iqO5gUcfQjVU9eAR2+kynXLuRgddfbhD3OVztnpIUNpPk4Cm+9n7oqEUWGNriGB0vuisrDuf79fCARooy9MmQO68unEnyVt6s99PKuicMupR3iaowYXOWdUTpNZQmTUrWRwTs3gtioCsco0FzKwbznp42qqZTXrBemJVK19YFPoexfaLoW0XNVe+mjsQbI9ut6D/ySKsJPEuMfQ8xYy6jgHA09oh7PKCdbAvfyw4/6MeqW4v5XRPqNOa0pKVztPHgytNYT+wl8GnHB9t9cebIwv32TwSQhdbIy0XFdXEykLj3
- cJB7O9Ob
- Cx9pde6cpYAY7+1IrkeKRcVa+w0qjfELMtA1PUw3Fu/cWVhUC3RM7pjOmO2ZhkVpZ2SnN7zgZhLKr6QN2DAuXzBK8Y7lW+RRSLtMuy4y9CeWcIRp8KUFG+2ZbeJ1uaG0xJ+VXyiA3Hp7EXSoUKbyRDUHpdoS2tpkQLeYuYyvQ4MXtnP84ybaY3N1fSJSRMCkG+Ce49Q7mnJQO+sa8A+nt3XzlMfpZO5mU82jPu6+N8aofIZkmeizu+ZoqwTwaCFNqokSBHt6IRC04bAq2UcYCu357i7Mv13vKThrH5Eo01EOjHxr34pdOa9OV4w==
+X-HE-Tag: 1789037137-784516
+X-HE-Meta: U2FsdGVkX1+h2ze1Zow9rGyB7tE+20L0ljqxCal9CrDGPUnhMfGcYK4/fFblzi2s5P4+0Lr7PZuTBV0LDdFWzKWcGa1mMTAP1Xl6JTYEvwATGjNj0VVtU2cPSaZhen3jdyeTFA/bMgs7Yml2TsasHSdfcW+Sjj+kHU3LU6SoWSQLkoPglVBZQX5JdXo7SIZcf2IYFuVtz7YQlcuJ/p0ljma52gZVafR+XQpxAAtHQPd9PxPOuP8OT2T7wUFWUewy2G6is5tJZWfrCY3ERSZk1i35etjRDT86/exKSAKDpflOtEh8PfdphsWjEiasuYYCaA5Ux0UitiP/3X3RZrnvUgP69mLx8mIcFiGRi/y8FLt87PePuy8H9WXl62DESeyLnbin/sI7sQ/fT3CJRItDzIabF1N6HmH/0jN/C0k6kXYEqwoPcaXzS69Ay2lZ7vw7sMSD7XlcGoNdpCInFRyz0gvmJX8V5oGfTt9wB4lsCAZuJsjGczynuOuYMuax4tWrKXWkYz54FZm39XpQJpq/y1c1Tg3DZh7xNPQOhT0j+4plXsLsxy7WT1lDrEr9ou4pi6UA7eTeCKkjqCVS61exfXeE7AoP2RLfF7GdRNMaSQpY/NF2lOvnc3T+CenZ23m1rH2N3MLhvzsazVxG5YcxDDwtLC3e+CQUh88bUeHlYrVXJuyo6lM6nwrnY6f+gvcQJYKc5jV+Nn2O7clr0h03wUntF4V3SP5Z/+Qs9xTVjw/EHSBFWvKkgXUwCxbhrdB94GPAk7k/51lylIyRnogI7HugLsmVJaegWF4Sxv/9bdRPinixV3CUeqI5j039l3RkcudBpupufqtWgFBPHJ+/SkEPC2qis5CVrB8tKDyRQ47IvPg3YKWQa28f+iytgFkj0Gp5qmUxmP5vtr40wAWKK36k8Ie2WWEqK5L4aTOQK8wjRSeKvEwfyi55htu2J50Rf6lasoGrmBom6B/emZU
+ 8M0TLsHo
+ rV68ldrCyvV2PG2YpANVNr8S1f5ziw2rU1uH8Ky/oNmGsef+ZzFdmvrJLv/in45D28Q6C8UroBef9C+/xXnaJ8d1eOH2CfRriYjjCBCDGkjNX7JUlmGOpIGGZDTS27nlxTsUhT7vW+zahqekhLPje0rDptf908AvGlzBmzmfQr4nwU6MYHeE116o/xcPhRkC+niepO7DImEio5AxU9Oa5F0rHaKuazEYukajNTZ0h9tXeCFG6qj+zJWe81m+QGV3cROxY6CAVcviAgR4/2PL9GMCAO7ceNuLQhU41UgNWSuFN/EakS0KqzoTXC6gkTHvGs3cR3SeOrKFj6Nr33UUo+0OjFfTg8faOKfxz80GMC1eT7LWNPzgtElb8WQJYAWrXtWKko0GcBROok4rUfHPqBSzD4RG260+i5mpqBTdhtEooaWL/D5bZMjd74Ikjy85Spm43wCCyoNtPSh70H6ctCqJ10Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,39 +135,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-> index 5f278913c4d7..b6fad38c8bee 100644
-> --- a/tools/testing/selftests/mm/soft-dirty.c
-> +++ b/tools/testing/selftests/mm/soft-dirty.c
-> @@ -92,9 +92,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
->  	if (!hpage_len)
->  		ksft_exit_fail_msg("Reading PMD pagesize failed");
->  
-> -	map = memalign(hpage_len, hpage_len);
-> +	map = alloc_isolated_mem(hpage_len, hpage_len);
->  	if (!map)
-> -		ksft_exit_fail_msg("memalign failed\n");
-> +		ksft_exit_fail_msg("alloc_isolated_mem failed\n");
->  
->  	ret = madvise(map, hpage_len, MADV_HUGEPAGE);
->  	if (ret)
-> @@ -130,7 +130,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
->  		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
->  		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
->  	}
-> -	free(map);
-> +	free_isolated_mem(map, hpage_len);
->  }
+On Wed, Sep 09, 2026 at 06:01:13PM +0800, Baolin Wang wrote:
+> 
+> 
+> On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > An mTHP collapse test needs to know that a range is backed by folios of the
+> > target order, and that they sit where a collapse would put them.  Nothing
+> > answers that today: is_backed_by_folio() classifies the folio behind a
+> > single page, and check_huge_anon() reads smaps AnonHugePages, which only
+> > accounts PMD mappings.
+> 
+> Have you checked check_large_folios() in vm_util.c? It seems to meet your
+> requirements, or am I missing something?
 
-smaps is really only problematic with merged VMAs when relying on exact page
-statistics. For other properties (vm flags, MMUPageSize) it's not a problem as
-long as our smap search just finds the VMA that covers an address.
+The changelog is out of date, sorry: since 6dedaf0d46a9 check_huge_anon()
+counts mTHP folios through check_large_folios() rather than reading
+smaps, and it is what check_huge() already uses for mthp_khugepaged.
 
-Assuming we fixed check_huge_anon() to not use smaps, why is this change here
-required?
+It could do this job too, called once per window.
+
+What is_range_backed_by_order() adds is alignment check: the folio has
+to sit at the window start. And check_large_folios() reopens two fds per
+per call which kinda wasteful.
+
+The collapse_order_* cases check three windows per case, so I wanted a
+helper whose contract is "this window is one folio of this order".
+
+I will fix the changelog if the series gets respun.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
