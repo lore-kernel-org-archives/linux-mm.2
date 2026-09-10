@@ -4,119 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3840FC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7FDC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 526FF6B008A; Thu, 10 Sep 2026 03:10:45 -0400 (EDT)
+	id 4720C6B008A; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D9CF6B008C; Thu, 10 Sep 2026 03:10:45 -0400 (EDT)
+	id 4225C6B008C; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5BC6B0092; Thu, 10 Sep 2026 03:10:45 -0400 (EDT)
+	id 3112F6B0092; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17A626B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:10:45 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59226C042A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:10:44 +0000 (UTC)
-X-FDA: 85196980008.02.BB56D97
-Received: from mta0.migadu.com (out-138.mta0.migadu.com [91.218.175.138])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5003280003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:10:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fNRlnKQD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fNRlnKQD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789024239;
-	b=AJvvGJ5LyIWe/ZlAsUUb4sw7U+Q+mGa5Qmci1UnE+LJRWbWKjyFNghRoKde0M7miligE9h
-	isTjdX+j02KicpggZ4UR5gQAocQ2jNg3knusWk1vfiyYAOFTruL30dyVCre0RDn1iDCPuZ
-	RU4Ywr6HDSg+Lw5mgYJ9w44xa6olFws=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E54AB6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:18:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D61DF16045B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:18:25 +0000 (UTC)
+X-FDA: 85196999370.12.1C18C19
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 910F214000E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:18:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789024239;
+	s=arc-20220608; t=1789024704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCxtYv7FJixvL/xJhNB9BmVgR2K6Chan2eNAqxz8bB4=;
-	b=FWUj2cxIp3UWEnNSiYHSj7kJDqMHCaKGSHot3xxWG2wW6kLCItUeuKij71p/pHgadZMCUz
-	u06ZWqltG7w3+Nk81bHJkLct3Uf0gR+cy8quVClkJC1AHRROz6WGO85/xPkjwp2RKiyNRC
-	NsuD4BeBlVeafzDoVlnj8r77j+//1gM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FfYc4aLXu2DF2lIjaj0B+4sqMfbvOvrYCGEer2SwT/Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789024234; v=1; x=1789629034;
- b=fNRlnKQD9hJd8fi2znJ3kEE0iaiXEi1IPG5NSgGVEoHdwc9OYNLhHx1clvgPHHbtsmYCJtKf
- 9wInfx3/SSFMCRb+WYptDIxpPms8Xa4Odz5t+sPbRiGBJfn9l4Q2qZOT45cAoNeSKWsDQ/L+BHx
- oSOkH0OQ0L87OZhnV/KFkqac=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 9478eb5f3bcfb84b;
-	Thu, 10 Sep 2026 07:10:06 +0000
-X-Mizu-Trace-ID: 9478eb5f3bcfb84b
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 10 Sep 2026 15:09:59 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <aqJXx2vtbKaRLt3x@fedora>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=reTiOkMB7AhG/2IJydoiOMebcdv8WbxyDZH46uhgH/k=;
+	b=zbGE+p2PAgXhs7G+TLm9h+H9gWCiOsnt8KKseDspPQZ62zpHGR3LjiDekLTqo3Gp1RMZrT
+	zn1ZYk3xexFAU7XK/yOMgso3EmPREt2+aS9AOrNpuLer0Lf71IIcEdrdPVAdp3Z3S38CgT
+	0BvnbHdTuoJrGqDRWRuyViZ+OtjThnE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789024704;
+	b=kf9NPQyvvhE+JgvuVNGI4Vbv9+nHjRFOazID8UYWxoQeJZg8pqCnTUtJG8Ogf79oHhIlYq
+	EWKvEnoTRDNEOTu2k3bFTXxOcHnrabLcYN1NL1t15/Uz1dyRJA34cuAidxgdmAy+v0OyvV
+	qdY6Z3CAUJBb8m8hiVCE24ZTCZcHmYs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hgTX06m02zYQvDV
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:17:20 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 7A67E40574
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:18:15 +0800 (CST)
+Received: from [10.174.178.253] (unknown [10.174.178.253])
+	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgCHbgm0WaJqciq1BQ--.27171S3;
+	Thu, 10 Sep 2026 15:18:15 +0800 (CST)
+Message-ID: <25009e78-b1e1-4c3e-a12d-365869b1d475@huaweicloud.com>
+Date: Thu, 10 Sep 2026 15:18:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
+ large folios
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hughd@google.com,
+ baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
+ ziy@nvidia.com, bfoster@redhat.com, joannelkoong@gmail.com,
+ djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
+ <20260909161433.d96c67399ccac8de27499925@linux-foundation.org>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <20260909161433.d96c67399ccac8de27499925@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+X-CM-TRANSID:cCh0CgCHbgm0WaJqciq1BQ--.27171S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw47Wr1kXF15uw4fur4kJFb_yoWrKFy7pF
+	Wagas0kr1kG39akr13Aa1UXw15A34xXw4UJFyfG3ySyFZ8Zw1DKF15K3W8Way7Kwn7Cw1r
+	Xa4jvayDW3WUAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
+	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
+	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_
+	WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	jxCztUUUUU=
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Stat-Signature: j6yu4csd66hpzbyih9w43ys4xaxt3yu3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5003280003
-X-Stat-Signature: z3rigphnoaoyogo7n34kxztqqbnzggbz
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789024239-776554
-X-HE-Meta: U2FsdGVkX1+HiGhw5K/ecnmFzEo5xRXvaUA5OenydOxTkuCybraA6tN7kB1lO8xaPVR3FCd1yomolqpVzKb31wttSvOyWyaj5fX5ZHsYgNXnImmrzMcG69sxFIhHzpdtKpWMLiaWBttJnl+RzPjGXkiWeDbOXC/YKkGIX0BicwSOQmlKZ84I39Wn2xf7DL5OUit36OL4eu/Is5dz8lSpUTGPlgM1EUU+elhjUP7USq6jjt0IOrackwSKfQSFnps7doxVDsqdu4u6IuUiD/iC1z4EBqfazSAy7k/VogIKhplA6wndOxKvOPxXzyRIF4Y/nZmP+/6Oec6Z+ye5G/ETfsePyxKEm4aV7/epFtlLtUS7ASZUkmH/muE42nBang29qa935fyDAEm7RnxRbNpFJ6gx4PPGnYAG6kK6hL8IRgRgZG/g/5GIiG2Ou81lJXi2F/M4GW7SY7LCM15ofVrLPBdXv2OK1a32MwasYx8++JCzqFjzCykRwxFlaPhXqudBZKMxD+9oVix9v/wsY9miHkX0PQ6XgexuDFPt86DViA23cJ2plR3gMzZdQQ/7pGUgEFyk2mAioIoehSlCK1IhhHoWrCnqQM0buVAXmZlXHkH2JaUJZDVcbJCLZlyPYdbZu66V5cwEMJVpUGkABoSHQ1XSx2La6I5cdAw/Y5RH1UfaWQ5NNEwQyPSYrjhvEpRKZ8XnNrlBKWZu2P4s2hVp/HbiRQ1GVFcTNF7aLPWssXzj8nzFbv0sVzYQ45py0DGtrrgC6DfEaSIYkzbwIloOy4jBJPuNrfz/7X/pc4/a4n4IxGqTshfNhM/sj7Erp9Oq3SPmUPMJrgUo/8qqGxGSrf+MpARdgIZQb24jcwlE5L6llgwK33KDQrvyRsOXhMk6NhTasT9j2C9Ukte+8CqgYQs9DbuVOawS7FoiLFYGiwi4mLPeZfkiJwpHycCi+LRKqE4Jq35cwjTTwa0EH1I
- kT4fk7+3
- 8ESaleNbSOf6odmIqh7Ip+IGAhF6xYjwBNPoTzwvZwTLNxk7GwKvC4wQDoYcVQQJp+mdYMFGruO3JdmxMNLfz5xuQ7Ayd/P62RcsGc9kY4YmZbPm+H0Sv/7IKvDqJs1PsXt4WvyQv3ZMyu5od2Q0Yod3K+YFEGNC7W/KWf1Xse2rpJkZwfWxc92bJUD1LhqMKuEd/W5lskXsdPjJ0WRoUju5kU4StRB9QwfEnyX4Awq1KXU9q3URYSgRImUKXgB0pYZKgTZMLIzSytFD182+MeKQX2hrzJGokN1a+h21sWj3vYmEVMkcXKz9/TkpqKmdv37r3W1nfRCHWXAFNulx2sDWuAIeDJf2jwpLZuso2obH0s8XntcfLxqvSlNJr2k1Ejzyyh0gCLMJ8URInM/6m15p9gcIiVepHHFd4SA2a+wMtKZwTr9/jLWCFexOvwUX8Xte4kFDyX8J9CnInfWdwKc1/TsokYOgyEODmYRsQn4A1JFeej0w8gGS9+INtMURvOwgsNJ0vxSrNiJ+T5PdoRJi0VfPJbTGIF8PPoFmr1uA+vlwkd0qssGa8wkZNAZumggbYPsvr+LW6Fgo=
+X-Rspamd-Queue-Id: 910F214000E
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789024701-669184
+X-HE-Meta: U2FsdGVkX19ecTfowZJ1pIrXdSl5FyeNeiOEzZ3B7EqDlYd0QZeUABfJvkSE2YzNaHAiTC4HT886WBO06qPB9Gvb2QJb0GiHXTLP/T9XYSdEgaDRDnTi1u9SXayWKMQrL5JLvecIjK1UZ5gsoiFkoWr+caSIVcrb7HPWV/sw+lq3a0jiTacWxbhI03259TeTne64cVgjaPo+HLM8y7jlFAh9y6juzL8nSwVThJfTUqsvBt8YHcBvRwxkfUEN+wa/JmXXsG1HtZ/+8sythWtv2vV5vaqbt9Rv6El7IWOxmDStF+r+9UrtsueCph+dAa5svyIw+agrl7z0KGsED79DJz65bogEvjx8R4ip2gNmLYEkaeWSiHerGVcJ/Vl2yPo4PHFT+YVdEVhQS679ri1pAzpGB0VPGbeHTw4+OcNPvpeNXu+Tpgcc9YGTnWzVBDf+RLRM9nfhoJzKIb0ThHh1iCe095Elw5IrIiQWESades5XZYkmCKk8CG3mpK1kPpgCyxE2n1Qn0wT2uWKVFCvtUxttEyt0VTfOpXgfbPSFua0nuOjRedX+KuM0zrEBKO4Nyt4pY6nZNlHqBmRHBfECKcvvj0PMpjfHgsyvJpr1+f7Cotd4BWcbVGAEIHXlRqQXDyL3mJwD4cly2xTmKptux7Ki9X2u5Ekx8Ib7PD8wu5NejSFik1QToX4Xyj3s3cqJ5SrFVvLKyAP2h6BDQoFiB0tOUtWGcpTqCYQ1CUrrJ7dJI1K6caDJnfQ91Dn5xqRLVuiv7nkGSpB12bop4bbsyLY5626gqI30RuVPTaW+QnUf04gAgxnQ/He4tExC+cWiWHKW0g87+mLdjCdAQgnnebbzhBCmN2bo4NcoutiClXRmOopAL0P0j8oyGF06mB14PyFWPfth71Stnd3pb0jSfnsGRDFckdp9SiwRLOaFU09xL9SOhLZtLof5iGalUN2NRoVeApp0+aa2ZD7EOee
+ OK/oZvVP
+ zHKh7hiDlIHa2PnMwVQrSgqBjbUXfTh340aVZTwzYFQgthUD/6WxTjCXXgBQSySCJGDmV/gxuhn07HIasE21zOQHFYV/xoY7YKKrWDQD4YvkHWKjXjy+ZCaw9m0t1IcpGTHbmGGKxh/72u6VhiRpE+E+XnqW1veGaUnXqUwiZQxnyCTiHWQflAwsS1CZJeEbaOCZ0j1iCqeYGdEPkwCLDWKxjbq4+tQ39oZVklHUSb26mekJAOZ3d7cZjQf3uVcoL60nd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,184 +112,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
-
-On 09/04/26 at 02:14pm, Nhat Pham wrote:
-.....snip...
-> Now, on xswap. Baoquan's working on a series [15] that covers some of the
-> same ground, and the VM_SPARSE cluster_info idea in it is genuinely good.
-> I've been reviewing that lineage since July [16] and I'd like whatever
-> lands to end up with the best parts of both. From my perspective the
-> differences are:
+On 9/10/2026 7:14 AM, Andrew Morton wrote:
+> On Wed,  9 Sep 2026 14:23:39 +0800 Zhang Yi <yi.zhang@huaweicloud.com> wrote:
 > 
-> 1. Userspace knobs. xswap asks the admin for a size (a percent of RAM) plus
->    a per-device limit to tune afterwards. I'm not aware of any use case
->    that needs those, and I don't think users have a good way to answer the
->    question anyway - sizing swap for compressed memory depends on memory
->    size, workload, and compression ratio all at once. That's precisely the
->    provisioning problem vswap exists to remove. The kernel should be as
->    transparent and dynamic as possible here, and not add knobs unless
->    there's a use case for them.
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> truncate_inode_partial_folio() splits a large folio so that the caller's
+>> truncate loop can drop the in-range sub-folios while keeping the
+>> out-of-range tail. The first split at the punch start edge is
+>> non-uniform, which leaves the sub-folio at the truncation end edge as
+>> large as possible, this means it may still straddle the range, holding
+>> both zeroed in-range and valid out-of-range data. The function then
+>> attempts a second split at offset + length to isolate that tail.
+>>
+>> If the second split fails the straddling sub-folio stays merged. The
+>> function returned true unconditionally on all exit paths of the success
+>> block, telling the caller it was fully handled. The caller kept its
+>> default end and the truncate loop truncated every sub-folio below it,
+>> including the merged straddler, discarding the valid out-of-range tail.
+>>
+>> For example, a 4-page order-2 folio punched from offset 0 to the middle
+>> of the last page:
+>>
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()      # same_folio == true
+>>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>>       2nd split of folio2 fails / cannot lock
+>>       return true                       # BUG: caller keeps default end
+>>     end = 3
+>>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>>
+>> This became reachable after commit 7460b470a131 ("mm/truncate: use
+>> folio_split() in truncate operation") replaced the atomic split_folio()
+>> with folio_split(), whose non-uniform split can partially split a folio
+>> and leave the end edge merged.
+>>
+>> It has gone unnoticed because a dirty large folio normally carries the
+>> filesystem's private data, for example buffer_head, so
+>> filemap_release_folio() -> iomap_release_folio() returns false on a
+>> dirty folio and folio_split() aborts with -EBUSY before any split,
+>> leaving the straddler safely unsplit. The bug is only reachable on paths
+>> that produce dirty large folios without filesystem private data, and it
+>> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+>> attached.
 > 
-> 2. Writeback support. Writeback is core functionality for zswap, not an
->    add-on, and a design needs to account for it from the start. This came
->    up before, in the discussion around Chris' ghost swapfile RFC [17]: for
->    a solution here to be acceptable, it has to work with the primary
->    usecase and support disk writeback. Without it, whatever zswap won't
->    take (incompressible pages especially) has nowhere to go, and cold
->    compressed data can never leave RAM.
+> So is there any way of being hit by these issues in 7.2 and earlier?
 > 
-> 3. Cgroup charging behavior. vswap/xswap shouldn't be charged against the
->    swap usage counter. It's fundamentally a different resource from
->    physical swapfile space, and memory.swap.* should read 0 when nothing is
->    on disk [18]. I made the longer argument for this in [19].
+>>  mm/internal.h |  4 +--
+>>  mm/shmem.c    | 13 +++-----
+>>  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
+>>  3 files changed, 67 insertions(+), 38 deletions(-)
 > 
-> 4. Data structure (xarray vs sparse vmalloc array). Even with xarray, vswap
->    is already on par with or beating baseline. I like the sparse array
->    idea, but why are we landing an optimization before the feature itself,
->    without any A/B data showing the difference matters?
+> I hope not, because that's quite a lump of code to be backporting.
 
+I took a rough look at a few existing filesystems and had an LLM help
+put things together.
 
-Thanks for laying this out, and for the honest push to converge. Let me
-be equally direct about the ordering: I think the xswap base should land
-first, and the things vswap demonstrates -  writeback, rmap lookup, the
-charging semantics, later THP -- should be built on top of it. Because
-it is the foundation that keeps the swap core simpler, and the first thing
-to merge should be the one that doesn't have to be redone.
+Actually triggering it needs all of:
+(1) a large folio straddling the punch/truncate boundary, so the
+    in-range part is zeroed and the out-of-range part holds valid data;
+(2) that folio dirty, so the out-of-range tail exists only in the
+    pagecache;
+(3) no filesystem private data on the folio (or ->release_folio()
+    returning success), so the first folio_split() in
+    truncate_inode_partial_folio() can succeed.
 
-The VM_SPARSE array is not an optimization to bolt on later; it is a
-structural choice, and the code reflects it. In vswap, the cluster
-metadata lives in a dynamically-allocated xarray.
+Filesystems that enable large folios fall into three groups, none of
+which can currently satisfy all three:
 
-struct swap_cluster_info_dynamic {
-        struct swap_cluster_info ci;
-        unsigned int index;             /* for cluster_index() */
-        struct rcu_head rcu;
-        atomic_long_t *virtual_table;   /* Backing pointers for vswap slots */
-};
+- buffer_head / private-based (ext4, btrfs, ...): a dirty folio
+  always carries fs private state (buffer_head, extent state), so
+  ->release_folio() returns false and folio_split() aborts with -EBUSY
+  before the first split — condition (3) fails.
+- netfs (afs, nfs, smb, ...): AP_RELEASE_ALWAYS is set but
+  netfs_release_folio() returns false on a dirty folio — same effect,
+  condition (3) fails.
+- iomap (xfs, zonefs, erofs): these can have dirty large folios
+  without private data, but none reach the unsafe window — xfs always
+  runs filemap_write_and_wait_range() (xfs_flush_unmap_range) before
+  punching, so the boundary folio is clean; zonefs has no punch-hole;
+  erofs is read-only. With the tail already on disk (clean), discarding
+  the straddling folio loses nothing.
 
-To support dynamic growth and shrink, vswap stores its cluster metadata
-in an xarray, and that forces two things the plain swap_cluster_info[]
-array never needed:
-
-1. Every cluster has to carry an extra index and an rcu_head —
-24 bytes per cluster — purely so the xarray can locate it and free
-it safely.
-2. To keep that bookkeeping from leaking into the normal-swap code, the
-cluster had to be wrapped in a container, swap_cluster_info_dynamic,
-so the xarray holds a pointer to the wrapper instead of an inline
-array element.
-
-So in vswap, every cluster access in the shared hot path has to answer
-"is this a vswap device?" and take a separate branch:
-
-- swap_is_vswap() is checked in 36 places across page_io.c, swapfile.c,
-  zswap.c and swap.h;
-- __swap_offset_to_cluster() branches into xa_load() for vswap vs the
-  flat array otherwise, and the xarray path can return NULL (a cluster
-  can be torn down);
-- __swap_cluster_lock() branches into __vswap_cluster_lock(), which
-  wraps every access in rcu_read_lock() and a CLUSTER_FLAG_DEAD check,
-  plus kfree_rcu()/container_of()/rcu_head plumbing for node lifetime.
-
-With VM_SPARSE, xswap's cluster access is exactly the plain-array line the
-rest of swap already uses:
-
-    return &si->cluster_info[offset / SWAPFILE_CLUSTER];
-
-no branch, no RCU discipline, no tear-down state machine, and no NULL
-return. So VM_SPARSE doesn't add complexity to close a gap; it lets the
-cluster layer stay as simple as it already is, which is precisely the
-part later work (writeback, rmap lookup, memcg charging, THP) has to sit
-on.
-
-I'm not going to claim xswap wins on throughput. I measured it:
-on a 64G/64-thread swapout, xswap, vswap and plain swap+zswap are all
-within ~2-3% of each other, effectively identical. Because the cost is
-dominated by zswap compression, not the cluster table. So the ordering
-question is not "which is faster" but "which structure should the use-case
-layer be built on". If vswap is chosen, the xarray-based table is an
-intermediate form. Your own ablative study already showed the flat array
-wins, and VM_SPARSE is exactly that flat array plus lazy mapping.
- 
-On the metadata side I want to be precise, because it is easy to overstate:
-the per-cluster cost that xswap saves is the xarray-induced index + rcu_head
-(20 bytes/cluster or 24bytes for alignment), small. 
-
-On writeback: agreed it is required in the end. But it is a consumer of
-the foundation, not a reason to pick a different one. xswap is deliberately
-the base; 
-- writeback
-- rmap lookup
-- THP support
-- memcg accounting
-All these can land on top of the xswap base rather than be stranded on a table
-we later replace. As we have discussed and I have been mentioning in each
-cover-letter, I didn't touch these core changes, glad to see your work built
-on top of it.
-
-On the interface, xswap v2 drops the percent knob entirely (your point about
-"why not just max out" is taken): create now takes only an optional
-priority, a device starts at full RAM, which is free because the VM_SPARSE
-area is mapped lazily, with an optional per-device size limit for admins
-who want a ceiling. More importantly, xswap keeps per-device instances
-because the swap->ops and swap tiering that come next need per-device
-operations. A single boot-time vswap can't express that, and it breaks the
-per-device conventions the rest of swap already follows. When I tested it,
-there is no way to disable it at runtime, so it can't even be A/B-tested
-against regular swap in the same boot. So I think a boot-time vswap is an
-independent issue which deserves a separate patch posting with a convincing
-justification later.
-
-So concretely: xswap base first (runtime file-less device + VM_SPARSE
-cluster foundation + sysfs create/destroy), then the use-case layer, where
-your writeback work, etc is very welcome. The base should be the one that
-doesn't need to be redone; by both our measurements, that is the flat-cluster
-substrate.
-
-Thanks
-Baoquan
+So on 7.2 and earlier I cannot find a reachable trigger path. It only
+becomes reachable on the upcoming ext4 + iomap buffered-I/O path, which
+for the first time combines large folios + no private data on
+fully-dirtied folios + missing pre-punch writeback.
 
 > 
-> One thing I do want to be clear about: I'm glad other people care about
-> this problem. Chris' ghost swapfile and Baoquan's xswap are both going
-> after the same set of problems, and that's a good sign. It means this is
-> real and shared, not something only Meta runs into.
+> Thanks.  I'll queue it for testing and shall await your response to Zi
+> Yan's questions.
 > 
-> What's been harder is the shape of the engagement. Alternatives keep
-> getting posted and pushed that don't cover all the requirements, while this
-> series sits without review. I don't think I'm owed anyone's interest in the
-> problems I care about. But I do think working code, with benchmarks and
-> production exposure behind it, deserves a fair hearing next to in-progress
-> proposals.
+> I see you've received Sashiko's feedback.  Please let us know if
+> there's any validity to it.
 > 
-> So what I'm asking for: I'd like us to converge rather than keep two series
-> in flight. My preference is that we land vswap first, then build Baoquan's
-> sparse array on top of it as an optimization. That gets the feature in, and
-> by then we'd have the A/B data to show whether the sparse array actually
-> beats the xarray.
+> 	https://sashiko.dev/#/patchset/20260909062339.473816-1-yi.zhang@huaweicloud.com
 > 
-> If you think that's the wrong order, I'd genuinely like to understand why -
-> after 17 months and 10 revisions I still don't have a clear picture of the
-> objection.
-> 
-> [1] https://lore.kernel.org/all/20250407234223.1059191-1-nphamcs@gmail.com/
-> [2] https://lore.kernel.org/all/20250429233848.3093350-1-nphamcs@gmail.com/
-> [3] https://lore.kernel.org/all/20260208215839.87595-1-nphamcs@gmail.com/
-> [4] https://lore.kernel.org/all/20260318222953.441758-1-nphamcs@gmail.com/
-> [5] https://lore.kernel.org/all/20260320192735.748051-1-nphamcs@gmail.com/
-> [6] https://lore.kernel.org/all/20260505153854.1612033-1-nphamcs@gmail.com/
-> [7] https://lore.kernel.org/all/20260528212955.1912856-1-nphamcs@gmail.com/
-> [8] https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail.com/
-> [9] https://lore.kernel.org/all/20260806184254.3790858-1-nphamcs@gmail.com/
-> [10] https://lore.kernel.org/all/20260825153238.2695446-1-nphamcs@gmail.com/
-> [11] https://lwn.net/Articles/1016136/
-> [12] https://lore.kernel.org/all/CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com/
-> [13] https://lore.kernel.org/all/CACePvbVXQWgcPD-bgK7iDba4NFLo2tT89ZbLOa03maJU4er4ag@mail.gmail.com/
-> [14] https://lore.kernel.org/all/aZyFxKGXc8J6PIij@cmpxchg.org/
-> [15] https://lore.kernel.org/all/20260827094509.1016740-1-hebaoquan@kylinos.cn/
-> [16] https://lore.kernel.org/lkml/CAKEwX=Pe+qMZd2xhnU-PAGQtgXkp56c-JwYCbt2Lux9htgB67Q@mail.gmail.com/
-> [17] https://lore.kernel.org/all/20251121114011.GA71307@cmpxchg.org/
-> [18] https://lore.kernel.org/all/anYIboHEUZb4fhHv@cmpxchg.org/
-> [19] https://lore.kernel.org/all/CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com/
+
+I took an initial look at Sashiko's review report. I think the
+issue is valid — the current fix can get the wrong folio2 index
+when there's a concurrent split. I need to think more about how
+to fix it properly.
+
+Thanks,
+Yi.
+
 
