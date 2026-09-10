@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973FEC79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE41C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D89586B0093; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
+	id 6D1786B0095; Thu, 10 Sep 2026 13:16:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3ACE6B0095; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
+	id 683AB6B0099; Thu, 10 Sep 2026 13:16:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C50B46B0096; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
+	id 56A146B0095; Thu, 10 Sep 2026 13:16:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB0E6B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 262C76B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:16:38 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 046C51A058E
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC583A5023
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:37 +0000 (UTC)
+X-FDA: 85198506834.20.A33F205
+Received: from mail-yx2-f6.google.com (mail-yx2-f6.google.com [74.125.224.134])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E65B51C000B
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:34 +0000 (UTC)
-X-FDA: 85198506750.20.F4E6D77
-Received: from mail-yx2-f10.google.com (mail-yx2-f10.google.com [74.125.224.138])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 390D21C0003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="iRgRlY/f";
-	spf=pass (imf18.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qWXHGRu/";
+	spf=pass (imf21.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.134 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789060594;
+	b=47d9sRvDwajUCAjESV98e/lE2PlMQU3H9BKrBRCPjA8H9VCSQm/HeltIZ6vjV0FHANDq7I
+	odKJEHK36yMcZYX5TPG0K/YJ4UNq98qUmmOVS6MMTb8wgdHms26hQGAuQGc27JBT3pTjH9
+	Nb/SGt6fuIPFZJ7UvoKK0wKdE2wwLTw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qWXHGRu/";
+	spf=pass (imf21.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.134 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789060593;
+	s=arc-20220608; t=1789060594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
-	b=hnW9LYyKrC5FGay2XQ5mmKCWwNzR8ZCidNEojMujjpQMSCtUOzI0tiV3eD/mg8E+LnM6fR
-	x48UHBdK3JEg2MNnH7gZ58eGeSabB/RyaU08h6Vl4G99Na9w490jrFTG4uAgq0yctnhheG
-	EvwOJuh/iMvbKgvmLmx3XQf4QglYxIg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789060593;
-	b=ZgtpFM3HOGjOKGfLcXbO6SGg6kmY79VeLQZriK1VO1Rzr7gBr1WKL2XmE6U7BYgUhWYqWa
-	Y14bAi5mJlEp/cLMNaUR1WHh5egbTc5US/uHJ2A+5cyeeVL0VHlv6krbl6mv64MeZdidEc
-	N7CxSt0EEqjqTH2i4nMN7vZ2vcziAVs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="iRgRlY/f";
-	spf=pass (imf18.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx2-f10.google.com with SMTP id 956f58d0204a3-66c711552cbso2234034d50.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:16:32 -0700 (PDT)
+	bh=G/4KB/W5umJ2NwhZ9AnF6tdCnGIfxiKJfL3QRGzZeTE=;
+	b=iUL8iT8dXyYCISmbehqvwzLwaRmzRs0pb4SM3jsAMmGD+hUJnV7jzVIJBNzV3rcxf6QahZ
+	As5v5V1K1wbd3p+gziiizLrObBQBor1qTSUWGxQVJeg2Tk8WaJIZPGAbr53YcnEdKM7sJu
+	3mb3flKLXz6FdxpOvT+CQiAIxQ5IzSc=
+Received: by mail-yx2-f6.google.com with SMTP id 956f58d0204a3-66e623a0149so2331388d50.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789060592; x=1789665392; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789060594; x=1789665394; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
-        b=iRgRlY/f06jfFsb5l64W8cZ19Z/CSqFJK/2xJ4YPETlalN3vySzhU+BL/PLjXK/rNj
-         YnOQmCEizWo0jKlGmOBZ/sknzqGNi9gw+PVpqAW9FDMBBH9H5DEUajdq/OL3LUBoDsn3
-         dDMOK2A3XYiZ/eJ4zoD82f5QSdgIPsgY9uaAEOP88wZ152upeJLy9gUHcIMVF5w753Q5
-         QIdGI71gbHQyC22zRlNUIhSWMTEoq5fovDy2grKpFC+z2bnkc69tWczKWl66mOsm/JP7
-         vWSJEC8QfGYvHXDrdTXtb5XzTwsaCT1cXVuRxcv5Q/S58Scuj0y+4hHwswCZckCBzWZS
-         aCMg==
+        bh=G/4KB/W5umJ2NwhZ9AnF6tdCnGIfxiKJfL3QRGzZeTE=;
+        b=qWXHGRu/FUF12UCmzm7h48DOWuTKcPGyX59hjHA9+34eROliT49fB5CAAhP+IM4LoP
+         k/sKO2Vbp1mZkSzPO34H3ZM+TFC0tYms+MZMYu/SwinNLqPCQxXCmAlp7rpOy8Og1gPU
+         L4DYqCkaVkJAg4juE5KtY9NhKG6QNH2+w3Mad4X8JPV+CcKK9zhJv/u/SsQqbLIMU3S0
+         K4tQw6dsMHsNz58Qt8OG1X5ZXgs2OyU4DtIuZ17m5wd7utdpEWV7ReoPgnMiXH8cJFrI
+         jujqVe8eom0YtRHyrlfxnOQKzRB0EW/oB/4CO3TiJyAjwxqKDQGM4WzRg24jydmJ1aiH
+         Czjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789060592; x=1789665392;
+        d=1e100.net; s=20251104; t=1789060594; x=1789665394;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
-        b=UF+ZPfOhTuHXIzMCaUdwjLd9rvUZJ41iatv2oqEHpP+TdeHsWer9RmOzGRuy37ep/V
-         XMaW0jeCe6oYQ6kxj0oLUOgw69+y0I5m9cztX1Ret8LX9IvQCzO/VOiA/Cr5F2Zqic9L
-         JM/+LovZ63Fmw7IkwHqKRP6QjTzJUawf9S7cH0d7wvsmTwKv55sX2W46rqdDzgfcq++x
-         rMgXKAiGd0hjfefHKwkzWK40jeROgUamOmB/Js11hX0t1yvD3EBIqJV6idT2xex4e2PY
-         pmfUX74vs0T9ZQ5yE8N5Z/eDOpW81OVn4WcQke5IE+qPG4lP27lVGUkQ6Ol3fbuiHuiZ
-         drHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxDRXZ4OlgqVDnOib+IoZywg7B8rpZE2cY+cNm4fAu0rsMqI3m5SCs6mihwm6rtaoLtVjs5UjXBpA==@kvack.org
-X-Gm-Message-State: AFuF++na6wmyrclH8N6QGGOSiwvoLgt791TY0KnXQEhGglgs6IIxbO+B
-	QGJ31+dBrqLuLKL6hPD0iDzmRMmyWV5AJ5DkdZCnOaSsl7Mwkb2XmwQ=
-X-Gm-Gg: AYBFou0fiaWNVQOexqG5wZ44T7FeMzp2eJwUkEpvz09TmgggPEgZVSFn9HbOnK16Glc
-	+GvaTS2MJVGm6OIOPCSyWGLQ4BR60Dq4tNs5DsEbOa+7cA2cPOJgV3jDNpXRHZk2Up+0yjePMiB
-	qXIWpc/hfDuqpBA2skER2Gwdlzy6JpBvZUb+nX4B2DcqNoFHqjjtMCq59ANbwv7ZQG8Gp/blsy1
-	juz6Bj98rEUZXYGrQUZiOpeDaRJg7VJ1gKGu5NJqdJ8ffIXZP6UxcBOBg+dnJgdWE6p73Q5VvJT
-	KuT+NSzr/BLaZqHE22IqqWWHEBUiBfLTh72GKzMw9DCrTWoAT1UGrqoyWGqVwcet3jo71P2XoPa
-	ZviHZIQqywGgFT6VxFM3dY7oONhL33tSRKLLUdrGkwYzL/N3tbKaNDnhQ6u/S6M9IGlyJIBOzCY
-	jg9bwsF1KJWYTvWd3pTDF4SxFACA2CLbSCq0ka2prE5JGBgMXab1mF1nwby4tOLNKPF+QM+adoT
-	tY/4ZjEd4/V5R+gypPUsdbyLAMGAohnhQ7ARTWc9jSiWdKrYA==
-X-Received: by 2002:a05:690c:e289:20b0:858:41d4:c28 with SMTP id 00721157ae682-884afc19817mr1025287b3.8.1789060592200;
-        Thu, 10 Sep 2026 10:16:32 -0700 (PDT)
+        bh=G/4KB/W5umJ2NwhZ9AnF6tdCnGIfxiKJfL3QRGzZeTE=;
+        b=EvEsA442x2v3xnpXcONnX4IBf8qcE+XDdwQGTWUzFxTcHRWBtnJQIDymRBNABj+B7o
+         av/uojYcSWd1j8il55/YVKahXNlAuw/RsEEKBujFhKua/76w+Lbi2qM9hc0AsR5leTI7
+         jMatVHZUt5haeslwJRz/BM0khcv3BjftkrWk5eIBUsVIQEff3KaM8Oc0zm31SJOaHtE6
+         UPjsg7n2jHSr8IvQTTQyt9ykHpBXOGY+PwW81G69fDDNIPkhmnVl+ezlN1WsPaiZ/yWt
+         UlNmAGqqRAJNmLawYV51ItwzSNMVyMhx+CmUi23BBvFpAiEYEPxrWj2pIDZYnHgLutCM
+         kqZw==
+X-Forwarded-Encrypted: i=1; AKwUvBw3hUklLmmPh3JL2UjbnSah4+RDSgijGuQSwWdIYVc4pnX1StzWEzxcy3rFoOwRkLVCwPEDwg20Mg==@kvack.org
+X-Gm-Message-State: AFuF++l3EDKldc889ASiTKi2Z9cg5HyGM30S07aN+Fw/fdAYgSyIr3qM
+	63oqWVFMpDoYgQuXTzSaP2IAbrjxpEGvs0PXQBL14Z6Ord75grWJ9pA=
+X-Gm-Gg: AYBFou0dosenV4koAL8Ej4Smmh1ZHVDBcFpHIh0RpQj3zd0CXf6idRT9hTcSg8gX0Nt
+	S1pThuO0f2lKZN9xWujpcvYn1VHcsfzc8+qIz1JeFvzTYFdekovGgbBSimhXRsTV8/pRIIMxayh
+	rbARJzyd8pKaIWimENIPP3hJ2s96OZpc/D6LJLUx/+YmA/jWgckw+Rvm9rBlkqjg7RrUUbrlnJw
+	jy/hcbT1qNVcL6Yp99VPwOPJPEHTQcoN3O093GqRIyYvoUEFxlBPilR7710Z1UO6x5AEqqMV/T3
+	8FBmkMHTH98fimGgACRaIYLBUzRn1U675Pi+mAs7zUVgKefAs8iXpBzXRb5zs3ShPH9BHTnB6Fu
+	sNIKpndKAawFbtV8VwwnM+t+GBkDpyXOlADhmfTL78p3c98hoD3l3XO20j4z7JwpjU9S0g+Wy3U
+	Nj2OTMRThSeIbCzB06PkucZmVGfzZ7gfrA0iAulx6lWTIHXiTY7CjbYq2MZCLzG725Av0E2+4d6
+	EQuOGMkXVCpn2OPaF+h6irzjxuBEHl2xOTSgwiIYAT902e2HJyrk8bj3jtU
+X-Received: by 2002:a05:690e:4503:10b0:66f:c1be:84c6 with SMTP id 956f58d0204a3-6712473ff01mr113462d50.52.1789060593948;
+        Thu, 10 Sep 2026 10:16:33 -0700 (PDT)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8848608617fsm2387337b3.9.2026.09.10.10.16.31
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48f1646sm14291862d50.9.2026.09.10.10.16.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 10:16:31 -0700 (PDT)
+        Thu, 10 Sep 2026 10:16:33 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	akinobu.mita@gmail.com,
@@ -109,22 +109,22 @@ Cc: akpm@linux-foundation.org,
 	weixugc@google.com,
 	jic23@kernel.org,
 	gourry@gourry.net
-Subject: [RFC PATCH v2 2/9] mm/damon/core: read the CPU number with preemption disabled
-Date: Thu, 10 Sep 2026 10:16:16 -0700
-Message-ID: <20260910171623.6638-3-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH v2 3/9] mm/damon/paddr: lock the folio for the page fault primitive rmap walk
+Date: Thu, 10 Sep 2026 10:16:17 -0700
+Message-ID: <20260910171623.6638-4-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260910171623.6638-1-ravis.opensrc@gmail.com>
 References: <20260910171623.6638-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 390D21C0003
-X-Stat-Signature: artzghan46m9uufgzsapknybymh1zbqd
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E65B51C000B
+X-Stat-Signature: prnsw87bo6rjg6rykwmd8cwawu1wgggh
 X-Rspam-User: 
-X-HE-Tag: 1789060593-386057
-X-HE-Meta: U2FsdGVkX18cVMKqxE6JEDs3msmlWqZ0eH8bCg7fZaytkcYB5jAKFrxjwC8bxpPcmoGbjpDJlgrZ4IDV+LBv5wj7SmG3RIYLJKTj9KhBPrxR2i+v9++xfdeLvSPkIrrpxqe9o/8pK1l0GxvRi+yj6i84Y4WMEsRbij1kx/Ny2yqjutqnkLwdvprK+i88/baXIkkKUB9L3wiIGtAhiynEhXa93MzmmSgClYXzoVajlGc2MGUe9ggi9BPfUiVajm2DthV0G1K35WlCR88BG7uEbQDKvWP6v4EvKiTDOB4WXDHfWdWckS5xhkAFePtwlAJ6byTdOXUIbsZWGv94Ffubd7f1byP4y/UqH4X3xYFVovqTDd6QIu460XiRz1dAUoPjeBjKMPd/Bd5R1G2+XvY3EtWvnkt2ayC5H/4b0f/inHxrfDlVCuNVLG1JVM5VPWjUh8mm8ODi69bS8uuJBtmSSauNJVQegWuTOYwoxv655BDEtRV55ZXIAOV5ySS9DV3FFUL5CLs1RYdrre22LctN7ANR9oE9CNGM0K7jSBaWUskotuN7jCqVuDZ29DjDG4R2l16aEYfzIsOppiF8sr6QVm59IQnV/buTXuJdTt98FWUjus2diQZORZ1fB3/0ElA/Zl+bl4yBOndUS23BkVrmIX6d1B0W3RPVKfQYs13LnxFrPewU1lsDyVetx0+rBxhNjP6uN8D7smgGnv8KLi6VW9e7E0C6Yn4Z8RA1fOVmi1a0//rAA5ViJNZKNvW0QwETvOtrSKLCHlqMXHK9m6uF1e3Oijg0ztDqD7aF9rPG12CrvoxV9mY9gw0NkuW6HZH+MTPWYUMOYQ3SUOiKacpomsfs9WPsWFwFiO1SUjFrpsrq7QBD2T0LgzX8CxNL5SUtKJta9hwqhTZCg12eiZxt9sfxf6Q9Y/IH2WVU0bNOmOvJCngnmmh1iImAWS6CRDWeQoEAL0yB9iwlsJ4n2V2
- szqyL089
- //LEM9uZc0D4Rb4URW6sc5LlUDJBRmGOcJQ8OP+GqvX+3OKLjc88bFZST6RFApAMEEnZb4IvaaJAw6Z0GLToRyAHzdISMBaR4JyrW/5n30gdIxgeOjNiG12s3CvW4JsrrHI3DtMPrBKNTHMY+NjoXL3csVw8qmx2yEwed01TvpW3d0enIBYH35EcP+zRh2ro3zk17yBumnezDYFVeFPDMTcR/lfxtoicms4E1KF4R35KBV8WBshDWro4uOS7CKqgFHJYjnxRQjOcynYFWeEGImbXEWZyB/PPha4TFYbI29uELNPiQUjjzD50NbaN3Y5Mx+IFRuDt5nbnnbmPYqimLS0HbxQBmYIJVJaDyPtqFAluWXNVGx886rrG1sY5NgsorGcq68dB9AJ1nF/7DqFLrGHJETVm5yyqAQ5Ufkq4m6IF98+4bFgbZ9RbmyPMPydXJoTcoYQrsWnZD6rmEZIOZgyFH91pfnOuWlGtnUfIV5axukycpi/o2OJL7/hhdlF6KACDn+EBEmZo74enEipDa2eJd6g==
+X-HE-Tag: 1789060594-643874
+X-HE-Meta: U2FsdGVkX1/I9FSOY2LixQs+MlP/vNPJHHQN3pvIIKf/GfGIveRwK+75LCfGW8yZvvV0jplNXiP1Zh5wQJ+LH0/PNzAT5rbwa8p7kOhWxTXkOo1ZdU4JvXr82KqzLzKluLuKx5zRVbRXznVmgDl7KtDxt31GnM2keDlABh0GXTaixOx/JppiSa3iTPv7uZQEjav7LtfJeoDDWHPc8KtDX6WGWIdJ6niSd+IjuvcKN8weQZla9g3GJUL5Cuk9rEmbNRqdDzgSUacXEIVH6RXHlYQtyIHb5Q7tCQ5aW7QgNzbPO1QIhrmnzHxm9JJYIsd4yaluIY4vWBVtlbaFeQ9JKKowe5OyaWCafFKjrwYBzVG71wTG1EERZyMRjWDLR9Iv2evuES+RzzG6GkQl6QPb3hs9Vp9rSSXLQgnq5cafpacARitN9LdX8OUgip8pUJNXONXX+CkohTJcatOzyiPc/TOWWvnTfVFa4ff54LjRu/i3e+UGcY38RfDO4LnOThBhdL+49C3VK00nfFbuRYuYHKqmL+AapCatwFM4SpzVMcXk8H959inr+qKNxJyn0jUOi9i9L7u1ntGACkupSiRIfLEXap26cym2PVFOnuIA4rsasGF5daeqz+j/BbY/hOEF1Fv/ZmkRirkRay5Zw5Ubmh99pKNTlrm/NdMvzQYs4RWnBevn5BCXaM6I472695NexG+s61ZgqsbL9VeND7/aEDbuEKfS/pc0DYztDUvktMIFWASD1ukmiNZQDSPe4UbBwDw1jFPjIrwMdSUiG9xw6Ca5+N44MYo0FzMGQxNuIt+GRLTBkNIDxJxHL2N1gprmGaw9go0phh2ZiMhTodl2NuZBUQoZDhREIHYr0qwgE3fr8RoAH+aiMdDmvNEQYluCgFq1u7ycZm/e5k90k4s6jvexxNgL3tkWvQyAuSlZo2WdE4k2CDIsAFXC1RMS353WDBh40lz6fpdlyfNmkdA
+ P5yj3QT4
+ QoVo15cQvC1NHxo5mzv780dXWLv3RHHNOisIElnXicYSMFjLzjJS0tDvBBpQ4flmDENj40b6tw/x6bfiEheqqdWt/2CHk0ZRrJ7vnm8uQXNy043LuIG2o1jZx2fo2HzPi/vuKFAmhFedMDjOTMJyb9AsR8PSrvuZ/cwd1hh12uCjQ7nrdMYszauf4IK6syUp8vN/KHb0QPGcvoe29TP/7EHtxjO+MoJatBXIskSGVFQJjILZJPYjscFncHELdQBvF7Yb9DQWQn22sGA6zR6YRns70eIBLT23xRoCiQ4oYiIbC0q320rAznxFHKTyA2YZ32/XoucaBK2k2d3+COGUXIEhgoeF/OvGCcxGXcKXJSzoAnplpOY371YtVbfwq39KzNWpkipJUsgGSnMrXMjToYFYLD27YH21d+IKkruxU7cjzLFqOG7z/u7hrw4tEghmUngCyaoS90+jWs1CnV1Zk5wbQSrorMhEUntEZ7cIX5zMSaH1gTRqmI1bLUorWeUEVRlbkbKG6xnQINFSlf4gQ+wP5gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,47 +132,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_report_page_fault() runs in fault context, which is preemptible, so
-reading the CPU number there triggers a "using smp_processor_id() in
-preemptible" report.
+rmap_walk() requires the folio to be locked for every mapping type it
+walks, and the page fault access check primitive takes the lock only for
+file-backed and KSM folios, so a plain anonymous folio reaches the walk
+unlocked and the walk does not install the marker.
 
-Read it with preemption disabled, and keep it disabled across the report
-so the recorded CPU stays consistent with the per-CPU ring the report is
-queued to, which is selected the same way.
+Take the lock unconditionally, as the other reverse mapping walks in DAMON
+do, and release the folio reference the lookup took on every exit path.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/core.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/damon/paddr.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 5fdb5922edb78..991ddb9a09414 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2514,7 +2514,6 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
- 	struct damon_access_report access_report = {
- 		.vaddr = vmf->address,
- 		.size = 1,	/* todo: set appripriately */
--		.cpu = smp_processor_id(),
- 		.tid = task_pid_vnr(current),
- 		.is_write = vmf->flags & FAULT_FLAG_WRITE,
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index f4fa7c231e551..5fcef3005c536 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -91,21 +91,25 @@ static void damon_pa_change_protection(unsigned long paddr)
+ 		.rmap_one = damon_pa_change_protection_one,
+ 		.anon_lock = folio_lock_anon_vma_read,
  	};
-@@ -2524,7 +2523,15 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
- 	else
- 		access_report.paddr = PFN_PHYS(pte_pfn(vmf->orig_pte));
+-	bool need_lock;
  
+ 	if (!folio)
+ 		return;
+ 	if (!folio_mapped(folio) || !folio_raw_mapping(folio))
+-		return;
++		goto put;
+ 
+-	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+-	if (need_lock && !folio_trylock(folio))
+-		return;
 +	/*
-+	 * This runs in fault context, which is preemptible, so the CPU number
-+	 * is read with preemption disabled.  Holding it across the report also
-+	 * keeps the recorded CPU consistent with the per-CPU ring the report is
-+	 * queued to, which damon_report_access() selects the same way.
++	 * rmap_walk() requires a locked folio for every mapping type, so the
++	 * lock is taken unconditionally, as the other reverse mapping walks in
++	 * DAMON do.
 +	 */
-+	access_report.cpu = get_cpu();
- 	damon_report_access(&access_report);
-+	put_cpu();
- }
- #endif
++	if (!folio_trylock(folio))
++		goto put;
  
+ 	rmap_walk(folio, &rwc);
+ 
+-	if (need_lock)
+-		folio_unlock(folio);
++	folio_unlock(folio);
++put:
++	folio_put(folio);
+ }
+ 
+ static void damon_pa_prepare_access_checks_faults(struct damon_ctx *ctx)
 -- 
 2.43.0
 
