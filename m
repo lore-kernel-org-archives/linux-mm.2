@@ -4,99 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 663E2C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3F6AC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:15:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720B86B0098; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
+	id 552B76B008A; Thu, 10 Sep 2026 10:15:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7CF6B0099; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
+	id 5035B6B0099; Thu, 10 Sep 2026 10:15:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60D6E6B009B; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
+	id 419506B009B; Thu, 10 Sep 2026 10:15:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EEF86B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF06DA0584
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:10:47 +0000 (UTC)
-X-FDA: 85198038534.05.C0CD334
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4253F140010
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:10:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3YlUNYI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3YlUNYI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 23C576B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:15:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69DA7C04E9
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:15:10 +0000 (UTC)
+X-FDA: 85198049580.30.BA17745
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AB16B1C0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:15:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OykTcqL4;
+	spf=pass (imf21.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789049446;
-	b=QEFbcGHJobUVymQ4It0zvTZAAr4xKeReo7UUN49VCX/sAhLnzgB3uEWOeoXn90N18mWNZ+
-	gMvYmiZwIMZ1oOjU2m07dZQDnAoVJSri8Myl1wHtZ/krTxtpuNzfeTkIa75Xzz7Abp6hP5
-	ugoHFnGQ0Z2InT6uhQRlHvUNz3eLcCs=
+	t=1789049708;
+	b=UjbuXgUZE7ZNumuwspdphI64WwzxENycNowQvWWcKOvxNxjoDILwdpUUOilh4D5RDCo13q
+	Ln1iiUSN8xHbyuCbyh97VqA741y9AqOBujn2IUNBQYPXTCfZlDzrikzwwdCE7BYY5lKN9e
+	mnHBeIlz6gUTtUt6gy7cw2p9HpmDbxc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OykTcqL4;
+	spf=pass (imf21.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789049446;
+	s=arc-20220608; t=1789049708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uCtMBc/69YQLL/vmB0BOFo8lbp1vfibmleZ+RjFXS78=;
-	b=57IW/uI6SpIgVJQGQ7QnvGIfme2ubRw0EPD2P6RCQC9E9+cLrCveOeTEEmiO/GZ118byyf
-	RvITvveOYXz6OjLmdROJYzsfESiJjovgwKi/clN+Uu+IPiO10z23qiwpkPbQF5fy/jHmEH
-	B+SrRw4QEu232q+UvvTjsrcVABI8K/c=
+	bh=TiUw/s/a5THXpKNutlCo5ceA78d7FKvTZXpt6nB2WDM=;
+	b=VetU5haKxMFE4Kh+Ek8OFlBkCIVyDS/4Za7dt0OZasnO7MDdQYZGlKE0Q7Zv/XBDxR18dW
+	qgZDWqixm/IIN5bQ9qJF39JwBkRck6N6R+qqX+HrbAvh3pRfqiZZlHrKXKyx1vtTN6eluV
+	vrlYEASrJq2WlWRb5mKXti8N/FuG2B0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBD92601F1;
-	Thu, 10 Sep 2026 14:10:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4CE1F00893;
-	Thu, 10 Sep 2026 14:10:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D1A9741273;
+	Thu, 10 Sep 2026 14:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988CA1F000FF;
+	Thu, 10 Sep 2026 14:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789049445;
-	bh=uCtMBc/69YQLL/vmB0BOFo8lbp1vfibmleZ+RjFXS78=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L3YlUNYIYpaiM8jp3G4/WuOcLTOnIxdJwv+s+8uTI+kxKX65VwPDppqs+JE0zLvaB
-	 NyDL2tInHbN7WThAmEhEtDhajRt1wFhhlIP0DMYqkynGRaURQKkbceSBJoxJ/3ZDTM
-	 J6lzpSUHLaap9Dt7WgRzlmjkj+bowVZgXzobSJsWSohOBQjZ/E6lrjUrTQ55tUmUIr
-	 hMBJoBiYnzzrCJR8o5kVUjQ/y1OkQCOrwlU38jpAP4x0CyC2YjOdvnevQAo6H4vXqx
-	 gV1MqVpoDsbxEuZd+4owbI7fNw3vqsA2KdqHm7qUqimV2gt4p7d6pfDdQSJp9lBwoM
-	 vDf49WpFcvzZQ==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm/damon/design: clarify when qt_exceeds increases
-Date: Thu, 10 Sep 2026 07:10:37 -0700
-Message-ID: <20260910141038.169135-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260910112255.157012-1-aethernet65535@gmail.com>
-References: 
+	s=k20260515; t=1789049707;
+	bh=TiUw/s/a5THXpKNutlCo5ceA78d7FKvTZXpt6nB2WDM=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To;
+	b=OykTcqL4d2iurhxpPxK93+PH89vvmNx5+3i+Q3z2sh5S25z14NIvXJG9W0cxefFjA
+	 NmdwFLDikwh5MJCPIv9VI/ggKb1BrDTx4edHuAPTPyD8Pf9nhxSKUIcZEYnu2/bB9c
+	 tRwlUkkyUztPw4tcAs4jFtjpsovBvrl0O+CH67EU3UOHsYKl8HDzp9kkFxMV4Ilva4
+	 M9pnRXd4809xytxNbcxwjvvr1OWn2Hims1vx/XUqQeh9IPXkv0wBDLWvZjkY9KPcNC
+	 dM5x5RPEv2qsdMQjViayhqn7jHRNwFkeJJPq+llZWG/ws0Ud/sfUVstxoEBZ1S7bWe
+	 zVs62TqX/jFdw==
+Message-ID: <894da5cc-7bc4-4b0f-9d6d-ae80a169616d@kernel.org>
+Date: Thu, 10 Sep 2026 22:15:00 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+ <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
+ <520b6aca-b515-4720-977f-1adb484f2e08@kernel.org>
+ <d700c4ea-b54e-4195-b124-3c89177ee49e@kernel.org>
+ <18ab9827-9e10-4360-a1d0-3b25d86a71a9@kernel.org>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <18ab9827-9e10-4360-a1d0-3b25d86a71a9@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AB16B1C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4253F140010
-X-Stat-Signature: ucuq6wh93hxkpjw5i9gx7z3gze3abjp3
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789049446-861103
-X-HE-Meta: U2FsdGVkX19Gd8pP8+bbyQTnyDpa5uzjHyD9e0JAJcxAUVPQhhsR1rpxEzGaOACHgG1Ur2Ta0lZOTtH2ReIwd5rMZYMphCCx4T2TibNgoh8/FGbwEmYDVhdmOnsOOC49Z5hRP9kzNmtC8VgWw688IoGHlQ1RfjV/JAklPxS1GFriH/as6eXXtoFYiSC/ly/u7bw/7M+HoZDuIfjPbTIH9lnXQzaiCsaMn3PLZ4S4zfZge6Hc0NuR4C0xLQ6EW+MzY7L2ymWa3VBUPojOq4ujF0LK5rn1Rk/1vUdAxPb014MWjTT+nyhieFselhFQljYPWFfZZrR0Wglg9RuFo9v8I0i5jue310RgtPrqTo1UmmtJeThbhHZ/1m6GorvSPG+Ia+68bSkwF198z1yKnfadhaIUfGLLmp0TYxTEzsVTt2c+H3I4HhAniWry2KAabZACMjYPewqadRMQsCWuqX8lls2kmZdKVdM5WQJqwthsaxVGYpFM45RAmSa/iezCFPyVsAr6OU45AvGaihKzpWeQ+/d1TyX6OLM1HxJV8TPPz+A47p5gLC+3PJXZS4cZ5T6un9aBD9496aNH+N4CVg+djcgPm/I+tkx7B70JaN9KASf+zSjcnU4kGXiyVwI8PVR1ov8nQMbOTmTUgBRH4VCpik2s2UlG8G/2bA4JyOxf0PZAT8upfoylf/us40TRNCnxIYZ/QdfQy5LX1UQ+RPqyYgEOAxHlcDmDK24SP84yIoTfpbKNYAEJx8pMZYOErLO8LRbOdP47Ggo2jtUNKHHpaqyRh15nzgusfHc958RqWxcv9E5grU0/xlPCqAUu3EHMANeYX4t/GqeHwLqY9uLfpJHbDL5QRWUd/dOJgoIQglkC6oBbo8AnwjCoMN2xnw5yTr368y0ZCPUbHEa1eqq4PncnfCeWOEi2OT8FmMAVfa+j+A5LHiaED07Ys8obnpzxZAwPdKyxM1zjtC0cuwn
- Aw9dI+Bi
- kHke0MuzCjc2/VWYZa9a33NdvlxiPcV6BPvdT4ohOpO+0h4R0dbqqQr1Eh5ZLPyC/NbHrUzCNsey3CT0NxayhW98UVh2MOftfpIsi+GSq0fe/ymIFAHSZtikJNTVV/zulIptn8qsnDdUxvn0GFUMR3DVEbqHM2UsEqle9YGg08FYGEeQp/CReR4wOpbxlXqvmbg84MbI+y9pGxwS+gWdEHSmvevyPnhiqO13Osr+0I21X+bNjJwwnNy2pcUjdoy4WR7i3YA+Pad0Ifv/9uiNS8S+3HBQWAcFHfnFu9oXlA+D8hbjz9CD+0jiSiAK+fZqUs16WztE3/W/yCw8=
+X-Stat-Signature: 3xzrbwxbt4cyqnr9x7ygkwbjerwdbyyo
+X-HE-Tag: 1789049708-908431
+X-HE-Meta: U2FsdGVkX1/Ad5AITDAYIOXU/eDFjFldwxhUcWZQl3PPea9cZsIPPmBdEgUijPoRPBVFTd3n5bgWSee7EzGKotrZzVbjoclxvE7wEWQB7+Vs1rEhgoP/I+FnUHGhJ+V0H7Q9W1fk6fHv5HUZusJLSECPIBHVEsyzs09+USgU98Tdml4if+WbUA6Kp4rbiBB4CvQvMIcUlLpXcceG3V7rpxZMNFoLMoehtT+xHjq9VeTlL9N+RzPRrY3VLR0eCz5U3qt+CbzR+D0b9zxm74irE1bEcKxHQ6i9vzLUEbdFlCt95thv9vu8RC/G1qV3zf/5hnoP5udrCgmvmIyCAVp+KWyOIIbASom2eQ6M0sMeUky+F4hV7tnZQ690j1fZkeDV62p1Ozd1FV3j0JkqI02AafQf2/QE8+7ImifVHQp+rkT2JwitMnvNOwvH6+4ixDyfkA0HQgk/mE18wiKT6KJpdY4eIPJlRu3vmHLYonq6w5Kj+4zBMUC1ld5Lwo6hgN/1pa+UDgI3vM9zznvEnukYYs/RDOpHBKJIQQHRbcOGJWAjNTLckIfR19GfcWRWJlzFkkMtEsTfVhR4eZCSky4da7VO0NqUzeIRhwmQG3AI4O4CjKPcgilQsiOfPXMrq+QM6NoYNQX3Nz7JoU76xNxVze+P5AnOYeDKx7yMl17Mjoht8b7M1VS8S6qCuAW/gcb86UXUxO6sZiPnYbvVZ17OS+DOoY+vP3YkoSeqBQoZMRIs2O5PcCCUns3ElBA9FFoTpENo+Blk6YFpeK2Y46BOAnLAwnjOeuh9rh1ihfAe6vbJaLx5qGiT3NV1pNPY1wlnrwRvhnODc6iF/mMVUlF3d8Btnwa8gpi8+JoiCfuEqcRZ9VwgMfpqv+qHriujACfG0OlBNQKG1WAyA0c6iwQ37nmXjZUYm5+Darb7tQ2ybpQfQoyT0rScxfbi5xfNwR+fKmOjvdNsha0ctjd4usf
+ pt923nZ0
+ CoEraWoLuhLj571XB49eJRpaKY4WEWosFB/EncWz1AmB2sk+T9Cf5kUFshFLu1DvRMZIMNtXHd+OrqYDK6caXj+0RAFZrl8E4OMef1r/nT2v8K3D95zs+LW70AE2nnQ5gHxTq7zNmIGJ/x2+wSzQ63OygsvFtokoNFCHBZ6qvTfrX1x9zTIEOOQfP8at7nqcqXitvqTObO34y/+YeSciHjk/1QN24FD+zUZa4Hedbw8SKdqmL7Zq/5RcFK0gBChEljxOTYae3s2yq1RNkBKWjJ+nLKH4Igjfrue+S9LoKZElwaj+cfsMoEXS7J+UlpJGKotq96BLEJ3nCZk4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,35 +112,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 10 Sep 2026 19:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> qt_exceeds counts how many times a scheme's quota has been exceeded.
+On 9/10/26 17:15, David Hildenbrand (Arm) wrote:
+> On 9/10/26 10:43, Chao Yu wrote:
+>> On 9/10/26 15:34, David Hildenbrand (Arm) wrote:
+>>> On 9/10/26 04:41, Chao Yu wrote:
+>>>>
+>>>> David,
+>>>>
+>>>> Thanks for the patch, at a glance, it seems fine, can you please send
+>>>> a formal patch? then we can apply to dev-test for test.
+>>>
+>>> I'm hoping Zi will drag that along as part of this patch set. Is this fine or do
+>>
+>> Oh, I see.
+>>
+>>> you want it sent as a complete standalone patch (will make merging Zi's series
+>>> slightly more complicated :) ).
+>>
+>> I think sending as a separated patch based on Zi Yan's patch is fine, since the
+>> purpose of this patch is a little different from Zi's one.
 > 
-> When using the temporal auto-tuning algorithm, the effective size quota
-> becomes zero once the goal is [over-]achieved.  In this case, the quotas
-> are still set, so qt_exceeds keeps increasing once per quota reset
-> interval while the goal stays achieved.
+> I'd prefer this patch over of Zi's patch.
 > 
-> Clarify this behavior in the design document.
+>>
+>> Note that: ("f2fs: stop using PG_private") has been merged in
+>> https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs.git/log/?h=dev-test
+> That just a testing branch, right?
 
-Thank you for this patch.
-
-> 
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
+Yes, if necessary we can append the new patch based on this branch. :)
 
 Thanks,
-SJ
 
-[...]
 
