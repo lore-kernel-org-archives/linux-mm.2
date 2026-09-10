@@ -4,108 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FCBAC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:31:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F68BC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19D0F6B008C; Thu, 10 Sep 2026 04:31:05 -0400 (EDT)
+	id DFD446B008A; Thu, 10 Sep 2026 04:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14E516B0093; Thu, 10 Sep 2026 04:31:05 -0400 (EDT)
+	id DAF296B0092; Thu, 10 Sep 2026 04:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03E946B0095; Thu, 10 Sep 2026 04:31:04 -0400 (EDT)
+	id CA3676B0095; Thu, 10 Sep 2026 04:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D21C26B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:31:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE62540419
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:31:02 +0000 (UTC)
-X-FDA: 85197182364.17.D5CAC14
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8C51E140010
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:31:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DWJSh1qt;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0B06B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:33:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C28314021E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:33:12 +0000 (UTC)
+X-FDA: 85197187824.22.750DA11
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 600F81A0002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:33:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=nq0t+a13;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=5bolpWR6;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=nq0t+a13;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=5bolpWR6;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789029190;
+	b=SCQgAzyVlPfGZHSHOPmXyDv2zSGTZkJ83lidx0XInAAQw+Ap5Usb7yYMW7h8Se+exLRGLL
+	kShVUjWH1rPPtbQ/BPnKW8R4BDpkUK+7Oxpb6KzIJv1AeZ895H/Rvfi0v3q7Aqf/BKZBQH
+	yGyvbGbJJJzPndCXSzpbUXo9xB66c/Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789029060;
+	s=arc-20220608; t=1789029190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MqiykUoJZh6JjDq4MJq+BR4QK3p6ZlqAmI2a1v4J/gs=;
-	b=fSxlx442Wgs3bIecvvYsM+IhAMq0nyVmntmobyE7jhKmV13AIrQvAA+ha9OBxlrIA9x4Wv
-	qlnj2LK6kYuPXq1FvisWVlUyAE6NxESzgTYlVm7OG1kaCbDBwwrBr/B17qf6p03A29x6rk
-	whIe6yY1b7p01y38/fZVNW8jqY7dKSc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789029060;
-	b=TbGRARxpd76kwo3zHgHAhH77X0IiBY6WrqK0yJ+jeQKYxcHtIvgEUjs/k6sAbTtszm+e6s
-	DXjceIuhdIw9nZmejeyDndxxbad3KLQWFoAwrS7LoiUqckLAoc4Z50eq3ovuURCVG3xT3G
-	DhSXkS3gW/sGs5ugADPryVBJlApwR/0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DWJSh1qt;
-	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D98841570;
-	Thu, 10 Sep 2026 01:30:55 -0700 (PDT)
-Received: from [10.57.7.224] (unknown [10.57.7.224])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B990F3F7B4;
-	Thu, 10 Sep 2026 01:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789029059; bh=YNtmWp0abywy18qRTZCAY47Y6tMmxx0rj25frpxeOnA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DWJSh1qt1lqFX/3Ix9EACo+WwD3ovBUlVqewO0zd7XPHLmF+fuPc2nOZnWep92Kne
-	 +iAnObxSHma2MOV52FFZfDMZyIlUVrpEjKyTQ7qwpbd/iDJhjEEY7OnLqAXAemlctC
-	 jfDffljyM8YroIEku4ZQbLmrl1jMqSdDUBWvj5HY=
-Message-ID: <46a747b8-bc06-4ccc-9265-68aa613bd7c4@arm.com>
-Date: Thu, 10 Sep 2026 10:30:47 +0200
+	bh=PgYnxH7H+tx7By2AM1sGAFXZm+b1KJf3JRXo/DozlYY=;
+	b=BSWCGc6+6qWM8PuRlWhCvAFiQKNkIcAjftdjGLCPbzp6RPmA1YwnKput0vszdgnoCmBjdB
+	RMmm1j2KSE+wEm8iYVSOX/Oj4mZ/9BlSa/tUhGfZUSxLX0DgYXS+ddcgwO1AX7Mb25GGEp
+	n+K/F5tl6twZVu8Vx/X2N2jcwOD0AVA=
+Date: Thu, 10 Sep 2026 10:33:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1789029186;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PgYnxH7H+tx7By2AM1sGAFXZm+b1KJf3JRXo/DozlYY=;
+	b=nq0t+a13NaTSuYF4CeenzbMGkxy4JvQOZ0gqaRRD4cV9bqclklB2nkc3jSKVIovWerzMBz
+	LqWRF9Z/Wq6H9Z9U5z8AE+VQpRnpoU7JLulnrl5INZdb1CMxTMPnV05lqmLTS9b7bcJFm5
+	+Jtv/C4gZ+T4oI66pMCTl5u5+NHtvOkMZSIlvstSVWgfAMfF9Uop+cNAY9pJ1wnhDHX3xt
+	0EaSx9l4i8NZrU/FDddnLlVafk+g+pAz5r8kkTP/k3bKjkb7OYFvZ0hMvCNLC7AHSIlTma
+	Sl6zOqwKm4Xb6YskdZMSeNDBr8w0HvolM2Ie/L+Q4FlwBs5LfCMZSPSM6ejB+A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1789029186;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PgYnxH7H+tx7By2AM1sGAFXZm+b1KJf3JRXo/DozlYY=;
+	b=5bolpWR6VEOPOQDk4aOdzzFsCMnIuSs3+o1Bx7da9a/VgRkSmhJ5Iff3Ie4w9HH2UtpfSb
+	Me4QoEKEhv6cUqDA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260910095003-d751da0d-37d1-4b14-9941-e3c388c94733@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+ <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+ <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
+ <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de>
+ <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 00/25] pkeys-based page table hardening
-To: Linu Cherian <linu.cherian@arm.com>
-Cc: linux-hardening@vger.kernel.org, Andrew Morton
- <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <apbgDNjQPLBdsUe0@a079125.arm.com>
- <43382882-0e7b-4255-9c34-99cec5b0bbbc@arm.com>
- <ap6rvQJbO8DH57v8@a079125.arm.com>
- <ba80aecd-85a2-4036-8d53-009f476f8e61@arm.com>
- <aqAyAymMO5sytqtr@a079125.arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <aqAyAymMO5sytqtr@a079125.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8C51E140010
-X-Stat-Signature: 8wk5s9i1rym4n6gyya76hw3tsiiej9ec
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
 X-Rspam-User: 
-X-HE-Tag: 1789029060-752246
-X-HE-Meta: U2FsdGVkX1+T0tn7ZiDt+mnVy1fgq4etr3TMELNa3T5U7ZvfPQNgyodFWvyNqlimDppxx+K+HqHNyZjSTsZDMzBlBaZIZa1NhyJYel8zjgx2S9hoKibLLOMiagnwNL86y5XCs4S37+HXsoUFLy76UAZ1vaESGwqIVAYvBwBs3aniFKlsc5fZySlZ7FK5Ls3lXjULWR4T6G0qc5xfEF7OxQIY+9pVIjH55AwoPyxrHuYDX04zN5uFODJv7bVPGTV28JLatKR0exd51YCgCzkYwFeJxtB9yyPqtn9QBlwykEUl+bYemdCQQDkkG/OrfrdaLhUZW0hmecMoes7iNZFbjv+0XR03IgT8VYzI7MzPt7dRgxSFrUD5q0nVJfYWEMCjQfnsm0TAkJdblxZTeIAXYz58ix+jF3JzHk4QBTMa0J7BSDTPZT3O9rgpHxaWvgjRmEmd1jf4fDZwBT688E/+Mj1oCbv0URfIQ1XPUPg6SyjtwcsRMUNXCtdm8v/V/xYqEexHR28WQFuOxoQhKoHi1RsoIJEhL0p8DfzIyq8XNqWPLnBf8m+8ek7XRL/W7sAP67JlhnUxuGpn+tRsezA9KjmqGepc4WbqHkKKQb3RA90xTkuFaCOhF2uJD33D27cX8Cul4I3lN4j9C1k20xK7kF270asC+0fp8Rl5OVrpoovjGpcYb2ahex5jnjjYzBlTPDGO90JjNmB4ZA6zW1FBfkmzO25ZxrD9oioahLHjnnDGtljdeBygvP8QiADEA9TSLm/7QpC1cpkG/4ItmfRJU9Uas2FlW2RvBkc26JCpIYyojZKPL5VgtmAWP5AkWj2WVbaokDtDofR8RLRDwJPZOLyNg3ZNW83gEnvGD6jZxvmOswiyldWQuZtoipZ78sFhnpR/MLd9apkGHLRrNxhCAe4nN2Et5beQSuz+7+cN0wF2akRRHVv0zu6erj7dHcnvHW+6CwnYNjAZuPdvH4H
- yTEJvbhg
- Eyil+Xk6J6IYXpo8Vir5sapG6MoX2934n1Vto87sv2u/DEUlNpX2lljV150G3N4tzKraEletymrEcnfilhL33msNX+CHs6/eAtt/hJthhEJPRlUL3fg56wZcHcGTdG5NrJ9dOWUgAFMwf7mXSFgegu5VwXq8hjaFaisa/8ulivO4chPAve9LeE/L2+wRleo3IuYeNEFBfV521DpDO4NPdId32hOyAblLXD3rwp8z8VzI2MKs=
+X-Rspamd-Queue-Id: 600F81A0002
+X-Stat-Signature: tfnjoy9knqym9jfqn1gjhed76aib7kco
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789029190-647704
+X-HE-Meta: U2FsdGVkX1/WHibcEF5SWQSf65nkH9JaMfJqDGpn5k6H3CeBbAREafs52Ba8/DLEAAuN4bIwyKQDjUPUeuO2FxxTClhDBtvSXAl/Na4oUpPhUsDy7Mo8VWWZ82dyzs7gS9x0yrpkVCE8BSuhIyPbkepx07+OR5hkapk/53uITayAKP70zNqu1ILIeIHgZRzE/SWog/DsyAFp630cvAocjWf9MOv4SHh41qhH5QsdqgFu2Gs/YON0mQDU5frnxhUDgMo2zHIY4OA4v0daLwI8npYERg45vChKoD4SMfsypSwjhKujXDg749VdA4QzSkioMquiIff/ZeT7O49AvSBdGGV4bYm5LnFYy8E7cNnu7p9ggqksG0KT3E4FAU3ykS3T79MCYVEDvg5ti6pwJ/E/sn+ZggDj+dizczE4eTyDReI33QBOJojQUYNPyQeoVxoUgdfnK7Y3n/Wa+z/hheLTomGnT+6a8nuND82McrE73GZNy6LuOiGbHh3MvMgDsEZqtcrjPcdoXMapXhblkS83lcjVnEehwcFkSzGzRYWaC0e9x1ET4E73WbUdxRaqr3QwNuBcvDLGxRr2NhQVEPSi6nzWMyIu/40t0hfacWJ8oKsqO+6suz+A+OleivOSKkZYuTDuWBfjrIUBdTrMhMKz6oeeVKSuQjCHV/LiG85o/SXbh3D5YIsopUlmgT7LlQDYxSlpji46kN21G9ReeHMiRz7wt7KT+/2KEKo1JdjL/8dy0Wxl5QbYR6/+iJV12Evqx6s3bckgg2hQvk8DJy8KTapd0mYZaMOf0ZYOjUucg44AZ/nvaaYG+xzx/V4CHBgfdRI82IoPF27bI13qnVsen6ZLM1VJdjfXBaYIGSLIFEsnWHyNrC9RE2gcg2a1rUIkpD49IjB8Qce8Vrjjp/sDs15FXm3lileCUs73VdBdKOat3/ZHx4LYun7YJGk7mp9GPAHuZd07ujo4BE82h7a
+ JEmFKM/U
+ gpyrGNMjLBGDi4YlGFVEVQ+k/yznT4yYZIC7L4qiAX/N4j/8cnRxUUYkijh6Unuoa12q1jKSfjLE01EaC955rJ1paYJaXz5mwg8aQJhREMBqH+7WhVdgk+PkP+IIyCVkd4HHyDJTZ3/H1l2PdKPdAaiGdwtlHk7MBYj8yn2SiZ5MhhzPCqem2NULk3jiUvCH9WvoSAcnTLmNSb7EqKG3DmJk7GgRa0Bi7AXZoAz0pEiLuPuFl8DhRaUV3eOG2d6tjUawi+3FxjwyQfrS7lLgWc1PAftBVLY1LHjdf72ECkBWV1tyUmoN/8EhGV5OOaT79E4+IzbpTZk1evZvilc81w9jlEHBkA11KCnHGyB28DnfRpP5CUr7H6cshxg3VTqEkmJZbVOqsgAQIm9extL5g0JbgjUrZ+Zgq6mL/fZbgEljN2ShXwzVewlQZvZaEvGvUbewQSQv9w3PpT73lUqN4HazPL7voPBU2gcodfIkGz3owBqRFwC0ai7ya4Rw526EV9qaOLtj1Bm2YSWc4cd0J0asAs7ozqck/axhPUDigbsROdSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,135 +133,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/09/2026 18:04, Linu Cherian wrote:
->> [...]
->>
->>>>>> Open questions
->>>>>> ==============
->>>>>>
->>>>>> A few aspects in this RFC that are debatable and/or worth discussing:
->>>>>>
->>>>>> - There is currently no restriction on how kpkeys contexts map to pkeys
->>>>>>   permissions. A typical approach is to allocate one pkey per context and
->>>>>>   make it writable in that context only. As the number of contexts
->>>>> Probably to avoid the assumption, may be we can we have something like
->>>>> below 
->>>>>
->>>>> For a pkey P, we could define
->>>>> PKEY_P_PERM_CTXT_OTHERS	 //permission for pkey p in other contexts
->>>>> PKEY_P_PERM_CTXT_SELF	 //permission for pkey p in self context
->>>>>
->>>>> With the assumption of one pkey mapped for every context,
->>>>> the permission for the default context would look something like,
->>>>>
->>>>> PKEY_DEF_PERM_CTXT_SELF << PKEY_DEF_PKEY_SHIFT |
->>>>> PKEY_CT0_PERM_CTXT_OTHERS << PKEY_CT0_PKEY_SHIFT | 
->>>>> PKEY_CT1_PERM_CTXT_OTHERS << PKEY_CT1_PKEY_SHIFT |
->>>>> ...(for all valid contexts)
->>>>>
->>>>> where,
->>>>> Permission key, PKEY_DEF is associated with context DEFAULT,
->>>>> Permission key, PKEY_CT0 is associated with context CT0,
->>>>> Permission key, PKEY_CT1 is associated with context CT1
->>>> This adds assumptions rather than avoiding them. *Typically* when adding
->>>> a context you'd allocate a pkey that's only writable by this context,
->>>> but it doesn't have to be this way.
->>> Okay agree. Then may be something like
->>>
->>> Define permissions:
->>>
->>> For default context,
->>> KPKEYS_CTX_DEFAULT_PERM_PKEY_DEF
->>> KPKEYS_CTX_DEFAULT_PERM_PKEY_CT0
->>>
->>> For CT0 context,
->>> KPKEYS_CTX_CT0_PERM_PKEY_DEF
->>> KPKEYS_CTX_CT0_PERM_PKEY_CT0
->>>
->>> Define POR_EL1:
->>>
->>> For default context,
->>> KPKEYS_POR_EL1_DEFAULT
->>>
->>> For CT0 context,
->>> KPKEYS_POR_EL1_CT0
->>>
->>> Finally,
->>> #define POR_EL1_INIT KPKEYS_POR_EL1_DEFAULT
->> We cannot do this because POR_EL1 is arm64-specific and its format is
->> not at all the same as x86's PKRS for instance.
->>
->> I think what you're getting at is that the permissions for each pkeys in
->> a given context could be defined at the generic level. This could be
->> done, but I'm not sure this is essential, and we may not need all archs
->> to use exactly the same permissions. There's also the issue that x86
->> only encodes RW permissions directly, not X.
-> Really didnt mean to keep these macros generic. Sorry for the confusion. I could
-> have replied this on a arm64 specific patch.
+On Wed, Sep 09, 2026 at 07:49:30AM -0700, Borislav Petkov wrote:
+> On Wed, Sep 09, 2026 at 07:59:51AM +0200, Thomas Weiﬂschuh wrote:
+> > These names and numbers are defined by the architectures' ELF specifications.
+> > They are already cast in stone. For example see Table 4.9 of [0].
+> > Changing them would break compilers, linkers, loaders and more or less every
+> > existing ELF binary.
+> 
+> So?
+
+This was a direct response to your "And putting them in UAPI casts them in
+stone". With the idea that we can't possibly cast them more into stone
+than they already are.
+
+> Your goal is to provide them to tools/. You want to provide them to
+> *everything*. See the discrepance here?
+
+My goal is to make my tool work. For that I can just as well add ad-hoc
+relocation constants definitions in my own code. Just as everybody else
+has done, in what seems like a well-honed tradition.
+Unifying the constant definitions was a preparatory cleanup step I put
+in my series.
+
+Some architectures (like x86) define the relocation constants in internal
+kernel headers, but others do so in their UAPI headers, so we can't have it
+in include/linux/.
+As the UAPI is the common superset, and given that we already have quite some
+ELF definitions in the UAPI I this is where I put the relocation constants.
+We can add a tools/-specific header which is not shared with include/linux/
+but then we still have duplication with the regular kernel code.
+
+As a coincidence, these definitions in the UAPI would also be useful
+for nolibc static PIE support, but that is more of a weird curiousity
+and not something I want to bring up as reason here.
+
+(...)
+
+> > Also we already have other, closely related, ELF constants in the UAPI,
+> > see {,tools/}include/uapi/linux/elf{,-em}.h.
 >
-> The original intention was to suggest the use of macros similar to above in the arm64
-> world.
+> Srsly?!?
+> 
+> You moved them there:
+> 
+> commit 626fd35278295fbb21f2da331cd8028e9738d965
+> Author: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> Date:   Wed Feb 26 12:44:46 2025 +0100
+> 
+>     tools/include: Add uapi/linux/elf.h
+>     
+>     It will be used by the vDSO selftests.
 
-Ah I see :) The problem is that again, kpkeys is not supposed to take
-over the entire POR_EL1, just the pkeys we've allocated for it (0 and 1
-for now). What could be done is something like
+I think we are talking past each other. To me the act of "exposing
+something to UAPI" is adding it to include/uapi/ (or the arch/ variants).
+That is an actual change worthy of discussion, which I am happy to have.
+Copying headers (UAPI or not) to tools/include/ is a rote administrative task.
 
-#define CTX_DEFAULT_PKEY_0_PERMS RW
-#define CTX_DEFAULT_PKEY_PGTABLES_PERMS R
+The commit above is the latter.
+elf.h has been part of the UAPI for as long as the UAPI exists.
 
-#define CTX_PGTABLES_PKEY_0_PERMS RW
-#define CTX_PGTABLES_PKEY_PGTABLES_PERMS RW
+> Looking at the rest, it looks like some elf bits got exported, you added some
+> more and that ship has sailed.
 
-That seems very heavy to me though. Is there really something wrong with
-what por_set_kpkeys_context() does? I'd argue it's at least as readable
-as #defining the configuration for each context, especially when the
-number of pkeys increases.
+"some elf bits got exported" undersells it a bit. There are 14 years of dozens
+of people adding constants to include/uapi/linux/elf.h. So far it doesn't seem
+to have been a problem.
+
+> I still think us providing headers is completely unnecessary and it will come
+> to cause conflicts eventually but hey, not my problem.
+
+As there is pushback, I'll just drop all of the header changes.
+Maybe somebody else wants to deal with it at some point. Not my problem either.
 
 
->
->>> Probably using something similar would make the idea of kpkeys context 
->>> more evident in the code as well ?
->>>
->>>> The configuration space is more easily understood by considering the
->>>> other use-cases we've investigated (struct cred protection and eBPF
->>>> isolation, linked further down). For instance, for cred protection, we
->>>> had KPKEYS_LVL_UNRESTRICTED with write access to all pkeys, and for eBPF
->>>> isolation, we need a level that is less privileged and therefore does
->>>> *not* have write access to pkey 0.
->>>>
->>>>>>   increases, we may however run out of pkeys, especially on arm64 (just
->>>>>>   8 pkeys with POE). Depending on the use-cases, it may be acceptable to
->>>>>>   use the same pkey for the data associated to multiple contexts.
->>>>> Lets say two contexts A and B, use the same pkey P as their permission matches.
->>>>> But then, when we enter context A, permission for pkey P gets
->>>>> relaxed, then that would relax permission for pages associated with
->>>>> context B as well which is unintended ?
->>>> That may be exactly what is intended, it all depends on the use-case. C1
->>>> may have a private pkey P1, and C2 P2, and then P3 that is shared by C1
->>>> and C2 (writable by both)
->>> Got it. With each context defining permissions for each pkey owned by
->>> kpkeys makes sense. 
->>>
->>> Also do we need to assume that nesting of different contexts is not valid ?
->>> For example,
->>> Default context:
->>> 	enter CTX 0
->>> 		enter CTX 1
->>> 		leave CTX 1
->>> 	leave CTX 0
->>> Default context:
->> That is a good question. The enter/leave logic does support nesting,
->> since leave() restores the pkeys register as it was on enter(), but
->> whether the inner context has sufficient permissions will depend on the
->> situation. Certainly if nesting is expected then it has to be taken into
->> account when defining the permissions for each context.
->>
-> Exactly. Also if nesting need to be disallowed for certain contexts,
-> then it needs to be taken care as well ?  Feels like would be worth
-> covering the aspect of nesting in documentation and cover letter.
-
-I think having logic allowing/denying nesting would be overkill at this
-stage, but agreed this should be documented.
-
-- Kevin
+Thomas
 
