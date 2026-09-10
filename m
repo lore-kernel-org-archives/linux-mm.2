@@ -4,102 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DCAC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83C5C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:12:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7586B0092; Thu, 10 Sep 2026 07:12:24 -0400 (EDT)
+	id D520A6B008C; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18F286B0093; Thu, 10 Sep 2026 07:12:24 -0400 (EDT)
+	id D01206B0093; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A176B0096; Thu, 10 Sep 2026 07:12:24 -0400 (EDT)
+	id BCBB66B0096; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D9E556B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:12:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E3A9404B0
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:23 +0000 (UTC)
-X-FDA: 85197588966.13.60E7149
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8B58718000B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4SCKy70;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CA9E6B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A83B1C246A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:42 +0000 (UTC)
+X-FDA: 85197589764.08.6BAAB79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 65F93A0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XAA2AxP9;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038741;
+	s=arc-20220608; t=1789038760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySAxteZYitEdS191q+Jhr+aLQ0O+gtEaE0u4BcO+1bU=;
-	b=IR1iTTzFdzE/fjSSmlp41JvdaBSz8xEdIG6tu3XMXijx+09/okal8q+MVVxVJtkYujiLbZ
-	rWNDj/8MlWjkBiQrkFD7b9Q5c+DGWCVEdzZLTsjmAxwOQjTR7qSttDAqFcI4g4qhV/Pkq5
-	MYljadiLNK8xjf6johQUMPkNcLvXGaE=
+	bh=ERCd9oSGM6NphjvkvfR4ik7TZShb7N0/sLtNifxHmW4=;
+	b=aYuKI9VMccO3oXbEgZWOGKMGbdaQPATmiRPVtfLYUXLSxacEwFxHY3k36KaTkMBAW76W6U
+	5SAYGJZQnpOrejvHFqn603WeCcBtG/HlAC67JkvIPEgsSOaFI9I+Er5NJFvkiR/c6Q5K8Y
+	+/RUggfI5aNGXI1Ke9yYBqr/R9ptTaA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e4SCKy70;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XAA2AxP9;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038741;
-	b=2q53xp2dYUgiMfOZOnp63Qwrj2oQVKiCYWlcc4p/CuYBwPMRk7K3uZP7SViVCBMQOTyqT7
-	M5/HezOB9VW3060No6fZH8r4TDTHVh6zo0zY6hgX4M2bJ2pXqDM4SE66G/qvW5VFeR65hW
-	xV0P+EhU6Wyl9f5W2KlnmXUpI24dNUQ=
+	t=1789038760;
+	b=NywMmj3PN/qxcZxlJzp1AWx728aVPKJXG+hvpEREOmsjVvMjFsKkI4uiuMEAmyb/oKz0QT
+	Yvwdozc9Wo/1IzMBnqz94/fae1nz44ELYjeiGWocpSglnr0l1SnBpYJJnB823Kc3DfSyio
+	3rh/v4lP398JM27WKzggZJboELhq62I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1FA48600CB
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB50F1F00893
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 82FC441170;
+	Thu, 10 Sep 2026 11:12:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ECB1F00893;
+	Thu, 10 Sep 2026 11:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038740;
-	bh=ySAxteZYitEdS191q+Jhr+aLQ0O+gtEaE0u4BcO+1bU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=e4SCKy70oF0334GIdpRouz7/q7kX1GWskMAAt3ntj/01FZg1iCVGFVhi1mte15ean
-	 8wXe2Ruu8XmREwEx2kHuwjgYwUr/hd3W4644cT5kPgVC6x5E6g7dNaDIvqlB9Txnh5
-	 JQ90RTtqZh5RYeaeWsPiRDN0GQ93NmHJmE7C99tH6WkjMefAbyJ0Dwhb/zTdoAsnmL
-	 iOi2XXcFq9zaMPLegUPcTAyjTztACF2QuT5v5JOXFl/CTLCy5CnzEawrOOuZQnGunl
-	 zrkn9MY4Cn2NSOOFFiiJWud1LWbn7aB3/OaMEBSdAexkIlXOu935tId8OknXtHc4DX
-	 maGXJ9RHSJbsg==
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1eso390267566b.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:12:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByNVHvCgSRQ761zG+snWgAfWgJK1BrW4AcAV92FZSNHuRG9PkOqTRghUU72u8u4B7ugMhpUSrj9Vg==@kvack.org
-X-Gm-Message-State: AFuF++lhzyEWrQZyWh5Kzl+dItK4e/VaejgvoakOuearFUmQa7LPELsd
-	2NOz/PpmEJiJoFjx+8yE1G3IvUufZqWHZWmyD5y/5oBBZsYqq4pxWRjKRM+kWMz5OjYqB/5NEiK
-	7pcF9w5MGPAOoQIzROZKW8JATCKeVeGE=
-X-Received: by 2002:a17:907:c653:20b0:c29:4147:f4e2 with SMTP id
- a640c23a62f3a-c29414802c6mr448054966b.15.1789038739686; Thu, 10 Sep 2026
- 04:12:19 -0700 (PDT)
+	s=k20260515; t=1789038759;
+	bh=ERCd9oSGM6NphjvkvfR4ik7TZShb7N0/sLtNifxHmW4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XAA2AxP9wc3keOOWbFhRPVpf+EYxKxMasAJfXKjcAqAFuVSeVn1RDY4Gg9ZkUluVf
+	 n9pwpAydmxlkNOitfcepj28uyjlpttBuu7A4phufEbFGOKtzfugTxHl7+ssItL/GQj
+	 HJqh+ZELtkOt/9go2MSO372IFr6HppkrEGAHyYQH9y95v92CgUil/++DQ2G82I3a+9
+	 8d7WwlCUuv4fbKea+9p2VnVIi8KGTwP1gD3LirxqJvH+dmiAPuGT6Ox5CfyrIybIPa
+	 w+bQJuF1/u7a6X6L3GlQWGV405kMeRAkPD+ghJsspAJGKwdZ8kbCeIEMW5928Iofp6
+	 xjHWmpt+oHGhw==
+Message-ID: <52562b42-1186-4e44-90ab-7fb92a6dcb1e@kernel.org>
+Date: Thu, 10 Sep 2026 13:12:22 +0200
 MIME-Version: 1.0
-References: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
- <20260910095449.715183-5-wangkefeng.wang@huawei.com> <CAO9r8zP-bGU8Hr+0ah9vpxWJBdbw+wTGMuC8+pTOHa+9XaeU+w@mail.gmail.com>
- <ea608517-49ce-4a9e-83bb-8687a139c4f2@huawei.com>
-In-Reply-To: <ea608517-49ce-4a9e-83bb-8687a139c4f2@huawei.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 10 Sep 2026 04:12:07 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMsx=JkdXnWT6aj0vEXwk33a_dUwR47ikdsFm+ER6dOSw@mail.gmail.com>
-X-Gm-Features: AcwNN1UhVCdf5PHGeb2X_v9vKXqe4Lz0D4VOkUWxzGYhsSnrNxYMPw4VWhOyDRg
-Message-ID: <CAO9r8zMsx=JkdXnWT6aj0vEXwk33a_dUwR47ikdsFm+ER6dOSw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] mm: zswap: skip zswap_invalidate() in
- swap_range_free() when zswap is unused
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 00/21] mm: change behavior of pXdp_get()/pXd_page()
+ in compile-time folded pgtable
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-openrisc@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>
+References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 65F93A0006
+X-Stat-Signature: dknnkp5beiohc187pp54665u8yicbpmy
 X-Rspam-User: 
-X-Stat-Signature: nbt74id4wodjarrs9kajndsufieumthm
-X-Rspamd-Queue-Id: 8B58718000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789038741-893109
-X-HE-Meta: U2FsdGVkX1+BnG9TuR8h1Er/GuyIjpYVmXL0sHLayRHneLS4EP44qmQoSpzuFia/xZ4tqebR/QLMIzih08kf5gc5Z6c4PCymh36TMgb1HiZW+MZnghJJjejTMFhKKsI4o1c1sL0uHObbgrtHcQ9t+5T8TJQUyXfKY5ksBbtn6UqzCzUOyt4c7KCvsYjkPTgdQa0CU7qdU5md75BGwBXouha/JmsLK0YqL29yCvS7UnHHRjqKrAGEfat8FcnCwWtcvW0wdL0H26TOfEzHe2gtlvVpeO9hL9r90M92nfamC1MYnU00mgeFLCeNt23E2LKF2CPvhNAiLThiNXCdnDQ7HOjChFCVN4Blp7pL9GrM+vl591X/ztyf0QacdFUtXmvyae6hy35dQH5VrVC7OnPdlKFMtUNzUbdwX0/VZJJRnwfv9+ocnfAchFF6N6+UvGBabjnEK87zaw02O24qSALe0Ns9VcxYpHit/pwjJzcaqNkFk2LOIifw+sZS9Fj9Y+XI+oF7lr7naH/AEMzAb+6aLAwfdqi/1FOmz7xlkjWRkxXGn6ChC9FS1hGrLUMmsQ5Sc/m4l4EKbw0jJTFDs26vCpGVdFb2UANmxF7q/GKth9ebFzkiB/dnthM3cu1G6Rh+lt4V6uEuzyQsgjyIyfJmacGT+tJh6TyHAWhSwh4lN56A6qIq8sZ0tNsp3kY79bhtEebY842hdMglQS0MErm2qwoWHXFzXo0phkAO+eJPd5ZYwdkGBE+lOS7v+GjxfuCNrthupgNdigs6Tr2Kg/PnH8LTZucyByz7CfhRyqvqSqZKnLtOyoCa7uZ5w+cadnwbVDupoMDOF8VOK4IVV8/JDGIzgpG5SEAMH4zavxpxBF1pagiGAzTWp/bGHxKnIpRMjMPJHVFdbMYOXKwoKFYy8wZ+jzZtxCz8g2wfDUR2TU0EdTBsrXpaxZu51/Oq4eiPtqgtmKyR7eVZQPRCJpA
- FlSjKHfa
- gCflrwwYHgdW8TxWNXHVFnQybE2jgstSwWzZX85ckuqbW7LLJen83qt43SMwKnjob9KIPN85sFO1IqNRius+7Rxae8wjN9n0ZKBEjPSsKEvVGygYfzp7GDKiS7KlGUUCaiQ8wHOFxmZk0RSd71T5N5EDB7NRqsJ7BOUYRgBGpE22ikj97SW0dVsdXUF/teMiiRU9zPfTHvNNN8wsJTp4HpZRzEvYhbpyxErQcet/Ucf+95turRsWSuZuMUNfWU7nJxuAPbkYb181WQvkXf/McQwhq0UlmCGHafsN8FcnONlLT8eGffC8ZcZNFWjef1vooA6SIeVm992r0nWlQB9I15EKWVgS9odlCH8cCbI2IoIGOmg12NWmcc+C44yth3azfnCKj
+X-HE-Tag: 1789038760-491683
+X-HE-Meta: U2FsdGVkX19bluQdswAoBvE+T89BaKwZg9tM71iX5dM4WiXl0AY146dsbOIJdbtHMvtTjZCOv24SRt04h6+gi0VNTChsPRU/jQJdfN9DfR6h0LaXmNj87qFPh3fGcZPaTEcc6lE+9wC9S0fk3T11ChMXhekV8jDUGRfAQkY6kc0BCNsR7/EPCsMcsAnvw3KMbIp4kydlUzK3HcrcHSI2ZRmPJQuFslV0fBK4r8fXHrAe5tcjSRF1D6/OFzdT2kAE827K7VK96WuTeH34KsgZH0HtiIYpOyzSvUFIQ9dFQVijqoAI3a10VqecMZ45AkbYbKeEILrNsyl6jM+cGwfiWri+nnmfn9BhW7nE+OpjjYXEU4O/1ZW/ReBIKVVnS5zHVVawXQ5cfkSYeQik2ZhQ0krO3xta1yGot3in+MiHMKny1M6hdJaib2e8Z30kgyWeunLwdlTofTnCQOXsSNxNyNcX22DX4PSUi3s5FXBCga1ef92lYjHIuU1U3v2brvG/HCu4eFoi7kuoNLduRHwbqMflTGb+i0ATH/jRy/nZAyTMVnov4VCN8CEVULqsR1ZPS9gClcCaAgSA8nAs+5nrZjJGCx7AL+QTDVhZmezasiLRu3i+40zefJ+p8xtyvhSEAWt9kxMQWvCb8PbGoSXLRttnoy0zwOLsnPeAwMhsApYg0aLyAduqZDI5jsnNOV+PunDeQMoiVNpXYkHHlwIVqaZGi99oUsvTxO8nhXHHKCTdPr26d2+aDP8FJJf5/Gte/KrRl5cXQZb4jpeSqisOwtI6paA0NNJ253PSf8BkNwJpGOcxU4aEHZuZOoUUVmJDJSYKAO6DQk5gGXnRqaf0YX8rp/Y8P21J8Vf2mF5x9NAszT8674B6qUkepxXgkb0xSip4EBdwPLrCOeUXIDtaTehhts4JkMvvQuSWA0ckSOQm/OUM6gZl/Aj+tq0qlrqxxre3uSFuFMcm3acYuY2
+ 9QkxNWYI
+ /WNGGLsZs9bN9njFJVEoskL6QhvChEDvQPkiw0ZZUC9X2jkqPRLaSAxNTSUpUTcxBQN126xihury+VT4cv4B9V6VpYGrVpVhxZcssFAhdVHUrtt3goj4pfmxIhGK26QaVkv6bO141Lc+Ejr+q04IMFrwxq/Lj0jgGdOHRvqxidE3MxgufPvpMPhmzQnVp1un7qg/cyOR7fJeCSExCO3IX9BJ1ZD/YYXJEDD6RkovbmJIDRWiuo/bI5YaA0HCGFXUmJBBsmx6Nu0rXcJkeUjWY3rfFaweGI5xobx+jM6uS/alCtO+tDEiXiZIb6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,150 +164,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 4:10=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
-.com> wrote:
->
->
->
-> On 9/10/2026 6:29 PM, Yosry Ahmed wrote:
-> > On Thu, Sep 10, 2026 at 2:55=E2=80=AFAM Kefeng Wang <wangkefeng.wang@hu=
-awei.com> wrote:
-> >>
-> >> swap_range_free() calls zswap_invalidate() for every slot being
-> >> freed, even when zswap has never been enabled. Guard the loop with
-> >> zswap_never_enabled() to skip it.
-> >>
-> >> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> >> ---
-> >>   mm/swapfile.c | 6 ++++--
-> >>   1 file changed, 4 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> >> index ba71905e4d46..505592051924 100644
-> >> --- a/mm/swapfile.c
-> >> +++ b/mm/swapfile.c
-> >> @@ -1318,8 +1318,10 @@ static void swap_range_free(struct swap_info_st=
-ruct *si, unsigned long offset,
-> >>          void (*swap_slot_free_notify)(struct block_device *, unsigned=
- long);
-> >>          unsigned int i;
-> >>
-> >> -       for (i =3D 0; i < nr_entries; i++)
-> >> -               zswap_invalidate(si->type, offset + i);
-> >> +       if (!zswap_never_enabled()) {
-> >> +               for (i =3D 0; i < nr_entries; i++)
-> >> +                       zswap_invalidate(si->type, offset + i);
-> >> +       }
-> >
-> > What if we add the check in zswap_invalidate()? I understand we'd
-> > avoid the loop here, which is nice, but I wonder if it's actually a
-> > measurable difference.
-> >
->
-> Skipping useless instructions is always a good thing.
->
-> > If we keep it in zswap_invalidate(), we can probably also skip patch 3?
->
-> Maybe add nr_entries to zswap_invalidate() and check
-> zswap_never_enabled() in it.
->
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 463bdee5c1e1..313c2f1b6c2e 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -27,7 +27,7 @@ struct zswap_lruvec_state {
->   unsigned long zswap_total_pages(void);
->   bool zswap_store(struct folio *folio);
->   int zswap_load(struct folio *folio);
-> -void zswap_invalidate(int type, pgoff_t offset);
-> +void zswap_invalidate(int type, pgoff_t offset, unsigned int nr_entries)=
-;
->   int zswap_swapon(int type, unsigned long nr_pages);
->   void zswap_swapoff(int type);
->   void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
-> @@ -49,7 +49,7 @@ static inline int zswap_load(struct folio *folio)
->          return -ENOENT;
->   }
->
-> -static inline void zswap_invalidate(int type, pgoff_t offset) {}
-> +static inline void zswap_invalidate(int type, pgoff_t offset, unsigned
-> int nr_entries) {}
->   static inline int zswap_swapon(int type, unsigned long nr_pages)
->   {
->          return 0;
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 505592051924..891379c95a01 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1316,12 +1316,8 @@ static void swap_range_free(struct
-> swap_info_struct *si, unsigned long offset,
->   {
->          unsigned long end =3D offset + nr_entries - 1;
->          void (*swap_slot_free_notify)(struct block_device *, unsigned
-> long);
-> -       unsigned int i;
->
-> -       if (!zswap_never_enabled()) {
-> -               for (i =3D 0; i < nr_entries; i++)
-> -                       zswap_invalidate(si->type, offset + i);
-> -       }
-> +       zswap_invalidate(si->type, offset, nr_entries);
->
->          if (si->flags & SWP_BLKDEV)
->                  swap_slot_free_notify =3D
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 6197aa71e33c..0e72cc9a5415 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1549,13 +1549,8 @@ bool zswap_store(struct folio *folio)
->           * offsets corresponding to each page of the folio. Otherwise,
->           * writeback could overwrite the new data in the swapfile.
->           */
-> -       if (!ret) {
-> -               unsigned type =3D swp_type(swp);
-> -               pgoff_t offset =3D swp_offset(swp);
-> -
-> -               for (index =3D 0; index < nr_pages; ++index)
-> -                       zswap_invalidate(type, offset + index);
-> -       }
-> +       if (!ret)
-> +               zswap_invalidate(swp_type(swp), swp_offset(swp), nr_pages=
-);
->
->          return ret;
->   }
-> @@ -1661,17 +1656,25 @@ int zswap_load(struct folio *folio)
->          return 0;
->   }
->
-> -void zswap_invalidate(int type, pgoff_t offset)
-> +void zswap_invalidate(int type, pgoff_t offset, int nr_entries)
->   {
-> -       struct xarray *tree =3D zswap_tree(type, offset);
->          struct zswap_entry *entry;
-> +       struct xarray *tree;
-> +       int i;
->
-> -       if (xa_empty(tree))
-> +       if (!zswap_never_enabled())
->                  return;
->
-> -       entry =3D xa_erase(tree, offset);
-> -       if (entry)
-> -               zswap_entry_free(entry);
-> +       for (i =3D 0; i < nr_entries; ++i) {
-> +               tree =3D zswap_tree(type, offset + i);
-> +
-> +               if (xa_empty(tree))
-> +                       return;
-> +
-> +               entry =3D xa_erase(tree, offset + i);
-> +               if (entry)
-> +                       zswap_entry_free(entry);
-> +       }
->   }
->
-> If no objections, I will refresh all the patches.
+On 9/2/26 13:56, Yeoreum Yun wrote:
+> Using ptep_get() and its counterparts in common code is suboptimal on
+> kernel configurations with generic compile-time folded page tables.
+> By default, ptep_get() and its friends expands to READ_ONCE(),
+> forcing the compiler to emit a load even when the value is not used afterwards.
+> 
+> This issue was recently reported by Christophe Leroy [1] for ppc32
+> preventing futher code conversion to ptep_get()/pmdp_get()/... helper
+> and the same behavior can also be observed on arm64 when built with
+> 2- or 3-level page tables
+> 
+> e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
+> 
+> 00000000000052a0 <perf_get_page_size>:
+>     ...
+>     52dc: d53b4234     	mrs	x20, DAIF
+>     52e0: d50343df     	msr	DAIFSet, #0x3
+>     ...
+>     52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
+>     5300: f9403508     	ldr	x8, [x8, #0x68]
+>     5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
+>     5308: f90007ea     	str	x10, [sp, #0x8]
+>     530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
+>     ...
+>     5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
+>     5364: 92746908     	and	x8, x8, #0x7ffffff000
+>     5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
+>     ...
+>     5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
+> 
+> Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
+> READ_ONCE(), there's redundant load for the pud which is folded.
 
-Yeah I think that's a good idea, even for the zswap_store() path.
+It would be good to include what it looks like with this series.
+
+-- 
+Cheers,
+
+David
 
