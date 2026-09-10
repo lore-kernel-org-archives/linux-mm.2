@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE03C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D92C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:57:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A1D76B0092; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
+	id 629F86B0095; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 479DF6B0093; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
+	id 6014F6B0096; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36B1A6B0095; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
+	id 517876B0098; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AD516B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:56:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE733A0512
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:56:53 +0000 (UTC)
-X-FDA: 85197701106.26.223D81F
+	by kanga.kvack.org (Postfix) with ESMTP id 31D0A6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEDEAA0514
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:57:35 +0000 (UTC)
+X-FDA: 85197702870.15.D75AB25
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 259C580006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:56:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBYR7A+E;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789041412;
-	b=ZYt09fIrtaRdtWJMNDt9TXW/VmLm5lmSgjP+RqiGE2/fWXNhDKhrrE89viHEXHj8Fk9XpK
-	v7ZtbeRzCXyJtFuRmM7mgUWxrQzOW0IsEsflTDlZhxfE6edDcQDt6MlvgSX2zLgp0Q0Jv0
-	KDXtEN3Ony6YsHnAJZuZeXBhiMZAprU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBYR7A+E;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 209EBA000C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:57:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iZL9wiLq;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789041412;
+	s=arc-20220608; t=1789041454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PTv5gjnoUkgmckYg25Wd/ghR+9+1LKQRAbj4/Rz6hR0=;
-	b=XVZkjEJjtS77IuU134Z/Tz8KWEXEbLmCGoi8m8LpDunjRUxOAHpp6F9dse2h4pdNrv8Oxg
-	ixXvzSDxPgRFvRQ1JZT2MqeJPORE2h7uGspeh0JOoYRcO/J1J4CnaFI56GhHJ0QWtE8AVH
-	Q4Xdz8fFQgrNmnRK+axAAf9ZJikPYXU=
+	bh=Mgh8waXa9eS3cTcLGuswtFpFRzduf+4/BpkuuXgbHnc=;
+	b=RVQXnYjmz0i5Hh/v9Y1wzBb8v1jvnlQbEMKGonn46CFbqB+v8gjn7f8F3bRzlZ/PAb7sr8
+	r7SDktruNs7dTcQwn8UejYS6z880eZVcgq1vel3LUJZPTxng4dhkUSDuNVlBGBhklYUTxb
+	fZKoNr4bmQ2QwmeoUmJGXssZavRpQrI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iZL9wiLq;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789041454;
+	b=PfiSfwdVrQzydK8AXgWUNut+40V8NS8PfmtaffdxTmNf/850+126+RHb2vucxyYKnG5gTz
+	sUh7kbIUIVaDXsCeEf3sdFhWGowtR21cNj2Wrje/i2eYT6GW2HHUwpxAYnLtw85+xeeJRt
+	m+retqQY9Eidu8RTxSi/YwSuxjW0qaU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A895A600D4;
-	Thu, 10 Sep 2026 11:56:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FC21F000FF;
-	Thu, 10 Sep 2026 11:56:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6E28600CB;
+	Thu, 10 Sep 2026 11:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6887B1F000FF;
+	Thu, 10 Sep 2026 11:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789041411;
-	bh=PTv5gjnoUkgmckYg25Wd/ghR+9+1LKQRAbj4/Rz6hR0=;
+	s=k20260515; t=1789041453;
+	bh=Mgh8waXa9eS3cTcLGuswtFpFRzduf+4/BpkuuXgbHnc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mBYR7A+E5z+EvsOhBN7DfdtkE3x9n3oGaFrh40fXMQwQq6v/VuATJp93OAVBpcdsJ
-	 /2x0vHU7OjE29cqp3dLj80QthvfsdFR7OzpWhX4Ex8X+ycWO/SwTQCs3TwpDz5SQip
-	 wokGMjREagLm/mw3zpaMLnOLw6OeqvoHIrUGxnjBsEY7R8LlQTeSDDh7ZassM+vhgn
-	 YkMlBWUBo25M/ndAiVZ/xur5sTx3NUSPGsI/iCT9jKj/49d4a4gjYNlb4RCxezsZNs
-	 /OcUcxbHOYBUZDlVobiSbrDu40TTl7iIXt6qisrv4hk+Oupv53Uks6b0x1810wZFA4
-	 1NxZid0h/Z6AA==
-Message-ID: <63cda829-631c-4758-9aee-7c07ef6a16f9@kernel.org>
-Date: Thu, 10 Sep 2026 13:56:43 +0200
+	b=iZL9wiLq7AUskmc+WJh3qzBBsQ6sONeIgaI+0RRAYtyX30gteNdyL/GReVBlp2E+w
+	 CKU7Q+TiwPuC7pH/4qxX7FlUkR9AvQcli5bW5zgIUwUp9N+Jw/P2PT0w4Wb6YBvoFY
+	 CgKs3QiX7/D5mq3BI/w+ndqMCRV8yFtHM/X3J5XYo04Tt5TR3FINWBtQ1vJQ1GdgOc
+	 sD6/MAq/GoFWVSgI6IdMVSoadiOf8r9CVghoUO8jBT4Xndj+Orx12FlBYtQa9yAvn/
+	 Fhqr7P9vAGUE1dm46VrkqKPXlrJiDgKympDAHwhFDG5Dx9L+gIZHy38en6b11YFraW
+	 5B+kn8i4wBKgQ==
+Message-ID: <561b379d-7ab3-4f78-94d9-7a056c5ddb1c@kernel.org>
+Date: Thu, 10 Sep 2026 13:57:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: replace PF_KSWAPD flag with kthread_func() check
+Subject: Re: [PATCH 4/4] mm: replace PF_KCOMPACTD flag with kthread_func()
+ check
 To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
  djwong@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
  vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
@@ -77,7 +78,7 @@ To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
 Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
- <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+ <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 259C580006
 X-Rspam-User: 
-X-Stat-Signature: rhqqt8mqm6xum158se6pbj8dhnp3e9ay
-X-HE-Tag: 1789041411-226297
-X-HE-Meta: U2FsdGVkX19vWa6E9+QPOtFPbYlRDk2ISosqgVeFqe5L4o0zH2UMgEn1HJDv6K3SDYCPy4Zg/pvo9c7z3NfPS5eMTaqT0aFUw/PMyeToq1hHsc1QUClm6jjGvaQlRqbsAF4TsdHzKKH4I7qjYsKLAt8cEWuz3PIQDosUg/Tj6j1EW77GZH5Rv9zeLc9sbTxNPhPXtcJkDOvj0cB28oOe3s58HjzJbeyE0utCwD5N+feBzv3kaHP6ptVSwEX1hTKZ0AAmLgZBeyfzmS/uoYmPm4nc6KhhHrMzK1Kpg92xvLeO84qJHKfGVvOpXiKp3Cv/7FEAYuaxYPazSLSkxuPa/2/sbrzhHV+5qYRjC1JxLa3czGQzOANzeAmZACWxFO2tc+tf5mNTApBCy3Vo5IQvnpKmo9Nu/FV17or3mJmwcdAmNxH6EU7MaSwh6HNSNFC/sDv+ksOXLPOkqOVzb4O1DL0zta4bEtam+IsMbqdjQ0exlfhnH5HoOXvvVFRQDd0/F6s+n9ch8KuJFHuF1ZYGuyPSrKW0Ay6BucXNs1wFjPuuoDywCsNr8hVnrosQon/+GGknFuflFFSFM4JZLeSG6kGIg3lWm+OANEKDxdS7ioiN7/p99d0TMz10NTM/xyPi17kZX4G9h13TOb0nWiGKehPyCY8WGnnvlSLehQe+S0DdmfptP+c4P6c9cx8X7NXRf65aeMR8tpu3O9zuuX1xs3svYAq8SRWPQZZXWBS/7qGfTlO0a2PfzsMhAAuPUdJRO3EbwyEn1SRDPdHdLTDytz+uU5Gby7qp59ujOarNBB/4oiuUqGzWEoPPPJiOTStnYPRJyBi46SvqPfRRiug4H3SPQpbVnPmdaau1NMeJ6w+M6YjQy9ThGprNATEM4IE6osYhwxVz+QKxEicwUUAa/NCnKWaflI6pWh4oj3uk6zhcG9ehlvqreMX/rkUkdu3BenJkEqtNjDsnStZSmBt
- BSBkz9Lh
- g8bDnFKrcle6YkU/jZbbTbwtrO/K3BvPkfwMAQsci0UkEPVoFgj9ThZttplpcRSaJN+j2stsWNruiuXV3+OMi9x6jDSC10yeOdbKeSRbHmrI9ICACGIxEafnGC0BoXER57HxE4pOnipsE6U5Kl5c/e2a8AaTNS1aLRcAXiQqLh5wX5Qd3ZxD5rOg3o12fgjfocncNrZIUytnYvwb51+077qcmKQtl9IHTxiqAUTt0AWlO0iKyDFUsIKgrjy9KMtenrQwdz7JEeZ6e2LpIY4NJ91W9bpW5l+TB4zsyDyf5e7dhZ+FnrGQWa3/O3f22Kvy9Yo5UoE629QocG/w=
+X-Stat-Signature: 3we34t13dr53p8prt6ioxhcqrqxa37tb
+X-Rspamd-Queue-Id: 209EBA000C
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789041453-381206
+X-HE-Meta: U2FsdGVkX19S27ZP9MyJbhXzjKiQlR7SOAGG8POK1l60bQURBMkPyI7p3Efow+bSFS37ekQRox6sjY2x9uV4zAq8qunvFg4zW7suAiS3We9FW7nLuWaNJ5YmJWCdYdrRxTS5r2KqtedX0keZhVS+w/XCa1x7F6jBr0CG7dWkq2gE+umUPDRqZLIWuexqZwgkQSBnLn1AsKW2/CgXjELkTtjBHEGaXLWQV/PdsccuLwPLFDn3eGYoXEmBVwua7/1psrjV+Uw+kfx+0enPqEaxlRQq2hNej42YmHamXCGmz9HwarEHKapz5VO86JkXOk7nNfPiqYlAQc3Z/WTYdeRVuT4IQrGyAt6umZtxZPcIGMN4CQfmc14adJTL9NkFccAhoPI5qbrrIK5nlJ/RUyA6Qs3D9yVwUb9AsJ9J12Am6Gik2+TZpL+CHSPADGUrkVDN98e+rb1OE/3KbypyiC6b4jpQdDm6v+22eRNtD9bKzmbIlKvOb+cm5FsnVNcLxsKYhoYM2IiqAJJ+vNCQFvAwtdtZzjvfbZxUk544wxul5sM48ySZCdc1ua+bONsEBr9mwfZRTndPfxQ32yfC/riIHAZSt1O/OWvAxSnz7yu5K01PD6B7DT3k4cJTbDMZs00jbiaDtFBjqk7DMXZJ/WHh//hgla/tfg8fHHip8HNI+a9cfhcWmplUEos52eVmpE3NkT35reXZpX5I4ZB0bLjahaCdgNbZ5plqppl0s4E+EL14xDhDYynSExMEYEK6PLs6XGHXTxFSRVniQw3pJN2jOBW99BRZV1Nf1WCNnO3J+xyDRqm7i3NUh3yT7Rw7VIaw2ekW0C0h/4b9YwQEOaA25mMJiUD5tO9uEwfDDgnuQXDMZnZbtLOmtpPMXRbCGvxI1GAP0Q+ESaUMD6/Ek0IWMAnWBdxaAFYd4KedduTTaV502EIqCIK3F1gILUC84ZJt1FbrHxGV2CyfNYtmAlg
+ GGCMj5oA
+ Lq0dmbjaRaOGBfNqYrDczKPXXD0wN9wlIhqdi2DKaDUsXDfKflJm9RnkOHhqL57mPw1ltOUrDIwcmGVY9N6Q+RMkMkZgF2oJor78B9jfmauTx8P4oS7VWvs/x/y2ODltuZ1QIA4no7fEhEwOretM/Ny+VsUuKVf7zk4ZYQv6xU9GsuZ9gWioTgwdzJ+zp4mJEzJU7s7Qt/AxU7+T6CBP9a5H0+N0+M4LzKaCR7F64qVkNk4OdOeoF+F4N8B2vhiEFG1phG0Ah5iXN/Dkg46fr04fNoZ9DYY21YCfep4bvRNqhQ146KRJfkn/z8Lm2a3oXFJDzg2vICbaU3jdxa4pgKLPSUd0pN77TRAB7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,11 +144,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/2/26 15:16, Kefeng Wang wrote:
-> The preceding commits removed the last consumer that propagated
+> PF_KCOMPACTD was introduced by commit ce6d9c1c2b5c ("NFS: fix
+> nfs_release_folio() to not deadlock via kcompactd writeback") so
+> nfs_release_folio() could detect kcompactd context and skip
+> writeback.  The flag is only consumed by current_is_kcompactd(),
+> whose sole caller is nfs_release_folio().
+> 
+> Replace the flag-based check with kthread_func(current) == kcompactd,
+> freeing the 0x00010000 PF flag bit.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
 
-We avoid talking about commits or patches.
-
-"There are no more consumers that ..."
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
