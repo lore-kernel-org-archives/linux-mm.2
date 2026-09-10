@@ -4,141 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DE24C88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3534AC79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935986B008C; Thu, 10 Sep 2026 18:03:40 -0400 (EDT)
+	id E51326B008A; Thu, 10 Sep 2026 18:12:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C0856B0092; Thu, 10 Sep 2026 18:03:40 -0400 (EDT)
+	id E01726B008C; Thu, 10 Sep 2026 18:12:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7600B6B0093; Thu, 10 Sep 2026 18:03:40 -0400 (EDT)
+	id D1CFD6B0092; Thu, 10 Sep 2026 18:12:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A3056B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:03:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88E0A120158
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:03:39 +0000 (UTC)
-X-FDA: 85199230158.25.6A52C87
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A416D4000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:03:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YHcc+qBi;
-	spf=pass (imf11.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 945E06B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:12:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E03D71402D0
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:12:45 +0000 (UTC)
+X-FDA: 85199253090.07.7A08007
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E455B80008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:12:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NE4okeLt;
+	spf=temperror (imf02.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789077817;
-	b=HVO7DtfKBCnsM/TZI6X1XotezgwXwJB+WXD/yfHCz/OVbw3W7jhlCFxeTIoLtcYOwRqdU2
-	hWsocZbrOCEqYRrX2+JinyOw51LykgCie4tVtgcSe5ViV1ee35uGEFkP1ClRcQcs0R6Hc5
-	JBdnO3DdN0bjYtPMYy6ScIj4f6d0mBk=
+	t=1789078364;
+	b=5FkwuOuljhBVuRlcm9Xs3NdJCzTZzk7VEqdS0fyTITdki4l8s0hGwkI4+kXLWmeq6cSWVe
+	AXw6boZAXwfPITs3bbzv43vN2RR2eCbbngbbmYdKwwop9hECc3tbAI2rKC9E/8X3JV/Wsa
+	2rYaHn6kP1dAWGhOPdcuS+ASKPv9BEg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YHcc+qBi;
-	spf=pass (imf11.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NE4okeLt;
+	spf=temperror (imf02.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789077817;
+	s=arc-20220608; t=1789078364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y4VC0C0lSHCs8Fcark7cmj0Id1dSh7PB6GmHxMlnI8k=;
-	b=zMsitZD2RS1Zs43aR4075znNTiMa/dchVTtG+AjYld3HuaQVzKCen0u+igrd2PytyKdAeo
-	y4UWn6zFk9k+ijQWPlMCy9M/os4hq5VEXXu1xV5aSq8rjSjK+hngITKb3F7d3JN9EUO7Mv
-	K7BveeSDHUwNOo9TPAXu7dLNj0J6N5A=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482e1b30c94so22600f8f.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789077816; x=1789682616; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y4VC0C0lSHCs8Fcark7cmj0Id1dSh7PB6GmHxMlnI8k=;
-        b=YHcc+qBixneIIQgTM7w9NtLNBSUy0+27oWev2CI5XrsOMni2Lc0GBGZ5IMqkoryo22
-         Td8+eGcWFeCMW7f08czcPD5dyPygwHElGuJCbDII2ZD+9ccMbEnoEMMHtYNBD5xR1XAW
-         gBfkX8gxC21kh+0Iy7B18uWonwi0kXIVJtPSvkQ935oROElL2AEHoswXC4GD/cj9QCWv
-         CHwrgzH5U2XaG2jOrw+Lr3BgLq2caB8gmVOfOgcxH3TPIldRVBEn/LW0ekR46HwMn2A8
-         WlrYP4+Opq1B79U2Ks5X8d7Vlje/YQtNjPmQstWA9FHqbpPMBJ/y9uVvacqdJvtmFyHO
-         VLdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789077816; x=1789682616;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y4VC0C0lSHCs8Fcark7cmj0Id1dSh7PB6GmHxMlnI8k=;
-        b=oEwC3WxAeCIC9+bb9CJJGgbflySHhoQTiV2Sd5n8dh5FMDjv4U8Q55nPUC7zIgAYdO
-         MPss/RYhDbhTKg9nwGg8QVfQKHh4fzdxOgGfbA6oMi4+3iaH66NKzpm4JW6cCukJ2bpY
-         JoLRXFXoRDtvYa3NioJa7J0vTyKk9z1QGbVsrcPgqZP2ILAwKOcNrq2aExzN6y6BP+BO
-         0NKbIOCsUgCI3pW+4bIq4cCrii2MNK7cu8rkYJ5qX1SAVH9dTmjps9ZbsfEXVUFYiHPN
-         0pk8a3h3mqxBipDmjKVaLrDplwg1LiCSYCTCG21ZAaiD77GjgSoIgcOKUPifEQOlGmFx
-         fJ5A==
-X-Forwarded-Encrypted: i=1; AKwUvBzh8b3LpTdQh0uNrKqX/v+lPFONVbnjU1x8BwuEUw0ZmU2SZc/7MmCUaFlJyT9NYPW1If17aH4Meg==@kvack.org
-X-Gm-Message-State: AFuF++mcKxZQiu77HiUksEcSRr8lAsthirhBi6Kj/iG4XLgcZMH3XMav
-	OP9VVV6BiyuP39wgCPBKQIrSWt6ZxJPcLNWyZ7seRZfV5EGXdqfdJIP9
-X-Gm-Gg: AYBFou3KRG51nbedjxbjJIg03oaL2GcjfuxamZqdNMOynZwcyyWirgAIUaZm2sQ9iYa
-	CFqa1eqKrVih8o7jwhf7XZK5QoUUqMqcH/kMRyrsI81R3CDSdpkHhxpMR1wNjGUO1BXRG+OAdj4
-	5kxIHkFTswz2bybL8fNgi1KRDjyqNTe+6pIsgcFltfw/Y6ZnE8pHASBBU1X/ajgGw0Cm2osMVoq
-	HrDa9IBoDTT1jkH7nUBYkCLrBWT6SuzYntMndmAUgmYXg+/2btXgXKx8hw8rHrF02ouqvfbRIOf
-	J1xXgWKrLUgfbCl11xguFkkSAjlQsZdctu51VPh41hCa10lLYzlRYVkBR0yJKYkmJIx+Uxzqqpn
-	OBWB/Gd1twdrQSs0z+pWtLcRkTfU6UWQgoqnvDTDFhcFVwmdAbW/iWAORXZqf8SOzo3IPshR42e
-	heMgxsatz5u8szJmPABiLu4IgBJ5plRG4ZZLbJBv5WJyFSa1N57dCBIGke9pp6LK9CEFEn3h5s1
-	sZxdYTlAKLmO9U99dY3/w==
-X-Received: by 2002:a05:600c:4712:b0:499:d95a:41f with SMTP id 5b1f17b1804b1-49e61643939mr10000435e9.0.1789077815736;
-        Thu, 10 Sep 2026 15:03:35 -0700 (PDT)
-Received: from lima-kdev.local ([85.100.66.184])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c300e2sm111238475e9.8.2026.09.10.15.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 15:03:35 -0700 (PDT)
-From: Kayra Cizmeci <kayracizmeci@gmail.com>
-To: tim.c.chen@linux.intel.com
-Cc: brauner@kernel.org,
-	bsegall@google.com,
-	dietmar.eggemann@arm.com,
-	imv4bel@gmail.com,
-	jack@suse.cz,
-	juri.lelli@redhat.com,
-	kayracizmeci@gmail.com,
-	kees@kernel.org,
-	kprateek.nayak@amd.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mgorman@suse.de,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	qyousef@layalina.io,
-	ricardo.neri-calderon@linux.intel.com,
-	rostedt@goodmis.org,
-	srikar@linux.ibm.com,
-	sshegde@linux.ibm.com,
-	vincent.guittot@linaro.org,
-	vineethr@linux.ibm.com,
-	viro@zeniv.linux.org.uk,
-	vschneid@redhat.com,
-	wanglu.priv@gmail.com,
-	yi1.lai@intel.com,
-	yu.c.chen@intel.com,
-	zhanxusheng1024@gmail.com,
-	zhanxusheng@xiaomi.com,
-	ziqianlu@bytedance.com
-Subject: Re: [PATCH 1/4] sched/cache: Keep nr_pref_llc_running in the runnable domain
-Date: Fri, 11 Sep 2026 01:03:30 +0300
-Message-ID: <20260910220331.1209469-1-kayracizmeci@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <f3b70dd40e29b309ff3449a95a4af4513ad0ef70.camel@linux.intel.com>
-References: <f3b70dd40e29b309ff3449a95a4af4513ad0ef70.camel@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Vz+ZzGUEPVhyxyWH+ySXaEyNB+ahs1758mxnioQr8x4=;
+	b=EDS1tldZEkY86apwi90MDSAiAow+7I9AD2jZC74y14J3dr0W9ZEakgAVwYbvMPPis6DxWd
+	mulv5TWdLvhsJpNZNnJnV5OW9oMwwQoEC83a5ouIq4bLIseob8vL+mnchM2nBCOfoDEeCq
+	lAlAdoqq4xd/BuHC+n69nZk4qoa/AXY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789078359; x=1820614359;
+  h=date:from:to:cc:subject:message-id;
+  bh=nNF9sBELwbR1ayruD0KyBbwDZBbIP7B3gFKpePKCzJQ=;
+  b=NE4okeLtDSfeJ3ocPbXXHlceNpj9Qe2Yx7wpDnVV0IWyDRUUnzcw+vCw
+   PzjGDRgkwJE5XBxIEzGlAMbITnIHMRQ7jQqJJzsI68SM4uUwwiThSJtib
+   9KFsYw0ge5dbCuSx4ZsynT647U5/BxX3LSda0B5YEr1+1PjwtGSkxBVsB
+   S4vqBK4FvFevVTgVwJJXaZAjzbnzvtLODaX8NXCa7C+eqEHK4jgPMRcjz
+   14VfFqLC37TXNLuoPsGwXkMAoctR6CzbRbOCfVxszmgTk3e8muZoUP/XW
+   Mx76RWInMZAWrImlzJrAL7vVKsiP/h6so6P2KzjRj1QIimEZqgQmT5VQk
+   g==;
+X-CSE-ConnectionGUID: /bGHq9PmTlaByRrYa5n+pg==
+X-CSE-MsgGUID: TOwHiJuHSh259x34HGLTBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89666450"
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="89666450"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:12:36 -0700
+X-CSE-ConnectionGUID: gkfCVZwpTsKOBF6vIto9Xg==
+X-CSE-MsgGUID: UD4uJhQpSGaHeLZFvlRBRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="310002104"
+Received: from lkp-server02.sh.intel.com (HELO 0a3643a6ed9d) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 10 Sep 2026 15:12:34 -0700
+Received: from kbuild by 0a3643a6ed9d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x4mzG-000000000aT-2tI0;
+	Thu, 10 Sep 2026 22:11:38 +0000
+Date: Fri, 11 Sep 2026 06:07:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Kuan-Wei Chiu" <visitorckw@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ "Guan-Chun Wu" <409411716@gms.tku.edu.tw>,
+ David Laight <david.laight.linux@gmail.com>
+Subject: lib/base64.c:58:18: warning: implicit conversion from 'int'
+ to 's8' (aka 'signed char') changes value from 131 to -125
+Message-ID: <202609110514.S0a0FD6a-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E455B80008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A416D4000C
-X-Stat-Signature: mf5s6qrtwd8hxp4gupz1z1zgzxd1j6a9
-X-HE-Tag: 1789077817-750180
-X-HE-Meta: U2FsdGVkX18r8ywfLNoPmX3nY3SbIpydq3YGhMPWeFtl+NBLQ0YGONUhsMofBBae2kDiy0V++DVmj1oIRNGJB2EG9W0QM8m7shaMZmz1MNQbpVNzAG7rEiSVCjvhTJBkPWzoHOCKqetTaJhIYMsZYZun+ymS27seK7sbBpspQNqrism+HVBcjnsMFkjsCu4quqjuirOp5INrwMf6YLpwLsGzwBUQ8ePCp7cCZel54CNyZOqGBYAN4ChES5QicD87uHiH87ISeqCJWW8q5I5c6TA0krswUsiio1RWEoPBEmtxBYgpSnODEmwMZyhvXnsjhW5+ekCluA2/B5NfBtF/il+Tvn98h/iR5DOJNC6hCe4Nzj8Xd4tHMGajgRLt07wAN7ZFHpbGbExMV9X6HmcPWOjR9HFaQPXDY8gfHGSqpWfwHkuT2emYfFv2/U+pdY/70eUp0AfDcSuhSarpFd7SG/9i3fSV7H4tXVdFmGw3V/yAkoQwCIRSnqHC8ySoGmJHJsNyMxDQp1ajhN1ovs3JUBAX+Mfq0uLU4zz4yMrvmqt/gDqh2wEd00XtClWxqSO+Fjyd8RweIXsIZXvZC+Slz5B+QCdFD32nEVnzVYlM+ltp1jt48+usLbE58ft0/ptOdacj4zaOp2ZMI1OGXBxm3j0ACrgc1D97ZL1XNJAe5hIO/Z18J4S2dwoRBlsOqPzIOAOztvACA5r2P1YTL/ajNsaxDP+z9rtbDKUeOPH+Xdf9n10zC6sFWdF0DMvxIH93VsszHJgOeyPtL5tOF7wZ+UZUh99V834ujSJOy0+w+y1/powD1Tfx1td/FlorI/BhTrCAfs6mrIULm0+6AlqUj3xKhUs3z+jQM26K52+wI5i7OPyt8/4c+56N81HQH2/ocvIvtgBSVklOcg/2hHKzQ4VQpmx3fimk9DfmqiYuY+ZmQhndvvDOmRs6mru3a+xEae9tD3zrsbzHmHJNAIK
- xDFCwSgm
- 6Y9cLpRbf1xWg1UflzOLezJDaEGxpd+zowXwJNKphNeaxnNb18BXSo/qfDhfDphQWFbrARUqBqpq9N41uxmFQMaPTDfmE0mQ+QkPRlcv1m7+8fiDsxbZubx1LQD7bB721u3KM4JW06YMhwjitqwTE8mVvsnbPu66UusRxYwoJqK6CPGb3a+5WpXkzEw1v7PnTdribecuJlf3u8WVHGvmCC2bkzJFpFXhRa2p01nWOZCCEcIC2tZgu2ogBrC3uFN8HYxKG0o2X9VkZwZKrZZWxafbBjTa2Fo4V+pBYvLubFKkJ2aGZmTdqgQwM8H844WjtrSFWrgJEwlJE0x5svw+oOP3rWL7NJItwbpVKzDBY/K8XmHWQ2u45pfpawD1oJnp5t/RMqmF72xdEZJAk6cDMnVi98N60RuJucH65BqbwkWQM/O+nG3J0ygXS8DLnEhRZNVdixsZj0ZwaX3hjcmfrvNHufIA/JSfWrDj29FJFZ+5CWg3UOlAPnoGOhtyoxbHrg6NI
+X-Stat-Signature: afem459ncryhqx4j97ncdc89g1gbehfn
+X-HE-Tag: 1789078358-440071
+X-HE-Meta: U2FsdGVkX18LmG7r5MpvcnPL+OnY821QE6JnY4YKYUTCz5++2p5H4pGBcNHlt+woD/4NvyLIucas6xGSSMoHYLNE6zrorpIzh4wUO/ZCmA4MxswppaH1LfYRgYh54/LEYQRBTBfsgNVrUSjF5U0F2gub12rhINGg8BUz7NMcwVjsEnDye+AOuYmin97/QNX+/vuSnXuJwnGSBgRdaJaMgr4Q0kWZhucMXtUv6oYjVfGufMQLgFDbJYHxtKbvIWVJUH9gR6cnS8adXUpoGxHs1lQocRIHCg/3BKc9CG33DJ79KmDDC/5osYiAA9dQlB5tvAwQGWVQEHOoxevguDprBMs3PK9W6bMYvivSVhji7yFx8HrR/fK2Ukcz5zXgFZseVYBIskjjz+nZCcbVEx8skJCMeNJj66X1N35f6qKAFzDYLRVhQU0xrAPJOMOG//66hgPPS0bMDNuozF5ZXfHUmrt6Zp+PZIeYbsGjruiIrY/g9AXtWIl1EZiqPF9n2oTQUSZt4sDwoUj3Xk2KJb/5NvjJHrMRD7ICA2/l96snyjcL72mqCo3VCyy9jGHzNQ0rMKAAPUICn+2pAaQo2ILibCGq9JdJnpwDToCoTQpI91j6t5srxTcU/wP/8Xxf9VEDeCrFICN9dEMbgk2WvXqL543lS/gwZR0esuo+9RjfS8Ikt64Wl8cMKJ2ez2wdGH6s9iq27T4RiGjQzUlTew24oP3pvYHNsocVEGLU/TZsi236WT1OdfMgdG50rjYT6sdgbZ6m8PNS3e2fDQoSnn5BR7hZhOkam4ReJrIZma0Y6ZePEEZucI7unZ1aULbZK1pw27iCi8PzxW5iA9cPys2QCnjD9dWGGUrMPv6ps20YvcR6IQVjnYUrBAEmVAstGq9eACecKP0AS7en9KQJX2QO2taDdXHek2yNh59e3Y68irNNUWEOZF1J4hZ5WlfjWKUHDd3xF+x9J+U7BHHYK+M
+ ffLc2kDO
+ H/HoSH183t9exAwnHJuOM6sZbDX+SzraKbqWzRvGKftnD3m/FzoBC1yM4A1sftzmRHOZWtzQ3XKrAqpJJ9vMuDMIpPaAsP9+JByNuZKvA+ownVvg2m2OWjzG3QsgMuN79I6cJMeiEGMTRCRs12dQCj1FwbZo3arBNSZqpIXrqyFDucTrotqCibtFa5tfD4MOV9eewjDy0WOQxaV4MrWBd2pol/XS6I9p+aJfklsBcQ2FtE2kXrsba85QQHtR5moJMH1/IknJ4cNdz1/n+/pOF+FRJZUwNWXp3PLtEGwn33rZoNIS13HfMn6Xa5x3qhqhkD1N0PWAqaEsaipKHind6KVQN3Vl8vObPVN38O6BnaDbPZyQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,36 +104,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Tim,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   50d05c7c76c96b90462f24debacca971d2e86713
+commit: c4eb7ad32eab13ba64cc452c6f43d518b63f5e03 lib/base64: optimize base64_decode() with reverse lookup tables
+date:   10 months ago
+config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260911/202609110514.S0a0FD6a-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project d3db069999553568848400c84cbf815c03f5470f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260911/202609110514.S0a0FD6a-lkp@intel.com/reproduce)
 
-> So moving the accounting next to (or after) the h_nr_runnable update
-> would make task_pref_llc_runnable() return false and skip the
-> decrement, leaving nr_pref_llc_running too high.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: c4eb7ad32eab ("lib/base64: optimize base64_decode() with reverse lookup tables")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609110514.S0a0FD6a-lkp@intel.com/
 
-What I really wanted wasn't getting the accounting next to or after the h_nr_runnable. 
-If we are updating h_nr_runnable in some way that means we don't need
-its check since it's already getting updated. And if it's getting updated
-that means on that branch we know how our check should behave since we 
-are a subset of it. We can skip the delayed check on that way since we are
-trying to behave as h_nr_runnable's subset.
+All warnings (new ones prefixed by >>):
 
->        if (entity_is_task(se))
->                pref_llc_running_dec(...);      /* sched_delayed still 0 */
->        se->sched_delayed = 1;
->        ...
->        for_each_sched_entity(se)
->                cfs_rq->h_nr_runnable--;        /* sched_delayed already 1 */
+>> lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 131 to -125 [-Wconstant-conversion]
+      58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
+      48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
+         |                                       ~
+      49 |         [0 ... 0x1f] = -1, \
+      50 |         INIT_32(0x20, ch_62, ch_63), \
+      51 |         INIT_32(0x40, ch_62, ch_63), \
+      52 |         INIT_32(0x60, ch_62, ch_63), \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:46:50: note: expanded from macro 'INIT_32'
+      46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
+         |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:45:49: note: expanded from macro 'INIT_16'
+      45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   lib/base64.c:43:48: note: expanded from macro 'INIT_4'
+      43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
+         |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:42:48: note: expanded from macro 'INIT_2'
+      42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
+         |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:34:42: note: expanded from macro 'INIT_1'
+      34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
+         |                                              ~~~~~~~~~~^~~~
+   lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 130 to -126 [-Wconstant-conversion]
+      58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
+      48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
+         |                                       ~
+      49 |         [0 ... 0x1f] = -1, \
+      50 |         INIT_32(0x20, ch_62, ch_63), \
+      51 |         INIT_32(0x40, ch_62, ch_63), \
+      52 |         INIT_32(0x60, ch_62, ch_63), \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:46:50: note: expanded from macro 'INIT_32'
+      46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
+         |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:45:49: note: expanded from macro 'INIT_16'
+      45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   lib/base64.c:43:48: note: expanded from macro 'INIT_4'
+      43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
+         |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:42:24: note: expanded from macro 'INIT_2'
+      42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
+         |                        ^~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:34:42: note: expanded from macro 'INIT_1'
+      34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
+         |                                              ~~~~~~~~~~^~~~
+   lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 129 to -127 [-Wconstant-conversion]
+      58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
+      48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
+         |                                       ~
+      49 |         [0 ... 0x1f] = -1, \
+      50 |         INIT_32(0x20, ch_62, ch_63), \
+      51 |         INIT_32(0x40, ch_62, ch_63), \
+      52 |         INIT_32(0x60, ch_62, ch_63), \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:46:50: note: expanded from macro 'INIT_32'
+      46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
+         |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:45:49: note: expanded from macro 'INIT_16'
+      45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   lib/base64.c:43:24: note: expanded from macro 'INIT_4'
+      43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
+         |                        ^~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:42:48: note: expanded from macro 'INIT_2'
+      42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
+         |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:34:42: note: expanded from macro 'INIT_1'
+      34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
+         |                                              ~~~~~~~~~~^~~~
+   lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 128 to -128 [-Wconstant-conversion]
+      58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
+      48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
+         |                                       ~
+      49 |         [0 ... 0x1f] = -1, \
+      50 |         INIT_32(0x20, ch_62, ch_63), \
+      51 |         INIT_32(0x40, ch_62, ch_63), \
+      52 |         INIT_32(0x60, ch_62, ch_63), \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:46:50: note: expanded from macro 'INIT_32'
+      46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
+         |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   lib/base64.c:45:49: note: expanded from macro 'INIT_16'
+      45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   lib/base64.c:43:24: note: expanded from macro 'INIT_4'
+      43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
 
-For example:
 
-In this code the h_nr_runnable is updated the same way regarding what is sched_delayed.
-That means if we want to behave as a subset of it, we don't need the check delayed,
-since we check the delayed to be a subset but if h_nr_runnable is decreasing/increasing
-we should look into our checks.
+vim +58 lib/base64.c
 
-My head hurts. Please notify if I'm wrong.
+    47	
+    48	#define BASE64_REV_INIT(ch_62, ch_63) { \
+    49		[0 ... 0x1f] = -1, \
+    50		INIT_32(0x20, ch_62, ch_63), \
+    51		INIT_32(0x40, ch_62, ch_63), \
+    52		INIT_32(0x60, ch_62, ch_63), \
+    53		[0x80 ... 0xff] = -1 }
+    54	
+    55	static const s8 base64_rev_maps[][256] = {
+    56		[BASE64_STD] = BASE64_REV_INIT('+', '/'),
+    57		[BASE64_URLSAFE] = BASE64_REV_INIT('-', '_'),
+  > 58		[BASE64_IMAP] = BASE64_REV_INIT('+', ',')
+    59	};
+    60	
 
-Thanks,
-Kayra
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
