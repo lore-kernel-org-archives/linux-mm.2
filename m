@@ -4,78 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E82EC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 609CCC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264646B009D; Thu, 10 Sep 2026 07:00:13 -0400 (EDT)
+	id 6F7596B009E; Thu, 10 Sep 2026 07:00:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23AF56B009E; Thu, 10 Sep 2026 07:00:13 -0400 (EDT)
+	id 6CF0D6B009F; Thu, 10 Sep 2026 07:00:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12BDA6B009F; Thu, 10 Sep 2026 07:00:13 -0400 (EDT)
+	id 5E6666B00A0; Thu, 10 Sep 2026 07:00:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E0EEC6B009D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 757EFA4E03
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:12 +0000 (UTC)
-X-FDA: 85197558264.14.A15F4B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B2C2840003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+4g5h2N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038010;
-	b=hGNCyKYwYErIwcWCD0h6x6ft5IRQXKat/IJnRwPQtrK7xveuBgPVsec+dPt+6y+gaVtOCY
-	P1Yj4XoA0/vo/gDsvPNED0rpuYpdP08W5Xfle64RPJ8Ycorz6D1pRRiUl6q8nlQywdsq1L
-	2mWwsPr8wXOTkch+CJHkJhdT2B95tvQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+4g5h2N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3A4166B009E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4944A4E37
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:15 +0000 (UTC)
+X-FDA: 85197558390.03.B51E62C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1C01B100007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QuGgLiln;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038010;
+	s=arc-20220608; t=1789038014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dFQw63bj1F/kPxxC9sqt+7gLUa5LGEkiBMoIMmY1uR8=;
-	b=J8cYQWKeHDxJ508YEZKYSwO9AC1AbALvT7yLJ9DrIoGxa2OzSRt+o6uKPAReBp1ErKWeJm
-	MKtNteJw93j9wJE02H6Vl641qHx7SHhy0Qh7bYgxJbjb/TofYwd9PGAZJ86HY+crBwfAnt
-	o9NLmxHQmLU6cF6RNNQKbY6rYpcswZQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=waNeuygMDtlm0C03ZytfUl73M0zkpwkt1aPQuPSWLWw=;
+	b=1LkIvliymku9PqH6usMXoMPUIzpQnhAqvNe9WYf/CNGxtK4gOznLVv/C4PldaI3pC+PqMm
+	2EDi8yY071N6N1SgrMQTbRkcmf0j8/Xhtq0/1IxVTkYx+LktNEftEPrI0qeDdTUwuZwqQH
+	zBZ9XTf4sJ4YNzMvZ1FwpfiXPpryAt4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789038014;
+	b=t3QKMYfKB4Fb0/c9pVjcNlxrKZsLlYBJzsEfrSF0myahe2tRi3lF5MuSWbtNc4fLA0RluC
+	4pxbHXsme5UqJKWT3VJI6YEJ77qDXKDRKsSTkq9bV2KKDauohG0mdUzLXMMHiHsiyYrq4j
+	Qekp6V3lN9Uy9SPXNQ449vCsI5Idy8A=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QuGgLiln;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 027FC4087C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 78AD0600D4;
+	Thu, 10 Sep 2026 11:00:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697F21F00898;
 	Thu, 10 Sep 2026 11:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB3C1F00893;
-	Thu, 10 Sep 2026 11:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038009;
-	bh=dFQw63bj1F/kPxxC9sqt+7gLUa5LGEkiBMoIMmY1uR8=;
-	h=From:Subject:Date:To:Cc;
-	b=S+4g5h2NWFTKw9U3EFXYMboABy/RasNDJ7dRe0fdCFq3Rdq7Z+kPzO+SH5PvxFfp2
-	 Sk1Wx2pSLwFDQ+c1VjPfmiSbJmbRB7pYRJ/Koa798p2iawxJzSnNkMx9CXg2aa5eU/
-	 bGbX7rmjh5OzR7CsTolHe/luzwOvRkyY2TnRqOb2cIyvoNLQgGR3J0narGVHpnl3WU
-	 p58nYT8ERhkN/kwT84oiwqwoN9vTQQdlwiBj/nKQKHcC1PTkbEaBth6m0Ossp47d8I
-	 UkTdXZw4sAvrFyGJ5fkZ+mk9dh4R0tE4raHtrxgPaw6Qjb/KQ0XWguZIU75eEfej1B
-	 +hzX8r7SbFVDQ==
+	s=k20260515; t=1789038013;
+	bh=waNeuygMDtlm0C03ZytfUl73M0zkpwkt1aPQuPSWLWw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=QuGgLilnXzAsGi5SDxvpW5ki3SPsVVpIH63og6dimK8fFfG5Fof8O+AehVN6a7xGE
+	 7jIGwVc2binhpEGQ+4HlpTa8Y7KhifuwbFX7vDQTaESA5Weo5LtB2S05xGP/OKQ4za
+	 yzm9ERhN8E+FemafZpVQnLNoP83GbbG0R9RsP2BJhmcAOgTmpBgMgma+afzs5wpqfn
+	 rct+zvuMngEM5w7Q8MGmwLGtgtKdZyInNtRidwEZLW5vSFZqG5WKRMJ3QtilipDueW
+	 tVqCNnECnvPfwrCo7hDpTVt+O94fS4ZmZzifGWltGnNSEHvwALMM34mMiqhtdW83PT
+	 4dyK4GUfJ986g==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v2 00/13] s390/cio: replace page allocator calls with
- k[mz]alloc()
-Date: Thu, 10 Sep 2026 14:00:02 +0300
-Message-Id: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
+Date: Thu, 10 Sep 2026 14:00:03 +0300
+Subject: [PATCH v2 01/13] s390/chsc: Use kzalloc() for CUBs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOyw6CMBBFf8V07ZA+CAVX/odhUcoUqoaaKRIJ4
- d9tce3y3Jk5dzYWkTxGdjltjHDx0YcpgTyfmB3NNCD4PjGTXFa84RqiajhYH4DQ9CuIGrVyrq5
- K6Vg6ehE6/zmEt/bH8d3d0c7Zkjc6ExE6MpMdc3SgLhSQFXk8+jgHWo+HFpE1f7sXAQmNdqqpe
- SVVeX0gTfgsAg2s3ff9C6Oc0mreAAAA
-X-Change-ID: 20260907-s390-cio-ready-18e73ff8642f
+Message-Id: <20260910-s390-cio-ready-v2-1-e931086fdde1@kernel.org>
+References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
+In-Reply-To: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
  Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, 
@@ -86,14 +83,14 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B2C2840003
-X-Stat-Signature: skabsheobuhhbn1xr78h9bstjbn4enad
-X-HE-Tag: 1789038010-291847
-X-HE-Meta: U2FsdGVkX1+ymY7PybNnSnUkiI5qmKM/g2d+SvcQVOldQNSbliSgswebQhkyf1IxlM2RvIX928yzqsJAE50X81DnWfqbOopliJcg2Ay1MsxWNjVZ6bnj+35qCK0bYJQqhL9o2hba0PSF4ltu2sm/iuamLPK/fr8wnIyAflfPLCX+QIMPE9wdrNFMjRnViq4twIsHGA0sxy58OvRqPFRvYCxczQO7xbGiiF9ffLC6/Ud9MGPGvCsc0KrZzzhiErtiv7SSqe3b5z1qD2eXfNyzYQpxtkHp9Qpz1yYTDmbpH5AYcJxwAJDQqW5AH2JbWhkNBghqfYdDcuI1n8shYFjJrb+VL55vspDSa5mWJnWHQhYxdzVT6KMxAlq3UEOoM8IFxuXc6fv3ajz/Uy06BVXPTpi1LKY8IHHbjfAm3jx1QDH+zlWED85LU5kENy34eMmn4p+ZPHW3cORoFGKRcmT316PtNefsl8clOQRhshJDkQSyth9Qg5WUBz1+7Ql4WVTQ5k4FILHv/fIspEgPxPoSF2BoQ20Ge+8mu5c5E2vf43CpeqbASxg5NePSeGxHLHrpJI53jehw3XkA7MdM/2J+IEttrnrpw8jF97rKh3qYPEIWTI8rTJpYXqM/xvvzO4hIhRRFMxOEJg1NgsZZZRZKAz86U2POmrGX1Qet6snmQYbJTeZUi/M1JwmK/kFS2dp2h9HRZAYjyJxpza6uw+/d/Vr4MlyZ9r6GX7J0wiY2uiWQ67Ix7m6yejywu1/8YCRMbaZmCmb2ESduIlJjeB62Y6HDy2MMlH35EBAGNkDiaTz2vRWlTKqTi8Yes+HUhZqTsiMeaXBKGgEHf57zrqwGJEt0nbyH5Bj7aFvMvmxZKlFLl8VOCAmVqslIeEpkZefOEhSbxzFB4xF+EMYA2kAV1r6Yo3uQOIi7+vD55LOokBhGgyjFF31VG1B5TuTibDnPd4Xd5cOUN6JYUwTs6VB
- 1odY7PcG
- NuhGbisS+i35+UIzp2oIubx10j5YbcO69JoodNJC/rN5ERMeIwc5smOzAo8w6QwzKF56li+y1gjLYJx3Ht+HRbZ0z9EzqIeJIXGS2HbH+JUomZzcDgWK7EqBk0obQClbudr9OmEzf0fbzIVA/cfTCs5gzy2gFaV7/KzNhghwCOkKAUhglJvhtXjqlNWdl38RkuqEgojrijNWyg9lZZ5GC2NsfEUGaCyyRBxqgT1FodrmD67LWxoPEvZypo3pZOLQV1whZmHRtF2aN2446P/CeM8WfdFKJo0AkUyUBlQP0QhoyhisTiORqlpSuFMjBcAQvsO1S7iUiNzoDYoUny52vSmdVuPQVMQIT0fMQ
+X-Stat-Signature: 5ko4jppqf5wr9bs34at9t6i9r1dg9ah7
+X-Rspamd-Queue-Id: 1C01B100007
+X-HE-Tag: 1789038013-685737
+X-HE-Meta: U2FsdGVkX1/dWz5B78WF1cGSngNPvpiY251NqJGwMTU0NOEbgEeo6TTNkJsbrA7L319C09l0eqIzmA/gsZDRWaoGraYm9gTAyP8unfG1SyFniTn/JqHIFfpFE7ThN6kLFfgoWcJk2+Ls5hnlyxPE5kZ/8BsLUTKAsvTtCSkRko3PpGA2dAfQtmaa1+pmyyqwXVw0kIIoecRIA/fFxGxn3H6Jc0kcpojdVHut7TWBcVYGrG/ByAzfPL6/eGEDfNp3z1eMTPSyDD4gNDHb3zE7NoWyNqknkavL6N66OPBq4WwuGqC23JioqKVijqr3InB/pSG5cGL65OtnOWNdFEcnuuGPIuFJAoe8l3rNgFcdyNSMV5OVvgK5NAOTIjgYrVQww6zeN9nWRKJ0H2Cg86+Oed1boGxL9xLy2O234pNvlLem8igXzn6MOsiG89PZ9bF6UWppnFJjyqWPl9Urh5n6nOn4zZa3TYNwL4WCic0PmIEeOXV5iz6uCFxhwLkJCUEVL/015Ltgsk5bRRXMR+lDD4i8IUnopPOtPUd+dq2Gz/cRqV7XBdMtxW4JtHiALiooF63doloiM+BrFX1/dvQCU0yC9qjSZ0XDYZAnaFaCrixSRLDWUWwsv8ETAdN0o56dcTnEihSAQwyV47TzKDPNLuFUUCc5q4DZ/7cOXLhhmqrFtbPLaaJN2XVvK5LogKiwKNvx/WFkjCRUA0LxFimJEIbLwUG0RYhbjmGNIUSExG2Lg/74QR+hq7/lub7nnUe7VZE/8+TNbtUVOYT9JIFR9Q+DgP/y4b+RHz9qtGcyEl1YLus7jCPqmeOPiVYIMf0Lq6QozInky7S4E/8RjVDy961x8jFuzUaabbBOft1dzVdiOauD0ZlKjZicKVBRoAL0Ia3cWzftnEtgCCThErvAg6wA1zESzIpV2xNScuKUCnB1oECbTJOecR9RoRHH2YQkQBRv1wQ2B0ecdaOf5Ni
+ zfJwa2NX
+ 1MuhmNMm87eEC/4Dajji1JtlNSR9y8oak5mwjgNG+JHzIJNy3z+Yy3EUI0SwqpQPgkkHMs+r3iZLnlta3WY27p5Rb3Hs5yeql0IQ55bSC7XzQP3XPbKTIh4hSkGWWhNjL/mA2HRfTM4Tf7wR5fJOt/ETfCdboH7ty5jHkO6LDUZP3Ehrl122buEG9r7SNKMtYXKl8eTyE9cYFmwm/hMRXsrrpf2SYipSyGL/idnsxyMR6dloI00vi2hl/cCMqNhYLRXPvpe6E+hXfrvg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,92 +98,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The saga continues :)
+cub_alloc() allocates the channel measurement unit blocks and their
+extended counterparts.
 
-This series covers CIO, QDIO, SCM and IDAL buffer allocations.
+This memory can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
-
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
-
-The patches are grouped by buffer usage and ordered by file or
-subsystem. Related CHSC work areas and requests are kept together.
-
-While on it, use __free(kfree) for the SCM information buffer and local
-buffers in synchronous CHSC ioctl handlers. The CHSC cleanup is kept in
-a separate patch.
-
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-cio
-
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v2 changes:
-Address sashiko comments:
-* Allocate the exact CMB area size and reject invalid channel counts.
-  Correct the alignment requirement to 32 bytes.
-* Tell kmemleak to ignore IDAL data buffers as only DMA addresses are kept.
-* Drop the obsolete kmemleak exemption for the QDIO CCW.
+ drivers/s390/cio/chsc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-v1: https://patch.msgid.link/20260907-s390-cio-ready-v1-0-ca7f39806234@kernel.org
+diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
+index 9689f722c863c..60a4a7e6086ce 100644
+--- a/drivers/s390/cio/chsc.c
++++ b/drivers/s390/cio/chsc.c
+@@ -931,12 +931,12 @@ static int cub_alloc(struct channel_subsystem *css)
+ 	int i;
+ 
+ 	for (i = 0; i < CSS_NUM_CUB_PAGES; i++) {
+-		css->cub[i] = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
++		css->cub[i] = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 		if (!css->cub[i])
+ 			return -ENOMEM;
+ 	}
+ 	for (i = 0; i < CSS_NUM_ECUB_PAGES; i++) {
+-		css->ecub[i] = (void *)get_zeroed_page(GFP_KERNEL);
++		css->ecub[i] = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 		if (!css->ecub[i])
+ 			return -ENOMEM;
+ 	}
+@@ -949,11 +949,11 @@ static void cub_free(struct channel_subsystem *css)
+ 	int i;
+ 
+ 	for (i = 0; i < CSS_NUM_CUB_PAGES; i++) {
+-		free_page((unsigned long)css->cub[i]);
++		kfree(css->cub[i]);
+ 		css->cub[i] = NULL;
+ 	}
+ 	for (i = 0; i < CSS_NUM_ECUB_PAGES; i++) {
+-		free_page((unsigned long)css->ecub[i]);
++		kfree(css->ecub[i]);
+ 		css->ecub[i] = NULL;
+ 	}
+ }
 
----
-Mike Rapoport (Microsoft) (13):
-      s390/chsc: Use kzalloc() for CUBs
-      s390/chsc: Use kzalloc() for the SEI work area
-      s390/chsc_sch: Use kzalloc() for CHSC requests
-      s390/chsc_sch: Use __free(kfree) for synchronous CHSC requests
-      s390/cio: Use kzalloc() for CHSC work areas
-      s390/cmf: Use kmalloc() for the CMB area
-      s390/idals: Use kmalloc() for IDAL data buffers
-      s390/qdio_main: Use kzalloc() for the IRQ structure
-      s390/qdio_main: Use kzalloc() for the QDR
-      s390/qdio_setup: Use kzalloc() for QDIO buffers
-      s390/qdio_setup: Use kzalloc() for the storage list
-      s390/qdio_setup: Use kzalloc() for the SSQD request
-      s390/scm: Use kmalloc() for SCM information
-
- arch/s390/include/asm/idals.h   |   9 +-
- drivers/s390/cio/chsc.c         |  20 +--
- drivers/s390/cio/chsc_sch.c     | 300 ++++++++++++++--------------------------
- drivers/s390/cio/cmf.c          |  11 +-
- drivers/s390/cio/qdio.h         |   2 +-
- drivers/s390/cio/qdio_main.c    |  23 ++-
- drivers/s390/cio/qdio_setup.c   |  14 +-
- drivers/s390/cio/qdio_thinint.c |   2 +-
- drivers/s390/cio/scm.c          |   7 +-
- 9 files changed, 150 insertions(+), 238 deletions(-)
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260907-s390-cio-ready-18e73ff8642f
-
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
