@@ -4,160 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89C7EC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55401C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:10:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384DE6B009F; Thu, 10 Sep 2026 07:08:03 -0400 (EDT)
+	id 6EA336B0098; Thu, 10 Sep 2026 07:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35AF16B00A1; Thu, 10 Sep 2026 07:08:03 -0400 (EDT)
+	id 66D996B0099; Thu, 10 Sep 2026 07:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 271736B00A4; Thu, 10 Sep 2026 07:08:03 -0400 (EDT)
+	id 55B3A6B00A0; Thu, 10 Sep 2026 07:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E78956B009F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:08:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DC341C1E42
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:08:02 +0000 (UTC)
-X-FDA: 85197578004.14.56E808C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7BFD9140007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:08:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UfY+BBiU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3455C6B0098
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:10:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99959140486
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:10:14 +0000 (UTC)
+X-FDA: 85197583548.26.EF11E38
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6FF3D180004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:10:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=FlFsF6Yv;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038480;
+	s=arc-20220608; t=1789038612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pCce3z8dCVOONWkuUk8CK4oY+wdLNQBPcWJtewhDSRE=;
-	b=n7SeO+VW5E5JEEMcgFgUw6V6taBQ2L2eE79smTmtNdAk+XoI1a2ken+C9TvpKc+DSsE9rr
-	HER+k5rU2WCX7x31Tqtqx/dTYryHNc2Gl47tgpPErOo1GTalNyuo/S7ZJduzEyZEXu0lUz
-	Lzl8Tk+jrrGRj+AtpeKrfx0nVlnmYh4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038480;
-	b=MmGHYHq6slCBkgKjHgPfdkS1tdjrhb/UJcJK/ga1tCKikohMZgTIphFgi0bBcjIzXEtfMH
-	Y1eTykWvZdgcG6ouq/sOKCm59YI+L6trTrFTN5K/FXZ3aBEFqhwX+Gt7IIZ2YJJVnzmV/U
-	wzK7kPVBUf1VWYXWQaRjOy7CY+b+aC4=
+	bh=rvYgWCWqn9o1wKFP8qdaR/yG0XoyGPk/YSg8atQ0Jb8=;
+	b=3pL6raxqo5HXSKFLJTG378r/Xd93tuMF4ana/bDTq1S7T+fHTRL4r6UsRwNknYUI9+DmZC
+	y7pJyEIsZaXgGYeH6Rf6BopvmcD3t6E0g+gVR5sUf8W6llWrWZvQnayirI3Eep6SVYdaIe
+	Qy7YwoKS91Bt3QpvmXZf96xlNMoDM1c=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UfY+BBiU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB9FB600C8;
-	Thu, 10 Sep 2026 11:07:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AB01F000FF;
-	Thu, 10 Sep 2026 11:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038479;
-	bh=pCce3z8dCVOONWkuUk8CK4oY+wdLNQBPcWJtewhDSRE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UfY+BBiU3GmNgRgmnmlEVQehpWmEe6l86q3IxlwNWdQOeajZTek9GZluUhB+HWPpl
-	 ZUMpUSW4rTr6yoabrHmMs71qKbsBXqcJWBE7a0xczru8ePO5yh+L3rzSheSHvNPqEW
-	 5jc21Yg2bOquawBDYkm2pXvYjuB/fLxQFnAA9Tlis1zCXUW5VaQzOH/bXisEQMdeGo
-	 0eqTHhaNNVQgs2/X7Krzkzc18IAblcwPYjYpiQA62vH+OP0H7lRaN408h2QTybMQ78
-	 yoWNU+D7kzbTs08abGRCeZbCDNqXI7WXPYPJeOyz2c4hkikZnOCWGCkWydxGtAFrOg
-	 QcND5/OLUro9g==
-Message-ID: <4f90d69e-e1a5-40ee-a3ef-38e38c1efb8a@kernel.org>
-Date: Thu, 10 Sep 2026 13:07:43 +0200
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=FlFsF6Yv;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789038612;
+	b=Zdz+xmQZ5kngoAmlLzNpYsjz7H+PEVGFULDa+HBSZ9UfMSwvTjzDXWbEMMQr7UroafW1Ny
+	WTKntc9yeFXu5I70qG1OCRjCQtBrR0GGcZgqrGaXVNqidzXCYxdWyDdePGjjhRwwD2dm37
+	9e039xV5ZjeWisx6Hyr+xWgXFrviyvg=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=rvYgWCWqn9o1wKFP8qdaR/yG0XoyGPk/YSg8atQ0Jb8=;
+	b=FlFsF6YvU4yyCMNuxlaOu2M4Ek6gWY4fYPOzoVUD7qYGHZ37JVdoTxOGBkZTH4DBLBtTAkmxy
+	xLVJD8z3PVx/X5PTl7ggTY1hF2IsafCWUpqfjqqEodOz4Ae4fP4cExjNgBAyOL+Jzm/QuZQNBGL
+	dYKv8sDteo3N2i87W53yjEE=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hgZRk0W2xznTVd;
+	Thu, 10 Sep 2026 18:58:58 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 967934057A;
+	Thu, 10 Sep 2026 19:10:06 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 10 Sep 2026 19:10:05 +0800
+Message-ID: <ea608517-49ce-4a9e-83bb-8687a139c4f2@huawei.com>
+Date: Thu, 10 Sep 2026 19:10:05 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
- CONFIG_X86_DIRECT_GBPAGES disabled
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 4/4] mm: zswap: skip zswap_invalidate() in
+ swap_range_free() when zswap is unused
+To: Yosry Ahmed <yosry@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>, Chengming
+ Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Kairui
+ Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed
+	<yosryahmed@google.com>
+References: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
+ <20260910095449.715183-5-wangkefeng.wang@huawei.com>
+ <CAO9r8zP-bGU8Hr+0ah9vpxWJBdbw+wTGMuC8+pTOHa+9XaeU+w@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <CAO9r8zP-bGU8Hr+0ah9vpxWJBdbw+wTGMuC8+pTOHa+9XaeU+w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Stat-Signature: hc86d8emu8nwca4ytgq693gxkin85r4x
-X-Rspamd-Queue-Id: 7BFD9140007
-X-HE-Tag: 1789038480-202526
-X-HE-Meta: U2FsdGVkX18NMWupM+JqqOI63z8t6IAsTjpHqiW8+/9De7Magy5/+q/29+FS/khfqWciqlpqLMEnspme8oXArbi44QXWCUvlAYW+gWylp6GFi9oAKB49WQSqtomtEX6WNdrTqKLB1Q+707O3cZvyfVzFKvSi20DGJGDUBIOT6B4GE7I3AoGYTwRAsq6OGKNNxPhPnTDcAAcgcDYS41HR5mVZKrbMHW5D2ptndz9dDhQ/RsVjRyg/9J0XrxXKxcr1St0GLaHLqYx1rh3VdFmAy6q1N/u2hxjsd2AZN7ebHqGXVcdbk2dmjStq3dwtrFsnFVvf3s8PiTvP69sDRI5dgs1nIJ0+4cPmrHVOP8xuOpdGUm1v5A5mFsvNoB6nXOe25An+MrBqTjV+/HjlXHxFMG641d6Ds/GR2/caNYVrNa4Cu+B3UzMvsi4WUM+s5v0WfmpRTGR36HDYW25U28BV5CQlao9GNz40758Z9Dee9KPBmvNzy7VYuL3tr86YoWLMuTiA7aiTUuGyjRxokbXOPgl3+8+BmjFcbdh53585njT1CeJY2qqBhCgtytJ61Q0rbtTAJzhDz6h6tUCo2f0vBeiDoQzc16HUZIGJida5kr0LXllZjjj4H+ocI8vbpphKwPJ+/Vmd2jXW255Az/FjiS7jgQiawkNiB2QxceVd/zHDsi61DQmm4QB5JIMXOL+FcYC090oQETNb+cQfIzsgBXcxrLGQeiWymiyJVpBun51jcBcdHNyaEy2K34ErKoCoodzinlB6e1lZaoZwfQ8251+t/0j5Kd+Bu2HMQGq+1Ir7FWLy3n1VE7nj2QLUkuCP5///mqbOi+K0Z/XlhEpc2pYpObMmDz8yYohJdiccPMrFiLNXvIAZeIxXNE1++yInInQ9y27VR/oKf0io/DwAsnLVg1s00vJ2AcrWmB8eULH174MDNG7m9gVR6wqpjH/4KhMu/ULAIn88IX9h1C3
- 1mYONjA7
- dcdEeNB84eByWKzEENa3iXG54ZFbc75kxKZTQL+1ghRjfZ1KiQ6mwtAdcoZNSdSgIweSD1+egSyjxZZbhx+jPrXD9icJWHz778H4D1vtT0o3YXx6G8Hi4juaic4fccN20SEH+cWsNm3IDmiJZHw/EDeTzTZdmwPQi14VWozYXu/XeEtR/PPqe6Fsmv7QlgeHrl7plj5PmbHso5s1JD2g056M3L3V/PnQqYnNKkuAuH3dymj5+PrFs5FMRxI9MSsdGwItkn0XDdiFD0GtPO91K5U6YDLY7phn5rAEx88RN25bfDl6tlniTT7a7iw==
+X-Stat-Signature: uo1t8snf3gxym6in7739g67pwfs4obzo
+X-Rspamd-Queue-Id: 6FF3D180004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789038610-529847
+X-HE-Meta: U2FsdGVkX1+gpjmoS2wM7qUlbPyTtn1aQ3Av0DAubEzXwAqgIfIHhPuecdqN7b8PMUgC8xb+GWYwM695C6ZZDbK4FN3gMjdw3GAHIgbG3WtDA4ihU3DIh2pyYYcs81JEsg6rX7BdiQ4W54rOAxTB/F/MVv2/vMWSwFHdRVc4dHhE+v4igNBc6bMnT751qUefAbLL7u9z7p8USMHBCLdMoiQbT363WKtCH9eboZcfpjhpRZF4IIZibnTDu/NDB6ifhVqp32VA7X0fT/JxeG1f44TzHdzcWDxgHyyEP6VnKBuaOW359/aM99ASoE7K3wezXmeBzUq5hpn/IvOW5rRb/8RmdlG2oiGtBkD+oT9ZCmXX6LH/8ANr0+EeODz/X7pgfVjc7jbAkVnpWd1WKVIZ25xWi6Rrzf9t5x8ydcKZJgLBW95op1xV8gHny7Jfemzd99v0YLPoZrG12r+1Jl0jDZUIyDiJQ2Ifoy2yO7BZJV9LYwTI41FtPFp6LwCHqMtwxBf2CSlUIp/IqxmXK0CtIRn1k1xUlU8/0e9+Bl3bNjJNRtfuy5r89PSfbVLLfdaIZ8ATNRPbaQj/D8JsrJuDFUcbSeyXYjPSMBeg+JKJ1/CcuRXmEiecxaRa5ZiDjHAk5I+tr8EeyurYD2oul88lJemaSpe/btIRwwwax41P/3MT3u1/HGxyuCFevTw2eBxqyTkWakXbpJ/7CPJfXpEwaXnPI+cT3pHQtX9DrY9phRTTjVQ4OUfVkZ+q8dafjP23ysOeYlsdKJqFFd/Z9GRNJVi2RZ9oUwf5Q1aXE0IVPVXlEntHQDi+uI+9woxYnnZSyF/UDT54XMPNSHPir15Lxdy1cF213uIzRYetkuA3sJZYWSEXMF/GVZEYPdzjipUcUzU9O1/iZ+vXs0JigvUzL0getVb6kZu1YsylvXnYgOkT6cPeyDcVeK3CeRFIw6ZLF9/pH3gi20rbyM5dAKw
+ ktmBops6
+ MUEVw73v6YZ6ZNc84Pp0LTa6dGHt4wJwK7+wXaO+vYH+IPZEMNUQKYWOYSvSWMddvp03FZcV4ROFlxMdFoCWaIbud0MgqONqj6thHuiFQnzyUvOo5vcV5+jrKLEvJG9q8tXVK0YVXS3JKLlPSakrLhPXFm6TBaEF0yc8Phrpgj6yeZ7wasrFYAqO4wvg10uSNA5wC8z87R335YzgKKQ5EtaQhQC+dc+XmxRhTGJLYk7aQuY87PnGa3omoUq4aXYzRH42Hzb1F785dRKFrb6nfayx3/e/8Fbo8n6gPycibGAAr8x0KqrHLsgRJDIXnT0QBK/rFjpKtpMVYazncAv3ApZkhg1kW0GAaaxau7iTUOsq574PrJD6HicQzp8F/U4KsPUhvPcxISmlke/VLVRUXWRYmDAoJZ25qUM6F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,20 +103,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 13:56, Yeoreum Yun wrote:
-> The behaviour of pXd_page() will change with generic compile-time folded
-> page tables by disallowing its use and triggering a compile-time error
-> when it's used improperly, ensuring that the actual pXd_page() is used
-> instead.
+
+
+On 9/10/2026 6:29 PM, Yosry Ahmed wrote:
+> On Thu, Sep 10, 2026 at 2:55 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>>
+>> swap_range_free() calls zswap_invalidate() for every slot being
+>> freed, even when zswap has never been enabled. Guard the loop with
+>> zswap_never_enabled() to skip it.
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   mm/swapfile.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index ba71905e4d46..505592051924 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -1318,8 +1318,10 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
+>>          void (*swap_slot_free_notify)(struct block_device *, unsigned long);
+>>          unsigned int i;
+>>
+>> -       for (i = 0; i < nr_entries; i++)
+>> -               zswap_invalidate(si->type, offset + i);
+>> +       if (!zswap_never_enabled()) {
+>> +               for (i = 0; i < nr_entries; i++)
+>> +                       zswap_invalidate(si->type, offset + i);
+>> +       }
 > 
-> To prepare fot that, skip collapse_pud_page() when
+> What if we add the check in zswap_invalidate()? I understand we'd
+> avoid the loop here, which is nice, but I wonder if it's actually a
+> measurable difference.
+> 
 
-s/fot/for/
+Skipping useless instructions is always a good thing.
 
-Agreed that Dave's patch is better :)
+> If we keep it in zswap_invalidate(), we can probably also skip patch 3?
 
--- 
-Cheers,
+Maybe add nr_entries to zswap_invalidate() and check
+zswap_never_enabled() in it.
 
-David
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 463bdee5c1e1..313c2f1b6c2e 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -27,7 +27,7 @@ struct zswap_lruvec_state {
+  unsigned long zswap_total_pages(void);
+  bool zswap_store(struct folio *folio);
+  int zswap_load(struct folio *folio);
+-void zswap_invalidate(int type, pgoff_t offset);
++void zswap_invalidate(int type, pgoff_t offset, unsigned int nr_entries);
+  int zswap_swapon(int type, unsigned long nr_pages);
+  void zswap_swapoff(int type);
+  void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
+@@ -49,7 +49,7 @@ static inline int zswap_load(struct folio *folio)
+         return -ENOENT;
+  }
+
+-static inline void zswap_invalidate(int type, pgoff_t offset) {}
++static inline void zswap_invalidate(int type, pgoff_t offset, unsigned 
+int nr_entries) {}
+  static inline int zswap_swapon(int type, unsigned long nr_pages)
+  {
+         return 0;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 505592051924..891379c95a01 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1316,12 +1316,8 @@ static void swap_range_free(struct 
+swap_info_struct *si, unsigned long offset,
+  {
+         unsigned long end = offset + nr_entries - 1;
+         void (*swap_slot_free_notify)(struct block_device *, unsigned 
+long);
+-       unsigned int i;
+
+-       if (!zswap_never_enabled()) {
+-               for (i = 0; i < nr_entries; i++)
+-                       zswap_invalidate(si->type, offset + i);
+-       }
++       zswap_invalidate(si->type, offset, nr_entries);
+
+         if (si->flags & SWP_BLKDEV)
+                 swap_slot_free_notify =
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 6197aa71e33c..0e72cc9a5415 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1549,13 +1549,8 @@ bool zswap_store(struct folio *folio)
+          * offsets corresponding to each page of the folio. Otherwise,
+          * writeback could overwrite the new data in the swapfile.
+          */
+-       if (!ret) {
+-               unsigned type = swp_type(swp);
+-               pgoff_t offset = swp_offset(swp);
+-
+-               for (index = 0; index < nr_pages; ++index)
+-                       zswap_invalidate(type, offset + index);
+-       }
++       if (!ret)
++               zswap_invalidate(swp_type(swp), swp_offset(swp), nr_pages);
+
+         return ret;
+  }
+@@ -1661,17 +1656,25 @@ int zswap_load(struct folio *folio)
+         return 0;
+  }
+
+-void zswap_invalidate(int type, pgoff_t offset)
++void zswap_invalidate(int type, pgoff_t offset, int nr_entries)
+  {
+-       struct xarray *tree = zswap_tree(type, offset);
+         struct zswap_entry *entry;
++       struct xarray *tree;
++       int i;
+
+-       if (xa_empty(tree))
++       if (!zswap_never_enabled())
+                 return;
+
+-       entry = xa_erase(tree, offset);
+-       if (entry)
+-               zswap_entry_free(entry);
++       for (i = 0; i < nr_entries; ++i) {
++               tree = zswap_tree(type, offset + i);
++
++               if (xa_empty(tree))
++                       return;
++
++               entry = xa_erase(tree, offset + i);
++               if (entry)
++                       zswap_entry_free(entry);
++       }
+  }
+
+If no objections, I will refresh all the patches.
+
+
+
+
 
