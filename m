@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47407C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C55C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DF526B00A5; Thu, 10 Sep 2026 07:00:32 -0400 (EDT)
+	id 7460A6B00A7; Thu, 10 Sep 2026 07:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B5846B00A6; Thu, 10 Sep 2026 07:00:32 -0400 (EDT)
+	id 71E726B00A9; Thu, 10 Sep 2026 07:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2B86B00A7; Thu, 10 Sep 2026 07:00:32 -0400 (EDT)
+	id 60DA36B00AA; Thu, 10 Sep 2026 07:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F35C6B00A5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08ACE1A04D1
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:32 +0000 (UTC)
-X-FDA: 85197559104.29.EA4825C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F4D26B00A7
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 544FA160477
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:35 +0000 (UTC)
+X-FDA: 85197559230.15.4E6C03E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5C8CC40005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUSLtGkW;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id B5D64C000D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QwJMnW0u;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038030;
+	s=arc-20220608; t=1789038033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kEZ6nz/JFEHq+6k02cM7QTBhs2+peJoyslzMnyOEfRs=;
-	b=Kg3CqBmyOVvxQdMjxVYwgBBMKF+zNlcw5UO+aesGQFFVp4DMo/9Ecjd51tiiPyAkNpTJ2l
-	dB2cszKyuq+YDekqY2fF1EZ5ynbpPlDKTq4ged1Gqmd5JIql16R8J+Cu2MmqqO0VccuNWS
-	kwEh3FCSA4NSXfj4Pgq42ejdDMu0VY0=
+	bh=bAVP4y79lmB0kd35IBqs2N16e6jwAfNVV+NWInsx3B8=;
+	b=f89IWJCnSLiNSkD+p2RzvmvXN+eZ4YuVyuUFiVNOpFmVIIFSs3949PFL9rMBxNbIwBNzqA
+	tlaAydVd7OPkBNp5+VNybSEjO/Y2z0KXKPRovygY1M1Z7n8YFgBT39gk0GRKtmcWHUfRNk
+	Mv83mygUSIjxEEd9zSluKO58TRnq8PI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038030;
-	b=vKv1AvDbu3pKU0iayVZEkYWkAg4q1G8fXud8i9y9vjBrLQ3rfS6ZaI0PZQB5hdkjPZs1tF
-	DnS58zrsqiz+mc5QBhF+fY7fmxl4tk+yWHRAE5usa3d5uvIJW7PnQzPqIiuyUrw8wJRsVP
-	d1h+6kXuFZu0aiNzVbSlJicsIjda6EU=
+	t=1789038033;
+	b=6kxbN7mzhRPQWLwYG3CYyWH+l/BHGcOppFGutxzrbYtHEbFYqGBtxMe5sOO9lQhU2jIPgI
+	zCTNmMsYuv+vb4i1VTnpo33dsthp5SaKaBJMG6q+UKVN6bnjt9VbkrDEbA6ZBOZwHHladi
+	jTypyUusnIXM+UjuSV3ZR5FNWldK9GE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUSLtGkW;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QwJMnW0u;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0097760216;
+	by tor.source.kernel.org (Postfix) with ESMTP id 460C460211;
+	Thu, 10 Sep 2026 11:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369BA1F00893;
 	Thu, 10 Sep 2026 11:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02D71F000FF;
-	Thu, 10 Sep 2026 11:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038029;
-	bh=kEZ6nz/JFEHq+6k02cM7QTBhs2+peJoyslzMnyOEfRs=;
+	s=k20260515; t=1789038033;
+	bh=bAVP4y79lmB0kd35IBqs2N16e6jwAfNVV+NWInsx3B8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PUSLtGkWdQoW+cSKLEstDTvjtTeqxWgpfsBiiGWDFJ6/TgdE8RnkfKbvYkWH/mxQq
-	 iUD1GMaIaoNEzflLY2zAsXaOXhLynyxr7XCAvjSidp0vG+Vlvpv1umfrZBFuiD+q4J
-	 vMN83RdUZQ/KPVcNidMa0lqABo/fOw/x4yahPoo8IiglMd0D2/43P5RRDSNf/AiNOZ
-	 B0CVFCFz5ZgnHe0oSLZFnDjvOO/B2T/TzHSRHyKLeRjC+cwqEULVvkA8uN5R4I9TJ9
-	 E5bjtHmqPaP86CNViLqsXoTbKl8X34Gxt08GmhG4jkmeu3a60XAy8Au3/CHJ58ob3a
-	 a0Hvww47S/I/w==
+	b=QwJMnW0uXEnOlhVjMZA3ChXQrzqwPzdD00tByvpMjpZhbWPYw2EJdfVvtch3h/gZS
+	 G8mh1fgKfpv7AA3MQn35gggwdWJqOOt2ofz18QG2rJT8R953CBCiPLjyEKF49uqLnV
+	 q+EQ8WmHBUuk8iQhRrfrGrGExi9FTJn+tmDTlhkm57GGQd9AruTdroDxlPuerbDl3C
+	 zdEQE9V5Q5uiApj3qDzkEd2l9IzAmVxfy8hwd1UtOad7tfAX7gF4+7ggrj70cCZZqF
+	 8aGTdeEAocc03X2vN+/KbDM2SEyEEyymgz2CH1VaZpf7oHPgD6/ZQxzdUlPElKMchr
+	 VjgvEuvNpQnLg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 10 Sep 2026 14:00:08 +0300
-Subject: [PATCH v2 06/13] s390/cmf: Use kmalloc() for the CMB area
+Date: Thu, 10 Sep 2026 14:00:09 +0300
+Subject: [PATCH v2 07/13] s390/idals: Use kmalloc() for IDAL data buffers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-s390-cio-ready-v2-6-e931086fdde1@kernel.org>
+Message-Id: <20260910-s390-cio-ready-v2-7-e931086fdde1@kernel.org>
 References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
 In-Reply-To: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -85,12 +85,12 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
 X-Mailer: b4 0.17-dev
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 5oyxwwbqednnak4yf8iyfigz5twegcus
-X-Rspamd-Queue-Id: 5C8CC40005
-X-HE-Tag: 1789038030-647738
-X-HE-Meta: U2FsdGVkX1+wfQtlv0uAFjofYr0SJ1mHJwaeNL7g3ev0nZPFwuQ08M/64meGoe5eLSREBXco8nfzouDH1JKOhRSaX/ZdDvgHZedh2yeV99OFQJ4eDB+fVZYKaRpweBzLGAJamGGVzuwwthJ7BL1dtanhpa3x4F5qGi7naNkQTCLPLrTlQMJ1lzTGjSqts8OOw+SGLwzxallvZz5Hr/6T9z96O4yMkvL7PR5EVEi3zAsCav/O/NGM3WktUYz35Nsc3+ArGWcN0Y3BMLaAk7yUXBPn/H5xUXr4mXVTDlGo/AgXgjFZO5Su3lk+UPRWdikSZztUOB3dO8JJmv06AjSuNzi0qOis7vILvyFMmOIslS5yuzq8q4j1GFGRAREYyR94/LZYaTVlvrlJb0IEZ7jeGtB/r+O0qn0BTxsXez4/+o2yVNy2LZk5U90D4Qcp/22FCGByVlS1hHO090MKestP7nJsfSOG+M0GS8ZVHujQKcqf+pYpH8NVq/AbZ4dxvmazwguh7LSq8NXlrwxLvKTQij9d1SxOYnEHI0ogIAfSmG69C8t9U6RyDa6HimQpJ0m6JjNn6ryWosUpCuEvKmRDRkIKb351HSLtumpzog6HdvSA87joPeGlx9SKpvAPoxeZP8Ql77DmkpNdquXYhk0vhcd0YzvMn65wDwmlj1rEH6h2i8aVFkeJhryapXqsUhOSlQZ6zf1JJ0FHQW6Xv2iG1qAksX17gWOnKxq3OCYVZYH+rIuWmdVG07xq1WlGY288L2PP3WT/NejWytr8fU96c2vegBS+bUkjGm3dlz3o6C0yvXgvP4Kn62kFlaLy+Jx9OjHCop8kfCJ1MUTGXYqJAkJnlyprOzpFYpTP3e73vqua/SE+cdavi26ZoIW0CcguXKPT7gRJEo/JUt/zee0rTQt91lvpuMqoYP63wef9WRTPIw9CWsDALKCPic5duYDCG+kjmQJYr6SCi7lPBYN
- Iu2fciCP
- M78GA/ot7Xs8fLi1OjI2B2UhTKRNYMmx1wv5kD4no6LuQWSd8PkmYrvy3Gwa3bblRYN/1uoFXZQVHXmU7LNYeHS8fSpfqNkmkwgTdhXI5LTaurW0hrF9EzGUafHILz45U2rb7Ni8ofOqYLrdxFQhzRW/ii5w9vVTVIAgKgcQtWZT5UZP16ayc2GbF4goknKQuWhjJkPVmcBVXwiffOAfzqUJdHK6dOVl6csDo6bSX4qOZOjiCLScFBrG9o8Dlee4kyIEqInUYiA6MVTI=
+X-Stat-Signature: gbdii4jqqst7hiapna47zkwtaq96jfie
+X-Rspamd-Queue-Id: B5D64C000D
+X-HE-Tag: 1789038033-418679
+X-HE-Meta: U2FsdGVkX18XSbXs5Ka8NORqfvXYG5rE2p5t+p85igMFAeTL1FMkzTxOPoI9VbcnGO4gBtSheJ7u9S/EJhkYAjMBKsG8dbasnW6KJ3Jp8m+4RwcRb5W9CSkcvECiQL3mOE0CBP8BB1u9LJgU9dGsdVWW1OFlfkZOuIamaqWeevz1atVkGPN34e35UB1nSd1GDtT6oAOebNNLqDQL962oTs8HYW2RYbsg6XhXZIu6MPqex+sxijZMtUa7DsH1G07Z++Oxf2WU0r5O8/x1JpIpwHklTY6L5LG9blg2/rEXP/Ygjtmb1srkK2pBN+ixE3UqNw03VVrnLMgoJOZcjyPeOcFFAHd1BLt5aSydZvHjCt/WtcI+PPUqUKsJptz44MR5vAb3ltt2r25p8v72mZJQMx2JATTpH2sWhIVopkucoqv5518oGQU9xsW34P0vGXWMFtThrqcGmlF8//3xu2kZz9+iNIjWb3hYN128v5sucA+eaMT3eacXLUybElTqk8q66SAtd+/hNFk7sCVhspA9E8euObjRxSe8tssFZS0l/+boVHkxw5Z9v3NxQehRekp/tJVVMqHiqvdndOwAMLFxUOsikwvm+1TU2q63/1mYg+ljOI7IMIO69WesImOCf4WDkGB0/J4YIw7glWHc5r1kDO+hgc2a87r//2gmuE+w4wV8H1Jkb7EADsm90PhS8E+mygvrPkXuaYsxDo8+7rXgRDbZWMq6tKOLsBfR1f+IuIAxseCfMLwrtHNWlhVRqqxn/Q6IKU3yjZaoo1wjgc3gWxRawe3bGEtpvqwZy8yDmnYDPJVH9Mk1oMZpQJqEEl7tZjUmX/hSKk+jREAbRf8Nb0Wt0sYz1SIOL+TatCEispHJYr22CGOkWgAMGCelCJihWsbo3va8K0P9ZwtbPIkpPxox8BCiUDHe5ZuIuQJpaDfcqQdafs3amdOEwYRC4PkkuUEcVWxVlJg9JEHkG/g
+ WdrZK+Nc
+ kRJZYrVvIEeuUfPOQ+wTI2zVjZzWj488Cn759Fsln+VFv6Ywdu3KzFx1k/a/KtgZ1EDiyax5HbH1XVSGJ2dyVw7QOmQVyD4t95rMDt7a9VqDsVyXI4U5Jn0McZHSK08N5YkWE+FCbBXj87k2EGeeqcC0jahqnjNepSkZ1qP4iSjx91qxJgDARZhmbqeeb7vrZIH1LE6W7lM8mpeOpU77jWoW0daQhxdN4rgtXPRyZ+fPwSyJHl6yTaKqdIOwGNaZYQ2La3GJYgV8visg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,11 +98,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_cmb() allocates the channel measurement block area shared by
-devices using the basic channel measurement format.
+idal_buffer_alloc() allocates the data chunks of an IDAL buffer that is
+used for channel I/O.
 
-This memory can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+These buffers can be allocated with kmalloc() as there's nothing special
+about them to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
@@ -114,62 +114,62 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-The measurement block origin must be 32-byte aligned. Each CMB is
-32 bytes, so kmalloc() provides the required alignment without rounding
-the allocation to a power-of-two number of pages. Reject an empty area
-before allocating it.
-
 Replace use of __get_free_pages() with kmalloc() and free_pages() with
 kfree().
+
+While on it, tell kmemleak to ignore the data chunks as only their DMA
+addresses are retained in the IDAL buffer.
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/cio/cmf.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/s390/include/asm/idals.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/cio/cmf.c b/drivers/s390/cio/cmf.c
-index 92ab3d546fe47..8fd41a7dfc20b 100644
---- a/drivers/s390/cio/cmf.c
-+++ b/drivers/s390/cio/cmf.c
-@@ -482,6 +482,9 @@ static int alloc_cmb(struct ccw_device *cdev)
- 	ssize_t size;
- 	struct cmb_data *cmb_data;
+diff --git a/arch/s390/include/asm/idals.h b/arch/s390/include/asm/idals.h
+index 06e1ec2afd5af..213f430a8d33a 100644
+--- a/arch/s390/include/asm/idals.h
++++ b/arch/s390/include/asm/idals.h
+@@ -18,6 +18,7 @@
+ #include <linux/types.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
++#include <linux/kmemleak.h>
+ #include <asm/dma-types.h>
+ #include <asm/cio.h>
  
-+	if (cmb_area.num_channels <= 0)
-+		return -ENOMEM;
-+
- 	/* Allocate private cmb_data. */
- 	cmb_data = kzalloc_obj(struct cmb_data);
- 	if (!cmb_data)
-@@ -501,12 +504,12 @@ static int alloc_cmb(struct ccw_device *cdev)
- 		WARN_ON(!list_empty(&cmb_area.list));
- 
- 		spin_unlock(&cmb_area.lock);
--		mem = (void *)__get_free_pages(GFP_KERNEL, get_order(size));
-+		mem = kmalloc(size, GFP_KERNEL);
- 		spin_lock(&cmb_area.lock);
- 
- 		if (cmb_area.mem) {
- 			/* ok, another thread was faster */
--			free_pages((unsigned long)mem, get_order(size));
-+			kfree(mem);
- 		} else if (!mem) {
- 			/* no luck */
- 			ret = -ENOMEM;
-@@ -547,10 +550,8 @@ static void free_cmb(struct ccw_device *cdev)
- 	list_del_init(&priv->cmb_list);
- 
- 	if (list_empty(&cmb_area.list)) {
--		ssize_t size;
--		size = sizeof(struct cmb) * cmb_area.num_channels;
- 		cmf_activate(NULL, CMF_OFF);
--		free_pages((unsigned long)cmb_area.mem, get_order(size));
-+		kfree(cmb_area.mem);
- 		cmb_area.mem = NULL;
+@@ -147,9 +148,11 @@ static inline struct idal_buffer *idal_buffer_alloc(size_t size, int page_order)
+ 			ib->data[i] = dma64_add(ib->data[i - 1], IDA_BLOCK_SIZE);
+ 			continue;
+ 		}
+-		vaddr = (void *)__get_free_pages(GFP_KERNEL, page_order);
++		vaddr = kmalloc(PAGE_SIZE << page_order, GFP_KERNEL);
+ 		if (!vaddr)
+ 			goto error;
++		/* Only DMA addresses are retained in ib->data. */
++		kmemleak_ignore(vaddr);
+ 		ib->data[i] = virt_to_dma64(vaddr);
  	}
- 	spin_unlock_irq(cdev->ccwlock);
+ 	return ib;
+@@ -157,7 +160,7 @@ static inline struct idal_buffer *idal_buffer_alloc(size_t size, int page_order)
+ 	while (i >= nr_chunks) {
+ 		i -= nr_chunks;
+ 		vaddr = dma64_to_virt(ib->data[i]);
+-		free_pages((unsigned long)vaddr, ib->page_order);
++		kfree(vaddr);
+ 	}
+ 	kfree(ib);
+ 	return ERR_PTR(-ENOMEM);
+@@ -175,7 +178,7 @@ static inline void idal_buffer_free(struct idal_buffer *ib)
+ 	nr_chunks = (PAGE_SIZE << ib->page_order) >> IDA_SIZE_SHIFT;
+ 	for (i = 0; i < nr_ptrs; i += nr_chunks) {
+ 		vaddr = dma64_to_virt(ib->data[i]);
+-		free_pages((unsigned long)vaddr, ib->page_order);
++		kfree(vaddr);
+ 	}
+ 	kfree(ib);
+ }
 
 -- 
 2.53.0
