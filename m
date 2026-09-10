@@ -4,119 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DFD4C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE89DC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:48:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8765F6B008A; Thu, 10 Sep 2026 10:47:06 -0400 (EDT)
+	id D3AE56B0092; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 827386B008C; Thu, 10 Sep 2026 10:47:06 -0400 (EDT)
+	id CE4256B0095; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73CCA6B0092; Thu, 10 Sep 2026 10:47:06 -0400 (EDT)
+	id BFE5D6B0096; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4888F6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:47:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67227A5057
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:47:04 +0000 (UTC)
-X-FDA: 85198129968.20.4B3D9AA
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A2D5340013
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:47:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="hIK/Bvw1";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0876B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:48:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E090FA039B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:48:05 +0000 (UTC)
+X-FDA: 85198132530.29.C1DAB2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2C602180016
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:48:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZS2dzQ+N;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789051684;
+	b=UiiOGqE5TU5oxfi58zE8DO9B9TTJHsl950HPLBfI8WLZraZ42drn9ZfR69Sq3Di8TBiqjU
+	OzmcameQJ+b1+QkfCVoys/QCVW+7TgiqzBb6G5KTUHfOazY0m6zFsfq8gk27ODWaRaDp2v
+	EloxwPgRuhR5QyU/yEBFTzqTpRNZZ90=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZS2dzQ+N;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789051622;
+	s=arc-20220608; t=1789051684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kKkfTdA2RhAgMUbRVAzf0FG3CakpaY+N8UoEfITRbZc=;
-	b=nIMhfe7Bx7lPkl3W/JGlTfZDCm26KsiCRxz0I9Pfm2S27SUDMGVKSAAyo9G0e/F2Fo99ku
-	59gyR+SIQV64mlqJCxW/iPdg3EPUIrjjtMGFms/s9V9rpeRoO0cUtVoh7OyUTQ3ZS0kf74
-	Ro702Knsd+Z3FzrQ0w5oaC0eyyCA6Zk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="hIK/Bvw1";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789051622;
-	b=Bkape6+Cv/gAnrvvMBUAsmaPpGee8V1UNNLQj7hjwfqvou0QUZ6WHYbq8/Na+mR4aenJ87
-	kTM1aYdgvASjxqnroQaqc/CuDQr1V82OjPnoPz71UA4a5DD2c4hz4Ff/YEeM3/9hAkx1Lz
-	pM3p9lVPwdEZuPmm76HS58bHQSTlGX4=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-939e50ae02dso23982285a.3
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789051622; x=1789656422; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kKkfTdA2RhAgMUbRVAzf0FG3CakpaY+N8UoEfITRbZc=;
-        b=hIK/Bvw1YtrIoIASGt1eSkyLQgeV3hJMIEZc3WLfFWgUqdy/H5Z7vWF3eRRbZeADTf
-         rtrz/nPkzAmINu8IclBS0ZsRtyqi/TpB9SlpGjyuGW7PbUzKRM3Z27X91HZrPLzDOzkn
-         Ly7pFE7XqZf79OWf5k8S8imgPqec3JvqWHl6K2qvb9+F5VDfZktIGUxDwr/4JFVyadnv
-         boYX2kEvg/+O/kGyFHAmXPWSibg2793gM+/wkgS/16jMXZMx5unVIz6+F6yMCg0oOA1w
-         c4/HnZBpc2HwQeBY/rQLf6P8r3T7bR4wKsdCN5gHtemBY9bXp2oZXBb9qfrAcSA5gBox
-         84xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789051622; x=1789656422;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kKkfTdA2RhAgMUbRVAzf0FG3CakpaY+N8UoEfITRbZc=;
-        b=ceoV+yM5vFT9qAU0x8XPyxfVcv9a18Be3zd0XpV36yZyy2N1SdIAC57Xn7j6hOs/D9
-         Mb+YbSLhuAvtpG2WB5RhMUgPQDcLVu/IjHDJCLkVcDIiOKw3MD8me2xYPWxOKyu5spVK
-         TCcOTnTCDS09T+50kSB+5V4UFW8eMdGdPGS2kIyNnbOt6ugGLFHEpkyB1GKnwoUzKAYg
-         TSDT6WkdF6Gz206d7nxj9atRaQFk8xAYOZpayqZhQ9hdJFI8gMkOj/REuIwgOjhgzmwz
-         sOdL3If8yru+0NiClr+mRHlPdfM4dkwL+KcGczs81YSTQ0Rdc6MI64bo5oNnf+UrNujf
-         tcvg==
-X-Gm-Message-State: AFuF++mMtcLvJP7PxAjquDNz2ifJiewkomyjrmqSon5UKqHNs+0J4xhM
-	1CkXgSjBfMcpPhRnMk3c2gn4Gb8UNP5OkVKQ+9vtspopPzsgQ+Oq7npE5yHaAHLQA3c=
-X-Gm-Gg: AYBFou3L0T0c52WZB76J8rPnrxTpI4j3GIV4V8D9CiEkvnpqCGiMg66fkMEEyxXl3Ep
-	VSALn0kMK32H0p6ROZHjfm0Kuu1aK43gtaNzOQCbXG6E381F5mF3uw66+R0G96yEKQX0p+gFR9B
-	hNTZoEhvcH+dZyGv3v///aM+VQNiIcG48QUBWrGa+O7GN6Cgqx9j2uUf1REfYEz0Onqp63GbM8Z
-	J0AlFdRYihFAvXONk+6mv+0z7yoYwearMt4jHs6dPU0hykGKNzek0fhzrYkPrpeJ13SnZYilTaz
-	GXdn3BB7F3gXubGlwr0vjECBJD4Y+c45ZvrRP0I5ISpS8NL+gZ/VroP0Ss+k8fVeCp5x06o+RSt
-	si3cLfCYkrpOuSdrC/tOyYB0VmR3Q7EvyoWYgm7UlmxnowjxzVLjAgiSULt7e48kXGTMX6dcW3V
-	4jCLQHuowdv+CCgL3JK17QZ160bOg0mH7vEwvSJYisgoD5ifgr//xI7/AydsIhGA+0DtDIR/x7W
-	EUNAqiyStmlAYfmBmkm6OmfEbZj37EJDvjeh1jzOstnA07MlrmzsQY=
-X-Received: by 2002:a05:620a:46a7:b0:939:744:b5a3 with SMTP id af79cd13be357-939806da02cmr4694331285a.29.1789051621645;
-        Thu, 10 Sep 2026 07:47:01 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e7da5f59sm1310085a.1.2026.09.10.07.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 07:47:01 -0700 (PDT)
-Date: Thu, 10 Sep 2026 10:46:59 -0400
-From: Gregory Price <gourry@gourry.net>
+	bh=B8LvULR1C7zHsgbEpOUrhn3DOAKTICCIgCcp9Moo1AI=;
+	b=oRqh1QbPynIAPKL17MCmX8xB5FjjddJhYnFX9KonChcgnSyaSiZFmljTHIDro299SI4I7L
+	YYlSB8j0ZhwNz/lUMKeUokmzoXY8rhALEra7ZnYXKojl0jd4cdmVII1HxHu3hBWRJgrisp
+	PJ19+sNN+BeJZCcpnshfBdCVMEF4mAs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 48613438A7;
+	Thu, 10 Sep 2026 14:48:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601061F000FF;
+	Thu, 10 Sep 2026 14:47:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789051683;
+	bh=B8LvULR1C7zHsgbEpOUrhn3DOAKTICCIgCcp9Moo1AI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZS2dzQ+Np0U4OAn0VVXIzCeZ5ieBiFxzuXO32HXGZjox2imU5YQqAvF8SDv3+HvpB
+	 NxKzJ7t53F+QsLxd/CAKfh/ceBGbni9Duv70Wf65QpPhB0zouKNuCKjxwxHBz7Ulrb
+	 YX/D12ZD9xp4XqsIIVhy+Pz4Q98Vhg7jVxbdMioUiDrhm08tGlgTlHSNBC5ULoSm7P
+	 RjDqnY3JtId+Xe4grDputbR5RuXHVt8PwdzEvcy+eynCsYB2Ookav39t3u54y4bkvh
+	 iX1Yd4WaL2lpHCK6hln10VYqPdfl55bipsdfB0oRiHwHmEfLJXIjbCAbdjH9fkO7ly
+	 YP/fvHYNEODkg==
+Date: Thu, 10 Sep 2026 15:47:52 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	pbonzini@redhat.com, seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, shuah@kernel.org
-Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-Message-ID: <aqK6aj44Tn3bilry@gourry-fedora-PF4VCD3F>
-References: <20260902194657.79075-1-gourry@gourry.net>
- <9b67424d-70e5-442b-9ec7-22b1d3db12f4@kernel.org>
- <aqKzIO3DD66Dhkdw@gourry-fedora-PF4VCD3F>
- <6285ebc9-fee5-4f51-9ce6-b840f9dba65a@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm/memory_hotplug: drop CONFIG_HAVE_ARCH_PFN_VALID
+ handling from pfn_to_online_page()
+Message-ID: <aqLB0Fe_bCRSph9E@gremlin>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-12-008fc8d579fe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6285ebc9-fee5-4f51-9ce6-b840f9dba65a@kernel.org>
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-12-008fc8d579fe@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2C602180016
+X-Stat-Signature: 5kgjh5ezi8hf9prmp9ne4mq1s5nmaz54
 X-Rspam-User: 
-X-Stat-Signature: n5d3f4pte1gxzrjobojbac7di78qzk6e
-X-Rspamd-Queue-Id: A2D5340013
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789051622-599564
-X-HE-Meta: U2FsdGVkX181Y6fPBpciKlhA6jQczfxWDINz/sK8XTu97DZBtVNERc0OJsICLPGWRjbbWXi2aIiZ1/JEap+wqeG4hzUh5vCmcRvJQesnoCtR9N0baJ3o9+TnC8qkNHfHjEbnH2a+21jB2Ckwnt+1dIlfRn0GYz70BoIosAb6GzjWsf9V88e7fiaYRnrpLaw+3iuDKZJaOuG6+ZTevNEcSFpiFTLKjBGnlLQcTSR/yDm/cyS7/9A1Y0c1DEoRMJ7UIQkZHZ5kZl6NTynGkHt210bPtN+5JfzFA2famdGFnBnRlHEo86ing6e1JzJ+JxyCIsTa6BNHlVagSlEnEXmdRNDe/Id1wWwNbf5Zfqcpe6Eh6oMes7A3bAlmoQ0W3ObESpWMvuUMOjKv1Bni98GRUSeq03d9flMk84FrRYMg8kYCut46enW+o9bLsgWJTDmi+k2ahHRiS0X7Xn6Ry/rV5Yl1Cs0arYwYflf0E43bar6JZKBWDsM8Tj7Qrz8QXQwfkpfAClP54w+EKSXYKsP8J4bQW9nqgXyujDY6085y8QBDKY5GD+kel7u3wNLwYgHuIDrpQRni1NpD3htodt2ppzAZOxGrayDtIm1tNZM+ZiFXds7XOvRMqHK00OGvrsjfVn4069GEQpttKj3nd1LhrwULvTqg6BFbJcdubf1dGiRH7R5/PJhK1gaN/Mp6hy0MRNFku89z4TqFOXBcdKs8jzLbOLOOtmnhzmjMbpe3Mo1AYGTNlDbcUu7Me0X/jcTSAXVl3IaAdGJNwlZlwsiYvwdSkR6k5DXJ17NX7rQsJY85C1ldZGHZJk9TEk7NO+c3mRtL5BMnIbpav2AFkD2DKISLgxeewYjM+puPMuoUR8+ZsTgn1KzwX4xAX+dANda0PnJHb32BUdNskqvJ/nAx2w3X3V5UBXnnQijlL9r3HPXdtPWBLbuw7+jQL1QEWd8S4dnW1/dD/ABLZEpCsqi
- p1DCMBcY
- b1JIE8L9NgAVJ3B+pwT8BXwuUCnOBO9JI752l5615XuvqyrntLV7bwsIIUksPBPglqUf7rhMA70NPXmW/YlCE4NeZ+bfkunSVQdwmDk2gSa82c4/oaMxzdd5oj7AWuQ6BpTjxmq2tYo5QL8DzxttIkFkGYnLfDbbbU3r/9OTra0AyHCrhk4xluNU5yj3itwqANpWM1kXLbaV2GY/Qk6gC/x6qSGTXiN7ShzDRgjyPY9n+R34XOKdvrZ37NHL6FIq4/DW7fYNeWLC0fZ7gjluvgxVuyQ3sRTvQagYAsJZRhjAi7KHaL8lQy5w138oguSLUQC1VSVwofY1iSoTo2TPs18vzp0Qy0eoAqhWrvtdR8OnSWqTEGCKez08tiKmEOx248TjcuEmo4QhOBWz2fZ+SNPr5M9hPNyRxjBjT3zGVo2to8Ic9ZZO1JPLwGGWxsj5f2Yvb/TedWR5WXWJc9xmx95idZ9BNZ1OtSakVc+S7OuCe+ft+mia6oBedkWl01TaJpkoLhodIqCDnC9s=
+X-HE-Tag: 1789051684-539500
+X-HE-Meta: U2FsdGVkX19YGgUapqwMPQaMO9+saICT0RasG8rX1z8jDE5THv1UqN3izonJ7mxWh64of93AemJSPiBJt8dRuWp9FEY7wmh7kSnWbq7WPOocNe72nY/9AEUuNO2tNSd5kpeJ4KHVzXqHdWejH6dmEvhSZTZCLnnzqpdpT4hUFKMNSuRHrblWz9R/aVzEklrgd3pycqc8kpOwoKBcllrDJQtfZeU0k77QMnbQetdwDYepWBQ5hXwyVaYkys7C2SyLiMB4VGBlKAKhQzxobrzDTCZCMec0ZzcQkCBdehck2Gw5Mk5YvpobFvVNWQ5m6mwnSdQxhmTdtUV+PVmkR26kZEtplbPp/IwTt/RegkapA8ggKlryRJyj9MzAkilgdLQgnvqII6zX5hPzvb5an1TEjVC2zZuMAfKiF/kq84Hk4H80K40LTtGSta1f79YfP3OjNMcLZxvzU7F0oB2WEXKbqQT6DkJ5pA4QJ8cO7SgOXlSi3m+dCL3aol9+PSgpOIch1nXVQgAzk9VVyarvgOpfctHfcFiTij3mCg8jAwluH7WhafVovdGZEZfznqnlyRurXwLmWmkx8abrloPi/XzdeuaLfs93LWWHwUs5M7TM8iA6EdB4m+IYw3631d0Gix7Xbt7ZylYaHB0j8IlAS9VYIjaSNs8k5/ehx7Rj48aUMFKGUyQAl+c1mntRGO8dMOugqXKynacUKzEiCX0/Rqck8xSuwxJtF3WBXC5YFbWZpR7SiAypY0MP9yX+ufXP+pgZezO0+OTiB2EY/C7oKOLTwq6sJcPC/tYjAzEk9bPAZ3mJ3fQ4/HD6nVUkpIqY77kp6sL089uHDXOIuVl3zSBkAJaykh1o8VyRwKuz+D0cfEo+ttZa8bpnVkWFyI9pMFdI1mRNpuAiC0A072qYBmQRim3Ww2s2pK220FSNrbkQ5x8JqG2r+A79lxt+Fk+4yFznN/alyc5+8fn5rblnQYB
+ hjfcv0et
+ YPxJe34cDSvxUDobgGNR5ohyEGZ0wEXn0dVH5t+fThmwfumQ+0NTVTHsH5SYynx5V6B1QPa/VFhM7NFYXIPEujuTSryOsvUCXYYJbylS8kL+2kY148SERgaR+0V1AyJBzXJudiGoWz4WBIq6uUCYmWToJ+khErm8BGeU7MpXEufJhSwyezl5X+midtOW5OIqNA7yi1vf/dN3FVrdj0pQawv2KP218kRF7kKArJvAmKkh7ti5gfTfX4n25D+zL94eekSVUJuNy1sfTq7VBlIynHxM7ibVeVAH8CEw4yO5NkgZgL8a4G1vEJ/bTmTrjIyOox75ED2AstMK7DRE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,82 +103,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 04:05:36PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/10/26 15:40, Gregory Price wrote:
-> > On Thu, Sep 10, 2026 at 01:30:04PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 9/2/26 21:46, Gregory Price wrote:
-> >>> guest_memfd allocates its folios through a per-inode shared mempolicy.
-> >>>
-> >>> Today that policy can only be set after the fact, with mbind() on a host
-> >>> mmap of the fd. That requires the fd to be mappable, and it cannot reach
-> >>> folios that are only ever guest-faulted. Neither holds for a
-> >>> non-mappable (confidential) guest_memfd.
-> >>
-> >> That looks like an investment into a mechanism we will soon consider legacy, so
-> >> I am not convinced this is the right approach?
-> >>
-> > 
-> > Hm, I think i've missed recent work in this space / this context.
-> > Any suggested reading here? Don't want to eat too much of your time.
-> 
-> So the big development happening right now is in-place conversion (having shared
-> and private pages managed in guest_memfd):
-> 
-> https://lore.kernel.org/r/20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com
-> 
-> 
-> The final series where we added mempolicy support should be:
-> 
-> https://lore.kernel.org/linux-mm/20250827175247.83322-2-shivankg@amd.com/
-> 
-> (I think you are aware of that, you commented on some)
-> 
-> See my other reply regarding the use of GUEST_MEMFD_FLAG_MMAP on private-only
-> guest_memfd.
-> 
+On Wed, Sep 09, 2026 at 03:33:05PM +0200, David Hildenbrand (Arm) wrote:
+> Drop CONFIG_HAVE_ARCH_PFN_VALID handling, as CONFIG_HAVE_ARCH_PFN_VALID
+> is never used with CONFIG_MEMORY_HOTPLUG, as the latter depends on
+> CONFIG_SPARSEMEM_VMEMMAP. Make sure it stays that way.
 
-Ah yes, i do remember this series.  In fact...
+So argument is:
 
-https://lore.kernel.org/linux-mm/aPD-dbl5KWNSHu5R@gourry-fedora-PF4VCD3F/
+mm/Makefile:
 
-```
-So this inode mempolicy in guest_memfd is really acting more as a the
-filesystem-default mempolicy, which you want to survive even if userland
-never maps the memory/unmaps the memory.
+memory-hotplug-$(CONFIG_MEMORY_HOTPLUG) += memory_hotplug.o
 
-So the relationship is more like
+Is memory_hotplug.c even compiled at all?
 
-guest_memfd -> creates fd/inode <- copies task mempolicy (if set)
-  vm:  allocates memory via filemap_get_folio_mpol()
-  userland mmap(fd):
-  	creates new inode<->vma mapping
-	vma->mpol = kvm_gmem_get_policy()
-	calls to set/get_policy/mbind go through kvm_gmem
-```
+mm/Kconfig:
 
-And quick skim of in-place conversion (wow that's dense) 
+menuconfig MEMORY_HOTPLUG
+	bool "Memory hotplug"
+	select MEMORY_ISOLATION
+	depends on SPARSEMEM_VMEMMAP
+	depends on ARCH_ENABLE_MEMORY_HOTPLUG
+	depends on 64BIT
+	select NUMA_KEEP_MEMINFO if NUMA
 
-```
-  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+$ cd arch
+$ rg HAVE_ARCH_PFN_VALID
+Kconfig
+1762:config HAVE_ARCH_PFN_VALID
 
-  Set attributes for a range of offsets within a guest_memfd to
-  KVM_MEMORY_ATTRIBUTE_PRIVATE to limit the specified guest_memfd backed
-  memory range for guest use. Even if KVM_CAP_GUEST_MEMFD_MMAP is
-  supported, after a successful call to set KVM_MEMORY_ATTRIBUTE_PRIVATE,
-  the requested range will not be mappable into host userspace and will
-  only be mappable by the guest.
-```
+arm/Kconfig
+94:	select HAVE_ARCH_PFN_VALID
 
-I guess the thought here would be something like...
+arm/mm/init.c
+121:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
 
-1. create guest memfd
-2. mmap(fd)               -> prior to full guest setup
-3. mbind(buf)             -> shared policy hits the inode
-4. munmap(buf)            -> policy is NOT reaped
-5. set ATTRIBUTE_PRIVATE
-6. no longer user mappable
+arm/include/asm/page.h
+178:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
 
-That doesn't seem unreasonable
+m68k/Kconfig.cpu
+23:	select HAVE_ARCH_PFN_VALID
+40:	select HAVE_ARCH_PFN_VALID
 
-~Gregory
+arc/Kconfig
+463:	select HAVE_ARCH_PFN_VALID
+
+All of arm, m68k and arc are 32-bit arches so by definition MEMORY_HOTPLUG
+can't be selected.
+
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+So LGTM and:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/memory_hotplug.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index b428da66d279c..58ce35cb48f57 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -344,6 +344,8 @@ struct page *pfn_to_online_page(unsigned long pfn)
+>  	struct dev_pagemap *pgmap;
+>  	struct mem_section *ms;
+>
+> +	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
+
+Haha nicest way of removing some later code I've seen. Just make it not compile
+if such a thing happens :)
+
+> +
+>  	if (nr >= NR_MEM_SECTIONS)
+>  		return NULL;
+>
+> @@ -351,13 +353,6 @@ struct page *pfn_to_online_page(unsigned long pfn)
+>  	if (!online_section(ms))
+>  		return NULL;
+>
+> -	/*
+> -	 * Save some code text when online_section() +
+> -	 * pfn_section_valid() are sufficient.
+> -	 */
+> -	if (IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID) && !pfn_valid(pfn))
+> -		return NULL;
+> -
+>  	if (!pfn_section_valid(ms, pfn))
+>  		return NULL;
+>
+>
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
