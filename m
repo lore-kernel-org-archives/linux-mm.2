@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC7CC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 663E2C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C75AB6B0096; Thu, 10 Sep 2026 10:09:27 -0400 (EDT)
+	id 720B86B0098; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4D246B0098; Thu, 10 Sep 2026 10:09:27 -0400 (EDT)
+	id 6D7CF6B0099; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B62306B0099; Thu, 10 Sep 2026 10:09:27 -0400 (EDT)
+	id 60D6E6B009B; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 960ED6B0096
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:09:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0B3AA0582
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:09:26 +0000 (UTC)
-X-FDA: 85198035132.06.BB90BB3
+	by kanga.kvack.org (Postfix) with ESMTP id 3EEF86B0098
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:10:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF06DA0584
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:10:47 +0000 (UTC)
+X-FDA: 85198038534.05.C0CD334
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F2D1B40017
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:09:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjaE3rzW;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789049365;
-	b=BfzPAfwyjXCI1TpRmM6AoUKgpE+tVOrtT/vcNqacHlbSXqapmMsmOsalBDKqM4/SvPuKik
-	7pjYGz4meDozWaHblvtCZNT0cfEeQ2275nxX9Ch42Y78FVmOcuJRo22Fg03zKoQRFiHQ/T
-	RFtJG7Vst5XSsakMu8i70/p9M53wCsM=
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4253F140010
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:10:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3YlUNYI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjaE3rzW;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3YlUNYI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789049446;
+	b=QEFbcGHJobUVymQ4It0zvTZAAr4xKeReo7UUN49VCX/sAhLnzgB3uEWOeoXn90N18mWNZ+
+	gMvYmiZwIMZ1oOjU2m07dZQDnAoVJSri8Myl1wHtZ/krTxtpuNzfeTkIa75Xzz7Abp6hP5
+	ugoHFnGQ0Z2InT6uhQRlHvUNz3eLcCs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789049365;
+	s=arc-20220608; t=1789049446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TR1SI9WlTbYYCKxfXulyIGLAxEW6EjpI8Ciu8i5LN8=;
-	b=QWovo0mTAMCr6KC93p9q949rVEIrw98LeTwwkF4tnzzR8+1HJyKX2TjLQdJbys2fT8vIud
-	Gr4IK0qq++h6m/jOYTfM9YJRJlC2EoPS/99+fPlk6Tffit6nkuxDQq+1i/dPF3Ob/XaAs4
-	oohb1/xNOvRzBWoT80K/kQtm7t7XPEg=
+	bh=uCtMBc/69YQLL/vmB0BOFo8lbp1vfibmleZ+RjFXS78=;
+	b=57IW/uI6SpIgVJQGQ7QnvGIfme2ubRw0EPD2P6RCQC9E9+cLrCveOeTEEmiO/GZ118byyf
+	RvITvveOYXz6OjLmdROJYzsfESiJjovgwKi/clN+Uu+IPiO10z23qiwpkPbQF5fy/jHmEH
+	B+SrRw4QEu232q+UvvTjsrcVABI8K/c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8986D600CB
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402F71F00898
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:09:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CBD92601F1;
+	Thu, 10 Sep 2026 14:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4CE1F00893;
+	Thu, 10 Sep 2026 14:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789049364;
-	bh=+TR1SI9WlTbYYCKxfXulyIGLAxEW6EjpI8Ciu8i5LN8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=mjaE3rzWO7cAvdi+EKMh6csE534Io9btmVmSOzmYfqu7Bx1bQ/z2V/S1ksi2tXvrt
-	 5Rf/JMOtGpaKjYywJjBgaPYmUFXTIXUNsi4JZ8NznxaD4tb4YQPILzZB/wteFeBfoS
-	 6MTUo+Zi9KRADh3I7KYlTH5xHi9cAK4lxZIJXiCju1FDhBh+1di+aus1A66FSbSudF
-	 fLCx0z2w4uHc+MTYmuKkexgOnRflSg2bFJmoG1ut+lAELv8fke0Z7kRfngFbqmKO/G
-	 WqnZjkRoqGZe/rksjICVIPiTWcUbOm5Tw8CAj6MYRY3PYmqmRsW8li2XBeJHGi3vBM
-	 Yq99qfLj4dO6w==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1c52d920b8so983701966b.2
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:09:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxEeTvK+3FKNj6t/BUY3dS65qa5JqjDetspwoDgUYUozoqPTtgNqBgLcds6hmAegbuqsqlJYzlmhg==@kvack.org
-X-Gm-Message-State: AFuF++lPJWFQbeCKEADP8DAZ6IW1y3Fko5EVkELSpIZJHqi2/5/MJbfj
-	+M756jtojinHpCmNNa2f9nb5i9lOImGJrMPBbDYafW59qjDhjs/mPtilPHw4iJvNBS/HH3LSBXx
-	KKxxEL0TwK4OW5GbfudWdPq92d9vlkvk=
-X-Received: by 2002:a17:907:7294:b0:c29:566f:531c with SMTP id
- a640c23a62f3a-c29566f5b38mr83551966b.31.1789049363181; Thu, 10 Sep 2026
- 07:09:23 -0700 (PDT)
+	s=k20260515; t=1789049445;
+	bh=uCtMBc/69YQLL/vmB0BOFo8lbp1vfibmleZ+RjFXS78=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=L3YlUNYIYpaiM8jp3G4/WuOcLTOnIxdJwv+s+8uTI+kxKX65VwPDppqs+JE0zLvaB
+	 NyDL2tInHbN7WThAmEhEtDhajRt1wFhhlIP0DMYqkynGRaURQKkbceSBJoxJ/3ZDTM
+	 J6lzpSUHLaap9Dt7WgRzlmjkj+bowVZgXzobSJsWSohOBQjZ/E6lrjUrTQ55tUmUIr
+	 hMBJoBiYnzzrCJR8o5kVUjQ/y1OkQCOrwlU38jpAP4x0CyC2YjOdvnevQAo6H4vXqx
+	 gV1MqVpoDsbxEuZd+4owbI7fNw3vqsA2KdqHm7qUqimV2gt4p7d6pfDdQSJp9lBwoM
+	 vDf49WpFcvzZQ==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Docs/mm/damon/design: clarify when qt_exceeds increases
+Date: Thu, 10 Sep 2026 07:10:37 -0700
+Message-ID: <20260910141038.169135-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260910112255.157012-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20260910123544.818146-1-wangkefeng.wang@huawei.com> <20260910123544.818146-4-wangkefeng.wang@huawei.com>
-In-Reply-To: <20260910123544.818146-4-wangkefeng.wang@huawei.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 10 Sep 2026 07:09:11 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPj=uP2ZcDx8ycahjgkb3Dodo=ou4Ry2W5d_m_E6xL57Q@mail.gmail.com>
-X-Gm-Features: AcwNN1VArvysjweyxF6anKXyNwn_HpHOpUsrbt-TuWPQXbxLudM6ULJuhFBwxgY
-Message-ID: <CAO9r8zPj=uP2ZcDx8ycahjgkb3Dodo=ou4Ry2W5d_m_E6xL57Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] mm: zswap: reuse zswap_invalidate() in zswap_store()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F2D1B40017
-X-Stat-Signature: m1sy7ybwsygedz36jmyrh6w4p9bqrjn7
-X-HE-Tag: 1789049364-439207
-X-HE-Meta: U2FsdGVkX1/lcFU78vQmFV0YrSSy4tLowOO+l/Xi+RYfw3Dh3GyaPX+e2/rOyjhgeVggXqvFxVH60bHMPMA6QdqEd1YBLZKs/MtPlcs/G0Dm1Xzaagbqi5F5IbaTNrZV1kEWslCmy6njp14soiKGB0g02hN/KDiHk6uo0uXvixvX16MszzV1ATVKyejBmzCgrUOoBpKjw2Qh9RuIouwDIrB6Of7x8A7IHTecWQbh2jhcv/pvyELyvHYmSfmOBTzAc2FDEGi8j7L4lyNVpZFDZftgKrtg77PfwrKUYWjvvuBQpw7jMSw+4X7RY07HCJoitOedhcbQ5Z8UNQ5QKb1GzBiuQSOkekvzrjYrZcYpEDWKKu+O2W2YfZBycjiS6bK2Sc/9yMu4MMFF7Rao3IBRrooYGpYltMDpnP7M6gUnSu0zox5iBCsUGPqFU+kMzwTULNHfc9Mx1/U8VwdU34Lib/0CiGJGLnLwKbT+H+aghCSHyk0GfTMKkXrnuoUHB/Yv8p4ea4ISGLj6lXh9k3/AoCVHUYJ2MqCZOVe7haggoAP3X5+lS5ZiWmWhctuWxVQU74gYyBCYy3yS5oCIy209gmJm17z23rhJjOonEnUbw+Manhu37rcbhmYoC60NWY/SLG0PieQAZ8OnedhNWd8ftTe1IoIc9JAYMMSwfXtlW79zr/TfhpLGnF9gnLnRGlvihYdFvxrneabAC6f8Edzw4FKQ+pmbd07G2I5dZXlGcJUy1NIXWryt94k/0eZ7v250EMmirYehs8jKXIbypfHG4f70/2BJHdPnSDkwyPUd+ITI8jfR7oiFUpECv3WfdlaiTyrU++yruFuAukzrw/T/fIuGT6HmuGdfHe6QW59Y6iFn1kHWCV4kGR0TLfkTXzrisRNufoOQX8WS8pQpEcKgNfGA7IUHzcg5lWvLZQPZGL7Tku84ng1+VqG44Nr1qnN2qRWvupK5uQqVK4tW1Ci
- JPKmA5Wa
- yAc24mJXsVDCtiYbTz9Vlf1bSMySEafa7pv+uaIaWjvscfHCP6mBphHL39ZKIzA7exjJuG1prpa+Nah47YtFpY5rmUM+uYELADwN+v84qZq3jopE6wwL/a8I8VwqNquzZAWAKKbW9FZ6WD5NFJ/Bh9IwOzh2nYEea2aFC7Ty/+qhyXscME9R+uvq7apoFIxhJXNKYyrFh1DekUFZZZMIBEPnAK9Ai6n8Pgvn08T6Ktf4FH1cHlTBMz0lfaD2sUxwo8oi0eDG0T/5GurnxFAGTNAcq3Um+DAVtsbqvsQ8u8Kcx8mAsNz3i0ENIirl0BrWC0XcWszuRsOtsGkUtNoboTTpeGh+v7B1ZTrY50KNp3OrJPDfwaAPf3TGtxrSNaJlSqjAemFHdN4C7AlAjkNVSBh1tEw==
+X-Rspamd-Queue-Id: 4253F140010
+X-Stat-Signature: ucuq6wh93hxkpjw5i9gx7z3gze3abjp3
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789049446-861103
+X-HE-Meta: U2FsdGVkX19Gd8pP8+bbyQTnyDpa5uzjHyD9e0JAJcxAUVPQhhsR1rpxEzGaOACHgG1Ur2Ta0lZOTtH2ReIwd5rMZYMphCCx4T2TibNgoh8/FGbwEmYDVhdmOnsOOC49Z5hRP9kzNmtC8VgWw688IoGHlQ1RfjV/JAklPxS1GFriH/as6eXXtoFYiSC/ly/u7bw/7M+HoZDuIfjPbTIH9lnXQzaiCsaMn3PLZ4S4zfZge6Hc0NuR4C0xLQ6EW+MzY7L2ymWa3VBUPojOq4ujF0LK5rn1Rk/1vUdAxPb014MWjTT+nyhieFselhFQljYPWFfZZrR0Wglg9RuFo9v8I0i5jue310RgtPrqTo1UmmtJeThbhHZ/1m6GorvSPG+Ia+68bSkwF198z1yKnfadhaIUfGLLmp0TYxTEzsVTt2c+H3I4HhAniWry2KAabZACMjYPewqadRMQsCWuqX8lls2kmZdKVdM5WQJqwthsaxVGYpFM45RAmSa/iezCFPyVsAr6OU45AvGaihKzpWeQ+/d1TyX6OLM1HxJV8TPPz+A47p5gLC+3PJXZS4cZ5T6un9aBD9496aNH+N4CVg+djcgPm/I+tkx7B70JaN9KASf+zSjcnU4kGXiyVwI8PVR1ov8nQMbOTmTUgBRH4VCpik2s2UlG8G/2bA4JyOxf0PZAT8upfoylf/us40TRNCnxIYZ/QdfQy5LX1UQ+RPqyYgEOAxHlcDmDK24SP84yIoTfpbKNYAEJx8pMZYOErLO8LRbOdP47Ggo2jtUNKHHpaqyRh15nzgusfHc958RqWxcv9E5grU0/xlPCqAUu3EHMANeYX4t/GqeHwLqY9uLfpJHbDL5QRWUd/dOJgoIQglkC6oBbo8AnwjCoMN2xnw5yTr368y0ZCPUbHEa1eqq4PncnfCeWOEi2OT8FmMAVfa+j+A5LHiaED07Ys8obnpzxZAwPdKyxM1zjtC0cuwn
+ Aw9dI+Bi
+ kHke0MuzCjc2/VWYZa9a33NdvlxiPcV6BPvdT4ohOpO+0h4R0dbqqQr1Eh5ZLPyC/NbHrUzCNsey3CT0NxayhW98UVh2MOftfpIsi+GSq0fe/ymIFAHSZtikJNTVV/zulIptn8qsnDdUxvn0GFUMR3DVEbqHM2UsEqle9YGg08FYGEeQp/CReR4wOpbxlXqvmbg84MbI+y9pGxwS+gWdEHSmvevyPnhiqO13Osr+0I21X+bNjJwwnNy2pcUjdoy4WR7i3YA+Pad0Ifv/9uiNS8S+3HBQWAcFHfnFu9oXlA+D8hbjz9CD+0jiSiAK+fZqUs16WztE3/W/yCw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,14 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 5:36=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
-.com> wrote:
->
-> Reuse zswap_invalidate() in zswap_store() check_old path. Its
-> zswap_never_enabled() and xa_empty() guards avoid redundant xarray
-> lookups and deduplicate the per-slot free logic.
->
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+On Thu, 10 Sep 2026 19:22:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+> qt_exceeds counts how many times a scheme's quota has been exceeded.
+> 
+> When using the temporal auto-tuning algorithm, the effective size quota
+> becomes zero once the goal is [over-]achieved.  In this case, the quotas
+> are still set, so qt_exceeds keeps increasing once per quota reset
+> interval while the goal stays achieved.
+> 
+> Clarify this behavior in the design document.
+
+Thank you for this patch.
+
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
