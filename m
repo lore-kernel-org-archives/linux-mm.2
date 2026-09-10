@@ -4,140 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDA5EC79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 18:33:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42259C79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 19:19:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3E8A6B0092; Thu, 10 Sep 2026 14:33:10 -0400 (EDT)
+	id 061916B008A; Thu, 10 Sep 2026 15:19:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC7AD6B0093; Thu, 10 Sep 2026 14:33:10 -0400 (EDT)
+	id 039226B008C; Thu, 10 Sep 2026 15:19:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C68E76B0095; Thu, 10 Sep 2026 14:33:10 -0400 (EDT)
+	id E6AE06B0092; Thu, 10 Sep 2026 15:19:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DF4E6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:33:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D0181A0640
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:33:09 +0000 (UTC)
-X-FDA: 85198699698.27.57C5D1E
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D56ED40008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:33:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGSDRc6q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC5E66B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:19:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25EB41C2771
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:19:24 +0000 (UTC)
+X-FDA: 85198816248.18.6D98F68
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2C8AF140008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:19:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="X7SvXni/";
+	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789065187;
-	b=hE0EHFsDsthDthDeKvR1oY834ytTH68ouwqk6NOmP+aGEtB1jFA++IiFVpHx9pvUaLUvoE
-	XKtxixM9kkKQIQdml+p6pj+s4kMOjInGlLXmVvaPKyxY4UOV2VpifZt6ajLd3xWFbXI9XA
-	d38kxJMwiPxr837nxgL6duPLg/pIKJA=
+	t=1789067962;
+	b=ak2jW4QbOGqXmZCDMm+9loFr5p5ZYcpMmJCSfWbVrfXn9pgwT2+RN5NiQHjVxKw/YL9XbM
+	NR3ezoFpLND2u/I3bngycWKPPUiZrWM06jP0J7rkF5CFEVDY1b9w3NaR51TzPpHd+mIxzu
+	PxtAEY3hI3qRYQYV6AkjaSpTTX8604I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGSDRc6q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="X7SvXni/";
+	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789065187;
+	s=arc-20220608; t=1789067962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ost6d0L83lIoeZ+lEEXbmuX93WTw58C3/ZwNuzffpI=;
-	b=xZHAtfFlpKUTaYKVrX+MnqhIcDj7gQwfaxCiZ74lvVYR4y6rfpjr6TtoYJoUQWH9VcvJyE
-	q6XmA3rFsdAbTatAmbznFpE8VVxNynTmURsd843v6GRf23jo19FgP/CsJqTZxOKRX2YaPD
-	0rjNAbEXBZrryLlXsNLonwXJkMHsnNo=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5faa1cfso174235e9.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789065186; x=1789669986; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6ost6d0L83lIoeZ+lEEXbmuX93WTw58C3/ZwNuzffpI=;
-        b=OGSDRc6qSYY2pEQl2bCC5V4g6e8n66coXpkuRKDRMP1ckGasZuxLO1YHCRacLDadRr
-         unVsXDMwebOLzNR3cNDgYbJ1GbBL4g2o307J+u1XJpMF4B03s7Ur2baPa6INCNWGTuuL
-         Y8mpBhKoT+NSHV1NPEz+OHIApJavnt40Vgf+16arnBU4eH82mYB/AGbTCGJSFQlQTDVc
-         CvsVR537KJavv7mdNx16PD9ibR7tDcSRjAPZrLnKERdHhU5+vpbz9ZcLp+5ux9BJ/gy6
-         dPBLLqfzbscXtZ/hWwC8wz/rCDpNa4wAHk6F2kV7uEl93dyrTNVjcoIZ0sAByDW3PvaS
-         9aeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789065186; x=1789669986;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6ost6d0L83lIoeZ+lEEXbmuX93WTw58C3/ZwNuzffpI=;
-        b=HGDuBWn52awqwIUMDy2+7/TNe6RqhKMeTwqa8CghU+jhFj41NX/zd2yuvvjBYDahLM
-         dJHOhsTaST8zhAbyce7qMF58y5g4fNys4Uxt5N6t/dwzRhNCiqLEmFQtbEONZSe6IpqA
-         x3KmGUWn9Nbn23fpkvjiDcnWb09iwVNkvH8pZNlnWUptu3PlTbbF+pRiT2NNorEGVjDj
-         pgtZLRfwk2bsbdTuiy+IvR5+8KQGMcXH3T/WGBIzrGsAbYD4m836oXQ4n/fmvyi+Hawo
-         WIQyiwGMyY6kmbYyuTEhtzyB6Cs+vJ4t+J2vTsLeA+QJdAu2Ein0YdTep/RLMP4fFzb/
-         Lncg==
-X-Forwarded-Encrypted: i=1; AKwUvBzFJrDcYqHRcQnTDiSEdN1dTJW96ku3k5VBdpcWwPjBKKh738DD/4l3CD40CiDzLRfHUyKVYkdBiQ==@kvack.org
-X-Gm-Message-State: AFuF++luQWpeN/7lIR5VbWdHCpCh6Ero9zZ3dgyjU3HcYPwJToc+GtWF
-	gi2RZOvu3+7miUsbZ1Ygz8278C2MqBd5fH/fNNZjhPQ271K90PvxVZae
-X-Gm-Gg: AYBFou0Uk+YT5BqXbHBvwmX5w4uXlHalzF6qUCz95WUvK/J4eJlbfRwpRM3uTwdSPLE
-	iPEHlo/FSXWAOZ593chUeaTpztgwFh+zBBPhLcXBXbx1QR2j/umP/fhnnFCXemipjCp+Rged99Y
-	dek3a/g8vivttVjn8zPKxybzDCabh1GxzxA+YHYzBtqkKxxr/L6YPS0iy4XNDUTbgkZYcgPNVfA
-	ohSpfQxahPv/N325AaXrERSw5Pub76zkTfyp40X8RYNRUBA7yzuH2y78c7ZMSwW67jIOTnp1v8z
-	W11kxNrxoSGJTz0BTibk1DRzxNxrdJVF2WWbOYfPFKgGVz/s9bGD9uejx1ZvqhefzLwTFWh+8Y9
-	0nwK6+/dVqIncFSt9iJcPNGL8vxggoyMoPoRoyp22xIGkE0jK6wEhOg7WCopH2ePcNEr0mH7K/j
-	3xDcKyAGHvuqeZddtbbz4P3ojdnZVFADJkp+qo/r43YU1w2G8m8f6wn7rC6lvnQtu7Z7/EQhcto
-	ghO6FTuyyE/yLZlwNB3LvIMAFUYcK3d
-X-Received: by 2002:a05:600c:4688:b0:49c:cbf4:572b with SMTP id 5b1f17b1804b1-49e619ec129mr2824565e9.2.1789065185924;
-        Thu, 10 Sep 2026 11:33:05 -0700 (PDT)
-Received: from lima-kdev.local ([85.100.66.184])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e5765152asm40701325e9.11.2026.09.10.11.33.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 11:33:05 -0700 (PDT)
-From: Kayra Cizmeci <kayracizmeci@gmail.com>
-To: tim.c.chen@linux.intel.com
-Cc: brauner@kernel.org,
-	bsegall@google.com,
-	dietmar.eggemann@arm.com,
-	imv4bel@gmail.com,
-	jack@suse.cz,
-	juri.lelli@redhat.com,
-	kees@kernel.org,
-	kprateek.nayak@amd.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mgorman@suse.de,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	qyousef@layalina.io,
-	ricardo.neri-calderon@linux.intel.com,
-	rostedt@goodmis.org,
-	srikar@linux.ibm.com,
-	sshegde@linux.ibm.com,
-	vincent.guittot@linaro.org,
-	vineethr@linux.ibm.com,
-	viro@zeniv.linux.org.uk,
-	vschneid@redhat.com,
-	wanglu.priv@gmail.com,
-	yi1.lai@intel.com,
-	yu.c.chen@intel.com,
-	zhanxusheng1024@gmail.com,
-	zhanxusheng@xiaomi.com,
-	ziqianlu@bytedance.com
-Subject: Re: [PATCH 1/4] sched/cache: Keep nr_pref_llc_running in the runnable domain
-Date: Thu, 10 Sep 2026 21:33:01 +0300
-Message-ID: <20260910183301.1208504-1-kayracizmeci@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
-References: <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
+	bh=bmUNJy9Nu15CoZ6GTfg+GAxUmN7j/4iTaUecL7MID4k=;
+	b=Qr/G0CEy1pruvx+wd5wun772DgExLJvbscGVF52H3mZkMSl/cU2/FeN6WHZPO0dFf283PY
+	LvKR/LTG9iw6Y3RFUVG6ox+mLKFBckGUl1x23mr4VfYB/kuwgwHxy0FkVyQuHspXaihuLI
+	/EreU04nEqQjvamXsBByH+SorXlRPn4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bmUNJy9Nu15CoZ6GTfg+GAxUmN7j/4iTaUecL7MID4k=; b=X7SvXni/u0xxFB0IacibI2DHCs
+	oXnWz3V7P/2pYqWQxeub+dUiL1tINFXXo60Dv+yxGulYp5Tw+nLeXXimaPsWXycIwogYL34d+tMGG
+	UeyKKr70Q+8bMaQj5hdYpEv4sFreUlZ9ZaAaMYed8U94AhHgrPF6nuauwtC5bKZkI2A/ikm107+tc
+	ieDZqOP1uxoL+NLV1uawS+Dh7iP8zL+5Jke1e3PKF9x6Nr7co7ceFIHCoXc+i/MO6bS5AdNL8Ul3G
+	8Ciu+poVr9WZ2gUrtrrDe5dqZNXs2VvXm10eIfZVCmAs5bn+Pa3vQcIuqOfOtaGJEN9qsLiRUTOoO
+	gGu/kxXw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x4kId-00000003AJn-0nh1;
+	Thu, 10 Sep 2026 19:19:07 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D8A06300400; Thu, 10 Sep 2026 21:19:01 +0200 (CEST)
+Date: Thu, 10 Sep 2026 21:19:01 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
+	Chen Yu <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Yi Lai <yi1.lai@intel.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 4/4] sched/cache: Introduce task_struct->sched_cache_grp
+Message-ID: <20260910191901.GW776954@noisy.programming.kicks-ass.net>
+References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
+ <4532ec4fd5beb829bccb85822a19360fa4191fe6.1789061845.git.tim.c.chen@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4532ec4fd5beb829bccb85822a19360fa4191fe6.1789061845.git.tim.c.chen@linux.intel.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2C8AF140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D56ED40008
-X-Stat-Signature: 896xkso53u5ktw518atfy6uus9pjke56
-X-HE-Tag: 1789065187-218062
-X-HE-Meta: U2FsdGVkX1+2YvKpOIfxJ6FqZI6zllDU259VqTwKL/xRgtQiiZRWAebISfWTMkjw0JmyHH+BgOqueCwm2SN/zOU1LXTiVuybBiUahkkIpVCAOEOW8cHhhtrD1V82EEeh8DDPovV8aemPjNy30+3LmLacYYM6vOnzDkDQyNApN3fgoxMUyC7Iyv3rMIremWXfTUSth1ngbnpoeuYHKxlsiKcYN8hbAq4Y41t9LmToGQCyUfOGBWO8/aT52ai1CDVgCTNzmz8845iqInJiE3N8XJzmDHLlqVBmtoGfCUYV46PTMorSlgxKCHjVGaXnW1HZQqJHN3DY8QZxwwSnKuC2Bh6ojKR1gsP54v1sIkBPOpBn52ZyNnlIHYOnN1COGpLv1BLCCPioeW/5HK+6OaNftiERRxI/bnHgEQ7kxp5XIRT8SXJp5ZHiPKCLulL/ByBHwmq85z/zTarZyuoGn9dH9cngF5oQ2WilKROQd3Kw5h4hjNDqu0M9kOe9MZV8TvOKt4QoxNNwaS3JKjNWS952AfK0gkAw1yZPcs5sbnrnnXxPjqmpOdPARQMm/fqbK9a1II1INenVlcd3KEn+CtfrMr2//BWTLASIFrZqRWC3/QBWk7iqmoowg1kfTSWeIQdHwouE3RUPMd1ZcxX2oGeZOjZluX+dXZYo+sQ4Mlc3CBkxIfeN99xBeSr5rr7HOH+gqKRIwKUFYdoKgRsaVMziZpXZ4EF/ugvtN8u9O51CBJQbqDFYFh/Diyjg99V4fL1SxaZ627kKOSnhigRXhrdrQ2IJhF3/8Jaj14giJmFius5RhQvFO+cDOfKNaJ8wI6Zl3XlRdapCANkMtkL6Qto77qAfuHEj18+TOIYX4RUlC+Twox0/QQ3rX+sQJc6OMrvOUEH1X61XaS7TpUjHPdtYDjfon4x3KGzKpur0xb83FxJzftEXPlOmJDPXs32+txT9Kyuse1gzp2LQ6zyuBjo
- Lx/kBHz/
- kaAnEUVfNynQ8q9ZZ2X8RHdyv7PCr+9JWCewkNnfxSzMXWeUAzECQ5SSw/YMHlDtkaKQhFvrRrO+WpD/aRNmDVHzQObQhTjDYUxK5Rb+JCHjsjoT+qaFO/2MAhgqV77u46RE7J9PMji6j4QaKHOOOwKfdQqJMkAZaxekh3HKKFOtowGuTbrvGthGh6G/ZNul3Avi9AAfYd6tl34Cf4hHilHasw47bY0CaFGeMy10Pzv3/Y7lbFvg/YN7q+NXw7Fl60YV3Z5FUPQVMxWUT0Kq3AQOrYLK1KQWXH4yYuEctclGjNOMr31VXoTI59UzP0zKgAzg+tg1Cw8ZXKEk9TIqU8n4DGStuzf+jST63nxB8Ds/783iuc9KZKE0DSSDtolWN3ZFgskr3OHWXIsoPoiiIN7YGNOC/7kXuKocjzP32THTj+4zAWqpszNM/SB7C6RsT0pmv5AqTFXA3PFOUqCVfY5ZXK1N/ZhYUAwkyjCdD/ja0YROWhN7wmf2hNPx+ZuQiX4qu
+X-Stat-Signature: w6utebsn4y8ejhiyy5p9occp7a8iuttm
+X-HE-Tag: 1789067961-887642
+X-HE-Meta: U2FsdGVkX19qTTftBaU7UQaAlUGPgQh+kTXHegCKj3oG7i7gnoTsi8D1QGlxQkmcUuE0eKqZ+88KlpJgIVoY5lRilkHNsbX6xUnJjF7JQfydcalkw1MpWt6exxzEg5l6/BPXl8sfSJgC1aSQRtAlNUUa7U8UTbUhCEvmbLcm6UTlUnnZbjlTXjzUHJ/RTyR2Cw14FzhAyNvQTzdApCufc174mIGRf6C1VellXlKGR+oBl+2bobUqVABu7XItCtmNGwB/z2eEVQ757HSUt/dnggmT3BQnhevMYTAXvCJUG8CLFIUBng6b/VjEnxfy2x/1WAN+9QZye6wF2DROz3my3ihHIYTsY7lQOEtgEx0zDYNLT1yDw4LhrmOHHraFaQmEIIegetbQeKoSdVI0kktd1ahZelq0AmfXpS+SupbcEUtq71o0cb4gNmoLdUhIdHggr/nIZIVfoLMG702ufLvMp5wxRxzVMVo/+SYk+BGp6XA5KCLW/gllcf2lIMm4E0kOhCt71mzZ87Bgmi9zjRjWSxOIVEOQieOiKBm7TUL4Gtl5fgY5NjUGvsiqLx9cji1ohCmh+5grGyJqoE1uYDjXCWfPkVac+kwW+DbT39Yj/qBWutxMFA/xqUc/fclqNJv5PYjjIuZ1b7ksf5gJ6Rt3jHTC9oPWHejhqSWc7Evp3brh3QwhkBZY8mlv5I+0wlI8DucVtcbQVsY8PZ4h/ltBLFehkEBKH+8eS8a11gtcq8b2KT6SUCP7f/CJJuZxTKXyDPeYBG3DZW98NOtOX2TE3VxDzcTcOZGnP6yGNa1NEZ6IeOY8Z7l5Pzqw2IiArCA17b11yMPb6utKyo6NNDRsLNGMw8IVXj+v4fLslNrxjLSHmGDQo7U1dQ0HtYp8cdxRptDX5JVgR18f5eSYONx9Pd96hDSZzrfw0oJWYjenTZTSkvnGqHCL+Z6GHRVEM9DTMVb02Z8hsQ8Qe10oiqz
+ jZDNJj61
+ Y+xFsfy93GbuG6NtRq+RGiJVdzx8DvypkbuYHCawt75thy6z3+OyLbu17fCjBn6DLht3jLDCZ0XmIMcjuYldT6WsBbcfrHfBizkwd0FIqbuZ67gRcTQvc+h6fcaieb+0NoOVoN34AHQ6QhhLYudFNCGgwGXFu2iZSZEyxihulnK4TTLt66BaZsOBa+B4Vaw3jzbSzyLazLMBiHYEiVimxWtw73mkOJGxUaVmvsEET2O4KDaqmA7nUiur5xSTGXLVQV8WfhYjqLcEcid78Z/yOK0jRJvwP/QFyU1jerqWxTjb+8YwXdO6oXJ3syQrv7yd7xN/KqFT46VsXUnZcAXBl5MoVeLcRZTFA2yrf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,50 +111,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello :>,
+On Thu, Sep 10, 2026 at 10:46:12AM -0700, Tim Chen wrote:
 
-> alb_break_llc() decides whether to break LLC preference during active
-> load balance. It does so by testing that every runnable fair task on the
-> source rq prefers its LLC:
+> Co-developed-by: Chen Yu <yu.c.chen@intel.com>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+
+:-(
+
+> ---
+>  fs/exec.c                  |  14 ++++
+>  include/linux/sched.h      |   3 +
+>  kernel/exit.c              |  26 +++++--
+>  kernel/fork.c              |  23 ++++++
+>  kernel/sched/cache_sched.c |  19 +++++
+>  kernel/sched/fair.c        | 142 +++++++++++++++++++++----------------
+>  kernel/sched/sched.h       |   3 +
+>  7 files changed, 164 insertions(+), 66 deletions(-)
 > 
-> 	env->src_rq->nr_pref_llc_running == env->src_rq->cfs.h_nr_runnable
-> 
-> But the two counters cover different sets. nr_pref_llc_running is updated
-> in account_llc_enqueue()/account_llc_dequeue(), next to cfs_rq->nr_queued,
-> so it follows queued tasks. h_nr_runnable is updated in set_delayed()/
-> clear_delayed() and drops delay-dequeued tasks.
+> diff --git a/fs/exec.c b/fs/exec.c
+> index 745f6eb5279e..7a8a9954343e 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -882,6 +882,20 @@ static int exec_mmap(struct linux_binprm *bprm)
+>  	active_mm = tsk->active_mm;
+>  	tsk->active_mm = mm;
+>  	tsk->mm = mm;
+> +#ifdef CONFIG_SCHED_CACHE
+> +	{
+> +		struct sched_cache_group *old_grp, *new_grp;
+> +
+> +		old_grp = rcu_dereference_protected(tsk->sched_cache_grp, true);
+> +
+> +		/* Acquire the reference before publishing the pointer. */
+> +		new_grp = sched_cache_group_get(mm->sched_cache_grp);
+> +
+> +		rcu_assign_pointer(tsk->sched_cache_grp, new_grp);
+> +		if (old_grp)
+> +			sched_cache_group_put(old_grp);
+> +	}
+> +#endif
 
-> So under DELAY_DEQUEUE, a preferring task that goes to sleep stays counted
-> in nr_pref_llc_running while h_nr_runnable falls. The equality then breaks,
-> alb_break_llc() returns false, and active balance is free to pull a task
-> off its preferred LLC. Active balance only moves runnable tasks, and this
-> is the only LLC check it consults: once the stopper runs, LBF_ACTIVE_LB
-> skips the per-task test in can_migrate_task(). The runnable set is the one
-> we want.
+Guys no! This is horrific crap. This is not how we do things and I would
+have expected you all to know this.
 
-> Fix it on the counter side. A task should be counted in
-> nr_pref_llc_running exactly while it is both queued on its preferred LLC
-> (pref_llc_queued) and runnable (!sched_delayed). Define that membership
-> once in task_pref_llc_runnable(), and adjust the counter only through
-> pref_llc_running_inc()/pref_llc_running_dec() from the four sites that
-> change either input: account_llc_enqueue(), account_llc_dequeue(),
-> set_delayed() and clear_delayed(). Gating every update on the same
-> predicate keeps the delay, wake and dequeue paths from double-counting
-> or underflowing; see the comments at those sites for the ordering.
+Have you heard of this new fangled thing called a function?
 
-> nr_llc_running and sd->llc_counts are not touched and stay on queued
-> semantics.
+Imagine all of those being just:
 
-I have one question tho, can't we combine the checks with h_nr_runnable? On the paper
-if we are updating h_nr_runnable we could check if the nr_pref_llc_running can be 
-updated and update it if the condition is right. Because, every nr_pref_llc_running enters
-h_nr_runnable while not every h_nr_runnable enters nr_pref_llc_running. 
+	sched_cache_exec_mmap(tsk, mm);
 
-Why instead we just check the nr_pref_llc_running's conditions on task_pref_llc_runnable()
-and call these dec and inc functions after the h_nr_runnable updates. Wouldn't it be clear that way?
-If possible?
 
-Thanks,
-Kayra :_:
+Also: rcu_dereference_protected(.c = true) is another offence, that's
+just wrong.
 
+
+> diff --git a/kernel/exit.c b/kernel/exit.c
+> index 006edcc0c2c5..442535778ce1 100644
+> --- a/kernel/exit.c
+> +++ b/kernel/exit.c
+> @@ -552,23 +552,25 @@ void mm_update_next_owner(struct mm_struct *mm)
+>   * Subtract the memory footprint of the current task from
+>   * mm.
+>   */
+> -static void exit_mm_sched_cache(struct mm_struct *mm)
+> +static void exit_mm_sched_cache(void)
+>  {
+> +	struct sched_cache_group *grp =
+> +		rcu_dereference_protected(current->sched_cache_grp, true);
+>  	unsigned long fp, sub;
+>  
+> -	if (!current->total_numa_faults)
+> +	if (!grp || !current->total_numa_faults)
+>  		return;
+>  	/*
+>  	 * No lock protection due to performance considerations.
+>  	 * Make sure the group footprint does not become
+>  	 * negative.
+>  	 */
+> -	fp = READ_ONCE(mm->sched_cache_grp->footprint);
+> +	fp = READ_ONCE(grp->footprint);
+>  	sub = min(fp, current->total_numa_faults);
+> -	WRITE_ONCE(mm->sched_cache_grp->footprint, fp - sub);
+> +	WRITE_ONCE(grp->footprint, fp - sub);
+>  }
+>  #else
+> -static inline void exit_mm_sched_cache(struct mm_struct *mm)
+> +static inline void exit_mm_sched_cache(void)
+>  {
+>  }
+>  #endif /* CONFIG_SCHED_CACHE CONFIG_NUMA_BALANCING */
+> @@ -585,7 +587,19 @@ static void exit_mm(void)
+>  	if (!mm)
+>  		return;
+>  
+> -	exit_mm_sched_cache(mm);
+> +	exit_mm_sched_cache();
+> +
+> +#ifdef CONFIG_SCHED_CACHE
+> +	{
+> +		struct sched_cache_group *grp =
+> +			rcu_dereference_protected(current->sched_cache_grp, true);
+> +
+> +		rcu_assign_pointer(current->sched_cache_grp, NULL);
+> +
+> +		if (grp)
+> +			sched_cache_group_put(grp);
+> +	}
+> +#endif
+
+Seriously, WTF ?!
+
+>  
+>  	mmap_read_lock(mm);
+>  	mmgrab_lazy_tlb(mm);
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 416758c8a3d4..2e79548cb7c1 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1599,6 +1599,19 @@ static int copy_mm(u64 clone_flags, struct task_struct *tsk)
+>  
+>  	tsk->mm = mm;
+>  	tsk->active_mm = mm;
+> +#ifdef CONFIG_SCHED_CACHE
+> +	{
+> +		/*
+> +		 * A task holds its own reference on the group, separate from
+> +		 * the reference held by its mm_struct. Acquire it before
+> +		 * publishing the pointer.
+> +		 */
+> +		struct sched_cache_group *grp =
+> +			sched_cache_group_get(mm->sched_cache_grp);
+> +
+> +		rcu_assign_pointer(tsk->sched_cache_grp, grp);
+> +	}
+> +#endif
+
+And again.
+
+>  	return 0;
+>  }
+>  
+> @@ -2599,6 +2612,16 @@ __latent_entropy struct task_struct *copy_process(
+>  bad_fork_cleanup_namespaces:
+>  	exit_nsproxy_namespaces(p);
+>  bad_fork_cleanup_mm:
+> +#ifdef CONFIG_SCHED_CACHE
+> +	/*
+> +	 * copy_mm() took a task reference on the cache group; a failed fork
+> +	 * never reaches exit_mm(), so release it here to avoid leaking the
+> +	 * group and its per-CPU buffer.
+> +	 */
+> +	sched_cache_group_put(rcu_dereference_protected(p->sched_cache_grp, true));
+> +	RCU_INIT_POINTER(p->sched_cache_grp, NULL);
+> +#endif
+> +
+>  	if (p->mm) {
+>  		mm_clear_owner(p->mm, p);
+>  		mmput(p->mm);
+
+Drugs, it must be drugs and lots of it :-(
+
+Please, try again.
 
