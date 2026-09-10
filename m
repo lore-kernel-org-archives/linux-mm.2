@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E51C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 177ABC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4B0F6B00A1; Thu, 10 Sep 2026 07:00:23 -0400 (EDT)
+	id 8F5B26B00A2; Thu, 10 Sep 2026 07:00:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E22186B00A2; Thu, 10 Sep 2026 07:00:23 -0400 (EDT)
+	id 8A1516B00A3; Thu, 10 Sep 2026 07:00:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60CB6B00A3; Thu, 10 Sep 2026 07:00:23 -0400 (EDT)
+	id 76C596B00A4; Thu, 10 Sep 2026 07:00:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A1BA16B00A1
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22367160477
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:23 +0000 (UTC)
-X-FDA: 85197558726.16.1D43E79
+	by kanga.kvack.org (Postfix) with ESMTP id 45F1C6B00A2
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:00:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D4C61C2446
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:25 +0000 (UTC)
+X-FDA: 85197558810.29.1287E9C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6C3E74000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B3lnb8PL;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id D89CF40002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:00:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aij3lXrD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038021;
+	s=arc-20220608; t=1789038024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/CjaWpeoftE+Wn2hDoCKbw50T/OskJjYcBztwhRMRzs=;
-	b=kRKpcxSqQDMLJ/h2LfWzCDk5wfjmKSKfGK2g4AsqD4Z7gogHmnugeM6t/Zmv0lUXKbkleX
-	DoJY3jtUv31Bg1/AMQSUUYxaEYDGqtXs2lZ9FsrUAVFH6aJ8W3vFNmFeArGYeGh3BLkyH/
-	BOj8UF6MaK4glTRdomoHCIHoSUyGEkc=
+	bh=wH/HnScIECqzPez57vPSs9kJwAMAsBLZmPepnLoPjpM=;
+	b=j1/zTYmgWLA74X4JhplQ6KCFt01JoxJul2hxDEncv0E65rCWFxGnbxb+e2KezuZAEuqzjq
+	foodGKJqlq8dDh2Lm2SryTVLkmfEelYs4FHX0K1vfUaFJ/IrdDAgESBYyQMFNTK9BXE7Ax
+	DpVksQv41FXCxXb5v7ScG5MSMELBUtY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038021;
-	b=tL3J+ymzulK1bUDfW+a3g5wZ0xEHlOFxQzylF/SJRht25Ha0tRQNLkynX4iEo1xl6TtXlq
-	vrGyqckMJkTsV/q1urTuKAtJ3zjtYoLlIZ37pwci9bohTf7f+HsyDyT8f2Mwk5rYykFP7s
-	4ZgTALX7S2o+Id7TmPa7lVm8Wlul3XM=
+	t=1789038024;
+	b=Kdi8fK6qUlS9gaYpc97JRqcH8bo7hKENWaaUMXklb5A6/MEBoPNbsLNR2ulWYxVUM+fsKQ
+	yZKAxL35PLz5hVQSb+phkOa/jjw0mbsvax6rtm1QBsmNkqF+XkpRUojtqKcNisFywQ5IbQ
+	PZIjr/sAoSdq0wdkQf/IOU4ZD4pzB20=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B3lnb8PL;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aij3lXrD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D55A74451D;
-	Thu, 10 Sep 2026 11:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020371F00893;
-	Thu, 10 Sep 2026 11:00:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29B1040E3F;
+	Thu, 10 Sep 2026 11:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479C91F00898;
+	Thu, 10 Sep 2026 11:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038019;
-	bh=/CjaWpeoftE+Wn2hDoCKbw50T/OskJjYcBztwhRMRzs=;
+	s=k20260515; t=1789038023;
+	bh=wH/HnScIECqzPez57vPSs9kJwAMAsBLZmPepnLoPjpM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=B3lnb8PL7M85f75exnh7h0hPNl1h1Lq61Zrk8Os+kTvDlTeUCAJYnm5mzVpXkjslJ
-	 uh3UkmdWeia6McU0ViR7mHavK4KMxc47giLOXDYZf2IBsFSdFLilDFAb0OAqV/reJ3
-	 ODVtoHqN0wFeWIy8nm0QLQiWsii7m6fAS6QXeBnM1YKgLrz7bhlKNCcOiTdTcpjAWh
-	 SUaALEAixjO6ayZLkzj8ipS70ZI4aVMzPXjH9ykyx6zxvMbKV2J4/1KEy1KwBucqsI
-	 qfJkRDJIfxqUm7ejy51Yezli/J4O0/FteUL2Dkvz+16Z73GQajYeMIoiuL5W8tMjLq
-	 NDDVfoHVrX/Fg==
+	b=aij3lXrDhzEmq4euQgQGNWweCFCBcmv0Ru0IiJlQP6T/gGHCdTA5F2z8v2TOzbEaG
+	 r9EC/B87klCZ6vmju7+fOePhoDhM6PShCPX0Bk3998yr4qWk9WVmKKexXQTBSOdWA4
+	 OUsqhnLJ5MWyxT3egO7/NOrzO25AboDvPj7FEDkkGnPOrKTdpUPUKAXHzTHRGbvkgm
+	 6lDdW7QmQ18221krdqayeKawV9PKSfqQXNN6eLHBRKw9XImdCEIIRCEC6phN3offim
+	 T/vY/+sxFKJ6b9ozKhfOmBz/wEDM6Fp//r2VsYk/wJQYrwf8DfiTJ7NQRg/FUYPPvk
+	 eolO1XLedPSCA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 10 Sep 2026 14:00:05 +0300
-Subject: [PATCH v2 03/13] s390/chsc_sch: Use kzalloc() for CHSC requests
+Date: Thu, 10 Sep 2026 14:00:06 +0300
+Subject: [PATCH v2 04/13] s390/chsc_sch: Use __free(kfree) for synchronous
+ CHSC requests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-s390-cio-ready-v2-3-e931086fdde1@kernel.org>
+Message-Id: <20260910-s390-cio-ready-v2-4-e931086fdde1@kernel.org>
 References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
 In-Reply-To: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -83,14 +84,14 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 1aaxr9p5qizhpgtiygi3ocrgm1p35we4
-X-Rspamd-Queue-Id: 6C3E74000C
-X-HE-Tag: 1789038021-205676
-X-HE-Meta: U2FsdGVkX1+dDzQeLP4HhY2ODDvhZ0YNLJMNS6b9TdCrcZYdFOZAwGo4NaTKQ5XY8zJ1GR4c/6DugIwV3X9g0gqC7DU9nvdYq35Ar+wHlHH5ftOv/m4XuXtIpJUu//3KbzY0eztDivVw3yhRHJBKwlYhag+sQsWnX05VBIKXdP/zcxhBmxaKJCuxpWjsOO2v6IiebYo+i/KuNmTxlYMmKpXoxrITHHcfUOYwZS/BAz6b9igbf+VTgIpwAxw7J72ogAblUviRLZbohYBiGaG07PyM0GbX6cddLmG5Z9Q+FrPghkGXWCkBO/nyquVnkXC8o0wztMesSL0N+N9ryNMrF2e9o89desUJswnE2+wioOspo0vNi2B0wAtNwZSjXSbAPm0wSGGB18oKc2iKPzGXDTu6RmrmICJsORx49acC5f66yt6jzfY8LsGniCLK6rN0Rw9UfRRXw09mXjY68jzeZ1hsfwt7MVAivQdwF3kKVwb6WEUCkdHCwbfi+gys3CchKi5ydRSHt5YHWwm8re6dDjF6+etPgCb6vheqUj3lJCio4edtGYkuiHmC8HSujWGDVfTpHSlOtsHCDaVlZmA6yTKfUBwjGb8chfJLeAukcknZIWIwveg8bLSZbxRBCG0OYjt/Y/eCTWnqlz9iKqTRhMLZ8WXFEG3zC0hKH1yWtpbz9FH7BRscIg76STdem5f1wfWWhVvmnat7qhxiAEwGZnGnv3Q3StyTeALOIJdClqQg5AflHNc2qH2UjPFT0PTWx5Sf3JIntJzutvA/tUixKmP5YbWDAUlhdKomaLdr01XSPgaww4RcNGBLuI1GmyGCYNX+hZeLAwKUkuLjgrTo8girG7dLLY9bjwVAIHW2p5SEso+feFRyYO3kXYzQ/atF1pYsFxQ486RqXeGeKXQ2vXBVATdqqNibwR3sXvNGSgt1+qqCP2AXxwFn3Op1Aemiw/yBb2jmQ8Qj0RGzanp
- YdmkYdYX
- VZWbpYzH2b2j02sXLXtWIH9/Oi7YT0DFAGdwzoR21d/ZZ/NIuevt2D8JLwh/gsWEGROaEVP4qtUfhnFkzhV4p/9aNG3iHJfyORjENM6acjz8OQC8cC9ryAA5IByFBzwFPVveN8w9jmh6SsjolFAzVy6dvc1/psgeg0medl+KAHBlAY3nwNJ4ejDcL7T2t34SoEeyhPxicPb+U/9P5qZ9sxDun4UaadCejWYeQzdGyTH9R4H6KdArQ7UjeQ2NewrtZBD/DLgXO6zmB81v4ivWI5JU1Ejr4Xkg/o0ah5x/bJIv7sHNW2qyognipvPPzKX+zo0GK
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D89CF40002
+X-Stat-Signature: xt3anat9z3p5cbptmzktbh5xtrozoii4
+X-HE-Tag: 1789038023-770913
+X-HE-Meta: U2FsdGVkX18S7adJD/iklcXA377WI5XQz0Gb6UUSUa7Zc2+xjVU5umxI5YzHvjrafJKi4OBJRQqf/rt1eKp2xankngaccDTNPbmQg162zwYQ1or6qXc6GN5LjEBJmWsRDCnd/Cu2XyrRa0ZgW3/PD5EQ9K4DiFHmgJhlaOgVZRSr5pi/SepuVMvCxiSlL3H4uR9hHAhSkzwszlVquV42N7Yo1YSAkqmK/nj70wAc2Ne8rkt4kTwpSB0aBza3HfjzNWNUTJ6JtVpxIXOOI+2Ouo9HY8/K8CeRlRsShuV3u3dSCXqnAyjxPUpuhDupIjJmExZHyCJngkry73uJxuOMWPaAPCKcpRv+eeP77X6nCE/rHKb3fboG5OBp7o6jECoDROdzCXzhlHtBKIm4WSpr8qGpPWXV9tsAqQ8n8cSbSC78j/xX1HCe6udBT7ji4Njez2F0uIqjfLrrpvQA0VtOvQkB1M/tw/GsUkSQ9T2HwTgDMfhWSV1wfDgQnAGcpAQrKXXrJss0+mh9Du33YMsQNe5b58Q3utdaz6WuEoM7ZzaY0Q4fAEoZjGzBfoMuX69mXux46Ss5ImcEj5LCZGr3wGYzWsrEzSJroMAj/NA6kohbwakHzHY8vwGozM1+V09XEoxmW8mWJaRjW6Wz/SoWzjdG2Ba4R9oghqgrtu3UGtvHbbc7hYhnJnUzV7l7Jp3Sy1gUxabM+k3x/nvWYHyPSUoWB1KzVd+DGF6w0L3/FeVe8cOyBDsq847tdTQSwm5eOLZ3BN6Fv4nGSBvgAyuMd7VI7XLLki48b5VlBUWWXJpML7+IyiC0tXFaNo6PGAxhhUCWUvGr2TUz3w9hC82Ve0+WIV+6znoX5jQszfloPhJky4AojWTe5WBjT2GPahZ+9ZgU183TVThPE3bd8ssqbz+D/bpq45bOWoX/bvQBvnHFBFp9UMw+LmmFI/PbMOVrBiylmVViVjYhSCOZz0L
+ cpwq1w5q
+ lGajdAMdsPWVhN45cyI2FDRhFwaBDo+yHHKfkA5IvZ45vSbWr8NaH0GKqsFdXWLOciMqEQ1POVlAjwgo9gyuqPlkgDUu814A6Og0um9Wj4zM6cl4p/qViJ+mFj/9bEoquqEEBsMkjt62INIe4fPJUWrIhLQZ8dUqj2RFb7VDvGCPQQq5YcRywoFVbwrUImy/IE8DmxuREiBLOesuGV3QRa9jiz/ZR/wuAispzblwQo57jIZvzuWSRv7deQVJivIl4fU6E1AND5WicyTaXaBSgH2vORY/l1GWZFkiBNKx4MT7ywcc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,234 +99,505 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CHSC ioctl handlers allocate request and response areas for
-CHSC commands issued on behalf of userspace.
+Use __free(kfree) for local buffers in the synchronous CHSC ioctl
+handlers and replace their cleanup labels with early returns.
 
-This memory can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+Keep the asynchronous and on-close handlers unchanged.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
-
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
-
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
-
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
-kfree().
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/cio/chsc_sch.c | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/s390/cio/chsc_sch.c | 272 +++++++++++++++-----------------------------
+ 1 file changed, 92 insertions(+), 180 deletions(-)
 
 diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index b6cb8bb8bcc4b..c8d6871d1841e 100644
+index c8d6871d1841e..225aaac7dd309 100644
 --- a/drivers/s390/cio/chsc_sch.c
 +++ b/drivers/s390/cio/chsc_sch.c
-@@ -292,7 +292,7 @@ static int chsc_ioctl_start(void __user *user_area)
- 	if (!css_general_characteristics.dynio)
- 		/* It makes no sense to try. */
- 		return -EOPNOTSUPP;
--	chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
-+	chsc_area = kzalloc(PAGE_SIZE, GFP_DMA | GFP_KERNEL);
+@@ -15,6 +15,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/miscdevice.h>
+ #include <linux/kernel_stat.h>
++#include <linux/cleanup.h>
+ 
+ #include <asm/cio.h>
+ #include <asm/chsc.h>
+@@ -389,39 +390,29 @@ static int chsc_ioctl_on_close_remove(void)
+ 
+ static int chsc_ioctl_start_sync(void __user *user_area)
+ {
+-	struct chsc_sync_area *chsc_area;
+-	int ret, ccode;
++	struct chsc_sync_area *chsc_area __free(kfree) = NULL;
++	int ccode;
+ 
+ 	chsc_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!chsc_area)
  		return -ENOMEM;
- 	request = kzalloc_obj(*request);
-@@ -321,7 +321,7 @@ static int chsc_ioctl_start(void __user *user_area)
- 	snprintf(dbf, sizeof(dbf), "ret:%d", ret);
- 	CHSC_LOG(0, dbf);
- 	kfree(request);
--	free_page((unsigned long)chsc_area);
-+	kfree(chsc_area);
- 	return ret;
+-	if (copy_from_user(chsc_area, user_area, PAGE_SIZE)) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
+-	if (chsc_area->header.code & 0x4000) {
+-		ret = -EINVAL;
+-		goto out_free;
+-	}
++	if (copy_from_user(chsc_area, user_area, PAGE_SIZE))
++		return -EFAULT;
++	if (chsc_area->header.code & 0x4000)
++		return -EINVAL;
+ 	chsc_log_command(chsc_area);
+ 	ccode = chsc(chsc_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (copy_to_user(user_area, chsc_area, PAGE_SIZE))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(chsc_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -340,7 +340,7 @@ static int chsc_ioctl_on_close_set(void __user *user_area)
- 		ret = -ENOMEM;
- 		goto out_unlock;
- 	}
--	on_close_chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
-+	on_close_chsc_area = kzalloc(PAGE_SIZE, GFP_DMA | GFP_KERNEL);
- 	if (!on_close_chsc_area) {
- 		ret = -ENOMEM;
- 		goto out_free_request;
-@@ -353,7 +353,7 @@ static int chsc_ioctl_on_close_set(void __user *user_area)
- 	goto out_unlock;
- 
- out_free_chsc:
--	free_page((unsigned long)on_close_chsc_area);
-+	kfree(on_close_chsc_area);
- 	on_close_chsc_area = NULL;
- out_free_request:
- 	kfree(on_close_request);
-@@ -375,7 +375,7 @@ static int chsc_ioctl_on_close_remove(void)
- 		ret = -ENOENT;
- 		goto out_unlock;
- 	}
--	free_page((unsigned long)on_close_chsc_area);
-+	kfree(on_close_chsc_area);
- 	on_close_chsc_area = NULL;
- 	kfree(on_close_request);
- 	on_close_request = NULL;
-@@ -392,7 +392,7 @@ static int chsc_ioctl_start_sync(void __user *user_area)
- 	struct chsc_sync_area *chsc_area;
- 	int ret, ccode;
- 
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	chsc_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	if (copy_from_user(chsc_area, user_area, PAGE_SIZE)) {
-@@ -414,7 +414,7 @@ static int chsc_ioctl_start_sync(void __user *user_area)
- 	else
- 		ret = 0;
- out_free:
--	free_page((unsigned long)chsc_area);
-+	kfree(chsc_area);
- 	return ret;
- }
- 
-@@ -438,7 +438,7 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
+ static int chsc_ioctl_info_channel_path(void __user *user_cd)
+ {
+-	struct chsc_chp_cd *cd;
+-	int ret, ccode;
++	struct chsc_chp_cd *cd __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 : 2;
+@@ -436,20 +427,16 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
+ 		u32 : 32;
+ 		struct chsc_header response;
  		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scpcd_area;
+-	} __attribute__ ((packed)) *scpcd_area;
++	} __attribute__ ((packed)) *scpcd_area __free(kfree) = NULL;
  
--	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	scpcd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	scpcd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!scpcd_area)
  		return -ENOMEM;
  	cd = kzalloc_obj(*cd);
-@@ -476,7 +476,7 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
- 		ret = 0;
- out_free:
- 	kfree(cd);
--	free_page((unsigned long)scpcd_area);
-+	kfree(scpcd_area);
- 	return ret;
+-	if (!cd) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(cd, user_cd, sizeof(*cd))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!cd)
++		return -ENOMEM;
++	if (copy_from_user(cd, user_cd, sizeof(*cd)))
++		return -EFAULT;
+ 	scpcd_area->request.length = 0x0010;
+ 	scpcd_area->request.code = 0x0028;
+ 	scpcd_area->m = cd->m;
+@@ -459,31 +446,23 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
+ 	scpcd_area->last_chpid = cd->chpid.id;
+ 
+ 	ccode = chsc(scpcd_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (scpcd_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "scpcd: response code=%x\n",
+ 			 scpcd_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&cd->cpcb, &scpcd_area->response, scpcd_area->response.length);
+ 	if (copy_to_user(user_cd, cd, sizeof(*cd)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(cd);
+-	kfree(scpcd_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -500,7 +500,7 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
+ static int chsc_ioctl_info_cu(void __user *user_cd)
+ {
+-	struct chsc_cu_cd *cd;
+-	int ret, ccode;
++	struct chsc_cu_cd *cd __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 : 2;
+@@ -498,20 +477,16 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
+ 		u32 : 32;
+ 		struct chsc_header response;
  		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scucd_area;
+-	} __attribute__ ((packed)) *scucd_area;
++	} __attribute__ ((packed)) *scucd_area __free(kfree) = NULL;
  
--	scucd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	scucd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	scucd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!scucd_area)
  		return -ENOMEM;
  	cd = kzalloc_obj(*cd);
-@@ -538,7 +538,7 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
- 		ret = 0;
- out_free:
- 	kfree(cd);
--	free_page((unsigned long)scucd_area);
-+	kfree(scucd_area);
- 	return ret;
+-	if (!cd) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(cd, user_cd, sizeof(*cd))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!cd)
++		return -ENOMEM;
++	if (copy_from_user(cd, user_cd, sizeof(*cd)))
++		return -EFAULT;
+ 	scucd_area->request.length = 0x0010;
+ 	scucd_area->request.code = 0x0026;
+ 	scucd_area->m = cd->m;
+@@ -521,31 +496,23 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
+ 	scucd_area->last_cun = cd->cun;
+ 
+ 	ccode = chsc(scucd_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (scucd_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "scucd: response code=%x\n",
+ 			 scucd_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&cd->cucb, &scucd_area->response, scucd_area->response.length);
+ 	if (copy_to_user(user_cd, cd, sizeof(*cd)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(cd);
+-	kfree(scucd_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -563,7 +563,7 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
+ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
+ {
+-	struct chsc_sch_cud *cud;
+-	int ret, ccode;
++	struct chsc_sch_cud *cud __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 : 2;
+@@ -561,20 +528,16 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
+ 		u32 : 32;
+ 		struct chsc_header response;
  		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sscud_area;
+-	} __attribute__ ((packed)) *sscud_area;
++	} __attribute__ ((packed)) *sscud_area __free(kfree) = NULL;
  
--	sscud_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	sscud_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	sscud_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!sscud_area)
  		return -ENOMEM;
  	cud = kzalloc_obj(*cud);
-@@ -602,7 +602,7 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
- 		ret = 0;
- out_free:
- 	kfree(cud);
--	free_page((unsigned long)sscud_area);
-+	kfree(sscud_area);
- 	return ret;
+-	if (!cud) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(cud, user_cud, sizeof(*cud))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!cud)
++		return -ENOMEM;
++	if (copy_from_user(cud, user_cud, sizeof(*cud)))
++		return -EFAULT;
+ 	sscud_area->request.length = 0x0010;
+ 	sscud_area->request.code = 0x0006;
+ 	sscud_area->m = cud->schid.m;
+@@ -585,31 +548,23 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
+ 	sscud_area->last_sch = cud->schid.sch_no;
+ 
+ 	ccode = chsc(sscud_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (sscud_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "sscud: response code=%x\n",
+ 			 sscud_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&cud->scub, &sscud_area->response, sscud_area->response.length);
+ 	if (copy_to_user(user_cud, cud, sizeof(*cud)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(cud);
+-	kfree(sscud_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -625,7 +625,7 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
+ static int chsc_ioctl_conf_info(void __user *user_ci)
+ {
+-	struct chsc_conf_info *ci;
+-	int ret, ccode;
++	struct chsc_conf_info *ci __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 : 2;
+@@ -623,20 +578,16 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
+ 		u64 : 64;
+ 		struct chsc_header response;
  		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sci_area;
+-	} __attribute__ ((packed)) *sci_area;
++	} __attribute__ ((packed)) *sci_area __free(kfree) = NULL;
  
--	sci_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	sci_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	sci_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!sci_area)
  		return -ENOMEM;
  	ci = kzalloc_obj(*ci);
-@@ -662,7 +662,7 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
- 		ret = 0;
- out_free:
- 	kfree(ci);
--	free_page((unsigned long)sci_area);
-+	kfree(sci_area);
- 	return ret;
+-	if (!ci) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(ci, user_ci, sizeof(*ci))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!ci)
++		return -ENOMEM;
++	if (copy_from_user(ci, user_ci, sizeof(*ci)))
++		return -EFAULT;
+ 	sci_area->request.length = 0x0010;
+ 	sci_area->request.code = 0x0012;
+ 	sci_area->m = ci->id.m;
+@@ -645,31 +596,23 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
+ 	sci_area->ssid = ci->id.ssid;
+ 
+ 	ccode = chsc(sci_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (sci_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "sci: response code=%x\n",
+ 			 sci_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&ci->scid, &sci_area->response, sci_area->response.length);
+ 	if (copy_to_user(user_ci, ci, sizeof(*ci)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(ci);
+-	kfree(sci_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -696,7 +696,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
- 		u32 res;
- 	} __attribute__ ((packed)) *cssids_parm;
- 
--	sccl_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	sccl_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
+ {
+-	struct chsc_comp_list *ccl;
+-	int ret, ccode;
++	struct chsc_comp_list *ccl __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 ctype : 8;
+@@ -681,7 +624,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
+ 		u64 : 64;
+ 		struct chsc_header response;
+ 		u8 data[PAGE_SIZE - 36];
+-	} __attribute__ ((packed)) *sccl_area;
++	} __attribute__ ((packed)) *sccl_area __free(kfree) = NULL;
+ 	struct {
+ 		u32 m : 1;
+ 		u32 : 31;
+@@ -700,14 +643,10 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
  	if (!sccl_area)
  		return -ENOMEM;
  	ccl = kzalloc_obj(*ccl);
-@@ -745,7 +745,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
- 		ret = 0;
- out_free:
- 	kfree(ccl);
--	free_page((unsigned long)sccl_area);
-+	kfree(sccl_area);
- 	return ret;
+-	if (!ccl) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(ccl, user_ccl, sizeof(*ccl))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!ccl)
++		return -ENOMEM;
++	if (copy_from_user(ccl, user_ccl, sizeof(*ccl)))
++		return -EFAULT;
+ 	sccl_area->request.length = 0x0020;
+ 	sccl_area->request.code = 0x0030;
+ 	sccl_area->fmt = ccl->req.fmt;
+@@ -728,61 +667,46 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
+ 		break;
+ 	}
+ 	ccode = chsc(sccl_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (sccl_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "sccl: response code=%x\n",
+ 			 sccl_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&ccl->sccl, &sccl_area->response, sccl_area->response.length);
+ 	if (copy_to_user(user_ccl, ccl, sizeof(*ccl)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(ccl);
+-	kfree(sccl_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -756,7 +756,7 @@ static int chsc_ioctl_chpd(void __user *user_chpd)
+ static int chsc_ioctl_chpd(void __user *user_chpd)
+ {
+-	struct chsc_scpd *scpd_area;
+-	struct chsc_cpd_info *chpd;
++	struct chsc_scpd *scpd_area __free(kfree) = NULL;
++	struct chsc_cpd_info *chpd __free(kfree) = NULL;
  	int ret;
  
  	chpd = kzalloc_obj(*chpd);
--	scpd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	scpd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!scpd_area || !chpd) {
- 		ret = -ENOMEM;
- 		goto out_free;
-@@ -775,7 +775,7 @@ static int chsc_ioctl_chpd(void __user *user_chpd)
- 		ret = -EFAULT;
- out_free:
- 	kfree(chpd);
--	free_page((unsigned long)scpd_area);
-+	kfree(scpd_area);
- 	return ret;
+ 	scpd_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+-	if (!scpd_area || !chpd) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(chpd, user_chpd, sizeof(*chpd))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!scpd_area || !chpd)
++		return -ENOMEM;
++	if (copy_from_user(chpd, user_chpd, sizeof(*chpd)))
++		return -EFAULT;
+ 	ret = chsc_determine_channel_path_desc(chpd->chpid, chpd->fmt,
+ 					       chpd->rfmt, chpd->c, chpd->m,
+ 					       scpd_area);
+ 	if (ret)
+-		goto out_free;
++		return ret;
+ 	memcpy(&chpd->chpdb, &scpd_area->response, scpd_area->response.length);
+ 	if (copy_to_user(user_chpd, chpd, sizeof(*chpd)))
+-		ret = -EFAULT;
+-out_free:
+-	kfree(chpd);
+-	kfree(scpd_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -796,7 +796,7 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
+ static int chsc_ioctl_dcal(void __user *user_dcal)
+ {
+-	struct chsc_dcal *dcal;
+-	int ret, ccode;
++	struct chsc_dcal *dcal __free(kfree) = NULL;
++	int ccode;
+ 	struct {
+ 		struct chsc_header request;
+ 		u32 atype : 8;
+@@ -794,20 +718,16 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
+ 		u32 res1[2];
+ 		struct chsc_header response;
  		u8 data[PAGE_SIZE - 36];
- 	} __attribute__ ((packed)) *sdcal_area;
+-	} __attribute__ ((packed)) *sdcal_area;
++	} __attribute__ ((packed)) *sdcal_area __free(kfree) = NULL;
  
--	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	sdcal_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	sdcal_area = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!sdcal_area)
  		return -ENOMEM;
  	dcal = kzalloc_obj(*dcal);
-@@ -834,7 +834,7 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
- 		ret = 0;
- out_free:
- 	kfree(dcal);
--	free_page((unsigned long)sdcal_area);
-+	kfree(sdcal_area);
- 	return ret;
+-	if (!dcal) {
+-		ret = -ENOMEM;
+-		goto out_free;
+-	}
+-	if (copy_from_user(dcal, user_dcal, sizeof(*dcal))) {
+-		ret = -EFAULT;
+-		goto out_free;
+-	}
++	if (!dcal)
++		return -ENOMEM;
++	if (copy_from_user(dcal, user_dcal, sizeof(*dcal)))
++		return -EFAULT;
+ 	sdcal_area->request.length = 0x0020;
+ 	sdcal_area->request.code = 0x0034;
+ 	sdcal_area->atype = dcal->req.atype;
+@@ -816,26 +736,18 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
+ 	       sizeof(sdcal_area->list_parm));
+ 
+ 	ccode = chsc(sdcal_area);
+-	if (ccode != 0) {
+-		ret = -EIO;
+-		goto out_free;
+-	}
++	if (ccode != 0)
++		return -EIO;
+ 	if (sdcal_area->response.code != 0x0001) {
+-		ret = -EIO;
+ 		CHSC_MSG(0, "sdcal: response code=%x\n",
+ 			 sdcal_area->response.code);
+-		goto out_free;
++		return -EIO;
+ 	}
+ 	memcpy(&dcal->sdcal, &sdcal_area->response,
+ 	       sdcal_area->response.length);
+ 	if (copy_to_user(user_dcal, dcal, sizeof(*dcal)))
+-		ret = -EFAULT;
+-	else
+-		ret = 0;
+-out_free:
+-	kfree(dcal);
+-	kfree(sdcal_area);
+-	return ret;
++		return -EFAULT;
++	return 0;
  }
  
-@@ -904,7 +904,7 @@ static int chsc_release(struct inode *inode, struct file *filp)
- 	}
- 	snprintf(dbf, sizeof(dbf), "relret:%d", ret);
- 	CHSC_LOG(0, dbf);
--	free_page((unsigned long)on_close_chsc_area);
-+	kfree(on_close_chsc_area);
- 	on_close_chsc_area = NULL;
- 	kfree(on_close_request);
- 	on_close_request = NULL;
+ static long chsc_ioctl(struct file *filp, unsigned int cmd,
 
 -- 
 2.53.0
