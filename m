@@ -4,89 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F04C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 01:17:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4640C79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 01:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159246B008C; Wed,  9 Sep 2026 21:17:29 -0400 (EDT)
+	id 6E5C66B008A; Wed,  9 Sep 2026 21:46:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E3446B0092; Wed,  9 Sep 2026 21:17:29 -0400 (EDT)
+	id 695246B008C; Wed,  9 Sep 2026 21:46:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3D1C6B0093; Wed,  9 Sep 2026 21:17:28 -0400 (EDT)
+	id 5ABE56B0092; Wed,  9 Sep 2026 21:46:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C970D6B008C
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:17:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E4ED4039E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:17:28 +0000 (UTC)
-X-FDA: 85196089776.07.2EDC363
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 44BBC40006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:17:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=p6733vXn;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3715D6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:46:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D1D5A3F77
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:46:00 +0000 (UTC)
+X-FDA: 85196161680.19.43CD2D0
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B7B2D1C0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:45:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789003046;
+	s=arc-20220608; t=1789004758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2IVJH8MPwJAkeuj2dMMiZHrS4p/p8L2+EkoUpA5hPNI=;
-	b=lD1/zaA0urFHHIWXaCEi2vHv6/SR3zYMmPKoFrnf4GOdn8dGAZ6NdIaSq4jyLD1LUlPPmd
-	gP/IMbXVrFnK4DuRb3V0S6/KRiGpJuvdbjr7db5E0LVEkliOQfTZ21UEg4faKrVshI1qHu
-	paqp+TAEOt+zxYnDh/TWUd8awoqp4ak=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c9D4/37StdW+/oBzY4eEwtKc1OugVeB5CDJ0FqRkHFY=;
+	b=ryUWFCz2ZZGi0v/E/HBJ6uaUpKjO0bd9hwrbZZ//aKK5v5tWdP2EMQ3q3hLp+SRIOH4hbs
+	utj4VxgGp35SnDiDXXMx+W4snDNGIbw+7WGx/4+OJ4JB5A3iw7mWuH/MyJKs9an9QbnlzC
+	uK4dROEgbNAXWAAUV90yZk/N0kq2/tA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=p6733vXn;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789003046;
-	b=SZYWamKj1N9FYQ7A8QxVfWI8ya+SvDzGWfrj+tNQ3hCK9Nr64wQQfRs3YCK72OTPeznsn3
-	KV2WPaeECUMgxeGPBA+v9B2XTokQVfA5FqYjEYfxGytINKuEuNmgjSGdStZFWDkuZPmfJM
-	xThGTjTkG79d3NgYKjPrh5LSPq3xOB4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789003042; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=2IVJH8MPwJAkeuj2dMMiZHrS4p/p8L2+EkoUpA5hPNI=;
-	b=p6733vXnaxnNV/DL+umHCEwzQM1WfBhHAB8HYwIsgMMztIuNm5L4cn+fVr9gRC8FwmwGoEPjgB39rY/mxAIWhdM33kqMVksIuyG0X/Qjx/XP8wineZat3xYAw/PyRIN+/Bhp8u3S6TdnQIx59o2w1qRVXePcNwL6LBqVLoD4HsA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAg1fiJ_1789003039;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAg1fiJ_1789003039 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 09:17:20 +0800
-Message-ID: <d65b4d23-b9d4-405e-84f5-a814fc984ebd@linux.alibaba.com>
-Date: Thu, 10 Sep 2026 09:17:19 +0800
+	t=1789004758;
+	b=76T04HbVTc4WjUdjjq3swFnA80J8MoH6lB2vBWdSYiajHIeCOCCGO5op7zKwJPMOK2Iy38
+	7bMBqHfFuPB+RJxD6LfP4V4hnUYoRrSnVSUI/DmDJ6QSPSVjDLSxUQ6SuYR6JIcrqY9ol9
+	JX+9bhZJAF8PqzwqnDTe6m4O0cSXFGc=
+Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
+	by 156.147.23.52 with ESMTP; 10 Sep 2026 10:45:54 +0900
+X-Original-SENDERIP: 156.147.1.126
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.126 with ESMTP; 10 Sep 2026 10:45:54 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 10 Sep 2026 10:45:54 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>, her0gyugyu@gmail.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] mm/swap: skip empty clusters in the swapoff scan
+Message-ID: <aqIL0nNT/RF67PIN@yjaykim-PowerEdge-T330>
+References: <20260909161552.2335971-1-youngjun.park@lge.com>
+ <20260909104939.5203c02695fcfd7a95f4b26c@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/19] selftests/mm: add khugepaged completion barrier
- helper
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, rppt@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
- nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
- kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-11-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260908125105.1510704-11-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909104939.5203c02695fcfd7a95f4b26c@linux-foundation.org>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 44BBC40006
-X-Stat-Signature: 57s7wzbc5frq8ezhqm9rfcawik9jpehg
+X-Rspamd-Queue-Id: B7B2D1C0006
+X-Stat-Signature: icechj7dmfm8t5qkcedqqca5y4qa4eec
 X-Rspam-User: 
-X-HE-Tag: 1789003044-9214
-X-HE-Meta: U2FsdGVkX19OsUPPVdpdxTnHXYGyHcSzKuevIO0cXg56Wwh3vt7/kIWHzXyyB0ivwaJ8uhLOOaPc4FxW9NZgzr4lFvkfNOuF999+xHTPU5wI7cpk3zwm3ZOYZLCIxHDf8D1tG2WUm00m4Hzg17RQM+Vj0oSJTRenIJcOVYQktEXGcXlGPP25wbLRl9wjzQBtBinMY2fqNWgJq4fNMlqcD5ivLQtbTEjp8ZobpgqXHzEid90V5QBQ1kJ6ftxRA4YJDoESgOc5x6xUtxKLXD/cVLX7G0f4n1p2YGHPiGIE68LmoQONKNHvLs/oDsTEZznp45qtlq1KtF5X07pjsaOwJrVxmC7JSw2KO0Bbc86RTwk8uNdoHWTertn61F+Lji43sdjAprBqVWcBYH0BrtiSuDjDhe9l59+nVvXF4qaQU2boRf9i2NinmvQla/HUHdqg0GGFus31B+XrQc0H1VwkbNeMFc7MjpTdH0lGU2JqtOUDNlyVp2g4zQ55ZlN96T3dehj+dfelYptiza/8TuIOMfpP3ou49RnRWZWyUtcFtLKjZ4as2ybc0O/uXv6b2M54CpygqWLhGLZCmHIm/bPyVEvta6mkUx+hTMgPleUEBWYBh6cQgqsACWgAxYxiRgm01HY4RWoUngHULwPG5JhxZPJuHM9WSH5lY9jEU4X7ZgV67psRnsdyYvmtPVOBhoGXbk/Jx76Xn/3LZuWEZCHM523/2hyQm3MCnlaoOAc2OCO4gft/dPuq3VFWHpgK/0N4xCagLQIl2PcVVgtbp72csP0U+umG2jsXVQahWeoJ4osF0X6RfvbObpPMggEI9KMQA2JvbZtDdYh+yjftJQl3OAmWQyVQgLnCQ1kTRZDG/u3Ex88R9jCqYpcZwPvOsyT5kW41O0Tq8CtrnmH3TYEzftmGdhut99K4KbQMOhlbuPgALmDJG7t/XghELk51iGvwh+JzzhArCXJUBHzxtkz
- Bwl5kMYb
- hutrOnc3diEkVSfnfv+pAolMHrLDY5ZzAyzOE1UdeqLfETbgqLE1ltMcGV765YcVeyAY7kipLomhvjgZPHm+JYKqVqbGvsJX5kdZMFTOazVfFYUMvtrPrpSBkZwvNnJNHP7eId4hfffrd3JpxJ6+fBso798//mOyZRvAWCBrPp/11x8p3KeBN3JkjJP+MTnZK+u9DajSFvgUL6vAFc+7m0RHJKpzUcq4DLd2Eg36aKmjL+jttEzQad0C/VdTjdDcTfioKJJ3up3+IdlT6zgAYu9PkQtremhRuOfX6HCTfRnxumwTfCnSPYTk3Tyfz6nULOXCGI45BUq+E6HUW34L4shCB5ceNOCRFDWGyu2zQ7tWXmRNdXzKofq1h9VEVGPEbh9/n
+X-HE-Tag: 1789004757-665059
+X-HE-Meta: U2FsdGVkX18OV6CsmXbbVLzNCIIJ/tPwHhVqLMwgwY25XPW21V4I89G1wjtha6GWONLV7eAuFhiSS/iIb52+zF6uGl/qATioClhW/PwUSV/23AsO5WKmm5T8XomGObM3j7dAcSt3h6854tpJhjxq+tBOssouiJYH5WohNEZWWRH9DJMh8YD0NsilCeqf0F5RS9N8T930GcX2utlq937blFcQQmwvoeFS3m7GYjrG+obz9Wq0ql2Xti19WZrKMZqNwVD8QHeWtZLOeG7x7jS2gNAsLuIODQHmgNiWB0Q1Ts6xJIAUdPUC+CjIqsEMdh7+GEPLc5/9R5s7ME/meEtFv1QoS1IzY4omLp9sYaQ47gjwW+pAajmA7F0+OhhdN3xK0CSRyIfwk2UejWZ27b6vFxL3qOzLNwGTws0iHGxyFSim6keBdqsYAEGR0qT+mTFS1NLfYHK1+CZ5YnBnLiXHTCNlhTQbIFcLha082aDx0FiW6h7noJX9eeIBIohFcW2fC05AmPHLMhrI6fO83u+p/g0QTRcbD6l11Sth5t6BL/33EtTUx+Gs9e6yMMVkvIX525k7J4qt/gXyLlByRzQLN38+vXf+1f9J5gu+gqvR3APWIJ6blnswjFGyhJJ93cweeKn2dq5yj4gTravnjRtVs6NDlWIIWH8TsEgnYuZJGRpROa1V8uJiUZKM3UDDr5YNLkcEHJlmwHOT+FoZnrtZmbsoeYAimAF0PAhFqCHESuhlcGhXtudipHa2VHlZ2foUq8/CZHrO/6cmBb5A03+Ej7wDLWOl/er+/33v3JL1d85BpAESq3p0h+k1IidJLzHlrezhP76LaTG9o3JaCJIcbPe4wSY7ByhWLjLVm3jX/BK+XfvK3MEBwwjmv2AEql58q3Lb8MLhEHv07z7gkt1a7qv1v0raIkLTwKW7MGdu7xyjOa2RV2iaOubz+2ZqmTolzyT5GppdZDIia3Ff3EJ
+ I3/J44lA
+ 1mOnZmWNRElxqheTh3F/pEdxGSAAhm5HQK17E4vOSXH95iqw9RhbkHdfcDP2dtVwN/oGgscyDk/c09ICco0pxuWZk3PCkr4jZwMAae36Zj90IBjqoIysYNeJ4IQ6/UOhAGiV0iJNcqsjfhV6IGMHlUdGhQov6wHEKXdsr89sPV67klmnf+SRFAHC9SWbGyGA7f3YnxDNT8/LWXz8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,36 +87,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 09, 2026 at 10:49:39AM -0700, Andrew Morton wrote:
+> On Thu, 10 Sep 2026 01:15:50 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+> 
+> > find_next_to_unuse() walks a swap device one offset at a time.  Slot
+> > state now lives in a per cluster swap table, so patch 2 dismisses an
+> > empty cluster with one counter read instead of SWAPFILE_CLUSTER table
+> > reads.
+> > 
+> > Patch 1 is an unrelated one line comment fix noticed on the way.
+> > 
+> > A debug test confirmed the skip path runs, and swapoff completed
+> > under load with no DEBUG_VM or lockdep splats.
+> 
+> Please let's try to make the [0/N] words provide a summary of the
+> patchset's effects.  The above didn't even tell people that this is a
+> swapoff optimization!
 
+Hello Andrew.
 
-On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> A khugepaged test has to tell "not collapsed" from "not scanned yet", and
-> nothing in the selftests can.  wait_for_scan() in khugepaged.c comes
-> closest: it polls full_scans until the counter has advanced by two, since
-> the pass in progress may already have passed the test's mm.  But it only
-> returns in time if scan_sleep_millisecs happens to be short, and it is
-> private to that one test.
-> 
-> Add khugepaged_full_pass() to hugepage_settings, built on the same
-> advance-by-two wait but driven through sysfs: a store to
-> scan_sleep_millisecs wakes the daemon, so the barrier completes whatever
-> the scan cadence.  A store made while the daemon is scanning rather than
-> sleeping is lost, so the helper keeps storing until the pass lands.
-> 
-> One wake completes one pass only if pages_to_scan covers every mm on the
-> list, so callers need it large.
-> 
-> Settings pushes must not start passes of their own.  A store to either
-> sleep knob wakes the daemon, so thp_write_settings() now writes a
-> khugepaged knob only when its value changes.
-> 
-> Assisted-by: LLM
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
+I will keep in mind, Thank you for pointing it out.
 
-Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> I asked an LLM for this summary and we came up with
+> 
+> :  Speed up swapoff and reduce scanning stalls on large, mostly empty
+> :  swap devices by skipping empty clusters.  Reduce swapoff time on a 1
+> :  TiB device from 158 ms to 94 ms after filling 128 GiB, and from 392
+> :  ms to 73 ms after filling 512 GiB; expect little benefit when
+> :  substantial swap data remains.
+> 
+> Does that sound OK?
+
+Yes, sounds good. summary seems good enough!
+
+Best regards,
+Youngjun
 
