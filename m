@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AB7CC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30BDEC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:18:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E570D6B009B; Thu, 10 Sep 2026 10:16:56 -0400 (EDT)
+	id 5395A6B009D; Thu, 10 Sep 2026 10:18:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E08006B009D; Thu, 10 Sep 2026 10:16:56 -0400 (EDT)
+	id 4BC396B009E; Thu, 10 Sep 2026 10:18:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DEC6B009E; Thu, 10 Sep 2026 10:16:56 -0400 (EDT)
+	id 384386B009F; Thu, 10 Sep 2026 10:18:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE8E76B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:16:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B99F4A056C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:16:54 +0000 (UTC)
-X-FDA: 85198053948.29.B4BEB51
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 00A6F140004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:16:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dKkmADC8;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789049813;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKr5hPbNleVMkg76w58XMKUslPR6fzuboqwZkz3wepg=;
-	b=RdfU6E0WErAb9Hon5x79jYJu1c5bep5ayMYdY0h+B8c7ZKFVgTP35OUUlp1ha8/ZNpEALv
-	WYCHUywzKKYBEcB2WJ7drWhLwB6ZgBf01z9QdxFM4Au8T3YD/TxCzZzi7EAgMmhJHhZAxu
-	LpT8QURCIc/+gqGMze4dUbEPnftoK+0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789049813;
-	b=PKKLQxmdkcx0KVJLZg5WZJFV/kwcGCQvjM/rT8VfWRRAsmgqrCIhijI57WWvr+rK6aEzSF
-	R18iA4C1gQCzMmZJ3uCQcJG1lf1ziL7+bZxRwpyu9BGEJPsuz6tq66dkTWSswBHh2RVwUJ
-	UTNcSZv30hbbd227lJnhHgsVfNmILbY=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C5266B009D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:18:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FDF01A054B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:18:24 +0000 (UTC)
+X-FDA: 85198057728.17.75EA00F
+Received: from a6-245.smtp-out.eu-west-1.amazonses.com (a6-245.smtp-out.eu-west-1.amazonses.com [54.240.6.245])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3FC7B8000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:18:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=calicevideomusicproductions.com header.s=resend header.b=m3Paapyi;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=zaU5xfYu;
+	dmarc=pass (policy=none) header.from=calicevideomusicproductions.com;
+	spf=pass (imf30.hostedemail.com: domain of 010201a08baf0d73-719ddfac-803f-4c6a-bf29-9e15f827362d-000000@send.calicevideomusicproductions.com designates 54.240.6.245 as permitted sender) smtp.mailfrom=010201a08baf0d73-719ddfac-803f-4c6a-bf29-9e15f827362d-000000@send.calicevideomusicproductions.com
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dKkmADC8;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85441601F1;
-	Thu, 10 Sep 2026 14:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AFB1F000FF;
-	Thu, 10 Sep 2026 14:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789049812;
-	bh=pKr5hPbNleVMkg76w58XMKUslPR6fzuboqwZkz3wepg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dKkmADC8CQOFHY6kWVFLhHmN/5gQRiSVsLiZPB0L8TvjATCyW+1Cb7C8Vy+kFGQcL
-	 ruGR6HIbcw9pVnmhxY6/ubSwRuttRWtFi+0CQhHxpNcO7wlTNdnxdRXx5jCqDri41c
-	 oduNfZfQDoEE9TXpXwEL78gORwyRdpVrQV9P9seIFBVR8WixbOya2rUNsvN4oGa3cj
-	 G8FMuuDvWgv4ByjBxH2LX0KUHaKdt7uXUfdHWLGiEPJXYIPTAXjwujhpEq86th9s9c
-	 XmCDVX70y+bfM4ZVfe6J/gglXWlFDI6WZ/z4sLsTYKcZRNuco/NOcuVL3G+T+KYPKI
-	 gDhqAkWNhXCvQ==
-Date: Thu, 10 Sep 2026 15:16:42 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 08/12] mm/sparse: move __highest_used_section_nr handling
-Message-ID: <aqK2_RpAlMbVYcuN@gremlin>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-8-008fc8d579fe@kernel.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=calicevideomusicproductions.com header.s=resend header.b=m3Paapyi;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=zaU5xfYu;
+	dmarc=pass (policy=none) header.from=calicevideomusicproductions.com;
+	spf=pass (imf30.hostedemail.com: domain of 010201a08baf0d73-719ddfac-803f-4c6a-bf29-9e15f827362d-000000@send.calicevideomusicproductions.com designates 54.240.6.245 as permitted sender) smtp.mailfrom=010201a08baf0d73-719ddfac-803f-4c6a-bf29-9e15f827362d-000000@send.calicevideomusicproductions.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789049902;
+	b=crhiIhCJonEYKzUf6WFDth/9nOwRZB0UAkLjt72PWDCUvNE8FsQMsbn4flPZ9qXadSY5XW
+	1PpV+FsMbiLX9X+cVuTEQm3x5WiIE5bp5aEyBjF46ii14/dNKDDekiuK0SUV1CGjGMdogQ
+	7O3ALhV0tetheFqM9ZfrPL3SK/+UrpQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789049902;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2Yu6usE9oSWTMXIwYcbrDZVbTT+a3eH6heq5hS1vc0I=;
+	b=HCtT8IPqUKK39A7dkalE2hXibqifwm+CD6EdmPycc9S0Bh+acE/+BVR/8HNklVWd6WjKS0
+	yAJN4YkhlktzUHQ8ENLnkD/AwF9npLLqOS1W6ubvPIR6ll1caTUSgM4tJPlZtF5o0mhDUe
+	DeivcMtcObDL+Z2bgdRt+kR/7zhLOJY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=calicevideomusicproductions.com; t=1789049900;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
+	bh=wdUbF0XlN24IVTcPJokbpXiy8vvfrIq3/BIfwzhoGy0=;
+	b=m3PaapyiHgAS/dZ+9Ih3mdjV5e/qb0KcHp8NGNm3ac/6pnKGORXqkkg4+NvM5L69
+	qxPBhRi4NUct3RfFFEx4rUX2H2R/PjHXvsfaeEqwHFnt/5LeCb9Gsw34m7A3OpHtCp8
+	ziTkT1PbWAjNCsckn2Zv2SmCrlv+hUigRiONMsJA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1789049900;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=wdUbF0XlN24IVTcPJokbpXiy8vvfrIq3/BIfwzhoGy0=;
+	b=zaU5xfYuB2clwKdUZxof/s5M5JmjI3KmnEobS3odI2zWcG3yliZz0uIo9kjC2+Vq
+	ilVHRffePNZs0WgWDhBFs9EOTPF1dYOAVWndFT3g8EUTgOMN5i9UpFBwZ9JDVlZmkvv
+	tIgUguKq9UKsmJMtDArYqXJ0p83ZnP6pVk8raccM=
+From: Camille Garnier <contact@calicevideomusicproductions.com>
+To: linux-mm@kvack.org
+Subject: =?UTF-8?Q?Arr=C3=AAter_l=27activit=C3=A9_de_ROLLIN?=
+ =?UTF-8?Q?_JEAN_PIERRE_sans_tribunal_ni_contr?=
+ =?UTF-8?Q?=C3=B4le_fiscal?=
+Message-ID: <010201a08baf0d73-719ddfac-803f-4c6a-bf29-9e15f827362d-000000@eu-west-1.amazonses.com>
+Date: Thu, 10 Sep 2026 14:18:20 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-8-008fc8d579fe@kernel.org>
-X-Rspamd-Server: rspam04
+Content-Type: multipart/alternative;
+ boundary="--_NmP-7d1f29afbad02ade-Part_1"
+Feedback-ID: :1.eu-west-1.vZ4XoxyLxFFmNF+zhKt6opdm4CFUShg/y8ffXV+YRlemK2M9T1/sYYYWFmQsJVNv6y0EaETQmlANk8SZuk8vF1+DeBV3d/bpFAgDDnqQ6mQXipmMgeR7KAskyW7/xKQJUOsPU65k2bausfVCzJoBGwF2cZBXBbSBRoa2DB6o4uQ=:1.eu-west-1.duyiEkLYPi4nGdRFd7LaGmAjRWieZlOvGu1wIBVR/Ks=:AmazonSES
+X-SES-Outgoing: 2026.09.10-54.240.6.245
 X-Rspam-User: 
-X-Stat-Signature: 49nt99scw79xeogne7zpygjr36q6bzry
-X-Rspamd-Queue-Id: 00A6F140004
-X-HE-Tag: 1789049812-499005
-X-HE-Meta: U2FsdGVkX18ZePuDURnysZUljf8YPMdz5gqXhPNNWpwrsrXbo9ulCB7bR8MsNcqUUPiEhxkY7F9xFpS3q8oCvRDMqIeGCbzlq9uRUeHWoEhmKLjv6PMAB9mM2jFtvVXvSa9X97wRGvIFNUaqCGbz0l47k27DySi5IVrTDHS7z1uz8eM1APLRMYldINGvptpaibqEOLBB1ZoVHmhK5OU8WiJMT0weNjacN+oLr0BY5lZ0yK9Ck3kGp9EpBxRLBg1SGD+D+OTVpSppLXu3G3WE2ykJsFQBuNHQjXs786DIIlIGiVH4OlGIXI3t6/kMX1WLv0Vv5n4pl1ly2ZJTrog854yH59EFdBwbBmPWG5K65seTMAi/VHxhgPl7FMjpXR7YL9gqBam54ZCnr99dtlDINqmYbpglUc3Z95eGZnCJARl9YBJgdysiq3beqOjBVHXXSt14T4Ji9/lhaKsAncRyV9PASx0/8DyoHk4fcv9ZQTLv8zUAyXhaJPo7LwwKNPXgAfrO/W41umpPXZ+ct8JdQLZW/DQuXcm3trmfDfBbd5gKTnwLI7Lu2YOaTxLjRSHCBfE9IJlrmePA19BFz7QdYsgQNJRNSCH305pwyWOSJw+/WV9t99SOmuVBpA6siyHGe+sUwU3d4VuZpN4PgGArP3Z90WnK533dajU8Mh4UXHYXn5imoMTQRg9m0p+C6RCzhb6pcn91ykiVsN6KcZcHLL/nXjAcuZwTlewlZQzOJXjjDcdiR/7MhWyPiWf7BQaGSWyMN4YDE4vrrI0907ReByFV0doOr/Cs99JDlDCD43U8//OJ21tMfn0laqzco/VgJBYms814hgmKauUwQM2TUG7ejiASZwyrls4NtG7h2VpiyT8sq+5NxsxRgRAODiEo8D2G5LHvz59DelUdXUGo6AfqvVJJcp8uurjVkkZ9CqhFg105L0gIjG5WHFT7NEawZbmqXq/Wa/Fcve+2Nzg
- aCmXWPkF
- 7h/n3qTxxNM7oty4iPmRx54El2SjyyXTBR5HBfSPSNItxoCks0YgCN+oVkOM3P15pwlhKjqrM0PG4gH0vHLVdK/Lrf4aeekRh0TNsPNno/SMAd1CHSMtEDOrGPTlUl2f6fH7vi7PjiLnFAAFDdJrsSju2WUVMAWzMIfWCDrymfM7yOdM812bRO7TX7OAk8cRLtXWgGGW0Bcg7UJ+XcxXNbvCVysnix8dVpSpTcV+kZ2lYbVI206KdLu0fB/+XxyLpjKk4v5+ta86evlXZ2JB1CPubt2X3wq/a9bsnbAtLyxa8NLRoM6dQ6D3608T6XVbJ2OKW
+X-Rspamd-Queue-Id: 3FC7B8000B
+X-Stat-Signature: 1pk7nwpmabesaq5dwr1egkfghmditqg5
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789049902-782749
+X-HE-Meta: U2FsdGVkX19Q/2VWoYXVkkDdB/hrb48a07ODh1TYJdllFrk7CLknDb4SuJjJcdzJ9Y8rH+Sd70xUrk8HK/7Dq39g/0WLVINUfPEwVqE1oyN3IfvRcr3RbT7ByhnUrV33lXoRqWAwbdLcsFMSfO9pxx6xrMqwdSvFsdnrKnDIlb1kKnmMoS43qaY5F066A5ksq5h8UcViG2FJyvEeZ0vGDchcloR4r0CB1TuUPy6LIDSFoe/ebFzfZDoDY//P+hO9oKLAd4SGKN9CBnnORmXj4Pnb6MAmr5nLIqYIho3j1ubmPVxnEors0wg9ZXn7IY/ixJTrLGfbg1TBjY8gKeedmadtG2cN9BwGcudRS9h5pZKChUCxlZp+HK0A2c42kP8XyMVn56DS9IsGT8E88VAiV/p4OMSO0fkIPNFm0RtZSbVZDyG/plb96RusieQNkxvTz/Wm3HuJmRPWdzyDou0TNQecCWoo3rhUKClx4bmOlZfnX1vEqVov9422fersnJqh76cIqcoZI/cCYvUUzc8Lt3Ke6O87cmqQM7I6PHruqg+KMZ5Y6ex8xQSKPqqjgb8hxQAdHbpC4dXoLWQnMqlJE1wVFnO08bEXWzM4LC5GgPRsQmElpBYaW5tif7bWcOkxGG6W7U6MIrY6aN3C/xqKEIV8lU+PIQ0SF+rOUikORLZ6HrrRDlEQlOWrvBqnDIDHknebsHCsuGCUMnj9ZJVE31spTgx9QkcLNhD5JjRKySRX0qVU9Z8zFaiTAi7IPWAMe6/kG46v322c/yCN3j3Tov38rzD2rmarGQcOF158jJIx+hN7gDT0q3zDVHmpwbPN5CsrLpTknHRCev11g+RaIUtKUdfKMD+E03S/XA10ZGWvSuzISkQvEJRdqlzVtI8cAw46okn3A/WlRZ7RGlOfJAYMtYK8dTMBPil2uhA5Mii3xO9uRzNTpgX2P5EG3j6kl1/ehRd9Q+RcqTcKVBU
+ GvNF32qv
+ OFhQUZ5Y1FEwQW/4uOkgiGPiAoGeKNp+vqFryDR1f19Y64V3EUwGwkXl7I92DmUNKQh6nIypWuwKc3qWyUs/TOhHJJYQj+Uuiq6H61kwNBdZDitVIYx4lyTvkIOO5AkyJs5H6KSAr2emheUBbb4e83nPATpJMV6kuNcaG/xpSixFweFA3ALf5OGplvI1NvES3P2CnoWgN+EMAK7EajYjl68aRThCT7DPOBZHik4DQS8gxoB3R89UxUynUhYq6XfU6a3I9oBMDQRPLh8KeM2cSQ3DRZ5+j2vvmZDZ9d0lRLMxOmEkI+i8Y2JNFhYuJznpTyyPKrwl/O7pzqHhYs6QX2QEelvnZmCCgbE7ORXMvHo3Vnpa+QYWyATfzKLPpECI0DRPZ9FOpU43skdOB+AYBTf5rH5jsfnc8vzNHwVOHSDf4f4wYxl2pbOV0NcaRlW+C6VYSQi9zKCK7I/P+HNkGYU5lZDr45Cje8GjA8MY4d0NfhAcyvGIlHkfdgr7c9YwhzCRdPwdke9pavBfIhA3J2NCcv7gYv5uw5Z+hpcDOKbWUcvxGm5+aMkTEI8flxXqK8cwOzMUvaK7itJV2qJ9xMByAbg2jW96Tpth3ne4qZhuuyhs+KUNoFSHjskIzsn/JwdzErbzaMg6858+fQCO/WQ2QLx8/mjmmoX+oI+FACvu5+3H7Iid17rDBs0rAIRplu1kiEFFdTbiwydVfKcXXToEBeUypQQYk7zt5YY8w3V1y/MtIPJf3UAX1DPQ0TUBCIbkmcIqw/TeprmQRzT9+XkXZTJy8SWLtK8BlAGhcNjvdUsUmnrvEmZLqkS+UFOJrqneEbwMv5bPCNivNw79QP/UmXyURhLX/1Z9VN5p5Ms1mdzz9rMonuj+CAT6A4nnljGuyis4UcCC4dzWRfzIBKLX/0ylVbobwBySAdNzMxQN9M3kPIyZr8d/eXoG+SsiCRndHMZmq9qP6APNNkgWAkiZykZZg
+ 9Hwx9Y9E
+ iT6ggNgNTlkedEFWcPOFdtEk5BUYQMmIA5LMSKzTFyTe+2QUiVoBY2ybAQpcWJUonLogCQXUhbiGay/3H9xcgjePY2OibErVrApssFXmmDcXXOP0FTKIYoNnx3QtSui/GX9vft2cHAy2Sim76lwENs5YLTUrYkgiX55aVvOLwOXVejIbbgrlw3MFTELX65CcfccLh2UgJH/ln9K4TCbkKxsv08VTho6fT38U5uRs2+pmw2Kmdklk8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,125 +92,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:33:01PM +0200, David Hildenbrand (Arm) wrote:
-> Let's move it to sparse_init_one_section(). However, to keep early
-> boot processing working, we also have to initialize it in
-> sparse_sections_init().
+----_NmP-7d1f29afbad02ade-Part_1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-A why might be nice :)
+Bonjour,
 
-I guess preparing for removal of __section_mark_present()?
+Vous envisagez de liquider ROLLIN JEAN PIERRE =C3=A0 HAREVILLE ?
+Vous vous dites que =C3=A7a va =C3=AAtre long, co=C3=BBteux, et que ROLLIN =
+JEAN PIERRE va se retrouver avec des dettes, des imp=C3=B4ts, et =
+peut-=C3=AAtre un contr=C3=B4le fiscal sur le dos ?
 
-Also good to have arguments as to why this is equivalent of previous
-behaviour.
+Et si on vous disait qu'il existe une autre voie, l=C3=A9gale, qui vous =
+permet de fermer ROLLIN JEAN PIERRE sans aucun de ces inconv=C3=A9nients ?
 
-E.g. higher pfn = higher section nr so naturally the highest is the one you
-end up wtih at the end of sparse_sections_init()?
+Voici comment nous proc=C3=A9dons :
 
->
-> Should we use READ_ONCE/WRITE_ONCE with __highest_used_section_nr?
-> Probably, something for another day.
+Z=C3=A9ro risque : aucune interdiction=
+ de g=C3=A9rance, aucun comblement de passif, aucune faute de gestion.
 
-It might be worth expanding this a bit. Do multiple threads read/write this
-concurrently?
+Z=C3=A9ro paiement : vous cl=C3=B4turez ROLLIN JEAN PIERRE malgr=C3=A9 les =
+dettes, sans n=C3=A9gocier, sans tribunal.
 
-No functional change intended here or is one intended? :)
+Z=C3=A9ro contr=C3=B4le : ni le=
+ fisc, ni l'URSSAF ne vous inqui=C3=A8tent, ni ROLLIN JEAN PIERRE.
 
-Before it was:
+Z=C3=A9ro d=C3=A9lais : en quelques semaines, ROLLIN JEAN PIERRE est =
+cl=C3=B4tur=C3=A9e, vous tournez la page.
 
-mm_core_init_early() -> sparse_sections_init() -> __section_mark_present()
-                          sparse_add_section() -> __section_mark_present()
+Nous ne liquidons pas ROLLIN =
+JEAN PIERRE au sens classique du terme.
+On applique un processus juridique =
+m=C3=A9connu qui neutralise tout : dettes, URSSAF, imp=C3=B4ts, =
+contr=C3=B4les.
 
-Now:
+Notre =C3=A9quipe a d=C3=A9j=C3=A0 sorti des centaines de =
+patrons de situations bloqu=C3=A9es.
 
-                                                 mm_core_init_early() -> sparse_sections_init() [early]
-                                                 sparse_add_section() -> sparse_init_one_section()
+Nous pouvons vous montrer comment en =
+15 minutes, sans engagement.
+Vous voulez qu'on s'appelle cette semaine pour=
+ en discuter ?
 
-But also called from mm_core_init_early():
+Oui, je veux comprendre la d=C3=A9marche : =
+mailto:info@agence-onp.com?subject=3DDemande%20d%27informations%20-%20ROLLI=
+N JEAN PIERRE&body=3DBonjour%2C%0A%0AJe%20souhaite%20en%20savoir%20plus%20s=
+ur%20le%20fonctionnement%20pour%20l%27entreprise%20%3A%20ROLLIN JEAN PIERRE=
+.%0A%0AVous%20pouvez%20me%20joindre%20au%20num%C3%A9ro%20%3A%20%5B%20num%C3=
+%A9ro%20mobile%20%5D%0A%0ACordialement
 
-sparse_init() -> sparse_metadata_init() -> sparse_metadata_init_nid() -> sparse_init_one_section()
+Salutations,
 
-Are both required?
+Camille Garnier
+Sp=C3=A9cialiste en liquidation d'entreprise - HAREVILLE (88800)
 
-Might be worth digging into why a bit here.
+---
 
+Cet e-mail est destin=C3=A9 =C3=A0 linux-mm@kvack.org dans le cadre d'une =
+prospection commerciale pour des services de liquidation d'entreprise. En =
+application du R=C3=A8glement G=C3=A9n=C3=A9ral sur la Protection des =
+Donn=C3=A9es (RGPD - R=C3=A8glement UE 2016/679) et de la loi Informatique =
+et Libert=C3=A9s du 6 janvier 1978 modifi=C3=A9e, vous b=C3=A9n=C3=A9ficiez=
+ d'un droit d'acc=C3=A8s, de rectification, d'effacement, d'opposition et =
+de portabilit=C3=A9 de vos donn=C3=A9es personnelles. Les informations =
+contenues dans ce message sont confidentielles et exclusivement =
+r=C3=A9serv=C3=A9es =C3=A0 leur destinataire. Si vous l'avez re=C3=A7u par =
+erreur, merci d'en informer l'exp=C3=A9diteur et de supprimer ce message.
 
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/sparse.c | 5 +++--
->  mm/sparse.h | 6 +++---
->  2 files changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 2b41ae36f20b8..2d0f2db34f4cf 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -177,7 +177,7 @@ static inline unsigned long first_present_section_nr(void)
->
->  void __init sparse_sections_init(void)
->  {
-> -	unsigned long pfn, start_pfn, end_pfn;
-> +	unsigned long pfn, start_pfn, end_pfn, section_nr;
->  	int i, nid;
->
->  	sparse_extreme_init();
-> @@ -187,9 +187,9 @@ void __init sparse_sections_init(void)
->  		mminit_validate_memmodel_limits(&start_pfn, &end_pfn);
->
->  		for (pfn = start_pfn; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
-> -			unsigned long section_nr = pfn_to_section_nr(pfn);
->  			struct mem_section *ms;
->
-> +			section_nr = pfn_to_section_nr(pfn);
->  			sparse_index_init(section_nr, nid);
->  			ms = __nr_to_section(section_nr);
->  			if (ms->section_mem_map)
-> @@ -201,6 +201,7 @@ void __init sparse_sections_init(void)
->  			__section_mark_present(ms, section_nr);
->  		}
->  	}
-> +	__highest_used_section_nr = section_nr;
->  }
->
->  #ifndef CONFIG_SPARSEMEM_VMEMMAP
-> diff --git a/mm/sparse.h b/mm/sparse.h
-> index 7c5d82ceb7142..a3af4967fd5c5 100644
-> --- a/mm/sparse.h
-> +++ b/mm/sparse.h
-> @@ -97,6 +97,9 @@ static inline void sparse_init_one_section(struct mem_section *ms,
->
->  	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
->
-> +	if (section_nr > __highest_used_section_nr)
-> +		__highest_used_section_nr = section_nr;
-> +
+Pour arr=C3=AAter de recevoir nos e-mails, mailto:desinscription@agence-onp=
+.com?subject=3DDemande%20de%20d%C3%A9sinscription&body=3DBonjour%2C%0A%0AJe=
+%20souhaite%20me%20d%C3%A9sinscrire%20de%20vos%20communications.=
+%0A%0AMerci%20de%20bien%20vouloir%20supprimer%20mon%20adresse%20e-mail%20%2=
+8linux-mm@kvack.org%29%20de%20votre%20liste%20de%20diffusion.=
+%0A%0ACordialement.. Pour toute remarque ou signalement, =
+mailto:abuse@agence-onp.com?subject=3DSignalement%20%2F%20Contact&body=3DBo=
+njour%2C%0A%0AJe%20vous%20contacte%20concernant%20le%20message%20re%C3%A7u%=
+20%C3%A0%20l%27adresse%20linux-mm@kvack.org.%0A%0AMotif%20de%20mon%20messag=
+e%20%3A%0A%0A%28pr%C3%A9cisez%20ici%20votre%20demande%20ou%20signalement%29=
+%0A%0ACordialement..
+----_NmP-7d1f29afbad02ade-Part_1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Could also be:
+<!DOCTYPE html>
+<html lang=3D"fr">
+<head>
+  <meta name=3D"viewport" =
+content=3D"width=3Ddevice-width, initial-scale=3D1.0">
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+  <title>Arr=C3=AAter l'activit=C3=A9 de ROLLIN JEAN PIERRE sans tribunal =
+ni contr=C3=B4le fiscal</title>
+</head>
 
-	section_nr = max(section_nr, __highest_used_section_nr);
+<body style=3D"font-family:Arial, =
+Helvetica, sans-serif;font-size:14px;color:#222;line-height:1.5;">
 
-But not a big deal.
+  <!-- Pr=C3=A9header masqu=C3=A9 -->
+  <span style=3D"display:none;visibil=
+ity:hidden;opacity:0;height:0;width:0;overflow:hidden;">
+    ROLLIN JEAN PIERRE =C3=A0 HAREVILLE : liquider sans dettes ni =
+contr=C3=B4le fiscal
+  </span>
 
+  <p>Bonjour,</p>
 
->  	/*
->  	 * We encode the start PFN of the section into the mem_map such that
->  	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
-> @@ -114,9 +117,6 @@ static inline void sparse_init_one_section(struct mem_section *ms,
->  static inline void __section_mark_present(struct mem_section *ms,
->  		unsigned long section_nr)
->  {
-> -	if (section_nr > __highest_used_section_nr)
-> -		__highest_used_section_nr = section_nr;
-> -
->  	ms->section_mem_map |= SECTION_MARKED_PRESENT;
->  }
->
->
-> --
-> 2.43.0
->
+  <!-- Phrase =
+d'introduction -->
+  <p><b>Vous envisagez de liquider ROLLIN JEAN PIERRE =
+=C3=A0 HAREVILLE ?</b><br>
+  Vous vous dites que =C3=A7a va =C3=AAtre long,=
+ co=C3=BBteux, et que ROLLIN JEAN PIERRE va se retrouver avec des dettes, =
+des imp=C3=B4ts, et peut-=C3=AAtre un contr=C3=B4le fiscal sur le dos ?</p>
 
---
-Cheers, Lorenzo
+  <!-- Question sur la m=C3=A9thode -->
+  <p><b>Et si on vous disait qu'il=
+ existe une autre voie, l=C3=A9gale, qui vous permet de fermer ROLLIN JEAN =
+PIERRE sans aucun de ces inconv=C3=A9nients ?</b></p>
+
+  <!-- Annonce m=C3=A9thode -->
+  <p>Voici comment nous proc=C3=A9dons =
+:</p>
+
+  <!-- Liste des 4 points Z=C3=A9ro -->
+  <ul style=3D"margin:10px 0=
+ 10px 20px;padding:0;">
+    <li style=3D"margin-bottom:6px;"><b>Z=C3=A9ro =
+risque :</b> aucune interdiction de g=C3=A9rance, aucun comblement de =
+passif, aucune faute de gestion.</li>
+    <li style=3D"margin-bottom:6px;">=
+<b>Z=C3=A9ro paiement :</b> vous cl=C3=B4turez ROLLIN JEAN PIERRE =
+malgr=C3=A9 les dettes, sans n=C3=A9gocier, sans tribunal.</li>
+    <li style=3D"margin-bottom:6px;"><b>Z=C3=A9ro contr=C3=B4le :</b> ni le=
+ fisc, ni l'URSSAF ne vous inqui=C3=A8tent, ni ROLLIN JEAN PIERRE.</li>
+    <li style=3D"margin-bottom:6px;"><b>Z=C3=A9ro d=C3=A9lais :</b> en =
+quelques semaines, ROLLIN JEAN PIERRE est cl=C3=B4tur=C3=A9e, vous tournez =
+la page.</li>
+  </ul>
+
+  <!-- Explication processus -->
+  <p>Nous ne liquidons pas ROLLIN JEAN PIERRE au sens classique du terme.
+
+  <!-- Preuve sociale -->
+  <br>On applique un processus juridique =
+m=C3=A9connu qui neutralise tout : dettes, URSSAF, imp=C3=B4ts, =
+contr=C3=B4les.</p>
+
+  <!-- Preuve sociale 2 -->
+  <p><b>Notre =C3=A9quipe =
+a d=C3=A9j=C3=A0 sorti des centaines de patrons de situations bloqu=C3=A9es=
+.</b></p>
+
+  <!-- Proposition d'appel -->
+  <p>Nous pouvons vous montrer =
+comment en 15 minutes, sans engagement.
+
+  <!-- Question finale -->
+  <br>Vous voulez qu'on s'appelle cette semaine pour en discuter ?</p>
+
+<!-- CTA -->
+<table role=3D"presentation" cellspacing=3D"0" =
+cellpadding=3D"0" border=3D"0" style=3D"margin:20px 0;">
+  <tr>
+    <td>
+      <a href=3D"mailto:info@agence-onp.com?subject=3DDemande%20d%27informa=
+tions%20-%20ROLLIN JEAN PIERRE&body=3DBonjour%2C%0A%0AJe%20souhaite%20en%20=
+savoir%20plus%20sur%20le%20fonctionnement%20pour%20l%27entreprise%20%3A%20R=
+OLLIN JEAN PIERRE.%0A%0AVous%20pouvez%20me%20joindre%20au%20num%C3%A9ro%20%=
+3A%20%5B%20num%C3%A9ro%20mobile%20%5D%0A%0ACordialement"
+         style=3D"display:inline-block;padding:14px =
+40px;background:#2e7d32;color:#ffffff;text-decoration:none;border-radius:6p=
+x;font-weight:bold;font-size:15px;">
+         Oui, je veux comprendre la =
+d=C3=A9marche
+      </a>
+    </td>
+  </tr>
+</table>
+
+  <!-- Signature -->
+  <p>
+    Salutations,<br><br>
+    <strong>Camille Garnier</strong><br>
+    Sp=C3=A9cialiste en liquidation d'entreprise - HAREVILLE (88800)
+  </p>
+
+  <br>
+
+  <!-- Mentions et d=C3=A9sinscription -->
+  <footer>
+    <p style=3D"font-size:12px;color:#888;text-align:left;line-height:1.=
+5;">
+      Cet e-mail est destin=C3=A9 =C3=A0 linux-mm@kvack.org dans le =
+cadre d'une prospection commerciale pour des services de liquidation =
+d'entreprise. En application du R=C3=A8glement G=C3=A9n=C3=A9ral sur la =
+Protection des Donn=C3=A9es (RGPD - R=C3=A8glement UE 2016/679) et de la =
+loi Informatique et Libert=C3=A9s du 6 janvier 1978 modifi=C3=A9e, vous =
+b=C3=A9n=C3=A9ficiez d'un droit d'acc=C3=A8s, de rectification, =
+d'effacement, d'opposition et de portabilit=C3=A9 de vos donn=C3=A9es =
+personnelles. Les informations contenues dans ce message sont =
+confidentielles et exclusivement r=C3=A9serv=C3=A9es =C3=A0 leur =
+destinataire. Si vous l'avez re=C3=A7u par erreur, merci d'en informer =
+l'exp=C3=A9diteur et de supprimer ce message.
+      <br><br>
+
+      Pour arr=C3=AAter de recevoir nos e-mails,
+      <a =
+href=3D"mailto:desinscription@agence-onp.com?subject=3DDemande%20de%20d%C3%=
+A9sinscription&body=3DBonjour%2C%0A%0AJe%20souhaite%20me%20d%C3%A9sinscrire=
+%20de%20vos%20communications.%0A%0AMerci%20de%20bien%20vouloir%20supprimer%=
+20mon%20adresse%20e-mail%20%28linux-mm@kvack.org%29%20de%20votre%20liste%20=
+de%20diffusion.%0A%0ACordialement."
+         style=3D"color:#888;">
+        cliquez ici
+      </a>.
+
+      Pour toute remarque ou signalement,
+      <a href=3D"mailto:abuse@agence-onp.com?subject=3DSignalement%20%2F%20=
+Contact&body=3DBonjour%2C%0A%0AJe%20vous%20contacte%20concernant%20le%20mes=
+sage%20re%C3%A7u%20%C3%A0%20l%27adresse%20linux-mm@kvack.org.=
+%0A%0AMotif%20de%20mon%20message%20%3A%0A%0A%28pr%C3%A9cisez%20ici%20votre%=
+20demande%20ou%20signalement%29%0A%0ACordialement."
+         style=3D"color:#888;">
+        cliquez ici
+      </a>.
+    </p>
+  </footer>
+
+</body>
+</html>
+----_NmP-7d1f29afbad02ade-Part_1--
 
