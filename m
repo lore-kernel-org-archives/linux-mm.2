@@ -4,101 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB4BC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:22:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8538C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9AF66B008A; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
+	id A2EF96B0092; Thu, 10 Sep 2026 07:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4BC96B008C; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
+	id A069B6B0093; Thu, 10 Sep 2026 07:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3D666B0092; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
+	id 8CE9B6B0095; Thu, 10 Sep 2026 07:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B09816B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28EACC0285
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:29 +0000 (UTC)
-X-FDA: 85197614418.17.2B6F659
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5944DA0009
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gNyRJvPv;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789039347;
-	b=6pmcLo6iO42zugZsyFcPo3YwFcbyFxEt2VWNG6EF8I8ukMk5kZilfD5XI9UgkJrLuoK2gO
-	qs0sRysPigudws8VB1WRx4dk7YLu1ubzTFLsbYFunMGw5R/LJrLoO8IPVSsLnIitMNf3ov
-	tYLkwMnv3rc+gvrrPWYmvMneyOlkhAk=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7016B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:22:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8A101204A4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:51 +0000 (UTC)
+X-FDA: 85197615342.26.5FDF626
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 049A01A0008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jK7ChX8L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gNyRJvPv;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jK7ChX8L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789039370;
+	b=AdBvl2rX6OT18JBBTC7nZjxYci/gV4URusUXrC4AaPvWKoaiZbtoFhrQalqRFdTiFJVMxp
+	rDmb4vGpNtaZvjfJ/ehiEJQuE2oSofUk9DmbnLO6Jc43pPVhWA4aYFT6hitJp2Id5lNTI6
+	TlD9q9Eo884RSVRRmTkMfAPuUQDvyNw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789039347;
+	s=arc-20220608; t=1789039370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ws0rXfuRmoTR7x5ntUwQBKIloOgySdJF3YXvYkohOlw=;
-	b=enHvW7FWKiR6MfxYzdj38ZzUUabc4LIBW5TiJsF75KpFwgCjYhcRkbAt7YI5LT9aj2h9Sr
-	fRj8HNOfP4kjAgsbP4wJicmG09maeAhB15cQvlaY7nN4WmmpbYQ5HcKiNmu9ac+LOrAdJp
-	L+mTuFrhy7FhcGH1OUSYb4tDYp6ZIv0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE457153B;
-	Thu, 10 Sep 2026 04:22:22 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED7A73F528;
-	Thu, 10 Sep 2026 04:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789039346; bh=38/OLHfK+M+1zXHjINgFF+BX6QfD20XmuFGEDGmyA0o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gNyRJvPvTorSclWHavC3DluONl2GqzDYewmuGoFwfuSu95jgspzfpgyIeNA5lq8U8
-	 2FENBwt8PF8W4hLeiuNSCZvUO7KTGzv0/LxQ42Zm2/QF8gtjerY30MPZpvnQV1+u8K
-	 qE7nMiXoExbF3ZBVGOPVjxGpcw/SpJ734ssJvuCA=
-Date: Thu, 10 Sep 2026 12:22:20 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2ad0A/Rr65EAuzEvke4bbMmbpC8hQdLLHmef4KcXvFA=;
+	b=wGH+8LdwNfF4Ees8O2c3O5uaENfy98v5kTxJeztsCc3MwADwFxlxrs/sWXUbDLLJwTeT6s
+	3hFiRa8b7o3teGPBdIUz3UZyO1vOR/tqO8O8Wx8npbPcHG4z3ZoagxKmgCK+HCCLeyEJDl
+	9jORmfPQiYHyY8ldbh03cYT4m1xFdZ4=
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b2e1d7so1537580b3a.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789039369; x=1789644169; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2ad0A/Rr65EAuzEvke4bbMmbpC8hQdLLHmef4KcXvFA=;
+        b=jK7ChX8LmrODLL16grbUoaCPosZGJrFad1GAT/4UEitAvF2kLyL128MDVjfoYo2zVM
+         4xgBpes6XQaoGG3pfwWByA516DE00CI+rF3uQwytVKrjR6nXGsjk9eyudpsB/zetrPhd
+         pZFfcgrLyVnVemd0mXDbxwFIfNK/E6la1hmerWl/iYKaLF4cH2R43CDV4GVdSyp7mgvD
+         MRT7TxakHW9S8f1r9Zx8RMLtkaQxCJEKopWn5j7K2KIjKxGEZgXtJkqj1YJiPs5o3cY/
+         FEEtJ9qQTjeZj+uTvVoZ/f5dXdnr1JuD31iufiBUcEG7SuRKztsnHg5+N7zZDQ13KxGk
+         IJKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789039369; x=1789644169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2ad0A/Rr65EAuzEvke4bbMmbpC8hQdLLHmef4KcXvFA=;
+        b=W/MLZ0UfqiwMhO2M/H4Iv0rhUI6NarmNUoSm9qNYABTdjTPST2wYBEMTwSlmDONvb1
+         WQNo+e2+/vd5+wzv6eAfMq2cp9rXBj/KXXU8WdE0rs3lT51B6vunZeZo/ahIwzKX5Dy8
+         k/JmtzWPAmiVt4Ac3OzCZrON1haKWIPFt6YO25+P9BwPsjvNzkS4feYBTBpUNCurT+jX
+         YUTEzMKIkqttaiANKlvheagrheByNGpQcJNxKLd5Kq5OfLx24YaE7LOuL9QEUAuXgU6w
+         MMX+QSY+YwSt+3+8WkOCQ8ozPK7q+Pjwqhd2HXLhJ2BYUsDjPXMy+ERCTmd1r2YeNyS4
+         441w==
+X-Forwarded-Encrypted: i=1; AKwUvBxSWOTvirSkGSm2whW2HUhshZIhh+8+fdmUn/iaaiZUTWWhyD9U3ByxHYv+o1wDoOynNLaTwBODIA==@kvack.org
+X-Gm-Message-State: AFuF++nW7OSVFBxrjH168P4r8ATRjNsV9n2pYfcNmueQa9PdqxkcQESn
+	rFCyd4HzJQenmIQE66LHq9ZneQgXPOUZNryzpi1Z5VZFPDPleDV76ln+
+X-Gm-Gg: AYBFou0jI/1dWUgMJYcWZfzI2cuWvHCSnTtGAJdXSJmesEFSU3pwG7qKRzh1KernFDL
+	lB6PDkyZlMXvBAPntZFqpxu1jiKJZ76qGb0p5WuBaRpiBVJSA3dNKbDxVZGzwYmxyObSClnLe4e
+	+/FpElh8I5lsvlVrhD2h0yyLY9Uyl/6hZCPbDB2prU7ggOAwOzeMnM2tK1WZTLWKFYf9yRGG2lb
+	d9e4Ktd2bM1Bg5oz9v9AY5UJfxXp1YJf7t/EiWukRZniSPVhA90dC7xxBw0cXppeb/wtjhQz5vD
+	Dqorfe97mxX4ruTvKnizKkJngoF02Y0VMDUfiNNjfwRx1ZTvf5Agmqos6xMnWs5V995feuSQeux
+	ICrzF0qKm3p3YaywALNxKgUyS9R710u6aArajQTqGZTL5T0C0jyrXTWb1FA3csIus2NYHhlL1Z+
+	PSpy1NoWQSvDVUKMXJ8UlskrY3zlCiUGld4dQnrkKtd9+JUg7yYjHL8nP5qPIkyEdvdH7lSFWCt
+	gMS
+X-Received: by 2002:a05:6a00:300f:b0:86a:8e9b:46c8 with SMTP id d2e1a72fcca58-86a8e9b6359mr2124764b3a.0.1789039368714;
+        Thu, 10 Sep 2026 04:22:48 -0700 (PDT)
+Received: from celestia ([2402:1980:885b:4183:b098:c1b9:7033:be8a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152045e8dsm7926904b3a.20.2026.09.10.04.22.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 04:22:47 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: 
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
-Message-ID: <aqKS7CP67X4h6NiM@e129823.arm.com>
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-3-822b810458bc@arm.com>
- <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
- <aqKOVGECsCNtSMIV@e129823.arm.com>
- <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] Docs/mm/damon/design: clarify when qt_exceeds increases
+Date: Thu, 10 Sep 2026 19:22:31 +0800
+Message-ID: <20260910112255.157012-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5944DA0009
-X-Stat-Signature: nkur8z8xe3hupd67pjxwrhqi78ets3jg
 X-Rspam-User: 
-X-HE-Tag: 1789039347-760890
-X-HE-Meta: U2FsdGVkX1/JlatatTNtI2WhOXRfYhPibXxhgY6okwy6Iznt1Lzc7FIurx2fHRQsbp8Rs407To1bOIDxnljqgOMvB53vxu1YEjX3XzQ/ZaWt6oNY7+VKKVyRVr18JvjBeTvJp5k3zQzTePfUFuudrwsLBkY6QjXWMIIMri9Weta3HwlAIX7zt7uiZbihSYCly9ZeY72M7GP2845/r61x0IPdRT8itFTmdJsNL6YjJCkwK3LlGeXetKZolznubni5lotrcCKpTtrXWwmWDUAHk3z1qO6I3sASyW7CdMw+Dfcd83KB+wGbfRfPWbCkzQE0cFYM30j5PmeibDntbZbMjieAH8A1zdTVNU7K4Ql84GtRCjO0miGENbB47Z2d8BQNDt9hTkAS/ItnubyVSw/JDq92wYfD7pcYmPbF6kYJ5yao8szX8v60KHoYkB7hABUBSIDoLFZrozQlEKufY8tdhMcSsNSIu+W5rNte0eIT1m8LT79SzL7QtaT7brlo0Z+BbhULNOUSW4+aucRSeAlztZ25nRHUBswHwxqdDKaCeUD4BesvMr96VQ2vPSHhFbTIOZF1bzlOaF4/w6+brCiiH05EohuYPMS18uBpL1yG/AgCR8Kj+mF/bMoAhQDvpMDA1+giWluPnc3JkAdxMHIfmMyidz09F3MCKQujCOrXPSUQFQ+8VZqxyqxLc0BJCVdQC3bNSDD8/eyuDnCVjIW1+bKvLtq63AXd7un0anjQyswuCvzSSU964eYbwK4yigSGBgIR7oR46EFgmZfG25CzxKZOEGKRdUe94Prn3nndGACRmCQ4fqNss6srZvX6x//xt6AIDr+r2kV7rJI8K/A9Lh1nf4kX9s8A7VO8/f+bMfP6XTm/ecs1nlaTIklulLMYL3ZYMVSPtunIzNOz2RihHS6Vrtf06DFfIHX0y1dXol2R9STrXG5c8XutnhCQNuZg6z4lQQQgJNuOFlOZswU
- OhLwnDNK
- BmOiy7AE/aEceAyrLlao0x6in5fw+x6EI0HFXy3dX1uJfigtZzac20ceI0+yHtFmuxT8irG+kBEa3EDvcSq38AEFltF1Laa9lMtJqEqEtkcwXR5gDpvSSjOkBHKGMAWAYgmbs+mGeqp+d+E1hglKYTu2Or//bQ8mtj+pT/dmTlLC0zoKyNSdiMQ+ApnustG/frNEIuL3xXvD2wIDPekEnDKZ0GT/fD8Ahwd9xEACcEeFfSnu/UK5xkd6JsDbIdzWWqRhvMS9Ja/YJGl5hu0F0l13rs0TAKOHSccl064B/bkXaEgBT4anDiJVLmw==
+X-Rspamd-Queue-Id: 049A01A0008
+X-Stat-Signature: 1yeemgubsswpp71my5ojdczanpk3z9j8
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789039369-770024
+X-HE-Meta: U2FsdGVkX1/a8023WN8llXI9G4QxSwC6dM2pHijGFQrcoJ9Gbefa0V4IYTkp7RG2r2fiersNy77n/rdEpNqKqDWdBBQPHHx2mDjbmxE0ifQMOrR1+1t4hxWNsmVbtbY5ettjE262EvpI1/u9t12XGlWEBxSW9oQHdwAPw+MFKyJV1G8/iCV719KjmxI27wQLG3NHwVk2OMxnLVMw9uQg4rXXPWOaJfJQs6b/tFfNCor8NGUnakJ0Dc6c+w58TtpGQtgYsG+hlGY5i51wNPVzY9MIvEOudQNIdS0i4WBgVihOyHCuMXPLjZx8sCvqAZA5pkTBVZc57KJ+9YNYmzd4hok7DbE8YcR1R/IIzDWPwpMQPJOCkrmD40uZB3ZgZScvLiFtsp4SkLqAqv7EdbwP3d7ddciWXVohf72EODcV7KWZqgBa30dm2Haddr8BuMUlpvIxj8VZXd5H2PZTGUOr7/Akb81wTKBF1RglXOzBZm7/4CL4k3R7sSgUecAjPtGvdHaVabe8p1DjIKGXeT/xWhzwnnjYaPIaI5nL/2kaOQChC8Dw0blssLTaKZDf6c0fZqrKdzmknVgH67RcIWxheBesgA9YLdNG//0FEmMI8kgeosJtXIPbw9/0CMbHbwyiIiftM72wgMugJsQmPqZSmuFDJZ+u9v+ODkqcbw+qm6MKRHPRmIritf823kiKmpL2HdDaxU4voNosdwNMQ9VbYKbpt96OYxIEBf+PdymtsuT0Gyj+mHhTenfRWdzPy/DVZb8qrq8fXhPFemeSLCn/O88oJI5sthS/KgpirpDR/cjnhJcUNCK9T0JEYwo2SwPwvcSVhwhs/vs5fnN2W2SXx9OVtZZNyfyGCxaavMwMYJnLDs3+UJ+SDRSQeKtqAs3CP2DODdKyQdO8FwsHKIwJiGRdyrjzajeEIUq0SUnv48nrBQvy5sNTK4FdHT7FgP64NqLDROz7FhUhhaEVVf4
+ e/okBX0b
+ HFr37jrS7fDwOBlsMvpuBmqR7BpzEalCemRF94xxwoaFDYJyxPMUb4cYf5j67/q9ktbk2GKj2/RqIXki3IAflJjA1wUJEsn3Qg7MNsV0PJR9uWhYMUNtpa746nxvm7ncVhghNVniobPQPe86LRtibUfxOKfz1KEMAFzEfdNKPH5CFDunqPHsW1zdAhHIGTh7yFeDtyM14WazZ44ba/YKbwf5twR9KFvL4Fthoonzh1LHzpFqFfSe7qYBOPwN+OoM/hYJJllXnsfbtL7BLdOe946EeXuJvCE6f2JicZUfX8/UECvy3IntxN4HUYxJtoFFrMgZd8iuSn/JKOFHA4n0Qd5Iiiu8xfTWdIOmQv3A+9FClYfnoQg9I6Oi6nBPvE9vjlBwgDHcsqA1Z1IJqV/CTu8luVqxtqdQpc09rhIZqjqYXnvpfuerGFqqa6dQJzk1KGD08MaXkzzYtlOiCzQSw/cLPQ9eJ8xMOVXdPrRKl+LRVzldXTZZ7csh2y8AMUxZKAyl+7jkO3EVfm9I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,71 +130,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 01:14:42PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/10/26 13:02, Yeoreum Yun wrote:
-> >>> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-> >>> index 5f278913c4d7..b6fad38c8bee 100644
-> >>> --- a/tools/testing/selftests/mm/soft-dirty.c
-> >>> +++ b/tools/testing/selftests/mm/soft-dirty.c
-> >>> @@ -92,9 +92,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
-> >>>  	if (!hpage_len)
-> >>>  		ksft_exit_fail_msg("Reading PMD pagesize failed");
-> >>>  
-> >>> -	map = memalign(hpage_len, hpage_len);
-> >>> +	map = alloc_isolated_mem(hpage_len, hpage_len);
-> >>>  	if (!map)
-> >>> -		ksft_exit_fail_msg("memalign failed\n");
-> >>> +		ksft_exit_fail_msg("alloc_isolated_mem failed\n");
-> >>>  
-> >>>  	ret = madvise(map, hpage_len, MADV_HUGEPAGE);
-> >>>  	if (ret)
-> >>> @@ -130,7 +130,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
-> >>>  		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
-> >>>  		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
-> >>>  	}
-> >>> -	free(map);
-> >>> +	free_isolated_mem(map, hpage_len);
-> >>>  }
-> >>
-> >> smaps is really only problematic with merged VMAs when relying on exact page
-> >> statistics. For other properties (vm flags, MMUPageSize) it's not a problem as
-> >> long as our smap search just finds the VMA that covers an address.
-> >>
-> >> Assuming we fixed check_huge_anon() to not use smaps, why is this change here
-> >> required?
-> > 
-> > Since there is no interface to get vm_flags not via /proc/self/smaps,
-> > It might be good to have it for preventing unwanted VMA merge.
-> > 
-> > And might be useful for future to prevent unwated VMA merge.
-> 
-> See my reply on why vm flags are generally not a problem. Just like other
-> properties that are not changed during VMA merging.
-> 
-> Let's not perform random code changes without a clear picture.
-> 
-> And just to emphasize again: VMA merging could already be a problem before
-> memalign() internal changes.
-> 
-> (also observe here how we do a MADV_HUGEPAGE, so this is all rather arbitrary,
-> which is not good)
+qt_exceeds counts how many times a scheme's quota has been exceeded.
 
-As I mentioned in my previous reply, what I’m trying to prevent here is
-a failure when checking, immediately after memory allocation,
-that a specific vm_flag is not set.
+When using the temporal auto-tuning algorithm, the effective size quota
+becomes zero once the goal is [over-]achieved.  In this case, the quotas
+are still set, so qt_exceeds keeps increasing once per quota reset
+interval while the goal stays achieved.
 
-Yes, I agree that this could have been a problem even before
-the internal changes to memalign(). An unwanted VMA merge could already
-occur at the time of memory allocation.
+Clarify this behavior in the design document.
 
-So what I’m trying to avoid is a test failure where, due to such an
-unexpected VMA merge during allocation, the subsequent check that
-a specific vm_flag is not present fails.
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
 
-I probably didn’t explain this clearly enough and ended up causing
-more confusion. Sorry about that.
+Changes from RFC v1:
+- RFC v1: https://lore.kernel.org/damon/20260908175105.42558-2-aethernet65535@gmail.com
+- Simplify the explanation.  Do not provide a complete definition of
+  qt_exceeds, but rather explain only the increment condition when using
+  temporal auto-tuning algorithm, simply to prevent users from becoming
+  confused and being unable to find any explanation.
 
+---
+ Documentation/mm/damon/design.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index d036340dae8a..3f38a3cf68e4 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -695,7 +695,9 @@ There are two such tuning algorithms that users can select as they need.
+   fast as possible, using maximum allowed quota, but only for a temporal short
+   time.  When the quota is under-achieved, this algorithm keeps tuning quota to
+   a maximum allowed one.  Once the quota is [over]-achieved, this sets the
+-  quota zero.  Useful for deterministic control required environments.
++  quota zero.  Useful for deterministic control required environments.  Note
++  that the zero quota is a valid quota, and therefore ``qt_exceeds`` :ref:`stat
++  <damon_design_damos_stat>` will keep increasing in this case.
+ 
+ The goal can be specified with five parameters, namely ``target_metric``,
+ ``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
 -- 
-Sincerely,
-Yeoreum Yun
+2.55.0
+
 
