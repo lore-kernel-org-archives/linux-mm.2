@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2EC2C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:03:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D5EC79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:03:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0C866B00A5; Thu, 10 Sep 2026 07:03:03 -0400 (EDT)
+	id 883CF6B008A; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDDCE6B00B3; Thu, 10 Sep 2026 07:03:03 -0400 (EDT)
+	id 85B186B008C; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACD616B00B4; Thu, 10 Sep 2026 07:03:03 -0400 (EDT)
+	id 773326B0092; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 905796B00A5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:03:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E0FAB404A0
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:02 +0000 (UTC)
-X-FDA: 85197565404.30.FC1A663
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4798F6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:03:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2F0112048E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:23 +0000 (UTC)
+X-FDA: 85197566286.24.816C829
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2B180A0003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mzqBx2zP;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 16BF218000D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:03:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXMfGLih;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789038202;
+	b=zWcoYcks8kjsuVJkP6Iklej5WHwY8RKilwIw+cw9gQ1RTK1BD8deYpd3RpTA2g4UYlivG3
+	AnlxAx5w0c9NA7y9tBodzeO2Pa8HiDmB/46auYkXnCzpxEpV/Yr2n/UkwPsenytC/F/EJQ
+	JYBpPQWDu+owGDIiFd26qvRgjptNrEo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXMfGLih;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038181;
+	s=arc-20220608; t=1789038202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P32ieGJu3Afv0kkfEMjK/YLsgguxDMlrGHW+fqvIAaE=;
-	b=ZQPv9qhp0y3EgbNt05KmqyxlcI+Hf9wpU1jc/yjpr9Oxz6rfzJsH1cFLcFYOaDjW1OqfC2
-	0XfcEErC+jqFYtnfst/2Hl7NjJHuJO/nrdRiBtxrtqzpng8ajvaJ9SHsK6QeJfSLGLszaN
-	GcmH/JZDWMqV+/hsPoSAkxzcjorBFdI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038181;
-	b=FAJYtMdNE1QJcCEfgrBjazrKY5ZyhcvanokwFRYRkNWdsYq8hraqU2RTTzlqMtjafzyhZ3
-	n7gzkuzrh8FlS+BSsKlYUlpRTtQV6+vnAVrzPnsEW4xghR5c9vaHfF3WtoTBXexCs66UjU
-	Yv2EVCd/f20kCInfGW/tw14cBuBQD1g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mzqBx2zP;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Xs5N6d4Q3VeK4CPw8sjumPscyGSXs4KBPkCsQSrD/Fg=;
+	b=cdyhL8jor386xqlrIMjkgpGC0WLDzTqBnUYbNACkdhl623Foc1h3d8ZlvdgJjEN6nqUfUE
+	0pwzLydgtDUNpmPH3xqQLm+FtMDvohQ8cgL7yxO5afmIbb2WJUF4QbR4xSfSvykMf1u73e
+	qBZt+zHFgL/PHFa50SoujebOFvisflo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B5177600CB;
-	Thu, 10 Sep 2026 11:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55F31F000FF;
-	Thu, 10 Sep 2026 11:02:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CA48600CB;
+	Thu, 10 Sep 2026 11:03:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B37C1F000FF;
+	Thu, 10 Sep 2026 11:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038180;
-	bh=P32ieGJu3Afv0kkfEMjK/YLsgguxDMlrGHW+fqvIAaE=;
+	s=k20260515; t=1789038201;
+	bh=Xs5N6d4Q3VeK4CPw8sjumPscyGSXs4KBPkCsQSrD/Fg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mzqBx2zPfVH2uaOqGHJT+gorRxvbdB9Eu96N466UgnMc/0WaAuPusdTDE3e4SddEo
-	 oZEvVBu9/jzNKA1b4F+Fd/zt0Ue5fhsx6pWVwnjEzoEtfkHCqaECBf98JP/mtBJdKx
-	 jkJtRp37Kct1mkXbsdrbOygxZfFXYfUvPMKyUSV80GDQX7aUywvMFW23x4w0RhkWic
-	 veNENsZLVqikPST9m2zltfy+UwD7oK+w5XCZRY6eRnyLViMYHFjqJQwti6Rpznv1QE
-	 nQMOMg2uSi17MwlrDqZDBgY4oCPZ5751gua4DWnnpcb59v0nNHol5kgsOwYhuItgGM
-	 L0Uhy5a3RQsXA==
-Message-ID: <aed03085-1d9c-4a26-be9e-196c3ea941d1@kernel.org>
-Date: Thu, 10 Sep 2026 13:02:45 +0200
+	b=dXMfGLihXvyR0gahQ2AIkqMeQkGub8BMfOB+ZZ98l5ud+Ms7cAsxntVKUZ1utDJEM
+	 nQ4//pg74UjHHC8mPasRfMu8FSDkOatRrczqiiC3LaTIfHBHPmv858G9GISLwMrdX3
+	 5t3/073kFkvaDHBaTdhFkEOMDmGpUKKC4E2Cj0V1n40/0ffKbTF+hIGUn0USrigbVC
+	 D6iE/rxT2btCRdq9PqG7qeHgFtHMEe2GvT962NY0ILA2s/3pNyarm41S82N//cyR8P
+	 iMhJW8tTmz6rcSiviTtdveTTrlyb320BlmbnPfWLAUCYZfF23wyaCs92UlD0YEhg6S
+	 GHLaU697xvBxQ==
+Message-ID: <bc96d00c-f343-42d2-99fa-e1f5fb11a72e@kernel.org>
+Date: Thu, 10 Sep 2026 13:03:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC v3 13/21] x86: mm: use pgtable_level enum in
  effective_prot_pXd()
-To: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
@@ -102,7 +101,6 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-openrisc@vger.kernel.org
 References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
  <20260902-dummy_ptxp3-v3-13-5d8f5b17c25c@arm.com>
- <8f3979a9-238a-4d7d-a040-6aa526fedec5@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -149,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8f3979a9-238a-4d7d-a040-6aa526fedec5@intel.com>
+In-Reply-To: <20260902-dummy_ptxp3-v3-13-5d8f5b17c25c@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2B180A0003
-X-Stat-Signature: bidh9cg99ofjhdhmkcpmiz639576yn5o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 16BF218000D
+X-Stat-Signature: 6hsx5q58ytnykze8decjjt9rkrctkpfp
 X-Rspam-User: 
-X-HE-Tag: 1789038180-935317
-X-HE-Meta: U2FsdGVkX1+vyWvkmD5S8v3KBfubriOtNBP2juT7TNVO8PahsAhEGKFuXt+qKsNuTPhdnba5wop5DtW95QbH0m68DVtZuzN8GLdMJymIQCrBJe7WsyH8kYyt4WGMOiUm7hqMPHtLgUqUaY6LSSueEg9Sjxv4FhexTNTvQS6OixXYKFD9GZyLHOPSUZqa850wotROjPvstdlK/oukbw6GWxyHP/MT2C0bONGl7Psw5S5nc2HE3YMDGelC2zs/YzADbiXUGEymuspGMDQjd8K5A0fJZSvvAHTBKe5r2bmaXE4oEAlppX9b7J7PKQIXo+nMaZyc3+oHmCjWoMpVqLPlZpAqyRtlvy89Dzwy522fBbKKnThwDe/mkbo0Q67itmj2nyAI0zC3M5FYq0y4UxHWmhqJzpzJ+viDSpKTnSmGK7Q2MMXl2SQrCRY9sCRcdqDLxP7JVURycsmCyWT433pzsKknVZZHom6M0OAA+wluuWzW5zKWLix4W5+loE4d58/PL4xazFafA9LyKbpPjEcdnc8uBFCcQvQOMxQFFQYPajTpq+vmQZgQBEmSTuN5TMrP5YsVWL3MXojyAPedKvIWK/L1hx3SU6rJRxBVh3jB9LLtheYdHSHJVeXX9AtDcLw5YjI2GQbrIWbviU5htyjReG65U+YPvpdsbiWJ2B0HDuUsU4VZnYSNq07KTmcRC9c5pGJzxqNR2iLGCfCfwgYiBLHBgZZSiz7jSUz54rAdthfqJOaYnqAF2ebzR//9MgKwrMcbAAQCVbwwvsrLg28nBV9hmU5IoPlatJTvv1XcB7Y33MGMyaALm3wTNOH8DRvMJlk8HsisV1lKsgUM9iD1Z9N+bk4pWqBI4OBcz6nW0UZfT4FF6YED0aWaok//3Re7WZMXOZn/R9m8KRbGqSz5B4LshJpiqmsELCZjhahLtwkk7YhZuOd7CUUjfmfEw6Lieb93CSzvjubrXgSYYi2
- I8tW0G9K
- k2ightujPqCr15tDihobKoI1VP4q85wSYb3AeO0Ll2I5P7HnuGsvvK8Pavp/owqugHsiMlMJScAxN5RgAnbt8P/6jme+DZxbfCSjjGqtR6WUKo4LJqQeZXA0/rlUaU1ZYglLRB2Pk4OpKo1MAc32f5SHVMdBoP6r5g6L160IVRcGBawB8dEn6mYlVqBwCXxMIS3GW+OhkmDjpOvIT1wgY7AUg5OUxEyphsbOr5D7V1c0ovC81lsjCR9Yo/F/grHt7DFStgx7jvfhtomGgNMjDiQMy9qR384NWtQ0dAOIOWvlDTn7XH9P/IueQng==
+X-HE-Tag: 1789038201-442326
+X-HE-Meta: U2FsdGVkX1/NN8HsbnLVCcXlrCAZhUFlD9CduBSAfDNU/pg/FuWs2xFonumWFp35gF9pBtUrGvr3pbIeKv+DFojpqPnn91X53LJN+nFNeLzopEo/0SVkuvOMfFmEMp+eAdnJ0APDfgiaAcwV2dpSW5kICeUcdZY9+/ZbHI36l06W/kmMSSL8qF5dE8BV2rOYoKDjLYo1yxZ9jFZuXEn9T164nj1llounSTCekJyrBFc81C2WiSr0vsvf9tWAeMZC99DJ9mH7bwAjYXKKokKcyXevyRVuxcxdTLhDFAr3zkSNnMn6HcxZT4QMK4o41A0P8HammO5d4JLVnCmkRBcy4y7bosP1GfaDtVoH+bK+9t/j0rklswMnQWFwn/cQArMIllZIgOfMSHdZfPfhKedo6Sy2uYk1DkSNRPRql1bwXsS452QdaIiiB43rH4GyLuXXn4U8cZTDCnwXa89RWqt/nd4yzIJbMWIaCoFOAmJYPyvOmxRoQBR0DBXrLQMuliSXCv8taCkwms2vmk+vORX1xGIRtJi0HpBZi4di/QQqHblpqI+kY4LeUjmbI5rBARNaQrQDRwWK5fKxRFEFF+BNX/6zSD5YT5ONZyg9esLktTZPeFjNWa5XA6TjK98TWWpNVfpxRJ5yfLpsqNebiKgyWr8ck3Yos4/9lwORp/tovtddM7On2jSD0/vCAKF64aBKoKe/RdSx6AOiWrcmgn4QfBHLePU3FKtfOI3az2yF+eo88UHABBqCO/WxIxF/5ctP8iAdEmUTcgDzKWMPwuzswL1/gyWClP1SKad6V+ENZMnBsFoDovzrlGyAZABVS/NimTu447xXbKP2n0olI0IixD2sRl7cEbSzh8CrAHsbHyPqCC3Mr2XAxd63LxsN/YQLH+IskJiv7yLSCnan39ryRiXVwr8YOJQccjmqCLENyZtqhk7sFS0k/OJ1a+d4V76gNCpXCRQuYdas9GYOB8v
+ CD0HJ2bS
+ PDBFssm+4QuGYcfIxjuETo0EGm9dlvtNqMcH8/dl6/4EOvfoV549nOLa9ulgOtE1GcHUOuzmiYlTj0bQ43Z3utaGzcaFZK2nLtVeFNnw3nPxHM6t6LoNoUb3hkNTt2Scy4axljtah6IUm0NzQRHVAJ706kjdae0zgIhX/TVSxUJBcXB+GnUFuNV9q24rqjALHJS6aobO+GSyd17E/yC5NWFLG78rmD6QMZANHhQ0lHOGINTMyR349OeRmGEig/Teh6N7d7HvBUK1XeSsuP1W6SWj3Xl0l6PXv/sPYQuXkC9ZscuQEcza5H/9OC29PkTdyGLKsf1D8HaQuoYgy4r6YaUI1fkFDVV6tJudeC0gixTRsZaDFa2a6F/Uxli+RDZNWTzKB6zwa61+zUyc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,22 +165,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 22:48, Dave Hansen wrote:
-> On 9/2/26 04:56, Yeoreum Yun wrote:
->> Instead of using hard-coded integer in effective_prot_pXd(), use
->> pgtable level enum.
+On 9/2/26 13:56, Yeoreum Yun wrote:
+> Instead of using hard-coded integer in effective_prot_pXd(), use
+> pgtable level enum.
 > 
-> Does this actually *do* anything? ;)
+> There should be no functional change.
 > 
-> I guess it's nice to have a wee bit of type safety from the enum and it
-> means that you don't have to *know* which level number a PUD is, for
-> example.
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
 
-The next patch passes the value to mm_first_pgtable_level(). Not sure what x86's
-preference is to spell something like that out in the patch description.
-
-"Prepare for future code changes that will consume the generic enum
-pgtable_level from inside effective_prot()."
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
