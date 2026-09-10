@@ -4,97 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FB4C79FB6
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 02:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5EEC79FB6
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 03:16:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56F016B008A; Wed,  9 Sep 2026 22:58:15 -0400 (EDT)
+	id 6EFEA6B008A; Wed,  9 Sep 2026 23:16:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FF96B008C; Wed,  9 Sep 2026 22:58:15 -0400 (EDT)
+	id 6A0EE6B008C; Wed,  9 Sep 2026 23:16:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9176B0092; Wed,  9 Sep 2026 22:58:15 -0400 (EDT)
+	id 590486B0092; Wed,  9 Sep 2026 23:16:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 228026B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:58:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 042DF1603DB
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:58:12 +0000 (UTC)
-X-FDA: 85196343666.23.C5A1804
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1EC0B1C0006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:58:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Gc+tE2ww;
-	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789009091;
-	b=AAmyudxCEz3+A5i5FsURPBPh3rHm4Zil0yxqxQmhPZ2EVycfgaaBxu5rqp9pu6k0mBRxYY
-	liOtnewlbXBce3pDSShwWKstKnROjzKxtM2n29aVEpsxJrq8rclDftqJnok0M6Q2FDqCzc
-	iLYuX+54lM/RoF93Nr5rnxK2/ngzD2g=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Gc+tE2ww;
-	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 272816B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 23:16:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D44C6A4968
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:16:15 +0000 (UTC)
+X-FDA: 85196389110.20.4A1A0DD
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 00583A0003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:16:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Gz3dOd/h";
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789009091;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789010174;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hVpVdp35yd0WL5lFaPpLBZXCA6v6qcrTGwvBbOPs54o=;
-	b=XiO0yHEiuzD2Uro5xrL7p3Ua/efGfSL6HnUrZP3ZO6/3p+V+6AyFE1djsyiG7u7dFsZyKS
-	zUWpXffJSV2NmvPSf7l/U4pY5/WLua4Yi4uhG5HtaimlOEhLSWbEaxYER+JYYFRdfsOaa5
-	14jiX/PY6DebOhvnZ/sCsZ7bSIJJbWQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=hVpVdp35yd0WL5lFaPpLBZXCA6v6qcrTGwvBbOPs54o=;
-	b=Gc+tE2wwGqBmQOpSFmtWVRB+yndJFeuODTubPqpb2kgMFcFylChVDodZ3egWZhrkOnFuUoErh
-	frwWaZqtozpO4Ub3DX++BHfGauQjEjZhVEd2LkpV2tjqeChjSWO64QZS/BklFYvpZuGNk9B75X7
-	MTLvDlzJO29qSm4W5mkZLh8=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hgMWq67Gwz12LHf;
-	Thu, 10 Sep 2026 10:46:47 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id A874640561;
-	Thu, 10 Sep 2026 10:57:59 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
- 2026 10:57:58 +0800
-Message-ID: <c84c5864-43ef-414f-acd2-99db78ee9358@huawei.com>
-Date: Thu, 10 Sep 2026 10:57:57 +0800
+	bh=xYSjnZ7o6t7LHnF5MCbffFkXr8Iwz82fqgMZavKGTtw=;
+	b=AhKe6Xee+G5taocOZ19IvaDvG7m743XJZOWUGl/cIi0BmJ2EvstdxafWIFdF97Ksj/wUQ+
+	2V+qB7fEEnEwKnjwfPlyTwYeyKDVaHJC26cZIzpTImkJT922IIOgIR1/PTZbWyexLe2QZ+
+	gAdiGwnjaqDjMTA95BmysaKXaC+/q90=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789010174;
+	b=U4bz5YWKZSZ7j1T6Ds8jRtwAFvgwVcdDE6vHUqoZa9FeE2A2ZLpW5T6m7YxoSPP3ibIQi6
+	TxgyUHubxbrZJ3L0nXUof3/2wzlaEr3FbUqwSp+Kwy3ot2jCdgxMUG6H2uJlgK5sju2d2K
+	Pnd4JLN0dq/X128ScVdnDMIFefILp9A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Gz3dOd/h";
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a64c7cdb46so1400523a12.3
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 20:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789010172; x=1789614972; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xYSjnZ7o6t7LHnF5MCbffFkXr8Iwz82fqgMZavKGTtw=;
+        b=Gz3dOd/hYgIsg4MV/JBbFGn+2iHvZRkicGEJC9AGJS+1gyEP5S/puEEBuDcYBDRo0v
+         eJ4In5c7eC/UuF56yvvpyMoV2MA+IFGOnp6O95IBPkKcwzb2YWZyuMVEnzkRZpkRQLac
+         LbghD2wGKOd0MpKGDFg8Hw/7dUeseG8PzS2Wkcs7dIuw2olA/vzCA9CfDP2IuhEji+gT
+         VU35K1OcEW/G6YDdbw0xIBH0dO1Q09gaLVFHHYiza7BdB8Kc5YxWMQMvMBaoYyVgZJmI
+         T9TJC/MWY6z0ogFjE3zbNI5BD9ss1QVQL2hGxcwgViQh8YBaN2AlOOt9u57sM9bykgVX
+         ZxoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789010172; x=1789614972;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=xYSjnZ7o6t7LHnF5MCbffFkXr8Iwz82fqgMZavKGTtw=;
+        b=TyoTMaLqQv0CE94bTKhBWbGWO+7HgzA/3FNaOhWLeRv9ci07FCaVuEaIJsNGhlW6q1
+         u9/VhYqkiaewqyCpXb+93cpjdDo8zko9U02nk60DiqAYvUsquXKRTqj7rKPXgiUxG5hm
+         vGWxIegpJ6Td7QRzWxSXBU8K3KMpRvA5LTZVJl68rQMGdAGCBUEuV5pjXrdk6LY9F315
+         wK9re5gq/axFSbn/JOXH61MC/YU+TgERCHRTghfqiJ5BkULt6GLXI6l5qp3OKFZzOxD+
+         Qr8DcTjd6y/O4l+DAqIx3ses41B+7zEo7HthAxEXTxAlQ22ZbptEHGHmJdIipeF5+e+r
+         H8iQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwTPKIVB/ss6NDkXaniEDRqC6/xUkUUrF0vCyyhvcje4llD9c4c5kIYMbpX3Tac4kr7lhOcnIIvqw==@kvack.org
+X-Gm-Message-State: AFuF++lXVEIUATSFllTzczOsxQC0t2NIB9X4Qn6NBSElq3Rk4bk/hN+W
+	GR+lIssT/SnSIsoAv68xJL3jMk3ApHf8gY59w+OYr18IfO4O9aGnpzTr
+X-Gm-Gg: AYBFou1AdUpv/KlCi/DQ6L2u8UTTUXaJ3XQigP/GJZnelnGBT2oFqE65OPJL6l9+95F
+	AP/Py1oOVraHm6kfo2ZedUpzjkucaKNGricPVgp0qT2l1NfW1xOMCQwnhvmehaIeFt1MQdAjBmG
+	ZMjAfIa9Banz0TtpQU1K3yufbBOhtg0DhL6A+gMN9IFAeJPnYUKFvW6O5LQ3BwqqA4YmdLF8fkA
+	y2r05akr/sEgCf4SuuYUPt/oX0a5sdTewTm9jVrv2tnTwviR+BwY9qj7Yx9vflLKNbol+N7pkX6
+	yw3oS215vqz4b0ggzS4YN6KmL6TImAH5hGQVJ1OLXnk4uATwOSvbhB5SB8C9pOYnv82KLGPXwsB
+	Jc1wFQjKQ+HPLzxcX3WtY3svnYbg+hnTybeij2N73WJsVo79IfwQIXDwWF/6WXc1GE5kdUlGrZs
+	3hAtwT+OGdULqpSwGWU/GJvBbeJGoW4KEHAd1Z+Q88fi6p6Hl5BaME9hIi24nncDDQNEqhtSo=
+X-Received: by 2002:a05:6402:4496:b0:6a6:c4b:c92f with SMTP id 4fb4d7f45d1cf-6a99caa4ab3mr1949381a12.9.1789010172185;
+        Wed, 09 Sep 2026 20:16:12 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9939349dcsm1765945a12.1.2026.09.09.20.16.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 09 Sep 2026 20:16:10 -0700 (PDT)
+Date: Thu, 10 Sep 2026 03:16:09 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
+	Jason Zeng <jason.zeng@intel.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [BUG] mm/memory_hotplug: panic due to race between compaction
+ and memory hot-unplug
+Message-ID: <20260910031609.qbn2qcxzbitau5xc@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260903095543.3752338-1-yuan1.liu@intel.com>
+ <1d625a60-9473-4f48-a384-7d756ccb7135@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/rmap: fix missing barrier between anon_vma init and
- vma->anon_vma publish
-To: Jann Horn <jannh@google.com>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<lance.yang@linux.dev>, <riel@surriel.com>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <harry@kernel.org>, <minchan.kim@gmail.com>,
-	<lwoodman@redhat.com>, <kamezawa.hiroyu@jp.fujitsu.com>,
-	<linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260908122924.554373-1-tujinjiang@huawei.com>
- <CAG48ez29qhPAiEz2SHy2JDiOJcF2Xv8Y2prZNGxw4Q+08DyCXQ@mail.gmail.com>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <CAG48ez29qhPAiEz2SHy2JDiOJcF2Xv8Y2prZNGxw4Q+08DyCXQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1EC0B1C0006
-X-Stat-Signature: 6bdbhdxgi85kiu3pxb849b3o5rrnoiww
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1d625a60-9473-4f48-a384-7d756ccb7135@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: ueh83z5sm8eoa3bnewqqziym5u7aepop
 X-Rspam-User: 
-X-HE-Tag: 1789009089-446016
-X-HE-Meta: U2FsdGVkX1/cCP3jpd3CuIeHIZO5polr7xgWVKVQsAGP4XZC4btp/cfDkhaxZ6CZl2Dk9xpJUJx8b9D/EAf89lZAPhimE+KAq2aKnwPvBRjoyxJngEi2o28Usw30OEvpzmlSVOqehHuC8hoOCSC9b7oS6wKKWrn+u57MQJvafygO/p2SI6iBc/hrN5WL3WplaZapxDI2FNiHIUhqtJsvm/dEzBKjxIFcKqm5cVxKrve2B0akei0IEo6oFpFW2VqrkdlFUQL1Zm7SjbB9NNHdJVen8jild3oTV4ynXWchb4jA7aHeLPxpEPQCrHJz9Vj5Dvdz7UrswKQi76kgGvIG6KnfQr8Go1hEqpg3JoxJnM6xzKVfi4z4oVW9qDLzPkWB0Smnd+hV327zMB9jDsbv2mSvkYB8mrSF1ir3wjxItJSgvQFl3YpCU2aB1BYp7gzO0lJe2vBj2v3pRA9yexSf1bNu4qnxaW8z+zcKIhjkCB+Z9RpsO5N7I8jm07FXMSOF9nhQ+sgy72zl5OLNo3lKGuOmXimIy/EbaqaKiq9uycEyNSmFh+FoWdvTf5rDs2twuz0AzOBNy8OOAxwR+1BVMV+QPzF7uDT5+N4OFYaWW1Nv0VMNHJUgrjSbgvRW2weIw049ZM8EH+UR7oEN4W9FxYUMyLUdiXLGFCcvJ4X7rkrg62+Z7w2F27tjYwjsKofUBCEreZlYXPW0mNOlYZFRAXaTAvhDZUAkTlWkLL1ZPbaAthXoei8SC85+FVgENaHkF6HjRn6JFjM0u8rMHLmZ7Re6M15r9m9oU0Vbxg58wJ597syBFu2ED3Z3Oui/zsYzKHJ+mcRhkXvPGuW8NbGtoCrJS6UBqgpjatH9VNpX+NuEUtNTGKeIHZPxUC1WkLp8JCMqmw7qvnpOg70ifW9vIBVEzCA0q0LYjR7d++fNz70Nx53VSv/RiG16vnKLnT/S3rNvUIK/knESNfonT32
- Is4V+ZsC
- D2DL5p1nrb924oKC9GcotnMMqvvl2dogtU1IahFsDTfbfJf1zJh8joSmh7BxuVzm0c+BDEYbHLIcclUM6ZtJ1CHA+LA51VCgV27HRdXMN+yxlZHT4yYM6Y+QEBg8s34lGgs9L2VqfuoJQ3lUhuqmoGukdX8QylkRxKtBr93ROTiZ07gmXNCopUyD/Tig+VfHbM6LSsY9Elq9JiOG1FzdMuMF9cPmcZGrJ8smKQ7dy+M6y/s64qnMvVzFtBmju+YqLQxxlW5sDgmXV8ULr+eTuzr64WyBT/2Ld+csnLtAiNKzi6Uvv9sk8IHSGPBX5URwkhrwWobm8EpDPNM4RpTYF0hQkQ4TsADTW0EXIIckoERZUtdpm0wjAwSCARd4ikzdMseSrvr2aWe2QpyFLeedh7UnqiTppqTuRzl+mV9PbMGVY1Ea0fxGRjDsajmV7NYToJEdCq9QrRq96OxAFTEc1No2LnQ7uJNA2Pm0Uti7N6wVYhSgQGjojU6A+8bUeBvnzlFTALA6dODHJuil5nbShyk0OAQ==
+X-Rspamd-Queue-Id: 00583A0003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789010173-798574
+X-HE-Meta: U2FsdGVkX19FTi+OnK0zaoY5ZTyTRNVtRm0sa9k2jMNEUXvCcFIcJUZpR0EuL+CNsn0tIbcGcKprTbzQwGK2oWd/XPlBV9m+/W9FWNjWoBAQjm0YFn4w6j8HtCnKV7ELhEa0UBTzsV98OaqvJ392MUnnzfLFaHrtcjevIZkhK+ONUqUO1Zupu+VkKqmBK6ibGq3deH1lERuLNKZ0rArgq3GJx7jNvGrdSA6ke7RdRKAIJEgl6WEx84CLMq9aH/K6ptf1YyuWcAq8LvWuXNre52WKm1uq1oy9SCUiOHT8UuLf/w/1P4D5kB1OdTUSExxC7ABBkSXk6r2I2/On8L8Cge+ZN5Ltwcv6hb0s4dsluii95rOiGn7FM+S4eUO8t8d5vCdEKweFt1DRqwgBs14XXrvBeJeHtAoe0eXVoa80Di1sLlYz74YoIsFUPn9YKeWQjD2RQVz1jD9DxCwA5rmzl0p5Fx4Leu8Hz9QAWzJ1VKxYxn8g/hIzQxZM2+aNUpwUg9ixxCGgJy2AI5D61bZ6p3F2Ad2bT0zOI06zIrPqcbhLmDyWU4d8fkzANtl1Riiw1wOKcjInuJ+5g/UlHYfPxaVK2D7CkZY6wLfRVoo1UjnF6SwCO8nCA9p1WsRb2WW0Qqd2vUrJhltvacUdInoZirxcxukxJ02Grme/tUn1BqdFRJAsLGk7UrqYBALZiM6/BCC1xhgsYTzsxt64LEIYCxyxIiCnRgEc7hyTeRzVwUZRWVqIl/Iv/uwDkHxFCZDxrLx4z5/PPcHWLMVF5Q9bP+qr7dKk8aFB7uR/VpMSca/XnzJS9SDB5ojhNgz8UKXC5QZxZAEQ5MzGUnewVnPPtwn3OZWrU3P911UIZ31087dHKvLSjU1vvNwCgKxzRQJe94vm5PXtUjAgfHwHaIcGPZw1/MJXfbXpN7jcfGAvyfBJQpHN8WOEj73KD2bnuqsQQCslq8iurs2a/KuFr8M
+ wxCp5dkQ
+ TLJVzt3+k1gMcKwMvfTAeseqQAyS3KTLJ/zK4IFopHbnTBELtR/i2SzZ/Cpr0yYCXhBAJyqcOjWm+SXUmjjU3+ZS8pBkoxvVj68FKYKWr2pf0Rg4WjKpS/hTimrY/ir58a8ebtqpIUrQQqxxCXrr5kVRhbrtA7Jnw7G4pSLothBCkr4mL7DMwWckRiBJ5xCXavWJPFVb6MkEMsD7t2yNZtBb6dLlukpEQxxhpK+unAnmKB8KrbK3w73mkGO4Ot5f1n2s/1f9TzFOflA87KbNGEgkhTUgvIp8vQCkTRE/NbRSSo7It1yVEm1gUoiaIPcv+RdiPC1F4zX0QrHyk9fLTHc1jNs/0ahI2lBjE4+jawdv0kjr24YFO2mkNgXtxVaLLLIa7FDsRlFp1S2eoKXznF6Yl9QcU+xUxmg1+MqOt+moSqIhNqkczYinXBL37+boDY7Co5ZQiTkK+pKJ/IQzrJvKeALH905hzLqe3qY4tgZRS/z0qexTRUPYAcFRgWYobGksfY65NGjxIIen47XjMBMnU6ITzoUXrmmvm34k9UKF9h+lv/5gNrDuGOXDXTo1nU2uOWs11WIqX4n5QCTMngEDeUm/aA0YhkUlGpOI9qbbvvpO8eh/uQ8jeukj0+HYrr+1Wq0s2pnHzRH37G6fLAwFVaDOObcvOwsSy9WP8NSyKFq7bp37JpCCA56RnrW+RyEx+ZQMUJKdG9uiGKtmmeRY3wK98HY8TfUZkbYnYsLOSLhVNrpvGOTWbCXaf/7B84eXn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,36 +126,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 07, 2026 at 04:27:50PM +0200, David Hildenbrand (Arm) wrote:
+>On 9/3/26 11:55, Yuan Liu wrote:
+>> Hi all,
+>
+>Hi!
+>
+>> 
+>> While stress testing memory hotplug on a VM guest running an
+>> unmodified vanilla mainline kernel (7.3.0-rc1, as reported by
+>> uname -r), we hit a kernel panic in the guest when memory
+>> hot-unplug runs concurrently with memory compaction.
+>> 
+>> The kernel was built from mainline at commit:
+>> 
+>>     cee9395acd80 ("Linux 7.3-rc1")
+>> 
+>> To be more specific, after a large virtio-mem hot-unplug, the guest
+>> kernel takes a fatal page fault in suitable_migration_target(), called
+>> from isolate_freepages() during compaction.
+>
+>Sounds like a real problem we should tackle.
+>
+>> 
+>> We are not sure whether this race is reachable under realistic
+>> workloads or only under this synthetic stress test. Sharing it here
+>> in case it is useful, and in case this is already a known issue.
+>> Thanks.
+>> 
+>> 
+>> Call trace (top to bottom)
+>> ==========================
+>> - RIP: suitable_migration_target+0x5/0x70
+>>    isolate_freepages() <- compaction_alloc() <-
+>>    migrate_pages() <- compact_zone() <- compact_node() <-
+>>    sysctl_compaction_handler().
+>> 
+>> 
+>> Why the race happens
+>> ====================
+>> CPU0 (compaction free-scanner)          CPU1 (virtio-mem hot-unplug)
+>> ----                                    ----
+>> page = pageblock_pfn_to_page()
+>>    /* checks pass, section ONLINE */
+>>    /* returns valid struct page* */
+>> 
+>>                                          offline_pages()
+>>                                            /* section -> offline */
+>>                                          __remove_pages()
+>>                                            vmemmap_free()
+>>                                            /* struct page UNMAPPED */
+>> 
+>> suitable_migration_target(page)
+>>    PageBuddy(page)
+>>      read page->page_type
+>>      *** not-present fault -> panic ***
+>> 
 
-在 2026/9/9 23:25, Jann Horn 写道:
-> On Tue, Sep 8, 2026 at 2:57 PM Jinjiang Tu <tujinjiang@huawei.com> wrote:
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index d1819fd69938..f3b21aaa34ee 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -209,7 +209,11 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
->>          /* page_table_lock to protect against threads */
->>          spin_lock(&mm->page_table_lock);
->>          if (likely(!vma->anon_vma)) {
->> -               vma->anon_vma = anon_vma;
->> +               /*
->> +                * Make anon_vma fields visible before anon_vma is published.
->> +                * Paired with an address dependency in reusable_anon_vma().
->> +                */
->> +               smp_store_release(&vma->anon_vma, anon_vma);
-> Yes, this should go in. There are remaining theoretical issues (we
-> really should also be using READ_ONCE() in places like unuse_mm(), see
-> <https://lore.kernel.org/all/20230726214103.3261108-4-jannh@google.com/>),
-> but this is the important fix.
-
-Theoretically yes, but I'm curious whether these are actual problems in practice.
-
-In hugepage_vma_revalidate() and unuse_mm(), the code only checks whether anon_vma
-is non-NULL — it doesn't dereference anon_vma to access its fields.
-
-In KSM, rmap_item->anon_vma is assigned from vma->anon_vma, and the rmap_item is
-then inserted into a stable node. There is a very long time window before
-rmap_walk_ksm() could ever observe it.
+Does it mean, the combination of pfn_to_online_page() / PageBuddy(page) is not
+safe, when there is hot-remove, even for other users. Not only compaction.
 
 >
+>If it can be hit with virtio-mem, it can be hit with any other memory hotunplug
+>code path (e.g., dimm, dax).
+>
+>It is known that pfn_to_online_page() is racy. We usually expect the race window
+>to be extremely small. But for compaction the race window is much larger.
+>
+>We do have get_online_mems()/put_online_mems(), big its the big hammer.
+>
+>We once discussed using RCU to protect pfn_to_online_page(), but I suspect for
+>comapction that's not actually helpful (again, large race window).
+>
+>We'd have to use the memory notifier or a dedicated callback to let memory
+>offlining sync with compaction.
+>
+>That's where it gets tricky :)
+>
+>
+>It would be sufficient to let MEM_OFFLINE wait until any previous compaction
+>users would be done with the range. In that case, the sections would be offline,
+>but the memmap and zone range would not have been adjusted yet.
+>
+>-- 
+>Cheers,
+>
+>David
+
+-- 
+Wei Yang
+Help you, Help me
 
