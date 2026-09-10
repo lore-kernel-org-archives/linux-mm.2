@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D714C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344C6C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2DD26B0096; Thu, 10 Sep 2026 05:36:24 -0400 (EDT)
+	id 2E6286B0095; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A06696B0098; Thu, 10 Sep 2026 05:36:24 -0400 (EDT)
+	id 2B6EC6B0098; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4A86B0099; Thu, 10 Sep 2026 05:36:24 -0400 (EDT)
+	id 1CC926B0099; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E7CE6B0096
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:36:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 45E5F40472
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:36:23 +0000 (UTC)
-X-FDA: 85197347046.10.B8226EC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7D0C520008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:36:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5DspycD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8D26B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:38:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA4C412045D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:38:58 +0000 (UTC)
+X-FDA: 85197353556.20.4ACB3D2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3FF2C40007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:38:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXcqGxKO;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789033137;
+	b=vcu+XZQnjanUDd9NJEFtLPKcYW0U5y3T3QXa28Nukk6XfO/nbhAJDq9UznkWQCVg98lMkj
+	b/cNs0RramCrhNp9hYMSxwl3LnrDSPSnHwJ4sAFP1wbFBFaCzCwYBej3+BzkZJnprlBz1Q
+	1ju5wphJ0DRU2shsi/MIqGZqOxcrIVU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXcqGxKO;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789032981;
+	s=arc-20220608; t=1789033137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AQXjfR0cnoQlWEM8LpxM+Eb+sMAgc4RR3NMesxTKn90=;
-	b=dYDtzF+XjvwT8FxZ3vCogLhWFToUBQJ6OpOJPf8MJU/I+J3hH29qrg0qE39MqsqHwCsA4H
-	fKSzEtN9x6DNxuH14FauD3EjzCEj5to3qGO1fkunsii+ghNlvhCa7lAE0ERVCBLfHagM+R
-	vWuicrp77trpDWErtWeiMNe9s/X8FaM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789032981;
-	b=jb6Z06N8zpBPpvvKhA+Vw48ukanKWDNjZ1vo9ahjjVf/yjEQy+hrNaPQSUWzBmlPf81CR+
-	eg71e+sLXGyveLUWZnnDKYjtwlPozYnCn770i9CsIBvlzSKevbfuWsM2Bp0dXNKGC6NnZd
-	TaiRhMmKE8oZoVjN8Zvp1A6WdDssLfs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5DspycD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=rtpC6H1ULndfbNFZ13FE1fDkMZRvAQ+CwTcYhQHI6N8=;
+	b=M49D9de1PRJjvMLxIhge9gb59sGvZKBhIal7Iyb29nLMeNz/qi9a04xHHJX+vHQzxJW//Y
+	A1bPP9RSLki2voUFYXl7Uu0RMXH6b32BLvEgoG2n0jhF2mKTh/FAm+I5UUfvK33lz++9uX
+	8ARJdpjbf10p2+R2Bkb6pM1vLzi9V/s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9963F41611;
-	Thu, 10 Sep 2026 09:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92D11F000FF;
-	Thu, 10 Sep 2026 09:36:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF123600CB;
+	Thu, 10 Sep 2026 09:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A11F000FF;
+	Thu, 10 Sep 2026 09:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789032980;
-	bh=AQXjfR0cnoQlWEM8LpxM+Eb+sMAgc4RR3NMesxTKn90=;
+	s=k20260515; t=1789033136;
+	bh=rtpC6H1ULndfbNFZ13FE1fDkMZRvAQ+CwTcYhQHI6N8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V5DspycDePUmtPUQQKIZAPftVcslFZyo0x0KEXY+VA3LqUfM/1jE+2bvaXb35Wol7
-	 3m4s/8wzaIo8dVk5JrMaCPsJtlMtS+s88wpk1hO7ttp9DN2kLtxW4mWtxA5YaBw5J1
-	 8+GK3ywd6cC/99fxaGQ01N0OGI9zYyRSBMDZRqm3MLaGA5RetCqnPVD08CSaE9NZ5A
-	 cdzGmgyXb3MOyEAyXReBcRb7NSE/lTmX9Oj1M3l/7MA6SvhkExwVDVTb8MUqvXnKWx
-	 DRvKmnzpXp2HsyU82JLEHDWjeXMyqAEgsa0inPAsMrkIVyXsVO3x0H4bR+/SNocjAN
-	 NzJnaTrgKHvkQ==
-Message-ID: <54242581-c5e4-433e-8fd8-e83da1383f42@kernel.org>
-Date: Thu, 10 Sep 2026 11:36:13 +0200
+	b=YXcqGxKOJIL+3bo3p+fRwNz7JFxdbXFMSdnakPLo8wv5JmHZgITn/QHj4u9aRMv7l
+	 yMlZfDi7aDzzNvcYRbN5fPlZwwsrG1NU0qDpi9wx36duR5dsh/bigu3bK2rTS19Zuy
+	 +L0ciI8kAGkmXGKxrOTkB8d9ZSxHTGyV4XjPDn9jQgPxjJDUU7SUrDqSqP31Vx7b7A
+	 JUY8BFS/7CFd24Nw8ESRCRDCGe6FwleGixN7bUzYOVY8W2j0EqZpPFfRAPGFwkyD5Q
+	 /kF0un6VhVjZOFuZye9arimqlF6VO+6ttZ2SMxbVRTWkVK6bq75eowcsRTsYnWXP70
+	 tDwrdkAGLsyAg==
+Message-ID: <707b26ac-7f73-430a-a473-cd3409c4505c@kernel.org>
+Date: Thu, 10 Sep 2026 11:38:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] selftests/mm: restore enable_soft_offline in
- hugetlb-soft-offline
-To: Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org,
- usama.anjum@arm.com
-Cc: linux-mm@kvack.org, shuah@kernel.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- peterx@redhat.com, sarthak.sharma@arm.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260825085756.63030-1-husong@kylinos.cn>
- <20260825085756.63030-4-husong@kylinos.cn>
+Subject: Re: [patch 0/3] lib: add synthetic MM benchmarks
+To: David Rientjes <rientjes@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>
+References: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com>
+ <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
+ <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260825085756.63030-4-husong@kylinos.cn>
+In-Reply-To: <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3FF2C40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D0C520008
-X-Stat-Signature: 5tnaaepg61hz51f4gfc74yd4fdjjbgzz
-X-HE-Tag: 1789032981-845606
-X-HE-Meta: U2FsdGVkX1+FBDxdG3ymrkkxjxjYiVUWePGtBJmy/YN3mljqQfMS5jhCaqCjb8nqJYYN4yHl7wgWQvxrexMpcqpVbET8JeHF1Yon4nxgG2WSj9e3PYBYBYUWuW1gO4eq4p3h4mbdwVzDzw+Nwd91CC4QJxrVyBTo+vvxJ9Fr9lQhbtfOtWGH3fqBDLZQQCSjneKax+33TBMXGbQt+pjjikuFlHoDtihkTfcd5NJ0mBej6MMYLuP7va5BKjKCsqovwc/4SW5bFfY6oKA1VNf2gkp+AAcpUAs74jjM+3NGbkgTl+b5vhmnpleZfq0kKKF1dvp4xD4cKEnzqlXbpV5WwM5gYa3CwS8wySme3EAhKCj0lTBgpxFvgYGQO4pIFM8K9zna8/17Cy+JYrcRFk0Pm1SEf+a7MoT2oezQXi3CHo0lOgTIJnweMt7K41y5mM4XGivnBJ7eBKgpL2qqpz4+98oiBrcrRHnqxcfiuUdbeE0jqxGJI+ktmkcd7PinNNUJOT7xVDVecDYhK8hh1qXk8vi+MNa+kzBtyK6pey1Snp5bA/H+pPYtIC08PY67LMHyuigaUpz9qG5ffZIez9wwGqfofLa1LQY5nWNrymm9fUKu74t0jfBkK5hIV4pD6rJqyDuwc3aspbs+jR3pRDQz5HspjkAYSfPIYbHDBUWewYsKmgm7Wk2LOU7BXKA9lH0exZTwM7+91IBnfkSD71o0ZIHusU9+EX71xqbusmZhpAw5A605VgdqE8qKxJkptoPDUo2oRbtVGOdXhDOl1nLvjmZdMJPGW8Gq0UXnAcMwo9lEtzkJDE/P3ZF5eMdTHuAKxMz9Su8xCXxk3J6g4wTEBUfvsEnMN+WKYzKl1q9L9LdYD+6JK8MeZfJ/IlvzXh76a2vkdpzVRBE70HUD5KjVu78gFxrhFkJ0q2PKeYWYH7qp5jt2srrcournbCrF3HcCNwDJMQ9h/IVxrPqRDS/
- b7ZWTq3x
- PM7I2/MbFHYtkBWa3v1nUyK9Y5sdrPkMIPorB9k8AZZmXAllY8R0zZ0iNi8L7HM56uv5a3i2CfItUeMJJ89GIx9veN7P7mT3jNwo9sF1FaaPzrbDdDI5cfSAAjLTbMmUZJGMsGtASS5d6h/FGGrc8Nq2TjFjKsdBcGtICt3DQHD0tsvO7HhrgqDNaGsMRb8lwONWWNJPTEAmnWVCPxTb11Dj0GkDeip/7n6AVxWNRCoFxhWBwW0OBUjqcbh1rc2nNapRvuImN/xsvReeQX6ufJ/qlhOX3bh9mLmTjzl2Ptro5KRgFABS0IuhqXpTJFv9PppNRTvEU5beKKTI=
+X-Stat-Signature: x8btbgrzzmsrysmia7imo3m4qx4wus6x
+X-HE-Tag: 1789033137-358171
+X-HE-Meta: U2FsdGVkX1+ZH1ggj1weIOHaYjJJvvjbHEwe+Jyf22f3c1EsoRttCpAp4qpwAqdVbS9x4FPrqDrhLIglLuOu5f8bdjGKzHSfHCKyWQx0QdwoOC1g7C5Wtefa7zJb6s3/U2bVL5P9MrpRkQxbnbHpkDsvEt/hmzH8UUtpfReO7H8/4nKTXO9/WeZg/VD1SOMxAP80aT5wamWfICLg3uSRB14Kut6rteXUz5aVyWk2SAB8TsowVRsGo9Ijf6QGIGUV6OTW1wWqWQJpXgo1YAAtlZDB4v2Iz2dx1EANaRIAdq4gnrZq5/F3l6N+yBZoqPmOXr+fu3gy/XNcyMTy++1HUCsm8gBFW9PL656Tht0RHWOMJdSYaULOcMpIJ7Sw/S3yJqde8b3HXwhAa5zHY5NtnN6cnIs/sKB/h7pqDMtPaOZrON1V8F839az0i37u1TtY3qjRo1BHiVc0XD2wXpoI8NB2NqW1mkqm8DXIWYy5V3pjHp0dyk4jUhd4NfSHgCAUb43Cx5kZtnlKVeonDJd8gmY//WSZGJqaeWVSTLxYr/DPttbv93KEbe9PlREty/m7T64ChStJ7zo1Xw4IIOu1gRVv9B7bx6DbA2KByB93IR2xTcFWmkQ0TXq28ZTAefJoX59R5krRCRURHyg8eR/N1IcLy0IXkKCWXGkVmo2V9ANN1XobFYQQsHrIJBPeSLk9BwZW9aTaW/OuNSIk+kvqRF9bN5PA09deORN/pxgkIA7MiuX6wK3p21D3ddM7o6ow/JigoeAohCAMmqAoQxOilGp0MoTtc6+x95qN47UQy5xAA0+k69LdO4GqR8ZJyVJdmgbhmiuTyRTf4C3mHjtmtu4oGAhCj6iurEX/+JhuhCzFWf6kb5Ejv/J7VC+Vz1wLU0PO+Km2nBBTNtJqwIqAO3fQ881VHT72FZ0m9y4dFcMDsSaB2pVKbAGKBijaiE5vB6ODfnFOiVkv7YAgniB
+ Z3DwFfIV
+ 1TIzAmTfSaLTjbL8fnLEG55gxzrYfVNb8AFbIzlp3BupgfSOzaLtlN5zOPzEt5Bu7tgTQ0DIp+Mzjf/uf9rcdJgXQilGdFv/5HZEd4M3OTYB2EfTjHx22qPYl65yNTgAFuX+0O3NvGNgT6ofuzxl2VFgh2LTPkJeGljKCn6wxlMhPbGav3nQLmXwWUQUwjyknQy2WqCyIIngjknpdCkM9OFNgkwYo73/0gnNLtsrytyb8OqXH4V96ht7ZKkoNBWuCXs05
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,29 +142,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 10:57, Song Hu wrote:
-> hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1
-> and 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
-> finishes, silently disabling soft offlining for the whole system after
-> the run.
+On 8/3/26 00:19, David Rientjes wrote:
+> On Fri, 31 Jul 2026, David Hildenbrand (Arm) wrote:
 > 
-> Save the original value before the test and restore it from an
-> atexit() handler, as hugepage_restore_settings_atexit() in
-> hugepage_settings.c already does.  Use read_num()/write_num() from
-> vm_util instead of hand-rolled popen()/fopen() helpers.
+>> On 7/31/26 06:26, David Rientjes wrote:
+>>> A blast to the past :)
+>>>
+>>
+>> :)
+>>
+>>> We've been carrying these synthetic benchmarks in our kernel tree since 
+>>> 2009 because they've been helpful to identify regressions in hot paths, as 
+>>> well as quantifying any improvements that have been made for new changes.  
+>>> Hopefully they can be useful to others as well.
+>>>
+>>> The synthetic benchmarks are run by loading the module at runtime.  The 
+>>> modprobe will fail intentionally so that the module gets insta-unloaded.  
+>>> The test results are emitted to the kernel log.
+>>
+>>
+>> Ideally we'd have an easy way to actually use them in autoamtic tests.
+>>
+>> E.g., loading fails -> error, loading works -> no error (and unload)
+>>
+>>>
+>>> Proposed with permission from Christoph.
+>>> ---
+>>>  lib/Kconfig.debug    |  30 ++++
+>>>  lib/Makefile         |   3 +
+>>>  lib/test_pagealloc.c | 337 ++++++++++++++++++++++++++++++++++++++
+>>>  lib/test_slab.c      | 375 +++++++++++++++++++++++++++++++++++++++++++
+>>>  lib/test_vmstat.c    |  95 +++++++++++
+>>>  5 files changed, 840 insertions(+)
+>>>  create mode 100644 lib/test_pagealloc.c
+>>>  create mode 100644 lib/test_slab.c
+>>>  create mode 100644 lib/test_vmstat.c
+>>
+>> This looks similar to tools/testing/selftests/mm/test_vmalloc.sh and friends,
+>> that can actually be executed as part of our selftests and do a modprobe.
+>>
+>> Can we have similar scripts to execute them?
+>>
 > 
-> The restore handler must not call write_num(): on failure it
-> re-enters exit() through ksft_exit_fail_msg(), which is undefined
-> behavior from inside an atexit handler.  A non-root run hits it
-> directly - the restore write fails the same way the write that
-> triggered the exit did.  Restore with plain open()/write(), best
-> effort.
+> Thanks for looking at these tests!
 > 
-> Signed-off-by: Song Hu <husong@kylinos.cn>
+> Good call, I agree these could be loaded with a wrapper similar to 
+> test_vmalloc.sh.
 > 
-> ---
+> All three of these tests don't take module parameters (yet?) so right now 
+> this wrapper would just do the equivalent of check_test_requirements(), 
+> usage(), and run_test() where we'd pass in a single option for now, 
+> "performance".
+> 
+>> But I also wonder if these test modules could be placed then in
+>> tools/testing/selftests/mm/ instead (or some subdirectory for test modules).
+>>
+> 
+> I thought about the same and just followed what appears to be the standard 
+> convention (like test_vmalloc above) for lib/ for now.  If they should all 
+> be moved under tools/ somewhere, perhaps we handle that in a separate 
+> series?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Yes. lib/ is just absolutely the wrong place for that.
+
+Maybe lib/tests/mm
+
+But then, I wonder if they could just be somewhere in tests/ directly ...
+
+Anyhow, it was also raised whether some of these could be written as kunit
+tests. It's been a long time since I worked on these, so just mentioning it.
 
 -- 
 Cheers,
