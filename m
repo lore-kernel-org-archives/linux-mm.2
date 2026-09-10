@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A078FC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:03:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A51C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:03:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBF316B00AB; Thu, 10 Sep 2026 08:03:17 -0400 (EDT)
+	id 3C2D06B00AC; Thu, 10 Sep 2026 08:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6FC86B00AC; Thu, 10 Sep 2026 08:03:17 -0400 (EDT)
+	id 374076B00AD; Thu, 10 Sep 2026 08:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D17A86B00AD; Thu, 10 Sep 2026 08:03:17 -0400 (EDT)
+	id 2639A6B00AE; Thu, 10 Sep 2026 08:03:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A869B6B00AB
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:03:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA92D1C24C0
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:03:16 +0000 (UTC)
-X-FDA: 85197717192.12.0A913B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9F326B00AC
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:03:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5137A1404CC
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:03:19 +0000 (UTC)
+X-FDA: 85197717318.11.884A5A3
 Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BB306180010
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:03:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="J YuMWBx";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=XAB7hUSF;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf05.hostedemail.com (Postfix) with ESMTP id 55467100018
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:03:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y /IDDIa";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=hpByUBib;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789041794;
+	s=arc-20220608; t=1789041797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U3fJN6p296lB8xQAGr9+sipff9HImTdOJUAonJMUUhM=;
-	b=Kp8J9EY1ULUgLXbQ4Bd/ogMS0fPHPyuEPpHCkN3Y3DW0jCqzM3m1MMxVzNeUwsyq3IO+Ss
-	zPeICpa/chWNT7LmbZMEWlNX8zG2o4y7r9OcX2/Bc3ZjdBAo+TkZrCsyBt95dwyhXwEzJS
-	dXn966bpVhZNRA2gjcCg9sVqgKkaXAA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789041794;
-	b=5AloyF84zbW0htOoXz0eoCnBoZQSAm1mt+tY/FgRC2gDapalJ4lhnc7ISUlMEwrHkq7GTR
-	KMHaGG5CK7HfkfECA8XkgJ3XtjEaVZtG3zmjeG55Jjm9FyHNk4UY9iki+J3gWD98CNOW4P
-	L1cuDVETxjHBN9Od8uGlDgjsCMb+cvE=
+	bh=ZttzZbEWmniFloGWXXa9WcpJ9aZ/lRN/IO7GYTjQ29k=;
+	b=k+aF3S7mXvhnN9S6cH3IdEtP94QEnZJyQ/Pm3hEF3aUSQrrzzanDSF9yyUc1+O0+iP2nr/
+	yCTf00x42M4cMNr7u0HWtcXxfxFfumLHuW9uzv2E1jOlCoTQA00z9Ek7MB7HdgU/S2X7kg
+	nDXX97aWIeoewx0lqGRfRsGuGgpTYLc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="J YuMWBx";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=XAB7hUSF;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y /IDDIa";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=hpByUBib;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789041797;
+	b=7Pau4MijAphr1Z7xL7h0n3m08NFpVUfBnUzMNQg1AAJ91B6zQb7vemTMQagor/Wnli51o1
+	zFaPuP5SJiieGC9Axzsw3pTkr6pZCAwcnx5uAsw3306zMxapfqpQcr7lVmWjKNpDhs5YH6
+	1j/DhPGkdSAPOfe8pf8d+c09UziJshA=
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id B07721D000AF;
-	Thu, 10 Sep 2026 08:03:13 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id 4255A1D0004F;
+	Thu, 10 Sep 2026 08:03:16 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 08:03:14 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 08:03:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789041793; x=
-	1789128193; bh=U3fJN6p296lB8xQAGr9+sipff9HImTdOJUAonJMUUhM=; b=J
-	YuMWBx4T1Oe8RKUAsbsHTo9RuPm9QxNeyXXP7Kur7rWtkK21LZKwq7Pl6DwcMct0
-	5s3FS1tKOS8vh8/x1CI8GtIw0E/6Z9QuoZTw5rqLF/ikTvt5ur3h+cZCv1dfgPN2
-	fVh3UrlWEuuQs/0y13eddIgQe8utwbFytt0wPWL/NOsf+kAUPz8FMpFpskiabVeZ
-	u8rkxQd0VlGS03Fsz5eAOd8ts8cFjJOeGoePwAiK6+WwMFDcD/tvY3iv4zt64bdR
-	1nRZ9a9Tu42BnT+kMUCIdqMCKdduJfNYCLKe/Ru07GaQUnYmkJ8CUoHuaejSk0FR
-	EVGhzwnuaB/pEzq7nQ6Rw==
+	:reply-to:subject:subject:to:to; s=fm2; t=1789041796; x=
+	1789128196; bh=ZttzZbEWmniFloGWXXa9WcpJ9aZ/lRN/IO7GYTjQ29k=; b=Y
+	/IDDIawoHWwsapkKw6WfeUQ/5ZhVEe130M8sRiq1dHYJgA7nuOCfyb3jyPOAkM7M
+	rPIiJZu3JxA/zcskxOHDEg/vr4YwN7q9sXaFnRI9I1z0pIXld+ykzCipwsUJAc6L
+	Ncu0gqfn/l1Esf8aVfiv9lNK70XN5OHrpj8/BdsiLz569CZjverp2Re1WwOjjypM
+	Fh9dYae9KkB/SYvS2TDDJVhgn9GUuy7vg4R45ZCjcRlVTBR19xuoINVpRsLZ29SD
+	DvdTTjKxEaBS0p3hIBXi8FkPoyrycFLlqGXYa5OFO69d/V8yKKgwQfTkpwurbkUK
+	iSLL0k71z3wUnllHm23eg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1789041793; x=1789128193; bh=U
-	3fJN6p296lB8xQAGr9+sipff9HImTdOJUAonJMUUhM=; b=XAB7hUSFpA12cCPJM
-	OMDqYRLFct9E/qNWpFh9WOaKkBgGDBuo0OWLQ0k4cdSWLGEe6I01MZxXtkTHRvyl
-	quHDuLMGAUPV/7a8RT1THTqviv3A/hRciKXzJgXngMUngjH1sDRmpAikw1nvPpHH
-	wlthYfptb5vddwMXqBj3fvOudK8I8FsX1W7IeKhqqg+j3nxLhzpcWMNQ8zUyskIZ
-	59jitQ/Hfw1XQp60giP7FFJjdgHCLYTc3fvBDub8fRX5XrBkEGBxTq6tXhE26e+8
-	YY3sRCZXt+je++5NcBa3utZyv2QZTsk3OZFBQshOWcSsAqCY09cUPhlXgiY+XdCB
-	UDZIg==
-X-ME-Sender: <xms:gZyiavy00eWV_iPEYIGlDAipRFfDzzfGK5wh4Fr1fEQPPk1_8g7kEA>
-    <xme:gZyiajM2eezg6hqzbA1onUy8PIsZYGl441XjwnbCIO8R699VZDXIJMrDhcnCZvQgr
-    LbHSAyJ0UxalSLBCPi6UajbfvBXFj5LrJijCUNZQWQg1OhTQaAKGAg>
-X-ME-Received: <xmr:gZyiaveBM4pbIwV_8dYi5rdNKZKUtPyobM6deX3xrDuPFrneW3wfWpXrdlc>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1789041796; x=1789128196; bh=Z
+	ttzZbEWmniFloGWXXa9WcpJ9aZ/lRN/IO7GYTjQ29k=; b=hpByUBibgZSTSQlt1
+	0A+OsZkMGGnQF9esFIvBt9DgvbTOiCfur4ZTu5QjuTr5Fl3oTaCcvccQbCbvmmMo
+	TxmR1W15njV63TkCNK66knLEsUKeng2qkj1SRPd0cxbYIyV8WPiEDs46pJSeSOQP
+	z26/UluebBIvIC2edFhjVChSV9BZ1imXauCc2/k7QZPj7hGNYwIJXf/9XML3hjxw
+	mzRmynUvEaYSM/Xj8MQrLcP1cVslzivl4grnggCZC8QXf7EccMPftP0Rd4AmaVJr
+	KDLFGXMJsuk4cD/iaB51Jdlp0hVP2Vsif9GJu+ZJNHPlRTv0K5TK6AHWkCkrniQy
+	tP6ng==
+X-ME-Sender: <xms:hJyiar1t3gD5TEo1FIWIYfoFsponz1O6MhStxObIiUn-XiBNEtsv2Q>
+    <xme:hJyiamBGzY5HXI9JPbWXyBboPlz3wZ_cYBtZhJfm8QEKWyv4JHogLP5qrjcISxcW0
+    z1B3QaqTmcgAbRgfSl9rhBcrBZPO8dnAz0ICBnkOYAUcIhPtnXYNk4>
+X-ME-Received: <xmr:hJyiaiDTAh5N2apvvbLV_OIHuaR0XGhQk54JhfHLuGDHrxysLLztoR_fgN8>
 X-ME-Proxy-Cause: dmFkZTGUwtybjwPNTLo6R8Djs851CxE4dYABoksc5DOLebDAdjF/7kz2LTXedMZaJHaEsl
     u+9R36zRT1ZhtRkJBR4Xz/EwBimHSAG+mwOmEGehzEiv3PYSuq6Z2mKTclu6l8ZCGLaRVv
     RupVEjOuMXLaHhEvmZ7MRnQK4S/jaA4Fn+A/pUOz8kiJx7aYiU9MigP37WKT+MGxNap2wz
     dRarL4pe9tmhsdpwwUXZj55Ji6mi71ZgLtAGecz1FGZAcB1ieVS0L457vxQ1F9sxIDxLwT
-    QcbTU8EZJEacVnPbAL6aT/vW8eX/g2TSMrM6YxxBPc/XsEEo+/bzW/w+LZ0gFhc/ZZneV+
-    vBUhDdd1wrc7OOZstiDjdJu3h/8fXkEkTVsJWdfGlzoNfbRCw8ttRXYEMeIWUbm/cXSR4L
-    0eKZQ8+Dm52lOCDT4lAOt1AIzAq4SRNVZG94DY+1cHz6Wr+rdWScldoDGWCVh0TgCnQvX+
-    Vsc8iMYu7wteWYcCiBcAtfKxwZV66W02PEgzgOvGxpevqvlGLEyzy8Mr8lBBhpF+WFjwU/
-    60RCAixwv13lRN3dbWksHjFMLsqo3WnZ6aV0/CpAK5N13BPRs2YFczS7JV8rfw5eEboqu3
-    c1ww/CKHpIPKYiFUkb1Cnqv8n2/vWAueO8W2qFX4yGVL8DFNiVEohvoyHhMw
-X-ME-Proxy: <xmx:gZyiav4YDEMnD9T5yYUASUcgh3Dyc9fi2FLXvovlcsJMxUgXja6WaQ>
-    <xmx:gZyiavKKgsUgzy-TipYLV6gIyG5zkzehSCCSig-EfTfN8mgYY4XMEA>
-    <xmx:gZyiar4wq_HxErhgO-yqfRIEx9whimrsGik4KPEKbDctDAyVX9ZhIg>
-    <xmx:gZyiamaUdbGZbaPtVQext43voPkENd4d85k9vIegT6zCxU79GRakUw>
-    <xmx:gZyiavpWv7Dmhu5ZqVOwiZC6l-3X8UXuMqCmMjimgNd5vn2nN5rv5FvV>
+    QcbTU8EZJEacVnPbAL6aT/vW8eX/g2TSMrM6YxxBPc/XsEEo+/bzW/w+LZ0gFhc/ZZnenC
+    oz1QcdLXM9OiLPZRMrV452RrLNmkTNrinjOdREYRHS2NkkyGueNPNckGvPvq6YZoblNe4k
+    bFSCxQvNlMrOLPybz0XCbF4VEV2g82XKF47qda8jBCJqqo6DE4Jt7dyt7qjGHpXsek1lYr
+    wMLN4eubNCOayGO5XTPuTSp6zMxz7RIv7XbW/rsKqIftVh8MGIg3m2KN63AunHYZiIP5tp
+    /QRV0UtUulhq0K59rVSm7YVyeLPkSeHydjthDNWGrQRUG9VTdcENvWdeFscLeoefHiMs7X
+    O9QxfbHnwjHq3HT2aJxYuRAFT+5/1vfzUIIgKRzqSOv0y1o9qiXJk1ZRkDrg
+X-ME-Proxy: <xmx:hJyianN9CNWT-04FzRhPtOTBCirKmW29N_3dGkD1GzmpGsDUPdX_Hw>
+    <xmx:hJyiasNuFsJoNiijWjFMCygZ9Irge7J9GNZNwAY1xFm2EtGApqILYA>
+    <xmx:hJyiarv2_J1KFwV_E5LQidmZO7YMqa5PwU94DX72tsxGfjaZHEQFCw>
+    <xmx:hJyiah8vZHOpeH0UwN51AGQPO3S6R8tvy4wTQ6mkNiviCt1WdO_cYQ>
+    <xmx:hJyiaiMbIWG-ZBSFChakE68IALr2SNRjfYniHsaqnixqYV3sbgifBYsv>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Sep 2026 08:03:13 -0400 (EDT)
+ 10 Sep 2026 08:03:15 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -120,22 +120,22 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	Usama Arif <usama.arif@linux.dev>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH v2 11/12] mm/collapse: declare the collapse interface in collapse.h
-Date: Thu, 10 Sep 2026 13:02:31 +0100
-Message-ID: <20260910120238.2529819-12-kirill@shutemov.name>
+Subject: [PATCH v2 12/12] mm/collapse: implement MADV_COLLAPSE in madvise.c
+Date: Thu, 10 Sep 2026 13:02:32 +0100
+Message-ID: <20260910120238.2529819-13-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910120238.2529819-1-kirill@shutemov.name>
 References: <20260910120238.2529819-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 55467100018
+X-Stat-Signature: ade6gerbszn8qxb58e7h3ry3y5gsmfhg
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BB306180010
-X-Stat-Signature: xbnnhwi4eff84sqiq1p5tywtxcdp1gaf
-X-HE-Tag: 1789041794-22412
-X-HE-Meta: U2FsdGVkX19rBPuH3YaXbZbqL/ExYEe+C8AL+mRXim3FLpRax1HqtpMlFsRjzwyv6tJg820l6NkaRT4JE2sPFDDo4xHqmkY/P/hzD6tSYhpXHDZWxo6+kXkozeayaqm5UiLDcDoHG/CYYw2Dt7Bm4vdQ9bZ+1TOvzOHFT1Dgy+D3vMmvCwzcVqBpwt6yneOZOl0Rd6ZojdtJzrmQ54AwpIMUrRrk3ZfeIVR+j855pG8pRMQ6G7uJgVbJD2rR+0bG9rmCFGJgp0fHidMc/5NTRdaclM+X1AmSVXVgHfJnj4K7fSX/Tq9z+pcosa7519qZmFqFxwSFjVUmCCaRloazk8xLm36heqP8K0O+logf5CvLsZhjMIGCWK7F01BWF1AIFsfKe7kehDyh/a8bMeCH2BNOSy1yE38hHkzs25a1Ib732rcodmoZWjGGdY0VA47QUGmCk19alYKCLp974pIlx5OSzOuyd3kermRSW6SXfB1HMMf5JaiU/uCyOqytYFRHU+joKEw7LvqRXNKp0qlLiwzFNGEAS+pq5TdyoYyGBc2t6/TwfGIPQD7pq/hzPp7NTaGMWG5xhkFeq5yK8t62v/pUJB1F/7R3sa+bIePgnWdigUjgPx4l6yBJUKeoctl5KQw/Ww/BnrPqlPQVj8r4Z5AVr/Not2Rk4xHaZqIGmaXEND4T/0gzjOsndQvhz/H9zCuUS2bfN/l2c7hirHY8SF3D8pAPiePH6dlqnsOwQN+VUe0AdyiE56ebHXYLvsy7rO//M4pZLKBeuPVLtBt9ko2vgB2/Iv0Svu57oS/SLCtnj1o4WOvG5e5//YtD4y/nHfdAJT5w7fCWWGL9+uJ8vpoBIMvKzlhxmoC+VjYTwWqmLKKMMiPneXKn/oYzP6X0uXewZ18Jh++AJkj6ZZNBSW+oqEGegMW8cahm8IYAUibzxAGKQaePMRqjdLwGGSxAV6Aa0o7pR7qJrOysqdp
- bZDuLLqd
- zAkGRp/xRJqy49LRs2swfHnV9WE+zWYAOQucciASEmaLIiW6UFs57XnWXx4HCsK1lrw1ET2Gg7bcEbN5BFXhsCGqOeoyZys0JWAYfLel62OECOk7+NyKr/CyUrtUxWA5Uh5rrZZgA/+dBJOPTVCfOzMIGfQJi5aoaUJ1Vg9a2pUOOIl2zh8pDhkPkAceLLc0PCBV/yxtVDrZzhd/q/y2BvvZr+r2h+F8DIsaDtCgLIld5q3lWWl6C0OGBOb2asgz1t1nEnNq08jP9VafvmcpUiU6J1WgCerT25CbLNi3pXvN3t5983tiUcuMQ91vw9tRwxIZFhWn97HKeEza/aztHnmM74hrvMBo55F5GdEurMX1UZWwuLMqTMfeaGrv/8PojU16Hw6svojx01oBbFQY7IcMgJhn/PZqnUZljqF/L3sKj080Oh8d4DRcGDjl73OYt6FZYXgue+omPwRA=
+X-HE-Tag: 1789041797-313404
+X-HE-Meta: U2FsdGVkX1+VbdLrjZboVx9sH0OopW8gvxYj+G8BbLLHQOb7oaTczo3uFscWYaY8uqIT2+vQXG9ef296ODefREjq7uBsQsZHCfVPPVOtSRN2miQ3LrilMlF9F+Au7e+sQVv+dwBavRAES/QpMF8tJ/gHcFcRJVmEUP6pEj/fKkjHmjOXY4YI0oGKseGe1A5J8tUC1PUMG6MUim6TmOCynqKa7OcUIP4BGJrTnBD3FjG2rVLjQXxNbTbk/3UzMjhN3IAaCXubZ0M8dtH3Tq9+6KwhCVtxsuQDEYFkHu8PxyQES3vXIJO5Adi7v5Er8dfy2wvoRTk6ukAWlZkX9CwlEoYQXonAdT61s74s5Uu/rDTaOshOOdznGIa36+1Bf/GT/FegAoDsIibCJCl25Mkq/OcuYdkjPxJcPF3WK6YHMACsnHN5teSW+ugTviqWQ5zp4iTTojVLwN0wZdiaApP6ckwn331UUQHQI2ivmiIDUD9K2yOh0XaF8mafcXFidW5eTaLRzFhFThCCmZvsW8+c9AbwVEwi9kVpissKrBJJmTgUcDfwexE6iuCTvxN0jlj7hgwWsG3vn1E+K1J5nZB0YnmgunAdeBzZ0jQXUJhXCpvgL3owE/oWWxwEYQW+SdoEplkdyCDz1yIjeg+9A9/jo22jzoA9fcC9jzMdfDmLmGlCHvbNbj4miVZ/RhyeM916jOSvM6BMHTAhAlKzEgVz07kO3FuVZGTzxhdMptXHDSdmGYlAwSRcYjssFkRFjB1x/dr1BSuMnvtwqF1InXSMKY2g7jyMMnMvrHM+884nilmsMhp4TQDExrDcXqcsu43OlJmAQ7y0IQXdn3r3ghEsLDoDOrilOxn7OxcW48uFDDcf054FONoh/+DqhRF9I09jam5j24zT01n3Vg82EO51QGDukzJBw21CaInDgGLCOfdtJ/8aPAiECh8FtFMz+fhMV1BTnkp+NMPwVku0+Fr
+ h4u0JeoH
+ M6pzweRwkOM3Ne+8/W5369bSZ6G0paQHaGjiHyMZXmezOg/4kM63bjKjxP5cvmX0J5nh5rmOgKgBhBsw2u8yBarhDHX+tpwq0ZIxoG2rCq2qs3wLcnvMRsUvyHFZTaOMnbPlXhB9VQE13TiAkR+lU+ACx3Lk4rqirT+AjFh2UjqTAuQ+XO2tlG2PJ09G1HD6gKtcivZt+lXlM8hdtwonkXDBTnxqKZgy12FmwN5X30yeCi/Lb8z9N0hhRIedV/VB4pLBL/UK2Gd1zrRPFjFSE7jX4p82ypEhrZMDIGTL3elJS2a079knTQbmAPh1ECR/nqcyo+Q7tsLkANm1+5c7i5YF0WWBseKBW1Jty0/I16KpdaFKHo06J53R3OLbYyx4FmAuh7no/ocD2jRfP7Ts2ngIF2JNMHmz+OZBw+9BoE1PT6ILaFgpoPifTbCMWIUeneHjUkrlagn4g8yMJ+o/kr2jHgCNstNnY/LRF0HO7xjg1ZaL4gmOMI07BPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,171 +145,430 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-A collapse takes four calls:
+MADV_COLLAPSE is a madvise operation, but its implementation sat in
+khugepaged.c.  The daemon's file therefore also held a syscall's worth of
+code that has nothing to do with the daemon: the walk over the user's
+range, the per-PMD loop, and the errno translation.
 
-  - collapse_control_init() - set up the control a caller carries;
-  - collapse_scan_pmd() - scan one PTE table, under mmap_lock;
-  - collapse_run_pmd() - collapse what the scan found, no mmap_lock;
-  - collapse_control_release() - done with the control.
+Move it to madvise.c, among the operations it belongs with, along with the
+errno map and the policy it states for itself.  It takes a struct
+madvise_behavior like every one of those operations, which is where the
+range, the VMA and the lock-dropped flag it used to be handed separately
+already live.
 
-All four are static in khugepaged.c, as are collapse_possible_orders(),
-which says what a VMA allows, and the revalidate a caller needs once a
-collapse has given the mmap_lock up.  No other file can ask for a collapse
-without them.
+It stays a caller of the interface khugepaged uses, so nothing about the
+collapse changes.
 
-Declare them in collapse.h, with a comment stating the order they are
-called in and who holds the lock over each step.
-
-hugepage_vma_revalidate() becomes collapse_vma_revalidate(): it is part of
-what a collapse offers now, not a helper of the daemon.
-
-Preparation for implementing MADV_COLLAPSE in madvise.c.
-
-No functional change.
+The !CONFIG_TRANSPARENT_HUGEPAGE stub moves in with it.
 
 Assisted-by: LLM
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/collapse.h   | 44 ++++++++++++++++++++++++++++++++++++++++++++
- mm/khugepaged.c | 18 +++++++++---------
- 2 files changed, 53 insertions(+), 9 deletions(-)
+ include/linux/huge_mm.h |   9 ---
+ mm/khugepaged.c         | 157 +------------------------------------
+ mm/madvise.c            | 169 +++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 169 insertions(+), 166 deletions(-)
 
-diff --git a/mm/collapse.h b/mm/collapse.h
-index 346859a2184f..1ebbbf63fb25 100644
---- a/mm/collapse.h
-+++ b/mm/collapse.h
-@@ -106,4 +106,48 @@ struct collapse_control {
- 	bool scan_retract_only;
- };
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index c745f7ad2298..8ca0fa3be2ac 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -510,8 +510,6 @@ change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
  
-+/* Which orders a VMA may collapse to, zero when it may not collapse at all */
-+unsigned long collapse_possible_orders(struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, enum tva_type tva_flags);
-+
-+/*
-+ * A caller states what it allows in cc->policy and then hands over one PTE
-+ * table's worth of a VMA at a time:
-+ *
-+ *     collapse_control_init(cc)         once, before the first table
-+ *     collapse_scan_pmd(vma, addr, ...) per table
-+ *     collapse_run_pmd(mm, addr, cc)    when a scan found work
-+ *     collapse_control_release(cc)      once, when done with the control
-+ *
-+ * The caller holds mmap_lock for reading over the scan and passes an address
-+ * within @vma, aligned to the PTE table the scan is to judge.
-+ *
-+ * The scan returns with that lock still held.  It only reads, and almost every
-+ * table it is offered has nothing to collapse, so a caller walks a whole VMA
-+ * under the one lock it took to get there.  SCAN_SUCCEED means there is
-+ * something to collapse; anything else is why there is not.
-+ *
-+ * The run is called without the lock and returns without it, taking what it
-+ * needs in between: what it does -- allocate, isolate, copy, flush -- is slow
-+ * enough that a writer would wait behind it.  The caller gives the lock up
-+ * first, and with it @vma and anything derived under it, so a caller carrying
-+ * on has to look up again with collapse_vma_revalidate().  The run revalidates
-+ * for itself rather than trusting what the scan saw.
-+ *
-+ * A scan that found something has to be run: the file side takes a reference on
-+ * the file while it still has the VMA to take it from, and the run is what
-+ * gives it back.
-+ */
-+void collapse_control_init(struct collapse_control *cc);
-+void collapse_control_release(struct collapse_control *cc);
-+enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
-+		unsigned long addr, struct collapse_control *cc,
-+		unsigned long orders);
-+enum scan_result collapse_run_pmd(struct mm_struct *mm, unsigned long addr,
-+		struct collapse_control *cc);
-+enum scan_result collapse_vma_revalidate(struct mm_struct *mm,
-+		unsigned long address, bool expect_anon,
-+		struct vm_area_struct **vmap, struct collapse_control *cc,
-+		unsigned int order);
-+
- #endif	/* __MM_COLLAPSE_H */
+ int hugepage_madvise(struct vm_area_struct *vma, vm_flags_t *vm_flags,
+ 		     int advice);
+-int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+-		     unsigned long end, bool *lock_dropped);
+ void vma_adjust_trans_huge(struct vm_area_struct *vma, unsigned long start,
+ 			   unsigned long end, struct vm_area_struct *next);
+ spinlock_t *__pmd_trans_huge_lock(pmd_t *pmd, struct vm_area_struct *vma);
+@@ -715,13 +713,6 @@ static inline int hugepage_madvise(struct vm_area_struct *vma,
+ 	return -EINVAL;
+ }
+ 
+-static inline int madvise_collapse(struct vm_area_struct *vma,
+-				   unsigned long start,
+-				   unsigned long end, bool *lock_dropped)
+-{
+-	return -EINVAL;
+-}
+-
+ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
+ 					 unsigned long start,
+ 					 unsigned long end,
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 9e77f71a788d..77f34aedf0f2 100644
+index 77f34aedf0f2..1deb74cf28af 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -498,7 +498,7 @@ void __khugepaged_enter(struct mm_struct *mm)
-  * Check what orders are possible based on the vma and collapse type.
-  * This is used to determine if mTHP collapse is a viable option.
-  */
--static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
-+unsigned long collapse_possible_orders(struct vm_area_struct *vma,
- 		vm_flags_t vm_flags, enum tva_type tva_flags)
- {
- 	unsigned long orders;
-@@ -1016,7 +1016,7 @@ static int collapse_find_target_node(struct collapse_control *cc)
-  * Returns enum scan_result value.
-  */
+@@ -969,21 +969,6 @@ static void collapse_policy_khugepaged(struct collapse_policy *p)
+ 	p->tva_type = TVA_KHUGEPAGED;
+ }
  
--static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-+enum scan_result collapse_vma_revalidate(struct mm_struct *mm, unsigned long address,
- 		bool expect_anon, struct vm_area_struct **vmap,
- 		struct collapse_control *cc, unsigned int order)
+-/* MADV_COLLAPSE was asked for explicitly, so it is not held to those */
+-static void collapse_policy_forced(struct collapse_policy *p)
+-{
+-	p->max_ptes_none = HPAGE_PMD_NR;
+-	p->max_ptes_swap = HPAGE_PMD_NR;
+-	p->max_ptes_shared = HPAGE_PMD_NR;
+-	p->strict_sub_pmd = false;
+-	p->skip_lazyfree = false;
+-	p->require_referenced = false;
+-	p->install_pmd = true;
+-	p->writeback_dirty = true;
+-	p->gfp = GFP_TRANSHUGE;
+-	p->tva_type = TVA_FORCED_COLLAPSE;
+-}
+-
+ #ifdef CONFIG_NUMA
+ static int collapse_find_target_node(struct collapse_control *cc)
  {
-@@ -1264,7 +1264,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	}
- 
- 	mmap_read_lock(mm);
--	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-+	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
- 					 &vma, cc, order);
- 	if (result != SCAN_SUCCEED) {
- 		mmap_read_unlock(mm);
-@@ -1299,7 +1299,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	 * mmap_lock.
- 	 */
- 	mmap_write_lock(mm);
--	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-+	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
- 					 &vma, cc, order);
- 	if (result != SCAN_SUCCEED)
- 		goto out_up_write;
-@@ -2743,13 +2743,13 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+@@ -2802,8 +2787,8 @@ enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
  	return result;
  }
  
--static void collapse_control_init(struct collapse_control *cc)
-+void collapse_control_init(struct collapse_control *cc)
- {
- 	cc->progress = 0;
- 	cc->scan_file = NULL;
- }
- 
--static void collapse_control_release(struct collapse_control *cc)
-+void collapse_control_release(struct collapse_control *cc)
- {
- 	/* A scan that took a file reference should have been run */
- 	if (WARN_ON_ONCE(cc->scan_file)) {
-@@ -2758,7 +2758,7 @@ static void collapse_control_release(struct collapse_control *cc)
- 	}
- }
- 
--static enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
-+enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
- 		unsigned long addr, struct collapse_control *cc,
- 		unsigned long orders)
- {
-@@ -2802,7 +2802,7 @@ static enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
- 	return result;
- }
- 
--static enum scan_result collapse_run_pmd(struct mm_struct *mm,
-+enum scan_result collapse_run_pmd(struct mm_struct *mm,
- 		unsigned long addr, struct collapse_control *cc)
+-enum scan_result collapse_run_pmd(struct mm_struct *mm,
+-		unsigned long addr, struct collapse_control *cc)
++enum scan_result collapse_run_pmd(struct mm_struct *mm, unsigned long addr,
++		struct collapse_control *cc)
  {
  	struct file *file = cc->scan_file;
-@@ -3256,7 +3256,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		if (!vma) {
- 			cond_resched();
- 			mmap_read_lock(mm);
--			result = hugepage_vma_revalidate(mm, addr, false, &found,
+ 	bool triggered_wb = false;
+@@ -3179,141 +3164,3 @@ bool current_is_khugepaged(void)
+ {
+ 	return kthread_func(current) == khugepaged;
+ }
+-
+-static int madvise_collapse_errno(enum scan_result r)
+-{
+-	/*
+-	 * MADV_COLLAPSE breaks from existing madvise(2) conventions to provide
+-	 * actionable feedback to caller, so they may take an appropriate
+-	 * fallback measure depending on the nature of the failure.
+-	 */
+-	switch (r) {
+-	case SCAN_ALLOC_HUGE_PAGE_FAIL:
+-		return -ENOMEM;
+-	case SCAN_CGROUP_CHARGE_FAIL:
+-	case SCAN_EXCEED_NONE_PTE:
+-		return -EBUSY;
+-	/* Resource temporary unavailable - trying again might succeed */
+-	case SCAN_PAGE_COUNT:
+-	case SCAN_PAGE_LOCK:
+-	case SCAN_PAGE_LRU:
+-	case SCAN_DEL_PAGE_LRU:
+-	case SCAN_PAGE_FILLED:
+-	case SCAN_PAGE_HAS_PRIVATE:
+-	case SCAN_PAGE_DIRTY_OR_WRITEBACK:
+-		return -EAGAIN;
+-	/*
+-	 * Other: Trying again likely not to succeed / error intrinsic to
+-	 * specified memory range. khugepaged likely won't be able to collapse
+-	 * either.
+-	 */
+-	default:
+-		return -EINVAL;
+-	}
+-}
+-
+-int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+-		     unsigned long end, bool *lock_dropped)
+-{
+-	struct collapse_control *cc;
+-	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long hstart, hend, addr, orders;
+-	enum scan_result last_fail = SCAN_FAIL;
+-	int thps = 0;
+-
+-	BUG_ON(vma->vm_start > start);
+-	BUG_ON(vma->vm_end < end);
+-
+-	orders = collapse_possible_orders(vma, vma->vm_flags,
+-					  TVA_FORCED_COLLAPSE);
+-	if (!orders)
+-		return -EINVAL;
+-
+-	hstart = ALIGN(start, HPAGE_PMD_SIZE);
+-	hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
+-
+-	if (hstart >= hend)
+-		return 0;
+-
+-	cc = kmalloc_obj(*cc);
+-	if (!cc)
+-		return -ENOMEM;
+-	collapse_control_init(cc);
+-	collapse_policy_forced(&cc->policy);
+-
+-	lru_add_drain_all();
+-
+-	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+-		struct vm_area_struct *found;
+-		enum scan_result result;
+-
+-		/*
+-		 * A collapse gives the lock up, so the VMA has to be found
+-		 * again after one: it can shrink while nothing is held.  A scan
+-		 * that finds nothing to collapse leaves the lock alone, so a
+-		 * range that is already collapsed walks on without relocking.
+-		 */
+-		if (!vma) {
+-			cond_resched();
+-			mmap_read_lock(mm);
+-			result = collapse_vma_revalidate(mm, addr, false, &found,
+-							 cc, HPAGE_PMD_ORDER);
+-			if (result != SCAN_SUCCEED) {
+-				last_fail = result;
+-				goto out_locked;
+-			}
+-			vma = found;
+-			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+-			orders = collapse_possible_orders(vma, vma->vm_flags,
+-							  cc->policy.tva_type);
+-		}
+-
+-		result = collapse_scan_pmd(vma, addr, cc, orders);
+-		/* Nothing to collapse here, and the lock is still ours */
+-		if (result != SCAN_SUCCEED)
+-			goto tally;
+-
+-		/* The collapse takes its own locks, so give this up */
+-		mmap_read_unlock(mm);
+-		*lock_dropped = true;
+-		vma = NULL;
+-
+-		result = collapse_run_pmd(mm, addr, cc);
+-tally:
+-		switch (result) {
+-		case SCAN_SUCCEED:
+-		case SCAN_PMD_MAPPED:
+-			++thps;
+-			break;
+-		/* Whitelisted set of results where continuing OK */
+-		case SCAN_NO_PTE_TABLE:
+-		case SCAN_PTE_NON_PRESENT:
+-		case SCAN_PTE_UFFD:
+-		case SCAN_LACK_REFERENCED_PAGE:
+-		case SCAN_PAGE_NULL:
+-		case SCAN_PAGE_COUNT:
+-		case SCAN_PAGE_LOCK:
+-		case SCAN_PAGE_COMPOUND:
+-		case SCAN_PAGE_LRU:
+-		case SCAN_DEL_PAGE_LRU:
+-			last_fail = result;
+-			break;
+-		default:
+-			last_fail = result;
+-			/* Other error, exit */
+-			goto out;
+-		}
+-	}
+-
+-out:
+-	/* Caller expects us to hold mmap_lock on return */
+-	if (!vma)
+-		mmap_read_lock(mm);
+-out_locked:
+-	mmap_assert_locked(mm);
+-	collapse_control_release(cc);
+-	kfree(cc);
+-
+-	return thps == ((hend - hstart) >> HPAGE_PMD_SHIFT) ? 0
+-			: madvise_collapse_errno(last_fail);
+-}
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 963337f93a7a..f75a9d139980 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -38,6 +38,7 @@
+ 
+ #include "internal.h"
+ #include "swap.h"
++#include "collapse.h"
+ 
+ #define __MADV_SET_ANON_VMA_NAME (-1)
+ 
+@@ -906,6 +907,171 @@ bool madvise_dontneed_free_valid_vma(struct madvise_behavior *madv_behavior)
+ 	return true;
+ }
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++
++/* MADV_COLLAPSE was asked for explicitly, so it is not held to those */
++static void collapse_policy_forced(struct collapse_policy *p)
++{
++	p->max_ptes_none = HPAGE_PMD_NR;
++	p->max_ptes_swap = HPAGE_PMD_NR;
++	p->max_ptes_shared = HPAGE_PMD_NR;
++	p->strict_sub_pmd = false;
++	p->skip_lazyfree = false;
++	p->require_referenced = false;
++	p->install_pmd = true;
++	p->writeback_dirty = true;
++	p->gfp = GFP_TRANSHUGE;
++	p->tva_type = TVA_FORCED_COLLAPSE;
++}
++
++static int madvise_collapse_errno(enum scan_result r)
++{
++	/*
++	 * MADV_COLLAPSE breaks from existing madvise(2) conventions to provide
++	 * actionable feedback to caller, so they may take an appropriate
++	 * fallback measure depending on the nature of the failure.
++	 */
++	switch (r) {
++	case SCAN_ALLOC_HUGE_PAGE_FAIL:
++		return -ENOMEM;
++	case SCAN_CGROUP_CHARGE_FAIL:
++	case SCAN_EXCEED_NONE_PTE:
++		return -EBUSY;
++	/* Resource temporary unavailable - trying again might succeed */
++	case SCAN_PAGE_COUNT:
++	case SCAN_PAGE_LOCK:
++	case SCAN_PAGE_LRU:
++	case SCAN_DEL_PAGE_LRU:
++	case SCAN_PAGE_FILLED:
++	case SCAN_PAGE_HAS_PRIVATE:
++	case SCAN_PAGE_DIRTY_OR_WRITEBACK:
++		return -EAGAIN;
++	/*
++	 * Other: Trying again likely not to succeed / error intrinsic to
++	 * specified memory range. khugepaged likely won't be able to collapse
++	 * either.
++	 */
++	default:
++		return -EINVAL;
++	}
++}
++
++static int madvise_collapse(struct madvise_behavior *madv_behavior)
++{
++	struct madvise_behavior_range *range = &madv_behavior->range;
++	struct vm_area_struct *vma = madv_behavior->vma;
++	struct mm_struct *mm = madv_behavior->mm;
++	struct collapse_control *cc;
++	unsigned long hstart, hend, addr, orders;
++	enum scan_result last_fail = SCAN_FAIL;
++	int thps = 0;
++
++	BUG_ON(vma->vm_start > range->start);
++	BUG_ON(vma->vm_end < range->end);
++
++	orders = collapse_possible_orders(vma, vma->vm_flags,
++					  TVA_FORCED_COLLAPSE);
++	if (!orders)
++		return -EINVAL;
++
++	hstart = ALIGN(range->start, HPAGE_PMD_SIZE);
++	hend = ALIGN_DOWN(range->end, HPAGE_PMD_SIZE);
++
++	if (hstart >= hend)
++		return 0;
++
++	cc = kmalloc_obj(*cc);
++	if (!cc)
++		return -ENOMEM;
++	collapse_control_init(cc);
++	collapse_policy_forced(&cc->policy);
++
++	lru_add_drain_all();
++
++	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
++		struct vm_area_struct *found;
++		enum scan_result result;
++
++		/*
++		 * A collapse gives the lock up, so the VMA has to be found
++		 * again after one: it can shrink while nothing is held.  A scan
++		 * that finds nothing to collapse leaves the lock alone, so a
++		 * range that is already collapsed walks on without relocking.
++		 */
++		if (!vma) {
++			cond_resched();
++			mmap_read_lock(mm);
 +			result = collapse_vma_revalidate(mm, addr, false, &found,
- 							 cc, HPAGE_PMD_ORDER);
- 			if (result != SCAN_SUCCEED) {
- 				last_fail = result;
++							 cc, HPAGE_PMD_ORDER);
++			if (result != SCAN_SUCCEED) {
++				last_fail = result;
++				goto out_locked;
++			}
++			vma = found;
++			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
++			orders = collapse_possible_orders(vma, vma->vm_flags,
++							  cc->policy.tva_type);
++		}
++
++		result = collapse_scan_pmd(vma, addr, cc, orders);
++		/* Nothing to collapse here, and the lock is still ours */
++		if (result != SCAN_SUCCEED)
++			goto tally;
++
++		/* The collapse takes its own locks, so give this up */
++		mmap_read_unlock(mm);
++		mark_mmap_lock_dropped(madv_behavior);
++		vma = NULL;
++
++		result = collapse_run_pmd(mm, addr, cc);
++tally:
++		switch (result) {
++		case SCAN_SUCCEED:
++		case SCAN_PMD_MAPPED:
++			++thps;
++			break;
++		/* Whitelisted set of results where continuing OK */
++		case SCAN_NO_PTE_TABLE:
++		case SCAN_PTE_NON_PRESENT:
++		case SCAN_PTE_UFFD:
++		case SCAN_LACK_REFERENCED_PAGE:
++		case SCAN_PAGE_NULL:
++		case SCAN_PAGE_COUNT:
++		case SCAN_PAGE_LOCK:
++		case SCAN_PAGE_COMPOUND:
++		case SCAN_PAGE_LRU:
++		case SCAN_DEL_PAGE_LRU:
++			last_fail = result;
++			break;
++		default:
++			last_fail = result;
++			/* Other error, exit */
++			goto out;
++		}
++	}
++
++out:
++	/* Caller expects us to hold mmap_lock on return */
++	if (!vma)
++		mmap_read_lock(mm);
++out_locked:
++	mmap_assert_locked(mm);
++	collapse_control_release(cc);
++	kfree(cc);
++
++	return thps == ((hend - hstart) >> HPAGE_PMD_SHIFT) ? 0
++			: madvise_collapse_errno(last_fail);
++}
++
++#else	/* CONFIG_TRANSPARENT_HUGEPAGE */
++
++static int madvise_collapse(struct madvise_behavior *madv_behavior)
++{
++	return -EINVAL;
++}
++
++#endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
++
+ static long madvise_dontneed_free(struct madvise_behavior *madv_behavior)
+ {
+ 	struct mm_struct *mm = madv_behavior->mm;
+@@ -1373,8 +1539,7 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
+ 	case MADV_DONTNEED_LOCKED:
+ 		return madvise_dontneed_free(madv_behavior);
+ 	case MADV_COLLAPSE:
+-		return madvise_collapse(vma, range->start, range->end,
+-			&madv_behavior->lock_dropped);
++		return madvise_collapse(madv_behavior);
+ 	case MADV_GUARD_INSTALL:
+ 		return madvise_guard_install(madv_behavior);
+ 	case MADV_GUARD_REMOVE:
 -- 
 2.54.0
 
