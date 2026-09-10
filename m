@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5900C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:16:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB4BC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:22:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB6526B0093; Thu, 10 Sep 2026 07:16:12 -0400 (EDT)
+	id E9AF66B008A; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8EB76B0098; Thu, 10 Sep 2026 07:16:12 -0400 (EDT)
+	id E4BC96B008C; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCB266B00A1; Thu, 10 Sep 2026 07:16:12 -0400 (EDT)
+	id D3D666B0092; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B61546B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:16:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B09816B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:22:29 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AC8314048F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:16:12 +0000 (UTC)
-X-FDA: 85197598584.17.32416C6
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28EACC0285
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:29 +0000 (UTC)
+X-FDA: 85197614418.17.2B6F659
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 736FF40005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:16:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IpQKBy3P;
-	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5944DA0009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:22:27 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gNyRJvPv;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789039347;
+	b=6pmcLo6iO42zugZsyFcPo3YwFcbyFxEt2VWNG6EF8I8ukMk5kZilfD5XI9UgkJrLuoK2gO
+	qs0sRysPigudws8VB1WRx4dk7YLu1ubzTFLsbYFunMGw5R/LJrLoO8IPVSsLnIitMNf3ov
+	tYLkwMnv3rc+gvrrPWYmvMneyOlkhAk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gNyRJvPv;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038970;
+	s=arc-20220608; t=1789039347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2wpTpY3kwjAvihsk8TkHnRkghnVUwK2OYNZl4VSBk1o=;
-	b=h1qWnNnsTHQTXcR85uWCSnhRD2AP9/om29H2ols3hh+G/Dtztypniqck1yReavuz15M9ie
-	GIryLiw6BX3sm4hdcYs/1bKx77X54oCrvjzm4zRLi0zeICyaWm856m3Qr8KuSYhShfe3w5
-	npHma3A4ItACl6RIp69arfVE9W6kOks=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IpQKBy3P;
-	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038970;
-	b=YYf7ErwrSg48U5ShCyTJ1AYIVviBLSBrp2ekRXuvSdzgmXuv1aiZH75pcFWlyEfW2XtGtg
-	P1L6kslvZQFLGpm3FMrTWGu3iPGzr2J6ANZB1Rek+rSITx8c7t4eCDDZX86vrhTnOr0Sb9
-	tafO5a84GxqpPnd9gUVwujv7fNrbWvM=
+	bh=Ws0rXfuRmoTR7x5ntUwQBKIloOgySdJF3YXvYkohOlw=;
+	b=enHvW7FWKiR6MfxYzdj38ZzUUabc4LIBW5TiJsF75KpFwgCjYhcRkbAt7YI5LT9aj2h9Sr
+	fRj8HNOfP4kjAgsbP4wJicmG09maeAhB15cQvlaY7nN4WmmpbYQ5HcKiNmu9ac+LOrAdJp
+	L+mTuFrhy7FhcGH1OUSYb4tDYp6ZIv0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D780C153B;
-	Thu, 10 Sep 2026 04:16:05 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE457153B;
+	Thu, 10 Sep 2026 04:22:22 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11AAE3F528;
-	Thu, 10 Sep 2026 04:16:06 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED7A73F528;
+	Thu, 10 Sep 2026 04:22:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789038969; bh=hVGs1Tj7kpc4YncSVFe0orcF4b5ZciBzk2QmqTOTL1g=;
+	t=1789039346; bh=38/OLHfK+M+1zXHjINgFF+BX6QfD20XmuFGEDGmyA0o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IpQKBy3P0wIZcjof1RRrgg2w+Zjdva4zQH7AyZLrz7g+fjfIlWrx5ZMYV/yR/L91q
-	 H9rkuSYiqw/m5gZVtM3RfvD7IkdW3x48VdMM1F/7nEPsKuz9CAb0nHC3Fxo76Ah0Bq
-	 DqA3PUPjOCVrQenLOMhXnt6Wf+NAeNEcd3CPRgps=
-Date: Thu, 10 Sep 2026 12:16:04 +0100
+	b=gNyRJvPvTorSclWHavC3DluONl2GqzDYewmuGoFwfuSu95jgspzfpgyIeNA5lq8U8
+	 2FENBwt8PF8W4hLeiuNSCZvUO7KTGzv0/LxQ42Zm2/QF8gtjerY30MPZpvnQV1+u8K
+	 qE7nMiXoExbF3ZBVGOPVjxGpcw/SpJ734ssJvuCA=
+Date: Thu, 10 Sep 2026 12:22:20 +0100
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
@@ -79,26 +79,26 @@ Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
 	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
 	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] kselftest: mm: fix some failure of
- split_huge_page_test
-Message-ID: <aqKRdIjAYB2PEwRN@e129823.arm.com>
+Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
+Message-ID: <aqKS7CP67X4h6NiM@e129823.arm.com>
 References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <b923f63c-db7c-4ecb-949d-368bc6311626@kernel.org>
- <aqKHHWKvOonYZPy0@e129823.arm.com>
- <21e0a933-63b6-42b4-8cd7-df05b0c9acfc@kernel.org>
+ <20260907-fix_split-v5-3-822b810458bc@arm.com>
+ <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
+ <aqKOVGECsCNtSMIV@e129823.arm.com>
+ <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <21e0a933-63b6-42b4-8cd7-df05b0c9acfc@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 736FF40005
-X-Stat-Signature: xej1osqmmicd119iwgw3tenx7nrwfcpm
+In-Reply-To: <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5944DA0009
+X-Stat-Signature: nkur8z8xe3hupd67pjxwrhqi78ets3jg
 X-Rspam-User: 
-X-HE-Tag: 1789038970-460738
-X-HE-Meta: U2FsdGVkX18GG1GFG4eU0GqEMMJbV9MhfA+1QMsVRbnRyqH6f5Rf1OEio6+XCokyt4JXcrl8rJUvKXH7/kZWSbUStliV8KoY6irZPhG0HkLBKB6bgOz77NDT+y8dsxcFbbW8Bcj8EgylD8VsgO8VnZ4RKf3WAQ0uLEZ/FnjG0LZgQaNL99mF1+RSQkKUrLi4QDUABNvPHf6a6ugNzDmRYXVV+tlMGD9eo5QHmRRAMHo7fyqr7/9bJsBMtrXy6XoLa8/r9L2YSdBuKbV0AzbxG4zkifqcZwvLjzuGBEoSf1dlynlT5bhtVhK5NfPmEPmdjHtUDmggVPL5Il0uvo+5ENWUT5o8queilrvpoU62ESaxALuiU+Gzuma80YQYYmCgWZg8gi7E1J4QtBJB9D//7HUp1xjXYYCT/CNWa2fnJw/W6WtiyKR+U8nPws9WubtZe/SLg9CuX5pIRdSTdufI0fNjLCu5sMl7L8qb3qM/PJ5Z4ry8gMjcy7aLcWFQk4ue+KYFrCYbce8jKS7t6b+UvOjdwurOK0ebYfAeOCHG5ndL1PbE1HkJiEq6RtpDWs14f+Bx3jb+N+Er3eFTzveynuCBBvCYnvdYdaxQ2ppiUxXGT8Jspkh7I6YQR0LRGh+urzmGQ61kAqAN7srQUM0DBujyzxS76Emoj1PyPtENtHdln27WXLIKXmYES6vaAV4mAOofVbl1TQ72yxKLQtiYdwi6GriIpOwNCwiu+U75BjVNMfhKnhqTdv0oLpMwSp4MkyFkT3rAEh9DOhdaUR8UHfoBJh4WmTmykqMgVJ97oe/R2sbAGmGi5iE3GxetESoR32rNpROH3SlXwza2qIzO7x8Dqt497hIMEN3YG89oulBRK4i0oKV5VGYeD6s2Xsg9EVWfOeZKbLBQT69CNHF7PhIDEu1GoHDCc/8VfkJMG5TPVhJS27MEKIWbCgBDPwzSYn4NOy3pMmI0C/Lmgvn
- 8U3G47rB
- N+tOUNJo90c37RMqkAgH8dg8hqnptg5ZIs/PX2idSOMVHX6ptHhMyLmvlCfC1suHvO0jlHHKNBs5yeXn8r8wfujBWogJXEGURZghzmMMnssbA3Yd35mRwERrA+qTysjFUbzYrEiK9aig81RhqK/WCkKS2zk6dgCao0cCWYMe0wByMHJCgtJgRGqxDQUIHyjPu/ngZ6X1jOKqKs9VDjUv7brWxWOcui7n741KCEQzvW5inxQg80yTlLGLTVwi0DQ4im2DozHSITpYyfF4YlFRI7AUefa4hw4Nok6tByquigkOGPpFfTKw6jkuCtA==
+X-HE-Tag: 1789039347-760890
+X-HE-Meta: U2FsdGVkX1/JlatatTNtI2WhOXRfYhPibXxhgY6okwy6Iznt1Lzc7FIurx2fHRQsbp8Rs407To1bOIDxnljqgOMvB53vxu1YEjX3XzQ/ZaWt6oNY7+VKKVyRVr18JvjBeTvJp5k3zQzTePfUFuudrwsLBkY6QjXWMIIMri9Weta3HwlAIX7zt7uiZbihSYCly9ZeY72M7GP2845/r61x0IPdRT8itFTmdJsNL6YjJCkwK3LlGeXetKZolznubni5lotrcCKpTtrXWwmWDUAHk3z1qO6I3sASyW7CdMw+Dfcd83KB+wGbfRfPWbCkzQE0cFYM30j5PmeibDntbZbMjieAH8A1zdTVNU7K4Ql84GtRCjO0miGENbB47Z2d8BQNDt9hTkAS/ItnubyVSw/JDq92wYfD7pcYmPbF6kYJ5yao8szX8v60KHoYkB7hABUBSIDoLFZrozQlEKufY8tdhMcSsNSIu+W5rNte0eIT1m8LT79SzL7QtaT7brlo0Z+BbhULNOUSW4+aucRSeAlztZ25nRHUBswHwxqdDKaCeUD4BesvMr96VQ2vPSHhFbTIOZF1bzlOaF4/w6+brCiiH05EohuYPMS18uBpL1yG/AgCR8Kj+mF/bMoAhQDvpMDA1+giWluPnc3JkAdxMHIfmMyidz09F3MCKQujCOrXPSUQFQ+8VZqxyqxLc0BJCVdQC3bNSDD8/eyuDnCVjIW1+bKvLtq63AXd7un0anjQyswuCvzSSU964eYbwK4yigSGBgIR7oR46EFgmZfG25CzxKZOEGKRdUe94Prn3nndGACRmCQ4fqNss6srZvX6x//xt6AIDr+r2kV7rJI8K/A9Lh1nf4kX9s8A7VO8/f+bMfP6XTm/ecs1nlaTIklulLMYL3ZYMVSPtunIzNOz2RihHS6Vrtf06DFfIHX0y1dXol2R9STrXG5c8XutnhCQNuZg6z4lQQQgJNuOFlOZswU
+ OhLwnDNK
+ BmOiy7AE/aEceAyrLlao0x6in5fw+x6EI0HFXy3dX1uJfigtZzac20ceI0+yHtFmuxT8irG+kBEa3EDvcSq38AEFltF1Laa9lMtJqEqEtkcwXR5gDpvSSjOkBHKGMAWAYgmbs+mGeqp+d+E1hglKYTu2Or//bQ8mtj+pT/dmTlLC0zoKyNSdiMQ+ApnustG/frNEIuL3xXvD2wIDPekEnDKZ0GT/fD8Ahwd9xEACcEeFfSnu/UK5xkd6JsDbIdzWWqRhvMS9Ja/YJGl5hu0F0l13rs0TAKOHSccl064B/bkXaEgBT4anDiJVLmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,84 +106,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 12:45:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/10/26 12:31, Yeoreum Yun wrote:
-> >> On 9/7/26 10:19, Yeoreum Yun wrote:
-> >>> split_huge_page_test can fail for the following reasons:
-> >>>
-> >>>   1. During the test, khugepaged may collapse previously split pages again,
-> >>>      causing intermittent failures.
-> >>>
-> >>>   2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> >>>      glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> >>>      made by memalign(). The underlying VMA may start at a different address
-> >>>      from the aligned address returned by memalign(). Moreover, a subsequent
-> >>>      madvise(MADV_HUGEPAGE) call does not split the VMA because it already
-> >>>      has the same advice.
-> >>>
-> >>>      This causes the test to fail because the check_huge_xxx() helpers
-> >>>      incorrectly require the address returned by memalign() to match the
-> >>>      VMA start address reported in /proc/self/smaps.
-> >>>
-> >>> Address these issues by applying MADV_NOHUGEPAGE after faulting in the
-> >>> huge page, preventing khugepaged from collapsing it again, and instead of
-> >>> relying on /proc/self/smaps, use /proc/self/pagemap and
-> >>> /proc/kpageflags to detect huge-page mappings and large folios:
-> >>>
-> >>>   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
-> >>>      using check_large_folios(), since only the mapping type matters.
-> >>>      This identifies PMD-mapped huge pages.
-> >>>   2. Otherwise, use check_large_folios() to detect large folios. This
-> >>>      covers mTHP cases.
-> >>>   3. Check the folio flags according to the type of huge page.
-> >>>
-> >>> Also, current usage of memalign() would result memory area may
-> >>> unexpectedly merge with an adjacent VMA, causing tests
-> >>> that inspect it through /proc/self/smaps to fail.
-> >> I'm not particularly happy about this.
+On Thu, Sep 10, 2026 at 01:14:42PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/10/26 13:02, Yeoreum Yun wrote:
+> >>> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+> >>> index 5f278913c4d7..b6fad38c8bee 100644
+> >>> --- a/tools/testing/selftests/mm/soft-dirty.c
+> >>> +++ b/tools/testing/selftests/mm/soft-dirty.c
+> >>> @@ -92,9 +92,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+> >>>  	if (!hpage_len)
+> >>>  		ksft_exit_fail_msg("Reading PMD pagesize failed");
+> >>>  
+> >>> -	map = memalign(hpage_len, hpage_len);
+> >>> +	map = alloc_isolated_mem(hpage_len, hpage_len);
+> >>>  	if (!map)
+> >>> -		ksft_exit_fail_msg("memalign failed\n");
+> >>> +		ksft_exit_fail_msg("alloc_isolated_mem failed\n");
+> >>>  
+> >>>  	ret = madvise(map, hpage_len, MADV_HUGEPAGE);
+> >>>  	if (ret)
+> >>> @@ -130,7 +130,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+> >>>  		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
+> >>>  		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
+> >>>  	}
+> >>> -	free(map);
+> >>> +	free_isolated_mem(map, hpage_len);
+> >>>  }
 > >>
-> >> Relying on VMA merging details rather hints that we shouldn't be using smaps to
-> >> query some stats/properties.
+> >> smaps is really only problematic with merged VMAs when relying on exact page
+> >> statistics. For other properties (vm flags, MMUPageSize) it's not a problem as
+> >> long as our smap search just finds the VMA that covers an address.
 > >>
-> >> Which exact things are test querying through /proc/self/smaps? Could we convert
-> >> the code to just query that stuff through different interfaces?
+> >> Assuming we fixed check_huge_anon() to not use smaps, why is this change here
+> >> required?
 > > 
-> > Well, users currently for using /proc/self/smaps are for check vm-flags:
-> >   - guard-regions where using check_vmflags_guard()
-> >   - pfnmap test where uses check_vmflag_pfnmap()
+> > Since there is no interface to get vm_flags not via /proc/self/smaps,
+> > It might be good to have it for preventing unwanted VMA merge.
+> > 
+> > And might be useful for future to prevent unwated VMA merge.
 > 
-> Most vm-flags should not be an issue when it comes to merging. The only
-> exception are vmflags that do not prevent VMA merging.
+> See my reply on why vm flags are generally not a problem. Just like other
+> properties that are not changed during VMA merging.
 > 
-> So it's VM_SOFTDIRTY and VM_MAYBE_GUARD. And I agree that for guard-regions.c we
-> likely have to care such that we don't merge by accident with other VMAs (guard
-> regions).
+> Let's not perform random code changes without a clear picture.
 > 
-> But that's independent of memalign.
+> And just to emphasize again: VMA merging could already be a problem before
+> memalign() internal changes.
 > 
-> ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-> ASSERT_FALSE(check_vmflag_guard(ptr));
-> 
-> could be problematic on its own (unlikely but possible).
+> (also observe here how we do a MADV_HUGEPAGE, so this is all rather arbitrary,
+> which is not good)
 
-Yes. That's why I'm think it would be good to use alloc_isolated_mem()
-in case of ANON mapping for this case.
+As I mentioned in my previous reply, what I’m trying to prevent here is
+a failure when checking, immediately after memory allocation,
+that a specific vm_flag is not set.
 
-> 
-> For other flags, you really only have to find the smaps area that covers the
-> given address and look at the vm-flags.
-> 
-> Or am I missing something important?
-> 
-> (merging vnas with VM_PFNMAP is impossible right now IIRC)
+Yes, I agree that this could have been a problem even before
+the internal changes to memalign(). An unwanted VMA merge could already
+occur at the time of memory allocation.
 
-No. what I want to say including the patch #3 is for the above case
-where you point out -- ASSERT_FALSE(check_vmflag_guard(ptr)).
+So what I’m trying to avoid is a test failure where, due to such an
+unexpected VMA merge during allocation, the subsequent check that
+a specific vm_flag is not present fails.
 
-Since we don't have any interface to check vm_flags execpt smap
-and for memory mmaped with anon would have a chance to merge,
-We need something to replace memalign() with preventing unexpected VMA
-merge. (But I forgot to change the those case in guard test case).
+I probably didn’t explain this clearly enough and ended up causing
+more confusion. Sorry about that.
 
 -- 
 Sincerely,
