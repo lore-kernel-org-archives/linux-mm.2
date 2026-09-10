@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FEBC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE0BC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE08B6B008C; Thu, 10 Sep 2026 06:11:59 -0400 (EDT)
+	id 9FC0F6B0096; Thu, 10 Sep 2026 06:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91A16B0095; Thu, 10 Sep 2026 06:11:59 -0400 (EDT)
+	id 9D3AA6B0098; Thu, 10 Sep 2026 06:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA74D6B0096; Thu, 10 Sep 2026 06:11:59 -0400 (EDT)
+	id 9112C6B0099; Thu, 10 Sep 2026 06:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EEF96B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:11:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 227B316049D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:11:59 +0000 (UTC)
-X-FDA: 85197436758.29.E8FBAE7
-Received: from mta1.migadu.com (out-101.mta1.migadu.com [95.215.58.101])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4CAB11C000B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:11:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bvG1tSfP;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.101 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789035117;
-	b=2PG6fTA2mp6EQx0/UufJBEQgqHoYA8jRcMzsguX9bCbtkaJgwmChBJd4QFX3VCTJ9saI05
-	oENfr4G7cjHILks4vsDFp26mL9FKVlRjuiQN9x5pZbTVpHP6tfQrks795J3duMR7092Uiz
-	LoE/lxVZjoiMW+mnVsEZGgxqvLhzZvI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bvG1tSfP;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.101 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72BBE6B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:13:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E27024045A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:13:10 +0000 (UTC)
+X-FDA: 85197439740.25.736A9DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3829614000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:13:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UoGjSLhh;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789035117;
+	s=arc-20220608; t=1789035189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=km7EzEbOE3IKmoq5ThQMkHl9qeCnR9DnuHBJn0xWVUk=;
-	b=yNJstM2OCk7Mxk6KXsdggvzZJFgR4d3T3x9lKpr9o4VBzobO7J0ARNKfhqiahXOETx5doa
-	n2eVgAhZ6E6lKPD34Ff8u/9GmtDXwtBNZ+eE2rL4vAxpMDDht+ZvLSJglMbPpc3kz9fML7
-	jo4EhUNHNULMXkzSkeBNIsitabrXd7Y=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+YiOtMV9LtHLD/hVdNynO6GNFamQnmcFiMsxau6m56I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789035112; v=1; x=1789639912;
- b=bvG1tSfPqXZ/HsMTLiJbbg+qVuiO+f6K+Z6kWsto6B1gKoiLFjB0LxF2pOb2Bym3KHGQk0Pl
- d8sl+ZW0d8T0x5P7G9EmAiQVdKE+aJtQYIRfiOccOvbkPQkdQC9NBBzrXrtwbLO3uK9xZRtM6P6
- b55gx6oZJmYcpbrhlcLyXHxg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 20c1762f2feea230;
-	Thu, 10 Sep 2026 10:11:52 +0000
-X-Mizu-Trace-ID: 20c1762f2feea230
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7975ef1f-8d2d-4be3-b206-7c6326bed2db@linux.dev>
-Date: Thu, 10 Sep 2026 11:11:50 +0100
+	bh=l/8YS0v7RJmeRpFjbq7IZwtQfZpx9xUIXzXJ4MYqpxU=;
+	b=Icpgahq82ipvpuEJXFN31qoIGW0QBCHpCGZbQB+mjmHZlORHA0WrhjCHbeYm0J3kd0oejl
+	HIQYc4A63DBbTNpGGLmz+m8UlGxgYrIWzUqJjQaGsJ5CJx6lMcTdzwuAD0CLE+Gm6M/r3Q
+	WZJ05DOCQ9NsRInoYbwNxGE6vObVpvc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UoGjSLhh;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789035189;
+	b=NbRSb0DnTpU4DgOUJ9a+8gqhlc43BEKVBMYRs/CLGSXlSQv6+MaJVGuqS7tilAugGTR01n
+	/qpmeCiqhT/KhRb4AB2+M+TwHfxbWsjZQr/cauDQZST7Dvcva4abwPNF6Yy1i2y2qTo7k+
+	FvbALJ0LbCcqZjDPDzK2oUJ1Plq1aVM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3350B600C8;
+	Thu, 10 Sep 2026 10:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49841F000FF;
+	Thu, 10 Sep 2026 10:13:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789035187;
+	bh=l/8YS0v7RJmeRpFjbq7IZwtQfZpx9xUIXzXJ4MYqpxU=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=UoGjSLhhTtjlSwKYzU/ih8PEW5F8wn1MnLeAWeLHcrVftvy7xiR6I/hxp34xFDx4W
+	 gTwsgHcV4U3mYLuhFpLiftsBTS1bDi6CNPx4Aufljnh8g2dl8RFfepljwIPSTVWpPa
+	 z/FmP42/foHDvRX+ieE1BD1WzD/7R8ZLUmTQifnhlflSVpdvTgmsj38l3fN8KwhkXj
+	 qEosKMaJSnTp9HuSnN0aVIEIVtegtQlJrZg3cOE/IoLWJrVBPfgV1Vc4lv3Rvl7D7a
+	 QLSIrTzilbAQDnWbuek0tdG/qTWVZ64fjtpTsU7m/xIW8yQ8lycZ86jyucEexdwjcb
+	 e3z5ALe6ACzDw==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: zswap: don't fail a large-folio swapin whose range is
- not in zswap
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: yosry@kernel.org, chengming.zhou@linux.dev, hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com,
- kernel-team@meta.com, stable@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>
-References: <20260907161938.1932355-1-usama.arif@linux.dev>
- <20260909194712.706fb2e87a6e59097424c31d@linux-foundation.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260909194712.706fb2e87a6e59097424c31d@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] memblock: use for_each_zone() in
+ reset_all_zones_managed_pages()
+From: Mike Rapoport <rppt@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Sang-Heon Jeon <ekffu200098@gmail.com>, linux-mm@kvack.org
+In-Reply-To: <178903430147.1489479.2162515570306846533.b4-ty@b4>
+References: <20260908165733.1703766-1-ekffu200098@gmail.com>
+ <178903430147.1489479.2162515570306846533.b4-ty@b4>
+Date: Thu, 10 Sep 2026 13:13:04 +0300
+Message-Id: <178903518466.2710705.16546329711992780120.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3829614000B
+X-Stat-Signature: je9e6tao75jqngft3mpngzhp7xonoyuj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4CAB11C000B
-X-Stat-Signature: jp7febqezsb3z86psuaubuxdugtzuunc
-X-HE-Tag: 1789035115-397612
-X-HE-Meta: U2FsdGVkX18Y0cIXY3KXpuKc63LUGhhbqskraYNU1LdHdX+qUcsoKitSQSKrLKg5Hy4iJu+ZqQqx83HhAlcImWJGS3qFfTywB4Owkx4nEvY4Mjl/qPPXZcfAZJUcN2OC+bCOvDLKxtJABLVS6EsIBvyGgFVAw9LZ0KZwiZlEFWpfI9iTfOMcXLSN6ROaVxwOCLwfvLnW3injI9IZe+0eF0n/dUlYhAleMy8LwuEJdPNy80LumEemX5bb4WkeiHwQmIYxCmmmtgNWjK3/te22/EVOWslwuBtCXGJ1/Xa6jPuIPEsK3tdB5kZdZMQLRE8iftw6pNXljappVF1jsCVeTMgHpSDY/uGe0u8Eg9Hnz2zwwhMUB6w7OggWJLla6CEjSARr1tR4LmdVM3BfUEKqi+gIi/eMRfOeE/D4bTk/OcqIdWMFjzKvr1qH8TWNP4F2pLYaWRj4gGckZNh5u+nbyzdJo4N2/m0/0+SIELQr2STMKfU2Zt1Qh3jhzvn0F1PsHVhQqrvGzVG3peyENNnSfy7ukh7zwXZTXd4y/yngUX+rOA0upXb5RKaWOMllrYvorrFEEVfBz1oJ0HeIarmi1YykupOu4MNDC6+2L00xdpVEUbrvSio6s8hT+GL2+xgoFArCxE/FHvR3Hd7KBmxDT7Ab5HL0e26sR2cxmjDkRcRQe1Qvsjhaz9cTGJT9zbRtg0t2muSCbm7YH2/+XVsmE5rKbm8WIKrg2fgRKhMqW9BSyOCmHpjbqTMVXL0cjF+gPgkibPyfXhUqoZFwpIeOXsTjacU9VbKgQ3vH1PLrwLwrEpMFZe45AbK7OB7503zYCaz8CLABpULJWAAHP8TiNr2s7iuatGorUFrTnZGyGWG+kYGl9E72nB35SSUfrLzIMj1nGfA2fuw06tsOKeuytK9Nu6AnvIPbsBP0+/JG7cuglMoArgc3xtGFqi3VVY6H/SUarldxGGaiYzhr3kj
- UdhFuv44
- uQkpIoBZLWX1hKivNEl3zp3GaGSaPrKDMIhR1elJrceY1Eu5RtJGFi9bS+3H9YJItIYzQat7rLE1gg6G3Fnj7SNKJXgxR7nB6oxK5Dh4qffRxEhwibE/6asqaeIdyQAerf2Oi0hfsz0LPpu6/+6HB4O1+WGlekrXB3v+7erVF2klcKXBKtiBV/D9b1xAywpDcUYHU0j95ha1pAMY3uPSfra5aX/5YATQHXixZcH0SCApVVRRbbMPfInTT7OsUO+k7+ooxfXwHnPoX9WXVI5vJiRiu3ftuFvm+m/NtomxE7Nw9oFjoWTHYBBbxSdTcjiA0qcvXvFjFt6xQr7PUif0sp7j6Dg==
+X-HE-Tag: 1789035189-375486
+X-HE-Meta: U2FsdGVkX18neyF2eWMy+X6bqMeWTnl7R6/1JUByhXqSd06Q0NyxmHtTgQVWf+UyzjKsvcY+cPoJw3NjK24E9iBCL9vb6Xy21id7PhZI0ZjFsYurgRnarLA1VlYGa5mhW07CcbFgjDpvBfN9yYplYfOjHUpzADLDL0y2VM+BFZ+MHNAkRAR8O1eqkHuCctRWepsfzUyCmUdzLzqRhP4hkTqKhTtWi82FO/k42eJhr0WRuZlaiWpxcTWY52y8vnPNwGENRRaDyGh5thWFIOD4WU/PiqIw/dHIWsV/LbT4EhKSMBMRH2+qcpUCJTbY0SCxdoH5svXvdVFtYN2RwtSJU+NqI6vcxMGmoHef64JgIvRSVsl6uwSorlQue5P7Bmrmpc8sZiB7//eJQcsvyj/m72dmH1s5CRulCIvc8cPw60As0IbxP5A8m2amYs1eXtqxVG2Fqt63GUxUvqL9LPawABufCj8gCYVTHB1VVJfN2hyf5/fW8XUC9l48p1kMu5ZX3ct8k1xRbo0u5E6f6rMIY4v94kE6uqlyxnNPYFOSPbxhjdqPj49dlRiTD+NI/bfhAtCDDaIOGQnPMnR63KCgxYiq0BgWudnB5Ob1zmvrGQ/qWwy5tdVqDtUGQhEIXdplmShqF3Lb8npDJLU7Zl1EkV8mB6Y/MH+z3P+SBPdTKcomLfIxyBTCjgK6A8EG7Y/9sUuDLOILZl9/O+IAL1f7w/w3PHpQAiq4w8c2fdLpQOrKWVXAQmXKyhzHXmICaLeTcox+X10KLQa7jaMWL/CcpAPCOcIGnfBATFyv/vDvdQjt6cxx9e+EXIU11VX57kdm+OEH9AHI+nHvrmvQKzeL2o4MDihf8p45fMQxlEEjeyAlVMqW3d8rUKaXh9MT/5CJzBmUJ7u9Korb26StZL7h0qw3wPHWwP9pDps/voZhUcG42ReOchqDmFBt05KwUiRIdoP9OmD+WJQXWiUID84
+ UmEIG4NN
+ X1uAVtbX1F5BRN5JI875hRv4xfn5RbFczhNuaYi9AcpzJ0BfXlevb/zczbg7iqR3nnQKeIlqg//eYxqn3bNIgWHbKatcrdwedoLH90nmqWY4MKPWenysJzGnjueBs/WlmNLHQssIhRKzmR2e6Iee+kVEnPoB/L9iv5alPzXSce1cNIdZvjiFcPE81mQCCTTyQMakC5tGWrLhMdQDUv5ECPs9sDUzqFZsP/BqtR5nNTw7IG13IDrhJXIVmRN8J8RMor4lnEV5ZhVYyhxBJwtfbI/IqAVOtMXSvrFFx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,88 +94,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-09-10 12:58 +0300, Mike Rapoport wrote:
+> On Wed, 09 Sep 2026 01:57:32 +0900, Sang-Heon Jeon wrote:
+> > memblock: use for_each_zone() in reset_all_zones_managed_pages()
+> 
+> Applied to for-next branch of memblock.git tree, thanks!
+> 
+> [1/1] memblock: use for_each_zone() in reset_all_zones_managed_pages()
+>       commit: 0876b2d8794913c867a1bb0dc3fd22ea1c5f0a95
+> 
+> tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+> branch: for-next
 
+Hmm, I was too hasty.
+This breaks mmemblock tests, so I dropped it for now.
 
-On 10/09/2026 03:47, Andrew Morton wrote:
-> On Mon,  7 Sep 2026 09:19:38 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+> --
+> Sincerely yours,
+> Mike.
 > 
->> thp_swapin_suitable_orders() and shmem_swap_alloc_folio() sample
->> zswap_never_enabled() to decide whether a swapin may use a large folio.
->> zswap_load() samples the same one-way static key again once the read
->> reaches it.  Nothing serialises the two reads, and in between the task
->> allocates and pins a high-order folio, which can sleep.
->>
->> If zswap is enabled for the first time in that window, a large folio that
->> was correctly permitted reaches zswap_load(), which rejects every large
->> folio with -EINVAL.  swap_read_folio() treats anything other than -ENOENT
->> as "zswap handled it" and skips the backing-device read, so the folio
->> comes back unlocked and not uptodate: SIGBUS for an anonymous fault, -EIO
->> for shmem.  The data is intact on the swap device - it was written there
->> before zswap was ever enabled - and the not-uptodate folio stays in the
->> swap cache, so every retry of the fault fails the same way.  With
->> panic_on_warn the WARN takes the machine down rather than the task.
->>
->> Scan the range instead of rejecting the folio.  The caller has pinned
->> every slot before issuing the read, so zswap cannot start a store or a
->> writeback into the range and the scan is stable.  If nothing in the range
->> is in zswap it is all on the backing device: return -ENOENT and let
->> swap_read_folio() read it.
->>
->> A range that does have a slot in zswap is still refused, because zswap
->> stores large folios as order-0 entries and cannot reconstruct one.  That
->> stays reachable - a slot shared with another task can be stored inside
->> the same window - and refusing is correct, since the alternative is
->> returning the stale device copy.  Report it as -EIO rather than -EINVAL:
->> the request is valid, zswap just cannot serve it.  The only caller
->> distinguishes -ENOENT from everything else, so that part is a
->> documentation fix.
 > 
-> So to hit this bug the user needs to enable zswap system-wide during a
-> teeny race window in the swapin code?
 > 
-> I suspect nobody has ever hit this and couldn't do so if they tried?
+> 
+> 
 
-
-Yes, I think it would be very very difficult to hit this.
-
-It was part of my PMD swap series, where its actually needed for the feature.
-
-I think we can drop cc:stable, unless you think its needed Yosry?
-> 
->> Fixes: 242d12c98174 ("mm: support large folios swap-in for sync io devices")
->> Cc: stable@vger.kernel.org
-> 
-> 
-> Documentation/process/stable-kernel-rules.rst, with which I agree:
-> 
-> Rules on what kind of patches are accepted, and which ones are not, into the
-> "-stable" tree:
-> 
-> - It or an equivalent fix must already exist in Linux mainline (upstream).
-> - It must be obviously correct and tested.
-> - It cannot be bigger than 100 lines, with context.
-> - It must follow the
->   :ref:`Documentation/process/submitting-patches.rst <submittingpatches>`
->   rules.
-> - It must either fix a real bug that bothers people or just add a device ID.
->   To elaborate on the former:
-> 
->   - It fixes a problem like an oops, a hang, data corruption, a real security
->     issue, a hardware quirk, a build error (but not for things marked
->     CONFIG_BROKEN), or some "oh, that's not good" issue.
->   - Serious issues as reported by a user of a distribution kernel may also
->     be considered if they fix a notable performance or interactivity issue.
->     As these fixes are not as obvious and have a higher risk of a subtle
->     regression they should only be submitted by a distribution kernel
->     maintainer and include an addendum linking to a bugzilla entry if it
->     exists and additional information on the user-visible impact.
->   - No "This could be a problem..." type of things like a "theoretical race
->     condition", unless an explanation of how the bug can be exploited is also
->     provided.
->   - No "trivial" fixes without benefit for users (spelling changes, whitespace
->     cleanups, etc).
-> 
-> 
-> If this patch meets the above then its changelog needs an update!
 
 
