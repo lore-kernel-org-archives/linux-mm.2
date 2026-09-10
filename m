@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7825C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE99CC88E40
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:22:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC6176B009B; Thu, 10 Sep 2026 10:22:44 -0400 (EDT)
+	id 626436B00AE; Thu, 10 Sep 2026 10:22:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D77C26B00AE; Thu, 10 Sep 2026 10:22:44 -0400 (EDT)
+	id 560BB6B00AF; Thu, 10 Sep 2026 10:22:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB4006B00AF; Thu, 10 Sep 2026 10:22:44 -0400 (EDT)
+	id 44F456B00B0; Thu, 10 Sep 2026 10:22:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A33F26B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:22:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C290416054F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:22:43 +0000 (UTC)
-X-FDA: 85198068606.17.7A2A9D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3E530100010
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 202956B00AE
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:22:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A04EC120518
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:22:44 +0000 (UTC)
+X-FDA: 85198068648.20.D4DA1C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EC14F4000A
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:22:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kRYtb3eO;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxvePAEX;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789050163;
+	b=p8d6BZoGI0Uu7AmavnIQ6n/v9WxwxyPDpjyAlzyoKxqJgjy1APsoWHLFc7Qr1v/Mzh6mhL
+	X0bilwU4X8iaYlyEup+9mhajrLrrysd0CkFgCUNa+68P/e8QakXAIHHbsmlVCq8mCeacvO
+	ME60NEmsATIBtH5eu3DvGLnu1U13vLk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxvePAEX;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789050162;
+	s=arc-20220608; t=1789050163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ydmrqNiPvZ4mpbkkUedW3SpTRg9lnwme+IK1BHGVlU=;
-	b=YGBL9G0SdrLKYZxtumk+leZgrSYu9nrsaTtT4PZzTOtH4VP5/nyDyqQR/8IMMzXvhLd/t0
-	bu/7yN2DP6XUOcBqnTR639pzaaOuFyJOBS149OFBS6mYox7O8mQl4A4MsyxuZT5Di3M0/8
-	zLVZ0RARxn7zSVsTlmC7PD8p8z7APcM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789050162;
-	b=3YTQ+HNFM9lOa0EPEU1CfJ1kt6jIxewNhbff6XQx1sXaaCtE/LUxV1hjp7/rtqlaeAweQ/
-	E7cHqCGE73w552bWnI8M0qlkcX+udirWSyH3R2HvyzOjvhRGnYItggzIRkwHru84E5ggNS
-	ppWbR53EN7QSk9ciT5Hrqi/wnhLCzZY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kRYtb3eO;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=wPCZ7WqgRzvETLWg2a26RvqiL8k5Df3lkcW+Fvmq+Qg=;
+	b=IIoScRx8S9Uv7KWwqt6x91vWhwaOdfzEevstwgazN4IAdQAiRqBOEU/CZwSD8zN/zJX9Tq
+	kOCejQ9w9RQozcpM5FjAL4fm4wfHO8DwuNWzThoQMwT2HrpLQrL3lEEzpaeJ1vy0xhLRKc
+	uksTQlSq63vNe0Yz7PO/xWH8STN3qpw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C8CA960200;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B218403D9;
 	Thu, 10 Sep 2026 14:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585201F00893;
-	Thu, 10 Sep 2026 14:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EEB1F000FF;
+	Thu, 10 Sep 2026 14:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789050161;
-	bh=3ydmrqNiPvZ4mpbkkUedW3SpTRg9lnwme+IK1BHGVlU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kRYtb3eOqKitNK80KezJoRPOPFZ8U4uxfCBnZtOA6sLTfFtxxFMgXJJt5n2IlRg4n
-	 tBLuqMizz1b98n9NOUFzcVwzpRKbj6wI5DbUMqR8Z7s0DM569fsNCophlhPslONnSz
-	 usvta/39C0dK3G3wCtTwL8D1oq0qob1k+DGvXJqjUdO2TXNY0rjwhmaTHw7FR55u4r
-	 aFu9l5hWDgCyJcwz6BNFKI5uNkiIrxdBSuZm2r4HqXDfpmhSwytaYwvh1qa7vCu1cX
-	 o9IEY7Qp9KOYlbwkAPjDKb2tp4xqYi0d4P8oXXEfabyXGwItFPexPrOI88EWL7wugi
-	 SSN8fEYGbVgCg==
+	bh=wPCZ7WqgRzvETLWg2a26RvqiL8k5Df3lkcW+Fvmq+Qg=;
+	h=From:To:Cc:Subject:Date;
+	b=YxvePAEXrWXF6Rw1TL5OTHVTq1O5/0FetqS4vTfRh2HWWw82DPGEbBrpTdVfF7T4/
+	 gf0eDrKaLbNDoJF2XCFghUWRwQl18qgKoiRTXft/jaIC2o3I+RCu101I0OcPOpHWYU
+	 IW+Mc/l5NwiLiEC2clQg34xX/l1Ocy00wRcnO7riJYd/ssawrA7/BmcLNblMxQvYym
+	 oo//zYHGcdx6UBqQn/EC3to2ZVN5TNvSu+e2yLZQVyVtZf+MDCQugpaOVkxPW8JSx8
+	 2LRQ6LSDrEpyOQZSifbtnxgY42zGPk9IQlDO6/hA7S1c6/fkow/B0l2xXqpbJ+Ytri
+	 g717Ko26Fv0rQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/5] mm/damon/api: introduce DAMON_FILTER_TYPE_PGIDLE_SET
-Date: Thu, 10 Sep 2026 07:22:28 -0700
-Message-ID: <20260910142234.171562-2-sj@kernel.org>
+Subject: [PATCH 0/5] mm/damon: introduce pgidle_set probe filter type
+Date: Thu, 10 Sep 2026 07:22:27 -0700
+Message-ID: <20260910142234.171562-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260910142234.171562-1-sj@kernel.org>
-References: <20260910142234.171562-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3E530100010
-X-Stat-Signature: a5du19ia14731zbgez6k4ppyhk5opxt8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EC14F4000A
 X-Rspam-User: 
-X-HE-Tag: 1789050162-327609
-X-HE-Meta: U2FsdGVkX1/81ZLYxTQmWKnfgJronrHHkfVAAcsCQnBQBpDy04EFa69CPZYYi43DNPvcdVkznO8YCL6FWf0UG8nQ82S9Ocup9G15HDowQccaaaz15/Jcs22rtqu9LcffZUT4s0arSEuOWSq25J5XFv8jJmuOOqz1HPze1pX45emp4YyhUeqkGn09fp3ecP0vF9OIRDyiacE00OQei69Z1/He+Jh93f6LElPYySe0KDDJtSHfj/Fhl9x9YaxjxKZCRo7/ebjLSEpSAGP/fMtU5tI73gjt5RTq2ssx7WJkCtt6xxqqfA+YgqrA6ThNjwO4grCApzGfSKlq3TPv6sKv0Hr227jKmdfxQwA8aqeVjNvfYlO6w9/RFHBT0KgWOyWpq/8h7oTi2bQqfusjALSdtaeK/LUlbw1/IPrGScbtNXGh6NrTrf3UJsRRvYyjHxUUHNmGAp7ljydm6kNesbM5tkMw+Hu3bd246KBznomnbcBEoeI89F5t51p9/kG/SG6o1phOmG5nDNjNw2eZWaU1l2hahmGK1Yy0f/pLgM8An+Pl4k2X6ZfbUdtMvF4VhHg5A3O1uSw5gKW/1e9jSxZxHNxiEX60oG6OhibgTG0ww0aAGqXAdAWKfN1KPs4b6HSGX805zZnasWOYAHDIyvYmrdMCbJm2AiKBff1MHDSpukyh16qbQzh8iXW6P3QGdlm0/O7ZnmwtPXeff8QHMvyg1vADvmlJnCI1CvS7965Ka+NSaqdbiMk6/O5TKvLa2DyYmVqmdRVBK6hw1FiOAuWE4USl2z4syFaJKuJo2xCkmCJ2M3w+ez+a6f/DROP0UuCWJ1j5IPLv9iIeWq9JYN9ZvNSW2mcafMWxC06xbUwzp0y5sZmsXa8qLG2tivz+B1ECoFtAvUHCcGVnT26S3mW88LSeQPF1VY2ijM6/+hDRZr+tQJe7xfWr0JECMxNdE+1QS0ryHSf4q1JdjazSyKQ
- qPuFN11B
- UEwMSGYZQV8lI1UOSwF/g14AeVo8Ll/FuYTm5tSCLttYPFOo3O+TW9xKVWhb5F2neNEkUxTulZgQjj5MD14Q805QEzumhK2w5DYlr+xyUVV9OQ8cCSvlmBUDP6/DAACbOgXewXaUqpyKtV98Cd82EC/N3jUwozdRhAKNWVYdBmRlfxPpEeDEDYXguyAInjCCeU6e/cEmf2zo2oqglQwV2R3bo74/Q3AJ+aJCu/jEC2xMYdjeiETaYAs4dEC91xvCUjOsekEBw5UzI5adKFz+yXNIU5w==
+X-Stat-Signature: dnm1dxf4arnrwyiw4wa3ghz8ag5xedi3
+X-HE-Tag: 1789050162-176842
+X-HE-Meta: U2FsdGVkX19eGuqKLvh602U271NugvSGAEkZg7uLRLCPlsSQPZ79u0zaboq/nwv4JrFhdxakkBXK84CN6xYj6t/ZVpCBlm1vK8AAv63iMnMXRuuCrQQlV/TuUzB4srQ3C4VPizPI6L++A21n91sNtUtLj4/cNEv/aWKmD/6A2EbtZ7/qcPbyGSHHXgjzDsbjkhQgKS3ecmCx1Da3BL8Fg2ZMhGzipkhd7mQ6AOS9e6qMMGFpaYxO5c8SbYt8cckEjCGMsu5LKm7/0+vPiHJuyEqIjTY4F8nWhPuQxzN8MFLtk11sAbz9dj9RZQyukCb9AbAOv7Q0wPQ/qvs0ZyylfWPA9wHUBddddpUeinpezgjMN38Fbodk09X5LIbW4qXMSyrNMTt3VGxiNh1pRsMjjoORK5VaWv6hmVOVfFawaKKPGwHfi7zQrT7uGYmklaHALksQPlIN4GiFka0Y0BezpN+PABPbtRGgzPpS3AqzOpOFVwKikhxD1yuBhcoSnVCO5RaM3pg7QAXMySR/gd3KP+L4CZvBD6pgVDoeHESGhLnX2sTOKGDiK972sIH104ShNHgelkhRVcIsw0xEdqc64sUG6VSc1TNgAdg4h6X5PEV4K2aepCZwpcP0oxLg3wQzpJn+23S5mhW4J0dpbNHy34gOxdz/0OuiqOHS4b8XRtLJkFt3uG8Img42OoKs8NUJIAGOYBsp19QMUf5WokBkB3BPy0XS6+c4GvjF9DTTtndSz2/tbm/yEdC+xIxKsEnUbQdJtJ68I4hB74YHr3fSZQz37aXMhYvT0OvhQQKGMnf06K7kZFc7qjdrd7BvZrnyTtzsBydiqZRiA/LhHE2mgCGzqkFBolY0aX0pb23dpCt6Umd6snxB5OzcN+CfZmLIqaJRRANgBZPMAuaC5MslbnweMN2vKWWNMWfgIfbuZl+URwNI0ISWWBhjtSNjv/3+Ps7T0u8vP1oA2NOkrGE
+ lx5amTV2
+ nbPqbH+YMlZlXeWhi1XNKqkzcqm2bnyvDVN+gguVl4ERUEr00pyrMV+MQkda1gAqQySCbeav1UlTeayaohZog3B67IP1jLF+BTIERCVyK8APgKi24MzHhe+KGIX1zp4vYuunJa+Nw9vHE54j6N5uxcR6r4jvtX6hzSf+sf6KaLxDhxgbKImlLRgWYdO4paZpuWL3ztaIVPCZeq8K5r304CPE4VSUkdjp96oJjCVMTp1oODlY5A8ujg/39Y0Zatgi7g1XM3llxCnYdOl6jEsNYYKSBO1ii7vxHNlH2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,35 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_FILTER_TYPE_PGIDLE_UNSET matches only memory that was able to
-confirm if it is marked as idle.  If the memory cannot be marked as
-idle, it simply doesn't match.  Hence, finding memory that was marked as
-idle with only DAMON_FILTER_TYPE_PGIDLE_UNSET is impossible.  Introduce
-a new filter for the purpose, DAMON_FILTER_TYPE_PGIDLE_SET.
+Users can do effective access monitoring with DAMON, using set_pgidle
+probe prep operation and pgidle_unset allowing probe filter.  In the
+setup, high probe_hits means the region was accessed frequently.  Zero
+probe_hits means the region was not accessed.  The filter, however,
+matches only the memory that can show the idleness.  Regions of zero
+probe_hits may contain memory that was just unable to show the idleness.
+On virtual address space based monitoring, for example, non-present
+pages are reported as cold.  It is truly cold, but if the purpose is to
+make some operations like reclaiming or compressing the data, this is
+not really useful.  Introduce a new probe filter type, pgidle_set, that
+confirms the page is marked as idle.  Using it instead of pgidle_unset,
+users can find cold pages that can effectively be processed.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h | 2 ++
- 1 file changed, 2 insertions(+)
+Patch 1 introduces the pgidle_set probe filter type to DAMON kernel API.
+Patches 2 and 3 add support for it on physical and virtual address space
+operation sets, respectively.  Patch 4 adds support for it on the DAMON
+sysfs interface.  Finally, patch 5 updates the documentation for the new
+filter type.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 4a36f344bbc7c..abb529771091c 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -782,11 +782,13 @@ struct damon_prep {
-  * @DAMON_FILTER_TYPE_ANON:		Anonymous pages.
-  * @DAMON_FILTER_TYPE_MEMCG:		Specific memcg's pages.
-  * @DAMON_FILTER_TYPE_PGIDLE_UNSET:	Pgidle is unset.
-+ * @DAMON_FILTER_TYPE_PGIDLE_SET:	Pgidle is set.
-  */
- enum damon_filter_type {
- 	DAMON_FILTER_TYPE_ANON,
- 	DAMON_FILTER_TYPE_MEMCG,
- 	DAMON_FILTER_TYPE_PGIDLE_UNSET,
-+	DAMON_FILTER_TYPE_PGIDLE_SET,
- };
- 
- /**
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260910040911.148273-1-sj@kernel.org
+- Drop RFC tag.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260906175009.93471-1-sj@kernel.org
+- Rebase to latest mm-new.
+
+SJ Park (5):
+  mm/damon/api: introduce DAMON_FILTER_TYPE_PGIDLE_SET
+  mm/damon/paddr: support DAMON_FILTER_TYPE_PGIDLE_SET
+  mm/damon/vaddr: support DAMON_FILTER_TYPE_PGIDLE_SET
+  mm/damon/sysfs: support DAMON_FILTER_TYPE_PGIDLE_SET
+  Docs/mm/damon/design: update for pgidle_set probe filter
+
+ Documentation/mm/damon/design.rst | 3 ++-
+ include/linux/damon.h             | 2 ++
+ mm/damon/paddr.c                  | 6 ++++++
+ mm/damon/sysfs.c                  | 4 ++++
+ mm/damon/vaddr.c                  | 7 +++++++
+ 5 files changed, 21 insertions(+), 1 deletion(-)
+
+
+base-commit: db0399c7f55d733a66e5661c4300276629123b0b
 -- 
 2.47.3
 
