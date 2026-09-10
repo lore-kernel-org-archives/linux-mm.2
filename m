@@ -4,89 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C62E8C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:55:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F31C79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 16:02:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C797B6B008A; Thu, 10 Sep 2026 11:55:10 -0400 (EDT)
+	id 5D0DE6B0092; Thu, 10 Sep 2026 12:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C52016B008C; Thu, 10 Sep 2026 11:55:10 -0400 (EDT)
+	id 587BE6B0093; Thu, 10 Sep 2026 12:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B68FB6B0092; Thu, 10 Sep 2026 11:55:10 -0400 (EDT)
+	id 448FE6B0095; Thu, 10 Sep 2026 12:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90B466B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:55:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38703140580
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:55:10 +0000 (UTC)
-X-FDA: 85198301580.27.0AFAD03
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 882AA100003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:55:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVMAbNdo;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789055708;
-	b=2tc5xGGUNO+kLRpmw3HS3wpnxeDOE3veUepVbL24/B6XJC2WJvtxOPwnbOjxDG2DPoWeDw
-	Adxdg6d7Jj4PUynSXTTMppc3AtwgGqSm8FVnazN9hnwNWXRnG9B4srDqxr9heth7oXxnBj
-	Y2LRWkdjUziCQVI3o9EfBRk8VX1dDXc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVMAbNdo;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8E86B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:02:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B29CC1C1CF4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:01:59 +0000 (UTC)
+X-FDA: 85198318758.01.7234858
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D5A454000E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:01:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c6Ecc6Mc;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789055708;
+	s=arc-20220608; t=1789056117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCQuPsQnnzWEfQqM8qoVptc5zhfCzwmt8mzzfIKqMeM=;
-	b=TLVrvF+ZO3lZC7dcH9aXotx1MWWY6qBBHzkcrhufqGPpLcMywOThyKH9jvaKCLWeHejq0d
-	dv/uX/0pDAhaZ1pGVeQHPChRlsN/7IRrK0ek5Hi1xxcjNRpUcEfpYgm4Mjuhtxt8zWCxmx
-	jun+tNwxSNi5M3PDHCWY64mDz6sp+JQ=
+	bh=EpSB5Z1kR5NpKp4iKQtUtXAW2RtPNgSVe46ufvS2ECQ=;
+	b=7rmbSI8ezsbzF1U/Lfb6/v32QNrCZuECN3xsNVDv5ozJtlbawM2vVqbMG/a78K7aIVvW2r
+	Z5oxcZKqeXGwz6asvXmagND5cWVvy8OA2mQpCA4XeNciwJQa+O8meQ0cDZFY0bYdjw22zf
+	oQesg5ZL0ocAexEXcEZMuALzfQJ/0XA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789056117;
+	b=GtGH4dsHpOasIPmDje/LBOk6TqflWVHDqHYDRPkWe9s1ZF9iLK+O6CF1c+AsOCUFnRlIfx
+	uYDHQY8XAARdhI612l0c3+2MveshJHB0mWq/onTv+pR0jspLtRa3AlRRftuGpejAl4mxaD
+	2TtChXpFSBA53DG4B7kYjoAXdIRkb1w=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c6Ecc6Mc;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F44541811;
-	Thu, 10 Sep 2026 15:55:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558CA1F000FF;
-	Thu, 10 Sep 2026 15:55:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 35C98600E2;
+	Thu, 10 Sep 2026 16:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D331F000FF;
+	Thu, 10 Sep 2026 16:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789055707;
-	bh=cCQuPsQnnzWEfQqM8qoVptc5zhfCzwmt8mzzfIKqMeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PVMAbNdo6ndFhaKlzN77NDHXZPrv+vd6y4nx1+MGaOXxACAoPKUHPnKPwSXQoiqx0
-	 DjDEtoTeXwD25745NTh8ThVCvdtTTWKe59/wWEbjV65Gnq2Yw/gXqDMzSV1IMHthOW
-	 zes7KPkTEznMFZ0ws0G9RfdbSz8jQvgbmajCj7a+fyrf+iRqZtdm6unx+Sk4DwA8fw
-	 6o5K9XRghRJN2yTWFCXZoD9ULIbIPFqUVPI5Go0yrYwXVpIIkBqM5WIcWrLRaBMeMA
-	 yklWF0PiNyvBqyrCBOw78AXla6+tpTENhVJP6K2cg7Ft9ShY9PIVKzvT451D6wfsqN
-	 NwY0Am3M80uDg==
-Date: Thu, 10 Sep 2026 16:55:01 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] proc/task_mmu: remove unnecessary inlines in
- function definitions
-Message-ID: <aqLSjyKYEiXyFehF@gremlin>
-References: <20260907063918.3432401-1-surenb@google.com>
- <20260907063918.3432401-3-surenb@google.com>
+	s=k20260515; t=1789056116;
+	bh=EpSB5Z1kR5NpKp4iKQtUtXAW2RtPNgSVe46ufvS2ECQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=c6Ecc6Mcv8m2/ntjf2/l/Fky9mr+wmCM8u6WjqrBOg4hgiDn7a81zNcI1KMnX6236
+	 bH9po7PNAZa3CrecPxcBpcy89c0FGLOkq7/3E7Px3tOqLgOa/IDtotdqH9V4KoN2Nt
+	 KBvC2v9Ys4fcBFtK3qXrCbX2gthXhS8vBS8E0MXRt4BM9zsYBKhRBvzfgGIqriafA8
+	 rjxk1/4v21CbYlqr7/kEerrtDjZwoPdDag5Rr/8QAKTnMgYcP1EAryRDdK0HXp6FvD
+	 JaQeFCl6rFERZaM45McKvC2t1U7TeS8JlyQ7IC/ccSFw6e0GzmyFIr5PckztK8kxGs
+	 fjicH5VRgM6Ag==
+Message-ID: <9e48cf7b-1700-4a85-af83-8883789ba87b@kernel.org>
+Date: Thu, 10 Sep 2026 18:01:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907063918.3432401-3-surenb@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] proc/task_mmu: remove special-casing of
+ smap_gather_stats() start parameter
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
+ vbabka@kernel.org, willy@infradead.org, jannh@google.com,
+ paulmck@kernel.org, pfalcato@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20260907063918.3432401-1-surenb@google.com>
+ <20260907063918.3432401-4-surenb@google.com>
+ <4825a2fe-f064-45d7-a7c9-e98de7efe86c@kernel.org>
+ <CAJuCfpFL_g7tELjT8p8ExM3tX_v2gNDM9rRKwwefPV_KW=fHfA@mail.gmail.com>
+ <8e643f51-a47f-428e-9443-678326288fa6@kernel.org>
+ <CAJuCfpEYdj=u0wczKRrsB8uDkbSzPy+hrsCo9TW9-3J3r3p0xQ@mail.gmail.com>
+ <2336140f-c993-467a-b2eb-e99dc9427a59@kernel.org>
+ <CAJuCfpEL40p+vk6-km6_BBuE3+YY0WqkpbvQnQGFEo_73MAomQ@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAJuCfpEL40p+vk6-km6_BBuE3+YY0WqkpbvQnQGFEo_73MAomQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 882AA100003
-X-Stat-Signature: cahcdegdi7sxudd86uapneakh7xa6ox7
-X-HE-Tag: 1789055708-76981
-X-HE-Meta: U2FsdGVkX19IRlI6TM+ShC0V9y7TPsOmtiSfPA4IcVtHTc9KIjxCxMvexbfrs4p/IGqdCUupHTtQPsLYPDdagGjsGyEO0T8qGFcYZTN9tpEosaJyQJV4+M/0U3PRWwBpDEB8XrR4llYAQzgIuLWL7PHvGuBiAkQZCNudfya9RD2padRe506Rszh1oPCGiRmEL2P9K5EdQjWOW0UGSFPgMg9sFiYdtE68OCQ1mk8usqA5SLSYNgNMnCRLiRpQ3cCXW7j5LZ+WF0E+a9ZBESYijp1g12WV111j+YeAsPMjXUnX37OroofEfEoyckLFuM+YwCsN/8JawX40HXS21SBQwlBVuh6+IprdDQG3iSFlR84nUp6Tyhh8Qv9yRoAvHGC6JkjL8dP0/jR6ZPwf9fqvNX0adPD8m/Jd0Zo0+wg8Yn/rdur4SH3Hq6Oo2jaYaL5rLIgOCdlnftz2UVP36CDFqIwW4qaC2f09tOUPxn+RL0wW5Sz9x3agLP/eYZjfgljyleVy/epX9FRhmRERbKUzg/eyW3hNtRAZrHpJzvhNKZrVSMhTzCmJ69Gc9r7GkWh+0akCkbS29JaAkGWuQrHQ5dNOo0V2zMSISYHQlK3hcZeBRptnCaVk2K+XTFpo68Tb8M0kpGGKCEZ41xkO2YTGHDD0MOu9wL8e9VCCh7b8rURJXRWNQ9UWnPejg+XgnycdYA20Av2N2ngM9CIiaQ2XA2f4XMtGk0RDcnL30/VCQyYzKAsrM50Q6PiEmDiX/p8t23rR118XCNZYFbvJ8rdyifGbPTpip7lS27GBqULETaEqfjlLps6Tr7aCuU6i/bAxJnTgPg0pnh7qunxgnDHam4p6P+EmMflTPr9KckVcPNoA3bkpbX2ytudK9GvZ9Tdu4MFsIvTQvb0i3E53iF29mYKMPrm1sZeWArEfpwr0CQsnla4lLtehbi6w9EmF9N3E/YPzNdpZ1uBU1Y8nfPH
- +TruBXLG
- jWq8O+/hs+ydXornC/16iSbxVXkOGoHotWaonfCltGsA0waiJVmayHtBSByyQsCp013g+0yKmgiMTqypa4BzFfuK2Dn4xqDItMM3QU/yxwlepQg+C0Lp4mDArd6vHNfaOOuNz4gMRF30Y6+Hhv02gzYnEuOfsHQnGBFNePWby8QdT20tiFqRm39+/jn+89C1mJySTqr3swNDsfanawCVxNBMleKH14EBgLa9QRmpKiR8EkCg0Gc/ykJZqD6rLgbzz3O3S1pqKYP8Afm7dwSk08xYovcg2RhmskeprsRPW9nmEGI2fAh7ufnPVrana8ftMRKDytgj49EekaKnjSiJfHwwX2SRnZevmowEN
+X-Stat-Signature: j4ew7cs1tkzg6m5p3c173yq68fehns9s
+X-Rspamd-Queue-Id: D5A454000E
+X-HE-Tag: 1789056117-682109
+X-HE-Meta: U2FsdGVkX1+ItbmsGZBzcJ8Zeph9mLoS+V3SOY/tCWsscTby+rIxkXW63ICaaQYzzN+dTtrWMX0Tp9P3baYE0RfMzAZODMHz2x8RGUUm/5SfYbDJ9cAOxRCGO5tVlbyN2XPZhJMLAk1AmjINVaDpP1xCP91vpiV+18GDc+k2ZyfW5sWT0LYmC7W5xcJonWm8bnfQNxmgfc3qP2S2O+Vgq1l4oQpDL31+AOm1hL+S1s5UWYPHSlCR+BgafA+3kB+Z0P3MF2ZpFHt7Sm7lJkEAfn1ca9Flb96Rim7E+V41f47KvKDXx/+TKGqaoQj52usGSgC47S1jtOmuxKkt3/LD4TIKxG1bAuKO2kmTtWpTckAWXS8EZVii5GoLu4Y4gPLqgDZp5vR8ElDzlxTlSj0bLe/pjGJuEBdh8Qa4NAwSEp6oW1WQ0saSbjQPykvcy3DkaSzM16y5S1rW0txUO7zLlVBKEex+yPgJY0bcBDHN+9NvP58c+dCmxYBEXkLcAAphFlYas17n8WcVjvX4xhVvqSyUb6jkJbQxJlRbcfUSQ+oD4szwxSAlzc3hJwTXiVg1qGdspBEYGA50C6n8oqnW9b2W1RYNvaDVmrm8TAKh3GUTYfPVKJUYXlyxeY3A8q0Op8bwYjMyIR0jvP9TWendOFlOggXGkJD8HcUtu+fyTPVM/HNesk/81i7+wEc2IysUy2SI95KElzmxxKhRL0Mq1jlDzn/HDMPaOu69Lqj2PzEIRGb4puGvRyR+jsadGnx3dxin2ZHMSN1HdUHj9/Cp4zDe4k6D36VbM3Azl626XSrDdGAvbGx09/zCQx1UUSe4YyXeAV1qGVTUFjp9MZ2sqzQZqROuLltasJEWvFhPHpomHlY/TiGOG79BqSHk5WZ+f2bX4Cg/6uNGP2HfcwXQaKLn09C8KN2E4CK3RHSkp/ctTsSNzGFc2+DQ2Jq1EOJzBjolEwvw4fcJQqp+61h
+ 649W22Cq
+ d9MCL2k7PFZ3xjwVUPS9SJqIMPiOoBhZNeekdIU34W4KNgqktBC3XF8KktCBTHKM+PauBrhK1cvNGQHE8OJzmb8hRE89Wwrn2bo8QSJ9u5XhmAl9tEfvSon3PnjiNOZoTBIg57GrP2dYzqKpMoG9/AlVtdMo3Gu1ByCivH0OnP496dMFTYAXfl9SNaeG9Y4hqcczCEBvvwreYlrxqsk6Tn7BSF9KjWSgvweC8FkwPSKb2VGBSOFdbBWhMHnTvA+5rJsYp1VriDCOpLtoFvnol0gASDHExhJr5/oUGqHwcjfkT42Mggzq9b+9y1kQMqajP40zpTcA5F2PZPFnEuUPbq6GVdc05UZfVCTOU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,154 +147,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 06, 2026 at 11:39:15PM -0700, Suren Baghdasaryan wrote:
-> It was pointed out in the previous reviews of this code that many
-> functions are specified as inline, which is unnecessary as the compile
-> can make that decision by itself. Cleanup these definitions.
->
-> No functional change intended.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+On 9/10/26 17:45, Suren Baghdasaryan wrote:
+> On Thu, Sep 10, 2026 at 12:41 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 9/9/26 23:51, Suren Baghdasaryan wrote:
+>>> On Wed, Sep 9, 2026 at 12:16 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> Ok, just want to make sure I'm not missing something subtle.
+>>>
+>>>
+>>> Ah, good to know.
+>>>
+>>>
+>>> I see.
+>>>
+>>>
+>>> I was obviously overthinking this :)
+>>>
+>>>
+>>> Sounds good. Will update.
+>>
+>> Likely worth putting that into a prior cleanup patch, so there is less noise in
+>> this patch.
+> 
+> Well, this is a cleanup specific for smap_gather_stats() funciton, so
+> I would prefer to keep all the pieces in one place.
 
-Yes :) Nice, thanks!
+I meant as part of this series of course.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+-- 
+Cheers,
 
-> ---
->  fs/proc/task_mmu.c | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 2f500d639db5..9908ba32f180 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -130,7 +130,7 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
->  }
->  #endif
->
-> -static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> +static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
->  {
->  	int ret = mmap_read_lock_killable(lock_ctx->mm);
->
-> @@ -140,7 +140,7 @@ static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
->  	return ret;
->  }
->
-> -static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> +static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
->  {
->  	mmap_read_unlock(lock_ctx->mm);
->  	lock_ctx->mmap_locked = false;
-> @@ -177,7 +177,7 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
->  	return vma;
->  }
->
-> -static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
-> +static bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  					 loff_t pos)
->  {
->  	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
-> @@ -194,7 +194,7 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  	return true;
->  }
->
-> -static inline void drop_rcu(struct proc_maps_private *priv)
-> +static void drop_rcu(struct proc_maps_private *priv)
->  {
->  	if (priv->lock_ctx.mmap_locked)
->  		return;
-> @@ -202,7 +202,7 @@ static inline void drop_rcu(struct proc_maps_private *priv)
->  	rcu_read_unlock();
->  }
->
-> -static inline void reacquire_rcu(struct proc_maps_private *priv)
-> +static void reacquire_rcu(struct proc_maps_private *priv)
->  {
->  	if (priv->lock_ctx.mmap_locked)
->  		return;
-> @@ -1230,7 +1230,7 @@ static const struct mm_walk_ops smaps_shmem_walk_vma_lock_ops = {
->  	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
->  };
->
-> -static inline const struct mm_walk_ops *
-> +static const struct mm_walk_ops *
->  get_smaps_walk_ops(struct proc_maps_private *priv)
->  {
->  	if (priv->lock_ctx.mmap_locked)
-> @@ -1238,7 +1238,7 @@ get_smaps_walk_ops(struct proc_maps_private *priv)
->  	return &smaps_walk_vma_lock_ops;
->  }
->
-> -static inline const struct mm_walk_ops *
-> +static const struct mm_walk_ops *
->  get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
->  {
->  	if (priv->lock_ctx.mmap_locked)
-> @@ -1572,7 +1572,7 @@ struct clear_refs_private {
->  	enum clear_refs_types type;
->  };
->
-> -static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr, pte_t pte)
-> +static bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr, pte_t pte)
->  {
->  	struct folio *folio;
->
-> @@ -1588,8 +1588,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
->  	return folio_maybe_dma_pinned(folio);
->  }
->
-> -static inline void clear_soft_dirty(struct vm_area_struct *vma,
-> -		unsigned long addr, pte_t *pte)
-> +static void clear_soft_dirty(struct vm_area_struct *vma, unsigned long addr,
-> +			     pte_t *pte)
->  {
->  	if (!pgtable_supports_soft_dirty())
->  		return;
-> @@ -1620,8 +1620,8 @@ static inline void clear_soft_dirty(struct vm_area_struct *vma,
->  }
->
->  #if defined(CONFIG_TRANSPARENT_HUGEPAGE)
-> -static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> -		unsigned long addr, pmd_t *pmdp)
-> +static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> +				 unsigned long addr, pmd_t *pmdp)
->  {
->  	pmd_t old, pmd = *pmdp;
->
-> @@ -1646,8 +1646,8 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
->  	}
->  }
->  #else
-> -static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> -		unsigned long addr, pmd_t *pmdp)
-> +static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-> +				 unsigned long addr, pmd_t *pmdp)
->  {
->  }
->  #endif
-> @@ -1846,7 +1846,7 @@ struct pagemapread {
->
->  #define PM_END_OF_BUFFER    1
->
-> -static inline pagemap_entry_t make_pme(u64 frame, u64 flags)
-> +static pagemap_entry_t make_pme(u64 frame, u64 flags)
->  {
->  	return (pagemap_entry_t) { .pme = (frame & PM_PFRAME_MASK) | flags };
->  }
-> @@ -3388,7 +3388,7 @@ static const struct mm_walk_ops show_numa_vma_lock_ops = {
->  	.walk_lock = PGWALK_VMA_RDLOCK_VERIFY,
->  };
->
-> -static inline const struct mm_walk_ops *
-> +static const struct mm_walk_ops *
->  get_show_numa_ops(struct proc_maps_private *priv)
->  {
->  	if (priv->lock_ctx.mmap_locked)
-> --
-> 2.55.0.979.g7e5102b832-goog
->
-
---
-Cheers, Lorenzo
+David
 
