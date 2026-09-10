@@ -4,143 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B442C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A37BDC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:25:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DCE46B009B; Thu, 10 Sep 2026 06:21:07 -0400 (EDT)
+	id BE6976B0098; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 576376B009D; Thu, 10 Sep 2026 06:21:07 -0400 (EDT)
+	id BBE9D6B0099; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48C116B009E; Thu, 10 Sep 2026 06:21:07 -0400 (EDT)
+	id AFB546B009D; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24E456B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:21:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BD6914048E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:21:06 +0000 (UTC)
-X-FDA: 85197459732.24.09E9C1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AA971140007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:21:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XiLgP0iU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789035664;
-	b=xaC8lMhUIfR2pzjcV1TtlFn/zzxAjRhfDtiqXDkBrtERR08RXguhJmBXSKAAGABwdBPMfG
-	BGz6ThbjO2d5jF9cYY8zOCgOmTZBzZv90b/ee+SpgVRND2mz473ZLmj8VmvMrL1t97ZEsQ
-	UTmst7LhGMvZTbVW4bOTjFNU25G9+Cc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XiLgP0iU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789035664;
+	by kanga.kvack.org (Postfix) with ESMTP id 8A4F26B0098
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:25:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CDC6180454
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:25:04 +0000 (UTC)
+X-FDA: 85197469728.30.1F68C13
+Received: from mail-qk2-f1.google.com (mail-qk2-f1.google.com [74.125.230.193])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D5A7E1C0007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:25:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=F9Xd3kNR;
+	spf=pass (imf20.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.230.193 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789035902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNqAmjn7vwuecUWun/yj3LWAkYuAP3u7AHtle9TvBmY=;
-	b=Owfps+qH6yHtgBUdNLq0lkO28SWtLhaULyZVL1DWegFGKLBrpYoHoioPLulq0IIGzioqNx
-	3eH5jA9UbiDI0kZSpIS79q556ryF57bsPF1CmOzHzgBFK2VTAT0j0Pdfc4GP95X8+1I6oM
-	M2yALZFCYaA2XzwTvo/yEekclx/mJ6s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B4444023B;
-	Thu, 10 Sep 2026 10:21:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81CA1F00898;
-	Thu, 10 Sep 2026 10:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789035663;
-	bh=VNqAmjn7vwuecUWun/yj3LWAkYuAP3u7AHtle9TvBmY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XiLgP0iUsnOLzVKKvCt33C/duL0ZjMqv/RyWaXpMwHO+aUoP3TNxa2utHfFlAODHu
-	 DmOlmNl6rKZvn1EaUHf0D/ouerBwA1AdWaUok4+mrCeLEf88PbMTDWr6sOzQBi4D17
-	 ngQpqWiIp0cCiHPiLsMNKo3NHa7W4e31E+X3Y7yfbi+83u3xxqYBxmJZW39jnuODZj
-	 kmCw6xTWUioYw3/CbjSkxdML86R6nAwyJ0EX4DvV718lQTaCFTgAArINxrA4iMPYxp
-	 EqUFHNB3AN/f4jNsnaH6S3ZILEK6UbH0GvZrJH86wy7xS7dVO/bDSKQiYRK1Wr4XU0
-	 VRoAiXqnr9tEA==
-Message-ID: <956df69d-8c0a-420f-889e-7df2842605dc@kernel.org>
-Date: Thu, 10 Sep 2026 12:20:56 +0200
+	bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
+	b=qjlqJ0H66cYc8v6W6DwC7AYTtgmBUxTL41dSGKGn/Pc4l3/ppdC/95Hszt3HZrla2MmSyA
+	cDSRXMLD5KARleUNyd9uaawd6zkl1TqUN6pDYGYuAElrTScGerNIgUTn0KCFQ+gkoFNdlt
+	6mQuhHGUwf6FnkrZmDbTg1lvbwpnZSg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789035902;
+	b=iBhL79xc6mUy6kF7ThhhKwXRSd26kPc3z9g8edyX9L+scdEjULT3c+YiQ0b1L7+nplm+cB
+	Z0sVMDkIFtdHySvgatOiMMudiP17yi8P8mMSZRcbr+1n2xHgZsn5PKWEeF8L4CyQ98hT43
+	e94CiZf62q9SNB4Q1jHZhZQpxHED460=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=F9Xd3kNR;
+	spf=pass (imf20.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.230.193 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qk2-f1.google.com with SMTP id d75a77b69052e-53096696963so21073821cf.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:25:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789035902; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KEW6x2GWtvfIurqBNJ8RKmW0MOsUXLSUyIq0SZYQjgYwO3H2XW1TseT4XPmjBaR0IR
+         7mbhT6VoGZmUcuzKVSLMtA3pW5DThnRQizz/gYGrAmWaCTvtktNVJDqPPyMiJm4vJcP6
+         WdMm2OjagQuTIZMkRgiNPV7Sfbs2bV/4rZBdUZLFsW2PM7hbhF4TWGFMMLouWLcwxwzK
+         X+tq3acLQyVbtk+nhgnUu759v8teJQrTwX4ca5JdFbaI/LSFZQTA9XiyJSXAxiByAHab
+         qdXSjxD8mZRq8De01pHrrruCd57MivdSeseed/gwPqFuAeYHBftsYliIejM2YMMDUdBV
+         nOKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:references:in-reply-to:from
+         :mime-version:dkim-signature;
+        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
+        fh=3G1Gn87MJiV+uJ+X5p9mX9j9Lq0vfnr34oPw8x9sw+8=;
+        b=NQHjQAz2kjxIJCLpuCCyIpkVifd7QIvKHeOvBGPI76MrcG4w689GDFVQe3RP3eajch
+         pYEghopyOdMqcNn1BxzYA6slBesYTaKK2jJRsAtfg4VwwfgwYgUgQovkzqnLxUuta0oa
+         bsZhBRe50G0FRxWTJSXtyJbXXeqYJm5kMBTxh506M4SoTM9eLuBEdQ6zb8/rnUYSo/ci
+         RS3E8TNIwN0axAnjidN5vnv82NUBoDIf2NukOwP6BtbYgNGyZMQoGwtL3AIdmSHX1VxD
+         YdNvNGaq1BY+mwSOtYwce7Zu0RaglWBbbYlrBO3nL3yVYdEfwegyYqNtV3DZZpmlKGck
+         9/xA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789035902; x=1789640702; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
+        b=F9Xd3kNRIR9YqqyhvL3iSwjUzGCw5sxfy5kGdqKPNjgKgLun7p+JD1Ezhg6Ew+FIlI
+         5VuJl3FEvmg72k0jUM2L4M1Lu3a7bcBaothiaq+J/hANwgrWCHk2jSwTR9ITNgn1mW5Z
+         ZchJZACFa10b8CJYXkLJGfnHB4yNaACyAmBmX2iOnE1sU8VRCVUN4ttc/ycVL/50q/MG
+         x5s9VXOmjU2gYhE+wwuNhJeoLJ90b984blKid2TJRdSutumfrdcD3jXXdiQ8fQM8Lv95
+         tD9tA2Bop4sJrtW4wn5F3WMqZb8d4jByRTrVBdCM9vl9DV5UHWbxTo6uHguN1lqWVWQd
+         dcvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789035902; x=1789640702;
+        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nDOMwEFmq4ys9LsFhX+YbJ4h+PB/dTq06lEyj7W61bw=;
+        b=DEKc9i3ix5bffjdByohBPKpO49SIv24XtvzWIBjEC2uuJlIqm2wyFhBjValE0XPMqu
+         XJba3N/qgv+zkBKsLiNS6BiNUestLEmzT7a4ksxBnCynEiXJT2AC+YtqLHKnp4Jf8Tcc
+         CtwvtR0y0JxnXYwUfKRUAVxKq4/mmEC9jsYxoU6t6qKTO7JxqEv1AG0OhX7kSSLQMnuX
+         NI3YMXJDIlutojLSFc7l60Tr7BW+5W4qzAhrzh7EQ11AHsR9dal3GFtnIjJeiQnTxwFj
+         PelS+wiIDkgtqtbf82jKuEyqKPtlbZEt1qTEJdKnEh79KEHm3yxKZKQ9pjkg/XmH1i1M
+         o1fQ==
+X-Forwarded-Encrypted: i=1; AKwUvByqynvlZIxkYepvGGfEP72OBCIv7nfXcSpiZwcR8GAqm+Vfo5LrbfY1QC3X5tS7Xk8G2kcyxWxl0A==@kvack.org
+X-Gm-Message-State: AFuF++kSLHmBBI72VT6UZu6fozaBFSZBGsWohVNZIvXUKEkdDdJA2QmI
+	Cv12e/dlgMbBUs6OCGvFDTlnNuzWeJq2hwLHlWwKm1fhQUE0FF7f8/EecIhQkEjuv/d53hc0sst
+	SF7d/hQZkHW3M9QqwgWEboD4BFwbBfM4=
+X-Gm-Gg: AYBFou1yfXh978nUKf+LXXlr2CrGRO4TahKfFdXI2Mtv7589S5G+OHe4mooygus/JH6
+	jBY4GgcgthW5yvx/p/ZfhI96IzpAUyn/qZHZNX3htMga5+P+ZPVaF/ohws7C80PAFRtsO+JnMeZ
+	AUJ3NZ0BUveyknWwUXMovxjPRv5+L4zrWO3dea+TMD+EDtDP1uyvJsSM08ZbRONaWJs4aRmC3NJ
+	SnQXTO9B68wS6yJxnUBuC0Lhe3j13nYUUm4kwS1Pfib4p2azHaAGQTV8o7XXOZ0nB1K5KFHWeCg
+	yLeKuPbhbBFG/Xy7zez0EPcwnt19QH34QG9QuNTjemwsfJPQje8cKQ==
+X-Received: by 2002:a05:6214:c6c:b0:90e:978e:1c5 with SMTP id
+ 6a1803df08f44-910d0cd306dmr100407746d6.16.1789035902071; Thu, 10 Sep 2026
+ 03:25:02 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 10 Sep 2026 03:25:00 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 10 Sep 2026 03:25:00 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-2-822b810458bc@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260907-fix_split-v5-2-822b810458bc@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AA971140007
-X-Stat-Signature: hpajyoyt31retg33aqjc8g957yrh457f
+From: Tianyi Chen <diannaaav@gmail.com>
+In-Reply-To: <17f49997-2bca-4e1e-8d58-bc95e25b9a23@kernel.org>
+References: <CACGbirTvSoSeNSpMCBiifTdRKKDsKbgk7nfvh=09fHw2b0M4Ew@mail.gmail.com>
+ <CACGbirSjNMD1mijDWRp4gLcw-6dJsErrF_jgjwr3nO-geBb1Sw@mail.gmail.com> <17f49997-2bca-4e1e-8d58-bc95e25b9a23@kernel.org>
+Date: Thu, 10 Sep 2026 03:25:00 -0700
+X-Gm-Features: AcwNN1U1KzJJqcIpSm1ihT2K_s37DAftiuJeICzH9uiCZ0P912OBUId5Syhekfg
+Message-ID: <CACGbirSm=AZtAVwJAZRZt0JAGGUGVOCUQVqu-EcEiiGC-=+vJA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3 1/2] selftests/mm: Reject invalid test
+ selections before running tests
+To: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Joel Savitz <jsavitz@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: hnswkdj8chtb4xuby3bxa4ke7p8gp4fc
 X-Rspam-User: 
-X-HE-Tag: 1789035664-921660
-X-HE-Meta: U2FsdGVkX18QIdCFMD87VsFU3M9CNjwOkm00ZVK/Q4Wa1LhC6jjGhAW573PwLfTrps+GAQMpVFXQAU7/vFXgWExWRyXZHKhC+qYXQMnAC5bkQY9rD+BdckNG6lJI63FPO4DExriVx4eYJXoXyAlSmv9eMSykGSV89RAWwIXKRUoEFTdyAOLvqPo/t9OlmnJd+hYVKv/oiNy+9XnsqA4l3J3v7r5OErg2TdWUTjIwqxIWpHfrtdyUKDL9wNxDrbvwAjbN1qyGyWiiVUNd+O/AUF6AePvi2Jw9ajFzSo3BzfPsdgmjMU7uZg8u/kX4ajBLDMOprF31trLjLxA7jiC63ZeazDtYrBzLeUUZ5eVzhEo3GYRNWA2ng29hWK3jyPQiefnD30IAFer2/jP4XX8JYXzNjp7VKN+Wi+rLjfIxZEejsWwk2Xwza6H3GI9bRDiGiKzAwohogGmLPz+DewdpUM1BGanweoi+FIExvtx9iM6UbASK1lgW8FB6PTHSI8N0g/CZgEP1RHWyeL0C+oRYs8dR3GJsRyMeeWIdH+63OAnbJuhme03B6nU7s9ek9mf+19O/P0gXDGOdH/oYlNPqCdaokWsBMdQsg+spj3g4PTO3Hw6bDAiU+MF8TYFO/qCJ47Wvar6RyLS3gdUMld65CuwzOCbnKjCOUPULv8dOoIKe6B3ksFucY5+KnhNMV9e7ZHzoNAFzzPhq0C2kc/2JsHQ6cBZ9NxwbDfaKyv5qhb21z4qd5a3M8Gw8AGtKZS3wJYeta8hjbKOptst334lpDD0ZC5bgEZtjP7D37p9x2C745wyJZdgrSpx7GS1piWccLD8gnmi9vexfdTR0J0XlWGyh/rFeQ35fK6aRorzZbLWSo4PVzmwzf5jFewbhF7TTzfJGqYmYXu9GIWQuu1iMefNSijlq5YAYWufgwmy7D9XFdDjW5o6pq5YSJ0V31qA+G06FhiQjIcXabKEwBGc
- FQlFnaBv
- oQBknAWfqzLrOWhNkMzrT4Ovg1h3pvMlRH8tfOkMcDWu4Oyhc5NMOZpP2NwyoTwRrwmaN+Hs2S2voeC1yxJ83US7uvbCxw7GD4l1N/0zdCy3wQiL+r2MznvNOK5zcmFzQpmP0ELpDGyYy4ekC1DH3ibFLrOoQE/J12+mwsboVBHcHtTf8Ch4srBqo0/jC8rXy8Ia6/UUHtoeuVVl0pRv7pbOSTqkIfjQ7Yj/fzDkWtC2Z6Ql60REkkRDLiV6qyccZY3G4VtTw97RneQV07SgWIYmyfmyI1VkYtV/JfN5LOOLPYPlDeZ9WxzybJuXJnFGMhGKb3LCRtRfqOiUfO8y/43sMbgY2q0xEY1fHHHdycpmmALT+R9NVBM0aiHXJzd+Sf7v70Srcr0X81VyHIwlawgPrOwocFY+TWF5kpQJsD0KMOceK2UzNKsqK1zq7yBNrGJPmjJuKNyWO3R0=
+X-Rspamd-Queue-Id: D5A7E1C0007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789035902-779842
+X-HE-Meta: U2FsdGVkX1+oQiOmWzP0LUlNwFNerwBW6nxsWBhjKWuBQxayI+6uEqFIWJHtnDXbKjnNmbYYkmFjBmbCmJGsxQmi6Q1uL3BWj9k6eJtWZj/cdNMCMDUXhbaFr3arAjR5beMsDDLhkm7d6t2an4ilChExXnrtt8v28mcz934xerNHetLUDN8LzjsjxzfHsWtvuJAopJY4xM7z39v13JfFnWWfMLD2mteOrXv5OVD3nkiGfMoPFEaD13H6PNYzlron/CBgM/Ey8vExrxN6H/QuLxFRTxLfKriOeKQIkzJx72KCXvIOfd92eWLskJ5JJQaBpLkqWgf1sqCXlokurhAck31O8jn06wEivqk/wofbdhJFK+QZwhWW+kl68SR3r/6oHpyEi1jDUvDoG6hxf9BSkF54r3Jy6WRIdK6nK6mhnVCHqMczbGEB0yrWreLAOqeYFoohrl4fL+1x6fVQMWwQQtjttIteVH1i8AtoFl//0lKIZ11JurwwDBtegGey2VBgT0LlJQle0G5qHdzuqs8+S73dDZiz1Ed4VYQEpJLA/5T2DR1qNh427BB2rcqaZpjU/bu/h7uXhCDxMUbk6vq509WyDQN/fXCHr5xzWi+jGeVlPZu+SDL8SJqTykAKPuetfKQMLHrTC4r+XEospJ1PsV6ZOH7JEBe1SLLNAP/9sgvhF5MaRxr5DSWkvaxXOjtGlR5eFiUoluxquCIdsOozm+ynTh0cHY2pdm8x99kOfo2njIht+fDPs8T29Qpw6iCu7i+yS7qTUPeTfCXK8btCga6R+BCSLKdoVtZB4TP7LriMTTv9NSHuIf7PZ02wr5idjYjI8YiaQF9EOe8Udv3coIUexZ1+ctLFNaQ4A/PHNRYYeRWM39RoZCW1LKirdOhsSxTx72MDW6xr1D6jYosPZEZSZ1cNpppNV2xpzEIrPNT1FWND2CBmfW/gfywItgFqlwDOKAnNKwzrgpLmWie
+ 9Qw0mOov
+ A3EGtbBqbACvU7xdnXWarae3HAq7CEPtcvh1yM/QlO24sMANjFUWvbiHYZ4cjMNJsb7gV7TfcLYzrR877U6zIchGu4XE997No1tA2hI+XjqemyrbbqNdEWc54f8c2sOOAqhbPf6Zg9rlzs2mwVFPiThFmiMlAhxEbn8v1dbmCvoySw2nKAy6BBE0yp7S5AhoAyLQe/AmuSjjjGkG3T6Uql4InR85899qM5lFXYwndA5VFQhp6pSzIxxZWy6BF8DYs6rhlL/qJ3WLutMS0Wc8bYTQhCZ67S5o+P3ibWBZqywhOPALwZWJgfxBypS10QKZ3ZnEII8RIP6tZGIZy3kGmlOFJ0pfdo3592QiLhAsDbnwqe04EFP54HhfEVPJliciw6/5tXeFFKgZj2B/KqwX94zWZot6vrQ/gHb0UsKlqn+pWUT25Cvhg5j622Ug5Bi7qZDOXksPS8BACFj8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,156 +142,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 10:19, Yeoreum Yun wrote:
-> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> made by memalign().
-> 
-> The underlying VMA may start at a different address from the aligned
-> address returned by memalign(). Furthermore, a subsequent
-> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> already set.
-> 
-> This causes split_huge_page_test to fail because the check_huge_xxx()
-> helpers incorrectly require the address returned by memalign() to
-> match the VMA start address reported in /proc/self/smaps.
-> 
-> Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
-> /proc/kpageflags to detect huge-page mappings and large folios:
-> 
->   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
->      using check_large_folios(), since only the mapping type matters.
->      This identifies PMD-mapped huge pages.
->   2. Otherwise, use check_large_folios() to detect large folios. This
->      covers mTHP cases.
->   3. Check the folio flags according to the type of huge page.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
->  tools/testing/selftests/mm/vm_util.c | 145 ++++++++++++++++++++++-------------
->  tools/testing/selftests/mm/vm_util.h |   1 +
->  2 files changed, 92 insertions(+), 54 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index 4821a3563036..dc62ce84e143 100644
+Hi David,
 
-[...]
+> How did you send out the previous revision? Through b4 or git send-mail?
 
->  
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> +static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
-> +			    enum check_huge_type type)
-> +{
-> +	const bool file = categories & PAGE_IS_FILE;
-> +	const bool swapbacked = kpageflags & KPF_SWAPBACKED;
-> +
-> +	switch (type) {
-> +	case CHECK_HUGE_ANON:
-> +		return !file;
-> +	case CHECK_HUGE_FILE:
-> +		return file && !swapbacked;
-> +	case CHECK_HUGE_SHMEM:
-> +		return file & swapbacked;
-> +	}
+The v3 sent from hi@tychen.cc on September 8 used git send-email via
+SpaceMail SMTP. The inline Gmail resend on September 9 used Codex's
+Gmail connector. The patches were generated with git format-patch.
 
-Why do we even need CHECK_HUGE_SHMEM?
+The Gmail Sent copy was intact, but the copy received outside Gmail
+had wrapped diff headers and altered whitespace. The attachments were
+a workaround for that sending path. I agree they are inconvenient for
+review.
 
-That's really just a legacy thing for using smaps to identify huge pages.
-
-It's sufficient to identify CHECK_HUGE_FILE if you know that you have shmem mapping.
-
-You will not arbitrarily have non-shmem folios in a shmem mapping :)
-
->  
-> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> +	return false;
->  }
->  
-> -bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> +static bool __check_huge(void *addr, size_t len, int nr_hpages,
-> +			 uint64_t hpage_size, enum check_huge_type type)
->  {
-> -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> +	bool ret = false;
-> +	int pagemap_fd, kpageflags_fd;
-> +	int nr_pmd_mappings = 0;
-> +	uint64_t pmd_pagesize, scan_mapping_size;
-> +	uint64_t categories, kpf;
-> +	unsigned long pfn;
-> +	bool check_pmd_mapping, allow_nonpresent;
-> +	char *start = addr;
-> +	char *end = start + len;
->  
-> +	pmd_pagesize = read_pmd_pagesize();
->  	if (!pmd_pagesize)
->  		ksft_exit_fail_msg("reading PMD pagesize failed\n");
->  
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-> +	check_pmd_mapping = (hpage_size == pmd_pagesize);
-> +	scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
-> +	/* Some mTHP tests check a partially populated PMD-sized range. */
-> +	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
->  
-> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> +	if (pagemap_fd < 0)
-> +		ksft_exit_fail_msg("open pagemap fail\n");
-> +
-> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> +	if (kpageflags_fd < 0) {
-> +		close(pagemap_fd);
-
-No need to cleanup when exiting.
-
-> +		ksft_exit_fail_msg("open kpageflags fail\n");
-> +	}
-> +
-> +	if (!check_pmd_mapping &&
-> +	    !check_large_folios(pagemap_fd, kpageflags_fd,
-> +				addr, len, nr_hpages, hpage_size))
-> +		goto out;
-> +
-> +	for (; start < end; start += scan_mapping_size) {
-> +		categories = pagemap_scan_get_categories(pagemap_fd, start);
-> +		pfn = pagemap_get_pfn(pagemap_fd, start);
-> +		if (pfn == -1UL) {
-> +			if (!allow_nonpresent)
-> +				goto out;
-> +			else
-> +				continue;
-> +		}
-> +		if (pageflags_get(pfn, kpageflags_fd, &kpf))
-> +			ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
-> +		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
-> +			nr_pmd_mappings++;
-> +		if (kpf & KPF_COMPOUND_TAIL)
-> +			continue;
-> +		if (!check_huge_type(categories, kpf, type))
-> +			goto out;
-> +	}
-> +
-> +	if (check_pmd_mapping && (nr_pmd_mappings != nr_hpages))
-> +		goto out;
-> +	ret = true;
-> +
-> +out:
-> +	close(pagemap_fd);
-> +	close(kpageflags_fd);
-> +	return ret;
->  }
-
-
-
--- 
-Cheers,
-
-David
+Thanks,
+Tianyi
 
