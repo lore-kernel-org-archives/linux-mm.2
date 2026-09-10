@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8705C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34FD2C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8A5B6B009F; Thu, 10 Sep 2026 10:19:01 -0400 (EDT)
+	id 1D8496B00A0; Thu, 10 Sep 2026 10:19:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A15066B00A0; Thu, 10 Sep 2026 10:19:01 -0400 (EDT)
+	id 162956B00A1; Thu, 10 Sep 2026 10:19:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DC9C6B00A1; Thu, 10 Sep 2026 10:19:01 -0400 (EDT)
+	id E89CF6B00A3; Thu, 10 Sep 2026 10:19:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 638EF6B009F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:19:01 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1888414053D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:19:00 +0000 (UTC)
-X-FDA: 85198059240.15.7847476
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B86A16B00A0
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:19:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E15440516
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:19:03 +0000 (UTC)
+X-FDA: 85198059366.17.3E3951B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7BF9016000F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:18:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RiprIrYY;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 716C520002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:19:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DcrDdV2O;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789049938;
+	s=arc-20220608; t=1789049941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OatsKQ+AnGs6vyB70H9GTzO9XlSkzqH7qImbPph1GPU=;
-	b=QJjrcPjO+oxxHfbp5qJMZpk7yQib/gL62mPMTqfvEWYN/b3Ta0+fbJ+m8cfe7RxlTWfLlg
-	6aJyNrbtOtMGyu619ONPzg2R+qI3qvYfFxbSPMSbay0681azNQGgo7SQnEwrVYLnlb4SjJ
-	YnkTozbP56rvHlWzSDUnnWHy/4HiHfU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j8SWQuWvWu2mDr3ZPa1cO5y8fbw9Oppo9ANwQ11kECE=;
+	b=w2p5IxWgE11EI+Kjd69UH9fQtS3n8rLgAGn4VF/LhPY129pwY6d3Q6P8UMSidHd2hQT9Kc
+	FHSwo4GkiVJSDLks5a+dcNxABGfqdS2uPcB74TwFIUinrrKZXV1IWPO3pRrDr+pXN4NZCB
+	HetFwT7BFXTK51CpxB1shYtHNltqRNs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RiprIrYY;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DcrDdV2O;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789049938;
-	b=cOIQhuV65Xx9MQnRbg/4HaHkmF7fg7NFrhQOSDUsv5RpIUUMb9vytbZ9jYZchkW8wpjbvC
-	FHVlG4bVy35WgZQV1KT3G9CboOH8s0Z8/ssRaEVqCl6MXPaw8DyEaWDOrBOh4h4w6puYj3
-	6M+MHN6IutBwClX/Kb3m2FsqNm/dbNI=
+	t=1789049941;
+	b=XGCseWsU2xXrSMnA2UA1clYUu4xBAmOEIiWQjJAXe8M82+wiKvuSUv/h7DpHGSW2FtvSsN
+	ulV9CiiWUnXrNanUY4dkbywx4eL5M8SjdeLrEGIz5KFA/8CdWZApNvxDeWMO4wkVkpPXYX
+	E2PqMaOUtpygd2eCxmCYq4mIABTLi70=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88A6C404D3;
-	Thu, 10 Sep 2026 14:18:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53BD1F000FF;
-	Thu, 10 Sep 2026 14:18:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B8B4343D6F;
+	Thu, 10 Sep 2026 14:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755CB1F000FF;
+	Thu, 10 Sep 2026 14:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789049937;
-	bh=OatsKQ+AnGs6vyB70H9GTzO9XlSkzqH7qImbPph1GPU=;
-	h=From:To:Cc:Subject:Date;
-	b=RiprIrYYjEpxQQ9oxSoTxYZMyOB5FZLZLreWjtU9UkixReFgZe7cRvj1PaHZaZgNu
-	 QE0lpZa/LtRQWPFLl/mkpgmRnOCQe8x+c7fEv/p/0xuoNfOo0F93LeY6+7JpxN2Kpd
-	 4BXc30JChzg40UGwzw8Wig+1XsHK5RJOJ3gO/b7DcqwHvOGiirhkF29DSWwnXhZYGN
-	 AxQDFZCvMWcjSsSAq7E6OSra9KlJh1z7VehNpyN2gVh5E5qtRWqEU/u6VVmTAiZUTd
-	 cfj0r1nZvg+giJegu7Ys1T8Nxb2GeIibTBbxZGAOopnbUrOseoVTneSJS+7XlADkDb
-	 cqv3bW3menB3A==
+	s=k20260515; t=1789049940;
+	bh=j8SWQuWvWu2mDr3ZPa1cO5y8fbw9Oppo9ANwQ11kECE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DcrDdV2OuRczE/ZW01khn6Ch9zyR3ESaeUpagDfMSI2MQIro4saeKfS41yfx4KyGB
+	 iTHZvtRAZNMsDC3NgX6oljEhhaMzFTZvrXKXx2aF/NDTOr9mP+pkyRwd0UZuTxQDCT
+	 jiiIcFVXeV5lbVVI0HXhz6XLI7YuxqoqeGH42A7mPEOdCwe4ZTD2r6C3rkBGw2Rmix
+	 Iin+VoK8BZsup+gJ7Ztbvox5N4vfCEZXh4WfvCGsT4Og2ha48qhvoKgEnVFaC5oH8Q
+	 7UYIDJzbV39+W/nE2v1zSPRA1OiEy4+rRSOZ06UXDdGhKNT9aSu5k1J8V76uT/xyxc
+	 nx6g4XHB7NoNw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/7] mm/damon: introduce probe_hits_wsum DAMOS core filter
-Date: Thu, 10 Sep 2026 07:18:40 -0700
-Message-ID: <20260910141849.170896-1-sj@kernel.org>
+Subject: [PATCH 1/7] mm/damon/api: introduce DAMOS_FILTER_TYPE_PROBE_HITS_WSUM
+Date: Thu, 10 Sep 2026 07:18:41 -0700
+Message-ID: <20260910141849.170896-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260910141849.170896-1-sj@kernel.org>
+References: <20260910141849.170896-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7BF9016000F
-X-Stat-Signature: 6efth54jyx11h5e8aeo65ctyspeq3trn
 X-Rspam-User: 
-X-HE-Tag: 1789049938-324674
-X-HE-Meta: U2FsdGVkX18qrqPiMLCWXCtQRuFlM3yCp8wXzKfRklaxQsQ47T/YeR7P6mPk20O1G8x7qUgoo3UCZbvZQwyPdRToIO4qEKW0hkRaWBYA/o893ul9KaTHCjOVvyrrENtANXvTl0cdDv65fhFbBnNAjZBarixGeayBvXD1hU4KqnOnO7s8LSGPuMjE3mt7shlffZgoPZE8ApWEKkC0VzeBskOroWnBZN6KrZFVvdV9gPT4lNX2xvBtAkEvflEYbolqzO/fQzjcZUjRkTuzxe1OlqK5TkPWYYq0m6zjYM0yapDuN/KSKziDSCPcmJwqxR+YrDJsJr0nXoy9MrPx1vFxtA/jDxLT6y+5B4UffHGjWXQk3FlwD66h9NW3wTnaBwZTr5dMSOh0HmgYVPO8MHLsyhE3/0JnQNuYccrFY1hLoj48bnodyIqr1we8MDc3/ek52H2diy0DW59U0bA3JM2N5cBgNyYeGSrwdSp5sJPdPsgZGoOMqsqUv35PdqBPYYWEMJd/y1HqKY7tttnT84ySWKUR6hvkDC5B6j+rL1LreFgCSr1RWUjGCVITm45Dw5JT3dKLc9TMWwZJp30Oo4uJNZ0O+oafdKqScIaRCoDqtHYvcBrWeH91D4Jyn+8g3yo/EhbwWWY96VSpjjrAOVhtVkdzrXygiP60InDJ+2qJBEwG+wYwBi8oHzuYl9oZGLjR+bcpjsGYWXF7tb+weIZi+5CXk5DeMswjVg5ubMpmJnjNeXILEgtxSZhviQ4hhWYC0iTXRw9AeI6TqrdbueWf0szG5cHCdqNL541hYitbuIPHHz50QtyDWpoNtXIbHzVkpU0gSRQRxw3gZFbEVTTvvDgl5ZpNbbAriJm2bxWfQwBidFEjqle5p5QFDLkoB9LIFZmN0ZAyvN80gz5jj2OxwjEYlXGUXd3p+R/mzX8MwJnmO8j0bMzJwdBpmie9yDitIHAotYcoYHCdsVYL6+C
- Z99OZSyt
- H/c5FxSYvtCaT1eL0DqGvuwg7eC7Lg1W4vznfra9zeNU+7vUcVmk5nIzYA4BYkIV0ul+sH9tmWPg3/TZiOESl7CzV1XkbT1qeQ2MSWa32G63/b0G52kSrpnDcOkabjFIyY2oFDP2lM18QtDf9rf/bKablQfBGYS/TZSPKMZDR04X7ANyIIbBlx52+3jLqyypIhR8S2/qk1ijOF8hVyZ3gR9JilkgzCis6s4H1PW6W7WY5azLt/A57QHDoO/Dc+6mAVw1atZI7SSZhDq+Kx8vdxI00gZlxLyuzy+fH
+X-Stat-Signature: 78f3r3ksrnr8m1gos3zqtgtcctr8gao4
+X-Rspamd-Queue-Id: 716C520002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789049941-864957
+X-HE-Meta: U2FsdGVkX1+CJ4CrzkvAppvPCtB9pwxuINIcbwnAK8Jth9KpqDmARuvqIRMKZUhe+GSOSy3FT6SkLpbWPPpIlR6/m+buzCqbAR5JLTv5pXk8eySfW6+/GkEvZzHF+0U/HyRvSxVBtC/hLzjFvdQnw3OtUHf0WwCc0bYQ6ZkMqVfwtCvtcedaAcwrGwcfZ3eIUDUIGsRwrPzfIUUY/LKp9f9fVcR2UVUpEF6KZDrCo2j8J+MhyXA7f0wlqZWytKpbp9Gsxax8VhVE0Lc0ukhw69b9BNHFRN0zFoQ0fCN2vszyqFVZbMy8UXwI20nQbc5BTTKF+NmpTzgIsi0wJmP3AzGlix1GmnMY8t5Y2zwJR66nx5aLFsr8Cr4D6J1EQUQ43UXGUKeXcDMGond+dG3jEhpOLMA7xnwMZRoZ+mlOPEWSUzLqtNdhpqyKgVTC7lvAssHBxRpPJ9fntbzTZLG/uK4SxddJ8y3gdCZOTlRhHqTVuAQJrFzHAYaX9lCa5ddlRdBxyzSGbmxoHTFtpLdSFv35mW/PaGL14YeH2c4pRDFDxuzeHmnXpzLA+KBn2XQfZ+GTFa0RQFJ6GsGIK+qm9dcg5+D4qcZyRoPkVG8mOIgcOEiQkq9wzPmrYfOVk5FekouW/Ha7L3MjVG8XNwl6kF1U41mxdS1Yt5scticq7y5LSwEYWMqZQUxcoVXFryfkSXa6/KNRz+Zmgf7chvX/lUBAlT+d1NGlqOa5U5hrVWUSikqnpsDUrktDobSpfIZjqNuuSO5Awu+NNOUr5i/0uauKLBQVl6FQUDBMhZvsh83qUO1kFhh2im8i3bqluib4wUNrklvajDa0DNGE+hYyZ+J/ZQBIU9lh/D+Ky20wqHvGBkFfAUo3Ej154RpDg0SGbg26Zgt7+qEC7MLXZf53w6jyqvG/YllXdajBYja2Vu03zdMYwG8t5VomaCWxFc7AnvMJgiRdzFblTim4KD+
+ 4QL2BFi9
+ 2IoykoYDz+v4fxNsHDIFVTWVMcNOa4cb0zrKIHRNcSpB/uwI383RwsIs3HqiiCl/ploc9ASQLT73mmNKxPcwzzF0onzeYVi9/zztXRLJvvgujLdFcfemj1eqk1u/CXsWsdsWHUJ7hfIvfOEET4xpV5mGuVjJV93F3gNE8Uvh5k2xV5otPaUrpOePXl10Y4kg5FYrRYTvVOctsOyyzFyeqgraz95cTfdOhSrG7sCAwA41U+a+N8/VS32gPQcpBH7ELi9ysuXRsuIqRdIKEqiSunNQ9oQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,80 +92,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON can do flexible data attributes monitoring.  The classical data
-access monitoring can also be done using the attributes monitoring.  The
-access event is just one of the data attributes that DAMON supports.
-Users do monitoring to make some actions based on it.  DAMOS is a
-feature for automating that.  However, DAMOS cannot utilize the data
-attributes monitoring results.  It is still Data "Access"
-Monitoring-based Operation Schemes.  It requires users to set the target
-"access" pattern.
+Update DAMON kernel API to introduce new DAMOS core filter type,
+PROBE_HITS_WSUM.  It will allow API callers to describe the DAMOS action
+target regions based on their probe_hits weighted sum.  For describing
+the filtering target weighted sum range, add two type-dependent union
+fields to damos_filter.
 
-DAMOS core filter is effectively the same as the target access pattern.
-It is just a more generalized and flexible way of describing the
-operation action target region.  Introduce a new DAMOS core filter type,
-probe_hits_wsum.  It specifies the filter target based on a range of the
-probe hits weighted sum.  Using this, users can apply DAMOS actions to
-regions of specific data attributes pattern.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ include/linux/damon.h | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-Note that the classic target access pattern still works.  Hence the
-target nr_accesses range should still be properly configured.  The new
-filter would be used in only data attributes-only mode.  In the mode,
-classic access monitoring is just turned off, and therefore nr_accesses
-of regions are always zero.  Users could simply set the target
-nr_accesses range to include the zero nr_Accesses regions.
-
-Patches Sequence
-================
-
-Patch 1 updates the DAMON kernel API for the new filter type.  Patch 2
-extends damon_probe_hits_wsum() to do the calculation based on moving
-sum.  Patch 3 implements the filter type in the core layer.  Patch 4
-refactors DAMON sysfs interface internal data structure for efficient
-reuse of data structure for the probe hits weighted sum range user
-inputs.  Patch 5 updates DAMON sysfs interface to support the new filter
-type.  Patches 6 and 7 update design and usage documents for the new
-filter type, respectively.
-
-Changelog
-=========
-
-Changes from RFC v2.1
-- RFC v2.1: https://lore.kernel.org/20260910040319.147037-1-sj@kernel.org
-- Update kernel-doc to clarify probe_hits_wsum is a damos core filter.
-- Drop RFC tag.
-Changes from RFC v2
-- RFC v2: https://lore.kernel.org/20260907171218.101430-1-sj@kernel.org
-- Rebase to latest mm-new.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260906210513.106895-1-sj@kernel.org
-- Fix kernel-doc typo.
-- Use moving sum based weighted sum.
-- Fix wrong range saving field names in sysfs.
-
-SJ Park (7):
-  mm/damon/api: introduce DAMOS_FILTER_TYPE_PROBE_HITS_WSUM
-  mm/damon/core: extend probe_hits_wsum() for moving sum based
-    calculation
-  mm/damon/core: support probe_hits_wsum damos core filter
-  mm/damon/sysfs-schemes: rename sysfs_filter->sz_range to
-    range_{min,max}
-  mm/damon/sysfs-schemes: support probe_hits_wsum damos core filter
-  Docs/mm/damon/design: update for probe_hits_wsum DAMOS core filter
-  Docs/admin-guide/mm/damon/usage: update for probe_hits_wsum DAMOS
-    filter
-
- Documentation/admin-guide/mm/damon/usage.rst |  4 +++
- Documentation/mm/damon/design.rst            |  3 ++
- include/linux/damon.h                        | 22 +++++++++-----
- mm/damon/core.c                              | 20 +++++++++++--
- mm/damon/paddr.c                             |  2 +-
- mm/damon/sysfs-schemes.c                     | 30 ++++++++++++++------
- mm/damon/vaddr.c                             |  2 +-
- 7 files changed, 63 insertions(+), 20 deletions(-)
-
-
-base-commit: e63f7a9955d13dbec5df4df19f844e5a0fbc3ce1
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 871d26adf6ae5..ef99ff778ae10 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -399,14 +399,15 @@ struct damos_stat {
+  * @DAMOS_FILTER_TYPE_UNMAPPED:	Unmapped pages.
+  * @DAMOS_FILTER_TYPE_ADDR:	Address range.
+  * @DAMOS_FILTER_TYPE_TARGET:	Data Access Monitoring target.
++ * @DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:	probe_hits weighted sum range.
+  * @NR_DAMOS_FILTER_TYPES:	Number of filter types.
+  *
+- * All types except &DAMOS_FILTER_TYPE_ADDR and &DAMOS_FILTER_TYPE_TARGET
+- * are handled by the underlying &struct damon_operations as a part of scheme
+- * action trying, and therefore accounted as 'tried'.  In contrast,
+- * &DAMOS_FILTER_TYPE_ADDR and &DAMOS_FILTER_TYPE_TARGET filters are handled
+- * by the core layer before trying of the action, and therefore not accounted
+- * as 'tried'.
++ * All types except &DAMOS_FILTER_TYPE_ADDR, &DAMOS_FILTER_TYPE_TARGET and
++ * &DAMOS_FILTER_TYPE_PROBE_HITS_WSUM are handled by the underlying &struct
++ * damon_operations as a part of scheme action trying, and therefore accounted
++ * as 'tried'.  In contrast, &DAMOS_FILTER_TYPE_ADDR and
++ * &DAMOS_FILTER_TYPE_TARGET filters are handled by the core layer before
++ * trying of the action, and therefore not accounted as 'tried'.
+  *
+  * Support for the operations-handled filters depends on the running
+  * &struct damon_operations.
+@@ -420,6 +421,7 @@ enum damos_filter_type {
+ 	DAMOS_FILTER_TYPE_UNMAPPED,
+ 	DAMOS_FILTER_TYPE_ADDR,
+ 	DAMOS_FILTER_TYPE_TARGET,
++	DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
+ 	NR_DAMOS_FILTER_TYPES,
+ };
+ 
+@@ -434,6 +436,8 @@ enum damos_filter_type {
+  *		&damon_ctx->adaptive_targets if @type is
+  *		DAMOS_FILTER_TYPE_TARGET.
+  * @sz_range:	Size range if @type is DAMOS_FILTER_TYPE_HUGEPAGE_SIZE.
++ * @range_min:	Minimum value of range arguments.
++ * @range_max:	Maximum value of range arguments.
+  *
+  * Before applying the &damos->action to a memory region, DAMOS checks if each
+  * byte of the region matches to this given condition and avoid applying the
+@@ -450,6 +454,10 @@ struct damos_filter {
+ 		struct damon_addr_range addr_range;
+ 		int target_idx;
+ 		struct damon_size_range sz_range;
++		struct {
++			unsigned long range_min;
++			unsigned long range_max;
++		};
+ 	};
+ /* private: */
+ 	/* List head for siblings. */
 -- 
 2.47.3
 
