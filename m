@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C593EC79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 00:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A49D0C79FB6
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 00:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BB576B008A; Wed,  9 Sep 2026 20:18:03 -0400 (EDT)
+	id 38EA66B008A; Wed,  9 Sep 2026 20:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C826B008C; Wed,  9 Sep 2026 20:18:03 -0400 (EDT)
+	id 340146B008C; Wed,  9 Sep 2026 20:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85B2D6B0092; Wed,  9 Sep 2026 20:18:03 -0400 (EDT)
+	id 22F496B0092; Wed,  9 Sep 2026 20:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FEB76B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:18:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 951AA40393
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:17:57 +0000 (UTC)
-X-FDA: 85195939794.12.7DC8845
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 13F9540004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:17:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XDiIuga1;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EFA8F6B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 20:48:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A55CAC03AA
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:48:06 +0000 (UTC)
+X-FDA: 85196015772.29.A32E739
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 72F36C0009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:48:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=U3F6o9ue;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1788999476;
+	s=arc-20220608; t=1789001284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TW3K+AgSrwHemRWw14UWea9xECIj/k6NgLwb2UHRsPk=;
-	b=Or5dqeg99244YqeK556p64g8TkDsJ5zXNkOlP7QouobQwHqQCP4nJpBc7YAfyXBQgRAfpe
-	6lRqFqrFtMA5BFsXI80nDyXQ7Iz5zzkuOHvTGLbZxudpEbQQy4gwkBCm3jhJFG/Z+EZHPd
-	wcPjYx6t5/EjQy4SptOtzWUa23hJVzU=
+	bh=nq8vLjHk5vP6E4/mvbpyGkWBdIX3aI/IOS8rGp1uTP4=;
+	b=XZCa5p1nV2mvG5ZsWsONuDs/KA4v/e6McXbg8ho5yAh/cQe2Eg/tzi8le/eVC8ZzgD1Y5H
+	MdRRbzK2Bl2VLort3u7sFqU6TaJo+H2EjEPGIMeHfVzfy26nqBkWejvyyGfFQMsnxWLzQX
+	lEWZf48uUa9xBpWp3unVwMcPTIskJv8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XDiIuga1;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=U3F6o9ue;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1788999476;
-	b=gsKOiuMtoo+2AvzvGMXK9FSqf0/V8uEpLQ3JAHsr4oz4dkFQ+noTImvnx9BMzX43orCMu7
-	mrg+3vwGjSE2kiH4MhYKy2kgoI3RgUVX3pkdqmlwIvK1zkmTkncDlbEzZc5bjN4xSX72Tv
-	xDnfbU6396tNRuCTTir5JNe6gmOq9uQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A94C600CB;
-	Thu, 10 Sep 2026 00:17:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769F51F000FF;
-	Thu, 10 Sep 2026 00:17:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788999475;
-	bh=TW3K+AgSrwHemRWw14UWea9xECIj/k6NgLwb2UHRsPk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XDiIuga1MVxrtxfrwhhYXePZoy0JGb+ujz65mh5hUYMY67pz0foKfM7Q5QkCL5v0n
-	 lTfa0cCfiS2XfZuigBiP9U0iHcwdRhd2CUM46aewqoVtleZ9nOpf9n/TnU19pVtIA2
-	 utUeA+R2k3MqADcMDel8YPg5y/UPtErXdi911fksXcgktppyMIvkEkrLuLBIFVW721
-	 RSfj6A+rv2AiJzx7SRLLoqkfDUlSg9Kd+1ykynRnzDYAXahm39nr1ayxpyrCVgbZJU
-	 SbdiADH8ni8BbnbdwSnfXengJkE6FhFqUH+qO/l72YS2CRY795lUa5AGNDljhhF/f6
-	 gzdzh8H/kx7Jg==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	damon@lists.linux.dev,
-	david@kernel.org,
-	liam@infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rdunlap@infradead.org,
-	rppt@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [RFC PATCH] Docs/mm/damon/design: clarify when qt_exceeds increases
-Date: Wed,  9 Sep 2026 17:17:46 -0700
-Message-ID: <20260910001747.110260-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260909100913.30568-1-aethernet65535@gmail.com>
-References: 
+	t=1789001284;
+	b=ViEeXZgxXCmx8XddzMwHUgigpcsT2PuRCq6jXoZfAIYS2J6J6Pn1T3fouvm1Zqb5NvYXVP
+	FYPlo3okx9XOyeE5vJ1Qq9y8cTQ9IXGsElwd0DfAeQ7pB5osaVI6NlgALqC1QfX9f+6KO+
+	GBymUXTHK6/X4SnHf2eru5D4roZnMJ0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=nq8vLjHk5vP6E4/mvbpyGkWBdIX3aI/IOS8rGp1uTP4=;
+	b=U3F6o9ueRtzWPUHauNFS00Qv0nhsUsuvxkyAegc8UGRmpFCPBoGd89gMk+53QS
+	k9rQQJu5VmVPRQl2LVfRujXDTfGmEXLY84bm6VnD+8Z3Kg3SO7CLkha2kyHTB7xl
+	kuyBOVZ1cZnqQbU2fMcZcSMdHX86P598n6YAtfJzH9iRE=
+Message-ID: <5cd47bc3-bc3d-473c-80d0-8be8b7b79881@163.com>
+Date: Thu, 10 Sep 2026 08:47:39 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/ksm: trylock the mmap lock in the unstable tree
+ walk
+To: xu.xin16@zte.com.cn
+Cc: akpm@linux-foundation.org, david@kernel.org, linux-mm@kvack.org,
+ chengming.zhou@linux.dev, linux-kernel@vger.kernel.org,
+ xialonglong@kylinos.cn
+References: <20260909110228828hKTCgUeuZkOujOBaVtUcL@zte.com.cn>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <20260909110228828hKTCgUeuZkOujOBaVtUcL@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 13F9540004
-X-Stat-Signature: 713tf3eogpdfsztca8jm6963nwhjsr39
+X-CM-TRANSID:_____wAnr08q_qFqdB8LBg--.771S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxury3Ww1ftF18JrWrZFy7Jrb_yoWrAr1kpF
+	W2ga4jkF4kJr13u34Iv3WkuFyF93s7KrZ8G34rta43Ar98JwnrGFW3tFy0gFyUur1Skws0
+	vr4jvFyq9FZ8XFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uh18QUUUUU=
+X-Originating-IP: [2600:3c15:e002:6267:9ce2:e233:64a4:205f]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2xbPyGqh-ja3AAAA3+
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 72F36C0009
+X-Stat-Signature: x5cd9z8h3kurhf7dudwgk4y9mqbcek6k
 X-Rspam-User: 
-X-HE-Tag: 1788999475-392597
-X-HE-Meta: U2FsdGVkX18WfA4Q9M8ci+9U9eT8fujQLnokJVvx9Cv5dMHmsrOHHMDK6GCw9NOGOLEEUrOOprH8gFKNAebH+5GuIWZ56WsRXKkLBUwtlXYjvBu3M/3XPteoa5H+7GbSILem4wslkrhg+pE6twlIipehag70de5DEI7spo7t4rAu4knblxxf0RA0viOhNoPq3v5xow7negxusn2jbyR3jSjSheOdJgoAtD+SXUtOrHwCHwa4ALpfAjMJMyUISAGW/dPH6ni9LYCoDymZV1KgBzbRAH1m0CpHBUOPRyna9c1+JM9qpCLUQugwOLOMEczErHZ/c+Q26C+V5zCaXlnqU356voPPhHk7Cpo/60HgUWPt3Hr6VT+5doHGYGegvU7pbMv04tnUuzI2kaD/51DqyulsrbabHcpahsgqpaY8x5A02zzZ+FgARiwkQZfuY8l4YV08SGQFUkrwa4thNW9xZFQC6n4NFqdw8NyUji1Akf1lFU5/2Zsx9L3Kb6tA+mwgD/pP2fLqGV5bmeVThbRzW4A9T4QjpI2fblaRuqJOZKkCaeNZIEgauMCo9LpnzkXdXYCS8v/4G0W4ZBCRQRJxl+Jk6M46b3D1LFdXYZBlQWgZMHFpaUVUBgCzoU6Mt9wQCdloBhjSUO8zOSo3KUI9Jq62czdZhfVe3dNAwu8zJqD2qXppNGlTvAGtztANHT7wtkKt6OwY30YWYx+9aYsT5T3LcH0DtVy5W9ka9cXMwttgfVLbuODJFyQQg7H0NnANR8GAgrTzbX+CdalUCtkLha1kMTaQ7V+sToDtXO7VSGPo0O0omvTsl/2WPRsurgZg2eFTrVxWxyLgbuJ9xa7zWQKklE8fENyj0OigzbZgFDzpEdfmLgr01RJihgffZjA6o0xxuPvmuUmEEW+JKYGEVSP0SA4Z7aIrjdUSxi5AHZ9arzgl1TrPmOXS6kgv0ot++PWa19CWjKc+lD0SmVc
- ZnwTz7po
- UGqL26eGxQEsryd3sEtvOkV0DA/RFKN7yKu4A7XyG3edqCXBXde13o+A2E/pnv2BVRcoVOG+i48ZLFyvlU3pGlJDbeKaij83wRuyAt6V505EcngR+47lM4G4ps9+bLs6c9uKN9BbWmBeG5xw2wtQI70De2DNxw4U9WLNf8lN7ETedAo2OM7RcETSbcnDyE1gjMkAhH5Z7aBuCgGW4u7hrN/ao0El1eWzi2Eba8TvJ/kPmeF4bykEjtB5WQiaiOu2fpQeHJPT+wEfa/LCs69/BdnmOPm9rEfo0C47nFyfW9ScifygiaX36eJHM+g==
+X-HE-Tag: 1789001283-228843
+X-HE-Meta: U2FsdGVkX19kLcVzXap93/TDeGgCsUjgdaq2p7tl9qXTw11VWGC2ThLO/bzyVymLsYWdf/4M0GbuMEzIio5zHxCQvlFCr0XmxuY2nI1rokKlx7LLMT/4rZ6vYvtn8Me+/+xFf6RKz89WZbIwM0oD7b57myBWg23i7RVpAWgL9FTOhCs1L11JanOScbP7B4mXTJcp/mlo7drTER0gH3QnReGuE4U+N1p8cxM7gSk5/+UP+6iDv7aaHlD8prEVsConXQRkxMnWco6cjISsuJSMOZbMrv2pC2L4+JgL5vsh3zKI80F1lM3tgjFqQW8YMiN0dT9c0he2lxnttmPS9WmEaoqu8RDnfqzwwvWUi/5rkbTfKQjiB+UTHDMMfiqQTvCiIxHmOarewwC80q4cP4OCdKoYKl/zsGDSwjiGyLc0z6w+OxuISyZGyJjCTgI+/XPr1TSnvuGDyC+6hAiarjitrk1L3Q66cG0jzSfrsw4fEcSd/Pk8/MY5lVXiVk11ZF73nFt7bGnmOarwhdZ/EvVnaL5jZ74NcPsUEIOoPeORXwcVIVbzfILA0iVfUIB7basDWtQ26Kk6Dvgo5kKJSxxwuEPZ+PHvHiVBDg9wLNAkkbGG6k48WLL3f1+p2H05sECDdyGhq0zEW7AWaPx3R+gosUdqake4/IPI6JZVOyqdFLUryGZNrHCbd2TdWDIgUtG8JJ6yrk5Qt8EuEbxZBTFxbYH1sdnSzn5VRmd36bK0r54j7Vf6lRcDoy23KYcmS1zmKMAKlpnWnWGXPbY82k4sD17VAowLuuA6FLVD6ejza2z/P0GXJ0Mi50Fgig24mxE9oOFTbAyu9q41FZPZvzAhWbE6lmlnoT05ZNf1BOgCsUNQXgh/L3j/sF3Lp0HZ5xorTVxDgU3ppmGs7hCClMFE5tehEdH7F6Xt9eCbRJg/HojtzKcbiyilPp0pPezTnuFCbAst5ar23k60+zBxcJJ
+ zVTvYlsk
+ UPLs7ilQ2Sfm+HwxsSt9ywNGl6facm7s77J+58bkeJ3ZCfk62urhfvBAC2/U61xRn0okzdMyLb+MJhiTZDVMrS9bbapQuitm8gADkfo/mFYhylSN0IPB7h56tathpag52v5X53JW0TmJm2tKPGDVTGYemOTonW2qzYjBaheQti4LvJpfD3QtsrCwsWpJh6BM/KIRqk+SjuSlBfzSxgxDjiCsC9FCezo3YPGSWvAXhCL4weGwC9yYFAX+ppQeu/fV90UD3CoXJOsAI+X7ms08xi7YJn3eHaUldKrnUVSmyH6buv8MooGK7UXpSapfFsOPoLToBGHhJxVE61wy+Kn2y5lLPcucoF6ymMUCtYX7A0AzEGU68jGKAyVb7ywqU5s7LzQwTKdTNTSSIKP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,53 +92,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  9 Sep 2026 18:07:33 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Thanks for the review.
 
-> On Tue, 08 Sep 2026 17:38:00 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > Hi Liew,
-> > 
-> > On Wed,  9 Sep 2026 01:50:23 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-[...]
-> > > By the way, I found a thing in the design document that confused me.
-> > > 
-> > >     temporal: More straightforward algorithm. Tries to achieve the goal
-> > >     as fast as possible, using maximum allowed quota, but only for a
-> > >     temporal short time. ---> When the quota is under-achieved, this
-> > >     algorithm keeps tuning quota to a maximum allowed one. Once the
-> > >     quota is [over]-achieved <---, this sets the quota zero. Useful for
-> > >     deterministic control required environments.
-> > > 
-> > > I'm not sure if "goal" was accidentally written as "quota" here.  Would
-> > > this be better?
-> > > 
-> > >     When the goal is under-achieved, this algorithm keeps tuning quota
-> > >     to a maximum allowed one. Once the goal is [over-]achieved, [...]
-> > 
-> > Good eyes!  Yes, seems it was only mistakenly written in the way.  Please feel
-> > free to send a separate patch or include it into the next version of this
-> > patch, whatever better for you.
-> 
-> I will send a separate patch.
+在 2026/9/9 11:02, xu.xin16@zte.com.cn 写道:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> Every node that unstable_tree_search_insert() descends through is
+>> revalidated by get_mergeable_page(), which takes the mmap_read_lock
+>> of the mm the node's rmap_item belongs to. These are taken while
+>> ksmd holds ksm_thread_mutex, so a single mm whose mmap lock is
+>> being written to - a process busily mmap'ing or munmap'ing -
+>> stalls the whole scanner, for every KSM user on the system.
+>>
+>> Use mmap_read_trylock() instead. The trade-off is that pages of a
+>> contended mm may need more full scans to merge; in return, ksmd
+>> latency no longer depends on unrelated mmap activity of the
+>> scanned processes.
+>>
+>> Testing, on a 4 vCPU QEMU x86_64 guest with ksmd at
+>> pages_to_scan=100000 and sleep_millisecs=0, 5 runs per kernel
+>> (median reported; baseline is the parent commit):
+>>
+>> 1. A contender process registers a 64 MiB MADV_MERGEABLE area of
+>>     unique pages and runs two threads looping mmap/munmap of
+>>     256 MiB, so its mmap lock is held for writing much of the
+>>     time.
+>> 2. Once that churn is running, a quiet victim process registers
+>>     32 MiB of 2048 unique pages duplicated 4 times.
+>> 3. Sample /sys/kernel/mm/ksm counters and ksmd's /proc stats
+>>     every 0.5 s for ~2 min of churn, then stop the churn and
+>>     sample until the victim finishes merging.  The same phases
+>>     run without the churn as an uncontended control.
+>>
+>> Results (median of 5 runs):
+>>
+>> - contended ksmd scan rate: 11,473 -> 58,397 pages/s (5.1x)
+>> - contended victim merge time: 10.4 s -> 1.7 s; the contended
+>> - contended ksmd CPU per scanned page: 13.4 us -> 3.5 us
+>> - ksmd time in uninterruptible sleep under churn: 78% -> 57%;
+>> - uncontended (control): merge time 0.65s vs 0.62s, scan rate
+>>    259K vs 247K pages/s and ksmd CPU 3.9 vs 4.0 us per page,
+>>    unchanged within ~5%.
+> Sorry, I'm not fully convinced by this approach. The performance numbers
+> indeed show improvements with trylock, but I'm not sure they translate
+> into real user benefit. Users typically care about how many pages KSM
+> actually merges and how much memory is saved, not just how fast ksmd scans.
+>
+>> Assisted-by: Zcode:GLM-5.3
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+>> ---
+>>   mm/ksm.c | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 49d48d1e0998..3cfb09a926ff 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -820,7 +820,14 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
+>>   	struct folio_walk fw;
+>>   	struct folio *folio;
+>>   
+>> -	mmap_read_lock(mm);
+>> +	/*
+>> +	 * We trylock because we don't want ksmd to wait for an mm that is
+>> +	 * busy changing its memory layout: we prefer to skip this page and
+>> +	 * let the next full scan retry it, like the folio trylock in
+>> +	 * try_to_merge_one_page().
+>> +	 */
+>> +	if (!mmap_read_trylock(mm))
+>> +		return NULL;
+>>   	vma = find_mergeable_vma(mm, addr);
+>>   	if (!vma)
+>>   		goto out;
+>> -- 
+>> 2.43.0
+> Sorry, NACK
+>
+> Also, this change feels a bit too blunt to me. In scenarios with even mild
+> contention (far less than the heavy churn in your test), ksmd could end up repeatedly
+> failing to acquire the mmap lock and thus fail to merge any pages for a long time.
+> That could hurt KSM's effectiveness for ordinary workloads, not just the contended ones.
 
-Makes sense to me.
+Indeed —— further testing confirms that repeatedly taking and releasing 
+the mmap lock slows down the victim process's merging.
 
-[...]
-> > I think the clarification is better to be added to the 'temporal' quota tuner,
-> > since this happens only when it is used.  Maybe the clarification could also be
-> > shorter.  For example,
-[...]
-> I agree that would be better.  Although users might look up the
-> definition of qt_exceeds first, they are also likely to navigate
-> directly to the temporal section.
-> 
-> I will clarify at the temporal section in the next revision.
+> Besides, there are lots of mmap_read_lock in one page's searcing and merging of ksmd, such
+> as try_to_merge_with_zero_page, try_to_merge_with_ksm_page and so on...
+Right — in my other tests using trylock, the difference was far less 
+pronounced.
+> I'd prefer a less aggressive solution that avoids stalling ksmd without starving page
+> merging entirely. Maybe considering it together with smart scan? Need to see other
+> suggestions from other maintainers like David.
 
-Thank you.  Looking forward to patches.
+Thanks for the suggestions — I'll explore this further.
+
+>
+> Thanks,
+> Xu Xin
 
 
 Thanks,
-SJ
 
-[...]
+Longlong
+
+
 
