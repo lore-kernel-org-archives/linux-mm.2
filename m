@@ -4,104 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8265EC79FBB
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0427FC88E41
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 941536B00AC; Thu, 10 Sep 2026 19:51:53 -0400 (EDT)
+	id E04876B0095; Thu, 10 Sep 2026 19:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1C26B00AD; Thu, 10 Sep 2026 19:51:53 -0400 (EDT)
+	id DB33E6B00AE; Thu, 10 Sep 2026 19:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BC0C6B00AE; Thu, 10 Sep 2026 19:51:53 -0400 (EDT)
+	id CA49C6B00AF; Thu, 10 Sep 2026 19:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 468B96B00AC
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:51:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC04AA065E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:51:52 +0000 (UTC)
-X-FDA: 85199502864.21.70585E2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94F766B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:55:40 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B36601404E1
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:39 +0000 (UTC)
+X-FDA: 85199512398.22.2ADA27F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 342CCC0003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:51:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArNsIwce;
-	spf=pass (imf22.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789084311;
-	b=und+78y4Hf/b6PdBsVyIZ8MglZ8bwleNCgZqxAdTTN5jcrl5o6Qo/MtSk4oxpNnytLs8Xy
-	EW7N9dcl6HNi7UpFQ0NJxp2lq/FkYkSYhODw3IrcjpQvExYK+GwvpmDedXkTB0pXf3Taq5
-	uB6KgBqw0+JLLeaLSWi3YOWxozhLO2s=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArNsIwce;
-	spf=pass (imf22.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id C0F4B180003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aRJyfS+I;
+	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789084311;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789084537;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=OQOxkycwoGLNXGUfFmcr/J4SGntOXSZHAc0hvOFZlQU=;
-	b=IjIDlkImRqT0OEXJbGapx35Xn5/Cdxtz6p9Qz+kv6p8zaPlTnMVB1F9lEIkldZOMfZyF57
-	k8lAoP/+p4aG+Oh5B/itptPhOvoO+17AN2vfXXcnqYy+kf2iosuJlr5tlX/xpXZo890+9Z
-	J9Zggro1TfcHlDHtIdyIg64UUqo5h2c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA5A460200;
-	Thu, 10 Sep 2026 23:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448D51F000FF;
-	Thu, 10 Sep 2026 23:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789084310;
-	bh=OQOxkycwoGLNXGUfFmcr/J4SGntOXSZHAc0hvOFZlQU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=ArNsIwcez5Uh3JsEBsAM0lOJjUMbXFHtBInHoiTTWHMtCAnNNGjd0GIaOeoyodhi3
-	 RVYHyIskfdIeLq2oYTHbGRM+jPvi6pwgX1y88UP32m2kJZ+eTc2ZESKtwhTwMMTB26
-	 RWyl5hUnei4gbHrytcDcV4H8icCzz97ZBQNBPtVSE5Wy4kHLvtO07PCBMXXTA6rGnO
-	 jbQBaEFncQwijJZ/Y+TD9Gy2yatx4vvD112VrtMsVNgBWZZWLyTopL0P4sW0Kig272
-	 gTRlFxN7Up1pmrq2wlISFeFjbRgJkc1ZRKoKvnV/5j963bDN9pT3LLl5mKsgjJdOxW
-	 2jYXvBzVAXIxQ==
-Date: Thu, 10 Sep 2026 18:51:49 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 08/12] PCI: liveupdate: Adopt ACS controls in incoming
- preserved devices
-Message-ID: <20260910235149.GA364189@bhelgaas>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=++ivv7HN60tWZlNPCgHch1tbo7hBfnJGr8wGNKhUbSc=;
+	b=liT17OdEF6g6kbhSKRplR9b6I6ViafnZK3MJJN4d0vc9EJrpx1RwCvJI0AG60XJSsp8tBQ
+	NF4crvA0diAqJR91ozx8o0+0d9nY18AzBYXzdLlxmbou0fs6PG84B0vlUbdmsVD38Nvohf
+	AUsZu+HYRemImgXfSgRM2Nib1zt0Xz4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aRJyfS+I;
+	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789084537;
+	b=FhZCBPgKB05MVm6wh6JZsaR+VypIqNtdUVD1mu9Uh6i5p0ozBJ+Dm5a6T7Xd2xOVH0MNvS
+	MD1UPBue/7lxkbVhMK7UP74W6xNauWGN4Qdo756IA+OXMn8GDT6JxVB0uUj4n5aFfsx22U
+	BjVBk2u1pPrkT40QTBns3eNWdDFGEY4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C87E3601F1;
+	Thu, 10 Sep 2026 23:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6B620C2BCC7;
+	Thu, 10 Sep 2026 23:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789084536;
+	bh=3xAm8x8BxRzgrAQrSXJX3gnFRneXWjklDL9ZXrCM6gA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=aRJyfS+I/6oQ7NgCYNS5fmaQR+KsYLywWvIOhh67twUSNtYkyOUbNPbVUUIIrpi51
+	 6GP9p4pbnVML0vJ2nd8LWSfjo+PnrGERiWFu0eRqSLwZ9UqNVjplFT0CRm9Phg4C2w
+	 oAKM4jE9zC9smkbSe0E4fDbbdhYc3jAZGKRoVOLytlKI76wYKWHNu/D8+0Qo/N+x2w
+	 AhCL13x6FpPQSPkNeUWTLHDPUwzeRe5sZ2tzwcShlzKvdPbhL/0KmtpFn0jfjmMYG/
+	 ehWoEaMOC7YdTLGP8Rbontj1HibTUE3fuYSJWwKpFAMyksKL0ANtyQLSDn74/zZqIt
+	 sC2rzmYHMxyIQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E354C88E45;
+	Thu, 10 Sep 2026 23:55:36 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Subject: [PATCH v13 00/44] guest_memfd: In-place conversion support
+Date: Thu, 10 Sep 2026 16:55:26 -0700
+Message-Id: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-9-dmatlack@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG9Do2oC/33T226cMBAG4FdBXNepPcYnrvoeVS8Ge7yLGmBrC
+ EoU5d1jdhVBREFcGXk+jw//ezlSamks6+K9TDS3Yzv0eSDkj6L0V+wvxNqQf5TAQXMAxS4ddaz
+ tb8/oifmhnyktRawJPDRBOqMklrn6lii2r3f69588bnAk1iTs/XXx/s7dz55ep2XqtR2nIb3dm
+ 5jlUvBYTgp5uNwsGWcqegFoOHnrfl2G4fJMT37oymW9udpAoI+hKkOUp0VyiscYdpBaoQrsMaQ
+ yFKzm1vvoEWAH6RVS3BxDOkNOYKPQNsJhtYPMBgI4hkyGIPKIVDmtJN9BdoW0ONmaXToK4JSTy
+ lgld5BbIXN2Ri5DUkWH5AEp7M9I8FWyZ4ck+H1zXlgiHWSDe0psqLMXIESmOAoVLBrn8D8UbCj
+ JTyjIlFWkYgCVv+/UxyMXif695KRNj3CUHY0j3oNWFxys0Z6QKQOGgceKNYSBGamVI9SR/Lfns
+ I1pXTz6+7rIfmCJppfUs9vCa1E5MAguOlPndHxlMjNdO9XFbJ4kSx5ymx+fPyXVBRgEAAA=
+X-Change-ID: 20260225-gmem-inplace-conversion-bd0dbd39753a
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+ steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Fuad Tabba <fuad.tabba@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+ Fuad Tabba <fuad.tabba@linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=8646;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=3xAm8x8BxRzgrAQrSXJX3gnFRneXWjklDL9ZXrCM6gA=;
+ b=tBwALuhzAg1A20WwgjQXyyFKIY1ex8U5p5pDeeO9K/+7xIvJd7mdEmNUHHn+JEMBtMbo+WCcs
+ /jqpzD96MFVDmtkwsJhys5mJeDZWb0Xhotl8vQrEiE9Jea5+I28Sxwc
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C0F4B180003
+X-Stat-Signature: y8d4kkt3jysk43ufuudxc4afcaphrg9w
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 342CCC0003
-X-Stat-Signature: 5jakem4cs76ibj4y5ft4pxjj5ujn8g5z
-X-HE-Tag: 1789084311-668581
-X-HE-Meta: U2FsdGVkX1/+z2wdyYT+ws+vYazSHpAsjTo5mAN4ZDpuT+H7g5aWvfmJdGzfcx3S5TfLCHV4PkhWsUGCtO/jQRGfeASgPevLetw4/jAVnAryCz3CqhR7b5af64rCF+Psaodpe7MhpwSCKgHy8D1kbZdI0wcohJ2dbcq984OwSoFYHNx9T0AkbsH6ffYrsmMdI0ROQ28URzfUcsqtR8PnWBP8AVJbEDW4Rh+1QdJS/pvVQCRkRNDaxu2Zz9co1ThJnpwkZlo+7h64e/LCS4TsJlCzdxq3AOcfkEejDFtnOxi6fkbRqtRdAOvYDt6OdGKQpTqlJJG9sTiGhXS4dySdU6hy7pv0XJAUVdMI9VC0ogt9N7abydliu/m4U2/pKQbEtfi8hOJQzo7OdFLo6+bsM57j1elS3u7um2S24IDB3pOZqwvePFrl/cK9KfvYCBmsjhH7iBgFCPuhluwsLBwzSpZOIzN8SuO9CEJqpPrimTz5S7CXOBwmlVtKZ2T2IpDneX1+3etk+/j0UI91g/5SW1qfecZ8WaawwBHL+D1Z6Oa6su+58lKLWb0WDlP7B+TKqWtJHNwUwNI6X01pSVyTZQrvt1Fl7HjtS1TUm5lChlMbQWERbWpcuEJq7V+nNvhYJYdiOs2vR2R8wMjzRd1B4/9B+AL8PNyPF6Y9zm4UDnE7f3jjdaLV57VCoDYulve6dBlGweTFtDk4erV23CNyI7zNwQznaU2Ip3FF8gliCI+jdUfGGUPQmK78UcPMGy/0tvTl/7Dzqfzhyq7XfuP4E3sWEcmjxd7uolRML+PR2n1K6eqchxG4Qn7oIMaUyB5lTffXzUMXVIpuG8yGd7rzXwtqOomeM/QU0xWtkkVjtZQMsgopJN7FiayQ7gsJUnHPwEx6g4hAPt1VqI10T0rr/a5/qeEIaKUUHimXAq2D+uaNSTmHkyhB0nsh2eHf9nyfWFZzhhRDp/KIS28ocz1
- RAfIZ24h
- zpzBavqMUYrsIzY8aQuYIUXvN5dMImFEW14yzColasjlat76aWVAux56+kfqoWMA16pMRmcOgTsYE3zAVWCrnsxlmM19v9UUNmUNQuvuGt9lD3mGqONz3xeuxLkvMLiCjxJ+lKIghZS7tKPMqR2G2LA9vIfn5pwR5+JVS8HDuU91A2RwGFrCweL/Iy825WEbYq9wOjoOB0xBKvE01YyTqB1gaGE+zCGheCYCOW0D6n8ryWw1zMUY7RvLFqtesXSc9H++y7jTCSHCrAjzAQ2CUHuTM+gknMdAQtuQOHu1htWNqhDSUxbIL8OnIVeMX0hXSq7M32/piRD7pDer9GVDr8fxqEXSjtXTwtjGNae7XRsloNhg=
+X-HE-Tag: 1789084537-257585
+X-HE-Meta: U2FsdGVkX1+3oA2TiL3qsEyNf1JxIegtkAr3N6kjalD1xdoqz820C92YWqU3mmv43DVcjN1WzvTaQZ6IV74hjpIHoEOdg0B36AAZSOjW1Ux/OzQJ5Qv58I/ZeUqUQoNftp2EqvoiX6pB9mWEvxwuJ5Qcrr9Yh3/qgsss0iRKyMZtGx1Z07XAAUxuwx426EALSX/EwxabNAx0b71lmGKCKcTBKpw14hVthbXo7N06GatmQ1SUlw37Ma7Jy8XAfsmGURLlXzGC7ked0NX7f/e52boI3B1g9keGSrKoqtEKxgLFSuqL3OwJXfI7b2JPZknCCfR44VU5WcoK0gqdMujov4aO3M0M3HBxQk9jw9K8nkd4B934xxMZ85g/e4xUQ8J0z2+RXeGNwHmQuKkEEi7PvuIzqxbqEIJafNq7YizdaIj5tU8hXpga12OQHvK7kLbacpVW+jr57/YBwmb7Az0LWslOicph168rEVbsbFE8qEelpqWXkODU9uhtB/+Y+dvAfVNxjcML8232GbV2vtOb+q+kfHkoFyV4JFdTRmCV8OpYPUXeKD6uD2rkVpIPaU5qplcwtRcysmJVsTaadMrXIZuXt3OalIVtNdG9CrahD2VzZFwEYKbrHSpJ675K7dGiMMQ8hyiFMW7c2Y8EGj3o8sBPhyu6cOriaJAwqjQJK8XC4Dyqz7wtvk+oFznPB+aPH5uZOvhWE93Htwb6IiqRu7UoPwoQy/yjLsJkFD78MMsvhdFqm/brDk2KA9IWQYCTR3KBEu5HevTdMlSzeFnnt6/3n74ioWPRK+39XyUhsb+sbn9Y5RZVEUyRiRVldGLyrCuof5uCU4rEncuyBFefv8D1KVKBhEBtzbkoeqrrJJNk8SkhFZbEyKcFjHk9JKSlxj1zmTFqc220HM/KEYG7NW6RCRJYzpVcQ66Jq2NoTHvxIV5O5zYGichmv5k8lY6T5MLnxDGb1yv2OF7PDMv
+ 95+h0+yA
+ y6bRKfyfqmgnfzsXCJlL8m/CTbdp8SSkzR7YgO+lIi6/CQBBRpEwGz8E60jE/ncGAxGtZHjp0GghDK19tXxtkzlOmWI4M7Y9ft5dl5Xtb6LaY2iJgKOpzExgxwrggSKH/lOT/ZnjGl1LtEtLwS2nxAWsLJRyB+D8PLJaY1a6RczzuRCmyHoBrtBY6GIpYonRByxXg0OijexK4V4Uzl+sXjr3zlPzQ7L2rLMM8cDhTutw1kIGkhW3bvXmt/f2yN4fqoMjGL7sL2qx4bBVCF4DG9A1GKrrg5rfK5BT3mLnj43Zyr0C75lnu4G8/zh7BFB2/ED9mTobsc2I3olZJp3/fh9dWyln9gIUjRnw/MTJs/PAz7MwXiEC1h7JoqoaNxN7Yp1izKQOyZ88nd7votguk+d4HKtqhxlOGk8YJJxiF0JL0Ep1gL38N1/XxqRDwxOtN7VrnWXGMS+or7B0B8U46LbnjaPxI8yWGgrjOjaA3VyA5ppjVKfdOlnUuPnVI+rbhOxlT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,308 +145,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:10:02PM +0000, David Matlack wrote:
-> Adopt Access Control Services (ACS) controls on all incoming preserved
-> devices (endpoints and upstream bridges) during a Live Update.
-> 
-> Inheriting ACS flags avoids changing routing rules while memory
-> transactions are in flight from preserved devices. This is also strictly
-> necessary to ensure that IOMMU group assignments do not change during or
-> after Live Update.
-> 
-> Cache the inherited ACS controls established by the previous kernel in
-> struct pci_dev so that ACS controls do not change after a reset
-> (pci_restore_state() calls pci_enable_acs()).
-> 
-> To simplify ACS inheritance, reject preserving any devices that require
-> quirks to enable ACS as those quirks would also have to take Live Update
-> into account.
+Here's v13. Thanks everyone for the comments and fast responses!
+We're now at ~3 weeks to soft-close at 7.3-rc5.
 
-> 
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/pci/liveupdate.c       | 87 ++++++++++++++++++++++++++++++++++
->  drivers/pci/liveupdate.h       | 11 +++++
->  drivers/pci/pci.c              |  6 +++
->  drivers/pci/pci.h              |  5 ++
->  drivers/pci/quirks.c           |  7 +++
->  include/linux/pci_liveupdate.h |  6 +++
->  6 files changed, 122 insertions(+)
-> 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index 08e5ff8c1fe7..fb602dd3933e 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -71,6 +71,9 @@
->   *
->   *  * The device cannot be a Virtual Function (VF).
->   *
-> + *  * The device cannot require device-specific quirks to enable Access
-> + *    Control Services (ACS).
-> + *
->   * Driver Binding
->   * ==============
->   *
-> @@ -113,6 +116,18 @@
->   * This enables the PCI core and any drivers bound to the bridge to participate
->   * in the Live Update so that preserved endpoints can continue issuing memory
->   * transactions during the Live Update.
-> + *
-> + * Handling Preserved Devices
-> + * ==========================
-> + *
-> + * The PCI core treats preserved devices differently than non-preserved devices.
-> + * This section enumerates those differences.
-> + *
-> + *  * The PCI core adopts all ACS controls enabled on incoming preserved devices
-> + *    rather than assigning new ones. This ensures that TLPs are routed the same
-> + *    way after Live Update and ensures that IOMMU groups do not change. Note
-> + *    that a device will use its adopted ACS controls for the lifetime of its
-> + *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
->   */
->  
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-> @@ -128,6 +143,7 @@
->  #include <linux/slab.h>
->  
->  #include "liveupdate.h"
-> +#include "pci.h"
->  
->  /**
->   * struct pci_liveupdate_global - Global state for PCI Live Update support
-> @@ -417,6 +433,16 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
->  		return -EINVAL;
->  	}
->  
-> +	/*
-> +	 * Do not preserve devices that rely on device-specific ACS equivalents
-> +	 * (for now) since that would complicate keeping ACS constant across
-> +	 * Live Update.
-> +	 */
-> +	if (pci_need_dev_specific_enable_acs(dev)) {
-> +		pci_warn(dev, "Refusing to preserve device that relies on ACS quirks\n");
-> +		return -EINVAL;
-> +	}
-> +
->  	if (dev->liveupdate.outgoing) {
->  		if (!dev->liveupdate.outgoing->refcount) {
->  			pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> @@ -668,6 +694,7 @@ void pci_liveupdate_setup_device(struct pci_dev *dev)
->  
->  	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
->  	dev->liveupdate.incoming = dev_ser;
-> +	dev->liveupdate.was_preserved = true;
->  	pci_liveupdate_flb_put_incoming();
->  }
->  
-> @@ -746,6 +773,66 @@ void pci_liveupdate_finish(struct pci_dev *dev)
->  }
->  EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
->  
-> +/**
-> + * pci_liveupdate_cache_adopted_acs_controls() - Cache adopted ACS controls
-> + * @dev: The PCI device to cache ACS controls from
-> + *
-> + * If @dev is an incoming Live Update device, read its current ACS configuration
-> + * from hardware (which was set by the previous kernel) and cache it.
-> + */
-> +void pci_liveupdate_cache_adopted_acs_controls(struct pci_dev *dev)
-> +{
-> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
-> +
-> +	if (!dev->liveupdate.incoming)
-> +		return;
-> +
-> +	pci_read_config_word(dev, dev->acs_cap + PCI_ACS_CTRL, &dev->liveupdate.acs_ctrl);
-> +}
-> +
-> +/**
-> + * pci_liveupdate_enable_adopted_acs_controls() - Enable adopted ACS controls
-> + * @dev: The PCI device to enable adopted ACS controls for
-> + *
-> + * For devices preserved across a Live Update, write the cached ACS controls
-> + * back into the hardware's ACS Capability. This ensures that the device
-> + * continues to use the ACS rules established by the previous kernel.
-> + *
-> + * Return: 0 on success, or -EINVAL if the device was not preserved or requires
-> + * device-specific quirks.
-> + */
-> +int pci_liveupdate_enable_adopted_acs_controls(struct pci_dev *dev)
-> +{
-> +	u16 acs_ctrl = dev->liveupdate.acs_ctrl;
-> +	u16 acs_cap = dev->acs_cap;
-> +
-> +	/*
-> +	 * Check if the device was preserved over a previous Live Update (even
-> +	 * if it has already gone through pci_liveupdate_finish()). This ensures
-> +	 * that the device continues to use the ACS controls established by the
-> +	 * previous kernel.
-> +	 */
-> +	if (!dev->liveupdate.was_preserved)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * The previous kernel should not have preserved any devices that
-> +	 * require device-specific quirks to enable ACS, but if such a device is
-> +	 * detected (e.g. new device-specific ACS quirk in the current kernel),
-> +	 * log a big warning and fall back to the normal enable ACS path.
-> +	 */
-> +	if (pci_need_dev_specific_enable_acs(dev)) {
-> +		pci_warn(dev, "Device-specific quirk required to enable ACS!\n");
-> +		WARN_ON_ONCE(true);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (acs_cap)
-> +		pci_write_config_word(dev, acs_cap + PCI_ACS_CTRL, acs_ctrl);
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
->   * @dev: The PCI device to check
-> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-> index 107881183fda..ac5b8bf2edf5 100644
-> --- a/drivers/pci/liveupdate.h
-> +++ b/drivers/pci/liveupdate.h
-> @@ -16,6 +16,8 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev);
->  bool pci_liveupdate_preserve_bus_numbers(struct pci_bus *bus,
->  					 struct pci_dev *dev);
->  void pci_liveupdate_scan_bridge_end(struct pci_dev *dev);
-> +void pci_liveupdate_cache_adopted_acs_controls(struct pci_dev *dev);
-> +int pci_liveupdate_enable_adopted_acs_controls(struct pci_dev *dev);
->  #else
->  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
->  {
-> @@ -34,6 +36,15 @@ static inline bool pci_liveupdate_preserve_bus_numbers(struct pci_bus *bus,
->  static inline void pci_liveupdate_scan_bridge_end(struct pci_dev *dev)
->  {
->  }
-> +
-> +static inline void pci_liveupdate_cache_adopted_acs_controls(struct pci_dev *dev)
-> +{
-> +}
-> +
-> +static inline int pci_liveupdate_enable_adopted_acs_controls(struct pci_dev *dev)
-> +{
-> +	return -EINVAL;
-> +}
->  #endif
->  
->  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 77b17b13ee61..22001bdf4c97 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -34,6 +34,8 @@
->  #include <linux/aer.h>
->  #include <linux/bitfield.h>
->  #include <linux/suspend.h>
-> +
-> +#include "liveupdate.h"
->  #include "pci.h"
->  
->  DEFINE_MUTEX(pci_slot_mutex);
-> @@ -1008,6 +1010,9 @@ void pci_enable_acs(struct pci_dev *dev)
->  	bool enable_acs = false;
->  	int pos;
->  
-> +	if (!pci_liveupdate_enable_adopted_acs_controls(dev))
-> +		return;
+v13 is based on 7.3-rc2 and:
 
-Ugh.  The asymmetry between pci_save_state(), which does nothing
-ACS-related, and pci_restore_state(), which enables it, is sort of
-sketchy to begin with.
++ Hugh's patch to export lru_cache_drain_for_folio()
++ Another series [1], which makes kvm_gmem_get_pfn() NOT return a
+  refcounted page to KVM.
 
-The command-line parsing in this path feels like kind of a wart (not
-that you're touching it).
+Here's everything stitched together for your convenience:
 
-It just seems like this path is already hard to analyze, and
-liveupdate is making it harder.
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v13
 
-If we could save/restore the ACS state around the reset, wouldn't that
-solve this without any liveupdate specials here?
+Changes in v13:
 
->  	/* If an iommu is present we start with kernel default caps */
->  	if (pci_acs_enable) {
->  		if (pci_dev_specific_enable_acs(dev))
-> @@ -3689,6 +3694,7 @@ void pci_acs_init(struct pci_dev *dev)
->  
->  	pci_read_config_word(dev, pos + PCI_ACS_CAP, &dev->acs_capabilities);
->  	pci_disable_broken_acs_cap(dev);
-> +	pci_liveupdate_cache_adopted_acs_controls(dev);
->  }
->  
->  /**
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 4469e1a77f3c..988a18b3204a 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -1047,6 +1047,7 @@ void pci_acs_init(struct pci_dev *dev);
->  void pci_enable_acs(struct pci_dev *dev);
->  #ifdef CONFIG_PCI_QUIRKS
->  int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
-> +bool pci_need_dev_specific_enable_acs(struct pci_dev *dev);
->  int pci_dev_specific_enable_acs(struct pci_dev *dev);
->  int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
->  void pci_disable_broken_acs_cap(struct pci_dev *pdev);
-> @@ -1057,6 +1058,10 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
->  {
->  	return -ENOTTY;
->  }
-> +static inline bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-> +{
-> +	return false;
-> +}
->  static inline int pci_dev_specific_enable_acs(struct pci_dev *dev)
->  {
->  	return -ENOTTY;
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 7ac39ec2843e..99b819f38e49 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -5473,6 +5473,13 @@ static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
->  	return NULL;
->  }
->  
-> +bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-> +{
-> +	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-> +
-> +	return p && p->enable_acs;
-> +}
-> +
->  int pci_dev_specific_enable_acs(struct pci_dev *dev)
->  {
->  	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
-> index fc1f5640968a..04a2b2a3102a 100644
-> --- a/include/linux/pci_liveupdate.h
-> +++ b/include/linux/pci_liveupdate.h
-> @@ -17,14 +17,20 @@
->   * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
->   * @outgoing: State preserved for the next kernel.
->   * @incoming: State preserved by the previous kernel.
-> + * @acs_ctrl: ACS features established by the previous kernel.
->   * @preserve_bus_numbers: True if the PCI core should preserve the secondary and
->   *                        subordinate bus numbers assigned to this device due to
->   *                        an ongoing Live Update.
-> + * @was_preserved: True if this struct pci_dev was preserved by the previous
-> + *                 kernel. Unlike @incoming, this field is not cleared after
-> + *                 the device is finished participating in Live Update.
->   */
->  struct pci_liveupdate {
->  	struct pci_dev_ser *outgoing;
->  	struct pci_dev_ser *incoming;
-> +	u16 acs_ctrl;
->  	bool preserve_bus_numbers;
-> +	bool was_preserved;
->  };
->  
->  struct pci_dev;
-> -- 
-> 2.55.0.487.gaf234c4eb3-goog
-> 
++ Picked up Reviewed-bys
++ Fixed bug Fuad pointed out in "Ensure pages are not in use before
+  conversion", and squashed the lru draining in, adopted Sean's
+  suggestion.
++ Fixed documentation bug that Fuad pointed out in
+  kernel-parameters.txt.
+
+Here's v13 with tests:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-coco-selftests-v13
+
+Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
+
++ tools/testing/selftests/kvm/guest_memfd_test.c
++ tools/testing/selftests/kvm/pre_fault_memory_test.c
++ tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+
+[1] https://lore.kernel.org/all/20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com/
+
+v12: https://lore.kernel.org/r/20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com
+v11: https://lore.kernel.org/r/20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com
+v10: https://lore.kernel.org/r/20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com
+v9: https://lore.kernel.org/r/20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com
+v8: https://lore.kernel.org/r/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com
+v7: https://lore.kernel.org/r/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com
+v6: https://lore.kernel.org/r/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com
+RFC v5: https://lore.kernel.org/r/20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com
+RFC v4: https://lore.kernel.org/r/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com
+RFC v3: https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com
+RFC v2: https://lore.kernel.org/r/cover.1770071243.git.ackerleytng@google.com
+RFC v1: https://lore.kernel.org/r/cover.1760731772.git.ackerleytng@google.com
+
+Previous versions of this feature, part of other series, are available at:
+
++ https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
++ https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
++ https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (22):
+      KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
+      KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
+      KVM: guest_memfd: Pass mapping type filter to invalidation helper
+      KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Ensure pages are not in use before conversion
+      KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
+      KVM: guest_memfd: Return early if range already has requested attributes
+      KVM: guest_memfd: Zero page while getting pfn
+      KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+      KVM: selftests: Test basic single-page conversion flow
+      KVM: selftests: Test conversion flow when INIT_SHARED
+      KVM: selftests: Test conversion precision in guest_memfd
+      KVM: selftests: Test conversion before allocation
+      KVM: selftests: Convert with allocated folios in different layouts
+      KVM: selftests: Test that truncation does not change shared/private status
+      KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+      KVM: selftests: Test conversion with elevated page refcount
+      KVM: selftests: Reset shared memory after hole-punching
+      KVM: selftests: Provide function to look up guest_memfd details from gpa
+      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+      KVM: selftests: Set up page size and alignment independently for guest_memfd
+      KVM: selftests: Update private_mem_conversions_test for in-place conversions
+
+Michael Roth (1):
+      KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+
+Sean Christopherson (21):
+      KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
+      KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
+      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+      KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
+      KVM: Provide generic interface for checking memory private/shared status
+      KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
+      KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
+      KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
+      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+      KVM: selftests: Add support for mmap() on guest_memfd in core library
+      KVM: selftests: Add selftests global for guest memory attributes capability
+      KVM: selftests: Add helpers for calling ioctls on guest_memfd
+      KVM: selftests: Test that shared/private status is consistent across processes
+      KVM: selftests: Provide common function to set memory attributes
+      KVM: selftests: Update private memory exits test to work with per-gmem attributes
+
+ Documentation/admin-guide/kernel-parameters.txt    |  25 +
+ Documentation/virt/kvm/api.rst                     | 110 ++++-
+ .../virt/kvm/x86/amd-memory-encryption.rst         |  14 +-
+ Documentation/virt/kvm/x86/intel-tdx.rst           |   4 +
+ arch/x86/include/asm/kvm-x86-ops.h                 |   2 +-
+ arch/x86/include/asm/kvm_host.h                    |   9 +-
+ arch/x86/kvm/Kconfig                               |  15 +-
+ arch/x86/kvm/mmu/mmu.c                             |  28 +-
+ arch/x86/kvm/svm/sev.c                             |  13 +-
+ arch/x86/kvm/vmx/tdx.c                             |   8 +-
+ arch/x86/kvm/x86.c                                 |  20 +-
+ include/linux/kvm_host.h                           |  83 ++--
+ include/trace/events/kvm.h                         |   6 +-
+ include/uapi/linux/kvm.h                           |  16 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ tools/testing/selftests/kvm/include/kvm_util.h     | 139 +++++-
+ tools/testing/selftests/kvm/include/test_util.h    |  34 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 222 +++++----
+ tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+ .../kvm/x86/guest_memfd_conversions_test.c         | 512 +++++++++++++++++++++
+ .../kvm/x86/private_mem_conversions_test.c         |  66 ++-
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  36 +-
+ virt/kvm/Kconfig                                   |   3 -
+ virt/kvm/guest_memfd.c                             | 468 +++++++++++++++++--
+ virt/kvm/kvm_main.c                                |  92 ++--
+ 25 files changed, 1642 insertions(+), 291 deletions(-)
+---
+base-commit: 5e036ce12de91c6fd674dad33b169c6150be2a7a
+change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+prerequisite-message-id: 02876cea-5727-2ca4-bead-73659ea6fec4@google.com
+prerequisite-patch-id: 28922a76dee80792da6e445a55cdbb4bedc85374
+prerequisite-change-id: 20260818-gmem-no-return-page-614927a29f97:v4
+prerequisite-patch-id: 38553271bcb80c17dbae29cef5c20bcf95e804f9
+prerequisite-patch-id: 0d4b50926073ba4f5e5d8b2c0cdae8869a278863
+prerequisite-patch-id: bf39277ddc12818fe562a006f31d7992e5c7d42a
+prerequisite-patch-id: 74fe849c04c187074bd380e664e536a07076292d
+prerequisite-patch-id: f92bdb4870dd7c1a2026fca1083e4400c2be11d8
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
+
+
 
