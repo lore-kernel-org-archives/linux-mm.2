@@ -4,144 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57B90C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:45:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4EC6C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:52:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46D266B0092; Thu, 10 Sep 2026 06:45:50 -0400 (EDT)
+	id DC6596B0092; Thu, 10 Sep 2026 06:52:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 444366B0093; Thu, 10 Sep 2026 06:45:50 -0400 (EDT)
+	id D502B6B0093; Thu, 10 Sep 2026 06:52:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 332706B0095; Thu, 10 Sep 2026 06:45:50 -0400 (EDT)
+	id C23706B0095; Thu, 10 Sep 2026 06:52:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06EFE6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:45:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 750161A0314
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:45:49 +0000 (UTC)
-X-FDA: 85197522018.20.09059FC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 967616B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:52:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0CCBA04DD
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:52:08 +0000 (UTC)
+X-FDA: 85197537936.19.0855D4D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B5E62140007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:45:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GfiMsYRH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789037147;
-	b=My4nhm755r1OyJzSoGh9edTv0kFhUKjwIK5JoM1tPQhqgKSiNp7M3KkEM/44TWMUS7dUJW
-	sykWEW2k+EJUC3TKZqzJ1CHnV5ti6KS93DWPjL+kyffG2na3rtuOjGHGfXqqH0M3fY9vs7
-	O/eGlBvoxnghpfMNy7SKHNuLjnscxNc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GfiMsYRH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4CA3CC0003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:52:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkBWkbqs;
+	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789037147;
+	s=arc-20220608; t=1789037527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Cok/UTYpji3+FrwaXOHiwTHqSUNYdgdbBT+xk3If5M=;
-	b=pw0bF2HZHi3r96gRLVbKCa+Hwq0T0Ifeuzw3qMkE3U5vFOM7W6R8P48Nu4+HuyYATePR+E
-	NM2BG6Exf+uPV4jTnsajYbT2wM7yg8rwPxR3khRaulQtuhpER42gVZNxwFtVLUBqFTD0WZ
-	u1Z1eZHuLsnJfo6rTHhH6rqAjngMAaI=
+	bh=N7tjoMh0VJ0JjF10mqJOPD7b1ih9SO6rgWyfI3+RTmM=;
+	b=jQcdbvQLLWexJRMnaWW7XUJwPO63HK+buoM4eoZzICVbTaAlSyieiST0wcbYp72TT4mrUW
+	YTlg9KV6GdI5QdPXfBDAShjhLmpowW1sA3UtVH2uVPDBD8m4Tlf2vUhnvp2z5s1d6ysoqd
+	scwy4ew672M2Dz6+Puus1BRO18ZFSVo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkBWkbqs;
+	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789037527;
+	b=yhlo9saif9T6HBBZzOb46IuZKGn1pqcm9CifwrztutP6vXz15ResEjEfmFUSMHfFiDIpwx
+	VBHgCPnofcT754N0fVwoyFiufZdWk6S6opZbQtLK7CxHlINDCWxSlMzOa/8NxkGhICk0hw
+	8mNjqLsvVeDaFZmMCnftovSZubZa4y0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 49D29601EF;
-	Thu, 10 Sep 2026 10:45:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8197C1F00893;
-	Thu, 10 Sep 2026 10:45:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CCE87600CB;
+	Thu, 10 Sep 2026 10:52:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB61D1F000FF;
+	Thu, 10 Sep 2026 10:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789037147;
-	bh=9Cok/UTYpji3+FrwaXOHiwTHqSUNYdgdbBT+xk3If5M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GfiMsYRHHGKZsvxYkr5y+N9FShOF3YPYQeID93USEHyToVLr5Q4DDvLP8osPAOlgE
-	 19IcjdZANh/NM/3t7hxkBAGh65vdud/loNQDh66f/cAuBH6MK7evu2uRCQ/uzwLoXf
-	 FdQ5sYivvWSYPoBbdPOWoO7BGc/dWw6AMr0ZLpO4AK6vflfxhQMYYkMZercslO4Gm/
-	 r8sebyEBZwbq5nRAiv+w/8LcVRlvl8ZQAhCzqkDVs4GNT81d5RtEadG7MZP4HzgqJR
-	 8JB1uhbUbixXYfCCDlArBHv8KBXq4M9FRjR2kCMBKOUvzkL8SXipIl6c95+HQVGCFR
-	 rfp1YIGRJEbEA==
-Message-ID: <21e0a933-63b6-42b4-8cd7-df05b0c9acfc@kernel.org>
-Date: Thu, 10 Sep 2026 12:45:39 +0200
+	s=k20260515; t=1789037526;
+	bh=N7tjoMh0VJ0JjF10mqJOPD7b1ih9SO6rgWyfI3+RTmM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jkBWkbqsUtrXGjvzs9ejgfK4XpAo0fpqaDkZEwyYUh3nsky2zY+18Vn27mS7241TL
+	 MvCu5S/EUOKRuRIWcemqgqVR0X7r6k4w/oYOXZqhYTVtmn5cDR0ZWuVJ+EoGIOf31K
+	 si2Vs3AQL0JW0JfVnduAaNtpDg+K6Gjxl/jEwtzpEcPUiZ4rezgSm0nh5PAkQQUFO1
+	 GwPIbbmKXcJaxgmpF9ohj/yHw0Jk801NrDXApGybMo/hVriULWRHefHhXwmI/BEyuR
+	 x75hp2NlH3/kPyBXNr+tNycCgJ1d5N0BstAe2eFHBEpUaMX8cbJ1kv4UK65a/OEoEn
+	 o+nS3JzDYdGyw==
+Date: Thu, 10 Sep 2026 12:52:03 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Russell King <linux@armlinux.org.uk>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Saravana Kannan <saravanak@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v6 06/12] of: Export of_node_to_nid()
+Message-ID: <aqKLkeg0iRBqa3bo@orome>
+References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
+ <20260904-tegra-vpr-v6-6-79042cfa8de5@nvidia.com>
+ <20260908145929.GB3123582-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] kselftest: mm: fix some failure of
- split_huge_page_test
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <b923f63c-db7c-4ecb-949d-368bc6311626@kernel.org>
- <aqKHHWKvOonYZPy0@e129823.arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqKHHWKvOonYZPy0@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pochtu3uujjsdg7m"
+Content-Disposition: inline
+In-Reply-To: <20260908145929.GB3123582-robh@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B5E62140007
-X-Stat-Signature: caqhbix3px5hxpu1geomi8m9sk8spp7f
-X-HE-Tag: 1789037147-675619
-X-HE-Meta: U2FsdGVkX18ZjWvQTmI8Q7sD+1ScnqI6nupWrOnrxdj2FVzANTf2CLFXlLED2CyM34pbs8JnoRwMij9PFI8azGQSPe7up1KrwQkLEnieeIc4+FJM2adnn1pEd7W48g4BeKKSxVP6/t62IbKJ+9j8hd7TlofcF2EqkzNgR1i2qbhZGsDeKkCLA5FKjXJiGKI667lyE178BbhNSA6z+msa7minI4ukwmoIe6GoTCc2uwTvCpjdhCkBE8RdfHh1xBJ+JUvu36+P8rEcl6s51mi8f6Ioh24AR+q94GFgpwhj0KRSgLG522yGB6D64XFVLfetUScpY9aa+TGfQB87YWqPRDnPIVWlu+KeADuCd5DksX/drT1HdlkJUkTfyd+f39ym0xVR1S6U66QSpVNpqq8HvNmoUqHSjhy+KqsKak7PIdXd9rvKvBdRvdnPjEZCWdzymnK51NDQqyLYsQswsS1/cLTF+4kOg8Nz2NXPE9OZkXnw+jWzDB0vokrj+/G2DpG3tb4URgwtc2Glx0oURc7aD+xCoKT1pUq7RFbKU+Uq4a6cD9OuYGxs+c5Ibmp4HdkTZc0eDrkBcpuzVn6PRPAhsvAMVP/fuSkrEU3zjJ5ZJVR9iC+3yFmovPE02qNg8GQsGR4V1iSSqENN0bYxID70bKs3zHyX7NxszelfsLij9t12eNiP3CgKJBa8RrH5xxMDs9WATzzW5CAt3hQvMbepDefG2LmyJOiZH8rz0EkJU+fJZN2zbpWBnRcEL8yGaPQ+6oj22TbWGJhzeM9/w85+OwV1XVLXXr2AVkCUUrRYgZ6I7ovxxUBjpCqW0pYST0GI/HWvVvx1LWFg5KmHPiJhom69aOOZwhTBUA40jWciE0Lap30OmSmZ/pfCiKShVr7hq6nlwPBm4jq36kEYaeuhee+tzTzNQfMNH/8LU8+v7Qgcfwygj71xbiroa+OJV5GTmeKS0C9aipsMNTdxS6f
- bUIJ1RDb
- wiOm1VtUnCLOiBscWBfhBy9oC30RyLQ4D0pdkGS8NgApASEW07rpqhPTPGhxbrT7sQKP9r0oEQK9/s7HM3nyfU9y5ID/kLJbBZLYtJ9CvvGb/EmGvAu8DYQGDjANiL+ueQJ0HT4864iwopnYnmaDNJ1XVV09oLT0vovnVq25oeSRsOu2HDKRrqKleRwlb5t5d4KQDhYux+ZfRyPefPwFRwdKTLHHp7XvWru/oVQDLxeXg8J16Z3qOHsd0CXrzSx8ZEkLv1JjW5/gxF7lxA9pBREtHaaTP2a/mK5AHNhxa1bkXgZl7fMRgssym3uciaJAQOIxj4Cp7H21ESLg=
+X-Stat-Signature: nzqrrhcwh1xntz8k8moa8xgwrrqrzajx
+X-Rspamd-Queue-Id: 4CA3CC0003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789037527-799484
+X-HE-Meta: U2FsdGVkX1+gU87tp/N/nYrfEgvt6sgpfKE/pxgTThlVr1nC3jECT6ao0XoiYfVOeWGXUCt7ZJboUyk7vtJUC35VSH3EILUVjB5fX4gBTmWsFfSHlkLO5Tq6p7hTExovupyRu/mZMY5L1bY19DE9B44+wvhB0lzTdJm7jmX0h70sl7vXTj7wnekFYzRtXuUj+A+cCNGjuyDGAy8G8FcTaEALDwHd8xDt2+a7ha8/y5lT9P3EpAnAv45Vk1UTF+/9FV5P3GLlZ9ILo6kaTdkMu8OQynWjZhHqb1jWzUYe6SBPCqtYU3bEV9jbTrC1mHPpTzjdA3mpzWSQu0GTmdg8DGvDCkwgscYUOx9iOOeZ5zmZ2TINvLEFwa1kIMC7CdhH9RCFH9OcjufPEwpIcyOufrDcLDqQqnVEJ7SuFK9lLVLATiaBT1/YpHu03GlkToa9BQ2pU+OnvnKvQ2m7yROP0/sg/LNMaqQ8b61lfYoIoO0ah9oMlOeAau1GiYvBxiB/JS4wgFhJrhK6M9BM28K0u/bUhGwN449DFZloxoIzP8eWPqWHg4D0h22Lw7s9kG7+sRyah8mvKR6PTvq20VHR8hW56fV4Go3OvT2fF8ah/flRFtFTO8uONaOeJdDPtGS9wjzaTd1po/WLEOG9ZQr6t2mbJLPdz2wagd0RsO8ZfRuvrtQp6DQPzX59TG1NkIk8aSosj8zIhbwjpn4pEat3OOJFbuTqCkTlAeeAQKYuz//gxiAwPpqPs3cPI6c0e0ksH8L30P003P9/nH/HN9mG5dth1t1GNF/NPSg67ty6u0FugUITmZimWYWdt35harH+rMUs2CQFfvHJJxA0WjDsNUodd3fL15/LSRCOLv2x9VpTP1lGL9ZzbgUIdK0ANGUTyP5pi9Hrolxh7DpXbwMlPsQ3DZHYvv+d1gD29nd0BDqxqOr0ZiDYVFd1VHoIMn4iCZpsYshK7F8IT9WqQLM
+ lCI8R5IC
+ k+COKj+izwuYKg7z4/DbK2NdUE1y/dZngNjQv8UIvWsXNKEBWhlcMSNRMmeiVdurxC5TAUx72c7raAj8kDfDdAFBZcbylvQfTmjL2vWDTegNEzfkeC0ae/3qZsFtM9cwH6oYpu4y79il/GL+J8FozPnbkiAwXSp8YLFImrmrTIRM4JBdTvLK5pu0kciDeve8O/zh/rwbojClcQIf0rWh7OkSv0HMIpJw6pbJ7elrCszmqreOq5ydjXtZFim4XtPhn71KJDybHneHrBq7pHiKTeR+8PGYW5FH/F6H2jIM+QM2VYSncfUFh5COW1NQZeq2rUwo2R1kvEvUSi5zz2SExJPxlsR72LR8GMuJ+3uI4WN43sFaZfI0dBuRvkUXZEFm3dp5m2rDOLIAYvGDePqr2gmY3f63+NgKoOXV9QC3WiaX9dSqxWrMitZy7KtmyB5e/DpA9QNpBWZ1dWaWEAcKn0h+ED34iSZ6L2vcuaXrnJWcrLrcu4FFZQbB0j/D1gUfLAmHDV8CUoDv+Z6K6jibweXUrpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,74 +118,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 12:31, Yeoreum Yun wrote:
->> On 9/7/26 10:19, Yeoreum Yun wrote:
->>> split_huge_page_test can fail for the following reasons:
->>>
->>>   1. During the test, khugepaged may collapse previously split pages again,
->>>      causing intermittent failures.
->>>
->>>   2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
->>>      glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
->>>      made by memalign(). The underlying VMA may start at a different address
->>>      from the aligned address returned by memalign(). Moreover, a subsequent
->>>      madvise(MADV_HUGEPAGE) call does not split the VMA because it already
->>>      has the same advice.
->>>
->>>      This causes the test to fail because the check_huge_xxx() helpers
->>>      incorrectly require the address returned by memalign() to match the
->>>      VMA start address reported in /proc/self/smaps.
->>>
->>> Address these issues by applying MADV_NOHUGEPAGE after faulting in the
->>> huge page, preventing khugepaged from collapsing it again, and instead of
->>> relying on /proc/self/smaps, use /proc/self/pagemap and
->>> /proc/kpageflags to detect huge-page mappings and large folios:
->>>
->>>   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
->>>      using check_large_folios(), since only the mapping type matters.
->>>      This identifies PMD-mapped huge pages.
->>>   2. Otherwise, use check_large_folios() to detect large folios. This
->>>      covers mTHP cases.
->>>   3. Check the folio flags according to the type of huge page.
->>>
->>> Also, current usage of memalign() would result memory area may
->>> unexpectedly merge with an adjacent VMA, causing tests
->>> that inspect it through /proc/self/smaps to fail.
->> I'm not particularly happy about this.
->>
->> Relying on VMA merging details rather hints that we shouldn't be using smaps to
->> query some stats/properties.
->>
->> Which exact things are test querying through /proc/self/smaps? Could we convert
->> the code to just query that stuff through different interfaces?
-> 
-> Well, users currently for using /proc/self/smaps are for check vm-flags:
->   - guard-regions where using check_vmflags_guard()
->   - pfnmap test where uses check_vmflag_pfnmap()
 
-Most vm-flags should not be an issue when it comes to merging. The only
-exception are vmflags that do not prevent VMA merging.
+--pochtu3uujjsdg7m
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 06/12] of: Export of_node_to_nid()
+MIME-Version: 1.0
 
-So it's VM_SOFTDIRTY and VM_MAYBE_GUARD. And I agree that for guard-regions.c we
-likely have to care such that we don't merge by accident with other VMAs (guard
-regions).
+On Tue, Sep 08, 2026 at 09:59:29AM -0500, Rob Herring wrote:
+> On Fri, Sep 04, 2026 at 12:44:57PM +0200, Thierry Reding wrote:
+> > From: Thierry Reding <treding@nvidia.com>
+> >=20
+> > Drivers buildable as a module may want to use this, so export it.
+>=20
+> We need a specific reason/driver. Otherwise, that's every API function.=
+=20
+>=20
+> It doesn't look to me like the VPR driver ever actually uses the NID.
 
-But that's independent of memalign.
+You're right, we currently don't need this. The plan is to use this to
+differentiate between VPR instances on NUMA systems, but we don't have
+any such system yet. I'll drop this patch for now.
 
-ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-ASSERT_FALSE(check_vmflag_guard(ptr));
+Thierry
 
-could be problematic on its own (unlikely but possible).
+--pochtu3uujjsdg7m
+Content-Type: application/pgp-signature; name="signature.asc"
 
-For other flags, you really only have to find the smaps area that covers the
-given address and look at the vm-flags.
+-----BEGIN PGP SIGNATURE-----
 
-Or am I missing something important?
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqii9MACgkQ3SOs138+
+s6G+LA/7BGayHietSWcjHsnMEamaB/I04lj2qpSvcwlZK/2E94CCzDouik55LAg2
+7yFNbMU0VYi2oxec0RMMlAfo/OEN8iG+3X3tcTwQ6Hv7fPxlsffyKDIAb0SxAalQ
+3gXrYnaeeUS8oWlfyapzTnArDHz1wkolZluRr9R3cj73ED8jdi0XuHkTjlbGKVko
+KaZTIYUo9uB5G1wLUs0TOP3pAfJJa97LpAtMPIdytlgwy8wLXa5ti4A79opsZzIa
+5kTsTXx5D9Xg+/kJuuvpr/5lanW+hYPWVbL8w37xwjKV5EoQW5kSdUnXXuZiE5p6
+zM5tKM16OssvhPhZkYaYwdR4QwrJz2wpGE1R8NV9W0IMpW4HtsIRJPbTQhQOqn0L
+DdKwKKwPYYEAshOJ/vel7xA5/rnfbFAtxOI8CvPpjM6mv0y8AFM8fApzzcfjlJvW
+D+mJVr7IHD3+E4MZeA44MUvJpuK9a6tZg80Z0ixPnnbtl7th8/3nrj6vpW2ANmjk
+aeh2Rud7YKP1TJThucNGvzzl9zmePpUiapF47cWCkR13ooM8opgzSHkeGBkU4Oaa
+HsXVrm8Ie+po6BAMLKsduZrB2KFkFyJ68bMGbHwuwqmVSux9BnT+Mc65Yc7fWEF7
+9+pu4BoTZZ32aJXzpyx8RcxV9jADGugXNEA88fHQpAxDbtyg5lc=
+=XC4p
+-----END PGP SIGNATURE-----
 
-(merging vnas with VM_PFNMAP is impossible right now IIRC)
-
--- 
-Cheers,
-
-David
+--pochtu3uujjsdg7m--
 
