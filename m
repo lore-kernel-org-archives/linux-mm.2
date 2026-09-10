@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CCE7C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 05:59:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBDDEC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DC166B008A; Thu, 10 Sep 2026 01:59:10 -0400 (EDT)
+	id 940EB6B0092; Thu, 10 Sep 2026 02:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D8F6B008C; Thu, 10 Sep 2026 01:59:10 -0400 (EDT)
+	id 8F0836B0093; Thu, 10 Sep 2026 02:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A7506B0092; Thu, 10 Sep 2026 01:59:10 -0400 (EDT)
+	id 8059C6B0095; Thu, 10 Sep 2026 02:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DAD586B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:59:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F600A044F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:59:09 +0000 (UTC)
-X-FDA: 85196799618.28.1DD5550
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E6D46B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:07:09 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96C3A1A045A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:07:08 +0000 (UTC)
+X-FDA: 85196819736.02.2ED8867
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9D8F8160006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:59:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r+b243BF;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf14.hostedemail.com (Postfix) with ESMTP id 100A0100004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:07:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jjqdE17x;
+	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789020427;
+	b=rQAE8o8tgMA5b+TXXFC+RKVk+HbljlYSaeMfWo7NPHr5JT/9bDf2uWAoKHbQolm+hTr/1V
+	zpRPJ3uzvsA4RRLmMB+pytBuTxEFw5V97YQSSuBukSGiqq2SorZPI8DzrE/0zOjBfTFuFR
+	ubAhO1Gv29urTxgl1xt+iouKHzKNhbk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jjqdE17x;
+	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789019947;
+	s=arc-20220608; t=1789020427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+W848YAGgId+r0hutVeqFh0OVKi+g9bP4xQ6R+kF14=;
-	b=OLKHPxgG/8oRqL1JRIhrJWFRMaHiwi9AD6r6AsM58/cedMATebOJHm9UfukkUO8h2pgWrt
-	2xFNRVgp+ZvsAApvbbJlqVygwqZjde+eFwmWFy8WktZjeQp2mJ9bFfcnDRU0f/XuCkMwyZ
-	7HsdTh7RYf2/dO9QDAUdej8v2jdG/zo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789019947;
-	b=7/A8lg3ksYbnMEh93W1nVzQJHyEmYPOYNwpZo9FgdT/Fl4WHrK/2s8od4P8j4G3PPm75lY
-	EtKvf0X/Fc4kZ56SXGC7vFASbXVRx7lhgNQ1BE5PEhFAMoeyryZt5hYu2F8YX8IUkAr78s
-	ONpfi9Rap4XHYSZukS36CdnH/05Iu+4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r+b243BF;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=nOylofx3XljWsfWb1rgg2Z8rQlbMXk1v7xJM3t4UkSE=;
+	b=Q3b9ph25viditiPnqCk0Ls1xhOGpchDQp3flBGPAOakcRPsldyRvsq4x5/WhT8xyd4UZHZ
+	oQVKlut4JM47Ji6wWjUfcWKiSxaCrMRk5LOtbMrvJ6N0eRmcYB5O95mMhPw9ly2h33QvCB
+	69Ka+3wV9heSQ7uMboMF+m/AbH/Hn7E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2CED43C1D;
-	Thu, 10 Sep 2026 05:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7891F000FF;
-	Thu, 10 Sep 2026 05:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789019945;
-	bh=6+W848YAGgId+r0hutVeqFh0OVKi+g9bP4xQ6R+kF14=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=r+b243BFAi1hYjM3C5FSUaRF87pjCI3Jp7Gy16gGEtlDLB+qr6pI76jTdWFOtd9nV
-	 zkzmtHr+WvIyIfodL4jckPUVjGIkNxEyFRj+Smk+lt5tFZjU5I+Dq4DFaIhIbXOau+
-	 yDBPitQAj0zIg9oKLCDEAfYVZtHGv0mwIfk8RdxY=
-Date: Wed, 9 Sep 2026 22:59:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: bingfangguo@tencent.com
-Cc: Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
- <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
- <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Johannes
- Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal
- Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Bingfang Guo
- <bfguo@icloud.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5] mm/memcg: clear folio memcg after changing per memcg
- stats
-Message-Id: <20260909225904.6d60c722ba21f26e18c98767@linux-foundation.org>
-In-Reply-To: <20260910-memcg-swapcache-stats-fix-v5-1-033f510ba748@tencent.com>
-References: <20260910-memcg-swapcache-stats-fix-v5-1-033f510ba748@tencent.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9D8F8160006
-X-Stat-Signature: 6u6cptm6xc5b5kuwezks4q1muoxe99z4
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 32E1E41FD0;
+	Thu, 10 Sep 2026 06:07:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0DF431F000FF;
+	Thu, 10 Sep 2026 06:07:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789020426;
+	bh=nOylofx3XljWsfWb1rgg2Z8rQlbMXk1v7xJM3t4UkSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jjqdE17xFtq86Ik5aSiQ67i6gtXd+ynBI2lrwVfYA0zuXjgU31NEyhSiCB73Ikn/v
+	 jDDUKPhYAHD1vTFRh1zn++I5dlp6obwoUkabyC1ocuQy+kZcdSdGU2YMqPczXG3Bzy
+	 J/ULaw+WHRVaCRrAvuOf7JOgiK/DHDfHT/N2LXF3oT3UJeuEDfitXvxL/JLSm/qdRP
+	 4Q3TDdcuSdCpMPByMNuMPazqnh2+rwjRV9Xl+MkfpPpoW7Q3Pl4mLRGj0z8adVuMSJ
+	 17DdVS/UloQT8ABhf4xBWQfBy2038qjcdbc+e3q+MxetpRMKYxNbr2ihG5lxGRZ5KF
+	 0Ii8eQ210zevQ==
+Date: Wed, 9 Sep 2026 23:07:05 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
+	cem@kernel.org, akpm@linux-foundation.org, vbabka@kernel.org,
+	surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
+	hannes@cmpxchg.org, ziy@nvidia.com, david@kernel.org,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Yun Zhou <yun.zhou@windriver.com>
+Subject: Re: [PATCH] xfs: fix NOFS state corruption in btree split worker
+Message-ID: <20260910060705.GB6253@frogsfrogsfrogs>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+ <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+ <aqJEWmUN3Jsajoyl@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqJEWmUN3Jsajoyl@infradead.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 100A0100004
+X-Stat-Signature: ybmbfaewpxnmmtuerog655h9izunhkbk
 X-Rspam-User: 
-X-HE-Tag: 1789019947-179573
-X-HE-Meta: U2FsdGVkX1+CVYKg55lviP5c+qdbBxpzOmqHmUpMgop1VerKiY5/E3zCHLtA4cxGJGDjS+Iwsu//E9jQVJfC7kvuxU4Ew7tWc8IipONdO/X4Lkf8TuckEdm23OVir/CGr+N4I/pToJEB6w1D+TuRuV5icuOCWIn/+QaTkgh4gt3m+LHOXH4nsFrAzOw5OqRoQ2ph3CaU/LKUmJg7khCV3znYm+EYYPZK3ZBPNqlTQ68yel8sJEGlkgf71tzsv1agJhHAOo0fHQW+44jz/0W4KFuG+7w83G4XvnjDiuxFAnd9Tpi/AOJc2QpFHfLGcuLX5c+iZGuAAmcOThJpq1aBEBfS7JuYoHVXaWJpeGQEkmuyRdE/1sj8SVZynHugWytbkwKGdfcvMVMLj5pQRBzJ4vLj5ZJN3m9tm01/DYp5Rz+5SAO8XHmE5aYvo5bsU09pw0jDtLmcoG1wUDK+swMCGZKxrV47EKAyxW2PJCPdDMtNU4pM+td120/HQ+znDye6FAxZ71V64DMMy0SLuHZ2W6wwdL+rya62MHgHEx4qt6v9ZrtnoeI8WMbf9nzm5CQpYSZL+I2yy1HXcfKWU+EDBICY5L2h05/tkKexiaK7ImV3lF0KyDxJzVtVJmNKvkG3o05a+RxZSepJ441F8JKTitEpJ2ZDxNMYFWFDFJbtGUrqpXTOryeSwCu16WyrWSGYozWcvrfoqZkhdsQNBk9xJ7iX3YP+ar361LbMkQ47fUpVs62AtnpLvXhKoP3sFb4q5ebRTpTpWsgy8SIHkr3AHVPJHmvPazAhv3muf/rWWe8Tswo5u0Nl7iZZEujPJj86sxcP/keI3qOEBr4x35JihkdRr0XsraER4lNX1FcOokoOCZ/OvQzxM9i+i02vD7pClipR+NNAj8BBHrd63ygLcJFklrGsK27FIKrJejMO8CtNJsEQcNJKE+xBTr9IMEVeVZRWX5GojHHx90wvECn
- PPBl4mCU
- knVCsjMbuZf7qrBHJka2v5zm3dX2nltudRNOqutroF+jrFEBV5rbziuSzVLWeD2YoDpeEB7HLX0aPvjRUb+7cwilTbqW77JUKEpAGtMqp4BgJvtx5sj/jG221KMN7Iy0YMJuPKdzJqScgQUW/2B0rI8TKel2J6rw3iCJBFtDXcZIBV8sUCPb13ymOcPS75TcqcUz6xDj7lNhFglEQVyOJSoEfhRLXGhZIaA/RxnqRXOl4DUjlnHe3uSoxMvhdbwwetljJhtIK2OCE8cIy9B2uezpioGJl1xIOC6jC//TnulmoUYw3pxFCXGGsKnsyXIS4IYhPAUC0LCLXZBjbz2DKhk9aiPn7havNQgxD+DvabjWOYNNET2w8sioJi7f5ZvCbCIGu8O+XH9CLjvOWKeo0c3LbUA3TV07m/9lh
+X-HE-Tag: 1789020426-109074
+X-HE-Meta: U2FsdGVkX1+5sL6VUrF0ByzznFdl7d/oo6XREJIQWERc9MAFxwSIekqNn96gwyR9pd1rnbl5aJJ84FchKoBB5CabzR69SgOKvofABqobitiazyRlciqLxRhEjKp4+PKwMVvOe3xS57xxO2gfLD9vtRCEsLUOzmtzq9aoOcCGN8lMmglw2TRDV20u2n9gIXnphrtxCKh+W+OxTUqz9M7nH0g2Rapyrjtz/BuDNdwz/phqbTXcirsKjqkzu6f3NvSGznpZpRxffFd8YCmIABK0FRwNsAANIHsNPYtolewcteAAVwPTG5HoevuQwbeplityXm+sIID2tU0n5W+6NwCeHRBNNvJllgJUZBOMM01eP9tHCxH/cSpuxPRmpPiFrDLmi6jjNUt2VTMFAeyxonc5vR3PqsnfhIlRd/Qi2VdHlouaiYfCOdwVW2Qff6TMs2aIkkSadpJLFlPcfxFqG8cWzEme4EWFeUytvPoYnSRPvMbKnSn35hPkYyw7M0/Pjeyf1JOUebSVbFcZfhH4JuarhWPfUhJ1v5weIOSr7ZFOhHxPOvClcYLaJ29mfULykBAdOgVKITkSYQxbhdk4SrPObXU+fcwKML+soE436WcdYTY6QIBnw0A8WO0XciSbM3gGAwrl48EGPRhUKd/Ir1EbxcUNTYcnFFzSx2Q54031QB2D99PgaFdoIKh0UOp/jaWBh+lD2RuQwKns+VBbh2fk3ngx2F2JsOX9saJLGyDB8286hbF+MyUDfnc0Dhdh0a19e25EbXKVwpS9cPzbwghkjlCdlfcHxdw/y9eTJwVA4shNex3X95DWgoooEiJl0/IFybvcGZK97FVezRdSj1XpJ4pQF3z/VvqJEL2LYTCS+VMnzwBDrKnEgSZpausGEjsCZGcx3UZDhev23MX9ltewTTjavP+pLk4J3YQlXCZHKpdkd/qn5NvweD2kaGXoAGit90VhOhsj/Ic6HiYhOPi
+ gRQvl7Gv
+ RmIaYxiVr0qN6kfj3GzCC+AKQfH64VO6gjOy13jJ3kRl2Y40G4bRFfmiP8QTagjlCyFPUSRCu4wW4ddIvrd5/PMip+Z5qST0uGlsWQfOMBdSzu7utfsfCbe8mSHzvPLBcza9xWacSJlAnA+h+CCyqjnUxYF5JVuc5bRxYdOGu7oUJsTdy4Niz9w40izXiORpeCJNqW6YcAhSBrY6V3xLfB3hYRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,37 +97,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 10 Sep 2026 11:46:58 +0800 Bingfang Guo via B4 Relay <devnull+bingfangguo.tencent.com@kernel.org> wrote:
-
-> I notice extremely high swapcached count in the per memcg level
-> memory.stat when running tests with cgroupv1 setup by swapping pages in
-> and out.  It seems that the counter never gets decreased so the value is
-> rather useless and confusing to users reading it. So I think fixing it
-> so that the value can reflect the actual swapcache usage correctly could
-> be helpful.
+On Wed, Sep 09, 2026 at 10:47:06PM -0700, Christoph Hellwig wrote:
+> Adding Yun Zhou, whoch touched this area recently.
 > 
-> __memcg1_swapout() transfers the memsw charge of a folio to its swap
-> entry and clears folio->memcg_data as part of that.  In the vmscan
-> swapout path it runs before __swap_cache_del_folio(), which then
-> decrements the swapcache stats through lruvec_stat_mod_folio().  Since
-> folio->memcg_data has already been cleared, folio_memcg() returns NULL
-> and the NR_SWAPCACHE decrement only updates the node-level counter
-> instead of the memcg's lruvec, leaking the per-memcg swapcache count.
+> On Thu, Sep 03, 2026 at 09:37:56PM +0800, Kefeng Wang wrote:
+> > xfs_btree_split_worker() calls xfs_trans_set_context() and
+> > xfs_trans_clear_context() on the caller's transaction, overwriting
+> > tp->t_pflags with the worker's NOFS state. When the caller already has
+> > PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+> > the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+> > the caller's NOFS protection.
+> > 
+> > Use memalloc_nofs_save/restore with a local variable instead so
+> > tp->t_pflags is never touched.
 > 
-> Move the __memcg1_swapout() call into __swap_cache_del_folio(), after
-> the NR_FILE_PAGES and NR_SWAPCACHE updates but before
-> __swap_cache_do_del_folio() removes the folio from the swap cache.  This
-> keeps the stats attributed to the folio's memcg while still recording
-> the swap cgroup with a valid folio->swap.  Add a swapout parameter so
-> the plain swap_cache_del_folio() path is left unchanged.
+> Looks good:
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> 
+> Btw, if you have some spare time, it would be nice to kill
+> xfs_trans_set_context/xfs_trans_clear_context as follow up given that
+> they keep causing confusion.
 
-Thanks.
+Yes please, the wrappers have not been useful for making anyone's life
+easier. :/
 
-> Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize layer")
-
-January this year.
-
-How does this affect users?  Should we backport the fix into earlier
-kernels?  If so, why?
-
+--D
 
