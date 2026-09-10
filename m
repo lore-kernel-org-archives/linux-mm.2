@@ -4,138 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BDB7C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD67C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:13:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46FFB6B00A2; Thu, 10 Sep 2026 05:02:38 -0400 (EDT)
+	id 484AB6B008A; Thu, 10 Sep 2026 05:13:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 420D16B00A3; Thu, 10 Sep 2026 05:02:38 -0400 (EDT)
+	id 436806B008C; Thu, 10 Sep 2026 05:13:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 310206B00A4; Thu, 10 Sep 2026 05:02:38 -0400 (EDT)
+	id 328C16B0092; Thu, 10 Sep 2026 05:13:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 04E886B00A2
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:02:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 197BA120455
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:02:37 +0000 (UTC)
-X-FDA: 85197261954.18.67B3711
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 41A7980006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:02:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If5M6sRe;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 093D56B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:13:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C7391C215D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:13:30 +0000 (UTC)
+X-FDA: 85197289380.23.5C0A155
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D17AE14000A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:13:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyPvGHc4;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789030955;
+	s=arc-20220608; t=1789031608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bi6HQbpS7WbVT11MZapyDiTA6f2yGohKV5fr13xqRJc=;
-	b=CYVgz8XilsTPOmHlfTTHeDTgJPjoDXpkwpdyTk8Hnkk8T97eyUenDl30/aRLX/xwQJ7SZI
-	BE5Q8BUT5PiYqZOAdp7Xnnzmv4KjOHeI0yv3h41MhYfeIN0+nynQwvzxhLRGpsAhrme7fn
-	AHoMLugr0izGf2FkEFelwi7YA76hq9o=
+	bh=zEeFtMUHn3s+PI/cg5N17MVY4nHEBTOfJ4ioYjja5j0=;
+	b=E7//M8m4f9JMKGU8C/rhGo25WQg76UzCr+4Xbp/WtrlkGtuh5Z/5z/lSgeBYA7J+1zNrGc
+	/F9ihFm7a3YfIcPm2iXY1zAOx2vjpWmgy1hANlvEqPChI7zJ+XhKqzFA1STwR/qcRdLLHH
+	pRTseVHJm+aQVjUx+EoHisyroZfP71k=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=If5M6sRe;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyPvGHc4;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789030955;
-	b=NrYBHKxRbc13hx3daENeJP1WCQ/WvyHbSzisY1LPLwHRb3CnehcRno+g1F0ZZDMPJ3I4fl
-	kQud+AHszGIYqNF9Ue201edGBCWGMx66NMdWCTzCBIrXpS2++uhNnaTqRb2ezgpF4Rp0ns
-	KKl12jyAEPrLpS8d7uF3AStNofqeZ8w=
+	t=1789031608;
+	b=DHJRDJ9zAdt13WNc4CMbCw2juWvDFTDZqxi8H1lg/hP46Ryh5kfpf63RTVAg6KenFyIBWm
+	/+CijWGfw27Ym6Md7ojfFk4AcbgDxwPbiONS75xlzFZIlnxM0MaNBrZZR34iOPPAebyNb/
+	ceSCgWsu4qbBfIiEDm7YCWF80hcAbt4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C5DF41231;
-	Thu, 10 Sep 2026 09:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4011F00893;
-	Thu, 10 Sep 2026 09:02:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FD1E600C8;
+	Thu, 10 Sep 2026 09:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2331F000FF;
+	Thu, 10 Sep 2026 09:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789030954;
-	bh=bi6HQbpS7WbVT11MZapyDiTA6f2yGohKV5fr13xqRJc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=If5M6sReucxfAa8nllZsBD5rzyKL9ELmN7J++KhzVHXMFwuo+ywIXweYK0qHvKt73
-	 1DlZC6yieZdrctVpoPbK8xAnJ01MqKDgn8JNOrREKfLrtY3kuk1QD0WFmmwZvIkpKc
-	 cjwQhwi6gfGiK1mJpr70MGacbhPTAkvMJSrfODwcnkW7h00u9xgR6Tozex936pATmf
-	 Y/e3g5Q+e44jwwElZlmy2drakal4M8C3ZYhzWEtU1LZSzTfNXyLU3yRFX7wXmiz5xW
-	 ThtO/NXMID8mQwyR1hAETqMn3NvdBwCEMEnIpbQLdGFzMn0iPU5Qgbppp1CAYsoqRp
-	 rYXsEVBqyS45Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 10 Sep 2026 11:00:05 +0200
-Subject: [PATCH v21 1/9] rust: alloc: add `KBox::into_non_null`
+	s=k20260515; t=1789031608;
+	bh=zEeFtMUHn3s+PI/cg5N17MVY4nHEBTOfJ4ioYjja5j0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XyPvGHc4wMCN7XnUzQUlQv10dHqh7HO9TkjaWiDpqVTCqUZ4CKmIoiz+rzPcl393j
+	 rIr/J7DuGFP9ozSMcRGKBgArgVJ+vGtlpUubDEgaYE5Vzdq6UW9s1oKqS6erMBJjYF
+	 SPn4FVdbHQyZXkXx/ixOwaCHQW3+hbhiDYYkbisYcgnWLijvhtX8jhLnBH+PL4XmMl
+	 0X8GngpShNpiBLxjcnPi2mLIa/G/Kv5WyR4GlLBYjl4gpWQl0s7YVeY5awvfbIrCTf
+	 WbID137Cnw9Gz6smokOCSQR3sQF+L/7Wc84ygpecTcamLUtAKNJQ9w39t3KgLMKJle
+	 sFyI2xY8WPRwg==
+Message-ID: <c2239ef2-10f4-4c87-a23a-2753f1e18d27@kernel.org>
+Date: Thu, 10 Sep 2026 11:13:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/12] mm/sparse: move __highest_used_section_nr handling
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-8-008fc8d579fe@kernel.org>
+ <aqJrblWch-lajp3k@localhost.localdomain>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aqJrblWch-lajp3k@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-unique-ref-v21-1-e83257373062@kernel.org>
-References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
-In-Reply-To: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lyude Paul <lyude@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Ira Weiny <iweiny@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-usb@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1188; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=WHW93VvrHeXgOCjNosfBMI4vPnTOHHkUoJXKjGlJMdY=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqonGhYtutHmW3K5/iWt2PtNR0EOOEvKOh8GOE3
- cAXhRn6VpqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaqJxoQAKCRD6UCkIqsW9
- 0PiAEAC1ZaUVBOkvlRXYa1uoG7fv8BkX7iuoYs3OUE6Xs7RBS7CbugsVYpLdGgml2yB5Xo/AfF1
- lOrJHP03TKEIawI0QIjvbDUNXrYGXND3iwPfW4oW9EKyBDMM7aQlMGM2ptkYJDcGzux3kw7pAqx
- zYjptUpVSESYUlKv7c6+bSMK1AeydAw1bt04eyJrzPRMgus+QTTFKWMkFU2w4n/A2Vybuz6QDSb
- +gMpzM9B3XcB5EYFx92khT1NMRiQsSRHxCc54Ro6JbS9nA7SFf4X1SRG2ZwFwEYJQw4+P2eXu/B
- kn8z2qUOFN7+DY5TEDT7kwV+OE7FFgKaMjSOLZh48VmeDrw9fYdtqIKT7xIuy1KqplTIuTjsNpb
- Iy++9Nqzy8yEHUWDqdzclvjSepDS5DSFpG5VMDldAC4AENbijZpOJVJwq41LMojHASK+t1NsF2T
- t6P+wfaQTuumBObShygOAi7WRMKfgFIBmoMisdn0c5sE+W1UPIzdRH53GVM7b8aY6Q+rsRPEu32
- rNoYVKX1ZCSGlH/Cai+CxLnb58kRzvOkj9jCMjG804rAMG2AgG+ExQoP1ymqRN4D8kik1NLlEy3
- 5yp5HL4qYcm91XRinv0cXg5icrFwfKuSpkpNl0UuMdJs9OSwTJV3P5cjHJpDbgZcd/sKdO+4yNt
- KzVWbdwXn+Hi8TQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 41A7980006
-X-Stat-Signature: w6zf555h65kh4b44ihwwfnrbua1p4who
 X-Rspam-User: 
-X-HE-Tag: 1789030955-953406
-X-HE-Meta: U2FsdGVkX1/nx35lReFmePNPNJyOrvaqsfvCWrX1ofL7b5H92qJ8n2/B0tvm2zFCrewMPRw2UzGzaWdN713kdj2hR6YYOBQIRBiUpHV1eBi8EoUMZBjcJakpq51QiV2Pl8a8qjiKd10f7Xh5D5/lJFCG48lAxHQz/6kXBgiF1hYN+esSR0twx4w42dcwiKvy/aHWg9ZrGrP8bgq5hg7Uuaf+/c4oGgX/RDIcTkaxAC83khg3Uiv8qAvyQsWG9bvFGBN3i7oj/YIkrdDce6bvK4lylk5d2O7q4qZip8uutn3gWoU9ClUInS8otbIlQYo3risoXdApsYTfvOUVe6xXVdWNEHOfw2YoY8tJoG5kHWrKvtLDAW7v7nZO3AXj3wPTRBN0P7FI4GfQG06gIJQdshFmMV5Aw2qmIJhTFqzsPMwFOL6nfvCte2nwqsFrdHxeeojmz8+BUfDhsYLPisT8Yj85t7BGc2QGRj0UPE9hxoFaaf5vR5wtpapbMfXQtmfylKJ7uV0R95CqMUHQ/OF39haPvncy0Su2KyRWR8fnXfDXX5BE6e2G4vg1Y4X+scEWZz4vO/DmLjR1sQHjnyuC1a2IlLq6EadkWqOFkOD7cHd7WJwKIXbKzIKP/CkDVwryVEtsaoqAAYroI8hVrtdfKtcJraDTwCyJAR0zecatOp1JH/STOGARrBKDoTSujoomCVUy7sTaOOHxWstTy9fteEg1450C+YlYCjPZMbyPN5lXLJo95xc7wzpHeIS6jregSiU/283iIXuOsTT6hl4mBP7uRMWjplsaSj0Z7VAwtNlbOf2TFLGgHMvKPnCEf4g7g2IPJqTeDdzoFhQJ+R7oU6k2XvqtT8Lppd5nbhAuR3U35v/isd70aqJBO7sirYIxGzxtBWez7UT0F3YFtA4sB0B9sTe6GUi9wnaHmQzqNyMpfsMNdSTFeqsgkvxvSEovZeLVCpvyQHMKSgI3+RC
- qIvVFiVQ
- SUkoLAZ/HsYuCs5jW3pq7cGDhktVnNANeXncRka3wXPS3gmFSaN7XlIIHAe8ZZr1WwlRmetZKsCZBbm5tAzjyvb75cAItv/dkLt4aJsz9in+yImRwpbp3HvRR4PN9QlagEK9U76L/u5GWkGs1Dlx07YawxZBEaXsLcUfYHuZkpgcsESJ8gJcqTOOyutIn3y/JQTFVaTQtKOly5zrMBR5KG5h00Q7FPHTZc5pALhHwo7p314RSTm2kICAnAsASadbiYtaC5d0FfFLpFcWaw+oS/FcGr8lNXsjh3hEASGq/cgxlaNsg1PMVRBq0KFedYJVTvWMRwXQ6FaVLfJkIcpj+/jgUMK4WkuNJq5+zG8VN8Wo3k40zZw2TMODCbfqeKXq0/HqIawLP/8eMSq3n0p03SdhNPS3KApExmdGd
+X-Stat-Signature: kid8groie6s3dhdk3jurxrpxne53k635
+X-Rspamd-Queue-Id: D17AE14000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789031608-544904
+X-HE-Meta: U2FsdGVkX1/F2X5c29htxIZLpyGb3GpKHYe9LCj4IKnOJs/OE7RYwIT3CygOdH4iCnfIimPKfRscNUh9qPevkY9HgkrTCBLCmDav5mW1+lAV/RW5uWjfbFM2z9UtCLRKd82FxMmVfrgPCJnRaiyb7018d5Y63IQNsdnvp/vOP/3veX4QnpytuYG00bX9bcUHjKNHUviEUZj7XQdllqmdqvkhtKUpH3hKkKjrQ1S8T6itGs3mgIZTK/GWrBDb/8AIuzHoBS9KHKnnvwGKQLGdkHF3AMxoJjatqYEf4i5KaGkgrfJn0pwbE2XAz0PhATkMp4CkpKYvmyTH+p71c7+iKmS8A72eGIMXL11gdNAgo2YKvDuQL78r8Z1HSfuKUzLMfR01TBExBQcC0CzS4hTu6toJMWve2kDJ0XEslrAlcFf+/rJkMeJ1NcFbIeTVBRLgOdwWI11lUFKv+U69ovm0whOUDDGyd7dqTAA1KjqS5ZwpEZp/MdjY3SRydrnicLQ9l6NHALHJHXp8mj/ENaFFMU9d2n6CDcJz4amKSkkoui0nYg2Qy2+DAFYR+FNBldlghSZMqOcYoBSWClVX45aSW7Akdsss58hfAKgnFH2ggjVSo3QNZ7N7FKmLzVfh4RVxMpCqbdWE3QF8b7vV1ACdp4FjHoFlYyAJfdBIOnnOyrxAR6935IlxSl+T/EX2OEiS5vu+zF6caM9V/eX6C0kaps4zs/hUl/GZuUozt/w0aSEZFKUFmJo5guAb3r4ULY4P2EBc4TokZeFN7whmpZLANf8Mad+vntT2ImqWq0QvInp8Qiif55Pe0SeMf8V+LsiBchOM7ff8t6ena3HTiCiTJRlI1FIdwuQUgRfHuflcSv7Q3tpaz2QnyUvkTH0ivPlNzjUcB4Xi4zH78AtL1Ycjo3IWx0GBef1AcEAX625qyynL6G2XaTZUaIxi4hnJoTs8VhklrEpqm8FU8Qt2ZhL
+ tcMNZAll
+ lzPo3jx2Bv+esex6XA6HCTvPIlB6ScjzKkdDUg5I21W++o5EE41rYBYmgcnJFBRkPtiCHxYk9ZMOpGqciIkzN9pEfAsYCVCY9do3YOC1/V9aX0k4SgGDXYmqEaE4xN6hvTj/qLOw/O9FXTBVBB5AOo4ALSaGwi57vRR58XLKux/579f1CwZWIbDkRIbhNq4+QZkufskq9KP9nsQO/E/d5aOyJSZuYxJDdorziDIKpYzCAeUrMTsQk1yGEPuMReV3N3b7MySNKyMIEkHIzxDPi6PZ63ysH160Wp7kd1397+k5/OQB5edOIiMxLgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,41 +154,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
-is a convenience wrapper around `Self::into_raw` for callers that need
-a `NonNull` pointer rather than a raw pointer.
+On 9/10/26 10:33, Oscar Salvador (SUSE) wrote:
+> On Wed, Sep 09, 2026 at 03:33:01PM +0200, David Hildenbrand (Arm) wrote:
+>> Let's move it to sparse_init_one_section(). However, to keep early
+>> boot processing working, we also have to initialize it in
+>> sparse_sections_init().
+>>
+>> Should we use READ_ONCE/WRITE_ONCE with __highest_used_section_nr?
+>> Probably, something for another day.
+> 
+> What is the worry there?
+> 
+> sparse_init_one_section() calls should run sequentally due to the memhotplug
+> lock, so there should not be parallel updates there?
 
-Assisted-by: LLM
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
----
- rust/kernel/alloc/kbox.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+If you have something consuming __highest_used_section_nr while concurrently
+updating it, you might get torn reads/writes that mess up the value on the
+reader side.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index c63d6acdbb6f9..27c31120c3854 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -211,6 +211,15 @@ pub fn leak<'a>(b: Self) -> &'a mut T {
-         // which points to an initialized instance of `T`.
-         unsafe { &mut *Box::into_raw(b) }
-     }
-+
-+    /// Consumes the `Box<T, A>` and returns a `NonNull<T>`.
-+    ///
-+    /// Like [`Self::into_raw`], but returns a `NonNull`.
-+    #[inline]
-+    pub fn into_non_null(b: Self) -> NonNull<T> {
-+        // SAFETY: `Box::into_raw` returns a valid pointer.
-+        unsafe { NonNull::new_unchecked(Self::into_raw(b)) }
-+    }
- }
- 
- impl<T, A> Box<MaybeUninit<T>, A>
+For example, mm/compaction.c consuming __highest_used_section_nr.
+
+I don't think this is critical, so I decided to spell it out instead of fixing
+it right away.
 
 -- 
-2.51.2
+Cheers,
 
-
+David
 
