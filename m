@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95142C79FBB
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33BF9C79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:24:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47BE26B008A; Thu, 10 Sep 2026 19:05:36 -0400 (EDT)
+	id B7E246B008A; Thu, 10 Sep 2026 19:24:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406926B008C; Thu, 10 Sep 2026 19:05:36 -0400 (EDT)
+	id B2F786B008C; Thu, 10 Sep 2026 19:24:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CDC86B0092; Thu, 10 Sep 2026 19:05:36 -0400 (EDT)
+	id A44A66B0092; Thu, 10 Sep 2026 19:24:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0005A6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:05:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24045A4FD5
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:05:35 +0000 (UTC)
-X-FDA: 85199386230.11.3458679
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 58ED14000E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:05:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=le70C3Mw;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 77EB16B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:24:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D3A5A063A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:24:15 +0000 (UTC)
+X-FDA: 85199433270.13.04E6F69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B786FA0005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:24:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZKVlkcho;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789081533;
+	s=arc-20220608; t=1789082653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=amOPDCiAno1NOdE5Q6HrVP/LyJBGQ/6Zm7f6CaXwps4=;
-	b=2nZr5nzYut7zEFo21QZvBeJevibThwRkqu/mYWmemhAAcvpegNBI3xo9hm2foFx8Xendky
-	Qhb6B7Ny9bBpF6bGZRipFEppcfgKweQFUbAF2Y+oGFkmgSp7KWP/s7ddUQXeUoSJZLVzPn
-	8pqJ8+c0d2rtuccnPEavwex02FWItq4=
+	bh=28p549CSsOmgPJIFzIZAmk2dWOo7LjPPNJpI2Q0OCPU=;
+	b=04736PS1KvlLzifAN6ox4x+LHxLLnmlG3tivLTxpNUz5/XfRtcPzqxz6sgDmpvHadTGZKE
+	SEK9Q4MeuJMTTrO8GneziunoKeyodwT3m+VvR1oMcmj6BJyOv5XELcn70UWVaLWuCUaf3/
+	zhYYs6/SPmEhui6FjY3s1AIs7adFosg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789081533;
-	b=CPd6vlPPx0nhJtQbALLGqZekMD8+Gvb7pM4SJiM/UTBRisOD7/OtmMHce5kCW4Xuml8XD0
-	I5Dx+fD51yyx8hZd3NZ+C9QCuQXvb7uWo7eOB+wMoWaZK0pZy9AUpfJCd5mCqjdVoujoLv
-	e7VgHi/WuXnUW3lf3ESazY0zNwQqZ6s=
+	t=1789082653;
+	b=FxIGL6hATYhKGPsde+Nafm1BFluydMl5b8S9MZVV+xVMtE9KroC5XCrzVsM4HtayqWjBLV
+	ErD4KmKruLXBj4YIwJQxE3/k/ef+TNSTzR+E2PdBU8Ai8n8Rf4ETFnXSylqyjiU7S0JSy4
+	Dn6xhX34Fp4w89iWUTfG9ohi7nmAy5M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=le70C3Mw;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZKVlkcho;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC551416AD;
-	Thu, 10 Sep 2026 23:05:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2CA1F0089A;
-	Thu, 10 Sep 2026 23:05:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0808A601F0;
+	Thu, 10 Sep 2026 23:24:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1111F000FF;
+	Thu, 10 Sep 2026 23:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789081531;
-	bh=amOPDCiAno1NOdE5Q6HrVP/LyJBGQ/6Zm7f6CaXwps4=;
+	d=linux-foundation.org; s=korg; t=1789082652;
+	bh=28p549CSsOmgPJIFzIZAmk2dWOo7LjPPNJpI2Q0OCPU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=le70C3MwovpeE01RxcZJn1UDUGEwvptIsnglPECn2vVXSRV/mOw5SMBvnbaToZ4S0
-	 qTPlQuNwI5FWDEAR2xG5pt1/LdXA8KsYnFb5axvqc9ICceuZGWpSJuV2FGZ1pCNsNu
-	 n22fMkC50Uit+9LFUO5g6CN8eiTL6aPhvywiZC/U=
-Date: Thu, 10 Sep 2026 16:05:31 -0700
+	b=ZKVlkcho0tV1KE1J0zSWwoIRXEVkCT7QdQFEPdd3bQmJJgFLSscp1f0wnihKx3Yjx
+	 DuLouAg5JFHdkRyPThEwMxNAoYI5aDCdBTHwWBSft6ydFat/H4WV/KYH6aDZx95I85
+	 a0DOVqkrCodo9TycG66iw+z58DPwj5AZPKqxEgKQ=
+Date: Thu, 10 Sep 2026 16:24:11 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>, David Hildenbrand
- <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Vlastimil Babka
- <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko
- <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-Subject: Re: [PATCH v6 00/17] mm: Introduce section-based vmemmap
- optimization for HugeTLB
-Message-Id: <20260910160531.64390c48445e8844b6f672ea@linux-foundation.org>
-In-Reply-To: <20260910063256.64386-1-songmuchun@bytedance.com>
-References: <20260910063256.64386-1-songmuchun@bytedance.com>
+To: James Houghton <jthoughton@google.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ liam@infradead.org, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Yang Shi <shy828301@gmail.com>, zokeefe@google.com,
+ hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] mm/khugepaged: Never install PMDs in
+ uffd-minor-registered VMAs
+Message-Id: <20260910162411.d3bd211927c10e049c6652b8@linux-foundation.org>
+In-Reply-To: <20260910023411.514987-1-jthoughton@google.com>
+References: <20260910023411.514987-1-jthoughton@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3bkabmxgcim3xpm7t65qr354n1puaf1u
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58ED14000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789081533-240189
-X-HE-Meta: U2FsdGVkX182Fsz2LSkeVMUZ/QXZqhVjZ1+WL04tZLnrjpbgeYDHPShPj/XVlIgMPKqzH7x1DyHXY9xX2KpRONwbY2JCeSVJcA0ehkBqCO6+1FpqStAYmdRQIME0PtXa1U2Y+kKjj3CqMSBmntnq3poz3QJZj6Ib/i3ahyCRV8FuZJC5uesOevmn6t44HAWAS40jamn8c3dNNObPA4tHYilnQNgQuE+E2X8uVkNxtZ6QZWLMfJZzL8uItALNq9ZvbBv6nYFoFbOOJfgFfbM5QqGerSiT1l5lWg+J1A4aKxS+gtcOgOMd7Q+Y8Y2/lixd2v14dW9/mC8ROmtFIxN9FcSOuryFJEkuK67y5wPi6FKMrL8uBhaxFuXhlY87izX+uIoe+oRiMsty7ebG/XgdINw+ql1twop873U+TVzh50WG3JFOvBJrR7Jv42qfT27/7gxeVl7p825iariBcl3onSDTrR4VJ0BW0xrLTW3d7AAP16t2w9D9t2sx1HaRLwqmAFoN2S7bVPGsJCdq2VAdCKtsZDcDdrbiNUTPATLMpWWX90gWW5qWmK9YVyILxRabffpB5LsqHVfiJWUmGp6wVhBewnM1uySUxIatMRBXpRVfu6VZcRuUKTf7KYMvCa45HZD9TL5E0dSVvnkvy/+RcKkWthsss3LYiFULpcY1rinxzD6HlV/LEjohbUxzYHD3CeSpmH1Up6L2My/YJV0G27pK8koDa0ktVGaUTMF4aRz+0ls5L8YnFtKwxSfXvArtIyY/ZZ+HdSeIzAMDs5rCU4R+ZVpxgHyL3ES3HuiXFZiWd2KAtz7z8l6TRWfip1Mw8hQ0U6F0p1TZ8qc4Rsl2YffCZWTsH0ylpdtr+El7dtiDFZsO1DMmcc1sYksXFa4EojF+ENYRW0mLBr5WocyVlhmB1+nY2UttLdn2aRH1qOzKfmVlP7jllP2PRtXZr/FFEQn0hElZXlJZsRC6ENM
- fxTZAExI
- KS8lPsY9HV4jKlxBkwT78wqG1vF7H24iz40x/aGzunIXjg+lVmZtJAi9U9U+kHb4a2GqngPWKAwMFQMIYcgNNhuNOGdKNrZuk5/8vjM+OyHgqayV6Pdi8VIxcIaRucwY9ATRB8Tkz4bmmh2HWUOFyOeSxqOSC38Zj0Fc7bwcrkdPy7Po8g7rg8JgkQjR3oF3lpDANnScRLtNAu95ak+wKL7EBvZ1GMeVpFgkERZbW/zkzudlgda1y8tokuLjqvNuiGQgg+JeNDV0bX2StK9aP4Cqgi6tDkPxzP11Wvf6437Pxt+rkdLJpxvGMiPLPjqMw99pJC6UhqwS4eDQ22f2YZ7bMcccnxFFBcvB8
+X-Stat-Signature: esrnezfk87ptqha48gziybscjf4e6szy
+X-Rspamd-Queue-Id: B786FA0005
+X-HE-Tag: 1789082653-933089
+X-HE-Meta: U2FsdGVkX19HA6U0ZaEMGkhO5JuU96h2nX735BHvpsaB3KN7HuikPaC7wci6IWrcecguoeTFR1rZWoPcGoSAgi94iACQJsm4hSvFZ2Emnx4mWhI1bYhK4uO8ix7rFGoYTFHeeInLu5WyxoAee+nELX7xX9zvN3ZN9FGwJkcTO59iZ28gyfLNdLQADYK4r03Vp3AWTR95L8AHaEmzm1imEAHdaWbLWEfyFf84p2taq9tqoG2gtJR2vzCbNTlY4D4lMrnwwfCISnJ4qT0GK/Nmf4dR8Z9xSL44FUI2walDCU4WXGUqwBAZyRMG0Nk2vNlALtxVvqk+tLZu0+EuKV9hy6HnZGnFxaN1+Q2kG3bL6n5XGka87AGtijxLNCZRFFi7aiNd7k3G2iqrbyyyX3GR+jFHemVxTYa2vfMeYrRWFt5mk82hQ86oa3W0p7n62h+xh27uZX7Shv9qRIaunc/F6fJ3DuxkKGHpuwulqkTzGN+WG5qp+1BiSAVeWL0uZ0nRyoiOX53bGKJmxxrnjxnYR/WZOGgPF6C8ip+X9lkKJbKEbiBqg9wpTqlO0qvdW73ow36dhMnvYnWoRsGiwZZu7KyStkswhAU1XsNbff1vXWQW5dzwcnCZ+jTQm8v/jSHpLhnmnTBvp5WzuhC+AjBubc1tlNJ8Fml0SzwOuOXCb4Mw+c7iL0MKDLiy4ngrwSQ2f4jn8bT9nR34sDZoyGKNhN2k7KSQSNpdRiZNOmZUwuoStFx7CgUKj5E9HUCD54JI+TXnVaNBjIRHip0ftX5GxzkZ5RL9nLXL3CEh80EdsCj2sxtbsa4CiJu3ZQpkBAVk1jKPIhO8IKGicgwbSzoeB7RXuPUcaFEM+pNUDOJeDCdySFRz6vetcZZtORFNY6dBQCmFUVfKonyM2LF7dT2TzIjwyggcPqPLrgobfz9vcytmD2Fyl+IFDT21tN8uOjGMfUy6q0lNJP63GpyxA8R
+ sZiX/amn
+ +BKjMqPS4Ck++33q4p4U5TVYuLKZnxZ+IdWA123A2W7u0au+lV4igWJlTXOLz5SHe4jIqdX8O9dkFyUp7+yhts1+fj99IByiS/5fzhE51I5GQmB1mm3gyKhuNzaRRiu7EJZp/oj+KNcrFUUWONatTNDN81nqJt9eKUywD8twz5jrdvyCAKuqeE+9F09vAz5Ajvg6k4HiXbZlSAJE2z5ZoF3pg4Yv23RkA5F4CZRgqR7Qv3Jg42S/VLA2vDOW3mS/LNk44siUk1XRZbRIBZ4HHbdmiuxHeV5z+yrFZfboVD14sHy74rrjpPfj1LNiUdrz3U1W8CUhZttbJtNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,31 +96,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 10 Sep 2026 14:32:39 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+On Thu, 10 Sep 2026 02:34:10 +0000 James Houghton <jthoughton@google.com> wrote:
 
-> This series is split out from the earlier, larger series "mm: Generalize
-> HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
-> vmemmap optimization across HugeTLB and device DAX, this subset addresses
-> a single, self-contained step: making the generic sparse-vmemmap code
-> section-based optimization aware and switching HugeTLB bootmem pages to
-> this path.
+> Userfaultfd minor faults provides userspace with the ability to manually
+> install PTEs with UFFDIO_CONTINUE. Right now, MADV_COLLAPSE can map
+> holes in the VMA when a naturally-aligned THP is present. This is not
+> true for khugepaged collapse: the PTEs will be retracted, but a PMD will
+> not be installed.
 > 
-> HugeTLB vmemmap optimization currently has its own early boot setup
-> path. It pre-populates optimized vmemmap mappings before the normal
-> sparse-vmemmap population code runs, and sparsemem carries
-> SPARSEMEM_VMEMMAP_PREINIT only to support that special case.
+> When MADV_COLLAPSE installs a PMD that mapped holes in the VMA,
+> userspace is likely to expect UFFDIO_CONTINUE to succeed on the
+> should-be holes. UFFDIO_CONTINUE will fail and return EEXIST.
 > 
-> That makes the HugeTLB vmemmap optimization path harder to share with
-> other users of sparse-vmemmap optimization and leaves a fair amount of
-> HugeTLB-specific boot-time state in the generic memory initialization
-> flow.
+> This is not inherently a problem, as MADV_COLLAPSE is an explicit
+> userspace action. But, especially because MADV_COLLAPSE can be invoked
+> by an external process via process_madvise(), a rogue caller could break
+> a userfaultfd-minor resolver thread. If khugepaged is later updated to
+> install PMDs for khugepaged collapsing, that would be a genuine problem.
 > 
-> This series introduces section-based vmemmap optimization support in
-> the sparse-vmemmap code and switches HugeTLB bootmem pages over to it.
-> Instead of having HugeTLB pre-populate optimized vmemmap mappings
-> itself, HugeTLB now records the compound page order in the corresponding
-> memory sections. The generic sparse-vmemmap population path can then
-> allocate or reuse shared tail vmemmap pages based on section metadata.
+> Userspace cannot generally use MADV_COLLAPSE to resolve userfault minor
+> faults, as MADV_COLLAPSE will only resolve such faults if a
+> naturally-aligned THP is present.
+> 
+> The naturally-aligned THP case is the only case where this quirk exists.
+> Collapsing otherwise requires all PTEs to be present for
+> userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
+> correct. This check is essentially bypassed for naturally-aligned THPs.
+> 
+> ...
+>
+>  - Drop cc:stable and update the changelog for the main patch.
+>    khugepaged doesn't actually install PMDs, so it is impossible for the
+>    kernel to silently install mappings that userspace didn't ask for.
+>    Therefore this patch does not need to be backported.
 
-Thanks, I updated mm-unstable with this series.
+Thanks for explaining that.  It helps.  My life :(
+
+Sashiko had a stupid niggle about the selftest change and made quite
+disturbing claims about the existing try_collapse_pte_mapped_thp() code:
+
+	https://sashiko.dev/#/patchset/20260910023411.514987-1-jthoughton@google.com
+
+I'll queue the series for test-n-review.
 
