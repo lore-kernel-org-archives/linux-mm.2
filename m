@@ -4,155 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FADAC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 16:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF16AC79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 16:27:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758566B0098; Thu, 10 Sep 2026 12:23:09 -0400 (EDT)
+	id 4525A6B008A; Thu, 10 Sep 2026 12:27:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7306A6B0099; Thu, 10 Sep 2026 12:23:09 -0400 (EDT)
+	id 3DC0C6B0093; Thu, 10 Sep 2026 12:27:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61F1F6B009B; Thu, 10 Sep 2026 12:23:09 -0400 (EDT)
+	id 2CC056B0099; Thu, 10 Sep 2026 12:27:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 365AC6B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:23:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 32E6F1A05D9
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:23:07 +0000 (UTC)
-X-FDA: 85198372014.02.1E66B50
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2AAFDC000F
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:23:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mLX0ERxl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mLX0ERxl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789057385;
-	b=i3GNFJEDOBaHTV8hjb7ydNxbob0HpGTUoJ5ZW1L3VJte9drBYsDvlrtw85w+ypXKa0QAjt
-	LVrVlKxXKtQL5IAeF01GpO1SUeR7QFHqkCarSY9nH/Xxq2KHHeM3+5s2vudCUoF/d959a5
-	J3+28fHmDPUarT7labKqLz4IiME7GB8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789057385;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 023846B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:27:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81C181405A3
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:27:04 +0000 (UTC)
+X-FDA: 85198381968.12.DE0F357
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2E4DF4000A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:27:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eDvzTLMQ;
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789057622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nEAGONInB8tJpm1u2lIKx48IXnht0iSXDghcmCqPigk=;
-	b=qSqJ3oSFrqyi9WtliF2qq2JGDcOssUEXwp4wq9g8JVqJ6nAglFB+Pys7xX8k5Sb7xuKKzm
-	Q7GLIEpHL2Us94trfAxiYmbLI0vl8BkX9h8RqEHq0Mkkqz1Vq4K3xM43KTQC2G4BcJLgMv
-	Onevv4idBAL0/+YKTrk+uGujtgBxlwk=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-482e257a23aso4849852f8f.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:23:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789057383; cv=none;
-        d=google.com; s=arc-20260327;
-        b=O4dbl6MXB2bX60qTwTgcqLyhmWM/NiGMAHAUaqlOwkS/OdcZo5E9v7qqh+DOVMwXQD
-         qYvhQv7XzYq1qp8rHeik+EkTwxLcqOhFMfglNpGor/hQrwB3XzD7nQyH/IP1EXDeIIZ6
-         mL4TxRIIYwmCVA40x25pmaKI0gjz9RYCn5qnRKmobEEjzghULdY8tYOJ+jdbXS0u8Mmy
-         Ewkkc/oKYZy3XST4Jg6qKN/ooEE+7ROqp+QTbmLURaP6z436dbBAiZv/OQ63S45D/NSl
-         rgBXbw2m6wtkG4K7yZf9Zz3UmNdJ1dFn7szJtkEaKjQVssDGFcujgqnXE2uBgcB4PY+e
-         OtfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nEAGONInB8tJpm1u2lIKx48IXnht0iSXDghcmCqPigk=;
-        fh=lRq66axOD0hM5YUpeJ5lT/r3eSykL18dz9P3rVI9Wso=;
-        b=EEBx6BLY2svoQ7u9IBfn7FvuFwzxsyrVlpjgLyEVIAPUeiF1oohsF4Hf2UpLEB/y7E
-         ifGIkfe0TQfBvcJkmc6wGTgIC+iVPMDSgmGRGus4wfyPWyKUDwqfDzmeoDV7smOvMoeg
-         kSu36x8gM2TFndLw67OTBntmJzEnddBJX7obtnxTN+icR5SoNl7g9urGsmoVfHEtmGKW
-         muCpNDqM9SlBsFQW5Gmaj7k+EEm2OIct9c6cO9Hq+ztuO5FnjRffoE2m+dpb4yBgkJdA
-         x7qz9CnpTvn8PThwIyQ0ZQOf0F1Sp+pwXNP2XzMPpdlSAJLb9GoKixsa9XVix2F5S1L0
-         VmVQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789057383; x=1789662183; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nEAGONInB8tJpm1u2lIKx48IXnht0iSXDghcmCqPigk=;
-        b=mLX0ERxleIzzuRSPrRng8m4Hh2gKFimPuvWi5ZA8fsMUYKcj2FVcC06JeFudfwXxsv
-         ahhmRBPSsfck60/rbT3w2uj0n8mO8jgaknGG2wG6Nrmpl6oKBR1zE1wh8Rzim8tK6BnF
-         qKgtO/PRJtkEue0TP+0lJ6znfc5mgoqG18tXJK4D0KIp+rb6rqY84V7dklBPwNcrlBNu
-         ki4xlTgLNJ+AqH8Ejbp1TQjROMFEJXOT2bUigL6Pul6OXDsxHTq4UfebvLDKRS7oZCJY
-         NwSATDzCfc6zJSS+rWGoSDxbZxgn6IKJJjnXE0Jc0Z9ODHzdGP/T+8KUuJejvhy/y42w
-         biJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789057383; x=1789662183;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nEAGONInB8tJpm1u2lIKx48IXnht0iSXDghcmCqPigk=;
-        b=JsRjUmbbxnfXJ05PzFsDSNXmG5aeG7UUqCxE2e1oKm2vpUhbg6xY1mxFBbvkZ5xTE9
-         nBrRQU52pp3fyFZlPHkmMstQunTZUqNX3N26QPR8oAk80gOJYbTVkL7w2/UiuKxZrfGd
-         3RIhXl0HC9t5rUYl7dTM/bJUWMC4bkmmkXwbA+kCSzEl+hNR6XEpNUvcann2PQ8kksw7
-         S5JIMFtQdcp2rn03DxWB030GpwMxX2xcMlvXL/CiHj14QtuykKT42HQJ2lkWFhHEISG6
-         D9eS4UaNi/1lJKrG7wA8oG7UsplFA9uQmx5L9uAAdpLupaACTFjaBqSbsBH5ip7OxbyY
-         KhIA==
-X-Forwarded-Encrypted: i=1; AKwUvBzE7dpzJKx61CUUTdTed2LuXS9Rz6H+HKasfzAsrCTA3mK25k09ab7FzUI3PjmC4AXW7DJi/C9bBQ==@kvack.org
-X-Gm-Message-State: AFuF++kBM8G1tfT0Eo29mAtiPQJRpH76CefUWU/Q/GRdElXevfvFS1eH
-	TpmlSGNVn8LrnwcGJgtPj0NqRNLtAbAW9IDrDeJ7rJmsokshR7y3FGyeGFNvuRjTDiZ3UliV+Qz
-	uRxW7XyXcsTDF2qz3Iiup0xmxQWtNISA=
-X-Gm-Gg: AYBFou1AVL+wwHCiBLB+YMZQs7uvK04QTfHREZT4W/gi8VneGa2PTgALNnkezVz2Bxy
-	9j+HBo2GU519Sl4xjGEQ0iq966WQP+j9YVRdAV+3imuAhIXDsrusoiA5GsW226wi1s8mGhzvvu+
-	Tg3TGE+MVjFjiT8OigwJIhWvV8E7J4Ief40zqLbtc2SkakjG4Zcs/DCeKxupgreHp0SaYG5znSr
-	1WLs0hX8ZFCUrbHiUfPdj9/X7KzE3cMW/7j3KVhade4VyWjt+J/32p+UlF3yyGhaGhvwBWw8Fg3
-	in4Eqz1Tqw92xq0K/TQVit2UF9O3QOwc6yKTOcm/U5/dK1L88XUbC5i4cMAJtJxal0KmTg+x2QU
-	N7V54HMWmeMGb22eASkAPcQ==
-X-Received: by 2002:a5d:6f0a:0:b0:485:95b7:fe8 with SMTP id
- ffacd0b85a97d-48595b7116emr40680885f8f.25.1789057383303; Thu, 10 Sep 2026
- 09:23:03 -0700 (PDT)
+	bh=1puZjxs3lQ0OZGjrziHtT77SfFjdKoASATdow4jmCoE=;
+	b=YKNwSgoElkD9fJ+ZfSn4j/xNsBjRa3wo2tiGIGKa+8ks6Lwv9QERfO5ski0Y+X68uLYtMK
+	c4aEZrowW/wQZtV2Gc3U3y+3HzYcIQ6flEJtm5E1n8NlY5hkPZ7mBX4tT7HryihROpxtvk
+	A4sYfmhDqSv8us3gLZ+TtJX6ce+5M/c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789057622;
+	b=Nd4Nlry/lAsBwW9skBLICJPBbQixLgVHHgaUqDtAVxL6jIkxjNAtCdLB4YvU6eC63x4Yle
+	9hwtCFcs9rzUeNI3qDuxX9OBK6hz8bSEo+0XTNNR2jBG8Z38pSWL1E1IGUoB/PtrZirT8c
+	SZ19ryQclcOsZppLgxj+mjEfxuT6CiA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eDvzTLMQ;
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789057621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1puZjxs3lQ0OZGjrziHtT77SfFjdKoASATdow4jmCoE=;
+	b=eDvzTLMQD1zk/gF2P1wYfL/knlCJKtqGxuq9L1nx7f55iGLirlEH0FAkCRPpuIskqXIixQ
+	wwn04Zu3hJCdkQvB5U0/8dPcSsim+hU2f4wt40ZswRyJY0FxqnWOrj0kPVlJRdHa+Nqrsh
+	n434uqSSJs5/3KKpJoCVSIoygBwxOX4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-KUPKdFIrNTa6Fvcwg-c9oA-1; Thu,
+ 10 Sep 2026 12:26:55 -0400
+X-MC-Unique: KUPKdFIrNTa6Fvcwg-c9oA-1
+X-Mimecast-MFC-AGG-ID: KUPKdFIrNTa6Fvcwg-c9oA_1789057610
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 433171955E7A;
+	Thu, 10 Sep 2026 16:26:49 +0000 (UTC)
+Received: from bfoster (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1D101800351;
+	Thu, 10 Sep 2026 16:26:43 +0000 (UTC)
+Date: Thu, 10 Sep 2026 12:26:41 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, hughd@google.com,
+	baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
+	ziy@nvidia.com, joannelkoong@gmail.com, djwong@kernel.org,
+	yi.zhang@huawei.com, yizhang089@gmail.com, yangerkun@huawei.com,
+	chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+	yukuai@fnnas.com
+Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
+ large folios
+Message-ID: <aqLaQcZvaFIrAz0e@bfoster>
+References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
-In-Reply-To: <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 10 Sep 2026 09:22:51 -0700
-X-Gm-Features: AcwNN1UnDVpavQ1PWarBG8W2VruLfKxk4ncIecF52ch3SJz533v-zrDp7ETfpYo
-Message-ID: <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: O0-WJUO8BozyWkztuYkLBlxTaQXCviiqujWO5cI0IAw_1789057610
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2E4DF4000A
+X-Stat-Signature: hxkj14jsxfbq7wk5y4sfxhyrekdspmqs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2AAFDC000F
-X-Stat-Signature: oorzbmbjtqr35xa5d3otiab6jugcp6zx
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789057385-208931
-X-HE-Meta: U2FsdGVkX19GlZ93iexkpdxjoKo9dUlBQBEH8LoxmVBgUUPKKRYNj3diY2L78kf5m1T/h2y2hoOIJVtppijnbFWojzsQ85mxe6kPF4C5HeSfrJsyegdV4UPdQt9edy2mv+GspwXmik7gg+3qm5hTi1LUYaxB3GO3GElZLso1skoo047WBxvkBGKEllyC7Mr/tzC6dALGCMRxYo8BIf6zeNIaa7F+Sei3sO9mxKausGjwfF1MKf3ykU5/deJDXLROS9Slu9CZ1EOAiMV2odKfRriJHXlDoYik3Kx4l1sv0r0lyjv+o2mUGjGwGin0gTXfiJ5hw9a/OVXeeWgEVCtqLpYKz0R6xrbSbY8kCEzCTqaME4ZPUHc19YNkPpVUmtE1HbuWRVOLxR+y53cPVytDEaCBUL6JBumKklJkj5jvC/plRL+TirpD0pPCb/GJ8x2BKlK87r5mBAhVHFVFBbg9RFRqOMVEoyPuxp/Bwy0PbAOGTvpkS1hOY4h39u7vCRibbh5S79rzgHRRospqKh612caKV4FQxYf1heXDrHMrPA+hIf8rOfz2ZR0lc1Sj/PJWP1CTT9KmBwg7w5GO8oUa9GYDYGf5U9tyzszOiW0RPnSihZiN3GXfSepqZZxqu/Eg2qn2Q2WRSEgg7fqHGQr4QezX49wLz71lInfQVdxSUYIl1Pm0IPWR/FmtDbacoyBvuXssBLprs1tE0ucleY5kUg9SP+WNILYqrAbnm25P6LhxfLhe6cKU3UfQTVwEWsSNelbPFhcDhb9C6FMJFBkjjLbt0Z2nTeZaa2DTsqmjNZ5pshJaQBivb1V+JdaH1JpJ0ni9wHnU7mblAgGTHTf1sHZfcjmNUmuGx4NOBsG3PcB/pAF5Yhy3Ziea4ycD3OH8RbVj2jaLhaq0bxtn8Mp7VE5wetuoV4hQOis86z6YbP7xFPYsHoR0M6KJ7SpxCW6DuXRe1QYr+Zgun7DdnUF
- QaimS/Y9
- CZLpVy1MP02od3AkRmpJJr74LaQibQI8387rOBowPwtACJ4/Mw2PSXC/3+Gj44KSw3vROlteMUlOoXQSlhyiiGP/dfcOQeOhGTv7oSsLbPk70nLP3jR2z62ZScHZBfgfCmN0v795y6+v6wqWUDAFjTDzlnYlDRth5vyz8bUods2/qNVCMsBhsi6YYtdLM7jNSIlmmCCzlth5fPLL9oiBP5VgxKkGSp/tmnKWdRgw7K4DdZkV5k1trTdcgDZRFdYyrXAZ9z7mIp3ZcHJGNE+u4bhrwCPlycvFO/UFCZTVC3ZumkXneXIHKjyUbxvJxU32bVSZXqhJ/m0dukX7tHo9GWnkTFc297J+15FjqsZtmy6/IGMcLiUtrUy98wzhAQBcFCmulIe5m0TpKjmf5uu9/t4TAWobH68dzDWBXWNIMOGSWkeUQGPXisIM++kyeMcYe1EiD1Ww0i3OMAVkB7f+jxo+dy8e6hpxzSDkDRYem//lDHYiv7/Y49QG+s7GKJ6IujDhMKjmdf9UNO9KSHSZCLI0Ji80WDgGk7E6h
+X-HE-Tag: 1789057622-384327
+X-HE-Meta: U2FsdGVkX1/FX5o2dT49Nn7hZvU2vyEC3qeV0U1M6fp+VgVt7pjEZLEXuZcJqCQD+p7hUtn50vcbhRPvxzRdxfyPc+JhE9p79mc+OFfplVm0k8bS/pbca4eecZFIl22uLb3jbImiDLLOjxj6X2ah+jSRAs9qKHS/bzpxeyzXzWf2cJ+ahipqTKV7TNyhRLTjs+Hj8iI+G5bO4nFs5HFOY7YNZjhL+m0S+ssJg8p2D4NaJXtq3jgapl70P2U6M4Au56+jAx0jKM+CrVubNQPb8rMHfwWScu/xFrK7SOIkj9b8nJh7/QZ/OTHn41RK8UlerNPwVgH+u7q7UhHEx1WhYWDuL6TVP4UZE2no6cxtkGTr/bxdf+O0dErq7zzkn9wGzFnwXx0Yj7V34HaBeCiIr5SYg3ZN+krSYSlXom2DkcdyP31CRC5OuxtnA1iSOOxudgpzei4CPXPfvdIT9MEGoNtkuh5tGGb+uSniZTaORtq4ijbQGqHVJ8t30/zTgFpUzUWEYVTDuj33GMMuUAYRhvYnq+2gaEDBJt72KdW9xSlg9X8HnBst/cQMUKbg48dMBFgcVc4EhDfMulmSBFAzhlUdFHE8z+kSvwMckZIeIty/X+Q9Lqj/E+FpzWlXY5uypjzNXYQQNz5e/Sew2fgl9f0j4Qi76H2EbiVxk2yldSdxTTadW4yy1anfu1PXPYF+SNpdEFTf/X88tvEmrwdNrSkSedSMWY+Iol85cZxhClDf0rCnxWqO9E4ki3cwBvnibMcnXh9uTVECnhtR2BPnNyvsW1hAvfmuZrc5htHo5qtaAcL0IYJCXuLGWN21yYQlf9PuyJta61qX4i0ym0cfh/bv4wbNbxFzUKp7KNUERB8Q+WSZ4Zot/n6QHA7brAkdk7Hz4Td01CdanW3rP5Nsdwm1IsSlFC3RIBXLpNI2gisfOA8Vk0YJjJTRccR401qGxMSaWQKUJVIsw92Jr9Q
+ RQ2Rdyyh
+ OrOlkbTQfLUtKx3gvKKDsKn8L5VHJ1l38VM05Xf+pHyLC1wKDpQ8nCAvfZbjIEoHtfKlQT3GJo4QlsO5tqCIvxdjVbQ+lkfjoH4HEmEq3Cn/wTCgc0Zw1y6Nq1bc8KnoVld569PDHVJRApyaqAHlBTzWPiz0koReVbqL4QkuKYUkz63hBfnCh8JPxjimrc9Fqog7hMRqehy/qeq3wQVArko7v9AJlk3K7gA/d3310hgOXYLR0yIIzh925CYacNel91FQ5DUrSz7g73aiwPynJxmkAh5buPtVtLCUxmd56oprYVtcat9GiQXKlnfsBrs/Qh3QomF8iMRHSdVgDmsu8joryDyE4RblvNI2k8+YF6i/eBQxjhzXKPSNqufCMEQQxjqGCZ5zo9ftu8JR0cGoQJfZUJF/UxBJ1fOzgW/TjKsK4hVBhPETf8ijaVl3zFkbUYTN0+3HepUuAs/EOdi25isa6Ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,82 +112,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 3:57=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 9/8/26 18:45, Nhat Pham wrote:
-> > On Mon, Sep 7, 2026 at 4:30=E2=80=AFAM David Hildenbrand (Arm) <david@k=
-ernel.org> wrote:
-> >>
-> >> On 9/4/26 23:14, Nhat Pham wrote:
-> >>
-> >> Hi,
-> >>
-> >>> To Kairui, Johannes, Yosry, Chris, David, Andrew, and other (z)swap f=
-olks -
-> >>> I need some help here.
-> >>
-> >> I'll mostly ignore swap-related stuff because (a) -EBUSY and (b) we ha=
-ve quite
-> >> some swap experts around :)
-> >>
-> >> Reading below, I do wonder if the swap subsystem needs some more coord=
-ination
-> >> and collaboration?
-> >>
-> >> For example, maybe having bi-weekly/monthly meetings to get everybody =
-aligned
-> >> and uptodate could be something reasonable?
-> >>
-> >> This approach has proven fairly helpful in areas where (1) multiple co=
-mpanies
-> >> are involved (2) many concurrent development is happening, and (3) peo=
-ple have
-> >> different priorities and requirements.
-> >>
-> >> Is there already something like that to organize development? Should w=
-e get
-> >> started with that?
-> >
-> > Hi David!
->
-> Hi!
->
-> >
-> > Thank you for your suggestions :) More collaboration and communication
-> > is definitely needed here. Conference is a good place for this, but
-> > it's not something we can do very frequently, and many folks could not
-> > attend (visa issues, etc.).
->
-> Right, and conferences usually don't have the capacity to squeeze too man=
-y
-> swap-related topics in, so it would have to be side discussions or BOFs.
->
-> >
-> > A bi-weekly/monthly series of meetings sound very appealing. Swap
-> > contributors are very spread out (China, NorAm, Europe, etc.), so
-> > coordination will be tricky, but let us figure out something.
->
-> Yes, that's an issue. I'd suggest swap maintainers take care of that if t=
-hey
-> agree. I could try as well, but it's rather tricky right now on my end ..=
-.
->
-> As an alternative, we could also use on/two/ ... slots in the bi-weekly M=
-M
-> alignment session to talk about swap. (I'd be happy to learn more about a=
-ll this
-> as well)
+On Wed, Sep 09, 2026 at 02:23:39PM +0800, Zhang Yi wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
+> 
+> truncate_inode_partial_folio() splits a large folio so that the caller's
+> truncate loop can drop the in-range sub-folios while keeping the
+> out-of-range tail. The first split at the punch start edge is
+> non-uniform, which leaves the sub-folio at the truncation end edge as
+> large as possible, this means it may still straddle the range, holding
+> both zeroed in-range and valid out-of-range data. The function then
+> attempts a second split at offset + length to isolate that tail.
+> 
+> If the second split fails the straddling sub-folio stays merged. The
+> function returned true unconditionally on all exit paths of the success
+> block, telling the caller it was fully handled. The caller kept its
+> default end and the truncate loop truncated every sub-folio below it,
+> including the merged straddler, discarding the valid out-of-range tail.
+> 
+> For example, a 4-page order-2 folio punched from offset 0 to the middle
+> of the last page:
+> 
+>   truncate_inode_pages_range()
+>     truncate_inode_partial_folio()      # same_folio == true
+>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>       2nd split of folio2 fails / cannot lock
+>       return true                       # BUG: caller keeps default end
+>     end = 3
+>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+> 
+> This became reachable after commit 7460b470a131 ("mm/truncate: use
+> folio_split() in truncate operation") replaced the atomic split_folio()
+> with folio_split(), whose non-uniform split can partially split a folio
+> and leave the end edge merged.
+> 
+> It has gone unnoticed because a dirty large folio normally carries the
+> filesystem's private data, for example buffer_head, so
+> filemap_release_folio() -> iomap_release_folio() returns false on a
+> dirty folio and folio_split() aborts with -EBUSY before any split,
+> leaving the straddler safely unsplit. The bug is only reachable on paths
+> that produce dirty large folios without filesystem private data, and it
+> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+> attached.
+> 
+> In addition, even when both splits succeed, data can still be lost when
+> the mapping's minimum folio order (min_order) is non-zero. folio_split()
+> stops at min_order instead of order 0, so the sub-folio containing a
+> split point stays aligned to 1 << min_order rather than to a page. The
+> original success path left start at the page-aligned head of the range
+> and set end to the exact page index of the end edge, neither of which is
+> a folio boundary in general. Either one could land inside the large
+> folio at its edge, and the truncate loop would drop that straddling
+> folio together with its valid out-of-range tail.
+> 
+> For example, a 64K (order-4) folio with min_order = 2 punched from
+> offset 0 to 36K:
+> 
+>   truncate_inode_pages_range()
+>     truncate_inode_partial_folio()        # same_folio == true
+>       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
+>       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
+>       2nd split of folio2 -> [p8-p11, p12-p15]   # success
+>       end = p9                           # BUG: p9 inside [p8-p11]
+>     loop truncates ... p8-p11           # p9-p11's valid tail is lost
+> 
+> Rework the contract so the caller is told the page range to discard:
+> 
+>   - Return true only when a split occurred, false otherwise. This
+>     clarifies the existing confusing return value semantics.
+> 
+>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
+>     range fully covered by [lstart, lend] after any split (or none),
+>     i.e. the pages wholly within the range and safe to discard. They are
+>     aligned up (pstart) and down (pend) to the mapping's minimum folio
+>     order so they always fall on a folio boundary.
+> 
+>   - Rename the byte-range parameters start/end to lstart/lend to avoid
+>     clashing with the new outputs and to separate byte offsets from
+>     folio indices.
+> 
+> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+> &pstart for the folio at the start edge and &pend for the folio at the
+> end edge, so the truncate loop drops exactly the fully covered pages and
+> never touches a straddling folio that still holds valid out-of-range
+> data.
+> 
+> Suggested-by: Brian Foster <bfoster@redhat.com>
+> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> ---
+> v1->v2:
+>  - Export pstart as a new parameter so that the generic and shmem
+>    truncate paths don't need to recompute the start value from the
+>    return value. (Brian)
+>  - When min_order is nonzero, align [pstart, pend] to the inner
+>    boundaries of the folio to ensure they do not point into the middle
+>    of a large folio, which could otherwise cause valid data within the
+>    folio to be incorrectly cleared. (Joanne)
+> 
+> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
+> 
 
-That's awesome! Thanks for the offer David - I think MM alignment is at 9AM
-PDT Wednesday, usually right? That works for me of course, but Baoquan
-and Kairui (and other swap folks) - would this time be convenient for
-you?
+Hi Zhang,
 
+Thanks for the tweaks. I still found some of the logic circuitous as I
+read through it so I spent some time playing with this just to
+experiment with cleaning it up a bit. I ended up removing a couple of
+the labels, lifting the pstart/pend assignment to a default init/case,
+and reshuffling the split case pstart/pend assignments in a way that I
+think also elides the need for the boolean or using folio2. (I'm curious
+if this happens to address the Sashiko feedback as well..?)
 
->
-> --
-> Cheers,
->
-> David
+Note that this is completely untested and needs further review. Since
+the current patch looked mostly Ok to me functionally (though I do agree
+with the comment about possibly splitting up into smaller changes) and
+has other reviews, I'm just posting this as an FYI. Here's a diff of the
+changes I made on top of this patch (Assisted-by: LLM, fwiw). Feel free
+to use some, all or none of it. Thanks!
+
+Brian
+
+--- 8< ---
+
+diff --git a/mm/truncate.c b/mm/truncate.c
+index d88a1b159084..8da16d7e6763 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -237,10 +237,16 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 	else
+ 		length = lend + 1 - pos - offset;
+ 
++	if (pstart)
++		*pstart = offset ? folio_next_index(folio) : folio->index;
++	if (pend)
++		*pend = (pos + size > (u64)lend) ? folio->index :
++						   folio_next_index(folio);
++
+ 	folio_wait_writeback(folio);
+ 	if (length == size) {
+ 		truncate_inode_folio(folio->mapping, folio);
+-		goto no_split;
++		return false;
+ 	}
+ 
+ 	/*
+@@ -254,7 +260,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+-		goto no_split;
++		return false;
+ 
+ 	min_order = mapping_min_folio_order(folio->mapping);
+ 	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
+@@ -266,29 +272,30 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 		 * for shmem truncate
+ 		 */
+ 		struct folio *folio2;
+-		bool tail_isolated = true;
+ 
+-		if (pend)
+-			*pend = round_down(pos + offset + length,
++		if (pstart)
++			*pstart = round_up(pos + offset,
+ 					   min_nrbytes) >> PAGE_SHIFT;
+ 
+-		if (offset + length == size)
+-			goto split;
++		if (offset + length == size) {
++			if (pend)
++				*pend = round_down(pos + offset + length,
++						   min_nrbytes) >> PAGE_SHIFT;
++			return true;
++		}
+ retry:
+ 		split_at2 = folio_page(folio,
+ 				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+ 		folio2 = page_folio(split_at2);
+ 
+ 		if (!folio_try_get(folio2))
+-			goto split;
++			return true;
+ 
+ 		if (!folio_test_large(folio2))
+ 			goto out;
+ 
+-		if (!folio_trylock(folio2)) {
+-			tail_isolated = false;
++		if (!folio_trylock(folio2))
+ 			goto out;
+-		}
+ 
+ 		/*
+ 		 * split_at2 may no longer belong to folio2 due to concurrent
+@@ -304,28 +311,18 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 		/* make sure folio2 is large and does not change its mapping */
+ 		if (folio_test_large(folio2) &&
+ 		    folio2->mapping == folio->mapping &&
+-		    folio_split_or_unmap(folio2, split_at2, min_order))
+-			tail_isolated = false;
++		    !folio_split_or_unmap(folio2, split_at2, min_order) &&
++		    pend)
++			*pend = round_down(pos + offset + length,
++					   min_nrbytes) >> PAGE_SHIFT;
+ 
+ 		folio_unlock(folio2);
+ out:
+-		if (!tail_isolated && pend)
+-			*pend = folio2->index;
+ 		folio_put(folio2);
+-split:
+-		if (pstart)
+-			*pstart = round_up(pos + offset,
+-					   min_nrbytes) >> PAGE_SHIFT;
+ 		return true;
+ 	}
+ 	if (!folio_test_dirty(folio))
+ 		truncate_inode_folio(folio->mapping, folio);
+-no_split:
+-	if (pstart)
+-		*pstart = offset ? folio_next_index(folio) : folio->index;
+-	if (pend)
+-		*pend = (pos + size > (u64)lend) ? folio->index :
+-						   folio_next_index(folio);
+ 	return false;
+ }
+
 
