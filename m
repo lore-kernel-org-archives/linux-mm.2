@@ -4,104 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C01DC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00662C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 339E46B008C; Thu, 10 Sep 2026 08:34:56 -0400 (EDT)
+	id EAD946B0098; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EAA16B0092; Thu, 10 Sep 2026 08:34:56 -0400 (EDT)
+	id E0F286B0095; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D8BA6B0093; Thu, 10 Sep 2026 08:34:56 -0400 (EDT)
+	id C89316B0096; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E91696B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:34:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B4EAC04AD
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:34:55 +0000 (UTC)
-X-FDA: 85197796950.17.D593734
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8F05E80007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:34:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=EyCim8z1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=EyCim8z1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A3C116B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 317C21604EB
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:36:01 +0000 (UTC)
+X-FDA: 85197799722.06.7132FEF
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D5A5020005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:35:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=S2THb0gK;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789043693;
-	b=neLuOvBUiM3z9NZhcsMtM1oh9cBLWUUOmSR8jsY44mlVoe9R1Hmqhkg+iF/KRxI7XGyKBu
-	WBH8MPHR0/CcULA5M7Ri+WuB+FAbRUZvMLPmuLkCC/eaw+dnbZTf5dmfH0m3YSDqPtRN/G
-	0C3g2CRKXnllIVju2zOvPG1Yu/RYJcI=
+	t=1789043759;
+	b=DS9mc9j3yXbVklfk5isl/Kbh3Yrk8IDDKE5HfycdbDoLoNkQTtUvYX0xPE1IzC/7333ovk
+	9o4nXKGWWYUx8dPsa0tzyK4kHy0Mzy9v99B23kzZ8sP3cKgGqOTfOpoCQd1dxHpmz9VQy5
+	+dtiEWXmMcjX1mMy+rg9YGNZWZYTDFA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=S2THb0gK;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789043693;
+	s=arc-20220608; t=1789043759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kyFV7zmyLxpEZvligdnuDoR5IOSsacIpTEqjLZPY4Hg=;
-	b=rytEgz4vq5RN/AIMm0xhAPfemjexVZu5M07TcvOriFj23yFEGIv20J10k5wixxzG2epOUM
-	m8mCb6No1LKJ7ZnVj8BdYlAQMjZyM2xIU6LEXVq+oHVF8wm/N6LebxduH/ZJqLgsreq/l7
-	gEtjy2paOasaO8lC/d0iWlQmXvQx/oc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CB9A2153B;
-	Thu, 10 Sep 2026 05:34:48 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0467F3F7B4;
-	Thu, 10 Sep 2026 05:34:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789043692; bh=3VduiEwRT1CiMZeMrb/9DRZj/SpWNd3+qDuMjc6JUx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EyCim8z1BXVvNkA1xBGQ4fcu6OUw6Mp7njnhN0VWg8gTaxRcZLvkZsfUFmfHBVbAj
-	 +sCuf7gjxCheN+REc0W+MySoxgx0IjTxXWJAkxDBCr9e/j+MmYZNrZ3bGLk9drGcnp
-	 0F83MHlbKNzouc73XXXeCAze3/qegFM0w0dpZ1vQ=
-Date: Thu, 10 Sep 2026 13:34:46 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
-Message-ID: <aqKj5ojQ3dabOV5g@e129823.arm.com>
-References: <20260907-fix_split-v5-3-822b810458bc@arm.com>
- <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
- <aqKOVGECsCNtSMIV@e129823.arm.com>
- <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
- <aqKS7CP67X4h6NiM@e129823.arm.com>
- <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
- <aqKU0-Gm4yh78F3V@e129823.arm.com>
- <d6f2e6b2-9dc9-4f02-be37-14329c1a6798@kernel.org>
- <aqKfjqa6ye2AOU5k@e129823.arm.com>
- <11a36d52-89a0-4f43-8a51-a4930e171ba0@kernel.org>
+	bh=a196pSrWkeJTnDFClt8myTTQ1/mCsw6g+DgOYrKLVHg=;
+	b=w4m9qZfZr+RPUCEMwF4LWYkw+Jz2cVczdA6xSRgJxI4dppTHuDBXdzTcvIePBcvOMqeQow
+	axoY7TzQ+rfDZD/txQ2ovQDu5M9Oh5uTWxuIOwF4q+N9QgWfRHjfEUmu/MG/tp6Na7U0fu
+	RXvVIb691Z2EJO5EcRpnampAc0oPRAg=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=a196pSrWkeJTnDFClt8myTTQ1/mCsw6g+DgOYrKLVHg=;
+	b=S2THb0gKiPSO4s0f1f+ZMWWHuq+7dHRZP0h0JVdjj/2SqBHzqgkbz6pN2vzLmpCdKqpjQRETq
+	a1C8EtxruZiXgqzQpC9L2A/wvzdT4ScQ6TjWaApzOBcLFJ499WUCNePCuGcvvJgqE7nDu9pA6vR
+	WHxbAXo+7n/8i6KaMqP6R7o=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hgcLF0Y8dz1T4Fq;
+	Thu, 10 Sep 2026 20:24:21 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2C7C840575;
+	Thu, 10 Sep 2026 20:35:54 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
+ (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
+ 2026 20:35:53 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
+ Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
+	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH v3 2/3] mm: zswap: skip xarray walk in zswap_invalidate() when zswap is unused
+Date: Thu, 10 Sep 2026 20:35:43 +0800
+Message-ID: <20260910123544.818146-3-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260910123544.818146-1-wangkefeng.wang@huawei.com>
+References: <20260910123544.818146-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11a36d52-89a0-4f43-8a51-a4930e171ba0@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F05E80007
-X-Stat-Signature: 6okyxwgayngsm44zfphfykai1iags3pr
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789043693-645281
-X-HE-Meta: U2FsdGVkX18BPNpxWUcHM6K/o6vv2xWSJGsV1lemJfxE5O0zQ/IfirU1usLrQxDokOYPZ46z2sOavRkK5tp1ga2n77Z99azqO0lJWgiDuXur6ZoZXqKIYncIF9xqpIGOR+TE/CrShlpjRA1nNwfbJ6yS3qfT1W8AqbpRzEpXOE+vQuktlkjLV5vtgRi6g52l87q2EMm1w6IsgPmvLD4DmJ+aOcjjopSzYQpYBtbyJUcjQ9WtxgexZ/mcc+g7qfpJjJRjjKvNvPsJZ75YMkGh64kIPXBj/NY88Ql84vQMRY7daF82RX0laXjHZ7GMkXBDHoWA8bHTBYoBViFfASJPLza/4WqmztiBaEyp18jh8fQDgCDVWEXFtLXsTaJ3sOYnN9wXFOhyRs4WK8ueqHYv4z/2XQM3aTNvG4jukDZXFSAMySSlCZFBt07EeeAvv5tzz3oQbbNrBYj9ze+K/VUnX7ukd3PJBkU/84fkM7am7viFbqPBGt5knkcS/yTldxR23TJiDp+fjB0BDFs0j4c9pNXtFqSLoiQxX7p7qAQqiqfbnBZmRa5BDOtVe1NZdRVGSqiZarnktxfqQzOsRUwfB3P4cqI0TVq9r3GYW+ldr5DMMP9kg4gx8MNXjX0glztidVJrUceg7PEC7pE5KH/8bvGSWAy7FkGHiarN0/T45Dbss4irWXtkNa4iWUuI8hU1NqShXLxp79/Owb2yxcXUOiM8t1U2l0WXQV2FYkZoMWhIlLA7NERWoIChCtXyFrsYgAfnagdoB09A4LXHZ0h5mPzR1Y2TFhmTTJ4yJcUeHGMOke+9a1lTiVpGEalwXUYw78yqqaligrVHqRuVQcLMVCmwLgfrIBWhUD+Qi07DIjlnXhHUbOn6QHCGIFf3xC3H8lKP2dU5IPJzNw1tS5SVsxqRMMcWti/Srm2M7HCJWoGNtTe/kfyYkar9m1FPFCnkA/6Ap/W5zrJRLPIu/D0
- n7+qZJyf
- EQVYS1+ex0Tql9or+AdKSZsApS5iV5HI2z91lKav4NrSYkMTF8X7aTWSPCYu/1RsRQZLEdFeHNYxK8HmfiZr/hDZYlj/osUL1yOe/Ym4hzx+sHxAmnnftLEQrTDZNXd/c8jlKQLOoTK7MQUPXKTNxJKNWRfyvTVyQisp/+iYNFtY7erzMRDrouBtBZpRDZrKrxymjzOLbvxIYTQDthKb/Z0lSoxXhBbG7vz7PWGU5fXHREgXwDr5yvgASHch9Tz4VfjL5xXjrLlrjol0YBv2Rn2tsC/yonzNXqmWv
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D5A5020005
+X-Stat-Signature: k9anyt8j8shk9czg4bo9zgf7myuwrdut
+X-HE-Tag: 1789043758-673776
+X-HE-Meta: U2FsdGVkX18tAEPaDBQEO8viw5Xb0Ln3VHYnzKc1xk64TQ7Ih2+xxP3tWHJAG8xK0fFFS+wrYh5NHx9frR412iXDgzng6JuIBj9HOeFYNtjgHNtFbUqQi1s1kPI/FRnvW5Wf4ACX0kFaofB5nTDx1cmBju+MVasaPoC2QGH9wLX/gCU9dawzzLVxeeMqp37vXeglZH4KfjwMmz56PFzGtKIuTYlNwg5xQ/AkOED6ngiQqlSIT18NUqPLvXnMb81JBdC4onbPmZ3+0mZdf9Z4Gjv5iyYb16+2T0u/bGm80Gl0fp0TMEXjo/N7HXhU5mMBMqAZqNWLcA274ak4dah7onBTHZwDOf+/n5R34C5TbaVrh0zydcNm3NW/qoXXgRb64Q6KeyCmXPWUJQ89R5bUGfyerUc+m5GGpXEzu4fZPD8vxO/w/DO2VjuUNvbexzVM1I4MNFqkjEadqrLPmeh39gXPD+JQhFqSv3A1HliY0zysKEf/4TzEtD1GefA3luHvqWoEdyaNfUXUiS8/Uvdb/A/Ai33aKuhWFKbjnbaRdI3wZMYsdrZYVLh+EvekpQcoC6cagz9EeGxV6OyqkW2I5kR8aKlTHEPTHmOC4vwPAnwkieku/KxIqzsVlZEKP2oc1yApHXMCrnbOVsx0t2Si2MNdEqoCiB49+YCQq2T8nNQ0MaIbAIiy9ca2tW1bFH/u6AXgIr2OGhnwL0YCndQAbzRnbzGAi8eF5bqMCS0LCmITLzU5gSZttOsTqlUCLLq9R0FVEykwivHSI0gXKFB3SVgslLhhk3ZzfBSdJAfq9QqcZH0VDaHBi5m8DdQwyyZaTXMzPURWuZkO/YKahOlhTolKdv1gMNzVntK79znKOLUxb1QKeHbjs/AozPuj6XHKDwVshchnS7jZvDVglkZWKuH8xK6VkK+NuTHKDbyej4i3/i6L/74tyA7cW4S4AWV098VyHXWTUGrXhUSvtMb
+ aRwSmGR6
+ J6QYtp+9Juk2iNBIIduiQsIGO0wE3suSUGusqCImjBi3VIQC8wjKZ9AIy8JN5r74ZFHiO+GLWduD6WXhmJKi271r/Co48YFR3IkeGWNFX6CuOGgOrfu58zg8//f/ZuGJSdHXc7p2Okr7/VZcRJ1oQGh4HHzmvodiuWLK4rZefODaq6H8IKn0X+0BAxSDYTfo2sBBn8rZBlnOYey7IyIUQZdvVIyEDu2nw2hskefc3l67Wlwx9XFLxy0v0yiXSDE+YmgyJ4HlHGDr7ggomP70txCBpfnomLwkJLHJ6vcAAXGkupEKoQOL+ex5/VEgo5oM9JwvJNV76K9YfMbMqc1A6RgU9FA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,74 +99,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 02:25:40PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/10/26 14:16, Yeoreum Yun wrote:
-> >> On 9/10/26 13:30, Yeoreum Yun wrote:
-> >>>
-> >>> Yes. so if we remove ASSERT_FALSE(check_vmflag_guard(ptr)), TBH
-> >>> we don't need this patch unless other usage comes up to prevent unwanted
-> >>> VMA merge.
-> >>>
-> >>> Would it be better to drop ASSERT_FALSE(check_vmflag_guard(ptr)) in
-> >>> guard test?
-> >>
-> >> I guess there is value in asserting that not all VMAs by accident start
-> >> with an over-indication of maybe having guard pages, which is why Lorenzo
-> >> added that check :)
-> >>
-> >> But I think even alloc_isolated_mem() is wrong in that regard: if the
-> >> original VMA gets merged, we could inherit the guard-marker, no?
-> > 
-> > True. I overlooked guard bit is sticky.
-> > 
-> >>
-> >> Maybe the following would be good enough?
-> >>
-> >> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> >> index 5c8ec3ca75d7d..791bf6a68b9e6 100644
-> >> --- a/tools/testing/selftests/mm/guard-regions.c
-> >> +++ b/tools/testing/selftests/mm/guard-regions.c
-> >> @@ -2257,10 +2257,20 @@ TEST_F(guard_regions, smaps)
-> >>         char *ptr, *ptr2;
-> >>         int i;
-> >>
-> >> -       /* Map a region. */
-> >> -       ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-> >> +       /* Reserve a 10 page region with 1 page space to both sides. */
-> >> +       ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_NONE, 0, 0);
-> >>         ASSERT_NE(ptr, MAP_FAILED);
-> >>
-> >> +       /* Map a new region that is guaranteed to not get merged in any way. */
-> >> +       ptr = mmap_(self, variant | MAP_FIXED, ptr + pagesize, 10 * page_size,
-> >> +                   PROT_READ | PROT_WRITE, 0, 0);
-> >> +       ASSERT_EQ(ptr, ptr + pagesize);
-> >> +
-> >> +       /* Clean up the excess pages left and right. */
-> >> +       munmap(ptr, pagesize);
-> >> +       munmap(ptr + 11, pagesize);
-> >> +       ptr + = pagesize;
-> >> +
-> >>         /* We shouldn't yet see a guard flag. */
-> >>         ASSERT_FALSE(check_vmflag_guard(ptr));
-> >>
-> >> -- 
-> >> Cheers,
-> > 
-> > It's enough but alloc_isolated_mem() could be modified to allocate with
-> > PROT_NONE first and then change the prot.
-> > 
-> > It seems whether make a helper or testcase should write the code
-> > properly in case of unwanted VMA merge.
-> > 
-> > IMHO, instead of testcase write them all
-> 
-> So far I am aware of exactly one test case, which others do absolutely need this?
+zswap_invalidate() still walks the per-area xarray even when zswap has
+never been enabled. Add a zswap_never_enabled() to skip it.
 
-True. I'll respin with your suggestion.
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ mm/zswap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks!
-
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 79a66093d7ec..132e97748ed2 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1670,6 +1670,9 @@ void zswap_invalidate(int type, pgoff_t offset, unsigned long nr_entries)
+ 	struct xarray *tree;
+ 	unsigned long i;
+ 
++	if (zswap_never_enabled())
++		return;
++
+ 	for (i = 0; i < nr_entries; ++i) {
+ 		tree = zswap_tree(type, offset + i);
+ 
 -- 
-Sincerely,
-Yeoreum Yun
+2.55.0
+
 
