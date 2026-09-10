@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A30C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 05:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01E57C79FB7
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 05:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF2556B008C; Thu, 10 Sep 2026 01:09:13 -0400 (EDT)
+	id 6B11B6B008A; Thu, 10 Sep 2026 01:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9816B0093; Thu, 10 Sep 2026 01:09:13 -0400 (EDT)
+	id 659AA6B008C; Thu, 10 Sep 2026 01:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDF0E6B0095; Thu, 10 Sep 2026 01:09:13 -0400 (EDT)
+	id 548206B0092; Thu, 10 Sep 2026 01:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0EC6B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:09:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3DE61C2205
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:09:12 +0000 (UTC)
-X-FDA: 85196673744.23.1CF7C5D
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 135AB1C0002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:09:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IPAHEByV;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3977F6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:47:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A27E4040D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:47:15 +0000 (UTC)
+X-FDA: 85196769630.25.D8325CE
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 587EEA0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:47:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rbu5P+b0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of BATV+ff59df477875fb2864a7+8418+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ff59df477875fb2864a7+8418+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789016951;
+	s=arc-20220608; t=1789019233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iM97NZNkgRQvm4z0BalpDvlSr5wYN5Y0N3YdRoica9U=;
-	b=DffzNdhR9JhAnb5L1r+sl3Y/511K/RYYmWB9Mp8eeF6JlBBE7dYi2eSd16pWLByQYWXtnH
-	c141lPgRwZmcN25DBXroG/RbWGhehZML7QHxxx7J+Fmkv2xs3ABxr+rKtRjrPSYplu6uM3
-	EYOiLMaWYs7okWEs4CEifU2QEMzvSoU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IPAHEByV;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=GfLKYZUgvxL1ahMi0OUAEXLtCuptGFsPyzgJaDdoa1A=;
+	b=Lho+fg/sNX63GJOPQha9j/QIT1W5p9rEfaFSPjS7AwgZ0Yv81Jqu/vm5wpNPFk1QS8w3Ln
+	9BD8MP4F+9vM83hNwulsak5BYJq7E918ev/ZxpVh+qrf/PRtx4wl8UsY6xFTqDMwuIqACc
+	5gmTOUVQna3X1PqpKlRICkkME7ue7XI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789016951;
-	b=d8YlEwZV/blZQEIaqyclm6r32ESp7WGnzvbZidSlxp6jjuXTgN8z02eqEHz1IyD+tCVfa8
-	gFuvRHLuoYgJLSHrb7C+9RP81FrhcTdBhErtvuYRKauPwAjPR3e+Av3sm3zcj9ExRHbeHk
-	pMGV3upiod3Qm1v7FZ3YsxRPib1lDoE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789016945; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=iM97NZNkgRQvm4z0BalpDvlSr5wYN5Y0N3YdRoica9U=;
-	b=IPAHEByVWQafrAmxw53ErU29wo2J3viol0RmtlSIaHaChJL1FF4wnc7IUM2jO5ovGj2gwOErk2iGtFfFsu9jHWmyopa3dkgF+OVfpNoQ0GyJ2OczlQL85HX3mQfsrx6/gtrWe36BuqLxtWMd+88LJCAtWSFC6GaWcrwDL810jyI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAgbYFF_1789016941;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAgbYFF_1789016941 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 13:09:02 +0800
-Message-ID: <4aeaa283-a417-45a9-9298-8123192dc707@linux.alibaba.com>
-Date: Thu, 10 Sep 2026 13:09:00 +0800
+	t=1789019233;
+	b=3RiWGLWnNkd1LQqaAwyGBCs+YQyilOe783TxLE2PDmbMbLML0FvmbxM8niPczLxJEQ50yd
+	hPWYTZ02FVCHO2zYTzfpKfe+7RZskiJpodgh4cCq+tif8DUjVzIEo8n493U2j+9+HBvPmD
+	qlJnaj5kG8mKBC0qlhXjMp7e+Ze2iIQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rbu5P+b0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf15.hostedemail.com: domain of BATV+ff59df477875fb2864a7+8418+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ff59df477875fb2864a7+8418+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GfLKYZUgvxL1ahMi0OUAEXLtCuptGFsPyzgJaDdoa1A=; b=rbu5P+b0gKhmfHoniTHQeIpdmW
+	XZAOFK/cR0q1II3k5bdMPFeVTHmMiFQiwkCSIDIzrRbBb320pnjc4UEUNhDn6iG0YNZmH3mFFkJZb
+	QMBgfU/sLem7PTpXB4+D9cRNZkMnNsU8P8ig0U871JDqZ5U1VSvg/KA+e+WSzsow3XKuGW12kn8m5
+	M6CL8HGF6hVHZwpnyguCfd34JfXZU3312iIFDH+0/VuntKcZIVIql4h57GTFtkz9+hO6glinlxA6V
+	JtdJc6X2bndHJp0eAbbrwHgHWXAxm9c14WmPLfOTNIz5qGXnVM7ALDShomySW35sO5af+V7Qa1+yw
+	2piWhWJA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x4Xco-0000000DTZq-0r7E;
+	Thu, 10 Sep 2026 05:47:06 +0000
+Date: Wed, 9 Sep 2026 22:47:06 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: brauner@kernel.org, djwong@kernel.org, cem@kernel.org,
+	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+	ziy@nvidia.com, david@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, ljs@kernel.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	Yun Zhou <yun.zhou@windriver.com>
+Subject: Re: [PATCH] xfs: fix NOFS state corruption in btree split worker
+Message-ID: <aqJEWmUN3Jsajoyl@infradead.org>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+ <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/19] selftests/mm: parameterize the mixed-source
- collapse case by source order
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, rppt@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
- nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
- kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-13-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260908125105.1510704-13-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 135AB1C0002
-X-Stat-Signature: 6oi7ot7frm59m8iqtoskud63w7y83meb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1789016947-946429
-X-HE-Meta: U2FsdGVkX1+4xg7AZPxcrEITGdtRYmzVQH1FiAwMSji0y/XaYlN8pAR69LmDg1J4MOaNhJDtF+2O77oJfyROBAYUFTXsWsQQdFBTfKdzZHbzEKdVQuNQwOe6NOJhdpH25/suVemXCxk0eLkQqvbgiZqjKyCqIfMlON3cZpM80G+wRK92u9PzqNIXYgG6MW9h9ZTGgvLUufZd7UfT6XrJ3egAJQv0M+GW8OIo0m7sGJmpwZ0++yWiF20ujMhUarzPtMaOuEnkMTziIISszELA79uXkmwltER46fX3qJyxjgxam14aITBaoscAGg3FfsVsnynUwdksjDYLJyskov5nU9DWZbYaNdrySSY6JIelSIwg+JYJv7VoUx53NePjIG3/yEejM9GXWWfv9OBhRN6ytixFSFlUVH4gURrMGFfHp/4cIfGUYuoN7mMhg+ofvimYNcK7I9cejGP41ltmO3wgTHXxqHE86coaHGfpf/5n+ZA30w/p0CP4mW509BoXEGWZYfkCuzOzSVhLq7zO9pFgO1EWxkPiv6CGdTe0UFSzo0JJ7RHdkDYj5EDSuaKfQzXtQv76Ubt1DODy4I4ve7PIqzf5LdGEXujIqkPy57QWh97iKsUKdUvNEGWLERTYn6NUshjs5Wcjx7WwhZRc2JNrLWCSxMLHiicTdDyfOPTiLyquAm2dV5XNCaQSikgcWaYZgnJ64owC704ckQjuEbsqzu4YAeGyegAgjitERzm6f70P6V+u3TuErR4j7AGTQ7sUghsq0WS0qfMS7v+FzO2TLshRmjF0K+XXiMlIjntH7DxkrMiWiAiF6YgfooQ58Dy72gd2E8AB1UwlQKdmzgKwiWgPT3jLS4saYQ1GTXfUdMBAm+J5XCSr4uKFVfN94Efj3cJGWzP19sV3Bpri6Ct0f5oe/Hu8GoyLMwF3jjUetQ1PHNxvOQSB9uzl5ZkbRLVLPf/8BIzbgK1MXsqVkui
- ZgT/L/gi
- oRGY8BTun4orCKwcNynKNPrf74ultdR6276Ww9BCx9FSnFcZPqJ5NH+QJYEThk/MJ3/pG60z+eVy9HbkZ9x7Fhsb5ODCHGKxuHq+A6Iqb4UxFgMCD4ewttuQCOtekKGXQxDZkN4GMn/Mc5PodPD3Fveh+btRRuUH69CGDacDiiVFEyTmRRuNhfbUY8gc22xLu2GfaiS62kjbiEH/ytLySVTcmXKbRrkfsaqy7QCx+pk2Ti1G9gi375GHyip/lHfJ3lJXuE29DyrhaockYU1hRmPfl16cLzliLXRQ/dBbJ6xD8MOTDvFLDVeZeje84uTZwkw64cm29wj4QRq4DeIChzMGfdGxZAMGHSvEQMTZ7KV2mDxQ5IDtqHh8nyY5oD2oRP36/SNHAMLKzBXQPVZK8eyVh+g==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 587EEA0006
+X-Stat-Signature: w64mrri9bcyezrozf63y6ggp1emq3wdk
+X-HE-Tag: 1789019232-195808
+X-HE-Meta: U2FsdGVkX193wKscICCvVYEgQ437QuzqRIqioJwujdX68UHVT7Z4pivpw8qzcha2lS65y3BHCmsVvI5tzA0yDDuqdoxZMCs/m4DS3bWPXYFbzCACdYcCAAXNZNegmf+v7MOXi6JoW82I4NczqAi5/Nb5/v/1VXZ2rwMvhte7wJchDuBCo4I/VZSI9UMpXUeKlB3wWn/pd6CIWvkFNI8ZtQTQ0vWj8ZF3/wvadf/h7tR+20EFn/seET8Yap6tQ7WebsCXWwXidxgwDIgXiMHv/ArGSGTMMB+nAVJRFIRSTQKJLHBOQ8WvH7lVHR2VAPlQ+pqaAwD8YT/Q+OXLglXGRfV9U7BACCHedX55cvVvKrwiyAgL5WMlLjD41JV211xTY9DLUDfi3c2Ji84gMYJ6P5c02pMJwbuX0uhOGuOUfBY5OfoYDhn00cuGR9fNYUOXab4v4psc2GxTjJU7x8l9Ti0Q3cycup9uqSOciglhQ9XvwqUZpJINyJNkyzU4z7Teg+gKMd/oVjbCIU3PQf4xQyNKoP8Qr2D2vUwCmBMuDIkkhoRdKvzELO9g9pL7O+VMTi4cBbyFxK44Pa0UhxGJWNrM6BKkOhILwL5gdn5nCOySNMuTCVmiNdG4Ols2VniE4i72pjlXsQA/upvY+LJRIuJRyCuzptbp7nbJ60rQDOj0JDtaV/sH9+YB8ctuMI/h1I7xr5X+EvwsiUcdpNc9jy85buqBSFRSd0heEiAGsZYicCd/HO091rglb1aDk9FRMYZXVhis25PT+/pTdpNRoUBR80gnTvegIX9zAAdjS2dMquUDLOS1vYGX/B/Tz/xrDu1pu7L7wGYotgTXcsNAaaIxjM6sAbD7twaYhQnC7IKWdWQOmDBc8aDlthDeNvhcRe3zIq0bt74BhcAmn+XNi+sekXoP04jxmluKHmo8HVBtKxI672sOMDdPic40PguySqS649nNKolM953pIT6
+ A8Y6r0yh
+ zrfEepQ/QA59Phr9WqTPX25pMsKUWDbbkYjaKnqGV4tUTeImR0ihLx7OnVabmLPBbERzJUKDCC91fpDq67HUVMpwbzHAqtNkmmoEHJknpOcmnOV2ZiGApPhLp5Uh7cvmB8yhJvXU7WLH3VnDpKBacmvytAt3y24Trd7+PggYQYU52jhjJt5I2zunR3vNgnw0QOM4Tzd6VjcP9wXUnc53mIZlz5KxyrrNnT05TsO1dfCNGg4rj0kGNbcsF7PZDLa5bZ1JY5H0YNFtl2lufipeOpx4wwJLpOqmwyrRv/x8OssmYOckRAfAZDnEr0BR8XI0MYWcuOA5gXzd+qd44U/13GNdFxZ5gE2neUzwocDU0hcyroDjG2EnGdZZSeBEJcWY1b6pPfguaFUmWD8FEavgZ85ZfuWFem6rkdDjPgFJMfhofxHVL3wVwT9CiwbxS6QX7oRBiTKF1/8zcRh2ipcCWXNdC0MuprHfNdGhuv7V9gXGZ0Kl/yP5ffkeJWbwturQiDoXQJQDzzMjcLNs1wGoj8sDATK6n03ryPubapHbbb/9uQn5gcSqQr4BGMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,135 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Adding Yun Zhou, whoch touched this area recently.
 
-
-On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Thu, Sep 03, 2026 at 09:37:56PM +0800, Kefeng Wang wrote:
+> xfs_btree_split_worker() calls xfs_trans_set_context() and
+> xfs_trans_clear_context() on the caller's transaction, overwriting
+> tp->t_pflags with the worker's NOFS state. When the caller already has
+> PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+> the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+> the caller's NOFS protection.
 > 
-> collapse_order_mixed_sources() faults its region as order-2 folios and
-> collapses them to the -c target.  Order 2 is below the contpte size on
-> every arm64 page size, so nothing in this suite collapses a contpte-mapped
-> source on purpose.
-> 
-> Let -s name the source order alongside -c.  The case then faults at that
-> order, keeping order 2 when -s is absent, and the source order has to be a
-> supported mTHP order below the target.  The other mTHP cases are
-> unaffected: mthp_push_target_order() enables only the target order.
-> 
-> "-s 5 -c 7" on arm64/64K then collapses contpte-mapped sources into a
-> larger mTHP.
+> Use memalloc_nofs_save/restore with a local variable instead so
+> tp->t_pflags is never touched.
 
-Make sense. But we should validate invalid parameter combinations for 
-'-s' and '-c'. For example, when I set the following unreasonable 
-parameters, some test cases fail, so such invalid configurations should 
-be rejected.
+Looks good:
 
-[root@]# ./khugepaged -s 7 -c 6 mthp_khugepaged:anon
-TAP version 13
-# Save THP and khugepaged settings... OK
-1..8
-# Allocate huge page on fault... OK
-# Split huge PMD on MADV_DONTNEED... OK
-ok 1 allocate on fault and split
-#
-# Run test: collapse_full (mthp_khugepaged:anon)
-# Collapse multiple fully populated PTE table.... Fail
-not ok 2 collapse_full
-#
-# Run test: collapse_empty (mthp_khugepaged:anon)
-# Do not collapse empty PTE table.... OK
-ok 3 collapse_empty
-#
-# Run test: collapse_single_mthp (mthp_khugepaged:anon)
-# Collapse PTE table with half PTE entries present.... Fail
-not ok 4 collapse_single_mthp
-#
-# Run test: collapse_order_single_window (mthp_khugepaged:anon)
-# Collapse one fully populated window... OK
-ok 5 collapse_order_single_window
-#
-# Run test: collapse_order_partial_window (mthp_khugepaged:anon)
-# Collapse window with single PTE entry present... OK
-ok 6 collapse_order_partial_window
-#
-# Run test: collapse_order_max_ptes_none (mthp_khugepaged:anon)
-# Collapse full window, not the one missing a page... OK
-ok 7 collapse_order_max_ptes_none
-#
-# Run test: collapse_order_mixed_sources (mthp_khugepaged:anon)
-ok 8 # SKIP collapse_order_mixed_sources: no supported source order 
-below target
-# 1 skipped test(s) detected. Consider enabling relevant config options 
-to improve coverage.
-# Totals: pass:5 fail:2 xfail:0 xpass:0 skip:1 error:0
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-> Assisted-by: LLM
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->   tools/testing/selftests/mm/khugepaged.c | 17 ++++++++++-------
->   1 file changed, 10 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index fb4efaf67c40..b15cd07fc0b3 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -1352,11 +1352,13 @@ static void collapse_order_max_ptes_none(struct collapse_context *c,
->   static void collapse_order_mixed_sources(struct collapse_context *c,
->   					 struct mem_ops *ops)
->   {
-> +	int source_order = anon_order ? anon_order : MIN_MTHP_ORDER;
->   	struct thp_settings settings;
->   	void *p;
->   
-> -	if (collapse_order <= MIN_MTHP_ORDER) {
-> -		ksft_test_result_skip("%s: no source order below target\n",
-> +	if (source_order >= collapse_order ||
-> +	    !(thp_supported_orders() & (1UL << source_order))) {
-> +		ksft_test_result_skip("%s: no supported source order below target\n",
->   				      __func__);
->   		return;
->   	}
-> @@ -1364,7 +1366,7 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
->   	mthp_push_target_order();
->   
->   	settings = *thp_current_settings();
-> -	settings.hugepages[MIN_MTHP_ORDER].enabled = THP_ALWAYS;
-> +	settings.hugepages[source_order].enabled = THP_ALWAYS;
->   	thp_push_settings(&settings);
->   	p = ops->setup_area(1);
->   	ops->fault(p, 0, hpage_pmd_size);
-> @@ -1374,10 +1376,9 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
->   	 * The allocator can fall back to smaller folios under fragmentation;
->   	 * having nothing to collapse from is not a failure.
->   	 */
-> -	if (!is_range_backed_by_order(p, hpage_pmd_size, MIN_MTHP_ORDER,
-> +	if (!is_range_backed_by_order(p, hpage_pmd_size, source_order,
->   				      pagemap_fd, kpageflags_fd)) {
-> -		ksft_print_msg("No order-%d sources to collapse...",
-> -			       MIN_MTHP_ORDER);
-> +		ksft_print_msg("No order-%d sources to collapse...", source_order);
->   		skip("Skip");
->   		ops->cleanup_area(p, hpage_pmd_size);
->   		thp_pop_settings();
-> @@ -1387,7 +1388,8 @@ static void collapse_order_mixed_sources(struct collapse_context *c,
->   
->   	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
->   		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
-> -	ksft_print_msg("Collapse region backed by smaller large folios...");
-> +	ksft_print_msg("Collapse region backed by order-%d sources...",
-> +		       source_order);
->   	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
->   		fail("Timeout");
->   	else if (all_windows_at_order(p, hpage_pmd_size))
-> @@ -1418,6 +1420,7 @@ static void usage(void)
->   	fprintf(stderr,	"\t\t-s: mTHP size, expressed as page order.\n");
->   	fprintf(stderr,	"\t\t    Defaults to 0. Use this size for anon or shmem allocations.\n");
->   	fprintf(stderr,	"\t\t-c: collapse order for mTHP collapse, expressed as page order.\n");
-> +	fprintf(stderr,	"\t\t    -s, if set, is the source order for the mixed-source case.\n");
->   	exit(1);
->   }
->   
+Btw, if you have some spare time, it would be nice to kill
+xfs_trans_set_context/xfs_trans_clear_context as follow up given that
+they keep causing confusion.
 
 
