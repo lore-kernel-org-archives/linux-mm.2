@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666FBC88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052CCC88E41
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3F966B00D2; Thu, 10 Sep 2026 19:55:55 -0400 (EDT)
+	id 922C96B00D3; Thu, 10 Sep 2026 19:55:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D16E46B00D3; Thu, 10 Sep 2026 19:55:55 -0400 (EDT)
+	id 8F8B76B00D5; Thu, 10 Sep 2026 19:55:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07056B00D4; Thu, 10 Sep 2026 19:55:55 -0400 (EDT)
+	id 796E26B00D3; Thu, 10 Sep 2026 19:55:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73D896B00D2
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:55:55 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBC48805EE
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:54 +0000 (UTC)
-X-FDA: 85199513028.02.8C0AEE9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F05E6B00D3
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:55:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F1B41C28BD
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:55 +0000 (UTC)
+X-FDA: 85199513070.14.81D0355
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D357240002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0Qqx7kW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7F5A8100006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qY2F3Brc;
+	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789084553;
-	b=AO//WWk+mu9PeC4dE1dXmL9/B0N2IVfXe3Kpfw5hyE1MPz84hMgDKrcySQ/blBSVm6cjVK
-	i9O1dzuqUkfdopPSumgYq+fqrTdpnYBGOki2KH/aGXPOObsSZz6M4vx10oSGUiUwRetNfz
-	jvkqf+E7QcbuQY21kLa1SzNhvgO8Wlg=
+	b=5FlsYOW4Ow943BrbVjGAMcFOJ4Tih4HV2LvWDOHCVlR0RPB1ZQ4zDreBLkjsMNKk8hWCaV
+	XGuDUSZO7Gi/qWzNX0EvhOgITuNagMRhz/4/v3D1IKDEyKXTkr1eK91CjSLAlzosK8q1OR
+	Qq4E3KGWUvy8aR4QFPp6apj5LqkWzUI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0Qqx7kW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qY2F3Brc;
+	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789084553;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -45,36 +45,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XHnkmd8di0Fj7HvKNuBcSA1VEgayipSPMZW7VTItomw=;
-	b=WM3CU1dn3vwEzCUyicgEl+bfGEvOwh5o34nPWuv2XcVAgHLhM6zdD7jvAWAw1SMUxKz7mF
-	b6rBcWwiTBeHBx6ehfMl1gZ5VNWRE1OXIoIBMt1swH/oFFqOV7WmjwcVuYc37XsJ6IvBS4
-	m2YYfiKd446C4kBd/9NPiXOfA+ivC3s=
+	bh=dT2qy2jFpIzhgHYtOWAlaosUmjZJ4xWXaxwzQ1xVoCw=;
+	b=v3MTmcONtKB4uPFPNSs0KQkVZbmLRTOa75Gif8cqgXDze2gtiLqt1+Yi2Wt8s94PMEfFKX
+	5Y7aOKu3JbcZ2lbfp4rSfRzibkBoV7X1k2g1/fYUf9Kg12bCxN1nzkIKJ1HsqqrKwPbu0j
+	MteleCfFs6IelRTJI8OHg8JL/qRkcXE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 829AA44981;
+	by sea.source.kernel.org (Postfix) with ESMTP id A593744994;
 	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A5C3C4AF13;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 723C3C4AF51;
 	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789084540;
-	bh=9/VBXFiPtXwwSkwilV6QPnmo3UfNHlyoXBHTXU6ZEIc=;
+	bh=G8N4ShrkYGN5GBTB755cDv3HxqeV741x6ACmQkhLBp0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=a0Qqx7kWCVBlj37epmd1cOaOUtUX3KbgsTmb21UffxnHoxg+cN4ojJ1Z0YQKPhJ22
-	 L644l+d/1YfKV7w/4CS5ZjbZNlZ9aircdmaU82439g0bLFHAyAlcNQ9MfVdDRZPuu3
-	 WIgIsZww9zTOQcsum0LsZHvOs6ct/B46gHCrJTrd+6+tRW88jiiFEHjx3A7NhjqK9D
-	 eFHetrV2SD8Q8EoOeBXOwtYuObvVqJfw4KSZkf+jNmf4iB07QrTUG196d0Zb+hdMrH
-	 ROVaetwoQuV1ZFBvoQoVpZYV21e/BORB5fnz2KgjUxW6kPDu9ypUuIwIUF6hrbcA5y
-	 Qrow1lUG2xviw==
+	b=qY2F3BrcEAlD9+DUuhU1Ag9LdFgkB1u4J6mSq8WG5HY6wxdUHaxQe7dsCkH7dywU0
+	 EwNmPAnTZ9np7xSpJsD/KSG9pCC7Vy9tVnG+8OWlnrwaUBgsTNJt7wUxuSruG4UTFg
+	 F7zvhRo2eSq+Pqk5IQWIZEP07bynY7se3WMJgUP0ujPWLGS4JADL6haeS06bzxQ4aI
+	 jyjE2B13z/hMIYrvNYpGO0/mlrRfP7bkY7nGvrr/6P57VZf2cEkuaLwwZ54kVjWtF6
+	 7J5Twe7/XRRruvQaAVlgTSKHLp1QTw80MAVwSe2vj2QF9JLVxmr0DMRuX5RMso0pA0
+	 R8U0M7gcHqZQw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44B22C88E45;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AACBC88E4D;
 	Thu, 10 Sep 2026 23:55:40 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 10 Sep 2026 16:56:02 -0700
-Subject: [PATCH v13 36/44] KVM: selftests: Add helpers to pin pages with
- CONFIG_GUP_TEST
+Date: Thu, 10 Sep 2026 16:56:03 -0700
+Subject: [PATCH v13 37/44] KVM: selftests: Test conversion with elevated
+ page refcount
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-gmem-inplace-conversion-v13-36-dd6fbf94f4e1@google.com>
+Message-Id: <20260910-gmem-inplace-conversion-v13-37-dd6fbf94f4e1@google.com>
 References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -113,11 +113,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=2739;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=3126;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ESFxRYNiDxK2Bg/x1Ed6912z9kN1UGHdmxFKSE9Nea4=;
- b=iOR/3JiOZabO9ujUFLcXtm+PIEufsgYutfh5+PdSX6c7HU9mn2NbbzX9dqB+VLtmcsvOHkMsu
- 7+jWyEdcc0GC/X9yGQnC4IwttxwDjVG6uWuFbFRoJIOJm0+EwNaRWxC
+ bh=PmSTG3Mn3VeRBRB+Sk4c+WCKivO001+yahByLRYiXQc=;
+ b=RpykbcULhzk4ajqe3DS/wC8n7+NFwOF0ACIKr+g2KTH4KaYSGPwwQkK/DSqTHRM2PdjRrrgAu
+ Q3Hqr1m2V5LBan2oI5vKX8wYPbB8YSk5b4E/+D8Y4Rnch7JyaXKpDli
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -125,13 +125,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D357240002
-X-Stat-Signature: pn5w6pq4fg5ore897oc7idjirzxnumck
-X-HE-Tag: 1789084552-2249
-X-HE-Meta: U2FsdGVkX181dSeb0LYPZ2rsWHZ0v6d6UM7PjiaxqAQNcLDZUxhgVf5O7hKhflgJl14eC9vlKr1kbRkuUTBVkyH5v8qV7VQuR9QKwFerrcpFIMzhQ33OV9BWlB/94CnKXbw5I8CGU2ciMnyOM2oi7kjhP0e9vTDB1Yaen+NcQenhR+CKkizBONGJHIwycab6V2L65c4IxWd4RlVs6c1Lg+1dk9qoGI9Mv/cBrm74w+xNtM8jjsWwnlaytni3lXOdfb1zDWeueFpxol99AHinJFcT/KOvwOffiSA6nes/QwevSOXxTwk9cZCcRJFCP+mrOCz9lEb1OZbu3eurTYVuPVuhaA29UN6d6GWQpo9wQh4YJzE+n9YhB0boC1QA0QCuxMAJWDGQap/p3ssWQtDIHWtrPEr5yzK2Jc6urUYUoCgEEGJ5r9nndgAm6/chytiRsNkv1TYLIY3MSrte1TL97Shp9dCR++Vhsj2SBKdWYKEI+FgoAQT29GgDPfS3/JnA3FrFXJ74VNTCtfRBB2Q9HQw1BKNhf8CZMKYW1SBJQ75zE9+ly7nqpA+fQiQ5g7FPtRidEuQIamTSF7wwgjDklPrPnVJoHe9VkSXvKFUFe4OKGKAZ6mh/CPpPX5e9zjot0aRr6DVjeuK30NISBzS52YpUn6gegEEV4nSQTRb4/RQcMX2A5SKymdhTCTxmCb0jVXMp1AlMxwhEIYTsxSmxXbEgAjvIAXGhmSkZTEjfRdYsn5T5X/qnA4j5lVpg3vqOGZmMLOLMwn1PKhq3wrGAfVi/nftD54l/7Zp0ehD+uF0aOOCv09xtcl4X1Z3zwg4GStgyaQgDIeXhNyt6ZE1iT9C7fVIrg1iMj24JUI34Z4E+L+x8lOnu4MW67mT4ymxWSfv7go2BXZUzpGWfX6feTeIUl2f4w7bwz1AkkxVuepMe0xLzoqpw0UNvXozBWpSsZqWmTx1mWTQKIs9IEZF
- GaYlP2c9
- w0M9ziVGV6DQhoBSzI0CL5kaTim+pvTnHwltHKpwmQ8eUMI6KCx6J0YmzkmGfGiOLg9EqlBv20ZfXakeyD//Psztim2QDl82d8hN2bWsPjn8hopdFmBxCabcnfhp7Lmu+0+qv8HgJdrayEonE94L6N3mgAyrLNkFggyM44odCUKltisoPqdpTej0e/Q4zDxa+36kf7NbMs+PYDyEkx5A0bZeZHtuMZBBqUpde7FnleL/FQzCDcAAWvahE+E+c59MENnWVYCYYk/hgscRZOL/eUTlpY9p1jyy059s4SnnYyJEaGJvk/lqivJgD7OLaFOiUmpJ+hD9Q6y3TIxyza8eNCbM8CgFP6ltHn9nFFFQS5+HKebH/3xPAWa+io2MPLhYxIxW8blr/LgrbtwHLaLtXNtRujjubQxg3Thzkty4FsMZ9FaFMlTeqkWpVnKS9ZG0EuaM7u/PiP1mswaxLDJnEsYnEu3ITUmPnnMi5ALE8AgVMoenWS2tvK1GxHzgpZrGwgKM3gcbIpJQsZHUQfJjLmxY5FQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7F5A8100006
+X-Stat-Signature: bk14y9oqnpiyro8yksmccq1rfmpwb16f
+X-HE-Tag: 1789084553-94527
+X-HE-Meta: U2FsdGVkX19+oEmPyTHuK+Xqf9sP8e4dI3T63aBwJl+HKx4YaC0KaT93XTGlZjP6qC3WgayTw/E79tPoy6oAgG7ryyGpGw49/z71Wk/XZsZn0aGYxxNsyk2IJjYrrAdHLj90tFRbLfTGsgkVG+92R5LUC8oOnEeYdDrUikVn/iOWYcm3x6MwK/oNp13PSuK/hjo8etjiAcqYIWvMDbCYl35YolyYvON/BsodJ/vu4n8nh/oYe6EvGB/PNyl0Vh37wj+rWwH0sW5dPrTqrPJg3NDLW73N2mBZA9TxDjRr0HvBxfQhefej12X4wo+1gqfrfCcSb288OvV/16/7RFc+JZIIfTX5sjoI011lTZWWxNUo24S/vDPbzwmtAGhjKtyQhum4QswkoKqp+ZZSk10a8l9tf9YdkHEUXD9R3QG1UAZFRHKp3JXa/cNqUzRTQhe1Hwvu2q/mFQkSObOri9gFm8Y6f6T++5RgEbKJyI7EztmAN7WSldYnOwdJXep7dtnbVHqmOuWsaBuPUtu7P4dGRwubpBWynSJIPq45PBnBHG5QRz8asn3Vwn+Ia94Tqy4uXTB//LRHQBlyo1Dp7yk+2tXGWUuec0l3vsZp6xHZYUOmZeCyXK2mNv1itIecCkApSQ1G9PyJ5EvxYVYKRGCjkhhTCiZhd0M0pdQVkAlUMIq/hvK8+jouFsJee0rW861Bo2ci6Rt8hmnhgqAWbEtfI+fkxp34Hw74QjSVhHs6DUa7yzjSpUf5kw47F2y7FDftM7Jg2IFvvYUolE0Pr9GaeOqtUcNXtp1WIPIWpjsaGbet+WVaak4foRm9YVzw1HBY44lxlzv5gpYan/d3tJG/f+WT3Z+NvCtsJfWyDRrzr0Z0UsRgACBhXWWOd8Q32Bfd7RMtorwkmv8YFAQvLt/auW20E9b0Ma+g+TfwFXFSV+STkJQ4njHJM9jd0SCtQYfA51w9TwgxYpYvaWsWSLe
+ 0iwxOToy
+ PBrdPpJXAKPz876Z30kbAeK1yFJcmN39PYx2eAcL3LAE0bAUiNdsyhQfP8dIgvGI/BwANRNEORXzXdGec0fWY6u/yroZ4i4qcAtdV+fuOp/sS90LHuwVRpyiiDL8m2Y5Yv3V1svqjJatEkxg+D1wL4os13pSleOU4TnNIh6vH/lM2qujzJXAbZWZQFUQlh0u4dLNxTjl/4Ct2XXPxyVORUdnHUwyk6I5qDLUt2GyzVqBpePbke/poVRLp59wDk3J+x2Ar+qZzzKfPdVMrCfTIOuegZuN4jaUiHT7qY3Rdh/n6mTEPtHQxTjIiDKv2Tchf/E+jj3oO5QAugdqN4Nv0gr8BOFqjgU4l/5Kc+4lRR/HHaGIj8isRUD4XP8ur/ArQhqYvAsxcnhayGi/BRCqZlTbt5HRby1VfFRr52zJED3nkh4MqIwVWKUwzR42DH3CjIrKCI10uUxP7hkeNsBN/MjnkRiokloqN5U43
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,82 +141,94 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add helper functions to allow KVM selftests to pin memory using
-CONFIG_GUP_TEST. This is useful for creating test scenarios where some page
-has an increased refcount, such as when testing guest_memfd in-place
-conversion.
+Add a selftest to verify that converting a shared guest_memfd page to a
+private page fails if the page has an elevated reference count.
 
-The helpers open /sys/kernel/debug/gup_test and invoke the
-PIN_LONGTERM_TEST_START and PIN_LONGTERM_TEST_STOP ioctls. Since this
-functionality depends on the kernel being built with CONFIG_GUP_TEST,
-provide stub implementations that trigger a test failure if the
-configuration is missing.
+When KVM converts a shared page to a private one, it expects the page to
+have a reference count equal to the reference counts taken by the
+filemap. If another kernel subsystem holds a reference to the page, the
+conversion must be aborted.
 
+The test asserts that both bulk and single-page conversion attempts
+correctly fail with EAGAIN for the pinned page. After the page is unpinned,
+the test verifies that subsequent conversions succeed.
+
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
- tools/testing/selftests/kvm/lib/kvm_util.c     | 25 +++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 56 ++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 575032e9791d2..3cfe243d7c8b0 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1206,6 +1206,9 @@ static inline int pin_self_to_any_cpu(void)
- 	return pin_task_to_any_cpu(pthread_self());
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index a972a09c5c6e5..e1c84df0f0596 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -444,6 +444,62 @@ GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
+ #undef TEST_STATE_AWAIT
  }
  
-+void pin_pages(void *vaddr, uint64_t size);
-+void unpin_pages(void);
-+
- void kvm_print_vcpu_pinning_help(void);
- void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
- 			    int nr_vcpus);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index cd468b2bb8343..b1456ed76e27e 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -19,6 +19,8 @@
- #include <unistd.h>
- #include <linux/kernel.h>
- 
-+#include "../../../../../mm/gup_test.h"
-+
- #define KVM_UTIL_MIN_PFN	2
- 
- u32 kvm_random_seed;
-@@ -645,6 +647,29 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
- 	return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
- }
- 
-+static int gup_test_fd = -1;
-+
-+void pin_pages(void *vaddr, uint64_t size)
++static void test_convert_to_private_fails(test_data_t *t, u64 pgoff,
++					  size_t nr_pages,
++					  u64 expected_error_offset)
 +{
-+	const struct pin_longterm_test args = {
-+		.addr = (uint64_t)vaddr,
-+		.size = size,
-+		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
-+	};
++	/* +1 to make it anything but expected_error_offset. */
++	u64 error_offset = expected_error_offset + 1;
++	u64 offset = pgoff * page_size;
++	int ret;
 +
-+	gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
-+					  "Is CONFIG_GUP_TEST enabled?");
-+
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
++	do {
++		ret = __gmem_set_private(t->gmem_fd, offset,
++					 nr_pages * page_size, &error_offset);
++	} while (ret == -1 && errno == EINTR);
++	TEST_ASSERT(ret == -1 && errno == EAGAIN,
++		    "Wanted EAGAIN on page %lu, got %d (ret = %d)", pgoff,
++		    errno, ret);
++	TEST_ASSERT_EQ(error_offset, expected_error_offset);
 +}
 +
-+void unpin_pages(void)
++GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
 +{
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
++	int i;
 +
-+	kvm_free_fd(gup_test_fd);
++	pin_pages(t->mem + test_page * page_size, page_size);
++
++	for (i = 0; i < nr_pages; i++)
++		test_shared(t, i, 0, 'A', 'B');
++
++	/*
++	 * Converting in bulk should fail as long any page in the range has
++	 * unexpected refcounts.
++	 */
++	test_convert_to_private_fails(t, 0, nr_pages, test_page * page_size);
++
++	for (i = 0; i < nr_pages; i++) {
++		/*
++		 * Converting page-wise should also fail as long any page in the
++		 * range has unexpected refcounts.
++		 */
++		if (i == test_page)
++			test_convert_to_private_fails(t, i, 1, test_page * page_size);
++		else
++			test_convert_to_private(t, i, 'B', 'C');
++	}
++
++	unpin_pages();
++
++	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
++
++	for (i = 0; i < nr_pages; i++) {
++		char expected = i == test_page ? 'B' : 'C';
++
++		test_private(t, i, expected, 'D');
++	}
 +}
 +
- static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
+ int main(int argc, char *argv[])
  {
- 	u32 pcpu = atoi_non_negative("CPU number", cpu_str);
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.55.0.1007.g17ff1f9808-goog
