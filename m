@@ -4,143 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA49C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:53:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ABCEC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5511D6B008A; Thu, 10 Sep 2026 02:53:02 -0400 (EDT)
+	id 5FF1E6B008C; Thu, 10 Sep 2026 03:01:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503B96B0093; Thu, 10 Sep 2026 02:53:02 -0400 (EDT)
+	id 5D6E86B0092; Thu, 10 Sep 2026 03:01:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F1F66B0095; Thu, 10 Sep 2026 02:53:02 -0400 (EDT)
+	id 4ED616B0095; Thu, 10 Sep 2026 03:01:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 16DAA6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:53:02 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76DAD40436
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:53:01 +0000 (UTC)
-X-FDA: 85196935362.25.5DB9B07
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9646E160007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:52:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CIPlZuNK;
-	spf=pass (imf08.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789023179;
-	b=ZoRX1TREr8BcoQ9EzcYrRptzLuCofnEMuZu4YcI7GvOpN1nSF6ag+LBJBIbB9h9aQJ0Yg/
-	nS6rj0SObI8Jw2pE9tjz/26y0r+epSk7tD1+AmYWMGiXyP9jylJZsL/r1OkDzdCSbpcY3C
-	P5cIoRALtxRPW/QVAsv80K/vrw52WhE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CIPlZuNK;
-	spf=pass (imf08.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3138D6B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:01:07 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0941A0455
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:01:06 +0000 (UTC)
+X-FDA: 85196955732.15.25EC37B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 08114140008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:01:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FY9LHIQR;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789023179;
+	s=arc-20220608; t=1789023665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
-	b=wORLUZbaW87VZXy6DWeCsjZmlVxm+EsN1QBkGKGNxjbvVxWYCwssGr+kycMA0QcsHbkAJ+
-	8Hs0WY66xBOzvTiBxxsqZveUpl8v6YvDevuhu6vtup/MaLwXpF6BrkwKshMz9A62lZJCKT
-	NcmDprK0+wK+ZC7Gfhrk0ie5tD6uZ8k=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso5218791a91.1
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 23:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789023178; x=1789627978; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
-        b=CIPlZuNKiV7PBpE65ThYSnnhGZNP5Yl4MIkC7DDVRWT3TTA9OnuXjWQYE+HPq8Qo9f
-         8yfM+QtHA7wpQv/A5B4f2KF6Z82T2cFoh7sg7w+D94lP4rCzPlfOQGxJQNBySLo+H3HR
-         j/VbHU/k8ZcbGEcUp+ETGw60o+DamdHwwItUxUAJSG7f67AmWoQpJQ3g5JEKiv0TtTxp
-         BQAHo5eah6Sju9oT2gdALO09wRgPzu5HS33xzKiTCuVmobXewb0NL0hLcviEverR6lA+
-         p5OsF9x67hyc8HXLJWv1oHYj7IVslBda1aMKe+uYwaAF6G+JGvjG2Dk55cMgS1YG1UqN
-         EOOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789023178; x=1789627978;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
-        b=dkYPMkLtnL7gZaO7fHOZ4EK1vXmEUcoPfr5tizfrGkCmh4zH/OmnCVq4D1T5RNStEp
-         sK8c414LpR0w/e7VIDY+Y/LGPUsbsXW63eklEuaHpZft0lVnbC8pIbGDgX8BHR9nw/Wt
-         uhXCp+YIUhVj9cIrg5BxEMoHNJowN+wk42RY3nml3EpWtzp4KFtLwhH5jXMH9NiT5EKi
-         8F0vRQR3xcxYPoRHJgT86NU3tKJQp2ha8bO04XH8iTYAU4G+ee5eLzzWc8HcVqksPU1+
-         7gnt9wp4hkprd/LqwAsCX9oMEN9YCDK+XdHBvWVbXKJ/2jSTHcNtXhBAKuGFf7Y/a8M2
-         P98w==
-X-Forwarded-Encrypted: i=1; AKwUvBz32YckP/zbwi3vHdTXapuowj5bgLR5b/lqQkvto2dpmT+ytpkqTr2kF3jVXjlRAurhPOQ9XC2Y4A==@kvack.org
-X-Gm-Message-State: AFuF++nGu+FpBm4TpFAgjKSzGMpczfs/AkTaMja6ZyzkZerVi/JWgx2/
-	cn8UyfB6VYBjuHQPgyV5ZvomBYgrXHrItYiv1vM5cQEQ/cVJZFJaUBgk
-X-Gm-Gg: AYBFou147xNgiP5AtPmlJX+5eO0IofGX98XshKt5yUup11aFZgo80G8KjOWky6Pdb9a
-	ZA/dsgX4YRKo+pVEo6PGMUK0ExzsWgByGOl5ze91fMuQTYJeHrplVrwMSdrh+9ysVgCHxlxjLb6
-	HcmvjL+ajJ7/COODuvogxeoNgDjfxke0YseF+hWloXjWx+aom3ql5ZM5gYHyC1eSZQrUmLN0KjT
-	vM3f2yRfcCiAn4uwVwIeRCgAcwSkUUx3s3ZtmtZliCql1fOxomWu02gs08GfvaOEu6O5NxaYuyj
-	48Nt/kxqW1JMSOZCfC2J+Sp66ZlKzDFRqdXFa1X9bEXYTJp2HDxRUG0+xOYOe0XRgTwZQ0MHv44
-	NTjWEnDEdZj9M9Ulbt1VBSPVUoqOU09Hd7JuTVBQeegbYuDq6anXfvLO+A/5pXmJKHbMj1KDsSa
-	sRvOvJe/djMn1q839dBktzz+WV4OBFxqDa0RZIY1EyChkoOPHwZQ6YgXhdP8m3NmMSpgET+eXSl
-	JD22XP1WZYOB8QB+fHjiyD8N/zy1kiNTqILlabnEXI=
-X-Received: by 2002:a17:90b:3d92:b0:398:bf7e:b267 with SMTP id 98e67ed59e1d1-39b2614df9dmr61606265a91.2.1789023178292;
-        Wed, 09 Sep 2026 23:52:58 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e77498csm2694423a91.3.2026.09.09.23.52.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 23:52:57 -0700 (PDT)
-Date: Thu, 10 Sep 2026 12:22:33 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
-	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 12/24] vdso: Add the vdsocheck tool
-Message-ID: <aqJS61DbuUI3xoY3@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
+	bh=A+Fvkto5qAFozFyaMkrbMhzLbwJwYpEtlaPW8hDl+o0=;
+	b=6Nf9KfmG5ilApYfTJCEclg/2emEh24x3mwvnS6KdgjHc+q7f6LdgfB4OyKGh07wChiSQ7b
+	dzl6rTbjci4jU51jq8swY6bBTZEETxAHs3MmdUPafLEUMvEy8XPA0qbvg/MQW5T8DxgUco
+	+pAHHEfbCN9ILvdmY9EARrbm55JZJrQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789023665;
+	b=c3iPnhEQuiV5jEf7Xp96HUu1ivod0aHlPGI4MgR8I30F6MVxyOPmkTSyv/4ItSB8hY7hqY
+	9cZUSsg6bmPQewQXQFNQHlVlo00gNtCNTzPBrTStGeaJFlA+EUSBfY1vAI6CDFpiZNmeJ7
+	CN8cgXBbK3lSo2Cr2jQ3viyljzOpslY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FY9LHIQR;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C233600C8;
+	Thu, 10 Sep 2026 07:01:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EB51F000FF;
+	Thu, 10 Sep 2026 07:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789023664;
+	bh=A+Fvkto5qAFozFyaMkrbMhzLbwJwYpEtlaPW8hDl+o0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FY9LHIQRUp6sudA89KRTEkiY5idffNFEywi7FthL/xHsXkvV4nt7orzbZrAHuUwSA
+	 T4bIgUZI27T2LiJIlgDSvz82rBf2NJaOOHdcKuXsNGwWxJCPDbkcRLP8Pd2/uWpbvU
+	 u75B91AzbY/KwPXrmnyiak2iru6wZ76cI2/WF0AJaTzpwyHa3Vta0qePyIsawmzEiL
+	 D5ujFipSkoB5uAK7joB7cieTrz0d9Yc5y/4TDGCQmqgmfRFopDhSyZ82baZ7P/cbVZ
+	 6GgkQ2zEIeeIz8gSMxtSS9zaNQ72ZLsNL9ozjhQ47DGOk4jnJfTSUAjYgFcXvzAXmC
+	 9sBRJe/94VINA==
+Message-ID: <0feba0fb-4d23-47b4-ba37-5c272bceafd6@kernel.org>
+Date: Thu, 10 Sep 2026 09:00:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/rmap: fix missing barrier between anon_vma init and
+ vma->anon_vma publish
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, lance.yang@linux.dev, riel@surriel.com,
+ liam@infradead.org, harry@kernel.org, jannh@google.com,
+ minchan.kim@gmail.com, lwoodman@redhat.com, kamezawa.hiroyu@jp.fujitsu.com,
+ linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260908122924.554373-1-tujinjiang@huawei.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20260908122924.554373-1-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9646E160007
-X-Stat-Signature: 6x1onmozbfasumyq7hy9yynmyut3qe7m
-X-HE-Tag: 1789023179-501950
-X-HE-Meta: U2FsdGVkX19WCXqwGJSBcZ+76egY7C5D/wYYIQw9bpWj9ldorJB/2AWZaHcmDdw/47Jcx5iYzfTBJflwOptfO3cY+06WV62Y1D2X+w60M3qC6L2OL+s6Za/4BsfKOtcOGNe9al0tSuvbGy1l+86PVFdj68DHnS9zE4B9Kfztr+nFvQSeGsHRfcfzXfD2VApG8/RI9RnY8wHImZkp4YqyvCU/iYaMhO+nsicfwoqgzjb/jHnUsNhUaCT39qDqBfInuwFj0Kj7U2LnhvmpgJoX2TKH16ONqgicqvmGAzgCl/rYjQRYD32rTblFBvWEkm7hKZkRiPRQRkZB9enbxZ/g+QDF317frVJkc+UVFdGyh64nTHL7EO0f35zP7O3AvVrSKILQjWnOEWwR1ZRXrNDGfmg2sE2QH2SEltfQUofyhiq+t6dEuCjq+C4t0Mjd6zQxgSRFQhHHRsbdlp5ee+1Vu9PY4FVgtbdGJDIGNnSfJZdImRzwX+XVULq5AIv0Fu1OjCkzPBMPdEsCbRnkpSM0j351wE2SXNFO51MA++k5UfIOYJJa6Q3hd6a0QERp1Nxnna7gFyL2jvzMbaHb2sTwoipHYFRDi0lTrdHVOu8lXIvPMh9fi0SKbQwoxm2xj0AqkKljn4EbdyAl3jnkR86QMwSo069aWc2YU3HPrfl7xi6PIO4ZIMU60YSxjvn6t14WFjBoejyFouSDNHAc6l+/iizWgfJziXyxijw0rduHRntJnom99AfXzXHKkHt7nB5PxO2t6SjklM/jbdtjtoVpD6BDoG7F2NliEmo+FGv8FvHUCA9d0+5USk3Gufv71ZLVupYNDOnh0qMPkDFj/WY8snPlXKcGlapYF4QIrkSINYojVlRHc6bic5s7RsC9P+QhHhzTOx/y7j83FzVk2qEEPMaExxP5EJ7PvAAvyI4FFdFUBjkWB3U2nha9XuJ64sYmzXdjO02Vyfu8CXpsDjC
- 0KEDeYmo
- TdlND06WmOBjucOYXKrjVmxXOoo8QyB84HG0NYDqEYI4PKw9G74vdh0URp+xI4IQCkzheiazmvS0Mm3tGtzuEI0H9a962IiZ7cBYjiTmM8h+ntzQvX4UiQ+eElxXRyWi6UOGh2+8vEFJZtnL1WNmoe+xLhAwjd2JaO4NntfhMDideZob+d0GhsFAD7YFpyFOpbdvbxyJNfLEuIgXR292uUL5z96I0BjfYlj15pxSw8hX5/E0XcW3d9uLtixyHNIUgUubxMe3h3ssVAAqfzPvXkpesBuSViopBnTzgYKCCTn7XHlBA18uCYe94mgovdQONz5n/XXfQLukIEq11qq9odKT5U0qaTc/fMyZxZEPCDiBS4pDmm/kmJsfsXPFwMyTPWj2VB0g3g6PgiPxHlNd6BSTL0C82q5GAB0EuuHa/07l9jVQ/Of69Ojam1lKvuVquK8q1YQ31oZ5z9fgPJfOFpEmmig49zdfNoCgslLZ97ipyq3gMgSqEQTwp0u5j/r/B9xSopsw9WtXNSxNGWZvW8nb8rg==
+X-Stat-Signature: xii9xmoodqmbj8yf6a669yggnw93y9id
+X-Rspamd-Queue-Id: 08114140008
+X-HE-Tag: 1789023664-864258
+X-HE-Meta: U2FsdGVkX1/mSf4wPoOCiDTwiWz++d8/5NOFw4Kfv7uA1GZKfb3LTiHjSnQKNOBK6auHTup2c+2+tQM6KX1lYzWSn4kJRQezwyFxE3LMFtlxUzzeHznX92ZekvZxcIUmOdFTKAl2LSPvSkb/5o/9wkWkZKCw6D4NQG4PUNVgHXvjTkT89shACbeLEo2Km3/+BRqP0aXvE8EimfRvTvOFjABg5sCdPmtMAQBY5paK2bMEoMv4hx3LziKwk6S3OS+PDmbb5bNcOWsxt/+XJaaRmhth67oBkPuMclNcPr2jQ1lOYncEUWSuEy6s0KOeTyxpYLcCQZORcyD13l4437zsUBpD2HT32J/g4b5E/6D62UUgbbXa4M6d5Sqc0KkMpgNRk37v48/i2sDuYpfdux3XsVrROgYSCycg48ESvRdsSlm46wV504DV9PFEZT0wYar9YXSmn7jZcfR/zQVDutMz3QjwCgUSH3mU1KOjRtp9cgNbnESNJbfn7vTh+2ebvAcpe1y2816kovVHAyyH+cAQBzipgC/f25k+K3JBqlH/EM5qf0m/Au2beVEXJkBrRsxv5wnClSSsmqEqLfVX94RptqoaYJHjIZ07eqnBEdq3BDBwPlr6nWcdO7I9L0099L+doLtrDxOQp3WYFrbnt14nkpSNiChb/jdMraA8a/xWW7EJI9eRa2UP3qsLBrkTDQzMp7xDkbnUq+9BDUfOiq5EfMfWZgCDWgzXBKRf3JWBMGpNFcbl18zMRVPchJLfth4Tl8fdq/vUIvXGbvUFQEyVjA+f4FFa7z43dnCWPq74kClMyegMDyzL8X/sLn1h/6tSGA9etIIAHHV60Ho0K3HXER71qUFAmQ0eGGJkJn/VJuZwtF3ms//Mt+H4+MusR292+znB3HE4dobqIbDBSiUWK2IhSA8r3WE0shvi8sE5+d73jRpAZqHknrgp+To7dH2h6OHgEAab6O5UfXcLmk+
+ P7qRRWlE
+ GqtHGmeUYWtYftok9zbznyryxHvbDBAkPy5oyJ8am5LtXJ0WHVewizOiKiFGvvXZSN6UxENpppZWZUTehbKzNRUpsKC2PCSiKZDJTT9Lbt2cAFQ5nWhFejT3uq0sLVthqCGhn2gcpkIG/Ct/Uxoe5mewPmWNzxcXTNZwnTfYC99EuOV2AxYUjw00aC+hyvv3QMrn6sb72M4xJgTERgcoJ85CgMJkF47nglNgdvqDpFqmFly6nQZNar4i1y2JH8RWv/rS/k07M8KZxeLKTRa4vx/Unp9hfCao+J7L+LagXq2dvk94naLaKQP7RcQfHRyFMYM7LbaerJ8Nn2CWFmT0qBiihxOV7S72aTlO0luG07qApo41ac798VOkqbT0zh5NKmHRWuUlmdhRk8N+Kaf060sYLJbYQvxdr20qCbP4ht0CK32E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,78 +136,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 08:33:46AM +0200, Thomas Weiﬂschuh wrote:
-> All vDSO code needs to be completely position independent. Symbol
-> references are marked as hidden so the compiler emits PC-relative
-> relocations. However there are cases where the compiler may still
-> emit absolute relocations, as they are valid in regular PIC DSO code.
-> These would be resolved by the linker and will break at runtime.
-> This has been observed on arm64, see commit 0c314cda9325 ("arm64: vdso:
-> Work around invalid absolute relocations from GCC")
+On 9/8/26 14:29, Jinjiang Tu wrote:
+> On arm64 server, we find that a task trying to grab the anon_vma lock
+> triggers hungtask.
 > 
-> Introduce a tool to check for absolute relocations during the build,
-> as the current inline-shell logic is not expressive enough.
-> The check is done on the object files as the relocations will not exist
-> anymore in the final DSO. As there is no extension point for the
-> compilation of each object file, perform the validation in vdso_check.
+> INFO: task main:2354726 blocked for more than 120 seconds.
+>       Tainted: G            E     5.10.0-0021.aarch64 #1
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> task:main            state:D stack:    0 pid:2354726 ppid:2350673 flags:0x00000a01
+> Call trace:
+>  __switch_to+0x7c/0xbc
+>  __schedule+0x3b4/0x8a0
+>  schedule+0x50/0xe0
+>  rwsem_down_write_slowpath+0x3cc/0x6cc
+>  down_write+0x60/0x260
+>  __anon_vma_prepare+0x6c/0x210
+>  do_anonymous_page+0x258/0x660
+>  handle_pte_fault+0x188/0x214
+>  __handle_mm_fault+0x1b0/0x380
+>  handle_mm_fault+0xf4/0x284
+>  do_page_fault+0x19c/0x494
+>  do_translation_fault+0xcc/0xf8
+>  do_mem_abort+0x48/0xac
+>  el0_da+0x44/0x80
+>  el0_sync_handler+0x88/0xb4
+>  el0_sync+0x160/0x180
 > 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> ---
->  Makefile                    |  19 ++
->  lib/vdso/Kconfig            |   5 +
->  lib/vdso/Makefile           |   2 +
->  lib/vdso/Makefile.include   |  14 ++
->  lib/vdso/check/.gitignore   |   3 +
->  lib/vdso/check/Makefile     |  34 +++
->  lib/vdso/check/elf.rs       | 498 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/vdso/check/vdsocheck.rs | 154 ++++++++++++++
->  8 files changed, 729 insertions(+)
+> After analyzing the vmcore, we found the anon_vma->root->rwsem.count is -1.
+> There is another anon_vma whose anon_vma->root->rwsem.count is 1, the
+> anon_vma->root->rwsem.owner shows the lock is held, but the stack of the
+> task shows the task doesn't hold the anon_vma lock.
 > 
-> diff --git a/Makefile b/Makefile
-> index 4ad67b737af7..e6e0dd7818ef 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1559,6 +1559,25 @@ vdso_install: export INSTALL_FILES = $(vdso-install-y)
->  vdso_install:
->  	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.vdsoinst
->  
-> +# ---------------------------------------------------------------------------
-> +# vDSO check
-> +
-> +ifdef CONFIG_RUST_IS_AVAILABLE
-> +ifdef CONFIG_VDSO_CHECK
-> +
-> +# Build the checker early.
-> +prepare: vdsocheck
-> +
-> +# If the architecture builds the vDSO early, make sure to be earlier.
-> +PHONY += vdso_prepare
-> +vdso_prepare: vdsocheck
-> +
-> +PHONY += vdsocheck
-> +vdsocheck:
-> +	$(Q)$(MAKE) $(build)=lib/vdso/check $@
-> +endif
-> +endif
-> +
->  # ---------------------------------------------------------------------------
->  # Tools
->  
-> diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-> index 597f5f0f9681..112b42a5aeb1 100644
-> --- a/lib/vdso/Kconfig
-> +++ b/lib/vdso/Kconfig
-> @@ -23,3 +23,8 @@ config VDSO_GETRANDOM
->  	select VDSO_DATASTORE
->  	help
->  	  Selected by architectures that support vDSO getrandom().
-> +
-> +config VDSO_CHECK
-> +	bool
-> +	help
-> +	  Selected for architectures that are supported by the 'vdsocheck' progam.
-	s/progam/program
+> After adding more debugging info, we found __anon_vma_prepare() reuses
+> anon_vma and triggers the UAF of anon_vma->root due to missing memory
+> barrier, leading to locking and unlocking two different anon_vma->root,
+> thus leading to an anon_vma will never be unlocked, and another anon_vma
+> couldn't be locked anymore.
+> 
+> This race requires two adjacent VMAs that are not merged but are
+> anon_vma-compatible (e.g., they differ in VMA_ACCESS_FLAGS that can be
+> changed by mprotect()). Two threads fault on each VMA concurrently, both
+> calling __anon_vma_prepare() with only mmap_lock held for reading.
+> 
+>     THREAD A                             THREAD B
+> __anon_vma_prepare                __anon_vma_prepare
+>  find_mergeable_anon_vma() -> NULL
+>  anon_vma = anon_vma_alloc();
+>    anon_vma->root = anon_vma;
+>  // the two stores may be reordered
+>  vma->anon_vma = anon_vma;
+>                                    // finds A's anon_vma
+>                                    anon_vma = find_mergeable_anon_vma(vma);
+>                                    anon_vma_lock_write(anon_vma);
+>                                      // may still see the old root
+>                                      down_write(&anon_vma->root->rwsem);
+>                                    anon_vma_unlock_write(anon_vma);
+>                                      // see the new root, never unlock old
+>                                      up_write(&anon_vma->root->rwsem);
+> 
+> thread A triggers page fault and calls __anon_vma_prepare() to prepare
+> anon_vma for the faulting vma. __anon_vma_prepare() allocates and
+> initializes a new anon_vma, and then publishes it to the vma with a plain
+> store. anon_vma_prepare() only requires the mmap_lock to be held for
+> reading, so two threads can fault on adjacent VMAs at the same time. While
+> thread A publishes a new anon_vma, thread B could find the anon_vma via
+> find_mergeable_anon_vma() and then locks anon_vma->root->rwsem.
+> 
+> The store to anon_vma->root in anon_vma_alloc() and the store to
+> vma->anon_vma can be reordered. The anon_vma_lock_write() and spin_lock()
+> only provide acquire semantics, which do not prevent prior stores from
+> being reordered after them. The release semantics of the corresponding
+> spin_unlock() and anon_vma_unlock_write() come too late, the store to
+> vma->anon_vma is already published before they take effect. As a result,
+> thread B can observe the following order:
+> 
+>     vma->anon_vma = anon_vma;
+>     anon_vma->root = anon_vma;
+> 
+> The anon_vma slab is SLAB_TYPESAFE_BY_RCU, so a newly allocated anon_vma
+> may reuse memory from a previously freed one. The constructor
+> (anon_vma_ctor) does not reset anon_vma->root, and __put_anon_vma()
+> doesn't clear it either, so the old root value persists until
+> anon_vma_alloc() overwrites it. If that store isn't visible, thread B
+> reads a root that points to the old anon_vma and locks it.
+> 
+> As a result, thread B can call anon_vma_lock_write() with the old root,
+> and call anon_vma_unlock_write() with the new root, leading to an anon_vma
+> will never be unlocked, and another anon_vma couldn't be locked anymore
+> (its count is dropped from 0 to -1 due to wrong unlock).
+> 
+> To fix it, change the plain store `vma->anon_vma = anon_vma` to store
+> release, so that the fields of anon_vma are visible before anon_vma is
+> published to vma->anon_vma.
+> 
+> At read side, the load of anon_vma and anon_vma->root have address
+> dependency. According to Documentation/memory-barriers.txt and some
+> investigations, only Alpha needs address-dependency barriers and it has
+> been handled by READ_ONCE() in reusable_anon_vma().
+> 
+> We reproduced this issue in v5.10 with KSM enabled. The kernel doesn't
+> merge commit cf7e7a3503df ("mm: prevent KSM from breaking VMA merging for
+> new VMAs"), so there are many adjacent VMAs that aren't merged but are
+> compatible for anon_vma.
+> 
+> Without this fix, our production environment could reproduce this issue
+> about 2-5 times each month. After adding a smp_mb() before
+> anon_vma_lock_write(anon_vma) in __anon_vma_prepare(), which is different
+> to this patch, this issue hasn't been reproduced for one month.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5c341ee1dfc8 ("mm: track the root (oldest) anon_vma")
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 
-Regards,
-Mukesh
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
