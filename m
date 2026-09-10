@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E4DC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65584C79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F3E86B0093; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
+	id 68E106B0095; Thu, 10 Sep 2026 07:06:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4DD6B0095; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
+	id 666386B009B; Thu, 10 Sep 2026 07:06:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BABA6B009B; Thu, 10 Sep 2026 07:05:38 -0400 (EDT)
+	id 583346B009D; Thu, 10 Sep 2026 07:06:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0494A6B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:05:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F57B6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:06:31 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 903641604B6
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:05:37 +0000 (UTC)
-X-FDA: 85197571914.08.512431E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B073B4000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:05:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9P4brTB;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F850A0463
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:06:30 +0000 (UTC)
+X-FDA: 85197574140.08.3905502
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C69204000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:06:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv2gG38;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038335;
+	s=arc-20220608; t=1789038388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9YZk2wCzZD7ud7nbBKJ04FWJsPn8EDTK/gTOXxFQNOk=;
-	b=Yqiy9JHF45EOv35yk1MWUHZD4xwButIrSNPWFoz7lVccHPDDrWS84ytmi2MZ4Z/op1ulI4
-	SPu+Wbb4By7EbktD0CZUzWTi7PtaxnZ1K2KxBQpOcb/eVnUWl3+RYpWV8QsS5MzyFBouD1
-	xq+v/2lG7vlYpqhC6vdEXf7HpXIyVXI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9P4brTB;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=aSzot3DdFbH1bRFQSRCfhn2f59lhOlsZ9OER6ann7aY=;
+	b=C+bc46iMHP2dWXbjBsNxHKiXMC7msqPs5lwiu7gKMmuiYVnuHx+rgQPAGbd5Ef2VOLWtNa
+	ll/hSopFTeulh6mabdVwANQyIh3VP8+y3ETS6bD7Z9hvs9fh5ezfv8fv4+Ge7YvHF+UnXq
+	e0hu4QchqhnSQcLMlZqfyenKwFwMIec=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038335;
-	b=k75RkHhtDH2kS6Ia8QjJO4SNuWPzNuaEOmP6JCP9XacQTwiDtwQJy8mWAE+CIaRbETilm5
-	FUp7+30zwgKoJJ8eGeCkzEjHNyybiDY7bb3X/IGhioch0WnzhgUHRd9kRIkwxWafeFkgJV
-	XlF9PiRRr+0pU3R/N885DpA1Qup/Ygo=
+	t=1789038388;
+	b=gXqK+9GtJeLccp/oGmfJZZpXS+v8g8E7+aaReS2IlH5bMrPpzlqW6imPxJdluH+sm0XfC9
+	V41+QdSs/bvzI9n61s3JUI2iX7HgEZpro1uQGn50kHvemDqgRM/hVbWJtqOiXCn6HH3dir
+	d9AsxZ/JvIJVAhU7Dxwqjf90CkRzSeo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv2gG38;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FFE941FE2;
-	Thu, 10 Sep 2026 11:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0541F000FF;
-	Thu, 10 Sep 2026 11:05:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FE3E600C8;
+	Thu, 10 Sep 2026 11:06:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6A41F000FF;
+	Thu, 10 Sep 2026 11:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038333;
-	bh=9YZk2wCzZD7ud7nbBKJ04FWJsPn8EDTK/gTOXxFQNOk=;
+	s=k20260515; t=1789038388;
+	bh=aSzot3DdFbH1bRFQSRCfhn2f59lhOlsZ9OER6ann7aY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O9P4brTBs+SaRO9GQMBGP55ozrj8eS/wvn34kbSVOVVvQGSv+4hQWqHtjF2Onz9AN
-	 /ZlxWsqUVNcxSq+6K2ChEbK2QSC0ahYV+IaDzTtpnV5KIEA34pSjHKM/7MiMMaRg4N
-	 6NGjbWhVcr++iGsRLdFZbdsf/hVDhqjrx8QWxMfTYgWBo7qhIU0H+PuySBwNV8ZW74
-	 Z7DtwGRBvklEoKCi+kEiUWK8uvvtvZFWP+zSaQfmwL4UlRv+cX3UlhBnZjUnzZtiEi
-	 0Jq8KHz8OyRyjw2fZOKgZ3v9cRudaLuE0woLzUhit0+rbKiNXIUYldYZPMLGJ25LzP
-	 fQeVdpHeQUxsA==
-Message-ID: <4b9f8ff1-8b9d-45f5-9012-b648d6e16689@kernel.org>
-Date: Thu, 10 Sep 2026 13:05:18 +0200
+	b=mQv2gG38DwhMioaZmlIihIcjXe1Of5Jx+44aRzTJ7yCvrfUER/jT5PGZkk3aEJsQz
+	 llwtEXey3grPl6cC3wlGm0pKh6qiIagIhA1kT8ncfBECmjszoV3jvYwo3C6HRpyKYJ
+	 IxzMP1ztXCx65ZtCGuluQ74gXB0ikTuy5CMNpTKt7Hj3lc7snpjLPDVvVz8o7RGfpK
+	 aMLsUAPj5Lib6dfiMXITwQJqBXtJOt5KnkAYdW/HPKreE6hr86GiEVwcrUvadtTDp0
+	 sgyMRboqSRuMrQQ78cLql5iy2T3CcddcS2Apy/HsfrlAkalTppILCGhN2j6p3nJWkH
+	 RwmkTeY7ro+aQ==
+Message-ID: <10eb16d9-df86-4116-9b54-4327bb1d55bd@kernel.org>
+Date: Thu, 10 Sep 2026 13:06:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum with
- ascend order from PGD
+Subject: Re: [PATCH RFC v3 14/21] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
 To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
  Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -100,7 +100,7 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
  linux-openrisc@vger.kernel.org
 References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-12-5d8f5b17c25c@arm.com>
+ <20260902-dummy_ptxp3-v3-14-5d8f5b17c25c@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902-dummy_ptxp3-v3-12-5d8f5b17c25c@arm.com>
+In-Reply-To: <20260902-dummy_ptxp3-v3-14-5d8f5b17c25c@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B073B4000C
-X-Stat-Signature: qnoywzcck1tf8amgw4rmjkrgusn848yj
+X-Stat-Signature: u5ejd79uxoggb5t3xbngtjc8ro5t7p1i
 X-Rspam-User: 
-X-HE-Tag: 1789038335-301819
-X-HE-Meta: U2FsdGVkX1+udpxq6JeR2SLgU/jW2P6i+qV3G/mrIgKb5mvFX1UdxgEAb8T3TvvryDHefGrvd/oj/ggpzaoC8s5EwCaDNREtJlME1nfhXL6dMxnWqUPAvgLi684YfjpGC1UGWbCqy00qlzMDIqA5vBoMvkbT/t9twG1oVV5ZTXv23CH6FmFxEd9iMTWQMlohUhMvO2jUaEI5mug+RRqhnmlWu10CUoCk80G4f0edhDMATM37nD6qStg4/Hb8wTIQjaiNhe5bO9gESKnoMylpLbBXDxEo9lHbxqoU3G2DgjPkkh6unRAMVmQSnZWVzVJoojtmu8d8BNKF5jvHxnhwLbpNVoZbUBEXb+yW3p0y/9qKhlKR6+1l3U3i1Qctd81sABKmQXJ+ZYcplaxuMUr205FXjL3SXDBN5yunrcH/yoW6hK+UNSFADxTZKcv3RkJLlI3sbPH9MxtKrpOteb2AWbXRa7fPDRRnqla/WlxgKi7O3SA54Hn8CYyASES7h8L+vTLoPObWZ3DIJmHTpfr0+R9ViI39P5mEw6k9L+WAdH20OOp73MMgG8p7084BQnYvbrzp1moKokiqzngt1Xvp5vsHkDcvpovdsGePKb3N6pHWSoWToQR3xy17k1qxkGDL5yhTE9yniYw6migR4NDUQkQycfe0Z+qtJSwaR7iZSVCJKy7RCvPWjM++onEfFwH3L8oWI9shbDjSgca+MG9sYcTimnsE/5MelCY0IFhND3orU/WfYzHXQzpc7By1UoCF+q3fZXnoq8gxsG01bpFGWDUfMEmVR2sNu4L9L34SFXlCZVr3A6VlcPD24v1lpwIVe+8+7ADU5q2gVjzS9gp7qsxY3yDUtxhAKz7ByCQ62elXEFNwGxn+JyUDCwINdbk/XR+/ojOPVvuNzRwsx7JMydj6XHCTBl2HNMj37+HZCMPbRQarSM7Yk9PnRbDgKphtvt3laYyVxEKIm54MhSS
- uePP3JSO
- E162uKjBgcy1cHFfaxM0WRsrSupFZppKd787ZEkn73tgm5KWS229NirOt+tsViZ88Plg89UH9UtbeQPcVuZZYlC72fr5PW5HTOTgLOUOLSx9p1N2X6b9FIvg26n0pST6Z7qqiQ1YJap+VbVzXGxQ+dY062u0HVgZlm5I3uGw01MFOH+5g439x55vdfpTj88PO5/cETS19FburOorkOaTNHnAju8tAVQWq7RiYZCEzKGSr6OYOM6vKws/GkLzXP1AZyEoCzwjhDDaRiUwiyBpmUq+GNT5ojiFPOk7fAMBF+IS669bPopNItzkZcT7Su22R8JIUdL1okxPR2gmJZi7QyS94cy1TI5VYztdFXtQaHWuDA5iVnqUPIKqs+M5379WdHScK2u69Ab8jDQs=
+X-Rspamd-Queue-Id: C69204000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789038388-294207
+X-HE-Meta: U2FsdGVkX18sfWauQEdEmGwWVBVgH8eLjzOyNmrRMsaTr36Ha/mStupWvL+gT8XK+snS9670qnxIqnLHA1AozS4agdCvauIlKGVrnTfzRoV/xvft4KNQzqpxL1aC2Z6ILITyu4MRsw+NkuUb71hYRYfexSCQHdp6bKIsCMzwbPbzVmsh/PXTL1qLT2S8z50zQAhdjWoClKsI7Tk77Lr07VoGU1mSBDWnh1pZ/5V6ntf4u0d3PQN5OzFrpqAA2/Es6F4vPWPobd/TM2fDhkthP4AW2AhkUBM5iaYlaEqfM8wH4fZ4O8qfmMZSzz7a8InOI2Iewi+TSi2qw5H0ErTtZfuSJeY4ynfo+6BYUnvgmSfaqpXRs2GwWLLII9ieu6WwwwVsOBcTMN/7BZd/jIooPFXMNJBMEsEcQQXaI2aBGnBLCXTCjihpDqcdFQRz4Yz9c+q1ppoY+AROXuAtXTtW8HpECCDjSq318sOUY69wOlsozUPgVEJo+iSsC0OlyCvisTaeW2JqYs/bKwqfkkroxKMQ9DRaPOCJ42dzLQ2eBHktkptnUiZlrwXbgtOoPeIVTfYNQVpyHKiZ6ELk/Z8XlJowlOpWTg3G1lle9z6FW5zx3xE7EZXHypVn+YC+qELhvHEhs2dys5hf63Co1oVMpvjQ0K475srpZVpxhzMk45msJd0VHrDq0SOiG3HwIzgQnqhdea/EhJXKI79Bh6+aTFPiGafgY86JQDSGPM5OVEUXEVZXqlhXuGOB+hJpN1L7WkqL3kG68qj2f/ZEJhlR7VRVAI79nxGnj5Z8Q1OOEbYrRuPzlAYXj3Ws24Lgc9WnQtH+/K4oZjFmUjc763BdFJuMS1VO/WoNSr0cRAadLOWPmzruIDW6ODjYMAdaMR2bBzcv0TeAZOSvRoquHOwqaEJyFE2aDTZiCqfumbDhMT8vPOu3WDZN4HvDQpoOly00AwBN/IrpaNbcqwiNYsi
+ iBl0DhqH
+ y92l55XqKdyRyWSB8g6hvNNkEQNO3EySbc+QD5vmOU5S0roc3umD9ix5gRxPFCWUKVruNAMpKsxVXIFNGSIRrPIuKz4Tzim+LkUMycBLQY9roiqqytVxa21jZxExZlRh7aSQeMm7bQYjXKlGWlxhfyWp93KM6hMmb4LbqJJWZxoafbdgfU7cGSlP5Ya0gW38qt899B4wk6FXN32D/vRuiIcoxItXfPGivYXcxAYSWlosOufR2MsegU3OohGB3AG4lGWjwqREqCUgZ1apKOhEDPud5edjC6fHF/Ls+KrewXOhPiEFFcBCAPZc0Og94PrFTfo0mxvxBZXRoQUyGY0Q5Dh9FqQEBxmeukGix6D3fW/srERSO9NFzQApHEWTbjJJOZkMnKCNAnMuwdz8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,20 +166,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/2/26 13:56, Yeoreum Yun wrote:
-> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
-> from their intended usage.
+> The behaviour of pXdp_get() will change with generic compile-time folded
+> page tables. To prepare for that, rework effective_prot() to ignore any
+> folded page tables entries, as it will unconditionally get called by
+> ptdump core with pXd_val(pXdp_get()), and the value for folded entries
+> really should be ignored.
 > 
-> Intuitively, higher page table levels should have smaller enum values,
-> but PTE is currently assigned 0.
+> For this, introduce mm_first_pgtable_level() to identify the first real
+> page-table level, move mm_pXd_folded() in !__ASSEMBLER__ and
+> update effective_prot with higher_prot only when the current entry is not
+> folded nor the first level.
 > 
-> For consistency and cleanup, reverse the enum value ordering.
-> 
-> Since there is no current user relies on these numbers to be ascending from
-> PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
-> direction of the page table walk.
+> There should be no functional change.
 > 
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
