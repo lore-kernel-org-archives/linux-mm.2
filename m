@@ -4,105 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EE92C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1532AC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:46:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3D206B0092; Thu, 10 Sep 2026 04:43:37 -0400 (EDT)
+	id E8CBA6B008A; Thu, 10 Sep 2026 04:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC0C76B0093; Thu, 10 Sep 2026 04:43:37 -0400 (EDT)
+	id E65246B008C; Thu, 10 Sep 2026 04:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8B0E6B0095; Thu, 10 Sep 2026 04:43:37 -0400 (EDT)
+	id D79BB6B0093; Thu, 10 Sep 2026 04:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E4BF6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:43:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9A72EC0406
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:43:36 +0000 (UTC)
-X-FDA: 85197214032.05.64346C8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id ED5DF40006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:43:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byq2LKLh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of chao@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chao@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4FD26B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:46:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F906140407
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:46:51 +0000 (UTC)
+X-FDA: 85197222222.13.8DB54FD
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5B57B160002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:46:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OPeZe2mB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oUoJCIsW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TlFhXNxv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iSMWN7e7;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byq2LKLh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of chao@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chao@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OPeZe2mB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oUoJCIsW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TlFhXNxv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iSMWN7e7;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789029815;
-	b=DSdVB7BBF7+cspv1owx3ydUoiUjOGrLmPJZF8qTRgAxcnnt+siWua9jM0JXSBG+e6QcS8D
-	FGoUPltp2Soi3/a1QCu6AGeHQym0qjSGDvrybHQUbspSX5sQwCZ0MykS2r18wPecVihNOo
-	4x2qPZn3rZ3UYVB01VCaBW9ZXKONRpE=
+	t=1789030009;
+	b=5OpDzWCHawDVjqleuGNaQtqmb67YdgNiIuFU+puwv04O9ccrOL/NhIobV70tXfjVaJQM9Q
+	OPSU+TdExI6lhBwJvTkRLHx/PlkKLMQ5waosYtYQUaT3HsLyNHziHRDRu7t+Y1rbbmv5Yj
+	2xrrX8mRoy3DojeCe5Ig9d6TQ7SieDE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789029814;
+	s=arc-20220608; t=1789030009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=isEbLjZPk/dWe3bh3R3NrHmu/Mf2w2fxrs7ayu2qcdw=;
-	b=psD4z3uXTRqrdgL19UMLYMNF2g7vDJJwcKzqcv9WbqgM3jCoSCX8L/0sdg2Kpwwsq2LM9C
-	UIDlSS5SX4dFFh2ZWx11t8rkRh7u+/5YCoq9ZiYubnvjzT3XGVFmbR+eWJZu1SXRxE3Q45
-	7U53/S75Zx1gfal5N7Wo+9pLYffjT2U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 302A2601F1;
-	Thu, 10 Sep 2026 08:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E2E1F000FF;
-	Thu, 10 Sep 2026 08:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789029813;
-	bh=isEbLjZPk/dWe3bh3R3NrHmu/Mf2w2fxrs7ayu2qcdw=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To;
-	b=byq2LKLh5wTPUorRM31M4sIDve1usn/sR9AsugS+bvOrGQ0q2EKGgRVXELonBPepU
-	 Gn/ViuRSmp4XQJIJwRhWXFWkxkPKm2DGlFogH16zZxZ4iQ+ZT657K+3xZK25i/81Ba
-	 /x9+5v5YgJ/Ss1CNrGmD1seqX2AeaYn3Rr6m+Y3DTYKPFs/q+eB8Z4G12iJU0ttEVS
-	 FO3rPrBkfjpUK1Xapvv8Y6OhQTd8GKz4pDNUe7SJmYLqM0XOoH+1pPTyY8r0Qp7xJI
-	 usAbolvU3Qop8LaA1p6AQexHn/SCerYpxEyDLJh0l50wTRBXHITBGPYo166RCBroFP
-	 bfg4rcYtiE2Qw==
-Message-ID: <d700c4ea-b54e-4195-b124-3c89177ee49e@kernel.org>
-Date: Thu, 10 Sep 2026 16:43:27 +0800
+	bh=hKFZgmV1DYh46za7nm6vYesF12VXdFrdx++kuKz7oSA=;
+	b=reon0re+QURKjExKUlFEp/kg5vgLIFjh+p6C9rPpV0wDB76a8LGGZZL45blSofi6z3jPWU
+	8hqWHNV4BV9DaqIeluyHdnmA4QYs1ENeZAQNPK3Gt9n2JOKg6oHrLhYPCWtX2s9t2YotQj
+	ZPPdW9tADo4MUA4bWCdTFqA5Ah39CAw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8C1EE1FD87;
+	Thu, 10 Sep 2026 08:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1789030003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hKFZgmV1DYh46za7nm6vYesF12VXdFrdx++kuKz7oSA=;
+	b=OPeZe2mBCNSZG9faUGgW76QSzjbES5lqawHvTyLRKgx3eWE3s/Z+w5p57o6nswvvEI4xPf
+	L1EqrGy8H7Ze4u0VMdtCOpD/O/YtiKx59L7biyAJuQJSrh9l30pjIoxPDNxTdDGT+mby2q
+	N5dEbPyBHlKHVY5QEJM/0+xOR5PVF7A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1789030003;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hKFZgmV1DYh46za7nm6vYesF12VXdFrdx++kuKz7oSA=;
+	b=oUoJCIsW/C800JcyNgaMTmZug869+ht/UC+RrRtfbMMXoo7o5RLWZnkyfm6P+4vB7BMSl1
+	SMYzAmlb2pqh6nDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1789029999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hKFZgmV1DYh46za7nm6vYesF12VXdFrdx++kuKz7oSA=;
+	b=TlFhXNxvk2ouWz3CBQCsAZH9hYkYbMu+7YKoQ68PEOkHWkgFLC1S9RcvzR010Rfk3zWdmE
+	yUNSFotVPVC5LB6SpwtKPCct11BzLGnqH75n97I0Fer0vPb+kWkJC0tL7CkX9dzVdUKdJ/
+	HqlPiLyHnjTfvG1gyiik3JkxPfuoURY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1789029999;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hKFZgmV1DYh46za7nm6vYesF12VXdFrdx++kuKz7oSA=;
+	b=iSMWN7e7+A/nJcB8ZGPd4+BYJR/w3drhvcON0l19ExQzzERsUwhnoRqgy2f04mkxMeWctS
+	Hm0NKo3qHVp/9PCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60A2A137FD;
+	Thu, 10 Sep 2026 08:46:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rZORF29uomolZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 10 Sep 2026 08:46:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E0D9EA12EA; Thu, 10 Sep 2026 10:46:30 +0200 (CEST)
+Date: Thu, 10 Sep 2026 10:46:30 +0200
+From: Jan Kara <jack@suse.cz>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Dennis Zhou <dennis@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
+ drain pass
+Message-ID: <q6euw7q6hdfdzhadrwyc47j2lbev6kutm3vix7fi5v7aset2hq@kbv4uy55whd6>
+References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: chao@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
- <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
- <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
- <520b6aca-b515-4720-977f-1adb484f2e08@kernel.org>
-Content-Language: en-US
-From: Chao Yu <chao@kernel.org>
-In-Reply-To: <520b6aca-b515-4720-977f-1adb484f2e08@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ED5DF40006
-X-Stat-Signature: 3c6s6qryph1z7eywio4jwzwtnj3iaiz6
+X-Rspamd-Queue-Id: 5B57B160002
+X-Stat-Signature: de5tsdfr893ekdztzx1d71owf5tpjs83
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789029814-400641
-X-HE-Meta: U2FsdGVkX19rSP3gwKPYmx/tCRQB3r3vZ/HCQ1G/To6N0yDqZOCYAfHp9ojM65nLe/sN+N4qDPKVvFAVO0u9wF/LpOVn39JQiJHBp12fW5XHAFxrY/naTf0N/jf2NiFyhUow1apakCOkknRJnzglC/Qxvn0ESRbGgv2jZWqicMsIb8uXqKQedY4nHI1RDq6AxeFWPHoHhjIQ073pgmJj/TiitY3ReYLbQuyVjOWvHPcyiMQrMLPx58ZdWNiJc9jjurTMrwT+zui3vcjigkGkXtgkSAtmY/FMZAYk1KAneQnfy1CoFz9XZUIFvJhjPSzpD/28Y5qjnylJXOQ42I6GaCxBdXPQ/bqAynjn37klDWHl9z5ycksexywLLkugFJh7AfQcclGItAfBnBw8gBHFTxHV1ICtXVkrbwL+ubhUZZCdTSP+EFNdza/jOLXd52LDZyhD0YV3fIsunWMKLGm4ljhVibsoyqFzgiOCAr1y8EXjj0izMkIqE047mIoyuhV27Avix6QfwRw8X/8F2eCadJZJldizhWj4F3gp5tptOyd/iywLGox/uf2zgfOpQ+stGDWUVnDSvLBmBo5NH7Jl/fJP6yu7LJZeDGU+8v7SnSSVpBFr6AFBeseJ3CIxvP0ijwCBgAHDyIGYSkjBHBeLBaRc7dC5FJ7TlHtQqeayjoGbrDn5iTOvD5FiXXq97Dc0SCSJE3Ym74uIcM0uJ4A17v2Vr1AU+zbENPIWMDQp2UB6b7Z9LnIE18XGIPIe7EUk/A6bVm2lTMP/Krf00goUgvQ4jJNAAu1dO5CtVrmYBYI4btyyBzXcI2jgkRuJHavcHRioJrKoSX+MH7Mg2GE/6UqTfkHw2+N34gGvf/1VcKdZOITu8NtRmseLhrtg7Bkgu3tH5eLcKXaLhsx9Vz02hqIMqInY+HPB25xpwtJP0pZov2LfKUXLNoLn98JL2cccxV5+q1jrrgb6l0/pjQV
- 2fofIL6o
- 7NXtOo3iGCLY4x+JhzJ+R/L51s+K9ip1CUmBEqzMPgibdfbvWk+sCkyt/fJg/4pX1jE085+Ttx+d7OEdoviqvOoPbdu59fW4hAnMuAKuPFnOSiJnaY1m0Hfy2ngFy58E5saG0bOnjLhq4Dpv8XgHdvfGV6WRFIVb8z6qOWZblT0zwSAmk9qgX+jz3mSfM7L1dneJJO+osAlCrlWv0TChyXQXWyrR1QB1/A8olROOxtyrrkHsuS7wIcV32P7YVW8W+SMgw5914HLHutRWxGZubZzMXSmmqHvARXe+FbYWw1j8RCVxqD92rPFfVBehn5M6wjARxsLOZQe/gz4yNOYWR6S5aMi8xEmiyXvBaCW0Ow8H+6/9P13++YhzzUQktEXnFnB9V
+X-HE-Tag: 1789030009-72345
+X-HE-Meta: U2FsdGVkX1/sgHGGsHKKTNNZlu2J3hSqBBr5ByYsmMGVeGgi9ScMnayA9tfZfwKrZAKWyZZ8wjcm4kQvwhwzJRAtF4zd55N6rRn/DN8HY99c56xd+4lvr0ASx8fHZbaGJ9lFDegpq+iEK7D3HQnphOvEnEAC5cO4giy6G0Hdr3/YynSZaboDcAwi/4vIh06wcuiosaavL7vD83bB3p1c8e8snh4120hjsaeD+P6w8Hb5uUuLGfp6hhVRk1eyDWl5OeuOidtRBIPaN9fejgFQw2RqehkzxcYyUj0hTxammJQ+aMcEJKTDHiAaaZwrtJVGcQA9IOqU94DrFikmNCdPxU7BXkfKL+NwIdZQavHnPfasqO1LsI9HGQW78W9juFaevWk3R13YTu+49O9O+IH/WCUbm9oMf/ipCyaglp+iIrtPqDfxrdomyuLOe8iFlZ7IVbjKnOKEF+UqDaC9Iu0T+tSEArfzXiAPwO996oRaUuPYv5mpN+79D+VL+T+Mvr9LDw9k0TgxJu+5FvYTlBBNCS/zsfcRybQLOjxcBlhMlG5vC1mzDPDwgwcsm8c12ko4eJqsbjRzvI05rfGfJiUMDupRfGjcarUvjo9oPOsHsoB2jMH2xybzMdLSn+4jb6DApV4cU1jiar9KIcK6ifk4OshhnTwGK5J5QDO5av/kB5AtM6lXjM+zupPDoIVng9zLRknQtHB//oy8s9DM0RbXNzy67oorYaIDWl4SQVvFKRjRZgA8UQdiuLq8IAeRCtE3BNCLR/N1cWlNLxCnrEV0DS+fWOWYYpohcsShgRMQuF/eri4GUxeWplcCZCQ/G7sRT4/giRjD/JewV6HWm7Hr6hikCqgodYou7QPiAU5UkyOC0pzQ9RBmtR1pxz5wy45FZc71JET09l3rMf2UBMmv/l9U2B8AGYO5gwisATi8m31lkE5xs9Shg5SvsflcgKz1U6kfiHQC0yr4VmsZCVb
+ 0kKmzwS4
+ daqD/z2H3Ww5DkeYoaSRxBhjemB2RjBtbNT0+d4Ix6cR9YCSnd7o2MXsxaiK1P8Pq2kf6r4FmvsoEzC+1foPZfxrkB0Xu/WZ0iLbIKBpN3xGZg9cpN2AnKN5psGrvmVPAu19EooBgJ3wXy5rqu7gjhYLTK+2UcUIA90e2C4x/JmOw5emsPkbb0+xZu1aRbdU8agzYqj6llQ/zT65N/X7hULAYnJOzDHEU/mMjeILvnGJQTmZKrqvw44qgluanFn/jumGcup2oxJcmJ+e+BlAD6CppWnvrw+zisT8htiEo4mk+u21XDBda7hmQI22mM8lrQT9TJ0balFHOlv4bf3Pdj/Iq+TEdrGM7TifaVw7WlLmIT9YaE8Tm+dcvKOpTft3byG5Thz7zghPolRqH45JVyVWiZJhu5N4YfWj6XNuDkR2hz8Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,101 +138,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 15:34, David Hildenbrand (Arm) wrote:
-> On 9/10/26 04:41, Chao Yu wrote:
->> On 9/8/26 23:47, David Hildenbrand (Arm) wrote:
->>> On 9/8/26 04:56, Zi Yan wrote:
->>>> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
->>>> page->private != NULL is equivalent to checking PG_private. Change
->>>> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
->>>> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
->>>> but it can cause confusion when PG_private is removed and
->>>> page->private != NULL is used instead. Change it to initialize
->>>> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
->>>> semantics.
->>>>
->>>> It prepares for a future commit that removes PG_private.
->>>>
->>>> No functional change intended.
->>>>
->>>> Assisted-by: Claude:claude-opus-4-8
->>>> Assisted-by: Codex:gpt-5
->>>> To: Jaegeuk Kim <jaegeuk@kernel.org>
->>>> To: Chao Yu <chao@kernel.org>
->>>> Cc: linux-f2fs-devel@lists.sourceforge.net
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Acked-by: Usama Arif <usama.arif@linux.dev>
->>>> Acked-by: Chao Yu <chao@kernel.org>
->>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>>> ---
->>>>  fs/f2fs/f2fs.h | 8 ++++----
->>>>  1 file changed, 4 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
->>>> index 9940a6cecf1a2..2f7ab5888b078 100644
->>>> --- a/fs/f2fs/f2fs.h
->>>> +++ b/fs/f2fs/f2fs.h
->>>> @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
->>>>  }									\
->>>>  static inline bool page_private_##name(struct page *page) \
->>>>  { \
->>>> -	return PagePrivate(page) && \
->>>> +	return page_private(page) && \
->>>>  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
->>>>  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->>>>  }
->>>> @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
->>>>  }									\
->>>>  static inline void set_page_private_##name(struct page *page) \
->>>>  { \
->>>> -	if (!PagePrivate(page)) \
->>>> -		attach_page_private(page, (void *)0); \
->>>> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
->>>> +	if (!page_private(page)) \
->>>> +		attach_page_private(page, \
->>>> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
->>>>  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->>>>  }
->>>
->>> Very weird interface. Why do we even need the page-based interface still?
->>>
->>> $ git grep -E "(set|clear)_page_private"
->>> compress.c:             clear_page_private_gcing(cc->rpages[i]);
->>> compress.c:                     set_page_private_gcing(cc->rpages[i]);
->>> compress.c:             clear_page_private_gcing(cic->rpages[i]);
->>> f2fs.h:static inline void set_page_private_##name(struct page *page) \
->>> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
->>>
->>> Seeing code like:
->>>
->>> clear_page_private_gcing(cc->rpages[i]);
->>> if (folio_test_writeback(page_folio(cc->rpages[i])))
->>> 	end_page_writeback(cc->rpages[i]);
->>>
->>> Makes me wonder whether we can just use the folio helper instead?
->>>
->>> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
->>>
->>> So naive me would assume that we can just get rid of the
->>> set_page_private_/clear_page_private_ stuff entirely.
->>
->> David,
->>
->> Thanks for the patch, at a glance, it seems fine, can you please send
->> a formal patch? then we can apply to dev-test for test.
+On Wed 09-09-26 18:01:07, Josef Bacik wrote:
+> cleanup_offline_cgwbs_workfn() drains a dying cgwb by calling
+> cleanup_offline_cgwb() until it returns false, with a cond_resched()
+> between passes.  On a CONFIG_PREEMPTION kernel that cond_resched() does
+> nothing: _cond_resched() is a plain "return 0", and under
+> PREEMPT_DYNAMIC the full and lazy modes disable it.  Since commit
+> 7dadeaa6e851 ("sched: Further restrict the preemption modes") those are
+> the only two models on the architectures with PREEMPT_LAZY support,
+> arm64 and x86 among them, so the drain loop never reports a Tasks-RCU
+> quiescent state.
 > 
-> I'm hoping Zi will drag that along as part of this patch set. Is this fine or do
+> A worker draining a cgwb with millions of attached inodes runs for
+> minutes.  On a 6.18 arm64 host in lazy mode the cgwb worker drained one
+> dying cgroup's writeback domain for over 11 minutes.  A BPF program
+> unlink (bpf_trampoline_unlink_prog -> bpf_trampoline_update ->
+> unregister_ftrace_direct -> ftrace_shutdown -> synchronize_rcu_tasks())
+> waited on that grace period while holding the trampoline mutex, 42
+> tasks queued behind it in D state, and the hung task detector fired at
+> 614 s and panicked the host.  Any BPF or ftrace detach during a long
+> drain inherits the drain's length.
+> 
+> Fix this by calling cond_resched_tasks_rcu_qs() so we do not stall out
+> anybody who calls sycnrhonize_rcu_tasks().  We put this in a do { } while
+> loop because if we have many small cgroups cleanup_offline_cgwb() will
+> return false and we will never call cond_resched_tasks_rcu_qs(), creating
+> the same problem.
+> 
+> Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/bpf/9d444098-7c03-4163-af12-bd0a79a51443@paulmck-laptop/
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-Oh, I see.
+Makes sense to me. Feel free to add:
 
-> you want it sent as a complete standalone patch (will make merging Zi's series
-> slightly more complicated :) ).
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-I think sending as a separated patch based on Zi Yan's patch is fine, since the
-purpose of this patch is a little different from Zi's one.
+And I fully agree about the fragility. It looks as an oversight that
+cond_resched() doesn't imply RCU quiescent period after the recent
+preemption overhaul.
 
-Note that: ("f2fs: stop using PG_private") has been merged in
-https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs.git/log/?h=dev-test,
+								Honza
 
-Thanks,
+> ---
+>  mm/backing-dev.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+> index cecbcf9060a6..18e999053bae 100644
+> --- a/mm/backing-dev.c
+> +++ b/mm/backing-dev.c
+> @@ -910,8 +910,9 @@ static void cleanup_offline_cgwbs_workfn(struct work_struct *work)
+>  			continue;
+>  
+>  		spin_unlock_irq(&cgwb_lock);
+> -		while (cleanup_offline_cgwb(wb))
+> -			cond_resched();
+> +		do {
+> +			cond_resched_tasks_rcu_qs();
+> +		} while (cleanup_offline_cgwb(wb));
+>  		spin_lock_irq(&cgwb_lock);
+>  
+>  		wb_put(wb);
+> 
+> ---
+> base-commit: 893e11787f78e43b534e252249ac3fff4d1333f8
+> change-id: 20260909-cgwb-tasks-rcu-qs-42341609f3e1
+> 
+> Best regards,
+> --  
+> Josef Bacik <josef@toxicpanda.com>
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
