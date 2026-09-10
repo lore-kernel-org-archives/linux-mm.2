@@ -4,91 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84547C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE03C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:56:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B0056B008A; Thu, 10 Sep 2026 07:55:12 -0400 (EDT)
+	id 4A1D76B0092; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 588086B008C; Thu, 10 Sep 2026 07:55:12 -0400 (EDT)
+	id 479DF6B0093; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479C26B0092; Thu, 10 Sep 2026 07:55:12 -0400 (EDT)
+	id 36B1A6B0095; Thu, 10 Sep 2026 07:56:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 140596B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:55:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9070F1404BE
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:55:11 +0000 (UTC)
-X-FDA: 85197696822.09.50E2992
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AD516B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:56:54 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE733A0512
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:56:53 +0000 (UTC)
+X-FDA: 85197701106.26.223D81F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CA64F1C0003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:55:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYsoNed8;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 259C580006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:56:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBYR7A+E;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789041412;
+	b=ZYt09fIrtaRdtWJMNDt9TXW/VmLm5lmSgjP+RqiGE2/fWXNhDKhrrE89viHEXHj8Fk9XpK
+	v7ZtbeRzCXyJtFuRmM7mgUWxrQzOW0IsEsflTDlZhxfE6edDcQDt6MlvgSX2zLgp0Q0Jv0
+	KDXtEN3Ony6YsHnAJZuZeXBhiMZAprU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBYR7A+E;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789041309;
+	s=arc-20220608; t=1789041412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HndTqnttNHPeJm/zRQ/NFvgMrbPvSUK2ZR4N90t4mPU=;
-	b=SDxZTGNSqgOq8FJIiSEhsd7y1/yiSNrH/jDNM/CGJqxK7iRLErhf8cU3f1gwOsdxoK121i
-	A0QliANOHD/JSysekd+9w8U/Ew92ZvvISxeZd7p17CKd8KE3aPghvl5K5OtpjlR/4IoSyD
-	ILkojSw8AMJIrLVg4nPK7skxUAAdIOs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789041309;
-	b=Z9pzfzvh1FwZMxdB9a4HP7o9EK/O0zz6/BPnoW0uHTeqLwliROr2RdSHeEMdtwLyOX40GQ
-	QVvVCedZD49z6iyfL0uTlbz43cnALmsHBdoW+v/AGMEYO51IqPyUy9ypc9rAEUUqoFQxaU
-	4aD8RsjRXxyw1bRFEqHDrKQPALpmFhI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FYsoNed8;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=PTv5gjnoUkgmckYg25Wd/ghR+9+1LKQRAbj4/Rz6hR0=;
+	b=XVZkjEJjtS77IuU134Z/Tz8KWEXEbLmCGoi8m8LpDunjRUxOAHpp6F9dse2h4pdNrv8Oxg
+	ixXvzSDxPgRFvRQ1JZT2MqeJPORE2h7uGspeh0JOoYRcO/J1J4CnaFI56GhHJ0QWtE8AVH
+	Q4Xdz8fFQgrNmnRK+axAAf9ZJikPYXU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6B5A600CB;
-	Thu, 10 Sep 2026 11:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB11F00893;
-	Thu, 10 Sep 2026 11:55:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A895A600D4;
+	Thu, 10 Sep 2026 11:56:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FC21F000FF;
+	Thu, 10 Sep 2026 11:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789041308;
-	bh=HndTqnttNHPeJm/zRQ/NFvgMrbPvSUK2ZR4N90t4mPU=;
+	s=k20260515; t=1789041411;
+	bh=PTv5gjnoUkgmckYg25Wd/ghR+9+1LKQRAbj4/Rz6hR0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FYsoNed8dt8TFC++FzMGu0IQeDK2UoI3RLPtEpoT0pnBrmFQ1lOa3rVFou475gEXs
-	 wkFbUQIkNQaEcJ4+QS3+FnqJvWKEJvRtuzkJUsXSY2kZpsIK8lTJPV9eikYrB4eU93
-	 /bv0s5gJ2ijqFZiP73TUy2y6jmcGaVKL18zOTa5XILUKhdFUv2XgvTmslSxveItrBK
-	 KMaS+cgEmgwRfu3KPSyCkmlhQ0xnc/LNefctnBfIhP3DdD5/E9dc+rkiVbROsBg6ah
-	 FBNPRGq+N1xZ5ooO4fEvSi2/N0497/4dM+qJLv1rJFSLIMJzE33zke+VznPP0rnZgT
-	 PKVhV8f+YzOrA==
-Message-ID: <d6f2e6b2-9dc9-4f02-be37-14329c1a6798@kernel.org>
-Date: Thu, 10 Sep 2026 13:55:00 +0200
+	b=mBYR7A+E5z+EvsOhBN7DfdtkE3x9n3oGaFrh40fXMQwQq6v/VuATJp93OAVBpcdsJ
+	 /2x0vHU7OjE29cqp3dLj80QthvfsdFR7OzpWhX4Ex8X+ycWO/SwTQCs3TwpDz5SQip
+	 wokGMjREagLm/mw3zpaMLnOLw6OeqvoHIrUGxnjBsEY7R8LlQTeSDDh7ZassM+vhgn
+	 YkMlBWUBo25M/ndAiVZ/xur5sTx3NUSPGsI/iCT9jKj/49d4a4gjYNlb4RCxezsZNs
+	 /OcUcxbHOYBUZDlVobiSbrDu40TTl7iIXt6qisrv4hk+Oupv53Uks6b0x1810wZFA4
+	 1NxZid0h/Z6AA==
+Message-ID: <63cda829-631c-4758-9aee-7c07ef6a16f9@kernel.org>
+Date: Thu, 10 Sep 2026 13:56:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-3-822b810458bc@arm.com>
- <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
- <aqKOVGECsCNtSMIV@e129823.arm.com>
- <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
- <aqKS7CP67X4h6NiM@e129823.arm.com>
- <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
- <aqKU0-Gm4yh78F3V@e129823.arm.com>
+Subject: Re: [PATCH 3/4] mm: replace PF_KSWAPD flag with kthread_func() check
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
+ djwong@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
+ vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
+ qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
+ <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKU0-Gm4yh78F3V@e129823.arm.com>
+In-Reply-To: <20260902131653.1338227-4-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 259C580006
 X-Rspam-User: 
-X-Stat-Signature: 7fpwsfc6edtsn3w1sk1sqsw3eqs73jbk
-X-Rspamd-Queue-Id: CA64F1C0003
-X-HE-Tag: 1789041309-735087
-X-HE-Meta: U2FsdGVkX1+AtoZ7aQ+wtw13YkRXp4cBxX4P4EAR3HOfL2rNJhR0zYtEZkpXnVZEx6Y2ydhM7x1TMmTCBgfpp6++HH9bYCTsXWgSWxnc3zJk3jbc/vmbtiHfs4HV24AyBcYFRX+vO4BZwF2XMKhs4KbadddMlZ+nszjGcvQHnWpqTpSJZn86g+J5Icx7HDKUYPBl6ha2sxYloKjRVRhmJt4Owjj1FSQLNooja7755c6jp7MzOiUVHUZxCv0h7cb3nyJuqvk78a53MqjwTbrMLU7uXoHK+albipJx6cWzPZF+NzyXFLW+jcXf0swCRwvGCTvzxIDBgitXtA4sxQYFmStGe8jV6VkBlPckzNsrWpcCq2VObA8FPqPWX2xpVH6zi5K/D717ZsiLrcK53tASIR+hDWm/rSMxekf02xEMbXjZNV/i9PEtED05J1w84/oPEDg1frEUnZJArYBYoqn3l5k3XbSe/u1VPi/vRj54Fv1R0immJnNNd9YAkzzyLEK1o0J6RMIR5W7icRvXgBH9CsBxz+L0P98/zJUZxqaQJX+4QZZuVLOKgIOH7oL8jGeL7Y3fKP5I6XK6bTY44KDDCBApCK5JCXt4/ewAPA1VpZL3UA9WPDkmdmZ5RJGBtEsnF5fVrKGZb64aclhe7YrxkOIythnv+CfW9MI1HO0pxr2gisRqUTD70e23tYbmcYL5tNvfGwuPnbIU9kzfCosA2dkrKpXXGLiJjc3165yRvHQ+l12HqIURxbkQvrtnUH7aSNhtorsn6VFYlCGjt4jELiSIBZQHU7AELVQlOkcnVJIFLIE+7NPifjF/MXTqJepKDHu8QDsGPW6Vc89/+eO8HFnPQ083MBAyt+62uq/FpmB5bYWr0arj+nH5iJD4ClUX+wkSvxI2C7jZpc/5csRa/NTuwvzLDJRzg2LpL7cE3uZfrfF1Zl6WOVKDZbSvzvv5RHyrgQliFIx+WbAXEWs
- c9KZBkUV
- rvCrzX67hipDQsRe/kKZ5+o4R8FcoRCQ8eJmmJ3eB2LNraikQjss86Dh4WYjqdzXBc1Ktcwc9HmEmXNbrfHbNvw17SDWlrwjWx3+SZRziWAAVPSFXiu7ZDwwr117NAiaKceXUH9HW0wEuOKrXBFhTBNIqsS1Kd5rTNfLdQzZag50hzPNQwWsS+A8EGcsKblIoS3PfQ+ZioRRFqFc41repKL1EodIPDC1gxUuYsSikXk6nrLPUj/gVLMNc9V2rS7pPbXkWtdZI13IrOU2zz3sUL4LHsWcuyuGR1NwJX9UdpKzRysusTZp4PXh9pub2kwoFGiuwwTtBlckP7lg=
+X-Stat-Signature: rhqqt8mqm6xum158se6pbj8dhnp3e9ay
+X-HE-Tag: 1789041411-226297
+X-HE-Meta: U2FsdGVkX19vWa6E9+QPOtFPbYlRDk2ISosqgVeFqe5L4o0zH2UMgEn1HJDv6K3SDYCPy4Zg/pvo9c7z3NfPS5eMTaqT0aFUw/PMyeToq1hHsc1QUClm6jjGvaQlRqbsAF4TsdHzKKH4I7qjYsKLAt8cEWuz3PIQDosUg/Tj6j1EW77GZH5Rv9zeLc9sbTxNPhPXtcJkDOvj0cB28oOe3s58HjzJbeyE0utCwD5N+feBzv3kaHP6ptVSwEX1hTKZ0AAmLgZBeyfzmS/uoYmPm4nc6KhhHrMzK1Kpg92xvLeO84qJHKfGVvOpXiKp3Cv/7FEAYuaxYPazSLSkxuPa/2/sbrzhHV+5qYRjC1JxLa3czGQzOANzeAmZACWxFO2tc+tf5mNTApBCy3Vo5IQvnpKmo9Nu/FV17or3mJmwcdAmNxH6EU7MaSwh6HNSNFC/sDv+ksOXLPOkqOVzb4O1DL0zta4bEtam+IsMbqdjQ0exlfhnH5HoOXvvVFRQDd0/F6s+n9ch8KuJFHuF1ZYGuyPSrKW0Ay6BucXNs1wFjPuuoDywCsNr8hVnrosQon/+GGknFuflFFSFM4JZLeSG6kGIg3lWm+OANEKDxdS7ioiN7/p99d0TMz10NTM/xyPi17kZX4G9h13TOb0nWiGKehPyCY8WGnnvlSLehQe+S0DdmfptP+c4P6c9cx8X7NXRf65aeMR8tpu3O9zuuX1xs3svYAq8SRWPQZZXWBS/7qGfTlO0a2PfzsMhAAuPUdJRO3EbwyEn1SRDPdHdLTDytz+uU5Gby7qp59ujOarNBB/4oiuUqGzWEoPPPJiOTStnYPRJyBi46SvqPfRRiug4H3SPQpbVnPmdaau1NMeJ6w+M6YjQy9ThGprNATEM4IE6osYhwxVz+QKxEicwUUAa/NCnKWaflI6pWh4oj3uk6zhcG9ehlvqreMX/rkUkdu3BenJkEqtNjDsnStZSmBt
+ BSBkz9Lh
+ g8bDnFKrcle6YkU/jZbbTbwtrO/K3BvPkfwMAQsci0UkEPVoFgj9ThZttplpcRSaJN+j2stsWNruiuXV3+OMi9x6jDSC10yeOdbKeSRbHmrI9ICACGIxEafnGC0BoXER57HxE4pOnipsE6U5Kl5c/e2a8AaTNS1aLRcAXiQqLh5wX5Qd3ZxD5rOg3o12fgjfocncNrZIUytnYvwb51+077qcmKQtl9IHTxiqAUTt0AWlO0iKyDFUsIKgrjy9KMtenrQwdz7JEeZ6e2LpIY4NJ91W9bpW5l+TB4zsyDyf5e7dhZ+FnrGQWa3/O3f22Kvy9Yo5UoE629QocG/w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,64 +142,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 13:30, Yeoreum Yun wrote:
->> On 9/10/26 13:22, Yeoreum Yun wrote:
->>>
->>> As I mentioned in my previous reply, what I’m trying to prevent here is
->>> a failure when checking, immediately after memory allocation,
->>> that a specific vm_flag is not set.
->>>
->>> Yes, I agree that this could have been a problem even before
->>> the internal changes to memalign(). An unwanted VMA merge could already
->>> occur at the time of memory allocation.
->>>
->>> So what I’m trying to avoid is a test failure where, due to such an
->>> unexpected VMA merge during allocation, the subsequent check that
->>> a specific vm_flag is not present fails.
->> Which is only a guard-region marker problem?
-> 
-> Yes. so if we remove ASSERT_FALSE(check_vmflag_guard(ptr)), TBH
-> we don't need this patch unless other usage comes up to prevent unwanted
-> VMA merge.
-> 
-> Would it be better to drop ASSERT_FALSE(check_vmflag_guard(ptr)) in
-> guard test?
+On 9/2/26 15:16, Kefeng Wang wrote:
+> The preceding commits removed the last consumer that propagated
 
-I guess there is value in asserting that not all VMAs by accident start
-with an over-indication of maybe having guard pages, which is why Lorenzo
-added that check :)
+We avoid talking about commits or patches.
 
-But I think even alloc_isolated_mem() is wrong in that regard: if the
-original VMA gets merged, we could inherit the guard-marker, no?
-
-Maybe the following would be good enough?
-
-diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-index 5c8ec3ca75d7d..791bf6a68b9e6 100644
---- a/tools/testing/selftests/mm/guard-regions.c
-+++ b/tools/testing/selftests/mm/guard-regions.c
-@@ -2257,10 +2257,20 @@ TEST_F(guard_regions, smaps)
-        char *ptr, *ptr2;
-        int i;
-
--       /* Map a region. */
--       ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-+       /* Reserve a 10 page region with 1 page space to both sides. */
-+       ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_NONE, 0, 0);
-        ASSERT_NE(ptr, MAP_FAILED);
-
-+       /* Map a new region that is guaranteed to not get merged in any way. */
-+       ptr = mmap_(self, variant | MAP_FIXED, ptr + pagesize, 10 * page_size,
-+                   PROT_READ | PROT_WRITE, 0, 0);
-+       ASSERT_EQ(ptr, ptr + pagesize);
-+
-+       /* Clean up the excess pages left and right. */
-+       munmap(ptr, pagesize);
-+       munmap(ptr + 11, pagesize);
-+       ptr + = pagesize;
-+
-        /* We shouldn't yet see a guard flag. */
-        ASSERT_FALSE(check_vmflag_guard(ptr));
+"There are no more consumers that ..."
 
 -- 
 Cheers,
