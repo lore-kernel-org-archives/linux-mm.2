@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90C08C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E3AC79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83AEA6B0092; Thu, 10 Sep 2026 03:34:59 -0400 (EDT)
+	id BE41B6B0095; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8122A6B0093; Thu, 10 Sep 2026 03:34:59 -0400 (EDT)
+	id BBC6F6B0096; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72E4C6B0095; Thu, 10 Sep 2026 03:34:59 -0400 (EDT)
+	id AD32E6B0098; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E6386B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:34:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5212BA4C30
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:34:58 +0000 (UTC)
-X-FDA: 85197041076.04.3026157
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9EB7480003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:34:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1aYriuI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789025696;
-	b=KP3u6t9T17O/XmL9rZIJiHZbtANfdxUE//DjgSDlnnIvWeSB4o3xKxO4Ss6pGmJfxjQsn2
-	xES87a3MDLFn3MdlG3o2iS6Mx6bty/u/xOKMKtTFRMHry3E1D6BlnJnWjIc+ViK6hpte0o
-	oJWYzB6ZM5cGA3z8gTid1Aco+1AMJXc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1aYriuI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D54B6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:35:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6084A046F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:35:44 +0000 (UTC)
+X-FDA: 85197043008.07.9DB4626
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 03A54C0007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:35:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArIWktUn;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789025696;
+	s=arc-20220608; t=1789025743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4CWbYR+JLxhjEFkn3E8IqW/7LBzeZSK+qKtZqgiB7OM=;
-	b=DauCLX+3hTyiW0zVYMHSGfdzvEcYxdgXNvCI9p4D9w4LlHJrpszlAFrYe6PhbasrBpQ7aM
-	wyvBHqEcAbpQAwONFIi3y9qBDHVskSPGjEe6GpAmJtm0xcQwI8CqTWOxMNW0jpM8EY1wyV
-	W9lgYQDSf5Lo2C5Ma2F69wL5v2KF7Pw=
+	bh=EhU5FRjwx3bIRyO70+0m2ZMAFaFYcoutIHjPJPwpjb0=;
+	b=7Oy9LE9CMXo4ImLH5zeT8jGpAJ1LHjl7eE9OjCgNXDwiIpV+J33tf+0gjY0drcKQtPOGQJ
+	kdjuGnmEXnaQvNp5tzgS4Pf43/wBR8g70pnyI+ehuGb3N45EolVKhTtCa6AypUzf61Hsnl
+	dIvuaYWGtozZW0DKazStxBYTOLZK2jI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArIWktUn;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789025743;
+	b=ZpjSiZ9bOk+5Jq+qtsdtmWTIs3QMjUW6lXOm3hR0WO1rZu8Hz5Y1A4xFnb8SFnOs+uU5qw
+	IeLOPbzfta/EuW1ELkSQPl2terDz1xekQqSh9v7M3MNEu/tb6IqMwo3zFEJ7nEG6n36u9L
+	CEnzjTtMD/5ISPb209fQkCzCoCr2ICg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1BCDB600C8;
-	Thu, 10 Sep 2026 07:34:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC771F000FF;
-	Thu, 10 Sep 2026 07:34:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DEF041531;
+	Thu, 10 Sep 2026 07:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C231F000FF;
+	Thu, 10 Sep 2026 07:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789025695;
-	bh=4CWbYR+JLxhjEFkn3E8IqW/7LBzeZSK+qKtZqgiB7OM=;
+	s=k20260515; t=1789025741;
+	bh=EhU5FRjwx3bIRyO70+0m2ZMAFaFYcoutIHjPJPwpjb0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S1aYriuIA6tz4mgwaEsKlFV/NuKhCbH9E4gw76QlVDki4uhAeXqLWRTP9gPhiZ55S
-	 4uZd793YbTA63LDC5kAxbA8Z4jDJae5iEqCYeY38BNSj8bjOseVTLKUHqPkrf6E8sn
-	 H77+2CIAtMWh4529SPPwSA5vW1LhGs+DfN22NujSwLjn8XMpyqfcFhL2ilS9kN66kM
-	 sK2hhAEuuRCG/da4Dv0RQlVpcLXkTwdf/z7E1pbcTqy1oM3Z5ci8735qX8++JVmQV7
-	 iWRKJLlFBdOEv1USiOYnctrqqLEQfI0agOWUEMTGKq6Im9Zf0L+ubXr1+XEuCGH4n9
-	 AXgTGSVPweDNw==
-Message-ID: <520b6aca-b515-4720-977f-1adb484f2e08@kernel.org>
-Date: Thu, 10 Sep 2026 09:34:46 +0200
+	b=ArIWktUnX4ZHRqyfQgODDI08WST8EkyZQTS8kC93Se4E6H+syeu0Dr629/uyOcxo2
+	 9lgDK7KIdqL6gH8zdsEKDMnghdylnYh/hgGmgjgckV3SuyLN3390WGB6RPcog6iZXu
+	 OO/XEJi6e4/AaARzYg+An6QISxOXdndN4CKx8wDo6NDo49Xtm+zM83zuqP9ojMdyrh
+	 FJ/tn4Bjrr6I7LVgrjwJ+mjKKJsCdyQlGI2Yo0hTds7SKfO0E1tm9OrFvbQ/gVzmbP
+	 h/8wPEBM75as9OPp4JVezB3s3pKMrQs7tyHW2vQVnUqHjb6/TvJQN6QSyeroQtw2rI
+	 5jj8kC6v1vixQ==
+Message-ID: <927c0ec3-4183-4355-9269-721d79f4983c@kernel.org>
+Date: Thu, 10 Sep 2026 09:35:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
-To: Chao Yu <chao@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -82,13 +82,16 @@ To: Chao Yu <chao@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Gregory Price <gourry@gourry.net>, Ying Huang
  <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
  Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net
 References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
  <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
  <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
- <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
+ <178889163877.1334491.3646957026033534678.b4-reply@b4>
+ <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
+ <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
+In-Reply-To: <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 03A54C0007
+X-Stat-Signature: ubpnxtn8iq1448rcjbz5u7y976e6airc
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9EB7480003
-X-Stat-Signature: 3m66ccjrbip1mgw8wgg9tfyszfc38qew
-X-HE-Tag: 1789025696-981282
-X-HE-Meta: U2FsdGVkX1+i5qONQgR1wbLwtJAAKWbl7Kzl4QkcYqwx2f4vDSkPEo3r4+oVyx9iGwj13YcxlPdiC159pXRy++HLp9tknyI1M9lJQCt4cG2tOOPV9mgo5oHPTEWI1Eb2DoRUXLbCXrM63wyPbpyEdTATnYPtWaWrMtcPdXfvh7//zKnsi7NQKgBT+31uWD3SAzWOaYRRC2snPS06RsCAC+6wt0dvUA/C5oNuD9b3Pe29d9TAq9a4UGTz0fnS5LtWK1m4WswwkMYLDFBot9BPbc6DW9YIY5g0lX/uHENqCgb6Q9E8nX0aSN4sEd8U5/Ap38uSRCO+zQLGxs2RlHdah8FS8nQH7wY5C9C5VOPHc+ii2E2MYe+NmFLvOsGvM4yeOe5+ggEgDrCLxHP+XudarnF8ykitBpUXkzjorqsQk6RQcBXc9VXY9iQ+e4AprCGmE93Us759s6Wg4v7Dr0yn9fm+sBFcDKjrne0DBLJxNjx5AWnBkOF2N/um8aeAZRaVlNgdoMTsMCYdsP3+JYRTUA/NcWBQ/IBoanr2ZBbExa0HSXMbeIkrmXXzuSiOfXH9ahishgl/J8tYHE1+S7nXNigrgiC8oSsxWdijc5RllJLwTCYnZIUzK3it3I5WzM/FOa7Cy3TBlUTpHB0TUBclV0fO+nBZIjJS0wHYHjuhAMA2lcDui/GFRqC2pA2nQfM2M5dv38RCHVQgqXr+6vdDSzlP8H3wTnGV667tRtFo0TW0eZCICQ6wxt6PO6iJIiP3RKNMUXiKhJ5wVcS9qJmThZIrMczpsngnNkeTLfKeyRbR470lX7dRcvvRzDZwrAuQOHch1ajNkZUcR/g2u5i0bMCSGCNQNl5c/mkz3NxSILcYodAYIKOsUzVNTA4aydSm1Qlp9Dqv6Ea9rdOewzNem8SlSofc1u9MOPJWxbbnr2WeHaMcyn8r9TmPqrlmqbEg6nCc9n70ZtyO11MSlPD
- i5ADNKtO
- 8Cjayq3vqJaOlPjNTyF45dwg2YP5Eh7RM6k5nW3GxVtWvbUSIxnMUoFi06Y8FP4/1s0wkf4jG2okCPUfxBucZtIm8xUxVsLrrhKA58sWo4xE19H12qTORPZAMMsscHwCPhStoepiov4DFm3YXaIg6/VIPSWyKZk+jUqHQr9MH92dn0JzgGdkeHgC3YwJkofcbzue6WJYPlWVZ8ekI0q+UL3L8K5liXk4hj6bEdOMHNIJt5ycCJtXHLyMIloGfjuc8jaik4V478a9EODRGQ2vbsGbAT/KBM1n290lWtcrQP0m7g0MujAJkpm0sUs5wL47uKwiRkMYHHOCD0cH5uXHlYZ23AIRZxH2dZJvSTDsNLI85AwShCUmSX4fWmVzW+dyED9Yf
+X-HE-Tag: 1789025742-910491
+X-HE-Meta: U2FsdGVkX18uo4DTC+4mR7+DnnyHMb3gaG3s4udLNtgB1Cw5PMqzyyXxhbmXRCw9d3i6cR2pZWN0O0jX+x35UvazzxMvQWArxvG02McqDSvRUjHXp1/k80rwVqZcziI4rCYTehlu3zknT1fOLrDOGsXue5dHSlP5V4TrRu8YyJfjNvNYadE4Fg8KtRU7MVtjxqNA/OdDMHy55Qw9WmVzk81HzrcjFddkLnqLXXVQVzjsVEcO79woU8HarCira+rmilrG+xMQZDNNxT8sf3euJ2jaSodVmzuXJEDIdbMkVuAZmxXIiHPu1Zphwg0vKd/oKgVq/tcybDhakp4R1W9LwIb2jROOjhQJydkO+YwkJSdxOQBARy2hPsy/qPzHiUqfLhGey2pjumd8SaKe2sNANyT/MNicRzdSi62JrCsJeJq5X0l6fan0C0WtjmXabWzrSbLEzCxe+eGUpbLZA0Sn/Gk4lDrSbhzq+nXC3uRK3Zw5yZpAcfjGxOsBFbl/Q0gXwrOl6DWBMCm+odMQ2h5LGq5cyGmfnPK8cGwWcRfR4ImKEv/fTHUviK1Fj738BNryKJHQW9rZrC8bATI1yLAWti5FHoxn8GWiyBgvXpI/PXv+q/2hCR4GPsoXv+kYjPtfGr427o824MPEWLRan2eo+pJR4Td1OI7C6Mada5YqJuQbU/zBoYIrzxUhUZNKZOE2o6b+veZ8pk0taMu21gdtOpKqwpC6mQ5cRof3pSG6wI+FPIJCTFPZO7psuHroXNrQH1Vff1MtIrtoNpKS7Q0XvzPNeXG2vdnnK++lbznaGDxZdS3fOLvgxiKTi/X2oNEwaS1yI7xKYk83uCjvt58p9Gt4x5lIp4AviTsOFR/ZIyFAxB11A/g/lKdFNCSNQUkPLr4QCdJ2gn4d/8Nf9zONtXKT2ja8Lr0yIpnqDT3KFAvpDGbHc/D6x/KJ3IsdH6pW4mQUXv0oSf2lMe78zVL
+ tTVrsXN+
+ mo7mCbidjcVxoQ4c/7NcN/rBSw3IM47vKx2jlz4BcLXJkI1FI08lvGFtO0bmCxzE28FiwYY88YGtd7HssL6Nq0WSRdVka68XMibYKH/ZAn0fAaz5XhZOltr3A0+5pSoWgRPLcjblgPl/AG/ifJfQL5iPWy//jzShrGrispBjTmQs/niCOyvLj4SnqrBO5j0Ywyd8fQFZRvWpQ+EunJj+shP1pPt0Dn0U5j5BRv2V1+8Gi+F4DW2nhK6iVfnWqaki5HlYwcLgkcmeixb6hq5XAc/xZUoXr3dMCusC1zGj7DKEKqjYIR6hjBicAPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,91 +156,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 04:41, Chao Yu wrote:
-> On 9/8/26 23:47, David Hildenbrand (Arm) wrote:
->> On 9/8/26 04:56, Zi Yan wrote:
->>> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
->>> page->private != NULL is equivalent to checking PG_private. Change
->>> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
->>> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
->>> but it can cause confusion when PG_private is removed and
->>> page->private != NULL is used instead. Change it to initialize
->>> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
->>> semantics.
+On 9/9/26 19:47, Tal Zussman wrote:
+> On 9/9/26 3:48 PM, David Hildenbrand (Arm) wrote:
+>> On 9/8/26 20:20, Tal Zussman wrote:
 >>>
->>> It prepares for a future commit that removes PG_private.
->>>
->>> No functional change intended.
->>>
->>> Assisted-by: Claude:claude-opus-4-8
->>> Assisted-by: Codex:gpt-5
->>> To: Jaegeuk Kim <jaegeuk@kernel.org>
->>> To: Chao Yu <chao@kernel.org>
->>> Cc: linux-f2fs-devel@lists.sourceforge.net
->>> Cc: linux-kernel@vger.kernel.org
->>> Acked-by: Usama Arif <usama.arif@linux.dev>
->>> Acked-by: Chao Yu <chao@kernel.org>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>  fs/f2fs/f2fs.h | 8 ++++----
->>>  1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
->>> index 9940a6cecf1a2..2f7ab5888b078 100644
->>> --- a/fs/f2fs/f2fs.h
->>> +++ b/fs/f2fs/f2fs.h
->>> @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
->>>  }									\
->>>  static inline bool page_private_##name(struct page *page) \
->>>  { \
->>> -	return PagePrivate(page) && \
->>> +	return page_private(page) && \
->>>  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
->>>  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->>>  }
->>> @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
->>>  }									\
->>>  static inline void set_page_private_##name(struct page *page) \
->>>  { \
->>> -	if (!PagePrivate(page)) \
->>> -		attach_page_private(page, (void *)0); \
->>> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
->>> +	if (!page_private(page)) \
->>> +		attach_page_private(page, \
->>> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
->>>  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
->>>  }
+>>> I have a WIP series of ~30 patches converting much of the remaining page
+>>> users in f2fs (including the below) to folios. Still have to do some
+>>> testing and clean it up, but hoping to send it out in the next couple of
+>>> weeks (in the hopes of eliminating some more folio_compat.c functions by
+>>> next cycle...)
 >>
->> Very weird interface. Why do we even need the page-based interface still?
+>> Indeed best to wait a bit before flooding -mm even more, it's rather a lot at
+>> this point.
 >>
->> $ git grep -E "(set|clear)_page_private"
->> compress.c:             clear_page_private_gcing(cc->rpages[i]);
->> compress.c:                     set_page_private_gcing(cc->rpages[i]);
->> compress.c:             clear_page_private_gcing(cic->rpages[i]);
->> f2fs.h:static inline void set_page_private_##name(struct page *page) \
->> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
+>> In the context of this series, it would be great if you could review whether the
+>> diff I proposed would get the job done, thanks!
 >>
->> Seeing code like:
->>
->> clear_page_private_gcing(cc->rpages[i]);
->> if (folio_test_writeback(page_folio(cc->rpages[i])))
->> 	end_page_writeback(cc->rpages[i]);
->>
->> Makes me wonder whether we can just use the folio helper instead?
->>
->> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
->>
->> So naive me would assume that we can just get rid of the
->> set_page_private_/clear_page_private_ stuff entirely.
 > 
-> David,
-> 
-> Thanks for the patch, at a glance, it seems fine, can you please send
-> a formal patch? then we can apply to dev-test for test.
+> What it changes looks good, but I would go a little further.
 
-I'm hoping Zi will drag that along as part of this patch set. Is this fine or do
-you want it sent as a complete standalone patch (will make merging Zi's series
-slightly more complicated :) ).
+Thanks!
+
+> 
+> There are only two more users of page_private_gcing(), which pass fio->page.
+> Those could easily be converted to folio_test_f2fs_gcing() by passing fio->folio,
+> which is in a union with fio->page. That would let you delete the
+> page_private_##name() implementation in PAGE_PRIVATE_GET_FUNC() as well and just
+> remove the entire family. At that point PAGE_PRIVATE_{GET,SET,CLEAR}_FUNC()
+> could be renamed to something like F2FS_FOLIO_PRIVATE_{GET,SET,CLEAR}_FUNC() and
+> all of this cruft is gone and folio-based, with no more f2fs use of page_private()
+> either.
+> 
+> The renaming could be done as a later step, but I would get rid of the accessors
+> as well in one swoop.
+
+Yes, either as part of the same patch or as a separate patch. Zi, can you take
+care of that? Thanks!
 
 -- 
 Cheers,
