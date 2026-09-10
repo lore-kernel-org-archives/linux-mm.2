@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C223C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 221D4C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:28:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2750A6B0092; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
+	id 1B4206B0096; Thu, 10 Sep 2026 06:28:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2254B6B0093; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
+	id 164446B009B; Thu, 10 Sep 2026 06:28:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 114156B009B; Thu, 10 Sep 2026 06:26:48 -0400 (EDT)
+	id 05C616B009D; Thu, 10 Sep 2026 06:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2DA6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:26:47 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C5D0A04D4
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:47 +0000 (UTC)
-X-FDA: 85197474054.28.B66EE10
+	by kanga.kvack.org (Postfix) with ESMTP id DB11E6B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:28:10 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8253FA0499
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:10 +0000 (UTC)
+X-FDA: 85197477540.07.40F96FE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 93AB5140008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMkwwheO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789036005;
-	b=bzYpKZIIPBScZEvX1wMcz3PqBRSX789BeznNAqkD0CLeHW9vXoc7C4u+5InFnZ6BksrDHT
-	5g3SzIa01OiA0uK0Gk+vdNTcYVmSUPRdVs4tYP/kihLpZT/1vY5pRqhPQRJ/creD8r0xft
-	enqouZVhKgm7uuJVnoyGghANzSi53v4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMkwwheO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id AE67580004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iA0GDKCK;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789036005;
+	s=arc-20220608; t=1789036088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DT5UfZsIsx+FkEJ4a4b5UteE31Gu0sGDdcOKTLS/7TY=;
-	b=lIdcos302DKXGbI9e+fp+8FTHInUuwsdsnvDO9jvMAWrtXCkLlBnYRGSogQvfhSVOkATJx
-	OEm+KlJHUWGRRdlKvRA9CiBoOGdIUGybOtC640oFeDEIVBXZNG5GhjGsFOkCUEHJWn4P1i
-	ATNFyzY+YLg/wkRzQ3lHLZpsjECyYe4=
+	bh=JPVyV5E0DqIzhRnGLYL94HZY1CWfQkQmEs0e67brq3M=;
+	b=xY/PRTlAEXVFAV7F43muYPopyHDaHYnj940OmvtPEmPcuyGC3v03rftTebQWfQtdFlu9Mq
+	x417fJYQob7TMr0yWnH0w2fSqfMnTAB2tWrlZGWwlQY6ZuwUDa1TCkcykwlraHlLGRnGHE
+	hCpuRlHjBFcqKkp6ZQ+s06ed6Xln0BU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iA0GDKCK;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789036088;
+	b=oP9sHVL/nwQ9yYas32iGZjMlwkUaNNNw6zjQC58nNVP5vVB7kG1qK1ynFc55FYglNP5ek8
+	yYbnQA86Bsv1QH/S9QB90/vSZxRIgOd+wBE+FgggFuby6Fk7mg4W0OXri2IbDEqXqTCr83
+	lRFYtg3BotMHXiknrIYPDK7yX7RXytA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D6CB60204
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042231F0089D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:26:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2947C60200
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B4B1F00899
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789036004;
-	bh=DT5UfZsIsx+FkEJ4a4b5UteE31Gu0sGDdcOKTLS/7TY=;
+	s=k20260515; t=1789036087;
+	bh=JPVyV5E0DqIzhRnGLYL94HZY1CWfQkQmEs0e67brq3M=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UMkwwheOSxfsgB+2pwkb/FKbjrd/3fOSXwaMdvKXkooqrLwPV/RwcZ3p1UdEk1e8D
-	 jzPOfkmVcZtp1p8CLDVhpOb5Lwfv8jLWGhamPvyqzEZyFiE2XyyMSy4AotzGN4Jjh7
-	 v53dKtW4hawvCE8obnBAI/b6pU7C/p+SfSfpaV0q47ev4mQmzI2TrKKjHX4bknP4Rq
-	 bP89ribbR+OL4oS6NayrV9r9DigUNNEWCVfggE9Idjw2W28NQN2uo84njhgiilRuG7
-	 duPhwxFwQf3psnNdysG+UIpywYKQCTiAwCZ+JnPCA17bpEw848Rrf/5FeUtH8RpKO5
-	 YypU0GRLqL9iA==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2544ff970dso1047313266b.2
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:26:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzfD6n81bdXfyf3+ShvYQf4C6OnTpxMMpaz96Sd8Xi2pPg32MJCDHwQjOwca3yvd/qlRhLZaJFkcQ==@kvack.org
-X-Gm-Message-State: AFuF++nj78USNBXqt1nU//kmtyLYoc91hKyIoo6L5k2czUmLs8qDPC5r
-	ZIpxHRF9foetnwg+hg+TJ6622R4PmfnhmzXecgHD1BXzMLYwmwLyYdii5t2dinZIv2//w2xxTNi
-	BuI0MKk1eHWjmjehCmDrcZvV2vf7K7Dw=
-X-Received: by 2002:a17:907:1c22:b0:c26:1649:47a8 with SMTP id
- a640c23a62f3a-c26164956d1mr1492741366b.30.1789036002867; Thu, 10 Sep 2026
- 03:26:42 -0700 (PDT)
+	b=iA0GDKCKKB6z/3Wf7Bp2lFEVxgRqv9dDRBZ0nAXD4AbzfcOzWgjMhjJ3jRxXE3+Qo
+	 PmtxCbR6eczSropjhrcKprDaHKCNH4GZC+VphfZt62UT0uI6SfLhBNCb0tvRZjRFMp
+	 8OhX1fgi5PAxP7nezhefxXo5TAEdrx0x299tsTXmPw0WfnrJGJ9/1RYNIe64sNse2s
+	 ymqKBpoCTUmSxpj4ne/R8Bkyq8EdWLZWLJUQqj+/ZFpp8dwc9ZFqoRTNl4vyx4ptaN
+	 F+uPI94MG4ME+1NeU6bPOYzrV0+iLK+GrZ0quos7sNg3e1a84cGJ8uE8V/S02Cq4Nw
+	 Z4eVi0/FQfjkg==
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b23so392641066b.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:28:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz1PNCRdP/VSb0Jt6ieVlJARyGqm7/31rVfAgiKqF5aYvymk1YlS9PMw0S8Ck6sq5cZNbkygBxLsQ==@kvack.org
+X-Gm-Message-State: AFuF++ltQdKx1+BzyKfGmRI3dk9d77Vg0FODfsSHdnXge5YjBdncPAf9
+	zUXcDxu9j0JS4crWhAt898wtlzgJud7zPYy57V7NeDG8oVVve90pZpeNOh7h8wSREDGxZpxqZPj
+	xmX0AaS8cJAwcpLAaGSv3vVma80Ajhd8=
+X-Received: by 2002:a17:907:97d0:b0:c29:29e1:2a07 with SMTP id
+ a640c23a62f3a-c292af1d8efmr979396566b.7.1789036086786; Thu, 10 Sep 2026
+ 03:28:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260910095449.715183-1-wangkefeng.wang@huawei.com> <20260910095449.715183-2-wangkefeng.wang@huawei.com>
-In-Reply-To: <20260910095449.715183-2-wangkefeng.wang@huawei.com>
+References: <20260910095449.715183-1-wangkefeng.wang@huawei.com> <20260910095449.715183-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260910095449.715183-3-wangkefeng.wang@huawei.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 10 Sep 2026 03:26:31 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMV4VrjdgwvEYX1oVGmOZOvLnKgk=1pWntrZONeea1+Pw@mail.gmail.com>
-X-Gm-Features: AcwNN1Uppy8p7EXaP6t7dNjcw5vdnjFOv-8ZypbVBnCBcynvBZuxhgtOTcEqS7s
-Message-ID: <CAO9r8zMV4VrjdgwvEYX1oVGmOZOvLnKgk=1pWntrZONeea1+Pw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: zswap: pass type and offset to
- zswap_invalidate() directly
+Date: Thu, 10 Sep 2026 03:27:54 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOvsrSZr5oLedu0jae-VdY9JkRFcJfthPEbqGkOwfw2TQ@mail.gmail.com>
+X-Gm-Features: AcwNN1XoK8UFTo0k12q2jzrRZhWEAqgmWTPUK8PiCXhBX1qdHzRnF9MjtfZ5nPU
+Message-ID: <CAO9r8zOvsrSZr5oLedu0jae-VdY9JkRFcJfthPEbqGkOwfw2TQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] mm: zswap: reuse zswap_invalidate() in
+ zswap_store() check_old path
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -91,13 +91,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 93AB5140008
-X-Stat-Signature: yhjk9pouzfj4qowmq1r4ej3jd9zs5j96
-X-HE-Tag: 1789036005-700951
-X-HE-Meta: U2FsdGVkX19rzCmNCX9ud6gTisStHsVS7W9ISnlC6piR1KNemNRjSRDrQH/1s2zM6qOpXAVhAEZTN7nRz3O4BcZfVFZkPkO8POv6elRcdJxIhAVXGR+CR8k61DoPQgUlRgLNkLdZwb9r7WQPCUwalfmuITB5gnyKokRpFxL/ngSZDJvb7/XjYu8jQzuGiyRRMQKGdnDF3hC/IfnGkQXzLcIHGErhGYtR996WykX0KEbKsZ6k9VG9cGxNLTBXG0apGxOhT4jNWdEC+drKq9E7RyE22HG3Ee+pwLE9hlDeMm+HFnQ5rtBj20X4r1CUrks2tTGRGxx1ShWorGtWl4o188NRmgNgyirkHEq1xajyuQUZhfabvww4YCpnHEmMTNNy1QuvFWFJ5zxW7CqpkZ/1kuNqXsjvRVXHeua0sgmpRE5q9r5tVpmJ6R4nfip/ZCmYRzZ9rBZ6FLzonVWqtTTYXEEVWd+DGkRg928fAF9WqfWiwc2lPZSo5OrbEUMswDoiO7kAFvg4oo/HDnHhJ21MDkHkFAvlIJpE/bGsqDwgv2usWfKloi+kMmXF1KBii3PxTQbxf3+gP3KedJAvIZ0mbnOSXqFTvTxgohUNLvh5jpIL921kbvRHo9gt6rn1d/ZSTypUFfjhwB6O0tGI084o+myO47GuRS7CXAVvmPOwQwCCoY+vqE6SicjJlm72qHqFQT0Jkv22OTDcL4p6kCCj/wadN46C7G/D/9D34eJR95NUHhoDoQXR9kQGAYJ4Oged7NeK3R2GNauFvj9hawVhRnJ4BrAE5DWI0ibzGw7OCuxqX0JfPcVt195h7ohzXzwjUsptjQCSlxDXyHUOJpoqNR9IYUGCIcfaHsJxudTjimAw8ynNUWLSnfrF7mlI9KDFH63W/0fpFw8Sm7MQ01xj/PCOKWa4kcc1EuSH6w0+2q69Fuswpd4IdcP0CSIYRByVkW1Ps2GxE3jSAV6xLka
- 4dSCG/za
- wSL68Vz5TvaczuPhjo4+zNX+25zXEKsLPL6l16Jt6HZXj+VKgxURLrUvjQgR20iVLeQcWbEspSSBK5hU+A4h1GeR2Q6NrI4PsfiktQ2NTp/pbzL1m0myUfchpkClivmkX7r9Td/UH9HxUz+duhfE548bGfZq5pY8z6EwmShAbv0Y7fIO+TMxz3RlnyEXbMy225gkDgfLWu09CSgmSRbiSw66a0Hxq4hNNcAvSQfFVA9/CWyI35Kj18OA5XmsAT/P8ZDHt32E9+4Z16BqWrpSGaApTr/All8MU7T05XGVNqIKsGv1nhusCngA09dSTHcItgwClnRrbhv31MNP1kKHw+BnV7VLhc+4gm3LwU4AYhKg4QNGFeMCVV9soriB2Gjz54vmq4YEv0lNNlyj4miUaKlKhojAbtrisu2MEy7+pZyz9stevezLj9owGsg==
+X-Stat-Signature: xmpsxhxxjburk97cb6kin73hjpn74x5r
+X-Rspamd-Queue-Id: AE67580004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789036088-628162
+X-HE-Meta: U2FsdGVkX1+3glyww3iSv3ysBWVVESJKgd8AUsSsEClNxv8kQQmI1EO2lshZQeGVKJSVn/ue80//LD4Fgwf0UE/tV8FPQe1KNyBOD33eLHgwFJZ4/plidp5+vyzcosVeayV8y6Kfpqg7icFUnjkd2tfokePILgc3YNUBFOzhV3vQeTnL31lqjo5ismjSBtAer32YdGhBdYzgxEEz7Kx7wS/0eZCgrbnb5XHndw/kZ8yFzfgdlEZEUcsJb0HSUcPYVTU6cNvui42xZvPW0hCjAMzI9rH/joIbRkHBnBi7GgkgIgwT0K2srFsqSsuUzghVEXTPue+bHUq4gTYriVggMpGcaabk0HgxUdMIb768+eLul5+Ys/T9m9l5oIgnBzFv2px86cBV9NErAWZrxxLAOzP4wVKg+8rJz5Y99/SUcbjTZBBy2eozDKS8ljeeqXgYGFODWwcbKemaigKLmkBA2rbHQQEJe0CjahnGZ4D/vQu+3R/J0bxQbPnL4yXJZRMO2NsyosQ0OrnjnHrR/HjCKZEUjjOuHs0dXxawTkAozAixrqqKyHAo13HJtVGhrmFykLfCxMtAY6ypmKOZ5LQPJqJT8rNY+YK3jcwvdpn9kgOmIOL4tVscXpFh33jKDN3d0S1ZDzPf5++t2Y2JATOj9tKLr54zblhTRS/zSr1m68q9pDJ/VleqRVj5yVkL7l5mVuuSimIljXrAf1/3WJiikSfw9VtF4bnSDkGxQqocE6MEEsZFFqy8X1Kx9/EbUT4cU2LiYmnUc0t6Qqk7n/IwZ9p02LJRK2njN7tVYK5ikwVJOa+RlD3d+5W6LjkmWvVB3IoMLCodAaVAAiqcouxdDj2cJkca6vaYSnFCa4ncJYprpX3QCxZMIgxWcziklzLo22m6nqUUBX5YiyiuxqH/yT64W9Bv4TXeFWdzfL1nQMzd1FLem3OyAp9WRNg8aSMziRDcOvhtazuIe31Jp68
+ ZSHo0nCt
+ urJnYBhMdA+TvikmJtVSYFiOQRKxyuIpdG+hR4/8FY7m25WCKpk8jcnol70CqQ6YmzpVgahCKaA+z1YaT8zHwgjjC+NerK12uVGq6Ax9lCS9Sib6jJ7vmpDeQwhg9QGZdOxPggFt4YdL7tS0saSCVz6MvgNkk1duaXWgN0yQf28nb/5iy9VarqInFBlGPFxdSuwqiDE7vwE/4VSQmeaqk4PSHn7OMPPvRGrXNyFdUbE4+0Eupt3BOeJaqakIljlzTKVSr9T4VsVP0XFlLZ5ZggV+BTPf91TjudtWAq6yNRL6zJHaVzPk+eZxkej7Fviv4WwshDu0VLRceeww/gTFB6UP20oRxfp0aVZ8+tHI6anAn/SzcyRbbV57t4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,95 +108,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Sep 10, 2026 at 2:55=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
 .com> wrote:
 >
-> zswap_invalidate() takes a swp_entry_t only to unpack it right back
-> into type and offset.  Both callers already have those values, so
-> pass them directly and drop the swp_entry()/swp_type()/swp_offset()
-> round-trip.
+> The check_old path in zswap_store() open-codes the same per-slot
+> xarray lookup and entry free that zswap_invalidate() already does.
+> Reuse zswap_invalidate() whose xa_empty() check skips empty per-area
+> trees to avoid unnecessary xarray lookup and code duplication.
 >
-
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org> ?
-
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+
+Nice.
 
 Acked-by: Yosry Ahmed <yosry@kernel.org>
 
 > ---
->  include/linux/zswap.h |  4 ++--
->  mm/swapfile.c         |  2 +-
->  mm/zswap.c            | 14 +++++++++-----
->  3 files changed, 12 insertions(+), 8 deletions(-)
+>  mm/zswap.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
 >
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 30c193a1207e..463bdee5c1e1 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -27,7 +27,7 @@ struct zswap_lruvec_state {
->  unsigned long zswap_total_pages(void);
->  bool zswap_store(struct folio *folio);
->  int zswap_load(struct folio *folio);
-> -void zswap_invalidate(swp_entry_t swp);
-> +void zswap_invalidate(int type, pgoff_t offset);
->  int zswap_swapon(int type, unsigned long nr_pages);
->  void zswap_swapoff(int type);
->  void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
-> @@ -49,7 +49,7 @@ static inline int zswap_load(struct folio *folio)
->         return -ENOENT;
->  }
->
-> -static inline void zswap_invalidate(swp_entry_t swp) {}
-> +static inline void zswap_invalidate(int type, pgoff_t offset) {}
->  static inline int zswap_swapon(int type, unsigned long nr_pages)
->  {
->         return 0;
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 05d3408396f9..ba71905e4d46 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1319,7 +1319,7 @@ static void swap_range_free(struct swap_info_struct=
- *si, unsigned long offset,
->         unsigned int i;
->
->         for (i =3D 0; i < nr_entries; i++)
-> -               zswap_invalidate(swp_entry(si->type, offset + i));
-> +               zswap_invalidate(si->type, offset + i);
->
->         if (si->flags & SWP_BLKDEV)
->                 swap_slot_free_notify =3D
 > diff --git a/mm/zswap.c b/mm/zswap.c
-> index a12b6452a225..420c405d0402 100644
+> index 420c405d0402..2c06e4e0e130 100644
 > --- a/mm/zswap.c
 > +++ b/mm/zswap.c
-> @@ -228,10 +228,15 @@ static bool zswap_has_pool;
->  /* One swap address space for each 64M swap space */
->  #define ZSWAP_ADDRESS_SPACE_SHIFT 14
->  #define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
+> @@ -1549,15 +1549,9 @@ bool zswap_store(struct folio *folio)
+>         if (!ret) {
+>                 unsigned type =3D swp_type(swp);
+>                 pgoff_t offset =3D swp_offset(swp);
+> -               struct zswap_entry *entry;
+> -               struct xarray *tree;
+> -
+> -               for (index =3D 0; index < nr_pages; ++index) {
+> -                       tree =3D swap_zswap_tree(swp_entry(type, offset +=
+ index));
+> -                       entry =3D xa_erase(tree, offset + index);
+> -                       if (entry)
+> -                               zswap_entry_free(entry);
+> -               }
 > +
-> +static inline struct xarray *zswap_tree(int type, pgoff_t offset)
-> +{
-> +       return &zswap_trees[type][offset >> ZSWAP_ADDRESS_SPACE_SHIFT];
-> +}
-> +
->  static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
->  {
-> -       return &zswap_trees[swp_type(swp)][swp_offset(swp)
-> -               >> ZSWAP_ADDRESS_SPACE_SHIFT];
-> +       return zswap_tree(swp_type(swp), swp_offset(swp));
->  }
+> +               for (index =3D 0; index < nr_pages; ++index)
+> +                       zswap_invalidate(type, offset + index);
+>         }
 >
->  #define zswap_pool_debug(msg, p)                       \
-> @@ -1659,10 +1664,9 @@ int zswap_load(struct folio *folio)
->         return 0;
->  }
->
-> -void zswap_invalidate(swp_entry_t swp)
-> +void zswap_invalidate(int type, pgoff_t offset)
->  {
-> -       pgoff_t offset =3D swp_offset(swp);
-> -       struct xarray *tree =3D swap_zswap_tree(swp);
-> +       struct xarray *tree =3D zswap_tree(type, offset);
->         struct zswap_entry *entry;
->
->         if (xa_empty(tree))
+>         return ret;
 > --
 > 2.55.0
 >
