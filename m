@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014A6C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:03:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD88CC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F15B6B009D; Thu, 10 Sep 2026 00:03:33 -0400 (EDT)
+	id C02D16B00A2; Thu, 10 Sep 2026 00:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C98E6B009E; Thu, 10 Sep 2026 00:03:33 -0400 (EDT)
+	id BD9166B00A3; Thu, 10 Sep 2026 00:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DFAC6B009F; Thu, 10 Sep 2026 00:03:33 -0400 (EDT)
+	id B16346B00A4; Thu, 10 Sep 2026 00:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F9366B009D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:03:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE31B1403DF
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:03:32 +0000 (UTC)
-X-FDA: 85196508264.20.53DC343
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5937314000A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:03:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RpWI6tNv;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789013011;
-	b=BoR4dqbEpBixJFrcjb8CkdlxrKBFhPKJ1RQcM59nkEF3s0QsQeiBFg8hsqTSt9ZgwkagY5
-	9u3LPuZqgs9/8XfuJl0X2Ybp8zj5dyyPLlX31Xe0OMh7pwXBAOjHiqXYcikQubzgIqQ4/1
-	bJqUFaft5Na6BCXzMXd7Iq59Wk3RPxI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RpWI6tNv;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D4946B00A2
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:05:10 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C44AA1C224F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:05:09 +0000 (UTC)
+X-FDA: 85196512338.15.317B65C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B80DAC0002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:05:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tCD5v4VU;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789013011;
+	s=arc-20220608; t=1789013108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0/q3LnB7iB4S2lxLwjnJON3GEVnAZWX6/MrZWM0ze7E=;
-	b=XVyHuwExPDk4tmcS8L5UtY2VF4TE49/dGQvBnVR63OK+UuDB7Zxn5+awV1wwb9ap5s5wd9
-	n2BGDR9FR33q/Vh9obRmQAezqMq4fep4xC9KCrKlZyKAgVqK1tufS9GmewiX7mo7coXHwb
-	nvMXE9AWwxzr/SGa4IvL32Ux38ZxM/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 985D144796;
-	Thu, 10 Sep 2026 04:03:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5ED1F00893;
-	Thu, 10 Sep 2026 04:03:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789013010;
-	bh=0/q3LnB7iB4S2lxLwjnJON3GEVnAZWX6/MrZWM0ze7E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RpWI6tNvgvWTzO4BrOIHfQxzMwCpsBSf6iQt37YryEJ+3MipCGOhmc45wQ3Xk8HKY
-	 VV45/IGLrV8l+H3svr8ExoPuVyXIvBcAdO3wni3d0JrdFVSPwYnxJf6b35/T5u1vdD
-	 VSC+zlXnIMwaLWOMmst3JVoYcfzuXIzIT8x2RFT67gcEWJF+qQsccCNU8ZKmL69lx5
-	 3/e6FSduRg6Q4shY4beBcbf+roTCu9UpwXasGNFV1yrEwwo8Wq43DVDgbaWSbfai7q
-	 /wIOKWa+E+m2vbp72DmZbauQAFFO5x2r+bbBt3GKn7QSrxvOmnBGogjR/a1iNH9TXP
-	 9T3FaI9Lk5pEg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	bh=cXhFOuqDM6JUeRauAhoieNZSOIkvbDqCyTIjuUkB6yk=;
+	b=IJJ7mRZZMtCEfrYNNNf6amHW/Ksu68IAoOzGekjHmS7QUNSGHUk7TvxmFR5joZgTk02zCx
+	/R35kpPF+yK4vuLqR1JKOQij0b77GlVc/mWwh0Xi3W6NX45XZQ2EtWAj5n0zC56GHh4LIX
+	o7UEl/Coirtzky2nzJaXzkI0vzGuRpc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789013108;
+	b=xaMla5ZULAZCO1+g/wOosyFuEaaS8InCQktuUuO1vJ9wF8SeUXM+5q97lypx4CSUAn6Cv3
+	Sd5NyrS0IFyQWAPQVheI77COTXLiaEGzP4Mq4wslziCYLoIVimSNNktd2f90ziDTZXsJPb
+	5T6wvAThlsCLEDSHTkUVB92sor8+37s=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tCD5v4VU;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC607153B;
+	Wed,  9 Sep 2026 21:05:02 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DAB983F7B4;
+	Wed,  9 Sep 2026 21:05:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789013106; bh=rAWrnAEYwtxB463a6X/NBqTWvXFmxUTkIqzzvCsxG78=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tCD5v4VUvLSUKDwb09dHubBqZMyi0aXPHA7yJz72TlE/XLQq4uYoYeyVilQgXOZKc
+	 UZ9s09iK+VC5GbdAALOudg5bQ05HkZVwdMpybiLdve6B2m/peyyq3TQ4200H8aRkIN
+	 rt3JRDGreOcdVN26eSoiOLR5jUGp1QSoUaQLEVWQ=
+Date: Thu, 10 Sep 2026 09:35:03 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1 7/7] Docs/admin-guide/mm/damon/usage: update for probe_hits_wsum DAMOS filter
-Date: Wed,  9 Sep 2026 21:03:18 -0700
-Message-ID: <20260910040319.147037-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260910040319.147037-1-sj@kernel.org>
-References: <20260910040319.147037-1-sj@kernel.org>
+Subject: Re: [PATCH V2 1/2] arm64/mm: Move __check_safe_pte_update()
+Message-ID: <u3uvjnmd7k7f7dijdvsykta3pcxyxhvztncu4apvg5eb6rvtyh@kmdgfebs6dns>
+References: <20260909040005.4148136-1-anshuman.khandual@arm.com>
+ <20260909040005.4148136-2-anshuman.khandual@arm.com>
+ <04358f9d-3b64-47c0-94dc-f1ef19c22f78@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5937314000A
-X-Stat-Signature: hsedxdpa9rog9szptj7xpdm9rnzjct4s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <04358f9d-3b64-47c0-94dc-f1ef19c22f78@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789013011-491475
-X-HE-Meta: U2FsdGVkX18MXlKzwI7ouTS4fYkIXeA83NNJtD8Fw0uXlgIFryDmc2HtsZmdjCs2aUmXg/phVEv7ZH5OgEOjSeWXPfSxZUjeiUX5rjxbuhf8lS6c5RzjkQVIsVTFg3iTJpIIhVwGn0lu0S1TSidTQO5hKhSbX5Ci/5zTeNYK31t/8KbpvUpq6QNZM+lowXa0nzKFiThw/GkVx2aiBoAIpw1+K2FCVR/XyY8j1aCRJMPmIu8KaHKEXP938MHnxuY3YWmSMWkUmA/3QZoUAGJKSqu06YhEbzYnLDzUln9rNal1qs2ywEaFSoFITPJQw2hwEjel0j/pTVpIFtsh4PMpeqflvO+3FCH1L/iVOtiu8rD9+1eQ59MNZ6ZKCswKBx9N4oEJ9vj3/Z/B6d+9rfRd4UHxthQhqyT79d67CR770U61VdU5hsY+LoduZhw+tdOlg22MBo2Q5Hzs3jDbhSrAIoF8zvgG7mABmAwPFdygaRxUF7pfsc387/nSQpf28FhwJSqKJbFCuN6vfWyN/bHaZ6ByGSPlDoKeADRRK8bWhKFEyeHc6q2WgE2H1m5Dn1rNibJw+x7eg/6NrShsttt97CapJmSc1FyIdlDDOZ7hEP+JXiw8CGIYSvtzp1Llo+abLxw8sw6Zu8TUc65h7IxqnPFN9O7LrpxL2rb0kY+Hpu7kJEPDmrTZu/w9xacaHqsVdM3haZ6BW7p1Dv+ZplI/NxSqH5qAkgWPJpVefwfwHOCW7W9+GthWAH+z82fkNWR/gAmE+vkkNIpXWgsBfEBOEDIMLbqbk5hdQzQE4yYhG479KlKi2uHdyKGbFI5HjRCgz3beTw35jBJnKxvV7S6cx8tl7o5+fT+j63qTYQ8DYVb/U2BG6l5mJszGM7P+K4tmJoTGeST1+84Zr5ZRFlq+Py3JJAlRhyLyPAQ21CIL1rxqvViaoQUIA966lqDV9+YMy8bePOPKgKdHRAClOmv
- 5TrNmxhz
- A1oxexpLXX14cIyqUAiaOTfPtpJfq/v9ctfxeD7FmcW2W8TwHKR9WCoc1AA5AI3q2pXN0NPfGXjR2s5sxyrfewavdQskVYL2yz9uDuto1x4NHSJ21qbIET6Yha5NxuABQjqjbFWwrSTd3wmKJvBKZRZB9R+sRrZFylF5mqSK3D0+jGBssPAC8QcKc4KThkcXhf1X8rEPSnTyBtdIVa5lI1d8VkaEN6vJIfbDzzUiVIXVOCftXWsLVmZUnBKYxfJEiw5SxpUIwdeWLsv4g88vmy/gooTNJ+RxXY9Zu
+X-Stat-Signature: 8469yjwwwi5fcfrzrrzbyz1gor131e95
+X-Rspamd-Queue-Id: B80DAC0002
+X-HE-Tag: 1789013107-744975
+X-HE-Meta: U2FsdGVkX1/akjAXvSu0E1gWqSudUH5X5OSzQrq4TC1eC4E5jXxrzlnRU4kYqvJzjwg8Ho62Dy5kBuTKHCPt65+V6f2MB/u6mF0L7Www00wiqV5qZoQ7utaNXwmDQNo8bvujZB2YY9npjVYAcflhXf6ICyyRTKX+O4JiRM+0lPpdHNG5Z38XN5gFXDgl+hOWjUJZK/00M4qOPjbhwb27K/ibIvVj0wzCk95Ocx26p26/8Xud97BsE3wM+KvxNGr5FkqSnLgPTt6o2XGWUmApGVJvnkQDYkRWI4GJKhFQGN5iiXWsBeED1BIZ+7BNM7PuF4KAPfwxNWM+Z1tUjSlx73j7VdZFk6Z3A/azzz6IwGRVaV+k1WB6uOuWNyGLkoRkdZdHabdEph7hlsvt4MQktxgrbf7iUV8P1NOGrqQme1JVexmQgwDH2xEdrw0esjKlMZB1ozfPLsx4Agc2UufppbljIrnyR7BXQhwduPKBP8bamRYWAzlfDGgxZHf4qXHOzEORtqBi2zQNdMm/w9aRYUpLEVzBbXQGJAvZYj+/LYy3X8T/piiqG8rHYfbGY3IiWWKKItUTyQNDvOob0saThW55sSK7YEjX2B30cnBBWXoCoCAk1KPaZEdAb2+rlB0yX5uGyEACoAB3lPsq+X5dpv0xAztfAOXnRqBptQyOUJ3DKUnLL8X10XybsmBydMcMFaIb1JuVlFXawTIv3zPnA7VnNlyaOv4xKWWH49/UsH+ScG8Oq8qqT0fBE1NZCD6D1KtkbIRjimGqcmbOrFaVIUcc7/SV9x+CAbhFo9XTfpkfppWh8m0gMn+wW3BOZnOEnZ2iWpjjkX1GhMtv87QshB0Vli+e6WKib1VF2Hg6ki+yDAsHpgkdnHiJgqQPQXR8VaTby0hpvO9Nh4MRi7Y75RDg/e87sKMo44C2G//1VqghOUSieE9wG395oEyabuoXqnQ6UF/3vrdcwab5XCW
+ Tgfshitf
+ xTDnOr7d/dyUnCJCi9E4llgcypDkaNn3z4JMEPtSxeCh9Y4HHAI7YBFL+dHlSs6FJzHNQ3S7SvhVq2P1/8GScJUb07vwsDZg1PkykN1AVubzPe1M70DkpEfWUyXiMHW/j4pvNzOlMKMV0GDpQjcOXEdyeHzjCrDsWtFDti9LkzwqKzURa2ZqMd0dWeCEeKxTw9szVEHmtwvem+c8xcw5rFhuyFLFf5YyTle+5NqMYTwt8EW6zY19OnrDKYQMS64MJpaDlXHLcJg4KRPPK1ME2Gk1vbhBkWD5Ct2dOiCkyruwWvxTJv55Fc+0uzJQ5z1jxJk/wZZgpv6JQajKZOgaBS9il8ZY096n/wZr2MbE/PzrVd2n7qz0t2Fx9eJnm0rCCEU17OvdTDo10w+fFvuQQGev7cB1yePqOGLu7kSrHpVfO5689G+1TYGjGIRgU9DKsrzyY9mntAi8xbp5qSWeVLwZl1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,29 +91,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the newly added probe hits weighted sum
-based DAMOS core filter type.
+On Wed, Sep 09, 2026 at 05:12:24PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/9/26 06:00, Anshuman Khandual wrote:
+> > The page table entry print helpers and related macros which are defined in
+> > <linux/pgtable.h> will not be accessible in platform <asm/pgtable.h> which
+> > is basically caused by cycling dependency.
+> > 
+> > Move __check_safe_pte_update() inside arch/arm64/mm/mmu.c as a preparation
+> > for subsequent usage of the afore mentioned generic MM helpers. While here
+> > drop IS_ENABLED(CONFIG_DEBUG_VM), although wrap __check_safe_pte_update()
+> > inside #ifdef CONFIG_DEBUG_VM that preserves the current code optimization
+> > which is achieved via the static inline functions.
+> > 
+> > This does not cause any functional change.
+> > 
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > ---
+> > Changes in V2:
+> > 
+> > - Moved __check_safe_pte_update() inside #ifdef CONFIG_DEBUG_VM
+> > - Added empty stub for __check_safe_pte_update() when !CONFIG_DEBUG_VM
+> > - Dropped IS_ENABLED(CONFIG_DEBUG_VM) from __check_safe_pte_update()
+> > 
+> >  arch/arm64/include/asm/pgtable.h | 49 ++++----------------------------
+> >  arch/arm64/mm/mmu.c              | 44 ++++++++++++++++++++++++++++
+> >  2 files changed, 49 insertions(+), 44 deletions(-)
+> > 
+> > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> > index e89ec5f4787b..281a512f1fc6 100644
+> > --- a/arch/arm64/include/asm/pgtable.h
+> > +++ b/arch/arm64/include/asm/pgtable.h
+> > @@ -387,52 +387,13 @@ static inline pte_t __ptep_get(pte_t *ptep)
+> >  extern void __sync_icache_dcache(pte_t pteval);
+> >  bool pgattr_change_is_safe(pteval_t old, pteval_t new);
+> >  
+> > -/*
+> > - * PTE bits configuration in the presence of hardware Dirty Bit Management
+> > - * (PTE_WRITE == PTE_DBM):
+> > - *
+> > - * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
+> > - *   0      0      |   1           0          0
+> > - *   0      1      |   1           1          0
+> > - *   1      0      |   1           0          1
+> > - *   1      1      |   0           1          x
+> > - *
+> > - * When hardware DBM is not present, the software PTE_DIRTY bit is updated via
+> > - * the page fault mechanism. Checking the dirty status of a pte becomes:
+> > - *
+> > - *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
+> > - */
+> > -
+> > -static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
+> > -					   pte_t pte)
+> > +#ifdef CONFIG_DEBUG_VM
+> > +void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte);
+> > +#else
+> > +static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+> >  {
+> > -	pte_t old_pte;
+> > -
+> > -	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> > -		return;
+> > -
+> > -	old_pte = __ptep_get(ptep);
+> > -
+> > -	if (!pte_valid(old_pte) || !pte_valid(pte))
+> > -		return;
+> > -	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
+> > -		return;
+> > -
+> > -	/*
+> > -	 * Check for potential race with hardware updates of the pte
+> > -	 * (__ptep_set_access_flags safely changes valid ptes without going
+> > -	 * through an invalid entry).
+> > -	 */
+> > -	VM_WARN_ONCE(!pte_young(pte),
+> > -		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> > -	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
+> > -		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> > -	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
+> > -		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
+> > -		     __func__, pte_val(old_pte), pte_val(pte));
+> >  }
+> > +#endif
+> 
+> [...]
+> 
+> > +#ifdef CONFIG_DEBUG_VM
+> > +void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+> > +{
+> > +	pte_t old_pte;
+> > +
+> > +	old_pte = __ptep_get(ptep);
+> > +
+> > +	if (!pte_valid(old_pte) || !pte_valid(pte))
+> > +		return;
+> > +	if (mm != current->active_mm && atomic_read(&mm->mm_users) <= 1)
+> > +		return;
+> > +
+> > +	/*
+> > +	 * Check for potential race with hardware updates of the pte
+> > +	 * (__ptep_set_access_flags safely changes valid ptes without going
+> > +	 * through an invalid entry).
+> > +	 */
+> > +	VM_WARN_ONCE(!pte_young(pte),
+> > +		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
+> > +		     __func__, pte_val(old_pte), pte_val(pte));
+> > +	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
+> > +		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
+> > +		     __func__, pte_val(old_pte), pte_val(pte));
+> > +	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
+> > +		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
+> > +		     __func__, pte_val(old_pte), pte_val(pte));
+> > +}
+> > +#endif
+> 
+> #endif /* CONFIG_DEBUG_VM */
+> 
+> Might be helpful here.
+> 
+> Consider the same in the case above
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 4 ++++
- 1 file changed, 4 insertions(+)
+Sure will update the same both in here and also for the declrations
+in the header file as well.
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 023c6334024f8..d3e37400367bd 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -551,6 +551,10 @@ and ``damon_target_idx``.  To ``type`` file, you can write the type of the
- filter.  Refer to :ref:`the design doc <damon_design_damos_filters>` for
- available type names, their meaning and on what layer those are handled.
- 
-+For ``probe_hits_wsum`` type, you can specify the minimum and maximum probe
-+hits weighted sum value for the filter to ``min`` and ``max`` files,
-+respectively.
-+
- For ``memcg`` type, you can specify the memory cgroup of the interest by
- writing the path of the memory cgroup from the cgroups mount point to
- ``memcg_path`` file.  For ``addr`` type, you can specify the start and end
--- 
-2.47.3
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks for the review.
+
+> 
+> -- 
+> Cheers,
+> 
+> David
 
