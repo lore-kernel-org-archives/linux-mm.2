@@ -4,146 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 808D4C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D38BCC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:47:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DBD66B008C; Thu, 10 Sep 2026 03:46:49 -0400 (EDT)
+	id D59726B0096; Thu, 10 Sep 2026 03:47:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78BB66B0096; Thu, 10 Sep 2026 03:46:49 -0400 (EDT)
+	id D36336B0098; Thu, 10 Sep 2026 03:47:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A17F6B0098; Thu, 10 Sep 2026 03:46:49 -0400 (EDT)
+	id C487F6B00A0; Thu, 10 Sep 2026 03:47:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 407006B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:46:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAAC9A0496
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:46:48 +0000 (UTC)
-X-FDA: 85197070896.30.2E85E60
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C576E20005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:46:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gv4Oy87q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789026406;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A663D6B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:47:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3521314045C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:47:06 +0000 (UTC)
+X-FDA: 85197071652.22.167400B
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3229540003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:47:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v9gf1qnu;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789026424;
+	b=ZzNlaa6S99bqxwtbg+QXUp1agsHO0urgrD7XPXcgtlNKtuPz6VL2r04qRuhvsZevOr74gO
+	A2en6hgYrp1qmpEw2dp/53LxynF+Mz6nc2yqqr/L3GihpT3lTdsVDUs7hk66GqVir4Zn8A
+	49pPGn+r4RbNt7Ks9X11+euzFPchTR8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v9gf1qnu;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789026424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SR/8Dy6Nrrh5LDSonTYCX4wiBWSkHbsQtwOFo2cEn6k=;
-	b=PCGn4Z1oEm/V5xKbrRe4Q0OoKjI9ovyHP/kFp0C418ZG2WVDze5SmwP54Eos04JGD3+CrT
-	HTcnowB2M8XDkeBeh+pFQMDB1VJhKfEfPpa7ZGa1iGR6ycxE+cKh7ueHveyQtLv702ccwx
-	ESf3TbjcjvjEGBfYmlf3yZd/cP2Sa7U=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789026406;
-	b=SuO28Rvlduevh+2ulioz/42RNr8XgRwHysFU0i3sKa9npkwTGAdt//Q8cMJzRcBp9qZk50
-	Hsy+NMPbMyylNa/YpUyaQaxAsC8yFhBY3idxUkNd/MttCIZ1+IFEHewpYJQraipVG8Qr8C
-	t2QDjSTYIp3HzTm6dO6r0HjWM/Pr9qs=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gv4Oy87q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482e1b55da9so772682f8f.2
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:46:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789026405; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qkAwZFMU7FSbFtgtCZ1tUElNfRw/0iMzjRq/L4S0WLTffcmSCnyfsRvWRhCuKtRjiS
-         e2nB0lhvPWKqVCiT/Co8Qax/7GhHzkF36br2DoIaXBxuBTo/uCnGYLmdMHPvrq3YeGg6
-         Lairzhqhn6tHJIMCw+9C8HKMAOOZCxSXepAfxKd3sFSHXz/W92TP/zGIv/1eOKqfiS6h
-         fxWUxW1k27HnPBWmrxwD1c91Rp+03gDglAA85qN0SNLrQ6IQHj2fvHGEgEjXdzYWSkkQ
-         m4C+EUsgCLnk7+NRiokWOMuF0YJsQRZKQ0MIUbbR/C4njt1L3qni/Bo/VZk3x25CoECq
-         DtiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SR/8Dy6Nrrh5LDSonTYCX4wiBWSkHbsQtwOFo2cEn6k=;
-        fh=P4LhZSWqz8FrfszZagA+2i4EANAohkYeH7Q6EjFxK0c=;
-        b=C9nE3oSgaTDjOaxnZ3gx6AwlCzQyyzJQeNE/X5giAXucYdWcLf8x4OPGEePY9c6G47
-         nBZuQafCKvoDQaTyjUGuTDWqgEQDiyXyh3yfJbWgyIQNjtUOZdTMtFB7v8GcHJHkQ/2j
-         mQRc1djb35qbUYIwDhEM7jUWBRTdC9Cm6Dlb3RR+q2Mk/2+6bmCcdePbSFFyBOMYp/5Q
-         doji+LsH+8pin+0Yh2N71mmeTkPWrj6npyb0plTfnSd5seypXOg1w7GwC2eprR/TYLry
-         J0S6ohGqb2VXChD/mRkIdwrXrYZIXrV3QQpe+RapwALC1K6PlroH6udC6Zqg4KX0OsQy
-         /m4A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789026405; x=1789631205; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SR/8Dy6Nrrh5LDSonTYCX4wiBWSkHbsQtwOFo2cEn6k=;
-        b=Gv4Oy87qEOG8zUaLWOiHICf7uda+2IjkLx4xXgC8ygfR8jjHCKHcL9SSE/u6wcAYX+
-         FlgLh5G/Kwnrpip2/b9Nj9b+tIVCswqnlvCUGN86r0K/ft9EkUmQx9QOV1wImqdoAhbu
-         ROCHcKmXbpYKqVsWupMoAer0+b4eBeOfAE5ORoCJdrzTGDJ4KLOY9Z61KCvz4fD5LAnw
-         mf/HOtbWJ0dzwSj3lNpEp9efEwpFF+lYp34VUNbd+IM7O+IQDhOhBicYBRNZkrcMV5BY
-         nFDO935gvk3N7MvDLj7SwAwRxHXHMyrHUMCqQcLZCoz6qTuGHiKU9Azuf5gftvo5Hvi/
-         ioqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789026405; x=1789631205;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SR/8Dy6Nrrh5LDSonTYCX4wiBWSkHbsQtwOFo2cEn6k=;
-        b=a+2BUFwyRiODNjCdrzpJqy9XkT+xlpc9ItvaACBF9Ej6ILippCtglY0If6FLY0WSdq
-         t3GC6euWdhjeX9X5ejxhqCQR//26/B1UmLDE3VxQJHWnu6tEVvyRBdp8SiCA3fyl8Wok
-         BmQkQ5yz1O2RT2HCG0T/FUvWUm/D3Vu8gbCIwefEpC2mLzItFJli2CKsnarh9CqY6wkc
-         YEuvaQc30OBi/7OlCw8c+px0Lxh4Xb2yTNyXluw/OVKPy8ybJnIBwUBJWb+SysQs1HGU
-         Ii6TijPNUwKyeR/5TYjBPSpMsCTMqig59Yvf3f8TMwwmPQDc76wZM6lDTNc2NB508+SR
-         rs8g==
-X-Forwarded-Encrypted: i=1; AKwUvBx+8U4WpxeC4zkgs6zXX5zzk8GU9H6qeIwXTxcbG3/TPFrbt6CDwklbU+bOFdWIsVFWyDDWhgTD2w==@kvack.org
-X-Gm-Message-State: AFuF++lXQq3hJdTY+zZXpiPR35OL1pWxmMyz1/jvsx9AMWb0lpMqaltb
-	cCu094GmurLQiM/Ru437bXqWGL2aRwMlf4VtwQH2aifVevTuiXYUiWtJF8MY4sBLfxOvV3iJRAd
-	HD+miEGYvGIEBulxEeCgFCWp76stN2Eo=
-X-Gm-Gg: AYBFou3Lr08sNgH8SQ27RHAUxLPkYx6CFLVZ+xGCADzFKRNagp10+489JBujuLA6gUN
-	qiwZ8FjJuYr1L27sjALPThWg2bEijQ8CTNXHJt4ENzWldziAzd+GoAb/dTpY972c8ub6egtULIP
-	Lak9BpYpULIWFCINh6OtkqaSSmqX8kr/LTzMeq1wnwOs27kblFvrpJIZ9LAwL+kaStCbk8kOkb9
-	/da/GIX40LUFzccQY6FtlOCtwYRXcMMpJ6zMFWGHZ49Hqt30n58Ta/fz9idd1Uy1+bu6kur/U3u
-	dCddBWQB0Z0sLYZJ2sn8zb4fFCrm6g/mI3+ne3hcCrjYQeR4vq9sYkJNHIqqc01kVi52xcaEjE6
-	2NkXqs+Q9xjoY1aEktlTjsr8EPT++wBH1o4JG3MDOT/5Cgtu+YDQ=
-X-Received: by 2002:a05:6000:2f86:b0:485:82f7:9053 with SMTP id
- ffacd0b85a97d-486d0de1a6amr3798843f8f.1.1789026404909; Thu, 10 Sep 2026
- 00:46:44 -0700 (PDT)
+	bh=SBZDbA7m6Uk1x34vpkryq/YkYdbuGu1YkB4b+p78Org=;
+	b=PMzFydh5bkOAu2o/G14QfhDAD/Wc8i886Kyi+2fBmwukcGBmn5oY55tw6R1J0gQuQhHtXo
+	IHLqiczcuAPA7+CFyffBLtm7gYPU+JNkVBmG5udxictPS/3rrBu4mhG5nZzlA8oftCTxT1
+	ebkxUDk0G+jHi63CkLi1Ogdjvtbcddg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789026420; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=SBZDbA7m6Uk1x34vpkryq/YkYdbuGu1YkB4b+p78Org=;
+	b=v9gf1qnug911Bfd6CyT7PlmnqESXvi3VKOKiXhnMx1Ddu23Tde+q6DF6ACEr4O3Z2DmaF5c70eFEDqvDmhpdDRSAKQDbZ+xy9IkEG2q0UsDlxvJ4v0d1Y5K6v+5u+nvGn+OauX+HgQwXRFh+pFUSOBIHPOrGVg2KHn5B85PqbE4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XAgyScL_1789026417;
+Received: from 30.178.84.157(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XAgyScL_1789026417 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 15:46:58 +0800
+Message-ID: <f5f6327a-bc9e-415c-a8b2-b498883b9746@linux.alibaba.com>
+Date: Thu, 10 Sep 2026 15:46:56 +0800
 MIME-Version: 1.0
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-2-xueyuan.chen21@gmail.com> <1d5ac9d7-48ce-4fee-b893-f646bade4a86@kernel.org>
- <CA+qSx6yjiXJkQm=hi=F8=_=DU0x_usSuXnL_1yuy0fUU9UU-Zg@mail.gmail.com>
- <d3723be0-46f4-4025-b526-e1bb3cc2cad6@kernel.org> <CA+qSx6x2-Md9uVZo+HV0z5CfmGPDzhL482eJNnM2VYVtn_e72w@mail.gmail.com>
- <aqJbFXjU53_D7SoP@kernel.org> <401e3beb-e2c5-4241-831c-005ccfb22e34@kernel.org>
-In-Reply-To: <401e3beb-e2c5-4241-831c-005ccfb22e34@kernel.org>
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Date: Thu, 10 Sep 2026 15:46:32 +0800
-X-Gm-Features: AcwNN1XRAKyh-nKS165ym6trfmmgm5ZhN281YBrKACOabVg8q_Fxhd9PqW2nK2s
-Message-ID: <CA+qSx6yZ4R5_n0PvYMvt-vU7CfsM3YEjHxvBz+N4ann=+BQzdw@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] mm: make persistent huge zero folio read-only
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org, ljs@kernel.org, 
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, kas@kernel.org, 
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
-	linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] mm: thp: restore SHRINKER_NONSLAB on the deferred
+ split shrinker
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260907110111.2286932-1-qinyuntan@linux.alibaba.com>
+ <20260907110111.2286932-4-qinyuntan@linux.alibaba.com>
+ <aqGlV7NjxrFPYtRH@cmpxchg.org>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <aqGlV7NjxrFPYtRH@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C576E20005
-X-Stat-Signature: dk6b9wyt4zu4kgorrt1fbdmjzyjy68r1
-X-HE-Tag: 1789026406-202885
-X-HE-Meta: U2FsdGVkX1/uv3/Iz7U+SD0CgF5uiOEUgkZHJA33XVdWpe4M1SgZfwBCJvkeJw3zPRxsdbFNqYUJHEX0HPx8hQ9TovFsPUTtjr4lKcqNK/5PHXcTB69+uYHcT0NARENIRULHOhtKMUKGY2V79Ga3X0a3PfRtbbTvGs1iFN6QrDnVfNAbpEALAWEFBST+9xvUf/P2F6uHsP1JzUoEvXYnGYtSayKRfam4plavTVN9RsEqVrUoCHDavQElwKFezYP4InRW2m9qxTByhWp9o72QYxyLjZHyvlRN920WXvSlM3njYTRJtmh0ZsSvAOxiITK6KdVaAtgJBI0/hoeqp1aclNcGrdbMujZjgPng0DngSX6l5wy5pcyVe0gPINc/H0bY/nz2zDK8/ExywzFcA9hpiPk8GPNxEOadCEoALm6qpRI6MnIdq6F9evWRcFjhtR/AS/ImFAOa22wlP22KWKmJs5yXB2viRbRkUk8OhHRJSuHMkAZaNmQxwsZqm3GwtYRFLSaQ52kv0s8h8jSe+ymxQW3vG/etVhfOi2BnrM+gaki0Kn4id00NIF334AOLNjWhLdTZcrAmyAm2Kzc2XAxoS20pepp9fN/M8Ez1wgFW5GZZzY5k6q+kivzkcEcpt1FAn6OJyFb8OPRWXs+eRWEyEkW0Z94pBKtmH7trNeykkaMB/DOUXjtF9SrJYmzzPXS0iCoIOQiMiDEp2pUW8YWz1WgohJVPl3lFxKB36XeEW1Attr7fce2R621IZLCz4IOp3EG3obY+EFbNTs14iHl1XjYADg6572XNoK5ploVmZxMbFTTSCXHf+oFclWnWGjCwi8cH0aW8SycLGLDrkX+vI4USvZzHDPj3IM7nr9vPe2uOY5nUTPBYblZFR3cHM0WzRD1OS1167GVKZYkbOMNgVdl4CE7kCq6g4BDbH0TNpNJLW2amJkClpSFg8BRLRySlwEvVygJ/8zvu/iHfb2/
- 8tyjUxF0
- 3kL/EpBmwhqnVdzigtXsLfthFpVZJMQT+lyW3ysxdDUXrBOsCqTwego/J9pj09rS/qhfkHBtS3Obl7V8xBCTquZ/178+e9BR1v584tQW4iFulrjin4bzwzUbjSQ63pVQV06n3w/m6Vn37YxqxXcq8/Q3KwwSH55hMuHRu7yJtIRYkodk0lxNzEQUnLvvOPKdDzINaFGCdLyj8pdlzzXijJGd4M0djtajEHF4W1QPS1kKRdpKdnXJk7OfTxs6Ozk4+rd6Dktl5HvOOT19/ioMkXgJitTFQD1X+ctCC86TzvgEswsrBd/+OxnVQ9DaBYD5NHSYXuh0E9g9BIta/t3OEvtOKJlcYm1RqNNTw70sI//r8E1Yjdi/yKqZydeBjlKk9kowATz9e6Y0iJNL7ibeVzQvHpF3EDroyc4ceCRF3wThX+dm7oXlZJrnDL8db//ZADZRrMQeeqxnwhhmMhUMGxlV46+FI/YkbNfR1N1L/hCHKcRU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3229540003
+X-Stat-Signature: t19bbwe8apwh97x4jpm57nh841cr5qba
+X-HE-Tag: 1789026422-944748
+X-HE-Meta: U2FsdGVkX18pyYrirRz/RfdsodohdtESqYm0WOpK6Zvm18nQpPWIdJl567IOvLTD6jJ2y5dSkypv+fPwWelcVWb5AXBr70H/ffUFTYaa2QDGTDa/OmbSEUU8StgL4PHUg55Hxs8YoocFdumh+RhPO1HojRQ3oLEe2tbX+Ior+ooZbrEarn2QPqfnTq7EubmVJ/dgBEZDcBLbbuF/Zr2wZpubZD2fuvoJ8dTEEquqCyLsjjxtYu/qStiELSY+n+LuvJWY5S9iW6zLxA6mhWi9+rcXyDa5eA4I9OVQbbXLdQe/9uZpijkwmeGm+N0zLIsdhx5Zs+StVVXgqmeXUbSAkRvQ0rLmddYxOKiONoI3n34nmln2y+zy4JzA+zikZUrKBUtt5ba/DgMEQE5180/O4g4Cb+SZJ2aWT/TSNJ6JE3d+o046O4fBScVF/RCY3J7HNMbkl7LZ0WmcSzAL8LmNS1nlFIi80yh2Jonoc/STY86YJFxF2mXifN02Kih69rOppk15+vDMj5WEe+09xJb5Wi+Je9JakOA03s3pZcNTMfbCXsky86Bb7J+xdmiQH+poH7IHxpj3YoSFYAryExZntJ3bD8djvSKMHLHtDyQkUJW6FO2tAr3n99NW5HK5IotH65CakLuOLnn66Yn8k3M0Bnsph28tViMbJ+A1HPUhgoFyu9TtCw4m9Choluc9MsSvK7UeD2wR1XivonsmEGPckO4SKAnzQUBj+oU03MQA4n067IaWPnapBkEi9ndENATU/JhGnaYdPanQvtn3fIVoj3uZ+Mjvan4TO//SG/6kYq+rIR/lTLnwTJ1bkFDGqURIE9/WMT9NQHkV7eaKbYhheqwyoruTtsmOYtHUwI9IiebEPenIXQIOxJkEOZWsWMlCzSx0P5IejaiZOFHYEOw8Rb6YA3B95obeEVN5iaeNxoLyzXiBoS2Su9JtgppOOphWvujDe3dJDNpyEXsc6zS
+ XFEU1RsR
+ f1UWXvJvpL62aJ2GFmMfVbpLDlcN4DD8YLtvsQVWWusYiglj6wOnQ+8nEiMwpWPDEyx6ETOu4ZMYofIezhFWPpxkPPi51Fb74fckiS7HBPL/i7gGoQfh6zkJiShdidJjIIHV5i0AJsP+knp0bBARb9WKsPHQbUPNDagUao+4Q3HchXmO5GT3LaEk2yj8b94SyNCiMyBxcsgfcuU2re5P2IxlTZKg3HJhCrDnq+p9AlIIp0RsiD7fVd6cOdvOqRiY+5yYA2iomE9P+Bu9JrI//rrW/wMy15AQ+Cvk8KyJ2eyWsX0qLJ55fm0DMTBzegXLAMT4F5mQCusrpdbPa98KejNGdZ9E0q9RSW36nLBhrsHUo2RtdVAYn6OXnh/gaoEBOJ1eCuBZuZGJ7MjT1T2aKlbNSdsZHgNF8hENx8j/81zIzjTbVRlHIizveHfIT3isphtGUmWUo6LLzKQ78RMM63wwds1vUmIjprzf5MLMLJLltTzx4A9JJzr8NskOoAjnmtK65Y0jMTZuNXOfy8DXgMKMW3d7Lry2USm4v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,39 +98,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 3:33=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 9/10/26 09:24, Mike Rapoport wrote:
-> > On Thu, Sep 10, 2026 at 02:22:25PM +0800, Xueyuan Chen wrote:
-> >> On Wed, Sep 9, 2026 at 11:18=E2=80=AFPM David Hildenbrand (Arm)
-> >> <david@kernel.org> wrote:
-> >>>
-> >>>
-> >>> I think getting something consistent for now is the most important th=
-ing. :)
-> >>>
-> >> Hi David,
-> >>
-> >> OK, I'll move the highmem check into set_direct_map_ro().
-> >
-> > Consistent means leaving highmem check in the caller ...
-> >
-> >> Should I also update the x86 set_direct_map_invalid_noflush() and
-> >> set_direct_map_default_noflush() helpers in this series to skip
-> >> highmem pages?
-> >
-> > ... or checking it in all set_direct_map functions.
-> >
-> > I'd keep the check in huge_zero_init() in this patchset.
->
-> Agreed!
->
+Hi Johannes,
 
-OK, I'll keep the check in huge_zero_init() in this patchset.
+On 9/10/26 2:28 AM, Johannes Weiner wrote:
+> On Mon, Sep 07, 2026 at 07:01:10PM +0800, Qinyun Tan wrote:
+>> On a system booted with cgroup.memory=nokmem, the deferred split
+>> shrinker is quietly demoted to a non-memcg-aware one.  As a result,
+>> partially unmapped THPs are only split under global reclaim; memcg
+>> (limit-induced) reclaim never splits them, so a cgroup under memory
+>> pressure keeps its underused THPs intact.
+>>
+>> This is a regression from commit fafaeceb89a5 ("mm: switch deferred
+>> split shrinker to list_lru"), which re-registered the shrinker without
+>> SHRINKER_NONSLAB.  The shrinker had carried this flag since commit
+>> 0a432dcbeb32 ("mm: shrinker: make shrinker not depend on memcg kmem")
+>> precisely so it would keep working with kmem accounting disabled.
+>> Without the flag, shrinker_memcg_alloc() fails with -ENOSYS under
+>> nokmem and the shrinker loses its memcg awareness.
+> 
+> Here is the reason why it was dropped:
+> https://lore.kernel.org/all/ah9PGv12mqai84ES@cmpxchg.org/
+> 
+> After your patch to make list_lru expand for NONSLAB shrinkers, it can
+> be restored.
+> 
 
-> --
-> Cheers,
->
-> David
+Thanks for the pointer. I'll update the commit message in v3 and
+reference that thread.
+
+>> This was noticed by Michal during review of the patch "mm/list_lru:
+>> don't copy stale shrinker id from non-memcg-aware shrinkers" [1].
+>>
+>> Restore the flag.
+>>
+>> [1] https://lore.kernel.org/lkml/697713c4-0857-485b-aba7-c74f37a3c8b4@linux.alibaba.com/
+>>
+>> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+>> Suggested-by: Michal Koutný <mkoutny@suse.com>
+>> Signed-off-by: Qinyun Tan <qinyuntan@linux.alibaba.com>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+
+
+Thanks again,
+Qinyun Tan
 
