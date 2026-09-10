@@ -4,91 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B4AC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:12:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C2CC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D3D56B0092; Thu, 10 Sep 2026 08:12:30 -0400 (EDT)
+	id A92E96B008A; Thu, 10 Sep 2026 08:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383596B0095; Thu, 10 Sep 2026 08:12:30 -0400 (EDT)
+	id A42096B008C; Thu, 10 Sep 2026 08:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2733B6B009D; Thu, 10 Sep 2026 08:12:30 -0400 (EDT)
+	id 931996B0095; Thu, 10 Sep 2026 08:16:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 060C46B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:12:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 379961A04E3
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:12:29 +0000 (UTC)
-X-FDA: 85197740418.06.9F8BE81
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 37FC7100003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:12:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sHhJordf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB206B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:16:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02F921404C6
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:16:01 +0000 (UTC)
+X-FDA: 85197749364.11.E743BD4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5C16914000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:16:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TAwYKaDK;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789042347;
+	s=arc-20220608; t=1789042560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXu4m3gDzx7ypk7jhgtSGQsaUhJfQXmgs1ehgxJPhuY=;
-	b=7eDmlRuTaoDgHLjP1JhFGF10JiSDBBecttUIrH6/AFklOrWhRKY1N0PzGcgh1lKupfliHF
-	ZjlG3XVlwQkFW0u2IH2Y5UGBzjTYM0EQfS5zoBYMJaNNun905BhWn28FFJfCHiVfcI2cem
-	Ajb7xPfKQ8dNgeFP5e5yo/X1nJWFNTY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789042347;
-	b=YFg+K50PHY2m4cUkr6P8ZMq0ToO75NhdQzgmsWsrzodNs7hch1YO19zxxvwNKnPaWSqbsw
-	iF7bSkMYCKfbuivRPwqaw3j+Q+RN/26f+52L/sjZncXaraqAttVPwYrHVKU6SBdBdQp3ki
-	AnmKimKky+5FS6gqnzVjNgQjFXeVwKg=
+	bh=1XWeEQAbcBQCpWZCK+9GzqSSfU/QDHQzFWzVzrQZerE=;
+	b=4r6XqvIJdWdUCNR1U93AzULzuzzl2sRYIW6L8rrDZGovPRIBjrFWGvrNX2V+FwhdYTfyfB
+	EUpQdZAWogHdw3OcMz8ape7J4F7Egzo4mxN+7dso35W0XUf1YlDgQjIhgg4F4JPRQZ1dA1
+	RRaxx3IYAmAHzGoEkFPgZvwGBu3MCu4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sHhJordf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D321153B;
-	Thu, 10 Sep 2026 05:12:22 -0700 (PDT)
-Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7647A3F7B4;
-	Thu, 10 Sep 2026 05:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789042346; bh=LFgg9NvNbLg0JHItMJrXrnYTc2H0SFmt0xaGwrerxvo=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=sHhJordf19MingqIsOLLBqUEPjFQkoeNghwwf0m49YNNGCU5Cj68L681KYb2uV5p6
-	 t0nq02vgM486v9GheUTxY4bQMRaTuMX7cNPWSSQtH1Aya7HHmGyI7ZkWzusq/GtwCh
-	 5LC1YO8K67r2RaN1iKKVBKBv6aat47ZazF/PcHGo=
-Message-ID: <8936784e-9ccb-4c33-9b30-f99552e10f87@arm.com>
-Date: Thu, 10 Sep 2026 13:12:22 +0100
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TAwYKaDK;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789042560;
+	b=xnELYQvHCsRzvDWh43J2Swa1wOSN3W2KgiFMewiYlYtxAfMoT3X0A6/5L/pDZooZSz42fu
+	LXeypSuH0Pa3VKMCQRHdNgE1kVz5U9d/IZ5VnHLMEz1xtjrVqRqbfw0IAGW4aOH9Ll8SvW
+	aq7mK3ujGlE2O1p08xdJjXDwaVEwmxg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C659416AA;
+	Thu, 10 Sep 2026 12:15:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3A41F000FF;
+	Thu, 10 Sep 2026 12:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789042559;
+	bh=1XWeEQAbcBQCpWZCK+9GzqSSfU/QDHQzFWzVzrQZerE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TAwYKaDKW0hTR3gVgSN3rsosHocgxDEN89+NbRlIOOKGsiIjGiLLiQcuDIrTNup1C
+	 PMHhjQHz5Zs7E/Oix00PFWiRwKwbdHVyoNFFEhfTT/hYCQJ6kH98AwL7lUNfSgd34o
+	 Nf0PMRL+FvDvbC9eXZwwcgHkVVpFWZr5HALVe2HA21h/4kxtbp0VkinyOq9tCA4gIg
+	 Eesl1vGtOR1h2yh9AgwFaJ51ZRW/33plu/xlWi7fIkz5aOEXsTATWGjpItFlgzqgd7
+	 DLPo0fcBvIjLFiCX1KgDx02Ghu4fAm2K6vxILj+iWYwyut4Wc8awO4bZIA/oOVPJv9
+	 /EUR8yt1yMeUQ==
+Date: Thu, 10 Sep 2026 14:15:49 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 09/12] mm/sparse: remove SECTION_MARKED_PRESENT
+Message-ID: <aqKfdTCHbqFmc7FC@localhost.localdomain>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [patch 0/3] lib: add synthetic MM benchmarks
-To: David Rientjes <rientjes@google.com>
-References: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com>
- <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
- <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
- <707b26ac-7f73-430a-a473-cd3409c4505c@kernel.org>
-Content-Language: en-US
-From: Usama Anjum <usama.anjum@arm.com>
-In-Reply-To: <707b26ac-7f73-430a-a473-cd3409c4505c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5C16914000B
+X-Stat-Signature: 4k6ycxrz6xnbetki4ckrk5y6hjjui3e3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 37FC7100003
-X-Stat-Signature: miaad35wfjdgf9ppk34npq4oafbn5y6w
-X-HE-Tag: 1789042347-512454
-X-HE-Meta: U2FsdGVkX1+mrGffuQd1ItkkRAxV1YB3E187sCkvy0KHWVH8Agnk3KKWdfnCehQ96z7TbnlRwT5PaoxKkTFkA6Bd9Pu5dKbu/kSJxHostF83WQhBpRADcUZLCO5uIHhyjTsmewejuXWNApurE0qv2fCmH1k72DyJE2xGMZWfHB6Zm/sgHIhqu0yDSeURnfiNP69FNqTq1sXFkv4w5a+ja9p3j2589Ld/fWXFUGAH63o+73hSSO5O0XmAvB+YikkVveYqPN/8vDQpP+JVQzlh2zYtqkKPneWVD2SjL3UrEMxOXq0vRKghFwpnrncq004+B4HBSV81wiPpeojwnmLvMGSo7Ik+rjG8HZ35maKuoFzy5gM1St3/DgQNyR/7QmBf/9+2issSjCtIpRGIv+mss5K+NdXX4u64rSli8B3ozPEGdV1d+XMv/b0H0B/0rw2vPQiNdeYmjwVhALyNj6v+NMumSa3TmssfxyvLtuP9un1L6a2v0gsm5bh+B180ncq+ctp8c1qfLIHGW3zTUeGerygxQ+qiAo6Pcyeh2x9NeWi0i4x0vTKHHL+Z4KdWsGJXd7fUmBw7ZVzRr2VTc2Jc4p9elSgXro+S0A91pPiEzEaX/3oIf6l1/DNXQbiv0P9ImxG1xLogYnHXuQOjjgl6wHZP09JN9sR3tlGkGzFAMruWiY3C4iTIW0rLDnya7tO57ABUeGE4wLkrsf25sr8Mod4ai8pDbc+QVWF+Tc1ucHiuFudpdgfMP4oixvoAyLm+LDmySRkdgZsd8b46Dwng6xGDC1da9TgcI2zpvWTsGBsXQFgbynybOu3UA79Zq4HDOZi5RZ/OwbPh8HJkJqGLe7XZVpgyez1uA8xZMIiUASahC2gfd2kOtftmuVmr4wYiLgAgtH436F7/jCQf0+JkOoUZAfs2J2gaGfSTvsY2lJHi9bPYCgao2U5U9S387ddedEEvwjUAwwitX+gk6Lu
- 8emNl3SY
- jguFpU1WkLrwXZ3+OxrPAccLDSryLrgyEpuTE0fov5gQLSn8h/Hski7HtuVJ8N8NSSXSdmT6vqt7yoDT8or2m0Y2bYzajRX5M3Sxa5TzZdNfFnTmooZ3pw96tev9tF8SxgDeHodx7+3kigIDnyX5kyr6OaM12MJ7ufHY+cL+UkeeG/I30u4ZJRRDfS/uG7iLnOuaQIZvfZioZtadGKxVcbLyoOrn09M6VsA5OQlSRAKiAf9o=
+X-HE-Tag: 1789042560-910484
+X-HE-Meta: U2FsdGVkX1/WKyAH1gaCmhQJJr2+T6V9cEg7bE2hK2pUVKRPlMKaTyBRssqCUkz11vfvRFMX8DYC84YeLgoR9AgVm5OWHAabI1ANk0SlhaMY/uLKoZrFAEXXOEJJAKr+DE3U3IrGmkefTpjm6jBDqH6UsQlY6NtFlTwU9oBgiOnHMmZ1MpbNk6uShF3WJ5Vvtd0ENiTvg44BFgpv0aYj6QIQX0e753kK/5oynyhtsdYtBsp9jQIK42j0Ko9ozb/o67vXPkey05X0VJMGLPalkYcxZSHAyrXZbs0mPdWs++Fi68x02snBsztUMIIc6MQMFKqzBol7YU1gOqIM1d/xCV+KeZDTnlLQBIgtzgPXd76Mqk4VIJDwNmQZjC6CKGHze2iJGaeI/6UJl05Wt4uWWlqWIRn+2IO5hXteJwOxJxnYM6wt1B3oDECt8tSbnjXNaZOTRFkr0FgFN60mwc7jTFlF6TQirdakCstBuEM0mDXjyCj+ssQIqU8ChMltJqUn/WXILI7y7rwvRFSf96dYJzdNvsAUIBprr5Ekg6fVzWn5nxxCnkD+0HA/s/BByhi1rz7L+/zIsPnFpMXYQe8bnRgoVSwX/L6HW914lLPPJ4W+YbvCXJCyCOoyjpaZovVJbNVfv4lQS1nO+8KFom1Ff+bTTNIfXfe/fFYsQh0KZ9JYu3xwA9Mr180PlFYmyNhh/GrcNCrSHM15xfKFu8Vt6wWW7W1ebUszEM6gu7HGOVS6W1VJ/0RRTOx4UAwODrPcQLQNSlk/Fj3cubOSe5z3uwQG4ah4JC2eBP/mmhYGzE61379eT0GTS8RbYvnZLuQY7WEYOK9lDeokbz78rNkskCcWzhbcXB/KLB6+s+2aS9Uu0Nqw53Lui1lRm3wTnzr6PLXtphF9dmW6LqRWKDe91OooE3Z4a40OqUqgnKqXadz0VdgybDBgVQe7q97gCgzlUjjcmygFUm3Rx3nNqL5
+ x+ZrqaJH
+ RE67KyM2ykgzpqHaX2cPsRnYDTGLIcPAUXI0WQ5UCueiRK2NIJEpLZKKpp/sTYXTT5KTfvE0dFMLbLS9IymrY2y88lrk3xdcXQ6ebJ16d1dyfTXpV+XO2twgymjVSx5hsfdSLNrlcHmth/fN9nEfbsyWZur76KU3EY7sb0XKwZBCdrmkZu7cumvPu3FyRDxHE/3PxR/qv5v6Z8r2HYkMaQUgaFXVxJkHNjfI4A3basVhBVRCbZ5hT5+UAmGjslZxeasjhSXWy3Uhn0DkJBYZU1qrWKVpd4X8X8HSd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,81 +113,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/09/2026 10:38 am, David Hildenbrand (Arm) wrote:
-> On 8/3/26 00:19, David Rientjes wrote:
->> On Fri, 31 Jul 2026, David Hildenbrand (Arm) wrote:
->>
->>> On 7/31/26 06:26, David Rientjes wrote:
->>>> A blast to the past :)
->>>>
->>>
->>> :)
->>>
->>>> We've been carrying these synthetic benchmarks in our kernel tree since 
->>>> 2009 because they've been helpful to identify regressions in hot paths, as 
->>>> well as quantifying any improvements that have been made for new changes.  
->>>> Hopefully they can be useful to others as well.
->>>>
->>>> The synthetic benchmarks are run by loading the module at runtime.  The 
->>>> modprobe will fail intentionally so that the module gets insta-unloaded.  
->>>> The test results are emitted to the kernel log.
->>>
->>>
->>> Ideally we'd have an easy way to actually use them in autoamtic tests.
->>>
->>> E.g., loading fails -> error, loading works -> no error (and unload)
->>>
->>>>
->>>> Proposed with permission from Christoph.
->>>> ---
->>>>  lib/Kconfig.debug    |  30 ++++
->>>>  lib/Makefile         |   3 +
->>>>  lib/test_pagealloc.c | 337 ++++++++++++++++++++++++++++++++++++++
->>>>  lib/test_slab.c      | 375 +++++++++++++++++++++++++++++++++++++++++++
->>>>  lib/test_vmstat.c    |  95 +++++++++++
->>>>  5 files changed, 840 insertions(+)
->>>>  create mode 100644 lib/test_pagealloc.c
->>>>  create mode 100644 lib/test_slab.c
->>>>  create mode 100644 lib/test_vmstat.c
->>>
->>> This looks similar to tools/testing/selftests/mm/test_vmalloc.sh and friends,
->>> that can actually be executed as part of our selftests and do a modprobe.
->>>
->>> Can we have similar scripts to execute them?
->>>
->>
->> Thanks for looking at these tests!
->>
->> Good call, I agree these could be loaded with a wrapper similar to 
->> test_vmalloc.sh.
->>
->> All three of these tests don't take module parameters (yet?) so right now 
->> this wrapper would just do the equivalent of check_test_requirements(), 
->> usage(), and run_test() where we'd pass in a single option for now, 
->> "performance".
->>
->>> But I also wonder if these test modules could be placed then in
->>> tools/testing/selftests/mm/ instead (or some subdirectory for test modules).
->>>
->>
->> I thought about the same and just followed what appears to be the standard 
->> convention (like test_vmalloc above) for lib/ for now.  If they should all 
->> be moved under tools/ somewhere, perhaps we handle that in a separate 
->> series?
+On Wed, Sep 09, 2026 at 03:33:02PM +0200, David Hildenbrand (Arm) wrote:
+> All present section iterators run before memory hotplug added any
+> further memory sections, Therefore, we can simply use the SECTION_IS_EARLY
+> flag by setting that flag earlier in sparse_prepare_early_sections().
 > 
-> Yes. lib/ is just absolutely the wrong place for that.
+> Get rid of SECTION_MARKED_PRESENT entirely and rename
+> for_each_present_section_nr() to for_each_early_section_nr().
 > 
-> Maybe lib/tests/mm
+> Also update the gdb script to use the updated value for
+> SECTION_IS_EARLY.
 > 
-> But then, I wonder if they could just be somewhere in tests/ directly ...
+> No functional change intended.
 > 
-> Anyhow, it was also raised whether some of these could be written as kunit
-> tests. It's been a long time since I worked on these, so just mentioning it.
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I also think it would be best to try to add them as kunit. I'm not exactly sure if
-kunit would accept such benchmark kind of code. Some research is required there.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-Thanks,
-Usama
+ 
 
+-- 
+Oscar Salvador
+SUSE Labs
 
