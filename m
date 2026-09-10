@@ -4,141 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B85CC88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C92FBC88E41
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 482376B0092; Thu, 10 Sep 2026 18:48:43 -0400 (EDT)
+	id A0B946B008A; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40C906B0093; Thu, 10 Sep 2026 18:48:43 -0400 (EDT)
+	id 9B5CD6B008C; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D47C6B0095; Thu, 10 Sep 2026 18:48:43 -0400 (EDT)
+	id 8A4C86B0095; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF4766B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:48:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA31F1A05BF
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:48:41 +0000 (UTC)
-X-FDA: 85199343642.11.98B9C2E
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3733F40006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:48:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XqatBJMS;
-	spf=pass (imf12.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 414BD6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A4F63C05FA
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:51:01 +0000 (UTC)
+X-FDA: 85199349522.15.651E2F3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 09E5F1C0003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:50:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eWkB5sEd;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789080520;
-	b=g5lNdZQyNVEFVqhTuJ9so8Ko5AF59SEbjfciOeNRNCD06fwSZNOrnO076KXZhDsJUwW2in
-	qXbBzj5ec+FuCPogWTekbAOvjUslsRLHDXJ067vXQsjjmCY6dc6THoCsKDmuXqML4Q/pop
-	nzfKNHWXVp6c13TODZmzvRaUnyNuT7k=
+	t=1789080659;
+	b=YpVEn9dfJh9hVr5nJgVroohxEo2RMqIil7IEgUIi5RLaVLrAHpDLw0fOolaR54a9YLQFJh
+	LzTsMjMA8AlX0GUSGYwfK2VpFF5iJ6vPN2ME/aqBgEIwKXApYTb5niUo9+7DGphN5RkyL+
+	z+w2nm7Yzp5VuGNYTcjJc8FL4FJ53zk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XqatBJMS;
-	spf=pass (imf12.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eWkB5sEd;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789080520;
+	s=arc-20220608; t=1789080659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LgrTte8+Zm3JUi96agAI4ZS5dvZUFrbR10h0R21xs6c=;
-	b=GJExlKyoVhGzYPNti4r7E6YlyvoW7Q/HF+/m3cxnWpcFbI+1OacTsaeBtk9Taa6AHuBfAQ
-	9gc+oFjbdxPv+hbc4pel+n1xYOCt1uFvPgtuolS8obCzLiSo4igUh3hIRBuxaFGzr6cIhA
-	6fb8Pugh5/j176VgJRLbChUFjpLDpw4=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48435ae9ca4so24855f8f.3
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:48:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789080519; x=1789685319; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LgrTte8+Zm3JUi96agAI4ZS5dvZUFrbR10h0R21xs6c=;
-        b=XqatBJMSM9r5qjlXHsV8gJ0dQWJ4byjKR9zc5KtZ8KVx0K7JtN42yJTxtcPclCBMKH
-         0l88Cj61CrKFgFdNkWAl5eLaaDT7ZboNLr5EVt0TIUHA+aGDzhzR4jcsPn4tCwUT9eyd
-         yimH8/FQ3K8KafoY4/mOwS8Wn+BTsEIFxu3tZQotrnlxCMMrtbilpnzOW4xskDm0tLK8
-         iJARLysKj/5lUptLinEgrJx295IsL7qA8ps2poGPHgQMsMB0RSdpMV7OlfnfGZhMT+7t
-         IfpdpxNqlzBVYetsLSgq80alSlsNi+K+2KIWv7UMwXNf3B0TN117rB9rI59OCzjqbi/o
-         z8Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789080519; x=1789685319;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LgrTte8+Zm3JUi96agAI4ZS5dvZUFrbR10h0R21xs6c=;
-        b=sTqp6cVthmAMQUKLj3ZfiFkI4Z/b9oq0gzXQgWR2g2f75dgohop8+wmOBc+23bI86n
-         R3UfKZrYMAUKBHTu/1fQSbbm9C/Bf1b8f8XHtLrcqpI7VK266dv5OPcR6opzsXbRix6i
-         38HtXgySOtW230JcMaXY3eEP0qNUTQZ15aShBRmS9q4LKvgvayr24jxQORH1qoAVQlud
-         fBiq4jgto+Jik6ybJc4JxCGB4lm5lown+9ovf6QnybcqlKSELPy95HMhqU048+h1ymoq
-         uDl/FN4T6YNe0Ah+i2oitG7idQhuyd7PSc5Cas9tDt8PzuwGN9gym3WmE6InTOYMjR9/
-         8s6w==
-X-Forwarded-Encrypted: i=1; AKwUvBzTZU7e2YNnEA6HjYYmPL06wyr83sU3xD+822Fps11rlmIHOU3PNR9OUfECeHUhxHAgoJbwMvH0Cg==@kvack.org
-X-Gm-Message-State: AFuF++ks0jxC/yn6IOx7XTfHG1VX4z7e1P4fmrpZ4jqOHfQTd5gEhGB7
-	JwFUjt30of0AIe9UGP6Pvkpm2AhwsdX4KBiv1/kDj7mtVRXN18OQOsyp
-X-Gm-Gg: AYBFou0+TDE8xpopFZip/lro74ADuc//klf4hktYQAKA08xbIWV1D4z5oUnApDnKC6g
-	fIG16m7UfiWXjHwtn/NQPtc2HqjK6CC89NoJ/obydKM1VLz1N8/JYjuWqD4q/nP78sR6rsNtWTm
-	byEeLWvPLLAsQ2k+tF5zSujJP6CVTkj9Wg89XEtpP6oSCr4AWIXNoBkgkDkhwKuG9VQp2kZ66F+
-	P/Um5lBvJ9Xrz0cj9onbOD/IjxBRJv8zVw4cCLN6um9FLe42xF1A1XLI3TiaqnxjNMgzqK6ww4U
-	d8sM9W5yvRcdt2tA/GYDy4JOKSbCjrF7FKlMLBu6hP8gHNu1T5quSYwap+wPDIdZMDG3SaTvBex
-	eL06l40f7JaCgNTgHWOckQBVAwOMO/4hrlAAokYr6YYTnn6Th1je7wV42QHy7e40uuGBhLLfvtF
-	IH1NFOeP4O/w4AljKYojyilk55PKXrXNmpHYeI5KMXy93prPVxDx5bdzAHiOgMzubfFAbE3nVQm
-	n3UHtI2MHww0l+nTAW3gM7SHJ2ElsDn
-X-Received: by 2002:a05:600c:b99:b0:49d:1da4:511b with SMTP id 5b1f17b1804b1-49e619a8962mr11821315e9.1.1789080518610;
-        Thu, 10 Sep 2026 15:48:38 -0700 (PDT)
-Received: from lima-kdev.local ([85.100.66.184])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eaccaa1asm2021565f8f.0.2026.09.10.15.48.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 15:48:38 -0700 (PDT)
-From: Kayra Cizmeci <kayracizmeci@gmail.com>
-To: tim.c.chen@linux.intel.com
-Cc: brauner@kernel.org,
-	bsegall@google.com,
-	dietmar.eggemann@arm.com,
-	imv4bel@gmail.com,
-	jack@suse.cz,
-	juri.lelli@redhat.com,
-	kees@kernel.org,
-	kprateek.nayak@amd.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mgorman@suse.de,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	qyousef@layalina.io,
-	ricardo.neri-calderon@linux.intel.com,
-	rostedt@goodmis.org,
-	srikar@linux.ibm.com,
-	sshegde@linux.ibm.com,
-	vincent.guittot@linaro.org,
-	vineethr@linux.ibm.com,
-	viro@zeniv.linux.org.uk,
-	vschneid@redhat.com,
-	wanglu.priv@gmail.com,
-	yi1.lai@intel.com,
-	yu.c.chen@intel.com,
-	zhanxusheng1024@gmail.com,
-	zhanxusheng@xiaomi.com,
-	ziqianlu@bytedance.com,
-	Kayra Cizmeci <kayracizmeci@gmail.com>
-Subject: Re: [PATCH 1/4] sched/cache: Keep nr_pref_llc_running in the runnable domain
-Date: Fri, 11 Sep 2026 01:48:23 +0300
-Message-ID: <20260910224824.1209785-1-kayracizmeci@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
-References: <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
+	bh=CL1avPpMMrkd+vpqi8+JGikW55h470TbWac1xw9X/U0=;
+	b=gjmoPmtWL6Ayo9MfXF5wdEd/HOeO+g71IVhYqvlCdDArPgEswoEzKuvyxXmZ5VBg127Ooo
+	bTq0WfLK5C5p9jUg3QeLo5Wbc73sTeEsf7y0UeAFIrw0TurnN9xQeQhC/pVn3MXQEZmMo0
+	7g+YaZu9Tq8ioxx2D4NT3waaAxMMqTw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789080659; x=1820616659;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=P7maDS07+h6HnjGuJWTSO8SdcPWU542f5xnMtj80oOY=;
+  b=eWkB5sEd5U3Xl+pnLKh/qoqvy6Vg7EnmhNZwG3398MwsGjrnE0E3/yd1
+   xIS/quIvnJtW8xdaYvSkdtCMNImktWpOqRM3+noM4P0GQtW/l5qMtBZi6
+   robbsSIyPr8vbDe8TbZEdyLk3eI/bW01v6sQd0YpJpn+vZdCWtYs+lMM1
+   SxGtAuBm9IlCE+bRMyq/o/NM+m0Ea2dVULeuqP2pXZg+Pmm1UOCILuv8l
+   kqt616qGdK8cJdhe+VCr64RiY779Dxe/WY81ZhhiQcRv87GgXjPQvyy/b
+   jXLa4Ohlw5xsGsPCrTUNgmdxr5KDFSuNkfM8B32tUOrnwZgo75VTaKTGr
+   g==;
+X-CSE-ConnectionGUID: zrIAc+0sTI+zu/LNmctoJg==
+X-CSE-MsgGUID: x+0FjfJ8SSOL0okPd8GbAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89558407"
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="89558407"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:50:57 -0700
+X-CSE-ConnectionGUID: q2AyFywVRruYetA+j99ZxA==
+X-CSE-MsgGUID: F1zayvQTTme62BN39KwMHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="275285741"
+Received: from unknown (HELO [10.241.243.185]) ([10.241.243.185])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:50:57 -0700
+Message-ID: <72bd9014ee83d5833bc1c78379ead84458045867.camel@linux.intel.com>
+Subject: Re: [PATCH 4/4] sched/cache: Introduce task_struct->sched_cache_grp
+From: Tim Chen <tim.c.chen@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Steven Rostedt	 <rostedt@goodmis.org>, Ben
+ Segall <bsegall@google.com>, Mel Gorman	 <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, K Prateek Nayak	 <kprateek.nayak@amd.com>,
+ Kees Cook <kees@kernel.org>, Christian Brauner	 <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara	 <jack@suse.cz>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Qais Yousef	
+ <qyousef@layalina.io>, Aaron Lu <ziqianlu@bytedance.com>, Srikar Dronamraju
+	 <srikar@linux.ibm.com>, Vineeth Remanan Pillai <vineethr@linux.ibm.com>, 
+ Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>, Chen Yu
+ <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,  Hyunwoo Kim
+ <imv4bel@gmail.com>, Zhan Xusheng <zhanxusheng@xiaomi.com>, Zhan Xusheng	
+ <zhanxusheng1024@gmail.com>, Yi Lai <yi1.lai@intel.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org
+Date: Thu, 10 Sep 2026 15:50:56 -0700
+In-Reply-To: <20260910191901.GW776954@noisy.programming.kicks-ass.net>
+References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
+	 <4532ec4fd5beb829bccb85822a19360fa4191fe6.1789061845.git.tim.c.chen@linux.intel.com>
+	 <20260910191901.GW776954@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3733F40006
-X-Stat-Signature: hwcp3cayuhdnehrnu5s3m6xxirzxujma
 X-Rspam-User: 
-X-HE-Tag: 1789080520-688040
-X-HE-Meta: U2FsdGVkX18t3f+HrfvdeoCpwK+yIYOV1nz6T6PZ7w7RQs3WWVFp6OA67UDEPTBoyaiI0J4kwb6wAvZ8TD0DFtTDmQNZVG/DoOvS3LhteizYrEAJylfUrZBzSayi5TMaf5uKg8/rafX1nzJjdnsX0xywnDWV1EIuYtLCEAvQCPuMre37NuIKQzY8OluyvfdYOULMYmNFQ/AGjVw7AlRQiGtce8J8PS5Xj9TDo2DcP9sy5o4duzHKpgCJVmomNs+qInSgGFExIr3goLKBWfw/TC5wFqex4/Kt4tRLlHQJOC21+A9iERuNbUtfJNcnQ+EuqpNxcR6fqNvjU+I9lfntkP7GP54jZJ0ftUtSpN1Lf1F6Tu0muR0jby9Dy44iup1v3rBH+6wvS1tRphYZiFkxyAyjsk3rdvZ+qdIv6fxsdUPbmCgcoyDAw0M75XG0nfpPr3ca/2qWjUZoJd8L5iWQ6WpAqi4AvLlJO6igs8JH9O+9swAZohGkQ82NqlLozClAVPWB0+jB1N8UXKijJV2+nlvMqZ0QZEAEpquAcFvJpdtwwgBXcXdWg9Wn+25Wc6IVlKr77qkIYmUqfSZYGEMl5tFoLVXDozojqIw7Gfk/xV3Cd72EhNkPKyHuxx++7CrEPZUpcevY8beMFg1DWCqVFTtuhiFe4npG1txLb44GQTuz60HO/ub9iYzcI68/DRy4erdH7EJkw3OBK74bVa0vpnY2HpH514xiag6EmPlOSqIVSK+NWdJEjTjJKHfps50Dx66zKbSlG8AzFaW3wOtnIjBSGubjPp7On5wRbyLHiTd/iUC0crygDttCtGiJqA8XuO92Bn1vwdFxi0AMaPDMrNc905zg7SogmHkzHdvdbbW0kVeQa0+zFR4WB3QLBhbWQ5mOwLCeD99EVGbmPKRDqzez7BYrHMfSZJ398rXlBaCPjv56AqUFEnxpn9nyUSbsTRZBZhDYDOROfn2Xn0p
- rbQaTFmr
- U5inoRBGSfNZbivqayWvHKLX8a5PWL8/0A1M+VNzAkoC/Zsj6uF1l0y1ZB/VXCeWD82EnKcFKjVRkr6EA7RWnsxN29QhrYaChAqAQ6bsSo2tzT1G4x1xEU+C6gn10YEl90RfgfEDAejLwzUScf7AIm5ImgGpHQwAGTXW5kXjL9tnbYscKTkUpksw/q8CdCOHu0glShW6KQYxwcR4uiKarQYLCX2baMsyD8ZpsWt9lHsnDgufkzECGp/TDqEe/BCWEUNBs95wiuPJYx5lLry9Mu7NyW00cBkVatXzx5ETxrcZtuISdXB8aQVqHyi+F1BrHfkgO4GGe/g3jGP1Kmp87w8DDaZCUggl6xDWDsNxnC9eQNwP7j5YDE+23g95jgzSouUu5a1mtgjSEQeLU7MmaH5+h6b3fD+rliqC7lK/GANPLDkSdAf1DJ4aZpARNNwEuXAT6+vwa2CRh2zynz2cE/yzT9Z92SEk5jJisJiRlq2/Snp/1cWfyH3IO0+mR6LZ+BCv0daFzlqqb4dDNUtNhN2q9ig==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 09E5F1C0003
+X-Stat-Signature: syt41bxa77hno451gutct6pa566k3ia4
+X-HE-Tag: 1789080658-474254
+X-HE-Meta: U2FsdGVkX1+Fz2oqBdJ9T4j5NxaMRcWRMZHSMc9oGPh8cdQ6gQC16uRF+xs7jV6dii3gm3YZ9WFM0Xbhn8J31EJqkGAS46N3ziji4OGtQ6szPlsjRS5/t8pcbjVjQAGHTBTYACe21N2rSy5A/j+ljGgab2+H1hiKO8AUS3uWs2+Cz31b9/qtl6bUpKBtPCJ/Cr6DzzaLl6LkxHj8iU/Eh/SfUooh+8vTfD51YYaD4+67xuSzwRaiDwDl+KOldwR3chAFrJHJ1GINLjBId22gw3fadG+QsOnwb+w81R3N5q/eMV4/vx1bc0PA9AZ6mPDsmkXuMC496bAEraVu7rARILVKI5ZDMO5lUvJANeZRZ+pNgKO3MTnGimb9frE6yI8zZVAlqVu6hZRmmGij5oTtpvXt3DKx/zp1F5M3ddZT7dBiexUOW6yopf6BKbettyTUgP4wuRF2kPiT0nblx1o2IR3AeE4bIsiH39891dNxcCSXcwzvGLnd3CMRjz8WE8BB+Qd+X1DB/jJxsX8oPaXXvdRj6xoZYMQbVUAIGxTscbNkS1Ol0JxbjHtZIR6P1h/jEsqE72wZ53bFnW3P2DV6cqOBbGQei6NO+ulrDmvs3fm7Wp7nv3AopWzNzcO1RgVU9b6QioZzaoRp7nT1+CThaFsPbg74+NzbmBHO/DExN+MVQUnS1nxwUX9Tm48+Zf/qJbldoS4hE8JRoLwjBX9ADRPb+Cc71mQ1xli3kYuaeHaSRTmEfXHpAJvCu0hGCRmY3nb0qgO8jefp4YAsERyaKWm9SsRUxXHe0mzO9dOwXUTqdxCBatwMH5zw9MY+miySyUZygcwKTtMadxww8F1CgLzQdjCFHadWK8g80a6HU0TZKrnzmBFo1FZU+e9o3QrVWelTZJllJqENDnfQgo7cx9qTdQjRYulzCHPbLpJldfmfUk0MI3CM+beIMDjjcg71oLL2NGLkIKKIWV6/2Wc
+ BQ4AyMbm
+ KFk1F5riQXleK1a1Xu+UuuyNcNcdxOc0mUvhG3XO/NpsqtMMqHwSV3rbSnklH+u9voB5yoS0/AVmsTWSa/XT7aqIEbOJpBYi2RiQLv1Fi45grWjBXGAf90pNXfZYDV4dZT2QBhaZdMK0Lmj9nYh0vp52Vt44yUbizVahIwG3AkS1Ojp1FxzTn5QgdNjTuOuVGzjDVA8dMtvNX1+cs49lLJXUD/MOOxkdSDCmj00ALwAPcxdmvMM2wcrtgr3EAL2WqQ4ne0wuswxflI3Dr+Zf1DJzxf/Wt0cltJ+OnQdpa8OglTW9ECiBBlWDbx+aERpexg7lM91bOmaXZNG90TFrLd5sl/T4yyEeuzMp6TQQf5HPSybs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,20 +120,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Tim,
+On Thu, 2026-09-10 at 21:19 +0200, Peter Zijlstra wrote:
+> On Thu, Sep 10, 2026 at 10:46:12AM -0700, Tim Chen wrote:
+>=20
+> > Co-developed-by: Chen Yu <yu.c.chen@intel.com>
+> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> > Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+>=20
+> :-(
+>=20
+> > ---
+> >  fs/exec.c                  |  14 ++++
+> >  include/linux/sched.h      |   3 +
+> >  kernel/exit.c              |  26 +++++--
+> >  kernel/fork.c              |  23 ++++++
+> >  kernel/sched/cache_sched.c |  19 +++++
+> >  kernel/sched/fair.c        | 142 +++++++++++++++++++++----------------
+> >  kernel/sched/sched.h       |   3 +
+> >  7 files changed, 164 insertions(+), 66 deletions(-)
+> >=20
+> > diff --git a/fs/exec.c b/fs/exec.c
+> > index 745f6eb5279e..7a8a9954343e 100644
+> > --- a/fs/exec.c
+> > +++ b/fs/exec.c
+> > @@ -882,6 +882,20 @@ static int exec_mmap(struct linux_binprm *bprm)
+> >  	active_mm =3D tsk->active_mm;
+> >  	tsk->active_mm =3D mm;
+> >  	tsk->mm =3D mm;
+> > +#ifdef CONFIG_SCHED_CACHE
+> > +	{
+> > +		struct sched_cache_group *old_grp, *new_grp;
+> > +
+> > +		old_grp =3D rcu_dereference_protected(tsk->sched_cache_grp, true);
+> > +
+> > +		/* Acquire the reference before publishing the pointer. */
+> > +		new_grp =3D sched_cache_group_get(mm->sched_cache_grp);
+> > +
+> > +		rcu_assign_pointer(tsk->sched_cache_grp, new_grp);
+> > +		if (old_grp)
+> > +			sched_cache_group_put(old_grp);
+> > +	}
+> > +#endif
+>=20
+> Guys no! This is horrific crap. This is not how we do things and I would
+> have expected you all to know this.
+>=20
+> Have you heard of this new fangled thing called a function?
+>=20
+> Imagine all of those being just:
+>=20
+> 	sched_cache_exec_mmap(tsk, mm);
+>=20
+>=20
+> Also: rcu_dereference_protected(.c =3D true) is another offence, that's
+> just wrong.
+>=20
+>=20
+> > diff --git a/kernel/exit.c b/kernel/exit.c
+> > index 006edcc0c2c5..442535778ce1 100644
+> > --- a/kernel/exit.c
+> > +++ b/kernel/exit.c
+> > @@ -552,23 +552,25 @@ void mm_update_next_owner(struct mm_struct *mm)
+> >   * Subtract the memory footprint of the current task from
+> >   * mm.
+> >   */
+> > -static void exit_mm_sched_cache(struct mm_struct *mm)
+> > +static void exit_mm_sched_cache(void)
+> >  {
+> > +	struct sched_cache_group *grp =3D
+> > +		rcu_dereference_protected(current->sched_cache_grp, true);
+> >  	unsigned long fp, sub;
+> > =20
+> > -	if (!current->total_numa_faults)
+> > +	if (!grp || !current->total_numa_faults)
+> >  		return;
+> >  	/*
+> >  	 * No lock protection due to performance considerations.
+> >  	 * Make sure the group footprint does not become
+> >  	 * negative.
+> >  	 */
+> > -	fp =3D READ_ONCE(mm->sched_cache_grp->footprint);
+> > +	fp =3D READ_ONCE(grp->footprint);
+> >  	sub =3D min(fp, current->total_numa_faults);
+> > -	WRITE_ONCE(mm->sched_cache_grp->footprint, fp - sub);
+> > +	WRITE_ONCE(grp->footprint, fp - sub);
+> >  }
+> >  #else
+> > -static inline void exit_mm_sched_cache(struct mm_struct *mm)
+> > +static inline void exit_mm_sched_cache(void)
+> >  {
+> >  }
+> >  #endif /* CONFIG_SCHED_CACHE CONFIG_NUMA_BALANCING */
+> > @@ -585,7 +587,19 @@ static void exit_mm(void)
+> >  	if (!mm)
+> >  		return;
+> > =20
+> > -	exit_mm_sched_cache(mm);
+> > +	exit_mm_sched_cache();
+> > +
+> > +#ifdef CONFIG_SCHED_CACHE
+> > +	{
+> > +		struct sched_cache_group *grp =3D
+> > +			rcu_dereference_protected(current->sched_cache_grp, true);
+> > +
+> > +		rcu_assign_pointer(current->sched_cache_grp, NULL);
+> > +
+> > +		if (grp)
+> > +			sched_cache_group_put(grp);
+> > +	}
+> > +#endif
+>=20
+> Seriously, WTF ?!
+>=20
+> > =20
+> >  	mmap_read_lock(mm);
+> >  	mmgrab_lazy_tlb(mm);
+> > diff --git a/kernel/fork.c b/kernel/fork.c
+> > index 416758c8a3d4..2e79548cb7c1 100644
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -1599,6 +1599,19 @@ static int copy_mm(u64 clone_flags, struct task_=
+struct *tsk)
+> > =20
+> >  	tsk->mm =3D mm;
+> >  	tsk->active_mm =3D mm;
+> > +#ifdef CONFIG_SCHED_CACHE
+> > +	{
+> > +		/*
+> > +		 * A task holds its own reference on the group, separate from
+> > +		 * the reference held by its mm_struct. Acquire it before
+> > +		 * publishing the pointer.
+> > +		 */
+> > +		struct sched_cache_group *grp =3D
+> > +			sched_cache_group_get(mm->sched_cache_grp);
+> > +
+> > +		rcu_assign_pointer(tsk->sched_cache_grp, grp);
+> > +	}
+> > +#endif
+>=20
+> And again.
+>=20
+> >  	return 0;
+> >  }
+> > =20
+> > @@ -2599,6 +2612,16 @@ __latent_entropy struct task_struct *copy_proces=
+s(
+> >  bad_fork_cleanup_namespaces:
+> >  	exit_nsproxy_namespaces(p);
+> >  bad_fork_cleanup_mm:
+> > +#ifdef CONFIG_SCHED_CACHE
+> > +	/*
+> > +	 * copy_mm() took a task reference on the cache group; a failed fork
+> > +	 * never reaches exit_mm(), so release it here to avoid leaking the
+> > +	 * group and its per-CPU buffer.
+> > +	 */
+> > +	sched_cache_group_put(rcu_dereference_protected(p->sched_cache_grp, t=
+rue));
+> > +	RCU_INIT_POINTER(p->sched_cache_grp, NULL);
+> > +#endif
+> > +
+> >  	if (p->mm) {
+> >  		mm_clear_owner(p->mm, p);
+> >  		mmput(p->mm);
+>=20
+> Drugs, it must be drugs and lots of it :-(
+>=20
+>=20
 
-I thought about the older messages and I think it's really not worth it.
-I mean, even if I'm right on 1 call site, the others won't behave the same.
+Sorry for the warts in this version.  Will clean it up and send
+an update.
 
-And I think this version is cleaner anyways.
-
-Only thing I could see was that on 1/4. 
-
-Feel free to add:
-
-Reviewed-by: Kayra Cizmeci <kayracizmeci@gmail.com>
-
-Now I'm going to sleep. Ah..
-
-
+Tim
 
