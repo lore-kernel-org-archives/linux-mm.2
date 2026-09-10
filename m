@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83C5C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:12:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE80C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:14:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D520A6B008C; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
+	id BCE536B0099; Thu, 10 Sep 2026 07:14:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D01206B0093; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
+	id BA6986B009F; Thu, 10 Sep 2026 07:14:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCBB66B0096; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
+	id ABECA6B00A0; Thu, 10 Sep 2026 07:14:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA9E6B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:12:42 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2A83B1C246A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:42 +0000 (UTC)
-X-FDA: 85197589764.08.6BAAB79
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 816E96B0099
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:14:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20EB3402FB
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:14:53 +0000 (UTC)
+X-FDA: 85197595266.30.6DBACC3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 65F93A0006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:12:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XAA2AxP9;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5A038100006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:14:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ohxqqE/h";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789038760;
+	s=arc-20220608; t=1789038891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ERCd9oSGM6NphjvkvfR4ik7TZShb7N0/sLtNifxHmW4=;
-	b=aYuKI9VMccO3oXbEgZWOGKMGbdaQPATmiRPVtfLYUXLSxacEwFxHY3k36KaTkMBAW76W6U
-	5SAYGJZQnpOrejvHFqn603WeCcBtG/HlAC67JkvIPEgsSOaFI9I+Er5NJFvkiR/c6Q5K8Y
-	+/RUggfI5aNGXI1Ke9yYBqr/R9ptTaA=
+	bh=PTk08ghQEYuYo89c0VG6xsdyLB9DUgU/FUr7ab35PKM=;
+	b=uSgdr/FIRJYGIsKJ2Fo9iaDvn5FHCJ3tQFoU87Io93u/1rsbylSJgn1Cb5BgkXlmegTslL
+	EzyA5vwzGatpSPmTy2JX9TXsAFNd9svPGKElwxFOwXlRKkWl4txhZ6OAdIZudTI/KM5JFN
+	kavkoRFjE6nWgXSSkQu5KHAFIJ5T6HE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XAA2AxP9;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ohxqqE/h";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789038760;
-	b=NywMmj3PN/qxcZxlJzp1AWx728aVPKJXG+hvpEREOmsjVvMjFsKkI4uiuMEAmyb/oKz0QT
-	Yvwdozc9Wo/1IzMBnqz94/fae1nz44ELYjeiGWocpSglnr0l1SnBpYJJnB823Kc3DfSyio
-	3rh/v4lP398JM27WKzggZJboELhq62I=
+	t=1789038891;
+	b=w6Nioo3x3mb1DaNDmvwEzmHrXY4X+Ao0QHd9BWK94He9eS5jYv3WFHQBf2d4LYfyDpAs/N
+	fEtB/TpBzwkjL0Z5puZiqa1GbTZ3fSbLiVleZStv/BpQZI+l8VURxtDhv9kKT63GYkSY/9
+	sl/hE/PPxAGK7kWZ49y3gW2aPgffokY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82FC441170;
-	Thu, 10 Sep 2026 11:12:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ECB1F00893;
-	Thu, 10 Sep 2026 11:12:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7AFA642B82;
+	Thu, 10 Sep 2026 11:14:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB881F000FF;
+	Thu, 10 Sep 2026 11:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038759;
-	bh=ERCd9oSGM6NphjvkvfR4ik7TZShb7N0/sLtNifxHmW4=;
+	s=k20260515; t=1789038890;
+	bh=PTk08ghQEYuYo89c0VG6xsdyLB9DUgU/FUr7ab35PKM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XAA2AxP9wc3keOOWbFhRPVpf+EYxKxMasAJfXKjcAqAFuVSeVn1RDY4Gg9ZkUluVf
-	 n9pwpAydmxlkNOitfcepj28uyjlpttBuu7A4phufEbFGOKtzfugTxHl7+ssItL/GQj
-	 HJqh+ZELtkOt/9go2MSO372IFr6HppkrEGAHyYQH9y95v92CgUil/++DQ2G82I3a+9
-	 8d7WwlCUuv4fbKea+9p2VnVIi8KGTwP1gD3LirxqJvH+dmiAPuGT6Ox5CfyrIybIPa
-	 w+bQJuF1/u7a6X6L3GlQWGV405kMeRAkPD+ghJsspAJGKwdZ8kbCeIEMW5928Iofp6
-	 xjHWmpt+oHGhw==
-Message-ID: <52562b42-1186-4e44-90ab-7fb92a6dcb1e@kernel.org>
-Date: Thu, 10 Sep 2026 13:12:22 +0200
+	b=ohxqqE/h8/pErTUSk94yiONeiZNIo5OYZZfvgXM/isBkATQx22xTOFjqP5ws1BX0r
+	 O/zuLixBlzlJMHNnTACJ5rau/3/pmfku0CYHOYwr341hc958uhJFPQJzmQGlvmcJVK
+	 HYHi9WSHCL5dBDzixrjyPXW18twNc27UbTCDvuQbM6VLjdGGpOm2mwdddVhpj1/AQ9
+	 N1vl4sxz7shcP8PQTxuztAszZk/x3NV1rLZ10aCpyGyNvgb3l1FJu2SqeliCsTtd7Y
+	 h9tz8KscbXjxI0bjVYTG764s6Oj34cer8zl4Glja/WzCDcwN50uGP7cZ3bR0ttfFU6
+	 JDNUXhSywWWOQ==
+Message-ID: <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+Date: Thu, 10 Sep 2026 13:14:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 00/21] mm: change behavior of pXdp_get()/pXd_page()
- in compile-time folded pgtable
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
+ <20260907-fix_split-v5-3-822b810458bc@arm.com>
+ <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
+ <aqKOVGECsCNtSMIV@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+In-Reply-To: <aqKOVGECsCNtSMIV@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 65F93A0006
-X-Stat-Signature: dknnkp5beiohc187pp54665u8yicbpmy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5A038100006
+X-Stat-Signature: wxi4w65mzqpzyjgaarim3rsqq6r7k9wn
 X-Rspam-User: 
-X-HE-Tag: 1789038760-491683
-X-HE-Meta: U2FsdGVkX19bluQdswAoBvE+T89BaKwZg9tM71iX5dM4WiXl0AY146dsbOIJdbtHMvtTjZCOv24SRt04h6+gi0VNTChsPRU/jQJdfN9DfR6h0LaXmNj87qFPh3fGcZPaTEcc6lE+9wC9S0fk3T11ChMXhekV8jDUGRfAQkY6kc0BCNsR7/EPCsMcsAnvw3KMbIp4kydlUzK3HcrcHSI2ZRmPJQuFslV0fBK4r8fXHrAe5tcjSRF1D6/OFzdT2kAE827K7VK96WuTeH34KsgZH0HtiIYpOyzSvUFIQ9dFQVijqoAI3a10VqecMZ45AkbYbKeEILrNsyl6jM+cGwfiWri+nnmfn9BhW7nE+OpjjYXEU4O/1ZW/ReBIKVVnS5zHVVawXQ5cfkSYeQik2ZhQ0krO3xta1yGot3in+MiHMKny1M6hdJaib2e8Z30kgyWeunLwdlTofTnCQOXsSNxNyNcX22DX4PSUi3s5FXBCga1ef92lYjHIuU1U3v2brvG/HCu4eFoi7kuoNLduRHwbqMflTGb+i0ATH/jRy/nZAyTMVnov4VCN8CEVULqsR1ZPS9gClcCaAgSA8nAs+5nrZjJGCx7AL+QTDVhZmezasiLRu3i+40zefJ+p8xtyvhSEAWt9kxMQWvCb8PbGoSXLRttnoy0zwOLsnPeAwMhsApYg0aLyAduqZDI5jsnNOV+PunDeQMoiVNpXYkHHlwIVqaZGi99oUsvTxO8nhXHHKCTdPr26d2+aDP8FJJf5/Gte/KrRl5cXQZb4jpeSqisOwtI6paA0NNJ253PSf8BkNwJpGOcxU4aEHZuZOoUUVmJDJSYKAO6DQk5gGXnRqaf0YX8rp/Y8P21J8Vf2mF5x9NAszT8674B6qUkepxXgkb0xSip4EBdwPLrCOeUXIDtaTehhts4JkMvvQuSWA0ckSOQm/OUM6gZl/Aj+tq0qlrqxxre3uSFuFMcm3acYuY2
- 9QkxNWYI
- /WNGGLsZs9bN9njFJVEoskL6QhvChEDvQPkiw0ZZUC9X2jkqPRLaSAxNTSUpUTcxBQN126xihury+VT4cv4B9V6VpYGrVpVhxZcssFAhdVHUrtt3goj4pfmxIhGK26QaVkv6bO141Lc+Ejr+q04IMFrwxq/Lj0jgGdOHRvqxidE3MxgufPvpMPhmzQnVp1un7qg/cyOR7fJeCSExCO3IX9BJ1ZD/YYXJEDD6RkovbmJIDRWiuo/bI5YaA0HCGFXUmJBBsmx6Nu0rXcJkeUjWY3rfFaweGI5xobx+jM6uS/alCtO+tDEiXiZIb6g==
+X-HE-Tag: 1789038891-896565
+X-HE-Meta: U2FsdGVkX19Z7zt/rFeJ6B0Dzc/QKVS9Q0Ony1ACG2tVfQ3jHlY6JqPKIA8MpNOVQ/Sv4OqiV7Bk8dyB8YkdpVx+Gbe+XMURkQ++dSzPpxoArDOUCOrweZFBjgdD9WXrY/Ysw7jWXFK0qRaTaf/n70OdPrwO0sl1VA+uklF5IyY9Cs+wUOVL0i/vBEz5AOOaicwGWx1KzY07x/kLzOiEDNrHXNQwtQ6CEA4TftOUN8uvxZMhd/aNdLFWoYz2q3xcVgaMBTLKQfHfsD+0XOglQMrSdZ1jWLctuoOgCMp2DumE72Ngrb/BMiW55y9GteFodmlBuRnf/AYZB4zSvJApvGP9De/CI7kHv6fWvOerzX/YsbS0SVvlLgOyD9IY+UWAjjnIXhYHno+95nYWoSelW5lbhKuZf5/r01Z5RKtT+AU6Zjbk/MoYtAEPs4uQE4+Tatm89/notzlfQazukz+jWWcxTDvZ35H+sOij1dA0DT4N/Mu8owtK/gDSQEX2PXDRLILGAvH3VqlWBfmEIvT2+MA0fbAFYmTM7Gm6eZ3Wfo4uCNIZLN4r33YeiLHEfYPgDFjpIv6pwsB4ZzOa+C3ZimPZuIV/417tHlMn9jRP+rXHUQoEWC7lheJBsZBIJsBskDhf35ZiVEkB3V6sTlVJS45tSPdewXsdI+wedXVw+778XykFiuwaINXaWRQDEnr2U61gpCbyQ/BIl8+CfPli3Pcx1Uep/rQJS1Hf7VSuSUjmSTXwbKqc+5rBnJfRa/N16kbNmLijTSI4a9OkGU/jMGNC0azslFnMvG/YztfQt4oJsH7dpXcPeWG0Oer9XqRnwJ4ZoJSon12WmcJ16Qd5VSYv2RS022eRx+xGYg+cERcbBWT9I0b5O9XN72CLYIEAngOVk8WBIt0x/StemPf/OhFBL6pM8lmIfNZW7ljIDiSU7GabAIKvdK6br4Wpek4dqrbmTr9h+GRlsMu/kVd
+ s/PfcK5L
+ F2XrOuRdjWFpJupfIK1ijIvbFNVDEVa1sMCmsS6pAjFyXmy5t5BdRNjrRx5Y4jNjriEUCHivJvGCDh/imzDU75DoSkLIMXH44DYkSnnUXYD1T9Xs5RnK48LQxxVJNPYgvcluDA6h9N6cWsKQ4KU+QeUepnp08Ma/LzSZcHqaoguGBPIS7nCCVYw5jUOr17XmS1HjAAlftcPzGRiOYsMzCeJzxJlRUTBmgyVkE8ahcvoC7VGPhE2o2nNufHbjPl64Gm7RjcYGTOH8VDGatp/mU3sJ/5/MPrvFl5qmpH3LLiyi0QJsRY8/1zPdlrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,40 +149,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 13:56, Yeoreum Yun wrote:
-> Using ptep_get() and its counterparts in common code is suboptimal on
-> kernel configurations with generic compile-time folded page tables.
-> By default, ptep_get() and its friends expands to READ_ONCE(),
-> forcing the compiler to emit a load even when the value is not used afterwards.
+On 9/10/26 13:02, Yeoreum Yun wrote:
+>>> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+>>> index 5f278913c4d7..b6fad38c8bee 100644
+>>> --- a/tools/testing/selftests/mm/soft-dirty.c
+>>> +++ b/tools/testing/selftests/mm/soft-dirty.c
+>>> @@ -92,9 +92,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+>>>  	if (!hpage_len)
+>>>  		ksft_exit_fail_msg("Reading PMD pagesize failed");
+>>>  
+>>> -	map = memalign(hpage_len, hpage_len);
+>>> +	map = alloc_isolated_mem(hpage_len, hpage_len);
+>>>  	if (!map)
+>>> -		ksft_exit_fail_msg("memalign failed\n");
+>>> +		ksft_exit_fail_msg("alloc_isolated_mem failed\n");
+>>>  
+>>>  	ret = madvise(map, hpage_len, MADV_HUGEPAGE);
+>>>  	if (ret)
+>>> @@ -130,7 +130,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+>>>  		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
+>>>  		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
+>>>  	}
+>>> -	free(map);
+>>> +	free_isolated_mem(map, hpage_len);
+>>>  }
+>>
+>> smaps is really only problematic with merged VMAs when relying on exact page
+>> statistics. For other properties (vm flags, MMUPageSize) it's not a problem as
+>> long as our smap search just finds the VMA that covers an address.
+>>
+>> Assuming we fixed check_huge_anon() to not use smaps, why is this change here
+>> required?
 > 
-> This issue was recently reported by Christophe Leroy [1] for ppc32
-> preventing futher code conversion to ptep_get()/pmdp_get()/... helper
-> and the same behavior can also be observed on arm64 when built with
-> 2- or 3-level page tables
+> Since there is no interface to get vm_flags not via /proc/self/smaps,
+> It might be good to have it for preventing unwanted VMA merge.
 > 
-> e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
-> 
-> 00000000000052a0 <perf_get_page_size>:
->     ...
->     52dc: d53b4234     	mrs	x20, DAIF
->     52e0: d50343df     	msr	DAIFSet, #0x3
->     ...
->     52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
->     5300: f9403508     	ldr	x8, [x8, #0x68]
->     5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
->     5308: f90007ea     	str	x10, [sp, #0x8]
->     530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
->     ...
->     5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
->     5364: 92746908     	and	x8, x8, #0x7ffffff000
->     5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
->     ...
->     5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
-> 
-> Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
-> READ_ONCE(), there's redundant load for the pud which is folded.
+> And might be useful for future to prevent unwated VMA merge.
 
-It would be good to include what it looks like with this series.
+See my reply on why vm flags are generally not a problem. Just like other
+properties that are not changed during VMA merging.
+
+Let's not perform random code changes without a clear picture.
+
+And just to emphasize again: VMA merging could already be a problem before
+memalign() internal changes.
+
+(also observe here how we do a MADV_HUGEPAGE, so this is all rather arbitrary,
+which is not good)
 
 -- 
 Cheers,
