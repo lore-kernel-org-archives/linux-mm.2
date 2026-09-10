@@ -4,114 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF4CC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:21:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E19C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED37B6B008C; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
+	id 9D1576B008A; Thu, 10 Sep 2026 05:29:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4036B0098; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
+	id 961DD6B0092; Thu, 10 Sep 2026 05:29:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE1E86B0099; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
+	id 84C076B0093; Thu, 10 Sep 2026 05:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8E956B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:21:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3CC01A0497
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:21:39 +0000 (UTC)
-X-FDA: 85197309918.23.451BDD9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4077FC0008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:21:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SWenu4/b";
-	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789032098;
-	b=4mSuOszuLvuBJV+gb2K5fdT8Hm1z94XtyYjwLFORIP+sz6n2TEIz9DlLrhGuWvFdCiBC9i
-	qdPmExagtxan8U1rC/X4asvBOdbxmv8bmQGRQT4BKxR6u1cW83EHXmSdgwahFUv6zqUzv+
-	HMUfCkej5S/wM05y9JZJcTFk+jpLVRg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SWenu4/b";
-	spf=pass (imf22.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A6206B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:29:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FAF5140423
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:29:07 +0000 (UTC)
+X-FDA: 85197328734.10.2626853
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3927F20003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:29:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCOBrDjQ;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789032098;
+	s=arc-20220608; t=1789032545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=etegQPhHDYYXKpgN5HhrDD3ja2BilOp/q9xebohgcXg=;
-	b=f3GICh9k5x9pqlwbRdWHOHb/J95cvoj8lxW8cNLwnjgN6YPn30CTo1DdQp0hSv2zlxmpU+
-	JxZ01pky6AlmugEzV7NlbQcl/yyvcCurRWlbUQ6Gx6cxr0l52oK9sIKs6Cjjtk8Qkrmszj
-	puTpLekngftv3FaV3PBN2zq/jwHsmVw=
+	bh=HYVaZs8zl6VDRHQDJSaZZ5BLmVDR91bVJIFkLDQKlfc=;
+	b=eMoGzbMIc/drhbLYR5H/eQlPyPOaZx88dhFbbOGiCaKzIf4/HcUQnaqZAGlGCHyh2Bg/B9
+	LA9V47DdSteaSbzhi8X36xyvcbysIX2QrLX3smIjuJ8OexHdA23TzyF1PWoL8PZCBhshDn
+	qvbOrLSGlZwhlr1wMG8/EwbiQx8ya70=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCOBrDjQ;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789032545;
+	b=Za7tFxut3gLCsTJ1dUWMrXuagvF1TkgsbFgW5cD0HdFQDvxjkSJpKDixfQWIRuVV0wG8KR
+	XMuuDg+iYliCLlSv54XWMjmLH9DIOmuly5zDn5THFFLLTyBQKNd8FBFX2Gepy8LEwhCLYa
+	UvmnOVhViaqJ88CnUAW3HreC0XEjzZw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B25FB600C8;
-	Thu, 10 Sep 2026 09:21:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2DF1F000FF;
-	Thu, 10 Sep 2026 09:21:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B2DC43B95;
+	Thu, 10 Sep 2026 09:29:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218B81F000FF;
+	Thu, 10 Sep 2026 09:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789032097;
-	bh=etegQPhHDYYXKpgN5HhrDD3ja2BilOp/q9xebohgcXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SWenu4/bhQp/ebHqQ47mZ8ttape8v/6aPUf2kjB/Ld/j9zBiWoVDmMFM2WXUeFpA4
-	 Tz4kQl6h6D02ibEHqRfMCGmzm4F4W385fd4iPw4EV/b0R7FrEPUyPOdgqYghnwGSlg
-	 wlCNkIv6fYWAYcTfK4O6DgrRMLRvCHdb42c6Z5fPxcblq5pU74lnZfaSijO4QJtgql
-	 XWi5JzunvwkhvBE8/kV9Y4Q9psgLSZ8fOLaxugK+zflWpyfdSLe5ID2gv+8YzALlTs
-	 DNEG/urmvrS21JPGf+b18of+CcOKc6HBFiQHYWy3kARa8VmrNDWDGEakhoATI6H2NQ
-	 gKLgojcgqTT1g==
-Date: Thu, 10 Sep 2026 11:21:34 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Saravana Kannan <saravanak@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v6 04/12] arm64/mm: Export set_direct_map_*_noflush() APIs
-Message-ID: <aqJjL-kDfl2_wwHG@orome>
-References: <20260904-tegra-vpr-v6-0-79042cfa8de5@nvidia.com>
- <20260904-tegra-vpr-v6-4-79042cfa8de5@nvidia.com>
- <aqJFb3VtsYtnIa1c@infradead.org>
+	s=k20260515; t=1789032544;
+	bh=HYVaZs8zl6VDRHQDJSaZZ5BLmVDR91bVJIFkLDQKlfc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XCOBrDjQvCtifR7aIeqbJD4yUvIkMKsz6k9FcqpuOe9ZHpcnnm8lWUEg1EPgA066r
+	 vnVWCXn6i1TTO/UHgeTkWShEoGgA4VhWhAFtbx9lK4aGOcrXGXF0xPSoYx9QghNb7l
+	 TWzygrvb4XWG3zTLZUKzU3SokLPZF/Ls6lkY6FxnadzDknMbEqnboYxnJzG4URGEHz
+	 urm0cxG4G0irCaOevsuoRseDBlApN21xpt/e8KZv8/38yJtyulXg2GRJJqKOAZwp8t
+	 fFwVHfpxfE3VrPAM4yJTEMa2o5xi7xpV7R6TFt7vKbfOXlm1jq1k4ybYp3ovRJrEfB
+	 EMN6oBMRyPl1A==
+Message-ID: <2f1992dc-8dc8-43e1-9bc2-5dd4e3cedbcc@kernel.org>
+Date: Thu, 10 Sep 2026 11:28:57 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nc5ni6zymi4hrk6h"
-Content-Disposition: inline
-In-Reply-To: <aqJFb3VtsYtnIa1c@infradead.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4077FC0008
-X-Stat-Signature: 9utgqo3epw7bi3jjwwrrhcdxyz43xcsy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] selftests/mm: emit TAP header in uffd-wp-mremap
+To: Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org,
+ usama.anjum@arm.com
+Cc: linux-mm@kvack.org, shuah@kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ peterx@redhat.com, sarthak.sharma@arm.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260825085756.63030-1-husong@kylinos.cn>
+ <20260825085756.63030-2-husong@kylinos.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260825085756.63030-2-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3927F20003
+X-Stat-Signature: s1ck3eat93fa669twjb7kw8a79x5deey
 X-Rspam-User: 
-X-HE-Tag: 1789032098-252905
-X-HE-Meta: U2FsdGVkX18lUv++V2tVgFkOm5J46+fiC0yejBAJBdWz+Jp9I6g0EkjsF60TCYgdsB3HRM6vYglnIWN4A9euiYmopRPvFXDN5cjXvlQHowTX0FNmTIhbjIk/5pFEE2wCr5U95VLRqmz8hhOk6ps4q+Iaia70D/T0OjsH4dA6GsX1U7o7cnIdujw4j5G3E5W6oqmxQn6pPQaxgFMCB421O78HDI1M7kXjeYibJI7e4u0dQQlEIn7kEf6ydvom4UhBgFKWj7KWry0Y5zSQW7GTHANogT6vDSrZ/0S/EWRroFwXiGNupt4QrAN9fcxYOrr70u1wYtZkdPKr3n8MUwol2vgw1mKUX7iLckUSvBYzIMieAG9GmKlnF7Rvwz8xq+HgXU5ZvuQ2JpGwtBNg/j3Or4eVeKiwzZ6f9EwY3eWly6x9SVUu/9uMxmZJBN0gjftZ/PaZ3Tq6ewLyvQWWteTt2IwKq0LgVssHPeEa5KOENXMi8etAS74YIN7DxBSu1+p0RFxdHOCHfplVbUPJ1jt1bjDbRcNzF8reipUQvTIKAAJY8DIff/kNoDmN7AUBEU2uZllJkPHpokT2QjR452s1mpup77rN+cgXrcqsCkXxpOxRTc+e7rgqIp+5sQ/xxbN6iS3bhLdM0z7im3vK80wNRB/FRKvAvqBA45Q2lk+afLU4W58hnJ1V40KCsLGYCrtA223ZG4ww5HaETvbYqmj/F0Edh3Re5KcOCyrbeTf75fnyNOK1UO3mrMTjQkfXZ6wKVGJ16uxqymAyg4ACSYie+SMxTAjebW34NTVi//TjdrzPT0T87kd2QOpj24tIflyHUZ+Vwi9lHvZloKo/rubU/jTXhdlv8iudAJHyBSIlv5VyRq9EPp9Fhny34nD8vUEJalguMTnUWnOL2AxAgj8I7sdu+Z52wSMRXP+DD0H2SATduzgla35IfMH9UAasmwazAOmDurexTgiQnG/GTM9
- FcFlYy/2
- 8wPppFMKKNN2oH05ORWX0fnVaSE1U0azcYMHV7W+p7pf4sLvFuJhqLRwtGp3E4t15h6L6nYdtlRDQr3kbLFqvjhJ4PmUchcYCFUtdOnooAS8mwmLIHM0Q/v44dePNFAfQ20wrIYdMvfzNKqVn/NUFcRoqWcmGPbivP3fx59xAFTdR34oAGblgGDOwXwYHDoJxcKy/Vk6gqy5TaeyHvKiifesehWP5kaji/tuEsIeahHvEEKimPwaKcZ1QGuBiIBuItZhyJBrJaH2+Cvd+G7gwobt2TjMM8lEqJlpE0mpUWf/jlqILtOk2IraiO5BPoLH3SqQyTrQLPWeE++FkaVCNGHlRoF81wrLLZ9A7yTjlCWtvBv3QEQl9ISqe++Oc7JHNDa6WH8PbNC90kaWY6mFJOoATRQXK42iwh7pEUxUToT20HtW379JQmx0srQVjslSVoJTSARNsm/pbZ6Gkaez9srJsMpa5vt8fvyHq26CtIMsGaQHTu7mE2kzZxsuC7bwOniVpeQLvrHmV4X3mC437ImNvHw==
+X-HE-Tag: 1789032545-538386
+X-HE-Meta: U2FsdGVkX18weD7/Jji5zoxYaFDeSNE1TIw19yx5WwnLYjx5B8PJYbm4QwicEBd0qpNJX1c1A0uJWNyYwcfyWrLeg35CetE4JIWt4ONf8xj1Qe6ZobMR7wveQvdqneS9RJJXz/Tzql1nFg4Nlptgq8diiNmbfb1YStxpa7keUuF1ThAbVmsy9uzbzaP8D8cxDQltoSwKUu1EA9gNbJHaElaU/6+QXuYQTZyi5RsYY2rBtryQLQY6UYdZh9pr2EQWxgOw6/9AfH01lJrNHbVa1BNkYoMLiIt9OENHWrZSw+CpZXK+gHrukJX6FBTTzygE+ESfxkLgyq6kKTmTXbCk8ZL43O7gzpCIQyDlFkiFg135b9dNg8CSJb4Km8oz+WnyuJNBCplf5YoGYaj0/dZnJlesYB2mnEIUA5FHUhNbvJsV74lR3NizHZdjzlTIVF9viwG50ohe/L/Cd/JJl21kpXbg5Stw/MAvdbUmPJR8UcbVPOqDpHkvGGUvkKm79fi0+A7Rqt+SnuN/s4jnd3/fhqhIIN6nr4AlzQb31EtBFA0wgfFep4UreX/RFtZeLBnen2j1Jkz17JoELBmdVHNtGrx4aXt9gOaqJu0Fli58IMM2mSTc9IjIxfUEQvPtvP4cakAFmxa7TnJy6g8MsU5WUYYq6ZbMRoAYoHCQU0zFsrRUA61oOq4doVrKijki2HMGQwmEDLVcgU0H1MhCa0ElczaIM5CjSHz2M9Jb/qe4Q0EHzFlxKEuWQwE+uPHc70DNZIY4HVsVqsuShjMWqL1mn3NimiMZsr3jcNOLsNzmJ48vt41Dp2JqlYcPpnrG5RTnJpyTuLxdCUzYyS9jWwMYpmvuyYTcIAWBzfM9E7eGJMRL4g1WwjMzt3twnk1L+b12PE7EW4B3VTUn3MvbW22dbc7Eb1/QxLu/8ZxCtfU8KCAZhobiKvO5yyTW4Co4qhZ5TIwA0t/tqD+1l7vIRy9
+ VYIcIANh
+ EFQ2/mO21Oz8HqvnOhVpT4TFnogKtmAVdaO3aDJNvtQyznmBroEyDShL+3x4xVYKnRPP52IicHAz0TmwaE1QlNqbMbOyltT3vsjAaltaZJdgn1pSTaX3xU1oupo1xm7/ZG5ES7u/HEyJSNEZdJhLX1FKD613YENeNAPcqgG7vyHqrZMwjLxy0fmCwKla101+Z93lOQe0f2mBVRZ3uaBtuBPjqWXb6q8Lfx56F/z+e2tkzzTejZCyxQIZZ0BP31HQWx4mIjkslB2Gt62ojELcJlr6YL6svM88qb8QOnwXcw6ShJgNnMqwi6oUXRDCqPWryVSwJrvHOxL6iLEs0vBySiXLEFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,60 +141,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/25/26 10:57, Song Hu wrote:
+> uffd-wp-mremap calls ksft_set_plan() without ksft_print_header(), so its
+> output is not valid KTAP.  Add the header, like the sibling uffd tests
+> (uffd-stress, uffd-unit-tests).
+> 
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
 
---nc5ni6zymi4hrk6h
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 04/12] arm64/mm: Export set_direct_map_*_noflush() APIs
-MIME-Version: 1.0
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-On Wed, Sep 09, 2026 at 10:51:43PM -0700, Christoph Hellwig wrote:
-> On Fri, Sep 04, 2026 at 12:44:55PM +0200, Thierry Reding wrote:
-> > From: Thierry Reding <treding@nvidia.com>
-> >=20
-> > Drivers that use this may want to be built as a module, so export them.
->=20
-> That's one of the worst commit log ever.  No, we don't just export
-> core symbols dealing with the kernel direct map because
-> "Drivers that use this may want to be built as a module".
->=20
-> For one exporting this at all needs a very good justification and
-> not just hand waiving.  But more importantly if we can't avoid
-> exporting it, it needs to be exported at the tightest sensible
-> scope.  E.g. for a given module if it is so special, or a namespace
-> if it's not that special.  But in doubt we should have a proper
-> core abstraction instead of opening up direct map manipulation to
-> random modules.
+-- 
+Cheers,
 
-Fair points. In an earlier set of patches this was abstracted behind a
-set of set_memory_*() functions, modelled after set_memory_encrypted()
-and set_memory_decrypted(), which I think I'd still prefer, too.
-
-Is that more along the lines of what you had in mind?
-
-Thanks,
-Thierry
-
---nc5ni6zymi4hrk6h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqidpsACgkQ3SOs138+
-s6GwVg//eIawY/jpVU95C05IvqaJG4LAKMlyvX0vCt0yTbFrsPQhY7RDigfanDMo
-ycZhJCp/jyLprOkhxYEUmbLqCr6cn+5taI7LSQYIjkP+XRbG7rM7vYOynCANDeOS
-uvUxtRu/8HlB0epcBAco9xhyX6Orb7w61HB8DspHAB/maQpHwCg8ce2/etTREXvK
-qXc3uVrtfrsVNKgZgNtSuHcYX5NyIIwuNKc7rwiU+Q3EFcYAF3RpG6XCrncuKajI
-GReiAWqBsyzzgM93zbemv3DKjbQkqVBl2fSZzTeguSv5KrJnFFd6n+JnHpHMPQPJ
-gg6l3zWb7P8nlPRtlEJh87sNZJ3F8nVYStP5WpaCgjFDW5WrMcTTj/SBKMQqeroe
-tgGkEMSMZAew1mtkyy5v0oaaialjMZ7796mpFs9J5GZv1PilvW/3Gn7D91zK4Yii
-N923BVwEz9EnkPER42dP9AfLUCDE0lwc4A5t7ezgKbOKLXUIfDN6zlZe3jWQ6LO3
-ALOl0JSYvlMX2izpQ4Pyl0/CSFHa5im5+5+o734Ql7U0mBOfpYYziOfPE9NJg5Xm
-hINUJ4RiAi1x2e7iP05HqJutCO2hXPdalSnK5rzuosZjqma4SvMo/Ma1P7bcFkJw
-2WDAAeRbtHk8qNOioz1Kp3UhdQCwFSP9Wa5RAtfvrmhE1X5Ap8I=
-=EeFB
------END PGP SIGNATURE-----
-
---nc5ni6zymi4hrk6h--
+David
 
