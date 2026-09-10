@@ -4,100 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E7FC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1176C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:55:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2EF16B008A; Thu, 10 Sep 2026 06:54:22 -0400 (EDT)
+	id 0109D6B008C; Thu, 10 Sep 2026 06:55:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D054B6B008C; Thu, 10 Sep 2026 06:54:22 -0400 (EDT)
+	id F2A3C6B0096; Thu, 10 Sep 2026 06:55:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1B636B0096; Thu, 10 Sep 2026 06:54:22 -0400 (EDT)
+	id E18B26B0098; Thu, 10 Sep 2026 06:55:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E6EB6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:54:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3773AA04C0
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:54:22 +0000 (UTC)
-X-FDA: 85197543564.01.7C46FE1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6900A100008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:54:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VN6MoQBj;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789037660;
-	b=VGPrPemzhG1vSmhjpL6yrMz/AL4KdKYJSRN0pxcDtGqC8GPfL1wgjCk9nOjhNslB5PNS/m
-	TVaMsP4GALVy46J5ioEyETJ6u3mrB+2e+qyEPOc0H1L/Pr25a8iJRoC7bOLVs/5cftdDqU
-	YDr4INHm8PbC7X8NPG57+0jBY3UyNNI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VN6MoQBj;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B94A46B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:55:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 164DF140498
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:55:20 +0000 (UTC)
+X-FDA: 85197546000.18.9F923AC
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2E31A40007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:55:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bSc1eTU1;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789037660;
+	s=arc-20220608; t=1789037718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Syr3CivIpQNe1+9BBRPldS4/S/zsJdsKT46NZN5zftw=;
-	b=GZLi8uEQhmzSlEHg0wXVPyv0NyXGmvQ4fGTY6NM9t4rePz84j3oBDxrJCcZ/qCAH77zIAq
-	M9eACEJvUj3LFWCC/iCgSmOtDgm3aTuXk3J6f7H/B3Az1jwU+JTnQ6dJBR9Dd578R6drlt
-	OETduE65Xe7n0N5fwCTbYaOFNo7CYvY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE2211477;
-	Thu, 10 Sep 2026 03:54:15 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19E8E3F7B4;
-	Thu, 10 Sep 2026 03:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789037659; bh=LZa/mTe3VR25KHQaR9yMTJp7T+IkVsTbaUvpTI1sUo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VN6MoQBjtpr1/cmo6G/4YZh5bHXuew9SIhpd11l+692psl/N9na3NbHc21NOsAUsU
-	 3+TQmValjDyMFstToPCzXuQUZ63eChLMNCBjyW+gx19SIlNi9MqfNzNAp+KP3fHIbQ
-	 6G3FQnvZE1lwfmo6X/7iJEX6alz2jYz4JAF7kQnc=
-Date: Thu, 10 Sep 2026 11:54:13 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-Message-ID: <aqKMVUDvN8bBpwVS@e129823.arm.com>
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-2-822b810458bc@arm.com>
- <956df69d-8c0a-420f-889e-7df2842605dc@kernel.org>
+	bh=I/lsWiPytaCYG5VQwzNu/fNcbbKarnBsAuYB2BQ7P9w=;
+	b=EcRQ+QzjJeu3Zix1GWRB83WmnzlDACC1y0tp8ph/Ktg+62o6bmy5HeDX0kr8tVUu5ISO5O
+	Ipa/Iv+GUgLkSN+nkQp28NFYIIN1Wb4wqWgLkQ0+JYu3cAZkGB+76rz0nPmLV4nZLnwdGI
+	qAF6N72IjLvG+qvfGUJvweWy0efcb+Y=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bSc1eTU1;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789037718;
+	b=PEN38UpiF/9Ad1wDVyu7pb8ARor+9npfHoGmCfl3c7zz2NfJ9q2+p4Wz5O+5C1s2e0P+Vw
+	GNsmQtI4QAsO7IOwYBrIbdeyqEoMY1xlxp0zrHn8W9L4ttJ47MRD7vNfT8tN7wMXpd2ICX
+	wjNGBYrmlLZwTg11O7ZObv2apfs8Wik=
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-398b9f722abso2264142a91.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:55:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789037717; x=1789642517; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I/lsWiPytaCYG5VQwzNu/fNcbbKarnBsAuYB2BQ7P9w=;
+        b=bSc1eTU1xF7m354KF/n4o0iO3GSE17TfSVCRriL9pCOd/O3v9OxCDrVoih9jLZ08mc
+         obvwlpb11xTxe/ufbMYhwIlGMTirFJErCJtYcGoSCeuAivDtF0l9Uhmhg0Q3sUWnFqwa
+         zNSTxYhNFfaXMiiZdJaAsApMt9DHwAKdRHzMsurQQMqc3IZLEw+FHN24KKvnxoI6QlVi
+         2aPqaxBlr1WWdvUDv6+41QcyBQ6HXFb5sYTPBu1A/TJDftJBa3EfrBDP5X5TCNkTvVaj
+         0SY2HsixLCyKldClhoAOIaMg6Y2+wLUXvo0KrYg6+61VwEOvoPBiekXGrc9Ng4YN218i
+         kruQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789037717; x=1789642517;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I/lsWiPytaCYG5VQwzNu/fNcbbKarnBsAuYB2BQ7P9w=;
+        b=bHKJWMZkEIsQvB9ngI1BZwQ8RThB2t4MEa1I6CujLlCSzo/RG04EixtQPoRz4kI9p1
+         Y8rvcsP+EjH0ckgfs+CxnDyU8EUutO7njemoCOB6Q6qWESdRCaV2IOJciI6ybBfzfuND
+         qr+RG7fwO2V/hhn9o9j9mCn9R6wQfwrsBnVf4tzCqI6lPNh3m5zxG9K2htkx8BH8sX5v
+         Pavvyl/3YWZrxrfw/TjV7ZY9gEISJDHJ3WT9Qf9pi7QgzpX7RZCpuEbc/AGiwJ9htudI
+         N7KdH9grcI1rJuR7cUX+kAxaCwTUumF2OCb8woA6VP/t01NNfhZXoGlOIshYa0eI3Is5
+         RA4g==
+X-Forwarded-Encrypted: i=1; AKwUvByKB/hBAMQFFP9SYoQQj3VWl9anixvYXkQhXucSKrmNoKDr4lh0ggzTiQeoaxq/CRtyYMec5wY9wg==@kvack.org
+X-Gm-Message-State: AFuF++lhV+TfvwMQqqXPllFJwdjm+85D0h461dTm+NaCxxX0tf3Lf9G+
+	T5F+Z/fiCWd2hATyVR3kc3UZ5pDRTS30Jy1hpUnGFnDRkSpx5UocrUTd
+X-Gm-Gg: AYBFou2mBu//TMfU2dXYV8qWZgRjRJfqoIvWS+3RY400NibeOE9AIUIkd+NISWITksx
+	8+qrF92RK3kWGChgsFgfAeeQxEQQY3x7O+fl9PznwsRQstNLRFiche/eOKWwoaC7OiKRpy6X+NJ
+	qD7pVfrzgzkqG233ldI0SIVRTEOA4sI8Hq4sydYhWX1qUrqEDruAcfRVandlQh6wUgg2XMDGxGO
+	seFXI8YUDAdqB3CV3/66uQ6J5i/OrL1q+gSA4lLtoUMIF4eIzHOKJs7LlUPNdcO3adyFmYvHxqt
+	/sysuzlN+uqZCaKLQT01aguRJmoyx2IYdjksxZa/XUZJX+5YQUgNGIr1abBz0Qam+rg8VcdvQwJ
+	vlffjAy/uz1gdY5D7T0wsZ1NBI9mc1/UYoZ2oPQiMJXiQNxAuQX0Plbc2HGdAyrvzzSh8OytE6H
+	vrOonhr9/Zp3Mh3J8xji1cuV+335HEM2vf0H3kNhRz2vDZ0fGCaLFIw6T+zhiXZ7xgM331IS46v
+	Ie4Fal/LiuSY3+t1w==
+X-Received: by 2002:a17:90b:4c44:b0:38e:97f0:aa4b with SMTP id 98e67ed59e1d1-39b261cdb38mr58067406a91.13.1789037715868;
+        Thu, 10 Sep 2026 03:55:15 -0700 (PDT)
+Received: from [10.125.112.20] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e77611asm3990224a91.6.2026.09.10.03.55.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 03:55:15 -0700 (PDT)
+Message-ID: <7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
+Date: Thu, 10 Sep 2026 18:55:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
+ early reservation failed
+To: Marek Szyprowski <m.szyprowski@samsung.com>, robh@kernel.org,
+ saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
+ <CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
+ <20260818092420.2859026-2-chenwandun1@gmail.com>
+ <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+ <af87036b-0809-4880-b088-545780b4d963@gmail.com>
+ <7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <956df69d-8c0a-420f-889e-7df2842605dc@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6900A100008
-X-Stat-Signature: tec9censythbeo4cjccuqonbfgwh9wct
-X-HE-Tag: 1789037660-189562
-X-HE-Meta: U2FsdGVkX1/av0EPbbyWNlXOOSBt/Oh8oiNmvQ21ueiMtIhBvLJf2wITjUa+8thCQScitUmU1hob/boygE/GlXatPN1xembP55RMBL/CwiTCcyGwoRCsY6fC5BejZLcQn2b4NS/wvhC0NLlckFq7trtqVHmQ7MEfRfaO/y4ZVVjnPTGTObmIPsdZJQG9uSOJCtw/XwKbQ0GbHIDISu0LoHmGPn/9Y8oM+Q1zIMqaWJ4ntIwm2eimFo2pX7m5jb/jXElF5CYoWiH84Agh9h9H48UhXBYHpQJGBtuK38kdb018lVDSGflzPV2G4J+AARZ/2zEoBrOnNvx+oQYMhJr954T5ptWM/GovOQioG9I/XlD2GhLMby7MpXPp4TdRa8PdV6vWFEofpdv6bwhUN+qv7n9ADfoK0supOMNPBlWmejRv6ppsh7aCkPFGuEBNhRqmXWn96/IVxedvruGRGOypLEH0HKA6TonnnBfzWAubSZha9dpPEqEUb+QnjQS1cmNevKhyOyI6p3la2ADUMAzcz5jD3Roq92L34WRQMxWvDAT7uQJHt7zQFvY/7BiBaq+9tPgBGDlAX19DCC+YNSn2HSTnbnTF4HCpCDcKNuwAVeV7DzkAq90NaGTrtfBsZUlf6Fmiy7W9aqdG3Dkjl3UxRIsjfFTaly+gdqJfD5N3yc5j7WoDXS2rhm+utZyWnjbqV1SqwWrktFdSW57OfMrzNc+4T6A0D7bcsKakV9UL7Kr4xLc/+gPE2J630TCmoW7ctwOvGkY31dAKpVJeu2m4fWsruQN6iCKqb9QWFp2oIlrK6Xe1G86hpT3L7SqlXSpoOqlzNteIA6qJwpKMpbAesMxnb3KR+LVcJu73as12mcfdsUFLg0v05Jzut/lkmGtwBDOt1jlb7vCrUIRFbgYuuiNx1Ck646MMqV6t0OpzzhHjq0HXJIKHsruL981d8z+Jaf5n9oIQh7umvLDIqk+
- hBBBQvNh
- XGwdL/8t/i5/hdTZwmB0SKRIZS0xBHacu9FosgQv9yDdijD+PT7tzFsYRVfsIJA3QU8lZwgESoAOb1xlxurHLnsY6yBuhQT5ka32pHmIS3ZcKoNBAvz2ntLIoUM0fxsKxSTqxEvxl+XXGjujNLNYnWTinJdHQp419cDvUEjStFQRTXbyRh/EiSGooYku+BOi7o5+Prkl6EZRFS23CzcSm4G/tN4aMa5RBcbuZPETtVlNfEvYDW5CQ2R4zLhKlR+uaOsxTrV3j59MurqNFc5FD4U0jxF3XlZ+tNIM0vJrJg9LorfzJ0ybS5ZgJVFVZSZ5iAiZnD0C9rZqJdlC2MpUu1Pw56OD8n4tJcVacRgzXHoS1cEz7Q2LBtKoiVo5GgM/Fg5M3jBJuh+vnxl9QK3bn7x5kDJWkcyKqO3w2ChQEgBdtCeFtlGC7LdA/4g==
+X-Stat-Signature: r49e3dnhboafoxtp86itom5bfh39kde9
+X-Rspamd-Queue-Id: 2E31A40007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789037718-255973
+X-HE-Meta: U2FsdGVkX18E2IHIx5jWe29z0TmkcDrP8Wh/zLebLs9kIWaywaEURsO49UHmHwSgBUSjuFLqClSARGxtsjdhZ3ewx+DLf+Qt5nTcjugUL77mv7V8psZTB9VnFKmN7QW/pXReLT+aGZEC9QJTX5QLNVnkcEsAtneSHadGczEzC8CAUBOz4llT0ybpWsNanhZ81OgVzSqoDVKdNPjyiuhvOfXo5MExxEd49AIe5QMEMBlrV1mS5csJ7qFZ0eHA8EfeFdj2V+8G8ancjTOu8puViaRUtcf1KGDnKYB7TvzjNr6Nuhyxj7f/jDHsQyNwWmcBa7hKl0OK8K1rzz2H4fpYxTz17VcwvuT958D0hnDL/0EBxw56G+ef/mbjNK3ykUDtvXZ7zaBxoqBxeELEBKk3rGmKuHiGiwQehpbKw0CR+Dbhbzz3/wXrDywbGWWWqo0At+x7lJKnUah1c0JJg1J1P+BDe0qi+z+2IgC1/aO2P+7+c4U5D9uG7bDtQSlN2A9ITSU/sHTPTZMiafVWoDq2zgYmcuVacDfdUey17/xEpC7/iCVjFaX4T63WXzWu2MTAJpMSGRIfwB05uPJ7OzZfBYbvkNVJ3TO9crGC5X0xKVc0nhH0XMZNQZ9Qqzzs9G3kZoKFAugguybslMlzskhu3TJgBGR7NLsGlSurLso7hQqy5l6Ob+Jl82FoD2SKv1dIES3sHKE0WxknGyLnDya1Rjg6J3lTrvGahqMFFYK7xyUfX5Srg5vGl7HMvvHcISfPYev8x0Heeww4MOVum2wbExmO67qplLfSOE9yDBOvXDdmEkOU2HmoNJQKYSSmnitpMlgR+JzRmcb0/v4rKyfoS9XgErYX9cSYWHKNFCk8+2eu3t3JsC/7cExVxcH1lodkvksmHoFTehSY5VoxwjJJeUv4bR7AvLx5GnnlcFN/n6Bt31F6MeN2gTUmTdsPaKXdJN1OpowtpIwmoxSgviv
+ 66qtukta
+ WXi38QSTJ5C2iv81GsDNxPJxwkIayn4Q7EYbTSovi8tCgWMbqxJPNlviSDwFnBbOrKnL42FsG2AdOH4Pm0XmipwpvHhDYssdr2ZzELzXLceSzXlum5Y7o9gN0O8nkvd35k7pn7x/ehWsqm67FoH9uqLc6EfMoFEgSS46uhhXIsya1ChSdmxq7pQN7bhtACanuS7Ha6B749/o5RB5mpFt5BFjPTIQX9mHILiv0lkl4YnQyfa07I3qeTBAFMY8LPytd5Zzg4smFCOzHY2+3pUYLCpUschFVyF0ugICsEQ+6WcKhZ0rTvX28cpjF2/SrW3C4qWA9orv/hTJ5k7FKqpXJWqv3c4yKP/ZqVAgSFpB9/eghWhHgeHGT2AF+GHGMJiZqAsBHmXvsy/qQLDi4sK1/cT7lgwltbB47U+AadRRI2BBGRLEv52OQuTdddtMTfnvEMNJWkN6qzEvHqR6Kwrl/5RjM9+1v+iFaKTGCaQjGeVWkwL73EsdJzmHWdESmpKSRUQYhClXYLo2HQLtoWl6FF8YVhERbtt4FiWg6AyJ02XsStDdGBmxdDl+uRbTdDaLrZxwQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,170 +130,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 9/7/26 10:19, Yeoreum Yun wrote:
-> > Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> > glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> > made by memalign().
-> > 
-> > The underlying VMA may start at a different address from the aligned
-> > address returned by memalign(). Furthermore, a subsequent
-> > madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> > already set.
-> > 
-> > This causes split_huge_page_test to fail because the check_huge_xxx()
-> > helpers incorrectly require the address returned by memalign() to
-> > match the VMA start address reported in /proc/self/smaps.
-> > 
-> > Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
-> > /proc/kpageflags to detect huge-page mappings and large folios:
-> > 
-> >   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of
-> >      using check_large_folios(), since only the mapping type matters.
-> >      This identifies PMD-mapped huge pages.
-> >   2. Otherwise, use check_large_folios() to detect large folios. This
-> >      covers mTHP cases.
-> >   3. Check the folio flags according to the type of huge page.
-> > 
-> > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Suggested-by: Zi Yan <ziy@nvidia.com>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
-> >  tools/testing/selftests/mm/vm_util.c | 145 ++++++++++++++++++++++-------------
-> >  tools/testing/selftests/mm/vm_util.h |   1 +
-> >  2 files changed, 92 insertions(+), 54 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> > index 4821a3563036..dc62ce84e143 100644
-> 
-> [...]
-> 
-> >  
-> > -	if (hpage_size == pmd_pagesize)
-> > -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> > +static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
-> > +			    enum check_huge_type type)
-> > +{
-> > +	const bool file = categories & PAGE_IS_FILE;
-> > +	const bool swapbacked = kpageflags & KPF_SWAPBACKED;
-> > +
-> > +	switch (type) {
-> > +	case CHECK_HUGE_ANON:
-> > +		return !file;
-> > +	case CHECK_HUGE_FILE:
-> > +		return file && !swapbacked;
-> > +	case CHECK_HUGE_SHMEM:
-> > +		return file & swapbacked;
-> > +	}
-> 
-> Why do we even need CHECK_HUGE_SHMEM?
-> 
-> That's really just a legacy thing for using smaps to identify huge pages.
-> 
-> It's sufficient to identify CHECK_HUGE_FILE if you know that you have shmem mapping.
-> 
-> You will not arbitrarily have non-shmem folios in a shmem mapping :)
 
-Agree. but there seems the case where discern whethr the mapping is
-with regular file or shmem like tmpfs -- khugepaged test where using
-__shmem_ops. So I think it would be better to keep this as-is.
 
-> 
-> >  
-> > -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> > +	return false;
-> >  }
-> >  
-> > -bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> > +static bool __check_huge(void *addr, size_t len, int nr_hpages,
-> > +			 uint64_t hpage_size, enum check_huge_type type)
-> >  {
-> > -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> > +	bool ret = false;
-> > +	int pagemap_fd, kpageflags_fd;
-> > +	int nr_pmd_mappings = 0;
-> > +	uint64_t pmd_pagesize, scan_mapping_size;
-> > +	uint64_t categories, kpf;
-> > +	unsigned long pfn;
-> > +	bool check_pmd_mapping, allow_nonpresent;
-> > +	char *start = addr;
-> > +	char *end = start + len;
-> >  
-> > +	pmd_pagesize = read_pmd_pagesize();
-> >  	if (!pmd_pagesize)
-> >  		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> >  
-> > -	if (hpage_size == pmd_pagesize)
-> > -		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-> > +	check_pmd_mapping = (hpage_size == pmd_pagesize);
-> > +	scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
-> > +	/* Some mTHP tests check a partially populated PMD-sized range. */
-> > +	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
-> >  
-> > -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> > +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> > +	if (pagemap_fd < 0)
-> > +		ksft_exit_fail_msg("open pagemap fail\n");
-> > +
-> > +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> > +	if (kpageflags_fd < 0) {
-> > +		close(pagemap_fd);
-> 
-> No need to cleanup when exiting.
+On 9/4/26 16:49, Marek Szyprowski wrote:
+> On 31.08.2026 15:04, Wandun wrote:
+>> On 8/26/26 21:14, Marek Szyprowski wrote:
+>>> On 18.08.2026 11:24, Wandun Chen wrote:
+>>>> From: Wandun Chen <chenwandun@lixiang.com>
+>>>>
+>>>> __reserved_mem_reserve_reg() discards the error from
+>>>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+>>>> caller counts the node in total_reserved_mem_cnt and the late scan
+>>>> initializes it without checking whether the early reservation actually
+>>>> succeeded. A region whose reservation failed is then handed to a
+>>>> device assuming the memory is protected.
+>>>>
+>>>> Propagate the error so failed reservations are no longer counted, and
+>>>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
+>>>>
+>>>> Recording the failed nodes explicitly is necessary because
+>>>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+>>>> tell from memblock whether early reservation succeeded.
+>>>>
+>>>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+>>>> of static regions is not bounded by it, so on overflow the extra nodes
+>>>> fall back to being initialized, which is the current behavior.
+>>> I'm not very keen on such partial solution. Indeed we have no place to
+>>>
+>>> store the result of the early init call, but we can check if the given
+>>>
+>>> region has been earlier marked in memblock as reserved or no-map in
+>>>
+>>> fdt_scan_reserved_mem_late(). If those attributes don't match the
+>>>
+>>> region can be simply skipped then.
+>> Considering the later patches that reject reservations for overlapping
+>> nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
+>> produce false positives.
+>>
+>> For example, if region A is reserved first and region B is a subset of
+>> A, reserving B will fail because it overlaps with A (in patch 02/03).
+>> However, during fdt_scan_reserved_mem_late(), B will still appear to
+>> be reserved because its range is already covered by A. As a result,
+>> B would be initialized even though its own reservation failed, which
+>> is contrary to the intended behavior.
+> Imho the overlapping reserved regions are some kind of configuration 
+> mismatch and it is enough to detect them. fdt_scan_reserved_mem_late()
+> can first store all regions to dynamic reserved_mem array, then check
+> for overlaps, and only then initialize those, which don't overlap and
+> have proper memblock attributes?
 
-Yes, but some test code does clean it up, so I was just confused
-about the convention :\
+Thanks a lot for reviewing this series.
+
+I did try this approach, and it looks clean. The overlap check works
+well for regions within /reserved-memory. But there's one case I
+couldn't make it handle, where it seems to still produce a false
+positive, please correct me if I'm missing something.
+
+For example, region A is reserved before /reserved-memory nodes are
+processed. A is not a /reserved-memory node, so it never appears in
+the reserved_mem array. Now region B in /reserved-memory is a subset
+of A. At early reservation, patch 02/03 rejects B due to the overlap.
+But at the late scan, B's range already appears reserved (covered by A),
+so it looks like a successful reservation and gets initialized.
+
+The root issue is that the late scan can only tell whether a region is
+reserved, but it can't tell whether the reservation was made by
+/reserved-memory node itself or by something else. Maybe we still need
+to record during the early reservation stage.
+
+
+Best regards,
+Wandun
 
 > 
-> > +		ksft_exit_fail_msg("open kpageflags fail\n");
-> > +	}
-> > +
-> > +	if (!check_pmd_mapping &&
-> > +	    !check_large_folios(pagemap_fd, kpageflags_fd,
-> > +				addr, len, nr_hpages, hpage_size))
-> > +		goto out;
-> > +
-> > +	for (; start < end; start += scan_mapping_size) {
-> > +		categories = pagemap_scan_get_categories(pagemap_fd, start);
-> > +		pfn = pagemap_get_pfn(pagemap_fd, start);
-> > +		if (pfn == -1UL) {
-> > +			if (!allow_nonpresent)
-> > +				goto out;
-> > +			else
-> > +				continue;
-> > +		}
-> > +		if (pageflags_get(pfn, kpageflags_fd, &kpf))
-> > +			ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
-> > +		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
-> > +			nr_pmd_mappings++;
-> > +		if (kpf & KPF_COMPOUND_TAIL)
-> > +			continue;
-> > +		if (!check_huge_type(categories, kpf, type))
-> > +			goto out;
-> > +	}
-> > +
-> > +	if (check_pmd_mapping && (nr_pmd_mappings != nr_hpages))
-> > +		goto out;
-> > +	ret = true;
-> > +
-> > +out:
-> > +	close(pagemap_fd);
-> > +	close(kpageflags_fd);
-> > +	return ret;
-> >  }
-> 
-> 
-> 
-> -- 
-> Cheers,
-> 
-> David
-> 
+> Best regards
 
--- 
-Sincerely,
-Yeoreum Yun
 
