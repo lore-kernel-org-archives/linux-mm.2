@@ -4,177 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1632BC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7D7C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25C86B0092; Thu, 10 Sep 2026 13:48:03 -0400 (EDT)
+	id B898B6B0092; Thu, 10 Sep 2026 13:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD69C6B0093; Thu, 10 Sep 2026 13:48:03 -0400 (EDT)
+	id B60D56B0093; Thu, 10 Sep 2026 13:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BECC06B0095; Thu, 10 Sep 2026 13:48:03 -0400 (EDT)
+	id A506E6B0095; Thu, 10 Sep 2026 13:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BEFB6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:48:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05D93A05EB
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:48:03 +0000 (UTC)
-X-FDA: 85198586046.16.4C574FE
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012061.outbound.protection.outlook.com [40.93.195.61])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3AED0140010
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:48:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kJwGOic9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.93.195.61 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789062480;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AE9E6B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:57:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 172B18052D
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:57:31 +0000 (UTC)
+X-FDA: 85198609902.28.B812812
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3DAB9120006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:57:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0B0rOvQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789063049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKd7QR80oLZFNIOxPtqaVQEmjNbpvg9cYaMNwW0lJIQ=;
-	b=NaHbSR+lyhCxoki/ZN/cN2d/mF0MICAY/wciLfhW1hVNxZp+WYGZc+e+wvve4UFrVKXEGp
-	MiT1dDF5NqnQMgvvZBVLoI3qRmdHG7n0et4kyAjgmUiPlaqn5NaypsK5k2tnYt8MsqM++w
-	iAj1fMTv7Jb3wkOQ1gQyWRcmqQMa/XQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789062480;
-	b=En1RMd1B/kme7Je6fYKpVAiDVQ7sCAnCifd05zCw7sWIjMQnRhkLmbHGzOL9HrDwoRG++p
-	oiY92qA2UahQsKwnj9MhZ3l8SZGGJfOa8dqthPH/EUZ5GzaUjBEhhXFeoCJfUR8ThAWL5L
-	8tQMSzcojC0EA8RnIs7LclDgLd2pCZQ=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kJwGOic9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.93.195.61 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wQ+5G0B1PpzlFO7B9xPawSjbZVvFwrDbgt8nbQPWjvGYSnkM2tMMdnKpuOPkcKJ3AQj6NdQ2D1AEj2qMYzZt2j4UtfEHsICDHYaU3AVkxcWHhtIxSPAgaL/qxwUdk3drJqMkZ4nZPMjj8w2JWNxI3mK1A3nk6aSpnb1VlqHpI+koCgs0UnnH1hc3WjKuqgjs8Q+hthkQmCalxlzco2KiF5DKtTMZgTKRPtMc8UNOauLU29Uctpwmj21th0S8oYWeEZKOch1jThbB/Nfi2U+XJcoM2IUmaY0xzU3JBzS/wE35JGJniZHQNwToSRuBvD6QaE094sTaL/X49PnY348DQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dKd7QR80oLZFNIOxPtqaVQEmjNbpvg9cYaMNwW0lJIQ=;
- b=u8N4poEjIueys6+iOUTyNB9mqofzmzMTJYs133FEHK0j+yYzKsoiHleXDIhEH0q6JCNOycsCeaidXJjceh6zfNAhy/YGmEQvQyMMO8OsihCace5LCc66qS1e34oIfIcXRNim1D9yuVkDv8m3i6ecHXv4z28RZFQvmWWnhsOCHoOr6rBVSZNZcum4rKp008zwLy3cYsR4z9UpTRcZKXJ8lcegYGSgqikakEdidgIyfZ/ZY8IgBabxmmoiQgzFDMqLbc9mE4M7HYQkdrmgzsOfrHZACAL7GVGbGD42WKTh+smB/wfnmMOCJu0hcXSbyHv2Le9WvhhVeJK+h42y60KgNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dKd7QR80oLZFNIOxPtqaVQEmjNbpvg9cYaMNwW0lJIQ=;
- b=kJwGOic9vMzTMqzBmVw0yubN+0iGFwo5y/cmTPNL/2lsS0U84gFnoonRMSvbNCtGLxsFgY5l5qQB04Vqh0cCPJ9L+Ie9cphM6t/sLlgmhr3IwGVco+PW4szUV1eb0QiuW2X9HL7US+Pe6r3RQbyDyzgTLQ+c07QGL7GldDD+YpGwHYMlx5a4lgpg7b8hC68qisEL89CoAP+ma9icOpNCF2r9dLgGWgLQM+OKYMehIgTYUupvXiE5jnj37vAVlZhTIRQiFJJhudZAf5M1/sOtCHjs67v45HZfbNVUnijIVsSaoRvqhDZj6TH55RHmrHL9JxaEh3chk/V3xR4wPPoWhQ==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by DM4PR12MB7623.namprd12.prod.outlook.com (2603:10b6:8:108::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 17:47:43 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 17:47:43 +0000
-Date: Thu, 10 Sep 2026 14:47:41 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>,
-	ackerleytng@google.com, fuad.tabba@linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, david@redhat.com,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
-	michael.roth@amd.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, will@kernel.org, vannapurve@google.com,
-	maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org,
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev,
-	alexandru.elisei@arm.com, skhawaja@google.com,
-	aneesh.kumar@kernel.org, linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com,
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
- updates
-Message-ID: <20260910174741.GG3968357@nvidia.com>
-References: <2vxzpkzo51wg.fsf@kernel.org>
- <anssOQFNZ2LfihbU@google.com>
- <2vxzik5f311e.fsf@kernel.org>
- <anyObKiZIhfok5mk@google.com>
- <2vxzqzjz1x5f.fsf@kernel.org>
- <aoMcqp0gr06YXAPU@google.com>
- <2vxzy0e3zgqz.fsf@kernel.org>
- <aoSCCTTBn9D5hqzk@google.com>
- <20260905011956.GA856309@nvidia.com>
- <aqLU653FXjJjhbop@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqLU653FXjJjhbop@google.com>
-X-ClientProxiedBy: MN0P223CA0001.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:52b::19) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	bh=6ff58e1r4MAeSOAGMoh1t3fDEZWa+M93NvaAU2f8cPU=;
+	b=l7XwrVFuk2AtIbPtNjWzXUD0YAnZWi+z+zo9yDi0aA3mtpjnHolry05g++xgRVVr2FaCVF
+	8JPn6OGtgiiZow7h3IJr713EIDm3BYrfipoeFZ8/kK2GdHYNdKoIZ1+X2xMnby7b6vJPbu
+	xiT4OqDorNMHxZkWdVJrXUARUH5O9pg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789063049;
+	b=xFejwJF3AqcLQhpCqw92Erc5DgMzrq0ppeTw/VyweWYRVKjmV+ycNDRoxaHn/gR0aux/GS
+	ZbwYQHBZrZV3aUgtMZY9HRNfVqvzhY6Zi1s5mqNbyLGrb1vdSkq6kyYaXX9koRz2R1sqkW
+	bP71JH+wWbEs7BPh8/GYp6cWwZ3Qh30=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0B0rOvQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09F0B40A44;
+	Thu, 10 Sep 2026 17:57:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3793A1F000FF;
+	Thu, 10 Sep 2026 17:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789063047;
+	bh=6ff58e1r4MAeSOAGMoh1t3fDEZWa+M93NvaAU2f8cPU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H0B0rOvQX8VpVHxmekklMUtfgBJjxIdYtekM/kNqL9xVctxs/FDGawqOjRLvAi5U2
+	 3jqkXDa1K6CYPa9q/y3fs/h+GSkuJuWOKwNB1VHTHDzI8G65oaogoJQSMe1j41DeYy
+	 z9KS5Mig06RQREdF3WcIf49yGsMmwVTkYrVQEWUD2mqCucrdeHKYmYKWVad2KD9beu
+	 D/SxfPZm/huPD3rluTJY2DWQuzEAcdzK1UbBDgexCuT68UoMUzRGpwOR7WMf7rzKG2
+	 X1861ACcpCmmA0U+ROYG1sjpmk0+jhti4TYK1/zj41Xm6DWNhRAgSArjFqJtXtF0Km
+	 KBwjqnhzCVfzg==
+Message-ID: <c4f13252-f4bf-4006-b908-5094601e5169@kernel.org>
+Date: Thu, 10 Sep 2026 19:57:14 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DM4PR12MB7623:EE_
-X-MS-Office365-Filtering-Correlation-Id: 955808a4-384d-4515-11e8-08df0f639d91
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|3023799007|10067099003|4143699003|11063799006|5023799004|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	iOkj1MhlmuWs3Q3Yka5GYsaQ6TZM66zt/vOEWATmoxG5O/uQppiNzFwdEDPUb7hdWnJxKUa5ydrbsg5Mr2vMoiL237PPoULNrp3d0qyqMzdxTyer91+BYKO6dSiY06hVefKMGUkqsk7H22sDrpoQNY2UCfYakigMFUT1iPjTxK9EYYC00kJ3TNI2aTxhNb6Y0HSxeugLLe7tZwOL+mNxOBM0mwalfAAHqGaDl1OPVMnJNvkdh7jJeSjQjGLsiohm6wYXcrW0j0IzGeUIOspZd3tnb0fkHYGwNPqucC363FRPYprYt5Hbxuo5lkqck4ag+fUY4+0AOBTNBXntIw+z04PB5ohwbYDBPUnTFEZmHZURi7WxtEY/VG2NDYtpaMdYJwEXJHaCbsumZhU6Om+Nm1ieAuTxmFqvKOQlwNWICAjNmyAM75u4yv03+39FcmsQelRCZCK4FBHFBRM6XYFxDwS4gmxRBVxWGg7oPZqHQiiISXwRJhvvB7k/T4nwBYksQryO7dShY6Xt6o+LeL26WUaX0f6z+7XwOCBr8POfP5YMqggoqdrlTopuI0vYgJAySzJ/niiCd5B+LAYYs8ipr46m0GiSzizDRA8aoFuT52DhGJ4HKckghczRsQVPRvp4HOFL75KjjvRuTlzUnbmY71XYwgWuqD/ZouuaPGiN97I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(3023799007)(10067099003)(4143699003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CkcgztgA/Jzc1R1gVil2wLLNMW7/x8FpqEckdD3A7tisZhL6uHUAPDyhgKWu?=
- =?us-ascii?Q?qpAQDF43DrDtYz21P88z339Y6N4K+IDv7Hf30PUaXw+TpnjewFnmpq1VFfjd?=
- =?us-ascii?Q?xihf/FIg7qeeMAYF15glfPWpAWib8yEqykHrM/c26m/7lm2DDFEQyJUSMB0Q?=
- =?us-ascii?Q?/mBHOOXFIEv3yEEBGUGI4c+ItDWBztW1qko/l8nEdFckWh8k26JliUQIyMMm?=
- =?us-ascii?Q?S4LaXeRDbVUiZuKDqoRPwjJ/wiQsBXDhrLqxVUlsyrZCABhSrV6EOLGcBsQ2?=
- =?us-ascii?Q?lUOePxgZ7rJRONVOHJBrsxUBD2xIEiDQoxVbDOdxXJUxYOkEPRsVrh1JTsjE?=
- =?us-ascii?Q?bx/b/Ds4hFTuyC3VjdXlqMLfyRxPmE5VdALUAsf4CsynjF3i8NkQEyVnbeit?=
- =?us-ascii?Q?Ewjbx8F3abJ4atnT4iisNaugEiW/pzEwdN7DcRJQse5Ekl3B0a2gDMNmxuFd?=
- =?us-ascii?Q?ry5BsR1gkUJkGnPeJyr5ukMZJdAPhp6ZtVDMIidRju8rvlQLv+YHZ2X+mJ5g?=
- =?us-ascii?Q?GKojEMTY1Nj/cPIrfQAoqtJnQBIs3VNzAjy3OwR2iKsUq/c2/b/p+45mPYi7?=
- =?us-ascii?Q?FRCPhaOUZcI2WURlcwdJlkO+EReDfRsngDjN8wK2QtPNdoFPDjo1wcbiLGEI?=
- =?us-ascii?Q?MFCKZhcyYiSc1OSlflx+z1nua5p6I/tS6SWMC0Pr/qwqwKU0CGq0v3dQvbWH?=
- =?us-ascii?Q?JmiLZoVwDmesXQNXhIZDm/d+oxpJj5Qu7XrSNO8LfyuAKY9hlYLO2iWK9jkZ?=
- =?us-ascii?Q?V1VhrQlPCGvYoPo9Zh82rTyYmrjeZuOOWDKAPzwt+d0gi4izrP3uciztB90N?=
- =?us-ascii?Q?eZ4ozD+G0OiUsEHrUeZ2w2w+RdDHbuQUmAUonmHB/97o/lIJdCeoy49/NPvD?=
- =?us-ascii?Q?IZ+SYLbUfUYJjqO55TY/4cfBsrxZ5Kabd4Aw6nvOiTRUzEgAZ5ecY8XWxO9l?=
- =?us-ascii?Q?pncRD5l1ZxV4a/Gm8oaj9HFxm7vjWp1FHDIlMMuq384QWR2LSPd6QaVNBYav?=
- =?us-ascii?Q?uKHqA/uzfZMf7QmA8Yy3Rh1Imb95tWNT+VLmAXUf0UBXcg+cgQYjwwZ6QB28?=
- =?us-ascii?Q?3dHyOJ31urS1ApwqhcvZlG2kw45bHr2XF/PBmVT5N24RFecMk7qk90M585Mr?=
- =?us-ascii?Q?NAfkZeo7NCOhILbuma5woycCBs0vNkHisOUL8G4dn1F7SX3rwft3xoGX6+Sk?=
- =?us-ascii?Q?bCE0RbAOG76wrVqqt5P/u02ltRPCzcoN8AszrVfdgnBp+AEXG4IZHRfujr5O?=
- =?us-ascii?Q?pVsX5Zag2lmBwUbP/kg6UB+ugvK+ZTrUE5k0clTmmjU6dQLw+XJnMp4BNMHe?=
- =?us-ascii?Q?0KxyMJv3VipQAH2EknGHnBDmBoLhM8Si7DoeGg6jGj1Wnid6vomtEmkcPqZw?=
- =?us-ascii?Q?hkY6I+xZxoeqDeANpQawndqBgHUN9Gcc2cB/K/rStoTE8y1UaIoCqU0X3W8g?=
- =?us-ascii?Q?68LqY4011T2G3Y51SyyfJu939YDIlnXbQq0H5PcZRJ0js0psXT5mUhsW2qSv?=
- =?us-ascii?Q?SL7BwWHH1vgwMOHPZ+pRxde80s+7GzMfeRfc/KB/wQ3HZen0vYfODkfuo1bP?=
- =?us-ascii?Q?lB2azXL4rhXNt3ce096ItBnjTusMTCcj4dinuosAipbPgFfcpcWZtPxrIrhj?=
- =?us-ascii?Q?mh6l4M7mXA2owN608yeWON6WeBMRka+zssgWcwob5BShj4MQQpEx3d8Darfo?=
- =?us-ascii?Q?MDAwxPHvGywMQLsDjlP+A0hXgecrIOjc2EJ1/0rk6sUFW4qV?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 955808a4-384d-4515-11e8-08df0f639d91
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 17:47:43.3653
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CEWGcjsHshNcJsfMJji/1z3ihpwnDDTQqqI+ZjL8kHgbwryCscaLqAh64tCaFUxD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7623
+User-Agent: Mozilla Thunderbird
+Subject: Re: Path forward for Virtualized Swap?
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ YoungJun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-doc@vger.kernel.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: e3bpmo19byk5ji6h9g7t1gcbf3uo9ssp
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3AED0140010
-X-Stat-Signature: 5cnerz7qabmuoyt1ige6yf9atcq9rgx8
-X-HE-Tag: 1789062480-356271
-X-HE-Meta: U2FsdGVkX19RVDQ9/z+6u+Cev4r7V6yvCO1LNGNQWmbWlJWzACy92RlTI0OheliwoybnS7qe5P+4icgomXgIGwwIi0Py2KWJ6pDuuOk4H4MtmkiLjg01PEpKH044VZPuwqxXfqVia4zyJsxB34yDe0wudnik9iEEoTBbtS9B1muPHSgtGb/7icX/m8TTPkl0gImekMCzpm8RgGmOB6KI/kgyBkL3vm9sEGjTSYbHU/N/jYT0CXMARf91/Izby9Bd9hggYifszrbxq5za70lkMTgycf5LQ2W5V9WfzjPnTAKsnTYvVQ3UpJbEQY0dLPD4C5BYv7d6i1YiAzAJhWRZj3G7eeXoKGrS3DtlSfZklv3mX6k+WZrvBbE6oeU8PKM08jNEWqT7sIb5d9alK/BSkAqeFnvOtnd9eu0ZA7LPdw0CgecnKQ3YdvoOh8kxr0me65EFVYqt610u8G0jKJmaHCtck/lGHsNSor3LDOnKHykJ7Y7Cnf1UppKqwsu8Huj9XJvkZpbAFzNHGhbYMC0cPkmvnexutu9hPRo69Q5I2wfvCTD+bvbWXtQYKqO/dHcmLkDWy0J16Fe00lW3SW6UEO8HtinpIGNNEnwwRHCLcXcChLCw8Yf2VGd4886Zmmt8ZTcRDnw173mHgiFV2SKPMhrSwTT7ZQ7M7XhpiBxTT+6G3I6pRScX7Hqzd+mypcFgW5l2DL07lgBvVSsrzrmFYWSGudqrupfZ79SXiyOlPu7iGsxZbGxB8NPJLNjmQxhNYS4exQU7EVGnDyZ7SCyHqkVzf+DQ4peM7kai6wFOfr1WpaBS7rPXEDPWL8RwaLhWS7wDtQ2T2RHKf7DArGc6JnGzxCl7pfiMO5jn+BFM3QXrjNjfUzP4cNICqm086EMjdusnlBO/R1MQZlAKbC87PkFYNAPjhe00nYQpGDigoLVhV6iibchfWsICvBkcdCjZ+8Rq0V7MIA9Wm3GB07k
- 0HXvyFAh
- wLmJFmifYa28jDiDiMnckl4zh3YKjBsf433NZ/w8BfrhxPqsDrAc+sz8U/c/gm0DniBdwELH+wVsIhzN+njLWAc7Ot3TpI2pyXeeR1Zu/NHH5Om5/eHQ0HWcs5D1+jUWhY2trRrdrVC3viVhzuzYAFOCYIAh6fUdv2YuRQIN142JBQ02NDNFfcazl8nwpIJSG2gf5ka1nEueq1Hk06d/+Zm9zV6oqMjSLz7NWjEswkbnaqFBdAof7a406mxwqYFYw5bUb23X1ewy9L+YTH/3jDq5oh3VQhjhCMtysbsIujAeR85hHZAzdZKY9y4+IFO4Q8MAPndQSa0Uc/qY8ntXp6E1EnzQGT0OHuqyFqftF1RjmsFVqWz3nxE1dFo2K409cfUYd11ZS7g8B17xPH4H+oVbcww==
+X-Rspamd-Queue-Id: 3DAB9120006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789063049-868266
+X-HE-Meta: U2FsdGVkX19pgjqWELcGTCjk9+FDur772Ji6V1n9Kug9A/IJHGO9Onyo6zhnNGoJ1QVYhhXMehkU9KQBl1re+99znkYkUulSRbrHSYzatXC+HMBhDiBbueLPd/emdK17X6fgWlR6Ua2E99fbs3X5YYlRu+FNn2Ps4AkfC1PvoHsyVqlaTEHlaS6nt4mfRia1z5jP2wZlElMywlxH0pjsIZEdI2si8K1deN03GUYE3McR6l+c22OElecUyLdYoROO6BKMW8ecyfTMzM88r4jU7GVeW7RkIYFdyjrlstAZLe5dbWZsLeasv0RH3R//IZFuj7E5fla/gFQdawep14F6+BF+dncaTdGlHYnvbump/l4LJM0odP2IVJF+flXEzUMMN/VCw8u3Xd+zg+M6AA2RwfT/y7anAFNpqVk1JoSgaAe1uGa1beXwIlKAwuRYqa6s6qlL2f1DBCoOPOYynZf94T2r44jEe0pshydKFrQ1vbrXzNQV3Dw4IUvhX18KkM0THnw7iCAPSq78OM+JZF2cpQ/NNtxAogGVKVp5xWd4RfWX7+0LDCY94JVpSTgMu8LpDBU6iCCO4IFUOsHkO2iDzgcsdaGR2O9PjXUqZha3Yg52OcJUri1kCd/APME8cGPq89iTeXD8xLyluBhnoJbkMTYpypA+ljDLovLhQzPs1k0Kjy/BtqvPAorx/EpS81RFI2IooJXpBIJ+FJcKBUqbxQp4Ye9wj8PTdSBhfrjWnkjLPtTc6pj8CkQFXqemSqJQkFOkJV0FJ42X1kqS+uWNTshsBLUTlGSIGyA+Ozg7GGe3ZU94B0QEuu42N6W1cU/DQLLN9aZDY1VcvMAcgUF8s2gl6hcDuhx+0o5Oe/qWs/M07D/njZUh6ch17z+QtpPoGl+yeUqkHGGnXJeTc/M7RSIPYHubcCPunZaodwJrg9+Nq6eT90usBp/Ge+5oPE67kdzQyOMwagI4u1K10EE
+ 98TF8t/H
+ wfi+nsolb8kNUWSVHYyu3oNNZe+NrVFPGdAXsRchR5HtcuB/hAUi667M4f4Pu7WdN36ebuF/9D9pnAWBXrO+uxdfYVKZ+p8xrpwg5ZS9D6RE1oPm0lvrDy/IsCRvFJTz2uaUdg0qHoPhOyh4loP7Ddcr3ivcBI2KGp5wobOImQv/QZeDbsoNte/AHwzRhAuy4IiogopaHOoTKAM8qiPXDaFaoNoM/wRr+jVC9FTkkC81fGSCWja/sdEejKci4fhPMxx0EqacHeM42PtK83Z/2BYtIK62RJwafjo7GZkfuHFMeqtRVbI+iz/HdIGZbdnsnyOM+oOhU/Qf2Dcy60VB4aHZPHf0lrTic9r8+TVkwJkii6jeOyBq41A87yDf+Xjf4eLnYpO0/XPv599Qaz6OmcLHbyCEi9DKhBtJ0agnHiPqSRto=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,109 +166,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 09:03:55AM -0700, Sean Christopherson wrote:
-
-> From that perspective, what I am proposing actually goes a step further.  I'm
-> saying don't commit to supporting *any* specific versions in upstream.  Express
-> the feature requirements in the serialization payloads, and let userspace sort
-> out what kernels are compatible based on their actual usage.  The kernel may need
-> to provide additional discovery mechanisms, e.g. so that userspace can probe to
-> see what is supported, but discovery is usually fairly simple to implement and
-> maintain.
-
-I'm not so fussed about the version number scheme itself. Alot of
-different schemes have been proposed over the last year and half, and
-some were very complicated. Nobody came with a more granular proposal
-that also didn't have alot of complexity attached to it.
-
-FWWI this started out with creating device tree fragments with a full
-YAML schema, and the same kind of perfect ABI like you are talking
-about. Yet it did not figure out how to make it discoverable, it was
-super inefficient and very hard to code for.
-
-It has to be discoverable from the ELF, restrictable on the export
-side, easy on maintainers, and not complex to implement.
-
-> No, the subsystem just needs to make sure that it serializes its data using the
-> defined ABI (where ABI here means the format of the payload and the meaning of
-> any flags in the header).  That should be *easier* for maintainers to handle than
-> trying to support arbitrary versions, because it eliminates subjectivity and
-> having to make judgment calls or remember magic version numbers.
-
-I'm pretty sure I have something like PTSD from ABI definitions
-adventures on the uAPI side. :( Please don't call it easier!
-
-I really don't want more of those in the kernel process. I think
-Linus's non-stable-api-nonsense is really a good thing for community
-health.
-
-With the simplification that upstream supports only one version at
-once, a simple "id" to represent that ABI was the simplest, easiest on
-maintainers thing. There is never a fight. Someone has a new idea,
-great no worries, change the ID. Done.
-
-I guess I should say my perspective is to prioritize not burdening the
-maintainers.
-
-> > I was told KVM had the smallest luo footprint of everything, so
-> > perhaps your perspective is different.
+On 9/10/26 18:22, Nhat Pham wrote:
+> On Thu, Sep 10, 2026 at 3:57 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 9/8/26 18:45, Nhat Pham wrote:
+>>>
+>>> Hi David!
+>>
+>> Hi!
+>>
+>>>
+>>> Thank you for your suggestions :) More collaboration and communication
+>>> is definitely needed here. Conference is a good place for this, but
+>>> it's not something we can do very frequently, and many folks could not
+>>> attend (visa issues, etc.).
+>>
+>> Right, and conferences usually don't have the capacity to squeeze too many
+>> swap-related topics in, so it would have to be side discussions or BOFs.
+>>
+>>>
+>>> A bi-weekly/monthly series of meetings sound very appealing. Swap
+>>> contributors are very spread out (China, NorAm, Europe, etc.), so
+>>> coordination will be tricky, but let us figure out something.
+>>
+>> Yes, that's an issue. I'd suggest swap maintainers take care of that if they
+>> agree. I could try as well, but it's rather tricky right now on my end ...
+>>
+>> As an alternative, we could also use on/two/ ... slots in the bi-weekly MM
+>> alignment session to talk about swap. (I'd be happy to learn more about all this
+>> as well)
 > 
-> Only because KVM already has a massive ABI surface for save/restore.  
+> That's awesome! Thanks for the offer David - I think MM alignment is at 9AM
+> PDT Wednesday, usually right? 
 
-Yeah, you are lucky, other subsystems haven't done that. Honestly, was
-it easy to create?
+Yes, exactly. David R. hosts it!
 
-> If you want to convince me that magic version numbers are the right
-> approach, then show me how KVM's existing save/restore support would
-> be made "better" and easier to maintain by throwing away all of
-> KVM's save/restore uAPI and replacing it with a versioning scheme.
+-- 
+Cheers,
 
-I don't know about KVM, but how do I manage something like serializing
-an iommu page table?
-
-I'm replacing all the iommu page table code. It behaves
-differently. It supports different things that old kernels don't
-understand. iommu page tables have to be under continuous active DMA
-during kexec, so they cannot be serialized.
-
-Setting the old stuff as V1 and the new suff as V2 is so easy and is
-unconditionally correct. To my point about supporting only stable
-branches this achieves it with minimal maintainer effort.
-
-Yes, we could do some comprehensive analysis and try to determine
-everything that changed and make micro feature bits, and some thing to
-map the current layout to those bits and then hope all of this is
-correct.. But that's *a lot* of work, probably will have gaps since it
-will never be tested. Seriously, why bother? Explain to me why I
-should spend my time on this and who benifits?
-
-IMHO your KVM example has a much clearer answer to that question. It
-is UAPI so you have to do it anyhow, and you have a robust open source
-ecosystem with alot of VMMs that will consume it. Yeah, I'm on board,
-makes sense.
-
-> Have to, or choose to?  I have a very, very hard time believing that
-> it's infeasible to define a serialization format that is decoupled
-> from kernel internals.
-
-Reduced perfectly everything should become grounded in either HW or
-kernel UAPI definitions. Things are not perfect, the kernel has
-limitations, it doesn't support every HW feature, stuff leaks
-in.. Like my page table example, the new stuff supports ARM CONT, the
-old stuff does not. That is kexec ABI breaking and is only happening
-because of kernel internal details. In the page table work alone there
-are probably ~10-20 micro features like that that would have to be
-identified and delt with. Frankly I'm not confident I could even
-capture them all.
-
-Also there is the push to make kexec downtime lower. That puts
-pressure to just retain kernel things exactly as is, and maybe even
-keep kernel memory as-is. ie a sloppy job serializing to get better
-performance.
-
-> Only if the relevant subsystem defined a poor save/restore ABI in the first place.
-
-I think KVM is the only subsystem that has save/restore :)
-
-Jason
+David
 
