@@ -4,97 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC81CC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06DAC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDC266B008A; Thu, 10 Sep 2026 09:50:29 -0400 (EDT)
+	id B199C6B0095; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB3AB6B008C; Thu, 10 Sep 2026 09:50:29 -0400 (EDT)
+	id AF0596B0099; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC99F6B0095; Thu, 10 Sep 2026 09:50:29 -0400 (EDT)
+	id 9E2C16B009F; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A8D6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:50:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A68371C244C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:28 +0000 (UTC)
-X-FDA: 85197987336.04.A9D6EEC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75F536B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:50:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97F30404E9
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:39 +0000 (UTC)
+X-FDA: 85197987798.19.FA1297A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1CEC618000A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFQAUfDL;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id A2C6F40003
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:50:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j00D8+5W;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789048227;
-	b=TMvqAtXeOvus5R95p85hIdye11Mx4RUJi9H75dpwriV7QGw4AeEOt93CSU40CXyS8jrdVJ
-	4rLO+Ny4kE59eJhg3ycbxf7p3KvFSTYA+jD7crw8P3VKZntqC+tz1vSMoYmhWIvNAnUuZW
-	KAHX2eQhfMOQGIZxaVU5TJdWFUsq/AU=
+	t=1789048237;
+	b=nmzuzuYqIxxmNveOxLKsRMDy7y/7iHPv36w4Aovl+VnJCFuIRnXlLGZKtkTiUXl1e+sNSZ
+	ohJrgbkmCYKaAfeu/RTUdCOydzuOlxCskP8cyeAS0uPNqZp/3Tk9L51yrUlsc8P8dV3OaQ
+	Pi6EfTplYE8u7P9L9TzE951rC8TCl2U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFQAUfDL;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j00D8+5W;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789048227;
+	s=arc-20220608; t=1789048237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Huo9AavKgYJyC3DyOPGYv+hq7OnKaq51C1pcQHDpq5g=;
-	b=aZaGEppBTiUf9Zi12fDYETPyneaHXxNVO36G03/6dVU8uybGnz809o3WIxa/y7WdWT66bd
-	xe6W2TltBPCLx0pkoY+Q/w8hp1Yc5IY54AAdtZ2LwrHhMA38oN+7VT2npZPqjXhdNXvCap
-	we4wMJYqmGa9eBYs0IesgDCnj4jt1GY=
+	bh=2Zyq+M8PkbCuol0oMRfsYKnJaMSeruYuwwQ+Za3eJWc=;
+	b=LmdmxEyfMn9sInkkPLUBJAFgnup0apTckfRHyvBRYqFKNT8YAnf1rrhX/8g9rsCCWTjWHM
+	2DxUWY8O0znCzKMRKtw1Haa4WYMNC6wZNXM+35y8V+p8Ryh73dVSK0BZGdTftcivZTPylr
+	gajcGoSRExhgcukiDN/q/5+w3jcU+P8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70963600CB;
-	Thu, 10 Sep 2026 13:50:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30A51F000FF;
-	Thu, 10 Sep 2026 13:50:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E6B060200;
+	Thu, 10 Sep 2026 13:50:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81471F00899;
+	Thu, 10 Sep 2026 13:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789048226;
-	bh=Huo9AavKgYJyC3DyOPGYv+hq7OnKaq51C1pcQHDpq5g=;
+	s=k20260515; t=1789048236;
+	bh=2Zyq+M8PkbCuol0oMRfsYKnJaMSeruYuwwQ+Za3eJWc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EFQAUfDL152OTzyxXY1pgmtZj7CbgwEMnNX/gqqxzgzLdXEVOxmenctBi0IwLcnqW
-	 dCBbbAMIgVwl8kmKBXwnsnDlV2hB8j4ttJ0g6Qtji1BL8YryHQeypajmRJd9xppbKn
-	 QFChUqMFxP/VZgqX+jPrIPN8SJrlngJSLgW5U8fBZKNy4yRjd31fRhcAi7jDTc1ejc
-	 nCf59edQlTsjNUlQez2McBcAepMIS/bokIJsA844y2K7Xvy/ssNrJpP+6TrXvqv3FL
-	 7mkfUO1Uy8ohog5YCziweZ4RU3Vta/vJbUHr2Zs7OnImdA2vkhSUiwqu9ygkBQNdYZ
-	 uf9Xz1DQ0QNcw==
-Date: Thu, 10 Sep 2026 14:50:16 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 07/12] mm/sparse: remove pfn_in_present_section()
-Message-ID: <aqK1g2AuXCFjAq7p@gremlin>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-7-008fc8d579fe@kernel.org>
+	b=j00D8+5WBvvgtePwmcUTZwR4/e9jpT6UAtMI2fuh6T2E2K/qQbB+NrWmtZtkevve6
+	 P628D+mJt4eG1F46p3oSH3FmkM9ZreGsoBxKPr+UEonN/lktvXOOKV+OSLSblr6Gvv
+	 nFIFoj9cIzsV9VKSq1smcUrIoKHLokLRpaq/tIlbe3AnyWhVv06uCY0F5CH7k3rV9V
+	 xbZ8jPnKkUH6xCWCEC9jIa26pJOeLA7I1mFKUfaU7XPUAKGzX39aKiPZ74a0BF/+wi
+	 CuD1Y4zG2v2k+y8srQVIu82NX4RiaR21voioo0Lzn8vtsLlIGM43OXjZE988H7GC6Z
+	 hSTXsRIS2AOcg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3A580198003A;
+	Thu, 10 Sep 2026 09:50:28 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 09:50:33 -0400
+X-ME-Sender: <xms:o7WiapMA5ZYLv0l1u-q3Q948NDdNTquzrCza38GpTucWddg-gkiFAg>
+    <xme:o7WiajAWLh850YP4Dl5hCV6ce800SEVdqzdNFw4ZbeW1-IpUeP533TvtF2m2TCEUt
+    NN5ff3HUKBjsqJ87eFUY08kkJXZ9QiJZtvql2BU2tWfYwROzbLZ7DQ>
+X-ME-Received: <xmr:o7WiashDBVKK0Au7xbKcz9IaHDZz-ELoWkklmHj2W4_IkxtxhKia6wiMHVo>
+X-ME-Proxy-Cause: dmFkZTGVBT71C7FGJ01T6J2UqH+Pi6wNZKGiTgwF7S9p/aCc0zCAXAuAMT/w3/NjT0H+7r
+    7fm9ak9wYpA9hlu1uygj5ql4In2cxLpabYHyYjdRq4Ex09QbfWhwYkSlUWEiEgKDtFlk6E
+    DKclzpl3GoADoRIKuxrLqLu7GHhh62DsLl2kTqbAAsipMyXMHV1I+aP0vA34B2aG8VHg0K
+    3YFXtDtxd398gCYFU3vtCJWK9kir9GxrwKXs64iv7yMKNFLP+RLrDApV1kw3PY4ilySoxm
+    r+mGzrL7lncFxihhj4CmZT7LwPmAgAQWUV5TG00b2op39e9fFzrAVDvVYP+koiS5eIOxaf
+    kAB+AbhujOvkvSZHTmblWNjGtUeTnXowRYMfFTBAf0Ty0JmlfPwLKju26jupTYYyyyHLGQ
+    EIy7bUWY+ekXNOf1jLx6+6yfibq9Fq7Tj8B9ob57uTKlVDYbdtn9MQ2RZCavmWjTlVAWlN
+    1S4HeDEXt+KToZfW7hup78qC7dlSB/Co0S/+3f4mXzrrhu8nM6qXfDm7mIIubCxO3uDsPG
+    1c1EVQMGPUMGfO0imDSXS//8tqxsQiDANNsdyb17XSemT9Kxp+hf0vrCUx//sqxk6V2DE/
+    zEJwPeL8LDYLn64IHFe6VRdZV1BWeR3slFsBpRm+MEgh0mqZapdcRaZAKSUg
+X-ME-Proxy: <xmx:o7WiaodoCCRhHCWSxmavRGtYkaYzJYKkPfChMHziTVVuCZrGexCTgQ>
+    <xmx:o7Wiag3ljJ85hhKeoFRel9qlCTYVDm1s9CywIdUbF_NH5nFUVSFk5g>
+    <xmx:o7WiagoiAWdDHfmcZst_Qg6VpEm0wCEdAKLj8GgVRoid-FMHxUiqeQ>
+    <xmx:o7Wiaq5R7zggsCVfMakZkc8OwEVaxisUBMSsDcBXg6VrqZgwf68SXw>
+    <xmx:o7WiaoW_pbmF3eyny5h1PeM8bM3RlT9iuVvY40Dblgakh02vu1wnsX9x>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 09:50:26 -0400 (EDT)
+Date: Thu, 10 Sep 2026 14:50:25 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ 	Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ 	Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ 	Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, 	Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ 	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, 	Chengming Zhou <chengming.zhou@linux.dev>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Chris Li <chrisl@kernel.org>, 	Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, 	Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ 	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, 	linux-kernel@vger.kernel.org,
+ Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
+ KCSAN
+Message-ID: <aqKzUTPbh1qcKs4a@thinkstation>
+References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-7-008fc8d579fe@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1CEC618000A
-X-Stat-Signature: pdt753cid981dunb6ydnk46qnkrfapkk
+In-Reply-To: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A2C6F40003
 X-Rspam-User: 
-X-HE-Tag: 1789048226-553614
-X-HE-Meta: U2FsdGVkX1/wWYSHQV7HM9RhNs2gS4eWvtWgmcDDS9IFIA8VqtFQ0m8Z02fKfcnIVpu47Jjfs6lp6l2gU9ncQm8MrtaOLhXUVjxiVlHFhxC4l/Y1sDelCTYcMG/3yUC8Avm1raihRUF9vgy7S94hXsnN4Nh90xwngGnJYYbqHfV+CVCNdr4mh5+E/HDOB3zvJeFL9zBT3xh6osRfsWNvXn01iezaPsnSnhHukkCy73KrwyEgpiCspChWHzPPKaDKLSWEd5sOx5SfCNQ+8sL3YIo0gpeMca919ljKWGvuVFN/vOBCOckvfELif237nC/U9pY+gy2FEvMorkwaHb3xu35zUHOW4fwXYOQBb31VDXyLX9Qmve6GyYxpD2/+tCmwxVM77AUl7tkVXTMJZlg7VEqfIJALbph+jZV4DTendNgynRmmZa4tx4IslCeReg91VsYcpcyNLe1STWBiQZHqJhoAfonB5J2eHgPDVhRHPEyWjAYBrPdTwbpgnuORF5HYOCFoqEsan4Fz/1L/L5jt7LPMN4ILI/UNeTq3PnWogGnc/DokrwWkp9+M+mNZl/RVTEhst9ZhtStl4bpUbZVh0ZpXlF+6O+DuE+/IjPfDe5gLdtTdTalNxm83F3QXSN924dco+twFIiuVnrdQIxC4oWzK1AS+Vg5VDc7KuFDJW/S1BXhrF5MyLWtZT2b7tj81mXM2tCSqmxnNoQPN5ePvuA7Na7NPNzSsyISdJqsKveXJ3hPCJGXmNU3/2y/Egzq7YnEFH5u+lI4YHbFv842D6NCd2+hmVPQJPuUPT60k0M6l2vCMakwdYkvBGCbqskkLZKRRpA7aQfzDGtfAqL3A/cpYyghAc9mcGXxhrgAa1GuVFtp4koy6agpEFaFNz11wuUHdlrxT05ayB8Tkxa33EmjNFdw1O9HoJcscBBupGCYpFeHY58uenmtv1S2nE6/UqIDKc41GHDvxkf6JXHl
- 1B/3SHDP
- ra+gLIGQFsekV7KOwvuDJKhNPp3fl9BKup586aaZnpn2RolNzPYmvY9AHyypYHnzmp9wBY0RhK6W/W+Pn/s38p4acC2tgVSlrEZl5wlcP2BU21bVv2DGZ4E/8NHwrYF+JD6XBRTf3TSNYI16upW48//0cVDG+4izeRG+ik6eOJY6mUJ7jt87KzqXYFO3pN3yC4EcRXzF2WhOadCqs0HXlkb+zBDv9TK6Q+TS3gWFy8EcaqyLWImX1yOWBunsOAkAVwRxsNSfakgf7SnK6YYpTtmtwtPpz2l1jJXAfLjxWMrXAWKQidf5mnGSePWb0VLJ2eDfFqZSNmZs8B3EQJOZdDvXrZL4gEMU3/VhKWPN+HH+aYF49MW1q/KPgBA==
+X-Stat-Signature: 11cg3dzjpeesz774611zbpag1d6rpndo
+X-HE-Tag: 1789048237-159187
+X-HE-Meta: U2FsdGVkX1/IvlWjgmEA4vYA89NLMl9zDdXpl9QE69Tdk47SJ+IZ2WeVQYPpOVXG9MCytpXuwyT/DpVo+Pw3o+UuA9+bCLzou4oVY7nd2I0Pfa0Wrba/8LVfIwWw9QcrXpGhjDkdCyW7MMIIkfWwqPTQ8eo6aaXLpmf71RskH7JfxT94aBIrJhGLjtvI2+EnznH8l10rdTtUikLQTMV1XUcYvy1OTcxteAHJHI8mtFLOOjxNEA4KZ7I4aImKJwUlQV5EEkBFKnr63WU+dgN21vTyN9o3bsbWxDGLpHvn/lbZB/QIZvcdo2DVU9zzSGBWBJ2laGZuX4aC7t2M46XJYgwRJuJ/htyUiOLiag5hhz6N7EKNY+BNOInbuT5P1TfQnbPt8tkM6q8J+T2t1shwgS+Xax9is8brcBna4c3JyTrKsWKzb6LaWrogT+rEcVmqacBbcuMspd8SQe71ChV1UCX5RfC6VKJq5VBZs58htGpiWuOU87xa/FD8/KLpgdzzWwKBqgKRGL6ZEHAcXRqH7UkCen71PSA6MdfNbRa2XieaCC6Z+c5PI40S/bZDorWpf4QEsmR4n3QU5T6gP2tP739fBW4n13n1v5+FMYG7m30NpVg+uRCwWyw+VvHQdZJzn5gDANbSNmzQ2sCIiN0riT2KRDpuw3uftBrtB7WM30uWdOVN0fHnMxRVuWqAPv+8Ywuju40qiVvd/l6Xrh1uN3MYUSY7tPKxPoKS387QKpa5+dATLsof9aSHPA05JEkxRehfQxr7tbAParPc/zVLe64zshtzoOhAgrRYlXp6yZvQOPC1OVLoBHNrBiZmN/bhdgwrE3hUhULLcnTEcX8ymtYC1S9134bYt6gkFM7abtAVPUDJM48JmvcpGBby4KnogDvnY6SOi+S4YJAi/iRsQIcg5j2gi3FuzMgPbIiFi5ETNcD9zL6aNkOAL1YBtHysnYoSYnk9D34OA7dOBu4
+ uxt6WNdg
+ xX6aSN4f3wMMY0Qzqrxuocf8X5RhmD5nkIM0osGKkzRJqTytPPnmJ+0QNSA7p3qpfX8CuQDTaIAEJ/0pJZ2qTdtcg8+yV17ykAXZBygSgcTO/Zt9Xxqvsv9tELTxfshrwnS7Za9O92V0e98vwvx4VQyGOSDCJCdiiwQ+XRUOP8PBgelsmfmVnuCzpM5RsJilyIMSZbOZHWWMaEgMCBulRYiT8GmBXnq1yrxOd3LEdqbLguMrmzvRruYKKnaME2sQaXHocAR273xE5ShLK1StZQfe9Q3Yo3L0w8GBGirUgISNqT9WU711yPtGWxkJpScEJm4Ot69att/NUQBYoZxpPgEtzs9AwdqE7YaE7bHo5/ZN7WrRih7jdj9/M5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,52 +136,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:33:00PM +0200, David Hildenbrand (Arm) wrote:
-> Unused, let's remove it.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Thu, Sep 10, 2026 at 02:18:35PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Provide a function to abstract the common task of checking whether
+> a VMA is faulted in or not.
+> 
+> A VMA or mmap lock must be held when calling this function. For an attached
+> VMA the transitions between unfaulted/faulted state are:
+> 
+>        Transition        |              VMA/mmap Lock state
+>  ------------------------|-----------------------------------------------
+>    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
+>    faulted to unfaulted  | write lock
+> 
+> So vma_anon_tracked() never provides a false positive (the lock precludes
+> it), but if only a read lock is held, a negative result must be re-checked
+> with mm->page_table_lock held.
+> 
+> Detached VMAs cannot be concurrently manipulated as they are removed from
+> the maple tree so require no guarantees.
+> 
+> Use data_race() to silence KCSAN about non-existent data races between
+> concurrent vma->anon_vma read/write on optimistic fault tests.
+> 
+> Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
+> dependants.
 
-LGTM so:
+If you end up respinning anyway, this would be a natural separate
+prep patch.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+> Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
+> preparation callers which test vma->anon_vma directly to use
+> vma_anon_tracked() instead.
+> 
+> Note that the lockless read in reusable_anon_vma() is doing more than
+> checking whether the VMA is faulted - it is returning the anon_vma to be
+> used on fault, so this check is not altered.
+> 
+> There is one odd one out - file_backed_vma_is_retractable() - which holds
+> neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
+> 
+> Therefore just add a comment to explain why the direct vma->anon_vma check
+> is required.
+> 
+> Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
+> Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
->  include/linux/mmzone.h | 10 ----------
->  1 file changed, 10 deletions(-)
->
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 19296e8ef44f8..e0fac344f6ac2 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2315,13 +2315,6 @@ static inline unsigned long next_valid_pfn(unsigned long pfn, unsigned long end_
->
->  #endif
->
-> -static inline int pfn_in_present_section(unsigned long pfn)
-> -{
-> -	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
-> -		return 0;
-> -	return present_section(__pfn_to_section(pfn));
-> -}
-> -
->  static inline unsigned long next_present_section_nr(unsigned long section_nr)
->  {
->  	while (++section_nr <= __highest_used_section_nr) {
-> @@ -2351,9 +2344,6 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
->  #else
->  #define pfn_to_nid(pfn)		(0)
->  #endif
-> -
-> -#else
-> -#define pfn_in_present_section pfn_valid
->  #endif /* CONFIG_SPARSEMEM */
->
->  /*
->
-> --
-> 2.43.0
->
+> v2:
+> - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
 
---
-Cheers, Lorenzo
+I don't particularly like vma_anon_tracked(), but naming is hard...
+
+From quick grep, it seems you missed two cases of direct readers:
+
+  hugepage_vma_revalidate():
+
+      if (expect_anon && (!(*vmap)->anon_vma || !vma_is_anonymous(*vmap)))
+
+  vma_needs_copy():
+
+      if (src_vma->anon_vma)
+
+Worth fixing? If it is intentional, add a comment why. I don't see it.
+
+Anyways:
+
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
