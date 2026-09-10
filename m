@@ -4,92 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C09C88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E8AC88E45
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:50:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6DB46B00A3; Thu, 10 Sep 2026 19:49:35 -0400 (EDT)
+	id 76FE56B00A5; Thu, 10 Sep 2026 19:50:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1DE16B00A4; Thu, 10 Sep 2026 19:49:35 -0400 (EDT)
+	id 7192C6B00A6; Thu, 10 Sep 2026 19:50:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5706B00A5; Thu, 10 Sep 2026 19:49:35 -0400 (EDT)
+	id 5E2026B00A7; Thu, 10 Sep 2026 19:50:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96C9A6B00A3
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:49:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A39080661
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:49:34 +0000 (UTC)
-X-FDA: 85199497068.17.1D381DA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DA5991C0002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:49:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eli6qMGS;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789084173;
-	b=A9mlOcTXXJMZP1WlkRnxnCkxDpi7xvpeKocmuktXRFQS30n6yW15DC+5LJ+BZ5dcCKCes7
-	bkfSJbU9JGxCMDYCGeel1EMx7fDSw4Q1IMymtOvIaksRSuoa0m9oljNjom9uA505W1ad5e
-	pMijU2mQzeoprsOizaEDOtqR8HkzTM0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eli6qMGS;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3181D6B00A5
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:50:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFB63140610
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:50:00 +0000 (UTC)
+X-FDA: 85199498160.18.5C372B6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0B51C40007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:49:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OcVJARaH;
+	spf=pass (imf11.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789084173;
+	s=arc-20220608; t=1789084199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VF1IzpkvEZpz8vf0zB2nL50NHFRi+ukaTt7C4SFlbI4=;
-	b=FNZkDUM7TucHiUr0fDibVP+DNBT+t418DPgO2ryIXYowLzTPsXM7YuouBEE8aDhP7buNcQ
-	yhqwyETXdPjiBgTkNE1u77f9R2415BNTQWYr766uYh3Y5nCjBMd8SC79F85ZsOrS3juoj+
-	ogfE6vwp+PHTzHGKhSaZBpZYpx1LPbc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=yDpON0CfstrMMVvgyqFjuA8QunpXRg/nhloNK4nTqMA=;
+	b=hHS22AIbYJ5EEsIale+XkkIvDYSxB/QoVaXSup/gz2a+W1y9M9ULVyQEz2sAsZR0slWkVl
+	BOLlrruUc0APXgeGw/0Z6wF1LUX2L6e45pR+zpcFBhGIhxt9OplKA05BVRQ1Pl2lkKsPyH
+	PB8Yw7xfgTwt3W/yh4/VQCCuvDRDRwA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789084199;
+	b=WzExiOktLEW5esyoRaf5Sb4Hjw/4zb/t9iJBy9bAWlMcHWTP5eScjS49QmKmispqK5PWRt
+	Y0EHjltYc/dBnw9h31qXqQPDbxD4MyqhoqwUJR9TKtRGHhRCZF/EAyU/ddGscPTGGeIecY
+	t+n6Y0KV0LOeyg4KZOQjDdAd7azmQCM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OcVJARaH;
+	spf=pass (imf11.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B6AD601F1;
-	Thu, 10 Sep 2026 23:49:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45831F000FF;
-	Thu, 10 Sep 2026 23:49:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789084171;
-	bh=VF1IzpkvEZpz8vf0zB2nL50NHFRi+ukaTt7C4SFlbI4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eli6qMGSmz4lm+Ip/4jVK6MLz8m76VA2SZpkZJMK63aPYDQl/jurHC0HPodPWxyfk
-	 IVLRqvcTgRZA75S/PEmbchQw+wlSOJM0+r6Uz7rodzsywLcV1tw4cpzLPz2LV1wk9+
-	 g2DsZN4aOSrRDHGa3XPs8/H7rY8FhdTjUIrevcRE=
-Date: Thu, 10 Sep 2026 16:49:30 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+093e05755c2d99caab91@syzkaller.appspotmail.com>
-Cc: cgroups@vger.kernel.org, hannes@cmpxchg.org,
+	by sea.source.kernel.org (Postfix) with ESMTP id D2CB6409AA;
+	Thu, 10 Sep 2026 23:49:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC061F000FF;
+	Thu, 10 Sep 2026 23:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789084197;
+	bh=yDpON0CfstrMMVvgyqFjuA8QunpXRg/nhloNK4nTqMA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=OcVJARaH6Oi1j8XuEcGXhNRaXpqRaKPdDm2jT1O9TnaIFERSfP65WUqSnVo8d7Fsi
+	 dh2sMWmgUOA5sg70lpCN5y/sesey3628HvmXS2+yXCP+WzaYrtcsPy2swaFDr1S/ML
+	 negKqmBZROzz0wR6IdBYzxXLm6h8Mw4vbquWhDRvx6hT8lpbnlJ+IStE46soZ9vToa
+	 EueBn4XirkPG3SkFz5lg6BJroLl6uN4O1kefqRFehAWQEZGV5HVZRKUqBcxYTV3M8j
+	 n6JshkcZkGKKcQM9+PwBnjcwWO266P762oW+Up/K12YE2Bp7Gz9q0zJzgTpG5K+UgN
+	 UQEwHZB2IgRIw==
+Date: Thu, 10 Sep 2026 18:49:56 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-usb@vger.kernel.org, mhocko@kernel.org, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	syzkaller-bugs@googlegroups.com, Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <"bentiss@kernel.org>, bentiss"@kernel.org>,
-	linux-input@vger.kernel.org
-Subject: Re: [syzbot] [mm?] [cgroups?] inconsistent lock state in
- fs_reclaim_acquire (4)
-Message-Id: <20260910164930.4be969ed38cb0d5b4b45cd27@linux-foundation.org>
-In-Reply-To: <6aa1e191.f81106d8.2ab401.0004.GAE@google.com>
-References: <6aa1e191.f81106d8.2ab401.0004.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+Message-ID: <20260910234956.GA367108@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728221007.2098560-4-dmatlack@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0B51C40007
+X-Stat-Signature: fcnp8785royq8i7kz7dphczqymhwiddm
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA5991C0002
-X-Stat-Signature: q4tieigw6mx9ar7tyoemobmsnse3pfif
-X-HE-Tag: 1789084172-200867
-X-HE-Meta: U2FsdGVkX1+McGDMZAJcB9nwkyxXFQwtPXZ+GFblYjcpqoZ8EO/k1NFIHmafwBQoLKRA3Y0rNiiKx2DwT8RcHFfQHbMi2YsjeNXeBight5FZWfQ9VRjmI+pG02SL6m4ejNSL1ogoKnTVQESIp1LYzBXIJ5Xi1v8hfuM2wQVJzz77u/Wu0d+YIcy/JJxWZwO6di8+5aExVktapMOse54G8yQXHjpkXM1bkXRY4wMoHCrNill70T3Na69tKAm9W9b1Tkf0vPGv+qWJVczcCcOg3T+hrXr75xJBXB7rnJcYZ2fwvxROsqco9iGnge8QHeIHKwq1AGzjXfeeKv9EpEpJ3J5ARwKPbZZWbLAfTak98rUUBsmEu4WaIwXFAmkstRiRMT9fjiCGUucSquH2OA/FPmGDpkxPmXuLvNkC6GgCaDDyZOE/sB8sJl11d65paOMuwOJxY1NgU3KK+0+J/5zJDqJL1qyWLeDn/WYNErpcNH2tJ07LHXY+2eNIIW/DFTKfZqzStgyMbLLekMXJR9t+lvHeJUYNhvq7fKRcs0WdJMUYQwavYuLC2tmgrbMoxqifAX8YFSjxznvVfcvB6PE835tm0k9aAFn6ROH3ij5Ojadmy1rFsJ0Xa4G/bX20bK/jhhbV0mPTdY9OJIzkOtqeXzWAAXMOb0PR8/EBjQH60dK/wo991+dShhqcGTp8AApNTJ42GiZzBuHDmcYfbSEcEgDiGfE8/Vi+Cc3tlJvwJrd7TOlcEUbMkFSCIYEnOQk57EnWwF0bRC1pmKENnJ6h4z6xZRfRQvE+Rmvtw4qIn6vTpEQFUPOksnF9c9xPfC5Pkp1PQBqyONnqN/uI3UScRlRDhX75XAWgZzt3UBDp1tOoOIp+9Z1tt95i+911riLVz+nTSEBo8jhkmVqpmdkGjqT0ooXJzXmzEoofJMTRIB995naiSktJnwzecQnwGh2XNyK2FmzcHLw8dLg2Hw4
- TT2P6xh7
- /FrlEhOtIwKMGkysysZ4oR2FX44/3M/SyV5DXFbsR9IhlJxI4w3a80BN4ELtCF5azYYYmbPqdqgb83MJdG5DsuvXWOzbsZGJiY9kSQv5jjYSQ0W6yiv5RZYwHmNc4gPgIYrdpaeOxbDzu4KESelRbwFteF2XgZz5sIeBv9hWkFItm6Id9N2RVZRwGX+d17buqFZF8WtLC0XbloBCyG599jJAWga6nbnwDqEA6OxnrNRkPh16PjfM/R4QmlBZ9dAw5XbGhn/utKnTtzAK8AJBnuA2k1exjzxY6nPjYm51FHizcYXhtGbbUo50/33WYmu9S18/YF6HwMKdMzLyAKqX5zBhxliu6sm4esFVrgipj9MgROYl/v0QebaPNsMzQwY1F/VSOd+GkX90D8A/B8SRPx0J1ASv//PXNCwC5WZd75i/7AD04ObfOzFPg+kHODN2q5x+qei8AF+afek8or1LuSnfrx5OQYZPtb9qaHOhtZwqKYkxDXaQy3cVXSKo42pCNVxXlPP93zaoXf7lNUWu83+J4evNv6P29bmI0fzbuBWVPVuHo9/FZ/qwmjrJ8zU9s/GVnJIWLyYKCbf+Mi34Vv1Z9hiySthX5agVeR8eG/U081TRbxozghb2H4/0Y+d2qU652V78HPvzIp+1ngED0V8JKRy6QZCzAOUd95gxY+cKD2DpHh+UpwvOBty1rgNdzruM3+flR/6qCJ1rk/D4iKO0h1mT+fCcsJlbjLe7mIFBlOOcURspDBWudWdebeoAgHc90Trdg4uMbEIabRyNekMLZSbNXywmMl1mPOxTEZVNbwBcfYDgTm0lUC5lXKVx+gp2rJBiTwU5T2gk0e9++eUl/i81o4+ye46ddiHSu6DWVzye5BvsFQLEKRMtL49dLnzjFGyT0o9DVsudwa1LI9U8g0Fk7KDCnh1adtQVrJ9psRMt4bofLLAnHfNqJxJwgBrbw5Z1bUVMZT/+A+e946fvj7U5l
- EMM4hzwt
- Lh/5I02HqbRdYa5L+lNiHUFZqK+E01eXfkujSXhzV/i+MEbDpJ+Y3FNuiZ1bSq2dcovA5YprlCQDcC623AtKlxmeZe9bgNvhH/anRw+H4bTpyUw1iS9FWRnoNpQHTfqDIp4KgQR4XfOCrhg3G1kgAfV3d21K3MvJ61vAUHQa3w5FYR3MxMV6gGsZfIxR+0rt
+X-HE-Tag: 1789084198-543945
+X-HE-Meta: U2FsdGVkX1+TCGMoNxNpxSZ4MPUcyfe3Q6u0Qv2kl55VJ3KtyIFW6RUuPi/7VT4Uf1b/+7J/LmccmvW/of2+AGfP4NAu8LSpjeOzkYTy4Ebps8xdpc08wyyC+wyXotPTzAIjHvuRRjNqTOByH6eHHdxgKzPgqepnvOFv8nzRaxSAi6aJx4HtMB+qOGO+4Dvx95/TPhy8xI3Ol1PmNY/JBGYdldLDxWdHaAS+kp4sF1Kl6hqzwjRxL42WLmAbyPfGISm3zo6+kOfuJAfgNTSrh9mMNJ7UFPOSzrEs3/Wv/ngsMvVWdu1TBpXpmze4VGNxS5V0SlfIWVQcAUszw4boA8gD2EqhmHYELzT9kv0Gqouqku0G2/lP4/xCvmH57c+HX/e8Cvqj/YQ/gkVqy81RTAQdFUaCBZAvrn6ESYDzcRHFK4zKuIqhHquYiE3Omf8uIcWM0jQwaBlLJWbVXYEg9H4hC6bkbOLLEr6YBd7neCg3Svu8sxg/9F9qcJtWc6xz5KMUE9akXuO3zypwSgAXqr4U7SZlOXh4mvbEsS8RndH9x2qwq1A7fMi21sVZ3YBLGN6dQnlZaAlgyriDOtYCUiEKLUh1jYQTgrP9+kKSj7HzvRJ9QxUOMt5us5pWQVUpdk2o4JspeL2sF3vYe/147dbpqwwNP9ETf0bckVKjccvETAPaYlsjj9ziHmFi8FnI8k5MWOLLEBowCkrLdcoHxTwweBQqrJTs5YkWfgT87mzjJ8QUohxRl2f/1HWfLaY6K/XzaZULjpq4u6/wtELf4FWfQxz6s92lhaDoLybePPM8Cuu17adOK4Dj5/9zPRngxambgtyCarhuD68krACi4uvurykAn9xxyHcL0zcoxOu5LYVGUxWL2ijuf/u5Qtk/q9/QvDbhPdlS9EVg/EgB0mLnkkCoEEyf30O2T3fX6ch5Et8UGwv36P2ISNRxtjEpMz5X6Hd28v0b9P8a5ya
+ zDqVVAhj
+ Eq1Hl7pySFfgqq58sRofWOGdB4BKR2Sp6YUmKrlFLIv5BqvUGVEHtzyLRy+yb2hzi8OYx1ZulX6sWOIPnAFweJ7rfzHV35x7ZisTwqvQm4vg6Zx62Onq3wZcM/WQDEaQQFpv14uBSUlP+pH05mS/e5CDpSnIqApbaVtQaqhw+xX16uO6RoSzVcGUV0Rn5LZnxYI47ZMaGjFCBolYtvHpJdl0MYRp72IW/OU+D+c/PrlhGC3mnN60ESroB9wKPaCc1x8gQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,316 +109,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 09 Sep 2026 15:45:37 -0700 syzbot <syzbot+093e05755c2d99caab91@syzkaller.appspotmail.com> wrote:
+On Tue, Jul 28, 2026 at 10:09:57PM +0000, David Matlack wrote:
+> During PCI enumeration, the previous kernel might have passed state about
+> devices that were preserved across kexec. The PCI core needs to fetch
+> this state to identify which devices are "incoming" and require special
+> handling.
+> 
+> Add pci_liveupdate_setup_device() which is called during device setup
+> to fetch the serialized state (struct pci_ser) from the Live Update
+> Orchestrator. The first time this happens, pci_flb_retrieve() will run
+> and convert the array of pci_dev_ser structs into an xarray so that it
+> can be looked up efficiently.
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    34c9c5517033 Merge 7.3-rc2 into usb-next
-> git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1408d749580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=c451f9f64434b622
-> dashboard link: https://syzkaller.appspot.com/bug?extid=093e05755c2d99caab91
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=102c2ef9580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=156d7af9580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/8a384e63cde6/disk-34c9c551.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/e5a73decdc30/vmlinux-34c9c551.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/13abc163bbdc/bzImage-34c9c551.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+093e05755c2d99caab91@syzkaller.appspotmail.com
-> 
-> ================================
-> WARNING: inconsistent lock state
+> + * The PCI core does not enforce any ordering of ``pci_liveupdate_finish()`` and
+> + * ``pci_liveupdate_preserve()``. i.e. A PCI device can be **outgoing**
+> + * (preserved for next kernel) and **incoming** (preserved by previous kernel)
 
-Thanks.  tl;dr: drivers/hid/hid-multitouch.c
+Thinking about how this will be rendered in the formatted doc, I think
+"i.e." is really part of the sentence, so in U.S. usage this would be:
 
+  ``pci_liveupdate_preserve()``, i.e., a PCI device can be ...
 
-My friendly local LLM tells me
+I understand British usage generally omits the comma after, so that's
+OK too, but IIUC the first part of the sentence shouldn't be
+terminated with a period, and the "A" shouldn't be capitalized as if
+it's a new sentence.
 
-  So I would not initially blame mm/cgroups despite syzbot's [mm?]
-  [cgroups?] classification.  fs_reclaim is just where lockdep detects
-  the violation.  The suspicious code is
-  drivers/hid/hid-multitouch.c:mt_allocate_report_data(): it
-  dynamically allocates report bookkeeping from mt_event(), and
-  mt_event() can evidently execute in atomic/softirq context.
+Similar issue in "PCI: liveupdate: Document driver binding
+responsibilities" later:
 
-  The interesting question for the actual fix is why this structure
-  wasn't allocated earlier.  mt_find_report_data() presumably normally
-  finds preexisting report data, but this reproducer gets an HID report
-  for which none exists and falls into mt_allocate_report_data() at
-  runtime.  The likely proper fix is therefore to arrange for this data
-  to be allocated during device/report initialization in sleepable
-  context, rather than merely changing this allocation to GFP_ATOMIC. 
-  The latter could suppress the reclaim problem but devm_* itself and
-  the lifetime/list manipulation deserve checking before assuming
-  that's sufficient.
+  bound to the correct driver. i.e. The PCI core does not protect ...
 
-which is sufficient for me to cc relevant folks and run away.
+> +static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
+> +{
+> +	return (unsigned long)domain << 16 | bdf;
+> +}
 
-> syzkaller #0 Not tainted
-> --------------------------------
-> inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-> syz.3.17/3981 [HC0[0]:SC1[1]:HE0:SE0] takes:
-> ffffffff89ab7bc0 (fs_reclaim){+.?.}-{0:0}, at: might_alloc include/linux/sched/mm.h:316 [inline]
-> ffffffff89ab7bc0 (fs_reclaim){+.?.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4636 [inline]
-> ffffffff89ab7bc0 (fs_reclaim){+.?.}-{0:0}, at: slab_alloc_node mm/slub.c:4974 [inline]
-> ffffffff89ab7bc0 (fs_reclaim){+.?.}-{0:0}, at: __do_kmalloc_node mm/slub.c:5413 [inline]
-> ffffffff89ab7bc0 (fs_reclaim){+.?.}-{0:0}, at: __kmalloc_node_track_caller_noprof+0xcc/0x820 mm/slub.c:5545
-> {SOFTIRQ-ON-W} state was registered at:
->   lock_acquire kernel/locking/lockdep.c:5942 [inline]
->   lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
->   __fs_reclaim_acquire mm/page_alloc.c:4375 [inline]
->   fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4389
->   might_alloc include/linux/sched/mm.h:316 [inline]
->   xa_alloc include/linux/xarray.h:876 [inline]
->   mem_cgroup_alloc mm/memcontrol.c:4160 [inline]
->   mem_cgroup_css_alloc+0x7e/0x1ce0 mm/memcontrol.c:4225
->   cgroup_init_subsys+0x223/0x700 kernel/cgroup/cgroup.c:6431
->   cgroup_init+0x569/0xe50 kernel/cgroup/cgroup.c:6558
->   start_kernel+0x470/0x490 init/main.c:1176
->   x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
->   x86_64_start_kernel+0x12b/0x130 arch/x86/kernel/head64.c:291
->   common_startup_64+0x13e/0x158
-> irq event stamp: 317
-> hardirqs last  enabled at (316): [<ffffffff878ad162>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:210 [inline]
-> hardirqs last  enabled at (316): [<ffffffff878ad162>] _raw_spin_unlock_irqrestore+0x52/0x80 kernel/locking/spinlock.c:221
-> hardirqs last disabled at (317): [<ffffffff878acd32>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:153 [inline]
-> hardirqs last disabled at (317): [<ffffffff878acd32>] _raw_spin_lock_irqsave+0x52/0x60 kernel/locking/spinlock.c:181
-> softirqs last  enabled at (302): [<ffffffff8177a2a8>] __do_softirq kernel/softirq.c:679 [inline]
-> softirqs last  enabled at (302): [<ffffffff8177a2a8>] invoke_softirq kernel/softirq.c:519 [inline]
-> softirqs last  enabled at (302): [<ffffffff8177a2a8>] __irq_exit_rcu+0x168/0x210 kernel/softirq.c:758
-> softirqs last disabled at (313): [<ffffffff8177a2a8>] __do_softirq kernel/softirq.c:679 [inline]
-> softirqs last disabled at (313): [<ffffffff8177a2a8>] invoke_softirq kernel/softirq.c:519 [inline]
-> softirqs last disabled at (313): [<ffffffff8177a2a8>] __irq_exit_rcu+0x168/0x210 kernel/softirq.c:758
-> 
-> other info that might help us debug this:
->  Possible unsafe locking scenario:
-> 
->        CPU0
->        ----
->   lock(fs_reclaim);
->   <Interrupt>
->     lock(fs_reclaim);
-> 
->  *** DEADLOCK ***
-> 
-> locks held by syz.3.17/3981: 1, on CPU#0:
->  #0: ffff888122130870 (&hiddev->existancelock){+.+.}-{4:4}, at: hiddev_ioctl+0x165/0x15b0 drivers/hid/usbhid/hiddev.c:610
-> 
-> stack backtrace:
-> CPU: 0 UID: 0 PID: 3981 Comm: syz.3.17 Not tainted syzkaller #0 PREEMPT(lazy) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-> Call Trace:
->  <IRQ>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
->  print_usage_bug.part.0+0x258/0x340 kernel/locking/lockdep.c:4086
->  print_usage_bug kernel/locking/lockdep.c:4054 [inline]
->  valid_state kernel/locking/lockdep.c:4100 [inline]
->  mark_lock_irq kernel/locking/lockdep.c:4311 [inline]
->  mark_lock+0x956/0x1020 kernel/locking/lockdep.c:4797
->  mark_usage kernel/locking/lockdep.c:4686 [inline]
->  __lock_acquire+0x7f1/0x1f40 kernel/locking/lockdep.c:5242
->  lock_acquire kernel/locking/lockdep.c:5942 [inline]
->  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
->  __fs_reclaim_acquire mm/page_alloc.c:4375 [inline]
->  fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4389
->  might_alloc include/linux/sched/mm.h:316 [inline]
->  slab_pre_alloc_hook mm/slub.c:4636 [inline]
->  slab_alloc_node mm/slub.c:4974 [inline]
->  __do_kmalloc_node mm/slub.c:5413 [inline]
->  __kmalloc_node_track_caller_noprof+0xcc/0x820 mm/slub.c:5545
->  alloc_dr drivers/base/devres.c:141 [inline]
->  devm_kmalloc+0xa5/0x2b0 drivers/base/devres.c:951
->  devm_kzalloc include/linux/device/devres.h:50 [inline]
->  mt_allocate_report_data+0x59/0xcc0 drivers/hid/hid-multitouch.c:695
->  mt_find_report_data drivers/hid/hid-multitouch.c:745 [inline]
->  mt_event+0x1bf/0x270 drivers/hid/hid-multitouch.c:1570
->  hid_process_event+0x37d/0x5a0 drivers/hid/hid-core.c:1572
->  hid_process_report drivers/hid/hid-core.c:1730 [inline]
->  hid_report_raw_event+0xb14/0x14c0 drivers/hid/hid-core.c:2109
->  __hid_input_report.constprop.0+0x349/0x470 drivers/hid/hid-core.c:2180
->  hid_ctrl+0x4a4/0x560 drivers/hid/usbhid/hid-core.c:486
->  __usb_hcd_giveback_urb+0x38e/0x610 drivers/usb/core/hcd.c:1657
->  usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
->  dummy_timer+0xdb2/0x3700 drivers/usb/gadget/udc/dummy_hcd.c:2019
->  __run_hrtimer kernel/time/hrtimer.c:2067 [inline]
->  __hrtimer_run_queues+0x462/0x9c0 kernel/time/hrtimer.c:2124
->  hrtimer_run_softirq+0x1ca/0x360 kernel/time/hrtimer.c:2141
->  handle_softirqs+0x1d9/0x9b0 kernel/softirq.c:645
->  __do_softirq kernel/softirq.c:679 [inline]
->  invoke_softirq kernel/softirq.c:519 [inline]
->  __irq_exit_rcu+0x168/0x210 kernel/softirq.c:758
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
->  sysvec_apic_timer_interrupt+0x8f/0xb0 arch/x86/kernel/apic/apic.c:1062
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-> RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:211 [inline]
-> RIP: 0010:_raw_spin_unlock_irqrestore+0x31/0x80 kernel/locking/spinlock.c:221
-> Code: f5 53 48 8b 74 24 10 48 89 fb 48 83 c7 18 e8 56 f7 05 fa 48 89 df e8 de 4d 06 fa f7 c5 00 02 00 00 75 23 9c 58 f6 c4 02 75 37 <bf> 01 00 00 00 e8 65 a3 f8 f9 65 48 83 3d d4 ee 98 05 00 74 16 5b
-> RSP: 0018:ffffc90001bff9f0 EFLAGS: 00000246
-> RAX: 0000000000000002 RBX: ffff8881f5625fc0 RCX: 0000000000000040
-> RDX: 0000000000000001 RSI: ffffffff89329b79 RDI: ffffffff87d2b780
-> RBP: 0000000000000287 R08: 0000000000000001 R09: 0000000000000000
-> R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881f5625fc0
-> R13: 0000000000000000 R14: 00000000ffffffff R15: ffff8881f5626008
->  __mod_timer+0x409/0xca0 kernel/time/timer.c:1139
->  add_timer+0x62/0x90 kernel/time/timer.c:1249
->  schedule_timeout+0x122/0x280 kernel/time/sleep_timeout.c:98
->  usbhid_wait_io+0x24e/0x420 drivers/hid/usbhid/hid-core.c:648
->  usbhid_init_reports+0x1a7/0x390 drivers/hid/usbhid/hid-core.c:787
->  hiddev_ioctl+0xddb/0x15b0 drivers/hid/usbhid/hiddev.c:794
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:597 [inline]
->  __se_sys_ioctl fs/ioctl.c:583 [inline]
->  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x119/0x710 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f01bd5ee159
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f01bd42e028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007f01bd876090 RCX: 00007f01bd5ee159
-> RDX: 0000000000000000 RSI: 00000000c018480b RDI: 0000000000000004
-> RBP: 00007f01bd68503b R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f01bd876128 R14: 00007f01bd876090 R15: 00007ffe3b7b3048
->  </TASK>
-> ------------[ cut here ]------------
-> do not call blocking ops when !TASK_RUNNING; state=2 set at [<ffffffff818d66ad>] prepare_to_wait_event+0x8d/0x720 kernel/sched/wait.c:318
-> WARNING: kernel/sched/core.c:9179 at __might_sleep+0x94/0xc0 kernel/sched/core.c:9179, CPU#0: syz.3.17/3981
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 3981 Comm: syz.3.17 Not tainted syzkaller #0 PREEMPT(lazy) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-> RIP: 0010:__might_sleep+0x97/0xc0 kernel/sched/core.c:9179
-> Code: 8b 94 24 c0 17 00 00 48 85 d2 75 14 48 83 c4 08 89 ee 48 89 df 31 d2 5b 5d 41 5c e9 33 fc ff ff 48 8d 3d 5c d9 92 09 48 89 d1 <67> 48 0f b9 3a eb db e8 fd 20 9c 00 eb 9f 89 74 24 04 e8 22 21 9c
-> RSP: 0018:ffffc90000007828 EFLAGS: 00010082
-> RAX: dffffc0000000000 RBX: ffffffff8931ad45 RCX: ffffffff818d66ad
-> RDX: ffffffff818d66ad RSI: 0000000000000002 RDI: ffffffff8b16a1e0
-> RBP: 0000000000000142 R08: 0000000000000001 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000001 R12: ffff888107ed3c80
-> R13: 0000000000000dc0 R14: 00000000ffffffff R15: 00000000ffffffff
-> FS:  00007f01bd42e6c0(0000) GS:ffff8882683e4000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f01bd42dff8 CR3: 00000001214ba000 CR4: 00000000003506f0
-> Call Trace:
->  <IRQ>
->  might_alloc include/linux/sched/mm.h:322 [inline]
->  slab_pre_alloc_hook mm/slub.c:4636 [inline]
->  slab_alloc_node mm/slub.c:4974 [inline]
->  __do_kmalloc_node mm/slub.c:5413 [inline]
->  __kmalloc_node_track_caller_noprof+0x473/0x820 mm/slub.c:5545
->  alloc_dr drivers/base/devres.c:141 [inline]
->  devm_kmalloc+0xa5/0x2b0 drivers/base/devres.c:951
->  devm_kzalloc include/linux/device/devres.h:50 [inline]
->  mt_allocate_report_data+0x59/0xcc0 drivers/hid/hid-multitouch.c:695
->  mt_find_report_data drivers/hid/hid-multitouch.c:745 [inline]
->  mt_event+0x1bf/0x270 drivers/hid/hid-multitouch.c:1570
->  hid_process_event+0x37d/0x5a0 drivers/hid/hid-core.c:1572
->  hid_process_report drivers/hid/hid-core.c:1730 [inline]
->  hid_report_raw_event+0xb14/0x14c0 drivers/hid/hid-core.c:2109
->  __hid_input_report.constprop.0+0x349/0x470 drivers/hid/hid-core.c:2180
->  hid_ctrl+0x4a4/0x560 drivers/hid/usbhid/hid-core.c:486
->  __usb_hcd_giveback_urb+0x38e/0x610 drivers/usb/core/hcd.c:1657
->  usb_hcd_giveback_urb+0x3ca/0x4a0 drivers/usb/core/hcd.c:1741
->  dummy_timer+0xdb2/0x3700 drivers/usb/gadget/udc/dummy_hcd.c:2019
->  __run_hrtimer kernel/time/hrtimer.c:2067 [inline]
->  __hrtimer_run_queues+0x462/0x9c0 kernel/time/hrtimer.c:2124
->  hrtimer_run_softirq+0x1ca/0x360 kernel/time/hrtimer.c:2141
->  handle_softirqs+0x1d9/0x9b0 kernel/softirq.c:645
->  __do_softirq kernel/softirq.c:679 [inline]
->  invoke_softirq kernel/softirq.c:519 [inline]
->  __irq_exit_rcu+0x168/0x210 kernel/softirq.c:758
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:775
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
->  sysvec_apic_timer_interrupt+0x8f/0xb0 arch/x86/kernel/apic/apic.c:1062
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-> RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:211 [inline]
-> RIP: 0010:_raw_spin_unlock_irqrestore+0x31/0x80 kernel/locking/spinlock.c:221
-> Code: f5 53 48 8b 74 24 10 48 89 fb 48 83 c7 18 e8 56 f7 05 fa 48 89 df e8 de 4d 06 fa f7 c5 00 02 00 00 75 23 9c 58 f6 c4 02 75 37 <bf> 01 00 00 00 e8 65 a3 f8 f9 65 48 83 3d d4 ee 98 05 00 74 16 5b
-> RSP: 0018:ffffc90001bff9f0 EFLAGS: 00000246
-> RAX: 0000000000000002 RBX: ffff8881f5625fc0 RCX: 0000000000000040
-> RDX: 0000000000000001 RSI: ffffffff89329b79 RDI: ffffffff87d2b780
-> RBP: 0000000000000287 R08: 0000000000000001 R09: 0000000000000000
-> R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881f5625fc0
-> R13: 0000000000000000 R14: 00000000ffffffff R15: ffff8881f5626008
->  __mod_timer+0x409/0xca0 kernel/time/timer.c:1139
->  add_timer+0x62/0x90 kernel/time/timer.c:1249
->  schedule_timeout+0x122/0x280 kernel/time/sleep_timeout.c:98
->  usbhid_wait_io+0x24e/0x420 drivers/hid/usbhid/hid-core.c:648
->  usbhid_init_reports+0x1a7/0x390 drivers/hid/usbhid/hid-core.c:787
->  hiddev_ioctl+0xddb/0x15b0 drivers/hid/usbhid/hiddev.c:794
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:597 [inline]
->  __se_sys_ioctl fs/ioctl.c:583 [inline]
->  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x119/0x710 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f01bd5ee159
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f01bd42e028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007f01bd876090 RCX: 00007f01bd5ee159
-> RDX: 0000000000000000 RSI: 00000000c018480b RDI: 0000000000000004
-> RBP: 00007f01bd68503b R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f01bd876128 R14: 00007f01bd876090 R15: 00007ffe3b7b3048
->  </TASK>
-> ----------------
-> Code disassembly (best guess):
->    0:	f5                   	cmc
->    1:	53                   	push   %rbx
->    2:	48 8b 74 24 10       	mov    0x10(%rsp),%rsi
->    7:	48 89 fb             	mov    %rdi,%rbx
->    a:	48 83 c7 18          	add    $0x18,%rdi
->    e:	e8 56 f7 05 fa       	call   0xfa05f769
->   13:	48 89 df             	mov    %rbx,%rdi
->   16:	e8 de 4d 06 fa       	call   0xfa064df9
->   1b:	f7 c5 00 02 00 00    	test   $0x200,%ebp
->   21:	75 23                	jne    0x46
->   23:	9c                   	pushf
->   24:	58                   	pop    %rax
->   25:	f6 c4 02             	test   $0x2,%ah
->   28:	75 37                	jne    0x61
-> * 2a:	bf 01 00 00 00       	mov    $0x1,%edi <-- trapping instruction
->   2f:	e8 65 a3 f8 f9       	call   0xf9f8a399
->   34:	65 48 83 3d d4 ee 98 	cmpq   $0x0,%gs:0x598eed4(%rip)        # 0x598ef11
->   3b:	05 00
->   3d:	74 16                	je     0x55
->   3f:	5b                   	pop    %rbx
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
+Add blank line.
+
+>  static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+>  {
 
