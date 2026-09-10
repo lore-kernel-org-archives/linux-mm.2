@@ -4,115 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C92FBC88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F254C88E41
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 22:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B946B008A; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
+	id 5570A6B0092; Thu, 10 Sep 2026 18:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B5CD6B008C; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
+	id 537976B0093; Thu, 10 Sep 2026 18:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A4C86B0095; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
+	id 41F1C6B0095; Thu, 10 Sep 2026 18:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 414BD6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:51:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A4F63C05FA
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:51:01 +0000 (UTC)
-X-FDA: 85199349522.15.651E2F3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 09E5F1C0003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:50:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eWkB5sEd;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789080659;
-	b=YpVEn9dfJh9hVr5nJgVroohxEo2RMqIil7IEgUIi5RLaVLrAHpDLw0fOolaR54a9YLQFJh
-	LzTsMjMA8AlX0GUSGYwfK2VpFF5iJ6vPN2ME/aqBgEIwKXApYTb5niUo9+7DGphN5RkyL+
-	z+w2nm7Yzp5VuGNYTcjJc8FL4FJ53zk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eWkB5sEd;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789080659;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 090556B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 18:57:40 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60A02805B0
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:57:40 +0000 (UTC)
+X-FDA: 85199366280.30.AE4A336
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013025.outbound.protection.outlook.com [40.93.196.25])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 875431C0004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:57:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oyjwQlTw;
+	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.25 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789081057;
+	b=pTlVAfnnM+QdHujoGwEgeBx0j5C7tP5O4ppd7G0qhk1+CEdo6h5ZF6kh0bpjEZgywytUwE
+	mXFtrqgSAHs6cwgEozb8LeRpNnH78eMnI3d8GEcikH3hwyuqM55hatYziPEujT5V8r/nny
+	4ZnKErnuYtBJA0tGh+WGkEPOyHv06bM=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oyjwQlTw;
+	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.25 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789081057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CL1avPpMMrkd+vpqi8+JGikW55h470TbWac1xw9X/U0=;
-	b=gjmoPmtWL6Ayo9MfXF5wdEd/HOeO+g71IVhYqvlCdDArPgEswoEzKuvyxXmZ5VBg127Ooo
-	bTq0WfLK5C5p9jUg3QeLo5Wbc73sTeEsf7y0UeAFIrw0TurnN9xQeQhC/pVn3MXQEZmMo0
-	7g+YaZu9Tq8ioxx2D4NT3waaAxMMqTw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789080659; x=1820616659;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=P7maDS07+h6HnjGuJWTSO8SdcPWU542f5xnMtj80oOY=;
-  b=eWkB5sEd5U3Xl+pnLKh/qoqvy6Vg7EnmhNZwG3398MwsGjrnE0E3/yd1
-   xIS/quIvnJtW8xdaYvSkdtCMNImktWpOqRM3+noM4P0GQtW/l5qMtBZi6
-   robbsSIyPr8vbDe8TbZEdyLk3eI/bW01v6sQd0YpJpn+vZdCWtYs+lMM1
-   SxGtAuBm9IlCE+bRMyq/o/NM+m0Ea2dVULeuqP2pXZg+Pmm1UOCILuv8l
-   kqt616qGdK8cJdhe+VCr64RiY779Dxe/WY81ZhhiQcRv87GgXjPQvyy/b
-   jXLa4Ohlw5xsGsPCrTUNgmdxr5KDFSuNkfM8B32tUOrnwZgo75VTaKTGr
-   g==;
-X-CSE-ConnectionGUID: zrIAc+0sTI+zu/LNmctoJg==
-X-CSE-MsgGUID: x+0FjfJ8SSOL0okPd8GbAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89558407"
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="89558407"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:50:57 -0700
-X-CSE-ConnectionGUID: q2AyFywVRruYetA+j99ZxA==
-X-CSE-MsgGUID: F1zayvQTTme62BN39KwMHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="275285741"
-Received: from unknown (HELO [10.241.243.185]) ([10.241.243.185])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 15:50:57 -0700
-Message-ID: <72bd9014ee83d5833bc1c78379ead84458045867.camel@linux.intel.com>
-Subject: Re: [PATCH 4/4] sched/cache: Introduce task_struct->sched_cache_grp
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Steven Rostedt	 <rostedt@goodmis.org>, Ben
- Segall <bsegall@google.com>, Mel Gorman	 <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, K Prateek Nayak	 <kprateek.nayak@amd.com>,
- Kees Cook <kees@kernel.org>, Christian Brauner	 <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara	 <jack@suse.cz>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Qais Yousef	
- <qyousef@layalina.io>, Aaron Lu <ziqianlu@bytedance.com>, Srikar Dronamraju
-	 <srikar@linux.ibm.com>, Vineeth Remanan Pillai <vineethr@linux.ibm.com>, 
- Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>, Chen Yu
- <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,  Hyunwoo Kim
- <imv4bel@gmail.com>, Zhan Xusheng <zhanxusheng@xiaomi.com>, Zhan Xusheng	
- <zhanxusheng1024@gmail.com>, Yi Lai <yi1.lai@intel.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-Date: Thu, 10 Sep 2026 15:50:56 -0700
-In-Reply-To: <20260910191901.GW776954@noisy.programming.kicks-ass.net>
-References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
-	 <4532ec4fd5beb829bccb85822a19360fa4191fe6.1789061845.git.tim.c.chen@linux.intel.com>
-	 <20260910191901.GW776954@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	bh=ag53OsvdHGBUIgQF6RYGdy69fiQDTevZ1Y5ABCjO8N8=;
+	b=v1D8HD6XR448hf4Zh+/r2SEDsza9LeQkyLjOt3be8YixxF3wLdIzJrwsToimnXPYUOgYT+
+	87CRCHJe54x2VUWJh7EK6Cd2x88RXlNtXXfn1EwD3CLxfxhEZMqs1ospGY3rf/xFmBA33I
+	62g9DoiAjKxvqTj3guU1dTlRtXQD/iA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qQjj39L4OIymJtFEXdkNgxI0nQkcHpiWHcZUTvuTVPN17ZKrKPXbIFG/WvFT3dxXkKgv9nSbW4jRBTGS+NZZbxi+UKL2fY2qM6GknC/Cd21scJoGi6REb6uLyuvQPPYx510fRjjX9vBUfm8PGDoG8z/CiVqC6pYVo03jGndUCRVWjkxtfpzlK1q4uoI8qWdFSzebqX8sNz9+hZIJRJdMEMEUZRsbGx3aUBB3TB+PHpkqvXxdI18EF+WDx8plAYLGG1B8hTkjrzLh/UzqdYnHQRHnrOuKjWUlDmCS0J+cMtw8SbpB3luJfwwz6GJzXKLMIvIASYkoO7pxezpU99oCwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ag53OsvdHGBUIgQF6RYGdy69fiQDTevZ1Y5ABCjO8N8=;
+ b=EBemnTOgD/yaoe/Uzb59KN23nGkJf9/vxz+q/2T5Cx1sGcgzfNTqhFx7JIUe4EBf6nmk+K3A45AUMaOcJSYsuwAyXnvqDZaGKIE0LLrSVxmJYn1EIPwNxdp8fk77/gZ7neWRGUlqhngspeV89m5ztNZ+hxtBb3qGXbcik4shNwFaV4RB82+4HoxRxBJ8IkPDtmVUJ00Or8IvH2QeBJUEUEt9j6LXAzz2/xdmhLBsNxMAZyNKJ06147usRwUYR8M5ISr445NL0q19udIsfEuZD+reRlGw1nl8nMAHvrBMR1GAjiz4vHHc2YzKLIGQBOKmXBFa1q0CJiHVC036FsM6qQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ag53OsvdHGBUIgQF6RYGdy69fiQDTevZ1Y5ABCjO8N8=;
+ b=oyjwQlTwUYrjKykJRsKa8sqhPd+EXg8rm16AloxZ+BPzbwqE9KLWm1u9ZIbGzMImqeTIQNoi+wEPPGJuwIE1BqlGC9U/xCtaGV68YnfJm3N1eslRHmfn+G/LGJqa9jF3q2n7kB6MqQhE47B4iPYVhYsvv2rxHAOfDWYCLRttCWbo4pJwXMJN+8yR6r5eB+1dHJVaNoLU1HsKSDjHLLpRVXC+jGty0KOfQaPkJJIgu7z3dvcU0eY/pXmnRxqOYxZANAq0fTt/qP+jZVLWcMDRNhlR0Gh4zm3o9Iyh1q9t0ZmDr1w2m24MRbiVeRK5zf1TQfDPBQHBnJkBJ5g/3CismA==
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by SN7PR12MB7912.namprd12.prod.outlook.com
+ (2603:10b6:806:341::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 22:57:31 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 22:57:29 +0000
+Date: Thu, 10 Sep 2026 19:57:28 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: David Matlack <dmatlack@google.com>,
+	Logan Odell <loganodell@google.com>, arnd@arndb.de,
+	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
+	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
+	maz@kernel.org, oupton@kernel.org, bhelgaas@google.com,
+	alex@shazbot.org, kevin.tian@intel.com, dwmw2@infradead.org,
+	baolu.lu@linux.intel.com, joro@8bytes.org, will@kernel.org,
+	robin.murphy@arm.com, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
+ memfd ABI compatibility
+Message-ID: <20260910225728.GB857650@nvidia.com>
+References: <20260904160009.GV4157646@nvidia.com>
+ <aptFFYqcSiBdMLE8@google.com>
+ <20260905012403.GX4157646@nvidia.com>
+ <aqIAtOoew-_6jw29@google.com>
+ <20260910143448.GD3968357@nvidia.com>
+ <aqLOWkuVKccR-I7W@google.com>
+ <20260910171210.GF3968357@nvidia.com>
+ <aqMgjXfTJ8u3n7Kj@google.com>
+ <20260910221832.GH3968357@nvidia.com>
+ <aqMyXE-fD-UN6w5L@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqMyXE-fD-UN6w5L@google.com>
+X-ClientProxiedBy: YT4P288CA0049.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d2::6) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SN7PR12MB7912:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce92fa94-ed34-4200-3035-08df0f8ee425
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|10067099003|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	QA5RbieWk9Ug+h6zWar2Mc7zFSemvkKfp7HRhyfGIrPhb9Swufb/L5VxDNe9UnBlPG7C4zaO7N77kov1G2MXp/BQD0gB8YM6lERETqN5AmHywB/xQiXIF0DI8rxKyxziXW3cLYQRJjPZJcByoxMI82d+LUmb98IuWR7pJH6CZhK6ccah6go2otxB4In2Nm6QmaOQloA5TU0VNW1G9yGJdH9SyHSrogOIABj2ReLMnRzdBj3an4ef5YruBjK0WCWaG26hFOOsjFZXknmQCT/pdCI+WU0WndryKHq1tnmAoAHy+BBADwReJdop24LlNvCwInWA2ofHd92waGuXSMfLyxxHiLl0AkQevAyPusMYOwF67/DIWdiI3Cda3RzSwRjzyZCimuI1f7StdHHVXtZcziB68D8c6SwSJpFC9qHpusn4mFjRFEH9unYStnmPXhpzZxEGcFUAd4X9a9abKN1sffNMILcICPATwYB1eCXmmzfHlk78izHDM2grnaRWeyt710IuGJrQTL8YPwmEn4hFwI97J3+LTqAomlP1cLd+A1pyEc4cWO3kRhJPoqQW1Xw2f0b9fh97PmW3+Qy9qsZ+sT3ShqUNNoAWfPiB0+8gEcRcwG1MqNtjTl/8vuqehDFgILU3qds9xCdYcviy2yWZKQ6xsSFwjTJGoWUTowkf/KY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xKifFiTJRwDydIcyBACTq2CVlVVavCLWXlYEMG5cDpfXg+uZLvtv8DgCFQyu?=
+ =?us-ascii?Q?stwFGtikYizqj53H+XhXC5iby3knbe0TPa+XDnrC0qhY78BxXLQGbHjGU88l?=
+ =?us-ascii?Q?lnM/R/ICjDBginJNOm1YcIk8uOGGvGz88oj8EkuMGlhAicMc83dZcVzfVYLa?=
+ =?us-ascii?Q?RkTJgp25VXB7bg08TbQnYGc5QlKh/LkhUs+8Jto2EynWM7dNY9ksvPi1aVey?=
+ =?us-ascii?Q?PV81xV4MAPCZRa64EXIe/unhXQ8u6/SVbjLP+b9OtFprOWofRlDK8jBTfnaq?=
+ =?us-ascii?Q?1syBxj9RRhp5suR3SnBKFKw0Mhx2zB3m6HyCVAD5t+aE62gbbxE25ytDI7AJ?=
+ =?us-ascii?Q?1QC5Y2Dao7z/hqJZmSePELPCel3w5lU7p5X/OMfUERxSRHWh+USZZE3xJGKb?=
+ =?us-ascii?Q?U/hxlmfmrUOegjaIZCDy0R/a3Yseg+SxFBNXN9LGekVGqjwBkSSCbOQ3hAFU?=
+ =?us-ascii?Q?GWjYPWkxNbjbV9raHxQmd9gN8bdPZ8xy+EKjDQCjIW2APjiRMzHQMkW+eGUW?=
+ =?us-ascii?Q?WF09yhOEhxlQvLhASHwwRoshyQjaahWBCANyG6lloaLcb15LPFaRchKOTSrC?=
+ =?us-ascii?Q?rSSrjs2D4d0TMyue2IxDiHbq2XL+E5pd5HQ//MMehfQvf6dhli/EhomZkwwH?=
+ =?us-ascii?Q?Q3kWh8oXj7uEraVAIZDVLiZD2znKam2r5E63t/xpAIqtmTNuP86ITWjUUR8J?=
+ =?us-ascii?Q?TAECWin57jZHBw/a1+dxddv9NNOoxebQVk3Zorfk58XPjqH6QOEbLaqra1Jw?=
+ =?us-ascii?Q?rgO0PuxSM1w28zFiMjt3RHDXZyCYwBKQYyVKNar2V5HYzBq2vOMbWUd0f/Yc?=
+ =?us-ascii?Q?rc18xxd8T88hpL9I6rEx0m2SXeU74uJB4COS0fij4qPS2yZAyH2zJpaPGmtM?=
+ =?us-ascii?Q?YdMFLVauX9fjhHbKiKzC/E68pWrbUIw49vzYUqzJCq4MuW0aPna3+1YEiw/n?=
+ =?us-ascii?Q?JteQMFsTi2pJkl6rsTVnSjEcpx+3IfNuHw7x4DxlHTlAEbdydD3Zrr1mCnRO?=
+ =?us-ascii?Q?YH1wXAJIXO2Csvzg3TtcFZeuQozbcXeo/V0ePGwjr4SQZlpaRA4DfN4XyHyt?=
+ =?us-ascii?Q?EryXaStlowlthfZWrcM2ydc6Zh+5hoWspUQSxu+4TWj4gtQNAMOfVzVHvL0t?=
+ =?us-ascii?Q?H+qqelTGH30cYyDW893uGtKr+futVavzQwhPpsc1EPlrkz1z/ny3zdsgZVfP?=
+ =?us-ascii?Q?NZEaqz5PUeRARySqOQ0v3BZBEFlyL1LaVO+CZuiUDFH/7Ip+1E/KIBPJyONh?=
+ =?us-ascii?Q?Azj2MUr1ykkUO7JVnLsbYOg78IkBquukFrHiWmZlZMwAxcsxoyVacwUq48nY?=
+ =?us-ascii?Q?1Jf13ana/1AXX5Gg1mfS5aVrMkiY7ATcWRtMskN49LeVoKP2k4ROAlnr5JWn?=
+ =?us-ascii?Q?CG3zbuVf2/w6kmOM280wgBUrsrbtWUi+jhXa44qFcuhW8zWpRodZI3s2BIOs?=
+ =?us-ascii?Q?tCGXF0B7zQ5QzZGD2t6WNhI0ymASqCz9SdThPoayyj5WzPualijIG7pmyVya?=
+ =?us-ascii?Q?HcQxHlwmtxGLDj6pwCifqQeaOeypzf+hs7CqnNdV4QgHf1B1J/wG7KoeMg5t?=
+ =?us-ascii?Q?nb8JVFrdsxTSC+6Smf+WxcROG+JD3vNRvTApd344LzsztgVQDtlBqqeBjPfe?=
+ =?us-ascii?Q?uv6wZSgV9nPnTJuX2ck5JqtZNCQLfJ+o5WuEdkm74iXgHzODji/76f6MYfzk?=
+ =?us-ascii?Q?yQXq6MzWFenULbiHkrhioxId20iiE9v1e6HnSwdOKyQx2lVB?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce92fa94-ed34-4200-3035-08df0f8ee425
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 22:57:29.8056
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hUtyDIBMFosI+6EJYNaCdR9Y6eTdR2zGFy6vAHrPkLLhm+Ol8YVTdvcRoaSmMQJb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7912
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 09E5F1C0003
-X-Stat-Signature: syt41bxa77hno451gutct6pa566k3ia4
-X-HE-Tag: 1789080658-474254
-X-HE-Meta: U2FsdGVkX1+Fz2oqBdJ9T4j5NxaMRcWRMZHSMc9oGPh8cdQ6gQC16uRF+xs7jV6dii3gm3YZ9WFM0Xbhn8J31EJqkGAS46N3ziji4OGtQ6szPlsjRS5/t8pcbjVjQAGHTBTYACe21N2rSy5A/j+ljGgab2+H1hiKO8AUS3uWs2+Cz31b9/qtl6bUpKBtPCJ/Cr6DzzaLl6LkxHj8iU/Eh/SfUooh+8vTfD51YYaD4+67xuSzwRaiDwDl+KOldwR3chAFrJHJ1GINLjBId22gw3fadG+QsOnwb+w81R3N5q/eMV4/vx1bc0PA9AZ6mPDsmkXuMC496bAEraVu7rARILVKI5ZDMO5lUvJANeZRZ+pNgKO3MTnGimb9frE6yI8zZVAlqVu6hZRmmGij5oTtpvXt3DKx/zp1F5M3ddZT7dBiexUOW6yopf6BKbettyTUgP4wuRF2kPiT0nblx1o2IR3AeE4bIsiH39891dNxcCSXcwzvGLnd3CMRjz8WE8BB+Qd+X1DB/jJxsX8oPaXXvdRj6xoZYMQbVUAIGxTscbNkS1Ol0JxbjHtZIR6P1h/jEsqE72wZ53bFnW3P2DV6cqOBbGQei6NO+ulrDmvs3fm7Wp7nv3AopWzNzcO1RgVU9b6QioZzaoRp7nT1+CThaFsPbg74+NzbmBHO/DExN+MVQUnS1nxwUX9Tm48+Zf/qJbldoS4hE8JRoLwjBX9ADRPb+Cc71mQ1xli3kYuaeHaSRTmEfXHpAJvCu0hGCRmY3nb0qgO8jefp4YAsERyaKWm9SsRUxXHe0mzO9dOwXUTqdxCBatwMH5zw9MY+miySyUZygcwKTtMadxww8F1CgLzQdjCFHadWK8g80a6HU0TZKrnzmBFo1FZU+e9o3QrVWelTZJllJqENDnfQgo7cx9qTdQjRYulzCHPbLpJldfmfUk0MI3CM+beIMDjjcg71oLL2NGLkIKKIWV6/2Wc
- BQ4AyMbm
- KFk1F5riQXleK1a1Xu+UuuyNcNcdxOc0mUvhG3XO/NpsqtMMqHwSV3rbSnklH+u9voB5yoS0/AVmsTWSa/XT7aqIEbOJpBYi2RiQLv1Fi45grWjBXGAf90pNXfZYDV4dZT2QBhaZdMK0Lmj9nYh0vp52Vt44yUbizVahIwG3AkS1Ojp1FxzTn5QgdNjTuOuVGzjDVA8dMtvNX1+cs49lLJXUD/MOOxkdSDCmj00ALwAPcxdmvMM2wcrtgr3EAL2WqQ4ne0wuswxflI3Dr+Zf1DJzxf/Wt0cltJ+OnQdpa8OglTW9ECiBBlWDbx+aERpexg7lM91bOmaXZNG90TFrLd5sl/T4yyEeuzMp6TQQf5HPSybs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 875431C0004
+X-Stat-Signature: aaf3gptn8rnt1kxtu3x55tt5jfc1w1r7
+X-HE-Tag: 1789081057-928906
+X-HE-Meta: U2FsdGVkX19JaGhkOI6kXK8hmG3SavCwegPGiozvUVldEgjukFUDxJu8jlf2ochCLFkJJit02qPF6rg104mu4i1DxWsfaXSdeURW4jUMBa3g4/IDzmasPCkDKNomxs0qGZ96hyKDHrmwBAqorkepRFXaSBgWSrrefL1dC7fIjyfC9AqZiQ/Cp9ao1j11kD5IAbEwBhlDaVsaon8FOHvZXcdMjGQoyKy2E0ufct1cZuYCx/N4fSCP1DhSur93h/APmGV++twUtogAXERuUcLH7f98+OHTQRqyH8iNQDOjL54iP8+aQbeTPXC3jcb9Y4dUKrrJEV+7dIRxPTr6+5RvyfmWtb/lrjx6hAVdR8YRs24zeuMNZPsLgrCrE+al101LdFhYIyytQ6VEmYdYog0YNfwCPS0gzLBwSPBvDu3iqJtz9yswjtcvbyHt3exXD/Pzn9DS9Bh3yuKeqYMWc+x9k6LrWXHTYMVTg9b62jpOkqrckpWLwybGx1g5CJzFSG/sc94STMQlMIU2Z4qJC/CtuziRaKdQm6WjAoVixjGmi9o94b01WOyCw0/3STBgePphcMihQbCyvDhPHXw68VYrJTNgxmwhkQFlQ3TPC5eHqSRSQQCyGD0v+PkFd52UGdsY7Vm2+4aeFJRuRpW95eNHNO49Uiq98T3jLOhRmr/nZy4YOp13HfAdzgj/d4/9GGlXEPjTHfShgwsxaTr+RBkznqqm/cNNy39uqxk/nKu5BFr5P6AKc6jnGirfSjgU+WExoZW7XbSxhZrbBFbVyxKHGtQFbWpVB4hmTYaABVeD0GV9qvWXW5YLul9Q6PABX6lttMDGgMbtVakqIOxu9pE3lhUfM95M0UwkhVCxkglvhDg17aiIFXEzU7v0eqVMMO6Df0CONmwhmtdk374ZzUn8+aOoiPrxyso+8SR3wooPasGixhDeyiEVftcXn3O/Je3HzpMiKdyLeY4XPVeCIO8
+ R33Jlro4
+ YuKFSPS2oATsOjgwtw+TDWSOGHM06IVScq6gFYZ3aMajc1ZJaiNNz3WQ3sU/pofu0aBL4Uf8hrGfYL9ChkHcMmJvDMN5oq6aB9GUaIp8XvXU0y8ugFcm1iHY1DmjtMcjb/qTCxkxuSXCi5Ofbw0TlLYtLAisBTvElTUnKhGeN/ymDTpknZVyUeyJSDAxKZKM5J3vEbt7jUcGaTSkPFBSzCyeuYcZ+Kq/JmHfGzVlqO57srE7ID68rW9ae36QLvo5iyKZUqK6j87zSc1lodK73yDeGTUNqI4Zh96DnobVLjSywmXi7lLT74kCk+pT5o5cGUPJ/SjOkBM6haJmBthipaePG6+FXgVI6JeZDBZ0yiLUEPQd76dNGC1UKcYq6z398KkRBt8JYzrnNexYblqBVSkHUrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,175 +177,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-10 at 21:19 +0200, Peter Zijlstra wrote:
-> On Thu, Sep 10, 2026 at 10:46:12AM -0700, Tim Chen wrote:
->=20
-> > Co-developed-by: Chen Yu <yu.c.chen@intel.com>
-> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
->=20
-> :-(
->=20
-> > ---
-> >  fs/exec.c                  |  14 ++++
-> >  include/linux/sched.h      |   3 +
-> >  kernel/exit.c              |  26 +++++--
-> >  kernel/fork.c              |  23 ++++++
-> >  kernel/sched/cache_sched.c |  19 +++++
-> >  kernel/sched/fair.c        | 142 +++++++++++++++++++++----------------
-> >  kernel/sched/sched.h       |   3 +
-> >  7 files changed, 164 insertions(+), 66 deletions(-)
-> >=20
-> > diff --git a/fs/exec.c b/fs/exec.c
-> > index 745f6eb5279e..7a8a9954343e 100644
-> > --- a/fs/exec.c
-> > +++ b/fs/exec.c
-> > @@ -882,6 +882,20 @@ static int exec_mmap(struct linux_binprm *bprm)
-> >  	active_mm =3D tsk->active_mm;
-> >  	tsk->active_mm =3D mm;
-> >  	tsk->mm =3D mm;
-> > +#ifdef CONFIG_SCHED_CACHE
-> > +	{
-> > +		struct sched_cache_group *old_grp, *new_grp;
-> > +
-> > +		old_grp =3D rcu_dereference_protected(tsk->sched_cache_grp, true);
-> > +
-> > +		/* Acquire the reference before publishing the pointer. */
-> > +		new_grp =3D sched_cache_group_get(mm->sched_cache_grp);
-> > +
-> > +		rcu_assign_pointer(tsk->sched_cache_grp, new_grp);
-> > +		if (old_grp)
-> > +			sched_cache_group_put(old_grp);
-> > +	}
-> > +#endif
->=20
-> Guys no! This is horrific crap. This is not how we do things and I would
-> have expected you all to know this.
->=20
-> Have you heard of this new fangled thing called a function?
->=20
-> Imagine all of those being just:
->=20
-> 	sched_cache_exec_mmap(tsk, mm);
->=20
->=20
-> Also: rcu_dereference_protected(.c =3D true) is another offence, that's
-> just wrong.
->=20
->=20
-> > diff --git a/kernel/exit.c b/kernel/exit.c
-> > index 006edcc0c2c5..442535778ce1 100644
-> > --- a/kernel/exit.c
-> > +++ b/kernel/exit.c
-> > @@ -552,23 +552,25 @@ void mm_update_next_owner(struct mm_struct *mm)
-> >   * Subtract the memory footprint of the current task from
-> >   * mm.
-> >   */
-> > -static void exit_mm_sched_cache(struct mm_struct *mm)
-> > +static void exit_mm_sched_cache(void)
-> >  {
-> > +	struct sched_cache_group *grp =3D
-> > +		rcu_dereference_protected(current->sched_cache_grp, true);
-> >  	unsigned long fp, sub;
-> > =20
-> > -	if (!current->total_numa_faults)
-> > +	if (!grp || !current->total_numa_faults)
-> >  		return;
-> >  	/*
-> >  	 * No lock protection due to performance considerations.
-> >  	 * Make sure the group footprint does not become
-> >  	 * negative.
-> >  	 */
-> > -	fp =3D READ_ONCE(mm->sched_cache_grp->footprint);
-> > +	fp =3D READ_ONCE(grp->footprint);
-> >  	sub =3D min(fp, current->total_numa_faults);
-> > -	WRITE_ONCE(mm->sched_cache_grp->footprint, fp - sub);
-> > +	WRITE_ONCE(grp->footprint, fp - sub);
-> >  }
-> >  #else
-> > -static inline void exit_mm_sched_cache(struct mm_struct *mm)
-> > +static inline void exit_mm_sched_cache(void)
-> >  {
-> >  }
-> >  #endif /* CONFIG_SCHED_CACHE CONFIG_NUMA_BALANCING */
-> > @@ -585,7 +587,19 @@ static void exit_mm(void)
-> >  	if (!mm)
-> >  		return;
-> > =20
-> > -	exit_mm_sched_cache(mm);
-> > +	exit_mm_sched_cache();
-> > +
-> > +#ifdef CONFIG_SCHED_CACHE
-> > +	{
-> > +		struct sched_cache_group *grp =3D
-> > +			rcu_dereference_protected(current->sched_cache_grp, true);
-> > +
-> > +		rcu_assign_pointer(current->sched_cache_grp, NULL);
-> > +
-> > +		if (grp)
-> > +			sched_cache_group_put(grp);
-> > +	}
-> > +#endif
->=20
-> Seriously, WTF ?!
->=20
-> > =20
-> >  	mmap_read_lock(mm);
-> >  	mmgrab_lazy_tlb(mm);
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index 416758c8a3d4..2e79548cb7c1 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -1599,6 +1599,19 @@ static int copy_mm(u64 clone_flags, struct task_=
-struct *tsk)
-> > =20
-> >  	tsk->mm =3D mm;
-> >  	tsk->active_mm =3D mm;
-> > +#ifdef CONFIG_SCHED_CACHE
-> > +	{
-> > +		/*
-> > +		 * A task holds its own reference on the group, separate from
-> > +		 * the reference held by its mm_struct. Acquire it before
-> > +		 * publishing the pointer.
-> > +		 */
-> > +		struct sched_cache_group *grp =3D
-> > +			sched_cache_group_get(mm->sched_cache_grp);
-> > +
-> > +		rcu_assign_pointer(tsk->sched_cache_grp, grp);
-> > +	}
-> > +#endif
->=20
-> And again.
->=20
-> >  	return 0;
-> >  }
-> > =20
-> > @@ -2599,6 +2612,16 @@ __latent_entropy struct task_struct *copy_proces=
-s(
-> >  bad_fork_cleanup_namespaces:
-> >  	exit_nsproxy_namespaces(p);
-> >  bad_fork_cleanup_mm:
-> > +#ifdef CONFIG_SCHED_CACHE
-> > +	/*
-> > +	 * copy_mm() took a task reference on the cache group; a failed fork
-> > +	 * never reaches exit_mm(), so release it here to avoid leaking the
-> > +	 * group and its per-CPU buffer.
-> > +	 */
-> > +	sched_cache_group_put(rcu_dereference_protected(p->sched_cache_grp, t=
-rue));
-> > +	RCU_INIT_POINTER(p->sched_cache_grp, NULL);
-> > +#endif
-> > +
-> >  	if (p->mm) {
-> >  		mm_clear_owner(p->mm, p);
-> >  		mmput(p->mm);
->=20
-> Drugs, it must be drugs and lots of it :-(
->=20
->=20
+On Thu, Sep 10, 2026 at 03:42:36PM -0700, Sean Christopherson wrote:
+> On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
+> > Sean's initial email was asking for strict never-break ABI compatability
+> > rules on top, and that is what I've been reacting to.
+> 
+> No, I was never asking for that.  I think we just have a different interpretation
+> of ABI, or rather are talking about different pieces of ABI.
+> 
+> I am still asking for never-break serialization format compatibility, i.e. the
+> more literal save/restore ABI.  I'm not asking for full backwards/forwards
+> compatibility across all kernels version, i.e. the higher level "kernel" ABI.
+> 
+> To phrase things differently: I am a-ok if kernels are inherently incompatible
+> because they fundamentally operate differently and/or support different features.
+> I am not ok if we end up with incompatible kernels because the save/restore
+> interfaces and payloads are poorly designed, lack abstraction, etc.  
 
-Sorry for the warts in this version.  Will clean it up and send
-an update.
+I can more agree with this, it is mostly what I thought we'd end up
+doing anyhow with version numbers and growing the structs not
+replacing them.
 
-Tim
+So you still end up with a version label (string I guess?) because we
+can break it from time to time, just the version should have the
+feature mechanism layered under it? I'm fine with that
+
+Jason
 
