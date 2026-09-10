@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5650BC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0192FC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 184626B0096; Thu, 10 Sep 2026 03:56:31 -0400 (EDT)
+	id 1B8386B008A; Thu, 10 Sep 2026 03:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15B966B0098; Thu, 10 Sep 2026 03:56:31 -0400 (EDT)
+	id 13B386B0093; Thu, 10 Sep 2026 03:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 099B56B0099; Thu, 10 Sep 2026 03:56:31 -0400 (EDT)
+	id 005976B0095; Thu, 10 Sep 2026 03:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3EB86B0096
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:56:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E2D11A0481
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:56:30 +0000 (UTC)
-X-FDA: 85197095340.07.C181DC0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EF9561C0002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:56:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDi8kUuo;
-	spf=pass (imf21.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D7D6B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:59:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70444A4B76
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:59:20 +0000 (UTC)
+X-FDA: 85197102480.23.3F96E9E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D58E6120008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:59:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NQFA2UmQ;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789026988;
+	s=arc-20220608; t=1789027158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BQQcusQ9LLT4yN0vtE2+JJfBAM0whRembcwi5uPMBmY=;
-	b=kpYsxEAowDhqNRMv9QVtmw0gXzjsZJpwJxpriX/zCSJefxuuLTNW37Si2MWZQBQbodf2Te
-	ho+9K8O0v3/WZQYKGs9ksdZGXqUKR+qI1kGLqzjt4IT9VXeUmAQv8vj6B1GI8RmWrJRgOg
-	hx/bIeoKS35mgXulf8F5PcBB0JE6YuA=
+	bh=NRs/chg0KdnpHvHLY9kfJ9kqDasmfHkg3JlNvfdFpxc=;
+	b=drbT6gNWcm/aiGrAWN+vu1BLjZo4N/ZZVM2O6x39rzr67RS7F9ZH3v2ahIJGWDIjJKtniJ
+	7YMbVlocorKTnFxX5NDDQohTpleRYa86bR4w1E+CqT8t2pmMrjVRsW4+KIdbYM3mHlgsm+
+	fFaa4kvUtXb08Zjc5dhRv04Eed367lU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789026989;
-	b=auipaGUnybhUXtk+bmJsfcyRrzIq+0fXs2+D3zKcX+j5moJCmWbgTWeiH2pBHP0lnpfZLw
-	JE2NNiLzWStzfMr1aKGP9YKDrp7LnFnr83cu28MnvVTYvTvPKhpVtMPTnLyMigtVJgSWLk
-	Ej0D2Sj4QmverTdezC3VlWEFQZJ+Vnk=
+	t=1789027158;
+	b=uYY4uN2pr40APaX9NDEdFUA13lpfAIVwM+SlNIV1BcDth1RJeOVktlDtmBO64Kda8CjJPn
+	0hYlHpTRA6tNAz1W+OI6zdnBl/tUP5aqT0mIMJVY+fNKWz6L3HLg0ChHVi/oU2DkrYQ3KX
+	vEuVcgjSR9KKPItVc6ul91MNbs1zhs0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDi8kUuo;
-	spf=pass (imf21.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NQFA2UmQ;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8CB17600C8;
-	Thu, 10 Sep 2026 07:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13BA1F000FF;
-	Thu, 10 Sep 2026 07:56:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE46640743;
+	Thu, 10 Sep 2026 07:59:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD62B1F000FF;
+	Thu, 10 Sep 2026 07:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789026988;
-	bh=BQQcusQ9LLT4yN0vtE2+JJfBAM0whRembcwi5uPMBmY=;
+	s=k20260515; t=1789027157;
+	bh=NRs/chg0KdnpHvHLY9kfJ9kqDasmfHkg3JlNvfdFpxc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UDi8kUuoLd3sQBFJGPIWCqcoyztj2LTiq9VJbAroJS0NmrWzlX881kEKj/grf85aD
-	 +iFSIOSNfcbhy3RVHR7B48/NMY+1sQNN8ceb8gy99B3IgdUR4q6rQoNiKgy/V/oR4y
-	 IcrtbvcrheHdS/YlR1R9Ro7LmulIoPjpSMZdb2rjWIBYgKwC7c915RPLwMJxcTsicl
-	 iulfu5rif6jCCo7NCp4ZGfR9WkDxd/Gq44sL7rA8DWe3cYda/Vq+rKC4j93AxOuJGf
-	 I70H/S0fguNXRnW8yk92n+a4QZgcvHR9wkwZ+V09rj+g/x/JqT/bPLYUa+vK1YkvwQ
-	 EZXJMANGawwbQ==
-Date: Thu, 10 Sep 2026 09:56:18 +0200
+	b=NQFA2UmQHMnTly+2eXTG8Pj8f+tmN8nLepBmX5vYFNjVw1HfO3ezcE2e3msAZcGKZ
+	 Nj85KlHQ7ImLxXVhEMr+AXBT/ULU3Zh58BBiYEUMCZqu6PX/SkPJqMSjP/vdKr/sZ1
+	 Cw0SThBCYzl9SW8qCmYWP0gGyLp6/njf2s0ydXIJBfvnFG7iJgU0/dbdRvT+LNQq8B
+	 vI+IaR3JxmLvUBbRZBwNJxifjFC1r4u+XndAlj32yr5YoDSkSOfFpfnaouIaJwP1Za
+	 e/HMCoMOkXuEQ0wm5waUt0AjJkPOFVYQJSJFxLrgvOB+YGpM24gUHIfypCoQ9/EgJK
+	 Hinjfj/aUvopQ==
+Date: Thu, 10 Sep 2026 09:59:08 +0200
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -90,23 +90,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Kieran Bingham <kbingham@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
 	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 06/12] mm/sparse: rename __highest_present_section_nr to
- __highest_used_section_nr
-Message-ID: <aqJiouyfI716msmO@localhost.localdomain>
+Subject: Re: [PATCH 07/12] mm/sparse: remove pfn_in_present_section()
+Message-ID: <aqJjTE04G1A1l0A3@localhost.localdomain>
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-6-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-7-008fc8d579fe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-6-008fc8d579fe@kernel.org>
-X-Stat-Signature: um885dybm8c5jo3scgawi6a7m5yc7z99
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-7-008fc8d579fe@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EF9561C0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789026988-281147
-X-HE-Meta: U2FsdGVkX198zv9k3rxnt/bmRJrYwsRMKUTSDRp4Zole06GUjvs+IshTL1jWj0mHq7rhy1RPT8l4cQmd8Zuy0P00XgGyA1e0tT7vqJzDwH7LMuqMB68/YQvPgc9iF0m+Xo3XHxQaxEnsPsx6A9iZ5zVDGcv7k4dcj0v9WfpWxWUGkRi9QOhqC58BYhrhWrnd0h+rbvHYCiAglc9qB6XDX9scCuIrEFZXjH6cSIQCJZ/QiD1pn9KHDyiCZLsV4lYnQTw2xouhvn3YH6Z35a3GG2f6j6cv0V4KarJ5G3IkKvKTNb9AWAVGUsECvlKqeiRGG/nDI373BBBT/TY3jDByBp7tOwzjeo0Vri37fIAJPFBgYeAwmfrHs53O3u5VCVigj8zJnc8ntB9csvcFZilxyDPVH5MLW62Ti4VU/9pUN0wmnWU0SIkHfscvZOfH+TSz6HSdfAjDvXYqJeJPfYGvkbPVT435lu8u70F6ShXyXw3eGl0595VQMLbx5zZBYiWNazJGN6zifJOP60c2PCvwotBjUwZvvxL7dP/dQuUX/GTW9BEPD62RDLRJLmyY7sH9TOiGBKmkajG2DKKrE0Fcl1edKOymTJN49D2VmjTADOWqFOLOAX4rgKF65LeC7Umd5no9odZHQN1HffgA3+/Attu2+4W4W82EC+utAz+ONtbIRy+EkGEJN9YoXIyOAutTxOceMebiAgigfF/GD4EfHEqS7uEwFQMt9p586n3RWMUpuNYJFMLHp0oT9uZwGBn4/3pTV6Ug2/DCKpKBq2w+jyxf6xWQeUdykGeIRSGvp/Six2UN6xEw8OW7/atvY6wewrA6EgmepHtINJhhtqZWxmzqS+IvqoSehNRmgsw0tGn7gqPw6tfCz2aQD6MJ8NA1XrPnUYLwZmngn1IUfZ+bONE6BiMYkStx67b/Qf8PytFgURlNDoTwBArYe3UZ+1v4juHgbL0MAsK71AwkFiv
- MDs2DF/p
- gx+Huha6chjZ5IOyGH+iJI5hUauGDvX7SD7ggCpAJ6SSlpp2Q6vB3z3llhBnIp1gHZUrFuWIO4QJRdo7MlMeod7YMp4MiEWiVE0eqo7sZYsvjRUGQ3c/jKMiPoS2lKe/vGmujSgDjfIAaU8vnjSqiG2NpwdUJoYviEp8vmD3CaQa8CV/oGyl1ujFG9/h+MrjzUvQuj+JlVbds1/9H3K5fNQp2roPYezX5mAaZTCkOuxiG1aZ2cu0Sh4XtzgplnU0GD8WfobV7LXJd1uX7uDNpUyFGlg22B0E3Tc0gK8efJuiLKI69DhdadLrFPkhAJyTS1qso
+X-Stat-Signature: b1nj964wmwaaso7prgoozwzmkgzhhj57
+X-Rspamd-Queue-Id: D58E6120008
+X-HE-Tag: 1789027158-229590
+X-HE-Meta: U2FsdGVkX18vufagGWLIR+xlQUn+mOs1wgb3lgnIhw5lxT1kopXZpoK608TC/tRlLmpMghCXQJYZg94MAIc6NzB1Ti11jZL6p1HZISITFXn26ufyp2jl1AywDV+RH3/Aof1fmPxgKeHAb+84zslnHEA8MfXJJSJCQ8g58fN9r5kY8fQ8UCjkZQWd+l2XOMwYIrTt3A+WA3q/lcAFBmj/CkhPWFefnmin0qRfU9RaxRxKLP8rjIXO0QvvtuZe7t6oFAjeJlk8olApnjr6MoFBQI98mxbt5IbKcQfci62JNm1LYgPhmfO6182pxtvYxPaN52YVQ78k3T9u9M/3n6FTZcjuS13um0ZhnLKRAPu65UF4uBuAtGqlqmZT+ZniAmhJApHd+Gxui0o5zDfrFw3Zgwyghm3HdSsC9paRpScEVxjgpdgwaihi4Fa7WDCrQqL4TVxtgrl/XP8e+IdzEo78Bl48pZ6tt/z31GPZhX4XNZZzO2E98hMk01dea1njJ8WbuUv4ibxQVh6t7i/ELe0GljJAatR4LekQbcGxUP3FfbNDh4eyDdp3OVeRJazyJrlNqnuCNQfqIdXwdeBgnhTfD5gf0M99hrytDhg1oLL0xhtjMy02ns7Xwdlh3/8s+ImGiSLyhjcg5KSrlJ7LSNesV5yaUwz2Ph4uQvQTf4dicH6v4B0tKTPMnk7BSBQHdzmJLZ7lll7+9Glr08FLcQeTFRhy+1UH0oAUjOQQ4f9JADxSXF6GjEaIaiN4YYWqFeSDBCh/0wtTwp3HkVK5tu8EgtawIM3aXIsIIokui+KrTekI9aT3dfMMjJXW9qazizVgIL85Q/829tNar3AT3qMoUe6ESxd4ftEWhfbsGeyjkKfWASBYmxXdhAzvOqae9lfKXBq+mox47g3jlewRD6n0H478x1xrzdiCEbYBrV0UL62l2FpJi10T6PiujqwJEAKNNPr++9rUa2S5etuffRs
+ Lis3vHxx
+ Gm+1yw8me/xmglJUWYoHt8zqxayw4Q5Ut9WMAVchFWpqVNuBBJsiRxHBz8Ho1GtfjFSZUTcwwSslX4ozdjie+d78hRkja9mh1U7yniF8IPC93vLOElZK0rEzIm+6iV6dzOLZhmGbJbolLk2psThXiJvQEz+QFf4ZfhpC7MNKkmspUl1/TRhK359awLsiGntgXigtFuJR7nlMcT4FQ248lroWxcUGgbLNmE8L+jG0qEczl8A9W2YR4EypHLaz38i24tvB51K4hS7aA02mlmndXCaoWc2a88Q9amQoHvSGEsCEqG+57INRG8iTgRqUnoudgFcQmkAuRerakjN3bDSs36Vj5BLY6q+uEAkrW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,9 +113,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:32:59PM +0200, David Hildenbrand (Arm) wrote:
-> In preparation for getting rid of SECTION_MARKED_PRESENT, rename
-> __highest_present_section_nr and clarify the comment.
+On Wed, Sep 09, 2026 at 03:33:00PM +0200, David Hildenbrand (Arm) wrote:
+> Unused, let's remove it.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
