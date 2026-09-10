@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14ED7C79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9686EC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:18:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068816B0093; Thu, 10 Sep 2026 02:08:14 -0400 (EDT)
+	id 5C2236B008A; Thu, 10 Sep 2026 02:18:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03EDD6B0095; Thu, 10 Sep 2026 02:08:13 -0400 (EDT)
+	id 55B656B008C; Thu, 10 Sep 2026 02:18:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBF5C6B0096; Thu, 10 Sep 2026 02:08:13 -0400 (EDT)
+	id 471826B0092; Thu, 10 Sep 2026 02:18:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C91E06B0093
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:08:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9360A045E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:08:12 +0000 (UTC)
-X-FDA: 85196822424.22.9BC5C7A
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4712520004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:08:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YZMnar3d;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D6666B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:18:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 185A2401CD
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:18:19 +0000 (UTC)
+X-FDA: 85196847918.19.F547208
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 565931A0006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:18:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YWqnZs7f;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789020488;
+	s=arc-20220608; t=1789021097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jePTnUgwFYrx1QtqJ0i+l+Bh+bnpi4s/zBah6ITg4fg=;
-	b=AcRbYw24Qyojd/+i/mSur7PWzRvM+lUGg+cuLjWCsGyWhjVDqfu6p+0puJLfkplIAvv8BQ
-	OM02DNlUatFO4jwJ9C+H8CyvOdsn8fd3Duw7Tb4QKO4bh4oylAQp9qoolkcB0QSTu1NzfH
-	4OeyLJGRbqekMWX8SNyPtuvYHf+dIkI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789020488;
-	b=VJsr8vs6wDh9ywj7imQlrNYsaCf8exA2v+yv+aXTO8vDARLL44vK5A8jrDyGQbMq95vmra
-	Kk2uSflcBnIcO6XU5Ie4L+5QoUq/mCxxAWKDlNloqTVYBIHFWbuT2NdbpGk+k7LA6K9SB1
-	CLoXYXn/LsNN58mXAnMWWJMUbVjSue0=
+	bh=6HZvhdr+7QCB5p9rcdZOkfxfILYHQvwBbNCROl0jgk4=;
+	b=LA4COk2WvOICvxgnwR2sYCDoM8EP/uhSU6meeCttH437Li3oeSfdGeqaGes2oqpCS00R1z
+	PZFLbWd+KWLiXGqqRPX+NYNu1tGyI61KLevLGJMmkS8J29wlKn57GX56i6EOjX/563JAbQ
+	wvES151CKr96caEXVho3NPtB0SqRE+Q=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YZMnar3d;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789020482; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=jePTnUgwFYrx1QtqJ0i+l+Bh+bnpi4s/zBah6ITg4fg=;
-	b=YZMnar3d5DizmJ6qAxdhzYbWDOqKPyd4eS3OOtnzII1xrmnzkye/IpUOqot11CqH8h6UQ6nxzCIOiCpgW0blHlHwKRJtdj26wHCqSy/aiZI3VKEERbbRtbNUQUPX/IdJlh5K1+Io9wFnwvLwzjP8dB/nmcKlmEPBq3HQ4sVbCO4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAgdFcD_1789020480;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAgdFcD_1789020480 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 14:08:01 +0800
-Message-ID: <e611ca08-1952-457d-ba45-8c8854020a74@linux.alibaba.com>
-Date: Thu, 10 Sep 2026 14:07:59 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 14/19] selftests/mm: run every supported collapse order
- by default
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, rppt@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
- nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
- kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260908125105.1510704-1-kirill@shutemov.name>
- <20260908125105.1510704-15-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260908125105.1510704-15-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YWqnZs7f;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789021097;
+	b=tVB296mmkO+HVoxqkqEqotCEg9b4B74qjRtvEgvh/rAVLUXCKhDF+lbFen0GuW7ipdBCSt
+	2lPSWHnQnadf2wDG5jldcWwGG6C4JQF0nzjehekUZJAXngQGAE07tszSIsAT5wXUmdAIfK
+	5VMufg2CIpW73WclBJhnw7KPAgcMFvY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2AE5F400B2;
+	Thu, 10 Sep 2026 06:18:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EE61F000FF;
+	Thu, 10 Sep 2026 06:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789021096;
+	bh=6HZvhdr+7QCB5p9rcdZOkfxfILYHQvwBbNCROl0jgk4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YWqnZs7fu0CKaV9+WSxSx7dskxKIy7WpXa7aoifE6T47KxX6nVVT2B6Ay1y60gxSD
+	 2Iei8ksW81V1S+8ZkQzhpOhwF5WSbo4/rLbH76nHxjqMaanxnNz2vKV36TgvXVs6RS
+	 PZOpI4sklR5Gx9IqsZUkd6081gQAad2wtfP/cVjg=
+Date: Wed, 9 Sep 2026 23:18:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ren Wei <weir@nebusec.ai>
+Cc: linux-mm@kvack.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, notasas@gmail.com, vega@nebusec.ai, rakukuip@gmail.com
+Subject: Re: [PATCH v3 1/1] mm/memory: constrain generic_access_phys() to
+ page boundary
+Message-Id: <20260909231815.bcb1ca6091ae0ba1b5ba54e1@linux-foundation.org>
+In-Reply-To: <e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
+References: <cover.1788842306.git.rakukuip@gmail.com>
+	<e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4712520004
-X-Stat-Signature: 9rxkqdg583ozz9uxcsrbsaebodjh3p4a
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 565931A0006
+X-Stat-Signature: ccq1fs3m6n1a48zeqd5rt8rcwsse9xhs
 X-Rspam-User: 
-X-HE-Tag: 1789020486-874656
-X-HE-Meta: U2FsdGVkX19RTOCz8AaYjhZPA5lJGAaniXcHTvPIokXwiL/VtEqL590auccJZnR1CnOTPU2Xfq6ARU8XFCpdMZYc0Dr10624wuT86rz8hAipLIsBszgsR/YGodRn9mqLLMRdAhLuAeShPUCVrbfe6m+SFtimVbAm9EV0FXowa4r/e//4cIo5Mh9rcYsoMmNjY8WJndPr7XdDyfiAYPn4VPBVmKYhz+MV5rzbp6lvzv0CNoTXFuXxm8h3PW40MOyuGW7VT3drS9dpEKp9mLfBO2x43ZynzH1F1KymxQKXkkym8aWn7Rh326tLFco4kaLIWWA5nc1unEZfbzb0UNluTvjg2TOzqEaN4SA1GzE8jgWOri4AxF13dB6VSnduPijUdzBiqvnJi0XdgRGeL8p6dKUfoFSYVJVgVb0otsmUsEQwKL1RLziCpHXiM8IbW3Hg4L4ECXBlhNHLxlUnq7UqdE1cHyS2HQnpuUenuKf9Do3KX3kprSxQxVmfoPOAwKgIrp5KdfVWyN6LUTeYhVqb9SDwout5X437JxsP62nVH58iPoabQLXGCEWDZPy5mmVerW8zwT0aIkfznmije+F06PV6YqwN+CdhiH2I1sXEqkwqPoqnJyjRptOIMx/Rw8SJ0rFB8SAGb6SYCiji1O3aIzBbj0CecdwE8ImAlfmadPQ8f7Gs/YeU5/oFqOgJhEnL06Vd0kuKflQVQwFIVvLis1pzf1NW3/i0J52LJ0DY3WoyslvLz6VOF1c5BvPxA6KM4tiRL+7I9ac9Hpb15qS4vgLv9rA8oxm98R65JR3JbgfQcz8ERSBXDxQRM1NP7BBpbAZ0QYs1lj2OivTeeaWD09vQdwH2GYZ7wL7a+i/chatpxECm1btravvhce6m1leACCSjWVigrjQ5LefDl9dilaZjsK9KUcKZOXhZh+IA5xja0b2E/X3EY7sSiA/2ExxOXFF/0jylc1rhDwad6mw
- RRaRGwCO
- rF92FAWNwhfUNG0/CNzr5EI0k5iwd/q74Ezl5G8S1bRmgqm9CA2bzuQHHSglCFyx/gXceAFGlPXLqSLtIyigUAvhwecbO3mMaPCnKKWVckOC9h2Q/xpMUHKUCbKQf/tgVLTBwpqpR99ndE5RKtN2Wd21uxJQv70ttneZy3+B7YFQnWBiekc8YwkRWzJL0CjCQGXFD+cJZjDnG1QpjLWe3tyLMqc7WmJ7QW1Cd3bY5q7q50moE6TzXnoW4i3v94oHxVdwLbzojTF8wG6shqdIkgmz9zLdn33ltttZ2TSi8KtwAgh9oq2ft65HbI/E0sLcWMLq4J404cYfi81aZ73DY01SQvd8wOleNvEE28DITgRY7tg3IPRHl8EM7DeMW6gDp0nHD
+X-HE-Tag: 1789021097-473211
+X-HE-Meta: U2FsdGVkX190oXaVMyXolvMbPYvfmS6mxv2/stW7JYDU9oCMqju6xjBpqT3tbE2X04LEOcF6gCoZ2q2vfxRiQuAmVOBgxUT0z24HnkBs63Pfom6NA3YzfA+5056h+1N31Gvf4ZM2jFbpCZzCbePbY33088dxUaXUnEpcoIGgCmqx1EzLt1hpcO94JdHoo8aZSUyKBmU3e+29VLXSUXde2b3uE63MbuMNEFMFauGlZ5j71lVAWod0/BrBEGjidgMWaSEtkPZclzzoXFDturpgQ/DjSQnkQRmnnQ+RKKXcpZcP77SxsnvujS2ARpxjARYEL3/To7zjMxlSQMMFRr/y+mQID/j81Mp4JYro3+VSTcV6DrWj8VOVQI/XevfypvcqZJWFQpEoBJ1OOAWBtIRjtdgQb6SoXQzm2YK1fKtShBclKhm799cFYJZEphQ2rr936rdnH5dUjmWSPof9izQdTF/59xIPTS1AAZj+KRyfDNhmR35iWGGBQhdQiwqb+lEbnYLuRkMoYq98o+eowjKjw1LY9BaMcxdj5Syq7QYrMR7qrxqICG04Wm1cdI1NOuuOEHLzHvKrgizZhVV1VsObYqgKtU8J928otKA5FJjFQjvU29S1BmZujazLaTSDKorOX4edkm5LzysNjOg2FIQ2O9oat6GpAq2fwVNYLrTW6eTg+V3IqB96PKOtRAruRUGK7a+3tkvVgrMaPIwMh2w8zl1Z+2dB0MBtRg2Oknmxtj4htay8opD5MihRLCE+jFMijs8JR/+9J717Gat10DhcdliRJPQTNNQpYXqNiQmCwAlsO1voaDBTqJYr1kQAUIEhj4/eDtXMuosMvQGJANaLO66D57/Pdeb6a/9lku44uNMkCudH54MLxuP0S1HEV2xhqRDAehQq91Yxg2/zHziOlJ2THkXwUZ37x61iFxaJYWEClymvh64Z8lHo2dd0fqnUSnl+GZZLmD4TXlDqS25
+ h2uZZCEn
+ J9cy+BjqFkgKcucGyYRY7GLAoRWeKVhaXcxeceU7OVPMNEY07rJY4aRcQSXYBZGP8rF8FSf/CcOj9AXBKVyxUPhvBwkhAAKuomHuOrblDl4zh1y7BYWZbX5yJ23P5p2MA3XhchhXYZPV+t4wefbikLelVH4VekawwURJ0mYbMGPYBUl582TKgT/8x+F0aSumLRWd5MrIaGXD8bS59NDmzdfy2PR13sblna7zJIUKoq7UrGEX0IaQV7xTVLfBvk4IHZp37gBbvsUVEVjE9qWw0c7/9GYe5BvIedTyUeCRfA/m1rrXynd1+KprWRF0n26kUiQeINFYARreW6G+de3k9bj9KHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,44 +92,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 10 Sep 2026 11:42:50 +0800 Ren Wei <weir@nebusec.ai> wrote:
 
+> From: Luxiao Xu <rakukuip@gmail.com>
+> 
+> generic_access_phys() improperly validates the memory access range: it
+> only validates the start address using follow_pfnmap_start() and passes
+> PAGE_ALIGN(len + offset) to ioremap_prot().
+> 
+> This poses two problems:
+> 1. In PFNMAP VMAs, consecutive virtual pages are not guaranteed to be
+>    physically contiguous, and individual PTEs may have different access
+>    permissions or writability.
+> 2. The mapping may cross VMA boundaries if len extends beyond vma->vm_end.
+> 
+> Constrain the access in generic_access_phys() to at most the current page
+> boundary (PAGE_SIZE - offset) and map only a single PAGE_SIZE via
+> ioremap_prot(). Since the caller __access_remote_vm() already loops over
+> the requested length and handles partial transfers, it will naturally
+> iterate over the remaining pages.
+> 
+> Also add a missing (resource_size_t) cast during PFN re-validation to avoid
+> truncation on 32-bit PAE systems.
 
-On 9/8/26 8:51 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> The mTHP collapse cases only run when the caller names both the context
-> and an order, so a plain ./khugepaged covers the PMD contexts on anon and
-> nothing else.  run_vmtests.sh pinned order 4 and covered no other.
-> 
-> Run the mTHP cases once per supported anon THP order below the PMD when
-> -c is absent, and pull that context into both the no-argument invocation
-> and "all".  Also:
-> 
->    - -c still pins one order, and now says what is wrong instead of
->      printing the usage text.  An order at or below the -s source order is
->      skipped: the sources would already be the size being asked for.
-> 
->    - Both orders end up as array indices and shift counts, so -s and -c
->      are range-checked before they get there.
-> 
->    - The mTHP context has only anon cases, so a run that names a different
->      mem_type -- "all:shmem", say -- drops it again rather than refusing
->      to start.  Naming both explicitly still refuses.
-> 
->    - A case carries the order it was registered at, so a result names it:
-> 
->        # Run test: collapse_single_mthp (mthp_khugepaged:anon, order 6)
-> 
-> On x86-64 with 4K pages that is orders 2 through 8, and ./khugepaged goes
-> from 29 results in 17 seconds to 77 in 29, so run_vmtests.sh can drop its
-> pinned order-4 line.
-> 
+Thanks.
+
+When fixing a bug, please ensure that the changelog always clearly
+describes the userspace-visible runtime effects of that bug.
+
+> Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
+> Cc: stable@vger.kernel.org
+
+Especially when proposing a backport.
+
+The cover letter tells us a bit more:
+
+  This patch addresses an issue in generic_access_phys() where
+  accessing memory across page boundaries in PFNMAP VMAs assumes
+  physical pages are contiguous, which can lead to accessing unintended
+  physical memory or exceeding VMA boundaries.
+
+But how does this manifest?  What does the user see?  Has it ever
+happened?  Is there a Closes:?  Any reproducer?
+
+> Reported-by: Vega <vega@nebusec.ai>
 > Assisted-by: LLM
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Please update your LLM prompts with my above sentence "When fixing...".
+Let's get this fixed for the future.
+
+> +	len = min_t(int, len, PAGE_SIZE - offset);
+> -	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
+> +	    (phys_addr != ((resource_size_t)args.pfn << PAGE_SHIFT)) ||
+
+hoo boy we've made a mess of the types in there, but I don't see a
+feasible improvement in the context of this patch.
+
+Also, a [0/N] isn't needed or desirable when N==1!  I'll consolidate
+both into a singleton patch.
+
 
