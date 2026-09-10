@@ -4,135 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45CA2C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FCBAC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F9C6B0092; Thu, 10 Sep 2026 04:16:53 -0400 (EDT)
+	id 19D0F6B008C; Thu, 10 Sep 2026 04:31:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FF26B0093; Thu, 10 Sep 2026 04:16:53 -0400 (EDT)
+	id 14E516B0093; Thu, 10 Sep 2026 04:31:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F8EB6B009D; Thu, 10 Sep 2026 04:16:53 -0400 (EDT)
+	id 03E946B0095; Thu, 10 Sep 2026 04:31:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E79B46B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:16:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 517311C23AD
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:16:52 +0000 (UTC)
-X-FDA: 85197146664.19.4D9D481
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 785EE100003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:16:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVY1XiJC;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D21C26B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:31:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE62540419
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:31:02 +0000 (UTC)
+X-FDA: 85197182364.17.D5CAC14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8C51E140010
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:31:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DWJSh1qt;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789028210;
+	s=arc-20220608; t=1789029060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ftFZUSVOyS9bfvsQojvatJ10rlyhpu64QQLvznjHmdU=;
-	b=tJatjw4XSeiopyld1VZ4j8HTd7hhaIK9fE+hkZHVDCvQ3rOoGrpjWu01taBgquTaR8pQx+
-	rxHdvYUduYtmG622f5lUsTMSAx0iMybqzdn4I4D7XOFR+eLFVGkPG4v9iUS7YOYNgx+Tmf
-	vE2lRwja9N+uI2seTkMTovwsr0+PZzA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVY1XiJC;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=MqiykUoJZh6JjDq4MJq+BR4QK3p6ZlqAmI2a1v4J/gs=;
+	b=fSxlx442Wgs3bIecvvYsM+IhAMq0nyVmntmobyE7jhKmV13AIrQvAA+ha9OBxlrIA9x4Wv
+	qlnj2LK6kYuPXq1FvisWVlUyAE6NxESzgTYlVm7OG1kaCbDBwwrBr/B17qf6p03A29x6rk
+	whIe6yY1b7p01y38/fZVNW8jqY7dKSc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789028210;
-	b=CzeGaTSUTrtdqvDoocmnQwssGUSethaTepgzkPctG+vYeP3xVEPDHXfaIiwgU/PRTzm7Mw
-	1t+fXTGuC7bMtyI23nfXA7b6zarhk9xmk9NgDLL/SCB5W03AEQxP70S/iOtAItyHL/JCjj
-	6Hq8KICy+bv1BEr//xNuFHp0Sc+rsoA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BAC4640276;
-	Thu, 10 Sep 2026 08:16:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F2F1F000FF;
-	Thu, 10 Sep 2026 08:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789028209;
-	bh=ftFZUSVOyS9bfvsQojvatJ10rlyhpu64QQLvznjHmdU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fVY1XiJC4Vf5g8jFDmB0ti3FWZ4F99IgchLrZtSH409dEUffRwgmLvXwI7b2csASg
-	 09bJ6DGCH1f7mv2Sy/PZoc60O+YtGZSwsT5AMbTLKSwnQHWetxRf+G1peI3P+WKRkX
-	 UqaDP793FuN5d8rp88SEawiQ9QUL2QjptcOmf8h3p5ORacS/vmtMJJYUbXNWjQCjL1
-	 hfwDdMcDxfDfMLdfGjtpQNuZGcTWcDwhtFUtNgBeXzaCLitfNDxCYDKD29H/L/HYas
-	 VgrXZE4aGenFr4+BqS2lZyQCLelCVCrvU+60/Ewq0WliMIrkpK/5TShV9X943/7MXL
-	 fGVUwPYPWOWBg==
-Message-ID: <06c15d6b-444f-46f2-9341-84d8afc1afc0@kernel.org>
-Date: Thu, 10 Sep 2026 10:16:43 +0200
+	t=1789029060;
+	b=TbGRARxpd76kwo3zHgHAhH77X0IiBY6WrqK0yJ+jeQKYxcHtIvgEUjs/k6sAbTtszm+e6s
+	DXjceIuhdIw9nZmejeyDndxxbad3KLQWFoAwrS7LoiUqckLAoc4Z50eq3ovuURCVG3xT3G
+	DhSXkS3gW/sGs5ugADPryVBJlApwR/0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DWJSh1qt;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D98841570;
+	Thu, 10 Sep 2026 01:30:55 -0700 (PDT)
+Received: from [10.57.7.224] (unknown [10.57.7.224])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B990F3F7B4;
+	Thu, 10 Sep 2026 01:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789029059; bh=YNtmWp0abywy18qRTZCAY47Y6tMmxx0rj25frpxeOnA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DWJSh1qt1lqFX/3Ix9EACo+WwD3ovBUlVqewO0zd7XPHLmF+fuPc2nOZnWep92Kne
+	 +iAnObxSHma2MOV52FFZfDMZyIlUVrpEjKyTQ7qwpbd/iDJhjEEY7OnLqAXAemlctC
+	 jfDffljyM8YroIEku4ZQbLmrl1jMqSdDUBWvj5HY=
+Message-ID: <46a747b8-bc06-4ccc-9265-68aa613bd7c4@arm.com>
+Date: Thu, 10 Sep 2026 10:30:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] mm/memory: constrain generic_access_phys() to page
- boundary
-To: Ren Wei <weir@nebusec.ai>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- notasas@gmail.com, vega@nebusec.ai, rakukuip@gmail.com
-References: <cover.1788842306.git.rakukuip@gmail.com>
- <e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
+Subject: Re: [PATCH RFC v9 00/25] pkeys-based page table hardening
+To: Linu Cherian <linu.cherian@arm.com>
+Cc: linux-hardening@vger.kernel.org, Andrew Morton
+ <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <apbgDNjQPLBdsUe0@a079125.arm.com>
+ <43382882-0e7b-4255-9c34-99cec5b0bbbc@arm.com>
+ <ap6rvQJbO8DH57v8@a079125.arm.com>
+ <ba80aecd-85a2-4036-8d53-009f476f8e61@arm.com>
+ <aqAyAymMO5sytqtr@a079125.arm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <aqAyAymMO5sytqtr@a079125.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8C51E140010
+X-Stat-Signature: 8wk5s9i1rym4n6gyya76hw3tsiiej9ec
 X-Rspam-User: 
-X-Stat-Signature: u5wexcwps37cmwmqq5ycxga4i6hug35q
-X-Rspamd-Queue-Id: 785EE100003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789028210-415004
-X-HE-Meta: U2FsdGVkX180JTfNHhHZz40fIDjCNNVXmeTkxfO/ZOuqDMg498VXHPwgYdjzFxwYjoFUpUibMHVJxbw2RycYQBfQraHymat/t9gtAqdzZWsRVXpkbjqFbr0ATnSbCuNVcuebzlNpiN63YM1cnSLAuYMMNxT0DSbxUwNC1pQxs4E8G1YdsL3CeX+bol1wkYLky3M1SklBnxCKN8DwoDM5zPT3bxjQoUPRrcc8vDKzLmsH9Cn/h4iqcwL0KpFMwnKclLhs6ipjDkh0wiL5H/CugzQno8mCAlvYk5JKs37YFfE/GAm8OMahQ+f5D1Tn40Ygr+KynEdds4lWBLSisL2cXrgNeXRWJmuBEQCJAxL+1P39TPcB3EiV28ucYFrDTnwyEP49vaVWlS5NGt9nygPON0PhKqNHxCD/EguhgAv7p0RiRUINI1d5PG2VgnaCtY4mKO9yNZq9TkjLmJxpoICXfI56KViYV388XqOzCt65ITxQ0schZP6WaaKQlBv9kvJKLDC4AItUkluBFyX+o+ZYy0P4GOcnLFBdTDUlLTLpVQ4I308OSDwS3TE/JGIxcWNXnTilIJ9Bh+HxAwQE/COS52TILDrG9e9HlChPJ+y+6E6fISxOka7aM4tGNugQ0LxLV/Fg3/PAODK6DOT5cxmRP/Kfm4cv1IRDyKBJ23Ui20huvwsij8t2OZVBiIPvOKUaRYrUtA3RM+ESu+PQlIfJtg1Swl3vpifckIWG2GO/fiYFLVeTegGLgFeqcOB25+mvyr8j6RP6+Kh+m8lVJI1FWkUqdT9LtYmJJqB1/KLRRNUHj0rxl5AmeN2oJIWq80v0Up0x2zQZ/cmb8yY1UZaFCBojQUfj8rcmuzm3UTAC3XAxm4vn3A5xhqRgckYgyTDZuxdpnKBDYaNTZyU0GmcdkFjThgTEvQHPccvGEIbcyngqNLh2f8z2krJ3KNr6HkO9ymvuW/fQIugqxNLUbRW
- 32+QgD2o
- FxKdV6kBLQji1UryJLz/86oXpZOzZzas6mmWRTEec9i5Ep5zOl0//oaHhq85fwEy8rysszecWNkZ/Y17fjfO4/opJ3BnlU4/T9pGjUM6ZJu2MNtMcMMjTiGOqPLpCcjdVmNPnUMiZ3nMetQSg4/yqXAF2CZQ4RbFGiF0WY8KgwRxwyobjJ0RAAiev2u1AIfVxtPYjNlPyQmvHJY/msiiQOcz2es5sUgvSAGzTquHtfHcfHd0BZSigaCJBxj1FRRjK/5/543XB3Tar/vdags4hUkFlYKV29L7wUQVzx2GidadAQr+6tCpdn34XHMzQFA9Mk5jwsweCjZVJF/Wle8tOpsw/3fIQSk9LoMsM
+X-HE-Tag: 1789029060-752246
+X-HE-Meta: U2FsdGVkX1+T0tn7ZiDt+mnVy1fgq4etr3TMELNa3T5U7ZvfPQNgyodFWvyNqlimDppxx+K+HqHNyZjSTsZDMzBlBaZIZa1NhyJYel8zjgx2S9hoKibLLOMiagnwNL86y5XCs4S37+HXsoUFLy76UAZ1vaESGwqIVAYvBwBs3aniFKlsc5fZySlZ7FK5Ls3lXjULWR4T6G0qc5xfEF7OxQIY+9pVIjH55AwoPyxrHuYDX04zN5uFODJv7bVPGTV28JLatKR0exd51YCgCzkYwFeJxtB9yyPqtn9QBlwykEUl+bYemdCQQDkkG/OrfrdaLhUZW0hmecMoes7iNZFbjv+0XR03IgT8VYzI7MzPt7dRgxSFrUD5q0nVJfYWEMCjQfnsm0TAkJdblxZTeIAXYz58ix+jF3JzHk4QBTMa0J7BSDTPZT3O9rgpHxaWvgjRmEmd1jf4fDZwBT688E/+Mj1oCbv0URfIQ1XPUPg6SyjtwcsRMUNXCtdm8v/V/xYqEexHR28WQFuOxoQhKoHi1RsoIJEhL0p8DfzIyq8XNqWPLnBf8m+8ek7XRL/W7sAP67JlhnUxuGpn+tRsezA9KjmqGepc4WbqHkKKQb3RA90xTkuFaCOhF2uJD33D27cX8Cul4I3lN4j9C1k20xK7kF270asC+0fp8Rl5OVrpoovjGpcYb2ahex5jnjjYzBlTPDGO90JjNmB4ZA6zW1FBfkmzO25ZxrD9oioahLHjnnDGtljdeBygvP8QiADEA9TSLm/7QpC1cpkG/4ItmfRJU9Uas2FlW2RvBkc26JCpIYyojZKPL5VgtmAWP5AkWj2WVbaokDtDofR8RLRDwJPZOLyNg3ZNW83gEnvGD6jZxvmOswiyldWQuZtoipZ78sFhnpR/MLd9apkGHLRrNxhCAe4nN2Et5beQSuz+7+cN0wF2akRRHVv0zu6erj7dHcnvHW+6CwnYNjAZuPdvH4H
+ yTEJvbhg
+ Eyil+Xk6J6IYXpo8Vir5sapG6MoX2934n1Vto87sv2u/DEUlNpX2lljV150G3N4tzKraEletymrEcnfilhL33msNX+CHs6/eAtt/hJthhEJPRlUL3fg56wZcHcGTdG5NrJ9dOWUgAFMwf7mXSFgegu5VwXq8hjaFaisa/8ulivO4chPAve9LeE/L2+wRleo3IuYeNEFBfV521DpDO4NPdId32hOyAblLXD3rwp8z8VzI2MKs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,43 +113,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 05:42, Ren Wei wrote:
-> From: Luxiao Xu <rakukuip@gmail.com>
-> 
-> generic_access_phys() improperly validates the memory access range: it
-> only validates the start address using follow_pfnmap_start() and passes
-> PAGE_ALIGN(len + offset) to ioremap_prot().
-> 
-> This poses two problems:
-> 1. In PFNMAP VMAs, consecutive virtual pages are not guaranteed to be
->    physically contiguous, and individual PTEs may have different access
->    permissions or writability.
-> 2. The mapping may cross VMA boundaries if len extends beyond vma->vm_end.
-> 
-> Constrain the access in generic_access_phys() to at most the current page
-> boundary (PAGE_SIZE - offset) and map only a single PAGE_SIZE via
-> ioremap_prot(). Since the caller __access_remote_vm() already loops over
-> the requested length and handles partial transfers, it will naturally
-> iterate over the remaining pages.
-> 
-> Also add a missing (resource_size_t) cast during PFN re-validation to avoid
-> truncation on 32-bit PAE systems.
-> 
-> Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-> ---
+On 08/09/2026 18:04, Linu Cherian wrote:
+>> [...]
+>>
+>>>>>> Open questions
+>>>>>> ==============
+>>>>>>
+>>>>>> A few aspects in this RFC that are debatable and/or worth discussing:
+>>>>>>
+>>>>>> - There is currently no restriction on how kpkeys contexts map to pkeys
+>>>>>>   permissions. A typical approach is to allocate one pkey per context and
+>>>>>>   make it writable in that context only. As the number of contexts
+>>>>> Probably to avoid the assumption, may be we can we have something like
+>>>>> below 
+>>>>>
+>>>>> For a pkey P, we could define
+>>>>> PKEY_P_PERM_CTXT_OTHERS	 //permission for pkey p in other contexts
+>>>>> PKEY_P_PERM_CTXT_SELF	 //permission for pkey p in self context
+>>>>>
+>>>>> With the assumption of one pkey mapped for every context,
+>>>>> the permission for the default context would look something like,
+>>>>>
+>>>>> PKEY_DEF_PERM_CTXT_SELF << PKEY_DEF_PKEY_SHIFT |
+>>>>> PKEY_CT0_PERM_CTXT_OTHERS << PKEY_CT0_PKEY_SHIFT | 
+>>>>> PKEY_CT1_PERM_CTXT_OTHERS << PKEY_CT1_PKEY_SHIFT |
+>>>>> ...(for all valid contexts)
+>>>>>
+>>>>> where,
+>>>>> Permission key, PKEY_DEF is associated with context DEFAULT,
+>>>>> Permission key, PKEY_CT0 is associated with context CT0,
+>>>>> Permission key, PKEY_CT1 is associated with context CT1
+>>>> This adds assumptions rather than avoiding them. *Typically* when adding
+>>>> a context you'd allocate a pkey that's only writable by this context,
+>>>> but it doesn't have to be this way.
+>>> Okay agree. Then may be something like
+>>>
+>>> Define permissions:
+>>>
+>>> For default context,
+>>> KPKEYS_CTX_DEFAULT_PERM_PKEY_DEF
+>>> KPKEYS_CTX_DEFAULT_PERM_PKEY_CT0
+>>>
+>>> For CT0 context,
+>>> KPKEYS_CTX_CT0_PERM_PKEY_DEF
+>>> KPKEYS_CTX_CT0_PERM_PKEY_CT0
+>>>
+>>> Define POR_EL1:
+>>>
+>>> For default context,
+>>> KPKEYS_POR_EL1_DEFAULT
+>>>
+>>> For CT0 context,
+>>> KPKEYS_POR_EL1_CT0
+>>>
+>>> Finally,
+>>> #define POR_EL1_INIT KPKEYS_POR_EL1_DEFAULT
+>> We cannot do this because POR_EL1 is arm64-specific and its format is
+>> not at all the same as x86's PKRS for instance.
+>>
+>> I think what you're getting at is that the permissions for each pkeys in
+>> a given context could be defined at the generic level. This could be
+>> done, but I'm not sure this is essential, and we may not need all archs
+>> to use exactly the same permissions. There's also the issue that x86
+>> only encodes RW permissions directly, not X.
+> Really didnt mean to keep these macros generic. Sorry for the confusion. I could
+> have replied this on a arm64 specific patch.
+>
+> The original intention was to suggest the use of macros similar to above in the arm64
+> world.
 
-Yes, LGTM!
+Ah I see :) The problem is that again, kpkeys is not supposed to take
+over the entire POR_EL1, just the pkeys we've allocated for it (0 and 1
+for now). What could be done is something like
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+#define CTX_DEFAULT_PKEY_0_PERMS RW
+#define CTX_DEFAULT_PKEY_PGTABLES_PERMS R
 
--- 
-Cheers,
+#define CTX_PGTABLES_PKEY_0_PERMS RW
+#define CTX_PGTABLES_PKEY_PGTABLES_PERMS RW
 
-David
+That seems very heavy to me though. Is there really something wrong with
+what por_set_kpkeys_context() does? I'd argue it's at least as readable
+as #defining the configuration for each context, especially when the
+number of pkeys increases.
+
+
+>
+>>> Probably using something similar would make the idea of kpkeys context 
+>>> more evident in the code as well ?
+>>>
+>>>> The configuration space is more easily understood by considering the
+>>>> other use-cases we've investigated (struct cred protection and eBPF
+>>>> isolation, linked further down). For instance, for cred protection, we
+>>>> had KPKEYS_LVL_UNRESTRICTED with write access to all pkeys, and for eBPF
+>>>> isolation, we need a level that is less privileged and therefore does
+>>>> *not* have write access to pkey 0.
+>>>>
+>>>>>>   increases, we may however run out of pkeys, especially on arm64 (just
+>>>>>>   8 pkeys with POE). Depending on the use-cases, it may be acceptable to
+>>>>>>   use the same pkey for the data associated to multiple contexts.
+>>>>> Lets say two contexts A and B, use the same pkey P as their permission matches.
+>>>>> But then, when we enter context A, permission for pkey P gets
+>>>>> relaxed, then that would relax permission for pages associated with
+>>>>> context B as well which is unintended ?
+>>>> That may be exactly what is intended, it all depends on the use-case. C1
+>>>> may have a private pkey P1, and C2 P2, and then P3 that is shared by C1
+>>>> and C2 (writable by both)
+>>> Got it. With each context defining permissions for each pkey owned by
+>>> kpkeys makes sense. 
+>>>
+>>> Also do we need to assume that nesting of different contexts is not valid ?
+>>> For example,
+>>> Default context:
+>>> 	enter CTX 0
+>>> 		enter CTX 1
+>>> 		leave CTX 1
+>>> 	leave CTX 0
+>>> Default context:
+>> That is a good question. The enter/leave logic does support nesting,
+>> since leave() restores the pkeys register as it was on enter(), but
+>> whether the inner context has sufficient permissions will depend on the
+>> situation. Certainly if nesting is expected then it has to be taken into
+>> account when defining the permissions for each context.
+>>
+> Exactly. Also if nesting need to be disallowed for certain contexts,
+> then it needs to be taken care as well ?  Feels like would be worth
+> covering the aspect of nesting in documentation and cover letter.
+
+I think having logic allowing/denying nesting would be overkill at this
+stage, but agreed this should be documented.
+
+- Kevin
 
