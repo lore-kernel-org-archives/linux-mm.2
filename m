@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FEFEC88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:48:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B7EC79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34D126B0098; Thu, 10 Sep 2026 19:47:54 -0400 (EDT)
+	id D5FBA6B0099; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 282D46B0099; Thu, 10 Sep 2026 19:47:54 -0400 (EDT)
+	id BD1696B009B; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FB726B009B; Thu, 10 Sep 2026 19:47:54 -0400 (EDT)
+	id A9A956B009D; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C36B26B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:47:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66863C0666
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EE8E6B0099
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFE44A5354
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:54 +0000 (UTC)
+X-FDA: 85199492868.25.EDC5681
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0EB081C0008
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:52 +0000 (UTC)
-X-FDA: 85199492784.05.DEFA3B9
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B0E1840003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JbgFE9mM;
-	spf=pass (imf17.hostedemail.com: domain of 3pUGjagYKCBIAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3pUGjagYKCBIAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VmKPuofU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789084070;
-	b=tsH8vgkq9gLMTCNxcD5sSz6GGgkW4TnS7QvN6+hIJbuT6lSoF7DIj2Ni1dOrdWAipkwNgy
-	X1ayBarseZh5f0HewCTEBLsj6arlCJY8cABu5OOlqph13wXg4N+t88GbfiRoff8/IZPmYc
-	NWBwyqilf3Kv6Y7La5ICog7XL9scxjo=
+	t=1789084073;
+	b=xfpnct2rT9AUxqtJlzpkM2wwWqVLvZ57HzaHsJC0V+T8B9ppQbkvONrZ90mDTt5PTRGN+d
+	N1nsefOy5HZCA+ZLFYJQYIMAll8O0iYuXaT9SyxiVSyxu2um1CVhN09kWMU/JopYzcHE6J
+	lKV4VtfbjeBoqNjPkhM65vEIqYmxxm8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JbgFE9mM;
-	spf=pass (imf17.hostedemail.com: domain of 3pUGjagYKCBIAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3pUGjagYKCBIAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VmKPuofU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789084070;
+	s=arc-20220608; t=1789084073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9GmwxGnSxtyc3MMcZyUdMtOHBijNkoyl6C3OnmMdL/s=;
-	b=yylbwEN5F5YGiZr+9p8CABu2zjIpo1yP9NZ8KNMdwUyKSQPf/WaGiThTFPVjy5WikrcYPN
-	CWUK4j6mQP0KIb95x7oRYwHErA+Mr/wxDcAOf7im1eVK7f+EwhwyoIaa3CMSGPcxb3gB4o
-	nLThse45wn9uoP2JV8eJPM1UJXcmPvM=
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39512608fb1so671631a91.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:47:50 -0700 (PDT)
+	bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
+	b=KtFIUm4wClA6hU3xVV+0pKX4qCyZo5dk5l1PhhyFrZVsd8lBWFAv9C/9FKs86T1p9NEODh
+	ENXoJEJiR/crxLTwMXW0iBxHzbAHgzklJhfheeYw93LmVQapponBHGJohSWN5n1UFMTYoP
+	L14AhXsJDUP887dhRcjV4AGNP9Rr/CA=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-385d2703b64so1684390a91.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789084069; x=1789688869; darn=kvack.org;
+        d=google.com; s=20251104; t=1789084072; x=1789688872; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9GmwxGnSxtyc3MMcZyUdMtOHBijNkoyl6C3OnmMdL/s=;
-        b=JbgFE9mMyXqwCUBQuwCGovfVWKQ3xSMgYkiE0+JxxZrEyPfQxcBpDCRDN2JHGptL6y
-         gNDj/DlBABcaa64lE2k1Vv31uzO6Joo8toq5heH2LQYvMZrHVwyOpMWk2sery1RLBodW
-         zEbIW6znOBfb/KnMjRs6dqV0ETkTwMjx77f9f3ODeoDsWPHDB8mvyyBs9LKdlaEd5qZI
-         KCcbhxs8Tqb6BjI2df7bquoSQMa8iZwwDKbVJ7lrUYrtl0NbLry2Ia2pzELp6l3TWFKe
-         sWzQnh4A0DHIrg5aT8muUH40skyMprWKMoYwGn4Pqh6j8lATL7oTl4SAO8QyCVY1UZG/
-         /HAA==
+        bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
+        b=VmKPuofURc8LYC5injdiPysNQN0BW3gVaSYOXfbsUi4yQ5YpgG7xSO5KOMnHHgbXEW
+         ixY5gmSvyh4AlRtaucQ8d4QTy2z4DK7uQP3Yi86nOByPxgrXoP7MxyOLECilw4K7rAr+
+         UVkVCm259cms7T8t6PUmCnkSP6Vtayy25y+8J366FSPbGmTN6Dnh3X+pXehkd961Ljgs
+         h/nAYnqyys2Q/wodGUzi3TbU5oR9LR+ukWY36NE/kAhqfCeLq78/M9Scg8qqMUlgVzVJ
+         TBo/WznhOkwBb8luMq65j61x9NykDZKwz0v6U2NI7GFTIu6rYXtqFAm58Lu3KhQ3Izwy
+         rs6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789084069; x=1789688869;
+        d=1e100.net; s=20251104; t=1789084072; x=1789688872;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9GmwxGnSxtyc3MMcZyUdMtOHBijNkoyl6C3OnmMdL/s=;
-        b=FFBwgwWtpJaJZ0/JJfcJe8cXiA6SFw8Y5ykzsAEm59Bai2zV/5i83MS1enNdXuJ7Nj
-         LnVRGXj8P/PBMVjCnK7zCpcqwg4EKRfQPeTbqcrbNkRyUKveRTQKloktnk8Ojlyzn79P
-         m5QPamkLjzkIYfYSkNfLz6lJCuWhCODc/hJttWMda6XIywT8mQPNrP1WEGmIJlcB3wFK
-         /rK/uh1tRfAfpP0ebuuxZbScQ58a2lt0TCcG99/3OdSRwSm8Q+As4abRLMe6exJCnI0/
-         wSAOgmhSxBu61MTE9fpW4X/r8tgfs8Yizmz2iyuaT70FgCR9/u2PxfskxqEPjOUfQMo2
-         pGWw==
-X-Forwarded-Encrypted: i=1; AKwUvBxyEjavP244sOFDxsBG+WAxwDd1w8TvuSYKeZ6FByksv+Q511otkffuLXvnEBp+QXIOYApJgyhBNg==@kvack.org
-X-Gm-Message-State: AFuF++nYiGPUKF7EtD8dlLDkU8UYjsF8OY/eQXh8Y+QVtoshIoGwX6In
-	lA7MkS7vBwvwOsmKT3/Ld8AEQtFii0hN/J0Tn7M0xPobFVwOmuZQ8FD3DAqbGZ+0UH0mY5O7mrC
-	H8gVlkg==
-X-Received: from dlbek20.prod.google.com ([2002:a05:7022:c94:b0:141:4abc:f12d])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4990:b0:396:4cbf:45a2
- with SMTP id 98e67ed59e1d1-39d9c0acc23mr1884695a91.14.1789084069193; Thu, 10
- Sep 2026 16:47:49 -0700 (PDT)
-Date: Thu, 10 Sep 2026 16:47:33 -0700
+        bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
+        b=JvThLBZjZWX0YIH3Kuqgv8TcxfnBm/LUqePCYrTFpCEH5n3qdyd8NsCwDu//GKmeSY
+         NsfOLkRM38abaHT15hzg6VRgMnVQBbQe5D3orL4vNubjSJj9zewWxQppka5jIz88UH6y
+         etjh+Km/NHvxYoYudigHPTI7/1Vb3jsABo90c149pB9rDqJEJn9LbUh9TpvioQd2jPu+
+         ZHDQhaZCS9+O/fz4noJWULVUK3U48BbFnCUgReeTjKKhMKKnIhRK8Q1DZvKdkhsJfkVU
+         XLkwtnZBfSJHvRPZa6JPcpazHcZwsurs4+FtHPrtR7rO//rGjHCd+cJzKQ2QqFXMgWGp
+         CAcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwUCqGHdrF3Sata2xGJfJYlhTESfa32rUHrZ/v4YIMl9MrFJTfMwvnOCfS80LVcd1xh0td3nlm5Vg==@kvack.org
+X-Gm-Message-State: AFuF++n9hMkj8VUoJWNF83Zl/8vSjaUqevAtyUmMXh27y7tNjj4x1l6y
+	u+1mjbKGuMgVFFFHCT6n2/AuIr9Ej2F6CivW6aDJtTGTbgZNhnFeAw330F5KnoUuldz1UCarcDz
+	MzIPuFw==
+X-Received: from dlbbq8.prod.google.com ([2002:a05:7022:6708:b0:143:6807:5e3b])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c85:b0:38f:cfe2:fd3a
+ with SMTP id 98e67ed59e1d1-39d77b1c383mr8988591a91.15.1789084071601; Thu, 10
+ Sep 2026 16:47:51 -0700 (PDT)
+Date: Thu, 10 Sep 2026 16:47:34 -0700
 In-Reply-To: <20260910234737.1340642-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260910234737.1340642-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260910234737.1340642-4-surenb@google.com>
-Subject: [PATCH v3 3/7] proc/task_mmu: clarify shmem mapping walk conditions
- in smap_gather_stats()
+Message-ID: <20260910234737.1340642-5-surenb@google.com>
+Subject: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
+ smap_gather_stats() start parameter
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
@@ -98,13 +98,13 @@ Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com,
 	linux-fsdevel@vger.kernel.org, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B0E1840003
-X-Stat-Signature: yjdxrfrkqn3rc3kxow6ep3f5jq3o47jy
-X-HE-Tag: 1789084070-390954
-X-HE-Meta: U2FsdGVkX18QKsm+1FncsuG4MKr7fuLpN5/QffoiNb5IWzfyOls+sTjIp9+imv2dJgwmn9E+bRDOaaeOEEk1CYrgrL15k1ZiN/DcHYNL/TcY2j7UrnUHOWZiJChnfbKIukr4Pt2ODvMiJkBD9Cdig+NuhUtw/dgxgcF91lonZycwqfUhlR/ipWA1V9yKuYTs713SZSSG8c2YIP0ZfWy9YQKhWISZJA4q1SB8YscfvuTGBwv6o4pjCNJ07atVJ/Ppjv5VjoRcVrAwRaw9t7nTZjWkaSx/Ts8/H1rCsQRmvrQqdw+Y/k00uu8TrV6HG8waMKjHKb2YNgP+tdiNMvK8rJCuPgeTuXJwXYf8/MapoAz5WKarJgPFDDndHZkDUXn67KNu7/0GH6e7WHe9Z/NTmYJQa2lXvoWii7X1Hdrh5UvF6ZHwhXj4eMROK9hg7QGsO9Gl2ziBLG4rZmhD3NEdT3FYzu5zo8ZhylDutLSQIRkUcvHPDxeqJd2dsGckr0STUUHVby0V5z7C7hZJvln3jqacLOj7Z7Pw1OQRts9gyVf1nSSD27jxwFfXqZKqpv7M/nJOVA7lHDQlR9Lf06hJn1uQgGq+U0w5BWDyfMD/DcsnKcUwMFnk3JFc4F+0nCbm0wYPyhFCxlvXOrvoEpTnoDdUOaVLP9wtVH/Jy/tQ/CAMDHcx9mD1IwQglYevNDHPfQCFka/OGstDYF/zPWOlCUkNivbIPVidrzcng16doXPgQqml8H2/0qqGsaoyhu5S9QT8q2wAEy3Xx8URkOzOnUVPjt9sVZm/1ed8Ta/HVfMlu2ksBfToYcN4NTfIMAz9h5YV3zGI25r0m/bxrAJJoQFRg6sdPriWwsvgq2y00xtQ1cYcVFcLdU/w/n1IgEWvHotZ2o6TtWlvxZ3XwLsNri16zDjJZVnBBij4x/AA5hHI71/CqNpAE4APRqZs94shrLqN93faPofIySOTgxb
- FQSVNAtU
- oFTCAlJBic5yV0JiYV035bYEI++8eQhnBsPVocTRIpmcR7/uxLP0ptTJwNydRJ/lAFeNBiwsVV40XbvmK9fAvwP6XW5SvMJ49jBf944l5BsZGQnU4uqJ7rv7moOsS9WB8YB+CTJ/4IaPneRls9KEMvp1wTcBc2Lk2OInfTKASwAln/f5Ggg2k1WPbf4rFZ4VM1xC85zoFeD5ZhI0QuyOet3Ivuo2QByTgch0/fADg76YnQ3rSdcyi5rT3AWzLNOGhi9zp5hR2qsRSXlKnxpIXAPp4qPK1HqaJkV7HHTXVTRNxNj/nmEd2WArYVsvx4NJOfF4NYNc2tBz2X3u813D3dKzT/FldakL5m9laqxgVP/Zd50+2YSLBdzDdTgo1tVoQ6lzSBcBQCQZlDwfBtKBc7femGTizmdOewu6veQMHhDlfvlCuci18cnKGmDNcjcAR6DnQRmwdVyzAjUGs7zB1e1wE6yJvAq/mOEzgnfRM0RqoWT4M28sU9drFSsAr5w/cWehyxfPUe1gox2Chi0wC2s0MkEfNgH2i7eAHb5h+wTfFbPi0Xyp6vTECXGXD3taV4NwjM8Ji0+222+6orbbA2hILOAjMcFYqRFDmHnoxu8439VYq4ulgPl+Ukxtcgel3FuxysM6q+XtoUocOs/mj2bu4nCL9kIeMjorGMm5y/t7xXgDe44c8VJZMcA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0EB081C0008
+X-Stat-Signature: 3p7ihi5f9uttoz3msnfomnuyrcg8mi6z
+X-HE-Tag: 1789084072-908130
+X-HE-Meta: U2FsdGVkX1+PKztJ3LdXo3q947ot64AgdToiR+gpMEsWeiAxuxj3hIWrKOBQMh6sb0M+6CFfF7ctFPn31i9y3l+C+UMC74SEVQ6FTTXQXvMgnGEKCIuaRZi7klESU30K40QhQ8wBkLWbyGWO1cFYFdcPisMxJP7kgAOWkI6+Ooh/GOnW2UoMlAyXpPIcjQKWksDY5TCp87bEn79fPmaDn1+LtNzdEt1rIpfsKUmtj97jukqOzt8/bWxHH5ImmgJ+09Hz/ImLZQ+pgdLqpF2MR/AE0HBSTb2gBF9qxSsItlGZlQbOGIyR50BWMo3Ks9gh8P0exrZt5mV+Sl2JwrQ6qscZpg5G/b+rn5FQAKYbnG5D7NouBv7FIsRUHIu6w/u8fG6eHYC29Qj+irlKdySWJrPmMHc5Nfl5H3Uid2kl4C0bmV8sSK7sAncZLNIZnLkyQwS2i9uNvge4UDR1EXvQydjtrIsDBZPqhug4oLXzqqVYwdRBD/qlQ6hp9YHW6PB/Lk42LvNZWVvmlTmGRLSf7z/Yf0IM+kivM/kHqzbpMIdkqaydl8jaIxCw1lT0HHfc8AuYb2vDaGP5x9YrM4As5Bfnj+Ba08b3Cx/IEO3YF83zv0qJOH6sy9RgDb4f33vmLDcFWRBCNJe4IsB2HsDhrS/boZj7t2lMu2RMbWCEjIMfb/wVJ1T1T8AgkyQ5X2WmkMO6pjtQJT6J8jluTyPIKmYcADYTUVUBCyiMvKqgfHgAlZ4iE2IfnP5KSFFIy2HXJmLCE0ylwpzyZgnMHbEeU6IcwGqyFMQsgRXU9Wi5xn3S7nJwXhYzQ/UFtWRKu2IRKqP6JZBw0c4tUXroKmLV0gdr5cbBQJdjVYnhmcuNFAmuDN29sJoV/WeV/GxlIQaQNwKycOFYdh3QpCnuIxUaPkNuWE+vdjmJgTcR6Pb1CDoleKE4ESLjonZjwbrVQjK5ml7v892LH0j7vDmwr3W
+ en9XAfNW
+ lGBvesfyAt4mLM+lXw2AYzusET5Mx7knRhswa82D2bjgXXo8yFjnsTaqN6wLYZgV1inwQ8ZIWcIezlTe5AhPpjI/WsPx2R1qDAJZJWyzqs9ekgsCfur8VwsNEzXnvKT1GK+iKI9jI+BUzWTFhtjURwfQfD26NcnstENaMmkeRtCNYb7MVTAZkzVDRXfl+wjDBMCiss7b3XJ7ZB0mDXXDCXSspGvmhm6sSc1uofSo1WyQGjV4jnd38PQwYpu4vHrIlMuQMGz1eh+6sZ0u4s+7pJnPoEgOWtCFwM1fwloVCvvEPcy0eZxi4OUN2FSaFDmTik2z2M1XFOiy+J7vHFXe0to5k48tMvcotgNup1RuOS9KGZqicRa2Ugg2wSkyey+AHtDuyoPsQRkSE+H7Mo7N9DQ4QdGTVfINOBZAXnpKfUNfyXPRDgPR2VC3CxVMdbFg+38vjnlXP454Z7XjlALDlVsqRbebH1KY20z8ehAwTF2x06qafelDXmSCl7jMFjwarz+esuITZd4LNfKUMfWSlj8MM1pp3ODwgkSD1HqLtS+poAbrNGCyRiJThydpCVo8chQCQPuhLv0onQ8J/Lb2G4TuAJX6GrJRVPH6eOQ8eCZYnrPEF9XsvKPGZjRNzsiDVypHD3kQ5JWhFO3c0kfqIO53x8VYIKbIDROH/Jlkt8Fik6ZOKQujPtpncuIUsf9AICxScRHXNtKiQ54FnJzBtALT6WQVdw154lwJ3M6QsDvPwLFMvpzzO/uumRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,66 +112,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-smap_gather_stats() optimizes stats gathering by skipping the walk for
-shmem mappings in certain conditions. Update the comment to clarify
-these conditions and use vma_is_cow_mapping() for COW identification
-instead of open-coding it.
-Instead of using (start != 0) condition to identify partial walks, use
-more semantically correct (start > vma->vm_start) check.
+smap_gather_stats() interprets its start parameter to mean vma->vm_start
+when it's set to 0. Eliminate this special interpretation and pass
+vma->vm_start explicitly when needed.
+
+Since smap_gather_stats() operates within a single VMA, we can replace
+walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
+which is simpler and also can be called while holding per-VMA lock.
 
 No functional change intended.
 
-Suggested by: David Hildenbrand (Arm) <david@kernel.org>
+Suggested by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- fs/proc/task_mmu.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index cfc7af1b551d..3c40c9cbb9c9 100644
+index 3c40c9cbb9c9..ecce7ce116cb 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -1257,6 +1257,7 @@ static void smap_gather_stats(struct proc_maps_private *priv,
- 			      struct mem_size_stats *mss, unsigned long start)
+@@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
+ 	return &smaps_shmem_walk_vma_lock_ops;
+ }
+ 
+-/*
+- * Gather mem stats from @vma with the indicated beginning
+- * address @start, and keep them in @mss.
++/**
++ * smap_gather_stats() - Gather mem stats from @vma.
++ * @priv: proc maps private state.
++ * @vma: The VMA to gather stats for.
++ * @mss: The accumulated stats.
++ * @start: The address from which to start.
+  *
+- * Use vm_start of @vma as the beginning address if @start is 0.
++ * This gathers stats for the whole of the VMA unless the lock was dropped
++ * and VMA grew or got merged and we found it again, in which case we only
++ * gather stats for the remainder of the VMA range.
+  */
+ static void smap_gather_stats(struct proc_maps_private *priv,
+ 			      struct vm_area_struct *vma,
+-			      struct mem_size_stats *mss, unsigned long start)
++			      struct mem_size_stats *mss,
++			      unsigned long start)
  {
  	const struct mm_walk_ops *ops = get_smaps_walk_ops(priv);
-+	const bool is_partial = start > vma->vm_start;
+ 	const bool is_partial = start > vma->vm_start;
  
  	/* Invalid start */
- 	if (start >= vma->vm_end)
-@@ -1270,23 +1271,18 @@ static void smap_gather_stats(struct proc_maps_private *priv,
+-	if (start >= vma->vm_end)
++	if (start < vma->vm_start || start >= vma->vm_end)
+ 		return;
  
- 	if (vma->vm_file && shmem_mapping(vma->vm_file->f_mapping)) {
- 		/*
--		 * For shared or readonly shmem mappings we know that all
--		 * swapped out pages belong to the shmem object, and we can
--		 * obtain the swap value much more efficiently. For private
--		 * writable mappings, we might have COW pages that are
--		 * not affected by the parent swapped out pages of the shmem
--		 * object, so we have to distinguish them during the page walk.
--		 * Unless we know that the shmem object (or the part mapped by
--		 * our VMA) has no swapped out pages at all.
-+		 * CoW mappings might map anon folios that do not belong to
-+		 * shmem. Perform a less efficient page table walk in this
-+		 * situation, unless we know that the shmem object (or the
-+		 * part mapped by our VMA) has no swapped out pages at all.
- 		 */
--		unsigned long shmem_swapped = shmem_swap_usage(vma);
-+		const unsigned long shmem_swapped = shmem_swap_usage(vma);
-+		const bool is_cow = vma_is_cow_mapping(vma);
- 
--		if (!start && (!shmem_swapped || (vma->vm_flags & VM_SHARED) ||
--					!(vma->vm_flags & VM_WRITE))) {
--			mss->swap += shmem_swapped;
--		} else {
-+		if (is_partial || (shmem_swapped && is_cow))
- 			ops = get_smaps_shmem_walk_ops(priv);
--		}
-+		else
-+			mss->swap += shmem_swapped;
+ 	if (vma == get_gate_vma(priv->lock_ctx.mm))
+@@ -1285,10 +1291,7 @@ static void smap_gather_stats(struct proc_maps_private *priv,
+ 			mss->swap += shmem_swapped;
  	}
  
- 	if (!start)
+-	if (!start)
+-		walk_page_vma(vma, ops, mss);
+-	else
+-		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
++	walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
+ 
+ 	reacquire_rcu(priv);
+ }
+@@ -1343,7 +1346,7 @@ static int show_smap(struct seq_file *m, void *v)
+ 	struct vm_area_struct *vma = v;
+ 	struct mem_size_stats mss = {};
+ 
+-	smap_gather_stats(priv, vma, &mss, 0);
++	smap_gather_stats(priv, vma, &mss, vma->vm_start);
+ 
+ 	show_map_vma(m, vma);
+ 
+@@ -1396,7 +1399,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 
+ 	vma_start = vma->vm_start;
+ 	do {
+-		smap_gather_stats(priv, vma, &mss, 0);
++		smap_gather_stats(priv, vma, &mss, vma->vm_start);
+ 		last_vma_end = vma->vm_end;
+ 
+ 		/*
+@@ -1455,7 +1458,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 
+ 			/* Case 1 and 2 above */
+ 			if (vma->vm_start >= last_vma_end) {
+-				smap_gather_stats(priv, vma, &mss, 0);
++				smap_gather_stats(priv, vma, &mss, vma->vm_start);
+ 				last_vma_end = vma->vm_end;
+ 				continue;
+ 			}
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
