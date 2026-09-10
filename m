@@ -4,133 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FDADC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0225C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:11:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8CEA6B0092; Thu, 10 Sep 2026 10:54:09 -0400 (EDT)
+	id 794176B008A; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3DAB6B0093; Thu, 10 Sep 2026 10:54:09 -0400 (EDT)
+	id 7449D6B008C; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06416B0095; Thu, 10 Sep 2026 10:54:09 -0400 (EDT)
+	id 633A26B0092; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9325E6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:54:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E32FD120555
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:54:08 +0000 (UTC)
-X-FDA: 85198147776.03.45303FB
-Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D778CC0008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:54:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M 9/FpRd";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aLHbZkVf;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 395186B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B57EF8053C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:11:51 +0000 (UTC)
+X-FDA: 85198192422.05.1A50C52
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0858540008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:11:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VO7pExAE;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789052047;
+	s=arc-20220608; t=1789053110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bOIokwILTqK/X59HRf9SOGvAGJFWog6Q6sfc83byU+c=;
-	b=T5zW5QFCaHVQyYdrtT7hjbmmZFy7tZgzQs5z/z7ozEWyspugRO9qBmqcn0Gx+m/W7pzx4j
-	OGC9QvheYIs7l70DsMTbT0G7SGAC05jCJ3XmUux3K8Np6vwydlFUzn+nk9q73R3Syd+ihR
-	LYtpDgSzPGCt8gNKeb34QsPZJJvjHvg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789052047;
-	b=yjscf3YTo5FXN8OYEHDcQX5CrM+XzNaQ+Gs6qjcY8oCm8oTgVANomWvhpKibE981WDelts
-	b1OJGOKUwsATtpJjApSduwpeDgsEnogZ89wDOfhOzGk8ITFueQYIhcAf3CFZfU7dgNlj7B
-	tWbCuL/VDhcmSpxA58yEo8tgd9enw9A=
+	bh=m8oPxLNbD63jwykdDjogfzHJQI7uOPBa9BxKyoPjd+4=;
+	b=dqmOf4FvYftRnSuuUkYCyL2rjiMRUNN9LgDU20gC+4GQOKdpqCzFmnqehBrfYvSgouyjcS
+	9V848pt038b8cCVDxW1BD8Uh/BoR/MFlGrYq/fBcqZJo5LO7A2VpoR3l0yE5+qcbOsutXo
+	AepxwNf6oJH/p/x9z9lOuPq3Op2ULeE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M 9/FpRd";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aLHbZkVf;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id AE31D1300DB6;
-	Thu, 10 Sep 2026 10:54:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 10 Sep 2026 10:54:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789052044; x=
-	1789059244; bh=bOIokwILTqK/X59HRf9SOGvAGJFWog6Q6sfc83byU+c=; b=M
-	9/FpRdK+sGsp4XM4/xr57O1s8r3rQKnDq47bmYwJ1lM5bFtHZ4JVddjHfD1SsTk8
-	9sk/tRlhtWwpSA2wTI2xxWjZmDmv/UvBO1GylTDoyFlot5wNQ9hXe1XxWfLpvZoq
-	RmvLOL24P3ADpvTVjv9iEvtaefzHhK+KAyyfAJuZjOXJOxMY45auWIyHHI8IQ49C
-	4440IMejGOhBYXDabK7IwWYb5CMaOufdpBYlnLmgGoPuhUBxJkrAtNTsoSENEi0J
-	DpGQqS3P7n2+EQD7wJX4Mn579Q/SWWSy0KEYSkYVcHZWJee9VtHsuv3xcsEnxWTd
-	OXcuL+F+uY5qAaOuTZy7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789052044; x=1789059244; bh=bOIokwILTqK/X59HRf9SOGvAGJFWog6Q6sf
-	c83byU+c=; b=aLHbZkVfvMmVXEqlzds87AkC1l8cr/RqplBfwhpb8vgtkdFEQcV
-	j436FsP/yrXuTK3XrRc23KbANp4LG3AMWl9JKnA1WALlVnrp0NjM1lDYgEyZuMoN
-	X0SRTedB00tYpRaNFTAePuSKkc+e6MmLSsZMnbhl2uFE/zodTmQTRv23yOIUI6Td
-	qCFUMPRul42MBFuBdbdsQvseCFlm1HFDubOKXmK4Av1PCxFtwkLJR+Bdugs+ZBt8
-	TkD5jfYjp6lylEu+rLTVVSReNKlyl512LwIrLuCks7Bkj5M1uIU8hNSxU41K/+N8
-	BoiYTb4fYStGn/ueV60NzMJrM7GKNp6BrOQ==
-X-ME-Sender: <xms:jMSialbvEOPJ7VCAbeFqHioo4q0O_s4gCDhzCtiOt3g-smczyborPw>
-    <xme:jMSiaq089m5anI5ZOLZUgRyZSs-CtbSDYSVzaaanIF-4AGVGXCKE0mnVo_j6J6twn
-    WSugtgkZdYbz-DlM39Kwt_382Oaker8DMtLcSF_7zUrSgAiwyXBRbU>
-X-ME-Received: <xmr:jMSiavHKQ24SL3aUN9GSQ6UPShYD0C_nS84b3YHsa7o-tsE95NdT6tkwnww>
-X-ME-Proxy-Cause: dmFkZTEEbSxJ0Zyi0MkWocW/9YZllMHwTnpiywc2Knx0LknOEhJGm34Bnb+ldyFqQwvqZA
-    tXHcDUUGGgDtRBcobbl20JtRFwlF584y2WyECkOUekf/MSaUnYYpt20GRitfOOyYTO35h2
-    Y0Wc9UVfGiIIsJnxLUXKn8PHdd93jc5nUHD6elK9r6qVBQGOAq7ALiFUnFpFtSLd5p0FNB
-    ByUt0Bd0xDHA6uh7Mo3pyJNoQeMjX2JuIIXybv+tfzG1Bd5HHOsfIkPohGXLLkFRGVKMAC
-    DBKKMdXjPeYc2aclhKqUHs+YaZyhogpzYGykkhy+KqIxDWidDTgHhdz6WJvoCWF8peo/t3
-    BN1xyBMPXbgSJ3cuOryQFY6iQSDxKQooweWv3O69igH/6rvcSx4f1ndmtnkDHxrHr53S9N
-    NdYVtpYSsal+wvpdaTP0Svzq8F1QXxraC/lVJcJ6tFTHS4FN8BMti4PWNShRhCJetFLmMO
-    VrxJxWCTB7ngs1Jzgg5j/8Y/D7ennq1634EDl6UvMiz5AVwGIm4HENF4UwAV9p6bQhgKtC
-    FlBWin0p8aPitlBgkuW1DrnWFERa8ayPIyF+csvfOHcM/cjZLD+saAHO6UdqrXN0cEaDiG
-    sq/a9Rwa5Nxkg58esN2xyqJW3Zf7eFibXG5oOoYj8e7Q39UmNhykUQd5eF4w
-X-ME-Proxy: <xmx:jMSianOjmKHwixA6A76NSYz1GrKUtmPrpq1hJBF-fLGaLbumnIgyuA>
-    <xmx:jMSiakAGv3rVbTim-K1RqcUHuQykc2ByzBpiVmmixr7P-nT38MNGYg>
-    <xmx:jMSiamzelPBdY8x9uH626HTBO6K1_yrXmE97rlXtCqdp4BvcHizyBQ>
-    <xmx:jMSiagdv9lzwpgvspxqljGOWlf2E9aXhWBjCNTtTo0fkDofd7WQLJg>
-    <xmx:jMSiauRo3rJu-zJdxYaS5pxSm9_zeuXJuzUckX_zCYY9t91j2P8bV4Pc>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Sep 2026 10:54:03 -0400 (EDT)
-Date: Thu, 10 Sep 2026 15:54:01 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: akpm@linux-foundation.org, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Carlos Maiolino <cem@kernel.org>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 2/5] mm: add a_ops->dirty_folio_range() and use the
- mkclean dirty harvest
-Message-ID: <aqLC3Uo6TaZ_3_v1@thinkstation>
-References: <20260903182943.662461-3-kirill@shutemov.name>
- <20260909105157.1627242-1-usama.arif@linux.dev>
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VO7pExAE;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789053110;
+	b=p3KaBGSKAlrcjC85a1hdHqZneM9jPmMSn6FyUDKTfHHxmPztkFqdoFucMpg3eQwfSlqhQJ
+	Wxek4lZfBOWfgsx+d6kvp6Lv5NG2tGx/cOqhlffZBbGAV81sjFCkSjWORZczB1qXGhWNI/
+	PbdmCZ+PgrWWGLktRoEQQEATft/nu0E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 60BFB600E2;
+	Thu, 10 Sep 2026 15:11:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080341F000FF;
+	Thu, 10 Sep 2026 15:11:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789053109;
+	bh=m8oPxLNbD63jwykdDjogfzHJQI7uOPBa9BxKyoPjd+4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VO7pExAE9tLKDaKHb8xxcgxhPCuKZtJ6zqhDrvjdmuD5ErR0dFWQ+W4yXO85uiR/G
+	 VLfy0Ms/MhbB4PHPzIjKj2tKCdJUX6RZH/qbmjZ0B91Cfmt+JfqDDXa/L1WnPOVqei
+	 fV9VKnEzVUX8aeK75ayqlZuQesHZecS7vI38Dj+y9hTwqI1bAFZyxeLDSjUm4h5pen
+	 YEIZHAS2N3LiejXO8NXe1I4V5AI7I+lTbFRaWxg4MsaN/aGjuOhMu2T7i6T8pFD/8I
+	 GbYXY08QYFSc1G6dx1AmcjR+4rPenkEG973Xr8FBUtvk3WCo/B9Now/Ghs6ZlWDuoU
+	 AnTw3vabHbp1Q==
+Message-ID: <eb5b465b-c256-4454-84de-517aefcd6d59@kernel.org>
+Date: Thu, 10 Sep 2026 17:11:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909105157.1627242-1-usama.arif@linux.dev>
-X-Stat-Signature: x3t3dthoigmbki7mgj55tsdfsq4wzgye
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/12] mm/sparse: remove SECTION_MARKED_PRESENT
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ Seongjun Hong <hsj0512@snu.ac.kr>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
+ <aqK9S1hBpPnujgz9@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <aqK9S1hBpPnujgz9@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0858540008
+X-Stat-Signature: 5zyu18h3djmri8gn5q8sf6z5x4oc8rj4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D778CC0008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789052046-37645
-X-HE-Meta: U2FsdGVkX19et5CSYJu68TA+lJo3kBAtL5V5ze7HlstM4d5Kd8Ub4rYZmRuzxYsTXjbqz4C0crPhMmPKDOW7J7Wm5Kj8X5OpeC8HZEW7tl5h8G8OWfRk5nPzm2whEG7G059po4i0u4pk+kgbWVkSC+b4AHLbpjMLxr8t3LWisx62TnSbLcRZbKxrKDbnFDa1AXnDoTNtaXh9twNmLPeDqv2ExdeX+24S5Izai9tWnS1es09aEpFT3ce89GHoBvZvn6nk/1XZzM8RyRvoKAQ/zVx6/nSQ+j6Q5gRlORrEyCCOqbkUotSbocpWKo0/aHti5f4maornlxnuqxnjxBWJbHHHp/spt+4rERLWVfjW6aesnDYdTc2A4Kjms7mjp4SQ83F9zjEeOsqxi//l8R/Gfon1wBVLoC+BzZVMJvsRfEueadspRsOP4lBs4ymHaK/ZeJwjTgEWfcCKxrn8Wdnkjt+nIibLB2db1FAQRRwUkWLFEPoEOeFq4jTpg4W1Xdo8sRNJvibRpXlZmmZQK88uhXUJjvpgUnEPXQDzaQqLtY30jumywq8Bj86tRltUyFntg2okDTFT5uSqj+l0Kv5fqjnQI6jRlywmM2IM+8t3OqA3l2qJg/c1Nsf98OmsOee4lOEi56tsoBmt7IZcpi25lo7+pG/yJIVOrEmZt2iO4jOMKpO5dKdtuOE7//ef28b0Y79Y3K6T+cRPvUdIIOJFmflt/ZlHO9lOmQ2FV1yLsDnUbzIJeGH+6AX+iyfOh1K8gXOC2JHXvdpNyxO8cr+0MyQg68L+PDLhkqAy6LAMLeO1TlHYGXOu7Vc+iX4u47ItRxcNONMshAU/jpYBrYywVmIhg4jpHHupgihklCJB68r0dv6QCkhF6Ihru+4BhBELOYCnVOTVZyhNIhDLfQ7+DxhDOxLpBh8qpUMgmkMHQ5pLDATmFdthtj32VCbjWkwBaCV8kmgSYJSUvYbC7Ak
- 11z6cKeg
- R6t1cFq2c5hSm0WA2h/azsLaWwsi93gYlUCxtpS69z3iy4UXE1UTeP7Ya+6XH8b25N2chbQtnieUtqXYPWOOh3msDjG6sJLzKJmmzfzZaCvf1JCmQ2bMi8zFjGxFA7n0YUiZdqT/mS2OoZI3QtSxalxZbwvjQZUu+8O2FtylT10I57/eLXfpgbUoJ4+DJadIj8/Ly3Lr8bmhpFuAtxKGzOYP8Z6SQm9XvYxZiEwaB75fRphiFuIv2DIKNqLsf5TU51hADA2sOkfPjpAA5kZjQxxdOpkLjWAtwTV7cj6vX9LTcevYmDo3ujiWECHz/5U1n0TqjEZcHty1cNc5IUWYdeyQVtEWK0Chne0vOFWizDZqVeTJ1UBbVux6I5pOpAEBkrlPKY4hBKq6U+8I/cjYFZKlbT8/l5ywwITDjXN4vfkbh5ZfML5AXQgt4YFoe9uOq9VF+1JPMmDbqTIDOKmB3sTo9pj3sTyoDWlH8RLnE/UJhhr9QEZrPgmPh/GIatr/yn/uZPiTiufvKJMo=
+X-HE-Tag: 1789053109-46019
+X-HE-Meta: U2FsdGVkX18xWwb92u8KypgZIqBozpcN8l6zdB54hnVz5/legXR30kjOJJB0Q3tvvA6/4brLvSO7NiDI5W7xpGNWBbxB2RN0qPe3PTrkSL/NuCennv3t8Lu0fkl/xZm88NFgxaXfVj/fpEiLD92h8EBdvtIhTbC45wJMmUHtJY9CpKkuD4URwsQLQofUbadCI9h07P0bSYozMOzPhObLjNjYxFgLFidee/DJviiFC0F5mdWXA8xGGE/ZdIYaasi9TpsRYLcryiXNKkaSEYpkxcpKWPGtrP5LUvayDLQfnlRJi0du0AgyVsfRFYsNtcVto9GZKVKKbL/cdCviKRUHZCVhgu347NDMkSnKbhYT0siI6Og4L3yxd/6HPdTdy1zr7ermhVXZok2ARmjiLrm6ZBioCAKfQ8sKTMi2ybyKGJgFWNz38gC15PXQVKMMs1CLibZxK75nXyByibZdSXht+GBPZzN+Pv9CTLbl1r3fvjGTT58Aw95JtoISE9no5oHu0ExJzghfykX0copgILWsDpg/f2hIpiKtXpwuiSRFJXbshcPWgrXG6b6hm8qzUUqw0YogRflcvnqKWo3sd+F2Ho4Lv2GuVxRxF2SQC5ToLj/tHYTGRVS7XXd+qGJwHq7OQ4Atgekl/fn/LhvgRoTwDFmguCOHeIVNIh7UpNn/jxOt9oXxyCGs1HU6FeYWIsZQjV9zWWRdvtNijTS+fOBM37zVAzYb7XYRmjm7voVP6LKnRd4ol6XRfIhIBbM28w4BvCGB0vTnIxgd478yQW2Hns7Zxjlk/pYydX6i9Rp4Ngmy/lrVRmSl6ym895qWYjdLy63exs+caeArbKBic/0ynAcgJOheLP+qzl4Tkpvru1CovFnXhYz9hUCn2zZAercsieJMGaeKS+EQwS3j6iUoBo0e2eTtSR+JlUFkqQCgVCH8TcHuwVH2NVX+VmW+SZSj67tyr3QuwqmVPv2GtMB
+ dCwNFv41
+ 4Lf8p99A9CPPX5gtJdAArdKqLMCDOQyraulNic1XXbLYP9Y2jc7JOf7qWf27sduomhwsQoRHv1dYqvgE3PRfU7PJKi5E7zgbFCYrlXspYfEn4ayYWO8rXYew1FWQ6Us9jeEkvkSP16BTp/m3lUHrJYFiEGnxlVDJFWI9X5piME39H197FwaghCmPJaZ2L4jRn3qusQMxwpl42k+SpU6U30SROFRDAQD8R6EOHfi5baM3Jw3wBC/FEPKPtrx1m/lBk8yO4KZb49AOHnIoHmOnRgmtSDYWf8UWPGuGWWeEgp7+vcwkacQfGHsQqxj+m+1tDAsWV/tg5qU6mToXb1LKIO6mVYGvrsE8/h2ME
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,236 +155,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:51:56AM -0700, Usama Arif wrote:
-> On Thu,  3 Sep 2026 19:29:40 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+On 9/10/26 16:32, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 09, 2026 at 03:33:02PM +0200, David Hildenbrand (Arm) wrote:
+>> All present section iterators run before memory hotplug added any
+>> further memory sections, Therefore, we can simply use the SECTION_IS_EARLY
+>> flag by setting that flag earlier in sparse_prepare_early_sections().
 > 
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > Every way of dirtying part of a folio through a mapping ends up at
-> > folio_mark_dirty(), which has no way to say which part changed, so
-> > a_ops->dirty_folio() dirties all of it. A filesystem that tracks dirty
-> > state per block then writes back the whole folio for a single stored
-> > byte.
-> > 
-> > Add a_ops->dirty_folio_range() and folio_mark_dirty_range() to pass the
-> > range on. The new operation can express everything a_ops->dirty_folio()
-> > can, so folio_mark_dirty() goes through it with a range covering the
-> > folio and a filesystem needs only one of the two. Filesystems without it
-> > dirty the whole folio.
-> > 
-> > Use it in folio_clear_dirty_for_io(), where the page table dirty bits
-> > were being turned into a whole-folio dirty. It now collects them with
-> > folio_mkclean_dirtymap() and hands the filesystem the runs that were
-> > dirty. A folio that is not already dirty still dirties whole, because
-> > the clean to dirty transition needs the accounting in folio_mark_dirty().
-> > 
-> > Assisted-by: Claude:claude-opus-5
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > ---
-> >  include/linux/fs.h  |  3 ++
-> >  include/linux/mm.h  |  1 +
-> >  mm/page-writeback.c | 87 +++++++++++++++++++++++++++++++++++++++++----
-> >  3 files changed, 85 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/include/linux/fs.h b/include/linux/fs.h
-> > index 072d8cd09a0b..1d98b6c0b880 100644
-> > --- a/include/linux/fs.h
-> > +++ b/include/linux/fs.h
-> > @@ -406,6 +406,9 @@ struct address_space_operations {
-> >  
-> >  	/* Mark a folio dirty.  Return true if this dirtied it */
-> >  	bool (*dirty_folio)(struct address_space *, struct folio *);
-> > +	/* Mark [off, off + len) of a folio dirty */
-> > +	bool (*dirty_folio_range)(struct address_space *mapping,
-> > +				  struct folio *folio, size_t off, size_t len);
-> >  
-> >  	void (*readahead)(struct readahead_control *);
-> >  
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 87feaa5a2b78..7628262c17e1 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -3337,6 +3337,7 @@ struct kvec;
-> >  struct page *get_dump_page(unsigned long addr, int *locked);
-> >  
-> >  bool folio_mark_dirty(struct folio *folio);
-> > +bool folio_mark_dirty_range(struct folio *folio, size_t off, size_t len);
-> >  bool folio_mark_dirty_lock(struct folio *folio);
-> >  bool set_page_dirty(struct page *page);
-> >  int set_page_dirty_lock(struct page *page);
-> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> > index 6c9c7ba89b8a..39b54c25a9fa 100644
-> > --- a/mm/page-writeback.c
-> > +++ b/mm/page-writeback.c
-> > @@ -2751,6 +2751,21 @@ bool folio_redirty_for_writepage(struct writeback_control *wbc,
-> >  }
-> >  EXPORT_SYMBOL(folio_redirty_for_writepage);
-> >  
-> > +/*
-> > + * Hand a dirtied range of @folio to the filesystem.  ->dirty_folio_range() can
-> > + * express everything ->dirty_folio() can, so a filesystem that implements it
-> > + * does not need both, and a whole-folio dirty comes through here as a range
-> > + * covering the folio.
-> > + */
-> > +static bool mapping_dirty_range(struct address_space *mapping,
-> > +				struct folio *folio, size_t off, size_t len)
-> > +{
-> > +	if (!mapping->a_ops->dirty_folio_range)
-> > +		return mapping->a_ops->dirty_folio(mapping, folio);
-> > +
-> > +	return mapping->a_ops->dirty_folio_range(mapping, folio, off, len);
-> > +}
-> > +
-> >  /**
-> >   * folio_mark_dirty - Mark a folio as being modified.
-> >   * @folio: The folio.
-> > @@ -2782,13 +2797,39 @@ bool folio_mark_dirty(struct folio *folio)
-> >  		 */
-> >  		if (folio_test_reclaim(folio))
-> >  			folio_clear_reclaim(folio);
-> > -		return mapping->a_ops->dirty_folio(mapping, folio);
-> > +		return mapping_dirty_range(mapping, folio, 0,
-> > +					   folio_size(folio));
-> >  	}
-> >  
-> >  	return noop_dirty_folio(mapping, folio);
-> >  }
-> >  EXPORT_SYMBOL(folio_mark_dirty);
-> >  
-> > +/**
-> > + * folio_mark_dirty_range - Mark part of a folio as being modified.
-> > + * @folio: The folio.
-> > + * @off: Offset of the modified range within the folio.
-> > + * @len: Length of the modified range.
-> > + *
-> > + * Like folio_mark_dirty(), but tells a filesystem that tracks dirty state per
-> > + * block that only [@off, @off + @len) changed, so writeback can skip the rest
-> > + * of the folio.  Filesystems without that tracking dirty the whole folio.
-> > + *
-> > + * Return: True if the folio was newly dirtied, false if it was already dirty.
-> > + */
-> > +bool folio_mark_dirty_range(struct folio *folio, size_t off, size_t len)
-> > +{
-> > +	struct address_space *mapping = folio_mapping(folio);
-> > +
-> > +	if (likely(mapping)) {
-> > +		if (folio_test_reclaim(folio))
-> > +			folio_clear_reclaim(folio);
-> > +		return mapping_dirty_range(mapping, folio, off, len);
-> > +	}
-> > +
-> > +	return noop_dirty_folio(mapping, folio);
-> > +}
-> > +
-> >  /*
-> >   * folio_mark_dirty() is racy if the caller has no reference against
-> >   * folio->mapping->host, and if the folio is unlocked.  This is because another
-> > @@ -2844,6 +2885,41 @@ void __folio_cancel_dirty(struct folio *folio)
-> >  }
-> >  EXPORT_SYMBOL(__folio_cancel_dirty);
-> >  
-> > +/*
-> > + * Write-protect every mapping of @folio and hand the filesystem the parts that
-> > + * were dirty in a page table.
-> > + *
-> > + * Without ->dirty_folio_range() there is nowhere to put per-block state, so
-> > + * any PTE dirty bit dirties the whole folio.  Same when the folio is not
-> > + * already dirty, because then the dirty transition needs the full accounting
-> > + * in folio_mark_dirty(), and for a folio too large for the bitmap, which the
-> > + * page cache does not make.
-> > + */
-> > +static void folio_mkclean_for_io(struct folio *folio,
-> > +				 struct address_space *mapping)
-> > +{
-> > +	DECLARE_BITMAP(map, 1UL << MAX_PAGECACHE_ORDER);
-> > +	unsigned int nr = folio_nr_pages(folio);
-> > +	unsigned int start, end;
-> > +
-> > +	if (!mapping->a_ops->dirty_folio_range || !folio_test_dirty(folio) ||
-> > +	    WARN_ON_ONCE(nr > (1UL << MAX_PAGECACHE_ORDER))) {
-> > +		if (folio_mkclean(folio))
-> > +			folio_mark_dirty(folio);
-> > +		return;
-> > +	}
-> > +
-> > +	bitmap_zero(map, nr);
-> > +	if (!folio_mkclean_dirtymap(folio, map))
-> > +		return;
-> > +
-> > +	for_each_set_bitrange(start, end, map, nr) {
-> > +		mapping_dirty_range(mapping, folio,
-> > +				    (size_t)start << PAGE_SHIFT,
-> > +				    (size_t)(end - start) << PAGE_SHIFT);
+> Hmm? sparse_prepare_early_sections() doesn't seem to be a function that exists?
 > 
-> folio_mark_dirty() clears PG_reclaim, but mapping_dirty_range() doesnt.
-> Do you need to clear PG_reclaim here?
+> Do you mean sparse_sections_init()?
 
-Yes, good catch.
+Rebase artifact, thanks! :)
 
-Fixup below moves the clearing into mapping_dirty_range(), which is the
-one place that reaches the aops, and drops the copies in
-folio_mark_dirty() and folio_mark_dirty_range().
+> 
+>>
+>> Get rid of SECTION_MARKED_PRESENT entirely and rename
+>> for_each_present_section_nr() to for_each_early_section_nr().
+>>
+>> Also update the gdb script to use the updated value for
+>> SECTION_IS_EARLY.
+> 
+> The change seems fine.
+> 
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> With commit msg updated:
+> 
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> One small question type comment below.
 
-Will be folded into v2.
+Thanks!
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 39b54c25a9fa..4995219eb8be 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2760,6 +2760,20 @@ EXPORT_SYMBOL(folio_redirty_for_writepage);
- static bool mapping_dirty_range(struct address_space *mapping,
- 				struct folio *folio, size_t off, size_t len)
- {
-+	/*
-+	 * readahead/folio_deactivate could remain
-+	 * PG_readahead/PG_reclaim due to race with folio_end_writeback
-+	 * About readahead, if the folio is written, the flags would be
-+	 * reset. So no problem.
-+	 * About folio_deactivate, if the folio is redirtied,
-+	 * the flag will be reset. So no problem. but if the
-+	 * folio is used by readahead it will confuse readahead
-+	 * and make it restart the size rampup process. But it's
-+	 * a trivial problem.
-+	 */
-+	if (folio_test_reclaim(folio))
-+		folio_clear_reclaim(folio);
-+
- 	if (!mapping->a_ops->dirty_folio_range)
- 		return mapping->a_ops->dirty_folio(mapping, folio);
- 
-@@ -2784,19 +2798,6 @@ bool folio_mark_dirty(struct folio *folio)
- 	struct address_space *mapping = folio_mapping(folio);
- 
- 	if (likely(mapping)) {
--		/*
--		 * readahead/folio_deactivate could remain
--		 * PG_readahead/PG_reclaim due to race with folio_end_writeback
--		 * About readahead, if the folio is written, the flags would be
--		 * reset. So no problem.
--		 * About folio_deactivate, if the folio is redirtied,
--		 * the flag will be reset. So no problem. but if the
--		 * folio is used by readahead it will confuse readahead
--		 * and make it restart the size rampup process. But it's
--		 * a trivial problem.
--		 */
--		if (folio_test_reclaim(folio))
--			folio_clear_reclaim(folio);
- 		return mapping_dirty_range(mapping, folio, 0,
- 					   folio_size(folio));
- 	}
-@@ -2821,11 +2822,8 @@ bool folio_mark_dirty_range(struct folio *folio, size_t off, size_t len)
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 
--	if (likely(mapping)) {
--		if (folio_test_reclaim(folio))
--			folio_clear_reclaim(folio);
-+	if (likely(mapping))
- 		return mapping_dirty_range(mapping, folio, off, len);
--	}
- 
- 	return noop_dirty_folio(mapping, folio);
- }
+[...]
+
+>> +++ b/scripts/gdb/linux/mm.py
+>> @@ -76,7 +76,7 @@ class x86_page_ops():
+>>              self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
+>>          except:
+>>              self.SECTION_HAS_MEM_MAP = 1 << 0
+>> -            self.SECTION_IS_EARLY = 1 << 3
+>> +            self.SECTION_IS_EARLY = 1 << 2
+> 
+> Seems a bit strage given the code is:
+> 
+>         try:
+>             self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
+>             self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
+>         except:
+>             self.SECTION_HAS_MEM_MAP = 1 << 0
+>             self.SECTION_IS_EARLY = 1 << 2
+> 
+> Whereas other variables must be available with no try, e.g.:
+> 
+>         self.PAGE_OFFSET = int(gdb.parse_and_eval("page_offset_base"))
+>         self.VMEMMAP_START = int(gdb.parse_and_eval("vmemmap_base"))
+>         self.PHYS_BASE = int(gdb.parse_and_eval("(unsigned long) phys_base"))
+> 
+> etc.
+> 
+> Is there some weirdness with gdb? Or is it maybe because there are some configs
+> without these symbols maybe?
+
+TBH, I have absolutely no idea and I was asking myself the same thing (but
+decided that I couldn't care less about a python gdb script).
+
+This code was added in February:
+
+commit 55f8b4518d14b7436f70defe27faba4eca0cd4e1
+Author: Seongjun Hong <hsj0512@snu.ac.kr>
+Date:   Mon Feb 2 12:42:41 2026 +0900
+
+    scripts/gdb: implement x86_page_ops in mm.py
+
+    Implement all member functions of x86_page_ops strictly following the
+    logic of aarch64_page_ops.
+
+    This includes full support for SPARSEMEM and standard page translation
+    functions.
+
+    This fixes compatibility with 'lx-' commands on x86_64, preventing
+    AttributeErrors when using lx-pfn_to_page and others.
+
+@Seongjun, why are these conditional and the others not? Trying to support older
+kernels?
+
+
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
