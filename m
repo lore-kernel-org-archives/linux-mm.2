@@ -4,108 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13773C79FB6
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 02:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75122C79FB6
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 02:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 039246B0092; Wed,  9 Sep 2026 22:33:33 -0400 (EDT)
+	id 320696B0095; Wed,  9 Sep 2026 22:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2B706B0093; Wed,  9 Sep 2026 22:33:32 -0400 (EDT)
+	id 2F8676B0096; Wed,  9 Sep 2026 22:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E41C16B0095; Wed,  9 Sep 2026 22:33:32 -0400 (EDT)
+	id 211086B0098; Wed,  9 Sep 2026 22:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6B296B0092
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:33:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 399B51603E4
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:33:32 +0000 (UTC)
-X-FDA: 85196281464.15.AC04513
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 17150A0004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:33:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=dRn6NekY;
-	spf=pass (imf15.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CFBA56B0095
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:34:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 20F6BA490A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:34:17 +0000 (UTC)
+X-FDA: 85196283354.21.5E40F49
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6DBCE80005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:34:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=od7ACfPH;
+	spf=pass (imf02.hostedemail.com: domain of 3JReiagoKCDgdnbioabnihaiiafY.Wigfchor-ggepUWe.ila@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3JReiagoKCDgdnbioabnihaiiafY.Wigfchor-ggepUWe.ila@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789007610;
+	s=arc-20220608; t=1789007655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CvBCsqM24ZHvzS1IiTaODTjyVXUo3s7E7NsLy/NcZk4=;
-	b=AdIPjh8QHoY67C0rySgYFKHzMgIMkJvfdmc/oZ0ys+5/LUUGr0cnPrzoQ6vQKHEqf2oQap
-	BA8BSrj8HpZ2zolWL2Vd9XQp7Rb8V0sllNwnVYFeEEEvRp194MTj+L92pcTFKRgvy0Lh4C
-	wByWgbw0PZB6fWdNXowYoncP8SlUeHg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=dRn6NekY;
-	spf=pass (imf15.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QCBRc7qyPLFL+OJFBYmAJyv6e7+fNwOVRVnLSpwhyZU=;
+	b=LmpH5nKWT0rLks6NXlFRyHDDorW+lWfpzJ5TbVHcJiWHcq23htepjT6viuve7bC1dKAZ4n
+	14F8lz1O50dyruj7UXtPekleZTGLei61d9G/yEEd/ZzNjhO5JWt1l7J6WFGcv09hMoQOrP
+	nJa06CjEGX3KTxU7LxT7F8Cdbb80Un4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789007610;
-	b=4VWUz1b3ND9ZUWgNeMRkrvcd37PG6tyIX5gejy1mtbmshLZ8u2nBclksubPMEZ6kEOyCgp
-	Y9uYfkGqPBKqiUFA91DinCnvtKeZgf7Xr+zSOt2ezlyOPvUWXZspI+E922Y3gvqjzxZQkK
-	S0kr/8joGPuZmJAQm8HyFBPhzC8iagk=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C0F0740E00E8;
-	Thu, 10 Sep 2026 02:33:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jYEDatXiYrTV; Thu, 10 Sep 2026 02:33:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789007596; bh=CvBCsqM24ZHvzS1IiTaODTjyVXUo3s7E7NsLy/NcZk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dRn6NekYce19LgPIiJKdKDlIra1LFGukMMnyhazzpGuX7O2os37VW6mg35w2zAFR1
-	 uAn6R/KCRz+zijje1ImMSPYsXTXR4JeGwGbNOmIZw0nc1eWG7uwtS24eVpgtqhzjpM
-	 UD/fVgyKFL4QGtzKXn+r17S9HHNbvm4WUayUOXAPsJA1KRrNvwITtrrRqLBNsTCuo/
-	 FXfZaxsYAJaOF80OguKz+Yk+HhbXGj6R2CZnIUoQDKdiRVghx5EkL9maNka3KefPtq
-	 UhAk2Os+w8vfGt1P6M52avDuHD141lwpb3jsz20e67v4bboTfSg/lIGkL0Usy2whba
-	 lXMQZr5ZmprJrI1RgnYRm4K/ZMCGD87SwAuhJzFmzgGxnDDbZCsNugn0Ia1hQDyqYy
-	 c1U2hNyM0kMp94YrNsoudZuirFRgmt5NDjvnbc175iHM+rk4Al/2CJ8DWSxTP1Uhno
-	 V3RtcbSJAQJeRZ9yOgAaUqzxvN4y7TeFZ4Bgyy50/pU9LrLyYXl8F46aLbTGGhdyL9
-	 xVzUCIYbzAujK/sbpjalZrMn5unbTUA4eK+KGmsJUd6HEE5YIpzXnwxqdgsrDoiftY
-	 EQcfBxuIyMwpWQRQhxv+qDP1GjYvfbXfxSJKqDTWPT7cMYmczuMzwshoBF7ht8CkKh
-	 WDYmmmZDMNfWSCpkGl62SoKI=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F0F3240E00B9;
-	Thu, 10 Sep 2026 02:32:59 +0000 (UTC)
-Date: Wed, 9 Sep 2026 19:32:55 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 1/5] x86/cpu: Factor init_cpu_info() out of
- identify_cpu()
-Message-ID: <20260910023255.GDaqIW1ynrVQBDcESZ@fat_crate.local>
-References: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
- <20260814235134.3461435-2-ihor.solodrai@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260814235134.3461435-2-ihor.solodrai@linux.dev>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 17150A0004
-X-Stat-Signature: f8x4bgt74oibiw97g4oeanpphr6yy6ao
+	t=1789007655;
+	b=z/IFmQGkSuZbNq5hZKMLhWE7bbwuFCqVwXfvnidHx/6rGA9xkhXBMlgA+4bOXkQ+FPxF/R
+	9Sce6h2xaFzRBsOISb07QqME+VgB9zt3fkqEFj9SQlVOvqASiDlUzG3MzO1YlkfFUZhkiV
+	6tOPHFAOjrAF6qpIjMl8IpCfjd33GaI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=od7ACfPH;
+	spf=pass (imf02.hostedemail.com: domain of 3JReiagoKCDgdnbioabnihaiiafY.Wigfchor-ggepUWe.ila@flex--jthoughton.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3JReiagoKCDgdnbioabnihaiiafY.Wigfchor-ggepUWe.ila@flex--jthoughton.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-398dc3d8f0fso630131a91.0
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 19:34:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789007654; x=1789612454; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QCBRc7qyPLFL+OJFBYmAJyv6e7+fNwOVRVnLSpwhyZU=;
+        b=od7ACfPH38y/vifIV/iWmKgNC3ouTgDbwx0HMcAbyZ3tBBN7Bw0J6ORvDPKxQ2fn4U
+         boxlcZR9InOJbIHX3bZKaJgsaH5N+2hFq0XlZs5CE/RzJ64jhLGAJpo/PSnSZCh0tpfW
+         TuTv8M86SklM/HsVF2nvv7N5yJLA5+nPyh5r2EYBezMLO3zWCX5rzaLB341D36n5Vnz6
+         J+IQwOHIZ5N0aXO1F1nZFlrUnKly6/G7cn5BEG0Z+VMvV4/G1X6G8KS3p0JKdituGvvp
+         jnFC+kEuJmqSYZRy6970UB/1La2gK0li8C5RgzvahmpHw3Ay3BtuKhUTincuUG342qpB
+         rydg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789007654; x=1789612454;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QCBRc7qyPLFL+OJFBYmAJyv6e7+fNwOVRVnLSpwhyZU=;
+        b=PQqWzl/YkOUDIpR3nJIjN2IJR9MB0if0so27DB5IfQtyNDKeb1a3xnHTyd7CQG0+Lo
+         gVLhcPsFNvympZIHk1ddexs71Q1nc3C/PmZLtCEK2shk/x6K7UwAqpoRM8MvlIxi/vSm
+         PtZ/eWauswh5GxG5NPwVRgFIvkuZS38kfwEGwyx2mRkGctwvHeD5gy8IKMiy8fL/SGlc
+         CIk6lvLTfyyS6qRKd00YN6tJv8IQx3I8T2l8NM+c+H0sUIbXAVtv7F91pkxE3IgVNrc3
+         u1Z3IneHdldssEQUkIr7vnjt5/BOABqYDNOTyC2n0gho7RL5/3x/aXEjxeKTvl+IuY/M
+         WFWw==
+X-Forwarded-Encrypted: i=1; AKwUvByIQSnSeHY1X/oPSbKFQBX951nO3rDkvwQ65eqU8clNrM4OZM6K4xtCpYLNC236uiBOyYj2m30p2g==@kvack.org
+X-Gm-Message-State: AFuF++l+oororHUdd74G+mO0lREas0G7QOkudYlws9z8tBA9qMJ/Mll1
+	4BFLVdBL79//ISzGLwHdqD6kIXzmjpTw3mwxlUH+Wowd2/SAmznZvA2VT5EsZ//F6tkZzFyRJXt
+	S+kpNCPGhqom4FSHwiI/+Gw==
+X-Received: from pjqo17.prod.google.com ([2002:a17:90a:ac11:b0:396:54ba:892d])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:5485:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-39d77a1d83bmr1950372a91.6.1789007653937;
+ Wed, 09 Sep 2026 19:34:13 -0700 (PDT)
+Date: Thu, 10 Sep 2026 02:34:10 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
+Message-ID: <20260910023411.514987-1-jthoughton@google.com>
+Subject: [PATCH v3 1/2] mm/khugepaged: Never install PMDs in
+ uffd-minor-registered VMAs
+From: James Houghton <jthoughton@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, liam@infradead.org, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Yang Shi <shy828301@gmail.com>, zokeefe@google.com, 
+	hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, jthoughton@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: md8nap97fxbfks3z1uznjgodo1iue56t
 X-Rspam-User: 
-X-HE-Tag: 1789007609-339934
-X-HE-Meta: U2FsdGVkX19HEyb7KRxSpYS79KxPlSnKmSBpnpWYDuw8aedj2gWFjNV8swpCPSWZOdCJL6zb9gAIG9//jlssUFTGpgYyAN96GOgqeovCXyjW2mPWU5Taxg/LIoNuZGqYqSxHxvk/00RhhueArNwF6h2c8XaNKEH2ebHMuH9idMkhyhYBTm/K53iy8VTZD9YLr4ggdad+LI0B/ZSf6qs42pRMArHA1gmdRLBrFSxxL7SRDTZ08DCCzfoaArtyLJsrSos0GAqfAXRfCQRsP/qsZ1hzpebsVWqB3qqLD8h/JnYgorNJA0lRGTiULEOOMCVahaFrVL2wVkjKW82JUDrHjORQgHPAbplYr9VvKdpMXnWBbpO9aCGzOs1BVB379fiwVnQz5v/Upju1Kl9GrYm5EffTNNKHiskS4yvvrgUGWeZ53DXvnzzGiaeGNjWif2INuCkulENwbNDpvI7iX48Bf97n20xs1Tq7KNlC34roR400gI4PkwgVJ8dJayrfPEVeRfXAv8HU7uzrMmFVZfVMDbcjHD/8cTSk6jYrtikq6n8+IdPVymz2xHnUMDgq//yydflLQKe5/PuP2zHiAWvQRFBwBM9V/nPD/hm7oFtzRAqyPhSGqEsHXekAJxP7yoQVIiVBZIkbx6PKvCjhD6zdMriQoiXOXuD7Bd1DUdl5ZzroovWO7v/yrcs5gdtIvNkqVSxmFZMGKV5Whivbg2CLhrSU/r2vWWPC2DVj3QVVDbOknKA5ZUk5jRD+KS2euJDJ3OKPc/XdjWrdEBMUvFvgqO7X6Ce0CKhBjtAjX+Xkz6uS197rvzaVlLpHdwGC1MQOkTUCwnXgAqS55OmpeVGYpQEX1GblqnSth745gjlrm7edYe9Z/nCtqV/9yLvpFPetOunXvFTwDR/aLjTa9Ax3fBg4BJX8DMs8/K+K4audN7rPPVBw7rR8QpLzq9CAXcLbS2bX+9aXkEgQc9OhMsd
- Bq7dMkjP
- tGSDYV7FXWAZRbo0KZBy2ITtJP67G3fSJ9M+ZNHKlaY/+7i74Dzky2ch8/dahk6/xa09OmaKevmINxC03X6sLWVcLALr07wOegrlxgoh0xiOBv/EGVw0DqQmACjdG9u092lsndqO0W9MF2E0l5B9Y8mh7w/t8wj1y0WvXUNB6qXMmo5HVPBYJkqHjV/nL+MmTcmMZJ1o2XmKaBzbocvSqg8v6tCA6UmIYYtKtlwdJ8M1q7XlJFvqvaecBY/MCx2NqixndMhzYWZMf+5iqvk9S/US4QRFJfj4uOA8b0UxRftArn3Lqi6nwmy1wIT/9pBROlgt5EZmYciWjxTTFkuryNu/z/tDvqsXoj7hT6KEBUTR07WtdBNY0CYzD19BUf1+16vk4N2RZsHJjg+T1luoH9w4Yb6WnBr2dEVTi
+X-Rspamd-Queue-Id: 6DBCE80005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789007655-761896
+X-HE-Meta: U2FsdGVkX1/0oi0pSDMR/DQW/iHpBzfm40nwMZBlwq1hNkE/aXN8hlYf28wdfNzxmazv2bf9Nqoe2L4Pa5HYI7D3J9o/9TvD2xVuhHB9wObvhbjm0YRluSlbZ2oNUxRF6bOp9NFqlvM3RNCFakPPA6hZKjvIL+BsR16lNgszbacRtH0AXA6B87pePCPQpi6hMyIVmHvdyQjMHYfD7Sq9z41H25SkiHS+vevdFimdG55p/t+rdc1gdhBCdiovZBT1cIwMmMXxo8CM5F8fE9n51iHbJ7mm/HYnCwL08+5+CGjXMOHpgJSc2VL4hazvqDNa0XDPTWWgIQppq7CuY+L7eabq0It34jkWJfukYxsU5dr5yHc/pQp8juAxYVob7k6IqJG7odtciSyLxz0A82tz3WG+T0u73ebBITAgD/WoOTGh9Nv+Qduv3+kMxta0Qkv/ieTBoEaOrjNYNUBzPyQds+bkJ2vaOpTdh3YC4Q5xXVm0hnRymjylYAGCsRMg0IJKIeHlsPsYuCL1Q9eDzq6nkG7mG1kSf18ppbC9IzTqxXVArqw7CD6axo3VjsZ353QO98ohr7+vodzWPIzx2pbLfhqWy9n80UozUknDgEIfS4cji75tRWfUnX7C6Nn4KdHuQTQUoJlrqXaVLIuigaRcwxh3Famn+tAcxOOCtl0Qvn8xnGEkZGiEqq4paBhs/T57i1b1xSiSO/4w2k6i3VdI4RWcTG8MB7SJZOAZf2lNgAa7If9qJI3AvbPailg/r4toBHKGjRN1ZzGKNI1Uo14YFrqlnLQlGgObV1nrASEPcjEEDzMAcGR92Skr4+FV8wRsoHPtTP+hVTqZy++iiJl3rWzb3QE+N5XJ1n5n5f5mJaR27p9+L4GetCQQexyH22dl/NKCutWx7k5ojJ36TYDfCzWdEYZj0EIDkQCOKsNX+Gte5tTaTFoGbq8XMvxznfF2L+iH7b9mJFtvjZnZefU
+ qN0pKaZo
+ Z+zUoZcqTOb7RXpuSwxcK+TMofp8t2diPGmsoIOuBlkykE+LrWMeAxitaRooUQS1rAqCDO+cWMjDzQxdk5Nje7QDWYwuNLazVdjJUJTCoaCCBmKhWneNDH2grkYJox2vc0P8xx57uaO5LOqrImF2V3WtXed+2fD14kGXoRMw9H8ELI8YCSB4SK5ltXryYgUlZYrNpAZQyHnpox0LcOxhMKS79zuYeA1Sy8OFL/DInPJzF+D9sf2quab3ZtFIoE7Gu79vN8Gqtwebktoe8QatGvpkjCH3L40ib93ICzDDmVxy9EMC617Dss4CU5tZwId+ulIL3vUKi5yJh87Ti9m9H0r26OBvipa/+0eM+/nUPCCeIYjNqpbRZYKYAGSsV2l69CQgnOGKcX5qKcjffba4+06qlKIjbp364An+rLaYqJp/Jay4DXnqrP2UxcRWryrnkJNbf0yb8EkFX85w7PIg1iK4eDPfgP53E32h8WuawdInZF8YmxFlg52+6BAHCl2T61pccDisRdXbn78SygafxBAz1AI3rPAJ0QTsA+uWFRGanddFWr0TfYx94TCWV8yBeT0fWymvdzSfaEuhiwkNzamYG1oMsS2OBm5boWUSv9TuhlZ9w8NQnrXOiqGHOolI3JsCJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,24 +111,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 04:51:30PM -0700, Ihor Solodrai wrote:
-> identify_cpu() unconditionally resets the struct cpuinfo_x86 fields to
-> their default values and clears the capability arrays with memset()
-> before rescanning the CPU to fill it in again.
-> 
-> However the boot CPU capabilities have already been scanned by
-> early_identify_cpu(), with interrupts disabled.
-> 
-> Introduce init_cpu_info() helper in preparation for letting the
-> callers decide whether the reset is needed.
-> 
-> early_identify_cpu() starts using the helper in the next patch.
+Userfaultfd minor faults provides userspace with the ability to manually
+install PTEs with UFFDIO_CONTINUE. Right now, MADV_COLLAPSE can map
+holes in the VMA when a naturally-aligned THP is present. This is not
+true for khugepaged collapse: the PTEs will be retracted, but a PMD will
+not be installed.
 
-No need for that sentence. I'll zap it.
+When MADV_COLLAPSE installs a PMD that mapped holes in the VMA,
+userspace is likely to expect UFFDIO_CONTINUE to succeed on the
+should-be holes. UFFDIO_CONTINUE will fail and return EEXIST.
 
+This is not inherently a problem, as MADV_COLLAPSE is an explicit
+userspace action. But, especially because MADV_COLLAPSE can be invoked
+by an external process via process_madvise(), a rogue caller could break
+a userfaultfd-minor resolver thread. If khugepaged is later updated to
+install PMDs for khugepaged collapsing, that would be a genuine problem.
+
+Userspace cannot generally use MADV_COLLAPSE to resolve userfault minor
+faults, as MADV_COLLAPSE will only resolve such faults if a
+naturally-aligned THP is present.
+
+The naturally-aligned THP case is the only case where this quirk exists.
+Collapsing otherwise requires all PTEs to be present for
+userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
+correct. This check is essentially bypassed for naturally-aligned THPs.
+
+Suggested-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: James Houghton <jthoughton@google.com>
+---
+v2: https://lore.kernel.org/linux-mm/20260828222640.1638457-1-jthoughton@google.com/
+Changes since v2:
+ - Drop cc:stable and update the changelog for the main patch.
+   khugepaged doesn't actually install PMDs, so it is impossible for the
+   kernel to silently install mappings that userspace didn't ask for.
+   Therefore this patch does not need to be backported.
+ - Update the uffd-unit-tests selftest to account for the new behavior
+   (new patch). This patched selftest is equivalent to the reproducer I
+   provided in v1.
+
+v1: https://lore.kernel.org/linux-mm/20260828005004.2870750-1-jthoughton@google.com/
+---
+ mm/khugepaged.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 75639298efc2..e6947fe142ee 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1894,6 +1894,13 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 	if (userfaultfd_protected(vma))
+ 		return SCAN_PTE_UFFD;
+ 
++	/*
++	 * Userfaultfd-minor-registered VMAs should not be collapsed, as
++	 * userspace is expecting to explicitly install PTEs.
++	 */
++	if (userfaultfd_minor(vma))
++		return SCAN_PTE_UFFD;
++
+ 	folio = filemap_lock_folio(vma->vm_file->f_mapping,
+ 			       linear_page_index(vma, haddr));
+ 	if (IS_ERR(folio))
+
+base-commit: 5acbae5f7eb3d5275120abfe698c394b7325dcec
 -- 
-Regards/Gruss,
-    Boris.
+2.55.0.1007.g17ff1f9808-goog
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
