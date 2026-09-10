@@ -4,152 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB47C88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 21:05:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7037CC79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 21:11:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39A7A6B008A; Thu, 10 Sep 2026 17:05:45 -0400 (EDT)
+	id 094DB6B0092; Thu, 10 Sep 2026 17:11:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 370976B008C; Thu, 10 Sep 2026 17:05:45 -0400 (EDT)
+	id 046176B0093; Thu, 10 Sep 2026 17:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 286396B0092; Thu, 10 Sep 2026 17:05:45 -0400 (EDT)
+	id DDCE16B0095; Thu, 10 Sep 2026 17:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D134A6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:05:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8342405FE
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 21:05:43 +0000 (UTC)
-X-FDA: 85199084166.07.26AD5E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DAEE480003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 21:05:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eMVAdsjn;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789074342;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 84C026B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:11:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 462F5805D2
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 21:11:18 +0000 (UTC)
+X-FDA: 85199098236.22.C9555F9
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012028.outbound.protection.outlook.com [52.101.48.28])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AFC64180006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 21:11:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eI5r66DW;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789074675;
+	b=aPwT7S5/OiA+dmWtO5aaJ1SlEIInxRIG/jJW38qjrEpAym+ZZXFfGjZi64HmpLOpow+Igr
+	BGYwvFFx1tq2oM3JEw5Kk/zvS5Yu4xBHVs3J6jBoXPDd26/la1IunF49CztAxykn536hxK
+	cY7049/6raUjkGsreIahkmtM77DIKis=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eI5r66DW;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789074675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oLToX4EccLVtnhGx2Vc8M3u3T1qH7yOvY6cF4At7RK8=;
-	b=64J4/paqntO+CKG2t5TqkVm4Gq1ZXjUAs3gZyu7puT0URxTi4k34XaGhcqRqgJG665im/i
-	uvonEMilLffcYqQeUpwtoyRYqnljfJMxMd8MUI6bS8FGG4h5eH/tGj4jRnUMyfXc+ip072
-	a6h+YUk9GXAQHRCFJKRIglCiJ021p/c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789074342;
-	b=PfzpLWFf+M8hlbLocKiZcFqlrHochTQ26mABAqXOrecnyXD4Ci5bURLGygeDOVGHHWafeK
-	u1YSPv3+wKxi5HMzjgRDSuVmilZam96EHsPCz93kaie00DdC7IOXv1KbfahXrQm2UWwtIl
-	jBpZtgSWRf3VjDqUdrz1kKkoGztoYDU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eMVAdsjn;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5816F601F0;
-	Thu, 10 Sep 2026 21:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7871F000FF;
-	Thu, 10 Sep 2026 21:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789074340;
-	bh=oLToX4EccLVtnhGx2Vc8M3u3T1qH7yOvY6cF4At7RK8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eMVAdsjnlliyWhH3OpkdXujTtNiigDS8c7DRnRcnAIebH2lnzAUn7CGlqjl3uXz0y
-	 s2ALMDFWBA/vymMAewgJcnnCue0nseOnWxIoiAGhV8fE786DdvJmyBvb+zHWePs8XR
-	 lF/fYrIuN9UJhL60bT5x2Fq9bJDI+mVu/yT4u1aXPqPqPf5DzIjhHhHx9SZoh9LVLO
-	 S79uttERoeDeu/vjm/SUOuF4gL0pYXMFFDStZZWSzMhfzYBwpaUD2hX0SAa/cZ2G43
-	 X2y+psFM3rUo/eSavsDm38Ea70SOZJE5rt1/C6Z/69h1i0oG2cTvy1Dclr70hq/j/E
-	 qu/datkRNcZ7w==
-Message-ID: <ce1e07aa-5600-46c1-b35a-d7df09a84521@kernel.org>
-Date: Thu, 10 Sep 2026 23:05:29 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/26] mm/fbatch: restore mlock+munlock batching,
- without extra ref
-Content-Language: en-US
-To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Ackerley Tng <ackerleytng@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
- <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
- <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
- JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
- Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
- Rik van Riel <riel@surriel.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Yang Shi <yang@os.amperecomputing.com>,
- Yu Zhao <yuzhao@google.com>, Zach O'Keefe <zokeefe@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-block@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
- <69ba633c-8fd5-1f4b-2e1e-b9b15b8946be@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <69ba633c-8fd5-1f4b-2e1e-b9b15b8946be@google.com>
+	bh=PIyqDYP7AxEmXhnq3xjsTqzWSHlQtNl8mhDQY3Mv8uw=;
+	b=pt+8ucyCwRoJEtBQ38l1ozdK8r1AGmHrn9JB+8MqXKXuuvLWErZeZ3rMf1p/1CGogNN3S8
+	XlEjBklllapWTRzf7fiWyzC5drEJ6uKokzAR+CBhVeLKyDBnXrMbnrjC/opLOHdwdHX09Z
+	trhRBI3OHZkelK1jlClo+xInrpmomC8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ifTzMPC85lF7CpwJdf+bdxo9OUSCaqWlkbMH07wAyWXNOCQbLG/23QqVv0Keng7fWdOrUvjWv9Hnjfs3B65piP6viidMRrpKlzZeZ5ZD6gSeYsNz5JoJdf05WRuwohkUWDKFEI6bvBHgfyWHd3WczsWHDPw8eE5HJWt6PI2ETuU5Kr0GpxzQDePcxYnlt/1pbDayMgGbLFWypFAaX5xdIiMh26TjI6fyxU6XDEaFaOp5tF8IOn8pIbqezQw4nFkg8rt7mSxTX+242i8fY/ZyU5P9rPpQW6ntsqTCCgfFPhmar2AUuiSD8Rg5fGCJcS15S2/fLGyrUvNX2DIL0jLPQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PIyqDYP7AxEmXhnq3xjsTqzWSHlQtNl8mhDQY3Mv8uw=;
+ b=JTMVNS5w8hf6Fx1v7LwW4svAIekMLBbJ7D79FDt+0+VgixfHG/uTE6gqzRg4NN7vqx9M7ZM8K9TEgop2qiqCubWqFcss2qmkirNMhK3BNT+dAUiY4p4G+IcNsXRsuGpJaIu05CAyDmU8EYKllHrVCnwMjxGtmx4xzHaCl1oLDoO6PZYn3knP17/y/k5CcFu6Ue6B5zvmGiYXO5dpBtTLslZg0Z1Ev1InsSRX/HEf40Q38ZVgWGr0G9f8D9GEeFMb/Vt/S8o/fvnFg4UvM/EPT/DMJaFXpoiuwmWbSDpgYqOOn0olRTw9InWrV7wH2d132wpbm/CiTNrk+FmCAGkZyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PIyqDYP7AxEmXhnq3xjsTqzWSHlQtNl8mhDQY3Mv8uw=;
+ b=eI5r66DWUchdmyro5SfaM+R+34VvsQZPjpZLBAOPsDMnBYzuWXCaWZGIgmDeP+3Vi/wX8367p4vQbGEB3RtO31SDK+k08zEF72Du79sOKngNGIO8QwcPAt9URyFoTzPQhZA7SAg+PrsVzfoHRKF6GRnFagnfZaP8FmiYgQPjHVcGVtQoupta//Yw4gSlnJWfhJkFCiLJmXbO1og6JcwuvQrsjHJ1z/JyEZAMANMixwK2mvBWE26tlY9GhLHDTV8BIyJHXgmuW/NIwO3mzlcX3DLubotauXRURifUSOFxNqh8VTVhIuHI+OWgpeS0kgjE86ilMisX84UbkIJyHR0Vwg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY5PR12MB6406.namprd12.prod.outlook.com (2603:10b6:930:3d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 21:11:06 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 21:11:05 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+Date: Thu, 10 Sep 2026 17:11:04 -0400
+Message-Id: <DLBY1EIZD8G9.3O0LMDKCMNPIB@nvidia.com>
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+Cc: "Tal Zussman" <tz2294@columbia.edu>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Muchun
+ Song" <muchun.song@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Gregory Price" <gourry@gourry.net>, "Ying
+ Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng"
+ <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui
+ Song" <kasong@tencent.com>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, "Jaegeuk Kim" <jaegeuk@kernel.org>, "Chao
+ Yu" <chao@kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+ <178889163877.1334491.3646957026033534678.b4-reply@b4>
+ <83a8743b-9cbb-42a5-9ff5-718297916a76@kernel.org>
+ <3dfab5df-c205-4853-bf48-86351a02b4e2@columbia.edu>
+ <927c0ec3-4183-4355-9269-721d79f4983c@kernel.org>
+ <30DEBE66-9E26-4468-9A12-123539ED68A3@nvidia.com>
+In-Reply-To: <30DEBE66-9E26-4468-9A12-123539ED68A3@nvidia.com>
+X-ClientProxiedBy: BL1PR13CA0356.namprd13.prod.outlook.com
+ (2603:10b6:208:2c6::31) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY5PR12MB6406:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3449b962-c051-4a85-ae53-08df0f8006fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|5023799004|11063799006|56012099006|4143699003|6133799003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	DHbYsCBdSeXBBBFadFFj7CNxqlMA5OfZXddNRPZnQDjZK4zAeSfi8TnRd+fqEWAGD8oTOlJiQL8lZdB5MYDOp1/ofhEBPIIIQnLWy6pEjkFGtQEcqlS9Fpc5tY4qxBDXwmqtFh7Eb8YYW2COwMAXtYqfGjfDFLoOzoj5IDINUySuJo7Rf6U/4fGEYvqjIPOkx3C4Abi03PLmpQnjv6J3Wyv4zOLTMIU4bFA3hTEAbZJ2qv08NQCAnmod4pziQPJnY/cbqJ5B1x7Xnlw+4DTKaTXY7MFQQFpnBa4rEcWfpAWugYZ/VVQoVzhYOGdA+wwCvIdvM09HTZ77dCYnuVpRJ+UZdqMRZZIKHatkZ7DABelGPNq42J7fEDAtbc1+6xmfog4mhK6phzrwJ/RA+QLf/u+Mxr/zUYQ0Fj+Ob7acwXER5liQbpJYRBXKz1YQucUSPLLiRUGHew5t9vlr2E/dYkTxT//Ldk3WuCaIpkfeGAL0FZNl7t1OKHywikqckuFQTEsa4t7ayIGcd/sdvmmOaAk/v6RHwE+Z/XA+HDYSlk+IAt797bT1RzPP27E+k0Ni41YIZTqDa0q2HlnZ5/6QcyyoOd7nIDzoRwUVpQjJ9GOllc5JlfEnYoRuNFgpyUVlSmXOSywf7gKBBX5/m0PgI95bL4RGr/o+TsHiYIf6u3k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(5023799004)(11063799006)(56012099006)(4143699003)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d3J4NnVhbGd4L25IYmlOU243R0Z3Q0hwNDhCYW1RKzNkUUJSNEgrT1JFWW5n?=
+ =?utf-8?B?bUFXNWxQbWt1VnE0RXErTEF6OW9iV0RDQmE4S0Fpdjc3M3VBdGhwUWhnTUFx?=
+ =?utf-8?B?NnJrc2ZtMVU2ZUZMallrd01JL290VVBoN2NOUHZSc0pzSk1IWDM4OW9QNTU4?=
+ =?utf-8?B?Z216cWJHaDNOTVI2KytreXZQUk9QOUlPd2drckErNm9MVEhOZVRaZml6UXRL?=
+ =?utf-8?B?MzMyQ1ZHTnUwRXBsSTZ2QThPM0diakRQOFBCSVlsc0UzU0N3Yk1qYk9KeEdG?=
+ =?utf-8?B?N1VYMUE1bys1ek9ERm9DU3VqV0JkRStvbzdlMDV5OExpYkV2Tk0zTkJYL01J?=
+ =?utf-8?B?ckpmZkpReDI1czRMMDdSdEU4ckMwb1BMdWNjT1VtUU5YZmR3dWxhd2NETW8w?=
+ =?utf-8?B?clpOL2VvSWtzSGRaNTcyR1BySzZDRHkzWUJyQk9wdTBvMXFLMnBxb01HS0Fz?=
+ =?utf-8?B?b1l1Y29sR2tYTEhTakNoTk9EVk9Db3hEdTVCUjZXRjdXL1RBampFaCtsSEZo?=
+ =?utf-8?B?TWl1OWk1eGJ5U0tZOU9tUmJFRzljWTV2M3FUUy9GTWNKTjZkUWIrR1NjNC92?=
+ =?utf-8?B?L3Z0MXU1VzgxSG1mK0dwc1JzTmpjQ2p4T2tpRHhTREZaWFc2V3pkOFQ4ZDFt?=
+ =?utf-8?B?V2FIK3NRcWRhVi9DRWJDZHRtcWRwVjBBaFNqdVVNZk5JalF4UjIyZksyTmVI?=
+ =?utf-8?B?Z1RYdmZ4VW1Oa0dSL2M3TFIxRFZPa0ticEIzYW9BcEpDYXBEZnNqb1EvL2Ir?=
+ =?utf-8?B?WTBIelJHWS81OGRJbmZ6RVBqQnk5V3lyQzJqS0QvMVUzb0RpeVBEWjFLbXNy?=
+ =?utf-8?B?K2VqbHBBWVJid2NLa3p0OGFPZ2JxNE9xaytyNFJ1WW00TmdDenBtZTB1Z3Jo?=
+ =?utf-8?B?ZG5RV0ZFYW1mNmMxbHhvRFJkUjc5ZnM3Tk9EYnk1cHB2MDl3d1VpVjU2cldr?=
+ =?utf-8?B?Z0UyeEpqQklucHdTMzM3QUw1OVRYOVNhVFRaR0lESVEyZVN2MVN6eEd0d2h5?=
+ =?utf-8?B?T3NPN2hVSTJ6Wk0vZkNXTFh0ZGR4MTBBWlVhUVYvbkNlcnk4eG5iUFFuVFJR?=
+ =?utf-8?B?aGwwWEUzZGR4UjY2cEJZUk02VVVNbmhaWWxPKzQyTnh2UlJ0N0M1ZHR5Y1Q3?=
+ =?utf-8?B?bWE0RzYxbWpkU0E0UXQ4S2lCUEVFT0hkQnJWUlhlZENsK3R0RHBudGNjS2px?=
+ =?utf-8?B?NXB3aWFYdmFvSGtyTjYrS3V6dmN3TmYxMXZqYy9qa2JMUzhyZy9kVnowQkZB?=
+ =?utf-8?B?Z1pRdHREVHJiVnNHVVVOVHUzT2NmRjN3Q21xeTNhSy9sMXlmSVl4VGhXRzZx?=
+ =?utf-8?B?akwrRzFKOUNEUG5DWVlKRGMwOHBHSFlKV29FejNzSEhDQzVzcys2ZnNjbUhT?=
+ =?utf-8?B?aHlZOXp3OVZ4ZXg3dmF4R0ZlSlNFbjVseU5URWZNdCswdnpUbmU4TElZYmxm?=
+ =?utf-8?B?cHdIcExiVXVPbkVUdStuRi84cks2ZEw2T0RVUnNJeDNuK1NnYUxsTWNEZWRl?=
+ =?utf-8?B?eDl5ajJzQkpRcG5xYXpIMGJzU2tYNkp2L0lZRTlTKzVZb0F3ZzdzM1d5a0o1?=
+ =?utf-8?B?V09kampKeTk0blUrN3JHY3U1ZmtPN1FiMFNFQUt3VTZvUEloWlBENUZlWmZQ?=
+ =?utf-8?B?cEpmT0F0VS9GNVIvMXhLU3ByOWpROXN0T1EyL1JBSjgza0p2dWk3MGc5WS9a?=
+ =?utf-8?B?RVk0RW1jeHNpdVZoS1gwTDdVUkp4aVJQejRLdWxjcDJJUEdHdDFJdGhRTE1I?=
+ =?utf-8?B?LzVwMFl4NExEcC9hNDZQTzlwSy9vVUNCaW9jbTJzcENnUmNpaTA3Sk1Eam9L?=
+ =?utf-8?B?WE05R2dMZmw5Z1cweUErdWJvTzNpZzVkeDlnV2E4alVFL09Hbm5pdVlsVWVL?=
+ =?utf-8?B?NnFLR3I1a1g2OHd4bytmSVZ6c0hBNkl3RGxpK2pSRUEza04way9OZzRSbVZN?=
+ =?utf-8?B?UFBiUXQvOTZBR1pJUWxJdkRNaXo4SzNyVHQ2R2VCNkpISTZFZ3JBM1ZtY2Nq?=
+ =?utf-8?B?VU8zc1krYmpkUWFyQnV4L2xIMitRUTNFeWp5Z2llc3hXY2dTNGxlc3NKNGlL?=
+ =?utf-8?B?NU1sRUZSNXlNMk11eEtEbEtINEN3VnNXdFl3MUZYbFhweHNDYmMwWkJ6bnF1?=
+ =?utf-8?B?bmR3eU5ZSEdmWDJLd3YrZDd5NjNSTkp6MkdDUXVEc1I3Y0pvdW5aYnZEQWpo?=
+ =?utf-8?B?STljT0VJT3h3ZGNxM0lwdTB5SHNBOFRQZG94UmR3eTNOdDVmbkh5MUxvbTJw?=
+ =?utf-8?B?UFNwSnF0WDUwSEpXUzAxWFlVLytyTEt6QXdpOU5GcDV4TkNBTEJBV1VrVGpq?=
+ =?utf-8?Q?WUgmNkSuMphnPt8eih?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3449b962-c051-4a85-ae53-08df0f8006fe
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 21:11:05.9002
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 26RDEENSUiOiOWKNaFZxSWXgpjE/82dyCRclMW1Ofp/SorA7PKOec4zq0izNUuGa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6406
 X-Rspam-User: 
-X-Stat-Signature: jwx5m8wczqupdq9sr4c3x8xkyesqwer9
-X-Rspamd-Queue-Id: DAEE480003
-X-HE-Tag: 1789074341-801134
-X-HE-Meta: U2FsdGVkX1/eousHzc6avV8NVNt+c7T8E0KIfwG1Hsmm3bFQLbYYvwK3c1WTlBhhkjpSKCQwhk4TttpaUiJQKyK53lTTy4dkIBckdz4wfFGsIZggPYjYtUqvw2kcuUe0oKoRe/k6vldO/nE2f5IxDGEFChdHfVmFxi3ma/xvi04Brch+WFdNxlSvu+v7ys/AwAfAgOXjypTUAvHgvZZ3m+fmLyaV1VJUAIQ5vdQiQl4Z2/vMtTzuFbVtOl7rXXrttieXGO/8cxXAB6SsrUuYAmHd5Xum4uwqN4tBkFiCeYnlzE1XLYCjPalJkllwyBZTiYKyQT0TPt9N4PjjiN6dS92H1QjTEPN/G5emj0Lpln7a2uKSG9H/5qHiPZvoQ2axjSva3ItRZaR5B3M/+cTuI9pqybODVFyiNeB1LIxIhXsLpyZMpC0NIXx8KQoKW73tjlp3oS2QIcHL94NQEAcp0ovjthrH65CDrtotSxL7k9+EOB5JwrFDYO+OaVVnCGJrsaYZY2cnTNP+I9QP8Rvq3wgEGAy7RdD/Td/D1MSGRhcciIEsFls4p/+0aIDclPp2KX5TY6ziEkL/ni+5+PpvJlN2lquiSJSGGk1I9R26xKN2vZ58pLDW1r4aps84D5atLdO6YwXnVvSJ+Xi+86y9K0ObwMeKGCcWAN0uUj+UpLRLBKGi6ikNaLS1P1HU9LLTYNCN6SrSffiQVBCdz70Fx++icMqPwnp6Ty42aIqJMHPRU2Azr98HzLOWkZxruzZUuuodyoyI++IE9QDTdk/yg8sMWawvLfprPEQU3Ppmi3lWtH4himKiiTRV6QN4qkjmIPX8VJq44A/g5J5mE1b61Zct1bKV8Q2/erLorUDsDqAeg8r0peIKreaJOFmUDhKz8XeikS37c4X/pDzu9AQvEpMz20NQw9VG3OvwWn/Zrhx26w67JfEuDf+hcUNLiRa3iNeYuq+3FX8EOozO9qb
- vqWa2iXg
- shIiroh4F020R5Bauj93DFDZ/NskuQkSVZeGXQTg6aajBH/j8SFUR7pf7NMccWaLZv9KJRInv7kulu6sPl/JVl0Wdteww4ny5J+za52QByTE5FNw1UnL1+2lGbtAjVPS4lmK2EqKSzjG/4wHhdnRTgMAShI0O9aOC69oHdoyGt3y/rbFFL7KLBUlGUsAYVEPUqDi+XIa99WbdPGeW3YBPJ12zPfCzIwEMn3FP5nZPZvHtiub+2/jkDj6d8160ENbyhosLVn+RMW4nlvSa3BElrAFZgpWV61q26kLwGclGqWrgRMn+YYznAqz/gz2t0+eMme/OluQ1cKZlPijkJLAfQ7BM1EErCgXm/yBaXpmH+039CI4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AFC64180006
+X-Stat-Signature: u5thzshiiknbfwxrebfnx33mp6q9ojdk
+X-HE-Tag: 1789074672-165302
+X-HE-Meta: U2FsdGVkX1/lIPR1G3ONKGlA/HU4oYmd5EnGD/nCosehVELbKmfQUdAZ5/YuPXLAwHOREkxu+ZgJ85GQZiITvPMI+CZFyQoyIme+q3ZzzzTy+jtHFFkEwH9cTy/7i1R1X5pW5nV+DnMo4rpi5F1QsAutwnN7WqE7jd+u+opI6HnrWXladlJbXmxbTfbKifjT1/jzipIWIvi51dJQIweZUVGhV2OUS0Nf08E9KX/eOLyoVAJkCX6Hf6TGv4jcYrT0u41qE7fyGg6gzhXgs//upPCkzT8SgaySVIcWG6j7VgMbJ5jbZLxh/NuoQtOiSkM5RPXctwMYptOWB4I+UIWVjjhyV07eXIKsqsU5zf3hjhOK9vICMfVZeAMPYR0bXWiz67qaq4rpqDs75QAeqY738i1QrC6BgdvPmIiGQhkd/yYGkHEPF6KUlDZsgYQNGeMoN54OobGQasw11vuZikIyjIkxZM2vsU5jkeLj4QPT5gzQ8seDqjG5uQ6IxWyy5aWM2TkQI9LRtklMMtiwXhaZzFEeKM7R1+MUjGJOwD/d7X+RDvsJ2bWwVG3TN13WUxBsbN+df/OtB/rRC8XLpw176EnhmQM5Ho6JLt5dSjpmKtIe58xVgk69LEu3rBjoxoHbA1dfTJ8iSY/tY3aa0b5j7tyajf6u3Y1Ih8tFzMBzJDbP31P42DKOs66psTM5LDqbP07GZtCUCA0kmfwIQ2MBURf/2HgT/zjCT+Y/fa4GWW2jPFPCOSfOBOn/+LiJyKuaPVR1AB6qF430Mc3ZroRwC89nEfFVq97Osnnpne1RbAfsa3C4GWn+m3yJ3Pg5TPvM17vEFlko0ihCKvaenmJGUG8ZwhXaMEox282Kv+dHAHK/re/0ECHh2ddX+yZ6RZ052Q3IB5rLF3W4jAoxYbz7hS8H4YPEEQu96HjLZ1g0mVSW/iYVK9SVXHYVkkO5q3TnFsCC/GJnBPx9z6QJqa/
+ bPqviVCE
+ aL/W+LxXGF4m4tDG+CsMZuAcLQFRl27wYfE51vtLcguUjKRGGjj16Kh80HBZME+rckzd1GOGC7yehbThbAvp9tpdyu19jBv+WHjbxFe/hDN/5faqIFeFv6n6vfivp34omp7D8YvBpNGMglenQ/BE9PU+kqUOztM45hQk9F9q3iI7iqB2Yvoyq84a/5H0laAIkHPtUVNOleN37HCtUPNu+FdrgETyKMHFAqliL9mSENGaW1fNkbIvekwu2Xd2FfFpmPY5NOoBlQFu/mwTd04YMizoP2HDk8bPfyGhvWLvH8yvh6bhGju+A95JTPKfl2Sr/JPbkI/IsOcZsZTRCNZeJlv8BNZDsZY1JLlbzdkPw+IdsznLYzx4gMAdUCWxFV+49Y3ukzdbFwBqwaRwIPnFx8VFMdBR11fOby5PoP92WyKrQPcJw+eE9+8WUvRFVg/pe4ND8PPaEYbZXyO14ogjFH5IpVg0Ayo87JvqJWZEQqSAe40TOKtNt/53DgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,61 +190,405 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 11:59, Hugh Dickins wrote:
-> Update mlock_folio(), munlock_folio() and their fbatch callouts and
-> helpers, to do folio_try_get()s at batch processing time, instead of
-> holding a folio reference all the while in mlock_fbatch: as in folio.c.
-> 
-> But more interesting is the use of mod_mlock_count(), using try_cmpxchg()
-> to update folio->mlock_count safely when possible (now when on lru_add
-> fbatch as well as when unevictable). While __mlock_folio() is as hard to
-> think about as before, __munlock_folio() simpler because munlock_folio()
-> can adjust mlock_count itself without clear_lru() or lruvec lock, and so
-> do the folio_test_clear_mlocked() immediately for itself (without which
-> unevictable_pgs_cleared was likely to appear high, when it should be 0
-> or low to indicate good mlock health).
-> 
-> __munlock_folio() is safe for use even when the unreferenced folio has
-> been freed and reused. It appears that __mlock_folio() could affect a
-> folio which has been freed and reused, but only if it is reused as an
-> mlocked folio, in which case its mlock_count is spuriously incremented
-> (but usually a spurious munlock decrement will follow).  How grave is
-> this? If unevictable_pgs_cleared remains low, not so bad.
-> 
-> I've gone back and forth on whether to move mlock_fbatch and these
-> functions into mm/folio.c: for now they stay here in mm/mlock.c.
-> 
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->  mm/mlock.c | 147 +++++++++++++++++++++++++++++++----------------------
->  1 file changed, 86 insertions(+), 61 deletions(-)
-> 
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 2c690f18031e..1050010bbe0b 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -58,6 +58,20 @@ EXPORT_SYMBOL(can_do_mlock);
->   * indicate the unevictable state.
->   */
->  
-> +static long mod_mlock_count(struct folio *folio, long incdec)
-> +{
-> +	long mlock_count = READ_ONCE(folio->mlock_count);
-> +
-> +	while (mlock_count & MLOCK_COUNT_0) {
-> +		if (mlock_count + incdec < MLOCK_COUNT_0)
-> +			return MLOCK_COUNT_0;
-> +		if (try_cmpxchg(&folio->mlock_count, &mlock_count,
-> +				mlock_count + incdec))
-> +			return mlock_count + incdec;
-> +	}
+On Thu Sep 10, 2026 at 8:21 AM EDT, Zi Yan wrote:
+> On 10 Sep 2026, at 3:35, David Hildenbrand (Arm) wrote:
+>
+>> On 9/9/26 19:47, Tal Zussman wrote:
+>>> On 9/9/26 3:48 PM, David Hildenbrand (Arm) wrote:
+>>>> On 9/8/26 20:20, Tal Zussman wrote:
+>>>>>
+>>>>> I have a WIP series of ~30 patches converting much of the remaining p=
+age
+>>>>> users in f2fs (including the below) to folios. Still have to do some
+>>>>> testing and clean it up, but hoping to send it out in the next couple=
+ of
+>>>>> weeks (in the hopes of eliminating some more folio_compat.c functions=
+ by
+>>>>> next cycle...)
+>>>>
+>>>> Indeed best to wait a bit before flooding -mm even more, it's rather a=
+ lot at
+>>>> this point.
+>>>>
+>>>> In the context of this series, it would be great if you could review w=
+hether the
+>>>> diff I proposed would get the job done, thanks!
+>>>>
+>>>
+>>> What it changes looks good, but I would go a little further.
+>>
+>> Thanks!
+>>
+>>>
+>>> There are only two more users of page_private_gcing(), which pass fio->=
+page.
+>>> Those could easily be converted to folio_test_f2fs_gcing() by passing f=
+io->folio,
+>>> which is in a union with fio->page. That would let you delete the
+>>> page_private_##name() implementation in PAGE_PRIVATE_GET_FUNC() as well=
+ and just
+>>> remove the entire family. At that point PAGE_PRIVATE_{GET,SET,CLEAR}_FU=
+NC()
+>>> could be renamed to something like F2FS_FOLIO_PRIVATE_{GET,SET,CLEAR}_F=
+UNC() and
+>>> all of this cruft is gone and folio-based, with no more f2fs use of pag=
+e_private()
+>>> either.
+>>>
+>>> The renaming could be done as a later step, but I would get rid of the =
+accessors
+>>> as well in one swoop.
+>>
+>> Yes, either as part of the same patch or as a separate patch. Zi, can yo=
+u take
+>> care of that? Thanks!
+>
+> OK, I will come up with a patch based on your patch plus the suggestion h=
+ere
+> on top of this =E2=80=9Cf2fs: stop using PG_private=E2=80=9D. I will post=
+ the patch here
+> for feedback to avoid extra churn of the whole series.
+>
 
-This never rereads folio->mlock_count to mlock_count inside the loop, so it
-can spin forever?
+OK, here is the patch. In addition to David's patch and Tal' suggestion,
+I also
+1. converted PAGE_PRIVATE_* flags to F2FS_FOLIO_PRIVATE_*,
+2. converted page/folio union in f2fs_io_info to folio only, since no
+one is using fio->page any more.
 
-(too late here for me to understand the rest today)
+Let me know your feedback. I will add this to my patch series once you
+are OK with it. Thanks.
 
-> +	return 0;
-> +}
-> +
+From 3bae5c494459b3dd05893df6051e3eb37164f810 Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Thu, 10 Sep 2026 16:42:39 -0400
+Subject: [PATCH] f2fs: convert the ->private flag helpers to folio-only
+
+page-based ->private flag helpers are used in the compression path, where
+large folios are not enabled. They can use folio versions with
+page_folio(). The two remaining users in data.c and segment.c can use
+fio->folio instead of fio->page (two are in a union).
+
+Drop page-based helpers after the conversion and rename
+PAGE_PRIVATE_{GET,SET,CLEAR}_FUNC() and the PAGE_PRIVATE_* flags to
+F2FS_FOLIO_PRIVATE_* to match. Convert the folio/page union from
+f2fs_io_info union to folio only, since no page user is left.
+
+The folio helpers do a plain read-modify-write where the page ones used
+set_bit()/clear_bit(). It is fine because the converted code either holds
+folio lock or, in f2fs_compress_write_end_io(), matches what the
+non-compressed code does in f2fs_write_end_bio().
+
+Assisted-by: Claude:claude-opus-5
+Suggested-by: Tal Zussman <tz2294@columbia.edu>
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Chao Yu <chao@kernel.org>
+Cc: linux-f2fs-devel@lists.sourceforge.net
+Cc: linux-kernel@vger.kernel.org
+---
+ fs/f2fs/compress.c | 35 ++++++++++------
+ fs/f2fs/data.c     |  2 +-
+ fs/f2fs/f2fs.h     | 99 ++++++++++++++++++----------------------------
+ fs/f2fs/segment.c  |  2 +-
+ 4 files changed, 63 insertions(+), 75 deletions(-)
+
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index ce88092d9ce26..09d9b8d0fdcce 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1064,13 +1064,15 @@ static void cancel_cluster_writeback(struct compres=
+s_ctx *cc,
+=20
+ 	/* Cancel writeback and stay locked. */
+ 	for (i =3D 0; i < cc->cluster_size; i++) {
++		struct folio *folio =3D page_folio(cc->rpages[i]);
++
+ 		if (i < submitted) {
+ 			inode_inc_dirty_pages(cc->inode);
+-			lock_page(cc->rpages[i]);
++			folio_lock(folio);
+ 		}
+-		clear_page_private_gcing(cc->rpages[i]);
+-		if (folio_test_writeback(page_folio(cc->rpages[i])))
+-			end_page_writeback(cc->rpages[i]);
++		folio_clear_f2fs_gcing(folio);
++		if (folio_test_writeback(folio))
++			folio_end_writeback(folio);
+ 	}
+ }
+=20
+@@ -1078,11 +1080,15 @@ static void set_cluster_dirty(struct compress_ctx *=
+cc)
+ {
+ 	int i;
+=20
+-	for (i =3D 0; i < cc->cluster_size; i++)
+-		if (cc->rpages[i]) {
+-			set_page_dirty(cc->rpages[i]);
+-			set_page_private_gcing(cc->rpages[i]);
+-		}
++	for (i =3D 0; i < cc->cluster_size; i++) {
++		struct folio *folio;
++
++		if (!cc->rpages[i])
++			continue;
++		folio =3D page_folio(cc->rpages[i]);
++		folio_mark_dirty(folio);
++		folio_set_f2fs_gcing(folio);
++	}
+ }
+=20
+ static int prepare_compress_overwrite(struct compress_ctx *cc,
+@@ -1281,7 +1287,7 @@ static int f2fs_write_compressed_pages(struct compres=
+s_ctx *cc,
+ 		.op =3D REQ_OP_WRITE,
+ 		.op_flags =3D wbc_to_write_flags(wbc),
+ 		.old_blkaddr =3D NEW_ADDR,
+-		.page =3D NULL,
++		.folio =3D NULL,
+ 		.encrypted_page =3D NULL,
+ 		.compressed_page =3D NULL,
+ 		.io_type =3D io_type,
+@@ -1370,7 +1376,7 @@ static int f2fs_write_compressed_pages(struct compres=
+s_ctx *cc,
+ 		block_t blkaddr;
+=20
+ 		blkaddr =3D f2fs_data_blkaddr(&dn);
+-		fio.page =3D cc->rpages[i];
++		fio.folio =3D page_folio(cc->rpages[i]);
+ 		fio.old_blkaddr =3D blkaddr;
+=20
+ 		/* cluster header */
+@@ -1476,9 +1482,12 @@ void f2fs_compress_write_end_io(struct bio *bio, str=
+uct folio *folio)
+ 	}
+=20
+ 	for (i =3D 0; i < cic->nr_rpages; i++) {
++		struct folio *rfolio;
++
+ 		WARN_ON(!cic->rpages[i]);
+-		clear_page_private_gcing(cic->rpages[i]);
+-		end_page_writeback(cic->rpages[i]);
++		rfolio =3D page_folio(cic->rpages[i]);
++		folio_clear_f2fs_gcing(rfolio);
++		folio_end_writeback(rfolio);
+ 	}
+=20
+ 	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 21f396ebe22ca..ca8232a9095f8 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2923,7 +2923,7 @@ bool f2fs_should_update_outplace(struct inode *inode,=
+ struct f2fs_io_info *fio)
+ 		return true;
+=20
+ 	if (fio) {
+-		if (page_private_gcing(fio->page))
++		if (folio_test_f2fs_gcing(fio->folio))
+ 			return true;
+ 		if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED) &&
+ 			f2fs_is_checkpointed_data(sbi, fio->old_blkaddr)))
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 2f7ab5888b078..85937de3d7016 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1357,10 +1357,7 @@ struct f2fs_io_info {
+ 	blk_opf_t op_flags;	/* req_flag_bits */
+ 	block_t new_blkaddr;	/* new block address to be written */
+ 	block_t old_blkaddr;	/* old block address before Cow */
+-	union {
+-		struct page *page;	/* page to be written */
+-		struct folio *folio;
+-	};
++	struct folio *folio;	/* folio to be written */
+ 	struct page *encrypted_page;	/* encrypted page */
+ 	struct page *compressed_page;	/* compressed page */
+ 	struct list_head list;		/* serialize IOs */
+@@ -1613,27 +1610,27 @@ static inline void f2fs_set_bit(unsigned int nr, ch=
+ar *addr);
+ static inline void f2fs_clear_bit(unsigned int nr, char *addr);
+=20
+ /*
+- * Layout of f2fs page.private:
++ * Layout of f2fs folio->private:
+  *
+  * Layout A: lowest bit should be 1
+  * | bit0 =3D 1 | bit1 | bit2 | ... | bit MAX | private data .... |
+- * bit 0	PAGE_PRIVATE_NOT_POINTER
+- * bit 1	PAGE_PRIVATE_ONGOING_MIGRATION
+- * bit 2	PAGE_PRIVATE_INLINE_INODE
+- * bit 3	PAGE_PRIVATE_REF_RESOURCE
+- * bit 4	PAGE_PRIVATE_ATOMIC_WRITE
++ * bit 0	F2FS_FOLIO_PRIVATE_NOT_POINTER
++ * bit 1	F2FS_FOLIO_PRIVATE_ONGOING_MIGRATION
++ * bit 2	F2FS_FOLIO_PRIVATE_INLINE_INODE
++ * bit 3	F2FS_FOLIO_PRIVATE_REF_RESOURCE
++ * bit 4	F2FS_FOLIO_PRIVATE_ATOMIC_WRITE
+  * bit 5-	f2fs private data
+  *
+  * Layout B: lowest bit should be 0
+- * page.private is a wrapped pointer.
++ * folio->private is a wrapped pointer.
+  */
+ enum {
+-	PAGE_PRIVATE_NOT_POINTER,		/* private contains non-pointer data */
+-	PAGE_PRIVATE_ONGOING_MIGRATION,		/* data page which is on-going migrating=
+ */
+-	PAGE_PRIVATE_INLINE_INODE,		/* inode page contains inline data */
+-	PAGE_PRIVATE_REF_RESOURCE,		/* dirty page has referenced resources */
+-	PAGE_PRIVATE_ATOMIC_WRITE,		/* data page from atomic write path */
+-	PAGE_PRIVATE_MAX
++	F2FS_FOLIO_PRIVATE_NOT_POINTER,		/* private contains non-pointer data */
++	F2FS_FOLIO_PRIVATE_ONGOING_MIGRATION,		/* data page which is on-going mig=
+rating */
++	F2FS_FOLIO_PRIVATE_INLINE_INODE,		/* inode page contains inline data */
++	F2FS_FOLIO_PRIVATE_REF_RESOURCE,		/* dirty page has referenced resources =
+*/
++	F2FS_FOLIO_PRIVATE_ATOMIC_WRITE,		/* data page from atomic write path */
++	F2FS_FOLIO_PRIVATE_MAX
+ };
+=20
+ /* For compression */
+@@ -2681,86 +2678,68 @@ static inline int inc_valid_block_count(struct f2fs=
+_sb_info *sbi,
+ 	return -ENOSPC;
+ }
+=20
+-#define PAGE_PRIVATE_GET_FUNC(name, flagname) \
++#define F2FS_FOLIO_PRIVATE_GET_FUNC(name, flagname) \
+ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
+ {									\
+ 	unsigned long priv =3D (unsigned long)folio->private;		\
+-	unsigned long v =3D (1UL << PAGE_PRIVATE_NOT_POINTER) |		\
+-			     (1UL << PAGE_PRIVATE_##flagname);		\
++	unsigned long v =3D (1UL << F2FS_FOLIO_PRIVATE_NOT_POINTER) |	\
++			     (1UL << F2FS_FOLIO_PRIVATE_##flagname);	\
+ 	return (priv & v) =3D=3D v;						\
+-}									\
+-static inline bool page_private_##name(struct page *page) \
+-{ \
+-	return page_private(page) && \
+-		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
+-		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+ }
+=20
+-#define PAGE_PRIVATE_SET_FUNC(name, flagname) \
++#define F2FS_FOLIO_PRIVATE_SET_FUNC(name, flagname) \
+ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+ {									\
+-	unsigned long v =3D (1UL << PAGE_PRIVATE_NOT_POINTER) |		\
+-			     (1UL << PAGE_PRIVATE_##flagname);		\
++	unsigned long v =3D (1UL << F2FS_FOLIO_PRIVATE_NOT_POINTER) |	\
++			     (1UL << F2FS_FOLIO_PRIVATE_##flagname);	\
+ 	if (!folio->private)						\
+ 		folio_attach_private(folio, (void *)v);			\
+ 	else {								\
+ 		v |=3D (unsigned long)folio->private;			\
+ 		folio->private =3D (void *)v;				\
+ 	}								\
+-}									\
+-static inline void set_page_private_##name(struct page *page) \
+-{ \
+-	if (!page_private(page)) \
+-		attach_page_private(page, \
+-				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
+-	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+ }
+=20
+-#define PAGE_PRIVATE_CLEAR_FUNC(name, flagname) \
++#define F2FS_FOLIO_PRIVATE_CLEAR_FUNC(name, flagname) \
+ static inline void folio_clear_f2fs_##name(struct folio *folio)		\
+ {									\
+ 	unsigned long v =3D (unsigned long)folio->private;		\
+ 									\
+-	v &=3D ~(1UL << PAGE_PRIVATE_##flagname);				\
+-	if (v =3D=3D (1UL << PAGE_PRIVATE_NOT_POINTER))			\
++	v &=3D ~(1UL << F2FS_FOLIO_PRIVATE_##flagname);			\
++	if (v =3D=3D (1UL << F2FS_FOLIO_PRIVATE_NOT_POINTER))		\
+ 		folio_detach_private(folio);				\
+ 	else								\
+ 		folio->private =3D (void *)v;				\
+-}									\
+-static inline void clear_page_private_##name(struct page *page) \
+-{ \
+-	clear_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+-	if (page_private(page) =3D=3D BIT(PAGE_PRIVATE_NOT_POINTER)) \
+-		detach_page_private(page); \
+ }
+=20
+-PAGE_PRIVATE_GET_FUNC(nonpointer, NOT_POINTER);
+-PAGE_PRIVATE_GET_FUNC(inline, INLINE_INODE);
+-PAGE_PRIVATE_GET_FUNC(gcing, ONGOING_MIGRATION);
+-PAGE_PRIVATE_GET_FUNC(atomic, ATOMIC_WRITE);
++F2FS_FOLIO_PRIVATE_GET_FUNC(nonpointer, NOT_POINTER);
++F2FS_FOLIO_PRIVATE_GET_FUNC(inline, INLINE_INODE);
++F2FS_FOLIO_PRIVATE_GET_FUNC(gcing, ONGOING_MIGRATION);
++F2FS_FOLIO_PRIVATE_GET_FUNC(atomic, ATOMIC_WRITE);
+=20
+-PAGE_PRIVATE_SET_FUNC(reference, REF_RESOURCE);
+-PAGE_PRIVATE_SET_FUNC(inline, INLINE_INODE);
+-PAGE_PRIVATE_SET_FUNC(gcing, ONGOING_MIGRATION);
+-PAGE_PRIVATE_SET_FUNC(atomic, ATOMIC_WRITE);
++F2FS_FOLIO_PRIVATE_SET_FUNC(reference, REF_RESOURCE);
++F2FS_FOLIO_PRIVATE_SET_FUNC(inline, INLINE_INODE);
++F2FS_FOLIO_PRIVATE_SET_FUNC(gcing, ONGOING_MIGRATION);
++F2FS_FOLIO_PRIVATE_SET_FUNC(atomic, ATOMIC_WRITE);
+=20
+-PAGE_PRIVATE_CLEAR_FUNC(reference, REF_RESOURCE);
+-PAGE_PRIVATE_CLEAR_FUNC(inline, INLINE_INODE);
+-PAGE_PRIVATE_CLEAR_FUNC(gcing, ONGOING_MIGRATION);
+-PAGE_PRIVATE_CLEAR_FUNC(atomic, ATOMIC_WRITE);
++F2FS_FOLIO_PRIVATE_CLEAR_FUNC(reference, REF_RESOURCE);
++F2FS_FOLIO_PRIVATE_CLEAR_FUNC(inline, INLINE_INODE);
++F2FS_FOLIO_PRIVATE_CLEAR_FUNC(gcing, ONGOING_MIGRATION);
++F2FS_FOLIO_PRIVATE_CLEAR_FUNC(atomic, ATOMIC_WRITE);
+=20
+ static inline unsigned long folio_get_f2fs_data(struct folio *folio)
+ {
+ 	unsigned long data =3D (unsigned long)folio->private;
+=20
+-	if (!test_bit(PAGE_PRIVATE_NOT_POINTER, &data))
++	if (!test_bit(F2FS_FOLIO_PRIVATE_NOT_POINTER, &data))
+ 		return 0;
+-	return data >> PAGE_PRIVATE_MAX;
++	return data >> F2FS_FOLIO_PRIVATE_MAX;
+ }
+=20
+ static inline void folio_set_f2fs_data(struct folio *folio, unsigned long =
+data)
+ {
+-	data =3D (1UL << PAGE_PRIVATE_NOT_POINTER) | (data << PAGE_PRIVATE_MAX);
++	data =3D (1UL << F2FS_FOLIO_PRIVATE_NOT_POINTER) |
++	       (data << F2FS_FOLIO_PRIVATE_MAX);
+=20
+ 	if (!folio_test_private(folio))
+ 		folio_attach_private(folio, (void *)data);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 63b712d3d599e..8c156e1fd37d0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3803,7 +3803,7 @@ static int __get_segment_type_6(struct f2fs_io_info *=
+fio)
+ 		if (is_inode_flag_set(inode, FI_ALIGNED_WRITE))
+ 			return CURSEG_COLD_DATA_PINNED;
+=20
+-		if (page_private_gcing(fio->page)) {
++		if (folio_test_f2fs_gcing(fio->folio)) {
+ 			if (fio->sbi->am.atgc_enabled &&
+ 				(fio->io_type =3D=3D FS_DATA_IO) &&
+ 				(fio->sbi->gc_mode !=3D GC_URGENT_HIGH) &&
+--=20
+2.53.0
+
+
+
+
+--=20
+Best Regards,
+Yan, Zi
+
 
