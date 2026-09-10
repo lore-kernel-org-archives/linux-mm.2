@@ -4,137 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25511C79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF84C79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290CE6B0095; Thu, 10 Sep 2026 11:35:32 -0400 (EDT)
+	id 0E4036B0096; Thu, 10 Sep 2026 11:35:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268E66B0096; Thu, 10 Sep 2026 11:35:32 -0400 (EDT)
+	id 0BC026B0098; Thu, 10 Sep 2026 11:35:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17E606B0098; Thu, 10 Sep 2026 11:35:32 -0400 (EDT)
+	id F13706B0099; Thu, 10 Sep 2026 11:35:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA5E56B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:35:31 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 78F701A05B8
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:35:31 +0000 (UTC)
-X-FDA: 85198252062.23.CB7B460
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 927EC140014
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:35:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsxinKBC;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9CD66B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:35:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 639031C2515
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:35:58 +0000 (UTC)
+X-FDA: 85198253196.24.63B18A1
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AA004A000B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:35:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tRUMAwwb;
+	spf=pass (imf15.hostedemail.com: domain of 3Ws6iagYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3Ws6iagYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789054529;
+	s=arc-20220608; t=1789054556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ojLLwmXu12xZ8+dLcS0JjNT0Aa/ATM7kmu2pt8Vyzw=;
-	b=dT3HU6vF0Co6g2S7Iv+vYYj45HSyS/q9a3rLK1auasZ0EtNquhB2P2Pmoq+qhcFOTiflTb
-	LARoKGKOi3YngbjzKToSfT6EtgDQGW6RQDy1vCv6RMjUNynW04eeSb4JizRsVhCG6lAN84
-	2Zbb7ej6pCiMKEsGF8N9rM9yZRofRxc=
+	bh=2+MOwVd/hSplAvFbBk52yvKLS3w7cDWTRO3ieRL0csc=;
+	b=INWRac0dvWjVBOggSGIVFZ7jP57qp7grtt6yBYHVx2s1Qbld8GibV4ul2W+NuTnwD93z/T
+	o2uWNysPti9YVRNoLSdHTGUkDql7dfqb7TSU45TFFfzCBse5/wqsKEQXaOLEKRuW0K4DXr
+	ucL141GEW49MjYZqt0nmy1T4R2Sf8Pk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789054529;
-	b=u0/axJXaNU8hg65lfvtA3p7K94gG/Wc1qHKzPklvsa3gc5rkxoiTymjiw2I5kkbMaXl9jx
-	FyNF4bvmNsCql3gDbeu7D8doQiHhKDI3QHE2f0dRit+r577cCWMDRMd2DGO2Akd2USQPH7
-	5oYvjtfd69ozVvYnw7up4MB/Qr0iXFQ=
+	t=1789054556;
+	b=sTtjf+LROF7JOr/Lzi6szgZEHjtFw8O9myf2nvTmSUDIraRNhpcIvQ9qb3utMExAZntoNb
+	dVGatFuIrrR+y0t45TS+rNJQKSSgsT8sBZKwn6bdOYHC6pn87MJOpjqNXO9Yaa00fi1VEU
+	yIRHo6t4ypTXfTBG05lwLRHm/+hv+nQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsxinKBC;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2927B43C98;
-	Thu, 10 Sep 2026 15:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7281F000FF;
-	Thu, 10 Sep 2026 15:35:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789054528;
-	bh=0ojLLwmXu12xZ8+dLcS0JjNT0Aa/ATM7kmu2pt8Vyzw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IsxinKBCNwEikeE6CCIyrHyTHIxKYOd22GIVq4mV6a97GZ8376vW9/syFU5vyLW7g
-	 0H6VzuCs36SAm1Eq5rVGxRMHC4TbTv9iEQWLngMMZmP3iyJvcnIf2yiMU5Wn0hv1nB
-	 +dul08EgkBO+GIyySw67WpJhn4DdalW/2rDZLQPt2krJ8A9nlurLL3+X8VIGiX5Fhe
-	 0WFqoCJikOOHQWQMVSipJIoMqN3kG9v6oIqKwbUHtMPYzjuEizgPruJqKJ2NE3q97B
-	 r+eqYzCUIRsHlaGdkIHQoxg5CM82a4KLG66vf68OB7XFLJ9SiMEnuy2b5FgX2AF19L
-	 tXOv+/+9CtcZQ==
-Message-ID: <6ce1ee63-431a-4bfc-9027-f0d5ffbad055@kernel.org>
-Date: Thu, 10 Sep 2026 17:35:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260901052950.3284540-1-yuan1.liu@intel.com>
- <20260901052950.3284540-3-yuan1.liu@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260901052950.3284540-3-yuan1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7qyqtzjdyju96k8auz8oiykt6fg8ii51
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tRUMAwwb;
+	spf=pass (imf15.hostedemail.com: domain of 3Ws6iagYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3Ws6iagYKCN0RD9MIBFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso5606111a91.2
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:35:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789054555; x=1789659355; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2+MOwVd/hSplAvFbBk52yvKLS3w7cDWTRO3ieRL0csc=;
+        b=tRUMAwwbux1yofyzf3n5j9g21uDLquJUh1j2zWgfzznFGWHXve0uH8190uoc1x5hgn
+         mDdLP43foKXg7cJq0rt3WWQoN/HmJ+5KmlFSNIsH3rBLm/dGONXmWc6Jwh5gbXzw/FS2
+         Nwr5G9ose1xf01Cq0spj5QMvVtUV61YT92mRj6SH1K6dwVNFDQzZeyyCIbbNMTD8Q7i0
+         NuKFEc8JZGNUnKKqWWbrqP4wVICF/tgFzGS9BqE8P26uVMqzY3uDrgpGG4dLDHj9LcP4
+         M5Kw3L7IznNdd5c5zbgPUsst6DgCi4rg+e3EjtOEku5pqo8DxaP94cUyDYnQ+S2aDTs2
+         tdvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789054555; x=1789659355;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2+MOwVd/hSplAvFbBk52yvKLS3w7cDWTRO3ieRL0csc=;
+        b=SVTK+yPYNamK1DNZaK+5U8FIbYiBSBZhvWW9wB0wUnwehEAbxn1Rg+SDZiJ7Ux7RDm
+         bx8/XqtarS0tZBm3e09yx6dpYFkf34AwQI3COSWF8vCLBoRc3QMfmFnpVPW/fw/AvwSY
+         YXC0B+Gayum0TjtoWMAhYQjuNvtSAREZV/+MiBPfBvMUbmqGQYSwh97mP1ZBJwrX0XHM
+         rYXT1WPT/m38rhHsYFGVozVbF+amUk5L6DonHi112vc5ZzrMqbLkLPPe3gJgpG6tujt5
+         /BRkAcc2Liu36wxQojQuvknd69IIOHD6JrTWbrUIcM09RR1LhdIqAuuOCJcjXKR/tkOB
+         aWXA==
+X-Forwarded-Encrypted: i=1; AKwUvByFvcUEGir8oLDK3xLGRae//TsLWdxgf/xar2mbRYyi8lDpDEGsHYxeQql9wvP5XvEB+xFDHEGa7g==@kvack.org
+X-Gm-Message-State: AFuF++maMiqp12xV7cpXKkoYxteSCwlEASccbok0H9oQSemkrk7uVTOP
+	GJUavND/h6B3MLnLfM/s9b/xtWL1BxerWZw9dT86bDhz01ruP7o+WmYCOhBLQFSObB8u4J9473t
+	ILFXdxA==
+X-Received: from pjbdt17.prod.google.com ([2002:a17:90a:fa51:b0:39d:8f18:feb5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:6081:b0:39b:51cc:4586
+ with SMTP id 98e67ed59e1d1-39b51cc65admr27199424a91.19.1789054554982; Thu, 10
+ Sep 2026 08:35:54 -0700 (PDT)
+Date: Thu, 10 Sep 2026 08:35:54 -0700
+In-Reply-To: <20260910143448.GD3968357@nvidia.com>
+Mime-Version: 1.0
+References: <20260903023452.721732-1-loganodell@google.com>
+ <20260904160009.GV4157646@nvidia.com> <aptFFYqcSiBdMLE8@google.com>
+ <20260905012403.GX4157646@nvidia.com> <aqIAtOoew-_6jw29@google.com> <20260910143448.GD3968357@nvidia.com>
+Message-ID: <aqLOWkuVKccR-I7W@google.com>
+Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
+ memfd ABI compatibility
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Matlack <dmatlack@google.com>, Logan Odell <loganodell@google.com>, arnd@arndb.de, 
+	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org, 
+	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com, 
+	maz@kernel.org, oupton@kernel.org, bhelgaas@google.com, alex@shazbot.org, 
+	kevin.tian@intel.com, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 927EC140014
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789054529-985413
-X-HE-Meta: U2FsdGVkX18Dp6cuY1TooEMkXN1adXrpBc3te3b3qFQjzdOOLbCA/tC1oBOoMxTfpcLOylRVLzXDIy3MbOE+YRkTZ7bkCwODyctLPE0HCiGDi7KKfQEGM/zMP9EmrlJbEmDH5GmW62VUc7M9V5ofxj4RShbbB6Sl2q7Z5GWco+UvT1og1FvUShghZAVXi4l6MxY/4WvArxKkCkL2FTQdGUhkrlMGoyIpInPN8gb8xHI2Rno1ltx7uXkN4VxukoZIEBt0YBXHXbj4Rvlg4frjXwV0hz4P1ecpTmldPX2FIrPt64ryHqasZ6KCB5hZ+q+S+JV+pl6mglr8nENkdTvOAOpoBk1zlKp4iKfackYNFNZawHxvvVFQlhkIqxjWuFSTiSxEpXp+7n34shRA80seibKW5e+nCX5ZCw2e29Gnz7l4dS9Pudxct3M/ukJaY+CMbBqCkBjBJwb3WebDSShvscLiTxzl7aMnqkbZYqnllF+HG7sh8aWPtfsHqO2UPxhEx0AwD4q8C7NU+vtdBWVF7BpSPXLkAMET3Nk/0F1s51RVqfxS2z0JecuG0NIsbA9h2+uMBHTWGkTm/ZUjbDDZtOesJgIoXrEKWlaNPJSBi0haMTSxXM/4qE7w8IpzJj0Xg7unPUHCJVSkTzb8sfHxmYMA4YDgnj4meoaMX35GccuyabishVfVoic5HW8c130Vn53Jblqmc0fDhHNo7a8MCiav3mziecrbaitBPO43UDK1/CYZRb4gKJUHD7DFjwYkglFc3ko4W2CWatnLkAQ6F9bXqgnjLanI/Rg9W4g3bsNw5VlRv5gA369L1VubhqOSvtw4+oUN6XFALkGNoO3YkGM7AoJsTjU9S71dxyWCvewfNaDZxFiLVoC4zMzOA4WMIxKfUS1f2GsC97YKAAqi4EBb0MvrfflxnYYADYva46hqw2uGiXai3rnS9JEzwOfpima1MeHUompPrwL/9q2
- eqWt79u0
- 7E9NkC2U8aipll+UW2eX7YLQMrmD8qg5VlRbhFdeznqZtALIGSqIg9jS0ImV5Pbl5PevefxCIUgJ2mWnVprllYjQ+Rn8y7XMv3YJ6PXjnT3Jco82RdCftPKdia7HaKnFqvV64MsspCfxVb2Yk8PvcGnKU5ibh3XwJ+FK1N1FrGd6DnOM3k1+Tq+Y1mFnlde9PEddFsm8nK93G23G+IlPRtnJsgm65cjCUUdGVK02BKjp56eTaLIuI4Ccp0Bu7ZBbzR0HxQ6Z6l+z495bJdzwnfHc7OXTUjxkujoRz48jboXTYru7eWyohpiwHOvStJUUCQIJP2o8qT2MVNh3HOYSsXzUTyD/oolm87k03iJ86Fod8LUdcj48qJgSxsznJg/EIwDTR8fSjszwIUox0haHO8PQP25wFg6EmclTWQKNUbVX1vLQ=
+X-Stat-Signature: 9t6ma3u5k1tn6xgdeuf7qycpz91hkx46
+X-Rspamd-Queue-Id: AA004A000B
+X-HE-Tag: 1789054556-299485
+X-HE-Meta: U2FsdGVkX183dhPetT7wqz99are246LAQEe4xrFs2Tt5YAuTWU+gYyKxMPrkiYo0gZB1Qfk1UAGRvgoODEMOpHSjLjFDm9w5n2MCzOBLr7AcuNfptVIa0gIkpNA64BiV2d+wo9fZJGzqlm5Yn6wtH5f8Gujui7LfdLSJcqnU/ZDWfPgSDqQAndjJZXYpQlHL04PXWvvI711STJ04GXqEOnwzr85tVyrOF2Oi/VPA19wASyaqbj/khkAk4u8PWwg3UzwXmhLk/5CwxLCwknEfAnsuKs0dIZ8Mp2s9Ah2Sy1n20xno295+3PUl4HxURxnWNW/P+yk3w7o/kl54QVHrXc01XM0Khmk/7XZ+MC2WM8hlKCswcd67reJ6Bu9g62LvOzJouHBm20gTWuU3jqYR1pQRPz4556TL/HZhGqa2ViKtkgOjRCXt36FqZIRXFEETUutZpDQ85iCtnXkCXnMyZrBoTAyOVv98Sw4PHY+FWMQ2XrFJ5sZ0DxaNNf5qgn4adYPeIdaaoooQ0q8+PM5f5o0+0aVqYiU6yZDt6xTgNjG23d3LhCRObYZhuV8yr4mYEsojvOCyuBlWzcJkt0IhW4lQxvzsC44Cxyz6024WRxf3P4lFti9cZFkNnOVOSuulsOi1sAM2O8O990TyJGHjUNFEVXnVvZiAQXSz+s2PtBOx0kAe8cVNkiXv1P2SfKSz+KIiMXrk0xKWcnmA7M7FFqfNpDwAZcl4Mt61EHV9349lIfNM7ciCz6lSRmBv/iUYI5oztckUScE1j28M2dnhtZaOp/WCPFdHQOPTZQNAOT+f7pL1HPgfzgkY180Hxt5Sy0Jtdj2HZyUlqypiaPDB7DyNtEt1obEhG8ZJBZAMRvOMBWCo7B0gNaWSLHSR7ZkV2/fEZsw7DsfSS0B2I3uAC1VxcKshAutTPyQTkA4r+//EOnaf7/wICRims3/eDBvrBd0aNYmHjRcz3twFO7N
+ QH1mjd6u
+ YCXd+csgPb4nlKr8OJOzvbl9/eFJhFM+EYviQ8BI/z4qRvVzmAYQt/+L8KCkf/mphv6TiVt6PEaaHcnDqvPGYgrVQ9VG+TLld7MNZ/7c2Lp6NiQeSONCRjaVg/AsDd5DDOnobsgKUA6OKOeX687CtR3eJq+eQCPcNZhcXp8R+ZCMNkDpqAkdAUEjCZsLoLyC4kd0lHeWqY2jGvS3Jl03ncHhYrkWMiDzYj9RC9aQlADBVKah+hqHzGBKz8S/MwweDbtbtM3jPiNNrTScAG02LnTVLclVftR/G4ggBYjXqv8gFGr8K1gDXySvFMJKsHkas1qfe8icQg0/vKR7JxC6OCS9jxIpwHXe/X+7qrI+mGw6o0pQNMAeBDO1xSK22VOk1ZyzcH2mwji8brCq9iSF68mxW8cxNit/SKGxLzKJ6dJkOysu0mBgGt9DqE+QgtHun6T2RwTAhi9CGEJzAiNDpXzcCdQX+aKE7nZctpR/yQlNF6MtjQG7V90oSXMN8Ibbc2rqCFI6p/CdkrpUESshPWpKDVaorgBY+puUvB4pTf+qmuwWlZRHWKleHeqCJMBjrxGCoXgWUnzld7JYwrDKsslbvDs42UaQgvJg3WgEXGKei6lBLiRQvQzEG+4hdmXgKM1T/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,227 +119,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 07:29, Yuan Liu wrote:
-> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
-> to rebuild zone->contiguous. For large zones this is a significant cost
-> during memory hotplug and hot-unplug.
+On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
+> On Wed, Sep 09, 2026 at 05:58:28PM -0700, Sean Christopherson wrote:
+> > On Fri, Sep 04, 2026, Jason Gunthorpe wrote:
+> > > On Fri, Sep 04, 2026 at 10:24:21PM +0000, David Matlack wrote:
+> > > 
+> > > > The proposal here (which is inspired by the KVM UAPI) is to ensure every
+> > > > LUO ABI struct has 2 properties:
+> > > > 
+> > > >  1. A field to encode options/features (e.g. u64 flags).
+> > > >  2. A way way to grow without breaking backward compatibility (e.g. so
+> > > >     we can add new fields).
+> > > > 
+> > > > Each flag can mean whatever it needs to. e.g. It can indicate the
+> > > > precence of one or more fields (i.e. new fields in the struct), or it
+> > > > can mean a field now has a different meaning (i.e. union in the struct).
+> > > > 
+> > > > This would enable adding support for new features without breaking
+> > > > backward compatibility. Downstream users would have to ensure their
+> > > > kernel does not start using a new feature while it can still rollback to
+> > > > a version that does not support the new feature.
+> > > 
+> > > This was never the biggest problem. The main issue was the functional
+> > > behaviors of the kernel that cannot be represented simply as data in a
+> > > struct with some flag bits.
+> > > 
+> > > Like for instance kernel A supports memfd folio sizes far larger than
+> > > kernel B because we fixed MAX_ORDER. You can't fix that just with
+> > > simplistic flags.
+> > 
+> > Can you elaborate on why the folio sizes matter?  Honest question, because I don't
+> > understand why the serialization format wouldn't express things as "N contiguous
+> > pages starting at PFN X".  Then the implementation would rebuild its folios as
+> > appropriate.
 > 
-> Add a new zone member, pages_with_online_memmap, that tracks the
-> number of pages within the zone span that have an online memory map,
-> including present pages and memory holes whose memory map has been
-> initialized and for which pfn_to_online_page() succeeds.
+> That's an idyllic view, yes, but my point is (IIRC) we didn't do
+> exactly that for memfd.
+
+Well, y'all screwed up then.  I don't see why past mistakes should force other
+subsystems to support a flawed implementation.  Learn from the mistakes, add v2
+of serialization for memfd, and move on.
+
+> Sometimes you can do more and more work to try and be more and more
+> general but this is *alot* of work and even then eventually hits
+> problematic limits. Like what do you do with the sealing flags? That's
+> ABI breaking if the successor does not support them, and downgrades
+> make exactly that possible.
+>
+> A CSPish user can do things like patch the new sealing flag into their
+> current kernel (while preventing userspace from using it), ensure
+> everything is updated to that, then jump ahead to a newer kernel and
+> enjoy the new flag with full downgrade support. There is so much more
+> control on their part that makes the problem far more managably simple
+> that upstream does not get to have.
+
+I guess maybe we have a different definition of ABI? 
+
+I'm not saying that upstream has to be 100% forwards and backwards compatible.
+I'm saying the serialization payload itself should communicate what features are
+effectively required.  I.e. *if* there are incompatibilities, they should be
+naturally expressed in the serialization format, not communicated out-of-band
+through magic numbers.
+
+The scenario you describe fits exactly with what I am proposing.  Until something
+actually starts using the new sealing flag, the CSP can downgrade to older kernels
+at will.  And if the user cares about downgrading, then they need to prevent the
+flag from being used until the new kernel is rollback-safe and deployed to enough
+hosts to prevent stockout.
+
+> This is why I think the very idea we can support any version pair is
+> too much to ask for. We should focus on supporting a small set of
+> version pairs and not making it too invasive or hard in the kernel or
+> on the maintainers.
+>
+> Thus live update within a stable branch only is my proposal for
+> upstream support.
 > 
-> For early boot memory, pages_with_online_memmap is calculated in
-> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
-> included in pages_with_online_memmap, and hole PFNs for which
-> pfn_to_online_page() succeeds are also counted in
-> init_unavailable_range(). For hotplugged memory,
-> pages_with_online_memmap is updated through adjust_present_page_count(),
-> which is called during memory online and offline operations. When
-> spanned_pages == pages_with_online_memmap, every PFN in the zone span
-> has a valid memmap entry, so pfn_to_page() can be called for any PFN
-> within the zone span without an additional pfn_valid() check.
+> If it really succeeds at that and it becomes very popular, then let's
+> discuss upstreaming doing additional version combinations.
+
+Why on earth would we have version numbers in the first place?  IMO, monotically
+increasing version numbers are flat out the worst way to communicate features.
+
+I am completely against supporting any scheme that relies on magic version numbers.
+It creates problems where none need exist, and checking for compatibility can't be
+sanely done in a programmatic way, because by definition it relies on magic numbers.
+
+E.g. if the ABI for a given component hasn't changed, why should anyone care if
+the overall "version" of the kernel is ahead or behind by N kernels?
+
+> > I could see things like HugeTLB not working if someone booted the kernel with
+> > support for only 1GiB pages and then tried to feed it payload with sub-1GiB ranges.
+> > But to me, those sorts of things fall into the "well yeah, don't do that" category.
 > 
-> The counter may temporarily undercount when pages with an online
-> memory map exist outside the current zone span. This can only happen
-> during boot, when initializing the memory map of pages that do not
-> fall into any zone span. Growing the zone to cover such pages and
-> later shrinking it back may result in a value that is too small.
-> This is safe, as it merely prevents detecting a contiguous zone.
-> 
-> The contiguity check using pages_with_online_memmap is stricter than
-> the old pageblock-by-pageblock scan. The old set_zone_contiguous()
-> iterated at pageblock granularity via pageblock_pfn_to_page(), so a
-> zone could be marked contiguous even if a subsection-sized hole
-> existed within a pageblock. The new check requires
-> spanned_pages == pages_with_online_memmap, meaning every PFN in the
-> zone span must satisfy pfn_to_online_page().
-> 
-> The following test cases of memory hotplug for a VM [1], tested in the
-> environment [2], show that this optimization can significantly reduce the
-> memory hotplug time [3].
-> 
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      36s      |      7s      |       81%      |
-> +----------------+------+---------------+--------------+----------------+
-> 
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      36s      |      9s      |       75%      |
-> +----------------+------+---------------+--------------+----------------+
-> 
-> [1] Qemu commands to hotplug 256G/512G memory for a VM:
->     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
->     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->     qom-set vmem1 requested-size 256G/512G (Plug Memory)
->     qom-set vmem1 requested-size 0G (Unplug Memory)
-> 
-> [2] Hardware     : Intel Icelake server
->     Guest Kernel : v7.3-rc1
->     Qemu         : v9.0.0
-> 
->     Launch VM    :
->     qemu-system-x86_64 -accel kvm -cpu host \
->     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->     -drive file=./seed.img,format=raw,if=virtio \
->     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->     -m 2G,slots=10,maxmem=2052472M \
->     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->     -nographic -machine q35 \
->     -nic user,hostfwd=tcp::3000-:22
-> 
->     Guest kernel auto-onlines newly added memory blocks:
->     echo online > /sys/devices/system/memory/auto_online_blocks
-> 
-> [3] The time from typing the QEMU commands in [1] to when the output of
->     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->     memory is recognized.
-> 
-> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
-> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
-> Tested-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Jason Zeng <jason.zeng@intel.com>
-> Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-> Reviewed-by: Pan Deng <pan.deng@intel.com>
-> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
-> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> ---
->  Documentation/mm/physical_memory.rst |  6 +++
->  drivers/base/memory.c                |  7 +++-
->  include/linux/mmzone.h               | 48 +++++++++++++++++++++
->  mm/memory_hotplug.c                  | 12 +-----
->  mm/mm_init.c                         | 63 +++++++++++++++-------------
->  mm/mm_init.h                         |  6 ---
->  mm/page_alloc.h                      |  2 +-
->  7 files changed, 98 insertions(+), 46 deletions(-)
-> 
-> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-> index a09407d72973..2e67e8b23a99 100644
-> --- a/Documentation/mm/physical_memory.rst
-> +++ b/Documentation/mm/physical_memory.rst
-> @@ -480,6 +480,12 @@ General
->    ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
->    is initialized by ``calculate_node_totalpages()``.
->  
-> +``pages_with_online_memmap``
-> +  Pages within the zone that have an online memory map: present pages and
-> +  memory holes whose memory map has been initialized and
-> +  ``pfn_to_online_page()`` succeeds. See the comment for
-> +  ``pages_with_online_memmap`` in ``include/linux/mmzone.h`` for more details.
-> +
->  ``present_early_pages``
->    The present pages existing within the zone located on memory available since
->    early boot, excluding hotplugged memory. Defined only when
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 5eead3346f1e..28f9503f6a71 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -255,6 +255,7 @@ static int memory_block_online(struct memory_block *mem)
->  		nr_vmemmap_pages = mem->altmap->free;
->  
->  	mem_hotplug_begin();
-> +	clear_zone_contiguous(zone);
->  	if (nr_vmemmap_pages) {
->  		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
->  		if (ret)
-> @@ -279,6 +280,7 @@ static int memory_block_online(struct memory_block *mem)
->  
->  	mem->zone = zone;
->  out:
-> +	set_zone_contiguous(zone);
->  	mem_hotplug_done();
->  	return ret;
->  }
-> @@ -304,6 +306,7 @@ static int memory_block_offline(struct memory_block *mem)
->  		nr_vmemmap_pages = mem->altmap->free;
->  
->  	mem_hotplug_begin();
-> +	clear_zone_contiguous(mem->zone);
->  	if (nr_vmemmap_pages)
->  		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
->  					  -nr_vmemmap_pages);
-> @@ -321,8 +324,10 @@ static int memory_block_offline(struct memory_block *mem)
->  	if (nr_vmemmap_pages)
->  		mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
->  
-> -	mem->zone = NULL;
->  out:
-> +	set_zone_contiguous(mem->zone);
-> +	if (!ret)
-> +		mem->zone = NULL;
->  	mem_hotplug_done();
->  	return ret;
->  }
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 94f9c3ff5416..7bfb871d6344 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1043,6 +1043,21 @@ struct zone {
->  	 * cma pages is present pages that are assigned for CMA use
->  	 * (MIGRATE_CMA).
->  	 *
-> +	 * pages_with_online_memmap tracks pages within the zone that have
-> +	 * an online memory map: present pages and memory holes whose
-> +	 * memory map has been initialized and pfn_to_online_page()
-> +	 * succeeds. When spanned_pages == pages_with_online_memmap,
-> +	 * pfn_to_page() can be performed without further checks on any
-> +	 * PFN within the zone span.
-> +	 *
-> +	 * Note: this counter may temporarily undercount when pages with an
-> +	 * online memory map exist outside the current zone span. This can
-> +	 * only happen during boot, when initializing the memory map of
-> +	 * pages that do not fall into any zone span. Growing the zone to
-> +	 * cover such pages and later shrinking it back may result in a
-> +	 * "too small" value. This is safe: it merely prevents detecting a
-> +	 * contiguous zone.
+> Okay, how about worse, todays kernel has hugetlbfs and there are
+> patches around to luo serialize that. Lots and lots of talks about a
+> post-hugetlbfs world out there.
 
-It's actually:
+And?  Adding a compatibility layer to a future kernel so that it understands an
+incoming HugeTLBFS payload should be trivial.  I can totally see not wanting to
+support serializing a post-HugeTBLFS kernel's memory representation into the "old"
+format, though even that probably wouldn't be all that difficult.
 
-[ zone span ]
-[   zone pages  ]
+> Do we want to constrain what is possible to ensure we accomodate this
+> hugetlbfs serialization? I vote no.
 
-e.g., spanned 10, initialized 15, online 10
+In what way is providing strong ABI guarantees for individual components
+constraining HugeTBLFS serialization?
 
-online == spanned -> contiguous
+> Do we want to reject the hugetlbfs serialization until we have a year
+> of debate outlining every possible ABI scenario? I also vote no.
 
-Growing after hotplug (hotplug 5):
+That's a bit of a strawman argument.  Is designing a forward-looking ABI easy?
+No, but IMO "a year" is a massive exaggeration of the effort required to come up
+with a scheme that can survive a variety of plausible upgrade/downgrade scenarios.
 
-[ zone span                          ]
-[   zone pages  ]    [   zone pages  ]
+And again, I'm not saying we have to support infinite compatibility.  If some
+future kernel drops HugeTLBFS, and we decide not to provide a shim to support
+downgrading (which IMO is totally reasonable), then it's on the user to understand
+that moving to that new kernel is a one-way street.  Given that dropping something
+like HugeTLBFS would require significant changes in the software stack, I think
+it's perfectly fine to put the burden of understanding the implications on the end
+user (though realistically, there would be a copious amount of documentation and
+deprecation warnings).
 
-e.g., spanned 30, initialized 20, online 15
+> Should we make a downgrade round trip a downstream problem? I think
+> so!
 
-online != spanned -> not contiguous
-
-Shrinking after hotunplug (hotunplug 5 again):
-
-[ zone span     ]
-[   zone pages  ]
-
-e.g., spanned 15, initialized 15, online 10
-
-online != spanned -> not contiguous although contiguous
-
-
-So this can only happen after boot (during memory hotplug) when we grow and then
-shrink the zone.
-
-
-Should be clarified in here and in the patch description, maybe even stating an
-example as above (obviously we cannot hotplug/hotunplug 5 pages ;) )
-
--- 
-Cheers,
-
-David
+Hard NAK.  There will inevitably be boundaries that cannot be crossed, but I am
+not at all ok punting on downgrades.  To me, that's basically saying "we want to
+add just enough support upstream so that it's not too painful to carry full support
+out-of-tree".  That completely goes against the spirit of open source and upstream
+Linux, and I want no part of it.
 
