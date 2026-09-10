@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0225C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68067C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:14:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 794176B008A; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
+	id 6608F6B008C; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7449D6B008C; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
+	id 611356B0092; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 633A26B0092; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
+	id 4FFF16B0093; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 395186B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:11:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B57EF8053C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:11:51 +0000 (UTC)
-X-FDA: 85198192422.05.1A50C52
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 256D66B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD1B4C054C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:14:34 +0000 (UTC)
+X-FDA: 85198199268.07.8A30A25
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0858540008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:11:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VO7pExAE;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2B17F20004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:14:33 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8/Hh26n";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8/Hh26n";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789053273;
+	b=lxeRB9aRsH6ZzQ36MyQhiFvhIl8RSOW07ZFppy0CLW+N9l4/Y88GJSW0INIa/fgRiPCYRn
+	9GwlbdyJQpc9PhDil6q/z5qkyeXTmJ8vj22whibupjIqKsPsd1jX1gTSwCB/IRP9LX9OHU
+	u6xrhwljsz+pI00joHbTjYXmHfLvWfs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789053110;
+	s=arc-20220608; t=1789053273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m8oPxLNbD63jwykdDjogfzHJQI7uOPBa9BxKyoPjd+4=;
-	b=dqmOf4FvYftRnSuuUkYCyL2rjiMRUNN9LgDU20gC+4GQOKdpqCzFmnqehBrfYvSgouyjcS
-	9V848pt038b8cCVDxW1BD8Uh/BoR/MFlGrYq/fBcqZJo5LO7A2VpoR3l0yE5+qcbOsutXo
-	AepxwNf6oJH/p/x9z9lOuPq3Op2ULeE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VO7pExAE;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789053110;
-	b=p3KaBGSKAlrcjC85a1hdHqZneM9jPmMSn6FyUDKTfHHxmPztkFqdoFucMpg3eQwfSlqhQJ
-	Wxek4lZfBOWfgsx+d6kvp6Lv5NG2tGx/cOqhlffZBbGAV81sjFCkSjWORZczB1qXGhWNI/
-	PbdmCZ+PgrWWGLktRoEQQEATft/nu0E=
+	bh=i71iPk/nmN9G4xlBgwAONHJyflCRetRnssw9AwqSJHM=;
+	b=Z/jicwMZeHiEJrAggZDv8tuSUy2URuL616GhD7XArxVBEA+Fr3CuzXr3IfJ0WwOf1XNOHo
+	yJZ2M5KdTfbTdBpwubiSlhhdR7WIXgcTu69jLUIRmbwJl+i1d2w8Sode2KMwLzIe0k6OgE
+	mBYCWuOoqbmWbP8xdZxnpZ736uDK7pQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60BFB600E2;
-	Thu, 10 Sep 2026 15:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080341F000FF;
-	Thu, 10 Sep 2026 15:11:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7C50F600E2;
+	Thu, 10 Sep 2026 15:14:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AB31F000FF;
+	Thu, 10 Sep 2026 15:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789053109;
-	bh=m8oPxLNbD63jwykdDjogfzHJQI7uOPBa9BxKyoPjd+4=;
+	s=k20260515; t=1789053272;
+	bh=i71iPk/nmN9G4xlBgwAONHJyflCRetRnssw9AwqSJHM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VO7pExAE9tLKDaKHb8xxcgxhPCuKZtJ6zqhDrvjdmuD5ErR0dFWQ+W4yXO85uiR/G
-	 VLfy0Ms/MhbB4PHPzIjKj2tKCdJUX6RZH/qbmjZ0B91Cfmt+JfqDDXa/L1WnPOVqei
-	 fV9VKnEzVUX8aeK75ayqlZuQesHZecS7vI38Dj+y9hTwqI1bAFZyxeLDSjUm4h5pen
-	 YEIZHAS2N3LiejXO8NXe1I4V5AI7I+lTbFRaWxg4MsaN/aGjuOhMu2T7i6T8pFD/8I
-	 GbYXY08QYFSc1G6dx1AmcjR+4rPenkEG973Xr8FBUtvk3WCo/B9Now/Ghs6ZlWDuoU
-	 AnTw3vabHbp1Q==
-Message-ID: <eb5b465b-c256-4454-84de-517aefcd6d59@kernel.org>
-Date: Thu, 10 Sep 2026 17:11:36 +0200
+	b=f8/Hh26nq+vVlLOiS5KT2eaI74x8SSamCLxJp5B6lM9ghwH1iXmyQ5ZQzxvpEfzVy
+	 1SRAiuz7mwiqt3spBDTCSj41GoNnyifoWTweI0P/VHXIAsbLhEDaG9bHXsOOmFS5mi
+	 9JIVLu5oH9n1sr9qnTQvpZNiP55Ue57JLPbsBSChckpNhn8HFS0jYo6J2JzRCkso7y
+	 AxU2zVNMuNOv+sd0UEci6u4kV28SP+2o4gHy5VzDFGqdi/ysuN/JLyXyk97/8Tsa5b
+	 Z8OaFqrw2q+YooSjvOwkk1PqwFoA6KqQKest7wl5OdBcVVkx+zKaxwxvCM8H0wJv1F
+	 ZBsCF1NXVdODw==
+Message-ID: <a44c51dc-1bd2-4773-be48-3a640f48e767@kernel.org>
+Date: Thu, 10 Sep 2026 17:14:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] mm/sparse: remove SECTION_MARKED_PRESENT
+Subject: Re: [PATCH 11/12] fs/proc/page: clarify comment in get_max_dump_pfn()
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -86,11 +86,10 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
  Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- Seongjun Hong <hsj0512@snu.ac.kr>
+ driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
- <aqK9S1hBpPnujgz9@gremlin>
+ <20260909-b4-sparsemem_cleanups-v1-11-008fc8d579fe@kernel.org>
+ <aqLBc20gZyDfkhdH@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqK9S1hBpPnujgz9@gremlin>
+In-Reply-To: <aqLBc20gZyDfkhdH@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0858540008
-X-Stat-Signature: 5zyu18h3djmri8gn5q8sf6z5x4oc8rj4
 X-Rspam-User: 
-X-HE-Tag: 1789053109-46019
-X-HE-Meta: U2FsdGVkX18xWwb92u8KypgZIqBozpcN8l6zdB54hnVz5/legXR30kjOJJB0Q3tvvA6/4brLvSO7NiDI5W7xpGNWBbxB2RN0qPe3PTrkSL/NuCennv3t8Lu0fkl/xZm88NFgxaXfVj/fpEiLD92h8EBdvtIhTbC45wJMmUHtJY9CpKkuD4URwsQLQofUbadCI9h07P0bSYozMOzPhObLjNjYxFgLFidee/DJviiFC0F5mdWXA8xGGE/ZdIYaasi9TpsRYLcryiXNKkaSEYpkxcpKWPGtrP5LUvayDLQfnlRJi0du0AgyVsfRFYsNtcVto9GZKVKKbL/cdCviKRUHZCVhgu347NDMkSnKbhYT0siI6Og4L3yxd/6HPdTdy1zr7ermhVXZok2ARmjiLrm6ZBioCAKfQ8sKTMi2ybyKGJgFWNz38gC15PXQVKMMs1CLibZxK75nXyByibZdSXht+GBPZzN+Pv9CTLbl1r3fvjGTT58Aw95JtoISE9no5oHu0ExJzghfykX0copgILWsDpg/f2hIpiKtXpwuiSRFJXbshcPWgrXG6b6hm8qzUUqw0YogRflcvnqKWo3sd+F2Ho4Lv2GuVxRxF2SQC5ToLj/tHYTGRVS7XXd+qGJwHq7OQ4Atgekl/fn/LhvgRoTwDFmguCOHeIVNIh7UpNn/jxOt9oXxyCGs1HU6FeYWIsZQjV9zWWRdvtNijTS+fOBM37zVAzYb7XYRmjm7voVP6LKnRd4ol6XRfIhIBbM28w4BvCGB0vTnIxgd478yQW2Hns7Zxjlk/pYydX6i9Rp4Ngmy/lrVRmSl6ym895qWYjdLy63exs+caeArbKBic/0ynAcgJOheLP+qzl4Tkpvru1CovFnXhYz9hUCn2zZAercsieJMGaeKS+EQwS3j6iUoBo0e2eTtSR+JlUFkqQCgVCH8TcHuwVH2NVX+VmW+SZSj67tyr3QuwqmVPv2GtMB
- dCwNFv41
- 4Lf8p99A9CPPX5gtJdAArdKqLMCDOQyraulNic1XXbLYP9Y2jc7JOf7qWf27sduomhwsQoRHv1dYqvgE3PRfU7PJKi5E7zgbFCYrlXspYfEn4ayYWO8rXYew1FWQ6Us9jeEkvkSP16BTp/m3lUHrJYFiEGnxlVDJFWI9X5piME39H197FwaghCmPJaZ2L4jRn3qusQMxwpl42k+SpU6U30SROFRDAQD8R6EOHfi5baM3Jw3wBC/FEPKPtrx1m/lBk8yO4KZb49AOHnIoHmOnRgmtSDYWf8UWPGuGWWeEgp7+vcwkacQfGHsQqxj+m+1tDAsWV/tg5qU6mToXb1LKIO6mVYGvrsE8/h2ME
+X-Rspamd-Queue-Id: 2B17F20004
+X-Stat-Signature: 9mnixtckjdxbazww65asyko4jioca9fz
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789053273-939807
+X-HE-Meta: U2FsdGVkX1/YK9Yvw1T9fJCH+epBo19tPhp87EcKySRuBgwSSynVCi6E+gR3cgDfTmtCy7eKN08onCGGgwP4zvhPbhhUoU+k96hYs+eqk6zsthAOg6AsRc2LPCLkNrHgiHe3iULBFdsv7B2CGgQoHrV65l1Km+Uouk752eVQkDetr3uBj5bLHTW2xzqTv6vxTxjqCHME82CuhX8z4vkCsgG1m914wbixOmaIRr+6tX1P9r3i0r+frr7Te/l/yfW7ZsFvIatxmqvPBhD8klcHkjGcMajB6ay0zclLwLlLS4Ub2FjY5RzkmdRisojjNC/ry6mz/lLpcn64FlFScls5eJgN1yCS7m/SE1ZO2vn/mKYsaOd/n0Ula8AHjUnetR9Y/TrqGr3boXFrXvlF5GzqUD/F5VV/GxKJyr3Z0vYAIiP8o2okq5N4tFCTYFiJTD00RN3G8PLGKnZMFC63CpUIipAes2opQyAmLmeL9tXgPc/7mc52gI+ynVPQeE2PCoSfak+dA44CQOHRwXRpKv3ouOdtlcoHh2b+rOki89qwLM4ORcEu5QTV1uv2/kZRBlpfIuZq3VkiJlBd3RkC9b4st5UhzchhHebfuWHac4GWpp2z7c8s2KJ1ASku79qWzWOSpQbjuMBRPMxsVNTPZ7CFc0catNEJzqN4CTcClPZgNqiGzoNuHSqMGu0aN4NAL/kqvRW9kjeDXvqPdP3pH9dMJBKzfh7qMhJhijGkl2zLdUkmwJMz4TmVSISliym6ZzY1xij3oWGnE2ubd8yTkxzeM+CP6YTxhF3VxM6gRY/hnf8OpnjYdDXPGchNi3lLEylkMjz+PYhflUB3/tk3I7mBEZj2A18iKwj3sniDnV5kYNy8A5nvFfYLMzZXtuRM8pEjneJ3y44HWGdJuTRasaeYsA+Tc5laaAfCEaIhjsqvx1aI30ODqsYrS3X67CjnArDYevWI1XvHkIonRM7WKZs
+ 94FbJEbH
+ ByotufIURItqYZWjVBRAqFSp2DbNo+4kpH/B6MUbXC4vKhJxbwQhJtObHKAD+tu2vdckkqZNvYcF4uOaElqNyw4RrwAV9BNB3OBmZPyYE2NJswiWGGfQP3fqHyU9jJizCKSRN2Och3Yz7YE16YKe66xkJ7Ee0plNy/Brw7sGOY5UOhaCSXP3QnSLHy+tdlTrn8aeKl6+EFZmTMf+uRW6OpTNubT2Vew+qCC/vl+rvV1p7d5Eg2w643nwKM7aPhoxRQO6m+inJ6wmbhtMjPVqgar3TXwL1o/w61Vi8oGPavL1jbd42PFItsnc5N67edNKqZimVNQas/qwDbUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,94 +154,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 16:32, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 09, 2026 at 03:33:02PM +0200, David Hildenbrand (Arm) wrote:
->> All present section iterators run before memory hotplug added any
->> further memory sections, Therefore, we can simply use the SECTION_IS_EARLY
->> flag by setting that flag earlier in sparse_prepare_early_sections().
-> 
-> Hmm? sparse_prepare_early_sections() doesn't seem to be a function that exists?
-> 
-> Do you mean sparse_sections_init()?
-
-Rebase artifact, thanks! :)
-
-> 
->>
->> Get rid of SECTION_MARKED_PRESENT entirely and rename
->> for_each_present_section_nr() to for_each_early_section_nr().
->>
->> Also update the gdb script to use the updated value for
->> SECTION_IS_EARLY.
-> 
-> The change seems fine.
-> 
->>
->> No functional change intended.
+On 9/10/26 16:41, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 09, 2026 at 03:33:04PM +0200, David Hildenbrand (Arm) wrote:
+>> pfn_to_online_page() will only succeed on some PFNs within the same
+>> section, not necessarily all. Let's make that clearer.
 >>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> With commit msg updated:
+> Nit on comment below, but LGTM so:
 > 
 > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > 
-> One small question type comment below.
-
-Thanks!
-
-[...]
-
->> +++ b/scripts/gdb/linux/mm.py
->> @@ -76,7 +76,7 @@ class x86_page_ops():
->>              self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
->>          except:
->>              self.SECTION_HAS_MEM_MAP = 1 << 0
->> -            self.SECTION_IS_EARLY = 1 << 3
->> +            self.SECTION_IS_EARLY = 1 << 2
+>> ---
+>>  fs/proc/page.c | 7 +++----
+>>  1 file changed, 3 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>> index 260772b20bd99..6856ff3e3cf28 100644
+>> --- a/fs/proc/page.c
+>> +++ b/fs/proc/page.c
+>> @@ -31,10 +31,9 @@ static inline unsigned long get_max_dump_pfn(void)
+>>  {
+>>  #ifdef CONFIG_SPARSEMEM
+>>  	/*
+>> -	 * The memmap of early sections is completely populated and marked
+>> -	 * online even if max_pfn does not fall on a section boundary -
+>> -	 * pfn_to_online_page() will succeed on all pages. Allow inspecting
+>> -	 * these memmaps.
+>> +	 * If max_pfn does not fall on a section boundary, pfn_to_online_page()
+>> +	 * can succeed on PFNs beyond max_pfn within the same section. Allow
+>> +	 * inspecting these memmaps.
 > 
-> Seems a bit strage given the code is:
-> 
->         try:
->             self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
->             self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
->         except:
->             self.SECTION_HAS_MEM_MAP = 1 << 0
->             self.SECTION_IS_EARLY = 1 << 2
-> 
-> Whereas other variables must be available with no try, e.g.:
-> 
->         self.PAGE_OFFSET = int(gdb.parse_and_eval("page_offset_base"))
->         self.VMEMMAP_START = int(gdb.parse_and_eval("vmemmap_base"))
->         self.PHYS_BASE = int(gdb.parse_and_eval("(unsigned long) phys_base"))
-> 
-> etc.
-> 
-> Is there some weirdness with gdb? Or is it maybe because there are some configs
-> without these symbols maybe?
+> 'Allow inspection of' these memmaps is clearer I think. But this odd turn of
+> phrase existed before this change also :)
 
-TBH, I have absolutely no idea and I was asking myself the same thing (but
-decided that I couldn't care less about a python gdb script).
-
-This code was added in February:
-
-commit 55f8b4518d14b7436f70defe27faba4eca0cd4e1
-Author: Seongjun Hong <hsj0512@snu.ac.kr>
-Date:   Mon Feb 2 12:42:41 2026 +0900
-
-    scripts/gdb: implement x86_page_ops in mm.py
-
-    Implement all member functions of x86_page_ops strictly following the
-    logic of aarch64_page_ops.
-
-    This includes full support for SPARSEMEM and standard page translation
-    functions.
-
-    This fixes compatibility with 'lx-' commands on x86_64, preventing
-    AttributeErrors when using lx-pfn_to_page and others.
-
-@Seongjun, why are these conditional and the others not? Trying to support older
-kernels?
-
+Done, thanks!
 
 -- 
 Cheers,
