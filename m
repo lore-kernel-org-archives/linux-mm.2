@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4CDEC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AEA9C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 10:05:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5B7B6B008A; Thu, 10 Sep 2026 06:03:47 -0400 (EDT)
+	id 3FA4D6B0092; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0C4C6B0092; Thu, 10 Sep 2026 06:03:47 -0400 (EDT)
+	id 35CE86B0093; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADB286B0095; Thu, 10 Sep 2026 06:03:47 -0400 (EDT)
+	id 201106B0095; Thu, 10 Sep 2026 06:05:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9170D6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:03:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 637B01C2315
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:03:45 +0000 (UTC)
-X-FDA: 85197416010.19.A17315A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1CFD6B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:05:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A87E12043F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:05:32 +0000 (UTC)
+X-FDA: 85197420504.28.A9A61AD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 80DD120006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:03:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KSilTxny;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 750D4140005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:05:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzBHpLL7;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789034730;
+	b=fFQlqFh37Sw4IWNK7KV6VhLy3lH8z/5tFbV67KRAxqoee6aoozq/uOgpJQzC7mEJ70Zyz3
+	tijDzeU177yN/NHvwtpvlZR09tAu6xzMt+h1V+xHEt1YIawbUciI4w5HvPUhV47jqGwVvu
+	SxE/t9ti/D5IjBme1nGKEQTTLg6pdbM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QzBHpLL7;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789034623;
+	s=arc-20220608; t=1789034730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d6X874Xrr4USoK1MTGkxBCcI6O6k/kEejm0Rs8M2xgI=;
-	b=JOos8r68f/6iELdsEPZ7UiG6eaJmhsWaa8H8WsKCz1akkiyAdPU2THjZB17KYZkU+amkis
-	YGdUyC4EGA8X/Fz7OTcL8gUSWko6gQunP8UEhp1ssvjJXYf4yUK2O8sC10OE7ppvp0IIos
-	VySjlq+y70lV9G7BKPZ4YqsSRtCwy48=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789034623;
-	b=7L23J4EqPTV2HWAwekjuxnIU7s1z/4zt6NqSutoluhDAfr7Vv+oe4aNQYd49aECmP1IIlK
-	AO5MStnKA4cAGfAXT0Fj9e2aQ7CMMz2K5XhPQL0N0W95eMtDBc5KhONUjbPzBY2xp/m7Qs
-	jJ0GCT081snqb2sku+P6tnDsPmskPzg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KSilTxny;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
+	b=4eImy9R8yitWO/Eszoll70FbiyheiqiZGVNGHd/OcSPaO8yR+IZB7d02FhjA8QdPdSlmOk
+	41CQSg/TwUgifHSZuko8EztQIuHW3gU1bbXV9t04vghgOlgbYBOk8WfYMOuy4sNNc1huEL
+	x/wID3rC83UwU1E4wm+SYhl6aFPkUik=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C852F600CB;
-	Thu, 10 Sep 2026 10:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107771F000FF;
-	Thu, 10 Sep 2026 10:03:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 08014600D4;
+	Thu, 10 Sep 2026 10:05:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A3C1F000FF;
+	Thu, 10 Sep 2026 10:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034622;
-	bh=d6X874Xrr4USoK1MTGkxBCcI6O6k/kEejm0Rs8M2xgI=;
+	s=k20260515; t=1789034729;
+	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KSilTxnykwDLR+U3kjOVLr+CmFJNrFBj+ywnUwLG4EDY6T7i9rZ0/XFHJRAUxB8Cg
-	 uqldP1L+oOYwVYS+nTPu9ABsJ/c4y13h6g8tMTZP05a5LhHIQGcJgTz7N4er5qin/P
-	 TdDYrSZqPhFpvfWNrCv2w8cKPMKZ2pjwRnlmep6cVJr8RB8MUjJ8ZYY7H4eN8GF7tm
-	 z1qahItZ9O9f5fZTHZnfmxkt4xxnbxtyNAUDI3cGONITin5oQR90wv7UX+e7Nn0Tcf
-	 +q+DIRfuBfX1UoO8t5Ai2ZyWKSJvKhnAtfQjvp3VJ7tFGlZDMAkXCkaCAaLqSainrz
-	 cD2P0SJBso/cg==
-Message-ID: <8fa1b403-99b0-4508-b705-f9e93c6bf0c8@kernel.org>
-Date: Thu, 10 Sep 2026 12:03:28 +0200
+	b=QzBHpLL73o0QRHBq1BtDWHfKhjgH7vYQlOQTmd/7CsBCnteHkCGmQ//nhe1xBe+XC
+	 B+J/EOTATm18+r68ByFk08E1DHO/jGR+rAnUx1rseFVGhpIozwzwFhzDF7sOLJLeQ+
+	 I9XUGlHlf+t7B+P5tn0YTppgcLchcfIELLFXodhjEkX4ufh+VLtkzkBdboHmg+39OE
+	 6g/BYc6mcelHh8Dvj1YRbZL2cncQvh7KDpBKn2qNLUqTx/qsd0Ozx7Dp6POJfFAdiR
+	 tfvp/PiJB/ZsLE17ZTAn6ACIgPYGEels8eKnoLC09LSAs9Q4EgK8NWvE4szHuqmUUQ
+	 HqOFKQ1qoF9QQ==
+Message-ID: <e0120f1a-d53b-46a3-9542-030212250135@kernel.org>
+Date: Thu, 10 Sep 2026 12:05:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+Subject: Re: [PATCH v3 3/9] KVM: guest_memfd: implement folio migration for
+ non-confidential VMs
 To: Shivank Garg <shivankg@amd.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -98,7 +99,7 @@ Cc: linux-fsdevel@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+ <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,17 +146,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+In-Reply-To: <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 750D4140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 80DD120006
-X-Stat-Signature: u6kz97qhkecjcs9dm7f7hbuwg597m4bq
-X-HE-Tag: 1789034623-54128
-X-HE-Meta: U2FsdGVkX19nSfYG398MUPGpG3YcYEFeRj1BHbzJg7lJtm4LqXuvIyNCAuKa1JedJPNZT3J/Y3C3w+AoRYHyTSscLwRlvZA6o5rexKMJVTJcdIkBN3+VE2iXWDTkFuzIrDbCUdcnOHp3zUD3XKXKY8iOsP91uJmWV5AO1Mx+j5PprtbQp7oq3W9lDxPK4lwk2D09GmLLbSDfP8pws2FTKa1T1WxuZsSn0UYR1jR6A1QxdZJTR2Ewwo3G0x/QgS9OBnC3zBpdmxRIs+wOr/I914i6ROUVEz3BMCak1z9GvOB4uH5OpsTUtYOqDrVKf1EHXo/tz6Ir8XcTOpKek4po5EbC4lYhQYF3rLXSO0gzkM4HYDVMfRPuaiqv1G7FZvVZVgnIBPQdk5OwzUXSDnUm/U57cItIO6LDD4oFzxHv71swsahkdyVLdHl88O0ED7SylU+8NGcd9bF6jMzzzVceXoZ+RVmSYZi19hQLBWzgeJwhYJ1h3JlVXb9dtUwvKlpPKbvPBMFfBw8dyq8RnvW6qy+6M2t5x26IJL0A24qPJQ3V72mf3Rsjwxhlh6F9dKpeymq151HOT17RDzqwpPmbMKURp8magCj+KBHUXQa6gPqFUs5QOUY5/yxIvdyGnx8XkgjTWJSTfym6j2k63Eiy5hTK78u5wHm2NngrEAx2/xjBL/kQuJnxbMtI9SosIgkSjDzo9n0z77QkieKTTtOjKP14QB2+3gQZMauiQucb1oRqyBZSfyL4DEJUCfM/q7z4k8t2cWYLGqmeFdDkIDEGEctQNdj4me8vi3KxbPsqtHy7nE/Bnfs+vtwkO1cmxQ/f9oqvk9O4JCcJCbLXjKSfTnoiSWhejj5NuIhJbWysmSnbIjL74jpOvjMbjWrEW0Y/JQv6Ie9cX2HxXwmqyVtwu2dmv05bKpv37bmPD9xJMGSHrT/haBSKl/VJKT0NQY+qt1D6lOJ7tW8LQdtWO6Y
- 4U/GxVV4
- idwpKV+/1Edt19Kmwpp1bJ1VR1uXVjdnZUbCb7USkvHQh+/JXfHOBnLfVjVFtEH8scVh1pQ7eORIQ0nocaFpJM8w6MPFeopfL8OnArzHOE2YPIWU81xapK0kcL5HzwwQcWamHWhXRcol9IRVr6U5hKRsVE35AkaK7b9wpn+SnQJZirAptajeEpzqEALPxEWZSEGOV0Q5qDkhV+d9vjAoC3/fk/SQ+OR8uVMKhub01Hkl26l3M3KJtMU0IJl/TEFEn8HS6jhRT6Eg0G/XI4xHCsu1jE3zDI3BJUEsS374sGGyUgUrAmc/o6/tW4pGV3n6NpkiuT1Y+cvSr0wZEcADXUvN+fjOH4OK30YvJXgLsuj/T4EJrzoZ5qxHBaj+WzfdjPkdo+bi+3DIQ1Wtb5mohcQZFJg==
+X-Stat-Signature: jrr9mpgoksbqo43qgezy83sge9ht71mf
+X-HE-Tag: 1789034730-974309
+X-HE-Meta: U2FsdGVkX1/d6anPcic2TN3AwDROWUuhYqjI9Eb/TgZwdlbfYgz0fV8Te7rwFpLAxkdGl0lf4Vd3eQduxbt4XLq4Z7pfFaIlYnM8HzQwM3HUWvyEXovA6wDKCWwCguKQqwuJHjpKWnRqNvzE6rD/x0+DKXJzvf6671bdz7c9BexeYN51rcooVXYFHZgfrBGMGjy29Ik79LjeEIUHpRbNL0oRTMWF9oDwZYpBhhblJKy1U3E2keeN69AAexHFiOiYNp5rHsJqzUm5DcB3Og1xoO19yapna+Xifg2RMMlsB3TTxKhLhe6Wi1GLpbcD+7O/1aWKlEf+MFEWMVQzA2jj3wmzYQZvi4BSLZ0TNPwc9XuRdfMNvBA3Qvcm8JRpVr7LjSF9evpYAXubNvoQ6ApFhx5VFz+w87Q8H1u7S6KgkvpaxjOMXYgpruQrebbLdN9DjJV+1D5bSJNk7MZ2tXvBPMxBxiQe8jd1044gzMcTRzSPHiRiD9gg0+1xN3BpgOM4XeEwNY0Jx051ko+NNwtC1BdCxryeezjstndr+TqCh3H1IreVZ1Ng3C/lhVz5rto3JDkktppKoMVARb7PxVWReE7zMSM0ST3s+nL5c/WQfXBYJMw20r8N1rxJRtdXX+6Gr51ktVF3JIQFcqWtHPp7zmm0MMeG7gEyvBAdJJ/6vmumT8X3zgpNcWo0auvk5Z/RqvdDJFoBmphrEr/fcOCIywc8sRa/77atwZUCi1lCh4t5hrog9PoQKM/fv/KMfUXeBdnbNoNFMvM+hjch6a05NXIsJdRFE1LLfS/JT/+TKdHjlkkVdqHdZvQa+ajjqnWORI4n+MMRAzozcJ3oCEehST2u72zaoAgVhufe6plYBG8BpY7Ar9koAmALYM9frvPSIC/SBCpDQkKGBitnlmSmMjFjeegIckkD4DsnkGwvMnMsnHvMOS49OJl5FvOlE3FkhB1BeYJN+xGZlOQ48td
+ jHkwed2u
+ t+Rwa0HPkAYosDFRWxGzgyHjfyZSNNmJm7/zOs1i5oa+ZbZbCteFcWVP6ZyWqU6aWmFOI/cxLTd+qCkcg+ze1FS5J34L4wIei8lBTdKkDVER3IPToddHzmPyIodQvtKLLioy4oCQwHERD+sMlzvKHPRcd3U2GuWvq/InLKNVRHhQsfiENDYTepkxN4Ztl6CI9Ws2hETAvEUSTuekxj4XxOouqNsWoJWodernPhi4WHuLAF3hTbVeLudA2jVOn/1RIjxUrIBv7xcybjYcZkU15HEd4ZaXwIciDpkGn2PLtUr1GL8pcG9vWnNldaul1Gkslees0NjCIaAiJ5D5QsskRFyMmYIQF3rQkaC0W+1R0Jw1Ja8qeSTTRdHhfPRDZ1iYNpLBvGnGnJA2CXpaDDjmqUwh26g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,163 +165,72 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/5/26 08:40, Shivank Garg wrote:
-> Commit 27e6a24a4cf3 ("mm, virt: merge AS_UNMOVABLE and AS_INACCESSIBLE")
-> folded the two flags into one, on the grounds that guest_memfd was the
-> only user and always set both. But the two flags were added for
-> different reasons and guard different things:
+> Implement kvm_gmem_migrate_folio() using filemap_migrate_folio() for
+> non-confidential VMs but don't enable it yet. guest_memfd mappings
+> are still marked unmovable, so MM never calls it.
 > 
->   AS_UNMOVABLE (0003e2a41468) marks a mapping whose folios cannot be
->   migrated.
+> MM invokes ->migrate_folio() callback with folios already locked and
+> acquires the invalidate lock afterwards. kvm_gmem_punch_hole() takes
+> the invalidate lock before locking folios during truncation, so
+> taking invalidate lock in migration callback can cause an ABBA-deadlock
+> situation. Use filemap_invalidate_trylock_shared() to avoid this.
 > 
->   AS_INACCESSIBLE (c72ceafbd12c) marks a mapping whose contents must
->   not be directly R/W accessed. Its only job is to stop
->   truncate_inode_partial_folio() from zeroing the folio.
-> 
-> The merge assumed unmovable and inaccessible were the same thing.
-> This cannot express a mapping that is inaccessible yet still movable,
-> which is exactly what guest_memfd wants.
-> 
-> Reintroduce AS_UNMOVABLE and restore the original split: truncate keeps
-> checking AS_INACCESSIBLE, while migration and compaction go back to
-> checking AS_UNMOVABLE.
-> 
-> Currently guest_memfd sets both, so the resulting flags and behaviour
-> are unchanged. Preparatory change to support folio migration for
-> non-confidential guest_memfd VMs.
+> A subsequent patch adds an opt-in flag to change the mapping to
+> movable and enable migration. Non-confidential VMs can use
+> host-side copy via folio_mc_copy(), whereas confidential VMs will
+> require firmware-assisted copying before they can opt in.
 > 
 > Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
->  include/linux/pagemap.h | 24 ++++++++++++++++++++----
->  mm/compaction.c         | 12 ++++++------
->  mm/migrate.c            |  2 +-
->  virt/kvm/guest_memfd.c  |  1 +
->  4 files changed, 28 insertions(+), 11 deletions(-)
+>  virt/kvm/guest_memfd.c | 36 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 34 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 2c3718d592d6..a7dcaa66e4e3 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -210,6 +210,7 @@ enum mapping_flags {
->  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
->  	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
->  				   account usage to user cgroups */
-> +	AS_UNMOVABLE = 11,	/* The mapping cannot be moved, ever */
->  	/* Bits 16-25 are used for FOLIO_ORDER */
->  	AS_FOLIO_ORDER_BITS = 5,
->  	AS_FOLIO_ORDER_MIN = 16,
-> @@ -322,11 +323,10 @@ static inline void mapping_clear_stable_writes(struct address_space *mapping)
->  static inline void mapping_set_inaccessible(struct address_space *mapping)
->  {
->  	/*
-> -	 * It's expected inaccessible mappings are also unevictable. Compaction
-> -	 * migrate scanner (isolate_migratepages_block()) relies on this to
-> -	 * reduce page locking.
-> +	 * The mapping's contents must not be accessed by the CPU through
-> +	 * the kernel direct map or other internal paths (e.g. zeroing of
-> +	 * pages during truncation).
->  	 */
-> -	set_bit(AS_UNEVICTABLE, &mapping->flags);
->  	set_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
->  
-> @@ -335,6 +335,22 @@ static inline bool mapping_inaccessible(const struct address_space *mapping)
->  	return test_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
->  
-> +static inline void mapping_set_unmovable(struct address_space *mapping)
-> +{
-> +	/*
-> +	 * It's expected unmovable mappings are also unevictable. Compaction
-> +	 * migrate scanner (isolate_migratepages_block()) relies on this to
-> +	 * reduce page locking.
-> +	 */
-> +	set_bit(AS_UNEVICTABLE, &mapping->flags);
-> +	set_bit(AS_UNMOVABLE, &mapping->flags);
-> +}
-> +
-> +static inline bool mapping_unmovable(const struct address_space *mapping)
-> +{
-> +	return test_bit(AS_UNMOVABLE, &mapping->flags);
-> +}
-> +
->  static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
->  {
->  	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index f08765ade014..e6b0fdfaf79d 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -1133,22 +1133,22 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->  		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) ||
->  		    (mapping && is_unevictable)) {
->  			bool migrate_dirty = true;
-> -			bool is_inaccessible;
-> +			bool is_unmovable;
->  
->  			/*
->  			 * Only folios without mappings or that have
->  			 * a ->migrate_folio callback are possible to migrate
->  			 * without blocking.
->  			 *
-> -			 * Folios from inaccessible mappings are not migratable.
-> +			 * Folios from unmovable mappings are not migratable.
->  			 *
->  			 * However, we can be racing with truncation, which can
->  			 * free the mapping that we need to check. Truncation
->  			 * holds the folio lock until after the folio is removed
->  			 * from the page so holding it ourselves is sufficient.
->  			 *
-> -			 * To avoid locking the folio just to check inaccessible,
-> -			 * assume every inaccessible folio is also unevictable,
-> +			 * To avoid locking the folio just to check unmovable,
-> +			 * assume every unmovable folio is also unevictable,
->  			 * which is a cheaper test.  If our assumption goes
->  			 * wrong, it's not a correctness bug, just potentially
->  			 * wasted cycles.
-> @@ -1161,9 +1161,9 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->  				migrate_dirty = !mapping ||
->  						mapping->a_ops->migrate_folio;
->  			}
-> -			is_inaccessible = mapping && mapping_inaccessible(mapping);
-> +			is_unmovable = mapping && mapping_unmovable(mapping);
->  			folio_unlock(folio);
-> -			if (!migrate_dirty || is_inaccessible)
-> +			if (!migrate_dirty || is_unmovable)
->  				goto isolate_fail_put;
->  		}
->  
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index dd15a84b2a52..d4dcd7f142ce 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1101,7 +1101,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
->  
->  	if (!mapping)
->  		rc = migrate_folio(mapping, dst, src, mode);
-> -	else if (mapping_inaccessible(mapping))
-> +	else if (mapping_unmovable(mapping))
->  		rc = -EOPNOTSUPP;
->  	else if (mapping->a_ops->migrate_folio)
->  		/*
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 45cbdf4801ec..169f75f95433 100644
+> index 169f75f95433..583341d593c9 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-> @@ -593,6 +593,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  	inode->i_size = size;
->  	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->  	mapping_set_inaccessible(inode->i_mapping);
-> +	mapping_set_unmovable(inode->i_mapping);
+> @@ -488,13 +488,45 @@ static struct file_operations kvm_gmem_fops = {
+>  	.fallocate	= kvm_gmem_fallocate,
+>  };
+>  
+> +#ifdef CONFIG_MIGRATION
+>  static int kvm_gmem_migrate_folio(struct address_space *mapping,
+>  				  struct folio *dst, struct folio *src,
+>  				  enum migrate_mode mode)
+>  {
+> -	WARN_ON_ONCE(1);
+> -	return -EINVAL;
+> +	struct inode *inode = mapping->host;
+> +	pgoff_t start, end;
+> +	int ret;
+> +
+> +	/*
+> +	 * Migration invokes ->migrate_folio() while holding the folio lock.
+> +	 * Use a non-blocking trylock to avoid inverting the lock order with
+> +	 * truncation, which takes the invalidate lock before locking the
+> +	 * folios.
+> +	 */
+> +	if (!filemap_invalidate_trylock_shared(mapping))
+> +		return -EAGAIN;
+> +
+> +	start = src->index;
+> +	end = start + folio_nr_pages(src);
+> +
+> +	kvm_gmem_invalidate_start(inode, start, end);
+> +
+> +	/*
+> +	 * For non-confidential guests the folio is host-readable, so
+> +	 * filemap_migrate_folio() can copy the contents itself via
+> +	 * folio_mc_copy().
+> +	 * For confidential guests, this would need firmware assistance.
+> +	 */
 
-For shared-only guest_memfd, is there even a reason to mark it as
-mapping_set_inaccessible() ?
+I think this is all more closely related to mapping_inaccessible().
 
-mapping_inaccessible() is only used in truncation and compaction logic.
+If accessible, this is just trivially true that we can support this.
 
-Wouldn't we want compaction to work here?
-
-IOW, for shared-only with migration support, can't we just not do
-mapping_set_inaccessible() ?
+So I would not comment on what to do for confidential VMs for now, and limit it
+only to the shared-only case where pages are accessible.
 
 -- 
 Cheers,
