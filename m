@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68067C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357C4C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6608F6B008C; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
+	id 2B9666B0095; Thu, 10 Sep 2026 11:15:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 611356B0092; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
+	id 290606B0096; Thu, 10 Sep 2026 11:15:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FFF16B0093; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
+	id 1A7076B0098; Thu, 10 Sep 2026 11:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 256D66B008C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:14:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD1B4C054C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:14:34 +0000 (UTC)
-X-FDA: 85198199268.07.8A30A25
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E622A6B0095
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:15:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 557951A02A3
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:15:21 +0000 (UTC)
+X-FDA: 85198201242.12.7C32DED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2B17F20004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:14:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8/Hh26n";
+	by imf15.hostedemail.com (Postfix) with ESMTP id 97F8AA000E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:15:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ChFiY7I3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8/Hh26n";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789053273;
-	b=lxeRB9aRsH6ZzQ36MyQhiFvhIl8RSOW07ZFppy0CLW+N9l4/Y88GJSW0INIa/fgRiPCYRn
-	9GwlbdyJQpc9PhDil6q/z5qkyeXTmJ8vj22whibupjIqKsPsd1jX1gTSwCB/IRP9LX9OHU
-	u6xrhwljsz+pI00joHbTjYXmHfLvWfs=
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789053273;
+	s=arc-20220608; t=1789053319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i71iPk/nmN9G4xlBgwAONHJyflCRetRnssw9AwqSJHM=;
-	b=Z/jicwMZeHiEJrAggZDv8tuSUy2URuL616GhD7XArxVBEA+Fr3CuzXr3IfJ0WwOf1XNOHo
-	yJZ2M5KdTfbTdBpwubiSlhhdR7WIXgcTu69jLUIRmbwJl+i1d2w8Sode2KMwLzIe0k6OgE
-	mBYCWuOoqbmWbP8xdZxnpZ736uDK7pQ=
+	bh=sEjaO8gOjD9f0+2IPCgP2BKjHuk9oDJMBENGv6o5iiw=;
+	b=32jaRbxgsnncEYAvxpgfmC8IdXqp0zAK5+g/kILncEtv7AovMz/xE7vo7EGNmSkUrOT+bA
+	2pNK4h1dw9FyWswR4dbOMbJ4c4HKuTFOImo+PmRwOS5Fhc33HSzLsvFOwuKEuYNQkwu4MA
+	4DpZilKLTqAgXZo/Z5N7DlSXklN8oBU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789053319;
+	b=v2HjoOaIShixMfQ3DxnclFBFvdHB+LB/c7WxUoWkIDXLgW8UKm4hUmA3qzzo8Hzd9amONc
+	1XzFg6r97VXQYdeHo73Gv7gtpS6eib4Oh2SUSXoz2sgOjMqthzAFjNSYzyPGtewZohu8Cs
+	oIfa5/+Q4PrygTRfJ7eBFDRPyGQ1UVg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ChFiY7I3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C50F600E2;
-	Thu, 10 Sep 2026 15:14:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AB31F000FF;
-	Thu, 10 Sep 2026 15:14:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D3676020A;
+	Thu, 10 Sep 2026 15:15:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86291F000FF;
+	Thu, 10 Sep 2026 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789053272;
-	bh=i71iPk/nmN9G4xlBgwAONHJyflCRetRnssw9AwqSJHM=;
+	s=k20260515; t=1789053318;
+	bh=sEjaO8gOjD9f0+2IPCgP2BKjHuk9oDJMBENGv6o5iiw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f8/Hh26nq+vVlLOiS5KT2eaI74x8SSamCLxJp5B6lM9ghwH1iXmyQ5ZQzxvpEfzVy
-	 1SRAiuz7mwiqt3spBDTCSj41GoNnyifoWTweI0P/VHXIAsbLhEDaG9bHXsOOmFS5mi
-	 9JIVLu5oH9n1sr9qnTQvpZNiP55Ue57JLPbsBSChckpNhn8HFS0jYo6J2JzRCkso7y
-	 AxU2zVNMuNOv+sd0UEci6u4kV28SP+2o4gHy5VzDFGqdi/ysuN/JLyXyk97/8Tsa5b
-	 Z8OaFqrw2q+YooSjvOwkk1PqwFoA6KqQKest7wl5OdBcVVkx+zKaxwxvCM8H0wJv1F
-	 ZBsCF1NXVdODw==
-Message-ID: <a44c51dc-1bd2-4773-be48-3a640f48e767@kernel.org>
-Date: Thu, 10 Sep 2026 17:14:20 +0200
+	b=ChFiY7I337QtzPmO3e7pcxLcEiMW3c1lGj7lAr0LVceobI2YDbaaxxmH1dC6zorIl
+	 2CRvuMT7kg+rqXci4EFF4yJVGlkA9vNas9C0TInFKFDfqxKNb1rFMxCNo3/1UDihoW
+	 0haaIsYy1dqa2/uNbuReA4WEbIKSJUekxWb70+W2gE8zsXlrbQXX9zzoKrfBQfs+Xn
+	 AhtS0iR5gFi2a/NG5ov/TJGW8Jqkth5BTSjOvDdr8srlm7rb/N3mlos5XxV9Sf5lLX
+	 LTajdiF1XC6BWLtjJtFqM4hjql8Y6Q2miG/DHnk/ybv8hIF0IVrw5RJ/A5GY1rJrk0
+	 60aIeb92PeZwg==
+Message-ID: <73b9f7b5-1c4c-4b03-92a4-8b093a5c9a04@kernel.org>
+Date: Thu, 10 Sep 2026 17:15:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/12] fs/proc/page: clarify comment in get_max_dump_pfn()
+Subject: Re: [PATCH 12/12] mm/memory_hotplug: drop CONFIG_HAVE_ARCH_PFN_VALID
+ handling from pfn_to_online_page()
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -88,8 +89,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
  driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-11-008fc8d579fe@kernel.org>
- <aqLBc20gZyDfkhdH@gremlin>
+ <20260909-b4-sparsemem_cleanups-v1-12-008fc8d579fe@kernel.org>
+ <aqLB0Fe_bCRSph9E@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqLBc20gZyDfkhdH@gremlin>
+In-Reply-To: <aqLB0Fe_bCRSph9E@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B17F20004
-X-Stat-Signature: 9mnixtckjdxbazww65asyko4jioca9fz
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789053273-939807
-X-HE-Meta: U2FsdGVkX1/YK9Yvw1T9fJCH+epBo19tPhp87EcKySRuBgwSSynVCi6E+gR3cgDfTmtCy7eKN08onCGGgwP4zvhPbhhUoU+k96hYs+eqk6zsthAOg6AsRc2LPCLkNrHgiHe3iULBFdsv7B2CGgQoHrV65l1Km+Uouk752eVQkDetr3uBj5bLHTW2xzqTv6vxTxjqCHME82CuhX8z4vkCsgG1m914wbixOmaIRr+6tX1P9r3i0r+frr7Te/l/yfW7ZsFvIatxmqvPBhD8klcHkjGcMajB6ay0zclLwLlLS4Ub2FjY5RzkmdRisojjNC/ry6mz/lLpcn64FlFScls5eJgN1yCS7m/SE1ZO2vn/mKYsaOd/n0Ula8AHjUnetR9Y/TrqGr3boXFrXvlF5GzqUD/F5VV/GxKJyr3Z0vYAIiP8o2okq5N4tFCTYFiJTD00RN3G8PLGKnZMFC63CpUIipAes2opQyAmLmeL9tXgPc/7mc52gI+ynVPQeE2PCoSfak+dA44CQOHRwXRpKv3ouOdtlcoHh2b+rOki89qwLM4ORcEu5QTV1uv2/kZRBlpfIuZq3VkiJlBd3RkC9b4st5UhzchhHebfuWHac4GWpp2z7c8s2KJ1ASku79qWzWOSpQbjuMBRPMxsVNTPZ7CFc0catNEJzqN4CTcClPZgNqiGzoNuHSqMGu0aN4NAL/kqvRW9kjeDXvqPdP3pH9dMJBKzfh7qMhJhijGkl2zLdUkmwJMz4TmVSISliym6ZzY1xij3oWGnE2ubd8yTkxzeM+CP6YTxhF3VxM6gRY/hnf8OpnjYdDXPGchNi3lLEylkMjz+PYhflUB3/tk3I7mBEZj2A18iKwj3sniDnV5kYNy8A5nvFfYLMzZXtuRM8pEjneJ3y44HWGdJuTRasaeYsA+Tc5laaAfCEaIhjsqvx1aI30ODqsYrS3X67CjnArDYevWI1XvHkIonRM7WKZs
- 94FbJEbH
- ByotufIURItqYZWjVBRAqFSp2DbNo+4kpH/B6MUbXC4vKhJxbwQhJtObHKAD+tu2vdckkqZNvYcF4uOaElqNyw4RrwAV9BNB3OBmZPyYE2NJswiWGGfQP3fqHyU9jJizCKSRN2Och3Yz7YE16YKe66xkJ7Ee0plNy/Brw7sGOY5UOhaCSXP3QnSLHy+tdlTrn8aeKl6+EFZmTMf+uRW6OpTNubT2Vew+qCC/vl+rvV1p7d5Eg2w643nwKM7aPhoxRQO6m+inJ6wmbhtMjPVqgar3TXwL1o/w61Vi8oGPavL1jbd42PFItsnc5N67edNKqZimVNQas/qwDbUM=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 97F8AA000E
+X-Stat-Signature: paw9n9un3x879fam3aq3e8g7j7cmapmy
+X-HE-Tag: 1789053319-378053
+X-HE-Meta: U2FsdGVkX1+uGds1toBiLsYetY286hs695gZD6AE2oaLcLn+MivmK/xwGd3B1NaC1r9/O9zQbGVkojOnYvN8bDqEEDtirw0hUT9Pg6s77TSIYpnSu2a5bSmGFtf+NDdEIC1YI9peveRYO3feflGZJ7uCfdsiSs/Qb0cE9y7no67SJzfNIaycgVbWs0Twurh9H2iG1KODLyD8a9NJsLICsewEDRDkqSrocFUXwFb1DD/RnUMxKYbADa9T3DtdF/drMUzo+9R6zZ9oUiQfzW6hHuAp0v2CkVWn4uI6lsRNOHVc+d+DeCg/j9JdPc3yQV51i0yszrOLHB8zudZRhZq1g6U5s6pZwYUEcB8dQk0i6ne8zBs/BOAAlCM0C/vXiD/S+OoGVHEUCJXglYZHQvCinrgQB5wDjS7Xm9y2FFRP9/wjfRITyyxipVU5MTnGadNTN6NvSmV1gy1iInydF3X2VYLcSJphw2geWcv9x4TExJVKHz8XU+jO89pgmHh8FY9LFNfVmETIvH0RRr6zAEMRsCDhwgNKh9jd/kwIp1c73vasuoWMBUV8knDz5WZuHL89lAB6pd5lzVLIKl57FHqhc+D0ZWsTD68WF82W96FI10pEYBaw0PuxcVtyzTYwum7TOnah3PMq53bP00gOBzINEXrS0SAZ0sDyVp6/McnEUU1Cy4DRAgb2pISBlczjX9CcXC9M+N3jSsm7mYtWo2kJKucSxsoc7O9Jq+9nOm0OUuEkmfGH2GN/uhh7uATm/rXdh/fo2naA1l8zw1qBXGWiopImn2gYZuiKxGHdzvKhKReSvgsOrQYOHDPhk21VkCUNkP9DnoXF89ousjh6T4ix3E4PrffS134rj4ED3y7wDxSjFIAw77G2PtY8qIcoBMlcXXxQxtnfOsvYOv0/HhjB1qa8ToqNY143hBe54d9vMCRDZnWRjjDdpGLcUOB7DamB0KJWJlCywdW5f/lff99
+ znOxr7Q8
+ Pa0QUqijo+MvXSpNyRwazmxSvifftFzZojzmWHXbTKjDFLDeA/4+s20maoPqNLJx4qgwm/MbbCKIrhFvgjrT7AeB3TqRceSrdMOuai8ikqbycgWWLRKmbdFN8H9YZ+/GbClcH2b56UAkLIvWOKtIi8chm1ovqbym6uODZ9rRqkmNq8fQltf1jHeObiJwLkM/7uNiHK0Z9lKVqVhSUlMfsZrb2SicFQMIBPCzp/UfN2VdWdjZUXjBoPNXkWbQ68BZVD+pJ5oZfgMMVBKpRibWu45CqT2EToymgLGsiistUqQrd0LhMjFgB9IFnwpkuRLZJISJLoT55pOpfuZQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,41 +155,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 16:41, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 09, 2026 at 03:33:04PM +0200, David Hildenbrand (Arm) wrote:
->> pfn_to_online_page() will only succeed on some PFNs within the same
->> section, not necessarily all. Let's make that clearer.
+On 9/10/26 16:47, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 09, 2026 at 03:33:05PM +0200, David Hildenbrand (Arm) wrote:
+>> Drop CONFIG_HAVE_ARCH_PFN_VALID handling, as CONFIG_HAVE_ARCH_PFN_VALID
+>> is never used with CONFIG_MEMORY_HOTPLUG, as the latter depends on
+>> CONFIG_SPARSEMEM_VMEMMAP. Make sure it stays that way.
+> 
+> So argument is:
+> 
+> mm/Makefile:
+> 
+> memory-hotplug-$(CONFIG_MEMORY_HOTPLUG) += memory_hotplug.o
+> 
+> Is memory_hotplug.c even compiled at all?
+> 
+> mm/Kconfig:
+> 
+> menuconfig MEMORY_HOTPLUG
+> 	bool "Memory hotplug"
+> 	select MEMORY_ISOLATION
+> 	depends on SPARSEMEM_VMEMMAP
+> 	depends on ARCH_ENABLE_MEMORY_HOTPLUG
+> 	depends on 64BIT
+> 	select NUMA_KEEP_MEMINFO if NUMA
+> 
+> $ cd arch
+> $ rg HAVE_ARCH_PFN_VALID
+> Kconfig
+> 1762:config HAVE_ARCH_PFN_VALID
+> 
+> arm/Kconfig
+> 94:	select HAVE_ARCH_PFN_VALID
+> 
+> arm/mm/init.c
+> 121:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
+> 
+> arm/include/asm/page.h
+> 178:#ifdef CONFIG_HAVE_ARCH_PFN_VALID
+> 
+> m68k/Kconfig.cpu
+> 23:	select HAVE_ARCH_PFN_VALID
+> 40:	select HAVE_ARCH_PFN_VALID
+> 
+> arc/Kconfig
+> 463:	select HAVE_ARCH_PFN_VALID
+> 
+> All of arm, m68k and arc are 32-bit arches so by definition MEMORY_HOTPLUG
+> can't be selected.
+> 
 >>
 >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Nit on comment below, but LGTM so:
+> So LGTM and:
 > 
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > 
 >> ---
->>  fs/proc/page.c | 7 +++----
->>  1 file changed, 3 insertions(+), 4 deletions(-)
+>>  mm/memory_hotplug.c | 9 ++-------
+>>  1 file changed, 2 insertions(+), 7 deletions(-)
 >>
->> diff --git a/fs/proc/page.c b/fs/proc/page.c
->> index 260772b20bd99..6856ff3e3cf28 100644
->> --- a/fs/proc/page.c
->> +++ b/fs/proc/page.c
->> @@ -31,10 +31,9 @@ static inline unsigned long get_max_dump_pfn(void)
->>  {
->>  #ifdef CONFIG_SPARSEMEM
->>  	/*
->> -	 * The memmap of early sections is completely populated and marked
->> -	 * online even if max_pfn does not fall on a section boundary -
->> -	 * pfn_to_online_page() will succeed on all pages. Allow inspecting
->> -	 * these memmaps.
->> +	 * If max_pfn does not fall on a section boundary, pfn_to_online_page()
->> +	 * can succeed on PFNs beyond max_pfn within the same section. Allow
->> +	 * inspecting these memmaps.
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index b428da66d279c..58ce35cb48f57 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -344,6 +344,8 @@ struct page *pfn_to_online_page(unsigned long pfn)
+>>  	struct dev_pagemap *pgmap;
+>>  	struct mem_section *ms;
+>>
+>> +	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID));
 > 
-> 'Allow inspection of' these memmaps is clearer I think. But this odd turn of
-> phrase existed before this change also :)
+> Haha nicest way of removing some later code I've seen. Just make it not compile
+> if such a thing happens :)
 
-Done, thanks!
+Better be safe than sorry :)
+
+Thanks!
 
 -- 
 Cheers,
