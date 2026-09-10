@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C603BC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39491C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:18:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC9F26B0092; Thu, 10 Sep 2026 05:15:14 -0400 (EDT)
+	id 43FF26B008A; Thu, 10 Sep 2026 05:18:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA1C46B0093; Thu, 10 Sep 2026 05:15:14 -0400 (EDT)
+	id 4179B6B0095; Thu, 10 Sep 2026 05:18:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B6C46B0095; Thu, 10 Sep 2026 05:15:14 -0400 (EDT)
+	id 3064F6B0096; Thu, 10 Sep 2026 05:18:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EEF36B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:15:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCC531C23DC
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:15:13 +0000 (UTC)
-X-FDA: 85197293706.11.D471874
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0E10640008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:15:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DKBE+jV5;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 112176B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:18:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B6BD21C23D0
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:18:54 +0000 (UTC)
+X-FDA: 85197302988.22.197E2BE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0A87640007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:18:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJJy2Sn6;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789031712;
+	s=arc-20220608; t=1789031933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xvdr6aBrr3NW0+VKdXVqJoJPkTnZau8BUc7nDTK8Om8=;
-	b=06wI1YWNSqGVuuBRjNI5KRWA8QO6H+zB6JTnDtCP1cWbI+7uUkd/H58OzUcA2grpYHMuax
-	gMQaj5eIEKgoiflK7gxdg9GXaYc+zfx5KW6dPiPpdGrKa+L6lUY2gGg5ZXbt3P27LzRqIz
-	OZMWA4fakg6mGQtUMbOLaCacnHVmplI=
+	bh=By4Fo104NqAk6U5B5IXs8V/eedehOHTPHBmWMz+lc8c=;
+	b=sAZQSlzV3p5URtqSk5CglDJaKijWOurbEwz2f7hF2CyIfo0JVSx1kyBgn32Ao/hr9z+Ywu
+	NFsyt7k85RW2yOsVrmOFDwdR96UbiGlgabTH0J8SYIkpUuksNuaN6ZU8ii6apakGvLFlKB
+	VqTpaDv3sIetKNzfRLtLsRSvb+G232A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789031712;
-	b=it3yCCK0ddCgwd5/9B+yuI7uK8OMR+erPAHv1lj+y28KBZGKDFdhInDkJbH3BJL4hQuOIe
-	uErUuln8Z2m4XOkn1viww3AOOc8dACVSqIoUyNhwDcMkSw/1GQkJZ1NnaeeBWTtOc1fQ2G
-	8+Qp5JG2k6G944OsnH1HndmDcT5QTmY=
+	t=1789031933;
+	b=0qK+XeUswvtbgZCbg6E1jco1KLM7TRvfuylGwBEX1Tk1gT+8W5vC2vNrcQjeuwpreQy107
+	0wFRRCTEJdzT3cEES7dt6My17PsvLi5+/itqppqQ6zRNc4FL5zcy5qWCJvKE2chyUaQRTl
+	fFqeb1cPqz5tJZfn71sKjmdKMO95jYo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DKBE+jV5;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJJy2Sn6;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8CA32600D4;
-	Thu, 10 Sep 2026 09:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691F11F000FF;
-	Thu, 10 Sep 2026 09:15:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 23DA2418E7;
+	Thu, 10 Sep 2026 09:18:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6031F000FF;
+	Thu, 10 Sep 2026 09:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789031711;
-	bh=Xvdr6aBrr3NW0+VKdXVqJoJPkTnZau8BUc7nDTK8Om8=;
+	s=k20260515; t=1789031932;
+	bh=By4Fo104NqAk6U5B5IXs8V/eedehOHTPHBmWMz+lc8c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DKBE+jV58Feen3qb+8pVGNdW4Mh2Jbn9vbS/1rTFybOAtOcLn9OHKaspPdWYX2+aq
-	 0ENYp04ugOo1z+ccGmKYHYmsKhD8vQNrRg1oNXuPdtVoCbYsYr06vb5WgjoiST3OVc
-	 AylqoSykdy/LrYaLVX9QpuDWSPwOLZocjAV/F2bGB9VmYsyxyNeh6oqkUqO+Sa14Zh
-	 y5ror0yvSrPaJNbmbdscJVuSJ0NGhWo4sFAlnknnfEvLS7EAHUJHRG5XLD58dcmqAL
-	 oVIWRxpfGjOyZ/dBzugZZJwPN+TP70JryTiP4XF+AZCj2zkQHLn8lDd1mofK+Dh0iA
-	 s1Hju/RFgOnoQ==
-Message-ID: <18ab9827-9e10-4360-a1d0-3b25d86a71a9@kernel.org>
-Date: Thu, 10 Sep 2026 11:15:01 +0200
+	b=mJJy2Sn6+IvRvRzhlXejWzBm8kAbAgnDCT86Q1Nt8mxplIZTo4xCBhQW7ac0t3SxY
+	 Ky1xNFFZVCpRJ4bk9JzrRdjnVP9Z9BoYha/WHY8QdS5UZq1fdEDhNg9L9XUdmfdAa0
+	 zMLIxCJXGlGjYlJ+Llo84pT729AeSDnK0CJ6R7UkYO8qf5x1LZR+LCmo+mP2hQwvcT
+	 VXhzbtm/l1CCE3NkNFIYiMOks2ovwGcP6bdk1I09Hyl1R3PnRVtH/hv+hYgZj5u8oG
+	 R/ssRrPtCw1rKfWAtLTcjtOiazhEj73xo/gRkW+G+EBEIDdqC7yWXYy0cpRgr0JU3R
+	 PJCGb1pTXkAQQ==
+Message-ID: <e8a9c3b2-17d9-43d1-9910-842b9131bf19@kernel.org>
+Date: Thu, 10 Sep 2026 11:18:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
-To: Chao Yu <chao@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
- <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
- <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
- <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
- <520b6aca-b515-4720-977f-1adb484f2e08@kernel.org>
- <d700c4ea-b54e-4195-b124-3c89177ee49e@kernel.org>
+Subject: Re: [PATCH v9 6/6] selftests/mm: add a GUP selftest
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Mark Brown <broonie@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260904123631.198697-1-sarthak.sharma@arm.com>
+ <20260904123631.198697-7-sarthak.sharma@arm.com>
+ <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
+ <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
+ <fadb8870-37f8-46f4-aefb-c21bc3a31e5b@kernel.org>
+ <07dab220-8497-4eea-a4d2-b27a6e01eaf8@sirena.org.uk>
+ <9695fac7-bf13-4e34-9cd7-4326ec21fcef@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d700c4ea-b54e-4195-b124-3c89177ee49e@kernel.org>
+In-Reply-To: <9695fac7-bf13-4e34-9cd7-4326ec21fcef@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0E10640008
-X-Stat-Signature: xyw6zuezzzwbzg7z1f57wauqnkzdeybd
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789031711-113609
-X-HE-Meta: U2FsdGVkX18jPeaa35Gzc7y1g1XFMF7uPYTsx5OPJcxCjiOPktyhYP7ZqVm17SMtjc8PqZQlITqFHuJOOA0BAL0YFPJhAxKpmrfbbbDrWxPHqVgQTSE9zreucp6cLjjccaleADTtwkmJ83o/biTP1YY/1wpBF+fW65jrTTkQFLV9k7ah3FmvI82N7jDGt5tUt2uYcYcDUrsekwm2vC5SgFIcTwF6fv7kRYLE/KSfrLcJ4ipvM5kw5N079/86B4IhubOvpBGWL+mX2/aKlW30Q7s8LKDy+r6vinIsRFQp5PaHu+l0G2iokrPqSx549VmY0YRPUFY+LkI0Rh6pgLL8Gct0KRaBjU3VaFQqsFnPRbY+L7Und6fyWcNS3ZNKqYues51fjyZHWYZb2/YLm4gbOCan5rx5ww8PVftXPkwj6CfKk5NkWqCcb615FHt/m8rDCnLSxSQsk+lmM8e2SLz3NSoay0bV9GnDtrY0PRDGqBQYs6TEKga7KPMpMSDLDDavIASd0zdYn5FoIhxi9ONaA6Ym4TJJwIILd8CSRnjA7EqWBvQEufNjzPujB9f8pwPfxcrsiRVEHsQn6OlPqmlCuLBgJ2pfUeAdo5jZHQo5H4IvagJ7NrGXrOQKjnzEGOicC9COJ+HQ4Q7G4PdSPR2s0vDuUj+6f8IXwTRxjXUw9hfQPQGIkWWHy7ekDp28U8Qb0VKyrFfyEN1ghicMCUj3h/8egcjl54re3Of3cup08WC13R9x8P2PYcys9uEk+4TdE7OJypvPadjefG4XVgY4QYCjrN5HdqDUIGoIhKtPw3eE7fOKBIntJQ9AB8lp6d7Ys6uTXKPcV/iUDXi5x4BIbu9V+noFRL39sPUiJ+Hlfti+z779Lc262Dn8P3g1KbatMVCraFsA9mikc/avQYXgN2kXnmBlNbxFM8FK0jxvUEz/NCHfzp9kUvtQNWyFsrHK1enlFFfeMTyGXCqeXgi
- r7HGdiOp
- SMn4lAFgInvB3X7uinBA1Cwb/fNrkBvqwc6eFp0lQMPVz6+WXGI99R4XOG1xz5UeVCxnK+JHzljG8Rhby17aL93gHnCSvncSSkh08DvDuaVBkdz6uNlxKgs7jzLC0ULQ2GQe4DcZNrVoATpDVC4vh5biEd6GP+L4IxDexz2hvNUVKvaoYDP0KHASwzPq5Yyr7rWlBX/T4RElOiShskqoZY1SPNcMyJa2CSOMUBa0xLzCw/nBRgILUzij2AVz+1u/ctgywnHL5UbkokznY9gY3OpmS7mvi6YeClKkP2RFOSAjzO8KD+FoOjqmYhs0lJi0MO+WxwX3avjb58qA=
+X-Stat-Signature: u5ocg3qq5iq6bfqtjd8pt47zprt6wqpz
+X-Rspamd-Queue-Id: 0A87640007
+X-HE-Tag: 1789031932-331266
+X-HE-Meta: U2FsdGVkX18ZHfNm6CBFcc7CAsbGReG9qOXUgYZ60BtfMvPoKTXm8RiUIQDEhojQfmylTQNayOO9e2viqU33wXeRUL6Q7+XJdzPShOeiGUAZPlcWI62M/rIeKtcgZvg8ugsNhbJ4YsoRnUg1JSudxS3DvNq2VJ8Cni/YHUsA1D2a+VKoYllHGt4m5uTdUYP4/ebVdOe4xoaALYy3vjTrT+GcgiL/U8m3lbwWE0JPv1Aab63YBpwxdDLX2GVxxoYbNFn4+97TQAfDRP6QiUDlhxz9KerKkPkg1LhDlHgkeZNZhMftdnAjVmWhfveWxaRRNypFkc3aQwPBTRJOBK1PrcZfUzSh95OPCRQdCx7IiqBVDmMfJnij8xeU5otQ1UsY1f6CV70YOVS3dztVp6lFwBSyTS2H+iw8GEsF4DWeUpHDRGsI4CAyKV9JQtnF8nhAqDdAACsPTKFVWI7e2kI319RhV4gsqqjY6Zq8HbxpFaxWQCtjrH+lJgkvrf5bNSs7Ff+VC/SE9Y873sRmIztqc8WPy/Jhtv0/BKaTxTjL6drMG5GaZchxkjxG1aw4aDt/GhUzywdzVYUBct18P2ZVopN/EDAYzmH4cLeB2h6XEwH5wOf9Y1F5txLbx6NjMmzV3J/lHgNjHN1XeD24Ji2w5dWwEoUfWnm+q5Pkn6x+XZDjEe92S5P7MwhmTp56Z6rIgaFAuIORTYfDoOoOy5eZE4iMETR5bl2+37ymVi86AMXp19O1jYdgOlfjS9kk9GL6AmBTQ9ZCp5oDQAnDmzgpVXF547ZphxGLHMzHbjixeIx32+/Lofmy4h41vjyUGgtBylgwdAmZ56qFUxr60wnstv4SbhSSZA1fyRjHgRAVZKwNKMJcBYULNYUpCXdzrUBN/x7CGc7EVvaxaSlIEsVMfMigpxJwWd8RKoFfEdo/DSeY091lhGfHINuFT1PMBqehSGR1Il/mZJAPiRplPMn
+ kgx9VtW2
+ /HQ4urhkDJC2vWEQDb68iw0t2W4XlItP2r9VRNg0pkG2NwBKDTzqR29YuxswCvOO7IfWy+dXfiXr9ABJAm+xZkljnwukCZhUzoVwqb+m1YLOVh46j6Wf2Whzvvq6g6BEv2JQQpTGOaJNKVd7vTJX7P9iWksSJw/QmNNx1iOeLRH+FrVFEWVwGtfTW8QI+h0NCvP9eoV6khb4FfmOLNdoUJpSVEr4i7kyDM3vTbpwOgTPrBC+f7XEiVNhcLBglFI/byLQ7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,31 +156,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 10:43, Chao Yu wrote:
-> On 9/10/26 15:34, David Hildenbrand (Arm) wrote:
->> On 9/10/26 04:41, Chao Yu wrote:
->>>
->>> David,
->>>
->>> Thanks for the patch, at a glance, it seems fine, can you please send
->>> a formal patch? then we can apply to dev-test for test.
+On 9/10/26 09:53, Muhammad Usama Anjum wrote:
+> On 09/09/2026 6:34 pm, Mark Brown wrote:
+>> On Wed, Sep 09, 2026 at 07:03:59PM +0200, David Hildenbrand (Arm) wrote:
 >>
->> I'm hoping Zi will drag that along as part of this patch set. Is this fine or do
+>>
+>> ...
+>>
+>>
+>>> Yes, we should in general try moving all test modules out of the core.
+>>
+>> If you're working on this please make sure to take a look at how the
+>> various automated testing systems cope with modules built under
+>> selftests (personally I think everything I care about uses tuxmake
+>> builds, but there's other stuff out there).  I think the answer for a
+>> bunch of them right now is badly, but I didn't actually go check.
 > 
-> Oh, I see.
-> 
->> you want it sent as a complete standalone patch (will make merging Zi's series
->> slightly more complicated :) ).
-> 
-> I think sending as a separated patch based on Zi Yan's patch is fine, since the
-> purpose of this patch is a little different from Zi's one.
+> There is huge discussion in the past on converting test modules into
+> kunit modules [1]. Selftests is not a correct place to keep kernel modules.
 
-I'd prefer this patch over of Zi's patch.
+I don't care where we move them, but mm/ and lib/ is *certainly not* the right
+place for MM specific test modules.
 
-> 
-> Note that: ("f2fs: stop using PG_private") has been merged in
-> https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs.git/log/?h=dev-test
-That just a testing branch, right?
+Anyhow, I think converting stuff to kunit makes sense. I am not sure if that is
+really applicable to e.g., gup_tests though.
 
 -- 
 Cheers,
