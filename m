@@ -4,137 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAD38C79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 368D8C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92FE06B009D; Thu, 10 Sep 2026 11:23:05 -0400 (EDT)
+	id 36FFD6B008C; Thu, 10 Sep 2026 11:29:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BA8F6B009E; Thu, 10 Sep 2026 11:23:05 -0400 (EDT)
+	id 3489A6B0093; Thu, 10 Sep 2026 11:29:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A8E6B009F; Thu, 10 Sep 2026 11:23:05 -0400 (EDT)
+	id 211B86B0095; Thu, 10 Sep 2026 11:29:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 424D26B009D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:23:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25BA41C2496
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:23:04 +0000 (UTC)
-X-FDA: 85198220688.07.9B27975
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 393F820005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:23:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IFqLb8a3;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789053782;
-	b=snLn/bwDKczi07lS2AzdMgqAahTMEekmwzabGBNHI7jNE2TiS+sj/4qFojfxJnoZAhwIhx
-	YymS57VDLDJwGy1QI6TyEJaMCz4UnqWsuGCklynmQmV1FhBVNjEQQBkeYM6jGEDR4Rj+Cc
-	lWfG/fxtHtIexdUeyCFVi1k1AuWOxCw=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IFqLb8a3;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789053782;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EDB106B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:29:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49AE9A05B4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:29:49 +0000 (UTC)
+X-FDA: 85198237698.30.811D938
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 792CE40008
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:29:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=k2egxiLI;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789054187;
+	b=uOIws21P4Ss2z2WxBBa0lMIVw3oQVO99yo9gt7q6P8qvweTc6WpOHjEECDoivl9HlcCkv+
+	AwTQRpAJFX9RDsxHa5EwV3E5HR3pU7qq99/NFUNkMvGBHKfGZglpt8iPyp9YmgglHTBfoK
+	MX84EX5rp7AHq8AsRDnfRToi+ZaU9LU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=k2egxiLI;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789054187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=foiDQ6diynQrcBaahnIV4yufuKYFC6bgEE9f3Z6k/+4=;
-	b=X35KMvsfNPmIK5jVu7zfFn+1j3qnN+DYPkLbh1TyUe9Dn96MlgW5K//Lk8G8P41Mk5ldy0
-	QP4nAj/pArIbY1Ojk22vFSKKhaSnRL4lktxy3qgu7f7ZfH7uU3rhNnUsdkfyBtAae6L3bd
-	NyfiAh2NSLuyH7Bm/+InKcZ6S6RynI4=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530411c7ee1so301151cf.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:23:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789053781; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IN3pG0w94cqXTCbRv9EiIriUieUMs4kFbsNOmHHn4u3pbGt+PwBXmVhMesmSe5gZMW
-         7bRKiApjqVxo4xyLOaOb7Y4SuUgieziPxU9xoLztg8b541mwgl+RDNhKwwF7TgUy31CD
-         JQ5bfrKk+Z47ZpLaw/xxzIvM8UkTMXCnIWJ6KSm1dFEBEwxBovGFxXED5CXbpQE5o/fg
-         JYqUACLB9Zrm74XdIGoQPQW1CQYftXFeYUTFT+LRUEtofT7zItksnHbp8HJ7crVCWbh5
-         hWH7A8KiDKElc/imsPGHJGOQmmw3aCUaaL51J7wzORjzJV6/424KC1lP9s1wVRBlQDw/
-         0vVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=foiDQ6diynQrcBaahnIV4yufuKYFC6bgEE9f3Z6k/+4=;
-        fh=e4gkurt/asniuKu4EgFvzVJt1j2tXP/X+Vh6OB26t7k=;
-        b=DW7UhfwGOb/6IBQ0ycjaS3WZ9KJLzRnVw0NNveayuqaL27cXKzEEyTOBuvP0CRqRLk
-         5C0gkXPkCML2GaPE23qf+BETTp485Tjm6FTrIHPKhshAliZXcxTVe3Ah78Cif53akmeh
-         P/v3BiuXOUr4SzZXPDIBXUdy+W9AMOX3cnGskILGJjT6+lHRdq2RS3k+E6Q/DamVQb43
-         FgRuEerPycyTZpbL1ek/xhR3HRChWpFLzCquCnqFcFCZvZo0lAjLZkIQDiHc4uR58Q+w
-         6nZRnK7J2Z8MMyMCRJw5GQaPHkfc5Eiu1tTqokNEDvjqc29eHezZ+5OtzSKfp7Oe4YAe
-         +kTg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789053781; x=1789658581; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=foiDQ6diynQrcBaahnIV4yufuKYFC6bgEE9f3Z6k/+4=;
-        b=IFqLb8a35LU+aEFYdLTx61smXX3z/YsMlJlQ5FRKYrXHGUAiUTYesWBUEXbuHzjrbQ
-         zS4Lnwld8PaYxWUtBti0f7i58sBJbzHgEXMU1DsYesk0WmCCSg8ZcCtYem7a63V+jS5k
-         IIsYJOfpoORE1JHdUemDSp7kMkqKVIhD1POWDUuxo2kOik0KpBbVvWwwCqz5Fh7NKLg0
-         7OkY8qQZgSp+qfbCNZM79IGF/VEsqnkaqPw36bXmLqJrB6FUwPiZRg55TGeMGg0CCobS
-         ovRVZOYbRUmM+uzhJO+ap2V2tuKcPGbErLw91idHoXe4TSTg9iq47jbRHlkUr7Exk8xU
-         luBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789053781; x=1789658581;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=foiDQ6diynQrcBaahnIV4yufuKYFC6bgEE9f3Z6k/+4=;
-        b=kUT7ws8xNZBLMVIBI/w8U2SeRyoDcl4QyztQ/rp9cDMZrJNdRt3kRJLpndNN2w/O+J
-         Bcp+Ty0IIMKSdVSv4kzz7UQxtPqqZGiaUZz10uIXT7qk+13E52kIp+34wO/R4X0pS606
-         1ON0v84PN7XpAjDdRb9V+157XT+WZyGL8eOBY/YQNXG+/eaICkTEGCq+VCEKeRyvu0B0
-         XQZiiE16X16yaM+3nYuoh42VmvttO5FYx34o8LiDaNcOu4uI1o+CsMiQaAkYgeDDf7V1
-         ewj8kBmovGZumrDytCDo2Ue6TjnMSB/i/+cxxKecvzU5aUV6AIL96pKKQYdMZHiTA8IA
-         piZA==
-X-Forwarded-Encrypted: i=1; AKwUvBwTCmtu/b5D+3UpvMl3gCbzM7ht60qnIwfUfjtXNZLODkgK34KBDLl40EpN0w+fnfC0oXNyTmKqpg==@kvack.org
-X-Gm-Message-State: AFuF++kgR+5zy5oEi0fZwCycbcfczqfUosw2xcjX8RAEQVt+FkwYXTkU
-	07z4UnXhUELig2WVaG4tBclrEGB86dw4PRhnCzOjx/8/ZDvyQP5AvvDLCMLeG1hf7ngmZks4H0O
-	oJsP4ynrWQRa8gfHX/rs99DJZSWdGfE4ICrMj0/Oc
-X-Gm-Gg: AYBFou1TSby5Hr8KTwGhhWo7+M9eTMMFv8DKTWii8ds++TJVHnjJn3UGwbkqmlXaXPX
-	QxYHEbEwdkvon8KNY6UnxZI+C2mt9eBhsnD99y2LFsywXmFMv2CPkwtMINlYtAea5+UQmHt/n1G
-	h0Zh6JOPjasydQ8UYM2DHOfOZHec2qfaD4rLXhmVEF+6RrLyTQnWXLpecer32gJMIUi4noXBvg6
-	ZU3baF5z3JQhwziDavCytG/ycijxtw3u/9gWwFGj5kImbWzn0Mk5/OaCSURenY65YKvRbMW4KX1
-	ACtjSYnOAj9/OiUp8/dnKAtieM9o/Rtns3AdxEqTii1Mv92ACDcVPu8eRCK3wj5EJ7mZY0+qe73
-	6DuJJgpe+MQ==
-X-Received: by 2002:a05:622a:229e:b0:51c:ca9:3d17 with SMTP id
- d75a77b69052e-530b493ec9amr21800701cf.12.1789053780219; Thu, 10 Sep 2026
- 08:23:00 -0700 (PDT)
+	bh=g+Y4FVluhJPEyKa8MIhZ+TvknJop9MgJLcSyMNBT04o=;
+	b=owQ8qADRZzWuSQsF8LVoJzRxS1Zzm8N7U+txolndaokbmDkO/Cz+b7KZc4OwrBWi6IT1ra
+	MBUBGVNomh1PEE4utweDtZXyNPsxL0RUOW0ZAFYpEG5k9ZxED+vf4MRRd0X8TZc1itZweF
+	vc/yyaEkYsKMs7eLreAC3XnIuCRDgp4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789054186; x=1820590186;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SFcUASuvlDRtE2C4hK5s4ZmzjFE6/W3nNqwA+OR44zY=;
+  b=k2egxiLIxOiBR9RNUCG9keDbzF7F1l5fuFxQ3z3Z02qJkD4/wOzYyzku
+   KCm/TqJ+AEiK6ScBJNIzBUv/BSh4UBUp2cS53bU7Z38CQ4Wz+cq+s5Qwc
+   w14kqgDTHecTdD1fq5KczfU2BOY8Zh7BHbJ0UEsZ9aU+EhGOWnZBgtG5Z
+   DvpzYCdr6LJ0QNkHSx+uApj7858h1a0mIsONcQ7g6GonCPKRH/CxjGYXd
+   Tzc6nKpZRar23SUeTAZ8tWwEMceS0nKPoNWSf3+UEglKhq6gAupw5ijm4
+   hZLDkkCz/vcOFftFKz3I1737Qq7JzPoZGJkzaQl7PlItzUG0lPEUKIRei
+   w==;
+X-CSE-ConnectionGUID: /pSunOhUQlKGDjRZOPfbbw==
+X-CSE-MsgGUID: CaDVSoRQT2qBV0X4/TyCMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="106875861"
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
+   d="scan'208";a="106875861"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 08:29:45 -0700
+X-CSE-ConnectionGUID: 8Dukv6vfSb2j1KuCmCzgkg==
+X-CSE-MsgGUID: XenJd8NISqWyB5sRR4Bqeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
+   d="scan'208";a="270317323"
+Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.111.208]) ([10.125.111.208])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 08:29:43 -0700
+Message-ID: <c1ce8e10-e190-45b4-b279-18f92aa4029d@intel.com>
+Date: Thu, 10 Sep 2026 08:29:39 -0700
 MIME-Version: 1.0
-References: <202609102250.lIycVv3n-lkp@intel.com> <CAJuCfpGzZjvC49EJb8KwjzsEKi2HZbrKs=P+06GNLDSFoTedMA@mail.gmail.com>
-In-Reply-To: <CAJuCfpGzZjvC49EJb8KwjzsEKi2HZbrKs=P+06GNLDSFoTedMA@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 10 Sep 2026 08:22:49 -0700
-X-Gm-Features: AcwNN1Vpd9Nn3bXuKcyUSWjUYWc9CR-onv1HPhUAjO_3tU0VLTHMUNIuNLQxO5s
-Message-ID: <CAJuCfpEz8=emKgxjQ3_Sv7knJZW1+kN7b6Y31uoMh2TQ6C0EuA@mail.gmail.com>
-Subject: Re: [akpm-mm:mm-new 358/388] mm/sparse-vmemmap.c:507:48: error:
- implicit declaration of function 'device_zone'; did you mean 'device_move'?
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 393F820005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 13/21] x86: mm: use pgtable_level enum in
+ effective_prot_pXd()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-openrisc@vger.kernel.org
+References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
+ <20260902-dummy_ptxp3-v3-13-5d8f5b17c25c@arm.com>
+ <8f3979a9-238a-4d7d-a040-6aa526fedec5@intel.com>
+ <aed03085-1d9c-4a26-be9e-196c3ea941d1@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aed03085-1d9c-4a26-be9e-196c3ea941d1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 5u9o8nekcx8b3c5m71r7ew8391ez6k5x
-X-HE-Tag: 1789053782-819122
-X-HE-Meta: U2FsdGVkX1+mY4dpDNjedPj9+h9zEjGQ7rRfbwbCIa9A1e8MzLV5hf6QOvBlOOkurJpi445ndzCc/8UpJbx6KGmkGnhp5TzmeGQbParcBukIc3/WNXIyIj5kjb3T8McWRmOKoMDqnqqMjBPdqixsla60Tq0hEW7u9C4GjCM5Vg+9k0VRJe7IG1yBbW4iPWid8v7Bc67dogrYouEKTQ1uc7V+aHUIiaGS0YZT+Y6IhpnRkgqtppPWTZmAl8+6j1lBBgeJr/MmpEOV8KNawp79WquneEJaX1F1crwte5B2D6s1F4h7VN4GGbSoxsIyRxe2COKdEAqXXLyxtm4DBXNGn6144YfcAyex0HLk2noEGNdLMAIp/j5IhOwILpaeRafgQ/NeTa4tPZlzLEQg08D/JOhfqV14Idb15qfaH3PUzUWsqxJBQJ/lO0DVLzcgVEa2XTEhMUUA+syIi9nyRfWKqdsDLGmi7z8UUAUKmJV+0EcyWdwIY5EgFTw9SX4Nkc54hWwpWkMEHUz+WD8CC8rxURm/l0xZTqANAe9bbyOZy6R3bdAwNgQZAhQ6df7TaDac3q3k6ewdvvpoxYLOidP+Ua6cjUUSE0l2DKOBVV2aDMlfsi0/Atc1ik6DVXNO/GUbLXM4+ECXZ0uuyNFMGOM4g97gSICIY4oIRqOfiIHHhTmQzRybBfmdWCPuDfj339DoNZjyCr9pORM+RA9//GITZHKdzmzC0BYmTjH7Xcg4aetgfEcgISY6rZpc7ytbIiFoOh1P9D9iTyvH0N82EECeUPXbVxVqxVTSX3TpLsXlFC7+cMqSMs7l4e/LlPBHKkqHzr8WfQoMo4jKdMI4jE1hk5aQuOpEM7OqB+oNB3cpsvNNVWrcL8UnCV75XWLyqcx3zq+PjTv3EvfQoHQ0UWT/dsV9hpRvPpP8dXv51xEPtSk3Kk3Vkh55oqpbtUOFz/qGNDofuw06IAeqeanEc0M
- m1ECcyUr
- vfHGFO3MpS0/mo7mtCTEk6biMg/uwzvpC99zJGaLqsayJoUZY5BAXO17bk5xT0svWYsez0iC5ny1Wbff2Pn2I9k91zmouvIDBa32EBelg+C1a5eyy668Qiof971aTh3FqN/vmshkDAWyEaNNTS8mc3tOhaqlKXh507N5FmGAi9XFDJoriSOBVdTtDjy9hxF7UO0+QwzCxHPutV2VFdlsMLYKpfhb1DpgWU0G73lHLXVEXWTiTAD2iBcqFpzLfCpUcCjw/12bTLm3hO24HR0hFjwWhQ6IsWZ522Z9caqh1C3WuR43msfcBUeXJAEM9eZQPqOEgBOGM3OWsNbIvm+5pPCF0SiIlPbVCsL4IB7Ed3Gfr9adny6eOE0RuKUWgdJZ6424AI+7lXBZnZ0L4p39JTDCpinoD9Zm1eDb3i3kEKkvE5PPU5vdtQq8+y3lNoa19sgI+3Ei81NtRf+edVFOHsw4D+8kAIP79+wC33BVx9RpvBps1xASXO5MATza2u+sbsnRVJPoNayCuM3YiwzWwgd+ajesoLR4HFwU+ItC1EneWYcc9iybCx1uFCQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 792CE40008
+X-Stat-Signature: i5h5qejed49qiwetm3e6fq1n8b83g4eo
+X-HE-Tag: 1789054186-136030
+X-HE-Meta: U2FsdGVkX1+Do3RTn1wfZw2v9izMKBSfCX541XnvlsyUcSDIX0gKwPusod0p3eUmyNPJBcv6ARjEIKfCBeiTyE/XwgaPZAx7NhTCteNjZqgQGEgGtQAGMHsCHWewTIBNTbQtK80tuH1f40NzdYPKZvsiLN8P0CSpWCtEFcwX/AwvG44IHSRR8RmwPa4q7CWfoSTYoc9YZnBFItefIYJjton7aqrPLNDvFMc0hFAHuOSA3ztp7rxyJTBQfvZY6rwSrHCfFD00vHDf/76inWbTdqGv1fD9xakihQIU/PG+i6w8Dhb2oe84c9YP7JCNjYd2gNWyLvjAcZia2iw0YCDQL63PGXif526DRBMC+8axhjxdn4rWtpJBTek9l/Y6YZulMFZUQHALl8fR7WUzuVcqJh+u8k2jwantZrPPnjJ9SE9VMMZay6ysdblPdNMEpZLLZHQCOTGYybqlrKP9Es8H82PcxBx43j8PuiKHulmG57yAcY6G3icw3u6qoRqQLYQBFudQE4gGC021/1k6X32LaZLveBQietjhTk7fhrgc+l9K5T3LcM5Q0sxu1VllFtK6GFfSIZS+AdUUan6aDel1xBFVO3khau7+0o00a4qeRVVVCEv+zKVB8CJgRqgaveBoYescYsMEOTquVL3TksHHL0m4OkOzbeWUbCeC+MmtOL/9ScqAehxC4e1DKnYErqp7NhqwSAMXQaI9dtJLIzT5hwM7Nxa3EFFV9awDVCBheS7XxfCi62ndojdW8rfkaALSqo0eJ8ex47hgjPb/T+yjFexPnUYrJ9e6vKotVDLgyN9NUnTZ4ykDcwmVnQ/+dwk+vRMZOZopR/2G8F5WKRhjPNrErbaUEPga8wW18LP0Go0MDhGo0caQwauUu0WmiVaZT1DFMHK1usyKABrMmpQKwHfnYAPUYX4NT0RgSjpI9oINYwiuy6DMZQ0ZnhKHX+dagzhrTR1TAPlMrn9mSDy
+ JcMzKJzq
+ 2mNXy1iYNeFFtOPMl/iESY7GEijr8FmEb73KjbeHj/c+Q9Ng/kJM54pZJB6BzKXI3xOjCvsvztAkNkCr0nZ6V/g46RhDLFc7ynTQ24pNK1EQnPSTiuYtGxR0frapceYSXxld2UjWPOOH+O6uMvkgbygxCVOt2Cjs38Rmez9QwvJxd1x5F3or4d8IXEcsBwRrnJurKkPiBqN6gVpv59UAo2wgYUYtZmszPsyX47PeqcKCCoKnpdDKTNgtfYLbVYEGDvvst+gAzvifs/z3uZwmvl1jmDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,181 +179,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 8:16=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Sep 10, 2026 at 7:41=E2=80=AFAM kernel test robot <lkp@intel.com>=
- wrote:
-> >
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-=
-new
-> > head:   cf558a250cf4475a8936902b8978fbb6c61016f8
-> > commit: dd35ca2f2cac9d6439a2ba2f523b98b5a9a9f8f5 [358/388] mm-sparse-vm=
-emmap-switch-device-dax-to-shared-tail-vmemmap-pages-fix
-> > config: s390-randconfig-r121-20260910 (https://download.01.org/0day-ci/=
-archive/20260910/202609102250.lIycVv3n-lkp@intel.com/config)
-> > compiler: s390-linux-gcc (GCC) 13.4.0
-> > sparse: v0.6.5-rc1
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20260910/202609102250.lIycVv3n-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202609102250.lIycVv3n-l=
-kp@intel.com/
-> >
-> > All error/warnings (new ones prefixed by >>):
-> >
-> >    mm/sparse-vmemmap.c: In function 'vmemmap_populate_compound_pages':
-> > >> mm/sparse-vmemmap.c:507:48: error: implicit declaration of function =
-'device_zone'; did you mean 'device_move'? [-Werror=3Dimplicit-function-dec=
-laration]
-> >      507 |         page =3D vmemmap_shared_tail_page(order, device_zone=
-(node));
-> >          |                                                ^~~~~~~~~~~
-> >          |                                                device_move
-> > >> mm/sparse-vmemmap.c:507:48: warning: passing argument 2 of 'vmemmap_=
-shared_tail_page' makes pointer from integer without a cast [-Wint-conversi=
-on]
-> >      507 |         page =3D vmemmap_shared_tail_page(order, device_zone=
-(node));
-> >          |                                                ^~~~~~~~~~~~~=
-~~~~
-> >          |                                                |
-> >          |                                                int
-> >    mm/sparse-vmemmap.c:172:78: note: expected 'struct zone *' but argum=
-ent is of type 'int'
-> >      172 | struct page __ref *vmemmap_shared_tail_page(unsigned int ord=
-er, struct zone *zone)
-> >          |                                                             =
-    ~~~~~~~~~~~~~^~~~
-> >    cc1: some warnings being treated as errors
->
-> I think this breakage happens if CONFIG_ZONE_DEVICE=3Dn.
+On 9/10/26 04:02, David Hildenbrand (Arm) wrote:
+> On 9/2/26 22:48, Dave Hansen wrote:
+>> On 9/2/26 04:56, Yeoreum Yun wrote:
+>>> Instead of using hard-coded integer in effective_prot_pXd(), use
+>>> pgtable level enum.
+>> Does this actually *do* anything? 😉
+>>
+>> I guess it's nice to have a wee bit of type safety from the enum and it
+>> means that you don't have to *know* which level number a PUD is, for
+>> example.
+> The next patch passes the value to mm_first_pgtable_level(). Not sure what x86's
+> preference is to spell something like that out in the patch description.
+> 
+> "Prepare for future code changes that will consume the generic enum
+> pgtable_level from inside effective_prot()."
 
-Sorry, it's the combination of CONFIG_ZONE_DEVICE=3Dn && CONFIG_NUMA=3Dy.
-This seems to fix it:
+Yes, a little "prepare" blob would be great.
 
----
- include/linux/mmzone.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 136235b6975d..0e4c09f4ad3b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1700,7 +1700,7 @@ static inline bool zone_is_zone_device(const
-struct zone *zone)
- }
- #endif
-
--#if !defined(CONFIG_ZONE_DEVICE) && !defined(CONFIG_NUMA)
-+#if !defined(CONFIG_ZONE_DEVICE)
- static inline struct zone *device_zone(int nid)
- {
-  return NULL;
---=20
-
-> The mm-new branch build breakage can be easily reproduced with defconfig =
-on x86.
->
-> >
-> >
-> > vim +507 mm/sparse-vmemmap.c
-> >
-> > 4917f55b4ef963 Joao Martins    2022-04-28  494
-> > 4917f55b4ef963 Joao Martins    2022-04-28  495  static int __meminit vm=
-emmap_populate_compound_pages(unsigned long start_pfn,
-> > 4917f55b4ef963 Joao Martins    2022-04-28  496                         =
-                              unsigned long start,
-> > 4917f55b4ef963 Joao Martins    2022-04-28  497                         =
-                              unsigned long end, int node,
-> > 4917f55b4ef963 Joao Martins    2022-04-28  498                         =
-                              struct dev_pagemap *pgmap)
-> > 4917f55b4ef963 Joao Martins    2022-04-28  499  {
-> > 4917f55b4ef963 Joao Martins    2022-04-28  500          unsigned long s=
-ize, addr;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  501          pte_t *pte;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  502          int rc;
-> > d1d11861d8a018 Muchun Song     2026-09-08  503          unsigned long f=
-lags =3D VMEMMAP_POPULATE_DAX;
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  504          struct page *pa=
-ge;
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  505          unsigned int or=
-der =3D pfn_to_section_order(start_pfn);
-> > 4917f55b4ef963 Joao Martins    2022-04-28  506
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08 @507          page =3D vmemma=
-p_shared_tail_page(order, device_zone(node));
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  508          if (!page)
-> > 4917f55b4ef963 Joao Martins    2022-04-28  509                  return =
--ENOMEM;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  510
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  511          if (reuse_compo=
-und_section(start_pfn, pgmap))
-> > 4917f55b4ef963 Joao Martins    2022-04-28  512                  return =
-vmemmap_populate_range(start, end, node, NULL,
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  513                         =
-                       page_to_pfn(page), flags);
-> > 4917f55b4ef963 Joao Martins    2022-04-28  514
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  515          size =3D min(en=
-d - start, (1UL << order) * sizeof(struct page));
-> > 4917f55b4ef963 Joao Martins    2022-04-28  516          for (addr =3D s=
-tart; addr < end; addr +=3D size) {
-> > 55896f935a60b9 Gautam Menghani 2022-06-12  517                  unsigne=
-d long next, last =3D addr + size;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  518
-> > 4917f55b4ef963 Joao Martins    2022-04-28  519                  /* Popu=
-late the head page vmemmap page */
-> > d1d11861d8a018 Muchun Song     2026-09-08  520                  pte =3D=
- vmemmap_populate_address(addr, node, NULL, -1, flags);
-> > 4917f55b4ef963 Joao Martins    2022-04-28  521                  if (!pt=
-e)
-> > 4917f55b4ef963 Joao Martins    2022-04-28  522                         =
- return -ENOMEM;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  523
-> > 4917f55b4ef963 Joao Martins    2022-04-28  524                  /* Popu=
-late the tail pages vmemmap page */
-> > 4917f55b4ef963 Joao Martins    2022-04-28  525                  next =
-=3D addr + PAGE_SIZE;
-> > d1d11861d8a018 Muchun Song     2026-09-08  526                  pte =3D=
- vmemmap_populate_address(next, node, NULL, -1, flags);
-> > 4917f55b4ef963 Joao Martins    2022-04-28  527                  if (!pt=
-e)
-> > 4917f55b4ef963 Joao Martins    2022-04-28  528                         =
- return -ENOMEM;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  529
-> > 4917f55b4ef963 Joao Martins    2022-04-28  530                  /*
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  531                   * Reus=
-e the shared page for the rest of tail pages
-> > ee65728e103bb7 Mike Rapoport   2022-06-27  532                   * See =
-layout diagram in Documentation/mm/vmemmap_dedup.rst
-> > 4917f55b4ef963 Joao Martins    2022-04-28  533                   */
-> > 4917f55b4ef963 Joao Martins    2022-04-28  534                  next +=
-=3D PAGE_SIZE;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  535                  rc =3D =
-vmemmap_populate_range(next, last, node, NULL,
-> > 8fbaacc4a64bd1 Muchun Song     2026-09-08  536                         =
-                     page_to_pfn(page), flags);
-> > 4917f55b4ef963 Joao Martins    2022-04-28  537                  if (rc)
-> > 4917f55b4ef963 Joao Martins    2022-04-28  538                         =
- return -ENOMEM;
-> > 4917f55b4ef963 Joao Martins    2022-04-28  539          }
-> > 4917f55b4ef963 Joao Martins    2022-04-28  540
-> > 4917f55b4ef963 Joao Martins    2022-04-28  541          return 0;
-> > 2beea70a3edc03 Joao Martins    2022-04-28  542  }
-> > 2beea70a3edc03 Joao Martins    2022-04-28  543
-> >
-> > :::::: The code at line 507 was first introduced by commit
-> > :::::: 8fbaacc4a64bd1bfbfb11bfb48b5db3f4943cbd7 mm/sparse-vmemmap: swit=
-ch device DAX to shared tail vmemmap pages
-> >
-> > :::::: TO: Muchun Song <songmuchun@bytedance.com>
-> > :::::: CC: Andrew Morton <akpm@linux-foundation.org>
-> >
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
-> >
+Maybe even explain that generic mm code uses symbolic names for the page
+table levels, not integers and this makes the helper usable in this x86
+code.
 
