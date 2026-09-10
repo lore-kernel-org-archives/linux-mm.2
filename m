@@ -4,152 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3930CC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32BA0C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286696B0098; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
+	id 40F0E6B009B; Thu, 10 Sep 2026 08:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25E256B0099; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
+	id 3E7D66B009D; Thu, 10 Sep 2026 08:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17A7A6B009B; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
+	id 303E66B009E; Thu, 10 Sep 2026 08:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E5D126B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:01:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ECF32120415
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:01:15 +0000 (UTC)
-X-FDA: 85197712110.25.52565D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2085AA000A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:01:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FhEat1/v";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789041674;
-	b=A/EmHM/FL3DWvBwuxDbgRZVTi5kRfXueYJYQH2J/Of6kqRoFctr3J8zmI4C640cW8lZtOv
-	CAjGAvvxefIc1E42vzcoMtjqxUjKlYj6PkPwq8kWIzglxZoVCcVFsYFaSxzzHbepWcFHMI
-	TyROH+RNP2eNdVxci3clot3CVASrdIs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FhEat1/v";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 068B26B009B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:02:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 947991204BE
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:02:47 +0000 (UTC)
+X-FDA: 85197715974.16.219E42B
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 947F820017
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:02:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=FqGETsnn;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=WejUxfxE;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789041674;
+	s=arc-20220608; t=1789041765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gGRiP00UZ2QnxQeyHEnzHM+4PwMNnzfPUpjThhppjiI=;
-	b=LlpLcMVJc8HN7F+KdDWkQKouRWfXQZdMhlu7EKDoZJ3VEwH9EfMI0Tz7G8hO3D+lUsXqbu
-	u8G0Yn8hQgZqTg46eCloAn5ic6HxuJCkYiZzOjdzQ/CahEUHRMZ+kG3efC9WU0rEG18kyb
-	Qzdr2ePdgvLta+M/zNVOoq3DLk6RE7g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFCCE42AFA;
-	Thu, 10 Sep 2026 12:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C017C1F000FF;
-	Thu, 10 Sep 2026 12:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789041672;
-	bh=gGRiP00UZ2QnxQeyHEnzHM+4PwMNnzfPUpjThhppjiI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FhEat1/vifu+AabmjF8NmJPEP65qR4NBg4Ky/6jU3lo17Q0Zo2BhNylfwMKgXlIDI
-	 UMImBV5640D83WmIILt73l8RjBygDF6Mt7gu1/ntqS0oBR8lidQsw7r3Sj2i5WdR8V
-	 INjCSwvtzlHK8kPH7G5nIBuVR3YVGY4ybJh+g5gGSFGtxyX6EYVptvqJMZZwjeQfGi
-	 aeG04jNaLuKWedKy71l1HWQfVdwcFptEjzJJ89C6fdNfHpJadbzrMhFXlVUL2CJHgj
-	 w8mBMnWhfb9D+zFJggWb28AQFcd5s8vG8Yuhm57TZx5ehR5Gfv4Ij2Aijxv4bMLNbQ
-	 hZcM2Ic2G/G5A==
-Message-ID: <ddab52d0-48c7-4d2c-b403-45f11e041654@kernel.org>
-Date: Thu, 10 Sep 2026 14:01:02 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NWWdQyL/PbDsgsxeFbbTVzX5Z8ycvsuk2Un6M8qiS+A=;
+	b=8S7DKRG/A/UaPSKrdymkn0lRh2H1H+0ajl509bgyzLKD5whfQKCpFkPP2ZfFgO/lfTQWus
+	IMpQA6F30cLnxikp1VtS8WLA9zKrSfscMAeWDVFL6un8unPOy0qycrmBnMYuZ72MoVgbF/
+	ix4i2BZw7G2oOxJ6glXRiN6/rbtubXg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789041765;
+	b=oGnPMuYd8/eJMRHc3jPdkLPU7dcqIBkZ1okRSpddJOaCZiNV4b6YyUfdb84eeIzf6UY8oB
+	gZ4KbqLExpPpdyKa27sagCb3LfV7HKAmh3+x4+JbmBSymohkZbtulBXmAAjfI+awmY7hsc
+	v1ok2se9pomX2rj9wZBZfK9HfsDj7hQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=FqGETsnn;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=WejUxfxE;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6DBE01D0006F;
+	Thu, 10 Sep 2026 08:02:44 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 10 Sep 2026 08:02:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm2; t=1789041764; x=1789128164; bh=NWWdQyL/Pb
+	DsgsxeFbbTVzX5Z8ycvsuk2Un6M8qiS+A=; b=FqGETsnnUjKhXq2XQDAqBToT8y
+	xoWRfEOi09O42hdLMy2sF2yfjw19bzrz9VcHF1YFI9SEhiXegqZ5SKJUio9M55aa
+	J2FS46ZgYuV7l+6EEfYHtiCDKgbwnJd9qekyqY7QMUks4rIEe7MomiLE858GNUi6
+	D1qCXde5rsCxDPk+y3JL9aQgR6lSYgtqkAWyNiqQNsFV01PWCr4dQGcLKl61m4Hx
+	/i2IjENek1vuS5Tl9mCRJFrk1n/WfCswXQ3JsufxHmNg6lV33pVOx8DMkVCuFS5e
+	5BvuN38Ognc1R5HDc8YPRp/T4iC5NZ9XkOYQVfVlOhNoAJEVU98okR4VJzyw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789041764; x=1789128164; bh=NWWdQyL/PbDsgsxeFbbTVzX5Z8ycvsuk2Un
+	6M8qiS+A=; b=WejUxfxEujmznltWba2U4M5v73OqlTFztq40BEE91Ymjc2zV3LE
+	Wu41NNbptamp9yC8dZhTskbnsyIJWTgtr9huxuOJaDQnINOhyFNl1eHoYpt0EUot
+	yPz2IVixl2zVU7JA7NZqXg6KpVvao93/O+iCYVVQR7gQDk/AJgvprF8NIXGFLEm7
+	sff0UxYea1af/pubpzETLtq4aaiJnIBhd2y6qtca98u3J6SYdXYxAE0kYTJCZdoF
+	ouwDC9K02TKib6Ftf4ZS3W+aU0xaYBnnyANq/WvGXBHrWPkCDGjNP8+eRUt00XKC
+	bGgWqxl1Te+Iy+E+FTXlT3ynoWn09RJDrig==
+X-ME-Sender: <xms:Y5yiaoLMh2tb1d5iA1Su17Q0NG9eC8MHhJW-kbQdUhs4h97DnHpq1A>
+    <xme:Y5yiakGeq1d-WfSwYUdg3jpSQ2zei7X8kRzvwC8zFEMRo2C5F-kqkdukPIjAr2mbQ
+    jsHZqCU-BK0krffVwrTN8XsCPVTcHI1d5tPoKE3qs3JYHf64DsauOs>
+X-ME-Received: <xmr:Y5yiau1jDom6uR0Q5nfZWtZEFyKe7HffhLEDcYtxzS5-BT0oCo9WzKNNZ4M>
+X-ME-Proxy-Cause: dmFkZTGXt30db1exnJDbw7W3OsexmKkDXxtuzUo4EwvKZc0CNK+BEhghtPadS4dxP7vADF
+    jYIeUWk907weicO99D+fAuFM6Q3PWhN3gli8K+53t36eJeuCTjXbHpZlk+RT11q9u9Cn4F
+    aZejNv1p6J+PHk5kBixx+LGBlNC6twqvMhklia3PdSpCABiohNAFTn8Xxp2ompwe1bcmwZ
+    91pPGflso6rZ+73n3TohIGdcCpsfDko0TCvG5qUtsZ7DZYge5y3w/r1kOAZTW8AhT2cnMK
+    +YF/6gCZZoWeL/lRPi9XJbya2I1/Y+9D7QwHP0pQf9wjgFnFy/fq5yd38PRZt35kLLEYs2
+    nAq2/rofKFwArggov6j7bLWvc7frwmKx8twlUA1OQ2ZBhoF6xLu7ixNZwE5jsohwNyGBo0
+    9Yq0+OQx7vtvI8Ni+QuruYo9NUIPnxidcsUuVjfDLQh3Jxmz5EoLskrYXt0dYQRyyN9Y0A
+    p6qfUJG5Q3Qhkb8dEUtYhgVODSc642k6/oG9PPf8e/ppBqA+jMRxHXorX2b+nd4ErT+38b
+    UKDQ/QGqWudqdo6F+41PyM0OoNNP1WoDi5TGaW0+sE9EQSIpfiGKsk6nTlyPO7Fl/U4A8S
+    gvjK1a20tlzIDk9aGOhFZulqDvhSEHKBeagOyFXnflYSXeZbNQTU2xCs+eww
+X-ME-Proxy: <xmx:Y5yiarxSCRBhAPlqKzKKZwD14eJc9JvMn9vtBPJvyM5Mk0Dt1NJNUQ>
+    <xmx:Y5yiatjUXI4ZxumLHN2bHm0tiihU3njhpbloLojmAcNYZgUwUnNKCA>
+    <xmx:Y5yiaqxLCSlPYwPnQ17yMOxxW2KVIZtJPTlvJmXlSmjTGeACLYcoig>
+    <xmx:Y5yiarzfIAgIiBdSvyJMX9sVwHqG2jdugcJBuxqJ6I0I2wye3eGB6w>
+    <xmx:ZJyiavDq4bijXge7CLc4qmZBAcGX-ZFVTXNXYKEx-PsUSH3N-17gho9l>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 08:02:42 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH v2 00/12] mm/collapse: separate a collapse from its callers
+Date: Thu, 10 Sep 2026 13:02:20 +0100
+Message-ID: <20260910120238.2529819-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/26] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
- folio_activate()
-Content-Language: en-US
-To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Ackerley Tng <ackerleytng@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
- <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
- <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
- JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
- Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
- Rik van Riel <riel@surriel.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Yang Shi <yang@os.amperecomputing.com>,
- Yu Zhao <yuzhao@google.com>, Zach O'Keefe <zokeefe@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-block@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
- <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pir3jowub6kzm6t6toyer173ge5xatno
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2085AA000A
-X-Stat-Signature: d6ku7qbocjdhh1qy8pah9utzkezujphf
-X-HE-Tag: 1789041673-275590
-X-HE-Meta: U2FsdGVkX1+lp/7B62u9/UcL61WGDowKXN1wEjGL/7uTCm3VWB1CHC+PtBqFeNkKDtbJje5+UDTkbuZWx2nKNqnEuNEkuml2Eay4uEnxr7c7sYnJMwFHVXSGr+4fkZELhPVc8ecHBHn2wwhfqDkkplycH0H1e4ZIGFzg8nd3Pe1zelAlD8IQb65ySUCFyiyd3q6mLnnZ4eLnK82P4B5G81PQw+maY75nBxppsq0d87SdyCWCYV2ZP1qQoqsVAnSPeHiAtXrvjD0FHIaEsb4nHRsxrGGZPkO1NLeM2sqU0Q89lJlYKr3wR+iGcA5PViV7WPZo8hT/cb4pObh1GFqI1HiQmlexsZr68XijOy/xKuCtq62tJNpqKYeFoC9KmfgpxjjpMtDx7+77UkXorWGD9ti+g8BSgbeBCWEDjIdoMnueNLANqXgipH/EqYa9n58TLGdjfxpQUy8FCSp6/qpAuFl78zgdwLYrWD5FzkK3Kmzylh6gi6xG5kKTo5vs6x4jsW/7ecMVoQMKC3NEswzy1fQYn2LviRea3HinhwApRg2tDzfJAif98TCNQkTMVfT93uAfQpVxHkEg7Pw7xxCydcnFLq28YWEJlKBgD4IbFX83DlpAhn039HEiUYWbKE+hIhFvyLUs2fPTBy3PdDJNbLf3jurSc7MQWKWbhRkvX275uD+3NY1bmDSwaPcSx/nUiPlac8VNFV6Qq25py5BL0Y51kWbrVzith4wtKMaP3uEPk9SidvmRO618cLmSl/RijtrLu7zggRQb01YxNR5d2C9AHqHMBu1rnDXOaYgrQc76hQQ2lFjVEAGfx0VxDRTz2FkPTaFtf6pFd5DYDfiAgDffJd+VBnl9WtSnCHCfrnvfazo1wYK+OgjpJarySDkSeZTqqhW9jZpU05Y0BIv+OmzTnXu9LJLqUsX1bNCMAQTVvYt8ryJ+ItXp1sLseXFBFJyOMpSe/CyEZm9P8a5
- UCSZQ1V0
- x8gNpd32yoglTd73tms2wcanpQ8W0M+9kWvqchg+B9LO1LTkBYdaO7SkYr1NSDNefVm7AtlDTf/iUQhhbo7Q91GQ0RborXnwBzBbikOq3PIbIZ/ph4cI9Fzi0X5cjpg8r5tbDdAvisZR6vwsdrp8TciejsM7/JTgO/EfS4ZXje3n8gRTNjwVY4L7DxTo2L0IoPAp8uVPuJq8Y1tusj7LlUMsJDB6Aii409HP93/iu49IhdDRUgaUKxOIUzvBImDI77iOhHqty2IUXZ22E8m25WHsLGpac/awKHl9HUb7n9AmM32U/DeMuhiLG7fVxBHN80Zb9hOILpZskr2ky/MUdS87R46B8hUDzp3XffCLvP7PnZa1NfjVt4BBQylKFrV8eoEUaZG+FvzCS5s3n0m4a5gdz0g==
+X-Rspamd-Queue-Id: 947F820017
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789041765-207032
+X-HE-Meta: U2FsdGVkX196+Z0m5ryjT16WNlb7YbKZ3dLqQyY595ztxpDOXsT30/x3SMU3TdN4X9rueWbvd/3R9zmaf2V4PgKC1fyC61Fx+AtyGXTz4dUJjeqtJIIs1LRyyIjQRYfo1w9N1W5kNaG+fXBpO21vKoH7MZWVmVL9A2SMKdV7dItSKf8TgGahBQ1IE2KGCalPIcy3ScPAvWI54pwWXlWf0LlbNTC11hSlcWSwGQhKqOLU6koTKBmLrclAi1AwF3xMmAhHV7f85PukzwOv/wvu2NBNnKlA4yxhFoyjviTN2zt5WNc/rwOdQKzMH/EyZKfSCYosu91xhPAJ9Puub5nlkraH/RUg+NInxv4Tk6EgUI5nzRfqK1I88gQoGhAbMJ1FtGws8ouRcKECX5bjUCau1zXY0pIlrvvG6lm0qnTq2zsAoc6WCzbUm22XJBF9aMaDFXK1xSXdT6x9dTHmFhWv1VLMTqaX4mgpm/EQ7M2UI4C0O4w8MmJ4N9nhbTvg38p6kasGwEh9oNfBwPhpPZ95/YpO2uQMa8lVTVh53sNiBu5HmRqGksLXCGbwA6GVxM0PjpzYK4aeGMlyY1mkosYrcYtPgzyNJGPMGsvmGujKNYLQ//39uHqGztWMpPXdEIu/CywYs8KbLqw6UVJucTy1eowhtnbeYn0hS1ifWGgUISjhZ50bdZWmk6oQkyH1j9/QYfaIr16fASroxJ+8M/NAGEBlKjHdAcSrssGRAp9ZiVdzWc/bYqqNsyFlm9giNpTxER2eYNhfBPB4EucrWD3V+BtEurPAzeAQZ5H9jfzM7WjpgdHuMfxIVmXWGVPBX0Gzt1k5KDbHc3qr1wBgADMBS6n9fDKOAjOFxeZQaLd0FJB/mAEXjg3VhJdAU8agog3nAZQ8eDw79lR2tmq3l1erlmGHdeN4FmM9oKO7x2ZXiQKCXm+YRN7vy9NQfPpp3TGcY+OckU59fi8KzhNfqnd
+ eDbUdSXI
+ 8lMcnZV9MkEmWvLcO5IR/UxP7N6dOn4sBWlzpF/iorTkhlL6BUmnvVX8nYhdpsG77LCDdUkaaNlKt5ATOlCi1SRkmW7JJ+O8gw6rFTrDFVArKSFnPbfkeHo51xsQO2ME727f/KIt/qU2CAtCI9fJ/0Xc43znNmSXUutXGkYuEFyK0rrDKBs4LmsORQBZP/hbkUQWq4bwgqwqspLvwmZToXi74M6W/VQ6elmLpJ0zWcHN1+qZdTR3k5jruXHr4+87xRmnxQxcx9IjTQkROJVnz6q5F6FjcrVRefUHgIH2rxLVmNOHyZSk8A/X7++CRgPHKMEmoUt4p2yX8CD71wAmtrS84CyxYssxhLj9JE3HT0vG9vogovZ2VRwIlsXY0drpk+O8CVotBQOQOmU9C+jZs+VMFG/JPLWTDOky+D6x/zkZQbae7xZ379ytprOvyBMbOAFWZlejf7Wng9ms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,84 +139,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/26 11:55, Hugh Dickins wrote:
-> Implement an equivalent to the old __lru_cache_activate_folio()
-> optimization, to activate a folio recently put in the lru_add fbatch,
-> without having to put it through the lru_activate fbatch too. Neither
-> lruvec lock nor lru bit can guard this safely and efficiently, so resort
-> to try_cmpxchg() on a further, LRU_NEXT_ACTIVATE bit in folio->lru_next.
-> 
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->  include/linux/mm_inline.h |  4 ++++
->  mm/folio.c                | 23 ++++++++++++++++++++---
->  2 files changed, 24 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index 8420b1276535..8f5efadf9c7c 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -346,6 +346,7 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
->  enum {
->  	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
->  	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
-> +	LRU_NEXT_ACTIVATE,
->  	NR_LRU_NEXT_FLAGS
->  };
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-This addition, and the comment "/* This mask will do nothing on 64-bit */"
-in folio_add_lru()... does it mean that now this is breaking 32-bit? Should
-we make this optimization, or perhaps all of the cpu fbatch, 64-bit only?
+[ This is the first of the cleanups I said I would front-load ]
 
-> @@ -358,6 +359,9 @@ bool lru_add_del_folio(struct folio *folio)
->  	if (!(lru_next & BIT(LRU_NEXT_BATCHED)))
->  		return false;
->  
-> +	if (lru_next & BIT(LRU_NEXT_ACTIVATE))
-> +		folio_set_active(folio);
-> +
->  	WRITE_ONCE(folio->lru.next, LIST_POISON1);
->  	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
->  
-> diff --git a/mm/folio.c b/mm/folio.c
-> index a18d8ef6afd5..0b75c3b69d5a 100644
-> --- a/mm/folio.c
-> +++ b/mm/folio.c
-> @@ -256,15 +256,32 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
->  
->  void folio_activate(struct folio *folio)
->  {
-> +	unsigned long lru_next;
-> +
->  	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
->  	    !folio_test_lru(folio))
->  		return;
->  
->  	/*
-> -	 * XXX: It is curiously difficult to recreate safely the old
-> -	 * __lru_cache_activate_folio() optimization (folio_set_active()
-> -	 * directly if it's on the local lru_add fbatch): revisit later.
-> +	 * This optimization is intended for the common case of folio
-> +	 * having been recently added to this CPU's lru_add fbatch.
-> +	 * But since other CPUs can now take it at any instant (after
-> +	 * a folio_test_clear_lru()), and we may be migrated to another
-> +	 * CPU, it is simplest just to extend the optimization to all CPUs.
-> +	 *
-> +	 * folio_set_active() would be unsafe without the lruvec lock, and
-> +	 * a folio_test_clear_lru() here might cause a racing drain of the
-> +	 * lru_add fbatch to skip its lru_add(): so use try_cmpxchg().
->  	 */
-> +	lru_next = READ_ONCE(folio->lru_next);
-> +	while (lru_next & BIT(LRU_NEXT_BATCHED)) {
-> +		if (lru_next & BIT(LRU_NEXT_ACTIVATE))
-> +			return;
-> +		if (try_cmpxchg(&folio->lru_next, &lru_next,
-> +				lru_next | BIT(LRU_NEXT_ACTIVATE)))
-> +			return;
-> +	}
-> +
->  	folio_batch_add_and_move(folio, lru_activate);
->  }
->  
+There is no line between the collapse engine and the callers that ask for
+a collapse.  khugepaged.c holds both, and they reach into each other.
+
+ - Sixteen tests through the collapse path read cc->is_khugepaged to work
+   out what they are allowed to do, when every one of those decisions was
+   made by the caller before it asked.
+
+ - collapse_single_pmd() does both halves of a collapse behind one call and
+   drops mmap_lock somewhere in the middle.  Which of its paths dropped it
+   is not something a caller can see, so it hands back a bool and the
+   caller keeps track.
+
+ - MADV_COLLAPSE's implementation -- the walk over the user's range, the
+   per-PMD loop, the errno translation -- sits in khugepaged.c, which is
+   the daemon's file.
+
+So: draw the line.  State what a caller allows in a policy, split the call
+in two with the lock as the boundary, and move the syscall to madvise.c.
+What the engine offers is then four calls, with the lock state written
+down against each, and a policy the caller fills for itself:
+
+    collapse_control_init(cc)         once, before the first table
+    collapse_policy_*(&cc->policy)    what this caller allows
+    collapse_scan_pmd(vma, addr, ...) per table, under mmap_lock
+    collapse_run_pmd(mm, addr, cc)    when a scan found work, no mmap_lock
+    collapse_control_release(cc)      once, when done
+
+The engine stays in khugepaged.c for now; what changes is that it has an
+interface, and that neither half has to ask about the other.  madvise.c
+gains the operation it should have had all along.
+
+Changes since v1
+================
+
+  https://lore.kernel.org/all/cover.1788533997.git.kas@kernel.org/
+
+ - Rebased onto mm-new with Vernon Yang's tracepoint fixes in it.  Patch 8
+   no longer merges the two calls to each scan tracepoint, since the base
+   already has one; its changelog now says what the status field reports.
+
+ - Patch 3: nr_occupied_ptes is nr_eligible_ptes, and the mthp_collapse()
+   comment counts eligible PTEs too (Zi, Baolin).
+
+ - Patch 4: no comments on the two constants (Baolin).
+
+ - Patch 5: one line per policy field (Baolin).
+
+ - Patch 8: the file side is split like the anonymous one (Zi).
+   collapse_scan_file() runs under mmap_lock in the scan and only judges;
+   collapse_file() runs in the run.  See Behaviour below.
+
+ - Reviewed-by from Zi Yan and Baolin Wang on 1-4, 6 and 7.
+
+Patches
+=======
+
+The first three stand alone and can be taken separately:
+
+  1  drop the mmgrab() MADV_COLLAPSE has held since 7d8faaf15545
+  2  count collapses in khugepaged's own walk, where the daemon's
+     bookkeeping belongs
+  3  rename cc->mthp_present_ptes to eligible_ptes, which is what a set
+     bit means
+
+Then the interface, in order:
+
+  4  add collapse.h, and move enum scan_result, struct collapse_control
+     and the two constants into it
+  5  struct collapse_policy, filled by the caller; the is_khugepaged
+     tests become field reads, and the flag goes
+  6  drop collapse_possible(), a wrapper that only turns a mask into a bool
+  7  collapse_control_init_scan() is a per-table reset, so name it
+     collapse_scan_reset()
+  8  give the scan and the collapse a function each: collapse_scan_pmd()
+     and collapse_run_pmd()
+  9  open-code the entry point that joined them, so each caller owns the
+     lock across the boundary and the bool goes
+ 10  work out the orders a VMA allows once per VMA, not once per table
+ 11  declare the four calls in collapse.h, with the lock rules
+ 12  MADV_COLLAPSE moves to madvise.c
+
+Behaviour
+=========
+
+No functional change is intended.  Nothing here changes which tables get
+collapsed, into what, or what MADV_COLLAPSE returns.  The tracepoints are
+the one place a change can be seen from outside; the rest is where work
+happens, not what it does.
+
+ - Patch 8: mm_khugepaged_scan_pmd and mm_khugepaged_scan_file fire before
+   the collapse rather than after it.  For an accepted table their status
+   field reads SCAN_SUCCEED, where it used to carry what the collapse made
+   of the table; that is now for mm_collapse_huge_page and
+   mm_khugepaged_collapse_file to report.
+
+Three things move that a reader should not have to find in the diff:
+
+ - Patch 5: khugepaged fills its policy once per scan pass, so the
+   max_ptes_* limits and the defrag setting behind the allocation mask are
+   sampled once per pass rather than once per table.  A knob written
+   mid-pass takes effect on the next pass instead of the next table.
+
+ - Patch 8: the file scan runs under mmap_lock, where before the lock was
+   given up first.  A file table the scan refuses no longer ends
+   khugepaged's pass over that mm; only a table it goes on to collapse
+   does.  A PMD folio the scan finds already in the page cache sends the
+   run straight to retracting the PTE table, and the writeback retry
+   re-runs collapse_file() alone.
+
+ - Patch 10: which orders a table is scanned for is sampled once per VMA
+   rather than once per table.  It cannot widen what a collapse does; the
+   order is tested again under the lock the collapse retakes.
+
+For an anonymous table, and for a file table that gets collapsed, the lock
+is given up and taken again at exactly the points it was before; the only
+difference is that the caller is the one doing it.
+
+selftests/mm khugepaged passes on x86-64 with a KASAN, lockdep and
+DEBUG_VM config, and every patch builds, CONFIG_TRANSPARENT_HUGEPAGE=n
+included.
+
+Kiryl Shutsemau (Meta) (12):
+  mm/khugepaged: drop redundant mm_struct pin in madvise_collapse()
+  mm/khugepaged: count collapses where khugepaged makes them
+  mm/khugepaged: rename mthp_present_ptes bitmap to eligible_ptes
+  mm/collapse: add collapse.h for the collapse interface
+  mm/collapse: state what a collapse may do in the policy
+  mm/collapse: drop the collapse_possible() wrapper
+  mm/collapse: name the per-table scan reset for what it resets
+  mm/collapse: separate scanning a PTE table from collapsing it
+  mm/collapse: open-code collapse_single_pmd() in its two callers
+  mm/collapse: work out the orders a VMA allows once per VMA
+  mm/collapse: declare the collapse interface in collapse.h
+  mm/collapse: implement MADV_COLLAPSE in madvise.c
+
+ MAINTAINERS             |   1 +
+ include/linux/huge_mm.h |   9 -
+ mm/collapse.h           | 153 ++++++++++++
+ mm/khugepaged.c         | 527 +++++++++++++++-------------------------
+ mm/madvise.c            | 169 ++++++++++++-
+ 5 files changed, 521 insertions(+), 338 deletions(-)
+ create mode 100644 mm/collapse.h
+
+
+base-commit: cf558a250cf4475a8936902b8978fbb6c61016f8
+-- 
+2.54.0
 
 
