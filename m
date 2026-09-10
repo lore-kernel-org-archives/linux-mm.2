@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C80C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDF7C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 08:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23E696B0095; Thu, 10 Sep 2026 04:33:17 -0400 (EDT)
+	id 4639A6B0096; Thu, 10 Sep 2026 04:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 217796B0096; Thu, 10 Sep 2026 04:33:17 -0400 (EDT)
+	id 412816B0098; Thu, 10 Sep 2026 04:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 105C16B0098; Thu, 10 Sep 2026 04:33:17 -0400 (EDT)
+	id 351F66B0099; Thu, 10 Sep 2026 04:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DFD0D6B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:33:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E1B31C2328
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:33:16 +0000 (UTC)
-X-FDA: 85197187992.14.2065DEB
-Received: from mta1.migadu.com (out-142.mta1.migadu.com [95.215.58.142])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 298AE40006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:33:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=THkswX8z;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.142 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 121126B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:34:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EE67802B2
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:34:01 +0000 (UTC)
+X-FDA: 85197189882.09.1151A15
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1608A100009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:33:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CazkhZSv;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789029194;
+	s=arc-20220608; t=1789029240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i91EWrMepTZXh/G+Sgm1TjnhlAhP3K0merfKLkHgMv8=;
-	b=Al512UQHxARX63EToocenNsLs14gL4gHw4dvCYWAsi7fNmf9DAsHDczV+tG2uTtQwqWInX
-	oyAJgw2Ii52jmXVFNj7AyPniVEKZNimKaUGwdQ/lIT4/ONDYEK5jgVZawCRQTcV3Kq35O1
-	J2zvkOuFfW9e0KlgcZLM5Mp1AM3uUzI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=THkswX8z;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.142 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=htWrCuWloy0NONsft45RDstF/ATea72DavKG8+QtMK4=;
+	b=J/1nqniRkyFCOEsT3ECaY+SOcuW4uc0VlcZP1AH5b84uGWeovyqkQWfergvvBM76A+vPjm
+	m+y7GOJLjG+xgL7pg0qwKoxMHxANfyiZLrRpYNYHD6ej7Uzur8sE4PsW3J+OQeskdLDkC8
+	QHx8iSbVKw4IWgGNrrtXVGxniR/zHqk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789029194;
-	b=jIYHfcQtxcrGQG2rNsZ6s9xWCgVsRYjxVlyMVKGGW4A6aB4xrEhJ7fRRX52chtfJ7mLZDg
-	p5dYG13T/tGpNVvA2RKGruZ3We2EenrmAKY3hz398n4WFuom71wg6M9++ZRP+SB+7M8m6k
-	CiCfCrdd8zAoknQg2euvfXhUl6FvfyU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3Q0TgDX5uuy2JzuGxiyBfj3XV6sc+FicZjZ2PsgT9iA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789029190; v=1; x=1789633990;
- b=THkswX8z6Oj7KnJ6FLOMBAqlYPi/J8Wf9v85JOGAcQb+yPv/YPVxKkmAv2c4PrKih1WDLEre
- ROyrzB2U2i+kakBo+b4FEJoYcqF+ylLGTuJUXi4H7wxCKeC5waL0WWHVZG8Fm1xVBjMtM38ByJr
- BxhQX5OVNpNiIzxJ5iuA2dtc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d2b225be2d1f5814;
-	Thu, 10 Sep 2026 08:33:10 +0000
-X-Mizu-Trace-ID: d2b225be2d1f5814
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <db978d02-2d5d-4d9c-994a-8791de7afa30@linux.dev>
-Date: Thu, 10 Sep 2026 16:33:06 +0800
+	t=1789029240;
+	b=UhJN7/i9oPoXUppXYr0UqLT4c+PqJtp7NK+F7begOiGYbtgZ7R6XNcNWiuguTpvfUTz3Zc
+	MRR5vwajaP0K80wyUt+wtA+9yF/wSM9ceyyr/pqckG6MHH6Pni0+0pzMjPniIsxCoeJQpL
+	ZVmxzm/nVVGIWcAaKE99JcxiAopRdNM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CazkhZSv;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 70B49601F0;
+	Thu, 10 Sep 2026 08:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8C81F000FF;
+	Thu, 10 Sep 2026 08:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789029239;
+	bh=htWrCuWloy0NONsft45RDstF/ATea72DavKG8+QtMK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CazkhZSvT+O0NgogGiXHI0lYcotwsei+QChUnDurF+HYFaqB31jqAAsP+ioj1RnJa
+	 slgoF+ChAAr/n4Lv1nBu2JaW3o+ffaESC4PwPQHVefTX1rJX0ZIIobfByVZPcIh8yU
+	 cx/VjCtD++UBLeRhzdko4P4UG+Pz1IlPG0jvfelVuUSkAqdjNHPkX4ImE2iLnVR4zh
+	 ECN3fzt4IyI8LStfLku08boRFArVqEJj1jo7jmqw3U74L2Mq2EXSNraAwkdMbliJHb
+	 jqTXTw4P0h0kyaFkuFMztWx28m4l1WJ72RCkKhiHM7UOl5XVdmfYEX46V1wJWF6/8J
+	 lsV+jOV4QvQfw==
+Date: Thu, 10 Sep 2026 10:33:50 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 08/12] mm/sparse: move __highest_used_section_nr handling
+Message-ID: <aqJrblWch-lajp3k@localhost.localdomain>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-8-008fc8d579fe@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for
- vmap drain
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org, Dev Jain <dev.jain@arm.com>,
- lirongqing <lirongqing@baidu.com>
-References: <20260905152717.11711-1-urezki@gmail.com>
-Content-Language: en-US
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <20260905152717.11711-1-urezki@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 298AE40006
-X-Stat-Signature: kp4oijd5i7i6bnqc9uta93isiwndaf5h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-8-008fc8d579fe@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789029191-182868
-X-HE-Meta: U2FsdGVkX19lGp14omyHkp6g7n2Rr4+tN1c2S6IuaUApcOfGhuiIM6FWVkukMpbZlAT0bO/TGAMNH/lml/rq/zlK+K5YNbewJW1XVBoiy2XrC70HhY7fGZjvj5tewgWtg1b7av3QeiNbCLtXGq8S1acySip6/R4zLtQNweco6G6d0vv3RSwmul7Dy2yjDXt8q25xHYFZ7LkG3Iu0uYJaaoId9ZyLBjvW3+Zup8NH/gVkBGRnakwFxVS3xacPRjuqTlBs728tNwEBbecLtKBT2ZNGFR4QRB7YAE1RHQRbY8lMKqjqErFxi63UC7++sqcemmi4ZX0yFAaEfCBpNH8fpcBkYC1aR5sv29HXqIhj+SFgf1+TsIcMmVECGu0dFbgb8ZyJsYfgH+8yitiZ34B8f6O6Xy7Xvja7zpQ+U7ZH1mGNTp2dqQR8WvGVYakCY6Bp30BFU320XAmR50MzclyMJdvHRq9axVzovq4bS4NvEzLw/jo2J0Lhjl/S2aWoyp08dwAmKuCc/Nv+flsCe06Lm1uWQTFealPx/41ArSwmSQ9ZWEyzRkWNga3kUaBsA2FRDvMUPDZFbmfRrU05Z2NWOBL1rXNzGH+SUlhzKlV+GX3cDWgG/BKy1iJtjNshO3+2L0FwpcEsHkUuKN+3z0W6PfwW0ULyWo/w5pz5MV0JnpQ2LqwZPBcTWBJTn4c12n53u9Oqk10qmq7/vSUkd37fcVd8VBFNkUmbuMaIryiTtYV1epmnTNrHaFc/1baxDP4JssnTgQnzNxi5+zvJdl7eySmcidyGcmTvEOuAxT5zsXdEWImx0sCqYilEAFYxT3e6VKqyxcTKo0SkO7UEAKfzvjD9YSH/U8232TVS++ylP7QA5yhaMmzgP3dNBwnomtqS7C5aeAKJul3CJppTEIOmPI/xrMi5o4V6bifhhI+Chzn7XRzXpjnKOj+DPYW8yXXTU8rhGl2WM4BlzTS8fmn
- VInDwrQW
- r30g4U4IjQmxkCZIFLFVoXq8pr7FPf5SBzQGo5lojQJYnxJ1tIDjcBxM5wJuBA8Vec/h9OOoS/vFVJCs8glpydZeNKImkU+u7jP+S7c/nVTueqIWQAVQq4JQfiVIRIhc6SM5+9wxZlSh88rvErEv7txgGaDk31NNmhpu+C57GyntowqLwJh2evobGCuLsKUFRycadcec4qcMHMELkBWEFRtsbp6n3gD/OudCft4QrQerrpwHRoyv+/FbuQBTGqCI1gGcXwsPxMcYfL63LqBEih/jmwurRQt5uLJiMgWr44nenLZ4sCRm2R7YnWvKxO0MsHM7cunp3gTJlUPLUroZGlpelktRPY0W3LTI4+zd8Kbcrbav5LwKEnsh+MJMXfkveVmFZ90jnmGWM5jSCHEeptaWQAKJ6mfzsnQ6wMmX+SvDRhMKzRkgrrM5o/GlSdeS/iI+Y
+X-Stat-Signature: zmtrmbqf5jjq38u9gr5dpk9sbybxhb7b
+X-Rspamd-Queue-Id: 1608A100009
+X-HE-Tag: 1789029239-814878
+X-HE-Meta: U2FsdGVkX1+5s/5Qmwfsc2USgg9iZniJ30LT9SCtYmYRDAB5xeT6HzzrT39nJfe9mMB0MtQ+zm/ET/CS1pAfLShxe/BCGOpLvDD1fVQTzfACZPrY3n3McTx1mEhPYD4JAfh66iuiPeouSfwXiJartKA1JtLAZKHgA7h5VWfjUrS8/S8a1wuO2aYKErzz+qKKVQkHxZPAsc79uHBHpdNoubtZXxcC6w1aefX2aT1St4wNnYToHh36i+Cvg1cv+vnUZk7LLQPYyGCkEXCAXjkGNqXjLHvuZHstImYbCHsmSQaUD1zXZpY+YbnMk2/q15ccQDx6NlTKBjSFdI8N9NfCXPpzyUi875WUEMzOayX8jwdq9whnd228xC86Ltwi1svbZAO/hfL+XOLya4LUxlVYwu3VjwiDOl2o+FYCqAsTOMOF2/5A0Z3FBvj6BKzUU1XtabdOT6plIT1tJ4cs6MybfraxCAUsA0wZkimD+8ToJDSideUVzo1sTuSFIvWiGrDhZ5+YJp4jOq9SO1f0Ps1bKXHr9ifi82q+ZIrUbAo6GXIDiUhy6phfQ27ky3f3VkTsWbIIW3csvdbW9+239DmL6EQj+iPwTTdyagNBYlveb9Ze92lj4RgXOratIRfr07LPBaNAt5FOEzN7d6nanPGTUvDhgKeCSMEEJqtAXyvIKFt4t5D5AdarHPBIPp1OsKLAh6FY6kHnbQ+M8IEJXM560aCVifVgkwBFWJPCb4ch/dnRk+JK/0XUp2tGKPP032aNUxj0lA/T1PtdyQizmkBDj9973cXtNjGrMf5t7rGuEfH69e7Sq6U1sIs1GkAbD7t9SPMQ8xeq1HqhkBxToq4tp+bmnQ+1zLB9qxJ0TKg2ZKtnuK+r1gyxKzAOr9E0bppNCYB+USoCJeoCoUXnd3z/+g7r1GwDYAMqoVmWWzVpVzG+3htJ/surhfM5bwPy7pu6Bhop9oUSb/TsSHxM6av
+ tVAkEpEz
+ VsyKLQHai2Nl4Z/xuR4SG4r2xUNhA47LvndY1ImdLKdtEq+WtCez1rwo6zT77NsuonXdTYoPZU+Gys9Q14xnWirsCROUGT+s2R5AWwpVNPt/WuaXZVLCUe5CiyQHEgnDLXPvmeQcIprTgOkNtXp1Z5S6hlC6dFMx50Ur5nUpW2PI02qJzObYJVw4v/NFOnfOWUIr+2iD5u+kV7LLP4YXIORx7Z0tI0oQlrhfrH4RiVzunR+IdEPTjcKqPpDI8lEe3JULu+nQARPxmIds=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,44 +113,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 09, 2026 at 03:33:01PM +0200, David Hildenbrand (Arm) wrote:
+> Let's move it to sparse_init_one_section(). However, to keep early
+> boot processing working, we also have to initialize it in
+> sparse_sections_init().
+> 
+> Should we use READ_ONCE/WRITE_ONCE with __highest_used_section_nr?
+> Probably, something for another day.
 
+What is the worry there?
 
-在 2026/9/5 23:27, Uladzislau Rezki (Sony) 写道:
-> drain_vmap_area_work() function can take >10ms to complete
-> when there are many accumulated vmap areas in a system with
-> high CPU count, causing workqueue watchdog warnings when run
-> via schedule_work():
-> 
->   workqueue: drain_vmap_area_work hogged CPU for >10000us
-> 
-> Move the top-level drain work to a dedicated WQ_UNBOUND
-> workqueue so the scheduler can run this background work
-> on any available CPU, improving responsiveness. Use the
-> WQ_MEM_RECLAIM to ensure forward progress under memory
-> pressure.
-> 
-> Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
-> workqueue. This allows drain_vmap_work to wait for helpers
-> completion without creating dependency on the same rescuer
-> thread and avoid a potential parent/child deadlock.
-> 
-> Simplify purge helper scheduling by removing cpumask-based
-> iteration to iterating directly over vmap nodes checking
-> work_queued state.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Ye Liu <ye.liu@linux.dev>
-> Cc: lirongqing <lirongqing@baidu.com>
-> Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
-> Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
-> Reviewed-by: Baoquan He <bhe@redhat.com>
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-
-Reviewed-by: Ye Liu <liuye@kylinos.cn>
+sparse_init_one_section() calls should run sequentally due to the memhotplug
+lock, so there should not be parallel updates there?
+ 
 
 -- 
-Thanks,
-Ye Liu
-
+Oscar Salvador
+SUSE Labs
 
