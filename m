@@ -4,138 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D92C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3930CC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 629F86B0095; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
+	id 286696B0098; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6014F6B0096; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
+	id 25E256B0099; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 517876B0098; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
+	id 17A7A6B009B; Thu, 10 Sep 2026 08:01:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 31D0A6B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:57:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEDEAA0514
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:57:35 +0000 (UTC)
-X-FDA: 85197702870.15.D75AB25
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 209EBA000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:57:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iZL9wiLq;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E5D126B0098
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:01:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ECF32120415
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:01:15 +0000 (UTC)
+X-FDA: 85197712110.25.52565D3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2085AA000A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:01:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FhEat1/v";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789041674;
+	b=A/EmHM/FL3DWvBwuxDbgRZVTi5kRfXueYJYQH2J/Of6kqRoFctr3J8zmI4C640cW8lZtOv
+	CAjGAvvxefIc1E42vzcoMtjqxUjKlYj6PkPwq8kWIzglxZoVCcVFsYFaSxzzHbepWcFHMI
+	TyROH+RNP2eNdVxci3clot3CVASrdIs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FhEat1/v";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789041454;
+	s=arc-20220608; t=1789041674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mgh8waXa9eS3cTcLGuswtFpFRzduf+4/BpkuuXgbHnc=;
-	b=RVQXnYjmz0i5Hh/v9Y1wzBb8v1jvnlQbEMKGonn46CFbqB+v8gjn7f8F3bRzlZ/PAb7sr8
-	r7SDktruNs7dTcQwn8UejYS6z880eZVcgq1vel3LUJZPTxng4dhkUSDuNVlBGBhklYUTxb
-	fZKoNr4bmQ2QwmeoUmJGXssZavRpQrI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iZL9wiLq;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789041454;
-	b=PfiSfwdVrQzydK8AXgWUNut+40V8NS8PfmtaffdxTmNf/850+126+RHb2vucxyYKnG5gTz
-	sUh7kbIUIVaDXsCeEf3sdFhWGowtR21cNj2Wrje/i2eYT6GW2HHUwpxAYnLtw85+xeeJRt
-	m+retqQY9Eidu8RTxSi/YwSuxjW0qaU=
+	bh=gGRiP00UZ2QnxQeyHEnzHM+4PwMNnzfPUpjThhppjiI=;
+	b=LlpLcMVJc8HN7F+KdDWkQKouRWfXQZdMhlu7EKDoZJ3VEwH9EfMI0Tz7G8hO3D+lUsXqbu
+	u8G0Yn8hQgZqTg46eCloAn5ic6HxuJCkYiZzOjdzQ/CahEUHRMZ+kG3efC9WU0rEG18kyb
+	Qzdr2ePdgvLta+M/zNVOoq3DLk6RE7g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6E28600CB;
-	Thu, 10 Sep 2026 11:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6887B1F000FF;
-	Thu, 10 Sep 2026 11:57:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EFCCE42AFA;
+	Thu, 10 Sep 2026 12:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C017C1F000FF;
+	Thu, 10 Sep 2026 12:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789041453;
-	bh=Mgh8waXa9eS3cTcLGuswtFpFRzduf+4/BpkuuXgbHnc=;
+	s=k20260515; t=1789041672;
+	bh=gGRiP00UZ2QnxQeyHEnzHM+4PwMNnzfPUpjThhppjiI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iZL9wiLq7AUskmc+WJh3qzBBsQ6sONeIgaI+0RRAYtyX30gteNdyL/GReVBlp2E+w
-	 CKU7Q+TiwPuC7pH/4qxX7FlUkR9AvQcli5bW5zgIUwUp9N+Jw/P2PT0w4Wb6YBvoFY
-	 CgKs3QiX7/D5mq3BI/w+ndqMCRV8yFtHM/X3J5XYo04Tt5TR3FINWBtQ1vJQ1GdgOc
-	 sD6/MAq/GoFWVSgI6IdMVSoadiOf8r9CVghoUO8jBT4Xndj+Orx12FlBYtQa9yAvn/
-	 Fhqr7P9vAGUE1dm46VrkqKPXlrJiDgKympDAHwhFDG5Dx9L+gIZHy38en6b11YFraW
-	 5B+kn8i4wBKgQ==
-Message-ID: <561b379d-7ab3-4f78-94d9-7a056c5ddb1c@kernel.org>
-Date: Thu, 10 Sep 2026 13:57:26 +0200
+	b=FhEat1/vifu+AabmjF8NmJPEP65qR4NBg4Ky/6jU3lo17Q0Zo2BhNylfwMKgXlIDI
+	 UMImBV5640D83WmIILt73l8RjBygDF6Mt7gu1/ntqS0oBR8lidQsw7r3Sj2i5WdR8V
+	 INjCSwvtzlHK8kPH7G5nIBuVR3YVGY4ybJh+g5gGSFGtxyX6EYVptvqJMZZwjeQfGi
+	 aeG04jNaLuKWedKy71l1HWQfVdwcFptEjzJJ89C6fdNfHpJadbzrMhFXlVUL2CJHgj
+	 w8mBMnWhfb9D+zFJggWb28AQFcd5s8vG8Yuhm57TZx5ehR5Gfv4Ij2Aijxv4bMLNbQ
+	 hZcM2Ic2G/G5A==
+Message-ID: <ddab52d0-48c7-4d2c-b403-45f11e041654@kernel.org>
+Date: Thu, 10 Sep 2026 14:01:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm: replace PF_KCOMPACTD flag with kthread_func()
- check
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org,
- djwong@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
- vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260902131653.1338227-1-wangkefeng.wang@huawei.com>
- <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 07/26] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
+ folio_activate()
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260902131653.1338227-5-wangkefeng.wang@huawei.com>
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
+ <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Yang Shi <yang@os.amperecomputing.com>,
+ Yu Zhao <yuzhao@google.com>, Zach O'Keefe <zokeefe@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+ <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 3we34t13dr53p8prt6ioxhcqrqxa37tb
-X-Rspamd-Queue-Id: 209EBA000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789041453-381206
-X-HE-Meta: U2FsdGVkX19S27ZP9MyJbhXzjKiQlR7SOAGG8POK1l60bQURBMkPyI7p3Efow+bSFS37ekQRox6sjY2x9uV4zAq8qunvFg4zW7suAiS3We9FW7nLuWaNJ5YmJWCdYdrRxTS5r2KqtedX0keZhVS+w/XCa1x7F6jBr0CG7dWkq2gE+umUPDRqZLIWuexqZwgkQSBnLn1AsKW2/CgXjELkTtjBHEGaXLWQV/PdsccuLwPLFDn3eGYoXEmBVwua7/1psrjV+Uw+kfx+0enPqEaxlRQq2hNej42YmHamXCGmz9HwarEHKapz5VO86JkXOk7nNfPiqYlAQc3Z/WTYdeRVuT4IQrGyAt6umZtxZPcIGMN4CQfmc14adJTL9NkFccAhoPI5qbrrIK5nlJ/RUyA6Qs3D9yVwUb9AsJ9J12Am6Gik2+TZpL+CHSPADGUrkVDN98e+rb1OE/3KbypyiC6b4jpQdDm6v+22eRNtD9bKzmbIlKvOb+cm5FsnVNcLxsKYhoYM2IiqAJJ+vNCQFvAwtdtZzjvfbZxUk544wxul5sM48ySZCdc1ua+bONsEBr9mwfZRTndPfxQ32yfC/riIHAZSt1O/OWvAxSnz7yu5K01PD6B7DT3k4cJTbDMZs00jbiaDtFBjqk7DMXZJ/WHh//hgla/tfg8fHHip8HNI+a9cfhcWmplUEos52eVmpE3NkT35reXZpX5I4ZB0bLjahaCdgNbZ5plqppl0s4E+EL14xDhDYynSExMEYEK6PLs6XGHXTxFSRVniQw3pJN2jOBW99BRZV1Nf1WCNnO3J+xyDRqm7i3NUh3yT7Rw7VIaw2ekW0C0h/4b9YwQEOaA25mMJiUD5tO9uEwfDDgnuQXDMZnZbtLOmtpPMXRbCGvxI1GAP0Q+ESaUMD6/Ek0IWMAnWBdxaAFYd4KedduTTaV502EIqCIK3F1gILUC84ZJt1FbrHxGV2CyfNYtmAlg
- GGCMj5oA
- Lq0dmbjaRaOGBfNqYrDczKPXXD0wN9wlIhqdi2DKaDUsXDfKflJm9RnkOHhqL57mPw1ltOUrDIwcmGVY9N6Q+RMkMkZgF2oJor78B9jfmauTx8P4oS7VWvs/x/y2ODltuZ1QIA4no7fEhEwOretM/Ny+VsUuKVf7zk4ZYQv6xU9GsuZ9gWioTgwdzJ+zp4mJEzJU7s7Qt/AxU7+T6CBP9a5H0+N0+M4LzKaCR7F64qVkNk4OdOeoF+F4N8B2vhiEFG1phG0Ah5iXN/Dkg46fr04fNoZ9DYY21YCfep4bvRNqhQ146KRJfkn/z8Lm2a3oXFJDzg2vICbaU3jdxa4pgKLPSUd0pN77TRAB7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2085AA000A
+X-Stat-Signature: d6ku7qbocjdhh1qy8pah9utzkezujphf
+X-HE-Tag: 1789041673-275590
+X-HE-Meta: U2FsdGVkX1+lp/7B62u9/UcL61WGDowKXN1wEjGL/7uTCm3VWB1CHC+PtBqFeNkKDtbJje5+UDTkbuZWx2nKNqnEuNEkuml2Eay4uEnxr7c7sYnJMwFHVXSGr+4fkZELhPVc8ecHBHn2wwhfqDkkplycH0H1e4ZIGFzg8nd3Pe1zelAlD8IQb65ySUCFyiyd3q6mLnnZ4eLnK82P4B5G81PQw+maY75nBxppsq0d87SdyCWCYV2ZP1qQoqsVAnSPeHiAtXrvjD0FHIaEsb4nHRsxrGGZPkO1NLeM2sqU0Q89lJlYKr3wR+iGcA5PViV7WPZo8hT/cb4pObh1GFqI1HiQmlexsZr68XijOy/xKuCtq62tJNpqKYeFoC9KmfgpxjjpMtDx7+77UkXorWGD9ti+g8BSgbeBCWEDjIdoMnueNLANqXgipH/EqYa9n58TLGdjfxpQUy8FCSp6/qpAuFl78zgdwLYrWD5FzkK3Kmzylh6gi6xG5kKTo5vs6x4jsW/7ecMVoQMKC3NEswzy1fQYn2LviRea3HinhwApRg2tDzfJAif98TCNQkTMVfT93uAfQpVxHkEg7Pw7xxCydcnFLq28YWEJlKBgD4IbFX83DlpAhn039HEiUYWbKE+hIhFvyLUs2fPTBy3PdDJNbLf3jurSc7MQWKWbhRkvX275uD+3NY1bmDSwaPcSx/nUiPlac8VNFV6Qq25py5BL0Y51kWbrVzith4wtKMaP3uEPk9SidvmRO618cLmSl/RijtrLu7zggRQb01YxNR5d2C9AHqHMBu1rnDXOaYgrQc76hQQ2lFjVEAGfx0VxDRTz2FkPTaFtf6pFd5DYDfiAgDffJd+VBnl9WtSnCHCfrnvfazo1wYK+OgjpJarySDkSeZTqqhW9jZpU05Y0BIv+OmzTnXu9LJLqUsX1bNCMAQTVvYt8ryJ+ItXp1sLseXFBFJyOMpSe/CyEZm9P8a5
+ UCSZQ1V0
+ x8gNpd32yoglTd73tms2wcanpQ8W0M+9kWvqchg+B9LO1LTkBYdaO7SkYr1NSDNefVm7AtlDTf/iUQhhbo7Q91GQ0RborXnwBzBbikOq3PIbIZ/ph4cI9Fzi0X5cjpg8r5tbDdAvisZR6vwsdrp8TciejsM7/JTgO/EfS4ZXje3n8gRTNjwVY4L7DxTo2L0IoPAp8uVPuJq8Y1tusj7LlUMsJDB6Aii409HP93/iu49IhdDRUgaUKxOIUzvBImDI77iOhHqty2IUXZ22E8m25WHsLGpac/awKHl9HUb7n9AmM32U/DeMuhiLG7fVxBHN80Zb9hOILpZskr2ky/MUdS87R46B8hUDzp3XffCLvP7PnZa1NfjVt4BBQylKFrV8eoEUaZG+FvzCS5s3n0m4a5gdz0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,23 +157,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/26 15:16, Kefeng Wang wrote:
-> PF_KCOMPACTD was introduced by commit ce6d9c1c2b5c ("NFS: fix
-> nfs_release_folio() to not deadlock via kcompactd writeback") so
-> nfs_release_folio() could detect kcompactd context and skip
-> writeback.  The flag is only consumed by current_is_kcompactd(),
-> whose sole caller is nfs_release_folio().
+On 9/9/26 11:55, Hugh Dickins wrote:
+> Implement an equivalent to the old __lru_cache_activate_folio()
+> optimization, to activate a folio recently put in the lru_add fbatch,
+> without having to put it through the lru_activate fbatch too. Neither
+> lruvec lock nor lru bit can guard this safely and efficiently, so resort
+> to try_cmpxchg() on a further, LRU_NEXT_ACTIVATE bit in folio->lru_next.
 > 
-> Replace the flag-based check with kthread_func(current) == kcompactd,
-> freeing the 0x00010000 PF flag bit.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Signed-off-by: Hugh Dickins <hughd@google.com>
 > ---
+>  include/linux/mm_inline.h |  4 ++++
+>  mm/folio.c                | 23 ++++++++++++++++++++---
+>  2 files changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index 8420b1276535..8f5efadf9c7c 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -346,6 +346,7 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
+>  enum {
+>  	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
+>  	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
+> +	LRU_NEXT_ACTIVATE,
+>  	NR_LRU_NEXT_FLAGS
+>  };
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+This addition, and the comment "/* This mask will do nothing on 64-bit */"
+in folio_add_lru()... does it mean that now this is breaking 32-bit? Should
+we make this optimization, or perhaps all of the cpu fbatch, 64-bit only?
 
--- 
-Cheers,
+> @@ -358,6 +359,9 @@ bool lru_add_del_folio(struct folio *folio)
+>  	if (!(lru_next & BIT(LRU_NEXT_BATCHED)))
+>  		return false;
+>  
+> +	if (lru_next & BIT(LRU_NEXT_ACTIVATE))
+> +		folio_set_active(folio);
+> +
+>  	WRITE_ONCE(folio->lru.next, LIST_POISON1);
+>  	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
+>  
+> diff --git a/mm/folio.c b/mm/folio.c
+> index a18d8ef6afd5..0b75c3b69d5a 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -256,15 +256,32 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
+>  
+>  void folio_activate(struct folio *folio)
+>  {
+> +	unsigned long lru_next;
+> +
+>  	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
+>  	    !folio_test_lru(folio))
+>  		return;
+>  
+>  	/*
+> -	 * XXX: It is curiously difficult to recreate safely the old
+> -	 * __lru_cache_activate_folio() optimization (folio_set_active()
+> -	 * directly if it's on the local lru_add fbatch): revisit later.
+> +	 * This optimization is intended for the common case of folio
+> +	 * having been recently added to this CPU's lru_add fbatch.
+> +	 * But since other CPUs can now take it at any instant (after
+> +	 * a folio_test_clear_lru()), and we may be migrated to another
+> +	 * CPU, it is simplest just to extend the optimization to all CPUs.
+> +	 *
+> +	 * folio_set_active() would be unsafe without the lruvec lock, and
+> +	 * a folio_test_clear_lru() here might cause a racing drain of the
+> +	 * lru_add fbatch to skip its lru_add(): so use try_cmpxchg().
+>  	 */
+> +	lru_next = READ_ONCE(folio->lru_next);
+> +	while (lru_next & BIT(LRU_NEXT_BATCHED)) {
+> +		if (lru_next & BIT(LRU_NEXT_ACTIVATE))
+> +			return;
+> +		if (try_cmpxchg(&folio->lru_next, &lru_next,
+> +				lru_next | BIT(LRU_NEXT_ACTIVATE)))
+> +			return;
+> +	}
+> +
+>  	folio_batch_add_and_move(folio, lru_activate);
+>  }
+>  
 
-David
 
