@@ -4,143 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C92EC88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86BFAC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 06:33:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85CCC6B0095; Thu, 10 Sep 2026 02:31:53 -0400 (EDT)
+	id 8AD1D6B0096; Thu, 10 Sep 2026 02:33:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80E406B0096; Thu, 10 Sep 2026 02:31:53 -0400 (EDT)
+	id 886616B0098; Thu, 10 Sep 2026 02:33:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723AD6B0098; Thu, 10 Sep 2026 02:31:53 -0400 (EDT)
+	id 79BD26B0099; Thu, 10 Sep 2026 02:33:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AEBF6B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:31:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 578CB6B0096
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:33:26 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD5F740430
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:31:52 +0000 (UTC)
-X-FDA: 85196882064.03.03FACE6
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 06A63180005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:31:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PmLLcdn5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=mkchauras@gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDBA614043E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:33:25 +0000 (UTC)
+X-FDA: 85196885970.03.5B9D403
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 469DA40004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 06:33:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=R7gn08pU;
+	spf=pass (imf11.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789022004;
+	b=E0X/4JGDkUlncDYKVWweJ/pHKfwVaDlhJ8xSBqlMhPRKXy4TTctsl/N1IYKzQrXuM/TZAQ
+	9EZ88zXoztwD+dH0tU2oLqc3+4re+LSho3apwkIAFafcBdRkPNzJ8Yb8HkUdGerZY5tx7i
+	nUEzYxy4GqHn6rgw9SD62X/5RgO6erw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=R7gn08pU;
+	spf=pass (imf11.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789021911;
+	s=arc-20220608; t=1789022004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1toCXFJJyIGT7Bi3z+gvDkztm6+uDMf7He5yX/dqQdk=;
-	b=IvIxXv0YjUu/cV4EE6TLJQfIwL1HleFejL8LU9tQkhQcmTK1zak7+E8oyKySx8t/1wWAyg
-	Uol4A75eYe6GDBin8Hj9+xNCLkmthnODwfult8tKFmrMJ+c7w990dcM/4ezWMOm1dV8PzN
-	JNTX7j/9WBezL9BUT75pYhHLkHYWD9A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789021911;
-	b=MATCjFxUrtVALoMMDVhSaP1BuSU44tKsP1RRVCauem1RgkdNd2j01kc/1VScqGDlnzD+4T
-	3lZ0IZwPjgSiBLL0BfadOy5bmx2pThl9GartooFraPiQB0yYCOtRhLMRh6o4b7Nf98VXPv
-	5ZnQ7EUmUIATyM8COl5Lzdqg1SNKee4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PmLLcdn5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=mkchauras@gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc891373e0so70404055ad.2
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 23:31:50 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rAd33FXhTKmE+GxkEc0xfvfKe/VbGJPr1z8AjG4R4y8=;
+	b=qCPOtZeVHfs2PIyGB8Iwsj6rT1r1JKYyxsYK96ieFvV4XvffLSU/zzzFCGFPEIbxnX2sYO
+	cAScFvy6leRLcP2to/bPwAeVYI/sQn54XPmk44Q/hjsXCm4Z4JS6LxoNOuVMJD2s0eI1VR
+	OXYA8wqtEuopeJfL/T8/zRqkVpOnTn8=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc4be0e5469so16300a12.2
+        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 23:33:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789021910; x=1789626710; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1toCXFJJyIGT7Bi3z+gvDkztm6+uDMf7He5yX/dqQdk=;
-        b=PmLLcdn5om39t1NSBA4F2P8dwRgZxp08MLxbIXXs8WBjmztiIL/+8xP+975rT/U9GI
-         O1UJazkh1BjsU+GK+Y4lfqAn3PoWNn31Jh/bFLSLp8ps2VEoZ/qDWADcjCasszlEhuRr
-         GobLswORDdFJ7hxAmDZ00DkR98LAyZ0b0D/XGVcMQHJuu+hS/SuXCy+lnDK1Tv90gB5s
-         IceuI8WK6R+Cnf5YsB/abKsBnrzQGjMyQRp9hcHIw9jqXH5UOX3LdnjsnMFX1iclDWWk
-         0NfFeYz8iP+EOxseLks3NfSjrxNLCD2gbBvkNXN0RywFj6PaVc+ekZTXc0ykY9scDk3g
-         v8Qg==
+        d=bytedance.com; s=google; t=1789022001; x=1789626801; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rAd33FXhTKmE+GxkEc0xfvfKe/VbGJPr1z8AjG4R4y8=;
+        b=R7gn08pU4/zrQDUr/Q00gEMZ2HXxF3kHcobVvam/b3U8PPFF/+t7UkQUh5cP7YbIcs
+         AmI5tKj/QMj8gK5ATya/hwYnqPaWVJlnGSSBZvdqi0XSCM/64UKy9Vgjm5ozfa1tgPGN
+         QuaFcz1qtGjnmJ7rR3GtXB23JB2YNwuolAOlZIBO6zITgAMvf6k3CO68KtC7cCgsTXkS
+         4NXyrMuARBsuAzNEuY2XEnLWbAH6Ejgmm6D7mCE+LD+e1qbCOcjcg6GHZ0bSzU06yKLW
+         8DNv96mXiJZPDfty+A6rkpneVHB82MaygvXc6iQqtwrDMVqF8z781ZMu7N6amagbR9YI
+         u0aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789021910; x=1789626710;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1toCXFJJyIGT7Bi3z+gvDkztm6+uDMf7He5yX/dqQdk=;
-        b=P8NlbzzjbPlt3ydQhWLgVA3IJ+SoV8qgzItxfqa/fgNnYDh/dYcpEpuobSN8R99D0j
-         H4it2DgCCmXHJrMJqRHBMn+bDYMRf7OPOykI1yjDmXGk00YFubDMX7/7F8bafEPHFJMK
-         EcHOexE2dnco1BzJaBJbKNMvKGQMemq4QrwhRhR0OEVKD0BE+8xCrFKI/YHQP0KPAY3N
-         +5tt9BFzi6BFwBmFj/6n+bXxggxgzH9Be5pwjAUM6fU1wZkMmYg8qp3EDb5nMcklRWNK
-         AuKODyvwCztiko6Nfufwz5mkN2Yg75g5HVy/D3CNzJup/4L4lSoQUP4E4LNC2IVwUyeB
-         9vzw==
-X-Forwarded-Encrypted: i=1; AKwUvBw7B2t1gskm/F8KGF1GYcx6QiQp+/LTJRRURWvZ+MsxtTBwtVBGJBGQ/Mpm5+39+RwW60HhLhOkWw==@kvack.org
-X-Gm-Message-State: AFuF++lprKzkp5l/6XzjgAvcPnio/la9YgGGqi9yAveQ+3IuHzmL1Qjv
-	dwJGTVrH1bXuumDQDd/KVNIHuqJQVq6hvevu7h7V0n1jmZwQ9OR9VzA0
-X-Gm-Gg: AYBFou3MOuMpPdcucDbwYcm66d5aw8m+dHYCgtqUu193Q1O0JGGkfCqVv6/SZXhYUkq
-	ZphfGv3ItCtyXiG/rUSwYZb4JJ8sVa2i2xV1lAkCFOSgdVmVsseFrPcljXydkAzh5/35aIPR940
-	NocdkDrYkcmOqhoETC45jpQqa2/asre5s+nrImkvPN8Bb1vYgcTGpk1EEVsZxI1ielNd2Cntim3
-	wJ0IWylGyGSWp4UVWr3TwwzOA+a7iIz77boUFVaWbqPp9FnBrAORTABKiaN2Ao4ny3AhCDjBdOY
-	Ibcf3Hs0TxJvYDlngmSRcEwcHJVonaag10pwwlb4ANOElXSb3F+mAu43ji1PexyTR4T/qMmrb6+
-	6MygQnOh9Q1WLhzfDAxrg7SghaylhZu/geZ+1qrNnBJkm2UxX408+/fpBoHeFwp4jaw0V2tvxvF
-	TT33Bw5UKtvWgO3P9NxzxdIsjYmjrz2QwKenf38SM+LfTN740dIlLqzu8L0KKq8klQkc+HYHtt8
-	uTA+yX+Vk/sFVdlE4HWDUe/YcKaZFL0dtwADRODaaY=
-X-Received: by 2002:a17:90b:258d:b0:396:4c63:7193 with SMTP id 98e67ed59e1d1-39b261323e0mr64061526a91.11.1789021909725;
-        Wed, 09 Sep 2026 23:31:49 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e834319sm2507639a91.10.2026.09.09.23.31.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 23:31:49 -0700 (PDT)
-Date: Thu, 10 Sep 2026 12:01:26 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
-	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 01/24] elf, uapi: Add a header for relocation constants
-Message-ID: <aqJOscgnnevybiKO@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-1-3a93791af1cf@linutronix.de>
+        d=1e100.net; s=20251104; t=1789022001; x=1789626801;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rAd33FXhTKmE+GxkEc0xfvfKe/VbGJPr1z8AjG4R4y8=;
+        b=ldLxyyzfYNyq1kjlmAq/IZfvxkTIGysNVGDljP5VbENUuKXYQyG/n7oZWU23iaeSbz
+         IqtYFoajQI4mRtpGNhQRzaRFUMfppWZjXUwAVRCI4vZUjOH5SANR5lh3lDXf6ymdbQmD
+         DmIJzZiPebuej1UabLmi1FXugzePKw1M7KIuG9CjrIUZoGgc4x/Uw8B0ORn6k5o0/Irf
+         9j8lKe5Dmuw9jWbkyX4LXIvvlDr81NScxUfISkt99Qz//eEYFEy/DwMozV7XTTHSvm8t
+         kYabrr12cAjHmCq9lFozSZI2aCL7iILwD34BSlNjlQjJKhZWFoBgeWD+O3hbIdQeCo4H
+         CCxQ==
+X-Forwarded-Encrypted: i=1; AKwUvByuEgdq8K4vXQr5bRnBtLZCcq9i5AKyBEZ+Atg8SNcYiixXNlBvqW2zQ72HVTbxhSYQPfsbchYf7g==@kvack.org
+X-Gm-Message-State: AFuF++lHBUJc0S5Ty79F57Q1YCbggHZZyM/pI6sdUrDxHGDd3736kfHR
+	yFGJ9sJDY/E9KdtZdcUu4/1L9GbdgWYsj3D6FK+YaPllmTS1RW0OncjeIFXnxX0ROFM=
+X-Gm-Gg: AYBFou0d6r3UQ5tdUPaprubplUi/6+v2VUlKKKx1R50QnXa4C9+QXYCsJ0Nkejdm8bj
+	ewQYRZZapfUKJeCu+bnz+1bW+2aQHTjWYCsJk6LNuawtxipHHS8GEwBECqWya5Kn5o5WkbXC57u
+	rGHyiRDK7CnKe90/+F8+m+X6OqwfDKg2xj1KJkkGwMAoctjBOE2Q0tjQQDNVm4dq4MEm1PBXjuk
+	qlhaUJpkcq5tX01GrVfYfrwxwVl9fcn/h7ZxL2dmrrv1zwT5vtdiYeVLDksyLOCeyYiX2lq+2EP
+	W9Llw4XgbuLelVG0NPIyRqTvdD4d3XvOnJ11hnw4NZIrnhqK+3hGTFY76WEPRMjPTChmKUVwo8P
+	5i1QwSKcgZfnTerk4LgCy9Pj/h2MbV6IMl21H3cVr1xVWEZ/JUUs+MXAvOgNitmMbH6QYDWMZ/Z
+	E5pHLEaYIKCqp5w+jWkW6LAvUQcLW3Vk2x+KjcpUdkk4+99Q7KwNKDUluOkXOHhQhCJeV++ctyO
+	KqEuF9jPi68HoxDo2Rjwg8BdbxsBdgYCAnBZr9oQ5ILlg==
+X-Received: by 2002:a17:90b:3c45:b0:398:9beb:5c19 with SMTP id 98e67ed59e1d1-39b26232bb1mr58417921a91.20.1789022000528;
+        Wed, 09 Sep 2026 23:33:20 -0700 (PDT)
+Received: from G6L4RL2QG9.bytedance.net ([61.213.176.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d84fdbae4sm1213094a91.14.2026.09.09.23.33.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 09 Sep 2026 23:33:19 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>
+Subject: [PATCH v6 00/17] mm: Introduce section-based vmemmap optimization for HugeTLB
+Date: Thu, 10 Sep 2026 14:32:39 +0800
+Message-ID: <20260910063256.64386-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-1-3a93791af1cf@linutronix.de>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 469DA40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 06A63180005
-X-Stat-Signature: urox57czf1975obe416pwy4f9gh3ktz5
-X-HE-Tag: 1789021910-151537
-X-HE-Meta: U2FsdGVkX18ydfiyhboFnkKonXE1mHFQoJ45SWA45yQFMR5no3NYNjRHRz1RVSmJSMSAnCFpGEh0JbPzh7C+6nqXj6GXAaNdR/g7+caW3/Xc4SF6iXaxTycNk2BZ0sZxMIkdo+mHHs3708jNSx/YE2O/6WJcXEftsKZfZ4gBNhm/JC7pQM36vrvQHXhJuqo/AzQFtUOVJ31mExnbDRDL8xL0/jfJjGteNeYDZpUHz1knjMX0BMmP58umAXr8lzI/cjFnS+aCyq4WJQx6CVNAnxwRvJcqw4K1lW4agc6D/xi+ko1CFQmbMRP1UKYQH9Z7BQKA6AWueLeHR9ijOv9gtIpDF55P4BgkBQD6JdBf6s03BU+BhoS3jSeiOUqX6xkMC5hMFWqrRW1Aciw78GEHk9Mw/phKxqzh4ZLl0jZZJ3RBhWMKgdX6SjAUmeAAUNfc0S1V9BtxtzEYrQUvdRQQxbLFjxYyOC/opVse3bvJGhVA6ag2JVdT189mVbmHUfznlJDO2USLh7qv7ml5R5FDYkYF9teg+UdVwUiigDy1XRSforsswLL5YXnQOf0WT2PPSIVX2fCJdJjkjEtxX/0hZf79PFwCbxBPYJqyukzSUeHsgMMQmlWxRi6dTSLv/c5g/czuLMeX0XTM+WtHc3h33FZPJwWoJ+QYn0NDZ7DxFvzrkW39uaEO2jatU9IEz8kGNd1ShIhumAh1iPfS2CNcEc23tLqHGNWuAKpfoKUmJpPB5rmnO+BO+q1u8MLhSqzFJeQXiR30g4a9wMCRbtdD4n0BfM7Yw06gSC4tb37HXFOpRiiEMHMkPLldGop6Hg+XmsOjbWaSvYpJrVsBIWUxmBz9BhGJePbYsDW537fSYnCHZS4c7lsXpEddmGSyyva6jLGesRmo3iZRUeYxympvMqfOx3pl5qFrC1WgCevDLYdmSqtklQmrtwG4wjkWLH+FKasa0qZlNrjayf8a94d
- bFPVRdcR
- MHV6Zb2tfMDDU+snXyy1OfhO0mTasenloMYy/+3RTd+N16S+hpBB0TYR1ZOi7YBxa2Errdt9ZtdMK0ZZB8nrVJ/M+9VG0Bi/KhNyYg2YlWaenmA/wdBzyEsOBMzmU95hfW5O8qVpwoFBY31AjnD40p1E8l+EN0XptBE3UBwkdv45FwqJEudX+yYuc4YxIM8rOoSuMHG8wHtMB7zry2fi0cxvJ14xN8MslkSG2tY3JwMUZ76D+PXXYC6QUfaHzQYFalUEsadCVhS0+hGwxp6H9fLBEGEglG4tDmfTxPINYnW3tH41vW6kcZEDjQDyrb/gg6ki6GVhCJ+NFGXn04C4qy4WESomNVOb7SpnWSOx50E4Zfy8T5Ly7NdkFNw1io+9RvcQ6q1aRXqHKsVZu0v/h7klxROEOFh8QuVvnNIyx4E66Bvkdpowgm1oGfeJcikyVh97iwkBtqDAS7vqQs1cbtkzMXnPCOVmq8NnlXjxk3e6rdc8cAnqRgG4aBrOv6nBF8X5aH4xW8g1zNZ5wPIDncgddgUyX8jilmXetKOxtUB8N7A2rn7WyHZp4UHkPFECiG5sMbPoZq6lHqTmQpv9mUjlgmA==
+X-Stat-Signature: sob6rk5anxekckmqpdkzgap98ogopahy
+X-HE-Tag: 1789022002-36781
+X-HE-Meta: U2FsdGVkX19HniAcdIxDl0SCHj01WBUtFBQ4psxBc7iX5tP6NZL+NZ6PxOKA5OFJbn4HNI0XhzdLdZE68uB6Vl+fBXF/2FaF7YAL8B2bYm0xQNg93+Q7aVDM5NQ66XSTynz/m9FSOgSdIgD/TWDZuOiP0PDPcbmFbYj0kJCgyOT2++BJ8UKK0PmQxT2XW2oJyTsuA3CXbsstWnMfTptHetR3Aebyb4mxNoRj3+QmxyMKoayYD3EhKyi9ckWvUH8hlCxQL71hkj0SOrOeCRH8DW3k0ALpGLqvX4o5dbQTxJLj4q3Ai7aDtn9NpgAQLENsMdaVRX1A2QJ4kUeUSGmweciip2PZMz7MJyIhNUbfAa1UwVZOwNrjuedaeqe+rJACKRxT2MzPCToi3tTE6efzwxlPMSeAlGqT6MfZkdzNGr5TdFZhcGsHcg8weSjvTI4VvFvyQ6UTaAGaIo1gqCMOCUwhK9M9Ps2zSSMB78Uv552KQUZ90d08F88qJH+b0v7CGi6Ji42nKHOuZJdm7SQbtb/2hli5jPdMkDS9JVd8FpN8FBQk0d7IjNIJHjIN6Sw6MlkU1OK/ERQkF1rtFyt4wLcLIaKKMKhdBb1t+BQHPdpui4Y49G5bEOwGBbPP8haZhgviZfvC0nJehxN1YeFGfHe9PgzFBG0AbyLZZvki81OIOGmAUTzDo+2QDKj3VSQ+ngwlOyT4O/eeZkUP+TO+dHISaTOtx9/vPmRhCj5ilCv0FuR9XSNr6BpOd2TZ2g2hMe/G5wvFohWt2Iwv2FRoJnwEuaVWJJSdqj4WmToYxOPtZ/4WCXORAf2Ci6MZ81HUSnHORGrfskEb0gKOGfVFtq5EKVxxcxf+7CRgHoGBdaNvFEaO/l/QFYj9g6WArbLC086RSKItlkhBR0s8BDfq44Rjljan5lUGRpQ2rQryogH852jF+bJkIA7F4am6iPxPTwtuTBhb/2goLMP2uGU
+ WAwDqLNH
+ 7bV1P+WnZFzOFEuzMybgnH11vXZbQKXqACcClteRiVWO8c2c4DYV14YiTtMrVls0rigOn6dAPVJ0R8orJHugwYaAeNzPn9BBOuFsPGuyhwKeLthZfAi9TtD238a8C7mx+EUpgD20ZODsxgYZ0j6hdWBV1EsNaIQjTreZg6FCZMngG87b/UU3sQGWt6Ci/SLkirkZTb48NE3usV21U/IhhO8hvn0WSQcPATcVBJMaInrEUReAs6ql3lUyqTO1GRsOgSxFcHkqvInsdewz3MfjUP8Fz6uC0FudgdS5NuZUahLxJAW2gKpbAoL1c8Lq8rXMfiv9YfSIakHfn0jj/76fVpdkKKR2uNDhgH8oYBtBvfj8pGleJL0KT86lxyaIHO01VHp91FsNDBXAl6a/PSRzFa/tUEuNhME2Jkb3/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,49 +127,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 08, 2026 at 08:33:35AM +0200, Thomas Weiﬂschuh wrote:
-> While the numeric constants for relocations are architecture specific,
-> it is still useful to get access to them from other architectures.
-> Also the definitions are useful for userspace in general.
-> For example tools processing elf files during a kernel cross-compilation
-> can make use of them.
-> 
-> Introduce a dedicated header for them, similar to the elf-em.h header.
-> For now the header is empty but it will be filled step by step in
-> upcomming commits.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> ---
->  include/uapi/linux/elf-r.h | 5 +++++
->  include/uapi/linux/elf.h   | 1 +
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-> new file mode 100644
-> index 000000000000..2c382c8a4807
-> --- /dev/null
-> +++ b/include/uapi/linux/elf-r.h
-> @@ -0,0 +1,5 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +#ifndef _UAPI_LINUX_ELF_R_H
-> +#define _UAPI_LINUX_ELF_R_H
-> +
-> +#endif /* _UAPI_LINUX_ELF_R_H */
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index ee30dcd80901..b3e312255552 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -4,6 +4,7 @@
->  
->  #include <linux/types.h>
->  #include <linux/elf-em.h>
-> +#include <linux/elf-r.h>
->  
->  /* 32-bit ELF base types. */
->  typedef __u32	Elf32_Addr;
-> 
-> -- 
-> 2.55.0
-> 
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: making the generic sparse-vmemmap code
+section-based optimization aware and switching HugeTLB bootmem pages to
+this path.
+
+HugeTLB vmemmap optimization currently has its own early boot setup
+path. It pre-populates optimized vmemmap mappings before the normal
+sparse-vmemmap population code runs, and sparsemem carries
+SPARSEMEM_VMEMMAP_PREINIT only to support that special case.
+
+That makes the HugeTLB vmemmap optimization path harder to share with
+other users of sparse-vmemmap optimization and leaves a fair amount of
+HugeTLB-specific boot-time state in the generic memory initialization
+flow.
+
+This series introduces section-based vmemmap optimization support in
+the sparse-vmemmap code and switches HugeTLB bootmem pages over to it.
+Instead of having HugeTLB pre-populate optimized vmemmap mappings
+itself, HugeTLB now records the compound page order in the corresponding
+memory sections. The generic sparse-vmemmap population path can then
+allocate or reuse shared tail vmemmap pages based on section metadata.
+
+The patches are organized as follows:
+
+  - patches 1-2 prepare sparsemem and vmemmap optimization metadata
+  - patches 3-8 teach the common sparse-vmemmap paths to use that state
+  - patches 9-10 switch HugeTLB bootmem optimization to the
+    section-based path
+  - patches 11-17 clean up sparsemem and HugeTLB bootmem code that is no
+    longer needed after the conversion
+
+This is intended to be the second smaller step toward the broader HVO
+generalization. The device DAX conversion and the wider HVO
+consolidation are left for follow-up series.
+
+v6:
+- Rename the section order field and helpers to use compound page order
+  terminology (suggested by David Hildenbrand).
+- Clarify when shared tail vmemmap pages are initialized and drop an
+  inaccurate sparse_sections_init() comment (suggested by David
+  Hildenbrand).
+- Make the local vmemmap allocation size const (suggested by David
+  Hildenbrand).
+- Collect Reviewed-by/Acked-by tags from Mike Rapoport, Qi Zheng and
+  David Hildenbrand.
+
+v5:
+- Add comments for pageblock migratetype helper callers and shared tail
+  vmemmap skipping (suggested by Mike Rapoport).
+- Move section_nr_vmemmap_pages() earlier under its own
+  CONFIG_MEMORY_HOTPLUG block to avoid code movement in the later
+  visibility change (suggested by Mike Rapoport).
+- Add vmemmap_alloc_pte() to keep PTE allocation handling clearer
+  (suggested by Mike Rapoport).
+- Collect Reviewed-by/Acked-by from Mike Rapoport.
+
+v4:
+- Rename pfn_vmemmap_optimizable() to vmemmap_optimizable_pfn() for
+  consistency with vmemmap_optimizable_order().
+- Move section_nr_vmemmap_pages() outside CONFIG_MEMORY_HOTPLUG to fix
+  CONFIG_MEMORY_HOTPLUG=n builds (reported by kernel test robot).
+
+v3:
+- Replaced the !SPARSEMEM __pfn_to_section() stub with
+  pfn_to_section_order() so callers can keep mem_section access inside
+  sparse helpers (suggested by Mike Rapoport).
+- Added vmemmap_optimizable_order() for order-based vmemmap
+  optimization checks and used it for HugeTLB bootmem decisions.
+- Fixed the pfn_to_zone() commit message to name mm/mm_init.h instead
+  of mm/internal.h.
+- Collected Acked-by tags from Mike Rapoport.
+
+v2:
+- Kept struct mem_section aligned after relaxing lookup constraints
+  (suggested by David Laight).
+- Folded section order tracking into the first user instead of keeping
+  a standalone API-only patch (suggested by Mike Rapoport).
+- Renamed the HVO order macros with a VMEMMAP_OPTIMIZATION prefix
+  (suggested by Mike Rapoport).
+- Moved pfn_to_zone() before the sparse-vmemmap optimization changes
+  (suggested by Mike Rapoport).
+- Kept vmemmap accounting and population logic in sparse-vmemmap.c
+  (suggested by Mike Rapoport).
+- Renamed the early sparsemem helper to sparse_sections_init()
+  (suggested by Mike Rapoport).
+- Fixed the !SPARSEMEM stub name so SPARSEMEM=n builds compile
+  (reported by Sashiko).
+- Guarded section_order() with CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP so
+  it returns 0 when HVO is disabled and lets the compiler optimize the
+  code as much as possible (suggested by Mike Rapoport).
+- Collected Acked-by tags from Mike Rapoport.
+
+[1] https://lore.kernel.org/all/20260513130542.35604-1-songmuchun@bytedance.com/
+
+Muchun Song (17):
+  mm/sparse: relax struct mem_section size constraints
+  mm/sparse-vmemmap: rename HVO order macros
+  mm/mm_init: skip initializing shared vmemmap tail pages
+  mm/sparse-vmemmap: initialize shared tail vmemmap pages on allocation
+  mm/sparse-vmemmap: support section-based vmemmap accounting
+  mm/mm_init: factor out pfn_to_zone()
+  mm/sparse-vmemmap: move helpers ahead of future callers
+  mm/sparse-vmemmap: support section-based vmemmap optimization
+  mm/sparse: initialize memory sections earlier
+  mm/hugetlb: switch HugeTLB to section-based vmemmap optimization
+  mm/sparse-vmemmap: remove SPARSEMEM_VMEMMAP_PREINIT support
+  mm/sparse: inline usemap allocation into sparse_init_nid()
+  mm/sparse: remove section_map_size()
+  mm/hugetlb: remove HUGE_BOOTMEM_HVO
+  mm/hugetlb: remove HUGE_BOOTMEM_CMA
+  mm/hugetlb: localize struct huge_bootmem_page
+  mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
+
+ arch/x86/Kconfig        |   1 -
+ fs/Kconfig              |   1 -
+ include/linux/hugetlb.h |   5 -
+ include/linux/mm.h      |   4 -
+ include/linux/mmzone.h  |  66 ++++--------
+ mm/Kconfig              |   5 -
+ mm/hugetlb.c            |  65 ++++--------
+ mm/hugetlb_vmemmap.c    | 103 +-----------------
+ mm/hugetlb_vmemmap.h    |  13 +--
+ mm/internal.h           |   7 --
+ mm/mm_init.c            |  69 ++++++++-----
+ mm/mm_init.h            |   1 +
+ mm/sparse-vmemmap.c     | 224 +++++++++++++++++++---------------------
+ mm/sparse.c             |  93 +++--------------
+ mm/sparse.h             |  88 ++++++++++++++++
+ scripts/gdb/linux/mm.py |   6 +-
+ 16 files changed, 302 insertions(+), 449 deletions(-)
+
+
+base-commit: 219467624544a1dd72e2022a442741e66766e39a
+-- 
+2.54.0
+
 
