@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344C6C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:39:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41146C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:40:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E6286B0095; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
+	id 505396B008C; Thu, 10 Sep 2026 05:40:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B6EC6B0098; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
+	id 4DC946B0093; Thu, 10 Sep 2026 05:40:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CC926B0099; Thu, 10 Sep 2026 05:39:00 -0400 (EDT)
+	id 3CC5A6B0099; Thu, 10 Sep 2026 05:40:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC8D26B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:38:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA4C412045D
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:38:58 +0000 (UTC)
-X-FDA: 85197353556.20.4ACB3D2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA386B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:40:38 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B5501C23B6
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:40:37 +0000 (UTC)
+X-FDA: 85197357714.06.DDFC001
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3FF2C40007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:38:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXcqGxKO;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789033137;
-	b=vcu+XZQnjanUDd9NJEFtLPKcYW0U5y3T3QXa28Nukk6XfO/nbhAJDq9UznkWQCVg98lMkj
-	b/cNs0RramCrhNp9hYMSxwl3LnrDSPSnHwJ4sAFP1wbFBFaCzCwYBej3+BzkZJnprlBz1Q
-	1ju5wphJ0DRU2shsi/MIqGZqOxcrIVU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YXcqGxKO;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7A619180004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:40:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DDgMmp3b;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789033137;
+	s=arc-20220608; t=1789033235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rtpC6H1ULndfbNFZ13FE1fDkMZRvAQ+CwTcYhQHI6N8=;
-	b=M49D9de1PRJjvMLxIhge9gb59sGvZKBhIal7Iyb29nLMeNz/qi9a04xHHJX+vHQzxJW//Y
-	A1bPP9RSLki2voUFYXl7Uu0RMXH6b32BLvEgoG2n0jhF2mKTh/FAm+I5UUfvK33lz++9uX
-	8ARJdpjbf10p2+R2Bkb6pM1vLzi9V/s=
+	bh=LOwczmd6xJ2j1KBWAU06PaQI0R1ONjM3JPnqUxNd2+g=;
+	b=LVdRWbqJhfRe6PLvHls0rs2YHELtVFdAbxvFQIzUvY5NG+UThNo/g77V+JybTvvBkTczLE
+	71Wj3edFfiDkJ/ref1N2PZ0moJormpi+vlE3bLQfEGrBFMXyADN8M2nwHiOFq8poYSyHVa
+	dP4AQ3YTGymx/tRZiTF/T91Gg0NBB7k=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789033235;
+	b=XiNy/67qdurFz5u7ohVJqBzZ1G10zDixnYKFvRzV/wKvO220Al7vjGO0we0sU0nFJMtJzE
+	ZEbDv51v0c2xMXkuElzjFVyoxBbarQP3TtjSLqGB0CV+QYFSJ16Z2jWKVoMUG2IcN/JCd0
+	KpVSmHN7OdepA4Uh9p/R3Er7FgnIuqs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DDgMmp3b;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF123600CB;
-	Thu, 10 Sep 2026 09:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A11F000FF;
-	Thu, 10 Sep 2026 09:38:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11B3C601F1;
+	Thu, 10 Sep 2026 09:40:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9F41F000FF;
+	Thu, 10 Sep 2026 09:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789033136;
-	bh=rtpC6H1ULndfbNFZ13FE1fDkMZRvAQ+CwTcYhQHI6N8=;
+	s=k20260515; t=1789033234;
+	bh=LOwczmd6xJ2j1KBWAU06PaQI0R1ONjM3JPnqUxNd2+g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YXcqGxKOJIL+3bo3p+fRwNz7JFxdbXFMSdnakPLo8wv5JmHZgITn/QHj4u9aRMv7l
-	 yMlZfDi7aDzzNvcYRbN5fPlZwwsrG1NU0qDpi9wx36duR5dsh/bigu3bK2rTS19Zuy
-	 +L0ciI8kAGkmXGKxrOTkB8d9ZSxHTGyV4XjPDn9jQgPxjJDUU7SUrDqSqP31Vx7b7A
-	 JUY8BFS/7CFd24Nw8ESRCRDCGe6FwleGixN7bUzYOVY8W2j0EqZpPFfRAPGFwkyD5Q
-	 /kF0un6VhVjZOFuZye9arimqlF6VO+6ttZ2SMxbVRTWkVK6bq75eowcsRTsYnWXP70
-	 tDwrdkAGLsyAg==
-Message-ID: <707b26ac-7f73-430a-a473-cd3409c4505c@kernel.org>
-Date: Thu, 10 Sep 2026 11:38:51 +0200
+	b=DDgMmp3bPTCKqKWHXJGkt6fiCN0NUJy6HkHGTlhL13P6vcB7QZWAOj/UOeJvm1ct3
+	 1EQebYe4v54l9LpByU5ciXP61GO+kVlEYaJXEGZWbOz8oieribmiPe8541HNszyUaH
+	 5QPJjJklIxmTHE9lZ7yLaUan4VmtzRsXkY6DlApG2NAzbW0xvmADr8tPY1ojbuGhTe
+	 3LolNcZZrUW7ob2hYnnPg8eYwy6M4ZHPnDQVhpiMhBP2zSA/9SBnt1NDYSc8PedKka
+	 K5gl+jiYYta9J4IHHE3bDHXdznLrEFiK2Yv1QuMwc1yyooW2/4Kfftt0XOPpvyzC73
+	 P0ICSNLO9RVqA==
+Message-ID: <42703e8b-cec3-496b-9c76-4dfc35ad469f@kernel.org>
+Date: Thu, 10 Sep 2026 11:40:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 0/3] lib: add synthetic MM benchmarks
-To: David Rientjes <rientjes@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
+Subject: Re: [patch v2] lib: test_vmstat: add synthetic benchmark for vm stats
+To: David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>
+ linux-kernel@vger.kernel.org, Sarthak Sharma <sarthak.sharma@arm.com>
 References: <d6787a7f-3213-2b2c-2de5-af3b02daa21f@google.com>
- <cec6f48d-8857-49d6-a24d-b072482bf0c8@kernel.org>
- <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
+ <e8dd28ab-ea7f-2ccf-c89e-a12f2d8b9988@google.com>
+ <94068447-f9c5-ba84-73be-bf492277b9b3@google.com>
+ <a06d4920-a63d-d653-1ca2-41b7500f1134@google.com>
+ <6136773e-b134-070e-36fe-2951aa25b5fe@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c76621a4-cc8c-b6a7-732f-633d372477ff@google.com>
+In-Reply-To: <6136773e-b134-070e-36fe-2951aa25b5fe@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3FF2C40007
 X-Rspam-User: 
-X-Stat-Signature: x8btbgrzzmsrysmia7imo3m4qx4wus6x
-X-HE-Tag: 1789033137-358171
-X-HE-Meta: U2FsdGVkX1+ZH1ggj1weIOHaYjJJvvjbHEwe+Jyf22f3c1EsoRttCpAp4qpwAqdVbS9x4FPrqDrhLIglLuOu5f8bdjGKzHSfHCKyWQx0QdwoOC1g7C5Wtefa7zJb6s3/U2bVL5P9MrpRkQxbnbHpkDsvEt/hmzH8UUtpfReO7H8/4nKTXO9/WeZg/VD1SOMxAP80aT5wamWfICLg3uSRB14Kut6rteXUz5aVyWk2SAB8TsowVRsGo9Ijf6QGIGUV6OTW1wWqWQJpXgo1YAAtlZDB4v2Iz2dx1EANaRIAdq4gnrZq5/F3l6N+yBZoqPmOXr+fu3gy/XNcyMTy++1HUCsm8gBFW9PL656Tht0RHWOMJdSYaULOcMpIJ7Sw/S3yJqde8b3HXwhAa5zHY5NtnN6cnIs/sKB/h7pqDMtPaOZrON1V8F839az0i37u1TtY3qjRo1BHiVc0XD2wXpoI8NB2NqW1mkqm8DXIWYy5V3pjHp0dyk4jUhd4NfSHgCAUb43Cx5kZtnlKVeonDJd8gmY//WSZGJqaeWVSTLxYr/DPttbv93KEbe9PlREty/m7T64ChStJ7zo1Xw4IIOu1gRVv9B7bx6DbA2KByB93IR2xTcFWmkQ0TXq28ZTAefJoX59R5krRCRURHyg8eR/N1IcLy0IXkKCWXGkVmo2V9ANN1XobFYQQsHrIJBPeSLk9BwZW9aTaW/OuNSIk+kvqRF9bN5PA09deORN/pxgkIA7MiuX6wK3p21D3ddM7o6ow/JigoeAohCAMmqAoQxOilGp0MoTtc6+x95qN47UQy5xAA0+k69LdO4GqR8ZJyVJdmgbhmiuTyRTf4C3mHjtmtu4oGAhCj6iurEX/+JhuhCzFWf6kb5Ejv/J7VC+Vz1wLU0PO+Km2nBBTNtJqwIqAO3fQ881VHT72FZ0m9y4dFcMDsSaB2pVKbAGKBijaiE5vB6ODfnFOiVkv7YAgniB
- Z3DwFfIV
- 1TIzAmTfSaLTjbL8fnLEG55gxzrYfVNb8AFbIzlp3BupgfSOzaLtlN5zOPzEt5Bu7tgTQ0DIp+Mzjf/uf9rcdJgXQilGdFv/5HZEd4M3OTYB2EfTjHx22qPYl65yNTgAFuX+0O3NvGNgT6ofuzxl2VFgh2LTPkJeGljKCn6wxlMhPbGav3nQLmXwWUQUwjyknQy2WqCyIIngjknpdCkM9OFNgkwYo73/0gnNLtsrytyb8OqXH4V96ht7ZKkoNBWuCXs05
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7A619180004
+X-Stat-Signature: 6cmqbhfntzripa81t4zr5pzjkrokiuzk
+X-HE-Tag: 1789033235-932808
+X-HE-Meta: U2FsdGVkX197DLK3RG2WycIGr7doFVtkxrWe4AvWp33W9yChALJu+Y07bW21GwOcp9QVwRaR1R1xGxeRJkwraOmsBVwUpnhihGVLL148N+r4mAyhdYK3zGGPt8f1WW0pRfvWGuRwZk/m3GdpED8L6gZolznAU7JOv0Io4xDne3i9CQIqE0rYhP3T6dUG90O12rflvPpilAdkiny/CLJP+bRB6Nh+dmnqM1TFQLkvvjHLDAh04ReTm7CNoD0ihUKe90pV+tmZifIAQ8Dv7eBiXvzqw4toITBsPIo7/l3u6UAhFpwFEhGL0Il18+JLBAuU6ZJRvbpYyPJOu3QFfCnO3j+V9Bf+3nCEYpEpCRYatz9bBqKAOGvAWs4UySLh3sEQUXhW8vegfBz1VXfmdF8VovBwkgUYX8Xd1JNeJmtRRypzFyBSpzUAWVJU0Iin72UqGIcoI5jYFpwuzr4/tqn0Hv/FH8jh4r4fUXTq11r82GFYXGJnseGUGNOpSd5c6kDM/VK64xDLdNYpWER1Y2cOML50yvivbO1PSPiZChj8d2hkM20On6EJ+2NzaEZBgQbWmy5TLc/9m/qO5IsL55FhkODNdV+WjtJFHxEkfqFXpUDJXdIp05lcuB9vHY0nsGMPMCHlnI3XGvy3kQWu2C8EPf23yAg4AIg987wYu+72pa9QdnXRiEjiuuKjwkloW0K2YLoDvWmUuoZdBW+XvoZUNleoF75Ig128UY61vzW863XpNMYXES52CEw1Up58jEBDFJRhQt3e+fzlnzWFo/W/dTcHwvaKEtY4y/mldQ1svMbf4UJLJCp/k4xLcp7/OS3HNcqZIzVP3+HdHh1kkBR6saYoAjR5x/M2H7Mctl/tMVW2LAiZWkmmaPAl+k0hwEwQlhvBJGw3VVpOhzjxstHLUh9m3w4+gOonPgm2bsrmSDMrW7r3ssXJLvXeuZb5UQbKFF/qW3eiUavHrTRAHwr
+ /yghSDdl
+ QRi7peB0Ktx0yJVxRz1vPeDnx4XM9G9JqzwPhc46YjTfqmg3VDOCXuj0/0zqcDG0OhCkr32J1qk4Hw2HkFgWOKNpIVi7mrXV7C03wsJr7PoBFvo0EcqT6DpnSthPUnYkKEJsYoG0VTnvkQFXeYZ+IDzrADX8RAmO3I3Wc748oHdL0DXyiJgMVujuO+HYd5fuVv8Sg0tQhb/niUbuSZChEmzwsoZ/9PoUPo7ItERkOO2sTBN5OR93wrfl0GUyc0ITTpoyr1b8EWJIUa7JaxLrAXSkPJA1YAGhDVij/Fji2wljYINBUO5U3u81bIny1W8X57CqXF6/kui46Toj60xbvQ1BIcnSV1m9HfQArsqo2TOUEJ1nFeEK3KFmOcwNsX1qnLaMQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,75 +143,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/26 00:19, David Rientjes wrote:
-> On Fri, 31 Jul 2026, David Hildenbrand (Arm) wrote:
+On 8/22/26 01:52, David Rientjes wrote:
+> On Fri, 7 Aug 2026, David Rientjes wrote:
 > 
->> On 7/31/26 06:26, David Rientjes wrote:
->>> A blast to the past :)
+>> On Sun, 2 Aug 2026, David Rientjes wrote:
+>>
+>>> From: Christoph Lameter <cl@gentwo.org>
 >>>
->>
->> :)
->>
->>> We've been carrying these synthetic benchmarks in our kernel tree since 
->>> 2009 because they've been helpful to identify regressions in hot paths, as 
->>> well as quantifying any improvements that have been made for new changes.  
->>> Hopefully they can be useful to others as well.
+>>> Add a synthetic benchmark that can be used to measure performance of VM
+>>> statistics.  This is used to analyze any improvements or regressions in
+>>> functions that are frequently used in hot code paths.
 >>>
->>> The synthetic benchmarks are run by loading the module at runtime.  The 
->>> modprobe will fail intentionally so that the module gets insta-unloaded.  
->>> The test results are emitted to the kernel log.
->>
->>
->> Ideally we'd have an easy way to actually use them in autoamtic tests.
->>
->> E.g., loading fails -> error, loading works -> no error (and unload)
->>
+>>> The test is run by inserting the module: modprobe test_vmstat
+>>> The module insertion will always fail so that it is automatically
+>>> unloaded; the results are in the kernel log.
 >>>
->>> Proposed with permission from Christoph.
+>>> Signed-off-by: Christoph Lameter <cl@gentwo.org>
+>>> Signed-off-by: David Rientjes <rientjes@google.com>
 >>> ---
->>>  lib/Kconfig.debug    |  30 ++++
->>>  lib/Makefile         |   3 +
->>>  lib/test_pagealloc.c | 337 ++++++++++++++++++++++++++++++++++++++
->>>  lib/test_slab.c      | 375 +++++++++++++++++++++++++++++++++++++++++++
->>>  lib/test_vmstat.c    |  95 +++++++++++
->>>  5 files changed, 840 insertions(+)
->>>  create mode 100644 lib/test_pagealloc.c
->>>  create mode 100644 lib/test_slab.c
->>>  create mode 100644 lib/test_vmstat.c
+>>>  v2:
+>>>   - added bash wrapper to ksft per David
+>>>   - integrated into ksft
+>>>   - added MAINTAINERS entry per David
+>>>   - fixed alloc_page() error code per Usama
+>>>
+>>>  Adding single test for now to solicit feedback before updating the other
+>>>  two.
+>>>
 >>
->> This looks similar to tools/testing/selftests/mm/test_vmalloc.sh and friends,
->> that can actually be executed as part of our selftests and do a modprobe.
->>
->> Can we have similar scripts to execute them?
+>> Any feedback for this one?  If this one looks good then I can also apply 
+>> the same treatment for test_pagealloc and test_slab.
 >>
 > 
-> Thanks for looking at these tests!
-> 
-> Good call, I agree these could be loaded with a wrapper similar to 
-> test_vmalloc.sh.
-> 
-> All three of these tests don't take module parameters (yet?) so right now 
-> this wrapper would just do the equivalent of check_test_requirements(), 
-> usage(), and run_test() where we'd pass in a single option for now, 
-> "performance".
-> 
->> But I also wonder if these test modules could be placed then in
->> tools/testing/selftests/mm/ instead (or some subdirectory for test modules).
->>
-> 
-> I thought about the same and just followed what appears to be the standard 
-> convention (like test_vmalloc above) for lib/ for now.  If they should all 
-> be moved under tools/ somewhere, perhaps we handle that in a separate 
-> series?
+> Andrew, David, any thoughts on whether this one is acceptable for merge?  
+> If this looks structually correct and is staged for inclusion, then I'll 
+> do the same treatment to the other two proposed tests as well.
 
-Yes. lib/ is just absolutely the wrong place for that.
+Please send new revisions next time not as reply to previous revisions, makes it
+easier to miss them ;)
 
-Maybe lib/tests/mm
+I still dislike placing them in lib/ but as discussed, we can handle that
+separately (CCing Sarthak).
 
-But then, I wonder if they could just be somewhere in tests/ directly ...
-
-Anyhow, it was also raised whether some of these could be written as kunit
-tests. It's been a long time since I worked on these, so just mentioning it.
+As replied to v1, is there any chance we could convert some of that to kunit?
 
 -- 
 Cheers,
