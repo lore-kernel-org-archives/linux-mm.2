@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6493AC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:55:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9120DC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 09:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4F756B0095; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
+	id 4FED36B008C; Thu, 10 Sep 2026 05:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A24B86B0098; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
+	id 4B0756B0099; Thu, 10 Sep 2026 05:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7476B009B; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
+	id 3C4B16B009B; Thu, 10 Sep 2026 05:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 679546B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:55:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 14DE14047E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:59 +0000 (UTC)
-X-FDA: 85197393918.08.DFB3DA0
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 231D4A0004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:54:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PasgboiQ;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789034097;
-	b=tjnqRShfIGcurFyoegH4ueqblR0rIk+NI1CvN5xzm12bMb3BESbCRSkcZouGtnMfx5NrPn
-	6+H03VsGbfcL+RqTzffhFn7Ve1kC/UNuQ8Kshy13EGk5RPNt3NhArF8O0BS32Y/429iMwd
-	dWuWuIEVFVtGpG8xfN1H/hK5yBC+Peg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PasgboiQ;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E096B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:58:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CECD80454
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:58:15 +0000 (UTC)
+X-FDA: 85197402150.10.C5862EA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F15DB1A0009
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:58:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKaF9uVF;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789034097;
+	s=arc-20220608; t=1789034294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ovbFxwCNHbB8G0hURmEkvpDbAzDv+nonn9A+bOJYp5c=;
-	b=07l9LYAE0jl7s2vlggaOUDAa+PRkzPVgmpkaFp91b6BH45ARqQcoTJbgd3UM6PGHGGcpc+
-	K8RrpcHcnr/0uW0l2LDn06expgkbr1ot6WqzDoXr4qyW2K6UwHgw+rEN/HZNjTjx/IXgW7
-	GrmSuxoayCYiD4D+xZLPb/0CmOwshs8=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ovbFxwCNHbB8G0hURmEkvpDbAzDv+nonn9A+bOJYp5c=;
-	b=PasgboiQ4hx+/+NdzfQVWaVhFj07liWp4O8dvxZrG02Cr59972JAo6h5SXffZMLLCtKiRKsLw
-	ZIQUZ98NvwyXHYVQlgKwQp83/7QyygnpkzhblJGtMvKQ/tiSRTMSU4lnmky9T0ovR7hNJ8KDkgg
-	jLg9uG7GY1x6x/zCaInAYQg=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hgXms1Ymhz12LHk;
-	Thu, 10 Sep 2026 17:43:41 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id DEC2B40537;
-	Thu, 10 Sep 2026 17:54:52 +0800 (CST)
-Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
- (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
- 2026 17:54:52 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
- Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
-	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, Kefeng Wang
-	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 4/4] mm: zswap: skip zswap_invalidate() in swap_range_free() when zswap is unused
-Date: Thu, 10 Sep 2026 17:54:49 +0800
-Message-ID: <20260910095449.715183-5-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
-References: <20260910095449.715183-1-wangkefeng.wang@huawei.com>
+	bh=ipF4yAyH+8cCr/5i9AssjJeIC5nrzhoLBaXZQ+ebQbg=;
+	b=XE8YiK+JRbcHWSCslEHQFGjyPqWGb0Drr1G4DRF68TmNjcq+g7nHfxfpIa0W9bKxQVi0rG
+	9MkGIyp8gpuSvwVAliZJKgEnqdzGS6gPing0armUeYBdrIHYSMnwgQ5RU1sQI+E/047Mi/
+	P5WrYK1VeLhgt95j5gm48arkl871cog=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKaF9uVF;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789034294;
+	b=oarLkLtuqi/bVDfUO2vJfV+KULpaXQQOmzgWo6HpCEjWd5fUqK4lHZyrMKg9rCACYY7593
+	keX8fqWDRP1B2MjEAFawGCM15JB9KjZ/QhBMXpHn/4iOD8LoGZL6LM5D0ChCf63emc3ViN
+	onBXA9T9W+PKUiCRysQYvZEtTLSUC5I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F557436F1;
+	Thu, 10 Sep 2026 09:58:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA2F1F00893;
+	Thu, 10 Sep 2026 09:58:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789034293;
+	bh=ipF4yAyH+8cCr/5i9AssjJeIC5nrzhoLBaXZQ+ebQbg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=WKaF9uVFSuDdkvnZUv3XVv2Ww4wViV0R7H07gTfwwn1hONZCNV2Bx702FMNcvfM9d
+	 QDpHT09iVgcFFWsUrSnK4y/cbdd7Y8bJvRLO9QhnFwCpOFJNqClSd1qMGelcDXzdA+
+	 +wyhI+eixS2A42tuo5pnWmFQLs60NeTdidSi+dph9LWMRLXoQ0Op3bHL9uWolWS0qJ
+	 mIVMSxGBTrF8dpkSDOYFXMlfnrE0htjG+f4uJXMTb5CT46iTZmJikHd5ow2SL9hWfG
+	 Zewrg+p8Zur/nAaZ3TcPz/HWkqMKnhtLMhC+748FLabJIbjEPXCEGhiIs7ipcNdFS/
+	 sefzwbHF0f8mA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Tianyi Chen <hi@tychen.cc>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <cover.1788997523.git.hi@tychen.cc>
+References: <cover.1788997523.git.hi@tychen.cc>
+Subject: Re: [PATCH v3 0/2] memblock tests: cover low-address allocations
+Message-Id: <178903428798.1489479.5765028250372068441.b4-ty@b4>
+Date: Thu, 10 Sep 2026 12:58:07 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk300003.china.huawei.com (7.202.195.93)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F15DB1A0009
+X-Stat-Signature: dkzpd3ec9fdn3wtinfs3ni8xpz1mwcco
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 231D4A0004
-X-Stat-Signature: i6j855xn8hgekdwnc6ph7ahw3cocwijs
-X-HE-Tag: 1789034095-561638
-X-HE-Meta: U2FsdGVkX19FiP32/B+y0RS0IqQm3Re36bmptueepU3jLsveuQpR8PI1RlElLmx7GZggu6/SmkAYLxuL+W+istiDKQFEx9HWjpKd7+iN5BfWJQYB4/LpBVT2w/VjsAHvEWpwPdidSWc0+tSZUxkIPV7TfydiH+KKeA9rVRCfclD2yDWVRL286qwcTAMRZFXs2gwPxPid4LddPop0JclJU5zPa5flLUADn313Kl+M0M5BS7M9PxbtySq6TrBmy3QQJVAhi2n/277FaI5naKJ9j5DDkZhIdv8hhMcpO2hQVF2kIEnFhd0fGOsKlnYJk7u4pY/t0ZyqQqe3YJqZcebXnYnsTky0Cku3idcl8wwzW8xpoaHg6N3USVI9pJfcEjL9Fak8COZLy8jYQCOKMY8yl/2LWgbQjHUVwWqsWGMGRK5MTE1gUUOvwljc9xPyS2wPtKFUl0R+Y7neIZKEAdRjkj6O2w/DbgJsVi/oorGefYQnL+PMVDmfyazQR1fX734fLdhekk+4ujHgCTg5B9vXuNMw1Z8zLB6kYtU4ZPJCkadkzROECk5rbi2bbCXouvSn7Qt520z3iFgAe9uVDiRKCi3xJj7wuY/0ZbSOD+iyhUUGUhA3/daxn3oQ+vtR0hhX6MeaQ/mtwwwyvdjBbG7GLvF9FObmIHyjzXrhNxUQzoVMU8cMO5eeloLoeEhBEPEkv67UXBmKF3vfFaBGgSx76azIquxp2kvPkt6pvBWL2nWMv/3zpyI7KPa2/9o59udQlQdGO+ROJvEqLREveVFTdzWuLZ/UtuytNJeDMKsL5Gsn5jHlBcCH5AQFPqFwPECz2qxrrUz++5Kry+2QfrKtaJt0Vo22iXb9QqfeGOE2axKfhscArcr5VFavBbxMOmwygy31eR3uPHaWwDMMIzzdmG503SVipXEVFdIGkfDnYoXq6rhYY5ciKq+ADxDWAexpNkUAxJjvLSLD1fAyNpS
- EbyT5zji
- LGNt6Tp+Y0xktTi2LWZi3u+6Lu2DOsG+99r2o/7Wo6BOU0FVq64jgtubgjuGocGQkGsDijkKRfJswYG5K+Ylsp93JyrZgGgmePioeUG/iT9iNtHAoHYPRGL/0QYHfSgAPJxsMYUrR/Yrlq40oEI9KISnHtI8j6uUUDBRDFQwNbhOCyhrzkkdXDYibmKh0TSLMzHVb1bT031dq/czwGkrF508K562FlAZdINWvItPcAu2SjBaYc+aZrBqQffdw3XrOBI43BfneKVIpTDu+SC9gKd3uLcRiXqMiMQ76RXavjXl7hDqEVtbTsKBFyB/6t31mXeSfmWLanwX6c+uwrk7V8+uweFUx+7gVB+epj0alvjgQWa+nMu3SgWA7yQ==
+X-HE-Tag: 1789034293-975446
+X-HE-Meta: U2FsdGVkX18QRyyTd0VtrpCVUT0kVvfE6srs59aZ7hmAZP4rJpXU//S5UBH3nQb5lHVNU4BOOgBasZql4hcklz07LT9XZt5RKKoFTbtIujY6Akdx6V3YwiuhpWYliWRnad01qLUdZnUD1cTvlb3bxDgPcOO4Twz4AJGNWdMlr+mz+ds64BNItl9NlZi5yiigzTkbnwijgDCapSLpXzU0LsfDx7qecWmmQQDXQjNziQ/i3ZoDckUu2cKibS9GuA1bAhHfwosrSz3iIxTHOmWPQeGxFezBwY38HIUh+ZBxlGtCFTni6moGn//qmunU71c4AL4svJoiLruiqqTII7MKbvu9J6bEqrV2ASDWS9Hotsga4RMRxG9Nt4wv4NO6L366J46uKGeLkdHsRro9G/lyChgW8MUsWLRboyys7byrvE1BfxYsMucOdRbZvqx5ypFPxxGNf3nVeG3/Rm+jS+TyHptqXfbrAJnCMKcUJ6jF+BjGjAC5tlXxY2bVZkN3takW5V8e2i/+mEk0PmDZjBeRli8gk0qhwJg1rdCdRDoltoUgQWXEB4+eaP9pjbCjVencK+MfOmzCdxIB9oaAXv9+f3J1PaH2xunwrShJOG0p7DZEz2vVn/HkyNrpLntoMiOFSUPoXM1oEd48qCJpClfcYN3kS3lsWFZVCnvo2+y4bGbPsn9XWzO6ajFV23nnm+ZBrY8RE2TCjAwravL52qsd60gbMrhvBg+gclD90a/rv2cUzn5D6+cz+vZxf/VfSILJ69VfDs4oXA2sFAWkge49A/lPJcMNOIfwT/AKEXSURyu1bisRRbWR3Ttj5rGDQpnZH8FrwNsgIccszVMlKMn8u+rE6peg4alHWoIykucFdTRLnIC+K8z0x8PkbrEcthVEJZrxLV6uy9GXaJcAqfVJtzLdsuDDfBgt2GdKTeyH+Uml18sTXuw3H76xyjCKGRtLXQEPac6P9CwLpkJKppZ
+ kgXr8MZn
+ rEEFFWnzKkTOXi9LA+t1ConxCGDRbOdEm7vo17qnSpDLxqd9iZU5U9AiU75ehyVTUzGcT23hpDgFLoArR3x7NDNWc2fMKBTABM7JS6RsQoz47bHuslSNftc7MO80rIY1I+2ZpwBiagVPDVxwixMmGxrTyJO5V6g0LJ8fhbmfAVLJIxZvwFY2LsdMUt9ZMQxlQOPuVK5kw2Ku1a5V9E4ARvYn/yF4uPLY7ifVyrhFvoW3uGyg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,33 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-swap_range_free() calls zswap_invalidate() for every slot being
-freed, even when zswap has never been enabled. Guard the loop with
-zswap_never_enabled() to skip it.
+On Thu, 10 Sep 2026 07:55:22 +0800, Tianyi Chen wrote:
+> memblock tests: cover low-address allocations
+> 
+> Model a low allocation limit within the memory registered by the simulator,
+> then exercise memblock_alloc_low() in both allocation directions.
+> 
+> Changes in v3:
+> - Describe the low limit and simulated RAM alignment directly in comments
+>   and README.
+> - Use Assisted-by: LLM in both patches.
+> - Start a separate thread for this revision.
+> 
+> [...]
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/swapfile.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Applied to for-next branch of memblock.git tree, thanks!
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ba71905e4d46..505592051924 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1318,8 +1318,10 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
- 	void (*swap_slot_free_notify)(struct block_device *, unsigned long);
- 	unsigned int i;
- 
--	for (i = 0; i < nr_entries; i++)
--		zswap_invalidate(si->type, offset + i);
-+	if (!zswap_never_enabled()) {
-+		for (i = 0; i < nr_entries; i++)
-+			zswap_invalidate(si->type, offset + i);
-+	}
- 
- 	if (si->flags & SWP_BLKDEV)
- 		swap_slot_free_notify =
--- 
-2.55.0
+[1/2] memblock tests: model the low allocation limit within dummy memory
+      commit: 5c194192279e0894b898967ff939e310a9bd06b5
+[2/2] memblock tests: cover allocations below the low address limit
+      commit: ba7b611a1fada0bff7f6c3fbc6ff13978bc1af91
+
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+branch: for-next
+
+--
+Sincerely yours,
+Mike.
+
 
 
