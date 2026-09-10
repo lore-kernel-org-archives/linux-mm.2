@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6435FC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:00:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 023CAC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 119416B008A; Thu, 10 Sep 2026 10:00:28 -0400 (EDT)
+	id E17306B0092; Thu, 10 Sep 2026 10:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C9BA6B008C; Thu, 10 Sep 2026 10:00:28 -0400 (EDT)
+	id DC8456B0093; Thu, 10 Sep 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFB426B0095; Thu, 10 Sep 2026 10:00:27 -0400 (EDT)
+	id C8FFC6B0095; Thu, 10 Sep 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B45AE6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:00:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE037140531
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:00:24 +0000 (UTC)
-X-FDA: 85198012368.13.9A483F4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 01663A0005
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:00:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blwkdE5Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789048823;
-	b=IoB1dTCZP8netjektahWQri5yQ/dDLmMqhCfbQGlSM/s4P7haEgGl4iQE+fxRLkVz4KkO4
-	J0UV9AAYsFCXxSztn6x/DkoSpSa1I5xThqA2QKB9Y75rW4Ybtv6npRMe+5REUIxIJBpBsL
-	UiDW9Igo43UmM7Oc0YcnXIteKpWmyog=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blwkdE5Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 92B136B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:02:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23503160552
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:02:59 +0000 (UTC)
+X-FDA: 85198018878.23.52BAC44
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 42948160014
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:02:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fA2x/ub3";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789048823;
+	s=arc-20220608; t=1789048977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=en3cnLSz3rou/qEMJvX8ynI+F/sbMoUWhXxA8YlL6Ro=;
-	b=pF22G78IUle9dnuD4FGP9uN3SbrAEs0Iq9+cgjPLBihxwbkGwXkuwDabSPAOpqKXWCRy28
-	OcSluSTzEguoVrmgIvUDcK8Gt+IqF4WKUh4HoVPgd6WTN1NvI+Oxafb4R9pHjqxF9NIc00
-	z+8r4silmqLQ4kNAdMFUSG5iwTFA8Sc=
+	bh=Qj7jerQrIGn+60nnavoJTceZpIvkRfaJD46i+mDcQ4k=;
+	b=r87v2XV3WhPkT8YdNBp+4Z6NjPdgcz8jjMz0+tSZQupbj3gOXX7i9vg0HmV4RNiFczTfzT
+	RKO27lQHxJdFj0TUqNy1pVzNa/jThhzrpNHMoAtNMzbImREiYQTRhLnQlvI9elb3P+2GXE
+	nP7HG+yP/kzqpU8HZEJO7D2q9L31hEk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fA2x/ub3";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789048977;
+	b=HC3jvXKEg8/oDI94H4EH8vWljFciMObx8oJVafew0Ga2u5Sylw2wIeHgm9K4EajafP9JF9
+	3hhESBT3FvAk71AB6KcZ6pb01KY51Sk0axIpLkx7ZmmqDGYP+2vXM/NaQ5leQDaNu02Sev
+	pYCNbYDDOqACRxxEizSQKQ0bf++X1hY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55F84600CB;
-	Thu, 10 Sep 2026 14:00:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC131F000FF;
-	Thu, 10 Sep 2026 14:00:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6748343E4C;
+	Thu, 10 Sep 2026 14:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BB01F00899;
+	Thu, 10 Sep 2026 14:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789048822;
-	bh=en3cnLSz3rou/qEMJvX8ynI+F/sbMoUWhXxA8YlL6Ro=;
+	s=k20260515; t=1789048976;
+	bh=Qj7jerQrIGn+60nnavoJTceZpIvkRfaJD46i+mDcQ4k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=blwkdE5QaCyKLuWw769dVAe7GqgyZGrHD9jp61Y7efv6M8KCj8uE12v4fDkaUrPMY
-	 HvQzf0ChhszWc5zTCCOihSbPLfFivsmBe4jmZ0EqbUnvmOgjqugMRsoXSECB4SD3qO
-	 /BXgi69/v2LxgFq6yYk8MlrrJnzW10TrVlGIc+HmH1k8viT8RdpEMwMtWz0OknlCES
-	 vDY1+zDfG7X9NZHoRWvjpd50yrPjlDNT2BSSdLRL/OlVYYlqxP5SFSEDdHxoG/xFQS
-	 bzfwkcR80B7EcfF8xQIZJCGvVS4IsyDj9SLCmaSXBNG6OxAcEwXKd6pbqh7WEb1d2/
-	 iCZ1b4nRh/aEQ==
-Message-ID: <580e45c7-7f4e-4fbd-b73d-3bbd048fbc6b@kernel.org>
-Date: Thu, 10 Sep 2026 16:00:13 +0200
+	b=fA2x/ub3LYfGaIOregLfIXJPVcmYC7hAkDtUCKcAdCRS0QPrURkadHTHdMm/1fTyn
+	 zTBFoqftDYUE6bdM2VNXsSADqAQ7ymuRz8BBrqlC3Vbzc7xzFy9r09pCdObupSaLMz
+	 P7e5VmCwBULqN5PprSOoP/xt27w159ha0e67YOhFK7sNSwgvnVDeH9pdOC/gU1sk0P
+	 29L/IjWnH04bauvPl590zCvm4iQBV3l8hFdeulzAw3yIQye2cQpXDzwsgKAez9oe1Y
+	 C8kt+nmb3SdVtrrVGVPiiz1EVgRjh4LHtaUctDFh+7GGooCY6MBRlSN4wTALPo7CYD
+	 wIKyEW5mIV52g==
+Message-ID: <7d779a3e-0c12-42fc-91e1-fe53ae2dc641@kernel.org>
+Date: Thu, 10 Sep 2026 16:02:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-To: Gregory Price <gourry@gourry.net>
-Cc: Ackerley Tng <ackerleytng@google.com>, linux-mm@kvack.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com,
- seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- shuah@kernel.org
-References: <20260902194657.79075-1-gourry@gourry.net>
- <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
- <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
- <0386eb30-0e0c-4d8c-abfe-86161b9e3d1f@kernel.org>
- <aqKxk2Marnz1HU4G@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
+ KCSAN
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKxk2Marnz1HU4G@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 42948160014
+X-Stat-Signature: b8fcoq4oaotjyofgr1aquknezqzrabbz
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 01663A0005
-X-Stat-Signature: xkqc1rzbirecwdstyjrgbkz65815mej1
-X-HE-Tag: 1789048822-608265
-X-HE-Meta: U2FsdGVkX1+tY5XzBBUe/UAXt8jRxcdnPTU1ojstiKZuSJCbC9dQaj+nGDhZMoUc+WQlVKX45+ACpWRGLSCeBlmEp3Re15Zcwo2uNw2dS2Ljzg59OP3ZI5j5fLCcWl1UMToJb0NrU84wICzo/F339/U50chy4bb7sKbZ+ZnuaSJRBiQ5rBjODhiDxRGGNXRlHRk3zlBnM3mWn+k6fn3vacH213o3+bnoGLkDVFSilBNuJr6j4urXo2pN2vAgRakZYfpoMv41dC3JA74vq+6qkQz0R/F6g/Te3I+rXAqaxiSZnAmOgteqxRI3Ze1EsBA5F3oPytmywGcV4YNlVawgWPYFliKmX/ZYvRaGTY62k6L7IwDHkdl0C3MV8kuXQuto0F8pFK6ce+xn/uLsoyJz7N7rTESWP5yF4ZnioqKYGypicSqKsvORj+rMu34uZpsqOzcp9oN9XXbN07oA/LSx6bnXUgS1sKJL4Jzqy3jIIO5zP+4gUL6nH6KOwOFgBh74H4nXILIvy7VTi6jj2Ceh7OeiFqGaBqeHt+7kyaCIVmE39LtJcoCNR3FgpSrBqzGTAZS0Q9RKFpjf+dMU0qxsx2fuJodmX48D/woLXRajLsPbCEhTA4aqUqdhQHMQmYnAu2uj/deJ7FTtCF+xnyIZtviEFGlfU/YgzIaLydch0JIN3/sj21yJIP1Xap7MvbxEfu1RrrGym9mWesSP1diuJr+swzx/YhS4TWHL8ihbJCWQDs1tw/SGMJ3sw+9W8HMe9UOsvr3y9POlzyEvM5JLxo6A19thW8hkOQ5ggaOAsjzeZcgsDqIV2HbGKyle24RAcMnPu5+0KWJBS4KpfL9yuwRHKbig+/2htW8UO4uP9FJYnDDWsuYLjdD4qLvY2pq1vFfTD3PP9CS1dQP4pnuqqrOu76rRcYIbciKGX+nG1vi0iYaV8zK6+vnKodiH7iExqPUIlKCys0JrjbPJiMd
- 8oxijxcO
- zv6x29+GVersxsN6HnKXw+WriTA9S17+QdWPoa9IUgWUpKFB6/k2WT196CjjapcBDsqwq/45h+b9iQ3JareN4PjIbgUyU44X/2OAoRU6JDisK+uiWYLAZ9fDvOTxAc3YoeDksIIGg7Dmn6HWpi3GXGlJVmYzgpRtapLpAje2qepw7fdKOt+9jqrppPsTGDTGmv0EVT/vURk9+gfx4cGy+3jAfLIMQRLubcr/ElhAgj/YHHe1UdafysCt3CNcO9RVv8/JGSiSBV7GAMQpnMDUSZxc5e+pVHyGwWll8b3K2SAr5Cl9XRRTU7lNUDglqOzdXPjUzYc6kIB5kWlsnDAJG59r8P7x+GNUj4BgRr1KVQC6NyYeVghKQHAOkhtcFECiUAFsh
+X-HE-Tag: 1789048977-352055
+X-HE-Meta: U2FsdGVkX1+X308NkQIOOcgY4sM497z3pbld9Zeu66ygj4HhEq9c/jA0V5blft3+zqfrTmchTYiUfFiqe5wh6/weRl03qdnR7EqmYSFhtjhUmj01M5kJBS10hQ1uIpTT7Cdr5WJqntnCM7G/Vztsmzvcam4pQYaYWW39QOmS3GLqO3mEf40XC1xq80SldUc79Oo5vTcSPKkUHDksDLE7yM8ZgNB316SM0prKu86RWPBAHJAGi5mig3EHL/1WWAP5ZXAgPcDvAHxZcsHv72OgTUWAyVZVT4HjZOfIBgaxf/ySaovEuCCerkb09MYvLE3Ee7NeWvtW4wsaiy89wts8YoxWh0RXd+yVJ12voJFYN7Er3ax+a2MtCuAFDIr/H8ofHj5w6xBCLH2c/k8V9enrZSDZFzTS9HZkZZySjvemOJOkZbcBnPlW3DRVMNxR22oRWJ/yB/XJTPtWal3376IUKUw7KLDm3oVtfVkOBRWGX0TfDFgHOetUob1PsJRtUjGvc84Wk3AJgZVN2JI0bgGCHyz9T4/CN5uWXpbdY61PUYGAt24h5uPP3KjyUyRYI4hdFd9h1Pwlqo03MvUFB7vPZyeFj0+FQ8pPhaA+cmN9XXaP3lvxO0l0JH47HDhmXG9t/1XioYAsRrrVPhxGxhZC6ZR7crZBYENqdR8LPLNVDSxYksRasbaARSUL75iPoINczUfsOntLBbWVdnxIQTuQcM6rNcf7vqV8Kt7eSJFozZ9wEtyekEDz8DqoKEECQeNAPdjqnsEKQjy1sJ6uBqMqDbJ92DEl+CSrRUPkwIxK306/q8nD/uhJq0BkYz9ZSP7yNMfkYL2DIZgQEMWcfjOxzjgW7CBWhRdjlHO75q5iUkwbIR4ZzLTCcjGXe3tgcuNqEzIExOwbLduUQgf3h5ReWvqMqqmCZ1MxD376IDUqUE6mGg8hsAIoAiPpj0zuULVGnF+T8frn8uUAbD1n8HE
+ tJHBGoGM
+ cpPx2e4j7N49RZ17fuDSiXsNJ7pQzFVCgjYTMv7zPUqQTt///kklyX4avBarlBXIwl0uqIdg44RjBo3QLCZulw4jxZnOrNjmvQDXZGBxVRQVk7i85E2M2dU0U8MAg8XOflCU+Vtn762ddUDwv9IdiFKCn2GdMSj8gABBf+LO/dn58tAnMlvn81D+O+obbKcdJYWSIWAEupnIWUMjQXdfQERuhCUpZFdUEFZ5Met/B/NsE53BvLrBLRLlTfHzV96Gm0AU7hknHAEubEuTOdCQm5t6J2GhrPTjiYwEfweWpsnI5Kp9rWrIawAZzlLFJQS9b2W/ultaVggJKRQbqqZxFVQ11GREUgX6F24REaLgP3Hb0I4kGNb/RCILzc2Niv1xkcqY0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,48 +154,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 15:39, Gregory Price wrote:
-> On Thu, Sep 10, 2026 at 01:32:08PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> the eventual intent is to enable this for fully confidential,
->>> host-unmapped guest, isolated to a particular memory device.
->>>
->>> Requiring a mapping to get node-placement is quite defeating the point.
->>
->> You only need a VMA, not actually mapped/faulted pages. So I don't immediately
->> see the problem?
->>
+On 9/10/26 15:18, Lorenzo Stoakes (ARM) wrote:
+> Provide a function to abstract the common task of checking whether
+> a VMA is faulted in or not.
 > 
-> There is no VMA here - only an inode (GMEM_I), which is where the
-> shared policy hangs off of.
+> A VMA or mmap lock must be held when calling this function. For an attached
+> VMA the transitions between unfaulted/faulted state are:
 > 
-> So yeah, if there was a vma, that's i suppose the missing component
-> needed to hook up userland mempolicy to all of this - but I would have
-> thought creating a VMA for guest_memfd is hacky and confusing (since its
-> intent is to basically not have a VMA).
-
-The VMA is irrelevant, you just don't want to fault in the pages. In fact, you'd
-only need the VMA while setting the policy. (similar to shmem)
-
+>        Transition        |              VMA/mmap Lock state
+>  ------------------------|-----------------------------------------------
+>    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
+>    faulted to unfaulted  | write lock
 > 
-> Is there a series I missed that was proposing this?
-I recall that we definitely discussed this in on of our meetings, but I don't
-remember whether we decided to not fully support this case given that in-place
-conversation is on the horizon.
 
-I think you can open a private-only guest_memfd with GUEST_MEMFD_FLAG_MMAP, and
-it will reject to fault-in any pages, but GUEST_MEMFD_FLAG_MMAP also changes the
-way memory pages are obtained:
+Still using the faulted/unfaulted terminology above is subotimal but I don't
+mind too much as long as the code is easy to grasp :)
 
-"When the KVM MMU performs a PFN lookup to service a guest fault and the backing
-guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
-consumed from guest_memfd, regardless of whether it is a shared or a private fault".
+> So vma_anon_tracked() never provides a false positive (the lock precludes
+> it), but if only a read lock is held, a negative result must be re-checked
+> with mm->page_table_lock held.
+> 
+> Detached VMAs cannot be concurrently manipulated as they are removed from
+> the maple tree so require no guarantees.
+> 
+> Use data_race() to silence KCSAN about non-existent data races between
+> concurrent vma->anon_vma read/write on optimistic fault tests.
+> 
+> Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
+> dependants.
+> 
+> Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
+> preparation callers which test vma->anon_vma directly to use
+> vma_anon_tracked() instead.
+> 
+> Note that the lockless read in reusable_anon_vma() is doing more than
+> checking whether the VMA is faulted - it is returning the anon_vma to be
+> used on fault, so this check is not altered.
+> 
+> There is one odd one out - file_backed_vma_is_retractable() - which holds
+> neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
+> 
+> Therefore just add a comment to explain why the direct vma->anon_vma check
+> is required.
+> 
+> Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
+> Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> v2:
+> - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
+> 
+> v1:
+> https://lore.kernel.org/r/20260909-vma-is-faulted-v1-1-3a701f48984a@kernel.org
+> ---
 
-For shared-only that makes perfect sense. For private-only, where shared memory
-pages would come from a user VMA, this wouldn't really work.
 
-But I don't know how your case would look like (where are shared pages? are
-there any ever?)
+
+> index dd66c6ad5af1..40669bec953c 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -264,7 +264,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  	 * Allow page fault since anon_vma may be not initialized until
+>  	 * the first page fault.
+
+Do we directly want to fix up such comments to not talk about "anon_vma" but
+instead of the abstraction?
+
+Not immediately sure how to rephrase, but I guess the goal would be to avoid the
+term "anon_vma" and least outside of core-rmap/anon_vma code.
+
+[...]
+
+>  		/* KSM folios don't reach here because of the !anon_vma check */
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 01e7b6b046b6..9f9cd6657360 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2705,7 +2705,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
+>  	if (check_stable_address_space(mm))
+>  		goto unlock;
+>  	for_each_vma(vmi, vma) {
+> -		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+> +		if (vma_anon_tracked(vma) && !is_vm_hugetlb_page(vma)) {
+>  			ret = unuse_vma(vma, type);
+>  			if (ret)
+>  				break;
+
+[...]
+
+> +/**
+> + * vma_anon_tracked() - is @vma tracked by an anon_vma?
+> + * @vma: The VMA to be checked.
+> + *
+> + * A VMA or mmap lock must be held.
+
+I would document here what the implication is: if untracked, there cannot be any
+anon folios, if tracked, there might. Some callers of this function (e.g., ksm,
+swapfile) want to know exactly that: could there be any anon folio in there such
+that they have to provess the VMA.
 
 -- 
 Cheers,
