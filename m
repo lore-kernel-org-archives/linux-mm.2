@@ -4,98 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C77BC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1D7C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10F476B008A; Thu, 10 Sep 2026 08:52:39 -0400 (EDT)
+	id 3AF5C6B008C; Thu, 10 Sep 2026 08:57:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C0C26B008C; Thu, 10 Sep 2026 08:52:39 -0400 (EDT)
+	id 3607D6B0092; Thu, 10 Sep 2026 08:57:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F18006B0092; Thu, 10 Sep 2026 08:52:38 -0400 (EDT)
+	id 24EE76B0093; Thu, 10 Sep 2026 08:57:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D11026B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:52:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A7A81604F7
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:52:37 +0000 (UTC)
-X-FDA: 85197841554.06.058B273
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DA8E040006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:52:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeqCUcLM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0505E6B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:57:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B651804A9
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:00 +0000 (UTC)
+X-FDA: 85197852600.02.1F10640
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D821A40004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:56:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OIG7N2AX;
+	spf=pass (imf11.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789044756;
+	s=arc-20220608; t=1789045018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xkj2AEIJUTs1kEBGyfC+T4+mC4iQhp2cUZ+Brvewmzw=;
-	b=H+9LB7iwGxD7ja2idZvB3t/ggUict5V7FXHXA19n9PAw5Vms6o/sipvp1WW+V9io9KsVaM
-	J5f4Ms0qRa6e6JZjAQ85Qp1ftD3Rww6xKI4/tJgyAezT2w1q7+xxkK4+ayOi0Pnh9xE6QU
-	cRBYcnvwfi8zHbGf9VrLnuLOnKuE0Go=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CKchm62sZ86IgrB2SwATbeij5NNcxRfyf4EvG63ewTA=;
+	b=nwdTzvv7RtRXbd0hiULnL2gK19xE64YTABgyqFGUDyx5KMSkiCXy1HVaKx577T4cndtmXG
+	YXAFJjCfi+K5N9rM3+yBM3C5CHk/e5epRfDTWValN4tdPUkzG5It3YrudmjsHZMEKn7xl/
+	umRmxcgWna4EDXWH5yWgJT+rvKf3A1E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789044756;
-	b=VP5kJ0BzzdC/47ao8eS1+M5JPgdsACTp1cHtVXj3Dv/HJHSkfNGzQLWhmfbSO/e4lYVOMY
-	vuftefhMecU9/XUFrbbRhwuGx/KIHqpxEgII0wsSoRsCeCLxkZ5l5Ig1yKjMJJkVqvLnzn
-	LRRqqcljteaeExk1hLqf09ClDXeq4eI=
+	t=1789045018;
+	b=nNnUbOb3PchNJo4LBj0iGVVPQ7WuSkrftMj3rTn2zvt1uHlkNqVjg+gysBQL5lsKg51Dbv
+	WB7M1kiPuKDbEnx8tvMWdMM7ZjNtdBscNmuGb/NF4y4/n5cUiybBvDoFnJjsbM7UrjcaH/
+	9mfAmTaJkU/lPw7yp/VPa8MUD4uHgfQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeqCUcLM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09C0240060;
-	Thu, 10 Sep 2026 12:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E051F000FF;
-	Thu, 10 Sep 2026 12:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789044754;
-	bh=Xkj2AEIJUTs1kEBGyfC+T4+mC4iQhp2cUZ+Brvewmzw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CeqCUcLMGfRxLqY/XX/cbO647DQEZ6Mh7PWnYBSz+DKJeSPJ658VXN26O/AgJWLPD
-	 /eflIiP/oB2t7cooFWq/hWvBbyg8b6p0bZyOYign06Zj42RT8NP+8gtPHWTOuyHdnl
-	 lVlhN9jc7xufKTFPR0Ite0dlh++gl0Awo/ooQ+QxPaDWtgmEht6DzPIqomDJZOynNL
-	 RBtZiW9Mlir9tOP2tBrLBx8f5E/kgt2mRtfdDNd9FUikkzVn+BGoFaAc4Sgn7FgeYC
-	 0VBo5P4CCWTnWYoUNgz6muUp5UXnpgj3IakGl8zBZv+UrSi5ZUX4EVvfauJtFXR0wG
-	 zEfJ96WE8dPOQ==
-Date: Thu, 10 Sep 2026 13:52:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 01/12] mm/sparse: move mem_section init to
- sparse_extreme_init()
-Message-ID: <aqKnDa6ukWwAXs19@gremlin>
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-1-008fc8d579fe@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OIG7N2AX;
+	spf=pass (imf11.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-39b2ad83680so2892660a91.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789045018; x=1789649818; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CKchm62sZ86IgrB2SwATbeij5NNcxRfyf4EvG63ewTA=;
+        b=OIG7N2AXTde9HzijfIoTEXQJ1OgSiAmZN3mleQTC973UswhU6BfayRuAncXme8ONiN
+         tk/yh1zU7geiGlC0hf3ylmIEB+zwNXm7W7R1LLM6aPX9o/lN9xKnFd3H8VYl2618NiLE
+         k2Ec88gtKZtxZBvmtbwEiaeILQne2Pcveqj6rdACqbXGPxdFs36cW3gU/F0zb+zMs5/t
+         db9i/RALCYfi5LC86bzqnZ4xjHevyXz9vSyw1kOZ1NBXYpZqJgUiXcNY7hrgxYAbwy9E
+         n3Nq1WGlkXK3vzonSEPdMfPKIdYhtfC/m5hrmbjD85eGj+5etbrok1nuQtoff6iGZ9OF
+         dGYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789045018; x=1789649818;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CKchm62sZ86IgrB2SwATbeij5NNcxRfyf4EvG63ewTA=;
+        b=aBp65R+I5cxjf0405CU6T9LKYBxH73nyPht5TIoddpE+yudAC5U9oYW2lKqALl9+6R
+         KhvPmBx9eds5YqYyIc8pFQjTMxHVXSDM539HTzR/AKRbNDsc0xAT5eUL+Xnz1J5KkeIF
+         1R/Kh91LvXYacNru5GH2CtHUrhMa+tPC/YeO/U/EVtnrwq6ls/qOJ2YNa7qzSTSCgVl+
+         mfR5Mh9HfTy2G/Ysrv9r5/ByjsryOGE+d8CYtyT4zqPLZhZkHuxYCtPQYmv+XO7p9bVw
+         j4AQ/POviLF1xDP+1jmLBCMxMgmGstUsnLbR1DJdkVuCndgzCPn9fbah0mQAYp9O4g5A
+         Cq7w==
+X-Forwarded-Encrypted: i=1; AKwUvByvkYNHUlZW0WK0J9jWSs6+vPu8IIh8lx88ro6aBxjZ8NZuiW6NCKYnuR3W0fJAidKB2uljRPn2Fg==@kvack.org
+X-Gm-Message-State: AFuF++kVeW4eLoRaFNMJOw8n+wUCjjqGEStDshvWNDMQt119/zssWP+0
+	JkCcG4zRJsmE3EJw0YPScxVRoZ5Xuqgc/EEmMR82Iq30hdszfD/5li80
+X-Gm-Gg: AYBFou0Z/Bo3yQ+GQEj9zw8TDeuD8m3hA5xah/DRQabr/tsn4gYQVmO4/Vg/IQTfGXg
+	YEek03uaJFHggxRKDaFlQQU1Msr/6djofeyGedsHdqMoo4+p02s6/YQmu7AB0eFsit0/ZERv/Ef
+	E529WdSdIS8z3j+vqYPQYR2QEbIyfutg5hz1+q1LAP/XFKaKSTsw7iuPJBSAAOPcXwL1+IWwgIZ
+	c9soYRO48dWs8sQd2jAaOfPyk/oSO/ZL0FVTdogagFV9ePrCN39eqM3zdyIn9LfQgLsnxiq4zbR
+	RUaEG8wLqiRsLDx/GnFviGnDgwh5ugPwRXgR3T/P8hE6e+Xm7TZO4pIl8Jh/H/5x86EDDdpZTRy
+	4VLW4+S/vie8cm/iNudv0SprhJKwf9RqYiHIgEGh6ksicivRwzOT70oIjC/Am/zpU88u8PbCUa1
+	rBKwMaqzQeUrAZVNZuMIwn9RGmSYd5EJEBkLEnZosj7CqtYIidxkIzK39o5w==
+X-Received: by 2002:a17:90a:d44b:b0:398:d93a:b343 with SMTP id 98e67ed59e1d1-39d709e7326mr12383992a91.3.1789045017611;
+        Thu, 10 Sep 2026 05:56:57 -0700 (PDT)
+Received: from fedora ([69.5.53.41])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e9014cbsm4800488a91.16.2026.09.10.05.56.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 05:56:57 -0700 (PDT)
+From: Tianyi Chen <diannaaav@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Joel Savitz <jsavitz@redhat.com>
+Subject: [PATCH v3 RESEND 0/2] selftests/mm: Validate selections and scope memfd_secret setup
+Date: Thu, 10 Sep 2026 20:56:43 +0800
+Message-ID: <20260910125645.285866-1-diannaaav@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-1-008fc8d579fe@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1ewjbnyptedhum93d6yktb1zoyuqbqjf
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DA8E040006
-X-Stat-Signature: wfkmrm4m8xa4ehti5fnoc5xgs3yyo1po
-X-HE-Tag: 1789044755-43333
-X-HE-Meta: U2FsdGVkX1+kY2XDWzAY+XjNCJgHBlXMxAnXc5kKJg1gWlUrLfmc9zmGaohBMZ0+25D474XlivPl33jZ1K7nY7E3QCzY0IBANq0p2dwvRdarjXN39Jfp9MOZR1AGXu0YRNbuXmY0A4/g1fXLDU+siH6sjZl2uY/jjSHsuxTx0/7uIHKYLWKwlnBdoeej+Fa0f8JQztjw3naA8e2xhU74sRBQgOq1gT7F4VuBthP5BDFDLfOCK2xUoF1azAN0n/fJyxDttbWgg2fwXCWmGC4gjwQ7YlM1uMpMOshHO2FrhBlLt/sy22obKupvqSFD7jyU6JVSqJdGG6RlUPxM6VhvWG0xDvZladdJ2VUM0XJ3KVn9AJeW5VJpYYdbnrHqwAZPE/MSDeQSaSe8ZG3imGrEwTe5oXhfqSYPSAyxAHCW8LQYVDfEyhN04UDryEO+TaxNht5nF86KPqGFEIm9bDWc3pTAY4N7Wet9ONBDFgSPbvAQnwS0wsIhOe77OeUcD90fOBBkJppt7JvmSFUWThP6G/AS9Jli+lbbYUM56HtbReprRPagRxqotcoLyyrl4+2BSLSTb/bIlb2o/Fmw8yXSDxQ93nBs/leOX6w6ShOtrRAfcPldubASq2bBMZsnokWEja5ks9urHqzoqOdWBAeFnsj31DJbeWFl7zqwfTdQmyDuVQnnfrjqKJxf1sBgr6aAPFAZz/Mu4Mv+Xoi7SRReRwFftAePEMKBeNgj3/1r0M5yv3ZVNlmbnraMP//Dtl8Tfijf/biLFgkIBOlQSumXwldK5gPJzCQNLHkagNKQ9Rv91hA1GqR2dzZTp55lcd4gIr0usgzzCv66kd3E7nCbpbf6rRAfyRSmCjQM3csCykH8ucohSYDk6SScQ03oKY1OAks/GYUPRM+sBlTDOecJlHLPOb1WCjZCEdchqlgFmgo8EhfjjVlqxJe8rWm322uDqA1GZDUE50PpqH6oNdL
- 6bpFPPIl
- 9qYc3BZTG6VcWJDIM9/VzKWJIeU7slI5sP5+5bqFFmnjjLr8DgSuVinr8eXEqADv/9CSxFammOFmKtiRfEgv/bj9gox87dwIPEaVf5ezOBpwQN7k6BSxjcQLBwpPkGJll2h9ggcEBcU1/SaNWT/1rFGREobx39Hu3SsDHKLGhArZYHP+liFd8VlPRJfvVVLJbTjD6zw02L0Gz7hwc54frMlN+8Hu0MSWoMKzjcnSIKV315qKCviXe1HldqMrU+GzT4Jo8TtEXy4NFn6UuDOQhhoW84qfIdQixsqXzw8r3F0Orn+nC7X2KajwGE8DfaGk7qWEU
+X-Rspamd-Queue-Id: D821A40004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789045018-890662
+X-HE-Meta: U2FsdGVkX19HFmDRBUEZhL4nI5yZwDl0hxe30TbBPF3D56ds9waVdf8eov4flc09XBckpG2MSdmAHtL/VxweJvPSQ7KqEMJGtQq8cVXQDYPYXxuKE2lfU6xMdnQlyR9p3DLkSzpq6qwr3ADOiIRsk7NPBenzlFtp2JOzYvHuvDZCrrdP2gmGmwTdkwoO/DHZxbuJD8f3op9wg9rV+KdOkewQjiwaxUfY6d5C7Cq83VoEbxr8lUNszPjiuHOXFN7Ov2zvNrXdT+IHKU7ISRRcWK45EqryCDoTfXtjRaYV+Yjl6GsYhiuq863YnzjIkymtQsqDW/7Wl662u7vfisQCxUOS/rq7JhC0JE/5zTMkufv9tMkRw8ip09/qkENQfpE4m6jx9AUqimGUaLE8UN6cPGmHEb8pwWIrE0vIfSFicL5Ab627WR6U4tVxMOWOsAWJNGyUJjOMKByiZP2KTF1yiv3MVbeB9TgDNQYyVokTE+EzC7k+VCWaWksjwq8eLURB9BYgLnBTFEs/+MfeUPlAWn0Z0LFFHOQJ0OdE35eOi30t4VN8sk1WtH4w57Dj9Bum+NWkMsariYYVBZ5KWwLYirRfuS31apeX4cKlB1QUqtb+OZpNf37Tz+/U/9ElETykzUq7lPHlgnNk9bt3yGdLUAyW/mPbHQ+zP0A30ku4Le1P0qzfiCPBN4y5oKWNRVNddrg6bCmVd56xqAoMP/jor6ke8/gE29+YNZEBPv7/AoyWP3uY/jUNClIXGvzMWW7TC1GWr0CAqFJE5ELPE7P1S4yoIPO5HMXsJ+UYo/o91juM154hxyYjb2iUd6mGeNbwrMzoNevtRthYEmxF5JwwufugCoWSmIfu4y52uBNFJr5bgXN6zcjvT3DaF1dDTVfEKH0sm0TT6it10sIvadb5YLVvSkZSobMsj5thckr+hQjfVoSFOkLUZtxgDlHAWzMiAzNtXHb8dYwl42rsfas
+ NtpfonV4
+ y3CJjT/XmtP2S3zbARxGXkPrhoONRSoACn7MWLr6o4DLgK7PBuABg4JXzM6V8jHTsWmB9y6UZJtoGMikCAmVLpMEFionfxMhvcjl9lFa6O1pSQaB5EpZJ7BXlqt+TWUjhRBUgDkF/Jpp/PTz5Kt7eUyYjc+osa9Fx5TCbaM72WkR+8QqiHesBG2CgohGVzjbFVoQWSJ/9tHrpXY3SYuCRcV4CpW9Xh0VyL9eIOQdM2beByvf9bIXJQWCfklAOKVsb5JszAH7HvqBj2T1L0zdJZDVonA/OXGwKbWtMCNmY3W/CWUlzNgLvapcJMXKFon493/yTWMtvaK46qa+zSKcLqXEGgXCwXZS1MMaWXgchEjgOYYq7NjrLVUtlpbYbxrmhpFmfB77p69XEcQlainYsgflBJMqJkRUGVvFqc/fI8HzNF6mnHFP5Ib6G0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,84 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 09, 2026 at 03:32:54PM +0200, David Hildenbrand (Arm) wrote:
-> Let's just avoid another pair of ifdef inside a function. While at it,
-> switch to INTERNODE_CACHE_BYTES by just defining a fallback in cache.h
-> as well, given that the x86 variant already provides one.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+run_vmtests.sh can reach test setup after invalid options or category
+selections. Its memfd_secret preparation can also change ptrace_scope
+when that category was not selected.
 
-Nic ecleanup, one nit below.
+Patch 1 rejects invalid selections before setup. Patch 2 gates
+memfd_secret preparation on category selection and executable presence.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+The patches and commit messages are unchanged from v3. This resend uses
+git send-email through Gmail's SMTP server to send the patches inline.
+Before resending, I sent them to my SpaceMail mailbox and verified the
+received contents and whitespace. Both patches passed git apply --check
+and git am, and the resulting trees matched the original commits.
 
-> ---
->  include/linux/cache.h |  1 +
->  mm/sparse.c           | 19 ++++++++++++-------
->  2 files changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/cache.h b/include/linux/cache.h
-> index e69768f50d532..b6e857b985bca 100644
-> --- a/include/linux/cache.h
-> +++ b/include/linux/cache.h
-> @@ -89,6 +89,7 @@
->   */
->  #ifndef INTERNODE_CACHE_SHIFT
->  #define INTERNODE_CACHE_SHIFT L1_CACHE_SHIFT
-> +#define INTERNODE_CACHE_BYTES (1 << INTERNODE_CACHE_SHIFT)
+David, this is my first time setting up Gmail SMTP for patch submission.
+I'm very sorry for the formatting problems I caused and for taking up
+so much of your time. Thank you for your patience.
 
-NIT: 1UL?
+Changes in v3:
+- Initialize VM_SELFTEST_ITEMS to "default" before getopts, as David
+  suggested. Only -t changes the selection.
+- Use Assisted-by: LLM in both patches.
+- Carry David's Acked-by on patch 2, unchanged from v2.
 
->  #endif
->
->  #if !defined(____cacheline_internodealigned_in_smp)
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 9349ed6326c01..6a6d258862904 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -103,11 +103,22 @@ int __meminit sparse_index_init(unsigned long section_nr, int nid)
->
->  	return 0;
->  }
-> +
-> +static void __init sparse_extreme_init(void)
-> +{
-> +	const unsigned long size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> +
-> +	mem_section = memblock_alloc_or_panic(size, INTERNODE_CACHE_BYTES);
-> +}
->  #else /* !SPARSEMEM_EXTREME */
->  int __meminit sparse_index_init(unsigned long section_nr, int nid)
->  {
->  	return 0;
->  }
-> +
-> +static void __init sparse_extreme_init(void)
-> +{
-> +}
->  #endif
->
->  /*
-> @@ -197,13 +208,7 @@ void __init sparse_sections_init(void)
->  	unsigned long start, end;
->  	int i, nid;
->
-> -#ifdef CONFIG_SPARSEMEM_EXTREME
-> -	unsigned long size, align;
-> -
-> -	size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> -	align = 1 << (INTERNODE_CACHE_SHIFT);
-> -	mem_section = memblock_alloc_or_panic(size, align);
-> -#endif
-> +	sparse_extreme_init();
->
->  	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
->  		memory_present(nid, start, end);
->
-> --
-> 2.43.0
->
+Tianyi Chen (2):
+  selftests/mm: Reject invalid test selections before running tests
+  selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
 
---
-Cheers, Lorenzo
+ tools/testing/selftests/mm/run_vmtests.sh | 28 +++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
+
+-- 
+2.55.0
+
 
