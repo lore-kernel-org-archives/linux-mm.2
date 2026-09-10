@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7FDC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B60DFC79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 07:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4720C6B008A; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
+	id 8BD626B0092; Thu, 10 Sep 2026 03:21:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4225C6B008C; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
+	id 86DA36B0093; Thu, 10 Sep 2026 03:21:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3112F6B0092; Thu, 10 Sep 2026 03:18:27 -0400 (EDT)
+	id 75C516B0095; Thu, 10 Sep 2026 03:21:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E54AB6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:18:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D61DF16045B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:18:25 +0000 (UTC)
-X-FDA: 85196999370.12.1C18C19
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 910F214000E
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:18:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 486E76B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 03:21:19 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 292FB1A0474
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:21:17 +0000 (UTC)
+X-FDA: 85197006594.14.81F77BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 51CC6180002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:21:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJxcTEHK;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789024704;
+	s=arc-20220608; t=1789024875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=reTiOkMB7AhG/2IJydoiOMebcdv8WbxyDZH46uhgH/k=;
-	b=zbGE+p2PAgXhs7G+TLm9h+H9gWCiOsnt8KKseDspPQZ62zpHGR3LjiDekLTqo3Gp1RMZrT
-	zn1ZYk3xexFAU7XK/yOMgso3EmPREt2+aS9AOrNpuLer0Lf71IIcEdrdPVAdp3Z3S38CgT
-	0BvnbHdTuoJrGqDRWRuyViZ+OtjThnE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789024704;
-	b=kf9NPQyvvhE+JgvuVNGI4Vbv9+nHjRFOazID8UYWxoQeJZg8pqCnTUtJG8Ogf79oHhIlYq
-	EWKvEnoTRDNEOTu2k3bFTXxOcHnrabLcYN1NL1t15/Uz1dyRJA34cuAidxgdmAy+v0OyvV
-	qdY6Z3CAUJBb8m8hiVCE24ZTCZcHmYs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/dFIba0UKBKJ4gn1LNPP82s6h59rJBwzWCWOyhLQY4g=;
+	b=sHZP1vNY3OIozL9r9bZWcCAibpKCcHIlHR6zmAGkW7dpDc2DZqLVmDeqVKtq+Ri4xcpGcv
+	YNCYlrUthW3McXpbyJoXxAq13tCdsrk/nUa7Vbp0ZzaH1GG9EJid1+PV18emAHlOew2De7
+	2P8UvHh/sbF8nu08ytwQm0ShMTYSEPc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hgTX06m02zYQvDV
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:17:20 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 7A67E40574
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:18:15 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgCHbgm0WaJqciq1BQ--.27171S3;
-	Thu, 10 Sep 2026 15:18:15 +0800 (CST)
-Message-ID: <25009e78-b1e1-4c3e-a12d-365869b1d475@huaweicloud.com>
-Date: Thu, 10 Sep 2026 15:18:12 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJxcTEHK;
+	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789024875;
+	b=j611hGePEuf4VnphlG5H73WSiGAqbcCEuo7rsM449h90l2CAA2MIrXRBCXi3AAYXb72wDj
+	iD//K2OZSXe4OmcGF8bxq+pYbySIwetyccQtlygpv41SrTSV/VdOwfNPkipD+d+NoeKkVo
+	+ewMTtv9DhZ6g6QMi2aRAOWTmQxu5Do=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E5EF600D4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:21:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C701F00893
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789024874;
+	bh=/dFIba0UKBKJ4gn1LNPP82s6h59rJBwzWCWOyhLQY4g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QJxcTEHKFLozghTdiaMO+BwMGEDdIMoJyyY7FyJCPHK/r5++gbW0KN+cYt4OJGlim
+	 5mwLFdwQLr9ttzut6GhAAMmICmQWwQL+Op1hb/bDakuJyMrgtvxRyyopjUnla691xC
+	 cYod3ZkAhxML2oDkVPbBTV5azU/wYVoqia8rpd7xMbGVHkill2GNYWaV4VtukHHCps
+	 bXU8w48cBTO3zTLZ6Py0ORGOhcib/d5dP9qGT/OL01xhI580ixM6eGnpzqo2HudbNG
+	 TlXOLwxbOekgLOtB/kR+vcY2uPZajPdp+afsn9Hkmt1eb6FwFLWnXZG1tPa5DfktnE
+	 XlKytfz8HlUSA==
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f705534so198090766b.2
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:21:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwxHjKP0OlTAsHeqTy2uBSC0Dl93Mkk2/skXrRW7cBL5K969I0H9UN8Z+Rmg8mLLJH0v7RARmpDtQ==@kvack.org
+X-Gm-Message-State: AFuF++nY6Zo6vqf6+2WdgjpA+fU4+cs4mPiJkSGWKhgyPN9xjD+FllE3
+	5gXwrKelnCIuKzJ+7a+aMWhNrGzvHrmrzCOGeYLWnvjhAH2aqp1x1cpEVDaEEz54hCyM6vEsTfY
+	WiLbSQkZ7Mo3kR4PyLMuBTWsp8famZj4=
+X-Received: by 2002:a17:907:398f:b0:c29:8d4:7c03 with SMTP id
+ a640c23a62f3a-c2941ae802dmr260263266b.26.1789024873258; Thu, 10 Sep 2026
+ 00:21:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
- large folios
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hughd@google.com,
- baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
- ziy@nvidia.com, bfoster@redhat.com, joannelkoong@gmail.com,
- djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
- yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
- yukuai@fnnas.com
-References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
- <20260909161433.d96c67399ccac8de27499925@linux-foundation.org>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <20260909161433.d96c67399ccac8de27499925@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgCHbgm0WaJqciq1BQ--.27171S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxWw47Wr1kXF15uw4fur4kJFb_yoWrKFy7pF
-	Wagas0kr1kG39akr13Aa1UXw15A34xXw4UJFyfG3ySyFZ8Zw1DKF15K3W8Way7Kwn7Cw1r
-	Xa4jvayDW3WUAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
-	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_
-	WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
-	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jxCztUUUUU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: j6yu4csd66hpzbyih9w43ys4xaxt3yu3
+References: <a8e16f7eb295e1843f8edaa1ae1c68325c54c896.1699104759.git.quic_charante@quicinc.com>
+ <aphSYFTd12oia8K2@google.com> <apkhSHr3by5Bf8jW@tiehlicka>
+ <CAO9r8zPCYNmJbkQEA62z75AB=ziWqGb38_E-ee_6o40Sz=zHXA@mail.gmail.com>
+ <apqppFukssaAQz3w@tiehlicka> <CAO9r8zMBBhhqepbLR9buOOu7bpyLW+UTu55DjbCYrbBp56rkCw@mail.gmail.com>
+ <aprxXHSh-LyqaFCW@tiehlicka> <CAO9r8zO93CMjJHLO1ZqHY0Tr2kDfvpMHfH3MLkR37vV0YROf_g@mail.gmail.com>
+ <ap5nJm1mH-4nfLaY@tiehlicka> <CAO9r8zOaAGHXK6FZ0PM9sJL2zH4fQe5kh+W2TBNL90YZV2detQ@mail.gmail.com>
+ <aqEMagbMGPlkuP2P@tiehlicka>
+In-Reply-To: <aqEMagbMGPlkuP2P@tiehlicka>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 10 Sep 2026 00:21:01 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOzmYcovBBu_nXWJ8KPJGSDt9m6c-hxrZh_RQQGjsH8-g@mail.gmail.com>
+X-Gm-Features: AcwNN1X0EJVzF0_77D2TNUNM6pwnCOqj1KrbslWUtbIqpVum1N7ZVyfgG1B1rEg
+Message-ID: <CAO9r8zOzmYcovBBu_nXWJ8KPJGSDt9m6c-hxrZh_RQQGjsH8-g@mail.gmail.com>
+Subject: Re: [PATCH V3 3/3] mm: page_alloc: drain pcp lists before oom kill
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, mgorman@techsingularity.net, david@redhat.com, 
+	vbabka@suse.cz, hannes@cmpxchg.org, quic_pkondeti@quicinc.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 51CC6180002
+X-Stat-Signature: hzfnktjh7moathgkxw89xfcmr3x15uy9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 910F214000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789024701-669184
-X-HE-Meta: U2FsdGVkX19ecTfowZJ1pIrXdSl5FyeNeiOEzZ3B7EqDlYd0QZeUABfJvkSE2YzNaHAiTC4HT886WBO06qPB9Gvb2QJb0GiHXTLP/T9XYSdEgaDRDnTi1u9SXayWKMQrL5JLvecIjK1UZ5gsoiFkoWr+caSIVcrb7HPWV/sw+lq3a0jiTacWxbhI03259TeTne64cVgjaPo+HLM8y7jlFAh9y6juzL8nSwVThJfTUqsvBt8YHcBvRwxkfUEN+wa/JmXXsG1HtZ/+8sythWtv2vV5vaqbt9Rv6El7IWOxmDStF+r+9UrtsueCph+dAa5svyIw+agrl7z0KGsED79DJz65bogEvjx8R4ip2gNmLYEkaeWSiHerGVcJ/Vl2yPo4PHFT+YVdEVhQS679ri1pAzpGB0VPGbeHTw4+OcNPvpeNXu+Tpgcc9YGTnWzVBDf+RLRM9nfhoJzKIb0ThHh1iCe095Elw5IrIiQWESades5XZYkmCKk8CG3mpK1kPpgCyxE2n1Qn0wT2uWKVFCvtUxttEyt0VTfOpXgfbPSFua0nuOjRedX+KuM0zrEBKO4Nyt4pY6nZNlHqBmRHBfECKcvvj0PMpjfHgsyvJpr1+f7Cotd4BWcbVGAEIHXlRqQXDyL3mJwD4cly2xTmKptux7Ki9X2u5Ekx8Ib7PD8wu5NejSFik1QToX4Xyj3s3cqJ5SrFVvLKyAP2h6BDQoFiB0tOUtWGcpTqCYQ1CUrrJ7dJI1K6caDJnfQ91Dn5xqRLVuiv7nkGSpB12bop4bbsyLY5626gqI30RuVPTaW+QnUf04gAgxnQ/He4tExC+cWiWHKW0g87+mLdjCdAQgnnebbzhBCmN2bo4NcoutiClXRmOopAL0P0j8oyGF06mB14PyFWPfth71Stnd3pb0jSfnsGRDFckdp9SiwRLOaFU09xL9SOhLZtLof5iGalUN2NRoVeApp0+aa2ZD7EOee
- OK/oZvVP
- zHKh7hiDlIHa2PnMwVQrSgqBjbUXfTh340aVZTwzYFQgthUD/6WxTjCXXgBQSySCJGDmV/gxuhn07HIasE21zOQHFYV/xoY7YKKrWDQD4YvkHWKjXjy+ZCaw9m0t1IcpGTHbmGGKxh/72u6VhiRpE+E+XnqW1veGaUnXqUwiZQxnyCTiHWQflAwsS1CZJeEbaOCZ0j1iCqeYGdEPkwCLDWKxjbq4+tQ39oZVklHUSb26mekJAOZ3d7cZjQf3uVcoL60nd
+X-HE-Tag: 1789024875-738868
+X-HE-Meta: U2FsdGVkX19SM9vUI710NPmZC7HzPWCb74raNYgwPifK41241+2NZKHKikNb3M4sZ3MTF72GdRaDPukGt+jjneqh3wXDsqVuZa4PQq0Kg9E6R/CdzjRFdRLT3611IyINIfnkr8XG2jwz0bek+B9By7xeLv2Qj82LP4TgMBbMBR2jW9QsGbMPwOLIxa4vdEH9mEH2Enwsg6Wynu3fGsVRNCMAFhmkobcBBDgUxjfsIAMcC8iqyNVsr5T/GIyKg4kZDyEJVDODZ7A3kpFlWK/94xnXBW3rCA3EceBPP2fSeONSl1xjEKI+02mPKCsSHUgrxiq2dWMLOzycji8Sui12m19EQjj8SoNmsE6GCHNiICqPgbjkBLR7I6/AZipj1napxoj75Zx31mGW3V+4GIMmvQ/i6Z07egkcZ7NmjFSbH9Q/THLD9YJtpnosRpzjXZLiwHlBrlfZ1Gcz3gXEm9vUHJIXTrbj8433pemUoiG0AqbCOzo2PPBN/Prf2zhLUdw/ga/noroHh1P4Q/uuv2cwxO8rExiIWfIIvFvwSA5PU7bqgWGF2/oXrm6VUG022SqiwwkKWkcnrrIXYObtzOGbBoa2g5TA10dcJ4uVHxNQ5t72BKyycNsZP5DuK+PhJHcIEwGBI207oKuQKw2FEj0WAERpR/9Pa+gS+zxHecFbQf8wdX3n6YuphG0ETUJe9mxazx/BnoEsEiuUtFpA/E6n7G9kulLTwqGjLVU6h/NPwDVPkhYWsApOz2QwHdUwtb+WGO3R5zW8jbLin0IWE2JYOAWhwa3mlMbOpfuycvnl1FuZ0o9RYb8+ODXLoMyv4S+56+xETHOY93y3Ghu+N05ziLLQPgWwVM47eWYod1fKprRWYxYFRE7bWHcTBBsVl8vzT1RWDsHwIjXEQ1tpJqLCw04scBNfXioWAMxqnFv22YvHE4s1f6RJd2przMdlaE2etjsv0uiChd0sgYl0l6N
+ ROr4+n0C
+ OdjQsTuivemF5k7daXQwUtRQlRdL9GyMR2o5flq9fLNztETzWCNjJ2TRo85GUGISL+ku37q7viSvx/pwjC9M4Lexim/OMV7ZzN0YCIl1yPW8Vngqa0DF2hcuk33XQ2PBBC6nElPW48fGEOl3up1fe44sOZbGEFOD3KgAWf40vQl85dkBrFdkAg4utkyNCB6C9WP646LHi4xBuJUVBAsnMtfOJa0fX4fwE3hG9E/JCf0JnX1PKWhOfVgRQe7SWKkULzxkx9Q3EyYjaYyfhMYuWs2aaIDmeNEB1u9WzjWe/Ax0aWfIqkbUfHUGQpTz4QCvuPPjpVe15CMKdYmSDEi31AojtmMz7Z1SGflmY+cFblZdgPCCYVNiEjjQJmb9GnCamjFxS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,110 +109,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/2026 7:14 AM, Andrew Morton wrote:
-> On Wed,  9 Sep 2026 14:23:39 +0800 Zhang Yi <yi.zhang@huaweicloud.com> wrote:
-> 
->> From: Zhang Yi <yi.zhang@huawei.com>
->>
->> truncate_inode_partial_folio() splits a large folio so that the caller's
->> truncate loop can drop the in-range sub-folios while keeping the
->> out-of-range tail. The first split at the punch start edge is
->> non-uniform, which leaves the sub-folio at the truncation end edge as
->> large as possible, this means it may still straddle the range, holding
->> both zeroed in-range and valid out-of-range data. The function then
->> attempts a second split at offset + length to isolate that tail.
->>
->> If the second split fails the straddling sub-folio stays merged. The
->> function returned true unconditionally on all exit paths of the success
->> block, telling the caller it was fully handled. The caller kept its
->> default end and the truncate loop truncated every sub-folio below it,
->> including the merged straddler, discarding the valid out-of-range tail.
->>
->> For example, a 4-page order-2 folio punched from offset 0 to the middle
->> of the last page:
->>
->>   truncate_inode_pages_range()
->>     truncate_inode_partial_folio()      # same_folio == true
->>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->>       2nd split of folio2 fails / cannot lock
->>       return true                       # BUG: caller keeps default end
->>     end = 3
->>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
->>
->> This became reachable after commit 7460b470a131 ("mm/truncate: use
->> folio_split() in truncate operation") replaced the atomic split_folio()
->> with folio_split(), whose non-uniform split can partially split a folio
->> and leave the end edge merged.
->>
->> It has gone unnoticed because a dirty large folio normally carries the
->> filesystem's private data, for example buffer_head, so
->> filemap_release_folio() -> iomap_release_folio() returns false on a
->> dirty folio and folio_split() aborts with -EBUSY before any split,
->> leaving the straddler safely unsplit. The bug is only reachable on paths
->> that produce dirty large folios without filesystem private data, and it
->> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
->> attached.
-> 
-> So is there any way of being hit by these issues in 7.2 and earlier?
-> 
->>  mm/internal.h |  4 +--
->>  mm/shmem.c    | 13 +++-----
->>  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
->>  3 files changed, 67 insertions(+), 38 deletions(-)
-> 
-> I hope not, because that's quite a lump of code to be backporting.
+On Wed, Sep 9, 2026 at 12:36=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
+>
+> On Mon 07-09-26 01:49:39, Yosry Ahmed wrote:
+> > On Mon, Sep 7, 2026 at 12:26=E2=80=AFAM Michal Hocko <mhocko@suse.com> =
+wrote:
+> > >
+> > > On Fri 04-09-26 09:35:55, Yosry Ahmed wrote:
+> > > > On Fri, Sep 4, 2026 at 9:27=E2=80=AFAM Michal Hocko <mhocko@suse.co=
+m> wrote:
+> > > [...]
+> > > > > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > > > > > index 8d79f76cdd0e1..98e9079240ad5 100644
+> > > > > > --- a/mm/page_alloc.c
+> > > > > > +++ b/mm/page_alloc.c
+> > > > > > @@ -4592,11 +4592,12 @@ __alloc_pages_direct_reclaim(gfp_t gfp_=
+mask,
+> > > > > > unsigned int order,
+> > > > > >         psi_memstall_enter(&pflags);
+> > > > > >         *did_some_progress =3D __perform_reclaim(gfp_mask, orde=
+r, ac);
+> > > > > >         if (unlikely(!(*did_some_progress)))
+> > > > > > -               goto out;
+> > > > > > +               goto drain;
+> > > > > >
+> > > > > >  retry:
+> > > > > >         page =3D get_page_from_freelist(gfp_mask, order, alloc_=
+flags, ac);
+> > > > > >
+> > > > > > +drain:
+> > > > > >         /*
+> > > > > >          * If an allocation failed after direct reclaim, it cou=
+ld be because
+> > > > > >          * pages are pinned on the per-cpu lists or in high all=
+oc reserves.
+> > > > > > @@ -4608,7 +4609,6 @@ __alloc_pages_direct_reclaim(gfp_t gfp_ma=
+sk,
+> > > > > > unsigned int order,
+> > > > > >                 drained =3D true;
+> > > > > >                 goto retry;
+> > > > > >         }
+> > > > > > -out:
+> > > > > >         psi_memstall_leave(&pflags);
+> > > > >
+> > > > > Ideally if we can make the function call less hairy. Maybe we wan=
+t to
+> > > > > make draining part of the reclaim as the last resort when normal =
+reclaim
+> > > > > fails.
+> > > >
+> > > > Do you mean do the draining in __perform_reclaim(), or deeper into =
+the
+> > > > reclaim stack?
+> > > >
+> > > > The thing is that __alloc_pages_direct_reclaim() currently drains w=
+hen
+> > > > __perform_reclaim() fails to make any progress and we still cannot
+> > > > allocate. The change above makes it drain if it cannot allocate aft=
+er
+> > > > __perform_reclaim(), regardless of progress. So if you want to move=
+ it
+> > > > into __perform_reclaim(), we'll have it in both places.
+> > > >
+> > > > Or maybe I just don't understand what you meant :)
+> > >
+> > > Sorry for not being clear enough. I meant to pull draining out of
+> > > __alloc_pages_direct_reclaim and instead have it somewhere in the
+> > > reclaim path. It is not entirely clear to me  where at the moment but=
+ we
+> > > do not need to have the same behavior as now. The idea behind the cod=
+e
+> > > is to not drain way too much. Maybe we want to drain when dropping th=
+e
+> > > priority down to 0.
+> >
+> > If we want to maintain the current behavior of only doing this for
+> > direct reclaim (not kswapd, cgroup reclaim, or proactive reclaim),
+> > then I was going to suggest adding it to do_try_to_free_pages().
+> > However, we bail before priority reaches 0 if we are able to make
+> > progress or compaction is ready.
+> >
+> > Also, I think in do_try_to_free_pages() we don't have enough context
+> > to decide if we need to drain the pcplists. Looking at the comment in
+> > __alloc_pages_direct_reclaim(), we specifically drain the pcplists if
+> > the allocation fails after reclaim makes progress to make sure all
+> > reclaimed pages (e.g. in other CPUs' pcplists) are made available to
+> > the allocation. So I think it fits better in the allocation path, so
+> > that we only drain if we cannot allocate after direct reclaim.
+> >
+> > I think the main issue is that we only drain today if we know direct
+> > reclaim made progress, so it potentially freed some pages to pcplists.
+> > However, it is possible that reclaim did not make progress but there
+> > were already pages on the pcplists (e.g. freed concurrently or were
+> > already there). I don't think the right place to do this is reclaim
+> > path.
+> >
+> > I personally think either Charan's original patch (draining in
+> > should_reclaim_retry()), or the diff I proposed upthread (draining in
+> > __alloc_pages_direct_reclaim()) are probably the best places. Please
+> > let me know if you still disagree.
+>
+> In that case should_reclaim_retry seems a better fitting fix.
+> Thanks!
 
-I took a rough look at a few existing filesystems and had an LLM help
-put things together.
-
-Actually triggering it needs all of:
-(1) a large folio straddling the punch/truncate boundary, so the
-    in-range part is zeroed and the out-of-range part holds valid data;
-(2) that folio dirty, so the out-of-range tail exists only in the
-    pagecache;
-(3) no filesystem private data on the folio (or ->release_folio()
-    returning success), so the first folio_split() in
-    truncate_inode_partial_folio() can succeed.
-
-Filesystems that enable large folios fall into three groups, none of
-which can currently satisfy all three:
-
-- buffer_head / private-based (ext4, btrfs, ...): a dirty folio
-  always carries fs private state (buffer_head, extent state), so
-  ->release_folio() returns false and folio_split() aborts with -EBUSY
-  before the first split — condition (3) fails.
-- netfs (afs, nfs, smb, ...): AP_RELEASE_ALWAYS is set but
-  netfs_release_folio() returns false on a dirty folio — same effect,
-  condition (3) fails.
-- iomap (xfs, zonefs, erofs): these can have dirty large folios
-  without private data, but none reach the unsafe window — xfs always
-  runs filemap_write_and_wait_range() (xfs_flush_unmap_range) before
-  punching, so the boundary folio is clean; zonefs has no punch-hole;
-  erofs is read-only. With the tail already on disk (clean), discarding
-  the straddling folio loses nothing.
-
-So on 7.2 and earlier I cannot find a reachable trigger path. It only
-becomes reachable on the upcoming ext4 + iomap buffered-I/O path, which
-for the first time combines large folios + no private data on
-fully-dirtied folios + missing pre-punch writeback.
-
-> 
-> Thanks.  I'll queue it for testing and shall await your response to Zi
-> Yan's questions.
-> 
-> I see you've received Sashiko's feedback.  Please let us know if
-> there's any validity to it.
-> 
-> 	https://sashiko.dev/#/patchset/20260909062339.473816-1-yi.zhang@huaweicloud.com
-> 
-
-I took an initial look at Sashiko's review report. I think the
-issue is valid — the current fix can get the wrong folio2 index
-when there's a concurrent split. I need to think more about how
-to fix it properly.
-
-Thanks,
-Yi.
-
+Thanks. I will rebase and resend Charan's patch.
 
