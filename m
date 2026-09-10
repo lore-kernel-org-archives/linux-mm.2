@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3340DC79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11899C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AE286B009B; Thu, 10 Sep 2026 08:24:43 -0400 (EDT)
+	id 1F0476B009E; Thu, 10 Sep 2026 08:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 485406B009D; Thu, 10 Sep 2026 08:24:43 -0400 (EDT)
+	id 1C8A86B009F; Thu, 10 Sep 2026 08:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 374076B009E; Thu, 10 Sep 2026 08:24:43 -0400 (EDT)
+	id 0DE4D6B00A0; Thu, 10 Sep 2026 08:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 112EA6B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:24:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB022404DC
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:24:42 +0000 (UTC)
-X-FDA: 85197771204.01.6EF8017
+	by kanga.kvack.org (Postfix) with ESMTP id D9FF56B009E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:25:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B9641A046F
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:25:52 +0000 (UTC)
+X-FDA: 85197774144.05.C003733
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C8CC31C0006
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:24:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAylqr2E;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 944D140005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:25:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7jrZ0Ki;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7jrZ0Ki;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789043150;
+	b=BjR2xVAz2covAJ9N91zDTMGf+4vuirk0fyl12P/gPLycDAlpqP16YNOaanFOeQVk11NNiI
+	rofCzSw/P8ExNG7lhm1vVgxVHOC+s7kq2fwJMeI/MyKWyhAlu+GDSpVxVaL7ZHzhdbd6wX
+	7c50Uf+6SfYlFTUvoHE+QGXvMmdbQQg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789043080;
+	s=arc-20220608; t=1789043150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tFXanxfg2e/r0PAU+w9eHkzd/M9HljlYUur5VUSIyvA=;
-	b=yXBpBQzhDtsDbYaO3U89KFqVfFm7a9UutBZlGeMfDGxumXbd3A3auzOXu18lIYK6y+SL9i
-	EXTa7H35C15q2NyHU4O46NMNAwDp+enn907NN5gdj9PzCP9uBv+VALslsh4GdHSzoltOAA
-	g+ZHmz/INXO7Fade52FUqAqSmtNt2ts=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789043080;
-	b=VR7YjErLsFfCot5Gw1DMMggg7GbCKaus4OOApwAyoLB53Q6BekBVL9gXiofSwtT3bjHjsH
-	VifQQhIkzLaFXHGEMKGKf3fMAvrP4JtE4fKxGTGERuR3+24ewUFC6K2hOpooAGZTkcKdE0
-	O6fHiY6pNRh5WbouSBHSjLSagl3W/bw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAylqr2E;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=kcY5aAJKfRkyYPIjb0gh7z3qil202KhtkYgA2Q2nJIk=;
+	b=YPchX8MWibTwzi0hCMJXGnHI7beD1b9Pv5LJ0ZDgnF5C1kNW2MPBNyQkyb1E4zSAMr8RI3
+	CF5XcN/OT5OJTJdZAwAfMLkaPYhwlBMXwlFjgiAREGumZ2wFr452CAbUHf1B/my4MlaM9z
+	1KV1voTAdtHeoqeSh9hyS8bdz8m5ZSM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1AB14600C8;
-	Thu, 10 Sep 2026 12:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BDC01F000FF;
-	Thu, 10 Sep 2026 12:24:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1136260200;
+	Thu, 10 Sep 2026 12:25:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D001F00893;
+	Thu, 10 Sep 2026 12:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789043079;
-	bh=tFXanxfg2e/r0PAU+w9eHkzd/M9HljlYUur5VUSIyvA=;
+	s=k20260515; t=1789043149;
+	bh=kcY5aAJKfRkyYPIjb0gh7z3qil202KhtkYgA2Q2nJIk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eAylqr2E1mZJj3022fXOx8zMyUZz/OAVirsKOq+4mLRozSFatRNLqZkGCiUwtpW1o
-	 TEDSsaZBnJhjmeJv05xveM3GVDTgecuXhltaw8tP0YAFENTjIJNXHZV8d99mYskiCU
-	 XFvVL9ppBxQbMl50qP86KyTr3QVvzVpSX5d4xso9jTKdgRQlN8Y0l34X+RTK4MJBSO
-	 s9gT1FJr9+uWZUF2Gw1DQbnEeJj3He+KIXJJPy9DnQBqsAwnOe84NOjUwhHfAwB88t
-	 Uww98gGPYHybU6h1mZZd2hJx/yABVRdtTLtVKteeFuRq2WOkTtJ5BAB5j7F8gG+2fa
-	 a84XvpTqRVQyw==
-Message-ID: <9c4a267c-921a-482a-91d1-6e84f611e7d5@kernel.org>
-Date: Thu, 10 Sep 2026 14:24:28 +0200
+	b=W7jrZ0KiUslcrcZAsoxUXdNWZedOCdeL8f5cQxxwc1/hjSOggsKVKb1j3s5wWBfHV
+	 rxn3uhWlGA261dtpQj57VQf0l63oQM4lMLWGfvdHey3/c8FRyVAC6f/RsZU5dY2tCR
+	 ekhqk1+UdERiYX37T5KCX26QOisMPv8zpgoQHwdupnf62whh15BYk8hKsy8oF9js9v
+	 XsDuGSEICcBlqzcEv+IKqoXuoN8i6xYs7KiQK6G/rAUgo7xWGKi3oH2S6w11/VaaPc
+	 GEPQRssD77FLa2hy9GADgpb4pjqlBkvAvqZnot7ndQazNqYdlBL+Y+ZHZbKnmtCa/c
+	 lSP4CMhGSInqA==
+Message-ID: <11a36d52-89a0-4f43-8a51-a4930e171ba0@kernel.org>
+Date: Thu, 10 Sep 2026 14:25:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 1/6] lib: introduce hierarchical per-cpu counters
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
- Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
- SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
- <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+Subject: Re: [PATCH v5 3/3] kselftest: mm: introduce alloc_isolated_mem()
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>,
- David Carlier <devnexen@gmail.com>, Josh Law <objecting@objecting.org>,
- linux-mm@kvack.org
-References: <20260901182857.26690-1-mathieu.desnoyers@efficios.com>
- <20260901182857.26690-2-mathieu.desnoyers@efficios.com>
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
+ <20260907-fix_split-v5-3-822b810458bc@arm.com>
+ <5c05b620-7a2f-453d-9725-fed4f536a019@kernel.org>
+ <aqKOVGECsCNtSMIV@e129823.arm.com>
+ <d0b3ea99-e20b-4883-8fa3-67fdbf5b1ee4@kernel.org>
+ <aqKS7CP67X4h6NiM@e129823.arm.com>
+ <31418d0e-9745-4e8d-bc02-dbbd5cb9e193@kernel.org>
+ <aqKU0-Gm4yh78F3V@e129823.arm.com>
+ <d6f2e6b2-9dc9-4f02-be37-14329c1a6798@kernel.org>
+ <aqKfjqa6ye2AOU5k@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,19 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260901182857.26690-2-mathieu.desnoyers@efficios.com>
+In-Reply-To: <aqKfjqa6ye2AOU5k@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: o1csz9usxx4d7y81xpwfwkefjs5ikgwx
-X-Rspamd-Queue-Id: C8CC31C0006
-X-HE-Tag: 1789043080-967413
-X-HE-Meta: U2FsdGVkX18X4kYaU4oryxn9t17VpyY5/Iv3FwnnDO6OuvcSEiyGiBR+2c95Ne2ByJqeHXzCmR65DEkBi1Kst5xBs/dG3T9FJUn0fZXjXfkkmP6ivEwSNQ+i2SmGedLi2LmFX4Tgb2LJg6/ulkoRTbhdShY1NucPs83HIPU2N7jYBK7cjuXebtBKAn2blISYt9urxpRpamU7teYqs1kkkvDr5RdkN3zLoWh6xGx/lceSF24WxWfcklWe434aOdVLLimbZxdhCUoHdm0IsqMvW4bIGXCLDKbRng7CWE2KzL64kdcAgwxU8awukVA9y6KJgJQUXb5918o7Jd3g0b7iLsvWSaEm6IVJpJ8uf7pk5coOZjP5WpObdjzKQvroFrDxZG0euhyS/t9G7K3VvsZx/9lIzr1x4ewB79kh2R7A6g7Y4dNHSjOAK1n5wmMwl4eWTfPaGnxUAMbTIS8bgbRhRD6nZCCYFFIQRrqJ02n/NqJbaC+dTdwmWc64eJZy0dv7GglPXkgk3FHz4WYbGzj3wfP4VDrazWlXkKYxB3xos35LPvUcOBS6E9lfLlLLRG8foegz5B08iYiEbAuN1atGjbHbmqRwPo14x4XXyPYO1CUFBWpDZ8jWe8vD5WY1aZjnD3snR6CvXOFAOqHyjZfpkgYNJ4Yc08rJUGZXAz8Ui029pbzlpWQfeb2viiKiCeLhsThXXvwRWwObwtx6MW2soZkFs83qfGXWoLiXEBYnVZ7m2WmnIbwsAWIIL7svKsE0q7nubXvVD3ryVlZsh3HcE/MWnEaAokmM0pK/FgGSYFQnibqlF/zHqGQUBRIvXH4GG4b4XUuNZxNbQDaghD8q6Nx0KxWbXzKQxiN1QRZl52jfBY9xXu5zd01MRjizbsxqbOz0YWjJyOxiAaSpFonAlJBVHwPjCAWphgmM6kWJbOqg5/G+1PKFiOjXg85x4irQ4hYT5xcBCXTB4FXVZIZ
- FLEKwZ0p
- K1XYMBZR3uhfApX+ROIEwL/9ZQX6EMDyjpiR8le5jxz/5FNSu2u7vIGnZ6VF3mPAiK/XdD5cku4zsLYp58bzLS0dUfj9ah2e1DeRS1jwOUTXnNuXbR4eRLpfw0k4mjFsc+pwlZbcHxw81chceE8GppKPAGwa9bLuErWKOeXoZU+PYTYUHJRplKGYOZroDUJKjJhCpkREltSODRpH1YPkPt5Nlvo4D6hZlviAaI3b7ED7X2e5imoolMTUnbZgy+0vAplCLoSVR0BAEXyJA3nDkKoieKkMxGs581sV76fNMdEQtxX7uMMXsaDLyk+49iaC3H/0jLiQSg0V1q/fikTp72CL742VmidzhQ/zQXBqb4s6zARoLOoE/3mZFm7vRGpglAvi4Gir+7Rd+fvQWsPitNlPjYSlvmGBXSf6YkEaycXu7POTYwco1ZrvbCFCxbzpj+SEKIM+2AXFqfIX1HQHTKziyIwwsnpMIx4MpmtmFX4V2jy6LY8YrI4TABfVRHxA5BS+FL6TmPhD7Oy/QR9ftQQluNcWJXsLy9x9tV29AjOGQFPLLN67ieneclfmE8zvCuAPFBxKM4XI8ZdAM5AazeIdXbknvtUFywR/biYTQcA8dLvknvWZvIYzd8W++kWyTCsK17aWIYOE4Nfx2cfuJrqN6CKGlhe6jatCTLdFG+tPhrE9gN6lPMnBErEPdSelX2KLM5fyC+5jWOfj9QiSvgI2qFPktv1a/iHGLkjAl26nDMVoE6pqHY4F2BbdC8lOIKCR6GIOsUsPV81Ok97WuzTo/8gtpmnXJL+E+ypa3GvQM1IBd2bgaEf0ZPuF6zB15qBzAuD3lfFsMKf30uYxB+8olVQ9IExOc6n7OAVCozje34fC0LE99Pms9Fzr39XNUlbTev0XtNxbmvYcOahYNmxmws5t3QsjyH06sizzg1dC15YSiplpvNbxH//YmhrdUHqeUgP0W4UZg5qjOeRDeRrQ0JA2E
- 3qpq2Q6L
- gBmd3V9OA/dSwVZwgV6lpmCxerFOovtULhD5cA1J4cxyN9XRSLPwGlqxQtQJ6nD9EEfvnxRcJPhUjUAUOzU9+OLvhqMpJcX3GCRBQsIKZ5+ZebpBmrrk7A==
+X-Rspamd-Queue-Id: 944D140005
+X-Stat-Signature: btqd3pjctct1k1o8xhhz19ww5e7ro1cx
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789043150-628620
+X-HE-Meta: U2FsdGVkX1/SdGxZpaPD/b3sEDiRfafVgfGcIkf8c7IBVmRPYaSbYf14SbTiCm3adfuqca0276I9q3LSsLnvmyBpyvie0NTeqGGdybAfIi05EAYQtWMNcpgyghj1aiGs0+d+nOLWmKntScWXtyFIb/0DPXRxAqJmO78i5az1AnSPbjGtDwgiiDaWY25c0Z+ohtcjVVo0/JlcjZTMQNI/9Cnx9M9GchWCztzzp332jJYEUwtvr6WqeUDkMCl343G9uN430YaHy5F3Wimld0ik+jeTd6OGBX+xegyMT09mFqLxVsVyrCqtTuAyUxDx4vMmy2bj8BAkz6phfXr8r8gq5Ya1QFVxLQ5N1rxSDQuww/rQuYatw9DKmXRNKc0nmVMTBztikyUFCW7uKU/MW+0ZAYncU29y4kUKQg8LbgwYjfW2cOxgNDaeRIpziKDd9OuJ7kjrXM2FftQU11/fGBOKqdMKx0yYxMlWE947B7UwtRF0lY7+NgYQNeDHBSQ8+O/xR8SOyy7AXSg0VFHrxYnNe2K9lIK4yJj72KdYBeQa0ZSoqwAnvRQ51lrKIk905IfttRY+ljsuNk+gYzhw/wTHSTpNeE/G3w42/qx4msBY/mTG1DWUJE36lOjl8NUCxmfFmlrMyZ2lD07OhzRcyIGPY566CBvTwZ5WQKTfBSyCCLz5TZM+jhdwUeL5MDRm3nQ0mUO1MyLkisPwBknATlp40L7O/LvImFoXYKMZGdxf8CLNwW8UQSfrxp5fQAMT/yIhHYhqobfq6e1vTjJ1a8+KTR+WA1LTQhrXWn4wgFACsX6Y+sMXrwOBlLfdwCo14dIyEZgXCKqnANVmSwK5fjQlY09YLq9/VNomxxajVpzY11XzflXX7H+ZS9cqihsup04rZ3QDkRsN4OW4x7WVGUnZg1XzfWJX7aTE0n+j4LEkajmCqnn2+nR+2mh8N1QCvbXsM/EsrznwDFqbGW/3KH7
+ rRK4SXuT
+ dOMuXWlLbukxXnkWRCJax9Ml063FrlOLNeqK9RlYjLSLT6OkjmDBPiEbSBmIobaCY6y9rkCLxJwEI72VhvEMCTpI64W0wLNYw2wIQxTJtu8M37XyLmkomnnZlvonzrWJmLyA226jAZ9fEjStFzOS8O+aZgZD0qqiQ5dTm6B8chX8WTG7gzIyNRx5BBpeQ+hjAlWtLxJcBrQU5e7xHYfD2SfsyqDzRvnSZmWv1q8DA0a5qGQqIGYPqYRWhw6kWUHh31IisnGBt4CKTV93FtZ4bU6eZ0lMbrF9R/5oEMd7wEO1YygstHdD3izPTZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,309 +155,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/1/26 20:28, Mathieu Desnoyers wrote:
-> This series introduces the hierarchical tree counter (hpcc) to increase
-> accuracy of approximated RSS counters exposed through proc interfaces.
+On 9/10/26 14:16, Yeoreum Yun wrote:
+>> On 9/10/26 13:30, Yeoreum Yun wrote:
+>>>
+>>> Yes. so if we remove ASSERT_FALSE(check_vmflag_guard(ptr)), TBH
+>>> we don't need this patch unless other usage comes up to prevent unwanted
+>>> VMA merge.
+>>>
+>>> Would it be better to drop ASSERT_FALSE(check_vmflag_guard(ptr)) in
+>>> guard test?
+>>
+>> I guess there is value in asserting that not all VMAs by accident start
+>> with an over-indication of maybe having guard pages, which is why Lorenzo
+>> added that check :)
+>>
+>> But I think even alloc_isolated_mem() is wrong in that regard: if the
+>> original VMA gets merged, we could inherit the guard-marker, no?
 > 
-> With a test program hopping across CPUs doing frequent mmap/munmap
-> operations, the upstream implementation approximation reaches a 1GB delta
-> from the precise value after a few minutes, compared to a 80MB delta with
-> the hierarchical counter.  The hierarchical counter provides a guaranteed
-> maximum approximation inaccuracy of 192MB on that hardware topology.
+> True. I overlooked guard bit is sticky.
 > 
-> * Motivation
+>>
+>> Maybe the following would be good enough?
+>>
+>> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+>> index 5c8ec3ca75d7d..791bf6a68b9e6 100644
+>> --- a/tools/testing/selftests/mm/guard-regions.c
+>> +++ b/tools/testing/selftests/mm/guard-regions.c
+>> @@ -2257,10 +2257,20 @@ TEST_F(guard_regions, smaps)
+>>         char *ptr, *ptr2;
+>>         int i;
+>>
+>> -       /* Map a region. */
+>> -       ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
+>> +       /* Reserve a 10 page region with 1 page space to both sides. */
+>> +       ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_NONE, 0, 0);
+>>         ASSERT_NE(ptr, MAP_FAILED);
+>>
+>> +       /* Map a new region that is guaranteed to not get merged in any way. */
+>> +       ptr = mmap_(self, variant | MAP_FIXED, ptr + pagesize, 10 * page_size,
+>> +                   PROT_READ | PROT_WRITE, 0, 0);
+>> +       ASSERT_EQ(ptr, ptr + pagesize);
+>> +
+>> +       /* Clean up the excess pages left and right. */
+>> +       munmap(ptr, pagesize);
+>> +       munmap(ptr + 11, pagesize);
+>> +       ptr + = pagesize;
+>> +
+>>         /* We shouldn't yet see a guard flag. */
+>>         ASSERT_FALSE(check_vmflag_guard(ptr));
+>>
+>> -- 
+>> Cheers,
 > 
-> The purpose of this hierarchical split-counter scheme is to:
+> It's enough but alloc_isolated_mem() could be modified to allocate with
+> PROT_NONE first and then change the prot.
 > 
-> - Minimize contention when incrementing and decrementing counters,
-> - Provide fast access to a sum approximation,
-> - Provide a sum approximation with an acceptable accuracy level when
->   scaling to many-core systems.
-> - Provide approximate and precise comparison of two counters, and
->   between a counter and a value.
-> - Provide possible precise sum ranges for a given sum approximation.
+> It seems whether make a helper or testcase should write the code
+> properly in case of unwanted VMA merge.
 > 
-> Its goals are twofold:
-> 
-> - Improve the accuracy of the approximated RSS counter values returned
->   by proc interfaces [1],
-> - Reduce the latency of the OOM killer on large many-core systems.
-> 
-> * Design
-> 
-> The hierarchical per-CPU counters propagate a sum approximation through a
-> N-way tree.  When reaching the batch size, the carry is propagated through
-> a binary tree which consists of logN(nr_cpu_ids) levels.  The batch size
-> for each level is twice the batch size of the prior level.
-> 
-> Example propagation diagram with 8 cpus through a binary tree:
-> 
-> Level 0:  0    1    2    3    4    5    6    7
->           |   /     |   /     |   /     |   /
->           |  /      |  /      |  /      |  /
->           | /       | /       | /       | /
-> Level 1:  0         1         2         3
->           |       /           |       /
->           |    /              |    /
->           | /                 | /
-> Level 2:  0                   1
->           |               /
->           |         /
->           |   /
-> Level 3:  0
-> 
-> For a binary tree, the maximum inaccuracy is bound by:
->    batch_size * log2(nr_cpu_ids) * nr_cpu_ids
-> which evolves with O(n*log(n)) as the number of CPUs increases.
-> 
-> For a N-way tree, the maximum inaccuracy can be pre-calculated based on
-> the the N-arity of each level and the batch size.
-> 
-> * Memory Use
-> 
-> The most important parts in terms of memory use are the per-cpu counters
-> and the tree items which propagate the carry.
-> 
-> In the proposed implementation, the per-cpu counters are allocated within
-> per-cpu data structures, so they end up using:
-> 
->   nr_possible_cpus * sizeof(unsigned long)
-> 
-> This is in addition to the tree items.  The size of those items is defined
-> by the per_nr_cpu_order_config table "nr_items" field.  Each item is
-> aligned on cacheline size (typically 64 bytes) to minimize false sharing.
-> 
-> Here is the footprint for a few nr_cpu_ids on a 64-bit arch:
-> 
-> nr_cpu_ids  percpu counters (bytes)     nr_items       items size (bytes)     total (bytes)
->     2               16                     1                 64                    80
->     4               32                     3                192                   224
->     8               64                     7                448                   512
->    64               512                   21               1344                  1856
->   128              1024                   21               1344                  2368
->   256              2048                   37               2368                  4416
->   512              4096                   73               4672                  8768
-> 
-> There are of course various trade offs we can make here. We can:
-> 
-> * Increase the n-arity of the intermediate items to shrink the nr_items
->   required for a given nr_cpus. This will increase contention of carry
->   propagation across more cores.
-> 
-> * Remove cacheline alignment of intermediate tree items. This will
->   shrink the memory needed for tree items, but will increase false
->   sharing.
-> 
-> * Represent intermediate tree items on a byte rather than long.
->   This further reduces the memory required for intermediate tree
->   items, but further increases false sharing.
-> 
-> * Represent per-cpu counters on bytes rather than long. This makes
->   the "sum" operation trickier, because it needs to iterate on the
->   intermediate carry propagation nodes as well and synchronize with
->   ongoing "tree add" operations. It further reduces memory use.
-> 
-> * Implement a custom strided allocator for intermediate items carry
->   propagation bytes. This shares cachelines across different tree
->   instances, keeping good locality. This ensures that all accesses
->   from a given location in the machine topology touch the same
->   cacheline for the various tree instances. This adds complexity,
->   but provides compactness as well as minimal false-sharing.
-> 
-> Compared to this, the upstream percpu counters use a 32-bit integer
-> per-cpu (4 bytes), and accumulate within a 64-bit global value.
-> 
-> So there is an extra memory footprint added by the current hpcc
-> implementation, but if it's an issue we have various options to consider
-> to reduce its footprint.
-> 
-> Link: https://lkml.kernel.org/r/20260227153730.1556542-1-mathieu.desnoyers@efficios.com
-> Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
-> Link: https://lkml.kernel.org/r/20260227153730.1556542-2-mathieu.desnoyers@efficios.com
-> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Dennis Zhou <dennis@kernel.org>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: Christoph Lameter <cl@linux.com>
-> Cc: Martin Liu <liumartin@google.com>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: christian.koenig@amd.com
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Liam R. Howlett <liam@infradead.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Miaohe Lin <linmiaohe@huawei.com>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: Yu Zhao <yuzhao@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Mateusz Guzik <mjguzik@gmail.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> Cc: David Carlier <devnexen@gmail.com>
-> Cc: Josh Law <objecting@objecting.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> ---
->  .../core-api/percpu-counter-tree.rst          |  75 ++
->  include/linux/mm_types.h                      |   4 +-
->  include/linux/percpu_counter_tree.h           | 367 +++++++++
->  init/main.c                                   |   2 +
->  lib/Makefile                                  |   1 +
->  lib/percpu_counter_tree.c                     | 702 ++++++++++++++++++
->  6 files changed, 1149 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/core-api/percpu-counter-tree.rst
->  create mode 100644 include/linux/percpu_counter_tree.h
->  create mode 100644 lib/percpu_counter_tree.c
-> 
-> diff --git a/Documentation/core-api/percpu-counter-tree.rst b/Documentation/core-api/percpu-counter-tree.rst
-> new file mode 100644
-> index 000000000000..196da056e7b4
-> --- /dev/null
-> +++ b/Documentation/core-api/percpu-counter-tree.rst
-> @@ -0,0 +1,75 @@
-> +========================================
-> +The Hierarchical Per-CPU Counters (HPCC)
-> +========================================
-> +
-> +:Author: Mathieu Desnoyers
-> +
-> +Introduction
-> +============
-> +
-> +Counters come in many varieties, each with their own trade offs:
-> +
-> + * A global atomic counter provides a fast read access to the current
-> +   sum, at the expense of cache-line bouncing on updates. This leads to
-> +   poor performance of frequent updates from various cores on large SMP
-> +   systems.
-> +
-> + * A per-cpu split counter provides fast updates to per-cpu counters,
-> +   at the expense of a slower aggregation (sum). The sum operation needs
-> +   to iterate over all per-cpu counters to calculate the current total.
-> +
-> +The hierarchical per-cpu counters attempt to provide the best of both
-> +worlds (fast updates, and fast sum) by relaxing requirements on the sum
-> +accuracy. It allows quickly querying an approximated sum value, along
-> +with the possible min/max ranges of the associated precise sum. The
-> +exact precise sum can still be calculated with an iteration on all
-> +per-cpu counter, but the availability of an approximated sum value with
-> +possible precise sum min/max ranges allows eliminating candidates which
-> +are certainly outside of a known target range without the overhead of
-> +precise sums.
-> +
-> +Overview
-> +========
-> +
-> +The herarchical per-cpu counters are organized as a tree with the tree
-> +root at the bottom (last level) and the first level of the tree
-> +consisting of per-cpu counters.
-> +
-> +The intermediate tree levels contain carry propagation counters. When
-> +reaching a threshold (batch size), the carry is propagated down the
-> +tree.
-> +
-> +This allows reading an approximated value at the root, which has a
-> +bounded accuracy (minimum/maximum possible precise sum range) determined
-> +by the tree topology.
-> +
-> +Use Cases
-> +=========
-> +
-> +Use cases HPCC is meant to handle invove tracking resources which are
-> +used across many CPUs to quickly sum as feedback for decision making to
-> +apply throttling, quota limits, sort tasks, and perform memory or task
-> +migration decisions. When considering approximated sums within the
-> +accuracy range of the decision threshold, the user can either:
-> +
-> + * Be conservative and fast: Consider that the sum has reached the
-> +   limit as soon as the given limit is within the approximation range.
-> +
-> + * Be aggressive and fast: Consider that the sum is over the
-> +   limit only when the approximation range is over the given limit.
-> +
-> + * Be precise and slow: Do a precise comparison with the limit, which
-> +   requires a precise sum when the limit is within the approximated
-> +   range.
-> +
-> +One use-case for these hierarchical counters is to implement a two-pass
-> +algorithm to speed up sorting picking a maximum/minimunm sum value from
-> +a set. A first pass compares the approximated values, and then a second
-> +pass only needs the precise sum for counter trees which are within the
-> +possible precise sum range of the counter tree chosen by the first pass.
-> +
-> +Functions and structures
-> +========================
-> +
-> +.. kernel-doc:: include/linux/percpu_counter_tree.h
-> +.. kernel-doc:: lib/percpu_counter_tree.c
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 6d815f6440c9..dff5fd1c1b06 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1462,8 +1462,8 @@ static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
->  			 MT_FLAGS_USE_RCU)
->  extern struct mm_struct init_mm;
->  
-> -#define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
-> -{								\
-> +#define MM_STRUCT_FLEXIBLE_ARRAY_INIT									\
-> +{													\
->  	[0 ... sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0	\
->  }
->  
-> diff --git a/include/linux/percpu_counter_tree.h b/include/linux/percpu_counter_tree.h
-> new file mode 100644
-> index 000000000000..828c763edd4a
-> --- /dev/null
-> +++ b/include/linux/percpu_counter_tree.h
-> @@ -0,0 +1,367 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ OR MIT */
-> +/* SPDX-FileCopyrightText: 2025 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> */
-> +
-> +#ifndef _PERCPU_COUNTER_TREE_H
-> +#define _PERCPU_COUNTER_TREE_H
-> +
-> +#include <linux/preempt.h>
-> +#include <linux/atomic.h>
-> +#include <linux/percpu.h>
-> +
-> +#ifdef CONFIG_SMP
-> +
+> IMHO, instead of testcase write them all
 
-Would it be possible to document here how these values are determined?
+So far I am aware of exactly one test case, which others do absolutely need this?
 
-Without that, ...
-
-> +#if NR_CPUS == (1U << 0)
-> +# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	0
-> +#elif NR_CPUS <= (1U << 1)
-> +# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	1
-> +#elif NR_CPUS <= (1U << 2)
-> +# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	3
-> +#elif NR_CPUS <= (1U << 3)
-> +# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	7
-> +#elif NR_CPUS <= (1U << 4)
-> +# define PERCPU_COUNTER_TREE_STATIC_NR_ITEMS	7
-
-... I'm confused why two separate statements share the same number.
-
-(should we simply drop the "elif NR_CPUS <= (1U << 3)" in that case?)
-
-
-I do wonder whether there is an (easy) way to encode this into a formula. I
-assume you tried and it got too hairy :)
 
 -- 
 Cheers,
