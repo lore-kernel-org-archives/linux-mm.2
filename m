@@ -4,116 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2D7C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1FCC79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 13:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E374D6B0095; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
+	id D5ACD6B008A; Thu, 10 Sep 2026 09:04:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC0ED6B0096; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
+	id D0B476B008C; Thu, 10 Sep 2026 09:04:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C132A6B0098; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
+	id BFDB76B0098; Thu, 10 Sep 2026 09:04:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9810B6B0095
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:57:07 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1A3CA4F47
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:06 +0000 (UTC)
-X-FDA: 85197852852.05.D34EB13
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2BCCE120009
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:57:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CMKkmGIg;
-	spf=pass (imf29.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF706B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 09:04:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 421ACA3B90
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:04:44 +0000 (UTC)
+X-FDA: 85197872088.17.9EFBCD9
+Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 43122180002
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:04:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="H bElgJR";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="oVBZsIV/";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.136 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789045482;
+	b=3Nl5SJUFz3ro3GRxyjkwBW824GgfriQNr6g6gLjJp9ivO5C/BI7ZHbT/wGanpasDfW0R4F
+	T9hQ/ZlPibG/hBt+TA9RAtDjDelWYp2+4DHbI9U3B5KZdU6MF3Jhcim6nIx+IZfhBcjsrc
+	CBaj/zUUqugBsE3zulCR2UIiW/GST3c=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="H bElgJR";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="oVBZsIV/";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.136 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789045024;
+	s=arc-20220608; t=1789045482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
-	b=2QFKziTz0QfEgLFBIytVWduIX24a1AS1b1OvJXECnHyzfQZaei0pmue4REouq8VRRK1NKc
-	WUvV4zRFfJs8ftwgrQg31G3+O/HIwtKxgOtIYpyqfxhNALx/XFh2y8ewOBY0sXSyTNCcik
-	A5uisQCq0FxOmPwZEFEsplmcFqmL/88=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CMKkmGIg;
-	spf=pass (imf29.hostedemail.com: domain of diannaaav@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=diannaaav@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789045024;
-	b=I/0o/Gb832qLnup8CD+D5LOX+gEJYWkmLLIITJN7TnzQsmaFHpOjb8yWozpHlP225ZoFO6
-	y3zYGoZRh+TCqhnoDPO6rcqas4RyUdvDL9LVd4X6a8Q0vk1g/gufAg8vdklxpU887o69xt
-	1WWtfFjBBBdijTWlPI2+qW0KAL5kduk=
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-396a51b2605so2892791a91.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 05:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789045023; x=1789649823; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
-        b=CMKkmGIgxgeEpzVDr4A5pklbdDubX7IB877oVZLOzPU++BlI5Tof3nxDMtKCT8l/yj
-         Eq8eJygaPxdT7aZIZ5XXi8H34xVWW7lRC1jHHGCrLhrJ+bcJOnJvZCeog/v1m5uA5RYo
-         KeNV9WH2q6B4XNy0inRQ2deQfdYF9/RL45q9igj/9anA8hY42tU33ELIt7Yh4xlRks2s
-         FtYNiQb7RtCh5MNScIyMwivZXzIHiDl0PeaeK1txFKHPenIn+YOkVn3brgqvmqrXUZIA
-         quCcHkI3VzjUxpBrCLQjfVnQCG0Q123Vxj9Ff7Py9h+SorXSv4FOm9Y24CwafyDGZ72Q
-         XRbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789045023; x=1789649823;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6mRdG/Kt6hS/eZlSBVQMx/QTMGuDSPWApxK45jZ1fD0=;
-        b=hCtnoeiAVuEUPhZPHR5VZWmTixoIA7sDD5K1HYpJiCS0U+6VO1M0KVoxs4UyIFMULm
-         wWiEcc87TDwFyAOuVmeZbEcmrIhtu1fUnZU5h0K1vluKpR6YCvuflroRveGIPufB8r9G
-         +ffVYATXVOuhraJ7s18iJmj2kUK43MJSKWl6mMcW8gcpKo8UnquR5aGKaCfbuElh02VJ
-         p90/cqV1fSRKLjIvUZwGUgm23ZXY9gPV55SJGBrarPYh2RbkIRWJfkbmHFBOBfEYO47q
-         DJjr5yd0zfLdwQTFYW+obT7LA5lB+0ojC3XB1JNSp3EgrcxyLL5DZ+YLbgyfwNcKt5Yr
-         5qZg==
-X-Forwarded-Encrypted: i=1; AKwUvBwLGawEIlbIB/FTOZ7RFCeVHWVzEG4N/wMidTtiRhkPeyyN/omJlmhW291STM6CQMEDg6hDLlZXjQ==@kvack.org
-X-Gm-Message-State: AFuF++me1zfDJS2xDwjh/+y6ACrH9gBEMHAKrXeesdsvM+TKpyYvt5uq
-	mbYVcG6Y/ZwGrWzfpzOuk17bSZFJfdmRqzV/yZJwXsNZV/N3Ex0PM+sB
-X-Gm-Gg: AYBFou0KqHDy38wliq9CiWSA2+ZqPlep9t+R83pcUHMzFbSCianQXbx+Qci3pky/Qd4
-	+rwH7zzVGgWO+m+4UOElfQQLqLPV+IQ3QoUhTAST2ppLK6skFLtxh02LcLK4m5ePvk+LyEwB5VU
-	wwdv4tGlOzzjs+Q8A1+AtaTtGP6rsVXbl7ZIlzMzy+X92a08ZHorOoGLKNdZaY0Sqd5CGBFp427
-	fU8EdtQ5U1q6XHJq0xv4Qdl/9ZD7gvcVC7d7YPVaZ3NPIC/CuwESQoWwW65qaiLI3I9vDgnd+AO
-	3xMnZydlPHGWI8mAh351uhqXyNNwTDo2lfX6o44FA6Ow+uFczqz2wEIJiSsGd81jJOby04ciQuX
-	O45HyxBkNEMmMOtAfsTTqm7FlDzPaWAT3qfRexK1tRh8qTiuVQwzBrKk49I7gfSHFqmFlRL4O11
-	epINMd/jxX+8GSFvq5gzsWU4fdRAHWhqt+GXGwO+m3CqCx8vz4gWXGQygn3Q==
-X-Received: by 2002:a17:90b:2d0b:b0:398:c794:ca26 with SMTP id 98e67ed59e1d1-39b263167f7mr60407420a91.25.1789045022916;
-        Thu, 10 Sep 2026 05:57:02 -0700 (PDT)
-Received: from fedora ([69.5.53.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e9014cbsm4800488a91.16.2026.09.10.05.57.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 05:57:02 -0700 (PDT)
-From: Tianyi Chen <diannaaav@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joel Savitz <jsavitz@redhat.com>
-Subject: [PATCH v3 RESEND 2/2] selftests/mm: Only prepare ptrace_scope when memfd_secret is selected
-Date: Thu, 10 Sep 2026 20:56:45 +0800
-Message-ID: <20260910125645.285866-3-diannaaav@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260910125645.285866-1-diannaaav@gmail.com>
-References: <20260910125645.285866-1-diannaaav@gmail.com>
+	bh=KV7XC8+HfJo2WCcRdFe2DjTL8zq9dSIHiccyK3AlT4Q=;
+	b=HUPuF2EQsOW/A2QMQnG+in2SaBRlUkmkbZ3N8OZXkp8t+p1l9xLXsKeI5TASs5oj0M0hr8
+	sD3gsM1IlkHW8Bbz5sJDVLQq5RpHYZzFTUqg+qvmlZXDVURjs+His79HME/+iSFvcmEnIT
+	rjWx8lJhKZVL/JiY7bqNcEz3QMrKRQg=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id 311BC1300DC9;
+	Thu, 10 Sep 2026 09:04:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 10 Sep 2026 09:04:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1789045480; x=
+	1789052680; bh=KV7XC8+HfJo2WCcRdFe2DjTL8zq9dSIHiccyK3AlT4Q=; b=H
+	bElgJRMEbERl1+nAd+kW9yaqu2UYYpiIMMfqBOlgxuZCg8RzxiGpYJ3HJLUO1lzO
+	LDl0gXvqTEsdY1A/P6dKgL/PlY39t3HlsPhcsQrC9g7ITFQiNILUVZqLE1lFKvSI
+	hCYWo8hWgzVUu4/uegICPxVIYjvnm+BKURMtflLpLWaolzZJwSYLIiHCDtWpUTU/
+	h1Uot5ZXV5vBIMZycPWrhHBouSonC0RIQn6CLlNKZFa9DrZ2gDkdjQEfn5MoLjzC
+	Wl2+kF+G+77XzuHyHeZIaIDSqsxAIaxGxrc3XYvKLiyUJlf2AFwngH+m7IcT+jL0
+	Xv0w/x+1LhsDBTd0/wwdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789045480; x=1789052680; bh=KV7XC8+HfJo2WCcRdFe2DjTL8zq9dSIHicc
+	yK3AlT4Q=; b=oVBZsIV/jGPLkFnHK5fKCRceo2RhqyVWgJrMPfTJzhd3TzQxKIW
+	sto0t6rW4VBiR/rPUkK/AdM58b7djr4IS/70B5HeMEQnKLQREe7aU/8gGTCtr5hl
+	/3LxYzRh6P72wjkgGiUTcnvOgr9PB8DSpj/3iGi+tKgeWkA7wZuzeEJo7jjLbAUX
+	ihYq0hMTk8uLu2m15H/zcD0MvC+oR/azRxVj5X6kz8Q5Ypi2IICQIUxD9sqD/tvq
+	N3NE2uwVlXYjb+LpsFPKJwGw7S3JEu3asBHXTSoZS/pzHZTb8gM7EMopILscFFky
+	0gfB6VrfHr5TuZ7fz6ZwsWjlwnRxZA7rsoQ==
+X-ME-Sender: <xms:5qqianj176YN02lMJxSb4EhgK6XJtpxMm5s_wF8HORrZBsSvFLtVQw>
+    <xme:5qqiaktgneoW465jMDoTGJ9mBgF3LIte14lEibp_-xu4Iud84BrOG2uotCs9MMzRu
+    Jem2JRdAplIfXhDt53RLPVOh2ZTPO3Hm0JUc66BNJCgPG55Svj0OvSf>
+X-ME-Received: <xmr:5qqiaiLJoEc6orBizfd_a84A21rAjlmVVDjrAEtHakmiMH2QSSAXngH_Q3Y>
+X-ME-Proxy-Cause: dmFkZTErqcWawBBo4NhlkntMFUoIJIaTUydErcobOOD2qAARaG/wohlBtCRTJcJOM32uP3
+    Su2EbwwCyp3i+tYUvxY2bamyQSTy/GKV369qRr9JqOWEPBUJxU7Z3UmtAq5W/iHR2L9J47
+    tt2BIFncpu5ZNx+sqC5cXqahs97pcgKZbPSGqXMpO/eInoNtlSNtCmaahg1NAfhhBYNSzG
+    mdVcqjwhA4ZOSmHsK3bJ8OZwAmUgnvgizo6JLW2iY+tYJWxkD/JyrUUQkamZ3ACJHeWiut
+    e7fio3BHz99JVq2AIaS7fMDOFkOm4z6epfRVHFGZ37qIK1VIWQ8NJXl+eU3AhPq8T5iYmU
+    Kh3TN5NnQykKmZ6US7nhNTnmJ891tXgs7BvVN5lWXoG1cSxevyWz07UCYd+fVZ1OTe79PL
+    MbYP5qPaBmTkSqT5lzJ0htc4A1Y0PDLTU+jgCIn22Jir/NPJEjDcjtFW1917V6SFWG4qzX
+    IFtc0qLFt+t1dExkY8i9RuPI9QCj174skW5QzCXtckImpPHjb/mT5dOm5k3f8v9tZVPT0+
+    bpHHEZzPhkRCWbEca5c01lLweMm0oZYg1/+cOpHlCpsfwVDYDZNM37VM2do+gv5D5NYyZh
+    7gJVUH9jUCEYaFksK3SHd5B2ovWpO0fZH0AUyFOq2PvNUvlBRdEbHCJz4jyQ
+X-ME-Proxy: <xmx:5qqiakQBUz5ibuwpZUvVFWhzF50qkaTG3wibznBs4EVd7YSkM4w2Ig>
+    <xmx:5qqiansrfVFGHZBlEpqA73jPCfxbZFDsuj6W4a51WSLlNz670Hu3LQ>
+    <xmx:5qqiargQBe4kcB93VgrvSkPR_d15jPamovI07Zy1lehQeVZvpRl5NQ>
+    <xmx:5qqiao2S6dERuJZ6cSe5xZiW-MzHNw7oP6W2AzGNuaO954chXvrvPQ>
+    <xmx:6KqiapOv4Km96vz_Hzt7vlskbffNMNn6M7FRmyBNRq0yuEjl_J8OndKQ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 09:04:37 -0400 (EDT)
+Date: Thu, 10 Sep 2026 14:04:35 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	rppt@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev, nico.pache@linux.dev, 
+	ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
+	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, ryan.roberts@arm.com, 
+	shuah@kernel.org, surenb@google.com, vbabka@kernel.org, agordeev@linux.ibm.com, 
+	jgg@ziepe.ca, leon@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 08/19] selftests/mm: add folio-order check for address
+ ranges
+Message-ID: <aqKqr62-718Vw35k@thinkstation>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-9-kirill@shutemov.name>
+ <feb76c81-db9d-4a36-9a31-0b2b31e3c3fb@linux.alibaba.com>
+ <aqKFXlpSELmCtt-z@thinkstation>
+ <65bf1722-c1fd-452a-88c1-c030b042cfbc@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2BCCE120009
-X-Stat-Signature: wqsjx7b3mp4jrg4xn1juaygc7u46w3ij
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65bf1722-c1fd-452a-88c1-c030b042cfbc@linux.alibaba.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 43122180002
 X-Rspam-User: 
-X-HE-Tag: 1789045024-673606
-X-HE-Meta: U2FsdGVkX1/i2XOCrsjVaAiMkUL419uq3WOu6A1yJIvTsvApK5s/A0g431W9Wwo2fwHr8sUWX4QxQjDBBMMLlawPYId0QncJR0N6fhu9hnd3xlRh0gvR308y4rZRY749Dmaf8rpD6dAK4n8V/fsa5TlGeu0O6Y1tjKkY+VAr+RZQ6s+iMsTIZtCwK9aQMSxVOYfFkuL5FaQy402Nq7MZ8tCmWWirDwPzvMBgNsFG/ULikTNVUiNaDjsBTA6ZBmX1Fj5VFpY88LZAMkJtTVKP0HLuzhVoGN2qI3jSZHvBEMUxWgJD3PYYv9GGmIlli8Z6SRpysiMszpGpQGls/2Ovc6kl71e/doYcA9W0UBoLy13ZHuDl3xHdCqK/qSC0c1pVEOD5ZBIMejVc9ft59cMetKxCUXzkK/Z1SPT66MBZPLH1yT3sFHNNNlzevpZOvCcXagwXtoKsCv8ckUq7pvdDA07P2ShnzOWkO2B8b1QrLVH5Vx+EEVxI/nFGXcTpERzfGIzaV0lzz1ELeve3I51PhDhB1rxZfm79EfBeHFGJx8OlfhRC1nuasx/Rbx7hdhu3kbUfYCel1r7YOt6X6fxfXCvch2441x5FIFiCN1E7ZqEINwHaYyH/bn9dP1qD575dfoBHHfFyw4XR97CQE4fp4crZ1ArZ70Xy6lIjon+e3izHBX5zBoJJnyjUF7YzonxY9Ye8DQKuTTcBqlzFYheXXCwmaCqqK8TqxEQXXh6ekwhIWP7MoRoZKT19j9AG2dY1pkyrhvdkPNSd5Slbx7YzGj+6txi9ZEn1IOko8fi7XTIF2A2+y138Uj2fGSqby+8WjSEiH73kxZ1X91dOrnzOxyaH9kBjcEnR4eBVPepeNOeZI6IR1npwEoUneGstTKV4Qz/kuTu4jE3jURQZsHHzog7HEyGGrxUEWMegwvfbRHJPcGaJFf3gjGlYLZOoC/wuDJP6qjt6r/mQPOha+vn
- Om1ZjGRb
- UHIuIzxFHol4jE04rMPU9a9BeNpK6EYLVM0+ZNXfsrtLU2QboBflx0V+zwAuw3dyVeVEkJncJL+7eS9JJ5Tf0w4GeYioFQ4PwMpCk0dbTsSFAlhKX6/AQqqYW8bpka+ScmQX6/66Ox3GPIXr3GdRhcDn0NzmshJDu/2MGcc98kW62Mw2qQN0nw+f0t8PZmTicYAtJgWn0M6wsRL4bhs3ROep40qPR2unv/11G2QbzVdyYNhOG4I77hXycllpgPsSug9PMP88ztRIbL01vUoGIlGaFC7tV3rNNZyFrp2UfmJaPdtZVOFvGyuRYeq2u9QWbV+NWo/9yuGirwcY/K6dVH5nRBnfZw5NPJzSRw7La2/oJ9TXkKZKpCLqVUJyv+FpHJoILV+cx2t2nUv6zpHCKXnysBg9e+7LlotXdPQSzcZgGWyoXopNKH0eS83KnuQL3gSKvrC/E07i3opA=
+X-Stat-Signature: bk3q5pxado55f7r1gkaik4jgd8f78ymd
+X-HE-Tag: 1789045482-261079
+X-HE-Meta: U2FsdGVkX19Enh3lvlNXm/l22/LV6I5mXQBxQhK5db0lnVU92aGvZ0pOG5SDwIzWwv42EQzpNagglyD32VqgmiaO1JsPVeaUFWAQZIsSrgYUJoYoTdLetbnijbmXeSIaguTXcXGBpFNN3q9Opk4vhx8+CKNco8KoGFrvcNj6Bvr5kIP8BHbbO4ode6wGHf4ulDH028kMd45QbGJGybXHJJT4/LOgdxPr52NGs7pEAqQG8o7NTgzDyxUmfShYq0ukMraf+GNldaXhLBU5P1p4mgMjfz3pdERfvJeougpKpBO62Bi2jCC80Oo8FHDt49PJ7H0D3fqqqfZ7b99qtZzV6kGzN8uRSa60IxwlJUHeiNmpcWbM1IyMuyOCm89JhA7aGUu/0bYDsfOrsuHXI1oKMzAdlrQJjehwSFMMnkqirxkDuGBNsS3KXF6cwn4hpZ0txTdrtKNLYiN03r/U1JpsAoryPzENkTS//48XDtyocRTUCRJyk84A1dOMjPU9+5TYJIeapG/KWJM7bJWzxceEqaDj8KMUO0ThWGI5wbkI5SPafYznlFS6DsxMbaFynyOm+VLSy545KRRfQMgACxJV3V9HP4yX+0axaWG+MasNiUbx3W8HcqaHM272U1Tp0P2bqw9HS99oO5QaTaWlcLndsJHWAJEOaKpDGG1QYjBIkZehWdK1R2qYMiJFtJhxLbFnSiJClHRxTkD861wkehN3VMT06+qw2OfX+f42Xp/8NZUksi0XjlkmCtPZvVsMUnfqzFFen5TBSeN9U9JP17EXyY4zAbYM2QxEDY5DR1om2FbUcg+3KueE3T9Ie++pOQaYepIg9tJ4drJq6IlII+c2ebuuuRtaXdTDuzwl0NzDOAOUBN06C6xPHAbBtqbbcRyqJxOVYTfQxhHMDeznles3nfGLm8iPCh+Ba+ghMThLQzEyG4tjeMW+o75b6PLZvUZlzW9uF0ZMs+D73tekwQH
+ aILaDtOR
+ C0eeUw4E2D0DuBwxWwAeN7UnngD+vumYBIBTnkhiQm9z+C2CeALa5SSQfxf7kdkDMqFyvyrp03IjtmwYSNz7rcYU7BGTKeX4/rwhR1f/fBRS0zeSUGkoD43eJNupdqUt1GdIJb1qNm6vfNHOO4aBwfsYvQvERQ0hi479FykuXAg4fUYxQYLy27UNXo1pv6O633r4mtDAlRGVbxkWTKJDNTp5NF+bxmDQE2Q9z2AWOvxuctHHqJ82WiwdN+BvwC9SAgMRuWVd7s/qY8qt2/gz1I68vfj2npRI9LXbi62BDakuc1D7wC99Z1nZS+1YE87Z0Pw/ZI3hao9t6T+8FREB3LHcVJfcYVDEoRnPjFbwYRf91HjKT7jlOOXmvXQ4Sj5oR92lW2FJcWlkCPy91imHyoRYrPZbLi7JHT1dOOH9afqHUYcYYkceLoSTKOaZw9PjU0BXe0MVAZhDS61VPDFUXuvJ9Ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,37 +137,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Tianyi Chen <hi@tychen.cc>
+On Thu, Sep 10, 2026 at 07:14:42PM +0800, Baolin Wang wrote:
+> 
+> 
+> On 9/10/26 6:45 PM, Kiryl Shutsemau wrote:
+> > On Wed, Sep 09, 2026 at 06:01:13PM +0800, Baolin Wang wrote:
+> > > 
+> > > 
+> > > On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> > > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > > > 
+> > > > An mTHP collapse test needs to know that a range is backed by folios of the
+> > > > target order, and that they sit where a collapse would put them.  Nothing
+> > > > answers that today: is_backed_by_folio() classifies the folio behind a
+> > > > single page, and check_huge_anon() reads smaps AnonHugePages, which only
+> > > > accounts PMD mappings.
+> > > 
+> > > Have you checked check_large_folios() in vm_util.c? It seems to meet your
+> > > requirements, or am I missing something?
+> > 
+> > The changelog is out of date, sorry: since 6dedaf0d46a9 check_huge_anon()
+> > counts mTHP folios through check_large_folios() rather than reading
+> > smaps, and it is what check_huge() already uses for mthp_khugepaged.
+> > 
+> > It could do this job too, called once per window.
+> > 
+> > What is_range_backed_by_order() adds is alignment check: the folio has
+> > to sit at the window start. And check_large_folios() reopens two fds per
+> > per call which kinda wasteful.
+> 
+> OK. But can we extend the check_huge_xxx() functions to meet your
+> requirements, for example by adding a check_aligned_huge_xxx() that wraps
+> the underlying implementation of check_large_folios()?
+> 
+> I still find it confusing that khugepaged.c has two separate sets of
+> functions for checking large folios.
 
-The memfd_secret setup clears ptrace_scope whenever its test binary is
-executable, even when a different category was selected. run_test() filters
-the test invocation, but it does not protect the preceding setup.
+Agreed that two sets is one too many.  Yeoreum's series rewrites
+check_huge_xxx() on top of pagemap and kpageflags, which is what
+is_backed_by_folio() already walks, so once that lands the two can meet:
+the mTHP branch of check_huge() checks each window for a folio of the
+order at its start, and is_range_backed_by_order() goes away or becomes
+its internal.  That also makes the generic mTHP cases stricter for free.
 
-Check the category selection before entering the memfd_secret block so
-running unrelated categories does not change ptrace_scope. Keep the
-existing executable check and the behavior when memfd_secret is selected.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Tianyi Chen <hi@tychen.cc>
----
- tools/testing/selftests/mm/run_vmtests.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 9e62ab4c6775..9bbef9410ccc 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -370,7 +370,7 @@ CATEGORY="process_madv" run_test ./process_madv
- 
- CATEGORY="vma_merge" run_test ./merge
- 
--if [ -x ./memfd_secret ]
-+if test_selected "memfd_secret" && [ -x ./memfd_secret ]
- then
- if [ -f /proc/sys/kernel/yama/ptrace_scope ]; then
- 	(echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
+I would rather do that as a follow-up than fold it into either series
+now, since both touch the same functions.
 -- 
-2.55.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
