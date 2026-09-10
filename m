@@ -4,137 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48836C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:17:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8EAC79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 15:20:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5544E6B0098; Thu, 10 Sep 2026 11:17:07 -0400 (EDT)
+	id 0C6DF6B0093; Thu, 10 Sep 2026 11:20:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5053E6B0099; Thu, 10 Sep 2026 11:17:07 -0400 (EDT)
+	id 09E676B009B; Thu, 10 Sep 2026 11:20:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F3D46B009B; Thu, 10 Sep 2026 11:17:07 -0400 (EDT)
+	id EF7666B009D; Thu, 10 Sep 2026 11:20:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 135036B0098
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:17:07 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9799B140569
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:17:06 +0000 (UTC)
-X-FDA: 85198205652.12.A716B23
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf31.hostedemail.com (Postfix) with ESMTP id ABAFC20002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:17:04 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="aORfu5j/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789053424;
-	b=LdrQZIlLZ75VetSnRAFnIlzKJUbbf3onIlCGNaiHVc5FVY1xWq/2ZzPecko0ENPAT9dkOj
-	G3J89CCSnizqiLy8zaHSn4lkDtxj5Tx4Zbduehxiyhf/d1vFQydJt96msL+XYmHzSDTvci
-	PdjEPKphgAPmHZSiM7SkFbQ7nVFJfQo=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="aORfu5j/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789053424;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D20D76B0093
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:20:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5648A05A5
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:20:35 +0000 (UTC)
+X-FDA: 85198214430.13.A47038C
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8D4301A0007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:20:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=o+PGVAam;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789053633;
+	b=Nh+oFlHnAhy3E5IGsumZESMdvA/SWBnFXm8bE5qJocnDufdCHgZZdh7oswep0g0W0cBWe3
+	RJZyt6gdS66sMa7f8hU/yJMRTXAMnVi8HAnjIXnNlUW42MOpv7kJIMkDi2pGVNftslLLyU
+	ZoConLgdmwEd+Eq+Hl35kNoK5D0uFDg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=o+PGVAam;
+	spf=pass (imf19.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789053633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDN/YUpPOFz+Kdvzz1//obMcefb85ZenH94zRZ152w8=;
-	b=a4x/hGikCGW4aPq/nZNY+jAlqgwpAA7Mh2K0jc4eb5iIEna1kJMl6Xadazl+hCMLKre8VB
-	5dOK39U38Vw3VqsgYAjkFQP+b18/zhTSSXe8Upc3qqPFNT2JAPHiWHx6OGjl79AImmWVeU
-	4M0MivMSZOYu3rbqDHqlYJXgR/+fKwU=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5306706e89dso312181cf.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:17:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789053424; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YSFQCz9TvSE/eydjzLxXMD71WE2SEJO8sJiRjYekpeHUglKhBsBTdcdB7+dE3LOwF3
-         ZgFUzdVLBounea5Dbt9+33H04TX0LsZdEsbxnvZpFoHqAUC449TM+5YwLfw60KjwRjuZ
-         KwYiutukJf3m7HB5KAysjgvEu8WGI3AmTETyoZOOPEld4NrcdhNNy3wSTIE7M092PkKV
-         PiBLDAPKaNi3uosUYaPGKZLhWOLRp9u3TxwpuuIIO7HiUlrV0CVpZgNzTaNQ+RX80btc
-         tyXxa7hJxZnt/XXz/t6R7L6jCo2NCvLmoqeqr2wHS+POJiTDivM4PAhAO0Izkl1nqo0/
-         X5mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xDN/YUpPOFz+Kdvzz1//obMcefb85ZenH94zRZ152w8=;
-        fh=Df1I7BuCRwkSm88JMHx1sc5zLJprYSQLjA8m+omAjs0=;
-        b=jhkPbbETgaqUOg4x3czI/uxuP8Bsc7WNm7no6zlDELFPo7H83aTNghTaz61Q1OE5U0
-         VzGCXfEGrJ6ykROApAz/TgNw9gM1pH2/RY3xGnGa6MdKQjYKUlLYcY6qzQfpOTIbFtf7
-         QU21/nirJ6G+0wB8gNUEORYPA+sVGIf6NW9J7jmjt7RmVQu0Jy6rAdcuvXxi8Rz6Xwlk
-         PyJWQypf68tBY1NCeBC/DRHF06MjbVCV8VGFRj75oVMQR5cvJGgtlkYsaYV3XoQPNFsG
-         LsEwIjcfJr1Gg5oAmOXcAvkvZyxgVSh3Vlj/on2vDz+k7iogjO352Iug1TkDrRaidJqt
-         TuBw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789053424; x=1789658224; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xDN/YUpPOFz+Kdvzz1//obMcefb85ZenH94zRZ152w8=;
-        b=aORfu5j/8vTMLcuydu7dfDHiX5gucodQpNokWJznrtK2Ym6x9NicZT66Q4J3LJQFDz
-         l/hQK0qPOC7x++ikYS3ZlJ6tUNFSC/rhLfzifvLdn+HCMRBYsXAUwuJpJu1AggNNeYEP
-         0CbWHoGIggA8BxjG9ARBYulyqjjGIaMbvzl1hB3hQu08lY76DG+t5yJTQQfQ5O7MpPxe
-         w9amaWqaHHxEiqQ0JkNBbKlMKkX1xmZ3uedI6b4OxvA3sWYUiCMk7fx7TakPgi+esgB1
-         h9dz82YeBE+Vm67srKUYQQ1rF69a+ArCJC5LriC0fRXPITrQGZ707Vpk+QUL/Q/q/ZFq
-         vRKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789053424; x=1789658224;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xDN/YUpPOFz+Kdvzz1//obMcefb85ZenH94zRZ152w8=;
-        b=Wt+DbJGIHuaLU96u5TU1ow5/dkAND6z7aoHpTRoWbOQ//DUsdqsfBgqxneol/AHGaV
-         oH7jsnI3iFb4AUednLSRpou9FGFSPfn2sHVk1sDXt+oj1eGpwSnu6AmrkvEFx4F2dCNf
-         ctJp0Y6x7qXtpLQsiCy8ljWsx+EzrzZnO2+h1TdIBcX9TXqO/nAOY/qe+xSqvbKjLKdd
-         m4M8HTtuIiYqzYqXf+IVPcok/b1p0+olnmi0cKbEEUbAxESxS8VwY/FfmqXcBL5qEoJQ
-         FMrA2+mZnS672QE9yGV7nYCrpjs2uEeK693X/iZ+jeGBSWFTAbdhrMGabpvQMNG/kyqO
-         BPOw==
-X-Forwarded-Encrypted: i=1; AKwUvBzv9NnXYQkzlwGJhISuGNcHHO/E/CO3QW88me3/c8i0oKyi3uaRWVbAPhvANVUU7uoACEm+ceaYKA==@kvack.org
-X-Gm-Message-State: AFuF++mVZ8SeDz68dRLcY6+wD+A/cR4XlnCvqJh22s7y0rUIg/85U5xw
-	zMP3pZ9GSOxxH8sCYk6faik+PcAwA7IZmYgT4awsF1Sovu4CZ7vR4LKdizrFcANmYmPEhtah/YY
-	mg2lxtxviGEqzqcOE4kBsGORNBdizxtqhwhm2QlBE
-X-Gm-Gg: AYBFou19Td3KzOQoairuvQkSstBTLm5mRNH5em/mSthEbm017iQtX8lQmXsipCc5k2/
-	TK1+KtTcEkQ5tUWa0MANQjLsi9LvR9ZnfbziIhFVIcs3JfdDgVF/I53y1/6uIXDycpdQYQJ//ra
-	LqUc/mSO3T2aXyRJTGqf+hI5LKMhxMNWeVrDP1zuebDsiRQ0sYQ9XMxaTpKlKdiVF8PMdskEQHU
-	E4J+KehYYbiCHv3X0/3SmkjMnlO3rrbCjOpUY0INkzt83Wypi7QO4Id4Wz8aofF9nz+ukKqpg39
-	kSk4fHyiuhFatnG2OJuu9j3KpFbwtTI+WsZP8AQu1yBU7hgUJJQFW0FKppmOPDljY4ljIKQ8qkY
-	H9Q11fErVN4tN42W0tkcD
-X-Received: by 2002:a05:622a:1107:b0:51c:ad5:93be with SMTP id
- d75a77b69052e-530b4874003mr21164601cf.8.1789053423038; Thu, 10 Sep 2026
- 08:17:03 -0700 (PDT)
+	bh=izFHd1RA+/2Fh1sAs5H355El9G+IR0JNrZBtgpSNdTU=;
+	b=J3m5GBmzVUnw4NQvF4BGMFL/uWoLmhi9adbNWHxcvaIrNXIuBY4crdCU+XkyR8/LfswIxY
+	z7wsn3Iz17nMm8u6qp6MseD4nuqgd1XEJqlThdwxU5YTz5hbDLK15U4QwEZg4XjPWBa94A
+	B2KAbfNN/b98cR3WhiWAW+S5lxMLe3Y=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260910152030euoutp013b5c7a443d917ed3faf35ff3734e5835~T-sxHQFbQ1880518805euoutp01U
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 15:20:30 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260910152030euoutp013b5c7a443d917ed3faf35ff3734e5835~T-sxHQFbQ1880518805euoutp01U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1789053630;
+	bh=izFHd1RA+/2Fh1sAs5H355El9G+IR0JNrZBtgpSNdTU=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=o+PGVAamrGuZJIq5ZBtsHzbopMnELdgTdEygVYagjfRGthDID706s0UX1ntU9c7UA
+	 3D0tiAV2Dv9Xh7ql5krC4ypxX4lbDHSGlyZhGgwzg/7GkedYTTABE7gYtyDJiD/2+W
+	 hmYABDL8NDG99JuHrtdPgaByzEWOmsvhHyEwoXX0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260910152029eucas1p10ea2e109779b1e8cd23a832adcbbd0fc~T-swhAOzC1238912389eucas1p1U;
+	Thu, 10 Sep 2026 15:20:29 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260910152029eusmtip1fa72d122c1c1cc8d3fc529180af1982b~T-sv66MgV2099520995eusmtip1O;
+	Thu, 10 Sep 2026 15:20:28 +0000 (GMT)
+Message-ID: <518729f2-db28-4af5-8ed3-9985c124db3e@samsung.com>
+Date: Thu, 10 Sep 2026 17:20:28 +0200
 MIME-Version: 1.0
-References: <202609102250.lIycVv3n-lkp@intel.com>
-In-Reply-To: <202609102250.lIycVv3n-lkp@intel.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 10 Sep 2026 08:16:51 -0700
-X-Gm-Features: AcwNN1XA_1Vxrpu5C9I0NHGQICi5xwP_ReZ-YZ-hWwO3NXMcsgCngvh-2ENY2I0
-Message-ID: <CAJuCfpGzZjvC49EJb8KwjzsEKi2HZbrKs=P+06GNLDSFoTedMA@mail.gmail.com>
-Subject: Re: [akpm-mm:mm-new 358/388] mm/sparse-vmemmap.c:507:48: error:
- implicit declaration of function 'device_zone'; did you mean 'device_move'?
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
+ early reservation failed
+To: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
+	rppt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: akpm@linux-foundation.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260910152029eucas1p10ea2e109779b1e8cd23a832adcbbd0fc
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+X-EPHeader: CA
+X-CMS-RootMailID: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
+	<CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
+	<20260818092420.2859026-2-chenwandun1@gmail.com>
+	<72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+	<af87036b-0809-4880-b088-545780b4d963@gmail.com>
+	<7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
+	<7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8D4301A0007
+X-Stat-Signature: 7ss9pgajuthfgu8yb7ej9ys1daygwjt7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: ABAFC20002
-X-Stat-Signature: trbswbpzmpfn463fgq96g9q6wikj3cyo
-X-HE-Tag: 1789053424-629060
-X-HE-Meta: U2FsdGVkX1/I2E8ukP83kuY1mtE1dcYnohzZrKLDD4gSNpWt4uJkmjeN1Fv/WpCNKe08pZLf3NhxG+f0WS05BXY+MRhlQ2EyEA3jVtVrGxuM1R1ov++rQmr29OARqABQSF/C+Rua33C1QqGS+53/QBkX9UlQ3qobZDsguI+xiET39idwYkS5jXkGcDf9cPtde4At4zqjSMi5xBRMLudPpLJKYKyYraWZSUEKX+GR/n+I2HlokcuyiK+WBaxb0e1j/F3cNOUBgOFVU61JDcewHwv+GtDEyR5Omz4arPjf1HjXZe4WhYb5av1xto7IIdwblWG7PGFEdjqFKMnNQ2LszRv46XYJ/AnfDnhXfQFUAp9vZX2+iMGFXCEmwnYVgI6g2IunrLesMAbhpk/cP1fKTJuIpOCpC4n+vEkpfNc1I79sx1xPuIiMdB/Zg9PGvib8OVkLcYwx77Toaey7Be0t0/qvPJDj0UPE/HdvxuFMGll0A+ZefQJYe+erkyKNR9pczbml8WmBLJyn56KgyVRVVXGuPviVPFKYNr4gmC2ozUlCZXUvQsB78P8S9vJI9qcsSFpKcBIrVGNRgI5ept9VqUAbChyrEjQ5R48KxcCUromJ0jKamEN0n2RlXeehIlddvhZl1xzOMFfqGKdWU4m8WOOabnBqslmUlWDcujASyPGHxHQEbAleMH19BIZKtkuBSUzp7aYI9T6Wm0doOXmxjoQ9x75E3Iazz0I2wkWiRsX6cSu9SSQ+ypMSlKfvPr3wlapClBweyqieNBjZQh9SAcLNAtmdCoyAwNsx0814YYd4BB1ZgTBGS8FemoZp/tez1fK1xDIl4Uz6m5l8qUWz4KfivBNWhg3dFz0YTyI7akB6DznZIzX7havEy5HCMbSmJF7rj1a+mZP4wkrGlhQxRee+JBTnyG+RPdH8ic8sdhbPd4iJHmsUIwuXuc1Nfv4X2y0t8aIdzI/iIbYTMEK
- rz1hXWZ2
- QM4JkVsK49riq6yTai0av0REM/3Rs7c/FnM3LjK9Alu8ngOHIcYnZUzMOWREPRm6JMXNVCeRqbvXYuSqWu7xVAy2Vy/G4Rw6fFhGvcNtjHwjWZwQzDBR0ErIeKTUwAdqVi0zNbLAVW9Nkb4VpCwq3KMPlGV4JwLE5JnZKG45xhK3aUr2qqnLPQglrPE2LDt4kVFTgbU0fSJxKEiVoLAkgSXVg7jxbNW9z2/wy5hXYv3AuLMOZQNSwu2VaMgfsHz+t60j/TSpclBdo8WVx686y3o2wz48KluKNh1EKe8HqKjT5apY6wyU8X4ZWmve6qCFZzc/pcg1uVWHga0aorZCLL/mM/XM+0fOx6yOy7RJVwS0Ak4kXYiPovsJYN0kVLLDp+QS6wNsTHfxvUnBIwnhnAjSvKtFAtxL2ceAq80fD98VVyauz+aGEhbRRbubNipaPYbd9lfRlIe54NuroGXs4XEZIPYbdouBY5t8lTd+p/ff8A27TMzgKjh2zkadokIPlTFsNjEgRIuPXZ+DnEL+fRLul88uGDFYNEQe9
+X-HE-Tag: 1789053632-635582
+X-HE-Meta: U2FsdGVkX1/qwLdlboj6nOiYR9ehNQw1c8fY8GY2eGo1a5QEPvd5rSFxwkENsjUziBCbwtLvYv1q1MzEly377QVYMi0BGVuYBUPyxMSBjuJYkQC/olTa0nhiHQG71+wBbE7mlOPZUF+eQQL+OmxNThAkAajHRUC4onRXtMqvduBFfoM1qLy0E8if5dSgZp7NixnsbrOMnp5M9KlrKfCVn6Qcc1KekbOb6CkidX4HYEUS0bEtWO1fiO/6je5+K2GxgrFhdLW743QWrRJ9yoyEmGxFrnoGCWMrQ/0txKIBu99G8vUNzvgZyzaI6cCMd4IFCQdjnQcpc19PoZmzoPcOIZfzyJ5NBdSMAX1rXwl6AcpaX+yqOhsMj1q/qWMbPqhTj1eMFrbXkvIbNRSyogy9SC3Nm1S0f5nc22uR2vamS7LFFIkTCLo6w6zIBQyI2aBmQ4ZHMYsjApkSxfKSShkHFARZUDizuJzTAc/EpjJuYcY1mzWKxE5WXIIFKiH8tszdH7YrWZZ4VFENJg8shrhtGw5hJvz/+PtBG7cFd4n4c2+g19g6dIIZXElshUzLvlXPHD+moRfU2scds2e5V8gJTFWG6iOsX5htRADLRj3KpISXyNmZjkzLc6Pce5sFs8AY3rpHNr5aOvWO1sjrQZJADtIDGCqSYsu5xWJvKy8GLquVav/Ea46ZIyBwLruHb9Cpe08PvpMBwg7OC4W7GiXnyUSTIoe2oh1soQcUOsTJNWbXH3+oU423LLyIaGCMDYEoCjLKGztCmRJJAn9+vRZQrQxUwgPhYCyCj9MPLvX8E7bVaK9lu2I3pnF9Ab1IeYGzY/RyI0LbDZKW02YAEhWE4BX5E/FncqN/q5NFf0dMIEfyWf+HCULcrlwAVGyv+ikJmr1V5uF+xALsF553ByNOXdEkX5e8i9a6nVevcBN+YN/o3VC/pNMYQb+kdYvhU8r1OfYIMxZrz7JXRA/vLsn
+ etV4OlFp
+ bdd9hmHcMzxT4qZSsOLo4P5zSMTti1ssP2r9HJvqfF+UL64dsSQfY4AC2K/A+7zTmSZHK0xogYxbOjFFYLblb0NrcOvvSqmOayE0ANQBuwjLPsiPbtF6Y71ZXKt2kJuTzCBjN6arnAe+NNMXADPDLUf1MIq1WXU69uLrLsI1bQ7/1lVN3YQl8gXR0qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,152 +110,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 7:41=E2=80=AFAM kernel test robot <lkp@intel.com> w=
-rote:
+On 10.09.2026 12:55, Wandun wrote:
+> On 9/4/26 16:49, Marek Szyprowski wrote:
+>> On 31.08.2026 15:04, Wandun wrote:
+>>> On 8/26/26 21:14, Marek Szyprowski wrote:
+>>>> On 18.08.2026 11:24, Wandun Chen wrote:
+>>>>> From: Wandun Chen <chenwandun@lixiang.com>
+>>>>>
+>>>>> __reserved_mem_reserve_reg() discards the error from
+>>>>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+>>>>> caller counts the node in total_reserved_mem_cnt and the late scan
+>>>>> initializes it without checking whether the early reservation actually
+>>>>> succeeded. A region whose reservation failed is then handed to a
+>>>>> device assuming the memory is protected.
+>>>>>
+>>>>> Propagate the error so failed reservations are no longer counted, and
+>>>>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
+>>>>>
+>>>>> Recording the failed nodes explicitly is necessary because
+>>>>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+>>>>> tell from memblock whether early reservation succeeded.
+>>>>>
+>>>>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+>>>>> of static regions is not bounded by it, so on overflow the extra nodes
+>>>>> fall back to being initialized, which is the current behavior.
+>>>> I'm not very keen on such partial solution. Indeed we have no place to
+>>>>
+>>>> store the result of the early init call, but we can check if the given
+>>>>
+>>>> region has been earlier marked in memblock as reserved or no-map in
+>>>>
+>>>> fdt_scan_reserved_mem_late(). If those attributes don't match the
+>>>>
+>>>> region can be simply skipped then.
+>>> Considering the later patches that reject reservations for overlapping
+>>> nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
+>>> produce false positives.
+>>>
+>>> For example, if region A is reserved first and region B is a subset of
+>>> A, reserving B will fail because it overlaps with A (in patch 02/03).
+>>> However, during fdt_scan_reserved_mem_late(), B will still appear to
+>>> be reserved because its range is already covered by A. As a result,
+>>> B would be initialized even though its own reservation failed, which
+>>> is contrary to the intended behavior.
+>> Imho the overlapping reserved regions are some kind of configuration 
+>> mismatch and it is enough to detect them. fdt_scan_reserved_mem_late()
+>> can first store all regions to dynamic reserved_mem array, then check
+>> for overlaps, and only then initialize those, which don't overlap and
+>> have proper memblock attributes?
+> Thanks a lot for reviewing this series.
 >
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-ne=
-w
-> head:   cf558a250cf4475a8936902b8978fbb6c61016f8
-> commit: dd35ca2f2cac9d6439a2ba2f523b98b5a9a9f8f5 [358/388] mm-sparse-vmem=
-map-switch-device-dax-to-shared-tail-vmemmap-pages-fix
-> config: s390-randconfig-r121-20260910 (https://download.01.org/0day-ci/ar=
-chive/20260910/202609102250.lIycVv3n-lkp@intel.com/config)
-> compiler: s390-linux-gcc (GCC) 13.4.0
-> sparse: v0.6.5-rc1
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260910/202609102250.lIycVv3n-lkp@intel.com/reproduce)
+> I did try this approach, and it looks clean. The overlap check works
+> well for regions within /reserved-memory. But there's one case I
+> couldn't make it handle, where it seems to still produce a false
+> positive, please correct me if I'm missing something.
 >
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202609102250.lIycVv3n-lkp=
-@intel.com/
+> For example, region A is reserved before /reserved-memory nodes are
+> processed. A is not a /reserved-memory node, so it never appears in
+> the reserved_mem array. Now region B in /reserved-memory is a subset
+> of A. At early reservation, patch 02/03 rejects B due to the overlap.
+> But at the late scan, B's range already appears reserved (covered by A),
+> so it looks like a successful reservation and gets initialized.
 >
-> All error/warnings (new ones prefixed by >>):
->
->    mm/sparse-vmemmap.c: In function 'vmemmap_populate_compound_pages':
-> >> mm/sparse-vmemmap.c:507:48: error: implicit declaration of function 'd=
-evice_zone'; did you mean 'device_move'? [-Werror=3Dimplicit-function-decla=
-ration]
->      507 |         page =3D vmemmap_shared_tail_page(order, device_zone(n=
-ode));
->          |                                                ^~~~~~~~~~~
->          |                                                device_move
-> >> mm/sparse-vmemmap.c:507:48: warning: passing argument 2 of 'vmemmap_sh=
-ared_tail_page' makes pointer from integer without a cast [-Wint-conversion=
-]
->      507 |         page =3D vmemmap_shared_tail_page(order, device_zone(n=
-ode));
->          |                                                ^~~~~~~~~~~~~~~=
-~~
->          |                                                |
->          |                                                int
->    mm/sparse-vmemmap.c:172:78: note: expected 'struct zone *' but argumen=
-t is of type 'int'
->      172 | struct page __ref *vmemmap_shared_tail_page(unsigned int order=
-, struct zone *zone)
->          |                                                               =
-  ~~~~~~~~~~~~~^~~~
->    cc1: some warnings being treated as errors
+> The root issue is that the late scan can only tell whether a region is
+> reserved, but it can't tell whether the reservation was made by
+> /reserved-memory node itself or by something else. Maybe we still need
+> to record during the early reservation stage.
+Then maybe it will be easier and cleaner just to add a new flag to 
+memblock_flags (see include/linux/memblock.h) and mark each successfully
+reserved region with it? There are some spare bits there.
 
-I think this breakage happens if CONFIG_ZONE_DEVICE=3Dn.
-The mm-new branch build breakage can be easily reproduced with defconfig on=
- x86.
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
->
->
-> vim +507 mm/sparse-vmemmap.c
->
-> 4917f55b4ef963 Joao Martins    2022-04-28  494
-> 4917f55b4ef963 Joao Martins    2022-04-28  495  static int __meminit vmem=
-map_populate_compound_pages(unsigned long start_pfn,
-> 4917f55b4ef963 Joao Martins    2022-04-28  496                           =
-                            unsigned long start,
-> 4917f55b4ef963 Joao Martins    2022-04-28  497                           =
-                            unsigned long end, int node,
-> 4917f55b4ef963 Joao Martins    2022-04-28  498                           =
-                            struct dev_pagemap *pgmap)
-> 4917f55b4ef963 Joao Martins    2022-04-28  499  {
-> 4917f55b4ef963 Joao Martins    2022-04-28  500          unsigned long siz=
-e, addr;
-> 4917f55b4ef963 Joao Martins    2022-04-28  501          pte_t *pte;
-> 4917f55b4ef963 Joao Martins    2022-04-28  502          int rc;
-> d1d11861d8a018 Muchun Song     2026-09-08  503          unsigned long fla=
-gs =3D VMEMMAP_POPULATE_DAX;
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  504          struct page *page=
-;
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  505          unsigned int orde=
-r =3D pfn_to_section_order(start_pfn);
-> 4917f55b4ef963 Joao Martins    2022-04-28  506
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08 @507          page =3D vmemmap_=
-shared_tail_page(order, device_zone(node));
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  508          if (!page)
-> 4917f55b4ef963 Joao Martins    2022-04-28  509                  return -E=
-NOMEM;
-> 4917f55b4ef963 Joao Martins    2022-04-28  510
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  511          if (reuse_compoun=
-d_section(start_pfn, pgmap))
-> 4917f55b4ef963 Joao Martins    2022-04-28  512                  return vm=
-emmap_populate_range(start, end, node, NULL,
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  513                           =
-                     page_to_pfn(page), flags);
-> 4917f55b4ef963 Joao Martins    2022-04-28  514
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  515          size =3D min(end =
-- start, (1UL << order) * sizeof(struct page));
-> 4917f55b4ef963 Joao Martins    2022-04-28  516          for (addr =3D sta=
-rt; addr < end; addr +=3D size) {
-> 55896f935a60b9 Gautam Menghani 2022-06-12  517                  unsigned =
-long next, last =3D addr + size;
-> 4917f55b4ef963 Joao Martins    2022-04-28  518
-> 4917f55b4ef963 Joao Martins    2022-04-28  519                  /* Popula=
-te the head page vmemmap page */
-> d1d11861d8a018 Muchun Song     2026-09-08  520                  pte =3D v=
-memmap_populate_address(addr, node, NULL, -1, flags);
-> 4917f55b4ef963 Joao Martins    2022-04-28  521                  if (!pte)
-> 4917f55b4ef963 Joao Martins    2022-04-28  522                          r=
-eturn -ENOMEM;
-> 4917f55b4ef963 Joao Martins    2022-04-28  523
-> 4917f55b4ef963 Joao Martins    2022-04-28  524                  /* Popula=
-te the tail pages vmemmap page */
-> 4917f55b4ef963 Joao Martins    2022-04-28  525                  next =3D =
-addr + PAGE_SIZE;
-> d1d11861d8a018 Muchun Song     2026-09-08  526                  pte =3D v=
-memmap_populate_address(next, node, NULL, -1, flags);
-> 4917f55b4ef963 Joao Martins    2022-04-28  527                  if (!pte)
-> 4917f55b4ef963 Joao Martins    2022-04-28  528                          r=
-eturn -ENOMEM;
-> 4917f55b4ef963 Joao Martins    2022-04-28  529
-> 4917f55b4ef963 Joao Martins    2022-04-28  530                  /*
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  531                   * Reuse =
-the shared page for the rest of tail pages
-> ee65728e103bb7 Mike Rapoport   2022-06-27  532                   * See la=
-yout diagram in Documentation/mm/vmemmap_dedup.rst
-> 4917f55b4ef963 Joao Martins    2022-04-28  533                   */
-> 4917f55b4ef963 Joao Martins    2022-04-28  534                  next +=3D=
- PAGE_SIZE;
-> 4917f55b4ef963 Joao Martins    2022-04-28  535                  rc =3D vm=
-emmap_populate_range(next, last, node, NULL,
-> 8fbaacc4a64bd1 Muchun Song     2026-09-08  536                           =
-                   page_to_pfn(page), flags);
-> 4917f55b4ef963 Joao Martins    2022-04-28  537                  if (rc)
-> 4917f55b4ef963 Joao Martins    2022-04-28  538                          r=
-eturn -ENOMEM;
-> 4917f55b4ef963 Joao Martins    2022-04-28  539          }
-> 4917f55b4ef963 Joao Martins    2022-04-28  540
-> 4917f55b4ef963 Joao Martins    2022-04-28  541          return 0;
-> 2beea70a3edc03 Joao Martins    2022-04-28  542  }
-> 2beea70a3edc03 Joao Martins    2022-04-28  543
->
-> :::::: The code at line 507 was first introduced by commit
-> :::::: 8fbaacc4a64bd1bfbfb11bfb48b5db3f4943cbd7 mm/sparse-vmemmap: switch=
- device DAX to shared tail vmemmap pages
->
-> :::::: TO: Muchun Song <songmuchun@bytedance.com>
-> :::::: CC: Andrew Morton <akpm@linux-foundation.org>
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
->
 
