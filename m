@@ -4,139 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 607EEC79FBB
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A81C88E41
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:47:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576116B0099; Thu, 10 Sep 2026 19:33:41 -0400 (EDT)
+	id 92A3D6B008C; Thu, 10 Sep 2026 19:47:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D6B6B009B; Thu, 10 Sep 2026 19:33:41 -0400 (EDT)
+	id 874E36B0092; Thu, 10 Sep 2026 19:47:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43D156B009D; Thu, 10 Sep 2026 19:33:41 -0400 (EDT)
+	id 73E096B0093; Thu, 10 Sep 2026 19:47:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 055AF6B0099
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:33:40 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 56C711605FE
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:33:40 +0000 (UTC)
-X-FDA: 85199457000.10.52B4D37
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 87A9340007
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:33:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fQQOub9B;
-	spf=pass (imf17.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E56336B008C
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:47:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67620805B6
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:47 +0000 (UTC)
+X-FDA: 85199492574.14.7ACF4FD
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B2351C000A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nRGMAQAV;
+	spf=pass (imf10.hostedemail.com: domain of 3oEGjagYKCA0574r0ot11tyr.p1zyv07A-zzx8npx.14t@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3oEGjagYKCA0574r0ot11tyr.p1zyv07A-zzx8npx.14t@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789084065;
+	b=CcU614ye5EwMDf3EwuaXi/qODa+hvomTI61MdAeMRcZUOCzUvqUCL8aqXlTf0XmB0uxlHs
+	xJ7mner9jKQd/aDnYD8Eawo6sDlb7N+2ielLGFuDjzoq9iIw/ouXmDZThThGB+VhBeAzjK
+	QfQ8tLEnkbEwgKPlvdkTLOC9bmelU4s=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nRGMAQAV;
+	spf=pass (imf10.hostedemail.com: domain of 3oEGjagYKCA0574r0ot11tyr.p1zyv07A-zzx8npx.14t@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3oEGjagYKCA0574r0ot11tyr.p1zyv07A-zzx8npx.14t@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789083218;
+	s=arc-20220608; t=1789084065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uKqFigUfUBeSnFW0KPe67v5MSiJ+XREL1Pj3ehWoLGc=;
-	b=hjFY+8gknKU8De/n3QC4POpzRLvC+1xrvOqHMiwLf5AMv2Ttb4wS0Vr/tZJ0MBgsI7OpOf
-	KT0jslEShLgXxAueXmnDSJ1XWrzl9p7ax5+11aaKhooDCPpZx3kYQoQViziXKHV5LQy0Of
-	IL0B3jYxbMNUxJs4+f7eocxQLGYxnX4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fQQOub9B;
-	spf=pass (imf17.hostedemail.com: domain of ziyang.meme@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ziyang.meme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789083218;
-	b=PeMNmYZ61x31Ii0lHx2XoixoUx7XnCSipn5yGegDMAzIJzHUDbSIhvnc/ZkvKjadpnTRNy
-	XetnBNpoWgYYie+ZXByqRB/EH4i3vfXAjSBqunWVh61DFcy/TFLFdKj6e43T7dC4IIrT6E
-	V4/S1Klbp6bhYYvhOMC5vqDiyoUcKZM=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-398e9698a70so355170a91.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:33:38 -0700 (PDT)
+	bh=xOFXyMArwtdLkzPinOADoZdNqvQDYiollRghSoVraI0=;
+	b=Gzs0wIjTqciqeG/BmbyUyDWscOG9Lg2TyrYduQHj8YjiP+QQ/AyGuCqzZgqnLo0sa5ocZ0
+	VG1BMCDJLpZ/fWILc48ddeGryxLRU7+l0CnTiEBw8RgZjkY39i1Ea+H+Vyhy4VHZmOSwHz
+	6GHN2tENfDrs0ZkhA0jCIKwk7cz/zJs=
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc4afc810bfso1456666a12.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789083217; x=1789688017; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uKqFigUfUBeSnFW0KPe67v5MSiJ+XREL1Pj3ehWoLGc=;
-        b=fQQOub9BttOipPc43517PfE8IPq21kB1VOHWfswd508FuoPgyXUg1xyae1G1DUE3Fb
-         a0m5AKh6y3n+8hl44G+d8zuY6Vf+8GcjLgFncpTYWu514w3m75a/QqoXgI2PUpTcEV3i
-         uuXQI3xkL6GNChkGrrhqxSVnqEtvpUI/TRJoK39ctrG90X8FwtislZDmjOiwln7Eo4eM
-         fGX2o775yAjF+iHHzjV4X4YHXTTselNI93RrfHT3hjdfMJNLwQ2jD/8xslO2fNm+EVtR
-         RHuwbKldNA2sJFz8oHZGtvCZlZ/A9Ex1bUgD2Xb7QiK3fdIHH/cmFJiDPncGTE3qd/lB
-         ow6A==
+        d=google.com; s=20251104; t=1789084064; x=1789688864; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xOFXyMArwtdLkzPinOADoZdNqvQDYiollRghSoVraI0=;
+        b=nRGMAQAV1kSXAhjENMnFbMCLlf0N5wJ6MR8mVaPUrzOUTGJUKeI2xIk0v6YRbgRKeV
+         0h+p5zghqzv9TvY3/eHhaIKlueUWE6FQn2hUFFfm5NVJ+UxKRbUFZK08RMRTTWgva+2O
+         x5lGQZVdW1Mt2jM/bQn669nE+0rYIoyratcWKCgj9sCKYRumqYq1dxPKNRLicXUYB3l/
+         3+xb9g5uGojkWfODKxPNR8YGBCLJ67X7huBVBtUaGHnRFs4ZvSp5Mb8/ugIxmNVKdw0w
+         wSDKcamPTI0wJKiqwj5QWTk8SyVFjMiTL1xohUSFXrxxctmKlwgrpBONHSkuNhggbOgO
+         6YvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789083217; x=1789688017;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uKqFigUfUBeSnFW0KPe67v5MSiJ+XREL1Pj3ehWoLGc=;
-        b=EzVUhieSxGRDHnC2Xkh1kQvkf0lHYhO45v+B/2J6jD1xJPLEtShhnaIuuqvlzt+Y5I
-         pVXsegUSt1KzAokEXZv2vXcdgddE1xiWdPJoCuebLoTvEbQGfHCwEfPUw59OGJah72KH
-         KLntevl0ydSmfUC2IxaK+gS17Pq3u1fuNw0pHz2ahogPpTYsrECaiEyAPGrq9W/7GPza
-         i5bJLaoAgYyhpKzR2mldNjJJuDY/O8vjOLCl78e7cUJS1+393k66P84lTdrl9woKlu79
-         +EOWsHmGwlWwCMRoS6ZNHJja3IvwzqkXh6g9LZ3pxCsTgeEVXs8rh2KZv0nMcMXRNuX+
-         6Z4A==
-X-Forwarded-Encrypted: i=1; AKwUvBxgqrXl1UpISThPSexLlpWH8sOIisbRJ6q3nxNpuF3fmcudsNs2z4pSzpdd1dU1z1csyQdGR8h1hw==@kvack.org
-X-Gm-Message-State: AFuF++m4Y+vwa6EXITlXoMK427LPmERuhs0X0pibzxbyyUONbqgob1TX
-	jefCNn4ijlNYxTLQoNbEiS6WpQwegkidx5iOD1UxKtSRRmVv+iwJHf+B
-X-Gm-Gg: AYBFou10uSguiHTfL3Z9xgkXQbT9KZCR5rLt7tiCNSNdEISfufJ2XKYltLq32yDUahR
-	xLZX6R28ZIlrT6Wxpe8wh9KQ57jItZgRV0TIJ4HdbUXb+hkQu0Qxv8i7ciXieDC1aHlqkViHLv9
-	HAU/EDCZodPQ41MXcuR+FZxyeSA3TvDdZ5O37eKY3ivmBwkN98MsnYAtKnfJVfW61eALmIxyZd+
-	GvfmFkspWU7IaJ5ikC1ufpMXnSNi18PQ4z/OsF0+bLemyJuTWayDcMMnVYGU0yIyzmAeDJRm/Na
-	509alu7sdqmZMPkpiyMY67qtxxdD3E8J86SsTlv2/YgXXd4mlKlGYA0swBM2oYHzBmZzWKN6Oy8
-	CjZYyXyXFVpn8FoDD+rSy87Hh296VstBoSnUYlRTcKXjJoWZm9mfYxUZvoaTPWPnPDsxWG/v60c
-	UU3dQhdvAzE5AHm7VrqPRapz6L/JbxFnRoj+sUSsuFu9sNCFpbFcw717kqlKebnvGqsbr3d8FLs
-	tLh
-X-Received: by 2002:a17:90b:4cce:b0:38e:7168:281 with SMTP id 98e67ed59e1d1-39d9bec4d91mr1889561a91.10.1789083217212;
-        Thu, 10 Sep 2026 16:33:37 -0700 (PDT)
-Received: from localhost ([2a03:2880:9ff:43::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b97994sm2817540c88.12.2026.09.10.16.33.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 16:33:36 -0700 (PDT)
-From: Ziyang Men <ziyang.meme@gmail.com>
-To: Shuah Khan <shuah@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	David Vernet <void@manifault.com>,
-	Eduard Zingerman <eddyz87@gmail.com>
-Cc: Viktor Malik <vmalik@redhat.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Changwoo Min <changwoo@igalia.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Mykola Lysenko <mykolal@meta.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ziyang Men <ziyang.meme@gmail.com>,
-	kernel-team@meta.com,
-	linux-kselftest@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	sched-ext@lists.linux.dev,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	llvm@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 4/4] selftests/sched_ext: build BPF schedulers via the shared lib.bpf.mk
-Date: Thu, 10 Sep 2026 16:33:03 -0700
-Message-ID: <20260910233303.1063501-5-ziyang.meme@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260910233303.1063501-1-ziyang.meme@gmail.com>
-References: <20260910233303.1063501-1-ziyang.meme@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 87A9340007
-X-Stat-Signature: f3os6746gd1r5rnjfqwmm31ehjj3idqz
+        d=1e100.net; s=20251104; t=1789084064; x=1789688864;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xOFXyMArwtdLkzPinOADoZdNqvQDYiollRghSoVraI0=;
+        b=dTB8Bi/o/0PyX6F1B7NY7m+Mbi0vBlEpcTsXtfV533qZkxI7e2IFmnPQfMxA9cbUJk
+         l+S8ftOV6qADyB19Rc3tnC+bagVkIO9hH4a9BOpRgUvVzMIXiciEjLh486lPuilLBuTW
+         8gKKd71fLH+fONN2Lq1bOzf55wkK8kJ+T0Dw3thNGMGBGeBtvOTqc/TRhRObWOUe/3Km
+         lrTQOtWLEOj4xbLYxZi2VSj6G4k4XGHLmUqbP89rYrgZA9qXrKBkaIpj5dEG+c9ks8KH
+         qjgnT5jcnEnjvdOGphCBfvOM1L/QtVLfwM/j/puOlf9XuL1inr1qmiZ/HcAzyD03r9Cu
+         dkmw==
+X-Forwarded-Encrypted: i=1; AKwUvBz/RlL3NDnKnKURp/sRYcdlNJ4scQeTUeX6jhln6GeWHto+cH/5n8judYKJqfKQDpigvzCkRhYzXg==@kvack.org
+X-Gm-Message-State: AFuF++l5xovsxVD3+pPO3j3WgEBvIQx8CKrTVrwUs3c7twA8gSjC9nTZ
+	w63fmbgsgtZU6FLr7gl/4gxk64KduZgeVzhhhVW5wRvrLAzPe8Ey4zj2ihy7Fvi5+B3kJv+FNUR
+	hz6wBgQ==
+X-Received: from dlnn5.prod.google.com ([2002:a05:7022:6185:b0:141:4b41:e0d0])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:bb86:b0:39d:8b8c:3781
+ with SMTP id 98e67ed59e1d1-39d8b8c3efamr3490361a91.28.1789084064165; Thu, 10
+ Sep 2026 16:47:44 -0700 (PDT)
+Date: Thu, 10 Sep 2026 16:47:31 -0700
+In-Reply-To: <20260910234737.1340642-1-surenb@google.com>
+Mime-Version: 1.0
+References: <20260910234737.1340642-1-surenb@google.com>
+X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
+Message-ID: <20260910234737.1340642-2-surenb@google.com>
+Subject: [PATCH v3 1/7] proc/task_mmu: remove unnecessary helpers
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
+	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
+	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, surenb@google.com, 
+	Usama Arif <usama.arif@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B2351C000A
+X-Stat-Signature: aqr3jpesgse9ycfwfyz74j37g7sq4o5f
 X-Rspam-User: 
-X-HE-Tag: 1789083218-379298
-X-HE-Meta: U2FsdGVkX18+PHGSx5AHrIcn4bQmwHEfFaHYAJ12q6GvaRCCb8apB1iNketDnlOd502TmnUcWEHKWIQJIXfZF1VuS1zHCYUG+nJEERhNovGt0poZXBv/YcLqtBTsPyjDGwpxbSt4Jm+PPq1204T1TfRtCbcOrFlv7rgTL9GiGXha1mlSj7UAUNzQYFzVFadi4GITbrQjF3JiOl6i8j7QpMPlBr+7MSP0xfJIq5uIwLIH12pEYnJzp4OmXhv1fvKuvqRAjDPjskNFVrPmWBYGWqDvddG4z/lmfWsSXplSn87whP6SZGqIIchbR28NBHDyiyC5hkKe/tbB0YS3nBH0HLKo+1K8FQDhLjlXUtc0oD8t/uOU/c6EYGZR77yThn+EyL6wp4xoKC+smHf/0qS3qYA6FKgsN7uZJWOHNK4SddgOdctBPmCENBpwiXMt6nzVAkTgyIg6Kdx/eqhRjzclZuhPEIYm451lM+mzf9qwGz5bLI6tZF9bTqtUtU0sOpE2T8PIlhLIZ7QhIB96k/uZ1qUqNgUJ5exoxhJWdrqBdjhh+BNRTTN5y0qzeEqhDfXEp3w/9Ew5Gp9xd4WAai2ySzr71ralFe75DBN1Ede6vjAU+yFdSrJPm97uZgYlPgF4EWQbpIbDyDtnjEx8FWpvjjBoQ1xZG6dglci71uMpzEJC1yfapSzUO7e/GmRmAhYQRTqDsMK5TeKp2jcaFuMklXcKwvgnp/vHDTqGChsGU6+S5HhtfW8EZECRRYTKuMoa+p8cZPhh9NPRWpljCKEHjjrrDkpmu8ZIv5cNRwxuUawMR54UdtiTGyxD0HA37azGXX0tMqYuDF1gbarmuhTIxCwheABul4jZrd+ZYUdRN4Q1dYsW3MMojzsiCApsaFtJiIC3Ca9/S2ZR6ke9lsGoL8+LmiIVsSzvJIIrp0QbQyuIZCz+phkHtYI4dxse6pgV2gB3JlSyUdHOiW3MYZt
- mFGsu33S
- liW7eHRWpPSbrlVy1ynTb/3/LPWE12Cy8q7s6y2yN7EesA/h0LMcICfZDwXy6w6K6hIfHuCjN2NmeOtO0YNOvjqmFqJDmQ7rareN2UKkBxLkaZrDuGifai4wV6Sehb7J3ktBH6QfD7pPB6eSpdRsbbSkYfnE6VT/SVGOGsgdSbVHconItm1z8Nf/Tp/dxhEuhYBCklRpDvyjlElTSqBOV1fHljys6r3DGM6pnabduNCqZ++I/5CYhOtMMlEd6uYsWRldaTAqjwHMmiL5U8W5GMJgO/0atFh1j9GlkMeMc7QXC3peqckBthw4PYHiYCf+nFuzXDHrujibjxOOetahtRJqglhNmcEWbSFuOtsEaYIH0lmxTXft3dMVaSZJ76tdtOvSP3AKf4VM2Xwalr74uDTHrXW1zZ9XYKivp8SCAspKiUH97z4qBs+Ilygz5pUd2dHOiEcH+X26xdvVGkOPDpptSJdfUQs/4cIaC8pgvZ/zvPb0shGQ9f3Ax78mEUTGha38AXXcQ6K9AZPnL1BAbqNvZVEF7KdzYsXRa90PdMSAG8xT2gudb08EEFeJL5gr8Tg4vrdzuck0cLxTjIbrVI6bd8PZs2SBp9OZ53E9OYy1zLYRXKCVeQzjQqbXEVXEyZ5EqulgxOkvVnCf03l2E/PVUrg==
+X-HE-Tag: 1789084065-525430
+X-HE-Meta: U2FsdGVkX1+dPzKHhefMwkuf9/uluq1wlL+PnFq+jE73FCwfU2GHUkPFZJso71NKW8LGc3vzUs7oFOYeiBn9TeWusTM1kYn+E6j7otlM8eI3XKxPXRbQFrJ8NNhYzHk2oQDVf5CNYC2EJOrWzx9m6GfNSaCE82ujvNtCqog+hmD6I0yO3Ly2ZX6albh+1iJ+nNHi54cqPT1irrhs/xNLXVOvxNfUvT+N17YNXwKJyTbX+rjDkrV3iutLuJhrgfOvRo0tGBxLVe4JL5myTUxRoOGRGK3pDoGrfYxiwV8+r1Mf7ODcrljtrK5UY+gASV7xHJsBMZjwLHvgPGoOfhOvzeTr0VadAq8QvbDzt/QPwYbCAsOGgtu+8smM2fGb/hsX6uDf7W7yMdVnQKmqV1Gl+/pym72ZIVSC7hQbp1YuD9Y/yG5TQyTAZpSNGUvyJTluTceSe2+kSByPo/QDGqx2hB3dDloinRt/yA9QJpHVcfIwcIVT7nHzqLBC1GOybPWq2WIwjHFBmDj82bTispWxWjFHW5ACSAmGYseI4mvF3DxZlm+r1yMySoYWNJY7OMptizRC5Cx1YH3GS0lqnHmsQKRsVXXRPpLZFFRmEiP0Pma4clRzq7d9N/b3pwydFTZLUuZDrYqbY9sYrB90m7hH6c+gpJ/phzYMzrLvBf+5Ab7Y6iSrn9b4xWOCsICYzZTBOeiKZkUvHbRAY9uWZz0RKcoLlMbICL0stbeZSxMHlLgB2MY4oXYS9TFOskz4zdQI3VPJx1jfo9nDOYZj2FGT9DdCaulkTwDUvNlWZgCfkHKOb7K9ci7ho1YCBg/0zfUKOPNcPBnWKVMXvf07qby7y5k8boF67qW9JwSBlmeI19RWy/B5SqckcIoAI7jowk0f3S0PU69M4cNir/cl2Qh9DIG6qPQh14qIoWgY7d1llAnwaTqJcpiIrfmfp+s4zGlI5uFEksA49ouqPrzN69Y
+ FkEi/2de
+ 3x9Pc5BBoI+61YnedAj05rpJ8B4e5HoND7HJSQf4PKfQsCnGnEiOHItIrSaD81RDIL5g0g4oMNyOUZByp3PxaGhfMxqmkmNkF/m3DgN6VquAD5paWzaeBuuJZyQFYRxk8zJTL4CY4SJIeeblCwt/t+pFqzvmI9Q7vdMGdlA/N5DPov42bp7GfAXwxUcQzyeSLOurgsJVsPQYGCzXBnPePig/xnEcKOUZhGnelZyydym8PAdhS2XTSps+W9JrET0s57VEvD8McviI6Bru7JTb1AGvmRMmJgfhc9P6B29cDJuXYx0KRj2AjnI2eCSYXQmENSgUrkPV7pDMXHsEsknodpqILu4SOlVt9AxnPgmvl6tMOgafyxofetSBSuQbXtzCJvrinVHyMJ5ieX1umU/avTRNxqbvqK8Y6LhmU9laAA78c6PyMN0QRlGcaz/Q0MVb5a2rfOAbU/VDKdtKOqWeCBTY62GQM+fSooQpkXgOytKvOsRyCW3aHUBGo6ucwcBVNsIfMjL9iswwfNCR0NHZBtWgY5ktzc4HOuG/zRlga8o4Lk9+K4VHMCbMAH/pkeys0CO7np3WNvWRL3p9Mi1YKPl4EB8ALjDQw53kwgYREKm2kXKZmhsJ/AtSnnGbtoklzjIu1LuXAuiAE0bNBoozUPJdksfieqszG0gTQ/4v+oYvbn/Qf1ekjiFM9ZZMB+3PfRelk52tLymOprCipnAhAmmwdd6ACa5tZ2m5WYaV6fcfmCAW8n0N5IdpBbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,231 +112,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sched_ext carries its own ~130 lines of libbpf + bpftool + vmlinux.h +
-BPF-object + skeleton build machinery.  Replace it with an include of the
-shared tools/testing/selftests/lib.bpf.mk, making sched_ext the third
-in-tree consumer of that fragment, after selftests/cgroup and
-selftests/hid.
+When per-vma locks were behind a config option, a number of helper
+functions were needed to simplify the locking code. Now that these
+locks are universally available, we can do a little cleanup.
+Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
+query_vma_teardown() helpers.
 
-All generated skeletons and subskeletons keep the same public API, and
-the runner is built and linked the same way.
+No functional change intended.
 
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Suggested-by: Mykola Lysenko <mykolal@meta.com>
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Ziyang Men <ziyang.meme@gmail.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- tools/testing/selftests/sched_ext/Makefile | 149 ++++-----------------
- 1 file changed, 26 insertions(+), 123 deletions(-)
+ fs/proc/task_mmu.c | 67 ++++++++++++----------------------------------
+ 1 file changed, 17 insertions(+), 50 deletions(-)
 
-diff --git a/tools/testing/selftests/sched_ext/Makefile b/tools/testing/selftests/sched_ext/Makefile
-index 5d2dffca0e91..856fe7dea685 100644
---- a/tools/testing/selftests/sched_ext/Makefile
-+++ b/tools/testing/selftests/sched_ext/Makefile
-@@ -14,48 +14,29 @@ CURDIR := $(abspath .)
- REPOROOT := $(abspath ../../../..)
- TOOLSDIR := $(REPOROOT)/tools
- LIBDIR := $(TOOLSDIR)/lib
--BPFDIR := $(LIBDIR)/bpf
- TOOLSINCDIR := $(TOOLSDIR)/include
--BPFTOOLDIR := $(TOOLSDIR)/bpf/bpftool
--APIDIR := $(TOOLSINCDIR)/uapi
- GENDIR := $(REPOROOT)/include/generated
- GENHDR := $(GENDIR)/autoconf.h
--SCXTOOLSDIR := $(TOOLSDIR)/sched_ext
- SCXTOOLSINCDIR := $(TOOLSDIR)/sched_ext/include
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index e671b4fd8ded..2f500d639db5 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -160,25 +160,6 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+ 	}
+ }
  
--OUTPUT_DIR := $(OUTPUT)/build
--OBJ_DIR := $(OUTPUT_DIR)/obj
--INCLUDE_DIR := $(OUTPUT_DIR)/include
--BPFOBJ_DIR := $(OBJ_DIR)/libbpf
--SCXOBJ_DIR := $(OBJ_DIR)/sched_ext
--BPFOBJ := $(BPFOBJ_DIR)/libbpf.a
--LIBBPF_OUTPUT := $(OBJ_DIR)/libbpf/libbpf.a
+-static inline bool lock_vma_range(struct seq_file *m,
+-				  struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	rcu_read_lock();
+-	reset_lock_ctx(lock_ctx);
 -
--DEFAULT_BPFTOOL := $(OUTPUT_DIR)/host/sbin/bpftool
--HOST_OBJ_DIR := $(OBJ_DIR)/host/bpftool
--HOST_LIBBPF_OUTPUT := $(OBJ_DIR)/host/libbpf/
--HOST_LIBBPF_DESTDIR := $(OUTPUT_DIR)/host/
--HOST_DESTDIR := $(OUTPUT_DIR)/host/
+-	return true;
+-}
 -
--VMLINUX_BTF_PATHS ?= $(if $(O),$(O)/vmlinux)					\
--		     $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux)		\
--		     ../../../../vmlinux					\
--		     /sys/kernel/btf/vmlinux					\
--		     /boot/vmlinux-$(shell uname -r)
--VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
--ifeq ($(VMLINUX_BTF),)
--$(error Cannot find a vmlinux for VMLINUX_BTF at any of "$(VMLINUX_BTF_PATHS)")
--endif
-+# Build scheduler skeletons and subskeletons with the shared BPF rules.
-+BPF_SRCS        := $(wildcard *.bpf.c)
-+BPF_SKEL_EXT    := .bpf.skel.h
-+BPF_GEN_SUBSKEL := 1
-+# Preserve the existing build/ layout.
-+BPF_OBJ_DIR  := $(OUTPUT)/build/obj/sched_ext
-+BPF_SKEL_DIR := $(OUTPUT)/build/include
-+SCXOBJ_DIR   := $(BPF_OBJ_DIR)
- 
--BPFTOOL ?= $(DEFAULT_BPFTOOL)
-+include ../lib.bpf.mk
- 
- ifneq ($(wildcard $(GENHDR)),)
-   GENFLAGS := -DHAVE_GENHDR
- endif
- 
- CFLAGS += -g -O2 -rdynamic -pthread -Wall -Werror $(GENFLAGS)			\
--	  -I$(INCLUDE_DIR) -I$(GENDIR) -I$(LIBDIR)				\
--	  -I$(TOOLSINCDIR) -I$(APIDIR) -I$(CURDIR)/include -I$(SCXTOOLSINCDIR)
-+	  -I$(GENDIR) -I$(LIBDIR) -I$(TOOLSINCDIR) -I$(APIDIR)			\
-+	  -I$(CURDIR)/include -I$(SCXTOOLSINCDIR)
- 
- # Silence some warnings when compiled with clang
- ifneq ($(LLVM),)
-@@ -64,102 +45,26 @@ endif
- 
- LDFLAGS = -lelf -lz -lpthread -lzstd
- 
--IS_LITTLE_ENDIAN = $(shell $(CC) -dM -E - </dev/null |				\
--			grep 'define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__')
+-static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	if (lock_ctx->mmap_locked) {
+-		unlock_ctx_mm(lock_ctx);
+-	} else {
+-		unlock_ctx_vma(lock_ctx);
+-		rcu_read_unlock();
+-	}
+-}
 -
--# Get Clang's default includes on this system, as opposed to those seen by
--# '-target bpf'. This fixes "missing" files on some architectures/distros,
--# such as asm/byteorder.h, asm/socket.h, asm/sockios.h, sys/cdefs.h etc.
--#
--# Use '-idirafter': Don't interfere with include mechanics except where the
--# build would have failed anyways.
--define get_sys_includes
--$(shell $(1) $(2) -v -E - </dev/null 2>&1 \
--	| sed -n '/<...> search starts here:/,/End of search list./{ s| \(/.*\)|-idirafter \1|p }') \
--$(shell $(1) $(2) -dM -E - </dev/null | grep '__riscv_xlen ' | awk '{printf("-D__riscv_xlen=%d -D__BITS_PER_LONG=%d", $$3, $$3)}')
--endef
--
--ifneq ($(CROSS_COMPILE),)
--CLANG_TARGET_ARCH = --target=$(notdir $(CROSS_COMPILE:%-=%))
--endif
--
--CLANG_SYS_INCLUDES = $(call get_sys_includes,$(CLANG),$(CLANG_TARGET_ARCH))
--
--BPF_CFLAGS = -g -D__TARGET_ARCH_$(SRCARCH)					\
--	     $(if $(IS_LITTLE_ENDIAN),-mlittle-endian,-mbig-endian)		\
-+# Preserve the scheduler-specific flags; the shared recipe adds target flags.
-+BPF_CFLAGS = -g -D__TARGET_ARCH_$(SRCARCH) $(MENDIAN)				\
- 	     -I$(CURDIR)/include -I$(CURDIR)/include/bpf-compat			\
- 	     -I$(INCLUDE_DIR) -I$(APIDIR) -I$(SCXTOOLSINCDIR)			\
- 	     -I$(REPOROOT)/include						\
--	     $(CLANG_SYS_INCLUDES) 						\
-+	     $(CLANG_SYS_INCLUDES)						\
- 	     -Wall -Wno-compare-distinct-pointer-types				\
- 	     -Wno-incompatible-function-pointer-types				\
- 	     -Wno-microsoft-anon-tag						\
- 	     -fms-extensions							\
--	     -O2 -mcpu=v3
--
--# sort removes libbpf duplicates when not cross-building
--MAKE_DIRS := $(sort $(OBJ_DIR)/libbpf $(OBJ_DIR)/libbpf				\
--	       $(OBJ_DIR)/bpftool $(OBJ_DIR)/resolve_btfids			\
--	       $(HOST_OBJ_DIR) $(INCLUDE_DIR) $(SCXOBJ_DIR))
--
--$(MAKE_DIRS):
--	$(call msg,MKDIR,,$@)
--	$(Q)mkdir -p $@
--
--$(BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile)			\
--	   $(APIDIR)/linux/bpf.h						\
--	   | $(OBJ_DIR)/libbpf
--	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) OUTPUT=$(OBJ_DIR)/libbpf/	\
--		    ARCH=$(ARCH) CC="$(CC)" CROSS_COMPILE=$(CROSS_COMPILE)	\
--		    EXTRA_CFLAGS='-g -O0 -fPIC'					\
--		    DESTDIR=$(OUTPUT_DIR) prefix= all install_headers
--
--$(DEFAULT_BPFTOOL): $(wildcard $(BPFTOOLDIR)/*.[ch] $(BPFTOOLDIR)/Makefile)	\
--		    $(LIBBPF_OUTPUT) | $(HOST_OBJ_DIR)
--	$(Q)$(MAKE) $(submake_extras)  -C $(BPFTOOLDIR)				\
--		    ARCH= CROSS_COMPILE= CC=$(HOSTCC) LD=$(HOSTLD)		\
--		    EXTRA_CFLAGS='-g -O0'					\
--		    OUTPUT=$(HOST_OBJ_DIR)/					\
--		    LIBBPF_OUTPUT=$(HOST_LIBBPF_OUTPUT)				\
--		    LIBBPF_DESTDIR=$(HOST_LIBBPF_DESTDIR)			\
--		    prefix= DESTDIR=$(HOST_DESTDIR) install-bin
--
--$(INCLUDE_DIR)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL) | $(INCLUDE_DIR)
--ifeq ($(VMLINUX_H),)
--	$(call msg,GEN,,$@)
--	$(Q)$(BPFTOOL) btf dump file $(VMLINUX_BTF) format c > $@
--else
--	$(call msg,CP,,$@)
--	$(Q)cp "$(VMLINUX_H)" $@
--endif
--
--$(SCXOBJ_DIR)/%.bpf.o: %.bpf.c $(INCLUDE_DIR)/vmlinux.h	| $(BPFOBJ) $(SCXOBJ_DIR)
--	$(call msg,CLNG-BPF,,$(notdir $@))
--	$(Q)$(CLANG) $(BPF_CFLAGS) -target bpf -c $< -o $@
-+	     $(BPF_EXTRA_CFLAGS)
+ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
+ 					   loff_t last_pos)
+ {
+@@ -286,13 +267,8 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+ 		return NULL;
+ 	}
  
--$(INCLUDE_DIR)/%.bpf.skel.h: $(SCXOBJ_DIR)/%.bpf.o $(INCLUDE_DIR)/vmlinux.h $(BPFTOOL) | $(INCLUDE_DIR)
--	$(eval sched=$(notdir $@))
--	$(call msg,GEN-SKEL,,$(sched))
--	$(Q)$(BPFTOOL) gen object $(<:.o=.linked1.o) $<
--	$(Q)$(BPFTOOL) gen object $(<:.o=.linked2.o) $(<:.o=.linked1.o)
--	$(Q)$(BPFTOOL) gen object $(<:.o=.linked3.o) $(<:.o=.linked2.o)
--	$(Q)diff $(<:.o=.linked2.o) $(<:.o=.linked3.o)
--	$(Q)$(BPFTOOL) gen skeleton $(<:.o=.linked3.o) name $(subst .bpf.skel.h,,$(sched)) > $@
--	$(Q)$(BPFTOOL) gen subskeleton $(<:.o=.linked3.o) name $(subst .bpf.skel.h,,$(sched)) > $(@:.skel.h=.subskel.h)
-+EXTRA_CLEAN += $(OUTPUT)/build
- 
- ################
- # C schedulers #
- ################
- 
--override define CLEAN
--	rm -rf $(OUTPUT_DIR)
--	rm -f $(TEST_GEN_PROGS)
--endef
+-	if (!lock_vma_range(m, lock_ctx)) {
+-		mmput(mm);
+-		put_task_struct(priv->task);
+-		priv->task = NULL;
+-		return ERR_PTR(-EINTR);
+-	}
 -
--# Every testcase takes all of the BPF progs are dependencies by default. This
--# allows testcases to load any BPF scheduler, which is useful for testcases
--# that don't need their own prog to run their test.
--all_test_bpfprogs := $(foreach prog,$(wildcard *.bpf.c),$(INCLUDE_DIR)/$(patsubst %.c,%.skel.h,$(prog)))
-+# Build every scheduler before each test.
-+all_test_bpfprogs := $(BPF_SKELS)
++	rcu_read_lock();
++	reset_lock_ctx(lock_ctx);
+ 	/*
+ 	 * Reset current position if last_addr was set before
+ 	 * and it's not a sentinel.
+@@ -325,7 +301,12 @@ static void m_stop(struct seq_file *m, void *v)
+ 		return;
  
- auto-test-targets :=			\
- 	create_dsq			\
-@@ -195,24 +100,22 @@ auto-test-targets :=			\
- testcase-targets := $(addsuffix .o,$(addprefix $(SCXOBJ_DIR)/,$(auto-test-targets)))
+ 	release_task_mempolicy(priv);
+-	unlock_vma_range(&priv->lock_ctx);
++	if (priv->lock_ctx.mmap_locked) {
++		unlock_ctx_mm(&priv->lock_ctx);
++	} else {
++		unlock_ctx_vma(&priv->lock_ctx);
++		rcu_read_unlock();
++	}
+ 	mmput(mm);
+ 	put_task_struct(priv->task);
+ 	priv->task = NULL;
+@@ -518,21 +499,6 @@ static int pid_maps_open(struct inode *inode, struct file *file)
+ 		PROCMAP_QUERY_VMA_FLAGS				\
+ )
  
- $(SCXOBJ_DIR)/runner.o: runner.c | $(SCXOBJ_DIR) $(BPFOBJ)
--	$(CC) $(CFLAGS) -c $< -o $@
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) $(CFLAGS) -c $< -o $@
+-static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	reset_lock_ctx(lock_ctx);
+-
+-	return 0;
+-}
+-
+-static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
+-{
+-	if (lock_ctx->mmap_locked)
+-		unlock_ctx_mm(lock_ctx);
+-	else
+-		unlock_ctx_vma(lock_ctx);
+-}
+-
+ static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ctx *lock_ctx,
+ 						     unsigned long addr)
+ {
+@@ -653,12 +619,7 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+ 	if (!mm || !mmget_not_zero(mm))
+ 		return -ESRCH;
  
- # Create all of the test targets object files, whose testcase objects will be
- # registered into the runner in ELF constructors.
--#
--# Note that we must do double expansion here in order to support conditionally
--# compiling BPF object files only if one is present, as the wildcard Make
--# function doesn't support using implicit rules otherwise.
- $(testcase-targets): $(SCXOBJ_DIR)/%.o: %.c $(SCXOBJ_DIR)/runner.o $(all_test_bpfprogs) | $(SCXOBJ_DIR)
--	$(eval test=$(patsubst %.o,%.c,$(notdir $@)))
--	$(CC) $(CFLAGS) -c $< -o $@
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) $(CFLAGS) -c $< -o $@
+-	err = query_vma_setup(&lock_ctx);
+-	if (err) {
+-		mmput(mm);
+-		return err;
+-	}
+-
++	reset_lock_ctx(&lock_ctx);
+ 	vma = query_matching_vma(&lock_ctx, karg.query_addr, karg.query_flags);
+ 	if (IS_ERR(vma)) {
+ 		err = PTR_ERR(vma);
+@@ -732,7 +693,10 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+ 		vm_file = get_file(vma->vm_file);
  
- $(SCXOBJ_DIR)/util.o: util.c | $(SCXOBJ_DIR)
--	$(CC) $(CFLAGS) -c $< -o $@
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) $(CFLAGS) -c $< -o $@
+ 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
+-	query_vma_teardown(&lock_ctx);
++	if (lock_ctx.mmap_locked)
++		unlock_ctx_mm(&lock_ctx);
++	else
++		unlock_ctx_vma(&lock_ctx);
+ 	mmput(mm);
  
- $(OUTPUT)/runner: $(SCXOBJ_DIR)/runner.o $(SCXOBJ_DIR)/util.o $(BPFOBJ) $(testcase-targets)
--	@echo "$(testcase-targets)"
--	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-+	$(call msg,BINARY,,$@)
-+	$(Q)$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+ 	if (karg.build_id_size) {
+@@ -773,7 +737,10 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+ 	return 0;
  
- .DEFAULT_GOAL := all
- 
+ out:
+-	query_vma_teardown(&lock_ctx);
++	if (lock_ctx.mmap_locked)
++		unlock_ctx_mm(&lock_ctx);
++	else
++		unlock_ctx_vma(&lock_ctx);
+ 	mmput(mm);
+ out_file:
+ 	if (vm_file)
 -- 
-2.53.0-Meta
+2.55.0.1007.g17ff1f9808-goog
 
 
