@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B7EC79FBB
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C807C79FBB
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FBA6B0099; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
+	id 1C6B46B009B; Thu, 10 Sep 2026 19:47:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD1696B009B; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
+	id 123396B009D; Thu, 10 Sep 2026 19:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9A956B009D; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
+	id EB8066B009E; Thu, 10 Sep 2026 19:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EE8E6B0099
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:47:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFE44A5354
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:54 +0000 (UTC)
-X-FDA: 85199492868.25.EDC5681
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0EB081C0008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VmKPuofU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789084073;
-	b=xfpnct2rT9AUxqtJlzpkM2wwWqVLvZ57HzaHsJC0V+T8B9ppQbkvONrZ90mDTt5PTRGN+d
-	N1nsefOy5HZCA+ZLFYJQYIMAll8O0iYuXaT9SyxiVSyxu2um1CVhN09kWMU/JopYzcHE6J
-	lKV4VtfbjeBoqNjPkhM65vEIqYmxxm8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VmKPuofU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=3p0GjagYKCBQCEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id B07026B009B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:47:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30BC21405EE
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:57 +0000 (UTC)
+X-FDA: 85199492994.28.8EC199B
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 77DDF40004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:47:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L3bcli9D;
+	spf=pass (imf12.hostedemail.com: domain of 3qUGjagYKCBYEGD09x2AA270.yA8749GJ-886Hwy6.AD2@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3qUGjagYKCBYEGD09x2AA270.yA8749GJ-886Hwy6.AD2@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789084073;
+	s=arc-20220608; t=1789084075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
-	b=KtFIUm4wClA6hU3xVV+0pKX4qCyZo5dk5l1PhhyFrZVsd8lBWFAv9C/9FKs86T1p9NEODh
-	ENXoJEJiR/crxLTwMXW0iBxHzbAHgzklJhfheeYw93LmVQapponBHGJohSWN5n1UFMTYoP
-	L14AhXsJDUP887dhRcjV4AGNP9Rr/CA=
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-385d2703b64so1684390a91.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:47:52 -0700 (PDT)
+	bh=MfCQoIF9r6drT2/q6iU4FW+cbq+J7ShlN3xdWU35XRs=;
+	b=27+jxgFgWRN0zol3xuDUlgDJKAPf4MZRQmFu+QtyRgmp7CrX45JaKckItv4E8f5DofKl96
+	/8M3S3aJ265Jh5XRWlpNAeDhU7AzFo//sZDcIpduxWjhGYEOlkWcjhgaH123PAur9M78le
+	3ym4QZOwOa6R8OwV2Rps4U39QybtrkY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789084075;
+	b=cE8+5+Tlz5/VNqILucbcMUE7mCut9iuuHCmJ3w1y3rv2qb43Xe5QIL6Q8PXKOqWGsVbCYx
+	u3xqNnEgdtOnCS2c/XpKb6NMLfWDAxa6wmfV9tefv7tqUWNk1quPonKYdJOJCE4PgcnDHl
+	0KlgNoVkIo2zp82zTlQJWoSyexy/+Wk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L3bcli9D;
+	spf=pass (imf12.hostedemail.com: domain of 3qUGjagYKCBYEGD09x2AA270.yA8749GJ-886Hwy6.AD2@flex--surenb.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3qUGjagYKCBYEGD09x2AA270.yA8749GJ-886Hwy6.AD2@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbee6bb8408so408010a12.3
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 16:47:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789084072; x=1789688872; darn=kvack.org;
+        d=google.com; s=20251104; t=1789084074; x=1789688874; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
-        b=VmKPuofURc8LYC5injdiPysNQN0BW3gVaSYOXfbsUi4yQ5YpgG7xSO5KOMnHHgbXEW
-         ixY5gmSvyh4AlRtaucQ8d4QTy2z4DK7uQP3Yi86nOByPxgrXoP7MxyOLECilw4K7rAr+
-         UVkVCm259cms7T8t6PUmCnkSP6Vtayy25y+8J366FSPbGmTN6Dnh3X+pXehkd961Ljgs
-         h/nAYnqyys2Q/wodGUzi3TbU5oR9LR+ukWY36NE/kAhqfCeLq78/M9Scg8qqMUlgVzVJ
-         TBo/WznhOkwBb8luMq65j61x9NykDZKwz0v6U2NI7GFTIu6rYXtqFAm58Lu3KhQ3Izwy
-         rs6A==
+        bh=MfCQoIF9r6drT2/q6iU4FW+cbq+J7ShlN3xdWU35XRs=;
+        b=L3bcli9D0dnrEawXEx3cD4X+hX/OADADMj8NUMchtyglkw0QRFK/PpQK0hvAa2Ky8q
+         lzusPuFawZ0GsF3V/+TTdY/2U5R268LfBejK7syvjtda3e90MpbzC6UxYQXtWToZcD0J
+         rN5GasaC1QzbIP4cHOXdUv8kWbSJPRZEzx0bV67i9MqdnexSDGZ8BOc3AAJc7XXp755C
+         jaEfsHJ/oLZaQUxQ6G20y6WG45nLBI5hCyU4b7GYK0vc/eQuEJIAePsR6cKnIBHtKndP
+         YpoG6V9ge0AhCvloWrpT6eAtoBv7s626ybhl5MEW6pguRzccH7qxQlUa4TYyToBgYvtQ
+         Z82A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789084072; x=1789688872;
+        d=1e100.net; s=20251104; t=1789084074; x=1789688874;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qU0KV0gIPZqolm93iR//P4qXqNLqAOfvp4joEi9Yvyk=;
-        b=JvThLBZjZWX0YIH3Kuqgv8TcxfnBm/LUqePCYrTFpCEH5n3qdyd8NsCwDu//GKmeSY
-         NsfOLkRM38abaHT15hzg6VRgMnVQBbQe5D3orL4vNubjSJj9zewWxQppka5jIz88UH6y
-         etjh+Km/NHvxYoYudigHPTI7/1Vb3jsABo90c149pB9rDqJEJn9LbUh9TpvioQd2jPu+
-         ZHDQhaZCS9+O/fz4noJWULVUK3U48BbFnCUgReeTjKKhMKKnIhRK8Q1DZvKdkhsJfkVU
-         XLkwtnZBfSJHvRPZa6JPcpazHcZwsurs4+FtHPrtR7rO//rGjHCd+cJzKQ2QqFXMgWGp
-         CAcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwUCqGHdrF3Sata2xGJfJYlhTESfa32rUHrZ/v4YIMl9MrFJTfMwvnOCfS80LVcd1xh0td3nlm5Vg==@kvack.org
-X-Gm-Message-State: AFuF++n9hMkj8VUoJWNF83Zl/8vSjaUqevAtyUmMXh27y7tNjj4x1l6y
-	u+1mjbKGuMgVFFFHCT6n2/AuIr9Ej2F6CivW6aDJtTGTbgZNhnFeAw330F5KnoUuldz1UCarcDz
-	MzIPuFw==
-X-Received: from dlbbq8.prod.google.com ([2002:a05:7022:6708:b0:143:6807:5e3b])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c85:b0:38f:cfe2:fd3a
- with SMTP id 98e67ed59e1d1-39d77b1c383mr8988591a91.15.1789084071601; Thu, 10
- Sep 2026 16:47:51 -0700 (PDT)
-Date: Thu, 10 Sep 2026 16:47:34 -0700
+        bh=MfCQoIF9r6drT2/q6iU4FW+cbq+J7ShlN3xdWU35XRs=;
+        b=iA4lpGz1BPdk+xbfKIEY5nmnAKKBHbZi5S8P7f7w6P2knoIpWdNH+xjpQteJmeBLsz
+         zwbDz4kYJkuR7z93nnzxXGV/ebdUTDSSKAoqsHWpyCymHqLXyPtlNAknEfkIcOwER+Jm
+         zNiDJQzrOa3jiHQFJ83NQAyyZpU4Hym/hqQNbnbJxilzKYpIlKMuEJmKZmIzHNubaP1N
+         nHfE2vZCNXU5FtGZyUDgPgInoFtftMeytKWe0Ysqq7Zq/3EpdWjpD0H7aB/8KS1TBI+J
+         vs0rHLpCWpcS5Pg0TbOnAO03F/CWt75ZwLsziKC8j6aHGaot7ShncxAkq7WPpdXfXejc
+         TrgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwS/ZbIOOt1Jt8r2gooKRJEnwsKOUxGdzPtVibigfHfgv1TbvqocNUZAuEHIwDOIg4CdsDhgBrKnw==@kvack.org
+X-Gm-Message-State: AFuF++lFgqACHfaZ2xwbp5yTeFg6NrLF2lWFkvNPz2dIqqkw6ThEZbon
+	FlvzhzQkDzPw8xBMptvFTN7jjt4N2/H+Uuw4J4hWWeYpfYF6BQOTXj0Q5p+m6OMPnmKd3FnXvxj
+	VdPDYyQ==
+X-Received: from dlk12.prod.google.com ([2002:a05:7022:10c:b0:143:54dd:1d39])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4309:b0:3da:1e7b:ea27
+ with SMTP id adf61e73a8af0-3daed3b7eaemr2196858637.21.1789084073982; Thu, 10
+ Sep 2026 16:47:53 -0700 (PDT)
+Date: Thu, 10 Sep 2026 16:47:35 -0700
 In-Reply-To: <20260910234737.1340642-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260910234737.1340642-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260910234737.1340642-5-surenb@google.com>
-Subject: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
- smap_gather_stats() start parameter
+Message-ID: <20260910234737.1340642-6-surenb@google.com>
+Subject: [PATCH v3 5/7] proc/task_mmu: change proc_get_vma() to stop returning
+ gate VMA at the end
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
@@ -97,14 +97,14 @@ Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com,
 	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: xjrqqpb56y8zzqik7u3zfdtc6upqdb84
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0EB081C0008
-X-Stat-Signature: 3p7ihi5f9uttoz3msnfomnuyrcg8mi6z
-X-HE-Tag: 1789084072-908130
-X-HE-Meta: U2FsdGVkX1+PKztJ3LdXo3q947ot64AgdToiR+gpMEsWeiAxuxj3hIWrKOBQMh6sb0M+6CFfF7ctFPn31i9y3l+C+UMC74SEVQ6FTTXQXvMgnGEKCIuaRZi7klESU30K40QhQ8wBkLWbyGWO1cFYFdcPisMxJP7kgAOWkI6+Ooh/GOnW2UoMlAyXpPIcjQKWksDY5TCp87bEn79fPmaDn1+LtNzdEt1rIpfsKUmtj97jukqOzt8/bWxHH5ImmgJ+09Hz/ImLZQ+pgdLqpF2MR/AE0HBSTb2gBF9qxSsItlGZlQbOGIyR50BWMo3Ks9gh8P0exrZt5mV+Sl2JwrQ6qscZpg5G/b+rn5FQAKYbnG5D7NouBv7FIsRUHIu6w/u8fG6eHYC29Qj+irlKdySWJrPmMHc5Nfl5H3Uid2kl4C0bmV8sSK7sAncZLNIZnLkyQwS2i9uNvge4UDR1EXvQydjtrIsDBZPqhug4oLXzqqVYwdRBD/qlQ6hp9YHW6PB/Lk42LvNZWVvmlTmGRLSf7z/Yf0IM+kivM/kHqzbpMIdkqaydl8jaIxCw1lT0HHfc8AuYb2vDaGP5x9YrM4As5Bfnj+Ba08b3Cx/IEO3YF83zv0qJOH6sy9RgDb4f33vmLDcFWRBCNJe4IsB2HsDhrS/boZj7t2lMu2RMbWCEjIMfb/wVJ1T1T8AgkyQ5X2WmkMO6pjtQJT6J8jluTyPIKmYcADYTUVUBCyiMvKqgfHgAlZ4iE2IfnP5KSFFIy2HXJmLCE0ylwpzyZgnMHbEeU6IcwGqyFMQsgRXU9Wi5xn3S7nJwXhYzQ/UFtWRKu2IRKqP6JZBw0c4tUXroKmLV0gdr5cbBQJdjVYnhmcuNFAmuDN29sJoV/WeV/GxlIQaQNwKycOFYdh3QpCnuIxUaPkNuWE+vdjmJgTcR6Pb1CDoleKE4ESLjonZjwbrVQjK5ml7v892LH0j7vDmwr3W
- en9XAfNW
- lGBvesfyAt4mLM+lXw2AYzusET5Mx7knRhswa82D2bjgXXo8yFjnsTaqN6wLYZgV1inwQ8ZIWcIezlTe5AhPpjI/WsPx2R1qDAJZJWyzqs9ekgsCfur8VwsNEzXnvKT1GK+iKI9jI+BUzWTFhtjURwfQfD26NcnstENaMmkeRtCNYb7MVTAZkzVDRXfl+wjDBMCiss7b3XJ7ZB0mDXXDCXSspGvmhm6sSc1uofSo1WyQGjV4jnd38PQwYpu4vHrIlMuQMGz1eh+6sZ0u4s+7pJnPoEgOWtCFwM1fwloVCvvEPcy0eZxi4OUN2FSaFDmTik2z2M1XFOiy+J7vHFXe0to5k48tMvcotgNup1RuOS9KGZqicRa2Ugg2wSkyey+AHtDuyoPsQRkSE+H7Mo7N9DQ4QdGTVfINOBZAXnpKfUNfyXPRDgPR2VC3CxVMdbFg+38vjnlXP454Z7XjlALDlVsqRbebH1KY20z8ehAwTF2x06qafelDXmSCl7jMFjwarz+esuITZd4LNfKUMfWSlj8MM1pp3ODwgkSD1HqLtS+poAbrNGCyRiJThydpCVo8chQCQPuhLv0onQ8J/Lb2G4TuAJX6GrJRVPH6eOQ8eCZYnrPEF9XsvKPGZjRNzsiDVypHD3kQ5JWhFO3c0kfqIO53x8VYIKbIDROH/Jlkt8Fik6ZOKQujPtpncuIUsf9AICxScRHXNtKiQ54FnJzBtALT6WQVdw154lwJ3M6QsDvPwLFMvpzzO/uumRA==
+X-Rspamd-Queue-Id: 77DDF40004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789084075-737225
+X-HE-Meta: U2FsdGVkX1+zJ3XaGi6HmadeC9q1pRzexEd5o6Z329oK9gmBTAI2uA2h7n1jpJIo7tr+tyRkDuzonuQ00VbwrLB3w/cNNGPSPZpeTwH/L4TKVDB8hFci4J4DHbxcy9J9UbGJbzIfcCKr8EikXkezTYPALXP6ciEteKhmMzPEucFe3XQv1CE+u8ZbLDRfbuw4kSVZxfQirOp8d0+xFrwNOxx7A/jZlmn3I3FappgRcrsIwW0YdBDQ7id9jiocOqyLJlXyNuQoYxnUhu9z0Or1JewiJ7ecjzRfsUWUf75euDU9jEtwcwYXRSNSJ1SiqzneFVvyJdY4tDui0LOKshT97NLOCKrwQujo8kRxyU/sAW0f3hLFYU6Zy/lUk4EpC1lStIGNotJHH/aoVjCOGzRAqo8FqeKO2n0MLTYidCRLuU2JxWgMcHAX8SBpLVyuij9qSxhwsAHsu1K20aYjtU58xVmCx44PzfKmK4i6UOzJICf+yHpfuNQFSGUjat1yqahAGkz0GbOphIghny3pj/1kZoRPMK5asDAV28U+cRRRLcoVBXdvKZqsOu2Eas96gwHhGxkxSJn+94OpAhL2PjGMywaCyI7EiWJcY3Rgg14pU5crVWkoMVoEoRVaoUwg4o21KUcQxwPNeqLbhnuGutfR4RFaD4yTL6EIjU/tObowWPeQQeiIh8b54S+LjiIUvnK+tPqkVmB7xr9W4tUy4mJVd8XvdwaIraaML+UUQ/nK7K0JshWJ2dTs8qCJ8NVNzpRoj8Eocg/Be9EUkxii3qLOjx7uZPw8LobDIzSQ6NGRcvNuhibVNgLs59DO6afrJalbuDVZDsql42Wa8m91Q3tI7tj+pzsN+c0rCAqfyun1T7qbdrgBw7YBEYPyjo+0tmVxvSuOU1oS6vgccrueermnKrRb0jkVulKmViAS4H/Ugisd6RGBBmB6QkBBIOg2nr/fN686vA6hGGv5IMw5F0T
+ yVB/oSF3
+ /HGng3B6TO1C6U8RGersHhoLMtQc3vGUcg4w+eOZTSM6oOeb0zPCnCnfhGWMyfLsd/kMS8P+okCXP6kDDqeGWnN5RS1g4MmxcXXW6yDXoGe6sBBiehtEZyz+yj1rK8aDNWLC26395tFEnQReDK233msdELRv6JW97G0ErIFx/r5uZyyc3w/76Lha0zdjFSBybZrnaYPlunTH5CvsQZ40qchLTpqA8r6yBfC8qeQWhmt+6Zq5biauRvNKkdG7S7PvW0aQ4y/oP2dWlnhX5KcBU2IMt/DotUMyjfPy5gq807XfKdhAyGReD8xT7ej+XKix9ig5LSpjRVivgmDOnpGRP2m5+6lSBJgFG1VaFvigfHl2Xj26piziHHHkqtOFSMKxULqKI8sL9MyFNvRkyxsgbaQtmdbOQrjB+lwJJh7Y+td+ulYAeU81q7buTK/7vmbMVIOLaO0r0RHoh0765YtwMMfDA7dh/bKCd6IoSl98vWxkpkGi4DkrPxmGQRU/Mwlw+2Q9BXCcFOWkoThsl3j22QWcde1vIdy1MjGfaI5X0FCYdi8HG2SAvL9NcLkf+BX3SdGgMuaD1RSSKUI9YGTlDEAkv9RwoniwCaj1/ZQqpAh69B2Bi4S00mpHXkDinqn8SqC037aQJTKzHE9EC4hUK13mASTX+CHoteFgA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,100 +112,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-smap_gather_stats() interprets its start parameter to mean vma->vm_start
-when it's set to 0. Eliminate this special interpretation and pass
-vma->vm_start explicitly when needed.
+proc_get_vma() returning gate VMA at the end is desirable for the its
+current m_start/m_next callers, as they need to report a gate VMA at the
+end of the address space. This behavior is very specific to these callers
+and makes proc_get_vma() hard to use for other purposes.
 
-Since smap_gather_stats() operates within a single VMA, we can replace
-walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
-which is simpler and also can be called while holding per-VMA lock.
+Move this usage-specific behavior into the callers themselves so that
+proc_get_vma() returns either a valid VMA, an error or a NULL when no
+more VMAs are available. This makes it more generic, simpler and usable
+in the later patches.
 
-No functional change intended.
-
-Suggested by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ fs/proc/task_mmu.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 3c40c9cbb9c9..ecce7ce116cb 100644
+index ecce7ce116cb..9a3c996c1d61 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
- 	return &smaps_shmem_walk_vma_lock_ops;
- }
- 
--/*
-- * Gather mem stats from @vma with the indicated beginning
-- * address @start, and keep them in @mss.
-+/**
-+ * smap_gather_stats() - Gather mem stats from @vma.
-+ * @priv: proc maps private state.
-+ * @vma: The VMA to gather stats for.
-+ * @mss: The accumulated stats.
-+ * @start: The address from which to start.
-  *
-- * Use vm_start of @vma as the beginning address if @start is 0.
-+ * This gathers stats for the whole of the VMA unless the lock was dropped
-+ * and VMA grew or got merged and we found it again, in which case we only
-+ * gather stats for the remainder of the VMA range.
-  */
- static void smap_gather_stats(struct proc_maps_private *priv,
- 			      struct vm_area_struct *vma,
--			      struct mem_size_stats *mss, unsigned long start)
-+			      struct mem_size_stats *mss,
-+			      unsigned long start)
- {
- 	const struct mm_walk_ops *ops = get_smaps_walk_ops(priv);
- 	const bool is_partial = start > vma->vm_start;
- 
- 	/* Invalid start */
--	if (start >= vma->vm_end)
-+	if (start < vma->vm_start || start >= vma->vm_end)
- 		return;
- 
- 	if (vma == get_gate_vma(priv->lock_ctx.mm))
-@@ -1285,10 +1291,7 @@ static void smap_gather_stats(struct proc_maps_private *priv,
- 			mss->swap += shmem_swapped;
+@@ -236,9 +236,6 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
+ 		 * found the extended vma with the same vm_start.
+ 		 */
+ 		*ppos = vma->vm_end;
+-	} else {
+-		*ppos = SENTINEL_VMA_GATE;
+-		vma = get_gate_vma(priv->lock_ctx.mm);
  	}
  
--	if (!start)
--		walk_page_vma(vma, ops, mss);
--	else
--		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
-+	walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
+ 	return vma;
+@@ -248,6 +245,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+ {
+ 	struct proc_maps_private *priv = m->private;
+ 	struct proc_maps_locking_ctx *lock_ctx;
++	struct vm_area_struct *vma;
+ 	loff_t last_addr = *ppos;
+ 	struct mm_struct *mm;
  
- 	reacquire_rcu(priv);
+@@ -280,16 +278,31 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+ 	if (last_addr == SENTINEL_VMA_GATE)
+ 		return get_gate_vma(mm);
+ 
+-	return proc_get_vma(m, ppos);
++	vma = proc_get_vma(m, ppos);
++	if (vma)
++		return vma;
++
++	/* Return gate VMA at the end */
++	*ppos = SENTINEL_VMA_GATE;
++	return get_gate_vma(mm);
  }
-@@ -1343,7 +1346,7 @@ static int show_smap(struct seq_file *m, void *v)
- 	struct vm_area_struct *vma = v;
- 	struct mem_size_stats mss = {};
  
--	smap_gather_stats(priv, vma, &mss, 0);
-+	smap_gather_stats(priv, vma, &mss, vma->vm_start);
+ static void *m_next(struct seq_file *m, void *v, loff_t *ppos)
+ {
++	struct proc_maps_private *priv = m->private;
++	struct vm_area_struct *vma;
++
+ 	if (*ppos == SENTINEL_VMA_GATE) {
+ 		*ppos = SENTINEL_VMA_END;
+ 		return NULL;
+ 	}
+-	return proc_get_vma(m, ppos);
++	vma = proc_get_vma(m, ppos);
++	if (vma)
++		return vma;
++
++	/* Return gate VMA at the end */
++	*ppos = SENTINEL_VMA_GATE;
++	return get_gate_vma(priv->lock_ctx.mm);
+ }
  
- 	show_map_vma(m, vma);
- 
-@@ -1396,7 +1399,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
- 
- 	vma_start = vma->vm_start;
- 	do {
--		smap_gather_stats(priv, vma, &mss, 0);
-+		smap_gather_stats(priv, vma, &mss, vma->vm_start);
- 		last_vma_end = vma->vm_end;
- 
- 		/*
-@@ -1455,7 +1458,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
- 
- 			/* Case 1 and 2 above */
- 			if (vma->vm_start >= last_vma_end) {
--				smap_gather_stats(priv, vma, &mss, 0);
-+				smap_gather_stats(priv, vma, &mss, vma->vm_start);
- 				last_vma_end = vma->vm_end;
- 				continue;
- 			}
+ static void m_stop(struct seq_file *m, void *v)
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
