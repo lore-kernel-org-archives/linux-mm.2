@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00662C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B002C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 12:36:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAD946B0098; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
+	id 1DC766B0092; Thu, 10 Sep 2026 08:36:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0F286B0095; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
+	id 193B16B0096; Thu, 10 Sep 2026 08:36:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C89316B0096; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
+	id EABAE6B0092; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C116B0092
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA7566B0093
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 08:36:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 317C21604EB
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 297E4A482E
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:36:01 +0000 (UTC)
-X-FDA: 85197799722.06.7132FEF
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D5A5020005
+X-FDA: 85197799722.03.D1C1360
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2BAF840003
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 12:35:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S2THb0gK;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=erm8ORLe;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=erm8ORLe;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789043759;
-	b=DS9mc9j3yXbVklfk5isl/Kbh3Yrk8IDDKE5HfycdbDoLoNkQTtUvYX0xPE1IzC/7333ovk
-	9o4nXKGWWYUx8dPsa0tzyK4kHy0Mzy9v99B23kzZ8sP3cKgGqOTfOpoCQd1dxHpmz9VQy5
-	+dtiEWXmMcjX1mMy+rg9YGNZWZYTDFA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S2THb0gK;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	b=1H36DGs7xXTSltM43F4jS1fAUp0ykg35602gjt/9J0WyoTy8DDsDCCuGN34DmOCPuIjRZ3
+	TcN86/DdSreW6oqeRs+zxr6kqmaAWbBLiNPeGMufJuJ5O/Gpk/Nmyw6S6nBrPp28/EA5L+
+	pNsao2tHXpqJfzyUEOF0BHidGkwJcTQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789043759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -45,23 +45,23 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a196pSrWkeJTnDFClt8myTTQ1/mCsw6g+DgOYrKLVHg=;
-	b=w4m9qZfZr+RPUCEMwF4LWYkw+Jz2cVczdA6xSRgJxI4dppTHuDBXdzTcvIePBcvOMqeQow
-	axoY7TzQ+rfDZD/txQ2ovQDu5M9Oh5uTWxuIOwF4q+N9QgWfRHjfEUmu/MG/tp6Na7U0fu
-	RXvVIb691Z2EJO5EcRpnampAc0oPRAg=
+	bh=tZ4HHZVGh/OUFXs7UNrTv4c3tt7D59kEmSG9wt4b1X4=;
+	b=2f5RWKJocZeOfDhIe3zuSTMYolupMijO2fWMFttQc0dZObgL9YNH7ok5ivLJz1MiZShPtx
+	WijsaRib7cRjgxNsok1wnziHpOZSEi/nhdV/fbaTkV2EKZwTrrC8xH/Cj/BL3PFAcHlQCh
+	dH5D2BJrgE09jpKVLGqxHsduihQDtXQ=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=a196pSrWkeJTnDFClt8myTTQ1/mCsw6g+DgOYrKLVHg=;
-	b=S2THb0gKiPSO4s0f1f+ZMWWHuq+7dHRZP0h0JVdjj/2SqBHzqgkbz6pN2vzLmpCdKqpjQRETq
-	a1C8EtxruZiXgqzQpC9L2A/wvzdT4ScQ6TjWaApzOBcLFJ499WUCNePCuGcvvJgqE7nDu9pA6vR
-	WHxbAXo+7n/8i6KaMqP6R7o=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hgcLF0Y8dz1T4Fq;
-	Thu, 10 Sep 2026 20:24:21 +0800 (CST)
+	bh=tZ4HHZVGh/OUFXs7UNrTv4c3tt7D59kEmSG9wt4b1X4=;
+	b=erm8ORLeiWsSRaNSqOrWTha44gEXeOVIeXYImossiUw8wOR46JTzw7KTCx4lgEjrmHCx430cY
+	wpjkh+GGNBSfe6fbt84opsMoHxPCmqjRyIAA7v7+wbtRvam8yEcpumOSI6m7pLHrVVa5q82E7G/
+	dam6Gw9wq4Kjfp4hofRuuRw=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hgcLz2vVBz1cyV9;
+	Thu, 10 Sep 2026 20:24:59 +0800 (CST)
 Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2C7C840575;
-	Thu, 10 Sep 2026 20:35:54 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C371640572;
+	Thu, 10 Sep 2026 20:35:53 +0800 (CST)
 Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
  (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 10 Sep
@@ -72,9 +72,9 @@ CC: <linux-mm@kvack.org>, Chengming Zhou <chengming.zhou@linux.dev>, Johannes
  Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Nhat Pham
 	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, Kefeng Wang
 	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v3 2/3] mm: zswap: skip xarray walk in zswap_invalidate() when zswap is unused
-Date: Thu, 10 Sep 2026 20:35:43 +0800
-Message-ID: <20260910123544.818146-3-wangkefeng.wang@huawei.com>
+Subject: [PATCH v3 1/3] mm: zswap: convert zswap_invalidate() to take a range
+Date: Thu, 10 Sep 2026 20:35:42 +0800
+Message-ID: <20260910123544.818146-2-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910123544.818146-1-wangkefeng.wang@huawei.com>
 References: <20260910123544.818146-1-wangkefeng.wang@huawei.com>
@@ -85,13 +85,13 @@ X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D5A5020005
-X-Stat-Signature: k9anyt8j8shk9czg4bo9zgf7myuwrdut
-X-HE-Tag: 1789043758-673776
-X-HE-Meta: U2FsdGVkX18tAEPaDBQEO8viw5Xb0Ln3VHYnzKc1xk64TQ7Ih2+xxP3tWHJAG8xK0fFFS+wrYh5NHx9frR412iXDgzng6JuIBj9HOeFYNtjgHNtFbUqQi1s1kPI/FRnvW5Wf4ACX0kFaofB5nTDx1cmBju+MVasaPoC2QGH9wLX/gCU9dawzzLVxeeMqp37vXeglZH4KfjwMmz56PFzGtKIuTYlNwg5xQ/AkOED6ngiQqlSIT18NUqPLvXnMb81JBdC4onbPmZ3+0mZdf9Z4Gjv5iyYb16+2T0u/bGm80Gl0fp0TMEXjo/N7HXhU5mMBMqAZqNWLcA274ak4dah7onBTHZwDOf+/n5R34C5TbaVrh0zydcNm3NW/qoXXgRb64Q6KeyCmXPWUJQ89R5bUGfyerUc+m5GGpXEzu4fZPD8vxO/w/DO2VjuUNvbexzVM1I4MNFqkjEadqrLPmeh39gXPD+JQhFqSv3A1HliY0zysKEf/4TzEtD1GefA3luHvqWoEdyaNfUXUiS8/Uvdb/A/Ai33aKuhWFKbjnbaRdI3wZMYsdrZYVLh+EvekpQcoC6cagz9EeGxV6OyqkW2I5kR8aKlTHEPTHmOC4vwPAnwkieku/KxIqzsVlZEKP2oc1yApHXMCrnbOVsx0t2Si2MNdEqoCiB49+YCQq2T8nNQ0MaIbAIiy9ca2tW1bFH/u6AXgIr2OGhnwL0YCndQAbzRnbzGAi8eF5bqMCS0LCmITLzU5gSZttOsTqlUCLLq9R0FVEykwivHSI0gXKFB3SVgslLhhk3ZzfBSdJAfq9QqcZH0VDaHBi5m8DdQwyyZaTXMzPURWuZkO/YKahOlhTolKdv1gMNzVntK79znKOLUxb1QKeHbjs/AozPuj6XHKDwVshchnS7jZvDVglkZWKuH8xK6VkK+NuTHKDbyej4i3/i6L/74tyA7cW4S4AWV098VyHXWTUGrXhUSvtMb
- aRwSmGR6
- J6QYtp+9Juk2iNBIIduiQsIGO0wE3suSUGusqCImjBi3VIQC8wjKZ9AIy8JN5r74ZFHiO+GLWduD6WXhmJKi271r/Co48YFR3IkeGWNFX6CuOGgOrfu58zg8//f/ZuGJSdHXc7p2Okr7/VZcRJ1oQGh4HHzmvodiuWLK4rZefODaq6H8IKn0X+0BAxSDYTfo2sBBn8rZBlnOYey7IyIUQZdvVIyEDu2nw2hskefc3l67Wlwx9XFLxy0v0yiXSDE+YmgyJ4HlHGDr7ggomP70txCBpfnomLwkJLHJ6vcAAXGkupEKoQOL+ex5/VEgo5oM9JwvJNV76K9YfMbMqc1A6RgU9FA==
+X-Rspamd-Queue-Id: 2BAF840003
+X-Stat-Signature: 9kq5pbz1hsckkxyjjwdpj7pebstd3akp
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789043758-740622
+X-HE-Meta: U2FsdGVkX19M/xGm7CoGMRX+1HmwgyhVnyJS+ECycQ2v7V6A1rx7K3ZB64an2LDFsi7aHuyhUSCYcv2r1FYgp44NX4CjlmYQQ3ZmIip0dl3U9HQ00MUI5R1SqKMr3wZPNYus2Umlfi3yZQjObNThsfVL4yrg5AXRcwxqrrpL+p7b8dNgS+JOWtrbW+xXFkJhCtcV3tDa9sggQA5+v3yG+zf9pI459N1Jmgbf9lXUh8CoAAFSJz1N/JpI68Gus4aOgQ+69kMg5IKkoroc/c1njUMPpUgPHf7xA87evPqaNbW+JMqSsP7BztvVoAJzGAWznk8A6AwUWKMgGyH0y7bec9Zptvex9NCS7na4jQh/VI9G+Kp12+trbIz3dqN0U02ABY+BftAYCDxNHZPb2sHLkJkQfeALIO11ce+bNuSBy8jPTcWXiOh6FQKmUzx5gr/UuQV7yBYhUgvB5acCKRG1KHKWFaZUdYAcdrAq/fesizKCRkhoaQO1odm73DR/FRRE5G4NBGVHy6khoM9vslPmS++tSi4oBOlHhtZeHEDzQLaYIBIwgoXygYuSUOvr3+QxSkie4Jq6DTYvTH38jw6LTQw0M+NPg2r4rJtXDTAezfUKbXxVBoB7upV+/3j1cUHkJFWPJivW/8zqmdnvMETbQVfhR9SZ0QjrLIZUXH6qD1kr0syxtAyP9r6RVEJvr9j8uN8maMP3v/D16u7VZaRSt0QTLkuJeBjdpAADqwMTys6CTUj/3uu4IEklvoRzqsy8h7ffRZp8dZaWI9xalgBU5IJXUPPDOpPLHZBZ+xY57uvHfnEENj7XvnyElWrXeU4R9r1nr28bRP1qM666ysdAcrB02kntpLivPJQKK/u340BjGioSmVTKx3qP0jQgQra++QEcAvfApReaz+NrINLYem2OUg2rV7eZdcaKAEYxz48AKFrUpulgDr+hlo3XZcwt+voBUkUiQ8lTuPJVshg
+ afP9spTw
+ aK0+Hq1EDImKqPhzCAGHh4egZYQBBIpwfM4gD1GZoWtb/HFZHzRYCgS7D5AuthmIOVsI5MfOjG+NoB4+bc3ExF/PKB68rq5cWMx41JdwRZ9VD94lsxfO4BkwWKE+1PVA4f7XzQlWsp5nxxRwQ3VsSdv8bXUPEA3a+4HUB87b/Umf4Fn20eW05cJtSEm4CdmIoGVMAiYcJ4sDH4gKxB5OndDvkMc6Rsx/2qpiN4CBfKltzoe1DKbmJwRzNoIZFR9KRBT0BqZdwRwlqu6ZwtWK/yAyCCCa9rQzLD3ZHZ4dhCNgegydul9JcOK4nOAhut9N2zWfVm+4pI2L/G/QryWsvAQfxYJ5g+2DBfvkr2IvxJJ0MEOyLE2TgyexyCU2JEsRr/6e2K9GA4UPyNSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,28 +99,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_invalidate() still walks the per-area xarray even when zswap has
-never been enabled. Add a zswap_never_enabled() to skip it.
+zswap_invalidate() takes a swp_entry_t only to unpack it right back
+into type and offset, and both callers already have those values in
+hand. Pass type, offset, and nr_entries directly so swap_range_free()
+can invalidate an entire range in one call instead of looping in the
+caller.
 
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/zswap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/zswap.h |  8 ++++++--
+ mm/swapfile.c         |  4 +---
+ mm/zswap.c            | 29 +++++++++++++++++++----------
+ 3 files changed, 26 insertions(+), 15 deletions(-)
 
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 30c193a1207e..df6cafbe95dc 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -27,7 +27,7 @@ struct zswap_lruvec_state {
+ unsigned long zswap_total_pages(void);
+ bool zswap_store(struct folio *folio);
+ int zswap_load(struct folio *folio);
+-void zswap_invalidate(swp_entry_t swp);
++void zswap_invalidate(int type, pgoff_t offset, unsigned long nr_entries);
+ int zswap_swapon(int type, unsigned long nr_pages);
+ void zswap_swapoff(int type);
+ void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
+@@ -49,7 +49,11 @@ static inline int zswap_load(struct folio *folio)
+ 	return -ENOENT;
+ }
+ 
+-static inline void zswap_invalidate(swp_entry_t swp) {}
++static inline void zswap_invalidate(int type, pgoff_t offset,
++		unsigned long nr_entries)
++{
++}
++
+ static inline int zswap_swapon(int type, unsigned long nr_pages)
+ {
+ 	return 0;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 05d3408396f9..891379c95a01 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1316,10 +1316,8 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
+ {
+ 	unsigned long end = offset + nr_entries - 1;
+ 	void (*swap_slot_free_notify)(struct block_device *, unsigned long);
+-	unsigned int i;
+ 
+-	for (i = 0; i < nr_entries; i++)
+-		zswap_invalidate(swp_entry(si->type, offset + i));
++	zswap_invalidate(si->type, offset, nr_entries);
+ 
+ 	if (si->flags & SWP_BLKDEV)
+ 		swap_slot_free_notify =
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 79a66093d7ec..132e97748ed2 100644
+index a12b6452a225..79a66093d7ec 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -1670,6 +1670,9 @@ void zswap_invalidate(int type, pgoff_t offset, unsigned long nr_entries)
- 	struct xarray *tree;
- 	unsigned long i;
- 
-+	if (zswap_never_enabled())
-+		return;
+@@ -228,10 +228,15 @@ static bool zswap_has_pool;
+ /* One swap address space for each 64M swap space */
+ #define ZSWAP_ADDRESS_SPACE_SHIFT 14
+ #define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
 +
- 	for (i = 0; i < nr_entries; ++i) {
- 		tree = zswap_tree(type, offset + i);
++static inline struct xarray *zswap_tree(int type, pgoff_t offset)
++{
++	return &zswap_trees[type][offset >> ZSWAP_ADDRESS_SPACE_SHIFT];
++}
++
+ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+ {
+-	return &zswap_trees[swp_type(swp)][swp_offset(swp)
+-		>> ZSWAP_ADDRESS_SPACE_SHIFT];
++	return zswap_tree(swp_type(swp), swp_offset(swp));
+ }
  
+ #define zswap_pool_debug(msg, p)			\
+@@ -1659,18 +1664,22 @@ int zswap_load(struct folio *folio)
+ 	return 0;
+ }
+ 
+-void zswap_invalidate(swp_entry_t swp)
++void zswap_invalidate(int type, pgoff_t offset, unsigned long nr_entries)
+ {
+-	pgoff_t offset = swp_offset(swp);
+-	struct xarray *tree = swap_zswap_tree(swp);
+ 	struct zswap_entry *entry;
++	struct xarray *tree;
++	unsigned long i;
+ 
+-	if (xa_empty(tree))
+-		return;
++	for (i = 0; i < nr_entries; i++) {
++		tree = zswap_tree(type, offset + i);
+ 
+-	entry = xa_erase(tree, offset);
+-	if (entry)
+-		zswap_entry_free(entry);
++		if (xa_empty(tree))
++			continue;
++
++		entry = xa_erase(tree, offset + i);
++		if (entry)
++			zswap_entry_free(entry);
++	}
+ }
+ 
+ int zswap_swapon(int type, unsigned long nr_pages)
 -- 
 2.55.0
 
