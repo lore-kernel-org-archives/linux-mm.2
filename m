@@ -4,90 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25CFDC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAD53C79F9F
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 11:30:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A7F36B009B; Thu, 10 Sep 2026 07:27:53 -0400 (EDT)
+	id D4A7C6B0092; Thu, 10 Sep 2026 07:30:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3325F6B009D; Thu, 10 Sep 2026 07:27:53 -0400 (EDT)
+	id CD36C6B009E; Thu, 10 Sep 2026 07:30:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221916B009E; Thu, 10 Sep 2026 07:27:53 -0400 (EDT)
+	id B9B176B009F; Thu, 10 Sep 2026 07:30:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 00CC96B009B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:27:52 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 86C5A6B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 07:30:14 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DF7B8046B
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:27:52 +0000 (UTC)
-X-FDA: 85197627984.17.A6777C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BC3D118000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:27:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/MmH0Mb";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C6101404BD
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:30:14 +0000 (UTC)
+X-FDA: 85197633948.17.7EB70A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 663541C0004
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 11:30:12 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d7aVNPj5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789039670;
+	s=arc-20220608; t=1789039812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ATDlBATG1qEL2oWhkdQFJlTR9e+n96ueHFzNCgfx3PU=;
-	b=U48TAN2RFv4todKIXOZx4u4jUVesH/pI4QxRkr4fb1WY7TmSEJyIVRXC7iAQzrQcmDTHNd
-	y/ooizBGvkOOYc5x6c0WiMlfQHpVSkxFVtJ9mvuihbQGDwBvWv20A9VGv3azdJ5ixxSnmR
-	CVReg+Dz8dJiLHCHfxTdGBheWlP2uS8=
+	bh=vmh1GKz1N11M+N8xmDUZhkm9CqjUcOyixUe/5x259k4=;
+	b=RvDpufcchDGYNpWQXrU6URGosIHyYOVOgiKm5m2dfs8TkPBEfnsWXrx45y+e9E9A5pcJ4H
+	80Xp+ppnOzT5VYk5lqy95eOiq9pOEctI+sbigAiTJYnWwCymph1p0mncOnJIoJ4VGZXwbJ
+	DqcrtRTj5vzDNtAmgdImWmGJy3ahna0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789039670;
-	b=CNjxTPKojaFLP+uP06qZRCA1gvCYThxnOiBAYs69YCqq0Jez+w3DFkLUpLPzQbO/uasnWs
-	BIVGI8+C0sh1UK2lFRNcj3MbkmVHTzLpF8gl7EFDA36jBV2wpEFefCIMHWxNx4kGIYlFjr
-	CWgQa77xAoeN9TJ9vaIjTYIwv46+a2g=
+	t=1789039812;
+	b=EonVI82kq6ClFFHUhA0Rj2ZBuDLIqEEe3wN0D/EgF9P+tsjd9USw/gAUPld4L09Nq4wJPH
+	Yo8cADVeo0m5aC21yFm5mJPnUQ1qc1fvx3egYFvnDl6DCpsOei9ZMwiL6kFX+CZVP1gnb+
+	gAQcZQrolfIZTML4TuhXjwjJa5SIvMI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/MmH0Mb";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d7aVNPj5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8C1743776;
-	Thu, 10 Sep 2026 11:27:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF021F000FF;
-	Thu, 10 Sep 2026 11:27:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F939600C8;
+	Thu, 10 Sep 2026 11:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225031F000FF;
+	Thu, 10 Sep 2026 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789039669;
-	bh=ATDlBATG1qEL2oWhkdQFJlTR9e+n96ueHFzNCgfx3PU=;
+	s=k20260515; t=1789039811;
+	bh=vmh1GKz1N11M+N8xmDUZhkm9CqjUcOyixUe/5x259k4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b/MmH0MbS25rKr8FTMt/hbaSS68FmUzkhr+sCScLLsyImKAUhysNWMPucCukCC5Jk
-	 cWq5OVGGT6FQfksq5gE4dhDWdtqqzriOVkWgx3f2BaevosGny6AvcLQx/ssfzjeldx
-	 IYTkDsG0DWbH/cVfi65/GY8gsW8/Y7n16DIBBPUnxHiFsi13NIVkHZvKlcYcypjxE/
-	 xuqkbi1AhYHjzO/F5O8I29C+DY/cbV4NVaCnUk/SNv/+9maSzj2vqbRHAlIXr6OW4I
-	 +A52JWTSClb+kGQW8NE85KuqfCJj0KkVSPJpfpp99MdauqxeSp2qT+GUpRiXkUOwGl
-	 rnKX1Vy4Z6WUQ==
-Message-ID: <3aad90e1-5081-4f8d-803e-e9f593ce581d@kernel.org>
-Date: Thu, 10 Sep 2026 13:27:41 +0200
+	b=d7aVNPj5I4IEFe1KJKsAvmQcC3+y06BptG1oBLhAOq9y20CRIwdceap4yWL+m1S//
+	 R46hgMinxVOwvajxh0odbLxPoUdIfa58DOTFbDodhDUfbfPpFPVNI9Rr5khsA+SRw2
+	 JFvbFIiuLHc7l+K6kj5aiMCUs/rpn/y3BhHxwdtInWTOBnoZ8EnO4hb/0UBJK/VVaT
+	 TvrreBW2VpKUJVDOihSi/PV5MIwpGuj9B1M3YZKlGDj/t/AO0xuJ1XBfYq2gNoW5bI
+	 /WgP8CAGLtb9kZfMDYMfzwXa88epd5AL4WN3hKmaqalWZF7H0NDGIE7Y0kc4uO7H9O
+	 B4IjvUUQnt0Jg==
+Message-ID: <9b67424d-70e5-442b-9ec7-22b1d3db12f4@kernel.org>
+Date: Thu, 10 Sep 2026 13:30:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260907-fix_split-v5-0-822b810458bc@arm.com>
- <20260907-fix_split-v5-2-822b810458bc@arm.com>
- <956df69d-8c0a-420f-889e-7df2842605dc@kernel.org>
- <aqKMVUDvN8bBpwVS@e129823.arm.com>
- <1968ed37-3836-44df-a266-9a37219c2f6f@kernel.org>
- <aqKTkkK0wnm6cqpX@e129823.arm.com>
+Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com,
+ seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ shuah@kernel.org
+References: <20260902194657.79075-1-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKTkkK0wnm6cqpX@e129823.arm.com>
+In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r5ed8jpasc8xjh14j7hshwy381q77591
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC3D118000C
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789039670-380988
-X-HE-Meta: U2FsdGVkX19ZsLPNWLCll73XVg/aryxLoxie8z+ZLM2YzXScXDp0Z3aQgjfxAWpWBueEmoMoXOubyLET/RFl1nVd20N11P6rDPh1ljGJmeHOxO2QktBYiJSxGvjkzgN08iYykwfif3qA+XxB30EvnAqJsEpxrsPeSGTyooIjpXMjUZEcXrsUQGvd/OvJsOgCLPEXk0PxpwpaLR+gduN+sEL0epyoAZqg1bkUOT4UGhQnhnEwSdhEMIr+xhG/jo8XZ7hzEzAH7vO1DWaX5dhA8pJo8Ob/3EzVyOxObBnJOz+7/3oSHBny1zavy8N4qGs/i1R+vYCmjWNvLQrYmRIAVPdUTGMDAj1YSLk1jRCHqhR0cBGAp/jAjx21UZKifrdmBmUlp5xxzB1qr4inJDBom/erFFTe9wMZp7Rd/RdOaXjD3vrI2qADMFPZLwwCDsS3+bsMW8S3QbrM36dR94fF8fDdUPS0Rzx2Bb2zvjNShv+RHsC1TgOQCQ3irPjqtP3SzC7uXKcp5v8rPOkSP0zr6K9E1Nb/41hG791gcgoKnHMPvPTV7QIP/Fhv9pKo+OATixOJFu4GFBaJIfl0C4TqVFC1SZVYj/o8p4Atd2Csu1alGAibyEs1lNfkhCzklRrYeW8xWQMn1P7pUj7LtmDzggI3VebYDP6vtKK4TNF2pPC+aooh/+dDGomxtr9mV48kavITUU13lq46nFbC9fwPP4WBQ9n2RhEf9v+RiNB1N/NezenfMlhEqFiBUYz+4UT7yYlGaBNtzoDJNcl0zS0FZ4gwX1U31y/JsFkZdMof8Mtbvv6YrQbVt/v3vlEcPCEslTHgTxUhfUpf5/+HWs0u+elPXHVEFOdEK5lZj8Sy9L02uFBDVpRvEaxSnqlHCtTmQMNhRDKmB677Ac/oNQg7v0YYXrYu1I/V17hJ5QQHjPCyyy66FYIxAFWEEeL+62tH4zPCr2xZxC8rHGbZzI+
- W657Eeu9
- 0I3oF+CGu/0OknZLVsogWfbBG9B12dCotl/UKN55+MVi1+7+FU+QJL6K6+Y4e9m0ZfpL8XdYA+2As1Fo/8oDL4kvCPhJjJHRBk+ifKS48UVp+Dg1uH00Ecp7uOoVSuGsczaSqsJJb1/dQZdtDszFJQF2ld8VbQyP0/ROF/832JPD4obVq+H+chtEITpmOo93pxT+vLeWYNwrDJEI+FWdTDBAphAG32p9v3h0yr0xD85Vx7fb5XcFLG/TC/v6CGM7DT1OpcztwhJU9BAP7Ao4pTWW58FIXTgiiLZgNw150PWlnpKtc/lBtCksdrg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 663541C0004
+X-Stat-Signature: 7xrtemwyspmw8hqpkstacxtdojdexn3d
+X-HE-Tag: 1789039812-453926
+X-HE-Meta: U2FsdGVkX18b5CF0mlNeX0qpfnjANF6dqWVK6CG+lapU+roSYCc/EYQcRincUWr4SJqKcKb3xgtN/x7K8s3VHgFAt3QlZxGx68UIk8S99fgHT0PIMoRFs0kgWETAJ7TdzWkz8bQFpGVIBmY31hHvOr3dFX2hAEy2CgV0S59xh8Kb/sAtpdYYPqDNG4zVCpCItla+WRJS6ntEi85rJVWrhc+aoCVqJEBBNwmJ0VlKmkh+Et1t6N5VkL3qEtI56eVDN+lpUK7IqDutfJ8lDPVY/+XiakkF7kWP+ZR8CeOb1PcdvrbYSFgkTBSGmeiK6Hvoa/QPoXC2fZ89yu1iiOsx3isK0TYqwghu8VY1KHWu3rrfU2yw4n2i2TavGJ19wljvxXBUpkwpO06CXF5O9CgKncc2f2De0OS13j/v1BzajZDmrH0knXpqfLudk13Tb6c35lZ9Gn4WyKLDUNSXLTo6kdx9caSeMNKE9f9opONRpZZlcIVgOJcz4lcIezA5cl8bttC7tJFjQkeBQwHSJJpOzY6RQKxY3tJyO+LcZnr7SArM1ASa6B6wJcY17Mc/YszWUBTZwU89CGjJsxIoi5CXJTf+Vxqk+aQmwJO6R4itIyZBMxJVMJw4+JFID+hTb16aI5F8pHu2w37vZ6rulN3rZKCKraDCfDhiQmzobdIADyE0rwjnLdEuiwSxacZKIZ1c096MBkggGRMmENwJyX5AuQ3sJ8CWnh4UtPHwk3gb85rvG5TKrHnrhtMT3mkedz/DAZz/F1IGtA66HLlVMl04GSOexd6X+VdBhonwpE58iAG2/MtwrIU+U8FeF+/4ErFMrOneVkm6PvpULZ6/9MWzrV8/HcI1X6OPAa/EJLOiQHncbfHErw2bVm02PaQi/CDztoQ4Vig0pDEJ49IMQSlqY8pDPiqr8fsKwTajDsvFWbZtEn+5dTMYDH4mO9OMZCnSQZkrHY1wzheVc2F78ny
+ ZT6JlMZ0
+ bSYT6aKF3EmH6hBYxLXEiPBZM4Oly6zGyRb4UH0Dyud59p3dm+97ETEp5yc8g5t8UY7EP9jvE/OYNKSWPQdlCTnOM3R6KILvcARTuaP5p8riTsrHhFX6fiT4p/UxzYx7LZhkufaEvsLkLOqNZpqvsk9iGwkl/aEbaX/pIrdbcP8gP0CTcb6rbEy9W7u2iAq3z2wYswYUFj5DFux2vd5a25uOY+cNJytf5Lc1/VHEts/1AHPq7yfmfy487fBIvzl+49fR6r40k8mv4q39oBowUUaztm3zT3yzE2a7i7r+ys7G+xEtRUA5fw3YD5p6VKmF+F2ZsPMtAUdkTLI98BLGpAaE54WgSb0MDC/63iLu6Mj+kK5rKwFDazTPFrq4PjaCqfKhy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,26 +141,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/26 13:25, Yeoreum Yun wrote:
->> On 9/10/26 12:54, Yeoreum Yun wrote:
->>>
->>> Agree. but there seems the case where discern whethr the mapping is
->>> with regular file or shmem like tmpfs -- khugepaged test where using
->>> __shmem_ops. So I think it would be better to keep this as-is.
->>
->> Let's not add or maintain unnecessary complexity.
->>
->> hmem_check_huge can really just become check_huge_file.
->>
->> Even file_check_huge can just be simplified.
->>
->> There must be a pretty good reason why we'd want to keep this.
+On 9/2/26 21:46, Gregory Price wrote:
+> guest_memfd allocates its folios through a per-inode shared mempolicy.
 > 
-> Okay. then I'll change the check_huge_shmem() to check_huge_file()
-> with the separate patch.
+> Today that policy can only be set after the fact, with mbind() on a host
+> mmap of the fd. That requires the fd to be mappable, and it cannot reach
+> folios that are only ever guest-faulted. Neither holds for a
+> non-mappable (confidential) guest_memfd.
 
-You'll likely have to make both behave the same under the hood first to then
-remove check_huge_shmem().
+That looks like an investment into a mechanism we will soon consider legacy, so
+I am not convinced this is the right approach?
+
 
 -- 
 Cheers,
