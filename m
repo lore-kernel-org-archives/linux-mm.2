@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 662E7C79F9F
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:41:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AB69C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 14:42:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C4B36B0096; Thu, 10 Sep 2026 10:41:54 -0400 (EDT)
+	id 5397F6B009B; Thu, 10 Sep 2026 10:42:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4739B6B009B; Thu, 10 Sep 2026 10:41:54 -0400 (EDT)
+	id 4E9526B009D; Thu, 10 Sep 2026 10:42:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363946B009D; Thu, 10 Sep 2026 10:41:54 -0400 (EDT)
+	id 3D7D96B009E; Thu, 10 Sep 2026 10:42:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 073AC6B0096
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:41:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41C551C2554
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:41:53 +0000 (UTC)
-X-FDA: 85198116906.22.9BB9AA5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B0FA5C0008
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:41:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kY8kccdu;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789051311;
-	b=qyxU9jif0TG/iMkZLAtqLxC26QcdiqxjUCX1jbYEa9ws0BsIvyiy8WcxjGK2jHQbgvSDTX
-	stp1+KVpEAqILWWttgGfPE5K7U/YQUROPo67vL1mFUDMFNZYQteAUyLm9vBzWGt/mBMzKe
-	vg/a7LaOmTjeh91kTsrkNEWy4ZOxu3k=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kY8kccdu;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FDE36B009B
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:42:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AD8D4A0589
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:42:03 +0000 (UTC)
+X-FDA: 85198117326.09.2B05DB6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 097FF140007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 14:42:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nckwhsbx;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789051311;
+	s=arc-20220608; t=1789051322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=mU3K5+jau8+iCxdCzIePFTHJ/DZz5fC5+egA358ciJY=;
-	b=PLq+rxGXfXPxw73HhwlhOqvVXt1XokR0cjuOb10w+5DHehC7r53OC//C6FyCP0Sz8X+kgA
-	jwum3dseSDZJ/iVOcksXywQNzOBGRERKlnKq+Te5u4r9y+94HPnG4LZHY4wwcugrqOUHyC
-	SXHy8kUlEZC/WhAVIeJ6qouWvMvWNeA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789051310; x=1820587310;
-  h=date:from:to:cc:subject:message-id;
-  bh=R8KaQwcEEbcL1aXyhF5pAZylzGCyNoHirqH1AYSFaj8=;
-  b=kY8kccduUVWN19tPH07kqdq7Vo9AVfHHb5sdvKQfOTqcyP3/rhRmMeAE
-   qoo/TrH/jEAGYzZzLj+6y9vq0JoHSXJylMnpCdXIlfAwbrXFWYEgkY0Vm
-   qQVAjd0WEykm0+QIppAHQgxKmWLfUlhq2lK62QmKVubFSXK9byixj2W/I
-   hcwiGTaCSczGw9TOC8cPE+um/QDThGS+kuBDdxvuvQRC9S9cRT7ccGvpx
-   Q0FMqIzfpKrWH3iymP+odVsq+zrvHhSLIafyqCxgY+VZUUXjyUTdnBhZp
-   2245WXXY1KF1tdaTRsJdF6jrutoRQxJwLGtZBlpGv+hLrhs/xxAhfZhlc
-   g==;
-X-CSE-ConnectionGUID: EZxs0P+iT4WI9WSMiSGleg==
-X-CSE-MsgGUID: gQQwcouyQQy/nQw+j1C52g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89542880"
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="89542880"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 07:41:49 -0700
-X-CSE-ConnectionGUID: caQsilGcQei5gmFcYG8JiA==
-X-CSE-MsgGUID: NjDI8RGrQe2OJT7FOjDWRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="275436798"
-Received: from lkp-server02.sh.intel.com (HELO 0a3643a6ed9d) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 10 Sep 2026 07:41:48 -0700
-Received: from kbuild by 0a3643a6ed9d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x4fxu-0000000007e-2lRZ;
-	Thu, 10 Sep 2026 14:41:31 +0000
-Date: Thu, 10 Sep 2026 22:31:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
-Subject: [akpm-mm:mm-new 358/388] mm/sparse-vmemmap.c:507:48: error:
- implicit declaration of function 'device_zone'; did you mean 'device_move'?
-Message-ID: <202609102250.lIycVv3n-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B0FA5C0008
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AC2aVlJGfM8BolgFPYicq3jFdCi6ZcStjOJlfIZLYLI=;
+	b=SSI7WQzBhhN/BhOxrxysrJUcPDT/ZPW4ZX/i69HBCgpmxdVGfWbk/3iqvJ027+LDIc//jy
+	Vudvdt1JNxcF07dHS2w1XJoy/fFVoujO4R2IauA0WrYqtRhLjhW1pXvaOkSOxWYCpcdfbK
+	5DBtjU13ySIUiveBKjtB+xSUsRVzHrw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789051322;
+	b=V55fvoOmZI3rzyCkNTBPI+wSV2v/OucoqkL2TpOpUz7pcqOxhi3z68WLQ4F6muKMKmaRfI
+	0c1vmgH1WzBMDjlgkb9eHei1/exqcXwbS2FYsFDNZq5/3fykIurXUhII+/v5gkO2+Cnd10
+	t7rpJuVHOFFJrrr0KA7vFd+zcX89F6c=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nckwhsbx;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E0CCC43D0C;
+	Thu, 10 Sep 2026 14:42:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7721F00899;
+	Thu, 10 Sep 2026 14:41:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789051320;
+	bh=AC2aVlJGfM8BolgFPYicq3jFdCi6ZcStjOJlfIZLYLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nckwhsbxifazypO4vMSW527cot3mVYyWVuVZnS2y9QbRQSzX58sMrbJUtkltcSehy
+	 54OcQSYm0JA9oGJgLHLeKRygrkgimIc6WV6T66RYGyAEAcMTlHocy2tTmElNoS7jFl
+	 bGSKek6YA30XoMC+vBx+2s6glRBX7BaqZ9OWguQqtOQ3HyLp6OjlWZSNeqpPpflYJz
+	 1TmPI8aA3QdMbUjfoLoQyh6bHd1VDJsWvjQFvhE3JdimnnvZALWl4zyKJZgpt339C5
+	 fSNBG9AQujVw7zaJk1hSUo0AUypE2bFCTyY7NIZ1qg/elrO5df8RFpMzNlQ3JdUWmu
+	 z9ghuwZPMAuIA==
+Date: Thu, 10 Sep 2026 15:41:51 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 11/12] fs/proc/page: clarify comment in get_max_dump_pfn()
+Message-ID: <aqLBc20gZyDfkhdH@gremlin>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+ <20260909-b4-sparsemem_cleanups-v1-11-008fc8d579fe@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-11-008fc8d579fe@kernel.org>
+X-Stat-Signature: 4mh44br4y413gmhf8h4uwoy7c3dizpe6
 X-Rspam-User: 
-X-Stat-Signature: uyy5gh5t3hh7wz8qtxifrtt9emqurho5
-X-HE-Tag: 1789051310-457798
-X-HE-Meta: U2FsdGVkX19RSh6wDUTnaclJlHkKeHE2u2xZBt04/SuLUcm71vor0pn2IXqkcfd6dk2bQFP1DfwVOn3IkcGuBabWWuTMYX46cQhseQG4/oHS/KstSwASCSJVF3NNPGAaS6maDWxrgU2WzcPPbQKo9k53RRYxyijHkDTlQNW2LEQfQYNey1K0U2a0xUHlBJV3SalzGwdpPNuuzgdiu60F54Hz0BU9+KFskzUfdyHzVZnsueS2eRmNMSdhpeuKY0xyOJv4FTPl9rnYN9UnVUKROmyDA4uf9vzSmmG+7qhIWpVpgzgWWVXW4jjxctBoGFMQlPnDD37SSXrICQuhNAkeDfWXra4lNbXVRhu30mKqwohxRmForKG5Gbss/CaBeJ4PttE56u5JZV/9sp8X3zZlAuK2OsXDgSk6zYe84CVi4ExQDyshitTAfJBr6mQdui9KbK8oOxCY2fEOZ3Wd6TDBq/1W4mT316vZJIPjWtokrLHP/5h91qYyAkijtfS77QeqnRKN9zgcvhLJ1y4c9NHqbfkwZFZe9SBmND1sqRsnKpsqC83otvXksAbIC7doXc16rfGFVsFx1vTC7i5287BEzzNCmckK95BWonvDqoqkTgpk6/eb5dWNNgu4R435wRe21HK2q9spFJvbAzRvP+AvDiWr711CfC0Xtk1xcTNV9sYgRU7kw0nTgn0pE4e44tpvNRPrD+1Frj22t2pg2gc4qL83bHod6YYV5kuzDgcI/4XEHjywHyuw8hvr/21A7n7KnetobFGsLrLgW28Xto0NLRztg6NGr2WDjK76qGmNAKH+keAVvrqEjEhDj+PVZqx6rUqAs7r07chRhOxnRE2dYax5ih6zH1aGmceFB2YIB2FFSAbT8z6UJGehdDqEHdSGXzwLl90CKpHKIb74cfz/WLCysoYAmyqoauY/THEXXxpeAqpRGm/CbHy8iKzEAI0IMYXDt/ySFwnzIxmgbsc
- crNeuY7e
- gIVtR+RMDdts6UkRd9kthf+DxpC75ObuTMAYd+Jqf3fR3KZREwZhZeQsbI5gMTRGwH/lW9RdsZEMBWf6rbykc701HxiEKWGRShY9hPLt1qsZnfjJv1+vvx5FuyF2vakq+i2Xq6kksJN1naYCQAbk8jhw5+rd/VgWkbEyDHnv29t6IXTnSor6X+d5a+arL56+IAvKIca2087aIRaZke8s2fv+PzhwyVD6Uo+RsEHBR9CeWsGz0jLw8JOw1OtXQK4Tw/m+TvBX78VaPj7SUuiBqRka1cg/6uPGU29X8uKQnip2FnXDs4NboH9pAh2v0tN3LM/lfHfVtQgc2ocAgdCjHFYurAxQYqIQBczxFibJtl2AWJQfcgo4BHUpqVVrH56QUyo8mD2hZlMzhd5utdL5YljSqmhkwKYPusewnXuSVyS4Qu5MNJNC3XbjE+25dsh3xF+KDR147hPAXcoc=
+X-Rspamd-Queue-Id: 097FF140007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789051321-492328
+X-HE-Meta: U2FsdGVkX1/d6f+/AbsxavZ7uFu6t4QmI9yEiAD7lQEmL1HS120SEhKL9Ksdt9UHLQOK1hoPJMayQ+pFZVHZleR21T2LrpLd/QX3+Q8NKNughmwb4yIcGfpgQLJGEHoMyTjJ0BHRfW5n5vy1NreQfXRjogjDsjxRqygMGWsB5zicJtQ6M5RyFyOn/nsP5tdqM4ydZMMTxXg6mApOlR+hR1dj8sK87MefJefe7sTkeF3VqO+NW97tW+ODJUX6U92iQN4zPbWr02zL30LlaL23vZfvrt8kHPRtFNZXRCUmg0yS6azWUo7KxVQbeZJllevYlRKhNEUWzTzfx7J0LAzhmUVTk540umK6HnwbXs5EvlRIBcgR6Pnsm9fV45BnctD2kQeHxJBCIRDXaMddB3/ph9I4o4VdTqqMJ6oH/dYy2iBlrLx3kpB2uazjlDwNNp54xC5EeQXZ/nbeXXbrLiO0KeabfNdPvZTFavlge7+hvO+fA7+CxA+BGk51lG40uptdUdj5mRwxXGHR9Y8dLkEqoMBP78I9tMxa846VVnbvFshzPP4B9RtLGjf7KCba+m7VP5O/STfKsPmXTOIvj+XEwpd9GsC/y394SpbSAcsjs5FSK742acU5NraTjdwTfLbMuCIszNJyjKcacaRhPz6xwQ6HTmo1WnesgKBFsBgbf5fto0IR6rbU+7kxPY9ixOM/EP/ZYtByzwwYB2EGlnDmmARUK2U/z5UMkk0ygPRge8arucYQTbR7ur+T9aZ2O4ICxE6yFr0p/cvihGxFYj/QV4X5xrotGP1/2VBTbJwsjaxi+rBo1GmdN2doWD1UhmkNVGyWfrqSG+JXAuMGqoUwkJC2Q8liwlDjmgMRxNqDGH30FqkKKvBgie0epNF53kH5OdSYgjAEo0X6IKQKmjCE3b1kXjeDIep8c1SimZhPk8Q4qrAuyz1N5GGF8P1L5u2MFSEN8p4+ZhWVNvQsWgI
+ Z5JRjU+B
+ maLXE15wfH6yA2YqcCqsr0AwNBOZMjLgnEDL0lPO52V5CGMVbG+sKIG5Emg2aMuRKDaPHs43z0iX97gezblRlfLerT/yp3LP6NNLfrQ73Ig4VH3yG/Smby0/2klpGzyj/WKyhXXEK+P01Yn1bPThXSRMGYZGWSlEqa3pSabgObJax2+DPRWhPrW1cpKQXmYly8okvg0NFWTL4DdL3nELTWv5Iq5hpqLR2fovZ3qyGzhP8Nk9CGQx3GIkYX2Vq6TYZ+6RD/g6lK34W6uaClPnt6Mwb34cZuWxuvRRQOrQWzMmtbwwKXNCXx8nWJ71uGEoDaNjh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,97 +102,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   cf558a250cf4475a8936902b8978fbb6c61016f8
-commit: dd35ca2f2cac9d6439a2ba2f523b98b5a9a9f8f5 [358/388] mm-sparse-vmemmap-switch-device-dax-to-shared-tail-vmemmap-pages-fix
-config: s390-randconfig-r121-20260910 (https://download.01.org/0day-ci/archive/20260910/202609102250.lIycVv3n-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 13.4.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260910/202609102250.lIycVv3n-lkp@intel.com/reproduce)
+On Wed, Sep 09, 2026 at 03:33:04PM +0200, David Hildenbrand (Arm) wrote:
+> pfn_to_online_page() will only succeed on some PFNs within the same
+> section, not necessarily all. Let's make that clearer.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609102250.lIycVv3n-lkp@intel.com/
+Nit on comment below, but LGTM so:
 
-All error/warnings (new ones prefixed by >>):
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-   mm/sparse-vmemmap.c: In function 'vmemmap_populate_compound_pages':
->> mm/sparse-vmemmap.c:507:48: error: implicit declaration of function 'device_zone'; did you mean 'device_move'? [-Werror=implicit-function-declaration]
-     507 |         page = vmemmap_shared_tail_page(order, device_zone(node));
-         |                                                ^~~~~~~~~~~
-         |                                                device_move
->> mm/sparse-vmemmap.c:507:48: warning: passing argument 2 of 'vmemmap_shared_tail_page' makes pointer from integer without a cast [-Wint-conversion]
-     507 |         page = vmemmap_shared_tail_page(order, device_zone(node));
-         |                                                ^~~~~~~~~~~~~~~~~
-         |                                                |
-         |                                                int
-   mm/sparse-vmemmap.c:172:78: note: expected 'struct zone *' but argument is of type 'int'
-     172 | struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zone)
-         |                                                                 ~~~~~~~~~~~~~^~~~
-   cc1: some warnings being treated as errors
+> ---
+>  fs/proc/page.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index 260772b20bd99..6856ff3e3cf28 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -31,10 +31,9 @@ static inline unsigned long get_max_dump_pfn(void)
+>  {
+>  #ifdef CONFIG_SPARSEMEM
+>  	/*
+> -	 * The memmap of early sections is completely populated and marked
+> -	 * online even if max_pfn does not fall on a section boundary -
+> -	 * pfn_to_online_page() will succeed on all pages. Allow inspecting
+> -	 * these memmaps.
+> +	 * If max_pfn does not fall on a section boundary, pfn_to_online_page()
+> +	 * can succeed on PFNs beyond max_pfn within the same section. Allow
+> +	 * inspecting these memmaps.
 
+'Allow inspection of' these memmaps is clearer I think. But this odd turn of
+phrase existed before this change also :)
 
-vim +507 mm/sparse-vmemmap.c
-
-4917f55b4ef963 Joao Martins    2022-04-28  494  
-4917f55b4ef963 Joao Martins    2022-04-28  495  static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
-4917f55b4ef963 Joao Martins    2022-04-28  496  						     unsigned long start,
-4917f55b4ef963 Joao Martins    2022-04-28  497  						     unsigned long end, int node,
-4917f55b4ef963 Joao Martins    2022-04-28  498  						     struct dev_pagemap *pgmap)
-4917f55b4ef963 Joao Martins    2022-04-28  499  {
-4917f55b4ef963 Joao Martins    2022-04-28  500  	unsigned long size, addr;
-4917f55b4ef963 Joao Martins    2022-04-28  501  	pte_t *pte;
-4917f55b4ef963 Joao Martins    2022-04-28  502  	int rc;
-d1d11861d8a018 Muchun Song     2026-09-08  503  	unsigned long flags = VMEMMAP_POPULATE_DAX;
-8fbaacc4a64bd1 Muchun Song     2026-09-08  504  	struct page *page;
-8fbaacc4a64bd1 Muchun Song     2026-09-08  505  	unsigned int order = pfn_to_section_order(start_pfn);
-4917f55b4ef963 Joao Martins    2022-04-28  506  
-8fbaacc4a64bd1 Muchun Song     2026-09-08 @507  	page = vmemmap_shared_tail_page(order, device_zone(node));
-8fbaacc4a64bd1 Muchun Song     2026-09-08  508  	if (!page)
-4917f55b4ef963 Joao Martins    2022-04-28  509  		return -ENOMEM;
-4917f55b4ef963 Joao Martins    2022-04-28  510  
-8fbaacc4a64bd1 Muchun Song     2026-09-08  511  	if (reuse_compound_section(start_pfn, pgmap))
-4917f55b4ef963 Joao Martins    2022-04-28  512  		return vmemmap_populate_range(start, end, node, NULL,
-8fbaacc4a64bd1 Muchun Song     2026-09-08  513  					      page_to_pfn(page), flags);
-4917f55b4ef963 Joao Martins    2022-04-28  514  
-8fbaacc4a64bd1 Muchun Song     2026-09-08  515  	size = min(end - start, (1UL << order) * sizeof(struct page));
-4917f55b4ef963 Joao Martins    2022-04-28  516  	for (addr = start; addr < end; addr += size) {
-55896f935a60b9 Gautam Menghani 2022-06-12  517  		unsigned long next, last = addr + size;
-4917f55b4ef963 Joao Martins    2022-04-28  518  
-4917f55b4ef963 Joao Martins    2022-04-28  519  		/* Populate the head page vmemmap page */
-d1d11861d8a018 Muchun Song     2026-09-08  520  		pte = vmemmap_populate_address(addr, node, NULL, -1, flags);
-4917f55b4ef963 Joao Martins    2022-04-28  521  		if (!pte)
-4917f55b4ef963 Joao Martins    2022-04-28  522  			return -ENOMEM;
-4917f55b4ef963 Joao Martins    2022-04-28  523  
-4917f55b4ef963 Joao Martins    2022-04-28  524  		/* Populate the tail pages vmemmap page */
-4917f55b4ef963 Joao Martins    2022-04-28  525  		next = addr + PAGE_SIZE;
-d1d11861d8a018 Muchun Song     2026-09-08  526  		pte = vmemmap_populate_address(next, node, NULL, -1, flags);
-4917f55b4ef963 Joao Martins    2022-04-28  527  		if (!pte)
-4917f55b4ef963 Joao Martins    2022-04-28  528  			return -ENOMEM;
-4917f55b4ef963 Joao Martins    2022-04-28  529  
-4917f55b4ef963 Joao Martins    2022-04-28  530  		/*
-8fbaacc4a64bd1 Muchun Song     2026-09-08  531  		 * Reuse the shared page for the rest of tail pages
-ee65728e103bb7 Mike Rapoport   2022-06-27  532  		 * See layout diagram in Documentation/mm/vmemmap_dedup.rst
-4917f55b4ef963 Joao Martins    2022-04-28  533  		 */
-4917f55b4ef963 Joao Martins    2022-04-28  534  		next += PAGE_SIZE;
-4917f55b4ef963 Joao Martins    2022-04-28  535  		rc = vmemmap_populate_range(next, last, node, NULL,
-8fbaacc4a64bd1 Muchun Song     2026-09-08  536  					    page_to_pfn(page), flags);
-4917f55b4ef963 Joao Martins    2022-04-28  537  		if (rc)
-4917f55b4ef963 Joao Martins    2022-04-28  538  			return -ENOMEM;
-4917f55b4ef963 Joao Martins    2022-04-28  539  	}
-4917f55b4ef963 Joao Martins    2022-04-28  540  
-4917f55b4ef963 Joao Martins    2022-04-28  541  	return 0;
-2beea70a3edc03 Joao Martins    2022-04-28  542  }
-2beea70a3edc03 Joao Martins    2022-04-28  543  
-
-:::::: The code at line 507 was first introduced by commit
-:::::: 8fbaacc4a64bd1bfbfb11bfb48b5db3f4943cbd7 mm/sparse-vmemmap: switch device DAX to shared tail vmemmap pages
-
-:::::: TO: Muchun Song <songmuchun@bytedance.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+>  	 */
+>  	return round_up(max_pfn, PAGES_PER_SECTION);
+>  #else
+>
+> --
+> 2.43.0
+>
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers, Lorenzo
 
