@@ -4,109 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A20EC79FB6
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 02:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF1BDC79FB6
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 02:41:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93ACE6B0096; Wed,  9 Sep 2026 22:34:19 -0400 (EDT)
+	id 9BD696B008A; Wed,  9 Sep 2026 22:41:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9129B6B0098; Wed,  9 Sep 2026 22:34:19 -0400 (EDT)
+	id 96E3E6B008C; Wed,  9 Sep 2026 22:41:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8298E6B0099; Wed,  9 Sep 2026 22:34:19 -0400 (EDT)
+	id 885A36B0096; Wed,  9 Sep 2026 22:41:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 348BB6B0096
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:34:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B551A03F1
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:34:18 +0000 (UTC)
-X-FDA: 85196283396.24.CC8A37F
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DB1164000C
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:34:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VpLh2tS2;
-	spf=pass (imf27.hostedemail.com: domain of 3JheiagoKCDkeocjpbcojibjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--jthoughton.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3JheiagoKCDkeocjpbcojibjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD826B008A
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 22:41:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CDF81203AC
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:41:37 +0000 (UTC)
+X-FDA: 85196301834.26.CBCD791
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8816D160006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 02:41:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OJrglBua;
+	spf=pass (imf08.hostedemail.com: domain of chao@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789007656;
+	s=arc-20220608; t=1789008095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HN8r1OTKJ5otXSKxSHXxiuMnoDfjm4NiMKL8K3DQtoE=;
-	b=o5XcOGRgTBOUW+KzjuZGRH1F1JRQKqTSz0sNOwO5eTc7e15ZyOppCQr4ARl4nbuMtJ1mPJ
-	feybXbRlAZNeOW1gdiE6xWGt3JK6gK5987bgVPVGcrNPBKMXcrbZwAhzBhuFJLWgpFlI0m
-	jL93gSFaB7squA97qGtNYCyXMUqqL2Q=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VpLh2tS2;
-	spf=pass (imf27.hostedemail.com: domain of 3JheiagoKCDkeocjpbcojibjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--jthoughton.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3JheiagoKCDkeocjpbcojibjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--jthoughton.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=nu1gPlwGKoa2f9NvPadg4IYpWkUCMvg0otg7hjCzfHw=;
+	b=idk9f7oFWoxkRdMzdigUl30iyUO7xcwSLC1OTWOKE+ZWhVj+JpLVFU6kiweAWn9xqNe23Q
+	ZmpMk7aZFBUfkM1IFRUNoirnCVS3P88ovyBfJ1CwkslPKcaMei1EBQ+xBZ/51NANRm/XdF
+	XOFRbR8+9aJu5p/bRFQ4mJLJAHmiaCQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789007656;
-	b=imGGCcCQvXtLGXHBr7GiYKM9/FV1k5DIjFwd5aceZnQmRbrL35+tA98rDuck/IyMhxuPJ0
-	ZgoFlEaGenqJ47/pA8ynjjIT79kfxGwx2bW0y57+3dhxGQS70jh3foJPO8QUPvpp0UgKlF
-	NLoaw00gyIt12tfgam5zJaxCr9pZbf8=
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848568a6f62so6489790b3a.0
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 19:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789007656; x=1789612456; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HN8r1OTKJ5otXSKxSHXxiuMnoDfjm4NiMKL8K3DQtoE=;
-        b=VpLh2tS2pRWMHIuRC5iImvZQlV9piHOlbpipsHiCiQxJrhr3ZnZOGtTJaxZf489+Lz
-         1TRE/l+k6M8OKtkwrO6i9NGOadzaimLlaGxIKphhDtvDAakyp5ZYGMCusoY8NNPYl2YC
-         wpxPMjmFO/+oKtIy9EPAZVzw4noKl8u9gq42bpiFhMlrcUqgohIJfob3c18M2QITpMH6
-         SHDz5VSF1jYSXHJctG9oo9A4CUOOyda76h220W1O/7JOmUr+DbGC2mQ4ual3ZHtdJM7n
-         fr9OzKHqtJ5OqAbHiGEueMA4srNOt3G/DdCWCeXzItyKjV665HNRjtfqaHAVP9yGqFpm
-         T0Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789007656; x=1789612456;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HN8r1OTKJ5otXSKxSHXxiuMnoDfjm4NiMKL8K3DQtoE=;
-        b=asG4O7W/Nh2T1faYs+ETgnhogxz5TxkK0+TGFvrz9o/zZ8oojITljCLs889k1U1K9o
-         zvJzhJ+cats+UDcDspuUFCJySdOYCVek4pO5URvaqaTfd2Zs4/y/U/y85fgsy2/C4Lkq
-         dIkTNj6UZcF9mKb7WifXR99SW/ueqZ+qW6XDHW+XOXG7LDVMzbj9BTsWvP2I2pOIGSZe
-         V3gWDNo2sxYge7GEeBDhzz2sAvFVoRbgdFD1/wbN2VoPghNQ2+5KOx+NjIrhaK0t0itD
-         OoZfLyJGIqnP1F2ONeNaD172S3PmFqjI+Z9CrmwieYxcQsIW9VGtj5D5G3P1A7lMcajq
-         s+eg==
-X-Forwarded-Encrypted: i=1; AKwUvBwAa+kWL2mGu9gFm913Chy1Uk9sJHvdSkn8Som+aP57iK3TwSTounAyy+ncwaAZiRItyv+ylrR8jw==@kvack.org
-X-Gm-Message-State: AFuF++kZ97+CzqLYGe8YpsGUklOe/rPDPeaoFXS8YXlJU4gbBX4KyVrk
-	JcYT7XYsPfGo8lZy58vh3lG9YFDqclWgPOLDW9m3v9EONpZv1yYrB9CY4QNBke1FBVo6en1JEdx
-	OYy+Z5Ca/Z1ygOFo7VGIoWA==
-X-Received: from pfbfy14.prod.google.com ([2002:a05:6a00:828e:b0:868:6325:1e0f])
- (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:17a6:b0:857:7384:b5fd with SMTP id d2e1a72fcca58-86948e29d5amr3444561b3a.25.1789007654727;
- Wed, 09 Sep 2026 19:34:14 -0700 (PDT)
-Date: Thu, 10 Sep 2026 02:34:11 +0000
-In-Reply-To: <20260910023411.514987-1-jthoughton@google.com>
-Mime-Version: 1.0
-References: <20260910023411.514987-1-jthoughton@google.com>
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260910023411.514987-2-jthoughton@google.com>
-Subject: [PATCH v3 2/2] mm: selftests: Adjust the MADV_COLLAPSE uffd-minor selftests
-From: James Houghton <jthoughton@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, liam@infradead.org, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Yang Shi <shy828301@gmail.com>, zokeefe@google.com, 
-	hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, jthoughton@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DB1164000C
-X-Stat-Signature: huisze1hegw4zj9rbe6ieqy5retzpkip
+	t=1789008095;
+	b=UPZktI5DUxlZTFsO2NQKzE/mbkXRQxqx7m1J51J7YZkKMv1bWUaJOGdaxx/SsdWUvatntu
+	5r1Jm9uH7zu6QOXNGPKwcHpYJVzYSKgN0pUJB1UKfYMpF+wDw+FCjTatXPm9RGD1htJsFs
+	iaOK9h7S6fB8x0xBZ/RuxWLMO0eRy1Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OJrglBua;
+	spf=pass (imf08.hostedemail.com: domain of chao@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chao@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DBCAD600CB;
+	Thu, 10 Sep 2026 02:41:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6041F000FF;
+	Thu, 10 Sep 2026 02:41:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789008094;
+	bh=nu1gPlwGKoa2f9NvPadg4IYpWkUCMvg0otg7hjCzfHw=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To;
+	b=OJrglBuaU9WW+pL5FUY/mAH1U8HHR5HruLQeZQ9r+/JrVmN3mGgghLSG+l8nTQKlR
+	 or4uMkgukGXAfG1emnyr2aFnLIgdidovISRTVhcgzvPkW5HCCyrYiU5xk2RjNXhfJj
+	 JYmnBbdecJZwKTPvfLhTGzeGCiotp5Dpugo3prgZhSFrjxTnG6ULADcKb1+O2RCf0o
+	 2UZjXn6uHDVX8muqscS3LvTGcZl+6hCeRoUh8XZe1M6S0tD5Ymd20LURLBIMrodPkV
+	 lSx/92yJRnMyHZwfUxu0ab9wB0Yb77P7vdNXzDz2+SOVRTPvgH09uZwsJtR4/Ofj5w
+	 4ll0XVDwPp46g==
+Message-ID: <7e11c56d-05e6-48f0-b5b8-b4a0e18ddc1d@kernel.org>
+Date: Thu, 10 Sep 2026 10:41:28 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH v3 06/14] f2fs: stop using PG_private
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <20260907-remove-pg_private-v3-6-6ae22f9d9272@nvidia.com>
+ <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <e5792e81-e8a5-42e1-aafe-58dc603f4968@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: cqirbnae8jrw6m55oc7zfpcqx1kthrxf
 X-Rspam-User: 
-X-HE-Tag: 1789007656-27876
-X-HE-Meta: U2FsdGVkX18eFKnhVMwi8iIgwhetolcTc03i5XeFsQ7aT1/PEzRGPkdNci5meSONQ8hLaFEFMfdaPeIBppuGz+N1BreS1js8srn6TVSNFFLMyuPIkQZekwpoN2IphpKTieBKQIeYgfpk8da7wfUvZG6tn1rjQHgiZygJ/TkH/MeqzCRDqnnlNrBGlsvx6Sc4XZdoIu00SZU7z+tKtH+5ot0rwVQ4IzBBG9yYf6kVhkBs4nIfR0wxC4xIJBUbYTj7WUMAHcKVSJL1hooxv1/bCZBe2BLlUTcyAtO/4kmGBV6RgmOxq41Y3xRCRlDU5Ac8fbPKYhxlpjEACA5pLxzhTgudgyfVmE81k9inkhyKkzGcL427yXZvAnwTBM1waLmFDB3XHsJd3WHjHBhj04LyitKWEnCDglNHierIF6QwT/VJ2xYBUMTstdiADKAMjZjP9bTo6Gih0eEkwcVmTxhQMYfkFtydQbPEb3xaMik/A5MOzY4lh/TSTwaM2UJphSnQeJqkZrNE9XtrxkLoMYN2Ny/sApqIHHdyfbIlbGjl9hxzhSQmR9xj1JH1Si4jWYnUBlPj+1vtebWWeeuNNv4K3pmFwDaaqfIo82F7jTjjOoumbshW+uqlDO3y1hsPvtaGpcKbhXN6BDzAEI0R10NhXoTSsdgkoYUgt80ZSkrxGPVbpuyefnFUyc1rIE/EjqkZkCZfGK57YfhAdm7LOBBY5U4sIeXVb4TLqJon8CPjGxgql9sOge1deIcEp5ca8/o/O8x3hxxxXhVbChQDsw7pk51aP2JCaU01Mf7/JYrW9c+o98j4ggRo3VNWONvTSViOSLbN1WOeooU6yxFaJHiTT89KR+18pLJ9M2p8jn4FzDLFK4jrLBia0AHSEn5ckDzdOV9HS1gdswJPLxkXx7htF6fu8xBXNnGxa/LzELz4a4OuGH5B6svguxH98ZwgPaDdKnkZDWpao6NLlXo5LS6
- Z/lpZY9r
- dsYY5Y6e50Igt8z54u+EbARPLcXn5tY8gZd/lpPE3+mC2RrbRyU1pAjQran0cNox5EChg6Yq6HkbwRr6nsIcwtYUioxWQTK78QUW3FGABIDm3OMBEXb6dJGu+6oR9vW/9rmv790ZIKGjgPWzFlS6Gz2iQRsGKuaS8j0iQydXk3URJ0pj/6DaFH4XsSmDDM8ly1Vw5ov14RPNMETJesihPuut6R2XhRe+DLObfrBonXt6RLfvEbAvrDYcGQRJTsmgN/Scr+iDFR8mbnVRM46jt9HMLaS6DsNHTLhdjYta/32q3Kig+PDTRtPJHe4K8Y7bncRUZTXmttDxxna7AAMZP/WSxGz5INLhhYXNawyZm21qp/Zp8xzak4WgnXVYcZHzZ7XKACfdATFl9DaF5rT+bxpaQcmgq3TuCQph9XAdDbLltcTqdUoqPynSNaPu0RLZTRGE6kaC4TFZN+HYdrHTMdS0MCW610gwYtnvvR/13bC3AxzwRLdCyCQvl1im12lSUix6fD3lHnafMACPOIGOOsc7OFv6V0eneHRRCrQiVeOXCpLO66ZXDmAW9Cpzz4YIxPuwT1+m5AhFwfGk6OAaosNyLYUce3+ZmApEoMCXNzfrE63P8MgqGs6qEmejtmBfvZtDTtGUbLvHH2nq/ixqgDgW01w1LamVrqmPm
+X-Rspamd-Queue-Id: 8816D160006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789008095-689267
+X-HE-Meta: U2FsdGVkX18T+GIb4EhxT4beo4FFiUZc63pv1rgca1h+1BKUNscIWr+cwczB213gX6i3TXONUIEqsMfLPXLxgDVb5DxOf9vzieU7kyKr4+GR0iA4bVXFRC8VSiCQNctorn8EtDJRAd3cVopebZ3hjNcsZ9mh8kG+NtqPq2y+2vAiRNydbS23sfOFGVaxroKUCIW2LWp2NXifeBOValziBeiqZabQlGKeZ23HK+PV3aQeyonxWo0JX4WRkkFo0EGl6qDflQaeS02AuJhcpa2dkw4vLFeAsezb+JVrH8h49wGdfqRtKJ1nfomVGVueuy2SFvYnbJcKvWN0PwcCcSgn94GW8/uo0kzNEvztHwqHZEt1HOWnr5vOxWcIp6vSc6m6yy46LZanRcpvbkxqHLxK82CASn8t9bqbhwPJArlYNEVa+wKmQkKRbv7Xv/A/nOxCMSVJsyb4arP0zwiefWK7Fw0wVFyf+V7j69JFNQ/A9pi6S4j2My7Yhg+3dRvbQjqpPG75C2CPEY2HkC2W3qDbDMeYU/WTg1MtGz0WdC1Cqh3ZMgL2oONg7aRT8EITVoO3nFElPCCWoTfSk09+wle/DYZfXA5oEauzadLyXZHHqpjrZV+KhgBZV3X6dLskkyupUPZigY+Mm0Td2h4sKqf1iQm0LfwEXo+b11b3nYcUxA16RFgg9SI/gsrD2JMelQKKVpZ4ImrEex611HDz9ZqAJmsjTTj7zwKj72cSqhTuW7zUHVgnuE8loLWwMDNKfzTV9edE3WRJlfymgvpVJx19B9D+RJxX2idauZuRFqaHOZOjx/HAqo8S9UNBKwomA8+gnoRscNII6rrPJW9+s/tfMZx1ugW82PahShfH/zp6/N2BEmT0C55E802N/Q4kGCq+QAHM0gUJLvvEljJcoLCSKK55tBzuP7q1R193N66lGx/Q/CYr3LVYVg9SNIsDpMdvC1+1NMaLVNTPuJwsIsC
+ I7dilOlA
+ YrwIQxBy99qrBgKSR7f+fzrmKJEmYZnebOcYmWdzl0EkfdcKz0ue/9nFgHUnE7XBvpkQE8vVz7/EOw2E6HSTDrPaazmp3ADgMXxR51fZmIOr9X/CfZjxCFvmhLe7AZy32J37vPO4uzN7LTNXublryRdZJJ7cDDkAO3a7RPh88KKuuWDXAKV/WvXlOOhYgPZNg/mA7sgglVD4LOjur3KdNnW7pGCfKli/6ygLqKSMMSCy+Qt4c5d8gaAfcE4fAAzur4hybsPR7+6Ct7/mZLymafRUgkX67MoqC3nYKASxbsIWtqhwDAlafHxuiqAORflwU6F95TZ5aLw3mt2b10hdIGink3Gan3ykwQhicCZ7M0mylye6AzRiBM/WVQbOsVnrH/O6H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,154 +108,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The behavior of MADV_COLLAPSE with uffd-minor VMAs has changed:
-MADV_COLLAPSE will no longer install PTEs where none existed before.
-Update the selftest to demonstrate this new behavior.
+On 9/8/26 23:47, David Hildenbrand (Arm) wrote:
+> On 9/8/26 04:56, Zi Yan wrote:
+>> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+>> page->private != NULL is equivalent to checking PG_private. Change
+>> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+>> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+>> but it can cause confusion when PG_private is removed and
+>> page->private != NULL is used instead. Change it to initialize
+>> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+>> semantics.
+>>
+>> It prepares for a future commit that removes PG_private.
+>>
+>> No functional change intended.
+>>
+>> Assisted-by: Claude:claude-opus-4-8
+>> Assisted-by: Codex:gpt-5
+>> To: Jaegeuk Kim <jaegeuk@kernel.org>
+>> To: Chao Yu <chao@kernel.org>
+>> Cc: linux-f2fs-devel@lists.sourceforge.net
+>> Cc: linux-kernel@vger.kernel.org
+>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>> Acked-by: Chao Yu <chao@kernel.org>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>  fs/f2fs/f2fs.h | 8 ++++----
+>>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+>> index 9940a6cecf1a2..2f7ab5888b078 100644
+>> --- a/fs/f2fs/f2fs.h
+>> +++ b/fs/f2fs/f2fs.h
+>> @@ -2691,7 +2691,7 @@ static inline bool folio_test_f2fs_##name(const struct folio *folio)	\
+>>  }									\
+>>  static inline bool page_private_##name(struct page *page) \
+>>  { \
+>> -	return PagePrivate(page) && \
+>> +	return page_private(page) && \
+>>  		test_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)) && \
+>>  		test_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>  }
+>> @@ -2710,9 +2710,9 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+>>  }									\
+>>  static inline void set_page_private_##name(struct page *page) \
+>>  { \
+>> -	if (!PagePrivate(page)) \
+>> -		attach_page_private(page, (void *)0); \
+>> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+>> +	if (!page_private(page)) \
+>> +		attach_page_private(page, \
+>> +				(void *)BIT(PAGE_PRIVATE_NOT_POINTER)); \
+>>  	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>>  }
+> 
+> Very weird interface. Why do we even need the page-based interface still?
+> 
+> $ git grep -E "(set|clear)_page_private"
+> compress.c:             clear_page_private_gcing(cc->rpages[i]);
+> compress.c:                     set_page_private_gcing(cc->rpages[i]);
+> compress.c:             clear_page_private_gcing(cic->rpages[i]);
+> f2fs.h:static inline void set_page_private_##name(struct page *page) \
+> f2fs.h:static inline void clear_page_private_##name(struct page *page) \
+> 
+> Seeing code like:
+> 
+> clear_page_private_gcing(cc->rpages[i]);
+> if (folio_test_writeback(page_folio(cc->rpages[i])))
+> 	end_page_writeback(cc->rpages[i]);
+> 
+> Makes me wonder whether we can just use the folio helper instead?
+> 
+> In f2fs_iget(), we enable large folios only when !f2fs_compressed_file(inode).
+> 
+> So naive me would assume that we can just get rid of the
+> set_page_private_/clear_page_private_ stuff entirely.
 
-On an unpatched kernel, the test will hit "unexpected memory contents
-after collapse".
+David,
 
-If the selftest is left unpatched but the kernel is patched, the
-selftest will SKIP when it gets EINVAL back from MADV_COLLAPSE.
+Thanks for the patch, at a glance, it seems fine, can you please send
+a formal patch? then we can apply to dev-test for test.
 
-Signed-off-by: James Houghton <jthoughton@google.com>
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 75 ++++++++++++++++++--
- 1 file changed, 68 insertions(+), 7 deletions(-)
+Thanks,
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index ef9b3956bdcf..6f2360f9b75d 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -518,19 +518,34 @@ static void uffd_wp_fork_pin_with_event_test(uffd_global_test_opts_t *gopts, uff
- 	uffd_wp_fork_pin_test_common(gopts, args, true);
- }
- 
--static void check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
-+static int __check_memory_contents(unsigned long offset,
-+				   unsigned long nr_pages,
-+				   uffd_global_test_opts_t *gopts,
-+				   char *p)
- {
- 	unsigned long i, j;
- 	uint8_t expected_byte;
- 
--	for (i = 0; i < gopts->nr_pages; ++i) {
-+	if (nr_pages + offset < nr_pages)
-+		err("overflow in memory check");
-+	if (nr_pages + offset > gopts->nr_pages)
-+		err("out of bounds memory check");
-+
-+	for (i = offset; i < offset + nr_pages; ++i) {
- 		expected_byte = ~((uint8_t)(i % ((uint8_t)-1)));
- 		for (j = 0; j < gopts->page_size; j++) {
- 			uint8_t v = *(uint8_t *)(p + (i * gopts->page_size) + j);
- 			if (v != expected_byte)
--				err("unexpected page contents");
-+				return 1;
- 		}
- 	}
-+
-+	return 0;
-+}
-+
-+static int check_memory_contents(uffd_global_test_opts_t *gopts, char *p)
-+{
-+	return __check_memory_contents(0, gopts->nr_pages, gopts, p);
- }
- 
- static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_collapse, bool test_wp)
-@@ -539,6 +554,8 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
- 	pthread_t uffd_mon;
- 	char c = '\0';
- 	struct uffd_args args = { 0 };
-+	unsigned long checked = 0;
-+	bool bad_contents;
- 	args.gopts = gopts;
- 
- 	/*
-@@ -564,24 +581,65 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	if (test_collapse) {
-+		/*
-+		 * Read just a single page and try collapsing. The collapse
-+		 * should either be rejected or be a no-op.
-+		 */
-+		if (__check_memory_contents(0, 1, gopts, gopts->area_dst_alias))
-+			err("unexpected memory contents before collapse");
-+
-+		/* MADV_COLLAPSE might return EINVAL for uffd-minor VMAs. */
-+		madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
-+			MADV_COLLAPSE);
-+		/*
-+		 * If the above collapse mapped pages that were not explicitly
-+		 * CONTINUE'd, the below __check_memory_contents() will not
-+		 * fault on some pages, resulting in incorrect contents. The
-+		 * PTE for the first page may get retracted, so avoid checking
-+		 * that page, as we might take a second fault, flipping the
-+		 * contents a second time.
-+		 */
-+		checked = 1;
-+	}
-+
- 	/*
- 	 * Read each of the pages back using the UFFD-registered mapping. We
- 	 * expect that the first time we touch a page, it will result in a minor
- 	 * fault. uffd_poll_thread will resolve the fault by bit-flipping the
- 	 * page's contents, and then issuing a CONTINUE ioctl.
- 	 */
--	check_memory_contents(gopts, gopts->area_dst_alias);
-+	bad_contents = !!__check_memory_contents(checked, gopts->nr_pages - checked,
-+						    gopts, gopts->area_dst_alias);
- 
- 	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
- 		err("pipe write");
- 	if (pthread_join(uffd_mon, NULL))
- 		err("join() failed");
- 
-+	if (bad_contents && test_collapse) {
-+		uffd_test_fail("unexpected memory contents after collapse");
-+		return;
-+	}
-+
-+	if (bad_contents) {
-+		uffd_test_fail("unexpected memory contents");
-+		return;
-+	}
-+
- 	if (test_collapse) {
-+		/*
-+		 * MADV_COLLAPSE will fail unless userfaultfd-minor is
-+		 * unregistered.
-+		 */
-+		if (uffd_unregister(gopts->uffd, gopts->area_dst_alias,
-+				    gopts->nr_pages * gopts->page_size))
-+			err("uffd_unregister before MADV_COLLAPSE failed");
-+
-+		/* MADV_COLLAPSE should succeed with userfaultfd unregistered. */
- 		if (madvise(gopts->area_dst_alias, gopts->nr_pages * gopts->page_size,
- 			    MADV_COLLAPSE)) {
--			/* It's fine to fail for this one... */
--			uffd_test_skip("MADV_COLLAPSE failed");
-+			uffd_test_fail("MADV_COLLAPSE failed");
- 			return;
- 		}
- 
-@@ -593,7 +651,10 @@ static void uffd_minor_test_common(uffd_global_test_opts_t *gopts, bool test_col
- 		 * This won't cause uffd-fault - it purely just makes sure there
- 		 * was no corruption.
- 		 */
--		check_memory_contents(gopts, gopts->area_dst_alias);
-+		if (check_memory_contents(gopts, gopts->area_dst_alias)) {
-+			uffd_test_fail("unexpected memory contents");
-+			return;
-+		}
- 	}
- 
- 	if (args.missing_faults != 0 || args.minor_faults != gopts->nr_pages)
--- 
-2.55.0.1007.g17ff1f9808-goog
+> 
+> IOW something like:
+> 
+> 
+> From efcde918178604de11d16c6dc5485542ab4dcdaf Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Tue, 8 Sep 2026 17:46:06 +0200
+> Subject: [PATCH] tmp
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  fs/f2fs/compress.c | 29 ++++++++++++++++++-----------
+>  fs/f2fs/f2fs.h     | 13 -------------
+>  2 files changed, 18 insertions(+), 24 deletions(-)
+> 
+> diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+> index ce88092d9ce26..0e9cc0fa297a4 100644
+> --- a/fs/f2fs/compress.c
+> +++ b/fs/f2fs/compress.c
+> @@ -1064,13 +1064,15 @@ static void cancel_cluster_writeback(struct compress_ctx *cc,
+>  
+>  	/* Cancel writeback and stay locked. */
+>  	for (i = 0; i < cc->cluster_size; i++) {
+> +		struct folio *folio = page_folio(cc->rpages[i]);
+> +
+>  		if (i < submitted) {
+>  			inode_inc_dirty_pages(cc->inode);
+> -			lock_page(cc->rpages[i]);
+> +			folio_lock(folio);
+>  		}
+> -		clear_page_private_gcing(cc->rpages[i]);
+> -		if (folio_test_writeback(page_folio(cc->rpages[i])))
+> -			end_page_writeback(cc->rpages[i]);
+> +		folio_clear_f2fs_gcing(folio);
+> +		if (folio_test_writeback(folio))
+> +			folio_end_writeback(folio);
+>  	}
+>  }
+>  
+> @@ -1078,11 +1080,15 @@ static void set_cluster_dirty(struct compress_ctx *cc)
+>  {
+>  	int i;
+>  
+> -	for (i = 0; i < cc->cluster_size; i++)
+> -		if (cc->rpages[i]) {
+> -			set_page_dirty(cc->rpages[i]);
+> -			set_page_private_gcing(cc->rpages[i]);
+> -		}
+> +	for (i = 0; i < cc->cluster_size; i++) {
+> +		struct folio *folio;
+> +
+> +		if (!cc->rpages[i])
+> +			continue;
+> +		folio = page_folio(cc->rpages[i]);
+> +		folio_mark_dirty(folio);
+> +		folio_set_f2fs_gcing(folio);
+> +	}
+>  }
+>  
+>  static int prepare_compress_overwrite(struct compress_ctx *cc,
+> @@ -1477,8 +1483,9 @@ void f2fs_compress_write_end_io(struct bio *bio, struct folio *folio)
+>  
+>  	for (i = 0; i < cic->nr_rpages; i++) {
+>  		WARN_ON(!cic->rpages[i]);
+> -		clear_page_private_gcing(cic->rpages[i]);
+> -		end_page_writeback(cic->rpages[i]);
+> +		folio = page_folio(cic->rpages[i]);
+> +		folio_clear_f2fs_gcing(folio);
+> +		folio_end_writeback(folio);
+>  	}
+>  
+>  	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> index 9940a6cecf1a2..0cfba8742d4b4 100644
+> --- a/fs/f2fs/f2fs.h
+> +++ b/fs/f2fs/f2fs.h
+> @@ -2707,13 +2707,6 @@ static inline void folio_set_f2fs_##name(struct folio *folio)		\
+>  		v |= (unsigned long)folio->private;			\
+>  		folio->private = (void *)v;				\
+>  	}								\
+> -}									\
+> -static inline void set_page_private_##name(struct page *page) \
+> -{ \
+> -	if (!PagePrivate(page)) \
+> -		attach_page_private(page, (void *)0); \
+> -	set_bit(PAGE_PRIVATE_NOT_POINTER, &page_private(page)); \
+> -	set_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+>  }
+>  
+>  #define PAGE_PRIVATE_CLEAR_FUNC(name, flagname) \
+> @@ -2726,12 +2719,6 @@ static inline void folio_clear_f2fs_##name(struct folio *folio)		\
+>  		folio_detach_private(folio);				\
+>  	else								\
+>  		folio->private = (void *)v;				\
+> -}									\
+> -static inline void clear_page_private_##name(struct page *page) \
+> -{ \
+> -	clear_bit(PAGE_PRIVATE_##flagname, &page_private(page)); \
+> -	if (page_private(page) == BIT(PAGE_PRIVATE_NOT_POINTER)) \
+> -		detach_page_private(page); \
+>  }
+>  
+>  PAGE_PRIVATE_GET_FUNC(nonpointer, NOT_POINTER);
 
 
