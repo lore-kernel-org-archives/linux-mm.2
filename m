@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7899C79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20856C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:09:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616E86B00A7; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
+	id D43606B00A9; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52AE26B00A9; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
+	id CCCC86B00AA; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CCD06B00AA; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
+	id B461C6B00AB; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 105BE6B00A7
+	by kanga.kvack.org (Postfix) with ESMTP id 8169D6B00A9
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:09:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FC0EA040D
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91C74A0416
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:09:28 +0000 (UTC)
-X-FDA: 85196523216.26.3054818
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 86CBD140004
+X-FDA: 85196523216.25.E976EB7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 15AAFA0004
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:09:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S2Qnh8QD;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T74ZWSkN;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789013366;
+	s=arc-20220608; t=1789013367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tn9W742GaDY7vW9qUrTT7oroxJHcL95g99YMTLAp8qQ=;
-	b=tlobhV4/ppPAKNascZxjvYZaB4oJRmqWb5f0/3y3IQ3w2AjsQTnsQMEqst5rWjlsRgMKVK
-	sH/ld7jofvPo0BN8OafF7RoRMS6hgPvDTNpIx8LwXTyHSY6zW88TVqHFXnbLaFt2xblG1k
-	bxzjd/3DihxJWqIcL7nKFdWpIZl0deM=
+	bh=YGHkp73SOXJ8OAqpC14uJPbey8Nk7EBIVu4GrdElavM=;
+	b=pqbsg7q5oTMxDc73Xkmz+ZV9wfi0OSY7OARqI4s/4or8HiyHpVMmB/m4bQiVNJUtPwluTJ
+	djwwJ0SYzTo2A2QoXuibZOXUOTj2YoAEcPUTi0pmOei0lTRnlID4pioQZp0UH4x7wKE4Ya
+	6Wne0dzMqPQ1fWfXItQIuSG+5zi7fSE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S2Qnh8QD;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T74ZWSkN;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789013366;
-	b=nl2sT1/RogicQ0DbHgfn+lqlauQPnlJmGNHlBFVZVYTF6NqdKOEMYlQL0U2EdJ4NUhJS9u
-	V+oLXP36MmNJplp2HlJGHU1Ra80gG4NT3VrNlrCxT+sH6ctc2gVrNwk+BB7ZmcyYfmaJJG
-	zdmughA/CBuXZz/mJy42BBI/3isBOlU=
+	t=1789013367;
+	b=ixBu4bxAYydujxb+YQlog9WZlSdTPlz32Ixkhb2Y62v9Lxh7LVtOz+CKeSSYwnu9m65HlL
+	ZJkerdq5SDyWJ2Jcxw705iPFJAHNOpH7w2Votj8XrbzsVWskCShm4IT5f/NKbjZoaTXHL5
+	P00E69ZXBkORz9LpKv3ZH8/F9ESuhho=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7815043AD0;
-	Thu, 10 Sep 2026 04:09:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349831F0089A;
+	by tor.source.kernel.org (Postfix) with ESMTP id A97F26020A;
+	Thu, 10 Sep 2026 04:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FBE1F0089C;
 	Thu, 10 Sep 2026 04:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789013365;
-	bh=tn9W742GaDY7vW9qUrTT7oroxJHcL95g99YMTLAp8qQ=;
+	s=k20260515; t=1789013366;
+	bh=YGHkp73SOXJ8OAqpC14uJPbey8Nk7EBIVu4GrdElavM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S2Qnh8QDjnl8nTroDHuL5cB+wM0QUKbNRJMwH9kuOKyITV0vdDi3Nscf6h2O56siv
-	 UZkgEIb4ViAVvJXdiFVAt5YsO6jf9tt56JB7po9Wr2ATLf5e7fUa9vvucgMbFrLs3k
-	 TnX76BlO1NWbNX5sET+k5ryRZakWLaMCFoBS3/3Jr9KJ5YvQKzp289sQ+5dUnH40JE
-	 YraWIKZB69U/oUsIkWs4LRwfKdVcaLifUX52rf6NvHOjRRJ8pwGnzMQXDiQTzkS+dQ
-	 Or2UDvuGVgxedXnRVwsappbAFcKl/jhcXeG8zbzd0cEW3UQY5qQzqAMPo1lt/1lJnb
-	 MjyskET5jnyGA==
+	b=T74ZWSkNJGxb/rEDsWUcATa7kBm3vaR5wctOIL0VkTCuMzG16cfJTs5879VEQn+ry
+	 Gexsnph5pgy0D5tA9g/+AWNddDRx0k6La+DONOFFhLcLewMicFWyY08zSHoam3zdZr
+	 +f/ueO8e9g5vyDBc0zLdkgXIUCTUF9tJXZribfU92tzdbadOOWYcUBp50cPgBQHfM1
+	 aKqh7KoES3Sa7JffhYavHuq2moVktpmDiYh3bY8GLWptRahRwmExGp+fhrzGC7qimu
+	 KAIbuDFVP7URM3U20yG/hQMoL3X+LOaGqelYhrpLCqNJ5xsYoq5LZW0WQbXUcuGGdM
+	 cHoXLVGRS5ucw==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 3/5] mm/damon/vaddr: support DAMON_FILTER_TYPE_PGIDLE_SET
-Date: Wed,  9 Sep 2026 21:09:05 -0700
-Message-ID: <20260910040911.148273-4-sj@kernel.org>
+Subject: [RFC PATCH v1.1 5/5] Docs/mm/damon/design: update for pgidle_set probe filter
+Date: Wed,  9 Sep 2026 21:09:07 -0700
+Message-ID: <20260910040911.148273-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260910040911.148273-1-sj@kernel.org>
 References: <20260910040911.148273-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 15AAFA0004
+X-Stat-Signature: 4zprs5mzci19dzwweb13c37d9dwyonwu
 X-Rspam-User: 
-X-Stat-Signature: 8mfdcdg5xwc4tqwkr619ui7eift9bthp
-X-Rspamd-Queue-Id: 86CBD140004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789013366-690960
-X-HE-Meta: U2FsdGVkX19sbNV3IPqitbCE/kyMMzMKBTrCHU8TqiYgNUdUo1YzX0RFyyj30IE+T9c/J0GJYAOe3RRoY7wH7URzLYAM1VmP4lm2Z81KcxeMmH+o3uuWdiYRPpVO8NSx6eoM8OR8s0Ky5okCqxmvjLyVncYivZ3w8SvrZlGu9xV5FtSsPeAFFEKqGrivkKO5SXX2pLvaNHacBZbBlbLdIsYkzGqZF6bo7RthHB7KJGaj4lXn61KBtUNMA6CT/ksFjxGG0lUJVQ1bWX0368sxarCPuZX4WxDf2SjlMv8ZXLwhzjjcqNjDcth4xsS9UegMrT/+NwemU14+xV07yDEJZpRUAHMecgYYCmdYbFXFWYA4/BlkFqnpv88zxx+hksPWR2L207KA2WsR44veL2cGr0sFNyoLIwfYC5uMg1fILxVOUwGMhalG/uwCLERhIfzcwckoWeLbllgYEgvQgR9FA7yXZNfMBrirDk1dfER3yNu6m+NeibLFdYG1rMUnZyuwZIIHMClLMuZuWIKWAMWos7JJykbtIlN0bKqsvD5JtfhmvC225AChXGwuXTKTU6Xj+jRmmbQmKKUZOotuuchpfo8pyE6uzD7hlMvpW/EU5++30swc3c2ZnpY71jh3AaPClX3z83jkyUr2yimVVbQ3PjYDjxynfs4p9gvJ7BwgaN/gY2SYK0rUGwPV6s1wuDHwC9ILzkc+cXsQ/35PZ3w/byYBQiSrqcWRq6Q1EmSt6b8DIOb14G8/oVArZPIIhsSsyndGkS8QL0181jE5++gNkj+rmeoYeEXyHIYaizCNsM6d8X++6cdTCzUJQY2s+JeR7Q8QXro+Dqe+xznmkytRJzS8Lh1PIzEiI8QQP6eqBUqxLkysRi6EqKWL6VThdGkORooVhr7n8Ye/qiymBnzCculNDNpSz/4yGSW2tqLJD8NLUcZCl1gdgnd+HLSqKec5IrIdHOaBb2UKVXq44Mo
- hnt0E6Jx
- RSF1KMmfrZoDh58UD06XMgo58udMjGbSpwGODJr7nRqYXaWSBdxiopV+lE1ob2c4Sqrq8AS20R4gneQMnWXH4ELVst81EcK+c+VapnsaN7EOhK+NsiEharIlmi90BkcKEEl+bkcwVKHYew/ArM7owOi7PHEGi6af6iMDHTzgxVKGyS12FbeERAm5sAbKQTzuC0qsjv2rLpVOd6uxa0GBiX7+DUdk8ZDrBDM6qOly432Ci+ZZ5x7DPsDdqaVkl5lBedKGjXXtJlIaj0CcwYLNrNj+EZg==
+X-HE-Tag: 1789013366-888669
+X-HE-Meta: U2FsdGVkX1+t71vhWuK4SubiLEnM1qTXfD8AHLu4YrkVkti3FpfkdxhNAKYYWFKEHn9QYyQmezVTsI6aKKSXDOu0PPCcNI/5hRIRwva/VeWgy1DhCxRbsbFjwKQ26EzwhjvrFuvBTHCp/jZc9AxyMLDpgxkeIN6YTTyZr9hucJ+svS59iqQ93aBxHwyA7At2PaKCidZFksJVVypDly+7BQT/DysSlB5WQou3bcaBK4NA9jBUdVAMmL3GrxybyBqZQNE8IdYqRnX5wJS5I5nYxvCLW9MgqnKBVUrLJdQWDPBFxrv2kxof9lbEsHqXWbrImVLKJyxRqxXFdP0W4DWVBoSeESSF/d/x9AZk3NCJ+ZjlDAUG0fSUngrS14cF+zHKR6za6WdS4u/ZfanIDVtvyRUtmWUSnA4/oiNg1PAqXoRI45XOa+JPt73UfbXW8ZlwxEcr3UiKkm7ixYfRK2ijtrgccwPGQ9I61hoBgzzJdEVjQluKgZxKl+on/qMO59QT0FK9AfwLbDo80GSruTQYtItqaysR0YtZQiv66CK+p6OhJ9egw6d4QmAmPA/1Y3nfS2HJTbwp1EkwJJTQUfOkGH/4PD9L8ES35Cko2ucuQrYr4OQYoHC39F9PWnOXnsTlCkkWIgHpoGrGOUtkVyJVVRqnrShCLaRHGEdmBitWfwB1K/kAra8TXbytgnrqSEA5kQ1bN3mTL0XZ0Kg6OZkfexZJFg6K9qwy413GxlHxSSjDkIsLrMXZ89aXOYeWynRgU2JrHJJycwC96E/GWJ2QfS+7Ufv1hI1IefeCIQWaiihJlga5nRVKRT96nYORBSeo3hOMfGWC7oBbdgC1VZci6yqS4eVm3aDVVhTN7pQ7PLb5gDoDEaEIIJzDmwR/8pcXdXIwp5elR3D45JXYEoNg3FWq+jbxABmj8wVySW0qiw2NKGmRh15Ki+WCPG+AzSdnDuyDObTJ0hqEovMKPBy
+ Bb+DhHyH
+ hT2+h1VFHeqfIWvFfMzDXWx4jBbrk7l7R0pqD0nyhXG8VWnbySVBMLDN0wIEzPANhWabgIqbI+VGxrN92KT0LITCryKtaIEMeBGEa34V4KdMqJa3dSac28eDZjasXloq2tKlnsYDQMmqwtrJ5o/907/uvg1YAKaY7anIs3/TVnQFZ+TudAZteyVvGM3MAawzUJzIQrvJ8jRivt3nAzGJ38a8jN1jbjPzT8aNegYbHKJxBTexrCvOvFkK0MQCyCVL8z3nyQNfDHZaMuNKnY0xr2Votlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,32 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement DAMON_FILTER_TYPE_PGIDLE_SET support on the virtual address
-space DAMON operation set (vaddr).
+Update DAMON design document for the newly added pgidle_set probe filter
+type.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/vaddr.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/mm/damon/design.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 4aecf34e39be2..d5dde97b3cd0d 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -550,6 +550,13 @@ static bool damon_va_filter_match(struct damon_filter *filter,
- 			matched = damon_va_young_addr(folio, pte, pmd, mm,
- 					addr);
- 		break;
-+	case DAMON_FILTER_TYPE_PGIDLE_SET:
-+		if (!folio)
-+			matched = false;
-+		else
-+			matched = !damon_va_young_addr(folio, pte, pmd, mm,
-+					addr);
-+		break;
- 	default:
- 		return damon_ops_filter_match(filter, folio);
- 	}
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 8e980dde362de..cb116a82ff20b 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -299,6 +299,7 @@ filter types.  Currently below filter types are supported.
+ - ``memcg``: Same to that for DAMOS filters.
+ - ``pgidle_unset``: Matches if the page for the memory is marked as not
+   access-idle.
++- ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
+ 
+ If such probes are registered, DAMON executes the probes for each region's
+ sampling memory when it does the access :ref:`sampling
+@@ -314,7 +315,7 @@ actions are registered, DAMON applies the actions to each region's sampling
+ memory before starting the next sampling interval.  Currently only one action,
+ ``set_pgidle`` is supported.  The action marks the page for the probing target
+ memory as access-idle.  This can be useful to be used together with
+-``pgidle_unset`` probe filter.
++``pgidle_unset`` or ``pgidle_set`` probe filter.
+ 
+ This is a sampling based mechanism.  Hence, it is lightweight but the output
+ may include some measurement errors.  The output should be used with good
 -- 
 2.47.3
 
