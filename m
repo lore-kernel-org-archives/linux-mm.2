@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24807C88E41
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08867C88E4A
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 23:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271306B00B8; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
+	id CF16C6B00BC; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A6AB6B00BB; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
+	id CC8DD6B00BE; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E775C6B00B8; Thu, 10 Sep 2026 19:55:45 -0400 (EDT)
+	id B4F0F6B00BD; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A49C66B00B9
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:55:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 083EF1405DA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D62A6B00BA
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 19:55:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B646B1A0624
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:45 +0000 (UTC)
-X-FDA: 85199512650.25.7495411
+X-FDA: 85199512650.15.4A9304D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 078E740004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3WFyrqF;
-	spf=pass (imf04.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789084543;
-	b=mCojI+tNWoD+i2jP2pMBg7bm71Zz4XZjBw/f5t99UJP6aeCN35HJSdhguHkQKGubF00m3m
-	ISmXleS3PX1tf5eioYvrkzeL2haNm9WbjeAi4Y4UznuzhGHIwHFVBUUmm0FSjdLl7uwlAY
-	jPLdbY1wrZH6oMR+FQWVhS0yJ+tPt1c=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R3WFyrqF;
-	spf=pass (imf04.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id A9A6A140007
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:55:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAWqa6HN;
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789084543;
@@ -45,36 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uelba80KDbGS0Q/yL8lt3XYUXYLg7qLFdiJHtbqGddI=;
-	b=gO0IANB3OX58stlKrUknLjNxLXpn3XNPgBPTjOcoJlf4yAuqSHvVDvXCrlOQAaUb3esxLO
-	iL0K5um8t7xCJQ0cC2aD1b1IQXdDAOV5g854iSNBAhkMemUvHoOSyUZtf3xAWIk8PaXzJf
-	wHlSEnb/RK2jhRu0H2mL4WivXUoe75A=
+	bh=nQiH2x6KpBgbFkgYo0cL6qY/qgVtjlCcjPb771rnW4M=;
+	b=YXdBkDB2XvL5VV2El2wVAPAe2vYUw27Jd2U8uL8WIGiYmDWSkd0OUwEUwC86jTCDyjhyzi
+	AXdPAHuT5YZV+tlcZVAUsoOR+2t0UusyeiOi+iv00/WGSL49veDoVw25r6xyTXShvhsz8x
+	BviBpgyWyR0A/QNVsuKP75jEsZu39Mg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAWqa6HN;
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789084543;
+	b=owUkIM614thD4oQXBV0MPhAmhFuJGbpUh5AyCmSo2sv4CjnKe0pxXofvHhJ4xeDAYlb2VX
+	i1b2CLIRnwOoP6cfFrj7cX97xwY4WFpaSx33+uDxcygdV4XyNuzQaEVfU3AZY7ggWxbx+Q
+	A9tOaJS6EUwp3p6YPk7nk8bzMUCyX5k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05469444FB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2522144862;
 	Thu, 10 Sep 2026 23:55:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C384BC2BD01;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DE98AC4AF62;
 	Thu, 10 Sep 2026 23:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789084537;
-	bh=hbL6e23MivHLBA3qI7N5pZhF/az0b2+KjLphjqv8C2Y=;
+	s=k20201202; t=1789084538;
+	bh=AKnq3mfGG77mv+gq3PNJT06gkFvH6br0vIP3tfVxk8M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=R3WFyrqFl2ZYfuq+yD55mnCIeB8PXqRnHUgHh5wdk7BIr6jGaOSuM23rociOxQ7nZ
-	 jtkTbvfFMrthxJylX9JYiTk5QMqaGBMUQ/DZEUCDprOYLeE5YG0X8ajj+GiGazWr7J
-	 oVzq7YHAZ8YYjyWwKj21luUw8NYjqVS7LcOM+bMUhh0r68QZ6eiOYLD39vdZquKd6C
-	 7cbnQOOamqrQOIXAIh7LwsOuNnTtyTqXFu2yjrLONY2idBvMkgViWT2QyoTncjS4vi
-	 Tfp+rHwn3KPr3BuDJJtYZ0HqszOkmIxwfvmOUOmX5OxyVkHOXOSS0SIqXFjc+4FHhI
-	 pDMX/DEWavswQ==
+	b=mAWqa6HNhQOZLMGnaET8GvLt/RbWXdF5Rp97p5omjedV9D1vBxgLAY2ibAsD5P904
+	 /akbgtQxHzHYhOVjluMU+HFYTHNnCVNI51UczcWhIsODyxrmhV8aP3itMsD4B4m/04
+	 ZG8nXaBbdMY5XFDDGC8GCiaO7Jb/YJjIscEsDA1z8Qt1TbFoMr/KOfc8ym/tuTWkY3
+	 6HiPenLL6XjSSopKfuZNAvcBu7x1rMKj6xxKiR/a40gVOycb4tvs7yVKMkTIpuXvWu
+	 2JYGHZjW0fblBFKmfbdNOSiTN6hW+6SVSolbEnQfm37570nK2LHC4CkebJbHzaM6Mt
+	 YDJb3QuvrxP0g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA185C88E41;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C53ABC88E46;
 	Thu, 10 Sep 2026 23:55:37 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 10 Sep 2026 16:55:38 -0700
-Subject: [PATCH v13 12/44] KVM: guest_memfd: Always fault from guest_memfd
- if in-place conversion is enabled
+Date: Thu, 10 Sep 2026 16:55:39 -0700
+Subject: [PATCH v13 13/44] KVM: guest_memfd: Pass mapping type filter to
+ invalidation helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-gmem-inplace-conversion-v13-12-dd6fbf94f4e1@google.com>
+Message-Id: <20260910-gmem-inplace-conversion-v13-13-dd6fbf94f4e1@google.com>
 References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -114,25 +114,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
  Fuad Tabba <fuad.tabba@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=4606;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789084533; l=3075;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=+WBdIWJC64hu8Hv2GEhpz7fsUgnbUjGHHH+Q9r+ACN4=;
- b=usjQGlypHSjCPwZTCoDIDlRGkN0v482L+z0wWA2+6lIPU5dTk9O03KS69230OC8njTRx9lUiY
- SH18HCX0W2IBGpCWM1wMQF93AhSh1p1qfzD7ctVmGfFjWTIhYMsV8lK
+ bh=olcJqZe/kIoxozaeU+OrcoTgHksLE0XmCcjni2I7E2I=;
+ b=PuzcQplh7gT51UloHv+ksBnamz11cj9OVdlBS5Uv6zl9EQj3TJbbaqQLWZ/soHHP9gmqJhceI
+ hjoYykTAE84BkNyY+4TA4mZ6z4mYfa48tiQc0dA3c5wb0giaT/aBERH
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A9A6A140007
+X-Stat-Signature: h93c7h5yimo14eizwjk7p6m3z5ffordn
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 078E740004
-X-Stat-Signature: jxx86rp8urdjx67y31er3wwj9ibmp4zt
-X-HE-Tag: 1789084542-927184
-X-HE-Meta: U2FsdGVkX198XCTiz8RPo7cNvXTD3dPz1qGYc6JfzO5ha0x0QlY4NJuuoT1ufy4TiQxrkMvnHGr15F8np3GCZiaIV8tiul7fg9eYhVZfzAVh0FaZZCCpBbT+l7+r5buhnR/79jhdhyf802V7T+VsEKjaA075/mNkFZcznerzZu9z7VtrlrDP5jOiFPfz0jrzGD7lfTN6A3OVmHQSUuUQAq86qzmpn+TyosfrNn+HNU8JkCd1+0PcOThTAwI3C3kXNFFG93NxIV8Z/4rtmZLGG/bNExxQUpG5YbZkYjoxpjQ78+3rAJvMF8NxP1l8YPhmcMVodfjrUoSP8NGDnsgV5U27+r1F3E6tXHYv9xTI4xC6P76KvxtFzls00sWHFhsiba3aA3PrleAkA/U6N2QF32CqH1DPiscasRqCGjORH8pyUqiYj0fsqnY9sUy12iANIHYhZ6kZwdKCyHfY0+HtRDB7IzWAB3gyR28qxX/REYa1Qgf8GaOqgjsrprDlA7T3+QOVpk3S5d2/oOgtgN5czQwtaWrTPfSViS7Y0QKXZHE68ob39X3/9BhUPGeCSCXLDDwE91nVXpCGrh9wPu8oyG+N4Q1l/ezBIT+e619t6JWM13j0jpCFrNL0ZPpbYZto+PngCingC5wDCLQAAPkuT5UtAaqj6qd3I9npptJRlWw6eg+q7v2XsnUz652Kl8sPwM5F96s9GfTbVdOWrvgzvKgRvqW/xmdzs7T5PBdYh7R5aPmP/R2apBwjt3J3u+4pgO5rwOKRzZjX88VkFb0CnbHKNTLciKqyrHwmJ00mVrOkD2iia+oRcWZwJLn8/8t/DfNlZMs5+d8BYjJed9YnXrKNNeKTFPbZTFYjARmRsT2EGxH4Kp19EDgZ2AI7SAxiWlles/nDRhTYl6f0qAblrNbSG38ZAp/AI0rAPlBfHx3DzMUeR4/+2XfaVIc4ZVipLFHDkbqCqs90e497y9A
- jqDEJviv
- 1dZwDoMklrhGuJEMiJrFPy9UfTulUZdP8DVxh7d7WhQIHHKvQGmk5ieiEHfJTl3ZchrAIUqmYieVOL4GOr/l5k16MLWRounb7E75xpJG3BYC6mNosCSKIBApjy2nMG0HQujS/PHaM3CB/RLdB+cQprE26mX+Qxzv0ouFo3wQ4xN266XgpxfSLtvzclF1N0jB12UzjMjmcQRG1Ia16TA3Nl5QFihwEsjfUpSsrWI+F/+Rba8jiAlZUF8ZQEAfWi/jAGofsHdY9mtt8izkiCXRaUzEageixjIKEhYM+sAUk1r/IB87AYF4+ZWAma6QclRSUbAAgf6TiNGs27LAp+NgXsZSCvtfD/g9PA0d0luWajyVveVcBwe+A7FwmjSoLp+ab5iLeQ0Fvrb3HDJT78a1TEmmpwqlCqqePu+nuSBK2PKCQTuSd5G81CPZU2REsZ5rACPcY9ZAGlab7GHqKsMtCaP1FjLgxmYs2QnBTmgq0fvS0RQbCv86MNvbtHIafhVwpz8dmISkpb8wrLQ4=
+X-HE-Tag: 1789084543-193450
+X-HE-Meta: U2FsdGVkX1+BFxX23M17Nfbx0PQk+y9iQV64W5jXTLMKhAlHfzvuzU59REMCQA0e1BqlnJ6s+Gm9OXwZmEsph0rC5VS24LAKM0xB6wBXkuLIC4s79ai7LG8O1UcM5NBYYr9Bf0+OiJDeblhwqZ8tTXb+SpHqkqp98U8TpH5pXYliKkkP3TICAITK5AF4vNPD/n5adkxNf1H9ClS33o9euR47XxPVosMuI32s8QqWJvV/6/WVQ8oSPnGRbbd5stkgyTG8Fl6TsZfa2jDfCmC+YR3pbqQogRvNuyeqN40djcsaF0agIkKPLVHXXLKCLedpgJh85+3MFXaVOmbh+OVIunM89OrCEMWpt7XSbae/srKjMyvEhjKOnBjMtTHgH2RTz72avFKsvgVKysX9iprhwpYt+Jjud3hJuwa2QnDafXNor6b8ZiXmG2flblvyOStvtWILIfnDFdoq3SlU+3CHqkohh0A6fHnAkaSw+DAtDQOfWSGkzEzN9d9vd+NolWjtpjodeXr/92+irEoLhNYDI4zhAB/azgivgzpZLGfFAWStIa7XiZc92L500UsK3lq7hgVGVTc3L6S32pvADoNnp1Sl9/4cVG+1AFaIqhYguvjAJ9exlNwkdzG2IXDS6LLHV/J46Da1zgcqzvSaAzuyJ/yD09fM6oIZePoYNpQOWC2QS5OAbWOCkVX0D+eB2Tfnj98wZMQaDrktCfAU3HGvpcIu0ietaoKa+95dpebIdDtHLwQxq+yetIE8wb8dB4nlUByEP4A5SF6ZZoiMGVc24eCRJPHyfaTDjeimqgwAFJabUhFj5gBjmlwkdeuWsOMKTZbAbDy7AWxYZUpZerVfnekBDeU/fdZm5jEOETjPoNIpG6LWlk6cu/Yhzz2vkFm3KJLXI7EZ8wzqfbLgVA/wjGWoGtRK6pqoURwe4dn6A8Uu4LYvPHGhIh60JKG6ImYmH07MXMp594F8rEjocL3
+ /NgYOEFs
+ bL5Ycwxpb7JfPM8nKXHZRU8BXz0rbi1X9c9FeCSGwtGvOnMlmYHbR9zuGKDSxHYthotapfEjrzv2yzm+WXF3h6fESzJ3Aqe1GEVGhhenFxpNjMYQs3RbN09LT6ng5TStXBr+mykICwqWzlhH0qYz+GqLahaIwX6EIOPbg4r8P+NZJ7SJyTSEpWslv4cFOKgP00jQDKQ61rrplkBHdtSS14ts4q6gWOTMwcOctfhGYeoekgpVO2bCoT6YVQBnNvEwJLcg1wIzCtk9ez8/Jg7h0uEMBAgcPNjKffFeMf++oz8whjaIyUHuufsKa1hyAhGkVC2vCYUXqhKG6kdLnTIneAAiWjrJv+mT9jFKpTA+27dUwDlMJDj5JBdLKEdsc+rGlz9f14bBDie1y78Fq2KDCKY90DiSqyS38yhwdihELWfSL8rQlChWK4UsnFQCeN3SVQ6nGeSF1XLEWBlR0+NPBZfceEWxpX3c4bSGoNhTTbrUAjCoX0/1Bo6bP8Xiobl4Q9Ubo6vVvIWpf44lvMwydRbD+h1EkhswPzQQscloBoA7HPfo92ej9GONPDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,92 +142,82 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-If a guest_memfd memslot is created but the guest_memfd does not have the
-GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
-memslot's userspace_addr.
+Accept the mapping type filter as a parameter in the invalidation start
+helper instead of querying it internally. This allows callers to specify
+which mappings (shared, private, or both) should be invalidated.
 
-Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
-guest_memfd's memory will be used for both shared and private memory. With
-in-place conversion, guest_memfd will be the only backing memory for the
-memslot.
+In the next patch, the conversion process will use this new parameter to
+invalidate mappings only when they're different from the target state of
+the conversion, i.e. invalidate only shared mappings on a shared to private
+conversion and not both.
 
-No validation is performed to require userspace_addr to be a mapping from
-the associated guest_memfd because even after validation, userspace is free
-to remap something else at the provided userspace_addr.
+No functional change intended.
 
-userspace_addr will still be used by functions like kvm_read_guest(), and
-if userspace_addr does not match up with the corresponding memory in the
-memslot's guest_memfd (whether userspace_addr points to the wrong offset or
-some non-guest_memfd memory, etc), that is a user error.
-
-Requiring both shared and private memory to come from the only associated
-guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
-operation on a guest_memfd, the invalidation is now guaranteed to be
-invalidating only memory mapped from the given guest_memfd.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- Documentation/virt/kvm/api.rst | 22 ++++++++++++++--------
- virt/kvm/guest_memfd.c         |  2 +-
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ virt/kvm/guest_memfd.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 09967e0308031..35d94c51cc56a 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6381,10 +6381,16 @@ mapping for userspace_addr is not required to be valid/populated at the time of
- KVM_SET_USER_MEMORY_REGION2, e.g. shared memory can be lazily mapped/allocated
- on-demand.
- 
--When mapping a gfn into the guest, KVM selects shared vs. private, i.e. consumes
--userspace_addr vs. guest_memfd, based on the state in guest_memfd, which is the
--sole authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD`
--to find out more about the creation-time shared/private status.
-+When mapping a gfn into the guest, guest faults are always serviced from
-+guest_memfd regardless of whether memory is shared or private.  KVM determines
-+shared vs. private based on the state in guest_memfd, which is the sole
-+authority on private vs. shared memory.  See :ref:`KVM_CREATE_GUEST_MEMFD` to
-+find out more about the creation-time shared/private status.
-+
-+userspace_addr is expected to be the mmap()-ed address corresponding to the
-+right offset within the guest_memfd. Any mismatch between userspace_addr and
-+guest_memfd is not validated and is a user error. userspace_addr is only used
-+for host-side guest accesses such as kvm_read_guest().
- 
- If in-place conversion is disabled, KVM selects shared vs. private based on the
- gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE state.  At VM creation time, all memory is
-@@ -6490,10 +6496,10 @@ specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
-                                page tables. Private memory cannot.
-   ============================ ================================================
- 
--When the KVM MMU performs a PFN lookup to service a guest fault and the backing
--guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
--consumed from guest_memfd, regardless of whether it is a shared or a private
--fault.
-+When the KVM MMU performs a PFN lookup to service a guest fault, the fault will
-+always be consumed from guest_memfd, regardless of whether it is a shared or a
-+private fault (unless in-place conversion is disabled and the backing
-+guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set).
- 
- See KVM_SET_USER_MEMORY_REGION2 for additional details.
- 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 0afe1468d2d9d..e41802944756b 100644
+index e41802944756b..e19de803149c2 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -746,7 +746,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	 */
- 	WRITE_ONCE(slot->gmem.file, file);
- 	slot->gmem.pgoff = start;
--	if (kvm_gmem_supports_mmap(inode))
-+	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
- 		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+@@ -192,13 +192,13 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+ }
  
- 	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+ static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+-				      pgoff_t end)
++				      pgoff_t end,
++				      enum kvm_gfn_range_filter filter)
+ {
+-	enum kvm_gfn_range_filter attr_filter = kvm_gmem_get_all_gfns_filter(inode);
+ 	struct gmem_file *f;
+ 
+ 	kvm_gmem_for_each_file(f, inode)
+-		__kvm_gmem_invalidate_start(f, start, end, attr_filter);
++		__kvm_gmem_invalidate_start(f, start, end, filter);
+ }
+ 
+ static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+@@ -224,6 +224,7 @@ static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
+ 
+ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ {
++	enum kvm_gfn_range_filter filter = kvm_gmem_get_all_gfns_filter(inode);
+ 	pgoff_t start = offset >> PAGE_SHIFT;
+ 	pgoff_t end = (offset + len) >> PAGE_SHIFT;
+ 
+@@ -233,7 +234,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ 	 */
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+-	kvm_gmem_invalidate_start(inode, start, end);
++	kvm_gmem_invalidate_start(inode, start, end, filter);
+ 
+ 	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+ 
+@@ -522,6 +523,8 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+ 
+ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
+ {
++	struct inode *inode = mapping->host;
++	enum kvm_gfn_range_filter filter;
+ 	pgoff_t start, end;
+ 
+ 	filemap_invalidate_lock_shared(mapping);
+@@ -529,7 +532,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+ 	start = folio->index;
+ 	end = start + folio_nr_pages(folio);
+ 
+-	kvm_gmem_invalidate_start(mapping->host, start, end);
++	filter = kvm_gmem_get_all_gfns_filter(inode);
++	kvm_gmem_invalidate_start(inode, start, end, filter);
+ 
+ 	/*
+ 	 * Do not truncate the range, what action is taken in response to the
 
 -- 
 2.55.0.1007.g17ff1f9808-goog
