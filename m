@@ -4,105 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D174DC79FB9
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:58:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21299C79FB9
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 04:59:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A93A26B008A; Thu, 10 Sep 2026 00:58:51 -0400 (EDT)
+	id 14D1F6B0092; Thu, 10 Sep 2026 00:59:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A442A6B008C; Thu, 10 Sep 2026 00:58:51 -0400 (EDT)
+	id 0F7256B0093; Thu, 10 Sep 2026 00:59:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 932AC6B0092; Thu, 10 Sep 2026 00:58:51 -0400 (EDT)
+	id 00FFB6B0095; Thu, 10 Sep 2026 00:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 76BE66B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:58:51 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0115A0421
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:58:50 +0000 (UTC)
-X-FDA: 85196647620.10.8840FE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EC79240003
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:58:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwxxO40Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwxxO40Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789016329;
-	b=r3fR0qVhbwSvd59pL3qjl4QKO5SnzAxsOW+RFnob33glaof9gYSdG1aYATIf2+r9j4mGC3
-	JGD/Jq98nmal8KXdHQfJdPOp6gihCN+y2UfVCtsV0xBa9Geio+0ITT4528MdJV9EpOnzA1
-	veHUyxabo3DLX2952Wu4jNZTrNRIPbM=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D09296B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 00:59:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1B2B01203D4
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:59:29 +0000 (UTC)
+X-FDA: 85196649258.16.25BD1EE
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6378FA0005
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:59:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UbIvo9qb;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789016329;
+	s=arc-20220608; t=1789016366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaJUvdpDpUDbSBpSVuw1s5uwDKMSoFFuKQIxHId5d8c=;
-	b=TnTONepjGF1LHXigzwQ98ICC6DcO+9UWM4rGbO+WeZ/Kl5wsEEbNWMK20rbTCBTsp3BsSD
-	IrgPB2Il8HQy+kmPYakcRHIv+YRY/kEX8ClxIsoZizfH/mzIO2/d4XFoXylqHPAVUr77rr
-	Y33e25lD3MkCq0EX2PWmJLG9VWYrvUk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACCB244792
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B6E1F00899
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 04:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789016327;
-	bh=jaJUvdpDpUDbSBpSVuw1s5uwDKMSoFFuKQIxHId5d8c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XwxxO40Quue7z7982LhM3SPoYwje4x6th5sqGFA/Uz6VWZgotsAlT7mG3AoQNMD0i
-	 bQT8clEzu+K6GYeJbONdygp2lWNTbDz//oevOHta2odT40Oimh+qf5ZND4Fdsmptqu
-	 uA9UZUN3TX3A5ymOjwLVItrPUBJWVlU+rp9dq0cf9ecZQNaLsW/bKViwnTHCAPTUQf
-	 3i7l0pGdzcOqxLPQtjZl5gfDmSN9sSMNgRM2QpIgabuRo14IbkUgZ4Q8FbxefCLcT4
-	 rnT1IX9TOghg7TCp9D71+S//r44KnM0yUUZqfejHD24MgN1WDJlsetSunZbIviFjnb
-	 xDWXqZayz8QBg==
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109fafd6so90142385a.3
-        for <linux-mm@kvack.org>; Wed, 09 Sep 2026 21:58:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw7fvGuNjHon06/9jCohBUWfhjn+0laBrVLWcufe3ZUf2Fa89sWB1sdnYoHUEs13yo/tskjCcZqeA==@kvack.org
-X-Gm-Message-State: AFuF++lLjw2Hb1F3dKixF4o9Q91Az+nWgvpw9dZ72g6lwkRTzDr52VHi
-	FZOfoYAh/LnqJwoH8v+IURPBSfN4ZsgpIQYHTgi2w7VuMfsePGXxDpLdDIwvCq4RzYQcFVgnDng
-	89dTAyUHunliSYGcTodbFZzoQWrT9k0M=
-X-Received: by 2002:a05:620a:4409:b0:939:191c:cac7 with SMTP id
- af79cd13be357-939d4953b26mr660961085a.13.1789016326635; Wed, 09 Sep 2026
- 21:58:46 -0700 (PDT)
+	bh=5ql/2tajP1TkT4UOmZZW/kIFnjsqRcP7DEEYotvDlhI=;
+	b=44GGhP1Ec3VY7DBf00/MPRzf3/YknNipyRsksCQxwYUtvpyzfsf1SHJFS6c6Bmy1U0OAVH
+	4gb2JMPqXQqXOW5q2XZgzgi1TV+44rX5QqZXQ4EvtEiVVWpsdIQRg3t3ZBIQhonK5HyQJh
+	wH+VPogYcOzz8s3z5O0+yB56EnzBDf0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789016366;
+	b=otqyyLNv5K++nMQdiPmIOzLTuEhaArDExIBgRG6DtYxYVNZHtAq09AhbpCQpy6AEWCe8Hw
+	D9U45ZjfTGFH7mOLdCVjNnZVLfHxlm+wFhGE+jNJcLpnOICVzJeTXXS2UVPScDjDRCQMZB
+	kFvwdkkKExc8Ol4e3zKSV0YQMbY3AHU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UbIvo9qb;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789016360; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=5ql/2tajP1TkT4UOmZZW/kIFnjsqRcP7DEEYotvDlhI=;
+	b=UbIvo9qbZh5qMbwTwMJblW9ksoDgWDzFho8JXpudXt66pu3Dfh2+kbs2Y62iSn/UcO6kk+VICd2qTeLiXItZwZjtTMkFAtfNqWohVGMaa31R6HzJ7koJFFOnupuEJJZIjLxkcAm1Hlt5iHjuUgXcRjfc1fCXUjiGiU128S/HwqQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAgbVTJ_1789016355;
+Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAgbVTJ_1789016355 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 12:59:16 +0800
+Message-ID: <162af233-ae81-40e6-8c71-d13a41b5d892@linux.alibaba.com>
+Date: Thu, 10 Sep 2026 12:59:14 +0800
 MIME-Version: 1.0
-References: <20260901054358.4049095-1-dev.jain@arm.com> <20260901054358.4049095-9-dev.jain@arm.com>
- <CAGsJ_4yQhafd8zoESxFza3N8kxWxpOpa1Pv-Sf+N=mCPz5or=w@mail.gmail.com> <3f1798bb-c6b9-4c1f-9a9a-fe312c1a0602@arm.com>
-In-Reply-To: <3f1798bb-c6b9-4c1f-9a9a-fe312c1a0602@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 10 Sep 2026 12:58:35 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4w5CFoUPLT=YiEwKm4b0CMvj4B0UFLKuGFo3Ko9jdOpRA@mail.gmail.com>
-X-Gm-Features: AcwNN1UcFB_eFHPosL252Q_VZRdmuTDwcLnKb5NJr-W5J12yqfDNTHvxufJjGpw
-Message-ID: <CAGsJ_4w5CFoUPLT=YiEwKm4b0CMvj4B0UFLKuGFo3Ko9jdOpRA@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] mm/rmap: batch unmap anonymous swap-backed large folios
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com, davem@davemloft.net, 
-	andreas@gaisler.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 11/19] selftests/mm: add order-parameterized khugepaged
+ collapse cases
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, rppt@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-12-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260908125105.1510704-12-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EC79240003
-X-Stat-Signature: er4nkm4f1s39bm3enokfqdok9i1pxywb
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789016328-740718
-X-HE-Meta: U2FsdGVkX1/2U6vW61h81AiIl2S4Wg59D2txx1RAQbycmC85WPXD3z/9rvF3MG7EIrbVOxwBupIUWFIlWDa/tht+K41s6WUmTZhviGgkH4zErkFWzVrO3yj1855nVo1LKkh8T5dYaAQMiBvkt5DJiIpwMe8RlQ5DDiNX/MyLZTpuT492Jh39gfCbzBU5NYuCSw/AxSS7CJtSsnKrc/3zLRtAsSY524c/LrqbPSS6YFsXNgsO5ZdTfbXciGxqYHn42adxePbofZ83oCE0OGS4boNBJPM9t+6KXfOagNuKm3S+g+oMHqCPiIajX1y6XFHqxP4eWDGjURbso+gN74gaFfirUOa+N1yWdpyhrTYgnYMHiUfWFVL69HClLxm7ySNJpmmaPgNMbDjcYgqGTsR6j1Um7rwMwH+W5Badq9ienYW9LwukEwSPWTqp+t/xd2s0Yxs6m6hGfAeSoiFUyUsysBy0gXZLeMgBrlb2ruNRYxXci3E0mHf7Wd2hs6QLdil5OpU8H8baTPyk+iYQVK27Sw8AWLOsQyWoSfSGoKSj0i+uwEH7UzsOxQb2nP5B7meM4uBmqHCkT+0bw2ZGOi5JApfZolUSrYg8Svf2ANLoo8WOGfFhI31Mw7cWio4jEshke1Xu9xWSwezIRyOVPAm/leJ3T+vWhmelKwE0fUqyiXX+cwJxRSFFkREs+3UGnktDsNlGSZTkHZrmqTW+xEUmYgxyJ1fksocbPsb7pezBYc3EDMGWRkYmud1r8nzHQUEWy7UF1eWlQOXTY3C2RCtP+Cyv5NIaaJ7WW93kseTwo5ORLsKUMg09c2g2eX5BZ0vO8oK0TH/YJ5wASIPR8RRz1KeJTeCLA/cBscjxKYiubln1HgAv4rnig+iQGXCUvwmDvVTLZOwfkHEpn4ZFaXXRMgne+1gEfCi7VIon99ttLMjckEmwa4Li5Swmnv+uDYOaN3ochLKpgHZpeCRnluG
- 2JZ9VnbV
- VNHYgniU+rTuIDJfRrQ74PfE1msfUqrNuKth9H8FmDHfC5RsBGd8g/Y0UIg72tnYbL3H5rk5UWnPFoxrnlTSASLFXL0VDgXu7h0VHSylCmHnNIrt4EDzh7YNRpptoNcHhPdPa2EJPd0pK2vvSDRqhHbjEM5WE7sRNkvBCcOJpqGuqxWzplnHMSzJaVX9ZYwEo7RBphNeSnEZBD0MgIoxKWdlYJbzIKMfq/pXfxE/K6tLfEIX2SOeW9a3MlV8FNQsSABV5dR+oDzsAaohI+yB/bc+kSUOOteDYeLZu/hRJPume+mb+SmpbUBSwzsB32Myeh2dmo/5yi7B7NOVsgsbGSoaDWg==
+X-Stat-Signature: jcekzik4hep9qqnpfbc69ko7yjzcz1aa
+X-Rspamd-Queue-Id: 6378FA0005
+X-HE-Tag: 1789016365-647895
+X-HE-Meta: U2FsdGVkX1+YpZJ1NSgXWL6BNfNKZD5YmBX99iXyr29gB4dUyhXYwzkNUQ9uA19TehB8HmeNlAwmDar9KsbOh7ryK60xOtYW96PRjCjEhRiIVGjLjekmGPLQVhmorPttYHExVhRsnGfffk3C8o3V2r3/6IW7jSg8AjIpf2eZRItHQNd+ZPgXp6/me3Svpd2IkiVc5SZoArjxmpqd9GGyV14cg/k8z4/F+J7V3fMvouxVSgGYRK9Pt2aRgPB8Z2KDTczb1Ki588wKWzP5EIrA9F1oGwtASId/0JVbi/L62AeTlkkRIjPDe8YTP74/FcQRIx5ZsJ6FfWH1wJ7pvyFVZB8ZZEehrwv79nwuB8r9M/94WAmm0OhMB3+E4Cw8lQGN2YZQ3DCxB9mj8Fs21gXnlabr82co24hy1Fx9VbjcPE8Bv+Wa+NBnoMHsH2JI6cLXUi1lS8PUFxRr22x7YlD/VLLWdAjlNIx28RHoEN7hiu/HxPW4Jj9/HFkKQMwkom53z3nEbjUQ8PRv3s/LeMfzS8mdpmioporPB+uqxpHRUa9xiRfV8u5ujokMgVxJbpSPj+k5WZ9WgRo6y+grEDkidNN5Og9tDL6s79oFen+lJ6gIiTh+95h+X01rFLdL0OAeZ1lhqfMln+Zm4d5iluMaB6XapG+9sT1lquPaIHtebfoBGOsCOxJ45RE4BLazAjRC4nUbUOimkj312h6v7A0fsdWwtDw/ipQWZQiyuT4uHf9Grcxk30qkM1sRz3RtmWO1hrH3hiLpsg0ZT7XmkUhQdWLpiJQchtC4jNdgS+JTxIPweAkW9CimtpESGTUZwPc2DJyGMjCUF2FWJMZenqGNbl9mdw+nzd3aqqUGmHy90P+ZbpusQD8ieqlUHSKZRG2kxh+WWMwR9Vocmw2aSZRmJL2tj9WtIigrQFbN5TKvip9jrCCBCxRJSHhIxF7vqnjudOka9xARc8lMKovnDcJ
+ 07DYnhYA
+ pb6y1GIxxEKaG5KyZKgTVxtqjFP1xuTF/ftSN66FPy3KX37PEIWMVZ1OaAJ9/lFQ0ATdWSmErEVP27UZ8kZk3DQXBlACvWDjt0VglAREi11KI9dfhIfm3/NbATR0Sk3ahJBS7bsR+OmxGGCOaE8cBuI3Zq+N+snArEBhppQR9+IAkD0CD4jJMW+wzk+pxVP/RwT0J/HzTWRhOIbs99FMtlKUNdlpKWxRg3rLxUt9QnfXYktmPxvilPdsmc/lLktSn7Y39bzO8YqGcw+k85Ib5YST9wmHsGyYFy9Mxu4+MqK60Lh1fv21gM4nNeqz7xH1MMzUGLCiXNL38O2bOn6DMR4l1NtudZpQNo6NbXiGKHMJ/R6Vc1epVWt4r7YeT9xGbS5qshy48g6kJ21UtuVAFJE41Xg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,29 +94,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 12:39=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
-[...]
-> >> +static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
-> >> +               struct folio *folio, struct page *first_page,
-> >> +               unsigned long address, pte_t *ptep, pte_t pteval,
-> >> +               unsigned long nr_pages)
-> >> +{
-> >> +       unsigned long batch_idx =3D 0;
-> >> +
-> >> +       while (nr_pages) {
-> >> +               bool anon_exclusive =3D PageAnonExclusive(first_page +=
- batch_idx);
-> >> +               unsigned long len =3D page_anon_exclusive_batch(batch_=
-idx,
-> >> +                               nr_pages, first_page, anon_exclusive);
-> >
-> > `len` is really a bad name, as `len` usually describes a size.
-> > Maybe `batch_pages`?
->
-> I disagree here : ) I don't think someone should mistake len with size.
-> len is ... "length". So in this case it is the length of pages in the
-> array, starting from batch_idx, upto nr_pages, which are all exclusive
-> or not. Also I would prefer short variable names.
 
-OK, up to you :-)
+
+On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> The mthp_khugepaged context runs the generic cases at a sub-PMD order,
+> which answers how many folios of that order a range ends up with.  It
+> cannot say which order-sized window they landed in, so "the populated
+> window collapsed" and "the empty window next to it collapsed instead" look
+> alike.
+> 
+> Add four cases that check each window on its own, with the folio-order
+> helpers in vm_util:
+> 
+> - collapse_order_single_window(): only the populated window collapses;
+> - collapse_order_partial_window(): the default max_ptes_none lets a window
+>    with one present PTE collapse;
+> - collapse_order_max_ptes_none(): with max_ptes_none=0 a full window
+>    collapses and one missing a page does not;
+> - collapse_order_mixed_sources(): sources that are already large folios of
+>    a smaller order collapse to the target.
+> 
+> Each case faults its region before MADV_HUGEPAGE with only the target
+> order enabled, so the sources are order 0 and the result can only come
+> from khugepaged.  They wait for a full pass rather than for the result to
+> appear: without a completed pass, "not collapsed" and "not scanned yet"
+> are the same thing.
+> 
+> Assisted-by: LLM
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>   tools/testing/selftests/mm/khugepaged.c | 212 ++++++++++++++++++++++++
+>   1 file changed, 212 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index e9bc8fe8a1f8..fb4efaf67c40 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -31,6 +31,8 @@ static unsigned long page_size;
+>   static int hpage_pmd_nr;
+>   static int anon_order;
+>   static int collapse_order;
+> +static int pagemap_fd = -1;
+> +static int kpageflags_fd = -1;
+>   
+>   #define PID_SMAPS "/proc/self/smaps"
+>   #define TEST_FILE "collapse_test_file"
+> @@ -1207,6 +1209,198 @@ static void madvise_retracted_page_tables(struct collapse_context *c,
+>   	ksft_test_result_report(exit_status, "%s\n", __func__);
+>   }
+>   
+> +/* Smallest order khugepaged will consider for mTHP collapse */
+> +#define MIN_MTHP_ORDER 2
+> +
+> +/* Time budget for one khugepaged pass in the collapse_order_* cases */
+> +#define MTHP_PASS_TIMEOUT_S 30
+> +
+> +static size_t mthp_window_size(void)
+> +{
+> +	return page_size << collapse_order;
+> +}
+> +
+> +static void mthp_push_target_order(void)
+> +{
+> +	struct thp_settings settings = *thp_current_settings();
+> +	int i;
+> +
+> +	/*
+> +	 * Only the target order, and only for madvise: the cases fault their
+> +	 * region first, so the sources stay order 0 whatever -s asked for.
+> +	 */
+> +	settings.thp_enabled = THP_NEVER;
+> +	for (i = 0; i < NR_ORDERS; i++)
+> +		settings.hugepages[i].enabled = THP_NEVER;
+> +	settings.hugepages[collapse_order].enabled = THP_MADVISE;
+> +	thp_push_settings(&settings);
+> +}
+> +
+> +static bool all_windows_at_order(void *p, size_t len)
+> +{
+> +	return is_range_backed_by_order(p, len, collapse_order,
+> +					pagemap_fd, kpageflags_fd);
+
+Like I mentioned in patch 8, you can implement these helpers using 
+check_large_folios() in vm_util.c. Then you do not need to add new 
+'pagemap_fd' and 'kpageflags_fd' variables.
+
+> +}
+> +
+> +static bool any_window_at_order(void *p, size_t len)
+> +{
+> +	size_t window = mthp_window_size();
+> +	char *addr = p;
+> +
+> +	for (; len >= window; addr += window, len -= window) {
+> +		if (all_windows_at_order(addr, window))
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +static void collapse_order_single_window(struct collapse_context *c,
+> +					 struct mem_ops *ops)
+> +{
+> +	size_t window = mthp_window_size();
+> +	void *p;
+> +
+> +	mthp_push_target_order();
+> +
+> +	p = ops->setup_area(1);
+> +	ops->fault(p, window, 2 * window);
+> +	if (any_window_at_order(p, hpage_pmd_size))
+> +		ksft_exit_fail_msg("Unexpected large folio after fault\n");
+> +
+> +	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
+> +		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
+> +	ksft_print_msg("Collapse one fully populated window...");
+> +	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
+> +		fail("Timeout");
+> +	else if (all_windows_at_order(p + window, window) &&
+> +		 !any_window_at_order(p, window) &&
+> +		 !any_window_at_order(p + 2 * window,
+> +				      hpage_pmd_size - 2 * window))
+> +		success("OK");
+> +	else
+> +		fail("Fail");
+> +
+> +	validate_memory(p, window, 2 * window);
+> +	ops->cleanup_area(p, hpage_pmd_size);
+> +	thp_pop_settings();
+> +	ksft_test_result_report(exit_status, "%s\n", __func__);
+> +}
+> +
+> +static void collapse_order_partial_window(struct collapse_context *c,
+> +					  struct mem_ops *ops)
+> +{
+> +	void *p;
+> +
+> +	mthp_push_target_order();
+> +
+> +	p = ops->setup_area(1);
+> +	ops->fault(p, 0, page_size);
+> +	if (any_window_at_order(p, hpage_pmd_size))
+> +		ksft_exit_fail_msg("Unexpected large folio after fault\n");
+> +
+> +	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
+> +		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
+> +	ksft_print_msg("Collapse window with single PTE entry present...");
+> +	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
+> +		fail("Timeout");
+> +	else if (all_windows_at_order(p, mthp_window_size()))
+> +		success("OK");
+> +	else
+> +		fail("Fail");
+> +
+> +	validate_memory(p, 0, page_size);
+> +	ops->cleanup_area(p, hpage_pmd_size);
+> +	thp_pop_settings();
+> +	ksft_test_result_report(exit_status, "%s\n", __func__);
+> +}
+> +
+> +static void collapse_order_max_ptes_none(struct collapse_context *c,
+> +					 struct mem_ops *ops)
+> +{
+> +	struct thp_settings settings;
+> +	size_t window = mthp_window_size();
+> +	void *p;
+> +
+> +	mthp_push_target_order();
+> +	settings = *thp_current_settings();
+> +	settings.khugepaged.max_ptes_none = 0;
+> +	thp_push_settings(&settings);
+> +
+> +	p = ops->setup_area(1);
+> +	ops->fault(p, 0, 2 * window - page_size);
+> +	if (any_window_at_order(p, hpage_pmd_size))
+> +		ksft_exit_fail_msg("Unexpected large folio after fault\n");
+> +
+> +	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
+> +		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
+> +	ksft_print_msg("Collapse full window, not the one missing a page...");
+> +	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
+> +		fail("Timeout");
+> +	else if (all_windows_at_order(p, window) &&
+> +		 !any_window_at_order(p + window, window))
+> +		success("OK");
+> +	else
+> +		fail("Fail");
+> +
+> +	validate_memory(p, 0, 2 * window - page_size);
+> +	ops->cleanup_area(p, hpage_pmd_size);
+> +	thp_pop_settings();
+> +	thp_pop_settings();
+> +	ksft_test_result_report(exit_status, "%s\n", __func__);
+> +}
+> +
+> +static void collapse_order_mixed_sources(struct collapse_context *c,
+> +					 struct mem_ops *ops)
+> +{
+> +	struct thp_settings settings;
+> +	void *p;
+> +
+> +	if (collapse_order <= MIN_MTHP_ORDER) {
+> +		ksft_test_result_skip("%s: no source order below target\n",
+> +				      __func__);
+> +		return;
+> +	}
+> +
+> +	mthp_push_target_order();
+> +
+> +	settings = *thp_current_settings();
+> +	settings.hugepages[MIN_MTHP_ORDER].enabled = THP_ALWAYS;
+> +	thp_push_settings(&settings);
+> +	p = ops->setup_area(1);
+> +	ops->fault(p, 0, hpage_pmd_size);
+> +	thp_pop_settings();
+> +
+> +	/*
+> +	 * The allocator can fall back to smaller folios under fragmentation;
+> +	 * having nothing to collapse from is not a failure.
+> +	 */
+> +	if (!is_range_backed_by_order(p, hpage_pmd_size, MIN_MTHP_ORDER,
+> +				      pagemap_fd, kpageflags_fd)) {
+> +		ksft_print_msg("No order-%d sources to collapse...",
+> +			       MIN_MTHP_ORDER);
+> +		skip("Skip");
+> +		ops->cleanup_area(p, hpage_pmd_size);
+> +		thp_pop_settings();
+> +		ksft_test_result_report(exit_status, "%s\n", __func__);
+> +		return;
+> +	}
+> +
+> +	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
+> +		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
+> +	ksft_print_msg("Collapse region backed by smaller large folios...");
+> +	if (!khugepaged_full_pass(MTHP_PASS_TIMEOUT_S))
+> +		fail("Timeout");
+> +	else if (all_windows_at_order(p, hpage_pmd_size))
+> +		success("OK");
+> +	else
+> +		fail("Fail");
+> +
+> +	validate_memory(p, 0, hpage_pmd_size);
+> +	ops->cleanup_area(p, hpage_pmd_size);
+> +	thp_pop_settings();
+> +	ksft_test_result_report(exit_status, "%s\n", __func__);
+> +}
+> +
+>   static void usage(void)
+>   {
+>   	fprintf(stderr, "\nUsage: ./khugepaged [OPTIONS] <test type> [dir]\n\n");
+> @@ -1375,6 +1569,20 @@ int main(int argc, char **argv)
+>   
+>   	parse_test_type(argc, argv);
+>   
+> +	if (mthp_khugepaged_context &&
+> +	    !(thp_supported_orders() & (1UL << collapse_order)))
+> +		ksft_exit_skip("Order %d is not a supported anon THP order\n",
+> +			       collapse_order);
+
+This check can be moved into parse_test_type(), where the 
+'mthp_khugepaged' parameter is parsed.
+
+> +
+> +	if (mthp_khugepaged_context) {
+> +		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+> +		if (pagemap_fd < 0)
+> +			ksft_exit_fail_perror("open(/proc/self/pagemap)");
+> +		kpageflags_fd = open("/proc/kpageflags", O_RDONLY);
+> +		if (kpageflags_fd < 0)
+> +			ksft_exit_fail_perror("open(/proc/kpageflags)");
+
+When you change to use check_large_folios(), these fds can be removed 
+from this file.
+
+> +	}
+> +
+>   	setbuf(stdout, NULL);
+>   
+>   	/*
+> @@ -1425,6 +1633,10 @@ int main(int argc, char **argv)
+>   	TEST(collapse_empty, madvise_context, anon_ops);
+>   
+>   	TEST(collapse_single_mthp, mthp_khugepaged_context, anon_ops);
+> +	TEST(collapse_order_single_window, mthp_khugepaged_context, anon_ops);
+> +	TEST(collapse_order_partial_window, mthp_khugepaged_context, anon_ops);
+> +	TEST(collapse_order_max_ptes_none, mthp_khugepaged_context, anon_ops);
+> +	TEST(collapse_order_mixed_sources, mthp_khugepaged_context, anon_ops);
+
+These test cases look good to me. Thanks.
 
