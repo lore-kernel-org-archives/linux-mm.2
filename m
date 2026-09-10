@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A2DC79FB7
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 01:16:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F04C79FB7
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 01:17:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E768A6B008A; Wed,  9 Sep 2026 21:16:45 -0400 (EDT)
+	id 159246B008C; Wed,  9 Sep 2026 21:17:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E27526B008C; Wed,  9 Sep 2026 21:16:45 -0400 (EDT)
+	id 0E3446B0092; Wed,  9 Sep 2026 21:17:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D162B6B0092; Wed,  9 Sep 2026 21:16:45 -0400 (EDT)
+	id F3D1C6B0093; Wed,  9 Sep 2026 21:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 955AF6B008A
-	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:16:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E003803EA
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:16:45 +0000 (UTC)
-X-FDA: 85196087970.23.CAA91C3
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 87A7B100004
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:16:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Iz++jSms;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C970D6B008C
+	for <linux-mm@kvack.org>; Wed,  9 Sep 2026 21:17:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E4ED4039E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:17:28 +0000 (UTC)
+X-FDA: 85196089776.07.2EDC363
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 44BBC40006
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 01:17:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=p6733vXn;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789003002;
+	s=arc-20220608; t=1789003046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjQKRE5lrce7jhbihAkBY+s6J3FeAMm2fhRqDQAJOrY=;
-	b=r83lX6XMQ2ozohbr+hqu7TPHIDe6jIjhhd+5YVhrj0WeFBAqZVTOR1G4oVQDdC3uv4TtY2
-	Hv8WEP5Avmjgp0G8ohPrd3SW7ypE8ANs9Dqxpeek/FbCprLwTBi91Urdzyphr2AegYDMkH
-	ngI4DrYlM1/hwagowlteRy5ZcJHb69E=
+	bh=2IVJH8MPwJAkeuj2dMMiZHrS4p/p8L2+EkoUpA5hPNI=;
+	b=lD1/zaA0urFHHIWXaCEi2vHv6/SR3zYMmPKoFrnf4GOdn8dGAZ6NdIaSq4jyLD1LUlPPmd
+	gP/IMbXVrFnK4DuRb3V0S6/KRiGpJuvdbjr7db5E0LVEkliOQfTZ21UEg4faKrVshI1qHu
+	paqp+TAEOt+zxYnDh/TWUd8awoqp4ak=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Iz++jSms;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=p6733vXn;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789003002;
-	b=SXnoHcCrS4n22D5twqwKDzV8UIyRn90xD9YJHrsUmzOgSRYAUXKrH2VPKt51xPR4Saf0Ng
-	BYVJwNbQ2B46l1eIHGsTSYXo0B2F/OakBIlcWuJiNrl8I4iEVfqg2usRHsc1uPuCxl29Pz
-	hrmwgOEINFINDLmLz+dJLl7V4x+/WKE=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=OjQKRE5lrce7jhbihAkBY+s6J3FeAMm2fhRqDQAJOrY=;
-	b=Iz++jSmsreCtrwA30Smkw7gaIr6HpZRBXqKisR+semcZGTV7Uw+hZPNR9QN2M/euNWaLY38E2
-	cZ2PTvK5s1cEwUvGtlMvxmLx458VE+q8x98z1gbCs3OUol0+sdGstFt51B2jg9eAK5gomxEgwAs
-	PIicfn7s2batLz6OPCe1qNE=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hgKGn1NS8z12LF9;
-	Thu, 10 Sep 2026 09:05:21 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 13AB04056E;
-	Thu, 10 Sep 2026 09:16:33 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 10 Sep 2026 09:16:32 +0800
-Message-ID: <9e511393-cc88-4fb7-aafc-cc8c1ea42a1c@huawei.com>
-Date: Thu, 10 Sep 2026 09:16:30 +0800
+	t=1789003046;
+	b=SZYWamKj1N9FYQ7A8QxVfWI8ya+SvDzGWfrj+tNQ3hCK9Nr64wQQfRs3YCK72OTPeznsn3
+	KV2WPaeECUMgxeGPBA+v9B2XTokQVfA5FqYjEYfxGytINKuEuNmgjSGdStZFWDkuZPmfJM
+	xThGTjTkG79d3NgYKjPrh5LSPq3xOB4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789003042; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=2IVJH8MPwJAkeuj2dMMiZHrS4p/p8L2+EkoUpA5hPNI=;
+	b=p6733vXnaxnNV/DL+umHCEwzQM1WfBhHAB8HYwIsgMMztIuNm5L4cn+fVr9gRC8FwmwGoEPjgB39rY/mxAIWhdM33kqMVksIuyG0X/Qjx/XP8wineZat3xYAw/PyRIN+/Bhp8u3S6TdnQIx59o2w1qRVXePcNwL6LBqVLoD4HsA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XAg1fiJ_1789003039;
+Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAg1fiJ_1789003039 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 09:17:20 +0800
+Message-ID: <d65b4d23-b9d4-405e-84f5-a814fc984ebd@linux.alibaba.com>
+Date: Thu, 10 Sep 2026 09:17:19 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: zswap: avoid unnecessary xarray lookup in
- zswap_store()
-To: Johannes Weiner <hannes@cmpxchg.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>, Chengming
- Zhou <chengming.zhou@linux.dev>, Kairui Song <kasong@tencent.com>, Nhat Pham
-	<nphamcs@gmail.com>, Yosry Ahmed <yosryahmed@google.com>
-References: <20260909123548.296955-1-wangkefeng.wang@huawei.com>
- <aqFynNC4wJnoTnjj@cmpxchg.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aqFynNC4wJnoTnjj@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v5 10/19] selftests/mm: add khugepaged completion barrier
+ helper
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, rppt@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, usama.anjum@arm.com, usama.arif@linux.dev,
+ nico.pache@linux.dev, ziy@nvidia.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, agordeev@linux.ibm.com, jgg@ziepe.ca, leon@kernel.org,
+ kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260908125105.1510704-1-kirill@shutemov.name>
+ <20260908125105.1510704-11-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260908125105.1510704-11-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk300003.china.huawei.com (7.202.195.93)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 44BBC40006
+X-Stat-Signature: 57s7wzbc5frq8ezhqm9rfcawik9jpehg
 X-Rspam-User: 
-X-Stat-Signature: wktg3he6973s3dakdigzshkkzjoewcwd
-X-Rspamd-Queue-Id: 87A7B100004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789003001-96320
-X-HE-Meta: U2FsdGVkX1+cxlRLt7/tUPnTwwtl15Lxw8DxrdZlfRTW5VI8GsLPRTvtcT+SCgRlgveaE39E0OuLB/UIwaY6a1V7WwgN1K0Hz8E4IzztWuUCLofL8fvWQnzQuPXXQxEpupS6LJiXH8UtgupDPwrP2ukWjN0XoLyRieVp8hj5sTuHjMfJJs5ZnZMZTL+pjk0TzWY6PWXoNFjeG6/5QrWfunZ5FEHFktBDbJ9NguwaFx+zY5hOFnhjd+ir1nYx6x83qiTPf07f/6jDf4ZcSPY29nPGGyj07lqTuEGubclOWv2rCLm8g3xIjX99TqM3MEIuA1UkWBTFaBT29OA26d6Wj525cwLYJgaSjyOjeyhmrozTSnjiaho9Sf0JET+G6U/ZMoRnVEcxL67O+jz2oANyB/qh+5800rqTvaIVD8881W0siqTlR3VNHaPqZe5qd5rXmcN1NFbxCavarrVGCCwwQ6cr/5+FRE+Y7a7+XnJ+bYkzPEK9UHQT1k1J54A6QVMFRIvM/f5BAmo04s0J+JMkHiYpF2dkDrUY+kc60gr8OpwAPWAaJG8f7K7AeYeWQS5NoxJqao0wBktbmQYBN+LA7UfnPGS6pBqqsWzxV2QQ5kXPFAVuhSkHWyb9KbeDNIolnVa6mI/siAqFVp//FbOTWHMoCfZFuLLizfmRCAqJEF81dWfqnUi4688a/jFX6zcbacr4NEZxs6PSTDAtOoGPnqH3tlWJYExAnIVVMZQ9xd+Si6y+p2q4sjmMecLi9Z3rc342xYLgSS74zNJvHrsdK/gyE/lNSmdZw48svMSJ8PClosRvIi7ojdAQo+hJzaUPi9bh5kiNs1qoD8NZODeaqRMtZD53XjLro7RE8ezu+YKtBithgAHASl2vU2Ves4myufpvzvLUyImAc3OhTJZSTEQdiv0edJY9R6ls7xt9YtJ3+g88fPl6iF8k9BC2+1dAzLPnapM1BcquB/DD9yr
- VbMFmHjz
- BMTlQTg8hzXriJdSsHNofEaCwQ4DJNsVAbScoFDcEfWd5ZHRyInwEomwFXakoc3h1KRaicN6L1zT2MDmJvlH4zeLgxKw7OFOdMOZlyhE0idV9ABWoVyGqZUkUWowkomxedoCc/VcvPKen2Wtn3VjjFxZ3ltb81HCoc0gA8hchBG4a9zvoQFPWJl7E2uMiiQH3XHIQH8Q8bodgZpvLJbBfNYrzf8tlnPip49ZwpOv85ntHkWRwykcml/2zuJqi2370EtH73QIZaCnSEmVR0gItKmA8G8Lm//3kOEki+xYaCL07j3E504yyKVaCe22mSYsOWKzB/0G13y7Fa2Xb0jAQ269lkkEWmf/Tw/ydx5r7SzghG1+LUvd/Z6HsrDx9iMAo3/EEk8dq4Fs9qrP/Eq8xhb4x+BCdhLG5ogxpTMPuw8FlRG602bmvDhFlZbJt/1WgAeoipwRvs/1aYA4tshL9/J9L25uWnU5zEFdCk5kDTYa3V7FTGQXR1NJHEDz+EMXMPypXRSkz/jStms3Kur+6bdKiZo9IWCCma7svunfbot3WeceSPQ0wFNk6ZGci3bJfzHSh
+X-HE-Tag: 1789003044-9214
+X-HE-Meta: U2FsdGVkX19OsUPPVdpdxTnHXYGyHcSzKuevIO0cXg56Wwh3vt7/kIWHzXyyB0ivwaJ8uhLOOaPc4FxW9NZgzr4lFvkfNOuF999+xHTPU5wI7cpk3zwm3ZOYZLCIxHDf8D1tG2WUm00m4Hzg17RQM+Vj0oSJTRenIJcOVYQktEXGcXlGPP25wbLRl9wjzQBtBinMY2fqNWgJq4fNMlqcD5ivLQtbTEjp8ZobpgqXHzEid90V5QBQ1kJ6ftxRA4YJDoESgOc5x6xUtxKLXD/cVLX7G0f4n1p2YGHPiGIE68LmoQONKNHvLs/oDsTEZznp45qtlq1KtF5X07pjsaOwJrVxmC7JSw2KO0Bbc86RTwk8uNdoHWTertn61F+Lji43sdjAprBqVWcBYH0BrtiSuDjDhe9l59+nVvXF4qaQU2boRf9i2NinmvQla/HUHdqg0GGFus31B+XrQc0H1VwkbNeMFc7MjpTdH0lGU2JqtOUDNlyVp2g4zQ55ZlN96T3dehj+dfelYptiza/8TuIOMfpP3ou49RnRWZWyUtcFtLKjZ4as2ybc0O/uXv6b2M54CpygqWLhGLZCmHIm/bPyVEvta6mkUx+hTMgPleUEBWYBh6cQgqsACWgAxYxiRgm01HY4RWoUngHULwPG5JhxZPJuHM9WSH5lY9jEU4X7ZgV67psRnsdyYvmtPVOBhoGXbk/Jx76Xn/3LZuWEZCHM523/2hyQm3MCnlaoOAc2OCO4gft/dPuq3VFWHpgK/0N4xCagLQIl2PcVVgtbp72csP0U+umG2jsXVQahWeoJ4osF0X6RfvbObpPMggEI9KMQA2JvbZtDdYh+yjftJQl3OAmWQyVQgLnCQ1kTRZDG/u3Ex88R9jCqYpcZwPvOsyT5kW41O0Tq8CtrnmH3TYEzftmGdhut99K4KbQMOhlbuPgALmDJG7t/XghELk51iGvwh+JzzhArCXJUBHzxtkz
+ Bwl5kMYb
+ hutrOnc3diEkVSfnfv+pAolMHrLDY5ZzAyzOE1UdeqLfETbgqLE1ltMcGV765YcVeyAY7kipLomhvjgZPHm+JYKqVqbGvsJX5kdZMFTOazVfFYUMvtrPrpSBkZwvNnJNHP7eId4hfffrd3JpxJ6+fBso798//mOyZRvAWCBrPp/11x8p3KeBN3JkjJP+MTnZK+u9DajSFvgUL6vAFc+7m0RHJKpzUcq4DLd2Eg36aKmjL+jttEzQad0C/VdTjdDcTfioKJJ3up3+IdlT6zgAYu9PkQtremhRuOfX6HCTfRnxumwTfCnSPYTk3Tyfz6nULOXCGI45BUq+E6HUW34L4shCB5ceNOCRFDWGyu2zQ7tWXmRNdXzKofq1h9VEVGPEbh9/n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,142 +96,34 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/9/2026 10:52 PM, Johannes Weiner wrote:
-> On Wed, Sep 09, 2026 at 08:35:47PM +0800, Kefeng Wang wrote:
->> zswap_store() falls through to check_old and walks the swap xarray
->> even when zswap is disabled. Add a zswap_never_enabled() early return
->> matching zswap_load(), and reuse zswap_invalidate() whose xa_empty()
->> check skips empty per-area trees to avoid unnecessary xarry lockup.
->>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Cc: Chengming Zhou <chengming.zhou@linux.dev>
->> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> Cc: Kairui Song <kasong@tencent.com>
->> Cc: Nhat Pham <nphamcs@gmail.com>
->> Cc: Yosry Ahmed <yosryahmed@google.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
+On 9/8/26 8:50 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> These are really two separate changes. Can you please split them out?
-
-Sure.
-
+> A khugepaged test has to tell "not collapsed" from "not scanned yet", and
+> nothing in the selftests can.  wait_for_scan() in khugepaged.c comes
+> closest: it polls full_scans until the counter has advanced by two, since
+> the pass in progress may already have passed the test's mm.  But it only
+> returns in time if scan_sleep_millisecs happens to be short, and it is
+> private to that one test.
 > 
->> ---
->>   mm/zswap.c | 16 +++++++---------
->>   1 file changed, 7 insertions(+), 9 deletions(-)
->>
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 5d0d8bd72193..fc6c5e0db5e4 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -1488,6 +1488,9 @@ bool zswap_store(struct folio *folio)
->>   	VM_WARN_ON_ONCE(!folio_test_locked(folio));
->>   	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
->>   
->> +	if (zswap_never_enabled())
->> +		return false;
+> Add khugepaged_full_pass() to hugepage_settings, built on the same
+> advance-by-two wait but driven through sysfs: a store to
+> scan_sleep_millisecs wakes the daemon, so the barrier completes whatever
+> the scan cadence.  A store made while the daemon is scanning rather than
+> sleeping is lost, so the helper keeps storing until the pass lands.
 > 
-> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+> One wake completes one pass only if pages_to_scan covers every mm on the
+> list, so callers need it large.
 > 
-Thanks.
-
->> @@ -1545,15 +1548,10 @@ bool zswap_store(struct folio *folio)
->>   	if (!ret) {
->>   		unsigned type = swp_type(swp);
->>   		pgoff_t offset = swp_offset(swp);
->> -		struct zswap_entry *entry;
->> -		struct xarray *tree;
->> -
->> -		for (index = 0; index < nr_pages; ++index) {
->> -			tree = swap_zswap_tree(swp_entry(type, offset + index));
->> -			entry = xa_erase(tree, offset + index);
->> -			if (entry)
->> -				zswap_entry_free(entry);
->> -		}
->> +
->> +		for (index = 0; index < nr_pages; ++index)
->> +			zswap_invalidate(swp_entry(type, offset + index));
+> Settings pushes must not start passes of their own.  A store to either
+> sleep knob wakes the daemon, so thp_write_settings() now writes a
+> khugepaged knob only when its value changes.
 > 
-> That dance through a swp_entry_t was already kind of awful. This would
-> be a good opportunity to refactor things to avoid that:
+> Assisted-by: LLM
+> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-It looks better, thanks for your review. will update.
-
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index e6ec3295bdb0..df18fdaae703 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -228,10 +228,15 @@ static bool zswap_has_pool;
->   /* One swap address space for each 64M swap space */
->   #define ZSWAP_ADDRESS_SPACE_SHIFT 14
->   #define ZSWAP_ADDRESS_SPACE_PAGES (1 << ZSWAP_ADDRESS_SPACE_SHIFT)
-> +
-> +static inline struct xarray *zswap_tree(int type, pgoff_t offset)
-> +{
-> +	return &zswap_trees[type][offset >> ZSWAP_ADDRESS_SPACE_SHIFT];
-> +}
-> +
->   static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
->   {
-> -	return &zswap_trees[swp_type(swp)][swp_offset(swp)
-> -		>> ZSWAP_ADDRESS_SPACE_SHIFT];
-> +	return zswap_tree(swp_type(swp), swp_offset(swp));
->   }
->   
->   #define zswap_pool_debug(msg, p)			\
-> @@ -729,6 +734,19 @@ static void zswap_entry_free(struct zswap_entry *entry)
->   	atomic_long_dec(&zswap_stored_pages);
->   }
->   
-> +static void __zswap_invalidate(int type, pgoff_t offset)
-> +{
-> +	struct xarray *tree = zswap_tree(type, offset);
-> +	struct zswap_entry *entry;
-> +
-> +	if (xa_empty(tree))
-> +		return;
-> +
-> +	entry = xa_erase(tree, offset);
-> +	if (entry)
-> +		zswap_entry_free(entry);
-> +}
-> +
->   /*********************************
->   * compressed storage functions
->   **********************************/
-> @@ -1554,12 +1572,8 @@ bool zswap_store(struct folio *folio)
->   		struct zswap_entry *entry;
->   		struct xarray *tree;
->   
-> -		for (index = 0; index < nr_pages; ++index) {
-> -			tree = swap_zswap_tree(swp_entry(type, offset + index));
-> -			entry = xa_erase(tree, offset + index);
-> -			if (entry)
-> -				zswap_entry_free(entry);
-> -		}
-> +		for (index = 0; index < nr_pages; ++index)
-> +			__zswap_invalidate(type, offset + index);
->   	}
->   
->   	return ret;
-> @@ -1647,16 +1661,7 @@ int zswap_load(struct folio *folio)
->   
->   void zswap_invalidate(swp_entry_t swp)
->   {
-> -	pgoff_t offset = swp_offset(swp);
-> -	struct xarray *tree = swap_zswap_tree(swp);
-> -	struct zswap_entry *entry;
-> -
-> -	if (xa_empty(tree))
-> -		return;
-> -
-> -	entry = xa_erase(tree, offset);
-> -	if (entry)
-> -		zswap_entry_free(entry);
-> +	__zswap_invalidate(swp_type(swp), swp_offset(swp));
->   }
->   
->   int zswap_swapon(int type, unsigned long nr_pages)
-
+Make sense to me.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
