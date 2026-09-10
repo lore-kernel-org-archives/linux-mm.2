@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E20C79FBF
-	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973FEC79FBF
+	for <linux-mm@archiver.kernel.org>; Thu, 10 Sep 2026 17:16:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 880566B0092; Thu, 10 Sep 2026 13:16:34 -0400 (EDT)
+	id D89586B0093; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858196B0093; Thu, 10 Sep 2026 13:16:34 -0400 (EDT)
+	id D3ACE6B0095; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76D726B0095; Thu, 10 Sep 2026 13:16:34 -0400 (EDT)
+	id C50B46B0096; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 437336B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:16:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60DC1A061F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AB0E6B0093
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 13:16:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 046C51A058E
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:34 +0000 (UTC)
+X-FDA: 85198506750.20.F4E6D77
+Received: from mail-yx2-f10.google.com (mail-yx2-f10.google.com [74.125.224.138])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 390D21C0003
 	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:33 +0000 (UTC)
-X-FDA: 85198506666.16.B661FAA
-Received: from mail-yx2-f8.google.com (mail-yx2-f8.google.com [74.125.224.136])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 724AF180002
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:16:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GyGAzbFn;
-	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.136 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iRgRlY/f";
+	spf=pass (imf18.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789060591;
+	s=arc-20220608; t=1789060593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U8F+pCWHvp6Bk2nFVk5sf15ui0cPT96FgZ/ARqD+0QM=;
-	b=qXacOC7vIl84A+hgNcdMmc8GgypIbjFHyjtn3QDL5xjMjHi1Zyp/317xzgh3DNT5lR58mi
-	54EcayseY9r0JULcZVnxmS8P4BAlUdv1ix+tlDBoGZmt9vgovbFURSAwskYG1j8TU7aV7c
-	0gexdob0dEabOh4Ddxrpsim55hdIsC0=
+	bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
+	b=hnW9LYyKrC5FGay2XQ5mmKCWwNzR8ZCidNEojMujjpQMSCtUOzI0tiV3eD/mg8E+LnM6fR
+	x48UHBdK3JEg2MNnH7gZ58eGeSabB/RyaU08h6Vl4G99Na9w490jrFTG4uAgq0yctnhheG
+	EvwOJuh/iMvbKgvmLmx3XQf4QglYxIg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789060591;
-	b=UUDFMwYmmvsue6sBQztlYoN8AqgRBGhxXZdbo8AwcAN7kw8fx2CcVroMO3M/j7ACHTSfgw
-	JxAmnvj+N2lVw6/zUSzVFoGfUkmQNHhZxx+9OMfLXVk4WWJ7oe76NkLLvEBAd/2bdF+z6x
-	rcM0wCKoHtIIZljR8uMPZAEFUxIUVnE=
+	t=1789060593;
+	b=ZgtpFM3HOGjOKGfLcXbO6SGg6kmY79VeLQZriK1VO1Rzr7gBr1WKL2XmE6U7BYgUhWYqWa
+	Y14bAi5mJlEp/cLMNaUR1WHh5egbTc5US/uHJ2A+5cyeeVL0VHlv6krbl6mv64MeZdidEc
+	N7CxSt0EEqjqTH2i4nMN7vZ2vcziAVs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GyGAzbFn;
-	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.136 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iRgRlY/f";
+	spf=pass (imf18.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx2-f8.google.com with SMTP id 00721157ae682-854f090ff98so38506067b3.0
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:16:31 -0700 (PDT)
+Received: by mail-yx2-f10.google.com with SMTP id 956f58d0204a3-66c711552cbso2234034d50.1
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 10:16:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789060590; x=1789665390; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789060592; x=1789665392; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=U8F+pCWHvp6Bk2nFVk5sf15ui0cPT96FgZ/ARqD+0QM=;
-        b=GyGAzbFnKYTqewNcIPUznUWKWisW0oT664r8o8KH2GKpmIsO5VZmwcdyEoF8N+Rkos
-         HTDVQATU8Kf3sQ7t071pBM/brGN2ObXR7bpNEZ+4gQdbAykwy97UUYLU+YBsAOwRFFf6
-         jZJXhoyZpC8B/f+3n0mtKy6niYWcCg9G09LwbfDWCCcJEp3Q17xRTjZ5x99oWFYhMWdX
-         Ih+ceF3I9pi7q4A2HlPOZgWkqis58dWsHpiW5E3YmbxY0QH4p0KN89UF2RAfndRk0+4h
-         KJrH3cTsaTa2TMQFviaTnlXBibcGOhWW0LX1hVPzOktRQroPdCyI0u/UjI6Bpbgsl/AH
-         YzXQ==
+        bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
+        b=iRgRlY/f06jfFsb5l64W8cZ19Z/CSqFJK/2xJ4YPETlalN3vySzhU+BL/PLjXK/rNj
+         YnOQmCEizWo0jKlGmOBZ/sknzqGNi9gw+PVpqAW9FDMBBH9H5DEUajdq/OL3LUBoDsn3
+         dDMOK2A3XYiZ/eJ4zoD82f5QSdgIPsgY9uaAEOP88wZ152upeJLy9gUHcIMVF5w753Q5
+         QIdGI71gbHQyC22zRlNUIhSWMTEoq5fovDy2grKpFC+z2bnkc69tWczKWl66mOsm/JP7
+         vWSJEC8QfGYvHXDrdTXtb5XzTwsaCT1cXVuRxcv5Q/S58Scuj0y+4hHwswCZckCBzWZS
+         aCMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789060590; x=1789665390;
+        d=1e100.net; s=20251104; t=1789060592; x=1789665392;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U8F+pCWHvp6Bk2nFVk5sf15ui0cPT96FgZ/ARqD+0QM=;
-        b=aO+gPyYnTOTmOCkUeEGVYN8e/FYolZd2sQmfyqJkV7ni53z4pACTe5FG2J2+iE657/
-         +dWaKwLBXZpBEErRhWg1BHMgU4A3ANTpQQ73YVPvGd7F8445GUXn6UQ0HLrW6/uwra9k
-         iSeP8ng4WswadPFeeG4Bm3g/6wLffIwlgyBg4Ku04rBhQ6v3jmffezL3jFeM12UeBfHQ
-         gPcrA9qbi09Ja0lFDeCmvMCVtWUpWv/jAIiOoylhmTv8u1zo+FUGoQZ/E8pRV5NRSOby
-         59p3aJ/G0dpdE4P0OQ9R5TXueYYnqvK4cGIBuEhays/O0x72Y0VGwIlfDc/3twNKv/AA
-         juTw==
-X-Forwarded-Encrypted: i=1; AKwUvByOdjUw2+XeqAVK5hYmY+DtQ0ixVrT5f+hWieolBkT8iGTyKFb80eY+yo9qOy+3p9yExADJKRVZ/g==@kvack.org
-X-Gm-Message-State: AFuF++lWFhcPYSHyFFA3efz8On31kHDujSjrvIzH8pdcUyFpKDR510hE
-	E/NoqJEjLKeJc6VHL6BsYPMQnXpPJ7BI9efka0oxBUZefIwu1AP5aEw=
-X-Gm-Gg: AYBFou1gOSuElldOnbo9pN9E7dsPVjdG8O1LNiJKxjlaAEBcfXNkc/ER5Sa9Y5bUXh9
-	WejsHsg7YYvJPmpZnEp5H+TQ/dDbvSjQ8u74k/clt8On9B+0eT4vo6sXfBjsztNGf6oQOyLIPfC
-	BQYDIxP7Lt4W6GsXbYZpa1GZ+V+KIXH3aicIF01my38LB+JWD5fBIzfpMRxkU8hHYLkc3K8nScX
-	uguxXHmP2tv0XaCkMaWx5QGrRrTWmLQGWLp1PxBmQ9ydXDz2pb0EEYyjuuRcrQH0+yDkbpH8nYe
-	kE868cKfnLdsdlrJagZP+tbnWlXfXC201yUctWJB6JXAcopV2dxgWaVaQJwMkjrCSr6QxEzKDys
-	ECdede6a3WdOJGom8tXJdYv665aARw94u17M0A8r0C4kaKd7Ghcbf4F44kra92IoKTYHTutKZGX
-	LqQ7ehmZE0jMcGp8tsdCXW5IW18vQXVtNGxMGLSLIUF2/UBoZ9EMh3DdYm11p3N0coKxbdJYWZw
-	pnIwkejKk8RBirqn2kFdXyCicgJvKrPQ1P7QnndySHa3mGyw7at1OGw1laL
-X-Received: by 2002:a05:690c:d83:b0:865:838f:485b with SMTP id 00721157ae682-884ad14f632mr2358197b3.4.1789060590335;
-        Thu, 10 Sep 2026 10:16:30 -0700 (PDT)
+        bh=yQvOpBVSB7EFzma+xoAdOHr/Eyr0ApRMjSY0dpxZAoA=;
+        b=UF+ZPfOhTuHXIzMCaUdwjLd9rvUZJ41iatv2oqEHpP+TdeHsWer9RmOzGRuy37ep/V
+         XMaW0jeCe6oYQ6kxj0oLUOgw69+y0I5m9cztX1Ret8LX9IvQCzO/VOiA/Cr5F2Zqic9L
+         JM/+LovZ63Fmw7IkwHqKRP6QjTzJUawf9S7cH0d7wvsmTwKv55sX2W46rqdDzgfcq++x
+         rMgXKAiGd0hjfefHKwkzWK40jeROgUamOmB/Js11hX0t1yvD3EBIqJV6idT2xex4e2PY
+         pmfUX74vs0T9ZQ5yE8N5Z/eDOpW81OVn4WcQke5IE+qPG4lP27lVGUkQ6Ol3fbuiHuiZ
+         drHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxDRXZ4OlgqVDnOib+IoZywg7B8rpZE2cY+cNm4fAu0rsMqI3m5SCs6mihwm6rtaoLtVjs5UjXBpA==@kvack.org
+X-Gm-Message-State: AFuF++na6wmyrclH8N6QGGOSiwvoLgt791TY0KnXQEhGglgs6IIxbO+B
+	QGJ31+dBrqLuLKL6hPD0iDzmRMmyWV5AJ5DkdZCnOaSsl7Mwkb2XmwQ=
+X-Gm-Gg: AYBFou0fiaWNVQOexqG5wZ44T7FeMzp2eJwUkEpvz09TmgggPEgZVSFn9HbOnK16Glc
+	+GvaTS2MJVGm6OIOPCSyWGLQ4BR60Dq4tNs5DsEbOa+7cA2cPOJgV3jDNpXRHZk2Up+0yjePMiB
+	qXIWpc/hfDuqpBA2skER2Gwdlzy6JpBvZUb+nX4B2DcqNoFHqjjtMCq59ANbwv7ZQG8Gp/blsy1
+	juz6Bj98rEUZXYGrQUZiOpeDaRJg7VJ1gKGu5NJqdJ8ffIXZP6UxcBOBg+dnJgdWE6p73Q5VvJT
+	KuT+NSzr/BLaZqHE22IqqWWHEBUiBfLTh72GKzMw9DCrTWoAT1UGrqoyWGqVwcet3jo71P2XoPa
+	ZviHZIQqywGgFT6VxFM3dY7oONhL33tSRKLLUdrGkwYzL/N3tbKaNDnhQ6u/S6M9IGlyJIBOzCY
+	jg9bwsF1KJWYTvWd3pTDF4SxFACA2CLbSCq0ka2prE5JGBgMXab1mF1nwby4tOLNKPF+QM+adoT
+	tY/4ZjEd4/V5R+gypPUsdbyLAMGAohnhQ7ARTWc9jSiWdKrYA==
+X-Received: by 2002:a05:690c:e289:20b0:858:41d4:c28 with SMTP id 00721157ae682-884afc19817mr1025287b3.8.1789060592200;
+        Thu, 10 Sep 2026 10:16:32 -0700 (PDT)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-884890160bbsm2241007b3.42.2026.09.10.10.16.29
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8848608617fsm2387337b3.9.2026.09.10.10.16.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 10:16:29 -0700 (PDT)
+        Thu, 10 Sep 2026 10:16:31 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	akinobu.mita@gmail.com,
@@ -109,22 +109,22 @@ Cc: akpm@linux-foundation.org,
 	weixugc@google.com,
 	jic23@kernel.org,
 	gourry@gourry.net
-Subject: [RFC PATCH v2 1/9] mm/damon/vaddr: support page fault access check primitive
-Date: Thu, 10 Sep 2026 10:16:15 -0700
-Message-ID: <20260910171623.6638-2-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH v2 2/9] mm/damon/core: read the CPU number with preemption disabled
+Date: Thu, 10 Sep 2026 10:16:16 -0700
+Message-ID: <20260910171623.6638-3-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260910171623.6638-1-ravis.opensrc@gmail.com>
 References: <20260910171623.6638-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: okfao8d91tuoyq9b8cnf5yd8af84m6bu
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 390D21C0003
+X-Stat-Signature: artzghan46m9uufgzsapknybymh1zbqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 724AF180002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789060591-86486
-X-HE-Meta: U2FsdGVkX1+QcYaOpU9A/Xdnnhwg1KbXO+FGH5ykt8PEsm+G/BwP7/UCDn9J25/ZailSTH4ltCjndKbc5zcRw/7J4UM1GeoBFz4g8XBOsHhI2+P7KixJQ4OnvHQQr5naIZ6myyL9yzB6hvCwJBU8tpnWghRsbV6UQ8dKZ2tLEXRJtBtDR3z+cs02Hr654am6Pn1EobmnJee6woMK3Ox8FcY3J+24oTbTJlaB8sUa/apF65uWac5a4+ENtFMELdrq0PVJubxLnNisdtYHWuYu2+8F39lxz7MZQjo4wVvY53/o4Cd82sV0n8RNl/N6DkwsgMKoC35GNS9BYF2VwLIiqVlY65x8lQiK2Zu1twh0dLdZ2D0ji89r9t7tCQqtzHwUawMVQL7u75slwsUG+Fwt8GX83ReKs7rl+4tUEeSjmixnBnHk3he5QLQi05J8cAcObfrEcmO2hsI2Z+fr2sw1MYr8zBcQnWXfF+jgsSIktDMGOy4oy2d7MfsWIHwTupHFzi5levseQmZQ++Iv7PGIzaMrvQzatzN/svFs2iL/53dAC57GrYBSUYvqP45Fdx9y29szUmcCEAmPzPwHR/3wnasEx70LHvBrDU8hQPzo8uQCSjguskTG76+QP/HRrZ+xGk24PizFG6Ajz1v4RLLpPCpmb33AoG89HjC55NZfVkcPtl6vmDnefkkfWRK/jCQLq9vh59xuKAU4rFYE6HHJ9qqiS2aEMrLQuECjNB6pRrYFkusJoOvnP/HfCuioMQuvb+CoSFnn7lfUnu1XMm8Vgz3rDSg3VqCBL/BaxAW+ZRw9J5R5JyaUHgeKyXVYhuJEeOljybCOFTpxsvLLx1N7fj8+NTh2/QSeKFPYYPmbm4g5CGRHfe8KTMMJocRFIycb0C3uWUgXqd7kCBJizX8jq50mFevI4Wj2AWMFpXdBJhWgR1qNDYweCvHg79oTN+/KR/TJdjhzBYc7TGqeGym
- JTC0JAL/
- NyTKVw9Nt0JRVT7to8zRdjic7Ytak/W26dH6FgeFljTV4aSU8UF8kunSNf7wA98qj9EfvBLJpXVkitDqVeCbpfiUKPeICJJzUtDlyAAvIChP7MCM7aOxEftaKyCQvgvrEOsBIqVXHZ9qvVXAbiw/xqaqkNdQJWKiYnBSNi3xJXRFPkP94pKElzYmS+SPmWLsRnvRKWga0YshHFQGpp7mIO/MaRZS/ZpHgYNTQJq+OJ8t4l5mpqs7ryiDVVviwCA4Ntc9RzJSEHTzN73ey1xw1j5p9fBW6CsFcolyLEgLsiMNflfacHAQ45oZ/8t0SW24nWuey6e+pGqj86Xgls8D6ZaFZL2ilPWBZF92WphJTo1WYV1+HNe0ZjgkMSmSrJepElbL7bi6V329uFDcmgDfPr6N/0toSdQrw1tdrxBgMcWKFUUdBN4F/Qt+8FBDwJrsEABjVGOeB8gH13RdYVY+nAiFX4ZvU2o59EC6P8Vc1eVApJDYDmkU+36i2vb7V/b5dGB++4gEiHTWJ7nFVMlAMWGO7TKIOWdpzSd7Hn5L3N11WtqEOY3HJgc+PippPCGflRvUo
+X-HE-Tag: 1789060593-386057
+X-HE-Meta: U2FsdGVkX18cVMKqxE6JEDs3msmlWqZ0eH8bCg7fZaytkcYB5jAKFrxjwC8bxpPcmoGbjpDJlgrZ4IDV+LBv5wj7SmG3RIYLJKTj9KhBPrxR2i+v9++xfdeLvSPkIrrpxqe9o/8pK1l0GxvRi+yj6i84Y4WMEsRbij1kx/Ny2yqjutqnkLwdvprK+i88/baXIkkKUB9L3wiIGtAhiynEhXa93MzmmSgClYXzoVajlGc2MGUe9ggi9BPfUiVajm2DthV0G1K35WlCR88BG7uEbQDKvWP6v4EvKiTDOB4WXDHfWdWckS5xhkAFePtwlAJ6byTdOXUIbsZWGv94Ffubd7f1byP4y/UqH4X3xYFVovqTDd6QIu460XiRz1dAUoPjeBjKMPd/Bd5R1G2+XvY3EtWvnkt2ayC5H/4b0f/inHxrfDlVCuNVLG1JVM5VPWjUh8mm8ODi69bS8uuJBtmSSauNJVQegWuTOYwoxv655BDEtRV55ZXIAOV5ySS9DV3FFUL5CLs1RYdrre22LctN7ANR9oE9CNGM0K7jSBaWUskotuN7jCqVuDZ29DjDG4R2l16aEYfzIsOppiF8sr6QVm59IQnV/buTXuJdTt98FWUjus2diQZORZ1fB3/0ElA/Zl+bl4yBOndUS23BkVrmIX6d1B0W3RPVKfQYs13LnxFrPewU1lsDyVetx0+rBxhNjP6uN8D7smgGnv8KLi6VW9e7E0C6Yn4Z8RA1fOVmi1a0//rAA5ViJNZKNvW0QwETvOtrSKLCHlqMXHK9m6uF1e3Oijg0ztDqD7aF9rPG12CrvoxV9mY9gw0NkuW6HZH+MTPWYUMOYQ3SUOiKacpomsfs9WPsWFwFiO1SUjFrpsrq7QBD2T0LgzX8CxNL5SUtKJta9hwqhTZCg12eiZxt9sfxf6Q9Y/IH2WVU0bNOmOvJCngnmmh1iImAWS6CRDWeQoEAL0yB9iwlsJ4n2V2
+ szqyL089
+ //LEM9uZc0D4Rb4URW6sc5LlUDJBRmGOcJQ8OP+GqvX+3OKLjc88bFZST6RFApAMEEnZb4IvaaJAw6Z0GLToRyAHzdISMBaR4JyrW/5n30gdIxgeOjNiG12s3CvW4JsrrHI3DtMPrBKNTHMY+NjoXL3csVw8qmx2yEwed01TvpW3d0enIBYH35EcP+zRh2ro3zk17yBumnezDYFVeFPDMTcR/lfxtoicms4E1KF4R35KBV8WBshDWro4uOS7CKqgFHJYjnxRQjOcynYFWeEGImbXEWZyB/PPha4TFYbI29uELNPiQUjjzD50NbaN3Y5Mx+IFRuDt5nbnnbmPYqimLS0HbxQBmYIJVJaDyPtqFAluWXNVGx886rrG1sY5NgsorGcq68dB9AJ1nF/7DqFLrGHJETVm5yyqAQ5Ufkq4m6IF98+4bFgbZ9RbmyPMPydXJoTcoYQrsWnZD6rmEZIOZgyFH91pfnOuWlGtnUfIV5axukycpi/o2OJL7/hhdlF6KACDn+EBEmZo74enEipDa2eJd6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,116 +132,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The page-fault sampling primitive was implemented for the physical
-address space only, so a virtual address space context had no way to
-enable it.
+damon_report_page_fault() runs in fault context, which is preemptible, so
+reading the CPU number there triggers a "using smp_processor_id() in
+preemptible" report.
 
-Implement it for the virtual address space.  The prep installs the marker
-whose fault reports the access on the sampling address of each region,
-mirroring the physical address space primitive, and prepare_access_checks()
-now dispatches on the enabled primitive as the physical address space one
-does.
-
-The target mm and the vma of the sampling address are both available
-here, so the marker is installed on the mapping directly.  The physical
-address space primitive has only a physical address and reaches its
-mappings through a reverse mapping walk.
+Read it with preemption disabled, and keep it disabled across the report
+so the recorded CPU stays consistent with the per-CPU ring the report is
+queued to, which is selected the same way.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/vaddr.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
+ mm/damon/core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index d5dde97b3cd0d..1f2d923e569d6 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -13,6 +13,7 @@
- #include <linux/pagemap.h>
- #include <linux/pagewalk.h>
- #include <linux/sched/mm.h>
-+#include <asm/tlb.h>
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5fdb5922edb78..991ddb9a09414 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2514,7 +2514,6 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
+ 	struct damon_access_report access_report = {
+ 		.vaddr = vmf->address,
+ 		.size = 1,	/* todo: set appripriately */
+-		.cpu = smp_processor_id(),
+ 		.tid = task_pid_vnr(current),
+ 		.is_write = vmf->flags & FAULT_FLAG_WRITE,
+ 	};
+@@ -2524,7 +2523,15 @@ void damon_report_page_fault(struct vm_fault *vmf, bool huge_pmd)
+ 	else
+ 		access_report.paddr = PFN_PHYS(pte_pfn(vmf->orig_pte));
  
- #include "../internal.h"
- #include "ops-common.h"
-@@ -329,7 +330,8 @@ static void __damon_va_prepare_access_check(struct mm_struct *mm,
- 	damon_va_mkold(mm, r->sampling_addr);
- }
- 
--static void damon_va_prepare_access_checks(struct damon_ctx *ctx)
-+/* Use page table accessed bits */
-+static void damon_va_prepare_access_checks_abit(struct damon_ctx *ctx)
- {
- 	struct damon_target *t;
- 	struct mm_struct *mm;
-@@ -345,6 +347,67 @@ static void damon_va_prepare_access_checks(struct damon_ctx *ctx)
- 	}
- }
- 
-+/*
-+ * Install the page table marker whose fault reports the access.  The target
-+ * mm and the vma of the address are available here, so the marker is set on
-+ * the mapping directly, without a reverse mapping walk.
-+ */
-+static void damon_va_change_protection(struct mm_struct *mm,
-+		unsigned long addr)
-+{
-+	struct vm_area_struct *vma;
-+	struct mmu_gather tlb;
-+
 +	/*
-+	 * The sampling address is a random offset within the region, so round
-+	 * it down to the page it falls in.  change_protection() walks whole
-+	 * page table entries and expects a page aligned range.
++	 * This runs in fault context, which is preemptible, so the CPU number
++	 * is read with preemption disabled.  Holding it across the report also
++	 * keeps the recorded CPU consistent with the per-CPU ring the report is
++	 * queued to, which damon_report_access() selects the same way.
 +	 */
-+	addr = ALIGN_DOWN(addr, PAGE_SIZE);
-+
-+	mmap_read_lock(mm);
-+
-+	vma = vma_lookup(mm, addr);
-+	if (!vma || !vma_is_accessible(vma) || (vma->vm_flags & VM_PFNMAP))
-+		goto unlock;
-+
-+	tlb_gather_mmu(&tlb, mm);
-+	/* todo: batch or remove tlb flushing */
-+	change_protection(&tlb, vma, addr, addr + PAGE_SIZE, MM_CP_DAMON);
-+	tlb_finish_mmu(&tlb);
-+
-+unlock:
-+	mmap_read_unlock(mm);
-+}
-+
-+/* Use page faults */
-+static void damon_va_prepare_access_checks_faults(struct damon_ctx *ctx)
-+{
-+	struct damon_target *t;
-+	struct mm_struct *mm;
-+	struct damon_region *r;
-+
-+	damon_for_each_target(t, ctx) {
-+		mm = damon_get_mm(t);
-+		if (!mm)
-+			continue;
-+		damon_for_each_region(r, t) {
-+			r->sampling_addr = damon_rand(ctx, r->ar.start,
-+					r->ar.end);
-+			damon_va_change_protection(mm, r->sampling_addr);
-+		}
-+		mmput(mm);
-+	}
-+}
-+
-+static void damon_va_prepare_access_checks(struct damon_ctx *ctx)
-+{
-+	if (ctx->sample_control.primitives_enabled.page_table)
-+		damon_va_prepare_access_checks_abit(ctx);
-+	if (ctx->sample_control.primitives_enabled.page_fault)
-+		damon_va_prepare_access_checks_faults(ctx);
-+}
-+
- struct damon_young_walk_private {
- 	bool young;
- };
++	access_report.cpu = get_cpu();
+ 	damon_report_access(&access_report);
++	put_cpu();
+ }
+ #endif
+ 
 -- 
 2.43.0
 
