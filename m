@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E71C88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 09:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F8B9C88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 09:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D2936B0093; Fri, 11 Sep 2026 05:08:36 -0400 (EDT)
+	id 87CA36B008A; Fri, 11 Sep 2026 05:09:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5925F6B0096; Fri, 11 Sep 2026 05:08:36 -0400 (EDT)
+	id 82D246B0098; Fri, 11 Sep 2026 05:09:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480D56B0098; Fri, 11 Sep 2026 05:08:36 -0400 (EDT)
+	id 745F76B0099; Fri, 11 Sep 2026 05:09:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 151BE6B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:08:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02C42C0156
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:08:34 +0000 (UTC)
-X-FDA: 85200905790.30.D4034CF
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 11ADD100006
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:08:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o0SR5xoR;
-	spf=pass (imf14.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789117713;
-	b=hFQ17XTpl0YzJzlmVTlHeR8bV3ejuef6J0FDMo1zjfyjrMPdwpFCu1UocgHxaGbKYrki+X
-	jppMG+k+IP0rwcmQxaJKahFyJWJ9I/wh8ElU6N5H+ZdD4zAMRuWAEWUhindLp4OCDYWEJO
-	nSMYT92YnyAfgc7y8ICE5TyM5gK7Zx0=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o0SR5xoR;
-	spf=pass (imf14.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 520C26B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:09:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A355840169
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:09:56 +0000 (UTC)
+X-FDA: 85200909192.27.A283E80
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C316FA0003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:09:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Vqnz2/rX";
+	spf=pass (imf15.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789117713;
+	s=arc-20220608; t=1789117794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-	b=j6Jjv1j/EGfPbOtwm56BKDFMfqkK+aWM2DytmyMTD3vQF4uBt23fNhiU18/bu2E+7QjoZC
-	53xJ7Yw8vn+4s3JBptUW+6u9tzYOosddm2fos5ivSqMihcjJFKdi7CQDimXLJpy0uoNkLX
-	B5KWzlb1mKhhn6bfNqP/S2+BSRyejkE=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4843e397f74so406031f8f.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:08:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789117711; cv=none;
+	bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+	b=XQmvmCcEeolO1bZPnYr3nrnJCaqTddNDlVTOvI6l1+0B6i6uM2qMVvFOZjnRM8PCJGrNWu
+	leEyjAGv08m6qwBryNIW7GdIDcM13/+2WHb0JQn4o9DwTMmErWFw5DMHryLsEyi4xaS2f5
+	iWqRd2kb6gVO4veO3yIdZvRo5Si/sMs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789117794;
+	b=2p3jE7OjOacfMGtMmv+i93Qdabu3fQBf3u2ttbOSJnNCe2GS3r5YvFTUHTUrCQzEKrz1An
+	K7PrZ1B04B4dqbAbszKQ06o4czNTjgReTiUOqSnX4TmPBRqd83c+TY2s5wCOvmDTNCqpzg
+	hxME/JcBFd9/sjBt46ypcMDWJAm97wE=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Vqnz2/rX";
+	spf=pass (imf15.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4843e9c5960so603274f8f.0
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:09:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789117793; cv=none;
         d=google.com; s=arc-20260327;
-        b=qkctzeu+uRW8Im3bJrghTIrwlwHEfAECWk2mdXnPrOd/3OVsQMDdcQChOPkMYmKwqb
-         nHBMPSJWVmNgPNGtkQesHKKlpgg1EdOELWS0txnI8ymepptbObF3YLB4zasDQf9qvbjZ
-         eWsFjram2otoXUI+h/BLXamRcVOx+8SkoJDAIlqqwfaUDiWhgbK7NcWp/WFiP4GiP0b3
-         gOJEX9TN+orVbZFjZFtgbYvlpc/BIhaN6xu3Kdg8XO0OVFtdGebmNDNTfegE8x0fCxgc
-         MeLtpUVbNontNBMQq5ckvkBKz4noq/5oArZmPrFQMZ9OxluKOo9abzWV/OvM5WhOhUah
-         I9Vg==
+        b=FMc/LTnGSkB2RT6My7gL2VS02/mxSIni12KrAzm9Xdwu5Y/NFU/AF4RAD5mL7zyF93
+         Ws29irrDWvjFixMTdrBM10D6LyvAaaKCyISZjbtC/Lmhf3xk/4+IS/pjrJOpDAQtHaTl
+         jAl3PxROQ2ocsQ/nObmjUh3gbhWD6UWfJZRAjkYpOAKZyXf3sOU+5j5Q03mnU1AHWP2a
+         QeN6giFWeqceuQ+lwcUhAIR5PdtzJ7SyufR/wvtgkWerCTRC44Iigb2iaZv24e4PQ83p
+         gAHc7NakTeZlrqk+Ox1I8S7QtmMVixlDArUiz+d3WQN7exmGE76q5CkETwspSCsFhtae
+         sBEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        fh=N6tN26022DTxYv6t/KcmiWLpssPPDWg99vAN4IEFAYs=;
-        b=c0EBMTz7wWrS0ci6ZP2sEA9G7FF7rNMPD4jmZ8XyyKpd2tTLjA9KO5ORWZzbgvRq4U
-         LXpbT0EVDfjMCIhpSXci/5p1FP2NasKZ6f3gKrfcAyWD7CfuCdOx0POHH8WeJt+u9EH2
-         KykDJ19xjj5cGGLQ3qhPbRXgoE2T+7LV9VR4RuvyGadTrXIdg0ua/OhtKuYfhNexpxOU
-         DMeB3dZz47MDDgSZd7vV5hLQyzpqOamnIiZ8RfgRd2UXgjXiy7iEWoVslMj1kmHyK0Zh
-         aViY6WLhANNsA7H+dX70VPWmlqRKvqjDFDeKHHIXD3PUdtwK2lje84EZlyEn9BPGEp7q
-         qmEA==;
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        fh=hA3Ed6Q1iZLfM5Xi02k5HborwT5vI7oQGiZxBjPSX04=;
+        b=P1JZdpBb0G2q1fhueoloCIseHaXRyeH7dqujW9dYWSN/J6vJxlve3l8Bdf1G5Pccqa
+         I0iVkJF5Fh2TpR1UqHwUILreeFHIjVZ76YnuH70w+XHmlwFPdemm6iuJfQ7SDIGBkL/h
+         sF3Ds2DmS0OG7HSWc9OQlM4RPtHRdBnWeriAWPWncpib6jl02xyf2h1K7HenXYg6sRBS
+         8lvfLvd3Sww7xfPWMCaTUoNwTrvZywGAUydddwo5I+aWopKL5MSAwuE0pjJQW36MdxFY
+         DoZC9cRMe4IV/I8GUmrhL8yz3j03F4yz2IG/YVHoBrMTPNQ5leNs8xFuGACWHsInqOzF
+         7pdw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789117711; x=1789722511; darn=kvack.org;
+        d=google.com; s=20251104; t=1789117793; x=1789722593; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        b=o0SR5xoR44aVAa32yqWkS+6yUaGp8Xy6A//KrTCvRZRYS4LwIdgfHV5Su7yiSOI1kl
-         ehMFnC3lXKpH2vwsxyLQ8GfeBD1aFVOaf36UacaiKwfX5BJ9TDc8+0gfWFkyDH/5RKnG
-         FySlxaf0Cq7aZo90wIYO9UTZywH8/B99rBzqY8L6qs0Dzfqoxhvve0oLNhiNPoy2RcQr
-         GzlSmEeOcfnxl4MqQawO/C3gSzEBlUk7V+dapC/a9rhwn6255JsfHtqf/UATzLoLlp/m
-         FKeU2D671CRhok2zva+jLZLto2kVw/4DG9fj08Fmn0BRhW3vSA2gaDuv0cViC6xD36V+
-         zGag==
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        b=Vqnz2/rX8Lb5r5YOoHbXfEVBPKArtQUH5y+HT28EdpgRqCV72zidrx9iGg7Ol3U+mi
+         IjKsxgVhKuUl0Vk3Lhpj6YoJc+QtvAQAiHamBEzxRP0OYWsWdws70hnDTjV7kW1OUHoi
+         +uyUlsRVWm/8BiqqCFpGM4ti1fg4R+ay0fCRuNW0y5vQrcXCYALzBVfyLZ5643NWhQZf
+         vogM2rRTgNW0GgPUlMoIya2gQognUn1IS9Si8BIiXirG696XYlpclVut/3xNAaQ3w+t5
+         sCED7b9500G092vmeeInCp6v5SAOG/e0qI1dF/jOHrPR8EyvQ9MG/82viZ//MoTNs2cx
+         N4bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789117711; x=1789722511;
+        d=1e100.net; s=20251104; t=1789117793; x=1789722593;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        b=UGA/1/SsXaC/P5blE8zyPNn56jzGV3LWP4o3NAVFsDvcryy/uU2e/JKHfpP0Ar0wNR
-         +UGNsE2y8Ue12G2Kp46QI1XuJfrkGhAj8u3ToMlFOiTVpgAsA3g6u7mB57KrL0iSH919
-         xBi020ylj1kI8ekiPXcq8ee/QwKza7Rasf4II22X9/LKhcN6HGX4Cq3mafA/SQWAAitv
-         EP/K821YGj2vlH+XOKvCOTZlPSzFjZUNTVHCHg27RcMMBP5A8/4hx7/4DBk0G3Jvdwpw
-         f9YApQXDKG3sNtxm8o0T4sO8QLMExc1coRMCccpN7CdoQpglVtOEo23NSdXMpuG3Cub/
-         M0Jg==
-X-Forwarded-Encrypted: i=1; AKwUvBxdDBqaa1IUc5cP1TQ279G9sMdP2ssouCMhkUAUsr4pRVqPyXKHpWHS09drAXxwv5SkZ5jvGFjj7g==@kvack.org
-X-Gm-Message-State: AFuF++mgtH3iJBXkk8oLenlM0144lJ4oNAfXS5az6gAslj5fK9unbqPD
-	f874QleNIid7X6tipZBWfWmGbnD8/qTWz8gmP89U0mo7W5c7ILIyx2FmXXKwUW8unr5+qjZIICD
-	mo/sx0/iC8h9GqVlLlqKDh0IP1iFTfZ6UUYMXy+bV
-X-Gm-Gg: AYBFou3IbeeQ1E3zjKosON/g9lkjU2aeFAxaiyn2lrzhQpwrqNRQX+lJOuz/yK+qCKO
-	qk76hB3c2Fqnr5a9jnPBCzvPP6Ephyt25WdLkTY7Yehut6xLASwgf8PzXLJ3Fq2tNXAZr+3UHRa
-	ssUeJFmFOviRDKlbP17+5hZ4njUaPT4xqF9LNK7qskK+ZiJNlZveYUeXIbdfHGbViADwphcnLFI
-	JqRSu/R80S6Bt4BQq8McE5eEkg0kZGg0oWg99/VMQTiwEYrOtd3PEnEDJzKmXoD0TMF7CV6eKK3
-	aWTI/SHBNR+M83EQiC2/WaC8iWQ9t1CU/q5nbItrcjgLU50COmW9dufyBO2Dhbjl0rYGX1zj8ox
-	ig7omfXgu3fLp7CsUDBimufn1We1Sy3r4b/u0JwpS7qxlKx2H4uBOGrGkYG2qOpHK
-X-Received: by 2002:a05:6000:46d0:b0:485:8226:c691 with SMTP id
- ffacd0b85a97d-486e0f6ce92mr8157059f8f.16.1789117710377; Fri, 11 Sep 2026
- 02:08:30 -0700 (PDT)
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        b=ovLVcPAT6p/1wkBR1IrqD+Rv/oqYFGCalBHTc7B3ZMfMhZhMm0lCsYvbaJEv0jyLJy
+         MIreJPGjwZz/xc0G5SurOKjXgj+58IOVWzBgcapHqrPNFfezpJIFfrFfOoA2IyIOylO+
+         S/dHkQTfkNv2ZQm9dvz3EyJblaKoVsklpvYs1w1s/aDfMiUlsLCIBgd/eQ1c81BzvyVq
+         78sdu1FOMDE/Jj0jjEBO83OZmJGw/Wo7Ax96gsKpRgoGT2p0FB32ySPvb7TDxeDwnoMx
+         /zQQrMoyE4e13qVTw2ZsLlUB+d6xy3mlMb99LgIPBPN5Aa0+UUuAnLKSM98749qUPKgm
+         +n7w==
+X-Forwarded-Encrypted: i=1; AKwUvBx7IV+Pbjw+kesIAz58SCBN2cN/JgWa200WimJYOorWTiSVujnAWQoO/Vsm5wtQapVw2y2CA622dA==@kvack.org
+X-Gm-Message-State: AFuF++kFwipIPaOXRK0LXOJr1pqoZclEfBlXWVpBgxRR47dKUNuQ9y05
+	RHMYXM1fu2qjbUxMSD1e7mVa//ZHA3/dQWAwLTfJ2HcijGITzwf2L0uZem4JHTgXailyXxrbGyn
+	wZW+r2CuZ64nL4Cn6/1d1cVsO0Z6JgE8Gi418hf0V
+X-Gm-Gg: AYBFou1xi5qGBHS4ADnYT1pdccd/s5PXVwD6mLhVCPEhfCaO/cBQyN4wIe5yFW61fEn
+	7sARYlombZM5j03a7URfHKEeJaIf8dpvM23T4yV6Q0WCw2NohLJnfInWhocvb7XFhBV74jxzvjE
+	T37fLZSSaFiCK4+C+oj1TAcX+FtYpLzHpJn8RkZlgOdQ8H8eS2nThlBirKHGPMdNqNgxQ2Q1OHb
+	jpnbLAmUbjlw5lB2VdQxJTKZxffNFPCKbqwgVLziw9W4jJdtH+QdVbbaGL5Faa5jePf3snYqlJ+
+	pmGSPk3QWWwSv291lNQAYYqwzDP8gML8VLFbq2yjF1sm9uJK/rO/yemMVsyHDHlqHY33yZr2W1C
+	mqKn5QmALKESuJgVoTSCDaj3HGkCpBQC5ufL3zj6EEdq5DgDkV9Ph
+X-Received: by 2002:a05:6000:118b:b0:485:8c16:5ef0 with SMTP id
+ ffacd0b85a97d-486eb2fe6e9mr2544735f8f.42.1789117791504; Fri, 11 Sep 2026
+ 02:09:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260910-unique-ref-v21-0-e83257373062@kernel.org> <20260910-unique-ref-v21-4-e83257373062@kernel.org>
-In-Reply-To: <20260910-unique-ref-v21-4-e83257373062@kernel.org>
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org> <20260910-unique-ref-v21-5-e83257373062@kernel.org>
+In-Reply-To: <20260910-unique-ref-v21-5-e83257373062@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 11 Sep 2026 11:08:18 +0200
-X-Gm-Features: AcwNN1Wcpw91RcC64bgI4fLKPGdY59qIT8O1U-qjeWGvrNCV-tRUtkCYbazUk4w
-Message-ID: <CAH5fLghUQW5urTfLCCDT4BhuqoFVoLUAG46TS-SxaS37bJcgWQ@mail.gmail.com>
-Subject: Re: [PATCH v21 4/9] rust: rename `AlwaysRefCounted` to `RefCounted`.
+Date: Fri, 11 Sep 2026 11:09:37 +0200
+X-Gm-Features: AcwNN1U8uQc4Zj212gVRashrRro-WErwh8uVMQ_MWKQsPaL29993fZfZR2Hn4U8
+Message-ID: <CAH5fLggBGvXayMT2QGo5JeQkYeJYc0L-348-kKLsBs_g45-fnQ@mail.gmail.com>
+Subject: Re: [PATCH v21 5/9] rust: Add missing SAFETY documentation for `ARef` example
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -148,17 +148,17 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlasti
 	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
 	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
 	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Oliver Mangold <oliver.mangold@pm.me>, Viresh Kumar <viresh.kumar@linaro.org>
+	Oliver Mangold <oliver.mangold@pm.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C316FA0003
+X-Stat-Signature: xezc9hxjfptda8m5zhwjw97ndekjq56d
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 11ADD100006
-X-Stat-Signature: ho5xyrno1nytgssos3nr5yho7j4pzusp
-X-HE-Tag: 1789117712-565153
-X-HE-Meta: U2FsdGVkX189NG4c/u5ThGK5gXei8+wY0lVwmaWCndjy857QA6gN9HGqMiqTZQYoiOa/XAchnObFeBeQ/fYX0qMNDrU+4eVrZoMZJvJw02gF71V6JlrntIvnaUyzWl5IV0ft8ykliaw+SYf+UeRq0YpyKCfW1gSfds5Fj9LbcliJXokNGmKF6QNCNmaimpKXbaX15OADfteQ/0jEakUfdKj4ERdLm2GRU+rZNlQLTwAGalSz+MpIkp8B95iq+aUZzMuFiBrHjW4ikmOv3DjE1YJsTsaOkxKh+M1sH0fPKKleDztjIY/761+6C7J+3Y3tR1Tw26gIn78ggxKOP39FwdWpmFR7FueZPyi/7pH52WNzpa6iSDXXZf36/FKS1loVA7Rn42hcn7FwcowVrS7FzVQt8f2fOBwGCIzGDh01IjfmsCGpAnoQFxbZiqhhpX+k56fZ0fn+s60tuXx0xJIhYSZDS8p6FWWPWTQWLFi30vnv1HdwsLs1xW/Gpc/wHAr+wseg6loC0IezZsDsF5nA+h77W4PxFun47cyPw2zy7ykLAxJY7FwepebbEHvSwUMU5Pu39Ttznneub8SnK9ZksEDH+OeSKtRaLgVgOWzwKtTmTyQlTM5GZxPd2AxRfIaiQP2vhzGUjycqDI8RRKLbiT08yVpWiV0QYsf/wx6fGV4AyrjIN/kUZw52KjjM78yWD7M6u4AoCzFCFINAOandQ+OfZf0HzEHBu4brGjC5prMjKGlRZ7zPUe48Hw5aNJvxToiJdLtrWmfqulgMlUFCDPEZU5FVvN8J2dfDv/bPc71zELPk9pZFA1FC/XEafbGJAJYm+M7e87omEYtQ4Rl/obpOI3RFhA6QQSmig3SinJGvJJmV3GS6mFgGiAeX2sz3Rlbh6hyAkBC78Y9l9gW9ffkyvtCFpM3dWC+WB0Ucizy+CBE3pOXxaiQCpLrY3Iqy/xHqtT4Bgfy1vbyLyii
- JsCMetid
- hkfmO0ME9rRb+7BOfkByDY7NPwuQrxuQSQ64Enl7uH50bYmAvQpMj0lLbkYBHRjsnzqXtWKfw5P9E8rCPVken2F6U2NTeHih8Y2RtmrEEwoYW9TMAToaPKMmNbWcRDKmSSf25Ji0p1tUSj2Ha5bLB5elDwn7RqUjwtQk3Ehiz3CSbWJQzsygpv4QK+yO5nz2AakDGtwcbYGhK1I3CRjHSlCharrCOmu3R2yJ2bm1sUaD4NER78PGkaCHV8DBvlwZBPfKcs8990y2Ukd70ijIegd9Kb4pupS1h5SEWO9ixy/EpSv/bf7k2c4L4n0SnSx0oizLBmSeJ8IvCbgvbBhdA7g8jtQMFR6zdYcNQyZ4CuoJ807IX4ISxYGfhJ4RCcA8q0Mly6hYbysdvSlG4EDlqvZ7kODrh/rUIbr+0qeIri9ioXTyob942gMVIGpBSUXwgmmTaJv5+O3ljzVHQivbgVWhS75Zmo+Wp35ox7/vj/8AHNnisKjwjWn5dT9h/a3LMR8teUvszT2hR1gQ=
+X-HE-Tag: 1789117794-926148
+X-HE-Meta: U2FsdGVkX195XQ5S9eqtkuedAoOcW3Sq++hioTHkKvsGRRypgKmdkhMDKfPdpiPK60keQnVgqjaSvj07bctpyUSGA84IXaUMmjzQh/9WTc4FvlhOaVGADWO0lnBcbjN1VjmQnbgDTT2liZ77kgfbbqdqnzyd+VIXIibZlcNRo9nihxxnCFX4hu0Kk4qfSnvEcWeclDiv8Md1lVsAYRg1VAe1tNWtHN9MaNkvsApJuXd1LGqgyKav1DsqLyA/2fvecFBnPyMPU4atblwGq30Ucsu+QFFJxQEPRjkEykEcIdTdq73PEKObrYokqAT0cmYE6uS+nmRbETW5m8uyNJgi3Gj49ofM5CjfWE09KIjT1g9dLBoecQaMg5vU+UZfTyMvBOHWZHax+mn5sX9y6Yi4FYuSpGpg+gfLhmHdI9CBRIhHj8hzK/4Jjsn2gmk5RYdfyixjoXZVC9j+W9w0+njkFeYb9bfPrFEpWJuFs/QekV/yLjeOEjqNweEgAALYmBdLBHE9eI0iU6AjKXb6KhpfPXnW8oJoXnokjyuQvZ8GiG72WHQtuyx/+eHOUEDgQU/Ri1LeRaHBUiWzEqUm6UkLGPeaM5qBRyC0MW1c/YOEV4MSDv1S2QWdZnf7IuyoBQ0/DWCNB2pGFecXwmxnsyS5/cjkamIa4MRYzz5rqddaK8jK6q66YEpKN2WWjNHTPShhlhtYxHuKl/rnqQhZ3yea+4joeyz1qzwputmjS8PsCEBllGGMm8gSuRSRu9yp7DPLC9Ji2mgGnEbaGVY+FF7fiX3WoKun0QOWQYVGHROfViaqlNHC4VN7WBgNYz6qRoaF/6VYlCAxF2BYtgziniSznOst50EsvTdk022/mrqkywoKJb1MEXqeskSmLt4f5KaLl70orDJfWslpHFdyRt4xGDzk56z6y6XQOhrYiKVkXIMBdk3huPrCt0stXkAxLVrhaL6nWW5Qah0BGIJliTR
+ ooCyMEgn
+ 8omUN8xZJdEy833dizR5Dve1o2rLcpsri5qB07UDM3I5JoL1PikE5f4UlOLhQemYAOCqOxEU+DWqkL7OgJbkIp4lcbj/pTubmLXxPpuez6FbjubuWb1i7eGUrzWtghFs3K9AOeEYXykl17Cjhs3bcpe9nSrE/UlPjOF/I7dfMwPqMic6D+eUnUzntsYt1r0c9NZB4ZvhcJfZooTnTwlW3I/+9ivMbrzjP765vltAKpUwGW2qqJnSEGKZhfe0x7uVafltd3ZYbhuML/NU+97XENzewngcbENU91Kk2+TEXaZ+Tt5/8cvz/6js22Gm1v1RUgKBaeXRcl75djqz5gGds2YulamaK6LpFGt1AUXaZPPbs0SLGocrLDaw214sxqJPqtwFeyxPyRDBVpczskfMsNs35hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,43 +166,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 11:01=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+On Thu, Sep 10, 2026 at 11:02=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
 l.org> wrote:
 >
 > From: Oliver Mangold <oliver.mangold@pm.me>
 >
-> There are types where it may both be reference counted in some cases and
-> owned in others. In such cases, obtaining `ARef<T>` from `&T` would be
-> unsound as it allows creation of `ARef<T>` copy from `&Owned<T>`.
+> SAFETY comment in rustdoc example was just 'TODO'. Fixed.
 >
-> Therefore, we split `AlwaysRefCounted` into `RefCounted` (which `ARef<T>`
-> would require) and a marker trait to indicate that the type is always
-> reference counted (and not `Ownable`) so the `&T` -> `ARef<T>` conversion
-> is possible.
->
-> - Rename `AlwaysRefCounted` to `RefCounted`.
-> - Add a new unsafe trait `AlwaysRefCounted`.
-> - Implement the new trait `AlwaysRefCounted` for the newly renamed
->   `RefCounted` implementations. This leaves functionality of existing
->   implementers of `AlwaysRefCounted` intact.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/351
 > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> [ Andreas: Updated commit message and rebase on rust-next (7.2) ]
-> Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Assisted-by: LLM
 > Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-This has a lot of safety comments of the form "This does not implement
-Ownable, *therefore* it can implement AlwaysRefcounted". But I think
-the safety comment should instead explain that it's okay to create an
-ARef<_> from an &_ for this type. The fact that Ownable is not
-implemented is not sufficient argument.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
