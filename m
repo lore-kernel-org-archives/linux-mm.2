@@ -4,124 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C851C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 20:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96788C88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 20:59:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 554446B0088; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
+	id 522996B0088; Fri, 11 Sep 2026 16:59:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 504456B008C; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
+	id 4FA4D6B008C; Fri, 11 Sep 2026 16:59:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F2A26B0092; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
+	id 410D26B0092; Fri, 11 Sep 2026 16:59:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BA1E6B0088
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BBAE160362
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:44:19 +0000 (UTC)
-X-FDA: 85202659038.02.9F0D587
-Received: from mail-qk2-f11.google.com (mail-qk2-f11.google.com [74.125.230.203])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 30B014000C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:44:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=g8N5nwxT;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.203 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789159457;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DF5D6B0088
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:59:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79402C0365
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:59:14 +0000 (UTC)
+X-FDA: 85202696628.23.51A0383
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7A9AF20005
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:59:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iN3IgPB8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789160352;
+	b=0qSywpfpLyAMFc8iAeocqK6HjnvUUiJWKlbHbxXG+iPY/GTwfC6MSHrsmiSAHtvpL8cWG8
+	grJdfPLFf/YFgmeGG7KANO9b/1AluvZ92aO2Nx1wmzD6fqcRcRhwY2+Y1A2Nhf269OImhm
+	cwrO82UclCIDaRw/+4UqX96KNPU3gpk=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iN3IgPB8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789160352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
-	b=RyrES8GO9ipgl/KmbdN1TfGtGZ3SKPNd4pUOgtDX5SWmnklxKAZ2g2yKudNbi2u7K1u657
-	NlAJtkKSNYnFzc/mIO8Q2DPQVs771qsShn9ceaqdDKiEbAG87SyxVb73x1+k1BIUomNyX9
-	0R++XxRXZhut7v7BN19j+q8HdUnxsdk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789159457;
-	b=Gr/kWhrJ9chSTlTCj6ZYPl2J3rhYUGXjMHvlx2o/iNszoHwMz6HFJtn/5DMDQsj9YnZ2kA
-	jAlsXutNOTWG3F9r5tp5+wuJ9ZxQXhUpxE39jOc23aSK2Ybkm7lOOq4cySQBbSem7hS4yn
-	4N+Hm/CxXKMo7lvHOLm5qawwPTg+ZR4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=g8N5nwxT;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.203 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk2-f11.google.com with SMTP id d75a77b69052e-530cedd4e6eso1825971cf.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:44:16 -0700 (PDT)
+	bh=9mIQ6jM8juF2PvO8eUkaKKIYpJrRvH5Gc2fB112shtA=;
+	b=CrE6XtJXvgjTEUZomEjQcBzTjCgfdYQl6Prbcc0fcCC5s4MAyHm3iYrL1fPx1buab1ELT3
+	sEyRGl06wlEGv+OQmZxga9gDqYCJ3VNJwiUZwS5gsDZsM7xkwcAcj6D0BJ8Jlvz17ftn6m
+	XZFVNp2MPoh7MV/bWgWT8jd3gv5iYcc=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-90e970f710cso14204446d6.3
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:59:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789160351; cv=none;
+        d=google.com; s=arc-20260327;
+        b=G+3QnXzeODU9QHBBQY6NDt6tVuF9XVjavDKYHclp3qaekdcrsj5GyKR4ibCDkxQW7r
+         hOsR5j3PHwKverItsp0HHa1oi8M4LxZ7qQR+Q5d8y5t5TngeUmp7rVMCSUQemHDi7lXY
+         8LizsnjDjQV16JmjN2+uPFc6Ld/53qFu0/OG2vvHx6gwE/DcqU+PGpiEXS05Eugfh/Jb
+         Sd2CzQH5j5WjhDXK2Q3texgNzGLCM9cBNtIAmguUOpvdV8lwSeBB+mwghf7nhbzEDpOV
+         iG6KEPcIA+nwiEbXVacD6fuy7UsrJ3uRBv1PCbswHFDz7EVIZ9E/bj1vsdKyKfkuBZae
+         nhqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=9mIQ6jM8juF2PvO8eUkaKKIYpJrRvH5Gc2fB112shtA=;
+        fh=VA51uWknzjBDJM/t/nzt1vR0LIh8OlW/YrN2Xqgb3hY=;
+        b=A2NCJLlL3XIbLT4Ube+G4EP/lGl5zIh7tMJWdDjnqLT3Qb+sk16YhBPbcoIZW7fyxt
+         2PNnwZYl6O7p5AQVdAW0nO1VlExq27lB3ul9wji6pwQcmi+nDZ+hCfB5oWAzXozQNnc1
+         1oGFC8hkKSvh60qHrR9MwRsb+eglogNH1j1htpMPGX1cYoxvfeo89qPwGn9PWXS5L0iT
+         y2rkYWKu7uO9d1WT3Q0arWaPhYxfGWnahLS0GLQeWg4gaSLEe1nQFYBlfW/UwVRI8Lbj
+         73/l9Xbl5qCQDJJP3DTH1ddjjBgber+p00fGm5oqvbPed+l/xL2Lbusq4MGKjFACbUZQ
+         VtsA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1789159456; x=1789764256; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
-        b=g8N5nwxTr7YMvOitFx1xmPyrzI3n9pRn3ydnXHjZcfH71TzhcvqOO8nQ63Otz46mMM
-         ZTFXhtaFvEEdZKBG0Tw618mduTxjNBaTNZ87+70KTECOFh+nAc/T99uQ/UhKAMSXhhlA
-         E4STJSLlBbg1vaVt2NVOYtcRjovf6mgghmLAejWTrPFUnzSEF7LbXFm9nQ49ODIwI3lF
-         jNqi4tqlE0574+uYS1jX4KdBXxpIjyA456moCbTCErKDMkzzrypNC34ucJIMCjesHLW2
-         HQJmJcOGjMEEMdSjRjCk66Y+U9hyQIYOtN5QCGQ1dcwE/XcO1pXiP7LZxEib+vOS0iLG
-         /KMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789159456; x=1789764256;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789160351; x=1789765151; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
-        b=eIAtWruJPeilgI7f2Flcc/gfdlUj0gVQijNvCHkvUK3kf+HboATXkaHwpD+7x7hMXt
-         K9mBBE8MoI8tjOLqwUVTKl5dTN/uAgyV0p8OLvI6Wj7HF/SIJrLFy3eoYqHpuWFCApeE
-         2HTBet71WmxTe/LVeUQtkIuotc6XZw4iCrm+6hkuhAJc+ysDNOyw0EHmdwPQ6HmdHvJa
-         9b9dwLzJ9OnlwKk1AfCVca+Zr3ced88hFuE6D1eWsx8D3cBnjwrOlhV8+aXb/H0gZx1Z
-         rkfhLaM2OIuvjfvbUbXvf2BkeDT+wHt6//8L2CNz7cwhzmAirvMADCfOmJoHT3ciZtZS
-         j/Lw==
-X-Forwarded-Encrypted: i=1; AKwUvBzFqVQ7koht7HHIQSYGx4nwb1YR1xa1XE0X/gOcBE9XW2P1rK5tEA3Sr3n+f7CxVns3eXjIf+Lk1Q==@kvack.org
-X-Gm-Message-State: AFuF++mIlhTGuSvxsLg6ZkUAEJBSHAuckbT49KQh3jZU6JX1J0CqXFc2
-	mfHNolZJsBuWMc+9MxMkaiZSmDXDQ1D16FtoQab5uvbqdZz20ytFcwpeNk8iS//InvQ=
-X-Gm-Gg: AYBFou0mgd7e0pntf13hG8xdoZhyBniAcFSXta1Lb3lcElPCbAu9g+gIE35OROVNc9f
-	Wyf2kto/bAJSEg8M8gzmMkPjWllFihLPXoofmI/Zb+XVk1RQQasIBdJBxOzBnQ+3k9gtAmLwVjI
-	VzfOB6xhz4S3YLIC5WqYzjDrN1TGhg7r+jKmEyeIALzVbOUiAIZquaIhCFWASoCEYN5iaxPAl3L
-	dQzRWuZcYjOimctSzM7e6L6VIAcumXIE5sl5NFqyxMQ8s0RMOur+3UTDAauDsVgLOdmOtQ8TazX
-	y/0Abzqh/7EQANRbrvxuBuveUPTtTwSDdYoxSGf2aHrop4km6q8ZAAcwh28wHXvl9wSKjFO4+U8
-	4zPS5nMQcjchRj1Z9VSvxzGXfsOgSXRRZsjFjEMXuvIZggYWp62mEjR3laTiWQ0V/ot7zyDMgtW
-	/eu0ZiMzAYtZBoPbwX2G/DOKYJNFrT9tQgBOZ0E8rpvq+sRcHIlnawbWq33zSh0h46RGL91A==
-X-Received: by 2002:ac8:5e52:0:b0:530:dc5e:27b8 with SMTP id d75a77b69052e-530dc5e2fb1mr37003331cf.27.1789159456019;
-        Fri, 11 Sep 2026 13:44:16 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca511ff0sm28939081cf.31.2026.09.11.13.44.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 13:44:15 -0700 (PDT)
-Date: Fri, 11 Sep 2026 16:44:14 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
-	akpm@linux-foundation.org, alisaidi@amazon.com, blakgeof@amazon.com,
-	brauner@kernel.org, dgc@kernel.org, dipietro.salvatore@gmail.com,
-	djwong@kernel.org, jackmanb@google.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
-	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
-	vbabka@kernel.org, willy@infradead.org, ziy@nvidia.com,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brendan Jackman <brendan.jackman@linux.dev>
-Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Message-ID: <aqRoHr8XGzzDUjBk@cmpxchg.org>
-References: <20260911142102.2294202-1-dipiets@amazon.it>
+        bh=9mIQ6jM8juF2PvO8eUkaKKIYpJrRvH5Gc2fB112shtA=;
+        b=iN3IgPB8rWN4m40H5pjGcWn0YrC2MFuiF+0Ux9Sl1lYqj7ZzpgK1Mp6Sao85L8KGzZ
+         utZPSMjsIIaAoj7UIJRC7VjbD5EK2FxKHZVWnjt0PfS/m8NVm26xODmvvVRPYuy7Umqx
+         mRGi4HFFXIM+bue5smTBSzLdEk6bIfOIc7MPecMqlxppVlIxqlMW0dyjcVXmWEhAjdSJ
+         FP316K/x4JG/ko7t4qh7C9ly6CAJw/EH1PH5pjLl7YVRbgbYQWAC3DjZ1ONyh6wC3Mjd
+         yuziTSebtnQyg+eejZ0P3HXi7lKGMt9QaRdPEimyNmmOGVnL7iSrIsPKy2IonsIjgBXv
+         N5lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789160351; x=1789765151;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9mIQ6jM8juF2PvO8eUkaKKIYpJrRvH5Gc2fB112shtA=;
+        b=cKltRUlDSMPJP02JhxHLHDDkJrLWyr7TpZUPe/ttfdQlbWDevk3G8VPqvdOnGS82D/
+         oCKV532rgUlh6HMfD4Mi/Tv+170a3Xg2bzNU1CxrT8stGY3dELeef2qQabTwpXK3sAG+
+         wm9fP6YSWE6Za6nPRgIbsIinWZWpCSToAPdL7XImopBVTitxfmt1JkmOZ08G6CqDYsnY
+         uBH39pWoVIvc99wxrYkBP6uMP2cFfsULBtJ3qy6zKovv3GpPvvhfJxUabrFxXtGYrdo2
+         T0dGh9/JzK8xbjtlHnXwuyjiIHXITZt8h8dBk4IR8Ta6Iu9ZIEHia453g1munwa6zliG
+         9bvg==
+X-Forwarded-Encrypted: i=1; AKwUvBwbH62x7TbgGuFkJkubcW/8zwjz18aBwTlZ01aCUXkMVY6pyhr287WuwXPtQMAdYQZdIUgkvB9nYw==@kvack.org
+X-Gm-Message-State: AFuF++klco/E1VYKYQNjDjUBCYtP9jlnmMLkKh89p6Jm5MP2zlqfMJTF
+	WAXeGrf4lSYxLYO/SVzrdNyHkfS+pAmOiu7i1PQCNdwmhMC9XE9m1fapx6WMcPRSRy60/Y3gZCy
+	wxRfAg5qrqqA4ZrgJ2K/pedNK1mGKq6XnlLQG1AvH
+X-Gm-Gg: AYBFou1yGGuKGiEZTgbL5/TWbd04+V3KA7/1ZfX09aTJs4dT+cx7BkYITW9FjzfJXjX
+	EtYQ+tZKzjHk9ljQ9DzCMvSKKj2mRIxcPjUJZh9UyzdnfSBGBTU1swZSeZBHVRasOF1+PNXR0B9
+	XxjMYloh6bg+MIyaohhjTsnin1cczWe12ydd4EGqo+x75JiOZg/dT4gO3HxUKs97L3uQNQuiSRZ
+	5+0obT5ZS3pQwSP0RLHhOiudHNbENal06dYyRM+uh6zGulu0VlFtKulK0lNxDVMm54+K/4Bf8ZF
+	nswVd29KDM73H/tm/QqwT49lPuW4QVyr0Uo3wIMRkic+W4OQBpIkp0Gt/zUSTzLX5BEjVvaP0bA
+	ovq1LHX68obQjkAeTuKVF0FQZ3MZr2wkL/4BpCS5zVg==
+X-Received: by 2002:ad4:5f8f:0:b0:910:4c56:76d8 with SMTP id
+ 6a1803df08f44-9121207d6d2mr79542346d6.1.1789160350811; Fri, 11 Sep 2026
+ 13:59:10 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 11 Sep 2026 13:59:09 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 11 Sep 2026 13:59:09 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aqRFSiicubfsw3N6@google.com>
+References: <20260901180713.4185641-1-dmatlack@google.com> <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
+ <aqRFSiicubfsw3N6@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911142102.2294202-1-dipiets@amazon.it>
-X-Rspamd-Server: rspam04
+Date: Fri, 11 Sep 2026 13:59:09 -0700
+X-Gm-Features: AcwNN1VXiGYQy4JW0rBuiz4KjYly49Wx8Xl5G5ezJF-9TY2IawBLiOKUcfGow4s
+Message-ID: <CAEvNRgFCrcyk6F0vJ11pgj2EDSUAXj6Zw-oEdZpfj2SrH1Cv9g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: eqzt5n73emkim68sqie65j1mfogxuoem
-X-Rspamd-Queue-Id: 30B014000C
-X-HE-Tag: 1789159457-602155
-X-HE-Meta: U2FsdGVkX19sZaRnX6AXPlMcB5FB1klBpLzShB0aOQdoh1SPvW3gnkZn8diQnr0tKFUtpUjE5+4KXGZgeOijwajtSrrTBt6X5K35XQwcppIv/wrYCUB364YvLXk9WMkv6AF/MpwBv+wvTueIhVUbmNzrJDxfZYYB1KIAn5F4aaPoAH2/S/CcbAFv+h4nQhbG859feo9w924W/fHsAATRF3lPDDLWxTQGhmhFuyg0nnG1T9VZ9kXepvC+v/Alvex+71l5ojhpGo5da0/65od64zbJtpD+mCOSzdCgKlWbxQGinBYniKolHgz8gx1Oy0AXVw39+YZOxZ4OkuLwBgcQz6J0WwQcCoa4nD5oodxd5vCCLwPbSbuJ9zHYFTHgJZ+NWEe7/0sZvU0BkPn8+c7hhSki2LcRdTTPlEs3UXW9pp5d8J41zLtJks5TXxB4es5zG13ZhVWWJBVdVoz5H/mK+VGyZKT/0Vp3s506BV623T0Hxv9BXa6dx8xyRXSQgddX2DBeNz4ur/b4nQT2DMUXwLBy09OBlj+5AF/hLyWDdfiTAzWualBaAxYTrHKqrOQqOeyNp7Dq5TTgkGfITzVfkO+4xtla3yUpz0MhviGGDVSPHyDTZ2MOLcMn9CT6GDr9MukJ1v6cyWpV/BREsuh/wK+mzcEGl6hxVP4wHeepH2lIOLpm546AYWt7WXXSI2SzlKh5MFuhznhpOCUYiQikZZOr3HrtuCefjuFDapXMsSOvUW0fQ9Ih89bDQrv4KWMeWDfQNmIRSHwbCDefANBuoKR8p/sQkBqbJm/WY8uVt9qeL5dWHt1LpSZtGOa/mJ+1oVe0qYNFdIdinJZv9UKM8BZHhO64pBBbJTWpsevG/rKX7rvx2FztxHhQa1nD0/P3olnWMSdm+HEBvmDeVClWZ38ZHF+yoMKscfpSOdL5EXTKuHv71yZ0/1gheX0rbUq25Kzkcl3ZFuGwVszOj88
- iwOtNVNl
- ha0fiN5nbO31WpIyDi5biGJQceZclGMV5P1XxPLhTCxXPjKj2b0nPTKKlNR4yKX8HczSA3GM1Ngq2PMFVQ0ONeilasABeoxuIeEVVnJSf4m/QskONAnNoW2tX8nHCNqJz3eetmwoJe56zZsoHGF5hSJbpzsCK1q4FC2bgKWqfNAmJILD7osL55TzkuvwqIIWetr23d/85+m6iCjfkOqSRswUoWJwnr7NLE424Fu5H8o0s5l7zl/QSut9jFJFaVtZ1Xvb7Ah0OUKu4wWh+wfT+oG4wNQZvUVNXG0v1A2qhOzLJM8Wi20PM/cQFqIow9MHFuVieXVBOMyOLdOQXg+yIRRaMTqsDZDlTIpS26Mf80LrUftP+X1tmt5eUTBTXOljuEiBMmhEqD1om2qSIDFMfWS3y5ZOsbkJZvn5nabt0QqGAoJZJR6I1GUDt3noQ0BwCvvpEAuOd+e1ISRExzfyRAag4Bpm0jqeHgpDNth3fQCrHAUMXbQC1NB7QyNZacNLH/69mo4RUUyE9ZcXxVAAGvd/9FwEVroKAyiY8dmDGdzAM5+/yVTK6r5wMoxAeVjGur1iuaNk2+sPeCHwgwc1GZtnncNj2llTJv0G+6WnoJIUvpjh9u0K7JEm1gFpdXBP7GlUO31Nk6mZUkkx46yMt+wIax34DvenYSgTCNtPmCs1TXIONI2lQ9CvDNZPB4Cl+MUUrcnWJve6rTqpx3+g6ec9TA+GSe2VFV64AdzkbxZweMXI+871wPcCF7NUXbjyp2TGF4RpHAI4xDMO9dS0jxsE6qMFv4KcmZ0n73UA+WQwinJETigwb1RgwXDKO7SErx+3heAK242y0H66PbJbXVqIbpOby5pKyMjpml39l7EQOHwMIlYgFsZr9+A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7A9AF20005
+X-Stat-Signature: gw9zi6csx9crg84d83hunsywd4an9q5u
+X-HE-Tag: 1789160352-139846
+X-HE-Meta: U2FsdGVkX1/t7krxbQyBIXYeCENX79HcesHUgAdkyI218h17qEPYFhiY7rwXCEqvBTql5jQV5U0ernH3zs2tOPG+ja3AShWb8iqjusF//rsIZZ2K6e0WGiddHIAMpyi7uwnuYteWP98sU7c5xpOIJF94IA2vFRBrljJtZRUY56Tm0tK4ZvE3/A4D77BMxRyXdM86U2xdXPRemhiYFyaYOOonA9YtZFazHug9360ZN0NbX9GJGD1eNc7TDtLQgWMFpukiNVD6yc+7IFM0UfavMmJncpN/nWiir9r0VQiIFb9hHS1OY79OGud9Xb1iJRe+zETNvCxVRS20QUoTZLxxzngSrlW8fxNTw7+5SFVUwVEvv4MwV72xxeSE9qSd05dYEq+oUJReqDS2RlAcGEcPkO3PtqIr8OLaGh3JX7hDFm15MoTcHKbaz4H1d0xH83XocupItUqA528NgqhKfaXwtqVzhEA9ZzflV/u7xJf2qvKA0L24B1F9JlOn+E5MQHRKN5Y/3gro7BfTe+D6PhiZQyvon1yg+4Jt0m0TDVitBw11wM8uMpsqV74nQedRqEChaO33Jiwhfpfm5qbveTQfr6fFhCQsWu8w3a/n75y/wwu3uCc9N5DMth9bxSTyk2nd6WtzwjgBJ7+jS8uGGRYM0+MxPwMtsAd3AYESQgqjabgBXKlXjRUIoMEID9Gl6vPISL6FtH+a4vSqfSTtgwn9vqdk5lsOqrGhDDkxpRAorMYV9HCa6OPpZhp697fEq7FRHqHfcrlftq6sKYD/sDmnBgtavLfhhDWqbnnfhCmfrTcHBQN9mxyBnZeRfkGQMP5pN6A2AaqrXUpUDWd+DJs6qav2NRlmT4tl6xDXmnBDJrHKWIW76pPdIXrPiSopeUyGL7RsKAqxt6o+fEsZd47TQJpeVabON8beDXrYYBQxvu/0KFKk5TG+6xDLhK+YzVWdrB/NM1lgTozTn6SpJUE
+ UbB/+kbw
+ vfPsb7j2EzoIbDXHiN9Jks8VzLeenCrVQC5k1gMAs3Z6nJBdwq0jIRUUFSlnTuboXWTUQccfBTzrLs3ZnLLSO1vjgadg0+Cn3vQruirH7qb8Ceg++prq4N+HFwu0NU6cv1xyLKdsuUoVUqCLyOmFB1Xv0bNeDRpHUQWCs3z6USz7ADpJ8IADo1jjWSIY4xyM0rW2H8bnKwuckfFvf90IFjO8+m+SFCWOXuDqdZzvN8RmAQOLqNdDeMIB2Mg8WFUDot91wt+w1vuhTbY6SCshr4Siji2lsX+Dd3nVLeMsQ2S1DasucRI1kuL08VOjYLOhcdhJFqS689d/DSaQoMp+hdgb5XCYT3nbZB5/FmWp1QpiUyZCjNPdlvOB50w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,85 +145,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 02:21:02PM +0000, Salvatore Dipietro wrote:
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the iomap buffered write
-> path.  When memory is fragmented, each failed costly-order allocation
-> enters __alloc_pages_slowpath() which runs direct compaction and
-> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
-> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
-> 
-> The root issue is that direct compaction is too expensive for hot
-> allocation paths that have fallbacks to smaller allocations.
-> __filemap_get_folio_mpol() already marks higher-order allocations with
-> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
-> failure.  However, the page allocator still attempts full direct
-> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
-> aggressive when the caller will simply retry at a lower order.
-> 
-> For costly-order allocations with __GFP_NORETRY, suppress direct reclaim
-> for the whole slowpath by computing can_direct_reclaim (and hence
-> can_compact) as false.  The !can_direct_reclaim check near the top of
-> the slowpath then short-circuits to nopage: no direct reclaim, no direct
-> compaction and no drain_all_pages() IPI across every CPU.  kswapd (and
-> in turn kcompactd) is still woken further down for background
-> defragmentation, so compaction keeps working for long-term system health
-> while being removed from the latency-critical direct allocation path.
-> 
-> Allocations that also request __GFP_THISNODE are exempted.  That flag
-> pairing identifies the local-node-first THP attempt issued by
-> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-> form transparent huge pages.  __GFP_NOFAIL is exempted as well, so a
-> must-not-fail allocation is never made to fail.
-> 
-> Test environment:
->   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
->              12x 1TB IO2 32000 IOPS RAID0 XFS
->   OS:        AL2023
->   Kernel:    v7.3-rc1
->   Database:  PostgreSQL 18.4
->   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
-> 
-> Results (average of 3 runs, TPS):
->   Config                                       Avg TPS   % vs baseline
->   AL2023 stock 6.1 kernel (pre-5d8edfb900d5)   136,942           n/a
->   v7.3-rc1 baseline (no patch)                  59,408             -
->   v7.3-rc1 + this patch                        161,994       +172.7%
-> 
-> The patch fully recovers the pre-5d8edfb900d5 performance, bringing
-> throughput back above the pre-regression level and well clear of the
-> ~59k baseline.  The AL2023 6.1 row runs a kernel that predates commit
-> 5d8edfb900d5 ("iomap: Copy larger chunks from userspace"), so it is not
-> directly comparable, but it shows the pre-regression level and confirms
-> that the ~59k baseline is the anomaly and not the norm.
-> 
-> 
-> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
-> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
-> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
-> Link: https://lore.kernel.org/all/20260904115629.3993331-1-dipiets@amazon.it/T/#u [v4]
-> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> Cc: stable@vger.kernel.org
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Dave Chinner <dgc@kernel.org>
-> Cc: Ritesh Harjani <ritesh.list@gmail.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-xfs@vger.kernel.org
-> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
-> ---
-> v5: Derive the decision into a local flag instead of mutating gfp_mask
+David Matlack <dmatlack@google.com> writes:
 
-I commented on the v5 variant here:
+> On 2026-09-11 11:04 AM, Ackerley Tng wrote:
+>> David Matlack <dmatlack@google.com> writes:
+>>
+>> > This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a new
+>> > UAPI to enable preserved files to be restored into a userspace-provided
+>> > file instead of a kernel-allocated file, and uses this to support
+>> > preserving tmpfs files in-place without any changes to the LUO ABI.
+>> >
+>>
+>> I'm interested in the idea of retrieving folios into an fd for a
+>> different reason, I'm exploring handling over ownership physical memory
+>> to a guest_memfd.
+>>
+>> > The Live Update Orchestrator (LUO) API currently explicitly returns a
+>> > new struct file for every preserved file during retrieve() (e.g. via
+>> > memfd_alloc_file()). This then forces userspace to use anonymous memfds
+>> > for all in-memory files it wants to preserve. This works reasonably well
+>> > for VM guest memory but does not work well for other types of files that
+>> > userspace may want to preserve (e.g. in-memory logs, binaries,
+>> > configuration files, etc.).
+>> >
+>>
+>> Does this assume that VM guest memory is usually provided using
+>> anonymous memfds?
+>>
+>> More generally, is the problem that there isn't a simple way to
+>> implement retrieval into anything other than anonymous memfds?
+>
+> Roughly, yes.
+>
+>> > Preserving entire tmpfs mounts in-place would require a large amount of
+>> > kernel support and would effectively make tmpfs an ABI, which is a
+>> > non-starter (or so I hear). Instead, we can delegate the reconstruction
+>> > of the tmpfs mounts (directory structure, permissions, etc.) post-kexec
+>> > to userspace. The kernel just needs to preserve the contents of tmpfs
+>> > files and provide userspace a mechanism to restore those contents back
+>> > into a specific file on the filesystem after the kexec. Hence,
+>> > LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
+>> >
+>>
+>> Suppose pre-kexec, the data was in a tmpfs file (and fd), how would the
+>> preservation work? Would the user have to
+>>
+>> 1. Transfer the data from tmpfs fd -> anonymous fd
+>> 2. Preserve from anonymous fd
+>> 3. kexec
+>> 4. Set up the tmpfs fd
+>> 5. Retrieve into the tmpfs fd
+>
+> No, the proposal in this series is to support:
+>
+> 1. ioctl(LIVEUPDATE_SESSION_PRESERVE_FD, {TOKEN, tmpfs_fd})
+> 2. kexec
+> 3. tmpfs_fd = open(..., O_CREAT)
+> 4. ioctl(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, {TOKEN, tmpfs_fd})
+>
+> No transfering to or from an anonymous fd is required.
+>
 
-https://lore.kernel.org/all/aqQlUr-1h07G8JWM@cmpxchg.org/
+Cool that preserving a tmpfs_fd is supported. How is that done without
+preserving the rest of the tmpfs stuff?
 
-I think v4 was better.
+Why is it possible to preserve the fd without the rest of the tmpfs
+stuff but not retrieve without the rest of the tmpfs stuff?
+
+Is retrieving into an fd a bit too much of a shortcut? Would preserving
+the rest of the tmpfs eventually be required, and hence retrieval of the
+rest of tmpfs should also be eventually supported symmetrically?
+
+>> > An alternative approach to restoring data to a named file would be
+>> > supporting a zero-copy sendfile() that can be used to convert named
+>> > tmpfs files to/from memfds across the kexec. But this poses significant
+>> > challenges on the *preserve* side since the preserved file might still
+>> > be actively in use. The benefit of the retrieve-into approach introduced
+>> > in this series is that it does not require dealing with two different
+>> > files. There is only ever one file that owns the preserved memory.
+>> >
+>>
+>> Would it be more symmetric if the process is
+>>
+>> 1. Transfer the data from tmpfs fd -> anonymous fd
+>> 2. Preserve from anonymous fd
+>> 3. kexec
+>> 4. Retrieve into anonymous fd
+>> 5. Transfer the data from anonymous fd -> tmpfs fd
+>>
+>> As to the exact details of "transfer", I think the best we could do
+>> would be some kind of move from one fd's page cache to the other fd's
+>> page cache?
+>>
+>> Is the goal of the transfer to avoid any memcpy and fully transfer
+>> ownership (so, not just by increasing folio refcounts?)
+>
+> Yes this is the alternative proposal that has been proposed and
+> discussed a little bit off list, with sendfile() and copy_file_range()
+> being the possible mechanisms to do the "transfer". I think there are a
+> few fundamental problems with that approach on the pre-kexec side.
+>
+>  1. iommufd requires that fds mapped into it are preserved. If the file
+>     mapped into iommufd is tmpfs, but then we transfer that file to memfd
+>     for preservation, iommufd will fail to preserve because the tmpfs file
+>     is not preserved.
+>
+>  2. Even if you only use this feature for files not mapped into an
+>     iommufd, transfering the contents in a zero-copy way seems
+>     challenging. What do you do if the tmpfs file is still in use when
+>     you want to transfer it?
+>
+
+When you say in-use, I suppose you mean folio is in-use by some IO and
+is mapped in IO page tables, and that the IO must continue while the
+folio is transferred?
+
+Are you expecting guests (as in stage 2 mappings) to continue to be
+functional while the folio is transferred?
+
+I'll have to think a bit more, I was initially thinking of just
+transferring folios where I could unmap from everywhere (processes,
+stage 2, IO page tables) for the transfer.
+
+>> > By leaving file and metadata allocation purely in the purview of
+>> > userspace, programs can create the target files where they want, with
+>> > the names and security permissions they desire, before directing the
+>> > kernel to restore the preserved folios into them.
+>> >
+>> > Currently, only tmpfs shmem files are allowed as valid target receptors.
+>> > Attempting to target populated files, or anything other than an empty
+>> > shmem file, will trigger -EINVAL. HugeTLBfs files could be supported in
+>> > the future.
+>> >
+>>
+>> Is this basically that at some point, all in-memory filesystems' fds can
+>> support transfers?
+>
+> Yes, theoretically.
+>
+>>
+>> >
+>> > [...snip...]
+>> >
 
