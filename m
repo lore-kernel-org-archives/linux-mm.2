@@ -4,121 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58979C88E58
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763B6C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 377E36B0096; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
+	id 9262B6B0098; Fri, 11 Sep 2026 14:16:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 328B66B0098; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
+	id 8F6DE6B0099; Fri, 11 Sep 2026 14:16:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23E286B0099; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
+	id 7E6316B009B; Fri, 11 Sep 2026 14:16:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EF71A6B0096
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:15:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E78E6B0098
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:16:31 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51725C02E7
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:46 +0000 (UTC)
-X-FDA: 85202284692.27.BBDFD21
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7ED8780008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ay6N/5OR";
-	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3290A42DC
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:16:30 +0000 (UTC)
+X-FDA: 85202286540.27.E5C4A23
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3302614000D
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:16:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X99XCYO7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789150589;
+	b=dT0rHMoFdW5nLYCEaJ9rQa1bJX4qWP8oH0gUbqqknd4M66zW9Kn5N6EdYDOLlKu+R0i9Nq
+	Kkan5PYifrmh+do1kLjksxmsarHE3IM0yKY4zdEQOfi90FKANKDiQxLtzPyKx5gx3/zwmH
+	jqJtp4leo8xxCSdXL70lKEP5qeyfaIM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X99XCYO7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789150544;
+	s=arc-20220608; t=1789150589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
-	b=VChSP0kTsw9QIvw9Peh8tCcj4/jj+usYw4ZSk2rWUaq8LVGFQetTcndmZCxsL6sAOaPI+Y
-	jt8wyUY6qnGmpcsROxC+in6SJXnaeIBqG7xWuxbEZX5o+r1r0hEdkXX29IgCxyyBcgpsco
-	sv2bXtNbBbKd8ThKPnQMPmlc/T8xu1I=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ay6N/5OR";
-	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789150544;
-	b=8hLDqe8voC6nztB7VqH//J7mernhAjbCEUtY5vZLHxR9jN1i5zFhvSs6S8+SqHqyvQ0QkR
-	dPrNDEB5d+OSR/8QgkT5UxZ6Xcw7bv/+fkJBag7vHC/zk2cXUx5ELv0nbjfTsp278QgrtS
-	1NVYbdaKYNAP49wP2fUuAq9qw29OQSo=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc4d64bcea5so344467a12.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789150543; x=1789755343; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
-        b=ay6N/5ORuEVJnDaagODEnX9Twv/IyzZlIrJ2wSfrjTJRAW8uQzFkk7J78Trst8x/YD
-         WviLodhGU8XqZct4QkbDrigqG/02y4wJOiC2vUitf9Xot1d63hXCe4bZOxS4fKv3w/bs
-         lYj1ALfobabQTxH3lGKaQMXtp6Z5HgsPqz/aku+PdPDBPzr8AxTPrd9+qeNyHT6mq/ly
-         /7CS5I6xXX/0DrW467FFOPEc56SV8XMQMekmEsBD17SN1HO5jaUMMfYj1XncfijMeuyv
-         K26tJBzhvwT3D+8SbjHZJVIFRBMUONAoktt0PB0TXpKCuwz/lByqzerfXbZEoN5xOVHs
-         GVyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789150543; x=1789755343;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
-        b=VN861FIHVOdJSow8c0tLd8LXSAzLovFf59cqqUKTyMXg38GXj69CfUjCEpMXGzztt8
-         iFTkeGkyUA9fANsoDTUVNNZwSp4sVruI+fMJdQrqjztAdV5O1TQjW3zFkZpVH3pCqetI
-         4IJBnhsT7WFli4ZIenOTEL97UgAnkpXTvJocPb1JfApeBvxA/q083i2ELMqogzyhm9AA
-         JYvAWrIXh0TUWvuMpc/5addTxXSTlDPCVOYdo9fF9tpKHMX/DEbgu1JISqn0xI/E9T3i
-         SZvzRULVW8dNP9u1qTRCNMr5tVnd8InnqJi+weuMFrwg0H/8Cc9sq4mpJX27xk1L99sT
-         Mg8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxRG8fgcxXt5nkq1jU8YBEmpdpny28rQL1v1gEgtQd5+b4JT/zNKKYZSC44rS23vdeJ05k9wwxSBA==@kvack.org
-X-Gm-Message-State: AFuF++ldnv9WydD3jhPH/DsAeLNKWTN1k+Um0ffVu4fboHuFzgUquGsn
-	oMB648ktPCd729IIQTHVdO39wMMLiOby8HBA7nHMN/hwp8OVNuytzzzt7VUCGjWZow==
-X-Gm-Gg: AYBFou2QgwQCUj5/8K3oRY6y56b16qYMPKMOS7NvdzGKZG1MkJU9Qecvi8Ii0kFmrik
-	CzXAJHjxHItAXOkX8Na+oyCM8zJ+CeT2cbQYlY3u3IgZl87M9773Oj8qK6HSCbVlCdHyJtdRudm
-	TEHWFEFji3GVX4FvBEFUWWXMhRV6qKeYvzZ2H+WQVt8Exns433CRUmSoLtT3h4ZuhyRS/fsHskG
-	gN5iFLW21LAD5lxBNL5rLIlZ9NUL8CpteyjSu8YjYgnZnAM2LwlX1AthNoB/X4k7KNucRw5lG1+
-	JD7bnm3bVAlLjStFqQPzQieT+vUe+J3vSUP++nu5Cb0stWqXI06ON+NSu0vPkpMZav/H7TsPd/N
-	su5MtfUJIakZz/ZxZX0c5pZTVOFbYx7ZLcGPG4MeSOsjXl37Wtx12JT1Ffra9V0XIM+BozmVrpb
-	oJ/Ef2sgqeLptQ4AT+3kXiGesg0IB/KVmVwVuEac3M1utlt1jtC3Z9EhkmBfA143R2KTzXOOaLp
-	uqN9vt5FHFdasbPzagis0cGjMKP7KJXaYdA3fP+
-X-Received: by 2002:a05:6a20:3ca8:b0:3da:bb98:b1f9 with SMTP id adf61e73a8af0-3daed4bba1dmr10454732637.9.1789150542427;
-        Fri, 11 Sep 2026 11:15:42 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6550e06sm1594193a12.14.2026.09.11.11.15.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 11:15:41 -0700 (PDT)
-Date: Fri, 11 Sep 2026 18:15:38 +0000
-From: David Matlack <dmatlack@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
-Message-ID: <aqRFSiicubfsw3N6@google.com>
-References: <20260901180713.4185641-1-dmatlack@google.com>
- <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
+	bh=pXkt8h/Jok9K7Q3feytS1db7RvHnBcGlzZ45+6I/na4=;
+	b=RYLmGz/bqzsfPfGtu1rNlneLS01T09Ikqu8Ab2d3XpkqAyAuIOfvWYmaEuyZfWCmQt6AIr
+	j+hpsF/wYP8XECXJ9e/C8ee2BaW8R6qsT+EDICjY50fEC081k8aqnnzaWHvAzAI2u3uy3t
+	2UdpQ9JAhTOUazs7R7U8xqpwa7B+cb4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A68D9600AA;
+	Fri, 11 Sep 2026 18:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6A81F00898;
+	Fri, 11 Sep 2026 18:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789150588;
+	bh=pXkt8h/Jok9K7Q3feytS1db7RvHnBcGlzZ45+6I/na4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=X99XCYO7J5latPOdtROUfGkWNMIZoKp9nscpYoI4bUZPyx9DTxg99Cd6v1kiNCHYi
+	 z/B9/nTxxuFhaNEnIQERpDHVoU9VBn3zqR04M3D61ga4pBpCpNi48pY4OrPl0ZPDq1
+	 luBs+w7JZwyu03/ggVvbbW0knu5oiouEX1O6Ij7WjcboyN9tekmeaT5jufsiH004XK
+	 2k+ak0Fxj1KN70ahhHBLh+if7rlUrRWJNdN0bUfqNl4yxZwPVi25ClsfxxSAreGdRK
+	 AGypfPnMXrYpmlOZEk4fruLO4myYSm9gmCS9eCTYMSH4GUWs+XGV2s03qVJYgRnF5V
+	 QrqZ1pi2UTKEA==
+Message-ID: <376e2b66-c0f7-4064-8e38-997fad4df5b3@kernel.org>
+Date: Fri, 11 Sep 2026 20:16:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7ED8780008
-X-Stat-Signature: pbp7fxdgu6cxraukq9cpxaaybzfbsosg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/gup_test: safely calculate GUP batch size
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260903115033.162218-1-sarthak.sharma@arm.com>
+ <cc0fdb0e-ab6a-4095-b559-10e1d8a616d9@kernel.org_quarantine>
+ <366c39ee-d452-4a1c-af0d-2badd4d8210f@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <366c39ee-d452-4a1c-af0d-2badd4d8210f@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789150544-821603
-X-HE-Meta: U2FsdGVkX19qcB4vhFVJwieJw6N0eB4Ye1dFlb5P9yDUx3pQEuahgnCabdzL9ggjhjmLB1/9LgNnH+pdCAXhxll6yhX/m/bq76tTJegRxA+448TYM4W01fNBGy47tWK9wM2uhltVxLA6bmXmBNri8NZH3lTwAOvhrAK2cEjs12Iq/5j2/fbIZ5P5vXlBSEGVeEvb958RoYeOmWO8GdcSJ/b/QxCiMMW7cUsvHdmyckWHVS2sxAjIr6my85bg2ZMxBjE6Mk+e8EMTZoVJftrl0aB06MR1Cyw7h0oAXIVeIf4M4IVdU00g/RnZspDljbB4DxEILa2Glt1Uxu74XeKr4F44785sVk5FQViB+HCpFqslBAbdyhdnMlNAiNf4fEV0HKVgn48wXwVQGzmlIKdgaDmPzHoMt+LURa7FcsJmGJDlwQnAiH/arEyOqZNnoTFV0SabKuP6gpXubzbAv17YZfJS0IPzPHHdjI4MnVYuZO2BsZF5yOUoMS6cqrr3n9bpbgMILt37PVppni5FUeTN/4TlN0KEAQTEZZNm3VBH+cuzf8Zuk0ZOyUejFuTir9CEdmlqcUATWhOhzjfwevNTGRZMezErJz4UfzvPb9+gTfOMNqFldhp4gZ8/olAmFD/SYoy0wSPalUILM6MREqNuQahzwhWEzL8ezRp490rVXkuCfd/+V282+iKzs6RHkdeGXV5L3dbWA2V4qUl88sDjj9PRT0OhrxMY2OJCUCv8ap3Avz+h8fDqm2vd2qAjyUmZmUXMH/7wxpX0PpKVeFo1P5naF/MlCcGOkGh84JL3RNq4D3+iIunGRMRNZKigxNHGaAUvNJ2bI4SeFWDFdFPyHXMfzhPIlfPI2hkc4HpLgoKno9rk7zMuybSL9jBNwt8beb+v9sMqAo1kV8vYJpV/jJ8fjtUMLLsbL5M7MFjvmvNNd/RKzv6l4s+Fst6Oq5w3gE58zNRXfb3Bv2EK6CO
- f4O1nrE2
- Uug28FPrsxm4n1wf4eATyI3CCbgAg2gFjWgreYuA+hAtconx3pi2siLf17dB2kg6VzUVA3FBa8oBxgBskmWNCOnJOXYqJObHfRG79iBui8OaJSK7I6vxsOTKZy9nMJQawR4AXhYJ5TSRZ7IksTcM8EOY58vjpeLFWgid7ac/Ns7O4cU2W1rUbddLG1x2KuZ7qbX4GfdaXp5+VUXrJ2hFpkaVTOCGxFGuU2Srpd62y1nwIOjLVBKOCE2O78kB48lFdAeo903d10FIhvmwHG430+4i0VUkn4578a/Ye3mxumCOwCOEWfrMIIpYEStiyLuBhL61zXnjvdpo7QG9aOZ2xNDu0J4sBzWvcJiy2VUu+KbNXoq73uWNqv3XbR5DNfhAQ9H5UsUKQD1tOhgs=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3302614000D
+X-Stat-Signature: 38hncnrts4jgyhze6ap4gm8fjshoezdm
+X-HE-Tag: 1789150589-245877
+X-HE-Meta: U2FsdGVkX1+H/R2jReGZyJ8k3J/nQK0pLHEbc+O2JI44ZS335WOls9XZ6Ph+n1GLIMPVotMisNTsbigVhRuxZk8e9NdzXJLThUvmnfFIyPyf1eLVm+y8jB8cTYPk7W6rfrRPpmMJrXjWGjAu6MEfLRB9FqCZR+3eYwYf4ETg9UCchyWDCKtIrM4VhYR6MZRKgysxZaF1DRiWd9qqN8DF//i8blPlBNCyXyg5+WehiB27X5oEIxYegWiaOaIwQgAKyKoEObkW/rvvQJxzpBTtrZRTPN/ZlCwz3+sqZRAtAD6ZzV8wk7Y5YJsEyimEuCqaDzIo60dPNPXBtcRFSTMmjvWWwJWa4xvsa+haxsOdekHiffdHBUi6MPVddDQQuukge3lgvyhhiIrOOw5gKL5N9YN38MLOYl8XCkaCOMQPordBbVaexSvrYN70hxH/fkkGCEk28JqubMxSHOt3Iz8tBVE5Kr46YBTxInRQRw/+lsPstApQbjm1BwStisjEIXZxA8/x9C/lBLhaoiLJr4txyOiNtmxILoTpdqoUoqLhje9r4u/DYBlM/SGHtktms4oon5IvpJN8eVfpIZk7SbE+s88E/35nhni5ibdroBlm4WkoCti/E3ftyfVahScCtsjtONqi52dUd08OY6RxQnGtMlQB/jqTJGb/s0ohR7Q6FazvsTB735pwYnRMxvz5yEfKPnd8qjLqA+cfS51xYHOZ56ogw5VpzQh/tFDrBddt7qrW8G4FO9zgPQmVruYc4EtWpqs36zAW8ba3aavfyfXYOSo85R8iJ95Lch99qw2s19H2LiYWknUeSV+AuZzePDrQ7AOS9U5egYU3FXogN7ZfijV0BKC7RC8N3KCzSIcbtVLQkazwRcO3v5+FRGuituGnP2Gu+UmVeowkaIyCCzhdLesFTA7YVm31nQPh6+hgI75aBwQE0tYLt/GHWCzH7B/tuThZq7Rkm9pqt2sTrcU
+ ms2XzK7B
+ Atp94vdCP1ujLpU2l1861APQiTrm4Eok3DnUOV+lJOy+mXvNH9xjDUAJcOVjksUwxzDZElXDJ6CT0TDEvLiddZOf1Xp9iDcsNMEuiVPiDIaoQ9NiTAX7BCGrusGKL8K5ft8hiRvciWk1zZ3hOdSPr/eY81i1+Pz2uWw5RXHArgAZXBU5lrMlfEqeFktMtlAVrdFjfThqt4pEGbBjHUVPy17OtXP8fnPFPPstZdPOv5Uqsnr3n/mOgo1iLrmRS+h6ZYGVJA6sam4pcRkZeoaMn0rjWF/gdE5DX/i6jcSwWiA3mpYBuIgAzH79vHhKFVbqC+B12ePDiOS4Fcr/kBx5th11UV65+n6s6OgBk6vMt7L3/Hq+Gt+Eb3sd6ykMFFvyYoYmPFt0AODnIo+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,121 +141,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-11 11:04 AM, Ackerley Tng wrote:
-> David Matlack <dmatlack@google.com> writes:
+On 9/11/26 14:13, Sarthak Sharma wrote:
+> Hi David!
 > 
-> > This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a new
-> > UAPI to enable preserved files to be restored into a userspace-provided
-> > file instead of a kernel-allocated file, and uses this to support
-> > preserving tmpfs files in-place without any changes to the LUO ABI.
-> >
+> On 9/7/26 8:20 PM, David Hildenbrand (Arm) wrote:
+>> On 9/3/26 13:50, Sarthak Sharma wrote:
+>>> __gup_test_ioctl() calculates the end of a GUP batch using:
+>>>
+>>> next = addr + nr * PAGE_SIZE;
+>>>
+>>> If nr is too large, it can cause next to overflow and wrap around.
+>>> If it wraps, the next > end check is bypassed and a large value
+>>> of nr is passed to the GUP call, even though the pages array was
+>>> allocated according to gup->size. This can lead to out of bounds writes.
+>>>
+>>> Also, when fewer than PAGE_SIZE bytes remain, the calculated batch
+>>> contains zero pages. The code still calls GUP functions with pages + i,
+>>> which can point past the allocated array.
+>>>
+>>> Calculate nr by taking the minimum of the number of pages per call and
+>>> the pages remaining in the address range. Stop processing when no
+>>> pages remain and calculate the end of the batch using this bounded
+>>> value of nr.
+>>>
+>>> Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
+>>> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+>>> ---
+>>> Sashiko reported the issue fixed by this patch while reviewing the patch
+>>> "mm/gup_test: report actual pinned bytes". That patch has been applied to
+>>> mm-new. Since the two fixes are independent, this revision contains
+>>> only the GUP batch size fix.
+>>>
+>>> Changes in v4:
+>>> - Simplify batch clamping logic as suggested by Kiryl
+>>> - Don't call GUP functions for an empty batch
+>>> - Drop the pinned byte reporting patch since it has been applied to mm-new
+>>>
+>>> v3: https://lore.kernel.org/all/20260901083452.115365-1-sarthak.sharma@arm.com/
+>>>
+>>>  mm/gup_test.c | 9 +++++----
+>>>  1 file changed, 5 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/gup_test.c b/mm/gup_test.c
+>>> index 185ba3bb8ed1..1b64e932c4c5 100644
+>>> --- a/mm/gup_test.c
+>>> +++ b/mm/gup_test.c
+>>> @@ -139,11 +139,12 @@ static int __gup_test_ioctl(unsigned int cmd,
+>>>  		if (nr != gup->nr_pages_per_call)
+>>>  			break;
+>>>  
+>>> +		nr = min_t(unsigned long, gup->nr_pages_per_call,
+>>> +			   (end - addr) / PAGE_SIZE);
+>>> +		if (!nr)
+>>> +			break;
+>>
+>> Can !nr actually happen?
 > 
-> I'm interested in the idea of retrieving folios into an fd for a
-> different reason, I'm exploring handling over ownership physical memory
-> to a guest_memfd.
+> Yes, it is possible in 2 cases:
 > 
-> > The Live Update Orchestrator (LUO) API currently explicitly returns a
-> > new struct file for every preserved file during retrieve() (e.g. via
-> > memfd_alloc_file()). This then forces userspace to use anonymous memfds
-> > for all in-memory files it wants to preserve. This works reasonably well
-> > for VM guest memory but does not work well for other types of files that
-> > userspace may want to preserve (e.g. in-memory logs, binaries,
-> > configuration files, etc.).
-> >
-> 
-> Does this assume that VM guest memory is usually provided using
-> anonymous memfds?
-> 
-> More generally, is the problem that there isn't a simple way to
-> implement retrieval into anything other than anonymous memfds?
+> 1. We calculate end as gup->addr + gup->size. So, if gup->size is not
+> page aligned, then at some point, we can have (end - addr) < PAGE_SIZE
+> and (end != addr). Then (end - addr) / PAGESIZE will be 0. Right now all
+> callers seem to provide a page aligned gup->size, but any userspace
+> program which can open /sys/kernel/debug/gup_test can provide a non page
+> aligned gup->size.
 
-Roughly, yes.
+Note that this is a pure testing interface. So we don't care about weird user
+space doing stupid things.
 
-> > Preserving entire tmpfs mounts in-place would require a large amount of
-> > kernel support and would effectively make tmpfs an ABI, which is a
-> > non-starter (or so I hear). Instead, we can delegate the reconstruction
-> > of the tmpfs mounts (directory structure, permissions, etc.) post-kexec
-> > to userspace. The kernel just needs to preserve the contents of tmpfs
-> > files and provide userspace a mechanism to restore those contents back
-> > into a specific file on the filesystem after the kexec. Hence,
-> > LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
-> >
-> 
-> Suppose pre-kexec, the data was in a tmpfs file (and fd), how would the
-> preservation work? Would the user have to
-> 
-> 1. Transfer the data from tmpfs fd -> anonymous fd
-> 2. Preserve from anonymous fd
-> 3. kexec
-> 4. Set up the tmpfs fd
-> 5. Retrieve into the tmpfs fd
-
-No, the proposal in this series is to support:
-
-1. ioctl(LIVEUPDATE_SESSION_PRESERVE_FD, {TOKEN, tmpfs_fd})
-2. kexec
-3. tmpfs_fd = open(..., O_CREAT)
-4. ioctl(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, {TOKEN, tmpfs_fd})
-
-No transfering to or from an anonymous fd is required.
-
-> > An alternative approach to restoring data to a named file would be
-> > supporting a zero-copy sendfile() that can be used to convert named
-> > tmpfs files to/from memfds across the kexec. But this poses significant
-> > challenges on the *preserve* side since the preserved file might still
-> > be actively in use. The benefit of the retrieve-into approach introduced
-> > in this series is that it does not require dealing with two different
-> > files. There is only ever one file that owns the preserved memory.
-> >
-> 
-> Would it be more symmetric if the process is
-> 
-> 1. Transfer the data from tmpfs fd -> anonymous fd
-> 2. Preserve from anonymous fd
-> 3. kexec
-> 4. Retrieve into anonymous fd
-> 5. Transfer the data from anonymous fd -> tmpfs fd
-> 
-> As to the exact details of "transfer", I think the best we could do
-> would be some kind of move from one fd's page cache to the other fd's
-> page cache?
-> 
-> Is the goal of the transfer to avoid any memcpy and fully transfer
-> ownership (so, not just by increasing folio refcounts?)
-
-Yes this is the alternative proposal that has been proposed and
-discussed a little bit off list, with sendfile() and copy_file_range()
-being the possible mechanisms to do the "transfer". I think there are a
-few fundamental problems with that approach on the pre-kexec side.
-
- 1. iommufd requires that fds mapped into it are preserved. If the file
-    mapped into iommufd is tmpfs, but then we transfer that file to memfd
-    for preservation, iommufd will fail to preserve because the tmpfs file
-    is not preserved.
-
- 2. Even if you only use this feature for files not mapped into an
-    iommufd, transfering the contents in a zero-copy way seems
-    challenging. What do you do if the tmpfs file is still in use when
-    you want to transfer it?
-
-> > By leaving file and metadata allocation purely in the purview of
-> > userspace, programs can create the target files where they want, with
-> > the names and security permissions they desire, before directing the
-> > kernel to restore the preserved folios into them.
-> >
-> > Currently, only tmpfs shmem files are allowed as valid target receptors.
-> > Attempting to target populated files, or anything other than an empty
-> > shmem file, will trigger -EINVAL. HugeTLBfs files could be supported in
-> > the future.
-> >
-> 
-> Is this basically that at some point, all in-memory filesystems' fds can
-> support transfers?
-
-Yes, theoretically.
+Rather reject unaligned gup->size early in __gup_test_ioctl().
 
 > 
-> >
-> > [...snip...]
-> >
+> 2. If the userspace supplies nr_pages_per_call = 0 (we never validate
+> nr_pages_per_call so it is possible).
+> 
+
+Same here, user space won't do that. If you want to be sure, rather reject
+exactly that early in __gup_test_ioctl().
+
+Something like
+
+diff --git a/mm/gup_test.c b/mm/gup_test.c
+index 185ba3bb8ed10..9e3e1df8dd526 100644
+--- a/mm/gup_test.c
++++ b/mm/gup_test.c
+@@ -116,7 +116,8 @@ static int __gup_test_ioctl(unsigned int cmd,
+        bool needs_mmap_lock =
+                cmd != GUP_FAST_BENCHMARK && cmd != PIN_FAST_BENCHMARK;
+
+-       if (gup->addr > ULONG_MAX || gup->size > ULONG_MAX)
++       if (gup->addr > ULONG_MAX || gup->size > ULONG_MAX || !gup->size ||
++           !PAGE_ALIGNED(gup->size))
+                return -EINVAL;
+        if (check_add_overflow((unsigned long)gup->addr,
+                               (unsigned long)gup->size, &end))
+
+> Sorry for the delay, your email didn't reach my inbox due to some reason :)
+
+No worries.
+
+-- 
+Cheers,
+
+David
 
