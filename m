@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D72C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB827C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:12:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 887F06B0098; Fri, 11 Sep 2026 04:10:01 -0400 (EDT)
+	id E78B66B0099; Fri, 11 Sep 2026 04:12:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 831776B0099; Fri, 11 Sep 2026 04:10:01 -0400 (EDT)
+	id E423D6B009E; Fri, 11 Sep 2026 04:12:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7470C6B009E; Fri, 11 Sep 2026 04:10:01 -0400 (EDT)
+	id D663E6B009F; Fri, 11 Sep 2026 04:12:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5562F6B0098
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:10:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7BC51C0457
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:10:00 +0000 (UTC)
-X-FDA: 85200758160.09.1B41FD1
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 03AC8140007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:09:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2216B0099
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:12:23 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F63CA1BC3
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:12:23 +0000 (UTC)
+X-FDA: 85200764166.11.24DB054
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B67904000C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:12:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789114341;
+	b=IJJCBJQhc6/L0+s/IgAZd97YU/O8cu6a+EjH7WX19LNUHMu31maH6ugAiTq+JNmcAlhTTX
+	dj/5q6HQ1LRtCYmuf2E2Vb6L3nStK9vbc6GooVTu6wd9ZwnGj6EI4KNwaPDVsS36DP9vyF
+	3GWJ3TYdfxtAgGd5g3dsl8k/zoPXdm8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
 	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789114199;
+	s=arc-20220608; t=1789114341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/5y+FsthTJI0eWILMOQzIIY0oegy+gmTqJFTs/Ievv8=;
-	b=xcTG+l2DeY9J9kzihB3MZii6pvM8/Uw1Xc4zxYDKB1GAziXDlcU465bvmi3XnQhqxQUA34
-	B3kfCEdRQXIPQSO0w9tLVsBPo1fdoWY7yXpKMkuzEjE7aJ2bzFZ9JIFHvI+LF7uDePdD2h
-	jvqm6UzShfCV5nckoQymiZsA37EMlI4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789114199;
-	b=g0BbOVcefVjCAQaKHIPhA6HRxeZSUXTt0n/i/iIPbmeic9n8e7l1Nxetxk36qn/U8Y9n5n
-	pxi+q6H8IxiAcWIl+Z8zggh2dkMedydV9rST7MW+KI74TGY1L6C5wQwMsXwtUGWPPkz8fb
-	yKt5X2A+9iDy4a7P89YgaxFr4YWOWTE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	bh=O6OgdWGOHw1gQdJJTT1BRqPW9nFEQbKXIHGoPFFpVhU=;
+	b=HHBbnQOm9Xn6Ov3/5x8RlydggiHdiwwxZB0wmrLSdlcgypF8G5Ngg2S4JJaDkvZ8o9CxhC
+	TyIQBOI7VCXzGl9RR0EX1BJ1bGwt8mvD95Ws+/yIscjkHjM+DycLV6EFaF0RMUKzoFJg5x
+	f6URkQ6tVtlmLOnUK1rlmnFeaXDEYxg=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hh6f24N3gz58fdY;
-	Fri, 11 Sep 2026 16:09:46 +0800 (CST)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hh6hx5Fzxz8XrrX;
+	Fri, 11 Sep 2026 16:12:17 +0800 (CST)
 Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 68B89dvq051060;
-	Fri, 11 Sep 2026 16:09:39 +0800 (+08)
+	by mse-fl2.zte.com.cn with SMTP id 68B8C7Bo036013;
+	Fri, 11 Sep 2026 16:12:08 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp04[null])
+Received: from mapi (xaxapp01[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Fri, 11 Sep 2026 16:09:42 +0800 (CST)
-X-Zmail-TransId: 2afb6aa3b746af2-9faf8
+	Fri, 11 Sep 2026 16:12:10 +0800 (CST)
+X-Zmail-TransId: 2af96aa3b7da071-c2054
 X-Mailer: Zmail v1.0
-Message-ID: <20260911160942109wy2iDTGJslK6rHl8E56si@zte.com.cn>
+Message-ID: <20260911161210082WKOqK1dumByDY7jeEOdPF@zte.com.cn>
 In-Reply-To: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
 References: 20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn
-Date: Fri, 11 Sep 2026 16:09:42 +0800 (CST)
+Date: Fri, 11 Sep 2026 16:12:10 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <liam@infradead.org>,
-        <surenb@google.com>, <rppt@kernel.org>, <ziy@nvidia.com>,
-        <baolin.wang@linux.alibaba.com>, <nico.pache@linux.dev>,
-        <dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-        <chengming.zhou@linux.dev>, <usama.arif@linux.dev>,
-        <gourry@gourry.net>, <harry@kernel.org>, <vbabka@kernel.org>,
-        <peterz@infradead.org>, <borntraeger@linux.ibm.com>
-Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: =?UTF-8?B?W1BBVENIIDIvNF0gbW06IG1ha2UgZm9saW9fd2Fsa19zdGFydCgpJ3MgbG9ja2luZyBhc3NlcnRzIHNjYWxhYmxl?=
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+        <surenb@google.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <chengming.zhou@linux.dev>
+Subject: =?UTF-8?B?W1BBVENIIDMvNF0gbW0va3NtOiBtYWtlIGJyZWFrX2tzbSgpIG1vcmUgc2NhbGFibGU=?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 68B89dvq051060
+X-MAIL:mse-fl2.zte.com.cn 68B8C7Bo036013
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 11 Sep 2026 16:09:46 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Fri, 11 Sep 2026 16:12:17 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AA3B74A.000/4hh6f24N3gz58fdY
-X-Stat-Signature: yrhmjdu3bwetuf5xwqqsi9o4x9xah67d
+X-Fangmail-MID-QID: 6AA3B7E1.000/4hh6hx5Fzxz8XrrX
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03AC8140007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789114197-342955
-X-HE-Meta: U2FsdGVkX1+feONtNZoilgMz3KVL+tcBR5SkL55FrosjsOR9IlzmlvTeoHixKRMNgkzXzYU+SJCHFbgKIxN/A33JO/YOzbmvtV/CU6HQlQoHexXxRPwscTnwPvS1DB1FIm4HbSoUJ+STZTuWyf5kKSaS3pMc47fQbO4SQOSKGlqwNVfJJlH/Y4g13mtUWo23DAzdsSw893302Mb5yfYL8+cwz3n0lLtNOO3D9y+cHPoEMOocwjTdL4QQV0E4/t47VeFNsIqL1SGJ1r/Ee1deH7gK/vgI88T1CcjwDMXlrP2rLp2xelRZHn03w92Sxik4oLkbF80/xz4YYLtDTM7RMBso0IJ4FzD9Q8g+KmCA3sp8rs6buNIDZMqDlsodUjSmNxMRwM390hKriR/j45sQM88NMcjBZfvZQR4pPfXLlIq0t7PiEBj+PDY/ho2tqtX1QqckODFLlfoGvDf7caFsJD3GhFf6KGs8BJ+fX5IQc0mdJNyIbSFvM/QW6kUDx2KxfLUumPJ0cEefT+6Ipwp2PxNMHBYn7cKlkE9oW5V8Tzl8vMaSBVjXJmuZaSwuj6pdZVdg+FjeD5pRKziT1A4IX+LhCzfgCymAJQXN6G29zlHGSp7ZHs9YA5kosQQfBQ2yTpragJqKT//VwRVvAA7zGA2uPqyPyzG6NCid/LD7OQfE12ussrp+8xmX1gRpChEhfSjYLOhTAIHmdcfQpYXKY/4C9dox2PXp8Lzpbhe5BkwIaQMzG39VNELiFpdE9NSMmy6OY4E5PcBMXh7/K1EDF0Y4KlcjhB5N1KEbVN1ll2r+i1FN6rSmGSB0mJJSlMuhuRtg9j65m/6mjSuoC8rKscN25s74nbCx3ekoSs+5L+jc2jGBSS+aGk/lzrN9Ixu3qWv5U5i7ygfeHv1tYPpw4+zb2bGsgF8e4d9jIjfg6tsWv1ly2Fq8NEmWBhSLGWm5yKLWZvb6umTCcKDOIew
- ZlZlmbTO
- bR4R2b/FzLnELQiJesn32GceS7Bf5JvwGUh768aUdHl6WAHRFBYXnIeIH6Mp+Fj+POR06T/4OartMJKXFmBI9WYUYiMlsp5cdIwYm5AP/UfLlSkzrGHwERZzx4iE5a66pUjtkh1zMwnXwP9lsSA2z3J5YovntQJNc86IyuTdXD0UB7T1StBPMHbzFtANY5cV2bYhkVP0oWoWtvF5+AeukHW16qw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B67904000C
+X-Stat-Signature: 1uyqab9mxrprnjxa5dnzf5u8uxydjoym
+X-HE-Tag: 1789114339-713524
+X-HE-Meta: U2FsdGVkX19PiXm+ts6c1313CPi5dzH1VzLKBaGHJ/FOyir+SbqqNnXXdGNqRpv95dB6uqBobDJrlNJ70YYeFKFwdDOfqmCiTRZyQiTQ/9kY3UPnBseZ9j2GkO1OicQSfJ7hwkmEe7+EcHXOxjzPosk+x/0nsQFgCqlxDVAFVY58LM3S5YFKlwsIZK6Xu/a3sBE7kWdMWfKdWHxlqwTzf8fS8bfNIeJWHmReOQO17V/+LtCA1RRZ5rnyGvHoOdF1nI5cCW8kMsKfL10DDzH28Gtnqb0Yo5JR8pvdnnxGgu3n4NI4m0VnMyH7vqyR5wFSDcAEGffGaU8tqdI2OhAlshA0bXgHSI1g8knDC2s79P05ZIh+d9i9+8YVX7/fQ0ma7uBez5/7KD2GiUIoN632hM7nZRs6MXRyMv03qZiFQXTcVOF5T2Vj8zrrusXCzvLErcN+YjCp7IIRht3pyIPL9u5Iu7MdqJJAJ+AEyPJzNA8axYXdIoALGb5bxrwEK/5H+QOahQNDT1a0bGOsZFfE+29OSJg/REUTZQepx4vTkEgFKZI4x2TbBgVF3y3RnkLEjwBnTGiPugAgliJNquNgHokFCaOSr4AT4ZO+s0sjV/LM2oT+/Ax/3NKdFKDGfPPqQJo8Kd9shBGyCrohoUkVu+JPdFqOffHSWJnwZFefTU3zj9CjT/USVpqSD4M+CtNsWJR6xTl5ZgXai+s6JkTd8vRQPsBgDeuVVW3HM9AP4i6VzLG5asKngEMT63ffWZYxjUC2aLhgehGCu+Ev9LWJtMFnTUdYrLGHTkZZAf/FlnX+1zYKXPD+7k2dKSgHvcAUKj05219ZQnYZVyi/fwaLNWLSzwonH0XJ63Pagov6YpQvJGN/1WUu6qaoeSHCIYHqRAIFH4yREfU4eMe/pF4sw75Fd6c8P9xIuU0k+kd/ci4amtX876TytMRD30dUZBpwvEoYAakrke2Mis9nuA9
+ 2NvABu75
+ BoeYyWjyQ9r0oLn2jefEGKKjXbk2z+Y8m0tc+jC8ZUQhWWf+STanlvVZzk2g5wQOdwNiaLaHH+OpxnpNP9DEnopCM8Dwndljce9446Bo/yPhIV6mkO0qmSr7e855sALtHAzibB5N9PwyxGb1wA4wESVhEwmpVhtxexrJCTlV6N4Ws4XjyNsP4kHRUEE02CHznuIxSLrHo6o67Uxw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,168 +100,99 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Xu Xin (ZTE) <xu.xin@linux.dev>
 
-Add an additional member 'walk_lock' to folio_walk to indicate
-locking requirements for the walk. Similar to commit 49b0638502da0
-("mm: enable page walking API to lock vmas during the walk").
-But no change is made on any existing locking behavior,
-all existing folio_walk_start() callers are currently still
-under mmap_read_lock() protection.
+Currently the last argument 'walk_lock' of break_ksm() is used to
+indicate whether the page_walk is protected by mmap_read_lock or
+mmap_write_lock. If 'walk_lock' is true, we suppose its context to
+be under mmap_write_lock() protection, then mark it PGWALK_WRLOCK and
+make its vma be write-locked during the walk; If 'walk_lock' is
+false, we suppose its context to be mmap_read_lock(), then mark it
+PGWALK_RDLOCK.
 
-This change is prepared for the latter patch to enable VMA locking
-asserts. folio_walk_start now operate under write-locked mmap_lock.
-With introduction of vma locks at the next patch, the vmas have to
-be locked as well during such walks to prevent concurrent page
-faults in these areas.
+This change is prepared for the latter patch to enable VMA
+read-locking where break_ksm() might be under the third new proctecion
+way: VMA read-locking, so we have to replace the boolean variable to
+the enum 'page_walk_lock', but without any function changed.
 
 No functional change intended.
 
 Signed-off-by: Xu Xin (ZTE) <xu.xin@linux.dev>
 ---
- arch/s390/mm/fault.c     |  4 +++-
- include/linux/pagewalk.h |  1 +
- kernel/events/uprobes.c  |  4 +++-
- mm/huge_memory.c         |  4 +++-
- mm/ksm.c                 |  4 +++-
- mm/migrate.c             |  8 ++++++--
- mm/pagewalk.c            | 10 +++++++++-
- mm/rmap.c                |  4 +++-
- 8 files changed, 31 insertions(+), 8 deletions(-)
+ mm/ksm.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index 46d828926009..968f128a5232 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -412,7 +412,9 @@ __context_unsafe(/* folio_walk_end() not instrumented */)
- 	unsigned long addr = get_fault_address(regs);
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma;
--	struct folio_walk fw;
-+	struct folio_walk fw = {
-+		.walk_lock  = PGWALK_RDLOCK,
-+	};
- 	struct folio *folio;
- 	int rc;
-
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index 1c397be0d092..455428eaf1fc 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -184,6 +184,7 @@ struct folio_walk {
- 	};
- 	/* private */
- 	spinlock_t *ptl;
-+	enum page_walk_lock walk_lock;
- };
-
- struct folio *folio_walk_start(struct folio_walk *fw,
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 7709ea882477..054fdcb52136 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -507,7 +507,9 @@ int uprobe_write(struct arch_uprobe *auprobe, struct vm_area_struct *vma,
- 	int ret, ref_ctr_updated = 0;
- 	unsigned int gup_flags = FOLL_FORCE;
- 	struct mmu_notifier_range range;
--	struct folio_walk fw;
-+	struct folio_walk fw = {
-+		.walk_lock  = PGWALK_RDLOCK,
-+	};
- 	struct folio *folio;
- 	struct page *page;
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index dd66c6ad5af1..b714677e2f20 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4795,7 +4795,9 @@ static int split_huge_pages_pid(int pid, unsigned long vaddr_start,
- 	 */
- 	for (addr = vaddr_start; addr < vaddr_end; addr += PAGE_SIZE) {
- 		struct vm_area_struct *vma = vma_lookup(mm, addr);
--		struct folio_walk fw;
-+		struct folio_walk fw = {
-+			.walk_lock  = PGWALK_RDLOCK,
-+		};
- 		struct folio *folio;
- 		struct address_space *mapping;
- 		unsigned int target_order = new_order;
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 624f37975e12..8df66b4e5de0 100644
+index 8df66b4e5de0..dda105681d7f 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -817,8 +817,10 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
- 	unsigned long addr = rmap_item->address;
- 	struct vm_area_struct *vma;
- 	struct page *page = NULL;
--	struct folio_walk fw;
- 	struct folio *folio;
-+	struct folio_walk fw = {
-+		.walk_lock  = PGWALK_RDLOCK,
-+	};
+@@ -660,16 +660,11 @@ static int break_ksm_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long en
+ 	return found;
+ }
 
+-static const struct mm_walk_ops break_ksm_ops = {
++static struct mm_walk_ops break_ksm_ops = {
+ 	.pmd_entry = break_ksm_pmd_entry,
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
+
+-static const struct mm_walk_ops break_ksm_lock_vma_ops = {
+-	.pmd_entry = break_ksm_pmd_entry,
+-	.walk_lock = PGWALK_WRLOCK,
+-};
+-
+ /*
+  * Though it's very tempting to unmerge rmap_items from stable tree rather
+  * than check every pte of a given vma, the locking doesn't quite work for
+@@ -696,11 +691,11 @@ static const struct mm_walk_ops break_ksm_lock_vma_ops = {
+  * protection keys here anyway.
+  */
+ static int break_ksm(struct vm_area_struct *vma, unsigned long addr,
+-		unsigned long end, bool lock_vma)
++		unsigned long end, enum page_walk_lock walk_lock)
+ {
+ 	vm_fault_t ret = 0;
+-	const struct mm_walk_ops *ops = lock_vma ?
+-				&break_ksm_lock_vma_ops : &break_ksm_ops;
++	struct mm_walk_ops *ops = &break_ksm_ops;
++	ops->walk_lock = walk_lock;
+
+ 	do {
+ 		int ksm_page;
+@@ -807,7 +802,7 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
  	mmap_read_lock(mm);
  	vma = find_mergeable_vma(mm, addr);
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 15b45832bcfa..fa638adfb0de 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2302,7 +2302,9 @@ static int add_folio_for_migration(struct mm_struct *mm, const void __user *p,
- 		int node, struct list_head *pagelist, bool migrate_all)
- {
- 	struct vm_area_struct *vma;
--	struct folio_walk fw;
-+	struct folio_walk fw = {
-+		.walk_lock  = PGWALK_RDLOCK,
-+	};
- 	struct folio *folio;
- 	unsigned long addr;
- 	int err = -EFAULT;
-@@ -2464,7 +2466,9 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
- 	for (i = 0; i < nr_pages; i++) {
- 		unsigned long addr = (unsigned long)(*pages);
- 		struct vm_area_struct *vma;
--		struct folio_walk fw;
-+		struct folio_walk fw = {
-+			.walk_lock  = PGWALK_RDLOCK,
-+		};
- 		struct folio *folio;
- 		int err = -EFAULT;
+ 	if (vma)
+-		break_ksm(vma, addr, addr + PAGE_SIZE, false);
++		break_ksm(vma, addr, addr + PAGE_SIZE, PGWALK_RDLOCK);
+ 	mmap_read_unlock(mm);
+ }
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 7411702a37f5..8eb29fba20ad 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -910,7 +910,15 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 	pgd_t *pgdp;
- 	p4d_t *p4dp;
+@@ -1245,7 +1240,7 @@ static int unmerge_and_remove_all_rmap_items(void)
+ 		for_each_vma(vmi, vma) {
+ 			if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
+ 				continue;
+-			err = break_ksm(vma, vma->vm_start, vma->vm_end, false);
++			err = break_ksm(vma, vma->vm_start, vma->vm_end, PGWALK_RDLOCK);
+ 			if (err)
+ 				goto error;
+ 		}
+@@ -2885,7 +2880,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
+ 		return 0;
 
--	mmap_assert_locked(vma->vm_mm);
-+	/*
-+	 * Other locking modes except for mmap or vma read locking are not
-+	 * expected.
-+	 */
-+	if (fw->walk_lock != PGWALK_RDLOCK && fw->walk_lock != PGWALK_VMA_RDLOCK_VERIFY)
-+		WARN_ONCE(1, "walk_lock is not expected!\n");
-+	process_mm_walk_lock(vma->vm_mm, fw->walk_lock);
-+	process_vma_walk_lock(vma, fw->walk_lock);
-+
- 	vma_pgtable_walk_begin(vma);
+ 	if (vma->anon_vma) {
+-		err = break_ksm(vma, vma->vm_start, vma->vm_end, true);
++		err = break_ksm(vma, vma->vm_start, vma->vm_end, PGWALK_WRLOCK);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -3037,7 +3032,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 			return 0;		/* just ignore the advice */
 
- 	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 5fefe5b060b1..fd8e1c9e4424 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2871,7 +2871,9 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
- 	struct mmu_notifier_range range;
- 	struct folio *folio, *fw_folio;
- 	struct vm_area_struct *vma;
--	struct folio_walk fw;
-+	struct folio_walk fw = {
-+		.walk_lock  = PGWALK_RDLOCK,
-+	};
- 	struct page *page;
- 	swp_entry_t entry;
- 	pte_t swp_pte;
+ 		if (vma->anon_vma) {
+-			err = break_ksm(vma, start, end, true);
++			err = break_ksm(vma, start, end, PGWALK_WRLOCK);
+ 			if (err)
+ 				return err;
+ 		}
 -- 
 2.25.1
 
