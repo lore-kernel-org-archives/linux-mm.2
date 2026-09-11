@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92D8C88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 09:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F0FDC88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 09:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8A836B0095; Fri, 11 Sep 2026 05:20:24 -0400 (EDT)
+	id 891926B0098; Fri, 11 Sep 2026 05:21:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3BC26B0096; Fri, 11 Sep 2026 05:20:24 -0400 (EDT)
+	id 841A86B0099; Fri, 11 Sep 2026 05:21:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92B3E6B0098; Fri, 11 Sep 2026 05:20:24 -0400 (EDT)
+	id 731186B009B; Fri, 11 Sep 2026 05:21:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A27E6B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:20:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4DB412017E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:20:23 +0000 (UTC)
-X-FDA: 85200935526.18.E40562D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D95E6B0098
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:21:28 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23B671C0403
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:21:27 +0000 (UTC)
+X-FDA: 85200938214.03.5782D9A
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 07DFC1C0008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:20:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by imf23.hostedemail.com (Postfix) with ESMTP id 329E2140007
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:21:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789118485;
+	b=D1dpGVMBf8A5ruBNnTLF6zZPYiLQPMrGnNkpMTkaj0vJ+XfIyWIsI29+KBozMG7+gG4GYd
+	3Xn5f60e52V+UzfD7wUxS7pz00Xai9YooVBd/LSacFUVsoAakWonWrkeEYxKZRfke3wCsu
+	H3NxMZWjU92laqpvbJWkbqH3eQzWjm4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789118422;
+	s=arc-20220608; t=1789118485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=CEM5r8+sI6rPviTbXxLUEaQ7XxarlPI77nzUSlo95n0=;
-	b=1b/mF0/9hw0wKrJwuNVlZGwwh3OfVEeO95D4JKaryGxaO0Ae04L0oAszxJnjlorN61xGuE
-	+Rxecp6m8foJP9Am2g6O/ZKZnpy1VBGA9XqA5ThC9yrTGa7jBNG9MjgECtmApBjiG8Sx9n
-	P5Aw5TuGYcLXxUaX8VmtTZfViSq+joc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789118422;
-	b=ODWflQMT/WIZy2sWWW9sL7Q3vQ66idw0hWEckSRxtg5aMiWOMg9FRkTcBia7/j2Wj9qnqT
-	G8bZYSbxcNIlX1kWj9URMQXyXT/Ln6QSGQaeYg95rP9HaJFTFQHXviMWKs6H5WMiNQRQ4B
-	TfNOMLQJ7zSZgL0FhDuqsLDt/MpUqyU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C948D3E972;
-	Fri, 11 Sep 2026 09:20:13 +0000 (UTC)
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZUJaOh2KD6xRBWpt8F1wTgtn33PqQSG0Nzak/7jX/RQ=;
+	b=B7P6gLP24v2PswzPQCTrJuF+Fq4y6oSZXlr/p7J4y3E583OAkh0hP+xjfGe1cqbe6R4Qi7
+	w10PGB3iUDPUU2gZOOIclVw6PpxB7C9NFFXef526cnzSiLSQ/3QkW/fC1VkfRSciONe/ED
+	tPwloD3YSFEW0otqrJIX2esUHX//RqE=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A74F03E972;
+	Fri, 11 Sep 2026 09:21:20 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Yosry Ahmed <yosry@kernel.org>,
@@ -76,25 +77,29 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	Joonsoo Kim <iamjoonsoo.kim@lge.com>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v4 0/3] mm: fix workingset refaults in the zswap writeback path
-Date: Fri, 11 Sep 2026 11:20:04 +0200
-Message-ID: <20260911092012.92399-1-alex@ghiti.fr>
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v4 1/3] mm: swap: move LRU insertion out of the swap cache allocator
+Date: Fri, 11 Sep 2026 11:20:05 +0200
+Message-ID: <20260911092012.92399-2-alex@ghiti.fr>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260911092012.92399-1-alex@ghiti.fr>
+References: <20260911092012.92399-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTGzWbzMA5QZanrT8MgC66CDhbKxneLy9Ay/yxMlFVji2OLfhXWQPDvA1tdKqdI4htUQ8rGaY98avqsZNnswh6aMbdwtiezvc7z1tC/Owq0KcV4QllV1SC7O7vY4OsviYvKSYizj54HeiO5NtcHBPpIsNQ0cLcmY0VU+o2O9iLuLxN7Y58cOu9EHyl2cmQQLPtCZYwGCRKbz/GfbYlc6SmLlTs6HausImgU1yP0ti3L7sYEczYM5t5PzUTriKDLL3/Z1DbMXKeHgViDpSRIzpVfSFaFCNhfltK/w6Mqub6XWyQi7gjVWslDKhbP14+qYeF75e07YklW7BqLi4wijPvvvQ723VilEeyZd7lSAC1kK7tTvIXyAMQSpfqkIMBNwjlYc3WYIsgcdMqQOnYRWoqsmjBVxxDQeKRx3CpID/k0CjMNF4JNxGWS/rq//O2xLW3X5zrhPArR822rbcvyjhlCYjv+VqRXWZ8jcO3pwiAi3IiYre4qWQzkVwJ/hyasSRSWPlMgCkG7ViBCiMUB4sNXQkgw8Cbw1ZZg0+sBDAMa8Fu1Cx+fRQ/3ft4K+XjCIUj+AbuYv+z7v6avh8T+2h3k4ls7WoYMLFIQnJeHljZT+jUcQm98qltouk18n50Cp4vJU0ts3FwUH8YjQRnWq0ldVApoFk9Mf3kwZg7He33ORXA
+X-GND-Cause: dmFkZTEtas3CrwcasTY741hFvgzjpFnMkpMW1lbw3r0llWGiLFx/Y//z6Sz+CMZcDh8lwgArDwMrlPA3TSGMVfVpHEv2C6ty0hoyShpKtj2D4Q/451T6PEIEOXKgRyf1pNZV0vQxCWoAbt40ORR1ArLGrBuSZHK4P2ukcqghwIEMJPGzodJ4eD4rm1fS8IYOoRUwFfVzSPqjFMGFmT88rlEUzIlnFZwJBlSPjL+PJMMbkjpKNnW/2mo16VEyUBDtZcMItfChdkCMa/2WcMi/p2H6h2nPpFy0zdThAqC4XGY7cJV2+ojzT/cIFeQKbpJsrq4Wp/8TBNFTE2dzdnX9+OK1NOsCsS7LOrFqOvAZon2BAz/vuuOVDUdYbSYIs7G0HSuKPD4OPqgA0DDepZGF+17BpNOvIuopes97lc8SjQOVyWMhh5gpTCk/qnhgU0bpf9voG5CXLwqh5+ihZxqAUTnNTRHJ+MjBspHmvfT/4kPXDP4TD/QlhV5ul480ODBg5TTibi4yKpOBeP5ryPDLet9gnH8KgSKgFoiyIKjLv+WbC45K7P5OTKKB6NIG8472SOVnsgthYgPWTIdDXxSczNtFEUIGdrCR8GwHLircQ95Na7+X/E7ZyYDhepgm+HWCmxxmEI97YRdlAvTemkXT8Q9Z0m2CBTU8yUG9lZgMK+rMN9hQaA
 X-GND-State: clean
 X-GND-Score: -100
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 07DFC1C0008
-X-Stat-Signature: sftkx5jfg759kjq5k5htic7g5ficwozp
 X-Rspam-User: 
-X-HE-Tag: 1789118421-738250
-X-HE-Meta: U2FsdGVkX18sPdNwtEJYEcHgJVBu90sqE0WZtXZsvO2M5siU+Nq2ZcCtaG3YtoJ7A+iEE05S8N1ud5SKKQ4MhqAC1Gpit21gjHP/73TRpbVfv6QTgTPN/eWERYsVRgRJrQgO/P+qeClyaHu+bjeko/GUMgrVeEn8l+jk85fFuy4Kh4wJ9E5MbBp+pdMJqd+kzytpi1iTcijNdUEs0hyHV/HkbylMqvp/kK3kPad5u8K80pQy3WmAX3ZhnIXGm0AtZYORWF4go+6C3LKoLv0XytsbMtSQWDJFXPCrA6wC7tt8b6snhLQWqJdRZfZkamipXv0KzFluL+PanmSGBjttdJjenUDi29g8o+zL5n+kvvlywgVJ29u+Al8Cq0r5AnbAH2cyJN4gGndbpqv/XaAFB5utZ4l6JDy8+xQByUM3QlNnpSeOCeMG8G2I1cU2DI0ZM7Si29QXKVdF8cm5DPI5FWXSehRtYm4yOGBSHuITURCF+PLJpzACeYlttwx3hzXxk0w9UJ4IO7Mw1eJ/znS1Zpc/okejJLb3krqddyRchF5LxOBGVTLdz1WjM0hjj8yFZIuS4bHSU05/tf11gRPdlazO8Oq+rWPU0utmcQJWfbnmeny1Ym0FeReWGE8YcJYKF9EJ+pq9EUyFtixYJm0gRpdA6L5aFUJPHxW4FvDwmnbOplj6U7D8wXvxzofIKAHp9AM8l5edj+tXbdM6+atTTtDJs1HBt/GfQTragbtxh0y5BB0dvTRep021Ad6i9u4QjVeJEdr9e3CTdo8x2RWj40ZXYd0uX2PYqT/Jh93NrAiKz9XZjpgTIxmRk8nN06nyIe0PFecH3PM8jID/mAaO/hv5Rj0bCFk/8i6TaGP3OejN1Um1UXFJ99ER5eCLDwiv5mZvZDaleigl47uhPwtQ9BeAD4PYgvZfXxS2LlJbm23daqSvvz6BypQF/16xS7RY4081RIo+hBmgHdbbqJl
- ywFijRto
- tjUOyytf9/YesFWbQxu6LAsuPcEv51m/bnkN6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 329E2140007
+X-Stat-Signature: iimfqecmor9kxg79q7ihsrgeyhpo5ujt
+X-HE-Tag: 1789118484-226967
+X-HE-Meta: U2FsdGVkX1/b8fnbJIxpes6zs78rYzvxMEeAzz80j7kTrf++/IWt71xdoAAEwisAvG8b5TFdzAwGvBdNDvL5goLqr5EbgDorveEw9Ye2G1/BB+fDP7DP5RDc30k8Zh4/3VXscs0S010Lk9+suOZ6H9p92QIgTnqn40SaI1EZxHSp/ZxryW6V00EtYv3SUI0OgzoRk8nmXFfK81iam5MVAKyLFuj5QbrZC2L/NxndI0K0e96OkmCOYI24Vfzy1cQxqFXlKETXUzhu/YzGSixjxTm16Y5Ucyjxwbwil7piO1r02ymQOahEzehFKwwMDq9EMyMIfllFUJ0xAfBVBYDE0ToCREA8P6rb3k7sIVEZmVnMacdO+OwIcl7sh8Qm1lv1bG+qE7DKexYSiyweBxWPgf+z3soQuL4TBLzd2h3uH82tSKAXjvBsp4+1hWLvBUzL2Pfw+eny7AepJshZemJ0qlW/4ot3A3axeFM/hjz92Gy7JfEETTtvxBvxwNirh+sslp2XxIGRKTWpPXMuIcw1geiOMDjcRBSe4E0LaKK7sx1U+OKpOvwZn6Clav3JHK+Xla5g9i2tOd/CNl63PQoR2u1KtOYgbHkPTFLPyEdcG+MzPzc5hH2eR8b/l45ZuiUEWP1u7bKyGQ/ylk0GUvfFBP2WJOOFFtOUy7BhJBC6zSyLoktzGgS15f4fgtF9Iuywgo0VOdWDcK0jXfsuAS6I6tHDAQZxODfug1SfDx8o3cSwQM4NLXYyu78Q1ZPBLHiun8pLT/IWQjQplKTwVX9rPOJ138v7XwVyQBQ7Nu3J4zhslbe2DRTdC66lxCC+mCTjp5rrdTXRh2X8oOD7tTEmgk4sLEyrdoeEbZQwA3/hwdESEDS85Lx91wUTLENmepIsXiAoaoOZLWvSlkCLS0P3UfMG4JDzN2JEGZGxbD1Nw0Y2c3Eo+51i6/Jo/M4tHwnTV0/tbzaa3mG9KwDew8d
+ gr4RqusF
+ +XH5BhgJau0dYFHpA+E6Q3efIyQdiHRbQIjoby0vHSMBALILKBtU4iTHaFTd+nicDk1fGdQaIq91yOz7lJex3J+8wIrQmlnAxHwsWMeGu6PhU4HJ0s/YNZg4di0zFYJ9DyVyW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,141 +107,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Note: patch 1 also appears as patch 1 of the zswap dropbehind series [1].
-It is the same change. Both series need it and both are meant to apply on
-their own, so it is posted in each; whichever lands first, the other
-should drop it.
+This is a preparatory patch.
 
-When an anonymous folio is reclaimed, workingset_eviction() stores a
-"shadow" (the eviction cookie) in the swap slot so that a later swap-in
-can be recognised as a refault and, if the refault distance is short
-enough, the page can be re-activated. This is how anon workingset/refault
-detection has worked since commit aae466b0052e ("mm/swap: implement
-workingset detection for anonymous LRU").
+__swap_cache_alloc_folio() adds the new folio to the LRU itself, which
+leaves its callers no way to act on the folio before it becomes visible
+to reclaim.  Two users need exactly that:
 
-zswap writeback breaks this in two independent ways:
+ - moving the refault evaluation out of the swap cache folio allocation
+   requires it to happen before folio_add_lru(): that consumes PG_active
+   to file the folio on the inactive or the active list, and under MGLRU
+   it also reads PG_workingset to pick the generation.  Setting either
+   flag afterwards does not move the folio;
 
-  - Over-count at writeback: the shrinker allocates a buffer folio in the
-    swap cache, and the allocation path counts that folio as a refault.
+ - zswap writeback dropbehind needs the buffer folio to stay off the LRU
+   entirely, as the per-CPU LRU batch would hold a reference on it and
+   keep remove_mapping() from freeing it once writeback completes.
 
-  - Lost eviction cookie at reclaim: adding the buffer to the swap cache
-    overwrites the slot's shadow, so the original cookie is lost; when the
-    buffer folio is finally reclaimed a fresh, inaccurate cookie is minted
-    in its place.
+Defer the LRU insertion to the callers of __swap_cache_alloc_folio():
+each of them adds the folio right after the allocation, so there is no
+functional change intended.
 
-This series preserves the shadow within zswap itself, without any new
-swap-table or swap-slot state. At writeback, instead of erasing the freed
-zswap entry, the captured shadow is parked in the zswap tree in its place,
-so it outlives the writeback buffer folio.
+Suggested-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+---
+ mm/swap.h       |  6 +++---
+ mm/swap_state.c | 20 ++++++++++++--------
+ mm/swapfile.c   |  2 +-
+ mm/zswap.c      |  5 +++--
+ 4 files changed, 19 insertions(+), 14 deletions(-)
 
-Finally, the refault evaluation is moved out of the swap-cache allocator
-into the swap-in callers, so allocating the writeback buffer is no longer
-miscounted as a refault.
-
-Results
--------
-
-Measured with a sysbench OLTP (MariaDB) workload in a memory cgroup sized
-so the dataset and InnoDB buffer pool both overcommit it, with the zswap
-shrinker on so entries are continuously written back to an NVMe swap
-device (classic LRU; MGLRU off). Anon workingset counters over the
-measured window, baseline vs this series, mean +/- stddev over 10 runs:
-
-  workingset_refault_anon    383,242 +/- 59,345  ->  199,355 +/- 27,042   -48%
-  workingset_activate_anon    54,890 +/- 11,742  ->   22,607 +/-  3,118   -59%
-  workingset_restore_anon     16,212 +/-  4,590  ->    7,599 +/-  1,190   -53%
-
-Writeback volume is comparable (zswpwb 183k +/- 16k -> 178k +/- 15k), so
-the reduction is not from doing less work. Normalised per transaction the
-reduction holds (-53%/-49%/-39%) while the swap work per transaction is
-unchanged. A kernel build under the same pressure moves all three
-counters in the same direction.
-
-The run-to-run variance of these counters drops as well.
-
-Throughput is unaffected: over the same 10 runs, transactions/s is
-18.50 +/- 1.08 -> 18.65 +/- 0.94, i.e. +0.8% with a 95% confidence
-interval of +/- 7.7%.
-
-Changes in v4:
-- Usama pointed out that patch 1's changelog referred to "the next patch"
-  and to the "upcoming" dropbehind series, which does not work for a patch
-  posted in two series. Both references are gone.
-- Kunwu Chan pointed out that mm/swapfile.c still refers to the function
-  by its old name in a comment; patch 1 renames it there too.
-- Usama pointed out that reading the slot's shadow in the swap-in path
-  before allocating races: the allocation can sleep, so another swap-in
-  can install a folio, have it reclaimed and leave a newer shadow behind,
-  and this caller would then win the insertion but refault against the
-  stale snapshot. __swap_cache_alloc_folio() now hands the shadow back
-  from __swap_cache_add_check(), which captures it under ci->lock at the
-  point the displacing insertion succeeds. zswap writeback took the same
-  racy snapshot and now uses the same output.
-
-Changes in v3:
-- David pointed out that the boolean added to workingset_refault() in v2
-  makes the calling code hard to read. The boolean is now internal to
-  mm/workingset.c and the callers use workingset_refault() or
-  workingset_refault_lru_managed(), the same way remove_mapping() and
-  remove_mapping_reclaim() do. The three existing callers are left
-  untouched.
-- zswap_writeback_entry() now restores the shadow into the slot on the
-  error paths taken after the buffer was allocated: the allocation had
-  already overwritten it and nothing was parked yet, so it was lost.
-- Dropped the "if (!shadow) shadow = ZSWAP_WRITEBACK_NO_SHADOW" fallback,
-  which can never be taken: the swap table already marks a swapped out
-  slot with xa_mk_value(0), so swap_cache_get_shadow() never returns NULL
-  for one.
-- Rebased on mm-new.
-
-Changes in v2:
-- Sashiko pointed out that v1 evaluated the refault after folio_add_lru(),
-  which picks the MGLRU generation before PG_workingset is set. Patch 1
-  now moves the LRU insertion out of the swap cache allocator so the
-  refault is evaluated before it, as it was originally.
-- Sashiko also pointed out that a failed writeback redirties the buffer
-  and leaves it in the swap cache with its shadow still parked, so a
-  later zswap_store() on it would hand the parked value to
-  zswap_entry_free(). zswap_store() now bails out for such a folio:
-  writeback already decided that data belongs on disk, so it is written
-  there instead of being compressed again, which also keeps the parked
-  shadow intact until the folio leaves the swap cache.
-- The buffer folio a swap-in consumes is already on the LRU, so the
-  refault there cannot activate it by setting PG_active: that leaves the
-  flag disagreeing with the list the folio is on, which shows up as an
-  mm/memcontrol.c lru_size underflow when it is freed. Such a folio is now
-  activated with folio_activate() instead. One still sitting in a per-CPU
-  batch cannot be moved safely and just misses the activation; a counter
-  on that path measured 0.0007% of the activations over a 10 run test.
-  This is only needed because zswap writeback still puts its buffer on the
-  LRU: once it stops doing so, workingset_refault_lru_managed() has no
-  caller left and can go away.
-
-[1] https://lore.kernel.org/linux-mm/20260825135209.3135169-2-alex@ghiti.fr/
-
-v1: https://lore.kernel.org/all/20260817144622.137133-1-alex@ghiti.fr/
-v2: https://lore.kernel.org/linux-mm/20260821093606.2231216-1-alex@ghiti.fr/
-v3: https://lore.kernel.org/linux-mm/20260825172604.3243589-1-alex@ghiti.fr/
-
-Alexandre Ghiti (3):
-  mm: swap: move LRU insertion out of the swap cache allocator
-  mm: swap: refault on swap-in, not in the swap cache allocator
-  mm: zswap: preserve the workingset shadow across writeback
-
- include/linux/zswap.h |  12 +++++
- mm/internal.h         |   1 +
- mm/memory.c           |   5 ++
- mm/shmem.c            |   5 ++
- mm/swap.h             |   7 +--
- mm/swap_state.c       |  52 +++++++++++++++-----
- mm/swapfile.c         |   2 +-
- mm/vmscan.c           |   4 +-
- mm/workingset.c       |  60 ++++++++++++++++++-----
- mm/zswap.c            | 108 ++++++++++++++++++++++++++++++++++++++++--
- 10 files changed, 224 insertions(+), 32 deletions(-)
-
-
-base-commit: 1a46b1e97bde62afa7d925bb0dcd9f9748a1d7c3
+diff --git a/mm/swap.h b/mm/swap.h
+index 90a551a88df6..8679cb61268e 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -312,9 +312,9 @@ bool swap_cache_has_folio(swp_entry_t entry);
+ struct folio *swap_cache_get_folio(swp_entry_t entry);
+ void *swap_cache_get_shadow(swp_entry_t entry);
+ void swap_cache_del_folio(struct folio *folio);
+-struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
+-				     unsigned long orders, struct vm_fault *vmf,
+-				     struct mempolicy *mpol, pgoff_t ilx);
++struct folio *__swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
++				       unsigned long orders, struct vm_fault *vmf,
++				       struct mempolicy *mpol, pgoff_t ilx);
+ /* Below helpers require the caller to lock and pass in the swap cluster. */
+ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+ 			    struct folio *folio, swp_entry_t entry);
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index b76eb3d876fd..bf8ff2d2dbf1 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -489,13 +489,11 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+ 
+-	/* Caller will initiate read into locked new_folio */
+-	folio_add_lru(folio);
+ 	return folio;
+ }
+ 
+ /**
+- * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
++ * __swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
+  * @targ_entry: swap entry indicating the target slot
+  * @gfp: memory allocation flags
+  * @orders: allocation orders, must be non zero
+@@ -507,13 +505,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+  * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
+  * @targ_entry must have a non-zero swap count (swapped out).
+  *
++ * The returned folio is locked and is NOT on the LRU. The caller must either
++ * add it to the LRU with folio_add_lru() so page reclaim can find it, or free
++ * it directly once done; a folio left off the LRU is unreclaimable and leaks.
++ *
+  * Context: Caller must protect the swap device with reference count or locks.
+  * Return: Returns the folio if allocation succeeded and folio is in the swap
+  * cache. Returns error code if failed due to race, OOM or invalid arguments.
+  */
+-struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
+-				     unsigned long orders, struct vm_fault *vmf,
+-				     struct mempolicy *mpol, pgoff_t ilx)
++struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
++				       unsigned long orders, struct vm_fault *vmf,
++				       struct mempolicy *mpol, pgoff_t ilx)
+ {
+ 	int order, err;
+ 	struct folio *ret;
+@@ -649,12 +651,13 @@ static struct folio *swap_cache_read_folio(struct swap_io_ctx *ctx,
+ 		folio = swap_cache_get_folio(entry);
+ 		if (folio)
+ 			return folio;
+-		folio = swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
++		folio = __swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
+ 	} while (PTR_ERR(folio) == -EEXIST);
+ 
+ 	if (IS_ERR_OR_NULL(folio))
+ 		return NULL;
+ 
++	folio_add_lru(folio);
+ 	swap_read_folio(ctx, folio);
+ 	if (readahead) {
+ 		folio_set_readahead(folio);
+@@ -690,12 +693,13 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
+ 		folio = swap_cache_get_folio(entry);
+ 		if (folio)
+ 			return folio;
+-		folio = swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
++		folio = __swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
+ 	} while (PTR_ERR(folio) == -EEXIST);
+ 
+ 	if (IS_ERR(folio))
+ 		return folio;
+ 
++	folio_add_lru(folio);
+ 	swap_read_folio(&ctx, folio);
+ 	swap_read_submit(&ctx);
+ 	return folio;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 51f5a525bb61..bfd0fb46b0ad 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1870,7 +1870,7 @@ void folio_put_swap(struct folio *folio, struct page *page)
+  *   CPU1				CPU2
+  *   do_swap_page()
+  *     ...				swapoff+swapon
+- *     swap_cache_alloc_folio()
++ *     __swap_cache_alloc_folio()
+  *       // check swap_map
+  *     // verify PTE not changed
+  *
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 37f34e406c8e..0d2efe21f18a 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1001,8 +1001,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 		return -EEXIST;
+ 
+ 	mpol = get_task_policy(current);
+-	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
+-				       NO_INTERLEAVE_INDEX);
++	folio = __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
++					 NO_INTERLEAVE_INDEX);
+ 	put_swap_device(si);
+ 
+ 	/*
+@@ -1014,6 +1014,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	 */
+ 	if (IS_ERR(folio))
+ 		return PTR_ERR(folio);
++	folio_add_lru(folio);
+ 
+ 	/*
+ 	 * folio is locked, and the swapcache is now secured against
 -- 
 2.53.0-Meta
 
