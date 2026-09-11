@@ -4,100 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E002C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:58:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E350CC88E50
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599806B0093; Fri, 11 Sep 2026 08:58:25 -0400 (EDT)
+	id EEBE96B0095; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A666B0095; Fri, 11 Sep 2026 08:58:25 -0400 (EDT)
+	id EC29B6B0096; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487506B0096; Fri, 11 Sep 2026 08:58:25 -0400 (EDT)
+	id DFF9C6B0098; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 24F806B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:58:25 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BF951201EF
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:58:24 +0000 (UTC)
-X-FDA: 85201484928.01.F8977F5
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B1F2914000A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:58:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789131502;
-	b=hQbmTTDREo3DQ7tGUTAYEEYQrZtx/gJuB1a285Nk9+cqzYR59nrw4YDZtLvnAbw7kPfxxJ
-	/mv4cELknMj1TfgN/nfd+IID77vTXoctEqCzQnT4CwPg/3qvi6+p8Yf56j/2Rd5PGohcCS
-	6vlRWIew5YnZjX04WgNC/TfTtXKkQts=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1A346B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3ADF5A023C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:59:39 +0000 (UTC)
+X-FDA: 85201488078.21.6F6B387
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AD58CC0005
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:59:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S4EmxVGV;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789131502;
+	s=arc-20220608; t=1789131577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UaQYdknTmueyDeiPHskDcTArMbJldar1uQP+OR5ILiM=;
-	b=OwHfM0okjnZ2npx08djpz+IrPAPfj4DU6uxBeZlcMKdqQE64YMC2nj8I9lED68a9KaascC
-	L1Jl6P+XlNV5/F/Fc5751ObGf5Q5lhoZwGhbSL5yoJSqxBsaRiAlYz/TG4IYupQ7En8Rzd
-	FfEAiQRks8Q2nec46f5FdHq4MCpKyiU=
-Received: from omf02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B13EA023A;
-	Fri, 11 Sep 2026 12:58:17 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id 411FB80012;
-	Fri, 11 Sep 2026 12:57:57 +0000 (UTC)
-Date: Fri, 11 Sep 2026 08:59:18 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Ye Liu <liuye@kylinos.cn>,
- Michal Hocko <mhocko@suse.com>, SJ Park <sj@kernel.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Oleg Nesterov <oleg@redhat.com>, peterz@infradead.org,
- paulmck@kernel.org, mingo@redhat.com, jpoimboe@kernel.org, mic@digikod.net,
- tglx@kernel.org, akpm@linux-foundation.org, david@kernel.org,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, rafael@kernel.org,
- gnoack3000@gmail.com, gourry@gourry.net, rientjes@google.com,
- shakeel.butt@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- will@kernel.org, boqun@kernel.org, frederic@kernel.org,
- neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org,
- urezki@gmail.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org,
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
- lance.yang@linux.dev, pmladek@suse.com, longman@redhat.com,
- mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
- mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
- babu.moger@amd.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, rcu@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3 11/15] tracing/fgraph: convert process/thread
- iterator to for_each_process_thread_rculock
-Message-ID: <20260911085918.30c87ab3@gandalf.local.home>
-In-Reply-To: <20260911075800.491472-12-ye.liu@linux.dev>
-References: <20260911075800.491472-1-ye.liu@linux.dev>
-	<20260911075800.491472-12-ye.liu@linux.dev>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=dKbU6ZCLYf+36lNW3LS5uhSrwFRNIDzXZ4c4yuSq4Ug=;
+	b=Jm+DztctPesNPla0drXmn32kGuq90fYVsa0zkI5VmlOMlzBg93qtvJX6DyVk3pK5QxmcUR
+	4koaAHRbOvT01ErD6JE5V0od15jDTAfNX/RBTvwglkoM9zeSSedHdC+LLsDfAzM8fMOE7Y
+	0J/fCZ/57QLoGmP0cxX07qU8W4QysLA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S4EmxVGV;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789131577;
+	b=p44OSZ9sJI+H6JT4PiUVkNT0kwBOkRvrLPGd00yO0W1TSzpKUNAQtSGUxomD2Ca6MbTXVj
+	AkYv7ZyT7zAvRxGWCoKjr8lLg8Xhnq017iJZOMeqBquqOTtoYAWv/YCXnQzRUBbw7jdO0F
+	oQqDZ2SK5JZHi2TjynwkPSJuyBxPqic=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CF60F60A5E;
+	Fri, 11 Sep 2026 12:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91CA1F00893;
+	Fri, 11 Sep 2026 12:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789131576;
+	bh=dKbU6ZCLYf+36lNW3LS5uhSrwFRNIDzXZ4c4yuSq4Ug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S4EmxVGVN2EXpDK1mdHXmj2dyRkhyvTefQxs2Ed1lcVVpAdr64kc8KZ4OAdO03oob
+	 IBw4kCAf4vMzqTMtdkuhTW3RYjP301+5k65naRnSzfEHfoRhmIx57u/fXs0+gSyDms
+	 epLslWhFMPJ12tHHQI3wyRgzVny1LAtfsbJJWqW4B0j4A/MXVqxU7+EqGWH45aVGLr
+	 qRecNBabXd5k+7EGgl1vCLpKOycF58Jv/7qAtvVo5vEhEJhmw2+Cld1dcAFO2V453P
+	 Fa5Ic58w2xkZi08EJfSQUAUd5wYZwkdvfThDH65X4TEQA1mu3OMWgbTeidzuY9lI8s
+	 pSEQSvNKRE13g==
+Date: Fri, 11 Sep 2026 13:59:31 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH] kselftest: mm: fix potential failure for merged VMA in
+ guard-regions
+Message-ID: <aqP29-H0iKl-2CVH@gremlin>
+References: <20260911123534.1181501-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX184cgL4CPzpG6wyU7gqy6pHH3IT2rF9ets=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=UaQYdknTmueyDeiPHskDcTArMbJldar1uQP+OR5ILiM=; b=0JqVOVv+9L81lkGml08i9mMS8B782yjgSSh0J7qB8NJfLJbXU0fLz9weZAM4fQ5Ra9CUavRTBo+PCH73WKm//G+wNOzwNoyxnF2a7JXOtbmdL7tZR3SzwRbbk7iw2rNQVN3kwRcItAAPl3JNid1xBW4naEquTGk2Qi05wOwcUrA=
-X-HE-Meta: U2FsdGVkX18IEJ34TJ0+KfkZrrzHJ2dGti8SCtUwJBxnBs7A77nAwjwyHWgBGGkRmcWxfRbbgYYDx9+//1mp9vVOjUQbCfr8JwoUfq6qObLo5XckYsaDveVKT4KVuSxa43lMppAHrfkQ6q66hua38QSWiGZ4pR4WLuiB/fRlv95rgRSwCTUef6/9xZIREFm6zARLWSxhMwm/+USXJ5Odeo33wnQhHtMWXVBSR1fuAOuRDXqRFn/VmuEmY4R93qX7JzsgtbqMZNWtX+CwTgbkKXii7THG1FmHcDAGAFH4eWA8QubRpp9x6o0Bf0fFFGOxvfWU4KGfGsEN23tdH4CEfp8DdKmJ89MyETXiouFLfhLA9mjoesG1uJ4spkJ5GIdarVsiaR7bvBIJXGMAkAiEBCCCpjOlciuLokm1pcCBCZvkrE1QZjTT39frBEzytesHCZdU724fPrc5uye0+xI5ILZJA4Ngv6OQ1x3Efp0PWJo=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911123534.1181501-1-yeoreum.yun@arm.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AD58CC0005
+X-Stat-Signature: kejyc8yjfojzm93i3sj8xihr7z6rinyb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B1F2914000A
-X-Stat-Signature: n6a6yg87erzr1tr8kadm4kbym8uws4c7
-X-HE-Tag-Orig: 1789131477-955751
-X-HE-Tag: 1789131502-809749
-X-HE-Meta: U2FsdGVkX1+gXh3FNCndjEqWSsFhbCl9LDJF7xkq9JW7VQZGuFz10ST+t+ZY/3RpVHJ2BgHP/lDOAQWwUbNGcXFLkljqJVAB/OrMECwoYNDuVNkUl58LCXpsUk/ZgiOZ2DJLErEGCfBDonN/IcJya7V3D/vkd05GLVbyUvbrV3F/4u0X4o3ZIl41YbOlz+mjSQWDpscE+qZnMnHWYab22LLWNzup0iuoEQpbQDG+gjagEF0CTIoJ/3xdds5NqJDGR9H+4BT+CJ91/Vq6Hs1LisRzGd1L6mbkZQPOpPoqzfV/BKyr50Md3dooZE6Gh0VLp0rV3Gk7oBgoimhuxH6Y5I9+sGr/TOkjB2SEKEwU0aR1lVP6gZaQIsBjCw9vesIHv6qLl3rTfNfmSE+Czt0lO6TKZkQd6ThAv97MlpYYOpjkC8TKQ+sD/MyQjn97MQEnoVEOZ5zuGUuqtWEU4Ph9Q9E0S8vzQvo4YNn0XOcVDjzoVuN/2jkcjyzZkcW5lk3JujbRQYh4a4cIWV0Rq7xjqbVHrwUG8j7r/snghfqi2inuy8Z47yPDqRJWcPhj6GuI3z00WBtGTVvA/pUq69F61X/kZtyoefjLdKTdzfatIjXsvTDeqoqbnAbJ1Cd7eTARiVHqfldv6BxuQbdDDvIEVV0h1IohBvZDYnt3dTFbhLiSqoABpwv3/nyxln/u7h0XiK9Vfe/pTTg6WtVzmqmKpFEedLBNB63cklbAy4UsRNUuDTcs35VCNkeehnhKOG8PfL/jhmdaXxoodOwaaYJAzaOhVsacJ/9eM69d49aemfFyWiMRaU5FeBA6sUPfWK/H/umfhMyfykm6T27uWkdtFrSbF52IsNU3Eg4EwG11gcf6XC8Uhzd4ZJA3BqolbyhoF1K4CNMlQ81DSP+EEcIA1WA/UwrCB62N0Z+Ci8FKjIJDyWIKLYzrvPLYkSCPvSyYIFQkx+tgnXYM10RB9bl
- 6e33VUpa
- 0ZdPdKh70zuN1BWgmHU2vjZArE5ox7o5cswZQFMHM5TC/4qLQk1Jn62Zm9XBDmZE36c7aKzEOSgTmt+ToNjttTJaQIgu11vLTBXTth8FVHCAh26qtugmkhH/Tr+0s8jsKGAGDZ0OrIGdD0KjBXESBsf6490AGzk9XXUwSKmRWhtPSdfgJ/WwcESzm5lkDqdQVROOAyexvtTSOkF4lHwtDYZiIJg25pmE2ELJV90ehb1uLzvMymI0T06YXetDPk6S26XWaN5sTW1A2IIV95nVbZWWqIMG2cBt1r6Ox87eAC/GbFeoiWX0lFULUapSQuuADCfTlmm2HzrKIk+c+tetAL3G+Hg==
+X-HE-Tag: 1789131577-968806
+X-HE-Meta: U2FsdGVkX1/X9n9m0XtSGXTaV8Z1Mz4ZNYFldpR4XTKApP7ZDwEXklqE9dAAuw7Fq6NqX1nNLlO4jZB91kZF5t7fYtZhfXE1kZYaqUrRG2e/0tldAJabASfVBA+ONvhCft9mAFkeQUr48fWGqRnoInu3lKS8JlhY2Pj64PWmp/FjxQc33UgYB/1q4GCJPw8v+Mx6zj17cxwy+/37l61cBhLdyiDlSZXzdcEpc1LQTZ6HbBCQP4vHZNe++JT/JcgCWZcF+WlQ+vC2i4UJOcB5j2tp2fA2PiNqxD6dd9W/HQyUQWHKRXx/P856QWHGXHzPWBTZpdbiGi0TcR7pzHo9qtNNFgFUbOGdzGxTs7ssWaZS4BUBNYQpqiao2RNSL67kK8Dz0Qj3TTxZjfTm85TjXQ+vt8UCMYoyu4i2C7j6r9TqdU299ryDFCzQrJv29a8hW2bHx/exAIezav62aWSI45tgWDLfDHxC/FGmRLp7F++n3RBU8q1r5ZDdZQLJ5Tm4BAhRIPG1uHdgseK0Cj0tFyjdHI1mOwIzSzko1Qh0ApAMoGuOMEtytespEtG6kqrGa5sr1c/0Apx7JnLqARu+RRrASU/DG5XceJDeAx5ImrQelmJzmPZhuZ7xhwQQ1UEwV/7sTftYfVukOv+kpM6JYr4rLVH2n+8h5Gx3M81eAxNjP//DS1ktB0EWKmHy2L1JpYnVAbotRuxbsbCXPDnvV+IrVTg5tVLF3SygCbO0YC0UoVUISfv9n3DkW3wdhMdela3iu6mfKilWE5HiDpNR1GGOGrIZWFig68tD5wgqOxQcDbkaGVy96ADUu5vqZyB25y+Df6TiCmqzcBcepmmbnr/M0TNVA4O2pPxzjekKNwr/fHoRuafYhp9VhYhahv2eJppNYF4NeXAeYO8DrS69JPJKT2hoOu4ZiB9MHiBgzPFr+kxpl3JlCiKJIxbeS12QESQQOwuirsz7R/Saa5l
+ McGjOb93
+ GIcshZrN5XmsNSwhAXI1NBcCSMBK6tDmBr8FfUCV98NHMx16SWYtKIMceEjDmfQZgPLr2xTdPRHDOUOzbo6S/7WjSdCDCM1irFfTYjPlWoifSeQjSE8OgMCNAT3VXUD8uof0oT8YvfmuNKiP8NlHjGhwLNTEWvblpsa+YAcZRGfPn4aNH8ZcZIUXEuHtTU8CSfwdEZP6y2Hoo7eTVMMPcOJ1L7lQPj9bZM02q5ojJpTUfPfg96rqzq7WPjj2Vtlnjik9xOCPrU1FVFnoXtm4Rez2q1TE/ko3Tohw3mP4L7mE58pCurPCb9b22Bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 11 Sep 2026 15:57:56 +0800
-Ye Liu <ye.liu@linux.dev> wrote:
+On Fri, Sep 11, 2026 at 01:35:34PM +0100, Yeoreum Yun wrote:
+> check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
+> but this can fail if the mapping is merged with an adjacent VMA.
+>
+> To avoid this potential failure, first allocate a temporary region with
+> extra pages at both ends, unmap it, and then map the test region within
+> the temporary address range, leaving an unmapped page on each side to
+> prevent VMA merging.
+>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  tools/testing/selftests/mm/guard-regions.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> index 5c8ec3ca75d7..a28a57d34e97 100644
+> --- a/tools/testing/selftests/mm/guard-regions.c
+> +++ b/tools/testing/selftests/mm/guard-regions.c
+> @@ -2257,8 +2257,18 @@ TEST_F(guard_regions, smaps)
+>  	char *ptr, *ptr2;
+>  	int i;
+>
+> -	/* Map a region. */
+> -	ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
+> +	/* Try to Map a region. */
 
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
-> with for_each_process_thread() loop in kernel/trace/fgraph.c with
-> for_each_process_thread_rculock(), which scopes the RCU read lock
-> to the loop body via scoped_guard(rcu).
-> 
-> No functional change.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Map -> map
 
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
+> +	ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_READ | PROT_WRITE, 0, 0);
 
--- Steve
+Should be PROT_NONE otherwise it'll merge with the below.
+
+> +	ASSERT_NE(ptr, MAP_FAILED);
+> +	ASSERT_EQ(munmap(ptr, 12 * page_size), 0);
+> +
+> +	/*
+> +	 * Map a region for the test. Since the preceding temporary mapping
+> +	 * succeeded, this mapping should also succeed without merging with
+> +	 * adjacent VMAs.
+> +	 */
+> +	ptr = mmap_(self, variant, ptr + page_size, 10 * page_size,
+> +		    PROT_READ | PROT_WRITE, MAP_FIXED, 0);
+>  	ASSERT_NE(ptr, MAP_FAILED);
+>
+>  	/* We shouldn't yet see a guard flag. */
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+>
+
+--
+Cheers, Lorenzo
 
