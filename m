@@ -4,89 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA1BFC88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 781D4C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B52246B0092; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
+	id 4CB1B6B008A; Fri, 11 Sep 2026 12:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B02E56B0093; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
+	id 455CA6B008C; Fri, 11 Sep 2026 12:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A18ED6B0095; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
+	id 2F6CE6B0095; Fri, 11 Sep 2026 12:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DE966B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65735802E1
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:39:37 +0000 (UTC)
-X-FDA: 85202042394.15.30C3A71
+	by kanga.kvack.org (Postfix) with ESMTP id 0E34A6B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:44:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A356802E3
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:44:15 +0000 (UTC)
+X-FDA: 85202054070.03.42E502E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CB16718000D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:39:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGl9I60x;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id DFD4F1C0003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:44:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JNlZ0Vfr;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789144775;
+	s=arc-20220608; t=1789145053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OkTP2UvkR9L4UOg/cpBiigVG7rpJsSBTG6KbmpAnG+o=;
-	b=M4Y0BJ+Afi1vtNcrKAjtLgGpFBEdqpXeeSd/9dplganE3VJp2oMp2zs+hrsQfB2gQtdR41
-	Kjdn/R+unMayv6kTzI++hdPY7rNY64cGJmoFfdo8mBXjKFU9UhY1/PXt3QrnFBlW0IK41h
-	IixKP0hEG3RWxcQS7GWcIWPFK1dr3Dw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789144775;
-	b=v6YEpNuQbNYBK6rQIY50XaIj9mtpij/b41PSuurRl2YzdF3xQf6a2b3q3jRxO+5bWLR/aL
-	P5VxQiP86hushq+RWHZEtnWNXe4M9Uc/cuBrb6/H2xTOIZQkOtiWu5iioAUuJvFWGZjaYC
-	En1baDX+jG1DDReNXQBR3GwNS9jmiwo=
+	bh=64/u24ltheFG+IRwvDX3qmiVM9rNvR3qqwc5FQ5UhyE=;
+	b=6zcU/v6HyccKr1HcVZhDTbe+pIqvi2Kzdx8HCWSB6f09XLQFoxUbCq5o5AUge1h69+Wq9u
+	1RWPhuL1AGW4htAEIjdGKlvPmbioQSIo+QPrGQtR4XRnChqyG14bRpaaek4Ri9WFIZpevC
+	i345tB0fs0TSm/9Ueciq64bGGl1Wd0M=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGl9I60x;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JNlZ0Vfr;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789145053;
+	b=LJxZOCG7kidDHnB84sC1JELMlbRRMY30ifBQhr58smDgclvj0IiTjwbidmy/FxeiCW34Px
+	o+0hygb8eocM0epm0ASO1tL0awiTCKOI1bcJis1TSTAMiLxqFW5D8jqEKiATCcqceN3nvA
+	Ryt8RG9HKTlRTyiL60GW9MRY2qAlwts=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E326360008;
-	Fri, 11 Sep 2026 16:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEF91F000FF;
-	Fri, 11 Sep 2026 16:39:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C3CE660142;
+	Fri, 11 Sep 2026 16:44:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACDE1F000FF;
+	Fri, 11 Sep 2026 16:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789144774;
-	bh=OkTP2UvkR9L4UOg/cpBiigVG7rpJsSBTG6KbmpAnG+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MGl9I60xY3Z2sFqyyRhad6HQLSNPVGaSdlpegFKSLHpF3B3rGo1tqdouOTEkjKNip
-	 alC0sHkDBVQbR5AEBqEpVXXiaUDQ8piArAQN5p42Uf1l1mEGXfrtfdPkLcc8DWVFHd
-	 uxS1/6MHrVb2aPWYKFqB25mTgla33/lPHoIXtpv+R5dEuU8fMbmQDpBzQdyMHTIgLR
-	 ALkurPnDO51TkRfpCizQmi+qxoWpwbCM+Hq/OSW+ug31KUDVs44DDpIXjCG2ElxENH
-	 1ciplIL2LP9dQiie4EW5MnBVvWvk7S/EMinDR/7sok2kQu9Vsord0jwYfSmqNZPT/N
-	 iV4NFGY3TFsVg==
-Date: Fri, 11 Sep 2026 17:39:28 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, xueyuan.chen21@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
- smap_gather_stats() start parameter
-Message-ID: <aqQsWNfrBSp4DY_N@gremlin>
-References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-5-surenb@google.com>
+	s=k20260515; t=1789145052;
+	bh=64/u24ltheFG+IRwvDX3qmiVM9rNvR3qqwc5FQ5UhyE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JNlZ0VfryvP9EzKmXHTr9w/lIf2axf3au0kadcGsERGODueey6Tw/YYQ7c4bG5XsO
+	 V2fZ50m7qORqDc5hsVlmwsbqMJOHGILSx+sty1t6GluygCYQzS6LqtByMeNe/AuX3S
+	 uJH/gJXDtT/BWS5LWoQOQQsn4WjyWZ7sCqbL8Y1fNlYzfYl/t20Lh0mooj4F/ua59Z
+	 R+wClSZRMp1xfQNZvdk9FLadg65f5VV6DMzkmx42VpRAyuTdkQZRqntDswfi8F9QxC
+	 Y/j+PuTJ3KMm+bhmrV7LDhA1KznGr8n7Uuft0S+5jxWqdiVFkulT0d3baNTZG9oA6I
+	 V5q80ufL8r/cA==
+Message-ID: <6882373c-f76f-41ee-be62-cd910d07efce@kernel.org>
+Date: Fri, 11 Sep 2026 18:44:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910234737.1340642-5-surenb@google.com>
-X-Stat-Signature: s8knsotksx1hudgz73pmnk95b9qw6zi9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 0/12] mm: use per-VMA lock in __access_remote_vm
+ for improved monitoring reliability
+To: Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>
+References: <20260724222934.1463812-1-riel@surriel.com>
+ <9e902c8e-c825-45ee-89a1-85923453e43d@kernel.org>
+ <7c7b028ae93f0551e07e9e09468954e76ad072ee.camel@surriel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <7c7b028ae93f0551e07e9e09468954e76ad072ee.camel@surriel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB16718000D
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789144775-653969
-X-HE-Meta: U2FsdGVkX1+jWaCR0ODr6e0LX3Xcwz0BplGrhQK+vD/MAqHIfHYf3mopPMftH3io+53Dp4XOqr7AtEA2LqwywhjH28jXYJa1ByimdZMWTonJr9qfgG/B8eoAoOc5GY2xfQ00OlDEdwUEvwkH8vnzEsMglyvcUGjrI9e+SxetzfJBtvskDhhzbAzlV5OFknddlMylRmaD9TdnIXyp8AyYn9ecMt+ceowYvjl+Fwfzvj+tXRQgg8yhU/e6soWj1CF/B2Bo71z1y7l/8AuF/N8X48WLMuzinhoXYFmabWIJDnil/M/++H7Kk17LxBarfwYVA8OmQqvOOk4K1kyp8Pehvju2XUAG69RE2rXcZmO7q9/K63UgRY5CwGHXyA+25n54vWWhVq+kpfW3xfAWBCG8JwM51etcpGUmCfpvK/J+3la9NAT4Nswskaf4m1q2Lli1TXI+mumBAC/c7O3DK96ukMqUmTlO+SXQa1jQAWBQHoKJLN2l2y4JWZ57eccvNawhkf+oOV2MD0VEA/feRmbqxumIu+G1ou0DIrqgmQcUj0pWNxWndboPyadtGL9atqtRj4JkR8/DqbGQWicuV8t+iS3yEY4iupud5eB8FF3IQqdBFv0WhdT4rhUuUX/PNuZWKWNUm9ZBVuozQBLEBgLx5B13D/ZRY8psYt8OkHWtAJBLFmgbKtC0iMvOhu05RU61lH1J/XUC0GUzs8fxIdgRvChMZb8+FPDvUyeJNwiztBamziYThPphHVGsc2UAfeQROuYfBcsdq5yeCnhiSVTFR0NGaFFPPUB4Y8LS//d5Oe4Tb+X9Gd0XKvN0wURmj5XhYTz1VHaquGXVni+Jf8EJELJZ+BrrgRotVZm5csD8uiN29H1kVheS4tY3iL0EEM9MRG1G/pZiKOPaAIeDk7kF8FD0Q3o2FLUzXYJt0bzbsianlHLrjb4U/qb1wtltBxfiiaULVb47DuSANHvmx9v
- yyaPD031
- fHH+FcAZ/t+I8SV+h1Utaabp4orghrKU8vCxUDhzbNjJlArRCMt5R2AScKukraa/r0qHBgoTqWW6eHHgQ/As/NYBtNjTTfI8OdNQJ4KAXWHNe0RizGlmBdx/xWg8dZe9v0AaCXpsY6XaBnDt1ZYDTRLbcHsm317Dyw3HXFmqWzI6XxpHgZP2HblGDCi6PcCyCavvpFTDS9eZQDDwjRozMtevgIe8t+u2Iz1leg7QP2/o/I+Q/3udgAMX/QcBWX++LkPW88zVDW6eyug7LvP9PktzXnoZglaQh8ohv5f2OFvXlqk2tdTcQSlPP+soUnh7K8T7WLtn+rotXjm8+QpZ/QYZpJd8Dc0PswpYNQwKNsFxdllWaBjRISejj53TXCpruzEZVX1zz3c2hOLIdCgSOezqhitcZzWhnwSoHb4jGHR4Vbb6A4MWKjm0xO5DKNg8Vh/qJ0tF2IsUcMlM4E+PvK7FQxp/BPph/clKH
+X-Stat-Signature: esxgnrs7kxpggwjmjyct7b96b51zas58
+X-Rspamd-Queue-Id: DFD4F1C0003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789145053-84167
+X-HE-Meta: U2FsdGVkX19jTI2kkvWggnGv9eZmJzB5el7RMct0hEO9Mm3lgFVe5HhWukvIV6+k0aschsMuWJokvEQzIZf8fIXeDT4VZHqHf6/1/8eMki/YczccXTpQbLFXTR0S5ckE7zccjLwUMbToiMPxmlRpPQwKzuvL0MaxvEhopcxycYU0512qTwOb+5/sy/ftidTWbrLd/mJA8SUPQkXflDx2qvyiiEf/nQ9/m5G/3nN46A2mfSzSgsEphgPlaNG/6KG8jEw5pspzOAfUI7L865deZpDeH7W+TZqUqt3RE9VBw5Qhw0UOzCDjqC4xBHynJTL63GHg2aw5BMPxwZqd6okxOjnJ5I0BMrAk593MQ20pFdw6cF7MhQ4yfeE3bYaLyzIk/fVZFRooak7S6tK13/O2WI/i9bkU7GqdeqR1/oiwl5Kksv/+sn36tewuicQIPkRu7nuy82S/ysn5dGdhNzc5UFdK1f4f093B3N06I1UPMC94zEvbcdiNdwVAmqMoSX1KWzjNPnG289K5QyMDH6ZRUt0TBKZHAKg/DOCGsrKTMjZneNzQ6ut9AnEi8bnvHKCJCxOlQwpIfYuHcjl0QuVChZZo8d6mV0Pu3r60lkRk/xoP5md0Kra/G5k/01LHwA5HjyC2/TGh2GZURspVQ54iebYCywf3ZttKjEtw8m1f//mTscMVNK2ROwO39xG89sQo8tUYVu7B4cLTCGVP7MP6Xp/Pn5n9VuuvRGfcxw1npcn95HOhveeuVFKZLQmVmF8f00qhChteyOyWQ/QkD0Y4dsTX8h4PaZKD/KbXE2FG6E0KqYtv8wMyb7rIhlsdvjJegQAnWfdNlNTyjUDxFmIvVT7vqnoiIBoLp5uVs7XDsOMmiC/NkqXtE/aKvMw7jWpRpoGy7yUH1dWCZXJ+lGZ/iDD7MrF2w6QpJIyhmlAdDKRpPFfxysZEX8qw4kuR8HwZNzkKHay0bgTztdby3Ka
+ hRHwtScz
+ Xs69QcGmyoILFq7icFqFNgCydpvtQYs0qzJsiEO1stSFUnRyEdt1zXnn4fJDXThZGjRK0IIBfCmgeHK7i+SUcTBNhLhYYGa4Tv5jwfO5MOb7V6s6Cp79GTdDK126Nsg/iiUaBNU6yb8QfojeXRe6I42EeELNHJ132cjwVO2xpoh3he1zCcObS/zf359ZEBw4ctmti1IZCsQkkveL28S2DAPaGPe6sC5poB9AFp/lwPz7H8mSi2XADX0Cw8IU898Yod4doUEo/ca4IZa5p/0Gktf7wpzDzsPlA8pBBsc0JtfZDE6WHECDehOOEzHFkoKo8vLpu+Jx2p2ed7Ew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,147 +147,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 04:47:34PM -0700, Suren Baghdasaryan wrote:
-> smap_gather_stats() interprets its start parameter to mean vma->vm_start
-> when it's set to 0. Eliminate this special interpretation and pass
-> vma->vm_start explicitly when needed.
->
-> Since smap_gather_stats() operates within a single VMA, we can replace
-> walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
-> which is simpler and also can be called while holding per-VMA lock.
->
-> No functional change intended.
->
-> Suggested by: Lorenzo Stoakes <ljs@kernel.org>
+On 9/11/26 18:03, Rik van Riel wrote:
+> On Fri, 2026-09-11 at 17:11 +0200, David Hildenbrand (Arm) wrote:
+>> On 7/25/26 00:29, Rik van Riel wrote:
+>>> __access_remote_vm() holds mmap_read_lock() for the whole transfer.
+>>> On
+>>> large machines, with large multi-threaded applications, the
+>>> mmap_lock
+>>> is often contended, leading to things like reads of
+>>> /proc/PID/cmdline
+>>> stalling.
+>>>
+>>> This results in system monitoring tools getting stuck, right when
+>>> system information would be the most helpful.
+>>
+>> Rik, what's the status of this, and which series do you consider more
+>> relevant:
+>> the pure per-VMA lock change or the pure page-table walking + folio
+>> batching?
+>>
+>> I'd assume the page-table walking would result in more speedup and
+>> the per-VMA
+>> in mostly less contention. So likely we'd want the page-table walking
+>> optimization first.
+> 
+> We can merge them in either order. 
+> 
+> This series gives a speedup as well, by removing 
+> the double VMA lookup.
+> 
+> If you want to merge the page table walking and
+> folio batching change first, I can easily rebase
+> this per-VMA lock series on top of that.
+> 
+> Do you have additional feedback on changes you
+> want me to make to get the page table walking
+> and folio batching thing in a merge-ready shape?
 
-Hmm did I? Where did I suggest this?... I guess a while ago?
+I'll go through one patch set next week, I'm trying to figure out which one to
+prioritize :)
 
-I mean I also happen to suggest it in the previous patch review :) but that was
-sent after you sent this...
+-- 
+Cheers,
 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
-
-I don't love hacking a hack for a patch and then unhack it in the next in a
-slightly roundabout way.
-
-Feels like this should be squashed. And a wrapper function for
-start=vma->vm_start should be used rather than duplicating that param
-constantly.
-
-> ---
->  fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
->  1 file changed, 16 insertions(+), 13 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 3c40c9cbb9c9..ecce7ce116cb 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
->  	return &smaps_shmem_walk_vma_lock_ops;
->  }
->
-> -/*
-> - * Gather mem stats from @vma with the indicated beginning
-> - * address @start, and keep them in @mss.
-> +/**
-> + * smap_gather_stats() - Gather mem stats from @vma.
-> + * @priv: proc maps private state.
-> + * @vma: The VMA to gather stats for.
-> + * @mss: The accumulated stats.
-> + * @start: The address from which to start.
->   *
-> - * Use vm_start of @vma as the beginning address if @start is 0.
-> + * This gathers stats for the whole of the VMA unless the lock was dropped
-> + * and VMA grew or got merged and we found it again, in which case we only
-> + * gather stats for the remainder of the VMA range.
-
-This seems to be describing what callers do not what the function does unless
-I'm missing something? So that's really the wrong place for it.
-
-I think the description of why it might be a partial walk belongs to the bit of
-code that actually tries to do a partial walk.
-
-Anyway as per below I think separate partial/full functions make sense and there
-it can simply be described as walking either the full or part of the VMA.
-
->   */
->  static void smap_gather_stats(struct proc_maps_private *priv,
->  			      struct vm_area_struct *vma,
-> -			      struct mem_size_stats *mss, unsigned long start)
-> +			      struct mem_size_stats *mss,
-> +			      unsigned long start)
->  {
->  	const struct mm_walk_ops *ops = get_smaps_walk_ops(priv);
->  	const bool is_partial = start > vma->vm_start;
->
->  	/* Invalid start */
-> -	if (start >= vma->vm_end)
-> +	if (start < vma->vm_start || start >= vma->vm_end)
->  		return;
->
->  	if (vma == get_gate_vma(priv->lock_ctx.mm))
-> @@ -1285,10 +1291,7 @@ static void smap_gather_stats(struct proc_maps_private *priv,
->  			mss->swap += shmem_swapped;
->  	}
->
-> -	if (!start)
-> -		walk_page_vma(vma, ops, mss);
-> -	else
-> -		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
-> +	walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
-
-I mean obviously am in favour of this as I suggested it in the last patch :)
-
->
->  	reacquire_rcu(priv);
->  }
-> @@ -1343,7 +1346,7 @@ static int show_smap(struct seq_file *m, void *v)
->  	struct vm_area_struct *vma = v;
->  	struct mem_size_stats mss = {};
->
-> -	smap_gather_stats(priv, vma, &mss, 0);
-> +	smap_gather_stats(priv, vma, &mss, vma->vm_start);
->
->  	show_map_vma(m, vma);
->
-> @@ -1396,7 +1399,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->
->  	vma_start = vma->vm_start;
->  	do {
-> -		smap_gather_stats(priv, vma, &mss, 0);
-> +		smap_gather_stats(priv, vma, &mss, vma->vm_start);
->  		last_vma_end = vma->vm_end;
->
->  		/*
-> @@ -1455,7 +1458,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->
->  			/* Case 1 and 2 above */
->  			if (vma->vm_start >= last_vma_end) {
-> -				smap_gather_stats(priv, vma, &mss, 0);
-> +				smap_gather_stats(priv, vma, &mss, vma->vm_start);
-
-I mean this is all horrible, having to pass vma->vm_start explicitly.
-
-Although better than the hack that gets compounded in patch 3.
-
-There 4 invocations of smap_gather_stats(), only one of them passes a
-non-vma->vm_start start.
-
-So it'd make more sense to just make smap_gather_stats() lose its 3rd param and
-have it call smap_gather_stats_range(), then have 1 invocation of
-smaps_gather_stats_range() directly, as per suggestion in last patch.
-
-Or something similar to that.
-
-
->  				last_vma_end = vma->vm_end;
->  				continue;
->  			}
-> --
-> 2.55.0.1007.g17ff1f9808-goog
->
-
---
-Cheers, Lorenzo
+David
 
