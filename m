@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B70DC88E45
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BACDC88E45
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:29:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BBE56B008C; Fri, 11 Sep 2026 03:29:25 -0400 (EDT)
+	id 1F3CD6B0092; Fri, 11 Sep 2026 03:29:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C806B0092; Fri, 11 Sep 2026 03:29:25 -0400 (EDT)
+	id 1A4986B0093; Fri, 11 Sep 2026 03:29:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A93E6B0093; Fri, 11 Sep 2026 03:29:25 -0400 (EDT)
+	id 0BA556B0095; Fri, 11 Sep 2026 03:29:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6812A6B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:29:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C6F1A0110
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:24 +0000 (UTC)
-X-FDA: 85200655848.05.94F622C
-Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6383040006
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IaY+C2kt;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789111762;
-	b=Y4WM6YFgUVlqLtsF+b94ncTfzcExIvvlwS255Zkt66NLL8MUtGRKs2a8dMQifEBCNTOqUd
-	2Hscub70SjtbEd74r+WMqtScRAKUS9EUK/O5AQSd004z6qIh9k2N5mGnCfFcsGvzFq10Hd
-	rBEohSJAsADGc9vGjBxUsZWDSHiyT9g=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IaY+C2kt;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E6A696B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:29:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BAE8C0125
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:33 +0000 (UTC)
+X-FDA: 85200656226.10.29E62D6
+Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EDE611C0003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pM+QHW8/";
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789111762;
+	s=arc-20220608; t=1789111771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xf5cO8i1fvbMjYR041dxQ4K7REFcZow2QMXWDWsaMY=;
-	b=3Y6cxslSbVwlpR4E+J1Pu5erwkP5ymDfpFdy0P2wEd4drMMyEFpNrabRFGEzKFOkATYKXC
-	+FV/6G3/5pmbHieQBWcQfGvNYdBVqGZykrFhWbX0mEOgwxJWYoWJxy126X+tuJnfsrVixe
-	fESXUlIk4ddrN/EJUEpXyBZFEZdRerM=
+	bh=1zkCYWBzgrq6H1kSHELexh23YwfnZJmhYRAHVpmaVa8=;
+	b=3k1yiKiD0/MAed8gwzKiibwrggqItzU44eV7E6SqFtxCS0izPYGJRu3oMiVUr6KkbV0Cx5
+	jLFI9pgFgpXRbPhJiqafPm3YiSaBjZPKsvUN6MN3f7UlFWI/kUFCOHbdN62dEOseedwOHB
+	IHdfj/jwmf2sYfW1MaJlpuHdNJPhopw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789111771;
+	b=KijQ4phiiHsaJkF7i/bDHPrz6xUWnhENYamlVp4zadPBcTmBJyitOBFgaNmYND0HTsitiX
+	Ga+xLnH9y72RsyIr7Cb4ny6hbd0lIpX4+cmchb87V4RU8+Y7xU88Okq7jiy1OCOivgWVtt
+	nCVsk1GOUm5tEUrmH7tYsmKayjgGK2Y=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="pM+QHW8/";
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=g5xNOknu84CKDZN5IQmWT85FT3qL1QmesKNb79arhdM=;
+DKIM-Signature: a=rsa-sha256; bh=F8lEjUgDEYXzI9ZONpaLcnDoyXX5+afRbkkgw4XCoDA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789111759; v=1; x=1789716559;
- b=IaY+C2ktpNiNjDGG75HQbpPJUk/6BFVCv1QnkH+C3MFknAkgwDfMtd4arJOw4o2ODTpMLMdo
- OWO7Vr01F1I7Vgc5sqBRXsHI2S99opU6cM/M6P/j7xS9/DXVluaagWbK+WbAiHASWDSrDF3N9bd
- meskw8DC+g7kW2VlakksIic0=
+ t=1789111769; v=1; x=1789716569;
+ b=pM+QHW8/dAVKYbXaLvsg7Vt/XtEzus68mg9mkRKxX2oGxE9CgHpp4W6gTMSCnADVYlKB+Uh4
+ qyF/xYCHEkHEfNbRzdp1S9uvO/x4zVrg5JgFX4RPNm9EmY34IZML9e6ztkN1xCpLe9zC7nxT8t/
+ 0rfpELJm5xpBQJHPR9ocOOHo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7d4cc03316c4c354;
-	Fri, 11 Sep 2026 07:29:18 +0000
-X-Mizu-Trace-ID: 7d4cc03316c4c354
+Received: by smtp.migadu.com with ESMTPS id a3e5a5186c9ad1a6;
+	Fri, 11 Sep 2026 07:29:29 +0000
+X-Mizu-Trace-ID: a3e5a5186c9ad1a6
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Steven Rostedt <rostedt@goodmis.org>,
@@ -84,22 +84,22 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH 1/3] mm/mglru: factor out lru_gen_seq_nr_pages()
-Date: Fri, 11 Sep 2026 15:28:46 +0800
-Message-Id: <20260911072848.2346073-2-ridong.chen@linux.dev>
+Subject: [PATCH 2/3] mm/mglru: add tracepoint for scan_folios()
+Date: Fri, 11 Sep 2026 15:28:47 +0800
+Message-Id: <20260911072848.2346073-3-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260911072848.2346073-1-ridong.chen@linux.dev>
 References: <20260911072848.2346073-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EDE611C0003
+X-Stat-Signature: hgombnb97ds7wpi9xf7bzdnuefh74ufx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6383040006
-X-Stat-Signature: z8enfqeu7wxut8fn9hwfxtqcewkw5174
-X-HE-Tag: 1789111762-940028
-X-HE-Meta: U2FsdGVkX1+Fve5sIxspa5oTBDNPw34vLEaKmuoG7CWd8r8YFjeQxSvcIah1tjlktCEG7b0j0EAsMXXap+DxjbsnrA5Y9tsLRsjbbhbN1jgXRX1aZAtWJAj8bU92jyGt89SYkwmo8ozGqkpVjeoXnjwijISyfcvcIcxl4xI255Bqrit0v+vJM7orL8Fo7x3QTDrnpXsrMiALBNxk9MVvGhKY0FtyztWnY/fzfNhyL0sIFlB8zZw1YrJWuwOjytvyLsnlFx8x9jMIm8rDShnsXZVFQ9zmgJ3qE/4dklXdRsp2BT5/NLB1vCbkblLNesRPqJTK5lc2FN9ag5NZSwK3yZQKKagmx/pN5Kti0vKGan7DI073ZEmdNQ49lxFvTWqa0TuF51Tjl+hAsOlpQaVWWhMCqspycmzOBjKZ89jxTD4PttN1T3pI+p02o7kOP2pxFTCR9S8y99pGINNxVehBSfl29LJA9SUayoC0dcGcAn2jyLQqPlHV248A6V0Mt/lkt16p+QIul2/fCpCE5YEKqHsds6Oz2f6+emWrWleCecE+jwHxLqagO9UUPQBwc2KHIGZ8CFQa5cbAdCNT1y/cm7V+XSRAdu5aQ8fLHlaPnBUPRDks1wqQfQFkX6g0ZUXp2vsQCba5xkuiZZSaTMAF9SpAAS4tyAGN9N68QX3Gg355LmLne+5f6OX06RTvFZu9S72uL5ESPZXioex7NV1rtXI9aRViUJyaqh9jX5LZ+y7p5+1rzy3D+QRhdcYHeLhymWwNpF/gmYo3JEzwD3ES8V29BRIke1ORLlPdmSbrwD9UnhZzVyX7gJjLogscsc4j3juqik28s5BtxRkw94FAeTTymkAgKtR1QAsEbZvjYCliqssVed4EzFDfBHX1seXMOalXwvcwFJLuSBZzM1pdUIZp5WfJe4GDJVW6sbaVfXtzhjonuly6SKPOMpF70KcIVSlgc7LARbDLko2ZSV6
- rQaIGQGH
- 2r7eAF0ssJMpA+KoTFGuywLdYuKQi9jHIaPrNgVJvnzF1FXSlDW/sn8SFnw16wQazo3foAPwRNdrlo75AQhWxkuEEafDZVw2AzhmVTBZEVfLTot0frBJW0mqoSi0CA6O8zcPY4OYRiAbaVLMOQ6mfpJZxetuRjiKx5IIy1CbD/90iYC0tXDFVTuNGRLUli4eVSCEVqJ6Cnv+9UNUKQgTA+07YV7p9YH7TP4s7T+7Tx6jsduFVmnnujV7Aght02HiubQKZmhywThlDOHQPlWA0O/FUWMPUO6Fc7s/ZIlIQI+vbZWY=
+X-HE-Tag: 1789111770-938695
+X-HE-Meta: U2FsdGVkX196V8cknJJ5RMRpo8eShiK9CBDui2YzJZhdcxqMefcOuR4UkZiGirhebcYw3ptFak4/fGHhD6O9T9RHiOKQ/wyLCLCVceUxQ6vSGF9Sc7gl8FlPxIJFNd9272CzjeQAiC7u5dHkk5SboBO3lNRkst2UUNE/Xy95pOHyD14TC6Na+AMORgl1VB5orhz3lIaQFNoNoNy5HKqzFhTot7fwgcVuDWTtOTrWKiFCcbAnuu9PdE69R1mp9wp8eDn1aYMupPSnPhDpe3/gjUUmRQzUhxSOTKESBKCqSN313wsdT4xihXaOfG7uwGvXFLgoyfuwIZwcKrJPwwh5y3bphQ+pokg2zmAi1om9K7xD61E1HeW2KeMGTmArciMxEZgBQQJfQp1dERrg+Tt9GZsZSMD1iWC7puRFHgHydcYa+orIVgjocV7GrN7r8qoZ/ldUeLny3mRUByFnxZYlAJZtO/huUVkxDKQlEKvO9QUBu29t5QAu41XuP/tCUMGrr/+40mcmQb1ZrO+plxAkee10um5j15J8lr+OGtma2WZKzfyC9MSYsa83XCROIytHLMqXLi/elqD0TIeJC8Xih6TTqFuzpSmJnNnlEvPiMWkKO9ORKO3S2tahJheqYNKoJ6tXz+K+nZdeTm+ygJL93ATu1mKQ+Pp5L279fpwXaw9Zi9urP0MQEuz+85Co3tSyd7r2Ib3SQue946A/OOLvoya/iwE9ghUWcO4jMU6pytoqwPQ22XB1Sl3GHGpS+gZxPLVi0Ar4ogb+CcgR92TLdC6gQDbvW4d+iDDjOyw/AiqmaT9g5z4jY31Lvk5CTd+KGC1VzJNirR4lZqEcmi4wyvw0lVH9bvL3CQbfySt0CYGqiJ/BdSDsR2pJB5DXs5BmAShHL+635qw39dosR64sKM3l/DD71WLVihgl8xmrjRsKcQm2ZvI/b0Woo4Ki09OZvlsmY7rhgIVLBmxcTs+
+ ygafyear
+ wDCj4mWbk1W1SqCnqlH4oZGWY7zGkE8Dk6PnhKR6/f55RWagcbaD6BzP606/w36Qi0x4nvL+EOToxQg/akKGtv5lrX85kxjarKfUpRLFowImdKegncfUV90cE4XYE4vEK3Vbp8ugKcSaUKK9x+cPq1ujwuQwejYS59LIBGuY0hDDS8dK3vXN6Alb3arJqMWl8B8SNzt/rVCJQo1qy2lDqgOM6PNxIBWW65CRlJ3Yea5BOAfK17X3Mb9h13uaNH4I3+zzDQ7wBBJ5KW3vWsPSXhHtZo3PcUPC45Q2zPwrkfUpjAgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,86 +109,123 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-Both lruvec_evictable_size() and the debugfs lru_gen_seq_show() compute
-the number of pages in a generation the same way: sum lrugen->nr_pages
-over all zones for a given (gen, type) and clamp each term to >= 0.
+MGLRU's scan_folios() emits the classic-LRU tracepoint
+trace_mm_vmscan_lru_isolate(), which predates MGLRU. It reports the
+scan/isolate counts and the LRU type, but carries no generation or
+memcg context, so a trace of an MGLRU run cannot tell which memcg a
+given scan belongs to, nor how far reclaim has progressed through the
+generations.
 
-Factor that out into lru_gen_seq_nr_pages() so the open-coded zone loop
-lives in one place. No functional change.
+Add mm_mglru_scan_folios next to it, reporting the same counters plus
+nr_sorted (folios moved to a younger generation by sort_folio()) and
+the MGLRU context the classic tracepoint lacks: the memcg id, and the
+max_seq, tier and min_seq of the type being scanned.
 
-A follow-up patch adds a tracepoint that needs the same per-generation
-page count, and will reuse this helper instead of open-coding it again.
+scan_folios() is the MGLRU-specific layer where folios are actually
+scanned, so it has no classic-LRU counterpart. That the classic
+trace_mm_vmscan_lru_isolate() has lived here stably shows this is a
+long-lived place to hook, and the new tracepoint can be enabled on its
+own to observe the MGLRU-specific information. The existing tracepoint
+is left unchanged.
 
 Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/vmscan.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
+ mm/vmscan.c                   |  6 ++++
+ 2 files changed, 69 insertions(+)
 
+diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+index 8a872990b4be..c39dfacef033 100644
+--- a/include/trace/events/vmscan.h
++++ b/include/trace/events/vmscan.h
+@@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
+ 		__print_symbolic(__entry->lru, LRU_NAMES))
+ );
+ 
++TRACE_EVENT(mm_mglru_scan_folios,
++
++	TP_PROTO(u64 memcg_id,
++		int highest_zoneidx,
++		int order,
++		unsigned long nr_requested,
++		unsigned long nr_scanned,
++		unsigned long nr_sorted,
++		unsigned long nr_skipped,
++		unsigned long nr_taken,
++		int lru,
++		unsigned long max_seq,
++		int tier,
++		unsigned long min_seq),
++
++	TP_ARGS(memcg_id, highest_zoneidx, order, nr_requested, nr_scanned,
++		nr_sorted, nr_skipped, nr_taken, lru, max_seq, tier, min_seq),
++
++	TP_STRUCT__entry(
++		__field(u64, memcg_id)
++		__field(int, highest_zoneidx)
++		__field(int, order)
++		__field(unsigned long, nr_requested)
++		__field(unsigned long, nr_scanned)
++		__field(unsigned long, nr_sorted)
++		__field(unsigned long, nr_skipped)
++		__field(unsigned long, nr_taken)
++		__field(int, lru)
++		__field(unsigned long, max_seq)
++		__field(int, tier)
++		__field(unsigned long, min_seq)
++	),
++
++	TP_fast_assign(
++		__entry->memcg_id = memcg_id;
++		__entry->highest_zoneidx = highest_zoneidx;
++		__entry->order = order;
++		__entry->nr_requested = nr_requested;
++		__entry->nr_scanned = nr_scanned;
++		__entry->nr_sorted = nr_sorted;
++		__entry->nr_skipped = nr_skipped;
++		__entry->nr_taken = nr_taken;
++		__entry->lru = lru;
++		__entry->max_seq = max_seq;
++		__entry->tier = tier;
++		__entry->min_seq = min_seq;
++	),
++
++	TP_printk("memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
++		__entry->memcg_id,
++		__entry->highest_zoneidx,
++		__entry->order,
++		__entry->nr_requested,
++		__entry->nr_scanned,
++		__entry->nr_sorted,
++		__entry->nr_skipped,
++		__entry->nr_taken,
++		__print_symbolic(__entry->lru, LRU_NAMES),
++		__entry->max_seq,
++		__entry->tier,
++		__entry->min_seq)
++);
++
+ TRACE_EVENT(mm_vmscan_write_folio,
+ 
+ 	TP_PROTO(struct folio *folio),
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 40d3f1b48a74..2554a6513aa8 100644
+index 2554a6513aa8..bd1b9ecf2e84 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2813,6 +2813,18 @@ static int get_nr_gens(struct lruvec *lruvec, int type)
- 	return lruvec->lrugen.max_seq - lruvec->lrugen.min_seq[type] + 1;
- }
+@@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+ 				scanned, skipped, isolated,
+ 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
++	trace_mm_mglru_scan_folios(mem_cgroup_id(lruvec_memcg(lruvec)),
++				   sc->reclaim_idx, sc->order, nr_to_scan,
++				   scanned, sorted, skipped, isolated,
++				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
++				   lrugen->max_seq, tier,
++				   lrugen->min_seq[type]);
  
-+/* the number of pages in a generation, summed over zones and clamped to >= 0 */
-+static unsigned long lru_gen_seq_nr_pages(struct lru_gen_folio *lrugen, int gen, int type)
-+{
-+	int zone;
-+	unsigned long size = 0;
-+
-+	for (zone = 0; zone < MAX_NR_ZONES; zone++)
-+		size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+
-+	return size;
-+}
-+
- static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
- {
- 	int type;
-@@ -4239,7 +4251,7 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
- 
- static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
- {
--	int gen, type, zone;
-+	int gen, type;
- 	unsigned long seq, total = 0;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	DEFINE_MAX_SEQ(lruvec);
-@@ -4248,8 +4260,7 @@ static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness
- 	for_each_evictable_type(type, swappiness) {
- 		for (seq = min_seq[type]; seq <= max_seq; seq++) {
- 			gen = lru_gen_from_seq(seq);
--			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+			total += lru_gen_seq_nr_pages(lrugen, gen, type);
- 		}
- 	}
- 
-@@ -5738,19 +5749,16 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
- 		seq = 0;
- 
- 	for (; seq <= max_seq; seq++) {
--		int type, zone;
-+		int type;
- 		int gen = lru_gen_from_seq(seq);
- 		unsigned long birth = READ_ONCE(lruvec->lrugen.timestamps[gen]);
- 
- 		seq_printf(m, " %10lu %10u", seq, jiffies_to_msecs(jiffies - birth));
- 
- 		for (type = 0; type < ANON_AND_FILE; type++) {
--			unsigned long size = 0;
-+			unsigned long size = lru_gen_seq_nr_pages(lrugen, gen, type);
- 			char mark = full && seq < min_seq[type] ? 'x' : ' ';
- 
--			for (zone = 0; zone < MAX_NR_ZONES; zone++)
--				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
--
- 			seq_printf(m, " %10lu%c", size, mark);
- 		}
- 
+ 	*isolatedp = isolated;
+ 	return scanned;
 -- 
 2.34.1
 
