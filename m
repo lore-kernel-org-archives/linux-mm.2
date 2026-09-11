@@ -4,87 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BA5BC88E41
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 00:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1D6C88E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 00:18:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159DF6B008A; Thu, 10 Sep 2026 20:17:42 -0400 (EDT)
+	id 246A46B0092; Thu, 10 Sep 2026 20:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10BC86B008C; Thu, 10 Sep 2026 20:17:42 -0400 (EDT)
+	id 21DA06B0093; Thu, 10 Sep 2026 20:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 023086B0092; Thu, 10 Sep 2026 20:17:41 -0400 (EDT)
+	id 133926B0095; Thu, 10 Sep 2026 20:18:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9DF6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 20:17:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7D414063E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:17:40 +0000 (UTC)
-X-FDA: 85199567880.16.1241E05
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EF96BA0007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:17:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X22wITFU;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789085859;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qGubHrOUaqKed99hLIWnPWqg+R/An1NQxE3VePdAsS8=;
-	b=B4gOBQUYXBYlBb1be2rVjbw6SPY21kHq8dMqCj9IOFdPW7Q+/5j4FcPOkbP6j7ohEAMGes
-	0OiAddtQZRxgWdgCcx41WjKkJ18Wl9Cgd2Uezqy+TeYx7Yk+RiJF5WLhTpCyDyKqTeggCt
-	R6jhjjpbr1NWrfBcTpwQWTqqP8i7pwQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X22wITFU;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D17B86B0092
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 20:18:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 941D9805EE
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:18:35 +0000 (UTC)
+X-FDA: 85199570190.24.3C825C1
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C98C040002
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:18:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sgyohamF;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789085859;
-	b=Vi9SpqpR/6fVFI/h8nhlBitL9ICfdLZFBFUpOoYe835LU5b4+Tez/AQHzkR/Zf2ImjfHuI
-	MZWbdoEdS4XazHpNEce31imkipz+lMtQ+/uykBKDatfK74IwYtd9ICQGR1DxIK4vDykbwK
-	DI29DP4XqcdNm2j/1czm0vIGSmpB9lc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A54142AE3;
-	Fri, 11 Sep 2026 00:17:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2563A1F0089A;
-	Fri, 11 Sep 2026 00:17:37 +0000 (UTC)
+	t=1789085913;
+	b=ksI2gnvCugqDREa2cnpEBkdDDFZMdxdKK3A1pNoHnL3pC48DpAHrBR0MjAiqogmbsHk3ow
+	os+vmi9DkIiqQF7P3Q+i4kqnwPjH2pRnhJZK1bApdYXmZwIswamr0yZ38HYRTHpIlGy+mN
+	hF3gbPziwZQT3FwpWR0OfxMk5doZEpg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sgyohamF;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789085913;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ejo+90E50fXi5k+UdJPEJ6xbgHQPbd1TRBdPlxbvODU=;
+	b=pCKoXsEyBBmZ7ddXJmd2zXDS8GNnVPn4vOkWrdVnF0a/hNb2ngIyxKF5gkMgc0QgcVaiqX
+	ZWaTAxpvuSMLNSIF8MQloXEaCxcQUBg4azY4uxfGwELm+jvuiqdDxHqapqNYmEfYD3Snvi
+	WodjsUVZjxP5INgLccZDBh1AMo+//tM=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-939adff838bso33600085a.0
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 17:18:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789085857;
-	bh=qGubHrOUaqKed99hLIWnPWqg+R/An1NQxE3VePdAsS8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=X22wITFUBnw2s1G3bTYYh6PPwLO2OObQAmukcHTIsN8nXzwTrmBf6GCes+Up9hgO5
-	 gxB4OE/GB4hsLxPnHsmV5zK4McPstEAzFnGeyaFYN8Ao9sTBsze/3F98e1gx8Co96k
-	 5H1YNkWaLQ8J5XSbEhmQWinEWSQO80KjGmCB/2P0=
-Date: Thu, 10 Sep 2026 17:17:36 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
- baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] mm, swap: Fix potential NULL dereference when
- trying a sleep table allocation
-Message-Id: <20260910171736.02208c335ee41edd89a23809@linux-foundation.org>
-In-Reply-To: <20260907091356.53026-2-shikemeng@huaweicloud.com>
-References: <20260907091356.53026-1-shikemeng@huaweicloud.com>
-	<20260907091356.53026-2-shikemeng@huaweicloud.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gourry.net; s=google; t=1789085913; x=1789690713; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ejo+90E50fXi5k+UdJPEJ6xbgHQPbd1TRBdPlxbvODU=;
+        b=sgyohamFfMUenaJb5rUhuopD2LtWW3Yc7gSKuPp+S6eAat0Upu45OZb2vS5CdVIw7+
+         gIEjlsuxGqwX2ZB34lQ8zIhqe7bkhF3XIRWC9UGsbZglJ8s8ckrgfUPEzLSOWMXkfFGX
+         /RNT38FGRuzUUVLWpB3q5F3sx4HVX01jtJ+FE1wF3cK82KGN35GkSDp1JoCKczjQGvtc
+         s5eYhw1YxretlFoAn8BW6OvIQg8ZjeKLIyHVJjpJvTt0n70zaoVjkw+dVeS8zxJogesK
+         OrpydmD3/dVQSV72vbqcQ3DYv/K+iWx7KQzBBKLc4yz/9ZjoPw82zSeMW1JiGkNFyJEt
+         FuAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789085913; x=1789690713;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ejo+90E50fXi5k+UdJPEJ6xbgHQPbd1TRBdPlxbvODU=;
+        b=FujGAQ+NiKRjcetDLiFmNZ8KTrC0kJc1gT4EOXlDSmb8ZQLLRGCWL3FIFPW80uW+bL
+         LSiJUDWbqzpHBtOpYSUWsTBgi9vixf//riCAVIxsXb9UlTT3jH3PmLYNfc/CzvZhAYGy
+         Eom8SZfIZuz85gpml6PKEhfRYH3D7TwMsEnp6L4JJ8cRz5Y0uEwAndEB40c3GpwN8MFp
+         3ybn7MSOeYHJR6R5OGxxeDMBRNZLSeeRkbwFcYe0bvn0bmrr2NxoJiJO1kE+SsuGa2Tw
+         bzfxjrlcshwoiZWjEMYw12JWyIM5obQ6VGfICIfN0vxcBhHa/gM12l/bygDH46pXXGuU
+         f6Pw==
+X-Gm-Message-State: AFuF++kbkmjzHVdZ1vWJmKhbC1Vaby68n6SlnL7EMpPC8Ljd3IOnXOcF
+	MIaNNht2oMl4MyPLLmcUk1sXyNcIx5q9iXtCUJXP3kyknS3TkCnPtP6y1TJZK8W/P7Ogp5DuZZY
+	bDCGW
+X-Gm-Gg: AYBFou1empH8x3t67FL0hFuot9QtN/yw5g3vpsdH7DPObgM6X06jYKlWmi/+wJdifVU
+	aiLlyPsmRtT/O7uDsEQ11a4WSzzvTyYLWZmmbWYI2oACSmmwM8fd/rakt9Zb4Hr/uJ4UYyDUu+t
+	zdguBjoLrbRjwzI9W7eoK5zU4x2AxUvq9SRY6oeZ9L8E6dAzmXlgYPBD50XhCSifjcBhZi158Wp
+	s46V2xNfmHv3Gliw2tZlvmYLRnYFUapEpd8eArHxks0LxFoD/NNX7/Mgk+ELs0IZlhKKUdCKxzR
+	X546dNXC2ioiArfTSCbxMVu2QBD3cBZsoMtcN6bDYTE+76MxoQ3k/Iv805qg6a6toNOV9qWH17M
+	xspy6vWlmf/ryLPepDxkz3tRMHY4pBZUcvk69f7zO6S51pkvpTRQsawF9ltLvL+/jtR2YI8gFlv
+	ZX8qxTs4WuTMJyTkAU/po/Fffh9Sie8dy+X/Ud+ow0pN3uGDjlUKBicoA+9UmQx+3JuvyO2uguh
+	9ja+b+Foaulmhsafm9LxzEuIGnnVTdnrwovR+hIZv8O4GqI+AQ5DUKstWWE
+X-Received: by 2002:a05:620a:1a22:b0:936:9fd4:e2bf with SMTP id af79cd13be357-939ea189d6dmr225830285a.37.1789085912637;
+        Thu, 10 Sep 2026 17:18:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e80e4c36sm108896485a.40.2026.09.10.17.18.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 17:18:32 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	osalvador@suse.de,
+	hannes@cmpxchg.org,
+	raghavendra.kt@amd.com
+Subject: [PATCH v2 0/4] sched/numa: stop VMA scan filters from gating promotion
+Date: Thu, 10 Sep 2026 20:18:22 -0400
+Message-ID: <20260911001826.2109390-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C98C040002
 X-Rspam-User: 
-X-Stat-Signature: ip4pgtjbtmp4b6ywy8ppn8jscb7fi6ep
-X-Rspamd-Queue-Id: EF96BA0007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789085858-183633
-X-HE-Meta: U2FsdGVkX19mshmlhESzwqVB8nBo4y6P5PKUsuDajxc1Z/Ofb0FXfqfUnBq1TdlDCpjtp68xg7hH+QUIoynMtKX2fWPyiAs+5X6q0qSwMPOojxmchGwuecuqRIIjAFVfYMGuLQDvtkc5LLugEzSkHpaXm+E6kmGnHacN2JZP3nLIoA5jAXGdQnUSTzS/4K0JGORBsWs4m5Md8Sn2a1RNrcon2lFA+Gqv//zmwY2+vaymv/t1b8A65CJS3Xteu4mbFmRoUxhs9veA6EpVzggLEiAPXXfIrYsAp/jlgnCFTNrbQSwaifSjT9AP+CRta/Ndj7TCR79M5UuN7Rb3exwWmo2hrioJEoTc2uFEvWp8QZx+y6BxkOkZwWb97HbPsN47TETq9mh1jDMnngyeRBl5C00LZUZAPbhQlikvTO7lD9n/0Kdiib/PediJ0ketswfPRDEwN1Fw7N1bzpnIBTxMBMI2CY0IIqbs6+d9aFtPOvJ3ZN8jz8RENQhBXiqDoZ/hq4MaRvxd4jb/gw+Bp7g/kCoRoJVxbtWIHLUG1m/I3Xc1g5zQWPeKhsNyPZiWaxXo4NbNjI1IFIG9gitX7A+2+attIpQR23rrXSnKiDYU2edPsZniWDQy3WzTXYnqczxiaa/bhc4nEOVEhahTtXthNe/JlPF8yeaiKOLkdfwi8o0UTNGqiAcQvaLsqSWvAB4XLD8B471ZbDBWcbSaUlFUuKJD8NxHCLV19oOjVSpgwKfFORKlXnuoV800IcN7Et2B1BMY4TupRVd5R/5Ou17T/ipLKSFPNi0/Vd6ynhAOWNMR9un/UYqh9FXXgAgZ/MUJ1kgYSfVMV+Qp8ccpadGPnN5Qi0ke+IdLFgQ5XZ4LtW7z68yFWIMXSAKyT30jjg6uL9XRqcnARXA4sckw6LfRcyaWffiaKNgySYsQowI7qZ/KbLS3n2ghAGLs7C4otFi3AwzGI613cOSN8BmkmAf
- B1jfUdoG
- /Mi9zEuxLby6VDWHyVsvqJMLDvLFvWD2MIPhW/FuNk+OWzqT/3oDp/3NKNGn0zyyN7pBulU+cb431TPwWipj/8V9MvaEgB2ypGQ6WHL1lYNhta42W/DD9iBvU4pJMZIPbPRswy0Lw6U2GTAmIRceWKUur/GXQcFeZNL6vh6yOJQD+Ten4SXJVA7um95d3DcRuSEVvBXdEg3hDOSvm/YfAwUczlBZkL4IbDHPD9dhIkpQX3SQzWdNmbuKVxGH619jd2CC50CHrehugZH15BybA7CcvKBjE5wu1tVBoKxKrsAZTGDIIPO+DGzy8pkwKn1X6bvmGUODtAuPWd04=
+X-Stat-Signature: 8awx99y79osdnwmbib5es1tqo7acumkz
+X-HE-Tag: 1789085913-494111
+X-HE-Meta: U2FsdGVkX19YQ7YAMx0k+TYTej0SNROr0lU8yODD8fOrtLEvJhbFZ7lBFnuZVHSw1HIwtThH5p2C5FTI3bwQRPWlXFb1Z7qAMnv/12upfGmIs/XfYLiOus18YX6TsGqVVTf5nsibIPCx/TCmbS+SNw9+edf90Gs5DX/hK1G4hw1CvwBK73w49/XiYgHcsab1RC54RZt8k32IKy53uu9kuF4fivty1n276BTHBoj+FyCjhVjuBjgRQNlicTx2l0vsvnLpuj+uTGN0JQ/SaPrnG9qNZ6w8S35CXCPT1o+B4MY34i4Is0hn5iwLpArkoitB40/KVeDJ1blYTYqtj5mqM+Pvp7gonBetK1tpz5oL++nj7ZB5t5iQzIj0MnhkrWsws/e6qnTrsiJ5bzx1O5x0UeLda02AA2IlNBTVj28nAT0j2oAkzIkUhiqC1RUCQuDbDwlWoYjVZHtcPz0r6PvJ0ihmZi2zj1E/XCoQdL+hTixC89xCbcPTsj4BzqvXAjQXmAI537kZNGFgBGvcNVYH1/SWVZTp0ANa89W3LeAD7dg7Rq71gGcV7Bm2v9PlxApysyaOz8BzffdsXxEKeaUXBt5hokzGyPM9lPoNr91ZbeBZPJLcdNrZdCetDqUdrDIaubsbdX4OYobTlsey8CLCIYa35A+02X2Ui4eW3olzCfzkYagz2YX2+PSMqxw9SXqPsoEtMlYG2KxAJosotLO+PhGUA+Gh0Xw1SBx5Kr3enKIwGFhirhW8lfQPM+G+tdo2Z+qIHUgjnt9tHOfxqBS19m6vlFhnsj9f2f1tfl7oUga2BCCd7BUi5m8bRZORq4ndtxpzlgeGYvphwhOoxH+nLDhqRAWFH751ftli4pQsl7oYHRL9JAqLga1rQpQxX6Rv5weyBDjUX7mAFqviLQnMMFmTFeYbkQjiJBjw1hnXDwWgl8qAlMHs58yiWJ+9GGRhiB0KN7TemcHehPEt8Se
+ 8ElNLl5P
+ xAzJ0yVW2PvjhBJfVk4DxoBMu6/zXgfJMpwuz9lUKORFptiAH/cpF79CDyPRjaQrhH6nfAo39kqhjaGYFdVaRTlft/Z1U0LGabnk1zEoHEFBrjB+NXJbe3Q1OyDbGy7otGfEk0aA6sJP98fKsvpxeKTf62fPvtIVPSuMvEAFndGqh+pb9pdh9B3iA9xI2wvLpA+ovs5I3rTlrWzQYtVlFGXtKY9SL35Upq1sHgk5TSpkZgEwdbX9eBxeqewxvNi+SUMD1d+D+tc7FXZiXp6LzIVrCtQasVOD6XqdRdGNuWAsbwG6OsVyqY61pPcCGmfv0cCmh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,19 +154,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  7 Sep 2026 17:13:53 +0800 Kemeng Shi <shikemeng@huaweicloud.com> wrote:
+NUMA balancing uses hinting faults for both task placement and memory-tier
+promotion. Several filters designed to avoid unproductive socket-placement
+faults can also prevent promotion.
 
-> The root cause of this issue is because multi-tables are updated in non
-> atomic context. To be more specific, the issue could be triggerred as
-> following:
-> 
-> ...
-> 
-> Since memory order guarantee between ci->table, as well as between
-> ci->table and ci->zero_bitmap, fix the issue by making tables
-> visible at the end of swap_cluster_populate().
-> 
+Read-only file mappings and VMAs without recent PID activity may never be
+scanned, while lower MM layers reject some shared folios. Hot memory in
+these mappings can therefore remain on a slow tier indefinitely.
 
-Sashiko suggests this might be incomplete:
-	https://sashiko.dev/#/patchset/20260907091356.53026-1-shikemeng@huaweicloud.com
+Separate promotion-only scans from socket-placement scans.
+
+MM_CP_PROT_NUMA_PROMO_ONLY carries that choice for one protection walk, so
+the PTE and PMD paths can restrict hinting faults to promotion candidates.
+Keeping this transient state in the protection flags avoids per-mm state and
+its associated lifetime, concurrency, and VMA identity problems.
+
+  - Allow eligible shared folios to be promoted to a fast tier.
+  - Scan read-only file mappings and PID-inactive VMAs for promotion
+    without re-enabling placement sampling.
+  - Track the last placement scan separately so promotion-only scans
+    cannot postpone the existing placement-starvation fallback.
+
+The series is ordered as follows:
+
+  1. Add promotion-only NUMA protection walks without changing behavior.
+  2. Permit eligible shared folios to be promoted to a fast tier.
+  3. Scan read-only file mappings using promotion-only scans.
+  4. Scan PID-inactive VMAs for promotion and account for placement scans
+     separately.
+
+Tested on a host with 768GB/256GB DRAM/CXL.
+Ran 2 ~430GB database workloads with large (>300GB) shmem VMAs.
+
+Before change:
+  - 150-200GB/s DRAM bandwidth usage
+  - 40-45GB/s CXL bandwidth usage (maxed out)
+  - request latencies over 5ms (longer tails)
+
+After chage:
+  - 250GB/s+ sustained DRAM bandwidth usage
+  - ~10GB/s sustained CXL bandwidth usage
+  - request latencies 800us-2ms.
+
+Functional observation:
+  A 20 GB hash table VMA that previously remained entirely on CXL was
+  split evenly between DRAM and CXL after the changes - and tier
+  residency tracked hotness.  This was previously affected by the
+  stavation issue caused by the "unaccessed VMA" filter.
+
+Gregory Price (Meta) (4):
+  mm: support promotion-only NUMA hinting scans
+  mm: allow shared folios to be promoted to a fast tier
+  sched/numa: scan read-only file mappings in tiering mode
+  sched/numa: do not let VMA PID activity gate promotion
+
+ include/linux/mm.h       |  4 ++-
+ include/linux/mm_types.h |  7 ++++
+ kernel/sched/fair.c      | 72 +++++++++++++++++++++++++++++-----------
+ mm/huge_memory.c         |  3 +-
+ mm/internal.h            |  5 +--
+ mm/mempolicy.c           | 30 +++++++++++------
+ mm/migrate.c             |  6 ++--
+ mm/mprotect.c            |  4 ++-
+ 8 files changed, 93 insertions(+), 38 deletions(-)
+
+-- 
+2.55.0
+
 
