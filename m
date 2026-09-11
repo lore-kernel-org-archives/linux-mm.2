@@ -4,120 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8ADBC88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC27C88E58
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:30:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E84D06B008A; Fri, 11 Sep 2026 08:27:17 -0400 (EDT)
+	id 11D326B0092; Fri, 11 Sep 2026 08:30:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7C56B008C; Fri, 11 Sep 2026 08:27:17 -0400 (EDT)
+	id 0A81B6B0093; Fri, 11 Sep 2026 08:30:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAEC96B0092; Fri, 11 Sep 2026 08:27:17 -0400 (EDT)
+	id E62FD6B0095; Fri, 11 Sep 2026 08:30:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A20F46B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:27:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73975A0219
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:27:16 +0000 (UTC)
-X-FDA: 85201406472.12.AE475A5
-Received: from mta0.migadu.com (out-219.mta0.migadu.com [91.218.175.219])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CE8EA2000D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:27:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="O/BfAYPe";
-	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.219 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789129634;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9D1F6B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:30:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0AFF91A016B
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:30:09 +0000 (UTC)
+X-FDA: 85201413738.07.D0D2F8A
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022098.outbound.protection.outlook.com [52.101.96.98])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2039D40012
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:30:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=tKdiAz4m;
+	spf=pass (imf17.hostedemail.com: domain of gary@garyguo.net designates 52.101.96.98 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789129806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HrNycxRjw4aYkF/JzDBMuhCLwRJARPW8e3b9KotqwVg=;
-	b=ATSjeAtXwfcB0JKJJDPd0G8NQ3iadKQQFiXXeUNnNqdddBKSBkKMtC8lrwWa7s8DMza0Vx
-	BkweaZeXaJldL/ZAIenEtETz4Thxcb0OJMpAPPnt+hF5vOe7v6kFb0C1zH9gTCTKcBTe3C
-	aJVmvfsLClK1ZX04fP/+S/Vydw3O+l8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="O/BfAYPe";
-	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.219 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789129634;
-	b=dijSVko66QV1nsHYMXhxdFXe5S01YZUPYOJuy29LtBDc8DuMz0OCTLCWkakAo2mphAmED+
-	Jd3U2Ocjji4s2nW8y2pI9VYacGwb2JuoEM0TSxjcx9vvE8Y1g3S45z0SZvrinJwAI2lstt
-	8NxcrOnaUCM3xwfuOADU8TlbOIiAFlk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7iFYTSzOCrAOlJrqwK4LCwzVc3QImSJhyOWmype30kI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789129626; v=1; x=1789734426;
- b=O/BfAYPenqTbyKfYweZsqLIo3Mk0Ydsp/ojGbUSeri1hr+V6ZzV5jZxp8jnrqrmEEv6vCoAD
- OffsAji8Lj4GQ3+7vov6N3xslUZ175D7mhM/MddyCC/cSOCWZIOkDpCgqvWN3Bd4rnMyMYsjTdV
- +OTn0cqkv7gLbPzv4lZioMu0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id a3a6938cd6c1d893;
-	Fri, 11 Sep 2026 12:27:05 +0000
-X-Mizu-Trace-ID: a3a6938cd6c1d893
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 11 Sep 2026 20:27:00 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <aqPzlIVJccbqbaUr@fedora>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora>
- <aqLi6cIjD2wJwk0B@cmpxchg.org>
+	bh=JKx55TsVGCAnYI4/46u4ZKV25DVYLk7MlbLMi/as7OU=;
+	b=GkWP7nQwaXqJAVyKl2jrksVYLFwlp1HHnNVQDf5ZGhk36BCKk2VtENSWYgyBJ+qlLQSJqo
+	w1Pz4IT27xMI3za9bNWNW6vjo25rFOaGWbm1GmS/BxCacP7sIVoTV8UjouR4m+E6DcUlOb
+	ZZl9XbDwx/4dfdvu9mycQYVWR5jazCg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789129806;
+	b=3ijEgsaadP1+xcJxOItZqWYnV68LhaTxs6uwnF3ruTL7iUwP2uh/sEDIWm4rN4hVToSIUM
+	r2v2IhUp/Pv0zaiveyGMHoOrSqo0VFayKT12qZa52x63hofUb+CB0ACcSBxpKysnmylJV6
+	lN4rLo1LnopfAH441PQTsWgdFW/qNqE=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=tKdiAz4m;
+	spf=pass (imf17.hostedemail.com: domain of gary@garyguo.net designates 52.101.96.98 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dvIJI0/uljN/7NISqbqEDOCp79s+l29mZDOtAtzLgLdki7zSfFlLCDfIUVSM8BIYtAyPCTRGTzfTCM71pp0okVazRrQ16S1ub3BHfMQPzEbkqS2eyM2+0sAh43SjZl5xGVoxjuqr4Izj4HnDAMvFbGeKtlgLirr3Z/l9KXAwq+PSgWlAzuPeatlu9lI+ev8KBGs8gBxqxXMGq1OmU3m48eg/ggo1SXW4zw1qfzRH98bXur3tj5xTyvbz3YT6XZy1lO5Nv/q6Yls8GoSachnC0RWHDI+84XHn/QnSw9S5sEKj3q1oSC20gs7SijHIHMcPpzwjlPnaZyApEU74OuPjPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JKx55TsVGCAnYI4/46u4ZKV25DVYLk7MlbLMi/as7OU=;
+ b=NbJ4G6p9WCmxaurUq8QL+hIpBrXS97mcwGDvddmXCfq+FlbRpqvtq54CsgVYla+BbrPsXW2tAqVFpqVdAThOCSqfYelqgO1KjxRJUbUxCbJ4nvjchpcav4n2XqgXYcbZE3eZPXNbff0CBLCj/apvFkX+f4t8D4rVLBjXrYFs2mfNd+AqWOYNT4xnwVd35TZPAR2rlFS8qlN7uANo2R2KXpoL7HZYPj6GPul5Bfb5mkQtlmIXPdOmp9TGkAae7K1KYRsyPtZP1wctMIDDxvK1jbizBbG0PCgdc/bINiLr80Rmwy9WNkrImYPR/hFfsMH1YRyt6UGCvb0K1q3arSviXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JKx55TsVGCAnYI4/46u4ZKV25DVYLk7MlbLMi/as7OU=;
+ b=tKdiAz4mEfYh0P0zazu2tNZHtP3G3dk4Xrjf6Bf5qyFbKzgEnajrNtW27iT4q1kO614uJEtPjeRQOC4X0u2mcIojrmNjWngoN/FXueiUsmN38J5io5LD9Fj5dyxLz4LgbvnbvXsmLIyEv6GzfaREsFgat8Z+vGoGufjx0jksqnQ=
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB7039.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ff::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Fri, 11 Sep
+ 2026 12:29:58 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
+ 12:29:58 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Sep 2026 13:29:57 +0100
+Message-Id: <DLCHKYBQ3WF1.B8YPUTAKNM7@garyguo.net>
+Subject: Re: [PATCH v21 4/9] rust: rename `AlwaysRefCounted` to
+ `RefCounted`.
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
+ <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
+ <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>,
+ "Leon Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>,
+ "Serge Hallyn" <sergeh@kernel.org>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
+ <igor.korotin@linux.dev>, "Viresh Kumar" <vireshk@kernel.org>, "Nishanth
+ Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Pavel Tikhomirov" <ptikhomirov@virtuozzo.com>,
+ "Michal Wilczynski" <m.wilczynski@samsung.com>, "Ira Weiny"
+ <iweiny@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Philipp Stanner" <phasta@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
+ <linux-security-module@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <linux-usb@vger.kernel.org>, "Oliver Mangold" <oliver.mangold@pm.me>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>
+X-Mailer: aerc 0.22.0
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
+ <20260910-unique-ref-v21-4-e83257373062@kernel.org>
+ <CAH5fLghUQW5urTfLCCDT4BhuqoFVoLUAG46TS-SxaS37bJcgWQ@mail.gmail.com>
+In-Reply-To: <CAH5fLghUQW5urTfLCCDT4BhuqoFVoLUAG46TS-SxaS37bJcgWQ@mail.gmail.com>
+X-ClientProxiedBy: LO6P265CA0001.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:339::9) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqLi6cIjD2wJwk0B@cmpxchg.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CE8EA2000D
-X-Stat-Signature: fkjzhzea9h1o11st9imi5fpfxm8zf4ss
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB7039:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1188c31b-b420-48f8-771c-08df100064a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|56012099006|6133799003|4143699003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	RfhjpylTvaZ9jKzhImUGyjo2QOI8rxjN3Lwzcr92g6QuAgR5g1tsnqbPeRdU72yaWRPPP+pFHfjdYqlxWicJ4WiLePCzkUqaBN0sd0e7gC+1Yqug7ETQYnC3JfKqoTWHWFMsU/fJCDkr+tUmcQlFDvmZwDSqFMC54kYwFJ99LdSCglEg4urZqfgsXu9Thcim0UlTNpGE1FxUDNK6xZ/tuznMt9+ok9XJn1hdxvA2bhgD396KZKth8XvYrgVSwtm6YV17rYXg7S2ZdMM5Kf89ZauR6MGOYk2QLv6iuPqqWqL9XKebhCnkWXDisfUfootiwX2wTTxQepo4+QWLXlbutnxXAgAabhj0ZH+OLmMH1ArId/Y2pyDKmbmo0ZcaodacKgG9r+morrfh/ccIpexhTcsHZPEQj48cuRROXNB6rbx3lCee2SWB++BXgqV7jjbyN37SMKCf+dGFEhsQBBHGpF4zjkLjy9SxIoIce6rBiCRQbSMA6IkD+8GiJUhNaq6nInXkNCUm9BZ47geLDuXpGh4pG/afsxjiyQQjfqNRknBedCzAsUEKxA8NaQfew3ZNAmBRXUR84JWVaxYUl8tj8b9tjtEvEh8KFLnQKUosseVwdcVQR41AGLNGCY2BkVfiy43/BhbbxdVEUyxjGc7VrxZ7Lp8TkBJDBnAflwBk4gw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(56012099006)(6133799003)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TGc4SkdFMVdja2RuYVJkd1YxWm1FL0RCSjN1aEp1ODI1cG1Oc2lMWlhsVWxC?=
+ =?utf-8?B?OVlvSFJ2QjZvRFE1TDlZWW9DSnhqbzBIWTZIQjRrMHc2RUExb0xwdHMxMGM4?=
+ =?utf-8?B?eEo5ZjBzVld1VytkQW9mZnFHcXBEd1NwOVpCOXBxNm5EaWQ1Sm1BRVVDQXBD?=
+ =?utf-8?B?WlBvMVhabUkybDhwS1U1bzBpQTliam41MHJEWnRvZHRNREtuZ2xnWXNLUWo1?=
+ =?utf-8?B?ZWZGYzJUTFJndm9LRGFpNHlPTm9EVWVudWN4V0pHSXkybEZiODQrU0RWVWU3?=
+ =?utf-8?B?TWlBbzV1SFF5ZUszZzMySEdadldmdlJsNjQ3L2I5NG9QYlVOdFFmZlNQRldD?=
+ =?utf-8?B?R3IyRTE4RnRNa1VNOUZiTnhPNlN2biswQ1BwZ1NxdFM3dmZ1T3BiOWNoak9s?=
+ =?utf-8?B?Y0Z6ajEzNVA3UWxFclZqTkFLM2RqcGgrTzZyMnZTQWZDTkVqZ3hFdHZNemZL?=
+ =?utf-8?B?Q01La3VMajJUdDJnYWxSRWdscFFPaFJjRklMeVZtRGlGS1RXNWVqaDcrUjVW?=
+ =?utf-8?B?TjBMdkJWMXdvTm1uaVVjcWF0OVllU05UVU9iWXJ6TUNzbHN4ekZXYklKakdj?=
+ =?utf-8?B?MkFMK3gxRm01VzJTMWcxdUNSUjVnNWZDSHNoaUJiKzBhUzl6TXJhMHJHUzA2?=
+ =?utf-8?B?UXJTSWQzcWk2VWJ6Rm9MQzQ1K3EwUTU2Q1MvNFRqb1ZYaEdJS2JLLzVkNDV2?=
+ =?utf-8?B?Q2lqQjJTQXp4SDJBay84cHUyT3JjZ3hUWkFrMmZQcWNVS0ZRTnJRbDd6K00v?=
+ =?utf-8?B?M1QxdjVOcTByaUJUaXpWTm9JeUJ2R28ydG1GVzA1ZTJMZzh0RStiaHpCMWNH?=
+ =?utf-8?B?cHB0ZlVpZ08xSnJIY2Q5OFp1czNnRVBCaWxtYXcwTkhxZ0FiK3I2WHNsYTJm?=
+ =?utf-8?B?am9ZQjA0czE3cnhtbzlDNlR3M0ZRL1JoY1lrUXl4bFF1cFZXcUNyWUNIQnJ6?=
+ =?utf-8?B?WWNubVcwVkFtQytuRGpQMmFmV0drWGhsMmgwYm8zOGYzSUJMNEx4elpLVFho?=
+ =?utf-8?B?R0p6aUZzSlRrQUtsdUhtVjUySXQ5aWxlZlFpYy9IUGcxcGY0L2ltZEVBaEpR?=
+ =?utf-8?B?VUVLOW9NWHhKbW9kd3YvV0QxWUVZTEdQbE1YZTVDSktYRTZ3T1Vrd3EwTVRq?=
+ =?utf-8?B?dlpOcGlSQ3VvZ0RaZStuMXBjYWxzVFZ4N1B5YTMzRm5xa0tKTmhxajBtL3hp?=
+ =?utf-8?B?M2owMmdyRTdZcFFwa3dyY1ZPcEx5YmUySXYxaW05eEdYZjBHamJmeXJLd3dY?=
+ =?utf-8?B?QytCWW5ndU9ocUEwNzF1SC9YMUF5WGpPTHFzR2RxUlBaMkQ1dTZtRDVKUXRK?=
+ =?utf-8?B?bDE0OXpYcjlPTWVyL2tQUFdIMkxDeGQ5bnIyVmxIMXVYSlZJZ2pSMHE1VTBB?=
+ =?utf-8?B?TkxSOVJNMzNtOE5UWkdPclh3alFHYzE1akFTS0VPREZ3QjI2dE5hTCtWM29U?=
+ =?utf-8?B?TXpPMEphQ3JRY3JEWmZoazJQQVJtd1RzWWhKdXNmVWloYTd2Z0psd0lBWUJz?=
+ =?utf-8?B?bkhpLzZ0MXBoRU5Hc2ppbnpwM2oxZ1dudDBjbXpNVkZYd01QYmJHN2RETHc4?=
+ =?utf-8?B?anVIalRrcnE2a29lWm80cHlWVG54eVM4Z0xuWGx1M1pCK2M1S1VIOGFLRVNN?=
+ =?utf-8?B?eXJWakw3MHVYbkJhWm1Ibi9mVFdvc0lid2xrV3I5dzVSL3RNNTJuVW9lR0FK?=
+ =?utf-8?B?Nmg4VHhBcXg4OFBwaDRSZzkyeU1ZWnZPd3hLM3MwamsyNFI4bjZNQ05iM2dv?=
+ =?utf-8?B?YnZWV3UwbktXZGZmNVh4NHVNV3U5ZW1DaVBKS3QyN2ZzWlpGTzNUUStrYTd3?=
+ =?utf-8?B?c1E1ZGxUTDUwa3ZXWG81Z3FOSThjcEY1cXV2OTNyVDdna1ZaUVlNa2t1OVlr?=
+ =?utf-8?B?M2lwakRkZ2VoTG1SV2tSUHo1b0tWWmlIQjU5UG1OTXRSS29PcjhMc205b2k2?=
+ =?utf-8?B?YTNEcmV4dko3YkZTM0Qrb3NBN2dMZjFMODl1UUZ0OVNJOVllbTdTc2RpMzlG?=
+ =?utf-8?B?Sm5VSnZMclo3clAxT1RyN1V3d05QaWRjZHQzZU1selNYT1dPbHpnckVlUWtX?=
+ =?utf-8?B?MXpOVXFDS2RMbDBvcHZOT01HVkE2c1JsMjdHZW43QmNiMlBDZStaRU5wVjho?=
+ =?utf-8?B?bXppcW9EVHdRYm5rZkZwaXJNWU9uc1N3NDA0MThkQmFTMGl2cW1KT1Z5Q2Nt?=
+ =?utf-8?B?alM2M3JXNDRzU1FEVFVnQU82allBeGFDUVFFZEx5UmY5cUhCa3JMd0lNOFY5?=
+ =?utf-8?B?dHpLK0hybWVPWVhjdDEwOFdKQXU2SzVyUHE4MEFMQjNxelFlTXpoczRvbkdK?=
+ =?utf-8?Q?0gTlrZQZYHgChetszZ?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1188c31b-b420-48f8-771c-08df100064a5
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 12:29:58.6001
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b0okIR6rYLMN6MXvV3IS4z+JjDgMUB8UcnSGh3mvV8u5UaD7Bp+PnDn6RzQngw+nrTVLI+7+Ue58B+xXbcVT+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7039
+X-Stat-Signature: 5ne63t7s64uk93fedj47m4u6sta6jfhp
 X-Rspam-User: 
-X-HE-Tag: 1789129633-51931
-X-HE-Meta: U2FsdGVkX1/sAGrmlzuq71/LWIf9+3Nktd3kKIepLFM6mKALTTbK2JoF2/Yc5ei7XctHEeSaluGW1Y73i2YWENuqIOFF2Ydq9uaIKyPWWD4bc3LpxZybw9TRM1GfvqC54iaHZn8c+fYtWb1fLayCv9hik698HFQp/pqrtgaozfPrxZC1xY1dgpymeNhJTyHpzeCdJafJd7VbQ57CiKc4+BZkq/MeztEZUtOqkXG6TkB8Du3v22wqwoOgzBX2BjyBkv8Kh0eRFxadVYObLztQxUks8Cz0NuwdptW0GBMjPfrgbsrqG/RYFqs902Kqpypj2bDiaxXu7UAaeU9/k7YKhuV9MPHZhjtAoYvuSEGzjjyKdMobjF8DhR1+JxmP2KFxCH2sexR/lcIdPABOb4OR4mhYk2t77KuXXJ0lxTQW0QtB4XzRGbRfy0yBFuGEgZcN11pS53V4GgZdMdDCawUiWzYc0UVOAmjKs8LziGoKYCO8Qap4nlRCY52+nGt3WtdBC5kFwNjw7fDiKGzYLGaj427P5ziio0xTjcDuXfiQELLs+a7MzgHFf3TTmN8u//d5mbSMKDbks5g70de7r9ej8JZyg/w+eTWS1F/8IE0V5CiRIWdAyOL2FsUD/LchZTbtmVAMa1cH3w8Ob6bZH10UOdYItLWltuvVQ47MFW6zg6ow4cwerj0Q7nZSo7AvOV2OjpcpYvSv+x9T0zDiGyS2e/3jAI7Aa+ZR9kHtb66WhL4XKQ8ruvoFHeZRYcITXoeVcjee+sBl9Hc34N5pORWZjPl1gtTZZESANLI1QDwemMxVxitGJBJ+0SeRJhjBOVE8RWwDYsXONATL61GceI2VFVAesVqA6L4kL6yPPdgT4piWrWqdrjiZX+do/5rJs/647+XJbc/BdvDJQLGN6a7IQkPe5VqHps5c2y9D23OaRD/tjv3Gb31E5wHf45mUj2NnfDhJWZjUermA1GaG7Fl
- EgE9YFs+
- Nt77G6v4uVi3td9BeKMXzH00XT9Tdi019McHIQVIv/JvBdyUlupc7OqC5P0rqbEWKgEs6mh3y5QYT1ifln8CjsJ38QWw9kmKI4kC6UUwmttqomoa+Qhu5f/HFFgtudsGXavQ8L62rbj9As0PQJIsHvWHc1u1RaaGjjjyLujGL2seHtRIi83JdAPLfUHd13tB3UecwDqrqQxa3rF8KZagKSr07XUCjsXhal1CsoDTIcc4tRE5M6OzdMXcvTR7nUmAJdGDf5/v0zXqyGvusYICOzSG05hk3qHJWDROJsBuQMspra3kvzZ/GIVByEgQJL+IkgOLQulA6dqLllYtTRuPmk/7SeKqbOjrmmuR/iCa8ogN1cvU6SW1pl502a6nizAUxet7k0luDHAWEFEb5flZ9VM1rNsVGu2EICGuz
+X-Rspamd-Queue-Id: 2039D40012
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789129805-369843
+X-HE-Meta: U2FsdGVkX18oQo9w8QLrb8moGXWmsF1pTTmUKlvXC7vBIIaCdc5Gk7/A+glIqdT6vphYlhVYiRJgrLJPqYK5ZZ5+13Y6ICST5AiENIu+oqTzCCUrAxTjqOwOVfVjJ3K+uve3XkjNFg0LWvS9AlJrvFj5EFcdZkvdSViq7t5LMT9oozRsWGEhWRH5lRQHwonquPJTPJ8YeFHUrzXo6hcQOBspNIet3yBB9o+6ufuSstpAu8GIj4jtvLgZw2dRjSj6rJv3tGjoGbULqv4VUiSodzninXPpYIgGgdiaPScCszeNxzcQmaRqDDjG8gnhkFAv50jxOMOfhNevUQG/ESsNZXMrjz4HaMHEZYuljz9WzJNULM1bYZiPwgVtgd81yHGrXDj5cmwk3eUt5NHWzGBoCOM5TQvUa4pfKih4AY1j1kc93ZIWIwWDiLyo8HOf8UiFZl9wh60pSsZMbPbwzf0786ZMOr2KO90tbgPG79OFv0PdTQAaJKSGnjCFSOmqXbY7kOeff0Vca5I5l+KmLUW/vTmMD3/mgKjXz2i9V/sNOstZoZYYwadM3eSljQrD51YxDfH6FZJ2MtKWA17biIOLALH60cCHqQG/bQ3tB7ZmDE7YdJh41nqO9cvNy+seB9/yv8WVyxl4O38oVU0P7/XcvRTMKWtXLN+JW6PJE52As19X8RatVBrIG6AOIveOICopS1PO859qfhhviyVRkcnRxIErgw+A2wp+Qn6R1b0zbXVRqIPstic+RARBOpSRkFUSIqh8oFioz7/fNhICpP/937TvpDzn6zK6SbD+qvhMEWi/XCPq9bPUIpCld3hAwnpx/HTNcODYFLbzWWef/seVnU0dyQ+G4Jq16i6dceQowLw6Rem3aPXlCMXv7l3Ai+VknpkqEbo8hLUhvdng+8BdWMFYUWGG55vKb7mQjM/dcT1apDhf2gwUpI8r3N/JQUSjW0885HGKPz/MNv8onBx
+ F8XExH5q
+ tpnkcL4L0eqdvBsytEeABcCraqQFX0JPZD7bM/SbyxtU5AwIwHJKcVknRG6pdlJAyC35EEEIliKoHeL0UDQBrywOKbMN5qK54CcZvMfPhc5le4lA0uhxxBnhfLLJSGNjmx8mI6XYG+AD3jjIUi+gSFlvWA52Ty9bsBhNWNFpwLT986eFWzFW3QDau86QFTPLbUMhVITXMqnPKviLuwuGS1Lj9nTa+QJgKnnR52aMWh6NQ/g5EO/rNH74Nq90WhlC8cK9XRu6IWyNULTxcDVUPkVLppidK3GhoqK+qnkGwRfWUr/JYBSobJkBZem1yIrwveYyrNFXcB1kK0BczGw6pPTfSKxqLWkPqD3eZu0aSF5WEiJIMjYOcZgB+ywDMuuTBU1UTOB+16HKM9dGlHFoyMpkDpRpNbg5mh5uYrtcUZkttpqvTzTQSyO8ldmrzwjxaLKeTczDjtpLHJwaQvm/vYLNElCDXclxGvwqDmXb6iP9I+X8ZvnGGRZjAgF+N1pdue8sgy8zACp5ymlpm9hph4CJIZabmtiM6pyivpicwLpzwVLA2kpPi8ijlb43AJyA3Ye2sn4XzmDifpgdflVKNd+tL+HcgTLe35xnJQ77DHDjyWiC0IZ23SK6cNEa0HSQCk0zrFLZHpX8VzjtRUd8aw6BevZxqCID8Bzp1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,202 +204,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/10/26 at 01:03pm, Johannes Weiner wrote:
-> [This reply was not LLM-generated.]
-> 
-> On Thu, Sep 10, 2026 at 03:09:59PM +0800, Baoquan He wrote:
-> > Hi Nhat,
-> > 
-> > On 09/04/26 at 02:14pm, Nhat Pham wrote:
-> > .....snip...
-> > > Now, on xswap. Baoquan's working on a series [15] that covers some of the
-> > > same ground, and the VM_SPARSE cluster_info idea in it is genuinely good.
-> > > I've been reviewing that lineage since July [16] and I'd like whatever
-> > > lands to end up with the best parts of both. From my perspective the
-> > > differences are:
-> > > 
-> > > 1. Userspace knobs. xswap asks the admin for a size (a percent of RAM) plus
-> > >    a per-device limit to tune afterwards. I'm not aware of any use case
-> > >    that needs those, and I don't think users have a good way to answer the
-> > >    question anyway - sizing swap for compressed memory depends on memory
-> > >    size, workload, and compression ratio all at once. That's precisely the
-> > >    provisioning problem vswap exists to remove. The kernel should be as
-> > >    transparent and dynamic as possible here, and not add knobs unless
-> > >    there's a use case for them.
-> > > 
-> > > 2. Writeback support. Writeback is core functionality for zswap, not an
-> > >    add-on, and a design needs to account for it from the start. This came
-> > >    up before, in the discussion around Chris' ghost swapfile RFC [17]: for
-> > >    a solution here to be acceptable, it has to work with the primary
-> > >    usecase and support disk writeback. Without it, whatever zswap won't
-> > >    take (incompressible pages especially) has nowhere to go, and cold
-> > >    compressed data can never leave RAM.
-> > > 
-> > > 3. Cgroup charging behavior. vswap/xswap shouldn't be charged against the
-> > >    swap usage counter. It's fundamentally a different resource from
-> > >    physical swapfile space, and memory.swap.* should read 0 when nothing is
-> > >    on disk [18]. I made the longer argument for this in [19].
-> > > 
-> > > 4. Data structure (xarray vs sparse vmalloc array). Even with xarray, vswap
-> > >    is already on par with or beating baseline. I like the sparse array
-> > >    idea, but why are we landing an optimization before the feature itself,
-> > >    without any A/B data showing the difference matters?
-> > 
-> > 
-> > Thanks for laying this out, and for the honest push to converge. Let me
-> > be equally direct about the ordering: I think the xswap base should land
-> > first, and the things vswap demonstrates -  writeback, rmap lookup, the
-> > charging semantics, later THP -- should be built on top of it. Because
-> > it is the foundation that keeps the swap core simpler, and the first thing
-> > to merge should be the one that doesn't have to be redone.
-> > 
-> > The VM_SPARSE array is not an optimization to bolt on later; it is a
-> > structural choice, and the code reflects it. In vswap, the cluster
-> > metadata lives in a dynamically-allocated xarray.
-> > 
-> > struct swap_cluster_info_dynamic {
-> >         struct swap_cluster_info ci;
-> >         unsigned int index;             /* for cluster_index() */
-> >         struct rcu_head rcu;
-> >         atomic_long_t *virtual_table;   /* Backing pointers for vswap slots */
-> > };
-> > 
-> > To support dynamic growth and shrink, vswap stores its cluster metadata
-> > in an xarray, and that forces two things the plain swap_cluster_info[]
-> > array never needed:
-> > 
-> > 1. Every cluster has to carry an extra index and an rcu_head —
-> > 24 bytes per cluster — purely so the xarray can locate it and free
-> > it safely.
-> > 2. To keep that bookkeeping from leaking into the normal-swap code, the
-> > cluster had to be wrapped in a container, swap_cluster_info_dynamic,
-> > so the xarray holds a pointer to the wrapper instead of an inline
-> > array element.
-> > 
-> > So in vswap, every cluster access in the shared hot path has to answer
-> > "is this a vswap device?" and take a separate branch:
-> > 
-> > - swap_is_vswap() is checked in 36 places across page_io.c, swapfile.c,
-> >   zswap.c and swap.h;
-> > - __swap_offset_to_cluster() branches into xa_load() for vswap vs the
-> >   flat array otherwise, and the xarray path can return NULL (a cluster
-> >   can be torn down);
-> > - __swap_cluster_lock() branches into __vswap_cluster_lock(), which
-> >   wraps every access in rcu_read_lock() and a CLUSTER_FLAG_DEAD check,
-> >   plus kfree_rcu()/container_of()/rcu_head plumbing for node lifetime.
-> 
-> Well to state the obvious: the reason it does all that is to make the
-> compression space transparent to the user.
-> 
-> The user can answer a simple boolean question: whether they want
-> compression or not. And it will work on tiny machines, on humongous
-> machines, and everything in between. That's a simple policy question
-> with a clear answer.
-> 
-> What you're doing, asking the user for a static size, is much more
-> difficult and has usability issues.
-> 
-> You're comparing implementations that don't accomplish the same thing.
-> 
-> The problem we're trying to solve is implementing a clean compression
-> space abstraction. I'm arguing that vswap does, and xswap does not.
-> 
-> While they're both using parts of the swap device code to implement a
-> compression space, xswap actually PRESENTS IT TO THE USER as a swap
-> device, and then makes optimizations BASED ON BAKED IN LIMITATIONS.
-> 
-> But a conventional, statically sized swap device is a bad abstraction
-> for the compression space. Here is why:
-> 
-> In conventional swap space, one memory page translates to one swap
-> page. Compression space doesn't act this way: a memory page can
-> consume anything between a few bytes to a full page in compression
-> space. It depends on memory contents and compression algorithm. So
-> right off the bat, this is a hard question to answer at the host level
-> which could run all kinds of workloads.
-> 
-> In conventional swap space, the resource consumed is a different
-> one. You're offloading memory by consuming disk space. This eats into
-> the space available to the filesystem, which is totally unrelated.
-> Asking the user for this tradeoff is a legitimate policy question.
-> 
-> Compression space is not a separate resource. It's page tables,
-> backing pages, and swap descriptors. It's just MEMORY. There isn't a
-> size tradeoff, because moving pages from memory space into compression
-> space DOES NOT CONSUME A NEW RESOURCE. It's still just memory. All you
-> need for containment already exists: rlimits, OOM killer, cgroup
-> memory controls.
-> 
-> By making this a user-visible virtual swap device, you're sending
-> users down the wrong path. You're asking them to set a new limit on a
-> resource that's already limited by other means. You're framing the
-> question as conventional swap which behaves completely differently.
-> 
-> If you ask them "how much swap space", they WILL reference this to
-> available RAM capacity. Maybe half of ram, maybe twice the RAM.
-> 
-> But when compression space is referenced to RAM, it's trivial to fill
-> it up with zeroed pages or easily compressible data LONG BEFORE the
-> process or container would hit any of its MEMORY limits.
-> 
-> This creates an artificial resource shortages. It forces a competition
-> where there shouldn't be one. And then you need new controls to manage
-> a competition that doesn't have to exist.
-> 
-> Like I said before, including compression space (which is memory) in
-> memory.swap.* (which is for disk space) is not going to be acceptable
-> from the cgroup side. We can talk about that if you want.
-> 
-> But asking the user questions they shouldn't have to answer, or
-> already answered elsewhere, is weak interface design. Allowing, let
-> alone encouraging, answers that create a whole new host of
-> organizational issues is outright bad interface design.
-> 
-> So if you want to compare implementations, you first have to actually
-> implement the same thing:
-> 
-> Stop asking user "how large". Let compression space expand towards
-> existing memory limits, such that it doesn't create an awkward and
-> artificial new resource competition.
-> 
-> Then we can compare implementations.
-> 
-> If the optimizations still apply under those constraints, great.
-> 
-> Until then, there is little point in discussing differences that, by
-> your own admission, have little to no impact on real world performance.
+On Fri Sep 11, 2026 at 10:08 AM BST, Alice Ryhl wrote:
+> On Thu, Sep 10, 2026 at 11:01=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+>>
+>> From: Oliver Mangold <oliver.mangold@pm.me>
+>>
+>> There are types where it may both be reference counted in some cases and
+>> owned in others. In such cases, obtaining `ARef<T>` from `&T` would be
+>> unsound as it allows creation of `ARef<T>` copy from `&Owned<T>`.
+>>
+>> Therefore, we split `AlwaysRefCounted` into `RefCounted` (which `ARef<T>=
+`
+>> would require) and a marker trait to indicate that the type is always
+>> reference counted (and not `Ownable`) so the `&T` -> `ARef<T>` conversio=
+n
+>> is possible.
+>>
+>> - Rename `AlwaysRefCounted` to `RefCounted`.
+>> - Add a new unsafe trait `AlwaysRefCounted`.
+>> - Implement the new trait `AlwaysRefCounted` for the newly renamed
+>>   `RefCounted` implementations. This leaves functionality of existing
+>>   implementers of `AlwaysRefCounted` intact.
+>>
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>> [ Andreas: Updated commit message and rebase on rust-next (7.2) ]
+>> Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
+>> Acked-by: Danilo Krummrich <dakr@kernel.org>
+>> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Assisted-by: LLM
+>> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> This has a lot of safety comments of the form "This does not implement
+> Ownable, *therefore* it can implement AlwaysRefcounted". But I think
+> the safety comment should instead explain that it's okay to create an
+> ARef<_> from an &_ for this type. The fact that Ownable is not
+> implemented is not sufficient argument.
+>
+> Alice
 
-Thanks for your sharing with deliberate thought.
+Yeah, I think for types that currently implement `AlwaysRefCounted` and doe=
+s not
+have a new `Ownable` form, it should keep saying that "this is always refer=
+ence
+counted".
 
-Agreed, and I want to be clear that the size knob is my implementation
-choice, not something the design needs.
+Best,
+Gary
 
-Now in v2, xswap's create() already takes no size, only an optional
-priority: the device's address space is set by the kernel to the machine's
-memory and cluster_info is mapped lazily, so nothing is allocated up front.
-The only knob left is an optional per-device ceiling. If we really want to
-remove it, that's quite easy thing, we can just remove the runtime
-growth ceiling and the shrink machinery that serves it.
-
-When I asked why shrink is needed, Nhat told on system, memory pressure
-could reach a peak, than later may not reach it again for a long time. I
-don't like the continuous automatic growing/shrinking, I think it
-doesn't make much sense just for saving that memory serving struct
-swap_cluster_info. But it's not bad to provide a mechanism for
-admin/users to tune it.
-
-But as I said, xswap/vswap both claim to solve the problem of zswap
-physical disk slot and swap slot coupling, and meantime extend
-functionality to make it more flexible than zswap/zram. While Nhat's
-vswap is boot-time per-device swap. And Nhat's own description of it
-in this thread is "vswap is just a normal swap device, no?". If I didn't
-apply Nhat's code and test I couldn't realize it. I executed swapon but
-can't see any output. I was shocked.
-
-I really appreciated your patient and detailed sharing, while it takes
-you so long words to explain it. IMHO, it deserves a separate patch
-posting to justify it so that anyone can know why it is.
-
-Thanks
-Baoquan
 
