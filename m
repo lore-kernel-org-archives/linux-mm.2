@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F44C88E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:06:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343AEC88E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:09:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F00806B008C; Fri, 11 Sep 2026 07:06:57 -0400 (EDT)
+	id 516E16B0092; Fri, 11 Sep 2026 07:09:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89586B0092; Fri, 11 Sep 2026 07:06:57 -0400 (EDT)
+	id 4C9226B0093; Fri, 11 Sep 2026 07:09:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7A476B0093; Fri, 11 Sep 2026 07:06:57 -0400 (EDT)
+	id 391F96B0095; Fri, 11 Sep 2026 07:09:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B23036B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:06:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52178A2DB0
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:06:57 +0000 (UTC)
-X-FDA: 85201204074.10.0BDBAD3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 88BCC2000A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:06:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M/9x1C4q";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 05DE06B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:09:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE0901201AB
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:09:03 +0000 (UTC)
+X-FDA: 85201209366.03.43B8902
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 35108160003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:09:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gC3880N7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gC3880N7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789124942;
+	b=QrBzrMVvBb2biEEujcQR1YPuptRutsU35DQO6762zHZ2aufynMzacNhAHsCpKPUJOGZlao
+	vhW1FYdfBTn1dHLkajLgzoadubUTdSCFKXUp7KDFttz20bMYl2mRJATyGxMpMaGXcYuBZ6
+	9jJYq0lk7T1Ph6nN6OE5eAlgth0a6KI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789124815;
+	s=arc-20220608; t=1789124942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wyAG1Oc8nhlMnt8PiMcuXVr+yTw6Fyl3B/k/KO2RT4w=;
-	b=q7roVimVMinvOIU9y/+oMUR0Vsl9WjS7Co6+4IwHRSntXaa3aoVOAnXcmXqDrDJqAxhbx1
-	byPqqY9TO20hmJJtTwdx+jFbk8v5mD35MH2oLDiGrWyDIv//WKuI4jHQ7FqlEUcXMtsRGE
-	cpnh9tndEtgAfyO9ZSXMJiYhh1bVfjA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789124815;
-	b=fyxplHuijfDIr3lz3ptcwXjtkglmQa0Q6G/Jvwy6YT2inw1Hgx6nODY4SfnH+VskJXOxcO
-	howNRu/kKlVG6Q3ggXgwvR20UqYfv30vNzajwTVNo9UecKud+zFwZQRgZlhXuJlkc35xKo
-	QiCuDqvj2kN2BGkAJi2ndYnVUD9+CtA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M/9x1C4q";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=6ygcdnQ69In0ilSwlGhITt/klmABXMlT7Ds7dNoRszA=;
+	b=oKQVVUwUuix9JRPeWpJPaEzcPcK0YFY5BvnrqH6i5oraPAACdPfKALFQI213uDALjNPTRW
+	UoSUzK4wuxfyRBvCN61pBDoVV4uuNgoxyuEGSI43O/oQCfOrr0f0S68RzVaReHWcyJG4YX
+	IghgNQRIG3UZwOA83D4xZpb7+HwcbUk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62A2741847;
-	Fri, 11 Sep 2026 11:06:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C547F1F000FF;
-	Fri, 11 Sep 2026 11:06:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C9BCB602C2;
+	Fri, 11 Sep 2026 11:09:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF1A1F000FF;
+	Fri, 11 Sep 2026 11:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789124814;
-	bh=wyAG1Oc8nhlMnt8PiMcuXVr+yTw6Fyl3B/k/KO2RT4w=;
+	s=k20260515; t=1789124940;
+	bh=6ygcdnQ69In0ilSwlGhITt/klmABXMlT7Ds7dNoRszA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=M/9x1C4qxDvpxoHiv7cEj8LQlUukVYDeRNTLsbbXNFOtrbTn+yTojyHWXbq6WzZ6B
-	 bU6nmscrsmoCKxa4FmC/vYIyG2DLQXY9tY7hf7ORDZK08UiTakX1B2z2QDh1CRtKG/
-	 ZBbYAaGUBwUibxquZGOshfnA30JdvF1XWyItQ/od8o7GnUHCF5Ae19awg4+hDmIdHN
-	 f33YPHgTVvIKEoPqJzAeEnqO1Y1OeRUXvXhXvHCBBHebAz3wYKMjiwpDEwK9Kg11W1
-	 eFyPB5Z6kWaXxxTgUyLmL6oQ14ejY4i0dbW3N8iEmfDVvJLeMEGN8o5RBJYcm7lTwe
-	 ahJ/1EkTHZwqw==
-Message-ID: <98ca914b-4722-448d-b5a4-7f095d0ca433@kernel.org>
-Date: Fri, 11 Sep 2026 13:06:46 +0200
+	b=gC3880N7e8W3doV9TCZFw9rw0iMCANVgDewTgiorw4xFJbxopkGieOb+PwS6w6yEK
+	 EFU7ECwpxoK0Jtx9uaK54xOQfl4Phf+XW94wQs0nC5Zw6HY4ZOVT8asix/QraMPSKN
+	 WVDnjjQx+csPiMXjB/7icM71AG/X4QHkgijLXNbSDPz9L7/fwcycRtbdnzJA5Ivnxb
+	 B8ShR1utBRL5LNy0mak9ADaHCaDPJF91fFlwh0ttZ1zHngwvT7zIg8u8RUx06A3yKL
+	 dZO/rPPRh/uep9AtUDw6QGnMFRshPc1wvDHKu3DblMSvoNb5F1Wwl2mFp4FGv6EiPY
+	 2OWGFZaucJcLg==
+Message-ID: <ea283a7f-0dc6-4a98-8fc2-dbba51f7a3a2@kernel.org>
+Date: Fri, 11 Sep 2026 13:08:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup
- filtering
-To: "zhen.ni" <zhen.ni@easystack.cn>, Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260907082620.2083838-1-zhen.ni@easystack.cn>
- <79548641-25f3-4ec3-a549-782fad168962@kernel.org>
- <6e8bfb0d-d595-4e6b-9536-0323ada57e25@easystack.cn>
- <b8e23456-00af-4097-a769-210a087d2b90@kernel.org>
- <22D1EC4B-FBCB-421E-B8DA-345B5F3505FB@nvidia.com>
- <d8d34e16-57fa-48b7-93a9-afbf4b950ce6@easystack.cn>
+Subject: Re: [PATCH v9 6/6] selftests/mm: add a GUP selftest
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260904123631.198697-1-sarthak.sharma@arm.com>
+ <20260904123631.198697-7-sarthak.sharma@arm.com>
+ <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
+ <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
+ <fadb8870-37f8-46f4-aefb-c21bc3a31e5b@kernel.org>
+ <f7416ebc-f897-4c9b-8266-6aa7c9fd5473@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d8d34e16-57fa-48b7-93a9-afbf4b950ce6@easystack.cn>
+In-Reply-To: <f7416ebc-f897-4c9b-8266-6aa7c9fd5473@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 88BCC2000A
-X-Stat-Signature: rfgcfbzhgngzb1eixj4tnh41fjizmg49
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789124815-234916
-X-HE-Meta: U2FsdGVkX18P9L37v+x8J/yX6r+adHSWO4jQKojK5K+D/D9TGGowF4DBl/7CJk9da3RHuFST+0hISbIZSmwxm0OpyQpphiU8UmpxuyE8+1YaEZJxHD1Fv1+mxVKpKeDXY1PFMe7r954SO1NJe+ZUZOT8ytYBMCdnN3Sso97IZaQv5uBidP++gNRMAduJOKinGrJZ2Y/6VTII19FYGmpWGBbHl8x89HiPdyrkSO/kDo0651DmhmMpBCGsFK8YdxuQ+kiMUaiUjP5jprp+Bt/TtHAPz4wLJ7vv1ykPIGx4PHeV9uWmrfOmboYGYeLBqf+ABasVkdiwKmwavxQwTm+nvSoqRuV5veBmZTfPyNoNahZYxr2csLeAakWNn4YKq0TouwsWW5msrSGrIv8qKYXouRnEUS1QCKhMN3PX9kT2ard/xRkgO5nzASItmE25/4sAx7HJBLDauhKdcL/u4tEOTXkw3vDISELDDqd3Zj8MJ0RG6dFW/dhyWZWimqWlEu9hLx2eGd5jyvQNlYvAXgnWrXKP/5JCHwwt1X+9ukvQBW7Mhah6h6UqC3K8ADWJjJuv/BqPMsWyzHLutTWCMyxoX11atD9H6WhuHjPgxNuodWjnnGK9CnkMm8gMp1HeLgihi6o3S7qzCZQWZWnf91vhDp388cU+Uz5PDkzWz6Qy6LQddeckG424emzbBBRiVNp6x15vMcuDsBpOWZQ+Ru2xeQtps9Dv1WFca0B4wgCL8OO0XCelWVSBfSS6h0OmQexfHWl9zCXsC25ho/ej5ZUdDcCNXIT07WyfKt5JzcnN6DsidxaWqvOJPnovbNEeyd9NBoF1sH/59s7fPyu8gT6oAoUxQgDay6g1PR0CfEd9+P2csaXQnJwxzQhBqr2wVfkI91Dd8p5By+hfQIVWTxQHyhchdr4yk0QIkF7l8fv0ecDy70jknIRts1utBcmR1jg1+70Q7el5Fiv3GZ++zcb
- LlXr6h6E
- 2vCfVyd/06NsScsmsP9dfdnUzvHmyjej2dHNdYk0W6GuxwFv1T0PjQmu+qBIla8aBlnN760B0teo0TY/dDLU4acIat2B/j9zNOO+D1ChVpfW5YEIfszDN4sPvn//IZLs+FFeSGx/O+EZuvNQKYDho8RPR/CaQTcmEuGHxqvHFW1OfFHHLvBx5pzj5zTwkhHd+1tY7+fUlG5kEdtKH5x+07GjPAXEp59eEfAxv760nBJuGS1wvwiA+hpATmQ8JiPXpjgSnbwrAdlLCUQgico28s70TbJhkRBI0tOhh9ct7MXMUJSa6S1xXz8tyyxkknInMb7izp3vbxlFSruM=
+X-Rspamd-Queue-Id: 35108160003
+X-Stat-Signature: szqes87rdyj6taapx5zyh419ipioiazd
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789124942-689511
+X-HE-Meta: U2FsdGVkX18SYNMOS1A15V1k0pb3QL8BXDLsqVWMG/gUwR72ZgxYa7TgS2tga76m0zLpNPNUhwP21H4GVoiKoTUpoEBUyUYqVXdMQzoLp/mM3e+AhqcqPbuLDZv5LGQoQCuxn+BOpPHq76l4TFCPNWP0HI1UuCOLpbJwaLG4HSASXP00mETWHSqo0I9ML7TGcVn1oKbNM7F95ARRb2toO/BZPz+awM/hwdR5XS+UXct8BlHIT+qLCeAYNqhTYGM3k7NaD2FrITfb7vlOzUt09XZGHqs0LdJEhlsPLjj5YJjsKZ6inG6jzPx50nfQQ49sYPfTbGnZaLQrEjNfQRLQr0kzG2NQuLYMgykzNxx2mYEK8QcUBiwR0/dxRLJqwLtAwoNSjRKd9ZFdEdUuEanxbozhaJU4QuCjPneBNry9x342kfSfBAIMcIKH1C9lZH0t3DEJwyJRjlXnoz+TsxSuyV9FbJKOEIS/IvXdzW24SYFxjFM85AmHzByx6gOn1B+Vn8N9xvafIA+Dt/RmNWHnI60E1yFwnGDrF9V2ilp8NEgC/ObPXBv/gLk4RE1mlRtCGpqh0jZJMtxzpByWYB55PfwBE2D7idV2CHVs71BsNTS3yA1jkh/4cZntfTLGzn8aDXMDT0WshJeoym1Ts3zfZ6/7nAXMlKSq96hYr3nR/6ffRTIRrCxbB5nCUCI2HIZpD8PU6FelyuJA5byo02YDpxhw87czwDMQp0OCfv6oyi+LhmyhXBO+MEQcsxOUfH07Nz9Mycfzt675HoICotBrDLVc0rG/MEFW9pjfj0iVWhcjiHod+Zw7dsvRt14rihOO4kapoJXUxk6X8VBv6gxQq1C4upapWmYnX0giFRBGDJD0h1cBx0cxZ0drQxwR/RoJ67kh/5muXNw8/iyCs/NjWVNW4k8Cp49/REFvXDNVb5FnxwEC/Py/xr1xoacAAF4EJdQc97/hRtJIMdTXsGx
+ iCrYFZiS
+ TiOkKrmeFxU/wUe/GuCrHBJ5+T887urHK6bsFcRHN7lU3DWCpD0Fv0zTUvfkQqA0wutr8kyr8U8oabmVy2EdRXD+0LcHvc3pWstDTN11H8+/xSvy06VRl73jQQrzapfL9BGXJctoqizZQlo3AqFlmtY4l/FqQAa5tpN79688HmAZWcwIEJXGQD33T4jZ6rlM2qyomnUpUsmsZ46771Av/UQRHSkLd6RiKVq7ggmTpZImQeBGJ+MInDZjXoGF4i7vhKpZy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,30 +156,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 09:58, zhen.ni wrote:
+On 9/11/26 06:32, Sarthak Sharma wrote:
+> Hi David!
 > 
-> 
-> 在 2026/9/9 23:54, Zi Yan 写道:
->> On 9 Sep 2026, at 6:28, David Hildenbrand (Arm) wrote:
+> On 9/9/26 10:33 PM, David Hildenbrand (Arm) wrote:
+>>>
+>>> This is an interesting change. We can keep this open for discussion
+>>> here. If required, I can work on this in the future.
+>>
+>> Yes, we should in general try moving all test modules out of the core.
 >>
 >>>
->>> Because it results in less kernel code  :)
->>>
->>> And less kernel code is good. Unless unavoidable.
+>>> This is a pre requisite check. Every test opens and closes /dev/zero and
+>>> /sys/kernel/debug/gup_test of its own. So I wanted to check before
+>>> running the harness if these two are available, so that we don't have
+>>> setup failures for 60 test cases.
 >>
->> An alternative is to add BPF hooks like bpf_iter to do the filtering
->> and by default, when no BPF program is attached, everything is printed.
->>
->>
+>> But why /dev/zero? We should understand why that would possibly be required.
 > 
-> I’ve also thought about a similar approach—perhaps a new bpf_iter type
-> that could iterate over all pages by PFN. The advantage would be that
-> you can fully customize what you want to print and what you want to
-> filter. However, doing so would require refactoring the entire
-> page_owner, and I’m not sure whether it’s worth pursuing in this
-> direction.I’d also like to hear everyone’s thoughts on this.
+> This was carried over from the old test, where /dev/zero was the default
+> backing for mmap unless the user selected another file to back the
+> mapping. Now since we don't support file backed mappings, we can
+> directly use MAP_ANONYMOUS here. Thanks for pointing it out, I'll remove
+> it from this patch.
+> 
+>>
+>>>
+>>>
+>>> mm selftests normally skip if the test is not run as root. So I tried
+>>> keeping the same thing here. Do you think I should change it to fail?
+>>
+>> If other tests do that, it's fine!
+>>
+>> [...]
+>>
+>>>
+>>> HUGETLB_TARGET_SIZE is the target mapping size and
+>>> default_huge_page_size() gives the size of a single hugetlb page.
+>>>
+>>> Using default_huge_page_size() would reduce coverage for 2MB hugetlb
+>>> pages. The old test set self->size to be 256 MB for the hugetlb case.
+>>>
+>>> Now it was discussed in a previous version of this patchset that we can
+>>> derive the self->size for hugetlb case by fixing the nr_hugepages and
+>>> multiplying by hugetlb size, and thought 128 would be a good number for
+>>> nr_hugepages [1].
+>>>
+>>> But in case the hugetlb pages are very large, eg we can have 1 GB
+>>> hugepages as well, reserving 128 GB is not a good idea. So I tried to
+>>> keep the target size of the mapping as 256 MB, as it was before in the
+>>> old gup test. If the hugetlb pages are larger than this, we'll reserve
+>>> only one of them. Else, we'll reserve (256 MB /
+>>> default_huge_page_size()) hugetlb pages, which comes out to be 128 for
+>>> the case of 2MB hugetlb pages.
+>> It's odd that 2M gets better test coverage than 512M or 1G.
+>>
+>> Is there really a lot of value in testing 128 2M pages? Would, like, 2 already
+>> be good enough?
+> 
+> Yup, seems like keeping 128 pages is not adding an extra value. I'll go
+> with 2 hugetlb pages to test both pinning within a hugetlb page and
+> across the hugetlb boundary. This would make things a lot simpler.
 
-Certainly better than having more and more manual filters added to the code base.
+Thanks!
 
 -- 
 Cheers,
