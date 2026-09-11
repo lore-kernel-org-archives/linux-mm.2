@@ -4,120 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E06DBC79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 06:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4F3C79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 06:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0D66B0098; Fri, 11 Sep 2026 02:41:22 -0400 (EDT)
+	id DD48F6B009B; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8386B0099; Fri, 11 Sep 2026 02:41:22 -0400 (EDT)
+	id D85856B009D; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBF0A6B009B; Fri, 11 Sep 2026 02:41:22 -0400 (EDT)
+	id C9AEE6B009E; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA076B0098
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:41:22 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id A904E6B009B
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3887D1C2AA2
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:41:22 +0000 (UTC)
-X-FDA: 85200534804.07.0E8B3B1
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6C7AC40004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:41:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j8lhifba;
-	spf=pass (imf12.hostedemail.com: domain of visitorckw@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789108880;
-	b=m3j84AfADu+ME5x7A5/7UHyl+DuXd1K+mhsjkwSW/r96W9r053wxNyI/8LQs4YMILJ6dka
-	aZ4ckrZ8EJ0CAqkacP92T2/lugXpLaym3vTwLupb9JpPeKPFwbd9kGNmc73RCUu+DlrSfs
-	YgkkRKEC0ZhkMEE0jyY1opcHD9KIpEI=
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C3941C0060
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:16 +0000 (UTC)
+X-FDA: 85200542112.07.CD5DCB0
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CB4E520006
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=e5KK3FdC;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j8lhifba;
-	spf=pass (imf12.hostedemail.com: domain of visitorckw@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=e5KK3FdC;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789109054;
+	b=Lqi4WOUxj6kP0Gi0hyxJakif+BB5SvbDEus0z3YG0NhwBUn1AthKlC4982iSUZTauJPlC2
+	V5ddFkv6SKrLjVX9O76/N++Dfuy1y/EhbIQ1C/XoXbxIKsqRZX8FYLXmvEzYd+k/tosAqn
+	vZWxJL011pyDQEu0gUsOQYaCtRIvMPs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789108880;
+	s=arc-20220608; t=1789109054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqnrRH3JnuYg9d568dJH6IC4tGq2CueKpd9gXMr6rl0=;
-	b=H1/hyicdRKzYvXPI+nSoayN55kAmHB8hxtr8XfnehRM2TqllNBtplNAdEDUfdHbcCqyTjk
-	NbDdB+/sUZqVf5qa2JtD80NmvGV3dzDgxH4mazBvGCi66skVgyue7VX2Vkmb43OplMBLF5
-	WDPdkAkkonkg7caMszdTVoFttx8hmcI=
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-86b90133ae8so157544b3a.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789108879; x=1789713679; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uqnrRH3JnuYg9d568dJH6IC4tGq2CueKpd9gXMr6rl0=;
-        b=j8lhifbasfOdWyTCj3aDFD3SLur55TnWd7km3XQF/SZrMudm+zVvNIQyTBJLs8mW2H
-         rTkgbTvjVdxogYdlnU72SC/ngTdaJJWWjuxKbQeap8L4gFlFwZ7mDmF17hnfSTen5CO1
-         UgBXfS2xTx0Lw5k6x8zKe2gFfFMZzoeVV7uMcScK5wZDLiLbkNDgg+WGXGsVkMOmSEtq
-         qfNlbTVeLBF1RcdldTlSBoUjYeegh19EkviTL9Mcj62d0w//0f0Jv30ZI+GwXRdeYSus
-         SkO4I2yKonDTKPrJ+Ol7IQi3wwb/Pq5LwIaawgtt2RDhUEJmQJHIvPHeSrCWxoG0vGAU
-         QnBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789108879; x=1789713679;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uqnrRH3JnuYg9d568dJH6IC4tGq2CueKpd9gXMr6rl0=;
-        b=ARYW31JXrJzWtdhWyF86asxxyPRmRJTyPX+JA4/dvkBpgWkS/5XbTTouOTQTZftCU2
-         pDZ9IKoomWqP6imTuqrvDFbpRSv5EkUnL3rwJJSX87KmQWD35GUIV4CkDjiHN+glXnoZ
-         xRf8iSQflg50/zxbRi6jLWl9QoTzl9H53czuNzsD+YAKdy6Higxna7xwvhgdgNP/tVgN
-         IVmiuO21vMWtyckiufACgEo2v3N6W+ecS7WjKUcAtdyumiehIoeKeHr9SMRzGUmUxcfy
-         g36CXDQDXB0Rz76ZbfUsJ6iRFRXRcSeRrUJkOJssMagZUO07s2UUTeP4SmSVYZraGWWI
-         WblA==
-X-Forwarded-Encrypted: i=1; AKwUvBw1Y7MoqRYbWFAlLsTHXPrAKNAHmkaOPvGRIO1xLHTYj5a1OBQ+A0woBWxJXy/s/vKEfoUZaSs1jQ==@kvack.org
-X-Gm-Message-State: AFuF++lW2AIycKgXcU6OmERkZQGqppRXN1LrKlOpcKciYGfagn6OXfjF
-	QtehhyI8idKTJCnRBTG5NTGVVAdrBQnsKyMeiOi2wmN8R7ijEzPES6ey
-X-Gm-Gg: AYBFou3PH29Hb9CZJDXLbAna2hlfW2zz9U3zMbEqjB1qQBdAK7daEQr6hhUsBZ+sLi5
-	gZLrk4Mn2/RyWe9HQhP1PkX38hlZVfLA7Mo7JCh4YDEYgQGP7p0F+Xbmnlg0XoOSbb5E3L4nuF2
-	N98tQZ6KOfYuoPrKNsakgwXOFCPQGwLwuI/FP2cs+KdszEwm174YZwvVuQA1dxl5NZ/nj0IG+yB
-	E4T6WBHE2IzelqMW5Hp8yLip9Zmc+YrKqTpUjVzEkcuP47wX5MQQGSmtYuO2A+LmgOg74I5JUb+
-	WbfvbcbsEVyYD8UQg8mhOsVK7J6a+N/0pzPSnAnACwQkNEKBwRgBrMVIwjVmug462BRYFqGf0wS
-	oQCG14wnfPC9+UGpOn1AjkXo2+RHrtLGE6dsZbwUd4hBZBiUWODqp+RGChUvDT7Cm7J0Jc+Uckt
-	ysJXTi1hnY6Pnr+BmF8n9fzI6b+FFeARUNQyKRoEwKFwAXbUYt2nDapP2PouQJ7D4UwDITpxm7W
-	lFcozVrnXlXYmRluceEzdP9lS3sTDm6rQ==
-X-Received: by 2002:a05:6a21:a95:b0:3da:6bdd:2c74 with SMTP id adf61e73a8af0-3daed306372mr6132777637.10.1789108878903;
-        Thu, 10 Sep 2026 23:41:18 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2039:4:e7d0:6323:1ab1:99bf])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c615a84bsm674786a12.1.2026.09.10.23.41.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 23:41:18 -0700 (PDT)
-Date: Fri, 11 Sep 2026 14:41:14 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Guan-Chun Wu <409411716@gms.tku.edu.tw>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: lib/base64.c:58:18: warning: implicit conversion from 'int' to
- 's8' (aka 'signed char') changes value from 131 to -125
-Message-ID: <aqOiihm0Mz0zCnw0@google.com>
-References: <202609110514.S0a0FD6a-lkp@intel.com>
- <20260910223520.GA3375179@ax162>
+	bh=t1H50kH3M88JVikkBnDtR3FYrroEvYJwh3vXK+3DDGo=;
+	b=O5nFGMvGXJoPcuK1c0sC5uTDHvjCy+3zmgiGY3gkx/hyfVKNpNE+31uNKLKhByCxQTUciM
+	jR+lwgl3KMWUNTJ+uH4v8oF5f/aPI1rUoWBt+1jpzFpQAlRxAR7pka3Nj8jn1KVSQ+9Ok3
+	Lq3PADFptBu11QukeMSZEL8dwR8o2J4=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260911064411euoutp02d0ac6233c028080fbe5a8a86ea82a729~UMTQGvVjx1863118631euoutp02N
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260911064411euoutp02d0ac6233c028080fbe5a8a86ea82a729~UMTQGvVjx1863118631euoutp02N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1789109051;
+	bh=t1H50kH3M88JVikkBnDtR3FYrroEvYJwh3vXK+3DDGo=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=e5KK3FdCweoN99A8Aq68AIq6VaEB4V1PFMz1oU40j6tmrjZtbpkljk09HgAdyOtsD
+	 2935EV/4FVJMN+kveoaHhlam2sVk8XWZvKMryakPLfwRos8emPs2XwNoi03i2lO1gz
+	 Ty+D4A7DidAquXdSvOBUhhp0zsMS5zJiugz4LkqE=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260911064410eucas1p1a59106bb32ffd42bf86506e3b9b7ff91~UMTPcco_M3171431714eucas1p1b;
+	Fri, 11 Sep 2026 06:44:10 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260911064410eusmtip10832dba296ae40699d5456b7b7154595~UMTO1e4tm0512005120eusmtip1P;
+	Fri, 11 Sep 2026 06:44:10 +0000 (GMT)
+Message-ID: <7dff82db-cfac-4c38-91f6-12b542716bd6@samsung.com>
+Date: Fri, 11 Sep 2026 08:44:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910223520.GA3375179@ax162>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
+ early reservation failed
+To: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
+	rppt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: akpm@linux-foundation.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <cbbe6ba0-5ee2-4597-92b8-3257e152be75@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260911064410eucas1p1a59106bb32ffd42bf86506e3b9b7ff91
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+X-EPHeader: CA
+X-CMS-RootMailID: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
+	<CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
+	<20260818092420.2859026-2-chenwandun1@gmail.com>
+	<72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+	<af87036b-0809-4880-b088-545780b4d963@gmail.com>
+	<7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
+	<7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
+	<518729f2-db28-4af5-8ed3-9985c124db3e@samsung.com>
+	<cbbe6ba0-5ee2-4597-92b8-3257e152be75@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6C7AC40004
-X-Stat-Signature: gmer7tgup4mjttiqm531nz36wwrh6qpp
-X-HE-Tag: 1789108880-750482
-X-HE-Meta: U2FsdGVkX19kgx8182YtVBQFm6wWpTTMRGPRbXitjq71AB5EC0ZNOthnE6n4+pcXsldQSFeuL2CHArE8MHEFBXPRpfw3QMbjS24avEhmgc69U+IiNGaQf4fvk/OMcGp3PyiZiKh+JrTsKumlu2Ol7CWktquT4PV2IqKhfvN4vRbTFzAr8kAqPrEHrphGfj3l0tLJv7U8Waivw1i4EY1IhSeY3VRRxUTKtKWnGHjEkVoircp1zl4JQ6kTs7+qtH1CwULj6WmFI9gXpkA6clpmhxKHTuuvfZMdkEV1rm8RxvyRBKy1c0YN4Mz7q2wjXnWSxArRhWt/3p8oLMPgo4n7fukR0rGqjdGtJHMtsGAaMBWLQ8+wUUNe5DoROpe56jjMT3pBt4ZTPKHi5jFbRNazY+twSjnlLtrg5Na9AocgEMWZgh++BY5GKdCzt3vcptIEX3WBtiMISL8dqS123wNyjCfds1LpkMse0+g5EEqvB5tVv8SBr7foPKA4AaSbfLwqnh29+arQ8M8rgt9f4x7KKMy5ZVthbozvVle5lOqRJsQEvJhy38aY0cEkswnZSOp0gMvVT8k+kN067sm7Jf/FRYfz6mWuQjau7oKtojdFYs2Ya9nnWLRgbnQqoNuKiHVzh1SLmOawo88iAQ5eQc2vGTYbyU1g1KmAD7sCPXfGvToVNWokcQoc5aR1o4qRZ7l3sqUv+5ZpsFaS8u3U40VL3bFi33xEaucyhODnm1Oqu5Qy0UVfvrG+cP5jGhZcEDjIW3fmmI1UAEjate76VaF4GQediyyI+i4beXLRqTGBhuKF2psWK9vrfDGaW4odB/kTsSVyoFgv+JI8RxjJu1htiDlKNInPRO2AZ+qsqBDni9F3MuirFcV5/ndynLcT7+6flTwGiKi39LlbCYTqX0gpOTRmxFlinHbglzedorr4NilHIkRrYDFz9vyo4P7xN1NL54jGvfqso92uLZBMUa0
- 6xm0/ZkQ
- E1KqIcpdKONfPWK7ZOsmBMt0LbEVQ7Q/iDvA8LR3y9o0D6bWvU8BPi19q+FXhuUPtnAeD7pyMEwOfTGbAhLF+8670RN9VzVw76RB1SRI6xMzFi8XNKET67OSSECqnvqWhwpeCyL24ELbMdl7AAe0fkoxbCgt2ytmBy0vmSETwnMgdp34qhhMpajL8L/f2p6qRZZKX2L8/GH8O3t97BKF1PR9Q9RWkunmKeJeZ43CW7El7500M9N4hrrBKpPvsx6+PcvP+2BhYORQLrrJVFHIdZPnobeVHQ+1mU9rqXmDf0335FOhMPZOsS4AbGcxuNXPZ6Sgujy+FtT8ZiQMke4aDMF5vwxucZ7+wcNQwwDYs3+ebwiI63XtyLUlOEr7b3SFo55dr+ncJOK7e3ou8x4yunVjUW5mM6fzVHsftrAo6UAMwUXSItd5w3rBOdEbdp1EQx3EnBzgg9w1LMwb4D5rQSnxNtdm7PpgwLvGrmA4nXNMIdFU7FU+2sbo+VquaAbLAyTXlU7eVi9m0SK96zRskGCQXWlRs00NTzVQ+NJP4iH0jnrp7D4/MpTZSHHECJXwQLzaPTGES/1VEi7CrmXeaRfpT/S0OD+NJOxAgV+1vWQ28G+Z+JmtG8B9MriD0By/Qtv+qL2/F0IP6uVQPNF6H4mMZu+WqsKcQhr0H4OqzgZBKO5A=
+X-Rspamd-Queue-Id: CB4E520006
+X-Stat-Signature: cfn4kjmhxbh33hza18phhzpatxc5z41g
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789109053-936262
+X-HE-Meta: U2FsdGVkX198+Nr/PUo3cUwr8DaY30XM6x0l2hCpjcUvoT/GNgSjbqvgTsIcKKXOmRq0Z7iQbcgni8iHEvo/4ZUMxFZeKZQLp1ehpNTSBLqXGOTIkjQ2TRI/kZEmYvC7wLumr9C6iUglkVDszxgB/ognM2aiYl9yac6ckxKzvpEdUgwW6RAKl6G350tkLg95DIEecBKxGZ+wzdwgq/LBt1TafwpPBlBZ6xw9GUy7H68ux9gl43I0nzs3bLWAZ+Hg8A/W3icmHNoAfXA/5Kv42I7e8QbSzhbbMMCFVzvtm4H55YnEz/8oBW0wB7pZ1mWlEH+8K4e6/OwLUXUinpEudfTgudPkdjDBpCbn2Traf+29JXBLbyzzbYSev3J9U7FrKV24aOKRIJPbU6H1eSWBJCDfQqjy2a3ss8Wyp1fIgca4OhZ0GY9RktSDPeP0e0sYgqy0GSePxc54kNGADqZvdldQgwtpf/fIcl5wTtxyFZicYSqcEw6dkCQ1IeqvKhFth8d9YLSqf/Pu9Q/CorQUKE0UWuc2wCyFNZXD4/r5T/rV8OXbyzzuU5nQODTI9a6LValVXBEFRq46s8emm65w1b4Us2La/K6rLwfGlSBVM75WnMFyIOLFD1LAdfDA4JSM5bbVfEdJFEs071sX3dV6Q9cnxy71Lh+IPY18QmiLPeEANcWLES7mxDEJmmwJq218NXks9UHDMUYIrxYDwIw17DhD24pv4lsHslzRmZET5t4RV0JZlEggzn+3sA3OIUCW3jr4E4lkg8l3pOfPKyKcW7/un5zBA9LWYfaZHPiCe2B5iUEaFF5Vwyr8aPRYUxpmHXPenBUlbTMNy9lDL9mWbACY/iJXxpgHvTT954CaI9L4XUSt5iSrOklAeqdnEn0i5p3q/Gr6PZCYCAVpZAjq8I2xrrBwPQcGpsCag69AUDO26fF8w9UpgGeGsXJjlCM52oo7bFpRLAX1sUfgjJH
+ Zr07T7L6
+ RijsDndyqXXlo2+GZnW4WiBbagc3KWJG+JArXv+40MHnJJTJPmOuFUmRJkOgYdqZBST1iJM8dNDYrczFQFiKCpriHKvhJJQjMsI9zf96nL8/H80SjnAFT9zuMjhETTb0hrCjkD4//7fJWi/PdxT4z2+GiDBIR+Ktd9IRZj24kLIylfpmC7ea+e2sC/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,140 +112,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 03:35:20PM -0700, Nathan Chancellor wrote:
-> On Fri, Sep 11, 2026 at 06:07:30AM +0800, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> > head:   50d05c7c76c96b90462f24debacca971d2e86713
-> > commit: c4eb7ad32eab13ba64cc452c6f43d518b63f5e03 lib/base64: optimize base64_decode() with reverse lookup tables
-> > date:   10 months ago
-> > config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260911/202609110514.S0a0FD6a-lkp@intel.com/config)
-> > compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project d3db069999553568848400c84cbf815c03f5470f)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260911/202609110514.S0a0FD6a-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Fixes: c4eb7ad32eab ("lib/base64: optimize base64_decode() with reverse lookup tables")
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202609110514.S0a0FD6a-lkp@intel.com/
-> > 
-> > All warnings (new ones prefixed by >>):
-> > 
-> > >> lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 131 to -125 [-Wconstant-conversion]
-> >       58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
-> >          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
-> >       48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
-> >          |                                       ~
-> >       49 |         [0 ... 0x1f] = -1, \
-> >       50 |         INIT_32(0x20, ch_62, ch_63), \
-> >       51 |         INIT_32(0x40, ch_62, ch_63), \
-> >       52 |         INIT_32(0x60, ch_62, ch_63), \
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:46:50: note: expanded from macro 'INIT_32'
-> >       46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
-> >          |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:45:49: note: expanded from macro 'INIT_16'
-> >       45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
-> >          |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-> >    lib/base64.c:43:48: note: expanded from macro 'INIT_4'
-> >       43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
-> >          |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:42:48: note: expanded from macro 'INIT_2'
-> >       42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
-> >          |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:34:42: note: expanded from macro 'INIT_1'
-> >       34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
-> >          |                                              ~~~~~~~~~~^~~~
-> >    lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 130 to -126 [-Wconstant-conversion]
-> >       58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
-> >          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
-> >       48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
-> >          |                                       ~
-> >       49 |         [0 ... 0x1f] = -1, \
-> >       50 |         INIT_32(0x20, ch_62, ch_63), \
-> >       51 |         INIT_32(0x40, ch_62, ch_63), \
-> >       52 |         INIT_32(0x60, ch_62, ch_63), \
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:46:50: note: expanded from macro 'INIT_32'
-> >       46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
-> >          |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:45:49: note: expanded from macro 'INIT_16'
-> >       45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
-> >          |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-> >    lib/base64.c:43:48: note: expanded from macro 'INIT_4'
-> >       43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
-> >          |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:42:24: note: expanded from macro 'INIT_2'
-> >       42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
-> >          |                        ^~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:34:42: note: expanded from macro 'INIT_1'
-> >       34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
-> >          |                                              ~~~~~~~~~~^~~~
-> >    lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 129 to -127 [-Wconstant-conversion]
-> >       58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
-> >          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
-> >       48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
-> >          |                                       ~
-> >       49 |         [0 ... 0x1f] = -1, \
-> >       50 |         INIT_32(0x20, ch_62, ch_63), \
-> >       51 |         INIT_32(0x40, ch_62, ch_63), \
-> >       52 |         INIT_32(0x60, ch_62, ch_63), \
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:46:50: note: expanded from macro 'INIT_32'
-> >       46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
-> >          |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:45:49: note: expanded from macro 'INIT_16'
-> >       45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
-> >          |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-> >    lib/base64.c:43:24: note: expanded from macro 'INIT_4'
-> >       43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
-> >          |                        ^~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:42:48: note: expanded from macro 'INIT_2'
-> >       42 | #define INIT_2(v, ...) INIT_1(v, __VA_ARGS__), INIT_1((v) + 1, __VA_ARGS__)
-> >          |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:34:42: note: expanded from macro 'INIT_1'
-> >       34 |                 : (v) >= '0' && (v) <= '9' ? (v) - '0' + 52 \
-> >          |                                              ~~~~~~~~~~^~~~
-> >    lib/base64.c:58:18: warning: implicit conversion from 'int' to 's8' (aka 'signed char') changes value from 128 to -128 [-Wconstant-conversion]
-> >       58 |         [BASE64_IMAP] = BASE64_REV_INIT('+', ',')
-> >          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:52:2: note: expanded from macro 'BASE64_REV_INIT'
-> >       48 | #define BASE64_REV_INIT(ch_62, ch_63) { \
-> >          |                                       ~
-> >       49 |         [0 ... 0x1f] = -1, \
-> >       50 |         INIT_32(0x20, ch_62, ch_63), \
-> >       51 |         INIT_32(0x40, ch_62, ch_63), \
-> >       52 |         INIT_32(0x60, ch_62, ch_63), \
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:46:50: note: expanded from macro 'INIT_32'
-> >       46 | #define INIT_32(v, ...) INIT_16(v, __VA_ARGS__), INIT_16((v) + 16, __VA_ARGS__)
-> >          |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    lib/base64.c:45:49: note: expanded from macro 'INIT_16'
-> >       45 | #define INIT_16(v, ...) INIT_8(v, __VA_ARGS__), INIT_8((v) + 8, __VA_ARGS__)
-> >          |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-> >    lib/base64.c:43:24: note: expanded from macro 'INIT_4'
-> >       43 | #define INIT_4(v, ...) INIT_2(v, __VA_ARGS__), INIT_2((v) + 2, __VA_ARGS__)
-> 
-> I have not looked into the legitimacy of this warning yet but it comes
-> about from a recent change to fix -Wconstant-conversion in clang:
-> 
->   https://github.com/llvm/llvm-project/commit/a5ef934a8d295dc03be3960f2b3744ec2e53238e
-> 
-This looks like a false positive rather than a real bug in the C code.
-The warning triggers because (v) - '0' + 52 evaluates to >= 128 during
-macro expansion which overflows s8.
+On 11.09.2026 08:37, Wandun wrote:
+> On 9/10/26 23:20, Marek Szyprowski wrote:
+>> On 10.09.2026 12:55, Wandun wrote:
+>>> On 9/4/26 16:49, Marek Szyprowski wrote:
+>>>> On 31.08.2026 15:04, Wandun wrote:
+>>>>> On 8/26/26 21:14, Marek Szyprowski wrote:
+>>>>>> On 18.08.2026 11:24, Wandun Chen wrote:
+>>>>>>> From: Wandun Chen <chenwandun@lixiang.com>
+>>>>>>>
+>>>>>>> __reserved_mem_reserve_reg() discards the error from
+>>>>>>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+>>>>>>> caller counts the node in total_reserved_mem_cnt and the late scan
+>>>>>>> initializes it without checking whether the early reservation actually
+>>>>>>> succeeded. A region whose reservation failed is then handed to a
+>>>>>>> device assuming the memory is protected.
+>>>>>>>
+>>>>>>> Propagate the error so failed reservations are no longer counted, and
+>>>>>>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
+>>>>>>>
+>>>>>>> Recording the failed nodes explicitly is necessary because
+>>>>>>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+>>>>>>> tell from memblock whether early reservation succeeded.
+>>>>>>>
+>>>>>>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+>>>>>>> of static regions is not bounded by it, so on overflow the extra nodes
+>>>>>>> fall back to being initialized, which is the current behavior.
+>>>>>> I'm not very keen on such partial solution. Indeed we have no place to
+>>>>>>
+>>>>>> store the result of the early init call, but we can check if the given
+>>>>>>
+>>>>>> region has been earlier marked in memblock as reserved or no-map in
+>>>>>>
+>>>>>> fdt_scan_reserved_mem_late(). If those attributes don't match the
+>>>>>>
+>>>>>> region can be simply skipped then.
+>>>>> Considering the later patches that reject reservations for overlapping
+>>>>> nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
+>>>>> produce false positives.
+>>>>>
+>>>>> For example, if region A is reserved first and region B is a subset of
+>>>>> A, reserving B will fail because it overlaps with A (in patch 02/03).
+>>>>> However, during fdt_scan_reserved_mem_late(), B will still appear to
+>>>>> be reserved because its range is already covered by A. As a result,
+>>>>> B would be initialized even though its own reservation failed, which
+>>>>> is contrary to the intended behavior.
+>>>> Imho the overlapping reserved regions are some kind of configuration 
+>>>> mismatch and it is enough to detect them. fdt_scan_reserved_mem_late()
+>>>> can first store all regions to dynamic reserved_mem array, then check
+>>>> for overlaps, and only then initialize those, which don't overlap and
+>>>> have proper memblock attributes?
+>>> Thanks a lot for reviewing this series.
+>>>
+>>> I did try this approach, and it looks clean. The overlap check works
+>>> well for regions within /reserved-memory. But there's one case I
+>>> couldn't make it handle, where it seems to still produce a false
+>>> positive, please correct me if I'm missing something.
+>>>
+>>> For example, region A is reserved before /reserved-memory nodes are
+>>> processed. A is not a /reserved-memory node, so it never appears in
+>>> the reserved_mem array. Now region B in /reserved-memory is a subset
+>>> of A. At early reservation, patch 02/03 rejects B due to the overlap.
+>>> But at the late scan, B's range already appears reserved (covered by A),
+>>> so it looks like a successful reservation and gets initialized.
+>>>
+>>> The root issue is that the late scan can only tell whether a region is
+>>> reserved, but it can't tell whether the reservation was made by
+>>> /reserved-memory node itself or by something else. Maybe we still need
+>>> to record during the early reservation stage.
+>> Then maybe it will be easier and cleaner just to add a new flag to 
+>> memblock_flags (see include/linux/memblock.h) and mark each successfully
+>> reserved region with it? There are some spare bits there.
+> I really like this idea, it's cleaner and directly solves the
+> "late scan can't tell who reserved the region" problem. Combining your
+> two suggestions gives a clean and simple approach, and I'll implement it
+> in v3.
+>
+> One concern: a reserved region carrying the new flag won't merge with a
+> reserved region wihtout it, so memblock.memory and memblock.reserved may
+> end up with more regions than today. When fdt_scan_reserved_mem() runs,
+> memblock is not allowed to resize, so if regions in memblock.reserved or
+> memblock.memory are exhausted, panic will occur.
+> The default regions number of memblock.memory/memblock.reserved is
+> INIT_MEMBLOCK_RESERVED_REGIONS, it can be raised if a platform actually
+> hits it, so I don't think this blocks the approach, what's your view?
 
-However, that branch is guarded by (v) >= '0' && (v) <= '9', which is a
-compile time constant false for those values, so the branch is never
-taken. It seems clang is diagnosing constant conversions in
-unreachable branches of compile time conditional expressions.
+When reserved memory regions are not contiguous, the current code will also
+trigger memblock split on each allocated region due to setting the
+no-map or reserved flags, so setting one more flag should not make it worse.
 
-Regards,
-Kuan-Wei
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
