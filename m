@@ -4,107 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC99C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1B7C79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD3076B008A; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
+	id 90BDD6B0095; Fri, 11 Sep 2026 03:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5D2F6B008C; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
+	id 8BCD16B0096; Fri, 11 Sep 2026 03:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B241A6B0096; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
+	id 7AAE06B0098; Fri, 11 Sep 2026 03:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C4736B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DF7AA2D70
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:35:00 +0000 (UTC)
-X-FDA: 85200669960.05.7F87EE3
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0A19A180004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:34:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789112098;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZpNb3kX5HfMhR18BnxIU33C03EaxiGcEhtBlfXZ5QLo=;
-	b=12VpH1QwU2p7Kh4pbO0CGU31MnfmFkrAWbjvoRUtmtxuaPj3rtRYi8nCfwAbJSC8idqCPf
-	6DbPeoFGb9ePlH+ZiuHw6+EjCUPQtzvwROLGVYtcANvFsLARfCcJj8WwwqDYbOPy6ISbyp
-	O11WnhnkHYF2IEFPYl85AykCOu/l1+0=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D5576B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:39:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9C6B1C02AC
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:39:38 +0000 (UTC)
+X-FDA: 85200681636.09.75E3C37
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 267E440004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:39:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Nv8v4URB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Nv8v4URB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789112098;
-	b=4v24sidw1PhF6GMPNyiGP8HrsgxExS83M70Mm+7NDDvcGMpiJBbq8PIxyJXaXsDi7lOUpL
-	/xcqaBhZA75y6iOBzucXmginS1AmHuWSdgxLufw09ka9bDSC0aMtYt3oxuQ5w7eW22OFbt
-	3dV8vSIR5Rh4g8xDbabzw+93UpRFg1c=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hh5sd0G6fzKHMNl
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:45 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id DDBE84056E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:50 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgAH7ggYr6Nq45QyBg--.39022S3;
-	Fri, 11 Sep 2026 15:34:50 +0800 (CST)
-Message-ID: <5796c4ea-fd8f-48aa-8c9b-f1cc8ec1dde1@huaweicloud.com>
-Date: Fri, 11 Sep 2026 15:34:48 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
- large folios
-To: Brian Foster <bfoster@redhat.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
- willy@infradead.org, jack@suse.cz, ziy@nvidia.com, joannelkoong@gmail.com,
- djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
- yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
- yukuai@fnnas.com
-References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
- <aqLaQcZvaFIrAz0e@bfoster>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <aqLaQcZvaFIrAz0e@bfoster>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgAH7ggYr6Nq45QyBg--.39022S3
-X-Coremail-Antispam: 1UD129KBjvAXoWfJF1DGF4xXw45WFy8ZrWrXwb_yoW8GrWDWo
-	WrJ3yYv3WF9r1kAa10kas7JryDW3Z8ZryxJF13urs0vFnFq34qyw4fJ39rGFZ7Aw1jkF15
-	Ga47Ja4SyrZrtF1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUYc7kC6x804xWl14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK
-	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
-	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF
-	7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6x
-	kF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02
-	F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4I
-	kC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a
-	6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
-	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-	xUIF4iUUUUU
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0A19A180004
-X-Stat-Signature: z19m8gb4iwcq87gdjgmm8csb8nci9won
+	t=1789112377;
+	b=nDK7SArMcOWv15aulAsIPFgtIqh5FlopF/m58yzPTEWPpLsRXmMGxuxL4fTKAH6ugBwChO
+	yrmIMDmUcNG3lkdw0i9ID/N2Pjaj1VMiMWWCjHnj1deBPPC8I+crEyA69A+eMHt9DelaN7
+	C6W0JmYwpoQWF8uspqNUSwhej6Hl16s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789112377;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=qxNcNl7rMQEnL/l+/+odtjGVY3ViF4ChFtUyvm7rr5o=;
+	b=b24TT17uqrQQko1w9DJIJHK2Ah8AGXIWcDQQhYO1GRKfPV6aZMZdEx3pdNdIvJkEwKOeeg
+	pzJL8hxzky9cZ0VcIJBIoNk41ya3TUli2VLMQaMIZJcuqti0AbOiuVIwHPaX/oP03rbfmb
+	hLnVJ0+pbMhCJXe73R6fvoiiVVPQeF4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789112376; x=1820648376;
+  h=date:from:to:cc:subject:message-id;
+  bh=fhsEcjNjs8c4XMj5j4L9Vl7rAKfJ3AfRYpFjTphjI3k=;
+  b=Nv8v4URBIgynzSpH1dbFnAM2Ck1vCXQGy6byuq0CvUKNKb/A03QRKu3M
+   wxAG5WMRNc3j40+k7qqhWW5AM9jwdWYvvgY2fJ68XbnBLiT6UUvA3wPIT
+   pli+1vUi06BzuIBqIu4qPMkxyy1XgHjq9cQq/O1UJ5ZQT9AaBzi8jAazB
+   fySZSgrgvythcyMGXDNvmlWtnjNnFoMelxK0oZbjhfQopZr72ZiaX5GHP
+   7YUs65HRwh+NkidxINCv8jmDeSk1qd/h1eSKbrnRaVHUZZAgWl0oszGaC
+   yFrUO9iFrrHbJZPqILGD1A6yqZftIxmhORjFz2cEa6su7B3W6WLRGVJqR
+   Q==;
+X-CSE-ConnectionGUID: bpsM2WPoRhW/prnFtbcwNQ==
+X-CSE-MsgGUID: QIbqnCgBQ+6fUxQUQcOOsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="100925747"
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="100925747"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 00:39:35 -0700
+X-CSE-ConnectionGUID: qIT2SHh7T9CCg5l3LIfhkA==
+X-CSE-MsgGUID: yeOaXVLESye75RqQT5ic+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="265651750"
+Received: from lkp-server02.sh.intel.com (HELO 0a3643a6ed9d) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 11 Sep 2026 00:39:33 -0700
+Received: from kbuild by 0a3643a6ed9d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x4vr0-000000001EP-2fQ9;
+	Fri, 11 Sep 2026 07:39:28 +0000
+Date: Fri, 11 Sep 2026 15:38:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:for-next] BUILD SUCCESS
+ 07ae2801241e1324e6ad2cc0102ad125d36712a9
+Message-ID: <202609111502.vdFP20hM-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1789112095-225355
-X-HE-Meta: U2FsdGVkX19L3gVtodjoioEg+tq46/zpAMsUeu4Wc62bW/kT34l1ta9CyGzAxs4xcRlnDp07Hfq9K97QfpEXPRtNjZtDmBwrgdBNNsYhCyHCm0HiPLEBgPWzD1v+VRAjHjtyBvQNZvzPtFX3TA1Zvey/JY9FW2OA9WM7dW8UE8o0uT6x5Oxwg6uobGHacedJDZAAAugFKps3+FssH8ykXGeV7FS4ZrrAdIM5SeANHm3dECm/jgYvv0h+Ysxhf8OJKjnVNcS68UTXtvjbKtd6LvRC8jclLM7cAkuiRodq3qIIRFLUdD1HQCMPSxrRRpYnDhNjSc4OxcKuDOeCxX+XDz0POg6DmULH6MiJpbY9eCZ3m3hkcBpcjdNWPpcXO9M73rk5PvTO4OBny+XDGD5gbRfa2+9aKBOsa/yZ5cuLQFjaM/Zib6tGlfKaVhOjplPLH2SwCBC3nI+MXPd/kM88bnXMOEqd8JNbjV6fFLsfjmkdhlBFbItRPb31P6AcBKmEkLc7uprB2JP/NnMphuKgnkEkHgQofGhxtYWJ7+SqNG4dsTRXim+j1M3CEVrnW5QQnig922F1lq5cimd3FGZ4/cCdU5lTUpfFSd+a+3J/yWPUbm8bwr1m04Rml7bGOSz9O29qdAgFk6G2TCBTT1z1EqeYchuXko1RC0rUn8Evkvnb6gx/r+wB6136/7LWxHIOwfbIZ53qJpzXS3HEfsRgNuY1PS4EVsyRAxuf9FrNI1ykXyIedn6kluGWTMSeDDoieYgjvth3kVDX0jQgeV1J+4IqzpTTXzCVfpBGx98UNLcIycyMvGYB/RQhKX0Sn1Ji/ZyYkp8FpBJJfILZWWLVqki4v+i0KPUTGTKeJnCm7NLXdCeJssX/8wH8VPedFcvQRyuWCvKti8Gj4t2Gq4Srrw6uJrsYNQEEA9eVI9pE3V//kZ1L8SE85eUOxUXp56vuHLqy5kPdqasDZVtyIE4
- 7qjsw2Gu
- Oya/MCowdHcWdsppcaOYscnLJz+YiTJsDPYSbr4og3YpT4Lxf3oA2+lugrBcwwnT1QsO+5S7onNiGR0/7U0OAsCxqOkFeu/r4FsiX7WOX01DvdLn35f0O6oles1xQpSjFnG+3pS0QdpN1Y+VmvKGkSZbI9kamY4QEfotNb8I+B1lIswdC6OZZPWm4qvTvObFofGloboEyzHprq8g20r1b+sXXHg==
+X-Rspamd-Queue-Id: 267E440004
+X-Stat-Signature: 7cwpqudrawtd6subbqf13yzkbmfan5et
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789112375-477192
+X-HE-Meta: U2FsdGVkX19daCmIQZn87GqrJhX7gVISUNTnGstx5H8maFwGfXZaLZAqzzW1Yn0totCd6ItrwfhXr4XVFgVmMe4PEIAC+VrEt5fcU0/Cj3nQm1+4dXxvfYCEJVuMDVro0F5/KbtFGhDwWLvUCilM9czMYD68KrzzlqEdGUoFSDgtYjkxMZ0mJcPlPQ0znOhm9zLBSHSfBFjubSn6vYkh7jXHaxthJ3Hhc2I1umoOwIgoyYRH0PJ4R5Cub68DqJlKvaAJmBVOs0RU20S09+TcPwtliVckQNwrdufvRpa2X54LwL4t1oVcYNzR+G5J0zx3hdxidiWVSWzHa8PtZIErQ3+vFw3HJ9H97DwAClqusS9z0Kg8WZ+DrpI8ac8Sd8OzgXrKrZVMy0oLQL8Xc+rSfsG2gzhPTJSm1ilAFrF+IXxONDae0GosPgoBLIvLi1b3YQqGvL/F539OXRkBsw0YORt4yzT6lqhnG6HPJTUoCog+x3jLSTZsIvZBsK3XPN90HDUdRBiWRq+u8xegMoX/vmRcX9tes0Vu1s9SkhLdbFwRxYo72/Q/npSDXh4+I8O3ml8aZxE2WDurXkelVh+yMvyxsR3O4lR0XsYq2iVOEqJvtL3vkYx679pwJrdZLufBjkABPhGD1YZxIVzpwBnFkvMQ92S57Yi15J6vVVjFdJrTluKSYAUHnYWTGgAQ6ueY/evGXMvrTWu+sFfHnYGufzRjGvuiZW17aEup4yOhhoZ6MZvPEaHvxOa1PjM9asUrMNgzjyjB1TtRQ6KHxoUnnQdAd7CKevyp/I7kIpLho/gE1Z8Ca+VuOuAx0U7h00cV3Urk31VhgrS89wk4+mivIMOQBIDb7HotndU/fayElk2wyb0bJxiDCstoIdKKHrShZA7H2IfJSRbmdADjsz+xpjic9U5lzUYiLA1CQpjalBh/LErx0c4dDXz90pnuHOlaKOUnWAQMtoPOYuvDNBC
+ gFWYiOzc
+ it3TKGRQ+QkhnAURqvXSHIMBTHohx89MDOkJovfRBpTZE624EWFV0uUomY4L+yhOKRgI8OMRBM8SKDKU1NBWBE+tyjgy7yRmSyFG42aIu1r1XQCHWiS6D6ZIwyOYSLj8YaOPHa5Xe6tSqN7p4ZD+HA1nmSt2s7NPbzcTO8F3NxVJKzjOnSMcbBuXz7EN6VdF3Vc/SZvCOmKKMorQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,389 +100,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/2026 12:26 AM, Brian Foster wrote:
-> On Wed, Sep 09, 2026 at 02:23:39PM +0800, Zhang Yi wrote:
->> From: Zhang Yi <yi.zhang@huawei.com>
->>
->> truncate_inode_partial_folio() splits a large folio so that the caller's
->> truncate loop can drop the in-range sub-folios while keeping the
->> out-of-range tail. The first split at the punch start edge is
->> non-uniform, which leaves the sub-folio at the truncation end edge as
->> large as possible, this means it may still straddle the range, holding
->> both zeroed in-range and valid out-of-range data. The function then
->> attempts a second split at offset + length to isolate that tail.
->>
->> If the second split fails the straddling sub-folio stays merged. The
->> function returned true unconditionally on all exit paths of the success
->> block, telling the caller it was fully handled. The caller kept its
->> default end and the truncate loop truncated every sub-folio below it,
->> including the merged straddler, discarding the valid out-of-range tail.
->>
->> For example, a 4-page order-2 folio punched from offset 0 to the middle
->> of the last page:
->>
->>   truncate_inode_pages_range()
->>     truncate_inode_partial_folio()      # same_folio == true
->>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->>       2nd split of folio2 fails / cannot lock
->>       return true                       # BUG: caller keeps default end
->>     end = 3
->>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
->>
->> This became reachable after commit 7460b470a131 ("mm/truncate: use
->> folio_split() in truncate operation") replaced the atomic split_folio()
->> with folio_split(), whose non-uniform split can partially split a folio
->> and leave the end edge merged.
->>
->> It has gone unnoticed because a dirty large folio normally carries the
->> filesystem's private data, for example buffer_head, so
->> filemap_release_folio() -> iomap_release_folio() returns false on a
->> dirty folio and folio_split() aborts with -EBUSY before any split,
->> leaving the straddler safely unsplit. The bug is only reachable on paths
->> that produce dirty large folios without filesystem private data, and it
->> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
->> attached.
->>
->> In addition, even when both splits succeed, data can still be lost when
->> the mapping's minimum folio order (min_order) is non-zero. folio_split()
->> stops at min_order instead of order 0, so the sub-folio containing a
->> split point stays aligned to 1 << min_order rather than to a page. The
->> original success path left start at the page-aligned head of the range
->> and set end to the exact page index of the end edge, neither of which is
->> a folio boundary in general. Either one could land inside the large
->> folio at its edge, and the truncate loop would drop that straddling
->> folio together with its valid out-of-range tail.
->>
->> For example, a 64K (order-4) folio with min_order = 2 punched from
->> offset 0 to 36K:
->>
->>   truncate_inode_pages_range()
->>     truncate_inode_partial_folio()        # same_folio == true
->>       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
->>       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
->>       2nd split of folio2 -> [p8-p11, p12-p15]   # success
->>       end = p9                           # BUG: p9 inside [p8-p11]
->>     loop truncates ... p8-p11           # p9-p11's valid tail is lost
->>
->> Rework the contract so the caller is told the page range to discard:
->>
->>   - Return true only when a split occurred, false otherwise. This
->>     clarifies the existing confusing return value semantics.
->>
->>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
->>     range fully covered by [lstart, lend] after any split (or none),
->>     i.e. the pages wholly within the range and safe to discard. They are
->>     aligned up (pstart) and down (pend) to the mapping's minimum folio
->>     order so they always fall on a folio boundary.
->>
->>   - Rename the byte-range parameters start/end to lstart/lend to avoid
->>     clashing with the new outputs and to separate byte offsets from
->>     folio indices.
->>
->> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
->> &pstart for the folio at the start edge and &pend for the folio at the
->> end edge, so the truncate loop drops exactly the fully covered pages and
->> never touches a straddling folio that still holds valid out-of-range
->> data.
->>
->> Suggested-by: Brian Foster <bfoster@redhat.com>
->> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
->> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
->> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
->> ---
->> v1->v2:
->>  - Export pstart as a new parameter so that the generic and shmem
->>    truncate paths don't need to recompute the start value from the
->>    return value. (Brian)
->>  - When min_order is nonzero, align [pstart, pend] to the inner
->>    boundaries of the folio to ensure they do not point into the middle
->>    of a large folio, which could otherwise cause valid data within the
->>    folio to be incorrectly cleared. (Joanne)
->>
->> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
->>
-> 
-> Hi Zhang,
-> 
-> Thanks for the tweaks. I still found some of the logic circuitous as I
-> read through it so I spent some time playing with this just to
-> experiment with cleaning it up a bit. I ended up removing a couple of
-> the labels, lifting the pstart/pend assignment to a default init/case,
-> and reshuffling the split case pstart/pend assignments in a way that I
-> think also elides the need for the boolean or using folio2. (I'm curious
-> if this happens to address the Sashiko feedback as well..?)
-> 
-> Note that this is completely untested and needs further review. Since
-> the current patch looked mostly Ok to me functionally (though I do agree
-> with the comment about possibly splitting up into smaller changes) and
-> has other reviews, I'm just posting this as an FYI. Here's a diff of the
-> changes I made on top of this patch (Assisted-by: LLM, fwiw). Feel free
-> to use some, all or none of it. Thanks!
-> 
-> Brian
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+branch HEAD: 07ae2801241e1324e6ad2cc0102ad125d36712a9  Merge patch series "memblock tests: cover low-address allocations"
 
-Hi Brian,
+elapsed time: 1168m
 
-Thanks a lot for spending time on this, and for posting the diff. I
-agree with most of it.
+configs tested: 187
+configs skipped: 2
 
-Lifting the default pstart/pend assignment to the top and turning the
-early exits into plain returns removed the need for the no_split: /
-split: labels and the tail_isolated boolean, which does make the
-function easier to follow.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-One thing I was wondering about: in your diff, when setting pend while
-trying to split folio2, you completely dropped the use of folio2->index.
-With folio2->index gone, an unaligned end means any failed split falls
-back to folio->index. I assume that is mainly because its value is not
-reliable under concurrency, which is exactly what sashiko pointed out.
-However, it does mean we lose a bit of precision though, I mean the
-sub-folios that were successfully split off at the pstart edge end up
-left behind in the page cache. Please see a small example below.
+tested configs:
+alpha                             allnoconfig    gcc-16.1.0
+alpha                            allyesconfig    gcc-16.1.0
+alpha                               defconfig    gcc-16.1.0
+arc                              allmodconfig    clang-24
+arc                               allnoconfig    gcc-16.1.0
+arc                              allyesconfig    clang-24
+arc                                 defconfig    gcc-16.1.0
+arc                   randconfig-001-20260911    clang-24
+arc                   randconfig-002-20260911    clang-24
+arm                               allnoconfig    clang-17
+arm                               allnoconfig    gcc-16.1.0
+arm                              allyesconfig    clang-24
+arm                       aspeed_g5_defconfig    clang-20
+arm                         assabet_defconfig    clang-20
+arm                                 defconfig    gcc-16.1.0
+arm                          exynos_defconfig    clang-20
+arm                   randconfig-001-20260911    clang-24
+arm                   randconfig-002-20260911    clang-24
+arm                   randconfig-003-20260911    clang-24
+arm                   randconfig-004-20260911    clang-24
+arm                           sama5_defconfig    gcc-16.1.0
+arm64                            allmodconfig    clang-24
+arm64                             allnoconfig    gcc-16.1.0
+arm64                               defconfig    gcc-16.1.0
+arm64                 randconfig-001-20260911    gcc-16.1.0
+arm64                 randconfig-002-20260911    gcc-16.1.0
+arm64                 randconfig-003-20260911    gcc-16.1.0
+arm64                 randconfig-004-20260911    gcc-16.1.0
+csky                             allmodconfig    gcc-16.1.0
+csky                              allnoconfig    gcc-16.1.0
+csky                                defconfig    gcc-16.1.0
+csky                  randconfig-001-20260911    gcc-16.1.0
+csky                  randconfig-002-20260911    gcc-16.1.0
+hexagon                          allmodconfig    gcc-16.1.0
+hexagon                           allnoconfig    clang-24
+hexagon                           allnoconfig    gcc-16.1.0
+hexagon                             defconfig    gcc-16.1.0
+hexagon               randconfig-001-20260911    gcc-12.5.0
+hexagon               randconfig-002-20260911    gcc-12.5.0
+i386                             allmodconfig    clang-22
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-16.1.0
+i386                             allyesconfig    clang-22
+i386        buildonly-randconfig-001-20260911    clang-22
+i386        buildonly-randconfig-002-20260911    clang-22
+i386        buildonly-randconfig-003-20260911    clang-22
+i386        buildonly-randconfig-004-20260911    clang-22
+i386        buildonly-randconfig-005-20260911    clang-22
+i386        buildonly-randconfig-006-20260911    clang-22
+i386                                defconfig    gcc-16.1.0
+i386                  randconfig-001-20260911    clang-22
+i386                  randconfig-002-20260911    clang-22
+i386                  randconfig-003-20260911    clang-22
+i386                  randconfig-004-20260911    clang-22
+i386                  randconfig-005-20260911    clang-22
+i386                  randconfig-006-20260911    clang-22
+i386                  randconfig-007-20260911    clang-22
+i386                  randconfig-011-20260911    clang-22
+i386                  randconfig-012-20260911    clang-22
+i386                  randconfig-013-20260911    clang-22
+i386                  randconfig-014-20260911    clang-22
+i386                  randconfig-015-20260911    clang-22
+i386                  randconfig-016-20260911    clang-22
+i386                  randconfig-017-20260911    clang-22
+loongarch                        allmodconfig    clang-24
+loongarch                         allnoconfig    clang-20
+loongarch                         allnoconfig    gcc-16.1.0
+loongarch                           defconfig    clang-24
+loongarch             randconfig-001-20260911    gcc-12.5.0
+loongarch             randconfig-002-20260911    gcc-12.5.0
+m68k                             allmodconfig    gcc-16.1.0
+m68k                              allnoconfig    gcc-16.1.0
+m68k                             allyesconfig    clang-24
+m68k                                defconfig    clang-24
+m68k                       m5249evb_defconfig    gcc-16.1.0
+m68k                       m5275evb_defconfig    gcc-16.1.0
+microblaze                        allnoconfig    gcc-16.1.0
+microblaze                       allyesconfig    gcc-16.1.0
+microblaze                          defconfig    clang-24
+mips                             allmodconfig    gcc-16.1.0
+mips                              allnoconfig    gcc-16.1.0
+mips                             allyesconfig    gcc-16.1.0
+mips                        vocore2_defconfig    clang-20
+nios2                            allmodconfig    clang-20
+nios2                             allnoconfig    clang-24
+nios2                               defconfig    clang-24
+nios2                 randconfig-001-20260911    gcc-12.5.0
+nios2                 randconfig-002-20260911    gcc-12.5.0
+openrisc                         allmodconfig    clang-20
+openrisc                          allnoconfig    clang-24
+openrisc                            defconfig    gcc-16.1.0
+parisc                           alldefconfig    clang-20
+parisc                           allmodconfig    gcc-16.1.0
+parisc                            allnoconfig    clang-24
+parisc                           allyesconfig    clang-17
+parisc                              defconfig    gcc-16.1.0
+parisc                randconfig-001-20260911    gcc-8.5.0
+parisc                randconfig-002-20260911    gcc-8.5.0
+parisc64                            defconfig    clang-24
+powerpc                          allmodconfig    gcc-16.1.0
+powerpc                           allnoconfig    clang-24
+powerpc                 mpc836x_rdk_defconfig    clang-20
+powerpc               randconfig-001-20260911    gcc-8.5.0
+powerpc               randconfig-002-20260911    gcc-8.5.0
+powerpc64             randconfig-001-20260911    gcc-8.5.0
+powerpc64             randconfig-002-20260911    gcc-8.5.0
+riscv                            allmodconfig    clang-24
+riscv                             allnoconfig    clang-24
+riscv                            allyesconfig    clang-24
+riscv                               defconfig    gcc-16.1.0
+riscv                    nommu_k210_defconfig    gcc-16.1.0
+riscv                 randconfig-001-20260911    gcc-16.1.0
+riscv                 randconfig-002-20260911    gcc-16.1.0
+s390                             allmodconfig    clang-17
+s390                              allnoconfig    clang-24
+s390                             allyesconfig    gcc-16.1.0
+s390                                defconfig    gcc-16.1.0
+s390                  randconfig-001-20260911    gcc-16.1.0
+s390                  randconfig-002-20260911    gcc-16.1.0
+sh                               allmodconfig    gcc-16.1.0
+sh                                allnoconfig    clang-24
+sh                               allyesconfig    clang-17
+sh                        apsh4ad0a_defconfig    gcc-16.1.0
+sh                                  defconfig    gcc-14
+sh                    randconfig-001-20260911    gcc-16.1.0
+sh                    randconfig-002-20260911    gcc-16.1.0
+sh                           se7619_defconfig    gcc-16.1.0
+sh                   sh7770_generic_defconfig    gcc-16.1.0
+sh                            shmin_defconfig    clang-20
+sh                          urquell_defconfig    clang-20
+sparc                             allnoconfig    clang-24
+sparc                               defconfig    gcc-16.1.0
+sparc                 randconfig-001-20260911    gcc-13.4.0
+sparc                 randconfig-002-20260911    gcc-13.4.0
+sparc64                          allmodconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260911    gcc-13.4.0
+sparc64               randconfig-002-20260911    gcc-13.4.0
+um                               allmodconfig    clang-17
+um                                allnoconfig    clang-24
+um                               allyesconfig    gcc-16.1.0
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260911    gcc-13.4.0
+um                    randconfig-002-20260911    gcc-13.4.0
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-22
+x86_64                            allnoconfig    clang-24
+x86_64                           allyesconfig    clang-22
+x86_64      buildonly-randconfig-001-20260911    gcc-14
+x86_64      buildonly-randconfig-002-20260911    gcc-14
+x86_64      buildonly-randconfig-003-20260911    gcc-14
+x86_64      buildonly-randconfig-004-20260911    gcc-14
+x86_64      buildonly-randconfig-005-20260911    gcc-14
+x86_64      buildonly-randconfig-006-20260911    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-22
+x86_64                randconfig-001-20260911    clang-22
+x86_64                randconfig-002-20260911    clang-22
+x86_64                randconfig-003-20260911    clang-22
+x86_64                randconfig-004-20260911    clang-22
+x86_64                randconfig-005-20260911    clang-22
+x86_64                randconfig-006-20260911    clang-22
+x86_64                randconfig-011-20260911    gcc-14
+x86_64                randconfig-012-20260911    gcc-14
+x86_64                randconfig-013-20260911    gcc-14
+x86_64                randconfig-014-20260911    gcc-14
+x86_64                randconfig-015-20260911    gcc-14
+x86_64                randconfig-016-20260911    gcc-14
+x86_64                randconfig-071-20260911    gcc-14
+x86_64                randconfig-072-20260911    gcc-14
+x86_64                randconfig-073-20260911    gcc-14
+x86_64                randconfig-074-20260911    gcc-14
+x86_64                randconfig-075-20260911    gcc-14
+x86_64                randconfig-076-20260911    gcc-14
+x86_64                               rhel-9.4    clang-22
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-22
+x86_64                    rhel-9.4-kselftests    clang-22
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-22
+xtensa                            allnoconfig    clang-24
+xtensa                           allyesconfig    clang-20
+xtensa                generic_kc705_defconfig    gcc-16.1.0
+xtensa                randconfig-001-20260911    gcc-13.4.0
+xtensa                randconfig-002-20260911    gcc-13.4.0
 
-> 
-> --- 8< ---
-> 
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index d88a1b159084..8da16d7e6763 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -237,10 +237,16 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->  	else
->  		length = lend + 1 - pos - offset;
->  
-> +	if (pstart)
-> +		*pstart = offset ? folio_next_index(folio) : folio->index;
-> +	if (pend)
-> +		*pend = (pos + size > (u64)lend) ? folio->index :
-> +						   folio_next_index(folio);
-> +
->  	folio_wait_writeback(folio);
->  	if (length == size) {
->  		truncate_inode_folio(folio->mapping, folio);
-> -		goto no_split;
-> +		return false;
->  	}
->  
->  	/*
-> @@ -254,7 +260,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->  	if (folio_needs_release(folio))
->  		folio_invalidate(folio, offset, length);
->  	if (!folio_test_large(folio))
-> -		goto no_split;
-> +		return false;
->  
->  	min_order = mapping_min_folio_order(folio->mapping);
->  	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
-> @@ -266,29 +272,30 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->  		 * for shmem truncate
->  		 */
->  		struct folio *folio2;
-> -		bool tail_isolated = true;
->  
-> -		if (pend)
-> -			*pend = round_down(pos + offset + length,
-> +		if (pstart)
-> +			*pstart = round_up(pos + offset,
->  					   min_nrbytes) >> PAGE_SHIFT;
->  
-> -		if (offset + length == size)
-> -			goto split;
-> +		if (offset + length == size) {
-> +			if (pend)
-> +				*pend = round_down(pos + offset + length,
-> +						   min_nrbytes) >> PAGE_SHIFT;
-> +			return true;
-> +		}
->  retry:
->  		split_at2 = folio_page(folio,
->  				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
->  		folio2 = page_folio(split_at2);
->  
->  		if (!folio_try_get(folio2))
-> -			goto split;
-> +			return true;
->  
->  		if (!folio_test_large(folio2))
->  			goto out;
->  
-> -		if (!folio_trylock(folio2)) {
-> -			tail_isolated = false;
-> +		if (!folio_trylock(folio2))
->  			goto out;
-> -		}
->  
->  		/*
->  		 * split_at2 may no longer belong to folio2 due to concurrent
-> @@ -304,28 +311,18 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->  		/* make sure folio2 is large and does not change its mapping */
->  		if (folio_test_large(folio2) &&
->  		    folio2->mapping == folio->mapping &&
-> -		    folio_split_or_unmap(folio2, split_at2, min_order))
-> -			tail_isolated = false;
-> +		    !folio_split_or_unmap(folio2, split_at2, min_order) &&
-> +		    pend)
-> +			*pend = round_down(pos + offset + length,
-> +					   min_nrbytes) >> PAGE_SHIFT;
-
-[...]
-
-Assume a 4-page order-2 folio [p0 p1 p2 p3], punched from offset 0 into
-the middle of p3, with min_order == 0.:
-
-   [p0 p1 p2 p3]  --1st split @p0-->  [p0] [p1] [p2-p3]
-   folio now points to [p0]
-   folio2 = [p2-p3]            # p2 zeroed, p3 tail valid
-   2nd split of [p2-p3] fails  # folio_split_or_unmap() returns failure.
-		
-As a result, both pstart and pend are p0, so the sub-folios p0 and p1
-are left behind.
-
-I agree that under concurrency we really can't get a valid end position
-since folio2 is not trustworthy(e,g., failed to get the folio2 or failed
-to lock the folio2...). But once we have successfully got a reference to
-and locked folio2, its index should be valid. So I've ended up with
-something like the below (This hasn't been tested yet, just wanted to see
-everyone's opinions), let me know what you and the other reviewers think.
-
-
-diff --git a/mm/truncate.c b/mm/truncate.c
-index d88a1b159084..b551e8253de7 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -237,10 +237,16 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
- 	else
- 		length = lend + 1 - pos - offset;
-
-+	if (pstart)
-+		*pstart = offset ? folio_next_index(folio) : folio->index;
-+	if (pend)
-+		*pend = (pos + size > (u64)lend) ? folio->index :
-+						   folio_next_index(folio);
-+
- 	folio_wait_writeback(folio);
- 	if (length == size) {
- 		truncate_inode_folio(folio->mapping, folio);
--		goto no_split;
-+		return false;
- 	}
-
- 	/*
-@@ -254,7 +260,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
- 	if (folio_needs_release(folio))
- 		folio_invalidate(folio, offset, length);
- 	if (!folio_test_large(folio))
--		goto no_split;
-+		return false;
-
- 	min_order = mapping_min_folio_order(folio->mapping);
- 	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
-@@ -266,66 +272,65 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
- 		 * for shmem truncate
- 		 */
- 		struct folio *folio2;
--		bool tail_isolated = true;
-+		pgoff_t end, aligned_end = round_down(pos + offset + length,
-+						min_nrbytes) >> PAGE_SHIFT;
-
--		if (pend)
--			*pend = round_down(pos + offset + length,
-+		if (pstart)
-+			*pstart = round_up(pos + offset,
- 					   min_nrbytes) >> PAGE_SHIFT;
-
--		if (offset + length == size)
--			goto split;
--retry:
-+		if (offset + length == size) {
-+			end = aligned_end;
-+			goto out;
-+		}
-+
- 		split_at2 = folio_page(folio,
- 				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
- 		folio2 = page_folio(split_at2);
-
--		if (!folio_try_get(folio2))
--			goto split;
--
--		if (!folio_test_large(folio2))
--			goto out;
--
--		if (!folio_trylock(folio2)) {
--			tail_isolated = false;
--			goto out;
--		}
--
- 		/*
--		 * split_at2 may no longer belong to folio2 due to concurrent
--		 * split. Retry to find the correct folio in case it's still
--		 * large.
-+		 * folio2 may become stale due to a concurrent split or
-+		 * freeing, so validate it before and after taking its lock.
-+		 * If it fails, we can't get an accurate end position and fall
-+		 * back to folio->index, which may leave sub-folios split off
-+		 * at the offset edge in the page cache this round.
- 		 */
-+		end = folio->index;
-+		if (!folio_try_get(folio2))
-+			goto out;
-+		if (folio2->mapping != folio->mapping ||
-+		    !folio_test_large(folio2))
-+			goto out_put;
-+
-+		if (!folio_trylock(folio2))
-+			goto out_put;
-+
- 		if (page_folio(split_at2) != folio2) {
- 			folio_unlock(folio2);
--			folio_put(folio2);
--			goto retry;
-+			goto out_put;
-+		}
-+		if (!folio_test_large(folio2)) {
-+			end = aligned_end;
-+			folio_unlock(folio2);
-+			goto out_put;
- 		}
-
--		/* make sure folio2 is large and does not change its mapping */
--		if (folio_test_large(folio2) &&
--		    folio2->mapping == folio->mapping &&
--		    folio_split_or_unmap(folio2, split_at2, min_order))
--			tail_isolated = false;
-+		/* Split failed: back off to the head of the straddler */
-+		if (folio_split_or_unmap(folio2, split_at2, min_order))
-+			end = folio2->index;
-+		else
-+			end = aligned_end;
-
- 		folio_unlock(folio2);
--out:
--		if (!tail_isolated && pend)
--			*pend = folio2->index;
-+out_put:
- 		folio_put(folio2);
--split:
--		if (pstart)
--			*pstart = round_up(pos + offset,
--					   min_nrbytes) >> PAGE_SHIFT;
-+out:
-+		if (pend)
-+			*pend = end;
- 		return true;
- 	}
- 	if (!folio_test_dirty(folio))
- 		truncate_inode_folio(folio->mapping, folio);
--no_split:
--	if (pstart)
--		*pstart = offset ? folio_next_index(folio) : folio->index;
--	if (pend)
--		*pend = (pos + size > (u64)lend) ? folio->index :
--						   folio_next_index(folio);
- 	return false;
- }
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
