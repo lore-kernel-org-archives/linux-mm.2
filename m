@@ -4,135 +4,240 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 474D6C88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 10:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 379D0C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 323136B008C; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
+	id 2C7C86B008A; Fri, 11 Sep 2026 07:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D4856B0092; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
+	id 252D36B008C; Fri, 11 Sep 2026 07:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EA4A6B0093; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
+	id 0CEC26B0092; Fri, 11 Sep 2026 07:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ECDD36B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:52:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6973A01C9
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:52:48 +0000 (UTC)
-X-FDA: 85201168416.15.935FE79
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EF0471C0005
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:52:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TMai2M/J";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D67056B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:06:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28B0F1A01D7
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:06:03 +0000 (UTC)
+X-FDA: 85201201806.17.0A028D7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BCE112000D
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:06:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mwIigjyH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=b+7SUHz3;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M6mKBOHb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Bkf9+hFx;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf03.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mwIigjyH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=b+7SUHz3;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M6mKBOHb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Bkf9+hFx;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf03.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789124761;
+	b=cj0jyO6RGz1Ug2rU8o3N1c8X5Q05JuFK1X7ctW1Z+s+6SKw1nInL5DCTY3Ky36uh3HbZOP
+	u4Exl9BG/gCqEltptaBCBlGpRD9sICMDZQEoAk1Ho9OurAPLjkny4N4/mIkUAMYffQI/Jm
+	g4pc5a2tNMVa6KWu78zKAd/alnOXuIk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789123967;
+	s=arc-20220608; t=1789124761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0wLJyzoS+rujzOY6JY3rDS0t6N6NQfza06M9gcgofo=;
-	b=TrdFLKIQNB27gsctbkF8+NrxnduadzjpH7FraSojoYB0g9guFkTTnZp13bxKuOp0I8E5Nn
-	Qjsa0wbs4zztoQfouNUc9U0fbvfBSqYzmVy3o7tEfMYo71GY3cPvfpwDSAVhTDi9cf+uAC
-	SC1+7yAXMv6nDdcurhz9ZrH3/p4fM4Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789123967;
-	b=u0opqPCd4ZJWSaEKxXdcXWtff6WIj7B48a4V+bQnJmCsTigBDEgOnOC8DMWIq3u/whsezp
-	E/7k9hgw5xTxXucpkrAqlv80P7XG486pPLlcIdshqBNkqLyiNDUYhlteLCl7okQYQhhhbl
-	5+26S1HPwN9sxKIRcvcAV9i/SIxVM9M=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TMai2M/J";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1562414E3;
-	Fri, 11 Sep 2026 10:52:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553D91F000FF;
-	Fri, 11 Sep 2026 10:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789123965;
-	bh=X0wLJyzoS+rujzOY6JY3rDS0t6N6NQfza06M9gcgofo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TMai2M/JzHX97Uof3kYcZNAXQxel+xYoWDt/nsWStU1GsLYFl6mRdPH2B6r1ujc4J
-	 eFHtj7ktF0FM3oVUDCjjkGnA2ySaseAaONIGzvxd8fKMQKtM0uLlnnpL4Bh3EU+O9q
-	 lA0G9iakdBgTAzB4VMlc7MW4xd8FPUO9HSKG6wkooCyjJI32HmMV12LlKT6kGdEFE/
-	 iHnV2fjW2JqnLRLDsMD5vdgP9nuUK3QbYMy5PLFBnOVkxlS8ZeWJ+diTH1ShYdVatl
-	 0y2uZxCb7gT5yQJRJ2TNQjwp0+JwvIQSgnHgKf7eyuhk3z4NW3nqW3E078ejLa2HrQ
-	 y3c+tcRPpLFUA==
-Message-ID: <008dcaa3-2068-46e5-9e58-afb590d90584@kernel.org>
-Date: Fri, 11 Sep 2026 12:52:39 +0200
+	bh=mCvWKSyOXghSRjrUIO25WhTluktNhI1ZIzrUisSCzog=;
+	b=7sc69cR2lyeqMv0FcOTqj6RoxiVHPkBT5FWxnfgXl2YBnvFuWXaQtFWH+FMKzEHGJ7xRNA
+	lcS4OqWJ2FuOeJb7HSoOaf5zt+t7JpgU3RE7SGng3lU7nKXXeOOlNMQvMcOgsM7w+a3IL7
+	H5MzFwexXIq2bfg8qX2pmgkV1VDppaI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E75961F8BB;
+	Fri, 11 Sep 2026 11:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789124755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mCvWKSyOXghSRjrUIO25WhTluktNhI1ZIzrUisSCzog=;
+	b=mwIigjyH85mOyKyDVXiVISSPm5WD3X0MP0365zfajWOkcWSuPmB2ARy/C5YHIzZl3SzDbc
+	mexaobbpaHz9iWGcTvThfd3zMOtaWRmJiSjzZdg8xpZbcyM68ZMswW5SZPVvyxE5Mk7Slc
+	/YYukJn/1TLBc8A1dWlsFiL2rvGZo4E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789124755;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mCvWKSyOXghSRjrUIO25WhTluktNhI1ZIzrUisSCzog=;
+	b=b+7SUHz3bESEaqJoCQKVGmpl3KrUrunJsFD9TELjfIDfQGfJXAJcfCB1Y/yJszE2SdjUyI
+	hA5MPiO3ytWkRLDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789124750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mCvWKSyOXghSRjrUIO25WhTluktNhI1ZIzrUisSCzog=;
+	b=M6mKBOHbiTWHmrq4OaTeygTN+927bG8HXBCzz3Y4jYZpN6W2TIiMwt5mhZdYJylNuC/eiN
+	276E04tyvopmopDYC/DjhTeHmHxTFJuP6nRvia45UtqLQRXbvqIOWCXqMt6H3llZgBfxVy
+	F5cdouDM8VEETMkpv1vrbWcWH10Fe/o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789124750;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mCvWKSyOXghSRjrUIO25WhTluktNhI1ZIzrUisSCzog=;
+	b=Bkf9+hFx/ERl6em/gPGKeoPFenHrChRVNOZRCzaiyvdKpzPFysgsyvTYq0CeN+eOGKeIpz
+	kWOLNVOPOZL3xYAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C59E132D3;
+	Fri, 11 Sep 2026 11:05:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Qc6PFovgo2rzKAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 11 Sep 2026 11:05:47 +0000
+Message-ID: <d8683667-55d5-4d77-9dcb-19e49b3dc3c6@suse.de>
+Date: Fri, 11 Sep 2026 13:05:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/7] proc/task_mmu: remove unnecessary helpers
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
- willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
- xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Usama Arif <usama.arif@linux.dev>
-References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-2-surenb@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 18/39] fbdev: defio: assert FBINFO_VIRTFB, drop VM_IO, add
+ VM_MIXEDMAP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>,
+ Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
+ Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+ Miklos Szeredi <miklos@szeredi.hu>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev
+References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
+ <20260908-b4-mmap-prepare-vma-flag-sanify-v1-18-dacf19cce22b@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260910234737.1340642-2-surenb@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-18-dacf19cce22b@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EF0471C0005
-X-Stat-Signature: ggp8mtjo1i4tj3cqa7sq773dqk3zo6hp
-X-HE-Tag: 1789123966-501970
-X-HE-Meta: U2FsdGVkX19Aloa+8WTfEwD6BdZBdve+SS8mRQWzaY6ryyp33JcfAD0yki1tKlbkQoIaoc84FH3m5pp7qkGqfKItuJxD+u6e5I20IHqXDt0mvnP2KuuEJMmSlbq+Z1GuZNFh4qF+gFElxD4VDQUuH1QXZv2idpyh5kq+sNCermPs1j2/QMx5cQMk58HVF+T/0HhFCpi2tBQIUOx/TKR6FAwu+8nDU3xfs4gZyLrV+Ew4+CC28hK28i4yqDxenOj8iyRZXhwKtvqDX0n7SWBMsm+Ci/gbCSzlnwYEHBnBhUp7Ahf28SEKt0ICiJBIU6TX40YUWXdwerXFi6wtepVdMGxIxqnZxL3J5H3Ybbdmvda6oQk/56SHVnvH+BhzQsx2vxLJqJCJYFte5jKJnE91RhVOtqXc/palTF/vaW70BZ+zNVPkCp4FsScpbRduXxJWhATUtrcUc6/+gFzUckllgIr+9FRJPAGyH7wFoESwN+fMnjOZ8jgJ19zHV5nt4AyahLBZZlyLOAXa3Jk/969bE2fxV9d2qlOJJjR7QjzS6R2eNE++iEruhotUdyXt25tRwkQvXaHIfY9lamArAFPBjDy7qLeXckjqSAh84EIw7wXHqUlqZv2puThSWhjnRhQ4jpwuPRSKZPb9OG/Ch2D5iHzP7rOfXw0o/bmFSJXDEpaMExLOiDt/1v+sOTKxvWaP4KwVrQRRboWWd498FUx4Ur+EVzLuosL7eHe1A58q43mUCplUof7bZW5e4rwtrhaH0Yf12GC4Ue71A+7KZ1A2Ssl3A9F0ceBFDCuFTkOJNua6EpMYSk9Nt0H8EyhYjJxUT1LaFTE6GHJGg88ey+rV2auUVp28IG5L9B0F9s2N10nAB6Oh9m8whPNefd0SA/WpXdKgJb/rEZiBDDbf96uxnKvwLeBTOe5c3H7kVnbPQ0927S4CcwgD75gZVF8GcwG4yAhEY03kSBC917HS/Yd
- FXI1Q6NH
- 4sTb2+GEag8Gw8gYXPdmvWntn1q3+4ph3wfmz9sX8l01z6a8K7gOADOLMnBmvJ9MAlgfyvA1rlkvImwkhLzwatLNpP/N9M8iAWYoscKfQ9F/oXrFDVwjO85gg4Y1hhoVnfXlAvMHPHZxtPLO/+mXM/e7ntRsgm1DayW6KYOpWjx3vLh52IcT5GAyPGrpWBxyfaxsrAfB28urwwH0aPCfXGFnOvrKN+PMiiswB4QL74Cxe7JO+3hEfJU09o+RbGFZwCg22v+bFR5qLo+D1tTuEMfKarnAJgZUtQn/a9ypx3eNAFj8IRLNEUbQQ11JynYdGpSxOudr/zO9fD/0xEjL/UIW4woV6RQG8pncv46MTujwKt7Ge7JILI/NAavdEwzKVgQA4zZuIv3L55/DDFLgD2MSzaKSOXE0GwSzw3TPKhl4DAV79u/OSdoNQ7vGfoloWYLA9qoF/Ils0txRoRpzS28yB8UzDFwppKFJsS7tuhDmwzdg=
+X-Rspamd-Queue-Id: BCE112000D
+X-Stat-Signature: enpeehy96app3doj3sih3uoedfw9p3pp
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789124760-626230
+X-HE-Meta: U2FsdGVkX19/RJHivp7VIJJVUAe1vciwAoPZ+bPESWntxE26Kpw0tcdm+COE0IWnBO0OIKPlKlXO/w/Xvb4c8MTdu9rBpfkPgcgLWmtHPIdAQfnz+u5GsASvHakq4mst227xcMATw3P2jydGDDDHYerhag5Weia8mJECb3ER5uC93+G610Qa8Mx7XtHHgBau8NGmTvsiE0by25nQl+/Enh2e3OFrOTEhecdxB+7FLOh7VPQkw9muHxXrb/fFLk+kiZHdERxY4/LwLPJCZ0NiTwsLOGSRK/ktHzg80UEsCJJSFHoc10xUnhIqSn+C8oBkSnMnvonCiB3Ubt9BQ6mCDU14YN/c1gg/la4ICWzeq0D9hWBiIKB9KUVUquU2W26G2b5BaIAWKY+M10DM1vBSVyLMsRjiUN4+zBvhXtdpkReAR4NXTEuelKjt2TRyR1B9zPpywFgxYTPRgEn9usfuQOyaaVurpS1jpDAzNzJbw7IQ4WDkBAxLSsLVqWfw3+OhA6xbpB0tt0y9LuKbyWAvZJLRQ+WnjTeij+7dUBgANscN21AY1BPPWPwEVf3ebCEJohAgfYKfxyE9pwhXZNQRQLi0jl7krDMQj2RhtIgo9Ky/pgVaidkK8UZ0BtqxRe5l/TQGJ9L8FTd7ewxCaFAQS4r4eYV11tV1ezO3mjNw2dfZHYpo2je6orGPT46uH2zCmSG4MvztoGrqj5wa9ZH5YkOijH7fNDF+hhBXOtN9RievWdTQ4+P1+Kk5Y6MiCqbWvoLMtPE6zVupwiIOCpc+BB8n4ZiTa9hbP7+slqP1o0ZFd6xatW/J+fkRqZ8s44xfojOFiI/X2MCzyClUfzh211KIhNjIrLIKlqyxqUMOQE91RZfOUngfED9WZvMehX0PXCaJol5fGOZ7MYmtNMH4WdVFNXoPQV/WUO7ukIZqkMl5+vJs+N0LEuZQKYoTJQTil4Z54LZ3w7CdpEvZws9
+ jtl74rl5
+ NhdopOrhEpgfvw7ezHJ/YLFgLX7r7qI1yTYCpGpUUzlpZlj8CWTRSByYiVpSZSjpNCPqYGu3ZNme+4qhkx2xGLhjwINGPK5mZM9ySSzcY/knUfHUrEV2G1Pa+UkutoKt5IruvcFTnyvVnP2c3OxTx9yopszrn9FjqQ5t3LR7o/Fw2m2C9aDJvoCCFLOzhdhwusi37kcipQU5Zfk/N3ZER1JWWsaMU6eFKW5+pX9gW16av//fAaSaMu/z3vNl5X/Zn1Ufro6dEkYZk0i5+rGHKsjK9Le2tdVIzCqcxXi7+LhILsEir4h+AbiH6KU50enxJBgoxPQA79svF9DUFoyjQC61UIp0Wpqz0JuafrYBEaTlf0tkTAEl/beqQ7JEvuEsgb7t4lmzqFVLg96e/hV2fNHPnNMsLnBAirZqS+vFQFtJLkQMnJv1OuvacNRNaoH/4PsEeVPlRF0X74mmHA3HKftH0ossxxhMm6kPqLryWbQAp2E7kt+mlnl5P5Wu1sDSmrPrBzrk3VBVMl0g9M7W76FiZzTWIfcORGnMoRgYhL6DaZk4RTer4ynfajWAN8f+qEAWKp1z1/nisX3DlqLBczfDv98UOXzYnEViaW7ibl7JARouLsMRBav7aHuf2Vwb8SIbPKbBkIWmkjVffN1w9KUvmiD1pYUf72p/vg+fPb7my7G7dP0p/T3RcoTB+rpSOs/XvNe7SlLO7J4VzGgSVTa37RToam0vC1h8cqM+CiWtysUv19ekrBvXtbK4vF4PMj0bKIY3vicmeD6a1sk8CUwxLqRICZQlMuZHKOT6xSBU/caV2K9DfYYHfe8H3lN9CijI7MBns+6iUUaRmWV9oRR13oLEsHcvovIl9NnsEWTiV+4R2c7WOBY/LJUHpIiq2Wx37aPsrCwrfDmWM+/R8qsaP1C0KyInTHQm224soCbji/AsKgnROWT0YgGP4tek4NW1lcB4fn9c9rJOcT3KoFkCfCAVT
+ Ce8TfvCB
+ 522tSUWo8+gjxsEZeMfQ6foggF7dyryS8OM3i1DHOUfAyCAku74WJH6Gl2f0BaJ9nB23spHsdYd6vRLscWlvdOGZ7Rp/gQaYB6YMZL8fiZEwAehJEsjyZFycFcQHZDLCaBae0JjGT5LTDuZgEY026KFGEkx+mgdv++7wLjh76qIpBJldfB0pbawNuR9tImxD5LtPoghpQcScqnu2Chh0ZONp5f51AXywdPpGV8lBC6tRD5akJIQIJ531N/9K49yyMtCxTKuNFXYI3UUkE4DQdDjhtqa5BHxHvMQfugP4E3wZG1QdVL9xnmDMRYeUq72+hhnJzppJ9lCSGYnFYE1/WiMlOe3rCBlw1HHHCEjt2UXqWqET7kBpjQN2op9c2NOc6Y5H98mQGOuRhLfDqS5IsYbuZwa+BsuVI2mj+yteQ+4zGIJo+XGsRCA+0sfuiu7gZJGRvwwR0DsN0Th5BcI79pJT6hXrEmHpaKpyA+aT9qBVciZMrb8Tz9TWpe835IjxQZ8yPqziGOj/Bh3FNKJSaERl0e95iShTxxsmhUM7rmgL3q6mCq4hh6SaWBrYd7v4Oxs6iD2JVzUAHfVsAFsuEYDZLT5lVxBqpFOma7jVCXbFVQRNwEuhabBrA31YNuvd8GyCGzRE2U/huFHTb+aXe/T9kHCm6Esx4FfTreIXJH28bLkBhz2h7m/9RFfj88ABWQt4fJIlXl/SskuIFr9PwRVgdvZyYQJyh9Ss8rBWm4K60+vtkb0OK+3KAPZGiQT4LpxEsRsz3VcCphISQM2FXMZYndD8c5YkITtp+rHBqnXHRtyxRRN8z2ogb0uUc4L6iC/cw0R6P13jqL34ULgpeWu6OUr+36+Fi4NUIl3EKYYAST6rK0xUM36WSytqR+rfyl59oXZx4t29dpLYhdgrzlKAfs6w/hJpiDPsIud3rUTTWOa07LqvoENGSWzxH4MGJ4qMwptzVBpmnBUNIH8ObTZB1GdPj
+ zVt0EBV4
+ IVPPONoyC0fgT9mClJC0oCQozsAByLqSxFVMrGUf8Tdsm43fWnZA6J4Dt+S2pxZfSrgBAm3DZbjHtAbGAnMnQuW0IEQbQnuBMQDJMei6K4L+b0w1OhqJ8R7nYjTiMaoMT7SpMru/JebFg88A7VIt+xTouSyEnCM+R/UNK/64xsypBRxz6S4bxQhYZfZQEvp52m+ufLUZIhhbGQi2WIiwPcQ04qs7Ibb9yH/XoLdOL7O8GIeXPQGpcOEHyo0oz56JuWN+l+RmH3t5fMChaFlrrY3DQIbaZaYkfyEohCyLh6L00dhLNvNHljkBHOLKTwWoV3uUPEdsJYKEA7kSTROwtSTWEAhsf7GJN72kNS5bFmnXfDVfTXnt4MbFfLGPBMwQ4z3zWRDbUtRZSfxMyYk95yWyCvBM9fCBngtqjKTNbDKWGy2vAit2LLoZdowrC28BZJ6sA8kzS7yuMm0zBQCTp9L8ZHoi89CrPX2OeBPIqMy0kreU2ZGJg9eqgQChPYJO/14QCDFY6revG6Ca57A1cC7m1r/n9WcltTKiBrSj5REuE2+2FFTGXX0UBOpZC87lF5cy3jeTBJNmJ7glp8zmvxieqi+VczpKGAtqNEIYWSVQEdTw1lPNOZVGfgF0fmx0Co7bSljM9c6JuKltSxUaP3RdnTYjMDpb5p6KRjHnzU17t/bj5QrYZNwO5sIXHoVBsFeeD4luxzyXonofrf1O5yz+LM/hv/WINB2o7mnadqSjrx4K1xon1fm9c9XhCL0SXcXTuxXU4WbfCF+n/tehgH6tIKF11KEztONMEp1Zu7YZknC8ok/XjK/1ZabfwPZxIogFmPhktPtnEDaJt6Nhp0yk2xaL0gYdGAxBxWHOlFbFwsdyJ5JYIzQY646dEl+ziUyGQ3zsWQFewGJLc9L1lEvYimvRQpY88KJLiu9qaC3UzcIXA5HqcB8wx+CD+4j79oTa98Coiuti/VYCbnCLVPCgzaKcB
+ 4i5teR9l
+ jHSjBiHv1qqj7QjhnTIecbUDBbLg7uKN5catiUtzpfXFzUDz66Do8ZrrJQw5+VD6AeWBBb2ojuBLckV+gnpE6AYOlTQSF62StjgAGb1gj4/CCIDaxq6VT6zgHo2r/8sFEigj6uJIh4iz3tGhkD2Yx42JI0J9ANPo9PvJZ2h850JHxK6qzdSiRvTfDIUv9s72av0vsQMUzC/ByLSj0M0MupgN6+WIBYWp75ppqH39wG47jVvSPrce8eNe2DI+nC55XUYE99YSqAV4ovigodxBeaORm9J8M6wJ7SHdAttZCRU0jFgvXReffY/LDz59Oxg1a5N2IehIZC9/ZtGAfnoblxmyyl8rvR7GAKjUBWOvPHgM/mNl0nT8mPy1FlCAQ2xGc6TNxwHIJW9cZnO4BpYLeBRfKBBlIqhGPdMbnk8/AYIkdlQt/vayICm/fs83qhXMmAa0rGdW+2d1fL5waZl43jA5LD7LdG+RJSKgp3CeCKXfbB1axb7nJX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,27 +245,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 01:47, Suren Baghdasaryan wrote:
-> When per-vma locks were behind a config option, a number of helper
-> functions were needed to simplify the locking code. Now that these
-> locks are universally available, we can do a little cleanup.
-> Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
-> query_vma_teardown() helpers.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
 
-I think you CCed me only on this mail correctly (the other ones went to my old
-RH address, I thought that one would bounce)
+
+Am 08.09.26 um 22:01 schrieb Lorenzo Stoakes (ARM):
+> Currently all drivers which use defio allocate system memory. All of them
+> also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocates
+> system RAM, so simply failed to set this flag when it ought to.
+>
+> This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_IO
+> in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
+> erroring out with a kernel warning if not.
+>
+> The logic requires a page from the driver and since commit 1ecbc7dd2902
+> ("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
+> always required it to be refcounted, so this was implicitly already the
+> case.
+>
+> Finally this patch sets VM_MIXEDMAP, as the logic is mapping
+> kernel-allocated memory so this is appropriate.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+> ---
+>   drivers/video/fbdev/core/fb_defio.c | 6 +++---
+>   drivers/video/fbdev/ssd1307fb.c     | 2 ++
+>   2 files changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+> index fd00b86e1ae6..fb359ecc3966 100644
+> --- a/drivers/video/fbdev/core/fb_defio.c
+> +++ b/drivers/video/fbdev/core/fb_defio.c
+> @@ -366,13 +366,13 @@ int fb_deferred_io_mmap(struct fb_info *info, struct vm_area_struct *vma)
+>   {
+>   	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+>   
+> +	if (WARN_ON_ONCE(!(info->flags & FBINFO_VIRTFB)))
+> +		return -EINVAL;
+>   	if (!try_module_get(THIS_MODULE))
+>   		return -EINVAL;
+>   
+>   	vma->vm_ops = &fb_deferred_io_vm_ops;
+> -	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+> -	if (!(info->flags & FBINFO_VIRTFB))
+> -		vm_flags_set(vma, VM_IO);
+> +	vm_flags_set(vma, VM_MIXEDMAP | VM_DONTEXPAND | VM_DONTDUMP);
+>   	vma->vm_private_data = info->fbdefio_state;
+>   
+>   	fb_deferred_io_state_get(info->fbdefio_state); /* released in vma->vm_ops->close() */
+> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+> index c4fdecafd856..958514a35433 100644
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -763,6 +763,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>   	info->fix.smem_start = __pa(vmem);
+>   	info->fix.smem_len = vmem_size;
+>   
+> +	info->flags = FBINFO_VIRTFB;
+> +
+>   	fb_deferred_io_init(info);
+>   
+>   	i2c_set_clientdata(client, info);
+>
 
 -- 
-Cheers,
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
 
-David
+
 
