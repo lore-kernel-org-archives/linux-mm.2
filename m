@@ -4,120 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31DE2C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24167C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B9246B0092; Fri, 11 Sep 2026 11:52:53 -0400 (EDT)
+	id 29C446B0095; Fri, 11 Sep 2026 11:56:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 469CD6B0093; Fri, 11 Sep 2026 11:52:53 -0400 (EDT)
+	id 24D496B0099; Fri, 11 Sep 2026 11:56:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 381366B0095; Fri, 11 Sep 2026 11:52:53 -0400 (EDT)
+	id 114996B009B; Fri, 11 Sep 2026 11:56:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 178366B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:52:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E22F1C1CF1
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:52:52 +0000 (UTC)
-X-FDA: 85201924584.17.C50D644
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 66D46160010
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:52:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gTvS2L/j";
-	spf=pass (imf08.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D96AF6B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:56:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A4D5C02D5
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:56:08 +0000 (UTC)
+X-FDA: 85201932816.06.45EBCFA
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 57D10180004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:56:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="n E2xLN2";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=mqYPiZ1C;
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789141970;
+	s=arc-20220608; t=1789142166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LNQ5H8myUqx1tWJQeg5MIIwa9og+am+x86iyfUFxIuw=;
-	b=VQcMs1A7bsemF0hII0CribpRu+/lK6+GuYcXvW7om9gJkI+thhFfYwtPp3DZWoejlJ2nUe
-	YnP0qZ1IrjZguixm4u1Geq2B+M4VhJt91mDzLaWG1IOqo1hgahG4u5st2YIKXOp90peS9I
-	dSAwrj4XNbb2qM0wo2npw1aFjB0oh9Q=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CpkRjukhNmD2VLcP+kNjnb/Y+O1Luo3t+QTwhUwDhVA=;
+	b=pR1pT2d5ezEuggInjPGh+B0r395yrnR6//53JpQqM0TQeQ6ULwpLzBPO5dyzXgoCKrXFEv
+	sBdGiMY+8t8Ilhtw6LRS371nS+TUZstlbwnQBj96awXjKCqS9xSH4VwGB1XxPu3kW+8E2K
+	6Y080LKgE5yt6G/gYA5XSyCJ6uZsYJU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789141970;
-	b=29T70P9Bub0/oOG6AorQ4p6oXMYvb+mHxR7LWC4y28P6mopGjHRyw9K2TIXR3yxDRJMsBA
-	/1s2hvHchQ33DW6ZTpclFj85kUpUvvV2dVqcdmMQxjie0XCJ82NixURpsuVg1TOm5KDLIS
-	xjOY1F5S15YWdxrzwFdGPG8Kq6CrIig=
+	t=1789142166;
+	b=TyOfV+B0+m8I7vsF346zSI3WeZJb5ikhVgho/iYSYq3FWS7l+TBl5XRDbOC/hPE3fYqo+L
+	OrU/I8lKBjhoh+n5Zzw/ieQlzuBXIi60QA5jErmMrG+vSwijodIXkRLijVMuBgxGOJSUyV
+	TNAbjFETCktFK6x/YrmkFhbcsNR16ko=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gTvS2L/j";
-	spf=pass (imf08.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2dcff8f44f2so14650635ad.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789141969; x=1789746769; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LNQ5H8myUqx1tWJQeg5MIIwa9og+am+x86iyfUFxIuw=;
-        b=gTvS2L/j/F1WL+KqB2ZUuhfCO+49cgS+TaAKim0C7z+JYp5ZYAMjCt3/PALe3EeHNN
-         w/qKSJvG+uYfmeMplEHYl2d7ImheDLISoU/uGWJkmukTCJFlqy88RcV8BZVqOJqlNPRR
-         eWirtLveKoqtYiiMGzYnkeRsNRzdmnW7YIlNhOOQE9nxQy/8+KwFnY+7sW53gCcZmf3c
-         +O/1maaqrMt9RdajmQoedrbtJNl9MiaW7qKkfKmk6tIK26JwURO8VuUR6DKGtd09Jyle
-         WDd7YUvUevGW/YfLo8iK4xXGPKAaXTVcnFKY4MUhiiBvYHdxYyG05Vk8GXaqlxKslgqR
-         hwvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789141969; x=1789746769;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LNQ5H8myUqx1tWJQeg5MIIwa9og+am+x86iyfUFxIuw=;
-        b=Dri2+LwAJqfh2FbfNorsiyZlgRW4Hepo9kYfhDzoTwuj2TPpwMo3CV/QvD+pQh1RR1
-         wSa0j/0o2RgU+x7xNSwplB/Uf4dEiDstqq+Ehybrm6GVlWbH6LIW4Yno6ATQbVmP3hwI
-         j1nmN4vfxCLx2ZUkPXVJsbGO7cvRMZBo6NqZQsZEEdTWFtLpudPob0SVfFzE0+GnB4/5
-         RlkyLKHECgC51qNC3eQ4xfIo+Bsvb9TNUoxdzVs8yGmzBJBYskDFPT61LKnJ9asS9OkB
-         vBjlKRwvk6+11CYVb6J1U4YkciJVt3StNuFaQaFaQy2VCVFg02sfVPMEuDGE47fdAbHj
-         PheQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxUym849due/YZWQDOyHDhPBMcqL/ed/40nC2oH3216RBHwMMKnwCmue7sfUkFxpRyV9d+NMQ52gg==@kvack.org
-X-Gm-Message-State: AFuF++k1ngK7BUKHx8Bl95UFaA7QNOjVl7ijaRIsjV5To9KH0wpq/edK
-	q618QKCkSaVp0jIsr7G8lRelj1/gpu1wdRk7rQTZPWVxI04B6HwIXtn/
-X-Gm-Gg: AYBFou2B6UUfPZLKzKplyz9EfkC+z3vag13LYDgmxl0v1FshUNgrYEgj63YVS9Lw6e2
-	FSFY2KC7tiuajscs8bU2hJ3USgseRSM6daCt+ITL8R+fK33BW/L/Von+hgQUUSc1tT8K1oZljGR
-	lPCTWNUbxZ2i92egelvFEFuYyuMOJANhWz7n4BvsC8oR2HKyLYD/ZqNgFTcZM8BbBysNhn9YOuJ
-	vPpx9UkhQK8Dw2cZ259rYmKzXgtEcLTzvDTI+02PLGB1hl+H0L0E9oj+x7GZEZP3aEPdiJ34tnS
-	SuztuA3x/pt4it4i33kGZ7oy14XRAWMCnDGGMxCqElxdlYDiYJpDcuouuX2719zKMgz1pbm4PaU
-	6XsIZJyFk6ioyRLGplxGLZrK6H3/f2j0OXbjdE962K2IKnVFrvWkS4qImOJ8APfm7qdQ7iR2WH/
-	jKUbhjTSxqpdPZ5fm+gL28qzyIzshOU+s7wUSVvTm3tW76WA9tKntjv0J69B9Rj+F6BwU=
-X-Received: by 2002:a17:90b:4b0e:b0:398:9be5:b41d with SMTP id 98e67ed59e1d1-39d9c368348mr7982154a91.24.1789141969010;
-        Fri, 11 Sep 2026 08:52:49 -0700 (PDT)
-Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b97994sm13853172c88.12.2026.09.11.08.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 08:52:48 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-To: "Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Cc: Yury Norov <ynorov@nvidia.com>
-Subject: [PATCH] lib: fix lock initialization in region allocation benchmark
-Date: Fri, 11 Sep 2026 11:52:43 -0400
-Message-ID: <20260911155244.1406122-1-ynorov@nvidia.com>
-X-Mailer: git-send-email 2.53.0
+	imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="n E2xLN2";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=mqYPiZ1C;
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id C2E89EC00A2;
+	Fri, 11 Sep 2026 11:56:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 11 Sep 2026 11:56:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1789142165; x=
+	1789228565; bh=CpkRjukhNmD2VLcP+kNjnb/Y+O1Luo3t+QTwhUwDhVA=; b=n
+	E2xLN2MhoWl8xjFcGUjtepqTLf9LM+bTuNT8gBbvxckZXYQi0QUrMC0wbunKTh48
+	OXTtBEIENk8yV6Xa+KYhTJ3wcMgF48kIJ46/U2+rUgGvit6CVl7JRuTLVnRT34yF
+	WxLyDm32LWyVv92tbZf5Byc7evK62UCcyfbDg8F7d1WDe52SOy7Od33Pv27b+PX8
+	s2pcKIFX4SfdjID55uOngL9Z7znbd8ZfljrmTxuUgQASG2c9YflztTXD5fMR9CRb
+	+iQgK9TmugTzqo+FEL1XkuF0fbYRMDW3UGWMkUzCIyD3hK+Ow9baLxDrxh8cZhwp
+	C/qnNEWmt/vLf5c3N6Hzw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789142165; x=1789228565; bh=CpkRjukhNmD2VLcP+kNjnb/Y+O1Luo3t+QT
+	whUwDhVA=; b=mqYPiZ1C8V1D7ko6AQe944jRR3Fe5Rwpv06XfD1epF/IW007eI4
+	/QJ/1ksvpJdoy6vngUtSeBFpLUximiVN7bna6H6HtoBiq4/2LtN39Z6jdPoTA7nU
+	zsI2mf6zrJxyrP3BNVnLp1nAbzFSffPRGcVVMCgSm+y1VzT6mZJPZJrFMWGnT0oJ
+	WXchYbwtKNOPiKYajzue/SsFUZTG5EZmhT4UZZmN49u8iqQdp0icuBNhD8mM9Rmk
+	K4CMmmUWWQbp5njFMsBTnLilRAJbd4PV3HPJOAjZmbRVTaCXlgycJXMiphC40QRh
+	KGcxtF3ATbBaBfFP2kxU29NY65qFdFDxBUA==
+X-ME-Sender: <xms:lSSkatb0vbfd7sUiGe2b0G97LoItanl7M60VueYOjfn8j45MZrR7Hg>
+    <xme:lSSkaiA-wXwVwfbpy8lycEbODIggDKLYvznfsiCDMqw5pVn-mAetHx9iF6GeK-OV7
+    Rr6MsUhI7DQE9YwvgSYxpxexudYQTK45i3sfp76ivzJGdF2EP7V_VG1>
+X-ME-Received: <xmr:lSSkanXF0JApUQWOKZYpaKyRqSCZlw79grtu-PHvrJAIPxv1lnau6mLgIs8>
+X-ME-Proxy-Cause: dmFkZTGTAWYtDpGmqldcHLGSX4v5lFhCr/Fj+S8fqcXDWFWNUtiXtn/NhTkjTJQ8pBXXV8
+    zbCaMxckVD2fu4yD3tliI1eEuWpqb/TsvmUNUMjoKQ28M82Uy6sQN8qyBypym9xlH/wV4P
+    J42kKHBokB/lr5oenyIHpxD6wNEyMMQ9qg1K8PfNeHD0LqsHThY+O0dn86GMoy9YfEMTfQ
+    53A9vAqDcf20mCrAB7uv8q6daB2YSzjD7SWTHwpd928byL8ORNjLjWbwg4U1UFTkNThWi7
+    Kuc1cjsu2uhtI9Vn2fB18F8jMXO3erw2YQWZeKB/aad/Q7lyh13MRrVglqVkRBZk+f4OoZ
+    sQzym5wCoxbqFPVAzc/87b6kyk1v74yMsWCZi4vFIdYz1y5jDvxewWjBEpLPCdfPNW7VHR
+    8netzjdv9hUNlBXEdGGxv6/y5E+n1Zf9iKCe1f83yxQPf+G2bt+1VSOfrQ3mfTv7R5KEsQ
+    leyXWLmYoJMDAsxtre0NOo30gb5O/8BX9r2o0IvgTmARscD6H2kpplwFPIXdflYidJPB1N
+    FOtNnojHaMv43OxarRrnlcCs8uGXJ6C6AIs5C4R+7Ya6vhqrGz9xh16kLWkW+ULr5+gt5M
+    kvvi74U+aw7VbU00bbWY4jqNWnvcNbz2LvVscQpuqeMtts33cu2ZqgyMTjTw
+X-ME-Proxy: <xmx:lSSkaj39Toqy7lM7O-FbGLM96Mk8YMkQeicKmoUEdxcQmIHkO_9CfA>
+    <xmx:lSSkagVZSj-u13cdHH5S-CcYt24bgK2vg0mt2unMkwBHVqMxRA5lWw>
+    <xmx:lSSkahDmzQgxTgIL6wtCDaRpIb2IFtMJIiQhDhuVJibeTSrPRpCtQg>
+    <xmx:lSSkarqf-70VGvnPkzraCPeuVu_X_9LZD3eW_zKtwlxO7qHtktPTMA>
+    <xmx:lSSkasYlUajrZbG8YqgaPrFnEnZc8Ncr4BLyNHtotFTlUnFBstbcXNQD>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 11 Sep 2026 11:56:04 -0400 (EDT)
+Date: Fri, 11 Sep 2026 16:56:03 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v2 00/12] mm/collapse: separate a collapse from its
+ callers
+Message-ID: <aqQf9hSy0iNjnL6t@thinkstation>
+References: <20260910120238.2529819-1-kirill@shutemov.name>
+ <8170ef17-0de3-45dc-8c8c-de15f088214d@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u79cxyr33taas7srczwjjphz844mio7f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8170ef17-0de3-45dc-8c8c-de15f088214d@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 66D46160010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789141970-704655
-X-HE-Meta: U2FsdGVkX1+sU2UCenlXx4k00WLlkBRoj99X7c8mj3KELpv928yUHeC7UWBCtrMLEJIu3k4oduHNLzQNlqvR87XzcdTKgznzXfrfJU3SuYf5eVhPYIiLUar98oIRvGMkiCC8J0EUMoF5oRkBlj7tapymtGU08gLysH1ieY6fIjvDruQy2vkFx2nw8EwpPjHbdYQ3WRd0acff8D+9+IOAhJ1V3wqgqhXM3BACTHLiIEiqBK0DkPOKkQ2BUtdL1As75r59wk79WmOmBaLHZ0Pd8TtywqyXn67L+y74d4363BdTqidC/iOgoMcZQ5gOUAgW1abOchoe33MxFRs8dGnDhkeePZPPhc5cjGPVc7PVYLZbjLS9wvdVzB/XTilRDmxntHf5OC3lr6KRTocCPR2OWw48O5W2pyyaDrjqATJBN/axarjeDK0CxtHb5d3ILcwvXZLyOeUjaK4ikx4rSu0AlmJKsc/r16NPSgSvH6zMo4dD4gcrk9zKyEKl6ixI3UW66AHbgt+3CI4JBGD05pzAYvYOlYPAEDp/UXdmtOY5fqt3E7Nfp76X58yks6u4avvF0eZ2ENRwUU9JV/nY9/tuTUSAhZBfX09WgaxAyliBOa+tcv0VS8zPXA1EBNbsFzUSDUOboMJPijEZkQzIpWLK4FM9wtvE8eZTOGP/Zqnlxt1Oy/FT3HRpVDvHTgtQzxfix72QpTuJFGcYa9HUcYTa4sQX+IAs0G2D8NswqNjh5ZZ0iXZSKcZIhN2y4j3XH29Ky+zRO5vA3luSenYFe39Orf3HVB4El3JRxdlgs4BAOXPVMjgwXIZzrstKeNOi6XWwtb5hwbNICYEbp3z3mcQtWGDMYhrROw72PutGusaXsw3ztvKV5MDbxCfisNAA19eD1egvnMOgQigwjhvFrr2NbZ8/f/oU5/W0UCMCfbR/zWzXjjR58DDVQwQ7Jgrm4Ih6OyIFq4aTJTgrfF+T/iS
- rfYG6t+E
- lSO74if5u6FKOwy8iiqjcGhR8KP1pjT4Zh26ykKxkCC4ATmW4GU6PVpuD0xgsZiiP+KB4RNgEA2gVJ78jg42Q+iUPMuu1LPtUNbtuPVBYYp+rKcOznU7E7B6aAP7KTRW4NTcee24qONtqKGglEACsbmEC7IFIV95MY/VB3LtrFtI3h9hO4lnsvjJzYnY+M3ZKDCfH/actejKRdCFReXIhhD/6wxiuk3Kq+MGs4EffR7Cs1Frndqxizsl/6BQlK1qiQ65TpitJSrnQ88If3WDl1UgODnXxC8UJ3bRbBkJGKdwtUotjvBnCG/3enW4ml86ZoEfi8MHFNxNM/xGhl9MbnrOKw7TkgqJrA5JSs1li51p3KetydEg4egr4NF2LzbFF8xDVDd2G7/vWVjTpQ1axJBUfAxgm0RTF99ckGb69IyS3DhAKOAE4rYh6yT1qRCy+NQhqvXBrGOy49ECbZgiNbcVBJnHhPblV+4x/TKYngNnGVnDpeIIaXkAODuypwBsbw67hqMt97j/4OIUraGqvGla07ebHhOy9bXYc
+X-Stat-Signature: en6ubmbu7n4x6t76mqet7zcmn6k59faw
+X-Rspamd-Queue-Id: 57D10180004
+X-HE-Tag: 1789142166-375791
+X-HE-Meta: U2FsdGVkX192DVJjdb4Wot0SgS62Du/TlTyqT1jhA92PjtrXadgg01CoVXdaoAkKC1uAp2eqvygP/9al5lglTg0UnKhLy90BWNJhYcILYhcd0hZO99ffmkG9pJOx+dNCVO6dwygZH2pFomik8+8+dBwwXqjABpH2uKiEg+mdftCPc+ip/CdqZbAV8Op0rV7kANcigjzH5eq2nqxukYXhRPdcOdSZbGroUMBEsBNEU9scdKUg7WecR0btP2i/INbwm8gYC1jdZX1umr1MP66tkskHnmL72+AHZP7se1XyyE47C+8RqxWN+jBM0D4+PrulNpkT2rMifR/QOMMbky+4eJ3LKH4KnChpOUBxmDUm8tdNHAb32pyuYHMROPa0XPq6M21sOR6j0QAT87W767/o8phm8B9Tst/L4Sog7BCnEdhs54jCGzTcysJOj8IyrEjYVudVO/XgNUt1YLOftDyPcVMg/xcDIIuqTzukKT6QGn1noAOPA+K4GQzdl++/DixUYGnZ1FHDRtfhiOpmbMs7HZnIfLzbU+nKAxPtQO8ncc97Ifzje0uQVwv5S9FySr++7PfuUXOh0sENiejTjfwZhkDsKwIlV+JE1t/gI9WlTmsPGpT/3iRcChomEWx1g8a2RZtA64LUCfvHyzFVrfmmX4my+Dha8YCFcht8wepCXBnCWQZWoTa9Et0W0oeKv4SUy9+O19S7VXh/kMgYXAndu761qkHw3QyLWTQJ3xscCBCeAfQ13l0dPUKjo3TGSzHicbG4RKTpUgIRe/v9Be9zOo/kniL4/XPrI+17tubENJjoFmnFA7OcwQD7P5FOZulleIRiRqNEYLBh8sD6X+C4NL/4NkrwLc+xr9PqFJEhdfkUxMZpfG5/HkDtpXqc6KWcCcX2WdyfTEfN0hYKVeH7JVs1ddRHrIEo9pD2hmuuNJZwH+BGdE2YogEdw2UdccOnltUruZ75zuFjI837atX
+ CV96Z0FC
+ WjrfpMKthfFSejErEyZ+KZuslpi2uIhcDFMmt04fv/cXykc9TpWDNH0lKyqD0YJtPu8z6GYG0aPWfpTsP36Vs1lyWCmdeYEb1o+FIhJ/CIzTse1RzubBTITluTLz80pgA9/sJLJnlf41TeFmwC2SfNJK/gIGf+cuGyKhVlfn8gn5p3vAQyq54TXA4tFxljbtIlqnqhnJepDSb6cuuhk+3NRYFNj0/zXKjmwI3IWet6Vq/yDySq48raon28qCyfqFveH2123feK6tZzeYcLN6XAN2KhzBGk9P87HVfzCzlFmhlYAWCRCBh26ZmrzpDegnNtEBniEFyg3knqgh86yfSmMuUux8y6lWq/oVGGC3oWUJZQblT83gN0YMup2B3+L3CSTblPZYIz0wM3fe43kvX6aKcjyDPgtM6H6A1AEywqfTGjalWkas8E3K6SArfQxFg3O8ntBZGoEN7/eqx8LSGQUFplA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,60 +135,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The Maple Tree benchmark uses MTREE_INIT() for a stack-allocated tree.
-Its static spinlock initializer leaves lockdep to use the lock address
-as the class key. Since the address is on the stack, the first allocation
-triggers "INFO: trying to register non-static key" and disables lockdep.
+On Fri, Sep 11, 2026 at 05:06:58PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/10/26 14:02, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > [ This is the first of the cleanups I said I would front-load ]
+> > 
+> > There is no line between the collapse engine and the callers that ask for
+> > a collapse.  khugepaged.c holds both, and they reach into each other.
+> > 
+> >  - Sixteen tests through the collapse path read cc->is_khugepaged to work
+> >    out what they are allowed to do, when every one of those decisions was
+> >    made by the caller before it asked.
+> > 
+> >  - collapse_single_pmd() does both halves of a collapse behind one call and
+> >    drops mmap_lock somewhere in the middle.  Which of its paths dropped it
+> >    is not something a caller can see, so it hands back a bool and the
+> >    caller keeps track.
+> > 
+> >  - MADV_COLLAPSE's implementation -- the walk over the user's range, the
+> >    per-PMD loop, the errno translation -- sits in khugepaged.c, which is
+> >    the daemon's file.
+> > 
+> > So: draw the line.  State what a caller allows in a policy, split the call
+> > in two with the lock as the boundary, and move the syscall to madvise.c.
+> > What the engine offers is then four calls, with the lock state written
+> > down against each, and a policy the caller fills for itself:
+> > 
+> >     collapse_control_init(cc)         once, before the first table
+> >     collapse_policy_*(&cc->policy)    what this caller allows
+> >     collapse_scan_pmd(vma, addr, ...) per table, under mmap_lock
+> >     collapse_run_pmd(mm, addr, cc)    when a scan found work, no mmap_lock
+> >     collapse_control_release(cc)      once, when done
+> > 
+> > The engine stays in khugepaged.c for now; what changes is that it has an
+> > interface, and that neither half has to ask about the other.  madvise.c
+> > gains the operation it should have had all along.
+> > 
+> > Changes since v1
+> > ================
+> > 
+> >   https://lore.kernel.org/all/cover.1788533997.git.kas@kernel.org/
+> > 
+> >  - Rebased onto mm-new with Vernon Yang's tracepoint fixes in it.  Patch 8
+> >    no longer merges the two calls to each scan tracepoint, since the base
+> >    already has one; its changelog now says what the status field reports.
+> > 
+> >  - Patch 3: nr_occupied_ptes is nr_eligible_ptes, and the mthp_collapse()
+> >    comment counts eligible PTEs too (Zi, Baolin).
+> > 
+> >  - Patch 4: no comments on the two constants (Baolin).
+> > 
+> >  - Patch 5: one line per policy field (Baolin).
+> > 
+> >  - Patch 8: the file side is split like the anonymous one (Zi).
+> >    collapse_scan_file() runs under mmap_lock in the scan and only judges;
+> >    collapse_file() runs in the run.  See Behaviour below.
+> > 
+> >  - Reviewed-by from Zi Yan and Baolin Wang on 1-4, 6 and 7.
+> > 
+> 
+> I'll hopefully get too look at this soon (after digging through older stuff in
+> my queue).
+> 
+> Skimming over some patches,  a note that we should not be undoing recent
+> cleanups without a very good reason.
 
-The IDA benchmark has the same problem through IDA_INIT(), but runs after
-Maple Tree and therefore encounters an already disabled lockdep.
+I don't think we undo it.
 
-Use mt_init_flags() and ida_init() to initialize the locks with persistent
-lock-class keys. Keep initialization outside the timed allocation paths.
+Both madvise and khugepaged use the same interface to the collapse
+engine. Anon and file paths are handled internally in the engine. What
+changed is that we have two calls into the engine instead of one.
 
-Fixes: f4806cc63cc6 ("lib: test bitmap vs IDA vs Maple Tree performance for region allocations")
-Closes: https://lore.kernel.org/oe-lkp/202609101106.771b567e-lkp@intel.com
-Signed-off-by: Yury Norov <ynorov@nvidia.com>
----
- lib/region_alloc_benchmark.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Collapse consists of two phases: finding what to collapse and collapsing
+the found range. These two phases have vastly different locking
+expectations.
 
-diff --git a/lib/region_alloc_benchmark.c b/lib/region_alloc_benchmark.c
-index e88b4cf55c62..a644f3d5431a 100644
---- a/lib/region_alloc_benchmark.c
-+++ b/lib/region_alloc_benchmark.c
-@@ -78,11 +78,13 @@ static size_t __init ida_size(unsigned long nr_ids)
- 
- static unsigned long __init benchmark_ida(unsigned long cap)
- {
--	struct ida ida = IDA_INIT(ida);
-+	struct ida ida;
- 	unsigned long cnt, idx, off, nr_ids = 0;
- 	ktime_t alloc_time, free_time;
- 	int id = -ENOSPC;
- 
-+	ida_init(&ida);
-+
- 	alloc_time = ktime_get();
- 	for (cnt = 0; cnt <= cap; cnt++) {
- 		for (off = 0; off < reg_sz[cnt]; off++) {
-@@ -125,12 +127,14 @@ static unsigned long __init benchmark_ida(unsigned long cap)
- 
- static unsigned long __init benchmark_maple_tree(unsigned long cap)
- {
--	struct maple_tree mt = MTREE_INIT(mt, MT_FLAGS_ALLOC_RANGE);
-+	struct maple_tree mt;
- 	unsigned long cnt, idx;
- 	ktime_t alloc_time, free_time;
- 	size_t sz;
- 	int ret;
- 
-+	mt_init_flags(&mt, MT_FLAGS_ALLOC_RANGE);
-+
- 	alloc_time = ktime_get();
- 	for (cnt = 0; cnt <= cap; cnt++) {
- 		ret = mtree_alloc_range(&mt, &idx, xa_mk_value(cnt + 1),
+The scan reads a PTE table under mmap_lock, fails often and doesn't drop
+the lock to move to next range.
+
+The collapse allocates, may sleep in writeback and takes mmap_lock for
+write itself. So the lock inherited from scan is no good.
+
+collapse_single_pmd() hid that boundary inside one call. It had to drop
+the lock somewhere in the middle, on some paths and not others, and the
+only way for the caller to find out was the lock_dropped bool.
+
+With scan and run as separate calls each has one lock rule: scan is
+called locked and returns locked, run is called unlocked. There is
+nothing left to report, so the ugly lock_dropped goes away.
+
+It is the same move as Nico's da98790891a4 ("require collapse_huge_page
+to enter/exit with the lock dropped"), one level up.
+
 -- 
-2.53.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
