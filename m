@@ -4,86 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8741DC88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:25:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875E6C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BBF76B008C; Fri, 11 Sep 2026 07:25:09 -0400 (EDT)
+	id 6C4956B008A; Fri, 11 Sep 2026 07:28:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66C246B0095; Fri, 11 Sep 2026 07:25:09 -0400 (EDT)
+	id 64F9F6B0092; Fri, 11 Sep 2026 07:28:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562896B0098; Fri, 11 Sep 2026 07:25:09 -0400 (EDT)
+	id 53CD46B0095; Fri, 11 Sep 2026 07:28:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27E786B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:25:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61F19A2D7A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:25:08 +0000 (UTC)
-X-FDA: 85201249896.07.161F284
-Received: from mta0.migadu.com (out-167.mta0.migadu.com [91.218.175.167])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AC5DA100007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:25:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e0LLpN1Q;
-	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 207EA6B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:28:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D8101C0E6A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:28:54 +0000 (UTC)
+X-FDA: 85201259388.21.0963E44
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5D0DE1A0006
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:28:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A2f0gqDW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789125906;
-	b=0gHh93R0d8D6vUttsc7Y6N7m+qCoBQ9YAB9Yn2c0uaPKxEXSDYRy6LOi9rKs+uIDTvre8s
-	Vn9nbE759wgRlJviR9Y8erA3FFYD+0rb04NGd2+9hEjY71nR+rhWjvjxNLWHA38smDH1NR
-	FrNRSX6IWb0gmml6oRlGKUMXHWQMrgw=
+	t=1789126132;
+	b=ZEmERWgygpRydtT7I0GYKwc5DJ6pw6KAISenrnl/iPKVtfGXMKSWqG+u1OtDpw7sAIVhoh
+	QO8ySAiOE6VEkvmCR4QkKHCC7L+4ZVeeKKnR1BU0XeJYX1RsqADIqwTVfLLJtvvFh0h4GQ
+	4X67ehHubrwA8xcO7tFypTlepnVEX4c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e0LLpN1Q;
-	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A2f0gqDW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789125906;
+	s=arc-20220608; t=1789126132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QUIXyhwqJ/Zm1gKTWa8Yz9CXGcjqxVLMUPvUwvq6pbU=;
-	b=sYs3f2mskUgvuV4azDxrMGsQ4SSUHvyqVQ1C91Utd9D7IOuyv6r0uKmwGrH56A+OIojsvG
-	Qx9YaZJGCo7Q6tMaP3S1YysZMF4aZJGbygM3lfl+wy6vw4i/MftnoVd6AeAjDrHqRAbEkA
-	QqjPqcm/UiNcmV9EoPwJPHCjmzJuHok=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=f7vgrWFnlwg6/255249tFUq+HYEzRsS+Tx+IgMJ6FWc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789125901; v=1; x=1789730701;
- b=e0LLpN1QAFDTi03psw8032fBWzWfOK8x9wggSKZtflhDdr6SRUzes6831HJ3yAQne8g4D4t5
- lon7fg0waEgbyxnC1o6TZ8J77LKM3LV5lno5wLHrfWt0HFEAMqHRlwBhxk1AdZntuJG0wHqys5K
- hjqXX6K91JggntSRPvvFJlE8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 363801b648538b55;
-	Fri, 11 Sep 2026 11:24:51 +0000
-X-Mizu-Trace-ID: 363801b648538b55
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 11 Sep 2026 19:24:45 +0800
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: harry@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [RFC PATCH 0/2] mm/slub: reduce list_lock contention with slab
- parking
-Message-ID: <aqPg5YRKdaZiBj9b@fedora>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <a3e5581a-e039-45bb-b570-a01158b154bb@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nsSRp8PdyK7jqxwyqAHoe3K2myVb/dPcJ1AFVgoBhm4=;
+	b=YEs9K3gPXWwR3OHlo8poK4QGQhofwGY4K3uxUshdoKDxbwqcltYN3gNqiTIll4TiFQIFTi
+	5vUPvpqv41F25KUUVRqDNVW4Zt6UgANuM9JdmOh3yJiqn7GptOWtq9nKbBt4f+WCe3ycKT
+	DS9v7jn9eGxjVg+EcFUdfsS5nukgfA0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 55E81415B4;
+	Fri, 11 Sep 2026 11:28:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF971F0089A;
+	Fri, 11 Sep 2026 11:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789126131;
+	bh=nsSRp8PdyK7jqxwyqAHoe3K2myVb/dPcJ1AFVgoBhm4=;
+	h=From:Date:Subject:To:Cc;
+	b=A2f0gqDW7IjntqtLnmWTY9FTZt2kpRTwAR81OQ0+X5rLtkU/oM3woCD8mBXpKl22g
+	 FxYe3TsxS68ynHwnCCJsl1bwPDgBbcj3b1Txifi+2tin8nkRKoyJzvInE1BZQaJEX1
+	 SfEvjpltcAkNn5xhvf+Rc0Gw+3IiqappNVYNQ4vVHGBz9KbXFSFUbvXeKjGQTNnKQe
+	 oQ8qUrbxCW07kqROwNWcZveAksa3yuRMFG/yhKpWZZTaXd6Lv/XEL9aASh6XtvTLuq
+	 biMrXtbaqD7QwD7g67lAzMIJsCVJbU2WmOQf4Qz7SKN0f6wro+FrvrrGb/qQcA7fJ7
+	 xshTLjIDUbIHA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Fri, 11 Sep 2026 14:28:43 +0300
+Subject: [PATCH v2] x86/mm/pat: use pr_warn() for early W^X warnings
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a3e5581a-e039-45bb-b570-a01158b154bb@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AC5DA100007
-X-Stat-Signature: 6dffzzmrqbhemgmnrffyge6ez9ce1c9s
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2O0RKCIBBFf6XhORSRUeyp/2h8AFuVSnQWMh3Hf
+ w+sx7N7z93diAM04MjltBGE2Tgz2gD8fCJNr2wH1NwDE854waqM0dYs4OgcrHal+FkoE0KKTJe
+ FyiUJ2oRwZIJ1q3/s3voBjY89MaGVA6pR2aaPI2+mdJFFOgxx2RvnR1yPh+YslvxvM8kqXuYsE
+ SwwlzSjOE3++gS08EpG7Ei97/sXW54AzNIAAAA=
+X-Change-ID: 20260910-fixes-verify-rwx-044841b76a38
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Ingo Molnar <mingo@redhat.com>, 
+ Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, x86@kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-HE-Tag: 1789125904-639679
-X-HE-Meta: U2FsdGVkX1/SI4hUNhSR506DDQ0189VG2JAm4B9JELKh9HLzVjynbq53QwyUUu+fYgnRRnwCtEIRLNbUCa0z2quffg0Pp0ffZPXAxPMCyYzXaNZKEV860veXVBjr0gcUxkC7/8oSM4G228ANoK0hvcuw+92XeSXTYdyv7X2h5RAb4bw1rICG1lccyOHIcLDdoDWxRKKYJ1IMPNwbMO5pTGLjRbzEnu8E6j2SK+BJrmFYWABxTRpNOM62P6y7HyIR/V+g5pRDHZRO5k1DBZOeSAupehevLktnrk79+Uwjp/gqvrEGzNSUjJmSbM4hLrHeu440HkGNqHWAlTvtSADIBmZoCs1JsOqYBJvYf8uLoWoFHuGVdMJKPYtKNy23OW7bOxXJOX/jIYy/fo0OjOVOUZahg7aP15JnpVk9RKCdKrjK61m/YQ9LoUo5jLXtbksYeq5m5a7RVRr+cyMvhLeNN94SN1AgpYynm80GOhgbhDizi5sktd2A2fpS+VwZhJp/0qWtIpQ9CkIE3jru04JynSkadHgt3lSJs3ZWwK133xzmkvbVbharU2dA4hONQgY0NlgPG2/aZ4JlZ7jOIZS9z2tHXlq0gWJZ5LknOdL/aSyVENExqTmlZi2ArY63cZaYqFcCmDdAGmru4go1+6kyXJBsLcFBqBUFgB0Q/wa28ApPowBqBPiYh9rVzSOSEOtf27IeIEFIuRJyfDAs+EADFRWgi6ZLkDnXldOUgNhEKDBWrgqNG0CvSchq6mZzDRHUGzMuau2wbn34Bj/5hZ+JpqOaKKRGVEm3rv/1ulD8QBtnJuYh3fA8PZ+ifDRsJU2QHAceplEmwsfk/n7Bnno9k+mWnBkDh12x2wZBgNSJeRLcm6j2TeguodB6rJsWLL60IyacUFf9AR++VA9zObEW5xMJejWf+isbUDBUUKzPtSs7wv/96d0N4vIEbxyHgZV3zvSIrtawg1wfsJCWi8o
- ahEKdrLJ
- gAVxR/PWdA4fi7wQQcEK3OwTLC6xYOtAE2V+YXhdnlvuq4JTX1lE/CgrEsTPjvweuxOyXIiYMef1WkRCmyvF932p3/jcg21McwSxWABXDvENdpSZCoGzf8fds4s3w2yWD0E3En9F676rKOikbM8VwVF3A7g4cnU2BAuTPtoX2X2N2lhy0RTgah7fyXCLqPGfs9CDQIujmWedxHiyVuNf1jADgL4r6FySleV0NcbStKTV28x3cbzh29fe6CIU9VsBiuQWh8g/IaPqtYZPcawNKfLlWHR+3n0E2rRLrz/op24k6bJuKQaTSbRqyW3F6e7oXBjFx
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5D0DE1A0006
+X-Stat-Signature: osttnbonpkf5i7uipid7s3dsmoo438nf
+X-HE-Tag: 1789126132-846061
+X-HE-Meta: U2FsdGVkX19mcIX3mSPWL2GlANf7CuIiZM89ADRhkKVpN9MrkxypYdBgmY0+goXT7gxzXbthIHwopGhRqr7CGu1shhYg4u7RJ0WdsQ+sArpH+iIKP4NDJCCeM9b30YIhYASeeWfu9PHtPRTydpqTdH6p5n2cOMeZVfAP+WcJjjKAQd0y2/OOs1CeHliiPnGFPLv/MywePMggqZz5hGUVxfbgl1W+fVOhhlxxDl+wljHuparIH/AlW0PUZU+VB4si/Myps5r7h167SBrJMbNyDtPD1AXcJQPeSOV7U8d9y26derBXF8WB3q4J4TsNeWCBdLIKMkZHC8GivrPHM15FbMsdSz3iKGTISbfXzg0Us0pM8BusXMA43NKpKIJNluiCIhJIwqbuYHO6R4Ho99swCPjxB/sc3vbcfjFE3qbNWHxx8K6ZrK2zfsQ4PQgVwOFdt5VsZ0ERiVIfko7chChtA6aXhF3GXaML9COtuFkxZNNBCslel6rU85czPe1mgAMZz8CEKprJmMQcHls1lbdgxI1hz0JBobYUbJnv7yZuLu4sMfbYX38Cx3AESdLXbmy8MrYrz03HG9aNPm93v1IaDIIyh9kUEEQ/IqVO9sA6lwSsN1V2dxWS8slSNe9dpzs504LKj1SJ1n7arOfTd2ThtWZH3IZEaPvXiakliyxkGQ6QT/USIzc3ar4Ji1pLEmFmgjh/lQmnGuuKcyQgnZKRdOPbFvAEZKxaU41YuJnioC/47vP2wYDHx2UARru/JVT1RzBsO7c79pZ4+J96EUpxknDsqVQElDQUi12OdcY0A2Mx7BFdBcHu1USTkUaKtCs83U9OtAo3po4bNjMGM3GJCFUyVZVyItScxZtdu58cuIrNHQKEdxm7hjpQpr6Mzc1k4iMo34MwQeNGckjfVnzcG5c1AcLEVp1nfmIFajcJ5Skkf2BXwtAujM0ZyhYTBV9meTJ34hQuLGyE/mNpB+A
+ QCcjMyNY
+ vELpCMNHcrc4egVLGB8jJlzk5pfSt1Ar981ZzYVCApAm279gX6MWFDBwIW6DuERLvfCH6Nn7AU0Pm4/ND3DRGsFdcWAbpERcmu+sJkMn8qE7n6f72Y1HPMejZvyqPXEzrwAAKNSfjZLcyS5zljfFfCyhohQvH62Uax+cUi8cFbCxU4BI2i1zjQTX/Cki54mA3LB3hfMzEhiBVvpOox47Wh38uDKzc6CpgQzoBxaP1PtksY3a0v0HMl/yiyuR1LhBJJWeSUiS7hOeu06/+xetdVBcajJMOKaupgBL/cifqT/C207+KTw0r6d3x8hFT6pjKl4vXQQkhhZuw3iw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,176 +98,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 03:44:08PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 8/24/26 14:19, Hao Li wrote:
-> > This patch series might sound a bit wild, but the initial numbers don't
-> > look too bad so far. I would really appreciate any feedback and
-> > discussion :)
-> > 
-> > On a will-it-scale mmap1 run with 192 processes, list_lock is the top
-> > contention point: __slab_free() and __refill_objects_node() together
-> > spend 44% of cycles in native_queued_spin_lock_slowpath. The free
-> > slowpath takes the lock mainly to add slabs that became non-full to the
-> > partial list.
-> > 
-> > By adding extra instrumentation to __slab_free(), I collect the following
-> > data for the maple_node cache (in counts):
-> > 
-> >   partial->partial    843017414
-> >   full->partial       550719384
-> >   partial->empty      17459564
-> >   full->empty         2
-> > 
-> > We can see that full -> partial transitions account for a significant
-> > proportion, and optimizing them can help reduce lock contention to some
-> > extent.
-> > 
-> > This series introduces the parking mechanism to address this issue.
-> > When the trylock fails during a full -> partial/empty transition,
-> > __slab_free() parks the slab on a per-node llist instead of waiting. The
-> > paths that consume the partial list (sheaf refill, alloc slowpath,
-> > shrink, cache destruction) unpark the slabs after taking the lock, and a
-> > delayed work covers the case where none of them runs.
-> > 
-> > Patch 1 cleans up the case handling in __slab_free(), no functional
-> > change. Patch 2 introduces the parking mechanism.
-> > 
-> > Tested with will-it-scale mmap1 (192 processes).
-> > 
-> > Summary data
-> > ------------
-> > 
-> > throughput             29237910 -> 35585663  (+21.7%)
-> > alloc_slab,free_slab   -52%
-> > cmpxchg_double_fail    -85%
-> > 
-> > perf data without this patchset:
-> > - 44.22% [kernel] [k] native_queued_spin_lock_slowpath
-> >    43.48% native_queued_spin_lock_slowpath
-> >     - _raw_spin_lock_irqsave
-> >        - 23.80% __refill_objects_node
-> >        - 19.12% __slab_free
-> > 
-> > perf data with this patchset:
-> > - 30.39% [kernel] [k] native_queued_spin_lock_slowpath
-> >    29.82% native_queued_spin_lock_slowpath
-> >     - _raw_spin_lock_irqsave
-> >        - 29.06% __refill_objects_node
-> > 
-> > Additionally, the number of partial slabs and the number of objects show
-> > no noticeable change before and after applying this patchset, indicating
-> > that this change has a negligible impact on slab fragmentation.
-> > 
-> > Detailed data
-> > -------------
-> > 
-> > metric                              before             after             delta      change
-> > ==========================================================================================
-> > alloc_fastpath                     155,417           168,534            13,117      +8.44%
-> > alloc_slab                      55,679,646        26,702,510       -28,977,136     -52.04%
-> 
-> It's interesting that this is reduced so much. Is it because parked slabs
-> cause more slabs to stay around for reuse, despite they are unparked
-> immediately when trying to allocate/refill? That seems odd?
+Nathan Chancellor reports the following warning:
 
-Yeah, it does look counter-intuitive at first glance. My understanding is that
-the parking mechanism helps by bypassing the partial list spinlock, allowing
-partial slabs to be parked onto the llist locklessly at any point. Because of
-this, the refill path gets to see and reuse more partial slabs instead of
-having to allocate fresh ones so frequently.
+  CPA detected W^X violation: 8000000000000123 -> 0000000000000123 range: 0xffffffffc0400000 - 0xffffffffc0400fff PFN 100e00
+  WARNING: arch/x86/mm/pat/set_memory.c:722 at __change_page_attr_set_clr+0xde7/0x1290, CPU#0: swapper/0/0
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.3.0-rc1-debug-00006-g453e78594434 #1 PREEMPT(full)  2950d432dd3910251071a66f3134fe0875432786
+  Hardware name: ASUS System Product Name/PRIME Z590M-PLUS, BIOS 1801 12/26/2022
+  RIP: 0010:__change_page_attr_set_clr+0xdff/0x1290
+  Code: 80 7c 24 42 00 0f 85 3a 04 00 00 48 8d 3d 19 8d 79 02 49 89 d9 4c 89 e1 4c 89 d2 4c 89 f6 4d 8d 84 24 ff 0f 00 00 4c 89 14 24 <67> 48 0f b9 3a 4c 8b 14 24 48 8b 0d 81 44 bf 01 41 f6 c2 01
+  RSP: 0000:ffffffff87003c60 EFLAGS: 00010246
+  RAX: 0000000000000002 RBX: 0000000000100e00 RCX: ffffffffc0400000
+  RDX: 0000000000000123 RSI: 8000000000000123 RDI: ffffffff872e50c0
+  RBP: 8000000100e00123 R08: ffffffffc0400fff R09: 0000000000100e00
+  R10: 0000000000000123 R11: 0000000000000001 R12: ffffffffc0400000
+  R13: 0000000100e00123 R14: 8000000000000123 R15: ffffffff87003d58
+  FS:  0000000000000000(0000) GS:ffff8ad1777a7000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffff8ad0a4201000 CR3: 00000007e3022001 CR4: 0000000000770ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? _vm_unmap_aliases+0x219/0x280
+   change_page_attr_set_clr+0x161/0x250
+   ? events_sysfs_show+0x5d/0x80
+   set_memory_x+0x39/0x50
+   apply_retpolines+0x656/0x6d0
+   ? events_sysfs_show+0x5d/0x80
+   ? events_sysfs_show+0x6c/0x80
+   ? events_sysfs_show+0x62/0x80
+   alternative_instructions+0x3c/0xd0
+   arch_cpu_finalize_init+0x130/0x190
+   start_kernel+0x97d/0xa10
+   x86_64_start_reservations+0x24/0x30
+   x86_64_start_kernel+0xda/0xe0
+   common_startup_64+0x13e/0x151
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-> 
-> > alloc_slowpath                           0                 0                 0      +0.00%
-> > barn_get                             2,715             2,771                56      +2.06%
-> > barn_get_fail                            2                 0                -2    -100.00%
-> > barn_put                             2,715             2,770                55      +2.03%
-> > barn_put_fail                1,370,488,457     1,668,257,974       297,769,517     +21.73%
-> > cmpxchg_double_fail              3,827,935           549,427        -3,278,508     -85.65%
-> > free_add_partial             1,684,340,964     2,161,921,625       477,580,661     +28.35%
-> > free_fastpath                       31,766            32,979             1,213      +3.82%
-> > free_rcu_sheaf              43,855,689,417    53,384,314,553     9,528,625,136     +21.73%
-> 
-> This metric (and others with similar numbers) should not be affected by the
-> change. Does it mean the benchmark has a fixed time to run, but manages to
-> do more work in that time thanks to the increased throughput?
+The warning appears because commit 038176c21617f ("x86/mm/pat: fix
+effective RW computation in lookup_address_in_pgd_attr()") fixed the
+effective RW checked by verify_rwx() and it exposed that pages used for ITS
+trampolines temporarily have RWX permissions.
 
-Exactly! In fact, the increase in free_rcu_sheaf matches the throughput gain
-almost 1:1. A ~21% increase in throughput naturally translates to ~21% more object
-allocations and frees.
+The permissions are updated in its_fini_core() after all the ITS
+trampolines are generated, but since verify_rwx() detects invalid
+transitions, it warns when its_alloc() makes RW memory executable.
 
-> 
-> > free_rcu_sheaf_fail                      0                 0                 0      +0.00%
-> > free_remove_partial             55,678,459        26,685,274       -28,993,185     -52.07%
-> > free_slab                       55,678,459        26,701,099       -28,977,360     -52.04%
-> > free_slowpath                  107,771,739        63,197,344       -44,574,395     -41.36%
-> > min_partial                              5                 5                 0      +0.00%
-> > object_size                            256               256                 0      +0.00%
-> > objects                             14,504            14,336              -168      -1.16%
-> > objects_partial                     14,504            14,208              -296      -2.04%
-> > objs_per_slab                           64                64                 0      +0.00%
-> > park_slab                                -     2,147,963,530                 -      absent
-> > partial                              1,398             1,367               -31      -2.22%
-> > sheaf_alloc                    743,660,288     1,284,618,991       540,958,703     +72.74%
-> > sheaf_capacity                          32                32                 0      +0.00%
-> > sheaf_flush                 43,855,651,858    53,384,274,983     9,528,623,125     +21.73%
-> > sheaf_free                     743,660,280     1,284,618,967       540,958,687     +72.74%
-> > sheaf_prefill_fast          17,585,335,850    21,378,958,833     3,793,622,983     +21.57%
-> > sheaf_prefill_oversize                   0                 0                 0      +0.00%
-> > sheaf_prefill_slow                   2,060             2,051                -9      -0.44%
-> > sheaf_refill                43,963,424,505    53,447,473,167     9,484,048,662     +21.57%
-> > sheaf_return_fast           17,585,336,335    21,378,959,334     3,793,622,999     +21.57%
-> > sheaf_return_slow                    1,402             1,277              -125      -8.92%
-> > slabs                                1,398             1,369               -29      -2.07%
-> > total_objects                       89,472            87,616            -1,856      -2.07%
-> > unpark_event                             -       315,397,838                 -      absent
-> > unpark_slab                              -     2,147,963,530                 -      absent
-> > 
-> > derived                                                  before             after      change
-> > =============================================================================================
-> > PARK_SLAB / FREE_ADD_PARTIAL                                  -            99.35%      absent
-> > UNPARK_SLAB / UNPARK_EVENT                                    -              6.81      absent
-> > PARK_SLAB - UNPARK_SLAB                                       -                 0      absent
-> > page allocator churn (alloc_slab + free_slab)       111,358,105        53,403,609     -52.04%
-> > 
-> > Note that some metrics have very small absolute values (such as
-> > alloc_fastpath, partial, slabs, and total_objects) and are subject to
-> > noise. Across multiple test runs, their rate of change fluctuates
-> > between positive and negative, which supports the hypothesis that this
-> > is measurement noise and demonstrates that this patch has no noticeable
-> > impact on these metrics.
-> > 
-> > For metrics with large absolute values, their trends are distinct. The
-> > data indicates that the primary benefit of this approach is
-> > significantly relieved pressure on the buddy system, with page allocator
-> > churn reduced by 52%. Additionally, free_slowpath decreases by 41%, and
-> > cmpxchg_double_fail decreases by 85%.
-> > 
-> > The PARK_SLAB / FREE_ADD_PARTIAL ratio reaches 99.35%, which indicates
-> > that the vast majority of partial slabs are added back to the partial
-> > list via the parking mechanism, reflecting that the lock stayed
-> > saturated and nearly all additions avoided waiting for the lock. The
-> > ratio of UNPARK_SLAB / UNPARK_EVENT shows that each unpark event
-> > processes roughly 6 slabs. PARK_SLAB - UNPARK_SLAB being 0 confirms
-> > that no parked slabs are left stranded.
-> > 
-> > I also observe increases in both sheaf_alloc and sheaf_free, which
-> > could currently be attributed to faster allocation and free paths
-> > resulting from the overall performance improvement. However, I'm not
-> > sure about this, which is part of why this is posted as an RFC.
-> > 
-> > Based on slab/for-next.
-> > 
-> > Hao Li (2):
-> >   mm/slub: make the case handling in __slab_free() easier to follow
-> >   mm/slub: introduce slab parking to reduce list_lock contention
-> > 
-> >  mm/slub.c | 326 +++++++++++++++++++++++++++++++++++++++++++++---------
-> >  1 file changed, 274 insertions(+), 52 deletions(-)
-> > 
-> > base-commit: e7f630142df2afccce90555e4972e60008222311
-> 
+At the time of alternatives patching the entire kernel text is mapped
+RWX, so the warning is bogus anyway.
 
--- 
-Thanks,
-Hao
+Since the verification of the entire page table with debug_checkwx() has to
+be enabled explicitly in the kernel configuration, retain the warning even
+if it's bogus, but make it scream less loudly: use pr_warn_once() rather
+than WARN_ONCE().
+
+The warning can be removed once debug_checkwx() becomes unconditional for
+configurations with CONFIG_STRICT_KERNEL_RWX set.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/20260905044253.GA3816371@ax162
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+---
+Changes in v2:
+- Use pr_warn_once() for early violations instad if skipping them
+  entirely
+
+Link to v1: https://lore.kernel.org/all/20260908092730.4002628-1-rppt@kernel.org/
+---
+ arch/x86/mm/pat/set_memory.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index b3060000da8d1..a4f7fe69e6922 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -697,6 +697,21 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ 		return new;
+ 
+ 	end = start + npg * PAGE_SIZE - 1;
++
++	/*
++	 * If the kernel text is still RWX, gently complain, this could be a
++	 * false positive.
++	 * Once debug_checkwx() becomes mandatory for CONFIG_STRICT_KERNEL_RWX,
++	 * the warning can be removed completely.
++	 */
++	if (!kernel_set_to_readonly) {
++		pr_warn_once(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
++		  (unsigned long long)pgprot_val(old),
++		  (unsigned long long)pgprot_val(new),
++		  start, end, pfn);
++		return new;
++	}
++
+ 	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+ 		  (unsigned long long)pgprot_val(old),
+ 		  (unsigned long long)pgprot_val(new),
+
+---
+base-commit: ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482
+change-id: 20260910-fixes-verify-rwx-044841b76a38
+
+--
+Sincerely yours,
+Mike.
+
 
