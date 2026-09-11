@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B445C88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B00C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 11:45:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3A856B009B; Fri, 11 Sep 2026 07:45:16 -0400 (EDT)
+	id 6950E6B00A3; Fri, 11 Sep 2026 07:45:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7B1E6B00A2; Fri, 11 Sep 2026 07:45:16 -0400 (EDT)
+	id 5AF766B00A0; Fri, 11 Sep 2026 07:45:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86E1A6B009B; Fri, 11 Sep 2026 07:45:16 -0400 (EDT)
+	id 44B076B00A3; Fri, 11 Sep 2026 07:45:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B4B56B009F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:45:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9803A30F7
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:45:15 +0000 (UTC)
-X-FDA: 85201300590.12.795F436
+	by kanga.kvack.org (Postfix) with ESMTP id 0C3D66B009D
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:45:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7DB33140145
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:45:16 +0000 (UTC)
+X-FDA: 85201300632.01.46BCB24
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B9C8D14000D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:45:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7U5owHJ;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7FF8480009
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:45:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DtXDy/kR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789127113;
+	s=arc-20220608; t=1789127114;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gDni6kh6Iy6PVnWV7fAXj+Sxx9t1NoAlJVLSrFH1nWI=;
-	b=5gf66l703NGk516ky8Kt9g6h/h/BD78lVwoi/oEBHiHxgNwhwhvS7ztMoUWQ6pn3nRF7jR
-	HaAM65RNHwmbq59pkh0NLAlXrddwmWYcS51AuKyeAZWLnfImSFdqzerUtdpjx2hKpFr3E+
-	px4sEElGynie/G3NvCFhTbSi10IQZ3E=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7U5owHJ;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=zV7X46hhsJd5Yjfp2ndSpzROiaLliCk9cKSMmjb3/UI=;
+	b=VhsETglC5awhg7DZJZYRjZkwkVIsD5xtCz2ezML8V6f0Hi2avJk/MkNrkezg3rs4uUptM1
+	137Qy5o5IDiIeRPx/Lsgfqv6InWtl9s0QegzZ3OrBk5trEHlVToW0uZFwko5IZKvJdEjp/
+	t8H/jOpohbRh/RmCf15R6gLqGje9TuM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789127113;
-	b=DZbyXA1bRLN8gitYk8+5I2RQuEU4Ie4IHoVN5NcsFfQ1sCNC07c6wdM9RkCZ5XvcFBbD+c
-	hyKJGR7oAVfGAx/6kO0ImJMNiX3XV/iCRi/+T8XKTB+j4L5eaMayCIOJR7Ac90x4RhhXpK
-	HQ0ke/cORjhxj7/27MkUbvXiU7B6PLA=
+	t=1789127114;
+	b=7+iOMjY6muUEkts/VMVYmO+MlTZqMESyk9+zaiBpxmXe+wzHYyRqkAM6K8yuSzLfVwlsdU
+	nhs5e+lwAeHgQFBaOqcNvgFI0rCsrNZcOujonhpYGvw8ZR97+s8FGWmGUNHclM4jW8nbHL
+	EN15MH2+89qg6PCYrMwTi+P7cuxbbE8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DtXDy/kR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 94DB444821;
+	by sea.source.kernel.org (Postfix) with ESMTP id ABFF94482F;
 	Fri, 11 Sep 2026 11:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 68DC9C2BCFF;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B2E4C2BCB8;
 	Fri, 11 Sep 2026 11:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789127110;
-	bh=qAq/J/sYfG6ZkVcfim0Zo7HRre2y54mXkinDXrdmMHQ=;
+	bh=tiOocqisQJyVtmOF/Ljy6WtfbcgSVLkxHwITetyJBZ0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=R7U5owHJv1EiXrYkvh4qkTXdITwnp8F2b1jM5gFpgcdKz8MBEfZDNZbBpgbc2hR2D
-	 5Ib3SDxm4haP4Eviv5Qvk1M82u85pqqZzZi/2kU+2iMu8phiV8tRO/TpsCU3xrO1Cq
-	 nq8KHNIbwxysf6D4VdGwpdcNttILC8jL4PRroJG67oOGW1/hdnts47VktmDrCaJnYr
-	 4JKE7/banh8q+I6V4pqqKwrECqz1IwLzdAap3cBDw3yP0Ob4ND/w5dfpHReGUbw9dT
-	 AiBe70kTraZoFkcuoFZn2hJvGDmvuKSEN9BkAdubUOqnN0zOLxTwU9nMRI773JT0v3
-	 kmsphNzFkTD6w==
+	b=DtXDy/kR8BbNlqyiZWybP5tlaOds8dkA9RX+Q5leY8Q14fv3hSREETWxPreNruaPg
+	 Tg/5mkqr0ZG2v8ZmkwWQsmoc1xTNuPkKOXxooh7PY8O2OKqH1WzIiOa6l8M/bgTxpb
+	 a1rDOTw2INo2zkGUXOC0BSqtwq2NgCvlzwCaE6wr6gB3z95jOO/qpd4bLbGENclVkM
+	 EnZfLF74CN1Lwbj7lEHiJP956YUuANJdFlCOoWEcU9RKVG6KzPRHPH1+CptKKp+3cj
+	 2RhbGiXEFzSAuVlc+pVxiZQYRGru7JExIeT+DZ60os/o/gqXRcUJB5mNtv27bepv7K
+	 qWN4ybYT5yd1A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FF7AC88E4D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77C2FC88E50;
 	Fri, 11 Sep 2026 11:45:10 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 11 Sep 2026 19:45:10 +0800
-Subject: [PATCH RFC v2 07/15] mm/mglru, gup: mark folios referenced via a
- fast helper
+Date: Fri, 11 Sep 2026 19:45:12 +0800
+Subject: [PATCH RFC v2 09/15] mm/madvise: adapt for LRU refs based
+ operations in MGLRU
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260911-mglru-fg-v2-7-f26e5cb26da7@tencent.com>
+Message-Id: <20260911-mglru-fg-v2-9-f26e5cb26da7@tencent.com>
 References: <20260911-mglru-fg-v2-0-f26e5cb26da7@tencent.com>
 In-Reply-To: <20260911-mglru-fg-v2-0-f26e5cb26da7@tencent.com>
 To: linux-mm@kvack.org
@@ -104,25 +104,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>, 
  Nico Pache <nico.pache@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789127106; l=2592;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789127106; l=3579;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=76hiJ+IqCKnuaQ/7hlfV8Pomepbu2+G2JAyXF+7DflM=;
- b=S+M7djq6ItbHCmZylWQyxNxFu67PRNPY5Uj1bR3LDiXAhZwDr8c+jDwGogPiatHHiJwEqUONs
- u1VPGkYohVeBa/rPImHUErKPffukw6+HzwzE2VJvJS39L8JCoSuGWvL
+ bh=pmj3P/HChz1ZRyXZspIgJRWwIbXzfxFrfJsIOvXtfWs=;
+ b=OqQF+CHj07t5BGpiOKt6owYBMczI7DdeygcSZALiFcAbH7fMx79vuC0X8jtXv74o3Fg4K2wwv
+ Hxmig2GiAyIBMdICKTsfcw6NAhJCqCpBrTMNaTy0Dg7bbRGZy/kUj4Z
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B9C8D14000D
-X-Stat-Signature: xy4hg9usctgcccuqo1x7ytbmy77iphg1
 X-Rspam-User: 
-X-HE-Tag: 1789127113-241662
-X-HE-Meta: U2FsdGVkX19COGoZRy+WLgHi4PkA34jllVdjzEysW1Lqm4g+/1yMDSp6GUb1cAlWXC41gGXqAYynr7P8Brojrm/XUhH2LMDstGQfbYHr/vTB55vQktTpa5SDc72iR8dam1oJtFxfN8Zdibrn66RYxA7OpZcVUxVLHaToZkRpjt2Xxhs9lSFqFIfCf/o8KIPjn1E6nXgjewnh9mPqXw4sO06U9w9jBsLlg5c2lswJDuy8raeLTMijJGVB+bcrXdROCZ/TGv0z+kO2psZm6nsFgaZYB4B3FRjUy+M44fUQBED+eVA7Y5jPmdBKJ7FSQ6o1JcmTJr12fwFCeIxnG9I0AOpBQJIy9caZXy+1ObRY8me5MFm1UyT/e3OIqmFgPFu/v3dcYJKndv4AYpqjG2TfitDvc3AnLPLSQ5PfsBNAtHNlaJCQBeeww+2awW+VX5Xl06mFPkHQMmcykrvfsMff7qmTbrYvQNNL/UB+ZXlBv2FQYJpgTrdY/eL8CY8z689dHAnl327anUm78mFKRhCAgF0yed7GC3A7kqPD6D98ZD+veRQWXOV8c88u77xADsbxxj1C0+ckc9np9JnY2bLmVddmXULFXk4XhAgmhZqCPEMVBXFn3ewECcy52RwByVRe9ySZBwdaKOOqXmqZy/bIFWyH0+3+kYpfqvfFPMBWj8j9Bc4jrCMVTnLsUXiw7yaCjddkUnK7g9x/C2HxLnVQ6HBuQ7qSc5vL+MDysFoqHHq5VrI9vQo6wGW8BTfQqsKcrmkbqPxPf2yZMFv5TJQd3RXxTqS/PXis3p3Pv822veF15pNm4SqjVdGoLzw1opIhT7rtbPJTsBsAoHv7LEJzcDuhKoAIAvVMCJ5Lj9FC/HLCd/aIXCqip9IHvuvDT4GkXP72XHgGtnl1qTkKcqs/nwpSLKwnn44BGzIkRuSUxsxRqi9vVSeumpTrTc9FkVGS/B1eQ2khAz8k/ByxfdJ
- LpIx1ES+
- zjHM+vk8WLgO/pYxYKNXHNq3XCFX49+dzo3V8w/wi/4nBLFgapafV//YDOMLtT5uzsms0jEaqfG/CkrQZ+uxbzqzbU+CMNyj22Yqg7IRVPbLfX7kXoHWt2y6gexlyid7TOa8iA6RHQJrEkxQZ/Kowrun0P0/S0myiq9ABQ7ZvN0cKqKmeOrHc0qzj5DEFGGBP+qIJA9rGiwEFf/6Yb71Ow/JpK9J0znh6zc+HV30+LUkRRKBPluuqQlVmMUlxO5RGlWYZkxEBcnYaAnvQHHwnXxTMwY5agVO7N14QMuD0hnZcMGXzSRzC8ywzN/2EFPSsDOhch6mGXyHZ74PfQkdTb7rqzS+y5jkp6Z0ii6DIKyME1ogYby2kn8m9i6YjMexhelItI+nflemfFvWdfINPBnUErQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7FF8480009
+X-Stat-Signature: ky1kekq91xhnursqm6fwxnfa35rdwieg
+X-HE-Tag: 1789127114-733351
+X-HE-Meta: U2FsdGVkX1+m40bGtr7O+rAgvSEvzpig8zoPHEZP5Huv3i2Iw3xpxAAp9KGqfaK0aWdMyrlN91l3lxqQrIX+gwckh9mD/LaTMrTOj/ubDf4Vg4Tup1JdUh3oUV/kbENoZEs+jwBRWW0cYoQJZAx8K/wbVb1sw52xQaqWmUD2t3dAkz0xrqyS7+NHh+DqYKnUmVqtfOqBo/fi1wZJC7jozIfRr+SqzxGlNOLV/moBy0S2N2uOmm2O4eu32Z1+AM9Xk/gmeFFdvMXpQYU3A8KwNpXiT1BJFIKq5NU3SN9id3ZFt/mwsVorYNxO9YnaBNDxAwTdk2QR8lEVG2B8FFZgd7Ypbwkv7kWevbEYBghH1tZJHMykuZwXCOJou91frOvOjukUQD6XB4zDlZBUPg1qa21M2yOdU/RjQMGSlX91+49WHgxNqcx0uG2J7cIsUXhHx/hiXVpNW9yfG0mDXT6PDn3N6mOzOK1wppGknznxtpp7o+P2vHr+g5qCtcW8GphiJTsL207TqtdJ20WjMZl4vshF4E0MPAu/y1eK0LgTJ6W6KhBrMpiDyDCqE2navsZUzOodbMKpx2PEKq7wtVyv0FNQ6zVthVyoC9ZdMbkwCCCuYZprQRjSw7K+rfplkBSOiRDGRzu+NB6R4sWETepNaRni6Nbst79p2HLOYf3P7S2jSfgAQZCWnH5h709lbJiqQhBmk/g4XUy4etXofULZV8Tr2NfRFanF8YVQDAQywqzfzbLqLf9jS8vM69g2oAvLavLI2CxfeYk+N6XCK2JzaK1ElR6sRhhMJxaURBd8JQaqeIkifMxMNtoYBoGmMsawRtKDn9s73E95fZ08z3lp0XFeHCKBIck1SjN53HCp1gvmT1JjU740AIr+IWecXCz1ptI9xaXeF0cPtIFfWwARIHeFpZmnQurly33N6t6GSAZnfSIHYG8J4jLWN97KCL0C/fqOMI/tTwxCtN7At/j
+ eFYR5Hrk
+ wyC9Dr+QN1IwlIfyKPtnczrh3/t3V+8nApofIT4eS3KItSwLvpNnshPXCCL8Ye7j/UutDJC32MDeWkdzgwECczjZlysiFT88NGWoXhEKjm0OoZVuk2MDEqT3ccEXITxIKzNhZmxdFDS8/+cXrJANiBtKUXWaUZydF6dPSKACB4TKtjFqTKoUbq3l/ysjksrltoSUaUrbLnXs4uboGIRpMi5KWQQ/Zw0zBHe4auGj6+qJs9Wv8JioHni1arU/4K+zwMoXB40XmWkDZgPAU570HoHp6lAmrsS6jQwwcGZGABxsACbccly710/heoKb76IlxyJUuGj/d7kNSW97351mSUUPy3FIyjlTm0vvRkgE+P/SVZDRvSuW1mNaQe7U0Tk2GHNWuDX0Qx4TTsqcmnQey0yEdHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,86 +132,103 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Introduce folio_inc_lru_refs_fast(): raise refs from 0 to
-LRU_REFS_REFERENCED via cmpxchg, or just set PG_referenced for the
-classical LRU as before. No counter update, promotion, and guarteens
-no other complex operations in following commits.
+For the active/inactive LRU, madvise clears PG_referenced so that one more
+access is not enough to reactivate a folio, and keeps PG_workingset on a
+folio demoted out of the active list so its refault is still accounted as
+a workingset refault (PSI).
 
-Convert the gup fast-path sites. No behavior change for classical LRU.
+MGLRU keeps that history in the folio's refs count instead, which now
+lives in PG_referenced, PG_workingset and LRU_REFS_MASK, so writing to
+those bits directly corrupts the count. The two hints want different
+things:
+
+- MADV_COLD resets the count in folio_deactivate(), which also moves the
+  folio to the oldest generation.
+- MADV_PAGEOUT isolates the folio and hands it to reclaim_pages(), which
+  ignores the count, so keep it and let the eviction shadow record the
+  folio's real hotness.
+
+PG_young is idle-page-tracking state, not a reclaim input, so it is still
+cleared for both LRUs.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/mm_inline.h | 25 +++++++++++++++++++++++++
- mm/gup.c                  |  6 +++---
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ mm/madvise.c | 48 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 8700563dade8..23ddd5d78571 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -439,6 +439,31 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+diff --git a/mm/madvise.c b/mm/madvise.c
+index f75a9d139980..cdd1bebf2485 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -361,6 +361,38 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
+ 				     FPB_MERGE_YOUNG_DIRTY);
  }
- #endif /* CONFIG_LRU_GEN */
  
-+/**
-+ * folio_inc_lru_refs_fast - Bump folio refs count without promotion.
-+ * @folio: the folio
-+ *
-+ * Raise refs from 0 to LRU_REFS_REFERENCED and leave hotter folios
-+ * untouched. For the classical LRU, a plain PG_referenced set.
++/*
++ * Drop the recency information madvise() is expected to drop before
++ * deactivating or reclaiming a folio.
 + */
-+static __always_inline void folio_inc_lru_refs_fast(struct folio *folio)
++static void madvise_cold_or_pageout_prep_folio(struct folio *folio)
 +{
-+	unsigned long new_flags, old_flags;
++	/*
++	 * VM couldn't reclaim the folio unless we clear PG_young.
++	 * As a side effect, it makes confuse idle-page tracking
++	 * because they will miss recent referenced history.
++	 */
++	folio_test_clear_young(folio);
 +
-+	if (!lru_gen_enabled()) {
-+		folio_set_referenced(folio);
++	/*
++	 * MGLRU keeps this history in the refs count. MADV_COLD resets
++	 * it in folio_deactivate(), MADV_PAGEOUT hands the folio to
++	 * reclaim_pages(), which ignores the count, so keep it, and let
++	 * the eviction shadow record the folio's real hotness.
++	 */
++	if (lru_gen_enabled())
 +		return;
-+	}
 +
-+	old_flags = READ_ONCE(*folio_flags(folio, 0));
-+	do {
-+		if (lru_get_refs_flags(old_flags))
-+			break;
-+		new_flags = old_flags;
-+		lru_set_refs_flags(&new_flags, LRU_REFS_REFERENCED);
-+	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
++	/*
++	 * For the active/inactive LRU, a folio demoted out of the active
++	 * list should have PG_workingset so its refault is still accounted
++	 * as a workingset refault.
++	 */
++	folio_clear_referenced(folio);
++	if (folio_test_active(folio))
++		folio_set_workingset(folio);
 +}
 +
- static __always_inline
- void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
- {
-diff --git a/mm/gup.c b/mm/gup.c
-index e49f020f721d..cbf609dc8866 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2899,7 +2899,7 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
- 			gup_put_folio(folio, 1, flags);
- 			goto pte_unmap;
+ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 				unsigned long addr, unsigned long end,
+ 				struct mm_walk *walk)
+@@ -438,10 +470,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 			tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
  		}
--		folio_set_referenced(folio);
-+		folio_inc_lru_refs_fast(folio);
- 		pages[nr_pages] = page;
- 		nr_pages++;
- 	} while (ptep++, addr += PAGE_SIZE, addr != end);
-@@ -2968,7 +2968,7 @@ static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
  
- 	for (i = 0; i < nr_pages; i++)
- 		*(pages++) = page++;
--	folio_set_referenced(folio);
-+	folio_inc_lru_refs_fast(folio);
- 	return nr_pages;
- }
+-		folio_clear_referenced(folio);
+-		folio_test_clear_young(folio);
+-		if (folio_test_active(folio))
+-			folio_set_workingset(folio);
++		madvise_cold_or_pageout_prep_folio(folio);
+ 		if (pageout) {
+ 			if (folio_isolate_lru(folio)) {
+ 				if (folio_test_unevictable(folio))
+@@ -547,16 +576,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 			tlb_remove_tlb_entries(tlb, pte, nr, addr);
+ 		}
  
-@@ -3010,7 +3010,7 @@ static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
- 
- 	for (i = 0; i < nr_pages; i++)
- 		*(pages++) = page++;
--	folio_set_referenced(folio);
-+	folio_inc_lru_refs_fast(folio);
- 	return nr_pages;
- }
- 
+-		/*
+-		 * We are deactivating a folio for accelerating reclaiming.
+-		 * VM couldn't reclaim the folio unless we clear PG_young.
+-		 * As a side effect, it makes confuse idle-page tracking
+-		 * because they will miss recent referenced history.
+-		 */
+-		folio_clear_referenced(folio);
+-		folio_test_clear_young(folio);
+-		if (folio_test_active(folio))
+-			folio_set_workingset(folio);
++		madvise_cold_or_pageout_prep_folio(folio);
+ 		if (pageout) {
+ 			if (folio_isolate_lru(folio)) {
+ 				if (folio_test_unevictable(folio))
 
 -- 
 2.55.0
