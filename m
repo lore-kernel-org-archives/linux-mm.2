@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A2EC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:32:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA1BFC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52B536B0093; Fri, 11 Sep 2026 12:32:14 -0400 (EDT)
+	id B52246B0092; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503FB6B0095; Fri, 11 Sep 2026 12:32:14 -0400 (EDT)
+	id B02E56B0093; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418EE6B0096; Fri, 11 Sep 2026 12:32:14 -0400 (EDT)
+	id A18ED6B0095; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E9836B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:32:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80A37A45D3
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:32:13 +0000 (UTC)
-X-FDA: 85202023746.12.5715ABE
+	by kanga.kvack.org (Postfix) with ESMTP id 7DE966B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:39:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65735802E1
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:39:37 +0000 (UTC)
+X-FDA: 85202042394.15.30C3A71
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B61C8180016
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:32:11 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id CB16718000D
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:39:35 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gy1m7qOG;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGl9I60x;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789144331;
+	s=arc-20220608; t=1789144775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9rqeVVJkLJL7hyeN+ZhuUze7JPnMyhzvchT9akDlcM=;
-	b=Cb2ob6690qoSaUFtBweXqUZXhd5jwldpJhgYxKqltNhowYFbSFJHTwMK8sqr+ZtdJ8lETc
-	6wSFds8NlGEqZbGoDTxtnhMgeSZvYOKx8SrijpoJrvZ5kMJqBya13xAVHeYkIxF/KeNCSN
-	gDRYkJ/Iyxqebr6tntxcUwDGOzZtqIA=
+	bh=OkTP2UvkR9L4UOg/cpBiigVG7rpJsSBTG6KbmpAnG+o=;
+	b=M4Y0BJ+Afi1vtNcrKAjtLgGpFBEdqpXeeSd/9dplganE3VJp2oMp2zs+hrsQfB2gQtdR41
+	Kjdn/R+unMayv6kTzI++hdPY7rNY64cGJmoFfdo8mBXjKFU9UhY1/PXt3QrnFBlW0IK41h
+	IixKP0hEG3RWxcQS7GWcIWPFK1dr3Dw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789144331;
-	b=yI0SNPm5cX7JLwu3jOtkGJ24ivHE3YCf/q0JFQld+SGN9/sXpoOmbFxkzHRboVqEHczGQy
-	6MRT98vX7jvpaTRRIj1DUDwwvS9jYX7g0yB5+foJoCmp448vTb5CroqZEcVlvmudAUe3A0
-	EZsJnduDgtKTmYjYOUPGFzGVXfJbk9U=
+	t=1789144775;
+	b=v6YEpNuQbNYBK6rQIY50XaIj9mtpij/b41PSuurRl2YzdF3xQf6a2b3q3jRxO+5bWLR/aL
+	P5VxQiP86hushq+RWHZEtnWNXe4M9Uc/cuBrb6/H2xTOIZQkOtiWu5iioAUuJvFWGZjaYC
+	En1baDX+jG1DDReNXQBR3GwNS9jmiwo=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gy1m7qOG;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGl9I60x;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A4F860142;
-	Fri, 11 Sep 2026 16:32:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C3D1F00893;
-	Fri, 11 Sep 2026 16:32:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789144330;
-	bh=j9rqeVVJkLJL7hyeN+ZhuUze7JPnMyhzvchT9akDlcM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gy1m7qOGyWRZPMTSfQJX9GQn8OMxswkKp0FjsuSudkheza3eMi6XvIr048H2mPW3M
-	 PL8rI73VtGnov+Hua7Sm836ztsrYcARh0SXYdWOwul2HOk/YsGB76Z9LE6hNVa3jgU
-	 bkeKe0wZLVavneFVz57sps8mALXwElCoNhR6bGFA=
-Date: Fri, 11 Sep 2026 09:32:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: <linux-kernel@vger.kernel.org>, <hch@infradead.org>,
- <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
- <brauner@kernel.org>, <dgc@kernel.org>, <dipietro.salvatore@gmail.com>,
- <djwong@kernel.org>, <hannes@cmpxchg.org>, <jackmanb@google.com>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
- <rvvandan@amazon.com>, <stable@vger.kernel.org>, <surenb@google.com>,
- <vbabka@kernel.org>, <willy@infradead.org>, <ziy@nvidia.com>, Vlastimil
- Babka <vbabka@suse.cz>, David Hildenbrand <david@redhat.com>, Christoph
- Hellwig <hch@lst.de>, Brendan Jackman <brendan.jackman@linux.dev>
-Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly 
- __GFP_NORETRY allocations
-Message-Id: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
-In-Reply-To: <20260911142102.2294202-1-dipiets@amazon.it>
-References: <20260911142102.2294202-1-dipiets@amazon.it>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: efzyozzmmoqopun3q4d1owhdk6hezdje
+	by tor.source.kernel.org (Postfix) with ESMTP id E326360008;
+	Fri, 11 Sep 2026 16:39:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEF91F000FF;
+	Fri, 11 Sep 2026 16:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789144774;
+	bh=OkTP2UvkR9L4UOg/cpBiigVG7rpJsSBTG6KbmpAnG+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MGl9I60xY3Z2sFqyyRhad6HQLSNPVGaSdlpegFKSLHpF3B3rGo1tqdouOTEkjKNip
+	 alC0sHkDBVQbR5AEBqEpVXXiaUDQ8piArAQN5p42Uf1l1mEGXfrtfdPkLcc8DWVFHd
+	 uxS1/6MHrVb2aPWYKFqB25mTgla33/lPHoIXtpv+R5dEuU8fMbmQDpBzQdyMHTIgLR
+	 ALkurPnDO51TkRfpCizQmi+qxoWpwbCM+Hq/OSW+ug31KUDVs44DDpIXjCG2ElxENH
+	 1ciplIL2LP9dQiie4EW5MnBVvWvk7S/EMinDR/7sok2kQu9Vsord0jwYfSmqNZPT/N
+	 iV4NFGY3TFsVg==
+Date: Fri, 11 Sep 2026 17:39:28 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, xueyuan.chen21@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
+ smap_gather_stats() start parameter
+Message-ID: <aqQsWNfrBSp4DY_N@gremlin>
+References: <20260910234737.1340642-1-surenb@google.com>
+ <20260910234737.1340642-5-surenb@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910234737.1340642-5-surenb@google.com>
+X-Stat-Signature: s8knsotksx1hudgz73pmnk95b9qw6zi9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B61C8180016
+X-Rspamd-Queue-Id: CB16718000D
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1789144331-648351
-X-HE-Meta: U2FsdGVkX18H09r7oG4CWVZW2wJ4lg/eee9ckYwgS1nGWaDrfVxuuQmYZrRwxAPh/xKkMDj7yZazvJ9JbrcDS0lOTnSE56aR7oInZtJW+4WrtdWa/sa0bLpukkMRut0Kvg+59VEF6TpX7PcTGiG6LInmP7zTu9DtNF/e8qHCugy7f7lRuMvKLcg5oYCHOeLaI1l8gDxev0eG0H7yzUS0gh/8mAgnHF7slgAszdINy2nsQMQuYbkiqGDsIPdwqtJU7TdamzAM/NRhC7/cRW+VVNpDG9zsZLfsRegNV39KHFSCzGmey5Nx2ujCmkzC5UYI0VkVfZdhIwoTWEalZQwfD9dYgHImYwqlzxzrfvCdCTpE5N2ken7m+8Wxn70viK0w0+Zzop4JIm/G9VA2LpDI4qy9NgcgPf6lE5hlXAFW7mBQN+ZZvHcdn34LaftT+k0yJPyUqsUMOwFRga6505xeLX9sBu7ycEC3XGDndFv7/5jgMkTodDNrUgwUv9bDjg9MUfQFIEYaRYVLkpcjwNnWIxghMUjg3AzDmsR5lmlq1LmZ/rJLB+JMZLDAG/QW4Y6EaOUYH/lSpC35NS7xn9o5Cu7qODXo6kwm/Z5Q7XJ0iM894bFxiUw8qM4j1q2BPaMKHg8pvZ51udxP63YBmwwQZjjlQLTd/50vY+qmNx+70RovkkFpP0nh+WHV1FjW2p7QmBljhmYi1Fk7rt35ORPOo5uvI9oUUUw4Pe199g+ilytz1Tp3hvB7z0DY61xSQ5PdeurTe1ZPYRWlIgU5dJOxRxCG3a6jpfsjPkmQkHy7gW3+0yMy3WsEMD+vfKiIFgWP1K3c9KuIGfnb9uz9bbwoafaJ76RZ0hwgvUXZ1TGCUwty4wAmBJ4zo+iGreQVPOaz+/SCfKMNWt0z+rjmOl0m0/4XdlZYP9yESnasuiw34GsCvRefNsdzJz+otjJyA0FLiN68DjtPU7TkNBqXGt4
- 5fbJ+VrR
- 9yEY+1ctTAZzkM6sRYY6/qnAFKQ/3Dtl+K8MxAtd06x8tk4tg7bOzU5VgYsz+UuGGrHWzUJjsW0WwXzFNJb8bAJgKcNK1AJrrlgg2/1K41SLAwGUE2SlcB8gIIBQ2nvXuxEIm88QaQUTXqsmRt4umafXXbrMvH+iqMP4YOfPxwjsm4k6nODS7d1+1u5+h6w4l/2+y2jRXqviMqL0x8dWkNtoMppxHc55w0YCu1FAp9g9uf/CMwuGeFBojZtQgiY2LpRSTKRro68BQPzS0XI1lG1lbJujjbU2UTOYV2tFX0/kvMVnBPCVgHqbv4vTW8/YoWwbuy/IztGzGeOyBpltfWFlJE0mlQ1P62/Vfrn/8AVn30eMxWLQ1S3i9eK4cN6G7rQssCTGnijB10Gh8DhzzwtuG1KJtKKos44OLcRYQWKXJmPDyw61CKWIVpw==
+X-HE-Tag: 1789144775-653969
+X-HE-Meta: U2FsdGVkX1+jWaCR0ODr6e0LX3Xcwz0BplGrhQK+vD/MAqHIfHYf3mopPMftH3io+53Dp4XOqr7AtEA2LqwywhjH28jXYJa1ByimdZMWTonJr9qfgG/B8eoAoOc5GY2xfQ00OlDEdwUEvwkH8vnzEsMglyvcUGjrI9e+SxetzfJBtvskDhhzbAzlV5OFknddlMylRmaD9TdnIXyp8AyYn9ecMt+ceowYvjl+Fwfzvj+tXRQgg8yhU/e6soWj1CF/B2Bo71z1y7l/8AuF/N8X48WLMuzinhoXYFmabWIJDnil/M/++H7Kk17LxBarfwYVA8OmQqvOOk4K1kyp8Pehvju2XUAG69RE2rXcZmO7q9/K63UgRY5CwGHXyA+25n54vWWhVq+kpfW3xfAWBCG8JwM51etcpGUmCfpvK/J+3la9NAT4Nswskaf4m1q2Lli1TXI+mumBAC/c7O3DK96ukMqUmTlO+SXQa1jQAWBQHoKJLN2l2y4JWZ57eccvNawhkf+oOV2MD0VEA/feRmbqxumIu+G1ou0DIrqgmQcUj0pWNxWndboPyadtGL9atqtRj4JkR8/DqbGQWicuV8t+iS3yEY4iupud5eB8FF3IQqdBFv0WhdT4rhUuUX/PNuZWKWNUm9ZBVuozQBLEBgLx5B13D/ZRY8psYt8OkHWtAJBLFmgbKtC0iMvOhu05RU61lH1J/XUC0GUzs8fxIdgRvChMZb8+FPDvUyeJNwiztBamziYThPphHVGsc2UAfeQROuYfBcsdq5yeCnhiSVTFR0NGaFFPPUB4Y8LS//d5Oe4Tb+X9Gd0XKvN0wURmj5XhYTz1VHaquGXVni+Jf8EJELJZ+BrrgRotVZm5csD8uiN29H1kVheS4tY3iL0EEM9MRG1G/pZiKOPaAIeDk7kF8FD0Q3o2FLUzXYJt0bzbsianlHLrjb4U/qb1wtltBxfiiaULVb47DuSANHvmx9v
+ yyaPD031
+ fHH+FcAZ/t+I8SV+h1Utaabp4orghrKU8vCxUDhzbNjJlArRCMt5R2AScKukraa/r0qHBgoTqWW6eHHgQ/As/NYBtNjTTfI8OdNQJ4KAXWHNe0RizGlmBdx/xWg8dZe9v0AaCXpsY6XaBnDt1ZYDTRLbcHsm317Dyw3HXFmqWzI6XxpHgZP2HblGDCi6PcCyCavvpFTDS9eZQDDwjRozMtevgIe8t+u2Iz1leg7QP2/o/I+Q/3udgAMX/QcBWX++LkPW88zVDW6eyug7LvP9PktzXnoZglaQh8ohv5f2OFvXlqk2tdTcQSlPP+soUnh7K8T7WLtn+rotXjm8+QpZ/QYZpJd8Dc0PswpYNQwKNsFxdllWaBjRISejj53TXCpruzEZVX1zz3c2hOLIdCgSOezqhitcZzWhnwSoHb4jGHR4Vbb6A4MWKjm0xO5DKNg8Vh/qJ0tF2IsUcMlM4E+PvK7FQxp/BPph/clKH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,73 +94,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 11 Sep 2026 14:21:02 +0000 Salvatore Dipietro <dipiets@amazon.it> wrote:
+On Thu, Sep 10, 2026 at 04:47:34PM -0700, Suren Baghdasaryan wrote:
+> smap_gather_stats() interprets its start parameter to mean vma->vm_start
+> when it's set to 0. Eliminate this special interpretation and pass
+> vma->vm_start explicitly when needed.
+>
+> Since smap_gather_stats() operates within a single VMA, we can replace
+> walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
+> which is simpler and also can be called while holding per-VMA lock.
+>
+> No functional change intended.
+>
+> Suggested by: Lorenzo Stoakes <ljs@kernel.org>
 
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the iomap buffered write
-> path.  When memory is fragmented, each failed costly-order allocation
-> enters __alloc_pages_slowpath() which runs direct compaction and
-> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
-> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
-> 
-> The root issue is that direct compaction is too expensive for hot
-> allocation paths that have fallbacks to smaller allocations.
-> __filemap_get_folio_mpol() already marks higher-order allocations with
-> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
-> failure.  However, the page allocator still attempts full direct
-> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
-> aggressive when the caller will simply retry at a lower order.
-> 
-> For costly-order allocations with __GFP_NORETRY, suppress direct reclaim
-> for the whole slowpath by computing can_direct_reclaim (and hence
-> can_compact) as false.  The !can_direct_reclaim check near the top of
-> the slowpath then short-circuits to nopage: no direct reclaim, no direct
-> compaction and no drain_all_pages() IPI across every CPU.  kswapd (and
-> in turn kcompactd) is still woken further down for background
-> defragmentation, so compaction keeps working for long-term system health
-> while being removed from the latency-critical direct allocation path.
-> 
-> Allocations that also request __GFP_THISNODE are exempted.  That flag
-> pairing identifies the local-node-first THP attempt issued by
-> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
-> form transparent huge pages.  __GFP_NOFAIL is exempted as well, so a
-> must-not-fail allocation is never made to fail.
-> 
-> Test environment:
->   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
->              12x 1TB IO2 32000 IOPS RAID0 XFS
->   OS:        AL2023
->   Kernel:    v7.3-rc1
->   Database:  PostgreSQL 18.4
->   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
-> 
-> Results (average of 3 runs, TPS):
->   Config                                       Avg TPS   % vs baseline
->   AL2023 stock 6.1 kernel (pre-5d8edfb900d5)   136,942           n/a
->   v7.3-rc1 baseline (no patch)                  59,408             -
->   v7.3-rc1 + this patch                        161,994       +172.7%
-> 
-> The patch fully recovers the pre-5d8edfb900d5 performance, bringing
-> throughput back above the pre-regression level and well clear of the
-> ~59k baseline.  The AL2023 6.1 row runs a kernel that predates commit
-> 5d8edfb900d5 ("iomap: Copy larger chunks from userspace"), so it is not
-> directly comparable, but it shows the pre-regression level and confirms
-> that the ~59k baseline is the anomaly and not the norm.
+Hmm did I? Where did I suggest this?... I guess a while ago?
 
-Thanks, I'll update mm.git's mm-hotfixes-unstable branch with this.
+I mean I also happen to suggest it in the previous patch review :) but that was
+sent after you sent this...
+
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+
+I don't love hacking a hack for a patch and then unhack it in the next in a
+slightly roundabout way.
+
+Feels like this should be squashed. And a wrapper function for
+start=vma->vm_start should be used rather than duplicating that param
+constantly.
+
+> ---
+>  fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
+>  1 file changed, 16 insertions(+), 13 deletions(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 3c40c9cbb9c9..ecce7ce116cb 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
+>  	return &smaps_shmem_walk_vma_lock_ops;
+>  }
+>
+> -/*
+> - * Gather mem stats from @vma with the indicated beginning
+> - * address @start, and keep them in @mss.
+> +/**
+> + * smap_gather_stats() - Gather mem stats from @vma.
+> + * @priv: proc maps private state.
+> + * @vma: The VMA to gather stats for.
+> + * @mss: The accumulated stats.
+> + * @start: The address from which to start.
+>   *
+> - * Use vm_start of @vma as the beginning address if @start is 0.
+> + * This gathers stats for the whole of the VMA unless the lock was dropped
+> + * and VMA grew or got merged and we found it again, in which case we only
+> + * gather stats for the remainder of the VMA range.
+
+This seems to be describing what callers do not what the function does unless
+I'm missing something? So that's really the wrong place for it.
+
+I think the description of why it might be a partial walk belongs to the bit of
+code that actually tries to do a partial walk.
+
+Anyway as per below I think separate partial/full functions make sense and there
+it can simply be described as walking either the full or part of the VMA.
+
+>   */
+>  static void smap_gather_stats(struct proc_maps_private *priv,
+>  			      struct vm_area_struct *vma,
+> -			      struct mem_size_stats *mss, unsigned long start)
+> +			      struct mem_size_stats *mss,
+> +			      unsigned long start)
+>  {
+>  	const struct mm_walk_ops *ops = get_smaps_walk_ops(priv);
+>  	const bool is_partial = start > vma->vm_start;
+>
+>  	/* Invalid start */
+> -	if (start >= vma->vm_end)
+> +	if (start < vma->vm_start || start >= vma->vm_end)
+>  		return;
+>
+>  	if (vma == get_gate_vma(priv->lock_ctx.mm))
+> @@ -1285,10 +1291,7 @@ static void smap_gather_stats(struct proc_maps_private *priv,
+>  			mss->swap += shmem_swapped;
+>  	}
+>
+> -	if (!start)
+> -		walk_page_vma(vma, ops, mss);
+> -	else
+> -		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
+> +	walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
+
+I mean obviously am in favour of this as I suggested it in the last patch :)
+
+>
+>  	reacquire_rcu(priv);
+>  }
+> @@ -1343,7 +1346,7 @@ static int show_smap(struct seq_file *m, void *v)
+>  	struct vm_area_struct *vma = v;
+>  	struct mem_size_stats mss = {};
+>
+> -	smap_gather_stats(priv, vma, &mss, 0);
+> +	smap_gather_stats(priv, vma, &mss, vma->vm_start);
+>
+>  	show_map_vma(m, vma);
+>
+> @@ -1396,7 +1399,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+>
+>  	vma_start = vma->vm_start;
+>  	do {
+> -		smap_gather_stats(priv, vma, &mss, 0);
+> +		smap_gather_stats(priv, vma, &mss, vma->vm_start);
+>  		last_vma_end = vma->vm_end;
+>
+>  		/*
+> @@ -1455,7 +1458,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+>
+>  			/* Case 1 and 2 above */
+>  			if (vma->vm_start >= last_vma_end) {
+> -				smap_gather_stats(priv, vma, &mss, 0);
+> +				smap_gather_stats(priv, vma, &mss, vma->vm_start);
+
+I mean this is all horrible, having to pass vma->vm_start explicitly.
+
+Although better than the hack that gets compounded in patch 3.
+
+There 4 invocations of smap_gather_stats(), only one of them passes a
+non-vma->vm_start start.
+
+So it'd make more sense to just make smap_gather_stats() lose its 3rd param and
+have it call smap_gather_stats_range(), then have 1 invocation of
+smaps_gather_stats_range() directly, as per suggestion in last patch.
+
+Or something similar to that.
 
 
-> v5: Derive the decision into a local flag instead of mutating gfp_mask
+>  				last_vma_end = vma->vm_end;
+>  				continue;
+>  			}
+> --
+> 2.55.0.1007.g17ff1f9808-goog
+>
 
-The acks from vbabka, hannes and hch were dropped.  Fair enough -
-that's always a hard call.
-
-Sashiko is worried:
-	https://sashiko.dev/#/patchset/20260911142102.2294202-1-dipiets@amazon.it
-
-That's different from Sashiko's v4 complaints:
-
-	https://sashiko.dev/#/patchset/20260904115629.3993331-1-dipiets@amazon.it
-
-does any of this look real?
+--
+Cheers, Lorenzo
 
