@@ -4,111 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9513C88E58
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E5BC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:57:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A10AE6B0092; Fri, 11 Sep 2026 12:55:42 -0400 (EDT)
+	id CACBD6B0095; Fri, 11 Sep 2026 12:57:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1F06B0093; Fri, 11 Sep 2026 12:55:42 -0400 (EDT)
+	id C834D6B0096; Fri, 11 Sep 2026 12:57:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AFEA6B0095; Fri, 11 Sep 2026 12:55:42 -0400 (EDT)
+	id B9A2D6B0098; Fri, 11 Sep 2026 12:57:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F4F96B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:55:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6AFD01C1C17
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:55:41 +0000 (UTC)
-X-FDA: 85202082882.13.CDBCD16
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8D3B81C0009
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:55:39 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 988106B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:57:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE4271C1DBA
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:57:08 +0000 (UTC)
+X-FDA: 85202086536.30.DB1E906
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3EDA31C0003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:57:07 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c0NoZhUu;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D+uQTn8J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D+uQTn8J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789145827;
+	b=DKiviZQjqx7DYZctUSM9psX5njbl3OOcYKZLZzsWrJcCoqL+TCKodPyy5yCgBPJNfi78/t
+	84+CTfh3bVXxZ9hkLsRX4LQcayyiG9GncHNJFVnp567Ugy/Oul+E5s99TiM9BTU5SCy+R9
+	38Fs4x0inNzOdZK7nbMkEjj9jknpJeY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789145739;
+	s=arc-20220608; t=1789145827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yE+7Pez0ot5mrGbBn0XwFu3bOI3y9SJeDDhq4Pq3Cgc=;
-	b=D594RUza84htOALyl6TYnAkt5yxBkiP5USMSPns+UGdfXzOqQpeMxCWPI6KY6QqHCKXH7H
-	AwYUAlXXIcgpjOFP5FOP8oIU7pSxTb0p6ke3Zel9LwUoryqOobGbm++yGVYR1AvcMGk3kx
-	b9Oz1oYh3h/jwelahXaZLHojWAeFZVM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789145739;
-	b=4vcyxvsmfmTkWNRLsLAuEYKinaN5QHwh/8guL2UflZI1p6ET4yCavAp1akNcs9YCYaRZRY
-	HrdY0jjdrg1S0y0aESiyXHskG336ISCw9ReB+zY0Gzt8G+P/95KQ25YL9c8ZwfGmFr51ZP
-	XGErR8qmCuTN6SqWgmcHNGSliB97Li8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c0NoZhUu;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=CCBzYIFfSdzdVkwkMBE3J+K3xos/U3vU+XIg0PSx4Ss=;
+	b=KXZPwx/Iic5LLSJtI1omDTThfZSsls+uRoXEoUKOvgaDToD/A1tLo6mG9kN+MHXjbPCcMY
+	r6kiT67FhFy7ieRWw1HjKpd0fPXsHUhrtCo+S1+GbhO2jwnDQZZ55QCgJ04UJ9sjgH+Jrp
+	8RJ+mtHpozTCIEL/OvJd0wgrO9lIxNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B0824005A;
-	Fri, 11 Sep 2026 16:55:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEC91F00893;
-	Fri, 11 Sep 2026 16:55:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DD7D60008;
+	Fri, 11 Sep 2026 16:57:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D9E1F000FF;
+	Fri, 11 Sep 2026 16:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789145738;
-	bh=yE+7Pez0ot5mrGbBn0XwFu3bOI3y9SJeDDhq4Pq3Cgc=;
+	s=k20260515; t=1789145826;
+	bh=CCBzYIFfSdzdVkwkMBE3J+K3xos/U3vU+XIg0PSx4Ss=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c0NoZhUuLC8eojSn10Dl+/6UkGx8wGOb/eBDtEA0CIyk1hQ6mP9dgGNHHGBX3N7yA
-	 X71r+aiXtzF4bhp3C1o/xG+WbKq9dsGWuGA3Hu4bxgxtDeR0HzLHnKDlSwnkTzN4I0
-	 yNFvdrydYpmyeMrh9F90cWrJC226CBBW/A2ArZjcVPRInVrizb9o3/D2/gMDnyMPx1
-	 YbCSjQU+p0HSOBH8E3Fyc1mpmYrLR8tCHSP8jSjf3gDgXExbXqvDifcxjWpIDa/PKf
-	 vZyITqtq+KtGCpN47eXarSnhSRPzuOIVrud/pd7SbcUw4idHZQTzpTNbHJv4fgl0sg
-	 qtZmvLKps6t8w==
-Message-ID: <dd6ecac2-9bd2-4184-a034-9e13afa614bb@kernel.org>
-Date: Fri, 11 Sep 2026 18:55:18 +0200
+	b=D+uQTn8J9UjvWNZ3dExwHHIHJ4paSJPSwyKONrL+rFV1TQvbwEjMm96PwplVEfmEh
+	 2iZimrrrHgIEpTaGO3a/lWB2PNSaaybBdP5aIrOg/uazxsHnxzDgQ8Ru7shWDrMD5k
+	 UMo3WjqrxmTTDJuKdIimEGrgHJjNJKjo54LvTQoHqaXJuc9Fb5xTt38cJRKuvGHbQS
+	 H7nli0AXP86VsDtIa0ojnr03+tmEKdVIjX10wM0PY2qb91LxwPt4NuW7pTW42ooTIL
+	 OYnzhhs7Ov0jK521kZjB35o3W9Rooxf3acHi5VL/8T5+nBKxanx8QIXrliZzm6NfOs
+	 AAG4S1RYDQRLw==
+Message-ID: <89356640-183d-4138-880b-332a05f93f10@kernel.org>
+Date: Fri, 11 Sep 2026 18:56:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] mm: distinguish PTE table storage from PTE values
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, agordeev@linux.ibm.com,
- ryan.roberts@arm.com
-Cc: linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260903103002.1091859-1-usama.anjum@arm.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ YoungJun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?=
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-doc@vger.kernel.org,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, David Rientjes <rientjes@google.com>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org>
+ <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -155,17 +148,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260903103002.1091859-1-usama.anjum@arm.com>
+In-Reply-To: <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: by64kfuki6k9ngxhyqeu96n3q19jzfen
-X-Rspamd-Queue-Id: 8D3B81C0009
-X-HE-Tag: 1789145739-180813
-X-HE-Meta: U2FsdGVkX1+NKyJi2Vofdq39svCewKU6kfdIc1iQaAbIcAHCZXRu3V4+R/ctMg8IAQdFZlY24FqpZPbQqmTfZEjmLXsCDr6P7di5q7IJPXXf3esmSZIZnEfpfK7pByMhwOK01UkoUUeoxH890XM2jzKq7WyGlXF6QU0ACQapDWoS7GKlNjfiUQmOkK5/jGvP2zDxU1O5z3je6YJ5XgBlJyKyzYA9iePXIytS7rqBVUH8//LiwCsJFnOhraSObNYVmEipA6NE4cnrk9umyWgVKDAychk3aBa03RJrq35onMKfnEQ5A/dG9V/QCp06p8aftwldnSSb4p2iegVAv+6fleYx7qt9fQM9MHLkhvSjV5ev9ZGnF+ZAi98YZxQx1CAMrgq2g6r2P+H5M5UTTXZwGhbF0IDZBp5RIOiVI6LW1JVrwhgDTENUKFzCSy9whoeKMYNubRP8KGi9NW4+Yx1Wm2x3sriFTVDTKzNiGdLIGaebDqBJ44j0wrNovunUnn429mT0XlJ+2PJwFggtoBwzOFuPsluBzEQ3JXIdTJ+ZAkyQsTMMP8EMl1vHcRDKRkqwrf2H73ftPC0pDHMFhC5OWh1Jtnp1ayqHrCrbQh8dzzq3yxgsMklBZAasmC39AN+Sf7y24Px6W+H7tPAJhbcz0VYvjjdxzhYo6ovO40eXoxNVHo6yusVAsx6cIl1Ed2rhgXcy6l7VnP4q3303aKhsoFQSGj7V9zYGohp1Kbp3/zmiY9TwCLs6uPJDiQKa1yyigqEGwQmU4SxzB7dBoS4q7d9Cj8b/Hu1sOHj98ca46fW0oICIeivgNY2j3ASsLXIhqaCFsAF1b04SLoC3mW1Ukx5XXPgsidm0hMJ6q314xvbIpcejNhybQzAkMg0gnMuyPCWdriPEwYEDfNpN2nyBlsbU74JqWvfGqE8Zg5apjoGF+DcMbVHq2+6/HtOo3gYU3xdRzIJWozxpbtXXBpB
- Ii7FdpbT
- rpepivq3xNwyxZQ1moQz20vkK2mtUqSvLQ0Zjp4EMzOlCPKB+hptfsMEfQi9Z6toiE7gOou8VA78leLPZGfDqTGA6NZIo64qw4lYjd2HWwjTDc1DyqMg/3/NlwOEFQIYmb1Fmalb+uwX8Ie2i1Iw8Vs+N8Bku/nMZ5m19hI2UIyYK481bh9qUGK+fsUFFIX6ghZnGwmiDAWxb7AM7rp5GIjaNfQUOoWkAXXPb+WOtqzNxZWvbKObtKSDJCVTBOYQkmam0eHDsTE6NR0+dLYtJAFeE88NViQlvrdW3AtUeFqwlshtA0xT8IMEnVwCpCVc3y92HjBm0T0WciVusvW5U87KhDQ==
+X-Rspamd-Queue-Id: 3EDA31C0003
+X-Stat-Signature: o4knyio6rd6tfxspr69gdho4p1phz8et
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789145827-912074
+X-HE-Meta: U2FsdGVkX19FAd0ERSQqXeRQsgITlv/TLVGLWWCD9U4YYBkzGuS0GAxAO4lvPoouHHncZkLi9QgEfgyJFFxYoXVYb6QOtM+AqmMg/P+k9zKv1NdAAyPDAao/PI5cpgLeYP7ROgjfwWurIeeVEk37YG0CW+mE1NoDGapCNQH7g6tE5KsQ2y7RjSmsbJFvjj8ZhZZLmvsztgV+dXPzs9lzLbEfOcn9yYIsPfRRuGhuzhN73lYKzA1XW8hK8I95gMDj484iuZs1F+IWHZ/zUHw9QP/mzppHby+kSQ2xkaVJzlIYj4sTRQ/JJdC/B8B57NWHUHuzaCQUP/ScCw/0lyJEAJDBPc8yc7soO/Y8YKT1xkO5NRI6OKhF2ysdunThoP8D03Zlrjcz2ZrUX2az27WuoJIlhlKukGMat2uK2VY1gTUl3KGV8BjThwYVBQka+GaWJN6BT5O9fmcrbxwgto0F7SxD7o2tbDgtH49nX4cOa2+DUg9xk3PfhpQnmZdfG4lqRRt/dVoc5ty0A8hb6dH8I9Ghq/adUxP5fEr8U/V8sIw7e8HOzVpFzPkWLZ07RFS+XXUCaTqCe1FUVpjVxMTSQnrP3YxlU/ESuW4S6ojNNXKrUMO7px8t75BIgeZjnETewCFyAIJmkkki3tqFR1aDMz5UT2cH0DCBAUVywjSBS0DbEq2M1km2nN3Plhuy3LW+mzFH8b9+gcBpkjWqXPOVqh78zgeIWWq+N12xTIufxH1WgaJmRWbKirJz+2AhqS7baFXrO9pVdikr3nkvL2Xw+2dPoD7mYRWpWd42tSmymuvrlLw5aJcyakZhLbAZ6GTUUbDvBnpwgDmrlJXzLIG2p+LvZEQZXg3iC/tBMmvlwmXnHehDUwEdEIO3KN9rcgKNb7wqjiiET08eKDNuPtGn3x+goTGf47lNoL6ZFtM/UAyMxNFEx7n3skfuQQB3gpE7IZOZgLO8s+/MPC7H9/b
+ 40uY2hJD
+ zLIYB7EKlSoIl1sQqBNBGE7MW8XGn/PBxf8RQwWuwZKC/rKzHzJwwZW4X9r17+XZOi9Eqt0d0nsiWO6Mnt2lWaSnx5WfYdLg+Dvh60MGDcAbJKOe52hkMNbplGP8a5IUzlKW3aiu0lsQV0wPM/WrzNCE8zMvERkEspKUknJDmRC/RhtmubOltP5SN8pmJ0rbHP/BJaXwmbCSWhQl/iPORJsOzqbhK75oVlJ0oHv/9AtvWttw6eakREzfkpnj1TBndvXozWCwRo0nsUjwB9rjEUhY9X/wbV4QiTOcSwWgil1pZ0mYtpQx41XqyFk2l0C9CF9Q4TsZGrBIbhqszUzfW1VFJyo0olmhHxUeclLCRSIaEEIoh/pKIUojDXShlRacaLjwrKC0H3wtM96jsmoaZZOmmIi6/AXR+wmwYhefzBZIcGj+FukGJhUdtuEi+B44sLFjM415k49iMxRU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,72 +166,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 12:29, Muhammad Usama Anjum wrote:
-> Hi,
+On 9/11/26 18:20, Kairui Song wrote:
+> On Fri, Sep 11, 2026 at 12:23 AM Nhat Pham <nphamcs@gmail.com> wrote:
+>>
+>> On Thu, Sep 10, 2026 at 3:57 AM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>>
+>>> Hi!
+>>>
+>>>
+>>> Right, and conferences usually don't have the capacity to squeeze too many
+>>> swap-related topics in, so it would have to be side discussions or BOFs.
+>>>
+>>>
+>>> Yes, that's an issue. I'd suggest swap maintainers take care of that if they
+>>> agree. I could try as well, but it's rather tricky right now on my end ...
+>>>
+>>> As an alternative, we could also use on/two/ ... slots in the bi-weekly MM
+>>> alignment session to talk about swap. (I'd be happy to learn more about all this
+>>> as well)
+>>
+>> That's awesome! Thanks for the offer David - I think MM alignment is at 9AM
+>> PDT Wednesday, usually right? That works for me of course, but Baoquan
+>> and Kairui (and other swap folks) - would this time be convenient for
+>> you?
+>>
 > 
-> pte_t currently describes both a software PTE value and an element stored
-> in a PTE table. Consequently, pte_t * can point either to a software PTE
-> value, often a stack copy, or to a PTE-table slot. The compiler cannot
-> distinguish these cases. A value pointer can therefore be passed to an
-> interface that expects table storage, while table storage can be read by
-> direct dereference instead of the architecture accessor.
+> Thanks for setting this up!
 > 
-> This series begins a staged conversion at the PTE level. It introduces
-> hw_pte_t as the element type for PTE-table storage and converts generic
-> MM to use hw_pte_t *. Software PTE values remain pte_t. Interfaces that
-> intentionally return a value through pte_t *, such as install_pte,
-> remain value interfaces; the relevant parameters are named ptentp to
-> make that distinction explicit.
+> Is 9AM PDT fixed, or can it be adjusted? 9AM PDT is midnight for the
+> UTC+8 folks.
 > 
-> The generic definition aliases hw_pte_t to pte_t unless an architecture
-> selects ARCH_HAS_HW_PTE_T, which enables a distinct generic wrapper named
-> __hw_pte_t. Some architectures define pgtable_t in headers parsed before
-> the generic hw_pte_t typedef is visible. The structure tag allows those
-> headers to define pgtable_t as struct __hw_pte_t * without creating an
-> include-order dependency. This is required when converting s390, m68k,
-> powerpc and sparc.
+> The time is still fine for me, though, I tend to stay up quite late
+> anyway ;) so that time works fine on my end if the slot is fixed.
 > 
-> No architecture selects ARCH_HAS_HW_PTE_T in this series, so the
-> representation and behavior of every architecture are preserved. ptep_get()
-> keeps its existing READ_ONCE() semantics and converts the stored element
-> through __pte_from_hw(). An architecture can later select the option and
-> convert its PTE interfaces to make the distinction compiler-enforced.
-> Architecture PTE implementations and most architecture code are
-> deliberately left for those later opt-in conversions.
-> 
-> Here, hw_pte_t identifies PTE-table storage rather than table lifetime:
-> complete PTE tables use hw_pte_t whether or not they are currently
-> linked into a page-table hierarchy, while software PTE values use
-> pte_t. The distinction between complete but unlinked tables and
-> hardware-reachable tables was raised during discussion and remains an
-> important point for review.
-> 
-> PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
-> converted in later series after the PTE boundary is agreed, avoiding the
-> PMD-specific cases that made an all-level conversion difficult to
-> review.
-> 
-> Most mechanical pointer conversions were generated with the Coccinelle
-> script included below, then audited and fixed by hand.
-> 
-> This series does not add a second ptep_get_once() accessor and does not
-> remove or replace STRICT_MM_TYPECHECKS.
-> 
-> The design discussion is available at [1]; while the original idea came
-> from [2].
-> 
-> I've the patches here [3] for arm64 conversion which I used to find
-> usages in generic code which I missed during development. These would be
-> sent separately.
+> Is there a calendar invite or something, please send me one, I'm happy
+> to do a swap sync discussion there.
 
-Unless there is more feedback on the overall approach, the next step for this is
-to have at least one architecture support posted.
+Let's get David R. involved.
 
-We should only merge this if at least one architecture (better two? :) arm64 and
-s390x? ) would merge the architecture bits.
-
-That is, we should get an ACK from the arch maintainer son the common code bits
-and the arch bits.
+@David, we'd like to use a meeting slot for a high-level discussion on the next
+steps / future for swap. When would the next be available?
 
 -- 
 Cheers,
