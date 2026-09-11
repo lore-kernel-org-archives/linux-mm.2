@@ -4,201 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A749C88E58
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:06:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1354C88E45
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 992BC6B00A6; Fri, 11 Sep 2026 11:06:17 -0400 (EDT)
+	id 159356B00A9; Fri, 11 Sep 2026 11:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943726B00A7; Fri, 11 Sep 2026 11:06:17 -0400 (EDT)
+	id 12ECE6B00AA; Fri, 11 Sep 2026 11:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D396B00A9; Fri, 11 Sep 2026 11:06:17 -0400 (EDT)
+	id 035626B00AB; Fri, 11 Sep 2026 11:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C5406B00A6
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:06:17 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87C2F14025F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:06:16 +0000 (UTC)
-X-FDA: 85201807152.04.2B4924E
-Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 94AC81C000E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:06:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JoIvWrEn;
-	spf=pass (imf20.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 74.125.231.171 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789139174;
-	b=MRG/7X8tdt8ldAUM3KKS8nQUJgT2M4CPYPkJJFAwyywJ21my/9gUw1duL9wmJhYD2fm6M9
-	5YD9upFsol2GCTtfqTt0NfTXMa7mtZ+dAdz0Kn/6vDvrdC6Kugt0QPMBltq4zrjfKCbnmw
-	hDWNkjWjIMlW0KzjMcN4jUJlD6/dG14=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JoIvWrEn;
-	spf=pass (imf20.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 74.125.231.171 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789139174;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D90086B00A9
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:07:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F79BC02A2
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:07:09 +0000 (UTC)
+X-FDA: 85201809378.03.608B8CB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5B0B314000C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:07:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDV8SFI7;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789139227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31WGPI9CsS8AEb1QmZigfY8oBbhGb6+EPuGPGJKusUg=;
-	b=Yw+lIXAPGrNLvMDjqfhUwTmWoSdVqeaDcpyTGZptsdGW+S3n2zd+y+emg76wTFgC96vuNC
-	4cldUnL321gFZ0tIzgBRI94nr/yAVB2g0L1HOo4Mvxp5td8A87M3Hr8RcbbynG+tOfjHZ5
-	Wx0wV7Z/4zoO6ttGA1VeSGzgcIHo2as=
-Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-7fccd4c3f36so880891a34.3
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:06:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789139173; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kXrOfrS/qpuG3+IwLVcfpM5tNHwNaxhE4WzlgQ8BYjrTrM2f8JA/zvX2p3tNB9Vnj9
-         rhpWzsXUuXhTL/OOm12jrXlynZkdq6d/wt85cWriPK8sYylGJ9CRr0cGTWCQtXUeW0R0
-         5SUzIyRAXTpdDG6uADjsnFdPvufHR18CxCK0tYYWHozbVhUW2OHoK33Ynf3A3Cmoq+2C
-         TK9KM5LBPHjcR378J5XfDua6q1uaUWfmmNlBmfAs8wFlWpWTCjMSelyVPDT1O4j+88mO
-         hCw0jsQT6fT/A4XagWvoflLqMIfxjwI48+vpiQWVkbwcUVOvDupefWpx1Hx0Qd2kTdRO
-         cFjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=31WGPI9CsS8AEb1QmZigfY8oBbhGb6+EPuGPGJKusUg=;
-        fh=Tp0/U/dwT3TrQz/xPw8FvnuZ4mE39bEd7vsJxB1txvs=;
-        b=a6GtL3EIHyz2zpl+gJnFdpVMptKE/SCzGeGS2KpsnP3bSkwADhHFLnY9955XsD55nL
-         ghXVFYTdrlq2RXTi4VYdG+OcglCrLfapy+6jQm1KERSLt6Em/0WC0AUbvG4F/EAWFMlj
-         KwLbqVwikrPZkOme8zoTsKO48VY2lOUgmFHTmE2+qck2x1fPZ0thsQzPPWM97ZS18tPH
-         cXN8IpmyDHMeumcC/fa7JDuOOit/Vi45b3hF20vSZgv5vCPSXWehqg1W+EB/rgtNKnZh
-         ggTQbyBQUL8oBod0oj1e0Ch035oMcPkvOOvNURQEMDsyXwac/1WdOBkTMmu02Im8/Qwf
-         pTFA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789139173; x=1789743973; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=31WGPI9CsS8AEb1QmZigfY8oBbhGb6+EPuGPGJKusUg=;
-        b=JoIvWrEnc/5OClGLlDUI31q+T7zpOSUMsUiFSgQ9WChjGqsF8/FPL9ZMdBKrZG4U34
-         J8dedhsUlEXVKdNtKHodtNCzu0SX0AsUpC7br5i4T4q2x+opIjrtGHZ2v9SKaNkZ6Gq6
-         Km4PRnhKRp2cNfV0aSsYGJBHCZSHKJAzMtRNp2kS6plHrBvTbyFTVlcbw8dgdHWvjtuM
-         bFX27uJMnWVwWqM2DvZye7HiUQ65xAwsZM8PuBSnqwXU5fJ5y1S47XO6WghRt8t00CWD
-         +tq1gq9Aj96ve/4T0LHM5iA5y7A8cMmrIMPDees2OyozMC9Yoz3bvruV/pjmbPOzh9CD
-         VUYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789139173; x=1789743973;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=31WGPI9CsS8AEb1QmZigfY8oBbhGb6+EPuGPGJKusUg=;
-        b=FI2rvGhfCuLBCvwphynCAjmW7mkUefHKEVPinBYgrMi1pS9EvFYIU1X2P4JZbXtCAu
-         aq8/4ZIs24heSP1sHpMRoCO06RHaHZ7oRFkM+N5IFih7MchV6BJz/Ldp4LSGMcBZ+vxR
-         IMznn7viUnbczYGCx3zmxCcLMxy5mzknFVS+jgcUrML7FY1aQ3j/mu8Kv6Pk/rKXFDyQ
-         Zg9dqqprkEqJs4IohAVKeFkW1z4p4TQo6CIlXO2UNwulmtuItsC27rQdyzgXEQBzCCdu
-         eFPHZxcQZC16wHunX7+DzqALW9iQZr4+xgHH+dvfSthPoUtb41cZmZz3p9AOYCj+6//u
-         7gJA==
-X-Forwarded-Encrypted: i=1; AKwUvByP8etHDOXEnbq4eW/FPDVaMlAXT0QY3qWNLuw9Sv6F4ZEfM1YilpjifqY9a1YnsNN9lTeAtbCX/w==@kvack.org
-X-Gm-Message-State: AFuF++mwDCUHLVM7aGC3jOwdB0xxf1Gv5qzW/xnIJw0gFUq/ZpjkOBdq
-	Qa+6MUrYxDJwQsozFi9y3db6Oc31uKUHVIEWAIQofUBZdqdhqcrZNBV252Bl6doBl8Cs+xlVOsx
-	CgfqZMQY95uEjFsB23qvTyjbUym+Nn0E=
-X-Gm-Gg: AYBFou0/u1zSw5a6ocwdh6MShVISX/fU3/aNycQeBWwxi85bG+QIDVlNDCfjHFP6LDR
-	EZuCpr9MwYgCQTMwUchgJKuzs9h/hB+457McbZlnPB1QDpw2yE+2/9OIHUdIw+KdS5muFRpFVpy
-	FMuOVfSNjpsnb+U6hs9w+fsXwBl7pWYtyZwxqBPk3Qg2y4a7VuPHAg5KX3qiRe32wtTkSlWThe8
-	8MhC7uKiu60vbnCF3zEVuyJqEe7rPN8tdusiGv8V8/mfwBk89vpZlcwBBihYmfJx9ooBxTA3z4G
-	HlwFynM1qQLz6lguvY8AcrcU0X/ZcNxc6uSXP1I1OayIkma4ztPHk8g=
-X-Received: by 2002:a05:6820:8585:20b0:6b1:be9f:ce6c with SMTP id
- 006d021491bc7-6c0b9d4e35dmr4967721eaf.4.1789139168581; Fri, 11 Sep 2026
- 08:06:08 -0700 (PDT)
+	bh=993TfVUqxah6p+9ru7SHYLSMQ1D9Z3b73DF2QhhB5to=;
+	b=XUq2VjBNZ07UQEXvgQzOXl4brU17n82Cfnj/s6P7Qu0aUbPy3VPkNbwdAIhetoQy1+PmxI
+	goUEJ/cIfKoKwXkgkp5y+cBgufJ3VRXUtiVhkoocBk2KeFqKa7e2+cREMtuAm3zMIjCy5q
+	BcpcqvgE+rwJtzOmMn8zXkBgLmmo8/M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDV8SFI7;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789139227;
+	b=I+noZm/WHVQBW0JdF4+eZevt2Ks8+2xoyKvxIQVrY71equxpQLugESodQjGHfvuRGG2d/Q
+	ydhBcKcADOC5ai2s/o2IxMxI3k+Zt/+Lzw2wcrhpnNatRIJvulK98kxLw5/rmKkwkuWIGB
+	W/QbVD6FDtmb7fZF0x2jbYx2UiMmndM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D6CD86022D;
+	Fri, 11 Sep 2026 15:07:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C9C1F00893;
+	Fri, 11 Sep 2026 15:07:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789139226;
+	bh=993TfVUqxah6p+9ru7SHYLSMQ1D9Z3b73DF2QhhB5to=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gDV8SFI7oNEqbwx1x4YqwzWsWDpq6fbK7G8af48m3PrQ+UhnjSF3yGpxcl7v45+iu
+	 ExM1/F1IJd8qIBvc/k0n1LeRgzV2/Wb8stVD7qctVPf4JitLk/97CLOmuLtpM9j8qu
+	 bK+30wRy8pHk9G/PCm9eedhXFrhHziF7LAxJapXLLxisW/w7dd31TMvcn4VwLadJ4y
+	 iAzoBrIP0gM8E0iy8boxjPFiOR/AYPC2irWP5ZgGjmHQEXxmIA1mQc5s+RN9lLut9f
+	 7MuFfuRPxulKQQox1Rln0vAZl171csJVOvAv/ouYk0Jxz0wbRYYzqmQB5ArIgLprW5
+	 ATEz2eLsefDfw==
+Message-ID: <8170ef17-0de3-45dc-8c8c-de15f088214d@kernel.org>
+Date: Fri, 11 Sep 2026 17:06:58 +0200
 MIME-Version: 1.0
-References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
- <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
- <CAEjxPJ7hXSi=oLtQPV+7GEvN+txfYwZ-u-v_EysNHM0gSGNrCw@mail.gmail.com> <aqPUqU3eZeFrykj3@gremlin>
-In-Reply-To: <aqPUqU3eZeFrykj3@gremlin>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Fri, 11 Sep 2026 11:05:57 -0400
-X-Gm-Features: AcwNN1UL9TCHStClpz4OqpdpVCOHFGRlTtL1ELl-GfcxGBMtPjfBSuHNlaSY27Y
-Message-ID: <CAEjxPJ6P19eKF-c+mm2BSr5_WpmhMTZjjUfSamv3SfOPO4SGVw@mail.gmail.com>
-Subject: Re: [PATCH 11/39] selinux: reject writable opens of policy file, drop
- mmap shared/write check
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
-	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] mm/collapse: separate a collapse from its
+ callers
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260910120238.2529819-1-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260910120238.2529819-1-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5B0B314000C
+X-Stat-Signature: 9g9hr5pon5p6ypnada9f1h9f7p8xfdry
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 94AC81C000E
-X-Stat-Signature: 73rjtryim9ugnwfyg99podxw6e9a5fj8
-X-HE-Tag: 1789139174-766118
-X-HE-Meta: U2FsdGVkX1/DN5FVqHg2ukSHJwciNNoOLKuuQbBQ4SkXzpwzUsw3XJm65kT5XAlNEvno5s9u5nZ35YqVta9EXAZhfhML0GFQyBQF3h0Rji73u96S3j1yzYB6Sqg/YgyRgAEMmbqfI7bi2CLAjZm55CzstvN8ZGkl+8GZQewo/gxsgATaNbB1Yi631yZpXgq1SgW+kZvCXzNObU4FjmRlMrvak3qYdJnzaBDBZOYJOZy0sr2P3aGOTD7YxAOiTxYs3e/75Wq38cAd60aHPD5Wr38lAOqW5MufPSXB19IrHB2H/vpBIN3GqQiU+334dBUWsZudeY1BOs58DUE4v6+1S0JO5XVk85XAnr+8buE4UmltbUPeiCuqDFmyjnN2Be+9VaASX42kU1gf3Cw7nOnby4/bFhsYnikK6Ab+fwWQDuDkBD7mqCYVpAnq/lbg18PL3mVtEqo3lK8e2Koc5cGBfjlUwGXYWLW1zKOI+vmlG+LNWdPeRcmkKTB2qTmGVmwNHI8P+OweXG96i9u2Fz3VR5QVE+uMrTxcolzYfWGze1JtJcUdPVjz0zL589LKvjcHKtwdu/cfhLH5fbPv0JNiT0qNlibvV9T9diq5oSbA/vDvKrB2cOpK4yipHRgUHU70neCxZ4PGEoKlVK8UJpQEny7CY9P+5RwuZsqqKRUIVrCbqVQsJ1ulZm0U2Edle5dWkUZJb44PshJeCGhfJRAvJoe0FPOsKg2O2MX+3GfhUlD7SsLNVItVhSTCW5We+4aLAN6HdnX/eHhvjBX5g3SqOp4ityNPMdfefOTcZS3dtyjlww+AGf6gMVCebHdUh6AuHXtkoVFasaMnKcvIiTzxe9T7ZOPqRGYBaFUY6bk1qFVk5xbmOZwK/GqfOsZ7TZJr1IKK53hdD3VU2/yhSENsYIarn+EQ28lVGLo+EV+KrJuTBsB+gcvqSb06mYrzNQ6LOkQQZVVP/JVhI+GS2Tm
- p+bMM/mc
- xcUGDFepmGWnBukBr/Gs4ru8GVcbbkQJg9H7UlMgiqaOfhVAQEOqNpDUbAGtXCHc95yCx6Msg5ZqjrR/yQYA1q2hiG+1JNFzRwTkVm/pUHFbOF+K8xTgKERYIkGldVxKrxRAjOo/GjOCZQUb3Uq/3ebpX6r9aHWueZMgS+Kcsl8GkI6OeHe9VP8lHqQGr3+mSZoQY7ZmPblLjDJ4362jO0apN4pHRr3toV80fmQiY84K0Ze5uW/gCCtHa1EmHpUJZGnk3L/jRlCriKbG/NqmXMV5O8R04hgax2zqBGEPfmT4UT7HrWxcID+LQ3erGgtnGYDLtzFvuVxgGYo0C61aEh2J6gkFvVZkHvnD5oV6zH4fL9o+3iaP82FZ5dLHcDl6IF7SYgGkMgrd0jsIOl4VHQm1t598oODW+uIREk/+LmB8mvAbDOIPk4CYDlPvEUBekpc5/KR9p5jCVqHueskv7cl8wi5ARrloDDtnGkoN1n/NZ90dPYcqJxDD8TG60eqfzU1sDTcXV4L8RsDjKENgQEr+G33mxMyhPT7vfnyHe7/Pqz861TuegnfKP9izZn7byWIb/DmiKn6aGi5WmT2UzwvJhnGmKLbpeVF2Bmbbyne2EjMiOcMUetsBDRuq9h6TlZzUtaYp/VgPv22O774k++enHsbwfb/Z7RVmeFs7B/GkDc1yNIvF9hiBGjRcv7bxtTvav9of4WOnF70xe9E7UIADfNOSHm4B5g667ZsyLel2le23UtvUOxzFaKwikNMskBt4OZSI48b4a8yPhZ+29iqos6DJPPu3rCJ/bgRJ9QWQ5vuPxLgd06LvLrIbNN46703KssnJqL5SQ/3b1b9WEOCoC8YvdNg6nfNpLzceJ389NIY4ZRrVjL64Ar34Qmgw1pJJPXrTD53h9DBgRGo3UZH0H+9156uHamrGvwSXt5d4757N7Q7wYcZfnEN/6E4PUXSHy59MgWYYqJ+ox1ETSI7EC1f2F
- 6/vnzDyR
- 2JkBZeXhN7nheMLrL6Sf7hMHfoTNuQCxRkRB5H0pTHnJS/P++Fvkkbszrf//yWh4226EODP+8/tFamcTi9IpKQUCXz8Y+pp+MdM51bupXPttEVNVKop9Pe86+pziaxXgXgBZbp/jkc6PH6NuqK77tIRIuZEhBrWwVHWCAx3x4CGYqjvuHRBIi5xCXLHOYio8xPoNLCKy00Xd67Q5IIpbgXyoO9XuyrqgUoHCz4mcSYpraqq3AEb3KnTegdhFxB5kBwV9jD6IKRdKKiMylf4WRoGOmmjj15oU3oHLEytvd0sl5kDhiy2ymn3PehC6CV4M12SB1uQ8ZL9FuDugLFLiY09yuoKsd65HpCkD3YkS7HM+wSJYTF8Ti4TijamNk/YEUv8vTl5YjC/9/At5LxCGK75EmoUvbNrlkZxN4U9SjG6yGMjb2YaORCyDcd0eSNU38sxm82RvmDDsPo1lH0GLGeRwtVtleV5iPzCWOIsGn20kXIM2JG7yCFTwZR4/BRA1qagjk4sQxRd2m5g9iZT+rLXhxK7gbLRsJzm47jnLY7YHVm3dpp0VlN/wy0O20F+CP7aIhbdVWGixauKOuEDjgXlLpkj3pFxaVOsFS7qEvserM+6qdMCZCFb61V6OjSpXCkX4wGCtg50CZXkjDWakyYqq7zQrtiY8Ip6U2eCDYTtSEpT6uTSkPYHeOHaUUqtX5Blj+MkIQ7I3os4TF1PQFM+PuUPIFSVlUM896yN3FFeEaR0jHMWdG5hrmEMyzXkYgtoaEL+F3qkHTLn5FPZfolxY8d9/b9o1Aqj7m3wT4q09OhgmRNjzbw5c5+YxyfY/u/U3B4RGAVKCew35e0mVccvwyBFqTTatQGm5HHR/onsHZ22DhFz67BPhlTWQnvN+hI22k4rPLRiY37KkhElrauvj3kjGJaRXUze4FWrm/QlD8mrC+LVN8bGa3NUq9Kns7Yy7GB+h+/CpX/qRwg2XwpshLAaY3
- 2vvoito8
- NV3b1+gShmEWjp8Kt3hjwBoUB87Gfl5A1JRXw/wLtnENrMyH46xzWhyuGf65MGOl0xVQS2ThnoQBmOMxrosM0ZgcG0/FGomH97FsyiViLbfI7Xh61ar4S1RnhpqvB2fx2/yOJe+jwWs9OXN2/XzQgCbJcBUUuHOUVDeEl2AIcagRes41q5DagqH0SbXEkCxa/12Gwgf3PM6g0y/0f2ayfPst/uZeCehfixzq57DOk6OdIrShKpOtDEA/F+UhBmGrX5+HG1cBkEYo7Igmts0CFaz4qOfIfiuouz8emaKhlAnzx/MN5glhFXDwZqIIpYlTWvDILDXXn8VgLlExEFhUfdm2mAUIUXoIsZUsyyfROiYU20GG3dXPXZMWcmWU9zAKVa5uspGEq4bOEzJZMufwldod8gqpMEaB62eB7bpfjzz6aaEvDAbJESuYpbQZORMKnR+LrTHjpWocIIenlV93bJ1F2JwQ5VDGJvuifXGHmS0pqBweq2+xA4Kx4rdnDaYSIWtC/BkahCT3sJToVVXSVuX4YgbfU1cX/EMqaFZQLCN0ADAligLbttzI/mtL9fmm6WeSmPtJ+ua7ksp4KwTSWYY9xmUQSGjUzRVB7q39Rfc1SDh280VtZx2oItkiTtdxAnBN6ADH3a7Pr0E3wvhIw3S34sL41ghDW9f5YSeG7u6U286FolP2CC+0QfvUjiXL+Aqds4a+ih7W6Rei700SnU+647UCKFpSId1zZoDgHnsu7SZMyBHspZcwC2Ehpfuokz/XRrON1+VRuO+WBGyzUcKjzNruc0ZTE7C+PHJvATctJUW5DeFaxXbfcjqfRuk50f3AtJBLoV0z9cm5H3oksyARu9XzQSu+/CuW4Ptk/5hYdT7/oPCsljVPorHgGPNkqLHSdu+6CqF6jtsCgNdg/hRHutN1RFhas3OstyBc01lbR20AYJPQbMRBJGpy57C7deSM4KB4YCFrsChaoxljvYGSdF2kw
- RV8006xK
- /edNdvpp6EY3Q9NP9B+BVJQ1uAw1lOP3EXX1ZXhpR0m5EOZ+06U7wOcB0T+Af0PD/rIkGgrgv7MzvJoSFdPSU7iMPKW8bVFXIHUNUwwp3AAgfDEOMchwzcPNqdVREBzFEuueLV14pfrOOV2W8D100w+M96PnBmfPsqzI1vfQIy6NxEk26s8XRm/bE+LyU7N//AE3c5ChWAnEYJceKGTZTJCmhWbos5jatd8Ax+SRwy8wjvCs9//QfAS8IxTE27pgjQClKllwtUY9S8LOtMKt8tvD/o+Hl8FNnY0rJxVR8KDdFxO7vhIHixsdnn/FlY1pG58Q/HE6iEDMhwObwbllNWoiMfl/fUuzZn1lUGhPzha36Je2D5UGFdUZNZCpYTOciSn7dQsUWUFIkYh9F68IW9F96TLWPwtM7nPRDKvUd8/79uXTyFIcDqB+rK6iW1CzTzUOYWq/gAM5W9tEf6SFhA
+X-HE-Tag: 1789139227-28838
+X-HE-Meta: U2FsdGVkX1/9PEfCwlhjvbr4+u+2na5KMm2pzCyc1XQKbiptkOG7mRLVFd8y+bSOMC6REz5n46hprCt4urIXcy2/cR/44e+H0a95kJuwt96jUHrZLDtVfjjTSOsgaKvBHz+XWKgGLfpyDHJx87NE9S4rhuxab9U1KEGAIOpReb5BtiCpQIS1NlvE76CSqsCjHO8RlSCsUyPV1rA+rUprkQvpXqYONJvOJNFofK0TlEsTRg4DzuZ5Ik73O77IIxFerxim4QI1WR2q/2a8K2ptLs9tCeE98eOdG+PGnc2TAC+waGB/P2gX1LcqCKUbDYzh5EUrhzISaGE7hLEBkcsTBEk4V0C/Kzqt/wJSTEAteghbFg+IXSL9xQmpgkcqZ+Y5tVBOE6yidjZqH0pn4A6ItB/qxeEOqvsg8fNY6qSPO4P0detRQUIOy5KOtzaH3Kzjf6wJyC75E6WaJ4K+rWKHn1Zo9RmSghdqLny+OHWJ+cbakg0SZEd5xCyP6kBb9Dd9/BZqbbUM+JVpIanzRI9fSMRp0+HvBPxF6/umf3r6h9KGKAqmPKsSP/xAp6M5Oi7JUQWkTeJt+OAbDo/GwJlvrmzgRhYfL/Go+mSuciPvajFrZFM30PNqwvKWvLUJIEAa+qg9qqPNWyupqi1v7lkgIN9ZE94lZ5KyqcLzzYV5iumMYbnZKVRJp/RFQIiycKQBsHIJZqKSpbTfwu0Z2qwkiB7UqYS2haivoEzjgB/4DmBNC0+7qfupSpXlGokuZsB4vckSpVJT8ypZR94OAcMCJiI0tYhgRtH6DDnng2MgHqcued91Z3kNs8Ziooano4wbkfraE/lc0X9d5cQPaWZvHzz453pAWIQZB7ESRyo2cjeF7lv7z88HyT5CieOX6Cw1zEmaUctEMUTC+bd8pWkpjD2BjqcNjVBDiYHhOGzS1St+DuiFp4bECNJ5Xi9k8sz0LN6HzOxz9/wn+fBZ5jb
+ cVSt8mF+
+ +o6ndpuyfjuce2ic56qcOCl73oxVRIRIisDOsHny1pZi/KeimSODYgyeuQM+XNCPgFBsEQKTHA8bxRhTD3fXsc1OZyIlSR9l6fkN8L6t1GskEmXNCJP4fDBYtENunuxMizegDcmoZwMiOMgMePWvKnCvut+fgQfJH4xNusOnBnc4T6eMuW8K/Ckb/lw1FjZzVw9Zt2TAEgKSTvtDA45iLnjqf78UgFawfeYN484KqYKdf5z48J2s7JTgQoiQ6Yy/AGFAq1+uwPhLf8MQYSs+K03X/DZ0c2KzP1sDu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -206,48 +145,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 6:16=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> On Thu, Sep 10, 2026 at 02:11:18PM -0400, Stephen Smalley wrote:
-> > On Tue, Sep 8, 2026 at 4:07=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kerne=
-l.org> wrote:
-> > >
-> > > The policy file has no write method and is exposed read-only (S_IRUGO=
- in
-> > > selinux_files[]), yet sel_open_policy() performs no open mode check, =
-so a
-> > > CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at ope=
-n, as
-> > > kernfs does.
-> > >
-> > > The file can then never be mapped with FMODE_WRITE, so do_mmap() alwa=
-ys
-> > > clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_S=
-HARED
-> > > check in sel_mmap_policy() cannot be reached. Remove it.
-> > >
-> > > This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping t=
-hat is
-> > > neither a PFN map nor a mixed map, ahead of the core enforcing that o=
-nly
-> > > such mappings may do so.
-> > >
-> > > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> > We should likely do something similar for the other sel_open_*() and
-> > sel_mmap_*() functions too.
-> > In particular, truncation of the status file can bring down systemd
-> > since it is mapped by libselinux.
->
-> Yeah I think there's definitely more that can be done there.
->
-> Though I think obviously that kind of stuff is better as a follow up as t=
-his
-> patch is focused on eliminating a case where VMA_MAYWRITE_BIT is cleared
-> incorrectly.
+On 9/10/26 14:02, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> [ This is the first of the cleanups I said I would front-load ]
+> 
+> There is no line between the collapse engine and the callers that ask for
+> a collapse.  khugepaged.c holds both, and they reach into each other.
+> 
+>  - Sixteen tests through the collapse path read cc->is_khugepaged to work
+>    out what they are allowed to do, when every one of those decisions was
+>    made by the caller before it asked.
+> 
+>  - collapse_single_pmd() does both halves of a collapse behind one call and
+>    drops mmap_lock somewhere in the middle.  Which of its paths dropped it
+>    is not something a caller can see, so it hands back a bool and the
+>    caller keeps track.
+> 
+>  - MADV_COLLAPSE's implementation -- the walk over the user's range, the
+>    per-PMD loop, the errno translation -- sits in khugepaged.c, which is
+>    the daemon's file.
+> 
+> So: draw the line.  State what a caller allows in a policy, split the call
+> in two with the lock as the boundary, and move the syscall to madvise.c.
+> What the engine offers is then four calls, with the lock state written
+> down against each, and a policy the caller fills for itself:
+> 
+>     collapse_control_init(cc)         once, before the first table
+>     collapse_policy_*(&cc->policy)    what this caller allows
+>     collapse_scan_pmd(vma, addr, ...) per table, under mmap_lock
+>     collapse_run_pmd(mm, addr, cc)    when a scan found work, no mmap_lock
+>     collapse_control_release(cc)      once, when done
+> 
+> The engine stays in khugepaged.c for now; what changes is that it has an
+> interface, and that neither half has to ask about the other.  madvise.c
+> gains the operation it should have had all along.
+> 
+> Changes since v1
+> ================
+> 
+>   https://lore.kernel.org/all/cover.1788533997.git.kas@kernel.org/
+> 
+>  - Rebased onto mm-new with Vernon Yang's tracepoint fixes in it.  Patch 8
+>    no longer merges the two calls to each scan tracepoint, since the base
+>    already has one; its changelog now says what the status field reports.
+> 
+>  - Patch 3: nr_occupied_ptes is nr_eligible_ptes, and the mthp_collapse()
+>    comment counts eligible PTEs too (Zi, Baolin).
+> 
+>  - Patch 4: no comments on the two constants (Baolin).
+> 
+>  - Patch 5: one line per policy field (Baolin).
+> 
+>  - Patch 8: the file side is split like the anonymous one (Zi).
+>    collapse_scan_file() runs under mmap_lock in the scan and only judges;
+>    collapse_file() runs in the run.  See Behaviour below.
+> 
+>  - Reviewed-by from Zi Yan and Baolin Wang on 1-4, 6 and 7.
+> 
 
-Agreed, posted one for the status handlers at:
-https://lore.kernel.org/selinux/20260911145840.19039-2-stephen.smalley.work=
-@gmail.com/
+I'll hopefully get too look at this soon (after digging through older stuff in
+my queue).
+
+Skimming over some patches,  a note that we should not be undoing recent
+cleanups without a very good reason.
+
+E.g.,:
+
+commit a155d945b73c5b0668e898df5495afe45bb261cd
+Author: Nico Pache <nico.pache@linux.dev>
+Date:   Wed Mar 25 05:40:22 2026 -0600
+
+    mm/khugepaged: unify khugepaged and madv_collapse with collapse_single_pmd()
+
+    The khugepaged daemon and madvise_collapse have two different
+    implementations that do almost the same thing.  Create collapse_single_pmd
+    to increase code reuse and create an entry point to these two users.
+
+    Refactor madvise_collapse and collapse_scan_mm_slot to use the new
+    collapse_single_pmd function.  To help reduce confusion around the
+    mmap_locked variable, we rename mmap_locked to lock_dropped in the
+    collapse_scan_mm_slot() function, and remove the redundant mmap_locked in
+    madvise_collapse(); this further unifies the code readiblity.  the
+    SCAN_PTE_MAPPED_HUGEPAGE enum is no longer reachable in the
+    madvise_collapse() function, so we drop it from the list of "continuing"
+    enums.
+
+    This introduces a minor behavioral change that is most likely an
+    undiscovered bug.  The current implementation of khugepaged tests
+    collapse_test_exit_or_disable() before calling collapse_pte_mapped_thp,
+    but we weren't doing it in the madvise_collapse case.  By unifying these
+    two callers madvise_collapse now also performs this check.  We also modify
+    the return value to be SCAN_ANY_PROCESS which properly indicates that this
+    process is no longer valid to operate on.
+
+-- 
+Cheers,
+
+David
 
