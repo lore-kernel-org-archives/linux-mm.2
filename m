@@ -4,102 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA938C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC99C79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC63F6B0095; Fri, 11 Sep 2026 03:29:45 -0400 (EDT)
+	id CD3076B008A; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9D456B0096; Fri, 11 Sep 2026 03:29:45 -0400 (EDT)
+	id C5D2F6B008C; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB7336B0098; Fri, 11 Sep 2026 03:29:45 -0400 (EDT)
+	id B241A6B0096; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDD316B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:29:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B134A237E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:44 +0000 (UTC)
-X-FDA: 85200656688.30.1CC0C16
-Received: from mta0.migadu.com (out-136.mta0.migadu.com [91.218.175.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 227DA40002
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:29:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C1tsNtNW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789111782;
-	b=rBrB+qVPPtdFY1yZP8RqhKyH2giQaXehuQ6WlathW6H8hMk7CnuTA8vg8Vz206OQxsieYZ
-	7lp11SYfGVaOsyF9+/Z6Cg5Ovdar6dudGgduYKdDmA+fsbiYTezc8DHwWBgJZGnH7efXEc
-	9oPcfG9oeOX2sqkGeyxZCNr9tyRDLbE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C1tsNtNW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.136 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7C4736B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:35:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DF7AA2D70
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:35:00 +0000 (UTC)
+X-FDA: 85200669960.05.7F87EE3
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0A19A180004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:34:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789111782;
+	s=arc-20220608; t=1789112098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vD/tj2AK765Epc4HikjrXJ8GD38Dy7fB2gFIaSZFtAY=;
-	b=e9g4fI+XPdd3LGN8V8dBp3EqE3nwbnz6+l/mBUti5basMyPyHozObLENZcm/YR1vkvb+a+
-	LayOSAYtDXXp+Rkyp/RHrlbYg8BK/mUVPneA0alQ6J2uMtnQSaS6RtdpDK0pASjOHpPOXP
-	Tx2Mo6gNpvSt731qTD3McsfyYOir0aU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FpcPo83nhWnkkp6me6q/GY/YfYdp1OKd5imnFWeXBLg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789111780; v=1; x=1789716580;
- b=C1tsNtNWOICb2y94PHvNp02pWal59w3l81qylbVBR7bTe7+LLoYcYZ1F8VZzQy6v58XjJ2CL
- k9hi5qfwXgetgx1sSf4ZPncgPj+gwXOPaE3HASs7mATvmk6knR2yHDwhHgDvR/7/MSJ4JKo0+Kg
- Izks7hAkpt4xfZ8c9Zqbqjkw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a8b9bafcc2d8f444;
-	Fri, 11 Sep 2026 07:29:40 +0000
-X-Mizu-Trace-ID: a8b9bafcc2d8f444
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH 3/3] mm/mglru: add tracepoint for inc_max_seq()
-Date: Fri, 11 Sep 2026 15:28:48 +0800
-Message-Id: <20260911072848.2346073-4-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260911072848.2346073-1-ridong.chen@linux.dev>
-References: <20260911072848.2346073-1-ridong.chen@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZpNb3kX5HfMhR18BnxIU33C03EaxiGcEhtBlfXZ5QLo=;
+	b=12VpH1QwU2p7Kh4pbO0CGU31MnfmFkrAWbjvoRUtmtxuaPj3rtRYi8nCfwAbJSC8idqCPf
+	6DbPeoFGb9ePlH+ZiuHw6+EjCUPQtzvwROLGVYtcANvFsLARfCcJj8WwwqDYbOPy6ISbyp
+	O11WnhnkHYF2IEFPYl85AykCOu/l1+0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789112098;
+	b=4v24sidw1PhF6GMPNyiGP8HrsgxExS83M70Mm+7NDDvcGMpiJBbq8PIxyJXaXsDi7lOUpL
+	/xcqaBhZA75y6iOBzucXmginS1AmHuWSdgxLufw09ka9bDSC0aMtYt3oxuQ5w7eW22OFbt
+	3dV8vSIR5Rh4g8xDbabzw+93UpRFg1c=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hh5sd0G6fzKHMNl
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id DDBE84056E
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:50 +0800 (CST)
+Received: from [10.174.178.253] (unknown [10.174.178.253])
+	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgAH7ggYr6Nq45QyBg--.39022S3;
+	Fri, 11 Sep 2026 15:34:50 +0800 (CST)
+Message-ID: <5796c4ea-fd8f-48aa-8c9b-f1cc8ec1dde1@huaweicloud.com>
+Date: Fri, 11 Sep 2026 15:34:48 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
+ large folios
+To: Brian Foster <bfoster@redhat.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
+ willy@infradead.org, jack@suse.cz, ziy@nvidia.com, joannelkoong@gmail.com,
+ djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
+ <aqLaQcZvaFIrAz0e@bfoster>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <aqLaQcZvaFIrAz0e@bfoster>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgAH7ggYr6Nq45QyBg--.39022S3
+X-Coremail-Antispam: 1UD129KBjvAXoWfJF1DGF4xXw45WFy8ZrWrXwb_yoW8GrWDWo
+	WrJ3yYv3WF9r1kAa10kas7JryDW3Z8ZryxJF13urs0vFnFq34qyw4fJ39rGFZ7Aw1jkF15
+	Ga47Ja4SyrZrtF1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUUYc7kC6x804xWl14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK
+	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
+	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF
+	7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6x
+	kF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02
+	F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4I
+	kC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a
+	6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
+	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
+	xUIF4iUUUUU
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0A19A180004
+X-Stat-Signature: z19m8gb4iwcq87gdjgmm8csb8nci9won
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 227DA40002
-X-Stat-Signature: qctssunmxykhmwtg35b19fyboadu47j9
-X-HE-Tag: 1789111781-690095
-X-HE-Meta: U2FsdGVkX18GYgC69Tq/x+uufyTZV1Lzw0E5Y8LjUJO6L0s5kwGxg1y62bnq4/IeDNCVKrb8XBs7tCqwo5ZIghHuG1l3tjOKRoY7eJb0xktYePMmlDCoUuHio3sTmWtNeARFMDErXJGzTlEqmw/4Pxu0crNE0pMweydyYvLfWHaYEPgrNr1biRdTzVokrlGOyupZVwOUVK1mR+I6ZuyK0m1OBwjyXA+TRj9hqq8cQL33usrWomm/rYHr6nfylbvQzbYs6jko0Ptla+P8/g72o3cM4eUviQM5MUsyWJTuvRIfxhgNaVI3v75p9X+a/qeoDXS2R4FddiUafAIB8fZkz8RbmwXVuKtqIpTD8pHiL7dW4BcE2pmNMdaV3zMS22+Gvv7Ntz7mH/uqXo/uvh1WuS+E9dbO+QNSx2Ev6JhSMBsU43HdhbqR6qohv3Cvr5RKgmuwR0MHqH1U9JhZQMYI/2iQOj190CkIFiFw9vYzmpC5bJGRQEZl9HyIn3lEI/jtEtxQ+TBrzVd0/EJCuqVxcu5QWhdVnBH5TussUqIH0O7vX0bf4yHX0KLLy8UIMTkXPNRlRIO/S2LwrfNLk7gJ5Me3+Wnfctih9lfi9qQCNnRPYEmYNOo/StvSKorZZJC70bvMzEeu5Cxs1WRLXmoC12QpgubbYR8GcYZyWMnxh5G4zf1s2fJk3h/bjv0o2zLLNEYGDUS5YC9keQFKxEYef0m7O8l95sn/R+JmC6Lj4f5VoqQz3w3O5gvPIa/3DYnB5VNkCzB0Uqm4xGOso5SylaMWyVrHlpRXbLN1qu1pdAn4ChwX8OS2QpG3MWHiDi9rrbyhxo80TRqNhB8sBOclDWIQLqlslcDWmUQdo6wUISPlftdkBhEGG6PRTh0F9zOdTiFl9mOhBvWQvqK/CWlIGuTp5v/cvdqjF0wqdiWS/TBZ0PAmky9oICKEJbsLNwyOrR7AO9zjYbrjOGMIaiI
- uDydo1Xb
- TFzD3ZWaqHHeJeh3ipHlPRuvN0nbHoG74O5uzUzB1s5U1N0BK7Xbj+FpopJooFj6Hulygxz1Bm+vapjcDgt3KAjB8vhQjte/ZjKoTaWT4TZSD/IrCSsxHaMaQyJJT9G+EYmGPlfPjAZvheLDAxC4+dghUOTHbnXhQ2B/yJHXCmSWqnbAmY7N2UpRy78vbTZLQ+1uQlZ8Q+s67Vqmm6X5Cq5UkK7ykTIiiBn5cBRSlgRFA17c3MwH7elhqJ4S5u0b1GedcqCv8spQ9F+bKVrclZxWaxVviy5MfN+MO6ftEuR5s9FA=
+X-HE-Tag: 1789112095-225355
+X-HE-Meta: U2FsdGVkX19L3gVtodjoioEg+tq46/zpAMsUeu4Wc62bW/kT34l1ta9CyGzAxs4xcRlnDp07Hfq9K97QfpEXPRtNjZtDmBwrgdBNNsYhCyHCm0HiPLEBgPWzD1v+VRAjHjtyBvQNZvzPtFX3TA1Zvey/JY9FW2OA9WM7dW8UE8o0uT6x5Oxwg6uobGHacedJDZAAAugFKps3+FssH8ykXGeV7FS4ZrrAdIM5SeANHm3dECm/jgYvv0h+Ysxhf8OJKjnVNcS68UTXtvjbKtd6LvRC8jclLM7cAkuiRodq3qIIRFLUdD1HQCMPSxrRRpYnDhNjSc4OxcKuDOeCxX+XDz0POg6DmULH6MiJpbY9eCZ3m3hkcBpcjdNWPpcXO9M73rk5PvTO4OBny+XDGD5gbRfa2+9aKBOsa/yZ5cuLQFjaM/Zib6tGlfKaVhOjplPLH2SwCBC3nI+MXPd/kM88bnXMOEqd8JNbjV6fFLsfjmkdhlBFbItRPb31P6AcBKmEkLc7uprB2JP/NnMphuKgnkEkHgQofGhxtYWJ7+SqNG4dsTRXim+j1M3CEVrnW5QQnig922F1lq5cimd3FGZ4/cCdU5lTUpfFSd+a+3J/yWPUbm8bwr1m04Rml7bGOSz9O29qdAgFk6G2TCBTT1z1EqeYchuXko1RC0rUn8Evkvnb6gx/r+wB6136/7LWxHIOwfbIZ53qJpzXS3HEfsRgNuY1PS4EVsyRAxuf9FrNI1ykXyIedn6kluGWTMSeDDoieYgjvth3kVDX0jQgeV1J+4IqzpTTXzCVfpBGx98UNLcIycyMvGYB/RQhKX0Sn1Ji/ZyYkp8FpBJJfILZWWLVqki4v+i0KPUTGTKeJnCm7NLXdCeJssX/8wH8VPedFcvQRyuWCvKti8Gj4t2Gq4Srrw6uJrsYNQEEA9eVI9pE3V//kZ1L8SE85eUOxUXp56vuHLqy5kPdqasDZVtyIE4
+ 7qjsw2Gu
+ Oya/MCowdHcWdsppcaOYscnLJz+YiTJsDPYSbr4og3YpT4Lxf3oA2+lugrBcwwnT1QsO+5S7onNiGR0/7U0OAsCxqOkFeu/r4FsiX7WOX01DvdLn35f0O6oles1xQpSjFnG+3pS0QdpN1Y+VmvKGkSZbI9kamY4QEfotNb8I+B1lIswdC6OZZPWm4qvTvObFofGloboEyzHprq8g20r1b+sXXHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,120 +112,389 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On 9/11/2026 12:26 AM, Brian Foster wrote:
+> On Wed, Sep 09, 2026 at 02:23:39PM +0800, Zhang Yi wrote:
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> truncate_inode_partial_folio() splits a large folio so that the caller's
+>> truncate loop can drop the in-range sub-folios while keeping the
+>> out-of-range tail. The first split at the punch start edge is
+>> non-uniform, which leaves the sub-folio at the truncation end edge as
+>> large as possible, this means it may still straddle the range, holding
+>> both zeroed in-range and valid out-of-range data. The function then
+>> attempts a second split at offset + length to isolate that tail.
+>>
+>> If the second split fails the straddling sub-folio stays merged. The
+>> function returned true unconditionally on all exit paths of the success
+>> block, telling the caller it was fully handled. The caller kept its
+>> default end and the truncate loop truncated every sub-folio below it,
+>> including the merged straddler, discarding the valid out-of-range tail.
+>>
+>> For example, a 4-page order-2 folio punched from offset 0 to the middle
+>> of the last page:
+>>
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()      # same_folio == true
+>>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>>       2nd split of folio2 fails / cannot lock
+>>       return true                       # BUG: caller keeps default end
+>>     end = 3
+>>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>>
+>> This became reachable after commit 7460b470a131 ("mm/truncate: use
+>> folio_split() in truncate operation") replaced the atomic split_folio()
+>> with folio_split(), whose non-uniform split can partially split a folio
+>> and leave the end edge merged.
+>>
+>> It has gone unnoticed because a dirty large folio normally carries the
+>> filesystem's private data, for example buffer_head, so
+>> filemap_release_folio() -> iomap_release_folio() returns false on a
+>> dirty folio and folio_split() aborts with -EBUSY before any split,
+>> leaving the straddler safely unsplit. The bug is only reachable on paths
+>> that produce dirty large folios without filesystem private data, and it
+>> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+>> attached.
+>>
+>> In addition, even when both splits succeed, data can still be lost when
+>> the mapping's minimum folio order (min_order) is non-zero. folio_split()
+>> stops at min_order instead of order 0, so the sub-folio containing a
+>> split point stays aligned to 1 << min_order rather than to a page. The
+>> original success path left start at the page-aligned head of the range
+>> and set end to the exact page index of the end edge, neither of which is
+>> a folio boundary in general. Either one could land inside the large
+>> folio at its edge, and the truncate loop would drop that straddling
+>> folio together with its valid out-of-range tail.
+>>
+>> For example, a 64K (order-4) folio with min_order = 2 punched from
+>> offset 0 to 36K:
+>>
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()        # same_folio == true
+>>       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
+>>       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
+>>       2nd split of folio2 -> [p8-p11, p12-p15]   # success
+>>       end = p9                           # BUG: p9 inside [p8-p11]
+>>     loop truncates ... p8-p11           # p9-p11's valid tail is lost
+>>
+>> Rework the contract so the caller is told the page range to discard:
+>>
+>>   - Return true only when a split occurred, false otherwise. This
+>>     clarifies the existing confusing return value semantics.
+>>
+>>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
+>>     range fully covered by [lstart, lend] after any split (or none),
+>>     i.e. the pages wholly within the range and safe to discard. They are
+>>     aligned up (pstart) and down (pend) to the mapping's minimum folio
+>>     order so they always fall on a folio boundary.
+>>
+>>   - Rename the byte-range parameters start/end to lstart/lend to avoid
+>>     clashing with the new outputs and to separate byte offsets from
+>>     folio indices.
+>>
+>> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+>> &pstart for the folio at the start edge and &pend for the folio at the
+>> end edge, so the truncate loop drops exactly the fully covered pages and
+>> never touches a straddling folio that still holds valid out-of-range
+>> data.
+>>
+>> Suggested-by: Brian Foster <bfoster@redhat.com>
+>> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+>> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+>> ---
+>> v1->v2:
+>>  - Export pstart as a new parameter so that the generic and shmem
+>>    truncate paths don't need to recompute the start value from the
+>>    return value. (Brian)
+>>  - When min_order is nonzero, align [pstart, pend] to the inner
+>>    boundaries of the folio to ensure they do not point into the middle
+>>    of a large folio, which could otherwise cause valid data within the
+>>    folio to be incorrectly cleared. (Joanne)
+>>
+>> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
+>>
+> 
+> Hi Zhang,
+> 
+> Thanks for the tweaks. I still found some of the logic circuitous as I
+> read through it so I spent some time playing with this just to
+> experiment with cleaning it up a bit. I ended up removing a couple of
+> the labels, lifting the pstart/pend assignment to a default init/case,
+> and reshuffling the split case pstart/pend assignments in a way that I
+> think also elides the need for the boolean or using folio2. (I'm curious
+> if this happens to address the Sashiko feedback as well..?)
+> 
+> Note that this is completely untested and needs further review. Since
+> the current patch looked mostly Ok to me functionally (though I do agree
+> with the comment about possibly splitting up into smaller changes) and
+> has other reviews, I'm just posting this as an FYI. Here's a diff of the
+> changes I made on top of this patch (Assisted-by: LLM, fwiw). Feel free
+> to use some, all or none of it. Thanks!
+> 
+> Brian
 
-Aging in MGLRU advances max_seq via inc_max_seq(), creating a new
-youngest generation. There is currently no tracepoint on this path, so
-the moment a new generation is created, and how the min_seq of each type
-trails behind it, cannot be observed as it happens.
+Hi Brian,
 
-Add mm_mglru_inc_max_seq, emitted right after max_seq is bumped, with
-the memcg id, the new max_seq, the anon and file min_seq, and the number
-of pages in each generation for both types, summed over zones the same
-way the debugfs lru_gen file reports them. The nr_anon/nr_file arrays are
-indexed by generation slot, so the emitted max_seq/min_seq say which slot
-holds which seq. They are printed with __print_array(), so the output is
-hex and its length follows MAX_NR_GENS automatically. Paired with the
-mm_mglru_scan_folios tracepoint it makes the full aging-to-eviction
-window observable per memcg.
+Thanks a lot for spending time on this, and for posting the diff. I
+agree with most of it.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- include/trace/events/vmscan.h | 38 +++++++++++++++++++++++++++++++++++
- mm/vmscan.c                   | 22 ++++++++++++++++++++
- 2 files changed, 60 insertions(+)
+Lifting the default pstart/pend assignment to the top and turning the
+early exits into plain returns removed the need for the no_split: /
+split: labels and the tail_isolated boolean, which does make the
+function easier to follow.
 
-diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-index c39dfacef033..9cf3f4564afb 100644
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -455,6 +455,44 @@ TRACE_EVENT(mm_mglru_scan_folios,
- 		__entry->min_seq)
- );
- 
-+TRACE_EVENT(mm_mglru_inc_max_seq,
+One thing I was wondering about: in your diff, when setting pend while
+trying to split folio2, you completely dropped the use of folio2->index.
+With folio2->index gone, an unaligned end means any failed split falls
+back to folio->index. I assume that is mainly because its value is not
+reliable under concurrency, which is exactly what sashiko pointed out.
+However, it does mean we lose a bit of precision though, I mean the
+sub-folios that were successfully split off at the pstart edge end up
+left behind in the page cache. Please see a small example below.
+
+> 
+> --- 8< ---
+> 
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index d88a1b159084..8da16d7e6763 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -237,10 +237,16 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>  	else
+>  		length = lend + 1 - pos - offset;
+>  
+> +	if (pstart)
+> +		*pstart = offset ? folio_next_index(folio) : folio->index;
+> +	if (pend)
+> +		*pend = (pos + size > (u64)lend) ? folio->index :
+> +						   folio_next_index(folio);
+> +
+>  	folio_wait_writeback(folio);
+>  	if (length == size) {
+>  		truncate_inode_folio(folio->mapping, folio);
+> -		goto no_split;
+> +		return false;
+>  	}
+>  
+>  	/*
+> @@ -254,7 +260,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>  	if (folio_needs_release(folio))
+>  		folio_invalidate(folio, offset, length);
+>  	if (!folio_test_large(folio))
+> -		goto no_split;
+> +		return false;
+>  
+>  	min_order = mapping_min_folio_order(folio->mapping);
+>  	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
+> @@ -266,29 +272,30 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>  		 * for shmem truncate
+>  		 */
+>  		struct folio *folio2;
+> -		bool tail_isolated = true;
+>  
+> -		if (pend)
+> -			*pend = round_down(pos + offset + length,
+> +		if (pstart)
+> +			*pstart = round_up(pos + offset,
+>  					   min_nrbytes) >> PAGE_SHIFT;
+>  
+> -		if (offset + length == size)
+> -			goto split;
+> +		if (offset + length == size) {
+> +			if (pend)
+> +				*pend = round_down(pos + offset + length,
+> +						   min_nrbytes) >> PAGE_SHIFT;
+> +			return true;
+> +		}
+>  retry:
+>  		split_at2 = folio_page(folio,
+>  				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+>  		folio2 = page_folio(split_at2);
+>  
+>  		if (!folio_try_get(folio2))
+> -			goto split;
+> +			return true;
+>  
+>  		if (!folio_test_large(folio2))
+>  			goto out;
+>  
+> -		if (!folio_trylock(folio2)) {
+> -			tail_isolated = false;
+> +		if (!folio_trylock(folio2))
+>  			goto out;
+> -		}
+>  
+>  		/*
+>  		 * split_at2 may no longer belong to folio2 due to concurrent
+> @@ -304,28 +311,18 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>  		/* make sure folio2 is large and does not change its mapping */
+>  		if (folio_test_large(folio2) &&
+>  		    folio2->mapping == folio->mapping &&
+> -		    folio_split_or_unmap(folio2, split_at2, min_order))
+> -			tail_isolated = false;
+> +		    !folio_split_or_unmap(folio2, split_at2, min_order) &&
+> +		    pend)
+> +			*pend = round_down(pos + offset + length,
+> +					   min_nrbytes) >> PAGE_SHIFT;
+
+[...]
+
+Assume a 4-page order-2 folio [p0 p1 p2 p3], punched from offset 0 into
+the middle of p3, with min_order == 0.:
+
+   [p0 p1 p2 p3]  --1st split @p0-->  [p0] [p1] [p2-p3]
+   folio now points to [p0]
+   folio2 = [p2-p3]            # p2 zeroed, p3 tail valid
+   2nd split of [p2-p3] fails  # folio_split_or_unmap() returns failure.
+		
+As a result, both pstart and pend are p0, so the sub-folios p0 and p1
+are left behind.
+
+I agree that under concurrency we really can't get a valid end position
+since folio2 is not trustworthy(e,g., failed to get the folio2 or failed
+to lock the folio2...). But once we have successfully got a reference to
+and locked folio2, its index should be valid. So I've ended up with
+something like the below (This hasn't been tested yet, just wanted to see
+everyone's opinions), let me know what you and the other reviewers think.
+
+
+diff --git a/mm/truncate.c b/mm/truncate.c
+index d88a1b159084..b551e8253de7 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -237,10 +237,16 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 	else
+ 		length = lend + 1 - pos - offset;
+
++	if (pstart)
++		*pstart = offset ? folio_next_index(folio) : folio->index;
++	if (pend)
++		*pend = (pos + size > (u64)lend) ? folio->index :
++						   folio_next_index(folio);
 +
-+	TP_PROTO(u64 memcg_id,
-+		unsigned long max_seq,
-+		unsigned long anon_min_seq,
-+		unsigned long file_min_seq,
-+		unsigned long *nr_anon,
-+		unsigned long *nr_file),
-+
-+	TP_ARGS(memcg_id, max_seq, anon_min_seq, file_min_seq, nr_anon, nr_file),
-+
-+	TP_STRUCT__entry(
-+		__field(u64, memcg_id)
-+		__field(unsigned long, max_seq)
-+		__field(unsigned long, anon_min_seq)
-+		__field(unsigned long, file_min_seq)
-+		__array(unsigned long, nr_anon, MAX_NR_GENS)
-+		__array(unsigned long, nr_file, MAX_NR_GENS)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->memcg_id = memcg_id;
-+		__entry->max_seq = max_seq;
-+		__entry->anon_min_seq = anon_min_seq;
-+		__entry->file_min_seq = file_min_seq;
-+		memcpy(__entry->nr_anon, nr_anon, sizeof(__entry->nr_anon));
-+		memcpy(__entry->nr_file, nr_file, sizeof(__entry->nr_file));
-+	),
-+
-+	TP_printk("memcg_id=%llu max_seq=%lu anon_min_seq=%lu file_min_seq=%lu nr_anon=%s nr_file=%s",
-+		__entry->memcg_id,
-+		__entry->max_seq,
-+		__entry->anon_min_seq,
-+		__entry->file_min_seq,
-+		__print_array(__entry->nr_anon, MAX_NR_GENS, sizeof(unsigned long)),
-+		__print_array(__entry->nr_file, MAX_NR_GENS, sizeof(unsigned long)))
-+);
-+
- TRACE_EVENT(mm_vmscan_write_folio,
- 
- 	TP_PROTO(struct folio *folio),
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b9ecf2e84..d0e59baf5d5c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4100,6 +4100,26 @@ static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ 	folio_wait_writeback(folio);
+ 	if (length == size) {
+ 		truncate_inode_folio(folio->mapping, folio);
+-		goto no_split;
++		return false;
  	}
+
+ 	/*
+@@ -254,7 +260,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 	if (folio_needs_release(folio))
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+-		goto no_split;
++		return false;
+
+ 	min_order = mapping_min_folio_order(folio->mapping);
+ 	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
+@@ -266,66 +272,65 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+ 		 * for shmem truncate
+ 		 */
+ 		struct folio *folio2;
+-		bool tail_isolated = true;
++		pgoff_t end, aligned_end = round_down(pos + offset + length,
++						min_nrbytes) >> PAGE_SHIFT;
+
+-		if (pend)
+-			*pend = round_down(pos + offset + length,
++		if (pstart)
++			*pstart = round_up(pos + offset,
+ 					   min_nrbytes) >> PAGE_SHIFT;
+
+-		if (offset + length == size)
+-			goto split;
+-retry:
++		if (offset + length == size) {
++			end = aligned_end;
++			goto out;
++		}
++
+ 		split_at2 = folio_page(folio,
+ 				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+ 		folio2 = page_folio(split_at2);
+
+-		if (!folio_try_get(folio2))
+-			goto split;
+-
+-		if (!folio_test_large(folio2))
+-			goto out;
+-
+-		if (!folio_trylock(folio2)) {
+-			tail_isolated = false;
+-			goto out;
+-		}
+-
+ 		/*
+-		 * split_at2 may no longer belong to folio2 due to concurrent
+-		 * split. Retry to find the correct folio in case it's still
+-		 * large.
++		 * folio2 may become stale due to a concurrent split or
++		 * freeing, so validate it before and after taking its lock.
++		 * If it fails, we can't get an accurate end position and fall
++		 * back to folio->index, which may leave sub-folios split off
++		 * at the offset edge in the page cache this round.
+ 		 */
++		end = folio->index;
++		if (!folio_try_get(folio2))
++			goto out;
++		if (folio2->mapping != folio->mapping ||
++		    !folio_test_large(folio2))
++			goto out_put;
++
++		if (!folio_trylock(folio2))
++			goto out_put;
++
+ 		if (page_folio(split_at2) != folio2) {
+ 			folio_unlock(folio2);
+-			folio_put(folio2);
+-			goto retry;
++			goto out_put;
++		}
++		if (!folio_test_large(folio2)) {
++			end = aligned_end;
++			folio_unlock(folio2);
++			goto out_put;
+ 		}
+
+-		/* make sure folio2 is large and does not change its mapping */
+-		if (folio_test_large(folio2) &&
+-		    folio2->mapping == folio->mapping &&
+-		    folio_split_or_unmap(folio2, split_at2, min_order))
+-			tail_isolated = false;
++		/* Split failed: back off to the head of the straddler */
++		if (folio_split_or_unmap(folio2, split_at2, min_order))
++			end = folio2->index;
++		else
++			end = aligned_end;
+
+ 		folio_unlock(folio2);
+-out:
+-		if (!tail_isolated && pend)
+-			*pend = folio2->index;
++out_put:
+ 		folio_put(folio2);
+-split:
+-		if (pstart)
+-			*pstart = round_up(pos + offset,
+-					   min_nrbytes) >> PAGE_SHIFT;
++out:
++		if (pend)
++			*pend = end;
+ 		return true;
+ 	}
+ 	if (!folio_test_dirty(folio))
+ 		truncate_inode_folio(folio->mapping, folio);
+-no_split:
+-	if (pstart)
+-		*pstart = offset ? folio_next_index(folio) : folio->index;
+-	if (pend)
+-		*pend = (pos + size > (u64)lend) ? folio->index :
+-						   folio_next_index(folio);
+ 	return false;
  }
- 
-+static void trace_inc_max_seq(struct lruvec *lruvec)
-+{
-+	int type, gen;
-+	unsigned long nr[ANON_AND_FILE][MAX_NR_GENS];
-+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+
-+	if (!trace_mm_mglru_inc_max_seq_enabled())
-+		return;
-+
-+	for (type = 0; type < ANON_AND_FILE; type++)
-+		for (gen = 0; gen < MAX_NR_GENS; gen++)
-+			nr[type][gen] = lru_gen_seq_nr_pages(lrugen, gen, type);
-+
-+	trace_mm_mglru_inc_max_seq(mem_cgroup_id(lruvec_memcg(lruvec)),
-+				   lrugen->max_seq,
-+				   lrugen->min_seq[LRU_GEN_ANON],
-+				   lrugen->min_seq[LRU_GEN_FILE],
-+				   nr[LRU_GEN_ANON], nr[LRU_GEN_FILE]);
-+}
-+
- static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness)
- {
- 	bool success;
-@@ -4159,6 +4179,8 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
- 	/* make sure preceding modifications appear */
- 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
-+
-+	trace_inc_max_seq(lruvec);
- unlock:
- 	lruvec_unlock_irq(lruvec);
- 
--- 
-2.34.1
+
 
 
