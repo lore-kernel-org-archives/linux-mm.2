@@ -4,107 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB802C88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:25:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FE65C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65CF6B008A; Fri, 11 Sep 2026 04:25:36 -0400 (EDT)
+	id 8F37E6B0093; Fri, 11 Sep 2026 04:29:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0DAA6B0092; Fri, 11 Sep 2026 04:25:36 -0400 (EDT)
+	id 8A4566B0095; Fri, 11 Sep 2026 04:29:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D6B76B0093; Fri, 11 Sep 2026 04:25:36 -0400 (EDT)
+	id 793D96B0096; Fri, 11 Sep 2026 04:29:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ED806B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:25:36 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C52914013F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:25:35 +0000 (UTC)
-X-FDA: 85200797430.16.D887522
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 627B840008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:25:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52B366B0093
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:29:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 607A8160130
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:29:44 +0000 (UTC)
+X-FDA: 85200807888.12.D2CED38
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AAB991C0008
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:29:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Veua+HoN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789115382;
+	b=W3/7OBIHHolGBftbudLsAA6VZ2OQvt19as2ASipDKsN6XVLRt7RGXgoJWd4S0SroyXj6kN
+	gKmNuDou6kJeouYbv15uSrktYdv7DNsrjx99zS5jd4hUqQSyXTsG0fBKCKubImgFXCEcK1
+	WVM/HeU4KPNSWpF91arCwoB1bZHtP/o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Veua+HoN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789115132;
+	s=arc-20220608; t=1789115382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJ7M8u1YysS9HAOLVeB1e/R6vTT4QnUO2lXXhRbucu4=;
-	b=HR1WWQ8d+KsA3fFZxQqqshvgzmHCFIkBSnoVpL4Xk96NJRFNbqWKScW6ArRQb/CxXfJlTc
-	TI7I+WRTU8OCJbT8IYRvsN8XBGHytT4PXdH5i/Q4I88U8OAHFzJOVzi3prJHt0lhPK3Ksa
-	Kk30JdWYm3gBT5BsD0Y6IHMMEl46+So=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789115132;
-	b=FrQAhMOqL1gBYChhXUqWUffDc7CyNQooQWwh6l13o6SPJ90S+cAz2bYIgaxu9bhj0+ILkd
-	9uouGvnMZwbb0dKg/65BNe1TT8vqZt1FJKK+USe35u0Jc7apda8BKiNY2umSOhepbPhDJm
-	0qBs6UYQ2x5Z7L8TFtD9W6F8hwGzhU0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hh6zv0TwwzKHMPy
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:25:15 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 00C4C4056B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:25:20 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP1 (Coremail) with UTF8SMTPSA id cCh0CgDH_AfuuqNqJOk2Bg--.2181S3;
-	Fri, 11 Sep 2026 16:25:20 +0800 (CST)
-Message-ID: <aa0f94c8-b959-4aec-b8f5-69365d1a02fa@huaweicloud.com>
-Date: Fri, 11 Sep 2026 16:25:18 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=njtH3Y8aJsmF2L/mVvCVoWcGDIcAJ4Klj9jaiQi90MI=;
+	b=3X5UGCPBwfB6m4DRRz2JsCdfCYPYEsqtcNNJc6JF2aJ42ExL167RRb1As44QsDR9s2Gkc8
+	uIDDqOYfsJo0o0kfCM1MjyhHX8QOMlmet2FahKRPHcgHBa+yRdaAzzzVjU+mlZpAhsXPmz
+	+UqfdxV4RCmXlldStvVA20QrMDn6JlU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 192D441667;
+	Fri, 11 Sep 2026 08:29:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD3D1F000FF;
+	Fri, 11 Sep 2026 08:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789115381;
+	bh=njtH3Y8aJsmF2L/mVvCVoWcGDIcAJ4Klj9jaiQi90MI=;
+	h=Date:From:Subject:To:Cc;
+	b=Veua+HoNohaKmx3l9Bk+TV9RsHWNB2+ZSrga9sg/gwzYk0e6IH4hFQEKrHOmYIOS4
+	 3gbsvn2+fxE9bBdFtD1WpB6TOyMZ4Gn1uWuu6UU88lIKU8mG1VNi9cGsWN8N6jXt6+
+	 MN0bk7L+fzyeyhZaoLfOzdw6ZlQkKGhppH8EFs6PmpsZeYwa1+6jRvguN1BoeOyELj
+	 Y+FTSzgkvlCSqIFPleCvbTiC0AmzS5rzz6VqcVV66PXgOMI8D3KyZbdaoK7U3N+gQW
+	 zFODNp/njZUw23aawUL/42+FM40G8jXenP33kOofY9N374ltnn4npPLkwnvNy0DpcA
+	 x4JSqzBDMcAsw==
+Message-ID: <880edb7b-a803-4847-99d9-a0b80b3088a8@kernel.org>
+Date: Fri, 11 Sep 2026 10:29:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/truncate: fix data loss when truncating straddling
- large folios
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
- willy@infradead.org, jack@suse.cz, ziy@nvidia.com, bfoster@redhat.com,
- djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
- yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
- yukuai@fnnas.com
-References: <20260909062339.473816-1-yi.zhang@huaweicloud.com>
- <CAJnrk1b8fWpp-yBRxFaBbFzA8852N53SB6j3Zi9Qnp+JBFuNbA@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [GIT PULL] slab fixes for 7.3-rc2
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, Hyunwoo Kim <imv4bel@gmail.com>
 Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <CAJnrk1b8fWpp-yBRxFaBbFzA8852N53SB6j3Zi9Qnp+JBFuNbA@mail.gmail.com>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgDH_AfuuqNqJOk2Bg--.2181S3
-X-Coremail-Antispam: 1UD129KBjvJXoW3XFy8tF1DXF47KF18AFWUurg_yoWxKr4fpr
-	W2ga9Iyrs7G392krn2va1DXw1rJ3yfXr4UAF93J3s2kan0vr12kF1Utw1rCFWUGr97G3W0
-	v3WjvanrW3WDAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
-	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_
-	WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
-	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jxCztUUUUU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: tst6b6omz9tqsiqarqz96mqdzmganqsd
-X-Rspamd-Queue-Id: 627B840008
-X-HE-Tag: 1789115130-267696
-X-HE-Meta: U2FsdGVkX18VNr6FsWb4Xc1yVtkslRBN93m9rxXkLxM9UdWe3ba/xvxZ7GsChDrlSyFkuFGzidSOMspvyGyJMdfAJLai29acUvh382lvIc9ZH8OLGkRO0bNOq2docWsGI+zo+x6aoaUqr1b9rrcTb0HSVpz//KX2lR/Y993sIX2eiAQXVGtGERXkxwaJfBybP9Fate2hZsQ7m6NCQNniNuo6ECGaGjgivfiN7waxyTAK71lt3U1cV/G3AIuyIIS2IovKlDPIAzplRtIEEY4aHKdep77osIbaMKI7YExzyiI8vGrNXE+pGz6XIV5MkQrcq5gGKsPGgC8x+U24N1UOQ5pU0q7tt8KfZCH02UQxZzTOeYlui2ylitIpiTZyvHLER4HbJmPRR2A5iftUw19AXK3bVjfh+GeXkhuHj8jkbdaS7ZVQH274lZdTZfxGqmyofdbY+1jb6xgs/eaY+5j0QuBq8RwD8ZfsJAIAxlAWGzxKiOrhRxMOkdhbrOUb6TS7kkOX5ET0uc3c62HL7PuAcb3VHwGj6+Xoc98ivTN6WLzkk94en982adgZvlq1aRY9aWmG5JCSM4d2QLnEZPqb26vSlkt4rxtFhp58lVl8vzoZZ4jILLIhvb+xuIun12T+ByEC0Ga+iofuuLI3GEopY2TAbRdowL2QgzuHjzDCzJDq/CATmgtGBF59ZQcWsI0pBrC781S5rLgKObqZ0Q0tz2qmNhQBeHvQLV0L7zPvx+DJ7t1lBCzUqn4uxxFP7XMilYJv38+PfIQxcdS3QbmWNcvC0UPzuge4QkdkOiFHndMeENU6QAyPVVhkufw71nK4j//Xcxohj4/nMrBgf1tU6XkY6dDyZ9EO8NifH+Y0TS0xk775sOtW3V1S6fEVLJJV1R8RdUV9sEjkgnFHTdvgf6tG0SiqB79/WEPrp1sRGlJHSFJCI9uAvVpZ6CFMeuEYDse4Uzj4OOhngEmzHSb
- FehjpYNr
- RZ1FT/JcDHeyYiiNbz/+OS49fZ+Sfp/SWttv5+nTMO4h6QokjfL2pJoC6g6c4Fr5hZi8CHo1ZCH7JJvPQle0aYDbL7BElWQs5dX75dWNFfefBbFbZOla/t6+qrUBwBTsrjlQFqT+/Qt7J9lqI8mBtpWSXH+ihZ8/NMO9mq8C2+QCoggDOgOsgpGlM2zTDWdBoZ3Xb/UvdEZkq3j8i568owGTZw7GRatqSo9OB5+u2QPUB6Go3mKAGwPJOqkwBD2Kmbw+DoYiOuztPjec=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AAB991C0008
+X-Stat-Signature: 4e37zun46jbphf1sask7xxb7skfhtqbz
+X-HE-Tag: 1789115382-313363
+X-HE-Meta: U2FsdGVkX1+q0W6xis6Rrnx2YMyJ9OBoLZdrnnQDaWX5Sg/+79kI8mSY4q+K8ZNs0gItctuH0czVFpvtdSHdqyyZxLD6D3R7exKG/DuoafPjeLHxaHoejOQ3AhOkCi2qD3U5+HSKSnNeFV7m91eAlJr7L2hYddYqd5pDK8hxrQTttbAmVc4oYz4JDdqD9iK1kwGMoPVd/LhiE+WILXlDnF6XSQ/ZVT+haJrslaCs1HVPAcjY3ooYZfAw9/RmPTCLBKQudDmSHSw5EdYUYITbb4dOGb6qABGntKZD2KJy1hm44NjrnKfHTd4Qz/8m2KxWW7Euujduz0gfwYEXaav9429qQiZrglbTgwXnTnrkcvAezIrTsjy5416PsuohbtQx4U2RY8vEmd4m2VmHrkNMr8LplDDTdMR/WSNoMGMQ/u38t7ZJEiigrr1Bozk5vDZmmPIF3nC4Zj8rvFq62FrNcTrw+rIwcENq6ACi1F4xRxk/BSsMQR5pu5HZMxo0VWbScpWx3qjbfatTSG5SYD9k18/r0jVSi5qB0DKZ0HkdsBgM7K4dfSRV40nUqWaSjttLQdwmQS87tUyCP6r0KTt2+pUnYQBJTvg5rb4ZlylpvwYn0RGhCBkAu4Y2r1oOlNXwbqmJtdDYAbrVWbPaeCLoUM1mg0jzWAmUhJ0sZF/afeD2QIblO0EVbXZ5n0LDs5i/fZI0DgeaSTyYt4jVJydQ2pAFYBp+xaPom1/NTIkmxKhJ28hIm1lq4D91HMrnFd7m4E7C5c8FwW4TRHUx7SH5RMzaQNpv3B53Uvc6YqNYGvAIW6SecgZ5DKfX4bRanNqCF33wozods2zcl6pRL1qv//lq+UlC+AMc+PuNvyQKuSOWMzkwZr6M1nSJQt1Iym4Deeby1t8E4AclwgQOUc+aorvagGoiOqHkbtzwZ2cRll5Q2jSzfLMuB0qNG1iWk3tYXz1DcuqJHjRsVBh5eiU
+ kKT3wEz3
+ MtEicsZ5Ao/vJIhY+5tqeaL/q/gMAlYLMqnyBpvqqy9GhZcmZrV6wg05/wpaRVPFCo+kRO51F7yNiM90GJo8nVPlgfetntfldVKBqtOhF2hmZyL+boRtjFTgTwSjSp5Bgbc6H2wmXwusKBNeSdC6csQN0mwQdQkapR+JtBLyuihMjypCzbpkHXzAfSNdlOjv42+IT+Olu/GOE/3iECsbR22TV47d2xaOW96W0urVsMXsbqMPW0e6Hi4w4lwHsokEsh0vDx2cyy/iurCVb+N+lXKU52/cGGCof9QQglgBSnSHOsTYmeQWQUIc0bgi3CMCC46Ia
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,161 +133,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/2026 2:29 AM, Joanne Koong wrote:
-> On Tue, Sep 8, 2026 at 11:31 PM Zhang Yi <yi.zhang@huaweicloud.com> wrote:
->>
->> From: Zhang Yi <yi.zhang@huawei.com>
->>
->> truncate_inode_partial_folio() splits a large folio so that the caller's
->> truncate loop can drop the in-range sub-folios while keeping the
->> out-of-range tail. The first split at the punch start edge is
->> non-uniform, which leaves the sub-folio at the truncation end edge as
->> large as possible, this means it may still straddle the range, holding
->> both zeroed in-range and valid out-of-range data. The function then
->> attempts a second split at offset + length to isolate that tail.
->>
->> If the second split fails the straddling sub-folio stays merged. The
->> function returned true unconditionally on all exit paths of the success
->> block, telling the caller it was fully handled. The caller kept its
->> default end and the truncate loop truncated every sub-folio below it,
->> including the merged straddler, discarding the valid out-of-range tail.
->>
->> For example, a 4-page order-2 folio punched from offset 0 to the middle
->> of the last page:
->>
->>   truncate_inode_pages_range()
->>     truncate_inode_partial_folio()      # same_folio == true
->>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
->>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
->>       2nd split of folio2 fails / cannot lock
->>       return true                       # BUG: caller keeps default end
->>     end = 3
->>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
->>
->> This became reachable after commit 7460b470a131 ("mm/truncate: use
->> folio_split() in truncate operation") replaced the atomic split_folio()
->> with folio_split(), whose non-uniform split can partially split a folio
->> and leave the end edge merged.
->>
->> It has gone unnoticed because a dirty large folio normally carries the
->> filesystem's private data, for example buffer_head, so
->> filemap_release_folio() -> iomap_release_folio() returns false on a
->> dirty folio and folio_split() aborts with -EBUSY before any split,
->> leaving the straddler safely unsplit. The bug is only reachable on paths
->> that produce dirty large folios without filesystem private data, and it
->> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
->> attached.
->>
->> In addition, even when both splits succeed, data can still be lost when
->> the mapping's minimum folio order (min_order) is non-zero. folio_split()
->> stops at min_order instead of order 0, so the sub-folio containing a
->> split point stays aligned to 1 << min_order rather than to a page. The
->> original success path left start at the page-aligned head of the range
->> and set end to the exact page index of the end edge, neither of which is
->> a folio boundary in general. Either one could land inside the large
->> folio at its edge, and the truncate loop would drop that straddling
->> folio together with its valid out-of-range tail.
->>
->> For example, a 64K (order-4) folio with min_order = 2 punched from
->> offset 0 to 36K:
->>
->>   truncate_inode_pages_range()
->>     truncate_inode_partial_folio()        # same_folio == true
->>       1st split at p0 -> [p0-p3, p4-p7, p8-p15]  # non-uniform, min_order
->>       folio2 = p8-p15 # straddles: p8 in range, p9-p15 tail valid
->>       2nd split of folio2 -> [p8-p11, p12-p15]   # success
->>       end = p9                           # BUG: p9 inside [p8-p11]
->>     loop truncates ... p8-p11           # p9-p11's valid tail is lost
->>
->> Rework the contract so the caller is told the page range to discard:
->>
->>   - Return true only when a split occurred, false otherwise. This
->>     clarifies the existing confusing return value semantics.
->>
->>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
->>     range fully covered by [lstart, lend] after any split (or none),
->>     i.e. the pages wholly within the range and safe to discard. They are
->>     aligned up (pstart) and down (pend) to the mapping's minimum folio
->>     order so they always fall on a folio boundary.
->>
->>   - Rename the byte-range parameters start/end to lstart/lend to avoid
->>     clashing with the new outputs and to separate byte offsets from
->>     folio indices.
->>
->> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
->> &pstart for the folio at the start edge and &pend for the folio at the
->> end edge, so the truncate loop drops exactly the fully covered pages and
->> never touches a straddling folio that still holds valid out-of-range
->> data.
->>
->> Suggested-by: Brian Foster <bfoster@redhat.com>
->> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
->> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
->> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-> 
-> Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-> 
->> ---
->> v1->v2:
->>  - Export pstart as a new parameter so that the generic and shmem
->>    truncate paths don't need to recompute the start value from the
->>    return value. (Brian)
->>  - When min_order is nonzero, align [pstart, pend] to the inner
->>    boundaries of the folio to ensure they do not point into the middle
->>    of a large folio, which could otherwise cause valid data within the
->>    folio to be incorrectly cleared. (Joanne)
->>
->> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
->>
->>  mm/internal.h |  4 +--
->>  mm/shmem.c    | 13 +++-----
->>  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
->>  3 files changed, 67 insertions(+), 38 deletions(-)
->>
+Hi Linus,
 
-[...]
+please pull the latest slab fixes from:
 
->> diff --git a/mm/truncate.c b/mm/truncate.c
->> index b58ba940be47..d88a1b159084 100644
->> --- a/mm/truncate.c
->> +++ b/mm/truncate.c
->> @@ -206,35 +206,41 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
->>  /*
->>   * Handle partial folios.  The folio may be entirely within the
->>   * range if a split has raced with us.  If not, we zero the part of the
->> - * folio that's within the [start, end] range, and then split the folio if
->> + * folio that's within the [lstart, lend] range, and then split the folio if
->>   * it's large.  split_page_range() will discard pages which now lie beyond
->>   * i_size, and we rely on the caller to discard pages which lie within a
->>   * newly created hole.
->>   *
->> - * Returns false if splitting failed so the caller can avoid
->> - * discarding the entire folio which is stubbornly unsplit.
->> + * When @pstart and/or @pend are non-NULL they receive the indexes of the
->> + * page range fully covered by [lstart, lend] after any split (or none),
->> + * i.e. the range of pages that are wholly within [lstart, lend] and so safe
->> + * to discard.
-> 
-> I think with themin_order > 0 case, pages wholly within [lstart, lend]
-> can still be excluded, so maybe worth editing this to reflect that.
-> 
-> Thanks,
-> Joanne
+  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc2
 
-Good point, I will fix this in next iteration.
+Note the slab tree has been moved since the last PR from vbabka/slab.git
+to the new mm/ namespace.
 
 Thanks,
-Yi.
+Vlastimil
 
-> 
->> + *
->> + * Return %true if the folio was split, %false otherwise.
->>   */
->> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
->> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->> +                                 loff_t lend, pgoff_t *pstart, pgoff_t *pend)
->>  {
->>         loff_t pos = folio_pos(folio);
->>         size_t size = folio_size(folio);
+======================================
+
+- Stable fix for an ABA issue causing slab list corruption introduced in 7.2.
+  (Harry Yoo, with big thanks to Hyunwoo Kim for the thorough report and
+  initial version of the fix)
+
+- Fix for 7.3 regression of kvfree_rcu() on PREEMPT_RT which can cause a
+  deadlock from the set_cpus_allowed_force() caller. (Vlastimil Babka)
+
+----------------------------------------------------------------
+
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
+
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mm/slab.git tags/slab-for-7.3-rc2
+
+for you to fetch changes up to 4a724bcf5d703e18957397914d79156fa2cf1174:
+
+  mm/slab: take n->list_lock in __slab_try_return_freelist() to avoid race (2026-09-04 12:15:41 +0200)
+
+----------------------------------------------------------------
+slab fixes for 7.3-rc2
+
+----------------------------------------------------------------
+Harry Yoo (Meta) (1):
+      mm/slab: take n->list_lock in __slab_try_return_freelist() to avoid race
+
+Vlastimil Babka (SUSE) (1):
+      mm/slab: disallow kfree_rcu_sheaf() on PREEMPT_RT again
+
+ mm/slab_common.c | 18 ++++++++----------
+ mm/slub.c        | 25 ++++++++++++++++---------
+ 2 files changed, 24 insertions(+), 19 deletions(-)
 
 
