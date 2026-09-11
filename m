@@ -4,174 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB612C88E40
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 02:06:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04614C88E41
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 02:21:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DEB6B008A; Thu, 10 Sep 2026 22:06:39 -0400 (EDT)
+	id CEE0D6B008A; Thu, 10 Sep 2026 22:21:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94EB46B0098; Thu, 10 Sep 2026 22:06:39 -0400 (EDT)
+	id C9EE96B008C; Thu, 10 Sep 2026 22:21:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 818C06B0099; Thu, 10 Sep 2026 22:06:39 -0400 (EDT)
+	id B8D536B0092; Thu, 10 Sep 2026 22:21:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 413AF6B008A
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:06:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB2EE1404BE
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:06:38 +0000 (UTC)
-X-FDA: 85199842476.14.B415F4A
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011061.outbound.protection.outlook.com [52.101.62.61])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C4D17140007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:06:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LmdafTtn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.61 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789092396;
+	by kanga.kvack.org (Postfix) with ESMTP id 755276B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:21:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D542A55FB
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:21:11 +0000 (UTC)
+X-FDA: 85199879142.05.006A0A0
+Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1081614000A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:21:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Vwn2jRiV;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789093269;
+	b=t45ydg8I3HTGypxnuW3L54KHzJqY3wSFvi6T5k4dccIUxbe5mYDiZWbrudVmILVecuZgrP
+	WsO2WjCaX9W/nzAuZdNPDODCrlBSmuOCeoyP4zNLwCEvXNEcZnof++si5DndevUf+RIdKW
+	+9NyZy6Eo225uYF1qbMHfQFSG20Taso=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Vwn2jRiV;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789093269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hUzPei/aaVMv0fOBde+MU0Pe4R8As3p3aUp8AA7JYyU=;
-	b=xjFXGUKs18rgGWa2EXni2QSJdYXTRafxEoLkjRK30o6j77B4TG2ghH5T7ES0UD9kl7I0Gc
-	BcD6j4EodzrbfsCLqG5j9BtZtAGlVV6Tr6KEZYT6C2eiIUF2ToCxqiAOgAyc/w+ET79gxO
-	kZWB+jiyMXvKJgVZmt4GYZl7a9DOwsc=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LmdafTtn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.61 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789092396;
-	b=CjtfZKsEjUTbZI6o/xNGdace3bFVqVWsvec0daMgBMpDKcw3Lz9CvOK++fF/G24ZFim52Z
-	PCkCMQktXuckT+7KntbDX/YEgRvY+hdlUwdivBeHGBeSKKHl4XSD+bnO5P/h9Fbaj+OhZ/
-	uQdYUq+oR8I1909AMYuSN2H+52pHtCo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bcWhjDLijNhJu2s6iRWz77FkbSFOpqYnAyLFoV2YFllBdYv3cSzPengJpOMemEXSCsEr/WuGcd/1fksRSFKHsm1xZi+/GNvUSpH510kL4qZ3JZi2OMWAEI3SRWhHj/iInjrJZcETqWqWdX0m8N0jDFLvA08zkgrnZhslwy/H8uMRi9F2ew2ybfVzxVSeuBB+lUdUjtxVsijRJSPmI5Q5YCQwOGBQ+33LMxw4omdzsX6PILFc/EXc4PRv58q8dl+k//VgHGx8Y+N9jSh7G5DSpneig7+ohojUdOpmTutkVv24H1VyA38Co935XZvmKlaZpVnqUK2hdm5M5x3VG/6P7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hUzPei/aaVMv0fOBde+MU0Pe4R8As3p3aUp8AA7JYyU=;
- b=G2gledzt7d+ALGZRp55poDLjVBnn9rWwbhNvnIRvaLjsEja5Id1f2A2QJ46E+fLQBK8tHUV8jrumk1kN5Vr45YN43nRY3qW5vYMWDbR80IwJLslUvpc9KikN26+fhxMqycpYH+0dWGEc+lyavyYiyFdg65thYYTdyNjNQAmDoVFuZnFftnlEBjQEl+U1kS8f4aziAfbxV2wj23AjUMRlCHLCsojaKYtN+FZ5jezzVq5hUGVp/UN8Sn2iW86Q00Qgg/tC9/hVbJDer9psM9VxWNvSuEz92H8VLtjQdUUQC7AR91aUwKARUIxSRu17k70cNqjDMnSQ56ZWlRZZMimsig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hUzPei/aaVMv0fOBde+MU0Pe4R8As3p3aUp8AA7JYyU=;
- b=LmdafTtnxuyZI2mHGr7Hmspz8TOYBbiseEWqA+v0VyVNQmGiOiQgs3DzrEu2SnjhQJ5ifK/9ce/k7b+w17Wf9J9v+LV7aMhxdJ9GFjFtu/sdPaaFYPYg/v2XVIwIL6knQmAwlM9x9LixcOvUDfspAnsKiTgnDw4MDFEWntc/57td3+lS/B/X2iJZZJrdjB7V5wMgx5oQCG8bRH4GOZmxqy879//A+elj3TkdkWyGKUiWKUN3+rudbv6UG8is5ZS7GoLjcn7eB+k3ox1V37gdlmdi17V4FAMPdcAdd1ttB7DIF/ADU/u2HS3IDw+jHKQ0ocLpKBEFhB5wNqEBVGhLzg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CH3PR12MB9456.namprd12.prod.outlook.com (2603:10b6:610:1c2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 02:06:30 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 02:06:29 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Sep 2026 22:06:28 -0400
-Message-Id: <DLC4BKO9UPN9.2VM6L3Q8KO0NR@nvidia.com>
-To: "Kiryl Shutsemau" <kirill@shutemov.name>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v2 05/12] mm/collapse: state what a collapse may do in
- the policy
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>, "Liam R . Howlett"
- <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
- <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
- <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
- <usama.arif@linux.dev>, "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn"
- <jannh@google.com>
-X-Mailer: aerc 0.22.0
-References: <20260910120238.2529819-1-kirill@shutemov.name>
- <20260910120238.2529819-6-kirill@shutemov.name>
-In-Reply-To: <20260910120238.2529819-6-kirill@shutemov.name>
-X-ClientProxiedBy: YQBPR0101CA0249.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:66::7) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TJF0+qQ/JNMyjKn+t/3th+Ab+NXCRkE52fy+SB+MOlc=;
+	b=R8vhLZCFXShn00yxmf3sIescpB3N0Q6qTTKCmrO83udqbrY8bWSVV61Bv+SxUOhalMusB7
+	2D/st8VkpJmLERTxhzrPQiiKYHDNZT+uinT7dDfsQKuXng0yeSt5vR/YXRs97ZUNQ1cZ1c
+	IGQzkfwHNYoyYgF6G6O6Dtem4tW0aqw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5/1w47pt+5M6oOZ6KogOUzOV3aVzd9z+Eh9KVmbPDK0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789093264; v=1; x=1789698064;
+ b=Vwn2jRiVlNaVbpcOqQcQidYNNWL/S+iwEdLPSW+pZebShAYYNOaAjx7GhmdxHDXpHOsNU7U1
+ gog9zhSwADXU9v7zTJkmv77A6zqHIwQ0NYa4igJ60kaC2xSDE5Xd7f4QmmKfMt7SxQfWpOg2hpr
+ WO50PVWtUokaUgASermFONEc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id e20d4b384e4f25b3;
+	Fri, 11 Sep 2026 02:21:03 +0000
+X-Mizu-Trace-ID: e20d4b384e4f25b3
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v10 0/2] bpf: BPF-driven proactive memcg reclaim
+Date: Fri, 11 Sep 2026 10:20:43 +0800
+Message-ID: <cover.1789091855.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB9456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6530db24-e409-4f45-f05c-08df0fa94b49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|10067099003|4143699003|22082099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	nx0YIxUiD192QS884Pm7tVFhyzoELVLrOeyg20QbNLv2PRRUwKYECwPwxLJrMLdld/K9jNV9n2ZyZmHNmEdzjqm3guJmBqgxEmABpcdpPyY8YUXWzJz/UZWo0brVNWuj6JOFiMx87+ZWy/zHe05RDZuae5jYS/7LvBQBVAfT7eg6dbDT7RAKA70zH3jNJzJNAXY7GNIdXdg4uiqY8dT3X0D+DsYEuFImNVAfA6+MgZqHTmFyopAec5zCAI+uCB54Lolh/Nt2ZWTGFULRPL4Q+7zuZ/P3CQETw2bqFbxQyalYrPfWMBp4U4NfXI1sqG2uJ2g5NphCktpYblWvmphz8zWbLVxaIkXLXsxGRY/GwuDKu55+Q6CSbhLBWTuKSQzZAKRk5CnYM6BUygOISrTWdRNgB0rJDYW94hWQJt2T+VWUDouHmaUke2CBU/yygZy79RsBC9wk9BFdn0KzK3J9m4c0iEJbmwZj286SWlZEdm0pIXMTe+LSD1r6A9dwM3MGs2lFBQy5Uu29S3TA1B5n28az2oqe6O98ZWk0iIveDbYcfR3/nea/2+q+OOIHrfDNtS5alwR3I+ZxzCOeS6T50PAcFv0PM/xyQufY2hDrunbUkn+7l/bNMOXTT/CADKGwijq2dbVwI0g8TmXx89frD+Sxw3RCAWJSzr9Q3ZIj9mA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(10067099003)(4143699003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dnlPSGxHSXozR1pzSnU4WHBiRHlxMFJqTmF2Y3M0S1djeXV2UGI5UWRmOFB3?=
- =?utf-8?B?dzVEcWJZSms0Q0V3MDhEVnpyQ2xkTTFEQS9aOU1vQ29TSThwWWpTaDZBQ3dF?=
- =?utf-8?B?MTNkbmlZUVZWUFlqOXVXOGtCZ1IyaTRiUTd0bklER3p5UFBHVzUxZVhqQUdQ?=
- =?utf-8?B?azNud2MzQldRYXV2RDRlMFgvTFFxRUcyMkJLYXF3c3VrcENoVnhJa2ZNZG5o?=
- =?utf-8?B?NGFhSU9kQzZjb3FpUzBVRjFxRkhkNHJKTEVxaGYrMERTS1lxRUVLNWRSR3Y2?=
- =?utf-8?B?Rk5EZU9CczRZS1kyd3Z4bzZVOHRrSU02MEJqT0txdVdmNmdCdVdYZ2lzRWxh?=
- =?utf-8?B?NWJabTd6VnA4MEZhZWNNS1BaVWpwTTloTlQzY016VXdoeUhUU29sYnlMcTls?=
- =?utf-8?B?NHFlOVM0eUx5SDlTNmZyRW5ML1lpRXhBUGNPMk9Wb2dObHFndFNGSVVtc09H?=
- =?utf-8?B?U2ZqT200N1Y0Z2ZJbG9yUDFPMy85VEk0ejlrYjRYanZ0V2o2TlNWa3VqV28v?=
- =?utf-8?B?SnpRMUFlYXFZa3RkR2JwbXNEVWpUZnhKMXlpOTkxcUhRK1Q2RUJMWjBXRjJ0?=
- =?utf-8?B?V3RsQVR1OTVOSnR2S0hZRFJXdTM2SjN6ak1JbFh3a3krUHk0RmVBY2xHSnM2?=
- =?utf-8?B?MjZYN3A1SzNPcjVyQWdvR1JmdEZ0VmROSTkrZE9Rd2p1YTh0T2FTbnhEWmZM?=
- =?utf-8?B?UFV3L2dRdCtremlMOUlBbDlkcXhER2lySDZaQ2tlaTN3eDBsRG5hY2hUd2Vk?=
- =?utf-8?B?bVRmZ1ZDb0EwV3d4TzZiOHVMZVJ5Z05iRlhXdkJDUGVBMzVYSWRnem93QUtQ?=
- =?utf-8?B?M0hOaWdRd2RzOTVlbFJ6aFJ2aTRqRCt1bmNjZG1ZN1lRd3NpdFJDTEdHUTA5?=
- =?utf-8?B?aVpHbHBzOEVFN0NQQ0pFOTNHSUlxbUUyOHN6enFBNTY4cnNoMDJGUE9hTE5q?=
- =?utf-8?B?SitlRlBSeFYvK29kK1loRXVaZWJ5YVJTK29OWlJXZEtLNEVHYUQ0dHpjS0RT?=
- =?utf-8?B?NW9xR2g5N25vUEFYd0pLL2dyNUhlWnBuVEFSWllvcTlFVEtIK0JHSG5SWmM5?=
- =?utf-8?B?UHdYQmFncTF2M2ZIUHNveTVZM0RvY1FGSys5ZEt2RUZrakc5ZVRnWlhYNHVo?=
- =?utf-8?B?Z0xPNXRBbUxSQmpDVXdHcHRyRnluTmExLzhxMHZ4cUFDaTFJZzFhNk9qNHJK?=
- =?utf-8?B?dEJnNDloUzZQc3RlRlptSGF2NEtUMm0xNW5iNjZObGlMWUhOQSt4M21HV1Zj?=
- =?utf-8?B?N0xTODRURjJuQncySVZDK2dxNVZFMUVvSkJjTTlpSGRWcFBLVjhpZU5BWmJh?=
- =?utf-8?B?QmVuSnd4MVhzdGFIeXlsTjUrTEhEQno2Y0ZiR0hxMytwNXkwYnBVa20vUjVO?=
- =?utf-8?B?ekVRSCt3aTBIZnpYa1pENHBNRU9yS2tZVS9GVVY3QUVqVjVQTjdOUVdpNzQv?=
- =?utf-8?B?Tng1ekZkUFdYcE5valNYRmxBWlo0WWJVVldTbm13dkJwR0hnMGVweUIvbXN6?=
- =?utf-8?B?MzBDMU85WWxFb2R2ZTdMRm1YL09TM3hwaW1kKzdOWWFiTjhwck0walY1alFB?=
- =?utf-8?B?c3B4TnVnUW8yaDZSZG5CYnVZUzEyN3pUdGdPdStBZG1lUythWVUvMmdIMjls?=
- =?utf-8?B?L0hFK2dmT25LTDZQSEppaWFybWRGSUsrM1FUWlVnSGt4dHRjU1NrWklnTHVS?=
- =?utf-8?B?MDNmZ21PNlF3V0ErNGlMUGQ1bUd1dFNLU090blhTUFBJREhzMnJzenlJQW8w?=
- =?utf-8?B?MXczbVFLZXAxaFV1YkQ2N2VXanhrRnUrZjdKOG5nTnFIbmxQT3puK0J1cFdR?=
- =?utf-8?B?aUo0M1U5U21qelZVdEF3akR1UlNGZnVNUkltZkM1Q2lkbnJWZUlHUjRoY0d5?=
- =?utf-8?B?aDNZeXo0OGQrZ2JNV1hIUDVSMHdNSzk0RzdFNXExQ0ZCcEl6OFYrdFNadzZ6?=
- =?utf-8?B?SGlGT3lhMDVYS2JOenJNc01rdDRwVUlQeUV6b0Y0Z3MvYnVJQXVSQ2drU3ZG?=
- =?utf-8?B?bU90a2NGY1oreGY4RTM3dkRFR1NHaGpnTnIrNStyZWcxazVVUXlOUVpsV1J1?=
- =?utf-8?B?c2puS1lTcnFtN3RTU251ZEdPb2xvUkdwOWlCSEQ2WUg0UC85L0psSTgySUN2?=
- =?utf-8?B?RkM2dWJCMXhkTE1pazQ4ZnhZclhpektQUEsrUlZjeUNlbGF5STIyT3VyV1k5?=
- =?utf-8?B?d0R0WjFvS0xYTjJNdk9zNjJVL3ZRMnZsTklkd3Z4Q0dxK2JkbTdUT1BueVRK?=
- =?utf-8?B?ZXduUEJocXBpVE1VMlNmc1ZuQ3pTRy9OV2NWRDNwdG41ZmQrekplVjBlamV0?=
- =?utf-8?Q?s9g4Jm4INxgnPWAyd6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6530db24-e409-4f45-f05c-08df0fa94b49
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 02:06:29.8171
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QznZgdSMAYqwPYOYqpYU4A5y4SCwTSA/pNn44KcDJWtscaDoG+aNMUKovCbpwuWM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9456
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1081614000A
+X-Stat-Signature: ngwte1zdcuamp5oj9pzxhnganmmuobsq
 X-Rspam-User: 
-X-Stat-Signature: wbocruraa415tq6y1hojipca7kd4eaei
-X-Rspamd-Queue-Id: C4D17140007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789092395-684411
-X-HE-Meta: U2FsdGVkX19kSd8PIBPpX1gVTAR4wvdbtKdIpilaiOqRhYlRMzBKuGNPvfiVB+h+4fcYp/073VchidIcDvd9AE4/HGn2M2JZyphYkR7gERlp/C5Gpum675e/vASaVhyanBl7NcYtsc8u1B6bhrG5CVVOUeKtyMQaTPu2Mls6bFA01oXTGjaCtwkU/KGHEtoBk+enuW9xN3957u5v98uHe/sAZXAWGyi9EaVWXp4/cAFHRhDserSCZ9w7kZP4mgAlZtjf5PHaPNT8Gqlbiat6XxKUCEHA0JwIk1V+jL6GtzkcAtoDxLXPY+kHonioYnMrRfF4TSseW59kWT6ahTzYeD9cu3ognNosmVc/E6Im6RGgtzo7AfJW2lnVumpU+hHjUCWnF886FfPqiIWNhb+2/7Yoe6nD6bnGiXNh9WDttMG8Yo6ySGkd/s/lcjxCOAbelzxOgy7B2sjTnXiGJ362VVwhg72lwihBL34pwWrE1NN3oHg6PvDjzI9TpBvhIT4uVkeoK5x7DLHygQMyQOdRGfSIYz8xNTU8TmST0I9z+XOCVpqL1dqXqulDPqdFNav1JxLEzB8OJH7ydueO68kpnbt2TVdsSNPsTPcxRlX0gQfRnBCDb/nNjS8WHCBDNTH3Tj6k6K6n0QzcGXZQ3NoOVZsNZcmkp/hGTsRXYNXSWW1/ujkGZqE3T6wt175LQbZd33Naq+5YyJIFEq/PdGQ27nZd7FgH6pYxASmZ3sECn7iw9Aye/JgI4h5uYDjolLoWQG8ggYQjz5yoW4E10bLt+CRFejaKzG3Qlyjb4h9x5DGbv4tcPUBMkNGp3xGIcgmTFZsNDHFpr1iV2jtxhnEhW9f/77uCPrwIVaNrAaYMbVtByzVyEZZXLeEF0Y1ejfGoHWSteN2vcdJ63zzX+TuIF0wDu8GJAlMSvDrKAOPUSOMXfflV/qP+9FxZHofi6PU+V6pdlxZEJNrBV2uaTQg
- D1Vqx4v0
- RGEs9BzLlkdrH8yw1DgNJI5jdH5SaeoBoNmTJNF2KtZ0VFbTqt36C84Tk7Uu5PIeeNT0EukxSUA/oc2rq1laQQF/7GkVvh0r8adD/RIwHFTQ7/umZGOWWPXrRbLh/DwEvz8AnmrAdAKcmLJynV3cxbJLdE5IOQAc/mrji8fJUyu0eoKQPl10rXGzqAF4BfyZUu4zkjuntIPqStmlVuG7CNtXyKlv5QdWj3W7xmevvRrTem5J4aAvFKxDlpyazIMPW0Z+dfHMTXQvfXs3RD/v10coN3cHSNutiEd/W8V4k414iHgxdi9z66ST/7uE/Gogdo2yitVKvFMqQlb4C3PzFYsLfgUy+WG/6CXFu1rY/c4R/tI9JjelJlkdyESN9Bp2lBFy36G5b19Qw50PTGDPPEtX4h3XBqLejKKZEXFbGH4o6nzM=
+X-HE-Tag: 1789093268-21418
+X-HE-Meta: U2FsdGVkX1/87y7jz7Fpc/5rLGBbvbQtuFxQ9LDg7iwvc3TgWubpdR35N0Q3iwFS4uJmajhNizO7B3WCJh2PU/fH9ppVz473Ms9uXzHvtIskS/gQo50TsEQSb+jM8i7Vfb0T4qZkNCSLkDoeZmMjScV7GNcAXe2tx3v4CHNGoPFFsg3PIgNj4gXTtyq8E4hE70jHyVWJnmminK6K7c5k3ZhiwZ2W02SRl0sRKnLJDvGvo9DPoGcIasg5s7n+i80u2yDCd4pFLGAK1cMv5b2Kt2kUfOIDNDMMjtjlrivngG94MW6NqjLBCur+TYIkWuaaiHeHdWe872aqKTyu/gOXC4pdZvwIVH2EfKmvAGxFCuckJAq+txP90M7kB+OkkDkSuxcmVXC9jfBFs/7LqUsIP6NbW1pl6cdKTrfvZ17D1Q5rt6NZXtg93dmFhqeqcqdtk19MttoXYddRjyMnnMEiHb20yEjWHao0wYL8DCiz9JGZm8NrJbp7yFtW9IcR+KRYXhCZz9WuYJx6fc5IB2gEBZoWUpWgr9/kD5fhvc/CmtNQALri9MdFqxDIVm+9n3i2sVL3EIRF+w+3YbiAaFT4MFS17j2Ou93+qZgUuMhJ6QwVcdFTJQeRpsXLxDLsdxDPlTJYwPwzwVp/rBwQqsOcnjnfH7z5hyZemwgpOT7MwE/+w0ECTfjfsmbq5lC+Hvu0w1sqtB4FxB8Y7r37u5RXglpliNIwTJS3nE2GMzP032zdEzhxc6SKHjEUg+IHErbYv15MvM4UqsIKMU7g8DoepHTDRefGcONM5pxtpiKpYJrqtcNvyIwR2siWQH+VWqhts+jO2l46uEUtsOKIb70J+iZ4lL6V9TkaIYx6VJXgFMUceOwKy3ijgFrqEY70lfXpg+uIRqH2ULwtITCug0m1SSwYwlDvpSNhfSICRyvruKktGKTRpFKWMOljZrL4Z23qmp6QSdgtz+1hzkut/y1
+ v0BZtJeX
+ vlyIzlIkwWuFG/rzdmXX8ylpGd5jQ5EF/lRK1gLmgXmOD5DCV8QNB0xVepFTO9TWCcg9ccAY11BtzrcbgE/e1/i5Kikeq5EzAQIrFAdhN7U+uGzGRILPtkDraqDeZFsNVoQu0x+mazjpp2ovbfQmZ1ZaEuGCYM/i0ZMf2zX79Bv8Fjv294llOdXaIxUME68whCis9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,59 +106,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 10, 2026 at 8:02 AM EDT, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->
-> Tests scattered through the collapse path decide what a collapse is
-> allowed to do by asking whether khugepaged started it.  Between them they
-> settle:
->
->  - which VMAs are eligible, and how hard to try for a folio;
->  - how many empty, swapped-out or shared PTEs a window may contain, and
->    whether a sub-PMD window is held to a stricter rule than a PMD;
->  - whether a range has to look used, and whether a MADV_FREE'd page is
->    left alone;
->  - whether the PMD is mapped as part of the request, and whether dirty
->    pages are worth writing back and retrying.
->
-> None of those is a fact about khugepaged.  Each is something the caller
-> decided before asking, and the collapse code should not have to look up
-> who called to find out.
->
-> Add struct collapse_policy for the caller to fill: khugepaged from its
-> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
-> Every test becomes a read of a field, and cc->is_khugepaged goes, having
-> no reader left.
->
-> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
-> call.  That is the one change in behaviour.  The max_ptes_* limits and th=
-e
-> defrag setting behind the allocation mask are sampled once per pass rathe=
-r
-> than on every table.  A table scanned early in a pass and one scanned lat=
-e
-> are then judged alike.
->
-> collapse_file() also drops a NULL check on the collapse_control.  It has
-> one call site, reached only from collapse_single_pmd(), which dereference=
-s
-> cc unconditionally, so the check was already dead.
->
-> Assisted-by: LLM
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  mm/collapse.h   |  31 ++++++++++++-
->  mm/khugepaged.c | 114 ++++++++++++++++++++++++++----------------------
->  2 files changed, 93 insertions(+), 52 deletions(-)
->
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Great cleanup! Thanks.
+BPF programs can observe memory pressure on a cgroup (e.g. refault
+stats via bpf_mem_cgroup_page_state()), but cannot act on it:
+triggering reclaim on a chosen cgroup requires writing to
+memory.reclaim, which BPF cannot do. This series adds
+bpf_proactive_reclaim(), a sleepable kfunc performing one proactive
+reclaim pass on a target memcg, so when and how hard to reclaim is
+BPF policy rather than hard-coded thresholds.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+The kfunc is restricted to BPF_PROG_TYPE_SYSCALL so that reclaim
+always runs in a clean process context: generic sleepable programs
+may execute with filesystem locks held or in NOFS/NOIO contexts,
+where the reclaim path could deadlock in filesystem shrinkers. The
+bpf_wq and task_work callbacks of a SYSCALL program keep its program
+type and run in process context, so reclaim work can still be queued
+asynchronously through them, as the selftest does with bpf_wq.
 
+The use case we are looking at is protecting high-priority workloads:
+a BPF program monitors the state of a high-priority cgroup and, when
+it degrades (e.g. PSI rises or refaults increase, as in the
+selftest), asynchronously reclaims memory from low-priority cgroups
+via bpf_wq and bpf_proactive_reclaim(), giving the pressured cgroup
+more free pages.
 
---=20
-Best Regards,
-Yan, Zi
+Another use case: several vendor-maintained kernels carry private
+implementations that trigger asynchronous reclaim when a memcg enters
+a certain state. These exist for historical and partly psychological
+reasons, but the underlying demand is real. We expect BPF-driven
+proactive reclaim, combined with the BPF hooks for the memory
+controller currently under discussion and development, to serve these
+needs in mainline, reducing kernel fragmentation and improving kernel
+maintainability.
+
+Benchmark numbers from the selftest (TEST_MEMCG_ASYNC_RECLAIM_BENCH=1
+runs the workload once without the BPF program and once with it; QEMU
+VM with 8 GiB RAM and 10 vCPUs, 10 runs): the pressured workload
+finishes in a median of 2.1s with BPF-driven async reclaim versus
+12.0s without, a 51%-90% improvement per run. The harvested workload
+shares the parent's memory.max with it and finishes in a median of
+5.1s versus 9.7s, as it has the limit to itself once the pressured
+workload finishes early.
+
+Raw benchmark output of the 10 runs (one line per run, all passed):
+memcg_async_reclaim: baseline high=4.081880 low=8.951780, reclaim high=2.000056 low=10.872397, high speedup=51.0%
+memcg_async_reclaim: baseline high=15.803050 low=14.594268, reclaim high=1.567874 low=4.848877, high speedup=90.1%
+memcg_async_reclaim: baseline high=5.222607 low=4.076494, reclaim high=2.188346 low=3.922446, high speedup=58.1%
+memcg_async_reclaim: baseline high=11.556587 low=3.222517, reclaim high=2.325903 low=5.303031, high speedup=79.9%
+memcg_async_reclaim: baseline high=14.481044 low=10.517298, reclaim high=2.309609 low=7.884620, high speedup=84.1%
+memcg_async_reclaim: baseline high=9.737340 low=2.876915, reclaim high=1.815853 low=9.379357, high speedup=81.4%
+memcg_async_reclaim: baseline high=16.290141 low=17.152739, reclaim high=1.649337 low=4.978743, high speedup=89.9%
+memcg_async_reclaim: baseline high=5.176590 low=4.858071, reclaim high=2.356344 low=5.971522, high speedup=54.5%
+memcg_async_reclaim: baseline high=12.444925 low=13.305078, reclaim high=1.973012 low=4.261413, high speedup=84.1%
+memcg_async_reclaim: baseline high=16.213717 low=12.608334, reclaim high=2.207762 low=4.317123, high speedup=86.4%
+
+Changelog:
+v10:
+According to the comments of JP, drop redundant swap.h include, turn
+swappiness macros into a BTF-visible enum, and clarify the -1 swappiness
+semantics in docs and code in code patch.
+report each reclaim outcome via ringbuf and wait for events with timeout
+instead of sleep-polling, log workload timings instead of failing on
+them, drop a debug printf, and add a TEST_MEMCG_ASYNC_RECLAIM_BENCH
+baseline-comparison mode in the selftests patch.
+Include the benchmark numbers in the cover letter.
+v9:
+According to the comments of JP, copy the motivation from the cover
+letter to the commit message, restructure the kfunc documentation
+to separate the direct and asynchronous calling contexts, fold the
+fs-lock warning into the SYSCALL-only rationale, soften the "bounded
+unit of work" wording (only the reclaim target is capped), and drop
+the redundant comment above the reclaim kfunc set registration.
+v8:
+According to the comments of Andrew, Kumar and Shakeel, drop the
+bpf_in_reclaim_context() check because the SYSCALL-only restriction
+already rules out reentrancy.
+According to the comments of Kumar, Add the swappiness argument to
+bpf_proactive_reclaim().
+v7:
+According to the comments of JP, clamp the reclaim target of one
+bpf_proactive_reclaim() call to MEMCG_CHARGE_BATCH so each call is
+a bounded unit of work, and document the batching policy in the kfunc.
+selftest: check the target cgroup for dying state before reclaiming
+from it, and add the memcg_async_reclaim_dying test covering target
+removal while reclaim is running.
+v6:
+According to the comments of Kumar and Shakeel, Restrict
+bpf_proactive_reclaim() to BPF_PROG_TYPE_SYSCALL by moving it
+to a dedicated kfunc set registered for that program type only, and
+document the clean-process-context requirement in its kerneldoc.
+v5:
+According to the comments of Andrii, Kumar and Shakeel, remove
+bpf_proactive_reclaim_swappiness.
+v4:
+According to the comments of bot+bpf-ci and sashiko, also check
+current->reclaim_state to close the fentry-on-trace-iter recursion
+window in bpf_in_reclaim_context.
+Return bytes instead of pages ( nr * PAGE_SIZE ) in
+bpf_proactive_reclaim_pages and bpf_proactive_reclaim_swappiness.
+Return (unsigned long)-1 on out-of-range swappiness (was 0).
+Kdoc of both kfuncs: updated Return descriptions; added FS-lock deadlock
+warning to bpf_proactive_reclaim.
+Fix potential child process leak in selftests.
+Use _exit() instead of exit() in forked children in selftests.
+Rename reclaimed_pages to reclaimed_bytes in selftests.
+Fix comments issues in selftests.
+v3:
+According to the comments of bot+bpf-ci, add a shared helper
+bpf_proactive_reclaim_pages() that is called by bpf_proactive_reclaim
+and bpf_proactive_reclaim_swappiness.
+According to the comments of sashiko and bot+bpf-ci, fix the issues of
+selftests.
+v2:
+According to the comments of Shakeel Butt, replace
+bpf_try_to_free_mem_cgroup_pages() with
+bpf_proactive_reclaim(memcg, size) and
+bpf_proactive_reclaim_swappiness(memcg, size, swappiness).
+According to the comments of Kumar Kartikeya Dwivedi, drop patch 2
+and patch 3.
+Remove bpf_thread_wq code in patch 4.
+According to the comments of sashiko-bot, fix the issues of selftests.
+
+Hui Zhu (2):
+  mm/bpf: Add bpf_proactive_reclaim kfunc
+  selftests/bpf: Add memcg async reclaim test
+
+ mm/bpf_memcontrol.c                           |  88 +-
+ mm/internal.h                                 |  10 +-
+ .../bpf/prog_tests/memcg_async_reclaim.c      | 779 ++++++++++++++++++
+ .../selftests/bpf/progs/memcg_async_reclaim.c | 288 +++++++
+ 4 files changed, 1160 insertions(+), 5 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+
+-- 
+2.43.0
 
 
