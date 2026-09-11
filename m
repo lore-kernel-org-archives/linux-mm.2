@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1535DC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB8D7C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F49A6B0095; Fri, 11 Sep 2026 14:26:58 -0400 (EDT)
+	id C45916B0098; Fri, 11 Sep 2026 14:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A5BA6B0096; Fri, 11 Sep 2026 14:26:58 -0400 (EDT)
+	id BD4F06B0099; Fri, 11 Sep 2026 14:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB23C6B0098; Fri, 11 Sep 2026 14:26:57 -0400 (EDT)
+	id ABEA86B009B; Fri, 11 Sep 2026 14:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4D936B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:26:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2679816030C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:26:57 +0000 (UTC)
-X-FDA: 85202312874.05.F6EC7C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 98FB320009
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:26:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RZbb/QQN";
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 813A76B0098
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:30:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65966140307
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:30:28 +0000 (UTC)
+X-FDA: 85202321736.16.2BC487B
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 871E920009
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:30:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eb3FGkiX;
+	spf=pass (imf03.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789151215;
+	s=arc-20220608; t=1789151426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJ0O0JaLtVP+XxR8QGsN0vFEwgtrJIgdHqxaxpf//gs=;
-	b=DKgFseRzGjCEtM0RdsnCtdw1LhtfBT/2sWpNWokJqUr7XR1A8mnY7sdaCVEbZYqnOTEmIR
-	E7Qddey5FAgiLc7G0neDFrtjW7/3cZSwosZ8ranFonJltrkjm2YqeOk64Tbozpt2d8KcYV
-	eYhNhYC5sjXwAOOzvzRLjuWnj93Od8w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789151215;
-	b=3OzTOaWrfY0Vu11agnUAA++iVy8RrtJKmu+RVfPdyc0AZJWqal1b/DAViV3+8TggEPFKdL
-	pftIaYcftuvAjL5XIHgSFyU+SgnYeW6gg6/TKNTqzS9eh+FjJ59Y5U2IExmdK4I3I8Kb0o
-	rbpmEZogFl3g1abS4YP7VewIUviLy/Y=
+	bh=wNS06P8dgAVGWElToa1LxbVILkDrDt7tgcn+fOWtX1k=;
+	b=MONZuPbb61XpMyFJDoJAxO9gTEx03AF4s4DDBMv1IGBSEcZA34fRMEf2yKLqvwW4p+tP+o
+	1/OQn8Kw1qR02VNJkLHhQOuCu3pHMQXPHmgGSQ/4lvIJWEnpqP7/3XoXm3igRgRmSEW5YD
+	5qbL+h/j5AOiWeXOk1I1QYz+lBMlAhY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RZbb/QQN";
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1D4E260202;
-	Fri, 11 Sep 2026 18:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29791F000FF;
-	Fri, 11 Sep 2026 18:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789151214;
-	bh=YJ0O0JaLtVP+XxR8QGsN0vFEwgtrJIgdHqxaxpf//gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RZbb/QQNX947GjiHM/rvFaywRPpzDljnISz8So1ljEZ/W8YoDwh9lmfhKxMaOMllH
-	 f1jlg/Wwwwt18W5lDeTYH/n3A7Gd7uFOvx+37M0qlmGQOxoW72W9dV4EcO5YSCnhdy
-	 fsphlPKbsHtFVb1lVgLvymKWotj/WXeBweyF9/lEiTnKySR/AgEFuvA/JSYOr2fwYJ
-	 8L1X8UJhd0OxFGuB1KiOr+6TIYDYA7FdE6cTZTIwZl92pXwKfiL7cjlLcLhpJuzfkO
-	 LzHutFm+dtFAQ0Db8AKfLt35gLgngcMPJisdPRfBWmsDj598nFYBxdENzGOtasOwYc
-	 upxzEE+ORsLrQ==
-Date: Fri, 11 Sep 2026 19:26:49 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, xueyuan.chen21@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 5/7] proc/task_mmu: change proc_get_vma() to stop
- returning gate VMA at the end
-Message-ID: <aqRF4YB7Ijk9PmRM@gremlin>
-References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-6-surenb@google.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=eb3FGkiX;
+	spf=pass (imf03.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789151426;
+	b=XJDlmfgRRQm9ljBc02l5U8k+bBDis1NFQgh9dibLnP4vYRwIzVEIIyhoTaHW0Wnv+ZSrzs
+	Vkn6B09SjVSX28UF2zWXcYpKpF/Lbrs8cxo+bWdNUq3u7F2QVwzhzwMdhl4lXm19yQ+3bn
+	/X9ASU1e93H8K+i9Wnp9d0szn+aW+7M=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d6fe26ef1cso17373835ad.2
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789151425; x=1789756225; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wNS06P8dgAVGWElToa1LxbVILkDrDt7tgcn+fOWtX1k=;
+        b=eb3FGkiX8Tl3487oMAuT5hGigresuCdBTqU8iVr4zb8eYxC32A8z3d1je5PDgGbUxB
+         1JjK33poHV9bLQg5ozGLxn98HNneE7VDiTXgdFVRQSaCUTrP+h5zjpASBQI8FbXBoSjL
+         xs/1453XvhFAPsLnE9Gzg9Z5C+QwCZFcR5QQUVIxWf2h2tP4lQNGxpI4edPJYrtiwNZJ
+         jTr9js+9k5LC5nalYWhhn0kaIs+SrD6ilsQf6yB2gD2fnJyFNvxTzEZiCVcg3tqwO5/U
+         NEXZYYgFAEE4Y0gSE3CexB98QtS5+gHB6PBlS2/bnpTGKyScKfH5bqjTvOtr9SbAOe8M
+         3zWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789151425; x=1789756225;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wNS06P8dgAVGWElToa1LxbVILkDrDt7tgcn+fOWtX1k=;
+        b=RkA5Wt6vHuvZhSMhDoNreC4HMIm88BHNlyb4puPtyYw7jdYyplzel+VBlyFNKchDkX
+         gzFlAGg2JaPJejI/NetbdmgUyto+5I9iBcw3B/0FoFUj7EEeRNCGyrldeaX2C+Nu3DDo
+         PDThQxCcZ/CUHxpnD5AaJVdUYzmjjZfO3NliOlCbWdVWcVp+PqGYzNi888YJXOZXX5SS
+         N4uqVWVIv6ja+OeADT8REIYWpxK7jBFiFARZTd/atCsj7ugXHT2zdQSdI8m4Jw+qCo0E
+         TUwpFxJDf7zmH0PJ932Yrgv1kS+uaxcTq5SkBYrySOfwifKbbGU/XlaQoaj3hZDYtzfc
+         IrIg==
+X-Forwarded-Encrypted: i=1; AKwUvBzZEkn4EWqTDZ6En2JaNG5IKfPP2tgCua+IrTSm7cjU+WpKbhms0MVdFuN7rQW8Vy5IsrjDCE04hw==@kvack.org
+X-Gm-Message-State: AFuF++nNEzFqNLcBMv4fHbq18HGv2hTXa6aSbn719gPPfVUe3K0DsJp0
+	clZ6x8VDQ3466d3mxab7XIe7ZhIi8zqahyG4buauE0sW4LK1vjpb/WuxvVto0YGLPQ==
+X-Gm-Gg: AYBFou1yzTjgS0K13MTvATJZyesrd0TztHfFKPNurMgtdq/tRhoegcfgFLyXSoaCvYJ
+	tqKVw52fTz3CzQhfF/6kks0e0axhJqqZ5p1yYGg0ReNsI/sRzG43OqPuWH3OaQ7puOBorBntOsx
+	NT9rrZvR/oL7qj9sWmCeovMUXoHfuEA+I5tKoHDMwPtClm/hevy/FvJ7PusMUH9RX5Tis+iGtAg
+	Aa2OOi/hxVBUEZ3ITAuetBQiu3iiHAojKurfx3LmhTXiud1KsrmD18wrQTYdToeYfXrWx5fBWxB
+	/OnaPIcCriAR7y1juli7LIMQXI0gpdyMXUW/bj6SbaJ2js57AOaIachJeaE2RSis6Jjp1uURLY1
+	aDj4QT8oSTy9WrS0VwH4VybER7547+IoKwuzo1gEbBZHhwbt8c1sWBFVpVxvt6hayq2H2WqN+NE
+	4cMB4JLASpc5SI940xWkmGKaAoB8iWVvdv9GYQxgX3M7dQXBZ2sqCGMt9ljwnyxTB7r9z/FwQVf
+	7Tyt0WL0dHjFJK3ttqMIwAlL9FPrUgKwghTSMR0
+X-Received: by 2002:a17:90b:53d0:b0:38e:bfe:81e9 with SMTP id 98e67ed59e1d1-39d9bc1b0demr8040768a91.1.1789151424426;
+        Fri, 11 Sep 2026 11:30:24 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d99531b16sm6613109a91.14.2026.09.11.11.30.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 11:30:23 -0700 (PDT)
+Date: Fri, 11 Sep 2026 18:30:19 +0000
+From: David Matlack <dmatlack@google.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v8 05/12] PCI: liveupdate: Preserve bus numbers during
+ Live Update
+Message-ID: <aqRIJs1SdJwoV_cf@google.com>
+References: <20260728221007.2098560-6-dmatlack@google.com>
+ <20260910235104.GA367522@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260910234737.1340642-6-surenb@google.com>
-X-Rspamd-Server: rspam04
+In-Reply-To: <20260910235104.GA367522@bhelgaas>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 871E920009
+X-Stat-Signature: brtueg3w8wkdg91am8tgds6q8xi744yn
 X-Rspam-User: 
-X-Stat-Signature: qoko3c7ce6frj85u53hbo7pa5a1cend9
-X-Rspamd-Queue-Id: 98FB320009
-X-HE-Tag: 1789151215-813464
-X-HE-Meta: U2FsdGVkX1/6/lUCXDacUO0YrPDQ8vGYCJfzH6Wru0XQkrMBf5DXAvCvh6BSMAK/q4HLP+j8TrA44DDDGYFXC6tnyET75c6tf81cOrb0TXQWxnRI22kHEznPxgQaScv6VlS1ydsUb6+ICJpxk9Gz84vAsmmLy+giarkVJ5oszgEu8h2uQksyRkhfgbH1g1T7jbFcBabtmZtP+eYyXayzQ09/yVWQ24AiiGVpBwjGIdO++sUXBE+AI6n6/uK/KK+FfiPRq39YX1seTekCBvo8BFD0ihPmIlPQw47QfS82kE7q3zhycIO5EuCRi2w2CPGrziwDWmmSKLDeMeRcAfc5dX0ORZ0BAQmMwxmMM9OrYSzPJ4HjfJ7nAQsEXr/lyILScW8IoW+DjWjo4mfQNBnxWzNgZcvt0vbQUppR+iVIRlYKN0i+/9l1/uPmaqo7G1YeBRFkHbh+CmGyoel8MsRo1KegbLN+hWzBfNmTN53M43s1eBrZSkCw9B2w1jltSepJiShmnNf2RWPnmopwzSVfh1YGJrOCUPUW49JfXDdEMPIG6wV2VHRSt17/QEPJqB01Z9wT20HSnj1JAIcdYhjhpKkjWqT2OuLhFVLGkwFTO10xKNRUiYfjEYsJNIIOL0xxkyEl+mG+N+Fe2nABg4A4aYVIinSkkS6/xOtJNSPHnMrz8FmWF4NY6HSj7SZ6Yw/ja7BmXsTE+HRrBG6PAD0fy2hDTyCBFqVhuAXys2W30X+ViQTbwdxt/qEBAJhD1Y/P4+qgzZqHJVubKc+EJ7lhPYJNQaB6HY1jdoBneHYAtruollVQlkre6WGVN+2kZe4gzlEJ7lqtUyrtQ9uU2OPt6JruX1nNWt3ZV9Kn9Hg+PlCL4pep7Tv6V5TX8zwoYcXVqbk+S0y1QsXfmrJi7br+0NECx8ykNgNMHVeAwWm2Bb1AVWesHA8ahN0mQB9HrOvFB6M0308E4c6Gt0/VNoD
- RBh0yYSs
- GvXAC7dhREMLggoCJYdJkFaKFCKj+Se57c6PYhW9IIj6giMegdjI6tCkGcCF6yauaaZg3LW/3W7jSdkYlF55TlPuu8NzezdGZ600SevfAub/d0DuFViVShmkUvQZSZ3j6+mPFnc/BNKje7ILWEoB7UNXGcNM2E4uUn11USGHgRcX7+272ItMm3pqMRZFQz4Np2aEUnvOTxUJKQIaAPVl1oAKnASXSJnvT2k9q33j6axftsLK3CLGGsv8YjsGYBj5ctGuClf89Oawafd8D/XdCcJO7cU6Bhp3whreB1bbctwHtwPgvUI14pEbdN9JK00UE9ztl/kOrRUTZrfTkSt9pt8WuRKRmTo07qgQZQJxPVgVcUhN1ur7HI+7S6x91FHypLmKwuEqsdBtBNEWDgrR7E1otN/YmKMSsN905fctfesJsr50=
+X-HE-Tag: 1789151426-88412
+X-HE-Meta: U2FsdGVkX1+U6ogFgS58hNH2AWu9XGy/KaiVznX09nmOXQSBm34znzDm6l60MOJfFBANSwhP9AJOe9rSjIZy/hWlrN0UG5nTQEh8FJ+Bv7BBEa81zmnWKUZ8WJVgc/6CtB2Tt/XdRBoH/r8Pn9vDR2lsHCnOfD2xmOmpLIEDYo6JB3prDYUKCLCicIbZK0nnBtQYOMrmBLTjUy4xpBwRAg2TZypeBEsoydQxfvsej/hBRHz/cmjA3PWWT+pHJqS/r0WAX7KE1VuIWZIG7ohzakHZZiW56oAHwluJC+9+7UgqNCKQGizadTo/w/tEHPej2BgeBrO/QEgnKOZbkD2wX7waOOFdI7yv35xjhrKAzQ3E46rs41+pYj4doNidDtVe+LvT2r0CdKTPRwxH0wB8SkuuU4msvn9R/oqyQbrRNEKV9lgJ0M0ehBsQuUGFIlokfR7xdBpdE4wbZvCJpQRmJaBCiKVu2QdC1vNMOzhF7sSM+2DtlOwBOAbWQ0IeLLooy43lNuEOug1FEWOCY1bs13MWO/UN7RWuO6X1QgkUNmreDm3O3B8VvEVcUSgbhxYrbVOoFVxE2t7cfjwuctB7bL2FBCHfPibdKNsM+wKjwVp1ed7gggEhbNT2aAW0LGIaw3eV0SEYCekNu0vqR+d1/+ICOyTeKq0SzeeV8G+5My26Rx9c7Sh6GWk5ND0RrSKem+gsHr3l3O+YiiBuDyZZvFN154sIUFaxZtlGfbyDYVbMPOrETy1sTMyufGyywIbJdsITNsKLbw+hKxvukTFSRm94c09CtJDlPEE0PmI/DdCUm8ZGwWwUCEz4oG91UAUYpuIYBRycULkjtavQTIKycWm+tr7XOn9dsDFZFUvQvqcY5ulon97a3FChEQO7jbwo57K5fdWIER4XYkHCZPXXSQxdd68Xw9r6anWuT3H3nyxDeJi3UWu8Flyh/vQWoOjhKCLdYquTcoB2anlmt8d
+ VlOKfsLl
+ Insj8plZBg1qth6SJkE56nEHOHBzGm0d0rOuk8L/6Bx4DKIiOCYhHD+EXxH4TaMmCAnONsorcZ0rCxLIJSpHHdy33IDtiOCwvaNOlW8gMOf4RGR8loy/BAy2vVt3mEBV2OBEneuLH4X+bnHght+lENnCJm82D/2ETm21POOQeQJOa//rzvLeC2V3WY1pVUelsmKW74QWd0mosouV42MXsvwxwmMbIR7rHMqwXPH6DNUIzJ3IaRUdJiqYgbhy4SnXVzbKS81j7w0jrCYL7K4MjSZT6qMrMsFFTCoTtB2ocBh74M9W8oDqGUjeS9RKt6INoarTcoeldLdhgAsZ39rXLy6E/Ksw4qYpXMJFGnWZsANq5OGY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,94 +140,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026 at 04:47:35PM -0700, Suren Baghdasaryan wrote:
-> proc_get_vma() returning gate VMA at the end is desirable for the its
-> current m_start/m_next callers, as they need to report a gate VMA at the
-> end of the address space. This behavior is very specific to these callers
-> and makes proc_get_vma() hard to use for other purposes.
->
-> Move this usage-specific behavior into the callers themselves so that
-> proc_get_vma() returns either a valid VMA, an error or a NULL when no
-> more VMAs are available. This makes it more generic, simpler and usable
-> in the later patches.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+On 2026-09-10 06:51 PM, Bjorn Helgaas wrote:
+> On Tue, Jul 28, 2026 at 10:09:59PM +0000, David Matlack wrote:
+> > During a Live Update, preserved devices must be allowed to continue
+> > performing memory transactions so the kernel cannot change the fabric
+> > topology, including bus numbers, since that would require disabling and
+> > flushing any memory transactions first.
+> > 
+> > To keep bus numbers constant, always preserve the secondary and
+> > subordinate bus numbers assigned to bridges during scanning, instead of
+> > assigning new ones, if any PCI devices were preserved. Note that the
+> > kernel preserves bus numbers even on bridges without any downstream
+> > endpoints that were preserved. This avoids accidentally assigning a
+> > bridge a new window that overlaps with a preserved device that is
+> > downstream of a different bridge.
+> 
+> > +bool pci_liveupdate_preserve_bus_numbers(struct pci_bus *bus, struct pci_dev *dev)
+> > +{
+> > +	struct pci_dev *parent = bus->self;
+> > +
+> > +	if (dev->liveupdate.preserve_bus_numbers)
+> > +		return true;
+> > +
+> > +	if (parent && parent->liveupdate.preserve_bus_numbers) {
+> > +		/*
+> > +		 * Preserve bus numbers if the parent bridge is required to
+> > +		 * preserve bus numbers. Otherwise the PCI core could expand
+> > +		 * this bridge's reservation beyond its parent (which cannot
+> > +		 * expand).
+> > +		 */
+> > +		dev->liveupdate.preserve_bus_numbers = true;
+> > +	} else {
+> > +		/*
+> > +		 * Otherwise preserve bus numbers if there are any incoming
+> > +		 * preserved devices. This ensures that the PCI core does not
+> > +		 * allocate a bus number to a non-preserved device that
+> > +		 * conflicts with the bus number already assigned to a preserved
+> > +		 * device.
+> > +		 *
+> > +		 * This is slightly more restrictive than it needs to be. For
+> > +		 * example, each host bridges have their own range of bus
+> > +		 * numbers that won't conflict with other host bridges. But the
+> > +		 * previous kernel should have assigned a sane bus topology and
+> > +		 * it is simpler to just adopt that entire topology.
+> 
+> s/each ... bridges have their/each ... bridge has its/
+> 
+> It's true there should be no bus number conflicts between host
+> bridges, but it does require the domain as well.
+> 
+> > +		 */
+> > +		dev->liveupdate.preserve_bus_numbers =
+> > +			pci_has_incoming_preserved_devices();
+> > +	}
+> > +
+> > +	return dev->liveupdate.preserve_bus_numbers;
+> 
+> I'm not sure why you don't just return
+> pci_has_incoming_preserved_devices() in all cases, which is what the
+> commit log suggests this patch does.  What's gained by all the logic
+> here?  It's not like devices will be hot-added during the kexec.
 
-Yes, very good change, thanks!
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  fs/proc/task_mmu.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index ecce7ce116cb..9a3c996c1d61 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -236,9 +236,6 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
->  		 * found the extended vma with the same vm_start.
->  		 */
->  		*ppos = vma->vm_end;
-> -	} else {
-> -		*ppos = SENTINEL_VMA_GATE;
-> -		vma = get_gate_vma(priv->lock_ctx.mm);
-
-Yeah this is just so confusing as-was.
-
->  	}
->
->  	return vma;
-> @@ -248,6 +245,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
->  {
->  	struct proc_maps_private *priv = m->private;
->  	struct proc_maps_locking_ctx *lock_ctx;
-> +	struct vm_area_struct *vma;
->  	loff_t last_addr = *ppos;
->  	struct mm_struct *mm;
->
-> @@ -280,16 +278,31 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
->  	if (last_addr == SENTINEL_VMA_GATE)
->  		return get_gate_vma(mm);
->
-> -	return proc_get_vma(m, ppos);
-> +	vma = proc_get_vma(m, ppos);
-> +	if (vma)
-> +		return vma;
-> +
-> +	/* Return gate VMA at the end */
-> +	*ppos = SENTINEL_VMA_GATE;
-> +	return get_gate_vma(mm);
->  }
->
->  static void *m_next(struct seq_file *m, void *v, loff_t *ppos)
->  {
-> +	struct proc_maps_private *priv = m->private;
-> +	struct vm_area_struct *vma;
-> +
->  	if (*ppos == SENTINEL_VMA_GATE) {
->  		*ppos = SENTINEL_VMA_END;
->  		return NULL;
->  	}
-> -	return proc_get_vma(m, ppos);
-> +	vma = proc_get_vma(m, ppos);
-> +	if (vma)
-> +		return vma;
-
-OK so I guess the logic is, iterate through every VMA, then once you run out,
-report the gate VMA. Makes sense.
-
-> +
-> +	/* Return gate VMA at the end */
-> +	*ppos = SENTINEL_VMA_GATE;
-> +	return get_gate_vma(priv->lock_ctx.mm);
->  }
->
->  static void m_stop(struct seq_file *m, void *v)
-> --
-> 2.55.0.1007.g17ff1f9808-goog
->
-
---
-Cheers, Lorenzo
+To protect against pci_has_incoming_preserved_devices() flipping from
+true to false while the PCI core is in the middle of a scan. It is not
+likely to ever happen given most host bridge scanning should happen
+during early boot, but theoretically possible with the way the PCI core
+code is structured. I did not see way to structurally ensure these 2
+things cannot race. A lot of the host bridge scanning happens without
+taking the rescan lock, for example.
 
