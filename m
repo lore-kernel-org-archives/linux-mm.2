@@ -4,138 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08347C88E45
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 14:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6237C88E50
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 14:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194186B0098; Fri, 11 Sep 2026 10:58:10 -0400 (EDT)
+	id F31DC6B009B; Fri, 11 Sep 2026 10:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11F306B0099; Fri, 11 Sep 2026 10:58:10 -0400 (EDT)
+	id F01CA6B009D; Fri, 11 Sep 2026 10:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00D106B009B; Fri, 11 Sep 2026 10:58:09 -0400 (EDT)
+	id E18E96B009E; Fri, 11 Sep 2026 10:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B992B6B0098
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:58:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E1CFC0292
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:58:09 +0000 (UTC)
-X-FDA: 85201786698.25.49C432C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3F0B71A000A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:58:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqQr8piC;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C01C66B009B
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:58:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66CFFA25F9
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:58:52 +0000 (UTC)
+X-FDA: 85201788504.24.FA7A7EA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C1382C0012
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:58:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqz5AEtv;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789138730;
+	b=O0u8k9qp8Tq2fd+H+jFlonvOJHy3eEhEH9G9r3RMOKJqEPLSGDTeZSsZ2pq9UN4qDF5Y0w
+	s0O3v/pHpbDenfbRs0uYVuRBA0WGb54tUMIhBG2giOF2Smg+YIfrkyYF8yRtYmTCcPfgnQ
+	w/9ewt+0AYYjz2mlZ6T0bnp1eKtp7E4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqz5AEtv;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789138687;
+	s=arc-20220608; t=1789138730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9kzqbt4ZRRllUtqOm4M2xLyawNqCHTN1qUIQJ4avLvE=;
-	b=XhxvrsOUNYwvdGKRmNs/ptNww4F/o15ZiCb92Kjn86ilYL6Qr/S4cgCUQaSZkeha2aqMl1
-	JlrI06lygYOdy865GFBkIe9URY+1yzQkErDtyE8eWufLbn6AEmOvqFI7lxSY2MutJyZJTw
-	mAYEckI5SCaE2nbXMD6cjLXF6CUCaXM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789138687;
-	b=2Qql9eXRn2BnMRgsTfeDHFLpaecvinymQxhwd1pKwquKkZKfftK8snGPIrRqmz4Ng/X9lg
-	4DyqBqFyIT+NX/1UEDmrOax/beNwmX+HH4cH59Z8VNgsIOS0yBr8RRdzeGJcp4BsEt1FlO
-	OaCgfVmtMvpxPde2h1cNJ4f+VVgijtE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fqQr8piC;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=CLYYj8/276uUFHKp2bAmnGjCPPOUxg1/tbdfRRnY79M=;
+	b=NNdJQYFW8B+tKhFSggM10cVqDJnjeDtizVp9jnlxLdrmFGiUObR0BE4VENOYxescqHgGWk
+	CFagHHncfbFd31z6P+1sKu32Wfdp8y7wB5+aE8pP6jQu6xNgSJuRjy0XVmpdfxwRWkAEV0
+	BHhoTAGM+org2TNtYCg0QXIUMmBT8YA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A528543F99;
-	Fri, 11 Sep 2026 14:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08671F0089A;
-	Fri, 11 Sep 2026 14:58:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E4DC6022D;
+	Fri, 11 Sep 2026 14:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF0E1F000FF;
+	Fri, 11 Sep 2026 14:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789138685;
-	bh=9kzqbt4ZRRllUtqOm4M2xLyawNqCHTN1qUIQJ4avLvE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fqQr8piCsl3GNslha/u2I8VaiGLQ4meIaSUM1Bj7ZRrr7BfqPFr5IS+c/2/OX7lwa
-	 r3F+IRshot2hAk8el+GtORycJo2NDoBl16m44ZkRIMmVrFTv7PmeY6nKEHsKlRchIQ
-	 AgUq6v/nVYfYgqRu34EJLIgJpLYAnMnPTOFaHuXhLmiqJEKE+896y0tNtb2Q7WfEU9
-	 TX1EYy+Iz3KrGMrthh7WMZWxQ+h/Scp8g+Sx9H7djIvmTo9/EZwe6KnA59J3Hafylo
-	 bZgpI8hyfbhghcKcbWVXw5nMvs7NZ4eahZ+bQKiMU1mK++VS2BG3uUlBOQpO/Wcq7X
-	 BPnSG4YzBCv3A==
-Message-ID: <88838d36-ea5b-4c76-b785-cf2bb71e34a5@kernel.org>
-Date: Fri, 11 Sep 2026 16:57:58 +0200
+	s=k20260515; t=1789138729;
+	bh=CLYYj8/276uUFHKp2bAmnGjCPPOUxg1/tbdfRRnY79M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hqz5AEtv8bWAGxTuMNtJQO2wPSFWWYfCq+JSxjsW2aNGCo5VgdIdzSLSWqd1EQKf5
+	 PV+NDPGnkEYz0CAO9fV9YVVbj39Ws7M+cVb0kh29FAeCTGyGfPWtW7BdHJgMmnzTFq
+	 gEJ32WRXDa9WnfxmGqthkNrTKCcaseCh3ywj8MsITXYwpMSGp/6q028uEV7TTpM0hy
+	 woNWGJGhhsSMCKZDlpiCZntEgs72YAPBRF1t71AC4guU/LPAbNrmVjo2/BSzuxVGvk
+	 fsDYvlMe9lykYXEWYhDdIL72fLBJADzBrm+hz52rTYXxuJ2aISxsMX7BbucMksw4ID
+	 E4lf9OfMk6tyg==
+Date: Fri, 11 Sep 2026 15:58:44 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH v2] kselftest: mm: fix potential failure for merged VMA
+ in guard-regions
+Message-ID: <aqQXFG2O4CtoQERQ@gremlin>
+References: <20260911142904.1825452-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/7] proc/task_mmu: remove unnecessary helpers
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
- vbabka@kernel.org, willy@infradead.org, jannh@google.com,
- paulmck@kernel.org, pfalcato@suse.de, xueyuan.chen21@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Usama Arif <usama.arif@linux.dev>
-References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-2-surenb@google.com>
- <008dcaa3-2068-46e5-9e58-afb590d90584@kernel.org>
- <CAJuCfpF5CBrCxZWm+Luopf2gq_hHxsbw0QptNhfRT=+KjyWbJQ@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAJuCfpF5CBrCxZWm+Luopf2gq_hHxsbw0QptNhfRT=+KjyWbJQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d98cmz8ghaqiwzupewzziaisujtfkzym
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911142904.1825452-1-yeoreum.yun@arm.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C1382C0012
+X-Stat-Signature: cy3j13ewwmuwscwi6pmy9y6ncgwntism
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F0B71A000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789138687-875326
-X-HE-Meta: U2FsdGVkX1/YnGedAzLILtauu3YZq0rGWKUEv39bENyFRH9d/FJry0few5fs6YjOkUZ//TGBNZjRI+Gl799l8x3X0rCHKKjZXzDUlICuKDyZPgUKV3ZWmTmO9UsbX4m1bDg0qBj0MR9FHjokPb7Iriv/ombECMe7pkYJdXms2F4Q1MPk7DAK/ngiJm1OjQvGXAVmn12NkoJdgSK2ejWAhRXWud9068y+URmAbZDqLU+LLVRI76KjHlY9WJZg2njztimeQZVOu1NTTYKIiAY1yxV23BBDuVCTLv6uF+pCEFlo5m2ZeP6zrMGHDZYQAfhCuZm2ZqYHv0hL9ZafgLSRUFzgOMTFanl1XfY8yjBbx2JreM9GflMaQupz+MwxO/N2JJGMnVw37V9Di1DzVjT8SHIwHKqlAUfXXqxZin7brL8phepzjZvmKKCq2oBzuDhft2tmUxkV+YbdI59e706pjcUURWbE20YMwMgGkmKnbwdpKIAYqs42jZfEgyTBJkNqtmXKVNaLbEMXCmsTUC+5j+cE6Gb1KDhQL6viDpmClDx7Xh1XuAyR0v8/CPLWhae8JFW0MClwRc/sLN0GXArGIqOqmSEIfODlSEl/SMc7+pYI3uERnD/vy5xS6vhfqymY/TiR2FybFLQB/6SwOew2rz77fAZVk1C3lxjL9bSRhUR84rx0XKktqeDPA31bhI6RX6p6x3tIELs2SUo7Pk3MlnqmUT4W2najLf59GKpOMNMgsmW9orvu22TrdznCMCf2sFVUJF0ZbxybcSWNXnfzzJq/VJGnXI64Mz8L15p5ZHg0RaEYpKJW3m8QygdLs5fz1Qnuae2Ee8ff94WCoOLTykaCfGTqZ0SOQW4Jb0hbQj/YHIdXMTc3uy2FYGw3eaAmBN5qWnmlJ+Oy5KkNnfPY9U9mzR7yEd7T+lxFY5mH6T6pAf+CtWYlgN1YdR+CyD7NEZ6EPFB7RtSpsHYLvhL
- 7ejCF/PX
- PGmLx51bjZ5NTrcgPix23rnldZ8ewb0DNfHGIw/lA2swfxH+BPCN6oSmA9ulV52UHKO9AvrX/OdL0zSU55GLlpluHokr2VcS/88llItRkNj71Tca1T19Ac0yD0imQPgr9H31EL0AP5nfDE+VSP67AiJQJRjrww/ui2+krZf6Iahjl4N3hozOykgjE5iJYC1sxgGW+e9hWHN7FgTSRMzHBYGB1ODQFPlvoYHWZAhicT2RgCo9V+gXHYqGMlCg3tt1oPr+71mz41+TsQIMojw4RJjznk5b9E6c8yZfLP/gptZqq5ljIGX2J3ddD5y2olG39BVOSEjHW31Wa3w3yVgaCSBS0Nu1hUqtHPhaNc2PNQ9IAUVRwibdJlJNR6xyLWG69QGPmmPyNX/YWITQarwJzTqBbrTZtX4iNyaLo/Uvse+sF4FRouT6/+Sv73kV8rR5+92U7KYoMiyvYS6ROs1i+kAnDJolRhc4OaWJifJ86d6yEqRrV3luYo+s+stetdg5PMkg0
+X-HE-Tag: 1789138730-258673
+X-HE-Meta: U2FsdGVkX1+qHLoEweK6tb96LpS34YaoOW/EqXSXw6wQHz0pMwGbzqmAkjYveQah5TciH/LIpVDWfbkaUxvR1piAr5xQwfrqCosWpYEj+el4GD1oxvizUexs8S85+mcazXx4BoxsAuT2BiY0eeeTEAXqKJmTJdkoyHnoJKDAr+79YqxV7BAoHBBDfNd1MDPqCZ7NhNuaU3qumPL3o93bQi7g3OTbFTo1Kz9a0W6CuauQ4mL/0VYkmix2p/7Jtcu1ngGag/PDfzaH5W64lsfECufRs3iyFYsROFobqjvT2VUw3PniT6wkp0d4AYoDHzZY3SWfo4nz32SKvyUP8UrVIQMDOq0Mc/fU0W1ctxDD33xCmpvMNwiryIWfsv2/RvHujVctbR0kB+f2ODbtXnmgXlNIZdVfQh/RJ1XLgnB7aImjDsKTXczF9Ry7vGJ1LlgO8fK0IN/lzhnhSab7jvtmJRCoinXQwPpO1qEbBZvT8QG2T/6AK25IfGVOaxst8/5PW1/ZYISVUiiBIWOJBpISi0LjTSVEK9wui+ulWOiCV6059BnIyi2hDLjaoQVxqb6geNnIZjiLhUBBcFE33EWL589bS1UIIZzCBF80v3h+IuR/kE6k41fYg7bnyLPkM4zycEUJQ3L5jqKZK3Px0UAzlf8L1w1PCJM7JPyk49tF4EauDQJIWqs7CFxkhXOz3u8G96tnDTjMs7kVEvjnt6zBVJOkwTrjoF7A9iDEVWxXqODWYWpdPwFvlCNLCEsO8YH3tG4yHZrQBdztwohoEfqh0ZLrSvQ7tqRFB5YM55/yyQQLumNivHek+WXcZA0Vwfb33jCjGUubQVzwLCrrFtYfzUAIoQy/8GIkVWpL9ffSsCO656vpxaewl+g1kjHqfRCkx2PHXTRo6yXAts6+9deOR8On8hlyTkpi3MxTKc6Pk+8l5/f57BOoerugsylSAaxJlliHzClwng94Vaoybfo
+ MDaxs+uh
+ 1wYOz75HtoN5z441NfRBH6sep2UTSQpSWXEYGXs35m2HTf67/DXH8iVz0SvwfUQeTm0sfMOAbp7PVDEFRBD5qtyxWlc5S5J/CDTOs6JuSxdg/T7ybAgQebS+XNZPqICwU/PzKooDM0CSm3ZytQhvNCJLcdOHFMiFPE8lu5wPA5y8RQyiynIg44UpNy5OQPk5E/Tr0miJwy/9ng/linqits3cqw6ohrkYoVK+XSfto2PlBgN6v7cakoltwtht8i1uLRDwxN+oaR6PNk+Nm2pp2OJYPiRrfhPR0yc+iO/X5yyBs5alpXyiUGQUjqiSHLZyGpaYeiLFew40aU5I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,44 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 16:28, Suren Baghdasaryan wrote:
-> On Fri, Sep 11, 2026 at 3:52 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 9/11/26 01:47, Suren Baghdasaryan wrote:
->>> When per-vma locks were behind a config option, a number of helper
->>> functions were needed to simplify the locking code. Now that these
->>> locks are universally available, we can do a little cleanup.
->>> Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
->>> query_vma_teardown() helpers.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->>> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
->>> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> Acked-by: Usama Arif <usama.arif@linux.dev>
->>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>
->> I think you CCed me only on this mail correctly (the other ones went to my old
->> RH address, I thought that one would bounce)
-> 
-> Oh, man! I used an old list of recipients :/
-> Should I resend to avoid bounces? So far I haven't seen any bounces
-> even from the previous version which also used the RH address.
+On Fri, Sep 11, 2026 at 03:29:03PM +0100, Yeoreum Yun wrote:
+> check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
+> but this can fail if the mapping is merged with an adjacent VMA.
+>
+> To avoid this potential failure, first allocate a temporary region with
+> extra pages at both ends, unmap it, and then map the test region within
+> the temporary address range, leaving an unmapped page on each side to
+> prevent VMA merging.
+>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 
-Odd, I thought it bounced for a while (maybe it has a new proud owner, who
-knows, haha).
+LGTM so:
 
-I changed Monday my mail filters to not catch to/bc to the RH address when also
-CCing a mailing list ... assuming everybody got annoyed of the bounces.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I just reverted that change, so I'll just fish the mails out of the mailing list
-folder and should also get replies to the other mails into my inbox.
+Thanks!
 
--- 
-Cheers,
+> ---
+> Change in v2:
+>   - change the prot as PROT_NONE for placeholder region.
+>   - add comment for clarification.
+>   - Link to v1: https://lore.kernel.org/all/20260911123534.1181501-1-yeoreum.yun@arm.com/
+> ---
+>  tools/testing/selftests/mm/guard-regions.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> index 5c8ec3ca75d7..b724d62d2b75 100644
+> --- a/tools/testing/selftests/mm/guard-regions.c
+> +++ b/tools/testing/selftests/mm/guard-regions.c
+> @@ -2257,8 +2257,18 @@ TEST_F(guard_regions, smaps)
+>  	char *ptr, *ptr2;
+>  	int i;
+>
+> -	/* Map a region. */
+> -	ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
+> +	/* Map then unmap placeholder to avoid adjacent merges */
+> +	ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_NONE, 0, 0);
+> +	ASSERT_NE(ptr, MAP_FAILED);
+> +	ASSERT_EQ(munmap(ptr, 12 * page_size), 0);
+> +
+> +	/*
+> +	 * Map a region for the test. Since the preceding temporary mapping
+> +	 * succeeded, this mapping should also succeed without merging with
+> +	 * adjacent VMAs.
+> +	 */
+> +	ptr = mmap_(self, variant, ptr + page_size, 10 * page_size,
+> +		    PROT_READ | PROT_WRITE, MAP_FIXED, 0);
+>  	ASSERT_NE(ptr, MAP_FAILED);
+>
+>  	/* We shouldn't yet see a guard flag. */
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+>
 
-David
+--
+Cheers, Lorenzo
 
