@@ -4,99 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51F2C88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D911DC88E50
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8FCD6B00A9; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
+	id 7FBF86B00AA; Fri, 11 Sep 2026 04:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67DE6B00AA; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
+	id 7D3BE6B00AB; Fri, 11 Sep 2026 04:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA49B6B00AB; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
+	id 6E9606B00AC; Fri, 11 Sep 2026 04:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 91AE86B00A9
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2107E12010C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1236B00AA
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:01:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA4CF16012F
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:39 +0000 (UTC)
+X-FDA: 85200737118.28.B324C08
+Received: from mta0.migadu.com (out-238.mta0.migadu.com [91.218.175.238])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AE6F3160007
 	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:37 +0000 (UTC)
-X-FDA: 85200737034.17.87FB660
-Received: from mta0.migadu.com (out-202.mta0.migadu.com [91.218.175.202])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3C8051A0004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JwaaHBoe;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789113695;
-	b=O/W4/l0ltOK+h/m7sVi7gTZ7ydlqZGmfHpiN9B/0Uzg3l/6Q9JzvXNdZIAJ6QaOLc36/DT
-	dDz5MknqRUsm2HTmYzRPKhuIJuKLKknfzIS/v02Zm8dIcOv7nohhrd3zt7eWcjpTfDBHPn
-	4rkYkkpihT2rYwx+BdIg8QO33Yl6+fM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JwaaHBoe;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ITKbw41G;
+	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789113695;
+	s=arc-20220608; t=1789113697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dlMr8ysiw1MQVlli9mPBpZcIDcHuzZcNn75rG1fxJ3Q=;
-	b=awew3bwld8fQRHsqAjxqEX7nve/FpJvkurTGCiF5cLf8Hv1q5VoF8YP2T/jaY+3i+1NiSV
-	lPw5m+V4sObujs7xQ2btyQ9pLmrAPpYrYIih8mY5KEoK8Ii6xK61QCjaDY4GImc3V60sk8
-	qQrpyuvt8lApGys0fQTDSEmDwRvFme4=
+	bh=HP7mr6oESMtqUcAcuw5C2lFLegyp5i5MPRclWIMnKdY=;
+	b=2Zhk+3PPjBjW9xDqhBHW4YCAKRtCQdWh70Gl+EGTX7XRHnB972Bsar3lmqD6da/qOZtYYK
+	Uhqgn46lBpkP1VkfdDB+Are0U3RXGr1nXWfJYMJKtc58vrWaXd5AUbkIbbeoob9ed1xaDN
+	tmfZqAVWuk75NOxCsqo9ss+0j4orRoc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789113697;
+	b=lEWiZJRrBnMo2t+eGlo+DMM8zyvMmdmoT0PaMkLo2RLLRSL4FggR8vtsbuXbmD+BFHtybh
+	l49ropyMHXQbOiOFM4O3TQ9VwW2m4Jl2OMWsBvU8LmQFQhXC36BJe+8niHhnaHS4z62NSR
+	PU62EL7cvmyWcvxknKPN8K0hbfKg/44=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ITKbw41G;
+	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lG7+VxQE9zUCiUgD2bZJA+1KtHaOwgs94O/ucBNwUz8=;
+DKIM-Signature: a=rsa-sha256; bh=IUi1QxJJO9OkJwG+5y62kZo0PP6tS0vKjCkbB/pQE7o=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789113693; v=1; x=1789718493;
- b=JwaaHBoe1/bLgr4t6gry/zjeRGLDvxJiliF0GbPraunHrffeVZGPQqRHI+GW2pedNn8Fv8B3
- yf+ykhf1/f8XO3Txi096Nyell8+mV7I+Wsm7gd65l1E1Q4SU76q/QD9BxHS8UdCfUYQW2Dvmndc
- 4bCPwT3tQ51MG0I9pC9fN7qQ=
+ t=1789113696; v=1; x=1789718496;
+ b=ITKbw41GIqoryyNdtt8qpmC83viNLQyMmuoZW8dWz8JcJc0unVQ8J/nZdm9KxTFgnButgmGJ
+ wiCYmtwrdxbb97eNtf9+weSiTGw+PYTAPRWcmIxdXGmrRf7AdeO2fEl1oddISNtk4J+GRgfSs0j
+ TvtyaW+rSUFOPeoVoko6zkWc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 908157556f9f07d4;
-	Fri, 11 Sep 2026 08:01:33 +0000
-X-Mizu-Trace-ID: 908157556f9f07d4
+Received: by smtp.migadu.com with ESMTPS id e9627d939de7aa3b;
+	Fri, 11 Sep 2026 08:01:34 +0000
+X-Mizu-Trace-ID: e9627d939de7aa3b
 X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
+From: Ye Liu <ye.liu@linux.dev>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>,
+	SJ Park <sj@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>,
+	peterz@infradead.org,
+	paulmck@kernel.org,
+	mingo@redhat.com,
+	jpoimboe@kernel.org,
+	mic@digikod.net,
+	tglx@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	rafael@kernel.org,
+	gnoack3000@gmail.com,
+	gourry@gourry.net,
+	rientjes@google.com,
+	shakeel.butt@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	will@kernel.org,
+	boqun@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	tony.luck@intel.com,
+	reinette.chatre@intel.com,
+	x86@kernel.org,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	pavel@kernel.org,
+	lance.yang@linux.dev,
+	pmladek@suse.com,
+	longman@redhat.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	mark.rutland@arm.com,
+	Dave.Martin@arm.com,
+	james.morse@arm.com,
+	babu.moger@amd.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 2/4] mm: workingset: use lruvec_page_state_local() to count lru pages
-Date: Fri, 11 Sep 2026 16:00:49 +0800
-Message-ID: <2ed42f96aca124856ea30f774afb55cbe6d8ba58.1789096175.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1789096175.git.zhuhui@kylinos.cn>
-References: <cover.1789096175.git.zhuhui@kylinos.cn>
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH v3 11/15] tracing/fgraph: convert process/thread iterator to for_each_process_thread_rculock
+Date: Fri, 11 Sep 2026 15:57:56 +0800
+Message-Id: <20260911075800.491472-12-ye.liu@linux.dev>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260911075800.491472-1-ye.liu@linux.dev>
+References: <20260911075800.491472-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3C8051A0004
-X-Stat-Signature: aay1uissh3n1uwcmdwtc7yob7efkoemm
-X-HE-Tag: 1789113694-917648
-X-HE-Meta: U2FsdGVkX189JoYDtvsKFT5rnU+l5gkfdnQ9/A29PJ7V01+YCVSUo+ZBwmkAdLAREFbE/gsBJ5DzSHtHH6IF6O7bmvreeCnzWW3t1hKMoSRIElUfg3JbYn/LCRW0l/sfHXK1iWIEt0/nSf4rhqHMEckUboFps8JMUrBJJXtvbuq8tuzvi5ZdGSkUOIp8vp9+wDZvao1l/L74GBpZEf/mIluXz02H8ukrlNOMpbwnC0Nri86WhF+raO1czgum5dwT4eGiZWTmE7NQrBM/slQKd5wi0fNJUgi5C5gdnw1LlQdU+oyWoo1WYojk/aRzrRfinFHBou5Ez4XrSkSMhEUIkMzqwbHIRGIh1sHrAy1mDKFI5ZjwvPqYq7ziKkOGQQCw1gNIfqPZkng6wSlFYMXCoFuAeRXyBqKOXFotugwYOwjxwTazau3RA6Wh8wtAJdZ588GlgZkOSOOjdKuYyC6qlshuog7j6hCbiVSRsLgagAuDZGnSyZzybMPLFXt5/brSzIKzM1vbNAc8b7LKdACcShbJtvBAkmevbU7XKf1ggIvVEXACfGsCZb+7zPaFrb4zUEeM3w9RgqpL8EEZebt0YgVDBfNp+NAZU/k1ijyRUVkl5Z5P0IoWYXa/mLydZD5XjtA7sSShBxS/l1TuaEUknQbGLStLLq9gdyqnJUnjYWBiFxXcZW3By9RAhTbntQkEGY80ma/FIlNixMMQIVIWzT7MKaez3G19DLiE0Kr+88HNfO9ZMQbdRckTm5+i8SpwJPwONx1LPR3I9rdcZP775ijKiBx8yI402La/AZk59wp8qysfzvFys6uy/ae7AbTCLHS3k2c1wLPoWVzFy7ZZjRy3hw+KvKndYDLQ0zT/wXHp01WYVcLAEALpwXCNUXPCtfRO+QqPpaH/MWtifOmZUueD6NpOia5uZvMT4ti+3rZUNHMDmNs5bNba0DPmqkugp+qlyT0HNCI5R2BjzKz
- 4AREHoM1
- ABXXaXkudZxNKcSyA1ZpRbrTouLRZw4iDh8LTc7E7GYF0zpiekXRqXketQ80wwkG0GwVBtKQzU3NlqYPmnYk132OfwEerG+mIyqR/A5W4M8oKg3OdeIsLbIdXqi/05EKaKLlMf4LTvI2XTe7K5T95wkJfnTIU++loqCYtGL484PEUfcdLAmjAxR4l0fHoWKaeQpzPJV4LjyyZE3gHg/Wc8WviOR76vgbdJUbuMuiIAum4TEx4kHYeIjx+GgwSSfD5ZYdO3UPj3V07WiFfu323QwinxaVjmwM0yDiyyH/YgIV6GV0=
+X-Stat-Signature: 43re4fk71h5ripjt1uriewozhynq1kfi
+X-Rspamd-Queue-Id: AE6F3160007
+X-HE-Tag: 1789113697-230972
+X-HE-Meta: U2FsdGVkX19m7v04r0GjBCp/ynxECNtu3Kbc/6wj4SZGN4JdYeRaQoiStStFRFaQqqseCukuCO1n/qZwYhxXQkTe7wXvVE7onG4kbzTatGRJkQLnoEeOggg24LxY4VCWbi/M4amoJLAnpnHNWA2XyIPSB2/tAjr6B3MKGvbMAX9C+pY3A/+YCiJDkcM52XLvJueg5QNKnRzEjBrFx1xV4OXBUE0d+UPPh+sNu7UxeHQIo9ljshJxowkiJnzjax9d9X0KJ4f3NNcLSAZUtUgZ6q8N5i/CiBYuik5OIVAHYr2cNLbtKBrrlc8EzCydB1DpUc04BW6DNC7JN7MryQk5NCg6S1fEadCHxpWOReZFyNkq+84hWw+/jIHrFTBpjaI0klcIUsrAB73FV5nVsmdnxDeIRovQF/eIypLIYGbAYvyN4Uw67CGATWeHHxQw8em/8DlI8N12cLTIqt1LHnT9VFbCSySY3Di2GxPgMe3vdf8+iY0pzIJ2t0aG2HIaWf1o7iejDl8bUKMkmkhva9gWCEet+ud38mjOV5rsPh85SX1amlrefwT53W1x2Hxv8cenm+W61ewetqE6yIpi5EMFLwsSeESVn8QQMHpz8KZkwHiSh3UmqvT/p0uhn2WruS9RX6RK6uLqfMw5ZmAxwYqo/nc+cbR/EnTprtXvmeWH9I7L6czUJV+fcHpFdK0ZH8I6ZrW8SynoauX4YxaPpHQMHRaFw80RQKFAJmkjC+hkbaDQPwpVtWxZFvSTPmuwo+IYjRj7vrSP6aRYU+srRQ78pHWwSQsztEtTtGondos5vHz84YMGT8HjVzczoBf8VXdb2AteC/9OSKpfmLwnv3BfvRtKOc7EQAfcC6ANhjWptkICne/1tWn9EUXcZC1B9G8W+cJMKUtiITj3bHbZXPB6mt8w37Jr680qwuvNKZTD/w/6UQ8s4O6adESRP79GCsCcH/UIYjnQ/TUYlk2YrL5
+ n6wNP6rj
+ 4XGDx9LgL00Qb+FUU5TuWTB6K9WbYvXK2mKdfnPlXB9XnQiKXkfXTgQC+2V/tmwSewgsTgdv+EjUAMQoPtho76KMZtCb8nSnXnHNE+GQ/hIC0ZPsZmyjuovXElCothGjSbbysUilytgnMbs+Lqh4ZmXkoehGNFW1/bSlcxlsOj2vhr6Yhd6ShJnlnNYvUp9E4drkeMoxDBXis3H4iG3exzilGIK5l20HJs2B1UWxL6L3hG4cpdjc/fAbodK6WUoyc27zKR9Xp4b1XegYqmP7KqX+dfRtN3+baEVGywA0kuusFc6wh9mkQzPJ1vbfIlTJ6Bm99g4UBWO3Ng8B/59MDjncy1x4jnnusJtfQCiLFL7+mYXj3hnGUbg/wnfbKPnBDnZtRVEke252oRc7lhoS0a+1l/p8Ho6mqubU1L1uPm+CJRw0qp8LIYK3rwLGfYDgYetrmhczlDilHni0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,49 +147,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+From: Ye Liu <liuye@kylinos.cn>
 
-Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
-With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
-which only the classic LRU paths maintain.  MGLRU accounts its pages
-through __update_lru_size(), which skips that array, so with MGLRU on the
-four evictable LRU lists are always seen as empty.  The shadow node budget
-(pages >> 3) then collapses to slab plus unevictable pages, and the
-workingset shadow shrinker reclaims eviction tokens almost as fast as they
-are created, losing thrashing protection.
+Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
+with for_each_process_thread() loop in kernel/trace/fgraph.c with
+for_each_process_thread_rculock(), which scopes the RCU read lock
+to the loop body via scoped_guard(rcu).
 
-lruvec_page_state_local() reads lruvec_stats->state_local instead, which
-both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
-race this re-exposes on cgroup v2 is closed by the preceding patch that
-redirects dying-memcg stat updates for all hierarchies.
+No functional change.
 
-Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the number of lru pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 ---
- mm/workingset.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Changes in v3:
+  - Split from kernel/ patch in v2 (Peter Zijlstra, Steven Rostedt)
 
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 7ac2b88c80ae5..8412f4840ae35 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -688,10 +688,9 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
+Changes in v2:
+  - Rename *_rcu to *_rculock
+ kernel/trace/fgraph.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 40d373d65f9b..f797ce119223 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1057,11 +1057,10 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+ 		}
+ 	}
  
- 		mem_cgroup_flush_stats_ratelimited(sc->memcg);
- 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
+-	rcu_read_lock();
+-	for_each_process_thread(g, t) {
++	for_each_process_thread_rculock(g, t) {
+ 		if (start == end) {
+ 			ret = -EAGAIN;
+-			goto unlock;
++			goto free;
+ 		}
+ 
+ 		if (t->ret_stack == NULL) {
+@@ -1074,9 +1073,6 @@ static int alloc_retstack_tasklist(unsigned long **ret_stack_list)
+ 			t->ret_stack = ret_stack_list[start++];
+ 		}
+ 	}
 -
- 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
--			pages += lruvec_lru_size(lruvec, i, MAX_NR_ZONES - 1);
--
-+			pages += lruvec_page_state_local(lruvec,
-+							 NR_LRU_BASE + i);
- 		pages += lruvec_page_state_local(
- 			lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
- 		pages += lruvec_page_state_local(
+-unlock:
+-	rcu_read_unlock();
+ free:
+ 	for (i = start; i < end; i++)
+ 		kmem_cache_free(fgraph_stack_cachep, ret_stack_list[i]);
 -- 
-2.43.0
+2.25.1
 
 
