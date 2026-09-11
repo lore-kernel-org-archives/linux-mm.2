@@ -4,107 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4F3C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 06:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E7FC79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:04:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD48F6B009B; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
+	id 5204C6B008A; Fri, 11 Sep 2026 03:04:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85856B009D; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
+	id 4F88C6B008C; Fri, 11 Sep 2026 03:04:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9AEE6B009E; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
+	id 40E286B0092; Fri, 11 Sep 2026 03:04:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A904E6B009B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:44:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C3941C0060
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:16 +0000 (UTC)
-X-FDA: 85200542112.07.CD5DCB0
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CB4E520006
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=e5KK3FdC;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=e5KK3FdC;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789109054;
-	b=Lqi4WOUxj6kP0Gi0hyxJakif+BB5SvbDEus0z3YG0NhwBUn1AthKlC4982iSUZTauJPlC2
-	V5ddFkv6SKrLjVX9O76/N++Dfuy1y/EhbIQ1C/XoXbxIKsqRZX8FYLXmvEzYd+k/tosAqn
-	vZWxJL011pyDQEu0gUsOQYaCtRIvMPs=
+	by kanga.kvack.org (Postfix) with ESMTP id 1A2236B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:04:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 465BA160115
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:04:15 +0000 (UTC)
+X-FDA: 85200592470.19.341B3A6
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 798F514000A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:04:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CJ6UQuRZ;
+	spf=pass (imf23.hostedemail.com: domain of 366ejagUKCCYOQTDQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--morbo.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=366ejagUKCCYOQTDQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--morbo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789109054;
+	s=arc-20220608; t=1789110253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1H50kH3M88JVikkBnDtR3FYrroEvYJwh3vXK+3DDGo=;
-	b=O5nFGMvGXJoPcuK1c0sC5uTDHvjCy+3zmgiGY3gkx/hyfVKNpNE+31uNKLKhByCxQTUciM
-	jR+lwgl3KMWUNTJ+uH4v8oF5f/aPI1rUoWBt+1jpzFpQAlRxAR7pka3Nj8jn1KVSQ+9Ok3
-	Lq3PADFptBu11QukeMSZEL8dwR8o2J4=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260911064411euoutp02d0ac6233c028080fbe5a8a86ea82a729~UMTQGvVjx1863118631euoutp02N
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:11 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260911064411euoutp02d0ac6233c028080fbe5a8a86ea82a729~UMTQGvVjx1863118631euoutp02N
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1789109051;
-	bh=t1H50kH3M88JVikkBnDtR3FYrroEvYJwh3vXK+3DDGo=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=e5KK3FdCweoN99A8Aq68AIq6VaEB4V1PFMz1oU40j6tmrjZtbpkljk09HgAdyOtsD
-	 2935EV/4FVJMN+kveoaHhlam2sVk8XWZvKMryakPLfwRos8emPs2XwNoi03i2lO1gz
-	 Ty+D4A7DidAquXdSvOBUhhp0zsMS5zJiugz4LkqE=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260911064410eucas1p1a59106bb32ffd42bf86506e3b9b7ff91~UMTPcco_M3171431714eucas1p1b;
-	Fri, 11 Sep 2026 06:44:10 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260911064410eusmtip10832dba296ae40699d5456b7b7154595~UMTO1e4tm0512005120eusmtip1P;
-	Fri, 11 Sep 2026 06:44:10 +0000 (GMT)
-Message-ID: <7dff82db-cfac-4c38-91f6-12b542716bd6@samsung.com>
-Date: Fri, 11 Sep 2026 08:44:09 +0200
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
- early reservation failed
-To: Wandun <chenwandun1@gmail.com>, robh@kernel.org, saravanak@kernel.org,
-	rppt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: akpm@linux-foundation.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <cbbe6ba0-5ee2-4597-92b8-3257e152be75@gmail.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260911064410eucas1p1a59106bb32ffd42bf86506e3b9b7ff91
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
-X-EPHeader: CA
-X-CMS-RootMailID: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
-References: <20260818092420.2859026-1-chenwandun1@gmail.com>
-	<CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
-	<20260818092420.2859026-2-chenwandun1@gmail.com>
-	<72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
-	<af87036b-0809-4880-b088-545780b4d963@gmail.com>
-	<7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
-	<7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
-	<518729f2-db28-4af5-8ed3-9985c124db3e@samsung.com>
-	<cbbe6ba0-5ee2-4597-92b8-3257e152be75@gmail.com>
+	bh=q15pDPXWwHD21xyeCsqnIN6CD+fe6kHmFEwudOZDaaw=;
+	b=bie65+SzOxzEX4RG8MaenejpLtUyzCF5IQWj002c+SnsY0MReN2nP5VltYA49/0SVjscfu
+	JpDRN9qjn492NK/tUGCG856BlxEWyCofM4MVzEioK5lo96LXORLRsozIbZEV5Kk2W33SiM
+	I5nGo6ST8WyDiGpPh8Wj0sEjOqGRlhk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789110253;
+	b=akMpps4ToxB3e19IX7TyNTtsgHpFnJ242QAL5UyrkTTdmjoSUrheLLxM5YIhOVvUN0jnNd
+	vW/k4bbsTU0mXYAzbRRWq8kqwsbVbKHaZltMj43EUiJTgcvO55C38ahJA6VCLKdhblF9ng
+	rfT3KFdMrhspHEHSlyyBmFYqbEvknaE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CJ6UQuRZ;
+	spf=pass (imf23.hostedemail.com: domain of 366ejagUKCCYOQTDQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--morbo.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=366ejagUKCCYOQTDQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--morbo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8538a72b430so633001b3a.2
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:04:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789110252; x=1789715052; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=q15pDPXWwHD21xyeCsqnIN6CD+fe6kHmFEwudOZDaaw=;
+        b=CJ6UQuRZQSdOVTP+0+LXa922a+n3r7iPcjOKBfcTju3AXp4J02/AgYrp007Ir0MDp+
+         2zWVW2jNukgduXi/qjHLwXG85U0yZsbioRzFSNnEzb423NWwtuhNb37iayK7gh7t3JJx
+         OQE9IP29ungTBjVEWPbkH3CRPecisgEhZuQgKnCWPSVlihKKi8QCnRi/Hx6Ja72c1lvd
+         +oj0G/vftUVDC+oYxmdTNsgUKNlbCCaMdt27uOGb19Hor9XD/DPwzdoOTAcd6B93UuKT
+         QdZ+WVPESO/APVr5LEgcaJd8JknuhnKLFguW6H+j1vGNVekps+WAw2kfFXyVWHhRYku6
+         OkxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789110252; x=1789715052;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q15pDPXWwHD21xyeCsqnIN6CD+fe6kHmFEwudOZDaaw=;
+        b=XViadi8m+uFWnJifK2BPeu/iv/HT93+KB6kq8aJyAFr12eOhciJD4c+uL+hzvTYTzN
+         FbtP2DO/VPvIeJ9oqz8O0M9CkZ0mGMKTfzdO43FS4Ba0EtYRHZuFYkok0F38jLS1nW4F
+         QagosRzrUCwXxTOrDQWBFsDhIruzuKMhJnPO+kXG2oM7Kx8ZMmJ+FLY3kTD43cRLfzKm
+         hAWmnrcdAOk7RANtJg9HNAHSRvMmF93L9C6umOuVqaY9DBdWLHT1dvFVbzxoltnqbvp8
+         KLD3T4LLqaGlInjfD6SFmjp3ignlh3UpqnAHCb5oiYtGMCJckZP0UAvo+FgzA9DZ29qw
+         XI7A==
+X-Forwarded-Encrypted: i=1; AKwUvBxJNOdwFtHf9oTIYn8D0OHF7yQ+LefcgXkWkHimUIoKD7dKLMpHpfdOduBNVFbJxmeTt9+tfcnp0Q==@kvack.org
+X-Gm-Message-State: AFuF++nxM/rFA69CTtRO5cIJBAv2xk9IHYDtTq0L5nmdmVDC3BbA3TuI
+	rd5ILtdX7HRui6E0T/7F4rQub6HJgjP5MN7UhLa6l/aHXR4a/7iwiZzERv8v4GC/oB7l4nfPLQh
+	3
+X-Received: from pgbbx40.prod.google.com ([2002:a05:6a02:528:b0:cc4:aa48:7b7e])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:1611:b0:3d7:eb3e:1c58
+ with SMTP id adf61e73a8af0-3daed1c1684mr5671856637.8.1789110251982; Fri, 11
+ Sep 2026 00:04:11 -0700 (PDT)
+Date: Fri, 11 Sep 2026 07:03:39 +0000
+In-Reply-To: <20260911070346.801948-1-morbo@google.com>
+Mime-Version: 1.0
+References: <20260911070346.801948-1-morbo@google.com>
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260911070346.801948-2-morbo@google.com>
+Subject: [PATCH 1/7] kasan: Add .kunitconfig for KUnit tests
+From: Bill Wendling <morbo@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: Bill Wendling <morbo@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	"=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?=" <mic@digikod.net>, "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 798F514000A
+X-Stat-Signature: ngnq5nswsifftgmpeh8zao8cus9gyc1o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB4E520006
-X-Stat-Signature: cfn4kjmhxbh33hza18phhzpatxc5z41g
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789109053-936262
-X-HE-Meta: U2FsdGVkX198+Nr/PUo3cUwr8DaY30XM6x0l2hCpjcUvoT/GNgSjbqvgTsIcKKXOmRq0Z7iQbcgni8iHEvo/4ZUMxFZeKZQLp1ehpNTSBLqXGOTIkjQ2TRI/kZEmYvC7wLumr9C6iUglkVDszxgB/ognM2aiYl9yac6ckxKzvpEdUgwW6RAKl6G350tkLg95DIEecBKxGZ+wzdwgq/LBt1TafwpPBlBZ6xw9GUy7H68ux9gl43I0nzs3bLWAZ+Hg8A/W3icmHNoAfXA/5Kv42I7e8QbSzhbbMMCFVzvtm4H55YnEz/8oBW0wB7pZ1mWlEH+8K4e6/OwLUXUinpEudfTgudPkdjDBpCbn2Traf+29JXBLbyzzbYSev3J9U7FrKV24aOKRIJPbU6H1eSWBJCDfQqjy2a3ss8Wyp1fIgca4OhZ0GY9RktSDPeP0e0sYgqy0GSePxc54kNGADqZvdldQgwtpf/fIcl5wTtxyFZicYSqcEw6dkCQ1IeqvKhFth8d9YLSqf/Pu9Q/CorQUKE0UWuc2wCyFNZXD4/r5T/rV8OXbyzzuU5nQODTI9a6LValVXBEFRq46s8emm65w1b4Us2La/K6rLwfGlSBVM75WnMFyIOLFD1LAdfDA4JSM5bbVfEdJFEs071sX3dV6Q9cnxy71Lh+IPY18QmiLPeEANcWLES7mxDEJmmwJq218NXks9UHDMUYIrxYDwIw17DhD24pv4lsHslzRmZET5t4RV0JZlEggzn+3sA3OIUCW3jr4E4lkg8l3pOfPKyKcW7/un5zBA9LWYfaZHPiCe2B5iUEaFF5Vwyr8aPRYUxpmHXPenBUlbTMNy9lDL9mWbACY/iJXxpgHvTT954CaI9L4XUSt5iSrOklAeqdnEn0i5p3q/Gr6PZCYCAVpZAjq8I2xrrBwPQcGpsCag69AUDO26fF8w9UpgGeGsXJjlCM52oo7bFpRLAX1sUfgjJH
- Zr07T7L6
- RijsDndyqXXlo2+GZnW4WiBbagc3KWJG+JArXv+40MHnJJTJPmOuFUmRJkOgYdqZBST1iJM8dNDYrczFQFiKCpriHKvhJJQjMsI9zf96nL8/H80SjnAFT9zuMjhETTb0hrCjkD4//7fJWi/PdxT4z2+GiDBIR+Ktd9IRZj24kLIylfpmC7ea+e2sC/w==
+X-HE-Tag: 1789110253-612395
+X-HE-Meta: U2FsdGVkX18bys1qXqINuZuSgsBtk3mkEt3fCcMFEJkxaMPAVmV4Phm48y/xQrlki7H/R44K3HpSMchLdu360zuooPXoR80PjfF57cCwOYn3s7icahpMqTN1FWP8nHrN2P7NKIABgz/34U0AV6ve1QNEp2Rt9Z2Wvni91wUo4zVLxOlW6VSu3DotYFqsc90Oyua8oSf9OLNYWq4Yg00sXWjKH7kPZYKVrW0AGx7o3sIqi47NAQKfBKED7FPqZPiMqFqJpYWKzEEHQShkkpUtOucerYON2xlrx+CX5D1/YwQn9cf9a3Uwj2h5qzX8lwEajo2c7NYSDNE1+rWkj/DiVwnyJ4L+tx8EaS6qlRbVRA+jk4iHDsJvoDPK3mHSs7shPkbYGiA228ZfnEERX0mJ/V6yB/FKVrR2+w5yuZlRjsd+PrrDIVIcUwIHPFZBMvqcAl0yY93TvAMbO87nyEJZmZeJ+iwCY9TCv3KmQNdbkRMarntrkjd5ABlxGYNb7lobv2z621iF3eJbDFlUhet28UkQS5TVoWFHhkXiZDXZ0AjrC5ZRep/UPY5xpOHWCeABL2WEUaA5gdOtsgd4OrFPZ174DG8XuHtCZFiz0fFfO/41p4K2C9e0GvR2gVihf36HMBwwDsXpUrxUfR7zkFdaw8C58TnZiB3yWHZ35cttDir/xP0c6bCt3F/uTO2mBOpLQynyHBArDDl3gLNiCPvn2fwy+swH/acSE+bKjVNkPKq4arPDkbyB7Pyb5MgUWVZy8YVdC3Icaf/4DL+f7DaPDjgiKxqk4hCen4KYSvphjxUBDDBf5xd7ExL/9NK5qyuwDJ0ABTACoGbYqPpUrzzBGWhNLttYYk97Ra7YMJUtItQrsp23gKX9o12joIrUHu1NHMzvAh4UA1F1x7C0Q+SfXzvv/xdn/hqDegmhE3iCky6oL1784fUcjra6AKf6XPXwnJ96ADdKgurtMJ0x/f7
+ sopyHbpq
+ aawy7bzyftGzIXgWQnqFrbEAZo/YfdNYMEkc2sxmgbC+0LeEkUYFpBJDg4tMKSZR6oHPjNW6myLGNYD+k0XBN95InJZ5YT5M8SrfAnuaRTrNiBZDTFVMETkLQ3VLKlalzQYd7WM664dPFSTGw0QPMB5Jmqvn9wN1rfP8ec++Nb4lNP5zWcnMhbvHdb2X6kno3Q0S99iUGBuxufO6H2yGnOlFD3N6yRFH1EWuptQFmcas2M9U2MUyz6ef4OoHm3YZ9Y7e5d+ulWl7iz5vixkJAM9XR4W6BjQkfNX4OaUayN/d8Gh1NnYju37l9vQz6FGgAFpdOYUsUQ3s8/i5vs34b5vHLj2U5nQkSAxz76lF3cVOtTaM4kOy7o8DDFcj6A2oyMGiNtCojBL9Uflpvm1H7WhzsKuR66rwrh16tKFPHMMm2ZNU1avkC0PusLpWi/Yr+Phr+EF7VPFnZiu7OsLsYyu22jfuUpNjWexvFyg+lHvVhVixoGWBDUAAZXCVh/FwI3SWrc3GhbrueINlZJiRqsgC3K/jtdm1IRslj5oP5ZT9uF5rVS9el64eY6q7Yjuc6Kxi+HF/AqP5urQllM/v/oyCs20+ZvbgsLOj8Z9sYQ5KeB1kLOwliaiIXf3I8aFO7Z16zLvzCuCCXLcepC05klpYEAm5OVWR7Xr6Wi3yrcmd1oeccamz37gzRBArwMJt/LYgKrtC/TI+7pJpK9yiIKnMiO4k8K0CwzeZnflJWNu49jUj+VIKT06RwFZ0VocQ2lx0Ga7zEkZm8JcS6S2DnpNSQctox/NNKsyldDZ9oYe/vkUxDAFvgGFrXaij3FxcZr16o93AnM8xmOUVXSTzroEIGAJuP+SAXmEteqLuU8Jpoc09Y9aannLJOSquIb67hCi9DdBZ9FNpAUdTsTJPElGONSerzNWSbisVXInenxFs1opfgdVjxFTZxvLqzHCRym2gO20j4V/nNfvI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,98 +116,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.09.2026 08:37, Wandun wrote:
-> On 9/10/26 23:20, Marek Szyprowski wrote:
->> On 10.09.2026 12:55, Wandun wrote:
->>> On 9/4/26 16:49, Marek Szyprowski wrote:
->>>> On 31.08.2026 15:04, Wandun wrote:
->>>>> On 8/26/26 21:14, Marek Szyprowski wrote:
->>>>>> On 18.08.2026 11:24, Wandun Chen wrote:
->>>>>>> From: Wandun Chen <chenwandun@lixiang.com>
->>>>>>>
->>>>>>> __reserved_mem_reserve_reg() discards the error from
->>>>>>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
->>>>>>> caller counts the node in total_reserved_mem_cnt and the late scan
->>>>>>> initializes it without checking whether the early reservation actually
->>>>>>> succeeded. A region whose reservation failed is then handed to a
->>>>>>> device assuming the memory is protected.
->>>>>>>
->>>>>>> Propagate the error so failed reservations are no longer counted, and
->>>>>>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
->>>>>>>
->>>>>>> Recording the failed nodes explicitly is necessary because
->>>>>>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
->>>>>>> tell from memblock whether early reservation succeeded.
->>>>>>>
->>>>>>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
->>>>>>> of static regions is not bounded by it, so on overflow the extra nodes
->>>>>>> fall back to being initialized, which is the current behavior.
->>>>>> I'm not very keen on such partial solution. Indeed we have no place to
->>>>>>
->>>>>> store the result of the early init call, but we can check if the given
->>>>>>
->>>>>> region has been earlier marked in memblock as reserved or no-map in
->>>>>>
->>>>>> fdt_scan_reserved_mem_late(). If those attributes don't match the
->>>>>>
->>>>>> region can be simply skipped then.
->>>>> Considering the later patches that reject reservations for overlapping
->>>>> nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
->>>>> produce false positives.
->>>>>
->>>>> For example, if region A is reserved first and region B is a subset of
->>>>> A, reserving B will fail because it overlaps with A (in patch 02/03).
->>>>> However, during fdt_scan_reserved_mem_late(), B will still appear to
->>>>> be reserved because its range is already covered by A. As a result,
->>>>> B would be initialized even though its own reservation failed, which
->>>>> is contrary to the intended behavior.
->>>> Imho the overlapping reserved regions are some kind of configuration 
->>>> mismatch and it is enough to detect them. fdt_scan_reserved_mem_late()
->>>> can first store all regions to dynamic reserved_mem array, then check
->>>> for overlaps, and only then initialize those, which don't overlap and
->>>> have proper memblock attributes?
->>> Thanks a lot for reviewing this series.
->>>
->>> I did try this approach, and it looks clean. The overlap check works
->>> well for regions within /reserved-memory. But there's one case I
->>> couldn't make it handle, where it seems to still produce a false
->>> positive, please correct me if I'm missing something.
->>>
->>> For example, region A is reserved before /reserved-memory nodes are
->>> processed. A is not a /reserved-memory node, so it never appears in
->>> the reserved_mem array. Now region B in /reserved-memory is a subset
->>> of A. At early reservation, patch 02/03 rejects B due to the overlap.
->>> But at the late scan, B's range already appears reserved (covered by A),
->>> so it looks like a successful reservation and gets initialized.
->>>
->>> The root issue is that the late scan can only tell whether a region is
->>> reserved, but it can't tell whether the reservation was made by
->>> /reserved-memory node itself or by something else. Maybe we still need
->>> to record during the early reservation stage.
->> Then maybe it will be easier and cleaner just to add a new flag to 
->> memblock_flags (see include/linux/memblock.h) and mark each successfully
->> reserved region with it? There are some spare bits there.
-> I really like this idea, it's cleaner and directly solves the
-> "late scan can't tell who reserved the region" problem. Combining your
-> two suggestions gives a clean and simple approach, and I'll implement it
-> in v3.
->
-> One concern: a reserved region carrying the new flag won't merge with a
-> reserved region wihtout it, so memblock.memory and memblock.reserved may
-> end up with more regions than today. When fdt_scan_reserved_mem() runs,
-> memblock is not allowed to resize, so if regions in memblock.reserved or
-> memblock.memory are exhausted, panic will occur.
-> The default regions number of memblock.memory/memblock.reserved is
-> INIT_MEMBLOCK_RESERVED_REGIONS, it can be raised if a platform actually
-> hits it, so I don't think this blocks the approach, what's your view?
+Add a .kunitconfig file for the KASAN test suite so that it can easily
+be run via kunit.py:
 
-When reserved memory regions are not contiguous, the current code will also
-trigger memblock split on each allocated region due to setting the
-no-map or reserved flags, so setting one more flag should not make it worse.
+    ./tools/testing/kunit/kunit.py run --arch=3Dx86_64 --kunitconfig mm/kas=
+an
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+CONFIG_KASAN_KUNIT_TEST depends on TRACEPOINTS, which is an invisible
+Kconfig symbol without a prompt. CONFIG_FTRACE alone only unlocks the
+tracer submenu and does not select TRACEPOINTS by itself, so also
+enable CONFIG_SCHED_TRACER=3Dy, which selects GENERIC_TRACER -> TRACING
+-> TRACEPOINTS. This follows the same pattern used by
+security/landlock/.kunitconfig. Verified with:
+
+    make KCONFIG_ALLCONFIG=3Dmm/kasan/.kunitconfig allnoconfig
+
+that CONFIG_TRACEPOINTS=3Dy and CONFIG_KASAN_KUNIT_TEST=3Dy both resolve.
+
+In addition, set CONFIG_LOG_BUF_SHIFT=3D20 to prevent printk buffer
+overflows on serial consoles when running under QEMU, as KASAN generates
+extensive reports across its test cases.
+
+Assisted-by: Claude:claude-sonnet-5
+Signed-off-by: Bill Wendling <morbo@google.com>
+---
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Micka=C3=ABl Sala=C3=BCn" <mic@digikod.net>
+Cc: "G=C3=BCnther Noack" <gnoack@google.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: kasan-dev@googlegroups.com
+Cc: linux-mm@kvack.org
+Cc: linux-security-module@vger.kernel.org
+---
+ mm/kasan/.kunitconfig | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+ create mode 100644 mm/kasan/.kunitconfig
+
+diff --git a/mm/kasan/.kunitconfig b/mm/kasan/.kunitconfig
+new file mode 100644
+index 000000000000..58a7448fa352
+--- /dev/null
++++ b/mm/kasan/.kunitconfig
+@@ -0,0 +1,15 @@
++CONFIG_KUNIT=3Dy
++CONFIG_KASAN=3Dy
++CONFIG_KASAN_KUNIT_TEST=3Dy
++
++# Additional dependencies.
++# CONFIG_KASAN_KUNIT_TEST depends on TRACEPOINTS, an invisible Kconfig
++# symbol with no prompt. CONFIG_FTRACE alone only unlocks the tracer
++# submenu; CONFIG_SCHED_TRACER is needed to actually select
++# GENERIC_TRACER -> TRACING -> TRACEPOINTS.
++CONFIG_FTRACE=3Dy
++CONFIG_SCHED_TRACER=3Dy
++
++# Prevent printk buffer overflows on serial consoles when running under
++# QEMU, since KASAN generates extensive reports across its test cases.
++CONFIG_LOG_BUF_SHIFT=3D20
+--=20
+2.47.3
 
 
