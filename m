@@ -4,89 +4,201 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B02A1C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D2CC88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:22:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DDA46B0093; Fri, 11 Sep 2026 09:06:52 -0400 (EDT)
+	id A0CFB6B008A; Fri, 11 Sep 2026 09:22:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B8036B0096; Fri, 11 Sep 2026 09:06:52 -0400 (EDT)
+	id 9BDF06B008C; Fri, 11 Sep 2026 09:22:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CA4A6B0099; Fri, 11 Sep 2026 09:06:52 -0400 (EDT)
+	id 8851D6B0092; Fri, 11 Sep 2026 09:22:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 496696B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:06:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7CABA0248
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:06:51 +0000 (UTC)
-X-FDA: 85201506222.27.51DCC86
-Received: from mta0.migadu.com (out-4.mta0.migadu.com [91.218.175.4])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 958FE80008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:06:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aO31goT4;
-	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.4 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789132010;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 637946B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:22:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92A60120201
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:22:42 +0000 (UTC)
+X-FDA: 85201546164.10.2707214
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011069.outbound.protection.outlook.com [52.101.52.69])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 694341C000A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:22:39 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3Zy4Nz0H;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf21.hostedemail.com: domain of shivankg@amd.com designates 52.101.52.69 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789132959;
+	b=6wxAgCskTam9cArhH9fV5PpX4fe73DPxpYtPnChRzfcuavu+zkx0xiCLjcYRf2ah2hPMVO
+	4Ee7cWgMFlsCXPJU6aY6Byt1i4xIEfRyFaBc4gDjdp/KKx/LNAOt2Ay8in36SSUBnjbpmg
+	3MEYBFtd/XRo9Z2paURxW8NxqNPoHL4=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3Zy4Nz0H;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf21.hostedemail.com: domain of shivankg@amd.com designates 52.101.52.69 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789132959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kfi+H+0vRX+9VC7bkZyCEQ2q2gtnzT1MRFZfyg5T0To=;
-	b=rZkDQVXRCktHfUjc76uf5vMjQwicG+AaLTS2IGyTa7P8G+x1kHwpHwjT9tlbmAHeL8F6nZ
-	ITpf4huJWnxGBS3JY3MU5yE1RNecKD0RgfX8VnU02IFlcqebyHZE4zWjyfzkFkVRbz3rWa
-	p6Y8MffojU+mTQ1uFURaIQSFsn4ooBM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aO31goT4;
-	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.4 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789132010;
-	b=AK9SeCcnY4Plo7/3vwXcNL0ltLIiGDjTebxNwxInEPVvJGYpo8sQ+TSxsh+PJXChqojaQB
-	V3Ron7XAIODt9XRRR9oARjV/lDNvMP35C0Sae815A09wkdXJY7sxGQBYGLYeRQEv9Z9MGs
-	GvykN/4SEeKkal6JQvmmQLlAmMeFD3U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VrBjQrAkdEmXpDtyAwR3LekOouRL0ah5gO9kVtcaIVc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789132000; v=1; x=1789736800;
- b=aO31goT4eBg8mrZ/YU2k05CeAV4GE9o3qUnnorPxnzpX7bOM6v4n+rEXbU3vBpcguuipk6p+
- 5s5oOZbCsx1O8PTyArfmtipwAJvWrQNT1K6zyI6mOfDyC4AhTOW1r7MezCvl5jmPTqsiuOLtj2k
- SWy8Ahve9ew3CzW1ikeyA5aI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3936e15f4d3d1065;
-	Fri, 11 Sep 2026 13:06:39 +0000
-X-Mizu-Trace-ID: 3936e15f4d3d1065
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 11 Sep 2026 21:06:25 +0800
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>
-Cc: harry@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
- list_lock contention
-Message-ID: <aqPlMzUIw-4g2iOX@fedora>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <20260824122513.3829-1-hao.li@linux.dev>
- <20260824122513.3829-2-hao.li@linux.dev>
- <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
+	bh=Uxjm5GzSOOuqpaMxqoJLkhQp6E7xr79gBCVz50z/Fd4=;
+	b=hnwwxdvmER0z4APKmKjTLV1yG9BKTLFjsvzwFXpKdduT2KxNL7SWtBqKy7MzLum7dkuNsP
+	TfNVUYcuo7LrBDK9BPkavrjSdVbC8V6bjfbhhDKr0vqj3bO10Y1IfmjoC6ZG6kjn2IdppT
+	MCQ8uqId/z1raspzIWsdlQvy2HNx8ng=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iZ6a1D2CAPMpsCpD8MO40PlgDcO6oSzoAtfE53lVBsf1p94rrJL8L+HQF0RpB426FWy/KvhtK2ZtcDxqJs1oXeahSf27SnYGzVb24mVAPmEawLoptzQQYUtgiQ1AKlxwO51etBiAveyHyj54W3ERgktFcsggj3bKCORFPAdx9U3yNLwVElbGrPGagahfXXLxCW0Pf54M5IJOYVkjTO4e+rTQMjuf7tDLre6DzjuJ2oDu59pEqN4I6/IhDrOs54aEy0Y/MUcvlkUsO4KvwT1DkyL0VqqHSy1TJAXPpk2vnfCCgI1cR0mjBMxPYVHh7+exj9QpHHByl+N8phbhZZHtfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Uxjm5GzSOOuqpaMxqoJLkhQp6E7xr79gBCVz50z/Fd4=;
+ b=n5xSMxbIg/ulpPkecw53fW/pXPVpmzmewrRIilj+lJf+2dZXV+lHLgTSJ59Ejnst83LQCqdfflbnNzPqjHj2VUS80ZlEEc2nIVRksM2YTcgP4IXZDjVgEFPffm4cJwMooEgrb4tNwLAab3jeh/IfdE4Mr5wQOKMpPzk5Tjd+Wey6qGokTT2f1bzL/1LdhPvXfpFDwB93r4iXNkAlZKi09JNj0xqI/RettQ41eTbWh/BSN1RcaqykIF53PVA1JLeMOUn5jjWpKM8DDTnc6ZYauoeLWR1M4bk3R84Lp+Xm8xhj0BYzCNw8VaVdBqbRVH4UsiPmNcBiB4nMPX60Qzj2Yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Uxjm5GzSOOuqpaMxqoJLkhQp6E7xr79gBCVz50z/Fd4=;
+ b=3Zy4Nz0HWJk0qLXt0qCR/Gfy1OVAhxyQMNTDltxlgU0//4jkMbtgtLekYcaymLeNpQ49wz7TQuWSGzwhp53RcI55EtCN0/tGt08kADpSL+UFSdaUQiEOrclPfZaWoTfmoRfL4zyj8wo2BPypR4KEO+aahiY1rst3NAswfQ3Ih7Y=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by CY5PR12MB6348.namprd12.prod.outlook.com (2603:10b6:930:f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Fri, 11 Sep
+ 2026 13:22:31 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%2]) with mapi id 15.21.0406.005; Fri, 11 Sep 2026
+ 13:22:31 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "Gupta, Pankaj" <Pankaj.Gupta@amd.com>, "Sampat, Pratik Rajesh"
+	<PratikRajesh.Sampat@amd.com>, "nikita.kalyazin@linux.dev"
+	<nikita.kalyazin@linux.dev>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
+	"david@kernel.org" <david@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>,
+	"tglx@kernel.org" <tglx@kernel.org>, "Dadhania, Nikunj"
+	<nikunj.dadhania@amd.com>, "Roth, Michael" <Michael.Roth@amd.com>,
+	"corbet@lwn.net" <corbet@lwn.net>, "mhocko@suse.com" <mhocko@suse.com>,
+	"gourry@gourry.net" <gourry@gourry.net>, "iweiny@kernel.org"
+	<iweiny@kernel.org>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>, "byungchul@sk.com" <byungchul@sk.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"ricarkol@google.com" <ricarkol@google.com>, "vannapurve@google.com"
+	<vannapurve@google.com>, "shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>, "jackmanb@google.com"
+	<jackmanb@google.com>, "Kalra, Ashish" <Ashish.Kalra@amd.com>,
+	"willy@infradead.org" <willy@infradead.org>, "surenb@google.com"
+	<surenb@google.com>, "pshier@google.com" <pshier@google.com>,
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, "fuad.tabba@linux.dev"
+	<fuad.tabba@linux.dev>, "skhan@linuxfoundation.org"
+	<skhan@linuxfoundation.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "apopple@nvidia.com"
+	<apopple@nvidia.com>, "ziy@nvidia.com" <ziy@nvidia.com>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 2/9] mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+Thread-Topic: [PATCH v3 2/9] mm: split AS_UNMOVABLE back out of
+ AS_INACCESSIBLE
+Thread-Index: AQHdJKV4LwQ7dSCl906exVUG+A92dLbHzfUAgAHJ8IA=
+Date: Fri, 11 Sep 2026 13:22:30 +0000
+Message-ID: <40e6e4af230cf5dc6e6937d785ee507378482602.camel@amd.com>
+References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+	 <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+	 <8fa1b403-99b0-4508-b705-f9e93c6bf0c8@kernel.org>
+In-Reply-To: <8fa1b403-99b0-4508-b705-f9e93c6bf0c8@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|CY5PR12MB6348:EE_
+x-ms-office365-filtering-correlation-id: b31c474f-42bb-4bde-cb66-08df1007bbb8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10067099003|11063799006|4143699003|18002099003|22082099003|56012099006|921020|38070700021;
+x-microsoft-antispam-message-info:
+ amkPZNX3FX6INvYZC9o1yYUgXYJaT6elLvYHy3eUz3zLNqKNN3hlh//p8rwqXwPYCTitUyM18tKkxizj8XdcSjog5vprQRZ58OlfDuf7vMxJ9s+GoeIAPjvUdOXjvSl8uuU9SQagirJM808K1UrDqRIvh7/k/HtCkq/w6oLuI2GNS2FYHW2TcZixW8bKyUpgy0evaFVnlTnvAtw3zPQkqr7hj1XEDPNxR9MYe3gWbesWsojSs/IDgbUya7RIPQs2ZIxMjcZgFPXH9kAZokXVgSq1p+dT1uCeJMbz7CJRlUCzL21FmrnqJfopbif4AqxPk3DwslpCH4IXtW3ADuhkERsy6332bniefksBvnv8Wiw4XmKC+JOnP6WG1KuDmwGE0HjVw9ChFP67gKNjkoNVs1j4UXKZAmoiEtsJxBudzq9kB0V0AXPWzUjcwBDAAH50x9e8oDr8PlGLOolCFaUfnjlQYKTIzjoA/o8cldT8YZtcKQNRDd3j4aLQdCSiED3Op+NiL3UVB57TNJp1GraEgZeDnh1N8hEpR7UAqBi/F2XOhlNOovzzoAMt5J2rxHDfam0TZ8guqx+PpZZVIMa0FWkjc11rbOVXTz09KVby3VaBY3wR7rhntYtjQlJCgG4UidpoNx6TCLI7wQ0FgnFeNCJlihMs35BE4hai3FOg66TTKNp+KVoc0agCCi49JGwi5BqqkgCCfsdDfLE3f9aAagTMOkGccxs61ANakfNH8XdliRxg8wlsGKBqHovsnbE9
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003)(56012099006)(921020)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?OUV2T3dVNFNGQnhmaENjajZtVTNGaTcxU2NVZmxvNGlYVTVNMTh2bjZYWnNP?=
+ =?utf-8?B?L3hXZXQ1YzBQZjY5YmJDNHY2VTJ1cC9KbW5JODkvTHpQQzJHaEN2WllFcmgv?=
+ =?utf-8?B?Szc4NXg5Z25wQ0JwaWp5eHFVVGI3QkNpb1F3QnFKbDVWS0lSL2FLMGltNlVR?=
+ =?utf-8?B?VE1Ua0lEaFU2SXkwaWRabE9rdkQxRWJUYWlUVS9mMEJWVDJvMFdnSnl6S0lo?=
+ =?utf-8?B?V25PRS96SVgwQVV1cTg2RWRaNkQ3RzlIeEo2OXNrUFhnWk15akF6K3M4MDhG?=
+ =?utf-8?B?eEl2K0FtUTZqd0JnYUJxbnBDUUROa0ZmTHk5YitCMGkwTExKRnpjalNZU2Mw?=
+ =?utf-8?B?SlRuTVV4ZitOc09XME5jSm1BVklMUlhpd3dUR01IV0wwYVpySmtHdGxVY0FV?=
+ =?utf-8?B?SlZUL2NYTytDZExjUXl0eGJlNUZSbU96WVBlQlh5MVhYOXdjb2lwKzJYRkxS?=
+ =?utf-8?B?ZENFZjhBeVE3UklJVm5Wd3Q2TVMwKy9KYlVFVzI2ZEFSZmVtYkJMQ2Nid08z?=
+ =?utf-8?B?emJ6WGlTaXFHbzMwVDY5STVESHJsbWxlVWQvZmk3VzRwNTRjbjZ1bmI3aEdQ?=
+ =?utf-8?B?SjhLOTJzWGlRWUwzUWN2MGdLc21xM3dXc2pZSFBkT1hXS0plYTU3ZzA0bGlx?=
+ =?utf-8?B?cWIxczErSU1aK3NYUkswRDlrYStON0JxczErYUx3S21KY0VpazF3Z0xncDJ1?=
+ =?utf-8?B?cjFqK3RZWHpsWEp6VTFjbW9IS2UxRWlqSmJPQXpGdU9nYXhiYnJOcHZlSVc5?=
+ =?utf-8?B?L1hoZGF0VlhLWGdaWDBLcG1WSDk5Tk83emM0VkF5bnc0RzZVbDRIb1h1SnUz?=
+ =?utf-8?B?YmRQaDNxTjJXVDRaK2FYcklLNUlGQlZWT3o5Z2xPcDUxWVBoSm5PSUd0KzZR?=
+ =?utf-8?B?RHVkNTVTSEt4djlZamVaZklsZlVUNlZUN0ZleDk5czluakt1ZmFLY1pvZDBQ?=
+ =?utf-8?B?WFdVckpHS29wRW1UcmQya1FqUEZBLzNaTTJuUHBZZThxNHhYRG84NURoT3VI?=
+ =?utf-8?B?MmRlc2dEei9CdVZCMXMyTUdsYzdoUmZlYm4xS3ZPWjNIbXZnT091dXJKMm1l?=
+ =?utf-8?B?Y3R4ZVVxZlZ0amlScjNYOTM1ZTl0L0FtY2JQbDRQTUZJcXFlcU5JbUF6ejcw?=
+ =?utf-8?B?azJsNXQyNEtiZ0JaODBGQ2QrL3g4eGZYNFVBTTRzaThyLzlhK3RuYm5nSysv?=
+ =?utf-8?B?YXJsR0JqTys4WUx5Z1hWWGRwWHJPR3JWN1kyWE8wYnNzRXMxbDB0c2hPbVZn?=
+ =?utf-8?B?TkltRjJLMEJMa3NhV01yaXFzZE5SbzFKUG44Q2t3UWNuVnhOQkhrQW1PcjBD?=
+ =?utf-8?B?Q01oSzBadnBrMGNPQy9ESnl3OWdnb1V2V2s2OHlJR0xZNWJQMC95OHhlb1NQ?=
+ =?utf-8?B?NnVEWitGdGJZUEV1K1hLbHczZENTU0hVSnNPcWRwUW1BcStIR2dWV3NPMWRY?=
+ =?utf-8?B?VDcxL1JraWVVT2VUdHBXVE1MRnZxdDZlNGR1UEhuUllmT0dJYjIxeC9lbXB4?=
+ =?utf-8?B?Sy8zTk1YTTlLZVdaalNHTStZODkrY2puOWxnOVBhZk5Sc25KMGdwVnY4L3VK?=
+ =?utf-8?B?YjhIVlBkdlArblU4VHdtZ1owbnJzRUNZbjIzVS9kVWZjL0NLQmlQSkJyMzV6?=
+ =?utf-8?B?QXdiSjAwVy9rVk5jZEJRelFBcWs0T0diUjlZREZUSEFBSTVjMmJ0TWRXZjVX?=
+ =?utf-8?B?eFVoT3c1OFAzNVYzU0I3Y3d3cEFIZWtMSGlVdEFXNlR1enY1bU0wMXRlTHlx?=
+ =?utf-8?B?SUdiWjJrQ3FuSEx4NGszR090M2p5dXhhWEk5UVpTTFpvRkVhNUtmSThFNit4?=
+ =?utf-8?B?R0dQTStKS3NrVkVReXVVSUlBQTBjcVFNcWxPZlBpTjRQWktxOURmRnUwTjJu?=
+ =?utf-8?B?eDQ1d3RyZm5vTHNUbGJMTURKNVV1OHRFZlNIcFZQL3pmMGRYR1NsaTV5cmhL?=
+ =?utf-8?B?ZGZGN2d2NEgwa1YwNDlFRXR2M1hkUGV4c01HekJYbnErUUdoZWsrZHVXNFJV?=
+ =?utf-8?B?QjBESndEUlRKbnpCZXB0VHFOSDIwL3RTT0ovODI4QThEckZnVmw1L1BnYzcy?=
+ =?utf-8?B?S00yTVd5d1dscDlVR0puVU5HQzl2Y0VmQ1hXM0NJamg2Sjc5RytnVnRUa0VP?=
+ =?utf-8?B?ZjZsOCtEYnozV2xUWm4yUDU3dU9Vb1E2WlZHWVRRSjgyUlFRUFBKdGFleW9Z?=
+ =?utf-8?B?SHIrYUFDcTBUdXkxZmh3M21MTk5zWkVVdDZHaHl4K0hRVk9rVzFnMktPNE1t?=
+ =?utf-8?B?VTlaQkpHSmVpVS9TY2NFdHBuOFhhNUEzNnlIQ29YaU9LWk9SZTRUend5OHBS?=
+ =?utf-8?B?bXprWk94MktvMnZYQlZpLzdiWlNYUlEyU1FiMk14c1IrblRjRC81dz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <77869D26A535E9448384A3B33EE3EBA5@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 958FE80008
-X-Stat-Signature: ozynxzi9eg3tc39rm4mm9t1ee18o56s6
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b31c474f-42bb-4bde-cb66-08df1007bbb8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 13:22:30.9545
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gjEiNjucNebvisoHiTE5ipmAwVimTVBQBDO6nysaqSbCufjxRh3NbM6HJqBL4qE0zokCyjGgY8/WPIyuPDGXDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6348
 X-Rspam-User: 
-X-HE-Tag: 1789132007-444554
-X-HE-Meta: U2FsdGVkX19d0xHIOmk+Vf3/s5/RNcI6JTw+P1xLQRoV81jCOgDulbx/6N0qZzRu1I9FLaYwIYM+lnCPjfSDkR5YrO0LD5AsGkdXdfQd18eEHFSG5sQCcXG98kigGPT6WGIbkr59UdkOQi+R6sZFY5CLwlwIQ2eYPQDU5Qb52rcoWx85P13mSb48xBuzPKtNuPbr5O3wYZfZSUU/S8gbtJOLYA7yEOZU/3gDarkNT6gdsP2oVE6K7I13XF3ulP/LwNiwa6wZJdkdRxhVwwF35HE0lrJ7VIMPYIHgr79QKizdvCW2plzcnKOAHOu3Ge+7mwpI+I9X5QRPcGItOC6Jhpd3jk6oEhjXotOuJIJNKqZIW68YZllKlckhLTJNiIQobMVx6xhSbvj9wvOMSb0e28kzDfV3mZrcESgZnUbyv50vlYjy8n6WhOZE46RAXcpRGlt2f4u8t22cI2PEG0TcPhy1ZNgHeHuR/TnC+9PAn5okd46rA4453PEuLNT6msNApARc+nmuy4XWstHwSVIECaZjnBgzXqjAp4CxOcZPgkLhi1pL49uw5VlmhBaOtQNiVzAux8GQQJH7jR3SkhJDL/Ixg3pmGO/coUkP6d/GaSjag4SJuIPsPcfHNAGHyj7j8F5dhMSaZy0rsfgCLX6wCXT1QrbfLToYMyJwTeQx9wUnftcaAcv3E1wpYvb9rqIRizjtTIFWIzx40GXAb8M8IBVuVf4iWtRVK5ZrADpBo0gjr4fzzhm8APfNS8MoiLWgNHIGW4/7A8Dp0MfzHqcgeYyw6wCLCEW41kHNqO++wFRYaDpEkeF0oqCArsDxPExlmdgG8+OvPgnJFkUk5bsNjEnnpvQweWc3kL5F3NuiA8YwDExERDU3vz1QrAaRgM+y6CSyVTBsQ2ID0oXL/PSKgNy78u0DGix89U0uv8aM0N+tf00M85pW4DPcMsARONyxUi2xdRvg9fEQiamBwZd
- jWC33Fyr
- AOJHKBNG8M9s8jKHHVbs2aNs2y8tfycB8Ycyo8FjRMoLzQnXrtR6pKsat5anyGw1aOGH0de0iwYik71MwEpiiZQLsA81PxX5W5ISpgfjabNxnpieEszuj6iqmfbEDCQ4igjvtqOmR0IZtYZMuZulxd3heN8r2WCO3FjStdtLz+DCftfgkmVWjmntPbplDqi/uJY88SAC444aJIDUSy4b2idkSWKmGP2iQdLqF9wF6kNuRduQJg84T12yWXRA/CcKe3LNjLzlazNsKYHz2v9qVrqXaHDSv9dB9uzAhjqiLpScD6bSxrtf83hW68RzKyS//hV2R
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 694341C000A
+X-Stat-Signature: nsteo3gazjyci3474f8zqjhf9yt9is5z
+X-HE-Tag: 1789132959-284451
+X-HE-Meta: U2FsdGVkX19WlNMBYyPzA/43FkLBkyEkKsRP4qm0UWBh9Y64sHQqCfUQIuhZ5XFb1hTOlYFwsjQVPjriJWhocSCz7eE+NY4Zj4H/oCVoOnxoM0hg16ocZop3928QXo/qud/xW82ncoSh/AObGfWnBdNdHglJdleO3lkaXrH5h0Qhd6RMMrjotAdHvYzb3CwMUYsRow5qkxSoB/AsRdnaVRwNPj/2v52K2ZJySEW+D4ngvIRvdzifNsNt2bdLxhzrRWP+GxqJgblieHn+kiIHee5nHQwcWTv0OrrYYJr/Q15ctNp5/+O7v5/qtPqkCobig1X5gsNGdMtbNcXCZU2j0nkJD7yXddR6qRgnpK3Q2RebYHYz6t9NoCC7EkEbAwxV4d90Sr+4lGPfgrxWMzTKX4Q8fa0fM8WhHYWS2VKpYJVXCCoe32a6MeY4eD+nVyVa6etlTw+rHuM13tYPcKKdPRSWlNTT8U/Oo7WHd7RFcG68RgED9/q8V6rzDEnGM1vy5yauVIdiZw2bv5Hq9wlOq2mG9i7c2T52Zvl8gsPatd4hSEVvSy6VCJRpiKRXTwP0n9Gal8vo22yZHaIzf6Wdi+/ggrj624pwi2sHYXRIX78Ww5H6oir8g2+BJ7tbQz5hGvim4CiNxs0v2fEn9GkM4r/nSdY8kHntlUzFs0RbveRpWM4VIIr13Y+H/CAJ+MTR/LbEhcmyVEXrEmvXkH7B4CSrgDspZbKiu3MMVev0ApGf/BRjhDTiQ/5roJ1Tt8n7QKCjgjrskP0CTKWWMKaRY8mpYiWI6IQkQjGYROURYY5z7bbgd5n9B3iWX1PdP7SNZKpLWFsOn+1lwRO5gFt1PYZkIFpE3gufH9cOMo1o1P6AmtEVLyJ6R88gs49Nr8vhGzf94k4efKAPsOE/jtrSjjZUcYyLgo3oIUypQF+VLaM6cAJtvcQh8l2Jgc7Qo+U4jSCFDHq3EpAKxAPKzno
+ Tzn1/fjn
+ HbztXl60LrAqHDHXe+htG6eTzCDrbB/s0ggHF2y0RN73PFnVKVuKbkdSwh46yJN6x2Ys5M3JOFUzx13uM+jKPDCXiRixB8hAjgqAJQBAqt/KaloKXciw3TaLdgTcN7GpUObg/eS0CLR7vzfhflC69JghoexB6Id4nAzBWhOw/Jixb9AoMvZk2doogLrT9XkZKFoirvxihquKH7WAeq/Kq8gi3vzXOHqzUW/nKAJo0gFj1s/iVXi+27d7qXZ89HP6uFLD4Li+TL/hzBLlRz3Oxr0WKiXl19GEQgAlpeUTh1l5SKIH/e/l/JyCaYS3C2IMmGr6heDN4+uFUsY8rPshwOG/Qv2JHuXC34zXun3Bb6lBb3RhDY0pPMsXhBdY3kL6v2PqVoLykeh0XAH8fT32qjCd/EKrpojEJNuyhHY9C3dBwPup51qGZ8unVu8eOBszD6bllVqIy31inyQl3ZxckkUTNy3lPJSs3v8RO/WDwPKMvBPYo7/94rP4mGVnjKEnTukxHrQV4Nao8JXLVYrXdxpQCWMWuBcH8ceyOFG2iMEgyYXH8ar79c7UdqNMX3d/yXTTqIM8NITCBT4uftjbjxIlBjLn7gKgXrxwzJLtI8Ir1a7Trn2hW5x0ocQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,521 +206,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 07, 2026 at 03:38:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 8/24/26 14:25, Hao Li wrote:
-> > Introduce a mechanism called parking to mitigate lock contention in the
-> > free slowpath.
-> 
-> Interesting!
-
-Thanks!
-
-> 
-> > In the free slowpath, when __slab_free() transitions a full slab into a
-> > partial/empty slab through a free operation, it must acquire the list
-> > lock to add these newly freed partial/empty slabs to the partial list.
-> > 
-> > Why must partial and empty slabs converted from full slabs be added to
-> > the partial list? Because only by doing so can the sheaf refill or alloc
-> > slowpath see these partial slabs and allocate from them. Therefore, the
-> > list insertion must be performed, which requires acquiring the lock and
-> > leads to heavy lock contention under high concurrency.
-> > 
-> > Analysis of profiling data from the will-it-scale mmap1 benchmark shows
-> > that full -> partial transitions account for a large proportion, second
-> > only to partial -> partial.
-> > 
-> > With extra instrumentation added to __slab_free(), the following data
-> > was collected for the maple_node cache (in counts):
-> > 
-> >   partial->partial    843017414
-> >   full->partial       550719384
-> >   partial->empty      17459564
-> >   full->empty         2
-> 
-> That's a lot inded. I'd be careful if it's some specific aspect of the test,
-> i.e. lots of parallel allocations followed by lots of frees, that wouldn't
-> be that common in realistic workloads. But worth looking into at least.
-> If it's this kind of pathologic behavior, then I expect changing sheaf size
-> as suggested by Pedro wouldn't help much.
-
-Thanks for pointing this out. I looked into this bursty alloc-and-free behavior
-a bit deeper and ran some further experiments.
-
-The core question we want to answer is: why does such a massive volume of
-object allocations and frees fall straight through to the node partial list
-layer, rather than being caught and handled at the barn/sheaf layer? In SLUB's
-current design, the per-CPU main/spare sheaves act as the L1 cache, the barn as
-L2, and the node partial list as L3. For the mmap1 benchmark (which heavily
-stresses the maple tree), the allocation path uses kmem_cache_prefill_sheaf()
-rather than the generic allocation APIs, and the frees go through kfree_rcu().
-
-Then, here is what happens during allocation: kmem_cache_prefill_sheaf()
-normally borrows the spare sheaf directly. If the sheaf holds fewer objects
-than requested, it refills it to capacity from the node partial list layer and
-this completely bypasses the barn layer. Once the maple tree finishes
-allocating a batch of objects, it returns the sheaf back to pcs->spare via
-kmem_cache_return_sheaf(). So in essence, this prefill path is just funneling
-objects directly from the node partial list into the maple tree through the
-spare sheaf. It skips the barn layer.
-
-Then on the free side: these objects are freed via kfree_rcu, and then
-rcu_free_sheaf() checks if there is still room on the barn's full list. But
-since the allocation path never actually pulled from the barn, the full list
-stays permanently saturated. As a result, rcu_free_sheaf() always falls back to
-sheaf_flush_unused(), flushing objects straight into the node partial list
-layer. It skips the barn layer too.
-
-So looking at this behavior, the benchmark does seem to reveal a gap in this
-allocation path, where a huge amount of traffic ends up bypassing the barn
-layer entirely.
-
-To see if we can address this, I draft an experimental patch. It introduces a
-new field, barn->sheaf_partial, which is a single sheaf rather than a list.
-
-[The patch code is included at the end of this email.]
-
-Whenever kmem_cache_prefill_sheaf() runs, it detaches pcs->spare and checks
-whether it holds enough objects for the request.
-
-If so, it returns it right away as in the original code.
-
-If not, call __prefill_sheaf_pfmemalloc() and then go into
-barn_replace_partial_sheaf() to swap the non-full spare sheaf with a full sheaf
-from the barn. The full sheaf is handed to the caller, while the non-full sheaf
-is temporarily stashed into barn->sheaf_partial. This largely avoids falling
-back to the node partial list. If barn->sheaf_partial already has a sheaf, we
-merge them together, and any resulting full or empty sheaves are placed back
-into the barn accordingly.
-
-The key idea here is simply to let __prefill_sheaf_pfmemalloc() pull a sheaf
-from the barn's full list, which makes room on the list for future
-rcu_free_sheaf() calls.
-
-Here are the numbers with just this experimental patch applied (without the
-parking patch):
-
-baseline: 28779879
-after experimental patch: 35550211 (+23.5%)
-
-metric                              before             after             delta      change
-=============================================================================================
-aliases                                  0                 0                 0      +0.00%
-align                                  256               256                 0      +0.00%
-alloc_fastpath                      23,259            59,287            36,028    +154.90%
-alloc_node_mismatch                      0                 0                 0      +0.00%
-alloc_slab                      10,171,378         4,796,346        -5,375,032     -52.84%
-alloc_slowpath                           0                 0                 0      +0.00%
-barn_get                               441       193,807,528       193,807,087  +43947185.26%
-barn_get_fail                            0               377               377         new
-barn_put                               441       181,694,607       181,694,166  +41200491.16%
-barn_put_fail                  272,868,220       156,335,632      -116,532,588     -42.71%
-cache_dma                                0                 0                 0      +0.00%
-cmpxchg_double_fail                744,975           357,255          -387,720     -52.04%
-cpu_partial                              0                 0                 0      +0.00%
-cpu_slabs                                0                 0                 0      +0.00%
-destroy_by_rcu                           0                 0                 0      +0.00%
-free_add_partial               337,390,126       162,178,648      -175,211,478     -51.93%
-free_fastpath                        5,204            14,081             8,877    +170.58%
-free_rcu_sheaf               8,731,794,372    10,816,953,777     2,085,159,405     +23.88%
-free_rcu_sheaf_fail                      0                 0                 0      +0.00%
-free_remove_partial             10,170,229         4,794,785        -5,375,444     -52.85%
-free_slab                       10,170,229         4,794,785        -5,375,444     -52.85%
-free_slowpath                   18,697,056        11,563,127        -7,133,929     -38.16%
-hwcache_align                            0                 0                 0      +0.00%
-min_partial                              5                 5                 0      +0.00%
-object_size                            256               256                 0      +0.00%
-objects                             14,774            14,596              -178      -1.20%
-objects_partial                     14,774            14,596              -178      -1.20%
-objs_per_slab                           64                64                 0      +0.00%
-order                                    2                 2                 0      +0.00%
-order_fallback                           0                 0                 0      +0.00%
-partial                              1,913             2,544               631     +32.98%
-poison                                   0                 0                 0      +0.00%
-reclaim_account                          0                 0                 0      +0.00%
-red_zone                                 0                 0                 0      +0.00%
-remote_node_defrag_ratio               100               100                 0      +0.00%
-sanity_checks                            0                 0                 0      +0.00%
-sheaf_alloc                    145,870,437       151,536,660         5,666,223      +3.88%
-sheaf_capacity                          32                32                 0      +0.00%
-sheaf_flush                  8,731,787,311     5,002,740,743    -3,729,046,568     -42.71%
-sheaf_free                     145,870,431       151,536,655         5,666,224      +3.88%
-sheaf_prefill_fast           3,500,187,266     4,331,383,393       831,196,127     +23.75%
-sheaf_prefill_oversize                   0                 0                 0      +0.00%
-sheaf_prefill_slow                     322               646               324    +100.62%
-sheaf_refill                 8,750,484,664     5,014,304,944    -3,736,179,720     -42.70%
-sheaf_return_fast            3,500,187,348     4,331,383,596       831,196,248     +23.75%
-sheaf_return_slow                      240               443               203     +84.58%
-slab_size                              256               256                 0      +0.00%
-slabs                                1,913             2,544               631     +32.98%
-slabs_cpu_partial                        0                 0                 0      +0.00%
-store_user                               0                 0                 0      +0.00%
-total_objects                      122,432           162,816            40,384     +32.98%
-trace                                    0                 0                 0      +0.00%
-usersize                                 0                 0                 0      +0.00%
-
-derived                                                  before             after      change
-=============================================================================================
-page allocator churn (alloc_slab + free_slab)        20,341,607         9,591,131     -52.85%
-
-As we can see from the data, barn_get and barn_put spike significantly, which
-shows a large part of the traffic is redirected into the barn. This eases slab
-alloc/free churn and cuts page allocator allocations/frees by 52.85%.
-
-Additionally, NUMA performance also seems to see some improvement. Under the
-maple tree benchmark, the free_slowpath metric likely reflects objects that
-enter add_ptr_to_bulk_krc_lock() due to nid mismatches and are eventually freed
-via kfree_bulk(). This metric also shows a noticeable drop.
-
-Metrics like alloc_fastpath did improve, but their absolute numbers are small
-and likely unrelated to the maple tree test.
-
-The tradeoff is a increase in slab fragmentation, with total_objects and slabs
-growing by 32.98%. I suspect this happens because as more traffic gets routed
-to the barn layer, objects end up being more scattered, which ends up pinning
-more slabs.
-
-For comparison: the parking mechanism reduces lock contention at the node
-partial list layer, while this experimental patch absorb the traffic earlier at
-the barn layer. They are independent in mechanism. Interestingly, both
-approaches deliver very comparable performance improvements. A bit
-frustratingly, combining the two only squeezes out an extra ~1% gain, I'm still
-investigating why that is.
-
-Phew, that turned out to be quite a long write-up!
-
-All in all, I feel we could probably focus on evaluating and pursuing this
-experimental patch first. For maple tree performance specifically, it seems
-like it might be the better fit compared to the parking mechanism (which is
-probably better suited for generic allocation pressure outside of maple tree).
-
-> 
-> > Since the fundamental purpose of __slab_free() is to make newly freed
-> > partial/empty slabs visible to the sheaf refill or alloc slowpath, these
-> > slabs can be temporarily stored in a staging area in a lockless manner
-> > instead of making the free slowpath contend for the lock. The sheaf
-> 
-> However the lockless manipulation is still going to contend on the
-> llist_head. But perhaps it's limited enough in both users and lenght of
-> operations to make a difference.
-
-Agreed, locked or lockless, there's always some unavoidable cost. But from the
-performance data, contention on llist_head still seems quite a bit friendlier.
-
-> 
-> > refill or alloc slowpath then checks this staging area first when
-> > allocating objects. This achieves the goal of making these slabs visible
-> > to the sheaf refill or alloc slowpath while allowing the free slowpath
-> > to operate locklessly. This process is called "parking".
-> 
-> I'm gonna pull a David Hildenbrand trick here and question the name :)
-> It seems to me it's an (extension of the) partial list, but lockless.
-> Parking would suggest to me that it's put somewhere aside not to be used, or
-> something.
-
-Haha totally! When I first came up with the idea, the word 'park' just popped
-into my head. I thought it sounded pretty cool, so I just went with it :P
-
-It definitely deserves a more fitting name!
-
-Until we come up with a better name, I'll stick with the term 'park' for the
-rest of this discussion. :)
-
-> 
-> > Parking occurs in only one case: when __slab_free() encounters a full ->
-> > partial/empty transition and the trylock fails. In this case,
-> > __slab_free() attaches the slab to an llist locklessly, instead of
-> > waiting for the lock unnecessarily.
-> 
-> It could be interesting to also see if skipping the trylock completely
-> (another cache contending operation) helps even more. Also whether moving
-> the llist_node to a different cache line than list_lock (and fields
-> protected by it) helps even more, or not.
-
-That's a really insightful idea! I'll verify it next and follow up once I have
-the results.
-
-> 
-> > Conversely, the process of moving these parked slabs from the llist back
-> > to the partial list is called "unpark". Unpark occurs in four cases:
-> > 
-> > 1. Sheaf refill or alloc slowpath: This is the core case. The sheaf
-> >    refill or alloc slowpath must see the parked slabs, so the first
-> >    thing done after acquiring the lock in the sheaf refill or alloc
-> >    slowpath is unpark.
-> > 2. Cache shrinking: shrinking also needs to see slabs in the parked
-> >    state.
-> > 3. Cache destruction: kmem_cache_destroy() must also see parked slabs,
-> >    which is obvious, otherwise memory would leak.
-> > 4. delayed_work (see corner case b below)
-> > 
-> > Why is this scheme correct? Because paths entering the sheaf refill or
-> > alloc slowpath can see both slabs on the partial list and slabs on the
-> > parked llist, while allocation paths that do not enter the sheaf refill
-> > or alloc slowpath would not check the partial list in the first place
-> > and naturally do not need to care about parked slabs. Therefore, whether
-> > an allocation takes the sheaf refill or the alloc slowpath or not, slabs
-> > on the parked llist and slabs on the partial list make no difference to
-> > the allocator. This visibility equivalence is the core of the scheme.
-> > This analysis also shows that the scheme does not affect the utilization
-> > of partial slabs or lead to increased fragmentation.
-> > 
-> > Corner cases to handle:
-> > a. Parked slabs may become completely empty. Therefore, unpark must also
-> >    check min_partial and free excess empty slabs instead of adding them
-> >    back to the partial list.
-> > 
-> > b. In rare cases, the system may go idle immediately after slabs are
-> >    parked, and the sheaf refill or alloc slowpath may never run
-> >    again. These parked slabs would then remain in the llist until the
-> >    next sheaf refill or alloc slowpath performs an unpark. To
-> >    solve this problem, add a delayed_work named unpark_work to add
-> >    parked slabs back to the partial list when no other path unparks
-> >    them.
-> 
-> OK, but is this a problem that needs the delayed work? If the slabs are
-> still partial, they would just sit on the partial list rather than on the
-> llist, but it would cause no extra bloat?
-
-Spot on, that's very true.
-When I originally decided to flush it as soon as possible, the intent was to
-stay as close to the existing code flow as possible, essentially making the
-parking mechanism a transient measure that steps in only briefly at specific
-moments rather than a persistent one.
-
-> It could be a problem only if free slab(s) got stuck on the llist.
-> 
-> So I'd try to avoid the delayed work as it's quite a red flag.
-
-Agreed, it's indeed not ideal.
-
-> Periodic
-> flushing of alien arrays used to be a very unpopular part of SLAB
-> implementation. I think there might be two ways:
-> 
-> 1) submit the delayed work only when transitioning partial->empty slab on
-> the llist. Would likely require flagging slabs that are on the llist.
-> Hopefully this will limit the submissions to negligible amounts.
-> 
-> 2) remove the delayed work completely, instead __slab_free() would perform
-> the "unpark" immediately when detecting partial->empty slab transition on
-> the llist. Would need flagging the slabs as well.
-> 
-> I guess 2) would be preferred unless it compromises the benefits too much.
-
-Agreed, option 2) looks like the better way to go. Perhaps have __slab_free()
-detect the partial->empty transition, and if the current slab isn't on the
-partial list (either parked or detached by a refill), trigger an unpark
-operation. That would nicely eliminate the need for a delayed work. (The only
-slab we could miss this way is one where the parking path is between the
-cmpxchg and the llist_add.)
-
-> 
-> > On will-it-scale mmap1 with 192 processes, throughput increases from
-> > 29237910 to 35585663 (+21.7%). native_queued_spin_lock_slowpath drops
-> > from 44% to 30% of cycles and __slab_free() disappears from the lock
-> > profile. alloc_slab,free_slab drop by 52%, and park_slab equals
-> > unpark_slab exactly, confirming no parked slabs are left stranded.
-> > 
-> > Signed-off-by: Hao Li <hao.li@linux.dev>
-> 
-
---- >8 ---
-mm/slub: refill prefilled sheaves from the barn
-
-For evaluation.
-
----
- mm/slub.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 112 insertions(+), 6 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 27a78d63f537..7d337dbe26a5 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -427,6 +427,8 @@ struct node_barn {
- 	spinlock_t lock;
- 	struct list_head sheaves_full;
- 	struct list_head sheaves_empty;
-+	/* leftovers of prefill or refill, protected by barn->lock */
-+	struct slab_sheaf *sheaf_partial;
- 	unsigned int nr_full;
- 	unsigned int nr_empty;
- };
-@@ -3183,6 +3185,69 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
- 	return empty;
- }
- 
-+/*
-+ * Exchange @sheaf, which holds fewer objects than requested, for a full sheaf
-+ * from the barn. The objects of @sheaf stay in the barn: it becomes the barn's
-+ * partial sheaf, or its objects are merged into the existing one, which becomes
-+ * a full sheaf when it reaches capacity. That way the leftovers neither occupy
-+ * a full-sheaf count nor have to be flushed.
-+ *
-+ * Returns NULL if the barn has no full sheaf.
-+ */
-+static struct slab_sheaf *barn_replace_partial_sheaf(struct kmem_cache *s,
-+						     struct node_barn *barn,
-+						     struct slab_sheaf *sheaf)
-+{
-+	struct slab_sheaf *full, *partial;
-+	unsigned int to_move;
-+	unsigned long flags;
-+
-+	if (!data_race(barn->nr_full))
-+		return NULL;
-+
-+	spin_lock_irqsave(&barn->lock, flags);
-+
-+	if (unlikely(!barn->nr_full)) {
-+		spin_unlock_irqrestore(&barn->lock, flags);
-+		return NULL;
-+	}
-+
-+	full = list_first_entry(&barn->sheaves_full, struct slab_sheaf,
-+				barn_list);
-+	list_del(&full->barn_list);
-+	barn->nr_full--;
-+
-+	partial = barn->sheaf_partial;
-+	if (partial) {
-+		to_move = min(sheaf->size, s->sheaf_capacity - partial->size);
-+		sheaf->size -= to_move;
-+		memcpy(&partial->objects[partial->size],
-+		       &sheaf->objects[sheaf->size], to_move * sizeof(void *));
-+		partial->size += to_move;
-+
-+		if (partial->size == s->sheaf_capacity) {
-+			list_add(&partial->barn_list, &barn->sheaves_full);
-+			barn->nr_full++;
-+			barn->sheaf_partial = NULL;
-+		}
-+	}
-+
-+	if (sheaf->size) {
-+		/* no partial sheaf, or it just became full */
-+		barn->sheaf_partial = sheaf;
-+	} else {
-+		list_add(&sheaf->barn_list, &barn->sheaves_empty);
-+		barn->nr_empty++;
-+	}
-+
-+	spin_unlock_irqrestore(&barn->lock, flags);
-+
-+	full->capacity = s->sheaf_capacity;
-+	full->pfmemalloc = false;
-+
-+	return full;
-+}
-+
- /*
-  * The following two functions are used mainly in cases where we have to undo an
-  * intended action due to a race or cpu migration. Thus they do not check the
-@@ -3317,6 +3382,7 @@ static void barn_init(struct node_barn *barn)
- 	spin_lock_init(&barn->lock);
- 	INIT_LIST_HEAD(&barn->sheaves_full);
- 	INIT_LIST_HEAD(&barn->sheaves_empty);
-+	barn->sheaf_partial = NULL;
- 	barn->nr_full = 0;
- 	barn->nr_empty = 0;
- }
-@@ -3334,6 +3400,10 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
- 	barn->nr_full = 0;
- 	list_splice_init(&barn->sheaves_empty, &empty_list);
- 	barn->nr_empty = 0;
-+	if (barn->sheaf_partial) {
-+		list_add(&barn->sheaf_partial->barn_list, &full_list);
-+		barn->sheaf_partial = NULL;
-+	}
- 
- 	spin_unlock_irqrestore(&barn->lock, flags);
- 
-@@ -5233,12 +5303,49 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
- }
- EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
- 
-+/*
-+ * Refill by swapping *@sheafp for a full sheaf from the barn. The old sheaf and
-+ * its objects stay in the barn. Returns true when the new sheaf is full.
-+ */
-+static bool refill_sheaf_from_barn(struct kmem_cache *s,
-+				   struct slab_sheaf **sheafp)
-+{
-+	struct node_barn *barn = get_barn(s);
-+	struct slab_sheaf *sheaf = *sheafp;
-+	struct slab_sheaf *full;
-+
-+	/* objects from pfmemalloc slabs must not enter the barn */
-+	if (!barn || sheaf->pfmemalloc)
-+		return false;
-+
-+	full = barn_replace_partial_sheaf(s, barn, sheaf);
-+	if (!full)
-+		return false;
-+
-+	stat(s, BARN_GET);
-+	*sheafp = full;
-+
-+	/*
-+	 * The sheaf may hold fewer than capacity objects: rcu_free_sheaf()
-+	 * puts it in the barn as full even when slab_free_hook() has taken
-+	 * some out (KFENCE, KASAN). __prefill_sheaf_pfmemalloc() then
-+	 * continues to refill it.
-+	 */
-+	return full->size == s->sheaf_capacity;
-+}
-+
- static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
--				      struct slab_sheaf *sheaf, gfp_t gfp)
-+				      struct slab_sheaf **sheafp, gfp_t gfp)
- {
-+	struct slab_sheaf *sheaf;
- 	gfp_t gfp_nomemalloc;
- 	int ret;
- 
-+	if (refill_sheaf_from_barn(s, sheafp))
-+		return 0;
-+
-+	sheaf = *sheafp;
-+
- 	gfp_nomemalloc = gfp | __GFP_NOMEMALLOC;
- 	if (gfp_pfmemalloc_allowed(gfp))
- 		gfp_nomemalloc |= __GFP_NOWARN;
-@@ -5331,7 +5438,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 		sheaf->pfmemalloc = false;
- 
- 		if (sheaf->size < size &&
--		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
-+		    __prefill_sheaf_pfmemalloc(s, &sheaf, gfp)) {
- 			sheaf_flush_unused(s, sheaf);
- 			free_empty_sheaf(s, sheaf);
- 			sheaf = NULL;
-@@ -5401,11 +5508,10 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-  * the given size.
-  *
-  * Return: 0 on success. The sheaf will contain at least @size objects.
-- * The sheaf might have been replaced with a new one if more than
-- * sheaf->capacity objects are requested.
-+ * The sheaf might have been replaced with a new one.
-  *
-  * Return: -ENOMEM on failure. Some objects might have been added to the sheaf
-- * but the sheaf will not be replaced.
-+ * and the sheaf might have been replaced.
-  *
-  * In practice we always refill to full sheaf's capacity.
-  */
-@@ -5427,7 +5533,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
- 
- 	if (likely(sheaf->capacity >= size)) {
- 		if (likely(sheaf->capacity == s->sheaf_capacity))
--			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
-+			return __prefill_sheaf_pfmemalloc(s, sheafp, gfp);
- 
- 		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
- 					     &sheaf->objects[sheaf->size]))
-
--- 
-2.55.0
-
+T24gVGh1LCAyMDI2LTA5LTEwIGF0IDEyOjAzICswMjAwLCBEYXZpZCBIaWxkZW5icmFuZCAoQXJt
+KSB3cm90ZToNCj4gT24gOC81LzI2IDA4OjQwLCBTaGl2YW5rIEdhcmcgd3JvdGU6DQo+ID4gQ29t
+bWl0IDI3ZTZhMjRhNGNmMyAoIm1tLCB2aXJ0OiBtZXJnZSBBU19VTk1PVkFCTEUgYW5kIEFTX0lO
+QUNDRVNTSUJMRSIpDQo+ID4gZm9sZGVkIHRoZSB0d28gZmxhZ3MgaW50byBvbmUsIG9uIHRoZSBn
+cm91bmRzIHRoYXQgZ3Vlc3RfbWVtZmQgd2FzIHRoZQ0KPiA+IG9ubHkgdXNlciBhbmQgYWx3YXlz
+IHNldCBib3RoLiBCdXQgdGhlIHR3byBmbGFncyB3ZXJlIGFkZGVkIGZvcg0KPiA+IGRpZmZlcmVu
+dCByZWFzb25zIGFuZCBndWFyZCBkaWZmZXJlbnQgdGhpbmdzOg0KPiA+IA0KPiA+ICAgQVNfVU5N
+T1ZBQkxFICgwMDAzZTJhNDE0NjgpIG1hcmtzIGEgbWFwcGluZyB3aG9zZSBmb2xpb3MgY2Fubm90
+IGJlDQo+ID4gICBtaWdyYXRlZC4NCj4gPiANCj4gPiAgIEFTX0lOQUNDRVNTSUJMRSAoYzcyY2Vh
+ZmJkMTJjKSBtYXJrcyBhIG1hcHBpbmcgd2hvc2UgY29udGVudHMgbXVzdA0KPiA+ICAgbm90IGJl
+IGRpcmVjdGx5IFIvVyBhY2Nlc3NlZC4gSXRzIG9ubHkgam9iIGlzIHRvIHN0b3ANCj4gPiAgIHRy
+dW5jYXRlX2lub2RlX3BhcnRpYWxfZm9saW8oKSBmcm9tIHplcm9pbmcgdGhlIGZvbGlvLg0KPiA+
+IA0KPiA+IFRoZSBtZXJnZSBhc3N1bWVkIHVubW92YWJsZSBhbmQgaW5hY2Nlc3NpYmxlIHdlcmUg
+dGhlIHNhbWUgdGhpbmcuDQo+ID4gVGhpcyBjYW5ub3QgZXhwcmVzcyBhIG1hcHBpbmcgdGhhdCBp
+cyBpbmFjY2Vzc2libGUgeWV0IHN0aWxsIG1vdmFibGUsDQo+ID4gd2hpY2ggaXMgZXhhY3RseSB3
+aGF0IGd1ZXN0X21lbWZkIHdhbnRzLg0KPiA+IA0KPiA+IFJlaW50cm9kdWNlIEFTX1VOTU9WQUJM
+RSBhbmQgcmVzdG9yZSB0aGUgb3JpZ2luYWwgc3BsaXQ6IHRydW5jYXRlIGtlZXBzDQo+ID4gY2hl
+Y2tpbmcgQVNfSU5BQ0NFU1NJQkxFLCB3aGlsZSBtaWdyYXRpb24gYW5kIGNvbXBhY3Rpb24gZ28g
+YmFjayB0bw0KPiA+IGNoZWNraW5nIEFTX1VOTU9WQUJMRS4NCj4gPiANCj4gPiBDdXJyZW50bHkg
+Z3Vlc3RfbWVtZmQgc2V0cyBib3RoLCBzbyB0aGUgcmVzdWx0aW5nIGZsYWdzIGFuZCBiZWhhdmlv
+dXINCj4gPiBhcmUgdW5jaGFuZ2VkLiBQcmVwYXJhdG9yeSBjaGFuZ2UgdG8gc3VwcG9ydCBmb2xp
+byBtaWdyYXRpb24gZm9yDQo+ID4gbm9uLWNvbmZpZGVudGlhbCBndWVzdF9tZW1mZCBWTXMuDQo+
+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogU2hpdmFuayBHYXJnIDxzaGl2YW5rZ0BhbWQuY29tPg0K
+PiA+IC0tLQ0KPiA+ICBpbmNsdWRlL2xpbnV4L3BhZ2VtYXAuaCB8IDI0ICsrKysrKysrKysrKysr
+KysrKysrLS0tLQ0KPiA+ICBtbS9jb21wYWN0aW9uLmMgICAgICAgICB8IDEyICsrKysrKy0tLS0t
+LQ0KPiA+ICBtbS9taWdyYXRlLmMgICAgICAgICAgICB8ICAyICstDQo+ID4gIHZpcnQva3ZtL2d1
+ZXN0X21lbWZkLmMgIHwgIDEgKw0KPiA+ICA0IGZpbGVzIGNoYW5nZWQsIDI4IGluc2VydGlvbnMo
+KyksIDExIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4
+L3BhZ2VtYXAuaCBiL2luY2x1ZGUvbGludXgvcGFnZW1hcC5oDQo+ID4gaW5kZXggMmMzNzE4ZDU5
+MmQ2Li5hN2RjYWE2NmU0ZTMgMTAwNjQ0DQo+ID4gLS0tIGEvaW5jbHVkZS9saW51eC9wYWdlbWFw
+LmgNCj4gPiArKysgYi9pbmNsdWRlL2xpbnV4L3BhZ2VtYXAuaA0KPiA+IEBAIC0yMTAsNiArMjEw
+LDcgQEAgZW51bSBtYXBwaW5nX2ZsYWdzIHsNCj4gPiAgCUFTX1dSSVRFQkFDS19NQVlfREVBRExP
+Q0tfT05fUkVDTEFJTSA9IDksDQo+ID4gIAlBU19LRVJORUxfRklMRSA9IDEwLAkvKiBtYXBwaW5n
+IGZvciBhIGZha2Uga2VybmVsIGZpbGUgdGhhdCBzaG91bGRuJ3QNCj4gPiAgCQkJCSAgIGFjY291
+bnQgdXNhZ2UgdG8gdXNlciBjZ3JvdXBzICovDQo+ID4gKwlBU19VTk1PVkFCTEUgPSAxMSwJLyog
+VGhlIG1hcHBpbmcgY2Fubm90IGJlIG1vdmVkLCBldmVyICovDQo+ID4gIAkvKiBCaXRzIDE2LTI1
+IGFyZSB1c2VkIGZvciBGT0xJT19PUkRFUiAqLw0KPiA+ICAJQVNfRk9MSU9fT1JERVJfQklUUyA9
+IDUsDQo+ID4gIAlBU19GT0xJT19PUkRFUl9NSU4gPSAxNiwNCj4gPiBAQCAtMzIyLDExICszMjMs
+MTAgQEAgc3RhdGljIGlubGluZSB2b2lkIG1hcHBpbmdfY2xlYXJfc3RhYmxlX3dyaXRlcyhzdHJ1
+Y3QgYWRkcmVzc19zcGFjZSAqbWFwcGluZykNCj4gPiAgc3RhdGljIGlubGluZSB2b2lkIG1hcHBp
+bmdfc2V0X2luYWNjZXNzaWJsZShzdHJ1Y3QgYWRkcmVzc19zcGFjZSAqbWFwcGluZykNCj4gPiAg
+ew0KPiA+ICAJLyoNCj4gPiAtCSAqIEl0J3MgZXhwZWN0ZWQgaW5hY2Nlc3NpYmxlIG1hcHBpbmdz
+IGFyZSBhbHNvIHVuZXZpY3RhYmxlLiBDb21wYWN0aW9uDQo+ID4gLQkgKiBtaWdyYXRlIHNjYW5u
+ZXIgKGlzb2xhdGVfbWlncmF0ZXBhZ2VzX2Jsb2NrKCkpIHJlbGllcyBvbiB0aGlzIHRvDQo+ID4g
+LQkgKiByZWR1Y2UgcGFnZSBsb2NraW5nLg0KPiA+ICsJICogVGhlIG1hcHBpbmcncyBjb250ZW50
+cyBtdXN0IG5vdCBiZSBhY2Nlc3NlZCBieSB0aGUgQ1BVIHRocm91Z2gNCj4gPiArCSAqIHRoZSBr
+ZXJuZWwgZGlyZWN0IG1hcCBvciBvdGhlciBpbnRlcm5hbCBwYXRocyAoZS5nLiB6ZXJvaW5nIG9m
+DQo+ID4gKwkgKiBwYWdlcyBkdXJpbmcgdHJ1bmNhdGlvbikuDQo+ID4gIAkgKi8NCj4gPiAtCXNl
+dF9iaXQoQVNfVU5FVklDVEFCTEUsICZtYXBwaW5nLT5mbGFncyk7DQo+ID4gIAlzZXRfYml0KEFT
+X0lOQUNDRVNTSUJMRSwgJm1hcHBpbmctPmZsYWdzKTsNCj4gPiAgfQ0KPiA+ICANCj4gPiBAQCAt
+MzM1LDYgKzMzNSwyMiBAQCBzdGF0aWMgaW5saW5lIGJvb2wgbWFwcGluZ19pbmFjY2Vzc2libGUo
+Y29uc3Qgc3RydWN0IGFkZHJlc3Nfc3BhY2UgKm1hcHBpbmcpDQo+ID4gIAlyZXR1cm4gdGVzdF9i
+aXQoQVNfSU5BQ0NFU1NJQkxFLCAmbWFwcGluZy0+ZmxhZ3MpOw0KPiA+ICB9DQo+ID4gIA0KPiA+
+ICtzdGF0aWMgaW5saW5lIHZvaWQgbWFwcGluZ19zZXRfdW5tb3ZhYmxlKHN0cnVjdCBhZGRyZXNz
+X3NwYWNlICptYXBwaW5nKQ0KPiA+ICt7DQo+ID4gKwkvKg0KPiA+ICsJICogSXQncyBleHBlY3Rl
+ZCB1bm1vdmFibGUgbWFwcGluZ3MgYXJlIGFsc28gdW5ldmljdGFibGUuIENvbXBhY3Rpb24NCj4g
+PiArCSAqIG1pZ3JhdGUgc2Nhbm5lciAoaXNvbGF0ZV9taWdyYXRlcGFnZXNfYmxvY2soKSkgcmVs
+aWVzIG9uIHRoaXMgdG8NCj4gPiArCSAqIHJlZHVjZSBwYWdlIGxvY2tpbmcuDQo+ID4gKwkgKi8N
+Cj4gPiArCXNldF9iaXQoQVNfVU5FVklDVEFCTEUsICZtYXBwaW5nLT5mbGFncyk7DQo+ID4gKwlz
+ZXRfYml0KEFTX1VOTU9WQUJMRSwgJm1hcHBpbmctPmZsYWdzKTsNCj4gPiArfQ0KPiA+ICsNCj4g
+PiArc3RhdGljIGlubGluZSBib29sIG1hcHBpbmdfdW5tb3ZhYmxlKGNvbnN0IHN0cnVjdCBhZGRy
+ZXNzX3NwYWNlICptYXBwaW5nKQ0KPiA+ICt7DQo+ID4gKwlyZXR1cm4gdGVzdF9iaXQoQVNfVU5N
+T1ZBQkxFLCAmbWFwcGluZy0+ZmxhZ3MpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICBzdGF0aWMgaW5s
+aW5lIHZvaWQgbWFwcGluZ19zZXRfd3JpdGViYWNrX21heV9kZWFkbG9ja19vbl9yZWNsYWltKHN0
+cnVjdCBhZGRyZXNzX3NwYWNlICptYXBwaW5nKQ0KPiA+ICB7DQo+ID4gIAlzZXRfYml0KEFTX1dS
+SVRFQkFDS19NQVlfREVBRExPQ0tfT05fUkVDTEFJTSwgJm1hcHBpbmctPmZsYWdzKTsNCj4gPiBk
+aWZmIC0tZ2l0IGEvbW0vY29tcGFjdGlvbi5jIGIvbW0vY29tcGFjdGlvbi5jDQo+ID4gaW5kZXgg
+ZjA4NzY1YWRlMDE0Li5lNmIwZmRmYWY3OWQgMTAwNjQ0DQo+ID4gLS0tIGEvbW0vY29tcGFjdGlv
+bi5jDQo+ID4gKysrIGIvbW0vY29tcGFjdGlvbi5jDQo+ID4gQEAgLTExMzMsMjIgKzExMzMsMjIg
+QEAgaXNvbGF0ZV9taWdyYXRlcGFnZXNfYmxvY2soc3RydWN0IGNvbXBhY3RfY29udHJvbCAqY2Ms
+IHVuc2lnbmVkIGxvbmcgbG93X3BmbiwNCj4gPiAgCQlpZiAoKChtb2RlICYgSVNPTEFURV9BU1lO
+Q19NSUdSQVRFKSAmJiBpc19kaXJ0eSkgfHwNCj4gPiAgCQkgICAgKG1hcHBpbmcgJiYgaXNfdW5l
+dmljdGFibGUpKSB7DQo+ID4gIAkJCWJvb2wgbWlncmF0ZV9kaXJ0eSA9IHRydWU7DQo+ID4gLQkJ
+CWJvb2wgaXNfaW5hY2Nlc3NpYmxlOw0KPiA+ICsJCQlib29sIGlzX3VubW92YWJsZTsNCj4gPiAg
+DQo+ID4gIAkJCS8qDQo+ID4gIAkJCSAqIE9ubHkgZm9saW9zIHdpdGhvdXQgbWFwcGluZ3Mgb3Ig
+dGhhdCBoYXZlDQo+ID4gIAkJCSAqIGEgLT5taWdyYXRlX2ZvbGlvIGNhbGxiYWNrIGFyZSBwb3Nz
+aWJsZSB0byBtaWdyYXRlDQo+ID4gIAkJCSAqIHdpdGhvdXQgYmxvY2tpbmcuDQo+ID4gIAkJCSAq
+DQo+ID4gLQkJCSAqIEZvbGlvcyBmcm9tIGluYWNjZXNzaWJsZSBtYXBwaW5ncyBhcmUgbm90IG1p
+Z3JhdGFibGUuDQo+ID4gKwkJCSAqIEZvbGlvcyBmcm9tIHVubW92YWJsZSBtYXBwaW5ncyBhcmUg
+bm90IG1pZ3JhdGFibGUuDQo+ID4gIAkJCSAqDQo+ID4gIAkJCSAqIEhvd2V2ZXIsIHdlIGNhbiBi
+ZSByYWNpbmcgd2l0aCB0cnVuY2F0aW9uLCB3aGljaCBjYW4NCj4gPiAgCQkJICogZnJlZSB0aGUg
+bWFwcGluZyB0aGF0IHdlIG5lZWQgdG8gY2hlY2suIFRydW5jYXRpb24NCj4gPiAgCQkJICogaG9s
+ZHMgdGhlIGZvbGlvIGxvY2sgdW50aWwgYWZ0ZXIgdGhlIGZvbGlvIGlzIHJlbW92ZWQNCj4gPiAg
+CQkJICogZnJvbSB0aGUgcGFnZSBzbyBob2xkaW5nIGl0IG91cnNlbHZlcyBpcyBzdWZmaWNpZW50
+Lg0KPiA+ICAJCQkgKg0KPiA+IC0JCQkgKiBUbyBhdm9pZCBsb2NraW5nIHRoZSBmb2xpbyBqdXN0
+IHRvIGNoZWNrIGluYWNjZXNzaWJsZSwNCj4gPiAtCQkJICogYXNzdW1lIGV2ZXJ5IGluYWNjZXNz
+aWJsZSBmb2xpbyBpcyBhbHNvIHVuZXZpY3RhYmxlLA0KPiA+ICsJCQkgKiBUbyBhdm9pZCBsb2Nr
+aW5nIHRoZSBmb2xpbyBqdXN0IHRvIGNoZWNrIHVubW92YWJsZSwNCj4gPiArCQkJICogYXNzdW1l
+IGV2ZXJ5IHVubW92YWJsZSBmb2xpbyBpcyBhbHNvIHVuZXZpY3RhYmxlLA0KPiA+ICAJCQkgKiB3
+aGljaCBpcyBhIGNoZWFwZXIgdGVzdC4gIElmIG91ciBhc3N1bXB0aW9uIGdvZXMNCj4gPiAgCQkJ
+ICogd3JvbmcsIGl0J3Mgbm90IGEgY29ycmVjdG5lc3MgYnVnLCBqdXN0IHBvdGVudGlhbGx5DQo+
+ID4gIAkJCSAqIHdhc3RlZCBjeWNsZXMuDQo+ID4gQEAgLTExNjEsOSArMTE2MSw5IEBAIGlzb2xh
+dGVfbWlncmF0ZXBhZ2VzX2Jsb2NrKHN0cnVjdCBjb21wYWN0X2NvbnRyb2wgKmNjLCB1bnNpZ25l
+ZCBsb25nIGxvd19wZm4sDQo+ID4gIAkJCQltaWdyYXRlX2RpcnR5ID0gIW1hcHBpbmcgfHwNCj4g
+PiAgCQkJCQkJbWFwcGluZy0+YV9vcHMtPm1pZ3JhdGVfZm9saW87DQo+ID4gIAkJCX0NCj4gPiAt
+CQkJaXNfaW5hY2Nlc3NpYmxlID0gbWFwcGluZyAmJiBtYXBwaW5nX2luYWNjZXNzaWJsZShtYXBw
+aW5nKTsNCj4gPiArCQkJaXNfdW5tb3ZhYmxlID0gbWFwcGluZyAmJiBtYXBwaW5nX3VubW92YWJs
+ZShtYXBwaW5nKTsNCj4gPiAgCQkJZm9saW9fdW5sb2NrKGZvbGlvKTsNCj4gPiAtCQkJaWYgKCFt
+aWdyYXRlX2RpcnR5IHx8IGlzX2luYWNjZXNzaWJsZSkNCj4gPiArCQkJaWYgKCFtaWdyYXRlX2Rp
+cnR5IHx8IGlzX3VubW92YWJsZSkNCj4gPiAgCQkJCWdvdG8gaXNvbGF0ZV9mYWlsX3B1dDsNCj4g
+PiAgCQl9DQo+ID4gIA0KPiA+IGRpZmYgLS1naXQgYS9tbS9taWdyYXRlLmMgYi9tbS9taWdyYXRl
+LmMNCj4gPiBpbmRleCBkZDE1YTg0YjJhNTIuLmQ0ZGNkN2YxNDJjZSAxMDA2NDQNCj4gPiAtLS0g
+YS9tbS9taWdyYXRlLmMNCj4gPiArKysgYi9tbS9taWdyYXRlLmMNCj4gPiBAQCAtMTEwMSw3ICsx
+MTAxLDcgQEAgc3RhdGljIGludCBtb3ZlX3RvX25ld19mb2xpbyhzdHJ1Y3QgZm9saW8gKmRzdCwg
+c3RydWN0IGZvbGlvICpzcmMsDQo+ID4gIA0KPiA+ICAJaWYgKCFtYXBwaW5nKQ0KPiA+ICAJCXJj
+ID0gbWlncmF0ZV9mb2xpbyhtYXBwaW5nLCBkc3QsIHNyYywgbW9kZSk7DQo+ID4gLQllbHNlIGlm
+IChtYXBwaW5nX2luYWNjZXNzaWJsZShtYXBwaW5nKSkNCj4gPiArCWVsc2UgaWYgKG1hcHBpbmdf
+dW5tb3ZhYmxlKG1hcHBpbmcpKQ0KPiA+ICAJCXJjID0gLUVPUE5PVFNVUFA7DQo+ID4gIAllbHNl
+IGlmIChtYXBwaW5nLT5hX29wcy0+bWlncmF0ZV9mb2xpbykNCj4gPiAgCQkvKg0KPiA+IGRpZmYg
+LS1naXQgYS92aXJ0L2t2bS9ndWVzdF9tZW1mZC5jIGIvdmlydC9rdm0vZ3Vlc3RfbWVtZmQuYw0K
+PiA+IGluZGV4IDQ1Y2JkZjQ4MDFlYy4uMTY5Zjc1Zjk1NDMzIDEwMDY0NA0KPiA+IC0tLSBhL3Zp
+cnQva3ZtL2d1ZXN0X21lbWZkLmMNCj4gPiArKysgYi92aXJ0L2t2bS9ndWVzdF9tZW1mZC5jDQo+
+ID4gQEAgLTU5Myw2ICs1OTMsNyBAQCBzdGF0aWMgaW50IF9fa3ZtX2dtZW1fY3JlYXRlKHN0cnVj
+dCBrdm0gKmt2bSwgbG9mZl90IHNpemUsIHU2NCBmbGFncykNCj4gPiAgCWlub2RlLT5pX3NpemUg
+PSBzaXplOw0KPiA+ICAJbWFwcGluZ19zZXRfZ2ZwX21hc2soaW5vZGUtPmlfbWFwcGluZywgR0ZQ
+X0hJR0hVU0VSKTsNCj4gPiAgCW1hcHBpbmdfc2V0X2luYWNjZXNzaWJsZShpbm9kZS0+aV9tYXBw
+aW5nKTsNCj4gPiArCW1hcHBpbmdfc2V0X3VubW92YWJsZShpbm9kZS0+aV9tYXBwaW5nKTsNCj4g
+DQo+IEZvciBzaGFyZWQtb25seSBndWVzdF9tZW1mZCwgaXMgdGhlcmUgZXZlbiBhIHJlYXNvbiB0
+byBtYXJrIGl0IGFzDQo+IG1hcHBpbmdfc2V0X2luYWNjZXNzaWJsZSgpID8NCj4gDQo+IG1hcHBp
+bmdfaW5hY2Nlc3NpYmxlKCkgaXMgb25seSB1c2VkIGluIHRydW5jYXRpb24gYW5kIGNvbXBhY3Rp
+b24gbG9naWMuDQo+IA0KPiBXb3VsZG4ndCB3ZSB3YW50IGNvbXBhY3Rpb24gdG8gd29yayBoZXJl
+Pw0KDQpDb21wYWN0aW9uIHdvdWxkIHdvcmsgaGVyZSBiZWNhdXNlIG1pZ3JhdGlvbiBhbmQgY29t
+cGFjdGlvbiBub3cgY2hlY2tzIHRoZQ0KbWFwcGluZ191bm1vdmFibGUoKSwgd2hpbGUgdGhlIFRy
+dW5jYXRpb24gc3RpbGwgY2hlY2tzDQptYXBwaW5nX2luYWNjZXNzaWJsZSgpIHRvIGF2b2lkIHdy
+aXRlcyB0byBjb25maWRlbnRpYWwgbWVtb3J5Lg0KDQo+IA0KPiBJT1csIGZvciBzaGFyZWQtb25s
+eSB3aXRoIG1pZ3JhdGlvbiBzdXBwb3J0LCBjYW4ndCB3ZSBqdXN0IG5vdCBkbw0KPiBtYXBwaW5n
+X3NldF9pbmFjY2Vzc2libGUoKSA/DQoNCnllcywgSSdsbCBkbyB0aGlzLg0KDQpUaGFua3MsDQpT
+aGl2YW5rDQo=
 
