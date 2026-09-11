@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89B2C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D5A9C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:33:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65616B0095; Fri, 11 Sep 2026 09:32:42 -0400 (EDT)
+	id 31C4A6B0098; Fri, 11 Sep 2026 09:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF0266B0096; Fri, 11 Sep 2026 09:32:42 -0400 (EDT)
+	id 2CC5D6B0099; Fri, 11 Sep 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5CE6B0098; Fri, 11 Sep 2026 09:32:42 -0400 (EDT)
+	id 1E2B06B009B; Fri, 11 Sep 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B241D6B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:32:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 594581A026C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:32:42 +0000 (UTC)
-X-FDA: 85201571364.20.9B8F8F7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B02DD1A000B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:32:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fi7eT0Tk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id F2D9D6B0098
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:33:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5FA59401FE
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:33:31 +0000 (UTC)
+X-FDA: 85201573422.25.3AF2FE7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C8657C0007
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:33:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiTVlcZ8;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789133560;
+	s=arc-20220608; t=1789133609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N4cjZyg9TwtoYS0w3Uy/aHxv7zEHGwy0d+Cmi9Q21fg=;
-	b=N1u2WFpunDkqiBbkE1lh42nUhdfkBkY1GKxLk9V01401gXu5xxPGnsnHNF8Dk4S9xhv9D3
-	ARmf0inx4YSLV8Fj1J6KXZYErcP4dS2uyorSL4CkDnuubQYIGWh/dImj0HRvI4tHcxQJwC
-	VM4xrhMaU3+Go967ZYVumWy2OUBo2RM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789133560;
-	b=HZzpeP4vtLVUAT2NudwxlpDAOLiRcd/QCKJr7rHX17JnIF7SoYPcJFmPx6leMmxlYSSsCj
-	dzm3NRRzov9AzzOihpolfLHmpWaqSwxc/KgGYokz+UIbBHMl4QK1pAYzhzVtcEglUdqED5
-	rFUislHAnvoRjpwwaipLiD0220GDSoo=
+	bh=ncu6ec8eT9DbAcxyd0iWWwPt3S/kddThKenFXEHMxhI=;
+	b=Yb9uYYE/3WrojiRfr6lE45SF4F6rm3IHJ9f5JNLNIPfCCRBzwUX4pJON808UMCKlIEP7Bl
+	5oXgoTYtdxMKkEAvtVCP5AmBa5YIl0kuAzBq/OLaUe8gr59OllBbCbVdv5NoEO8gEKKJR4
+	/gHBAJkzA4DzvPSMVZaeCMzIXTfCqNA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fi7eT0Tk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiTVlcZ8;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789133609;
+	b=6JtWZGZU02fqioGNZh3AeXuiXn7bPwoxrEoXEvP3zdVKHVUqLJmaMTJjr7QCLeY4sYDKAv
+	7b24YuZk2oPnLDG2kUd6SyT3O5r4JpM7cIBgDAxo80vH5GvXk3pnPbR0vAmp5K0xqAniHc
+	auVmuNBD/UZ8TBm3x2kDT5V0lhZc1cY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 96EF441A91;
-	Fri, 11 Sep 2026 13:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0081F000FF;
-	Fri, 11 Sep 2026 13:32:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D165A6020C;
+	Fri, 11 Sep 2026 13:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522F21F000FF;
+	Fri, 11 Sep 2026 13:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789133559;
-	bh=N4cjZyg9TwtoYS0w3Uy/aHxv7zEHGwy0d+Cmi9Q21fg=;
+	s=k20260515; t=1789133608;
+	bh=ncu6ec8eT9DbAcxyd0iWWwPt3S/kddThKenFXEHMxhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fi7eT0TkQmppnxyAyCkikpwfZbm5O2/Wc0O4B/TIREOKCFn/Xltpt7fQgsfD4/4th
-	 b07wACychsuviIbE+qwjxQzwfu82D10HimieReg+VHnUeWDv8pg/+tE1MufglZgstR
-	 IkczmtJVwza2MIbD/Y2A4YEKuL2Egssl1RiQg631laq+B4WCzXVMAxreGnpMTv5gFN
-	 KLyJjtkRU7MzlZckZtXiW2yRE/JAqIp49p2qniT//EAyY/T2ts5R+sQC994QdQFOhr
-	 mYoQrBZCHa6x5nTW3tb6K3RXLkC5LXD6EoiWwhPC/Zi+/CUR3rQ1UvFOmcPED3v7DV
-	 xnQHvcY+e2pZA==
+	b=NiTVlcZ8udwhihsn5Yc6rp5/JYS+E8o6tyz4qA7zT5HIhe8ubYfMnd+lmG9SRIzx2
+	 nggHtW+jBhoAgXGpER5ny4Z0Xb4xj+Sq1NpkKFkUz6EE+72gdg3X/Pu+BFUsbvZCIP
+	 gx+2Ab4QF+7EzemyoRZnpKwyw9jTMwBVTe3RITK+CPohGDdy0DVgoaeufQ2u49H5Ap
+	 ktoaWQ65dY7cX2sQOY3VAESmvh9wHNCJwVemAB7fZjD7IomyxkuFo5foSGL4XsG5l1
+	 1M+NaJidWuLfTVPXg+M02Eu+LcJLmE07ji4ctaMPC2wjZGBBTg7fLCyAOgbxbW9kO0
+	 qZNd40RFBzFDw==
 From: SJ Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@gmail.com>
+To: Lian Wang <lianux.mm@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Subject: Re: [PATCH REPOST 5/5] mm/damon/vaddr: support pgidle_unset probe filter type
-Date: Fri, 11 Sep 2026 06:32:31 -0700
-Message-ID: <20260911133232.91581-1-sj@kernel.org>
+Date: Fri, 11 Sep 2026 06:33:21 -0700
+Message-ID: <20260911133321.91720-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260911100427.2804601-1-kunwu.chan@gmail.com>
+In-Reply-To: <20260911020118.37585-1-lianux.mm@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C8657C0007
+X-Stat-Signature: 8h3hjtmx1134mg7w11hjqyhtjr6zj5j4
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B02DD1A000B
-X-Stat-Signature: jmuxs11gf95cm6qnuhb9kyh8yrwjxd81
-X-HE-Tag: 1789133560-755297
-X-HE-Meta: U2FsdGVkX1+iPG+VqyFzc2jhmGzC6ECt73YOjlACpCFi83ANZ3kPYguxyq8dQTSUyaAlE+Wp5Y2gLyB0xFJEPNQjv/BirTkfElWuWcRC+nPfqTbfMGA3z28dR6CnEwFzMhNtGl9w3MkQD2SDk1a1JzV3mrNw2IblFkElaWTB25+qrCj2UMXOy1IJgOSiWB9hf4qJnzj2RbsXfZ6lwkHScoWlUNABBsLBMEBfE6PPq+gyjBGwoUfu68ZTFWpdCSkqPnxASwlUn8usNyxIHIOpTF6FKoHCWf6MsgsqOc3YHppn+Qdp2Eipm8e6gHTCL2ulfFPeWOfk4iJDkujXOT7IB9JTd03W/lpKJWuvn1Mki88XSwi5jVc9E9+QlHKUQkNsu3lp1n7iUNmkQn0O4uoc+BkkpYEFnbdP2CmR/uwXLqMfRh3fcdu+XAiJ9s3wvK9jevdfHe7fbgf+RiAhUOjWBj4vozqSnaBNY0TlMp/KT4tLdIJG7ZXiSYlpmNPAzB5dqPllkhvUd4y8oW//BeozZVHMJxOwW5N/L2V+1Sz0JaqkyfQ8Q+Nd/N68QuGXHhxkiuG7I2tmZtgBA1L/VhlLQvhluGWPWl2B6nrsdjAN4HjoqEnfi0p/3wcwZ4Rw6gomsirqn8ywK/cHy/UELcWKnKqNxYRUDJrXTddOJ87hA9kjdGdMNqhzRgk4eiyFw40XOmmwSLev5S7EcswHACsIGRyzWsKmcuxt6SzcA3KhPuK/vzOS2mrawSt08v0MewkUaMvoqv69ceXNMEpAX1FPA9uy9Q5h7fpH5Fn82XGyK2DzVpIdYtlMfxbAWrSBb1nhe9KnAyPzLPmsMUmtPeLah54ko0gTn6BtZiozLEkhOKeWvu0j3l3hytqPQfvHEWHZ9OCFpkWR5HWGCKrXiw9bUbXx7QlHstOo5pxF0yJ//e0CF+Af7m618be9l3Oj+IBeagCkzJ9Q4tOFIcVFo9L
- 3XVza9Va
- UGGfPzFYvhDABdWFxko9npusWAPmb39SsgGvmQ86vDubs702QPJZrb9Rqr2R+zuFp7hn+PiZLV6pURrOQMVPhXl5uZMoP7ovidJicUGom6lFOgBsrV04xHqfyEAbwLNafGTebBJlE7S6LQr/APYfEFYzvoLXI41vpER5dp+otI376IshIyqnXPQYLpn8xZEMdLniYIZEUKjwtpo6AB/UxnL9KJFDfK0e7d/BzX0vJLM6UrLfYxssgGCmd8+ITnKFC5WNR5DfO9BRW+JNTI4GHu1AzTTcooYt/w+ko0L/Ly4lxQYDPwzqsjdOVxS0h9Mnj7DrY8+uq86TVHX5Z87+1XAJs16lHrA1JTlU5n/v+IcniNn/kJo2QdSHGZw==
+X-HE-Tag: 1789133609-389289
+X-HE-Meta: U2FsdGVkX18tcX74oEjI2uwnY3DdI7vaD+7ZYH+JQcZ7LcQdqqpi4VGIbTvAYDhMAhD5Y7Joo/qXF6366FiXZVs+QkaQRgYJYQlJDOA6VSOxIfUWwxuPAolX67qtpcoHahxMqY9F0073qVuI/Onh3Yem63zPXhHXVWgijjwGuc1rT6mSzsAQIVa13l+ef9I70V7oHMGMYhbqUQjRGER9KPFQAwnogCv1UzUkSkOsHE7pBcZQMJFOnFgwdXhXMvEQ6fwX0rGLRLaMPbZ2lOI12uFZ1TjSqsMPYfspZrB1YLMPYnAgCZlpEWfEFJdkLEVAVXQfHsy5pDvdwjSOjclnLDtSZRKbpXeaGnx3TS+Cxt4jsqTTYH+h8FAiA59gQSkjxUiVgkh9WahhmwXPr3GVbUDeUNvLBmXwHagcCofrOULGYaS/Cr0zYDSFtT5PHIOzeaJADCKRMWbqYqozZHHGnkjK/vJ3+jSX18RUlAvlY6USeZJj2KFKotz4b8qs12x8g6mjaiz4adqhzrXDjegPqF58tHzGI02u90xpNPTDqSAFLUlDWwrNC4PcXJCccLb0jIZjTCJXAfINpuw/t7uvCIj0SqyA6w4UOGk3C9+rRb8/fuK4/GWiwnsCc4wVbB1vK88hHcKa19+EJVe5b0dwLb9LDaiaoErZQdn+RCXkQo4q7oN5LirROwQJ0gDGQVUBeJVx5uKtJk46ogmCkBkS7sIh94h/bZNmbS/gVqrtZO8GGf6LEE4vB4N2wU3OwHGmJIPyD6rVCW8s7UT7AozLVhcyBaL1Zh3shk6kkSMQWfQU0XcfTKV50IxisGiqcre+2x2Wjbg/xVV7dgMSCAztnKpujppNukJN3M+5aiNkxa6xnSTGi+0y73fdFoyvObADvl6+vZWOZVNOnbCvPDQBpgYZ8OWnW07DloeadRTqmtt7j0EvAYV+U1rPnuDQdJegzMJ5ir0OHf+SPZQjT1F
+ eAYZKfHM
+ xLd3s0dM+JDtlnHg9q/gcOwf2B6f3PHtdWmtlB6bHOi3uBAXp51dy9X+NOXHC9ITKf9RE2LSJvnMnauDcmt4BXgXbts1Wsb7dj68hV2apdLJVaDRqvhK95pz/kZjUlz1s1rv8uEfIq0FSLQPEgt/aIRBJ34Ui0bofogHa9ZfITjScOHiDe5tKoMolDOh9fiHYvtFDeF1DGDcwtN3zr6aSbrBrQ5sv6yYTmEeo2XJ+UeeWez848hsYAlAuHyqnP86wVhmZR3bN2UVoYCIOd4uUKVVPvS9LwfsW3Mf0x3t/4J3hn1bqmZ61z3si2scfRsogdHIg5gJXp/eYgL/ATmmcfByqllQLFZrt116boalkofxduzOC/MTuUvthloM0mDJJ2+2HMdQ1BEbIovX24xzoamntVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +93,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kunwu,
+On Fri, 11 Sep 2026 10:01:10 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-On Fri, 11 Sep 2026 18:04:26 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
-
-> On Wed,  9 Sep 2026 07:04:07 -0700 SJ Park <sj@kernel.org> wrote:
-> 
+> On Wed, 9 Sep 2026 07:04:07 -0700, SJ Park wrote:
 > > DAMON virtual address space operation set (vaddr) does not support
 > > pgidle_unset probe filter type.  Add the support.
-> > 
-> > Signed-off-by: SJ Park <sj@kernel.org>
-> > ---
-> >  mm/damon/vaddr.c | 55 ++++++++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 48 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> > index 45239f05e113b..9a38dc89a156e 100644
-> > --- a/mm/damon/vaddr.c
-> > +++ b/mm/damon/vaddr.c
-> > @@ -522,13 +522,49 @@ static void damon_va_prep_probes(struct damon_ctx *ctx, bool set_samples)
-> >  	}
-> >  }
-> >  
-> > -static bool damon_va_filter_pass(struct folio *folio, struct damon_probe *p)
-> > +static bool damon_va_young_addr(struct folio *folio, pte_t *pte, pmd_t *pmd,
-> > +		struct mm_struct *mm, unsigned long addr)
-> > +{
-> > +	bool young = false;
-> > +
-> > +	if (pte)
-> > +		young = pte_young(*pte);
-> > +	else if (pmd)
-> > +		young = pmd_young(*pmd);
 > 
-> Hi SJ,
-> I see that all callers already check pte_present() / pmd_present()
-> before calling this helper, so I don't see a correctness issue here.
+> This looks good to me.  Checking the PTE or PMD young state together
+> with the folio idle flag and MMU notifier state follows the existing
+> vaddr access-checking model while making it available to probes.
 > 
-> However, the other DAMON young/accessed helpers, such as
-> damon_pte_young(), damon_hugetlb_young(), and the PMD path in
-> damon_folio_young_one(), keep the present check together with the
-> young check.
-> 
-> Would it make sense to keep the same check here for consistency?
+> Reviewed-by: Lian Wang <lianux.mm@gmail.com>
 
-In my humble opinion, it is already consistent as long as we didn't miss
-present check in callers.  If you concern a case that we call
-damon_va_young_addr() without present check in future, how about adding a
-comment noting that on damon_va_young_addr() as a followup work?
-
-Also, thank you for your reviews to this series!
+Thank you for your nice reviews Lian!
 
 
 Thanks,
