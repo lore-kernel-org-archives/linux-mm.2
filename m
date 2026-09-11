@@ -4,127 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60EE3C88E42
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 06:37:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 115F7C88E42
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 06:41:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D96C6B0092; Fri, 11 Sep 2026 02:37:48 -0400 (EDT)
+	id D7FF16B0095; Fri, 11 Sep 2026 02:41:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B0DF6B0093; Fri, 11 Sep 2026 02:37:48 -0400 (EDT)
+	id D30F36B0096; Fri, 11 Sep 2026 02:41:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CACB6B0095; Fri, 11 Sep 2026 02:37:48 -0400 (EDT)
+	id BF9536B0098; Fri, 11 Sep 2026 02:41:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C9596B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:37:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD97BC0715
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:37:46 +0000 (UTC)
-X-FDA: 85200525732.12.D415F29
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0C23F20002
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:37:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fBLoZvPR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789108665;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8479C6B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 02:41:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1E8F160707
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:41:01 +0000 (UTC)
+X-FDA: 85200533922.18.D005879
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010028.outbound.protection.outlook.com [52.101.193.28])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A2BC4180007
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:40:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=RUzff3hl;
+	spf=pass (imf06.hostedemail.com: domain of shivankg@amd.com designates 52.101.193.28 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789108858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFqFJVoBVN5kZfJxUCTmdBnEcYhE5q7ZSLbJrzghpqw=;
-	b=Omr6ezCQ1niVUBPVDoq5qlBdZfqYoz4wTFq6JLQQZT7UBSULUoNRGP8zcWGUsfSt3cHU65
-	S5lWRbGq/Hb7cVtUR7C6waUDl81wm8OqXn+ciT5mqhdDq3TPE3fEOHRcYpFgYbSVNvueSU
-	Bg9YEADshqLr2vMS90riXDk0nEPvFMw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789108665;
-	b=EXxlXzjSdOmDCubgxmfR1yRoQ90F/gDfbglar+dieUkdI0p7/7is3mTiHdZzPyiC4jm5C/
-	pInwM8kBQ97kD1oBBiCEZ1bU3aFxplb5d8Dh3ucX5oUbpirPFU1emZ/JXe+G8lb1UXUyLC
-	b8zL9xB+6wIv/TvKX6rs6g7WF7dxmsM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fBLoZvPR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.136 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-39b456fc4cbso316706a91.1
-        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 23:37:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789108664; x=1789713464; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vFqFJVoBVN5kZfJxUCTmdBnEcYhE5q7ZSLbJrzghpqw=;
-        b=fBLoZvPRbncCJM99+1Rh8rkgYbOaAKO0s9h0kxu3Yuwg/bxmzVOCYswU1TEXZ6E/87
-         B//DCUfZLYBW2QuqxHHaUWX/RX0qq7t2rYsc6BT7K3CVnshZFBQ5rXSelghDY16jc6D1
-         KTzLPZua8pD17gPH2d5suZA7tNARI56K2NUjVmlrtOIwHt6asrIRkTaQw/sMDHyN+FUT
-         9G+J0MnH1GmK1AXu8z5nyDxKQwGZITsvVu/ayKEpbMLttlRrq4p9gdhVvg6Pn/ejddGS
-         soSEfkwUSO7dO2WjbN6aBD7l5MpBM03La7jBHFyxWVbRpkk0Z5vMBCXMFPxK9kccAw78
-         epeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789108664; x=1789713464;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vFqFJVoBVN5kZfJxUCTmdBnEcYhE5q7ZSLbJrzghpqw=;
-        b=OhzYF+D/mkWEjSdmth9S5Q6Sq5/sXJMCc5BoH3xmFiElL/1YVb44lCh2t0U1Yev43c
-         H+g+zi7F6MzNcwa+iwOxM8Fq68TXIM8WPpojDqzriCa045kvV+qkEA909ssxXEw6b5L7
-         fDn+mj2rFSjqBHv5e/dH8YBJxtlJh+gfN3RbUysVG3phULRuSCWCUj8jtYlHnaSw6E2D
-         DJW6sVmpMYfhf7MI9XAtSjWNPEbc+9l49CyK8ksQKA0hU64j9hKCY5aDPLKTgSj10WOy
-         V2uhhFmZZb40Zgu1D5WjQ3EcREBwkXwWM3Ue30AAhArDLs9YjS9V+9KbJXKg7oWG9AvA
-         MGTw==
-X-Forwarded-Encrypted: i=1; AKwUvBypqhElZ+7RQkdis1bropWup5SY3dbLebGGnzyu1ClAmMBv2hSCw7Kpi2NkmoIM7krr+sq+6mCUPw==@kvack.org
-X-Gm-Message-State: AFuF++kZ40fInm1Nyg1sjWbe1XcwZpxEWSKWgMezPCKoyi7YX7hPOOuu
-	137w9qmXqmV3uZtsA41Q+4G2IRRNQsbp2r1/p2IjCwXyoBXquxDx1N26
-X-Gm-Gg: AYBFou0DBtQ9ifO+rENzAFf+JzQUur1xahwrl8GCchKW9+UhIaL4ZDZ46AYHjez8ZSl
-	89cTT33zdj/rwzcHgt8VqOY4+AzQqaitPIl79lrrSapI+5w5+aH+nQ3elU5H0efjL77MCNm4s5b
-	5lzYZCznWZAHU/evNJBRzL2quQGTNzoglAsFbzWOzCeJazzOisdwVVR7e98UEWb6pTQH/SbTY3i
-	2cu50nozjz5D4nJ/kM7PNTmQtyO7sL6sUy1ECPLQxNvFi4H697hQocTNxX2uFORLqK4S+Z7YY99
-	YSCyM59uAwVbxrfOlXsONjPGPy1yd+bF0PDAKT+HIhdawqZzSwPE0OifuHdRqhD2iTgnth9/aj1
-	xtWvCKzvU7pZUamvah9Y/BgpSDF4Uqpt41Tf9iVJ5Tpu7UpAxanTnd84MaBoEkFeWuYDoSGxVIn
-	6qFBbcYdsnE+wYX39ht//YPZ2KDVHZtcykcR05VEkRIF+tI+glyNrLzRsusFTSgmRAWF5wJvTv4
-	nrkrw==
-X-Received: by 2002:a17:90b:548f:b0:392:b509:b1a5 with SMTP id 98e67ed59e1d1-39d9c1db3d4mr4983638a91.14.1789108663538;
-        Thu, 10 Sep 2026 23:37:43 -0700 (PDT)
-Received: from [10.125.112.20] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39da6016718sm783381a91.15.2026.09.10.23.37.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 23:37:42 -0700 (PDT)
-Message-ID: <cbbe6ba0-5ee2-4597-92b8-3257e152be75@gmail.com>
-Date: Fri, 11 Sep 2026 14:37:37 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
- early reservation failed
-To: Marek Szyprowski <m.szyprowski@samsung.com>, robh@kernel.org,
- saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org
-References: <20260818092420.2859026-1-chenwandun1@gmail.com>
- <CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
- <20260818092420.2859026-2-chenwandun1@gmail.com>
- <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
- <af87036b-0809-4880-b088-545780b4d963@gmail.com>
- <7a964778-adc3-4186-9122-3858bb61c372@samsung.com>
- <7dd9e1c3-ddc8-482e-a560-e8dc4f2f0aac@gmail.com>
- <518729f2-db28-4af5-8ed3-9985c124db3e@samsung.com>
+	bh=3OpP4RVmEWuKp0b89EXWlT29yBYutOj/XQd1IkGVn34=;
+	b=TxzrWqzhBKc4KMO1DKRLpHmYcIvSfPoNKSij31LgvTN1s91w6ZFW8xQ0l1inlxl97hwpuj
+	j/zYDFsieOC1nLsKuE0oSh2sBAnnwNUe2Pg0odOtMxSIxv4IjJYdPmKId2QPNX9dmbWWQ8
+	Mh6q1E0FaIbbr9VFNzs/IWZ/aPgLrMU=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=RUzff3hl;
+	spf=pass (imf06.hostedemail.com: domain of shivankg@amd.com designates 52.101.193.28 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789108858;
+	b=nBlwvlMBkgPYBjEzsPwAmnrcxZScaL0a/TG7EP+bsGVRGhSxFoXeVGee5BKbHX88ndi6uB
+	DNKwFJdqhXVz1e/4x0l7zdCcOnNOppB3wImab112q8MbGj9jvOJUji9gT7Da23ecQ9vqm9
+	4PPsZz4Mw9UkULgDw2BcfMxn1qUVgOA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WzJ92hQxxv+pEywr9WQi3hNs+B+YqCcGTOiDcLIFqOuqJRA71nBq6t4hIPGGW5sOGIkx3SyKBFV9XnfZIkXsecnU9fx5FzqHm4B65NSGbxmHIazcjlyPo3RgtrIr1QAJbsjObzTaxa9Zrj1MtBcFNwHf32zyuObeycsW1jut+TesaUAVFeX7lQsvBdFsCnZJad7AvB7sqmKhjyLcISY+9CDZFLCPQBIfnKBFPp4cJUaTMHbRETZ/5ti3Gx9ombpg4OU/02JpQa6dCNaasMt0ycNCx+cI9W0c02WwHTJ4bd1frFwe3tPhUCIrSbIA2UTrvSYaRACSQRZ+atJ8H0t3xQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3OpP4RVmEWuKp0b89EXWlT29yBYutOj/XQd1IkGVn34=;
+ b=MsIbLH3oP+wwfQ6yMiBb08idfdg8PmG3q/UcgQGsLQWFG6unjyIjBH8Beqveo7LwV3hRuKXUauVS3in1w8umTriDmS1s+jI8/KwWD6nH886V6n6ekwPm352/Pg80EEQA0QSg4WqTV8wk8SSCTm7f3e5TmFuw0MQT75RNSEzh6GosmZENRHGZFyBCBb0wtbhlGcH9PwspLbqXfZ28x+Wg9ojkFKzcw6Uu73rtklJ+Po+u5TJ8BuFBscDGCY7Q/zjSsHfEBi3Rizu1xIweEO4sx/qSrNg7E6vGDJ9ugpVM84zXzktMjyFiBgozKYjSA6uiPbKoYBb+nPrXMAT1/9+ZHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3OpP4RVmEWuKp0b89EXWlT29yBYutOj/XQd1IkGVn34=;
+ b=RUzff3hlgHkv806JhcjXkcbS/MBy4DFI7lxT2soMl9agtguijYgeAvkQG3tOvpIEyAZYfg9rhK+01L2CMxhF+ZbpziYQ4nTKcfruM4vTf70DkOAPfmpsLkLanMHnhoMlFG863nmZKjqu7VTtI+Eb60CfIoItvzCLY+n9jCB36vY=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by LV2PR12MB5773.namprd12.prod.outlook.com (2603:10b6:408:17b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.14; Fri, 11 Sep
+ 2026 06:40:53 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%2]) with mapi id 15.21.0406.005; Fri, 11 Sep 2026
+ 06:40:52 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "Gupta, Pankaj" <Pankaj.Gupta@amd.com>, "Sampat, Pratik Rajesh"
+	<PratikRajesh.Sampat@amd.com>, "nikita.kalyazin@linux.dev"
+	<nikita.kalyazin@linux.dev>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
+	"david@kernel.org" <david@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>,
+	"tglx@kernel.org" <tglx@kernel.org>, "Dadhania, Nikunj"
+	<nikunj.dadhania@amd.com>, "Roth, Michael" <Michael.Roth@amd.com>,
+	"corbet@lwn.net" <corbet@lwn.net>, "mhocko@suse.com" <mhocko@suse.com>,
+	"gourry@gourry.net" <gourry@gourry.net>, "iweiny@kernel.org"
+	<iweiny@kernel.org>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>, "byungchul@sk.com" <byungchul@sk.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"ricarkol@google.com" <ricarkol@google.com>, "vannapurve@google.com"
+	<vannapurve@google.com>, "shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>, "jackmanb@google.com"
+	<jackmanb@google.com>, "Kalra, Ashish" <Ashish.Kalra@amd.com>,
+	"willy@infradead.org" <willy@infradead.org>, "surenb@google.com"
+	<surenb@google.com>, "pshier@google.com" <pshier@google.com>,
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, "fuad.tabba@linux.dev"
+	<fuad.tabba@linux.dev>, "skhan@linuxfoundation.org"
+	<skhan@linuxfoundation.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "apopple@nvidia.com"
+	<apopple@nvidia.com>, "ziy@nvidia.com" <ziy@nvidia.com>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+CC: "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"sashiko-bot@kernel.org" <sashiko-bot@kernel.org>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/9] KVM: guest_memfd: take the invalidate lock when
+ unbinding a dying file
+Thread-Topic: [PATCH v3 1/9] KVM: guest_memfd: take the invalidate lock when
+ unbinding a dying file
+Thread-Index: AQHdJKV15sg2STvrekyb2rIxlphFqbbHzK2AgAFbAYA=
+Date: Fri, 11 Sep 2026 06:40:52 +0000
+Message-ID: <f186fbb9fbb0590390bd226ccb5a45cb071180da.camel@amd.com>
+References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+	 <20260805-shivank-gmem-migrate-v3-1-00d8bdec4e1d@amd.com>
+	 <dedad87b-909d-4d14-b914-ff2e28c414ce@kernel.org>
+In-Reply-To: <dedad87b-909d-4d14-b914-ff2e28c414ce@kernel.org>
+Accept-Language: en-US
 Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <518729f2-db28-4af5-8ed3-9985c124db3e@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|LV2PR12MB5773:EE_
+x-ms-office365-filtering-correlation-id: dae5d2e4-137f-4b69-c2b1-08df0fcfa00c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|921020|38070700021|11063799006|56012099006|4143699003|18002099003|22082099003|10067099003;
+x-microsoft-antispam-message-info:
+ KydwV5FvG6eYBI5DdL95U5DcSvbO1JyuSSaLN/id5VJ0rEVEtN4OgkORvJCwbihsYogZWUO8x8QzuAxftSiUvRroTBVnQlzjxKZ10YQQuBwQS3ngkMHIcE6m1atxgl0zHUiCrelWRiCjspr1bz5TNLRIkc40kM38tazlu3I+LIpWPBkqd547wGNHpRkqMTN0zIQXaZvv6Mb6V0xWABJLAvfk6Ja2gDNP/Nd3rqile6MWtBDfXra1vlSh2N6IW4bh1D5q/rWd5zsJuKfqKQD0VS52ZtU6rzPL9lLCe7ahwSiF+WxTjj3IGMR5ZnKlxMBjhI/JRDlRRr0KGw1kt0paMY84iatJx6jbj3vXNXhTgqyrM296r143cUxFXrdY26Sb5WWt3eUQx0VmLTCv8iuD69E+mxqK25rgMF/Ger75DuQTn1fvaCw6LXkjTNQIPAn33LDRUpMfl+ILRvvh6fUnke1l8HmaU8v8a0DzrqVvXM5WZLHQcNHL5OSpRP+3E4qbHo3LuxyH/qGrbE8JjT/HZloyq7+jv5G0mvqR3Geu8vLWfXpA7+bNJNiNyK1lPFqtGSalboLfOXCVuO47EQqrLztDqC8XAvnFfQqmpM4uPkg9heSXNakHbX0MD9+lth9CeN+diGHAK3BGcQ0puMtWHnehklG2IjYF8PZSM0LlnBnceyXmvJpfPIrEJWtRs+i0o1Jama4nw2cTju1sw8DGeU9+7Gx6QFuagpBFoBn0rfMh8zIpbnA0OUswUQoeIjAp
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(921020)(38070700021)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?U2pGWExjREhlRDNHWUFrTUpsRG12dmh2by9JOFJYR3p6TXlFRWw1ZnFjKzRX?=
+ =?utf-8?B?TU5FeWVGNXZGKy9oYVNvVTV5V2l5bGlxN0pjT3Q5VjhHVmJPQ0U3ZlljVG1h?=
+ =?utf-8?B?eFZnK2Y0VzBjM1hUbzhUazhwQ2I3eEV2bVoxOVVoNTMxYkZLUEQvQVM3NUpw?=
+ =?utf-8?B?WTR1OCtjWDJ1d3o0eUFYUEdnTHlaaC9ZUnA3bUQ1bDBMcW5pb2dNRngxanNt?=
+ =?utf-8?B?d3VvYXM0Ync1TlJJTlRWWUdtQnZUT090WDcraUMrMXVWNllDZitKQUhhS0l5?=
+ =?utf-8?B?eGZUSldtZHhzN1RvRG92UGErZFBzL2hQZUh3WU01aTJsdHV4Qnk4SDYzME03?=
+ =?utf-8?B?dTJuWTY4VHdVbWowVGZIMEpIMGFFWm84QWxxbUJqSXdvczlMbkNRR1ZGMk05?=
+ =?utf-8?B?TStXanoxQWVoWGhuUVNaaVJ6a01CSTZsOFFyd1BtQzd2aTJSOTFDL3g1dmUw?=
+ =?utf-8?B?QktOVjE2WmRxTzN1ZnJkOVQzbm9CZVhvTGlGMDJyVzIzbVlOa2djeHgvWGFy?=
+ =?utf-8?B?Q0FjUjRKUllVMFc1NjVucXI0UGU3QzZaQlpTK1FFV3VQaENqZERlNjVhcHpx?=
+ =?utf-8?B?TFhsWVhta0hmRW1kTG1FdVowNlgxaWE1VXZXa0NEOXJQR3ZORjk2cDh3cXdq?=
+ =?utf-8?B?WElrcm4vOHk0N2ZMbzljRVJZbktWaHltLzhzQUVYdHI1MHVGL3NFTGNWRUc0?=
+ =?utf-8?B?bTlrZTBCWTN5c3RiT0Nqb2FUYklwWXVRb09nRGJYNEdzTzdjU0JZZ3BWM3N3?=
+ =?utf-8?B?TnlhR09JeUhLaStRWlpaVmNMdHU4RFJFQzJ6cnY1bDF2eEZtMUdZS0dFc2w3?=
+ =?utf-8?B?YXl6MDZNYkE4RExCY1JXZGlYUHVCNkVxT1pmamhqRy9vMC9CR01meXg5K1pY?=
+ =?utf-8?B?eXprRHlSQWFGZWVMczlObDdKNFRBU3N2bnd4ODRscnI3TS9CaDZFTENJamRq?=
+ =?utf-8?B?MlVWY09IUUY0KzJTVlg3TlVRTnRLN1lvVjBaSmZPNWdzN242azFHbVJScVRm?=
+ =?utf-8?B?d29adG5JNUpENDJTdVlSdkQyVEFSY2pVZ3pVcU8vcWpSKzZiVlUvVEZFZTkz?=
+ =?utf-8?B?K3pJMkdPdkdWSjJvL3lwaHlOdnVxRDBzMWVaQmlqbFVOdDNBSFJoWWYvdno2?=
+ =?utf-8?B?dlRuU3ljdnJaOWFaWUkwOGhidmo3NmowYjdodEpjOG1MVVV3aHp0a3lSbFdH?=
+ =?utf-8?B?NkxKNWQvMHhpQTVzWUFlMWxWTVdUeG1zRmwwREh3WXdXbTFjQUQvWUcrTCt5?=
+ =?utf-8?B?U2QzeDJJQkV1cDMzNVBta1RZd2tiNDdGRi9la0tYeFQ1cXB6VFU0N01KQXY1?=
+ =?utf-8?B?c1NJR1Y4N2VhdXFub2RMSm5NYm56bEcxS0VWcEljQ1hyZzBVUVoxek9oRVgw?=
+ =?utf-8?B?ZUhORm1CUFJEeFFsQ2h5dlJscFgrZStCZnExR1NadGwrd1dRZ09CM0txOUlJ?=
+ =?utf-8?B?R09xK2EydWxFL0FqNGtBUFZoaDVBbnE3M09UZlY5ZnRadG4zam03ZHhBdExa?=
+ =?utf-8?B?UlA5UU9xQjh3bnZYVDVOS1AwQkxMVlpta000NDFkQ0RDT0ZDa3ZjamVUNGlJ?=
+ =?utf-8?B?SFgxMzR5L0VXNkZ6SlRKdWxPZjZrVlE5Mmo1eDlrcmxOa3hWTFJCeHU5dGN1?=
+ =?utf-8?B?NTdVVmdyQ1hlMS8vS3BpUk1rZ2xNV2Rwby83N3lJZVVZMDhrbmF4ZEFXT1RZ?=
+ =?utf-8?B?VXNrSWFhNXhFcjkyZHA4SGRyZlVHc0R3TFNDdnFmNUROTzQvZkhoQlA0MGhP?=
+ =?utf-8?B?bnQrNStyQTdQb0M4ZHE3aGVIZk41RVZGcnB4RG8wOVVyVjYrNjJVUURpN2Np?=
+ =?utf-8?B?dTZpWTVkdkFzNDltU2Z3WXpXeCtXYVhPenc1aEFBNXZiTUNOaUVqbW0rejRl?=
+ =?utf-8?B?b21EWFNRdTR4SHVpSXpQWlNzbHpRQnMwUG04ZFRFcWIvV29IdUFuOFdPd1ps?=
+ =?utf-8?B?NndiQTQ4YSsrSVRlUDRtYW1zbmN6aEE5dms3T3lsbkQ5amoxemhpWWYzL1hN?=
+ =?utf-8?B?bkRIMHZEVGdtSXdpZzZ5VjV0Mi93MlEvYW9MRDFxdFNFdVYyYXZPNU1NZmZU?=
+ =?utf-8?B?aWsrZWdnSnpFektwVi9EODNqQzNrOWE2cGs1b0VyUVVqZEsvMVNvZUpRVXJk?=
+ =?utf-8?B?dDUrMEQxSzFTTXVRTXdmNnJFMEZqUEt0VkxOckNOOHB6YnFJb3VCdEczVkdQ?=
+ =?utf-8?B?ek5XTDhYMHRGMERvV1FpZGNhQzRvb1RRZTB0NkZ3WDFjcndUY3hDam1jaERJ?=
+ =?utf-8?B?LzhkOE13NFRKSis4TW56TGM4VWtqdE5Jalhadm9LQmhGaUlSUjZRVFJqUUhJ?=
+ =?utf-8?B?NXpKTTM1OW1EanA1U3FTdVdsOXcxL2VDeC9RMHlxVWhmNlJYOUhGQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <DB1C65BD1B891541A0217BA6EF413C97@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dae5d2e4-137f-4b69-c2b1-08df0fcfa00c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 06:40:52.7493
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2p/08LSyMI8UYbnIjD5oGCRvHfUo1VNGZtN/1XvfwTv2Sv5mAPNPh+T2a6qKCQm1cPY5t3lNFZVYYPYevDs2kA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5773
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A2BC4180007
+X-Stat-Signature: t4px7n371o7dd7n7n8ha7dhd1p9uiknc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0C23F20002
-X-Stat-Signature: 8owkicuddmisfzijnkf7yzjgcymtkogx
-X-HE-Tag: 1789108664-974149
-X-HE-Meta: U2FsdGVkX19K6FVHrXsbAPSxktrK8PuJV8bcsi6HkVLt7rkHxLDahMuRCKAPfFqEnkpS1YANf/QMc1vfbSfPoYIXpbVKPxpk6xuNw4XcAMgAsenEV56b2H4IF0UpF4bbavjGxGBww+hBBBEnBSvOnyPnYvwfv3miR85Rd+6jdmQ8MeK+B/TShcsgbqBKX/d7pmrct6AztVknbmy4JbS4Xr1zYLXPQqqiQp0iT4EOBh+eM8pOOTb2iFyBMdPOPGj2a88JObSd63DjVhvhNqf/epnfJ62XvsZgu+vbvVsR5zYlVsxY1WyOoHvG+RB83aZOr9TAgHGH0SSn0NGcrmfQ3Z0RaaB1QamQTDAF09g+HMw1NQgDkulz7jR4YvfnU3mXLjmE+AJYefRGU4XiDheqDmbbc4tKwiaQJGzR32rnVoz8AExm6CGbajz66CIhFIRiiQMf6w3U3QciqLGa23WefdrwVbY4W341Byu58JZyzQCUz+JGFJoD1bQhXvNC8tUvbY/jxL43qKhrb0jK5TKtDPKW49DLLenz6xX1Mr8nEISvq0cdMzqNar5IrJsgYXK++cjpjlSr1XfChRp92+Yt2f7/wIpL03nY/F/c6HrIgOmCugtRNjdatC6NnjgfYRdgAde3yRjn1kC9ibODO19EllRTTtBCbacrcC47DqHdbtCazR+cS857SRMl142jz4Q0lG2hCcGDiFcwSyQWgrnFrhKGfCd9J+dwbQmBcKroMfbk2c+g3ZvPpw4KSoIS1CvE2jrZcUcE9dpnsNBWfciohv0VUip67UgKCUSnlS7jCvKgOOGSUGhmmaRhTOHWKTVuurptapdIRl5F0CnRqKaDq6z2QqgZ20oppSwb+9mg7zAmtzsgj8HMV4Ll8fIKmHRsfRQ135WcxHahLpYMPb0eQ72nsDd/zvLEwMYkZ8zkv+YnR/f/rEd4uxfUX2J1hlWciQRW/XybvpvdcPqhtk3
- pAkV2/Hd
- gawi7Z3shzUn/qOXercRiyRBSVySuTYGip7TesrmtSwYBfZL7YjedS05gxkz1XRCk+2n/lO1fFIoxiLbyAbXHUqZB5sUOsfgsMFRiV6V7/EzPNJTt+EL8vbgSPxQh6cR1dyq/6gAM0eou9Rkl6wvIsloTnocanTTmJ1A6zD7wT/hd73gOfXPRnFol0KMCJIZW9Mb1QMTBykl6bkUscd8srMFeaNU7fdZF8NjjZcCaGLRd++CaLWs/vi150ZTXXuMi2yPIAuMV2KgWpRlEJaPRt3xs3vb2976io8433I9ghw5yj2c7+vgYfFg6nIcFNAt+m5aSFDIyjq0b/eCvIonIju7USrJJ29b3JNkZShX2XtxGFHjNiqeH/GCUAMj1Vi9iuIHphw9uh5QWIXNl0IK/Z3188gYjmcUVYy1BQKw1p4D2dy+NRr4kwz1Eay2CvbIg2cw8veV8ijm6kbdZrvNVspW3Ifv0zZbAsLMlrvqRyGgkbL/zfPm3iE/qY5g/QedMpxvWViepXQluWE7guX8bS9pwcCFX8T3I6//27bO3Rqu/8gk+8/MseEB5jpAXqpQvvsWH
+X-HE-Tag: 1789108858-126942
+X-HE-Meta: U2FsdGVkX18AAdkRyhkaR94tvArsIr+51SmQAEztoDhOvbhVntM1gnMj+xBC4vbt2e7tKDTpImMwaef5/HW+j4Ngm37ebeTsGMbh9pAzE4giiqIaNlWaq2y5kcwhBh238rxsRme8ZWGTQm577QEJP7r+RvqY1hZLhuFW9fedsCpb7yBPqhzKNJ9EkyneHVltqRE4dsRoPlK6j1IqaKYbYPjEU12oU4ptOZDsINs8JtHiPpL3gDcVBymud/Ae/ERC6Q4Wc6HICwbq3vu2v7axolhV1FANqiObYj6ljJ7zlWmleExbkNreCR/V86Fy6/wXdBBk3dQHdSTy7NrDQ34TK/hAxjF8BTKpyYXmtqvdyGFOdPPqI6lj8pv2KpDSPuX5wrkg3PBpF7h5F1yZKMMLaS4EZaXdkqg3W6Tb5jOPoNT9uES8KCG7IZj7UnJ51Q0tzBn0WLl15ZToEpEGCejCswIeb4CbabFG1XAGd1O2mVSL4ARj3Cs+i0JDjSR4YUMMLVD+HkhnpJQ2c5z15pbcgwACzkHp4FtddXGRBp7iW6S2uQkuOZl5PDw8W7xXeiFvzxWtQeIdgA+eytQR4EQ9EUt0qt1psIvUVysLHyfWtd8VNdE2OCHjdLRJOCbC8qI1wjMg2KZvH+bRYyT2yR44jlmaAawNFZPlqOITNA1imj4IEmmJs3fFuvdB7BHAkXKNJ8QMUAJF5Vjbxk6+yF/4AeD3COhbwFTQyuHTJoZf3bZnKWVkOFZS0F/YlMCHFeVvuiiMGXi2TAWaPVlktgxds0Xy1T5XNcZhFvhz3iaDJCaG8mb+JwVo9/ajHjKA8TiJyGuoztUmQeQWXICEJvgV+nqpPLH7Zfrjt2fWt33qasrjIhQiU2PeqgbhcST3E17yGmWbU1kDZizSxvEb6UzVQHTZNlXVxaQYj2i7AtaPvgsDr7AKqXcoDqzTd2C5sujv97dGEULYtE6so5+HWtE
+ wyuBKDSv
+ sX/jfshp18snk3vFhP22lXcwyhsKc5SDgdybUuDS3RWgq5AZGB1E6j7dTiGsn7sz2czaaH/dhaQxPgy1pUYa0AztM+6rzmmoVkYCVEj263ur8kqTjTmALfRVgknbFSMnAr1BkhUvCU7YCX8lCv2Lhsoo0p8vllTODY167l60VRX/GSIxX0OuWT2d80arMhMyHpWXF44Ak+XbNmeG8NgpFltY5X4UJ+wG2jHedhVMU2DZSRIc1slwE3RmZtJ9C1IZFKNYevbboRtv1lbqUcwo7OaqYFQctWdYAebjCAQVRiFz6P154kO7yAF54p+SydvVF4BlRbPFXXlZbeo74fXuEJDNckYVubOmcw1L+9G52G1HzsmRAlmkZYbqzsUEi6FEbEeB5D2Z1qBz+bFuGUoHMf4vDKGuIJNJ4m3Qj1E+99G0B/kbsfN6RVUrYFHQ2GJnPYnLpUoZZyobGxG40ghOF2v49u0OvZxoZouDCS26AnaOsbOzY8LZNJWSwGofr749eytkRW3jSHQQQlu3dibhQxh+cI/H9GaMlJyn/YFtycQ91VDUdkbxlCPvAmvqZeZk6z2P8s8lTBODOra0RVdxPcY2fBgIjHv9lntfOMgj/WYufMPP+PbOKeK88ZK080A9JAEqBmtrX+L0q8gI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,96 +208,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/10/26 23:20, Marek Szyprowski wrote:
-> On 10.09.2026 12:55, Wandun wrote:
->> On 9/4/26 16:49, Marek Szyprowski wrote:
->>> On 31.08.2026 15:04, Wandun wrote:
->>>> On 8/26/26 21:14, Marek Szyprowski wrote:
->>>>> On 18.08.2026 11:24, Wandun Chen wrote:
->>>>>> From: Wandun Chen <chenwandun@lixiang.com>
->>>>>>
->>>>>> __reserved_mem_reserve_reg() discards the error from
->>>>>> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
->>>>>> caller counts the node in total_reserved_mem_cnt and the late scan
->>>>>> initializes it without checking whether the early reservation actually
->>>>>> succeeded. A region whose reservation failed is then handed to a
->>>>>> device assuming the memory is protected.
->>>>>>
->>>>>> Propagate the error so failed reservations are no longer counted, and
->>>>>> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
->>>>>>
->>>>>> Recording the failed nodes explicitly is necessary because
->>>>>> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
->>>>>> tell from memblock whether early reservation succeeded.
->>>>>>
->>>>>> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
->>>>>> of static regions is not bounded by it, so on overflow the extra nodes
->>>>>> fall back to being initialized, which is the current behavior.
->>>>> I'm not very keen on such partial solution. Indeed we have no place to
->>>>>
->>>>> store the result of the early init call, but we can check if the given
->>>>>
->>>>> region has been earlier marked in memblock as reserved or no-map in
->>>>>
->>>>> fdt_scan_reserved_mem_late(). If those attributes don't match the
->>>>>
->>>>> region can be simply skipped then.
->>>> Considering the later patches that reject reservations for overlapping
->>>> nodes, checking the memblock state in fdt_scan_reserved_mem_late() may
->>>> produce false positives.
->>>>
->>>> For example, if region A is reserved first and region B is a subset of
->>>> A, reserving B will fail because it overlaps with A (in patch 02/03).
->>>> However, during fdt_scan_reserved_mem_late(), B will still appear to
->>>> be reserved because its range is already covered by A. As a result,
->>>> B would be initialized even though its own reservation failed, which
->>>> is contrary to the intended behavior.
->>> Imho the overlapping reserved regions are some kind of configuration 
->>> mismatch and it is enough to detect them. fdt_scan_reserved_mem_late()
->>> can first store all regions to dynamic reserved_mem array, then check
->>> for overlaps, and only then initialize those, which don't overlap and
->>> have proper memblock attributes?
->> Thanks a lot for reviewing this series.
->>
->> I did try this approach, and it looks clean. The overlap check works
->> well for regions within /reserved-memory. But there's one case I
->> couldn't make it handle, where it seems to still produce a false
->> positive, please correct me if I'm missing something.
->>
->> For example, region A is reserved before /reserved-memory nodes are
->> processed. A is not a /reserved-memory node, so it never appears in
->> the reserved_mem array. Now region B in /reserved-memory is a subset
->> of A. At early reservation, patch 02/03 rejects B due to the overlap.
->> But at the late scan, B's range already appears reserved (covered by A),
->> so it looks like a successful reservation and gets initialized.
->>
->> The root issue is that the late scan can only tell whether a region is
->> reserved, but it can't tell whether the reservation was made by
->> /reserved-memory node itself or by something else. Maybe we still need
->> to record during the early reservation stage.
-> Then maybe it will be easier and cleaner just to add a new flag to 
-> memblock_flags (see include/linux/memblock.h) and mark each successfully
-> reserved region with it? There are some spare bits there.
-
-I really like this idea, it's cleaner and directly solves the
-"late scan can't tell who reserved the region" problem. Combining your
-two suggestions gives a clean and simple approach, and I'll implement it
-in v3.
-
-One concern: a reserved region carrying the new flag won't merge with a
-reserved region wihtout it, so memblock.memory and memblock.reserved may
-end up with more regions than today. When fdt_scan_reserved_mem() runs,
-memblock is not allowed to resize, so if regions in memblock.reserved or
-memblock.memory are exhausted, panic will occur.
-The default regions number of memblock.memory/memblock.reserved is
-INIT_MEMBLOCK_RESERVED_REGIONS, it can be raised if a platform actually
-hits it, so I don't think this blocks the approach, what's your view?
-
-Best regards,
-Wandun
-> 
-> Best regards
-
+T24gVGh1LCAyMDI2LTA5LTEwIGF0IDExOjU4ICswMjAwLCBEYXZpZCBIaWxkZW5icmFuZCAoQXJt
+KSB3cm90ZToNCj4gT24gOC81LzI2IDA4OjQwLCBTaGl2YW5rIEdhcmcgd3JvdGU6DQo+ID4ga3Zt
+X2dtZW1fdW5iaW5kKCkgc2tpcHMgbWFwcGluZy0+aW52YWxpZGF0ZV9sb2NrIHdoZW4gdGhlIGd1
+ZXN0X21lbWZkDQo+ID4gZmlsZSBpcyBhbHJlYWR5IGR5aW5nLiBBbGwgb3RoZXIgcGF0aHMgdGhh
+dCBtb2RpZnkgZi0+YmluZGluZ3MgaG9sZA0KPiA+IHRoYXQgbG9jay4NCj4gPiANCj4gPiBrdm1f
+Z21lbV9pbnZhbGlkYXRlX3tzdGFydCxlbmR9KCkgY2hlY2tzIGYtPmJpbmRpbmdzIGluZGVwZW5k
+ZW50bHkgdG8NCj4gPiBkZWNpZGUgd2hldGhlciB0byBiZWdpbiBvciBlbmQgS1ZNIE1NVSBpbnZh
+bGlkYXRpb25zLiBTbywgdGhlIGJpbmRpbmdzDQo+ID4gbXVzdCByZW1haW4gc3RhYmxlIGJldHdl
+ZW4gdGhlIHR3byBjYWxscy4gSWYgYSBiaW5kaW5nIGlzIHJlbW92ZWQgaW4gdGhhdA0KPiA+IHdp
+bmRvdywgc3RhcnQgaW5jcmVtZW50cyBtbXVfaW52YWxpZGF0ZV9pbl9wcm9ncmVzcyBidXQgZW5k
+IGRvZXMgbm90DQo+ID4gZGVjcmVtZW50IGl0LiBFeGFtcGxlLCB1bmJpbmQgcmFjZSB3aXRoIG1l
+bW9yeSBmYWlsdXJlOg0KPiA+IA0KPiA+ICAgQ1BVIDA6IG1lbW9yeSBmYWlsdXJlICAgICAgICAg
+ICAgICAgQ1BVIDE6IG1lbXNsb3QgZGVsZXRlDQo+ID4gICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIChndWVzdF9tZW1mZCBmaWxlIGlzIGR5aW5nKQ0K
+PiA+ICAga3ZtX2dtZW1fZXJyb3JfZm9saW8oKQ0KPiA+ICAgICBrdm1fZ21lbV9pbnZhbGlkYXRl
+X3N0YXJ0KCkNCj4gPiAgICAgICBmaW5kcyBiaW5kaW5nDQo+ID4gICAgICAgbW11X2ludmFsaWRh
+dGVfaW5fcHJvZ3Jlc3MrKw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAga3ZtX2dtZW1fdW5iaW5kKCkNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgZ2V0X2ZpbGVfYWN0aXZlKCkgZmFpbHMNCj4gPiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgc3RvcmUgTlVMTCBpbiBiaW5kaW5ncw0KPiA+ICAgICBrdm1f
+Z21lbV9pbnZhbGlkYXRlX2VuZCgpDQo+ID4gICAgICAgbm8gYmluZGluZyBmb3VuZA0KPiA+ICAg
+ICAgIGNvdW50ZXIgc3RheXMgZWxldmF0ZWQNCj4gPiANCj4gPiBtbXVfaW52YWxpZGF0ZV9yZXRy
+eSgpIHRoZW4gcmV0dXJucyAxIGZvcmV2ZXIsIHNvIGd1ZXN0IHBhZ2UgZmF1bHRzDQo+ID4gcmV0
+cnkgd2l0aG91dCBldmVyIGluc3RhbGxpbmcgYSBtYXBwaW5nIGFuZCB0aGUgZ3Vlc3QgaGFuZ3Mu
+DQo+ID4gDQo+ID4gVGFrZSB0aGUgaW52YWxpZGF0ZSBsb2NrIGluIHRoZSBkeWluZy1maWxlIHBh
+dGggdG9vLiBUaGlzIHByZXZlbnRzIHVuYmluZA0KPiA+IGZyb20gcmVtb3ZpbmcgYSBiaW5kaW5n
+IGFuZCBsZWFraW5nIG1tdV9pbnZhbGlkYXRlX2luX3Byb2dyZXNzLiBUaGlzIGlzDQo+ID4gc2Fm
+ZSBiZWNhdXNlIGFueSBjYWxsZXIgdGhhdCByZWFjaGVzIHRoaXMgcGF0aCBob2xkcyBzbG90c19s
+b2NrLCBzbw0KPiA+IGt2bV9nbWVtX3JlbGVhc2UoKSBjYW5ub3QgbnVsbGlmeSB0aGUgc2xvdHMt
+PmdtZW0uZmlsZSwgdW50aWwNCj4gPiBrdm1fZ21lbV91bmJpbmQoKSBmaW5pc2hlcy4NCj4gPiAN
+Cj4gPiBSZXBvcnRlZC1ieTogU2FzaGlrbyA8c2FzaGlrby1ib3RAa2VybmVsLm9yZz4NCj4gPiBD
+bG9zZXM6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI2MDcyODA5MjAyNy4yMjVDRjFG
+MDAwRTlAc210cC5rZXJuZWwub3JnDQo+ID4gRml4ZXM6IGFlNDMxMDU5ZTc1ZCAoIktWTTogZ3Vl
+c3RfbWVtZmQ6IFJlbW92ZSBiaW5kaW5ncyBvbiBtZW1zbG90IGRlbGV0aW9uIHdoZW4gZ21lbSBp
+cyBkeWluZyIpDQo+ID4gU2lnbmVkLW9mZi1ieTogU2hpdmFuayBHYXJnIDxzaGl2YW5rZ0BhbWQu
+Y29tPg0KPiA+IC0tLQ0KPiANCj4gVGhpcyB3YXMgc2VudCBpbmRlcGVuZGVudGx5IGluIHRoZSBt
+ZWFudGltZSwgY29ycmVjdD8gKG9yIHdhcyBpdCBpbmNsdWRlZCBpbg0KPiB0aGlzIHNlcmllcywg
+SU9XIHdoYXQncyB0aGUgZXhwZWN0ZWQgcGF0Y2ggZmxvdykNCg0KWWVzLA0KSSBzcGxpdCBpdCBv
+dXQgb2YgdGhpcyBzZXJpZXMgYmVjYXVzZSBpdCB3YXMgaW5kZXBlbmRlbnQgZml4IGFuZCBzaG91
+bGQgbm90DQp3YWl0IG9uIGd1ZXN0X21lbWZkIGZvbGlvIG1pZ3JhdGlvbi4NCmh0dHBzOi8vbG9y
+ZS5rZXJuZWwub3JnL2t2bS8yMDI2MDkwMS1nbWVtLXVuYmluZC1maXgtdjItMS0xMmZlYmUxZDIy
+MTZAYW1kLmNvbQ0KSSdsbCBkcm9wIGl0IGZyb20gdGhpcyBzZXJpZXMgZm9yIG5leHQgcG9zdGlu
+Zy4NCg0KU2ltaWxhciBmb3Igc2VsZnRlc3QgZml4ZXM6DQpodHRwczovL2xvcmUua2VybmVsLm9y
+Zy9rdm0vMjAyNjA5MDctZ21lbS1zZWxmdGVzdHMtZml4LXYzLTAtN2E0YmU1YzFjYzhhQGFtZC5j
+b20NCg0KDQpUaGFua3MsDQpTaGl2YW5rDQo=
 
