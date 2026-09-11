@@ -4,141 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E575C88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58979C88E58
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 18:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57BFE6B0093; Fri, 11 Sep 2026 14:15:38 -0400 (EDT)
+	id 377E36B0096; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54B7C6B0095; Fri, 11 Sep 2026 14:15:38 -0400 (EDT)
+	id 328B66B0098; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43A596B0096; Fri, 11 Sep 2026 14:15:38 -0400 (EDT)
+	id 23E286B0099; Fri, 11 Sep 2026 14:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18F956B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:15:38 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ACE50802BA
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:37 +0000 (UTC)
-X-FDA: 85202284314.09.6557970
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B6D5B20002
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:35 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GD8x6hhP;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789150535;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF71A6B0096
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:15:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51725C02E7
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:46 +0000 (UTC)
+X-FDA: 85202284692.27.BBDFD21
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7ED8780008
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ay6N/5OR";
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789150544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsUdzBV0WoHiJJ6Nt8zSUSskXe/EFmoaeRcNUlFxtf4=;
-	b=QmxqmWQbFkFdWjjOwYJ7qt6GJXs9RsqR05hoWGE4bphpkudWro11CBpZ+zNp71hiL1bnuf
-	iulcVYhgZLJUtNQo3CkQUmXsJ6vHBREIFMxVdZLdgRkdlZayd5R5UO4YhSr1PeF7nPoJL4
-	KJV9pinfYKjk3Rfk+LV3QF9YvSlFGMU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789150535;
-	b=o8SudhdLCd9ysEuLVWt8p8NyxPVU7iS79bFPQkynS+18CUhHJhmyzp8w+YguJ/R0q0hhqI
-	0G6Yzw2OacfqGoLx2wzElYI7hjQCKxxEhsHIehbfTdL4gqe7af3U5DcM6dSUOt0U7TtHZM
-	dlJ6TNMy2f4IC1Db65tEJdAm3nI60XI=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GD8x6hhP;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530411c7ee1so95511cf.0
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:15:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789150535; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SmIoPU11DcICv/ww6+qsLnYnbaCsqdyjRJw99k+YgTI5zkp3TGaJHdrmPPFTfH3qwV
-         K63iLpsiVIxWi4m9ZZyFq50VXneUWvuVc8vVtv0Vbtq3bWtRMmoVYbvyK0zBi9dIXQnf
-         Oj5C5qlNiS0tcsuY4N34PaXzmwPtwIipIiX9iDw2ic8ey9ZV/5NTK45JxoePr/uifDLz
-         3bclmdGB1wo2frSZxxqSFfuLru4+SAQVlCDdzUxexwAnmxxgCyibVHAE4lNbbUXekDyg
-         uIpkUDBiTguPzSzjsx/JubNQ5kKmOi/Jr8dF8gpXRt1lW7gJ1Zbaw2JOXC1zU3H6aBDp
-         7iVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SsUdzBV0WoHiJJ6Nt8zSUSskXe/EFmoaeRcNUlFxtf4=;
-        fh=C8rbP0hkWVu49hxfZrmEpUVqlI1Lr5hZHwK0a6rHc6M=;
-        b=DZKBcrgwr246n9Og8vS28v+w8fsSRFXGrxIJVggmuOyIzvXQjRXenUJ7usuA4MvcFZ
-         Nb5BSXDaamXQcYfpX3UHvXENb6MbZrNKntxx+ct6eU5IA9YX4rl4JPQr3w68vLnPJzSS
-         06GVGB10eIz9urWu2WDGbwc0nHGUYcy+DbSmmLAAf3hDidjTulCUioFCHKy+am4ACGni
-         0R8gPE/zRvedFofP5pBvaebabWL7KddUDykCDRKXuADNdCuI2mcV1/ee152qBVoEU7jq
-         9i+SfA9L7HuT9prEo2h4w8wGOPoC0KPRlgmYWdj6QpduK8Kd9g2HedfQ1mLid+2+IIMd
-         pR+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
+	b=VChSP0kTsw9QIvw9Peh8tCcj4/jj+usYw4ZSk2rWUaq8LVGFQetTcndmZCxsL6sAOaPI+Y
+	jt8wyUY6qnGmpcsROxC+in6SJXnaeIBqG7xWuxbEZX5o+r1r0hEdkXX29IgCxyyBcgpsco
+	sv2bXtNbBbKd8ThKPnQMPmlc/T8xu1I=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ay6N/5OR";
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789150544;
+	b=8hLDqe8voC6nztB7VqH//J7mernhAjbCEUtY5vZLHxR9jN1i5zFhvSs6S8+SqHqyvQ0QkR
+	dPrNDEB5d+OSR/8QgkT5UxZ6Xcw7bv/+fkJBag7vHC/zk2cXUx5ELv0nbjfTsp278QgrtS
+	1NVYbdaKYNAP49wP2fUuAq9qw29OQSo=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc4d64bcea5so344467a12.1
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789150535; x=1789755335; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20251104; t=1789150543; x=1789755343; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SsUdzBV0WoHiJJ6Nt8zSUSskXe/EFmoaeRcNUlFxtf4=;
-        b=GD8x6hhPVV/K0p8cWBdFzXUE8yy2hk8wpJLtu5Fiyz12QUQw0OKAmx88T9VAnG2x1J
-         /40KpmaXF6LxrFaW3peKf21m6dm1lT/Ss60VtOxwdXsD2BvWfMgh1CNzwcOvx1fhQtlf
-         1G+oh28hYr104GAuwuEBsAPhP8XzGyPQZdPOIrYylNTeMYu3dBWrPHmvWBh/SDn864pN
-         SpkT6UuNESlxWT9+NvA0yOL1b5Y/tL91cIU34YhnXcqc/gUWhl5SO73RPfrdrT6RSP7q
-         kyuUjdCS9NhZNauhpBLvvSN0lMQhWQU1S7xn0491nNDOeyoRkTTpvG2H/9oa1m3m206U
-         0yjw==
+        bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
+        b=ay6N/5ORuEVJnDaagODEnX9Twv/IyzZlIrJ2wSfrjTJRAW8uQzFkk7J78Trst8x/YD
+         WviLodhGU8XqZct4QkbDrigqG/02y4wJOiC2vUitf9Xot1d63hXCe4bZOxS4fKv3w/bs
+         lYj1ALfobabQTxH3lGKaQMXtp6Z5HgsPqz/aku+PdPDBPzr8AxTPrd9+qeNyHT6mq/ly
+         /7CS5I6xXX/0DrW467FFOPEc56SV8XMQMekmEsBD17SN1HO5jaUMMfYj1XncfijMeuyv
+         K26tJBzhvwT3D+8SbjHZJVIFRBMUONAoktt0PB0TXpKCuwz/lByqzerfXbZEoN5xOVHs
+         GVyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789150535; x=1789755335;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1789150543; x=1789755343;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SsUdzBV0WoHiJJ6Nt8zSUSskXe/EFmoaeRcNUlFxtf4=;
-        b=eDIGXz6yTdbG6FUeijuk7h2OONTwUjCKQ8Ro5E291193ZOeVB1Uf4uS5uuNppHs0ew
-         nmnUHqj+dS+9VKzhtm50kk30q54j+fnCvqYEd2g0wW0JMcGnTTSLjeaOXlK0GcLYcLF5
-         fHxBEUKRYXo4IwKwDGjfzH0iqBIEOp14/8yXBb7CMAo7CzslQ6nKe9a2slHu2eL9oFC6
-         r2fjGFeAsGEVvh/PlFeU6CHreKtgfSWKbtoE6oq6GiWYctwjspHiFcLgUmmD6vnxd/dI
-         LKTAKnIAHhEoOB6V1nPREDK8yWQLGzG5sAPrW5nYY9PaI59eD/4P6b/7w0/tfaLdVIUP
-         WkjA==
-X-Forwarded-Encrypted: i=1; AKwUvByQ4l5ZQHQVvQxBcsqYN9ux6T1zhn2zMN2lJD2ifxXGoOszNyTs/M4u45g39Uw9dBYVKB93fu3KnQ==@kvack.org
-X-Gm-Message-State: AFuF++m3NaK1C+BkntJ90RevE4ydw54RJ5yT43yhiSZOdt1VjjtJ7a4K
-	TnkSNkNW9ZoeGsFa/LiXoDccJ8kN2xykU0U7HYws8vh25u3LEXN/mOPTumhFye4NieASrcJquxI
-	hW5H5RA0VEzq7AunnJQo+Hv/cYbadTx6QpH5umDS+
-X-Gm-Gg: AYBFou3WrcUClKBWozp3QGVbnsOBKMlpibkH7CR7DgoYsWBGSyk/JEeFJfOgZrvAHU6
-	AYd/Pu90LhXAX6Gy1K8cCCMXbkC4VUItqE/Dp24qvV1UsLl5YF60roF6R1aU3jCY4+tDfb0Q3VK
-	Pyjl/4XcgTbfK/UlgdFn/ODBn4U+kGprIayYvd7axleLKT9WT8IiIJhul7mfucRrlrVi0FKiOdo
-	h+8Ro7Or6YqxsNIHQFF/i2JgG8yegKDZhZlQDqPToQJavS9FADklTq5NW5nI+cPCMaMoztD8q/r
-	kONPiuVuzojtNOTi0VjUIys5p8LLC17wHYUD2QPQ1mC9cISsGnBSeueVDNBvmyKsOPDOKovKtYA
-	pxQt+oN6EJw==
-X-Received: by 2002:a05:622a:1b07:b0:527:f08f:56a2 with SMTP id
- d75a77b69052e-530e4652848mr1537081cf.8.1789150534090; Fri, 11 Sep 2026
- 11:15:34 -0700 (PDT)
+        bh=UoB/yhujSeic4Z83ePKaRXKf1DWcrbuqnOKvr88NN90=;
+        b=VN861FIHVOdJSow8c0tLd8LXSAzLovFf59cqqUKTyMXg38GXj69CfUjCEpMXGzztt8
+         iFTkeGkyUA9fANsoDTUVNNZwSp4sVruI+fMJdQrqjztAdV5O1TQjW3zFkZpVH3pCqetI
+         4IJBnhsT7WFli4ZIenOTEL97UgAnkpXTvJocPb1JfApeBvxA/q083i2ELMqogzyhm9AA
+         JYvAWrIXh0TUWvuMpc/5addTxXSTlDPCVOYdo9fF9tpKHMX/DEbgu1JISqn0xI/E9T3i
+         SZvzRULVW8dNP9u1qTRCNMr5tVnd8InnqJi+weuMFrwg0H/8Cc9sq4mpJX27xk1L99sT
+         Mg8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxRG8fgcxXt5nkq1jU8YBEmpdpny28rQL1v1gEgtQd5+b4JT/zNKKYZSC44rS23vdeJ05k9wwxSBA==@kvack.org
+X-Gm-Message-State: AFuF++ldnv9WydD3jhPH/DsAeLNKWTN1k+Um0ffVu4fboHuFzgUquGsn
+	oMB648ktPCd729IIQTHVdO39wMMLiOby8HBA7nHMN/hwp8OVNuytzzzt7VUCGjWZow==
+X-Gm-Gg: AYBFou2QgwQCUj5/8K3oRY6y56b16qYMPKMOS7NvdzGKZG1MkJU9Qecvi8Ii0kFmrik
+	CzXAJHjxHItAXOkX8Na+oyCM8zJ+CeT2cbQYlY3u3IgZl87M9773Oj8qK6HSCbVlCdHyJtdRudm
+	TEHWFEFji3GVX4FvBEFUWWXMhRV6qKeYvzZ2H+WQVt8Exns433CRUmSoLtT3h4ZuhyRS/fsHskG
+	gN5iFLW21LAD5lxBNL5rLIlZ9NUL8CpteyjSu8YjYgnZnAM2LwlX1AthNoB/X4k7KNucRw5lG1+
+	JD7bnm3bVAlLjStFqQPzQieT+vUe+J3vSUP++nu5Cb0stWqXI06ON+NSu0vPkpMZav/H7TsPd/N
+	su5MtfUJIakZz/ZxZX0c5pZTVOFbYx7ZLcGPG4MeSOsjXl37Wtx12JT1Ffra9V0XIM+BozmVrpb
+	oJ/Ef2sgqeLptQ4AT+3kXiGesg0IB/KVmVwVuEac3M1utlt1jtC3Z9EhkmBfA143R2KTzXOOaLp
+	uqN9vt5FHFdasbPzagis0cGjMKP7KJXaYdA3fP+
+X-Received: by 2002:a05:6a20:3ca8:b0:3da:bb98:b1f9 with SMTP id adf61e73a8af0-3daed4bba1dmr10454732637.9.1789150542427;
+        Fri, 11 Sep 2026 11:15:42 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6550e06sm1594193a12.14.2026.09.11.11.15.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 11:15:41 -0700 (PDT)
+Date: Fri, 11 Sep 2026 18:15:38 +0000
+From: David Matlack <dmatlack@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
+Message-ID: <aqRFSiicubfsw3N6@google.com>
+References: <20260901180713.4185641-1-dmatlack@google.com>
+ <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260910234737.1340642-1-surenb@google.com> <20260910234737.1340642-5-surenb@google.com>
- <aqQsWNfrBSp4DY_N@gremlin> <CAJuCfpEEi-9ZqhKR536tJHywprb9RFcx92gK00qp_ecBGH9Fvw@mail.gmail.com>
- <aqQ2M5bZv4k43j91@gremlin> <CAJuCfpG21qzef-yag3A9d22BUXnx2EFmbSvT=Zi5uRx_h7BxbA@mail.gmail.com>
- <aqREAsJK72xwXSzK@gremlin>
-In-Reply-To: <aqREAsJK72xwXSzK@gremlin>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 11 Sep 2026 11:15:22 -0700
-X-Gm-Features: AcwNN1WgElVhcS2wqqourqlrpP3HGCgXdW4_YR2F2gcH7VKNhfp3ud7rRD_kq_g
-Message-ID: <CAJuCfpGxoFPgs2pN96VsTtWJE+aN5e94woAGCeyp92+geVxOrA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
- smap_gather_stats() start parameter
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, xueyuan.chen21@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7ED8780008
+X-Stat-Signature: pbp7fxdgu6cxraukq9cpxaaybzfbsosg
 X-Rspam-User: 
-X-Stat-Signature: k9khnhtc3533ja8rkxpb6ct1g5r158rb
-X-Rspamd-Queue-Id: B6D5B20002
-X-HE-Tag: 1789150535-558271
-X-HE-Meta: U2FsdGVkX18tle3Q6PMIGbsG/Y03mhMCtaVI/78HvVTrm5FP4Em5lLJGHn0jwkm42A3Go9octAsY06QRnyT1m5By5uW9CE7GpG3wsgvicCmPXbLy8PPj5Ap2gHWZY76VCYFhhG/0NOFALKviQyXzyLIWb/S0FBntPzQMJAZSH3zbfpFxSZB+X42Sp01Tvqo+IdOdCrF7Hw/sOljzt5RCYjEEKsjR3+TpSpy6lTf9cFLvaa5iNEOnbMjOHfhM/3zL1A01GBK0ZIST9+0f/48YrsaAYP393lNP5qMp6FU1YhR0ksvUZ0Pwht9X+raLCilAZgiXhiUf6p+pgrRYsb2RrmKCm+ggMEvBRrfXX/1cSOH5Y4wtSs0VRg7JsvBQUji+k/RnQZXZ8pGtTuu4a4mDQzymZgUbZASm2NNK0eZEpV6R6VcXjzuV/UrpEZCXnWOLnM6gT0SgcMAHWeHj6rNau4MozH1quZPRe/stelfdHix4FRGqKAsjfTRYEhK8esKtv1xS+KBU/M54AoiuYSdSfcOOcIKEsDVzH2+BEnbBzF2pO37wLJ8TB0MzVhce7aHZEBFEU/2WU2Ax5DFXhsxO5BbQNEkZIhkM0D3ds6q0Ot8gsj1PitNk7DsZCpdor3ebqVs4FqkvHz54Mcn4Bm9vlaJO/4uYkA8k+8bcRQ5qXWbbeJyWenc9TVNa/UsQ3cVrp7lQFRxYvA5tQ6UAz3H6ClYL3VyN/ds8CMNjnURRXJBNxLHWZEjr1jee2ToPzbBXwxPhde1FkpHF4BDVVUdWdFfhamdI9+ru1DHYcfs3hkaZ2IWF96L9Uuk+oqHKkeA3kwiqoDPabnnD+Qg9ylrPhUK/pCqVBJvuviOCto/Fi5h9w4jgbdhmYW3a5euxqiZ4p/V6F5YhWqcYWvFG0LYivilSuqGB3bd+etPxDHYL8CEQgDtADWIfZ/m3tGCRtvRbM/Wg24Rhxq1mC0E9tTB
- AHQeZUQu
- m8NDDrAHdmai6rkqKx0W6Bnn7EsSbXiL96x8NwJI3SrJNtHZ+mrCbyXfLF/IWTprF5hdJFZSBZK7tQQGG/lsvlPfhC3V9Xlcytw0KcyP7uRAefdPMds+WyN+fcB3GC20tFDVtqtr5K7QqjTXOrcU83RUHbPsiSWwalFSUezgf0tCQoFjFhGSTfZlF6Dt5F3kEtYOw2ivwz1wT2GekLX60kFOvVwL2NFQts0WLNyYV3SdaT+m7oadk6uNitVXJwMlrI1znRbT94oFoujTNRf/n6Ly4qyWVugvf1joYf2u5qD6xMl913id7ujZkJDyaYH/aMyj+BkpENNcrFYHEnxIEZqlpIqGMISTgPJRy34mejhCQ7YviCXYyG4ZpvitAbFQm3n9PKoKh/a2r/bfjxWwygOvGvenDVvxttAV0EltcAsvrzwVVVwBHxIxpi9uTspyHxI5fWHxOlc47u4RsMH7Xn+CJGw==
+X-HE-Tag: 1789150544-821603
+X-HE-Meta: U2FsdGVkX19qcB4vhFVJwieJw6N0eB4Ye1dFlb5P9yDUx3pQEuahgnCabdzL9ggjhjmLB1/9LgNnH+pdCAXhxll6yhX/m/bq76tTJegRxA+448TYM4W01fNBGy47tWK9wM2uhltVxLA6bmXmBNri8NZH3lTwAOvhrAK2cEjs12Iq/5j2/fbIZ5P5vXlBSEGVeEvb958RoYeOmWO8GdcSJ/b/QxCiMMW7cUsvHdmyckWHVS2sxAjIr6my85bg2ZMxBjE6Mk+e8EMTZoVJftrl0aB06MR1Cyw7h0oAXIVeIf4M4IVdU00g/RnZspDljbB4DxEILa2Glt1Uxu74XeKr4F44785sVk5FQViB+HCpFqslBAbdyhdnMlNAiNf4fEV0HKVgn48wXwVQGzmlIKdgaDmPzHoMt+LURa7FcsJmGJDlwQnAiH/arEyOqZNnoTFV0SabKuP6gpXubzbAv17YZfJS0IPzPHHdjI4MnVYuZO2BsZF5yOUoMS6cqrr3n9bpbgMILt37PVppni5FUeTN/4TlN0KEAQTEZZNm3VBH+cuzf8Zuk0ZOyUejFuTir9CEdmlqcUATWhOhzjfwevNTGRZMezErJz4UfzvPb9+gTfOMNqFldhp4gZ8/olAmFD/SYoy0wSPalUILM6MREqNuQahzwhWEzL8ezRp490rVXkuCfd/+V282+iKzs6RHkdeGXV5L3dbWA2V4qUl88sDjj9PRT0OhrxMY2OJCUCv8ap3Avz+h8fDqm2vd2qAjyUmZmUXMH/7wxpX0PpKVeFo1P5naF/MlCcGOkGh84JL3RNq4D3+iIunGRMRNZKigxNHGaAUvNJ2bI4SeFWDFdFPyHXMfzhPIlfPI2hkc4HpLgoKno9rk7zMuybSL9jBNwt8beb+v9sMqAo1kV8vYJpV/jJ8fjtUMLLsbL5M7MFjvmvNNd/RKzv6l4s+Fst6Oq5w3gE58zNRXfb3Bv2EK6CO
+ f4O1nrE2
+ Uug28FPrsxm4n1wf4eATyI3CCbgAg2gFjWgreYuA+hAtconx3pi2siLf17dB2kg6VzUVA3FBa8oBxgBskmWNCOnJOXYqJObHfRG79iBui8OaJSK7I6vxsOTKZy9nMJQawR4AXhYJ5TSRZ7IksTcM8EOY58vjpeLFWgid7ac/Ns7O4cU2W1rUbddLG1x2KuZ7qbX4GfdaXp5+VUXrJ2hFpkaVTOCGxFGuU2Srpd62y1nwIOjLVBKOCE2O78kB48lFdAeo903d10FIhvmwHG430+4i0VUkn4578a/Ye3mxumCOwCOEWfrMIIpYEStiyLuBhL61zXnjvdpo7QG9aOZ2xNDu0J4sBzWvcJiy2VUu+KbNXoq73uWNqv3XbR5DNfhAQ9H5UsUKQD1tOhgs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,305 +126,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 11:11=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org> wrote:
->
-> On Fri, Sep 11, 2026 at 11:06:28AM -0700, Suren Baghdasaryan wrote:
-> > On Fri, Sep 11, 2026 at 10:49=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@ker=
-nel.org> wrote:
-> > >
-> > > On Fri, Sep 11, 2026 at 05:07:48PM +0000, Suren Baghdasaryan wrote:
-> > > > On Fri, Sep 11, 2026 at 4:39=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@=
-kernel.org> wrote:
-> > > > >
-> > > > > On Thu, Sep 10, 2026 at 04:47:34PM -0700, Suren Baghdasaryan wrot=
-e:
-> > > > > > smap_gather_stats() interprets its start parameter to mean vma-=
->vm_start
-> > > > > > when it's set to 0. Eliminate this special interpretation and p=
-ass
-> > > > > > vma->vm_start explicitly when needed.
-> > > > > >
-> > > > > > Since smap_gather_stats() operates within a single VMA, we can =
-replace
-> > > > > > walk_page_vma()/walk_page_range() calls with walk_page_range_vm=
-a()
-> > > > > > which is simpler and also can be called while holding per-VMA l=
-ock.
-> > > > > >
-> > > > > > No functional change intended.
-> > > > > >
-> > > > > > Suggested by: Lorenzo Stoakes <ljs@kernel.org>
-> > > > >
-> > > > > Hmm did I? Where did I suggest this?... I guess a while ago?
-> > > >
-> > > > In [1] on June 9, 2026.
-> > > >
-> > > > [1] https://lore.kernel.org/all/aifO_rCurVhFRTcl@lucifer/
-> > >
-> > > Yup a while ago :)
-> > >
-> > > >
-> > > > >
-> > > > > I mean I also happen to suggest it in the previous patch review :=
-) but that was
-> > > > > sent after you sent this...
-> > > > >
-> > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
-> > > > >
-> > > > > I don't love hacking a hack for a patch and then unhack it in the=
- next in a
-> > > > > slightly roundabout way.
-> > > > >
-> > > > > Feels like this should be squashed. And a wrapper function for
-> > > > > start=3Dvma->vm_start should be used rather than duplicating that=
- param
-> > > > > constantly.
-> > > > >
-> > > > > > ---
-> > > > > >  fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
-> > > > > >  1 file changed, 16 insertions(+), 13 deletions(-)
-> > > > > >
-> > > > > > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > > > > > index 3c40c9cbb9c9..ecce7ce116cb 100644
-> > > > > > --- a/fs/proc/task_mmu.c
-> > > > > > +++ b/fs/proc/task_mmu.c
-> > > > > > @@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_ma=
-ps_private *priv)
-> > > > > >       return &smaps_shmem_walk_vma_lock_ops;
-> > > > > >  }
-> > > > > >
-> > > > > > -/*
-> > > > > > - * Gather mem stats from @vma with the indicated beginning
-> > > > > > - * address @start, and keep them in @mss.
-> > > > > > +/**
-> > > > > > + * smap_gather_stats() - Gather mem stats from @vma.
-> > > > > > + * @priv: proc maps private state.
-> > > > > > + * @vma: The VMA to gather stats for.
-> > > > > > + * @mss: The accumulated stats.
-> > > > > > + * @start: The address from which to start.
-> > > > > >   *
-> > > > > > - * Use vm_start of @vma as the beginning address if @start is =
-0.
-> > > > > > + * This gathers stats for the whole of the VMA unless the lock=
- was dropped
-> > > > > > + * and VMA grew or got merged and we found it again, in which =
-case we only
-> > > > > > + * gather stats for the remainder of the VMA range.
-> > > > >
-> > > > > This seems to be describing what callers do not what the function=
- does unless
-> > > > > I'm missing something? So that's really the wrong place for it.
-> > > > >
-> > > > > I think the description of why it might be a partial walk belongs=
- to the bit of
-> > > > > code that actually tries to do a partial walk.
-> > > > >
-> > > > > Anyway as per below I think separate partial/full functions make =
-sense and there
-> > > > > it can simply be described as walking either the full or part of =
-the VMA.
-> > > >
-> > > > This is verbatim of what you wrote at the end of [1]
-> > >
-> > > OK, I guess I disagree with myself of 3 months ago?
-> > >
-> > > The technical point being made here, which I think is the more constr=
-uctive one
-> > > to engage with, is that this is a function that can be called with di=
-fferent
-> > > parameters for whatever reason.
-> > >
-> > > Somebody might decide to call it for another reason, putting somethin=
-g in the
-> > > description of the function that assumes what callers will do when th=
-at code can
-> > > change is asking for bit rot.
+On 2026-09-11 11:04 AM, Ackerley Tng wrote:
+> David Matlack <dmatlack@google.com> writes:
+> 
+> > This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a new
+> > UAPI to enable preserved files to be restored into a userspace-provided
+> > file instead of a kernel-allocated file, and uses this to support
+> > preserving tmpfs files in-place without any changes to the LUO ABI.
 > >
-> > Yeah, that makes sense.
->
-> Thanks.
->
+> 
+> I'm interested in the idea of retrieving folios into an fd for a
+> different reason, I'm exploring handling over ownership physical memory
+> to a guest_memfd.
+> 
+> > The Live Update Orchestrator (LUO) API currently explicitly returns a
+> > new struct file for every preserved file during retrieve() (e.g. via
+> > memfd_alloc_file()). This then forces userspace to use anonymous memfds
+> > for all in-memory files it wants to preserve. This works reasonably well
+> > for VM guest memory but does not work well for other types of files that
+> > userspace may want to preserve (e.g. in-memory logs, binaries,
+> > configuration files, etc.).
 > >
-> > >
-> > > So as I suggested above:
-> > >
-> > >         I think the description of why it might be a partial walk bel=
-ongs to the
-> > >         bit of code that actually tries to do a partial walk.
-> > >
-> > > I.e. I guess past me's description is apt, but belongs with the parti=
-al case.
-> >
-> > Ok, sounds like you want two separate functions supporting complete or
-> > partial walk. I don't have a strong preference here and it's easy to
-> > do like this:
-> >
-> > staic void smap_gather_stats_range(priv, vma, &mss, start)
-> > {
-> >         ....
-> > }
-> >
-> > staic void smap_gather_stats(priv, vma, &mss)
-> > {
-> >         smap_gather_stats_range(priv, vma, &mss, vma->vm_start);
-> > }
-> >
-> > Does that sound good?
->
-> Yeah that's the idea.
->
-> >
-> > >
-> > > >
-> > > > >
-> > > > > >   */
-> > > > > >  static void smap_gather_stats(struct proc_maps_private *priv,
-> > > > > >                             struct vm_area_struct *vma,
-> > > > > > -                           struct mem_size_stats *mss, unsigne=
-d long start)
-> > > > > > +                           struct mem_size_stats *mss,
-> > > > > > +                           unsigned long start)
-> > > > > >  {
-> > > > > >       const struct mm_walk_ops *ops =3D get_smaps_walk_ops(priv=
-);
-> > > > > >       const bool is_partial =3D start > vma->vm_start;
-> > > > > >
-> > > > > >       /* Invalid start */
-> > > > > > -     if (start >=3D vma->vm_end)
-> > > > > > +     if (start < vma->vm_start || start >=3D vma->vm_end)
-> > > > > >               return;
-> > > > > >
-> > > > > >       if (vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
-> > > > > > @@ -1285,10 +1291,7 @@ static void smap_gather_stats(struct pro=
-c_maps_private *priv,
-> > > > > >                       mss->swap +=3D shmem_swapped;
-> > > > > >       }
-> > > > > >
-> > > > > > -     if (!start)
-> > > > > > -             walk_page_vma(vma, ops, mss);
-> > > > > > -     else
-> > > > > > -             walk_page_range(vma->vm_mm, start, vma->vm_end, o=
-ps, mss);
-> > > > > > +     walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
-> > > > >
-> > > > > I mean obviously am in favour of this as I suggested it in the la=
-st patch :)
-> > > > >
-> > > > > >
-> > > > > >       reacquire_rcu(priv);
-> > > > > >  }
-> > > > > > @@ -1343,7 +1346,7 @@ static int show_smap(struct seq_file *m, =
-void *v)
-> > > > > >       struct vm_area_struct *vma =3D v;
-> > > > > >       struct mem_size_stats mss =3D {};
-> > > > > >
-> > > > > > -     smap_gather_stats(priv, vma, &mss, 0);
-> > > > > > +     smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> > > > > >
-> > > > > >       show_map_vma(m, vma);
-> > > > > >
-> > > > > > @@ -1396,7 +1399,7 @@ static int show_smaps_rollup(struct seq_f=
-ile *m, void *v)
-> > > > > >
-> > > > > >       vma_start =3D vma->vm_start;
-> > > > > >       do {
-> > > > > > -             smap_gather_stats(priv, vma, &mss, 0);
-> > > > > > +             smap_gather_stats(priv, vma, &mss, vma->vm_start)=
-;
-> > > > > >               last_vma_end =3D vma->vm_end;
-> > > > > >
-> > > > > >               /*
-> > > > > > @@ -1455,7 +1458,7 @@ static int show_smaps_rollup(struct seq_f=
-ile *m, void *v)
-> > > > > >
-> > > > > >                       /* Case 1 and 2 above */
-> > > > > >                       if (vma->vm_start >=3D last_vma_end) {
-> > > > > > -                             smap_gather_stats(priv, vma, &mss=
-, 0);
-> > > > > > +                             smap_gather_stats(priv, vma, &mss=
-, vma->vm_start);
-> > > > >
-> > > > > I mean this is all horrible, having to pass vma->vm_start explici=
-tly.
-> > > > >
-> > > > > Although better than the hack that gets compounded in patch 3.
-> > > > >
-> > > > > There 4 invocations of smap_gather_stats(), only one of them pass=
-es a
-> > > > > non-vma->vm_start start.
-> > > > >
-> > > > > So it'd make more sense to just make smap_gather_stats() lose its=
- 3rd param and
-> > > > > have it call smap_gather_stats_range(), then have 1 invocation of
-> > > > > smaps_gather_stats_range() directly, as per suggestion in last pa=
-tch.
-> > > > >
-> > > > > Or something similar to that.
-> > > >
-> > > > Hmm. Ok, I'll wait for you to read your previous suggestions in [1]
-> > > > and after that let's discuss what the final version should look lik=
-e.
-> > >
-> > > I don't really think that's hugely constructive.
-> >
-> > I wasn't trying to offend in any way. Just wanted to give you some
-> > time to recall previous conversation and consolidate your position.
-> >
-> > >
-> > > I'm sorry I'm (mildly) disagreeing with my past self, I've sent tens =
-of
-> > > thousands of words of review since then so I think it can be forgiven=
-.
-> >
-> > Definitely. Again, I wasn't trying to blame or anything like that.
-> > Just pointing out our previous discussion and want to make sure we are
-> > on the same page (while having some fun in the process).
-> >
-> > >
-> > > In any case, I really do think:
-> > >
-> > >         smap_gather_stats(priv, vma, &mss);
-> > >         smap_gather_stats(priv, vma, &mss);
-> > >         smap_gather_stats(priv, vma, &mss);
-> > >         smap_gather_stats_range(priv, vma, &mss, last_vma_end);
-> > >
-> > > Works better than:
-> > >
-> > >         smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> > >         smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> > >         smap_gather_stats(priv, vma, &mss, vma->vm_start);
-> > >         smap_gather_stats(priv, vma, &mss, last_vma_end);
-> > >
-> > > ?
-> > >
-> > > I usually come back on review very quickly so I don't think this seri=
-es
-> > > will be held up with any such change.
-> > >
-> > > But let me know if you think it's not a good idea technically.
-> >
-> > TBH I don't have strong preference but if you like it this way, it will=
- be done.
-> > I'll post an update today since I don't think there will be more
-> > controversial parts. The biggest blunder on my part was the way I
-> > split patch 3 and 4.
-> > Thanks for the review!
->
-> I'd quite like to have a look through the rest of the series first.
+> 
+> Does this assume that VM guest memory is usually provided using
+> anonymous memfds?
+> 
+> More generally, is the problem that there isn't a simple way to
+> implement retrieval into anything other than anonymous memfds?
 
-Ok, I'll wait for you to finish.
+Roughly, yes.
 
->
+> > Preserving entire tmpfs mounts in-place would require a large amount of
+> > kernel support and would effectively make tmpfs an ABI, which is a
+> > non-starter (or so I hear). Instead, we can delegate the reconstruction
+> > of the tmpfs mounts (directory structure, permissions, etc.) post-kexec
+> > to userspace. The kernel just needs to preserve the contents of tmpfs
+> > files and provide userspace a mechanism to restore those contents back
+> > into a specific file on the filesystem after the kexec. Hence,
+> > LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
 > >
-> > >
-> > > > Thanks,
-> > > > Suren.
-> > >
-> > > --
-> > > Cheers, Lorenzo
->
-> --
-> Cheers, Lorenzo
+> 
+> Suppose pre-kexec, the data was in a tmpfs file (and fd), how would the
+> preservation work? Would the user have to
+> 
+> 1. Transfer the data from tmpfs fd -> anonymous fd
+> 2. Preserve from anonymous fd
+> 3. kexec
+> 4. Set up the tmpfs fd
+> 5. Retrieve into the tmpfs fd
+
+No, the proposal in this series is to support:
+
+1. ioctl(LIVEUPDATE_SESSION_PRESERVE_FD, {TOKEN, tmpfs_fd})
+2. kexec
+3. tmpfs_fd = open(..., O_CREAT)
+4. ioctl(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, {TOKEN, tmpfs_fd})
+
+No transfering to or from an anonymous fd is required.
+
+> > An alternative approach to restoring data to a named file would be
+> > supporting a zero-copy sendfile() that can be used to convert named
+> > tmpfs files to/from memfds across the kexec. But this poses significant
+> > challenges on the *preserve* side since the preserved file might still
+> > be actively in use. The benefit of the retrieve-into approach introduced
+> > in this series is that it does not require dealing with two different
+> > files. There is only ever one file that owns the preserved memory.
+> >
+> 
+> Would it be more symmetric if the process is
+> 
+> 1. Transfer the data from tmpfs fd -> anonymous fd
+> 2. Preserve from anonymous fd
+> 3. kexec
+> 4. Retrieve into anonymous fd
+> 5. Transfer the data from anonymous fd -> tmpfs fd
+> 
+> As to the exact details of "transfer", I think the best we could do
+> would be some kind of move from one fd's page cache to the other fd's
+> page cache?
+> 
+> Is the goal of the transfer to avoid any memcpy and fully transfer
+> ownership (so, not just by increasing folio refcounts?)
+
+Yes this is the alternative proposal that has been proposed and
+discussed a little bit off list, with sendfile() and copy_file_range()
+being the possible mechanisms to do the "transfer". I think there are a
+few fundamental problems with that approach on the pre-kexec side.
+
+ 1. iommufd requires that fds mapped into it are preserved. If the file
+    mapped into iommufd is tmpfs, but then we transfer that file to memfd
+    for preservation, iommufd will fail to preserve because the tmpfs file
+    is not preserved.
+
+ 2. Even if you only use this feature for files not mapped into an
+    iommufd, transfering the contents in a zero-copy way seems
+    challenging. What do you do if the tmpfs file is still in use when
+    you want to transfer it?
+
+> > By leaving file and metadata allocation purely in the purview of
+> > userspace, programs can create the target files where they want, with
+> > the names and security permissions they desire, before directing the
+> > kernel to restore the preserved folios into them.
+> >
+> > Currently, only tmpfs shmem files are allowed as valid target receptors.
+> > Attempting to target populated files, or anything other than an empty
+> > shmem file, will trigger -EINVAL. HugeTLBfs files could be supported in
+> > the future.
+> >
+> 
+> Is this basically that at some point, all in-memory filesystems' fds can
+> support transfers?
+
+Yes, theoretically.
+
+> 
+> >
+> > [...snip...]
+> >
 
