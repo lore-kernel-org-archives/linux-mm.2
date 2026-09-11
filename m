@@ -4,99 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C642AC88E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02BD3C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:02:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E17BD6B00AE; Fri, 11 Sep 2026 04:02:01 -0400 (EDT)
+	id F304C6B00B0; Fri, 11 Sep 2026 04:02:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEFB06B00AF; Fri, 11 Sep 2026 04:02:01 -0400 (EDT)
+	id F01136B00B1; Fri, 11 Sep 2026 04:02:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D05D06B00B0; Fri, 11 Sep 2026 04:02:01 -0400 (EDT)
+	id E17C96B00B2; Fri, 11 Sep 2026 04:02:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CD266B00AE
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:02:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 382B01C0403
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:02:01 +0000 (UTC)
-X-FDA: 85200738042.27.A32581C
-Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5020540009
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r+oGFJjp;
-	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id B56A86B00B0
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:02:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DB50160134
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:02:18 +0000 (UTC)
+X-FDA: 85200738756.16.0A744FF
+Received: from mta0.migadu.com (out-96.mta0.migadu.com [91.218.175.96])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5C23E40008
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:02:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uBbKjQP2;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789113719;
-	b=ntVxP3Gim9b5FCBUCUq360RBYT6FjMdWxZOmI2XEvfPs55h+cl3fu/XxnamWKqRJUrznJw
-	yshI017OYL7/7BPCTOfVcwIwbpn9shrW+zIOFfMV1U6f38KvY5T5x8M/SX/fxg5rkVx9lL
-	mERHok6LqR9xy17CNecSTVMJih7twLE=
+	t=1789113736;
+	b=wM1AioUktlwxOPiMWPuwl4hpaHuOyISkT9r5+wVtAdrQWmipHdsJIxJOMS+vvjT2D7DPGp
+	5ggZUNyepUret3yaTbeyVz1lw31P8/EyCKEVd8BJvL846yuCiLOS2pGBbMJZAZIJLj1bLG
+	NqogyfF4UMD5HOYRbWla/BiervTs2/U=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r+oGFJjp;
-	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uBbKjQP2;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789113719;
+	s=arc-20220608; t=1789113736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RvUtUMBnVxAOxf82D4GmyE5Hx0QZB2VCDnA8OWIQgts=;
-	b=pvCkefYFk4HPSVIDW76QIlOpFbL60rIPhJJtP3oEDfqcl2rSi90wfIcm/YzH8dvZ4Rfw6k
-	LRrNX0z6B9Ut4vDlOB2Fj5oS4n012I5fcVlyIMFb0liCNx8I7XfC24Rl8xrAmJUxsVncge
-	pTEVngp3UVK2m4Vv+5F/Yw+EBXvowSQ=
+	bh=UmvM5O6QlxHFIfGeiOyXcANPGbZcs1vqxiFYf5ALZ6o=;
+	b=MXxDgcruV9UnYgy7hTi5Kq49/2a0V6N9/8/E7e8OsQqGt+44cVzz5Pq1BfuR06jO7fvG28
+	yoTr+0PfZZJmzHjsHLsJjjv7BBeCmz1u+/rNMBV+GRCcHJsxAB1anv82MUhVof7VYzeBvW
+	ZPZSSkR0+3eNOz9ZheFXQzq66tf+RrY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MlIZcCXSxTICdrlqvuuIMch3l/hSvENFUEtEORDa6Hc=;
+DKIM-Signature: a=rsa-sha256; bh=qoSX5ca3+2R9T/SC58K8tjc6WdOgd2bgxhEA3kDokIM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789113718; v=1; x=1789718518;
- b=r+oGFJjpjPNVoTAMB21ph5+IOjt5CEFIzmZVsSjBVVoaEcDyEXELWyEFEXn+bB1X7FOC+v9Z
- 1ctT4+tf7gBXDaiGuroot1tLxpdzApgdqgQXXbyMumsT8sY6NVGZtGuKLvYxv2VNtUOeeoo8u0t
- hYMxOEaPdYT+Xofg5mejiX5g=
+ t=1789113735; v=1; x=1789718535;
+ b=uBbKjQP2EUFEE5hOrKY945vscJ8EiZRp/QjlrT/nUA2uof7ObFLnaQTzIwtMWoB5PtPeBbY8
+ Hz6PB2TrYIwKc3fkuv1VVm53juNElXExAWWjrPSz8LRPnN2oVGZ9IB+rPFrpL6gltcZ+dyuDjxC
+ KftX2UpgqD5WH7VnNstP7CiI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 0c3212cca3ab0784;
-	Fri, 11 Sep 2026 08:01:57 +0000
-X-Mizu-Trace-ID: 0c3212cca3ab0784
+Received: by smtp.migadu.com with ESMTPS id 7d384f5229d115c0;
+	Fri, 11 Sep 2026 08:02:14 +0000
+X-Mizu-Trace-ID: 7d384f5229d115c0
 X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+From: Ye Liu <ye.liu@linux.dev>
+To: Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	x86@kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
+	Jann Horn <jannh@google.com>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	cgroups@vger.kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Oleg Nesterov <oleg@redhat.com>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>,
+	SJ Park <sj@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	peterz@infradead.org,
+	paulmck@kernel.org,
+	mingo@redhat.com,
+	rostedt@goodmis.org,
+	jpoimboe@kernel.org,
+	mic@digikod.net,
+	tglx@kernel.org,
+	david@kernel.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	rafael@kernel.org,
+	gnoack3000@gmail.com,
+	rientjes@google.com,
+	shakeel.butt@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	will@kernel.org,
+	boqun@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	pavel@kernel.org,
+	lance.yang@linux.dev,
+	mhiramat@kernel.org,
+	pmladek@suse.com,
+	longman@redhat.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	mark.rutland@arm.com,
+	Dave.Martin@arm.com,
+	james.morse@arm.com,
+	babu.moger@amd.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 4/4] mm: memcg: reparent non-hierarchical lruvec stats on cgroup v2
-Date: Fri, 11 Sep 2026 16:00:51 +0800
-Message-ID: <4a7a64eed2b145ad535fedaea3624f8310c29d5b.1789096175.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1789096175.git.zhuhui@kylinos.cn>
-References: <cover.1789096175.git.zhuhui@kylinos.cn>
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH v3 13/15] fs: convert process/thread iterators to for_each_*_rculock
+Date: Fri, 11 Sep 2026 15:57:58 +0800
+Message-Id: <20260911075800.491472-14-ye.liu@linux.dev>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260911075800.491472-1-ye.liu@linux.dev>
+References: <20260911075800.491472-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5020540009
+X-Rspamd-Queue-Id: 5C23E40008
 X-Rspam-User: 
-X-Stat-Signature: o7mhk5o9zeagjs6jb4umk8yqb46kbawj
-X-HE-Tag: 1789113719-680675
-X-HE-Meta: U2FsdGVkX19H4Va4exAE4ZAdzinXLBOJQng6jNH3f0v6jIXHfLVjM2YiGzZdW1StCapRS5eZEtCb5OqEllfyxt0VlEpt3MFRaH8DKr1VdhHNgrZaMqqhpWtjwrpcTi0wg/Dk747RzTep5YDAfXVPG7/q5MBb0lVmbEMRK5gsemt5qBr9Uw1VonyV/BvyxicWiMYy3zS47F850VG2/GT7q5mtYz4usIVkm+Ckc8dhe5qFJuDa9nZlzuJuvsMGVru4AvKTst+oCBsUGMGunUUE5LX7rTllTGhcPvWCtccfY9l3Z6TvCsUcolpCZMg7mVGLlzHv72BNghG16WFX7vad9YnkpSna8wUpAL0fudMo3nhzX9PqpWOWtM2VmORVVcFyyV2Pz7fcpcX2uSsCDzuxwgGOqURIPKqUdwGxhhOSsxCbSmjmqMZ7IBKR/nt7DGOppY6720JdtadJNO4VeEcNklflpwFo32JD0mkbpLvxtmobIF+DRn/KV+gr7WuHKkk9ZV+s85kdijv1++Ri6jZDtwHBXufVlnfZj6by3gxf3tbZ4lNk1mL72C8ysdfJ4qXCS/uIWVuJkzZCy5mjaX9/VI54kHebkcPtZGLLOai1EJHzScrnPOyHqGBXmdpWaOGQIA7iwNxzGxIea4tPqGzeW7n6wfcvgmXRzJMgBH/2V3ArWpbl8FUCkWqkloTDPj9EuykYtkqoQbn8iNkc2HftPoDUiCuPcxyaLJ/IIadCI/dmX3zZ0SkoOudc9EEnf2nts02fl7u0R9r2YoxYAY+/9fjQnhLfZVxRwoLvVB+aD3DelM0tBig9mryHLcxbgjMQl2/9N740rUoaZ8j+kJkqfLyy7ImPTSUXNH4RB2iHeFLP4lBfDLtWcbW+B5gQBwwsrcOUso+18GkPmSexzYBUiMUKsmA6FGDlOuhTZf16QlLohb+rpVG3Kpa2YBi9V6JBVDAr4YX2+IpeLj9yesd
- sWw14AWI
- u2rTItGWkpw9bP4dDdutKmSWSOlhh53/4jfe/g2uAWyRFhLMq57q7NnS/vNoSIYzgA/agdJc3jeGCZj3sb8QXUv4HtFuGsUJcepYTkc+rI7X0ZEZVRblkrDmll50DnHLc91h6p/pCm/kU4qZYK5+9hS/2dv+li+iAeD3yjugNp2M+FuORpeIKHxarVE+FVg6VlxGduREUdC7HLbaLUleGaZiIMQ==
+X-Stat-Signature: fs4xsqf113sezf6kzowe1acjy6xex1fd
+X-HE-Tag: 1789113736-265529
+X-HE-Meta: U2FsdGVkX19z70hyDCnMmqvOOA8xdPABAByHvlTMYU56yHL3rOEaviTXAULD7cpwDr7lcMWZ9nQgPZ/EMInFZLjmshthU/wOAuLNVGD7gsRWcHIR+IT/mNGQ5siE/QmOZL6Gl73m/kwER0er1se3SZMw6SE0eAvEQb/dcBJX+13xRc+ig423X97COAReuEDMjkmspgn2fIibE2iT59pU5Vc8hJdmPgkkVgLgImGQpy3R5pFisyIPz0JvlK9iX97F7G52CPChDfcJkAlDMhYbB+uVW65Fl/YgHDemf1bhhVipjDRCQtRFKRxRiwDdnyjpylhzWzePDSoR+mvNDmQ9jj3WkqGIQByLndU7wmkI6tn9uCc202xciwCJ7Dv0C2IntV86uiudPDg1eV8P6WxdkRuunlKMwTAtDOExrpxA8PARtSXwsUTq11DesXrwFD0kuA04H0wR8MXDIeCXIkAE1u/r7XSnGHSSgds8KIPrx8CXL46h6I+NJHgaVJsiep7zPTUa1eMPGxzZaTNM60xgJ8M0W0bxrF0cpKaj5iQqWyhBKKcGUQLCvq3R9h8eq73TNwSp5mEv60saV2oFnLoZ6Zva1y0Gp9hSl41eWaPxUMXf0yicgw0jbYP0ZxjAEdCukeJh47zozADnmoDuobH/jyPjnfOEOqXN/gOXESHjsh4A/GUHiJuD0TvqN03yvCp2x42/BS89a+cjZGxc9aNBX6f3+qx4TVsMmlM9E/c+fwJ1HKzNVk8DTfe88HmYN3zS65qMxCZuyZOlq2HrBRtu4+B0Ol4g5o8aAEcmUesUyGb6HS0k9WWQQ6gHqG9Rqyu9+guz4zG6ouvAbWVlxy0N51SPjs3baRvgKNtaBFhjr/PwcCYR/xcuJ9mEdoIZUYjEkaah7HFS0lhtXEZjqzqSzcw8dJt5T5idq26z/u+a7cv7ZdIW9VLy+6bskgxVqQoO3k0A69xjzxdLFXDjRR+
+ Og1QnM3r
+ Gln55omHdtFBDkNFkDMH+NlBS7rzFKrhN2f7Vfm7G9hY9RHM2wdSQWe4TiSFUwhg1qkE9u5wlwSICKLSjJ786IJT7/aIZ8Phx7juvMJNMsIZLdu4xMwWsjWpD9g66peaK+W7phlvSBmVfzicJ9vyv0ysn+ng5jeG0GW7IdTlmpq0nB0QmlXv5zFbWvZr6iT4hgkIFDoS7nky9JIEoc8UMySelQLuijbUUC9gF9/WNFSmw8jPcC+3vyp4Rk3kEbLRQBuIE8kaJbtXK9qP91QtZhuE5yaX1wuyXDAXXif2yHZZNICD0elGMB5nOalg/Vn0aGp/l2hfcwyJh4qDY43IYq/WI5ZxOmEuHf3voFHhYdhxzphH8/eKqxvA6JXUbt/YL7GVYOoh4w2zmJ+aPmuFSOpuIddbbkVLXMlgWxbUiKVrkr11tFjXXaHE5JsAU/+irw8Lvh9gNEeblQKIEC5PP7N6Gb0CdIQ/t5ncLkxIOWz/MQVg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,142 +152,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+From: Ye Liu <liuye@kylinos.cn>
 
-On cgroup v2, reparent_state_local() returns early and never moves the
-dying memcg's non-hierarchical state_local base counts to its parent.
-Meanwhile memcg_reparent_objcgs() rewrites objcg->memcg to the parent,
-so when the reparented folios are freed later, the negative deltas land
-on the parent's lruvec.  The parent therefore receives the uncharges
-without ever having received the matching charges, and its state_local
-(NR_LRU_BASE + lru, MEMCG_SOCK, NR_SLAB_RECLAIMABLE_B,
-NR_SLAB_UNRECLAIMABLE_B) permanently underflows.  Since
-lruvec_page_state_local() clamps negative values to zero, the underflow
-masks the parent's own legitimate pages.
+Replace the manual rcu_read_lock()/rcu_read_unlock() pairs combined
+with for_each_process() and for_each_process_thread() loops in fs/
+with the for_each_*_rculock() macros, which scope the RCU read lock
+to the loop body via scoped_guard(rcu).
 
-count_shadow_nodes() is the only reader of these non-hierarchical
-state_locals on cgroup v2, so the underflow directly distorts the
-workingset shadow node budget.
+No functional change.
 
-Fix this by reparenting the lruvec state_locals on cgroup v2 as well,
-mirroring what cgroup v1 already does.  Only the lruvec stats consumed
-by count_shadow_nodes() are moved; the memcg-level stats are left alone
-because on v2 they are exposed through the rstat hierarchical tree and
-are not read from state_local.
-
-Fixes: 8285917d6f38 ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/memcontrol-v1.h |  5 +++--
- mm/memcontrol.c    | 42 ++++++++++++++++++++++++++++--------------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+Changes in v2:
+  - Rename *_rcu to *_rculock
+ fs/proc/base.c        | 4 +---
+ fs/resctrl/rdtgroup.c | 8 ++------
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index 1e394269c613d..0578b7076764d 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -25,6 +25,9 @@ int memory_stat_show(struct seq_file *m, void *v);
- struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
- 						    unsigned int n);
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 6a39de424f62..3de4f4557e4c 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -1160,8 +1160,7 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
+ 	if (mm) {
+ 		struct task_struct *p;
  
-+void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-+				       struct mem_cgroup *parent, int idx);
-+
- /* Cgroup v1-specific declarations */
- #ifdef CONFIG_MEMCG_V1
+-		rcu_read_lock();
+-		for_each_process(p) {
++		for_each_process_rculock(p) {
+ 			if (same_thread_group(task, p))
+ 				continue;
  
-@@ -73,8 +76,6 @@ void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgr
- 
- void reparent_memcg_state_local(struct mem_cgroup *memcg,
- 				struct mem_cgroup *parent, int idx);
--void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
--				       struct mem_cgroup *parent, int idx);
- 
- void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
- static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 9995f3d2aae1b..f13030f75fa54 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -232,14 +232,29 @@ static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memc
- 	return objcg;
- }
- 
--#ifdef CONFIG_MEMCG_V1
- static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force);
- 
--static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+/*
-+ * Reparent the non-hierarchical lruvec stats that count_shadow_nodes() reads
-+ * to approximate the shadow node budget.  They are not exposed to userspace
-+ * on cgroup v2, but they must follow the reparented folios; otherwise the
-+ * ancestor would only receive the negative deltas when the folios are freed
-+ * without ever having received the positive base, and its local stats would
-+ * permanently underflow.
-+ */
-+static void reparent_v2_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
- {
--	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
--		return;
-+	int i;
-+
-+	for (i = 0; i < NR_LRU_LISTS; i++)
-+		reparent_memcg_lruvec_state_local(memcg, parent, NR_LRU_BASE + i);
-+
-+	reparent_memcg_lruvec_state_local(memcg, parent, NR_SLAB_RECLAIMABLE_B);
-+	reparent_memcg_lruvec_state_local(memcg, parent, NR_SLAB_UNRECLAIMABLE_B);
-+}
- 
-+static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+{
- 	/*
- 	 * Reparent stats exposed non-hierarchically. Flush @memcg's stats first
- 	 * to read its stats accurately , and conservatively flush @parent's
-@@ -248,17 +263,18 @@ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
- 	 */
- 	__mem_cgroup_flush_stats(memcg, true);
- 
--	/* The following counts are all non-hierarchical and need to be reparented. */
--	reparent_memcg1_state_local(memcg, parent);
--	reparent_memcg1_lruvec_state_local(memcg, parent);
-+	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
-+		reparent_v2_lruvec_state_local(memcg, parent);
-+	} else {
-+#ifdef CONFIG_MEMCG_V1
-+		/* The following counts are all non-hierarchical and need to be reparented. */
-+		reparent_memcg1_state_local(memcg, parent);
-+		reparent_memcg1_lruvec_state_local(memcg, parent);
-+#endif
-+	}
- 
- 	__mem_cgroup_flush_stats(parent, true);
- }
--#else
--static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
--{
--}
--#endif
- 
- static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
- {
-@@ -570,7 +586,6 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 	return x;
- }
- 
--#ifdef CONFIG_MEMCG_V1
- static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 				     enum node_stat_item idx, long val);
- 
-@@ -592,7 +607,6 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
- 		__mod_memcg_lruvec_state(parent_pn, idx, value);
+@@ -1177,7 +1176,6 @@ static int __set_oom_adj(struct file *file, int oom_adj, bool legacy)
+ 			}
+ 			task_unlock(p);
+ 		}
+-		rcu_read_unlock();
+ 		mmdrop(mm);
  	}
- }
--#endif
+ err_unlock:
+diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+index 5dcbb0a964e8..b14df8b23f1a 100644
+--- a/fs/resctrl/rdtgroup.c
++++ b/fs/resctrl/rdtgroup.c
+@@ -709,14 +709,12 @@ int rdtgroup_tasks_assigned(struct rdtgroup *r)
  
- /* Subset of vm_event_item to report for memcg event stats */
- static const unsigned int memcg_vm_event_stat[] = {
+ 	lockdep_assert_held(&rdtgroup_mutex);
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(p, t) {
++	for_each_process_thread_rculock(p, t) {
+ 		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
+ 			ret = 1;
+ 			break;
+ 		}
+ 	}
+-	rcu_read_unlock();
+ 
+ 	return ret;
+ }
+@@ -826,15 +824,13 @@ static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
+ 	struct task_struct *p, *t;
+ 	pid_t pid;
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(p, t) {
++	for_each_process_thread_rculock(p, t) {
+ 		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
+ 			pid = task_pid_vnr(t);
+ 			if (pid)
+ 				seq_printf(s, "%d\n", pid);
+ 		}
+ 	}
+-	rcu_read_unlock();
+ }
+ 
+ static int rdtgroup_tasks_show(struct kernfs_open_file *of,
 -- 
-2.43.0
+2.25.1
 
 
