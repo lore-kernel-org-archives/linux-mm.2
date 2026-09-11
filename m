@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94810C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:01:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51F2C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:01:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69C1C6B00A6; Fri, 11 Sep 2026 04:01:29 -0400 (EDT)
+	id C8FCD6B00A9; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64E2D6B00A7; Fri, 11 Sep 2026 04:01:29 -0400 (EDT)
+	id C67DE6B00AA; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58A936B00A9; Fri, 11 Sep 2026 04:01:29 -0400 (EDT)
+	id BA49B6B00AB; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EF586B00A6
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:01:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B83518012E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:28 +0000 (UTC)
-X-FDA: 85200736656.26.858FB18
-Received: from mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ABAE1C000C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cnGYwt8A;
-	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 91AE86B00A9
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:01:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2107E12010C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:37 +0000 (UTC)
+X-FDA: 85200737034.17.87FB660
+Received: from mta0.migadu.com (out-202.mta0.migadu.com [91.218.175.202])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3C8051A0004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:01:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JwaaHBoe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789113695;
+	b=O/W4/l0ltOK+h/m7sVi7gTZ7ydlqZGmfHpiN9B/0Uzg3l/6Q9JzvXNdZIAJ6QaOLc36/DT
+	dDz5MknqRUsm2HTmYzRPKhuIJuKLKknfzIS/v02Zm8dIcOv7nohhrd3zt7eWcjpTfDBHPn
+	4rkYkkpihT2rYwx+BdIg8QO33Yl6+fM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JwaaHBoe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.202 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789113687;
+	s=arc-20220608; t=1789113695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXxTmIeKQvV/g4Hrzs/mGZm0pm0bhMQphi8gJbgCQCg=;
-	b=V0VrBuUjnF2JAmUuQ2gn8tpQjAA42xGt151Xmet32hSkLAq3+unHq+CZVrU0U29HhTmTye
-	P1W0kNN6BfCjDa4SCn59AY1A+BFBlDvyIY3Xgc/gsjkYexfDOlfeYdryLz8RpG99uQ0qA1
-	bMlsvchFfa5BW72pyjkxxB/IL5Nctus=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789113687;
-	b=nlKEcdjRYabEO4byT6JZhOVscTHLWsLAIZ/mPCfL2bLEmojhnWVhQQoEdq5ekgYVu38nHR
-	Mg3rG1F2SjFAKjIDRDe7VHDvJmLh5RhD8hji68eIBEmDCsZh5Z+Feps8eJ5FrtWQiqjyOP
-	2ypR4n5iRdmNbAG8m54Lnlac+NURs50=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cnGYwt8A;
-	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=dlMr8ysiw1MQVlli9mPBpZcIDcHuzZcNn75rG1fxJ3Q=;
+	b=awew3bwld8fQRHsqAjxqEX7nve/FpJvkurTGCiF5cLf8Hv1q5VoF8YP2T/jaY+3i+1NiSV
+	lPw5m+V4sObujs7xQ2btyQ9pLmrAPpYrYIih8mY5KEoK8Ii6xK61QCjaDY4GImc3V60sk8
+	qQrpyuvt8lApGys0fQTDSEmDwRvFme4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=48OIeErQYrhkpbuOIqiS9L91aRSY0G25gCPRWoMJaKs=;
+DKIM-Signature: a=rsa-sha256; bh=lG7+VxQE9zUCiUgD2bZJA+1KtHaOwgs94O/ucBNwUz8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789113682; v=1; x=1789718482;
- b=cnGYwt8AhDyuiA7JuomDmDM6Cq+RcLuhVFsw1UbcAnaIy2pAYlDYGhEyCEyu9viIGlG+7hVT
- PBWof/O371hthPEPY71CjBbBpcY+QrxnCBXS7D4wOUjHcg0HfgX4DbHL+IwFc3QRqIjmdLg18vY
- ZBcwWFYHXO8CTimCuBMIudL0=
+ t=1789113693; v=1; x=1789718493;
+ b=JwaaHBoe1/bLgr4t6gry/zjeRGLDvxJiliF0GbPraunHrffeVZGPQqRHI+GW2pedNn8Fv8B3
+ yf+ykhf1/f8XO3Txi096Nyell8+mV7I+Wsm7gd65l1E1Q4SU76q/QD9BxHS8UdCfUYQW2Dvmndc
+ 4bCPwT3tQ51MG0I9pC9fN7qQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 53d09cb5692f64cf;
-	Fri, 11 Sep 2026 08:01:22 +0000
-X-Mizu-Trace-ID: 53d09cb5692f64cf
+Received: by mta12.migadu.com with ESMTPS id 908157556f9f07d4;
+	Fri, 11 Sep 2026 08:01:33 +0000
+X-Mizu-Trace-ID: 908157556f9f07d4
 X-Migadu-Flow: FLOW_OUT
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
@@ -81,22 +81,22 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v5 1/4] mm: memcg: redirect stats updates of dying memcgs for all hierarchies
-Date: Fri, 11 Sep 2026 16:00:48 +0800
-Message-ID: <c1ef4ef6a84cac479e573f4423b734dc8176f7d5.1789096175.git.zhuhui@kylinos.cn>
+Subject: [PATCH v5 2/4] mm: workingset: use lruvec_page_state_local() to count lru pages
+Date: Fri, 11 Sep 2026 16:00:49 +0800
+Message-ID: <2ed42f96aca124856ea30f774afb55cbe6d8ba58.1789096175.git.zhuhui@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1789096175.git.zhuhui@kylinos.cn>
 References: <cover.1789096175.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 54b3qum77tag4sssgte1dsa6fpirbme9
-X-Rspamd-Queue-Id: ABAE1C000C
-X-HE-Tag: 1789113686-951580
-X-HE-Meta: U2FsdGVkX1+ykqF+ZrDxMfCSmuTiolPRcJMgBcQEbvY6FHCo039Tz2twDVFLFJMzhRlHCsTgjuZ0oMBHl10tVd4Our3oZg3Y06GX3RL7bb7E5VndEq2ztbuWtBJhgfICYFz2yZaXkrDy3U8LssPwiQWqF2cD54LozPqMbAfxy8oIxwNsZCwBagIlJBCJ05fcgzhLTBuI0gGnPVeGRoMDRggwR+noXk7nMu63u7sFqCkR5pbmScdVBWTjaBV31n7uezbjBeS2NblA+VZlXijUXSDu5fizs9D5Bs85VEKo7a5sM92DkJ3/++a3Ah5r0UBFvESvkYmkEvGx+asjNcUYL18I0mC545PTj+Se1SfiJw4orjLfuYkBAKPOieEV2H7hBBn8yCFgHenVqAIC5aGbx480KEDWjW4OwkGJZJ8ZSYN+rR5cL0EJYR98s9xisnfPBn4pMuFcGtTaLmmhgcEt4VtFFUnE52dbf79S+l/2IEisu09XV2M3g6AJDHlIjUFi6kdyAKT9d2RHkO2kTvQoSdkaB/qZGAbH3gIrVRHf6QdF97K9r0yuiVCgSueaT4fZk2jnqcEwrvQT4F4oMm7nzx/Sw7aAjVhq/4VInH3HFu9wb+YHm2iewaOFdMEAoc8pWckl3hxIYNvvo1DtiNcohmrnUYNmcXrL3U3y3OpFxLFHiTclFo74JMVevEFjjll7YnZjq+yad1eOkYcK3iDMwzmLjrHyDHM9GuYfSA18l/e46J/oa+bV6ItWxOaQNhUGh3P8x4ZeOFLe5tZsftE3TWt1j/PMYLo8XMl4kiQW9rTaVGdB28dF/dJ6E7sA1JKQI2q7G3arzMiVJLfPt78ibRXelkWqgaWYhfR4Y1bJA5QHg8lg7XfPuTryq2bCejuQDiQ9c/RTp8E1RboHQQ69g/VXb1YmTpc1LUze85MFoNhjjzfNU04arAW2hxPbNR9EhlPWhRfz3xnwcmeDdts
- Gjn1FFAU
- P2HwcHiSmDiwwxlqFi0korLIZV9TQV/S5Q1hjbEPinQpX30spVxiWrspgOOlWrzVIAp77twpBEWOwIkxKbmoYafOFZQNP8mzxI4+78qdqXjWxPqNMqET6PGTTqWNBG1JqXFqOrklIvo54GioyaMLOai5am6IvkIcK8ckEGMUG9FBPA9Q61n6xME0DiHjF3s3fJePIQANkOPsL/E/qqiPYJQnXbw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3C8051A0004
+X-Stat-Signature: aay1uissh3n1uwcmdwtc7yob7efkoemm
+X-HE-Tag: 1789113694-917648
+X-HE-Meta: U2FsdGVkX189JoYDtvsKFT5rnU+l5gkfdnQ9/A29PJ7V01+YCVSUo+ZBwmkAdLAREFbE/gsBJ5DzSHtHH6IF6O7bmvreeCnzWW3t1hKMoSRIElUfg3JbYn/LCRW0l/sfHXK1iWIEt0/nSf4rhqHMEckUboFps8JMUrBJJXtvbuq8tuzvi5ZdGSkUOIp8vp9+wDZvao1l/L74GBpZEf/mIluXz02H8ukrlNOMpbwnC0Nri86WhF+raO1czgum5dwT4eGiZWTmE7NQrBM/slQKd5wi0fNJUgi5C5gdnw1LlQdU+oyWoo1WYojk/aRzrRfinFHBou5Ez4XrSkSMhEUIkMzqwbHIRGIh1sHrAy1mDKFI5ZjwvPqYq7ziKkOGQQCw1gNIfqPZkng6wSlFYMXCoFuAeRXyBqKOXFotugwYOwjxwTazau3RA6Wh8wtAJdZ588GlgZkOSOOjdKuYyC6qlshuog7j6hCbiVSRsLgagAuDZGnSyZzybMPLFXt5/brSzIKzM1vbNAc8b7LKdACcShbJtvBAkmevbU7XKf1ggIvVEXACfGsCZb+7zPaFrb4zUEeM3w9RgqpL8EEZebt0YgVDBfNp+NAZU/k1ijyRUVkl5Z5P0IoWYXa/mLydZD5XjtA7sSShBxS/l1TuaEUknQbGLStLLq9gdyqnJUnjYWBiFxXcZW3By9RAhTbntQkEGY80ma/FIlNixMMQIVIWzT7MKaez3G19DLiE0Kr+88HNfO9ZMQbdRckTm5+i8SpwJPwONx1LPR3I9rdcZP775ijKiBx8yI402La/AZk59wp8qysfzvFys6uy/ae7AbTCLHS3k2c1wLPoWVzFy7ZZjRy3hw+KvKndYDLQ0zT/wXHp01WYVcLAEALpwXCNUXPCtfRO+QqPpaH/MWtifOmZUueD6NpOia5uZvMT4ti+3rZUNHMDmNs5bNba0DPmqkugp+qlyT0HNCI5R2BjzKz
+ 4AREHoM1
+ ABXXaXkudZxNKcSyA1ZpRbrTouLRZw4iDh8LTc7E7GYF0zpiekXRqXketQ80wwkG0GwVBtKQzU3NlqYPmnYk132OfwEerG+mIyqR/A5W4M8oKg3OdeIsLbIdXqi/05EKaKLlMf4LTvI2XTe7K5T95wkJfnTIU++loqCYtGL484PEUfcdLAmjAxR4l0fHoWKaeQpzPJV4LjyyZE3gHg/Wc8WviOR76vgbdJUbuMuiIAum4TEx4kHYeIjx+GgwSSfD5ZYdO3UPj3V07WiFfu323QwinxaVjmwM0yDiyyH/YgIV6GV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,86 +106,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-get_non_dying_memcg_start() redirects the stat updates of a dying memcg to
-its closest non-dying ancestor, but only on cgroup v1; on cgroup v2 the
-stats keep being accounted to the dying memcg itself.
+Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
+number of lru pages") switched count_shadow_nodes() to lruvec_lru_size().
+With CONFIG_MEMCG enabled, lruvec_lru_size() reads mz->lru_zone_size,
+which only the classic LRU paths maintain.  MGLRU accounts its pages
+through __update_lru_size(), which skips that array, so with MGLRU on the
+four evictable LRU lists are always seen as empty.  The shadow node budget
+(pages >> 3) then collapses to slab plus unevictable pages, and the
+workingset shadow shrinker reclaims eviction tokens almost as fast as they
+are created, losing thrashing protection.
 
-A later patch in this series restores lruvec_page_state_local() in
-count_shadow_nodes() to fix the broken workingset shadow node budget
-under MGLRU.  count_shadow_nodes() is the only reader of those
-non-hierarchical state_locals on cgroup v2: when a memcg is offlined,
-its pages are reparented to the ancestor but their stat updates keep
-being accounted to the dying memcg, so count_shadow_nodes() computes a
-wrong shadow node budget and workingset thrashing protection is lost.
-This is user visible as premature reclaim of hot page cache and
-degraded performance under memory pressure.  Apply the redirection to
-all hierarchies to fix this.
-
-Offlining is rare, so the added cost on the stat update fast path is
-limited to an rcu_read_lock() and a css_is_dying() check; the upward
-walk happens only while a memcg is dying.
+lruvec_page_state_local() reads lruvec_stats->state_local instead, which
+both classic LRU and MGLRU maintain.  Switch back to it.  The reparenting
+race this re-exposes on cgroup v2 is closed by the preceding patch that
+redirects dying-memcg stat updates for all hierarchies.
 
 Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the number of lru pages")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/memcontrol.c | 30 +++++-------------------------
- 1 file changed, 5 insertions(+), 25 deletions(-)
+ mm/workingset.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617e..ace9fe2b46084 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -845,20 +845,14 @@ static long memcg_state_val_in_pages(int idx, long val)
- 	return val < 0 ? -res : res;
- }
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 7ac2b88c80ae5..8412f4840ae35 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -688,10 +688,9 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
  
--#ifdef CONFIG_MEMCG_V1
- /*
-- * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
-- * reparenting of non-hierarchical state_locals.
-+ * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race
-+ * with reparenting of non-hierarchical state_locals.  Offlining a
-+ * memcg is rare, so do the redirection for all cgroup hierarchies.
-  */
--static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
--							   bool *rcu_locked)
-+static inline struct mem_cgroup *
-+get_non_dying_memcg_start(struct mem_cgroup *memcg, bool *rcu_locked)
- {
--	/* Rebinding can cause this value to be changed at runtime */
--	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
--		*rcu_locked = false;
--		return memcg;
--	}
+ 		mem_cgroup_flush_stats_ratelimited(sc->memcg);
+ 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
 -
- 	rcu_read_lock();
- 	*rcu_locked = true;
- 
-@@ -870,22 +864,8 @@ static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *me
- 
- static inline void get_non_dying_memcg_end(bool rcu_locked)
- {
--	if (!rcu_locked)
--		return;
+ 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
+-			pages += lruvec_lru_size(lruvec, i, MAX_NR_ZONES - 1);
 -
- 	rcu_read_unlock();
- }
--#else
--static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg,
--							   bool *rcu_locked)
--{
--	return memcg;
--}
--
--static inline void get_non_dying_memcg_end(bool rcu_locked)
--{
--}
--#endif
- 
- static void __mod_memcg_state(struct mem_cgroup *memcg,
- 			      enum memcg_stat_item idx, long val)
++			pages += lruvec_page_state_local(lruvec,
++							 NR_LRU_BASE + i);
+ 		pages += lruvec_page_state_local(
+ 			lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
+ 		pages += lruvec_page_state_local(
 -- 
 2.43.0
 
