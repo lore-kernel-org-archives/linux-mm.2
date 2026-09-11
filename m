@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA362C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE6CC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DE366B008A; Fri, 11 Sep 2026 12:04:23 -0400 (EDT)
+	id 5C4086B0092; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 988866B0092; Fri, 11 Sep 2026 12:04:23 -0400 (EDT)
+	id 599926B0093; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8769B6B0093; Fri, 11 Sep 2026 12:04:23 -0400 (EDT)
+	id 4B1DD6B0095; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 670F06B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:04:23 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0ABBAA45F9
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:04:23 +0000 (UTC)
-X-FDA: 85201953606.06.A692331
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9CAB64000A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:04:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="WnlsB0 I";
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 212636B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B0BD01A02F7
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:08:42 +0000 (UTC)
+X-FDA: 85201964484.13.110EE16
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 249F2180009
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:08:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/7De1Zj";
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789142661;
+	s=arc-20220608; t=1789142921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rR1Bx7fi8xYmaqwM12Cl5cmpcBittw/5vU9eYvMxtCA=;
-	b=eX5fWYziRINMratxSMKXwbZN2o37UyJ1/PaXdMOg5qKuHswTBXI03qDmklikcyhyEBQNPz
-	xZ8kbZ05kfxMRneeBjpQ8SCclV/EhrTtnTjb7h8YfycgyzH4JHDvgrTpj2lTAaoRSWxVlw
-	vLBgNP/6/3h5O3pH+335r2a1FwVK14g=
+	bh=xnCshcIoWhJMLbbpjD+kSB2RQWWN3gtcsfG9Qvmj05c=;
+	b=ZG8XUlbpR6uNEQBhYUmfebX/N5A/ThDh8WRZAn4bOxv1YF7CXyZ2Apl+5CaamFPTNnlZ7l
+	Lycl6IZjdHacFJd8TzTUNdC/dNBIEp91PFkaxjZ0Va6f9cO8DMiQWfuwy0JJrV7pKc2f/u
+	KAsE5BfhcRRUZF/ZVbRcTCkugtWWXWM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="WnlsB0 I";
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/7De1Zj";
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789142661;
-	b=GmTJHjvLNslTiNzhv/GorftEN5XzxT2KHumnEVuAKft5UXpp6kknUCp3lXKbjNkkeVRZFZ
-	NvzKQzbLkN2gysIRdHEc+UKrQ2Zykpt0XlW0yeyBVHOb1JvCmsXHl27Y/Zu4/J6sxfQ57h
-	H/8Ojyz3TvrAOABgkEmuz8aOs6eeVyw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=rR1Bx7fi8xYmaqwM12Cl5cmpcBittw/5vU9eYvMxtCA=; b=WnlsB0
-	IDbzhjdBLketBrAColocv1cck0fpkaLFQAjJHI4hr87M4LisybioWrfUTth+BFqJX/WWHTNcWtxbc
-	7NLv6WxJdEVsCMSeBk0VASNfbMqjho2THp070kDqJHdh4JcULIUxaaYNuIdfbIUC5qRbMg3tFPsOq
-	E8CIBgyOGHjHQBQNymfwJLmBQZGqSAiPMJc1KY4r6XRK7ZuBrmCm33kVrVIsfA6bsL33gyj5UaaQX
-	OcaI4z+ZJMhm8ZDdS8vBvSduyu36pyDDNlK97xHiat8ONcbVxMrol2Nh19vhqVDWKt53yVgv7lZO2
-	Tcf7YK7kPCeaFunp9YjXR6i2Khmg==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x53j7-000000080lY-3ueh;
-	Fri, 11 Sep 2026 16:03:45 +0000
-Message-ID: <7c7b028ae93f0551e07e9e09468954e76ad072ee.camel@surriel.com>
-Subject: Re: [PATCH RFC v4 0/12] mm: use per-VMA lock in __access_remote_vm
- for improved monitoring reliability
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	 <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com, 
- Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Suren Baghdasaryan	 <surenb@google.com>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka	 <vbabka@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Mike Rapoport	 <rppt@kernel.org>, Michal
- Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,  John Hubbard
- <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Matthew Wilcox
- <willy@infradead.org>,  Usama Arif <usamaarif642@gmail.com>
-Date: Fri, 11 Sep 2026 12:03:45 -0400
-In-Reply-To: <9e902c8e-c825-45ee-89a1-85923453e43d@kernel.org>
-References: <20260724222934.1463812-1-riel@surriel.com>
-	 <9e902c8e-c825-45ee-89a1-85923453e43d@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	t=1789142921;
+	b=x+6J347mSTjcKXxEVaqwr14BLNPETxKWG5NYs/5TAcpXPYcLel1t20+kOvn+fQfzsBwsFj
+	Rj9F8N2RoammJ2ZyFzvsUtG0ZuR79QG7Bpd67qkxtY4Ps1gCRRSglqMZf78Q12sjAvwSwb
+	8x+t2kOBul30lUVbsxDpWXSrD0R8GOI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D41160008;
+	Fri, 11 Sep 2026 16:08:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273A51F000FF;
+	Fri, 11 Sep 2026 16:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789142920;
+	bh=xnCshcIoWhJMLbbpjD+kSB2RQWWN3gtcsfG9Qvmj05c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N/7De1ZjCZaLOY85gfXq7OouuwJ8uDEexXhtxrc9S5HqY0Wtv3bRFUg+Z0AXlvBNJ
+	 usTMbaKC1mB1d8KqQkBj7/v5i8T+WnlVxNrRWSnqe1o7+Zj+eo2+TPq7vOWA4oHqFD
+	 NrhiyNLPlF7+2HkWdQaYCuC7x/v/RQGdDA3iKNjAsgfEksb3y8k1qM4HJe2edezKPl
+	 u6SJnN2GHgQWa3t1cEMi62NfXqPd+xSpWbnTYL8F5LryK/saDWM/d9Dh5vHNGc1rKO
+	 ARtVinN/r7z1HjZ5frK4sYk+D0qBIvB0LzyJGLbdQylVDZID+enlWwwYQ4tV8mXbmJ
+	 nPpCx8dkBIqsw==
+Date: Fri, 11 Sep 2026 17:08:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
+	Tejun Heo <tj@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Dennis Zhou <dennis@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	stable@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
+ drain pass
+Message-ID: <aqQb_Jzl--8So9p_@gremlin>
+References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 249F2180009
+X-Stat-Signature: ya8o1x787xiaytt4bs8xc56k5ja9cfno
 X-Rspam-User: 
-X-Stat-Signature: 7djnrxjiibzp74jgnfu5obkt77gsugh3
-X-Rspamd-Queue-Id: 9CAB64000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789142659-785075
-X-HE-Meta: U2FsdGVkX1/oUGBPMm4fZA+r5FcASLn3+ldc8JXpIuVhbB9ivAsFjfeizj3Wasp19+VuNArkL3U4/7/SO6UZlX/mShkw5hWeFI/FO4AQMcKU3mjMVwDjAtKqOcFZQMf0H6zsPFz50x4VU6e2DFCizg3lSBOTS2pdfUxs9HcdKe7cxFhdJ60nlQYwu35Jv1YT1l+SuLgEMFmkYhxLtNjOpq9C2t0AJWFG8xlcTmBrTrdCB44VuZbG72uceUcxzvmHiwu3LB2s2YP9B0ojez9svY5Za5zW38dU+O0EtoA6t6m7PTjkNaKNETkFv08gP9TCNJEP8ynl/EfwQV+zANJ5DmoYFeTOXeBktQqvgV1F17pM/wq3RMDuihlr04ElPNA+0lK/QeL/b+CDxfzheFMVa7gU0O0tDgk9CuSgVddfW3H2AoRFlzsHtiWpOOmzEhNwqlKRdD54nWBZykDThrJs9VzUPeTLug8f6vENYLg+Ene2yXaS9QEHnQrfrgQfD6FnIzpFnjyv9alC5VEJfmGG0RB2utgKjJWEI9ppAzOwkb9dFbX5AAW9oE9fKWct7zwpDC24f1w+xU5OksPNE9dvkLkTjOTBBbi2nRG9Y65gl88yDhBlo50uywPklOkUXckAsltPeto9/ymT9WQu1ftiQ5zi4KyhfMbiAkBEzjk7JdvnVzs/UxWGF5aOCZzlfT5sLtX4aElRiLq7d8Nudos74m/d2446Iaa3Fsfz7EsEB6Zrok3OdYXO8cn/foLMhODasAq4KiTDZXbzIqvvK+8ALgO5uTEOquDUcwl+sF4Mv0M5eImLqjV2FPGIJJKEAGHVywN0FPjiuEBqCWcl7UDvHSQnpYYOUp4k044vH2inIZ0AP8vLiDwQC3AeGk1c4/lsUtoNQ977bwMnS4l3pb20napYF8LiA0KxCYnF6JFTT0FKBJwyB2iDHgdoyePzTjTSog+C/yILIUHvZaJoB/V
- NiU+4c3C
- X1KJ5cW8zS21KCv15izsFYzojfMkh5Sk/t9iu1oBm3HFwymej/KcwcmYtrF/LyFXabTdlQmuDl/wmCfDH6u1ZKJymwBO1un1ED+hJ6zgDaX6p8u7tc/H7yx/1EOy72BBuX2RDC/tZ5P+jqIGyM0J2kYwobN08vsyePtGqUBws2nwsOxSviPiDNAsSc5Llkywn2Yflao+8Kj4K4piGoWzJ9vgvSMSlg+43/JFqjATEAby03FyLopk7MxfIJlVxZCvFBDHccH8EhJyHvQIxvQ6EHXmNDChKWuvSQVkw7OmqH5RBu4m3b6KQccSVt98h03d66puVaj6bfiK/BzM=
+X-HE-Tag: 1789142920-422554
+X-HE-Meta: U2FsdGVkX19JmWade5zv+Ysp4LLU5d43xwAw85oEobv/GNqJfTYbk7wScfy82O3nvkVf23ICntXcXjlNSmPBFdrJDWkFoWsnbab3y8F+wodcNXxMzp7XYgEIYmzCtdIyQJ8klFjtPNJUSm/JEGDTUKshbHhZwuoWLCUSBMEB1AELEJzNAWvPjNCII5/zGOjuCOmYbZNSLS9o97wdmX/2nUdG5o08Xbe4zqOUlM4VLcViKuv/AtmSBQXaGfluDJwfsohK2DVSTgZXqxmdMLk/vxtwdcT3HMbJq4AQMzyiApgM5oz34YjUjsmbrAqjfxH0drwyjLI+dKb9NUGLEcVsKzx7Rb5UZsjI/1VGtQcsMWh+eoOdN85OvSS8DSkEqIAxNaRAbDbd0DW0BXWawR229vKiViI0hpxQqqv+pvlV/mp/SHJy3jGNXSSKr31TMWgx9SPzKR4fKmz5N49Os8vG9mtaKPpgb+LuAcoX+FqwKI19imIYReh+CpPgT+A74FBPbXF66hJ7Ya06iLn4I9fiGSHg5sPTAY5WWRT6xGC0Xx5S5a6UXWw5a4bFeyGDKF4MXYl8HTEHqg0T7VmBEX47HM8b18rF+3/fGJFkS+aIKuY2jb3Zel/BfWw2NgaT3ZnMXRLd1qe4MVNgxWWYv19dQ2AXKeDPR30CJkxkahwPcltGLaqHwU6oMXUfDRP/h44PLpa3mXjQcam9k7yUjubH8Jda3zByULdpDSiK4+tsn5KUiPYKbM71wwhHDjv6ObXjVf103yin97cwN3aPay8v3Jr6lWYlLBDP9xq8X8GxsMPJS0EreMN2GlO6b0MLMIPCwNgDcyFyfspk3FTbP9b1KBTkJuk4QqcJ/3K7xr5zGmzvB8fnO5B/wZGlb+j0tZSek9VqxdvwU3v6wvkW/HMDWB5cbatJFzEjEVfPMKn2MunPJZy1AuSn1BwKvxESacvh7tCq8zYx3gdzkJXFB5S
+ lSKiR+OM
+ o8uNsh/hW/zx4g1cm3U/P7ox5cH21zANuYcNxWflkO86d6fSLuMJMMsmk6upoP0tSTv7MzQU7V0EORaO9YK5VejayT/1WGtjEG3kZgtpqtqDL5PepJcAv30mRaNjljQWK+xRPE+tHrpKzUTPcRdT35/DVy/ZNBpz3OtKL2pkc8W6FxunKiDTsMGV7CTTMxo3iPVh7Oja1/X/qiNFlpU43pmDRszQ6uBnzvC2zp8J+0ae1tyPD+nnes6kK750ZmI0z46Rp7rAQobGK32Szo0r7/89XrV/3tASORW4pncUlqGRrQZoiiyfkXjuSmnfq8kwaO4ipmY/BFR/kj4Yaq1fZtTienQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,42 +100,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-09-11 at 17:11 +0200, David Hildenbrand (Arm) wrote:
-> On 7/25/26 00:29, Rik van Riel wrote:
-> > __access_remote_vm() holds mmap_read_lock() for the whole transfer.
-> > On
-> > large machines, with large multi-threaded applications, the
-> > mmap_lock
-> > is often contended, leading to things like reads of
-> > /proc/PID/cmdline
-> > stalling.
-> >=20
-> > This results in system monitoring tools getting stuck, right when
-> > system information would be the most helpful.
->=20
-> Rik, what's the status of this, and which series do you consider more
-> relevant:
-> the pure per-VMA lock change or the pure page-table walking + folio
-> batching?
->=20
-> I'd assume the page-table walking would result in more speedup and
-> the per-VMA
-> in mostly less contention. So likely we'd want the page-table walking
-> optimization first.
++cc cgroup guys + paulmcr for rcu aspect + willy, pedro for fs stuff
 
-We can merge them in either order.=C2=A0
+On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
+> cleanup_offline_cgwbs_workfn() drains a dying cgwb by calling
+> cleanup_offline_cgwb() until it returns false, with a cond_resched()
+> between passes.  On a CONFIG_PREEMPTION kernel that cond_resched() does
+> nothing: _cond_resched() is a plain "return 0", and under
+> PREEMPT_DYNAMIC the full and lazy modes disable it.  Since commit
+> 7dadeaa6e851 ("sched: Further restrict the preemption modes") those are
+> the only two models on the architectures with PREEMPT_LAZY support,
+> arm64 and x86 among them, so the drain loop never reports a Tasks-RCU
+> quiescent state.
 
-This series gives a speedup as well, by removing=C2=A0
-the double VMA lookup.
+Hmm, I thought that for all intents and purposes cond_resched() was unimportant
+and something we wanted to get rid of or it was silly to use?
 
-If you want to merge the page table walking and
-folio batching change first, I can easily rebase
-this per-VMA lock series on top of that.
+So it seems very strange that it's so critical here.
 
-Do you have additional feedback on changes you
-want me to make to get the page table walking
-and folio batching thing in a merge-ready shape?
+I think there's probably a bigger algorithmic issue underlying this.
 
---=20
-All Rights Reversed.
+And I don't think cond_resched() is really relevant here:
+
+Looking at my RCU notes it says that [rcu_tasks_kthread] polls and snapshots all
+CPUs which have undergone _voluntary_ rescheduling, and quiescent state is
+determined by that.
+
+It tracks holdouts and then at 100-200ms it forces a context switch for those
+holdouts.
+
+But AFAIU cond_resched() isn't a _voluntary_ context switch from task RCU's
+point of view.
+
+So this whole bit is just wrong I think.
+
+It's more so that no voluntary context switch occurs in a context where task RCU
+is all you have for RCU.
+
+Also actually I think the comment on cond_resched_rcu_qs() is out of date:
+
+/**
+ * cond_resched_tasks_rcu_qs - Report potential quiescent states to RCU
+ *
+ * This macro resembles cond_resched(), except that it is defined to
+ * report potential quiescent states to RCU-tasks even if the cond_resched()
+ * machinery were to be shut off, as some advocate for PREEMPTION kernels.
+ */
+
+Commit bde6c3aa9930 ("rcu: Provide cond_resched_rcu_qs() to force quiescent
+states in long loops") references reluctance to 'instrument' cond_resched().
+
+So it was provided as a means of actually achieving what you need here in a long
+loop.
+
+Paul - I think maybe it's worth updating this? And maybe even renaming it? :)
+
+>
+> A worker draining a cgwb with millions of attached inodes runs for
+> minutes.  On a 6.18 arm64 host in lazy mode the cgwb worker drained one
+> dying cgroup's writeback domain for over 11 minutes.  A BPF program
+
+That really sounds like something bigger is broken here... why is so much queued
+up by this point with no voluntary context switches to clear any of it down?
+
+> unlink (bpf_trampoline_unlink_prog -> bpf_trampoline_update ->
+> unregister_ftrace_direct -> ftrace_shutdown -> synchronize_rcu_tasks())
+> waited on that grace period while holding the trampoline mutex, 42
+> tasks queued behind it in D state, and the hung task detector fired at
+> 614 s and panicked the host.  Any BPF or ftrace detach during a long
+> drain inherits the drain's length.
+
+Yikes...
+
+>
+> Fix this by calling cond_resched_tasks_rcu_qs() so we do not stall out
+> anybody who calls sycnrhonize_rcu_tasks().  We put this in a do { } while
+> loop because if we have many small cgroups cleanup_offline_cgwb() will
+> return false and we will never call cond_resched_tasks_rcu_qs(), creating
+> the same problem.
+
+So I think this looks fine as an immediate, backportable fix.
+
+But I think we need to look deeper into the real cause here.
+
+I've not looked at the writeback code for a while, and am certainly not au-fait
+with the cgroup side of it, so asking the LLM:
+
+" - fs/fs-writeback.c:726 isw_prepare_wbs_switch() walks b_attached from the
+    head on every pass. Inodes already marked I_WB_SWITCH stay on the old wb's
+    list until the consumer moves them at fs/fs-writeback.c:465.
+
+  - Each pass isolates at most about 120 inodes, per fs/fs-writeback.c:269, but
+    revisits every already-prepared inode, each costing cgroup_writeback_pin()
+    plus an i_lock round trip at fs/fs-writeback.c:624, all under wb->list_lock
+    with preemption disabled.
+
+  - The consumer at fs/fs-writeback.c:616 does a synchronize_rcu() per wave, so
+    the producer outruns it and the rescans grow. With millions of inodes that
+    is quadratic, and it explains minutes of CPU-bound worker time without any
+    preemption-mode change.
+
+  A follow-up that makes the producer wait for in-flight switches, or that has
+  cleanup_offline_cgwb() resume from where it stopped, would fix both the
+  runtime and the Tasks-RCU stall. "
+
+So this DEFINITELY needs some follow up attention I think.
+
+Anyway for the fix as written, it seems sensible and the right way to
+immediately address this, so:
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+>
+> Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/bpf/9d444098-7c03-4163-af12-bd0a79a51443@paulmck-laptop/
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> ---
+>  mm/backing-dev.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+> index cecbcf9060a6..18e999053bae 100644
+> --- a/mm/backing-dev.c
+> +++ b/mm/backing-dev.c
+> @@ -910,8 +910,9 @@ static void cleanup_offline_cgwbs_workfn(struct work_struct *work)
+>  			continue;
+>
+>  		spin_unlock_irq(&cgwb_lock);
+> -		while (cleanup_offline_cgwb(wb))
+> -			cond_resched();
+> +		do {
+> +			cond_resched_tasks_rcu_qs();
+> +		} while (cleanup_offline_cgwb(wb));
+>  		spin_lock_irq(&cgwb_lock);
+>
+>  		wb_put(wb);
+>
+> ---
+> base-commit: 893e11787f78e43b534e252249ac3fff4d1333f8
+> change-id: 20260909-cgwb-tasks-rcu-qs-42341609f3e1
+>
+> Best regards,
+> --
+> Josef Bacik <josef@toxicpanda.com>
+>
+
+--
+Cheers, Lorenzo
 
