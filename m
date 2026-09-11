@@ -4,97 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDD56C88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:47:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AF7C88E54
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:52:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D83A16B008A; Fri, 11 Sep 2026 04:47:35 -0400 (EDT)
+	id AA5126B0092; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D33AC6B008C; Fri, 11 Sep 2026 04:47:35 -0400 (EDT)
+	id A56186B0093; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C506C6B0092; Fri, 11 Sep 2026 04:47:35 -0400 (EDT)
+	id 945116B0095; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CA2E6B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:47:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1A9C5160159
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:47:33 +0000 (UTC)
-X-FDA: 85200852786.13.B90601D
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C4293120004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:47:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmZn2Pm;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555986B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C323D4015A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:52:10 +0000 (UTC)
+X-FDA: 85200864420.16.691EC01
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6A06F18000A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:52:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o1e1H5S0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lld2fKKz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i51qg33t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kEDUQO/w";
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789116728;
+	b=o9RyAHhcaza8MpIVKQOoqIoWXrsNqvHH0jQNBq+85s7ErYZbjWFDaHVNWIPqSJGHf2qKwm
+	nvbuqgzrpjXPeo646Wkx9+vum7Ox3gzJVKfqxljNuSIFU5TzItrKaypjEOQB9KbNHGJaFH
+	ucFY0ITt3FQLP2kPA7rOaZR4oKwo7C8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o1e1H5S0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lld2fKKz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i51qg33t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kEDUQO/w";
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789116451;
+	s=arc-20220608; t=1789116728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1yUwcX3UlLnLfoIr8zYfqVUEOK/MbgYFGnxLAsHWgYE=;
-	b=JTmACoOAtPUBM0b+C8skH1fnbWDqkSCPACKRZiDb/eRhv64A4QITaP+dxGp+cejUehKt3Z
-	hMnRkpjsiLx8z8mX6iPL0/539z9bRODiSxSUhq1jYnllDvyqtVepaKuiYmnlJBLQyV6bKC
-	tWHqnBBLo2AnWacpT6vqNflBvTp16uY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmZn2Pm;
-	spf=pass (imf29.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789116451;
-	b=SkLf/deWNVwiXQOqyvFle4TxspJdPE55zTdJvtHFhGX3FJ1wbGGYex1s7fN1UB2A/M5gu5
-	wop2flI6+v3GOwqhYCoFbii2IO2KWSRnIGmK+3wDO3xEQg0ZfrK0A4n+/cTQCIXPNy8xh4
-	XEXV2g0Lp+yHjHBgKkjeLqUMcUxAcIY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1yUwcX3UlLnLfoIr8zYfqVUEOK/MbgYFGnxLAsHWgYE=;
-	b=xLmZn2Pm+KYM1D0O+8lYHWWOWQ4Nw5UyxR8dYeNs7mSlCC2k7VR40D6an0jzMPdDsfLYAl4vK
-	SCkgk5duhFud3ex0ylNZ1vS7gtFa47Ash4T5y96Kpoa+yY0nDPhLVib0lkQ435H0jJrf20Uulpw
-	PGCvbiXg5nhT1rPjoECxGj0=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hh7Dr42npzmV98;
-	Fri, 11 Sep 2026 16:36:28 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4BF1040573;
-	Fri, 11 Sep 2026 16:47:24 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 11 Sep
- 2026 16:47:23 +0800
-Message-ID: <40c0c081-d636-407b-898e-f40f3d5d38cb@huawei.com>
-Date: Fri, 11 Sep 2026 16:47:22 +0800
+	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
+	b=dT5sU4oujNcgK7u3UNAgiBzqzZgodvlz6CFTRCU7z1HExzmWbVZwnKyzFEvrvbwZZl79aH
+	EseOKobdbYQlqtW7Y0nJZ+owD++pXezhUlkpD2jy1il48iOpQ37S5eR+4QXI1sGQ5SFpDR
+	2ymNfAvQjMz2XrNsjnly+R6P+Yx58xQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B0E431FD88;
+	Fri, 11 Sep 2026 08:51:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1789116722; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
+	b=o1e1H5S0ondTKFIS5WQja6u2CMLt8CzD9k0kQNmAAZ3/D4Pll6a7oXv1DTKF/CcyyFep6c
+	XdaZMA26wqEh/SUj7pc3p2atwpnBQZGwpslqDQD3QiOb4KQG6DO1SAX5U0Ixn4RfIlZ13K
+	ulnOMj5kHGD/xIL2BQjeLtzl3A6rI3c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1789116722;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
+	b=Lld2fKKzVxAWVmEH203fxlwHKaXu/ydQZl375BK0QjEVUC3UTX9SEGb/0+OfEcALd6Nkbr
+	s4HY1qIkzA3JtdCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1789116718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
+	b=i51qg33tb863XFo671lPhAI97tHtIUQgBWqx/6wuG0HxauurSn27V+Guszkz0Zq8G4o8xA
+	lh08OsLUo8ME7SW2tp4AV+9UA6iorukPKPFfNMr53wG4wSY9RnOhRwX3zH2fThAh2lETT1
+	L55dyLUHo8DPpNhfK57fgITXjUJDplc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1789116718;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
+	b=kEDUQO/wnt6F9aDVN/HGlgivRDf6CAwe1gfGCyNR6RMMuf5zlHatzQTASDRhBUIEMfmF40
+	a4K9JxcYowS0lJCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67B7C13794;
+	Fri, 11 Sep 2026 08:51:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nzZRGS7Bo2qyHwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 11 Sep 2026 08:51:58 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id C8D7DA13AE; Fri, 11 Sep 2026 10:51:53 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-mm@kvack.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mikhail Rudenko <xyzzy@yandex-team.ru>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH v2 2/5] fs: Avoid inode dirtying on last iput
+Date: Fri, 11 Sep 2026 10:51:38 +0200
+Message-ID: <20260911085142.1774803-7-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260911081309.14137-1-jack@suse.cz>
+References: <20260911081309.14137-1-jack@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] mm/ksm: use per-VMA locking for find_mergeable_vma()
-To: <xu.xin16@zte.com.cn>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<liam@infradead.org>, <surenb@google.com>, <rppt@kernel.org>,
-	<ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <nico.pache@linux.dev>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-	<chengming.zhou@linux.dev>, <usama.arif@linux.dev>, <gourry@gourry.net>,
-	<harry@kernel.org>, <vbabka@kernel.org>, <peterz@infradead.org>,
-	<borntraeger@linux.ibm.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4361; i=jack@suse.cz; h=from:subject; bh=n0K80NlVJu9vGet7bT/TQoYBw0ad3M3u86eFQZ5/vL4=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqo8EfB82a9kvKqXvGvUVhyPyh5lvJT25WMqxbi tTzwgoPI2GJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaqPBHwAKCRCcnaoHP2RA 2VDAB/9wQMsi9uWET3Gm3sdzAzNo48twh5uzDf/F6D2dsKfUKSHEPUh7fbH+iaU0LNv+9vE8HLj KGxfgnhhF7pX1VuRFDwypzfolgZvQnaaLTRWwxovX7jrEhaVRWPv3IZXS1sa1yOELku7NXVlggr 40LkZwx/RDXyRDqWftflywW6pMard31o3QUkldDrEHKA0h9yoh5rAx78Wj6Y60uUbbAfYKSJYun 7CBvUNOtEYH1S4ImBKhttEnP1cfS0dwl08yTxu0gW61FTpugqJcChRcDh1tF++BYFBXUtNpsJrE T2F137n/RnoW4TL573PFRqHnqpTuzMzi7T+aqzqcHeZf+HjQ
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4293120004
-X-Stat-Signature: apqexowj5hqubjxffmk9kohuybniz854
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1789116449-301429
-X-HE-Meta: U2FsdGVkX1/Bws00JV5OEf6NRmF3OQR9TztBjyZeOXpL9l8i+kffX+eowRNh/cVLA2H2pFrHbWHc43lbLzAD29GGKqOCdx6CSAxfLIntEAJm5qE2jq8F0qzg8bBkaYsZO9EUkPxdPs+NXk/6Tjrtb0jYQsLi6o0sDP40Qo6Mc0kn4gu5CAyjjc5xSjohOPADAsiK0kLlGmI0HBwIQOR45jYhH0oXUPTxXUFa7baDkv5a+3yKS05jqqDjaB35UMgksRRfRB+grWo404jMub97Ckj+AcCAfHH1v3g/pIxyRhNTR5N6rS9sPvzs2uuItCMzovTC48an6BkAqgZ3tswlry3ghvwQarudNC1oVVDN5Xb2+1MauHOPATsnUGhPImF/RpKraiA2nJkrMlLhGrNupwJUBu+xVm0YEG6DRQtVxz6EWn48CqThdYatfcZOmPaS1Kb5y0w4/XKaGQGw+LOvkLpnCY+0OVZiGhOycteLX2zT0LKUBLEJVemlIWUyLj9/9su6oAmWOrdjKz1xn+oTd49UHIRiw02E7dyyIFhW9Eeh2gK7u93Uacd/8AVcqWMtz5LCGZ1w4PGO9mlUBMbxSvxz8wqfp9jhmMeX6Lbu2EFDRDqCpPBaYJ2DDe4Kk/lp/9CnLYz6BQwDos3eENCBQmFXozs1CRYiGkpaHTjfqw8O5JgKraIFANzohnCBB3gYes4gA46kmUm1Jq3NFeXJw3T4R6znvARRvCdmplmsDdni50W3YuBIl7n/bLNCcgnT+HlSvs1ZAXEfvK/f4j+aTXkX3v4A1k3WjV6tbDN1NLf9cAboS4UlqbdRoGJhjq27goCh4pYKe3sFlPbq1uHpvyhFTkv5TD9mYJA1Wu1RmcLwUGwZ7SjrHhZJhYB2Ik0NbdWV3ZpEdf0TMbgJ2oNVrAyyCtpzBlGjxjVBRO3k6przCR5l153LATQyvH7+ULo/5TTdENoWlGZ3pt1cWMF
- rfGltRJq
- v4kP8mxQm+SER8uT4IWkKGCk7x9zz18UmYIQ4mbwMVo+2C+JGX564k23uuQmZgzdj8TOTa1CfKyqvm2q/BdFm962Lsqn58CJlcXMI9HtgkgSfzkeqDQq/CE+8XqLMWKBU+peDm4vRVLPYJ/cofXVOCKD7jhkdnfaIQo6iTI3nF2irF2P8wbRadwDaXAqDPWr+k17//uYAR4la3JWCjA2EcBeRHG0K7AetDtb5L0FihDNw3PdoJNwVQv3+zAnPRexvRM3G+wgNKmNPf7yWRHs1SvsN7CrccRHiy0QBAxbZha+p4k86VLyUkrhpYj2BeLbPiKxhJ3TWJ6tPPUvp0nYevMpIwBkZ10E7+n4J8YGCg+OiTXhFrCv2DjyxpIjHQeJsRQ1c5TtoICQlCNbmCMNO0IYVHCfYULvnO3ryqk+EV+Uj+RgC5r+c9mj5RJpP7kCNzOB7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A06F18000A
+X-Stat-Signature: rh6g8dbdk46gau6micpsit5t1jpceswx
+X-HE-Tag: 1789116728-748599
+X-HE-Meta: U2FsdGVkX1+/1An8DFlZbLahJuE8EsdmWCzNGt65fWmd26+zagh1wWrfvAvVHKa88O+Izbpw6gAUfF5w6GGtIAQeMy0fKYTEJzfGIK+dR1Q1StSGKOsDW7MeBrRL8hXblj2cqWYQMyhtXk91r4YS94fk6ygIZ59zhcSBSScKG41oHNsfZm3X52xGbExXeVQ+qYzZHQ9hbNjUERa/taLpjqKyprKb/DlVRhc7oVP4fu/s6YnsvhVS6eqdoCvjOIhVTLKxWmmiGwGzKmrE08bL4coDT4DXdC1HjGcJSoHPuqsM3dT/QcB1sPNq17nwPltZDHS6rFV3M+CiGAMIQCV0y9/VHSXXVRyulw/G9HW9YkHwkmh97ii/H9xCI2unAmCgUSBxhR9IqsxwmQtCKk2CW+35EHmCVN3RVapjJJJGMK7X8VeOMp78n878cBpK6+IqRs5eyujKi0sSusm57FmN8JKMD8cXpTh47A7PlcRJ+9UyXRXXK9pwGQHG6TMA0W+tPHy2pwIZE2t3tPYbkjDZkcqHAbmVu2RZAUH3l6D6PUdxO9UBUoYZEmUHu7Un5haN1MnTjkiHYlBESpt4BWILILxuZFIdC1dJJ9OfO8HoJtRLbuG0rv3GW7syQPfxvMNxOMCPIiuIjq3/rQkBkIXloHxMI5FgmmfQzJzD6Sn3Q0PGMPe5p7390Im5CvRTncqfUlm3gkeeLGmvUB6+etDgef0Gfylm63ZneOlr4z4vrDijfLirm+v5FKcj/GtXRxtoJ8RdiVktI/DuFcex434wWrL9spxB+tL2XhaMIj4B82YNBw4InvuMs0XjYtQFTE9poO8hau0yYigo4/E0tFWMCJHHRfSFfa3vxPCQd5yZq8H3KwWcDIgewno4skzyv2ZbsnZ/zvvffYUv2jor8CbPoqy6OG5fAzh/gmQHjiymZyLojP9m1k3o6IvFA+2bu6u58awhBzpcxtz/JOODsy4
+ pm5xiZfz
+ ly1QKODn4/9UBFgovCq+tJqRXv+IELSVbLt+pZwYxZF9x+azrOiW5Q7GfRyCt2UP1zkX5IyK//ZWuf0SzkPG1C8oq9D+f90Y2yHpdmcBUnEqlDdOSzL8868EQrUnu8hvFx862SCeNHdBcyDHoR2KMLg6BUoG8aci4pV3AHmSt3vJxw0h3tRQC8OlI8uYXnSTor5wRe2xR5gGfa9YBGQIczlWSZ2zDa3iKTblHwc6MYCatvIY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,87 +141,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When inode has dirtied timestamps, we currently call sync_lazytime() on
+last iput. This is done because inode with any dirty bit set is not
+inserted into LRU and dirty timestamps expire only after many (12 by
+default) hours so these inodes would be sitting outside of LRU aging for
+a really long time. However this can result in doing IO and consequently
+GFP_NOFAIL allocations from dentry reclaim making MM complain. Sample
+trace for ext4 is:
 
-在 2026/9/11 16:04, xu.xin16@zte.com.cn 写道:
-> From: Xu Xin (ZTE) <xu.xin@linux.dev>
->
-> KSM scans VM_MERGEABLE VMAs and currently protects each scan with
-> mmap_read_lock(). Per-VMA locking allows KSM to read-lock only the VMA
-> it is actually interested in, so that unrelated mmap()/munmap() activity
-> in the same mm no longer blocks ksmd.
->
-> This series is organized as follows:
->
->    Patch 1 removes an unused 'vma' member from struct folio_walk.  It has
->    never been used since its introduction and is pure cleanup.
->
->    Patch 2 adds a 'walk_lock' member to struct folio_walk and extends
->    folio_walk_start() to assert the required locking mode.  Existing
->    callers are converted to pass PGWALK_RDLOCK, so there is no functional
->    change.  This prepares folio_walk_start() for callers that hold a
->    per-VMA read lock instead of mmap_read_lock(), which is needed by the
->    Patch 4. No functional change.
->
->    Patch 3 tranforms the boolean 'lock_vma' into the enum 'page_walk_lock'
->    without any behavior changed, which is prepared for the Patch 4 to use
->    per-VMA locking. No functional change.
->
->    Patch 4 introduces find_mergeable_vma_locked(), which uses the
->    universal per-VMA locking helper vma_start_read_unlocked() to look up
->    and read-lock a VM_MERGEABLE VMA without taking mmap_read_lock().  All
->    KSM call sites that previously used find_mergeable_vma() under
->    mmap_read_lock() are converted to the new helper, and the locking in
->    get_mergeable_page() is switched to PGWALK_VMA_RDLOCK_VERIFY so that
->    folio_walk_start() can verify the per-VMA lock is held.
->
-> A microbenchmark was run to measure the time KSM takes to merge a
-> victim region under mmap_lock contention. Under interference from 4 churner
-> threads, the merge time of the per-VMA KSM-optimized kernel is
-> significantly reduced by 50%.
+prune_dcache_sb
+shrink_dentry_list
+__dentry_kill
+iput
+sync_lazytime
+__mark_inode_dirty
+ext4_dirty_inode
+__ext4_mark_inode_dirty
+ext4_reserve_inode_write
+ext4_get_inode_loc
+bdev_getblk
+__filemap_get_folio_mpol
 
-Hi.
+Avoid this dirtying on last iput by reshuffling unused inodes to the
+beginning of b_dirty_time list and clobbering dirtied_time_when instead
+so that they get written during next periodic writeback.
 
-During task exiting, __ksm_exit() uses mmap_write_lock() to synchronize with ksmd.
-see the comment of ksm_test_exit().
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/fs-writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ fs/inode.c        | 15 +++++++--------
+ fs/internal.h     |  1 +
+ 3 files changed, 50 insertions(+), 8 deletions(-)
 
-void __ksm_exit(struct mm_struct *mm)
-{
-   ...
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index bb4546d147dc..762e310e808f 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2837,6 +2837,48 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ }
+ EXPORT_SYMBOL(__mark_inode_dirty);
+ 
++/*
++ * If inode has dirty timestamps to write out, make sure flush worker writes
++ * them out during its next periodic writeback writeout.
++ */
++void queue_dirtytime_writeback(struct inode *inode)
++{
++	struct bdi_writeback *wb;
++	unsigned long new_time;
++
++	lockdep_assert_held(&inode->i_lock);
++
++	wb = locked_inode_to_wb_and_lock_list(inode);
++	spin_lock(&inode->i_lock);
++	/*
++	 * If inode writeback is already queued or inode got dirty, we have
++	 * nothing to do and we mustn't touch writeback lists anyway.
++	 */
++	if (inode_state_read(inode) & (I_SYNC_QUEUED | I_DIRTY))
++		goto out_wb_lock;
++	/* Written back while we dropped i_lock? */
++	if (!(inode_state_read(inode) & I_DIRTY_TIME))
++		goto out_wb_lock;
++
++	/*
++	 * Move inode to the beginning of dirty queue and clobber dirtied time
++	 * so that it gets written out during the next periodic writeback.
++	 */
++	new_time = jiffies - dirtytime_expire_interval * HZ;
++	if (!list_empty(&wb->b_dirty_time)) {
++		struct inode *first = wb_inode(wb->b_dirty_time.prev);
++		unsigned long first_time = READ_ONCE(first->dirtied_time_when);
++
++		if (time_before(first_time, new_time))
++			new_time = first_time;
++	}
++	inode->dirtied_when = new_time;
++	inode->dirtied_time_when = new_time;
++	list_move_tail(&inode->i_io_list, &wb->b_dirty_time);
++out_wb_lock:
++	spin_unlock(&wb->list_lock);
++}
++
+ /*
+  * The @s_sync_lock is used to serialise concurrent sync operations
+  * to avoid lock contention problems with concurrent wait_sb_inodes() calls.
+diff --git a/fs/inode.c b/fs/inode.c
+index ba7da39be4a3..5555a513a0a3 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -2030,7 +2030,6 @@ void iput(struct inode *inode)
+ 	if (unlikely(!inode))
+ 		return;
+ 
+-retry:
+ 	lockdep_assert_not_held(&inode->i_lock);
+ 	VFS_BUG_ON_INODE(inode_state_read_once(inode) & (I_FREEING | I_CLEAR), inode);
+ 	/*
+@@ -2043,14 +2042,14 @@ void iput(struct inode *inode)
+ 	if (atomic_add_unless(&inode->i_count, -1, 1))
+ 		return;
+ 
+-	if (inode->i_nlink && sync_lazytime(inode))
+-		goto retry;
+-
+ 	spin_lock(&inode->i_lock);
+-	if (unlikely((inode_state_read(inode) & I_DIRTY_TIME) && inode->i_nlink)) {
+-		spin_unlock(&inode->i_lock);
+-		goto retry;
+-	}
++	/*
++	 * If inode has timestamp updates pending, queue flushing them now as
++	 * otherwise the dirtiness could be preventing the inode from entering
++	 * LRU for hours.
++	 */
++	if (inode->i_nlink && inode_state_read(inode) & I_DIRTY_TIME)
++		queue_dirtytime_writeback(inode);
+ 
+ 	if (!atomic_dec_and_test(&inode->i_count)) {
+ 		spin_unlock(&inode->i_lock);
+diff --git a/fs/internal.h b/fs/internal.h
+index c658c8a5ebd5..eae0e2bb5d1c 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -219,6 +219,7 @@ bool in_group_or_capable(struct mnt_idmap *idmap,
+  */
+ long get_nr_dirty_inodes(void);
+ bool sync_lazytime(struct inode *inode);
++void queue_dirtytime_writeback(struct inode *inode);
+ 
+ /*
+  * dcache.c
+-- 
+2.51.0
 
-	if (easy_to_free) {
-		mm_slot_free(mm_slot_cache, mm_slot);
-		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
-		mm_flags_clear(MMF_VM_MERGEABLE, mm);
-		mmdrop(mm);
-	} else if (mm_slot) {
-		mmap_write_lock(mm);
-		mmap_write_unlock(mm);
-	}
-
-}
-
-When ksmd currently is scanning the exiting mm, we should guarantee the mm pagetable
-still valid (i.e., mm_users > 0). However, ksm_mm_slot only holds mm_count, which only
-guarantees the mm_strcut isn't freed. So, __ksm_exit() uses mmap write lock to synchronize
-with ksmd.
-
-IIUC, vma_read_lock cannot be exclusive with mmap_write_lock().
-
->
-> Xu Xin (4):
->    mm/pagewalk: delete the unused member
->    mm: make folio_walk_start()'s locking asserts scalable
->    mm/ksm: make break_ksm() more scalable
->    mm/ksm: add find_mergeable_vma_locked() to use per-VMA locking
->
->   arch/s390/mm/fault.c     |  4 +-
->   include/linux/pagewalk.h |  2 +-
->   kernel/events/uprobes.c  |  4 +-
->   mm/huge_memory.c         |  4 +-
->   mm/ksm.c                 | 85 ++++++++++++++++++++++++----------------
->   mm/migrate.c             |  8 +++-
->   mm/pagewalk.c            | 10 ++++-
->   mm/rmap.c                |  4 +-
->   8 files changed, 79 insertions(+), 42 deletions(-)
->
 
