@@ -4,100 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45190C88E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 00:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C03C88E41
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 01:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 218B56B0092; Thu, 10 Sep 2026 20:58:05 -0400 (EDT)
+	id B829A6B008A; Thu, 10 Sep 2026 21:13:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F0226B0093; Thu, 10 Sep 2026 20:58:05 -0400 (EDT)
+	id B0D596B008C; Thu, 10 Sep 2026 21:13:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12D716B0095; Thu, 10 Sep 2026 20:58:05 -0400 (EDT)
+	id 9D8386B0092; Thu, 10 Sep 2026 21:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D240B6B0092
-	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 20:58:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43DBD1606B4
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:58:04 +0000 (UTC)
-X-FDA: 85199669688.29.9BDAB28
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2845640004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:58:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oJ8nYRlU;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AA406B008A
+	for <linux-mm@kvack.org>; Thu, 10 Sep 2026 21:13:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCF1EA4F22
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 01:13:40 +0000 (UTC)
+X-FDA: 85199709000.09.C73838D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 456D240003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 01:13:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i81ukWa9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i81ukWa9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789089219;
+	b=S98XKVfAlccsM+KCmY6T9YIZzhab6vLN5y7Q69UN1whv59dyRlOAoOGPrtBYVB8+3o9sKB
+	dE1JFI9EWbhcTulwuSOIUPu9qVLYcvTAICFR9HZIH6vYkWI7yV/TmLJtTZUxOowpDzTH0z
+	T2naMHiOuTvFYoMfKeD8kxzk7tXWE0I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789088282;
+	s=arc-20220608; t=1789089219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06ewrVmtpiUthW0f0X+LeH7QcawiHpWQIKkhx26qBG4=;
-	b=6Pf8m1U/qzRHKHmCXmTY/RRxRC0RLJXfxks+eBMndKVKJlqA9hPYXGIVEy/mrgPFX7urcq
-	+TP295qemy03OYKUiYEcc1D37lumm1AHYHFqFlUkApPEai5tvJMKzVLFwUaAE4nr01fF1I
-	+qmLyQOLC40i46nQN3CSAwig4akGcFE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789088282;
-	b=fE/fQ1iJVYWVWxJj1PDVYnaNXul5xGODN8qa30/2n0JlyjdK0nHRiBU8wJ9I/uzKwkFbtz
-	LbLqtdbpuqp/VC9aXv/nxvd9GZaT9NOk0RoBhWEmiLAjgbzOFzf2qfbm5irdBGfGtnBxPb
-	K+eGcQrL3s+bOW6UZOT7IAEH4s7Ac6o=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oJ8nYRlU;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=06ewrVmtpiUthW0f0X+LeH7QcawiHpWQIKkhx26qBG4=;
-	b=oJ8nYRlUe0gbBczxWto/aUXlXyWSDiEjP/Mf743T2ujLnGFToOXhADQtS5kDyjj6qYd002ERB
-	JMPiNcP7oElOizkrrypqA8tIlk077fMEj/x4k7Dh1dh9iG2Puu8vd9Wqt7VQSgF//LBM/D+N3PR
-	ADwJzBiCpYdFOtsCtfve/5g=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hgwq84sgdzLlX5;
-	Fri, 11 Sep 2026 08:47:00 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0C2254056C;
-	Fri, 11 Sep 2026 08:57:56 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 11 Sep 2026 08:57:54 +0800
-Message-ID: <93256043-c590-4001-bd7f-41ba36055b94@huawei.com>
-Date: Fri, 11 Sep 2026 08:57:53 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GpC4gk3m7cdW8BgHK5/ON6FM2LXn4NcAQ6pZC9bl+OA=;
+	b=PurmligaBbRX+KVruR4P9c5bRIQPfv1EYjlLBC4TnkYmlPpSQxgDONIPHzfY7/+MoZSQkl
+	GH3yVX2AAZ6vddXc/R3k4llrpHrm46IRM56XsM8USrlxTCIUzYNxS96Mftj5oSRSXg4byz
+	BNk9g8Vj18yGyM0aiZQiY1s7BOel0Ek=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 859BB601F0;
+	Fri, 11 Sep 2026 01:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5AE1F000FF;
+	Fri, 11 Sep 2026 01:13:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789089218;
+	bh=GpC4gk3m7cdW8BgHK5/ON6FM2LXn4NcAQ6pZC9bl+OA=;
+	h=From:To:Cc:Subject:Date;
+	b=i81ukWa9Q8JIQisy8BbIlRUyfGpX8D/Ju1bddEZSQ5Q69K5NkvMY8hw/Rpfe888Ut
+	 LXV/H+SvyWR5vCLtUjEW0BgT889s0GxDMZ/Rd0H0tK3T4JaDs0HeTnC0oUXRnOXMy+
+	 xoq9eYpPf8TFaUQ0TDhT9HUS+TgI5YyCFSCZ9vBm3PIzRNKBUksZ8RNELqGR257FRm
+	 GNbrUFj8ZnOrHnpgK+3E1rDDsCWnEGolNsynUi1G/2/WnHcPyfn4whYL0DnMidsY07
+	 hKLax3gjw39Qcfv5Ttopa50mPawvYixzfSmQLTMwg6OFc675qTPyFkEEEUJzlRtcng
+	 +8h29SO/AW4pA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2.2 0/7] mm/damon: introduce probe_hits_wsum DAMOS core filter
+Date: Thu, 10 Sep 2026 18:13:21 -0700
+Message-ID: <20260911011330.93678-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xfs: kill xfs_trans_set/clear_context() helpers
-To: Brian Foster <bfoster@redhat.com>
-CC: <brauner@kernel.org>, <djwong@kernel.org>, <cem@kernel.org>,
-	<akpm@linux-foundation.org>, <vbabka@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
-	<ziy@nvidia.com>, <david@kernel.org>, <qi.zheng@linux.dev>,
-	<shakeel.butt@linux.dev>, <ljs@kernel.org>, <linux-xfs@vger.kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Linux MM
-	<linux-mm@kvack.org>
-References: <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
- <20260910140742.833170-1-wangkefeng.wang@huawei.com>
- <aqLqeTsbKBMEsl-G@bfoster>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aqLqeTsbKBMEsl-G@bfoster>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2845640004
-X-Stat-Signature: ekx8udqb49zfcc99ia1su8bzxkcsdnyb
-X-HE-Tag: 1789088281-739366
-X-HE-Meta: U2FsdGVkX1+cV0m68o3GXgkxYIlPjBHjw3L7mitpydg/lz0sgXwJT7w2Ibif4AeE4JrsktGu1VCSQZb/Npc2dblZZgOvAnWr0bZRPY1vMq255DcZzZGFhKlBRPM3tPQy1uscfOdUbL8k6grVOPqDqbA2V1SbhRMdr5Oc3Q0vXq2wQO3cK4ikNP1a1wx4vlC9y+xr1iIi9rfKwOIquc1aDU7UVhm3vhxothRXIYC5/8+qu15gRdyT1uqcKb0L5+N0a7rqImpEX0p2YpXdI5IeX0mbNDdeCHgLlCjYrEkHC8ilsmSbF3jrVZ9Fg38dwa6FNntDbMyb9uu5iZeFaoV68ibZgtzyuDqDdbwpg+M6IKYGe0e5zl3TcUvEn9dSHP8iK+2d9STRkZx5bj2bVul50aj9Yk14sAk8zSbiKhYRZdCV+1dVvspE2r0I5OjNU1TqafF+W5qJxoBkA1L+yjtsoTnbeYK3wJYbvzP84FTvnLb6zh8NkGWBalqo/sxMy2ottxI4hjUjiSZdhc72SQR1fU7M03PsX6ghz+JOMe+5Hctgkfbw0kgK4Ta8Tz5F/OejvgjL1t1NZEB6xPUPK1AzIOqFxi4yb/T2QZdsvute6UBX1Wy2cKPzgiy/Ygag1FmeFMcTKPVbGmlJK20CUAD63oaxXVOwRKDP3pss7wp2aqIzmF8EMUxCF199VFgR5z3s4ODeLs3Wam84VuRb/PCWD+KeVOSz/MkNp1hLQub0lowjRp9vQb/UnuwmKiv2DEoTzV5CxbzG93sBYQ9WzqneptHeJQTmQ0TaPqusXKVuQkIB+K67ZHBLU9/K1H29d7qBl1DeOVMuSSUk2J6o9zekg/WFpLTB73MghqV4QIXOZeZpTkfXcBKQOyMWeafXzlD6ThfimMDdNsZkJ+ui/kpjVG0LJormGOeaOfqlULLkprJeBkNC9ZhSJOau1TVPN6HIpP+wuQpm7XY/I4wcenJ
- fJuuEMJb
- 9m+Xk7AyZcXhjZCg/wG4cUU5DlBvK7Wg32IleK5PSm+zwhwcY0cp6op/EBEe/BAPaBjtuMhDCe89vO01C6TR50wdp9uoI4xTtv8Npuk2T2rSrKIIq6sZxYVgon/VOMMoF2fxoC3l3Oc+bf9dV4HdrdpNO2SWtUH8acG5h6fjcukhpRAwZOFHtz2UF6CKd+od78dDPQYVPOQ+LY12StOmiS0Z+m/VlE/rQJmtcOSJBiGpn+ZS+tvMKgb6/nsL8yqsWbQ7x/IFnKwR4vA3OeuQ2yLJR/ify1oNHV8izY3GE5D15BxeG5xj2R72mGQB16pv1KFFfchXvQYmF/z4S7vL+x6PIdXjxMgGhzKsH3T0sORlFW4cfy4+9fiTib+iqIu39NN0y9V6HBmHX1cCwTB+DuPrDZXMUUhbvSyBqb1hgItEuabgRhvPR3uInacwV6H2EFSrZlRwdD0d8tMVXMvEH7X//UeLqpgC8j6o09sN18WGFpfPBvWvdfbqzqZToMfIf0Thx+peYOD/xYFyWCwY4yY6tgw==
+X-Rspamd-Queue-Id: 456D240003
+X-Stat-Signature: 15ff4z6qm6wofe4cecozxqt7ndd8hwme
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789089219-276273
+X-HE-Meta: U2FsdGVkX1947M2RCUA7mmxuAfo62r8BQO4ESWzMqBkn8M8ghZ/SPebtISzBoULE4X3EyJ4Ivsslum0dCSHvdo37OuMoRgzO2rGD4X+ydFlffdRqXh4SM18CDTB/djVZCpXBsxvJEzM+CrMYT47DZaHCY7STBAnDxeK5YhzM25zC6ILe7tFJnu3lfbpQfRdL3Mrvjm085DFZyS9tOGOTTj6Bu62hQMu//gdEtiVOKicpguqKlZp0f8SadtnXf6b8+xQCxBdU1Ysh3vH5noS+w9UqUfzAvaLMzdW1IvtOsLLQTILt1TT6P83DtqaHQFZ2epHCrjJUZMqy/PJMWxXEsVj6Z0W8ArLznnWPV1n7KihNKP4bNIS9XbS1JlsV7MfZ78OnTSWdqaIEuP4Tstg7BmjJT7KDehFp9R5Nxt5uEr6vRDZeYHQaMJcZyV570rAzky2M+F70JlXYLKmTl+LGONIQYeosMTH+0ULUp7HP2FWD8jYr8ZT4JXrmVSZdKZSTIQSGVrzczYGFaYZwOsBL+9XHGCa/PQ2JX5avBuQa0Fs+3pNslBQKnJBbOW3k2GV2m363g4LAnG2Rrcm7TAy5cCMBbsppUoXxThGBZeRHDpmWET0o1GMo7ZIVPKsDTCZvVQPoPrPlrNy4Tugx8aw0p3GDF3/KC1EsTG4XZU4KkiAcNgHpUmrCI16swS2JHGUnw+l1kRotUzdYZfCaL1ihkJ+uN5N3nH0fVSWy9zvM6kjyO9/7FZGhS/GIX75rnk6NICbZAWEppTsYS6ErfRIyIeNn7aix3VPpqJlgqxP7PhnTreNZk6KteyXt7lthaQ+rVsN8Ro9hUPH38VqqXcKDsSGzv7saPkGwNOALV2MyV8v8bkc/kmQLNCQQQQyL4W+ZB6V4UQOSDEkzAC/HQouCAmM/NdWOy+qtVLunIJOnZk+GtwkiSBu1ps6entFeb4wmfL5WMLeyOdlyioOG7dw
+ DIK59k/S
+ M3XTy2QZwkpnrFadEkAJ9c3qdWkhNt4maOQPOhY3Kie8M1LzlZ57pVoZhnoDGObRa3fBWegRjOa/AQfaizgdHif1+sH3J1SEAkiD/wW/jDy865K/YaAeTcNwXuHrLfQCRQsJC3aYY5ajoI60sawrOe10Xp2MYPqREeuaFZEaYYgL3JtXB0N/mCWgyeiLtEVMal2BgX33FwsqOehu9Bf/qoethdcnluuAM9Mcp6ERuc3BilFeouNzszMOrBd0DNDaHGFjBGH0BOLCc/RGWblGexDib2J1I1uP64fgV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,31 +102,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc list
+DAMON can do flexible data attributes monitoring.  The classical data
+access monitoring can also be done using the attributes monitoring.  The
+access event is just one of the data attributes that DAMON supports.
+Users do monitoring to make some actions based on it.  DAMOS is a
+feature for automating that.  However, DAMOS cannot utilize the data
+attributes monitoring results.  It is still Data "Access"
+Monitoring-based Operation Schemes.  It requires users to set the target
+"access" pattern.
 
-On 9/11/2026 1:35 AM, Brian Foster wrote:
-> On Thu, Sep 10, 2026 at 10:07:41PM +0800, Kefeng Wang wrote:
->> Open code the helpers so that tp->t_pflags access is explicit, reducing
->> the risk of misusing them outside the transaction owner thread as seen
->> in xfs_btree_split_worker().
->>
->> Suggested-by: Brian Foster <bfoster@redhat.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
-> 
-> Any reason this is not cc'd to the list? That aside:
+DAMOS core filter is effectively the same as the target access pattern.
+It is just a more generalized and flexible way of describing the
+operation action target region.  Introduce a new DAMOS core filter type,
+probe_hits_wsum.  It specifies the filter target based on a range of the
+probe hits weighted sum.  Using this, users can apply DAMOS actions to
+regions of specific data attributes pattern.
 
-Oh，my bad, sorry for missing it, should I resend it?
+Note that the classic target access pattern still works.  Hence the
+target nr_accesses range should still be properly configured.  The new
+filter would be used in only data attributes-only mode.  In the mode,
+classic access monitoring is just turned off, and therefore nr_accesses
+of regions are always zero.  Users could simply set the target
+nr_accesses range to include the zero nr_Accesses regions.
 
-Another question is the target repository for merging this patch.
-Both this patch and the previous bug fix are based on the mm-new
-branch. Merging into xfs separately (if an independent branch exists) 
-might cause conflicts.
+Patches Sequence
+================
 
-> 
-> Reviewed-by: Brian Foster <bfoster@redhat.com>
-> 
+Patch 1 updates the DAMON kernel API for the new filter type.  Patch 2
+extends damon_probe_hits_wsum() to do the calculation based on moving
+sum.  Patch 3 implements the filter type in the core layer.  Patch 4
+refactors DAMON sysfs interface internal data structure for efficient
+reuse of data structure for the probe hits weighted sum range user
+inputs.  Patch 5 updates DAMON sysfs interface to support the new filter
+type.  Patches 6 and 7 update design and usage documents for the new
+filter type, respectively.
+
+Changelog
+=========
+
+Changes from v1
+- v1: https://lore.kernel.org/20260910141849.170896-1-sj@kernel.org
+- Validate {min,max}_range sysfs input on local variables.
+- Add RFC tag again.
+Changes from RFC v2.1
+- RFC v2.1: https://lore.kernel.org/20260910040319.147037-1-sj@kernel.org
+- Update kernel-doc to clarify probe_hits_wsum is a damos core filter.
+- Drop RFC tag.
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20260907171218.101430-1-sj@kernel.org
+- Rebase to latest mm-new.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260906210513.106895-1-sj@kernel.org
+- Fix kernel-doc typo.
+- Use moving sum based weighted sum.
+- Fix wrong range saving field names in sysfs.
+
+SJ Park (7):
+  mm/damon/api: introduce DAMOS_FILTER_TYPE_PROBE_HITS_WSUM
+  mm/damon/core: extend probe_hits_wsum() for moving sum based
+    calculation
+  mm/damon/core: support probe_hits_wsum damos core filter
+  mm/damon/sysfs-schemes: rename sysfs_filter->sz_range to
+    range_{min,max}
+  mm/damon/sysfs-schemes: support probe_hits_wsum damos core filter
+  Docs/mm/damon/design: update for probe_hits_wsum DAMOS core filter
+  Docs/admin-guide/mm/damon/usage: update for probe_hits_wsum DAMOS
+    filter
+
+ Documentation/admin-guide/mm/damon/usage.rst |  4 +++
+ Documentation/mm/damon/design.rst            |  3 ++
+ include/linux/damon.h                        | 22 ++++++++++-----
+ mm/damon/core.c                              | 20 ++++++++++++--
+ mm/damon/paddr.c                             |  2 +-
+ mm/damon/sysfs-schemes.c                     | 29 ++++++++++++++------
+ mm/damon/vaddr.c                             |  2 +-
+ 7 files changed, 62 insertions(+), 20 deletions(-)
 
 
-Thanks.
+base-commit: d07c4abd83baebbe6dcc351c519292cddce024f4
+-- 
+2.47.3
 
