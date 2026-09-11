@@ -4,95 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE6CC88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D25CC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C4086B0092; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
+	id 221C36B0093; Fri, 11 Sep 2026 12:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 599926B0093; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
+	id 1F3196B0095; Fri, 11 Sep 2026 12:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B1DD6B0095; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
+	id 0BAE96B0096; Fri, 11 Sep 2026 12:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 212636B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:08:43 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B0BD01A02F7
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:08:42 +0000 (UTC)
-X-FDA: 85201964484.13.110EE16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 249F2180009
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:08:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/7De1Zj";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789142921;
+	by kanga.kvack.org (Postfix) with ESMTP id D76726B0093
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:10:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43DC740264
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:10:15 +0000 (UTC)
+X-FDA: 85201968390.26.D7BFEEF
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 47E3BC0009
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:10:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g1QNlLds;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789143013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnCshcIoWhJMLbbpjD+kSB2RQWWN3gtcsfG9Qvmj05c=;
-	b=ZG8XUlbpR6uNEQBhYUmfebX/N5A/ThDh8WRZAn4bOxv1YF7CXyZ2Apl+5CaamFPTNnlZ7l
-	Lycl6IZjdHacFJd8TzTUNdC/dNBIEp91PFkaxjZ0Va6f9cO8DMiQWfuwy0JJrV7pKc2f/u
-	KAsE5BfhcRRUZF/ZVbRcTCkugtWWXWM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/7De1Zj";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789142921;
-	b=x+6J347mSTjcKXxEVaqwr14BLNPETxKWG5NYs/5TAcpXPYcLel1t20+kOvn+fQfzsBwsFj
-	Rj9F8N2RoammJ2ZyFzvsUtG0ZuR79QG7Bpd67qkxtY4Ps1gCRRSglqMZf78Q12sjAvwSwb
-	8x+t2kOBul30lUVbsxDpWXSrD0R8GOI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D41160008;
-	Fri, 11 Sep 2026 16:08:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273A51F000FF;
-	Fri, 11 Sep 2026 16:08:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789142920;
-	bh=xnCshcIoWhJMLbbpjD+kSB2RQWWN3gtcsfG9Qvmj05c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N/7De1ZjCZaLOY85gfXq7OouuwJ8uDEexXhtxrc9S5HqY0Wtv3bRFUg+Z0AXlvBNJ
-	 usTMbaKC1mB1d8KqQkBj7/v5i8T+WnlVxNrRWSnqe1o7+Zj+eo2+TPq7vOWA4oHqFD
-	 NrhiyNLPlF7+2HkWdQaYCuC7x/v/RQGdDA3iKNjAsgfEksb3y8k1qM4HJe2edezKPl
-	 u6SJnN2GHgQWa3t1cEMi62NfXqPd+xSpWbnTYL8F5LryK/saDWM/d9Dh5vHNGc1rKO
-	 ARtVinN/r7z1HjZ5frK4sYk+D0qBIvB0LzyJGLbdQylVDZID+enlWwwYQ4tV8mXbmJ
-	 nPpCx8dkBIqsw==
-Date: Fri, 11 Sep 2026 17:08:32 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Tejun Heo <tj@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Dennis Zhou <dennis@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	stable@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH] writeback: report a Tasks-RCU quiescent state per cgwb
- drain pass
-Message-ID: <aqQb_Jzl--8So9p_@gremlin>
-References: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
+	bh=chrq6RomQPNyRdzBhcaf19ect6USlxXFD+SAG73uJJw=;
+	b=WwXIjR+qDiP+1Qz+PrmhKswFxt+weCxvcdSbPgaAVcgmcOpKfTHtZi2B4hBMSluxTkrQ/Z
+	voC/jFiz6lTBg5ALWSVXAM57d75nTESVOn768QNeDnUNZZXESUyEJqMP671C5zA9pvQ1t9
+	rASZbq7wJ3iTwzi5jXbvzLuU7YJTio4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789143013;
+	b=M4VT05U261nGtCKLOqUdfnhvQF+32gWvmCx2rWVqQc9zI9TWSoiVjEaOU5LmuVZ3FIUmmO
+	rQzX8kZybSfM0xG7DZPanPmEPUS3JEEmeBJDgODyHMEq2Qno1tLhZUpT0amfHo6Onjp7cJ
+	gPP8dJIR7nuaG6r4L5FjRxZFqivw9Ck=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g1QNlLds;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2637dd37c1so163281966b.0
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:10:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789143012; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bU4T8MmwHsbRMJem4fS2kaB/P5W0/Bb8xEVQR4OKGv3iyEJ6PB6XQKNgsXFVp5wRwA
+         poxVLFagj4ziS91/omAqPFdQmGS/gWhKPqpfOGHVtklBEnI4n8k0qLc4z/kCPl1UW3v8
+         kf/YZGgfIpavg6yIoCC3H4wGgCZ3sZcLKpG+qgXpTF+ZjUbrWOAf5Cwt4jjMbiHjhrEf
+         86y6yc16g8N6Ol2Treisw2QQZWJFAIhXfKaYsdRovu0ITLG8DdYQvF9oFXArRJ0QXPvA
+         EckTC8q+mSz0/upju46+szQfkVrib2CArLdjoa1NnoW0ODcjR+piYwnzTJUxyf+AT/nZ
+         jQKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=chrq6RomQPNyRdzBhcaf19ect6USlxXFD+SAG73uJJw=;
+        fh=Sc5xzpVu3d3YM21ECkZ7eTCmYaHkhG4wURcwJfUAG3E=;
+        b=VyAHAP2gNHUwsecY9gVD7yAuwwixLFR1iXxAmh1dGE/mMr/lh3bcgYJkFFccrmbmyZ
+         SRcn+1pnQwnRCO2h85HRx9FKk0HTLpREF/YpmXummNPwZhbqAbKWFRjYyyngH/LMizLT
+         sb/FHYRZGEtbxZfvcZE68Fhmzg6fz4L8i/WqEvSRu0wZKzMoGOSf2zJZyIN0Qa5sWPak
+         J5yOPwFMe71iZ77MI9IohfBFZqVfVgNN08TuCdMa2Dx+nO6989w5FHeXSFmK3hx8hxW7
+         Zql+zxnz0Nc4gfdJlbc0YDP+VnJbuA/CIiJiHBh6uFV+GMuWYOlyXr/ogMBHQaw4EbM2
+         94PQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789143012; x=1789747812; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=chrq6RomQPNyRdzBhcaf19ect6USlxXFD+SAG73uJJw=;
+        b=g1QNlLdsXV/NRVQzVzGynDgstVczA8rY1otPTujp11jzaL6U6tWYtOUozXDFcUEuNy
+         dNVO6L+YssfTaEAuXy9FRb9d7A6pmRaVfmVILZSBEwbyGfpuA/MqgUIAnSVCNxFLUZa3
+         d11yjyN7cymN8q/4quK5OEXg2cnosp5sZM897WSAiNV4+B6i7tOOb566i+Yqh0RwTbnB
+         KlvcyO0Dz6l5DSHXrO0SMX7YA7nqSKY0I3ugRHUV22sKvwjYBeyvPW8OdaUnoIrTs8sj
+         ZuCD+ZQNbviKjUpuGb+NRnGPlpW4v1Y6tLU8RMCPf9BrMHseMDBzO/F2vfgHSMMBPNlz
+         EfaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789143012; x=1789747812;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=chrq6RomQPNyRdzBhcaf19ect6USlxXFD+SAG73uJJw=;
+        b=dun478gCZyrTrp4LCmbOZWxtN6V5XDDzuyXSjpHGBMI5TIMvN8djxFWfI98bHk8PWB
+         OuErqqmpG7BwvuroxqG621+qmFs5FNsT+S7MjykqMfe/72DvRpm+p3faiGHZ8DIDZ/49
+         S7oOY9rlQnm2aB+s8CSn9f817q8QNyB1jpkLOrhVaLi1Tmq/N1mU1cHBXydMSFnDnPWp
+         1r5bjluEq0Ye5xONrjQZ3P79l0XvqNPOspVYD5zr1dTAdXrIszr3GD++YXHgcTdXu7iG
+         Ch7D+jyElKT8EER50/O765Nv+KPkYWZWSHJobGCNSn2esk9vHgnDwgA6ed9lIS0pftnX
+         3ZZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzCbH8Qvg/Sk9IxEiNGfFJAaymHYA78Ey1/9dxv12K9lYfX3fTUWADF7x09tIGaEIC088LCz1a/Xw==@kvack.org
+X-Gm-Message-State: AFuF++kYgMycu6XyQAExV8/C3YVXyyWrHJrpL/8SmKxeZY3Bu9QRwlCl
+	2MA0MvM11GhZc2kXmi8tAUD6HnIH4XKZIRp0uNF/utR8Rsr/38sWrV7ZqH7fMwkI9CnuK+xRk/u
+	nGtxuBWNnnXzcuX/ENFr04bW6FfVffCc=
+X-Gm-Gg: AYBFou3KFZkeKecvi+UQ5ju4DVSQ0WPQeVz0Hz49RL9p+GyGtZAwbEF2ASMnKyLr7kz
+	5eGLaneFfDV4fXIjtYNbt0SBHS4DSG/wwAM9uoyFst498oR3ZgNfmiSJQZmjLijqjVlTcrMKcLX
+	Ty3w8JpR4irmU/bmNXQJ/0KBWx8T2hGvi45UJdtdPwJmuF8ELmsbZSPEecGSfLBJ50xwK68L5BE
+	krhmBmDyex3a5g+SwRjSoh+JEr48dXjQbkeuwMFtC+YK2/lgERJJ+JNJgalI0i+BZkC8OEEeGhL
+	zZnQSU9OPGZMkP63Jas8Tt2rDVmAiOKXHRV1SRE/yAv7Zcd6OIHamHJvNy2wm8XuPq5HJGr1nxY
+	/JojJWFuQW5E+
+X-Received: by 2002:a17:907:c16:b0:c21:601:6501 with SMTP id
+ a640c23a62f3a-c29665e89fdmr193638666b.20.1789143011443; Fri, 11 Sep 2026
+ 09:10:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909-cgwb-tasks-rcu-qs-v1-1-967a7754771f@toxicpanda.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 249F2180009
-X-Stat-Signature: ya8o1x787xiaytt4bs8xc56k5ja9cfno
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com> <CAKEwX=O8i+OsP6BJXNZNk07hveN9HDT+PoyMTAU6gOc-xp0Ppg@mail.gmail.com>
+In-Reply-To: <CAKEwX=O8i+OsP6BJXNZNk07hveN9HDT+PoyMTAU6gOc-xp0Ppg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 12 Sep 2026 00:09:31 +0800
+X-Gm-Features: AcwNN1Un2LFNfTd7xdPlYuftb137wVckrxct0RVwonPV9MljgbG46bA08SXCPNY
+Message-ID: <CAMgjq7BQeQQOZMDPFJ+8LS2N4t3x53r6Nm+9o0_pi92oVUgjgQ@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1789142920-422554
-X-HE-Meta: U2FsdGVkX19JmWade5zv+Ysp4LLU5d43xwAw85oEobv/GNqJfTYbk7wScfy82O3nvkVf23ICntXcXjlNSmPBFdrJDWkFoWsnbab3y8F+wodcNXxMzp7XYgEIYmzCtdIyQJ8klFjtPNJUSm/JEGDTUKshbHhZwuoWLCUSBMEB1AELEJzNAWvPjNCII5/zGOjuCOmYbZNSLS9o97wdmX/2nUdG5o08Xbe4zqOUlM4VLcViKuv/AtmSBQXaGfluDJwfsohK2DVSTgZXqxmdMLk/vxtwdcT3HMbJq4AQMzyiApgM5oz34YjUjsmbrAqjfxH0drwyjLI+dKb9NUGLEcVsKzx7Rb5UZsjI/1VGtQcsMWh+eoOdN85OvSS8DSkEqIAxNaRAbDbd0DW0BXWawR229vKiViI0hpxQqqv+pvlV/mp/SHJy3jGNXSSKr31TMWgx9SPzKR4fKmz5N49Os8vG9mtaKPpgb+LuAcoX+FqwKI19imIYReh+CpPgT+A74FBPbXF66hJ7Ya06iLn4I9fiGSHg5sPTAY5WWRT6xGC0Xx5S5a6UXWw5a4bFeyGDKF4MXYl8HTEHqg0T7VmBEX47HM8b18rF+3/fGJFkS+aIKuY2jb3Zel/BfWw2NgaT3ZnMXRLd1qe4MVNgxWWYv19dQ2AXKeDPR30CJkxkahwPcltGLaqHwU6oMXUfDRP/h44PLpa3mXjQcam9k7yUjubH8Jda3zByULdpDSiK4+tsn5KUiPYKbM71wwhHDjv6ObXjVf103yin97cwN3aPay8v3Jr6lWYlLBDP9xq8X8GxsMPJS0EreMN2GlO6b0MLMIPCwNgDcyFyfspk3FTbP9b1KBTkJuk4QqcJ/3K7xr5zGmzvB8fnO5B/wZGlb+j0tZSek9VqxdvwU3v6wvkW/HMDWB5cbatJFzEjEVfPMKn2MunPJZy1AuSn1BwKvxESacvh7tCq8zYx3gdzkJXFB5S
- lSKiR+OM
- o8uNsh/hW/zx4g1cm3U/P7ox5cH21zANuYcNxWflkO86d6fSLuMJMMsmk6upoP0tSTv7MzQU7V0EORaO9YK5VejayT/1WGtjEG3kZgtpqtqDL5PepJcAv30mRaNjljQWK+xRPE+tHrpKzUTPcRdT35/DVy/ZNBpz3OtKL2pkc8W6FxunKiDTsMGV7CTTMxo3iPVh7Oja1/X/qiNFlpU43pmDRszQ6uBnzvC2zp8J+0ae1tyPD+nnes6kK750ZmI0z46Rp7rAQobGK32Szo0r7/89XrV/3tASORW4pncUlqGRrQZoiiyfkXjuSmnfq8kwaO4ipmY/BFR/kj4Yaq1fZtTienQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 47E3BC0009
+X-Stat-Signature: zjoyezga7keu1mjii6bpgybxq8agps9p
+X-HE-Tag: 1789143013-360735
+X-HE-Meta: U2FsdGVkX19+Cmv393rBT6ZqYmIYOQ29zP/vv/q/EDgn1dO5LNxkkyFt7JqNi6T72lDD9C5iDmwiDOIeo2lvu2rH02sSFlWGMXNRy9kMnFbRJFpoc12j2Tu8qsqAuYzLOwVvXEh4ddtro9o0WPViJAQb4ffnNbFgea9wpLjLpZApY61SVdRyn6mvAunn+Ouj0Zx5sFbdJYvdHyCYRCNb4LYzJ7AIIw6961dthhUQvzrXljiBUZpkGtXjZB+uAGSgqzMWNuTcr/lM3LOfLydzexHYtvuWoRNKs2vzBTAAuzmGvO4L8a7+5LaHdwCWr5zGe64jiZpeUy7ysdyLhGzgA6OZ6iHhPbZa9Cdm2ORPGbM4pnHHEXd52tj3kDyF3EOWtl+GZp7vD11sMQ8uf6Ra/Xol1k9HAWhHBHC9dDfdFInLq1OfXxDdb5ef3A4sU1v8AsRDTGWzzApv+RZrSQaM3fZJNC3rokHNHqTsjGS36vuQq0Ze7v/+xlz1XBhwWlOB1PNo9Dgk6YyycNkTbBKCQTKL4aSwLt0tlBv7g2Klkf7btRL3GFSFLHO3WGEWvDKtDUGMOhS4fmD+c5bG6W1agUur30a9ZHqW+VnElA66s4FEQCRZWMHKpw2oImbupwPuis7R7lsJYcV/hkmOAIk5pzy2OnYhxLHQMEr3aXVrIV+Ln83arFS8mDrDcd2quRwiQy5B5MmLH0FiVshwSvxD5NhF3NzflYvrInUdFbduR9UlOfOqiAoYWty3ubfjkqal2trgP6FM8zv35Kfn8Vd17QnbYdI/8J6U/BtmR8NRhBtqLT76k+LDCb5XHK5WczwDKkyxr97pa8swCRVAxGKrkyRXRHer05MOmfqKnfVml3MJcfYfWO7ZH1gt8EfM0UxADYCFY9WVtRGuew/43WWLdxycRqfJaCcmb5zSrwVUTeuZeP0rrkZbX+5O9INQ555uDmRDVHe9SymNAKCbLWv
+ seG7zF85
+ ogZe1Y1LGXgjO4IVmHgF1r+KPOufZWLiqnvqu/QKWtVeu0qa5Yc1HdYcRGMHgl1yKCpk1KWlEUflIfs3mP61+nGVLdv1+hSdhucqWpyvIFT8ZmniW2CRkJeunFlygNc8ykOKkI6yJ5Lxg+z5Bg3sLpa0l6P4hB6luXWPTpYzlE15ZBT0OrwQGEzCbr7dHficxJd0enuGaAElJZcei+81NbITX1GmKUrwrSK2fZZgudHdTDCms5WOejfwv2/0EhivIWHZtTRGiOWnJ+RbWTLrGzYZ98lfer80XmiiY+KqFdW/CxGS+IjrRD0zngkG8GQ9T8olz4GAE6eBp19wLQvkSXAh1SiYHz0GhBb0TTTc1tMwQ11cbHpnG3oxAQwSo7XoL/04LqLcLYmjM8rONWOgb5ScqqdXxpB2U84wVygsS+Ozp9S2/8PrfmymRunzX1emDofS4kUBhiqbsFxNPvNNias2zn0w+gy1L2uK2cH0BxMUm6+3cm96vvHfzPgMzTkYolgXjcZCQV4yc0GLNaXBKZ+pbskDbTyhXrgou+AfNqKHXxYm5XVdGxKqdQLDuCQnc7/OQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,153 +159,269 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc cgroup guys + paulmcr for rcu aspect + willy, pedro for fs stuff
+On Wed, Sep 9, 2026 at 12:36=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Sun, Sep 6, 2026 at 10:52=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+>
+> Hi Kairui,
+>
+> Thank you for the kind words and encouragement :) It means a lot
+> coming from you.
+>
+> My main concern so far has been - it seems like every time I satisfied
+> one of your guys' requirements, another pre-requisite is added to the
+> list. I mean the performance regression and memory overhead concerns
+> make a lot of sense, especially when vswap is non-optional. But now it
+> just seems like we're delaying real use case for the fabled perfect
+> swap system. It gets very exhausting trying to keep expanding the
+> scope of this.
 
-On Wed, Sep 09, 2026 at 06:01:07PM +0000, Josef Bacik wrote:
-> cleanup_offline_cgwbs_workfn() drains a dying cgwb by calling
-> cleanup_offline_cgwb() until it returns false, with a cond_resched()
-> between passes.  On a CONFIG_PREEMPTION kernel that cond_resched() does
-> nothing: _cond_resched() is a plain "return 0", and under
-> PREEMPT_DYNAMIC the full and lazy modes disable it.  Since commit
-> 7dadeaa6e851 ("sched: Further restrict the preemption modes") those are
-> the only two models on the architectures with PREEMPT_LAZY support,
-> arm64 and x86 among them, so the drain loop never reports a Tasks-RCU
-> quiescent state.
+Hi Nhat
 
-Hmm, I thought that for all intents and purposes cond_resched() was unimportant
-and something we wanted to get rid of or it was silly to use?
+I also wish we could do things at a faster pace in upstream :), that's
+a challenge for all of us...
 
-So it seems very strange that it's so critical here.
+> >
+> > I asked Baoquan the same thing, see the "Why not make both args
+> > optional" part:
+> >
+> > https://lore.kernel.org/linux-mm/apaw_XmqnEcY8sv7@MiWiFi-R3L-srv/
+> >
+> > Where I've ended up is that unbounded growth is a real concern. On a
+> > host with no memcg limit (root cgroup, and most desktop and embedded
+> > setups), an unlimited pool means usage can keep growing, with no
+> > admin visible ceiling at all. I'm not attached to xswap's percent of RA=
+M
+> > knob specifically, but I do think some kind of bound makes sense.
+>
+> Technically speaking, virtual swap *is* bounded, i.e 8PB (xarray
+> induced a limit to the number of clusters it can allocate). But more
+> importantly, it's effectively capped by the backend it can take:
+> zswap, swap cache, disk swap, etc.
 
-I think there's probably a bigger algorithmic issue underlying this.
+Right... See below.
 
-And I don't think cond_resched() is really relevant here:
+> > Agreed completely, and I think this one is settled: whatever lands
+> > has to support disk writeback in the end. Baoquan mentioned that
+> > what he sent is just a foundation though. I know talking is cheap
+> > but still, could it be combined with the writeback support from the
+> > other side? Or am I missing anything here?
+>
+> I'm just very nervous about any design that doesn't quite take that
+> into account and handwave it away into a follow-up :)
 
-Looking at my RCU notes it says that [rcu_tasks_kthread] polls and snapshots all
-CPUs which have undergone _voluntary_ rescheduling, and quiescent state is
-determined by that.
+In fact, checking the code, it seems it won't be hard to just glue the
+vswap writeback to the xswap design? Maybe that's not the right way,
+but I'm just saying it seems it won't be a problem, we need to think
+twice about this.
 
-It tracks holdouts and then at 100-200ms it forces a context switch for those
-holdouts.
+> > > 3. Cgroup charging behavior. vswap/xswap shouldn't be charged against=
+ the
+> > >    swap usage counter. It's fundamentally a different resource from
+> > >    physical swapfile space, and memory.swap.* should read 0 when noth=
+ing is
+> > >    on disk [18]. I made the longer argument for this in [19].
+> >
+> > I personally don't have a strong opinion on this. But I think this
+> > needs an explicit decision from the group rather than being
+> > inherited from whichever series merges first. Skipping the charge
+> > when a device has a special flag isn't hard to do if the code
+> > abstraction is done well, so this is more of a design decision
+> > than a technical problem.
+>
+> I'm fine with discussing about this. I just want to point out that
+> this is not something I snuck in :) This has been the behavior since
+> probably the first or second RFC of the first design though, and in
+> most of them, it is a front-and-centre patch of its own, not hushed
+> away in one big patch. Folks have had 1.5 years to comment on it (and
+> still not too late - nothing is merged yet!)
+>
+> I'd love to hear opinions from other zswap users regarding this :)
 
-But AFAIU cond_resched() isn't a _voluntary_ context switch from task RCU's
-point of view.
-
-So this whole bit is just wrong I think.
-
-It's more so that no voluntary context switch occurs in a context where task RCU
-is all you have for RCU.
-
-Also actually I think the comment on cond_resched_rcu_qs() is out of date:
-
-/**
- * cond_resched_tasks_rcu_qs - Report potential quiescent states to RCU
- *
- * This macro resembles cond_resched(), except that it is defined to
- * report potential quiescent states to RCU-tasks even if the cond_resched()
- * machinery were to be shut off, as some advocate for PREEMPTION kernels.
- */
-
-Commit bde6c3aa9930 ("rcu: Provide cond_resched_rcu_qs() to force quiescent
-states in long loops") references reluctance to 'instrument' cond_resched().
-
-So it was provided as a means of actually achieving what you need here in a long
-loop.
-
-Paul - I think maybe it's worth updating this? And maybe even renaming it? :)
+Right, I still have no strong opinion on this yet, up to you guys :)
 
 >
-> A worker draining a cgwb with millions of attached inodes runs for
-> minutes.  On a 6.18 arm64 host in lazy mode the cgwb worker drained one
-> dying cgroup's writeback domain for over 11 minutes.  A BPF program
-
-That really sounds like something bigger is broken here... why is so much queued
-up by this point with no voluntary context switches to clear any of it down?
-
-> unlink (bpf_trampoline_unlink_prog -> bpf_trampoline_update ->
-> unregister_ftrace_direct -> ftrace_shutdown -> synchronize_rcu_tasks())
-> waited on that grace period while holding the trampoline mutex, 42
-> tasks queued behind it in D state, and the hung task detector fired at
-> 614 s and panicked the host.  Any BPF or ftrace detach during a long
-> drain inherits the drain's length.
-
-Yikes...
-
+> >
+> > > 4. Data structure (xarray vs sparse vmalloc array). Even with xarray,=
+ vswap
+> > >    is already on par with or beating baseline. I like the sparse arra=
+y
+> > >    idea, but why are we landing an optimization before the feature it=
+self,
+> > >    without any A/B data showing the difference matters?
+> >
+> > This is where I'd push back a little. To be clear, my concern isn't the
+> > size of the win, it's that VM_SPARSE isn't purely an optimization. It
+> > changes the cluster/metadata layout and avoids RCU conventions,
+> > could help avoid some future sleep while atomic limitations and
+> > it's tangled with the initial size issue too. So bolting it on afterwar=
+ds
+> > could mean rewriting the parts of vswap that touch it and could be
+> > costly some conflict in ideas. That's why I'd rather we agree on
+> > it now, not that it has to land first.
 >
-> Fix this by calling cond_resched_tasks_rcu_qs() so we do not stall out
-> anybody who calls sycnrhonize_rcu_tasks().  We put this in a do { } while
-> loop because if we have many small cgroups cleanup_offline_cgwb() will
-> return false and we will never call cond_resched_tasks_rcu_qs(), creating
-> the same problem.
-
-So I think this looks fine as an immediate, backportable fix.
-
-But I think we need to look deeper into the real cause here.
-
-I've not looked at the writeback code for a while, and am certainly not au-fait
-with the cgroup side of it, so asking the LLM:
-
-" - fs/fs-writeback.c:726 isw_prepare_wbs_switch() walks b_attached from the
-    head on every pass. Inodes already marked I_WB_SWITCH stay on the old wb's
-    list until the consumer moves them at fs/fs-writeback.c:465.
-
-  - Each pass isolates at most about 120 inodes, per fs/fs-writeback.c:269, but
-    revisits every already-prepared inode, each costing cgroup_writeback_pin()
-    plus an i_lock round trip at fs/fs-writeback.c:624, all under wb->list_lock
-    with preemption disabled.
-
-  - The consumer at fs/fs-writeback.c:616 does a synchronize_rcu() per wave, so
-    the producer outruns it and the rescans grow. With millions of inodes that
-    is quadratic, and it explains minutes of CPU-bound worker time without any
-    preemption-mode change.
-
-  A follow-up that makes the producer wait for in-flight switches, or that has
-  cleanup_offline_cgwb() resume from where it stopped, would fix both the
-  runtime and the Tasks-RCU stall. "
-
-So this DEFINITELY needs some follow up attention I think.
-
-Anyway for the fix as written, it seems sensible and the right way to
-immediately address this, so:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+> I don't think the current code differs significantly from the existing
+> model, no?
 >
-> Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/bpf/9d444098-7c03-4163-af12-bd0a79a51443@paulmck-laptop/
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
->  mm/backing-dev.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> For the most part, RCU played quite nicely with the current swap code.
+> Practically, it's just:
 >
-> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> index cecbcf9060a6..18e999053bae 100644
-> --- a/mm/backing-dev.c
-> +++ b/mm/backing-dev.c
-> @@ -910,8 +910,9 @@ static void cleanup_offline_cgwbs_workfn(struct work_struct *work)
->  			continue;
+> 1. If you have a reference to the swap entry, you can assume entry and
+> the cluster owning it is safe.
 >
->  		spin_unlock_irq(&cgwb_lock);
-> -		while (cleanup_offline_cgwb(wb))
-> -			cond_resched();
-> +		do {
-> +			cond_resched_tasks_rcu_qs();
-> +		} while (cleanup_offline_cgwb(wb));
->  		spin_lock_irq(&cgwb_lock);
+> 2. If you don't, then do not assume it's safe once you exit the rcu
+> read section.
 >
->  		wb_put(wb);
->
-> ---
-> base-commit: 893e11787f78e43b534e252249ac3fff4d1333f8
-> change-id: 20260909-cgwb-tasks-rcu-qs-42341609f3e1
->
-> Best regards,
-> --
-> Josef Bacik <josef@toxicpanda.com>
->
+> What conflicts specifically do you have in mind here :)
 
---
-Cheers, Lorenzo
+Yeah you're right. I'm just a bit worried if that RCU period will be
+extended, and it's always better to make the convention as simple as
+possible. I'm already trying to get rid of the local lock, in that
+swap queue series, that is not so painful and still a bit troublesome
+for a few new use cases.
+
+> > Using VM_SPARSE does outsmart my earlier xarray suggestion :) There
+> > is an interesting early benchmark from Baoquan, VM_SPARSE wasn't there
+> > yet, but with it we can use clusters natively in the same way. It shows
+> > about 20% latency cut and 10% throughput gain, which seems a major
+> > improvement, and that's serial performance, not even mentioning
+> > scalability yet:
+> > https://lore.kernel.org/linux-mm/20260707073215.72183-1-baoquan.he@linu=
+x.dev/
+>
+> I think a lot of these wins come from the fact that the zswap's xarray
+> specifically is *really* bad in certain paths. For instance, in the
+> free path (swap_range_free() -> zswap_invalidate()), there is no
+> batching behavior, so we walk the tree from scratch for each entry
+> rather than using an xas iterator for the entire batch. That goes away
+> in the current vswap model, because the xarray manages cluster rather
+> than entries, so you just do one tree walk + one flat array walk.
+
+Right but with vswap replacing zswap, isn't the performance is still
+basically unchanged according to your test (or just a little bit
+faster)? My test still doesn't show a measurable improvement.
+
+> zswap and swapfile coupled, but only remove the xarray and replace it
+> with the flat array in swapfile's cluster struct. I observe the same
+> win, basically (especially on the usemem benchmark).
+
+Yeah, merging the zswap xarray into cluster should buy a lot of
+performance gain, the only concern is the cluster it self is in a
+xarray tree so if your vswap space gets huge, could that somehow
+become an issue? Zswap used a split xarray, and swap also used to have
+a 64M partition for the swap cache xarray, which is gone after the
+swap table.
+
+...
+
+> > We were also discussing the limitation of the global cluster cache in
+> > that thread, so I paused my other work for a while and posted the swap
+> > queue series first. That one is orthogonal on purpose, and helps both
+> > swap tier and vswap, it reduces the overhead enough to cancel out
+> > the layering cost due to missing caching for either:
+> > https://lore.kernel.org/linux-mm/20260829-swap-pcp-priq-v2-resend-0-68d=
+3d925578c@gmail.com/
+> > (this is V2, V1 is earlier - thanks to Lian for keeping this going!)
+>
+> Ah that! I sort of tabled that as a nice-idea-but-still-optimization :P
+>
+> I'll spend some time thinking about the design and reviewing it. In
+> the long run, it will get things more simple, but another thing that
+> should not be a blocker, correct?
+
+Right, definitely not a blocker. I think the swap queue could be
+merged after tiering and other stuff, as an optimization, just to
+demonstrate that we don't need another layer of cache; we can just use
+the devices directly without any cache above them. It will also
+deprecate plist; with the only plist rotate user is gone, we can get
+rid of a large chunk of common plist code.
+
+...
+
+> > The two interfaces aren't equivalent, xswap has its limitations, but a
+> > couple of xswap's properties look genuinely better to me. Runtime
+> > on/off rather than a boot parameter is better, more flexibility and
+>
+> I would also like to point out - I *do* have a runtime parameter in an
+> older version of vswap (v3). There is also not a lot of engagement
+> from folks in that version - no one expressed any interest in that
+> runtime knob in particular. Only Johannes made the case that a boot
+> parameter is superior, so I switched over. I think his reasoning makes
+> sense at the time FWIW, and it also removes the need for CONFIG_VSWAP
+> (which in turns remove a bunch of useless stubs - saving 100 LoCs), so
+> I figure folks will prefer less code and less userspace decisions :)
+>
+> v3: https://lore.kernel.org/all/20260806184254.3790858-1-nphamcs@gmail.co=
+m/
+
+Ah, thanks for the reminder.
+
+> Regardless - do you have a specific use case in mind where a runtime
+> knob would be useful?
+
+A boot time bool will cause real trouble for us, at least. We have
+many VMs with fixed boot images and fixed cmdlines. However, the VM
+itself is used by different customers, some are ZRAM only users, and
+quite a lot don't want any kind of compression (e.g. their data is
+dense compression is just waste of CPU) and prefer plain swap. So I do
+hope we can have a runtime tunable instead of modifying the cmdline
+and rebooting or rebuilding the base image for different cases, and we
+have already seen that a runtime toggle isn't hard at all.
+
+> > doesn't conflict with what vswap is trying to do. Some other of these
+> > differences involve design decisions rather than just surface knobs,
+> > and those are the parts we're stuck with once they ship.
+> >
+> > So a few current interface difference of vswap and xswap I've noticed a=
+re:
+> >
+> >  - default size: somehow also tangled with VM_SPARSE, which
+> > needs an initial virtual value. It's super cheap if not zero cost
+> > (the only cost is occupying some vmalloc area, which is fine
+> > I guess?). But we still have to pick a number, could be large
+> > enough to satisfy everyone?
+>
+> 8PB? ;)
+
+Right I saw that at V1 :).
+
+I'm not sure if this is the reason that is in conflict with VM_SPARSE
+in your mind? Techically, at least for 64 bit, we can just apply the
+same limit to VM_SPARSE, for 64 bit machines we have a lot of virtual
+space to consume and that should be fine (VM_SPARSE is just the
+cluster map, which is much smaller compared to swap space).
+
+And another thing is do we really need that much in any case? Will
+things like, e.g. 64 times the physical memory (max pfn) be enough? I
+know Baoquan suggest just use the physical memory size. So that could
+be tunable, it's really easy to tune, just a number.
+
+For things like an extremely high amount of zero folio swap, I think
+remapping the zero folio it self is definately a better idea instead
+of wasting a lot of SWAP entries and metadata in the long term
+
+> >  - boot vs runtime toggle: I believe a runtime toggle is better. It
+> > can still be tuned on boot via cmdline, but it offers the extra
+> > ability to turn it on without modifying a base VM boot image or
+> > kernel.
+> >  - growth / limits: as talked above.
+> >  - charging semantics
+> >  - there could be other longterm design decisions on top of these as
+> > we talked in above.
+> >
+> > Once these settle, I think the picture will be clean. Your writeback
+> > logic and swap table integration are solid, while Baoquan's VM_SPARSE,
+> > previous preparation with swap ops give us a structural foundation. A
+> > clean long-term architecture means getting the core structure right,
+> > let's try not treating this as a race between series.
+>
+> I've reached out to Baoquan as well, but I figured there's value in
+> both discussions in big and small groups, and especially since there's
+> a chance some of us might not be coming to LPC. Let's see what we come
+> up with.
+
+I'll be there this year if nothing goes wrong :), I hope we can come
+up with something.
 
