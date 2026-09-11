@@ -4,107 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDAC1C88E5A
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 19:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3BDEC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 19:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99B4A6B00A5; Fri, 11 Sep 2026 15:41:57 -0400 (EDT)
+	id 701666B00A6; Fri, 11 Sep 2026 15:41:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FC4A6B00A6; Fri, 11 Sep 2026 15:41:57 -0400 (EDT)
+	id 6D8006B00A7; Fri, 11 Sep 2026 15:41:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8399F6B00A7; Fri, 11 Sep 2026 15:41:57 -0400 (EDT)
+	id 5C87F6B00A9; Fri, 11 Sep 2026 15:41:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EAF96B00A5
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:41:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64A87C02D7
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:41:56 +0000 (UTC)
-X-FDA: 85202501832.15.E5BBDCA
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A021880007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:41:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=shgirmiv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3gVmkagYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3gVmkagYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id E3D326B00A6
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:41:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35992C0336
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:41:57 +0000 (UTC)
+X-FDA: 85202501874.30.C1EDEF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 78B10160007
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:41:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5hZkxPe;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789155714;
-	b=8SswFpjlMgD0pV7il5WayG9nt+k/jE62s0KsIYGv1wj3VTXjHs/TGFRRLOEMpx0cdtYjP4
-	in0bt2/mQ4BgqNCW1mBf0/3Io2SkzjMDT0s0p0FJgRCTM6sITg8Vz5oCNw6HtpUoVSwL1z
-	vdCCbvmG2W20/uxf6zj/OeLj7REWNQQ=
+	t=1789155715;
+	b=jD4W+owVpig6Sy1mcKzGR1uzL2AAZUV7AXvnYk6W9oiZTW5H7+SxXYnQhrL0J8NyuuHXNg
+	NP9sP5Y8sQwaAEv0De2JODm6kkZCSOdiuP6WTwO958579okdg74lDQxg4CYuXzfT6DO/Vs
+	A21DH7JATvqaj1wZo2uMZaCCFgu8A3w=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=shgirmiv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3gVmkagYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3gVmkagYKCCIQSPCL9EMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--surenb.bounces.google.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5hZkxPe;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789155714;
+	s=arc-20220608; t=1789155715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YI2R/SdoKPqweMYYzjbXGeDWKwn1DHCKfjSC8BU4ikg=;
-	b=NHDorE3DyOjcud1dh5iOpi41tuZ2onVVwUSyUdcZC4TleON2i1F2Jd9iRXwn+N0t/d9mnx
-	W0Zw4Z/drS0n734ur4fCfxtWG62Iz59WqRc5cLpi7yIUw/udCzcv7cpjMxxUpg1zd1Zx3/
-	lX6Rlevflaz6MieV8JPwvVeCQbQKvz8=
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db050d469fso34567795ad.0
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789155713; x=1789760513; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YI2R/SdoKPqweMYYzjbXGeDWKwn1DHCKfjSC8BU4ikg=;
-        b=shgirmivoUEGMsoTdZmYZRmCkZkMVTSIDsV/l+H4usIboaAQKRycS3Ka7zepNvP4W+
-         kQ9e4gK5t8V5oMknQsAd361x7LDagOp/CveT82xFEeJ7DvIa5lfR9Ru/gFOdCvpp+XBL
-         8eQb6Cc8EArTWZoInoqnXtgzTmurK4u8niXJAN0ai82J6mkzb40p/DFPvy15XWm4zmLy
-         SFAjTtt8OCzo9JYrNR03epgmoHwkt44Z+WiT2twQ/bArhD/JJOybcnUjsL8RHV5nb3uE
-         7opmttzEwc38wJtcY4mKyToV1DEDYmRcVdj7P+miXOVfwactwX1EeNbRFv9FvkgQoZoa
-         nwNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789155713; x=1789760513;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YI2R/SdoKPqweMYYzjbXGeDWKwn1DHCKfjSC8BU4ikg=;
-        b=bTaCf+Q69Yeb4wC97EJTqt3UOaTkZUS+sMMvoBT7yger/o87ytXjF6mT/djMylf8vm
-         7fGM2dXcYXHqOp4Va/0O/7ag4qOOjQwwOo8KcS3SaUFIWy4HGH01yF0SlBlqXMEINaQP
-         /fzFfZr8AY57hxZMYyifaXr/VKyMxrB2G8MmKowyDJVrZLrVTahFe6beRV4BmVjR+P/C
-         LTxfqKx0xZhCSO3wjl6do2gNoYi7u3xKl/NIT6q4vBEx442t7wblY3QD4ZhlAtnbsqr6
-         NHYIJmn1OoFwRVX3q7bN+rkvSENpQ0PqwlzGiljD5nX8nYnHecN44c7uR/K9VfzZwKq3
-         LdhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwolY3Uj7jAp6rWHb+9gS9ERkzPPdEpcuwMAvCOB3TyZcNTB4oINVXp1eaaUiEwjpVeb3MjQOWwbA==@kvack.org
-X-Gm-Message-State: AFuF++mumgyRY3H8zMac7bXIkuRKamqXeBOfvOQvvWeGorVYr3/itn/V
-	IZc6YYgZkrgZJcQprecUiAw4c7hnNnlO4yn+5HpVG+USrBAiRrtqhfts5RbSxWb+rqoN9qmYi0/
-	ivIdUyg==
-X-Received: from dybrp10.prod.google.com ([2002:a05:7301:460a:b0:339:7bd3:e896])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:38cc:b0:2db:3734:cfa4
- with SMTP id d9443c01a7336-2dd0e8a0ef6mr117429835ad.5.1789155713246; Fri, 11
- Sep 2026 12:41:53 -0700 (PDT)
-Date: Fri, 11 Sep 2026 12:41:40 -0700
-In-Reply-To: <20260911194145.1781926-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20260911194145.1781926-1-surenb@google.com>
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260911194145.1781926-3-surenb@google.com>
-Subject: [PATCH v4 2/7] proc/task_mmu: remove unnecessary inlines in function definitions
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@kernel.org, 
-	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
-	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, surenb@google.com, 
-	Usama Arif <usama.arif@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	bh=M7feebBV+4w0SqCnHHPUA0WnsaaqlXi4RbYO862HspA=;
+	b=lT4mvC9HlHOBtUD4qqfWrpHTnnaOjMrazMeu/ner6kpMfiOEZAnDhmIl/E2T/Zpk1uK+zt
+	fhTX/huNzSE+dzvs3b3Ik7zrKS3RpvNx6emiacOZPFbu+bSMvt7gQWSniq/Wpb0yIN5R6+
+	ine4/BLFG35GnpO3tbbtu8f4c7UkaI8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1245E60202;
+	Fri, 11 Sep 2026 19:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6EE1F00893;
+	Fri, 11 Sep 2026 19:41:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789155714;
+	bh=M7feebBV+4w0SqCnHHPUA0WnsaaqlXi4RbYO862HspA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=b5hZkxPeby4ytfMTJauKfEirdwvu+obLbvn3xWPzZcr0wBfX3w+c2kujWFIcDpY9n
+	 25FLBvyf42J+UZUzQbo4EoU7R+DQKAdV1weZ0+5Qm1djVUXn5MsNCrmeyoRpAkTbTJ
+	 siMNDnCxo7ntKpAO1aUHoIFfJkSGnCkmDedyGaQ3sl0jd3SZvqvmObc3YM/xNBonZf
+	 k+LnB3mpReS5jSnuryAr5mgkoBDh+B/eY8XbcD0SZAWiMwiGHobrF0ybz9sq0aO3oR
+	 P9ZtVpQUF5BFr3CO4oSylZnpjSWQo66V0pbELQZm+VUzxOw02NQkviAWzBGK9gChxZ
+	 3WaZrJuQhS4QQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Fri, 11 Sep 2026 20:36:59 +0100
+Subject: [PATCH v3 12/12] mm: change the contract for free_pgtables(),
+ update docs
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260911-rcu-pagetable-freeing-v3-12-7b8c86103821@kernel.org>
+References: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
+In-Reply-To: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Dinh Nguyen <dinguyen@kernel.org>, 
+ Simon Schuster <schuster.simon@siemens-energy.com>, 
+ Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stafford Horne <shorne@gmail.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+ Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
+ linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, 
+ linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+ linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3290; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=d4o8BvEhvbpmkAFDsmC7e/OS16AthPkW67coZubsUt0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKWRDRfPca+K1Qt69Vu3RSVu8e9Ur+x7Hbg6r6kKjhjQ
+ tW2Xw17OkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRtYKMDKtcrE7Oe/bdKdOw
+ QVRKubxP/maw6+Z2i5NRMyQLnn/8n8DIcLLhht/b1oOGNt4zuvVbs+/8t5WS4NfTdnZawiPYtGc
+ JEwA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 78B10160007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A021880007
-X-Stat-Signature: sx7gksf6d53muwjfng65mcxt6sgfdqhj
-X-HE-Tag: 1789155714-557279
-X-HE-Meta: U2FsdGVkX1/62oShtZuH1hIxkIPASUFkk4iMoFSkq6nB9zqWN7oiyhR7b+bXklqimatOf+EOcR50D8/cSE0c+916zTAXps6pme/FcyvqqeOATMHREFRMDLdP9mHqkmhMhFj2Xulc9/cscWkUlqzExPD9iJM7tV1zAxCc2CWNj40SgWDGWE4e0oemQEw8iDehqz/9ZT8OshSu5ymdvTLroD5hv8CUFOz+sMTexWdNhJU0MwC8ensjbPW6aDCdJMECaovOiNuBxMFBdP+plncnZaxzFvTQyPpkpKwjDTgTB9l3k6SfkG69F+WaV23AEGI8r2n0IYAauL0oNFC+CGEiPijXidWxRMassy/Pt+i62aqJxLUUR9Ct99/HyqSCbDiAucXMsUSyqCzDkAuJ9YrYS9sCUBlOFD6T6sl4NhjnRb5mJ3xz0Ca54QAf6BUHG2cp8fFuydi0CbW81QM1XCFnS0QXXv+TMx6cgjXFrLNJWyPN/obBb1RTMX0wBvqahzk0DdLsdGylGZKYUSViIHGHRxpn87JugDW5Xsmy/JhosQ0QabLqQgLodSUNKrHajROY0l0/IjLBpShazF4EQHqPCFcoxDuQyvMXwQ4K0G/yrgU9N76zZoRXd5RxXYI4cg6VvOZEe+kPrlr69aIew+zp25MEYt3+mabGjvb0ebZY6LMYuGIqdv1OBPHFEeOht3mxp8mC4icZZYlajjqfOeAHDv2QBJkjpaG4zXRfNMNAj9ROUxpr+Gsqkj8xcalERtn6z6SCiv63EziXLVmm8J/n6aVIwFwXwFei0eDm1ziaGrKnyx0q2kqueszYFBGicqzkEl5x6ShUeIUXyj18LAHNUmQ6Jhd1DfOZtjoQoKRyPCRjh6CVa+Uz6C+U4wPNUOUiFSP/oMjLr6AlKRluAklPT6nVf9v/Z2tdnf1g/EedBvUzwxIRUZQcD3gWnkPYoqWtYEUIV/BOXnPGgwIewUA
- yi45YuTe
- KTva33l9auj8Dvp9vhTz9vkueO9ZF8VuwZ9j+IMkClDBPV7xH+o+nty33tAvKyiX3N+x1uJJq8gD1eTTA4bdHHtDad6i0AQLeZ/52f0h1ZP7pD/Y3Sy83AcWkJsSmiTDqI65F+dtpxCoLhc17Bp9fhwuMa0FLKWdhqMwLaphCjuceUF7OSUgTYTrr6RL1CYuHFWh4qG35CbAXKlujK3AsGqCYnwVsVbVrySo1aAvdMhDZhbt7mmobI/hIqf9PcPpKZQXRsw1/T5fr/HvEJpsynwtXLKR5d5a0W80cZg6UhBf7ouaUyLDTpeff3dTtG45jGTHNA5ppOesprxSZuEbCmdw7AiBp4xRKuhkWNOFM0vkVU8L6qi+sJSZO0+SZFMWGsp/IK4/MNMccJucI+Pw8WP53PF+ey0d04OCl8RgEl1VAMNS4Z5tkyKVwTrF+TA+zT1YMGVpdLMIcRs6mror+358izC/Eptt1ycJ4RNwxTeJAL3cXLcvG903tse2iZvAixSBJIBKBmDH6K7iaWeTZlp4u23HExByEj+wR5aDv4ww9HMI82iwVct5TZcu4++T700sWiEeZNMI2enn7w1Jy9OBXyRR/STTdN2PGC0t7MWlwiqwdrmjI57D3MN/CETjf8Mhw6y8mkwdolMcRaANXGHPtmhD9dOH1iNKi+KNJ3jNdS6wvjDKtJLYOrMcYQ9gaQjqiPqH6FQU3bDq1OUZkWBOsSHSk6E9FySeGtQRhiKd0x9xB5WjrFzQ86g==
+X-Stat-Signature: zgwii8ao553qp5ikb5gryspx71hczy31
+X-HE-Tag: 1789155715-918520
+X-HE-Meta: U2FsdGVkX1+1pRsd+XNK36CtrZm7+7VpiQvus7keb40m3m6VlqZKK93QfD+emm+SjnQfyYmCnM4yE92TYdg7BfclsDrSxfJV2JieWDBPf2IQmUyUd9EIQ+1kq4lw0nAIfLdTDY2VdGh880eD5B1N1AE/IQ36VKtNMQPjK1g0uEdafyNxP62+OScJorR1G01uDt2YhlYonYCF6sJ8B976JacIghcvxoqeCKn3oB6RoaiqVH+tnZPXmIjE8JawCwpjjF7cwE+CZfZrtOArjH+KYDs9i3g6ijxySRGed6kEO6+Z8QcTfWnj14QVOodELZ4+dOnRu51ZhCpkNT8rfPfmrNNBV2yw+QpMqm3lqVovWPJdLLPyhZNZL15NcsV5CtNsekUXyNC+DEHVCXLIsQiBr0YqcJ91mhvoaL8jYtIfWkTgm1Gzkl6ANqTd2bUDRm1r0vqOQ6BDttHOr3qwHJkAgV57Z/5QXLGxd97uABL1LnF/vk9cDT+Q1Fs18/GuUwopWx4TIZU4JN0Ut7DveMHM6FTlQuZmSfjD0wcJQ5yeFd8+9nGlgVqgCQNXSBxypkEbhmb77yay9Z4evxPp15lrEVLCNyMPIkuP2QVJPWhFMiEsva60iws+3y2tJC2X+cIzTG2b1yiLhiVO+kbhsJUQ2wM8hfaFJTaUIghPVMkgC7dJsgBPxgjQWp5h2RfZXX0rMm2IXSmU+/9chhwltWkQCDRZNKaPhWQxkqU9AcJTfNrlibVygMqWOXxb2M+4+dpjG1V+a/nFL9rxAIwlwBd4i8w4cF1LCBqX3QAssorlKsfBw25ZgN1BjT7uJWPjOFqIvYI28fkIxCF0aDbrde68a2bSqon4+S5y6JqaFAYmgdCLqTDkcZv+WjJB+oKFW3eFRRt6A7Bf8DEHh6hMXVOVNGy7Vg6VjwcUK1bEV9uaXZY9GFtvM3t+xDksl7ukJ50hSCofKEcXD9ho5g7YfZb
+ NXie9pcu
+ jRpORlzAFAZ1/Chp9D8lbEX135Ap+ZfC/9YJLQ/yDbaoLLE60kHeq4L8ZODGTbwOVMq22BDq2zw+Nr9sTVcUNOnqhV6KlgYv085q6q75cU6ulgqFdFkZtEOWN7y7ppu/FLi2ubIb7JsJq8f0fwHOd9Ijbbeg1AsGpURMFI5FMTlvPH0NayQ6oz+OshMmVIOoWXiFXQL/nBzAJFPr2tl/JK6erq76Eiyk0A1fCHQ4Rjqs14abyfSWfnmdcBMjH8yWMJJKc4L8VDvboxpnc3mSD8I1jYOeEfRwxQptdL523b7mzhTHK+rb7IkncY+u72atHB/BjjEd5oJX62uBjgRDa6mSlzaqvsJpaCp+4AZD7nC4D8m8d05nYYc/yDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,148 +157,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It was pointed out in the previous reviews of this code that many
-functions are specified as inline, which is unnecessary as the compile
-can make that decision by itself. Cleanup these definitions.
+Now that page tables are freed after an RCU grace period, it is safe for
+read-only page table walkers to walk page table ranges that are being
+concurrently torn down, provided the mm is kept alive via mmgrab().
 
-No change in the resulting binary file size with gcc v15.2.0.
-No functional change intended.
+It is however unsafe for writers to do so, as they must obtain an
+appropriate lock to do so safely.
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Update the pte_offset_map_lock()'s comment block to reflect this.
+
+Similarly update the process addresses documentation.
+
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- fs/proc/task_mmu.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ Documentation/mm/process_addrs.rst |  6 ++++++
+ mm/pgtable-generic.c               | 15 +++++++++++----
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 2f500d639db5..cfc7af1b551d 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -130,7 +130,7 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
- }
- #endif
- 
--static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-+static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
- {
- 	int ret = mmap_read_lock_killable(lock_ctx->mm);
- 
-@@ -140,7 +140,7 @@ static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
- 	return ret;
- }
- 
--static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-+static void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
- {
- 	mmap_read_unlock(lock_ctx->mm);
- 	lock_ctx->mmap_locked = false;
-@@ -177,8 +177,8 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
- 	return vma;
- }
- 
--static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
--					 loff_t pos)
-+static bool fallback_to_mmap_lock(struct proc_maps_private *priv,
-+		loff_t pos)
- {
- 	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
- 
-@@ -194,7 +194,7 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
- 	return true;
- }
- 
--static inline void drop_rcu(struct proc_maps_private *priv)
-+static void drop_rcu(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
- 		return;
-@@ -202,7 +202,7 @@ static inline void drop_rcu(struct proc_maps_private *priv)
- 	rcu_read_unlock();
- }
- 
--static inline void reacquire_rcu(struct proc_maps_private *priv)
-+static void reacquire_rcu(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
- 		return;
-@@ -1230,7 +1230,7 @@ static const struct mm_walk_ops smaps_shmem_walk_vma_lock_ops = {
- 	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
- };
- 
--static inline const struct mm_walk_ops *
-+static const struct mm_walk_ops *
- get_smaps_walk_ops(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
-@@ -1238,7 +1238,7 @@ get_smaps_walk_ops(struct proc_maps_private *priv)
- 	return &smaps_walk_vma_lock_ops;
- }
- 
--static inline const struct mm_walk_ops *
-+static const struct mm_walk_ops *
- get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
-@@ -1572,7 +1572,7 @@ struct clear_refs_private {
- 	enum clear_refs_types type;
- };
- 
--static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr, pte_t pte)
-+static bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr, pte_t pte)
- {
- 	struct folio *folio;
- 
-@@ -1588,8 +1588,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
- 	return folio_maybe_dma_pinned(folio);
- }
- 
--static inline void clear_soft_dirty(struct vm_area_struct *vma,
--		unsigned long addr, pte_t *pte)
-+static void clear_soft_dirty(struct vm_area_struct *vma, unsigned long addr,
-+		pte_t *pte)
- {
- 	if (!pgtable_supports_soft_dirty())
- 		return;
-@@ -1620,7 +1620,7 @@ static inline void clear_soft_dirty(struct vm_area_struct *vma,
- }
- 
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE)
--static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-+static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- 		unsigned long addr, pmd_t *pmdp)
- {
- 	pmd_t old, pmd = *pmdp;
-@@ -1646,7 +1646,7 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- 	}
- }
- #else
--static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
-+static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- 		unsigned long addr, pmd_t *pmdp)
- {
- }
-@@ -1846,7 +1846,7 @@ struct pagemapread {
- 
- #define PM_END_OF_BUFFER    1
- 
--static inline pagemap_entry_t make_pme(u64 frame, u64 flags)
-+static pagemap_entry_t make_pme(u64 frame, u64 flags)
- {
- 	return (pagemap_entry_t) { .pme = (frame & PM_PFRAME_MASK) | flags };
- }
-@@ -3388,7 +3388,7 @@ static const struct mm_walk_ops show_numa_vma_lock_ops = {
- 	.walk_lock = PGWALK_VMA_RDLOCK_VERIFY,
- };
- 
--static inline const struct mm_walk_ops *
-+static const struct mm_walk_ops *
- get_show_numa_ops(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index a7296f251799..b1f4f44d75eb 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -537,6 +537,12 @@ We establish basic locking rules when interacting with page tables:
+ * When changing a page table entry the page table lock for that page table
+   **must** be held, except if you can safely assume nobody can access the page
+   tables concurrently (such as on invocation of :c:func:`!free_pgtables`).
++* Page tables may be *walked* under RCU alone, as page tables are freed only
++  after an RCU grace period has elapsed. However, any entry found must be
++  revalidated after the page table lock is taken (such as the
++  :c:func:`!pmd_same` recheck performed by :c:func:`!pte_offset_map_lock`)
++  before it is acted upon. Changing an entry requires the page table
++  lock and one of the locks that excludes teardown (mmap or VMA lock).
+ * Reads from and writes to page table entries must be *appropriately*
+   atomic. See the section on atomicity below for details.
+ * Populating previously empty entries requires that the mmap or VMA locks are
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index b91b1a98029c..a127e3e8f9b9 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -385,10 +385,17 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+  * Note: "RO" / "RW" expresses the intended semantics, not that the *kmap* will
+  * be read-only/read-write protected.
+  *
+- * Note that free_pgtables(), used after unmapping detached vmas, or when
+- * exiting the whole mm, does not take page table lock before freeing a page
+- * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
+- * pte_offset_map() and co once the vma is detached from mm or mm_users is zero.
++ * Note that free_pgtables(), used after unmapping detached vmas or when exiting
++ * the whole mm, does not take a page table lock before freeing a page table.
++ *
++ * As page table freeing itself is RCU-safe, page table readers can safely run
++ * concurrently with page table teardown.
++ *
++ * However, writers CANNOT as, without a lock being held, nothing prevents
++ * concurrent teardown.
++ *
++ * Also note that the PGD itself is freed at mmdrop() time, not under RCU - so
++ * the walker must keep the mm alive either by pinning the mm or the VMA.
+  */
+ pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+ 			   unsigned long addr, spinlock_t **ptlp)
+
 -- 
-2.55.0.1007.g17ff1f9808-goog
+2.55.0
 
 
