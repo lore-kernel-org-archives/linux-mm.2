@@ -4,139 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E76C88E58
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1EABC88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A45996B008C; Fri, 11 Sep 2026 11:40:00 -0400 (EDT)
+	id AA3706B0096; Fri, 11 Sep 2026 11:47:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CFA36B00A2; Fri, 11 Sep 2026 11:40:00 -0400 (EDT)
+	id A53EF6B0098; Fri, 11 Sep 2026 11:47:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8725A6B00A3; Fri, 11 Sep 2026 11:40:00 -0400 (EDT)
+	id 9909F6B0099; Fri, 11 Sep 2026 11:47:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0A16B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:40:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2ED6160295
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:39:59 +0000 (UTC)
-X-FDA: 85201892118.18.37CA959
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8671E20003
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:39:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yRG5ex+E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ibyTuXKy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RkpCoSdf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/uV3tk5l";
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 7AA976B0096
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:47:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABBFF1C0CD8
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:47:54 +0000 (UTC)
+X-FDA: 85201912068.19.FB3B0A2
+Received: from mta0.migadu.com (out-60.mta0.migadu.com [91.218.175.60])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8BA03A0011
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:47:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lMVX98qN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789141673;
+	b=oNZE3QG97Zp1jY85Hu6Tg5wXblpzR/Vww43RGU6tWaSx6Y7jEB847LuPjy6gBFE4LogV6V
+	tyUerGinQjGjnuBgmYjWQYhHMztQ8csmV2OEkiBLPmUQcmRFGhmlSOyLnG5n89aoLXclWS
+	+KtL+ahJxfGOPeHbFqQh/cvZt0yyOsk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lMVX98qN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789141197;
+	s=arc-20220608; t=1789141673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ISisgtuP+E44Yh84wawy3XFCNcwKdHPChIXb+WWrbb8=;
-	b=z1ZglXci5KhsbwJf6x12XN8dC9ocTjAdAVRIK4CIThdJyjnczZHNlVfcUhMaxvh2nozjJi
-	Y/24OU/NLHoIIjNRb5ROCxznueMy8bK6HS1Nz2aH33JgVwifyWxfPjLGpt/RND6R6tc49h
-	et4cHFtm9su5NnxdKWGCxUv7ESFBKA8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yRG5ex+E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ibyTuXKy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RkpCoSdf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/uV3tk5l";
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789141197;
-	b=Ck4DHCWELVX2Ys4I9SMC2zOtfLUZofYKR5v+ITfAmwbM5UI4oJp1c3gg8WzSeklWVvn080
-	9AXNAqQllSHcv3+2KX2Tt6R/Bq85UIZXGTpsLrrhByzQeGT6czWV4zqU87ANtz9P7ao/79
-	mvt+4D3pVsi5wmIGIyNlVtihoFRY6xI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B72D421998;
-	Fri, 11 Sep 2026 15:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789141191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ISisgtuP+E44Yh84wawy3XFCNcwKdHPChIXb+WWrbb8=;
-	b=yRG5ex+EgB7JBx7GgoY0xMIivNvnNeF+/ahkrQ6RI9VUTThFlHzeUDfRkQD79gt6PAZZRo
-	QB9V1ct50L9FC6VBPHoyNtADtG3BzCnvgr/9kKHl/D6/CBK2EI6+uIc607aqyPkMK/oi43
-	glGziJW/osokEeiCZUnyi0qDUuAxPbA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789141191;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ISisgtuP+E44Yh84wawy3XFCNcwKdHPChIXb+WWrbb8=;
-	b=ibyTuXKyLcMMID8pqMigaGopxJtiBJpdeCCWE2u61T/OgIVLnkEZbVXEK/xnidGY8NiTND
-	8W55H2ZR3gYX40DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789141187; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ISisgtuP+E44Yh84wawy3XFCNcwKdHPChIXb+WWrbb8=;
-	b=RkpCoSdfSHWj1fcGtwrDhT62/fsH7xBwSZ2zrwPbNGs6VmbGZdwjTzYiJjy1F8iWLGBvkD
-	HpKgVD9dSpdoEI/pxQHyekwgrbZpWyVejI0I2fyfmaw5BHlfbNhSdIW2QUoPpjnAjn90qZ
-	ze/kVeQhZNqGHOU663uUKvS9yhMyTgQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789141187;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ISisgtuP+E44Yh84wawy3XFCNcwKdHPChIXb+WWrbb8=;
-	b=/uV3tk5lQuLMBGbwQPAkn0EVQUwb3BC4zkQwrUMFqeDPefyjym38hC1nKr16gCgXqmQx+B
-	FQZIBaAwPIhJgqBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 58E82136ED;
-	Fri, 11 Sep 2026 15:39:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1CI+FcMgpGp/QgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 11 Sep 2026 15:39:47 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DB29DA079E; Fri, 11 Sep 2026 17:39:31 +0200 (CEST)
-Date: Fri, 11 Sep 2026 17:39:31 +0200
-From: Jan Kara <jack@suse.cz>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: Jan Kara <jack@suse.cz>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org, 
-	axboe@kernel.dk, tj@kernel.org
-Subject: Re: [PATCH v3] writeback, memcg: skip foreign dirty tracking for
- bdev inodes
-Message-ID: <l2awpukcp7lorvujvwdoqnlwlkkjl6e2kef6tnjvdw7qve2fni@vh4lspozoytt>
-References: <20260909034343.340703-1-sunjunchao@bytedance.com>
- <iqvi6yo62ydxzshad2mhi55rxhyskfsoo62ji2curbldrg5cc4@z3wju4r6c3ab>
- <CAHSKhtcvaWgGHY_NWW242vYHHiSet0v-qsj4MsXGiwZJFrdUnQ@mail.gmail.com>
- <ekylbhyzseq25nxq2yivmmdt5xl5glum5proueyd5mrqfux2y6@fpvflg4crr2i>
- <db6d62f4-34f0-4237-ab58-c21b0968bee7@bytedance.com>
+	bh=3mw9opfOMB3dc75dXEFi6/zB3WIELWle4wCvOjsHcss=;
+	b=ZuBAwIOXAeozzKNUCGefkiwurwexnEIe3dLX60gSndncyRmtCTjBFx3vKQQODAVTs45nJx
+	VMCFbYsfcLr095Z2MliUg6Cjc/OrPHahg60TheKXD2CIeey1EDLffyBJmdGySnjtoLsh1x
+	UlzdF4rLyeAMu4Mh78+CUZj0Sqf7DB4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=3mw9opfOMB3dc75dXEFi6/zB3WIELWle4wCvOjsHcss=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789141668; v=1; x=1789746468;
+ b=lMVX98qNzhtgsB96w3biKLxvhF5fYLRHW1uYUzs/eZXKfUlJWqOtM8bhpELc4nyRiAeLrMQ0
+ Zpa8En8ziw9KF7eTBQ58oBqaH0aareXMCuEKMgOSaxrAIIz8IqDBtlZqeSj0+dCrXxYZEKhoccq
+ ObGRlZAS0UF4ALZjSRED439Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bbdea84a56ccda99;
+	Fri, 11 Sep 2026 15:47:47 +0000
+X-Mizu-Trace-ID: bbdea84a56ccda99
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org,
+	hughd@google.com,
+	david@kernel.org,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: shmem: ignore sysfs configs for shmem forced collapse
+Date: Fri, 11 Sep 2026 23:47:32 +0800
+Message-Id: <20260911154732.31220-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <b1829ac0d3f38217f031854ff0f40abef614ac0d.1789098446.git.baolin.wang@linux.alibaba.com>
+References: <b1829ac0d3f38217f031854ff0f40abef614ac0d.1789098446.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <db6d62f4-34f0-4237-ab58-c21b0968bee7@bytedance.com>
 X-Rspam-User: 
-X-Stat-Signature: mbiezq98wz9a7ueistjq3tc8b1w7xfoi
-X-Rspamd-Queue-Id: 8671E20003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789141197-134793
-X-HE-Meta: U2FsdGVkX1/k2sUJzrIM53sTD2WueJAOmQAeb3Qzzl2WseYM+whhnjpwObgKv3XbgdZGl43x/YRzk99YiONja7bQYXIYBr90Ky/prIwTCeCl9yN89S76oEk02h6Eit6tZvT6AedIwAJynA810wSXOb+F59CemX2XOCMszA4HYOC0FPUcPTZlc+5PSOrIpnuZZeCjwe97Wlm5AHlIRL5plR047TC4dNM84I6yeHFScoN3bjAwcWWyJc492UDKIadP7PgcdmsJ3ed9hptJHxZic8/hh7qfVLYUsrRlh+KfPxv7qSQfX86tsUFYdlfkyWTeybq5S6iGpXEqk1BwWZGCLQvQrmgl6XSlMK51Np07ZN1wTdDVVXkj3Fcsnt4sZYR8EpPyG2x/ndx/hM9zT3kMOx6qzhlQ4HzvDg0Dkdf/HIlmn0xulctf9yOsdjTx8RgpWISfhTuoFVo0Qey5X52GuQCVc0itE1nT3JNCMNBVfHzFCnHuFIVMI1jM084i0UCc+cgGjqPi00KId6UXIffmeKmGVdUrHFIzHvHHYPJJlEOFV9zih/siZ/wGsebmVs5HOnj1HlDuZmSkJwfyLnHlQ/go96GFP/Eytxp9B4WLZuM2KskdBRSoXotefmRBvdaXkBx61uJp48hUw8XA/ChdD/fZsiJCiI2bPdTrFu7TXyzpfjbuzse+xrpXCoRwwbd5BNNvDDnC4rsgxwEYssKOLquslmuxpkjlrGuvmH+SgR7xqHTyPtdiOZhDn68yr8m/eL4Gs8yjJwmrwZ4Lt9DiWt1UdZFnxrei8vcL0W8RedrXQcuCgtNc7evD9H5I9DPBSChw7at+e5JLwL8Os+NrDyO7KG/gkT+7Rsnd0ukRH4v0lDcZxB2OOuQ13qORP4trNy5DecpJ/NIes/pXaTHRNXqMAHFV1MmQCPMXIi7h93PwrC0F+qs1DnyhVr57P2Nnws7OYZixMUF7vFXUrDq
- +z63PmZn
- zBWVEfyFxi2HBZZplOE5BgMAaI+TwzeFJyMd8PzFYn+NUvs9qTOqs+Coy6Tr//b/JB4IVQAHaPcwJon8hKc6b4zHAi96sK/Ka0DwAy+W5OKzzO74IbfnirdHwEQjqIluMaRm467AWsiAZxlIbn5m6NTmR9KKCMddNSJSphBaRBH7M82vIf3Ujk8HfE+SM5uSudLAHPieDfFYVBKWK/r6S9bfIzSdj7n4fe3vrT3RmzP0ZNMT5d7dt1zwSR0j1x01u80Y2u8yE4t+QwgSQBZiA1BVgyaYiX0KUZNJPmCjNHRj+TDr1+z6fRLxoxFyzTOPuIO8Tpdc5SHoJ0PXZ7/Beo+QdNWCMCGI2zGjWHiOzJ8VotyGtkNZWsPJa4A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8BA03A0011
+X-Stat-Signature: diy31584wd1z4fzago3f5cerz7b1b9px
+X-HE-Tag: 1789141669-934903
+X-HE-Meta: U2FsdGVkX19cFigqW3T4EQteXQOz0+Axt2v8II+oRw2/BH/0t2HctmScuN666S4Gjyir0sTUgB4jvuBLDhbI7OFZLfmz/YBOGK9J/UdDkEibZEXk9OK6DzgKwKRqL/CxyYrEmArhfl81WHHpXtvyQKKLayieIdYqe+kJO1Oqfsc6mqONULFJLmt7y4t+U4sanOoeeqtHQ2k4Q3t3TSuAI2Kg84Ze+ajErK+RyPR2JkGIslSpQalusOOjSY8NNR2zb4GblPifAboGJr+t4ogtFhOAAr3TZkoE5Kz5+vdabTxTZf1pwjbLYWG6Qq/q+XtASqUIjdFd78cdfVfwFSfqmv+PUDh7qMugovId+zKGvw50ILMTlZ/NdsLjBgnkyAr5nfF67salBCRnQVD3ek6NTK60NmSNU0Secz7kUmLFvgTPh5HGsoMYX//+/WctVjN10Is0EdSuomdig4f32mcgKycSGHgJIGRvcblbb1IrlSEEt5GCMkQ80Oq/VuLAmaJMgFeiEvx3wvrDy2cWZmMYez5QuCgcEhcfOjC5fXl95oAqijb+bd5CuZLWO5z1DE6mJOpvIvOan4vTcGDFCVnF7uG+Z1bT+D2sT2vV5UxhNj0PgDUEiPiAWFF7ZH+QKHZfHwoEgQQxQUFWvXQahDNlSZ4Qa2elMFxN/5JvAV7DlAv5CBbe1/NvwnVOAWEuFIl8ttUAgdX5qYOWPis2LBDGTTHH0+3F1dDOzfv0FgFmQlkSUkJbPN9o2qLuk4MndO2jg8ZL9gU2jn8IfqfUdtIlce2nIf9nS2SCjnCE1r5Hm1Erqn3YXIWhs4CCVoprR0lz8PEIXDPrSjJpa9gl08f00sDde1hkCRJ+J8wT0XqCQrLcv2U3RTT7IOSJ1ZYJK0072W3M3Q46LMGiYijSSsE2frYYuk1K5W1RokEY2nVNn6/iFh+MESs1zb53yARZZjo8yFK6GtUSif1c29ZyCy1
+ nMUY1tjK
+ W8E6wtNROl3HMRORkGi8MY4l+U38QQMw9P0Dr0+S5nVkDk6LnyoP1OyvHaKrGRsgsjpJdrWivIwEesKxeqL/LwYJl2zE1tNRl10vs7ErftDzc6v/1ojHv3iLwaPdBvtzVZUVo54DxtI+0JtcgxWbxrZ6FeHHByM6mK8dzc/e16LsslSLSsuOgARGwjXrj6WO4+LnpNc+DC6gbmLukijkhHpo62zXuUS/TfGIvUpA0N8rG0lYc642MeG31xMd/RF3M+VSovakJ3kUtMSXeRqw+hkoUIgeKeIPdNAyi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,101 +103,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 11-09-26 19:39:42, Julian Sun wrote:
-> On 9/11/26 7:20 PM, Jan Kara wrote:
-> > On Wed 09-09-26 21:18:11, Julian Sun wrote:
-> > > On Wed, Sep 9, 2026 at 7:13 PM Jan Kara <jack@suse.cz> wrote:
-> > > > 
-> > > > On Wed 09-09-26 11:43:43, Julian Sun wrote:
-> > > > > The expectation in wbc_detach_inode() that "concurrent write sharing of an
-> > > > > inode is expected to be very rare" does not hold for bdev inodes. On ext4,
-> > > > > metadata from many memcgs shares the same bdev inode, so dirty throttling
-> > > > > in those memcgs can repeatedly trigger foreign flushes of the owner wb.
-> > > > > These flushes can also write ordinary file data, reducing overwrite
-> > > > > coalescing under continuous buffered overwrites. The resulting extra I/O
-> > > > > leaves less device bandwidth for other workloads.
-> > > > 
-> > > > Hum. Are you aware of [1]? The guy is from the same company so I was
-> > > > assuming you two are working together on the problem :).
-> > > 
-> > > Yes, Xin and I are on the same team, and we are looking at different
-> > > ways to mitigate this issue.
-> > 
-> > OK :).
-> > 
-> > > We will continue trying to gather more evidence from production to
-> > > better understand its actual impact. The number of calls to
-> > > `balance_dirty_pages()` and the time spent in it might be useful
-> > > metrics for this purpose.
-> > > 
-> > > Jan, if we can show that this patch provides a measurable improvement
-> > > in production, would you consider accepting it? Or do you think we
-> > > should still look for a better approach? If you think there is a
-> > > better way to address this, we'd be very interested in your
-> > > suggestion.
-> > 
-> > I definitely acknowledge that there's a problem with foreign flushing due
-> > to bdev inodes that needs to be fixed because as Tejun wrote, bdev inodes
-> > break the fundamental assumptions of foreign flushes. But so far I haven't
-> > seen a solution which I'd definitely support.
-> > 
-> > Having data from production to understand what exactly is the practical
-> > problem will hopefully help us understand how the solution should look
-> > like. Is it just that we trigger too many flushes and that slows down
-> > things? Or is even one foreign flush of the whole wb due to bdev inode
-> > making performance bad? Is it that we have many foreign pages and foreign
-> > flushes fail to properly write them?  These are questions we need to answer
-> > to decide how the solution should look like. And the solution could be
-> > anything from just limiting number of foreign flushes for a wb to 1
-> > (because there really isn't big point in more of them being queued) to more
-> > involved foreign page tracking for bdev inodes so that flushes can be more
-> > targetted.
-> 
-> Hi Jan,
-> 
-> Thanks for your feedback.
-> 
-> All the foreign flushes we've observed were triggered by bdev inodes.
-> What we've observed is that the bdev inode has only around 10 MB of
-> dirty pages, but it triggers writeback of around 40 GB of dirty pages
-> across the entire wb. The actual foreign pages account for less than
-> 10 MB, yet flushing them triggers writeback of the whole wb, and this
-> happens repeatedly.
-> 
-> This appears to cause significant write amplification.
-> 
-> Limiting foreign flushes to one may not be sufficient in this case,
-> since even a single flush can trigger a large amount of unnecessary
-> writeback. I'm currently working on tracking foreign inodes so that
-> foreign flushes can target those inodes specifically.
 
-OK, good, these are already some tangible data to use :). So in that case
-I'd maybe just:
+On Fri, Sep 11, 2026 at 12:04:33PM +0800, Baolin Wang wrote:
+>According to Documentation/mm/transhuge.rst, MADV_COLLAPSE is expected to
+>ignore any THP or mTHP interface settings.
+>
+>However, after commit 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled()
+>into shmem_allowable_huge_orders()"), performing MADV_COLLAPSE on shmem
+>will depend on /sys/.../hugepages-2048kB/shmem_enabled being set to "inherit"
+>(although that is the default), which can cause MADV_COLLAPSE to fail
+>unexpectedly.
+>
+>Fix this by returning the result of shmem_huge_global_enabled() directly
+>when MADV_COLLAPSE is requested, allowing PMD-order collapse while ignoring
+>shmem THP/mTHP settings.
+>
+>Fixes: 6beeab870e70 ("mm: shmem: move shmem_huge_global_enabled() into shmem_allowable_huge_orders()")
+>Reported-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>Closes: https://lore.kernel.org/all/20260908125105.1510704-7-kirill@shutemov.name/
+>Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>---
 
-1) Avoid adding 'wb' as foreign just because it owns bdev inode where we
-are dirtying a page.
-2) Track that we have some foreign pages in this particular bdev inode.
-3) In balance dirty pages queue flushes of bdev inodes where we have
-foreign pages (besides queueing standard foreign flushes).
+With the Fixes tag corrected as Kiryl suggested, LGTM!
 
-I didn't put too much thought into how to integrate this in an elegant way
-with the current writeback infrastructure but something like this shouldn't
-be that hard and it should help you with the foreign flush issues you
-observe.
-
-> The impact on production workloads is not easy to measure directly,
-> which is another challenge we're facing. We've had reports of slow
-> dirty page writeback from production workloads. Although we haven't
-> established the full causal chain yet, we suspect foreign flushes may
-> be contributing to the problem.
-
-Just being able to measure that "with these patches we don't need to flush
-40GB of unrelated data in foreign flushes in our production workloads" is
-enough to convince me they bring some tangible benefit for your workload
-:).
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
