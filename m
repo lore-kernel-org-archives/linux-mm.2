@@ -4,83 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E66C79FA1
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E2DC88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:58:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13246B0093; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
+	id 55EBC6B008A; Fri, 11 Sep 2026 03:58:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9AAD6B0096; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
+	id 50FB06B008C; Fri, 11 Sep 2026 03:58:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B0386B0098; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
+	id 3FD1D6B0092; Fri, 11 Sep 2026 03:58:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 718EE6B0093
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DED0F160109
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:57 +0000 (UTC)
-X-FDA: 85200695034.15.08D5E29
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 62B721C0004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IndTzz0q;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 15CBC6B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:58:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E39CC0132
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:58:29 +0000 (UTC)
+X-FDA: 85200729138.22.E0D1834
+Received: from mta0.migadu.com (out-197.mta0.migadu.com [91.218.175.197])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7825720004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:58:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=czgAtOF3;
+	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.197 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789112696;
+	s=arc-20220608; t=1789113504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OBzZVFee4S2rVGtg6M6II1AeDxf+F8a1EcPtLaDHgSA=;
-	b=lrvQLt8ClaTx9xhRYvLXFoucVTCTT00MN16uGJ0KGiCiWOv+1So6vRuzUGnyyVTZEgWFD6
-	DKwjaZMx0oLqOIsyQYNHvB5Q0qD+f9YGjWQUMx20r3MOs66rmKJ4vT7uhuoQIyVINgXjV7
-	gK+0Tm7Bu4PqPPFsGjmn87KzlVvrNjE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789112696;
-	b=BNndUx7HQiVkKVGuhFkDUdKoENUi1YWu2SDPQMakPbiDBgk9M2saFhJuAZnjeihwfCuvvk
-	31QJunMFBqpMbutPAqYzrUF/3XYykrKM4KlWG/8CpQHlBXY3FBZAtxBTgcKgfhZg4nxild
-	RmRD3Uz8+ctcE1Zo4Zv6fv2rctEX4GA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wOgTCEbQYAco9Y4McmPRaV1mhNoWht7hjNtbhEmX5no=;
+	b=8dkiiClEB+zfA95uTG7lLCYzEb/t2cXOZNGAi3Q4/2QewkSFR1/lq8RztP/mYITV06Dl/J
+	HC8RP/KURrtCimaPaNcC9tWbABR8wD3u/ue1e0LVNZ3ZL2ZvbZYt6dPJDB6ziIKj2g0XBa
+	nC5oq8x2yfy7G0KS3yLrRMrdjJpHe0c=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IndTzz0q;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92CA460213;
-	Fri, 11 Sep 2026 07:44:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6CA1F00893;
-	Fri, 11 Sep 2026 07:44:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789112695;
-	bh=OBzZVFee4S2rVGtg6M6II1AeDxf+F8a1EcPtLaDHgSA=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=IndTzz0qx5n84yuYFaj0DWuFbXlMNMPU4pRMRYbKWgxyf4TAx2zBq8olTVJsw4s2u
-	 T8ETqh0czo2f8KDTWd/deX51MYFDkVdIFO3jrx3+oJdStA6flfctbs8Kow9r290h9/
-	 ysBcd4DtTy6jucTnsC9uG3bAlZdzphZM22IDAA+tfNUpb1185+ZTvA0wuTYdkFIDlQ
-	 GY+8MTjJh6Sf1yjKHRdxLJRSR4tsXlWw8dXmKWnC+c0hbF7rNeEftF3Q0uYOwSChKD
-	 6R3SIFMUrqRBR5DKwf4bY4JCkrXjt16eiRWlwNww199xaYLBMnyK0TdnOyRIMGd5MC
-	 z5YYoLKAUXWUw==
-Content-Type: multipart/mixed; boundary="===============1662541605359616403=="
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=czgAtOF3;
+	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.197 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789113504;
+	b=8APpVgif2L1/DCLdbmI7EIasbPyKrRVo6aIHquMhyWZYOCSJO3zjg/txT0ng/P2JTtHtoK
+	5KBUAW32WLngI48vOnBlfyRLWBRPO14v9qCgdkSZ6uLt69rdiXTxxfnLKBb8/CgvvK2sne
+	/jbe+ofqt0VJkAKa4RKRXK10cZFhBxs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2z6K28VZFghAvaOC2rxcV8P37YjNcXnY9WqrSWMHQ/k=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789113497; v=1; x=1789718297;
+ b=czgAtOF3JlWxuaKbHd6nJn+3vEEx++yytKytXfhgizpNlKXoBu0iIPbhZbr1uCfHrYUvkPQD
+ pkP6XMVK5eXLDp8cDD9X27POKFZ1M6XVUvSlRcXc7oWwe48CfuZxUSc6jmc7O3rXoKS75h0w7Ex
+ c/9gvUSCt+YiV0IBUdtl2XfQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 08c4df989fc31bb8;
+	Fri, 11 Sep 2026 07:58:16 +0000
+X-Mizu-Trace-ID: 08c4df989fc31bb8
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	SJ Park <sj@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	rientjes@google.com,
+	shakeel.butt@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	will@kernel.org,
+	boqun@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	tony.luck@intel.com,
+	reinette.chatre@intel.com,
+	x86@kernel.org,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	pavel@kernel.org,
+	lance.yang@linux.dev,
+	mhiramat@kernel.org,
+	pmladek@suse.com,
+	longman@redhat.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	kprateek.nayak@amd.com,
+	mark.rutland@arm.com,
+	Dave.Martin@arm.com,
+	james.morse@arm.com,
+	babu.moger@amd.com
+Subject: [PATCH v3 00/15] sched: introduce for_each_process_rculock and for_each_thread_rculock
+Date: Fri, 11 Sep 2026 15:57:45 +0800
+Message-Id: <20260911075800.491472-1-ye.liu@linux.dev>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-Id: <c51a056670cea30c7fb85ed0ef80a6be9b7e538196a5ae53cbad3b374db70c2c@mail.kernel.org>
-In-Reply-To: <20260910233303.1063501-5-ziyang.meme@gmail.com>
-References: <20260910233303.1063501-5-ziyang.meme@gmail.com>
-Subject: Re: [PATCH v5 4/4] selftests/sched_ext: build BPF schedulers via the shared lib.bpf.mk
-From: bot+bpf-ci@kernel.org
-To: ziyang.meme@gmail.com,shuah@kernel.org,tj@kernel.org,hannes@cmpxchg.org,mkoutny@suse.com,jikos@kernel.org,bentiss@kernel.org,void@manifault.com,eddyz87@gmail.com
-Cc: vmalik@redhat.com,arighi@nvidia.com,changwoo@igalia.com,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,akpm@linux-foundation.org,inwardvessel@gmail.com,mykolal@meta.com,nathan@kernel.org,ziyang.meme@gmail.com,kernel-team@meta.com,linux-kselftest@vger.kernel.org,cgroups@vger.kernel.org,linux-input@vger.kernel.org,sched-ext@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,llvm@lists.linux.dev,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri, 11 Sep 2026 07:44:53 +0000 (UTC)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 62B721C0004
-X-Stat-Signature: s57ht7s13akfo7tx9ntid1r5qw7a61q3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789112696-806557
-X-HE-Meta: U2FsdGVkX1+JxpQaC6zJUXtgCXTVfGugymbD37pzylfMLYX6SUXriFVJ+ugLqOag+oAQJ788IdqZoKQ3F4SmcwkvJWYYiNg3AfCZx1b2cgrmb2MTV+vafzcWdBbe4aO4aTfrRq+EtAuNenMa/WSVKsuD8niIuodA4dLtDgzzmKoVprQl+XSeKjiGln41asd1BV76FyNiOausrdkLTVPCSW0hieLn/N0W/lF0dofOfCpOVxR/yPfS2aH7Q29MfusKFiJ4dRj/nduhO7khnkhgwUgU6ybtxV5rzyUyjyPiG0iw673DPi3FCCATJVG90ahwtVqG+E9IwRHI+1iCnzUzuIa6XyG8Mi18b7R+GRUSyPDunTtHXIuczQI2ER5qOVaSrHFgHtNSEcVKRfmd3geNMm90z0veLHmtoIglHY7/yfQdU9xxXCdbXYpDPzgvuqSXZw2bHuOt3XGtphRNerDgtnaxXDT2VfVtkUSyF8NOyeiB86tORgo6RWA+nYFMKrv5oGtkd6TxVvmclDocal4Z+syYLtBye+kGwFANDPuThqgjgyfHbLjM3Q0ryeF0UD1Bi3TBW3TpHGS0YDkp8sMI1qTFS6PG+WkGVbMjAVmUj7POhep1Uwa/gvIpxCykhpk4MqGJo2BC0FkXc6zSnKTy65GtVBYokNt63jgRtPDaAkfDDfjCK4zL3k7JZxfsG38tLOjP8ld7mWx7W5+SiSq31xLaNhC6ZRBgbX23ciwXeUtd6RvlE3h5KN5e46M8VCWNWi0aUF76eGk76vS7kpEMSNvsG93MFb2rBSHM/eTpFpJWF3RpdtmR63YQuPE7OXlqkRbhfCfJQfmCNvSf8dtJJAkH+ksmKSfFx2ZrGDEeIHb0bYMGPxgC/HvOajn1t64qtBs/g60Kr3fqNiqcfU4B7i5TEp6ALBYeJopldxhqs0mwIkc8ZwYqWG+z3m8F6fm+U/IKL44gQFLHNpsK0X5
- QKMMEJ2E
- s7roPViPW9KT2ID4cMNADbJ2UVBTBo085b7W9JQTl2FVjYZNreVvxhGTYTRhipsYDgxpgUaklR2nau2CFyRsX9m8EOq2PoFkbOVwZn3O3IutVoUKKrH6iB5ukneDz5EXnOII1n+aUhIUsRie8OxOxQolfVucFZOeA/HtwWP+o6nbu/6Dq+AnSu1yfp0xkUyDQsEuSTZP16Ru69ZXdyCYGpV0upgru6u5zdgjGd8pYdTKgYAy1H7wTXnzbEnCp3LOLO1OhF6WJiOUmw122y/LKjqbjNx+rlltnkj/7NPK9LDM6mkTVQlK2mtsBCbB3hT8xHwFymUBn6luy5et0zOGTH8EfNlhdO8rBdH4oOnksaLLzTTnr+8z8BbO0WB/UCkdmuXA/udu4ZtjmbvL+E0IeDUHJUmMbgjA3A2r+wSycJZ8h9xO6MaryBHdB40UdxY9i97LJ3PXQ6HuKjn4spVxLrLcfsrjtdtGuSpwLowQB8vMgCAhSOnh4MZAQtTF2QBuApkTaW9+LFwVtzqKDEBgxcvUTWW33FlT6HueC
+X-Stat-Signature: xgxojk66hjqf8sy84j9zm3w5hngunbow
+X-Rspamd-Queue-Id: 7825720004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789113504-188800
+X-HE-Meta: U2FsdGVkX1+twHBVTVz8bz5CNYpN2EDIYBe1gPkgO4gBKv+SKFSQ2XMeUlG2yncfzhtlhYz2r8uuyEI7S4qc8WtlYl09ucg6rQxzLypEXGc4N3lKBJ2wce1ZOCqhzXgsXBrx6yI9UdSJresdiWWxpoQid3vkDNgeTb3FrIpDtzpUWabpEA4HvBmE6ftOh7mX3jdcRor/LSStA44yapbLIGTDHJHxyG59ajYwXmXDHFscGVTXjMOkDu70y3v3YaGUZotUBnMX/xF+naK4KiiusGSZPA3Z5Cc/nmrt/9seyM0cFwtDSnMD/xBmMq5mV2Mi5gHiF/+UnEoI5u5R67aguoBjiIjdO7M7H4jdoSHpJt1/eYgPzalC24wsUsBzA7CWutVCv/dP9vUPnOggqn9YdTEO4F8pBHRb/KRBkuKDksnveKQV5oDMZeV/8FCQv/NNguEPTtAHzJjJEUe4YewgI1ucOjUk8OuGRptXtwWfBOgTULIhuiW192iJKSZ5adprf9V1bm7KkLXtDWbjo53pSSIsUmstpbwDmD6vMHsskpyT+0iFXisTe5MKzBEK/MMcOJ1qjgwnKdT06NnaujxXugzcdWvAyHH3CnO2Ez7zIbqKXX4GzH9zAJ6A58U+IeJvKEBvH7oaXH/EjLoGK26KD6YRAiqR0fHNfLMVumUBhboCpzmKH4M1hBDoaTuPov7nkIKQzNpeN+RpPHFEwNebcwz/Iexr6rZCCi+hrimBzSmDQofmJymlP4DnG5egjK9o1Qw74u5AVXOJoO9bhMTPkhgKq7J85KbBDnMgMLlzfKqX9g+LqJlyiwtcLoXv6ze2Wh0oMtLLF/zC3DGWfSpsp1UnmzbfKzxgO1P9B6nnZ0bPlhrsD2YMek2NinliR9EccbvVrId+6B9/grRxGkY5hOQGrbnSQ8OuigLNncY0OXFlTMOGFKhCoODFOsuB/clq3bFJ94lM3xmIP+5aTsF
+ co/4JYSR
+ qaMy9CJshGMZ6WMsWYSkow94ogoZ7uJF5v/t+/e1L/MMO+VT515wxjf/skteD/0aEsAJBIkQqooIfsnH/kfXLpSkfP3+yRFcx9wwx4YFKZA3VOWNSm7CJ4CLriMZScPpCBjqFfA6CweT1xVz7nVCQOQmOnG4FgGM7nr9tUe3ZWhhdfNNdABgfoPTmzb4QqdaZFgZFzTIfETDLrWKWVJ4n7VBKqsCaBvhdTpqm0m82qzZqiJkYUt/XNsxJDBoQHxnz+LA83A9vQDmZl9z7wKFkcmejxWZOc0GLASP0gi+Y5+s69iusxc5FVp4Ub4SFTdMSq1S122f1jNU9CvFLiDbAUWJvDKwR+r8JZjPA1/onyYSptG4uuu2fcOWs9eqX6coY7alVHtnsp03GFMuowgqmxEMfyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,114 +146,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1662541605359616403==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ye Liu <liuye@kylinos.cn>
 
-> diff --git a/tools/testing/selftests/sched_ext/Makefile b/tools/testing/selftests/sched_ext/Makefile
-> index 3cfe90e0f34f..dd3f5594af24 100644
-> --- a/tools/testing/selftests/sched_ext/Makefile
-> +++ b/tools/testing/selftests/sched_ext/Makefile
-> @@ -14,48 +14,29 @@ CURDIR := $(abspath .)
->  REPOROOT := $(abspath ../../../..)
->  TOOLSDIR := $(REPOROOT)/tools
->  LIBDIR := $(TOOLSDIR)/lib
-> -BPFDIR := $(LIBDIR)/bpf
->  TOOLSINCDIR := $(TOOLSDIR)/include
-> -BPFTOOLDIR := $(TOOLSDIR)/bpf/bpftool
-> -APIDIR := $(TOOLSINCDIR)/uapi
->  GENDIR := $(REPOROOT)/include/generated
->  GENHDR := $(GENDIR)/autoconf.h
-> -SCXTOOLSDIR := $(TOOLSDIR)/sched_ext
->  SCXTOOLSINCDIR := $(TOOLSDIR)/sched_ext/include
->
-> -OUTPUT_DIR := $(OUTPUT)/build
-> -OBJ_DIR := $(OUTPUT_DIR)/obj
-> -INCLUDE_DIR := $(OUTPUT_DIR)/include
-> -BPFOBJ_DIR := $(OBJ_DIR)/libbpf
-> -SCXOBJ_DIR := $(OBJ_DIR)/sched_ext
-> -BPFOBJ := $(BPFOBJ_DIR)/libbpf.a
-> -LIBBPF_OUTPUT := $(OBJ_DIR)/libbpf/libbpf.a
-> -
-> -DEFAULT_BPFTOOL := $(OUTPUT_DIR)/host/sbin/bpftool
-> -HOST_OBJ_DIR := $(OBJ_DIR)/host/bpftool
-> -HOST_LIBBPF_OUTPUT := $(OBJ_DIR)/host/libbpf/
-> -HOST_LIBBPF_DESTDIR := $(OUTPUT_DIR)/host/
-> -HOST_DESTDIR := $(OUTPUT_DIR)/host/
-> -
-> -VMLINUX_BTF_PATHS ?= $(if $(O),$(O)/vmlinux)					\
-> -		     $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux)		\
-> -		     ../../../../vmlinux					\
-> -		     /sys/kernel/btf/vmlinux					\
-> -		     /boot/vmlinux-$(shell uname -r)
-> -VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
-> -ifeq ($(VMLINUX_BTF),)
-> -$(error Cannot find a vmlinux for VMLINUX_BTF at any of "$(VMLINUX_BTF_PATHS)")
-> -endif
-> +# Build scheduler skeletons and subskeletons with the shared BPF rules.
-> +BPF_SRCS        := $(wildcard *.bpf.c)
-> +BPF_SKEL_EXT    := .bpf.skel.h
-> +BPF_GEN_SUBSKEL := 1
+Introduce for_each_process_rculock(), for_each_thread_rculock() and
+for_each_process_thread_rculock() macros that combine the existing
+iteration macros with scoped_guard(rcu), so that the RCU read lock
+is automatically acquired before iteration and released when the
+loop exits — including via break, goto, or return.
 
-This isn't a bug, but is anything consuming the generated
-*.bpf.subskel.h headers? Grepping the directory for "subskel" matches
-only the Makefile itself - no .c or .h file under
-tools/testing/selftests/sched_ext/ includes a subskeleton header. The
-pre-patch rule generated them too, so this preserves existing behavior,
-but the conversion makes the subskeleton an explicit one-line opt-in.
-Would dropping BPF_GEN_SUBSKEL be a reasonable follow-up to save a
-bpftool run per scheduler?
+The rest of the series converts manual rcu_read_lock()/
+rcu_read_unlock() and guard(rcu)() pairs across mm/, kernel/, fs/,
+lib/ and security/ to use the new macros.
 
-> +# Preserve the existing build/ layout.
-> +BPF_OBJ_DIR  := $(OUTPUT)/build/obj/sched_ext
-> +BPF_SKEL_DIR := $(OUTPUT)/build/include
-> +SCXOBJ_DIR   := $(BPF_OBJ_DIR)
->
-> -BPFTOOL ?= $(DEFAULT_BPFTOOL)
-> +include ../lib.bpf.mk
+Suggested by Michal Hocko for the oom_kill path [2].
 
-[ ... ]
-
-> @@ -64,102 +45,26 @@ endif
->
->  LDFLAGS = -lelf -lz -lpthread -lzstd
-
-[ ... ]
-
-> +EXTRA_CLEAN += $(OUTPUT)/build
->
->  ################
->  # C schedulers #
->  ################
->
-> -override define CLEAN
-> -	rm -rf $(OUTPUT_DIR)
-> -	rm -f $(TEST_GEN_PROGS)
-> -endef
-> -
-> -# Every testcase takes all of the BPF progs are dependencies by default. This
-> -# allows testcases to load any BPF scheduler, which is useful for testcases
-> -# that don't need their own prog to run their test.
-> -all_test_bpfprogs := $(foreach prog,$(wildcard *.bpf.c),$(INCLUDE_DIR)/$(patsubst %.c,%.skel.h,$(prog)))
-> +# Build every scheduler before each test.
-> +all_test_bpfprogs := $(BPF_SKELS)
-
-This isn't a bug, but since the variable assignment is otherwise a
-straight substitution (the foreach expression becomes $(BPF_SKELS)),
-would it be worth keeping the original comment wording? The previous
-text explained the rationale - "Every testcase takes all of the BPF
-progs as dependencies by default. This allows testcases to load any BPF
-scheduler, which is useful for testcases that don't need their own prog
-to run their test." - while the replacement restates what the following
-line does and drops the reason a testcase depends on schedulers it does
-not own.
-
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Changes since v2 [3]:
+  - Split the kernel/ patch into per-subsystem patches, as the
+    combined patch could not be applied (Peter Zijlstra, Steven
+    Rostedt).
+  - Move changelog below the --- separator so it is excluded from
+    the commit message (Lorenzo Stoakes).
+  - Indent loop body in macro definitions to show scoped_guard
+    scope (Lorenzo Stoakes).
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34573210499
---===============1662541605359616403==--
+Changes since v1 [1]:
+  - Rename macros from *_rcu to *_rculock, as suggested by Steven
+    Rostedt and acked by Thomas Gleixner, to avoid confusion with
+    existing *_rcu() list iterators that expect the caller to hold
+    the RCU read lock.
+  - Improve the comment on for_each_process_thread_rculock() to
+    document that 'break' only exits the inner loop and 'goto' is
+    needed to exit both loops (Thomas Gleixner).
+  - Rename the stale 'unlock:' label to 'out:' in hung_task.c, as
+    noted by Günther Noack.
+  - Clarify in patch 4 that page_pgoff() is safe outside the RCU
+    read-side critical section (SJ Park).
+  - CC all relevant maintainers on every patch (Lorenzo Stoakes).
+  - Drop the mm: prefix from patch 1, as the macros are in
+    include/linux/sched/signal.h (Michal Hocko).
+
+[1] https://lore.kernel.org/all/20260904083001.553587-1-ye.liu@linux.dev/
+[2] https://lore.kernel.org/all/20260813092933.562028-1-ye.liu@linux.dev/
+[3] https://lore.kernel.org/all/20260907081334.1152889-1-ye.liu@linux.dev/
+
+Ye Liu (15):
+  sched: introduce for_each_process_rculock and for_each_thread_rculock
+  mm/oom_kill: convert process/thread iterators to for_each_*_rculock
+  mm/ksm: convert process iterator to for_each_process_rculock
+  mm/memory-failure: convert process iterator to for_each_process_rculock
+  cpu/hotplug: convert thread iterator to for_each_thread_rculock
+  freezer: convert thread iterator to for_each_thread_rculock
+  hung_task: convert process/thread iterators to for_each_*_rculock
+  locking/lockdep: convert process/thread iterators to for_each_*_rculock
+  rcu: convert process/thread iterator to for_each_process_thread_rculock
+  sched: convert process/thread iterators to for_each_*_rculock
+  tracing/fgraph: convert process/thread iterator to for_each_process_thread_rculock
+  unwind: convert process/thread iterator to for_each_process_thread_rculock
+  fs: convert process/thread iterators to for_each_*_rculock
+  lib: convert process iterator to for_each_process_rculock
+  security/landlock: convert thread iterator to for_each_thread_rculock
+
+ fs/proc/base.c               |  4 +---
+ fs/resctrl/rdtgroup.c        |  8 ++------
+ include/linux/sched/signal.h | 26 ++++++++++++++++++++++++++
+ kernel/cpu.c                 |  4 +---
+ kernel/freezer.c             |  4 +---
+ kernel/hung_task.c           | 11 ++++-------
+ kernel/locking/lockdep.c     |  4 +---
+ kernel/rcu/update.c          |  4 +---
+ kernel/sched/core.c          |  3 +--
+ kernel/sched/debug.c         |  4 +---
+ kernel/trace/fgraph.c        |  8 ++------
+ kernel/unwind/deferred.c     |  3 +--
+ lib/is_single_threaded.c     |  5 +----
+ mm/ksm.c                     |  4 +---
+ mm/memory-failure.c          | 16 ++++------------
+ mm/oom_kill.c                | 20 +++++---------------
+ security/landlock/tsync.c    |  8 ++------
+ 17 files changed, 55 insertions(+), 81 deletions(-)
+
+--
+2.25.1
 
