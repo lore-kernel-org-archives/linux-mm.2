@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CCAC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A68C88E45
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356E56B008A; Fri, 11 Sep 2026 09:44:55 -0400 (EDT)
+	id A8F206B008C; Fri, 11 Sep 2026 09:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32F286B0095; Fri, 11 Sep 2026 09:44:55 -0400 (EDT)
+	id A18CA6B0092; Fri, 11 Sep 2026 09:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 245486B0096; Fri, 11 Sep 2026 09:44:55 -0400 (EDT)
+	id 92E376B0093; Fri, 11 Sep 2026 09:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03FBA6B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:44:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F8EC140177
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:44:54 +0000 (UTC)
-X-FDA: 85201602108.19.2DAF5B4
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8DB2140007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:44:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nPRJYrct;
-	spf=pass (imf04.hostedemail.com: domain of 30wWkagYKCMo8uq3zsw44w1u.s421y3AD-220Bqs0.47w@flex--seanjc.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=30wWkagYKCMo8uq3zsw44w1u.s421y3AD-220Bqs0.47w@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 726C56B008C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:51:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC81612022F
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:51:17 +0000 (UTC)
+X-FDA: 85201618194.16.677CBE2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2DE5340003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:51:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JK6EuNJm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789134292;
+	s=arc-20220608; t=1789134676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=35qTFGciq12kEJU+EMJ4woELZzEj6I4YMtoPAd4aNAQ=;
-	b=PilGyyo+nQ0DQ1qC7VB/d7cjdTRLsvGKPtS7b62GtQhiH9X/nFEmjsDIfaFllUAanfNVWM
-	zVHfmD24JvNXhs2n0u0xhmrH/mDG43C2dgln4W2jVXa3chqwcNz9h8fVbOizPLDU18rvoF
-	fD4CTbP7UTqESP5QqJdy5i5hmnxWpqM=
+	bh=fvaClzPibMX8sDId7DsBxokq538mDXT63zj8aRNKY7M=;
+	b=0Nvpslm0dgCMxZT16tzKNJT3LHzeGlfvWcdvgmV9jylvkqhhjW+6I7s6oh5LDdsKJkm2m3
+	AjOZWTML17ZH+1dSC96Sgpmo7mAB+OJbCfsQC6Fys7Oyg4UYohJf0xic71CV23mMTscdrV
+	WIInrdDmF5KZrrlOT5pebrUrCB1PftA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789134292;
-	b=h5IqARpBoNxbbOMTti5K/HGdXGHzHjxGQwnswnjviZKmXmLUegsML+Q1/EvxU8IYOAczFu
-	IW92lUcQgnxDe5/rYCtnhsUmbG8Ynvo00kMbSvE+P6RkJOVwP2l5Nw1zWCnG6Z6biJR8lv
-	9Bc0pxvNrNIpiSpuiqMPUYhCfyRjv5U=
+	t=1789134676;
+	b=tyer0ZtaSqp/DCvkYaLm7Gci/zB1UOTuGklnsDrXVbOtWN2E1aXVHs5n3PpPp+IF6qNcqL
+	ogVVcvqAEyPGdHRK9xkMvLm65PJe7lsWZmsEguhFzs8RpEuh7ZukgRJdzNJ7IH5NoGXgli
+	tIBbkmKzWAY4y/d2zxbeBPt62rEOdB8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nPRJYrct;
-	spf=pass (imf04.hostedemail.com: domain of 30wWkagYKCMo8uq3zsw44w1u.s421y3AD-220Bqs0.47w@flex--seanjc.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=30wWkagYKCMo8uq3zsw44w1u.s421y3AD-220Bqs0.47w@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb835525b10so1140591a12.2
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789134291; x=1789739091; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=35qTFGciq12kEJU+EMJ4woELZzEj6I4YMtoPAd4aNAQ=;
-        b=nPRJYrctTAhT5fvsUKM/u+DUXplSgDm0L1c4OmLI0JBEHGuBsTq66L0LeAXmb7Troj
-         wH+J74Ne9Ga5HJCoHT/+/fM0fvuoN3onlCuHXitrR16rP08yFsSfVn6dSNiKUtTwyo6a
-         6v20PaSAKKeTgpIcDxuScfsZPAqjK1LDDmn/XPIfeL+rBdPI5Usx5+UHJCFxzghuHsN/
-         ZuS6sbG1KdzhUzXP/KEMUTtTDV/CilAs+TNpZGux0soJ0TnvskjZpOQLk8SAe2jtjiyC
-         IhXM/TeLOZb8mqVKoqtrStm+Cn4/MUeY8WlttjYTXvz2oG5dvPjnmLdBT8sb+heY/S0v
-         V/6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789134291; x=1789739091;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=35qTFGciq12kEJU+EMJ4woELZzEj6I4YMtoPAd4aNAQ=;
-        b=ABD6ezBKX0R2PFPRdyDD0vg8QSIj7isMSPII83l7VQLOR2grL1eEYJTbne//f7YuqN
-         zZgio/f8BlTi2Vx+cNs4WvaY/vTS5FthprcuDd7UaD5i9svmjcpkav87Ewa+38riJPRe
-         TuzksV+zqUzvN4xFq5IREYonRf5xX1AOLoFWWutX5WjsvYe2gJRjREbC7io5ahc2NfNE
-         TRGh/dU1w06ZjOGLaq9YrGL/Vtdb293Z4kIyieADRUcK2W3Q+3zqty/K7P/BDuGZCa9t
-         bw5fYiRbQy/megHMJrToQh9zAUAN/fmAu8I30c7s/hQOyWwvYsRq8iJ5Q7qMT3UZcnyP
-         6xzA==
-X-Forwarded-Encrypted: i=1; AKwUvBz4JSfP89MNJS29KXL/vYBf83OP6ql7EM7Yep3Is2oznBER+HinnSp6v1yyd67Tz2nAoiY1GcKPsA==@kvack.org
-X-Gm-Message-State: AFuF++lVoaKjM7XQgVtuiHJrGtqUk9yqMIGlz4x8+838AOzcUprO9G+B
-	5wamZW4UnmswGDzao0XgYrlYMnsXOtNoza/MyptQW5af2T6p+WIsynjraxPcv/VsWLMMzJDwrir
-	b/wc4Zw==
-X-Received: from pgjj10.prod.google.com ([2002:a63:230a:0:b0:cc4:5907:21e9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:b08d:b0:3c6:61b9:917c
- with SMTP id adf61e73a8af0-3daed1fd3cfmr8633653637.11.1789134291123; Fri, 11
- Sep 2026 06:44:51 -0700 (PDT)
-Date: Fri, 11 Sep 2026 06:44:50 -0700
-In-Reply-To: <20260910225728.GB857650@nvidia.com>
-Mime-Version: 1.0
-References: <aptFFYqcSiBdMLE8@google.com> <20260905012403.GX4157646@nvidia.com>
- <aqIAtOoew-_6jw29@google.com> <20260910143448.GD3968357@nvidia.com>
- <aqLOWkuVKccR-I7W@google.com> <20260910171210.GF3968357@nvidia.com>
- <aqMgjXfTJ8u3n7Kj@google.com> <20260910221832.GH3968357@nvidia.com>
- <aqMyXE-fD-UN6w5L@google.com> <20260910225728.GB857650@nvidia.com>
-Message-ID: <aqQF0gz3Q2weDyEd@google.com>
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-From: Sean Christopherson <seanjc@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, Logan Odell <loganodell@google.com>, arnd@arndb.de, 
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org, 
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com, 
-	maz@kernel.org, oupton@kernel.org, bhelgaas@google.com, alex@shazbot.org, 
-	kevin.tian@intel.com, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8DB2140007
-X-Stat-Signature: zgqj8hhpdeymk6pspjnwfyffcbaafqhe
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JK6EuNJm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BAE243CF2;
+	Fri, 11 Sep 2026 13:51:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E561F000FF;
+	Fri, 11 Sep 2026 13:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789134674;
+	bh=fvaClzPibMX8sDId7DsBxokq538mDXT63zj8aRNKY7M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JK6EuNJmEr0lM0l1PtHdk05vdILf1KZ3cHgK0LH1/k3ct3M/29gKSqzM5MLwZbHAe
+	 1gUFS6ovwrEcu/B9ZWAcXtG9bvRJHVAH5z4f0Yd6I42s3f5SbhyIbGxJoewuXr6FDB
+	 dFducW2cgv4lQDDhHwDWxedcTAtQNfEsaMek6YQEPExnKaYpOgoxx7dyd2M/vAG1A5
+	 a/mlov04vWmIQ+nWhSaCYLqCOYyiF/6ZwcsuSz3nwv5d9tECM0gUPedD4kvHGFwE9f
+	 Zwt60k8LPtqiGwoWswLdjb5wD6pPNvcA+eF4Or99UGjoWpnMO+GnHyhkiL42dlYKpq
+	 wtWxeBy/4zWvA==
+Date: Fri, 11 Sep 2026 14:51:09 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: Re: [PATCH] kselftest: mm: fix potential failure for merged VMA in
+ guard-regions
+Message-ID: <aqQG5LgqXnrmY1_l@gremlin>
+References: <20260911123534.1181501-1-yeoreum.yun@arm.com>
+ <aqP29-H0iKl-2CVH@gremlin>
+ <aqQDbfMOVasuejA3@e129823.arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqQDbfMOVasuejA3@e129823.arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1789134292-164373
-X-HE-Meta: U2FsdGVkX184dbLB7jgs/Ky86daXrEhqqMaUwhauc/CqfEbIcpm14U31D8DQ62KrR4UzkuaUIXDtHjUcAhyj1MPYbB2MkWfaumSewZHSfag4hSCpVsxig01guv3MUPECvWmGMffFI27g8GJ8yXANIGbN9uynIdGkoK9Z2vP5BtmL/M0vjwdFGh3BFOiIKcVhPdgU0uKaThLlMEFssiy8SgQ2ytCQrFnyJxk+HsveWkfmgJT69e6GcuBYJj0xZs1zExfPWgjp750yQFEzxL2ntD1zi2ZMZ9DjWdOXEt+XWzr7+xFuNm3QLo1NblSnvIx3B3miooxSHbqDN/Nf0q0jq/qD+MsaDcG1dklknTjVLcUIeBLQOdf3TgieOPPB1SbtsD0EXAPjNzgj8DXYB1ukeO1iJhTYOJGxVp4LbXlX7bsp6pCLTXCNiz3Mf2UZ4eVM7iahCHrDOmjmHE5SPevB6U4YtXLolHijuS2/WUy8gB3CNuT9UlgF2lb3w8sJ4inHhZ5fNvY8l30hq/VAder+cl+Ft6YiRAM8ksFdSJVQNqOjaPK2esPGXgSWruJgd8i9IPgaNqTnfJT2FXPsd5ZvpC39JreXJSCGg/Eg+ZFdB0n2gerbjlhc8uEJzmhNL3ecJrRTgYirYGceGBrmQ5ik1NnYah0KOXyXSJgC0dLe5CL/VXGSVyLmE+ba9jlyzUG/i34ublR7tpytKqEe18y1jomivxbR2wgi+sJELErsUNAKq8AWY//0kBlpPQkiiBaiheDh8H75Pexu+U8kF5EJLkPMAYGOFDcrrk1OGSBU12E3HJZbi8XVaRR/DnCnj2yMlo/KvLDtrTX57U51LUar+dr4SiyT1RS1P8rgz6Lj40P+6VVm41IcL2QntTv5wMtsDwsqMcvIuj4HC1uDC7htqzx6Qv422AcoqG7jJvdRpt02osIG8gyHJQqKQz84+WReqtLzzRwHf6LlJAiw95P
- C67ueHlJ
- flx1n0YFWuoPLBKffedZv+5292dyPMlnsd0egdpXgIdpGFxxlhEYV/GBaycJb6hhp0+5GkcugZPtkhE+kbAnq9Pu+AGR5MeY8T3PlemcQvou39spWGA/Gb1ya2iomxZtIDzU8OmlRxJQUpizIZhC8bI1yP4PRyid0xkv4GxJ6eR6WGThnFhVHExp+zFJ/Tc8GePxCBbdfJ1COpxT+G4TB9wAYN2AtaeMxbpoSvSfHFxaErjUs28VU0nl1EX98ZJzsuvDw2mxFNkJqNzqSdlM+5HKTsho8+fAs3XGquufpYhj/IHK54BQofCGl1DAe/kRv0wrV8j4rvKocHwMksQUOkpVv9OvfqdllTZOY1hxDSC6/gRABF507bfwFbDAvOvvFHiPld5/Z/GvZzLIzQ60S+ZGKc/lCd7oiMtkrnCjkm5BIdCul1JVlp+kWX701S5HYjQNgTdirCqvgWI/w+DwTbUQFjyHdRLSFPGL7eGUKB1LcLXbXOFbvjyo8JS8e7tNQ0lAmz+O+ZuwyH507juz1I6uHFjFs7hQipvELv/hcetrRahgjAcuNx11n+NnBqU3Z2FI9vV/eOO/+FUB5971EQL9JfIF38lWZQMXWwpkJiU5YmLeRDLLnq2nbMA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2DE5340003
+X-Stat-Signature: dx65hi3b7x9z51w5q3nb7ximt7rfxpft
+X-HE-Tag: 1789134676-100459
+X-HE-Meta: U2FsdGVkX19Sqvt7m7t9WxB+HQGUE0RD3GBrzvzYXbu6kAdBXPGLVFzJoQCaEB4LhWoEBEetSwn3And+njsHEcHE+fld7UnKXXIyBvBt5innDHlmJ8KbjFAX+uheIf0vcnYMUd2lXRsUgOqySwV3Mom74gLkPn+YAKF3D3zV0t868KbiLJxtr12l25Pt/Qu3h+2IBIxyr6FQyUWtiCPLXFUOZxbHjHNqLv8up+1OUtgC4TeB6Iwh8rSEiQD5yfVYRr8ckyINN61yA7QhkSFRC+8rcFW3rXHKH8ZJMt80QY1gcJ9mvqW8u9cLcfcEz0gFkOcFrevoQw71CgWitkoQNXFM8UrgWB0AdALeWLXjE/XYf7ZAhKOWhxYgByir6z3it4g8dcsAJW2TC3u97goTRSmovNapYUePEnbOdHrdVTeOzMmi6chdNVJk1nluURuXC6UjP6KgyT5dQJdsFn19gUB/fnLQBWGalxfawP4MzU2711VnlCiPcDPHskNpsOUj1UBkQ+7WiEYYuuyq/U+Uj/kZoSZG/ps4QkxEjXtDre3Hs6SjcCa+uRcdrDwEwpcqm0PncXfQd1fnZOiFoXdzaHkbv0ticefqcqo3/aAmh/0BQiPHTFS4NXnKHIvDqQ645aA3AB7usnFHB2rXH1xmCXncz8idIlu2sZvsJm7FFHN64FZ8+7nGumgXpecL3He4Coc0AoM9VvGSkZ9q1ZJ/CiSW5m9FR6cvAbwllXVgpYjVIV9pgjyNyj8rJBR7p78U4kOE4KnzaWy2G8ArE+58L9ePT7F7WqiLfmJ0MmiIZYn09rUArjVp1IBoYdE/Z2H6/fGjiURjurnhdqyYwZgirnDjMSY3tQf6U8rxThk0y+eTge/ZleyoDf5cFXuMMCf8IM7Z5Rp7e/TWREmnmkyPAc0DrcxfRtEXLCybVa3TEBj3FB29UgFlxRFqo5KnrsZDSrPEXmDksDzHBWLtX3y
+ magAnWWs
+ TKR8iogHgJtzOufbarRz8hFn+u1vx9N+NqgD7gGD/lEgiqyULfQD+An2yHswDXYwDeFf81NBfhDqtLmO0yazLYxGKdc1tqBcdbIRRjzaV0mDd/1GjO3lZWqvCIlFCgmTavd1aZVdVfiI+oLLp5ON09Iu52HEDJviY1620V5wHzy1lojStRzph96I0JWGm+HbnsiaB43Vq4ChE5yIG4dhwnTuoTroOrPbIQ1NPhwMXZT+CYWD1fTHOyUn1HQ5lAF8Gh49ahsfsa8mQwoyQqHgmt1cQXkxqAEpKNI6a3SHrmoL2Vv16qvY2RVK4WA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,44 +94,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
-> On Thu, Sep 10, 2026 at 03:42:36PM -0700, Sean Christopherson wrote:
-> > On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
-> > > Sean's initial email was asking for strict never-break ABI compatability
-> > > rules on top, and that is what I've been reacting to.
-> > 
-> > No, I was never asking for that.  I think we just have a different interpretation
-> > of ABI, or rather are talking about different pieces of ABI.
-> > 
-> > I am still asking for never-break serialization format compatibility, i.e. the
-> > more literal save/restore ABI.  I'm not asking for full backwards/forwards
-> > compatibility across all kernels version, i.e. the higher level "kernel" ABI.
-> > 
-> > To phrase things differently: I am a-ok if kernels are inherently incompatible
-> > because they fundamentally operate differently and/or support different features.
-> > I am not ok if we end up with incompatible kernels because the save/restore
-> > interfaces and payloads are poorly designed, lack abstraction, etc.  
-> 
-> I can more agree with this, it is mostly what I thought we'd end up
-> doing anyhow with version numbers and growing the structs not
-> replacing them.
-> 
-> So you still end up with a version label (string I guess?) because we
-> can break it from time to time, 
-   
-Why bother with a label/string?  I don't understand what it buys us; I see only
-pain.  Make the features discoverable and punt on all of the "is this pile of
-insanity my company has created compatible with this other pile of insanity?" to
-layers above the kernel.
+On Fri, Sep 11, 2026 at 02:34:37PM +0100, Yeoreum Yun wrote:
+> On Fri, Sep 11, 2026 at 01:59:31PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Fri, Sep 11, 2026 at 01:35:34PM +0100, Yeoreum Yun wrote:
+> > > check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
+> > > but this can fail if the mapping is merged with an adjacent VMA.
+> > >
+> > > To avoid this potential failure, first allocate a temporary region with
+> > > extra pages at both ends, unmap it, and then map the test region within
+> > > the temporary address range, leaving an unmapped page on each side to
+> > > prevent VMA merging.
+> > >
+> > > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > > ---
+> > >  tools/testing/selftests/mm/guard-regions.c | 14 ++++++++++++--
+> > >  1 file changed, 12 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> > > index 5c8ec3ca75d7..a28a57d34e97 100644
+> > > --- a/tools/testing/selftests/mm/guard-regions.c
+> > > +++ b/tools/testing/selftests/mm/guard-regions.c
+> > > @@ -2257,8 +2257,18 @@ TEST_F(guard_regions, smaps)
+> > >  	char *ptr, *ptr2;
+> > >  	int i;
+> > >
+> > > -	/* Map a region. */
+> > > -	ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
+> > > +	/* Try to Map a region. */
+> >
+> > Map -> map
+> >
+> > > +	ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_READ | PROT_WRITE, 0, 0);
+> >
+> > Should be PROT_NONE otherwise it'll merge with the below.
+>
+> It doesn't matter. since this memory is unmapped and then second map
+> at ptr + page_size.
+>
+> IOW, though the first one is merged, it unammped and then
+> the second is allocated at ptr + page_size, it wouldn't be merged:
+>
+>   after unmap:
+>    [existing VMA][ 12 pages ][existing VMA]
+>
+>   second:
+>    [exiting VMA] [hole (page)] [ 10 pages (for test)] [hole (page)] [existing VMA]
+>
+> Am I missing something?
 
-IMO, trying to capture compatibility in a version string is doomed to fail.  To
-be useful, the version would have to be extremely sensitive to changes, otherwise
-userspace will have to do its own compatibility analysis/checks anyways.  And at
-that point, a verson string will be too restrictive, e.g. will mismatch due to
-changes in features the deployment isn't using.
+Yeah, unmapped (unfaulted) VMAs can be merged with mapped (faulted) VMAs.
 
-> just the version should have the feature mechanism layered under it? I'm fine
-> with that
-> 
-> Jason
+In general it's also better to be explicit by specifying distinct attributes
+anyway to spell out clearly that the VMAs are intended to perform that task.
+
+>
+> --
+> Sincerely,
+> Yeoreum Yun
+
+--
+Cheers, Lorenzo
 
