@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5833EC88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E88BDC88E50
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:35:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7396B009B; Fri, 11 Sep 2026 11:34:21 -0400 (EDT)
+	id CB1196B009E; Fri, 11 Sep 2026 11:35:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A6566B009D; Fri, 11 Sep 2026 11:34:21 -0400 (EDT)
+	id C87986B009F; Fri, 11 Sep 2026 11:35:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BBDA6B009E; Fri, 11 Sep 2026 11:34:21 -0400 (EDT)
+	id B9E036B00A0; Fri, 11 Sep 2026 11:35:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C2776B009B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:34:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5261640254
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:20 +0000 (UTC)
-X-FDA: 85201877880.12.811FDAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 947FEC000B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:34:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ks+jkqFp;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 9E7626B009E
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:35:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDCC740284
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:35:38 +0000 (UTC)
+X-FDA: 85201881156.28.BC5A9B7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 08F13100002
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:35:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8vhHNr8;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789140937;
+	b=2gsFqErmFy7fmjawNVIAZB+sMDPpbWAWt87IzKDN3WBMZByt1rgw87WM5Y8nlk8rpQjs8m
+	vMpm2nY95XqZyTIkNERZXwvRFBc4NYcexIhFxwOYvLxgzeBd1LrS6THIly5eyQRlzrIVXL
+	XAwNvI+HTvxrGNb5CKk5dRyXYHCyO0c=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8vhHNr8;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789140858;
+	s=arc-20220608; t=1789140937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E/mAvtzivA9U9X6tGPYFmDfSejRVU7lyr0+4Ivk47GE=;
-	b=dhjx9B1cc+aI1lBUZkPlSHI87g5zYXbchdeVBLdI3oK/YqZWSrLNw6O+C81ZeppfXG6WX9
-	yY/M1ejvXh8/3gdyrOyG/bdKLV3PWiQIcRLamKeuF3HJxd7B7DMkSK+e3WRSQHziYIxE6g
-	baWqSSZ0DjLjfjh+SwcELH6rhbyDsFI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789140858;
-	b=Zf9qjIDUTNVrm/1KoyVrssxhDFVFhDZgE8eoOP/pr9vHnfeWOKSn6lMYVGcbGzJrDlK/9+
-	MIf5vQNqlfO0zmxwyNiQuz+AUjOLVkSu+I0WoperkQKSh93k8hMjgUOXZ2pRni/fNbhUFS
-	o0bz/I/sTnGb8U1cyzy+YJlPqdexW6w=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ks+jkqFp;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8htBhrrS7QJa0BzCT1gDdtND0CWm0Fsl2BMBtjFjmjM=;
+	b=N/O/cF3MHCkFVOcwWAjSsuW87cQmT0dpxuVAfhnrujmCmd4Fnf2L8pbtrvYDZKnVXGynsk
+	Rb0RRaRsvZ78nXdSdcyhvZm5YvZgkqQcwGYF/GbHqMrOHLbiRDEHy8WNoLSsBLl261cvlg
+	PGlSQSjyiVSpt0PC+qvZukvfxbMnm0I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12A2B60234;
-	Fri, 11 Sep 2026 15:34:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515C41F000FF;
-	Fri, 11 Sep 2026 15:34:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F4CE41691;
+	Fri, 11 Sep 2026 15:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA771F000FF;
+	Fri, 11 Sep 2026 15:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789140857;
-	bh=E/mAvtzivA9U9X6tGPYFmDfSejRVU7lyr0+4Ivk47GE=;
+	s=k20260515; t=1789140936;
+	bh=8htBhrrS7QJa0BzCT1gDdtND0CWm0Fsl2BMBtjFjmjM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ks+jkqFpPwmWZ66/YPo1VZOvJ9HduIIKb5D/770pWEebkf7dlklTq02Y621vjUQKD
-	 Tfy7zNaCHzRd1kglFb2yEjnGGp+iZqRGG0DWdQK6IO0RHZMD5ES5VbMZRYfy82/vBn
-	 o/104GLutpfb9SHkCcPYXlb2KpfJOwYN0ITmFEPS1cNEeT/agBhikMjyMp9bojhpXN
-	 6Kr0RKj7Qnc9x29zWRlQ7KglAzHf6IShts0QtJ5RAdKu+LdpjimrvATnMbhTq5TZyR
-	 bYLQNb5FX83l1ZY29eXM9IHmUmw4tIdGKhon9DEize/OzBqbSuV+MLPf3byMohLzZ0
-	 0oZoRFn5DjbLg==
-Message-ID: <6fc3240e-8c4c-4178-a1a6-c7c876b92ee3@kernel.org>
-Date: Fri, 11 Sep 2026 17:34:11 +0200
+	b=G8vhHNr8GtxwAZiagsKXcAhnsR/45HrxtPYuUh/1TqNcr6fNSt6bmUiL910FhgmCo
+	 yxWZWx6B8z3+Oo1cFZ2293FRzkaEms49uD1pDZVNta8+wj7YlHcPCPCcEtwWpCyV6D
+	 TYtp/uEorhAmvL5kwQZK8VnHGFYW2lpQOseEbEvvSHO5YiAWHF9P5SwL+ahVr1atu0
+	 HDJ489c9eh7svfdUWlwWIJXS/hj/qO0oBIwSlH3rGmaRjrWbIjvROVGjAvXoRLjvdQ
+	 Vr+Dpl3OirERuF0oRgKNXBZGtL+rK43A0hcJ2TzRu0Jc2ELJARzce2uj4pC68TTHYj
+	 0tJOg2moMTOsg==
+Message-ID: <20de0829-1d74-44d4-a7cd-9c3e99d3caba@kernel.org>
+Date: Fri, 11 Sep 2026 17:35:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/7] proc/task_mmu: remove special-casing of
- smap_gather_stats() start parameter
+Subject: Re: [PATCH v3 5/7] proc/task_mmu: change proc_get_vma() to stop
+ returning gate VMA at the end
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
  willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
  xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-5-surenb@google.com>
+ <20260910234737.1340642-6-surenb@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260910234737.1340642-5-surenb@google.com>
+In-Reply-To: <20260910234737.1340642-6-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 947FEC000B
-X-Stat-Signature: mcqai1w4iki7r36cnkogps83faafr7ss
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 08F13100002
 X-Rspam-User: 
-X-HE-Tag: 1789140858-849543
-X-HE-Meta: U2FsdGVkX19UmYRiaZ02zG792vpeq2RQBA4UbGBIYK2dvI7SRJtLCZrIdhccw/jy8cCyigdr3CrmVEy2R94WUmpruLUVXvfYVEbM+xL49YfjP9p8p4VXe5mDdrRewCwQYo89VHVdwv++q46Chq0mRgPWLrTiyEkQ6LUMPS6hsCvt64L8b4H9eSGlPben0hmxI/m/Jl6SQQfo5lEZJ6veWjWyl0q0DVdD1PHm5/yXkmm+5LFiWsSnuDm5VbNXotJ42h4RqrOuoAyug1Crg1TXbQrlQEgEEiD9tZEZpfehcfx4GzwXIo62VBaVIY/FbLgD+fpxS4GmFyoWEtgx7lAMJodGtuUMHjFNYbesSnSsEruemMJEvIxfxg+yVPV4hmeIHndqH3lgSL3E2UsGRdYWAq1bX0goTDgg9bJdzWJ3GycejUmRitaJOlQRhoTuwbwYaiiL58SpVx3uOBRAEZslVtWD9ceaP4sAGB9bl4YavuN2Xfb8TxYrKIOiW/4dh77sYEVGkmAhItj/wzli6Dm0Wvo54JfQMtI3XxEitM5rUEUJRjuC8nLauNb2Un2ZRv3Pks8h8SGJB6DMH1VMYVJGmAROSPeWtk8oc4wPk82esgpIsf5m9JMm7TLEcXgfzqJnePRBO0lqUIY5eLRPo1d0Rvp7W84zdhmJ7H+CCJBT8YqTwip3sI1mLdmI/GGqyVtIbMGzyBn+IhPM8rufJIkG2dZRw5J5pYSx/slkhOsgvYYFyl0bqyc6yyGI/ikWFRXVvvv8rrajUx7IRwrFexj7rpDsKAfiWktJ7p7p7PM24LOINEREsZbTWU+jgEC4LqjUE8SGJJsh0D+vz6SiMBXt/dus9/r0OfHvQtHbVGnenuLzJpAi+DUyzwuJo1nCPpVtPpmGWfFrY7Nwyagtln+My8wiQVRWikju56VVxWgQKUBOcpSAyJkBuvhlRg4Q1kk18nwo0HeJMNTxb1zh+CL
- qxFz7sp2
- yi9zSIH40ThJzQ0bCAf1qL18bw0gI1/2x674Jz73aVESTXrjJclsHxL+Udz3WFVSX90hBjD6MHdNmw7KKKRNmBtebFjUVa4hWskzN/Z6ouhlQKhjTrgQtXVoNxhE55AwUaLd8gxW0lzqA7elh4Lc9vMJ+tb15Q3/9myWws1cjU2vMHzvNS/lQnV+NbtnxlZ1QFTz/2vdHHcjXYi4W+lTLSHP7Om4NqPKi7B3f5ZArPx3p07riI0e2G8uzc89JPW+0XeQYkwQJsJbZPdpqvUljgrfOT6JevLNEDcDn5UyMaNKM/uLCu3T9jFkPSFxnKS2TVypk2l7noHqkvlF6cQrA8tDYcqk57isICZ6LjI6jaObo8btVN9wrlziEl5Ik0PblpNITec7eH83kqxM5BiXRX7L8qInuUCvyY4oxM7yQNBwF+kCafG0+P5wpKKfWMf3WFnitdW/fxDUspoBw3BQl+tqTWU5OTbzG2UyptMwdx8tGYYs=
+X-Stat-Signature: mq4iqty8s7h77c1hx86zaqnww86e5zp8
+X-HE-Tag: 1789140936-837721
+X-HE-Meta: U2FsdGVkX1+EUopy/j5Bvd08+WLoRoUygiBNl+S3xMg9Ml6QljfjBpCjrb8okk9cqDZ09/csUW9ZSiKVZCdOTH8tU9VOG00WjrtMTgIOKlsfSPmdvg+pq+351VgEOG18pVlskuuVAs7+ZnsO5EtavrLmWozPAZFOTHHDTVRfAXzkE8clx8QotU/Hc4eQol6dRpsaHbSib0Lcs2ZXg6P9uRbAtLbSXrh5yXG20MGYYV++KSJxw3ZPvQe/AeaCjG6bJQnuxtqkEBF968N8uNyUqR5mvpF2trOz3igIvE37jA72KoILz03kXdHvwVaX6QpouufipmC015/2XB7+htSFjsCBOGdBOAuQb5HbnZYcRviovSetQkXzV/1/jXFiV/7Ps9Gx3ZUEhKfPM8iFSPuzUFMSQ3Yaqp7AvJKr3d5wB5ChC8uDtGFZ3WVNtqcUwnaToBIHevHP7lzOCdic3QYG2pqUyuclkAOp8L6rCqtjvFGkWRMVuGrqmnprXZHPr02HLi+Pu8a3oTPk71dcA/AlCVKXOb4gPBn2vT/lAhZzo8GtPq+IHEPHtnMPeXfwdwT8iFLeLcjHSZvRu1u/1EK64OVZaCrdOLLAtj7YR6agYdDvjDkUHE6QZNF9U97QCTWL1mvjsSd/mvD89EE8P51sA5wmrYmXAOjYAXc3iE50dUYTpPZdq+crw24rk+r7+UyUiFtoL1XK4961rpf+ynpb+3EBzllQZvbM4RJQ3EjI/vXPfrkDElOr5oGALrWO7J1fKaIVl+dxaTJJpQgE+BMIEGYC/6FBwaPl+iFwDAk+P0blXDgXvbAPkbFNxgbc34trInAbyBGsbafzQ38TZ7ZgO3E92EXY7wX6xxt8aj8ZyRsgH0adbI53BmWqq8SmaqFD/t0RVLaQy/P3Z6H4qPDJSSrC2T44NuoPbrm7eAYJbi8Rie/T4u3DYb7FJR7cK5+KQQTL14toF0r6EWcTw6+
+ ntZXarZH
+ FJEx/h/VcBMVHlB+8FlQFDirBfCYgYHh/hQgcc82nlBNYv85mRJ6Ebk8cJetHM0200YRCWy5ygAxcbjW/Rxvjd7yWtfkZ5y4fIShouIsPUK29aiUswumNoYXXDog2rqP+lmmaR9yGD4iau6QjfT4CP/Z2j7XPbBq6ZUy9aI5Etr34rgWRDcMmZbbWYgagKBKAEun6F23BkEvtax94V9TGVJoFouqtTJhHKBuBvryHi2/2OnIKuGgSeLMuT7ZMN2g3FXm7ru0T7viA3ynAUCZS/YrgnaJbLP+e5iUNUNMqInNpikzzDRlh0uwQyrK2W8yEDz447ybwMxyWwrFKGQ2oRlytYWBVv2Vw/k/PbC2MvG5L8ojdbqAmBn9wmEQq9BByfsdXO1+rc9teo+at9zVSzcbHmkJ+iBtBTAyshiUBc70GrUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +142,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/11/26 01:47, Suren Baghdasaryan wrote:
-> smap_gather_stats() interprets its start parameter to mean vma->vm_start
-> when it's set to 0. Eliminate this special interpretation and pass
-> vma->vm_start explicitly when needed.
+> proc_get_vma() returning gate VMA at the end is desirable for the its
+> current m_start/m_next callers, as they need to report a gate VMA at the
+> end of the address space. This behavior is very specific to these callers
+> and makes proc_get_vma() hard to use for other purposes.
 > 
-> Since smap_gather_stats() operates within a single VMA, we can replace
-> walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
-> which is simpler and also can be called while holding per-VMA lock.
+> Move this usage-specific behavior into the callers themselves so that
+> proc_get_vma() returns either a valid VMA, an error or a NULL when no
+> more VMAs are available. This makes it more generic, simpler and usable
+> in the later patches.
 > 
-> No functional change intended.
-> 
-> Suggested by: Lorenzo Stoakes <ljs@kernel.org>
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 > ---
->  fs/proc/task_mmu.c | 29 ++++++++++++++++-------------
->  1 file changed, 16 insertions(+), 13 deletions(-)
-> 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 3c40c9cbb9c9..ecce7ce116cb 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -1246,21 +1246,27 @@ get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
->  	return &smaps_shmem_walk_vma_lock_ops;
->  }
->  
-> -/*
-> - * Gather mem stats from @vma with the indicated beginning
-> - * address @start, and keep them in @mss.
-> +/**
-> + * smap_gather_stats() - Gather mem stats from @vma.
-> + * @priv: proc maps private state.
-> + * @vma: The VMA to gather stats for.
-> + * @mss: The accumulated stats.
-> + * @start: The address from which to start.
->   *
-> - * Use vm_start of @vma as the beginning address if @start is 0.
-> + * This gathers stats for the whole of the VMA unless the lock was dropped
-> + * and VMA grew or got merged and we found it again, in which case we only
-> + * gather stats for the remainder of the VMA range.
->   */
->  static void smap_gather_stats(struct proc_maps_private *priv,
->  			      struct vm_area_struct *vma,
-> -			      struct mem_size_stats *mss, unsigned long start)
-> +			      struct mem_size_stats *mss,
-> +			      unsigned long start)
-
-Two tabs while at it :P
-
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
