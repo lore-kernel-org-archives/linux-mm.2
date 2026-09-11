@@ -4,104 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFF0DC88E59
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DADBDC88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 16:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A26286B0096; Fri, 11 Sep 2026 12:46:04 -0400 (EDT)
+	id F3A3F6B008A; Fri, 11 Sep 2026 12:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D67C6B0098; Fri, 11 Sep 2026 12:46:04 -0400 (EDT)
+	id EE9B86B008C; Fri, 11 Sep 2026 12:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C51D6B0099; Fri, 11 Sep 2026 12:46:04 -0400 (EDT)
+	id DD7F56B0095; Fri, 11 Sep 2026 12:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60B646B0096
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:46:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B156F14029A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:46:03 +0000 (UTC)
-X-FDA: 85202058606.21.F08EDED
-Received: from mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4CFA8180002
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:45:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ipDHnnk0;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B61356B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:51:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7EF39C018F
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:51:18 +0000 (UTC)
+X-FDA: 85202071836.18.7A9DABA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C4886100002
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:51:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nczUk29e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789145476;
+	b=Uwm/hHWVIlfXxO5wbBVI2Bhs173XosKm0oaB6AKXDKL/cSvkg9qL8RxmMP9Rhjs+YiwPan
+	fyFX96ysuksD7IZDrrzHsxsxvd1wBuNTSF2RS4UuFR6dKGU0Ocz/ryzk490oWwXiO7H3CT
+	2WQXo03+k6foYZrefr8FCHXqWMHT9VY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nczUk29e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789145161;
+	s=arc-20220608; t=1789145476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nH9yz8sYb6ilBEnZkuGYCZ7btVu1Ulx8yeloY3t9XPU=;
-	b=VMQ7kap9ahFrfvlE/AUBC+2tOf3tuJP5/uETfhcU4lZwwFOFF0QBqe6rZDymdkmKSC0j/p
-	xtiOxBNNoTb9Si2nx3whwotPsw1Xn/4EVxDjYJozRLZP7cBVge02Nxk0snlGJ5Ui7sv53D
-	E4Ph8Woclu0dgRHDFt8qIWzhKnolxJw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ipDHnnk0;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789145161;
-	b=Tp12Fi7Ako9I90P3JsvLIJlZTUiuZ261lBaWBKkbagQ/3Wz9s12iEoN5cm+aqn55+Z+cXB
-	u7WnKEESLPeH+vZHhSiFrZEHItd9a+ZRqo2gKcYg3qxESBahxBTj4V0JCSZb1E9wQvK5uY
-	cIHiXMafA8JnOylqfA+c+DClSA2P9GQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=iVjHC+6s8+AGQU6RRqV42Jq80JuEkr3tyj+AhFd+fe8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789145154; v=1; x=1789749954;
- b=ipDHnnk0VRcBMvNduGCJFtepe3w0LLG7UlPAnox8ngTrZ9q3T/Jx/ZAHhc91zmP5+amXtTqE
- MSKCAEGVXd/NiDt2TGf7VdtUGdg8+2r6OeKhE8eL/1l73NeYvyENpGlEm0UyC8GhkHuvZUIx5dg
- owyA2XgfG8+8zFdx89iEDbVo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6c76367668246014;
-	Fri, 11 Sep 2026 16:45:54 +0000
-X-Mizu-Trace-ID: 6c76367668246014
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 11 Sep 2026 09:45:52 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, 
-	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel team <kernel-team@meta.com>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <aqQrPLPXHXiuKup0@linux.dev>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora>
- <aqLZ5TVDAqEbIeMN@linux.dev>
- <aqP81aqNbwAbs2P0@fedora>
+	bh=FIuUIH9isTF2HHo+P+QJvURJf4qaJeVb1iE/bkwd7nk=;
+	b=Ic/v1YPi/UzgAc/XQ6CYOMJmqRa30s8P0GlJglwTnWoIVzbR9MfVJP2h9HXdw35ZKyOOWR
+	Ay/iNuJIXMxA7E5kODzNGvqWFgol2uw+dePBsz1Pp3HtdC/T8DekbBXa+2JwNh5PxyXQIw
+	mO2PyLqN0SUgWKWFdafj9gf0sEF4Wno=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 39F5660142;
+	Fri, 11 Sep 2026 16:51:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3651F00893;
+	Fri, 11 Sep 2026 16:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789145475;
+	bh=FIuUIH9isTF2HHo+P+QJvURJf4qaJeVb1iE/bkwd7nk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=nczUk29euAdvz2L3BTLjS0bNKun74bw7ORA45xw/m4AVviJN2Q4HnjsBYvazaceup
+	 SOd1arR19e+0ZKxbH4WS0qXZkEX0pvQ+ZYLz8SwHKse5G2TCB1TpKj520EuVxuuyYX
+	 fhedmKzyvIz/uMalRgHUsvjh5wW9VfvZj9LDwsafLrN8cCiJsfwV1+OByR/8Ygd8vJ
+	 WXT9FhjXkgVfkvGy4oXiCr9eu+7PQ7Yz2n9Gfg9fJ46TXpxSBFss9gQkO/HtbjvRkW
+	 dnmCMpjJZ7RLFz7ebBAwuflqwk0O0cBSQ2FPANbNaLx2pavCl3GLuU9AzlsgeGgsT7
+	 F5qCXPdoY8OVQ==
+Message-ID: <c09fb2ac-58b9-4b17-be2d-38bf7fa8fbb9@kernel.org>
+Date: Fri, 11 Sep 2026 18:51:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqP81aqNbwAbs2P0@fedora>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/9] mm/huge_memory: refactor
+ __split_huge_pmd_locked()
+To: Yin Tirui <yintirui@gmail.com>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Nico Pache <nico.pache@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, "Liam R . Howlett" <liam@infradead.org>,
+ wangkefeng.wang@huawei.com, chenjun102@huawei.com,
+ linux-kernel@vger.kernel.org
+References: <cover.1787941780.git.yintirui@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cover.1787941780.git.yintirui@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xdx6hhzomfkgn4ae3exax9zdfpakghuy
-X-Rspamd-Queue-Id: 4CFA8180002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789145159-506902
-X-HE-Meta: U2FsdGVkX18FcNKJTX/hxQ/r6vv5ZxU/jRrD0sP0I28Q8qD7eqrxbLk/WRduGEcOpVubW7gnwxlj2ZHy4vCqLQj0bdIzRsMDZfJafY/FFmm+QrQfrkI4sSn+BpP1hB+3UgLdUjxXr9zA2qa7zgBK+49KogCIt8zG/662lkOggPDzhZajjHyvtfuGGinCbowJakSW3CkvSWY4PL3sXn4M47YfhvB+uoNtf82SJm1NDS1ruMEqEFN3dBvIJgjXCKjnrcy48/OxVTln77KVAF6RMZm0wIYEkB48lL5Y64n5Dk/f+56T8MFIQeIRf+TPkepUmWANk2SJpKAdDw8nFJenidVb+fC+23McIhHX60J2bMQ8sQ2LNjZgUDfwS+4zoq3f8NoNzyGf1TM7gCWT2jXzGPrsEad+Tone9S9Hfd0f68T6hTkN152e+0VPiLLMKUipMeuj3gd+JAPjaEXQnS9GMLFjc2Tzf8flA4DAC4oiA5kyYroeNg8fi5uB+FFKt/a+8Ab3DUn786Dr+n64hUDb02t9Vc7LuqVf9XDmEJs6ksxUhDwqPlmOuwn+LBAQy5olYvvzmtMycnO3G9d14ETNCgrkRLnvVb3rqlTSR2Yxq/5ZGipHfr5GTzfClBrMcwcw1c7aw1ffzt9tMtL/ttC0A6Hm5LhPD2jVwH8oFdfqe9hDQ4EvRgInf2zHMIdVQ6jjEc6nesmYb77uBAZ4IxnKcRkBdy83bqTj+dfr350xkBQINucHM5DyeNlGGugK/83pQLL4vXYQbVAftIGoybagspEMYbrdbr88FRnhI+4Wxhk74LzWryMH/M3U8J/8H5xRYNteNO/qL8PqG9Wj+e78Rdkdnfnc8VDQ8OeNrAuUBXbwGFfZQdxUvK13lgDU8Fm2AtXKweqRJsGiEt8RY93OnvEKqxCw08D7FoRovnsgsj2RN5mZqZmWDPY7WGYGR87RCvAWDXC4JeG7JaEGnFb
- Ml6I0aI8
- fqHKFwZhkCx5DCOpiLiHHkF5INzerKZxxnrfSWLAB+pvgdivt1x6cIGfPhKMzycGG92PLjUwphHApAzuGkyHpO8nOc9XRh8gndf9DrcFErAd3BnRk4miVqLoN+R4fwTA2Pl1Z7geS5LR7AQJK2OiqzZHawhk/syHCWC93nIAKl8IauZgOjdZ3mIIRvUA1wS1GGIig8QseZpRIWNaInb7tmGGyQCNDk85TRp5HIUZLJvX9/91mDLYO5tER1nAsUI3lih+9OUSi6rmmnNzrYNWMZin1IuTSR2hXuu7c4ioWHSCNQcUiPaQkRmVn5FL+tyY9CgsUeMSvkiiT2gppG4+Bvxip6zmX3H6T62xi2GroW94t1SBjdMVLgSrAsfwaQzLb9kCtNgRXkw3DCS0=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C4886100002
+X-Stat-Signature: 7qxu3sfdn6trxoobg5dwoy5wefwabiny
+X-HE-Tag: 1789145476-837014
+X-HE-Meta: U2FsdGVkX19EUuj9J7ERCKEyjb1Bcw/LbwiwNlcPmp5vsKiWqcnUz1ebs8J/9Or3L9dCNbH2Q0BsmUkb1+gH1E8/xf8NjkUNlkBKVS4LRAXiFL6SjFNep6VweLReVUvwmUm6HJzwtxjqXDdRRpTkscSVamUt1EcKmErZ5NP94U54GhC6tB/vR8zE1yY67qaujTGMq3mZKhinxl/eopbSryZTPltZsUvQZhuzIYQitbebQr5uzHYeo98IvZT1VfanM4hgMI4e9dH6qTjSCm+rmHTKWJnLkLhAl3EAEka9LJ2MCVPgbgO+zIz7Zm21mje5tI6FTi4V+7d7GG4gMtT/HOAeH4HXfGErVo+pRutokKXZCCggxpPtjlDl7L/zhyIsdBGVxIrWExWPGo95CP6yWgxQZanWSu/ptlsnBCjnPREnvWaY7xZlBWhgOZjXwlP38ObbSvzaxxY767FPSWXZ/RjSiKOShw5EiOYrj3E2sjKSLvuN8REXEuzifUJLBJwPdQSOoQQTLeyuuvDzTtqAJL70U9ebhMAnJzvWMyjbxsRbGmbTfciYDirV2Qh8+UAMC85xj+Sdathl1t546iUN5kwe52QWmM/96c3DZIwcb6qFK/igSGU79VVX/ccjnuSJ6FLBQVtXSYUXNhIEDTk9tGij1cIr4nHhfTmiD3CKsv/7lPRvojM7GY3jXvPr1a9WTu1O5//Ux/33qE6AdvJIvOadzfIq+Iiajdh92pGaKgk4vXLTTEBoNVt9FvXIQdK+lpo8uQXXyyqZdh2fFbxtpSBtCdXZW4CPsBxvW6KA9RXnMQaxuFegHAUerjNyjpj/HD/xNl13BMuRthxhXDFCSSnno2iEKcn+FOwI0VCSGI3EXSvPnDKdMJt4MdHMMtMCzU2vggr6GdN1YVpiOgcBtJ9tYwMshMnRf29u65K0rDVYE3GlWdxampfUq1pJ7AqMjXI5nvXHFa2ZUyBQaH4
+ gfPyz0px
+ jeZv6MWlJ+m0tOJNb1d8EEP6JyVphLXRkHsC2h/ixltVCc7RUd6f8oR2QMh7M/20hQ1S/nyey58l12v5F5nyjIvRV/6GTJu21yYDcViaRik1tzM4BvyVRBaUtl5b3jgtpbFd828uiEazlIvsXo5MrA9itXGu6nubK4MVXpswE2NI17a62vr+chc/YIgjZlSPmy6rl4nEUY4w6Rruga/tyOVgVIkYtsgwH7qmZ2pN4zBeg4iKds0F1JGbkqFlwY/8q3SEL5EEm3dXeZrnHaOE7DbaicCSmer0xu3MuNzTTN1z7YthEWdGD0OhBOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,81 +144,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 09:06:29PM +0800, Baoquan He wrote:
-> On 09/10/26 at 09:39am, Shakeel Butt wrote:
-> > On Thu, Sep 10, 2026 at 03:09:59PM +0800, Baoquan He wrote:
-> > > Hi Nhat,
-> > > 
-> > > On 09/04/26 at 02:14pm, Nhat Pham wrote:
-> > > .....snip...
-> > 
-> > [...]
-> > 
-> > > With VM_SPARSE, xswap's cluster access is exactly the plain-array line the
-> > > rest of swap already uses:
-> > > 
-> > >     return &si->cluster_info[offset / SWAPFILE_CLUSTER];
-> > > 
-> > > no branch, no RCU discipline, no tear-down state machine, and no NULL
-> > > return. So VM_SPARSE doesn't add complexity to close a gap; it lets the
-> > > cluster layer stay as simple as it already is, which is precisely the
-> > > part later work (writeback, rmap lookup, memcg charging, THP) has to sit
-> > > on.
-> > > 
-> > > I'm not going to claim xswap wins on throughput. I measured it:
-> > > on a 64G/64-thread swapout, xswap, vswap and plain swap+zswap are all
-> > > within ~2-3% of each other, effectively identical. 
-> > 
-> > So the claim is VM_SPARSE is simpler than xarray based approach. I feel like
-> > we are discussing implementation details before deciding the design and
-> > architecture. So, instead of VM_SPARSE vs xarray, let's discuss and decide the
-> > need for dynamic growth. Why we want dynamic growth upfront or can it be added
-> > later? Once we decide that then it will be very easy to pick an implementation
-> > that would take us there.
+On 8/28/26 20:33, Yin Tirui wrote:
+> __split_huge_pmd_locked() currently decides from the VMA --
+> vma_is_anonymous(), then vma_is_special_huge() -- before inspecting the PMD
+> entry, so split and zap can classify the same PMD differently. The entry
+> itself should decide. The function also mixes the present and non-present
+> cases, resulting in duplicated code.
 > 
-> Hi Shakeel,
-> 
-> Thank you for joining the discussion and for taking the time to comment.
+> This series uses the PMD entry and its folio to decide how to handle each
+> PMD, as zap_huge_pmd() does. It separates the present and non-present paths
+> and moves their common work into helper functions. After this change,
+> __split_huge_pmd_locked() only selects the appropriate helper.
 
-Hi Baoquan,
+I skimmed over some of the patches and there seems to be valuable cleanups in
+there. As the MM list is right now extremely busy, I won't be able to review
+this right now, so unfortunately this will have to wait.
 
-I am mainly trying to facilitate the discussion but your use of LLM is causing
-more confusion. LLM use is fine but please at least re-read before sending that
-the sentences flow and makes sense.
+-- 
+Cheers,
 
-> 
-> Agreed on requirement first - but this one was already decided, and not by me. In
-> the July ghost swapfile thread Nhat rejected exactly the shape of "grow only, can
-> be added later":
-> 
->     "Except for my virtual swap design, which does support dynamic growth AND
->      shrinking of capacity on demand ;) If it cannot grow (and furthermore, if it
->      requires userspace operation to trigger swapfile growth), why do we need this
->      at all? Might as well create a new swapfile with swapon?"
-> 
-> To me what it converged on was "dynamic growth and shrink, no writeback yet".
-
-I am not getting how out of context above paragraph shows the conclusion about
-dynamic growth/shrink and *no writeback*.
-
-> So automatic growth *and* shrink is the requirement, and the simpler alternative
-> was already on the table.
-> 
-> And I keep mentioning it in the cover-letter of each version of my posting. I
-> only did the foundtation via lazy vmalloc. And Nhat will do the core
-> part including writabck, rmap lookup, memcg accounting, zero page fill,
-> etc.
-
-I don't see any evidense of this decision. Actually this whole email thread
-shows that there is no such decision.
-
-> 
-> What is still genuinely open, and I would like us to settle, is how large the
-> device's address space should be, because the metadata scales with it:
-
-With dynamic growth/shrink, is this really a blocker?
-
-Anyways, I will let Nhat and others discuss the technical details (unless I am
-asked for it). My main reason to join the conversation is to converge the
-discussion to a decision and resolution.
+David
 
