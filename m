@@ -4,102 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D09C88E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 10:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 474D6C88E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 10:52:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40AB16B008A; Fri, 11 Sep 2026 06:51:14 -0400 (EDT)
+	id 323136B008C; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BD116B008C; Fri, 11 Sep 2026 06:51:14 -0400 (EDT)
+	id 2D4856B0092; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D1DA6B0092; Fri, 11 Sep 2026 06:51:14 -0400 (EDT)
+	id 1EA4A6B0093; Fri, 11 Sep 2026 06:52:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F22436B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:51:13 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45C3D1A01BF
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:51:13 +0000 (UTC)
-X-FDA: 85201164426.24.2085F19
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CFA1640006
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:51:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AIz7jU+N;
-	spf=pass (imf17.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ECDD36B008C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 06:52:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6973A01C9
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:52:48 +0000 (UTC)
+X-FDA: 85201168416.15.935FE79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EF0471C0005
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:52:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TMai2M/J";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789123871;
+	s=arc-20220608; t=1789123967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YNIARwvAoaD587kn8kLvRjpjKEQ+aDSYPufdVCROqUQ=;
-	b=Q8WdBKoo8LZVm6Xsn7KHSHxWaDzp5Is3ltjAVMgRU3L0oG10c/KrmacwwcC/HcHbcdWU/T
-	tUj/Vrwta8KuCYmwQucn8Ux5RiMP60a6AJe28czSpePKQcOsArg+4//U/rTYHZ3BhnbpFO
-	Z0yvgclSo1xZExANz5exez6OzTq22Xk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AIz7jU+N;
-	spf=pass (imf17.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	bh=X0wLJyzoS+rujzOY6JY3rDS0t6N6NQfza06M9gcgofo=;
+	b=TrdFLKIQNB27gsctbkF8+NrxnduadzjpH7FraSojoYB0g9guFkTTnZp13bxKuOp0I8E5Nn
+	Qjsa0wbs4zztoQfouNUc9U0fbvfBSqYzmVy3o7tEfMYo71GY3cPvfpwDSAVhTDi9cf+uAC
+	SC1+7yAXMv6nDdcurhz9ZrH3/p4fM4Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789123871;
-	b=naohJspE5WHvSxbQ+NmGwykrvf81ZXtbctY1DIFvVG9Iu2i4m5vvqgvmHECFl+LXLbq1Ds
-	EcPtbPSHQjvhYgxrTIGdOrIOiE3LPyODAKmJ/6RP4v3VlfLgyckahWaWcf14Umm/mbcbJm
-	qUbINbhPIF7Dt0RFVf61QQd1DgWCIiA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YNIARwvAoaD587kn8kLvRjpjKEQ+aDSYPufdVCROqUQ=;
-	b=AIz7jU+N0TKZGvyxZmpvRaHfK9ACzUFrPcPQzf4wOuWlMI2yC9QrgixQZJVyBB4sqnpDo4EFo
-	AWZFQYN54yHyznl9+IQKrUxEBy4eo1u8JpDd9DY+Gucla3YzXvz5c1gaj6geiJT6MABM5Myn27x
-	OaFLo60/KYV1AvK2D9DAzLs=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hh9zX1WG2z1K9B2;
-	Fri, 11 Sep 2026 18:40:08 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id F083640578;
-	Fri, 11 Sep 2026 18:51:03 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 11 Sep 2026 18:51:02 +0800
-Message-ID: <b430989d-a146-4db7-ba82-21c5b5e04f11@huawei.com>
-Date: Fri, 11 Sep 2026 18:51:01 +0800
+	t=1789123967;
+	b=u0opqPCd4ZJWSaEKxXdcXWtff6WIj7B48a4V+bQnJmCsTigBDEgOnOC8DMWIq3u/whsezp
+	E/7k9hgw5xTxXucpkrAqlv80P7XG486pPLlcIdshqBNkqLyiNDUYhlteLCl7okQYQhhhbl
+	5+26S1HPwN9sxKIRcvcAV9i/SIxVM9M=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="TMai2M/J";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1562414E3;
+	Fri, 11 Sep 2026 10:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553D91F000FF;
+	Fri, 11 Sep 2026 10:52:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789123965;
+	bh=X0wLJyzoS+rujzOY6JY3rDS0t6N6NQfza06M9gcgofo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TMai2M/JzHX97Uof3kYcZNAXQxel+xYoWDt/nsWStU1GsLYFl6mRdPH2B6r1ujc4J
+	 eFHtj7ktF0FM3oVUDCjjkGnA2ySaseAaONIGzvxd8fKMQKtM0uLlnnpL4Bh3EU+O9q
+	 lA0G9iakdBgTAzB4VMlc7MW4xd8FPUO9HSKG6wkooCyjJI32HmMV12LlKT6kGdEFE/
+	 iHnV2fjW2JqnLRLDsMD5vdgP9nuUK3QbYMy5PLFBnOVkxlS8ZeWJ+diTH1ShYdVatl
+	 0y2uZxCb7gT5yQJRJ2TNQjwp0+JwvIQSgnHgKf7eyuhk3z4NW3nqW3E078ejLa2HrQ
+	 y3c+tcRPpLFUA==
+Message-ID: <008dcaa3-2068-46e5-9e58-afb590d90584@kernel.org>
+Date: Fri, 11 Sep 2026 12:52:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xfs: kill xfs_trans_set/clear_context() helpers
-To: Christoph Hellwig <hch@infradead.org>
-CC: Brian Foster <bfoster@redhat.com>, <brauner@kernel.org>,
-	<djwong@kernel.org>, <cem@kernel.org>, <akpm@linux-foundation.org>,
-	<vbabka@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<brendan.jackman@linux.dev>, <hannes@cmpxchg.org>, <ziy@nvidia.com>,
-	<david@kernel.org>, <qi.zheng@linux.dev>, <shakeel.butt@linux.dev>,
-	<ljs@kernel.org>, <linux-xfs@vger.kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Linux MM
-	<linux-mm@kvack.org>
-References: <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
- <20260910140742.833170-1-wangkefeng.wang@huawei.com>
- <aqLqeTsbKBMEsl-G@bfoster> <93256043-c590-4001-bd7f-41ba36055b94@huawei.com>
- <aqOp035i41XIrDXg@infradead.org>
+Subject: Re: [PATCH v3 1/7] proc/task_mmu: remove unnecessary helpers
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
+ willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
+ xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Usama Arif <usama.arif@linux.dev>
+References: <20260910234737.1340642-1-surenb@google.com>
+ <20260910234737.1340642-2-surenb@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aqOp035i41XIrDXg@infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260910234737.1340642-2-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk300003.china.huawei.com (7.202.195.93)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CFA1640006
-X-Stat-Signature: iszdcmom4kk83wrdomzum5z76qsx3jjm
 X-Rspam-User: 
-X-HE-Tag: 1789123869-206659
-X-HE-Meta: U2FsdGVkX19altn99pC9nuOFOLbz+3H6F7O9BCcnOx2xP+YjwOCncZYrfVnpjibJ03m5pO3L9p/N8810Jw64kgmU4QGSldSFBaaFkqNt10b5Drib8V0s52P/WFerOfTIVA5r3G93H8QFwh3S+WpgBg50mNLKcL+b+eYdAvXkP14PXINS9pB1TpNI+q0VCys5I9D8KQHaL1IjLrlDo5B+YbXXhub908+z6ryueqTQGdMyCr9UV/O/J+ERHAc0N/V6BnDtE36mOLRFAfuNaRGxHiKgYNiPogrqOeOXADLd5Ydk81DajzylsC4EjduOK3b4V5fKB4AxmoCBSGvGUjQLTraVokDauw35d5nk+xz6Hf1wKSBWVHc7NDxL4YhIRvUU90RHP+IEO0Cfe9CHYYG7NuIynGCmuQaYcow8jplbt0gXLVwtTa6zx3YrhVCpTRZ+8o+we3FUMssmDekq4eGapU+gBq2pyCLbvchCvHe09FgcUO10AADYIb18GMweEyHQFJAb8a8y72dhwo2hg9KFrfQKede/V7n6KnseteSgOaggx5Xxr09HbSimqIJTvA9RHN+du0K8YFlZgzZU3sq0wm4imEOMnuuQyYmirIrpnkTtF/I4gAmRWJFjLskCLVQqPEqaBTHahjATcfXzKQeKkN51Ff2F7LDNrye1TU26e1O+PVH+BDr8ob3a1nu5Rygv0j8qZp7ct4AUst/hhbaET+IGfP7jO4wHPiEdw99G0Oq8VnkpUPQ8F0h+w4TRPCYXDN9fgUF7CnDIWlxhCexh3N5gaKZX76ePRWt+3qtFmEyOSSj10PYqVG+kQw2rRc6+WnkSPRW4dFtKnJC2dbCPc2zRlLRvZH19MkenwPs6orFL/GEzlWqC8peJ5UQSba5k9xbpRoI9Si69wM2OeiSvgc83yR0xarA1hig1/4hRvHTnJ7hHBqqDJTO7hYGuc9aaAN9Y1+a1mfSMdjq21x8
- ZJnVMdUw
- cttTN2C+jdNfQOTHsz8MC2xy5Qjbr9Pxw5mq6bpRaZW0Jq8nRXr2PUskde3mrNuN7S1AczR5vDiI3iVih1PQ2jpFKOhjwUqwmC90SWV/4R/2UgbL33fEiJVA36PwzOBjKRoNFsJxow/vU8lUjGAkgHnpxpgRy+BcWqn5TMTplLKR4g6qbq0g91NWQzPFvqiDxvsHeHGstd3+rDtsxrFelDWWIamOfznXX/Pncxx/O+oYyyGMlAidTwA1CJCSwM+iNG+QQJzv8my/W2l5FloqIuwmlzUXI7GJ3SFxX/ZORmhDba9ZVAtuoc4vv83BxuJ0sYL0dl1Vq0XZp/ruVoVQNXF9F+3+L+0hmS8uxo51vsT9SvD0YfW+4F4tzPlEGGPdpi0h7w8FiqLRxznCMtSYFJrodYEZpJvU2GVDbkMC962u4DLDqOVHbWWlkZCUDLEEC7ZFT3uUqQaZZ1Xs=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EF0471C0005
+X-Stat-Signature: ggp8mtjo1i4tj3cqa7sq773dqk3zo6hp
+X-HE-Tag: 1789123966-501970
+X-HE-Meta: U2FsdGVkX19Aloa+8WTfEwD6BdZBdve+SS8mRQWzaY6ryyp33JcfAD0yki1tKlbkQoIaoc84FH3m5pp7qkGqfKItuJxD+u6e5I20IHqXDt0mvnP2KuuEJMmSlbq+Z1GuZNFh4qF+gFElxD4VDQUuH1QXZv2idpyh5kq+sNCermPs1j2/QMx5cQMk58HVF+T/0HhFCpi2tBQIUOx/TKR6FAwu+8nDU3xfs4gZyLrV+Ew4+CC28hK28i4yqDxenOj8iyRZXhwKtvqDX0n7SWBMsm+Ci/gbCSzlnwYEHBnBhUp7Ahf28SEKt0ICiJBIU6TX40YUWXdwerXFi6wtepVdMGxIxqnZxL3J5H3Ybbdmvda6oQk/56SHVnvH+BhzQsx2vxLJqJCJYFte5jKJnE91RhVOtqXc/palTF/vaW70BZ+zNVPkCp4FsScpbRduXxJWhATUtrcUc6/+gFzUckllgIr+9FRJPAGyH7wFoESwN+fMnjOZ8jgJ19zHV5nt4AyahLBZZlyLOAXa3Jk/969bE2fxV9d2qlOJJjR7QjzS6R2eNE++iEruhotUdyXt25tRwkQvXaHIfY9lamArAFPBjDy7qLeXckjqSAh84EIw7wXHqUlqZv2puThSWhjnRhQ4jpwuPRSKZPb9OG/Ch2D5iHzP7rOfXw0o/bmFSJXDEpaMExLOiDt/1v+sOTKxvWaP4KwVrQRRboWWd498FUx4Ur+EVzLuosL7eHe1A58q43mUCplUof7bZW5e4rwtrhaH0Yf12GC4Ue71A+7KZ1A2Ssl3A9F0ceBFDCuFTkOJNua6EpMYSk9Nt0H8EyhYjJxUT1LaFTE6GHJGg88ey+rV2auUVp28IG5L9B0F9s2N10nAB6Oh9m8whPNefd0SA/WpXdKgJb/rEZiBDDbf96uxnKvwLeBTOe5c3H7kVnbPQ0927S4CcwgD75gZVF8GcwG4yAhEY03kSBC917HS/Yd
+ FXI1Q6NH
+ 4sTb2+GEag8Gw8gYXPdmvWntn1q3+4ph3wfmz9sX8l01z6a8K7gOADOLMnBmvJ9MAlgfyvA1rlkvImwkhLzwatLNpP/N9M8iAWYoscKfQ9F/oXrFDVwjO85gg4Y1hhoVnfXlAvMHPHZxtPLO/+mXM/e7ntRsgm1DayW6KYOpWjx3vLh52IcT5GAyPGrpWBxyfaxsrAfB28urwwH0aPCfXGFnOvrKN+PMiiswB4QL74Cxe7JO+3hEfJU09o+RbGFZwCg22v+bFR5qLo+D1tTuEMfKarnAJgZUtQn/a9ypx3eNAFj8IRLNEUbQQ11JynYdGpSxOudr/zO9fD/0xEjL/UIW4woV6RQG8pncv46MTujwKt7Ge7JILI/NAavdEwzKVgQA4zZuIv3L55/DDFLgD2MSzaKSOXE0GwSzw3TPKhl4DAV79u/OSdoNQ7vGfoloWYLA9qoF/Ils0txRoRpzS28yB8UzDFwppKFJsS7tuhDmwzdg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,23 +140,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/11/2026 3:12 PM, Christoph Hellwig wrote:
-> On Fri, Sep 11, 2026 at 08:57:53AM +0800, Kefeng Wang wrote:
->> Another question is the target repository for merging this patch.
->> Both this patch and the previous bug fix are based on the mm-new
->> branch. Merging into xfs separately (if an independent branch exists) might
->> cause conflicts.
+On 9/11/26 01:47, Suren Baghdasaryan wrote:
+> When per-vma locks were behind a config option, a number of helper
+> functions were needed to simplify the locking code. Now that these
+> locks are universally available, we can do a little cleanup.
+> Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
+> query_vma_teardown() helpers.
 > 
-> Your first follow up fixes a xfs bug that can have somewhat nasty
-> consequences.  So I'd suggest you send us a standalone series that
-> we can get into 7.3 and -stable with as few dependencies as possible.
-> mm-new can get rebased on top of that, and then we can delay the pure
-> cleanups for xfs until after that is merged
+> No functional change intended.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
 
+I think you CCed me only on this mail correctly (the other ones went to my old
+RH address, I thought that one would bounce)
 
-Thank you for your suggestion. I rebase on v7.3-rc2 and resend them.
-https://lore.kernel.org/linux-xfs/20260911104227.2028941-1-wangkefeng.wang@huawei.com/T/#t
+-- 
+Cheers,
 
+David
 
