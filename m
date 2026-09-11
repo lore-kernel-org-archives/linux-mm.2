@@ -4,169 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5AB5C88E59
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 17:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCF0C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 17:10:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE146B0096; Fri, 11 Sep 2026 13:10:20 -0400 (EDT)
+	id 34F446B008A; Fri, 11 Sep 2026 13:10:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD4926B0098; Fri, 11 Sep 2026 13:10:20 -0400 (EDT)
+	id 326CE6B008C; Fri, 11 Sep 2026 13:10:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A3A6B0099; Fri, 11 Sep 2026 13:10:20 -0400 (EDT)
+	id 217996B0098; Fri, 11 Sep 2026 13:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A16BF6B0096
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:10:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B29C01602D2
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:19 +0000 (UTC)
-X-FDA: 85202119758.22.B78D7C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D784E18000D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC1DB6B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:10:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ACBDC0301
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:51 +0000 (UTC)
+X-FDA: 85202121102.08.E6953A7
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D70B4180002
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:48 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ijM28yeS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FzBEV+AC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=I+r8FKMT;
+	spf=pass (imf16.hostedemail.com: domain of ashok.raj@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=ashok.raj@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789146618;
-	b=5F9Ylk8bUPSUi90cuno0jBKR+3/rCp7/t1Juj4WmP1dfyctw4sMbRkxjVZLjKLpVsSsMBe
-	RpE4qIzHIjl9TUHuRhyHegmH39KsujFjW1QDwqVc4eoH+Uk/htpI/RV7ZYJLKdykVjNvfW
-	4HD8qTxlqujwCVn5w2Iul7frwUUJC7M=
+	t=1789146649;
+	b=05iiDrcA1xFVa9k20NEkzDNShzHAVGSjvtMYx+c8/s3YJwkAK9PbQtRuZCGX8F/n6+g/2a
+	NqcsZZm6mWgUc19JetatLADNOvxngnK2ASEyF7ghI5d5CPXIEOM36MUfcgardKmiBiSftD
+	geQNWCiyEj2bJhFUWu4faGEZT8NgEUc=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ijM28yeS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FzBEV+AC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=I+r8FKMT;
+	spf=pass (imf16.hostedemail.com: domain of ashok.raj@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=ashok.raj@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789146618;
+	s=arc-20220608; t=1789146649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s9/6KbXsN5PKvzZs2esn/AhPtSfdFVVRLNXzVuGAieA=;
-	b=YjCZnY+d34btY068s6IRNYJHc4OQY7NKsvWR1EpKQGdwprxtTjaZjy1qKWTCbUVJmLaMUt
-	UK2EezD/i6M1ChLCCHYSxwFIvUVa869zVHvhpImZCEmQlOkE7iv1SVmQY5k3M0goJ/Yz0Z
-	6y5GG4A512BCruBfhkQtz969QkZDFEs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8DCD4067A;
-	Fri, 11 Sep 2026 17:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF04C1F00893;
-	Fri, 11 Sep 2026 17:10:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146616;
-	bh=s9/6KbXsN5PKvzZs2esn/AhPtSfdFVVRLNXzVuGAieA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ijM28yeSeyX61csI7of/aYV6Iu23+fQwE2+XMHuORDOd9Q58+YKhljzXl+IBz4Fum
-	 GTMuOS39dD0b/3zG27EdOqjAkusXj6vqwIKDQom13aNYWLtWjARY8yD4Fc6x0WSfAd
-	 5HAYNkwusAIKERa3WHgLnp9dbK4wyC6PAL6LjnODK0XIQGto7t/yd8GJT72smbQhyu
-	 OzZ3q1/AtOHdfG+oKc4RjaNN9Ctxu4fwIB3/CiLYKdFCtFfw3NRb+woAMvc191s+Fq
-	 6WOJgh4F2SXLfO/k1FpUXsN9xExTqEQkHaoouynhFq/HctD3ifs1J/7Tb6gKYO0V6p
-	 uNN1MzB53btqw==
-Message-ID: <0a4fd9e1-3e7d-4910-99ee-6f6f89b5ca93@kernel.org>
-Date: Fri, 11 Sep 2026 19:09:41 +0200
+	bh=43JV2CT34ywMCqvN1NXrOAtOdXSh1XmrnXb+Ch1XFq4=;
+	b=zefmNnlIQYcUPFzB+0THfmAEbkm2h1/w+V7qknA/7iwufJNcw7ttGf924K+sgYDIKm5xmf
+	n12mb204G/VPZzm9qBI0oB9+vLp5BmoNdb9V9PiQLtuVNOUIieZxeybBLnfNzB13z5sE1U
+	Ty91eeRDVt0dQcdDfZr/5QLr2JBMjuc=
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68BEmEYQ3780630
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=43JV2CT34ywMCqvN1NXrOAtO
+	dXSh1XmrnXb+Ch1XFq4=; b=FzBEV+ACGiWF9U3C+hHFMycemyMOgnt8Heo9eeUg
+	Xk1dzhykslO7j3yYf79ye1NNrPoGwkZnCbXssagGG/hb6b3Ikxzsw48UiQfMAP1d
+	VM8HwcnEnKSdO16IIDZR2rhE8c6fTuSenrhs5zFgwrbee7EHmmztL88hcC9pbrVJ
+	tuPsu7g1u440kKLrjWHNLHGpI9TTVNKQFlxRzhaNgEUqWhNJysC7GRf0YZI5gK/w
+	gY33dg5Qd+S6Lb6FlwIJPflwEroZRdMXOLJZqHKC+fYewR8giBbmGfCyQ2gtJMdw
+	ToM77AlpTgeKgVYll6O/OvNShehart6d8M6SEYoTVwwPkA==
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmcgfjm4r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:10:47 +0000 (GMT)
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7f4e9fe8b17so1321175a34.1
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 10:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789146647; x=1789751447; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=43JV2CT34ywMCqvN1NXrOAtOdXSh1XmrnXb+Ch1XFq4=;
+        b=I+r8FKMTx5yyDQDN6iE4wSAoulg7iu/JSyqjh2RKp40vl1ejbX2t4+LQqiAu2wDgfj
+         K+S/qRDFOXn3KMJBAtI2KbgEuBen0MsGNCB+TVTk51Q+mqch86AipkhVlEqIr2n0vFPI
+         lwDU7Ba46aRN19N3cOAyeaWPgcPnzZZ3aCSPj/vsSvINENxsjM4H7CW3IhZ1RYlPjZ9S
+         V0Z5b1KpuR3wl0RJITdgSgGn+3Evc+HSCOMN0D9Jj4y41BwSqcKp30BPHUMmt96Ki4xI
+         CH2RYne2Rcxgdb8azPKf/Z07xLkpCC6pB5ZQmCHKcgH5uVQiymqs2PWyfo6O/nXNJtPD
+         JNUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789146647; x=1789751447;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=43JV2CT34ywMCqvN1NXrOAtOdXSh1XmrnXb+Ch1XFq4=;
+        b=INaK63C79MYdBRO+hZlL+GyEvFCSZ8abSVh0hlCEb/hrrGe5I4bqtAP8NpMGEmR575
+         14kKwmIKwab2tPqwQks4hLErTEBpWgUQJJ5LAAalGVerjiwfbdKZZioFUIyLmJROKgn8
+         SJ+yOjJmJXVXf8Qmck97Rb1zBiHiXArLNVa15XjMtkeO9GT+v2XfGu9FkhA9pyYYQXoG
+         3Przip43C1ngno23l9QMutbmPUJtnyYEvsZJE1lMeLJT50keqxYmwCjwKj686rm3pptU
+         uVa6p5QOFt/o9WxAGkrSP2TcBdHplkCSoK9GArBCCLbFbPgFjDJoJ4H4nUAD0DFloudP
+         dQuA==
+X-Forwarded-Encrypted: i=1; AKwUvBzUqu1aXI/X/YitCQi56bccfWK/mMFlLyxTo7u5qgF/UQu24H+9FdeChveJYVzBQ/41L6TaDAApiA==@kvack.org
+X-Gm-Message-State: AFuF++nAIylwGqMbDywR6FeKW5b9hRIEXiWNEcYTg9vWTjoKGwvFK1Xe
+	/MoRacvVQf8w4nbvTrbY0zjkZ8ejrzj+z/FX3GRro3fZeXzyJtwrqZT8Ark9Jzbq6JVFpZIYO8c
+	hqhTMc3vN9GuSXS+0tcsV8K28gg8NAjFShGSl+tkFuzTpkgfJJDrtcQ==
+X-Gm-Gg: AYBFou0skqbBRqPZk/MMKTnle9osVq0sQOKwW0vKhCnNxtPWK2FjLejkVlR0giMIhrw
+	AQp4SPzsUN7xMWRQIcOhPUdZ172XAdModSCn+AEGC+IFGj+j+iTzNFwF3eQ6qyQ4iWWPSZmfpux
+	DHBuh30d6LaJLT7TFGdIFV08Jx4FpoH9DJF7kPpupH3iqixkbtdL7GxU8HM2p7dfghZ3pyjVSh0
+	LI3wzW4pe67Cqm5nGSVT4n9Wr4/RQI5SrN79vlEkDNUHtaSDfZp/R/C59evjmrGuLqSeFe91UCq
+	A3+ZcZo8ZsCz+Dj1VHi2t3nLEeNVDMm0LLn+wo2aa6vjxUWdQ+kPDZ23Sx+USp/HBNMjIdIJMjQ
+	T17wA+fDxdOB08UBS8XqeSdlKLQe5jtsKidQ++kP/jc+330iRPg==
+X-Received: by 2002:a05:6830:81cf:b0:7dc:df37:844b with SMTP id 46e09a7af769-803fadd1e9dmr4468521a34.4.1789146647047;
+        Fri, 11 Sep 2026 10:10:47 -0700 (PDT)
+X-Received: by 2002:a05:6830:81cf:b0:7dc:df37:844b with SMTP id 46e09a7af769-803fadd1e9dmr4468492a34.4.1789146646681;
+        Fri, 11 Sep 2026 10:10:46 -0700 (PDT)
+Received: from hu-ashoraj-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-803f59ea2f9sm2763387a34.9.2026.09.11.10.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 10:10:46 -0700 (PDT)
+Date: Fri, 11 Sep 2026 10:10:43 -0700
+From: Ashok Raj <ashok.raj@oss.qualcomm.com>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, iommu@lists.linux.dev,
+        liam@infradead.org, maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        jgg@ziepe.ca, kyle@mcmartin.ca
+Subject: Re: [PATCH v5 0/3] iommu/iova: convert from rbtree to maple tree
+Message-ID: <aqQ2E68lmU3Fbjsk@hu-ashoraj-lv.qualcomm.com>
+References: <20260818152505.1057922-1-riel@surriel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] mm: use hw_pte_t for generic PTE table storage
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, agordeev@linux.ibm.com,
- ryan.roberts@arm.com
-Cc: linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260903103002.1091859-1-usama.anjum@arm.com>
- <20260903103002.1091859-4-usama.anjum@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260903103002.1091859-4-usama.anjum@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260818152505.1057922-1-riel@surriel.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTExMDIzOSBTYWx0ZWRfX8Hor6x11Ee+f
+ d16IiTfttHrc2g9/aiQMMWAUyEI0wayDSa/J63lkBHGXO6cjhyWHx8IfrKwGOyQZ/WHPlnpjEM9
+ 78xdjh5nLiPD3avkJ1U+kijWhiqCwn3lkuxfwrxRxtC7Rl5g1vohdtcGPsd077zt/yRltTzia5U
+ RMSn/GnwOvizVSZC/i79p/hZoJDaoa/+8xs30Au75Iyok9wE2MAeBOkEggDopYODg+vlOoAZx6U
+ aS7xZ9D4A0S0ezgHzCUWS8U4mBdHJ8b2qE9j0tyhcG3Uc0qyLFtD51POrWlP126RLplXzKAMlXc
+ p50BkCnN3gCrG+G80zQxqkklI6s4mPnRjWQQNvuX2/ZGpM8LrWanhOMS1tCcRqOao9HyTJhOMSr
+ JsYTlUG7UgHFmPwwnr0ak36sLhNYGmEVunLeopGmzrVU7TqubzQxtfs+h4uhg8hqYsSt+2RvPSo
+ jkJX5l2D+fnjkgKW4Gg==
+X-Proofpoint-GUID: HplCTdFRXSTCik2eCXiQ_7AYACqfQNwt
+X-Proofpoint-ORIG-GUID: HplCTdFRXSTCik2eCXiQ_7AYACqfQNwt
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTExMDIzOSBTYWx0ZWRfX0pBx4ETxAoUF
+ hQlXfXIvJuRrO3oh7Ad4DEDCegqvDx5t74b9cXiiY1TqAAkZllelcwURw2/YK9U4koqLQsrfrSg
+ E4mir/uYSUuRiAXmBBPCM+E81sqe1EM=
+X-Authority-Analysis: v=2.4 cv=ULtIjyfy c=1 sm=1 tr=0 ts=6aa43617 cx=c_pps
+ a=OI0sxtj7PyCX9F1bxD/puw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=fwyzoN0nAAAA:8 a=EUspDBNiAAAA:8 a=nI-UuXyqNnj8uUgxqL4A:9
+ a=QEXdDO2ut3YA:10 a=Z1Yy7GAxqfX1iEi80vsk:22 a=Sc3RvPAMVtkGz6dGeUiH:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-11_05,2026-09-11_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609110239
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D70B4180002
+X-Stat-Signature: qx99gepeztzjwcma7ejdfss98oao4xgw
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D784E18000D
-X-Stat-Signature: dni8n1gbbybsqoet8r3tz51so3r9brt7
-X-HE-Tag: 1789146617-826727
-X-HE-Meta: U2FsdGVkX1873180tIHUJfnN9S20rREZJ77Qlii/de06JBu3A7UsUYR39cRn3BESUUvFfDCTNMxJlrPQBjHAU/9b/uvb0artvmTnXHSSc59PqX93bZs3QW/RnnXDAdz0y61IsbSLLGcigNvavefY4YjKU/1jHNRVwVpFfE38hXrwc+L3Oe0uhHwCHUr9DCloPc69tqWzfaY/VZMz7JIDA6t+/TqqW6DxEZUEX7XinHOShRrdTOT0BYGO7Wx3SXWruQn2h2lXjm+eE5jr+p0h96RZIotpIp9BSx16RKD5tbwPYjohG8bOakpnojVVIbf6eSHfMCym17CGvMwRH4IcaSNVyvQSbQcjOCOyuzbt4qm9IiRG5QftdKPuJ5FfPG6qtOa0MViRy2QLbXVjg6Kittv1bFwCXyHnGxNu4fTrga5IiG/eC7SN+YexUedrKNPqnmKnLVm8QpbzPGyue0wGF6kpeP04qxbDfDZwH+mXdnA6wAdHzIUZNQF862OtjNQZiPuM8GRqnR2zdkUjYRqBP2LguhSSESKBjrdqvLEGp0af1hcrg13tuAC7245AwqAwxOF4K0j2MQrW5wgeBDRRpz01zAglKBkFhPIPjPyYZuNqqmNHQeqzux1TeB8zTLs9Nh9liYM0h8f8HeUDNcfBguNmfPNaMQqIvsV7aL+QqYEZYAUqRai2Y3UDLCGzxFYEiWp5sCX3i97ATaStE3onZF9suKGsgRrL0CqG1rTKpnmgfA3ZEO0oeWaiY3K/nJAweuC0j/P5bnQuguZCmbbulx1U5tVZ2EadrLMMRhrqtwjwtrTLdKq1zIOhcd4NJRVCAkJ6QnhFLSTb/DcYB5Ojl4RRtCGhfh138PDmEpHWw/nDLlOd1DZhKiH9tuQUZCsCMRqo7LzrcPdjuP1jxlBtYZBigUB7gByrXHnd9DmGlGkbx48ZDhZgxTIIIHkbvq9vAqLODFdacijVIRb6tyH
- xHCZY8SU
- YRrEjumptB/EhvPjZ/0WXUa47T8AriE/xCmPCqagTFK7CxPaXIHUzqSRFnQygcUMybmVOYOubHcMQq4+ry2oZdBsBHInite0dYFbPvgntdSnlM4pbLnb6+s1mX3Bp1GzTkhGH3MVg+CJ0JOA6orI24w3qnbb1j0VwTRzAZaH6guFaxLYsKbVq9IKmZ9ciVObd9djOVRa/zoQJv876rzyopTojGG1ghhy+d7/QYglmrdt1Kgb6ClhIaBzYnjGNsk8nNRFUw3N7129jcNvKtILca7X2e7r+UgKQAVclHfzp/BN2zHVYoFQrnIAmizrWJAGH2rxo4WAF7ZQuckE974XanEdzcNCjSqAOkk4HOs3wC9ZfM1VS3z3li6bSZs8m0TjNORXeWDuft02WqoihNmZ8pkE7+x8lmWD3IvVnGMDIxe3nfHZsWQVvHl50c7tZbZ1jaGd7GXPTIhD+MDPEb4g4T/lWEY34Hcue+lRL
+X-HE-Tag: 1789146648-356141
+X-HE-Meta: U2FsdGVkX18GyeWRWaUUGHVBGXS/HBQ4tIf+WEoS/EWpiX3AIQm8rpsqf4Wp5qxQT5sLeT/PckUCaUYAupjAxC9X4OH4T5T3lBqT/dqb5XqgrSViZyaaN7KZJw9xeuwLKNUf+DmAbcSfKVc7BhgxmEaWwrvBHTEAqDFqeRcxs/XmWPDtDZSpz61Dses1z42AO0HyiSarxujG4E+WgrB5KYN04frPV+yIYOiPimCw589vTdYHLBcMKr6pT4ZnvgwoyhSOFNliJ7HlAI+qKWVDrzLnGBsggpogoeZAk32I98WbPAJFyARHCZV8KRXdN2cdEy1QIMD80n4p5UbbecqwDxsRCT6Es5xu/Tq8IWsgWY46QO4YHHnIX37WrelEluiGqyNes3X8n9Jetj8Ir372HaERF0U8g90+uPmNK70EhinwaKhxsj/SiyWi3/0zLAhi2vPs9FZX6JXQnEAmW+Y1lKNHtE7w3xSrPrC5YwAzABkW50wH6hFtYbxSv3hT9e7uVBakWqudb19xE4Xvjp6twyO55LmqJh4auNGhUaXyD0/P3EQBXg14kZIKlktUTc3hoPQB0xj3DJuvnFmwuLyZYspqOj9+dl5JbEaUpj6/2VGY2Z+fz8U1XooeLq0MPRkD5BJeUCSaX/mXPJPZzxTPJHG3xN8UiC70Cfg1C5liJiFqMLheunBXsLyTtSQSv3ZexTDr5UtQt5szIA8LNfNuUKx6gxT/0qno/jC11pWyvX6pvNM/uj7w4z66VYLS5C+T9k7/Us5fNAlAIq2X28zc9owR5dltiXMt0jv2EHSaPrDrHuXl8AQi0g5Jz1jBVTYgKeK1sbO4D/ik2lq3BV03T8edtFO3fKJOec/bL8GMLcCtHntcoflLyaVPIHt/a11KACKAjDRxbSVE2tATsBBdJwfLneso7kBj9Dv5TRNqnxPd2eScE66wAtCkeiYwbs0lQOrLaQi3O1VcU3USlQH
+ 6iRynMgt
+ 0qenIgJA3ey+RK0rpEsnPDu/eQp2zS7NGCJp8//YzGP4Nda1SmAR20DRFO7OZ5LmpVHNiCKUr5y6TkVcmhKcfyS9K9yCJKTL0hGe2XI34Eejl+uFwf6qaIV0HVb6tw4H4QsXHC1L+u6qm9WlvJ46Bg/LXAjE4B0cNmmsPnITLIdvnqSWdbnceuFe+GCL5JLCZXFLatN+KQhCXSxsQ171C14+Wssf8HWyXRz2bCkV/XxhfbbXVF0FHyOEuSsc/8VX6OdJMkOg4gQqhqJ31EBnZGlTC+BGgXV43OM4NA1J2ZuEkfVYQe98e0wgZWlb/EXsRDMLMaX5BnGgkNSI9TWCdAd5BbVhWyORt+PFIqRqrlalYhDlVZjmuKtzR+FQkiug5MOZS5P5CLWwoQ188DCEwX5Nme/5zb46CLi3zx8NovD+V4YCZ1pEabsWBqA036WVRCpE2NM7/zzZKQa9JkGNIAdb/SC5rmfSAiT36GJShT1m2RPfryBmlyx5/O201DA9/6BbONR48hI68gZNOQiq+zMUyjif8MWlpa5Lu6KqzP1lriQqhguHFtl50nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,142 +167,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/3/26 12:29, Muhammad Usama Anjum wrote:
-> Generic page-table interfaces use pte_t * for both pointers to PTE table
-> storage and pointers to software PTE values. Convert the generic
-> declarations and their MM, fs, and kernel users together so parameters,
-> return types, callbacks, and local pointers that designate table storage
-> use hw_pte_t *.
+On Tue, Aug 18, 2026 at 11:25:00AM -0400, Rik van Riel wrote:
+> Occasionally production workloads at Meta run into the linear search in
+> alloc_iova() in ways that cause real issues. For example, when enough
+> CPUs at a time fall into the linear search trap, systems have been known
+> to get stuck for so long that it causes soft lockups.
 > 
-> Include linux/pgtable_types.h from headers that expose the converted
-> interfaces. It continues to provide pgprot_t to vmalloc.h through
-> asm/page.h.
+
+Something odd, except your cover letter rest of the patches are missing
+v5 prefix in your patch? 
+
+> This series indexes the iova ranges in a maple tree instead. Its gap
+> search makes alloc_iova() O(log n).
 > 
-> Keep software PTE values as pte_t and retain pte_t * for value interfaces.
+> struct iova loses its rb_node and shrinks from 40 to 16 bytes.
+> The maple tree keeps its nodes outside the entries, so total memory
+> use ends up about the same as before.
 > 
-> No architecture selects ARCH_HAS_HW_PTE_T at this point, so hw_pte_t
-> remains an alias of pte_t and this changes the interface vocabulary without
-> changing representation or behavior.
+> Patch 2 handles the one thing the maple tree does that an rbtree does
+> not: erasing an entry can result in the need to rebalance a tree, and
+> allocation of maple tree nodes.
 > 
-> Most of this mechanical conversion was generated with the Coccinelle script
-> included in the cover letter. The script deliberately ignores pte_t *
-> pointers named ptentp because they designate software PTE values. The
-> result was then audited, and sites the script could not convert were
-> updated by hand.
+> iovas are freed from atomic context, and GFP_ATOMIC allocations mean
+> the erase can fail. When it does, the entry is marked IOVA_DEFERRED
+> in place and the struct iova is freed. The marker keeps the range
+> reserved until iova_drain_deferred() retries the erase.
 > 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Ashok Raj asked on v4 whether the marker store can fail in turn, since
+> the WARN_ON_ONCE there reads like error handling for a case the comment
+> claims cannot happen.
+> 
+> Code examination shows that, with the current maple tree code, the
+> IOVA_DEFERRED maple tree store will never result in an allocation,
+> and cannot fail. This series adds a test case which allows us to verify
+> that maple tree property continues to be true.
+> 
+> Only a corrupted tree, one no longer holding the iova at its own range,
+> can reach a store type that allocates. The WARN_ON_ONCE is more of an
+> assertion than a recovery path.
+> 
+> Liam Howlett's "maple_tree: lock checking and clean ups" series adds a
+> WARN_ON_ONCE to mas_nomem() for a GFP_ATOMIC store under an external
+> lock. This series is external-lock and GFP_ATOMIC by construction, so
+> both stores would splat if that lands as posted.
+> 
+> Liam, is the intent to disallow that combination, or to flag callers that
+> cannot tolerate a failed store? The iova code handles failure on both
+> paths.
+> 
+> The code was written with Claude, and nitpicked by myself. Don't be shy
+> if there are more nitpicks remaining.
+> 
+> Tested with the KUnit suite in a VM, including with PROVE_LOCKING,
+> DEBUG_MAPLE_TREE and KASAN enabled, and on an AMD Bergamo system with the
+> IOMMU enabled. I know of no way to reproduce the linear search soft
+> lockups at will, so that scenario stays unverified in practice.
+> 
+>  drivers/iommu/.kunitconfig |   6 +
+>  drivers/iommu/Kconfig      |  16 +
+>  drivers/iommu/Makefile     |   1 +
+>  drivers/iommu/iova-kunit.c | 544 +++++++++++++++++++++++++++++++++
+>  drivers/iommu/iova.c       | 561 ++++++++++++++++++++---------------
+>  include/linux/iova.h       |  21 +-
+>  6 files changed, 901 insertions(+), 248 deletions(-)
+> 
 > ---
-> Changes since v1:
-> - Fold the header includes into their first user instead of keeping a
->   stand-alone preparation patch.
-> - Rebase onto mm-new and rerun the Coccinelle script.
-> - Use software PTE value terminology.
 > 
-> Changes since RFC v1:
-> - Clarify that linux/pgtable_types.h provides both generic hw_pte_t
->   definitions.
-> - Clarify that the distinct generic definition is activated by an
->   architecture opt-in.
-> ---
->  fs/hugetlbfs/inode.c             |  3 +-
->  fs/proc/task_mmu.c               | 33 ++++++-------
->  include/asm-generic/hugetlb.h    | 15 +++---
->  include/asm-generic/pgalloc.h    |  6 +--
->  include/asm-generic/tlb.h        |  5 +-
->  include/linux/hugetlb.h          | 50 +++++++++++---------
->  include/linux/mm.h               | 26 +++++------
->  include/linux/page_table_check.h | 10 ++--
->  include/linux/pagewalk.h         |  8 ++--
->  include/linux/pgtable.h          | 79 +++++++++++++++++---------------
->  include/linux/rmap.h             |  2 +-
->  include/linux/swapops.h          |  6 ++-
->  include/linux/vmalloc.h          |  4 +-
->  include/trace/events/xen.h       | 10 ++--
->  kernel/bpf/arena.c               |  9 ++--
->  kernel/events/core.c             |  3 +-
->  mm/damon/ops-common.c            |  2 +-
->  mm/damon/ops-common.h            |  2 +-
->  mm/damon/vaddr.c                 | 20 ++++----
->  mm/debug_vm_pgtable.c            |  2 +-
->  mm/filemap.c                     |  4 +-
->  mm/gup.c                         |  9 ++--
->  mm/highmem.c                     | 15 +++---
->  mm/hmm.c                         |  6 +--
->  mm/huge_memory.c                 |  4 +-
->  mm/hugetlb.c                     | 60 ++++++++++++------------
->  mm/hugetlb_vmemmap.c             | 13 +++---
->  mm/internal.h                    | 16 +++----
->  mm/kasan/init.c                  | 12 ++---
->  mm/kasan/shadow.c                |  6 +--
->  mm/khugepaged.c                  | 50 ++++++++++++--------
->  mm/ksm.c                         |  7 +--
->  mm/madvise.c                     | 14 +++---
->  mm/mapping_dirty_helpers.c       |  4 +-
->  mm/memory-failure.c              |  6 +--
->  mm/memory.c                      | 78 ++++++++++++++++---------------
->  mm/mempolicy.c                   |  4 +-
->  mm/migrate.c                     |  4 +-
->  mm/migrate_device.c              |  4 +-
->  mm/mincore.c                     |  4 +-
->  mm/mlock.c                       |  4 +-
->  mm/mprotect.c                    | 19 ++++----
->  mm/mremap.c                      |  4 +-
->  mm/page_table_check.c            |  4 +-
->  mm/pagewalk.c                    |  9 ++--
->  mm/percpu.c                      |  2 +-
->  mm/pgtable-generic.c             | 20 ++++----
->  mm/ptdump.c                      |  2 +-
->  mm/rmap.c                        |  6 +--
->  mm/sparse-vmemmap.c              | 22 ++++-----
->  mm/swap_state.c                  |  3 +-
->  mm/swapfile.c                    |  5 +-
->  mm/userfaultfd.c                 | 32 +++++++------
->  mm/util.c                        |  2 +-
->  mm/vmalloc.c                     | 11 +++--
->  mm/vmscan.c                      |  6 +--
->  56 files changed, 410 insertions(+), 356 deletions(-)
+> v4: https://lore.kernel.org/r/20260624030853.2340880-1-riel@surriel.com
 > 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 7611a8470ea26..ddaab714c3e02 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -328,7 +328,8 @@ static void hugetlb_delete_from_page_cache(struct folio *folio)
->  static bool hugetlb_vma_maps_pfn(struct vm_area_struct *vma,
->  				unsigned long addr, unsigned long pfn)
->  {
-> -	pte_t *ptep, pte;
-> +	hw_pte_t *ptep;
-> +	pte_t pte;
->  
->  	ptep = hugetlb_walk(vma, addr, huge_page_size(hstate_vma(vma)));
->  	if (!ptep)
-
-This is interesting.
-
-Assuming we'd had a hugetlb_hw_pte_t, we be able tojust naturally catch things
-like using
-
-	ptep_get()
-
-instead of
-
-	huge_ptep_get()
-
-That caused bugs and headakes before.
-
-But I'm not actually proposing that at this point, because it would make messed
-up infrastructure where we hacked in hugetlb, like page_vma_mapped_walk() harder
-to use.
-
-
-Regarding this patch, I guess we'll regenerate it when the time comes. We
-*might* have to do this stepwise.
-
-E.g., merge patch #1 first, to then convert individual MM components. But we can
-discuss that once the time comes.
+> v5:
+>  - subject prefix iommu/iova:, matching the file's history
+>  - put_iova_domain() takes iova_lock across the tree walk and
+>    __mt_destroy(); without it lockdep reports suspicious RCU usage,
+>    since a MT_FLAGS_LOCK_EXTERN tree checks the external lock
+>  - explain why the IOVA_DEFERRED store cannot fail, and check it in
+>    test_marker_store_needs_no_node()
+>  - deferred erase is now patch 2, the test suite patch 3
+>  - rebased onto v7.2-rc8
+> v4:
+>  - reduce the size of struct iova to 16 bytes
+>  - simplify the (hopefully rare) remove_iova GFP_ATOMIC failure path
+>  - test case for the deferred free code
+> v3:
+>  - switch to maple tree (suggested by Robin Murphy)
+> v2:
+>  - clean up selftests (thanks Jason Gunthorpe)
+>  - drop the search-with-alignment, since most iova requests should be
+>    of similar sizes, so the worst case behavior is unlikely to hit
+>    once ranges are excluded by the augmented rbtree
+> 
+> base-commit: ad8d485e665829ecbf3c97b22ce251f8ff5f8037
 
 -- 
-Cheers,
-
-David
+/ashok.raj
+ashok.raj@oss.qualcomm.com
+Qualcomm Inc
 
