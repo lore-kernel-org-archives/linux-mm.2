@@ -4,103 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF64C88E41
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 04:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D48C79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 05:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADCBD6B008A; Fri, 11 Sep 2026 00:32:35 -0400 (EDT)
+	id 288C66B008A; Fri, 11 Sep 2026 01:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB4186B008C; Fri, 11 Sep 2026 00:32:35 -0400 (EDT)
+	id 23A526B008C; Fri, 11 Sep 2026 01:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F16E6B0092; Fri, 11 Sep 2026 00:32:35 -0400 (EDT)
+	id 14FAB6B0092; Fri, 11 Sep 2026 01:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6251E6B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 00:32:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44B261206D4
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:32:32 +0000 (UTC)
-X-FDA: 85200210144.28.70824B3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4025840002
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:32:30 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Xmrwydqh;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D3BED6B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 01:03:31 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D4DD806D7
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:03:30 +0000 (UTC)
+X-FDA: 85200288180.15.7F2F233
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 38DC580002
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 05:03:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Tw/AqfFb";
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789103008;
+	b=Fe60XydGKc6laF4ayRs58sY6+mq42EwtJ4MF2GFbchORCEZwNMN2b6Jcg1lkeStJBoPuBQ
+	jYzw7fM2u8la2KxMCYA07tZs7uTIkxcKK60CNB0/t8X0Wwd3JuzL1c9EGQPlAyhAvxMl8C
+	6HeZgEaWuj40kL2/0BV4bvwGBjxl9Gg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Tw/AqfFb";
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789101150;
+	s=arc-20220608; t=1789103008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Q1/NUVZn+jCPysogxCzsbc//x4mJlPJQE8FNV+lHlI=;
-	b=qOcXipzSoY0w26Bc2jUf5srbymU2/0lGIsAL3nm35FPXoZV62XQwdl8bN4YN9ngleTI4Kp
-	nCA9A0B9WZUGfjiJ12oKkkAqQIINZMkQAu5xTgieuKGD0OsPd09jgqsUJ7UznsvHBtq1HH
-	0dIy5yIkw3FY8ymCNktf/vjcw7ygQYQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789101150;
-	b=SdUHqvqTCbg3GhOij+Rc+ONy9YLUoaQXPdnbIf2Xg9UgWIIDYl+UK4/CbzfVMru8Gy92FK
-	MDenLpu3xBmxKHV9Uapw2RhN5w470x3DFqDqg1e7KfLWjgAIVr4OKj5ZTGFnq4oxajRjCX
-	nVSmNAWfOya2IEbh7Z57+OI/xxvOFj8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Xmrwydqh;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 75BDC1BCA;
-	Thu, 10 Sep 2026 21:32:25 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2D773F7B4;
-	Thu, 10 Sep 2026 21:32:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789101149; bh=6nIY7vDGZl1HSYvtDHEzSpFXJFmf/2f+RPP48FA6xjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XmrwydqhBZ/vf1ECBYZqTArXWHBOiLel894SB9CwN4Xy7DofCaJ+zOog4ySBEP7Hz
-	 4KhKGUpFRrxfJZ2ULqbeOunH7b0q2UHOnOjSo+TkHoCHono2PP0xtQpCYja39Rnbls
-	 4gcwvzdWSOE2J6vNY9m5bsFQyw5Lpa2MPLdctktg=
-Message-ID: <f7416ebc-f897-4c9b-8266-6aa7c9fd5473@arm.com>
-Date: Fri, 11 Sep 2026 10:02:19 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qqQtNE5K5bGF4fAhBmQKuNzeCVlz+kHVYANXwAzhHeA=;
+	b=t7W+qPLAPY/n4ORUIPhKYy/lxDReRlmQpwDMLkYPknMH0bYg9TY6U3gQTjXOdDpUv5Blmd
+	RBuvUxKuwyq0DeRrZjIg0R4fWAbN4R332QGzFtBXeTeE7tLDf6P5LcLZWY2ZBNDT4lzTfa
+	+/iJxRbO636c3FdHSjVU87Xnx2QKgI8=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso471690a91.3
+        for <linux-mm@kvack.org>; Thu, 10 Sep 2026 22:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1789103007; x=1789707807; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qqQtNE5K5bGF4fAhBmQKuNzeCVlz+kHVYANXwAzhHeA=;
+        b=Tw/AqfFb9JmFu4MFtsC5mDZrNASDMX2ccrJcRJRv5GGHzU01QEdSsV5nSK17IdTKLN
+         ns8hpO9mD5V5NdgodAv8TNY8DsMxSQ5WLHW6j8aoL0SuxulNc7lLAzjJGHm+JZW6EKAA
+         VwFWP/C2pNJZSLcN7q+e5toGC3FrWjiBv6RvWkf+5gJte2wV61LyMIsrNyAIIZXAmavn
+         LjH6rkDzpLD4bHENpOH9B7fOaSF1bsUUJJUpXVQk5kcNINkc3kpYT0SnOnsuAuZjJfN6
+         Z4LrepWHMXPAw1usHZdl0j6s14Zrst+lQq5abgCwdLQ4XZSg8EIG885kfr3CT7AtffTi
+         JN9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789103007; x=1789707807;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qqQtNE5K5bGF4fAhBmQKuNzeCVlz+kHVYANXwAzhHeA=;
+        b=MARZNgj4YyfV/2gC76gh91a/ZudXeMUxkvNUIZmy/QrD1qlGGZlZOllqVVrMHYRUvm
+         cqNESF0lGPg2J77L7J41muhpF0xuHHEQNGTAkX0J74qD6c/GbPVlbYYTP4gDxfP6quyz
+         yRkTnNxv8bgW93FjyUDSU51zwzJpBQqSdbCtRwPryyVNkMyztBSQDJvOg/4k9l2HmNUS
+         sHYm+/NpZ7OL1EPU4MYJc79/EaSErRm07JnvGixc3oRlkbe/VGYduC+ujnT4GRvJFDQp
+         KfV8pRI1lU6L//od/b61Yj94rYaIOJ56Unp+sblZKp1z1BL+5FIhltoAacKVs75EHLzA
+         0Asg==
+X-Gm-Message-State: AFuF++kdv3WVX6YDJy0/BSskQCHMxw08XCdpGOlb2ltX4YdMtHobsA0Q
+	v/kk9glpyHXrizGUnfxLtQrqsTOa1qZQ1GO5M6iEnRqSG6iouRrOFIf0QI4gLIpJ5bs=
+X-Gm-Gg: AYBFou3RKkDr+S1/0TWP6hVia+q95GgJUvcjXvAKxZ6W8WkdUgeDWwrLPx6jK6YjDrk
+	m3cM0QsM5ELjZDq3TShChfPN2FR62GBNk8VcTvHJMWVeWR+3s5e+7iIY4orQn/3jpOGe6GcztfO
+	CyuKSezzzTJUqJU2kz4hgsc53LI44bxQh+iBUBRUDxI4sr4GLc82EZ1nxwHbea8O5YqEBvcddM3
+	/xuaiW4fjBHm1FkzA5JEVEkV7bTmf1SPDxx+qVTBnUYVcvftBA0KvoQ5gQe7daF4zNqQBRQAOy5
+	EYIuCOBON+Z3aUb8dd/U7/dsgOSvoAfACUk5szq+C2iNQZO7I0dxHSNAHgkWh2j7rKwkYiQRGmc
+	C2yFMx60z6VIh3ixhAUm0Ae5QrWopHU5omtov/nPErntg//22swZj9f+bnhUE05tFoREpl36W7d
+	AUgehbQkZpt7nHkfBusHr4lDeIR3zila/rgD+Dolnk6AhIqVrxY6dSAQIJB2A8m9HbONy2KRZh6
+	R+qgbFwtJx89tdvVlYdWGuErQYmSxBrUmR1
+X-Received: by 2002:a17:90b:1d45:b0:398:9be9:ab8f with SMTP id 98e67ed59e1d1-39d9c21cf40mr3843551a91.20.1789103006582;
+        Thu, 10 Sep 2026 22:03:26 -0700 (PDT)
+Received: from G6L4RL2QG9.bytedance.net ([61.213.176.11])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d99531b16sm2651561a91.14.2026.09.10.22.03.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 10 Sep 2026 22:03:25 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-doc@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v3 00/11] mm: Switch device DAX to section-based vmemmap optimization
+Date: Fri, 11 Sep 2026 13:02:17 +0800
+Message-ID: <20260911050228.58884-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 6/6] selftests/mm: add a GUP selftest
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260904123631.198697-1-sarthak.sharma@arm.com>
- <20260904123631.198697-7-sarthak.sharma@arm.com>
- <b0400430-c3b6-40d5-b476-49189b1cc292@kernel.org>
- <5e0b9365-cbac-4f2d-b915-85edf3093508@arm.com>
- <fadb8870-37f8-46f4-aefb-c21bc3a31e5b@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <fadb8870-37f8-46f4-aefb-c21bc3a31e5b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kixj5hrjgz1d3a9isb37eyig7wsbnrrk
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4025840002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789101150-41892
-X-HE-Meta: U2FsdGVkX1/mzXVT/WzPDFOMoGdtZhgWoYJADKHqxABRlkF7tkQw4IH4B1IZ+oE2P1V6jVHc7sSQVQDLQpf8WjGTqCkOK14l5BB7138Ls0M6ErjuWLnBKZhn0+Nl3TYf97UZYVvm+dSKfKaWdvFLeARKWDMfzNGBc9etygtprIqMbsCalXmN513s8eyWqKmg3pzj9hEyS4Egxku1PCco77hcFuBpdk9jobEwOSMD8r09bZotxKLsmJmPAS5pV4vQbZNP4N3c74IQESTtqvD0Vy7v4lPoiTBE4tlrV/23GjpxBEETaxlQdi12v/1l6msnYAgMaQj2Zo9DzkgV6T9YKMUlGSF14LVXSmA32YNISuwvFsfQrn3PjpsdpcwFdQBz780rUchH5Tb8oGB+85zfS6wwULAipKqyewyVypQYrSk175SM3EBdTJ9Bfp6Wv8N878YSP89ruJ+cudRZoLCwexBIZ+Nv3Lhle6Km4SikROjJNWwxac3HbhIj7VfYMKT2Qrg0EjMIH1vDciijxgtF3TSpjtAE2+WrpDprGhSHCirDdhmzhfgoaEnZD+7WEZjQpZQ7QaCCJZEel6e9ZyPl48HbozTKh1Yru0DkPoLM/VBR4UuY5Un8NVSredINbg0/aq89up43rwtuStxwnuUhQyE7jRNszrEGu7VdXLd9lHRyOQ8VZQTGtBrWMIEN5XYvknc9tbiF4v16tOc02Jd4Pi2d8ssZALrY9QBRoLTP2lypZVwf20579p7x09YHzntlTak6ea0VHHMbJHE4pNtzJ1NgyEm+JLfpN49X5QAsV70nK1wAeO19c9FGgHWrkewIE9IbJDRPD6SXpDdzVVfXowl9PJPUWTzu8zz95S8HBl822YvEc2703xpeJapvFiz8ooToELpNEBFZXhJ9Ptus2U3TIblWvS+8HcXCIZSgl9/X8dJfq6aXqTHpANiBNpr6eU7TXT6iq7qTvvw8IH/
- 1m2feG32
- pHSCF6ib+3P5Ou1Xex5qEveNYzogOS8d8KhAhq2A4t/tdkTjybjMh6DMYxqpC6djgPdkPFPh6H6LFaUyQCblUiYd3C0p7r0bf4Jd2hwNhri1mRdz9XyEkiyAOgTs9w8+JGws/iinDGbLWVT2Ue953eQvYmftaFvS2cEDoybPC7m0SKeSw4PjvRWyQbQvVQxCWp/PZzacRaaxIkNqbP88xjNfW9cbzoTRag22QfeYEt7WCVXA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 38DC580002
+X-Stat-Signature: 47bq63ae6dr7jea8m55yhbrsoku3o8k8
+X-HE-Tag: 1789103008-615445
+X-HE-Meta: U2FsdGVkX1+1L+v5G7F3QSwXUddDIdzhKaXeTJ+JFkZl9mT6gPveZIPKbwQ2wwMxtOlT+vC3NQ6yXXKFamwxQP3YK2VHnu9wwMwBqncfkbrhXf887CA5LnsIZrNEVwzbLeMDWrGiCEFa0BF8B93AYBT3G+8bT8Ru4hhNzLFUeOy22IOsZ12pR/v78hUcaC/MhmiPWWxxLt03nF0u3Q35YEFl2VOS6j3d6YOvrvLBzTn4GRh/ewRtkRFWAPZx4LOUWn23TEPnoGv2z6818K3xmRP114Cjm4mnAiz4X2QE221tllrvhYECBCnioL7jMaXTTmSDE//1G3Sr5+sopusaJm1I0YPfr/zL97LqdyCjDWTplgyJvQNp6hIhhTPWihe5DNvlBPug96RMM3BGjiJH5mLHYwPTATVccvn/W91qM7cPaCqLuoA3TZ0h7a7ypN4Ac36lXXFVbyJ71+6/Z9SAmMaEF1jleUZ+uCn3wKMbEzTH95a0x72bbXu8soUiXWXcfiDJcy4xMjTL/y8d2AlKMF6Fu1zqpB3/4F5KchZiw2Gnmklv+4GUxQXCrlTBNoY8rfMGBHIR/DjgbEOuu1VRkNVtdDS8DGRPRPWdD2HUEV0XNznPgN3AHaalp0NYG26LR8ZnHlZ5WIjbKKuzHuR07kaivXZqT0V7X/7b4TIO9Z0zxbVGBuA+c5b8s9HsTfTVwTY2lCw27VHylebJpeE5Ex/O1ldGupep6OWUhYjrCQQF/yQftv9kOAxIJBHa9WKy9sWG2jpxqrHeDY6GYuB4txkT63khVXnLAxN0bYiOh7u/MyhgRIINrNYVmBx9AKwYdJyXBVa+oqWKxwzR6SYhZ/LYibtBSSAEdzM9z2hWRlRBIR/ymEXs+AqmwerQZuSHYL2J5XPEOYPpE5uLmWWzs4qILlw+r37zvYrmO45SAuW60k+M4SUJlH5VG6QOxVJT0K4SklyiC/1uwb+mvgN
+ tHJ9pBo4
+ W3HeJa1f4K9jvWGBfsEYl6qG2oJD1ctWo8bLDdE4VK7jwl2Kd4yTLBeMovMJflqjNHATdphRPI01pZIeXDbZMs82jJTkrPawDorf7jGABg7aac3kJiO5CfDqbcJNZ6384qkWej1EKGWyTXVSAABSytv6lL16OSKzleM8HjLJtsIiKjS6LUSYcROXRNq7MRVV91N+ZBZ3YS2Dwf8itYebzIvUPeEJnJDLgeZqlzlwPa0vWVP1mKfvaZFqiI90bq0voQ+mSGHgG3VOrL0KlCwQdNeZ9HYc6F+l1mrKSpQGkVc1fxXl+N4FUIEYyu0YpCeL89ZErzv31Gh5Qotx6lH40A2T+Tg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,103 +129,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David!
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: switching device DAX to the section-based
+sparse-vmemmap optimization infrastructure introduced for HugeTLB.
 
-On 9/9/26 10:33 PM, David Hildenbrand (Arm) wrote:
->>> BTW, I was wondering what it would take to:
->>>
->>> 1) Turn mm/gup_test.o into an OOT module (would we need more EXPORT_SYMBOL_GPL?
->>> EXPORT_SYMBOL_FOOR_MODULE ?)
->>>
->>> 2) Move it to tools/mm/modules or sth like that.
->>>
->>> 3) Build it with the selftests etc
->>>
->>> 4) Remove GUP_TEST
->>>
->>> 5) Try insmod'ing it from the tools+selftests that need it.
->>
->> This is an interesting change. We can keep this open for discussion
->> here. If required, I can work on this in the future.
-> 
-> Yes, we should in general try moving all test modules out of the core.
-> 
->>>
->>>> +int main(int argc, char **argv)
->>>> +{
->>>> +	char *file = "/dev/zero";
->>>> +	int fd;
->>>> +
->>>> +	fd = open(file, O_RDWR);
->>>> +	if (fd < 0) {
->>>> +		ksft_print_header();
->>>> +		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
->>>> +	}
->>>> +	close(fd);
->>>
->>>
->>> I'm confused. Why do we have to open+close /dev/zero?
->>
->> This is a pre requisite check. Every test opens and closes /dev/zero and
->> /sys/kernel/debug/gup_test of its own. So I wanted to check before
->> running the harness if these two are available, so that we don't have
->> setup failures for 60 test cases.
-> 
-> But why /dev/zero? We should understand why that would possibly be required.
+After the HugeTLB conversion, optimized vmemmap state is described by
+the memory section and the sparse-vmemmap population path can allocate or
+reuse shared tail vmemmap pages based on that metadata. Device DAX still
+uses the older DAX-specific population model, including a separate tail
+vmemmap page reservation and architecture-specific logic to locate or
+populate reusable tail pages.
 
-This was carried over from the old test, where /dev/zero was the default
-backing for mmap unless the user selected another file to back the
-mapping. Now since we don't support file backed mappings, we can
-directly use MAP_ANONYMOUS here. Thanks for pointing it out, I'll remove
-it from this patch.
+This series makes device DAX use the same section-based model. Device DAX
+records the compound page order from pgmap->vmemmap_shift in section
+metadata before vmemmap population, uses the common per-zone shared tail
+vmemmap page, and drops the extra reserved tail page. The powerpc radix
+path is updated to use the same shared tail-page helper, so the generic
+and powerpc DAX paths follow the same reservation model.
 
-> 
->>
->>>
->>>> +
->>>> +	fd = open(GUP_TEST_FILE, O_RDWR);
->>>> +	if (fd == -1) {
->>>> +		ksft_print_header();
->>>> +		if (errno == EACCES)
->>>> +			ksft_exit_skip("Please run this test as root\n");
->>>
->>> Wouldn't we want to fail here?
->>
->> mm selftests normally skip if the test is not run as root. So I tried
->> keeping the same thing here. Do you think I should change it to fail?
-> 
-> If other tests do that, it's fine!
-> 
-> [...]
-> 
->>>
->>> BTW, why are we using HUGETLB_TARGET_SIZE instead of just using the
->>> default_huge_page_size()?
->>
->> HUGETLB_TARGET_SIZE is the target mapping size and
->> default_huge_page_size() gives the size of a single hugetlb page.
->>
->> Using default_huge_page_size() would reduce coverage for 2MB hugetlb
->> pages. The old test set self->size to be 256 MB for the hugetlb case.
->>
->> Now it was discussed in a previous version of this patchset that we can
->> derive the self->size for hugetlb case by fixing the nr_hugepages and
->> multiplying by hugetlb size, and thought 128 would be a good number for
->> nr_hugepages [1].
->>
->> But in case the hugetlb pages are very large, eg we can have 1 GB
->> hugepages as well, reserving 128 GB is not a good idea. So I tried to
->> keep the target size of the mapping as 256 MB, as it was before in the
->> old gup test. If the hugetlb pages are larger than this, we'll reserve
->> only one of them. Else, we'll reserve (256 MB /
->> default_huge_page_size()) hugetlb pages, which comes out to be 128 for
->> the case of 2MB hugetlb pages.
-> It's odd that 2M gets better test coverage than 512M or 1G.
-> 
-> Is there really a lot of value in testing 128 2M pages? Would, like, 2 already
-> be good enough?
+The first patches prepare the shared infrastructure by introducing a
+generic CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION symbol, factoring out
+shared tail-page allocation, and keeping the special shared-tail struct
+page initialization local to sparse-vmemmap.
 
-Yup, seems like keeping 128 pages is not adding an extra value. I'll go
-with 2 hugetlb pages to test both pinning within a hugetlb page and
-across the hugetlb boundary. This would make things a lot simpler.
+The middle patches move device DAX onto that infrastructure by recording
+the device DAX compound page order in memory-section metadata, using that
+metadata to back generic device DAX mappings with the common per-zone
+shared tail page, exposing the shared helpers so the powerpc radix path
+can use the same model, and dropping the extra DAX-only tail page
+reservation and the now-unused section accounting arguments.
+
+The final patch updates the documentation for the new DAX layout.
+
+This is intended to be the third smaller step toward the broader HVO
+generalization. The wider HVO consolidation between HugeTLB and device
+DAX is left for follow-up series.
+
+[1] https://lore.kernel.org/all/20260513130542.35604-1-songmuchun@bytedance.com/
+
+v3:
+- Use EOPNOTSUPP for partial additions to sections that already use
+  optimized vmemmap mappings
+- Move device_zone() after NODE_DATA() to fix non-NUMA builds
+- Collect Acked-by tags from David Hildenbrand and Qi Zheng
+- Rebase onto mm/mm-new
+
+v2: https://lore.kernel.org/all/20260908030335.96549-1-songmuchun@bytedance.com/
+- Add a missing SPARSEMEM_VMEMMAP dependency (suggested by Qi Zheng,
+  reported by Sashiko)
+- Add an explicit ZONE_DEVICE dependency for DEV_DAX
+- Add missing dependencies to the new public header
+- Explain why optimized and ordinary layouts cannot share a section
+  (suggested by Qi Zheng)
+- Explain why sharing tail vmemmap pages is safe for DEV-DAX (suggested
+  by Qi Zheng)
+- Clarify the removal of duplicated 4K PUD calculations from the docs
+  (reported by Sashiko)
+- Collect Acked-by tags from Qi Zheng
+
+v1: https://lore.kernel.org/all/20260831075342.57563-1-songmuchun@bytedance.com/
+
+Muchun Song (11):
+  mm/sparse-vmemmap: introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+  mm/sparse-vmemmap: factor out shared vmemmap tail page allocation
+  mm/sparse-vmemmap: open-code init_compound_tail()
+  mm/sparse-vmemmap: prepare DAX vmemmap population for compound page
+    orders
+  mm/sparse-vmemmap: set compound page order for device DAX
+  mm/sparse-vmemmap: switch device DAX to shared tail vmemmap pages
+  mm/sparse-vmemmap: move vmemmap optimization helpers to a public
+    header
+  powerpc/mm: switch device DAX to shared tail vmemmap pages
+  mm/sparse-vmemmap: drop the extra tail page from device DAX
+    reservation
+  mm/sparse-vmemmap: drop unused section_nr_vmemmap_pages() arguments
+  Documentation/mm: update DAX vmemmap deduplication docs
+
+ Documentation/arch/powerpc/vmemmap_dedup.rst  |  90 ++-------
+ Documentation/mm/vmemmap_dedup.rst            |  32 +--
+ MAINTAINERS                                   |   1 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 124 +-----------
+ arch/x86/entry/vdso/vdso32/fake_32bit_build.h |   2 +-
+ drivers/dax/Kconfig                           |   2 +
+ fs/Kconfig                                    |   1 +
+ include/linux/mm.h                            |   6 +-
+ include/linux/mmzone.h                        |  23 ++-
+ include/linux/page-flags.h                    |   5 +-
+ include/linux/vmemmap-optimization.h          |  94 +++++++++
+ mm/Kconfig                                    |   4 +
+ mm/hugetlb.c                                  |   2 +-
+ mm/hugetlb_vmemmap.c                          |  30 +--
+ mm/internal.h                                 |   9 -
+ mm/memory_hotplug.c                           |   6 +-
+ mm/mm_init.c                                  |  17 +-
+ mm/sparse-vmemmap.c                           | 184 ++++++++----------
+ mm/sparse.c                                   |   3 +-
+ mm/sparse.h                                   |  81 +-------
+ 20 files changed, 253 insertions(+), 463 deletions(-)
+ create mode 100644 include/linux/vmemmap-optimization.h
+
+
+base-commit: c46036ca3ab7a7628fabe5790aefd917d0858db6
+-- 
+2.54.0
+
 
