@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA8FC88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 21:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE04C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 21:06:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A8EB6B008C; Fri, 11 Sep 2026 17:00:37 -0400 (EDT)
+	id 2E4716B0088; Fri, 11 Sep 2026 17:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 859316B0092; Fri, 11 Sep 2026 17:00:37 -0400 (EDT)
+	id 295826B008C; Fri, 11 Sep 2026 17:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748096B0093; Fri, 11 Sep 2026 17:00:37 -0400 (EDT)
+	id 1ACCB6B0092; Fri, 11 Sep 2026 17:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4387C6B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:00:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3B29A03A0
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:00:36 +0000 (UTC)
-X-FDA: 85202700072.25.F396E12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EAE9B180004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:00:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScS+ytAz;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED22C6B0088
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:06:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A90340335
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:06:17 +0000 (UTC)
+X-FDA: 85202714394.16.5616BCF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9ADEA80008
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:06:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ggRE77ma;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789160435;
+	s=arc-20220608; t=1789160776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0v5qDdlZ+UMhSmAlZv+vR0W72nkytSOWSkoGTQSfXo=;
-	b=5rJy/SsoaVWo6KglNdRQygV2mbmsPlPrGArcZ0O+BfWtrTkD4tjSImaj/pHqXZMEwCJAda
-	IU4qzAagblvYc8KebDpjEpmEwlaCufzHUMNCEqBWCVfFIaiykiumjNq/zUVFrveZE54DNm
-	GU3FbghU2mY7rgMQchao4tgcKETmEPs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScS+ytAz;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XNxSeaKPnR1SsQqw6gfSGR6lazRYUQXIpU6i6OvIvI4=;
+	b=Bmzp898RQfmywq9H++VyBMiqOVE68N9dA4gXAJcj8B3JNCT1DTEv72u1uX/o97eSOGpmfn
+	zBtyJ1qN5P/ejtUN/xnvNcc5jdEnt4xJ++imrUjtw+ADyEQbV7zaon+ZFZiJVEicTdQab9
+	x9CEuA6oW5GjqL+phnlzarZpL7XsJvU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789160435;
-	b=LHOj1EMLqMVTcv/haYgXy0FwL+esUvhugLa95zeE/cyrUEaf2RkWmjdA+zOmj1jp1Q/N7h
-	IotWlQ0BsBBRaNCQ4C+5g0O/rynrhf2J1VxX2d9Y6DdmgdQRCbH9mC2TeJhCPzFb+IwbA1
-	iHy8mX6l9EeZh3gD6KTujTtMBgnHdiE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2111940F53;
-	Fri, 11 Sep 2026 21:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9741F000FF;
-	Fri, 11 Sep 2026 21:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789160433;
-	bh=X0v5qDdlZ+UMhSmAlZv+vR0W72nkytSOWSkoGTQSfXo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ScS+ytAz2/iqKxGyKZ4ZZFeYhfiolHMZ2vEn52zhAVtWOO2y6FJUvzBacDbEkZKAg
-	 Z3g4BgDynUOde7Bm+tHrzeM+B3dAR3vKS0XQYC3qlvjSlf3/LLMw6TT/vjNSJKdC1i
-	 VxuQb+YObH6HyAmfvN5KjpnnXZMGwNt/hX8mZOV+uKw2wlUU0YPBU/dpKzSQuJWzK4
-	 g3hIfFW56a5OPtAeuHWuBwdQ6VFik6nDY0kWEnG6Jn+v/ceRsQCxncMk9LKmMWiKUZ
-	 u/zlAm2VNQk3oqO03MR0eU2DJsX5pQMCb24YIULWjHGAwvZ+9vp2Z1qO8T9UXMP7ZV
-	 OMbfLuyTZq7Lg==
-Message-ID: <8a5abc5a-bfd4-4fc3-aec2-a567ef5c409a@kernel.org>
-Date: Fri, 11 Sep 2026 23:00:24 +0200
+	t=1789160776;
+	b=02oTKnPnxfp71vwMTbPRj/ApWG8CyLMv+tP/45wJimalVxtJNTXPxv9Q8ezlilpOr0f6Os
+	typ94OJ0Zy9aEY86QsfUqVgbG3/yyELZojwGkJ39XLnSCwfZpZJPKKx493zbfgksdNrYMN
+	8yL6cLYxtGSngYVh5kGyHKin6doK8h8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ggRE77ma;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C62C12E96;
+	Fri, 11 Sep 2026 14:06:10 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E03973F8C6;
+	Fri, 11 Sep 2026 14:06:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789160774; bh=Ko4HtAWHNGp2tQS4oxkiTDsisIyPXC3mwTAstW5j2OM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ggRE77ma+WZuCvCcU2DRXbCHnE8eEhQnfghWBaubvPG0j7Lkq1zMt42RDbb8r8z2P
+	 6wtrYneVI4qutIAc7S4800a8aM4kvE8jtE57c1hJZb8b8Rlpehgf9OLxmOWU8Ws9Wb
+	 fsKj6de4XzzjUJv2pZ9DRcQxw8CuOHTbWSKpfurQ=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v2] kselftest: mm: remove exclusion of building soft-dirty test in arm64
+Date: Fri, 11 Sep 2026 22:06:11 +0100
+Message-ID: <20260911210611.4001419-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/7] proc/task_mmu: clarify shmem mapping walk
- conditions in smap_gather_stats()
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
- willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
- xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20260911194145.1781926-1-surenb@google.com>
- <20260911194145.1781926-4-surenb@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260911194145.1781926-4-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EAE9B180004
-X-Stat-Signature: uqurco4fdp46f6e67mxbxhy1kwtk47ha
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789160434-654797
-X-HE-Meta: U2FsdGVkX181QF7DY9vb5Lw4sxedk5XL4RnV8ngt8HYzNTUxzXl+4Fuy5gFGvB6wE3zKZCLwnd/YYdf/QgH9STncCwEFU2W9tggY7bX2iDoN8cQR2XkaU5VPSVit6WlcP+2e7Ht0cz7s5xc4avqUBk7dMr1bLzAIIW++L2ZBd4YdnPJ8TR239+bYdtXNCkw8PguYRDyPLg5FfHOPknZKyhGqM/h3DPbzWG63la6N83QQFiUkv6cqrQTfoitS12T4sH9KwHeKCXRSVx7lQxofwJbWUEAgKrIW1TunX3xbkvgSTtX++oIz5MZVH2LhS9ScElrp17vPlKjFEXD0XkYScZbiNw92vV1dZHi9gw/GMEhc7E0tXzrpG28Mpllt6MUExGpbckz+r3Qt4QsQkS/OpoTaXDZRODL+zVBuFdnWi2RQ8yIpROEbSw3QyhR7p76Sru2F3JEyayWIK5bdbshE3rJJ3OIdzbcF02E9N4LrXzVPyLY/qopG1v1nujQq7iuA65/xD2cA/hgEJCx/UauImXlQ2zGbkacBi68OqSdANlce69fz97EqQWxR/ns8cp+jD6EEQHG+exRIi/OuKaRu1Wyozqkzb+4fWgv7tVOfAg+WQCYU1HFN1vtCQuT6jGkr3XLKZIO4KrGzgsvihZKoJCmwCfRws5+KRAAgfOl5HJEWRmwcJ2AjrE81oqDgvU0C+PmPI2jJNbUQHgxauQyxb6y/Ae6e5jTdKOjKpMYFJlKTy/bRzgDFkeQbVHQD5RgGxxlQaa/wBriwDryeSmXmV+O5BBz+/Z9cwtXSxHd+/QAGv9SAkFeEI3tsofXFhsh2yA0KzCsRyoA+aA1waiJ93TmrHGWZEo2nV0oYPJ/5YeuVmpzL+JZymfG01seFTadjvJ9yoDLQVqPy6kAuehrZGIZ91yFSyhwGdfPaRGns8Nj3AeiEpsMzYmjCwKIqNoensQ/1uhJHVeJNYdoH4+D
- 7Tkgs7oH
- mmySfNS3hu67M69CqiXvTlJOtls9bXmN9Ke6WgEC4cTnu1wWrx3uGsu5YPdjA6JyTPytIsdXnKP16xkt+i4XaPcQilgv4bKR+xFi20nuvTz1FnOlP5vU7yO8oP8mO7VSCXrdg34nRa4ZdWzzh4XoorcM1xgJbUznWpP0Vamrlxol9BKainM2pqP9E11m+7thFQEdIULRy3ouyXGn78Ji9yZJh3/UI9hkYdzSRu9OexhpWnA5n9lwkHxCo7XoTJXYMZzimYv35RIqdA/yItnlUR2NdxN7tt/+OD5qkSrheXsiycj70Ec1FPAVnFT+Oz1ngIGFoFrN2DJAy09lNZN9SPhPYYMoJF8r/UvZdCCVf4f9G9R/fDc5jg+9kTQ2CPvBIsGvdt+9XZ21yTpikhEfcRl6Q7a47TZhnCnbZflLeQwvCI+k=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9ADEA80008
+X-Stat-Signature: 1zriagd5ghg3xkccp6hokg4u8i3t3p84
+X-HE-Tag: 1789160775-26718
+X-HE-Meta: U2FsdGVkX1/8xjzanRbPXW7R+Las9seypWfJ6SYL8j7lQgC0gGtGualyPqFr8VfoXY6c+pcKW9JnNZzheFNPdJ/gRLqKzTAonVIiNDGxHPsUdJ7ogM86Ma1qOAhzNyoqBIhRyYAd7hyk171EHkLxmXAAgeFjIM0L6N/AbSUDL+nt2eeqt0eYbP0ncOX+R5oeD3f2TXsi1uP3f8NHUn+wo5mpyl7exI2wVcnHju0gCP2nSHwMSWKEI72hCQMaQtgG2I8uXfsCTqMdJKHcBX/sH6pMsM5AFiLZ9PUa42BbFhSJFARHxGw8dY/snpOzOm8DkFzyE70Ufm2mQGJO53c1XYl4ksBXbZxSuMoA4pluiTZKTj47KeQDDpyHzjN7ABoB/6GPNXvyqNjmanyGD/2HPRC71fU0Qsyv4aoBikBXHwyaLX0cyocRqDtg+k6cLlRBegWq8iTAZGkXFdWK5jkQeOIfgyU/zqBWRACcHQJr1DinH7u8Y3YjYXfUQtSHfblQD7nvkffCixJwPeaRYX2HfqQOM2u/+fEGVYk9s8Lc3MsiABpR0hBrTA0Oo+45oJEWjCo3HasB3eZaefG+WX8brzpPtLzs7G7Vb/p558m9MOT71f0GsIHhbFNbqGJWfeg/iJ20LLMb/SfnnrFIs1mO6wTAcKy6pME7HgobXxjM4NCUCi191nE/yENGIhaLux/rsm50kzndNys1Gb4O6lJcnfcXtMKYY1xMDCn7nOlWrNqv7FMLIfhEpePZ4D7gXnTitP0Pje0JIjBl2/myNpPReXUwnUduC5STlrklQ93wAyhx07z7THU0WeeGFYQtoVcNK20RHESGftR9uG0jA1Fjb0pwPVeqkvAQkbMbS4gIF2sHYE5J5SuYit3Hw/zXyhDPVf7Ik6zG6EsBoDw6LyTl88wEVLKE2bndoEungZT1tMtAsUZ1b7SUeLUpgwHJ72+Dca7cFy43dVQOVAXsnu5
+ UXTHRtOR
+ fy2IV031iyNp2SlQjt79aMIz4X33n1i+rcyWFUZ1HwXrfppZoms5TgiwXV9lbolMkg6kuOZuJ0azHZyuL8DmjNeyEZediGrE8XWL0Ho/v8aNZxa7RysP4m1qlvTbQ20YPzntBy6Wr32VXgnTwgx32mFpXFXnxuXtGpSR8IlGsm7y+yCVb8dAV6PNEsfzriLJKwa92iA719U1M/sywzOoRx59byHZfySlQHRBi3O0emGrkJcUsQ8LAI4geO2G5k/MgbNCh4QqDiGn3GDzZOcg44H6Khf5jeAZbBXih0XzLhQfRsvrb0qGeUDU/Mg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,22 +96,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 21:41, Suren Baghdasaryan wrote:
-> smap_gather_stats() optimizes stats gathering by skipping the walk for
-> shmem mappings in certain conditions. Update the comment to clarify
-> these conditions and use vma_is_cow_mapping() for CoW identification
-> instead of open-coding it.
-> 
-> No functional change intended.
-> 
-> Suggested by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
+Since commit 0389c305ef56 (“selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled”),
+the soft-dirty test is skipped when soft-dirty is not supported.
 
+There is therefore no reason to exclude the test from being built on
+arm64. Remove the arm64-specific exclusion.
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+Changes in v2:
+  - remove redundant condition in run_vmtests.sh
+  - add r-b and a-b tag.
+  - Link to v1: https://lore.kernel.org/all/20260911125028.1268274-1-yeoreum.yun@arm.com/
+---
+ tools/testing/selftests/mm/Makefile       | 3 ---
+ tools/testing/selftests/mm/run_vmtests.sh | 5 +----
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 2d5366196e30..d3e9bd67904a 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -104,10 +104,7 @@ TEST_GEN_FILES += guard-regions
+ TEST_GEN_FILES += merge
+ TEST_GEN_FILES += rmap
+ TEST_GEN_FILES += folio_split_race_test
+-
+-ifneq ($(ARCH),arm64)
+ TEST_GEN_FILES += soft-dirty
+-endif
+ 
+ ifeq ($(ARCH),x86_64)
+ CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index d09f9f6a384e..33963535616b 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -390,10 +390,7 @@ then
+ 	CATEGORY="pkey" run_test ./protection_keys_64
+ fi
+ 
+-if [ -x ./soft-dirty ]
+-then
+-	CATEGORY="soft_dirty" run_test ./soft-dirty
+-fi
++CATEGORY="soft_dirty" run_test ./soft-dirty
+ 
+ CATEGORY="pagemap" run_test ./pagemap_ioctl
+ 
 -- 
-Cheers,
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
-David
 
