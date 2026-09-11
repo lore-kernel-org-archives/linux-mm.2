@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401CAC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 22:14:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5000CC88E50
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 22:15:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 056BC6B0088; Fri, 11 Sep 2026 18:14:51 -0400 (EDT)
+	id 5AD7E6B0092; Fri, 11 Sep 2026 18:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02DE96B008C; Fri, 11 Sep 2026 18:14:50 -0400 (EDT)
+	id 55F446B0093; Fri, 11 Sep 2026 18:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E868D6B0092; Fri, 11 Sep 2026 18:14:50 -0400 (EDT)
+	id 49B236B0095; Fri, 11 Sep 2026 18:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4F26B008C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:14:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FF0916038E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 22:14:50 +0000 (UTC)
-X-FDA: 85202887140.01.521651C
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9545F1C0006
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 22:14:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eGTx+wRL;
-	spf=pass (imf21.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2062E6B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 18:15:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D6D540370
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 22:14:58 +0000 (UTC)
+X-FDA: 85202887476.30.BA7505B
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8AF2680003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 22:14:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enP2ZZaU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of yury.norov@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=yury.norov@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789164888;
-	b=I2JQ0QWXjjaQwAOM3j6iNcBXFiUXmPsmluEqTMRfKSy2y1nH1764WHCTK4GLz14CfHc3JJ
-	GV3O+gvGMXD/2TbOQbzn9Im+/dk9bjepIjjTlUpqxEOXtM0gt4GyS+SDwt8DHGKfOEH3PX
-	/VmbCMvkUcbJku6RUCKizrQ1kPM/ANU=
+	t=1789164896;
+	b=xNm8qVMiN1BPO2ySmsnsC0F2itOfh/SSVn2HICY/C1/pODKfelOG+Do9F37N76mlm8DYpU
+	SLprMOaR3/mALoYtk/wPofoWXMOslFIo20k+cfDEkJHTiBdP/DQVZtg9rkM2cDKA/coD6T
+	2oucuIMnFt5zoXS6d16KS1KMPA1Krdo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eGTx+wRL;
-	spf=pass (imf21.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enP2ZZaU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of yury.norov@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=yury.norov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789164888;
+	s=arc-20220608; t=1789164896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=l+6FszybKpenSJZy2BI3hcOtPumB191OQOasiZknYb8=;
-	b=cMX0WNWC3HRiRojsoeMt5RIHBjslXCD/peV3d/6a3FcRHTB0YD2NAQr18Qflb8vjxWteCH
-	fxiiIG+wuCJQ87W8TivZ2sZAq2NWgGeOzgHNrmOFsu0vfScQylM8jmz9gbiNa7tR9o+owD
-	5cYN/KHepnFdnPNTpMYjhpI+/q6TrUw=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so1520890a91.2
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:14:48 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SryPbedwt+PB/tIiQ1DKQcYvegcDPhcxT20I1ilZbIQ=;
+	b=zc3vXglqL3QHkG+ru29atd4wKgZPi4B6bLPwz7yjOjEo/WBpj89wceY46PJphok53HwHtr
+	ySt2oyg6VJenaBura0X0XxWe0LZhouSCQzi7SRqUs1XfnZWFIHGi44cAWDTeAbgkP+G8Z+
+	rlBUeJmm0z/QKQfHE/xhRCD3bSVCx1Y=
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747f01363so399285ad.2
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789164887; x=1789769687; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l+6FszybKpenSJZy2BI3hcOtPumB191OQOasiZknYb8=;
-        b=eGTx+wRLe8eGXXcSA79LYK/MF9kojdAyRfMqyrcaDfvSS9kJWQsm9uEIKM864vaiGy
-         5Kc67UOeO2SG+FefoP/9ZGXHx0XfAv/iyohzrAmIxvDD3Kqlqw0uWTsc1enTKqM883oR
-         /FMb0q5IlF9MQZrn5Yb6ptwMnaqiimg0GvDjkeuuny2C3Es9F5deYQzIi4Z+IEh2bqTY
-         CHe7XjFAxEImOBvE4FTAfTDs/5NnC0vxUcj3EHn3CkY9TxqlNY14N0RTgKpCVoxIjACC
-         SJ6xftk49LUH1kgETLiLY7ZHWJPxjhogvE/WuEcesEHr+c8MZdr5IL+1o9rqtEIbAWKV
-         ljiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789164887; x=1789769687;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789164895; x=1789769695; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l+6FszybKpenSJZy2BI3hcOtPumB191OQOasiZknYb8=;
-        b=cbNk0qy3zNWgqyu6It4OxasJt8yoeRAbRF2nGaN2Or3y0MJQRreGEEY7zM+3iLEMiq
-         UqOLZOvFVsiFdH83xZbq6eWaR9CSTeqp034f4SGUz0ovWSzePEYdbRi3xP8GORUKJ6BS
-         e61zCP/msAuTYCRMt4v/rFoVsNBX5EK2CIIv7mtcA5l/VRVqBz28srntoF4qt3EpJYo4
-         NmJGHLfT7/F+1gjXnBfG7ZI4BAqvb73u9YDehKYRguk7dVvD5yoCLbJV0n2QOgBeiQp5
-         n3qXlibIUJT7gUfEULqNYeZj2LfnJzGs/mtZi5HbBN+/sWAl9hfDFL1GK5aoRGBm+p0b
-         pjjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxp4NULmzTm3t/jSVmD3r1X55Rl8/nezmVmHQP6T2NbRp2PTTt1RhHSmechXA7o/x8PraDcscekAw==@kvack.org
-X-Gm-Message-State: AFuF++k+rkArT9OrsNob2t+jBb5g8osAnlaMYLO+8PT1qTnx6BwwcXg7
-	VSlnXF1OZPpZJIdmqaDWwkvS7ZhfALA3sQqkQCcbJlBmnrm0/LYA2wvB
-X-Gm-Gg: AYBFou16U77EkH2+qlQLsUg6KiChEwyLf95H/6w0kC7cDXFnHdwkG1aDGC02++VUz9H
-	3Bc1g92e1V53HQ0LSTa+Csyr6PL0EKY7FzflKL/B/HwbiTxZrgu2KgjwId2i2iEMn7ozTzBUqQO
-	BWWNqwfZYZOpaO5bL6N67tu9MrwoYU293pHE626xXd6hkNYPELiviJ12juIVJYlUCee0wRlHJfE
-	C51G8gF1CfDPyQ/zeI1PGDzPeiUDMItfd3h0Br8np/Sofjg6ZU1Bb6XBCa0+/ZMe5exKuKLJBsl
-	hF8W27+TqGcXqMQLTrryUk6YSrNH/P0A5RF8St7outX3+jO9B020HEOLH7O47IIUKXTk3q69ABu
-	V1+kyj/p94iNlA94+BSBzI74Htmrh/Fa172qw9VB4fYb5nFLU11DV2rhiQtw5G/CmNoovivI5eC
-	JWor6CVwZyhjyw5Xbrb7OYW01j8BLj1tFg0KPW2zn3PDqBZxw6zjSTrEHCXc2aIyDsyl/qLy+Zs
-	xiGWC4=
-X-Received: by 2002:a17:90a:fc48:b0:39a:e983:d4bd with SMTP id 98e67ed59e1d1-39d9c3527b5mr9789091a91.24.1789164887357;
-        Fri, 11 Sep 2026 15:14:47 -0700 (PDT)
+        bh=SryPbedwt+PB/tIiQ1DKQcYvegcDPhcxT20I1ilZbIQ=;
+        b=enP2ZZaUPq0RTlMWSp0om+BI6syejRlqhzqYiLki9QzHT+HiSxLvO4Eq5qDnNYE6Fj
+         QE7P1S3K/NGFWZHy++/LfTZ25mlmBJrUvwr9J6L/ZjYIJAfF/GL2nljY2VoMpIHrmfbE
+         y78JILNd6WylnoXQ67dmFJX9eMEkryKKRWx27Sw0ANn0AUIv4d9hCmwSV1YTBQoG3Nlb
+         txKVRTs+1GiJQeRs/faLy+xO2eo4IArN2S7RndUpTuEyvVl8JZN7UfxRLS5toOxK3Oud
+         9yK05STu6nLyqyWMJhA564l8Bfbal3YJpD1b+4xNUCXgZacgEQklLZL2XUfF6TBy9HTl
+         3MRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789164895; x=1789769695;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SryPbedwt+PB/tIiQ1DKQcYvegcDPhcxT20I1ilZbIQ=;
+        b=d48xAY5gUA62/KoSUAN/NomN+Juxgk3u+1zH0eRp1/E9OlFkMPLCvw2xvUTYd5BJac
+         mFapxYLF6rKRPTNdF4azCHzHKWwU6hRTpkdHINys3c9hEgYu4OQjCkKLob+XnBaJKaCF
+         nE1mN7hZZo3J3gfsmOrzInsdRmn+iVoazzFy3yqdaiQ4OcpIQtoK9nx+QiRg6WXI2eyT
+         DzmhxBBRw+fOiAJqF3s9ML81dQMWEahoXuAb7+gNVVBj1rfevEp/3ss6JVMDzgrJKiWg
+         hq59FYX4E+6Ph1YxO3JKoLqDciToEdBbFHvCDSjDj7aGqo+A61StNZs5bnofOhhXkdje
+         iyYA==
+X-Forwarded-Encrypted: i=1; AKwUvByxaYjnUGzSy9Oqz5V9jOq+YmteVgEUEWf/8sT2piUAzQ6Nv3aQ1zm1KNWK+LPk20W2Yn8zU0d5NQ==@kvack.org
+X-Gm-Message-State: AFuF++nQJxBAC9Q7R8CWtRXQlfwDpuFI5TjoWKEhWDmNuYO834GqfiMb
+	qf9tTLICHjP4vLK5LW2gAgp/IoBbbb9ImaQ4+Ev1a8JpiqgxeNkZkMaW
+X-Gm-Gg: AYBFou31NxfsvChokNr3zahundV8UVfiY+SkuZ+GEjcln4cSsvIwmp2kq+dUNJ8fN79
+	NJKwDrS9zkmfZHxgbnfIV4fNSDp+luJt23G2Jkl9zw0AD9pCBQA5SpO8zCC7icp3DdzbLY6wcZi
+	x+fRdq7IjMUYCEfqhKwTpoEyl6y0JJ3f+/c80vZ6qQtwe/UZFBkCH+pD80TTyQZYfCFpZmlJwgx
+	fmnD/0hjgbFdwyLLwH9Kbe9mOdnoQQJA0Y0fZDTCQUwb95YjFZ/anPPq3ir6zmoJTwk1O5cJtZw
+	NvsDMcSxO3inQvTDgHstjtWFLlGJyhwNWZ9ahpa1vOsjiQUvYRoDB4DEdCPpZOc6znGp6SoonCi
+	Ap0pe8U+lDThtCONa+J1cf+ENiQpk5/bXp0xgGWKeBmKcGAWmsOo001PUFSLK/XTIK1Q16xu79t
+	fPyM1phWvxa1aPVT1zCazn6eT7GNKxyPHude3Jl2hnBxoHvC6Lv7XuJiXhpC112lok/+4=
+X-Received: by 2002:a17:90b:4c0d:b0:38e:b400:a860 with SMTP id 98e67ed59e1d1-39dbc6a3e56mr392229a91.13.1789164895357;
+        Fri, 11 Sep 2026 15:14:55 -0700 (PDT)
 Received: from localhost ([216.228.127.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4efc398sm10174839eec.19.2026.09.11.15.14.46
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365ba71cesm8971595c88.13.2026.09.11.15.14.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 15:14:46 -0700 (PDT)
+        Fri, 11 Sep 2026 15:14:54 -0700 (PDT)
 From: Yury Norov <yury.norov@gmail.com>
 X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -105,20 +105,22 @@ Cc: Yury Norov <ynorov@nvidia.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	maple-tree@lists.infradead.org
-Subject: [PATCH 0/3] Catch automatic storage in IDA and Maple Tree definitions
-Date: Fri, 11 Sep 2026 18:14:40 -0400
-Message-ID: <20260911221444.1523311-1-ynorov@nvidia.com>
+Subject: [PATCH 3/3] maple_tree: assert static storage for DEFINE_MTREE()
+Date: Fri, 11 Sep 2026 18:14:43 -0400
+Message-ID: <20260911221444.1523311-4-ynorov@nvidia.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260911221444.1523311-1-ynorov@nvidia.com>
+References: <20260911221444.1523311-1-ynorov@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9545F1C0006
 X-Rspam-User: 
-X-Stat-Signature: 913mpd39mu7rn47e3d4js4cxzteko9zx
-X-HE-Tag: 1789164888-257157
-X-HE-Meta: U2FsdGVkX18Ot0FUxg7kAJ36K/C35jBQ3puxhEqLQ3bPK73SyNWvuHuwH4tErIUKAlqWujpE9/WwCKRmfnvH7ParuqGwn8uuXnl35TS8rcuSlRyCezVR3T8/xXQCZHuZ6mG33dF4l5nOD8LHlHnpM0iKw7tYzjwwc/SwUICPVm7DoCYAE4dhmj4bDkg/Jbhd//vTXxaqHY8UtCwMQIbhbWFA+wOIo9W3Me4k4k4dEl7OJc4wetqRIHx56SDBIbYgH9mWYp71mrzRIkSWIACvUaiZl0AJOpmWohgrZMMVCBQ8+XSB/YTsCKBVO0Yebsi0ddlzFsj5KzHrjMBdn7aXT853TfxMt4ueZU2Qd0Lwtv+RpVcqkUYwZFzzKxvUo0EBFLr0hf5vo8fv7sPcvBdfX4V8tfMHa+/vlnmIAZyf1/XpQ0ETsDyhlNqOeEFnUSNCsNxM78ljrW+SKwZw/myEZDLZtoA6VkQK+8H5i1BK2u74N//aM87h5fMezqP2leEya53rbHvwKMVxAUmEYCQQSJvRvW3DbYfFuJulj4AMbx1mpf/Fj41I9utyYmL+3j754wm9VlsZwX3O+BNdZHmLa95/n3BvwPtuAY9LVsrjMqBbIq02WzChTCOTRJrYVO6gvGJz/5OquSvL9+/iwIBbQBfb1OOJ1NrVlRwK67MusSg31VbRnNjKsKyHOyMojDm0ZjitDgHdjhoUNABWO0YUynv2le6QKm1LzPCc0n/JvWGsCTKilXqyesZ+WdZB8vyqqqYwLKemJePaeJ3yokiUsusg1X2uuKA5jkCiwDlvzO36oOHQK1oUrzQMLL4v9ISBUdQHpf06cwmJbwftSydWBfvWqIIks9xUPZFcFNKBrPqcdd731CTrSiXTYlL51ig0O6e5z2u4HiAwcSbl5JTEXuBvOsSAhd0cmEx7rEw05WtaKYl16UVwCc6c+IntgxdaZnYxLdbusqdjMJb8q1m
- XjriChSP
- rGeos9oblYj4nv2Dr5aFJa5TGdlEsIkqls2lidkowbfmof/4REimZXUV/RiNEW5d+WQ6D+8Z7O9m7FMiyJ//1vRT9kQmD+fWA0qhHmGBD3UHmzPhBkHzG/xPhkvTG1X/JxoVtbhz/SLj7MyJNp9Z8TL+mlXrj9eb5R/U2VXpUUusr2j5y+B/ZtlzhGCRas0m/N/pFQZtnJMsGNjLCUR+G6SgfJNbj7w+W+Ayy4Nh/piDDuIAYKP48rt6H5Czr3NlnwQsLDffMlWJGDmvdfJN1l7NnleCXQ1otJ4eFgoFkF55dgngOd1KJrlEp2P6FgLgHOIe0TM52PXC8B7XfFjqwyxN3WONXmaVlTSXckX/TiUNSI7C6OeFRLHXw8hxgzvc83/0aHXUPwec9lEBN+vyMFZ0iYX3gg4Fw+m099xOYXojFP1dy/giRQt3MnHgNAy4wX2Ds505zYEIhZp8l4kWwYWRJI55nO4KFiqns2htneAkm6aq4jSyHOvhzzHkIvvSzR+F48eLMmUrRDlagGqQ35PRr+z4eXF2axlyw9+XhcQVLlGURsVJRP8BLZw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8AF2680003
+X-Stat-Signature: jx1rq4zzkd6575rwd3btawg4hfsqgpez
+X-HE-Tag: 1789164896-721076
+X-HE-Meta: U2FsdGVkX1/Y/SVRRRV+E2J1g1P9nLyg6DZOyI/5icictgWMaSZgaqAMniPQbwNQLW1aTkbSBrO/rVQyXbjRQVxje8/vVBEtqzjqrX4aTdE1jjZhAWymuBMuvOlmoJ9p1UYZXaNsS8cW+BCSbGfThUFbJw+5mae6C0O5JJxwKnFvq15BOfT0Zya7HRlJ15F+SLvdrRNGuxs0DvCqjltzC0Px+PJgFoY9V7edrX0QPFw2LqaP++91eYtOQtcnXhzfm4HTcmpQkh0Vmo8CIkvIxrUoz4/BaKjGXTwMC4QnTQ6GewReFnSklbT1PWYRBIk8NNGH5hOoQMJVq9+Nq4YWWGQWFiJ9B9sLHT/48dLT8vZ4mBvff4uuKQkDs2pEO6S6lFNfqGtWaiMwRIBGONAwG0wqXbKfQ6DUdmHOxa2d28QZaiC92h+bi+Gmfd+u6LmCMRF51H6a1REEh5DMzMl8i/ffMF1AXIbJPOTiSQoIlvJ0USgy/TYOtLsPYfXbolv2Jazx1yDs6Bn06CGk7rGcSbTOyo9pROI4k22y39O2C++a8rut1q6N8Dy3Cqck7VWgjeL2BuzZQcJGOPkNN21FAWXMnuJqp1nZAbMsKMfxe0CA4PaTpW9d6CsJHSwVVPGh5FXDNt4R/gC3ZAyFwc8XJD0Ts1mhyF4awOM5TEC2Yy26wRbBvOuWTUwZnbSWqbmcHz1yoFmc9psiPMXxWo5lW4YOrU/YXD/MnxX942L1Sl9SAqhRHEb1ypA75FUI6ZXhUe9u42U193qFyCzsRXjXHMgaRmT8Su/f9ukMR/eLVrEqaLWZkc9NsNY44InXz/C75EzCOIi1nMFrQgwGVFIeJEBAJejEc1X77faVMLYaVDr84TK+gA6nw6MSj7UCxZlBi7K6IwiwQTBBuhO3bruNeDYkdTDCeunJWCMjnrFmzaDNRbAuwWafL0j451E0bPVWf4mXNPVUKBCEYKkNci2
+ Z9GznxZY
+ bcbEQriDOqN/56wpNE2lJ3xKN40QfSyZoA4KjlGZQGexoue9oQQcl/DwI7FWKFEpc0sB4TYGECpILfUvJRPS3/kl2b+zbRRMUMKYnJf15yT5TId50v+E/dl7n1ycjUui8ySUR3CQxj+qp1YQfenmni1mVcbT6Y4mMRSpNiFwI+MwzRGRYxYkN/2/+R5HqytMmJ4jvd5KFtXcIY7JmvSJt0zbAf6di3H6zcN8PKk5aW+siNEe3r83pZoF6VTiC/JumzxiXC8EnsLonDzGrw/Be8M5rP/WI0pUfPx8T0hihIGNiR6i487u/vMbPwoypSWidvH40hQlKBRPKIb04q/omCn+b2TPs5gbYeLlcaPguenH3xMtNAGKPGP7z9+LVoQrr+dS1l1iL/6npuC2xpxUwAqTprvKugos1kHtbieZN1dzvqOhqojxJC8LsobHZsGHpWiU3d/SEGfmM5YjCxRc9Ku6/SDs7txvVeiDxNAHvtLQuJDAF5LUzQbBaZjZl5CkYfWCirbVCeq178yutd031do+04u8or0+VDP8eruakhN+TNziiC+Bvzp5dgi5DntCDWNCmiFDgGLOWON8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,72 +128,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A 0day report [1] from the region allocation benchmark exposed a lockdep
-initialization bug: a stack-local Maple Tree used MTREE_INIT(), whose
-embedded lock has a static initializer. On the first allocation, lockdep
-rejected the lock address as a non-static class key and disabled locking
-validation. The IDA benchmark had the same issue, masked because it ran
-after Maple Tree had already disabled lockdep.
+DEFINE_MTREE() uses MTREE_INIT(), which initializes the tree's embedded
+lock with a static spinlock initializer. If the tree is an automatic
+local object, lockdep rejects its address as a non-static class key and
+disables locking validation on the first lock acquisition.
 
-The fix [2] switches the test to using mt_init_flags() and ida_init().
-This series adds a compile-time check to the related DEFINE_IDA() and
-DEFINE_MTREE() declaration macros to catch the same class of mistake
-earlier.
-
-Patch 1 introduces ASSERT_STATIC_STORAGE(). It declares an unused static
-pointer initialized with the object's address, requiring that address to
-be a valid static initializer. Patches 2 and 3 apply the helper to IDA and
-Maple Tree definitions, respectively.
-
-The helper is mirrored in the tools compiler header. The existing automatic
-local IDAs and Maple Trees in the userspace radix-tree tests are converted
-to runtime initialization. The interval-tree span test keeps its existing
-mt_init_flags() call and uses a plain Maple Tree declaration.
-
-For example, an automatic local definition:
+Apply ASSERT_STATIC_STORAGE() to DEFINE_MTREE() to catch automatic
+local definitions at compile time. For example:
 
   void example(void)
   {
-          DEFINE_IDA(ida);
-          ida_destroy(&ida);
+          DEFINE_MTREE(mt);
+          mtree_destroy(&mt);
   }
 
-now produces:
+GCC reports:
 
   error: initializer element is not constant
+    name##_storage_check = &(name)
+                           ^
   note: in expansion of macro 'ASSERT_STATIC_STORAGE'
-  note: in expansion of macro 'DEFINE_IDA'
+    ASSERT_STATIC_STORAGE(name)
+  note: in expansion of macro 'DEFINE_MTREE'
+    DEFINE_MTREE(mt);
 
-File-scope definitions and static local definitions remain valid.
-Automatic local objects should use ida_init(), mt_init(), or
-mt_init_flags().
+File-scope definitions and static local trees remain valid. Automatic
+local trees must instead use mt_init() or mt_init_flags(). Direct uses of
+MTREE_INIT() and MTREE_INIT_EXT() are unchanged.
 
-The check is limited to declaration macros. Direct uses of IDA_INIT(),
-MTREE_INIT(), and MTREE_INIT_EXT() remain unchanged. The helper cannot be
-inserted directly into those initializer expressions because it expands
-to a declaration.
+Replace the local DEFINE_MTREE() in the interval-tree span test with a
+plain declaration; the test already initializes the tree with
+mt_init_flags() before use. Convert the three local Maple Trees in the
+userspace radix-tree tests to mt_init().
 
-Validated by GCC and Clang checks accepting static storage and rejecting
-automatic storage The userspace IDR/IDA and Maple Tree test are passed
-as well.
+Validated file-scope and static local definitions with a kernel object
+build, and confirmed that an automatic local definition fails to compile.
+The Maple Tree test and region allocation benchmark objects also build
+with lockdep enabled.
 
-[1] https://download.01.org/0day-ci/archive/20260910/202609101106.771b567e-lkp@intel.com/
-[2] https://lore.kernel.org/all/20260911155244.1406122-1-ynorov@nvidia.com/
+Signed-off-by: Yury Norov <ynorov@nvidia.com>
+---
+ include/linux/maple_tree.h       |  4 +++-
+ lib/interval_tree_test.c         |  2 +-
+ tools/testing/radix-tree/maple.c | 12 +++++++++---
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
-Yury Norov (3):
-  compiler.h: add ASSERT_STATIC_STORAGE()
-  idr: assert static storage for DEFINE_IDA()
-  maple_tree: assert static storage for DEFINE_MTREE()
-
- include/linux/compiler.h            |  5 +++++
- include/linux/idr.h                 |  5 ++++-
- include/linux/maple_tree.h          |  4 +++-
- lib/interval_tree_test.c            |  2 +-
- tools/include/linux/compiler.h      |  5 +++++
- tools/testing/radix-tree/idr-test.c | 20 +++++++++++++++-----
- tools/testing/radix-tree/maple.c    | 12 +++++++++---
- 7 files changed, 42 insertions(+), 11 deletions(-)
-
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index e595ae5cd0ee..e30e57f5f3df 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <linux/kernel.h>
++#include <linux/compiler.h>
+ #include <linux/rcupdate.h>
+ #include <linux/spinlock.h>
+ 
+@@ -297,7 +298,8 @@ struct maple_tree {
+ #endif
+ 
+ #define DEFINE_MTREE(name)						\
+-	struct maple_tree name = MTREE_INIT(name, 0)
++	struct maple_tree name = MTREE_INIT(name, 0);		\
++	ASSERT_STATIC_STORAGE(name)
+ 
+ #define mtree_lock(mt)		spin_lock((&(mt)->ma_lock))
+ #define mtree_lock_nested(mas, subclass) \
+diff --git a/lib/interval_tree_test.c b/lib/interval_tree_test.c
+index b0b07270ce7c..06f77fb3179f 100644
+--- a/lib/interval_tree_test.c
++++ b/lib/interval_tree_test.c
+@@ -244,7 +244,7 @@ static int span_iteration_check(void)
+ 	unsigned long start, last;
+ 	struct interval_tree_span_iter span, mas_span;
+ 
+-	DEFINE_MTREE(tree);
++	struct maple_tree tree;
+ 
+ 	MA_STATE(mas, &tree, 0, 0);
+ 
+diff --git a/tools/testing/radix-tree/maple.c b/tools/testing/radix-tree/maple.c
+index d967e76a3c06..bfe4b8626c42 100644
+--- a/tools/testing/radix-tree/maple.c
++++ b/tools/testing/radix-tree/maple.c
+@@ -36022,10 +36022,12 @@ static noinline void __init check_erase_rebalance(struct maple_tree *mt)
+ 
+ static noinline void __init check_mtree_dup(struct maple_tree *mt)
+ {
+-	DEFINE_MTREE(new);
++	struct maple_tree new;
+ 	int i, j, ret, count = 0;
+ 	unsigned int rand_seed = 17, rand;
+ 
++	mt_init(&new);
++
+ 	/* store a value at [0, 0] */
+ 	mt_init_flags(mt, 0);
+ 	mtree_store_range(mt, 0, 0, xa_mk_value(0), GFP_KERNEL);
+@@ -36319,7 +36321,9 @@ static inline int check_vma_modification(struct maple_tree *mt)
+ void farmer_tests(void)
+ {
+ 	struct maple_node *node;
+-	DEFINE_MTREE(tree);
++	struct maple_tree tree;
++
++	mt_init(&tree);
+ 
+ 	mt_dump(&tree, mt_dump_dec);
+ 
+@@ -36432,9 +36436,11 @@ static unsigned long get_last_index(struct ma_state *mas)
+ static void test_spanning_store_regression(void)
+ {
+ 	unsigned long from = 0, to = 0;
+-	DEFINE_MTREE(tree);
++	struct maple_tree tree;
+ 	MA_STATE(mas, &tree, 0, 0);
+ 
++	mt_init(&tree);
++
+ 	/*
+ 	 * Build a 3-level tree. We require a parent node below the root node
+ 	 * and 2 leaf nodes under it, so we can span the entirety of the right
 -- 
 2.53.0
 
