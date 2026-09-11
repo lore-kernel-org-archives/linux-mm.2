@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6148C88E45
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:44:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E66C79FA1
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 07:44:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2E166B0092; Fri, 11 Sep 2026 03:44:56 -0400 (EDT)
+	id B13246B0093; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FF436B0093; Fri, 11 Sep 2026 03:44:56 -0400 (EDT)
+	id A9AAD6B0096; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93BFF6B0096; Fri, 11 Sep 2026 03:44:56 -0400 (EDT)
+	id 9B0386B0098; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B686B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:44:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED52040126
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:55 +0000 (UTC)
-X-FDA: 85200694950.08.5A1AEAF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 53F3680004
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nSh8nXxf;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789112694;
-	b=FVywHmajHKVelc9J8R2JnZesE8sgqb3Il1UhMANqXWwf8RbG5w71w6lS32ySfkbP3H8j8S
-	WAqLnIxjuJdfdpNxVTMBzCgHolR2wG4Q5HnHVbTuGRMbZIdeALs2XsbgOFiyl6j+E8du8o
-	Vt+aWcDSkA8NcRmjxTJUlNkSYDpJ4b8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nSh8nXxf;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 718EE6B0093
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 03:44:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DED0F160109
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:57 +0000 (UTC)
+X-FDA: 85200695034.15.08D5E29
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 62B721C0004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 07:44:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IndTzz0q;
+	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789112694;
+	s=arc-20220608; t=1789112696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JVNsmiGxY1SdhPHsIl79rzqOKs/aP852ofsVaoPTftY=;
-	b=Vcue1tNp0P6XfMD4EAZz9+MWxLp/LMfBC72vpzHezXoQxHjv6I1JTbkHx3A/3BuHvtGnDo
-	Ycw7krS2CFgoHsZZnTpFD8byDMCu7MK5MVkGHEvjqHLRK65tObAVg3+D6Fom0j1ZxzYG09
-	l7fzaOJXs19UMxFYpmEZ7Eta2DzV3mY=
+	bh=OBzZVFee4S2rVGtg6M6II1AeDxf+F8a1EcPtLaDHgSA=;
+	b=lrvQLt8ClaTx9xhRYvLXFoucVTCTT00MN16uGJ0KGiCiWOv+1So6vRuzUGnyyVTZEgWFD6
+	DKwjaZMx0oLqOIsyQYNHvB5Q0qD+f9YGjWQUMx20r3MOs66rmKJ4vT7uhuoQIyVINgXjV7
+	gK+0Tm7Bu4PqPPFsGjmn87KzlVvrNjE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789112696;
+	b=BNndUx7HQiVkKVGuhFkDUdKoENUi1YWu2SDPQMakPbiDBgk9M2saFhJuAZnjeihwfCuvvk
+	31QJunMFBqpMbutPAqYzrUF/3XYykrKM4KlWG/8CpQHlBXY3FBZAtxBTgcKgfhZg4nxild
+	RmRD3Uz8+ctcE1Zo4Zv6fv2rctEX4GA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IndTzz0q;
+	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1F3140181;
-	Fri, 11 Sep 2026 07:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E101F000FF;
-	Fri, 11 Sep 2026 07:44:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 92CA460213;
+	Fri, 11 Sep 2026 07:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6CA1F00893;
+	Fri, 11 Sep 2026 07:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789112692;
-	bh=JVNsmiGxY1SdhPHsIl79rzqOKs/aP852ofsVaoPTftY=;
+	s=k20260515; t=1789112695;
+	bh=OBzZVFee4S2rVGtg6M6II1AeDxf+F8a1EcPtLaDHgSA=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=nSh8nXxfkEr1kUl7cfnHIIf1jZLF1ZnKYJMXAxMWbeex/1I+vA4DWR+URZEpMvHbi
-	 Xnd9r+6mji6dWqQ9LCBHTlIGDBmfENwyZi5PoKHpFNaZUjNorCTFH/TTHY/G3I1dA4
-	 S7uGU0ykKRHQQVaF4JDhVsKt2auPoAB+6NT3b+aIPD9mvfkjstADVlQH8nTUnqC0r2
-	 EwAuj7ZGUOIv8VXmM6rLhTrgeRIR/46HXvJwII9OQYXc9vwQOiXOJmpXzAlsrcDx6V
-	 vqfoDjPnSK3T0vArVyKY6JMKGujqewoGn/BM3DPlCS9vZ6WnXsmenQnuYyeu9uaoQT
-	 gm0AJS8Tv+A5w==
-Content-Type: multipart/mixed; boundary="===============1065213570066958851=="
+	b=IndTzz0qx5n84yuYFaj0DWuFbXlMNMPU4pRMRYbKWgxyf4TAx2zBq8olTVJsw4s2u
+	 T8ETqh0czo2f8KDTWd/deX51MYFDkVdIFO3jrx3+oJdStA6flfctbs8Kow9r290h9/
+	 ysBcd4DtTy6jucTnsC9uG3bAlZdzphZM22IDAA+tfNUpb1185+ZTvA0wuTYdkFIDlQ
+	 GY+8MTjJh6Sf1yjKHRdxLJRSR4tsXlWw8dXmKWnC+c0hbF7rNeEftF3Q0uYOwSChKD
+	 6R3SIFMUrqRBR5DKwf4bY4JCkrXjt16eiRWlwNww199xaYLBMnyK0TdnOyRIMGd5MC
+	 z5YYoLKAUXWUw==
+Content-Type: multipart/mixed; boundary="===============1662541605359616403=="
 MIME-Version: 1.0
-Message-Id: <81d809ef7a590d33ae978b98bb3d830b3cff2ce34a091ab3f4a5f0b977bfdfeb@mail.kernel.org>
-In-Reply-To: <20260910233303.1063501-4-ziyang.meme@gmail.com>
-References: <20260910233303.1063501-4-ziyang.meme@gmail.com>
-Subject: Re: [PATCH v5 3/4] selftests/hid: build the BPF program via the shared lib.bpf.mk
+Message-Id: <c51a056670cea30c7fb85ed0ef80a6be9b7e538196a5ae53cbad3b374db70c2c@mail.kernel.org>
+In-Reply-To: <20260910233303.1063501-5-ziyang.meme@gmail.com>
+References: <20260910233303.1063501-5-ziyang.meme@gmail.com>
+Subject: Re: [PATCH v5 4/4] selftests/sched_ext: build BPF schedulers via the shared lib.bpf.mk
 From: bot+bpf-ci@kernel.org
 To: ziyang.meme@gmail.com,shuah@kernel.org,tj@kernel.org,hannes@cmpxchg.org,mkoutny@suse.com,jikos@kernel.org,bentiss@kernel.org,void@manifault.com,eddyz87@gmail.com
 Cc: vmalik@redhat.com,arighi@nvidia.com,changwoo@igalia.com,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,akpm@linux-foundation.org,inwardvessel@gmail.com,mykolal@meta.com,nathan@kernel.org,ziyang.meme@gmail.com,kernel-team@meta.com,linux-kselftest@vger.kernel.org,cgroups@vger.kernel.org,linux-input@vger.kernel.org,sched-ext@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,llvm@lists.linux.dev,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri, 11 Sep 2026 07:44:50 +0000 (UTC)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 53F3680004
-X-Stat-Signature: sd14hu9uiteqresee81tkcx1cytigbum
+Date: Fri, 11 Sep 2026 07:44:53 +0000 (UTC)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 62B721C0004
+X-Stat-Signature: s57ht7s13akfo7tx9ntid1r5qw7a61q3
 X-Rspam-User: 
-X-HE-Tag: 1789112694-58104
-X-HE-Meta: U2FsdGVkX19hhYHb+Itjw2d7T9kqb/N3M9JQxTPY0o0FglDyAmoDt59AM9uGwAvjlvWX1t6tYMU1oLb7kxPQVwi70r+octX+KIW3xiYBPtu8mq+TmZRFGHskgxFW+Hb7HS1vv/j3+DbGnoWskxdGmWLNOVkUdRzZC2/pu4svVlac0lVRFFCjdOqky5NCJS51jU7nmdqdaRzmECNi7ME0f9bb84FF2P0XdUYPYzt4jRoBM8J3gTuNL17d0gMHgjZcuDO1iPnbUEInk5YQYsnUieQyM8ZG+4fIZwNVxaA2bBM5suJgwHJqSjvUjpXJFnvtpw7w4JhKbUUjZb46gGLr7O66Tqn189GCra1GJHId8Syig5r/W5tMZnV9yA8hWn9WI7GTF1D+4RoUuyr2qHFXqbbR+KqdNmlt7dqWAx4JVRVNbz03tHpu8Pf6lqLCZEIVPj+FKsJmCN1LuHNIEfUZTIRiTvJJEqaSkqachsNHCWyhXWzbhyrqcNs1TmXzyOFOU6oqOCik4igpS/92vZc9rvPJn6PIoy3SMBFf9Wp0sbvUkzkYJEkpmTdhJq/8ahntzLVJAsVCQwVh01rMVSuQqAuX59NcE5Jzlv7HvLV0cPnDOT3q6/qVJjCxJeZn5Zgkcfn+XxI7Zosu2vR1vW/KRerPCmYZTPhjGub4EkL7GLLlyOQLJmysvAL81IR0qPZA1w/+XSFp1bhMDaVYwV7lzIysc0f/fgAd+Rh3UwdTIuABzoL73zKMDGd8nVahJuQVg79AbN+f/Hc8ZLpdE5Xo9gbtI92/dhsYKz0h7OrWl0O6Vi5bSh2T34Ae+Urxem9fJy9H/lPu1gHYOWLU0VGvOn5u6lNbfOySep+J/Rs8hjcc94OPogj/5dTVVg+cXXc/9wqQUo0I0IxaaHFAbNwmLQFxFzzGrKsgf8AY7Dmc8Yxg/NlslYE7gIRnGcEcrbzu7ZKnYNBVEMf3iPpIutl
- Mms5FQB3
- QJKD0g6riekmeZ6+pTlb+W6XHK8fRd0XyFFKplHvtzT2kjs7Qqv8WUHXCrtBL0PPR5xt7/6aFqk9XHqHXVWl/G7OMJ7Yz65/poHLu4cUtBMqKcx4MdKE4geK9INQ7m9fj1DunBBYgqOEkSPDuzqGbwVAFoMwDllCSwzmIoT4PsNeo9Zgjnk3efOJGtKvu+RKVnJH997Y/qfaVa9Sohbwp+MY++9zGn6LOdni/0n7mDtMh/pmFn6SW0BlcOHlskGKHqdjwodUZfRuyM+SLDt4+F7J9JMTUfeJJlKUlfPJJEwHWfGFX9a6FceTBh3gOl/rF3bDAS8DrucJZI9UqkSOVuGzabFxgZA2nQJ4Bzun0+F4pAA29tt2OZFqqqvq4l2L3ZBrvy6wiVovA7WdRCztVyAp9+NM3rX0CB2i6Gsn92zvMkPOKb1AJYdlFb8fVOpyygBiqoBVHUMo8xkNRpksVITZj5Tiot4VOXTr2NYcv++xEi5y3xNfBIRRtNQ==
+X-HE-Tag: 1789112696-806557
+X-HE-Meta: U2FsdGVkX1+JxpQaC6zJUXtgCXTVfGugymbD37pzylfMLYX6SUXriFVJ+ugLqOag+oAQJ788IdqZoKQ3F4SmcwkvJWYYiNg3AfCZx1b2cgrmb2MTV+vafzcWdBbe4aO4aTfrRq+EtAuNenMa/WSVKsuD8niIuodA4dLtDgzzmKoVprQl+XSeKjiGln41asd1BV76FyNiOausrdkLTVPCSW0hieLn/N0W/lF0dofOfCpOVxR/yPfS2aH7Q29MfusKFiJ4dRj/nduhO7khnkhgwUgU6ybtxV5rzyUyjyPiG0iw673DPi3FCCATJVG90ahwtVqG+E9IwRHI+1iCnzUzuIa6XyG8Mi18b7R+GRUSyPDunTtHXIuczQI2ER5qOVaSrHFgHtNSEcVKRfmd3geNMm90z0veLHmtoIglHY7/yfQdU9xxXCdbXYpDPzgvuqSXZw2bHuOt3XGtphRNerDgtnaxXDT2VfVtkUSyF8NOyeiB86tORgo6RWA+nYFMKrv5oGtkd6TxVvmclDocal4Z+syYLtBye+kGwFANDPuThqgjgyfHbLjM3Q0ryeF0UD1Bi3TBW3TpHGS0YDkp8sMI1qTFS6PG+WkGVbMjAVmUj7POhep1Uwa/gvIpxCykhpk4MqGJo2BC0FkXc6zSnKTy65GtVBYokNt63jgRtPDaAkfDDfjCK4zL3k7JZxfsG38tLOjP8ld7mWx7W5+SiSq31xLaNhC6ZRBgbX23ciwXeUtd6RvlE3h5KN5e46M8VCWNWi0aUF76eGk76vS7kpEMSNvsG93MFb2rBSHM/eTpFpJWF3RpdtmR63YQuPE7OXlqkRbhfCfJQfmCNvSf8dtJJAkH+ksmKSfFx2ZrGDEeIHb0bYMGPxgC/HvOajn1t64qtBs/g60Kr3fqNiqcfU4B7i5TEp6ALBYeJopldxhqs0mwIkc8ZwYqWG+z3m8F6fm+U/IKL44gQFLHNpsK0X5
+ QKMMEJ2E
+ s7roPViPW9KT2ID4cMNADbJ2UVBTBo085b7W9JQTl2FVjYZNreVvxhGTYTRhipsYDgxpgUaklR2nau2CFyRsX9m8EOq2PoFkbOVwZn3O3IutVoUKKrH6iB5ukneDz5EXnOII1n+aUhIUsRie8OxOxQolfVucFZOeA/HtwWP+o6nbu/6Dq+AnSu1yfp0xkUyDQsEuSTZP16Ru69ZXdyCYGpV0upgru6u5zdgjGd8pYdTKgYAy1H7wTXnzbEnCp3LOLO1OhF6WJiOUmw122y/LKjqbjNx+rlltnkj/7NPK9LDM6mkTVQlK2mtsBCbB3hT8xHwFymUBn6luy5et0zOGTH8EfNlhdO8rBdH4oOnksaLLzTTnr+8z8BbO0WB/UCkdmuXA/udu4ZtjmbvL+E0IeDUHJUmMbgjA3A2r+wSycJZ8h9xO6MaryBHdB40UdxY9i97LJ3PXQ6HuKjn4spVxLrLcfsrjtdtGuSpwLowQB8vMgCAhSOnh4MZAQtTF2QBuApkTaW9+LFwVtzqKDEBgxcvUTWW33FlT6HueC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,58 +88,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1065213570066958851==
+--===============1662541605359616403==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/tools/testing/selftests/hid/Makefile b/tools/testing/selftests/hid/Makefile
-> index 2f423de83147..1190a747036d 100644
-> --- a/tools/testing/selftests/hid/Makefile
-> +++ b/tools/testing/selftests/hid/Makefile
-> @@ -47,7 +47,6 @@ msg =
->  else
->  msg = @printf '  %-8s%s %s%s\n' "$(1)" "$(if $(2), [$(2)])" "$(notdir $(3))" "$(if $(4), $(4))";
->  MAKEFLAGS += --no-print-directory
-> -submake_extras := feature_display=0
->  endif
-
-This isn't a bug, but with submake_extras gone, does anything still need
-this local msg/MAKEFLAGS block?  lib.mk defines both identically a few
-lines below, so it looks like it could be dropped along with the rest of
-the copied machinery.
-
-> @@ -58,172 +57,25 @@ override define CLEAN
->  	$(Q)$(RM) -r $(EXTRA_CLEAN)
->  endef
->
-> -include ../lib.mk
-> -
-> -TOOLSDIR := $(top_srcdir)/tools
-> -LIBDIR := $(TOOLSDIR)/lib
+> diff --git a/tools/testing/selftests/sched_ext/Makefile b/tools/testing/selftests/sched_ext/Makefile
+> index 3cfe90e0f34f..dd3f5594af24 100644
+> --- a/tools/testing/selftests/sched_ext/Makefile
+> +++ b/tools/testing/selftests/sched_ext/Makefile
+> @@ -14,48 +14,29 @@ CURDIR := $(abspath .)
+>  REPOROOT := $(abspath ../../../..)
+>  TOOLSDIR := $(REPOROOT)/tools
+>  LIBDIR := $(TOOLSDIR)/lib
 > -BPFDIR := $(LIBDIR)/bpf
-> -TOOLSINCDIR := $(TOOLSDIR)/include
+>  TOOLSINCDIR := $(TOOLSDIR)/include
 > -BPFTOOLDIR := $(TOOLSDIR)/bpf/bpftool
-> -SCRATCH_DIR := $(OUTPUT)/tools
-> -BUILD_DIR := $(SCRATCH_DIR)/build
-> -INCLUDE_DIR := $(SCRATCH_DIR)/include
-> -BPFOBJ := $(BUILD_DIR)/libbpf/libbpf.a
+> -APIDIR := $(TOOLSINCDIR)/uapi
+>  GENDIR := $(REPOROOT)/include/generated
+>  GENHDR := $(GENDIR)/autoconf.h
+> -SCXTOOLSDIR := $(TOOLSDIR)/sched_ext
+>  SCXTOOLSINCDIR := $(TOOLSDIR)/sched_ext/include
+>
+> -OUTPUT_DIR := $(OUTPUT)/build
+> -OBJ_DIR := $(OUTPUT_DIR)/obj
+> -INCLUDE_DIR := $(OUTPUT_DIR)/include
+> -BPFOBJ_DIR := $(OBJ_DIR)/libbpf
+> -SCXOBJ_DIR := $(OBJ_DIR)/sched_ext
+> -BPFOBJ := $(BPFOBJ_DIR)/libbpf.a
+> -LIBBPF_OUTPUT := $(OBJ_DIR)/libbpf/libbpf.a
+> -
+> -DEFAULT_BPFTOOL := $(OUTPUT_DIR)/host/sbin/bpftool
+> -HOST_OBJ_DIR := $(OBJ_DIR)/host/bpftool
+> -HOST_LIBBPF_OUTPUT := $(OBJ_DIR)/host/libbpf/
+> -HOST_LIBBPF_DESTDIR := $(OUTPUT_DIR)/host/
+> -HOST_DESTDIR := $(OUTPUT_DIR)/host/
+> -
+> -VMLINUX_BTF_PATHS ?= $(if $(O),$(O)/vmlinux)					\
+> -		     $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux)		\
+> -		     ../../../../vmlinux					\
+> -		     /sys/kernel/btf/vmlinux					\
+> -		     /boot/vmlinux-$(shell uname -r)
+> -VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
+> -ifeq ($(VMLINUX_BTF),)
+> -$(error Cannot find a vmlinux for VMLINUX_BTF at any of "$(VMLINUX_BTF_PATHS)")
+> -endif
+> +# Build scheduler skeletons and subskeletons with the shared BPF rules.
+> +BPF_SRCS        := $(wildcard *.bpf.c)
+> +BPF_SKEL_EXT    := .bpf.skel.h
+> +BPF_GEN_SUBSKEL := 1
+
+This isn't a bug, but is anything consuming the generated
+*.bpf.subskel.h headers? Grepping the directory for "subskel" matches
+only the Makefile itself - no .c or .h file under
+tools/testing/selftests/sched_ext/ includes a subskeleton header. The
+pre-patch rule generated them too, so this preserves existing behavior,
+but the conversion makes the subskeleton an explicit one-line opt-in.
+Would dropping BPF_GEN_SUBSKEL be a reasonable follow-up to save a
+bpftool run per scheduler?
+
+> +# Preserve the existing build/ layout.
+> +BPF_OBJ_DIR  := $(OUTPUT)/build/obj/sched_ext
+> +BPF_SKEL_DIR := $(OUTPUT)/build/include
+> +SCXOBJ_DIR   := $(BPF_OBJ_DIR)
+>
+> -BPFTOOL ?= $(DEFAULT_BPFTOOL)
+> +include ../lib.bpf.mk
 
 [ ... ]
 
-> +# Build the legacy progs/*.c layout with the shared BPF rules.
-> +BPF_SRCS       := $(wildcard progs/*.c)
-> +BPF_PROG_EXT   := .c
-> +# BPFDIR is defined when this recursive variable is expanded.
-> +BPF_EXTRA_HDRS  = $(wildcard progs/*.h) $(wildcard $(BPFDIR)/hid_bpf_*.h) \
-> +		  $(wildcard $(BPFDIR)/*.bpf.h)
-> +
+> @@ -64,102 +45,26 @@ endif
+>
+>  LDFLAGS = -lelf -lz -lpthread -lzstd
 
-This isn't a bug, but do the two $(BPFDIR) wildcards still match anything
-here?  tools/lib/bpf has no hid_bpf_*.h, and lib.bpf.mk's
-lib_bpf_header_sources already covers *.bpf.h - if so, this could become
-a simple BPF_EXTRA_HDRS := $(wildcard progs/*.h) and lose the
-recursive-expansion comment.
+[ ... ]
+
+> +EXTRA_CLEAN += $(OUTPUT)/build
+>
+>  ################
+>  # C schedulers #
+>  ################
+>
+> -override define CLEAN
+> -	rm -rf $(OUTPUT_DIR)
+> -	rm -f $(TEST_GEN_PROGS)
+> -endef
+> -
+> -# Every testcase takes all of the BPF progs are dependencies by default. This
+> -# allows testcases to load any BPF scheduler, which is useful for testcases
+> -# that don't need their own prog to run their test.
+> -all_test_bpfprogs := $(foreach prog,$(wildcard *.bpf.c),$(INCLUDE_DIR)/$(patsubst %.c,%.skel.h,$(prog)))
+> +# Build every scheduler before each test.
+> +all_test_bpfprogs := $(BPF_SKELS)
+
+This isn't a bug, but since the variable assignment is otherwise a
+straight substitution (the foreach expression becomes $(BPF_SKELS)),
+would it be worth keeping the original comment wording? The previous
+text explained the rationale - "Every testcase takes all of the BPF
+progs as dependencies by default. This allows testcases to load any BPF
+scheduler, which is useful for testcases that don't need their own prog
+to run their test." - while the replacement restates what the following
+line does and drops the reason a testcase depends on schedulers it does
+not own.
 
 
 ---
@@ -147,5 +197,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34573210499
---===============1065213570066958851==--
+--===============1662541605359616403==--
 
