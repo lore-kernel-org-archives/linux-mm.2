@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED33C88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:00:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F787C88E45
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2829F6B009E; Fri, 11 Sep 2026 11:00:15 -0400 (EDT)
+	id 14E2D6B00A0; Fri, 11 Sep 2026 11:02:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233EB6B009F; Fri, 11 Sep 2026 11:00:15 -0400 (EDT)
+	id 0FF756B00A1; Fri, 11 Sep 2026 11:02:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14ABF6B00A0; Fri, 11 Sep 2026 11:00:15 -0400 (EDT)
+	id F312E6B00A2; Fri, 11 Sep 2026 11:02:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DEB8F6B009E
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:00:14 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C7E9C6B00A0
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:02:28 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 229C01C00A9
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:00:14 +0000 (UTC)
-X-FDA: 85201791948.19.4F16264
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5B164A0008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:00:12 +0000 (UTC)
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A91A802A1
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:02:28 +0000 (UTC)
+X-FDA: 85201797576.19.D43E3C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9D591A0013
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:02:26 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dy8e5PD7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZh6a5er;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789138812;
-	b=0TWPPiebNyGdn7ZjSBOy37iPTTm4lValwEE7sQhPGmMaeSrT/iBrC9BHRGfkJXwu6IWJxk
-	kMXTiAyCdqdmZ/njgEJl+CbIL5S851tOTGh0SgjtDobO9D69owUjVTA/lEYbpFofwxK5iG
-	j4a1j08ltlQ2sSbtf+qdidFYSFwFgRQ=
+	t=1789138946;
+	b=2neyg182s6Ci4BLndV0h74y9OkQvL+rlbFX0U1t5W75g5h6J6cxvgZOJbGQm2P2g556pDe
+	v59ZD2l0iASopQVokXNbaQZTuUbKih3HUd/fXdhP567dveyHsY2WcM9ToV9oEnPTw2NJnr
+	GC9fpKdza3lPN4cAvsuYRFlA+JE4V2A=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dy8e5PD7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZh6a5er;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789138812;
+	s=arc-20220608; t=1789138946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IwI1Hg5YAjW2rDMwPwYrAQxSLiZRPOJVWVCH8JKII60=;
-	b=kImk7PcowwiFCIopxalNZ9XpUO4dzkdaoqNLrpbbMAN3i2p9B7vuFkClaLpmJb0PUpIeVr
-	ibY282PmzeyDzK1xWFFDU1Ou22tMqxpHUjR3LO8pkgsesNqZicmGPUPJakwbIZU+Y+mrRN
-	T5FXm/7J6mY/R9m4+9916LBuGYQNzSk=
+	bh=1PTWyg4n3qpD4y/aa8UvIgM/ayJsqmzhh3ejIEE3QXI=;
+	b=EuPslchMebxeuSjt9qT+eSWBTBUAP0UJ9o0XDxYaUePLacfeO5MMOEO6V009xmgsfeQ+LH
+	6Bg91wHuNQYWbpvDjJMpyuPEUxpSDDCheAtU5tTemFEakvW9cHtAo3wjy1StMpScOr9O1r
+	qRG33QfLWKZDQH8OJaxcH27Y3PcNTBQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8348240091;
-	Fri, 11 Sep 2026 15:00:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534911F000FF;
-	Fri, 11 Sep 2026 15:00:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 28DFC6020C;
+	Fri, 11 Sep 2026 15:02:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138301F000FF;
+	Fri, 11 Sep 2026 15:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789138811;
-	bh=IwI1Hg5YAjW2rDMwPwYrAQxSLiZRPOJVWVCH8JKII60=;
+	s=k20260515; t=1789138945;
+	bh=1PTWyg4n3qpD4y/aa8UvIgM/ayJsqmzhh3ejIEE3QXI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Dy8e5PD7jr0IjrU9SvA6lmP88wpLBTpJ2VgJbE4UZ9E4t+WK3QtJFI8AwZbcp/bxY
-	 QejuWzp1CfkQjKuJs18bQZcU7L5oyMShHWg9cToHK2Fu0Tl8pcGCdzrqAph6KODNkv
-	 tMHevqRILk8QVJo8pnotb/wn45smu2oYd3L/yiiZTup/gCKM5yJViu1yQFSDodGNO/
-	 jGKg8tRWxEAlZSGwCekSOUizy3bYW7Xka1+MUzP7YWbuU+/s6CNC8i135PgghyABAK
-	 M2mr6Qj6Z5e5J3w18aae2AJr5c8tYUJY9VY31ARrLQOTrJsXwEtyci1BZayipkvXUN
-	 nSr07x6yYKupA==
-Message-ID: <0e419abb-71ce-4b97-b189-da86a4891920@kernel.org>
-Date: Fri, 11 Sep 2026 17:00:05 +0200
+	b=VZh6a5erCAhSab9ROCtz8BS6g7MI1jzhVXl1TxFBYM68Z+fltaZm1xEx6OLItP15Z
+	 nZmBVnNP1V+0/DmEZx6SzFV84s9DU1Cqc3gJdZgKEuLrXE8ZBhvx4UTF2zsQJmzQrU
+	 1ESbS6pHuZFLaLsWPyN7kq3K9C94jNU3KLadDp0qGGPb0YqI8SxZOaAh8rd/J0rPK5
+	 N7z3J3PXvkWkYOSJwSDPZrWHYbCcf4HyZ5juLbh027S7qlmCWyKCaa/zsagr+fkbEo
+	 rjY7sSzeoe/K7U4vNDmzPmvaXdunSPEXnnKxmE3D1cRrG2OGu0oUCAh5OqIXCJVYCC
+	 jemxJj67wfX/Q==
+Message-ID: <62160d6e-5409-4249-814b-cdc33b7d29df@kernel.org>
+Date: Fri, 11 Sep 2026 17:02:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kselftest: mm: remove exclusion of building soft-dirty
- test in arm64
+Subject: Re: [PATCH v2] kselftest: mm: fix potential failure for merged VMA in
+ guard-regions
 To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org
-References: <20260911125028.1268274-1-yeoreum.yun@arm.com>
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+References: <20260911142904.1825452-1-yeoreum.yun@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260911125028.1268274-1-yeoreum.yun@arm.com>
+In-Reply-To: <20260911142904.1825452-1-yeoreum.yun@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9D591A0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B164A0008
-X-Stat-Signature: 68upqyr6xpowa4jsrhmyf17g5s83gcu7
-X-HE-Tag: 1789138812-625190
-X-HE-Meta: U2FsdGVkX1+K516GWUoT0FJGOxKuKGYNAchzVk9T9tNiacmgXYFQ8aY5fbL0euZhNhq08cijRkHzrURDALKn8XEJTUAb4SJMQFDkm7PyyKeeH70E+ZYDoaM06TuuD2bEcDbL+rrKvxyTu+FoyuoDOH3I7m5gSElE3n2t/0wM8sP4QpWQllBZF0Bcp5nLxQhjtC1fyDFjim+GWT2+7xXEt+tLHVq6rOGZ+V4/486/RDK5QTnvDLvIvU8TCIzHu6epaSOmblxDStcm5aKPd26v18T5KtUfC6NWEDCYdzrODcjnkS9djyFARewU6bmPSZhOJV/igTjzCNl4m9gHKn+bN9Th4skyk1NjkywOl/v/ortsFxnBLWSVp8ZKi4Hccxg8fa3Q8RLSpfppuf/iwKd/eOWflArV5WTWsGmAWzYgBgAI/n3cm2JuIJ8PcyWJoU+Xh6mgFoaz0YpevWfyBgfYaWxXeFHvlMHn8Xe3fnIWf5Z9ic9DJiJ+tBABeRsfx/TVXKGrBhPmhmGHrPD9CYUnCtC2favtw6NGBiyQ02p1MZwSRJUULWQmnaSzlD2TnVwU8g3OdDJhw876X1OjsEZ9IJscCZ4l6avn9HjMEnbG6SdhX64RppD0fMWSTHg+KJs8Y7jTktTpoORjQJaY/6juIsvZSX/+6NKgau8sDSAaUlJmcUEQgIm+AxyLm143MyKF/Xg9IT9+dL7hqT+qIDdL1pLCS0pMXESmki4OiMZjiaE9SzZh8cOtW3fLZbYCZmzE1bgl3CqVFo/R65sMPykWCvfQfRBi111xgxZt7duvjsc/kr0zXwN7FOgdjyGUD+BhiShcjzXIa5ExW+V4ezWtBCAFvtADq3f+odkmupmDqpPeXYLK6sICZXVgUmyDvQNg/Gvcr1sK2c5+Kofa8hSPvT0/U0YxzoscfmW+8aPsxRzuQfeNC+g8p2ukCXK98amNUeaz4lxz4xum0DtiTpc
- yg7ry42W
- veauHDRdccYJFASup4GeDVhhIwjSe7+r+o27cPH6Uv1rujeCp7E5Ai+suJ3xpVyeYgSD/69BMEHpiN/VPGf7eTZEXjJnXPvnQZCYMhihXU9bT+03wPomiayvzDj8VPcu+NavCbMRJXIJc7mNyfAKQ9l1NOYDYMvdy4ZEgZrWO02cPsU4AuyczGCxNfbWsRQoLov5JYVa21ix9I/Cw4lew6bRqKNeCSpU1XDjglHeKKB/ifHk6ujaHMgcM7E80NrqqN65YU7wlhI8/wK6IlDdn1RiEvmwDjk2562KS7g2JIekrk3ZOQLTYHYsnW62B6FVWZlqnTs0C25/6S6N1K9/BS++RrI5j1m8gCIfWVigr6QUAlhdQY6IQ/EPCtQ==
+X-Stat-Signature: c7iaa58nox1mn3ipotsckhf3arwn5yje
+X-HE-Tag: 1789138946-199652
+X-HE-Meta: U2FsdGVkX18q9AYn2ZX2CB4qAF9FXqbYDGZJ7bBxacS6Bx6Km4csji1UpOGkkZ6dWnQco9znVnjJfKw3mofJTpxPiQejaXV4EPthFnf9R+bN3L6vPEqZH/lR/9s2iiCArCS9rR00gz40+k0bmWJ6z4T3d9nCY4M5tOkb2JFax9hXSL+8MMKOK7d8GHbcYz3STLB1+W8BBxs4PUnvP2HDfdBRgBePkS+CjEKkSIQhqdgIWotz0cXfXf7OxWujQepgGg4do93znA6hPI1kFs1xGjctPZrjk1aUPq3wq3gpxrC1cTG4VHLh12GSTMI+zLNd5UWWT3edyO5HH1TIjRkSN8tB2uiyIbjKhqtw3Id08NpUQsFawMvQfXkbEyfpTbj3bqMUIkfuaL0cMTQDWtJPzBakHaUW144kHOsMnZWoERKfxoLLUxhZsIOn+NMpW8bL8Of5ne7w36+reZRXzdklLyrFEiSztsTfayAZkpXHbCZVURCa1Fa/4aJMX96a7IqmGGpgOnOOh+tik/RxQGtHOuoe7yJ6Z+wjkLQfMpW8RGRIpvkcAaFDMJ4ZalFMY95NMOMg9rzM2KKpnM33eQTmlhE91/zDpLjd98/+RpNhoHa39/FP9uMZR+4b72yq4TdnzUKCb4NDt0kVmx5otD3xoDxkUxbO7jJSvRn6j/wMUPX65rRV2IClA6wozE88hAb0o5cXMGIvwhK9dxFklVXafyDY3o3K5l9WA/ouQs5mcWcmViqSGrKxzg13VSSqfDry7gUqkNR4QXN7diDIKT35uaadhr3K5ZkLy44sHzTsQgQnmFJds6DhC/CPM7Ik5MgrlFACizmloTrOg5dT6VYgao1vvjglZRex+lQFXPyskOWqKkh7AcH9FlITvD9FVUXmHkR27ScPTWMiwT6v+xWbp0NTfeEhx1IwcevGGmOlqwCAoAPLkrHsxxkBmC5trZeqQXyPqGlFPooJYJqChQm
+ +jufscrz
+ ccuZurECBPtlTVCTC0TCZFNNeabmClmqp9xt8HM4TX8EXCceqRbRc7Gm8FkEfCUHIWNhMAJI6Sab67ORG04Is9NfR5NuYU3FXzBr5hrDa8T3NjfZaHBGn5BzXftyb8EHaRjMNPp8wGO2O67HTDzGFtrMmie1cu4ZXUmhiLdKdjIB31y0fgOIdpy/gD3cNPCpGjKXTl96lzKn4HNpzxzJXB4k8kJFP8E823cOQ4xBRnxTXrPuuS3Nz/JGAv9hgTJuWmyvX5rT2mOT18NSkZyHjacF7OqNeC9DINi3mgQ1a+XW5SDytIlVvZRFaSI90/LRd+bX39B9s8R2xiBxYX3p6D9CxQvWfXByjPBLEtKPQF9LX//A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,52 +139,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 14:50, Yeoreum Yun wrote:
-> Since commit 0389c305ef56 (“selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled”),
-> the soft-dirty test is skipped when soft-dirty is not supported.
+On 9/11/26 16:29, Yeoreum Yun wrote:
+> check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
+> but this can fail if the mapping is merged with an adjacent VMA.
 > 
-> There is therefore no reason to exclude the test from being built on
-> arm64. Remove the arm64-specific exclusion.
+> To avoid this potential failure, first allocate a temporary region with
+> extra pages at both ends, unmap it, and then map the test region within
+> the temporary address range, leaving an unmapped page on each side to
+> prevent VMA merging.
 > 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
->  tools/testing/selftests/mm/Makefile | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index 2d5366196e30..d3e9bd67904a 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -104,10 +104,7 @@ TEST_GEN_FILES += guard-regions
->  TEST_GEN_FILES += merge
->  TEST_GEN_FILES += rmap
->  TEST_GEN_FILES += folio_split_race_test
-> -
-> -ifneq ($(ARCH),arm64)
->  TEST_GEN_FILES += soft-dirty
-> -endif
->  
->  ifeq ($(ARCH),x86_64)
->  CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
 
-Does that mean we can also the following?
-
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d09f9f6a384ee..33963535616b2 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -390,10 +390,7 @@ then
-        CATEGORY="pkey" run_test ./protection_keys_64
- fi
-
--if [ -x ./soft-dirty ]
--then
--       CATEGORY="soft_dirty" run_test ./soft-dirty
--fi
-+CATEGORY="soft_dirty" run_test ./soft-dirty
-
- CATEGORY="pagemap" run_test ./pagemap_ioctl
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
