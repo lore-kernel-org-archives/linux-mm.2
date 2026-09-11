@@ -4,131 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1551C88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E02C88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 15:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B45E86B008A; Fri, 11 Sep 2026 11:58:42 -0400 (EDT)
+	id 8BDD66B008C; Fri, 11 Sep 2026 11:59:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7486B008C; Fri, 11 Sep 2026 11:58:42 -0400 (EDT)
+	id 86F7B6B0096; Fri, 11 Sep 2026 11:59:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97DE96B0096; Fri, 11 Sep 2026 11:58:42 -0400 (EDT)
+	id 75E6C6B0098; Fri, 11 Sep 2026 11:59:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DC096B008A
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:58:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C670314027F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:58:41 +0000 (UTC)
-X-FDA: 85201939242.16.30908B7
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DC02E140007
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:58:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L oj+n/1";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=nBokoZMl;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L oj+n/1";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=nBokoZMl;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789142319;
-	b=l8MxLZAsEQVBK4cdozxUMV4wZrpR4UCb4AbRimkxW9Yr5LTTXys+tnlaewr/9EQbCCWxJW
-	9YWA0ybrfDITZSmhZUSAAAcuPT71P24RamPu+E6v30+T1Cpy9agrvhNBUtJYlkMTom6HwL
-	yClKfBCIj7RMU7/RE4kwWV+kTMlEGBU=
+	by kanga.kvack.org (Postfix) with ESMTP id 37A156B008C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 11:59:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B3CBA45D1
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:59:22 +0000 (UTC)
+X-FDA: 85201940964.06.19A59ED
+Received: from mail-qk2-f8.google.com (mail-qk2-f8.google.com [74.125.230.200])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8AEC780008
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:59:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=JN6eImSq;
+	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.200 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789142319;
+	s=arc-20220608; t=1789142360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsR0HR0pw4kDSImLViPVSWsm/iy2iIyQ6XZ5SwWZypI=;
-	b=hlnyzBNoQK6JUNAmmiWK736o0k/es+pdDqJBh5Roa5S2wNueT/ZoMqKWp7oQDVKa0m4n6g
-	Q3AVrGShR47s52AS4QD6jw+nS6xWVBw9xYdDEFB4ej+0yf3k+F8K4FeqDwtST/y3OFxK4+
-	o3gy8t+ksdAVw0nwiCozhX+x1eE01I4=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 625251400169;
-	Fri, 11 Sep 2026 11:58:39 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 11 Sep 2026 11:58:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789142319; x=
-	1789228719; bh=SsR0HR0pw4kDSImLViPVSWsm/iy2iIyQ6XZ5SwWZypI=; b=L
-	oj+n/1IcBV5tie3ucxFuz0Mq0YWToLY/MVqGmLm6ii17ZQU/gNJ88//SSWBbdyfc
-	r577ztUjMOqBrzBuH0zV3z9/hATRnI+dH45sYcTTSPbLp7HepzEz4C18cwTHpA/y
-	/pfci+MFrAMYVSU2NiC5qnaZpZ5otGXHw9Mns/VdAAql6R5S+eWYs3RtQF+u1jp3
-	wQyhYim/xT6Tgs82VgEanlUOvS3Ma7L6A27IC6bCEr/X7gqd5xnl6n12I24P08Bz
-	3tNwMS/qWoL8LKo2b5BRnr24ExSvfXbYcy5pfyJJ+pbTCBO+SSv5ZOmgLpUpQuhx
-	A4Cnb61DI8yH12esD4emw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789142319; x=1789228719; bh=SsR0HR0pw4kDSImLViPVSWsm/iy2iIyQ6XZ
-	5SwWZypI=; b=nBokoZMlEzRdfFPUxlPf7Vqb9NkuBzeXPOfLgLznwLCQhdxYjg2
-	dA1gRdcmPfx3DCljiRkvQ1TY/vmmhC74pxSIu0NnuW4XlMi1joiOgvhPZlZs9jOS
-	3LiegcM63Yw2fjDCcQqi9L9zOu2v54aThpkzUef+G7lmp+aPokyPJdiylz+Bcc5P
-	lPqq5BzmWwNZjyq+e+hk7yg+t7cB+XO0nNUsWlO7KWFNsP4jOdqeyWEXJtu2zZFZ
-	3k4PBnJp5/hpXtwmiUfLJLTt5O1Dqh8B24xJZGHfUuqAoHOFSM88DoCygItT5BmQ
-	KHoUJjoNMzl+bJiGaBPLv5UUNPjlAj1lFTg==
-X-ME-Sender: <xms:LyWkaklElL8-UqaR_ApPPDHUFDdoTSYD2eSVyKN4on9NekW9X10zPg>
-    <xme:LyWkauo6_9fulllf-atV_oFqQO_f22akuVvMuAQhSWY5Za0YjCSKL5-8ywnoH42oY
-    JjKkxEvcqVAZZtXcgEetL0gdXA0VmUvvqhIlidDHumVQYuzF-_7YYzTSA>
-X-ME-Received: <xmr:LyWkag4eelSPg12kYSnFjvj-lWwecMqtxvW_fxPBpvIkBbAG1jOKw04bozk>
-X-ME-Proxy-Cause: dmFkZTFdhIIRaHoHvxR/i3qDB+Toan8xhX/BO4+LAXG6YR9Th32opelHKVqK5DPv2w5l2g
-    mk7hR63FLrTi9H9OKaK3FiFYCj8H06se6Ibg178Z/kVc0sDSIeQHfNcAVGtagcp0fyGWsF
-    2KZVKsddUect1FLwMOhtJQIBUA7GSldxWIBYXSmvpmeJ6hLC38qM8vk4TrNBAB4AGNTUas
-    SDP5i7H1AkLaCnj/QE3E5gOS2I6JpFXPLLknYD/tT/JFvbDfCQBmeW0g178/yGlRvxQiyk
-    gglF+PN2p3sWtGuVoTd1Kwhv5qSHxGsS1Bbqn+//ovzyjuutXkqlvJIzc84yAaW/XKBnRO
-    pNd0f/HXf5ohF0TXEbleZGrqvr/hVH/Anh6pVivhVTVoK5u8TjqSI38QVOzH5zl5K9PCcU
-    JMVM0UdLNUyLs19KnbqHDdYrM0XGHKIJxknY7xk3/UU5PGYr+jD6uKcK+S4c9ZmUP0/Iwa
-    si4UoXGrCG07kirb46RsyitgqMIJspSCWViXGvzXDCldU0QLpWZP7aGSt5JmOGNufGfVMI
-    QE3NBIinwblebkIrlnNlzizraov7Vxj5N10BpPXJ/L9zdYSH7qbTH6GBB3Tepd/rHOZq9b
-    RT9+IsuPaQmDTv8q62Zb7BwajhOjixcd1TwzYVH8XetVQgJSr3y5dN9fGg7Q
-X-ME-Proxy: <xmx:LyWkagIYz5HiGTNwJGREkKRD1yEIqzoAM7trsGL0k8BeKK2Oo-XzNA>
-    <xmx:LyWkasmFJuag4G8hEs9fDAqmm2hA7buaLhbdY4wXdmRKyHI6l6NQpA>
-    <xmx:LyWkan_Xw0j3uiadsf0_iByBlQKHzL722WsULuGVhM_tGGEKOXynZA>
-    <xmx:LyWkaj73Z3fuvARAyA56H20_4UEC_VJxuW2XEKARQ7P4eGziMRSZKA>
-    <xmx:LyWkaufG0P7HmwZ0YBjnA1JeIe1B4GjdcooRK8-BLoDm83ECZMNsgp_2>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Sep 2026 11:58:38 -0400 (EDT)
-Date: Fri, 11 Sep 2026 16:58:37 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 00/12] mm/collapse: separate a collapse from its
- callers
-Message-ID: <aqQlBzxvNVObNSxg@thinkstation>
-References: <20260910120238.2529819-1-kirill@shutemov.name>
- <8170ef17-0de3-45dc-8c8c-de15f088214d@kernel.org>
- <aqQf9hSy0iNjnL6t@thinkstation>
+	bh=ql6yDYiCUfB1KtPKnMN8J1mkX0CDVMGXFwFiHiyB4X8=;
+	b=osPK+rMAxSLM9tN2RIJncmomXBI2BYrhdHf4zUzRUHLsuxweYPYnM1TdP3nIpNUVvovAFd
+	quC/Mgmyku/fSQH+nKgIDA5JO8xK7ZJb9yGSSuz/Ag48r+TVzXzbQ6GOSyZJQvXN7+9oWS
+	AV95x1JiHtFmJVMzTkchUPDiqmKp7rE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789142360;
+	b=kAyxnMVi2OVyi0AeLYzZE7JZkO1kZv37vinOlmoFcYxn+wMgkD9I21i6BptrSNLwE19ca3
+	RJzOqIJ4vTNScMDl1jsLJXRUi5TRDgZxcaJzRSMGTFk+7zrtmc42dML4gdtlUpdO6fKCUc
+	j22SZc2QFJBzHDroQXceepJB07zPQC4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=JN6eImSq;
+	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.200 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk2-f8.google.com with SMTP id d75a77b69052e-530e0062c97so1620201cf.1
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1789142360; x=1789747160; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ql6yDYiCUfB1KtPKnMN8J1mkX0CDVMGXFwFiHiyB4X8=;
+        b=JN6eImSqtDbxe+yzfYVdjjWFJugq7AFjn8WNOAJkKNPugrQOukbtVQUje1gTRM1MDa
+         m5mab/jVEXTwPmC803j3CbpMzOSOVbpWz72TtFxUbR4wb/Aw67TJ5a1YGooYtUosCbtA
+         ArQpZqXCDNK3PkAF2kt230XAw7DMuHiPsiovzw5lX/OoLq0xmqrfDNECFr718A+hXJ1q
+         RoQoB6HECw/8Ba0xm5F3ZJH1ERnV4973MfTb/2hdo5FkwLjKrKmbF3emik6TpJSMcoXC
+         HVHJJKCZE7PB9odTh76ALKVD359uuvL2J3M5iln9cQkAMgXZMSanr7hQBrNWEPm2qmb3
+         x3EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789142360; x=1789747160;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ql6yDYiCUfB1KtPKnMN8J1mkX0CDVMGXFwFiHiyB4X8=;
+        b=JMTWF6zv9yyAGt3yTgWZ9zTXe2jlXACY+c0E9N98YwdQVb0voWekVVQWHHSqYVYZHP
+         JdzN4vvDFh9cK6SOyHAIPU2r6b8D1PsIAbz0ARgk2Rme6woGe0ZaNHGUzSR9qNCWGakt
+         yc/YEZN6/exvnNhHx69m1+NxRyto95OpY0m7c/Nr47J6EvDTNOC6l7ZUw5TmTBTN07Cm
+         tYIHvRsqrfZla5OOCw4WMOQb2tgenvQE1bkOsTYmJwmcYCZNlGV7OSpyBOldcpnTiQjY
+         nyEFtdnGqHN//2bH0aT4SE6fgh7VgkKKxDD4l/AnxF5ote5SQ7iSEITILRarHvv0lFHl
+         0SXA==
+X-Forwarded-Encrypted: i=1; AKwUvBy4EPQPyxp2DwiSOOl2+JM3RYtr106AYD5h6mxXrgpxovfk0L23RtKV/8vJ8oCatoTecnAdUag0Eg==@kvack.org
+X-Gm-Message-State: AFuF++kMCzn6pAqWIXVPIj6wXhvGTtglLPgnFALh7qOTh0ZudTq7Uwt3
+	/2Krkr1JXdQCP7Tx/RojzomkM3m2aMuLYRFk8jvdfu61PnYB4QS60hIwc8jUIvA54Ys=
+X-Gm-Gg: AYBFou0Z10v2vGY4y4UysluTzm5DOiK8VQl2yv5WNY8d7NMdLCONaseUgLU2huzOg6W
+	lczgMhCavRIWRJDPRsNMtLTzuIF/1btX/uZz3VRddkQi3viglVOvvJjWjzxnMda21vfJA8CWGUo
+	trL7bNDmTrCZJfOmbrOzOHVOhqbNQdvYb9t5yz0T+xlcKrjf+NfeGVYdP5u5IcENHGbe+J2lRJ/
+	rIrciNqL9UPgglrvVicj28r7uf1Qom8Wdw2rMgZyZ1PFU/G4voUrqpa9arZqSJG8aiAWImGly5M
+	Muc/7LMm1w/OU/vWHHFlJK1xdR9ieJTby9WK4z0X/S8IxwOIO/5CbBhJI6vItaSAiv4TgCqNXFi
+	OndF5GdFOOvCOb50i28dSscM89x4VZwK9x1Lj8xBeB5AchCQ5LWRNlv3rLigY6/tLofBTVJjHQv
+	vx8B6nOyqVoUy48e8vXHit7MRGDKoZkUchj8KPdWXsSm2NNNCUrp5xf07dilinFCv+JlEDaQ==
+X-Received: by 2002:a05:622a:2b0b:b0:52f:aa6c:bc7d with SMTP id d75a77b69052e-530c86d54b3mr75558611cf.28.1789142359223;
+        Fri, 11 Sep 2026 08:59:19 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca47efa2sm22945531cf.11.2026.09.11.08.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 08:59:18 -0700 (PDT)
+Date: Fri, 11 Sep 2026 11:59:14 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: akpm@linux-foundation.org, abuehaze@amazon.com, alisaidi@amazon.com,
+	blakgeof@amazon.com, brauner@kernel.org, brendan.jackman@linux.dev,
+	david@redhat.com, dgc@kernel.org, dipietro.salvatore@gmail.com,
+	djwong@kernel.org, hch@infradead.org, hch@lst.de,
+	jackmanb@google.com, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	vbabka@kernel.org, vbabka@suse.cz, willy@infradead.org,
+	ziy@nvidia.com
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <aqQlUr-1h07G8JWM@cmpxchg.org>
+References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
+ <20260910114602.926944-1-dipiets@amazon.it>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqQf9hSy0iNjnL6t@thinkstation>
+In-Reply-To: <20260910114602.926944-1-dipiets@amazon.it>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DC02E140007
-X-Stat-Signature: 7f7hyashaw9oudm9k3xyoxynoazk3kzz
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789142319-814843
-X-HE-Meta: U2FsdGVkX19m54GbAvGNdiPswBTvA3VDOE3vXWuKD72m1+32qiTcI0LFtKWrw2jJgEPknFOsfZUQnbyh0BNKPTsZqLXQz0KdgvXixQVxI6UrppFti72X8g+eoDcXVE/7L/pcEL1LpsrDs5MaWQMW4PSeIhrhWivE1/SY1brYTxgK0Vxn7HeKLRGzwe7NQVL1V2DUa9EjfbLzH49QjKQWCp02AHopLdKjGnKn22hJGsPYnNKpe7IRs7MrTdwJQiMysxastq/WePDlfVp/r7vTOLjIUxsVAhGamQrPRnGiJeGARsT3i/mDAj8d3fJHbYcaUWfEkWSCD2qoK64nMeDPeHP79Ce+IrBKgGcN1LWu/AmM7DXct6qDkPxJktOJZWqEVvtx0aw9E8etLPuNoiMttcfsCP1UogEx5NHvC52Wz2hcgsW/ky+eMkLX2nWoqINP34w02oqCfAr6eGwT7xelAYpGTozrfljIxQ8GMRirTu1aoX/6LM/uMOuXlcOVtNsgdZ6Gso4Tr++QlwzZOqTqvtRrk/SfqkN8CbUhoooEQ5bWe7ZDwAhGYsPbXdMFVBbWAYMBSkun8GTBBEXM2QRcJpscPVn1C9CEJpW/LkwDC/H1A4FfxbGMOvetp2/8F703vsn5UYc87qO8B0KuldBcaNACtZO/DH2DGuRRCDIxjLitwM+tDyxKAA0F0IWkklCbHTpD2xnCdBQiKyz9GC+1BK4QOUOoR8nGdxsyZX5atwU1YSMHB9K3X0i+BqoqewtYe24gZNd7LduFiHWdDl8HJ4Lyn0EfvRlxDFgmuUDt8KzdVchrDA2iCp3kUd+rG9g/fQxPLy/tOSnP5KpE4/KusZGakTP0O8/4AiWXfDLwV1bwO5BI8KHKBXv/3y2Ab143wAlAqC6vJMJFi1q3J1UEmeJwU2lxCDmyInwiF4LVNaj3hzGp7UIY8SdTQX+1NvHMnNvFdSkbNv4u1trnAtn
- EjxVsXrL
- XNJVx3usKc1IbxJscwoU21eCvK4etSIqHxckWJ3BFd+Gpgh4axv319MeDRHlgRIKALnxg1rdC7EnqvBWChBBmjH1OJbxa7QefjhXKvycuzIj3hsiu19+fslcp7WM0o0U8XsGTLRbI61oXz/t7yYn4DzilgznuIcHvUOE1rMsiFXwz5sSorYiaFl/L3JAIvcGc75f0Qww+C6GHZo94UBAz0zIrfTUym5LuJEsawBR369rLZqaNa7qAD2+xtn6zvqsFXlaoZ8rAIIRpA5mSOlm/T4AVgMZh8nlI9XT8gVcR0cpy3LV2OObj8K5LntvONzsjt2aS0jGTFUIgyjmAXg8fsRRjOicgH+sTc8jaQqmuUjdhjz6jvrvKBBjVwoZuNusQQW2G7PZZfGDQJ41OXbUvA6KeKJJF3aBuCvLsaBMRsaVbetIqrHw+ZBqW77Eb4LxsRzoDF8MXTE6N2tm3slq+oqAeCQ==
+X-Stat-Signature: niuu6cfwtgpezu4of7x1ofz13ezi3wqr
+X-Rspamd-Queue-Id: 8AEC780008
+X-HE-Tag: 1789142360-462104
+X-HE-Meta: U2FsdGVkX19Ct127Liv0c7l9lBfEVaZRKOfPl3AkiTDRvauUYfqVky+aFQys+JMS5OfuM1wwCPRBdFmsvtMg9eFwcjrq2EHJsocfe2bhlLrRZjP0c/3994J0EKFK+l9p5MlfLxK+pp3lgfPP6k2p500TBCE28KG1d14qsbiJeM7Fy4HC7XSJFMh+mJ1rpiqCh4uJf7AQZJOMe6YQLNpRwh8t7NaQW1y4LQ1omA3lu+YtSGe3gSBTFvqe7o8+6jDS2UNyqTNHulSVUC9KsIu6I2bm2BZOsP05Vmlw+wwBkEVMUz9/ryLmCDYeyi+koibu8FEgwCup8D3RMoayIETAik5Rw9KfZLnK7S/RPlkJg0q5ohozA9OcZsTaVtA2f1m+WDWp3e3KsA4XjCZm7x9otGnkRZkdIcs1fZwoXf0XwcbhV6jq+tlskIQqY8+1vJlGinHxVYHBDqN7n3FIR+BLc729iyYx1N1AvU3PiJV1vF8Hdur/Jyme0Na1X3SVHGldkvE5fA2+w/rcpEF0zhbjLrJbADEPmWxQ9he8USd/jhixArybetWju5ZaudwLegnFIGZo17rZtbktU+eYIhtonS7/FTHQJNG5p25uAjwZC9/PZfmBRn7Z5se3aSx67budh9Hqo6J6G6T8qPnccmPVNuEG6bEtchueVYjbkBCP2wefcQ86TBNcreL+6X/RSlBz1uaVLH04gRa9bgbHRkvDgiPwjY/Sz7kadyUW8QjnPcCg8VCO47pscLskgBlnNojP068yXULjTCopcHPO+4PghWeWxItC9L0SWbqxfM111kGZxP4qpSp5EhT4P3Jx+YxwJuoY4N+OAtQEBuOJ6/iciZey+XeAJwQ+ElPejjoKBWli+fYlGZI5UMRR1KD+gUr8ft8+6/V3snuDtHE/rmaKZ0rAIDI0oOyzEihkDzqO7ZekyREiG5sW47Lkp+R7Ssv41AFOlXjQsi/2n/wkZxj
+ PmvCdoPF
+ /T/i23YFyFICwUQbTL4TvR4FoawDnk+Wurb56sqkxtbfgnunzcdsw3hfHifaTkbdAkyDFHTEHjez6M99bfYQneeN+kgipwZceA2kH4rrfZ4N5dTZ2A8Hp1Gx2DXiHzVvL5VBFmyZhPLad8TSRnRr8j3jplzlaWHu1r5bEp4aFJs8X15DM9I2vork+DklRHwI6EZsRAkxaBJoIN+VLIEDfqdLlo8b5QeeHMDlJgIl48+r6wCrWmkrCo6wOzf/bRm30JbO9NQO+OLrv97rl2QKu4l52gTj0RO3DIvRPZDxscSQrhYeoM/yRjMYonRlvB4QtQHfiVvSuoa2dFCekDvULcUXP6ZgkAT3AnOIgPIaD7AcI0XwOWQ6KQ6lfNAk5IY2z8hafpHjKLp64xIgri8BeusiIGDuZRNZdOiSWMZfFCVmXYVrqsCi0z5iIPjMBljEh/tTGqRmOEoTlq9BfwUeBTTFqRQM6qBMNaPmQ/bnGygSiwzxeL4iHfU8BtYjb7EXcD24GfqofcJ2x8qFMqBWFyRj41Pj423xW+pt0mziaqXCRMfjVM9aMs0rZ+qvjPgXwA9legXxLzOy1rtsM7PD6+yIavOEIR6Lb60u1r8uOppZUr8asBL/HOm9aff9DO2l75OVwSjCuzDiqhfs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,103 +128,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 04:56:06PM +0100, Kiryl Shutsemau wrote:
-> On Fri, Sep 11, 2026 at 05:06:58PM +0200, David Hildenbrand (Arm) wrote:
-> > On 9/10/26 14:02, Kiryl Shutsemau wrote:
-> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > > 
-> > > [ This is the first of the cleanups I said I would front-load ]
-> > > 
-> > > There is no line between the collapse engine and the callers that ask for
-> > > a collapse.  khugepaged.c holds both, and they reach into each other.
-> > > 
-> > >  - Sixteen tests through the collapse path read cc->is_khugepaged to work
-> > >    out what they are allowed to do, when every one of those decisions was
-> > >    made by the caller before it asked.
-> > > 
-> > >  - collapse_single_pmd() does both halves of a collapse behind one call and
-> > >    drops mmap_lock somewhere in the middle.  Which of its paths dropped it
-> > >    is not something a caller can see, so it hands back a bool and the
-> > >    caller keeps track.
-> > > 
-> > >  - MADV_COLLAPSE's implementation -- the walk over the user's range, the
-> > >    per-PMD loop, the errno translation -- sits in khugepaged.c, which is
-> > >    the daemon's file.
-> > > 
-> > > So: draw the line.  State what a caller allows in a policy, split the call
-> > > in two with the lock as the boundary, and move the syscall to madvise.c.
-> > > What the engine offers is then four calls, with the lock state written
-> > > down against each, and a policy the caller fills for itself:
-> > > 
-> > >     collapse_control_init(cc)         once, before the first table
-> > >     collapse_policy_*(&cc->policy)    what this caller allows
-> > >     collapse_scan_pmd(vma, addr, ...) per table, under mmap_lock
-> > >     collapse_run_pmd(mm, addr, cc)    when a scan found work, no mmap_lock
-> > >     collapse_control_release(cc)      once, when done
-> > > 
-> > > The engine stays in khugepaged.c for now; what changes is that it has an
-> > > interface, and that neither half has to ask about the other.  madvise.c
-> > > gains the operation it should have had all along.
-> > > 
-> > > Changes since v1
-> > > ================
-> > > 
-> > >   https://lore.kernel.org/all/cover.1788533997.git.kas@kernel.org/
-> > > 
-> > >  - Rebased onto mm-new with Vernon Yang's tracepoint fixes in it.  Patch 8
-> > >    no longer merges the two calls to each scan tracepoint, since the base
-> > >    already has one; its changelog now says what the status field reports.
-> > > 
-> > >  - Patch 3: nr_occupied_ptes is nr_eligible_ptes, and the mthp_collapse()
-> > >    comment counts eligible PTEs too (Zi, Baolin).
-> > > 
-> > >  - Patch 4: no comments on the two constants (Baolin).
-> > > 
-> > >  - Patch 5: one line per policy field (Baolin).
-> > > 
-> > >  - Patch 8: the file side is split like the anonymous one (Zi).
-> > >    collapse_scan_file() runs under mmap_lock in the scan and only judges;
-> > >    collapse_file() runs in the run.  See Behaviour below.
-> > > 
-> > >  - Reviewed-by from Zi Yan and Baolin Wang on 1-4, 6 and 7.
-> > > 
-> > 
-> > I'll hopefully get too look at this soon (after digging through older stuff in
-> > my queue).
-> > 
-> > Skimming over some patches,  a note that we should not be undoing recent
-> > cleanups without a very good reason.
+On Thu, Sep 10, 2026 at 11:46:02AM +0000, Salvatore Dipietro wrote:
 > 
-> I don't think we undo it.
+> On Sat, 05 Sep 2026 17:42:39 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 > 
-> Both madvise and khugepaged use the same interface to the collapse
-> engine. Anon and file paths are handled internally in the engine. What
-> changed is that we have two calls into the engine instead of one.
+> > Is there anything particularly unusual about this test case?
 > 
-> Collapse consists of two phases: finding what to collapse and collapsing
-> the found range. These two phases have vastly different locking
-> expectations.
+> It is a stock pgbench simple-update PostgreSQL workload on a large
+> instance (96 vCPUs), using standard PostgreSQL settings and with no huge
+> pages assigned to the database. We deliberately overprovision the
+> pgbench clients: 1024 clients over 96 threads. That keeps enough writers
+> in the buffered write path concurrently to hit the costly-order
+> allocation failure path continuously. The memory fragmentation comes from 
+> page tables: PostgreSQL spawns a new process per client, and those page
+> tables consume ~40% of memory, which significantly limits the page cache
+> and the free memory available.
 > 
-> The scan reads a PTE table under mmap_lock, fails often and doesn't drop
-> the lock to move to next range.
 > 
-> The collapse allocates, may sleep in writeback and takes mmap_lock for
-> write itself. So the lock inherited from scan is no good.
+> > > Results (average of 3 runs, TPS):
+> > >
+> > >   Config                   Avg TPS      % vs Baseline
+> > >   baseline (no patch)       59,408       -
+> > >   With this patch          155,409      +161.6%
+> >
+> > Is this back to pre-5d8edfb900d5 performance?
 > 
-> collapse_single_pmd() hid that boundary inside one call. It had to drop
-> the lock somewhere in the middle, on some paths and not others, and the
-> only way for the caller to find out was the lock_dropped bool.
+> Yes - fully recovered. Here is the summary, same host and workload
+> throughout, average of 3 runs:
 > 
-> With scan and run as separate calls each has one lock rule: scan is
-> called locked and returns locked, run is called unlocked. There is
-> nothing left to report, so the ugly lock_dropped goes away.
+>   Config                                        Avg TPS   % vs baseline
+>   AL2023 stock 6.1 kernel                       136,942            n/a
+>   v7.3-rc1 baseline (no patch)                   59,408             -
+>   v7.3-rc1, 5d8edfb900d5 behaviour reverted     151,184        +154.5%
+>   v7.3-rc1 + v4                                 155,409        +161.6%
 > 
-> It is the same move as Nico's da98790891a4 ("require collapse_huge_page
-> to enter/exit with the lock dropped"), one level up.
+> The 6.1 row predates 5d8edfb900d5 entirely. A different kernel version,
+> so not directly comparable, but it shows the performance this workload
+> used to get on this host.
+> 
+> A literal "git revert 5d8edfb900d5" does not apply to v7.3-rc1 -
+> iomap_write_iter() has been rewritten since - so the reverted row is a
+> one-line behavioural revert, forcing the write loop back to copying at
+> most PAGE_SIZE per iteration:
+> 
+>   -	size_t chunk = mapping_max_folio_size(mapping);
+>   +	size_t chunk = PAGE_SIZE;
+> 
+> which is what the pre-5d8edfb900d5 loop computed. That makes
+> iomap_get_folio() pass no order hint, so the path issues only order-0
+> allocations.
+> 
+> 
+> > AI review asked a few serious-looking questions:
+> > 	https://sashiko.dev/#/patchset/20260904115629.3993331-1-dipiets@amazon.it
+> 
+> Thanks for pointing that out. To address them, we can have something
+> like the patch below. Performance results are still similar to v4. Happy
+> to submit a formal v5 patch with it if you would like.
 
-Forgot to mention, this kind of split by lock boundary makes it trivial
-to switch scan to per-VMA locking.
+The feedback looks misleading to me.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+ALLOC_NON_BLOCKING itself is fine, it usually only means something in
+conjunction with other flags, like __GFP_HIGH. The access to
+MIGRATE_HIGHATOMIC that it points out is in itself too generous. This
+seems like a real but separate bug. It will allow GFP_TRANSHUGE_LIGHT
+into the highatomic reserves as well, for example.
+
+The rt issue seems made up too. We're talking about costly_order &&
+__GFP_NORETRY allocations. Why would they need access to reserves?
+
+>   Config                                        Avg TPS   % vs baseline
+>   v7.3-rc1 baseline (no patch)                   59,408             -
+>   v7.3-rc1 + v4                                 155,409        +161.6%
+>   v7.3-rc1 + proposed patch                     161,994        +172.7%
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 12fac9084c48..be8b0d72a2db 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4784,10 +4784,22 @@ static inline struct page *
+>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  						struct alloc_context *ac)
+>  {
+> -	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+> +	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+> +	/*
+> +	 * Costly __GFP_NORETRY callers have a cheap fallback to a lower order,
+> +	 * so don't stall them in direct reclaim or direct compaction.  Exempt
+> +	 * __GFP_THISNODE (the THP attempt from alloc_pages_mpol() needs direct
+> +	 * compaction) and __GFP_NOFAIL (must not be made to fail).  Don't
+> +	 * clear __GFP_DIRECT_RECLAIM from gfp_mask instead: that would also
+> +	 * change the alloc_flags derived by alloc_flags_slowpath().
+> +	 */
+> +	const bool costly_noretry = costly_order &&
+> +		(gfp_mask & __GFP_NORETRY) &&
+> +		!(gfp_mask & (__GFP_THISNODE | __GFP_NOFAIL));
+> +	bool can_direct_reclaim = !costly_noretry &&
+> +		(gfp_mask & __GFP_DIRECT_RECLAIM);
+
+IMO this is worse because now there is a disconnect between these
+flags and the gfp mask again. This sets us up for subtle bugs.
+
+I much preferred v4.
 
