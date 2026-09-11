@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E350CC88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA79C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEBE96B0095; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
+	id 4B6036B008A; Fri, 11 Sep 2026 09:02:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC29B6B0096; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
+	id 4670C6B008C; Fri, 11 Sep 2026 09:02:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFF9C6B0098; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
+	id 3A4186B0096; Fri, 11 Sep 2026 09:02:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A346B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:59:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3ADF5A023C
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:59:39 +0000 (UTC)
-X-FDA: 85201488078.21.6F6B387
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BBA36B008A
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:02:05 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7497040200
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:02:04 +0000 (UTC)
+X-FDA: 85201494168.23.B430138
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AD58CC0005
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:59:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S4EmxVGV;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id B4134180003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:02:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGf6kE80;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789131577;
+	s=arc-20220608; t=1789131722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKbU6ZCLYf+36lNW3LS5uhSrwFRNIDzXZ4c4yuSq4Ug=;
-	b=Jm+DztctPesNPla0drXmn32kGuq90fYVsa0zkI5VmlOMlzBg93qtvJX6DyVk3pK5QxmcUR
-	4koaAHRbOvT01ErD6JE5V0od15jDTAfNX/RBTvwglkoM9zeSSedHdC+LLsDfAzM8fMOE7Y
-	0J/fCZ/57QLoGmP0cxX07qU8W4QysLA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S4EmxVGV;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=nbFIIEzlUTxl2xJVgrwWeAYn7BDxFx09xtnVsWU/DZU=;
+	b=h0lCQzfCXAid6zMPHnxYRVjP/k1KplW2y+7VY0VTR6UdeyknxJsTFSSUmZDv125R0AhbsQ
+	ariU3YSQKYEVOPj1HgSNld0zMyaggH5ekQLwBGuoB+3maQMD9svw2q2RyX6xL2iBKTD5T7
+	w5E8hpa8mw/u0rEjRkDPYwa6Sg47N68=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789131577;
-	b=p44OSZ9sJI+H6JT4PiUVkNT0kwBOkRvrLPGd00yO0W1TSzpKUNAQtSGUxomD2Ca6MbTXVj
-	AkYv7ZyT7zAvRxGWCoKjr8lLg8Xhnq017iJZOMeqBquqOTtoYAWv/YCXnQzRUBbw7jdO0F
-	oQqDZ2SK5JZHi2TjynwkPSJuyBxPqic=
+	t=1789131722;
+	b=bO77v5dVbwFn8qQF5iVX8oaFqL0QLxet+4wQ+CbwwlpLw1ag0CsgVlnDHeUMqY1e9D5fZ5
+	+T0Rw53nv2tBXZU9gADbzzFw2WN2OHMvvKMyBqBsnnuLisTWmjG8s3wKSicW3ut0cb7e+v
+	ngaSxUOawXnr7mk/gmtF6MgoAEBfWJA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGf6kE80;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF60F60A5E;
-	Fri, 11 Sep 2026 12:59:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91CA1F00893;
-	Fri, 11 Sep 2026 12:59:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 169C56020C;
+	Fri, 11 Sep 2026 13:02:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFBE1F000FF;
+	Fri, 11 Sep 2026 13:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789131576;
-	bh=dKbU6ZCLYf+36lNW3LS5uhSrwFRNIDzXZ4c4yuSq4Ug=;
+	s=k20260515; t=1789131721;
+	bh=nbFIIEzlUTxl2xJVgrwWeAYn7BDxFx09xtnVsWU/DZU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S4EmxVGVN2EXpDK1mdHXmj2dyRkhyvTefQxs2Ed1lcVVpAdr64kc8KZ4OAdO03oob
-	 IBw4kCAf4vMzqTMtdkuhTW3RYjP301+5k65naRnSzfEHfoRhmIx57u/fXs0+gSyDms
-	 epLslWhFMPJ12tHHQI3wyRgzVny1LAtfsbJJWqW4B0j4A/MXVqxU7+EqGWH45aVGLr
-	 qRecNBabXd5k+7EGgl1vCLpKOycF58Jv/7qAtvVo5vEhEJhmw2+Cld1dcAFO2V453P
-	 Fa5Ic58w2xkZi08EJfSQUAUd5wYZwkdvfThDH65X4TEQA1mu3OMWgbTeidzuY9lI8s
-	 pSEQSvNKRE13g==
-Date: Fri, 11 Sep 2026 13:59:31 +0100
+	b=eGf6kE80/niewCA/exBDVcLLTbWRMPwpulCnRJlfbdYNfHtJSrXSDAl6WIH3FTjtG
+	 gaFkHeK9+N2Lb/C4CsTee5ZeaAKLQB1DjL+lM2ijnCJmSzlMbr3eiqOFWHkizw5EJa
+	 6HtfC4xrAjaDF2jpRDgtoHcB1UQRrQur+rXjubVZS/d6dl5fmNzS6yupuZRVPW7LXb
+	 Hb440HnuyGwFbwdSc5ywhqJam0/v9ujlkJfeJFb2ZObm4MMuicmW75bfytQ9sTVxi0
+	 FJ6ZOxMr3f5f1IAxpAdX+Rz4SFHqEUigz5AMi7xOn3sv0tMRyaOJIWBU4RpOMmVEjh
+	 0WdO6plnGG75Q==
+Date: Fri, 11 Sep 2026 14:01:55 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Subject: Re: [PATCH] kselftest: mm: fix potential failure for merged VMA in
- guard-regions
-Message-ID: <aqP29-H0iKl-2CVH@gremlin>
-References: <20260911123534.1181501-1-yeoreum.yun@arm.com>
+To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, ziy@nvidia.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: skip khugepaged file tests if mkfs.xfs is
+ unavailable
+Message-ID: <aqP7gW98GIiYgL1z@gremlin>
+References: <20260911124517.63714-1-jaeyeon.lee.dev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260911123534.1181501-1-yeoreum.yun@arm.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AD58CC0005
-X-Stat-Signature: kejyc8yjfojzm93i3sj8xihr7z6rinyb
+In-Reply-To: <20260911124517.63714-1-jaeyeon.lee.dev@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1789131577-968806
-X-HE-Meta: U2FsdGVkX1/X9n9m0XtSGXTaV8Z1Mz4ZNYFldpR4XTKApP7ZDwEXklqE9dAAuw7Fq6NqX1nNLlO4jZB91kZF5t7fYtZhfXE1kZYaqUrRG2e/0tldAJabASfVBA+ONvhCft9mAFkeQUr48fWGqRnoInu3lKS8JlhY2Pj64PWmp/FjxQc33UgYB/1q4GCJPw8v+Mx6zj17cxwy+/37l61cBhLdyiDlSZXzdcEpc1LQTZ6HbBCQP4vHZNe++JT/JcgCWZcF+WlQ+vC2i4UJOcB5j2tp2fA2PiNqxD6dd9W/HQyUQWHKRXx/P856QWHGXHzPWBTZpdbiGi0TcR7pzHo9qtNNFgFUbOGdzGxTs7ssWaZS4BUBNYQpqiao2RNSL67kK8Dz0Qj3TTxZjfTm85TjXQ+vt8UCMYoyu4i2C7j6r9TqdU299ryDFCzQrJv29a8hW2bHx/exAIezav62aWSI45tgWDLfDHxC/FGmRLp7F++n3RBU8q1r5ZDdZQLJ5Tm4BAhRIPG1uHdgseK0Cj0tFyjdHI1mOwIzSzko1Qh0ApAMoGuOMEtytespEtG6kqrGa5sr1c/0Apx7JnLqARu+RRrASU/DG5XceJDeAx5ImrQelmJzmPZhuZ7xhwQQ1UEwV/7sTftYfVukOv+kpM6JYr4rLVH2n+8h5Gx3M81eAxNjP//DS1ktB0EWKmHy2L1JpYnVAbotRuxbsbCXPDnvV+IrVTg5tVLF3SygCbO0YC0UoVUISfv9n3DkW3wdhMdela3iu6mfKilWE5HiDpNR1GGOGrIZWFig68tD5wgqOxQcDbkaGVy96ADUu5vqZyB25y+Df6TiCmqzcBcepmmbnr/M0TNVA4O2pPxzjekKNwr/fHoRuafYhp9VhYhahv2eJppNYF4NeXAeYO8DrS69JPJKT2hoOu4ZiB9MHiBgzPFr+kxpl3JlCiKJIxbeS12QESQQOwuirsz7R/Saa5l
- McGjOb93
- GIcshZrN5XmsNSwhAXI1NBcCSMBK6tDmBr8FfUCV98NHMx16SWYtKIMceEjDmfQZgPLr2xTdPRHDOUOzbo6S/7WjSdCDCM1irFfTYjPlWoifSeQjSE8OgMCNAT3VXUD8uof0oT8YvfmuNKiP8NlHjGhwLNTEWvblpsa+YAcZRGfPn4aNH8ZcZIUXEuHtTU8CSfwdEZP6y2Hoo7eTVMMPcOJ1L7lQPj9bZM02q5ojJpTUfPfg96rqzq7WPjj2Vtlnjik9xOCPrU1FVFnoXtm4Rez2q1TE/ko3Tohw3mP4L7mE58pCurPCb9b22Bw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B4134180003
+X-Stat-Signature: pf481pdzzppdnfkgq7qpqw7835yirjop
+X-HE-Tag: 1789131722-627894
+X-HE-Meta: U2FsdGVkX19CAoyQMjuIjNIVgRG2No0AN4fbQ04uOQwucGvQdClMkehTHAPJrgSXVevNVtnA1EntNWZR+3bIt+V4T/t3bovjjcD+vxrpj36+Gx5fWJHoScZmGFi8GpdPL8bibasrh6s8gQZdLPXujNHkLQVytzTL1c+Sxr9Sp/l5rkZScLtSJU92uZ+ZOvuxjabJ+czdPFhILFwFS5u1JwIROCW31/+I1bIDgY8sa8rh32IxjJOPJCrqet5q60FnRHE8zmd8I75Bu84lX5BIzxu4URkDqxUb1MzE33ZX12leAcJXkZrIlme6Ml+vt5aB46QJZQ7ufRbX7z2YTtJumkVGeAFQndj7t50aQhtx9xLuScDhP3Dc0/67Jvm8U5G4E7hHVcY1YtlLwgKG7nzTOyXauoNXqHHJ0TSSn0ZqMaV5iUztGZ9p7Ug1g9r8HQhFTQsXNxu7VXUbJL820asULZr7ghfUgQSMwrYYNP+KIfC3qA4o6zVumCLGPneMTc9nZPN+VPFSikQJeuQJmqT1o0Hk4DWFkcSeggMef7CtfjqLFFK0DHViRMt0N/y4JD8iKa9p2lb1W0zt0fpTh7tQZ52oJIuSYd6fYcKqf0JqlHDgn8O0lba/obkD9QD/EJGDrgAQJkYiU6c6gddT1S0hCn6uq8HYDeSL8h95zDuQ/3FsPezXt40XpUtGTpuSvNy8jJBUZINNjrxwqEyXy0/ZiguBxaCx4KCGUOqrnJMX/2T3/HvtZodO6utFhAw5+Pbb5IdmWFkNNr60tUlLatfLGZe+YLw6X3+HI/hE72WHBM8i6+KJVy8pZB/oeV6lnGLtjNu1crQlX3xnvjBUyD0AuKU8UqraU7+PoGIuIcEDAWdnVjguWaHyxevLluV335DiV9pe0q2vf+gNB65KLDxuj3ljCY419xYuh/p8YqYPL4h8GceFeec4Y4mDcv1anJWzsAdHdaXz64h6zy/9naz
+ Ljgn3Ym1
+ JokCubjwL3/E4rAUQK8SKhqXR+wmseuRLcK+ui7EL/5uOVJuW8SK/X5yhDrRkIpH8h0g0wxTs/9/1VK/3je+6thJfmpBxMLKjLs3K3ekhd3hAGYhIcor599YrFhZX0wUW6ZII35dOgRPZvGYUfrBOG7R5QIjWliIHeD1I2s7KieqWlX0P13dWu4zMmWFHiC63CQlpfSIpsp7ua81TJe1XcmzRIpcZUNqOlQt7CygwEAas+lHTiAZMvQrBxj3Bmn+sAaMQQ64c/b4cnruu1BTlK73/NmXS/c098nJhSoxqjxf3havbD+1CJfBxerXBy8CBHEFjD3Nyuur0LIQX6zYDoJ9ycdgO1o4Vh4RKVDJxvZmqfWuME04sL7jA0leknNj4qVGPlnOSf5/egtv5PPHyRTJ6hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,53 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 01:35:34PM +0100, Yeoreum Yun wrote:
-> check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
-> but this can fail if the mapping is merged with an adjacent VMA.
+On Fri, Sep 11, 2026 at 02:45:17PM +0200, Jaeyeon Lee wrote:
+> The XFS setup for ./khugepaged all:file checks that the kernel supports
+> XFS but not that mkfs.xfs is installed. When CONFIG_XFS_FS=y and
+> xfsprogs is missing, mkfs.xfs and mount both fail, but
+> SPLIT_HUGE_PAGE_TEST_XFS_PATH is assigned from mktemp -d and stays set.
+> The test then runs against plain tmpfs and six subtests fail.
 >
-> To avoid this potential failure, first allocate a temporary region with
-> extra pages at both ends, unmap it, and then map the test region within
-> the temporary address range, leaving an unmapped page on each side to
-> prevent VMA merging.
+> The script already has a skip path for this test, but it never runs
+> because the path variable is always set. Check that mkfs.xfs exists
+> before attempting the XFS setup.
 >
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> Assisted-by: claude.ai:claude-opus-5
+
+Convention is now:
+
+Assisted-by: LLM
+
+See https://docs.kernel.org/process/coding-assistants.html
+
+> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+
+This seems sensible, so with the tag fixed:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  tools/testing/selftests/mm/guard-regions.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  tools/testing/selftests/mm/run_vmtests.sh | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index 5c8ec3ca75d7..a28a57d34e97 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -2257,8 +2257,18 @@ TEST_F(guard_regions, smaps)
->  	char *ptr, *ptr2;
->  	int i;
->
-> -	/* Map a region. */
-> -	ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-> +	/* Try to Map a region. */
-
-Map -> map
-
-> +	ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-
-Should be PROT_NONE otherwise it'll merge with the below.
-
-> +	ASSERT_NE(ptr, MAP_FAILED);
-> +	ASSERT_EQ(munmap(ptr, 12 * page_size), 0);
-> +
-> +	/*
-> +	 * Map a region for the test. Since the preceding temporary mapping
-> +	 * succeeded, this mapping should also succeed without merging with
-> +	 * adjacent VMAs.
-> +	 */
-> +	ptr = mmap_(self, variant, ptr + page_size, 10 * page_size,
-> +		    PROT_READ | PROT_WRITE, MAP_FIXED, 0);
->  	ASSERT_NE(ptr, MAP_FAILED);
->
->  	/* We shouldn't yet see a guard flag. */
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index d09f9f6a384e..6315b67b6733 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -415,7 +415,8 @@ CATEGORY="thp" run_test ./khugepaged -c 4 mthp_khugepaged:anon
+>  # Try to create XFS if not provided
+>  if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+>      if test_selected "thp"; then
+> -	if grep xfs /proc/filesystems &>/dev/null; then
+> +	if grep xfs /proc/filesystems &>/dev/null &&
+> +	   command -v mkfs.xfs &>/dev/null; then
+>  	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
+>  	    SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
+>  	    truncate -s 314572800 ${XFS_IMG}
 > --
-> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+> 2.43.0
 >
 
 --
