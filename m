@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45C6CC88E50
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71FDBC88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 12:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B99C6B0092; Fri, 11 Sep 2026 08:50:39 -0400 (EDT)
+	id 45DC96B0092; Fri, 11 Sep 2026 08:57:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1492C6B0093; Fri, 11 Sep 2026 08:50:39 -0400 (EDT)
+	id 40E776B0093; Fri, 11 Sep 2026 08:57:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B3F6B0095; Fri, 11 Sep 2026 08:50:38 -0400 (EDT)
+	id 324116B0095; Fri, 11 Sep 2026 08:57:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE4C96B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:50:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42EADA021F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:50:38 +0000 (UTC)
-X-FDA: 85201465356.18.4EAF216
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5DA5D40008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:50:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cDOU2Mbc;
-	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 125C76B0092
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:57:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 702611401EC
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:57:00 +0000 (UTC)
+X-FDA: 85201481400.02.52A0873
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9FA3B80003
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:56:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789131418;
+	b=eG+lnJNWYXxEbqOkm54yIL5W0+E2x1b7QUYntwnUGD+K5jvVkBFl3i6AY7oK6WUeSEuWB8
+	vNY3PkTT0Z2lJSeNexh7sQT8JwSVm/mNmYGbJtDdQuLzO9NJW3rOPiUDd7tdFjbfKsbJeU
+	sAfNXS7xRPsOx1IeJGZ0QC0uvNKugTw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789131036;
+	s=arc-20220608; t=1789131418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=K26NH2ePKSHYqhGfatvyCC4cXl8E+lNDvwOOPUufPHU=;
-	b=pPIqll4o0wY+emxHh+J7PI9MoYkIH1jJ7sRLx7Ig+1IDtnO9S/85PAEi4cTK1ykb40ZivE
-	bP+bVOTCg0qF19AQ2Zs3xHb6dwqsVEO4jH/DIBu/khEF2ZXHmk41XncIx/ybwR4KeaD3cj
-	OsXbEnm0whOTYrSGWtRexErfvDf1Sbw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789131036;
-	b=yWUEhZWZyNQQ/QwiblpZWKUqHem1oOitDDjWmEZjnIgg2Y7dySZSVWvw1TSc+TWi98tHNK
-	2k5Ux5/HBTwqFQwm0pPfjqNR56Q9N1rtMXZd8hIFZttK8/Qo+9gI8Zj/83BYuyfZVBSqEf
-	OdRW3CdoBYeqDAK7p9vhGhk8vJx+xFs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cDOU2Mbc;
-	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BFF481655;
-	Fri, 11 Sep 2026 05:50:31 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (unknown [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3E8FF3F7B4;
-	Fri, 11 Sep 2026 05:50:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789131035; bh=xWtNJUTwM42lJpkUN0xjfcVe8e21SEBz9UB8yrPkMAw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cDOU2MbcaEMP1yBMbopyBDyoAv5Zy9emYA9RaAc3TnMstvdkF4LYm4+k+cEnpKQCI
-	 7/gQ7+WrMc+1qMOvwOBxu+AXs2Vq3icXGCknW6CgdHvPoYvf7lR0variw/Sne9+SLm
-	 O+SKNVnvemrESZxz37YQc/Nlik4oMnL0N1u0LlhI=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH] kselftest: mm: remove exclusion of building soft-dirty test in arm64
-Date: Fri, 11 Sep 2026 13:50:28 +0100
-Message-ID: <20260911125028.1268274-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E0ssg816zZqGUemHya07FEZhfM/BCVla+Qd4d9ec2gc=;
+	b=Wgns2/X8ksnT7Xaje9CA+bng/V0RUkn7Uc/6zq1SOqDdrZZgLvSjbbV7VcVMGrX2walLon
+	xSBoeod9oeK+DieAwOQvKJ4BwNelGyhKDVIIQL5d88tGZnLp0a1sAYueGPJPUQHszeM2WS
+	AE2r6SzFAmDN5hqpjOzFd/gNgbMM/z8=
+Received: from omf11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C68AFC020E;
+	Fri, 11 Sep 2026 12:56:53 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id C51C42002A;
+	Fri, 11 Sep 2026 12:56:33 +0000 (UTC)
+Date: Fri, 11 Sep 2026 08:57:54 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ye Liu <liuye@kylinos.cn>, Michal
+ Hocko <mhocko@suse.com>, SJ Park <sj@kernel.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Oleg Nesterov <oleg@redhat.com>, peterz@infradead.org,
+ paulmck@kernel.org, mingo@redhat.com, mic@digikod.net, tglx@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, rafael@kernel.org, gnoack3000@gmail.com,
+ gourry@gourry.net, rientjes@google.com, shakeel.butt@linux.dev,
+ xu.xin16@zte.com.cn, chengming.zhou@linux.dev, will@kernel.org,
+ boqun@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+ joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, tony.luck@intel.com,
+ reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
+ jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
+ lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com,
+ longman@redhat.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+ qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+ mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+ babu.moger@amd.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, rcu@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v3 12/15] unwind: convert process/thread iterator to
+ for_each_process_thread_rculock
+Message-ID: <20260911085728.47d3b351@gandalf.local.home>
+In-Reply-To: <20260911075800.491472-13-ye.liu@linux.dev>
+References: <20260911075800.491472-1-ye.liu@linux.dev>
+	<20260911075800.491472-13-ye.liu@linux.dev>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5xdzmeyidyseu4xp3a1djhdbaw6qt59b
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/KtCaZ9/tsi0hxBkYuIS2CFwjudzULElM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=E0ssg816zZqGUemHya07FEZhfM/BCVla+Qd4d9ec2gc=; b=gh7JU/bubZhrpxGBgrxho2alJtCMELUzto5Po0cae150cpl0BavJgC2dRHwU4FvXJDWgj7yOyyuU2Stz8X9XeWiOLT41yNeO3tUvFSw40L8rqSvkkd6r1CgWOdrbH+uscOfxXomLGGWuLAhDqRhufkG1WPXyO7BUnbgmm77KIMY=
+X-HE-Meta: U2FsdGVkX18a8IZpiamWSNHMOGJqi766L2hoU7BxJ2jc1mbGcETaj4OLytypvLF1C/8k4P6eKXvas+lrJd2fkaPBqv3KUx75daqT4beXqnn0s2TYyKccRHJ75eB75GbvBLtsIiHrPJIERzvArIitexLxj/cO9kvTrTnKbk61hiBe7r2nGDYiIOb1LXm9ZUaQdU3q4M27XcVbYDqNe8LJroq3pRtqtAzUxadzwfvnx2yAElBekjB5HsCjqmT+iIl7VHmhuoQbgdgPLcfu1uuZPVtwqwe4tPyVIqWTA8JTY+/xeG00csaaYSlhKyUuwM4zCh0hTIx4hiAhC0O7Hxmc1L4GgNlGmvWrkiJxOxCWnZSjVtEWmHLD9bmVh59kOkTIR4M5NtVHKoy0W8PLA7ap0pa5fEVrBPjp3LVjOdSzjgHtfss8M5cvpx2hDQTJ21CwWfHIl/mD6Xc5kDP/SGon2U9aC1WoX7LRXWG0diJrZik=
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5DA5D40008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789131036-687954
-X-HE-Meta: U2FsdGVkX1+DOBH1ttxHO0QKLdleqOyvfVmOi13EvJg9wYj7zrgoAm9fWBDVHuQKRTvWKrmCBQ1gFkhCDSSUNiadf5fLYoxje63203UrcjSJlEpTYWnqCPIQhWyZdZvgah09cSXjnFzuXA+2eynFLFYWP/pZo2LKJ6bAu+3PNgeFu4cgx1Axuuon3eWNBDu3XxPC1212rfB1qEBccWfFGZcVlqg4OEr6Tyv51GfOtPRa3gnK1ICGeiBh/tSwQLwI8yXtsZIdSxfq6l6vj8Vl0ncv4Qjxko8Oz5FoWUehix88u6G8C0uXtTmSEXAW8aUJxRqc+N3d16RAIsJpSXxW1Q493tUlAxHHUr+epcbVzWoW5yE34CqLuCJM1CracSTEDsXHY73r9GxFD0YiRKxW5G3pq07gbmlscxS/5LzT9dUpM1Nhz1NIzpDNNXE+0xxoQ8mi0KdOLlJed/DFIOd+DbqogmYZ68BYeKYQAthq/kymPkG5tsLk6mAGwHdid+jMZ+dSgVz/JT8ILFTWaBiPawMLzXF1YTj+uceikGY4XcTeFXIp39Djwg4VqHCY2WVNJD2Pd2xNyQOIkhCDN9sNPVuklmWG+hagIpvRNz3lD31juYNI4Ow1IR+0ee672TYK2DDa/YOUy8ZfkjlVuiKeuK16YdSk1P64Mk/SNjeUNUDgs7YV4RHMjQlHBsGg0tWRuyqXhGhwZvLQ4Ddh0GuHxIrGYaayjgwAnQF0z8OdY6poKdM7eRVleqGKTKtlb2CaR4f6kpNs1xCp+VOd5pxTM4kWcHxLxatQSMufpnPsaVxiGQXlX/LYQBTsNR9CnIdZJBJuVJ+hW4QRhk9kZVKLZTju5u/AXLZ9Pjhm+ThxpJgucv+2NpD6h0L5+EJtTYEpLXt5sTAw4wT8fD1xG3GhrMoEpdCbWDM67Xjn3+vaSY3SCKRJx7SY4tV+6MGWhkvlhY2cjuAl052tRvlLAi6
- kvNsZoZJ
- jeSEyHwbMT65ldPaArHMzKzBL+D3Pdzcz2F9ggNjohV5ef/UZE/NAdG/W74Bf3WGgcCnlCQtSQp8lmPFw20W3FjIt0qwLlyeS1Z7TtklZh3hinns1QnoAlqXDtenr4iq1hJRYJziGX+AU4N/N7rKpWrf1tk2C0NeUI96hUnor0trN229Ny9TCv56VsUF0gs9V5TOdCABBIIPV6+d6gYtSJBS1FGLXQJ3sgbDjmZBIbyzJ0pHT3RVm2o0soJ8Od8eFpkvCRTIPY7N846sK/7q9anM3oxzN9/ziKIJdiynciztj8Bw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9FA3B80003
+X-Stat-Signature: hqhoj1bk96b3okw6yn9sw183sqfwkh4q
+X-HE-Tag-Orig: 1789131393-869492
+X-HE-Tag: 1789131418-676354
+X-HE-Meta: U2FsdGVkX1+pZPvVqPMaa3eZ3/NydHAvlCMRazy5HZFcJmgnYm6s+RtxvRZbxB+pmI3QHGS58fptAFqid/ng2BUmQhXbD7VofLZNfjq1nXo22WS2N0TqydtkucOKvOGcHJeMFuKotxZGzB+caRoPkcmGUD2iMh0jFeCM6tDHywkGLFS0kyNTm+65G5GVLqkW97G8stJh1RUX31nEHlY3doe+Oh2i/OhnS8qBgpSkQ4eYcNqL56yOL1HAobJ6p3/8vqc0I/4N7A3nMMZzm7QChy5eUuFVVwqRiH+DsADKl6PnPx55pDyTalR/0VvfeX6BfUUoTpW/+xf3h2YZWty4QSgUfQqgycfwoS+D0kUaqTXFK/ha28tnKb48n5VLR5kqoYxJybURtTLhmFdZNOOJb6VOhPhPr/B1KMf+ABYWy20r8spaTKlmwquya9K1KTymDOvScoaukbp8rKfvSrUqaroU1rKRoM9uewLCteViK3S691jfJfEE6bst2ueKlOqS9nunnAt7yGE3Fco1+JbBi7A4rVyt5y9X0qmfHJLLBPMbB3OoeWSeqlwEt1NG2oNJwEbyxW9V9tgvdZJ19wQhRzmMl+gCsvTW1wUTLkaRvP79FOUu42dgduG/PP9zgGT74I0UVX9LedF0VE/BeZIOxBjPQvwu8YKa+0sbbb+kl+pA1FmfSM/AdtvSBNntNgzdPiCLaaUzb2HKQ9oHKmeQHI5Ae1EPlqaLyRe9rkXa+pCrME8EgUG5FyahYWDerLv6XOaJ/S0ZMgRfljuNMM0NIeAaUcdY5s3pDTXz2u6Pi0rjL2MK0m8nGOXizWZs2P/vm4NbHNr1AjRV9dE6x024V/n/nRxpL1H+FeUrRKC4Noif4wHsjf+TssmZT7Ml8UarpZJ9rmxgyn6epmxo5/9oJ7RmDk0SnEX1rTCDweZn4Z4J2z8Mdl3oxp6wfRkTL6R5xjTRy4tCrY8pFNBx09T
+ 4lHA0lTE
+ GfB83D5d7ytd0ldNVkQHDl5SMLHEjzwo7EFBqfXpc0KnruIbHfOvMS+BVzKz7SEv/SII4uU0Xf3fKcJDnGs8SZ+efFzqtnmaxYVYN82M7Yi6GdG9QdzCfYa18NEnP3UaoQSTvkUUK82QJMzGuD7d5JzZi1or/bNvGwYP0tsLQTI51qCpVcRcognpf5PsmLkenqi2t57IIDNmoiJbUclo2ousUZgd5CBqhim/VICtSTOQa8bYl9KfPCnVNz5KR+Ymo2VzYgcWYe2xclt5u38oipeMl/zh95nCtIl9zU8TunjL3iuPsaRs74uDr/X9Ny8VNNILmM4EbyXJHMWl7pAVJzIHQvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +105,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 0389c305ef56 (“selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled”),
-the soft-dirty test is skipped when soft-dirty is not supported.
+On Fri, 11 Sep 2026 15:57:57 +0800
+Ye Liu <ye.liu@linux.dev> wrote:
 
-There is therefore no reason to exclude the test from being built on
-arm64. Remove the arm64-specific exclusion.
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> Replace guard(rcu)() combined with for_each_process_thread() loop in
+> kernel/unwind/deferred.c with for_each_process_thread_rculock(),
+> which scopes the RCU read lock to the loop body via scoped_guard(rcu).
+> 
+> No functional change.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Reviewed-by: SJ Park <sj@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/Makefile | 3 ---
- 1 file changed, 3 deletions(-)
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 2d5366196e30..d3e9bd67904a 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -104,10 +104,7 @@ TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
--
--ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
--endif
- 
- ifeq ($(ARCH),x86_64)
- CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
-
+-- Steve
 
