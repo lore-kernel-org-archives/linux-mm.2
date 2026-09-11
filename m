@@ -4,87 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 733EEC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A34C88E56
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 13:35:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95F2F6B0092; Fri, 11 Sep 2026 09:34:45 -0400 (EDT)
+	id 061786B0099; Fri, 11 Sep 2026 09:35:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937CA6B0093; Fri, 11 Sep 2026 09:34:45 -0400 (EDT)
+	id 038F56B009B; Fri, 11 Sep 2026 09:35:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874356B0099; Fri, 11 Sep 2026 09:34:45 -0400 (EDT)
+	id E91F36B009D; Fri, 11 Sep 2026 09:35:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 69A356B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:34:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 010EB16014F
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:34:44 +0000 (UTC)
-X-FDA: 85201576530.01.2A635B4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0D75110000B
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:34:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ot8PSeur;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4DC16B0099
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 09:35:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECFFCC023E
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:35:53 +0000 (UTC)
+X-FDA: 85201579386.29.363EBD8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5EA6DA000E
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:35:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WuqZzmWt;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789133683;
-	b=qgefChbZxHZXdVTJxaJrw6VjR95QBoUTi77mLOFckEgavoeET97FYCS6Jlx7DGFqqATGCy
-	+lJwA2KUfr7zs4XWoA0Q6LUGA08hulan6m5sdTgq9f4Z1SfRKQryaB44aLE7wuMlDWXivB
-	57wvY3zFLHnpnACBximX9ETJE3Y/pbE=
+	t=1789133752;
+	b=DpELX08VDd+Q4rEEsKZSTuXKFypiGFVE9pMTgKBdT3GmZfCrIG/Gqx4DUHmVOFo7/r4TAi
+	DwDcWmmfLOSdj1U+M55yEVYkL5LvtHCAP90UkDBBtNP7GGp7Y9WpKqp6ub6IQqGG9NAt0L
+	5CBcqkqMoBlxB9/CS3q+jyKrfD3LeRI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ot8PSeur;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WuqZzmWt;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789133683;
+	s=arc-20220608; t=1789133752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62WYyxS+9gI6RuDOSpD1jzvwTBSygxnPuFsZGOMg3eY=;
-	b=hdsnIhwl5KU6lQ5eRrWiYlKBIAAdCvz8/V5t6WUSD8BAgdY2FFfmyrLhRf4MaxhlheWAzU
-	N/p73Jis7o+nNebNHuLoLaX0IaFNZ+2CwNgyoHxQXdjKnZT5A6UeBAO5d2SNceQuoXrsc8
-	wIa/E6TDIGbxXC2LO8XQo0GNSJIqqXo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6DFB31655;
-	Fri, 11 Sep 2026 06:34:38 -0700 (PDT)
-Received: from e129823.arm.com (unknown [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 697173F59E;
-	Fri, 11 Sep 2026 06:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789133682; bh=bnRhlOG7uJfn0zTtgUAfL8VaHyebIVtCjGBipOdWK2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ot8PSeurmDv/PG8wha2jcV1v/KJF74wyupEmOPFe8OdNtu3gb5v4ntaEBt6xBJLuH
-	 xR/962+EVrO4e5oEMFLRz2qi5PH2MCjsPg5Xjk+jEOgDFpkI3XTF5dUlAIS2h5ttHQ
-	 mnMpNoXQ1eoStXY4igAfLMZoyfUTiAoASspo2jsQ=
-Date: Fri, 11 Sep 2026 14:34:37 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com
-Subject: Re: [PATCH] kselftest: mm: fix potential failure for merged VMA in
- guard-regions
-Message-ID: <aqQDbfMOVasuejA3@e129823.arm.com>
-References: <20260911123534.1181501-1-yeoreum.yun@arm.com>
- <aqP29-H0iKl-2CVH@gremlin>
+	bh=GgGvB7wf3jMu2SKBD8yyeQabKZY9LxyLIN+L7CC9SH4=;
+	b=FDp7CBFBrL25pYlvabz6fDXnJwujjnn4WOfASm07l90PYCXiEW+J/ur9K1tGY0ztDhMiIw
+	vN8NOV/EwwK5dNw+VFYgUdWkUzglIyLAnE6uuakivkbziYCxwDRtF4FezWypw40aarOMYE
+	RZQLDiZvkYzrwWDQg43MWYkVYZVqvdY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C49840400;
+	Fri, 11 Sep 2026 13:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C101F00893;
+	Fri, 11 Sep 2026 13:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789133751;
+	bh=GgGvB7wf3jMu2SKBD8yyeQabKZY9LxyLIN+L7CC9SH4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WuqZzmWte3bB8Ft6qad7MYpkg/9RfskcX7IDxobWRqOvNgeD8tGWhYXzdKo9PxsMr
+	 2HyIUNat9KztrqS3dCQOoSOpdsB5Rx1ZI3NBkSn1PuY0xOOmngDOFnMfRIKJxRS/cH
+	 gRTdgbrETaoPK+AXcXPXMo6N6EztBKkCVpEm97ajoz9nK8y/6sFJoAjL9rSFMM/1+d
+	 iBy4MtTuRNUCjytG0kVee3MqTIx650ie7Jjsy5Snv6RbcptN9fgA/XNfOBb91k82B0
+	 7PWQFpjtL+Q9xQlKIy1yzAYs7YGo5xFX1OXL603T8DXiBGmjneV4Y2z2Rb4e3Q1s+F
+	 JdUS+KQBVXGWg==
+From: SJ Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Docs/mm/damon/design: fix typos in temporal auto-tuning algorithm section
+Date: Fri, 11 Sep 2026 06:35:43 -0700
+Message-ID: <20260911133544.91871-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260911093314.156875-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqP29-H0iKl-2CVH@gremlin>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0D75110000B
-X-Stat-Signature: n8ug4ueqitseg87umiqcnnx6o4ndxna5
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789133682-354689
-X-HE-Meta: U2FsdGVkX1+VZDnRQ3xk6dzuapzndhkdc5lGIxYX8ot+lqPNrrYZAujPl8nYaYE/TUBqyQUHaAlm1Mrk/o4y7reZY/5wyhTL0NOv2ZSL00VImQMygmsjpJKz1IPUI8dtwa23KJkifaSAzi6weoEGQrptO2a7SDXpJDGhu61O2bpSUSRyb5H7t6MsKMetILJ+hr+TG6rnk2k8/YMniIazvN+8dXdStuiu4KM8GnXDe+gX8KxB0xulYtdR0I1RrAGEQZOqsjP9LU6t1S15GrHRTsLpi7JCxdYS15+8YxRbxZ4uyNgZHmbVo/Vatwwr4yfB+3BskSKMvx2PAy1DKCbZU+Nddpb67ET9sQcI/guz6+YEnc4gRh8g7WnceqXpOfJKTFRXbewkCOhh3X+DmzEoIy6LHg/A1g2u6o0TBMz9oqlDQ+MOPOzINg+7uiX5K9xH9p6pJsb3sZTKvkc/srf2hlr0GtYMIMjA4+6jgpTik98Gvf4DjsRSYY0s+hMX9gh6pLZFQi7HsP2Qt4+X20t4xqTmSn7JhNrgNzIsWdZjaOBCdIY2vKQbGmsY1R4w/BQW8FwAUSSNWTHLVrMjJcOzQIuyvQdsMWWBTYTt1IUe2Y/iT5TSitI/SmfhlgR4/FJCUgvqT2DSMgBMgOXc2nTrYF45pLxCBqkrJ513DtTtCoO7zqsVhJ867z+A5Q4UjaWR3U/J6VU7Lgs8cGCT8btPNkTYbS1FdLlOGzBTLynPE5Fj64Pn+/Hoq80eIDaIvpib0Z0jLfrkrgdaNfnxP/uzbPzNHYcG3Ou2r0sgfs65tOpYDyc2R4Qeuih/TA+tky/P4LtskYvRoqMN/Lrxy/ran9VziMk8R0Dw8MN68oklmJRy+qXj45nf3wr26SM/SK9m9WGdFj8dVGfsqbM5YfQ9kBnwg4M7Sb0SMwaF8pCSvY1zwbrKSuTXotJzC0UOG9yLiQ+i2k+KwOg7bSQ9Adf
- kg3ARMqy
- 4ro64ZvWgkALS86ydN1BLdvc/WO2MqvtJY4ojBujGy42dZGLAutWF+jb18CK0h/dRmsNmJ7bff4iz0PYVTHpfkRh4SU4cn2DIp17YdvgX4UB0nUhoV2j/FGz7ckpfmYlxqgbjsUWm6uytEEY7XaXJCeJFAhAIg05ETOxz0kBMqvz9eHR3V//Jx/ZEy5k5rG3lPW5kDF0g/Kt/jOm/gwjj988xsXOBJq0UY7eRC4ln5apS9D/XHlSmHoZgkSE+T7bONzyVu+gkmqkMLoLNQP3ACCXIWJCodKhz9vQI
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5EA6DA000E
+X-Stat-Signature: tqca6dtkrxrg3peqqhn6oxw86yr8p7ba
+X-HE-Tag: 1789133752-753987
+X-HE-Meta: U2FsdGVkX1/IQkRlXBJJCZk0is2gkdezn4DfWkxKVRWFiD+0pTv2KnOIxE8CKVuv2c56CHhKrbb3IfA5KuK82dCUtSaXYA+iFfT/3bkuSovD1xe7BP+2ByV8nnPlhhJ6J8wtE7Rcnvwahn/suZhTA3RiqzEb7SRME15OpzcSEpoT0MIXqsHQ5FAzF+P3pPzM6arUFkTbdsCIPWMmW9KNLPfdjRkJ9myd5jmYAY3UyGCjUr1igVDzj9NVAAPIMnqhYdRvccRb9gf9+ZIbAtQEepEdGsKVw5WIGy3RrVTDgII90vGcbwTDB8ytULIGYGDcXuRpyXFTR0vy0Z6uuHrM9UMqUVfvowlMuUo7R5IfRJIlwkzXEbr8CVu6q7Vt1678bhgxV8QR6QVE2oIQrriPE4PfBy5AYJOgptmDduvpyoYHsg2zYv9ywFEvsrdHdILmIyoo0zKoe8NV2u103kJPEwQdVEUt9k1Vrkf+VD0laQ0x2xzQLA7pwjx0coDW3A1orRwVeEiHzoS8P4nhwN3wzzReuxaWQbz3lsE51ssNmcEJUzy0COZS7RpOQi9tv3zy5Od7YCo0j/IWs4OhX7EmKzseofGD30+1/iMoVJIWE7vAyzFoS75atq4D3AzFL+NspjCSkAp3wkAfDP1m3qZWFJRwN0vA25jKbaivczEZSYpRxzkg5cqHsSTL7nX0bSpJgM7dl5IFh3n4APdy6NIunBa6wf8baqfhg5RbleJ1rBnuIFG1gZu4pYllmJMjJzst6+PmxjErxzPOcHVCwsgVtGdiO4Ktn8ANNh5OPF8PcT9GSQsu2kjO5lgPLW3mA4q9b+lWtwNadHskSW27wLqJ11XVu7uruL0eraqp+YYKy5NVDAIiiKSRsfr8wQw3LgSDDlV2m0ReacxL90EaOjSdM/x5UerRbslhL/hAL8gZSCxe+PWbnBbpNf2U6aG/9U5UqAI6g8ewSzM9ox2k1z/
+ k/PLmD3H
+ iTEs7ehtyrF7DjMA0Dmq3MEsncArwYetghAMCLMaemPmFT2Bwva2/XHbFyo9usLfarjaaXsbdT6g7voF+hj5zRDklIjDq//rfeVpey5B60gVb5wRpJCFnHu9VaLdVbWZQyS17+j9XH0XL30OYtNxcPu9fzyhug2Y77EH2PsMb+uZIwOj+kmyvNz1025UNaj9PH46RsFTyTR2qEHbFY79U/LeBzdA/S2u9kxKQs306JBscV5KQt2mSc2bVcuB/ONHe2pKknJJarWT24NgZTFgoNP6zcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,54 +104,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 01:59:31PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Sep 11, 2026 at 01:35:34PM +0100, Yeoreum Yun wrote:
-> > check_vmflag_guard() uses /proc/self/smaps to retrieve the VMA flags,
-> > but this can fail if the mapping is merged with an adjacent VMA.
-> >
-> > To avoid this potential failure, first allocate a temporary region with
-> > extra pages at both ends, unmap it, and then map the test region within
-> > the temporary address range, leaving an unmapped page on each side to
-> > prevent VMA merging.
-> >
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
-> >  tools/testing/selftests/mm/guard-regions.c | 14 ++++++++++++--
-> >  1 file changed, 12 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> > index 5c8ec3ca75d7..a28a57d34e97 100644
-> > --- a/tools/testing/selftests/mm/guard-regions.c
-> > +++ b/tools/testing/selftests/mm/guard-regions.c
-> > @@ -2257,8 +2257,18 @@ TEST_F(guard_regions, smaps)
-> >  	char *ptr, *ptr2;
-> >  	int i;
-> >
-> > -	/* Map a region. */
-> > -	ptr = mmap_(self, variant, NULL, 10 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-> > +	/* Try to Map a region. */
+On Fri, 11 Sep 2026 17:32:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Correct incorrect references of "quota" to "goal" in the temporal
+> auto-tuning algorithm description and fix the square bracket formatting.
+
+Goot catch, thank you for finding and fixing this, Liew!
+
 > 
-> Map -> map
-> 
-> > +	ptr = mmap_(self, variant, NULL, 12 * page_size, PROT_READ | PROT_WRITE, 0, 0);
-> 
-> Should be PROT_NONE otherwise it'll merge with the below.
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 
-It doesn't matter. since this memory is unmapped and then second map
-at ptr + page_size.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-IOW, though the first one is merged, it unammped and then 
-the second is allocated at ptr + page_size, it wouldn't be merged:
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
 
-  after unmap:
-   [existing VMA][ 12 pages ][existing VMA]
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
-  second:
-   [exiting VMA] [hole (page)] [ 10 pages (for test)] [hole (page)] [existing VMA]
 
-Am I missing something?
+Thanks,
+SJ
 
--- 
-Sincerely,
-Yeoreum Yun
+[...]
 
