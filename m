@@ -4,138 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD0CC88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 21:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56923C88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 21:21:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33B9B6B0095; Fri, 11 Sep 2026 17:11:21 -0400 (EDT)
+	id 570FF6B0088; Fri, 11 Sep 2026 17:21:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ECA56B0096; Fri, 11 Sep 2026 17:11:21 -0400 (EDT)
+	id 5004C6B008C; Fri, 11 Sep 2026 17:21:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD696B0098; Fri, 11 Sep 2026 17:11:21 -0400 (EDT)
+	id 3E81E6B0092; Fri, 11 Sep 2026 17:21:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2606B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:11:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75B0FC0160
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:11:20 +0000 (UTC)
-X-FDA: 85202727120.26.A14D9BD
-Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 83D8120009
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:11:18 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=s7atofJg;
-	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.37 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789161078;
-	b=fWvEq11vRlmiOWhqeFmUI+8u5EBm4UvoacXjtT43G+XsQbAX0rH0JWTxtb5c2XsgAhTfOS
-	JU6u50hyEJxa4KZTT9ay9LxTeyR6sDj16DMCTChGd2qZh/QGSa08XFs20+Vz7oPFbTy0BU
-	XT95rZ2wmEF1/VAd2vu+zeMuLflsw/k=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=s7atofJg;
-	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.37 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789161078;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 157AE6B0088
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:21:02 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E4691A0365
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:21:01 +0000 (UTC)
+X-FDA: 85202751522.20.77B0AB7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B354140009
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:20:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtNc2rHQ;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789161659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c6HV8uHNfHnA3I2z6iazz6poKohSe+yKAEsfT8M/ffc=;
-	b=pVhE69TfPbfaak/pXP50/jXnC1zLzyYCgI74Y1duMNS4a6Udf30Ubm1bBIPZPDe90GsIfB
-	gql7GGa1RGP5SMwK/CNbrU1zBagNdXiQGo8Vb0v42iWLhnU4mBjexgpENPjnOG6eH61fbz
-	VuOhODmzlUn96PgDoxnc4lq8LYdJgfo=
-Received: by mail-pz2-f37.google.com with SMTP id 41be03b00d2f7-cc4bdf8acd6so343806a12.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:11:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789161077; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qX8oAnpA1G7sYQbaAxMu6viqoHgFeuvR7Q9JcmyK6iWa8/OZaQdqGLYb8KWu15oaeM
-         6rNPM6z419Nf2uga37Ff3wB6il1MjpE43/+vE9cMegGUR+vM6WCQgPLHc22aOmYU+Fv8
-         bikaFRq3mJGRZI5lL5HD3SnYNTz6q+rj1G5j5b/4QFY3eRN1JUVQpwDR2w1zHuXGf1h7
-         BnhC9fE/K9QtZkSXDsPXGnsavIprwR9xpct+CVnLWy6NfyxpLq75yyWK/syXSf4QYdgi
-         rrKh5PCb+ALS6DfntH8OzuQMrpwo1E44TJw1maML9LF2qpZR8cnRHmCeC+iOq+wnyim4
-         dFkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c6HV8uHNfHnA3I2z6iazz6poKohSe+yKAEsfT8M/ffc=;
-        fh=+gaamkn34x54p4vD1i4DCjjWps72bRpshJvMxuiulwk=;
-        b=lxFyFTeqyTrSqJFF6/1h5DrDLGSgNQ5b7o9xLJwZfcJwsQlhclBw5k97jzfH/M0ruN
-         ALeqo/a/iwvUSRCtRouYKVKV5xD1E6nHrZjBAmrfSzp7T9XpoGTuz51TgXjuNg7XXifF
-         tTJKfsWQa5a5VhHgYlD8wnaddiI5dwsd2ZGz9o0++KQ1KJabTo9F8q+k4AgDCwPF8Dc/
-         B+TYb+mG8CsB24z/tIBa48TDllLvcFtXLtvqiE1oNMtOojZfsjj7eWIXLQEE1b4lW7oW
-         uVA8CWJhqfG/HjJ66ryYC3dgxCV79sglJNvHmEbEevgyZKVHSZWbNtzXeXQNG1VCMHY0
-         IUlQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789161077; x=1789765877; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c6HV8uHNfHnA3I2z6iazz6poKohSe+yKAEsfT8M/ffc=;
-        b=s7atofJgTB89Mhb4dk9y50Q5jBfS4KuPgcDO4gg5VaNlNXTtcK5iLW/UAi9Q2ImEoD
-         5bHlnghV+gXytCSoq/fJalmOx6uVj2PGWMc8Ap25CgjjhSTQcjvYFQLGIQBJvVV3bAEa
-         DrZlWJOPw3bMWzqVCUlSXXmZ7O4Fx8gx1SKvtWcES3sSMGjKjoKw4kREMAlAi7+Filib
-         E0WNf/XxWW5M/YuBww5CsFU3PF9Ve2i/XdCxowCB3bJ8UBMXIuZLThEDGlm7IxnCqfsv
-         QfusKXTQvaZYFMyIf/Gtlb+qs8ERil6eKV7douKz6h5XysvwhPPnxoh84fhrwm2GRwVV
-         GHiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789161077; x=1789765877;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c6HV8uHNfHnA3I2z6iazz6poKohSe+yKAEsfT8M/ffc=;
-        b=qLg2rocHJX35kPIExDTokTMj957NQViDalqH4KO9XqzeXluNhYP5Q9Kgztes9JLyNb
-         oQWLYKdUBywxn1Y1TDACJPbZeimG6pnnWVUPfXarfRSxrTLuk8g3ZRgZQjDFU964pQMe
-         my4TK2qI4JuF9rw58VMhv/f4KA5+pxeot2Gf1lmP/KmivgH51MahN0xA7Qvf4HOHTx2k
-         kReJSm/f0SNlv+jPNyahQgSGM3xi7Wt9LsHDuz3fTLHBL6MA8kDSaqmyXXowIoHFVWQC
-         TGjRArPkBZcmKkM88Wj42dXUEyz0ke72uXMDe5x7Cpr1U3BRDNiKOTGcwHT2PtXP/nLg
-         zrcg==
-X-Forwarded-Encrypted: i=1; AKwUvBzZgx6gu4BLdyHMAaFBbCPVpFgiy8lrmxRNd5Pj1YW0a+O4W/fQkHNEOTigew1Clxz1OHOInc5RFQ==@kvack.org
-X-Gm-Message-State: AFuF++l+nLpYMTWyBbGXzztZ/QKkOnWewBGyZBbHmSppeb7w7xipKstm
-	jfMQ+u4bpH84CuBuxicQ5cexVNrKRPQatn11uxekytr5ERNiXqjZkzeaQTlmheMIELhmdKVqw/Z
-	mxgxEKRrN7x4ldKZ7hfiTDNMTYzRWTwQ01E9N//Xk
-X-Gm-Gg: AYBFou22eaJLI9kkeDXfFtXVeXDREiEanuCUleYBBGQI5fulPbwMiBHKandJFXyjce9
-	+kEvjrgn8kCOpzmlpdZsUBSXurJnc1i63y4llsYlPGSDWISt1oj0ztS0NR28bXciymiXj8TTboE
-	BjaCZ+MKKwiCWUrNP5oiUzT0k1hoe3kJJjwvBOfYmmVQRxuGYKFk9c4n2idqlIJMn3A7q66zyyS
-	cIaKfYmpfsJZ/UBeZuPfzKQA8GPTMqNOBUYpplQ6KSdzWeYr//LYnXMkb5jCu1DuB5/Yw7XXh7r
-	ap4pqQC1u7bsK+tCD619Gk33ar/C/DLYj/NikyTMBYfoKKmZF5m798QB
-X-Received: by 2002:a05:6a21:a95:b0:3da:6bdd:2c74 with SMTP id
- adf61e73a8af0-3daed306372mr12662047637.10.1789161076494; Fri, 11 Sep 2026
- 14:11:16 -0700 (PDT)
+	bh=bYi+BLcDxpGEvH8TRFhgsxjlizIH3+JRxRD7LLGvT8g=;
+	b=33riamcKBNDfYXEecL0B+pyqHB7KN9/Z8MbL7ggioBlUdjcsby+sQ7yhXYhasqV8Yo6DrX
+	oPkgZw3/He9Pd85JKeJBhru9LOpQzvqDg1VzBwJayMCcBTvui++n8kwRxJJ94hdmBkERXe
+	sCsqGeOmmegl5t8m96/Pzl+Ey564VV4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789161659;
+	b=1Ops7Zw50MNax74tPAqkGqHqVPUJT4nwShDi/lH5HuWhGfcaY8O9/C+4rD2vwUDlKpGXw+
+	qTIj8rry2o5BQ+WFjlo9nNdE5r5rbo61KdduZGU4P+C2PhmK6mxHSpDm5DMdMOQDEpN7Cp
+	8WozSWf5QWsAnQDr/6eIvG5b4+szPw4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtNc2rHQ;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E7ACB43F1F
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF66B1F00898
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789161657;
+	bh=bYi+BLcDxpGEvH8TRFhgsxjlizIH3+JRxRD7LLGvT8g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dtNc2rHQtWIObd/DI/ApVeqzSQNXUd5s6VPhj4i/TV6agec3+bbNqYhrNOPh4K8fg
+	 BIrklNUVaLk+sAVnauNPFcw6npJGzDGiJ76UfZKi4DyEBNOIowrc0b92AcJaMiAPlc
+	 gQwo9UXhkKIasdqcLaN0toFekM0+KsTDfKc2ReccbxNBUYkyEBbmcsfGmvH5NgzSn9
+	 n09EToGNkcYL6LN0XwQbFi1UzKAvcos3XzAmjlfom6VQJmLz3bMyhT4+ftDXM3AQ9t
+	 b297P9sNrDqqJDHY14KoInNCQxoGn3vRu8i/YJ/FzI+ODxI737ZWMsixwY7+acirZW
+	 5GiB2PhdWFaVg==
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910c3e6b1so11499485a.0
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 14:20:57 -0700 (PDT)
+X-Gm-Message-State: AFuF++mZSjIy5MXfShLJNSK2Nuoet5WtpVUmX04F5NtOmoQGkOGPlSaF
+	72SOmAJu9wPwY5UBQH4PDIP4lmhM6G3hPPIBcQG72d2RAtzZPi/LPQ60pzv4uC+H3ZiU1SCJv5Y
+	BjvkBUlJCmVFMirlCTfwTxnp8Ndg9UIA=
+X-Received: by 2002:a05:620a:880c:b0:939:83c1:d8c6 with SMTP id
+ af79cd13be357-939e8b079e4mr730453685a.8.1789161656904; Fri, 11 Sep 2026
+ 14:20:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260901180713.4185641-1-dmatlack@google.com> <CAEvNRgEs82CVTL_CUn=Ovrwvt86U1dxzr8psWGu=nk98ZH6Esw@mail.gmail.com>
- <aqRFSiicubfsw3N6@google.com> <CAEvNRgFCrcyk6F0vJ11pgj2EDSUAXj6Zw-oEdZpfj2SrH1Cv9g@mail.gmail.com>
-In-Reply-To: <CAEvNRgFCrcyk6F0vJ11pgj2EDSUAXj6Zw-oEdZpfj2SrH1Cv9g@mail.gmail.com>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 11 Sep 2026 14:10:45 -0700
-X-Gm-Features: AcwNN1VPqi3zVmYZAELfBj-CBxTUTXJC8KC_tY6rHii958hpSbyM_Grda2-osHc
-Message-ID: <CALzav=cKG9hXskFgQfub3Jg5O-rKUWBe8TBcPdJz+tBKzenFrg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] liveupdate: LIVEUPDATE_SESSION_RETRIEVE_INTO_FD
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>
+References: <20260818225904.55236-1-baohua@kernel.org> <08f63301a58f0e0c38480553295ad9af95928da6.camel@amd.com>
+In-Reply-To: <08f63301a58f0e0c38480553295ad9af95928da6.camel@amd.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 12 Sep 2026 05:20:45 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yjHqSFtmHrRKgE1JrJpQKw5oBs1cuX1_mQ_r0wKdMdYw@mail.gmail.com>
+X-Gm-Features: AcwNN1Wj6o7DDMeN04SnJ_ORbzq-MZuYZLrVkODVnbcFIGbkDcBF9Yh9yxqPI28
+Message-ID: <CAGsJ_4yjHqSFtmHrRKgE1JrJpQKw5oBs1cuX1_mQ_r0wKdMdYw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hughd@google.com" <hughd@google.com>, 
+	"npache@redhat.com" <npache@redhat.com>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "david@kernel.org" <david@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"surenb@google.com" <surenb@google.com>, "ackerleytng@google.com" <ackerleytng@google.com>, 
+	"usama.arif@linux.dev" <usama.arif@linux.dev>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"joannelkoong@gmail.com" <joannelkoong@gmail.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ljs@kernel.org" <ljs@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 83D8120009
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: p4sx3gpaxfbakxgmfomj8aui8rqx9mm4
-X-HE-Tag: 1789161078-34814
-X-HE-Meta: U2FsdGVkX19wudK08NkvmNHuj6wPEO/mviFLwbV9ad1feheozFY+ewGtFhMMqFp+yQTRWj2KWf+BnG/vrCFfE6PKvlXT5Cwk1aeSEbbe/1mwILWFkzwlr4UVzGKfjhYepKBoUmMsmgfNf2wYChtUR/yAnoZbXM/gPXVCTpuzh5rziP8FMWoP/oIv6wbr4ehOZc25++dDePmRf9bggqNDXpfuqYTxVNQ84nnsVcsSWSIF53cByNmn8RcIAfU4aUP41yIpmY2mMcxfhI2DrRExkYGhUbyHyU2ynrxaL13MLTEuvyxIyO9ifCeXqkzjGs9FVIqdyZ+MhPdZgdRXBfoEHvIfgGrsy7RUAfYlV1FPC+gocjTfocL0+mSI+6XC+ORtUdOzPsUTr9hZxRGitwSyg76fQ17uawq9oWBKty0ATh81JlWF78DCt7Uf0fjkhUvBg/mLD9/+VhBOnbr++KhqDlN1hGqURgKeh3Disd9AjPJ4XAyVMCEmHmk7bAQxoGMNsN2ssuvS++r23SFVXZKKU1/BUrNi4PyuxSzTrMtdBlVDRu4yzgBRgcAFykLgo80Q4IpLOk3HZqJdMZ6Uz+3lK7PkI/JJvlUcyAwMmvaR4a96eV4+F+Q0eY+8KB9qKwfwLMj7i0kBjpfqIHas+GG/YAySIJzHd56HnuiNLHCKydEY+Gww7SxpRzwZ4/bvx3rmEBzaYpaKlxuqenjsyLLWptlatxESOtciRZGLTX+fLoCQ+geovZlUA9omE/fQwQODotffwOr0yoANvGXNAjD1fOGiB1aRBTj0x+iN+clNVAftwSopMi1hlc2iQ7PxeKaou+jh3oQ3WeD97DgLR0KlVcdeJWIcXwaPQI5+bqhL9XuIqzMc+HKI8+/KTCg+BdoDB4hKvzIeUlVuQjaqhG9kUSkVwYic5/Z0OaG4YEnKv2gd33o2OQE21RO+C7jtRVgz0d9vW5f+3qWen2qpVip
- KH6BvF3r
- sAC4yu0RNMaUqqNi6YGhIM1X8j5wTT6kQxEbw68bbiNmtVqIs5a6qau2BoXiLTm5qF/mZY9li+/LSwvAC9wjj6Wdf09xfwyua4ZxZVg4RvoazOTLgjEfcPdrNIVyJjjT0w9uqF1bR4pqtE+YRS0YGXHTSOlslEPsLLakCkaolZN/8htc6w7+jw16Ffl6xzJWbGcVVUywlqZj4dRTgHMT/U6OpUWigwznBfO4SlAZSawfjUZGZQwVEuRxojlEnKpOgpu8OumsqJjBnakRpgomUt80Vhy1RR5GM2IPpgJY1SpYeMeNiyzKsvQNGWw==
+X-Stat-Signature: xrosxqqtpnbbgqyku87m76orta4wcnni
+X-Rspamd-Queue-Id: B354140009
+X-HE-Tag: 1789161659-838101
+X-HE-Meta: U2FsdGVkX1+SItWmWcjVHmjiFGE5nUKeX17WhZEWN3UBqck9gWUPRp6ALHwFwU8U1WptSeixd0M559wmuif9bor9oEc8RNhPaPkJkdPPlcXb8bGOowOLCdOtrStnpre3JTzVpR6P4fOIrRXaz/AkedUDBQbgx+lclaTePY6M1KHZO17/KcZBnrNApuGWVl0cWUMsjc3jPPzvxRSxPgjcOVB5EleDaQunS6ry9nEL+NBEkvRL8i1asD5rCSxRJ4H0yj4lXdShVvRRArF9yaRgEMBdVYI+UeX9DwlSe0P4XaT2K7icShzc+FxYkcMgykvaFpmiD1tmfQmEHkv6j651k2uK68tWur2lTwUdb6jSt6b5dpY5OFQJ6oFd12hST0u/C5/cQCcXKqC6yo1cqeEt6Zp+33AtC/Rw3nrPY1LWq9zX5OpE4kYoGy4OMwNx17zpEX6zLgTsLn9eiY8xcj2e+oaNr+30VN5qUwAKOb7kINKZoxE31Ss7PBV+bMUxZPx/4qQ7TNqBCJDnAskY7Tu7g7/HFhoWBPUt+dhXMc4dnfhMhunATCKafepWcgiwXO0NWEI73udFebjmnwDPxxlpkk+TmFvVPTaWBY9K4xCuikmYDwdP4EoTeOVZ/jruuCP81vhsrZizg9ioyYPTfSg17w/MYe8OruJKGiRRC6xDpMTwO7dTeVow8L8Pr76lQpTgLCw6Os2B1TwuHDY2aJzhJ/MTnSk+U7eBqMwq5gTW8sMczc1wJktd2+hqARbGzRXQnPnv14w0GNLZfY6oByZkr+HS6P/zn+Pzzid+ynqmGCmmVP7T8lDCwgSL/xnsQlqBSQGCv6optHQIGMOh5HDSkyInz5XrRmMxzPHP+Sk8cPly1hFhewp7PFD2uNi4OjVkn9VEHPVFo22zD5U70N60H/KAz6W3eRe9Nxabd0BM5v7huXEVhWJwAwOxryOhZVGWgl079ks+1mAO51cDein
+ xlgiMeds
+ 67lDwqQ4PTVuVM/FV0O+OqIOYLPPw6e6t5spCYKZcIW0ayHDTAp0z630nV4HV+c0mKi+9Pe6HWOxEic6U4Ktz9ZGgaN4P4dyDH9mDC+5xDx/BUVZL9PQjISn7CAwIhbNctZlWBizsFL6P+OZjnnKrPypdqpm2238/STNPBCrj8DnjxkboRngs1WzQdUXqFXhcKGZ+Hkx+rJQGkXmYVRA0epLZNIDjX6PdFzoziNWQXSnSIWFLGfi6YNcOuLwUSvBMc4mI6h8KL+qM5n2/LVuQ6jyUHip2k+55K2u5CacAq37JILu4qCoWI/XV9qfWoLolL3d0Gjs2KN9gLXpyFQTN6TtplfL8zGAoqaQrUrWwArhKfCYrRuz+KFQEizzGuz2iZg0AvDNWg5MgV3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,196 +111,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 1:59=E2=80=AFPM Ackerley Tng <ackerleytng@google.co=
-m> wrote:
+On Fri, Sep 11, 2026 at 11:39=E2=80=AFPM Garg, Shivank <shivankg@amd.com> w=
+rote:
+[...]
 >
-> David Matlack <dmatlack@google.com> writes:
+> Thanks for this series.
+> I tested this against a Graph500 regression with 16K mTHP.
+> The series removes the regression and reduces folio_lruvec_lock_irqsave c=
+ontention to approximately the 4K rate.
 >
-> > On 2026-09-11 11:04 AM, Ackerley Tng wrote:
-> >> David Matlack <dmatlack@google.com> writes:
-> >>
-> >> > This series adds support for LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, a =
-new
-> >> > UAPI to enable preserved files to be restored into a userspace-provi=
-ded
-> >> > file instead of a kernel-allocated file, and uses this to support
-> >> > preserving tmpfs files in-place without any changes to the LUO ABI.
-> >> >
-> >>
-> >> I'm interested in the idea of retrieving folios into an fd for a
-> >> different reason, I'm exploring handling over ownership physical memor=
-y
-> >> to a guest_memfd.
-> >>
-> >> > The Live Update Orchestrator (LUO) API currently explicitly returns =
-a
-> >> > new struct file for every preserved file during retrieve() (e.g. via
-> >> > memfd_alloc_file()). This then forces userspace to use anonymous mem=
-fds
-> >> > for all in-memory files it wants to preserve. This works reasonably =
-well
-> >> > for VM guest memory but does not work well for other types of files =
-that
-> >> > userspace may want to preserve (e.g. in-memory logs, binaries,
-> >> > configuration files, etc.).
-> >> >
-> >>
-> >> Does this assume that VM guest memory is usually provided using
-> >> anonymous memfds?
-> >>
-> >> More generally, is the problem that there isn't a simple way to
-> >> implement retrieval into anything other than anonymous memfds?
-> >
-> > Roughly, yes.
-> >
-> >> > Preserving entire tmpfs mounts in-place would require a large amount=
- of
-> >> > kernel support and would effectively make tmpfs an ABI, which is a
-> >> > non-starter (or so I hear). Instead, we can delegate the reconstruct=
-ion
-> >> > of the tmpfs mounts (directory structure, permissions, etc.) post-ke=
-xec
-> >> > to userspace. The kernel just needs to preserve the contents of tmpf=
-s
-> >> > files and provide userspace a mechanism to restore those contents ba=
-ck
-> >> > into a specific file on the filesystem after the kexec. Hence,
-> >> > LIVEUPDATE_SESSION_RETRIEVE_INTO_FD.
-> >> >
-> >>
-> >> Suppose pre-kexec, the data was in a tmpfs file (and fd), how would th=
-e
-> >> preservation work? Would the user have to
-> >>
-> >> 1. Transfer the data from tmpfs fd -> anonymous fd
-> >> 2. Preserve from anonymous fd
-> >> 3. kexec
-> >> 4. Set up the tmpfs fd
-> >> 5. Retrieve into the tmpfs fd
-> >
-> > No, the proposal in this series is to support:
-> >
-> > 1. ioctl(LIVEUPDATE_SESSION_PRESERVE_FD, {TOKEN, tmpfs_fd})
-> > 2. kexec
-> > 3. tmpfs_fd =3D open(..., O_CREAT)
-> > 4. ioctl(LIVEUPDATE_SESSION_RETRIEVE_INTO_FD, {TOKEN, tmpfs_fd})
-> >
-> > No transfering to or from an anonymous fd is required.
-> >
 >
-> Cool that preserving a tmpfs_fd is supported. How is that done without
-> preserving the rest of the tmpfs stuff?
+> Tested-by: Shivank Garg <shivankg@amd.com>
 >
-> Why is it possible to preserve the fd without the rest of the tmpfs
-> stuff but not retrieve without the rest of the tmpfs stuff?
->
-> Is retrieving into an fd a bit too much of a shortcut? Would preserving
-> the rest of the tmpfs eventually be required, and hence retrieval of the
-> rest of tmpfs should also be eventually supported symmetrically?
 
-The idea is that the kernel is responsible for preserving the
-_contents_ of the tmpfs file in place. Userspace is responsible for
-setting up a new tmpfs mount, configuring permissions, etc. after
-kexec and telling the kernel which file should receive those preserved
-contents. Userspace set up these mounts before kexec, so it is
-responsible for setting them up after kexec as well. I see no issue
-with that.
+Thanks very much, Shivank. I=E2=80=99m very happy to see that
+mTHP LRUCACHE not only resolves your regression but also
+improves the performance of your case.
 
-There is some nuance that this series doesn't handle though (it is RFC
-after all). Pratyush brought up offline that the tmpfs mount might
-have allocation policies attached to it. The
-LIVEUPDATE_SESSION_RETRIEVE_INTO_FD handler needs to confirm the
-preserved contents do not violate the allocation policies of the mount
-it is retrieving into. But that seems easily solvable to me.
+As discussed with David, this series will be respun after Hugh=E2=80=99s
+work[1] is merged.
+
+In the meantime, I=E2=80=99d really appreciate it if you could test an
+updated version that I haven=E2=80=99t sent out before:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/baohua/linux.git/log/?h=3Dm=
+thp_lrucache
+
+It includes some modifications based on Sashiko=E2=80=99s review comments
+on the version you tested. I=E2=80=99d like to know whether it still provid=
+es
+the same performance gains you saw with that version.
+
+[1] https://lore.kernel.org/linux-mm/e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@g=
+oogle.com/
 
 >
-> >> > An alternative approach to restoring data to a named file would be
-> >> > supporting a zero-copy sendfile() that can be used to convert named
-> >> > tmpfs files to/from memfds across the kexec. But this poses signific=
-ant
-> >> > challenges on the *preserve* side since the preserved file might sti=
-ll
-> >> > be actively in use. The benefit of the retrieve-into approach introd=
-uced
-> >> > in this series is that it does not require dealing with two differen=
-t
-> >> > files. There is only ever one file that owns the preserved memory.
-> >> >
-> >>
-> >> Would it be more symmetric if the process is
-> >>
-> >> 1. Transfer the data from tmpfs fd -> anonymous fd
-> >> 2. Preserve from anonymous fd
-> >> 3. kexec
-> >> 4. Retrieve into anonymous fd
-> >> 5. Transfer the data from anonymous fd -> tmpfs fd
-> >>
-> >> As to the exact details of "transfer", I think the best we could do
-> >> would be some kind of move from one fd's page cache to the other fd's
-> >> page cache?
-> >>
-> >> Is the goal of the transfer to avoid any memcpy and fully transfer
-> >> ownership (so, not just by increasing folio refcounts?)
-> >
-> > Yes this is the alternative proposal that has been proposed and
-> > discussed a little bit off list, with sendfile() and copy_file_range()
-> > being the possible mechanisms to do the "transfer". I think there are a
-> > few fundamental problems with that approach on the pre-kexec side.
-> >
-> >  1. iommufd requires that fds mapped into it are preserved. If the file
-> >     mapped into iommufd is tmpfs, but then we transfer that file to mem=
-fd
-> >     for preservation, iommufd will fail to preserve because the tmpfs f=
-ile
-> >     is not preserved.
-> >
-> >  2. Even if you only use this feature for files not mapped into an
-> >     iommufd, transfering the contents in a zero-copy way seems
-> >     challenging. What do you do if the tmpfs file is still in use when
-> >     you want to transfer it?
-> >
+> System and Workload
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >
-> When you say in-use, I suppose you mean folio is in-use by some IO and
-> is mapped in IO page tables, and that the IO must continue while the
-> folio is transferred?
+> AMD EPYC Zen 5 System, 2 sockets, 160 cores/socket,
+> SMT on -> 320 cores / 640 threads
+> 2 NUMA nodes, ~512 GB/node
+> node 0 CPUs: 0-159,320-479
 >
-> Are you expecting guests (as in stage 2 mappings) to continue to be
-> functional while the folio is transferred?
+> Base: v7.3-rc2+ (50d05c7c76c9)
+> Runtime: performance governor, preempt=3Dfull (lazy)
 >
-> I'll have to think a bit more, I was initially thinking of just
-> transferring folios where I could unmap from everywhere (processes,
-> stage 2, IO page tables) for the transfer.
+> Workload: Graph500, Scale 27, edgefactor 16
+> Metric: median_time in ms (lower is better)
+>
+> Bind to node 0 with numactl -C 0-159,320-479 -m 0
+>
+>
+> Performance
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>                   Base       Patched    delta
+> 4K                109.60     109.11     -0.4%
+> mTHP-16K          144.10      99.00    -31.3%
+> mTHP-64K          104.75     104.25     -0.5%
+>
+> mTHP-16K was ~31% slower than THP-never, due to lock contentions.
+> With your series, mTHP-16 performs ~9% faster than THP-never.
+>
+>
+> The dominant folio_lruvec_lock_irqsave entries were:
+>
+>                    Base                  Patched
+>                contended  wait         contended  wait
+> 4K               834603   2.41 m         844193   2.61 m
+> mTHP-16K        7008834   28.88 m        840695   4.87 m
+> mTHP-64K         188144   752 ms         40874    93.46 ms
+>
+>
 
-I was imagining a userspace process may have the tmpfs file mmap()'d
-and is accessing the memory. I guess you can argue that userspace
-should stop doing that during LU. But I think the iommufd use-case
-shows that that is not really possible. The whole point is to preserve
-the memory mapped into the iommufd throughout the Live Update.
-
->
-> >> > By leaving file and metadata allocation purely in the purview of
-> >> > userspace, programs can create the target files where they want, wit=
-h
-> >> > the names and security permissions they desire, before directing the
-> >> > kernel to restore the preserved folios into them.
-> >> >
-> >> > Currently, only tmpfs shmem files are allowed as valid target recept=
-ors.
-> >> > Attempting to target populated files, or anything other than an empt=
-y
-> >> > shmem file, will trigger -EINVAL. HugeTLBfs files could be supported=
- in
-> >> > the future.
-> >> >
-> >>
-> >> Is this basically that at some point, all in-memory filesystems' fds c=
-an
-> >> support transfers?
-> >
-> > Yes, theoretically.
-> >
-> >>
-> >> >
-> >> > [...snip...]
-> >> >
+Best Regards
+Barry
 
