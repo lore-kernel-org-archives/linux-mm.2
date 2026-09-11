@@ -4,139 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315A4C88E4D
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 19:48:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C851C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 20:44:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 473086B0088; Fri, 11 Sep 2026 15:47:59 -0400 (EDT)
+	id 554446B0088; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 424546B008C; Fri, 11 Sep 2026 15:47:59 -0400 (EDT)
+	id 504456B008C; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3137C6B0092; Fri, 11 Sep 2026 15:47:59 -0400 (EDT)
+	id 3F2A26B0092; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 162BD6B0088
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 15:47:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DB55120187
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:47:58 +0000 (UTC)
-X-FDA: 85202517036.12.95EADE7
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A097712000D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 19:47:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MlaLKI5Q;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789156076;
-	b=DvcIJLIMuqcOmtvoemRP8LbPA9QE79bOTfs55KRfEH9jUS/07GM2Wsnl9HKa9ZJJUGGXNB
-	mD/hl2Yzml+Ma1hqiqQnhIkHk8EeTMmCtElXZm+hOdV+zEmqLnWG3dWFZcv0awxDT/f+W4
-	jeQFALCDXe//e5znEyOm6Sl+7S8Uv0I=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MlaLKI5Q;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789156076;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BA1E6B0088
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 16:44:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BBAE160362
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:44:19 +0000 (UTC)
+X-FDA: 85202659038.02.9F0D587
+Received: from mail-qk2-f11.google.com (mail-qk2-f11.google.com [74.125.230.203])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 30B014000C
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:44:17 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=g8N5nwxT;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.203 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789159457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vrYQ8fif4AyPdCzj9gAZ4OwR6V4iYcgiDS5Z8k+S3YA=;
-	b=2Rwj/pc1P2FmH1kGIMyxKGZk14iCqCXQFrOTO3hHLnQXXzt9UgmYaQPdEg90cJv+I6mAoi
-	XQJDyBwFA9ux+01HvKPpOVyzYcNIyVidf/kxRwxreURHfCHcJdYKWkzXtXVW5kHZ1of0zr
-	gPkFnaHMpAlO6IGt0BZVpRaQYNjscno=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530411c7ee1so127451cf.0
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 12:47:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789156076; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z490aufXOCvOhuV2dY/bt7ytmcFYy+0wbIKiImy8LcnjYutiqMNnjsrtegiZFUfOeO
-         BH0kRdyCkbe/XDPqwUwvCmap0pTDZXHSyk2Bkzvd0JJurD4DPvkGd3bwg9fvIYb3WizE
-         MufTN8fa1TfjYL93TzMkyLCwxoI9nmOz/qgtY7i4YqVrAZD+yTLNjx5CtSvuQNIwoI9s
-         ke1uw9sPkhLKCQpn6oHdGXecw2O6fWKj0lSwSb0CNmsGDT/0ywa617Slf8MaxPMobBqx
-         8Wc5UTZw/yJ7bPle+lYdnBBOgWhz2d0VZxoXAx4URN/2bv08hfRr2E1OjcIxQ8B//8Fu
-         R0eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vrYQ8fif4AyPdCzj9gAZ4OwR6V4iYcgiDS5Z8k+S3YA=;
-        fh=jatDWfCM3AX81TVAZO/4N1S37gTqh0NZN7d4k8/IXWM=;
-        b=Kk8yCkUAo3t8SbxCJFonoW45DsFPzzJrynaFTrrZKJpjhaexDb9xFX8zmo6QsiNxBw
-         es9SFIFyYSGrcnqFolH1aIHVD4szIapIKBaNCbOdh+q4tpLXahBTGXDv0RSNl6GN9QoH
-         hfNtn690gKVphmcdPGYWoptPEs+mtND5XSOH86/+MFvbZOuoUqIMvOprlhWjhFPouxgU
-         hUdhDW75QAd8BmctfgWYWWfSM89lW89pRuBfYjCoXiB3ntQDWhDqIhbUoKeEDlUPjiDg
-         8PXH9kGw2fwnCyWR10psTJIunTwH7b2+H2Jw8Liqu2H08vwV+q6Zk0QxAzM7zDfDdBTG
-         hJ+g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
+	b=RyrES8GO9ipgl/KmbdN1TfGtGZ3SKPNd4pUOgtDX5SWmnklxKAZ2g2yKudNbi2u7K1u657
+	NlAJtkKSNYnFzc/mIO8Q2DPQVs771qsShn9ceaqdDKiEbAG87SyxVb73x1+k1BIUomNyX9
+	0R++XxRXZhut7v7BN19j+q8HdUnxsdk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789159457;
+	b=Gr/kWhrJ9chSTlTCj6ZYPl2J3rhYUGXjMHvlx2o/iNszoHwMz6HFJtn/5DMDQsj9YnZ2kA
+	jAlsXutNOTWG3F9r5tp5+wuJ9ZxQXhUpxE39jOc23aSK2Ybkm7lOOq4cySQBbSem7hS4yn
+	4N+Hm/CxXKMo7lvHOLm5qawwPTg+ZR4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=g8N5nwxT;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.203 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk2-f11.google.com with SMTP id d75a77b69052e-530cedd4e6eso1825971cf.1
+        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:44:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789156076; x=1789760876; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=cmpxchg.org; s=google; t=1789159456; x=1789764256; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=vrYQ8fif4AyPdCzj9gAZ4OwR6V4iYcgiDS5Z8k+S3YA=;
-        b=MlaLKI5Q0IuvkvcnWFkXtets5fIf2gtLMwMAGpUgFjtdEPS995GSgXw5XVWGyVXEDN
-         RHZYbrHVTATd72NpeSzcEXioxJkiS+H0vcNb30NqRRGqWQaKJnlhwyiBs2STzGW8U1Rf
-         Mgm3LAolI/oLV0HYYSj4ZN7r4To+Pl61ctrShD9pkvvU/vFb1jeVCHdaXhhBEtEsQ1Sa
-         Tsd+pcSHPHpXs+pFyNt1W6VCZdTEmGbrfULwH4GlChVjFixzvH/2Mh1HKbHmSL6+R1Lx
-         KaOlZIEOKdPfPM+tAme8nDnmC5EAF9MC4hu0p3+Q7gibAV18KuAxEIyY9Kltrww+I957
-         R3aA==
+        bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
+        b=g8N5nwxTr7YMvOitFx1xmPyrzI3n9pRn3ydnXHjZcfH71TzhcvqOO8nQ63Otz46mMM
+         ZTFXhtaFvEEdZKBG0Tw618mduTxjNBaTNZ87+70KTECOFh+nAc/T99uQ/UhKAMSXhhlA
+         E4STJSLlBbg1vaVt2NVOYtcRjovf6mgghmLAejWTrPFUnzSEF7LbXFm9nQ49ODIwI3lF
+         jNqi4tqlE0574+uYS1jX4KdBXxpIjyA456moCbTCErKDMkzzrypNC34ucJIMCjesHLW2
+         HQJmJcOGjMEEMdSjRjCk66Y+U9hyQIYOtN5QCGQ1dcwE/XcO1pXiP7LZxEib+vOS0iLG
+         /KMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789156076; x=1789760876;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1789159456; x=1789764256;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vrYQ8fif4AyPdCzj9gAZ4OwR6V4iYcgiDS5Z8k+S3YA=;
-        b=mA80XgmE2cycaluZ9Cii/Q/3bjy5xUV4zPaI7RMXJaalOUmnpng4G9jIMQ08gg9ZBP
-         HPrnfS0T1B5q1ZltaKY7mk1LskG7YAGKembca9C5LQxalJNhKaJFBbSApCJOHke5FNy7
-         t0xsuyXemLm/NtL/llyvJqRgdkLDjoZvO9WoQEay9KgxInse11AmHg0I2fdEmTazpppA
-         LlzUgwBKIwvRdn/UNEEOCAzFV3ab4U3lkFkDmv39+05I4cagA2CDlZ6FDG6t8rDDPNni
-         R8EmLnsQxd9m6Shnbq+8jm21Kv7ru9hk+hJkPqTZGTvaU5jh28g1qmIZLsbz83s6uqAJ
-         pDHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxPnjcTRbGHaTXvOy8oQOiq2KTQ2tYnAEr5bZIJ0OgzXSJ7Rm+9i/tiSqCif9A9dnT+gX5Xa6Tz0A==@kvack.org
-X-Gm-Message-State: AFuF++nLa5t4zxkJfrVMFSrmgmYz3CsuMvkFODhwok7FMCaRP3oZdRBI
-	i6PkOAsIKjjx0DQS/95fe7iWhA6Zo3ykY8e9R3ibu06P1fmNkPq5XiEPriGkhmogelHUpAIfMYG
-	dnXd/Cag/FR0ukkFkj5CYMLUtJZ+755tJrqHrUC+G
-X-Gm-Gg: AYBFou1Qgz4TOBZ8n2WyzfIkefP/TEjkHrP33IA+LMGv8743LGeUEVBUsR7AfikpfhF
-	Gc7LC+h3b47iD9haIdoEO5SlUexdTVUbtCxIt+t9L09aBLxhG7DUJ6AaxX1nCzG8cv3/NFiWQIY
-	2+kwfibCQBtQfEzpm9pAvlZ2785KEzvg59PH35j9SHtQvOor62SJ2/9XMipOU/rI4Tp3pC0PbhK
-	+BX3dPnUWJqeQ8shJT18aHUWh8BI00/nchPgVxURqDVRwXcnZlSLF1IqjUMumgjLikjZ+yKojPz
-	QsUp1vrCGqFICuRm/iUeUNuCmPgcGyXrWIMATKyZQa+D1QE7EA1wC+mYkFy1QO3lPVNckORCcvC
-	HwEWC0wtjJw==
-X-Received: by 2002:ac8:5749:0:b0:530:39d7:ef48 with SMTP id
- d75a77b69052e-530e612de23mr89771cf.3.1789156074760; Fri, 11 Sep 2026 12:47:54
- -0700 (PDT)
+        bh=FDi78tn+rNyw2f5XP4H8xqn6L7v0YajTpN+MIEXmNi8=;
+        b=eIAtWruJPeilgI7f2Flcc/gfdlUj0gVQijNvCHkvUK3kf+HboATXkaHwpD+7x7hMXt
+         K9mBBE8MoI8tjOLqwUVTKl5dTN/uAgyV0p8OLvI6Wj7HF/SIJrLFy3eoYqHpuWFCApeE
+         2HTBet71WmxTe/LVeUQtkIuotc6XZw4iCrm+6hkuhAJc+ysDNOyw0EHmdwPQ6HmdHvJa
+         9b9dwLzJ9OnlwKk1AfCVca+Zr3ced88hFuE6D1eWsx8D3cBnjwrOlhV8+aXb/H0gZx1Z
+         rkfhLaM2OIuvjfvbUbXvf2BkeDT+wHt6//8L2CNz7cwhzmAirvMADCfOmJoHT3ciZtZS
+         j/Lw==
+X-Forwarded-Encrypted: i=1; AKwUvBzFqVQ7koht7HHIQSYGx4nwb1YR1xa1XE0X/gOcBE9XW2P1rK5tEA3Sr3n+f7CxVns3eXjIf+Lk1Q==@kvack.org
+X-Gm-Message-State: AFuF++mIlhTGuSvxsLg6ZkUAEJBSHAuckbT49KQh3jZU6JX1J0CqXFc2
+	mfHNolZJsBuWMc+9MxMkaiZSmDXDQ1D16FtoQab5uvbqdZz20ytFcwpeNk8iS//InvQ=
+X-Gm-Gg: AYBFou0mgd7e0pntf13hG8xdoZhyBniAcFSXta1Lb3lcElPCbAu9g+gIE35OROVNc9f
+	Wyf2kto/bAJSEg8M8gzmMkPjWllFihLPXoofmI/Zb+XVk1RQQasIBdJBxOzBnQ+3k9gtAmLwVjI
+	VzfOB6xhz4S3YLIC5WqYzjDrN1TGhg7r+jKmEyeIALzVbOUiAIZquaIhCFWASoCEYN5iaxPAl3L
+	dQzRWuZcYjOimctSzM7e6L6VIAcumXIE5sl5NFqyxMQ8s0RMOur+3UTDAauDsVgLOdmOtQ8TazX
+	y/0Abzqh/7EQANRbrvxuBuveUPTtTwSDdYoxSGf2aHrop4km6q8ZAAcwh28wHXvl9wSKjFO4+U8
+	4zPS5nMQcjchRj1Z9VSvxzGXfsOgSXRRZsjFjEMXuvIZggYWp62mEjR3laTiWQ0V/ot7zyDMgtW
+	/eu0ZiMzAYtZBoPbwX2G/DOKYJNFrT9tQgBOZ0E8rpvq+sRcHIlnawbWq33zSh0h46RGL91A==
+X-Received: by 2002:ac8:5e52:0:b0:530:dc5e:27b8 with SMTP id d75a77b69052e-530dc5e2fb1mr37003331cf.27.1789159456019;
+        Fri, 11 Sep 2026 13:44:16 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca511ff0sm28939081cf.31.2026.09.11.13.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 13:44:15 -0700 (PDT)
+Date: Fri, 11 Sep 2026 16:44:14 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, hch@infradead.org, abuehaze@amazon.com,
+	akpm@linux-foundation.org, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, dgc@kernel.org, dipietro.salvatore@gmail.com,
+	djwong@kernel.org, jackmanb@google.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	vbabka@kernel.org, willy@infradead.org, ziy@nvidia.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brendan Jackman <brendan.jackman@linux.dev>
+Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <aqRoHr8XGzzDUjBk@cmpxchg.org>
+References: <20260911142102.2294202-1-dipiets@amazon.it>
 MIME-Version: 1.0
-References: <20260911194145.1781926-1-surenb@google.com> <20260911194145.1781926-5-surenb@google.com>
- <aqRaONEiklcnblwQ@gremlin>
-In-Reply-To: <aqRaONEiklcnblwQ@gremlin>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 11 Sep 2026 12:47:43 -0700
-X-Gm-Features: AcwNN1XsaY36agWBMGEWlskBvCYjftnblVqAHV0x5LuDyqQXoH6GyBmbsL07NFo
-Message-ID: <CAJuCfpFRmDJ=hu8et-M+tZtTmYoNcebaHgDqMz1V03eM7WL0LQ@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] proc/task_mmu: remove special-casing of
- smap_gather_stats() start parameter
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, xueyuan.chen21@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A097712000D
-X-Stat-Signature: otzncy5swxmnzox53j6fymf91owamcke
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911142102.2294202-1-dipiets@amazon.it>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789156076-488901
-X-HE-Meta: U2FsdGVkX1/yU1jXbw8cKRmf3B2TgovQywL/1tt/zrpHxbUq/B2m6p6e3yKT365zRC+cfg2+G17VIVX+bvbcwjM/7LhZ8T4v+4t7lB4Av2MI7XZJyK7G8n+Q/s0ZoOpvVqO6MHcYl4itQrqDEhnau+3lzVoEt8wj6ObLeVC+mBN9R+o5X3MbmEdUavsi45wmc60W7UQ0dr8sLzqN033NWDn0ONLNa/CbPl33Qm785OzGDyYwmV3WLpTNVaC86M3W4os2iiGR+ofjHSzABBrnoaU6N5ccFaAC0SXU/Nw2gkerX4tDRP+7mxCbthlmujG+/L3vzhxgzKHYSECieZjG/ZyAYedCMlRWYCfQrKLOwMbdJnELoPcYTXQYKfcjxsSKnrRn1jsFRh2emZhJKYqk00ZGR/aP/0bTaSYOZuO1qJagt/D1r6wH12h61ulqI0LZ04U3VxI5nw2dARQj7x+gt+3ACooP1Y7ZGZLGDHl+FJtc4l0jFoM0+7oHxc5Bkk5fJ8N0m1McWB1tBWQEtSksmXf8VhjZrj1jeO2LrkryFnbpzyHb9N/l4BXGyM4dXDmpXqZ/rwhhABhT0HroJ7gHu4W4418RSCPjvAQ2IBp6YrdPh8iACld3KrBTCAnSDg7nXYNyU1s7hQU2LU4EF8LPoT2tMJrCQuk/kfsQvwlk8Gf2zRNJHa9VVyr995cMY1X/VSPN9twIejNXnRhv53JobXfSSCgFvqcu3sV0koG0yeoISWivafdG3nETIhkbRyYoTY1lLxWRnqfglS93Wa4UqdKjEMyPrUajx8PueDl5aSgX/2EtUglTUUcztRur04T+9A8sIY5WGCF9gYbrNH5JExGoOF2204dVn4j4PVssgazUbInv5Kg+YpqESs6ZvmvedGxe2MMoCEva+QAXU94iP2TwGFY5k6Dvx1I8W/QlnswAxuqjSVAD2qtGVrBAqMMenMZEmFCttfm4BN/Iljk
- NlZCAASB
- Jbyn8ogSEJ2/wtuSBRzTNfhI2HiisRuNOdas8eSgZJXXLyMHn78XMXPMNnTtraIvBVeUvgU22jzc9ri6mFTKjzyHI6xcWxZm/mbgvfZN7kh4oj74//SDc9CkbEbZvAFlKOCJBtBPcqJzesejmHNjrnJtLIlwBeC+IMNA+ddIPvY8IoXyu47+JXL4MV3Mj5bhlFRGbNF3zBAI+8M+3o3DuEUErHsVArK4Uyp8V+wA9hZo+UN8pzVseDVL43+deASKMSUKajWgJgZOalvObVGMcrOzlMBTYgJ6ksuUhDMCwUCxOeSmr2aq5v2t20BsEId1X4ekNWamNb08J16uIX/R5w1bBIU6BM1d2YN65fCitGNau74y4uqn4Gc2i412IvogHbvj4tN7ayEA+FP8zWs4fZifRfA==
+X-Stat-Signature: eqzt5n73emkim68sqie65j1mfogxuoem
+X-Rspamd-Queue-Id: 30B014000C
+X-HE-Tag: 1789159457-602155
+X-HE-Meta: U2FsdGVkX19sZaRnX6AXPlMcB5FB1klBpLzShB0aOQdoh1SPvW3gnkZn8diQnr0tKFUtpUjE5+4KXGZgeOijwajtSrrTBt6X5K35XQwcppIv/wrYCUB364YvLXk9WMkv6AF/MpwBv+wvTueIhVUbmNzrJDxfZYYB1KIAn5F4aaPoAH2/S/CcbAFv+h4nQhbG859feo9w924W/fHsAATRF3lPDDLWxTQGhmhFuyg0nnG1T9VZ9kXepvC+v/Alvex+71l5ojhpGo5da0/65od64zbJtpD+mCOSzdCgKlWbxQGinBYniKolHgz8gx1Oy0AXVw39+YZOxZ4OkuLwBgcQz6J0WwQcCoa4nD5oodxd5vCCLwPbSbuJ9zHYFTHgJZ+NWEe7/0sZvU0BkPn8+c7hhSki2LcRdTTPlEs3UXW9pp5d8J41zLtJks5TXxB4es5zG13ZhVWWJBVdVoz5H/mK+VGyZKT/0Vp3s506BV623T0Hxv9BXa6dx8xyRXSQgddX2DBeNz4ur/b4nQT2DMUXwLBy09OBlj+5AF/hLyWDdfiTAzWualBaAxYTrHKqrOQqOeyNp7Dq5TTgkGfITzVfkO+4xtla3yUpz0MhviGGDVSPHyDTZ2MOLcMn9CT6GDr9MukJ1v6cyWpV/BREsuh/wK+mzcEGl6hxVP4wHeepH2lIOLpm546AYWt7WXXSI2SzlKh5MFuhznhpOCUYiQikZZOr3HrtuCefjuFDapXMsSOvUW0fQ9Ih89bDQrv4KWMeWDfQNmIRSHwbCDefANBuoKR8p/sQkBqbJm/WY8uVt9qeL5dWHt1LpSZtGOa/mJ+1oVe0qYNFdIdinJZv9UKM8BZHhO64pBBbJTWpsevG/rKX7rvx2FztxHhQa1nD0/P3olnWMSdm+HEBvmDeVClWZ38ZHF+yoMKscfpSOdL5EXTKuHv71yZ0/1gheX0rbUq25Kzkcl3ZFuGwVszOj88
+ iwOtNVNl
+ ha0fiN5nbO31WpIyDi5biGJQceZclGMV5P1XxPLhTCxXPjKj2b0nPTKKlNR4yKX8HczSA3GM1Ngq2PMFVQ0ONeilasABeoxuIeEVVnJSf4m/QskONAnNoW2tX8nHCNqJz3eetmwoJe56zZsoHGF5hSJbpzsCK1q4FC2bgKWqfNAmJILD7osL55TzkuvwqIIWetr23d/85+m6iCjfkOqSRswUoWJwnr7NLE424Fu5H8o0s5l7zl/QSut9jFJFaVtZ1Xvb7Ah0OUKu4wWh+wfT+oG4wNQZvUVNXG0v1A2qhOzLJM8Wi20PM/cQFqIow9MHFuVieXVBOMyOLdOQXg+yIRRaMTqsDZDlTIpS26Mf80LrUftP+X1tmt5eUTBTXOljuEiBMmhEqD1om2qSIDFMfWS3y5ZOsbkJZvn5nabt0QqGAoJZJR6I1GUDt3noQ0BwCvvpEAuOd+e1ISRExzfyRAag4Bpm0jqeHgpDNth3fQCrHAUMXbQC1NB7QyNZacNLH/69mo4RUUyE9ZcXxVAAGvd/9FwEVroKAyiY8dmDGdzAM5+/yVTK6r5wMoxAeVjGur1iuaNk2+sPeCHwgwc1GZtnncNj2llTJv0G+6WnoJIUvpjh9u0K7JEm1gFpdXBP7GlUO31Nk6mZUkkx46yMt+wIax34DvenYSgTCNtPmCs1TXIONI2lQ9CvDNZPB4Cl+MUUrcnWJve6rTqpx3+g6ec9TA+GSe2VFV64AdzkbxZweMXI+871wPcCF7NUXbjyp2TGF4RpHAI4xDMO9dS0jxsE6qMFv4KcmZ0n73UA+WQwinJETigwb1RgwXDKO7SErx+3heAK242y0H66PbJbXVqIbpOby5pKyMjpml39l7EQOHwMIlYgFsZr9+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,162 +129,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 12:45=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org> wrote:
->
-> On Fri, Sep 11, 2026 at 12:41:42PM -0700, Suren Baghdasaryan wrote:
-> > smap_gather_stats() interprets its start parameter to mean vma->vm_star=
-t
-> > when it's set to 0. Eliminate this special interpretation and provide t=
-wo
-> > separate functions for a partial and complete VMA walk.
-> >
-> > Since smap_gather_stats() operates within a single VMA, we can replace
-> > walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
-> > which is simpler and also can be called while holding per-VMA lock.
-> >
-> > No functional change intended.
-> >
-> > Suggested by: Lorenzo Stoakes <ljs@kernel.org>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> LGTM so:
->
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Fri, Sep 11, 2026 at 02:21:02PM +0000, Salvatore Dipietro wrote:
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the iomap buffered write
+> path.  When memory is fragmented, each failed costly-order allocation
+> enters __alloc_pages_slowpath() which runs direct compaction and
+> drain_all_pages(), causing a 0.38x throughput drop on PostgreSQL
+> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+> 
+> The root issue is that direct compaction is too expensive for hot
+> allocation paths that have fallbacks to smaller allocations.
+> __filemap_get_folio_mpol() already marks higher-order allocations with
+> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+> failure.  However, the page allocator still attempts full direct
+> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+> aggressive when the caller will simply retry at a lower order.
+> 
+> For costly-order allocations with __GFP_NORETRY, suppress direct reclaim
+> for the whole slowpath by computing can_direct_reclaim (and hence
+> can_compact) as false.  The !can_direct_reclaim check near the top of
+> the slowpath then short-circuits to nopage: no direct reclaim, no direct
+> compaction and no drain_all_pages() IPI across every CPU.  kswapd (and
+> in turn kcompactd) is still woken further down for background
+> defragmentation, so compaction keeps working for long-term system health
+> while being removed from the latency-critical direct allocation path.
+> 
+> Allocations that also request __GFP_THISNODE are exempted.  That flag
+> pairing identifies the local-node-first THP attempt issued by
+> alloc_pages_mpol() (mempolicy.c), which relies on direct compaction to
+> form transparent huge pages.  __GFP_NOFAIL is exempted as well, so a
+> must-not-fail allocation is never made to fail.
+> 
+> Test environment:
+>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>   OS:        AL2023
+>   Kernel:    v7.3-rc1
+>   Database:  PostgreSQL 18.4
+>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+> 
+> Results (average of 3 runs, TPS):
+>   Config                                       Avg TPS   % vs baseline
+>   AL2023 stock 6.1 kernel (pre-5d8edfb900d5)   136,942           n/a
+>   v7.3-rc1 baseline (no patch)                  59,408             -
+>   v7.3-rc1 + this patch                        161,994       +172.7%
+> 
+> The patch fully recovers the pre-5d8edfb900d5 performance, bringing
+> throughput back above the pre-regression level and well clear of the
+> ~59k baseline.  The AL2023 6.1 row runs a kernel that predates commit
+> 5d8edfb900d5 ("iomap: Copy larger chunks from userspace"), so it is not
+> directly comparable, but it shows the pre-regression level and confirms
+> that the ~59k baseline is the anomaly and not the norm.
+> 
+> 
+> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
+> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
+> Link: https://lore.kernel.org/all/20260710143437.12379-1-dipiets@amazon.it/T/#u [v3]
+> Link: https://lore.kernel.org/all/20260904115629.3993331-1-dipiets@amazon.it/T/#u [v4]
+> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> Cc: stable@vger.kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Dave Chinner <dgc@kernel.org>
+> Cc: Ritesh Harjani <ritesh.list@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-xfs@vger.kernel.org
+> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+> ---
+> v5: Derive the decision into a local flag instead of mutating gfp_mask
 
-Thanks!
+I commented on the v5 variant here:
 
->
-> > ---
-> >  fs/proc/task_mmu.c | 52 +++++++++++++++++++++++++++++++---------------
-> >  1 file changed, 35 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index 0e53eb065a3e..a6026ffd07f1 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -1246,20 +1246,26 @@ get_smaps_shmem_walk_ops(struct proc_maps_priva=
-te *priv)
-> >       return &smaps_shmem_walk_vma_lock_ops;
-> >  }
-> >
-> > -/*
-> > - * Gather mem stats from @vma with the indicated beginning
-> > - * address @start, and keep them in @mss.
-> > +/**
-> > + * smap_gather_stats_range() - Gather mem stats from a portion of the =
-@vma.
-> > + * @priv: proc maps private state.
-> > + * @vma: The VMA to gather stats for.
-> > + * @mss: The accumulated stats.
-> > + * @start: The address from which to start.
-> >   *
-> > - * Use vm_start of @vma as the beginning address if @start is 0.
-> > + * This gathers stats for the portion of the VMA starting at the @star=
-t
-> > + * address.
-> >   */
-> > -static void smap_gather_stats(struct proc_maps_private *priv,
-> > -                           struct vm_area_struct *vma,
-> > -                           struct mem_size_stats *mss, unsigned long s=
-tart)
-> > +static void smap_gather_stats_range(struct proc_maps_private *priv,
-> > +             struct vm_area_struct *vma,
-> > +             struct mem_size_stats *mss,
-> > +             unsigned long start)
-> >  {
-> >       const struct mm_walk_ops *ops =3D get_smaps_walk_ops(priv);
-> > +     const bool is_partial =3D start > vma->vm_start;
-> >
-> >       /* Invalid start */
-> > -     if (start >=3D vma->vm_end)
-> > +     if (start < vma->vm_start || start >=3D vma->vm_end)
-> >               return;
-> >
-> >       if (vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
-> > @@ -1278,20 +1284,31 @@ static void smap_gather_stats(struct proc_maps_=
-private *priv,
-> >               const unsigned long shmem_swapped =3D shmem_swap_usage(vm=
-a);
-> >               const bool is_cow =3D vma_is_cow_mapping(vma);
-> >
-> > -             if (start || (shmem_swapped && is_cow))
-> > +             if (is_partial || (shmem_swapped && is_cow))
-> >                       ops =3D get_smaps_shmem_walk_ops(priv);
-> >               else
-> >                       mss->swap +=3D shmem_swapped;
-> >       }
-> >
-> > -     if (!start)
-> > -             walk_page_vma(vma, ops, mss);
-> > -     else
-> > -             walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss)=
-;
-> > +     walk_page_range_vma(vma, start, vma->vm_end, ops, mss);
-> >
-> >       reacquire_rcu(priv);
-> >  }
-> >
-> > +/**
-> > + * smap_gather_stats() - Gather mem stats from the entire @vma.
-> > + * @priv: proc maps private state.
-> > + * @vma: The VMA to gather stats for.
-> > + * @mss: The accumulated stats.
-> > + *
-> > + * This gathers stats for the whole of the VMA.
-> > + */
-> > +static void smap_gather_stats(struct proc_maps_private *priv,
-> > +             struct vm_area_struct *vma, struct mem_size_stats *mss)
-> > +{
-> > +     smap_gather_stats_range(priv, vma, mss, vma->vm_start);
-> > +}
-> > +
-> >  #define SEQ_PUT_DEC(str, val) \
-> >               seq_put_decimal_ull_width(m, str, (val) >> 10, 8)
-> >
-> > @@ -1342,7 +1359,7 @@ static int show_smap(struct seq_file *m, void *v)
-> >       struct vm_area_struct *vma =3D v;
-> >       struct mem_size_stats mss =3D {};
-> >
-> > -     smap_gather_stats(priv, vma, &mss, 0);
-> > +     smap_gather_stats(priv, vma, &mss);
-> >
-> >       show_map_vma(m, vma);
-> >
-> > @@ -1395,7 +1412,7 @@ static int show_smaps_rollup(struct seq_file *m, =
-void *v)
-> >
-> >       vma_start =3D vma->vm_start;
-> >       do {
-> > -             smap_gather_stats(priv, vma, &mss, 0);
-> > +             smap_gather_stats(priv, vma, &mss);
-> >               last_vma_end =3D vma->vm_end;
-> >
-> >               /*
-> > @@ -1454,14 +1471,15 @@ static int show_smaps_rollup(struct seq_file *m=
-, void *v)
-> >
-> >                       /* Case 1 and 2 above */
-> >                       if (vma->vm_start >=3D last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, 0);
-> > +                             smap_gather_stats(priv, vma, &mss);
-> >                               last_vma_end =3D vma->vm_end;
-> >                               continue;
-> >                       }
-> >
-> >                       /* Case 4 above */
-> >                       if (vma->vm_end > last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, last_v=
-ma_end);
-> > +                             smap_gather_stats_range(priv, vma, &mss,
-> > +                                                     last_vma_end);
-> >                               last_vma_end =3D vma->vm_end;
-> >                       }
-> >               }
-> > --
-> > 2.55.0.1007.g17ff1f9808-goog
-> >
->
-> --
-> Cheers, Lorenzo
+https://lore.kernel.org/all/aqQlUr-1h07G8JWM@cmpxchg.org/
+
+I think v4 was better.
 
