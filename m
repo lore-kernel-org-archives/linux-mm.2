@@ -4,110 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AF7C88E54
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A53F1C88E53
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 08:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA5126B0092; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
+	id 7BF256B0093; Fri, 11 Sep 2026 04:52:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A56186B0093; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
+	id 747AB6B0095; Fri, 11 Sep 2026 04:52:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 945116B0095; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
+	id 636956B0099; Fri, 11 Sep 2026 04:52:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 555986B0092
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CF166B0095
 	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 04:52:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C323D4015A
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF6E312014A
 	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:52:10 +0000 (UTC)
-X-FDA: 85200864420.16.691EC01
+X-FDA: 85200864420.29.1B4412C
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6A06F18000A
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8AA62C0002
 	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 08:52:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o1e1H5S0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lld2fKKz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i51qg33t;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kEDUQO/w";
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kXPTGl5e;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="xHmQSVr/";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=evBWxFs1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rvWH5mkw;
+	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789116728;
-	b=o9RyAHhcaza8MpIVKQOoqIoWXrsNqvHH0jQNBq+85s7ErYZbjWFDaHVNWIPqSJGHf2qKwm
-	nvbuqgzrpjXPeo646Wkx9+vum7Ox3gzJVKfqxljNuSIFU5TzItrKaypjEOQB9KbNHGJaFH
-	ucFY0ITt3FQLP2kPA7rOaZR4oKwo7C8=
+	b=lh9iNtnQtiub9kH5R7TOxpQbKrO7nS50EP4fEGDi8k7yJ4p5IU3pxDvNwoCQyd1WugXKJg
+	7Yhmr87bmoLiVzt551EOmsbFt/R/giboARjvh0imaN0bukemjFXZdpxb3v4dAgwtd+Arq6
+	s5uY80jO5xyOjskvMul8dul7JeTnO0I=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o1e1H5S0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lld2fKKz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=i51qg33t;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kEDUQO/w";
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kXPTGl5e;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="xHmQSVr/";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=evBWxFs1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rvWH5mkw;
+	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789116728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
-	b=dT5sU4oujNcgK7u3UNAgiBzqzZgodvlz6CFTRCU7z1HExzmWbVZwnKyzFEvrvbwZZl79aH
-	EseOKobdbYQlqtW7Y0nJZ+owD++pXezhUlkpD2jy1il48iOpQ37S5eR+4QXI1sGQ5SFpDR
-	2ymNfAvQjMz2XrNsjnly+R6P+Yx58xQ=
+	 in-reply-to:references:dkim-signature;
+	bh=z/fxdm5G9XKt+9Xe5B66an5zv6QkeOhmXsJC5MEhbuw=;
+	b=sSLRiKCezOKLsH248pmV0eMxxbeI4yJ4BssIsDidEmmAF44fPFBytaivJWTG8M/WL4Em1l
+	zaMlRq/fOSx81DCgkkG/A+7JuXsl8VeCwdEut+7dfozPQo4+YTZsxy6A7FAwiW4fUgVrjG
+	pGXP3O9LAUZ60w4MuQ9DgiP9RB9/Zzc=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B0E431FD88;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E7501FA79;
 	Fri, 11 Sep 2026 08:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1789116722; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
-	b=o1e1H5S0ondTKFIS5WQja6u2CMLt8CzD9k0kQNmAAZ3/D4Pll6a7oXv1DTKF/CcyyFep6c
-	XdaZMA26wqEh/SUj7pc3p2atwpnBQZGwpslqDQD3QiOb4KQG6DO1SAX5U0Ixn4RfIlZ13K
-	ulnOMj5kHGD/xIL2BQjeLtzl3A6rI3c=
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z/fxdm5G9XKt+9Xe5B66an5zv6QkeOhmXsJC5MEhbuw=;
+	b=kXPTGl5e+rYlxHfO0P9FQozWKELvV0LwD+8X2jT7frkWrqIM209HQW9rPQauE9P271cEaT
+	Wq7LbstPEoKMqgY2dkUshCEwNPfBs4v7kcFcs3bQCTDuY+ZPBXKysYLWYVPdzV556BqzFP
+	p72anasTR/gWYUqBmmRMzSa6wki7DOk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1789116722;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
-	b=Lld2fKKzVxAWVmEH203fxlwHKaXu/ydQZl375BK0QjEVUC3UTX9SEGb/0+OfEcALd6Nkbr
-	s4HY1qIkzA3JtdCg==
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z/fxdm5G9XKt+9Xe5B66an5zv6QkeOhmXsJC5MEhbuw=;
+	b=xHmQSVr/TeosCGnXYpwj0W5uOB97er5y8BmxqFjw/NvnaaJJ1vxG11hHdeEaS3fwSevCMS
+	z0x/bD7/GmB4bmDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1789116718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
-	b=i51qg33tb863XFo671lPhAI97tHtIUQgBWqx/6wuG0HxauurSn27V+Guszkz0Zq8G4o8xA
-	lh08OsLUo8ME7SW2tp4AV+9UA6iorukPKPFfNMr53wG4wSY9RnOhRwX3zH2fThAh2lETT1
-	L55dyLUHo8DPpNhfK57fgITXjUJDplc=
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z/fxdm5G9XKt+9Xe5B66an5zv6QkeOhmXsJC5MEhbuw=;
+	b=evBWxFs1LnY87IdpSVJgOaS/D8Phaa7+eUx7GiEj5bpxhfWRkkSdgM6YNz5f098TJ+R/yO
+	ILaPlIEhUXt8Ow3ryNJS5+bbvRzb6U38SZGU1kniGVs2BVrPAjLK4XhGosqP7Uf9NU1HX7
+	hnekQJo8Vs5pY8MkC1Uk8sKMIXwzb5A=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1789116718;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6NwH++d24GNIYZv7OKuurKVqtEXzUK7BFcqB+QWevU=;
-	b=kEDUQO/wnt6F9aDVN/HGlgivRDf6CAwe1gfGCyNR6RMMuf5zlHatzQTASDRhBUIEMfmF40
-	a4K9JxcYowS0lJCQ==
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z/fxdm5G9XKt+9Xe5B66an5zv6QkeOhmXsJC5MEhbuw=;
+	b=rvWH5mkwo67z+qAwNpiJ+H5kRi+SPhPSj45nS2zLF/+6XqlJUl0tZafjnNTbPPii6BYrnc
+	gx+k9j2lr8h2UNCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67B7C13794;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47BB413715;
 	Fri, 11 Sep 2026 08:51:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nzZRGS7Bo2qyHwAAD6G6ig
+	id BQVyES7Bo2quHwAAD6G6ig
 	(envelope-from <jack@suse.cz>); Fri, 11 Sep 2026 08:51:58 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C8D7DA13AE; Fri, 11 Sep 2026 10:51:53 +0200 (CEST)
+	id BF509A1342; Fri, 11 Sep 2026 10:51:53 +0200 (CEST)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-mm@kvack.org>,
@@ -115,25 +107,23 @@ Cc: <linux-mm@kvack.org>,
 	Christoph Hellwig <hch@infradead.org>,
 	Mikhail Rudenko <xyzzy@yandex-team.ru>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH v2 2/5] fs: Avoid inode dirtying on last iput
-Date: Fri, 11 Sep 2026 10:51:38 +0200
-Message-ID: <20260911085142.1774803-7-jack@suse.cz>
+Subject: [PATCH 0/5 v2] fs: Deferred inode reclaim
+Date: Fri, 11 Sep 2026 10:51:36 +0200
+Message-ID: <20260911081309.14137-1-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260911081309.14137-1-jack@suse.cz>
-References: <20260911081309.14137-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4361; i=jack@suse.cz; h=from:subject; bh=n0K80NlVJu9vGet7bT/TQoYBw0ad3M3u86eFQZ5/vL4=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqo8EfB82a9kvKqXvGvUVhyPyh5lvJT25WMqxbi tTzwgoPI2GJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaqPBHwAKCRCcnaoHP2RA 2VDAB/9wQMsi9uWET3Gm3sdzAzNo48twh5uzDf/F6D2dsKfUKSHEPUh7fbH+iaU0LNv+9vE8HLj KGxfgnhhF7pX1VuRFDwypzfolgZvQnaaLTRWwxovX7jrEhaVRWPv3IZXS1sa1yOELku7NXVlggr 40LkZwx/RDXyRDqWftflywW6pMard31o3QUkldDrEHKA0h9yoh5rAx78Wj6Y60uUbbAfYKSJYun 7CBvUNOtEYH1S4ImBKhttEnP1cfS0dwl08yTxu0gW61FTpugqJcChRcDh1tF++BYFBXUtNpsJrE T2F137n/RnoW4TL573PFRqHnqpTuzMzi7T+aqzqcHeZf+HjQ
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2552; i=jack@suse.cz; h=from:subject:message-id; bh=qb2MBAqTLT1go2FYYfHVi1Q5zbydQPdUbAmNs4JQD1w=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBqo8EYxl9zKGYzitP7Znr2SZL1VlrMOl8wBQxgu rW64pldoMiJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaqPBGAAKCRCcnaoHP2RA 2behB/9mDlFKMai+yJJQedPJanFbltFjkJM6Op6ouyQEjMT2YYFuz6FT81zQOTPZ7/JZYdLtpOr R1YlWV91z9LkSS9kOI7nF4zBGqhSnyelaJ7F2dmv6KCzM/K10mLWymCwjcJtuRHKBx9NnAp3Rkp zKfs7+Vtruv0tOERt3oezMvsYE2xIj5NogYyeOuwDC+TexDzVyKnlUuknWM6lUzGLKAoJs3IoZY qdokUf3VlOiT/Do8B19eF8M+7MJmKTBUAv/+9s75EDfN+DPq8r/RvX2akoeByfVGRwwEie6knkY AhfQyviILiSkggdja1Kw1lJT6sji9vNXEP8xQ0/JYaUCO52D
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8AA62C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A06F18000A
-X-Stat-Signature: rh6g8dbdk46gau6micpsit5t1jpceswx
-X-HE-Tag: 1789116728-748599
-X-HE-Meta: U2FsdGVkX1+/1An8DFlZbLahJuE8EsdmWCzNGt65fWmd26+zagh1wWrfvAvVHKa88O+Izbpw6gAUfF5w6GGtIAQeMy0fKYTEJzfGIK+dR1Q1StSGKOsDW7MeBrRL8hXblj2cqWYQMyhtXk91r4YS94fk6ygIZ59zhcSBSScKG41oHNsfZm3X52xGbExXeVQ+qYzZHQ9hbNjUERa/taLpjqKyprKb/DlVRhc7oVP4fu/s6YnsvhVS6eqdoCvjOIhVTLKxWmmiGwGzKmrE08bL4coDT4DXdC1HjGcJSoHPuqsM3dT/QcB1sPNq17nwPltZDHS6rFV3M+CiGAMIQCV0y9/VHSXXVRyulw/G9HW9YkHwkmh97ii/H9xCI2unAmCgUSBxhR9IqsxwmQtCKk2CW+35EHmCVN3RVapjJJJGMK7X8VeOMp78n878cBpK6+IqRs5eyujKi0sSusm57FmN8JKMD8cXpTh47A7PlcRJ+9UyXRXXK9pwGQHG6TMA0W+tPHy2pwIZE2t3tPYbkjDZkcqHAbmVu2RZAUH3l6D6PUdxO9UBUoYZEmUHu7Un5haN1MnTjkiHYlBESpt4BWILILxuZFIdC1dJJ9OfO8HoJtRLbuG0rv3GW7syQPfxvMNxOMCPIiuIjq3/rQkBkIXloHxMI5FgmmfQzJzD6Sn3Q0PGMPe5p7390Im5CvRTncqfUlm3gkeeLGmvUB6+etDgef0Gfylm63ZneOlr4z4vrDijfLirm+v5FKcj/GtXRxtoJ8RdiVktI/DuFcex434wWrL9spxB+tL2XhaMIj4B82YNBw4InvuMs0XjYtQFTE9poO8hau0yYigo4/E0tFWMCJHHRfSFfa3vxPCQd5yZq8H3KwWcDIgewno4skzyv2ZbsnZ/zvvffYUv2jor8CbPoqy6OG5fAzh/gmQHjiymZyLojP9m1k3o6IvFA+2bu6u58awhBzpcxtz/JOODsy4
- pm5xiZfz
- ly1QKODn4/9UBFgovCq+tJqRXv+IELSVbLt+pZwYxZF9x+azrOiW5Q7GfRyCt2UP1zkX5IyK//ZWuf0SzkPG1C8oq9D+f90Y2yHpdmcBUnEqlDdOSzL8868EQrUnu8hvFx862SCeNHdBcyDHoR2KMLg6BUoG8aci4pV3AHmSt3vJxw0h3tRQC8OlI8uYXnSTor5wRe2xR5gGfa9YBGQIczlWSZ2zDa3iKTblHwc6MYCatvIY=
+X-Stat-Signature: qtas7ai4k6i3a9tgttixzsrb5x1skzim
+X-HE-Tag: 1789116728-503260
+X-HE-Meta: U2FsdGVkX1+swOqMr7CN3RsRlwbYlIQBUMM6qZwtEfWy+6P4aZCRy9MIsMzEJVTGHKwjnv5FoYZ+yj6de3HY641u7IUnyeygrD4tKBOzmpinUwj6wfysYMAjPkX7v+eCJkDrQpOy2EYwt+KIDlTQ2aRGviZToeM82cjZj/r2je6Nu326IomoOdBC2hmtazaNWskTEpIKkD8XyF+JBXxpofOKy028rD6qe6IG5xVqOJXhkLA2xRvC67PFd5RYQGu1U66Z22BcYIGEvxspc4UcEKnLn3mdQ9P2fnbfDKEsXF56ZvX5kuYZdFTsg5hhFcpZ+mkg7DWuWFz55FhOH3dN9zFyoMLzw6n8Hbck9nAexR/Dbg2Uw0tl9yAFuVWSSY9GcJK0Y6jbQy7GiRtnLNxN0bopazhylAVyuyFocVdOgkL8WnvBjaILA3XHuK+1tbKcbX0KWpWwUS+u7B5nUCIO49PoLBR9mKro/uaRSiScLFUodNyMN7oLPfUjvPBl3sjancjSGkrTyO0oCFM9XXXRpgxFKzrMEFPCnpZNs5NJsMZ4mrddSB3AVxAphlh+iy45IoKnoiGk1FhGEQANEhu9QBxED+6vwio1QkzWEHmgHFkE4Ka2MHpZ1iTPxHe7gAKjqLF2dmsZTUNpyKG/EIRfEGJO6K4najw9lC2+G9Aw1i43JFctsbAGlBBWbQ8zlou1w4VxeU6rZoiIS1RbuME2es6NTrWGXDt6GHOr4YeopRw+oiTwyQrLkwMVn0NAAH9m3NuCGZtOxI/wYpoSHa1WXutyLeIldwJV4UOHsoZwASzgHQmht9HAfRsUhkrSkQxf7dpmFfrRuJRZTrrW6KDiSRXtHxXZhr5ZZxknvUnj6VrQWh2Lw9JKPubEj/Rso8iUsgxsTRBEvTA7DZymewJKeRRkaQbfUJHj0BUz8ltJlaNeywrK5TRcWzYxe4YFuNuzm71j7sYIz32XrDRBRQW
+ B5sfeDM+
+ h9UfFWgqyoDvecGfrzVAu0VIZYYdSSTVSmY8luz1bm2yFNoe1cLC4Nulu9pHxvPfe3c9hCuqMFRzmWSR43PZProokG35MNDUTxV/UsRfuNef523pw+O/THCQsjFY4ettPh4aRKY9piPwbzBZ5JvIE+6EzH3PQV2F0us9wym+VXd7dDEabJzmsJSe329LD95ih966m9feivtqtV8WWwfkSwGY04otCOvw8DH+hEwvwK6UGmfOaPjjnzEKeprBtVhkupT5T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,138 +131,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When inode has dirtied timestamps, we currently call sync_lazytime() on
-last iput. This is done because inode with any dirty bit set is not
-inserted into LRU and dirty timestamps expire only after many (12 by
-default) hours so these inodes would be sitting outside of LRU aging for
-a really long time. However this can result in doing IO and consequently
-GFP_NOFAIL allocations from dentry reclaim making MM complain. Sample
-trace for ext4 is:
+Hello,
 
-prune_dcache_sb
-shrink_dentry_list
-__dentry_kill
-iput
-sync_lazytime
-__mark_inode_dirty
-ext4_dirty_inode
-__ext4_mark_inode_dirty
-ext4_reserve_inode_write
-ext4_get_inode_loc
-bdev_getblk
-__filemap_get_folio_mpol
+after a long pause here is a second revision of my patches implementing
+deferred inode reclaim to deal with MM warnings due to GFP_NOFAIL allocations
+from reclaim paths. This happens because to reclaim some inodes, filesystems
+have to do IO including complex operations using journalling and forward
+progress of these depends on successful memory allocations (which is impossible
+to guarantee from reclaim context).
 
-Avoid this dirtying on last iput by reshuffling unused inodes to the
-beginning of b_dirty_time list and clobbering dirtied_time_when instead
-so that they get written during next periodic writeback.
+This time I have fully tested the patch set. In particular it survives full
+fstests run on ext4 both as is as well as when marking all loaded ext4 inodes
+for deferred reclaim to stress the deferred reclaim paths. I have also tested
+(when marking all inodes for deferred reclaim) the patches by creating a memcg
+with 128m memory limit and then scanning from 10 processes 600k inodes in total
+which heavily exercises deferred inode reclaim paths. This also verified
+efficiency of throttling of marking of inodes for deferred reclaim. Basically
+we cannot guarantee any particular limit on the number of inodes queued for
+deferred reclaim as that is bound only by their number in memory and memory
+pressure. But as the number of queued inodes grows, the tasks creating them
+get slowed down so eventually some equilibrium is hit. In my VM this was
+at ~10k inodes (only slightly above the 8k limit when throttling kicks in)
+but this all very much depends on the reclaim pressure, speed of deferred
+reclaim etc. so I don't think this is some representative number.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/fs-writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- fs/inode.c        | 15 +++++++--------
- fs/internal.h     |  1 +
- 3 files changed, 50 insertions(+), 8 deletions(-)
+The first patch is a pure fix for a problem I've hit when running fstests.  The
+second patch deals with lazy timestamp updates which I've decided to handle
+better directly inside the writeback infrastructure instead of deferring
+reclaim. The remaining patches implement the inode reclaim deferal. Ext4 use of
+deferred inode reclaim is there mostly as a demonstration. Other filesystems
+need to determine which inodes need deferred reclaim and mark them as such
+which generally requires good internal knowledge of the filesystem. I'm hoping
+that once the infrastructure is there, fs developers prompted by MM warnings
+will start using it :). I know for a fact that besides ext4 e.g. btrfs is
+hitting MM warnings in inode reclaim as well.
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index bb4546d147dc..762e310e808f 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2837,6 +2837,48 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- }
- EXPORT_SYMBOL(__mark_inode_dirty);
- 
-+/*
-+ * If inode has dirty timestamps to write out, make sure flush worker writes
-+ * them out during its next periodic writeback writeout.
-+ */
-+void queue_dirtytime_writeback(struct inode *inode)
-+{
-+	struct bdi_writeback *wb;
-+	unsigned long new_time;
-+
-+	lockdep_assert_held(&inode->i_lock);
-+
-+	wb = locked_inode_to_wb_and_lock_list(inode);
-+	spin_lock(&inode->i_lock);
-+	/*
-+	 * If inode writeback is already queued or inode got dirty, we have
-+	 * nothing to do and we mustn't touch writeback lists anyway.
-+	 */
-+	if (inode_state_read(inode) & (I_SYNC_QUEUED | I_DIRTY))
-+		goto out_wb_lock;
-+	/* Written back while we dropped i_lock? */
-+	if (!(inode_state_read(inode) & I_DIRTY_TIME))
-+		goto out_wb_lock;
-+
-+	/*
-+	 * Move inode to the beginning of dirty queue and clobber dirtied time
-+	 * so that it gets written out during the next periodic writeback.
-+	 */
-+	new_time = jiffies - dirtytime_expire_interval * HZ;
-+	if (!list_empty(&wb->b_dirty_time)) {
-+		struct inode *first = wb_inode(wb->b_dirty_time.prev);
-+		unsigned long first_time = READ_ONCE(first->dirtied_time_when);
-+
-+		if (time_before(first_time, new_time))
-+			new_time = first_time;
-+	}
-+	inode->dirtied_when = new_time;
-+	inode->dirtied_time_when = new_time;
-+	list_move_tail(&inode->i_io_list, &wb->b_dirty_time);
-+out_wb_lock:
-+	spin_unlock(&wb->list_lock);
-+}
-+
- /*
-  * The @s_sync_lock is used to serialise concurrent sync operations
-  * to avoid lock contention problems with concurrent wait_sb_inodes() calls.
-diff --git a/fs/inode.c b/fs/inode.c
-index ba7da39be4a3..5555a513a0a3 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2030,7 +2030,6 @@ void iput(struct inode *inode)
- 	if (unlikely(!inode))
- 		return;
- 
--retry:
- 	lockdep_assert_not_held(&inode->i_lock);
- 	VFS_BUG_ON_INODE(inode_state_read_once(inode) & (I_FREEING | I_CLEAR), inode);
- 	/*
-@@ -2043,14 +2042,14 @@ void iput(struct inode *inode)
- 	if (atomic_add_unless(&inode->i_count, -1, 1))
- 		return;
- 
--	if (inode->i_nlink && sync_lazytime(inode))
--		goto retry;
--
- 	spin_lock(&inode->i_lock);
--	if (unlikely((inode_state_read(inode) & I_DIRTY_TIME) && inode->i_nlink)) {
--		spin_unlock(&inode->i_lock);
--		goto retry;
--	}
-+	/*
-+	 * If inode has timestamp updates pending, queue flushing them now as
-+	 * otherwise the dirtiness could be preventing the inode from entering
-+	 * LRU for hours.
-+	 */
-+	if (inode->i_nlink && inode_state_read(inode) & I_DIRTY_TIME)
-+		queue_dirtytime_writeback(inode);
- 
- 	if (!atomic_dec_and_test(&inode->i_count)) {
- 		spin_unlock(&inode->i_lock);
-diff --git a/fs/internal.h b/fs/internal.h
-index c658c8a5ebd5..eae0e2bb5d1c 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -219,6 +219,7 @@ bool in_group_or_capable(struct mnt_idmap *idmap,
-  */
- long get_nr_dirty_inodes(void);
- bool sync_lazytime(struct inode *inode);
-+void queue_dirtytime_writeback(struct inode *inode);
- 
- /*
-  * dcache.c
--- 
-2.51.0
+								Honza
 
+Changes since v1:
+* Multiple workers to reclaim deferred inodes, related to that I've
+  moved lists of deferred inodes from per-sb to global ones
+* Added missed lazytime sync fix
+
+Previous versions:
+Link: http://lore.kernel.org/r/20260429174850.18223-1-jack@suse.cz # v1
 
