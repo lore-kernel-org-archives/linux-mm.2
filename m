@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FBCC88E53
-	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 17:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CF3C88E4D
+	for <linux-mm@archiver.kernel.org>; Fri, 11 Sep 2026 17:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 418FC6B0092; Fri, 11 Sep 2026 13:52:52 -0400 (EDT)
+	id D1B846B0095; Fri, 11 Sep 2026 13:53:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C19E6B0093; Fri, 11 Sep 2026 13:52:52 -0400 (EDT)
+	id CC41C6B0096; Fri, 11 Sep 2026 13:53:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B0776B0095; Fri, 11 Sep 2026 13:52:52 -0400 (EDT)
+	id BB6876B0098; Fri, 11 Sep 2026 13:53:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 009A76B0092
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:52:51 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAA80C0193
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:52:49 +0000 (UTC)
-X-FDA: 85202226858.30.1A841BE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0E16B0095
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 13:53:56 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 10D221A0344
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:53:56 +0000 (UTC)
+X-FDA: 85202229672.08.B836CD9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0981580008
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:52:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iOz351Q/";
+	by imf15.hostedemail.com (Postfix) with ESMTP id 595E9A0004
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 17:53:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IHZEFyny;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789149168;
-	b=leyccriZ+XS+3dpR8NA0V+0HkvPrBXJgIYnZ8dzYcaQXc+UQW/kToTxBXysJ0LsD1/QJQs
-	9DmExjFVDxaYqxIvQHPFxL2YNM2IOQsVt9NMGxSOQueQQ5+TqNGpbtjCZdfUkldOO2e6JE
-	Ts2TLrhcqWcDriXipeVczep+wa/bNb8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iOz351Q/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789149168;
+	s=arc-20220608; t=1789149234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iVpZfsXMVEGiEUfVriw9pLF8pscFPyVWyCdcfJ25DGc=;
-	b=J3XoZOCXPXpappyAEAH2+tvg00oknBflzB2ieuwwr3QTe/97vfkvS0CeYXq0v5JzClsMUn
-	+NFt+JUq9Upvt74bc3tkrybib4jO/bAcbLtaizXIruytxGriYoLmRmuVc/IFLtwvmFvqlI
-	n6TaAJqEYyimw0Qrd+Lg3L3FJLkUmk4=
+	bh=LTbZJ30EqsYk8SxQCH9xM+3ZtgdDgiLg204FPahktqQ=;
+	b=AQi6Ld/+WbLL1jWitqY9pfObyj+ulAqx1iu5PFtIAFbOGr1tRYtAXG80Sv5Pp6cprenKuo
+	YEpjWHw2pMs7lWK1Eoc+T0rm2c59mktlqjlRvkFiHNiZJhfzK3JhDt4gZc7MSpOai1AYRh
+	z8Y+jG2FtnsnoxnbxzkKZiTxWd7YgLo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789149234;
+	b=mk6g9MJ7QTZkbfgUyIqviDiRJZlrUIH0rpWkFhI0vbNNTxyzm/uqdoa6opxC+lCAGhHjzZ
+	rVQYf310RDFKPUz1E364251sd3are0PQ8iknU20SUHm6MjHqtjiBH2CyCD9A1g72xaWCn4
+	UqL2qUTMmfWYSjLrQYmuUyqhOSSynpQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IHZEFyny;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B3B76020C;
-	Fri, 11 Sep 2026 17:52:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D4F1F000FF;
-	Fri, 11 Sep 2026 17:52:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DCE2060008;
+	Fri, 11 Sep 2026 17:53:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9AF1F000FF;
+	Fri, 11 Sep 2026 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789149166;
-	bh=iVpZfsXMVEGiEUfVriw9pLF8pscFPyVWyCdcfJ25DGc=;
+	s=k20260515; t=1789149233;
+	bh=LTbZJ30EqsYk8SxQCH9xM+3ZtgdDgiLg204FPahktqQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iOz351Q/hnr3UJVmku9z13YS0k8WM/um8sWugkCDEQ3q8R8SlKuwrn1Y9lnc1yzMe
-	 4FriItsqCkS5TYFvlF64mmdFpYcVXCQjR9wpBEZe7Kf2QhLpFWQynplSJmn3agr/fx
-	 PXiAeZgHdkJ/fmy8vLoM69lSaQXBV+UnzEcxamARhjEObcJrBsx2TkXcX62YwzMjxL
-	 SwrGn7bW/qrJphLTeoAyqj9cFf6u636d3MhMHvM0MKKVPNKSGUWOgaQ5yPdx+ib9Ej
-	 b6JAzN+cbNoOlbrLwew+3sDhnK/dI5sD2FRfSKXwg93F5F4n9x3RWHQtfDdv0dmPDQ
-	 O/NBvf81QRXzw==
-Message-ID: <eb040cfc-4038-4cc1-9220-c387c4c8a02e@kernel.org>
-Date: Fri, 11 Sep 2026 19:52:38 +0200
+	b=IHZEFynykFS1ttB1G1hhT9c4tzOzA9AqYZJ88Y9BSXZZdDvIjf+4NqPUDQk35yyK7
+	 CxOYStsBLS+l3clVVn16laQauI1rI+M3rVNOIi0RNDB50x3vdWKEJc0uCbZDO1IEWD
+	 QbamjbZaYPr6be2JTu1VMqusSWwmdKj+3ixYrrkj1eGQUOqfAigNT33lu/ZYHQ/E/L
+	 Ccl2TanUsfTghY7OOxJ/TUiSYVSMB5NO3Cq01ZO1akXYRehszNoEyC0VBwc7bttr7a
+	 8SAkj5qM9+X/M3WR7sczHUU12hmM3ygUGefuFuBFR4FdiKFQTjZq39E3+5x9JPTwJl
+	 DKu/AWeyQmXXg==
+Message-ID: <c2eeb782-a426-4cc1-9231-846db5939803@kernel.org>
+Date: Fri, 11 Sep 2026 19:53:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] proc/task_mmu: clarify shmem mapping walk
- conditions in smap_gather_stats()
-To: Suren Baghdasaryan <surenb@google.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
- willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
- xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20260910234737.1340642-1-surenb@google.com>
- <20260910234737.1340642-4-surenb@google.com> <aqQoPTTUC9M5HkYb@gremlin>
- <CAJuCfpEHeFSMamNhf=FLvFjh9D8DBwZtbKwL0zi=x-2g8B+ENw@mail.gmail.com>
- <aqQzk2AT05r6rOyT@gremlin>
- <CAJuCfpEMd=hVtwe_9Rp1kqigYJwqEUGCD+ViQmoacAZONCR6DA@mail.gmail.com>
+Subject: Re: [PATCH] kselftest: mm: remove exclusion of building soft-dirty
+ test in arm64
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org
+References: <20260911125028.1268274-1-yeoreum.yun@arm.com>
+ <0e419abb-71ce-4b97-b189-da86a4891920@kernel.org>
+ <aqQrIkcPf6uMlouk@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAJuCfpEMd=hVtwe_9Rp1kqigYJwqEUGCD+ViQmoacAZONCR6DA@mail.gmail.com>
+In-Reply-To: <aqQrIkcPf6uMlouk@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0981580008
-X-Stat-Signature: aj4djqznf9fwwmutrdf3mbanaufoqp1o
-X-HE-Tag: 1789149167-702960
-X-HE-Meta: U2FsdGVkX1+1z30bchW7s/2Os4JwonG7AiwHcR7O5frIG1Hcjda5bVeaxKF4tnkzn0EHBy2M15/3eYLxCE7yLE38roD5gxI42Xf7WSMqxVVeY9p8TswkDIL40q7hSRjMaiWe3R4FmSN+INO7A9t3Afuk5uqVkH8SQmFIfsON7TdEEpEZluNzmm5uNuC6jUH+IHWv1bH18/Kgi9a889np708ZVAY4N9Ij/S+g9J4yUdLtpO8VFjty4d2a+cB5xGMFHVrKJAdq+8DU0mr7Qe5ZKMrQgFicIUsQCPGuYHc1v/aqPw32yFzS0kWyY5wwWcnOpl/t1PCv60RJ4Ob8AZI8l+5KvuLtzl5qfTri0R0h9KE2nuVnJ2tX33LC4QHhuhkF2MNsaHX12fBvuYzqX1KhzEHdpIfTnEFBB4eCWtoPkn+zN/ttZSup96Z5ynR/+2qz5obr1Hnb565MbxigK19em0/La8TX7PCIaZtWi5cKlddDOfJWn9mxM4BB+5XhnyRM3/CeTDhQOcgcw66rd0qp8bWp6LsRY9ti9Mu++/pJ+FZTw2/5NiUGXMd0zDG79IcDvE//wmT8LB+4XitHXVWt5YefZdduJBDU8sfM/evhxrDlx4pKvJUGx6ig1n3Z6qa0vjgFfXu60hwl6vTrdtrAHrU+AQpAfTvzIzXPg1mUfCw5mhcPKWuxXudWG4JaqkOa0nsOOIEx6AhcHt06r4tg0HmFPdW3xEnuui42sZ/U+ZKTNMR2ATOJGgzfbKvELquj/w48mhxkSbeEgP0E4VVny+MNZ2lspDWQNMeQ1IMp/oYGsaP/U/HcIfguRjUrTe8yrm8INPJGdolVsZIgu3ZYWytoC3wKS/TyuMdBraVYePy30mhhOOu/OczgXMAZagblu83TsstLkrfQ+nQzfu4CsrUEO4HjMdjCgw440xWeG02pLLRX3HzHpAqFDhbkU0sHFJk83Pk7LgIoj8M5J19
- kfgzRvbS
- hzzCdSUlJ1FINCpFdxBTlTJV5+jJodkodx6qoYyG/+hJJ0jaek0OkKPVU8kV91N3PBh65fvX56wctVyrG2Ykjf8o+KJah7uvjcZcH+kZ+eAqzq9ezZlg/Nu/FwSWCPJ70KFwBpJBh4xPNkp2YQ8CCbkotGI4RqGikrEZKpufgdTximKaYhHQYiuOaOK8szuv58g486PdmUtxWEqBwzfE6uNs4TKc7mYaYib0NiOkMxpyafL/OvSI7sFF5jZF6AUU29x2yYv0ds4VGvyTnGafmPrCWWh0nT2uylgTbqyR/z+mNq8vYemCel78ccFAt+NXv6YycpAZB/VyJhx0UL9mCw3n6/PFggzztb6kfsJJsDCLBnH2tQxjgsyZ1uKlOCWsAZ7o7UDHl4Ziwqmxx/bqSoxObrRVAOmTsdJL8Zz7qj2CHnZ8=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 595E9A0004
+X-Stat-Signature: 8x8idx4q3ae1xw19rboho4sif4rhp8gy
+X-HE-Tag: 1789149234-757761
+X-HE-Meta: U2FsdGVkX1+GDB61whF1+1a2IuETU1p6bGwItZXVZ7khL+tIZmCBfMwObVwcHcntWO4wFzNncm6RYfJKsUVIbORezdGosZbdbGFWSWM8EylDxUYFiKfuzh3gTQ7gLC2iTSwREwTUruk/eazDmX6918hRsyv7C+iQ/cCiH4MdjWi0yCArVBqlt2Bgsiy5XBhWQKtys4hkKMU35zzl1s44t96K+b6y6tEX+0Yd51I52dpkSIcpJtPzSEj083TsOc43RacDi77z2gLWigbj0ob+fR1tckarY73U2PLp5zV5kAdcE82jBrTEs9BW72kVHx3uALShfz0V8ZFQUrHGSrI+Z7/A0G495LSpM+9ICbgsMTdnuUD4cbSy1Lf81a1aptShXJW4dRGDcJcGuX8ekvzPA0DtwmZ2anE8U+Ma/iV6/nOKUGjpXS1GhrWuYSaAjNWx/kFfNFP9LVg14Y2u3/ln0YenAmKO3bu9gj3goDT+qJJmvjjKM7DQgpdMHCNL0StBxSMsCrH2X8bvcwrxYC/hUf1iNcGmfKJWvJi+DSLmextQPueZY4XXozhZauQhVpxDlSD4Rza1PkjBWrXqFPYiM1kJDPfiY5gsEZvaPgNffS+vxZfhhjbELqdC5CCd7CbVClyScNR28Hs9RE/grL7NCQR13e6l7m96WaQL2SRX38bQF4Rvh9dPa/OOdo6EMSDE/Ephud/VLdsvnEU6iV1/2527yySDfn7S1eO4iOJs1omtxMxzkTvUbkqP9Y1/MgvJXFmdac4hVIX9Vp7cNHuwkhy19g0Cap+tGUB3StHg95ledo3+Ys0Vw0QngQA1pNOryhJKYwDvgTi+HElLQeSKMu2+g9t1CZ01M6ruERkjhay45xLxP5K6Pd00Z+9uqjRCL9XLVNgr4GznMGtd1qKC2++rtPhunP95jfIhwU2/mn24lkQtDi8b1VK+4m6HiYxUT51Nlp5Q+NLoMHYyW5Y
+ IBRDCZIw
+ uXQ2vIO23V5BM7s2WvlKm04Cw0rQXmxbOMu1N5zHlsJkKSCtzv0joCu17Gz+Xf74HMBw0jHmCNEEgFpc0V9F+6AB3v4EpL3BK66WSTUBAxCXFbcZjHH3r851Ua2No7L8Yeb2ZgM6xOyZa14/Dd+6jHF+kDi2tE5FJb+OPQ9fZ9KhvvT2QL45pNfuumOrzzuR69JBp5h01YVOnY49AHEkEB0OA7KGqVZkDOn1vOHq9oRuajOSSPNDWWwk+pyLrBlUDhTK0+A0CUduyf1GSDINV7JG5u8aOOhb/Ny0MYpeJk+cxKwRNWvILUYd0FsXveECcIdH8hQsfpJwqatdGU3OBAiVOPvhqIWv5WVLy7IP8/eU3sbE/nBHO5/1xbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,50 +142,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 19:39, Suren Baghdasaryan wrote:
-> On Fri, Sep 11, 2026 at 10:10 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->>
->> On Fri, Sep 11, 2026 at 04:58:40PM +0000, Suren Baghdasaryan wrote:
+On 9/11/26 18:24, Yeoreum Yun wrote:
+>> On 9/11/26 14:50, Yeoreum Yun wrote:
+>>> Since commit 0389c305ef56 (“selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled”),
+>>> the soft-dirty test is skipped when soft-dirty is not supported.
 >>>
->>> Well, the "other" Lorenzo does not agree with you and suggested this
->>> approach in [1]. Specifically, see the comment:
->>> ```
->>> I also don't love that 0 is taken to be 'start from vma->vm_start' and I
->>> also don't love that the code in smap_gather_stats() actually special cases
->>> this...
->>
->> I'm not sure what part of this is disagreement?
->>
->> It's saying passing 0 is a hack, which is one that is still in place and which
->> this patch makes worse, because instead of explicitly calling out the invalid
->> value, you're treating it as if it were valid.
->>
+>>> There is therefore no reason to exclude the test from being built on
+>>> arm64. Remove the arm64-specific exclusion.
 >>>
->>> How about passing last_vma_end and making smap_gather_stats() more sane? In
->>> the other invocation of smap_gather_stats() we could pass vma->vm_start
->>> here.
->>
->> Yup, well me of 3 months ago should have suggested what I suggested re: wrapper
->> (I think you cut that suggestion out of my reply).
->>
->>> ```
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>>> ---
+>>>  tools/testing/selftests/mm/Makefile | 3 ---
+>>>  1 file changed, 3 deletions(-)
 >>>
->>> [1] https://lore.kernel.org/all/aifO_rCurVhFRTcl@lucifer/
+>>> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+>>> index 2d5366196e30..d3e9bd67904a 100644
+>>> --- a/tools/testing/selftests/mm/Makefile
+>>> +++ b/tools/testing/selftests/mm/Makefile
+>>> @@ -104,10 +104,7 @@ TEST_GEN_FILES += guard-regions
+>>>  TEST_GEN_FILES += merge
+>>>  TEST_GEN_FILES += rmap
+>>>  TEST_GEN_FILES += folio_split_race_test
+>>> -
+>>> -ifneq ($(ARCH),arm64)
+>>>  TEST_GEN_FILES += soft-dirty
+>>> -endif
+>>>  
+>>>  ifeq ($(ARCH),x86_64)
+>>>  CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
 >>
->>>
->>>
->>> See [1]. This is exactly how you wrote it at the end of that reply.
+>> Does that mean we can also the following?
 >>
->> Assuming you passed vma->vm_start, not 0? Passing 0 makes it really strange.
+>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>> index d09f9f6a384ee..33963535616b2 100755
+>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>> @@ -390,10 +390,7 @@ then
+>>         CATEGORY="pkey" run_test ./protection_keys_64
+>>  fi
+>>
+>> -if [ -x ./soft-dirty ]
+>> -then
+>> -       CATEGORY="soft_dirty" run_test ./soft-dirty
+>> -fi
+>> +CATEGORY="soft_dirty" run_test ./soft-dirty
+>>
+>>  CATEGORY="pagemap" run_test ./pagemap_ioctl
 > 
-> Ah! Now I see the problem you are pointing out. Ok, in v2 [2] this was
-> done correctly and that's the way you want it!
-> Okay, I agree this split was incorrect. I think I'll move is_partial
-> conversion completely into the next patch and this one will only
-> update the comment and use vma_is_cow_mapping() instead of open-coding
-> it.
+> Ah right. since all archs have the soft-dirty, we can remove the if
+> condition.
 
-Ah, that makes sense, I missed that as I was mostly focusing on the cow stuff only.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+With that, thanks!
 
 -- 
 Cheers,
