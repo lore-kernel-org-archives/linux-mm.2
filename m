@@ -4,105 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1091CC88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:26:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 516D0C88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9056B0095; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
+	id 23D5F6B0088; Sat, 12 Sep 2026 04:46:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 289E86B0096; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
+	id 1EE696B008C; Sat, 12 Sep 2026 04:46:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6E36B0098; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
+	id 105616B0092; Sat, 12 Sep 2026 04:46:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0126C6B0095
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DF3E160450
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:53 +0000 (UTC)
-X-FDA: 85204426986.04.6400E09
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B6B0FC0004
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Sz9hZ3gn;
-	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	by kanga.kvack.org (Postfix) with ESMTP id E8D726B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:46:45 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA82E16041A
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:46:44 +0000 (UTC)
+X-FDA: 85204479528.01.98D3E6C
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8812640007
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:46:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=KG3bTJy2;
+	spf=pass (imf17.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789201551;
+	s=arc-20220608; t=1789202803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCKQzHy11n4rZ/Ir7KunChoHPt2wwZSgc8x8OP6qy24=;
-	b=3R/PenKZE3KiiD59LfN+frEYQRh4ExNFiNTUo45pPyAOGDeaRYY2RkMMcdc3uZVB0/AdwG
-	DjWApZAgrAwbDdzZrSwd8wGBKVlJY0UgUS+NqVc67RHmAXJAcE5VjJ4VpHPV65HdUmi+QM
-	DfxnkpTv/FOvdIBOHf2MSolfYCdQyAI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789201551;
-	b=dtVlogJr0KTxgbGvnTq4aCGJHjTnOjHsYORc/g9DPp2SfyuTbt+qtIGwTnAaARUFxYmgSk
-	2jBt/fzTTaJ2y/m2ej3feoaZQYKD2YBO1lW8kSFX7K7ECBD14GVViZwnXPcF9wlrGguCZN
-	51Cr8pI40ruOPkjP8+JJqSIYK/vI34Q=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=muj/HRuq64yD8eyxGvhrEp19RdiCrjzHDAVXUMs7IHw=;
+	b=YjLVtKIhJ7647ufF0jjE3iCaDYfUU6TuXXNEAo9keJRCwXZv2znaERiCrBc6xidwzrMkfS
+	ZtEnKRBa6sHpUidRn/HobTO66uiwiCw8pstRVJKt6sTW+flt2wyl08JQmBPo+3MSBBYGBe
+	J0Ie5STRwCr8CwAcfEAhVI71BcyoF1s=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Sz9hZ3gn;
-	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=KG3bTJy2;
+	spf=pass (imf17.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
 	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789202803;
+	b=UclcEV1rkJkM1ciJcnFvJvBdyM1bc9w9KgTe1rRagk7cwVJ3XcsnWPEdSgO8/GZBQAX7ih
+	uUxUcM1wSbAgSZ+YHzqDwXdJJJY3VltpbVGkk76EDTpMiCIb+kQVtDtYke+eTBqvsp4+WP
+	ZR0XiARcmW+LT/vvCjdvZ7LLVbWfogs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=PC
-	KQzHy11n4rZ/Ir7KunChoHPt2wwZSgc8x8OP6qy24=; b=Sz9hZ3gnsXEBvhqNjp
-	R8n7fEYA200Widg1VJ/UBlhyyCvoyOv40BdwS2jWy3mulgauNMnBQLuv0sI2D7sX
-	FI+WS8MObchPuONVR1x7UwXu9VeNqDc7kt4lIkCW9J+Vwo+qLD7Mgoqfo3b7a6du
-	MzlJ1EevqwI3uTw76Nx5hwciM=
-Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S2;
-	Sat, 12 Sep 2026 16:24:47 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	borntraeger@linux.ibm.com,
-	chengming.zhou@linux.dev,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	harry@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
+	s=s110527; h=Date:Message-ID:From:To:Subject; bh=muj/HRuq64yD8ey
+	xGvhrEp19RdiCrjzHDAVXUMs7IHw=; b=KG3bTJy25PW28Y/vRG1otgkYywi53jg
+	Re5lHhiOV48Qww8ToHTOnJt4HWQ8UElDPLgxr2qYeTfd3jYcoal5vtzya6KcopTV
+	gJNXRfXoiI0Z/anZV5/PBdIJwp6cClgtv3CRWE+sh//rrOsGbd6VtR6bW5/IH57n
+	Ct4sS4YApVtE=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD332xZEaVqwa_uAA--.63502S2;
+	Sat, 12 Sep 2026 16:46:18 +0800 (CST)
+Date: Sat, 12 Sep 2026 17:46:17 +0900
+Message-ID: <173eadcb2d7b18b3f8c57a7c57bd7652.sh_def@163.com>
+From: Hui Su <sh_def@163.com>
+To: Balbir Singh <balbirs@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
 	linux-mm@kvack.org,
-	nico.pache@linux.dev,
-	peterz@infradead.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	Longlong Xia <xialonglong@kylinos.cn>
-Subject: [PATCH RFC 0/3] mm/ksm: scan with per-VMA locks
-Date: Sat, 12 Sep 2026 16:24:04 +0800
-Message-ID: <20260912082407.75875-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
-References: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF1UWw43tw4UtFy5Ww17ZFb_yoW8AF1xpa
-	9Ig345Kr48Zr12vwnavanrCrWrGw1kGFW8tr43G340yr45K3WqvFW0yw1jy3WUW34UG3yr
-	Zr40yF1v93W5Ww7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7CztUUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2w8aE2qlDE+hbQAA3d
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B6B0FC0004
-X-Stat-Signature: 1rc9nhedeqmnyju6bnxaneuw648w5hd5
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate_device: consolidate compound folio handling
+In-Reply-To: <1ca189d6-5b36-4d70-9dfc-34316591447a@nvidia.com>
+References: <20260912034414.1943342-1-sh_def@163.com> <1ca189d6-5b36-4d70-9dfc-34316591447a@nvidia.com>
+X-CM-TRANSID:_____wD332xZEaVqwa_uAA--.63502S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GF43ZFW8uFykKFyfXr1DKFg_yoWfGrg_ur
+	yktr1UAa1rGr13t3Wayw4rXFZIka10ka4UCw4jqrnxAw1rArW7Gr18XF9Yv3Wkta18tr1a
+	kFnYvF4UAw1fAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUaiiDUUUUU==
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6hpevWqlEVpBPQAA3r
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8812640007
+X-Stat-Signature: y4ozzq7jysq4raohcbz8hek93eas5tdi
 X-Rspam-User: 
-X-HE-Tag: 1789201548-716371
-X-HE-Meta: U2FsdGVkX1/OIUahMmZB0IxN+qoIeYSNhQ1/lzjFTcrTk9rWywl4f5+efwdgMDRwf9DwW0JT+wP0rYMoSlno9pDCDn/hxAGecugtboNtv7ttYbVGhuTp0iTi5e4o05wMGN4dSTax6Qp2Az+xW1H6UVZw3UY/bEavyl5Q5oYSwF7dxSp20wxueKRATggLizylKlB6FTeXlg6RC16r3XMrCC+9Mk0DRNkg2JXkgVfzMByPU2dzb3R0lxY8gaK+9z4WdocTQ9LBNycV173yXQdvF5jr9iPHyU4owEa27pP0mtART2YmBle5BdHOuP/Ge6vFiKUbOefOMengdMFsUl09ZQdyeGD+QFoVYdlCiVjd+SCaflVVqdbWIA3CqD/HDt67gzuCVhK0D0scZNTZvxOZbzkhXEiUDXjo1psp9fbsGFKCIcO01tLcJ8u9p5ryXzB0Bgfa9H1E72u/CcIouoOYyJycdOvOPEQTIkXIzjHX9T8vkufGY0YqcC+WysgO81nL8pJwAR/6Aef2xtuRiKktdY+Js2FFRgRlRj69fxV1yR21HWgnFDCT/JiVExjFi2PqWzon6aJYz1os2x86Bg4ArF1FJhJI9koR0xcsqvC8TmA/yUWyiYZ6M55Bkiwum/axf2jg8y62pgPA69kxmmZV4absitKnKOp5bBIH+rlvy54hDhO1G3/r92Io5TOnxsm9vwWUvAnp4xN12IVwoK4ubCnK0txf7RvGJOCToX9Hk5u5QJnz4Z12jD4K5dcAlMh8pH7fb6MRNXVZjfn4RV+FN4YhZqzZwLL+hzUYdB3X6ORpeP9st68MDR6dytorHhQD1AKeT8PpI59v2A7R0IZfGTrOlfkl16LzFzwwmUyhsPXt0TynzSbPXMEI7NUZ2IeJ7llKdB3xORudFV3jqWfj3BT0ziETen11JbzDPkzkJ8ODWBa7pWYm5lAirACmKfhxL8BxBtSsrMGY19lq6nJ
- I+xKRDiE
- GRm4wrUZD+h6lkp5VJE0ZeA9xP0aPa9p+DIGY8GFSNy2gyGxR+/t+cGdYJG1q+D5esvt+dnU9bApQHwcwdmIpuQg+t3tR0GdjiQKvciWz7d1OBMR6/dOWBx3zfUQIIZK7lhxVSnh1pTi8/D1FKr7vu32QdVPpZIbhhyITYYBuMJiEw9HbjQ++fmKGDkIvp4io4q9glwjHrczf5SIOCzvWhD16FDEzwsH0CltjrhpPf0/2/jaghThXUjSEjFNz2tlsD2tyMRrZ/jd78c0t46ARvQurMk5xvJVIkEw8
+X-HE-Tag: 1789202800-599309
+X-HE-Meta: U2FsdGVkX1+wg+itSzEf6Xts3u1oRiIT1iergfmb7N67llmsAb8UcfZ6wzd1+ii3uHQos+bxYsNtR9uirybic+Kjsa0PiJTcuGmb6sqlSqFwdXAkQ5HVb/eAO5y9jES6NODxrAxpHrVyDuDdqPpca/ZDRIyJiSGPi24Ks6Bh3uY9HPKRsvlLLOJQn3RVr5vHL8J4WmVPiVxYIQDtVah+qne1vcWVAYBWnhsBUYqntGDrF5sHCWnFNziPA4BbgnRL1YLRXIrX4p+DbTqYpcSbhqbaXu8rkFyg//QrROa3ud5Z9J5IfOOBwUzMmw7UCDSYmCLLcCHtmHvryxK5IGjZ3svyBPtM0kejlgErPGT1vRPyB0YqYDWB+XNcGJkyQcu+W9uH8DJDPL2iXHbtgI6btN2dQlW8tmJ7YTFlW96AHplyhKfcBzWuq7yqiOP49UA+Omgvr2yt3hM7LnC40T8tDKyIHtOrNCbrrQULZ6yM3FrNBUxX1qtfKLTWGhN9CARZlvCvmxXAd01jhyMIn9IyO+LFUtqZuvoIZWRVAuFIny+JElVfT9d8JIjrcf7Sgu0glb8KcwH9BNd6o+66rTvsytqfdDNpRLBiQeupa8yLmqGTPFTanujpbfH37aEItSQJ9lAvFiT0Ac7sQjMltJe+n6rsKYmUj+1vVwWbuCUgvkxJrhet8KfOtYT5DyMhkOfeLwGvIXcD1UlYx9rLWNghakyVNKtzQum/Vrp5Wz+0zYe8KuoM1Q5MOk28uLwY9IfRRbOlP8z55qmradJyj+QE+0LWn4WtUIFUQdTlBkBfdAE+CGSwMrCo75vmE5NTgc84WxfaclouGDSp5saj+1WNdYvk/Y/OxJbrEgNgGsJNTfZ+87L1YUypRPhGoZ3+mUMOc1MX1XHLzgSJHhVKWOIckPqeiJG1rDKEYHUmOvlQx45XmE/8YbrBk4MHkAOQiGzdmL6Tfks2FVQTVXvVqDf
+ k79B9Jg9
+ LL69DUN7XLAABvqI/+FXZn+Z2u//CXRYCYkyhne4Q1zSD9nDHy50n03wHVltQ2t29t1ZDZSCIZFuzPLRNwxdxN2UZsRv22K5ZFIuBm2PPCTcs/AdzewFletySUqRyvQUzJF54cfPdxyqEWeEB65Jkw0rEOEE5VDbTocukcLV/8Sv2SPFHjgXNUoqUgdMwKYMCepQtE2JFpe6GiZlBTicw3XAto2Rg2Z92R9LIMQrWnNAZpsVJyFajyR6OsWEe7yNu/zun+lQQ5aJ2D830rhiqSw5tswzRKJpJP0Yn75hU/lZAKlSPL4lbXnCsaYen5J/g9TElW6eyDbcDakv8QDgb0o8kmP8pK2cUAotX0HsyVWIH9h/YzTCaoC9rRCirClPXZDgnRGvykZBPdinGUy51HyHjGDKH0cxkSBRhxoUx5hmaYgJU0+ictThV28+Blmvumr1dmp4h3GpHCZ7oqPug4OzVnA0dVNAxPutM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,53 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Longlong Xia <xialonglong@kylinos.cn>
+Hi Balbir,
 
-This work was developed independently before I saw the above series.
-After comparing the two implementations, I found that the approaches
-overlap, so I am posting this draft version as an alternative 
-implementation and would be happy to combine the useful parts.
+Thanks for the review and the Ack.
 
-  The main differences are:
+> Don't we want to check for *src_pfn == 0?
 
-  - use per-VMA locking in the ksmd VMA scanner;
-  - revalidate the mmap-lock sequence before skipping the fallback walk;
-  - avoid repeating a completed VMA traversal when no candidate page is
-    found.
+Yes. I'll avoid setting MIGRATE_PFN_COMPOUND when
+migrate_device_pfn_lock() fails.
 
-Benchmark (QEMU q35, TCG multi-thread, 4 vCPUs, 8 GiB, x86_64 guest on
-Ubuntu 24.04, 7.3-rc2 base, CONFIG_KSM=y + CONFIG_PER_VMA_LOCK=y;
-victim: 32 MiB anon, 2048 unique pages x4 duplicates,
-pages_to_scan=100000, sleep_millisecs=0, 3 runs each; churners: 4
-threads mmap/munmaping 256 MiB in the same mm. Microbenchmark as
-posted in [3]; relative numbers only, TCG is not native hardware):
+I don't think we should return 1 immediately when *src_pfn is zero,
+though. We should still consume and clear the slots corresponding to the
+whole compound folio. Otherwise, the outer loop would advance by only one
+entry and the next iteration could treat a tail page of the same folio as
+a new source PFN.
 
-                       0 churners      4 churners (mean)   
-  7.3-rc2              1.21-1.41 s     90.9 s             
-  + patch 2/3          1.41 s          48.7 s   (-46%)   
-  + patch 2/3 + 3/3    1.21-1.41 s     30.1 s   (-67%)  
+So the plan is to keep the folio-sized slot accounting, but only encode
+MIGRATE_PFN_COMPOUND when *src_pfn is non-zero, and only do the
+unlock/put when the lock succeeded.
 
+> Can we please change this to VM_WARN_ON_ONCE?
 
- 1. mm/pagewalk: allow folio_walk_start() under a vma read lock
+Yes, agreed. I'll switch it to VM_WARN_ON_ONCE() and keep the existing
+defensive clear-and-stop behavior.
 
- 2. mm/ksm: use the VMA lock when looking up mergeable pages
+I'll send a v3 with both changes.
 
- 3. mm/ksm: scan VMAs with per-VMA locks
-
-Link:https://lore.kernel.org/all/5cd47bc3-bc3d-473c-80d0-8be8b7b79881@163.com/
-
-Longlong Xia (3):
-  mm/pagewalk: allow folio_walk_start() under a vma read lock
-  mm/ksm: use the VMA lock when looking up mergeable pages
-  mm/ksm: scan VMAs with per-VMA locks
-
- include/linux/pagewalk.h |   3 +
- mm/ksm.c                 | 166 ++++++++++++++++++++++++++++++++++++---
- mm/pagewalk.c            |  11 ++-
- 3 files changed, 166 insertions(+), 14 deletions(-)
-
-base-commit: df2908090cda368b01ff43709f51890076c56157
--- 
-2.43.0
+Thanks,
+Hui
 
 
