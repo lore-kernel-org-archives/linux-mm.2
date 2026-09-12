@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B1FAC88E45
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 07:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFEE0C88E4D
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:25:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D0A26B0088; Sat, 12 Sep 2026 03:38:20 -0400 (EDT)
+	id 98F896B0088; Sat, 12 Sep 2026 04:25:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0814E6B008C; Sat, 12 Sep 2026 03:38:20 -0400 (EDT)
+	id 940CF6B008C; Sat, 12 Sep 2026 04:25:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED98B6B0092; Sat, 12 Sep 2026 03:38:19 -0400 (EDT)
+	id 856CE6B0092; Sat, 12 Sep 2026 04:25:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C426B0088
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 03:38:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 427451A0439
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 07:38:19 +0000 (UTC)
-X-FDA: 85204307118.19.EAA3C76
-Received: from mta0.migadu.com (out-25.mta0.migadu.com [91.218.175.25])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1EFC0180009
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 07:38:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="j/DGK12B";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.25 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="j/DGK12B";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.25 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 666576B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3518C0416
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:46 +0000 (UTC)
+X-FDA: 85204426692.05.5804F4C
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0368540002
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ISqqJMZc;
+	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789198697;
-	b=oWvZ1+WHn8LFbBFjI+jyafq9hb8OE0EE48zBGg6ehjMX1Glnub84QVGEOGXahmBZ4PAqdK
-	7PdRXQRRHdFyCMORhth/t7U7rnqtOulKlSLOiSsEpBg9rLYCzk87x91EcplV8P3vd0QIKm
-	bki+U1OuemaDj8G1yIi+YbvUtbzsqPQ=
+	t=1789201545;
+	b=CQQbtsDBHPRbxo5wviv0R8FPS9rq2kn/triBXa8G6lhRnuc2eDIhlGJOiT8tzj4/4f6a5i
+	BcJhXJ03lGVGs/gibCnzKeQoVO4/GwyqwUZRWLZPoREBRS/zdL7nloYqmlW8Kz/zaLXsr3
+	ADo6Eyy39pQVauflLK+sf8sJMrk+CeQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ISqqJMZc;
+	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789198697;
+	s=arc-20220608; t=1789201545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSgwKggMZZEINRzruvckSYN8CkiG0YlzpT9zzqZL75c=;
-	b=WZS87ZmqnGVzlS9PusGA55QsrpynasP5hpEEchSqiIvNGVTwZobIAGMh1K2JFz4Wi2tj5l
-	EGbEw9T0jZGc37IXD6DjeWZdeMKXUf0rriENeAmZiyWVWVSzcn7Ut1nihHfSGP7HyVZQWG
-	wO0uPjnP50yjzhVbowvvXzQpWdMr/XQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=951k9p3C3OHpYcCEeTeS+zKRLsyye3/AWkca/cyq9wg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789198695; v=1; x=1789803495;
- b=j/DGK12BR0xHMsYBEEZM/+30kdmK5ECke9/XzCHuHtvXLqaJIeT/IO6DihCINCA9AMuOLYQb
- E1pOYpwKWHbWg6zZufKQwBZXBunNYpsvYZgFKUd4Q87sDa+YNSoiGt0w5zP1ctX2b+kQXA/HOoA
- hdDQ3yazcuwOWBGIBwAXei1U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 937d4987c72d0ac1;
-	Sat, 12 Sep 2026 07:38:05 +0000
-X-Mizu-Trace-ID: 937d4987c72d0ac1
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: yintirui@gmail.com
+	bh=Yncf0PxijlZoQpU9WpOljLbavmoG2PB3EBdY+B+ayfA=;
+	b=QOfo8300ic/9/usjGqahhMCV+P8tN3sHcYbeLYa89Pfh7LRqvyO4YGyaHs47Q32v8P2L1n
+	C9TQN04Q4B+unRtAr6TuJvu85KL1H35TVm9ZWxKVzeCeBd1PvHPE90/N95bASIVCq5wTed
+	syFpJ/b+cvIwaP39Ajf5uX8bQjUdcbU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Yn
+	cf0PxijlZoQpU9WpOljLbavmoG2PB3EBdY+B+ayfA=; b=ISqqJMZcXy0NipoBmQ
+	DGy+LrADHOcT2G5d3Giav/XLw7t9GyjKbu8FlOV0xqA3zVQFcEWdW/cildYiwUnh
+	YTY1sTDIiCu4d94LimVip3iwJte2sei5ZfwxWTq8G7YAXW9/itMbazDCUDSI1ULp
+	n6m3SUEhuJr+nBhKAsZ0lzUEY=
+Received: from VM-0-3-ubuntu.. (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S5;
+	Sat, 12 Sep 2026 16:24:50 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: xu.xin16@zte.com.cn
 Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	dev.jain@arm.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
 	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	borntraeger@linux.ibm.com,
+	chengming.zhou@linux.dev,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	harry@kernel.org,
 	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	nico.pache@linux.dev,
-	usama.arif@linux.dev,
 	liam@infradead.org,
-	wangkefeng.wang@huawei.com,
-	chenjun102@huawei.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 4/9] mm/huge_memory: use normal_or_softleaf_folio_pmd() in the PMD split path
-Date: Sat, 12 Sep 2026 15:37:55 +0800
-Message-Id: <20260912073755.8403-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <efae5222ad43f749c40aaca9b759b41844fdded8.1787941780.git.yintirui@gmail.com>
-References: <efae5222ad43f749c40aaca9b759b41844fdded8.1787941780.git.yintirui@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	nico.pache@linux.dev,
+	peterz@infradead.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH RFC 3/3] mm/ksm: scan VMAs with per-VMA locks
+Date: Sat, 12 Sep 2026 16:24:07 +0800
+Message-ID: <20260912082407.75875-4-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260912082407.75875-1-xialonglong2025@163.com>
+References: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
+ <20260912082407.75875-1-xialonglong2025@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JrW8KFW3Xw48ZFy8GF4rXwb_yoW7Ww15pF
+	ZrJa98Wr45Cw4fXFZ3XF48CrWagw4vga1UJr43Cwna9wnxtrsxuF4rKayUAF98Crn3Xa4a
+	vr4jyFnxCF1avaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j9yCXUUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xMbFGqlDFOSjwAA3m
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0368540002
+X-Stat-Signature: u3j9zn86cxiy7sz5qw4y5aoru8pw1ygf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1EFC0180009
-X-Stat-Signature: ypkj516db8zcb113m9mqjtc9yuwr1xx1
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789198696-693723
-X-HE-Meta: U2FsdGVkX18J5ZzGP9f/z6F4raAv90L8ps7JHA0cs8N20ukx0qfv8cQis4EBvAmm3GRW7oISBDHPeFNqDGMoykayYXE1NItUkt3778CpGoc0qPXRdXxSLlRaAoRM5uOS0pJOHJk1PURsmofftGcMxcRqcnXPasvcJuaAQsvKVaOchp6y6ny4JbBfZyV8c8gjxN6Y3nrJtILM01AXeEgg9VZ0EN73dTJfU7cgXKl2epRcujoOpMQyU5MBPPVpIx0JCqS1n3yR4Vo1QQMWyqDq1lLmir+5zpxXPRCRbYYKgNsgzGUWONy4DDLsEMCLOMqerQgnqQGNyGz2yEaFk8S9ZGDI5QybpVOCjL79lDwm0C8fxT9ynG0Jcdw+REa/TFy8wuzAACoi3fIll8jNJYZLwKhM7NyvZV0bB1VmTXJOqQchWTG2cgi4WcWSfKzeHaXidYJUnoG4RaCoQTgLIHjWRC5R4yH+6c2Cdyc3ngShPI8d9Bb/NML6uv4BRZAKjeenvp5bzmwXzGUV66fPr+u0UtT+RndKi/rqyoXTO0xnOAKCVLyj5BYg9YdjQlQRqt1WqHrRbWU1RGMLW9HafwzbK3ULDrU3aAqq/xrdMVkfvQxRcUC7/vSVGKONQaOWiDGqF/cAzY0FARFOaHVhdZql/2Mnzw9xLjIf+n50Sg8aHFPGWSn9k6yQVopc3Fp/gytNkvm7LP+ozFMrwEgfqzjLJM3+FF9FaFEK6b4fUGogGGaEkY0CTuUVbHJ43TO/k3fG/neIOioUttBcHFmhOUEdjlJmjJxweeUBM5P6MqE0FLoA7PKLkdCqOWn4CMKLOVVO+kngb3rJIPPH3JEbOtm92Dda/uiyURP0cpUoGipXzsaA6vquz2HaDBX86INh5FlQPywumerjz+yufJhh/u8PAJ1uMv2tMXuJeYELzZJTkZAEJf9dRuZoLYfavHFRr/CJJrDPGCfIFP1gtxuxez3
- IH7Ozo0m
- LpvTsXy5i8MfhOLfGByat8mWNCINI1nJWuonovOuH9PwFr2QSvf7Xib6xnNbBs+lShTrlO2bFJwJqPahVQ/IXGSqKqfUPxoauO8Jqc18qnecHeWAsMTb/IrUoec0+B2lsAHu2Zx+u0oVTL/++P6ZVR8dJAG/l9tbA3pzj/yVc1ScBk95FMi4KH+c3BI+jFUZImDBAPRO0Mmm9mem80Fz4YL/5bBmaP0D/pHTFosgqmJF0bndUCXZM9g9QXbn55u8AizyOUde3EHalTwscctDGNF3gE1eiuV2dYDXaNv4EN2UMIVYu4mcUwSKU1g==
+X-HE-Tag: 1789201543-794413
+X-HE-Meta: U2FsdGVkX19OWnDNKMdwrqqKwX6sUAHeL9vfC7Xd/CjrtuU5seU6Qf0CnWxOlej0PjlY761TRRIjNzNu51JaIofUnX0W1idxUmfzM5zFN6CfBg0524VH0SpG1ZwXIA8VY9L+UC1qsmhhn2taSjvtTd78KeFqmcrKYBNdpIggbODL1GJBWcyR/WQpEPUPc00PIR/ZetgsBEcvYW0gPxAv0xkcl79X+UyDnN35Dc4FJUaTumhgtb8+EPrxh1NGNrEfPnrzZOe8pvffEeK5xtdNRz4q4jlG1d89GUCVgjTQAdXs04tqn5XBI2UIdR6UgRYkXC46FxlJ+HaznALr95J3UYOai3Dnx4KXlslK91jb51A+2/jOOZa/NbKNemWtLDTlLNQUQJG+XnoN9//pcNMKvDEalqP9biArnLJnoCx+L+q1h1w1guraGBy+vvh2AxMP0ijYch+4RN5iPKe2b64yLQLKSIIx3wR1GxpWJkkLo2xCj6/KU+KQjMzr/9UOD5iZ1Sn2gebKcpZkIywlomHaZ9pu46GUJCuTVc35nPrlUPyl/k4kn7PlXyyGvhS8gOVqx1CsXlQpzAYs8EEVq5MEvRTclv4EhxPhsJ+SJHGC3G3Ap3jtia3SZGW0E4MUTuzxgvrd9pdua+c6cZR6uZjHaHxggoMr5q3BraAmV42Y7UWU2malQCxxpGx2yHXL079lkwwAKKxXLfMMbH72ubdMYcrsDtWQRl9E1dYH0n2Y5YE24cdbnocFURdH503cDt9L9G/CwAVYuiUYsztHqv1GFzgybYxONfQ2u9lW3DAlJK52SqwA/nm+zU4A+DHjfOzqGsN9Viu0qMPll2JOIEUhThUpVRSrikXCyjML/QTcIdh+1asOo+obu5HOq282z5KLFiFL9isVczNJFZRQ4IWZXzxz92tX+FU4OFHZx+MVq1zCDR2HnzdmXmq//B1s6dNJKHQrlYDygVPxTnXITKZ
+ aG+j3ITW
+ Omnlc8wJN+nQasUAGPwc7tUt2HFLFzVO/S+S7uTWBP8PLViQ0LbtUQlEIkHhSv16lJCPQER7UPtEmY6gvqOMxBQLUsFYArVcBUAObTr494nNg+/S0uLRfRm5o7qAmVlwWb7oH6O5OupSxdJFlGkDIPBqRZ9L/P4oSP4TfVOss6oEto4Ju15TPRx0r0zts3pVe/NGBCEm+duRLomw8TT+lj1tnUcgMjlTOKYKKpy2kcLaFPV075tPql/AMWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,65 +111,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-On Sat, Aug 29, 2026 at 02:33:14AM +0800, Yin Tirui wrote:
->Get the folio once with normal_or_softleaf_folio_pmd() and decide the
->deposit once with has_deposited_pgtable(), as zap_huge_pmd() does. That
->makes split and zap classify an entry the same way, and drops
->vma_is_special_huge() from this path.
->
->Behaviour changes only where the entry and the VMA flags disagree, which no
->in-tree path produces.
->
->Signed-off-by: Yin Tirui <yintirui@gmail.com>
->---
-> mm/huge_memory.c | 21 ++++++++++++---------
-> 1 file changed, 12 insertions(+), 9 deletions(-)
->
->diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->index aefd62827139..b2ede9a6ae5d 100644
->--- a/mm/huge_memory.c
->+++ b/mm/huge_memory.c
->@@ -3172,7 +3172,7 @@ static void unmap_huge_pmd_entry(struct vm_area_struct *vma,
-> 	 * We are going to unmap this huge page. So
-> 	 * just go ahead and zap it
-> 	 */
->-	if (arch_needs_pgtable_deposit())
->+	if (has_deposited_pgtable(vma, old_pmd, folio))
-> 		zap_deposited_table(mm, pmd);
+KSM currently holds mm->mmap_lock while scanning the VMAs of an mm. Use
+lock_next_vma() and walk_page_range_vma() to acquire each VMA's read lock
+and release it after finding a candidate page, allowing unrelated VMA
+updates to proceed while ksmd scans.
 
-Staring at this ... I think we're missing raw PFN mappings of the huge
-zero folio ...
+Pin mm_users for the duration of the lockless VMA traversal to keep page
+tables alive, and retain the mmap-lock scan as a fallback when a VMA lock
+cannot be acquired or per-VMA locking is disabled. Allocation failures
+preserve the existing early-stop semantics. This reduces mmap_lock
+contention for workloads with concurrent address-space updates while
+preserving existing scan semantics.
 
-static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
-		struct folio *folio)
-{
-	/* Some architectures require unconditional depositing. */
-	if (arch_needs_pgtable_deposit())
-		return true;
+When the per-VMA scan completes without finding a candidate, remember the
+complete traversal and revalidate the mmap-lock sequence before entering
+the fallback. If the address space is unchanged, skip the duplicate VMA
+walk; if a VMA writer raced with the traversal, restart the fallback walk.
 
-...
-	if (is_huge_zero_pmd(pmdval))
-		return !vma_is_dax(vma);
+Assisted-by: Zcode:GLM-5.3
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
+ mm/ksm.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 107 insertions(+)
 
-...
-	return folio && folio_test_anon(folio);
-}
+diff --git a/mm/ksm.c b/mm/ksm.c
+index aee1a1b49b1b..2c0b2adb83d4 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2647,6 +2647,98 @@ static struct mm_walk_ops ksm_next_page_ops = {
+ 	.walk_lock = PGWALK_RDLOCK,
+ };
+ 
++#ifdef CONFIG_PER_VMA_LOCK
++static const struct mm_walk_ops ksm_next_page_vma_ops = {
++	.pmd_entry = ksm_next_page_pmd_entry,
++	.walk_lock = PGWALK_VMA_RDLOCK_VERIFY,
++};
++
++/* Return true when a candidate was processed, including allocation failure. */
++static bool scan_get_next_rmap_item_vma(struct ksm_mm_slot *mm_slot,
++		struct page **page, struct ksm_rmap_item **result,
++		bool *complete, unsigned int *mm_wr_seq)
++{
++	struct mm_struct *mm = mm_slot->slot.mm;
++	unsigned long address = ksm_scan.address;
++	struct vm_area_struct *vma;
++	struct vma_iterator vmi;
++	bool done = false;
++	bool mmap_unlocked;
++
++	if (!mmget_not_zero(mm))
++		return false;
++
++	mmap_unlocked = mmap_lock_speculate_try_begin(mm, mm_wr_seq);
++
++	for (;;) {
++		rcu_read_lock();
++		vma_iter_init(&vmi, mm, address);
++		vma = lock_next_vma(mm, &vmi, address);
++		rcu_read_unlock();
++		if (IS_ERR_OR_NULL(vma))
++			break;
++
++		address = vma->vm_end;
++		if (!(vma->vm_flags & VM_MERGEABLE))
++			goto next_vma;
++		if (ksm_scan.address < vma->vm_start)
++			ksm_scan.address = vma->vm_start;
++		if (!vma->anon_vma)
++			ksm_scan.address = vma->vm_end;
++
++		while (ksm_scan.address < vma->vm_end) {
++			struct ksm_next_page_arg arg;
++			struct ksm_rmap_item *rmap_item;
++			int found;
++
++			found = walk_page_range_vma(vma, ksm_scan.address,
++					vma->vm_end, &ksm_next_page_vma_ops, &arg);
++			if (found <= 0) {
++				VM_WARN_ON_ONCE(found < 0);
++				ksm_scan.address = vma->vm_end;
++				break;
++			}
++
++			ksm_scan.address = arg.addr;
++			flush_anon_page(vma, arg.page, arg.addr);
++			flush_dcache_page(arg.page);
++			rmap_item = get_next_rmap_item(mm_slot,
++					ksm_scan.rmap_list, arg.addr);
++			if (rmap_item) {
++				ksm_scan.rmap_list = &rmap_item->rmap_list;
++				if (should_skip_rmap_item(arg.folio, rmap_item)) {
++					folio_put(arg.folio);
++					ksm_scan.address += PAGE_SIZE;
++					cond_resched();
++					continue;
++				}
++				ksm_scan.address += PAGE_SIZE;
++				*page = arg.page;
++			} else {
++				folio_put(arg.folio);
++			}
++			*result = rmap_item;
++			done = true;
++			vma_end_read(vma);
++			goto out;
++		}
++next_vma:
++		/*
++		 * Don't advance ksm_scan.address for VMAs the mmap-lock loop
++		 * skips with a plain continue: the cursor has to stay 0 when
++		 * this mm holds no VM_MERGEABLE vma, so the fallback walk can
++		 * remove the mm from the scan list at the end of the pass.
++		 */
++		vma_end_read(vma);
++		cond_resched();
++	}
++	*complete = mmap_unlocked && !vma;
++out:
++	mmput_async(mm);
++	return done;
++}
++#endif
++
+ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ {
+ 	struct mm_struct *mm;
+@@ -2655,6 +2747,9 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 	struct vm_area_struct *vma;
+ 	struct ksm_rmap_item *rmap_item;
+ 	struct vma_iterator vmi;
++	bool skip_vma_scan = false;
++	bool vma_scan_complete = false;
++	unsigned int mm_wr_seq;
+ 	int nid;
+ 
+ 	if (list_empty(&ksm_mm_head.slot.mm_node))
+@@ -2719,12 +2814,23 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 
+ 	slot = &mm_slot->slot;
+ 	mm = slot->mm;
++#ifdef CONFIG_PER_VMA_LOCK
++	rmap_item = NULL;
++	if (scan_get_next_rmap_item_vma(mm_slot, page, &rmap_item,
++			&vma_scan_complete, &mm_wr_seq))
++		return rmap_item;
++#endif
++	/* Recheck the end of the scan under mmap_lock before removing the mm. */
+ 	vma_iter_init(&vmi, mm, ksm_scan.address);
+ 
+ 	mmap_read_lock(mm);
++	if (vma_scan_complete && !mmap_lock_speculate_retry(mm, mm_wr_seq))
++		skip_vma_scan = true;
+ 	if (ksm_test_exit(mm))
+ 		goto no_vmas;
+ 
++	if (skip_vma_scan)
++		goto scan_cleanup;
+ 	for_each_vma(vmi, vma) {
+ 		if (!(vma->vm_flags & VM_MERGEABLE))
+ 			continue;
+@@ -2785,6 +2891,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		}
+ 	}
+ 
++scan_cleanup:
+ 	if (ksm_test_exit(mm)) {
+ no_vmas:
+ 		ksm_scan.address = 0;
+-- 
+2.43.0
 
-If a non-DAX raw PFN mapping on x86 (say, via mshv_vtl_low) matches
-huge_zero_pfn, vmf_insert_pfn_pmd() won't deposit a page table, but
-has_deposited_pgtable() will return true ...
-
-Before this patch, arch_needs_pgtable_deposit() skips withdrawal when
-splitting this mapping on x86. The new check would instead reach
-pgtable_trans_huge_withdraw() and dereference NULL through pgtable->lru
-if pmd_huge_pte(mm, pmd) is NULL.
-
-The helper already causes the same bug in zap_huge_pmd(), but extending
-it to split is a regression introduced by this patch. I'll send a separate
-fix, and we need it landed first :D
-
-[...]
-
-Cheers, Lance
 
