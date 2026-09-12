@@ -4,151 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04A88C88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 11:51:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34682C88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 12:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94ED6B0092; Sat, 12 Sep 2026 07:51:58 -0400 (EDT)
+	id D533B6B0088; Sat, 12 Sep 2026 08:28:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C466B0093; Sat, 12 Sep 2026 07:51:58 -0400 (EDT)
+	id D03CC6B008C; Sat, 12 Sep 2026 08:28:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D82C86B0095; Sat, 12 Sep 2026 07:51:58 -0400 (EDT)
+	id BD5146B0092; Sat, 12 Sep 2026 08:28:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A53056B0092
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 07:51:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 127AD160481
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 11:51:58 +0000 (UTC)
-X-FDA: 85204946316.11.6CE766A
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E4118180005
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 11:51:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=uaJD2HTi;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789213916;
-	b=XxTdtucQEy3Az4WHt34fRWNrvzeSOhPEmGqf0TNyJiycSH6FKHOpsqZPB235iJL54vVu0W
-	lMlf8Bry3FZfRTtVnrsBkVNX2j3bNc/0QMy8G2jFBMYweHrIPrdtxDY+H6aIUYZ21ZFj6U
-	+cAZdTMtEPURi+Z9RjiVG+AFsIC+sJA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=uaJD2HTi;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 90CE66B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:28:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C4761A04B4
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 12:28:36 +0000 (UTC)
+X-FDA: 85205038632.07.62BF6FF
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A257420002
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 12:28:34 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uuLEGrHc;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789213916;
+	s=arc-20220608; t=1789216114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bcAx2yrZ5W43UEp0p7bdF0l1dDSK9D0U9mKNzi+eSEk=;
-	b=mqA3qDquLcKmSB4MvkyAJ4iXCCE3x+9s3D7GI7dPuhuNlY9BqFGWEVrlSXkfKxlSe7lPIN
-	j0fBObiXpkWGh5/6u1+hJ8ZvAWjkeTTcPddlQW1Z1PMMr6Jg1CtPcvlMuKie0zlvR+wdTx
-	MX3zyPk3WTMi8ua+8vEhPSdlx9moMuY=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9399daa3d43so158209785a.2
-        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:51:55 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NJXH9rrJbZbgym50NMM/+P+67cMUDF3IUxD6O+4ZOuc=;
+	b=xot65FXtHIwY0+F5iQlLXXTRwb9ekekhsOL20wJL9kzx5c9Nb+0RThK48W+N8XEBe8slfY
+	kolwfAyl6zKXFp3ABRC4SCLqyrQs+prA68ZOdLqvFml6SSImYPZgQd9pm0C0s1TDGR8u+/
+	L3yaGEwIz75B+S3DLkv5NJIFGqy3OkA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uuLEGrHc;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789216114;
+	b=zXqH6zZ4SRRNwMgSxdmKAnyLqn+hCtT6vtXVVxEW8j6L36x/y3zVPSDzmJmUIjh4XHs0Lu
+	wI/EJT4IENmulftAx2Wygak58XVH0FUo5EEckEIZrAYWKyvN5ovxcf1yLz3/Wd3fwocJEC
+	Yv9SxV+O+o0EH3LYreOEu3/FY3wtYSI=
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530c602630bso5738551cf.3
+        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 05:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1789213915; x=1789818715; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bcAx2yrZ5W43UEp0p7bdF0l1dDSK9D0U9mKNzi+eSEk=;
-        b=uaJD2HTi/Xc6EFk5SNv209VKPYr2jEnlFblrxL46lo9CBokev4KGKynOtD8iPgCP5v
-         x6g+3Kj9lpH5M7tfgB0MQgR+hi5H+YBFzfQyh2uBIS2//skIWYmWnqKLMnXaLAOUYISP
-         g2xPW0A42FAW3f44kk0d+wpTvG96Weo3QVWQcwCyZ0zkad9vIHckw1otUUEO+yQDzfgU
-         qDJyRCOdeVO8YU7QFP2oJZuKzeOPECM1z1DWX+wmMHXGsTojKWUrdGGJh6T9Pk9zbpcO
-         p62iwNiTy51iokZnXaQ1U4KbboMXr6D39xG0XThqm6JqtWfo58peEo+pBQ9eIUBnaCYG
-         XShQ==
+        d=gourry.net; s=google; t=1789216114; x=1789820914; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NJXH9rrJbZbgym50NMM/+P+67cMUDF3IUxD6O+4ZOuc=;
+        b=uuLEGrHcoCLri55uQwyCmJz/YKEHM5G507O3pptEfJZAObeSqChEtsyu4xRFZcA0WJ
+         SRyaaa6FDdfGJS4jej3vhdgvP2ivyAnoTqOUqn+fVNsrF8KPCgHGAl/DEdLGxObToENS
+         oVttDedQ1sd59P+UOt96QyVLp/1lHJilNWBAgNqrheKzc1q32oHrCgx0OiPKjWo4sDaO
+         eiy752GGPUbD0PZfk8YIpyc0+MqRj+cc/qzLX2g2qt79Gjk9Je3qLEiwHSDYnY5hKfyH
+         0HCxpK20d720DrS1cTOjxxLi/f9RcAtZStXMRAqJmm0Ozx+1gHopDMWvHXb8VYaYDtkP
+         erKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789213915; x=1789818715;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bcAx2yrZ5W43UEp0p7bdF0l1dDSK9D0U9mKNzi+eSEk=;
-        b=R8z0hVPVvkD0DTLPaS9NVxd1Lby1IeqV+6XW6hIVXGKnYU8CIixtnHv6uz5FRklqHk
-         7DxZ8a9/0HTo+mGaGnW040kEIu7ayagqRDGDfkPO8ZPu39gx4sdnpqkpeaSZdnDTNhh7
-         S4LY0ouGaLRG3LUblTeNIUtH/GeKNsc3BkZbq11TP/KIC7m/j7050d05LjV95DXgEsGY
-         HE+qtN8jHCiqi0m6SGjXAfKn29qGTjdqf8Xsl3rurj3lBKIcNgV2N6ZrfbV9a6e7lPX7
-         uTIWLLYkOeLD0+3vDGN4MmMQ9FLBTuc6XrUs3p7taSAwjbBsGnfiNJx3ghFRqp7Pb3Cb
-         zgaw==
-X-Forwarded-Encrypted: i=1; AKwUvBxSX3IP9UVDzG3ddFDUXajukRd6wEEon1yhc1fHc3dtD44zFiyN27NTmpkupR1XixUhcALHRfQXBA==@kvack.org
-X-Gm-Message-State: AFuF++mtacB/Iyv2zrpzegdAqHFGIR5++JG2UEqIvvBqca1Dim8eGUyT
-	l0LyPiuOLkZcjGGw3MhyC8toIhZ1dD+Ts7twmCczm5vEk9Pdu/hfuqBYUTXhV+pVrF4=
-X-Gm-Gg: AYBFou0JhVs0PYLkOxAdEpcullYB6VkRH7McZozKQ4Um8z0txE/nSxlaLu0qlV2jl6/
-	G7gNom69R1LePveec1tkIj8IjXS79zsTwRrBe+tCSncCu8HHYb0yPbCZ71TeKt5NbkXevT3T+QJ
-	hNh9D1DGbzsukrZIqAJv7Di0mGZvXTkusDkzyeoPHUN1y0zeoTW4YQsa8ckr/W/aMqgBbhfhnLc
-	a7axUzzlAgeT9kAaZa0Or0EBT8s+1rJnC04dXPkeQ57mHW2mda/MIW4SUfVygSrqhssjKkaxGID
-	LrPgOYuFhkiFkc+gokFAGvomW5CgojkPJwTHuPihcmfwBkIpTgcnEWxsi6DdM4xanAHV28L5K+C
-	WNVuyJgGzxg36kEXoxrItTs0l+cyPeS7CqxYMSHekCxb2CbFpYtwUx2zxyweDuqEzLnj4RIlk0d
-	b5Iunbl9eJ04qBhhNQx20heRcchi/xRCJBjxN/xWKybCt4L+Vj4ecVvsHRgT1fTATnh0J4Jg==
-X-Received: by 2002:a05:620a:700f:b0:936:e702:51a9 with SMTP id af79cd13be357-939ea275a08mr1168041885a.36.1789213914937;
-        Sat, 12 Sep 2026 04:51:54 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e7f18628sm481437485a.13.2026.09.12.04.51.54
+        d=1e100.net; s=20251104; t=1789216114; x=1789820914;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NJXH9rrJbZbgym50NMM/+P+67cMUDF3IUxD6O+4ZOuc=;
+        b=BGT59BgxYJ9KQc1w5enjzcgi/9JsdGslJG83T3meuhWKy7TGp9ciHC9VruOXTe6Tuk
+         yxoYqfMoZuVr0cvXInpfaGsovkWlkz39vAck4l7NkzcpK9Pngss0LB4f9Os9fJCtf/+S
+         k/v2DES7kTCXChT2FUdg5/HLwWff9j8ckQew/vpJctSGAmfvmdz7DVS/ZVbJncsOGRyz
+         Lxl9F6ctPhV8ptldwtuccqYekVyTuhiJhNvvZQVvWjd+0m2KSq3oVulPY/ok6iwRPieG
+         xJrHVOQ+NFZZEJiBvvnWsLmB+z98tYSJGrmIC03VSy4ONiwQXxto7AubDO0636zcmsut
+         7CUw==
+X-Gm-Message-State: AFuF++m2dteQv6ZD8VtkbtV2mVUfx/3Kmtt0UOQZzjqjVceGO8+g5Qa3
+	n7q+BKytkoozlSkkSUwYu96SOvexvhMUr5GDR9JOPRN+PIaqCaiNhE/iaewaFCCT6f9Fo+4sy3v
+	7P8HE
+X-Gm-Gg: AYBFou2DR4rQphy/RvPUvLwDZ2e0lWFS1/r/9Rkk5nv23n5Nd4SCklNRxa2UuQJayIg
+	9ewK0gamUuoSADvsQgycuYEv/aNKqTWXU7B3AbDQkyBCaPmMSbEY7io/nRNTQu/tCO7+chLbSK3
+	ivXu1Je7oXmOn3L8OUTp7wpJOoNE87OtVZ5OKopw8qO7ABXWPXTaLLPOAEav8yjw4sYeNYr46IU
+	DyFeL4J9xLcYFQMUkuGz7yP5ijyhda0ARHEV/ZA6Z0sTHQGc5HOV8iHktpgSNtyl6vCn+J/g4A9
+	cbma2FLtbRDOeGut/C/pjvrh7vXLT/1SMWNgSHAzddtdXSPhNZ3EqerFX3Cy/4ZRLw/zuIDW3jo
+	65Sx9ZulEblw/YevsWqMj0L6GoBFooOQIo76u+/f3WeVhy6XIucMe9/J/48D39PZi/tztWELcbq
+	TxgPShp0jg2Ue/pesTGEC3lU5wqEpws0W/NacVaD2dG3jlY7JtS5XLttsNvRimvcCBY6IKDyDx6
+	bKus6IdYQZr1GpiCTauHrsF8qZBhZXHINYL89GklX/4uKFXKpWj0CEsOYa1
+X-Received: by 2002:a05:622a:1f8b:b0:530:42e5:f3a4 with SMTP id d75a77b69052e-530e81e3f69mr37044771cf.45.1789216113681;
+        Sat, 12 Sep 2026 05:28:33 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530e64da059sm17780461cf.24.2026.09.12.05.28.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 04:51:54 -0700 (PDT)
-Date: Sat, 12 Sep 2026 07:51:50 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <aqU81l1oqGItb-0C@cmpxchg.org>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
- <aqBT_35E-eSoN_zj@cmpxchg.org>
- <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
- <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
+        Sat, 12 Sep 2026 05:28:32 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	peterx@redhat.com,
+	jgg@ziepe.ca,
+	david@kernel.org,
+	sashiko-bot <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] proc/task_mmu: handle special PMDs in clear_refs and pagemap
+Date: Sat, 12 Sep 2026 08:28:22 -0400
+Message-ID: <20260912122822.3348978-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E4118180005
-X-Stat-Signature: zqmg5gyt6g4of6z9r8tayicss7betmhi
-X-HE-Tag: 1789213915-717985
-X-HE-Meta: U2FsdGVkX18dBxcaPcd6omnWAmzBrzrGJB78qHzUGcsh41gBWOwS+qF+7JCdNUFww8a9yMCpByEaWwmQX18q4INM/n5nsk/w8IREbP2s8xS9zIlaWzsxZ1/6SKzfCYiqeGSYuQaS2Urlf99NJgyXQ8Zkj9chQ81YfDQEtT/mubj+FlDbQZhSo/Hx2XQxkF5zucb3Ibt38g3R8nJcGjpgbit7qH1LGErZUVjbtKfDOMpFdbhXTwQ310WHgMCHAJorZ2K6omXD5GloaJdeIYi3ZxGBs4D6tLAG/mQUUXau2Azcw7b+Xpqf7LvxpBsyU9K0c7ISj89XsXub9u24He1NIvDvHwMazsoIigdWFq40AFjIQX5LDwtAFgkS5L093l8lMHymSoiG/LHksPj2Op98cQ32KcEoo4cbhjt3JeCv6t7jYycEHN/8N0qF2TdnHkXxZH07w6ga2/Q8jUZuuyCbH1sy3ONET6J9Jo+gJ3KPr7YZH9VckapPvajK/3aEYodNsdttXBf+RT4rJG7Uiss4W63DgMCipFNf7rwyYvF+IkNfnvHkk/gxIdOVc1H7LuQcOJOb7u9a/SB6qJfapDSCxXOAWyNVYLo2c1PFJLbs1cBrzUZFa4JKQvWNUHMYnY1bRpIq/VjgYi4fW7idCDkihHhTtOLsclIHjkFXHOEPHvNuXJlxCCQ62VinMCNGWIoFpaC9Kio/82Y7dLDmWkCKTi4REz6pjwlGexmWhV10GUJouXfux9RHMpWdzry3VgdW0zFMUOI3W4bbI701G1SwXeoZBfS/w14LOyxy8cyyZiQncd5QOEmjJz7cz5/arKV6AWvDsKyM+aV5K2IzrrO5J1CuLeCkYA27ZAQpFeSacaazfxtCBgdXs5sPlT3nSH51oGgl28n7GFo6kFfomuHfifsoZ8qSEY3znXDFv06ObcSquxtdM7gyTc8IFa7o3dqNVbuUtsurUzL4JDEExLC
- d0MM+sOQ
- VgxRVycih9E+rskEDsibmPn2jB2fKMFbkoTc6b4HnVdxJ7tPDUywhd1wcuG08WX4N+BHf+LqG81amNXtJ7NTZqBOzCnoNWk9bxTdutdfBGWCx3Ahg/qAmA8QGpUrDfQbjRLB7Hj8PJv/3XTnqXJYHRFcu7eq75NN3uuOlg/uuUzIMWF7j5MnhwsrobI86mTqoJ5vE3F8xQkpdXWixn0GvUs6R8Q/7IqKGPnlFlA173Rg6TsXU/DsObmhFavv+Z84EidPGZ5c7ikyWV3B9vfggb/O8XaQYZH8+h1VR8XPvUzJ4rX5SSR0gUbMCx2tz5EvdrPLB9OR48hprAP/xeW5KBHNQtC0SUZyNZiD5vkDwfC4LDPrBq+USh7eddjjDAJitxFxDnUsJXKoZqkGsrqdBgfQZRCWDM8Vvg3/PIun3nRtmAdmCaBy/ED1Odf9dGvq+9GCMYa5KF5gdVEKGREm6MMkD1gyG9SoFTMbiO4Qx+cSweJyL3ApYwgPZwmMj1McDVhU59SI+usV6Yv+hTzh/Op9rDbcXWRt0L2vEkq6goEaWK6YCA1jrAf+mG1+RaQrBE+FVx3l2JLTw7DL8EeZ30mjDg7C98+VeQ1ad
+X-Stat-Signature: wb6dgfikqfuagh45568entwh4yi4jbdz
+X-Rspamd-Queue-Id: A257420002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789216114-416216
+X-HE-Meta: U2FsdGVkX182ruQT3coi9P8QIYt3DnpeYdItKItwkICdWXOSPUmo8xrnRrjhmcW6SvQFMEgRT6GlfGf4XEbWHcKTJDVXwDRMCSAj6g2MBRetjIj6yPGauagjdMZThC+cwi9N7V8v3RmV4OGeVsbJIJfoCeDIDDmnOtbKwTfLZJAXnQ2PBnY0CifVNCLkybkR8dv9t3+3pY7MgrUo9FS7SNj+M/AhGhlEhcxTBs58EUikZ1z54zhLFXIk8SKBJn1i/GFXfklhSYaYmYytGAa8Tl0PTWt+olq07G3VnP4Fzsf6CdBEngVTy+vr3HYFaNzY/g7114qRu3XNA4w1TOeqelHiUio+TUcU0rV3iSzcsQ5HaelOnM8mI+yjex02dhN5WqAHSUUwKhz27ZQQ0y4EbTBdXNTgENxbHkFnoyHZrwGdVvq4MelDOqC3rMAje1s1RL4PNA7V5hbD1WKtqawbiAcxOCRsydFJmJRGU1rxfh1yQhoxgiEXIyYI3Zrry0JfI2j4agziJ56QXFUwqCNsJb57wVmh7mFfi6RpYFtPuc4RcI4qSumR9LSyHAvIUU2wUMEEvk5GSJmq0w1tjsfXxFa7qGceg/avXVj0sZhprZlDk/XI08oqS0sVw9hsCtADfponpIrQLJ0Xc4a8AQxoWnJ5tyRToP5qjJ9kQ5S292LzoT+BtoYAlG7gy7AFjBG9JrbadesUFHj5AvuLbHwLti7PEC49ZdZucb+2HSs0HHCCwkmL1O7HFpAEMrW4X7i8jDl8KxF5QhK52NZZyCcwCKnaDWEa7s36Tm0uuFXEDEtpVWJKuLxSd5R1cpfupHMvIrz1l6xlLtbIzo5s5r7k7g8rajCmD0GDDe2COqtFA6xug786hjYs/8B7eMpQ8h5Mxuen5ngaJRfTo680e7YcKRTGpz+ihtuFdbDhA+bybNW0jYqUplroJscUhirBXqCuQiii9UZ5DE8pWIFu8lm
+ k+rvzbj3
+ n3K8SWBp1OFhhu+iwLyFDsPEhnamliTrQL2mtGzZ/DgkM2hHGFU6CqbayfTFeAUlkK7PemScg7FLOpV28eIi+5a7SJEocJjniiCChzCpZyhnu3AllPOuYWWYmijDI5hL8iSBcVz1ekEBlL/I+uF+WOm219TSmzj3q1mxzoY4OVxwqgjIGt4GrTGzXbEB20NgiLLOsBv9QQECo1eRvlEsb0fLjwEamj2LiNRmrx/juHTBnFcInegqIA2Uk6bzc3zxmtgEde/UPBeBpVmAQIuP3a/f5OuGFMgzMZYDDJJ2Zx4YwKJ/62sD0e9ARwLnuMLmW6o2f81lWkWA63Z4I2Z1zoRZHItMs2iXCzFvt2M0cUgtaON4a/xxt1zJq1v4ekxYpqgpzr7aINJc6rtXXfgVB1WDWaV1xN8v2M6iVTlNvWkEq34pcU0HvID2g9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,70 +127,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 12, 2026 at 05:00:42PM +0800, Kairui Song wrote:
-> On Thu, Sep 10, 2026 at 12:42 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >
-> > On Tue, Sep 8, 2026 at 11:30 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > >
-> > > On Mon, Sep 07, 2026 at 01:51:31PM +0800, Kairui Song wrote:
-> > > > Where I've ended up is that unbounded growth is a real concern. On a
-> > > > host with no memcg limit (root cgroup, and most desktop and embedded
-> > > > setups), an unlimited pool means usage can keep growing, with no
-> > > > admin visible ceiling at all. I'm not attached to xswap's percent of RAM
-> > > > knob specifically, but I do think some kind of bound makes sense.
-> > >
-> > > Swap space is just process virtual address space, no?
-> > >
-> > > Swap entries already have one or more page table entries pointing to
-> > > them, which in turn are managed by trees of vm_area_structs. That
-> > > means rlimits apply, overcommit protection applies, and OOM killer
-> > > attribution works as well (oom_badness()).
-> >
-> > I tested this theory. I spinned up a process, and let it spam 0-filled
-> > memory + swap these pages out continually.
-> >
-> > As you predicted, oom-killer picked it up eventually. The host was
-> > (and is) intact otherwise :)
-> 
-> Good to know the kill path works. But I think the accounting side cuts the
-> other way? Won't that conversely underestimate the host's ability to
-> handle memory alloc? Not to mention a lot of application are
-> swap  space aware, some built in logics like e.g. with vm_enough_memory:
-> 
-> On a 1G machine with vswap enabled:
-> [    0.241906] vswap: created virtual swap device (2199023255040 pages)
-> 
-> a 2G sparse anonymous allocation fails:
-> [   46.044002] __vm_enough_memory: pid: 1129, comm: search_agent,
-> bytes: 2147483648 not enough memory for the allocation.
-> 
-> The default "Heuristic overcommit handling" policy is meant to handle
-> seriously wild allocation (as documented, and it's named as
-> OVERCOMMIT_GUESS).
-> totalram_pages() + total_swap_pages
-> 
-> Is the limit, the heuristic exists only to make "a seriously wild
-> allocation fail" (as documented). But on a vswap-only machine,
-> reasonable allocations fail. Common swap devices, zram, or xswap don't
-> have this problem. One could argue that the size there is just an
-> optimistic guess, the compression ratio is not controllable. But that
-> heuristic is a guess by design, and a plausible number serves it fine.
-> "Unlimited" seems break that.
+mshv_vtl_low can install a special PMD from a PFN supplied in the mmap file
+offset.  That PFN need not have a memmap entry.  Reading /proc/PID/pagemap
+or writing /proc/PID/clear_refs for such a mapping oopses the kernel.
 
-That cuts both ways, though. If the configured compression space is
-large and compression ratio is poor, it lets through allocations that
-can be considered "seriously wild" for this machine.
+With a test driver mapping the PFN at the 1 TiB mark:
 
-It's a filter. I wouldn't say that letting things through is evidence
-that it's working.
+  echo 1 > /proc/self/clear_refs
 
-Since compression space is backed by memory, it still makes sense to
-me to reference this heuristic to RAM. Cut it off at 2xRAM or 3xRAM
-tops if compression space is available.
+  BUG: unable to handle page fault for address: fffffb5b80000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  RIP: 0010:clear_refs_pte_range+0xb1/0x1e0
+  Call Trace:
+   walk_pgd_range+0x50a/0xad0
+   __walk_page_range+0x6a/0x1d0
+   walk_page_range_mm_unsafe+0x193/0x230
+   clear_refs_write+0x18e/0x3f0
 
-That all being said, I've laid out implications and concerns around
-limiting compression space in this thread, too. Collecting pros and
-cons is fine, but if you bring up cons for the unlimited case, it's
-fair to ask that you engage with cons brought up on the limited case,
-too, so that we can weigh the tradeoffs.
+  pread(pagemap_fd, buf, 512 * 8, addr / PAGE_SIZE * 8)
+
+  BUG: unable to handle page fault for address: fffff57840000008
+  RIP: 0010:pagemap_pmd_range+0x3cf/0x6b0
+  Call Trace:
+   walk_pgd_range+0x50a/0xad0
+   __walk_page_range+0x6a/0x1d0
+   walk_page_range_mm_unsafe+0x193/0x230
+   pagemap_read+0x1dc/0x350
+
+clear_refs_pte_range() passes the PMD to pmd_folio(), while
+pagemap_pmd_range_thp() uses pmd_page() followed by page_folio().
+
+Both paths assume the PFN has a struct page and dereference bad address.
+
+Use vm_normal_folio_pmd() and vm_normal_page_pmd() so clear_refs skips
+folio operations and pagemap skips folio-derived flags for special PMDs.
+This matches the PTE paths, which already use vm_normal_folio() and
+vm_normal_page().
+
+User-facing notes:
+ - Pagemap still reports PM_PRESENT and the PFN to a CAP_SYS_ADMIN reader.
+
+ - For a special PMD backed by a valid memmap entry and for the huge
+   zero PMD, PM_FILE changes from set to clear.
+
+ - PM_MMAP_EXCLUSIVE is already clear in both cases.
+
+ - The output for an anonymous THP is unchanged.
+
+Tested in QEMU with the test driver on broken and fixed kernels.  Both proc
+operations oops before the fix and return 0 after it.
+
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260912034833.2952750-1-gourry%40gourry.net
+Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
+Cc: <stable@vger.kernel.org> # v6.19+
+Assisted-by: LLM
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ fs/proc/task_mmu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 24425e230895..501cd038b4e4 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1671,7 +1671,9 @@ static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
+ 		if (!pmd_present(*pmd))
+ 			goto out;
+ 
+-		folio = pmd_folio(*pmd);
++		folio = vm_normal_folio_pmd(vma, addr, *pmd);
++		if (!folio)
++			goto out;
+ 
+ 		/* Clear accessed and referenced bits. */
+ 		pmdp_test_and_clear_young(vma, addr, pmd);
+@@ -1991,7 +1993,7 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+ 		goto populate_pagemap;
+ 
+ 	if (pmd_present(pmd)) {
+-		page = pmd_page(pmd);
++		page = vm_normal_page_pmd(vma, addr, pmd);
+ 
+ 		flags |= PM_PRESENT;
+ 		if (pmd_soft_dirty(pmd))
+-- 
+2.55.0
+
 
