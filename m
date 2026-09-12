@@ -4,131 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14335C79FB6
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 03:48:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 329FDC79FB6
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 04:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FBA36B0095; Fri, 11 Sep 2026 23:48:43 -0400 (EDT)
+	id DC3AA6B0088; Sat, 12 Sep 2026 00:16:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CC166B0096; Fri, 11 Sep 2026 23:48:43 -0400 (EDT)
+	id D5BCC6B008C; Sat, 12 Sep 2026 00:16:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE636B0098; Fri, 11 Sep 2026 23:48:42 -0400 (EDT)
+	id BFDA96B0092; Sat, 12 Sep 2026 00:16:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C767C6B0095
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 23:48:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 257DBC03EB
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 03:48:42 +0000 (UTC)
-X-FDA: 85203728484.10.83242ED
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7741240005
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 03:48:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QLjk7iCR;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789184920;
-	b=IzNNiqdx/1aXJdxv7hzFmfRFriZ6zSpSyKsVG17uP24aMgAIKlEom7GgYl9YNNy18sTtEr
-	ogzzC7fCpAZ5BBodCsGzN3az+ATDRik/bZHC+uQZ4nK0Bxi5imzkCJTAV+2N7mev+URTn6
-	m4yqndVpjOGql1chtvZZafz91xrSlLk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QLjk7iCR;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789184920;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D2AF6B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 00:16:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DE1911403BD
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:16:29 +0000 (UTC)
+X-FDA: 85203798498.06.AF182A1
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012058.outbound.protection.outlook.com [52.101.53.58])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0AA24A0004
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:16:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cTptUizc;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789186587;
+	b=xAloufJj2vvJPe0rdwFCalpSuNheBSJmwv0N7TxuE+NoaFmo5JxxGAG0Hc3dwnaD0RDpPT
+	FK+813wjhhBj8Z9Hjqct3NkiobkYkn51EMVO5nkFhfKmrljcUVv5EF+xc6NThfy4dksJ+/
+	6R+2z+TrJDpk4KfmgxMPQg4d2FFNaoM=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cTptUizc;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789186587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gwin+KqMEV68jY1s8XlWs9NOlkNCNlU9QmB5425skrY=;
-	b=G6uTACwKfiKkQ8K1JWJZckTNwsNYe1f0FgTLE/yJrJLgL/LEX2uySDwL6GGZqRWlZ6eTYg
-	ba4AYz7OegtQ4vrTP7+FC6qk8kbYcmAZxbyGBd35zLYs1CYyCSf6ESF52rPnj5eabcON68
-	lF0oADcZfcYddZPIVy+ad75hlGuoq/s=
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9104e54b1abso3086186d6.1
-        for <linux-mm@kvack.org>; Fri, 11 Sep 2026 20:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789184920; x=1789789720; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gwin+KqMEV68jY1s8XlWs9NOlkNCNlU9QmB5425skrY=;
-        b=QLjk7iCRgOPBmY7iB05Ao2nyBWY6c4YaoAp5iadG3Qo1D5uR8I0J8/Xpfz+ySbIbo/
-         RHo+Sp8eAVoacSOeJ3vz1MYf5Vd/ia5Fg6FNoskIcPMCeT/T2mK01DAtk+4qs4Ev1Hku
-         xGP2w8nyt7PvCHknW+jrBy0e+gKRbasIoYVtuyxTsMEB2Kgv6TWxDG3153ja+3aiLyIU
-         8p1bytIVqjIc8pzaqt663sx92bgFBjPlEWuiCXjo8CpzOdqm2cq58wIPvHBQwfzQNBYU
-         X6S6zJeiAYgf4Ucs6qNI9pRsNDM9SObiyn86UaTNhDXfYFpHFwk9icBfwisGbIjZU6Fn
-         ALKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789184920; x=1789789720;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gwin+KqMEV68jY1s8XlWs9NOlkNCNlU9QmB5425skrY=;
-        b=kwreK/BNrhqUwOVMAx+j26B/d/yUGFfsxs3m1lxciyNXEjoDGxb71kWeKFstGP06JJ
-         jMpjSPELL/9KX4gzfMm1g4SWNHxogJcpY3Pa0UAgv5foguPF3f2dQNMqt12Fm1JfkVCx
-         Q0mgA5r6TA9bnPD38Gn9ncQluocQpHzG5Af8t1oUyHQ+N7LsYdZuaC6+cQwEWo0tCinQ
-         7XoIEZ7nRFMjsV+fyMXecc3cSG3DqTwKlYtRfkLfFjA/rqUEvmpO5H2BGnqWEHyl5WaM
-         5qC9e6AVJ10pGyu8i4G1RfV06PAiceyH7wJyir9lSxShPZkyldSwJjGDX7kpnSymR0Ak
-         KIWQ==
-X-Gm-Message-State: AFuF++l0kZ26gHUXVY4tRoI55qa4kMO1G2miCw9dW57czXdpy7CdRboZ
-	ILRRCDJNKkvvVHJaRW9+HF4uBjoAfLExwEePIv7ecOk3AFOrzc2rT5gwBeS+uvJTYJICQeicaqY
-	lpkpd
-X-Gm-Gg: AYBFou2WiYeYl2YU00NtfWi3mwgK1MQ7BncFMKXWOyIngHzidaXlyW60iADABOT1yoS
-	qDj24NqPYaR/AAbvP0O8LRLUz4JwSdYGcr0cgONb730aW7a2CqzMATaO51WHO5FV68YVBBtu5N1
-	RBxGGYP63tzDf52+qn8Vou3tEqpdaGpke1h8O6tEbx46oeB8q3kLqG6JnPpCeVOmfFJgVylmdcz
-	Zvk6c7T+zd8Fo3jkQ78Dm9J/4I5j6uj0gkR2Qrkn3LZa4cR2rgN9BPRLkTr70XStbBgZ4noM3Mp
-	00sOccKjuLNyno3cG+bGcpTLWe+scFikI4MUEnJ1ANeTnagwytVcd/jrj8L+7C85gq8cgsT2N+X
-	fmMcEo+6GiqETwNbyF0Xd6CW3JKDvFMLP1NlL+DwCn1nAEbpFvIjbQ4gc82/C1/O2Uz0dnmdwLJ
-	xHp4M4HWZ3tZGSkbkGivHjlRcoC4jL09Z1hTNWttTBdEUN69oGkjhWHgEtAa5tfc6lyYS/9GmgM
-	OjczfycVikU82ztd3zo2fwiD/3f05gjIlpZtsTIK6f0NIiiqOXaYJ+g1h/e
-X-Received: by 2002:ad4:5ae9:0:b0:910:46e1:7bac with SMTP id 6a1803df08f44-9121dabf7b3mr19465126d6.26.1789184919640;
-        Fri, 11 Sep 2026 20:48:39 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f494620sm36252476d6.28.2026.09.11.20.48.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 20:48:39 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	peterx@redhat.com,
-	jgg@ziepe.ca,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mm/madvise: use vm_normal_folio_pmd() in cold/pageout PMD range
-Date: Fri, 11 Sep 2026 23:48:33 -0400
-Message-ID: <20260912034833.2952750-3-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260912034833.2952750-1-gourry@gourry.net>
-References: <20260912034833.2952750-1-gourry@gourry.net>
+	bh=D9u0twnv8J3acsNoPcR1srnfI5R0+gbyOPlObcalYjI=;
+	b=I6iXwEmeFh+qHZQ4VZcBi4e+UkKj2YFqTmDmEhZ/8DhjxY5OxhsDWqhGbZHyQtTUSeE+bZ
+	sFblrk348kVddRLotRY7EjI5e3PBl4QQB/V1oO+7KejekRTwUNAt5UnpXcqfz1Lo4tT7ku
+	iPEv2i312X8x6yHdLdc7gtAdu/6Dre0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LQh5CoUTrzoOxiQ3xXFE7QVLLtlP3UhHyqEr0WFbiN5GZDazciL1gzUtsKy80hbm/a8d3s/Ui4qI75zyQ2NXZzqFJHYszU5R+VMpRAsYNk5yF0ZuN7MtgMaaFwRsF7oommVDL9SKdtb/Uz80nS91BUDgcMww/dcP8IjEfaPZCilQ+96ErpUZ7RFE+HUaCQj73nsaaPaC1eB5MzzL95PfYGjeeW74fTjrZ8c0xFIQq/WBw14D3wZZaETa6pjYPWK1iVwFL1E6qV4j0YRnW3t6vKKdkgmGFSr+mn6VNff8n/pDpPGqvGtJeVuHVWRQ6YiDWvwBGVSYcS7Kpswv5YZTfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D9u0twnv8J3acsNoPcR1srnfI5R0+gbyOPlObcalYjI=;
+ b=OSQXi6vI0sYKjhYgq2/9rSIUm3tU3GsVqnCQKqKAYSgDAdYy1rau6l9VaXYd7wzsH3wbERJRGh71mQaUHLDwGFxuhgw3TvAh8IGqH+1T6jVlTifwh46vBby2xnvUNoiOFMcWZjLpDFHxUa74lrNHS0WvOBgsocH22JUarjPqT7minvDBLGJPfNUiRm+X9YyFkKGrsxSVn/2xbTIif6AtXgHrAqRuPWPUItQnGE1YguiZHAEJ8Hfz1G4vwmdVfnRpNJHwwAC1Ic040Sjko9PtdjMk2jU/8NXz1y8KCnh/OJZYxQgTrszHxg2z1HvzB2Rth1x1NRV1L/bbyvCItT8MWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D9u0twnv8J3acsNoPcR1srnfI5R0+gbyOPlObcalYjI=;
+ b=cTptUizcE7HAzfjZyDpbp+L94d5FVRuxpfAwp6ECYtaExEtkUreO0xKG92+CuBHnUjEnIgBQRwnWRY1pOCtcYKYjevbVV5eRctZv+Jez8ifM1PmVjgI6VxfrlDoF34usBvuy7SIyTK7Cf0TvDV86hqRiyH/2/0swMHG8pFiBIHrO+Hwa+iiNN3Od5OxU59HXXKyBP9DGPgJCfiYeTXULgAN860Z+L0YeBdUSAAeUG9i7igET265sxCxA19gei6DtETzU13K9YSlwe0jTcC6i68yQ0Jv/rcGXOuN9mAj8hysglhp1XrTgxcUerSl6Ja3G6/b2/FXZ4llOjBUfLqtu3Q==
+Received: from IA1PR12MB9739.namprd12.prod.outlook.com (2603:10b6:208:465::9)
+ by IA1PR12MB6651.namprd12.prod.outlook.com (2603:10b6:208:3a0::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Sat, 12 Sep
+ 2026 04:16:22 +0000
+Received: from IA1PR12MB9739.namprd12.prod.outlook.com
+ ([fe80::769e:ca66:82fa:aaf7]) by IA1PR12MB9739.namprd12.prod.outlook.com
+ ([fe80::769e:ca66:82fa:aaf7%4]) with mapi id 15.21.0406.007; Sat, 12 Sep 2026
+ 04:16:22 +0000
+Message-ID: <1ca189d6-5b36-4d70-9dfc-34316591447a@nvidia.com>
+Date: Sat, 12 Sep 2026 14:16:12 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/migrate_device: consolidate compound folio handling
+To: Hui Su <sh_def@163.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260912034414.1943342-1-sh_def@163.com>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260912034414.1943342-1-sh_def@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ME3P282CA0056.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:f3::7) To IA1PR12MB9739.namprd12.prod.outlook.com
+ (2603:10b6:208:465::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB9739:EE_|IA1PR12MB6651:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00d9c125-be13-4d9d-4513-08df10849a59
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|6133799003|22082099003|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	SSKna639MLv7MRelwp1zY/OX/l2HAcbxqp4FpC8Gtht2W0pyUNnAZ7U/XC4gQfTrMBQCTCpvTYr7Bc/5cjGqxoRBKvnUcn9ytq1F8wjD6uuljnNTpKiqA1MjnXYyYjuTtyJZkPv9vJRhinTBCrj//UAqdZ5oCTALtqNSb1Q8WulMayFTPvENpxuUNasMSHFC3DCYyV8FOdsmtCsgXq1ufD22nSQSx9EDDTlpAW5POsAudwWxX4/8dkH0qQg/Km52P5QdnIuYxQWXJIlEK7Rn6QILFmsw9i3u6p6MxEIZix8+Tydu1i5ge+6s605GGDxjxzYxwLui3oxGdDV3S4ONN6XSRKZnb4z2NEEGeVGTKyhIeLaNqR9h/uTi8XMXkhhxVv8r51xkxQxWHTvGW600UgjBz/2jrQe+W0KjgqiHaZf5wgvaKsU/L4smN/TS804DxdseX1Z8YlFQ/OK+tbrkZ55INJ3I7o8ZTyY/M/N4EAQyY5qBG/rE/zlsZHS6MY1OCYZopoRkrHLCVqglf+2JIZj5I0PeuvD0gTk4jNomDFnEEMT+VB4xfsNV0VG1o5kZ2IZg1MTgty/5CkMu2RUgvQaBGKZxea437goSvI3AZO+pnJVJyi3l2CSBsbFutb3z2MkVLczgfkBE+MmgwKFW//gtnAPxqcOKNEZIz2sB+BQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9739.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dHBKSHdYUVU2bjAzSVFmcEgwSEVXbVJmdVN4VDFrOEFyNy9FNHVtQ3hNY1Ux?=
+ =?utf-8?B?eEd4eWZWR3M2aytGWkdsT05uMFFiYWZ2WXRFTVZjcUFCdExMbU5JWXM5d3JT?=
+ =?utf-8?B?c0w4UWgzZTVKWXMxczc5Mmhqdzd5VG5Kdms1ZUFEMCtHQXJuRjYvQ0UwTDdl?=
+ =?utf-8?B?eThuTTVQR3k3Z2pRSVFzVURTUTJnODVkNURKZ1hVRDZ4S1U3ajFuR0tVbDNh?=
+ =?utf-8?B?MUM2YmVPRFdjVm54VVFFbTRpQWtJNFhkWFQ4NHJITlloc0Y1OFBqdCtwVW9E?=
+ =?utf-8?B?akF4MzZWRFBFdFZUV2t4cUxxb0dTVHhieExpZTJFRDlhTG8zNkwwY21lY1U2?=
+ =?utf-8?B?c0RyNjVEL0UzMm16Q2dKbWVtVVovM2xLWGhwTzBjQUl1SnRJdnpSZWVuYnZw?=
+ =?utf-8?B?aUtldDBtRTdEelFKVjlPbERpRHdYQTdoRW9EVzBRa2I5VElRU1BUbVVxNkp4?=
+ =?utf-8?B?UDBBc2Nwbkc3Z1BnVUJrQTZWZFByK2NKaHVQVFdzcXVQbUJFNHRob281NlBZ?=
+ =?utf-8?B?M1JCZmxJeDBTaFVMcmF6ZXVwSXhINnBucGI5TlpLcnBWLzdVZjUxK1g4c3gy?=
+ =?utf-8?B?bG5tZVE3RDhNUlNkcTdOcE82aGZpUUQ3NU5GZ1NXMDNNMTRuSXZZQ2JYUUtI?=
+ =?utf-8?B?Q2dzYnlNUHNvd3NkYXFvazVlU0ZneTYzaDB0dy9WMDdlSDk4MWo1MTRYOFpX?=
+ =?utf-8?B?RHRTTURKSUo0S2NNaXo5YlBBOTltZDNGcW8wUFVGMTkyTW12cXR1QXMvU2o4?=
+ =?utf-8?B?aHlxdEVTUURXSVFJa0tEeUg5eDV1b2UvV0lHK1NKTWllL1lFYUdlQ01iT2hl?=
+ =?utf-8?B?K04xMHE4cjF4czJscGVsenJINW95R2p0bkZJdHgxaWxKZzBVN0RxdmZnR0VX?=
+ =?utf-8?B?Mjd2WklZWFh0QmNIMk1FSEN1RzdqYmU5U2xwOXZXNkN3YmM2NnBMRkMwcE0x?=
+ =?utf-8?B?RXFnRHpBejZReFJtZUdCYWdVdkE0Qkp2YWcvakVSTEdDS295L0h2QXpZVzNo?=
+ =?utf-8?B?MEgyWEVQWENsSHFpRU1pdDU2c3ZWY2lRUkJTZy9mM2ptNFh4OXdVamsvaVgv?=
+ =?utf-8?B?VTJKQTc3d3I5UThHeW0vc2FpaGZKV1N3MEpLZkdRVXk4Z2Q3L3JxYlFDQ2Mz?=
+ =?utf-8?B?dDM5VjdIOEprcnN1Uk9jVlNtSHlGbElNYnZESWN4WXN5R0JlQi9GdDdmdEVG?=
+ =?utf-8?B?MVVTbE90KzhLREl3SGVSaDIxOVZkUHEwcjZXdEdGWVhscVhpZ2ZSUERERUFs?=
+ =?utf-8?B?dXJGemFpdUxBQ29rVzEzYW4zVW14aDY2UGdDSlVDSjVLcW5hRUtuNEJhSVpL?=
+ =?utf-8?B?WEJCc2pMZ2xOSi9rZld2cTc2REM1dXVKVG8ydnRZdE41cEY5ZktZV3JTT1E5?=
+ =?utf-8?B?Q0c4cjNJVm9qb3oramNmNFBKTG9Sb2dPUEpDZkg2MzBoK09nYmREeERVUnpB?=
+ =?utf-8?B?OXFTZklSNUI5cXMwUW85U3pReEI3UWJhSGhXWkY1dGFMdzFrb3R6c05Ua2M4?=
+ =?utf-8?B?L1VaczdzcU40aGphWGFHZldvVTRneTNuK040eDVpTVBRLzlEN1krcFl2T3Z0?=
+ =?utf-8?B?U1hKeld4NlJvYU8rL2pkRkJuTlJNRDZjM2xXR3c3aHFVTDFLTWZwbnh1Nkl6?=
+ =?utf-8?B?ZVZNWHRuNlFRWkcyQkk5eGZIMzN1OEF5WmFLS1JIK0xIVmp5WVJWcld0aUNk?=
+ =?utf-8?B?VFA2ZmNYU09wVmxpMUMxSUNCZEtKSlVmVDNRWGxRZ01CT2dqZ0Npei84ai93?=
+ =?utf-8?B?ZE1RU1dUdkRSelI1aXdnZ1J2STd4UzNaK3ZBSHpBVDJQYTkyU1lTL0FMWEgr?=
+ =?utf-8?B?UUhyUGlabVgreHkvZ2xNTjBBVmI2Y1BoUnh0NUNOTW9kRzREaGlHNnJ4T29X?=
+ =?utf-8?B?eXVVcEFBbytudFc2WU1xU0g4VVd4R21vSVM2a1ozdm5EdnpmUytsV0xrMTk1?=
+ =?utf-8?B?ZDVNVGdqYkJsc3pIRUxNb3dPUE1yd042VXlha1hqVGw2cHRRVitPOW44WHBk?=
+ =?utf-8?B?QSt6Tkw1NTlRTWFKNS9RckRBOStHYWJtSlFEcG1tT0V0dk5SMGlHRHBoVFZW?=
+ =?utf-8?B?OSs1S3JqcUszRmM2ZW1vT1Z6YXpRN1puR2piTDROTHl6WEFoMjlkaS9pbHRM?=
+ =?utf-8?B?M2ZIOVltcGxjdGdjZE41elp4aE1SUUZiZUxGWnEvTm9BTnFGem12czVKYSs5?=
+ =?utf-8?B?ZVduY1pQM1gwYmk5SWQvVURTUmZadVVOenBVU3RCUmt4YXQya0lodUhGUFoy?=
+ =?utf-8?B?MTBBNGZZVWRVTDg3V3dtSThwNVluRlVuakdMSWNpWVg4MlkyenJsbGtxYyty?=
+ =?utf-8?B?cE5PVUNoVlk5dXZiS1hKaHlDd0ZoWHFFQWxTMit6ZS9mQk1RYVlOdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00d9c125-be13-4d9d-4513-08df10849a59
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9739.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2026 04:16:22.2038
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JIHj7LgHEfiwGpiaaiM4TmanbrYTwEwjFPIAB2ZgFZcSHk3bhFGDdPezSTPaRVACYmgieLzm6mNdHXmbBqPPyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6651
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7741240005
-X-Stat-Signature: x7ecf9ibdbbaphkmpd9r1chx773r11wz
-X-HE-Tag: 1789184920-933822
-X-HE-Meta: U2FsdGVkX1+uESYt0NtVZfClAacFFMdRs+/8OwFVWXmXJRTS1eliFnSVYbH09sNL4aFwhfh4XGdu65YGhDOeke9s3kBDZkM4HB/7C42awBMCZ8PkzClBeee6YlW3ffvpcJq9CgisiVxCPFK/emdct3vMDvmWJYzw3P2fI+xatU4b2HMLI7jB3wG/G0VUr28+hoyGajwYin86blFcZbb/lXD8AD/kscl4KgwPxWVQNB8gQ8IWTneGKyT5A5NJWELxD/yhnKOjGpeMM7eQ2nJ/Uz+J8xI9Gw6kK3rVb1ofwC2C9Aqk/bOTtbNA9TwDrI5R/E/rCR+xEXRB4OPiuAFOh/1ap39+LGmDu4RBe1W7namIqXFASJjCS55yvKPithq9V3JpFnSTVhLCPxreU2EDyCjNs5ZhLjp04cVWMedlXpEqn1u7E8tMGouRn+Of8pBUoA5157O8M+Z2OJm1YKFPY0ASGscz0+aESKAJNa2D+WWyEVp9p8k7NoA3ZHQn7+ipyHejYdWvumAXVGjitenWI+g7TOCTKM54WZEEbnbqHt3wHxOJJCx8v2JS5XImnoml2qqQl9psxbQ2UDN5f1Im0K4QakeOABPHEjlA+JlPdGuVq6TSTylRlbXd8eS0UqsJESbVdpA6d2iyJ7Wu8GPcez7rCTfoXbkgs44X9Cbrg2WPaBQzEVXkFSBLmqOxNCApOlq0nmRe/M2FJyy8jJyfVXF6txXmPJN7TFszXjFT4k4/F4Tx4CrP5j48jScseuyznYQjYskGtzmKxGDdVvwTHIIZiETNIbiIymiiW0uWxoqvJaLWPYCgkiYYGdbYUEsx4zst32c+BcPOPsACjydyWvQ6M8O4sw5qu1emYgFKylvH8j+LOYScVdPN4cWNNkLH750gFMHx865WsVykIFXgTznSVeNmd3Mt9wPXdKWKkkh7QPjoV8N9eDztwpYvomlN+k8QcCVlKxqqKb4hsj9
- rkUo7yEp
- josRfDpVvolFaOG2/svYhqEc/tPu6Bwz6SDjFCoJ2XEcbHvQpuxcK1ZICFlvzSbX3kC93O+Kfs64wWdOkEo8Pl+L4s6EXQFomB+DGP3lLzqfk+0ZhWF0XPD/5Al4DKI+Vt2E5tMWvUs6ln8JrBs8opZwl+wmusmCo5r4iBglavmNddcaWgdz9f3gkPlTGd7lmsk3bstsoHgAK47mdGYvWzw6uDLSyUyLHgaCgkygAn47ugiMlrH7YqPqxAHNDO8qSur1XxKAf93MRH6Ifi/IuaAqaisMLBnXNIHyA4UBVAuLzQlf6pHbP8AL0/2mwFJZQNhrpMKYlOMOnJRTH320T8N08ETTvytBEN4jUamuvLy2IhKuUsDoSNvroHw+7AEDC84+k2KKvo3WKikSb8vezgUPm2ZyLWu8wxkmyQDVa/ZRqDcv+It5xpy1qXjeO0Mndx9bspS71c5h30h7qmWpLd3bLJwrji+zVuYAzhreZp46TOfF8ZErvB+xzxU9nq5Vz3KZ+
+X-Rspamd-Queue-Id: 0AA24A0004
+X-Stat-Signature: bnrzym6x89dubb5r1e446onuo9ujo38p
+X-HE-Tag: 1789186586-855538
+X-HE-Meta: U2FsdGVkX1+Ic8B0+Awea3w989OUHf/qs3gpHb02B3I/tJu8J4C3MPSdbOF6AwQ8TtRj+oV01MQ1A3flaiueOnwZs9HudKQldJcOUDavwWuG2znYTqarMkIs2LvfwO08Kns7TGxxUVGq/Qc4WCZ65aQaXQ3EETfDlFW1zNbZbkhTv79Cr3iXUAaCsZgRUmBD3SsQ9JCQpd5ldTP35V0w3jsNSSNhTfR8Re9PBI7bNjF1DnyqRr9VCZmhqPVBfq2EQ9ML2dXyuvCEq9FSWxLun+nU20I01B2DEPsFo7pZ7gsSmB/qunUfeonma1e+Y0Hs4ewhRUmpQF7LW+ffTauVky8k5wiDGNyyOWxK8CXDRe8rOOa0YVZUxobcxUnG+2Gpa/5e5lAeJ4egqguS/1GZkJVhwM17AF+M8bf3mCpwp/5hcVk0lFE2xnanzt1xrxDysduc2roytI7Wz3FfRqdQx6MweDRTO3qGX7sY6vdG5n9WnDxMB4Hz51iYVN+nwVA3zlj/V3Z6pCDC6KxAtfppvss/R4eHVjzqqSjMigfUadNtUQmVwKsOkckFTI02VipTbfpoLnpOsmqC8yjHV7/Ljev1f46zv6yJ2StkALDI7xLuXfz313FbA/w+KdKMfyBDVXXRxTWbcVWG71p41A7JglvMpkXWmn5d1/dyRpM0R0nULLSgHJbQjQELSCoy0BRCxdh3O5cgCWQ6lyys/9N/oBaDwXS52W1uSDFRFAEIQRkl4H1vCPegaPUZNDulxpukvS0PpciipBZRn8K6HVnn355KLWdu2UMph2z/1uVlmpqr/JEE2X52tfqlSWRUlizeyTgkRtPvAbseT8p9ptJQ1f4x7yObdaCaVyB49xDlWANTegUc+ckISFnPeL33/i2WITrtDVR54EPqzp93pEvc/uGbuW9cO8gjoBoLsnpiYM5lV/AJJJerMhUAkoLszmVygX5MxpnuMVY4iZTaz9E
+ 7eiv34h2
+ lzVieG8eZSQ3Iq14JOpWMc4q26D49XKxnlrcKEZ1+k81+hnJ2EXtU36c8uKAuAjnvzlq91E8O+undtSGJ6cIBVmhhX6itPkZr6x8vrlVtcA3kLA+X6+ZfsOR/4GTGnkvsFb0JPS7e7BgiNAfdnMWm77o/j05bvkoa+An2ZV95llsGAC794Khg6/VaBVEYQ9xouj3Hr14zZkwd1xP+7VJthiN2w3UL+l7RJCFA6IGxERisdD3q6kPEOgPEQ3a82iYXkEd1zkGDYD3Zw3Fq5qq8cXuOBGyVpJi4kv8MPNyLZAIn4LiEt3wXRM+U4itBvi5aHvvJh6NDwiKPc6PWhx0av+QT7p7XJpC/cxjt4VXf+vj6Tah0Ix2AWWpVH6xCq7+sGjLz75yk+GU4gofy2LyyTmHcRzonBtLSQbwkJHQMDnnj/pxqAOwSYJWI6r+RYTaj9/MUBDzzvuBaBc/AHygg+xUOjxvingG1935nMNmhBSNcl6EntXmHAJ6BKQokkcF+WmTveklsqcdDRKaLQZGreSO6x2DJuGw7oYFYT3J/Af7+zXDYaD/88n1HPbG095j/cRy5JQE40k8SxXbhm6fcHhA+vxEXePhSAiZo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,75 +175,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mmap a VM_MIXEDMAP region whose ->huge_fault installs a PMD through
-vmf_insert_pfn_pmd() - mshv_vtl_low does this, and needs CAP_SYS_ADMIN
-to open - then:
+On 9/12/26 1:44 PM, Hui Su wrote:
+> Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
+> compound folios") added handling for compound folios that do not fit in
+> the remaining PFN array.
+> 
+> migrate_device_range() and migrate_device_pfns() duplicate the logic for
+> locking device PFNs, encoding compound folios, and handling this boundary
+> condition.
+> 
+> A compound folio cannot be represented partially for migration. Warn when
+> one does not fit in the remaining PFN array, while retaining the existing
+> defensive handling: release any lock and reference acquired for the
+> current folio, clear the remaining entries, and stop collecting.
+> 
+> Move the shared collection and encoding logic into a helper so both
+> interfaces handle compound folios consistently. Also use memset() for
+> the compound-folio tail entries instead of open-coding the clearing loop.
+> 
+> Document that an encountered compound folio must fit entirely in the
+> remaining range or PFN array.
+> 
+> Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Hui Su <sh_def@163.com>
+> ---
+> 
+> Notes:
+>     Changes in v2:
+>     - Fix the helper parameter indentation and keep the declaration to two
+>       lines, as suggested by David Hildenbrand.
+> 
+>  mm/migrate_device.c | 89 ++++++++++++++++++++++++---------------------
+>  1 file changed, 48 insertions(+), 41 deletions(-)
+> 
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 009bfa8b212d..ace543fd6946 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -1392,6 +1392,38 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+>  	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+>  }
+>  
+> +/*
+> + * Collect a device folio into the page-granular PFN array.
+> + *
+> + * Return the number of entries consumed, or 0 if the folio does not fit in
+> + * the remaining array.
+> + */
+> +static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
+> +		unsigned long pfn, unsigned long remaining)
+> +{
+> +	struct folio *folio = page_folio(pfn_to_page(pfn));
+> +	unsigned int nr;
+> +
+> +	*src_pfn = migrate_device_pfn_lock(pfn);
 
-  madvise(p, PMD_SIZE, MADV_PAGEOUT);
+Don't we want to check for *src_pfn == 0?
 
-With a stand-in module for the driver:
+> +	nr = folio_nr_pages(folio);
+> +
+> +	if (WARN_ON_ONCE(nr > remaining)) {
 
-  BUG: unable to handle page fault for address: fffff587c0000008
-  RIP: 0010:madvise_cold_or_pageout_pte_range+0x410/0x9b0
-   walk_pgd_range+0x52b/0xaf0
-   __walk_page_range+0x6a/0x1d0
-   walk_page_range_vma_unsafe+0x8e/0x120
-   madvise_pageout+0xb2/0x180
-   madvise_vma_behavior+0x46b/0xa90
-   do_madvise+0x108/0x190
-   __x64_sys_madvise+0x26/0x30
+Can we please change this to VM_WARN_ON_ONCE?
 
-Nothing validates the pfn on the way in:
+> +		if (*src_pfn & MIGRATE_PFN_MIGRATE) {
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +		}
+> +		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
+> +		return 0;
+> +	}
+> +
+> +	if (nr > 1) {
+> +		*src_pfn |= MIGRATE_PFN_COMPOUND;
+> +		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
+> +	}
+> +
+> +	return nr;
+> +}
+> +
+>  /**
+>   * migrate_device_range() - migrate device private pfns to normal memory.
+>   * @src_pfns: array large enough to hold migrating source device private pfns.
+> @@ -1410,35 +1442,22 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+>   * migrating pages that aren't free before unmapping them. Drivers may then
+>   * allocate destination pages and start copying data from the device to CPU
+>   * memory before calling migrate_device_pages().
+> + *
+> + * A compound folio must fit entirely in the remaining range.
+>   */
+>  int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+>  			unsigned long npages)
+>  {
+> -	unsigned long i, j, pfn;
+> +	unsigned long i, pfn;
+>  
+>  	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+> -		struct page *page = pfn_to_page(pfn);
+> -		struct folio *folio = page_folio(page);
+> -		unsigned int nr = 1;
+> +		unsigned int nr;
+>  
+> -		src_pfns[i] = migrate_device_pfn_lock(pfn);
+> -		nr = folio_nr_pages(folio);
+> -		if (nr > npages - i) {
+> -			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+> -				folio_unlock(folio);
+> -				folio_put(folio);
+> -			}
+> -			memset(&src_pfns[i], 0,
+> -			       (npages - i) * sizeof(*src_pfns));
+> +		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
+> +		if (!nr)
+>  			break;
+> -		}
+> -		if (nr > 1) {
+> -			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+> -			for (j = 1; j < nr; j++)
+> -				src_pfns[i+j] = 0;
+> -			i += j - 1;
+> -			pfn += j - 1;
+> -		}
+> +		i += nr - 1;
+> +		pfn += nr - 1;
+>  	}
+>  
+>  	migrate_device_unmap(src_pfns, npages, NULL);
+> @@ -1454,33 +1473,21 @@ EXPORT_SYMBOL(migrate_device_range);
+>   *
+>   * Similar to migrate_device_range() but supports non-contiguous pre-populated
+>   * array of device pages to migrate.
+> + *
+> + * A compound folio must fit entirely in the remaining PFN array.
+>   */
+>  int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+>  {
+> -	unsigned long i, j;
+> +	unsigned long i;
+>  
+>  	for (i = 0; i < npages; i++) {
+> -		struct page *page = pfn_to_page(src_pfns[i]);
+> -		struct folio *folio = page_folio(page);
+> -		unsigned int nr = 1;
+> +		unsigned long pfn = src_pfns[i];
+> +		unsigned int nr;
+>  
+> -		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+> -		nr = folio_nr_pages(folio);
+> -		if (nr > npages - i) {
+> -			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+> -				folio_unlock(folio);
+> -				folio_put(folio);
+> -			}
+> -			memset(&src_pfns[i], 0,
+> -			       (npages - i) * sizeof(*src_pfns));
+> +		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
+> +		if (!nr)
+>  			break;
+> -		}
+> -		if (nr > 1) {
+> -			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+> -			for (j = 1; j < nr; j++)
+> -				src_pfns[i+j] = 0;
+> -			i += j - 1;
+> -		}
+> +		i += nr - 1;
+>  	}
+>  
+>  	migrate_device_unmap(src_pfns, npages, NULL);
+> 
+> base-commit: df2908090cda368b01ff43709f51890076c56157
 
-  can_madv_lru_vma()     rejects VM_PFNMAP, but not VM_MIXEDMAP
-  can_fault()            *pfn = vmf->pgoff & ~(mask >> PAGE_SHIFT);
-  vmf_insert_pfn_pmd()   no pfn_valid() check
-  pmd_folio()            pfn_to_page() -> unpopulated vmemmap
 
-Even with a valid pfn the path is wrong.  The mapping carries no rmap, so
-folio_maybe_mapped_shared() sees mapcount 0, and the walker goes on to
-folio_deactivate(), or folio_isolate_lru() plus reclaim_pages(), against a
-folio this mapping does not own.
+Otherwise, looks good to me
 
-Use vm_normal_folio_pmd() and skip on NULL, as the PTE half of this same
-walker already does with vm_normal_folio().  This also filters the huge
-zero PMD, so its separate check is no longer needed.
-
-Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
-Cc: stable@vger.kernel.org # v6.19+
-Assisted-by: LLM
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/madvise.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index f75a9d139980..fbb72ab49aa6 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -395,16 +395,15 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 			return 0;
- 
- 		orig_pmd = *pmd;
--		if (is_huge_zero_pmd(orig_pmd))
--			goto huge_unlock;
--
- 		if (unlikely(!pmd_present(orig_pmd))) {
- 			VM_WARN_ON_ONCE(!pmd_is_migration_entry(orig_pmd) &&
- 					!pmd_is_device_private_entry(orig_pmd));
- 			goto huge_unlock;
- 		}
- 
--		folio = pmd_folio(orig_pmd);
-+		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
-+		if (!folio)
-+			goto huge_unlock;
- 
- 		if (folio_is_zone_device(folio))
- 			goto huge_unlock;
--- 
-2.55.0
-
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
