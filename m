@@ -4,136 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70249C79FB6
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F473C88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 09:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2E76B008C; Sat, 12 Sep 2026 04:48:41 -0400 (EDT)
+	id 035626B0088; Sat, 12 Sep 2026 05:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A40C6B0092; Sat, 12 Sep 2026 04:48:41 -0400 (EDT)
+	id F28D26B008C; Sat, 12 Sep 2026 05:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093596B0093; Sat, 12 Sep 2026 04:48:41 -0400 (EDT)
+	id E17036B0092; Sat, 12 Sep 2026 05:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4F376B008C
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:48:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CAF461A0487
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:48:39 +0000 (UTC)
-X-FDA: 85204484358.23.3B55435
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E023180003
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:48:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j4o9B888;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFBDC6B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 05:01:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BC9716039B
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 09:01:22 +0000 (UTC)
+X-FDA: 85204516404.03.1DB5742
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AEC62100003
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 09:01:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mBs6geZL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789203680;
+	b=TlOnRam1uWnDeN1L0h8CHP23Gjj0GxEeGp3dKiu+uv4rBYnEgF3A3YZgz6AYzaGubztp1Y
+	0fO1m/l5ehcx6cDw1U41xfya5ZTKvXabdUN3n+9oy6FnzGeU1qmMEj0Qkyx6FmzHizzpoK
+	itXxVU4+EyhKInFnJo78JatRLGqyp08=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mBs6geZL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789202917;
+	s=arc-20220608; t=1789203680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I4VBvSxEGrUfJJhcCbVvt54AZ/dw8YbEqxSSPOGIQHY=;
-	b=JMA3Nbfo2qB2Cl+qYxIZGFdKijLi7jvTKV9txfMh/KaDsaI+nzNHf8pbz0AW7FBo4VZo7O
-	jN/m4izcezRXe0lXUqrcsSNnTd0OV/ILQIa7no9LsZGyOjPGu8bcu0E4a3K7sxmxnku9Az
-	L73oBz4I30Zx2eGBruVZAt78ohyf4Oc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789202917;
-	b=AelZS0voBfo7q2S0KXiIShlfrc1il8cwYIYB61JtBaI7KfjLXQpcOqTPnoEvPHPyv3vvYt
-	mqIXnI3mTUp4dWle9G0gZSIuF/sCfaT2ttD3nXwK6dcG2X4KGiACVkhjq36BJW3hso/e7G
-	5JZxpRv/au/wAphKadkFQddeTN5m/6Y=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j4o9B888;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a9cb66f7b4so664312a12.3
-        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 01:48:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789202916; cv=none;
+	bh=Emo/VHVaZMhmQcduzPD7yxfTUOKr9C1DEbaLmLBuIaI=;
+	b=r3/N24fQ7HAc9jKjJXCHUW+YFG5FF86JbSS5/RSySbeNhvqz+n8mbCNw7kFq9i1dedZkGW
+	TxMTnF30R25Hg/DSwbzc4neAxBn7OF0IsuTOpD7iME6Bjs2on0oQCrAKDjtVjLttg4uh1k
+	3JpbvSGWcUWMfvYyUIiK+wNMHuO2xig=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c25b661d37dso267957266b.0
+        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 02:01:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789203679; cv=none;
         d=google.com; s=arc-20260327;
-        b=PZp7BQaKW8kOHI93fsDLqM14b1DsZmKxlKhdtxReMk7cresL21mD6fg77wrA54rG/y
-         6EFuq1gXPy91QRRySUSUSS6OLGpiZJ0T/U68a83in9nzNWcyCc38L8e8BT78jmsZMJqw
-         h2pbSPtfiUMFDB/5TgkQxQQKy6TKE2AFBd3GpN5XyLX+7SW15X/NBX4cjzt3uodvo/5K
-         omg8UTyM1DuWz3YJ9P7qDYG1kxq7FUG1K43nILbKJzVqc5JAOFT0ot1pui2RklJVQtc3
-         Dd3DC7SpqVZYGoOiozXDr5+VeSA85RcYDNbj7/gf/T6y/NeQOuMaFNkI94a7XJrFnGxr
-         8J9A==
+        b=Lh54j3RDXwPM/USB9Egli/J9B988gcA1Y9QgJne9/jRl6FHkkNPLCd1w/CidBYQuCH
+         29srAq/fPGNkTAbZmMx+gE8J8Ak5nEOzf0y7ABJGgffHYTCaZWzYhD6dlLFopgSKx0Ve
+         uaD8KwuDTPqYosZNomqUu/sAVulkez+9woKsq2QkwGMR4bqESsgqsA34uviuYJIQxQfn
+         /rV2l6vyaEXaMwZ0cc86JJf8CxdVRSgNuQ9BmQ17eWQ24mz/6vlzWxgNJIoZh9RFZ/mn
+         0VUGKkZalpBkbqfyDAkRxeuIIrANua7XzTTe3m5o2HHsR4EWQIhNd28A/fYEr6wJfkO7
+         jv/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=I4VBvSxEGrUfJJhcCbVvt54AZ/dw8YbEqxSSPOGIQHY=;
-        fh=6X33o6bHdpuPF4WXhe+cc3GS+lU3WWF4l+O5TI6pzcw=;
-        b=Ygwx+5qugAh1im90Kf7hr6Qn/dh1vPAtFwX/HYlctjqBZM98AvUcQ4hjC9rs1R5zXq
-         T6dVc96zcv1BtDxfaJyBSYz0Tl3VLQuLFM/S/eOgHChMBa5S/btA1JhCLzWlguw8+ZdF
-         JGDjtz8Q5p8IUeSyxANAy7afMqIzKBmzvIaI/KuFeixjK4PGj8u8mywm/1ZXrm8huIJu
-         NzO2ue5J17NNcW6XlajsuKjtxKCnVJ2n7Ymo1hmRvh+JwpvbquQnLehV+JCq68emlKNI
-         rNBrNyVw0++87deiCVSr69ji5JVb/yMRmPXhZpvNGWVgrLaCD7FIsisSJUVwU4Y8t7wj
-         +ozg==;
+        bh=Emo/VHVaZMhmQcduzPD7yxfTUOKr9C1DEbaLmLBuIaI=;
+        fh=/ZDGEJLl6MqHoblMh9Tha+YcvYTJrZAFBo0Qflcm/JA=;
+        b=VzV4gYVB9jm7vcAvS1ufROmtbzmVF1z0TQ3ybFP0saQhqSxlBbYi2dZ7L18z3W8bYW
+         rJs9qRVfXZTCQ0/FSWZwxbd5vzrZ4NRphrf0izYCx+m8KR1C35QhgmT5NPnwKlkLCbVK
+         T+rw7UTrWJK9QPUIjXXwwrrLSnneYxCFPgLUk7ndzSxekGqOhKz/+pO0R+Y3qdd74Vn8
+         ravbStguU80HSIMYjHtZdExojTO0BRS4rvWG3kWCoTUFdjJwgjq0JvXuHk2zonizzcl+
+         UtQvICxC06HQeXsnNRgZYMUWP838C8aaAv763ieG4jkL6s/jbizstET1shb8fRqqsqPt
+         3ofw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789202916; x=1789807716; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789203679; x=1789808479; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=I4VBvSxEGrUfJJhcCbVvt54AZ/dw8YbEqxSSPOGIQHY=;
-        b=j4o9B888vwh/li61oEdjnPTowhhQGA9xC7L/dArL2Xi+lVTro8ZTVF3HS+KaSSLAW8
-         R8j00qU7Qkuj3gM5E3Zd3bpOuE433JQIlWix/LtYKMgEi/VyXFo+8DmRm0dCWpCewb0m
-         bGFpNG/fZFvMRMEncfr9zJg+cftjUTS8JZTQ+DhWgHdDKTGeQnG0NoHXZgszzAwdX0pl
-         Kc65wHplgK8XQlG7Vqt+4YaUuU0HKjM/YQ2BGvIRQ+3Zr9wU9lpF+TRcH0kl9i3kG25F
-         LnwJ0g2AtHc8A2jrhGhlZBZT7p9v8ao0UEM9V1XJQYysr9SBt16sJucAXruGRGN2jogn
-         9akg==
+        bh=Emo/VHVaZMhmQcduzPD7yxfTUOKr9C1DEbaLmLBuIaI=;
+        b=mBs6geZLfUUKKKveX+R6fH0jCkhekGbzfN3gjCAbJ7nPvfrD4GzcliXWfsSPUkEWWx
+         M16eScZwx/zqr8P2W5767nbY4YHMfW5LWV9Z4G/COkNOjM1Kh15lAGxplkEyDXhTosCC
+         TFTi4ML5/KsPsfcoDZwu+oUAOyIMY9HRLKWIjnmtGb2PoiJqSAU1xqisDCcvx+D3ANAY
+         gqmoHcW9cE5NkNVFy9P+bP5jiGjWs1rXJnMa9RARibsAn+wfgarEz9xlpChotHMs3tHJ
+         SAy5rzRNFNa3cU+Jj696vGxmVn6b8N3feTsH1qH9Zdf33sDSZy7bxeRAQZVtPxIQQ+Lo
+         /LVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789202916; x=1789807716;
+        d=1e100.net; s=20251104; t=1789203679; x=1789808479;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=I4VBvSxEGrUfJJhcCbVvt54AZ/dw8YbEqxSSPOGIQHY=;
-        b=c3WeXAFJZHkwa9GKw3kb+aGi0J4P/Lh7esDI0BUkf5/Bek8YSr8F/k1avFkKyTwn67
-         h8+hEW42kS5lAAVwnNCoZ+wiNwrZbWMWiKwD/wVjYnymRDRaHZLNu9cXG17KNJGkCL0c
-         bE4fEJ5//jg7K8/v9jIibVNp4dQgghAeSQXw0DXw+5ev+oPPhsXYqAGeOgA9w7PPQNRW
-         YKojAp9wi1Mq9rexGTIokvL/R0rUDI8RWerCavoSf1Ts5qrlngMsNkPKWzlmGXbv9gNR
-         9wDKfcGjN4L0zjeVCpt6Bc36aEDdfAyFvQJXMPMSObU9kTTMh1rXk1EXkN6sdIjvJcQf
-         qVyg==
-X-Forwarded-Encrypted: i=1; AKwUvBxX+45KCGzvXnTJdhJ8y9A6SXqsflQIGscm+0kmmuljdjpEqMnZJnDN/HECmSQfOWUleLCQhKjnTQ==@kvack.org
-X-Gm-Message-State: AFuF++l00SopyiVOFLyYzisemvDYe8QA6UvFa0QFhEOUeDT8KaRgpJw3
-	HLNe2bCshZhaz84R4+X+edZWT3m8zq/rG14mQEE4ijb4yLgd2t9ufy7tWuKqH1NOSxQYg89RInz
-	S6mPB93erGMxXFw2Ww2L+v8iSVCTUiZ8=
-X-Gm-Gg: AYBFou3q1JlVC4w/XiuSqyEVQqba4XRif1o0TUZH3QyowouulCY301RvvjsSiwT/P+l
-	OidmqTsloJO7tCCamzgRyfHXemCynr84xzlbyQsJMpaVxbLKb4kykXP73iZceaXO6Z+9XiibJhX
-	k2BiqKENn66DuHQ2L46i6HzNLN4pZs9K+VrIjv2FwioKH1Ed7qf5B3EG7TuqEeb1ePyR5PmhMci
-	0ktR03IgOMwCholmHr2xfwyxRhhqm6St3ejYRKvBMLEnQ8ozQRwGFSDx028D+uXzL038RqU4Azn
-	2MONyqmtOfwGyX9GzzGFm7CckIT/b1QnBAxs+9ElVX6r1YXfzBVCAehT25ihRPiasw3MaL/hh/Y
-	pKWejd9ZK3WajAg==
-X-Received: by 2002:a05:6402:354a:b0:6a9:93c0:113e with SMTP id
- 4fb4d7f45d1cf-6a9b5603d6cmr3580548a12.9.1789202916079; Sat, 12 Sep 2026
- 01:48:36 -0700 (PDT)
+        bh=Emo/VHVaZMhmQcduzPD7yxfTUOKr9C1DEbaLmLBuIaI=;
+        b=jYJlR6HK4Td6eBMlc+rxxvXyGVSFjy1e6OfU6GQ4lvkw3/5jisyhu2i1wuZfL7Bd/V
+         oOQXA0pHLdu0v1JBNtMPAnjt4ftLOWHSnjkaP8D4QGm180s02iERNsBV9pFLpyd+xChN
+         WnNN0KCEZm+UUd6DCU/U3hDaZZten/fiGYxZ2t3ZKDnZzv03rLvsOGxseHEDD4KtLzba
+         P56Uenl9rUbQTiMiFLox/NADbTTqJWhK/xl9mkzyUiP0JuFn3PLBXI+tVgOKXEdwq2hF
+         zuc09JPs/dUrwq+tH3evgW/abp2QSnL9CP3VYKMR+NYAxqtvhFcDo2gaN3Y4/w9hmaU7
+         RUGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy88eAJ6x1Y42NO6kve6MdtmPmvYNYL9HJZ2ZtU8Bgyv86GIsGF0E6fD35qd1SU7huGa+qm1L/EOQ==@kvack.org
+X-Gm-Message-State: AFuF++npwD5SriZ7UvaEr4lsbdvN92PZMPoh1vJwfRj7DOio/L5brH/p
+	cF3ZP1L5ftognImuk4WcdS+fZiOydhfkGRweP9fXjU5kVM2vyxqDjRW9qW37n5r3gsa2upUzczs
+	gLqqbf58JmycovN8jQpHzitUdsBtjT3Y=
+X-Gm-Gg: AYBFou3hq+bDwsvfYvfkYDxzwfTErc+vJQMpdAfve+ZNsnxDFy+oPZLfCBgjQMRPUrP
+	3Yv4PTvQVVutAUo5CSmER2VHP51r6JP7ZDLxb1nFU2u9MWfE28C0CiRAelEzrbWvRIg9xcBTUeo
+	/+s7U5MNHLK4otjHAOBCyXY8VpqH2rFxVmcfw98xO5rtuC4EoMnx/b8AFVSKHJ7RZnqG7ApYmsD
+	inW34eAPc6MCH0k0hBa19diQ6VLltlTiS1U0yibUjPp7or/g0ZQhA5w9X2IBeCkztWlJBY8NP4Y
+	IRUvi7SaIdv6j72189KmAdOQHb9WCuJT6rB2gEur8Nh/fDqpjXVpNRTXt5J5Upv5WEoAx/UeARE
+	9OsJKFFadQaya
+X-Received: by 2002:a17:907:3f88:b0:c25:9102:ed with SMTP id
+ a640c23a62f3a-c29665ff973mr349742666b.5.1789203678979; Sat, 12 Sep 2026
+ 02:01:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
  <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
- <CAKEwX=O8i+OsP6BJXNZNk07hveN9HDT+PoyMTAU6gOc-xp0Ppg@mail.gmail.com>
- <CAMgjq7BQeQQOZMDPFJ+8LS2N4t3x53r6Nm+9o0_pi92oVUgjgQ@mail.gmail.com>
- <CAKEwX=MS-7C96i4tzBijHN=-xuZgny_wQEa_0YjfHzhoNysdYQ@mail.gmail.com>
- <CAMgjq7B7Mc7vpQN0gBknsSrfZWXdif5L7nU29YskG9mzS-_jsA@mail.gmail.com> <CAKEwX=PxZ68_4240DC8HjcqPRE0bQWGmouoqapqqTQ2b0xqpvg@mail.gmail.com>
-In-Reply-To: <CAKEwX=PxZ68_4240DC8HjcqPRE0bQWGmouoqapqqTQ2b0xqpvg@mail.gmail.com>
+ <aqBT_35E-eSoN_zj@cmpxchg.org> <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
+In-Reply-To: <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 12 Sep 2026 16:47:59 +0800
-X-Gm-Features: AcwNN1Vvr5dRguutvcgehjz-XZkuALg4SjwQULHioJZ7yEPwdeM7nc8UPMPMn9E
-Message-ID: <CAMgjq7D40KGRjwpFMH4x4fhJ18OQyZwPtovhc8Hm3Y7+__d4Lw@mail.gmail.com>
+Date: Sat, 12 Sep 2026 17:00:42 +0800
+X-Gm-Features: AcwNN1VTyrOeQmFG_efe2_ca4qa89c2Nr9YsCc4NghZiW0bnHUOivuHs2n-bDVs
+Message-ID: <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
 Subject: Re: Path forward for Virtualized Swap?
 To: Nhat Pham <nphamcs@gmail.com>
-Cc: YoungJun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
 	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
 	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
@@ -148,14 +145,14 @@ Cc: YoungJun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3fxercgzqbcr8e6n1zz6e5ua3uehcqa6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AEC62100003
+X-Stat-Signature: imuc3c1duh77ksjoef7t79uzc5zmpo41
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E023180003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789202917-717995
-X-HE-Meta: U2FsdGVkX1/O/SzWSajANp+nZ3E+lSM4dCqvAbIAVs6d2xrroi4DZWDC5R+o+AgIMe6zO+X7y07huF09dP5O8XLF54tHVzoHSszhI0CaOWkgqPa13V6CAhKsvK9Z+7L5F0vLA7cH9QoIibMfwnQBNnzxRmdGisQnDqVSu/mVAkWXnNx3Uwid+1GrtbznXAn0gu8FgujZIiRBF0OKTkn5J5XwyWCBdedkJfRRjn1d7h1wcx2FvJRzv+ClxkcTLX23zKctAz+vqLyvLHnmyUhzQkkM0OPlOROZVtFH+LK4siPgDsl39xsSq9y6Ry3SKo9mMXyo8cocZFaTY9zEpQVC8yAutrHjSEqn9Hicy6UNmjuSds16Gwt44ylcaZVtckXSS5qXrEuOxLQ4UmauueMRTpeFxY6BMG5v8sVfjytlA+rTTw2Ndk5bcDj7FJ72xzRSzqX+llAV6M1fdj0hSQ/rYbLo4XwQSbjHF1qdEGahdQ+Z7/qSIVMRtO+cgQGyMMYHaSk7Y+Id0N4X7LNUZl1gFWTuUO3xKG2cUh+TO/aQY0QqNz9d7FQNHQ0IjxirwPpg4i5hdQVGZw8kBNav6OLycFtnHtA5QGOIKPyRp1X59sDW3bXn+pB9gcZa4RZx2KmcxfL5gCVY6/aJKaN4/XiApGXBm3hSER8gkaZPU4ZF02ePT//C+kDV1fC4Tgh7Zop0r+LD1SYk503Kk9PbEIIJIQotKX2puUaZYMiAjtDqod1tsndhQSRUJo3lM924hAqxeenrwfBmhiWIwE0MGM6zZ25weef9CMu6GmTtAj/0xNpAzAao8DmuLNB2XWeA7E16otMxk4JxX9OapenJJ/LcwE+v36c8oQpDni4PNZwMQfSuQYyskKjA7l3baaJL5vWCAXJlaESy3Anmk19WoE79/4ykK8KqbSuBqHKZP4zqiRVwCNHtPZ5xvQSFqZgNeMjMC6JmAMsDzK3/OuJJQlg
- 0g/multC
- kXV5vDsnk/nLmgFpATBnsNuvQ18V2jvjC460viLZsvsbkNad5DuyCjjzIlubWzsKxYH9v97fQFVET9rGdjf/vAvUmvkiHKkxu8F9TUXKyRHBw4KKUJbb7f6XQdURnJ/YJPzGMoTu2rqPXNz88yjbQnnEtNmzSdGZDs1B0NjvIWiErYXP4KlsV67cca2Qr0paTCMIMV8W5zSyhCDg+jrAxttZFST6g0daDqkZX0o2veY3qdIdZskFL/nJNVwdK28RJykeCuMU3lZ/WI6IeeRYuA0v9QAlSzFlKIi3hZSOM9Oa/Vc1KrH4iaiiPXTLlNq0tVOR0A1cV5miWTJAh8167vYs1ai18Myqateg8amoxoGZ1Giu4E1kh+KudULvPpkUUhACfZ8y+Lf0C62dmTLz00/j9iwVuLI6tfznl/hFr+RbxKKqnO1feBidlK66kvcebgql4hIlpsr9jZVvERDcWnHVDnBta0ZARBS16GYzijOXwKBpP+E2PJOWZ3qn3U3CDiM5KEIYD7z9l38w1xp/6PuKW+B39hWNenwMc1MeoEn/RBSm7m68r6F9oqaJAqEIt14c8PWTYOG6GueU8r3EDniUIGPlbDr3VBcca
+X-HE-Tag: 1789203680-543410
+X-HE-Meta: U2FsdGVkX1/retcTW6AYQZV4oJQp7WDNUIWIfYEugIK9/Eue81DaXedn8/hquyXy7J9ywPYMVYklcN9Ci0MKxcnoBqEqn6hbCcsQEKhRU6eJGJ1EqWH9aQY7qQR8aoItp4H1XWcUux+zlLrwT0VuMTyTB1KS6dKMfDY4hdrQi5zu1RTPInNPMPUWY62YMQdOdBQIzfeP+aZC0odtQh90nRQec+276gRVeR40aTQrhItPn7Zt2kughQyLkzsQX7zSo08pLmYNqKb5Tdt7lFvOZzMfRJvB2QTUABbQL6uxSreMEQxQlRlTozkdvsEJXlrt2OJMBbh/pzIobdXEmvnaApb8J7M0B+xHHoNrn2owFc7ZPAryF24OE6Qatab51D5EOZSqmM/1irvRVHY3e6hIh5PyHwyEwlssZbKa8mZGEcMg57TifI1gi9Bu2fQ8MVRKWTibzz1KgaEpqGPig7VR80N0wHEVpUnQ46aUpCx0yPnNczfk4wEwTNlCir0jzNy9nxgJHbPf4kVxF2UtOZkdTDaosejxZ0r1ZvS9O/feLiKidA51ktVDH0jLlFC/0DcZ0OtaSIvXe0+OMTVYn/93UBXhBL7PwLMTfHqm41tsKhEgiAU3TmbaEdOMcht3xIVZyc05GLfop4jki+IbMw1yqbjL3FOgzfnVa4UJxN/6iQKqmlysRIYbIGUJEQ3CQhXy5x43jWQ4pvwlaVPXF6UlhA/fj9y3dA1WJO1Ano9vAbtwcI5cnXGlITtus5GK+tdsIpkJvt5/0O+i9YnxbaKSzhVnQCzB9V36u8Amkmgx8mdK0JI6huITT3kHgCBRe1morAE4TeEHqJ+sCvoSICuRYQRG89/Zx0dn9jHs1yfzrwlOSxBF+nvfJaU5uz5ygoZzaHjruQgIVAp4jT2LyRuX36A5tUZO0U1MrPXZKdCW234Gr0HHmQF/KUNZygN4SR5wnXY/NRHhWLZB4yNXfmn
+ Dui7dpmq
+ aQCUGex1yNf6BUqUPtMhfU0H5xohpSbaAUp6LFT/A5kECL+QjyaeNNNKvEFWH9BquloucvD3yF024g/gyfE8uUOKtJNvaFp0pj8jWens5WSLzbFXCFhh58qfUgFzOIQMstnwc8foNEr4neRtSq1goch3+GCzqRfqpaa3GL3D3ojvHpIdgBp8C0Y7FBiB3UFJiY1dbt0mJ4aWFeokFssGPLpOvN+56CPwM9FOfRvN6+0U2qjzD67eVS97tpD9h9ADaYtkBlcAIubKwccgxJdRM4dWjmckxUFeSUX57yZk2cAKBpHclawsF62fDSJ9DpEsaHAJZ8m+cbPo9UozriWt64uhoAOtecelhSmxszD+uJ6b0cUf720xmOdCj6uttQFx4YJkxaqY0xs4ENFFqhpuBl2jr6+0IXO7nRO/+L7J9gOzaVRa45mBiULew+hYmbZZnX8mPsYHj7h6WSq0KyZEApEQXu7ZdVZTFynLmz6H6tgGjqXRPFw83F3tmpEtpZUUP/yHKF8o5RXw6M+i9zsVputJDvbx/DFwJrelOdgSrTUb73rSA2MivHbORnten6Ra43MUC6sAtW1kaZ5gPzqlnNzoBprQqTYbq9fKz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,114 +160,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 12, 2026 at 3:04=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
+On Thu, Sep 10, 2026 at 12:42=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
 >
-> On Fri, Sep 11, 2026 at 11:14=E2=80=AFAM Kairui Song <ryncsn@gmail.com> w=
-rote:
+> On Tue, Sep 8, 2026 at 11:30=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
+rg> wrote:
 > >
-> > > Would something like this fix it for you? ZRAM users will not get
-> > > vswap indirection overhead at all, because it would bypass vswap :)
-> > > Down the line we can revisit this decision - for e.g, if there is a
-> > > use case for vswap-on-top-of-swapfile. There might be other interface
-> > > that makes more sense.
+> > On Mon, Sep 07, 2026 at 01:51:31PM +0800, Kairui Song wrote:
+> > > Where I've ended up is that unbounded growth is a real concern. On a
+> > > host with no memcg limit (root cgroup, and most desktop and embedded
+> > > setups), an unlimited pool means usage can keep growing, with no
+> > > admin visible ceiling at all. I'm not attached to xswap's percent of =
+RAM
+> > > knob specifically, but I do think some kind of bound makes sense.
 > >
-> > Hmm, this interface looks confusing though. you mean tangles vswap
-> > with zswap through the cgroup's zswap limit? I originally expected
-> > this to be a problem solved by tiering, skipping certain tiers seems
-> > much more intuitive. Maybe Youngjun have some idea here?
+> > Swap space is just process virtual address space, no?
+> >
+> > Swap entries already have one or more page table entries pointing to
+> > them, which in turn are managed by trees of vm_area_structs. That
+> > means rlimits apply, overcommit protection applies, and OOM killer
+> > attribution works as well (oom_badness()).
 >
-> It wouldn't be confusing if this is something users don't have to
-> think about at all :) My point is that we don't have a use case where
-> we need userspace input on vswap-enablement on a per-cgroup basis yet,
-
-Ha, you really can't assume that for everyone :), we even have
-workloads working at different compression levels, and the tiering
-series shows different cgroups working on different devices, there has
-been pathes enabling per-cgroup swap device a decade ago.
-
-> > > Potentially, but we have many users at Meta. There's a huge diversity
-> > > of machine types, workingset size, access patterns (both frequency an=
-d
-> > > file:anon split), compressibility, etc.
-> >
-> > You can just set the number as 8PB? :)
+> I tested this theory. I spinned up a process, and let it spam 0-filled
+> memory + swap these pages out continually.
 >
-> Sure, but with the vmalloc-array approach, there is more metadata
-> overhead even if we have not allocated the backing page of the
-> clusters yet. This will be annoying on the smaller size machines
-> (O(dozen of GB)) to also pay the overhead of 8PB-swap space metadata
-> reservation.
+> As you predicted, oom-killer picked it up eventually. The host was
+> (and is) intact otherwise :)
 
-Not al all? With VM_SPARSE, you literally have zero overhead, unless
-you really use these slots.
+Good to know the kill path works. But I think the accounting side cuts the
+other way? Won't that conversely underestimate the host's ability to
+handle memory alloc? Not to mention a lot of application are
+swap  space aware, some built in logics like e.g. with vm_enough_memory:
 
-And even if you really use these slots, the overhead in both CPU and
-memory is lower than Xarray, if I did the math right. I just ran a
-quick test with Baoquan's Xswap, forcing it to start with 8PB on boot;
-it was smooth as batter on a 1GB box and still worked fine after heavy
-anon memory pressure.
+On a 1G machine with vswap enabled:
+[    0.241906] vswap: created virtual swap device (2199023255040 pages)
 
-See below (8PB xswap device with almost no metadata overhead, the only
-overhead comes from zswap so I reduced the tree number but that can be
-easily merged into clusters as we discussed before):
+a 2G sparse anonymous allocation fails:
+[   46.044002] __vm_enough_memory: pid: 1129, comm: search_agent,
+bytes: 2147483648 not enough memory for the allocation.
 
-### Before XSWAP
-# free -m
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:            1464         405         756           1         544       =
- 1058
-Swap:              0           0           0
+The default "Heuristic overcommit handling" policy is meant to handle
+seriously wild allocation (as documented, and it's named as
+OVERCOMMIT_GUESS).
+totalram_pages() + total_swap_pages
 
-### Create a XSWAP device, I hardcoded the max size in code to 8PB,
-### and use fewer ZSWAP trees:
-# echo 0 > /sys/kernel/mm/xswap/create
-[  140.289280] xswap: adding extendable swap type 0 (prio -1, init 733
-clusters =3D 375295 pages, max 2199023255552 pages)
-# free -m
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:            1464         407         755           1         545       =
- 1057
-Swap:           1465           0        1465
+Is the limit, the heuristic exists only to make "a seriously wild
+allocation fail" (as documented). But on a vswap-only machine,
+reasonable allocations fail. Common swap devices, zram, or xswap don't
+have this problem. One could argue that the size there is just an
+optimistic guess, the compression ratio is not controllable. But that
+heuristic is a guess by design, and a plausible number serves it fine.
+"Unlimited" seems break that.
 
-### Lift the ceiling to 8PB:
-# echo 4294967296 > /sys/kernel/debug/xswap/type0_cluster_limit
-# free -m
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:            1464         403         756           1         547       =
- 1060
-Swap:     8589934591           0  8589934591
-
-### Run memhog:
-# time memhog 12G
-...
-________________________________________________________
-Executed in    4.36 secs    fish           external
-   usr time    0.46 secs    0.00 millis    0.46 secs
-   sys time    3.77 secs    3.80 millis    3.76 secs
-
-### After memhog:
-# free -m
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:            1464         336        1136           0         222       =
- 1127
-Swap:     8589934591          31  8589934560
-
-The only different from vswap now is that you just hides everything :)
-(writeback is not hard to add)
-
-> https://lore.kernel.org/all/CAKEwX=3DNYoMH8pTKeCvA=3DXHFmmNVMeDz3mxbhp5q6=
--PxSTJ5wOg@mail.gmail.com/
-
-Right I saw that, but 64 bit of private id will make shadows really
-awkward, not for SWAP but for file folios and file mappings, swap
-table is actully fine since memcg_table is standaone, and we can
-workaround the hieratical refault distance issue in other ways (e.g.
-record the reclaim level instead of memcgid direct). I think 24 bit is
-good for now? As I've never see anyone ran into issues
-with even 16 bits in production.
+One can switch to strict overcommit limit, but that is limited by a
+user specified ratio or number; again, we need a concrete number. A
+fuzzy "unlimited" seems odd.
 
