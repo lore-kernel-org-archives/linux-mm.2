@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E2C5C88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 18:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BC9C88E56
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 19:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCDE46B0088; Sat, 12 Sep 2026 14:55:51 -0400 (EDT)
+	id A13766B0092; Sat, 12 Sep 2026 15:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7ED86B008C; Sat, 12 Sep 2026 14:55:51 -0400 (EDT)
+	id 99D2F6B0093; Sat, 12 Sep 2026 15:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B95076B0092; Sat, 12 Sep 2026 14:55:51 -0400 (EDT)
+	id 8E1676B0096; Sat, 12 Sep 2026 15:18:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 982806B0088
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 14:55:51 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F42580543
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 18:55:49 +0000 (UTC)
-X-FDA: 85206014418.29.F16CE2B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AEA56B0092
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 15:18:19 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A5DA05B0
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:18:18 +0000 (UTC)
+X-FDA: 85206071076.19.DCE4AF5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 763E7120004
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 18:55:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LfjnJEkY;
-	spf=pass (imf29.hostedemail.com: domain of "SRS0=D5ov=HE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=D5ov=HE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	by imf25.hostedemail.com (Postfix) with ESMTP id 11BADA000A
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:18:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pb2rwd3i;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789239347;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789240697;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HUcxlcbaDdo23591UngwmMxDtqKXJFAuV7We/f5fCME=;
-	b=IhBOigbmT+l1+60FbWJR+l0STMAkbcj/TH9QMmT3lIbe7Q5cyXAOaT1q/UvOIrqe/8WoLx
-	MxoJpMGaOWRXRMjgHJRc1e5aqgZDYVtEMmOi+rlhZnhG3FGT5OXVpBlVUKXFYZOLReCmso
-	q2Zo6D06f27QGX+3ILsNfR7zSc3q+/8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789239347;
-	b=8nIqzaPUe6zCUJShjhfGLtW57IAJoT+uLMHs8mOFNO/SqaOXaPfcCyMpHzzqQoTmgQUvN1
-	Fr443G1szM35uQ68Ev2uEyphlkKOCHFxYEWDMf/mpqE6NZ7l8HD4fHTi//Mi/ExClbMwdA
-	FpXSem5qYGsEuTpI2mdd6wJRFh1tukQ=
+	bh=hAIupWOiZk1Nz5VeipyYWCDtbEHKa9N+XsP7giaox3I=;
+	b=z/cx2BB2ZgeHv7MO8JX0u/p7YfGXH0/oKnkzo3Tw58p3cuJ7rOOTLh+vGjXV/ukCkJQ/NL
+	V69Yr8d3JwjxOEURPyu0BK1zQyhwj5+/0Gfeiy8YbvpIly1c0VS7iMMr7ZLE01sZCa9UqV
+	wUf75/K+TSkk5GgeSnwEJ08YB2j3kMI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LfjnJEkY;
-	spf=pass (imf29.hostedemail.com: domain of "SRS0=D5ov=HE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=D5ov=HE=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pb2rwd3i;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789240697;
+	b=MzFGZcS65mV9ErQJJj30J8NqKCeVQn4ACk51GHLM6rS7EkfB2ad8Q4DP6t0O6XnF4ztduA
+	Q/xu/2y6wuynD42YRV8BKtnIMtD1FyMGfF0tX+s7181WxZ/UbwpYbP6BbIhoP6Ujjz0Kqs
+	QUfnudzqs/Jw1OGCZqOkgJfvS1YAWsY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63C6F43F3A;
-	Sat, 12 Sep 2026 18:55:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454D81F00893;
-	Sat, 12 Sep 2026 18:55:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5059F44004;
+	Sat, 12 Sep 2026 19:18:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E81F00898;
+	Sat, 12 Sep 2026 19:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789239346;
-	bh=HUcxlcbaDdo23591UngwmMxDtqKXJFAuV7We/f5fCME=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=LfjnJEkYMJQ+GyGUVqP7t/4fiTiSokO6rlR6GqlTrgouWVIhVVCJYmfFWs8q9BCj4
-	 pOwnhu2fRfvFW7xvg4kONTzpZt8HLDKA7TNVEQQY3ecnvfFyXQyErBLfkkDd7GimVJ
-	 NWnaXQvdcI/b2IzMl8GsRdgo6DQO8XSWyGqUwToVXHJgMoO+vwpZrOtjlnjEAYmeMP
-	 Om639OoptgnZqn0J8RABvcWDK6xbG4ia24mWkA+r1QvgrbD+JhYM88PyCwMEY5+lqb
-	 EEzOjeVZFLosIHUohT+hRFBlVm4ipXoWP3tsYzUKlj01bPCJgt2ts8YNSA4OQafiXs
-	 +cpVIwR/6jYvg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 0C807CE1578; Sat, 12 Sep 2026 11:55:46 -0700 (PDT)
-Date: Sat, 12 Sep 2026 11:55:46 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, liam@infradead.org,
-	ljs@kernel.org, vbabka@kernel.org, david@kernel.org,
-	willy@infradead.org, jannh@google.com, pfalcato@suse.de,
-	xueyuan.chen21@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] read proc/pid/smaps_rollup under per-vma lock
-Message-ID: <ff6a7b3f-1624-4940-a4c5-3efd51a35eba@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260911194145.1781926-1-surenb@google.com>
- <20260912002436.0605a85b912eb8ae406cecf0@linux-foundation.org>
+	s=k20260515; t=1789240696;
+	bh=hAIupWOiZk1Nz5VeipyYWCDtbEHKa9N+XsP7giaox3I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Pb2rwd3i7YJEayi20uaPGc3CcA5bXzPFyUFJ6I+PnkBjhyagDQ/JtJWVamOJZF+QZ
+	 GOBKiyeMwZ2GNRSpemAIE2yOVYItKsiz4HeJIasjJF1H5qRlhCmaYsdsXBXGAf71Cs
+	 f6nfS73vDuIkg1HclAThaPxtO/A0l6G2sVUFkjxrWD2axGUwu1JD4t/zORtLzmv03T
+	 sJwuVILiLssQCHhr8TbmtAavsdYwv1yVDyvdGmvvpC4XgP5d2RNC/j77EjuD4XsH1r
+	 N5pcZq3qd2B3sCy6+ISy6uggHu+ZC3xFc8mETLPmp0lWmE5pqCmYuZ156H/9E8vh3u
+	 FEBDLK2vkmtew==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 2/8] mm/damon/sysfs-schemes: read sysfs_filter->sz_range only once
+Date: Sat, 12 Sep 2026 12:18:00 -0700
+Message-ID: <20260912191807.138502-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260912191807.138502-1-sj@kernel.org>
+References: <20260912191807.138502-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260912002436.0605a85b912eb8ae406cecf0@linux-foundation.org>
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11BADA000A
+X-Stat-Signature: frknjxrrwbzb15jnrnot8pria6jixx99
 X-Rspam-User: 
-X-Stat-Signature: erzrpytctp81g5ewoqec83urrzjj4s7n
-X-Rspamd-Queue-Id: 763E7120004
-X-HE-Tag: 1789239347-995417
-X-HE-Meta: U2FsdGVkX19YmQCS/c/0wWoSswXiAWmbHNrUOmegiU8XsH9j7udrIbowJWQDM1DOaDLV+pHX716HAI8HumhLSw/PPZxK6aGoSdp/7PMnHfW27iuTIfox7usEep3U3NEn4DpilpMEzCKjWhd1AmEHf3X+k0d2PZ9szVKcfLtRz9ARPRSEGKqwc0sWUhspr6PwR1GOONx/LJ/o2ozr0zEoVKyzEFBPidRr/KHMr2Sqc0DLlI483OTVQu3Qi7KbPLdT9B0FI2HRgANbks0aP7Rki8xtpgPIpenGRnD7Fed8zvmrX/37RwMavzqCW3iUCm/88I1RRAGw8Zj99BfWW2M1unFUhz40oTl/T5rcP748I2o57azVBF62jFr+MkWfbtb8PQUqLxKRAZEhMtwsLtOYEglQpCtrkxjxpAgeb2ALv9s+s+fS0mzBIsDrLE9nBhJEn3J6WIsNwMDxK1HO351MnbkqnAW7ij9YwlaPp5Q3cXaXB6gnPtLg6WVk+ADnLUd4d1hCVy0rfICcfmorkWh4eF3SDyvid2Lv6zkvG+Ll5Qt+9fHfhlneuwa+yYSwgEj7u7e+HsvLyvjcPrfAZrAt1amxspFbBx6mKMx0K2AKT9rUnWzOgHldT7a7gSG3xcNfwLP/e8Gn67KKb2nCunPqo+a3cJSd6457pvFxPh4md/A/UoSkeGv+yzP1O8wuFLrUz6vwP85JH54TY0Fzi76O9T2ElXH/jBLn+OlnHg7x4mg7kG/cwvYhzoXTeajKmeA1mA+p2173n3qqFJctLOqsCnNTzlGJDuXccuBxaCWAgmSHFY0sonoRbBu+8R73Y9/I5AYQURBDNr62GVBGVv0rQdkuG61hIkacktfwNmw1L4yZHTYd25eXiUe/Z11rSeXXxibHm7/s4CxCBs6PQNk6yNZXmSTQp13QpIqMlkipm2pYHMXsFTTdS0NMzJDfYxnWsibj1u5lX09WQE8wTI/
- fLOzzedM
- xNAWcT5WVFVFbZ1MdcJ+xp6rEFk+pYmiuTIYccLITmqO8eSYC91gjPRN8h2Rfl68kWEQbMV/za9iLHKJPXZak/lq6mlvTo18H9HNTwGbomihAxEo4UJPBQCutrGju7XT9ZD1XtdVvzXlNqFSPo+KYHo4DNn5D8CLsmk+eobEAs7jt/uQY+A+XGh9wspBuV4bF/dFtglZuKjXoA2dwhB0f+BaAN6k3YFcURSk5J/BYDgITbPc0yONcQRwQ5ey9cAWcyFlxp/Xjg7xcraQJjwBfG7Ni0T8Q1Zl6lw0nRLeSPLT1ytrkcyhANr9EAvmsH9TgkeOBAsdZVl5EAoPo/f4W3XJSkR4RFj1+k5Ip2JA6AK8G4sF2eiypU6Y13CH5f3d6XRMMgo9MKGbWS/xJUsAlHRPAGVWOhxKHzT9H8QUZ1+chg8L2vKaSvolEzCCqhjGKqUCyze6gra963IxB+B3x6n2N1EMFIxe9ffc79RzWwrdN8hD2pcZqLx/TSSJpwsPMByNPMSMTcJtmWSgefkwSUdPOHQy0Cxu36unsKlDQ8b1mhbVYl22jrhvM0xQB1h5+02KkXVjdgQlFnIPepcQqDNvkILGZne7iaMY/aby3fUo5a9W12lo6jpel/ywb7FsV+mXhwHAjYIQ9eE2qdi5JWw7Md/0p0qcBU/2RYKxjy5Cvu5YPRBhoiU2mv+7rO+kPeloYabcaFwcNHH2XmEIgp0sKVBSNf+KQ5FKedjD/xHEE+0XUWZdc0BX4XFo8Mg2LHNx9l0jlWkfn5Vb6EE9t+REsWzwV5PlrOf16lwXEdJLWoi0d/+QzHVDrlaU2exzDK9UhJQclE3I6uLCtQlrkZWc0XZuUs4miFChl
+X-HE-Tag: 1789240696-432157
+X-HE-Meta: U2FsdGVkX185JsahaDdC3NdrjjPZMQvscGgDpJ44BiV0ITDLESzENShD6fFyLzaEC7WuoxhDsrKbTp+zRi0oKc87tqg2kYKxRxcCSBWOqBnZ5V2NEQY9YTDE0TUEjiuJMHb95o1Y+k6LHDJ+S81Jo+5+vJTEBa3rt7iFZZfEgisp5717uzzWucfjIAt8gwZqVvjAscp5onIGKR+zn3DN4bzQ9+1qIPRow4LJwROTXmcvDBg/+2yrAiwAdUXkO7URIqcnQN0PEbrrDZBEQKPuqpoEyclLn27XUXgnO8LN6wbc07vdJVEOcFk5GdPJCeNDk90puuycjcR7upLNiwENZyFqH29LPe+8841NyUHc5Rt4/KRsD8lsbmeILoS36iKG4xjbUSW56/B1+CQZ288jGjndqPHZT58fh/P1pD8asMW0bpxEg4W2PN8LQQsiQjepWONuabK8LJMLx6LYAeaeoTu2opBg1FBvyjOSaIDPyPP/+CK/UG80jsfUFz9yWGs0RfeysFz8YvrohGut2QtDyfp6Q7gZcA6trJe+6OS5L41hwz540H/47pl09N/zghISx6TdfqN9H0Qq3vvPMVu3XCzyocf58MBUe3276Wbu2EXwLW2anpMgzQctGq+zvIXiDPFNOTTWYBUCaaRlDLXpjFLqlZ5Xtwg/1vpPsTMR2Ikf0oCGD/dIXUClFMrLhqv2m04xcqsXUg3cmZyqN5QRGWoIm99z72XnHOWbrLu0WCmsjN8JnUyEk4atsIMcXHiH5pJB+P03aZiRP31k2u2hWxcnmPThb9Tq1XDDC1H36HppfDgEqSNxp9zGNhoXix/3KVvxIBy4dSgeqZBjYLfazzjNw7qqYNxvzeqVU/rJnATXf45oyVgpMu/ButUyc4T5RFqfI2Um6D+zvXyqnxym2TVAkvTp0Z8wod2qRQq/7KQLXu+dsBMBlrVJMaaQtISCawCbVutj3QJuDZgJory
+ 6fLM2gXt
+ ef5+es2ywS21XgomMn35gF455X/gSL0dkvzRa8pqceVLpDcjneAtVs9/jt09/vEsMtMI8i2S4Ub0wbznxBsek6Wm7oFr98xRsANlQoTfxXFibtDMdjOG7rHoVG62QJaHv+pWYI6zQc1a+EvsEDAvz+TUcFiEohAfgF76Y50Dm61TlU7fotoeLhHwZyI0uL0oxEZ1tYBYGQ9ltkg9RJj+5eZKsm97f5/H03L/Ufp2DBTGjPwW+OrAITXdpkO/yM/IavNg3MRyPhtRhWq3n/3kwEDMzsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,38 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 12, 2026 at 12:24:36AM -0700, Andrew Morton wrote:
-> On Fri, 11 Sep 2026 12:41:38 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
-> 
-> > proc/pid/smaps_rollup can be read using the combination of RCU and
-> > VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
-> > required to safely traverse the VMA tree and VMA lock stabilizes the
-> > VMA being processed and the pagetable walk.
-> > Note that we have to keep the logic to drop mmap_lock on contention
-> > because even when using per-VMA locks we might have to fall back to
-> > holding the mmap_lock.
-> 
-> Nice.  Queued, thanks.
-> 
-> The speedups described in [6/7] are significant, although I don't know
-> how representative Paul's tests are.  Probably not very.
-> 
-> So I don't know how much improvement our users will be seeing from
-> these changes?
-> 
-> And I don't know how much usage smaps_rollup gets in the real world?
+DAMON sysfs interface reads the user-provided size range arguments for
+hugepage_size type DAMOS filter twice.  Once for validation, and once
+again for assignments to the variable that will be passed to the core
+layer.  If the user updates the arguments in parallel, an invalid size
+range could be passed to the core layer.  Avoid it by doing the
+assignments first, and then validating the assigned variables before
+passing those to the core layer.
 
-It is used heavily in some applications for monitoring.  This should allow
-us to more tightly fence our monitoring software, leaving more CPU for
-the application.
+User impact of the bug should be trivial.  From the core layer's
+perspective, the invalid size range is not really invalid.  It just
+works as having a weird size range.  No critical issues such as a crash
+or a leak could happen.  And sane users ain't do such parallel arguments
+update anyway.  If they do, such racy behavior is arguably somewhat
+expected and deserved.  That said, there is no reason to keep such
+races.
 
-So thank you all!!!
+Fixes: ea1f204ba29a ("mm/damon/sysfs-schemes: add files for setting damos_filter->sz_range")
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/sysfs-schemes.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-							Thanx, Paul
-
-> As I've no doubt you know, Sashiko is saying things.  About these
-> patches and about the current code.  Its pre-existing
-> clear_soft_dirty_pmd() driveby find looks significant.
-> 
-> 	https://sashiko.dev/#/patchset/20260911194145.1781926-1-surenb@google.com
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 3c1c1cb387fec..8c8ab82c8facc 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2840,13 +2840,12 @@ static int damon_sysfs_add_scheme_filters(struct damos *scheme,
+ 		} else if (filter->type == DAMOS_FILTER_TYPE_TARGET) {
+ 			filter->target_idx = sysfs_filter->target_idx;
+ 		} else if (filter->type == DAMOS_FILTER_TYPE_HUGEPAGE_SIZE) {
+-			if (sysfs_filter->range_min >
+-					sysfs_filter->range_max) {
++			filter->sz_range.min = sysfs_filter->range_min;
++			filter->sz_range.max = sysfs_filter->range_max;
++			if (filter->range_min > filter->range_max) {
+ 				damos_destroy_filter(filter);
+ 				return -EINVAL;
+ 			}
+-			filter->sz_range.min = sysfs_filter->range_min;
+-			filter->sz_range.max = sysfs_filter->range_max;
+ 		} else if (filter->type == DAMOS_FILTER_TYPE_PROBE_HITS_WSUM) {
+ 			filter->range_min = sysfs_filter->range_min;
+ 			filter->range_max = sysfs_filter->range_max;
+-- 
+2.47.3
 
