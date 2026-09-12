@@ -4,95 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73BCC88E45
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 01:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01DE9C88E50
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 01:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD9E6B009D; Fri, 11 Sep 2026 21:25:02 -0400 (EDT)
+	id AE2596B009E; Fri, 11 Sep 2026 21:25:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255DE6B009E; Fri, 11 Sep 2026 21:25:02 -0400 (EDT)
+	id A94B66B009F; Fri, 11 Sep 2026 21:25:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1932A6B009F; Fri, 11 Sep 2026 21:25:02 -0400 (EDT)
+	id 9AA996B00A0; Fri, 11 Sep 2026 21:25:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5B26B009D
-	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:25:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 415D51603BF
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 01:25:01 +0000 (UTC)
-X-FDA: 85203366402.26.7F33C8E
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A057540005
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 01:24:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=P3f3o761;
-	spf=pass (imf01.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 60B926B009E
+	for <linux-mm@kvack.org>; Fri, 11 Sep 2026 21:25:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F2C71203BD
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 01:25:03 +0000 (UTC)
+X-FDA: 85203366486.18.E1CBF21
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C42BCA0009
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 01:25:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FImGN4y1;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.5 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789176299;
+	s=arc-20220608; t=1789176301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NPPKZAStI7N6lxDqkkzLK3v+X0s+kCzQt7K1E1LT7Z8=;
-	b=xkgPbhG83T+WI/p+moLvfg5QHggHJL9cxYf3brR19Wo7CjqEUVcp311eALQSXcmfnEt8d4
-	WBjbj0O+W44QRzYaZ5OBKWP3YiUwvLI9OFoo52OMQuqKJEA+EgkPkyOgRVCNqwdNmMGMJO
-	VUDHyrvUaSbfQAPF8J87U8JJ/kOLbzg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789176299;
-	b=Eyc73ATCtVw2Pz1gxG2h2qis6n9Wus5yHQr0vXQyLcWE6H4agw6uZGAE/iG4ovIKxNbaXZ
-	UyfvvrXArlfcS8WkP3dxyL87YNs9RyxE5xREzumzEsYdMgFbzFJa58wVp2tNjToscTgVH4
-	aLPI7/2BmmCtY2JUKANVj4kyggnlFCo=
+	bh=LWOmbgU/cXl9zYssMUB/cx3MltvPnlZGgjW9s6beYp4=;
+	b=n5KY64iYIQFL0Tk6VFWbCYreQPhD5WL8E4Y0Yzyhv4Kgzm39a+oBXToiBpOe/aQA7O5WYV
+	cmdwMQKaVU868LMeRP/cRxJdjO6K4/oU9Fcf/KeVHk43B1tmNgzWfQ5P2dtQhX4woY6d/o
+	u7JoCiPyvH53JLj5xY+MS9WpnT4nhUs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=P3f3o761;
-	spf=pass (imf01.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=NPPKZAStI7N6lxDqkkzLK3v+X0s+kCzQt7K1E1LT7Z8=; b=P3f3o761WI0uDfzHUOSMRa82RX
-	8cPAOewU4S0jezVJJWf6WcMvH8ZpJAIAA6tUiHnEZFnAPzE7aPPqCorzf1iTvhSjYNC/xBywMIAEE
-	4nfv4pzC7QsD8TnqjS+UwNjJi4hN6t09npZ7k7jxJOJZD/YDpuZteUAkE3kWCVG294KC7CWjK7vaY
-	Z/mGE0CYNoX8+jC/slr8o6HxUIL0EhJ/4nJHGB/U4e+SKhjfoha9ydob+Ize7o05v7XKedVz57V5W
-	XUviyLY2/j5dXuRiUnzoZ/4cFZ8rufXMmtWi3KSAoUmwUzvOeg9qdIkMrvP9jffVWofORVMTOpv6e
-	MnYTa/YA==;
-Received: from [177.172.123.122] (helo=[192.168.15.100])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1x5CTz-000xjI-PZ; Sat, 12 Sep 2026 03:24:43 +0200
-From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 11 Sep 2026 22:24:02 -0300
-Subject: [PATCH v7 5/6] prctl: Add support for long user thread names
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FImGN4y1;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.5 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789176301;
+	b=q9E51E06d4E2v5++Qv2ukdytvgxX514laNYuyI9u30+hDkwT7T/L9TCX+VY0GCdfYEYwHp
+	pCFhWQmR2rF+FfATysv1+Tt+WYK+oU2jw9MVcOwSwXGrnEKTmtDizd30/uZuVHzNJM3g/n
+	lxuJpXvmBe5eDNlAxwmz+U8flrbtsTs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789176301; x=1820712301;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YOk3cxlanGIdTmLtQtPKJDwT6LnOdcC7uVqrLVzgVRU=;
+  b=FImGN4y1Uta77wW6PCA0JhUBxCV5Q8W1VzNCjPxoNK9tpVaZMg08rt+i
+   ofwjtNNDlKlefUnTaFsTZTiN5XK+v920jtaZ68OLciQYGc17hFUlNClUo
+   6p5Fc9GWSM7iSGiAYk7DTrqYYeF8dghkXCAyDUJ4vh5uDPVCYNN8AmEjF
+   BuDrhodkzGQ6yb7G9rhAEC+VZNdyUfp+dM+TOFjwEiQxhy7/N2h8PYekC
+   gBXsr7oGBYvMu78WuJb0ISc9Rw8IZ0k0ePHhSqvEm4klSjqxEUUhjo2ia
+   sdXJEt/+MuRcnJ5+xZWiAm2N4yZh5od+FHsQ2O0rex3utVmDNynqxsPon
+   Q==;
+X-CSE-ConnectionGUID: Lv1Ywhi6RhO2NekDsOEz0g==
+X-CSE-MsgGUID: 6ZwnUzOFRRqEHYu7l5E/gA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="148697"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="148697"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 18:25:00 -0700
+X-CSE-ConnectionGUID: 9W4u8baaQ/CzWlAcKyP6gg==
+X-CSE-MsgGUID: iuQBu0n/Twu1nungr6zV7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="272047984"
+Received: from lkp-server02.sh.intel.com (HELO 0a3643a6ed9d) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 18:24:56 -0700
+Received: from kbuild by 0a3643a6ed9d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x5CU2-000000002VF-0PA5;
+	Sat, 12 Sep 2026 01:24:49 +0000
+Date: Sat, 12 Sep 2026 09:23:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Ingo Molnar <mingo@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] x86/mm/pat: use pr_warn() for early W^X warnings
+Message-ID: <202609120931.Bo3Gyiqu-lkp@intel.com>
+References: <20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260911-tonyk-long_name-v7-5-34e1ee1564ae@igalia.com>
-References: <20260911-tonyk-long_name-v7-0-34e1ee1564ae@igalia.com>
-In-Reply-To: <20260911-tonyk-long_name-v7-0-34e1ee1564ae@igalia.com>
-To: Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, willy@infradead.org, 
- mathieu.desnoyers@efficios.com, David Laight <david.laight.linux@gmail.com>, 
- Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org, 
- Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
- arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>
-Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org, 
- linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-X-Mailer: b4 0.15.2
-X-Stat-Signature: gtyzq5cw8xgzmeb1mcx1xh6ztos89x3p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C42BCA0009
+X-Stat-Signature: i1ruqinjbtea93ntpu31crzne5osh85t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A057540005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789176299-729660
-X-HE-Meta: U2FsdGVkX188TUlmLD88NvzSeiuxYQsrSh/USBLt43mHGg0GYlpHe/UOoTEtRn81t/yJrgiWSopvLZ26k+FMxugMt0k0fM/n8LQQZbBUyufnVwLo03mcEeW7AFuJo5jPzuEi5wFBHEWnO+x1bOgU7JpoUh1me+7W2z8lkGKByDNFSzb+nrZyJ2KlsquJLyhemqCG1HiUYe9ehN0/OLz8HjoP3dxWxAtTlHsnU9Y+mmLyfm7ejyaoppBE3or0WzE0NMxHvpwOS6X1TvZ1t8qUzwznqSaCZ+tIavhHs7BZSxKHlrBX1WxXFNDcVQHL6zT6B2czCeM6YSDZN7LmoR4OA3EuxRVxdy6kshV0C1aEV0vQ4LuOMGge0sg7aQeNtOwlgSPDzZ9eEFW4C49/DY9iISNXfmylDtXEXQfa3XVrGL9S0yGwDVBnoD6krDgkjbLa53JjN7RGr4y4QBbvkC++yXyLgA/f79ZrZYSu94N/bZTCujhF/4YfLI/cWTckIKpumlH+nwKpxcJKLN7Zyq3CJecGHv9LVgkwWub75BAPaT7hrM60vFfkZUTadaTkZigj4fHwh4wX9jPDqtXrTX37b0XCIb7snsiBfTuwGHS82sO5PLFcRTvtfipVDG8DmotkjiTGm4zvSlm6tsYPtl3wFvUokVl+pvS6NWwico4pqBD0HddU8Os3tNBmOg1xkyBMhzLCNF2JSDEbh4sWAq3nF/IuYcdEC1w42HxgqdmcT2GpEEgO00N1Kh4dw48jPTS63DNZTfGGiKr7aORLVFXIgOUdOqe/75c6cZHFwDCfUnUdmbQBhfsTyint8vVfDAwxLxd1gtmKRIvmeLYVkvZtJiAgSk+fkDIAVvrGwjbg7cKGlbM/LUYWEa5DsLPbi4azZr9LgatY0v3FaUyusWDuFmLlwwTKtyRl3FrEk2WDQX/xpO2t8+BQFmGwkPd7uuwD7/Y5eyYCUdQJsY3N9Da
- jEwntRxp
- qKwFwJDB1N0xxPeIZOEIreYVu6kOXAZeUOQXujbrGaWGKIXa0kuq3gSfntDKv10wXqc3bj57V/G7uOsa0EW4hSm2C41USsoqCQ7szln05hSclerfLcyBHCZbVLiXJDiicZsZVG5GLWFdE8ZZm75czE2ZUsgCy8WchMTp/jEUDn8LVnF1v7xqOUMZnRegWviLizhNKOLrPU9AHLTgwjOGqcUB839pupJPxKReSpOG+nFcHQum4VuE0wmk/Oo50Ib861qYEDz3ebfME4xTRicy41g5X8eagE5y58W1yHWWvp1J+TVmjRNjh/w9vqErfrHkJ4cqe5xhkx9EYPd2bUWpKa2KN+mB/wJbOAlBA+ziTeMoFmNVFID3j3e51Tc5xjJOFJIh2QYA+CUHIggQK0gJPOCqkhPONSHDp5fhA
+X-HE-Tag: 1789176300-391655
+X-HE-Meta: U2FsdGVkX19e9FfUbMxoL9Fv7DlRuBHQBxxnxgcWxadp/SbGnwl0wFkwZMl+H8Xp0kXY0wJlNw7mCiZqL4ljlZFgGaaoq5tE5++qvU887Op8Ks2fu4Y2XT9Lob2405afbSGEPmDYE5uyr92hD5XNDRRqHenu/DSBDVrrVI0WfpiQZYMy8njI5ulyyltO2sO3AICMv+rElqOUXLXdEsPHoSIGqoD9RmECK/maulwYkNeiy4/1xPH3utqgUaUAH8q9RAuB0d6ePM/rpiNkgiXiG0Vl+pqoPJ3S6gPGQ6v2o1/1C+il/HXoeKOQtTZHcQbnh5yEQamhM7u/fWOL+27w8QQCXLgqrmRF4MDSqTMBa50JZlfdTOVOWEKKC7m1UeN+p2J8PN37wlNJldtHbRCdAq+pXpsoHhFhRBBamJpDeDtRKr8CEkBSLUI9Y/q1y4mhcj9BTBtwrIlkgUmbHBp6kebWPZ2u2hvplOyCv8D7q9ISHaasRxPZKUYqdvQMgkblY47eOMbkwc0BCUkm/YQp9LuN5r0p8FGzvJn6V9hZsGmA3GQUmuKzXPciaIoCESEhvwC3VX2YcRTy+7dFRszKNGrfBAPj1A4+80K3acWSsjvv1adEJDPF2/ZrFuXpLIMwVB6voQlEISkh73U+SnOrT/j/TcXHREOJ4C8pj3ULSwvNl0OP4HbtJ8Ai/IzNO/mCK1vo7+/gsIkK3Mipq9Sm9OKann1hEAV657P47opBwcNxB+Gzmgjm+rtb2fdVnWzejPINvYT1m1jtDN5lzLYOUCRzpjcCQ8D/UzVAuFEKQ4EtVFg1cKC36CNPBXxRY9kt1KPToqegIGRHg33MoaY69zd4KII0/+vco1kNJibmTgcK4bSeqNck05MQaOIeB9KbBtsF0qoy0+/73B88pEjNIhQ/H35zOiLY6jrMP/KsedIgAz2OMKAv7LI2jcJsZu43ONkXpQQQLCfAPT8/Zgu
+ TjclTYuM
+ vDR+6jXBTjdGr78wjKJUZTDAMPcqwRsWWoxW24Oo0koBB60rOaDSxD1W7+JzvpjFXehl1e8HkZeV/ZIjtXW/ZWmYhaAo+xHpouzwur7rnF9jSfeiPQXzmqQoXFaMMcvkJsP4NGEJe+o+nPvc5k9DOZoTSDSm3KJLexQ9D9mQtKp8/xHXQTnrDHfJve8XuJohpTSXj0cerGqGCw2q6UwAa/rvZAoZPNK/dlmcGJxhGNf5bhISHnpa+gV/l+O91WdcW/yRp7uq7QsImBJYvenX3/hsecGw4KCg/hj46lLieM7m9yoO2t28WxRPtvpsZXJ70KsA3vLAuKBRDK4lH2OFDJTlqB5kxncakW+UTrTncJBHeOxfgwcy8qx+3lw72wF99VvO6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,78 +114,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for getting and setting long user thread names with
-PR_{SET,GET}_EXT_NAME.
+Hi Mike,
 
-Signed-off-by: André Almeida <andrealmeid@igalia.com>
----
- include/linux/sched.h      |  2 +-
- include/uapi/linux/prctl.h |  3 +++
- kernel/sys.c               | 15 ++++++++++++++-
- 3 files changed, 18 insertions(+), 2 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index c4e0104e7ae9..0736b6a32dcf 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2033,7 +2033,7 @@ extern void kick_process(struct task_struct *tsk);
- 
- extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
- #define set_task_comm(tsk, from) ({			\
--	BUILD_BUG_ON(sizeof(from) != TASK_COMM_LEN);	\
-+	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
- 	__set_task_comm(tsk, from, false);		\
- })
- 
-diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-index b6ec6f693719..a07f8edadd65 100644
---- a/include/uapi/linux/prctl.h
-+++ b/include/uapi/linux/prctl.h
-@@ -56,6 +56,9 @@
- #define PR_SET_NAME    15		/* Set process name */
- #define PR_GET_NAME    16		/* Get process name */
- 
-+#define PR_SET_EXT_NAME    17		/* Set extended process name */
-+#define PR_GET_EXT_NAME    18		/* Get extended process name */
-+
- /* Get/set process endian */
- #define PR_GET_ENDIAN	19
- #define PR_SET_ENDIAN	20
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 5ebd3c1dfddf..4caf6ef836f1 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2535,7 +2535,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		unsigned long, arg4, unsigned long, arg5)
- {
- 	struct task_struct *me = current;
--	unsigned char comm[TASK_COMM_LEN];
-+	unsigned char comm[TASK_COMM_EXT_LEN];
- 	long error;
- 
- 	error = security_task_prctl(option, arg2, arg3, arg4, arg5);
-@@ -2613,6 +2613,19 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_LEN))
- 			return -EFAULT;
- 		break;
-+	case PR_SET_EXT_NAME:
-+		comm[TASK_COMM_EXT_LEN - 1] = 0;
-+		if (strncpy_from_user(comm, (char __user *)arg2,
-+				      TASK_COMM_EXT_LEN - 1) < 0)
-+			return -EFAULT;
-+		set_task_comm(me, comm);
-+		proc_comm_connector(me);
-+		break;
-+	case PR_GET_EXT_NAME:
-+		strscpy_pad(comm, me->comm, TASK_COMM_EXT_LEN);
-+		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_EXT_LEN))
-+			return -EFAULT;
-+		break;
- 	case PR_GET_ENDIAN:
- 		error = GET_ENDIAN(me, arg2);
- 		break;
+[auto build test ERROR on ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482]
 
--- 
-2.55.0
+url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Rapoport-Microsoft/x86-mm-pat-use-pr_warn-for-early-W-X-warnings/20260911-142843
+base:   ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482
+patch link:    https://lore.kernel.org/r/20260911-fixes-verify-rwx-v2-1-e2cde39b6693%40kernel.org
+patch subject: [PATCH v2] x86/mm/pat: use pr_warn() for early W^X warnings
+config: i386-allnoconfig (https://download.01.org/0day-ci/archive/20260912/202609120931.Bo3Gyiqu-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260912/202609120931.Bo3Gyiqu-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609120931.Bo3Gyiqu-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/asm-generic/bug.h:31,
+                    from arch/x86/include/asm/bug.h:195,
+                    from arch/x86/include/asm/alternative.h:9,
+                    from arch/x86/include/asm/barrier.h:5,
+                    from include/asm-generic/bitops/generic-non-atomic.h:7,
+                    from include/linux/bitops.h:28,
+                    from include/linux/log2.h:12,
+                    from arch/x86/include/asm/div64.h:8,
+                    from include/linux/math.h:6,
+                    from include/linux/math64.h:6,
+                    from include/linux/time.h:6,
+                    from include/linux/stat.h:19,
+                    from include/linux/fs_dirent.h:5,
+                    from include/linux/fs/super_types.h:5,
+                    from include/linux/fs/super.h:5,
+                    from include/linux/fs.h:5,
+                    from include/linux/highmem.h:5,
+                    from arch/x86/mm/pat/set_memory.c:6:
+   arch/x86/mm/pat/set_memory.c: In function 'verify_rwx':
+>> arch/x86/mm/pat/set_memory.c:708:30: error: expected ')' before numeric constant
+     708 |                 pr_warn_once(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+         |                              ^
+   include/linux/printk.h:483:25: note: in definition of macro 'printk_index_wrap'
+     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ^~~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'printk'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/linux/once_lite.h:11:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+      11 |         DO_ONCE_LITE_IF(true, func, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~
+   include/linux/printk.h:650:9: note: in expansion of macro 'DO_ONCE_LITE'
+     650 |         DO_ONCE_LITE(printk, fmt, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~
+   include/linux/printk.h:669:9: note: in expansion of macro 'printk_once'
+     669 |         printk_once(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~~~~~~
+   include/linux/printk.h:669:34: note: in expansion of macro 'pr_fmt'
+     669 |         printk_once(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |                                  ^~~~~~
+   arch/x86/mm/pat/set_memory.c:708:17: note: in expansion of macro 'pr_warn_once'
+     708 |                 pr_warn_once(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+         |                 ^~~~~~~~~~~~
+   include/linux/printk.h:483:24: note: to match this '('
+     483 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                        ^
+   include/linux/printk.h:511:26: note: in expansion of macro 'printk_index_wrap'
+     511 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                          ^~~~~~~~~~~~~~~~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'printk'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/linux/once_lite.h:11:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+      11 |         DO_ONCE_LITE_IF(true, func, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~
+   include/linux/printk.h:650:9: note: in expansion of macro 'DO_ONCE_LITE'
+     650 |         DO_ONCE_LITE(printk, fmt, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~
+   include/linux/printk.h:669:9: note: in expansion of macro 'printk_once'
+     669 |         printk_once(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~~~~~~
+   arch/x86/mm/pat/set_memory.c:708:17: note: in expansion of macro 'pr_warn_once'
+     708 |                 pr_warn_once(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+         |                 ^~~~~~~~~~~~
+
+
+vim +708 arch/x86/mm/pat/set_memory.c
+
+   667	
+   668	/*
+   669	 * Validate strict W^X semantics.
+   670	 */
+   671	static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long start,
+   672					  unsigned long pfn, unsigned long npg,
+   673					  bool nx, bool rw)
+   674	{
+   675		unsigned long end;
+   676	
+   677		/*
+   678		 * 32-bit has some unfixable W+X issues, like EFI code
+   679		 * and writeable data being in the same page.  Disable
+   680		 * detection and enforcement there.
+   681		 */
+   682		if (IS_ENABLED(CONFIG_X86_32))
+   683			return new;
+   684	
+   685		/* Only verify when NX is supported: */
+   686		if (!(__supported_pte_mask & _PAGE_NX))
+   687			return new;
+   688	
+   689		if (!((pgprot_val(old) ^ pgprot_val(new)) & (_PAGE_RW | _PAGE_NX)))
+   690			return new;
+   691	
+   692		if ((pgprot_val(new) & (_PAGE_RW | _PAGE_NX)) != _PAGE_RW)
+   693			return new;
+   694	
+   695		/* Non-leaf translation entries can disable writing or execution. */
+   696		if (!rw || nx)
+   697			return new;
+   698	
+   699		end = start + npg * PAGE_SIZE - 1;
+   700	
+   701		/*
+   702		 * If the kernel text is still RWX, gently complain, this could be a
+   703		 * false positive.
+   704		 * Once debug_checkwx() becomes mandatory for CONFIG_STRICT_KERNEL_RWX,
+   705		 * the warning can be removed completely.
+   706		 */
+   707		if (!kernel_set_to_readonly) {
+ > 708			pr_warn_once(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+   709			  (unsigned long long)pgprot_val(old),
+   710			  (unsigned long long)pgprot_val(new),
+   711			  start, end, pfn);
+   712			return new;
+   713		}
+   714	
+   715		WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+   716			  (unsigned long long)pgprot_val(old),
+   717			  (unsigned long long)pgprot_val(new),
+   718			  start, end, pfn);
+   719	
+   720		/*
+   721		 * For now, allow all permission change attempts by returning the
+   722		 * attempted permissions.  This can 'return old' to actively
+   723		 * refuse the permission change at a later time.
+   724		 */
+   725		return new;
+   726	}
+   727	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
