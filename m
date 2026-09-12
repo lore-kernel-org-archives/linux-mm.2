@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E37AC88E56
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 19:50:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E69DC88E56
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 19:50:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0BF66B00AB; Sat, 12 Sep 2026 15:50:24 -0400 (EDT)
+	id EC4E26B009F; Sat, 12 Sep 2026 15:50:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6DFE6B00AC; Sat, 12 Sep 2026 15:50:24 -0400 (EDT)
+	id E46FD6B00AD; Sat, 12 Sep 2026 15:50:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5CB16B00AD; Sat, 12 Sep 2026 15:50:24 -0400 (EDT)
+	id CC0C46B00AE; Sat, 12 Sep 2026 15:50:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5A76B00AB
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 15:50:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C3601A058C
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:23 +0000 (UTC)
-X-FDA: 85206151926.02.A7327D1
-Received: from mta0.migadu.com (out-48.mta0.migadu.com [91.218.175.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8734E80003
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DG1wY6Z4;
-	spf=pass (imf02.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.48 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A0A756B009F
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 15:50:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E55C1120588
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:31 +0000 (UTC)
+X-FDA: 85206152262.03.E086018
+Received: from mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D406AC0005
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QpZfBJAE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789242622;
+	s=arc-20220608; t=1789242630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mtw+c/AOmdiC/qVn4Qu1NmY7n7Mmt4AEmzZqI/VR6G0=;
-	b=NOecPg5ehC80d56ilujnZ0tKovGGCUc3Z2ogH3R6shrt1gfelHHCRwAvuMNZcoNcmrtGid
-	EkboUWWiJip92Mn4SOdc5edwyUUaayHkDD/S109GCtfV+32UXbw+GaOiGI1rEidbBdwb9y
-	aPHoSGcRSd8LGIGVKrhxN3JD1OGMazA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=M7iCdG+EO3//BwprPTeEY4DKPx2D64bP1xkVZGm24v4=;
+	b=5UkrtJEmSeyXnObzzNjgCFzFYIiQBmhzpzkzDkggPjjf+zOlcl4p+C/7LEYuzRcF8bVRRc
+	U8xQieCDMkwZTE7nGUtRzoN6wQZPAVXWC8hu7QC0M76lzpJdNDPC2pwg63t/Lsr8LJ+/Jz
+	HO/MyTwpIcLA7eykZmjze+dBDFJWiyw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789242622;
-	b=JHSATwoowdhXTIBgcz/TLBI1A4tN0UoNL88KrmpGAAe5uCG9A5lHtR2+pxZ8WtyAkJCEIb
-	WCdiCxsZRd9hX8bvkAnviYyRz8qeDjeAdQAaBA/NS6JRn7cfh1rUH/T+B7zGUJSVAcGalw
-	bZ5Fnhl2AIh7a+ARxAv2Dhl+a75SQfc=
+	t=1789242630;
+	b=IPuuIKwlSuWHlGSq9Vlw6uwXZhmLQ09arYYPRwmnuh2EZ4zcfXvh8+503dWDOyq78h63nA
+	t5nsvw08Foh1OJ2tL0sKV7X3l2AKCqdaida8yLSH4mZ6XMnsFEllZF2KnfacZ1N4rZON7y
+	6FvnufYhId/2gM43uL1rKq0rnybXZ/g=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DG1wY6Z4;
-	spf=pass (imf02.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.48 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QpZfBJAE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.63 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xj5HW2/JOE89pE436b8pIPlE/VRt03TZ7+Dwvo04iEI=;
+DKIM-Signature: a=rsa-sha256; bh=brsh5b/KdMNuvnx+9fqsxBmZ2yLtLLwkoZhQRJDHq64=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789242619; v=1; x=1789847419;
- b=DG1wY6Z4iIpHeWxx3Z1iFwNeL5oqcUSCHTnmamUXMwC3L4oBoo109vi3SfhDX8uS3yqrcDmW
- 6OY4qbxxu/eKc6DreXPU3B92feDl3W+29xa8oY8+yXzKjPH/rv6qBUqucbDdfTpKHdm8rbOhdCm
- JShBB8WNXCOUjgNG2SkqawGY=
+ t=1789242626; v=1; x=1789847426;
+ b=QpZfBJAE//lAjKLaME4jfm+6uKFx+MLqPu3UOV/yX10W4gAWZ85MeRGoWTBuPxs2VQ7txOXw
+ QNiW9mxNGf8DzqKZKLgc8aba/uWVTlP1PxW7wtKRrqTkPATBAZZ0mUdYYMo1JxhdLLFivSwVUUl
+ YkNlwS4zDxoGlTmnrttcyXmw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id fd67c0cc06b11572;
-	Sat, 12 Sep 2026 19:50:17 +0000
-X-Mizu-Trace-ID: fd67c0cc06b11572
+Received: by mta11.migadu.com with ESMTPS id 0fc06f63615bcd41;
+	Sat, 12 Sep 2026 19:50:26 +0000
+X-Mizu-Trace-ID: 0fc06f63615bcd41
 X-Migadu-Flow: FLOW_OUT
 From: Ilya Gladyshev <ilya.gladyshev@linux.dev>
 To: ilya.gladyshev@linux.dev
@@ -89,20 +89,22 @@ Cc: akpm@linux-foundation.org,
 	willy@infradead.org,
 	yuzhao@google.com,
 	ziy@nvidia.com
-Subject: [PATCH v6 0/3] mm: improve folio refcount scalability 
-Date: Sat, 12 Sep 2026 22:50:07 +0300
-Message-ID: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+Subject: [PATCH v6 1/3] gve: reduce pagecnt_bias to USHRT_MAX
+Date: Sat, 12 Sep 2026 22:50:08 +0300
+Message-ID: <7d7dc5d62597f2f76ed890a3056e9754ede1c54d.1789239015.git.ilya.gladyshev@linux.dev>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8734E80003
-X-Stat-Signature: mjjawj4oiw656iztfuww6jb813oqme45
 X-Rspam-User: 
-X-HE-Tag: 1789242621-820039
-X-HE-Meta: U2FsdGVkX1/VkLntSZ2nLaleS8/LJUKZeFjrUtGGeX93KBdfPV0XzZEaT56vf8wSIq6gN2a9/6offM2rW2ls5c3wqfKKsSktAxvSm/BKRTSQCBplPyBpFnmrQ/sIMc6a66LFNlW3yEKrvcXcHl6kusEyKPo9Sn1ZaFh+R533mpQqzuH2xnweLGGGsItceBbiM/uh1zTkV7lWy2vil35s6VHhIh35h3mxJi/ySR0yzbdpAIw1kmS+CKk7jIh385EPnWSZ6jjNi186r+dnwyB+b2PN0rqDoJjeszyf/9fQEU7XjmVmQ2KKMnJKN2LQ8pC4+kBG/B+JXulN6Yk0Pyj+Vu9GW6YKC+eXUy1qocOZgS3vzxrrKrILl6KyHBhARkTNzSsARebWS6wP++SoH8tHf0db6tHy3C4+yoxtZ7qHbLOZ9AzgPzgjp374iPKoz9jIJHd+YhdZYYcflsX+nDuBeJJ0EkKwKl2v+bwGXmJHh7WrV5sL5A8nbjpn56Pm1JcR9IcHc4T/K+POIAJyLN3ovSphvV6A2pmPbQNSULgrNm8EOZDvYaPazsk/sLQ7YBevJFqHR1QkrpBe4Z3o73xFyuyI46pRZVnX/hfqqszTMKnJw97pLx3SVmgjEBSgq/IjFwP05tqijH9sz55hc68yrVfZohnLRAUBkQBqJBCpe1LU2yYLGwp1O2aYgOduLxNYwaGn2dt7kQehE9pRLgkNKq8fbY19lKRK4wBUcPFejJ14KC6I7sp+EnnaBk89FgkhwozbX3a3xf+T03QNFIRcjPAuB9ppaGdj7MM276dDdqtBHPjydX8UvHbC/M5sa0zr+SdYKmYeq+7Hrr5z76pBsKiUCGuKSrQd/1KM+7rapnMUJNYprMLBFHhTKpWyMVpvd9L4KyS+nNTs/Lvy1LkXwRyAWXZ+z1SjDWJgRdfw7pULRLf+2oFR7nxghPKTsx9dBxBhahza6ShAyy6zeMs
- mlx777XP
- dtg9iKyB9BZgKt0a4ffK7o+LxR5zwZMoK2fMLOFxJ1BcJb4ixl0HNCaiT2Ua0oLsFRWIFTrsZ7qCKneCV03bpD6wGfy+Vq5deu/CUDm62CjjmIZ3/AhXuNCcfSv66JwCHPqIg6zZOWapx4IHuai3Odv6NfHqB1pPf0FkEBvENTGilm4QLoUMvlZwQbOSokPcfTczRPqRxAITcqCBypnrcSoOrwh1KKdGxuyTiMzC3yI/pFA4gZ5PcQDVWO3azne6jLnFyYTib08yIPrFb+eDS1kmDFbtqM1/eo7Pr4hCXLM3bRCSK4yViHxco17U/nZlEtOIN+P/VuqqWiWzX3H+nt+ZqMkY0W53g0axaEsyO2Wp9KPUtXcPk4BnV0WX++SFgp37bwqi9PJv3lbpUV8TsOjrdVLVqwtxChXv2ZcuSWgsofag3eS3OEkjp/A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D406AC0005
+X-Stat-Signature: u4rsumsh73f4ohwu78uhtdrzmxtzcxhx
+X-HE-Tag: 1789242629-422000
+X-HE-Meta: U2FsdGVkX1/s6LiRqDgauUCBszeDF8AmphZnZGUSZdg+8TrLGehpaRs5Ah/RppmdxtP4PVryvWU79vUf9t1Ib9JgHl07WAn3jRkgqSPyDgfJJPfc1DiXW0TsQ8e8p4uJ1BnoM+5Ky2R1IQGnov+nuRVt/IYuvudj9pcaKaUDxJKX/Z5gAPjX/NwICRszpYIwXui398Pcxw+ZxLlaFlLnOzebWFUphvXfJoKC1Y4HcZAjFkYwnhDd0an6B4ETcMsy66j/j/YS9L2yQxDsLaM0DDbpEOlDuxnyYbHU7W04Z3wTn1HTbWWnZm7wkMHZsPfAbFIurUG54FL9EgmsNFdqw5gwEeGgkHIoebXlEX00wfv1C/wI7PqNJr0+QhvQOyH7YcrfknhmGcuQayrxHhMXV17UpxwMQs8vftPBdgfSwjyB6q7HYDjX4C9XrFHrLm2bUUjA9iUADmRDszxedpaUaWXGMmFz4yWOiyAitT5entB0P4O7ZQ/oKzYXQOddfDPq1azBEUllxnyzq2GCgKGjw+mh2q/7FRHFlgrZjtjaeTrdwC4QvxZlZWWUn/ZpptTCQ1hpCol98CAFVEPl6xVRITqQWtu2dX5bQFkHszE3ytKryGh5ICC+GJGtjTgxbDq+c2OLm81LPgcKCX/rn0jg0mnmzrp9m8cQwwRC4UGRxwT1xY71yAMqPf4TxjyNVvG9Zkw38CDGw6QgYNVSeZNkAWm1MVxMLCIwJCDnhkpQIA4HhXTa+ScUlFHz8DqpPh6R004demvXMcHPhW11hDgFg6hmqJh66bK2UnNx+uz4/v1TDp8wmjBfXg/xM/7ZUVoZsOIy++S3NwPMleuSNBiDJ0HI5dt4Qiw8W+f0iDWNVT9FejlVxvIsd080/g4qW6pytQq2oX9LJy3PtmX9JQaSMed0ZTEVjzeDuQrwpiHEZu2nkWHLMiw8VhuO1q1g0Hle89uIR1d/X/4xEs3SqJt
+ afSMb0+y
+ Cy1daltYjAN/YRPavRA/EXHc7bhMvnuEt/xOylbBpmsFGg5e31wM25dB7CaBrGeiDAETOGZrXFkwBDlnSpecJTmnznFD8qjJP9uIQlS7G8kHfQexhJ7FyLSijhis40DKcJk7X4blvpus5L4oyCzs7hlhBipAVfm/WsNIuHiNPM4RjOXUAEXnNWur7+OlYKh6J3f/+YuetsO1MKAghPfJ0TP2HXWiDhA5N1qjtHSbawi1/w3Qn9ylVzQzqDVZGqG3ej+yFSLlT/Ndgn6FmcZWSMCK8CdvkjwSopOwbpgvZr74pC/mLoLNNiKtDAWRGNTW/3vTV2/GMbc3NaLhdslyVUOvQsJqDYoxWJ5uUqq2nRclpPOuJvGLR0xFpjQEYuybd7TLfhHNg5qmCRwI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,127 +112,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Google GVE driver bumps page refcount with INT_MAX ghost users instead
+of the usual USHRT_MAX like other drivers. This INT_MAX bump brings
+refcount dangerously close to an overflow.
 
-Recap
------
+This works fine for now, as refcount is treated as unsigned. However,
+following patches will reduce the usable range of refcount values,
+making signed int overflow critical.
 
-This patchset addresses a scalability issue of a folio's add_unless() operation,
-noticeable during contended IO reads from the same page [folio_try_get()]. The
-main idea is to replace CAS loop with optimistic increment (and deal with
-failure later). This requires splitting refcount into counter and separate
-"dead/frozen" bit.
-
-To allow for such modification, this patchset also slightly refactors page_ref
-API, consolidating all implementation logic inside mm headers. For more
-information, check individual commit messages. The original performance issue
-and previous attempts by other people can be found in [1][2].
-
-Performance
------------
-
-To my regret, I don't have any access to high-core CPUs that I can
-benchmark on, and a 12 vcpu laptop isn't really a scalability test. So,
-here I can only paste my previous measurements on Linux 6.15. To be fair,
-none of the related code paths really changed, so I don't expect any changes in the
-numbers here.
-
-Performance was measured using a simple custom benchmark based on
-will-it-scale[3]. This benchmark spawns N pinned threads/processes that
-execute the following loop:
-``
-char buf[]
-fd = open(/* same file in tmpfs */);
-
-while (true) {
-    pread(fd, buf, /* read size = */ 64, /* offset = 0 */)
-}
-``
-While this is a synthetic load, it does highlight existing issue and
-doesn't differ much from the benchmarking in patch [2].
-
-This benchmark measures operations per second in the inner loop and the
-results across all workers. Performance was tested on top of v6.15 kernel
-on two platforms. Since threads and processes showed similar performance on
-both systems, only the thread results are provided below. The performance
-improvement scales linearly between the CPU counts shown.
-
-Platform 1: 2 x E5-2690 v3, 12C/12T each [disabled SMT]
-
-#threads | vanilla | patched | boost (%)
-       1 | 1343381 | 1344401 |  +0.1
-       2 | 2186160 | 2455837 | +12.3
-       5 | 5277092 | 6108030 | +15.7
-      10 | 5858123 | 7506328 | +28.1
-      12 | 6484445 | 8137706 | +25.5
-         /* Cross socket NUMA */
-      14 | 3145860 | 4247391 | +35.0
-      16 | 2350840 | 4262707 | +81.3
-      18 | 2378825 | 4121415 | +73.2
-      20 | 2438475 | 4683548 | +92.1
-      24 | 2325998 | 4529737 | +94.7
-
-Platform 2: 2 x AMD EPYC 9654, 96C/192T each [enabled SMT]
-
-#threads | vanilla | patched | boost (%)
-       1 | 1077276 | 1081653 |  +0.4
-       5 | 4286838 | 4682513 |  +9.2
-      10 | 1698095 | 1902753 | +12.1
-      20 | 1662266 | 1921603 | +15.6
-      49 | 1486745 | 1828926 | +23.0
-      97 | 1617365 | 2052635 | +26.9
-         /* Cross socket NUMA */
-     105 | 1368319 | 1798862 | +31.5
-     136 | 1008071 | 1393055 | +38.2
-     168 |  879332 | 1245210 | +41.6
-               /* SMT */
-     193 |  905432 | 1294833 | +43.0
-     289 |  851988 | 1313110 | +54.1
-     353 |  771288 | 1347165 | +74.7
-
-Changes since v4 (last significant checkpoint)
+Signed-off-by: Ilya Gladyshev <ilya.gladyshev@linux.dev>
 ---
-- Lower Google GVE pagecnt_bias
-- VM_BUG_ON -> VM_WARN_ON_ONCE
-- Refactor missing API calls in mm/memory-failure.c
-- rebase
-- Make __page_is_frozen() public and introduce folio_is_frozen()
-  counterpart [3].
-- Make commit messages more informative
+ drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c | 4 ++--
+ drivers/net/ethernet/google/gve/gve_rx.c              | 8 ++++----
+ drivers/net/ethernet/google/gve/gve_utils.c           | 6 +++---
+ drivers/net/ethernet/google/gve/gve_utils.h           | 2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-Link to v4: https://lore.kernel.org/linux-mm/df26082871b4c65b2bd38d409026237c08572836@linux.dev/
-
-[1]: https://lore.kernel.org/linux-mm/CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
-[2]: https://lore.kernel.org/linux-mm/20251017141536.577466-1-kirill@shutemov.name/
-[3]: https://lore.kernel.org/all/aqAIFV4nOGPbWiDS@thinkstation/
-
----
-
-Ilya Gladyshev (3):
-  gve: reduce pagecnt_bias to USHRT_MAX
-  mm: drop page refcount zero state semantics
-  mm: implement page refcount locking via dedicated bit
-
- .../ethernet/google/gve/gve_buffer_mgmt_dqo.c |  4 +-
- drivers/net/ethernet/google/gve/gve_rx.c      |  8 +--
- drivers/net/ethernet/google/gve/gve_utils.c   |  6 +-
- drivers/net/ethernet/google/gve/gve_utils.h   |  2 +-
- drivers/pci/p2pdma.c                          |  4 +-
- drivers/virtio/virtio_mem.c                   |  2 +-
- include/linux/mm.h                            |  2 +-
- include/linux/page-flags.h                    | 13 ++++
- include/linux/page_ref.h                      | 69 ++++++++++++++++---
- kernel/liveupdate/kexec_handover.c            |  6 +-
- lib/test_hmm.c                                |  4 +-
- mm/hugetlb.c                                  |  2 +-
- mm/internal.h                                 |  2 +-
- mm/memory-failure.c                           |  8 +--
- mm/memremap.c                                 |  4 +-
- mm/mm_init.c                                  |  6 +-
- mm/page_alloc.c                               | 10 +--
- mm/page_frag_cache.c                          |  2 +-
- 18 files changed, 108 insertions(+), 46 deletions(-)
-
+diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+index 6880d1531ba5..52223baf0303 100644
+--- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+@@ -149,8 +149,8 @@ int gve_alloc_qpl_page_dqo(struct gve_rx_ring *rx,
+ 	buf_state->last_single_ref_offset = 0;
+ 
+ 	/* The page already has 1 ref. */
+-	page_ref_add(buf_state->page_info.page, INT_MAX - 1);
+-	buf_state->page_info.pagecnt_bias = INT_MAX;
++	page_ref_add(buf_state->page_info.page, USHRT_MAX - 1);
++	buf_state->page_info.pagecnt_bias = USHRT_MAX;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 81ea800e66e9..3bed19866376 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -152,8 +152,8 @@ static void gve_setup_rx_buffer(struct gve_rx_ring *rx,
+ 	page_info->buf_size = rx->packet_buffer_size;
+ 	*slot_addr = cpu_to_be64(addr);
+ 	/* The page already has 1 ref */
+-	page_ref_add(page, INT_MAX - 1);
+-	page_info->pagecnt_bias = INT_MAX;
++	page_ref_add(page, USHRT_MAX - 1);
++	page_info->pagecnt_bias = USHRT_MAX;
+ }
+ 
+ static int gve_rx_alloc_buffer(struct gve_priv *priv, struct device *dev,
+@@ -230,8 +230,8 @@ static int gve_rx_prefill_pages(struct gve_rx_ring *rx,
+ 			rx->qpl_copy_pool[j].buf_size = rx->packet_buffer_size;
+ 
+ 			/* The page already has 1 ref. */
+-			page_ref_add(page, INT_MAX - 1);
+-			rx->qpl_copy_pool[j].pagecnt_bias = INT_MAX;
++			page_ref_add(page, USHRT_MAX - 1);
++			rx->qpl_copy_pool[j].pagecnt_bias = USHRT_MAX;
+ 		}
+ 	}
+ 
+diff --git a/drivers/net/ethernet/google/gve/gve_utils.c b/drivers/net/ethernet/google/gve/gve_utils.c
+index b53b7fcdcdaf..267fe3c88553 100644
+--- a/drivers/net/ethernet/google/gve/gve_utils.c
++++ b/drivers/net/ethernet/google/gve/gve_utils.c
+@@ -95,13 +95,13 @@ void gve_dec_pagecnt_bias(struct gve_rx_slot_page_info *page_info)
+ 	if (page_info->pagecnt_bias == 0) {
+ 		int pagecount = page_count(page_info->page);
+ 
+-		/* If we have run out of bias - set it back up to INT_MAX
++		/* If we have run out of bias - set it back up to USHRT_MAX
+ 		 * minus the existing refs.
+ 		 */
+-		page_info->pagecnt_bias = INT_MAX - pagecount;
++		page_info->pagecnt_bias = USHRT_MAX - pagecount;
+ 
+ 		/* Set pagecount back up to max. */
+-		page_ref_add(page_info->page, INT_MAX - pagecount);
++		page_ref_add(page_info->page, USHRT_MAX - pagecount);
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/google/gve/gve_utils.h b/drivers/net/ethernet/google/gve/gve_utils.h
+index bf2e9a0adb36..2933453d1a33 100644
+--- a/drivers/net/ethernet/google/gve/gve_utils.h
++++ b/drivers/net/ethernet/google/gve/gve_utils.h
+@@ -25,7 +25,7 @@ struct sk_buff *gve_rx_copy_data(struct net_device *dev, struct napi_struct *nap
+ struct sk_buff *gve_rx_copy(struct net_device *dev, struct napi_struct *napi,
+ 			    struct gve_rx_slot_page_info *page_info, u16 len);
+ 
+-/* Decrement pagecnt_bias. Set it back to INT_MAX if it reached zero. */
++/* Decrement pagecnt_bias. Set it back to USHRT_MAX if it reached zero. */
+ void gve_dec_pagecnt_bias(struct gve_rx_slot_page_info *page_info);
+ 
+ void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
 -- 
 2.55.0
 
