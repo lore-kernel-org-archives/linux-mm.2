@@ -4,107 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B7AC88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 19:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41683C88E56
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 20:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B8CA6B00B0; Sat, 12 Sep 2026 15:50:45 -0400 (EDT)
+	id 3466A6B00B3; Sat, 12 Sep 2026 16:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790D36B00B1; Sat, 12 Sep 2026 15:50:45 -0400 (EDT)
+	id 2A8BB6B00B4; Sat, 12 Sep 2026 16:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67F6B6B00B2; Sat, 12 Sep 2026 15:50:45 -0400 (EDT)
+	id 172266B00B5; Sat, 12 Sep 2026 16:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 381E76B00B0
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 15:50:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 93514140486
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:44 +0000 (UTC)
-X-FDA: 85206152808.05.EE64562
-Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9743AA0004
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:50:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vI4PQNvt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789242642;
-	b=rsTNQvnjJKrYBCoaXyg/0bzZFx3vffy715Ur/n+nQ63JTY1lXpuyRe2blGhl3tcDmGaf5T
-	S4dCUhnpHGAzSl6dYPLWIk34DPBJSYHcqxbXqr+MKYigX4ovPCPR1QF/T8SGNFC1T23+bf
-	AqdLAdyfsyxrYRn7CoVAYWhQHxafkqA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vI4PQNvt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E7DDD6B00B3
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 16:08:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3850D1C2697
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:08:25 +0000 (UTC)
+X-FDA: 85206197370.04.AA17C92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B5FA140006
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:08:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GyP7s0R6;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789242642;
+	s=arc-20220608; t=1789243703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOa9NahXWmGce85T5uzEDXB6XC8e+WguWeQziQN/kZg=;
-	b=tXBRIAkNOrzRHZeif6MWYqrL+lzgX+mJSGQU872BB6pZfD50U64uXXXSW7Mdc5L4+hGB87
-	IK2PIMhWDdqUdTOkaX+m364DYb+TfX3laam1w0Va+boQ+qwout1ZaKLcGBqL0401dOPCiC
-	4DRGtMKHeSnY/mfXqho0uik9Q2QFOd4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IZQWpLfgOYy2HoyGgwPrn56oEiNSXBhTyZWh8PoLnm8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789242639; v=1; x=1789847439;
- b=vI4PQNvtzlz5BVglkofWTsBPA2OSAuND2Xwvxxxa6xJ/msUylIFRfjkuTMEihxVtkwfQtU71
- Pk9Mmmccy09A3gqx8ZBJeUKYQYs1Y4gU5zjrGMB5nEr2SHTFoGNTndIhWP/6M5zr36YcfEKlqON
- XbTZkjx4hK5Dw0euM25ihMW8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 657099db2046fc3f;
-	Sat, 12 Sep 2026 19:50:39 +0000
-X-Mizu-Trace-ID: 657099db2046fc3f
-X-Migadu-Flow: FLOW_OUT
-From: Ilya Gladyshev <ilya.gladyshev@linux.dev>
-To: ilya.gladyshev@linux.dev
-Cc: akpm@linux-foundation.org,
-	andrew+netdev@lunn.ch,
-	apopple@nvidia.com,
-	artem.kuzin@huawei.com,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	Liam.Howlett@oracle.com,
-	edumazet@google.com,
-	harry.yoo@oracle.com,
-	hramamurthy@google.com,
-	ivgorbunov@me.com,
-	joshwash@google.com,
-	kirill@shutemov.name,
+	 in-reply-to:references:dkim-signature;
+	bh=smoUNIlPKQ1+ngX9XR4JYb0EDk9zUK6MJ9A9qAFnTbA=;
+	b=TZvVCC/N+B8A0K1PTfA23TO22wSI7/TEtHsR0vSy/TH+WQAuTiVZlEHOT8GdU8zGr5iQKd
+	jPtEDCqqX4eGC4FX36GLOdnas8Clne3/UYb8g0MSYmYA1eNwONYPd9EbDFJph+8TqDCBag
+	1/TIYqFCWJk5+coVhbFrojlbAi4HLzQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GyP7s0R6;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789243703;
+	b=QVoz5EMaocfvhcOsIq7wITEb+K+TNcO53pvzMQ3V8di8dr33jHcxVpmjn5tm8fmEaK6jCA
+	bOPHUqYBbo03mToUeaJDLtU1gQKWW1RDD8+vybFt/eHf6fTYQtdjy/MRJHC3yXFg0NC/fF
+	mhz8aIXMH+xm8Hw0lvbKZYt3yAWdUJA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EAEFD6020A;
+	Sat, 12 Sep 2026 20:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F541F000FF;
+	Sat, 12 Sep 2026 20:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789243702;
+	bh=smoUNIlPKQ1+ngX9XR4JYb0EDk9zUK6MJ9A9qAFnTbA=;
+	h=From:To:Cc:Subject:Date;
+	b=GyP7s0R6uwhKk24TKjL48orriQZnS140dDGxiVVZo8TROSrOXjYvzTCiTQLHx+kna
+	 Jbgoalm/05tCAcssJSx0GXakZDREjI0bO2Z5lbYEFSSGNWue9vvl6wh07MJjV7npJV
+	 eG2Si86iG90PkubUg5Zrgw8D/Wz/gpP+QjrFyonFZHyLsc9BXg8SKj55xJz2vNZZC5
+	 F/JLWgdXwIlveZGqnYHAEPTLzSf/F6ZR9jcmt3vlZEpMTeu08eNBdptNw6QZIRQ6cG
+	 G487KL3gQIA8/iBxVsgSHREo0ZsHonuO3oCl/Un5Iuv+qKg/D5sGsg7+IcY62GuB1n
+	 2/mBQjg3UBzCA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	pfalcato@suse.de,
-	rppt@kernel.org,
-	surenb@google.com,
-	torvalds@linuxfoundation.org,
-	vbabka@suse.cz,
-	willy@infradead.org,
-	yuzhao@google.com,
-	ziy@nvidia.com
-Subject: [PATCH v6 3/3] mm: implement page refcount locking via dedicated bit
-Date: Sat, 12 Sep 2026 22:50:10 +0300
-Message-ID: <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1789239015.git.ilya.gladyshev@linux.dev>
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/9] mm/damon: cleanup, clarify, and add/improve test
+Date: Sat, 12 Sep 2026 13:08:01 -0700
+Message-ID: <20260912200814.145612-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B5FA140006
+X-Stat-Signature: 7e1fpjigjocyh6qagdjop98dmdugzh3j
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9743AA0004
-X-Stat-Signature: nny6npm86yorccygwg43ay1t8b95pxxm
-X-HE-Tag: 1789242642-244865
-X-HE-Meta: U2FsdGVkX1/povwTfpc9Zq8kAWghQmR9ooG0OVWYnZG/MVBv3Gzq5f3vIpP6wgyafDw0GUvmRqqzb+0mknC2NLfobPv4RKlyan6KSnr83AsLX0QMm9SUWVpQagB77v7J/K1hteWJ7omDFLc/yLjWFckMEzTdnC5b1NuLWFU0o+mPEWTKsrsDHzjIk/C0uGnIDFzbcLNhEMNNQgeORyKmE34YTkPaaHdJ2UNbvaqs0WB0RG6Q+MJLm8yFuczrieXT0CscUcwJe4B8u3Bn+GjnLC88CzWsA3+lpg6U70ke0yGqtdi8uGudRDBo9qjsmei4xzTSp8/YA/9/zTl7AUmt9MrBYWVk4XYoBaCTpz112RFICHuUMXwYmhBHzKjjmjVKSVNLGaQ4lWT31KiFSEoxko6N55Wc3wWbSwZGjPsT7NWcfvadG/qbBJLMvmGZDWxrvb18xtwIcUewfPobdx7A7GgvM2sziDohA12BBtp5CMEooIvjbVg3C/erNXOfjfZDuiDjEyWAwgT6yBDRE5X2xRG7ebeS7F9DgTroy0EoNW6is8KXvqoPj0x2L1fq50DmESbXmuBg43bZLZkIQvYZiMGlVJ0BsRZRFTfM8iy+YaoLBWYumAXsU6KDZTT0WWPFOIQRf1CDY6FyvtJbcrcdyv/LkAdTiI9s6s81pRsunyKtmD+ufzwUedUJByX+dusKxDTVtfiU60cd2B6Y00HATUFtIKYc/l62v6kbaBwM7JAxcvNcXkdIBNvRGz1+wOO5SSNSlAZ30/yuVxhKDOAgjffSFylHhciIMv7tPK9YdvHrvDVveUjmfFFMYPtsEM5Ea0MS32hKav/ZByBSoXs6Uq5PAAzSt+v3gz9J1MyhuGSaRsZmpHUb/uszQNHKo93ZFDHIebgq1gDz7J1MVlaXuAmi9UKCqZwAojw6kiLqHbwyxMrzizj99y6M9r25JdsyrjOQU6+Vbd20vhPNpg6
- B7MCth7E
- ghvYBGu/XpIGQlVC8ihRAfp865xanlU9IqafJJgr0oNLeB2lrWVdDSyobjE6KJKzarZvzBH88nyB9RSCbF0H/Lg8fjdHULJVj5Buh7NzAiIdAlj5vFzag88qL3kn5Lv5RiqMk8xZBwLQ/slBJbO/MJamQhqJ3GYn1rQawcFiNhHR1hXb/ruT+IX5oHpDHoWCr0Lz5U+ipGyxsMQUfQ624TVTCwUnYhg1vjZk0nrTjP1LJ1IvIb69f2vcpF1Z9l34MCP0Qa7w378L2RekKPn9xc2mclm+PjHGATvLhoi1aRA6HOBvwc5zCLSr4bfJG5j7bfNof+ZwEfduBgmeAhz3Xy1qYyfZE8+xWyetzN2BvHQb1e74NpfUmTXXaF582CzzIwKKkBS1vg9Dk9OXLs7cgr9BA/qITNzB0LoblKw/DlqD/iMo1e0xI2AA6JWfZX8m0HNDDia4qhwKp7nq0oZfGQmuhn418nMsagwht56W0CTiZPWB6baWpaMXkaQ==
+X-HE-Tag: 1789243703-823309
+X-HE-Meta: U2FsdGVkX19aws02VUC4jSl1CyQgTIhZdQCGanB9iUGznLj0/1kWSdBeCRfsvDZDAMflgrXIKWJXVs7t1f/abJm0NsuvehCe+xi2ooXlRBhFkzbgC9FrMZ6GuQujPt5fRxgbzj88zsm/b5a0CTHDhIh2yE/0yDHQOlLQkhT+gMpfJPJqKfyuNnQqMVlgOrIX90JXshdk41fmDHjaxckXcZ7Ruip+gcll4VgoTqupomZS2FyuRen9bKUmZvAlCURDezh+MQokadAHYPMaQi2ISYNAx29nEynCfx83XE88sWg+CkWwelegC4GdzoqR4n2q9rrgrdGem4yeNs57EZd4PCFWjK3jpad64x/uRpFQSoV9Zi/QPKRy3npLqUx4HrshJmtg6jOKAiJN52EpK/QHRVraNjvsO/UQiR6OBMio3rkGrQfDo4IK4rw7zvymp6f96cDgGIyC8wN9SbX0RXu1SQYcWC9rScEf2h/ISqjwtn9mGw2EmCLk2EoL3TpXXj90nPQIrt7+6CG4rLOglR6bTYkKQdo+e1MlKXim8Vvh05rlOozAMlwXhJhN08KUiwpiIGhW7EdXU3alqa9MD1e5bxJ/+qlUvzJ84i1pXmVumFtbPbedMG3+mXAD2nmoY9Nop0OtOZicDv6JGRVY52S/+vCiglG4BBQp7wv/8AwWTXPkyVTaTL4bF3aXeJF0cwhcvoDBZHdgOPb1IFKYCMVEpCtXc/s5JF8kj9mbLVtFYGBFWITQJuKvREczPmt0di6uW++wrS/VDDtTslr9NrefxDldZ6v417Weq3tWpw2YEqfywmg1Uo5GK4JgLJl4Q2jtsbQl9WxFdOhbv96Nl3Yp0yOXKMh6WBHIsYBvunsRx6Hns0PFZ9XFSU2BaTPfST87ZXd7AAioZmXLbFsWeMkG4fAiTAuyRqkDw5F10cUxH3hQvjMucD9HGb50GNPG6h9DE5t4jD/B9/5jm/NUYfA
+ fCBQljKz
+ fImgiXkreBXLa1VRMy/XWdomGM+SLuX64g9WP31qISy5ZuG80y7kgZBQaG0gYa6PB6P81gvLtsf3bnS1kIXZ6ArfE8fvhcd/vJclu/FHEBKUPtvqF9vDZfygH4Ra/9hfPjekt6b2hEBWC1uK8UsBT3yAr+czeRxA+EsXlZqyh2LC8ofT/ihw2vOJFRm+U+Y2YbfEE3npxOsTsHvQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,159 +107,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current page refcount implementation uses a single counter value
-(zero) as dead. So, to prevent incrementing a dead refcount in
-folio_try_get(), it fundamentally requires a CAS loop.
+Yet another batch of DAMON overall cleanup.
 
-This CAS loop can act as a serialization point and can become a
-significant bottleneck during high-frequency file read operations
-[1][2].
+SJ Park (9):
+  mm/damon/api: remove NR_DAMOS_FILTER_TYPES
+  mm/damon/core: use abs_diff() in damon_feed_loop_next_input()
+  mm/damon/core: use mult_frac() in damon_feed_loop_next_input()
+  mm/damon/core: use damos_quota_is_set() in damos_adjust_quota()
+  mm/damon/core: document damon_call()/damon_start() race hang issue
+  mm/damon/paddr: remove pa parameter from damon_pa_filter_pass()
+  selftests/damon/sysfs_memcg_path_leak: fail only for real DAMON leak
+  mm/damon/tests/core-kunit: test eligible_mem_bp commitment
+  Docs/mm/damon/design: clarify bp is basis point
 
-This patch reallocates the refcount value range:
+ Documentation/mm/damon/design.rst                |  5 +++--
+ include/linux/damon.h                            |  2 --
+ mm/damon/core.c                                  | 16 ++++++----------
+ mm/damon/paddr.c                                 |  5 ++---
+ mm/damon/tests/core-kunit.h                      | 10 ++++++++++
+ .../selftests/damon/sysfs_memcg_path_leak.sh     |  7 +++++++
+ 6 files changed, 28 insertions(+), 17 deletions(-)
 
-(1) refcount < 0 means dead refcount (uninit / frozen)
-(2) refcount = 0 allowed only as a temporary state (see below)
-(3) refcount > 0 is a regular reference count
 
-In other words, refcount is now split into "dead bit" and a 31-bit
-counter.
-
-Refcount decrement now works as follows:
-1. Counter decrement
-2. If it is now zero, try to put it deep inside the dead zone
-   (CAS to INT_MIN). Or you can view it as "set up frozen bit and reset
-   counter".
-3. This CAS can fail only if someone grabbed a reference in-between --
-   that's okay, this page is their problem now.
-
-The size of the dead zone allows performing an optimistic increment
-inside page_ref_add_unless_frozen(), replacing the previous read + CAS
-loop with a single RMW operation. This reduces cache line bouncing and
-improves scalability, especially in NUMA scenarios.
-
-[1]: https://lore.kernel.org/all/20251017141536.577466-1-kirill@shutemov.name/
-[2]: https://lore.kernel.org/all/CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
-
-Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
-Co-developed-by: Ivan Gorbunov <ivgorbunov@me.com>
-Signed-off-by: Ivan Gorbunov <ivgorbunov@me.com>
-Signed-off-by: Ilya Gladyshev <ilya.gladyshev@linux.dev>
-Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
----
- include/linux/page-flags.h | 13 +++++++++++++
- include/linux/page_ref.h   | 30 +++++++++++++++++++++++++-----
- 2 files changed, 38 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7a863572adce..b19721e0e7ca 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -196,6 +196,19 @@ enum pageflags {
- 
- #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
- 
-+/* Most significant bit in page refcount */
-+#define PAGEREF_FROZEN_BIT BIT(31)
-+
-+/* Page reference counter can be in 3 logical states,
-+ * which are described below with their value representation
-+ *        state              |         value
-+ * (1)  safe with  owners    |   1...INT_MAX
-+ * (2)  safe with no owners  |         0
-+ * (3)  frozen               |  INT_MIN....-1
-+ *
-+ * State (2) can only temporarily occur inside dec_and_test.
-+ */
-+
- #ifndef __GENERATING_BOUNDS_H
- 
- /*
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 82ff3a99297a..cc7a9d7db504 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -64,7 +64,7 @@ static inline void __page_ref_unfreeze(struct page *page, int v)
- 
- static inline bool __page_count_is_frozen(int count)
- {
--	return count == 0;
-+	return count & PAGEREF_FROZEN_BIT;
- }
- 
- static inline bool page_is_frozen(const struct page *page)
-@@ -79,7 +79,12 @@ static inline bool folio_is_frozen(const struct folio *folio)
- 
- static inline int page_ref_count(const struct page *page)
- {
--	return atomic_read(&page->_refcount);
-+	int val = atomic_read(&page->_refcount);
-+
-+	if (unlikely(val & PAGEREF_FROZEN_BIT))
-+		return 0;
-+
-+	return val;
- }
- 
- /**
-@@ -150,7 +155,7 @@ static inline void init_page_count(struct page *page)
- 
- static inline void set_page_count_frozen(struct page *page)
- {
--	set_page_count(page, 0);
-+	set_page_count(page, PAGEREF_FROZEN_BIT);
- }
- 
- static inline void page_ref_add(struct page *page, int nr)
-@@ -220,6 +225,9 @@ static inline int page_ref_sub_and_test(struct page *page, int nr)
- 	VM_WARN_ON_ONCE_PAGE(page_is_frozen(page), page);
- 	int ret = atomic_sub_and_test(nr, &page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -nr, ret);
- 	return ret;
-@@ -250,6 +258,9 @@ static inline int page_ref_dec_and_test(struct page *page)
- 	VM_WARN_ON_ONCE_PAGE(page_is_frozen(page), page);
- 	int ret = atomic_dec_and_test(&page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -1, ret);
- 	return ret;
-@@ -275,9 +286,18 @@ static inline int folio_ref_dec_return(struct folio *folio)
- 	return page_ref_dec_return(&folio->page);
- }
- 
-+#define _PAGEREF_FROZEN_LIMIT	((1 << 30) | PAGEREF_FROZEN_BIT)
-+
- static inline bool page_ref_add_unless_frozen(struct page *page, int nr)
- {
--	bool ret = atomic_add_unless(&page->_refcount, nr, 0);
-+	int val = atomic_add_return(nr, &page->_refcount);
-+	bool ret = !(val & PAGEREF_FROZEN_BIT);
-+
-+	/* Undo atomic_add() if counter is locked and scary big */
-+	while (unlikely((unsigned int)val >= _PAGEREF_FROZEN_LIMIT)) {
-+		if (atomic_try_cmpxchg_relaxed(&page->_refcount, &val, PAGEREF_FROZEN_BIT))
-+			break;
-+	}
- 
- 	if (page_ref_tracepoint_active(page_ref_mod_unless))
- 		__page_ref_mod_unless(page, nr, ret);
-@@ -312,7 +332,7 @@ static inline bool folio_ref_try_add(struct folio *folio, int count)
- 
- static inline int page_ref_freeze(struct page *page, int count)
- {
--	int ret = likely(atomic_cmpxchg(&page->_refcount, count, 0) == count);
-+	int ret = likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_FROZEN_BIT) == count);
- 
- 	if (page_ref_tracepoint_active(page_ref_freeze))
- 		__page_ref_freeze(page, count, ret);
+base-commit: f0cc06ae989195d7280e0e7eff9d963ddc056d27
 -- 
-2.55.0
-
+2.47.3
 
