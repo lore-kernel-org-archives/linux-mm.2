@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFE9C88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1091CC88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:26:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3F086B0092; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
+	id 2D9056B0095; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B152E6B0093; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
+	id 289E86B0096; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52E56B0095; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
+	id 1C6E36B0098; Sat, 12 Sep 2026 04:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 892946B0092
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F38A740418
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:50 +0000 (UTC)
-X-FDA: 85204426860.19.56B2BCB
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5677120003
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:47 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=p+QhlJEF;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789201549;
-	b=0pBZq3tdsNlQVh4jDAaEr7+wz2NyiF6ytaFT+3yUoyg6bP1TvNg4RXBbgSGQr0ELzKzwuP
-	a3vYckzxdjKy+XDk5BKbdJRjhn8WJYKr4B5gjFOpkb4noMVVi6c1L0YLyFPjRetn0n//6p
-	MVC4wsf5W2Gk/rhK59RM4vLXO7aVDxs=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=p+QhlJEF;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0126C6B0095
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DF3E160450
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:53 +0000 (UTC)
+X-FDA: 85204426986.04.6400E09
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B6B0FC0004
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Sz9hZ3gn;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789201549;
+	s=arc-20220608; t=1789201551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zBogXOhOlG1kMkxMqII2ZbwGmlciHENob2EpVE6bVCc=;
-	b=yBTOMTQznbI6nlw2TzQmmy90O9kRM2tNxkQEAvj2gRoQDWrHtnIgEQ38lICSwggvYSm/q0
-	mbnqvmhp7gj62Dcn4qAGAcSwD/uq3Iopf0CqmYO1TDRx9cvPLHWrfdmU5xF6wnFFUffJP2
-	NyFUISg193KBiRX481WB4FW0z2XAFKU=
+	bh=PCKQzHy11n4rZ/Ir7KunChoHPt2wwZSgc8x8OP6qy24=;
+	b=3R/PenKZE3KiiD59LfN+frEYQRh4ExNFiNTUo45pPyAOGDeaRYY2RkMMcdc3uZVB0/AdwG
+	DjWApZAgrAwbDdzZrSwd8wGBKVlJY0UgUS+NqVc67RHmAXJAcE5VjJ4VpHPV65HdUmi+QM
+	DfxnkpTv/FOvdIBOHf2MSolfYCdQyAI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789201551;
+	b=dtVlogJr0KTxgbGvnTq4aCGJHjTnOjHsYORc/g9DPp2SfyuTbt+qtIGwTnAaARUFxYmgSk
+	2jBt/fzTTaJ2y/m2ej3feoaZQYKD2YBO1lW8kSFX7K7ECBD14GVViZwnXPcF9wlrGguCZN
+	51Cr8pI40ruOPkjP8+JJqSIYK/vI34Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Sz9hZ3gn;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zB
-	ogXOhOlG1kMkxMqII2ZbwGmlciHENob2EpVE6bVCc=; b=p+QhlJEFq21IlZxo+c
-	NxJyxgDg8fE6y/NEaX/XoL6bTwDF+tDVS++xpBFt/OaZSZY0SSExhsUc+C5k1hHI
-	kNDk49X/U5ZtJRXr/AwtjCu6H1R1oPNh8g201lbpGjrw3gnoG6yLSG0avCaek5yv
-	QKgmBzdwo8jjm+x6m996fAOI4=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=PC
+	KQzHy11n4rZ/Ir7KunChoHPt2wwZSgc8x8OP6qy24=; b=Sz9hZ3gnsXEBvhqNjp
+	R8n7fEYA200Widg1VJ/UBlhyyCvoyOv40BdwS2jWy3mulgauNMnBQLuv0sI2D7sX
+	FI+WS8MObchPuONVR1x7UwXu9VeNqDc7kt4lIkCW9J+Vwo+qLD7Mgoqfo3b7a6du
+	MzlJ1EevqwI3uTw76Nx5hwciM=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S3;
-	Sat, 12 Sep 2026 16:24:48 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S2;
+	Sat, 12 Sep 2026 16:24:47 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: xu.xin16@zte.com.cn
 Cc: akpm@linux-foundation.org,
@@ -81,29 +81,28 @@ Cc: akpm@linux-foundation.org,
 	ziy@nvidia.com,
 	ljs@kernel.org,
 	Longlong Xia <xialonglong@kylinos.cn>
-Subject: [PATCH RFC 1/3] mm/pagewalk: allow folio_walk_start() under a vma read lock
-Date: Sat, 12 Sep 2026 16:24:05 +0800
-Message-ID: <20260912082407.75875-2-xialonglong2025@163.com>
+Subject: [PATCH RFC 0/3] mm/ksm: scan with per-VMA locks
+Date: Sat, 12 Sep 2026 16:24:04 +0800
+Message-ID: <20260912082407.75875-1-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260912082407.75875-1-xialonglong2025@163.com>
+In-Reply-To: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
 References: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
- <20260912082407.75875-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur15Xr1rZr4xGr18GF1UAwb_yoW8Kw45pF
-	Z2ka4FqFWvkr1I9w18Aa12yr45u34kKFWUC3ZFgry7ZrnIya1fKF1kt3Wjqa45Gr4xAFZ5
-	XrWDKrWkuF18Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jSv38UUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+BAbFGqlDFCUsQAA3R
+X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uF1UWw43tw4UtFy5Ww17ZFb_yoW8AF1xpa
+	9Ig345Kr48Zr12vwnavanrCrWrGw1kGFW8tr43G340yr45K3WqvFW0yw1jy3WUW34UG3yr
+	Zr40yF1v93W5Ww7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7CztUUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC2w8aE2qlDE+hbQAA3d
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B6B0FC0004
+X-Stat-Signature: 1rc9nhedeqmnyju6bnxaneuw648w5hd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5677120003
-X-Stat-Signature: fu4gt86w9aa3xnzx61nhr37k9g5f516z
-X-HE-Tag: 1789201547-234432
-X-HE-Meta: U2FsdGVkX1+XC98n90HIRiiNuxaKrxx6O1A/p4cKZCfl+j1RO3g4HTysGJs5afQG/m7/Uo7gHOWRNVPEK4h6+FH4vhfqj16cM95idztFnrgsGb8GWbpALpqSKVXbVup9BcOfNgkcNVt5ywP4n3qY4FK4PcJtj9uttBzRyw3t3upZbdadnU/PCU08FpRj2UGgtDgnuiuhmvVtvMdSRGFHLrzEudTP1VI3kfIj0/wNvdzJeS2cS49Fs3bialqOIOcqfQPayu0fcfoYuhzPnTfOGSxiMjQctA+rA4VDM2O8vfnaFSLyd+isNe9PEwQj6FkfhUrYcH7p9jXA+pShnSCXrDvhb0bjf3Zj9PQK+w3biQVPIyS+m6HwFhWpv9jfYbqO6P1P8Uq+hGflW9jxy70Bf1a6RcJWQ7KUo5rPR9OgeADROPJX8ddo8bSibkA2GPtgZwl+YZjq2D43GKOC2myoiXWtouTpySHzDf8aGzvpjjuDL57PbDaZhWYDgVp7x6GTPKJKOEtW/6XctqfH3gCCr2VxEvwPFDhxcp7JdqZ0KiIOUz5fIK46edmdHA/CQPM+M/tqZOFOalADEXd4os4frQJGmv0H9LltTgMxsssKRlBK9tKmMv1I6Nar7QXODI2ReuNLLNFkmvJPDvRecndE27H51nq6Ob+RytOTuVFMmxELLA4VeMQNNYL83wM6HuHcLmPXuoHMWeE0TZiBMtIwkZh2BjkNoMheoyZ68Mw9c6DDp2e/tEzf0P3dhprLmGlZ7L43iRBkxLMfTehlA7iqx7fILR2TUiyIx40NS1/wYUIvE4+fRnfwKzaDLcj7J42s8dxeuNZ9U+teEXqMe6fQWjuPTHPaNaYOlmNwVsHWre5R5i/eyiyftdggRWfGq/i8+yUrnpCr+3QO88C+lyadmdI5CZCnstQFX5HOadL/DONWOP9tSjsZ2FA7NweCdzlyjjguaOK0zVCFvZ4HGnI
- nszGpPDY
- wgEWTO1LkaFCaWfzoZMnB7BMEiXBCDH9RCY3j+oqMRj86LbHkTMWzsUAtlPASQ8RFr9ghkMJuObAxg3D91/YmNXGlXY+T71Z+v7g/1p2EHigtO0TPJ/I3Ea6/DctTaO9U4pM9QdfUaicDsX/cC2R9d+WFJolr9fxtRjC20qRMxmzQWm7fMqRDmcliZ0CDyyGzy/8aQW1yKWSq//jlObd5a5O9jeZGp5oU5eJklFt6e5x4iqLBJlDhSx+zBzr5TqVYVDL8eXRmYfiiJZ/7t6OdWt8ScqZCjKEA4nA8hhZnPi0dwZWSylYgfo+E5Rsjj4eqDiJIaR7fZXbf/9DZuoj0o8A8UeAZyuHhQQZOVMehVCc/LjaTwspP/FvfBw==
+X-HE-Tag: 1789201548-716371
+X-HE-Meta: U2FsdGVkX1/OIUahMmZB0IxN+qoIeYSNhQ1/lzjFTcrTk9rWywl4f5+efwdgMDRwf9DwW0JT+wP0rYMoSlno9pDCDn/hxAGecugtboNtv7ttYbVGhuTp0iTi5e4o05wMGN4dSTax6Qp2Az+xW1H6UVZw3UY/bEavyl5Q5oYSwF7dxSp20wxueKRATggLizylKlB6FTeXlg6RC16r3XMrCC+9Mk0DRNkg2JXkgVfzMByPU2dzb3R0lxY8gaK+9z4WdocTQ9LBNycV173yXQdvF5jr9iPHyU4owEa27pP0mtART2YmBle5BdHOuP/Ge6vFiKUbOefOMengdMFsUl09ZQdyeGD+QFoVYdlCiVjd+SCaflVVqdbWIA3CqD/HDt67gzuCVhK0D0scZNTZvxOZbzkhXEiUDXjo1psp9fbsGFKCIcO01tLcJ8u9p5ryXzB0Bgfa9H1E72u/CcIouoOYyJycdOvOPEQTIkXIzjHX9T8vkufGY0YqcC+WysgO81nL8pJwAR/6Aef2xtuRiKktdY+Js2FFRgRlRj69fxV1yR21HWgnFDCT/JiVExjFi2PqWzon6aJYz1os2x86Bg4ArF1FJhJI9koR0xcsqvC8TmA/yUWyiYZ6M55Bkiwum/axf2jg8y62pgPA69kxmmZV4absitKnKOp5bBIH+rlvy54hDhO1G3/r92Io5TOnxsm9vwWUvAnp4xN12IVwoK4ubCnK0txf7RvGJOCToX9Hk5u5QJnz4Z12jD4K5dcAlMh8pH7fb6MRNXVZjfn4RV+FN4YhZqzZwLL+hzUYdB3X6ORpeP9st68MDR6dytorHhQD1AKeT8PpI59v2A7R0IZfGTrOlfkl16LzFzwwmUyhsPXt0TynzSbPXMEI7NUZ2IeJ7llKdB3xORudFV3jqWfj3BT0ziETen11JbzDPkzkJ8ODWBa7pWYm5lAirACmKfhxL8BxBtSsrMGY19lq6nJ
+ I+xKRDiE
+ GRm4wrUZD+h6lkp5VJE0ZeA9xP0aPa9p+DIGY8GFSNy2gyGxR+/t+cGdYJG1q+D5esvt+dnU9bApQHwcwdmIpuQg+t3tR0GdjiQKvciWz7d1OBMR6/dOWBx3zfUQIIZK7lhxVSnh1pTi8/D1FKr7vu32QdVPpZIbhhyITYYBuMJiEw9HbjQ++fmKGDkIvp4io4q9glwjHrczf5SIOCzvWhD16FDEzwsH0CltjrhpPf0/2/jaghThXUjSEjFNz2tlsD2tyMRrZ/jd78c0t46ARvQurMk5xvJVIkEw8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,65 +112,50 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-Allow folio_walk_start() to use a vma read lock by replacing
-mmap_assert_locked() with vma_assert_locked().  This lets KSM look
-up pages without taking the mmap read lock.
+This work was developed independently before I saw the above series.
+After comparing the two implementations, I found that the approaches
+overlap, so I am posting this draft version as an alternative 
+implementation and would be happy to combine the useful parts.
 
-The vma lock stabilizes the mapping, while page table locks serialize
-entry updates.  Callers walking another mm under the vma lock must
-also hold an mm_users reference to prevent exit_mmap() from freeing
-the page tables.
+  The main differences are:
 
-Assisted-by: Zcode:GLM-5.3
-Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
----
- include/linux/pagewalk.h |  3 +++
- mm/pagewalk.c            | 11 +++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+  - use per-VMA locking in the ksmd VMA scanner;
+  - revalidate the mmap-lock sequence before skipping the fallback walk;
+  - avoid repeating a completed VMA traversal when no candidate page is
+    found.
 
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index b41d7265c01b..cafd7b15f480 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -151,6 +151,9 @@ typedef int __bitwise folio_walk_flags_t;
- /* Walk shared zeropages (small + huge) as well. */
- #define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
- 
-+/* The caller holds the VMA read lock instead of the mmap lock. */
-+#define FW_VMA_LOCKED			((__force folio_walk_flags_t)BIT(1))
-+
- enum folio_walk_level {
- 	FW_LEVEL_PTE,
- 	FW_LEVEL_PMD,
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index cc07fcf50e87..57ffaf2a85b8 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -894,7 +894,11 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
-  * huge_ptep_set_*, ...). Note that the page table entry stored in @fw might
-  * not correspond to the first physical entry of a logical hugetlb entry.
-  *
-- * The mmap lock must be held in read mode.
-+ * The mmap lock must be held in read mode.  Alternatively, with
-+ * CONFIG_PER_VMA_LOCK and @FW_VMA_LOCKED, the vma lock may be held in read mode: the
-+ * page tables of a read-locked vma cannot be torn down while the mm has
-+ * users, so a caller that walks an mm other than its own must also hold a
-+ * mm_users reference for the duration of the walk.
-  *
-  * Return: folio pointer on success, otherwise NULL.
-  */
-@@ -912,7 +916,10 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 	pgd_t *pgdp;
- 	p4d_t *p4dp;
- 
--	mmap_assert_locked(vma->vm_mm);
-+	if (flags & FW_VMA_LOCKED)
-+		vma_assert_locked(vma);
-+	else
-+		mmap_assert_locked(vma->vm_mm);
- 	vma_pgtable_walk_begin(vma);
- 
- 	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
+Benchmark (QEMU q35, TCG multi-thread, 4 vCPUs, 8 GiB, x86_64 guest on
+Ubuntu 24.04, 7.3-rc2 base, CONFIG_KSM=y + CONFIG_PER_VMA_LOCK=y;
+victim: 32 MiB anon, 2048 unique pages x4 duplicates,
+pages_to_scan=100000, sleep_millisecs=0, 3 runs each; churners: 4
+threads mmap/munmaping 256 MiB in the same mm. Microbenchmark as
+posted in [3]; relative numbers only, TCG is not native hardware):
+
+                       0 churners      4 churners (mean)   
+  7.3-rc2              1.21-1.41 s     90.9 s             
+  + patch 2/3          1.41 s          48.7 s   (-46%)   
+  + patch 2/3 + 3/3    1.21-1.41 s     30.1 s   (-67%)  
+
+
+ 1. mm/pagewalk: allow folio_walk_start() under a vma read lock
+
+ 2. mm/ksm: use the VMA lock when looking up mergeable pages
+
+ 3. mm/ksm: scan VMAs with per-VMA locks
+
+Link:https://lore.kernel.org/all/5cd47bc3-bc3d-473c-80d0-8be8b7b79881@163.com/
+
+Longlong Xia (3):
+  mm/pagewalk: allow folio_walk_start() under a vma read lock
+  mm/ksm: use the VMA lock when looking up mergeable pages
+  mm/ksm: scan VMAs with per-VMA locks
+
+ include/linux/pagewalk.h |   3 +
+ mm/ksm.c                 | 166 ++++++++++++++++++++++++++++++++++++---
+ mm/pagewalk.c            |  11 ++-
+ 3 files changed, 166 insertions(+), 14 deletions(-)
+
+base-commit: df2908090cda368b01ff43709f51890076c56157
 -- 
 2.43.0
 
