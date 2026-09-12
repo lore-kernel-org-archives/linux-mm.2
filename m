@@ -4,138 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 997E8C88E56
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 22:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37716C88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 23:16:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 546986B00D3; Sat, 12 Sep 2026 18:35:18 -0400 (EDT)
+	id 127626B00D5; Sat, 12 Sep 2026 19:15:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F6D16B00D4; Sat, 12 Sep 2026 18:35:18 -0400 (EDT)
+	id 0B0D56B00D6; Sat, 12 Sep 2026 19:15:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E6556B00D5; Sat, 12 Sep 2026 18:35:18 -0400 (EDT)
+	id EE3476B00D7; Sat, 12 Sep 2026 19:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 011AE6B00D3
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 18:35:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CEE501205AD
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 22:35:16 +0000 (UTC)
-X-FDA: 85206567432.06.48FC127
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 153A61C0003
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 22:35:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=v+Z0OXe9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=hughd@google.com
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=v+Z0OXe9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=hughd@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789252515;
-	b=WEo7QFUdgmAjmOcjibzdU/g4JheuaNNtHx5mAEa/GWSxnB83SNjp3A9QTsi8WGPwbYxpQx
-	Ova9X8tFKy+B+xNxDX4efhjhIrof/vrhWK/gfh/tVNMLCca6m7DbZUZID0D/JPkmCCvy7i
-	0EOE4S2iHVw52B+7e5xXOZhoCjS9Kpk=
+	by kanga.kvack.org (Postfix) with ESMTP id C7C956B00D5
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 19:15:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C6BF11205C4
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 23:15:57 +0000 (UTC)
+X-FDA: 85206669954.11.C4A55E7
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2C818A0004
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 23:15:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jE9pWcy2;
+	spf=pass (imf15.hostedemail.com: domain of rientjes@google.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789252515;
+	s=arc-20220608; t=1789254956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XyqTSD7+XEJxR7K9Lr2Cp4DYcxTxFY5cqwi53+WEaFU=;
-	b=n8BNxmQ30HoiYAgErS9rmkuTLogIdtQmMjJokQswdk/AAwwrJ6oDNGIocsazWe7qQ707Fk
-	2XMx01Swk/U8JD6uiJBC6hXAU3AQejlfu8tziXq1vs0IR00S8J6a2LT2ioxJO5HNJpUjAp
-	5SGSvZgKjta5Sgc/yJdnVnB+wwTs/ec=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e64ccso6829465e9.0
-        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 15:35:14 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=hrHGia3UYotbURjNGtmEF5DSWsvDK02hj0DhIk0RRgc=;
+	b=alIB4bzINvRVUmoS2mogHjBxYtzJFPH0yqaNIw2+brB0jfWOj8QfMzuKuP6AR/SFVWiqlT
+	75L8El520IHWVU2aBM8D/Uq/FsS2D/HwRSGn6gtVi9cZsVajJXD73I+I+fUtf124XUHWf7
+	uyIOJdzA6q5gcY3tjUYVucdxU7QrT2A=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789254956;
+	b=1V2mdVT20OE0yF6uw6IIGCsfj1C1qAErpIiriPOzXoGDcdPC/W6x91hyYBudRo8srNjnu5
+	okqdpnw7fkpuaj1hw+smryfRGznrTiX3gdPCRFCZV1ORXQ3JNfakpgBVXAYRlEINOu1DZO
+	TPq8sY4vfypbGx7c2I2XrbMnGROJcMc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jE9pWcy2;
+	spf=pass (imf15.hostedemail.com: domain of rientjes@google.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d6ff3aca06so44425ad.0
+        for <linux-mm@kvack.org>; Sat, 12 Sep 2026 16:15:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789252514; x=1789857314; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XyqTSD7+XEJxR7K9Lr2Cp4DYcxTxFY5cqwi53+WEaFU=;
-        b=v+Z0OXe9OsWLd2m6pU11cBmo/KZpYqxw8Bh88mUCqJAKIQiXr+SMmtuKSsQGphmUls
-         1xb5qgHzjST0Yh+gWyY9QWzMtqB1r1sS7Uq936Z4ErFs7WXrOinQRHiB9bod8hKXOOEZ
-         zeqXt1jORU2FSCAKWiKodnVZRn4OjrH/jkKdYopSBm8gxh59NHtGsbXpsN6vOZoLJSWg
-         dL4g61+6mE0kPi2oTdZFHzn/HVDF8cSgVrXtKtGL8SrsZ81gkKbh4je+NHSd7+v8U67l
-         xgSS5Qj//lrHQFWuvZwjQ+Sx/eAvWW5bf0/GTfCQZelwNNY5DkBsohlAb3x0lfkJEC7d
-         gBZA==
+        d=google.com; s=20251104; t=1789254955; x=1789859755; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hrHGia3UYotbURjNGtmEF5DSWsvDK02hj0DhIk0RRgc=;
+        b=jE9pWcy2jajQJ8hZ5Wg34Lj/yNHn1RmfUbMuMoPn4RB1Irg4ezNAtuJ5ITPm2JsXRn
+         wpd5qFUU+EV6M8N1LHHLG/R5Qul0ZD6HJKwfHiPN6ZGu31xJVVuYoYBwI4NsB9CBZ11a
+         CMaPFb6lNR90XQ4ayVDnSYSBehix+nt51LxMzrhv+EbidPCuNHiWaaaKCj4OKsiVfMIA
+         B0F000Qsvhj6vDOI5E7D7UNgd60lDD62Du27B6NmRulS6UZO+6FctlNgIa+jUE4Or7Vx
+         YTEQw+Hc/94lfVnFHgb15gDgC493k2zAygKLQlRkXAt3scyPsbY6X6hJkd55no7OhDCO
+         ZT4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789252514; x=1789857314;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XyqTSD7+XEJxR7K9Lr2Cp4DYcxTxFY5cqwi53+WEaFU=;
-        b=HFr3unKioeilB6mfSuHrl2SUwRkI605zf+nBzJwPemkE7nEDWT6NRjAWY9sWCZHQeO
-         Ekb/ylpB2MI+vtPa+MlA/QZHyVt6x5H493Z4ah1mqcRnBakJzvpwUm2h5gAkW4Pg++kg
-         DG29g0Mbb5c7veli2xkH5d5HNGuF2IP6Rwts02jjdA3WcZD/4cGe0h1xGsmxX7pINFnX
-         OzGroAqROIRdMoxHXqpkRoTXmU9LzrWTIPLntSVtRn6nKt3JMQGxWs+B9mk0JDot2Vmb
-         bx3CTgb9oig/3waOBITrCqzWdTap2iS2b89ytrjBha3tVnzvYPoBI47QcN8wrN0q1eOP
-         /zbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwTCj5MD/Ufs3AAD/TpoS+UCX50AZJhb/cN+7Lz1WT96OnrK84ndNE3QLKHWLkIVKCPaH8Df9gA6w==@kvack.org
-X-Gm-Message-State: AFuF++mRVEM2+Ddh3XsA+8qudvmysVcSHmhgTvkWA+hhSQYPzIvgGykb
-	55NzIxpEd3n8C/qLWtkNXMll0YHTZJq0mS+23JC2VIqcX4EvEU2M4iSMRFRb9s0z1A==
-X-Gm-Gg: AYBFou24cLjAwSgMnWlc3XUvnFbu6vRR/SnRmvmkICAacP9yKdSiYEE7X9QCWOyOAQK
-	oXDPA7ugkE2aB+2UwMCRw7pESjgenePaDlXdtXwx28ZYO222B0hQbCVUUfS609U3CqhJOJax5wU
-	7nOqD6jXFXbVxd0cCxwvEs1HvYxpFBJ3B4jpPeUaZJLSa/X0U3yxbN7MH8CzYoB0MOEKcyspyjS
-	wOhONkC7gviRTP+NmO4z0YYJe2rkhbc2n3GOcLeE+u4JdZM+D1jm98X+a10oa7dfPttnvwqbAxb
-	uicM7o07kZS+R/QYnb7pyP9gErKiDak9LQFqBqBrAzf18uZDdPglVyesY6gFQ8TahWbRdhrynr3
-	hG7LRVverw8E/ak6pQ+EvIbMFO+GVniFa2treAMQK2LJFU0Vap42TjpYt0BYe+Fd8YteAqw0FIw
-	uSBCvMimbPBVilzhOytuOOsOvjL462o+KpYTMLuHWOKp8mYQc9S3jzbPXn3rNuKgInib7esQuN7
-	pT1n+sRjqIBBpcg+eZD
-X-Received: by 2002:a05:600c:3513:b0:493:f140:c3fb with SMTP id 5b1f17b1804b1-49e619c0357mr193958835e9.7.1789252513196;
-        Sat, 12 Sep 2026 15:35:13 -0700 (PDT)
-Received: from darker.lan (104.157.125.91.dyn.plus.net. [91.125.157.104])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60acff8bsm191751465e9.9.2026.09.12.15.35.10
+        d=1e100.net; s=20251104; t=1789254955; x=1789859755;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hrHGia3UYotbURjNGtmEF5DSWsvDK02hj0DhIk0RRgc=;
+        b=Fk7v7jkcgnf4ztuL6ZMkFHlmbeL+gVu9LVft21bu/h5YpZqlkJhptPdWaICqyHhRlc
+         O58RJI55GIDn0bDCQ5dwQx+XzSNx+y6Pv65qlStkV5DXBd47jYZLlnzOH/u7nGxIUytP
+         eiAn5zVs3p6fTr3cIMXcAohSBpELpAE8Q9Df1CMh3o2xLY5EeMS8JF62ALUF4+WqWXVx
+         Df/Z6fMw3t/YGBZYXLVNuqpFsjf1zR1SNY7qyMj+paSInB/Dc+/ibVKJ68B8T2RxKKX3
+         qlxhPoub5EYrllPSwoVsyUM1nzY6f+AMD3efDTzmNKeAnCZ5FkeZ1CJANOOQT+DbEeks
+         Xcvw==
+X-Gm-Message-State: AFuF++nGIRQGuRC6Hgn84un9ymR5xko2mce2MFinQM/7jyERQdKIEm3q
+	94jBwbbMOlOprqt0Kld9F3wv11HFs4SpvD3MpJn71nhy7qU7vbmp1eqigEVWvefWUw==
+X-Gm-Gg: AYBFou2JwNC18BnSD9TLvNfTzXHHAWYN1Sh2NXKHYAhq5CqRXiKgzSoYvQ9sCBjSIZv
+	Ik8G229RZjbWqCe6ISV13T2EM31/1wse48chEw2b5Gun8VZJHZ5umIW3PCoPtlkU5TiS0z4NmSz
+	4kFWivPVAXHtmR06cW28dJoRbB/vfksV2FXgQBCDrak+M++Cl0t79hTRKtTAhLVbI1NZkMiJ7AJ
+	fuvDZeYY8L6dAGEMEN4v1E3gsFMpRCgYb7As7bxqKYOZnSU7QhAcsfeT4njO/OrMQD1yQ9M0wp+
+	wzNizzDPg71O5ySrx1wAtBEcpDrykwav9yb52UtJbDbhTtl/8QUG48uQnfdNY3TK6DzXIqoTLiP
+	VUnDwv2buDCfr+/agefk0cMlEMMWXZ12VXaZXAj9NptByAQzw9XzVty9aJJrlU5A5ThHn3SozIz
+	f9j7bQl2Shjx1mX3KcVB6w6iaNpysHC3sGgPR3gTYn2Y+/9FB0p/2l/oLLmfID7UM04dQZJJ153
+	Ho4gIXvfaiK8c61RRRKoa1+TI625WsfgH4eyIkYPIW/KnEtLv6QmkFQc/3U7rGxUatsQjF+5KK+
+	Yr6w3xs+uxCKyY2f9NZq3xXjXQyF4L7uz8XjCHDPQAWQ2C8N8OjHkp2szi5hmBxcqERKClhorYD
+	5MkMC
+X-Received: by 2002:a17:903:2c06:b0:2d7:2a35:d14 with SMTP id d9443c01a7336-2dd5e3bb3a4mr207615ad.11.1789254954278;
+        Sat, 12 Sep 2026 16:15:54 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:3d64:ac9:6488:d633] ([2a00:79e0:2eb4:9:3d64:ac9:6488:d633])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d95424fccsm12203815a91.10.2026.09.12.16.15.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 15:35:11 -0700 (PDT)
-Date: Sat, 12 Sep 2026 15:35:09 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 07/26] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
- folio_activate()
-In-Reply-To: <ddab52d0-48c7-4d2c-b403-45f11e041654@kernel.org>
-Message-ID: <bbf33dc0-6812-f204-188f-f2176a4faf4c@google.com>
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com> <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com> <ddab52d0-48c7-4d2c-b403-45f11e041654@kernel.org>
+        Sat, 12 Sep 2026 16:15:53 -0700 (PDT)
+Date: Sat, 12 Sep 2026 16:15:52 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from September 10, 2026
+Message-ID: <f5a9467b-1cdd-732c-a70b-625be9fc8dd5@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: k81q5eq3jawaegjmjgqest4imcyu8uje
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 153A61C0003
-X-Stat-Signature: 6hufg7kn4srr1wnphg4pppnc41q7k8xo
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789252514-621490
-X-HE-Meta: U2FsdGVkX19V6eBAg6z1CyFwHnj7gHp35R8esO2H4AjWzXM64gboPUMmHdlG/bIaGdihpn+RN05OvBTd6g9mokB7mv0ehiUW/oE85mauNF2wkWAG5cxLiUm6uC8jkKGv2edDg5qkOUimYUBY2xDuau2Is2d2fG+HJhgkwqxMACfFw/P+wt3BFEWaSY+DtkevKjtQaXBumTtnzL2PZaRmpKNUF45FI2IWk/EJA8o80QU1tFO6pzV6xulpS35nd1QEZxP608ASmpBByukmOzqJ9vBjj8Ao8h2u96XO6bAsVEpAaOXY1rfsxf6NHTRJEJTgODOD3Oz1rnoAM3eECqoB6fVkPtpzgo6ketw64MtJ2tehmLi8+p9fntYs92yw1ckfJJmlvXX1fyJVVDn8IhRc7VmcPmpGy5fGFCFSEGcAM5V6bYdQGjHhGytH80sPdTsp0Dhf4as9yrP8JZ0p8FE8CxcOsC0Ezo2cfV9Lp/TpSL2+UMjVZ7SvobRF2dx3bgk7PFHtvTxXjWO2oGLvGBFs+PeRxtqn6cLTxPnnhRgO8KWU08xMbkjA8RFY151fYr4HT91PE7Q5n9z5aNcAxu26AVK3NZGGcsib0T3dTVNdsiND0PV2cUVLSQLX2JgfkWY1CHS3b2RUNagGLh7+m9639bVJ77yrwLq4Qm76smVcxL4RXuqTaM5GZXGdJfzyOy7XlvWXeXR6WmveZIxan9kkYA/EKWY5BWy/vRO5HBaaakJjTLqZimv+s7IozrOEVImLm9fanzWYkwoe/XxsK4q5xez89gIl1kXiq5GQhiMISs0yO2dCmMhVj1m3VPd2Rn/wea49nMXMT/nOuOe6r6kvDQHOsSEy5NQTP50fE4Duia8bUnD2nkpkDIHgVNWkdyPMR9TmRymI1leAjegcHFcsX2ooBFkDGPr8xOVlmcHQsDPRtdqIfCX8REb2CUn7x+Qr5hno1KE3/o0FdVe6qHR
- vpeGXp/a
- 55GVxYmXXcrVeXeoI5YS2IkW4WagPrekE3QbThz5ikOFAW9KcSFx9T++KfwJOmGOE/C85knVbyKrmv2JMYMxbthPICRgwQNcFF6bWrJb40Md026feOOmAH771n4GgFBqYfTpQ027jwzjNmed9rUoNED5R/SUG11ENkoz92mf29wwLfgTDJKVclIR8ZqclpIKWO0APCwuiWvUXXpoQj0UDqoqyMzB3u7t/aJL+QbB0qCu1n6aO/lkmfGey5wbEXky3wYSjHugvi2yjMsNecHP66i+nL5YtoIDz/sSj0wc0fnpOG/bGUOYlwJLky779LLMlVDV3aAx2i7s0OQPRkNX0oUYFHCZ01tirxgE/SDjCXwGfLXPxcuU5JRgyMX2Mblt5Jwoj4Mj33fe+MWZhEsEdZtYMxEamjvSq5yzvH0EKX/CDjbgo9uk0qWbuCwBLz4LNc5Obhzy6/M7f0d4IrX2Xiuy6hQ==
+X-Rspamd-Queue-Id: 2C818A0004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789254956-901635
+X-HE-Meta: U2FsdGVkX192Vx43Cm2rLtRv7zT7fAtIHWlE3VYdwVIkoaGOEDVmg4K6yJEiKFGO22UcPwmP5cqGgSZ8Q3HpJVMyMCwVno6QIkYt3Y+7dh4hhKwEk72x+CviejeU6otgUS0tDVsMIM0tLsg8mp6KfEsrjYmvIxNW+3YbQ8eU1shaqhHV4rSCnOa2IBQDiA/Sahg/Bwdfd3ZqLxjz+Sti5JpxBk9KoCNWdQ1IRN78J9nVe9qdKDZVPI4wUgmBZIL/m6Su1A4JyElNqt/dSm02PVmQgICNxXQmvUeN9PIyzFjSiyjFzb57PGxJZErX7qJDJHu2h7X2OgqOf4Y7olEI/2eCW9193PGh9bsDZ7NUkB5EpKT8vuuwEMMy7pzxEekOkwSlchSvljAjivSru132hLS/HevA+o9e5N7pWB+kwfef0aId3avBZS1b7LYWdYaI0pBuUBPbIQF4fRv2uq2ADhztfq0BBFNqr+DwBa2hi+39BY1tX6o4qnzaazeggQ1ifMBWA5Wf5QxPphew8nwDEpx/+j02QkRyQ2TfRBRlEqju2swHgi8ipXr4tOsjBx7mDuusgtXoC552vPefksQ0d6QLgGFuFe3BlukxAA2RqP7Zdhv00KRC1kbfK1aPijH3/kT+wK/MKsu71Evg3b4KkJJ8OELnbNmnGAquIMg3/MQKVVYL1/h5RBwPm2LF5ZgWoh1TbOUAfCp4vZPlItWqpB49gIx2vrxC5JL2rWsyNIEGrTc+kHK2JilnMVxt+QQRKHAtcYT/0sIi5MiZ5SeBPLP9XywXFVTt6/5iVe0MrkrM48iIVRln3gtO/2t9B1ocekitEfIPmce6a5phhWXH52mpSC4y2ntmiPKl0wTvvGGIRo3KgNEFOMq0Je90QiI01wT4WdwCaI92LD5Q3i5N3SCh223Hkk5c2Ujup0+A3xA8LhAsoMVEgkzRAVQdxy5X9X6Hh/Xj2ojKVUu3PKh
+ dfI0jKD1
+ i9oi9hwN+XFynntKltcr17z9g5QzYiHtym3C0daJd4vrwMnOVpyzUbc6XLv00oCEuXnQuNrISBj04gh2v8fjeRIDobumV2c+vdRj7jQ6xYH1exYHNb9sgfqIfpIuTIaIbQ3r5lZbx0UlLXVWWJd/Z21etyDloqDMMiTVBJ6hI+7KBEW2/Xm9gZNBry4bkTWwYgtrVnghOvrMP802u6A6dLne24xyhdmkjs51Q2O4QmD9QkeIZucxPG2h/Z8gp3L9sErZ/IAwxaIvtXvh1N6eLBSsxPE1/hsxoSwC+ksz+JeJSGVnK5DkVcjZQ+0p4YSJxUBbtzQKBRpQ/9yjffa5oG/1viVB1POUoKbSHXkbZ6Z1TYIQZeQmPzsxXsjXndY4i8Q4RzEAwB8DqGBh0yJGDfH/D4UIccGpD6+IB5IFRiUdKyEe/mB5PE+/HU2dILtvZJH03evjnDrIWwzY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,60 +119,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 10 Sep 2026, Vlastimil Babka (SUSE) wrote:
-> On 9/9/26 11:55, Hugh Dickins wrote:
-> > Implement an equivalent to the old __lru_cache_activate_folio()
-> > optimization, to activate a folio recently put in the lru_add fbatch,
-> > without having to put it through the lru_activate fbatch too. Neither
-> > lruvec lock nor lru bit can guard this safely and efficiently, so resort
-> > to try_cmpxchg() on a further, LRU_NEXT_ACTIVATE bit in folio->lru_next.
-> > 
-> > Signed-off-by: Hugh Dickins <hughd@google.com>
-> > ---
-> >  include/linux/mm_inline.h |  4 ++++
-> >  mm/folio.c                | 23 ++++++++++++++++++++---
-> >  2 files changed, 24 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > index 8420b1276535..8f5efadf9c7c 100644
-> > --- a/include/linux/mm_inline.h
-> > +++ b/include/linux/mm_inline.h
-> > @@ -346,6 +346,7 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
-> >  enum {
-> >  	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
-> >  	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
-> > +	LRU_NEXT_ACTIVATE,
-> >  	NR_LRU_NEXT_FLAGS
-> >  };
-> 
-> This addition, and the comment "/* This mask will do nothing on 64-bit */"
-> in folio_add_lru()... does it mean that now this is breaking 32-bit? Should
-> we make this optimization, or perhaps all of the cpu fbatch, 64-bit only?
+Hi everybody,
 
-Answering second question first: those could have been options, to
-disable the activation optimization or all per-cpu fbatching, on 32-bit;
-but I much preferred them not to diverge, and tried hard to keep 32-bit.
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, September 10.  Thanks to everybody who was 
+involved!
 
-First Q: This does not, in the end, break 32-bit at all. But while I
-was developing, I thought it did, and reluctantly switched the encoding
-away from holding lru_add entry pointer in lru_next, to holding
-lru_add cpu and lru_add index in lru_next: from those the lru_add
-entry pointer can easily be calculated, and there's lots of space
-left over for more flag bits (which I thought might come to be needed).
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-But then I had that marvellous realization in folio_batch_move_lru(),
-that it needed to service "wrong" entries in exactly the same way as
-"right" entries, therefore didn't need to distinguish them, therefore
-didn't need any address there at all.
+----->o-----
+Gregory shared his progress on end-to-end compressed RAM and performance 
+numbers obtained through qemu experimentation.  He will also be talking 
+about this topic at LPC coming up next month.
 
-I have kept the address for debugging, and do put it to some use in
-the paranoid vmstats patch 27/26. On 32-bit, with 4-byte pointers,
-this LRU_NEXT_ACTIVATE bit does then leave one pointer covering two
-adjacent entries, when it's deciding whether the folio points back
-to this lru_add entry. Is it possible for two adjacent entries to
-hold the same folio (and so perhaps miscount the stat)? Yes, it is
-possible (if that folio is freed and reused and readded immediately);
-but so unlikely that it's of no importance when gathering stats.
+The theme focused on a first principles approach for a memory architecture 
+that includes devices that necessarily lie about their capacities.  For 
+example, devices can tell Linux that they have 2GB of memory when they 
+actually only have 1GB of memory because compression is enabled.  Some 
+problems with this include releasing capacity back to the devices and 
+including poisoning of memory completely (not just best effort 
+prevention).
 
-Hugh
+There are two ways to access this memory: files and user mappings.  Files 
+go through the kernel direct map whereas user mappings go through the user 
+page tables.  If you made a poor assumption about the compression ratio 
+that you have, then accessible pages don't actually have a real backing.  
+When you put file mapped memory on compressed RAM, you lose control over 
+who can access it.
+
+Writing memory causes physical memory to be loaded into a cache that gets 
+invalidated and stored in a different area of memory in compressed form.  
+Compression ratios can change out from under you, thus we're expecting 
+Linux to operate on faith that we won't end up poisoning memory -- there 
+is not great precident for subsystem components in Linux that operate 
+based entirely on faith.  This is particularly concerning when dealing 
+with memory.
+
+How much capacity do we actually expose?  Zram and zswap have had this 
+debate; in this case, we make the decision at boot.  With software 
+compression, you intercept every access through page tables; with 
+hardware, you don't have this and the result can be catastrophic.  When 
+writing to a file, for example, the page allocator can continually hand 
+out pages but this can result in poison of that memory.
+
+Accounting is another problem: zram and zswap can charge the compressed 
+memory back to the cgroup; this is important for oom killing.  We 
+completely lose this accounting with compressed RAM since it's just a 
+memcpy().  In the extreme, consider task A storing 1GB of incompressible 
+memory that has a real usage of 1GB whereas task B storing 2GB of zero 
+pages has a real usage of 0KB.  In this case, the latter would actually be 
+selected for oom kill.
+
+For memory poisoning of memory, this is detected at read.  The poison 
+occurs on write, but it is detected on read.  In the future, interrupts 
+may provide insight into this.
+
+If you have the ability to cut off future writes and allocations, it is 
+possible to avoid poison entirely; Gregory stated that we shouldn't try to 
+migrate our way out of this problem.  How we do this for file backed 
+memory and user mapped memory is entirely different.
+
+----->o-----
+If the entire device is saturated and the compression ratio drops over 
+time, there may be an interrupt to inform us that we may need to start 
+reclaiming.  If we have uncontended writes, we need to reclaim faster than 
+the rate of writes; this is likely to be a losing proposition.  There's 
+also the opposite problem where the device is largely empty but a user is 
+writing /dev/random to the device -- the page allocator will continue 
+giving out pages but they won't eventually be backed by anything.
+
+Gregory has implemented a number of solutions for these problems and has 
+approached it from first principles for isolation.  He suggests we need 
+normal pages that are mappable and can be reclaimed; demotion should "just 
+work" like zram or zswap does.  There should be no ZONE_DEVICE requirement 
+to support this.  Additionally, Gregory suggested the memory should be 
+mappable to read-only, we should support dynamic sizing (ballooning), and 
+allocation control.  The kernel has to be able to control who can access 
+the memory especially for writes.
+
+For page cache, cleancache would have been preferable but is no longer 
+available in the kernel.
+
+Gregory provided a link to the github where this is implemented[1] using 
+btrfs.
+
+----->o-----
+Gregory tested this work by setting up a system with lots of qemu 
+instances on hardware with actual CXL memory.  He sought to prove two 
+things: that his work does not impose an additional overhead on the kernel 
+and that the page cache implementation is safe.  He primarily used NVMe 
+based swap-in and zswap swap-in as the comparisons.  His implementation 
+was much faster than both, closer to actual memory speeds.  He suggested 
+that we could not compare this to standard DRAM that supports uncontended 
+writes.
+
+Gregory noted that for read-heavy workloads there was little to no 
+performance implications and the additional capacity resulted in better 
+throughput.  Performance dropped with a lot of writing that required 
+promotions, which is intuitive.
+
+Frank van der Linden noted that he'd been running experiments with similar 
+devices and that he had largely come to the same conclusions, so he was 
+very supportive of this work.  He asked about promotion on write when DRAM 
+was under pressure.  Gregory suggested that we just need to reclaim in 
+this case -- it's an allocation just like anything else, promotion is not 
+special here.
+
+Wei Xu noted that some users have the ability to kill jobs to free memory 
+capacity, which may not be possible for all users.  Gregory noted that 
+bandwidth on these devices are ~45GB/s, we might get 20-30GB/s if it's all 
+writes.  If we have 1TB of compressed RAM, it's difficult to reason about 
+being able to keep up with the pace of writes happening to the device and 
+be able to make strong guarantees that we will not start poisoning memory.
+
+----->o-----
+Next meeting will be on Thursday, September 24 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - update on combined patch series for supporting non-temporal stores in
+   migrate_pages() with memory error handling (series from Yiannis +
+   Huan)
+ - v9 of pghot and the PTE A bit based source (kscand) for inclusion in
+   the upstream kernel
+ - v6 of Shivank's series for enlightening migrate_pages() for hardware
+   assists and his rmap batch series and LPC discussion
+ - Teja's update on SDXI page migration based on AMD patches and hardware
+   issues being encountered that do not result in page migration
+ - update on tier-aware memcg limits status and production testing based
+   on the latest major overhaul
+ - first class support for virtualization based memory tier support, how
+   to leverge memory tiers in the guest
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl,
+   otherwise utilizing bandwidth information will be challenging
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1]
+https://github.com/gourryinverse/linux/commits/scratch/gourry/cramtest/cram_72/
 
