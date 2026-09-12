@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4345FC88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 20:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9354FC88E56
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 20:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 039F66B00BA; Sat, 12 Sep 2026 16:08:30 -0400 (EDT)
+	id 0AB406B00C7; Sat, 12 Sep 2026 16:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E685E6B00BC; Sat, 12 Sep 2026 16:08:29 -0400 (EDT)
+	id 081EF6B00C8; Sat, 12 Sep 2026 16:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0A006B00BE; Sat, 12 Sep 2026 16:08:29 -0400 (EDT)
+	id ED9AF6B00C9; Sat, 12 Sep 2026 16:26:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A97446B00BA
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 16:08:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F33C40541
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:08:28 +0000 (UTC)
-X-FDA: 85206197496.15.B19CE52
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9151A40009
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:08:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAzxcZNz;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789243706;
-	b=x6x2ufpx051smJdWiCfuuKHzKn67Giu4ePXrQPBWLOJZ4ccKcEn2bQbP3jcsXwqn7bLKLh
-	5qnX+Bch7seJpAJgcWId4lOUZi927zhUW8fpOQpNkV6/Sal69vVZvqgJwjASAOIpw2Gwc9
-	8EpXFcEH8lEgxQp7uxPA4Mm52W8ABrE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAzxcZNz;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D4DFA6B00C7
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 16:26:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D59B14054A
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:26:55 +0000 (UTC)
+X-FDA: 85206243990.07.220F692
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 591D840004
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:26:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4SV0qYCZ;
+	spf=pass (imf11.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789243706;
+	s=arc-20220608; t=1789244814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qMM9iy6IrAL3WXWLU7jycgpdPbxivoB9SIapWH0R9Ko=;
-	b=Nfma9U0awfkrhtewoGgKozHFUgF7YMIwcHivWVthubeWK+rDhl9JfdheTvKSVMMeNZnpFu
-	I/AIt81+bVvDiL82Nef7ddiw8lMgpJZhHVwyZ8WEhnJsCI+8+7FqJaOXiaS3yq31JaLgj6
-	PWUnBhp1FNYBlz1eIy22BK9lzNeChs8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3BF6E60236;
-	Sat, 12 Sep 2026 20:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D01E1F00899;
-	Sat, 12 Sep 2026 20:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789243705;
-	bh=qMM9iy6IrAL3WXWLU7jycgpdPbxivoB9SIapWH0R9Ko=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LAzxcZNzJcohmCNK4xFBtqQSjGg7ODGYWfX3bVmzoMoQOH9cpF8zoL5WaLrJuY8y8
-	 2hi/QB6NaEPk5644YSxYUoRJyy36J7+m6ZQLlJqAo9opluc+/hphS8gHAnYUR79TF+
-	 838IYEgaTYUFxXSHRPb5W+0f+kYnf4w5ddg4Ltuz/hqpIQCjn1YCvo2cYnXhLB5Xrb
-	 lahBliozSjDX1ltQwc07yPC+hq3loR6CEKvFKlCHvacIP/ET8y2QLCgskroSof8bq+
-	 JpeeATQkg99Pn08yG384ij2/tNqTVIAz4tsVP4eFx6bXOvxlR2PfN22sEQMm4gFvgG
-	 VRy10MZJogqBA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 9/9] Docs/mm/damon/design: clarify bp is basis point
-Date: Sat, 12 Sep 2026 13:08:10 -0700
-Message-ID: <20260912200814.145612-10-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260912200814.145612-1-sj@kernel.org>
-References: <20260912200814.145612-1-sj@kernel.org>
+	bh=k80GbC8BsCfGepmIx3SENEY1Kj4sK1tV084haoESIqI=;
+	b=rmPb6L6b3dqxNy4Tr/8xkiMJ1ZCcZw/OHpx41rA+s0uCrWR3vtue1SkUiE410y+fISW8/f
+	H7P2gVjM2AUDrHvHqovuSNQs2gAqwh8hXfAGw9Ih32iZv+kUxb63uF7ks+vTKn/9au+/96
+	UL8ln828e2bc3rvaIw/yvGMrVM9p3Yw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4SV0qYCZ;
+	spf=pass (imf11.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789244814;
+	b=nScUcp+xweo9OSSa5jad/eLFXg4ZtH8dpPwkmSyhSFYb8at66PX9lv0q72KeEt0yzX1N2X
+	GI1Cgu1Y+VZLh+7jFO8+d2iCYtJfEM88vHkIKbbi4i/Rc1lWUFeWafYLrcbi0XITegcs/m
+	z7LFyiL8DS/6N76jGisKGM+73bNDKW8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=k80GbC8BsCfGepmIx3SENEY1Kj4sK1tV084haoESIqI=; b=4SV0qYCZcJLmADDaWKZF+5HVbj
+	0kZVZeWr9XaUFTKaFVYHtjcH/BSjFKVpuvpgu1wkUtkqsAH0jyH+n0BYomq8LtzasjuFsAt1LP19B
+	repU/d3uHy7nVUuNKSjTGsIdeexv9vU2x7ik1Mz1QdyNMtEYR3d5ZzJpy835AGqAduJoSp1ApAHwN
+	JnXZJ6dPji+wc8vekwJQwEkwD5UPYd6kEZsWCP0CD53E8kpoYT0T93Y20A8boKm194aQfYjvapoZD
+	/V0/KHeywd8p/RTJsubKoRUbtKPemcsZsFfHjXhDJYhj/SrF/F02xU9D2ya12vX3hw65vuYyNMzJk
+	CPrtX2/A==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x5UJD-00000001A29-1NQr;
+	Sat, 12 Sep 2026 20:26:48 +0000
+Message-ID: <d70237f4-462c-47f1-b550-5cfa91e08873@infradead.org>
+Date: Sat, 12 Sep 2026 13:26:46 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9151A40009
-X-Stat-Signature: 1t4cny8x74rku63wkps8k9np3zgzqp3w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 9/9] Docs/mm/damon/design: clarify bp is basis point
+To: SJ Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ damon@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260912200814.145612-1-sj@kernel.org>
+ <20260912200814.145612-10-sj@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260912200814.145612-10-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 591D840004
+X-Stat-Signature: 9a9khny3ofq53befxzgye9naqzii7not
 X-Rspam-User: 
-X-HE-Tag: 1789243706-388727
-X-HE-Meta: U2FsdGVkX1/NJ2vnBhd//sjUmlQQIhemyJCLzE1TYzRd+4P+02VpH47DADDzWS5IxfvIqbuz0LiptHZtS0sR32Kk/QUuhcaVoq9M3KCjwChCh3tVOI4/rpwTqR3fvgJgcSZIT7slU1B4SJ5lU5ai0aCoQwM/KhoGSsfgC7+EAi2Nw3v/mgYYBlf3dw6QgBsdNgDvjwzy+hsYKzQa4N57sY9ne2Sp6xRcpkLLeKl4Z8w5ffDciuzRKDPabpkMa3cPHyGSQ/QTzypZDjIv6sbH2546v4di8MPud5ddKnGnQyuzBZjXqA1lVG6b+wnH4CdgZ3S3CTkYrJt9GRP7fwvoOqly3oDfZlUNPyQrLuKKj7v/Nsxnau7iEmuufbevUBRQY6GDCKKG/JpRYGjlbtNB8SBEO1xy4XG75vRIfZag8dXNp0TjPyYYg0SssnRLSCn+0hyPdl859HkAyPh1z064GtUF3JrGpZFBJlWmB8X2k2oEl7VnBr/CPBcsYxt+F/+g3qSS5/H2pdn68kP8BR4jmt57Nng8qSaUEhe9XXEMxlwssMVEknWRosCe6a3SytEuNMK+HbWnM62BDSPb+N8j36hcVygOmQhBR7tJXNVC++ZcXf+yUbl95B7omhfQYaa30Nj3YxAJeC3VvtFEwuBkbucEQaw4Ij41TfBa5qh1OEv+XHj9Px1vlOPaeHClLU5u/I5ehNxAJkCc3yilsqKJ2gVzii/XTi7qGHQ86GY+iZO5XVX6rUXh13Tg/NkV/bABlAFlszhM85BadpxiIvcc9mOZKGbkc75eeP4utPwhnJH4DDWNXAz8QAza23CjAT6Pwv3zQv0yMLAeyA2m+sJzBP1EDn4Yz1E8SWbVJRwMrEP8344uk5C9Eemcs/vJW6wKWIsN8D/HKPFntMaycdV6ZhHfOT2lUvAR2IXxnj/PGAZp+djJkuQaxMteoPLsjZZT0JY+5lKo69tFXb2vUyi
- B0iMKonH
- LQTpO6tY1/nO6VaHH/ntzgB0EHx+B2IMf9IuDjoE7pUA0tv29sAK0jG6LbuNO+DtTPQheF5EoUBtYNm5EiDm3F15Wba30Xg+HU3cP4JQzJJDeQ60tkp8s9MZcWL0iPNmEGhverRhGl6wfIG8pqTnjL/V7UKqWT1J+s8rWwZNXYneRcFJeI5mN1kzcMf/+7qwFvmqqnn7xTZvMlEPHrllz1LV3usVJpxE7MRCk0F+SXGgkWRvH54iprDpStV9vJvD06yzcmbnA4lpk30tRgUHBXfAJoQWIf+O/IhwT
+X-HE-Tag: 1789244813-267581
+X-HE-Meta: U2FsdGVkX1+xyBIzt++tAU5qWAwL6U9XZ9I0WXsOL/r0lEPGMYfBqy39I5MeKbPMmgHsWCZ0jVOp7JOJTTnEs4w3f3JSHFMVjmX+aoUYWJqo20LhCphm06Uxv7LOdZqC7KQOzmeUbVA9O9gp9j9WBiH16ENxOoyEb89NF7P1YSjn2Lzh/w6kWhQrevu6eMnW86sy0f3Z372WOVF6SO08c23huBobCH4X3XNDH7WZGQ4YuznR7d/PgXGnNPu9d3hNlFJLNjF45VZx2OwCl7SpvlBgpGllEcEjrzDW0vIZWGCfMmNDOny4IxtRcxVjncVyN5VqKqij09jUnjCJsJ57v/yeYLZuqJ4vXWL0tRg+3o2lDQsNvPQg40T6/I8QJ2z3rguxT1O3XDHcZxF107HRA+hKFnbMIjkpzmy1k9v+HjbS8OR0JkeeavVQyGTPb0nxL/L+Dpn+2OpytCNpMwAgI7hpwS3lFUv6n6Jr6d7yOWK622zS1CBaQMhZIRDTmF9CVYeBjmYqHiuZe3TpM6SFz+h//ChFq7vfB6EC4AmWez/zNRfSyyix35hHISqWHKyesVVbCSZ33bALssTgd3/Ou2k1DVY5fwS10dLOVEDF6wZ7FhtAz4gJnMkg+ZlHFgifIlEdWt9/vUR3URuyJfP0Szt+HZ/hQJd/EBWC7YtzScrSEUVkQP1URp3V1HsWUsiTd+56A9ZJI31EoknVcp8FfC+jG3gw/Zvpvw5agV5pBd3ZjOpZ019Q3SQ2ca3bGzUOgEmns5RbSgFj1pti34Wcqv2h6Vn5OILXARAAVhakjC5qBCtSBVCqVW8pt6knjKi6tZMAlpepeJ3aNYzpdHLAhLArUFNvjLg1Wd+3sL9cHxO2ZI2wkoHoDDwKGoPIdCpA2omoNMbYHulVD2c2UYIRco4c2v7kcoKQEYQ8VZ8bqLX8rw5wwk1h64C/oB3h4BXWHNH4DOkCJt26HiDa+1r
+ ih5m5KEc
+ cn+Yp9VUbKmUJfNVw5T0q0JK2X2+ymCVVHxaWBkKv46KMMcBFl7l7FtA+kkGgs2f98+HYjtAI9FlNL5WTSUpCvciBt7WVNv0bracsoOmSzDRLJfTi6eifVyg+ydGQVnyJAhAbeSP8Gt5HwW881uRKw9XO9+fa4Pozq8+ghi0xQUCtA7h+Wr82FHzw4iLAuYzsmoT0CR7tmvlZe17zK3BRPKfP3NDGuBcUmt3VEaaXZQbaLhyrVSF84RIEntGNlAxO1gHfh3/s82Uixf4ffipBa2/snPlzvJtKRQv2GSyLM3+sLsJYt38TggcpBKOu+vVCbxYmfOwu+C/wrquYq02YgV1m74SEMmLrf0+c55NdizxnEtXMVSkvfvGd/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,40 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON design document uses "bp" for "basis point" in multiple places.
-Because it is not clearly mentioned, it is difficult to understand what
-"bp" stands for.  Add the clarification.
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/mm/damon/design.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 0a86792f90a18..e82390e77a70a 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -445,7 +445,7 @@ users to set the aimed amount of access events to observe via DAMON within
- given time interval.  The target can be specified by the user as a ratio of
- DAMON-observed access events to the theoretical maximum amount of the events
- (``access_bp``) that measured within a given number of aggregations
--(``aggrs``).
-+(``aggrs``).  The ratio is in basis point (bp or 1/10,000).
- 
- The DAMON-observed access events are calculated in byte granularity based on
- DAMON :ref:`region assumption <damon_design_region_based_sampling>`.  For
-@@ -717,7 +717,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
-   in microseconds that measured from last quota reset to next quota reset.
-   DAMOS does the measurement on its own, so only ``target_value`` need to be
-   set by users at the initial time.  In other words, DAMOS does self-feedback.
--- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
-+- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
-+  (bp or 1/10,000).
- - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
- - ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
-   specific NUMA node, in bp (1/10,000).
+On 9/12/26 1:08 PM, SJ Park wrote:
+> DAMON design document uses "bp" for "basis point" in multiple places.
+> Because it is not clearly mentioned, it is difficult to understand what
+> "bp" stands for.  Add the clarification.
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Closes: https://lore.kernel.org/107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org
+> Signed-off-by: SJ Park <sj@kernel.org>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
+
+> ---
+>  Documentation/mm/damon/design.rst | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index 0a86792f90a18..e82390e77a70a 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -445,7 +445,7 @@ users to set the aimed amount of access events to observe via DAMON within
+>  given time interval.  The target can be specified by the user as a ratio of
+>  DAMON-observed access events to the theoretical maximum amount of the events
+>  (``access_bp``) that measured within a given number of aggregations
+> -(``aggrs``).
+> +(``aggrs``).  The ratio is in basis point (bp or 1/10,000).
+>  
+>  The DAMON-observed access events are calculated in byte granularity based on
+>  DAMON :ref:`region assumption <damon_design_region_based_sampling>`.  For
+> @@ -717,7 +717,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+>    in microseconds that measured from last quota reset to next quota reset.
+>    DAMOS does the measurement on its own, so only ``target_value`` need to be
+>    set by users at the initial time.  In other words, DAMOS does self-feedback.
+> -- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
+> +- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
+> +  (bp or 1/10,000).
+>  - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
+>  - ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
+>    specific NUMA node, in bp (1/10,000).
+
 -- 
-2.47.3
+~Randy
 
