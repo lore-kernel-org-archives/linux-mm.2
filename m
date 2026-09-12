@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED4FEC88E53
-	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:25:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFE9C88E53
+	for <linux-mm@archiver.kernel.org>; Sat, 12 Sep 2026 08:25:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8BFF6B008C; Sat, 12 Sep 2026 04:25:50 -0400 (EDT)
+	id B3F086B0092; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3C316B0092; Sat, 12 Sep 2026 04:25:50 -0400 (EDT)
+	id B152E6B0093; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2B6E6B0093; Sat, 12 Sep 2026 04:25:50 -0400 (EDT)
+	id A52E56B0095; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C92E6B008C
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63D04C016C
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:49 +0000 (UTC)
-X-FDA: 85204426818.25.68B2C5D
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 84DD6180007
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mZ8qcMQ0;
-	spf=pass (imf06.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 892946B0092
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 04:25:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F38A740418
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:50 +0000 (UTC)
+X-FDA: 85204426860.19.56B2BCB
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5677120003
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 08:25:47 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=p+QhlJEF;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789201549;
+	b=0pBZq3tdsNlQVh4jDAaEr7+wz2NyiF6ytaFT+3yUoyg6bP1TvNg4RXBbgSGQr0ELzKzwuP
+	a3vYckzxdjKy+XDk5BKbdJRjhn8WJYKr4B5gjFOpkb4noMVVi6c1L0YLyFPjRetn0n//6p
+	MVC4wsf5W2Gk/rhK59RM4vLXO7aVDxs=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=p+QhlJEF;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789201547;
+	s=arc-20220608; t=1789201549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fYYZoGWdlGWHi1GqFofODMAvVspXQpVNRnI7u63JZdA=;
-	b=aVpyTCQTtFTjySGnisTEXKHdNqk4dBD77Dl/8loAQhGaCkAhWXrxrFfIQV11zIhDQbFfbe
-	SnzLNelpdWiYPg8l6vEJQCMwu1zQzpvWQOfEdYgSlgRrdCjlrtMinPuNAJ2RUcK4MpIHMd
-	TdmTsMojzZLFzDz+haUxeTdYRe9ZJ5I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789201547;
-	b=BD08kMnaBdCZMQpnYRt+98T0Eo2xYcI3eJO8TNiG2zHz2SvNmuOAel58YetdKjyPxs5W0U
-	CRSyl7iV72sr68MqmZOzvvKv3e1PYleW//xl3sCkD66/2v4pYY6x3i/TV2cVxaKBe87kFo
-	T1mQ9gGdnDndFTlIuxd/PymX6+/dLNI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mZ8qcMQ0;
-	spf=pass (imf06.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	bh=zBogXOhOlG1kMkxMqII2ZbwGmlciHENob2EpVE6bVCc=;
+	b=yBTOMTQznbI6nlw2TzQmmy90O9kRM2tNxkQEAvj2gRoQDWrHtnIgEQ38lICSwggvYSm/q0
+	mbnqvmhp7gj62Dcn4qAGAcSwD/uq3Iopf0CqmYO1TDRx9cvPLHWrfdmU5xF6wnFFUffJP2
+	NyFUISg193KBiRX481WB4FW0z2XAFKU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fY
-	YZoGWdlGWHi1GqFofODMAvVspXQpVNRnI7u63JZdA=; b=mZ8qcMQ0jNua/wD0a2
-	R5+bUyUTNUp77BIOXdh3ftCnuPvuOYstV0lvDqiAuvWUINtT/j36FGVtXK12uPq2
-	UvG0+ZU3l4GcQw4Lh1f0Df5nwZlcZ5GTlQ2UjjO7CQlIP2P3yAf6M//MA9O7SEZj
-	GTD8sG8BhEqw6XsepLNtEcMVQ=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zB
+	ogXOhOlG1kMkxMqII2ZbwGmlciHENob2EpVE6bVCc=; b=p+QhlJEFq21IlZxo+c
+	NxJyxgDg8fE6y/NEaX/XoL6bTwDF+tDVS++xpBFt/OaZSZY0SSExhsUc+C5k1hHI
+	kNDk49X/U5ZtJRXr/AwtjCu6H1R1oPNh8g201lbpGjrw3gnoG6yLSG0avCaek5yv
+	QKgmBzdwo8jjm+x6m996fAOI4=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S4;
-	Sat, 12 Sep 2026 16:24:49 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDnr7FODKVqmfMoSQ--.44660S3;
+	Sat, 12 Sep 2026 16:24:48 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: xu.xin16@zte.com.cn
 Cc: akpm@linux-foundation.org,
@@ -81,29 +81,29 @@ Cc: akpm@linux-foundation.org,
 	ziy@nvidia.com,
 	ljs@kernel.org,
 	Longlong Xia <xialonglong@kylinos.cn>
-Subject: [PATCH RFC 2/3] mm/ksm: use the VMA lock when looking up mergeable pages
-Date: Sat, 12 Sep 2026 16:24:06 +0800
-Message-ID: <20260912082407.75875-3-xialonglong2025@163.com>
+Subject: [PATCH RFC 1/3] mm/pagewalk: allow folio_walk_start() under a vma read lock
+Date: Sat, 12 Sep 2026 16:24:05 +0800
+Message-ID: <20260912082407.75875-2-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260912082407.75875-1-xialonglong2025@163.com>
 References: <20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn>
  <20260912082407.75875-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArW8Gr4kWr4xZFWUCw4kZwb_yoWrGw48pF
-	WfKas8KrWakr43u34fAr4qyr4Ygwn2gayUAFy3Ja1avw1rtF43GayfJa48JFy5GrWxG3Zx
-	Ar4jyFn3Canrt3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j92-nUUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xEbFGqlDFGSgwAA3q
-X-Rspamd-Server: rspam04
+X-CM-TRANSID:PigvCgDnr7FODKVqmfMoSQ--.44660S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ur15Xr1rZr4xGr18GF1UAwb_yoW8Kw45pF
+	Z2ka4FqFWvkr1I9w18Aa12yr45u34kKFWUC3ZFgry7ZrnIya1fKF1kt3Wjqa45Gr4xAFZ5
+	XrWDKrWkuF18Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jSv38UUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+BAbFGqlDFCUsQAA3R
 X-Rspam-User: 
-X-Stat-Signature: zdef9bqpcmkuts1fquqo9ssic594nbya
-X-Rspamd-Queue-Id: 84DD6180007
-X-HE-Tag: 1789201546-507016
-X-HE-Meta: U2FsdGVkX19S3fT8fV20XhX+4tQj+2DkplvAFBD28oBlMKXPmfSYbnzHl8uO5+nRGT0u3SdFGpdn2YBPO4Lo+6gpx/fFKDG0KbYFIeTC6f3YBC9iux0IIkaFaFUoLultD7lSN2QBZQDYDYAo91/lP2tgp5YAnzE0eElnAFOnysTiQekW/tFP11ebLWf5FgNrNhNGQ7gbHHGccHCDmXtMdaW/c3yaT1bG6VIGHqRefOp6WsXH/WqqzT30eOOJhuK+9/GdVDl2wSdbEcXar8blVfiTGMt+rJfJEp89OhRDSaQEVtBZBZc3+pv88NgBOl/PcEBa/Y53r9VmOhG8kQTXEtZ2WT/c2asjLp3Rmz9TaQgLIV22/Xb+9Dx3+bG0EcMTc9jidwJ30NsF5BBAWbqAbYSC/H3KfRR1AvvnvFzLPBpMLHkJRWNIfP2gCiVhTDfsfC+wNl7Shz0NurIlJK/Byxs4Mb8v80S1LxjalOwIFCHfThaVxPfVjIvoBl3VrgGPJNAjQ2lsiQELM8troRlO9BYPWOWYB9ZQaEmbLfKqQce1N6hFp2V8KkrkO3WzvehAT6ANjksxbGY67oKTSR/ww3Ag4imihHANY3gzfrrfmrBHYIcS8IOnwAp/xhpHV1lD7ST9AKylg3RyM+S6Pm1HtXS2NG7HB/VlHGF5aXjwoBkXdBKsbLJ7UtfMGyvlF1jMLgGAU22pZEb65CdFL9dnvmMfWPhAxmjRWCJmIjTmNQO2j9xhosiMexGqGbyP9v5Xv2bHcVzNEx2N70i/H9Tt7lahmC8yYisrfMms1lZ6MYdjGxpgKIdt3RnyXL5yYdNtkKhDxj/WFOshMNeC+A3T1NIakM08sJzgvr6kl8tpTlbnysKaJbV4hp/xWhypnOjFo8wdp9Ugkr0JLk0RcaLcDCeE+LM2QBbAqujInu3Mge8dXLCoMZPfeU/FAbRQnMuZmJ49zjfE+TYCu5CZ7B+
- oesNBSI4
- U1ueN3if5foUXIKQka+JWlth4Wl58K5nx3fN40aHTgvXpUdmsoK7FIAcJfueReCSPMhbs7U1Hzn4C+x+EhD1F9kkjUjE37HNrWRNihXsrGC40yOzuYf5pIVZtVJaeLsFLfOoNyHgKkfw8w+xqwOwc1i22vc+uVALSEvX3Zghsqf5qTXnvacxJEehR2+mat7IzDFKL0IS6Ec07elE3EhR8O377SXgiwRmlzicwHPqRp2+7pQS8yV6OHp+ykw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5677120003
+X-Stat-Signature: fu4gt86w9aa3xnzx61nhr37k9g5f516z
+X-HE-Tag: 1789201547-234432
+X-HE-Meta: U2FsdGVkX1+XC98n90HIRiiNuxaKrxx6O1A/p4cKZCfl+j1RO3g4HTysGJs5afQG/m7/Uo7gHOWRNVPEK4h6+FH4vhfqj16cM95idztFnrgsGb8GWbpALpqSKVXbVup9BcOfNgkcNVt5ywP4n3qY4FK4PcJtj9uttBzRyw3t3upZbdadnU/PCU08FpRj2UGgtDgnuiuhmvVtvMdSRGFHLrzEudTP1VI3kfIj0/wNvdzJeS2cS49Fs3bialqOIOcqfQPayu0fcfoYuhzPnTfOGSxiMjQctA+rA4VDM2O8vfnaFSLyd+isNe9PEwQj6FkfhUrYcH7p9jXA+pShnSCXrDvhb0bjf3Zj9PQK+w3biQVPIyS+m6HwFhWpv9jfYbqO6P1P8Uq+hGflW9jxy70Bf1a6RcJWQ7KUo5rPR9OgeADROPJX8ddo8bSibkA2GPtgZwl+YZjq2D43GKOC2myoiXWtouTpySHzDf8aGzvpjjuDL57PbDaZhWYDgVp7x6GTPKJKOEtW/6XctqfH3gCCr2VxEvwPFDhxcp7JdqZ0KiIOUz5fIK46edmdHA/CQPM+M/tqZOFOalADEXd4os4frQJGmv0H9LltTgMxsssKRlBK9tKmMv1I6Nar7QXODI2ReuNLLNFkmvJPDvRecndE27H51nq6Ob+RytOTuVFMmxELLA4VeMQNNYL83wM6HuHcLmPXuoHMWeE0TZiBMtIwkZh2BjkNoMheoyZ68Mw9c6DDp2e/tEzf0P3dhprLmGlZ7L43iRBkxLMfTehlA7iqx7fILR2TUiyIx40NS1/wYUIvE4+fRnfwKzaDLcj7J42s8dxeuNZ9U+teEXqMe6fQWjuPTHPaNaYOlmNwVsHWre5R5i/eyiyftdggRWfGq/i8+yUrnpCr+3QO88C+lyadmdI5CZCnstQFX5HOadL/DONWOP9tSjsZ2FA7NweCdzlyjjguaOK0zVCFvZ4HGnI
+ nszGpPDY
+ wgEWTO1LkaFCaWfzoZMnB7BMEiXBCDH9RCY3j+oqMRj86LbHkTMWzsUAtlPASQ8RFr9ghkMJuObAxg3D91/YmNXGlXY+T71Z+v7g/1p2EHigtO0TPJ/I3Ea6/DctTaO9U4pM9QdfUaicDsX/cC2R9d+WFJolr9fxtRjC20qRMxmzQWm7fMqRDmcliZ0CDyyGzy/8aQW1yKWSq//jlObd5a5O9jeZGp5oU5eJklFt6e5x4iqLBJlDhSx+zBzr5TqVYVDL8eXRmYfiiJZ/7t6OdWt8ScqZCjKEA4nA8hhZnPi0dwZWSylYgfo+E5Rsjj4eqDiJIaR7fZXbf/9DZuoj0o8A8UeAZyuHhQQZOVMehVCc/LjaTwspP/FvfBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,113 +113,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-get_mergeable_page() currently takes mm->mmap_lock for every unstable-tree
-lookup, so KSM is serialized with layout changes to unrelated VMAs. Try
-lock_vma_under_rcu() while holding an mm_users reference and walk the page
-tables under that VMA's read lock. Retain the mmap read-lock path as a
-fallback when the VMA cannot be locked or per-VMA locking is disabled.
+Allow folio_walk_start() to use a vma read lock by replacing
+mmap_assert_locked() with vma_assert_locked().  This lets KSM look
+up pages without taking the mmap read lock.
 
-Extend folio_walk_start() to verify a VMA read lock and keep the mm_users
-reference across the walk, since a VMA lock alone does not prevent
-exit_mmap() from freeing page tables. Drop the reference before waiting for
-mmap_lock on the fallback path so an exiting mm is not delayed.
+The vma lock stabilizes the mapping, while page table locks serialize
+entry updates.  Callers walking another mm under the vma lock must
+also hold an mm_users reference to prevent exit_mmap() from freeing
+the page tables.
 
 Assisted-by: Zcode:GLM-5.3
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 ---
- mm/ksm.c | 64 +++++++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 52 insertions(+), 12 deletions(-)
+ include/linux/pagewalk.h |  3 +++
+ mm/pagewalk.c            | 11 +++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 49d48d1e0998..aee1a1b49b1b 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -811,21 +811,20 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
- 	mmap_read_unlock(mm);
- }
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b41d7265c01b..cafd7b15f480 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -151,6 +151,9 @@ typedef int __bitwise folio_walk_flags_t;
+ /* Walk shared zeropages (small + huge) as well. */
+ #define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
  
--static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
-+/*
-+ * Get the page that @addr maps in @vma, with an elevated reference, or NULL
-+ * when the address no longer maps an anon page.  The caller must hold a lock
-+ * that stabilizes @vma: either the mmap read lock, or the vma read lock
-+ * together with an mm_users reference.
-+ */
-+static struct page *__get_mergeable_page(struct vm_area_struct *vma,
-+					 unsigned long addr, folio_walk_flags_t flags)
- {
--	struct mm_struct *mm = rmap_item->mm;
--	unsigned long addr = rmap_item->address;
--	struct vm_area_struct *vma;
--	struct page *page = NULL;
- 	struct folio_walk fw;
-+	struct page *page = NULL;
- 	struct folio *folio;
++/* The caller holds the VMA read lock instead of the mmap lock. */
++#define FW_VMA_LOCKED			((__force folio_walk_flags_t)BIT(1))
++
+ enum folio_walk_level {
+ 	FW_LEVEL_PTE,
+ 	FW_LEVEL_PMD,
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index cc07fcf50e87..57ffaf2a85b8 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -894,7 +894,11 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
+  * huge_ptep_set_*, ...). Note that the page table entry stored in @fw might
+  * not correspond to the first physical entry of a logical hugetlb entry.
+  *
+- * The mmap lock must be held in read mode.
++ * The mmap lock must be held in read mode.  Alternatively, with
++ * CONFIG_PER_VMA_LOCK and @FW_VMA_LOCKED, the vma lock may be held in read mode: the
++ * page tables of a read-locked vma cannot be torn down while the mm has
++ * users, so a caller that walks an mm other than its own must also hold a
++ * mm_users reference for the duration of the walk.
+  *
+  * Return: folio pointer on success, otherwise NULL.
+  */
+@@ -912,7 +916,10 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+ 	pgd_t *pgdp;
+ 	p4d_t *p4dp;
  
--	mmap_read_lock(mm);
--	vma = find_mergeable_vma(mm, addr);
--	if (!vma)
--		goto out;
--
--	folio = folio_walk_start(&fw, vma, addr, 0);
-+	folio = folio_walk_start(&fw, vma, addr, flags);
- 	if (folio) {
- 		if (!folio_is_zone_device(folio) &&
- 		    folio_test_anon(folio)) {
-@@ -834,11 +833,52 @@ static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
- 		}
- 		folio_walk_end(&fw, vma);
- 	}
--out:
- 	if (page) {
- 		flush_anon_page(vma, page, addr);
- 		flush_dcache_page(page);
- 	}
-+	return page;
-+}
-+
-+static struct page *get_mergeable_page(struct ksm_rmap_item *rmap_item)
-+{
-+	struct mm_struct *mm = rmap_item->mm;
-+	unsigned long addr = rmap_item->address;
-+	struct vm_area_struct *vma;
-+	struct page *page = NULL;
-+
-+	/*
-+	 * Try the vma lock before the mmap lock, so that ksmd does not queue
-+	 * behind a writer that changes the address space layout anywhere in
-+	 * this mm: the vma lock only contends with modification of this very
-+	 * vma.  Pin mm_users for the walk: exit_mmap() frees the page tables
-+	 * under the mmap lock alone, so a vma read lock cannot keep it away,
-+	 * but an mm_users reference can; the pin also stands in for the
-+	 * ksm_test_exit() check of find_mergeable_vma() on this path.  Drop
-+	 * it again before waiting for the mmap lock below, so that an exiting
-+	 * mm is not delayed by us.
-+	 */
-+	if (IS_ENABLED(CONFIG_PER_VMA_LOCK) && mmget_not_zero(mm)) {
-+		vma = lock_vma_under_rcu(mm, addr);
-+		if (vma) {
-+			if ((vma->vm_flags & VM_MERGEABLE) && vma->anon_vma)
-+				page = __get_mergeable_page(vma, addr, FW_VMA_LOCKED);
-+			vma_end_read(vma);
-+			mmput_async(mm);
-+			return page;
-+		}
-+		mmput_async(mm);
-+	}
-+
-+	/*
-+	 * The vma is being modified, or CONFIG_PER_VMA_LOCK is off: take the
-+	 * mmap read lock as before.  We are prepared to wait rather than skip
-+	 * this page, so a contended mm only slows down its own merging.
-+	 */
-+	mmap_read_lock(mm);
-+	vma = find_mergeable_vma(mm, addr);
-+	if (vma)
-+		page = __get_mergeable_page(vma, addr, 0);
- 	mmap_read_unlock(mm);
- 	return page;
- }
+-	mmap_assert_locked(vma->vm_mm);
++	if (flags & FW_VMA_LOCKED)
++		vma_assert_locked(vma);
++	else
++		mmap_assert_locked(vma->vm_mm);
+ 	vma_pgtable_walk_begin(vma);
+ 
+ 	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
 -- 
 2.43.0
 
