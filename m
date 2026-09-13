@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D230C88E63
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E054C88E63
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:12:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 517846B0092; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
+	id EB4CB6B0093; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C80C6B0093; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
+	id E8C186B0095; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DE4F6B0095; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
+	id D7A946B0096; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EFCE76B0092
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:11:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D2F6140889
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B4A7B6B0093
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:11:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A8251608AA
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:11:47 +0000 (UTC)
+X-FDA: 85209381054.06.3CD909C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DAF3C20002
 	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:11:45 +0000 (UTC)
-X-FDA: 85209380970.20.3CE3386
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D5C9D1C0004
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:11:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vp4KZOl3;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyXD0N+n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyXD0N+n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789319505;
+	b=KQZpcQt4F1zNpD7nD/UyJg4u7QlWOO6QcAEk++oSNiKqQTzGR2DtAzP/0wnGJ4gpLQ6RUg
+	GmJ6h3vHMgrMh6kWxq2CuL0o3jBMx9aVgpbs0GcANgPJqCRMyDo12iDJRPHQkTBzMZ4I9O
+	DEz3ZrY1C786Jt5PkTqNk9UrrbDaaL8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789319503;
+	s=arc-20220608; t=1789319505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WKHC2ohfBCTfxJBQb1w+ZA1oqxl4Tap4PnGbWDCoJ/8=;
-	b=02Shq/BPknfZr9mk67l7jhceDIO+VCqoUkzNz+UNYs9VVRstCC4Bj6dY/OcrduOaFEtFcC
-	xZhFl3NxxeaLFbZ3oyPnzCkAGG/dAXVvNxYxnsq02Q9Qrpq0i+48QDYsu+oQxr7VVet1PE
-	ZbEPbZ7X2nzeMCyN0qzP/PKalWbuhiA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789319503;
-	b=1hs2j1JegEVD74E4kSh2HYnjS1yDVgTrjtQjUSI5s5ZeZu4LX/xmHntaN7bp3SYT5ac79z
-	PHwuF7HrVQGfqoFU1oys8HoAauXls+EF8XGl+/O9FfrDYzLy1PDUfdIws66d6MG45cWTkm
-	TPJ1byMxMGTWKfoX8p7hcYVxUDz4HIw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vp4KZOl3;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=9PbkWTjWrdG2mF2OjLqwQA4JbmDDau4Exk+WU0SHNwM=;
+	b=J1oZZ/hjoT4oDfpcYicIMwzwvNPce2KUC2tJhu9a0XaLZ6icyx8JppTwSisGIvL8k9W/2D
+	zpABiUuvhmVBIU9jDk6CgGkLG5rhfLts/5HJ8jwDtisxCuMLnTYJWI+M6a1CWNxCKdj4jj
+	9sdNZwVlSQEC2Aft5TdOAuh57C6ON5U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BAADF60E8E
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:11:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D24F1F0089C;
-	Sun, 13 Sep 2026 17:11:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 331874496B;
+	Sun, 13 Sep 2026 17:11:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4031F0089F;
+	Sun, 13 Sep 2026 17:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789319502;
-	bh=WKHC2ohfBCTfxJBQb1w+ZA1oqxl4Tap4PnGbWDCoJ/8=;
+	s=k20260515; t=1789319505;
+	bh=9PbkWTjWrdG2mF2OjLqwQA4JbmDDau4Exk+WU0SHNwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vp4KZOl31dlS71Xlig/awbyEcGBsaOfBoJ+8S6UPztXW16Vw4bjbpuqrkKntVm8ss
-	 T8nGpBDS3+/5j9dkRdcMqgMO6s7KBndqZWWDcpWg/ZwDY3aq3TCBYUI+hF5X+BWxxM
-	 b9mnYwiDxLRZ0NrfxrZXw3Vf07NoBazywfbkNtH/dYOKuMlkTZm5aThKBvGIrM1r+K
-	 J0saQ5JhTpBXPyExoHEdo/nccOYpzLdWCYva1ntd5sVhiWhlDA/2NiilpDqzk8onrh
-	 X/S71liwj/HGPJJuaGxwMWGSgzVtOGrL/ZqQI8mmRzU+IhpoXqrylo08U4IYOQhsN0
-	 CgyF/vHt3r4Tw==
+	b=eyXD0N+nDjWX6B6by7NPh5tYhxW4OybmmpxYZ/OlK0iuABcaP0AaYqhjBb6sX1zwL
+	 YPPPHERZaWrDknS0ebG29avVbQndRd1wicddhQQYzIkz1xeq7EEL37H4rnHVrygHqs
+	 loh6mS31S5CPMG2C32+RYyhrsl9OEguPyX76tuDVZtRVwLuT6ppyFIetb/A6lScmZ2
+	 N6NfWY9wcLCQMtiN8KIr3B/gxWdShiqTYN9S5/JfJMAmAyMJaBBTVDVSrCHmMUVPuU
+	 pyZCg6Gx+5GRsllDp+tCOxWaqxvFmxwHqFrgu6C4tdWbeQKHDfqn99lS6CHiW7V9Zc
+	 fngHZponMfbcA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/8] mm/damon/api: introduce DAMON_FILTER_TYPE_HUGEPAGE_SIZE
-Date: Sun, 13 Sep 2026 10:11:23 -0700
-Message-ID: <20260913171133.102366-2-sj@kernel.org>
+Subject: [RFC PATCH 7/8] Docs/admin-guide/mm/damon/usage: update for hugepage_size
+Date: Sun, 13 Sep 2026 10:11:29 -0700
+Message-ID: <20260913171133.102366-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260913171133.102366-1-sj@kernel.org>
 References: <20260913171133.102366-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: wbzs7n4tngajhhti68ix49d9psrms63n
-X-Rspamd-Queue-Id: D5C9D1C0004
-X-HE-Tag: 1789319503-770553
-X-HE-Meta: U2FsdGVkX1+l+q0BvjLdM0ZtrUbF5r42/Nphh9mQRcmF4kLza50Y18nM0IFj2b7Qme9yZ/CMnB8KF/elZF6rMRnP/Ys6M0EeOKHTKbqmIuUqHP3Hl/Ve+Cn408g1dQAjavy2AYktX/7jdzrK4sWHYNEXIVk7xY3tBRsWzKcu5AuzrcTn/wdmVv5FROhx9EQqw+LzYRLa+Tyh8sOxr7VEhl71eu2xFmhHKUboO24f1VfbJ07kJfl2kFsPLkrejPaXX1YSrhhq98W22NqkBVKUUL30JKNhop+HgdT2ZxRo4c8Rxj8ByDrZYe2Dxf+MTvX5a/f4nEUMvJWvWouVVFdV1NkENQrbXj2R23ugAU34E+NhVAcJcmDr/GTBOL85MyFEncBq6lr6BImYe0z/3B5N/ZuB1LubweWsPrE/qPHXtqw21VXfTFmMHhL3WQa+ujfaBV5rpE+AxRNXVM80CkFyjcfjxFAcHvmL1SJptO6892IjfEpF1WduXOOrGffpv/lVpPAaw2TAhbwDKFdmScAahWxocVm0IOdMg4lMaQYvZSlGkRNNI901FTKGQlaXQCtkEBCHLl2UJP7utQlC8c5zvREWUZj+IfHz5Ar+juSAU/KrrrMMD9sgYzHnr9fHqm9yL86hkAE3Pe+ZpwkelVf3W42U9+yLAQoa6YQojLTP0h4907HqYswMjQVZWa/EfLsIO2PqNpiF+Xn5AnTuctDn72+iXsQc+UdrskLO5ByVqPILbCD6fwWJ5zz7bnzjPX5yY+sCVcOvScrXYbOvx18Af8Dl+ghjPi2+Cihx3cwOX3CYp3j53H73E3J8gKjTr2mmE/XMer/PD5rCtDrCUfWKKpdOhe5Nh2tcOPyRXWJn1yL3khvLpVwTU3m9dFTwahggZETnZURqgWzmtKafFhcnd8+oWk5ZKUVy+N2GKI01oHkGEOYe3oKjIg8rrlKAeZOQx+aLLrxB5UKYuE5vEtY
- LEupsLG2
- ren2VdVOSvhLyffOLw9tib++ACORFKnAd90mlFgLgn27SjJJSdmlDzQHqgG9t4n1q96dQVSwfcgnKuf3D1yOGbaVQ4CkLaIq9fzwMDRp0J+9525/dMU8fl5MQRqj1sWxFZfDJQP9A4Ix9248QuRPd3srBZZ52y4atg6hYrum5QWhmvBMrY/6Wlu6TdKdcj61cT9EOwhzAjH7N0gIcF9uhE/Wxn0jLinGW+I6eBTYYgb2hphjaF4Dp9SeNXmItt6Ru8FP9IDw0ggxpq+z9qWqKHPYjmAxZSc3XaWdLwBC1PL/mECJjpfEeiTeQAOt2nin9mSBK/algASdDtphiFVWd5A2ffFTjTGTX4y5c
+X-Rspamd-Queue-Id: DAF3C20002
+X-Stat-Signature: gx1rydsy1qbyt9xd1ff8y9x7o9cu4dhe
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789319505-329859
+X-HE-Meta: U2FsdGVkX19cMIOFLggXRNnysmUmKKDY3KqtO4Tt67Pcl9Q/BC0j2vRmXIecWeSFH4b514VrvOz7PFj/4iBQZ3e85aijBwfxZttB78K9pSTtPzJkJ0/0JMpSO3Fo6KDZ5JD6MFHHNTZkK3g6tQ1GdI6eH7Piymy6+Hfv2NieRZ3FTpCCwboZGJmokWgS1K/i0LmJucQ5uAMwet30k1GPNF+X3v4q9B8W1X0tyuAcnqXFuaEdw1obaOjHAhK5JqHrAwJkjgESvTKqM/E63ZZBQEGYlRUfBEFsVtbEsZzR2Nbfda7EOkk/1MZxsbtZy6LO2zlkSbIDyeuwQXsgiN876tSl2qii4yohvxEhYtOgWBCW/q1X9KAwjOo+/z3NYXf1Rt76NjqeOf38MMkUsHK4TMgif1LUzaTzg7aQTOMBeTuhU8ecRnfiUIF8Xk0bu3dPExFKmUBGihFKKLnPRUUOSd04PcP8pxR4xK0Nz58dZtXZSmneCDgOskcPMVvlvg5NJq9xF8uzwfY8NPDnFLJkHwln8ZRTmENb3f142xAtTtl4Hcn2eehEYdiJiuaRDHRgnAq23kU4qDz48CYLN+ZwbJKcNB1k0qku4VCnAMBVoCBSiSH4G+uMMacHobvtIvz9dydUc0OLj1ec1P1/uhHu0pw1ho9T8vqBuzPJAgmTUlAXkpONwLs4u7wbCMMlqDOg6CZ33JLl8GruIppvlSA94sxKx3LCEeuxYzbAKnD0obrxK2tNYidgf0HLyrK9gMZNVATKEVN8Inw6Cv5w7Y/MF3jBJIKqZT9hDxn/4i62cMEh2i31yzAD+vTElYM1ZTuoxd//cmzPv4JHUIHh06eE0tDSGfkouhSiI0DSA9GIEm0I/t6loIX4AVglC3GYaJ8EENfhz+dGb90euQ0ZSavBHNeGJG1hVV9BgMnlidp1I73C0DSkBRW2HKjfTCF+XTV2k7e9kTEunXKnWb12564
+ HibaYu4Z
+ z/JdSW/32FnuLFov6DqM0AHZZjt9RkIj/GeQZSnBUALh4LPtJ6yq13UrJF4pOod849vNTFJlhOQveCh1emwkRgFJ7Ixzu7XBlnTffbBxyxMogoe/eVf1BMmcc+n7mQTAUrsdgHR7spzX3TZIzQTDez1dIGDzbTSmkYz6ZXBoy3VzEOef1Xm+T0TvFDxmB6zYOWjGczWx0M5tgj1t2aYw3l1MTEQx6ZPkgtb5b/gRpm6AcZojLQ4Z2QtU05vqB8jHl1uRQEWGXkibuEYsOxSFTq++6V/dQEGzn1Ix5Rv1tdaPCCBMVVu8Cw51FLGizykkBJ6tnHr+8vPbLzfmkYKzpxfXjKu2/tbQS7VcS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,56 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new data attribute probe filter type, hugepage_size.  It
-will work for memory that is backed by a hugepage of a given size range.
-Add a new damon_filter_type enum DAMON_FILTER_TYPE_HUGEPAGE_SIZE to
-identify the type.  Add two new fields in the damon_filter struct for
-saving the size range.
+Update DAMON usage document for the newly added hugepage_size data
+attribute filter type.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 4be7d1df8e71f..bbb190b474015 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -783,12 +783,14 @@ struct damon_prep {
-  * @DAMON_FILTER_TYPE_MEMCG:		Specific memcg's pages.
-  * @DAMON_FILTER_TYPE_PGIDLE_UNSET:	Pgidle is unset.
-  * @DAMON_FILTER_TYPE_PGIDLE_SET:	Pgidle is set.
-+ * @DAMON_FILTER_TYPE_HUGEPAGE_SIZE:	Page is part of a hugepage.
-  */
- enum damon_filter_type {
- 	DAMON_FILTER_TYPE_ANON,
- 	DAMON_FILTER_TYPE_MEMCG,
- 	DAMON_FILTER_TYPE_PGIDLE_UNSET,
- 	DAMON_FILTER_TYPE_PGIDLE_SET,
-+	DAMON_FILTER_TYPE_HUGEPAGE_SIZE,
- };
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index d3e37400367bd..6b80bce5d678d 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -78,7 +78,7 @@ comma (",").
+     │ │ │ │ │ │ │ │ │ 0/prep_action
+     │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ │ filters/nr_filters
+-    │ │ │ │ │ │ │ │ │ 0/type,matching,allow,path
++    │ │ │ │ │ │ │ │ │ 0/type,matching,allow,path,min,max
+     │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ ...
+     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
+@@ -308,6 +308,8 @@ Writing a number (``N``) to the file creates the number of child directories
+ named ``0`` to ``N-1``.  Each directory represents each filter and works in a
+ way similar to that for :ref:`DAMOS filter <sysfs_filters>`.  When the filter
+ ``type`` is ``memcg``, ``path`` file acts as ``memcg_path`` for :ref:`DAMOS
++filter <sysfs_filters>`.  When the filter ``type`` is ``hugepage_size``,
++``min`` and ``max`` files acts as files of the same names for :ref:`DAMOS
+ filter <sysfs_filters>`.
  
- /**
-@@ -798,6 +800,8 @@ enum damon_filter_type {
-  * @matching:	Whether this filter is for the type-matching ones.
-  * @allow:	Whether the @type-@matching ones should pass this filter.
-  * @memcg_id:	Memcg id of the question if @type is DAMON_FILTER_MEMCG.
-+ * @range_min:	Minimum value of range arguments.
-+ * @range_max:	Maximum value of range arguments.
-  */
- struct damon_filter {
- 	enum damon_filter_type type;
-@@ -805,6 +809,10 @@ struct damon_filter {
- 	bool allow;
- 	union {
- 		u64 memcg_id;
-+		struct {
-+			unsigned long range_min;
-+			unsigned long range_max;
-+		};
- 	};
- /* private: */
- 	/* Siblings list. */
+ .. _sysfs_targets:
 -- 
 2.47.3
 
