@@ -4,114 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B2AC88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 11:04:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A9DDC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 11:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20D096B0088; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
+	id D64D16B0088; Sun, 13 Sep 2026 07:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BE8B6B008C; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
+	id D1D716B008C; Sun, 13 Sep 2026 07:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ADBE6B0092; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
+	id C2CCD6B0092; Sun, 13 Sep 2026 07:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBCEB6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:04:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 538D916064C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:04:03 +0000 (UTC)
-X-FDA: 85208454366.12.C2A4E7E
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 99E24180007
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:04:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ioJvSNvP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ioJvSNvP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DE646B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:33:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1DC8A06AE
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:33:23 +0000 (UTC)
+X-FDA: 85208528286.27.90278EF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E0CC9C0003
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:33:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eSxoDUXv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789297441;
-	b=6Vlnmin8yIaX/yAJFKShzRrCnnKBwOvraJRrMTIsMFmbc5TtOzbbzRw1BcPHT1GPYolijL
-	fJysq8BmzmI4oZDI7G2APHj35tpzC8MryKj1NbYlToWcS54dWvIZ7wqp8TYFLWWyxfE8o9
-	TV8dFy2ZLLmN+vIAzBd+sAOKFuHpG/I=
+	t=1789299201;
+	b=dxk5aw7wSyh6q6NIFJ+sM01pYliqWGGllwn5DjPZrx+CreI2RkbosbPw+Am1Mpsww2LNuC
+	Nxr6u+SEfo2Y5IOodUlSD9rieY4OAt+h5WwkDYFwbCVuikagg/efKx5fcofXMdyyepLtu6
+	+9hOsj6fTyfehyUzA6iLJSDasixPNe8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eSxoDUXv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789297441;
+	s=arc-20220608; t=1789299201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
-	b=Y5gtxj+VIts+92fn1UmqugZ/Ef761VVwxFNkJb6TP6Yjy2PKujjcwBQF37KGwBk//BX/lm
-	Ki8etcmuA48x+gLxKmxW6sBenJhcXhtVHRbxKLc8t75XAzyAme1ijGy83lVT/TTnTJ1tOh
-	GG8/g/FOKg3eddkXpXBIiCvmPF98L/Q=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2dd1dcdcf95so17863965ad.1
-        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 04:04:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789297440; x=1789902240; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
-        b=ioJvSNvPZ95T6ozCWz2SWN5D9I1ACEGAd1wO1hl1ZM9bbKdwRPL053J3E098luegIC
-         Num+Zr8mGxD3ZatT8RVVxDKHJqrB8vbv7KvDyVfZnLGIOZe7/77eCI++XCg85Xzrpxo9
-         Iu0GTp+XTVU2IZ8gjX+scw4cXJLFqMrEVrgQQ+s2KQ317JmlrruniYf72wW6CvO70p54
-         CZkmPxsHSIMq3R4bAHvTtbRs0eQExzV1w6LVRU9r+uIt+3BQ9yyO/+wPmFR55BSgfLIr
-         LZURpckRfjYNB9v3PJbvE/BZ/TcTul/6iiUMJI6DKuiA85g6JR9B+NW1p+FTeCsSp/1w
-         Lf+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789297440; x=1789902240;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
-        b=EPUDgpwIlzhOcIe6tTOOukoWpIAWzj03FouY1NSBwwKrLNwRj1quEhpeACrKG/UVre
-         nSKD0O0ZfftOhXVqgCV0LD4eBuMFgbXmcq51LAOvBiNZ2B2MPIKUnqNGUppl+P0c2t3c
-         3nNXSqiCVGQ3hU/lz+nKpuU85wkC5h/HXPZlwAPRQ1yJKnO58vmdx/Cd5isu/PP4nNx3
-         c+NcUeZauL1VFk7rg5wnZZqcSZ4tGnVpREx+E1qeIW8QBo6lRzyC8D8W9Vd+/FnivURN
-         i/Qb0D8tkxAn4qYzHzPSicIt+CfrD6PwcC4HlbI7ATy68kBbo7wqNZUZubZ3G0SS0hqL
-         KfLg==
-X-Forwarded-Encrypted: i=1; AKwUvBxDNBtAYUCF8vo+b/fFDiG9WsoyG59E2a2ouWvrUZ4wMADs+EPsbiIMnMfCAQj/3utpRHg0/+6dcg==@kvack.org
-X-Gm-Message-State: AFuF++lfnIlsXcgFC7r7MHqji27svLhPx+g765c6ATWn2zYTNZ1xDv1X
-	cj1BgAH5bneKe7z+N3kUSL4jW3p/KWNxqsa9u053vnYZgZB+7IwVYUms
-X-Gm-Gg: AYBFou0/Xt/X1SDlB9U1tiuBCUOpMs25iOmgIP7T7Cyjcvn4PT0FL4/vIvrR+r//Fui
-	JbT8hNXA7/D1kbLPwl+4StosNRY2owf0nBNnNNq+27ERpcD2R6qmqFjh0QpUqBftycnKj/jyfPM
-	Q15FoUV4MU3kXXPTuz9A70OT++Y/OGJmSsziKbcIzZpMWj3tHMkSU1ykH0N8LtaIXHhbFEZHIu3
-	jL4bdihXdCT8ynN/n4xMP27IqH9HeZ/+qC2zC6PbhqAd84TMv79khNG41nj+2/JqKDX2DfvP+Up
-	iuMQkbgLz8rTSJH/1lfe8IfFK+KOSa4rC8Fg6jwHGuhT6lY2zM54udxG/DejZG0Imevttf/G9Fd
-	KYc8Z+n3naHw1A5xaelcQBtU10dIRjMR5Ny7oiflfQWrckTVkv4tuKgmpJqpkWwWFD6RntqlW1L
-	ImYugwxcEN8Fk11W86y1C3Bo6vZXbT53rjcWH5d1A12nL9s0BaiLzRPrj8Z3Dkg48ND8z3608Vm
-	z8=
-X-Received: by 2002:a17:902:e88f:b0:2d8:d4d2:d137 with SMTP id d9443c01a7336-2dd5f1b11d5mr21545765ad.19.1789297440322;
-        Sun, 13 Sep 2026 04:04:00 -0700 (PDT)
-Received: from celestia ([2402:1980:8858:8cc0:7bda:d54a:257:22ec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cff67aasm32885925ad.79.2026.09.13.04.03.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 04:03:59 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: 
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/damon/core: add short circuit for esz<min_region_sz in damos_adjust_quota()
-Date: Sun, 13 Sep 2026 19:01:38 +0800
-Message-ID: <20260913110407.32558-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OKNiS0G+VfR7DI/pz6s3DVVQAdEY8q1vPLowJQfTB1c=;
+	b=3CwgqIvMnbP1ogRM76hs4QWTFGCUTNrFLNMaashnU6JPw5edX3MCtVJFdeSpevWaWrJgIL
+	PiEcmwGeuIAeeZtLWKYITlY9XUAgMTyyU3xujAD7YrjRq0FDF6ZXFvjLQXdaoqnUfuEyx+
+	UGx1HjMHSv50gfLAfXYP2XUjH4kA5bw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E31FF60DE6
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996ED1F00893
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789299200;
+	bh=OKNiS0G+VfR7DI/pz6s3DVVQAdEY8q1vPLowJQfTB1c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eSxoDUXv2ZyaUt3mJXkjidAaQKxj82E05UlIWy3yUWwSAlgk3v8b8r5ezTqgg1Tl7
+	 C/hTEjEP57GnK5iVqBPqlYfxhLfooSsEDooZLYmdHwdpSaUcJOVAEkmEwNa+srPh0S
+	 WCl+Ufn2yCXet4ZKQZyXrViTZTOvefG0QcCOLVQWZcLNCdAdrNT9JT3lJarlFb1jrU
+	 O93tskiyY1WEiwSRKPNItcZ5bOz08IAjaE3K6UqPi0aXEoXQTWjAHEoXMGrUaAOxbp
+	 Y1tl7pz7f84kyTmWkFB0UyRrIvOZ3lWIxQXNqzVp8HfQCyJV2EwkWN2pdEM9o1yaEG
+	 Q/1MShWofntBA==
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109f067cso107526585a.3
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 04:33:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBypwLVlFPKTTa7X2IcQNuAz5Xa5pWANqKhI3Jy+7PtcHQLz/PDYAo6vXdSuNg1EdZtvwfrOYDeoCg==@kvack.org
+X-Gm-Message-State: AFuF++n/iKmOPnvheK+oINj/DmCTWs0KlW2hixA52eou9S1YsLOtvwa3
+	gXLceNkAKAX4zBf9d9aH1X8rlHIPkwKFgcFyvSAqh5SaGk4JzZIvO5FqVa0zMvDM8Is+OAZXzf9
+	eQuEa9evuLNCyXj13zmJkONZkV8fEImg=
+X-Received: by 2002:a05:620a:7087:b0:939:6516:7128 with SMTP id
+ af79cd13be357-93a0357e45dmr975245285a.3.1789299195111; Sun, 13 Sep 2026
+ 04:33:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260913100013.3603815-1-ridong.chen@linux.dev>
+In-Reply-To: <20260913100013.3603815-1-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 13 Sep 2026 19:33:03 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VjT3ePuFRlXNHX4QCzONR82HSxBT7DetfUPd5PYSqYB8und2MAFxb1FgM
+Message-ID: <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
+Subject: Re: [PATCH v8] mm: vmscan: retry folios written back while isolated
+ for traditional LRU
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99E24180007
-X-Stat-Signature: fuu6tro4r87hri1mejse57ycfg3ezrsu
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789297441-377275
-X-HE-Meta: U2FsdGVkX19e8M6BkyzQk+ajo9lT5JvdbTneDJxwzcb/lLgT0Ox+yUxfpNpMVThx4xNfqkx3ung6tl2OgUTpV+QrR35myE8V/bRAJKcsJiC7LQSBDpmr6JMXiSsas1/lCjfMxNPzCyIgxgOyjF/T0Bi9SrJ3uNLi8PCezLIGtpMeEZv92Hba9WbJleltA2XeAXdB39OqXMz3eNxQYPdNi370LkoWwksmJPZajieH2BN0OB6usIPGz2H8xZPET9pU+8fRR4jmsvnGiTFhIRXs3MvKdNa0KWNkUTiZL9HH3kYgQIi/uWNpIWqfcqG+X+qBq4rIdkMEOG6nq/YhSUK4IDzXbh9aA4Caf4WlQOq1kT7hfe89bVVqij0yN6ZUSo5ea2oK7Azs8Dcb9FT/Oqh70hjc3kc8pVbDB13nRqhOSA4CrPPmQhSIIklwlCe06zKCTUBrXD9dEw0novgnLbMiE1ywew1aSpquoQFs5rfEVE06YQzYflqGJksHUXIAdpdPP8Iv8fE8ZhEVumpN94cCMfT4mrib25vDPFeXU+gNzKwe4fq1d5TeHpm5LMK0r9PGQI45wLXHxkD6A+gWigxRlZefq58gDuV24IIpSHNg8TqYHJg/fcmnI9BV996WTofO55cZZK6AsqfhsKaewpeg3jGrfnA+3PuA8Ibf2R4Ga0mwAGWnWKc8biGCKnPS1+hZD2tFPy7zApNQYuTEIO0w6xRK55IcTDqlf9TOxrdrXk62WN/eMIWoqn1X9LCYL0tCgzWPCxknTr2Oe/Iw4yws6ypq8bNNqm5hMViQZ2UhoFhh4CxYPLnb6+jMDHECFAhDyoPTI/FsvJFGXNscZWUd4UjHbzb5ypST2S1KyrW2D3+NUftP3C3oGDx90GtxWkbVx/eOs1cmsv3F7tkykzi/dH1kweHNFekaLAKOtsjhc0trVZALekC2v+ScMCfqYOO8RQW2wsutSOhzk5RCd7X
- Jv/iBJZ+
- c6ZjOdW3aN2ucbpk9MMcTHGZgKasZE5Ba2xFmn/G+Z6B+3EiBN2hJ8VdGDHaOt6JQpDWvkxatFML487PJQpgsIsRjV3TUaylOZTdaAQwqdbIYC023r5y1FYYjNhvkWkdW6d892RYpMVb++J3R+fbNl3TUujJB5jX9CmSZ3F4di/XyJEFeXbyNSFhFU8m9WU73BRtTXvUYvAI5MDPhwZYEw4TA+0ZN91mlZyKzH5i8pOgX+DMV+kKU0Ean0vitN00QRChm1N/llRroPWUGLNK5W9ulEIVa01OF0kO2PqHKIuGqORyTCZhGZU9knnAXibDujIFVu7p19QTAn4DsLcpvjmdw93j9yMTWp+YHZlRc58hnHAeIkIj0e+IwoFrxxNIdGiehdlC4tM/fjHQFDa5Wpmwp7a3a+ywaHbEIwpobNo5Ydz13DgDgSSlXVBR9f3s+WLgxD6vXLO+DsUgoTUrTqcpp/fBsBlSbyFHtD6fQtiZWiSQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E0CC9C0003
+X-Stat-Signature: ieushku3pbpoaaojpgfpbyre6jdffigq
+X-HE-Tag: 1789299201-719078
+X-HE-Meta: U2FsdGVkX19bZBop2CrzaH64bbURRKc5s4N1uf/Gcdg6oYu+0JSt31qkUCewRjX161IxJWkNVQqCf5ROkLzB5qGbpkIJuFnvx+u1M3PPvPXN1Ueof2dUD+t+7pucOjxvtJs7KV/pb/+6Zu3OSK1tqcDhh63pwkovxQYjU9ObYfeu9XCfYjWnLac74FIXUU9Gi8tKeH51zxbP+2CBsrW4yhLmcVnob6k7/yhfhE+OGy3UeekZ3O7Ze0pI6I5WrDH2z8D5vwsNOjty3U1UAZ2Rux09hukmEINN6iShwKG1tSv9ycpAnh3ubGtIrjDlWdqNagyQY5zIXDa1qN64EKghKpbqPtl/yK+Pd3Se7GTW2w3KHdT/IX6bTMGcgPuhIPR0VrzzicxN6omRBbAHVmk99eZG/qkXZKLTfvHWSIl/4j0n9Pj1QGlKOnk7JZNMaKMc4iHsTsTCjEZos4tVg/xHVmvCgMH11J3YIDsdG7Mu1ry4cfgntsY5PfZjX6F0gj5x3Fs07GIxumOqnQ8ws6WZi3l4pBNWFyXfeVbiCPuvAaEgOGqCD8Koos24RJYtApoZ7N9k2h9yjhMS0GRUgOrQ+sZO81H5c9y1XHBmD4J2kB/j+FLfCMuKmWryhwEhtOTdyTD4CE6Rn+QvURZaapzl93vl+rTedAJ685OfCB4Qx5X9a7WXMvILdrJF+n+PHo66INSSs/yGzKFM0GY6hoEOn1r8p31g2ghqJe599AV2nVsjUnAQ9JKmnV43pzff9wU8tZSt8R4dhI3ITOixAtPJ2sLN2fWaZcu0WCdIvTa7CsHRbLq5ST07zPz9wectKlSn5XuYZuzs4UdNFb7CZnNSonO6hZqH/rGYFzH4kFrXuNGmipnmMLlnwuOI4XT7nJ+5Unc2U+oPOwXCF9r4ZqPn/7iQLSzUcWQWsSnUZZYrXPnXjPZQpORZuzqn2Ct0SdSVXGNwrkz28SZcQWgKYE0
+ eD81x9LS
+ pRnTuz7cJum1WywAGbo6831zxDMJ0GRNuSg6r3wzHVn0POXZU+0Jop1ZNKbXs3vGalV4ZwHTtJ7CAb5UMFGlxnaLwH0r74mmD86YYHJIv2WGJ0hRfqFLA7eqF+dwzYI0TZqGbdZytishhj6aifxw1KDZ6z0/iN2CVfMKmdqUX+PmOd7f9OU+7ibehEwrz6jGGxZ1o4z51li4TCHV+lZarTy0usjnUeSruK1loOWQeP9M+JcqljQtDASSd71ACzrctq/gG7f6sshHopFaTCOr0bnvnJXFt1GmDv5sML+px/CqhGF4gd0rUnkeUP5Z282xAt7mU3LZV+YBcOeXHvxV+SxIdgfJCkzP79AMF+dWX46KRrcuVzefpFGUaEx5ypgAwseHCFsPEofBcxWlutdE9tFI7dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,45 +109,304 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After damos_set_effective_quota(), the effective size quota may be lower
-than min_region_sz (e.g., when the temporal quota goal is
-[over-]achieved).
+On Sun, Sep 13, 2026 at 6:00=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> As commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+> while isolated") mentioned:
+>
+>   The page reclaim isolates a batch of folios from the tail of one of the
+>   LRU lists and works on those folios one by one.  For a suitable
+>   swap-backed folio, if the swap device is async, it queues that folio fo=
+r
+>   writeback.  After the page reclaim finishes an entire batch, it puts ba=
+ck
+>   the folios it queued for writeback to the head of the original LRU list=
+.
+>
+>   In the meantime, the page writeback flushes the queued folios also by
+>   batches.  Its batching logic is independent from that of the page
+>   reclaim. For each of the folios it writes back, the page writeback call=
+s
+>   folio_rotate_reclaimable() which tries to rotate a folio to the tail.
+>
+>   folio_rotate_reclaimable() only works for a folio after the page reclai=
+m
+>   has put it back.  If an async swap device is fast enough, the page
+>   writeback can finish with that folio while the page reclaim is still
+>   working on the rest of the batch containing it.  In this case, that fol=
+io
+>   will remain at the head and the page reclaim will not retry it before
+>   reaching there".
+>
+> The commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+> while isolated") only fixed the issue for mglru. However, this issue
+> also exists in the traditional active/inactive LRU and was found at [1].
+>
+> It can be reproduced with below steps:
+>
+> 1. Compile with CONFIG_TRANSPARENT_HUGEPAGE=3Dy
+> 2. Mount memcg v1, and create memcg named test_memcg and set
+>    limit_in_bytes=3D1G, memsw.limit_in_bytes=3D2G.
+> 3. Create a 1G swap file, and allocate 1.35G anon memory in test_memcg.
+>
+> It was found that:
+>
+>   cat memory.usage_in_bytes
+>   1073700864
+>   cat memory.memsw.usage_in_bytes
+>   1413124096
+>
+>   free -h
+>                 total        used        free
+>   Mem:           1.6Gi       1.2Gi       299Mi
+>   Swap:          1.0Gi       678Mi       346Mi
+>
+> As shown above, the test_memcg charged about 324M swap (memsw.usage minus
+> usage), but almost 678M swap memory was used, which means that 350M+ may
+> be wasted because other memcgs can not use these swap memory.
+>
+> This issue should be fixed in the same way as mglru. Therefore, the commo=
+n
+> logic was extracted to the 'find_folios_written_back' function firstly,
+> which is then reused in the 'shrink_inactive_list' function. Finally,
+> retry reclaiming those folios that may have missed the rotation for
+> traditional LRU.
+>
+> After change, the same test case only wasted about 2M swap. The swap
+> device usage matches what the memcg actually charged.
+>
+>   cat memory.usage_in_bytes
+>   1070301184
+>   cat memory.memsw.usage_in_bytes
+>   1412448256
+>
+>   free -h
+>                 total        used        free
+>   Mem:           1.6Gi       1.2Gi       299Mi
+>   Swap:          1.0Gi       327Mi       696Mi
+>
+> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenrido=
+ng@huaweicloud.com/
+> [2] https://lore.kernel.org/linux-kernel/CAGsJ_4zqL8ZHNRZ44o_CC69kE7DBVXv=
+bZfvmQxMGiFqRxqHQdA@mail.gmail.com/
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+> v8: Rebase to the -next tree, adapt to the current reclaim API, and retes=
+t.
+>
+> [v7]: https://lore.kernel.org/linux-mm/20250111091504.1363075-1-chenridon=
+g@huaweicloud.com/
+>
+>  mm/vmscan.c | 104 ++++++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 73 insertions(+), 31 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d1495a7d469d..6e13e570aab8 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -181,6 +181,10 @@ struct scan_control {
+>         struct reclaim_state reclaim_state;
+>  };
+>
+> +static void find_folios_written_back(struct list_head *list,
+> +                                    struct list_head *clean, struct lruv=
+ec *lruvec,
+> +                                    int type, bool skip_retry);
+> +
+>  #ifdef ARCH_HAS_PREFETCHW
+>  static inline void prefetchw_prev_lru_folio(struct folio *folio,
+>                 struct list_head *base)
+> @@ -2013,14 +2017,16 @@ static unsigned long shrink_inactive_list(unsigne=
+d long nr_to_scan,
+>                 enum lru_list lru)
+>  {
+>         LIST_HEAD(folio_list);
+> +       LIST_HEAD(clean_list);
+>         unsigned long nr_scanned;
+> -       unsigned int nr_reclaimed =3D 0;
+> -       unsigned long nr_taken;
+> +       unsigned int nr_reclaimed, total_reclaimed =3D 0;
+> +       unsigned long nr_taken, isolated;
+>         struct reclaim_stat stat;
+>         bool file =3D is_file_lru(lru);
+>         enum node_stat_item item;
+>         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>         bool stalled =3D false;
+> +       bool skip_retry =3D false;
+>
+>         while (unlikely(too_many_isolated(pgdat, file, sc))) {
+>                 if (stalled)
+> @@ -2052,25 +2058,42 @@ static unsigned long shrink_inactive_list(unsigne=
+d long nr_to_scan,
+>         if (nr_taken =3D=3D 0)
+>                 return 0;
+>
+> +       isolated =3D nr_taken;
+> +retry:
+>         nr_reclaimed =3D shrink_folio_list(&folio_list, pgdat, sc, &stat,=
+ false,
+>                                          lruvec_memcg(lruvec));
+> +       total_reclaimed +=3D nr_reclaimed;
+> +
+> +       /* Retry pass is only meant for clean folios without new isolatio=
+n */
+> +       if (isolated)
+> +               handle_reclaim_writeback(isolated, pgdat, sc, &stat);
+> +       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+> +                       nr_scanned, nr_reclaimed, &stat, sc->priority, fi=
+le);
+> +
+> +       find_folios_written_back(&folio_list, &clean_list, lruvec, file, =
+skip_retry);
+>
+>         move_folios_to_lru(&folio_list);
+>
+>         mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+>                                         stat.nr_demoted);
+> -       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+>         item =3D PGSTEAL_KSWAPD + reclaimer_offset(sc);
+>         mod_lruvec_state(lruvec, item, nr_reclaimed);
+>         mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
+> -       if (nr_scanned > nr_reclaimed)
+> +
+> +       if (!list_empty(&clean_list)) {
+> +               list_splice_init(&clean_list, &folio_list);
+> +               skip_retry =3D true;
+> +               /* Retry folios were already isolated and accounted above=
+ */
+> +               isolated =3D 0;
+> +               goto retry;
+> +       }
+> +
+> +       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+> +       if (nr_scanned > total_reclaimed)
+>                 mod_lruvec_state(lruvec, PGROTATE_ANON + file,
+> -                                nr_scanned - nr_reclaimed);
+> +                                nr_scanned - total_reclaimed);
+>
+> -       handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
+> -       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+> -                       nr_scanned, nr_reclaimed, &stat, sc->priority, fi=
+le);
+> -       return nr_reclaimed;
 
-In this situation, damos_adjust_quota() will still calculates
-quota->min_score.  However, this min_score will not be used in this
-window, because in damon_do_apply_schemes(), damos_quota_is_full() will
-always returns true, preventing the scheme from being applied to any
-region.
+this is a bit weird to move the tracepoint, shouldn't it just trace the tot=
+al
+number of twice reclamation?
 
-Therefore, add a short circuit for 'esz < min_region_sz' schemes to
-early return from damos_adjust_quota() before calculating min_score.
+> +       return total_reclaimed;
+>  }
+>
+>  /*
+> @@ -5006,8 +5029,6 @@ static int evict_folios(unsigned long nr_to_scan, s=
+truct lruvec *lruvec,
+>  {
+>         LIST_HEAD(list);
+>         LIST_HEAD(clean);
+> -       struct folio *folio;
+> -       struct folio *next;
+>         enum node_stat_item item;
+>         struct reclaim_stat stat;
+>         struct lru_gen_mm_walk *walk;
+> @@ -5046,26 +5067,7 @@ static int evict_folios(unsigned long nr_to_scan, =
+struct lruvec *lruvec,
+>                         type_scanned, reclaimed, &stat, sc->priority,
+>                         type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>
+> -       list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+> -               DEFINE_MIN_SEQ(lruvec);
+> -
+> -               /* move_folios_to_lru() culls unevictable folios via foli=
+o_putback_lru() */
+> -               if (!folio_evictable(folio))
+> -                       continue;
+> -
+> -               /* retry folios that may have missed folio_rotate_reclaim=
+able() */
+> -               if (!skip_retry && !folio_test_active(folio) && !folio_ma=
+pped(folio) &&
+> -                   !folio_test_dirty(folio) && !folio_test_writeback(fol=
+io)) {
+> -                       list_move(&folio->lru, &clean);
+> -                       continue;
+> -               }
+> -
+> -               /* don't add rejected folios to the oldest generation */
+> -               if (lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
+q[type]) {
+> -                       folio_set_lru_refs(folio, 0);
+> -                       folio_set_active(folio);
+> -               }
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
+Baolin has a patch which modifies this.
+so probably you are not based on the mm-new?
 
-Changes from RFC v1:
-- RFC v1: https://lore.kernel.org/damon/20260912124406.96535-1-aethernet65535@gmail.com
-- Make patch more complete by covering 'esz < min_region_sz' instead of
-  covering "temporal quota goal is [over-]achieved" only.
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=3D51=
+9f7768585e372b97e568baf9d4648e6beb6863
 
----
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+> -       }
+> +       find_folios_written_back(&list, &clean, lruvec, type, skip_retry)=
+;
+>
+>         move_folios_to_lru(&list);
+>
+> @@ -6108,6 +6110,46 @@ static void lru_gen_shrink_node(struct pglist_data=
+ *pgdat, struct scan_control *
+>
+>  #endif /* CONFIG_LRU_GEN */
+>
+> +/**
+> + * find_folios_written_back - Find and move the written back folios to a=
+ new list.
+> + * @list: folios list
+> + * @clean: the written back folios list
+> + * @lruvec: the lruvec
+> + * @type: LRU type (only used for CONFIG_LRU_GEN)
+> + * @skip_retry: whether skip retry.
+> + */
+> +static void find_folios_written_back(struct list_head *list,
+> +                                    struct list_head *clean, struct lruv=
+ec *lruvec,
+> +                                    int type, bool skip_retry)
+> +{
+> +       struct folio *folio;
+> +       struct folio *next;
+> +
+> +       list_for_each_entry_safe_reverse(folio, next, list, lru) {
+> +#ifdef CONFIG_LRU_GEN
+> +               DEFINE_MIN_SEQ(lruvec);
+> +#endif
+> +               /* move_folios_to_lru() culls unevictable folios via foli=
+o_putback_lru() */
+> +               if (!folio_evictable(folio))
+> +                       continue;
+> +
+> +               /* retry folios that may have missed folio_rotate_reclaim=
+able() */
+> +               if (!skip_retry && !folio_test_active(folio) && !folio_ma=
+pped(folio) &&
+> +                   !folio_test_dirty(folio) && !folio_test_writeback(fol=
+io)) {
+> +                       list_move(&folio->lru, clean);
+> +                       continue;
+> +               }
+> +#ifdef CONFIG_LRU_GEN
+> +               /* don't add rejected folios to the oldest generation */
+> +               if (lruvec->lrugen.enabled &&
+> +                   lru_gen_folio_seq(lruvec, folio, false) =3D=3D min_se=
+q[type]) {
+> +                       folio_set_lru_refs(folio, 0);
+> +                       folio_set_active(folio);
+> +               }
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ce8c6f99106e..15758525765e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3318,6 +3318,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 			damos_trace_esz(c, s, quota);
- 	}
- 
-+	if (damos_quota_is_full(quota, c->min_region_sz))
-+		return;
- 	if (!c->ops.get_scheme_score)
- 		return;
- 
--- 
-2.55.0
+as above. please take a look at Baolin's patch:
+https://lore.kernel.org/9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714=
+.git.baolin.wang@linux.alibaba.com
 
+
+Best Regards
+Barry
 
