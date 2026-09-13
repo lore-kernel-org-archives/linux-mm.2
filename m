@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA50C88E63
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 721A2C88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 18:17:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5715C6B00AA; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
+	id 016426B0088; Sun, 13 Sep 2026 14:17:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522636B00AC; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
+	id EE22F6B008C; Sun, 13 Sep 2026 14:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E90D6B00AD; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
+	id DAAB66B0092; Sun, 13 Sep 2026 14:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C63866B00AA
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:17:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37FD84088B
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:18 +0000 (UTC)
-X-FDA: 85209394956.07.91FEC52
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A073A2000A
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZqCBSZU;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789319836;
-	b=x2QoC9Qc1uzNWyrgC2I6EvSdUoNkUWnJXU1406b002QHKP/5pdfhSSEMdouuA4XVWuLrTD
-	x9FTSJxWp7eyHEP5r30X8jnuYRrLjdpYAXQpGbIts02elKWuY7LYXO9NkN5ydKBMdif93m
-	UHGjUT2xQ1nkpPCKHWf8zza2xNqIGjQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZqCBSZU;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B07E6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 14:17:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4151716099C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:17:05 +0000 (UTC)
+X-FDA: 85209545610.08.BF65FDF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78B3B180002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:17:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CH2uAWDP;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789319836;
+	s=arc-20220608; t=1789323423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPljEC41AE/9V3Eb7L+bcMCBYD4RAk8iJtQDR/e+uUw=;
-	b=slKeBd90FUzbYHxTO+jNM0nUZpvR+3i+NCzYPPK3BW7eOZtUk0vFPApboiIdMCJvIyPlpY
-	tuYKc8skqsq6BxlJ+Y778YxbkmxaUqfrZyfslUKtodH8iJYd7uvFgscjF6ygjn/igF5/Iz
-	BNfOD5K34IBrR1HBrnhctMZliGKU7AY=
+	bh=KU9uwymn0LP9fWhntovos+AUWynKcZgGYx2o/2j+a04=;
+	b=UQG/OZpl8MzYUdvNRaFmgIcLGEUUBZ1H7t2Q1FV4hggzxyUs5kcyIxz7fVAfb/oK5aLNXE
+	y2LnJj3xC/pzGkhwbxuM2honDT2Nkyh18caCKq+SvQ4iF55KU1zHZ3eTRKowfRbctWWqVk
+	uWynMFmKXP/6EpqPm8h8oS7Yum41e6s=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CH2uAWDP;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789323423;
+	b=5F4jnWO4W4uGNHooXtxBihHXal9fP7KAmmBbkOF4jLF0hazlJ8dx5cPbpn3dgE4Sl6WkTr
+	ZwpLf2HF+Bga6D3xRXGfmrqvKSd3GdIdoZzYnQy8t0sGb+DWwNLp/FKyiqM77kSuHbRKJk
+	+Eztg2A7lTfQqbF0hQM9az5wJOgI8Fk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2462406D0;
-	Sun, 13 Sep 2026 17:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9061F0089A;
-	Sun, 13 Sep 2026 17:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789319835;
-	bh=hPljEC41AE/9V3Eb7L+bcMCBYD4RAk8iJtQDR/e+uUw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OZqCBSZUf/wQ/7MYqIfkvWxbZ4LmvLyMBfTw8zz3VNihGmgE3PHX+t8GljC//GAtv
-	 IXTqNmPCVRLj/0+JPAfXmbAJh3vqi1T5btpqHhI0y8l+FIc3vXJ903nUnY2JXNB0hd
-	 FUL/VGgP+3+M1fo0Utf/5Ep3AAwJULWe7mL8QiHYjMoThnKWhtjazHkPLKvQ3DfLON
-	 IvivD4wTgidbdYci5d9MkpedjdF+oR4gXwLeAsDi/HpiMdmAPQQ0v8ZH11RLIVjDm/
-	 8e3Y3e3HTlUsLdiAPPpN0fAnCty1kx3IzL6JKcCvmW2OKLD8S69I3vuww+ObjQwaaS
-	 a0we1B1eAtS1w==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2 3/8] mm/damon/core: return an error from damos_commit_filter_arg()
-Date: Sun, 13 Sep 2026 10:17:00 -0700
-Message-ID: <20260913171706.103052-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260913171706.103052-1-sj@kernel.org>
-References: <20260913171706.103052-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A2C760F86;
+	Sun, 13 Sep 2026 18:17:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7899E1F000FF;
+	Sun, 13 Sep 2026 18:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789323422;
+	bh=KU9uwymn0LP9fWhntovos+AUWynKcZgGYx2o/2j+a04=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CH2uAWDPfwJyNBnFFm4FV6Qp6lxylRxMjUnlTHRYBRgV6ogXRxUnAeAuICkUT9bW0
+	 3HeCA7cuIqR5q9Gk6G14cSFkh+hoeSXKNcYBE8tMpgn6AhbDt/j1m+ZslOy2aDmnqI
+	 cubMNgGpEpRteAyW+WxLtkz+6XEEN/wL+Q/XueLA=
+Date: Sun, 13 Sep 2026 11:17:00 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
+ collapse_file() readahead
+Message-Id: <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
+In-Reply-To: <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
+References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
+	<20260913163644.122133-1-ngocthang2710.1999@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 78B3B180002
+X-Stat-Signature: ghuh3oq4zgenu3kt46346tudwgxiyy63
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A073A2000A
-X-Stat-Signature: g6bey3db78pqw5xc74iofn6xqmht87b5
-X-HE-Tag: 1789319836-381402
-X-HE-Meta: U2FsdGVkX1/7PuO5gwaC1OoOBRU+UxSbKyPP6ri89d2sFu3NCcz3no83iF2NON2DuCmP+Ggex7g7MdovU299soH+U9A3RLCtQOplQiOur//bp8X/0AvOTs22PhZ/3rt0o2lAH1Vb+yYmNsYU5M5e3MIAHP6ezTZg88qrQPu6AGj6s7nIxpl1AgcJ2svkp1LTTnvQufKNm4XgLx1zOMLPSH4+FuyAG84O2dqTJQbFn+uHA4TBp8WltP9G6RFuDBrDlHTixrTiltDwEdv2FjTBb6MfYQAAQ71Cq7pQAZccgZKRq5ERlr6L+hMUTvQKODI/GO/MViDvUtBUUCvUsR030Tz+Z5esSHs55VP4wZE4kVOFpQEtT/ZhgH077GCW6q1D6RyXY9kh2CTmLA+UZhw1UZY2cPFAbK4vl7S6GcyzRk3vFvQUPC/nHFI41E96BcKKTsMsHURoOTQ3ncX1btE2lpgmmxJRIDtpjS03O8oGi8NnAI5lzJ3P7tOni/LewDK0Tcf7UpdjlF5a/XL1QMipytDZ4gt40+t9mhwaQvYyaH3Kbr04u+U4vfMR45gdjOYdBBmhqcUWyJhRY2ugruH6P3KcvUUM//UJdwCPrv2a4CQFaRgfz6Kth1WS6EtXavVHLnd7FPZDcotee0SqYtZ2ZL1mAch8i+PS7n+nO7zOdzZ1Rw3xSDjILa1AukKxbhAEZaExB4xsx0qhNaUzFSfaO4T3WBAY3sL52PRh2I5Eh67Dh77jVA1rO4Z5r8xazf8LRc9H8Z6/fkqDfOHro7jW+3xtfzG7X3kuC8ITQoG2m7PZWZcvFsdR9svX3W9z8Ie/Y5bBsq9uh3WHh8yvvCbaYB171pB7DoJYdI3lX7ZRTQgCY4BuROOI8PE+ScQAf4ZqRtMk6aLOejxckWm8Q0I4w6TfOI9mCbx9f8+7LwaTinIblKEdDXhbgaGagW5XXDkXQhP3IeBW0dvtpLjS5KZ
- barLUpls
- OUagACrBkNcDCE8vJGqKvgCtWHZ0zekcA/m2IjlCLgQ/PG4FIMzrWONZ8XGnjFXOXq+sy34VNrrMndemojeuoUlTpERjkdSiPIx7++wHjH4utIJKq/q/v+1Ce8wOBAB/8i6sd/su/uGd8+ym36k159I0dzRwiZ7z+p/gZt2gQj1GpBW5fd3tnWTaKhtGLTA3EwKpOyYvE6o4KVcWKjWSJG9gnww1KWqlQhUeNG2CsTaX4I5w3TBJmb2JKvmau0zM+wAyk96QDuqQGBDXTdD13eLWZXA==
+X-HE-Tag: 1789323423-975889
+X-HE-Meta: U2FsdGVkX19X+dmgSoYYpBubq0Zy5xEkVr7U06dY5m3p32FzRyaWZzvYBfCllLsbCx4dXsEYERi20zjC9K2X0H6R7kRBd+X5Gy4/jc7Uv0h1yO36EHOs6l/LopCRakHnHgmfAXjlKmauk7DkzK6cXsge2nsAaAfvduQNSBHAR14XUwnOpjdwm68sUavzq7ZS64C6+kV6qm8ro+SqgWBVelOCCX9MZVc/7L25WnV1xxWOYTUEjdonYgnGHRDy9qrGY2wp459z7qQah7rRd6RWgIGlOczZjpU8Fd99JlQCo9Nt/zlarBpx3V6wyMp3qmK1fMESjye5479oxmMwLL7zqPW+n+10rS1zD/5MZahK55wqKgz9vZ4uOyuNC9umiq7xP4JoAE716esJMQ3VLy178S9zYJJRERvpqN44GKH99RwfROLbBVarUYAwMApzjLMioc4OzjeLc8xUDEhbKARmhoOhhGyYOUU7tS/bhmfsUUwL2LSS47s63V/IaspLGtG0KIhmtOLKr9jiJU4X7Mo+Af218ribzhegNLOTU8TTds5zNuEcjH1ElAcpN8XkDZC+x491vwLSMme/QQ0Do0ESCRBZimA0mUUcKO7dOtBeo014zwpdBmxE6JV+Ni8X51syKJUEjCsFgfC0nn1zwKrDACmQxMwSQ6rzvj88Mt8uZBksSuoOjhXlCeAunTqw0/sRHY/hvTEC5XK+bnmbPRFpfq9rwZbRydsp1kUSHn5aoLCDh1EUwrJq5OxCnwSw7HqSlUqZ8WgRvUVys66K7O2ruc/EyY/ae5cbyXcBWPSbJKy8XNNK4vX4HMVJgkt6OJ9+BKJUMTvDG/oXsN3NznR3i8Ilf965hr1Le/y607DK58S7IsmfkI28eThoxXK6ldu0e7ElZWAgalcLGXRjTVV/vnGIdCRoBWglIb0lunAss6qiFYqe8kQlTGDCTBYmw+i/epru3yI0/oo8OtkEV9b
+ EThBCeS0
+ s9q88Xq2aFjRbWFt6Ka0ktBo4igX6qjEP2qYb/3eLo/JErV67geYEqHCVoMHEwhsfLfMLvrDQM3+RPteQt15GE4DG9LrXG4s69MzaOxH7ZmANE+hqeWJ0Tgzjgec8x3vtXg2Ca7gAPwNoPIEJIky6eBMNZn0mCJTJ03CM8Ix1vgZFJ/5N7c9PrFCFUyTn5N88dZVRH39k5+s2F1H/aam2jRat9P3Us0BCHx5Nj28Ak9qvOVusqcp3sB69OTOLTVfIGx9eATH/HgtyVgJxjKty+c+GFOt+G20kfmu0tAvK6qzJSUnKQSxljkMy6B1pML6gjkp3/5I493i4yWSlzGm3LmUaEn0JDsJXxTIpO9kE0sdinfX77S8+p1zEHNZ6xGlRQYbeqm+rcfK0e7RYfq4t22I/vBT3f2c77wY/Wl4CeR56DOnHRcr8cf/qYApe1o3I0eT8guhgFuDllW8hH3jsgKCQbIrSUpMh0vV7cp0AelF+sMLw5OUeRlj3QjB36L4mQ2bG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,116 +97,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_commit_filter_arg() is supposed to always succeed.  It may not in
-future, for example, if the given filter is invalid.  Prepare the case
-by modifying its signature to return an error when it failed.  Also pipe
-the return value to its callers and let them handle the error.
+On Sun, 13 Sep 2026 23:36:44 +0700 Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com> wrote:
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+> collapse_file() calls page_cache_sync_readahead() to fault in missing
+> pages before collapsing them into a THP. That helper takes
+> mapping->invalidate_lock itself for the duration of the call, then
+> drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
+> takes invalidate_lock and then waits on each page's folio lock while
+> holding it. If collapse_file() has already locked one of those folios
+> by the time truncate reaches it, and then tries to acquire
+> invalidate_lock again (e.g. on the first readahead call, since
+> invalidate_lock is not yet held at that point), the two paths can
+> deadlock/hang on each other's lock: truncate blocked on the folio lock
+> collapse holds, and collapse blocked waiting for invalidate_lock that
+> truncate holds.
+> 
+> Reproducing this over ~150,000 collapse iterations with truncate
+> racing concurrently reliably hits hung_task: blocked tasks within
+> about 20 seconds on an unpatched kernel.
+> 
+> Fix it by taking invalidate_lock_shared once for the whole scan, after
+> alloc_charge_folio() succeeds and before locking any folio, and using
+> page_cache_ra_unbounded() directly in the readahead call site instead
+> of page_cache_sync_readahead(), since the latter would try to retake
+> the lock we already hold. page_cache_ra_unbounded() does not clamp to
+> EOF like the helper it replaces, so clamp the requested range
+> explicitly.
+> 
+> 730633f0b7f9 added invalidate_lock acquisition around readahead but
+> missed collapse_file(), which already locks pages while calling
+> readahead; later filesystem conversions made the deadlock reachable by
+> taking invalidate_lock before waiting on page locks during truncate.
+> 
+> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3d7a973ea8b6f..ea7d8d5a4abf6 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1317,7 +1317,7 @@ static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
- 	return NULL;
- }
- 
--static void damos_commit_filter_arg(
-+static int damos_commit_filter_arg(
- 		struct damos_filter *dst, struct damos_filter *src)
- {
- 	switch (dst->type) {
-@@ -1340,28 +1340,32 @@ static void damos_commit_filter_arg(
- 	default:
- 		break;
- 	}
-+	return 0;
- }
- 
--static void damos_commit_filter(
-+static int damos_commit_filter(
- 		struct damos_filter *dst, struct damos_filter *src)
- {
- 	dst->type = src->type;
- 	dst->matching = src->matching;
- 	dst->allow = src->allow;
--	damos_commit_filter_arg(dst, src);
-+	return damos_commit_filter_arg(dst, src);
- }
- 
- static int damos_commit_core_filters(struct damos *dst, struct damos *src)
- {
- 	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, err;
- 
- 	damos_for_each_core_filter_safe(dst_filter, next, dst) {
- 		src_filter = damos_nth_core_filter(i++, src);
--		if (src_filter)
--			damos_commit_filter(dst_filter, src_filter);
--		else
-+		if (src_filter) {
-+			err = damos_commit_filter(dst_filter, src_filter);
-+			if (err)
-+				return err;
-+		} else {
- 			damos_destroy_filter(dst_filter);
-+		}
- 	}
- 
- 	damos_for_each_core_filter_safe(src_filter, next, src) {
-@@ -1373,7 +1377,11 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
- 				src_filter->allow);
- 		if (!new_filter)
- 			return -ENOMEM;
--		damos_commit_filter_arg(new_filter, src_filter);
-+		err = damos_commit_filter_arg(new_filter, src_filter);
-+		if (err) {
-+			damos_destroy_filter(new_filter);
-+			return err;
-+		}
- 		damos_add_filter(dst, new_filter);
- 	}
- 	return 0;
-@@ -1382,14 +1390,17 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
- static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
- {
- 	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
--	int i = 0, j = 0;
-+	int i = 0, j = 0, err;
- 
- 	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
- 		src_filter = damos_nth_ops_filter(i++, src);
--		if (src_filter)
--			damos_commit_filter(dst_filter, src_filter);
--		else
-+		if (src_filter) {
-+			err = damos_commit_filter(dst_filter, src_filter);
-+			if (err)
-+				return err;
-+		} else {
- 			damos_destroy_filter(dst_filter);
-+		}
- 	}
- 
- 	damos_for_each_ops_filter_safe(src_filter, next, src) {
-@@ -1401,7 +1412,11 @@ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
- 				src_filter->allow);
- 		if (!new_filter)
- 			return -ENOMEM;
--		damos_commit_filter_arg(new_filter, src_filter);
-+		err = damos_commit_filter_arg(new_filter, src_filter);
-+		if (err) {
-+			damos_destroy_filter(new_filter);
-+			return err;
-+		}
- 		damos_add_filter(dst, new_filter);
- 	}
- 	return 0;
--- 
-2.47.3
+(You forgot to cc the original author)
+
+Five years.  
+
+I wonder why this hasn't been discovered by lockdep, AI, syzbot or any
+other of the tools we've been using for so long.
+
+Thanks for doing all this.
+
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2257,6 +2257,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	enum scan_result result = SCAN_SUCCEED;
+>  	int nr_none = 0;
+>  	bool is_shmem = shmem_file(file);
+> +	bool need_unlock = false;
+>  
+>  	/*
+>  	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+> @@ -2271,6 +2272,15 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	if (result != SCAN_SUCCEED)
+>  		goto out;
+>  
+> +	/*
+> +	 * Take invalidate_lock before any folio lock: the readahead below
+> +	 * needs it, and truncate holds it while waiting on folio locks.
+> +	 */
+> +	if (!is_shmem) {
+
+Is the shmem special-case a red flag?
+
+Probably this fix an acceptable minimal-thing-for-backporting.
+
+Question for maintainers as well as for yourself: but does this
+indicate a need for a more architected redo?
+
 
