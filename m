@@ -4,95 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBB41C88E63
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 18:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB23FC88E63
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 19:26:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D257C6B0093; Sun, 13 Sep 2026 14:49:35 -0400 (EDT)
+	id 4DCF56B0088; Sun, 13 Sep 2026 15:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD5676B0095; Sun, 13 Sep 2026 14:49:35 -0400 (EDT)
+	id 4B5746B008C; Sun, 13 Sep 2026 15:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE3B6B0096; Sun, 13 Sep 2026 14:49:35 -0400 (EDT)
+	id 3C9736B0092; Sun, 13 Sep 2026 15:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CD2F6B0093
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 14:49:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30F851C2D7C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:49:35 +0000 (UTC)
-X-FDA: 85209627510.29.C96E4E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 995C81C0004
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:49:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SFRxiGvj;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789325373;
+	by kanga.kvack.org (Postfix) with ESMTP id 0857D6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 15:26:31 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE9BA160A58
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 19:26:30 +0000 (UTC)
+X-FDA: 85209720540.12.48AA8E8
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EF40820005
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 19:26:28 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OHjTVdFh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789327589;
+	b=OrnArQU6qx6NTyQcetoDWelJA2eLDx0OsKbP0xBvpOWO5bY2Kt9YjaH2EQkW1y7coVe6xu
+	IeSyz3Gqne1UiDANMmVkyFrM49uBN78TIIGNc6hriT5dzqG3jGX3FsqxSQwc5qeW6JQs1P
+	InQ8Dvs5K38nDSqRkp6UCbDaZxt7AOw=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OHjTVdFh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789327589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ASqH2opBRIlLEsueKOw7/l+ZMjsrPLzg0iHEi3azRhk=;
-	b=nW+leU/AZrKhA0TvbO2Hco9RaUu1xsiDdMaUKOQV1ET87za43aEyA64VlrSwxjhctevVLc
-	TW9ioKvq+pCMSlJxrwQBhKKqhEEwH6Gu0LulWaCiGi2sz8Rec4jv9v6Iuwm25TR7DGyGMk
-	kCW6CGOku8urR7SJupnPRkzoU4wBKK4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789325373;
-	b=DDNwZA7D8BBtCbVqvX2Ge8W+BcwkIsfI2OMY88T8ruOZjIHQZrzC39DQ1FHVbb19+N4kWc
-	c3AHp+VUTpgAVft+qeOnsTxqGf87u+FEBUNcgXWo2eWSyzUCP0Polv6qKy1eAj4Y7URy5U
-	ou55Aqbve9U+cSLsntDaTGO8mHdWe/0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SFRxiGvj;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B209141605;
-	Sun, 13 Sep 2026 18:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717231F00893;
-	Sun, 13 Sep 2026 18:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789325372;
-	bh=ASqH2opBRIlLEsueKOw7/l+ZMjsrPLzg0iHEi3azRhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SFRxiGvjwDh+Y+1T2fJ1/aw58TKDIFHaBrbZRrT+UzodT19W1INReS6lIicR23TT2
-	 Q0972OJsaAemnju9rB2GkRyKMJkEzlhbpdPs4KEvEcJXeNe/NIC0YVc7stUSSvCyVj
-	 2/q8JtOvq5touWQUHq85LonqAym+Q+CrQU9/zvQSkcsrgiGzHOAQ3vOESVenX3h8C0
-	 DOaXND6FYi3ljHem6MSczwwBW2UjTPmQw1VqvF55Wf1Qp3HYfD/E36aoK+sYC09n73
-	 MaH06+tG3v84lMrCvA6cjKnaUCDIuBvDtySuHpj/DCtTdRheSswI2QrmbMRlSaUb9V
-	 g271a4fZWecvw==
-Date: Sun, 13 Sep 2026 19:49:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
- collapse_file() readahead
-Message-ID: <aqbwKLwMss-UG4bU@gremlin>
-References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
- <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
- <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
- <aqbvFtlXd3Jdnfbm@gremlin>
+	bh=O3bm4p3XYFyhf+gjUNcp2hdrx1XIlgahhu2l/35xw9w=;
+	b=b1Ne/fyzQceVLlmVm770oWViewtyB6raFU57IRKJA8a2OPiwSrFrCmSitPjMFTAuGvlKog
+	NEz4ery+1naI+lIzOJrR/upTv6Y+FEtBEkON4r4sDgKTAmYlAqXBHcOKv/gBXqmMWnl5WP
+	rPOOuQp8jX6dRu08tMKU10H3SQupF8M=
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-5306706e89dso169081cf.1
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 12:26:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789327588; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Lcm0Unv38SNXF+tPZVk1rtjLrLX2aSCNaRlftmFeYdd2Gl5QeiAiysHp+2Jpsidy7e
+         NsS50pkXapW0rzK1hjEAQeG8GRZ2F5LXekmLzSsd9oVK2nijnUugXjWge/gDPQSyuNWG
+         J94+O9opd5MnAtwwCrhKBoe9qpBcWgtisnoz3FI176dL7yex4Nxy/u6een2TRIS/G6Y8
+         lBeAeiTKZc2PzvAZ1zfKZ3Q+66StYjJxGH9Pibed0ZO2J4ofqL7TeR2JPoZ+IqlFZFeu
+         LHpH7ipi7TM6fPqbnB3QqdlHWoQCEO2WPuOB+5PBuoSNSOJk/kvkuAg6tWQxa2xggysh
+         opcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O3bm4p3XYFyhf+gjUNcp2hdrx1XIlgahhu2l/35xw9w=;
+        fh=9bfa1gfJsrPOI4jqXRYNR3UgUe+2RTDtVQwv401qBlo=;
+        b=ghBD8tnpXhshlq/wXBcxRazQugXwi3jraeo28qebhUnrsdTZzAq+lLAd9cL8WYkrFj
+         +p0iKJZPF8Xe35z3riAILMTCdSV09X6JvapVtbKzau21HAkkvOa3WyWPKDss34GKYkYP
+         zPK+K3V2GjHEnvhNi1sZZDMm7PNKvK6COMV5mz6Mlq0PzHEDP/H12RrsaZCSbqcGixNB
+         SAbbtIZ6oS8ASOXBDEfdGx6Xj/OfsDTPcNpHZdVPmnkEPAzsZTaOd0U7IjjosTyxY9Aj
+         jR/QBVh5ovEhPHW1FD+Nk4PBoRo4+gC5Ou5hZ1WRiWMlSw4XEeZtd4R3ZiCrX+Dg38nG
+         6i6Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789327588; x=1789932388; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O3bm4p3XYFyhf+gjUNcp2hdrx1XIlgahhu2l/35xw9w=;
+        b=OHjTVdFhIo5IGOB1cSNnwlh3arBJZR4bTZ9iZUuREYw/v1Ly6zk0x+1KSsciDwzwlL
+         cDdzmnpCcXw71hAwAbk7M2gaKBTTIHoAxIlf8vfg88RnkWzPO6qY3J9hcfLiP4JlFuiX
+         cjgWKOH+Fplali/hUwyPUK991k+o/btiO2C6KN1Zf/Ok56BN16wgCGIDJN1nX8bGQhA+
+         kixZPOsVw9UmlPW8wlRcyS5rdvyW9sGUB21XKqQOaAuFwJ3R/BAnJhzwYcH5ZXHYDbTo
+         Aa7tqaq60+IAKr6KUc2yVMKcCdiEjN98hTOP//M53n5bFlggGVkhD6Vr4k9P5oD1rcpN
+         J5Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789327588; x=1789932388;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O3bm4p3XYFyhf+gjUNcp2hdrx1XIlgahhu2l/35xw9w=;
+        b=oNqUk43RjwRwLQnzSFrFIfyMs9LljDvCI3R8OJm7LC8eTwn16VcFQdCbdOLkfqkvIb
+         LScF7xXWLufpYzEVjSX3ZEMDbMX7uHtWSAiAi+CO48j2v+mTnPja1NopeM/9wetJBm14
+         Xt8d2Nznd+ItECsbwcrBMpPGQgW1dVJzd2GhHxduJMeVHEo9XN1WcyYUxZWZW+KNIRzV
+         9IniJ93BQSRBldyFZaUVc7uTMEZTS1qcZ4mIzra0J6YfeONtTcfmrTvGxvAJVRYlxr9P
+         7/RREte6HEe/QzHz204Hvq/0jpXH0WuKUEQJ3MzL3PIEKkbaE93ViDpshbGDO/elXr8n
+         jl9g==
+X-Forwarded-Encrypted: i=1; AKwUvBz7aXUZomB0ltry4DOResLjxVk3Qnkdj+Ys7zgiUDDAoHdfAKXE/wMud76EzrvsNIIQFHGheX3+AA==@kvack.org
+X-Gm-Message-State: AFuF++muVsGenofM84EBuHmlUCic4YVnTXdtyOpuiyr3kPs8YVbuzyw1
+	j4+oJzHTeqoiLrtr4Orl3m+XssPQrjI0fTvlFhAMa5obd1nWU+XaBGXDsaFdWczCkN4w30lLuzj
+	pqrmbPfVouNiD6IsEg85pNT8B4/mFxA1ZsPVKqQ8y
+X-Gm-Gg: AYBFou1zjn9sW0Us9suISuKqyIaEOIRcihSc2nHHrsQrPwsy08hdP81IooecoVV4QbX
+	Gc17C3KhoGDU4g/ElELgXuiTSd4Wux9DxsFTatkrY6gR+YjGisjU/Kh4Kepg1+TcwTnD4KjzTPj
+	x8TuvuAJaWtOGELanLfwTfBIUvJf3YDbSK4yR+wPgJHx+GGkVbGjmUUboz74SdzIdzcbcSI9QoS
+	HDmX3rCUbSwyE7kcdY/uIpO6A9dls9fUvINJUcZVtP87q9wOudhecUlGx8pE6eI5Pk/g6EZmMtp
+	on8evkfdEaMg17tTbpw/gLcPFa3hkNn7I0xMchxsiRK5V6CtGFgb6LyKCDEAION9
+X-Received: by 2002:ac8:7fc7:0:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-530f8b121dbmr9139921cf.10.1789327587349; Sun, 13 Sep 2026
+ 12:26:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqbvFtlXd3Jdnfbm@gremlin>
-X-Rspamd-Server: rspam04
+References: <20260911194145.1781926-1-surenb@google.com> <20260912002436.0605a85b912eb8ae406cecf0@linux-foundation.org>
+In-Reply-To: <20260912002436.0605a85b912eb8ae406cecf0@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 13 Sep 2026 12:26:16 -0700
+X-Gm-Features: AcwNN1VI8o7qgtAf7FpFyYAf_QiJM539hgJGQoLRqGdhk0b6X3b8GUp7lNPBUcA
+Message-ID: <CAJuCfpHW24Vh2RSr7qwzV0jmWz7oirrG2F4JPCuBnnk0x09NyA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/7] read proc/pid/smaps_rollup under per-vma lock
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@kernel.org, 
+	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
+	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EF40820005
+X-Stat-Signature: mh1itb5dqe797zw6pm4jhmcet1yh1i7c
 X-Rspam-User: 
-X-Stat-Signature: z3srtz3ps3e48ns5p9cdz8d36j9zc75f
-X-Rspamd-Queue-Id: 995C81C0004
-X-HE-Tag: 1789325373-850978
-X-HE-Meta: U2FsdGVkX18TjnCVkECqQQ8rUOb15D3CnNQ5b+0jO7RGNcvpdp/UHPo1017YKyQXezQdAnAFJ64RXKBsjLhGfkd7ZUDaeaklqZyJSoXUVLvJ3QAelst9eC7zlXmLUa9n0bHsFuDB/SA4z0TdD54aV7bLJoBXHe4R5Efk5Vl6E7d6M/wNoLnGIaop4OU0lk5BKyjIYoSFD/0oEjTy7CKn2KPKz2xR0ufwBQYBoO411AB72sAyDaBtEiYw37/AAYHWX/PT+x1Q0JQzruNv0Z3o8qrtsHkaJD2VZjNfY7DNK0MM81iHaMmflvCsB1tALlKduocazIbBDTN6V10OEz7PA1uhIuWZCOMbDrWOU2fYLtUpRRgLY/HNM02eN384AmJxPempflx2diNbzbdj4p4hXUKCNw6fbuR7lJnnKGaw76/ZmTORH/+SvBOpeHwqVTjHjAnuVcsZfJnVGJlvGBmnct2gJFM1ITiy4WmXTXW5+Mm2HVEpVtY/TvUWX2OoMISxa0W5qLZxMQWbSzb01KyDun9ouA7b4rQas6YMXqJkzQs4KsfAZxu2m/D13JS39o6ltn2q44zoIUi4tU7fZadNf7BwDQ6ySAmSlR8/YSBerXME2KAxJxTqlMVcFTFCNiPznzchZGK2DkAU2txABklbUsU+E9+ghtvEaLc5RNioa5KB6KNCrGSUTssZeP+af5Owjz24ybxZmpIPqMN9Ts07uNbFLJ7mtyEphukSQobtpUBlPOmalh5hyL1jkqUsuN+GvRmbrV2gz4uW4LPxujg02D5DmWLGN8oaER9OytqEpFu7HpZ4LkQ4MuezmnChPVhiLd+7xvFL9JGd9rAlYyD96zdqJNCTYGcZUTKbutOyEAAhpUpl5jQiiyegOkUfqNPOi4AnhyBJvHaykKRY9p5Q7Ct6dYlqTls/qTpKeU6znImBO2bUhncKNrGiDDK2QFyvEzxyDs5MKf5P4LTQRZn
- H2w8Wja3
- ePVodxfJaAeLkBMZmnttZj+0r3iiEFkoZFFmDJwkOoX+tPJainFp82LwZthRhpK/57spB+e6/GLt7QpqD0E1Y23vhyu55bluPLpmvjyczpRHOXKiQOZ8TisjT34QCHy80CSSoyIp3P2rxU9LiJ1ECo3eI9AlDfnz39IOXnEgELf0FAvrGCY2q7W7l8QyOQP4uDckY7a8WXc8CQC6OsCF/OxZ4mjzQRBLLeNfWN3jS1pJmQPJaoH6B428rXawbT4cP/ExexxSF67Gzu64WsJ6sIa05lDwidq2RSYL7FVP6uH8KH0weJhBmq0oFkEH44UaJ1USquxYI0OMa+KSk2PUjMwdP5BIJooexqJSOMdFKdkcO6W4hjLyBHYiZ9A==
+X-HE-Tag: 1789327588-109451
+X-HE-Meta: U2FsdGVkX190AolRevkTiIkjwKspjawxYLrn0eBVagqAIEawTT5eklp06HvtVhEu4tzqOiUtlAoj6Y893qRhWCEiBuGSIrdIg1ST7hzcldumtzKjWJgiPCTNlMsT/JejfTNZIthkW/NZcjoEeIy6xUiS1iy6rn1nrBSReKqb2mBL6lQIY45pJJS4KrpQ/cWdvtp4yEK29aoByZSwpOgRy9kuBEmreXVBaEKvJMPnSUMvp6dfvZwSDe/853HqXonTrCKW1FOSBOXhIE7rGBwrozrQeQ99kPqDg5RsLlTTRWWJYYU2rsfpLkdrn0jWKmWe5I6kbB1EeFJZVkBqyhhEd/8ywy9EM8+FxSOvr1+Q5yYT2RBNmhQggZm3a3qKT7lDn+pnu1EnEE6boQ22+gBMWtD2vgS67A8c5hseX3DKgMoTr/fyFHXhOiC0l0Ig/+sDFFnamHHZe4Hs6h/6pIq+6J2vEiPtoMOXLvwhDdsLMTKOiCnjCbLa6KRAuAnuUFEgPx/SYzhG4XXqjSFspXwiz3w/r1gks0BBvCOX3qIV9IWLsFOzRTqhfg62y6rPgvRuDbxb9g1dEA+R4Qy9ZkceyH4mm2QL+21Y2/5m7ovNp5NjAovYm2hp5opfk+sKKjdkrU1CBzbpvaoXrgZojokuC0myFEFP6GJ/BHZrCeW4e+rM5OLBO3N3AUbOwRtPujm20pFT1g4hosUyoE76BnkHQZEvQw2EOnHHDdiBq9f9L4hp9RDD7tZVQXA894pzTOJpWAZWp/hOeOvJi0z+x67/YLkkgBKn8FKnWDa7KMz+JPk8XKbV2lLFdgBcJq45xVWbKNHAYRcc9E58JNNRZGqD9+sBAUjoklzlcYMQfNT3cwttRnPd9uHI+LrrPfVbxxoqpzmBvzCPTJHQ11sMAdKG3GStvrH/ElvNnU6SJAZs1VLA97qZEuBQQKVq9GZxBPscJZyiTdWD3HbGyoBOL1p
+ eKcvMdYt
+ 0l30riTgnQo/bRxfVjVIHFb8LujXepk295JIBRxEExWA5JacXcrMm5zqcY3M5q9FVvQEGLdPSEiZOiU/+VXO81i2VL+ShjnBcyjjYN5B0kOXjQCwWHBdX2AGf5yf9ZM/sXn5seI5N3xFLSAYFJiD6xy3u++75n66WkJv41FuFEfkygYSrbPBX0hvH/91uH1lc+4GGW2YSRrV7hABWxhrylsh/8S2Bmyo9x5RFUuEWCq81fmEHy4Epf2SoMnd6Y4UkwOojcBKNxUbPNcE4DlNzetJ+VTfnPG/WfUehlIJgamdEoZqJ4C46GZI3rBiV+fg2saiNJSBbqCWkw5OecGf686VP5Ii3Kfsx5hxJBWqvxwrYRwazbXA9ev3rcYQJtsxx/4PZ+FXwQQwhRfQoXqXYIgGXELE6GblHWeJ9D7U2DpMtKA+n8boH819kWPmPf/DSQLlyERDGKM6ydRsHk9l54mBHsAmWrhPudFR+JMmvHo76xI38LWKvjwYQyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,11 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 13, 2026 at 07:48:44PM +0100, Lorenzo Stoakes (ARM) wrote:
-> somebody who has a
+On Sat, Sep 12, 2026 at 12:24=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Fri, 11 Sep 2026 12:41:38 -0700 Suren Baghdasaryan <surenb@google.com>=
+ wrote:
+>
+> > proc/pid/smaps_rollup can be read using the combination of RCU and
+> > VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
+> > required to safely traverse the VMA tree and VMA lock stabilizes the
+> > VMA being processed and the pagetable walk.
+> > Note that we have to keep the logic to drop mmap_lock on contention
+> > because even when using per-VMA locks we might have to fall back to
+> > holding the mmap_lock.
+>
+> Nice.  Queued, thanks.
+>
+> The speedups described in [6/7] are significant, although I don't know
+> how representative Paul's tests are.  Probably not very.
+>
+> So I don't know how much improvement our users will be seeing from
+> these changes?
+>
+> And I don't know how much usage smaps_rollup gets in the real world?
+>
+>
+> As I've no doubt you know, Sashiko is saying things.  About these
+> patches and about the current code.  Its pre-existing
+> clear_soft_dirty_pmd() driveby find looks significant.
+>
+>         https://sashiko.dev/#/patchset/20260911194145.1781926-1-surenb@go=
+ogle.com
 
-Ignore this incomplete thought :)
-
---
-Cheers, Lorenzo
+Thanks! I'll investigate the preexisting ones and will try to fix the
+ones that look real.
 
