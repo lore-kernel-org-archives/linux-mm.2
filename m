@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6A4C88E5C
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA50C88E63
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 152776B00AB; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
+	id 5715C6B00AA; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 103E16B00AC; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
+	id 522636B00AC; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 019186B00AD; Sun, 13 Sep 2026 13:17:24 -0400 (EDT)
+	id 3E90D6B00AD; Sun, 13 Sep 2026 13:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC29E6B00AB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C63866B00AA
 	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:17:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60FE31C2D76
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:19 +0000 (UTC)
-X-FDA: 85209394998.23.D46C9F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D41F5100003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H4W7py6a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37FD84088B
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:18 +0000 (UTC)
+X-FDA: 85209394956.07.91FEC52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A073A2000A
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZqCBSZU;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789319836;
+	b=x2QoC9Qc1uzNWyrgC2I6EvSdUoNkUWnJXU1406b002QHKP/5pdfhSSEMdouuA4XVWuLrTD
+	x9FTSJxWp7eyHEP5r30X8jnuYRrLjdpYAXQpGbIts02elKWuY7LYXO9NkN5ydKBMdif93m
+	UHGjUT2xQ1nkpPCKHWf8zza2xNqIGjQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZqCBSZU;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789319837;
+	s=arc-20220608; t=1789319836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqfaQq4DYDAwDcS6eX/vnZ8ZZiveWwkFxlbgk1mGGIc=;
-	b=QnlIkWD2g6wBGyZ4v23a2h2rE9MShhexFoPPJcDv/J9dw0OpGG/rTpFbwgAn+ZeFHJyOeI
-	5WxZRUt/5Q+ZC2Y5Dpqjju+eKmp3g59SJRE92ZNKOqgnOv+Pbwi+RzFnbzGCeM4IUytAra
-	2+WRItwMP4XhIn4C44nd3PcB1wDRcHE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789319837;
-	b=wjsN14ONbjEOjSsZ3DtoYrxTMYhE1ToKDwFA9cVZF4cwoxhtbk0rImYOeikwSdNnAqR+/8
-	lOjqCPlRSipm9wKRvXFlp37gQ3W3OfjlSbbgBzquhdRqKgjTYD/UDxmbmMVSLI5jmmhnwQ
-	bmh+2yCltkByevblAiEkkRwVO1WG4QQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H4W7py6a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=hPljEC41AE/9V3Eb7L+bcMCBYD4RAk8iJtQDR/e+uUw=;
+	b=slKeBd90FUzbYHxTO+jNM0nUZpvR+3i+NCzYPPK3BW7eOZtUk0vFPApboiIdMCJvIyPlpY
+	tuYKc8skqsq6BxlJ+Y778YxbkmxaUqfrZyfslUKtodH8iJYd7uvFgscjF6ygjn/igF5/Iz
+	BNfOD5K34IBrR1HBrnhctMZliGKU7AY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7990760E9E;
-	Sun, 13 Sep 2026 17:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98D71F00899;
-	Sun, 13 Sep 2026 17:17:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D2462406D0;
+	Sun, 13 Sep 2026 17:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9061F0089A;
+	Sun, 13 Sep 2026 17:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789319837;
-	bh=nqfaQq4DYDAwDcS6eX/vnZ8ZZiveWwkFxlbgk1mGGIc=;
+	s=k20260515; t=1789319835;
+	bh=hPljEC41AE/9V3Eb7L+bcMCBYD4RAk8iJtQDR/e+uUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H4W7py6aOI53Y/ZvNSunZRHFe0l0i6pGkVwow4aMEflbBTjd5mP73d/jl4iuSE70w
-	 /wMFvEg+0UIYFIoEVo3WqwWNj/gFLtEaiCpbb3iCkP144bNl+M74+2wCvC01cCK+hV
-	 8fnB74LyzDzBwjdXY70NVF2vwiQZy0ru2VnbjyQIKq+y3tDkBc2HertUhRQBF7vz5a
-	 juJklc1eGsYaq31xW8meHEK1YRl0Wo9eUadCuSSylpj3dz6eZAlIsCF90TCJ1sUAUd
-	 Z6w/90du8neSMJ4i5vBWBP1W0V6eZrUZdmcDO+dDrf2GqhFrQTWKwuol3yI8zdQIcL
-	 3rM52daiIfvxA==
+	b=OZqCBSZUf/wQ/7MYqIfkvWxbZ4LmvLyMBfTw8zz3VNihGmgE3PHX+t8GljC//GAtv
+	 IXTqNmPCVRLj/0+JPAfXmbAJh3vqi1T5btpqHhI0y8l+FIc3vXJ903nUnY2JXNB0hd
+	 FUL/VGgP+3+M1fo0Utf/5Ep3AAwJULWe7mL8QiHYjMoThnKWhtjazHkPLKvQ3DfLON
+	 IvivD4wTgidbdYci5d9MkpedjdF+oR4gXwLeAsDi/HpiMdmAPQQ0v8ZH11RLIVjDm/
+	 8e3Y3e3HTlUsLdiAPPpN0fAnCty1kx3IzL6JKcCvmW2OKLD8S69I3vuww+ObjQwaaS
+	 a0we1B1eAtS1w==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 7/8] mm/damon/core-kunit: extend damos_commit_filter_for() for wrong input
-Date: Sun, 13 Sep 2026 10:17:04 -0700
-Message-ID: <20260913171706.103052-8-sj@kernel.org>
+Subject: [RFC PATCH v2 3/8] mm/damon/core: return an error from damos_commit_filter_arg()
+Date: Sun, 13 Sep 2026 10:17:00 -0700
+Message-ID: <20260913171706.103052-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260913171706.103052-1-sj@kernel.org>
 References: <20260913171706.103052-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D41F5100003
-X-Stat-Signature: m3if6i3ow7jkcgeqr61qjxot5daf17c4
-X-HE-Tag: 1789319837-92931
-X-HE-Meta: U2FsdGVkX180AYk1pkSY98OYgoNacBUuME2qRqjuf7CmyKr+Oxm/pUZKsNsBkH8/L2bznkwp6I6coUzWPot1W3UYCEQIDgZls3+4a92GunXnCJ8B9zpCTmAUYW+1sTft5Stmzqql0tULDXS2hhToxbkBiVlmUnN390oHtkq9XbLJtTyxFj+GNbRDOK9We+zhFsJnVfJPyzdtDANAEn/J4h1qWs+UVWOyEB6mOPT+mHgO9Dgr4Rlyj9KcWWgvq+teeJ2b//S1aPU1U8qZdwCQt6rgPand0Hh1ylS+/4dCrePOXWECdWLp8CZqyNayknwO5xZskfDfis4//fAKLnPOgiCfaeXFPhVNUprBmWOM1jq6u1gEkjT4DLMIEwJ8vDEqtd333aCS193CxMc4kKkW3nsvDqzsqotoYwvo8wX3xRHsAdCB6qYb9IyiaFjewgKx8F2JPudWMEv5s/Kjh0NCAeRTOico29ugep8bHj0BTc58DkGnaoZU4A/Qx5XnzcHPW9yyaH8S3SvQ+isCnMKoMR3qLoWjsOL4eJX5qRdHOdKm7WZ0Y7XNSwAlJBRegNS3oDaIZFYv3D4AgtlOJ0BxnxFD1JYDW4KWAAxzKpYZLSstxifiz//doqH7VYUUzeiOtPs4j5DRkkcOamS6hj/MZ2uPGxiFAI8+xTonbHXHU4BVfr/vdwuqEt2WKQiO+OBt/A3Myegk0TdKX6kP5vGHcVe3pnyCCQ4uh2MmJSjAh1djyii1SokCC9Bcm/Jj+paeIyHOaiyerxgPhSgzuuiRDw3dFBvdg9Tb/Qj21gwfMgiZfouvg+eo2clerRBIAhhNNxy+29hJwKDQuhLpwaKsPGMisPhHe2mOxIwOlTl85hDlHtGJ6pV1/gK+rO6MuleF5k7dsVY5d0ktEAvC7equ2qYUvAaXc6iJuxylrHNr2AmZVakKa0/4nUCmUB0GsL4dKprvsvaZvo9nO41SE4s
- eJkN33u7
- yvHaKG9ZCaY9fUJJ+zXS5afmqnh+sU2WGOtKo7tLteHlFBx5kNmn8f1HBVh1a46qYw97oJA0JZURSFDriW209OJwnJx5hnGCGRhW+VLgC1apVhgQZNOnprJdV1sg8tMWB2jRPOsvWwV5wLyyqb2K4Lv2kTLz+mABmzXD730TxC8IqRwnw5K7/JoKPSXh8v/AKMOzBYtARWp/7ljLARYIgQ9V/jq6VW4hmorvJZnpmEeE0onyxAJMXkUDAI/lqat5DOwBZJ/yboI+kW+d2b/B9AZoSJw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A073A2000A
+X-Stat-Signature: g6bey3db78pqw5xc74iofn6xqmht87b5
+X-HE-Tag: 1789319836-381402
+X-HE-Meta: U2FsdGVkX1/7PuO5gwaC1OoOBRU+UxSbKyPP6ri89d2sFu3NCcz3no83iF2NON2DuCmP+Ggex7g7MdovU299soH+U9A3RLCtQOplQiOur//bp8X/0AvOTs22PhZ/3rt0o2lAH1Vb+yYmNsYU5M5e3MIAHP6ezTZg88qrQPu6AGj6s7nIxpl1AgcJ2svkp1LTTnvQufKNm4XgLx1zOMLPSH4+FuyAG84O2dqTJQbFn+uHA4TBp8WltP9G6RFuDBrDlHTixrTiltDwEdv2FjTBb6MfYQAAQ71Cq7pQAZccgZKRq5ERlr6L+hMUTvQKODI/GO/MViDvUtBUUCvUsR030Tz+Z5esSHs55VP4wZE4kVOFpQEtT/ZhgH077GCW6q1D6RyXY9kh2CTmLA+UZhw1UZY2cPFAbK4vl7S6GcyzRk3vFvQUPC/nHFI41E96BcKKTsMsHURoOTQ3ncX1btE2lpgmmxJRIDtpjS03O8oGi8NnAI5lzJ3P7tOni/LewDK0Tcf7UpdjlF5a/XL1QMipytDZ4gt40+t9mhwaQvYyaH3Kbr04u+U4vfMR45gdjOYdBBmhqcUWyJhRY2ugruH6P3KcvUUM//UJdwCPrv2a4CQFaRgfz6Kth1WS6EtXavVHLnd7FPZDcotee0SqYtZ2ZL1mAch8i+PS7n+nO7zOdzZ1Rw3xSDjILa1AukKxbhAEZaExB4xsx0qhNaUzFSfaO4T3WBAY3sL52PRh2I5Eh67Dh77jVA1rO4Z5r8xazf8LRc9H8Z6/fkqDfOHro7jW+3xtfzG7X3kuC8ITQoG2m7PZWZcvFsdR9svX3W9z8Ie/Y5bBsq9uh3WHh8yvvCbaYB171pB7DoJYdI3lX7ZRTQgCY4BuROOI8PE+ScQAf4ZqRtMk6aLOejxckWm8Q0I4w6TfOI9mCbx9f8+7LwaTinIblKEdDXhbgaGagW5XXDkXQhP3IeBW0dvtpLjS5KZ
+ barLUpls
+ OUagACrBkNcDCE8vJGqKvgCtWHZ0zekcA/m2IjlCLgQ/PG4FIMzrWONZ8XGnjFXOXq+sy34VNrrMndemojeuoUlTpERjkdSiPIx7++wHjH4utIJKq/q/v+1Ce8wOBAB/8i6sd/su/uGd8+ym36k159I0dzRwiZ7z+p/gZt2gQj1GpBW5fd3tnWTaKhtGLTA3EwKpOyYvE6o4KVcWKjWSJG9gnww1KWqlQhUeNG2CsTaX4I5w3TBJmb2JKvmau0zM+wAyk96QDuqQGBDXTdD13eLWZXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,94 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_commit_filter_for() supposes damos_commit_filter() to always
-succeed with given inputs.  damos_commit_filter() could return an error
-for invalid inputs.  Existing callers always pass only valid inputs, but
-they may pass invalid inputs in future, for test purposes.  Extend the
-function to be able to be used for wrong inputs-caused error testing.
+damos_commit_filter_arg() is supposed to always succeed.  It may not in
+future, for example, if the given filter is invalid.  Prepare the case
+by modifying its signature to return an error when it failed.  Also pipe
+the return value to its callers and let them handle the error.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ mm/damon/core.c | 41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index a47a5cdf285c8..c9941f3bfb42b 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1127,9 +1127,15 @@ static void damos_test_commit_dests(struct kunit *test)
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3d7a973ea8b6f..ea7d8d5a4abf6 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1317,7 +1317,7 @@ static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
+ 	return NULL;
  }
  
- static void damos_test_commit_filter_for(struct kunit *test,
--		struct damos_filter *dst, struct damos_filter *src)
-+		struct damos_filter *dst, struct damos_filter *src,
-+		bool expect_fail)
+-static void damos_commit_filter_arg(
++static int damos_commit_filter_arg(
+ 		struct damos_filter *dst, struct damos_filter *src)
  {
--	damos_commit_filter(dst, src);
-+	int err;
-+
-+	err = damos_commit_filter(dst, src);
-+	KUNIT_EXPECT_EQ(test, err != 0, expect_fail);
-+	if (expect_fail)
-+		return;
- 	KUNIT_EXPECT_EQ(test, dst->type, src->type);
- 	KUNIT_EXPECT_EQ(test, dst->matching, src->matching);
- 	KUNIT_EXPECT_EQ(test, dst->allow, src->allow);
-@@ -1168,47 +1174,47 @@ static void damos_test_commit_filter(struct kunit *test)
- 			.type = DAMOS_FILTER_TYPE_ANON,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_MEMCG,
- 			.matching = false,
- 			.allow = false,
- 			.memcg_id = 123,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_YOUNG,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_HUGEPAGE_SIZE,
- 			.matching = false,
- 			.allow = false,
- 			.sz_range = {.min = 234, .max = 345},
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_UNMAPPED,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_ADDR,
- 			.matching = false,
- 			.allow = false,
- 			.addr_range = {.start = 456, .end = 567},
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_TARGET,
- 			.matching = true,
- 			.allow = true,
- 			.target_idx = 6,
--			});
-+			}, false);
+ 	switch (dst->type) {
+@@ -1340,28 +1340,32 @@ static void damos_commit_filter_arg(
+ 	default:
+ 		break;
+ 	}
++	return 0;
  }
  
- static void damos_test_help_initailize_scheme(struct damos *scheme)
+-static void damos_commit_filter(
++static int damos_commit_filter(
+ 		struct damos_filter *dst, struct damos_filter *src)
+ {
+ 	dst->type = src->type;
+ 	dst->matching = src->matching;
+ 	dst->allow = src->allow;
+-	damos_commit_filter_arg(dst, src);
++	return damos_commit_filter_arg(dst, src);
+ }
+ 
+ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+ {
+ 	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_core_filter_safe(dst_filter, next, dst) {
+ 		src_filter = damos_nth_core_filter(i++, src);
+-		if (src_filter)
+-			damos_commit_filter(dst_filter, src_filter);
+-		else
++		if (src_filter) {
++			err = damos_commit_filter(dst_filter, src_filter);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_filter(dst_filter);
++		}
+ 	}
+ 
+ 	damos_for_each_core_filter_safe(src_filter, next, src) {
+@@ -1373,7 +1377,11 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+ 				src_filter->allow);
+ 		if (!new_filter)
+ 			return -ENOMEM;
+-		damos_commit_filter_arg(new_filter, src_filter);
++		err = damos_commit_filter_arg(new_filter, src_filter);
++		if (err) {
++			damos_destroy_filter(new_filter);
++			return err;
++		}
+ 		damos_add_filter(dst, new_filter);
+ 	}
+ 	return 0;
+@@ -1382,14 +1390,17 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
+ {
+ 	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
+-	int i = 0, j = 0;
++	int i = 0, j = 0, err;
+ 
+ 	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
+ 		src_filter = damos_nth_ops_filter(i++, src);
+-		if (src_filter)
+-			damos_commit_filter(dst_filter, src_filter);
+-		else
++		if (src_filter) {
++			err = damos_commit_filter(dst_filter, src_filter);
++			if (err)
++				return err;
++		} else {
+ 			damos_destroy_filter(dst_filter);
++		}
+ 	}
+ 
+ 	damos_for_each_ops_filter_safe(src_filter, next, src) {
+@@ -1401,7 +1412,11 @@ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
+ 				src_filter->allow);
+ 		if (!new_filter)
+ 			return -ENOMEM;
+-		damos_commit_filter_arg(new_filter, src_filter);
++		err = damos_commit_filter_arg(new_filter, src_filter);
++		if (err) {
++			damos_destroy_filter(new_filter);
++			return err;
++		}
+ 		damos_add_filter(dst, new_filter);
+ 	}
+ 	return 0;
 -- 
 2.47.3
 
