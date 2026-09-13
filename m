@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E26C88E63
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242ECC88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 17:17:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23CFF6B00A5; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
+	id 7BB736B00A6; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215B96B00A6; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
+	id 76C7F6B00A7; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152EA6B00A7; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
+	id 682406B00A9; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DCB6E6B00A5
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:17:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4B3A1208C0
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:20 +0000 (UTC)
-X-FDA: 85209395040.01.10B81A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7A69A140002
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gEU23QJZ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 445AD6B00A6
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:17:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CFDF31408D5
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:16 +0000 (UTC)
+X-FDA: 85209394872.03.4AAFDD7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 61CE01C0002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 17:17:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMds8Aov;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789319838;
+	s=arc-20220608; t=1789319835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=as3OPkNFsYYWKFBQO9tZASdaFQXU9TrMOPenfE/ek3g=;
-	b=lD19splMGlW5w8HYCA5IfNAgQN25MLq+42tTFYFWnJARXarff91U7Dn95Nd1BFxVG9OS/H
-	M+FmydBA5rhsfj8eJM1fk83hqWxCb1vYWyHBJLUZrYg031w0HKTF0IjlXK/2Ur5Yml3vBC
-	HLe33M6sMhccgNdNCLcWiuKDJHbwQRQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789319838;
-	b=tWzVryStMjqeLxFWUxmrNMlzXHwTTF5rj/V9lmS01ACTmV1aPxsJO5i8Z4gJUNGpOewwqC
-	fek8G76keu2dUluWZqPDAXUNzYe4p73QQhCMCCZMsh3cRs+ppPSFwR5YGHbtcQmOChRCsb
-	EMkIW3rOXw/Ct5ab6bErQPYGZx7YqaA=
+	 in-reply-to:references:dkim-signature;
+	bh=3+8k6ainblVJ8ZQoxyR4ldMO4in1kOwavTyrKMtf2jU=;
+	b=Xp6qpZUSv/2gy+slwSb0JR5pGhMllMT93SN2NA3N9TKFRC3eUntgTrnzTFeyMuvLiEiG+R
+	bsggHvPDonWSi9hO6bm3nERk2nEAjiEGEVjLUVRkZluc8XTiw3LgBZJPenYStoNfyUwOu0
+	MkXBrS7xzE5RTxvTfozkLHXfCm3x6dM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gEU23QJZ;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMds8Aov;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789319835;
+	b=eKk89VEIKjXU5W0uF/xv2BYPUgZ3X2wm45BoKaw2rWtPY7jursJolUUwCBrkmnIp9uVto1
+	wzvx4b8DE1W39Bq8eIY2WeU7npaNDpNMRy7OSI9WWoQf0r/FA7v6e414L6LVTf3ykrxVKS
+	6WAV4oi1mIhOT1a7u7UzKYX1uSZ5NIE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C809944963;
-	Sun, 13 Sep 2026 17:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E51F0089A;
-	Sun, 13 Sep 2026 17:17:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EDB7760E83;
+	Sun, 13 Sep 2026 17:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB1B1F000FF;
+	Sun, 13 Sep 2026 17:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789319837;
-	bh=as3OPkNFsYYWKFBQO9tZASdaFQXU9TrMOPenfE/ek3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gEU23QJZRHcX0hf20lXi65rqTmqiivKMAkC8NWufRT7WW+XbOERTEzf6LOBNj+o8T
-	 KdT2r6OtpYD27Ng7Q+Mtlp1jDlRl5lYYltAWyx8puWG25O5SQTLk79wNHEEw33znUr
-	 uRwJGhZbp2nM9BidpT2oc98FQAtiyvIjxACfE0xEnYZuV+KiEmk77q2lMdO+mKC8n+
-	 UTRrz7j85k3xK4VbbWGOH/rphd0YXZa7iWF0dEiiGGODzKFevfGLMmWzz776B+acKc
-	 MTB+wmuAUkZggR2syAibirXfUBPQLBfUVferBLJ6EWSxUU8MtnRqSnxVRL7eAvqq34
-	 ftqdznGyrAZAA==
+	s=k20260515; t=1789319834;
+	bh=3+8k6ainblVJ8ZQoxyR4ldMO4in1kOwavTyrKMtf2jU=;
+	h=From:To:Cc:Subject:Date;
+	b=gMds8AovhvmAXMi8//pmO+kS6q3uU+kD619aoEYC220mBOHKi4sqsINPF1x8qhsjq
+	 7Q26+jswgTXjbcMiw6cPjaidfAZflaDU/Ch65TEel9omyqF1K8LeTTZ9yqZBtYNIyy
+	 oO7IlFC56ZqCm7nFVZN60K2CooGs+SuqA4Np9EiCF4ZFIOwrvZDE+QkqCEhsECVF9l
+	 8wFKK41WSbjXmHUOplf8chlJxt/DO4aghUm6yeGYY9KzbZhaRZy4WxY3uTHzyIFX7m
+	 JmtgFJqr75P6MXGZdtsKr7S/jLsK2DhrWazdm2gA1mBtC3PRVoIh46uhafQLgxULB+
+	 Gzau5nf5wsg7w==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
+	Usama Arif <usamaarif642@gmail.com>,
 	damon@lists.linux.dev,
 	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 8/8] mm/damon/core-kunit: test invalid damos filter commits
-Date: Sun, 13 Sep 2026 10:17:05 -0700
-Message-ID: <20260913171706.103052-9-sj@kernel.org>
+Subject: [RFC PATCH v2 0/8] mm/damon: move damos filter range arguments validation to core
+Date: Sun, 13 Sep 2026 10:16:57 -0700
+Message-ID: <20260913171706.103052-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260913171706.103052-1-sj@kernel.org>
-References: <20260913171706.103052-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 61CE01C0002
+X-Stat-Signature: kncfcb4f7wdexwqgdk6ddg86h6d7ppo1
 X-Rspam-User: 
-X-Stat-Signature: q91dzr5wi1so7qedxhqttnfcatsimuye
-X-Rspamd-Queue-Id: 7A69A140002
-X-HE-Tag: 1789319838-288154
-X-HE-Meta: U2FsdGVkX19UOXVp0OgTTdh64ndv/BMOY3+fkSGW4K8L13z8I6465g2jlT0B168HaPqMy3MZMmUrbL7unAbUwiqKBvEGq8m2mu9z6pcthKokYiGz1GWsJYujnW5q+Q4OF/b4wQ75+XI8+p6U1Zu682J2mOWKKw5B2PXgNdK3qEA+4D2/+HV0f8VQ0Q+SMvlCyxBMZZCzur7bOSNVrKIy3xSKW29/yqXqeFwEXgGquXn+GugAsoChThmK/Lo18QA/Ug8/CAD1HBqku9yEGQFcmw2ABODGg1lyaG5VTT3tJBJKyjKAOU3u9CaZ85xxj5cQxiWFUpjf1rRycLoHfVfZDNF5eJFcqxpC46abtznaMUUJpVKkA76TnvBu4GVOwuHEkjZc7t+L/cUVu+ohztoOCWOkYKGMtw+aW9/nOeg3HRkk/edDgTR3UEN0HD9Eauj2dADn+OcSgrfn1o8CiPdY7QBKqbhfIysYRcFXT7AUK1TaKe3lZSTPpGnHUVrPuCGUgxwIkrDaluH/8wEhC+uLJBrlPAjRbwRX7ZhnOK4tCdXocXHyJZ7/QpGJWgY5hfGanNloMnhrHM+Hid4TYECyY7RgWtTQ+OyGS/ZMjHDUZHCHYBVGMPJM1hy3UOrDqxYtDc5BykRp3Ys0ehzegmtorwY2uZh30UQw6GguyqG0K/S7+IVs/Dt/YtukNdaEFnp6Xs1ACOuV+5NZS438TloryFPbE4LaD++yK5ZUv03RkRK3TuSDy9zGbX+hxGujFkNhvSZZPFv+RMD+OKmWFgWRVKYckuUMF4lJ063yM18DBGh2rEtRu6tLj+GkHivnKJsduJNrhZB8JQ+p2VmrEc5uMKp9rwy5OCmlDZ40oOa3xhT/kDO1iORyJh9GPEmvMWSpCCZKLOfNHGcDH64D+kp9Nf5Sh7MRO3M8CJyJ7Q+cZ3Pvc+NSBcnN/jJoGIlKnNgSigoAntfLJu6vAYczs5o
- WITCVuEL
- KOaIDuv1+b95jrhSgdQ4rZQK6VOxJMcWA6/8i/bVKwEgrAopQ+gL1A3hUMWbNnyinUNJoe43om+sJRkhDGyDJo6BAVbtUq9dJUadljAYUK+XPDYLjLXqb5m6/W6Q2JpJob6rGAlR7SrJEPng3HvRnjQpIjgGA0iISqZwe40Eut46RtXOYZQ4rvwofqV8DvNvkIA+WiMdWfaYfaMT9bUlIX9t7qykykpdzWxy2pIcUIMEJNe0=
+X-HE-Tag: 1789319835-253136
+X-HE-Meta: U2FsdGVkX182cfVgDjTU84bHqXA6mXwydyz+VXJnTOxbVw9KP0639lq/isyNxhRmYtHKOEL2k2A8lZ1bg0put74ro/uF2duHCw+VsR49hjuvei/0gFjT3Z1NBI4iHCOsfI3RPCNBuux+Y6JZWQBfjgrkA4NJGjs9t4iXd89hftp6POu7TO3Y5muzfVyv4Cfp10IyUv9qoh0vFTmoBt33wWDZa0rjptTnFjvk1Ui5Ocj2Ci0FynmZhRWYG519bAj+mOOW42CfKYRZT19Iuws8XR5DTEr9zGCCO1nQvQlmwOBKXSPL0ZkFYMlZxP0iGR4Zy8pvfeYHkKTmagkqzdp2XSKaCMsNyXxssDCcamK2NTHt+Ws5MYBX8YZysOwmIp8rN25WijupyvCj+BZcu7FPsXrRfyPhNEU7pFBPKUviPVIvapLxguBaAi51h0mr1y7kPBPCl5ROdYyqLSFnnlRdFYdOMTh3nns1ORIDrVu6P2BH78bi7Oh9+LBp+vS5d6EOwtV02m9x0aiQOOsxDTIBvr+UL/f9tz/v5jyfBzSqpvlpKiN26183wT1tQGqkcG7YUpfG3YtcTs3i3aGmqw1CpNDhHFMFFF7oTG5PJvBP4U+8STUsCuz1aGoYDYX1BeyUey/qMvj0Wj0UU+vrkXMQV8M1kopB56bAwKAJ7HSNBhkYjG0E+YNakdsU77pXC9zVktdr3KjMmO/fGxnYlye3zZR5chr6fLBphVw98k3EgbKxE8IvMIuCis7Wq7ib5qI2WyEcLMsbDtNwOPxS39NIZ4hqFSQezbUJH0G6PUclff0Qiq8MTRQjWO9vMzyOhNIBwSpU0RSL7sEJTczz5bnMEWJkSvtccok2uQo/Bg3zr76D/qUHQQ+pif1zsF9JAjYu9WNl7f559qkj3C7Ttusk9IBTUR4iDgoZC9h+UnEJAK25ZJucv1hNQJ7wwxuFwL25OInkwXF5YDHRSrs8P+8
+ SMpR2oKq
+ EULChiTY0FWWgQ7RSRhcpD5E7kP6NX5oTL+6yvxu4+VWS8tkFG/vpfSQ9qzxZElXSezvhHxJ6fDmzx1aZ3Hf6A438ekIiwpIFUowZDbtldwRrAEe5KlyZkDqvLcs2jLhXCV9BR9Kc0/iSggH2q3zbPPTwiMWGzTBDivRK81U9Me50g+mJT8XYSP0HptIHTc7w2qh5p+qb/cqugaEVLVNclH+0U5j4ebyJsgCi0CSUaIlFl9I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,46 +97,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add test cases for testing the validation of damos filter arguments in
-commit time.
+DAMOS filter range arguments are being validated in the DAMON sysfs
+interface.  Some of those have minor time-of-check to time-of-use
+(TOCTOU) bugs.  In future, other callers might have duplicated
+validations with similar bugs.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Fix the bugs and further refactor the code to move the validation to the
+core layer.  Also add kunit test cases for the validations.
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index c9941f3bfb42b..5da84caf4124d 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1195,6 +1195,13 @@ static void damos_test_commit_filter(struct kunit *test)
- 			.allow = false,
- 			.sz_range = {.min = 234, .max = 345},
- 			}, false);
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_HUGEPAGE_SIZE,
-+			.matching = false,
-+			.allow = false,
-+			.sz_range = {.min = 456, .max = 123},
-+			}, true);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_UNMAPPED,
-@@ -1208,6 +1215,13 @@ static void damos_test_commit_filter(struct kunit *test)
- 			.allow = false,
- 			.addr_range = {.start = 456, .end = 567},
- 			}, false);
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_ADDR,
-+			.matching = false,
-+			.allow = false,
-+			.addr_range = {.start = 567, .end = 456},
-+			}, true);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_TARGET,
+Patches 1 and 2 fix the existing TOCTOU bugs.  Patches 3 and 4 adds the
+validation in the core layer.  Patch 5 drops the replicated validation
+in DAMON sysfs interface.  Patch 6 further cleanup the code.  Patches 7
+and 8 extends kunit tests to test the validation.
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20260912191807.138502-1-sj@kernel.org
+- Handle error from damos_commit_filter_arg() on all call sites.
+
+SJ Park (8):
+  mm/damon/sysfs-schemes: read sysfs_filter->addr_range only once
+  mm/damon/sysfs-schemes: read sysfs_filter->sz_range only once
+  mm/damon/core: return an error from damos_commit_filter_arg()
+  mm/damon/core: disallow max < min damos filter range arguments commit
+  mm/damon/sysfs-schemes: drop centralized filter range arg validations
+  mm/damon/sysfs-schemes: use switch-case in add_scheme_filters()
+  mm/damon/core-kunit: extend damos_commit_filter_for() for wrong input
+  mm/damon/core-kunit: test invalid damos filter commits
+
+ mm/damon/core.c             | 47 +++++++++++++++++++++++++++----------
+ mm/damon/sysfs-schemes.c    | 32 ++++++++++---------------
+ mm/damon/tests/core-kunit.h | 38 +++++++++++++++++++++++-------
+ 3 files changed, 76 insertions(+), 41 deletions(-)
+
+
+base-commit: 9b2df9f07a4a7a5d9f625d26f9482486859d64aa
 -- 
 2.47.3
 
