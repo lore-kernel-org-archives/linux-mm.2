@@ -4,99 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7242C88E40
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 07:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E117C88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 07:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1026B0088; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
+	id EB0C76B008C; Sun, 13 Sep 2026 03:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87CC16B008C; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
+	id E63036B0092; Sun, 13 Sep 2026 03:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7432D6B0092; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
+	id D78516B0093; Sun, 13 Sep 2026 03:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3AF6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92177A543C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:23:43 +0000 (UTC)
-X-FDA: 85207899126.26.1BD6284
-Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 11BE9140007
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:23:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gVN42bTL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789284221;
-	b=lyZ5znIiQ5CxbY8SoY1RIiHurTmHXufMGD7QgjLlU9jJ4+4dTQ3clXrxk0C8aBCm+EXRcu
-	8ajJg+WruXQ9VATjKd/5ECUi+soY6OQZX2F8sp26dsDeVzm7ZCdOg6+xbV4scbYZGk0oLL
-	mmIODPaTtdF4kLR1yjlBesDc7bUeLh0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gVN42bTL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B25DE6B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:37:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE46E1A061B
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:37:36 +0000 (UTC)
+X-FDA: 85207934112.16.947AC6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A4FF180003
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:37:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jD/pKnFc";
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789284221;
+	s=arc-20220608; t=1789285055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DA1a4NsTijrA/0A7Rp40uSGEov9CchZ4qFLhGxWOzlU=;
-	b=bjGJ/zaT4wij60r5cyIwIXqEAOa/hTcQcfB4ySZYZrlT9xge3zapkM8mQzXv8wuoSacjdo
-	NWrXYP1ONJUSehz6PPn0LM2LCsy9qkCGpBR7c7cqM4FgVZnLjqmwTp7JicOL6XIvs9oGH5
-	a195lXlyjkes59vT9Ze45RTxKsj9s+M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IxZ5irpoc9Wr9wY2wKWP3i1ANdXlxPv1vjeqCqP4vuI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789284219; v=1; x=1789889019;
- b=gVN42bTLJHEEpg1p4L9bINSm2s8Z5Jm2mwRO2k7kkH5pmlJktgBDF2fp/wnkomQSGNRg19bq
- cLCFQPOk2AEIfyZETjX1ESTKuSCzf55Bak9dHzZknyl+hV10ZGppV1VR6y6Ic8hbcJOxtHCgL6y
- iPK+HKzUwjEl98TmCPSrq5rc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fc7f62b8527fd901;
-	Sun, 13 Sep 2026 07:23:29 +0000
-X-Mizu-Trace-ID: fc7f62b8527fd901
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: lance.yang@linux.dev,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero PMDs
-Date: Sun, 13 Sep 2026 15:23:12 +0800
-Message-Id: <20260913072312.52111-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
-References: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kENY6vTLb3k3xzY9wWud1EJa7mum1nmdexc1RLTPIWo=;
+	b=3sqQG61aSD6AmnAbvHH+szoBoUa+ggYbGHDnhTnuDD8keCCDxKAots3eMFWIUq1Lm+Dau4
+	FWOl27AKMSVUexAKq0d1ylOZlqNfXDBmg38CeS9FhveDTUwMxqxT62nK/iGrYyFZcbO9Pc
+	Vz+zGrAZtPf9Vttp7D5vSOG7S/1UqIU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789285055;
+	b=C6F8bRWR+6xWp04jwQ5LnvRXLACLQPrGeGbDXYIfArnQYqY1eXbWSP8UFcnnTAo+ChQJGX
+	rixtVGkjpZyNASB7LR6PjJJiTreHOfNLc6uZGnrTAH6tde5i9EKkzgG62pTUTKP0+UUHMr
+	p705pGHqBnWKaUFOOHEEJ3mMf6QKZeE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jD/pKnFc";
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C899460D8D;
+	Sun, 13 Sep 2026 07:37:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EFC1F00893;
+	Sun, 13 Sep 2026 07:37:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789285053;
+	bh=kENY6vTLb3k3xzY9wWud1EJa7mum1nmdexc1RLTPIWo=;
+	h=From:Date:Subject:To:Cc;
+	b=jD/pKnFcs/SmCcOj/dmMYFcvawtFKa64uwWJVHDsKIgTwun3UP1+/zBQFRMob0zms
+	 A3Nlfoq1Kqxbx2cpVpZbZJppHeOSGQjAO0zqgGNdmC7Fcyysyete9bdNkwhEW3X5fH
+	 59/Obh9+sB5fuzloRF9SmowQdw/v+b2J7SbMpdyEx/hApGxiT5teQdHJfCs20EemKK
+	 MlouMr7gGaLYJfDEAM3czrcYtB0sIv42x0ZIvrHE0RgLfP0PahSHaLhTumUfzPVz62
+	 58AP9U5bA7U25FQdAdWKwYycKTVH2fqyaEh9XePrOiZRO3bxKbg5cEv4Xd0tnAsvOn
+	 xTOiG4s0FoujA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sun, 13 Sep 2026 10:37:27 +0300
+Subject: [PATCH v3] x86/mm/pat: use pr_warn() for early W^X warnings
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260913-fixes-verify-rwx-v3-1-5e1d6a08bd02@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WOzQ6CMBCEX4X0bKU/pBRPvofxQHGFqvxkixVCe
+ Hdb9aDxOLvzzcxCHKAFR3bJQhC8dbbvgpCbhFRN2dVA7SloIphQrOCMnu0EjvpAnWeKj4myLNM
+ ZN7kqpSYBGxBenkAdjm/t7uYC1RhzosOUDqjBsquaeBrtkE5apW0bn411Y4/za5DnMeTTzTQrR
+ C7ZNmNBC005xWEY91fADm7bHmsS67z4Yjj/3+tFIEFUJ5CFUaqQPwnruj4BRLfqkxQBAAA=
+X-Change-ID: 20260910-fixes-verify-rwx-044841b76a38
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Ingo Molnar <mingo@redhat.com>, 
+ Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, x86@kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 11BE9140007
-X-Stat-Signature: cn5j3sf8exzotgx7k3yaay48qut57nsm
-X-HE-Tag: 1789284220-518531
-X-HE-Meta: U2FsdGVkX1+ayq1z01xdPOaTS7VNJsejt8PIvGZbt04BYuwZeoYSUDrsGzfHB9YXPIx5IpR0HS4AugdTeKfhIfFgebnr9uGcMGdfu4OoSSMMNdF4xH7P4Y/9wtehy/YUXggZn32keMyHcDW2Nt3lXD4MAAEPMiD3KXo3iiwZPUfBIl/dycvGAZRRoxMug1G+FMuk4/tL4A0knipBOkbqqZ0ijavn0/wxkFzToIXwVHBm0bYvv+1qJdQhGcQpC9wkvECY25FgnwUjl09eLNoPIoaWuMPaE8pYw1qWdW8G5C3AUY3NH5COYpmENYie+AQTzQiwNMIz968pzsecfEE3lx7i3Gkq14AvtxmNIJe5JmL2vqQyMOf690rkQkXoJNRwAUEp3dhBPHdyEI6kKNQQnH1SoDUipsCqJepVWFXzmRmB7/LPrAI6OsPp8pC1tNefXGw5ZxusxHofYW7FKtnYsUZA7NTwJB/WWnlbo1dIplh54uGXUX7xyzBZkxB/RGIfTFJyEFqfLRbTY5oF9cstixKIx/dkU20A7iY2AUG6enr6mu91LZrdwJV1fc0rpgRodlYqTeJzjMXTCYnc54AliYuCbFbLRearONNpVBaFVclcbClaXwEFUUxs1osPV2Cl6c8i5SvbEXQKjtotaP951HYRSxWGfsIizdjSxDXRpESxQ+1Zhk25tRlUkLgwFH8Jxds43sknCPCPZe6S4gT/xojcN7InL9QaE+tirB3PIhdrZetrFUGyuxWh2JnMGI4z0dnwxuLCuhIFml42+TroehJORU/Iw+CRRz2Qgd+CsvYJWgVp1hRUeWzuDjo9810lXOvWEgZQkFbBsK/kVhj1LgQLNwypCPyKDsXnpI95uKJXjlxiA74ge9+qCVKEX+x5x9ILpHu6UItCGceV8nmG5ZWYr9N8u4JnGp1ePhUhW9nYNHx+U4NKKu8fXE6wwIojzCEmhzz0JCeNpp9XF8m
- xdAdUMFo
- X34n5LTiWEPTpiWZ96g6/m5GANUin32gIg2rSQm5wnpsoJuPwW5QmhI3cVgkmfggu1PgfsNs++YoRYW94MMoIIWNqcPoefcYyZvSpmfQ12l58d0WgWc5h11O06w89Ghf//XlBA79AhhX6+TIALWvlMRXCBNLLC8uPWg6ww5s4lNyOuo/A1PfVuMt8L7Wibm5kI4TMzu4qNd5h861+Firbhev4oNejNNdUv56ckkAVSRpswKTtCCsQgXtoVDEmrIgx9j2vi6uwgOEHC+7wgzTMzvrOeTZYmyNeE8pIiTq7CDQ55NMFiGPRXGx/7YReBmaHPFnq/gpA4G7zbmE=
+X-Stat-Signature: 19u1x8z73omqog766if17rfck5udik5x
+X-Rspamd-Queue-Id: 3A4FF180003
+X-HE-Tag: 1789285055-612578
+X-HE-Meta: U2FsdGVkX1/RuxSdEBhNZs5Eqjti/6vXtuaSVQu09UE2w8eX73p6mjUWWhTe7PRJpZajGFg0LuBWFS6HXvaZ+mWig9M9VrzotzFaZxmBXn+v+tUqfN/XyPBaJ4reIBAaWLczyNcWy6QLh60vVZfeFbd7j+q0RZLmxmzmrvk+U532JQtcc8iy1IZuL9LWfXxZBEaC5XCIDkDe0DfWEeWhFCN5+un6LrhfCem8XH96lDeO1TxIQH0ZrxdiG9n50MDKNMkqWK3MESgLQb04i13nk0CYHX2hOpMtrbrxDbfM1oRsKBut9MqMukQVt03Tk4EGCJu1HA6i616ZZlxRsXceRMluqyc1kTzHTqVoaK0UCu3zl0u6JTbDl3ZZJh0B0WMwWTVzA9sTZABBtGBgNNHrrUVkXOrVoyJXbZ/6HVjwYYqMjI07J3zzLXgtp3sDjghOw8UtH7IuH2AU+8USfP189+75pyQosU/aaqqb9mMs41ThBSgjIG8vt/mIhWdMq/cnqbXx6lXYJdjIznE2XKC4Iv50k0nvtAlKcj1i3FnZ33SGoTq7wc9iWQVoFFcqsuXlqCWsQz5teC4+GQk7H+CHLJiiEei3cgD5W7pEAP3lAoAKGmKJZlEQ+OsawektTX76a4N3zIUc3tf9rJu3Qs/nCuFZoJ9h4gyMpWL+dr6biikZS2H/NyI+0PRHUaYCGmye5tWjDhHGRVXoa7UVDzNFl+DLIq7ZculyECwZ3L2W2JOF+jyk7LaOTpsLBpxPjcIjJjjq1SxGvUa9SSX/WA8OrdMF2+5oJD2xNfD9RB2M81CyYP8AWC8xcXW8GYFHiiOHg+BMTfde2XHKFsuxKSVxulrgB56GrzmjcEzGgRMTS0hr0jpwTbx8wMCf52ShgVd/tu3Olr6687hzXT3L5Dg7nJa2fcIfzYWX65v2GeQGA8dOMASMTyC5VGE+1vw2RRSoSJJigwwXZEBZCQtDxml
+ MOM3vTVv
+ Dm9zsMWeG1Vq/CotnhemTUQjYEUnyQc7wcBWDxQkOivIAKdjkEkXWjjXKHzVdsiFu1/4KxSn/raS6WDK96wNt2dieENZUm6gfHn5m/wphilNG/4vH/62kInGytvAjuMaMhv6adxmw220rXi0ppnKZjMTY0s1SZmjofJ4iBqfEybLjVgLjmhPaEdDvLO/cudzl2uHFGGwqyCsy3+jcMpsz49IisZTxoeTSBtPP/D4wwAKVO0J/+veEaD8nhEVozxQTRpZ8pLREfylsgzhsHMwLw1lyGwcWV860pjG4e91dCE3sO0RpufGyHvFYhKLgJDsDUSSN9ZS1K17e36qnfO+xoTilBLgcVJBD2//kZQ4hqzBRg4fpc5LVuekWnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,90 +98,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Nathan Chancellor reports the following warning:
 
-On Sat, Sep 12, 2026 at 11:46:35PM -0700, Andrew Morton wrote:
->On Sun, 13 Sep 2026 13:19:42 +0800 Lance Yang <lance.yang@linux.dev> wrote:
->
->> From: Lance Yang <lance.yang@linux.dev>
->> 
->> has_deposited_pgtable() uses !vma_is_dax() to decide whether a huge zero
->> PMD has a deposited PTE page table. That also accepts raw PFN mappings
->> of huge_zero_pfn, although vmf_insert_pfn_pmd() does not deposit a page
->> table on x86.
->> 
->> Zapping such a mapping would call pgtable_trans_huge_withdraw() without
->> a corresponding deposit. With pmd_huge_pte(mm, pmd) == NULL, that causes
->> a NULL pointer dereference.
->
->That's the sort of thing we'd prefer to avoid.
->
->> Use vma_is_anonymous() for the huge zero PMD check. This matches how PTE
->> page tables are allocated, deposited and moved.
->> 
->> - For anonymous page faults that install a huge zero PMD,
->>   do_huge_pmd_anonymous_page() allocates a PTE page table and
->>   set_huge_zero_folio() deposits it before installing the PMD.
->> 
->> - On fork, copy_huge_pmd() allocates and deposits a PTE page table when
->>   copying a huge zero PMD into an anonymous VMA.
->> 
->> - Raw PFN mappings use vmf_insert_pfn_pmd(), and DAX file holes use
->>   vmf_insert_folio_pmd() to map the huge zero folio. Both use insert_pmd(),
->>   which deposits a PTE page table only when arch_needs_pgtable_deposit()
->>   requires it.
->> 
->> - Moving an anonymous huge PMD preserves its deposited PTE page table.
->>   move_huge_pmd() transfers the deposit when necessary. For UFFD MOVE,
->>   both VMAs must be anonymous, and move_pages_huge_pmd() transfers the
->>   deposit as well.
->> 
->> Keep arch_needs_pgtable_deposit() first so architectures that require a
->> deposited PTE page table still return true regardless of the VMA type.
->> 
->> Commit d80a9cb1a64a ("mm/huge_memory: add and use
->> normal_or_softleaf_folio_pmd()") removed the vma_is_special_huge() check
->> in zap_huge_pmd(). That check skipped the huge zero PMD deposit test for
->> non-DAX VM_PFNMAP and VM_MIXEDMAP mappings. Removing it exposed these
->> mappings to the incorrect !vma_is_dax() test.
->> 
->> Fixes: d80a9cb1a64a ("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()")
->> Cc: stable@vger.kernel.org
->
->How real is this?  Is there a reported-by:?  Do you have a reproducer? 
+  CPA detected W^X violation: 8000000000000123 -> 0000000000000123 range: 0xffffffffc0400000 - 0xffffffffc0400fff PFN 100e00
+  WARNING: arch/x86/mm/pat/set_memory.c:722 at __change_page_attr_set_clr+0xde7/0x1290, CPU#0: swapper/0/0
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.3.0-rc1-debug-00006-g453e78594434 #1 PREEMPT(full)  2950d432dd3910251071a66f3134fe0875432786
+  Hardware name: ASUS System Product Name/PRIME Z590M-PLUS, BIOS 1801 12/26/2022
+  RIP: 0010:__change_page_attr_set_clr+0xdff/0x1290
+  Code: 80 7c 24 42 00 0f 85 3a 04 00 00 48 8d 3d 19 8d 79 02 49 89 d9 4c 89 e1 4c 89 d2 4c 89 f6 4d 8d 84 24 ff 0f 00 00 4c 89 14 24 <67> 48 0f b9 3a 4c 8b 14 24 48 8b 0d 81 44 bf 01 41 f6 c2 01
+  RSP: 0000:ffffffff87003c60 EFLAGS: 00010246
+  RAX: 0000000000000002 RBX: 0000000000100e00 RCX: ffffffffc0400000
+  RDX: 0000000000000123 RSI: 8000000000000123 RDI: ffffffff872e50c0
+  RBP: 8000000100e00123 R08: ffffffffc0400fff R09: 0000000000100e00
+  R10: 0000000000000123 R11: 0000000000000001 R12: ffffffffc0400000
+  R13: 0000000100e00123 R14: 8000000000000123 R15: ffffffff87003d58
+  FS:  0000000000000000(0000) GS:ffff8ad1777a7000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffff8ad0a4201000 CR3: 00000007e3022001 CR4: 0000000000770ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? _vm_unmap_aliases+0x219/0x280
+   change_page_attr_set_clr+0x161/0x250
+   ? events_sysfs_show+0x5d/0x80
+   set_memory_x+0x39/0x50
+   apply_retpolines+0x656/0x6d0
+   ? events_sysfs_show+0x5d/0x80
+   ? events_sysfs_show+0x6c/0x80
+   ? events_sysfs_show+0x62/0x80
+   alternative_instructions+0x3c/0xd0
+   arch_cpu_finalize_init+0x130/0x190
+   start_kernel+0x97d/0xa10
+   x86_64_start_reservations+0x24/0x30
+   x86_64_start_kernel+0xda/0xe0
+   common_startup_64+0x13e/0x151
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Yes, I reproduced it on x86 with a small test module. It sets
-VM_MIXEDMAP | VM_HUGEPAGE and calls vmf_insert_pfn_pmd() with
-huge_zero_pfn, without touching the page tables directly. A full-PMD
-munmap() crashes before the split series[1] as well.
+The warning appears because commit 038176c21617f ("x86/mm/pat: fix
+effective RW computation in lookup_address_in_pgd_attr()") fixed the
+effective RW checked by verify_rwx() and it exposed that pages used for ITS
+trampolines temporarily have RWX permissions.
 
->Is it a theoretical, LLM-found-this thing which can't really happen?
+The permissions are updated in its_fini_core() after all the ITS
+trampolines are generated, but since verify_rwx() detects invalid
+transitions, it warns when its_alloc() makes RW memory executable.
 
-I found this while reviewing the split series with LLM assistance.
+At the time of alternatives patching the entire kernel text is mapped
+RWX, so the warning is bogus anyway.
 
-mshv_vtl_low derives the PFN from the mmap offset, and its checks do not
-exclude huge_zero_pfn. I haven't tested this on a Hyper-V, though.
+Since the verification of the entire page table with debug_checkwx() has to
+be enabled explicitly in the kernel configuration, retain the warning even
+if it's bogus, but make it scream less loudly: use pr_warn_once() rather
+than WARN_ONCE().
 
-[1] https://lore.kernel.org/linux-mm/cover.1787941780.git.yintirui@gmail.com/
+The warning can be removed once debug_checkwx() becomes unconditional for
+configurations with CONFIG_STRICT_KERNEL_RWX set.
 
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2529,11 +2529,11 @@ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
->>  		return true;
->>  
->>  	/*
->> -	 * Huge zero always deposited except for DAX which handles itself, see
->> -	 * set_huge_zero_folio().
->> +	 * Huge zero PMDs have a deposited page table only for anonymous VMAs,
->> +	 * see set_huge_zero_folio().
->>  	 */
->>  	if (is_huge_zero_pmd(pmdval))
->> -		return !vma_is_dax(vma);
->> +		return vma_is_anonymous(vma);
->>  
->>  	/*
->>  	 * Otherwise, only anonymous folios are deposited, see
->
->Thanks, I'll add it for test-n-review.
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/20260905044253.GA3816371@ax162
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+---
+v3 changes:
+* fix stupid copy-paste error
 
-Thanks!
+v2: https://patch.msgid.link/20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org
+* Use pr_warn_once() for early violations instad if skipping them entirely
+
+v1: https://lore.kernel.org/all/20260908092730.4002628-1-rppt@kernel.org/
+---
+ arch/x86/mm/pat/set_memory.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index b3060000da8d1..a799f539287e2 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -697,6 +697,21 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ 		return new;
+ 
+ 	end = start + npg * PAGE_SIZE - 1;
++
++	/*
++	 * If the kernel text is still RWX, gently complain, this could be a
++	 * false positive.
++	 * Once debug_checkwx() becomes mandatory for CONFIG_STRICT_KERNEL_RWX,
++	 * the warning can be removed completely.
++	 */
++	if (!kernel_set_to_readonly) {
++		pr_warn_once("CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
++		  (unsigned long long)pgprot_val(old),
++		  (unsigned long long)pgprot_val(new),
++		  start, end, pfn);
++		return new;
++	}
++
+ 	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+ 		  (unsigned long long)pgprot_val(old),
+ 		  (unsigned long long)pgprot_val(new),
+
+---
+base-commit: ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482
+change-id: 20260910-fixes-verify-rwx-044841b76a38
+
+--
+Sincerely yours,
+Mike.
+
 
