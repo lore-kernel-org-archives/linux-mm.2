@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 871E8C88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 00:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC7DC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 03:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B0396B00D8; Sat, 12 Sep 2026 20:52:52 -0400 (EDT)
+	id 1F0B26B0088; Sat, 12 Sep 2026 23:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3615D6B00DA; Sat, 12 Sep 2026 20:52:52 -0400 (EDT)
+	id 17B016B008C; Sat, 12 Sep 2026 23:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 276B46B00DB; Sat, 12 Sep 2026 20:52:52 -0400 (EDT)
+	id 059BC6B0092; Sat, 12 Sep 2026 23:11:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 06C996B00D8
-	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 20:52:51 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0D9D6B0088
+	for <linux-mm@kvack.org>; Sat, 12 Sep 2026 23:11:55 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D0C79140560
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 00:52:50 +0000 (UTC)
-X-FDA: 85206914100.28.EAC87D1
-Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A529EC0003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 00:52:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bTebRpj8;
-	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C03231C26F1
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:11:54 +0000 (UTC)
+X-FDA: 85207264548.28.070A2AC
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C8B1A120008
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:11:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CCR8M2oB;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789269112;
+	b=7125snH14+Ho36TuJPC5fRpcgMxN7qrwwNMziO6ut6w1KtVf9fGACVTx3DqSqRWIklzrN2
+	u/akDGHLsMEaCfghfTiOFO5VEBJCgi9FMxNvQGaJ+74+7qu0w17hRzuESL7jVRnKpFPRXE
+	IOMBTOBWa/OdJIW9MsLsxuJ+/wcsSSQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CCR8M2oB;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789260769;
+	s=arc-20220608; t=1789269112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GweSOghhzjWnfuYCFBbbhvI4fM/pRZ5riibqzev0/FE=;
-	b=7mmVGStVyffd9F3fkaohiRyGR+xsj28wh/Ft6lYBHSMPw40eWLcQmFWJkeLFxtHqsjPUjj
-	aIZu4Ujs9xeahmoyh1N5qe98SvKefxYmSLJRDPghYL07NmqJA/G0l75ZfNgmpxCBePfjKv
-	7o0U240mhyCwelvUIBqpAIw12myyvic=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bTebRpj8;
-	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789260769;
-	b=MW+zj/tjbSijKDUtBljBJ9Hu5H7A7ejP7V9w830jxeyif77KQFmIfsF53X2+Cdejsv5TAS
-	Vj7EWJFZxwwFlzgaoIm4d2PwzgfEC4hWOt9EQW8Syj9ZTRunDGamZAJk5+UAckYeoRxipn
-	7GXeucbuABFPTxPTaBF3HmeRyJ7OwD4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dEqQfU3lTD/bd5QrEcI5VNiNtdR+MT8JPrBJyfy09V4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789260766; v=1; x=1789865566;
- b=bTebRpj8Qgs3LIT+POhy2MZGMmTbTReSxuqKKHeSpY59Jw7czyna8LieX1p/QKFaSMwpWSVY
- mjOA3lUg4MORMplEm9UY7ZO7GyKlR/0mzZWFljLwHC2m/mMENvSV27/krFC0ddtR+Pv6Z9Cv7Zf
- 7fH2X/aHV61EkQ35Llf8vBkw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 52314063f20a0e10;
-	Sun, 13 Sep 2026 00:52:36 +0000
-X-Mizu-Trace-ID: 52314063f20a0e10
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <be7989d3-648b-44e5-b90e-f4ab8b2066d9@linux.dev>
-Date: Sun, 13 Sep 2026 08:52:28 +0800
+	bh=ssrb0XY/cPSH8ZAUVROdvAzpy0zzHhYV7tpvfy8CQwA=;
+	b=UP5GKEL6XwaH7bzLUBP1lV6z1MPuTmZzG82yVKSiWnkETwDbeP76LIsyMfKmrwqAA57kiB
+	ff4qKnN3RfyO2y4t6fvjvRshfDTD4bxfoZJ8n+lI3SrYtNCrFxmPJYxg8S09wQ9OcHdvRg
+	/A25EfiQnytlXRq5/WjP2ocNPXR27Oc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ssrb0XY/cPSH8ZAUVROdvAzpy0zzHhYV7tpvfy8CQwA=; b=CCR8M2oB4m+y0ftzq1hl5Cd7Sp
+	Eq4utnfvBFq8gG0OogYzPZnaQmzmOp5fGRpwLZZxXeWo5U93OC/Wz+xi6QYk98IdczgUTQT2qoCKU
+	KRd5XLKE1z55BO0DvoKqhe880rWuFdw1oBGkG7StPD4m+68dPIwtGr3HiGHt0EP5J31zAOnhXrkq6
+	H9YfQ8GzUvx+lR7ad3e/FRHlzs3qPoF6bfrnkWMKjURpXqLuM58MWTSM8LvGJrlpAd2Zzgd3Kprn7
+	9QWHr0RTjUAtUGxCv0xeRJ5uWFR4OjKHcnWu/4GD7GYpMcua8HluIaf9wWQfAzw2c47qK2YYb1024
+	17XaQfSw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x5acl-00000003JyY-1RDO;
+	Sun, 13 Sep 2026 03:11:23 +0000
+Date: Sun, 13 Sep 2026 04:11:23 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lyude Paul <lyude@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>,
+	Serge Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Igor Korotin <igor.korotin@linux.dev>,
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-block@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v21 9/9] rust: page: add `ExclusivePage` for race-free
+ page access
+Message-ID: <aqYUWzRSade_Ww67@casper.infradead.org>
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
+ <20260910-unique-ref-v21-9-e83257373062@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kselftest: mm: remove exclusion of building soft-dirty
- test in arm64
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org
-References: <20260911210611.4001419-1-yeoreum.yun@arm.com>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260911210611.4001419-1-yeoreum.yun@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A529EC0003
-X-Stat-Signature: fzayp1xd4z8pu6y7t4mrgdf1o6whxni6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910-unique-ref-v21-9-e83257373062@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1789260768-155603
-X-HE-Meta: U2FsdGVkX19ToG4pRZ78kND3iZ4X74YysdVvhImsy2e/7WUofCMtYOwVw1h/tdFzPEk+eY8DkA8zV1Rv964rH1uaeEKujTrVU72mmflcjJSpBPOquBqUSFvQP0pr/ezwHtIeH54VkVkEXUoagd080GnTv6mWLQiwc2Ipmdk5UOp8qIecxSzO7OhF8aUvGfwsq4lCmKOrGuiajZ0I2Z943ycvHQF2vSCxiH0j3YDVzYt4CF1QXOd4dMem+jsLsBh6BYkobDVWnil8zcTH0JOHKx0cvKf3FtjRyqpjoJ9K2of2mKAWTxEOR3ueoywSIcoi7SaOv0cyhpEObHz561tiOi4vcGIz9TiI0J4hIpY6+FIWBvvfFUr3aKK0XgxdNRJMP7xU9mrHRsrbuhLwXdKAqDakFyq670IRxVBg6F5QUUNfgDI0tDm6//eA9o90+3sJHlTsIytMSiwBZRwlUQasUUjXswKYEqB5ZITQqyxHUKqRjsxE0E08+S9EMAFoVrJRbzbVjnbtqSJEDSERC3ByemzViJGQ8MJcGNZWzT2cZIyw/NuNF0TgQIHNpxLpTaVveKQalhHZ7luyAHgOx9XbEQgNkL2i36vsLwG7S1g0cDSuTQkb9xS4fNFhDHt8WcuQgcnggmttzP4sYhdvTuIJfeEouMiT5Cj67mlhTQRM/QYJqbABuRj9lTciG1SZ/h0qmY0tJPgq8SBD41Rxt1wdmIFy9a2J5tYZr5UiNiercSQVOvd7yBqIlhjhoEbvpS+HmwtOKaZqrw66RmsO2l/TJtAwj0tEpeDyZntLeja3mXl8IQR64HQ8qF1LXdDkdsI4WTZMTsMCz+R4o2uRGO28/PMpEcloFyHTTHc61Es8ZImIxQXILHxPqSj84iYJDaXzZYXUgQj3sVHZGKQghMWh2gUcGeafFuqX4BsOD8dlcVaN9H5oaH/GtdHgfVBiiXtMiKX5x0o3Iq2YknybWen
- uPikOPWI
- XUfRu/xx5hQuD8x+MIU7/E6IDpDdcONB6DFWd/OC9VWduM26aoinK9MgHq6D7j/Jekiu7cR8jL6xCRIM7Kv5JvjtLP1hesD8pDFn76IqRct+fSM7I1RymmTjSoPX6laYfjQ88wVgBxCHP9CrJh+dm7p6YPzEkSAKaL+IzqOa29nDLqvI3eCzU6LAM/t/i9Tsprm6LjHMsIyz5/hJ1V0wYskk/s5lOldsqReXmTX7LK70uIyLLjxTs7AThlH1tkHfAikp9/ItcpWgxHiu3Xw61k24/1kNEar+6Hdyv9SOoHu0TqAUq/rA3m3RVbHpEoqUDjwtNGmM4SLFCPOObtwCx9x3AvTHwlGAIrvc1p7oZKpI2ErDvmhgXCbMO+ny32fteqbGi
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C8B1A120008
+X-Stat-Signature: tttc8xriprih4h36piqpfqb65crchqmz
+X-HE-Tag: 1789269111-890424
+X-HE-Meta: U2FsdGVkX1/xVvNKARJO90cFAyl2tgW1JzHGn7Q96EoGHzh2vCBS1AYoNaPry0qM760MMDKLdpolMlWQtZXaMLAos1oxl8KJQlunPFC0TZRtRsqjdZQIf0HrFPo1pv7rGpx7av9IPwi8hk68nSWQvquY5OLXOMUByFs4hzl/uBZ6qNdCP2/D5PVAaq+OgilEn7gPwJoxOk1Zy1YdiTb61613Ull0TPvo5IPjD9O9WVInM4iADt4Xj5W6XFxOKn9Guk1q71jiuz4SvAdchmH42CVrr1gHCqByt6r3sEyDv3lV/nAKkJLp8Iee90vnhzc8MDBnPHL6vOJiwuMngQ1M1Yy0ZMnu7sDzfeRYmn2nf56zFJSliUVQe2LPNmWZUUUtApyHlqDPiz9ACKVB+Xs7auCga8y9q9re9XiqkXJKfjMg7sPKcUVzxOWr6nkUR+xQWMLDggVupul7m7Ne8nNDZlZ8OwPSADtS6ab7fHJP3295ZwZS/abTA6iuaZDui3CbrmVSuauwmBSOXbG8x1aEqtMBNp2PciApqyPw+feAJZN55vsxC+KqC5lPE9p4Yg8sQQKybGKhpC94GKluHvXJqnleJM/OhqZXe6C2WMl2ihZjiScq3ruYk4PyVKnekHaXujJh/YEnoI+zHyGHR06B7qoaNhzBBRRETN1ATrf4lC3ZljrM3+FW81/UfH5uhRpnfBshS+VZW714+BkGNE+mw8NDAVkUUp7OF7eBTglkvH4jUFIjCNIxj9ozYcTH6vVgt/UMZpjVyeUbD2AO167pklUWBY0HieOzRouR6VYNdclmmrqbv9wayWSuBl6mFiqECgodaGI7Y3ss/8E3IPIfOdVO7qkLE7LwVqSAePS/pZXWvq38RP9+XSJYrSQ+w9hnEhggbQguD1mbnrfDJzhFbSUkEVlZNW9i9NoKSq6ID8Hlbg6TSKDg+c4kQgjaF6JHvZwd5bOCSMIfVoB80So
+ zwdxdhTg
+ UXcEffQNT+uEV7zb4ReY7n8HtuyRvoFw2YUAHEded91yYF5lW3vC4RuwCaS5OazeGjnxDdfauXmuKI+O2j+Dd1pMVPeS4QoecfGI/VXBwQkaLOrkBohOBearXlJDAvTAjZzQ2UwlcY2qkLIT83+EKD8sERDuxCMOwSWDYOd+y4KmxE/vbQiW+UZbk3s0E1M/I0fUv+8kOCBFykZz8HMN0t/VZ08+Z8sI640pkUI2uAySu2XBl/lV4tsuAZODZW9XI8FFI1Ms0j4BXVx8zrUd8BbsjMSnKFtux2JNX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,29 +130,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/12/26 5:06 AM, Yeoreum Yun wrote:
-> Since commit 0389c305ef56 (“selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled”),
-> the soft-dirty test is skipped when soft-dirty is not supported.
+On Thu, Sep 10, 2026 at 11:00:13AM +0200, Andreas Hindborg wrote:
+> `ExclusivePage` wraps a regular page but adds an invariant that the
+> page data area does not incur data races. This means `ExclusivePage`
+> cannot be mapped to user space or shared with devices, and it
+> becomes simpler to directly reference the contents of the page.
 > 
-> There is therefore no reason to exclude the test from being built on
-> arm64. Remove the arm64-specific exclusion.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
-> Changes in v2:
->   - remove redundant condition in run_vmtests.sh
->   - add r-b and a-b tag.
->   - Link to v1: https://lore.kernel.org/all/20260911125028.1268274-1-yeoreum.yun@arm.com/
-> ---
->  tools/testing/selftests/mm/Makefile       | 3 ---
->  tools/testing/selftests/mm/run_vmtests.sh | 5 +----
->  2 files changed, 1 insertion(+), 7 deletions(-)
+> Since `Page` implements `AlwaysRefCounted`, handing out a `&Page`
+> from an `ExclusivePage` would allow safe code to obtain an
+> `ARef<Page>` to the page and break the aliasing invariant of
+> `ExclusivePage`. Thus, do not implement `Deref<Target = Page>` for
+> `ExclusivePage`.
 
-Tested-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+Given this description, I wonder if this shouldn't be implemented by
+alloc_frozen_pages() / free_frozen_pages().  We'ree certainly trying
+to move the C parts of the kernel away from thinking that pages have a
+refcount (folios have a refcount; otheer memdescs may or may not have
+a refcount).  Do your intended users of this actually have a need for a
+refcount?
 
-Thanks,
-Zenghui
+> +++ b/rust/kernel/page.rs
+> @@ -17,7 +17,11 @@
+>          AlwaysRefCounted,
+>          RefCounted, //
+>      },
+> -    types::Opaque,
+> +    types::{
+> +        Opaque,
+> +        Ownable,
+> +        Owned, //
+> +    },
+
+While I'm asking stupid questions, what's the significance of the //
+after Owned?  I see it after RefCounted too.
+
 
