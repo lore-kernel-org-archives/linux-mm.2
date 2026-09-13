@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41FCC88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 06:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D0CC88E40
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 06:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B989A6B0088; Sun, 13 Sep 2026 02:55:01 -0400 (EDT)
+	id A12A86B008C; Sun, 13 Sep 2026 02:55:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B49FF6B008C; Sun, 13 Sep 2026 02:55:01 -0400 (EDT)
+	id 9EB726B0092; Sun, 13 Sep 2026 02:55:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39A96B0092; Sun, 13 Sep 2026 02:55:01 -0400 (EDT)
+	id 8DA036B0093; Sun, 13 Sep 2026 02:55:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71F1E6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 02:55:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 468FB1605E1
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:54:59 +0000 (UTC)
-X-FDA: 85207826718.16.240601C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DFE8B6B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 02:55:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 339161A0600
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:55:11 +0000 (UTC)
+X-FDA: 85207827222.01.E670A0E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AE3B6140007
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:54:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L+v92v1A;
-	spf=pass (imf26.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8B98920002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:55:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lqb0Zlcj;
+	spf=pass (imf03.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789282508;
+	b=nz9pb8LEzcviAszml3oSt2kVREd1H5vbrk5H1QNbZ7U2RHmntsoNQ2qOdgQzBe4d9Q3go/
+	jHTtNl59CRmXTqNMbyEYbkDuxFVsTjw1a6YrpotgHNNB1cykFUX4TqJalPG7xxV0xEpoeK
+	X+KxV5AFbn3ZvtHEuatUyqtxMwWMDkw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lqb0Zlcj;
+	spf=pass (imf03.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789282497;
+	s=arc-20220608; t=1789282508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=W2MbFsUx54LJK7U3V6vP7eUNrI9U/R36OrB0aVm9oyE=;
-	b=NYQcAJTpFmT8BXsytLSODeh3/7VyqR2jfhEr+dcqMUdmqLL4vegENuIgVdiToGWvtEEUjd
-	QKrnaHM1SO20Et/T15UP2Bix/3+IcWfhifuA1y89xytD23zyVXAAMyMASmeoEsuOXiSLCz
-	C3nVisUhIJ4Sbh9qYuFEurXgiyRWRq8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789282497;
-	b=BQMKWela88fs8qWROwHaneEbwiHIr1EL/Z/NndvlzZ0eGh/UxdP8WwAIS3uRJgm4eK3fY5
-	Z3Lsc5K/l7D6it/PKBU5YhyjC+qwWW2STBRSm5SST8RZiVajXcKXkLQsxo1OToUMxwsH2Y
-	F0iHUoqL4b0vQX6kNq7mCiEUCFWmxRs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L+v92v1A;
-	spf=pass (imf26.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E2m5bPihJ9cXDt+pmRr3b83kez9grcEUhaWsAGb8vLg=;
+	b=BYkGLd9ObNIUVbidS1ZzoPD1YY3Ck+OnxN9HQ1aWsp3w6ZCXESe2aJMF76q/7Ew4NfHTRD
+	yWJHV4c1MKEI/HKydf1BoUMFvH4NbO/cgi0qG9eV9NpCVXa4bW2D0iQ3jSlxOGF3/IOIiU
+	aZemUH8v4XiqSpGjnK2DMwpHzhu/Y+U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A99B360AB1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 16E1360D7D;
+	Sun, 13 Sep 2026 06:55:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DC81F00899;
 	Sun, 13 Sep 2026 06:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EFF1F000FF;
-	Sun, 13 Sep 2026 06:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789282496;
-	bh=W2MbFsUx54LJK7U3V6vP7eUNrI9U/R36OrB0aVm9oyE=;
-	h=From:To:Cc:Subject:Date;
-	b=L+v92v1A2R6bqo+k2ns+Apd0XuZhfJJRlDhcZRxfgYZBR6lBTySlcGwphZl9esPqc
-	 6OapuqhkUgrZB5XbpeiKFE4FWmpX3fDYqnAWZ+Z5cik38+LKv17eC95gI/dBBW2maI
-	 QBtXzwx4Css+3kO8rrA5dxC6eWTTYjMJfj2lSIDJyX9WPH8eOB6Ln0exJvX33oYTJO
-	 CHj1Orsj3SZQz9ZomQddwDmGJoNO6y1P+zQ5V26DW3JHaWShU5qKy+zKNWu1trppZH
-	 XR4Bt0VV/FOH6OlQ1i8WQIXtA16nKQJtDvrM9pq+m+RFhwSgcAcBzQIdBMkDJt9hP/
-	 ktPD12L2uaUcA==
+	s=k20260515; t=1789282507;
+	bh=E2m5bPihJ9cXDt+pmRr3b83kez9grcEUhaWsAGb8vLg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lqb0ZlcjcSbugemJkO558rJLVsl1UygPLih+zVjDqjstkFjKJ9rqpXBse8REBK/HU
+	 YjAi8BGrTVplgGIVHA+D6X33OjXfWwKBSuzx+EOkZIRV+g07SBKLXJghaydOkRYrid
+	 l7lbAr9fk7tsyMGfcKPRAyArVi5ya0Xr1R8sq+aoSvpX1CSUn6X89bMDbjdM+pKfCb
+	 aED7CYfb7j6hvYcz0J40KI3bEDAEwBmfUGvK+Wwle4pTIhOJjXNXPiqryimKqlgR9L
+	 nZJjt6NfkagnH0pvaLaD7iZmmvQphlPHk+O0uUmmDS64EBUOceYM3onrG1QQQvEUto
+	 qfcTXQM7uFTlQ==
 From: Yu Kuai <yukuai@kernel.org>
 To: Jens Axboe <axboe@kernel.dk>,
 	Josef Bacik <josef@toxicpanda.com>,
@@ -111,20 +111,22 @@ Cc: Yu Kuai <yukuai@fygo.io>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v2 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
-Date: Sun, 13 Sep 2026 14:54:37 +0800
-Message-ID: <cover.1789237876.git.yukuai@fygo.io>
+Subject: [PATCH v2 1/3] blk-cgroup: use a request_queue rhashtable for blkg lookup
+Date: Sun, 13 Sep 2026 14:54:38 +0800
+Message-ID: <bbd34ff4002c75025295ec741b2ca321f916ad82.1789237876.git.yukuai@fygo.io>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1789237876.git.yukuai@fygo.io>
+References: <cover.1789237876.git.yukuai@fygo.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 8cdxw6mjdfh9fentop91e9t8hsjgdcfe
-X-Rspamd-Queue-Id: AE3B6140007
-X-HE-Tag: 1789282497-187125
-X-HE-Meta: U2FsdGVkX1/0dmt/CVE5Wg18vmp8/oMAi9jZcXVh/x526i1Y0kVIrz3zXlrvb/JGqEAjcF53kwlTdF+eGmsY++07ctUzZxCcnQ2yxxNwzHp7uAsD/ZR2Urk6/KleaQ96DXtLgzIk/G/Ex/zSROWoIx/iUmMayZEaa3R/B1t1BVd+P+LLoyv7mGDPuuZY6JrEmXhIsnTyKHO+6wH5CculalY8qkXSnxMagfmx9Q090z9S/XdrVPRkxja/RBcix3ujyulEztAMSTmXcsZePTDhwC+u/3VWWRZgHger/o9rmOzkd/KQyqy8ZbGpShozwfzJ3nVvStXKKUjPhS79h8KKskhh1NibVf0Paya+FE91gj7o8hGB5JcNTOkE7g2ArcYbx1NDO2Yp8hh631QUHnRabBd4qbICZigAhZh0rc5o/2koTugyKgXKkdS1xAdTp3EMqMSTPScvkN2rDjlDP0si6qsdO56PQ5lDJYAtDhXE3Eo3w0WPo1y/hijSMzvxuRoWZ6taskZThZXjRkaLxG1O2NyN6t70q6Zh1hAOCCBykWKSjregs7e7tAGCcJ1ZJWRRu3aEfG2UpSRyF123Cnkgt5aRA9ZAtGwyvGb4UbCczhC0RV2JxVp0nTiEhR2KqLMYLD5sveN2vOkXbue+sCbqw3j+UKG97OE90gEcR7ivnGqp2Fq5wzHRoRQW04DpYw+/za2iEGt4n4YBMBzG40LFn3a5uD7KMII/RY19bk5FYFygtBW074Tl/P3omKD9mjhxVEenEGKUK26cbQMINd5tz708CT4O42r3bjzmOG0Ay64+TWe2D/t1ol9Q4bAXPVEBOk8m+xsHgtwbFRa25P+UfJeppU5C59bdsiWc6rCpXifCO1Om1rpDi0LKJ3hVDg2aBcJoAG1XF/vy8t0Vt14Aa5aS2X3LEBTEbbNOwdStnmtk/go5norikOXRDzsz1dFSBW15V71SnFN38yHLIY+
- z/a+RuUd
- a6ho8Im7xq9VV2A9qQit55zNDCivHhGkk0Sc9WFr9gG2VgVNlgdGww7dwLElFzt0BeRnRqs5Qh8ADRcq4g7l4/bILjiHjfRm5k2Ozs9j6aNtTX7peqDluE39DNV7H/KN4wddsV7jg+PnNGogsgNAYFh6K6FT3Hzf+sWUGQvZXEv+LjlCTDF/EAvmnYipJUEUHNXyUdMIHigoK1PSbDCOnY18snds7SuJOZIEnx1Y3oc8cfwV5NM+KYAtMQg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8B98920002
+X-Stat-Signature: zzjwqw136pepbcey76wjcxfgp6c41pds
+X-HE-Tag: 1789282508-299363
+X-HE-Meta: U2FsdGVkX1/NJW4hQYqaJyjvbsL/qh3QjUps8atRbmCDlKTVVEVZHpJrZoECrdH2zr83mMc3Nf65EorPK+d8g+spzDHzVuXQihm831xsvzmi/CIYQ3HcEibJEE0pNZeLIHATod74PD3GIy+EHbD1p1Tbudh+sEcCcFx8dCo2H5L/TUt2HUp8SWW4rBrXProjsi/Z+crxoxVug3YjSKh1nSIyJ1EWiBOjkguZRhvwHXfaQ25GkuDZwTPnDaJy+uatArXv+loxR3bkKGkPN9F3Es7bccYBdpU+S8QnyZUwX7wkyG/wQVuOR3tcXSrThvxULkmASSwVQ+gO5eXClIMS/oJAkSMv+3SH7bqZPWp4pMmPzTA3gbNtfIK4/vI0drYEnum+ibAcb4lQR7bqKOwJveCaRB6x/saLBZMcj0xpHuBf4YqUXkuoEr7BGpvdgMxN/nBfFS5iWfl+fCcSkTlGCnXb1sfJ9H8vi2FcaH9QnUdrSb0BEtJSAmJDsZCSZ4fqQFsXPztDO6Hzsgyj7ZFDzkKsz8Ft89iwxGEfKFYFTW8OnYNKJKObrZ6Ojy0K70+UbtiHJ6R/ebR27DaOxgcodZbj5kweM/7sUorAp5R/ZrU28+XkEm+oPqZFoMfSTR5v7I9gOszsIy4CWI0NXvTdCNrQvvE7HNhewrT8smaZUKIUBki/v9Pzi6D0DAUKi3C9Mm/YHio3WneKOYIQLup4L6CP7qDMaGvaRaI1kGH2TwzSDBU/G1G36jRD6AEPjhjrlQjJ8iNz2N6tESprws9U8lg3nqMVUjmlBH6AdJ5I8yJ+/16qx9khX+IfRZ/Nc5V4wSR0Ka71mJY0/d/lHzKq+QOJ1i7xl1hZgQvtUkNBqLFk3cUJgpDeD+9YD6M9vqZDAYYGwIoLZbQ9lei02JpirZTMjCbwO6DkyYmXHyn/QAS/MPjgVljD3PaaHDFNeOQOoXzApOmibU6Vjh6wdi8
+ 0a17M4VT
+ CnAFbcZfa7yl82GKwlM1gei9LHnApp4QZ/V17e0tgaRIINmXd7BIwBgB9IEw4acVCWdTHv9LEN5lUeM7e4LrIcAcHc085cXk3Kq/krgN9stw/Jw+l+m4oL84H/zd3h8emdJ7gtp/04buvPCijy0XxWoWhepFEE7ZfdnkgjpGDslwRu8qvuagTT/l+IdViICTU2C+nlB/fc2u6ghN5ShuL/MAaqG03LsQ3W6zcyYneCzv0D/xTAigA9w5gug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,133 +136,490 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu Kuai <yukuai@fygo.io>
 
-This is v2 of the preparatory series for the blkcg_mutex conversion
-proposed in the related series [1]. That conversion moves queue-local
-blkg topology synchronization from q->queue_lock to q->blkcg_mutex,
-which is awkward while bios directly store queue-local blkg references.
+blkg lookup currently uses a per-blkcg radix tree keyed by request queue
+ID, plus a lookup hint for the common case. This spreads the queue-local
+blkcg association index across every blkcg and requires radix-tree
+preloading before creating a blkg while holding q->queue_lock.
 
-Storing a blkg also ties a bio to one request_queue. A remapped bio must
-drop that reference and recreate the association for the new queue even
-when no blkcg policy needs it. Dying blkgs add another complication:
-they disappear from the per-blkcg lookup tree before all pinned bio
-references drain.
+Replace the radix tree and lookup hint with a request_queue-owned
+rhashtable keyed by the blkcg CSS ID. Cache the ID in each blkg; the blkg
+holds a CSS reference until after it leaves the hash, so the ID cannot be
+reused while it is hash-visible. The integer key also reduces hashing and
+comparison work relative to a pointer-sized key on 64-bit systems.
 
-Patch 1 makes request_queue the authoritative lookup owner. A
-queue-owned rhashtable keyed by the blkcg CSS ID keeps dying blkgs
-discoverable until their references drain, while q->blkg_list remains
-available for ordered walks.
+Keep entries until blkg_release() and provide blkg_lookup_any() for callers
+which need to find dying entries. blkg_lookup() filters offline entries so
+existing lookup semantics remain unchanged.
 
-Patch 2 stores and pins the queue-independent blkcg CSS in each bio.
-Queue-local blkgs are created lazily by policy users, then pinned until
-the bio changes devices or releases its cgroup state. Completion and
-accounting paths which do not create a blkg remain lookup-only.
+Keep q->blkg_list for ordered policy and scheduler walks. All current
+walkers are cgroupfs or sysfs slow paths, so they can move to rhashtable
+iteration once the q->queue_lock to q->blkcg_mutex conversion lands.
+Initialize and destroy the hash with request_queue, and remove the
+radix-tree preload paths which are no longer needed.
 
-Patch 3 moves async bio punt state from blkg to blkcg, so punting alone
-does not instantiate a queue-local blkg.
+blkg_release() removes the hash entry only when the blkg was successfully
+inserted into q->blkg_list; the list_empty case covers allocation or
+creation failure before insertion.
 
-Changes since v1:
+Signed-off-by: Yu Kuai <yukuai@fygo.io>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+---
+ block/blk-cgroup.c     | 64 +++++++++++++++++++-----------------------
+ block/blk-cgroup.h     | 49 +++++++++++++++++++++++---------
+ block/blk-core.c       |  9 ++++--
+ include/linux/blkdev.h |  2 ++
+ 4 files changed, 74 insertions(+), 50 deletions(-)
 
-  - Rebase onto the latest block-7.3 branch.
-  - In patch 2, require every blkg rhashtable lookup to run inside an
-    explicit RCU read-side critical section. Annotate blkg_lookup_any(),
-    blkg_lookup(), and recursive wrappers with __must_hold_shared(RCU)
-    so Clang thread-safety analysis verifies the contract.
-  - In patch 2, exclude BIO_BLKG_REF from the flags saved by
-    dm_bio_record(), since restoring an ownership bit cannot recreate
-    the associated blkg reference.
-  - In patch 3, use scoped spinlock guards for async_bios and annotate
-    the list with __guarded_by().
-  - Add Nilay Shroff's Reviewed-by to patch 1.
-
-Changes since RFC v3:
-
-  - Drop the RFC prefix.
-  - Add Christoph Hellwig's Reviewed-by to patch 1.
-  - Add Tao Cui's Reviewed-by to patch 2.
-  - In patch 2, relax blkg_lookup_any()/blkg_lookup() to also allow
-    q->queue_lock as an alternative to the RCU read lock.
-
-Changes since RFC v2:
-
-  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
-    -stable, as suggested by Christoph Hellwig.
-  - Rebase onto the latest for-7.3/block branch.
-  - In the new patch 1, note that the remaining q->blkg_list walkers are
-    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
-    the queue_lock-to-blkcg_mutex conversion.
-  - In the new patch 1, explain the list_empty case in blkg_release(), and
-    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
-    does not acquire a reference.
-
-Changes since RFC v1:
-
-  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
-    shared request_queue is rebound, instead of treating root_blkg == NULL
-    as completion of asynchronous blkg teardown.
-  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
-    request_queue rhashtable keyed by blkcg->css.id, as suggested by
-    Christoph Hellwig. Keep dying pinned blkgs in the hash until
-    blkg_release() so bio-owned references remain discoverable.
-  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara and
-    Christoph Hellwig, and make bio_blkcg() naturally return NULL for an
-    unassociated bio.
-  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned reference,
-    falls back to a live parent when creation or tryget fails, and updates
-    bi_blkcg when the returned blkg belongs to an ancestor.
-  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
-    is already set. Use bio_blkg() in the BFQ and IOCOST merge paths which
-    may need to create a blkg, while keeping blk_cgroup_bio_start() and
-    completion paths lookup-only.
-  - Move CSS online-reference handling into
-    bio_associate_blkcg_from_css(), including fallback to the root blkcg, so
-    bio_associate_blkcg() does not take a redundant reference.
-  - Keep the v1 async bio punt conversion as patch 4 and document that
-    async_bio_lock protects async_bios.
-
-Previous versions:
-  v1: https://lore.kernel.org/r/20260823133045.970199-1-yukuai@kernel.org
-  RFC v3: https://lore.kernel.org/r/20260818070641.756747-1-yukuai@kernel.org
-  RFC v2: https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
-  RFC v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
-
-Related series:
-  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
-      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
-
-Yu Kuai (3):
-  blk-cgroup: use a request_queue rhashtable for blkg lookup
-  blk-cgroup: store blkcg in bio instead of blkg
-  blk-cgroup: move async bio punt state to blkcg
-
- Documentation/admin-guide/cgroup-v2.rst |   2 +-
- block/bfq-cgroup.c                      |  18 +-
- block/bfq-iosched.c                     |  19 +-
- block/bio.c                             |  22 +-
- block/blk-cgroup-fc-appid.c             |  10 +-
- block/blk-cgroup-rwstat.h               |   2 +-
- block/blk-cgroup.c                      | 358 ++++++++++++++----------
- block/blk-cgroup.h                      |  93 ++++--
- block/blk-core.c                        |   9 +-
- block/blk-crypto-fallback.c             |   2 +-
- block/blk-iocost.c                      |  12 +-
- block/blk-iolatency.c                   |  11 +-
- block/blk-ioprio.c                      |   2 +-
- block/blk-throttle.c                    |   3 +-
- block/blk-throttle.h                    |   2 +-
- drivers/md/bcache/request.c             |   2 +-
- drivers/md/dm-bio-record.h              |   3 +-
- drivers/md/dm.c                         |   2 +-
- drivers/md/md.c                         |   2 +-
- fs/gfs2/lops.c                          |   3 +-
- include/linux/bio.h                     |  26 +-
- include/linux/blk_types.h               |   9 +-
- include/linux/blkdev.h                  |   2 +
- include/linux/writeback.h               |   2 +-
- mm/page_io.c                            |  12 +-
- 25 files changed, 391 insertions(+), 237 deletions(-)
-
-
-base-commit: fc34aff88b3bd22146745c75cff0abb3c067cf42
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index e48415aa6084..717271b67734 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -64,10 +64,17 @@ bool blkcg_debug_stats = false;
+ 
+ static DEFINE_RAW_SPINLOCK(blkg_stat_lock);
+ 
+ #define BLKG_DESTROY_BATCH_SIZE  64
+ 
++const struct rhashtable_params blkg_hash_params = {
++	.key_len		= sizeof_field(struct blkcg_gq, blkcg_id),
++	.key_offset		= offsetof(struct blkcg_gq, blkcg_id),
++	.head_offset		= offsetof(struct blkcg_gq, q_hash_node),
++	.automatic_shrinking	= true,
++};
++
+ /*
+  * Lockless lists for tracking IO stats update
+  *
+  * New IO stats are stored in the percpu iostat_cpu within blkcg_gq (blkg).
+  * There are multiple blkg's (one for each block device) attached to each
+@@ -194,10 +201,20 @@ static void blkg_release(struct percpu_ref *ref)
+ {
+ 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
+ 	struct blkcg *blkcg = blkg->blkcg;
+ 	int cpu;
+ 
++	/*
++	 * A blkg that was never inserted into q->blkg_list has no hash
++	 * entry.  This happens when allocation or creation fails before
++	 * rhashtable_insert_fast() succeeds.
++	 */
++	if (!list_empty(&blkg->q_node))
++		WARN_ON_ONCE(rhashtable_remove_fast(&blkg->q->blkg_hash,
++						    &blkg->q_hash_node,
++						    blkg_hash_params));
++
+ 	/*
+ 	 * Flush all the non-empty percpu lockless lists before releasing
+ 	 * us, given these stat belongs to us.
+ 	 *
+ 	 * blkg_stat_lock is for serializing blkg stat update
+@@ -327,10 +344,11 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
+ 		goto out_put_queue;
+ 
+ 	blkg->q = disk->queue;
+ 	INIT_LIST_HEAD(&blkg->q_node);
+ 	blkg->blkcg = blkcg;
++	blkg->blkcg_id = blkcg->css.id;
+ 	blkg->iostat.blkg = blkg;
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	spin_lock_init(&blkg->async_bio_lock);
+ 	bio_list_init(&blkg->async_bios);
+ 	INIT_WORK(&blkg->async_bio_work, blkg_async_bio_workfn);
+@@ -423,11 +441,12 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
+ 			pol->pd_init_fn(blkg->pd[i]);
+ 	}
+ 
+ 	/* insert */
+ 	spin_lock(&blkcg->lock);
+-	ret = radix_tree_insert(&blkcg->blkg_tree, disk->queue->id, blkg);
++	ret = rhashtable_insert_fast(&disk->queue->blkg_hash,
++				     &blkg->q_hash_node, blkg_hash_params);
+ 	if (likely(!ret)) {
+ 		hlist_add_head_rcu(&blkg->blkcg_node, &blkcg->blkg_list);
+ 		list_add(&blkg->q_node, &disk->queue->blkg_list);
+ 
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+@@ -476,13 +495,10 @@ static struct blkcg_gq *blkg_lookup_create(struct blkcg *blkcg,
+ 	struct blkcg_gq *blkg;
+ 
+ 	rcu_read_lock();
+ 	blkg = blkg_lookup(blkcg, q);
+ 	if (blkg) {
+-		if (blkcg != &blkcg_root &&
+-		    blkg != rcu_dereference(blkcg->blkg_hint))
+-			rcu_assign_pointer(blkcg->blkg_hint, blkg);
+ 		rcu_read_unlock();
+ 		return blkg;
+ 	}
+ 	rcu_read_unlock();
+ 
+@@ -546,21 +562,12 @@ static void blkg_destroy(struct blkcg_gq *blkg)
+ 		}
+ 	}
+ 
+ 	blkg->online = false;
+ 
+-	radix_tree_delete(&blkcg->blkg_tree, blkg->q->id);
+ 	hlist_del_init_rcu(&blkg->blkcg_node);
+ 
+-	/*
+-	 * Both setting lookup hint to and clearing it from @blkg are done
+-	 * under queue_lock.  If it's not pointing to @blkg now, it never
+-	 * will.  Hint assignment itself can race safely.
+-	 */
+-	if (rcu_access_pointer(blkcg->blkg_hint) == blkg)
+-		rcu_assign_pointer(blkcg->blkg_hint, NULL);
+-
+ 	/*
+ 	 * Put the reference taken at the time of creation so that when all
+ 	 * queues are gone, group can be destroyed.
+ 	 */
+ 	percpu_ref_kill(&blkg->refcnt);
+@@ -880,47 +887,37 @@ int blkg_conf_prep(struct blkcg *blkcg, const struct blkcg_policy *pol,
+ 		if (unlikely(!new_blkg)) {
+ 			ret = -ENOMEM;
+ 			goto fail_exit;
+ 		}
+ 
+-		if (radix_tree_preload(GFP_KERNEL)) {
+-			blkg_free(new_blkg);
+-			ret = -ENOMEM;
+-			goto fail_exit;
+-		}
+-
+ 		spin_lock_irq(&q->queue_lock);
+ 
+ 		if (!blkcg_policy_enabled(q, pol)) {
+ 			blkg_free(new_blkg);
+ 			ret = -EOPNOTSUPP;
+-			goto fail_preloaded;
++			goto fail_unlock;
+ 		}
+ 
+ 		blkg = blkg_lookup(pos, q);
+ 		if (blkg) {
+ 			blkg_free(new_blkg);
+ 		} else {
+ 			blkg = blkg_create(pos, disk, new_blkg);
+ 			if (IS_ERR(blkg)) {
+ 				ret = PTR_ERR(blkg);
+-				goto fail_preloaded;
++				goto fail_unlock;
+ 			}
+ 		}
+ 
+-		radix_tree_preload_end();
+-
+ 		if (pos == blkcg)
+ 			goto success;
+ 	}
+ success:
+ 	mutex_unlock(&q->blkcg_mutex);
+ 	ctx->blkg = blkg;
+ 	return 0;
+ 
+-fail_preloaded:
+-	radix_tree_preload_end();
+ fail_unlock:
+ 	spin_unlock_irq(&q->queue_lock);
+ fail_exit:
+ 	mutex_unlock(&q->blkcg_mutex);
+ 	/*
+@@ -1418,11 +1415,10 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
+ 		cpd->plid = i;
+ 	}
+ 
+ 	spin_lock_init(&blkcg->lock);
+ 	refcount_set(&blkcg->online_pin, 1);
+-	INIT_RADIX_TREE(&blkcg->blkg_tree, GFP_NOWAIT);
+ 	INIT_HLIST_HEAD(&blkcg->blkg_list);
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 	INIT_LIST_HEAD(&blkcg->cgwb_list);
+ #endif
+ 	list_add_tail(&blkcg->all_blkcgs_node, &all_blkcgs);
+@@ -1455,21 +1451,26 @@ static int blkcg_css_online(struct cgroup_subsys_state *css)
+ 	if (parent)
+ 		blkcg_pin_online(&parent->css);
+ 	return 0;
+ }
+ 
+-void blkg_init_queue(struct request_queue *q)
++int blkg_init_queue(struct request_queue *q)
+ {
+ 	INIT_LIST_HEAD(&q->blkg_list);
+ 	mutex_init(&q->blkcg_mutex);
++	return rhashtable_init(&q->blkg_hash, &blkg_hash_params);
++}
++
++void blkg_exit_queue(struct request_queue *q)
++{
++	rhashtable_destroy(&q->blkg_hash);
+ }
+ 
+ int blkcg_init_disk(struct gendisk *disk)
+ {
+ 	struct request_queue *q = disk->queue;
+ 	struct blkcg_gq *new_blkg, *blkg;
+-	bool preloaded;
+ 
+ 	/*
+ 	 * If the queue is shared across disk rebind (e.g., SCSI), the
+ 	 * previous disk's blkcg state is cleaned up asynchronously via
+ 	 * disk_release() -> blkcg_exit_disk(). Wait for all old blkgs to be
+@@ -1479,30 +1480,23 @@ int blkcg_init_disk(struct gendisk *disk)
+ 
+ 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
+ 	if (!new_blkg)
+ 		return -ENOMEM;
+ 
+-	preloaded = !radix_tree_preload(GFP_KERNEL);
+-
+ 	/* Make sure the root blkg exists. */
+ 	/* spin_lock_irq can serve as RCU read-side critical section. */
+ 	spin_lock_irq(&q->queue_lock);
+ 	blkg = blkg_create(&blkcg_root, disk, new_blkg);
+ 	if (IS_ERR(blkg))
+ 		goto err_unlock;
+ 	q->root_blkg = blkg;
+ 	spin_unlock_irq(&q->queue_lock);
+ 
+-	if (preloaded)
+-		radix_tree_preload_end();
+-
+ 	return 0;
+ 
+ err_unlock:
+ 	spin_unlock_irq(&q->queue_lock);
+-	if (preloaded)
+-		radix_tree_preload_end();
+ 	return PTR_ERR(blkg);
+ }
+ 
+ void blkcg_exit_disk(struct gendisk *disk)
+ {
+diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
+index e67c69839129..7278a8817a49 100644
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -17,10 +17,12 @@
+ #include <linux/blk-cgroup.h>
+ #include <linux/cgroup.h>
+ #include <linux/kthread.h>
+ #include <linux/blk-mq.h>
+ #include <linux/llist.h>
++#include <linux/rhashtable.h>
++#include <linux/rcupdate.h>
+ #include "blk.h"
+ 
+ struct blkcg_gq;
+ struct blkg_policy_data;
+ 
+@@ -54,13 +56,15 @@ struct blkg_iostat_set {
+ 
+ /* association between a blk cgroup and a request queue */
+ struct blkcg_gq {
+ 	/* Pointer to the associated request_queue */
+ 	struct request_queue		*q;
++	struct rhash_head		q_hash_node;
+ 	struct list_head		q_node;
+ 	struct hlist_node		blkcg_node;
+ 	struct blkcg			*blkcg;
++	int				blkcg_id;
+ 
+ 	/* all non-root blkcg_gq's are guaranteed to have access to parent */
+ 	struct blkcg_gq			*parent;
+ 
+ 	/* reference count */
+@@ -96,12 +100,10 @@ struct blkcg {
+ 	spinlock_t			lock;
+ 	refcount_t			online_pin;
+ 	/* If there is block congestion on this cgroup. */
+ 	atomic_t			congestion_count;
+ 
+-	struct radix_tree_root		blkg_tree;
+-	struct blkcg_gq	__rcu		*blkg_hint;
+ 	struct hlist_head		blkg_list;
+ 
+ 	struct blkcg_policy_data	*cpd[BLKCG_MAX_POLS];
+ 
+ 	struct list_head		all_blkcgs_node;
+@@ -190,12 +192,14 @@ struct blkcg_policy {
+ 	blkcg_pol_stat_pd_fn		*pd_stat_fn;
+ };
+ 
+ extern struct blkcg blkcg_root;
+ extern bool blkcg_debug_stats;
++extern const struct rhashtable_params blkg_hash_params;
+ 
+-void blkg_init_queue(struct request_queue *q);
++int blkg_init_queue(struct request_queue *q);
++void blkg_exit_queue(struct request_queue *q);
+ int blkcg_init_disk(struct gendisk *disk);
+ void blkcg_exit_disk(struct gendisk *disk);
+ 
+ /* Blkio controller policy registration */
+ int blkcg_policy_register(struct blkcg_policy *pol);
+@@ -247,15 +251,37 @@ static inline bool bio_issue_as_root_blkg(struct bio *bio)
+ {
+ 	return (bio->bi_opf & (REQ_META | REQ_SWAP)) != 0;
+ }
+ 
+ /**
+- * blkg_lookup - lookup blkg for the specified blkcg - q pair
++ * blkg_lookup_any - lookup any blkg for the specified blkcg - q pair
+  * @blkcg: blkcg of interest
+  * @q: request_queue of interest
+  *
+- * Lookup blkg for the @blkcg - @q pair.
++ * Lookup a blkg for the @blkcg - @q pair, whether it is online or dying.
++ *
++ * Must be called in a RCU critical section.
++ *
++ * This does not acquire a reference.  The caller must already hold one, or
++ * have the blkg pinned by I/O.
++ */
++static inline struct blkcg_gq *blkg_lookup_any(struct blkcg *blkcg,
++					       struct request_queue *q)
++{
++	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
++			 "blkg_lookup_any() requires an RCU read lock");
++
++	return rhashtable_lookup(&q->blkg_hash, &blkcg->css.id,
++				 blkg_hash_params);
++}
++
++/**
++ * blkg_lookup - lookup an online blkg for the specified blkcg - q pair
++ * @blkcg: blkcg of interest
++ * @q: request_queue of interest
++ *
++ * Lookup an online blkg for the @blkcg - @q pair.
+  *
+  * Must be called in a RCU critical section.
+  */
+ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg,
+ 					   struct request_queue *q)
+@@ -263,17 +289,12 @@ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg,
+ 	struct blkcg_gq *blkg;
+ 
+ 	if (blkcg == &blkcg_root)
+ 		return q->root_blkg;
+ 
+-	blkg = rcu_dereference_check(blkcg->blkg_hint,
+-			lockdep_is_held(&q->queue_lock));
+-	if (blkg && blkg->q == q)
+-		return blkg;
+-
+-	blkg = radix_tree_lookup(&blkcg->blkg_tree, q->id);
+-	if (blkg && blkg->q != q)
++	blkg = blkg_lookup_any(blkcg, q);
++	if (blkg && !READ_ONCE(blkg->online))
+ 		blkg = NULL;
+ 	return blkg;
+ }
+ 
+ /**
+@@ -496,12 +517,14 @@ struct blkcg_policy {
+ };
+ 
+ struct blkcg {
+ };
+ 
++static inline struct blkcg_gq *blkg_lookup_any(struct blkcg *blkcg, void *key) { return NULL; }
+ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg, void *key) { return NULL; }
+-static inline void blkg_init_queue(struct request_queue *q) { }
++static inline int blkg_init_queue(struct request_queue *q) { return 0; }
++static inline void blkg_exit_queue(struct request_queue *q) { }
+ static inline int blkcg_init_disk(struct gendisk *disk) { return 0; }
+ static inline void blkcg_exit_disk(struct gendisk *disk) { }
+ static inline int blkcg_policy_register(struct blkcg_policy *pol) { return 0; }
+ static inline void blkcg_policy_unregister(struct blkcg_policy *pol) { }
+ static inline int blkcg_activate_policy(struct gendisk *disk,
+diff --git a/block/blk-core.c b/block/blk-core.c
+index 196bccf27f58..e396a316b8bf 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -301,10 +301,11 @@ static void blk_free_queue(struct request_queue *q)
+ {
+ 	blk_free_queue_stats(q->stats);
+ 	if (queue_is_mq(q))
+ 		blk_mq_release(q);
+ 
++	blkg_exit_queue(q);
+ 	ida_free(&blk_queue_ida, q->id);
+ 	lockdep_unregister_key(&q->io_lock_cls_key);
+ 	lockdep_unregister_key(&q->q_lock_cls_key);
+ 	call_rcu(&q->rcu_head, blk_free_queue_rcu);
+ }
+@@ -479,21 +480,23 @@ struct request_queue *blk_alloc_queue(struct queue_limits *lim, int node_id)
+ 	spin_lock_init(&q->queue_lock);
+ 
+ 	init_waitqueue_head(&q->mq_freeze_wq);
+ 	mutex_init(&q->mq_freeze_lock);
+ 
+-	blkg_init_queue(q);
++	error = blkg_init_queue(q);
++	if (error)
++		goto fail_stats;
+ 
+ 	/*
+ 	 * Init percpu_ref in atomic mode so that it's faster to shutdown.
+ 	 * See blk_register_queue() for details.
+ 	 */
+ 	error = percpu_ref_init(&q->q_usage_counter,
+ 				blk_queue_usage_counter_release,
+ 				PERCPU_REF_INIT_ATOMIC, GFP_KERNEL);
+ 	if (error)
+-		goto fail_stats;
++		goto fail_blkg;
+ 	lockdep_register_key(&q->io_lock_cls_key);
+ 	lockdep_register_key(&q->q_lock_cls_key);
+ 	lockdep_init_map(&q->io_lockdep_map, "&q->q_usage_counter(io)",
+ 			 &q->io_lock_cls_key, 0);
+ 	lockdep_init_map(&q->q_lockdep_map, "&q->q_usage_counter(queue)",
+@@ -508,10 +511,12 @@ struct request_queue *blk_alloc_queue(struct queue_limits *lim, int node_id)
+ 	q->nr_requests = BLKDEV_DEFAULT_RQ;
+ 	q->async_depth = BLKDEV_DEFAULT_RQ;
+ 
+ 	return q;
+ 
++fail_blkg:
++	blkg_exit_queue(q);
+ fail_stats:
+ 	blk_free_queue_stats(q->stats);
+ fail_id:
+ 	ida_free(&blk_queue_ida, q->id);
+ fail_q:
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 4f7905c3412b..58f323edc990 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -25,10 +25,11 @@
+ #include <linux/sbitmap.h>
+ #include <linux/uuid.h>
+ #include <linux/xarray.h>
+ #include <linux/file.h>
+ #include <linux/lockdep.h>
++#include <linux/rhashtable-types.h>
+ 
+ struct module;
+ struct request_queue;
+ struct elevator_queue;
+ struct blk_trace;
+@@ -577,10 +578,11 @@ struct request_queue {
+ 
+ 	struct list_head	icq_list;
+ #ifdef CONFIG_BLK_CGROUP
+ 	DECLARE_BITMAP		(blkcg_pols, BLKCG_MAX_POLS);
+ 	struct blkcg_gq		*root_blkg;
++	struct rhashtable	blkg_hash;
+ 	struct list_head	blkg_list;
+ 	struct mutex		blkcg_mutex;
+ #endif
+ 
+ 	int			node;
 -- 
 2.51.0
+
 
