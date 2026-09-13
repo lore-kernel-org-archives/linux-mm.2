@@ -4,170 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D1FC88E66
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 14:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDCCBC88E65
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 15:26:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA0626B0088; Sun, 13 Sep 2026 10:49:35 -0400 (EDT)
+	id 919076B0093; Sun, 13 Sep 2026 11:26:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C49C16B008C; Sun, 13 Sep 2026 10:49:35 -0400 (EDT)
+	id 8CB996B008C; Sun, 13 Sep 2026 11:26:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B132B6B0092; Sun, 13 Sep 2026 10:49:35 -0400 (EDT)
+	id 76C6F6B0093; Sun, 13 Sep 2026 11:26:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8584E6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:49:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E145F14065C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:30:21 +0000 (UTC)
-X-FDA: 85208823042.08.89E9084
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6C779C0008
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 13:30:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kkCdYWnG;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf28.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4606B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:26:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8419AA07BE
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 15:26:56 +0000 (UTC)
+X-FDA: 85209116832.04.516136B
+Received: from danaos.cslab.ece.ntua.gr (danaos.cslab.ece.ntua.gr [147.102.3.1])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BC4BB4000A
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 15:26:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b="HTJl/mFq";
+	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr;
+	spf=pass (imf17.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=cslab.ece.ntua.gr header.s=smtp-cslab header.b="HTJl/mFq";
+	dmarc=pass (policy=none) header.from=cslab.ece.ntua.gr;
+	spf=pass (imf17.hostedemail.com: domain of dchar@cslab.ece.ntua.gr designates 147.102.3.1 as permitted sender) smtp.mailfrom=dchar@cslab.ece.ntua.gr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789313214;
+	b=eOQUFb8zv9ySf8W0Xga0dn0nOuCfTykftjImGa5xMg83N8OcdKWgu7lYyodBcSODVzDao1
+	SWH8j686UciNfEzkHRqsOyvR+SBQMcNz4LvKb6q6gPTHK1rC6i4exlZcUGS7U8xIl60ZAS
+	9VBW18GG5kgawb8dhmVBfeSXpmdqXv0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789306219;
+	s=arc-20220608; t=1789313214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+V/HImHSDz8kfFeEdbya+rI2+T3XQl9CUl1CtP6MnQY=;
-	b=Xb+HA/jtC7nu8YRWjvEFMZf4/pJqilXRpTVtrR93hTd8lSFYih6ysZjE7QiKZ6KjlIX3yN
-	OY1xHI474MvdD4uwWr83C5FkX1u21jP3voz3DQa126P+kUMtHouAoZdbAglhflEFAYq3ra
-	aJ0fywfOmscYTP8JUGy/xBR7Ut+XiMw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789306219;
-	b=S035l120pdkfBNqSftjLlKoUq4dzzlRbv/f1jpkzKb2Y02FhacuIXolhcKD3qSNDRjA0JK
-	DofjUi7E7J8FteNCJlTKOxOJA9NcGwVjTqUpeBByMkARF5B6ipLm1RY4xYBmjsUTFCf8Y8
-	DettG/jzcxzYJOOqT5JHkGJzQKmt1Co=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kkCdYWnG;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf28.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAVQkF1255664;
-	Sun, 13 Sep 2026 13:29:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+V/HIm
-	HSDz8kfFeEdbya+rI2+T3XQl9CUl1CtP6MnQY=; b=kkCdYWnGsL4dS89b7MgWSi
-	8GJVjDvIQ9h+M7k9j8tNkW942RE2zvWfRXzQr0qjMV4dHnmHq99pw1YTz+UTXy9/
-	/S2UyPagSL+3Nq+IIu97ne4NbyZ+AqdmWBXCba6AGvFf2ejDRurwYcHXw8QeTIyj
-	EyRPmRrcXkc6VeiZi55r7/FCsKGoutX6JFwfOme2x/bVj5SFDoAQSDC1qKdcXczB
-	FvcLTPegwmnY5jKb1mHlYiiwwO05cS1/iUHz1TjmycNOCk0ATqbKujf4ylqluy5c
-	liEEExomDNrLDNESynCU303UKrXLt/cSpMWD8aQW8BOy49f/6vTzDaCITCiAvP2Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxdpvp3k-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 13 Sep 2026 13:29:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAZ4oB544502;
-	Sun, 13 Sep 2026 13:29:41 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gnh2psqu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Sep 2026 13:29:41 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68DDTf2U23134818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 13 Sep 2026 13:29:41 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 445F958055;
-	Sun, 13 Sep 2026 13:29:41 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A64B58043;
-	Sun, 13 Sep 2026 13:29:27 +0000 (GMT)
-Received: from [9.61.162.129] (unknown [9.61.162.129])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 13 Sep 2026 13:29:26 +0000 (GMT)
-Message-ID: <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
-Date: Sun, 13 Sep 2026 18:59:25 +0530
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=I/+m3OHiB1/w9bCvqfab0gwJ1AbBCswIlznPDA6TImI=;
+	b=8pgFAvoWqyPE14cZv29thLJOK2mRBLQTPm5/O/eQkkUlMdwWDMJMhZwXV9rZpyqu57e+jJ
+	ZKPKdekYiUT2v5HcJsD247PofBV+8bNMXvYu+JiMIaXzuv9qpnuiDD7qumf062u/YYZMlw
+	QLUak8jdwKIRnJFT9Z5+RrJT7D31Q1Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cslab.ece.ntua.gr;
+	s=smtp-cslab; t=1789313206;
+	bh=Bnk734lVpvGjHUNThsIWBtKEdz4cGiQMC0zLJkAfrIk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=HTJl/mFqPyZ2rkie4PSJCm14++mzyyZr2PEUIH8+ogRbzF77g5BdI6kDBlncdneNH
+	 4lMm9F88bcJiBjq4IYXTGJSseVzxakqsqx6DJTg42fGBC1K97eAEyTMEW4+nSKVtiz
+	 9/wPhs75tZm0PY4XVsGe00v7h3mB6sn6uJZclEBo=
+Received: from [127.0.0.1] (armor.cslab.ece.ntua.gr [147.102.4.33])
+	by danaos.cslab.ece.ntua.gr (Postfix) with ESMTPSA id 8E0AB120A01;
+	Sun, 13 Sep 2026 18:26:46 +0300 (EEST)
+From: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+Subject: [PATCH 0/2] maple_tree: fix maple_range_64 crashes in RCU mode
+Date: Sun, 13 Sep 2026 15:26:17 +0000
+Message-Id: <20260913-fix-maple-tree-range64-rcu-v1-0-31a130bb8cbf@cslab.ece.ntua.gr>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] blk-cgroup: move async bio punt state to blkcg
-To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap
- <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Alasdair Kergon
- <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
-        Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling
- <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>
-Cc: Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
-        Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
-        dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-        gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, llvm@lists.linux.dev
-References: <cover.1789237876.git.yukuai@fygo.io>
- <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE4NiBTYWx0ZWRfXwV/0FqNA71UW
- 0pSFlqnYwSqWUYI6LgVLyKbNtIbqAXpKwLtlpplrS30cUDQsW2lRrlESKbbUK1oSAm5xS8Ylm55
- VNl+w9i9HLWFGn8vh9aZHnh6SAqmPz13WVaI6pKqA55iJdy5LNt9R1Wi94ijn02bhHTHKAe0eRP
- mp1vNvMZ7l2UiHUt58ZXQBMVs6hQdaaQ3nChJkoptBrQFIPGEirAwojONs4lZ6aHCKdNxRtzvJA
- VEaSWJbv7lVRD5sIfTWnm9jjRqkJZ32e7oiPfEo9MnPFWhdGetfmkOqDaQekF77ovy5LJRxmJm4
- GHgK/ALXAeVLOEPIBjf+qhG5iy+5XWRhZiTObq8UQ+HqyRjSELagks36ThrVEyBiln9x1oyRA3K
- 6RWEEkijXp9Vg20WYSpU+aj5P1ynIjIW9tHl7ChXZlM42/wLY0H0BiuqAYnMqScT+rA1lzv4TAc
- lKGFPo2jxo7pOUNxhDA==
-X-Proofpoint-GUID: jqEO1yjE93QiEpR2tJ-y2Cj8IdEumaS9
-X-Authority-Analysis: v=2.4 cv=DobDa2/+ c=1 sm=1 tr=0 ts=6aa6a547 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=DV5896PDfqYWo4ufmHUA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: vL8PPh6d47DxNDz6NH1gi_sDy5Mchg5w
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE4NiBTYWx0ZWRfX+u9bu0oOeNVm
- 0mm11mtP4XmiNfvfkDWefm6R0Hke5V/MZntTFgts27Fvw05oL4zedqtiD/PrbwZHmnddXxuaxEY
- eyOP6ZBuPFe31aD3IKoBDNy2zMXtA+0=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-13_04,2026-09-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609130186
+X-B4-Tracking: v=1; b=H4sIAJnApmoC/x3MQQqDQAxG4atI1g2MsVX0KsXFMP5qwFrJqAji3
+ Tt2+eDjnRRhikhNdpJh16jfOUX+yCiMfh7A2qUmcVK6Ohfu9eCPXybwagDbbconW9jYSe+LTvC
+ qfUVpsBiS/s/f7XX9AB1VQGNsAAAA
+X-Change-ID: 20260912-fix-maple-tree-range64-rcu-02fa3d2e59a7
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Andrew Ballance <andrewjballance@gmail.com>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+X-Mailer: b4 0.14.2
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6C779C0008
-X-Stat-Signature: t8dgoq3wxhijmf95x3u16oid7xtg7gxz
-X-HE-Tag: 1789306219-174061
-X-HE-Meta: U2FsdGVkX19XyRnE6278pJJIieFPCLKlnyHNdcYNrkRYBX7oonu4cIqHhsSjz7QfKTdXAQtvuBTvAiYSTrPBzK7stso4or8GcS6gk0Km+5mzbPbBO/Pwx4nL70bB1pIslGtLCMBzLb+AsGMerOcv1rkipYGN/DGvjXIx+YnSWIqAe2MRW5PI+VxxlliKLvut/zkI5GaMkMJwEl+bchqFxGqiylf8vHbI0ritAS6NQxr4c7SV3RUkZawHDnjkwfNQGRz/pErsuVkv7k9lDIKiYXoUGi3NTBJdWQCFULBxQfqzrgeKf/Vuj5Cab8GoOjhzoT2FAInzT6UiOW/1cWSfmR+i8kcP5I2V0u4oZQz64vMfc6gB/w4H0RpLDodCouTID7Cqxo/Q7wnzmbzPdC38bk0QXyQLaQxea/DTfIZgsJ7A+3ULotmPW/HMipdSl7c1uZataAYJcEznxaQGfjpMOWXlECYQpCrPVk7Bj4/2DStwH8gJndkmzUHv+dUa1ZULWSF59WspjWnFNY9WbC8v/eNOGLU69F+gUd0J5TJvNT3CpfPa3G+ZU8svaMgJ90HBrFLmXs3718BJoJiYorNSmsH++O/f8BqP+C+5VvU/2SKBTjtOK+hHtbbYXqvuZToRShO7NwUOmE7Qxtrl4LpTCT99ioAk5P+RSFlU4ekqKer5AAU75CMJqD9W9rpTHDa5Z9/iPVfymyCwsB7UerE3miKhFP1Mc9fz0zoTnu3PMO7Ddfu35WBtHcTRLRKPfSOz92I4wh6L2/Xtqg0z1AP5SdzGwNfeP4nDUZDUlP9GLeOJIUqy57tFKoRfo2Q8NG/6IAjwHgLh/aXHabFwtIxAA0iOW2o5rhdDPCILpUIJyOVcGCD4b/s4dZYv6nvxdbUsdxAYBEMcRsy/lxiyO5vq0bhO4BLI+QrJ+B3Rt6pKOwRGsz19kC6Xz6OwNMo499k73XK2W6LMJzaurkxMVJZ
- RBsJtHeH
- PKQ5BplIJGNkU9vKUC8aoKqE5WA8YiP4XsaQrrCTQbFpw/g+RNv81+jOkmoQyInbEiK6nWrrc8gnho7SCeu/Lz/pplll9H2lWO0IZmrw1575EQOrBA16eEkSJRyhkyz8w+mbI7kVLKWIL5DhVUJM0i8zuOawpLyoPcFLrECehA31uqMHx+R43/Hnn1GZPBpxu86UhLSMurvOgClaK6xmDUVYPBqzVVUZqmNK7lx194bYSQiJyNIVfIcuQgI+xituEp2SXAZ8vjSE4YGIrZtN6/d1qt6Mj7Ix7n661bWuaSFwPOM+1qsOeHKyldcjfjd0CYdrl
+X-Rspamd-Queue-Id: BC4BB4000A
+X-Stat-Signature: xnk7wydnzu5td1m7w6rfpzfkhq46fyig
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789313213-169776
+X-HE-Meta: U2FsdGVkX199hUD7eclpS1TLKjZ9WMuEU4XvfN0qrQ2NsuTt04zMMd/3nUSCrEoknOBrrD6FaBjVRoBrDlfQw2PjeC7UXiskKhcOLPp9b5eKLQWxewWciyV2Asa6ZrwZoBsga3UKK6G00/ufHPs2fldPxtk6SxU+laWl8kcDd9NbPBFn0N9kQjieY+WrF3mJSMycetjeKI8JRcOiFgPSJRT/7ZWb+JuFOyuS+nx2YWuKk6KM66XLl8/DgxVUMDrYcHSkuUn51mkE7Jnt5e0nRQ591lYm+qIVj3x79Q6na/dW8HaotXFV1hVE0B8XOKvQ1TfcCgUchokCzRgdu7I8wVF2MzCIC5FrUZta7mZddb0iWmfw7XyghgkkwIH6POut1ExUPo4juxK5Rof+rZ4Py+9YCD9NSxlgrpaZt9ntm8j08Ez7YA6FRBtMTtse6zfjt/Ajvn0UL5+Xk+UzenwtepMunWabHzp/kNGUUbaLmrEfQOaPuPcuPbmMsPhoo5pZgnec0VPX05gedWoUgg035iaZxyZ9pjHXJK8Cb/zf/RnDbu4JTixSPxbzgV58+S3XRs5bE9ztpqC0AS+1pKNvnkyQ1mcZpjxTQ1LyLrjEX87yigvVL1jALv6kr1SUs9y/GBPc/h+4UeayiHSlJ0IFxOxyjNBhCYFb12XfV1p2dfis56wJs3ifLAIDei9c5hpHQ7AfF4RLeQYEfbGdGAQFp8hFPeW8KyZ5eAghqAmuom7XkZD22y9LOCNj7vzoh7dwNrE4ks+SMthurdCavA8Q/Z9vDgL0+AORsZBUOvLTWygwDJ8G9xZD4JtVDgKOmjfU4SvTISDHkrEgFQkQB6qNrnP1lBXTaVCQPvTaNIDtwvaU78h2TkQFVF5IHKs+Iy+uOO7MyDo+9RDb7WEXzDLGf2lXZsc2PkI/NQEO66Wy75pWbgGEbJQ4/doJf6zZc37PkSfz11mSaKQTjMEJbf1
+ t2z0Z3PV
+ RGKW9Iyp+hH9LLF6NnUjQnXDnLecPs+YJZr+sV94VbFJPl6wmc8GfxrV5Dm4dhNbA9hM28HhIeUcLK6mgbtmp2/aqaHElufh6O6UxxZK3YC3c90gtP0GrA7b98tH7ixtJmDk8FG+5ZWqHbcM1efLNReyuvPOb1Fp7JhXEW78G4On7LSqjgTb5YJLKofncEmpAc8ZW9BRoVcOTTYzWHjjMQiUTD3Nc+zTcnLxKOsheLtHWYfFzMxMdX2aEcfAckcviiSY32H+UicJRmqmw+yE2TGaNuHi0puFG6H6HIxZ7OZFALQcdacyArD7YV95EtOxOJYaIr4QxIQJOkqH5RUB4xfAdRVe0/NroOEoilwoJ+vQSYfWoiP2OYa1ESw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,194 +92,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/13/26 12:24 PM, Yu Kuai wrote:
-> From: Yu Kuai <yukuai@fygo.io>
-> 
-> blkcg_punt_bio_submit() currently queues punted bios on blkg->async_bios,
-> so it has to call bio_blkg() to find or create a queue-local blkg.  Bios
-> now carry and pin the blkcg css, so punted bio lifetime no longer needs to
-> be anchored by a blkg.
-> 
-> Keeping the punt state in blkg can instantiate a blkg even when no blkcg
-> policy is enabled, just to bounce submission from a shared kthread.  Move
-> async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
-> punted bios on bio_blkcg() for non-root cgroups.  Root or unassociated bios
-> are submitted directly.
-> 
-> This preserves the priority-inversion avoidance while preventing
-> blkcg_punt_bio_submit() from creating blkgs that are not needed by any
-> policy.
-> 
-> Signed-off-by: Yu Kuai <yukuai@fygo.io>
-> ---
->   block/blk-cgroup.c | 52 ++++++++++++++++++++++++++--------------------
->   block/blk-cgroup.h | 14 ++++++-------
->   2 files changed, 35 insertions(+), 31 deletions(-)
-> 
-> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-> index 59ccfefe16a8..aa3cee107ebe 100644
-> --- a/block/blk-cgroup.c
-> +++ b/block/blk-cgroup.c
-> @@ -180,14 +180,10 @@ static void blkg_free(struct blkcg_gq *blkg)
->   
->   static void __blkg_release(struct rcu_head *rcu)
->   {
->   	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
->   
-> -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> -	WARN_ON(!bio_list_empty(&blkg->async_bios));
-> -#endif
-> -
->   	blkg_free(blkg);
->   }
->   
->   /*
->    * A group is RCU protected, but having an rcu lock does not mean that one
-> @@ -226,23 +222,23 @@ static void blkg_release(struct percpu_ref *ref)
->   }
->   
->   #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
->   static struct workqueue_struct *blkcg_punt_bio_wq;
->   
-> -static void blkg_async_bio_workfn(struct work_struct *work)
-> +static void blkcg_async_bio_workfn(struct work_struct *work)
->   {
-> -	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
-> -					     async_bio_work);
-> +	struct blkcg *blkcg = container_of(work, struct blkcg, async_bio_work);
->   	struct bio_list bios = BIO_EMPTY_LIST;
->   	struct bio *bio;
->   	struct blk_plug plug;
->   	bool need_plug = false;
->   
-> -	/* as long as there are pending bios, @blkg can't go away */
-> -	spin_lock(&blkg->async_bio_lock);
-> -	bio_list_merge_init(&bios, &blkg->async_bios);
-> -	spin_unlock(&blkg->async_bio_lock);
-> +	/* as long as there are pending bios, @blkcg can't go away */
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		bio_list_merge_init(&bios, &blkcg->async_bios);
-> +	}
->
-Instead of using guard(spinlock)(...) here, I think we could use the
-simpler spin_lock()/spin_unlock() helpers. IMO, they are easier
-to read and reason about for these short critical sections.
+I was running a patched kernel using a maple tree in RCU mode without
+specifying the MT_FLAGS_ALLOC_RANGE flag and the kernel crashed. I
+switched to an upstream kernel, and after some investigation and
+debugging (thanks tools/testing/radix-tree/maple.c) I discovered that
+there were two separate issues on the RCU destroy path that were
+responsible. Both arising from the fact that a maple_range_64 node that
+is not full repurposes its last slot to hold metadata. Each issue is
+addressed by one of the two patches.
 
->   	/* start plug only when bio_list contains at least 2 bios */
->   	if (bios.head && bios.head->bi_next) {
->   		need_plug = true;
->   		blk_start_plug(&plug);
-> @@ -259,19 +255,20 @@ static void blkg_async_bio_workfn(struct work_struct *work)
->    * cgroup.  Use this helper instead of submit_bio to punt the actual issuing to
->    * a dedicated per-blkcg work item to avoid such priority inversions.
->    */
->   void blkcg_punt_bio_submit(struct bio *bio)
->   {
-> -	struct blkcg_gq *blkg = bio_blkg(bio);
-> +	struct blkcg *blkcg = bio_blkcg(bio);
->   
-> -	if (blkg && blkg->parent) {
-> -		spin_lock(&blkg->async_bio_lock);
-> -		bio_list_add(&blkg->async_bios, bio);
-> -		spin_unlock(&blkg->async_bio_lock);
-> -		queue_work(blkcg_punt_bio_wq, &blkg->async_bio_work);
-> +	if (blkcg && cgroup_parent(blkcg->css.cgroup)) {
-> +		{
-> +			guard(spinlock)(&blkcg->async_bio_lock);
-> +			bio_list_add(&blkcg->async_bios, bio);
-> +		}
-> +		queue_work(blkcg_punt_bio_wq, &blkcg->async_bio_work);
+AFAIK there is no in-tree user of maple_range_64 nodes in RCU mode at
+the moment. All in-tree users of MT_FLAGS_USE_RCU that I found also set
+MT_FLAGS_ALLOC_RANGE which makes the internal nodes maple_arange_64.
 
-Again same here, replace guard() with spin_lock() and spin_unlock()
-helpers.
+Below is the minimal reproducer I used during debugging.
 
->   	} else {
-> -		/* Never bounce if there is no non-root blkg to queue on. */
-> +		/* Never bounce if there is no non-root blkcg to queue on. */
->   		submit_bio(bio);
->   	}
->   }
->   EXPORT_SYMBOL_GPL(blkcg_punt_bio_submit);
->   
-> @@ -350,15 +347,10 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
->   	blkg->q = disk->queue;
->   	INIT_LIST_HEAD(&blkg->q_node);
->   	blkg->blkcg = blkcg;
->   	blkg->blkcg_id = blkcg->css.id;
->   	blkg->iostat.blkg = blkg;
-> -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> -	spin_lock_init(&blkg->async_bio_lock);
-> -	bio_list_init(&blkg->async_bios);
-> -	INIT_WORK(&blkg->async_bio_work, blkg_async_bio_workfn);
-> -#endif
->   
->   	u64_stats_init(&blkg->iostat.sync);
->   	for_each_possible_cpu(cpu) {
->   		u64_stats_init(&per_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
->   		per_cpu_ptr(blkg->iostat_cpu, cpu)->blkg = blkg;
-> @@ -1399,10 +1391,16 @@ static void blkcg_css_free(struct cgroup_subsys_state *css)
->   		if (blkcg->cpd[i])
->   			blkcg_policy[i]->cpd_free_fn(blkcg->cpd[i]);
->   
->   	mutex_unlock(&blkcg_pol_mutex);
->   
-> +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		WARN_ON(!bio_list_empty(&blkcg->async_bios));
-> +	}
-> +#endif
-
-This is a slightly different case. At this point blkcg_css_free() is
-freeing the blkcg object after its final reference has gone away, so
-there should be no concurrent context accessing blkcg->async_bios.
-Therefore, I don't think we need to acquire async_bio_lock here just
-to perform the WARN_ON() check.
-The clang context annotation cannot infer this object-lifetime property
-and will therefore report an unprotected access. I think we should
-explicitly mark this access as context-unsafe.
-
-But wait, even better, we could introduce a bio_list_empty_careful() helper,
-similar to list_empty_careful(), for this purpose:
-
-static inline bool bio_list_empty_careful(const struct bio_list *bl)
-	__context_unsafe(/* intentional lockless access to @bl->head */)
+static DEFINE_MTREE(tree);
+static int __init maple_fix_init(void)
 {
-	return bl->head == NULL;
+        unsigned long i, j;
+
+	for (i = 10; i < 4000; i++) {
+                mt_init_flags(&tree, MT_FLAGS_USE_RCU);
+
+                for (j = 0; j < i; j++) {
+                        mtree_insert_range(&tree, j * 10, j * 10 + 9,
+                                        xa_mk_value(j), GFP_KERNEL);
+                }
+
+                mtree_destroy(&tree);
+                rcu_barrier();
+	}
+	return 0;
 }
 
-Then this could simply become:
+Patch 1 fixes the first issue. The splat is shown below. mt_clear_meta()
+runs after the slots have been rewritten with raw pointers by
+mte_dead_leaves(), so it cannot recognize a valid last pointer because
+the type information is stripped. On my 64-bit LE machine, it clears
+bytes 248 and 249 of the maple_range_64 which are the two least
+significant bytes of the last pointer. The lowest byte is already zero,
+since nodes are 256-byte aligned, but zeroing byte 249 corrupts the
+pointer.
 
-WARN_ON(!bio_list_empty_careful(&blkcg->async_bios));
+KASAN catches it as a double-free, because that corrupted pointer
+happens to land on a node that was freed previously. The splat usually
+appears at around 226 insertions in the reproducer. The exact tree size
+that triggers it may vary because it depends on where the corrupted
+pointer lands.
 
->   	free_percpu(blkcg->lhead);
->   	kfree(blkcg);
->   }
->   
->   static struct cgroup_subsys_state *
-> @@ -1447,10 +1445,18 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
->   	}
->   
->   	spin_lock_init(&blkcg->lock);
->   	refcount_set(&blkcg->online_pin, 1);
->   	INIT_HLIST_HEAD(&blkcg->blkg_list);
-> +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-> +	spin_lock_init(&blkcg->async_bio_lock);
-> +	{
-> +		guard(spinlock)(&blkcg->async_bio_lock);
-> +		bio_list_init(&blkcg->async_bios);
-> +	}
-> +	INIT_WORK(&blkcg->async_bio_work, blkcg_async_bio_workfn);
-> +#endif
+  ==================================================================
+  BUG: KASAN: double-free in mt_free_walk+0x138/0x3a0
+  Free of addr ffff0000f3d40000 by task swapper/2/0
+  [...]
+  Call trace:
+   [...]
+   kmem_cache_free_bulk+0x5b8/0xc18
+   mt_free_walk+0x138/0x3a0
+   rcu_core+0x5d0/0x1638
+   rcu_core_si+0x18/0x30
+   [...]
 
-This is interesting. As you know, while an object is being allocated
-and before it is published, it can't be accessed concurrently. So
-guarding blkcg->async_bios with blkcg->async_bio_lock is not necessary
-here. Moreover, since blkcg is zero-initialized, we could simply remove
-both the guard(...) and the bio_list_init() call above.
+  Allocated by task 1218:
+   [...]
+   kmem_cache_alloc_from_sheaf_noprof+0xa8/0x2f0
+   dst_setup+0x210/0x630
+   mas_wr_split+0x568/0x26e0
+   mas_wr_store_entry+0x98c/0x1de0
+   mas_insert.isra.0+0x3d0/0x5d8
+   mtree_insert_range+0xec/0x1c8
+   maple_fix_init+0x94/0xff8 [maple_fix_obj]
+   [...]
 
-Thanks,
---Nilay
+  Freed by task 0:
+   [...]
+   __kasan_slab_free+0x88/0xb8
+   __rcu_free_sheaf_prepare+0x94/0x360
+   rcu_free_sheaf+0x30/0x138
+   rcu_core+0x5d0/0x1638
+   rcu_core_si+0x18/0x30
+   [...]
+
+  The buggy address belongs to the object at ffff0000f3d40000
+   which belongs to the cache maple_node of size 256
+  The buggy address is located 0 bytes inside of
+   256-byte region [ffff0000f3d40000, ffff0000f3d40100)
+
+  [...]
+  Memory state around the buggy address:
+   ffff0000f3d3ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+   ffff0000f3d3ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  >ffff0000f3d40000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                     ^
+   ffff0000f3d40080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+   ffff0000f3d40100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ==================================================================
+
+Patch 2 fixes the second issue. mt_free_walk() descends by checking if
+the corresponding slot[offset] entry is non-zero. In a maple_range_64
+node that has MAPLE_RANGE64_SLOTS-1 valid pointers to child nodes, all
+slots will be non-zero, since the last slot holds the metadata. Thus,
+mte_dead_walk() dereferences the metadata as if it were a node and hits
+the null-ptr-deref as shown in the splat below.
+
+After applying patch 1, the reproducer reaches this case at 3166
+insertions. The affected node is the root on a tree with height 3 and it
+has 15 valid child nodes on a 64-bit machine.
+
+Patch 1 does not introduce this bug, but it exposes it for the root node
+because it no longer clears the root metadata. On an unmodified kernel
+before patch 1, the same bug exists and is reachable when such a
+maple_range_64 node appears below the root, where mt_clear_meta() is not
+called.
+
+Second KASAN splat:
+
+  Unable to handle kernel paging request at virtual address dfff800000000006
+  KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+  [...]
+  Call trace:
+   mte_dead_walk+0x78/0x140 (P)
+   mt_free_walk+0x1f8/0x3a0
+   rcu_core+0x5d0/0x1638
+   rcu_core_si+0x18/0x30
+   [..]
+
+Both splats are from an arm64 QEMU guest. The test_maple_tree and the
+userspace suite pass after each patch in the series.
+
+---
+Note for reviewers:
+
+* Before commit 790e1fa86b34 ("maple_tree: add RCU lock checking to rcu
+  callback functions") mas_clear_meta() was called while descending the
+  tree, so metadata was cleared on every node. That commit removed the
+  call from the descend path leaving only the final call for the root
+  node, and renamed it to mt_clear_meta().
+
+  An alternative fix would be to restore metadata clearing for every
+  node and fix mt_clear_meta() for full maple_range_64 nodes. I
+  preferred removing the clearing and use slot_len to identify the valid
+  slots directly.
+
+Signed-off-by: Dimitris Charisis <dchar@cslab.ece.ntua.gr>
+
+---
+Dimitris Charisis (2):
+      maple_tree: remove mt_clear_meta() to fix a pointer corruption
+      maple_tree: fix invalid memory access in mt_free_walk()
+
+ lib/maple_tree.c | 43 +------------------------------------------
+ 1 file changed, 1 insertion(+), 42 deletions(-)
+---
+base-commit: e2e54005e20fb42d4a5e140d70a65be4a2363045
+change-id: 20260912-fix-maple-tree-range64-rcu-02fa3d2e59a7
+
+Best regards,
+-- 
+Dimitris Charisis <dchar@cslab.ece.ntua.gr>
 
 
