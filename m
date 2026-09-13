@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29948C88E5C
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 22:34:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCDDC88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 22:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C807C6B0088; Sun, 13 Sep 2026 18:34:41 -0400 (EDT)
+	id 605186B0088; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F036B008C; Sun, 13 Sep 2026 18:34:41 -0400 (EDT)
+	id 5DE046B008C; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B35A26B0092; Sun, 13 Sep 2026 18:34:41 -0400 (EDT)
+	id 4F1DB6B0092; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 61E9A6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:34:41 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C9CCA0ADF
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:34:40 +0000 (UTC)
-X-FDA: 85210194720.28.BEDA174
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BFB2114000A
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:34:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cnBOn5Qk;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 238EC6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89E9540C0D
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:47:30 +0000 (UTC)
+X-FDA: 85210227060.17.1672D69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D3AA5140005
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:47:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GX2L01Iw;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789338879;
+	s=arc-20220608; t=1789339649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kXQ36z2FmSwis8KLkaw/kb+F0G2d5cEXJpcdmkEhIQY=;
-	b=U/F/ib53Dg92EU/AygfE+9GJkIWxbYTefwOZ6tj/vF9XAJHKQDrawkRorLtuXRVteSH6BU
-	lxtMde93ZkfRMUEJvVz7NOnmworNXannJQc1EYLokzH1ByRLvgZSDRgARmA3lbN4NToXL+
-	lbXiKByb2tjSB2Y2qF9AHlRf+JAev6k=
+	bh=oc0kz/Lcz/Yn57rNNFxonjfaQnrj/yxO/lHTbtb3iGA=;
+	b=N1/qsaioBiXp5Rz16c+oRZEprkEuXNB311HkAFnz0i+Xu+04jgYQTzFsXkhck7k198IjlX
+	U/hRWNvBiz/82fQ/WtUAS6BSaT2XjzLbE0yTd2j8dVS55zyMtl/WMWisDDKhQBA7XNsm4D
+	cDkw40NxZ4fADtPlgVI1qNO3wkAme58=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789338879;
-	b=bcWwhjLq1MeM14jC9PNKfhC0ZHlyp9hcYgIeTQtav0MFpfJkpI+4M/AiI7daYt6Wr+V3+3
-	PzL1Q+k79137SmDb7fmMrvalS+e7xuKWTk+sj6tuLlhryELbQ4Bnsncp9EmIlT3o7nRKZ7
-	iP/01zRnxKB4aB9ckS02zyUAeNBErkg=
+	t=1789339649;
+	b=UXz1pEQW7QfNNWx8qgXeOgAK70W8TyLXFvIIyxe8S6jJQhL3riJ7pG3995PliGymv/SP7e
+	Uof0kBs085mKsSY+mjbcabgrFiZMjgrBgqTYjVBM82jS/FQ2O8t4pLyAwsdmS80qvfJmj9
+	3F+i8wcBueLcL0QnRU1OCZsB8kRPF2o=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cnBOn5Qk;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kXQ36z2FmSwis8KLkaw/kb+F0G2d5cEXJpcdmkEhIQY=; b=cnBOn5QkHzhg85PE9bOpVT7I95
-	2HMYhIEabssbaPxm/k3DgvO4iUxqmaWC0jJx1DHGANiaWZ1POZnV419qDgILRyyjVNcIQuEVdFV7m
-	bdDvJQsXqe7E6X6OZ1MH+eYAhUDyXb6s2nafxyAuOBTo8bl8VI1ULnmMeCnn3FRiKP2BJWuwUfsEw
-	vHkq9YTU25l4KK5LkotAte2eh4oG2xUB+wZwVIdoq4oGL1W62R9R9KTa0IsB162D8b0TbailCIelR
-	ITeJ4gWUoJ3HJFZIsYJLev/vk9y5zeURWBrzSi7UQhUT5XdkYgJ4P4uFoUUic9byRrx5VEcxzC5i5
-	lRuRrMWw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x5smI-00000007M0P-3ftY;
-	Sun, 13 Sep 2026 22:34:27 +0000
-Date: Sun, 13 Sep 2026 23:34:26 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
- collapse_file() readahead
-Message-ID: <aqck8rfGByZhdtqT@casper.infradead.org>
-References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
- <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GX2L01Iw;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 122EC61002;
+	Sun, 13 Sep 2026 22:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610AD1F000FF;
+	Sun, 13 Sep 2026 22:47:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789339647;
+	bh=oc0kz/Lcz/Yn57rNNFxonjfaQnrj/yxO/lHTbtb3iGA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GX2L01IwIepGX/OpWrrq1g1pz9hcsLKwHhp6MlxZAmZeAZO4+EKEVTQLTKQpMhGg3
+	 eGhyJ0Pf+TTd9QAE1RBh5HsR2rM7B5SuaQe5na1glgmg6JOwWtyxq4riHNCiO7h4PW
+	 BMzvX8RXR85eJmDDMYzOw9cmYD9HzpD5eZ/StjwY=
+Date: Sun, 13 Sep 2026 15:47:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yuan Tan <yuant@nebusec.ai>
+Cc: linux-mm@kvack.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, notasas@gmail.com, rakukuip@gmail.com, Ren Wei
+ <weir@nebusec.ai>
+Subject: Re: [PATCH v3 1/1] mm/memory: constrain generic_access_phys() to
+ page boundary
+Message-Id: <20260913154726.be94acada0a925cf6dabfbcd@linux-foundation.org>
+In-Reply-To: <1146fc8a-94c8-4e28-aa38-cd0322bea9a4@nebusec.ai>
+References: <cover.1788842306.git.rakukuip@gmail.com>
+	<e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
+	<20260909231815.bcb1ca6091ae0ba1b5ba54e1@linux-foundation.org>
+	<1146fc8a-94c8-4e28-aa38-cd0322bea9a4@nebusec.ai>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BFB2114000A
-X-Stat-Signature: s84bryz9p3ecsjhyzhra7a1bjyx9agp4
+X-Rspamd-Queue-Id: D3AA5140005
+X-Stat-Signature: q3fgt3ayfm8su4swztfnir47q71hnzky
 X-Rspam-User: 
-X-HE-Tag: 1789338877-394799
-X-HE-Meta: U2FsdGVkX19DYbrDYFGbOYb4be97KRmPnn6vl7OevXBgyI+2SSfRhWKIgHZASITSkpeOvcmojFVR446wUvMzHzd3c6mC/mZXr8zGu6YXpu/TC0XszkQfe5P6pjvhOCRKm9WMgQYIzNKP0v2HnCGLvWwB5l685ziug/Z/Jw18YxINUK3cx2B2Z79DUyeAvwE7TH9p1WULb85qxMZRJxJjoKnR1QjHyQJdK5ARQiBRzA3RANWkG0bILIzzJYyJFuaUt3EFpp43LlclHFWrQRykf1gUzoX22XRFhOTgkWut7n7SMp2TNRKgFoEmSpiSOcyFQxz6Z69ufnBMRrmwKisZtdJ91n2tzce4h2zx2SoBdj0HtJd4K7jsbism+Ez1HtWj5xx088Xh9ZOFjZ2gFEL1RoPp9E3Rv3EdJ7V2hHLFouIiV7dtK1Uu2dSkJQGntUBv+4O33J4y8UEAMElN+yZW5zAjRjhoqecPkSxJoa24j6V/QoeS8U19s+kaDClC6isLu5cWfqrYv0Lfj7iJves57R6LWCsJNZ7Zl9ktKwIneD2uBCth8QmOmtg4B00AanpcoaVPv9PTOthpD7HSaheBQFZeU8hOKibLSrbeVZpwJkIwdo0HYcrOQ8oKkPAIXLXj1pEaDDiSj2NU53zpDtTj+I1LDoreHagQ05MCrRHKnlvFvtWCz/HAqoISkrWSRt2mWTqIiu5idecOzZIgNkcUm9WXStCohEX2Tl0GFSAldQt2J5RlfAxeLoGIDrvWj/dmvFayz4bW7Q2Enxb3Bm67kZZesZNe6MxWvWfH7zmviWSFt1NUwBFbtTYXyIQqLu40VmNgH2zTAZJl02uCzj1vXT6TaKRZ8aogQrlzQqljy5bIU7Ml2477Jh96to0TzIQNsGs3axm8gTMoDVWbeekwMteYjS609Don46IHW/y2NC23jcEqFo8U8VDttaPyFFKmOvo6oMmxm5FTdHiZvFq
- ynLGM8+d
- E9z0UhdMpWpx4CMowTBafglXhDa3uErQm9LuRLYM7rxZIj36rX7nanpbdJC7KmV9tQJuh1ur8l0OyT7UHNfPudbLSoX+21yrl/ApKixqUYJi93frEyxBB1OR3nyM9OeGG1ZXlq1+8EC49+53YB1B4fxQhUj2brEODnJbasEiw7D7slwcC80ji74gqASGO4JOs+7Rv+hf3CtFCfsnkzonFT6pSyN5Fe1Cm7itX9MVj5UWrWo8GxIqRYgQFC2gNCwAWC8UXv8g8MQhJxh2aWRp8sATUxDMsge6ueqThzmFMJPbI9TjbSNe+jEn8sfT1/ph4XGpEcVVg3tg2m8m21c19ItuuHUyDpXDt7VyvmJFxMcN80GgwxpsyK/i1ynKI8fbuEmUJNg4/grvs9DE=
+X-HE-Tag: 1789339648-228903
+X-HE-Meta: U2FsdGVkX1+Vy6L45cvJWZeehG3q1xKWqPNWa6qQ8pJKJmi0bLORDKYMEHXGrLmfEszoamK50ijBtC34i64Zzhu3upWF4rmpD62yy8T8o49Rw4AkbkHfHRkKymsIqwF1RsmVBra4lzXzzgDRdEvnhoMbZNWLQLgMNICqHrBuyRB3rL3o9+H+x4o94OwlPkDbX6NLN9vFZxQYSVusKc2fHsLKPnDJ+2L/t2arMbGcrS+oH45OrFu5R+n1lbzt50a1/+9CyXsXaSsdGspgEJtDV7xCWrIz3oyb5m7RMmXge2h5h5GNyG0sQYYqd/6hmMCON2S7xm2dL1JpTMJ9FjooEql5I1NUa1FGINIjQN+2p1bwkASBKGdEVRwVWQpZi+OZ9e2TccpOStgWQdAkKHWA3xcO8Zf4Ep69A/uGh3U1vwhgbrt+4OwPfrZ8lZ/f5KSWmrOnAhQNRJgzbDmCQ5vmTWPlmd0F8x7hvJvcIyL6MajBpgabzmyfGBvmSNPjvTCMLL8x39xvPNJM29GZsvRKuMnHUgjN7CXI+E9pANsmj1FL5Xy5PiEu6P+dAcfeZL6e6bAyZTEqyxol+NEppUZJK49pDBVeJiBCAnZJOWVe+zXT4RDMLtia+WZUelg21d5dwJoTbeQnH3AS2gKzl9qqGqkvL9Uj4MEQoRcPqgiH69gTNa6W3AYqJMBqakMn4dnKqNJKh8bvuu2Dg3VuQXQeoU9+R5ZAmmHhkvRbzGvQwPxL3aYD+yeK3mk/wvUi/RQ/g1YNF/ZCXf3yNQeMasR9dEEdurtpB+/lZ74Ww8XeE2PL1YqUgY0r3kzvueY93Q2UKuk0d9yOahy3y/jxS3i4mXyTnLbUPvSwKYmrhwoOmxskMCL5X5gCQOvr3Fau37MZLFmULVAkAAJAyjHBrygRpqOKZbuz7MBdlVNcz7cRdUYeaxIFLH+Wl5KRQfbd/kSfpO0rJQoHcDV/PE8F2xq
+ 1V1rXlIG
+ n6dOacHY/4legBppepFESj460DMCIOzOI7FL+mLWrhSlNPTh9ICqkTrJi+a+dtesFNFld5j5Zd5uQAHBj80793VcjWQolbDxD+Hqh6ixTdEji0ihur7SIHjl3AVnuYD8sUQ3UzCyeOaYVdiWvNaxLbyyp0Gx9ioBNgasZVgKTeJ8NKkW7t22/NZuSr/xxNbtkHAYbovzq915n/Do7iVVMw+dQCL571nwvqNYwD1KCoOeRlS3tEesfUiHsBhqIXC+0N2IWzqhU1U4kxhlP8+Dlc8hCaDQMre74jG+a27hGD6X2XhZ9i299hq8n34x6DI6qZE8FB/EEpVAdN95y78W70pH8ZOcb/Go5UH4LJ3YWln42Pr+aHEbBt4baSaQYPDwz+XdFGjPGBR3af3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,54 +95,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 13, 2026 at 11:36:44PM +0700, Nguyen Ngoc Thang wrote:
-> @@ -2271,6 +2272,15 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	if (result != SCAN_SUCCEED)
->  		goto out;
->  
-> +	/*
-> +	 * Take invalidate_lock before any folio lock: the readahead below
-> +	 * needs it, and truncate holds it while waiting on folio locks.
-> +	 */
-> +	if (!is_shmem) {
-> +		filemap_invalidate_lock_shared(mapping);
-> +		need_unlock = true;
-> +	}
+On Sun, 13 Sep 2026 01:28:18 -0700 Yuan Tan <yuant@nebusec.ai> wrote:
 
-I'm not a fan of all this surplus commentary.  And what happens if e
-simultaeneously truncate a shmem file and collapse it at the same time?
-I know it doesn't use the invalidate lock, but does it go wrong in some
-other way?
+> 
+> >> +	    (phys_addr != ((resource_size_t)args.pfn << PAGE_SHIFT)) ||
+> > hoo boy we've made a mess of the types in there, but I don't see a
+> > feasible improvement in the context of this patch.
+> >
+> > Also, a [0/N] isn't needed or desirable when N==1!  I'll consolidate
+> > both into a singleton patch.
+> 
+> Hi,
+> 
+> 
+> Luxiao is helping us fix some of the bugs found by our bug finding tool. 
+> 
+> 
+> Normally, our patch series includes a reproducer in the cover letter, so
+> we usually send these patches with a cover letter. I believe Luxiao
+> simply forgot to include the reproducer in this version. The reproducer
+> for this bug can be found here:
+> https://lore.kernel.org/all/cover.1784428532.git.rakukuip@gmail.com/ 
 
->  		} else {	/* !is_shmem */
->  			if (!folio || xa_is_value(folio)) {
-> +				DEFINE_READAHEAD(ractl, file, &file->f_ra,
-> +						  mapping, index);
-> +				pgoff_t eof = DIV_ROUND_UP(i_size_read(mapping->host),
-> +							    PAGE_SIZE);
+Great, thanks.
 
-Not a fan of the overly long line.
+See, what I'm always looking for in bug fixes is a solid description
+of the significance/impact/risk which that bug has upon our users. 
 
-				pgoff_t eof;
+This impact ranges between "Impossibly improbable thing which some AI
+scan found but which nobody is ever going to hit" through to "this
+crashes our entire fleet 12 times per day".
 
-				eof = DIV_ROUND_UP(i_size_read(mapping->host),
-						PAGE_SIZE);
+The range really is that broad and this information matters.  And
+people care about it.  I look to authors to help us understand and
+assess this impact.  So please do whatever you can (organization-wide)
+to ensure that this info is made available to its potential audience.
 
-or we could cache mapping->host in a variable called 'inode'.  We use it
-in four places, so that might be best.
 
->  				xas_unlock_irq(&xas);
-> -				page_cache_sync_readahead(mapping, &file->f_ra,
-> -							  file, index,
-> -							  end - index);
-> +				/*
-> +				 * invalidate_lock held above; don't retake it.
-> +				 * page_cache_ra_unbounded(), unlike the readahead
-> +				 * helper this replaces, does not clamp to EOF.
-> +				 */
+> For future patches, if we are sending a single patch without a cover
+> letter, what would be the preferred way to include the reproducer?
+> Should we put it directly in the commit message, or place it below the
+> --- separator so that the reproducer itself does not become part of the
+> permanent git history? 
 
-Again, remove this comment.  This explains why we're making the change
-in the way that we are and adds absolutely no value to the reader of the
-new file.
+It depends.
 
+Formally, the reproducer should be made part of selftests/, so the bug
+can never reappear.  I think that's excessive for this project and the
+risk of reintroduction is so low that this isn't worthwhile.
+
+Pasting it in to the formal changelog is reasonable.  Putting it below
+the --- is probably better, as long as the permanent changelog mentions
+its existence.  Then highly motivated people can follow the Link: and
+find the reproducer.
+
+The main value in the reproducer is knowing that it exists!  That this
+bug can really be hit from userspace.
+
+> 
+> Also, I have been collecting the bug report by llm into a syzbot-like
+> tracking system[1].
+> The tracker aggregates bug reports from multiple sources, including
+> Sashiko, and then attempts to validate the reports and generate
+> reproducers to make sure it is not a false positive . It also
+> automatically tracks whether a bug has been fixed. 
+
+That's a great initiative, thanks.
+
+> 
+> For the networking side, I have already imported the Sashiko reports
+> into the bug tracker and shared it with the net maintainers. I am
+> planning to do the same for mm, but haven't gotten to it yet. There are
+> already a few mm bugs in the tracker that were found by our own tool,
+> and none of them seem to have security implications.
+> 
+> If you have a chance, I'd be interested to hear what you think. Any
+> suggestions on how to make it more useful for mm maintainers would be
+> very welcome.
+
+I saw.  I'd love to spend time with this but you know how it is.  We're
+all overwhelmed by the bot invasion at present, and none more than me. 
+I view your contributions as "parallelization of effort".  Keep the
+fixes coming and I'll do my best to get them through our pipeline and
+out to our users.
 
