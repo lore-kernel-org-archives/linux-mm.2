@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F571C88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 05:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52BF0C88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 05:22:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046536B0088; Sun, 13 Sep 2026 01:20:18 -0400 (EDT)
+	id 727E86B008C; Sun, 13 Sep 2026 01:21:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B276B008C; Sun, 13 Sep 2026 01:20:17 -0400 (EDT)
+	id 700D56B0092; Sun, 13 Sep 2026 01:21:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27866B0092; Sun, 13 Sep 2026 01:20:17 -0400 (EDT)
+	id 63CDE6B0093; Sun, 13 Sep 2026 01:21:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF63B6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 01:20:17 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F85D40259
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:20:16 +0000 (UTC)
-X-FDA: 85207588032.01.E1FE852
-Received: from mta0.migadu.com (out-242.mta0.migadu.com [91.218.175.242])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7B05F40002
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:20:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yo+prUFH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yo+prUFH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.242 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789276814;
-	b=V2Wri0jB3fkoljqgRigrYZRiRXd7B4BRz38x7WgaZSfS/Ooc+h+hSvhxLOWtYy7BfSYjTn
-	sLxko4n+ABFMIzoqcUsa5k3mTSt12gUuN8NtJbIzmrRgFp1h7z8020flRHSS231g0Og8QF
-	VFJJ5mI5k2pI2d6PPyQxJgVd5imBMjw=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 471926B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 01:21:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC186805E1
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:21:54 +0000 (UTC)
+X-FDA: 85207592148.21.DBE1141
+Received: from mta0.migadu.com (out-19.mta0.migadu.com [91.218.175.19])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9DEA41C0002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:21:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="CB/xRpGq";
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789276814;
+	s=arc-20220608; t=1789276913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=al6pO6MCASdQxVn4x9t1K82bQLC1cP8MXGPwZE1R87g=;
-	b=qAOlcr9UVWoR1A1y5xEMaZynk/I7KowdFS2nYsRuM7UNSVepXhzF90xtVbKjtEtmlIJHCK
-	619/vD4lGb1u+S0llqTfcjkRvV93ddMdi2W5ufjvM9sC1VKeT/E0rKA7Tn1vEPTq3kf4C/
-	bI4yxZbg99DgyZjoYCPexTF5RGRQELQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1aIoJzlExqCQlIqAQRBNKKVr8UFzQ0N5gvHtcl2/Qdo=;
+	b=moRLOUgv4pfFR09Xu5HG0ZILL+G3VbyhMVRkbbgzKSsuSa08ctRJqzUozt7wNm2/NWVzgb
+	Xdh4wJSJUtlD1EmHK2j97cCzOLsWpxR1Rr5Pkg5+8ENQLOGkVhJyUJUyNHrNEf/AY0ulHo
+	nEBa9WbOT4oYHZJF+jtbTFrOGEusKz0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="CB/xRpGq";
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789276913;
+	b=FRth0+hzy1cpGiT6UY6ptyFGUW2/8trWG34GWlBM18F8wtQH/hfPyNOo7Fk5zBacOeLHVk
+	B4ZZkiEYYJOr9ZciFgyJbZEOGr6gtHBC5lCfChp84E4Mr7DEtF0YHnDczD5xScRiu157XI
+	8132GEHN4aEW2Rg9d8JUSNQibu5vduA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NMYn3pbfZMJwwPcgVnZkDAC09qrdHDK3+hZHa3z6uk4=;
+DKIM-Signature: a=rsa-sha256; bh=RKmcLz7tqw9BoAn8ncge1YXquNNNISh1dupWXKD795U=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789276806; v=1; x=1789881606;
- b=Yo+prUFHLs/xWM/XhCDAN8KP6uq2i1UCGPQgoXKEvxYTlntSRFCGhqDu5XrUaCha/s4IEVzA
- 4ko+nQkhugGu79Z0UVGNmNUxRgK5o/WNU6DYx3ggwwafBEky3UbU7cjaTO9Cv8/GHxi+gTQFWFz
- WOPFqBXhyyQ5WQ7PWpH9UPHk=
+ t=1789276911; v=1; x=1789881711;
+ b=CB/xRpGqoCSpRxco6zev68F1o832sH5JYz6qf01yJJnISdcr0zpFAqczIM3ZnXssJacHdwLa
+ RMCl4VCaXKIeiwv9Xon6rxzySloQpUyLV4PxycxQCocuHCQHgfCdePODcm/PW3UcL8XaDgm4L+D
+ stxS9/G70hcMDoLzIpb3B8FY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8181c55abab0265d;
-	Sun, 13 Sep 2026 05:19:56 +0000
-X-Mizu-Trace-ID: 8181c55abab0265d
+Received: by smtp.migadu.com with ESMTPS id 4087794f270a1a0a;
+	Sun, 13 Sep 2026 05:21:51 +0000
+X-Mizu-Trace-ID: 4087794f270a1a0a
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero PMDs
-Date: Sun, 13 Sep 2026 13:19:42 +0800
-Message-ID: <20260913051942.40889-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+Message-ID: <afafcdd7-3854-4860-a12d-35498a007106@linux.dev>
+Date: Sun, 13 Sep 2026 13:21:29 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 4/9] mm/huge_memory: use
+ normal_or_softleaf_folio_pmd() in the PMD split path
+To: yintirui@gmail.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org,
+ ljs@kernel.org, dev.jain@arm.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, baohua@kernel.org, ryan.roberts@arm.com,
+ nico.pache@linux.dev, usama.arif@linux.dev, liam@infradead.org,
+ wangkefeng.wang@huawei.com, chenjun102@huawei.com,
+ linux-kernel@vger.kernel.org
+References: <efae5222ad43f749c40aaca9b759b41844fdded8.1787941780.git.yintirui@gmail.com>
+ <20260912073755.8403-1-lance.yang@linux.dev>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260912073755.8403-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9DEA41C0002
+X-Stat-Signature: gc48rzquitokfhoz6ketj3bgsufzqu1i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B05F40002
-X-Stat-Signature: 4aee1fwakwtfurdcj868i5mowdie4xqa
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789276814-401996
-X-HE-Meta: U2FsdGVkX1/sayZJR//T6s5+Fz8+TI/f7n4gc0cvmo2c1saCKXGszQo177kQ9yBLzKcxiA4aTinbFF6ttZ4fSTL1DXrKxDbmpwxowYoKbNh0QiWhA195+5dX7X0UT9K4EbIda7aQ6AqJ32Ee20j0BH1EDsA/SykyODF94GLyKRltPjNhFhI1rU6UnM3hksam65p2m4IgbkANVKJnRArTKO+hH2hCIX8LyHooFN2kphqiDHTnKCnwBLGARhI1SCl0LD9+IyWJHu8UPCXiMk/5X60qXqx6bSxnjyOwQTXw4YkhcOqRmCaqtVo3oUgseYm9Pon2UmKDEeIDIGjf13enMtvrKeE4M6Zp58blRuRVV5QfX/fsejfZr7xC+8qYsqWmfj1BzzIkBePLZjchlLus1t8KkBEyXbmh9zWIWqBlCGTMHBrXTwOFh678513yOQH9PcmPShqPgUWHa4FJS5hnMjC6j88ie3zWRwZ5Ojd1pmZNLBo7jdmJIPfMge+pEf1d/06Z0FTv5gb+ZqkCYNt/jl+vvQl2wT42i4itvMCb6m3au45UF4cSOoRI5hMgvTq6Tf64YUX86cP4JmCGUAaXk9/CnmJ8InA8rJQxJWAjNBScW/W09/JjuGgcJ2AmBSonhIP9/gmXyAktdJI5TPAhYqscvExWJi6ndUMfoa6AnEv+0+4MuAr98Fyk/Ekk2Hq46LyHfnVLqexZHqApApGpNA0dDLXyYwAUkMGqJiayK+p3oFDEGi1C7c7cL2jhrOtf9ln+oyc6+uSsDbxddIJ5pt59MIXxaekVQZ6asSOwcdvBpjtwknv54jK2c+s+dQxBWYJZhRP7E1iz24jOtF3WWFz8VxdsAZ3couBN9IDy5CXso99pJ+enMRAyKDKih212xNpjstTwiyWPZxxOGdtjYwrKadF2poKE+JIsl5pf1+xHvlF9I5dRYFw75oRoGKVeMAZWz+WUoL5pKRK2rVx
- LJ+7rL/t
- /mDp/k0r/knbX2/7YY238yXmyGUZ2NxhlOtYbbGgOC0p/2+AFh6Icfj5Uik1iIP82wFJB9jHRE1s3Xe1coRAiG0iTo15eqYqRSXW3TbrBdVzIm+L/vL74ErGw5IS2pehHIXt3CglxryiMn/2lS5ptANWeIx4ni4AgMDwf8LNdG1DHo4tuFlhHstFslLH/NqlnFwMGkYPw8HdgS9RX3WGFTp0zgKH1jHfLrbTd47oQ7boWBKcp+sXkJwKdkQaSZTSEH7W7hjrk7nAdYmRQt2ZbJkEMl6baVEApf4KQdOyWmW+GPak=
+X-HE-Tag: 1789276912-345258
+X-HE-Meta: U2FsdGVkX1+ZRbr/OErdhDrah3LHpE13L66HEM7c+yAjVWhD4hZRYJ3lMdoofXmwbf33EeoMu9dSaf/IPsuGjx9q6MFc/2o6Jv0Q2ti9ycp4wbHnlU1YdmUZkT/ldltak5Fe6rquyVe7f00eFxQveoTi2LrlIT4JT+dOCNpHh9sJchCWCMR2rsLAY9u4LSEX50p/2onOPAMNuFd3ZmFsDo3bqy0G4DnpWtHoiJTbXnJ0XAKqxBVehasOBRQqIxWKwrSuJeUBb9u7JPaDqv2IvFqnPTnFT2umvld/xxLTFgQUvG7YKe3CQU86H6yBqiPGyFXGvt/2589X8N+FALCZXuzp4Nr/wBpkS35VN8Vms0/A0Yqscjh4fkJOd7djPVfD6ucuEMtd7NI4fhoOREok0K/T78NXtAwWh82JLCLBlZQuzSHihSNleYn1a9kd7ZL2ie4Uehto3CGScOdNodLVsLBUCTtWWvGErjVGq0Gc6ySB4Ia+fb0/GPvBTLOnUs42qTD7agaI4WwDaAJ1/yktrhrtwnNNPzr9HbLgmc0/uWxLGAzZmH/yrX5zZryu84KZXPJug5jVwlyXPQ7zeKg17IZrRtNhiZnmZw+DaQhJN5XADGO4u6RzMkO2HwzjxS+rEJqHCipo7huTc+SVp67A+s6u1t3c/CdhucS9UUtFlEAGIz/CUZ3WQJvJrNIL80HqJGE+axFxBsxOmNhVJ9/1OyNKZxQnWo9TZcJggQv2hixyUX4SG01KO9OFTqLZGEbGtuHpb95n/geX0ejCPALYR4s8DshKcZQd0mhbTtfgW8Govp9GFIZl2yCXpIGqMQsco+mizFL9hMxpywM4Kz1stm7bAT/EFvnuXDWr6zg2JFWDvMhjZndvCkEB4up2Vl1wfNu7MlUWpYATzvejrm2BPg+vzzNdaGdLgWXAigpJtw7GTempaH6d39FeP286falAS/+MMWcu9dqmQZhidXB
+ pB6OECSA
+ 8BbICozCyIqeiRtXy2X8ce/tvz6pB/ur4X3FHjl53XWoBmKR0Y7Uvso/7xWAdftc/vlPpxW2o5n7NnYAl11sZgEXyUNUMj1DueKvYtqfzA4x4PNPDWi+yjuAHTNxM05ywteF/Pue1xuZ6yym+vYhLWtOduVMY96scKExYCcGBlf1KoT0c7Z8RdaOkB2Ne4Y6P/6w1N4X9rBPcVdD0VVWFanTMwRudaCsiClpo50kS2AOPRvwfce38gFJHD31k2DAfV1ROfu9+KRpt1t4ajG6Lt8yNFbQpP3ItztL2vYohGvI+BPO9waqSh4e9XKG13k8CgholeYvYhQxlGKf887txkzeqfDYsm+jErInYttRf5IuQS+HJi2G9hW8kng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,73 +97,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
 
-has_deposited_pgtable() uses !vma_is_dax() to decide whether a huge zero
-PMD has a deposited PTE page table. That also accepts raw PFN mappings
-of huge_zero_pfn, although vmf_insert_pfn_pmd() does not deposit a page
-table on x86.
 
-Zapping such a mapping would call pgtable_trans_huge_withdraw() without
-a corresponding deposit. With pmd_huge_pte(mm, pmd) == NULL, that causes
-a NULL pointer dereference.
+On 2026/9/12 15:37, Lance Yang wrote:
+> 
+> On Sat, Aug 29, 2026 at 02:33:14AM +0800, Yin Tirui wrote:
+>> Get the folio once with normal_or_softleaf_folio_pmd() and decide the
+>> deposit once with has_deposited_pgtable(), as zap_huge_pmd() does. That
+>> makes split and zap classify an entry the same way, and drops
+>> vma_is_special_huge() from this path.
+>>
+>> Behaviour changes only where the entry and the VMA flags disagree, which no
+>> in-tree path produces.
+>>
+>> Signed-off-by: Yin Tirui <yintirui@gmail.com>
+>> ---
+>> mm/huge_memory.c | 21 ++++++++++++---------
+>> 1 file changed, 12 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index aefd62827139..b2ede9a6ae5d 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3172,7 +3172,7 @@ static void unmap_huge_pmd_entry(struct vm_area_struct *vma,
+>> 	 * We are going to unmap this huge page. So
+>> 	 * just go ahead and zap it
+>> 	 */
+>> -	if (arch_needs_pgtable_deposit())
+>> +	if (has_deposited_pgtable(vma, old_pmd, folio))
+>> 		zap_deposited_table(mm, pmd);
+> 
+> Staring at this ... I think we're missing raw PFN mappings of the huge
+> zero folio ...
+> 
+> static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
+> 		struct folio *folio)
+> {
+> 	/* Some architectures require unconditional depositing. */
+> 	if (arch_needs_pgtable_deposit())
+> 		return true;
+> 
+> ...
+> 	if (is_huge_zero_pmd(pmdval))
+> 		return !vma_is_dax(vma);
+> 
+> ...
+> 	return folio && folio_test_anon(folio);
+> }
+> 
+> If a non-DAX raw PFN mapping on x86 (say, via mshv_vtl_low) matches
+> huge_zero_pfn, vmf_insert_pfn_pmd() won't deposit a page table, but
+> has_deposited_pgtable() will return true ...
+> 
+> Before this patch, arch_needs_pgtable_deposit() skips withdrawal when
+> splitting this mapping on x86. The new check would instead reach
+> pgtable_trans_huge_withdraw() and dereference NULL through pgtable->lru
+> if pmd_huge_pte(mm, pmd) is NULL.
+> 
+> The helper already causes the same bug in zap_huge_pmd(), but extending
+> it to split is a regression introduced by this patch. I'll send a separate
+> fix, and we need it landed first :D
 
-Use vma_is_anonymous() for the huge zero PMD check. This matches how PTE
-page tables are allocated, deposited and moved.
-
-- For anonymous page faults that install a huge zero PMD,
-  do_huge_pmd_anonymous_page() allocates a PTE page table and
-  set_huge_zero_folio() deposits it before installing the PMD.
-
-- On fork, copy_huge_pmd() allocates and deposits a PTE page table when
-  copying a huge zero PMD into an anonymous VMA.
-
-- Raw PFN mappings use vmf_insert_pfn_pmd(), and DAX file holes use
-  vmf_insert_folio_pmd() to map the huge zero folio. Both use insert_pmd(),
-  which deposits a PTE page table only when arch_needs_pgtable_deposit()
-  requires it.
-
-- Moving an anonymous huge PMD preserves its deposited PTE page table.
-  move_huge_pmd() transfers the deposit when necessary. For UFFD MOVE,
-  both VMAs must be anonymous, and move_pages_huge_pmd() transfers the
-  deposit as well.
-
-Keep arch_needs_pgtable_deposit() first so architectures that require a
-deposited PTE page table still return true regardless of the VMA type.
-
-Commit d80a9cb1a64a ("mm/huge_memory: add and use
-normal_or_softleaf_folio_pmd()") removed the vma_is_special_huge() check
-in zap_huge_pmd(). That check skipped the huge zero PMD deposit test for
-non-DAX VM_PFNMAP and VM_MIXEDMAP mappings. Removing it exposed these
-mappings to the incorrect !vma_is_dax() test.
-
-Fixes: d80a9cb1a64a ("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- mm/huge_memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 6895b38e4704..0ed997a97416 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2529,11 +2529,11 @@ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
- 		return true;
- 
- 	/*
--	 * Huge zero always deposited except for DAX which handles itself, see
--	 * set_huge_zero_folio().
-+	 * Huge zero PMDs have a deposited page table only for anonymous VMAs,
-+	 * see set_huge_zero_folio().
- 	 */
- 	if (is_huge_zero_pmd(pmdval))
--		return !vma_is_dax(vma);
-+		return vma_is_anonymous(vma);
- 
- 	/*
- 	 * Otherwise, only anonymous folios are deposited, see
--- 
-2.39.3 (Apple Git-146)
+https://lore.kernel.org/linux-mm/20260913051942.40889-1-lance.yang@linux.dev/T/#u
 
 
