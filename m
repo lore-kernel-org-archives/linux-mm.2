@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE20CC88E40
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 09:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A36EC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 09:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0846B0088; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
+	id E76006B0088; Sun, 13 Sep 2026 05:49:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A1F46B008C; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
+	id E27866B008C; Sun, 13 Sep 2026 05:49:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 891E56B0092; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
+	id D16806B0092; Sun, 13 Sep 2026 05:49:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 612A76B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65157A0651
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:37:12 +0000 (UTC)
-X-FDA: 85208235504.12.2D0AB7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DED1A40004
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:37:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXq3ebKy;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8AA16B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:49:32 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3ED8140601
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:49:30 +0000 (UTC)
+X-FDA: 85208266500.30.4B26267
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0494B20004
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:49:28 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfBvxpKE;
+	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789292230;
-	b=2tQbtnFd49Ed7IaQQ8gTLB1fWDJyVS9uJ4c3HhaFwAcHVi+tc2FO0Iss2f2uNlguhv/bDk
-	PrA1cwDNZECosv2rHCBrUVvgJWqi70UzMdd2A6Iq5mLDMvYdQadH41YOGYFyL/mQEwL2re
-	EGtWA+1hCr8RQnw71kVsfQB6OiC5Ujw=
+	t=1789292969;
+	b=mtgR2nRDJo5FsxkJ2UGsqAOa1wzox+ZUaEWyYABuG7VI2RZ2hwo7BwrJ3uZEYo0WDlrp3p
+	Wu+ST0eIkG2K1hJLyMLh9r4rey0NnP0vZKh2YPTfMSMdt5SIk9l8N4xG4uK+e+yV+QEn4r
+	w9j41Qsof++7cPW+ummFSNC5rzbSpTo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXq3ebKy;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfBvxpKE;
+	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789292230;
+	s=arc-20220608; t=1789292969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TeKLAo2lyBFX9D/j+t1NddJvYANiKwcO6O8pNn5tCYg=;
-	b=G7b81PJGrmta+7kusEcqsWp9+JZCSlt1vuZJD8USSh5yiG/JDHOrJVQIyP+P/jONwCFIN1
-	PHuOujMm2TsBSBkH1jSY7guSuP+CEhY8gTmia8kZbZJXoAXpVIS0VCfymgvOrJbvc/fGwV
-	7gMYyVWH917zf+naCW91vblwjjLWWzM=
+	bh=Tg5IU0+H9KMkSOpIVEYusfjm6bIb4fQEllwynyz0EVc=;
+	b=ODBzPDRAieYDKf5joDAHiOZTUzfMlvZoC3AfEzjrmD3VvNSNkBFeK3QAiG1VFpU2ve3MUD
+	QfLUnVoDLPyxGlYriLLpDFYSMdfp32V/pYwMqQxoyr+FKa6YlqPi3OniNRWugyKNmCIzTW
+	HTjzyAjGRrTyBbZuB3nYdnQxYSyLiIw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 370D360AAB;
-	Sun, 13 Sep 2026 09:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B941F000FF;
-	Sun, 13 Sep 2026 09:36:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB11242AC6;
+	Sun, 13 Sep 2026 09:49:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DC51F000FF;
+	Sun, 13 Sep 2026 09:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789292229;
-	bh=TeKLAo2lyBFX9D/j+t1NddJvYANiKwcO6O8pNn5tCYg=;
+	s=k20260515; t=1789292967;
+	bh=Tg5IU0+H9KMkSOpIVEYusfjm6bIb4fQEllwynyz0EVc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ZXq3ebKyzE91YMdk8KbwizzTYuRfKiJOjlC7hKcGtHQQZJ5nCJUfiu07FF3uqPR7f
-	 o6PqZ16b+Hzz787iWq7uAC2vR9/5i/IcYkPHKcuLhWMNuP85R6uSJM7F8FyrlWBS1Q
-	 KGIHV9T/yk+v10sUF/WNyxF8c8Po1Eo24e9YNLKt1UalWmzbnS3U12EvMGLOio9tEM
-	 ODMte60um3jwtWBD0ubXBYEB7KUwVDXh6qnHC7TqbJBMW531TTW44iAHQTQrd9L9Ll
-	 YCzgkk7cH0cJu67QwfwU4dQxrTMaBkv9vzAy6OxG6D2amnqezq/M6SGoPo0FCl+y/h
-	 jcgRapmP3RlUQ==
+	b=PfBvxpKEvpJ5VLvXhFNDyHaYXB+ow/oOmmQUHohuPRTQ5OidCuKr72NVna21Lhj74
+	 r5JNth+EicGcrCC7nWRPU3KP7VvVO3pSw3SMgGmOSz4IhFnNf6O4Pe/2yjIehooC1j
+	 V5gfQBN3V7CSTiFObippk57pdzCBTAaYjhpBs8h86PcRmrAVE5mHCe8CBXR8sdZ9lI
+	 hOiIl8GhtQRUZJhWmq4v0gpGo2yCDfi4JJ5+JCDbKJMzUMLQpHEY7eL23wcPEXXOYK
+	 YUZArZv4sXfKDhvHqKab4q5jTSS5LAjaBXREtzk2jtVz45lYaQ3li0P61UqlG1ww9i
+	 AGBthjzkxuVUQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
+To: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"
  <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda
  <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
  <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Lossin <lossin@kernel.org>, Trevor
  Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
  Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
  <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
@@ -80,43 +81,46 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
  <tkjos@android.com>, Christian
  Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>,
- Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ J.
+ Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
  Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, Simona
  Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
  Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar
- <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd
- <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel Tikhomirov
- <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>,
- Ira Weiny <iweiny@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Philipp Stanner
- <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- driver-core@lists.linux.dev, linux-block@vger.kernel.org,
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-usb@vger.kernel.org
-Subject: Re: [PATCH v21 9/9] rust: page: add `ExclusivePage` for race-free
- page access
-In-Reply-To: <aqYUWzRSade_Ww67@casper.infradead.org>
+ <vireshk@kernel.org>, Nishanth
+ Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski
+ <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, Matthew Brost
+ <matthew.brost@intel.com>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Philipp Stanner <phasta@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, Oliver Mangold
+ <oliver.mangold@pm.me>, Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [PATCH v21 4/9] rust: rename `AlwaysRefCounted` to `RefCounted`.
+In-Reply-To: <DLCHKYBQ3WF1.B8YPUTAKNM7@garyguo.net>
 References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
- <20260910-unique-ref-v21-9-e83257373062@kernel.org>
- <aqYUWzRSade_Ww67@casper.infradead.org>
-Date: Sun, 13 Sep 2026 11:36:53 +0200
-Message-ID: <878q55v6fe.fsf@kernel.org>
+ <20260910-unique-ref-v21-4-e83257373062@kernel.org>
+ <CAH5fLghUQW5urTfLCCDT4BhuqoFVoLUAG46TS-SxaS37bJcgWQ@mail.gmail.com>
+ <DLCHKYBQ3WF1.B8YPUTAKNM7@garyguo.net>
+Date: Sun, 13 Sep 2026 11:49:12 +0200
+Message-ID: <875x09v5uv.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DED1A40004
+X-Rspamd-Queue-Id: 0494B20004
 X-Rspam-User: 
-X-Stat-Signature: ridd7wj5teb8rxfwx7rhfncfnywy4ruy
-X-HE-Tag: 1789292230-675032
-X-HE-Meta: U2FsdGVkX18xYRRKHapYrihDvSExcQ3UsiDKfoRvIM8UuJ2YkU8HUjquX3oqsPuovaB5ReFSDhFRvH0Xip+hoVttSsAQyGYhITZrujsYXbfs0IIFbIULIWhf4rKdLd7uoNfEl5z5O0P8H3vjBXZS+/XspOaqk6uQ9a9Tq799UL1gDXAQm0+mfRTBD9FckG5FSret07KJ9hctQZ4QZcqSHN66hG9oQ2f12W6LGHa6HdiP5qeDL0rDzamFe0kt8ReI5sITU04fVo2lfPLtkbhE4xTpMkzQh8FtkmeUCkDD7qPK3j5LBKZ5yjJZhHgnaag6LhfU+4ftJ6uN5zd4x1VeNa5ZVS5c7u9jBVbBXBDLkEMLkfhMZ9JidEQEwAuqV5qIdOnHYVSPBOU7SHrn69ENaxv0qSKNAy6lY/d3Eb4YX2bkM7GQUFIytgXg7VMSZ9BMqW3DeJTS6X9UtrQEw1Ym0fc2SNc9EJe6MNzev6P5Aawu9ZqJBzTz36x84gAp6J6wrLpDLyNHpwODeNTClIKQqvNfSx5cLS2aPh85kow8zOLsKkL5BvnqNgMSCpbrBW8bJTjAbUkHR0n5NAyK7TL1wRB0CzjAJJXlyp1yuzl6CGi8Ei0CIshCjgqafoUQpns5hJSkUggZ/XdY8+EFfnofCcsvL0QbqvYafaxRtKG9A5EQfXVz44EMXBtYT52TKZstL3c/ncBEn3ryPfhPh0d4lcjxDeE9k90Eyz7IX1iqBvTzmwLGbp8wzkIYT/pbFkgkTT2ApEfETKWRDqRapWNECWMG80Rm5kxCW78Ns70d1GDP6uyhzJvulukkSOl/HSHtPQk96JFKfmgMTXuORga2+toZ3ZluijrddL92uu+E/AuP3bP0eXdgep+JKeeMhz0NOK+Nyd3RLNccQ20sB/zfh637THYwbG2qdTlFk19zdxAzTOwm0CabaFx458EmOvidpJuaZczsMPMNmJjCoZF
- BunMDtfd
- vPmfVvwGY4F9l4ocR1V5JSxPRm4ovmaxZwm6QrpLlFzgKmfBraQQ10r7D7YBiLxAPfWdGv43QlWTz3pdVnTL20RIJqmz9aJhPeA2NGw+LTS5ZNZvbgB13ZuKJKkIQrjwEWEMJLE6G2d4foSMeFtW2UO2igy7VcOZcnRsjDOUy3OXR0jWkc2cay6Y6bANHGVfFYY/u709ZNElgwHCOxUi+WfXQx+3bRRTv9tNFRvVcjFpOPJqQkOx41tNdP0wj0z3oaSeDk6rMl6+WjKuvdS94RXnaokLBAIKhYVFwkF5xPEWVuoUZUUubW7rYwwg0kJDRnVP5TpRw8HYEDe2ude8QTKV5jXCWC7r3qVHlac92ZZLkJ7c47qU+1yHXkWCGMCHKYKlAIxvfloPDAaU=
+X-Stat-Signature: oawufpp5wdpeqgkimozhf69fhoiracgr
+X-HE-Tag: 1789292968-19768
+X-HE-Meta: U2FsdGVkX18wXLmIwymebZOsBhA/UY1nA/hY1wwicLCozbH1AZUhs1KZC7xUcM1w23qvYIOt0yivh4mbZEHvtBEWiKO1bwDgFFmKr5KOIMQMBdgMmAe6c9Ux+T4ITVeRTVVdMaMPFEXa0/C7Y2CU240VVPn0lDgg8SD0G1UOicKTETPVW1vg1mfylvqOn3tlpH6C8l2r/5SfPDH0lAeBeQch4C5bo55UJBTTp27oolfmyIt3nUp9zCZAdC76oLaUcxwYLcQFeEuxb6+D+g+vjChGB2TWbZ7vMMz9dB/H0Gxbr6pQx7H1KQHgTRaVHH7Ay6zv12uca4L0KLRyUQc8w1Y5xs/Q7BnBnn2P3cYIJcetXo6aDsrpQhuUHIisidbZ5H5urxac1Xqhcip/hSc0kDIMp0HEnbFtKKORE0sgqg/4LgNwQuCTVEPA7LLxvdLeumZCNUgfppAFlS/hb6a0aZQ8jxDBOwi/B8P+Q0gq6Ep27cjCbZ4jk3LizJr3DEgkovKkG1W9hjNCvzwC3bafiaxhuk7Dp7PbQXSE/n6TvjQom8i9ArLax5Ge7hssZMPeMMrjRsJiAgKnMRgSpUIWTYLZo4LHvMFPhmEM2oagln9XB9RlMsN7Hj5jMF8xVkusvwpIV9nnsrvowb5KpdY5qaYLW7hA5bxgxOCYfnHcv36+IjNffTYU45FOU/7d/TPYyD3NGvGEwIOPpJ2794otj7rKUdvxq+I7eKYKdwhTC4NLDczOoSKkQjEEg/iX2qv/bBmhbDWKyTalUmO5ONquLFAuh5ZD9lmapsfv7+TJqimiKf2xfqVBtxMhMEy7WWVgEsr9GnOe1tBmJ3FZ8I4f7c9LIIJwSbWEFmCHhPu7m3wSEaH8MBLE6HkYTaBa8lxJXOrWNyG8AnVShsCLs/cW8b1iqzL1HhApwFWsflSJOwmz2xrDnaotRc0RUfGWwtI2ptxAM//58nM9XJhDbwe
+ P48LcTC6
+ xhqr4yTGUrQAGs1fwmvUpl6eonu6qwLt9QcuVaUZNmqKJRFvN1qsiQB+wB1OPQ5GcRvCj7ztDDZAU9CvxiUFDy+LLE0EFwKb40Ua2ykJjUuo83ft2cunGKtpvaFW2fBrF7Aq8HZnGsXu5M93KOK2Uwpmh7yOfHhjznzvtUd8rdcAFBi62JlhyVStN498f4zPLKTAQPyVtD6obWcevo5DguEsFOVXRlB+VBlfhXpizDE7IlHs5Ej9S+GVuPOeT43vbK7P0UqFYtTDZLhgTAQPX1zFRaPvssXhApcUcYE4QPHAHwKGu5nn9V7SE9Uv5lcyte//gKZgngFvqcERVqObmwzPXWaotmapq9md17bJmTkGVtRwKfIiwupSCq9R50nSYW/anLUyHZiv02yqQ1BVSFZLZNCckpHOvIRWSJjiJOAmhLlOJD/pMufMnu0Y1Uavd29ejmr5jZ7oJQ1wpkR2Zqb1lFbYU8wz5a9UkJB/1n8DMh+l1rzTlZJECzTiZhb96TGxIlGNkjv1sofOAgVpv4ktUEhMpgpIqA38g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,59 +128,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matthew Wilcox <willy@infradead.org> writes:
+"Gary Guo" <gary@garyguo.net> writes:
 
-> On Thu, Sep 10, 2026 at 11:00:13AM +0200, Andreas Hindborg wrote:
->> `ExclusivePage` wraps a regular page but adds an invariant that the
->> page data area does not incur data races. This means `ExclusivePage`
->> cannot be mapped to user space or shared with devices, and it
->> becomes simpler to directly reference the contents of the page.
->> 
->> Since `Page` implements `AlwaysRefCounted`, handing out a `&Page`
->> from an `ExclusivePage` would allow safe code to obtain an
->> `ARef<Page>` to the page and break the aliasing invariant of
->> `ExclusivePage`. Thus, do not implement `Deref<Target = Page>` for
->> `ExclusivePage`.
+> On Fri Sep 11, 2026 at 10:08 AM BST, Alice Ryhl wrote:
+>> On Thu, Sep 10, 2026 at 11:01=E2=80=AFAM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+>>>
+>>> From: Oliver Mangold <oliver.mangold@pm.me>
+>>>
+>>> There are types where it may both be reference counted in some cases and
+>>> owned in others. In such cases, obtaining `ARef<T>` from `&T` would be
+>>> unsound as it allows creation of `ARef<T>` copy from `&Owned<T>`.
+>>>
+>>> Therefore, we split `AlwaysRefCounted` into `RefCounted` (which `ARef<T=
+>`
+>>> would require) and a marker trait to indicate that the type is always
+>>> reference counted (and not `Ownable`) so the `&T` -> `ARef<T>` conversi=
+on
+>>> is possible.
+>>>
+>>> - Rename `AlwaysRefCounted` to `RefCounted`.
+>>> - Add a new unsafe trait `AlwaysRefCounted`.
+>>> - Implement the new trait `AlwaysRefCounted` for the newly renamed
+>>>   `RefCounted` implementations. This leaves functionality of existing
+>>>   implementers of `AlwaysRefCounted` intact.
+>>>
+>>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>>> [ Andreas: Updated commit message and rebase on rust-next (7.2) ]
+>>> Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
+>>> Acked-by: Danilo Krummrich <dakr@kernel.org>
+>>> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+>>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>>> Assisted-by: LLM
+>>> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>
+>> This has a lot of safety comments of the form "This does not implement
+>> Ownable, *therefore* it can implement AlwaysRefcounted". But I think
+>> the safety comment should instead explain that it's okay to create an
+>> ARef<_> from an &_ for this type. The fact that Ownable is not
+>> implemented is not sufficient argument.
+>>
+>> Alice
 >
-> Given this description, I wonder if this shouldn't be implemented by
-> alloc_frozen_pages() / free_frozen_pages().  We'ree certainly trying
-> to move the C parts of the kernel away from thinking that pages have a
-> refcount (folios have a refcount; otheer memdescs may or may not have
-> a refcount).  Do your intended users of this actually have a need for a
-> refcount?
+> Yeah, I think for types that currently implement `AlwaysRefCounted` and d=
+oes not
+> have a new `Ownable` form, it should keep saying that "this is always ref=
+erence
+> counted".
 
-I'm not familiar with that API, but I will take a look. The
-`ExclusivePage` would not need a refcount. The reference is intended to
-be exclusive, giving mutable access to the page contents.
-
-I could imagine a situation where someone might want to transition a
-page reference from exclusive to shared, but I do not have a user for
-that at the moment.
-
->
->> +++ b/rust/kernel/page.rs
->> @@ -17,7 +17,11 @@
->>          AlwaysRefCounted,
->>          RefCounted, //
->>      },
->> -    types::Opaque,
->> +    types::{
->> +        Opaque,
->> +        Ownable,
->> +        Owned, //
->> +    },
->
-> While I'm asking stupid questions, what's the significance of the //
-> after Owned?  I see it after RefCounted too.
-
-It is a hack to get rustfmt to format the import statements in a Linus
-compatible manner [1]. As far as I know, it will go away once rustfmt
-learns to do this by itself.
+Makes sense, I will fix them.
 
 Best regards,
 Andreas Hindborg
 
 
-[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
 
 
