@@ -4,129 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89FAC88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 06:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7242C88E40
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 07:23:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D215A6B0093; Sun, 13 Sep 2026 02:55:35 -0400 (EDT)
+	id 8F1026B0088; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8AC6B0095; Sun, 13 Sep 2026 02:55:35 -0400 (EDT)
+	id 87CC16B008C; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C106E6B0096; Sun, 13 Sep 2026 02:55:35 -0400 (EDT)
+	id 7432D6B0092; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A1EAD6B0093
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 02:55:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0905C048E
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:55:34 +0000 (UTC)
-X-FDA: 85207828188.24.40F4FE7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3117140003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:55:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1GYpsNA;
-	spf=pass (imf17.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3AF6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:23:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92177A543C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:23:43 +0000 (UTC)
+X-FDA: 85207899126.26.1BD6284
+Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 11BE9140007
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:23:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gVN42bTL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789282533;
-	b=IHWjDV5x6dS1Bz+IOLC/tBNG3rxzRV1X1pQkdP4BdbHO5Ku+0KkXmlDt+EYfK95F2fCAOa
-	NRxvoTgD+rmbISW14BWdJJpRjzGud+d3ELTHiLKenOK2I+WWuhKtoAz9swPLcxjBysVT3J
-	mpDHgM/2rdQ4CkNDOdDWUgnpG9NnBJ4=
+	t=1789284221;
+	b=lyZ5znIiQ5CxbY8SoY1RIiHurTmHXufMGD7QgjLlU9jJ4+4dTQ3clXrxk0C8aBCm+EXRcu
+	8ajJg+WruXQ9VATjKd/5ECUi+soY6OQZX2F8sp26dsDeVzm7ZCdOg6+xbV4scbYZGk0oLL
+	mmIODPaTtdF4kLR1yjlBesDc7bUeLh0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1GYpsNA;
-	spf=pass (imf17.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gVN42bTL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789282533;
+	s=arc-20220608; t=1789284221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wT6gN/IxgPOdTmMhpo1rniCpWE+wufTMXpH4Yd2onlI=;
-	b=7Rc/p6OXX14EsD80tkvSzPC3+gerkiuWTa4H9NFog0TYtgMzmHwyaBApGmYqp7oGOwZnkm
-	xQw57B4/SAl1bG9yJ0l+SpF+C8+Z6/4eOB11U6INCDYFdrTMHUm8H7sGsjsvv+LzHRdJyR
-	dn2lCsqxlRrATTMkSVKAoF8SfeBzvlE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBF7B60D87;
-	Sun, 13 Sep 2026 06:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313601F00893;
-	Sun, 13 Sep 2026 06:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789282532;
-	bh=wT6gN/IxgPOdTmMhpo1rniCpWE+wufTMXpH4Yd2onlI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1GYpsNAcUx0FM53lU9XD7zterbc/p52NIZV+fMTVTYJ6erepuX41g85L5n7PvkJJ
-	 8DyqyQIpmcHLylqfO6XWSo0DEA74+IpDKPoFtNYUtRB2pWX32grlDMgBXojD3u4IRA
-	 gRyjRQo1pb8uRFp4YpNOf1t41jIGgXTqlRrEqjT/OXqf1ggIqCgLWhKi941OwoGx35
-	 DFO0DSBsqJJL6qE9ZmvHNqdpd4Jp5KJ0wFJRbWNE0xbxnJ861QQSROnV/Z28ij51aB
-	 FNQN15OXDwCd1LRcPVcXgP3w52Grw6b/cwXBW5KAkci5pkWdZe4ltunpTvsVf82b6P
-	 11r3CWL8qVYeQ==
-From: Yu Kuai <yukuai@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>,
-	Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Cc: Yu Kuai <yukuai@fygo.io>,
-	Christoph Hellwig <hch@lst.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Tao Cui <cuitao@kylinos.cn>,
-	linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev,
-	linux-raid@vger.kernel.org,
-	gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
+	bh=DA1a4NsTijrA/0A7Rp40uSGEov9CchZ4qFLhGxWOzlU=;
+	b=bjGJ/zaT4wij60r5cyIwIXqEAOa/hTcQcfB4ySZYZrlT9xge3zapkM8mQzXv8wuoSacjdo
+	NWrXYP1ONJUSehz6PPn0LM2LCsy9qkCGpBR7c7cqM4FgVZnLjqmwTp7JicOL6XIvs9oGH5
+	a195lXlyjkes59vT9Ze45RTxKsj9s+M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=IxZ5irpoc9Wr9wY2wKWP3i1ANdXlxPv1vjeqCqP4vuI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789284219; v=1; x=1789889019;
+ b=gVN42bTLJHEEpg1p4L9bINSm2s8Z5Jm2mwRO2k7kkH5pmlJktgBDF2fp/wnkomQSGNRg19bq
+ cLCFQPOk2AEIfyZETjX1ESTKuSCzf55Bak9dHzZknyl+hV10ZGppV1VR6y6Ic8hbcJOxtHCgL6y
+ iPK+HKzUwjEl98TmCPSrq5rc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id fc7f62b8527fd901;
+	Sun, 13 Sep 2026 07:23:29 +0000
+X-Mizu-Trace-ID: fc7f62b8527fd901
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: lance.yang@linux.dev,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
 	linux-mm@kvack.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2 3/3] blk-cgroup: move async bio punt state to blkcg
-Date: Sun, 13 Sep 2026 14:54:40 +0800
-Message-ID: <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1789237876.git.yukuai@fygo.io>
-References: <cover.1789237876.git.yukuai@fygo.io>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero PMDs
+Date: Sun, 13 Sep 2026 15:23:12 +0800
+Message-Id: <20260913072312.52111-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
+References: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3117140003
-X-Stat-Signature: 5g3j5k64xqbz3dgua55ncb9kcwug7p7c
-X-HE-Tag: 1789282533-846304
-X-HE-Meta: U2FsdGVkX19JoQuPJ/314iKZhiX2oejsp2W4BOVpCCC22NlD/QNGZRnDVTq3deu+KLsVX7+a9nar9bcJtfsjUCDOu3W4J0l2tGcbW+oenwVFVmwFQNQ3RWsMTdUdJ0G86I0k+yP3UoCUaqyyJDeabZj/9VcdWCOqUleYIoEDUuEsLONs1uxQQhyR8BAdenM/CXO5JeAvXpFglPOFulxd/1SghZrHTX/LC8LZtHJYffdrFL/nrTkCgF3+Ack8gTdLElPt2XMzd9NEPbYJuCMUgJwokMQg10N85JP5pza+uJCb8Xgeo2TP1NpFfndly0ckTm7PhUZ0JIoaKE61BI3X+yeJqo/mpGxi7O5mu7g5ol7oelaMFpzlA20mfF/U895hMERio2mHC0hPCcCKnGHgQYr9ZfoOfY6O/I4y0Iat7wFHzTdGgfxt/dXRqSa1xuLCspkQq4PQf2Yq4kr2XE+ThUvQrnvsEczBRZ5RmoF1z4KgJi5ByNgg0jJXN+X1J3Gjy3f464/8ggwaaHUuxhdCvoIjoEskzjIZlN2NE/W3IpmjWYY18KziBDSydv4rOFVVRrEsef87QTL/XF19HiJo9c/WRLRwoCZ2wh8MkFD+xKlEV0sh98PLLwXLPm9TUgLmHhz2iyNX7n1VXPQR62vgMFd2Rgem6OuRAGoC4RfFI4TVsviCxTPs3E5LEI0T/TSBwTqobNGdWaXjkxmS8s7cLkHRYfPnxjPN/LPG/Ac0OQoz9LUHN0t5gNuDcDolpX3Q0DqpOa+IMVqJkEgT1qh9ZolMhYHCpYxl4nigKVve9ewZsDP61//94bzucdrU6cx1bB92FFcPZgzd3P3WbIgDLqqRuzbJsxNwO2Q9/p79CGrLlHmfGBZmJkhv8eGn0zymnTrGf2rqGeDABTEwEL3z264UrOR4MtD02JmNA6BKlK5W3IGnQSxUfd7noiTs/KTc/JR5scORyGYPadzAwVj
- dYdrFHHO
- IVhZAfssg9IYw7rjvQef2yFWRnMQcbuDIbXYFjvG05CTJHmWUJRBBluULfZHwEDbFKxVkzgavVupwhDSP5vSR58cdLRvvqZPSLhL2UiqN+sT3Wl7SHYd3uNtyW2+l4AR/a7+8/ZlyOqid4SDK35kWhyitVZm+tgZnO/PA2BcWMbuKWTc=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 11BE9140007
+X-Stat-Signature: cn5j3sf8exzotgx7k3yaay48qut57nsm
+X-HE-Tag: 1789284220-518531
+X-HE-Meta: U2FsdGVkX1+ayq1z01xdPOaTS7VNJsejt8PIvGZbt04BYuwZeoYSUDrsGzfHB9YXPIx5IpR0HS4AugdTeKfhIfFgebnr9uGcMGdfu4OoSSMMNdF4xH7P4Y/9wtehy/YUXggZn32keMyHcDW2Nt3lXD4MAAEPMiD3KXo3iiwZPUfBIl/dycvGAZRRoxMug1G+FMuk4/tL4A0knipBOkbqqZ0ijavn0/wxkFzToIXwVHBm0bYvv+1qJdQhGcQpC9wkvECY25FgnwUjl09eLNoPIoaWuMPaE8pYw1qWdW8G5C3AUY3NH5COYpmENYie+AQTzQiwNMIz968pzsecfEE3lx7i3Gkq14AvtxmNIJe5JmL2vqQyMOf690rkQkXoJNRwAUEp3dhBPHdyEI6kKNQQnH1SoDUipsCqJepVWFXzmRmB7/LPrAI6OsPp8pC1tNefXGw5ZxusxHofYW7FKtnYsUZA7NTwJB/WWnlbo1dIplh54uGXUX7xyzBZkxB/RGIfTFJyEFqfLRbTY5oF9cstixKIx/dkU20A7iY2AUG6enr6mu91LZrdwJV1fc0rpgRodlYqTeJzjMXTCYnc54AliYuCbFbLRearONNpVBaFVclcbClaXwEFUUxs1osPV2Cl6c8i5SvbEXQKjtotaP951HYRSxWGfsIizdjSxDXRpESxQ+1Zhk25tRlUkLgwFH8Jxds43sknCPCPZe6S4gT/xojcN7InL9QaE+tirB3PIhdrZetrFUGyuxWh2JnMGI4z0dnwxuLCuhIFml42+TroehJORU/Iw+CRRz2Qgd+CsvYJWgVp1hRUeWzuDjo9810lXOvWEgZQkFbBsK/kVhj1LgQLNwypCPyKDsXnpI95uKJXjlxiA74ge9+qCVKEX+x5x9ILpHu6UItCGceV8nmG5ZWYr9N8u4JnGp1ePhUhW9nYNHx+U4NKKu8fXE6wwIojzCEmhzz0JCeNpp9XF8m
+ xdAdUMFo
+ X34n5LTiWEPTpiWZ96g6/m5GANUin32gIg2rSQm5wnpsoJuPwW5QmhI3cVgkmfggu1PgfsNs++YoRYW94MMoIIWNqcPoefcYyZvSpmfQ12l58d0WgWc5h11O06w89Ghf//XlBA79AhhX6+TIALWvlMRXCBNLLC8uPWg6ww5s4lNyOuo/A1PfVuMt8L7Wibm5kI4TMzu4qNd5h861+Firbhev4oNejNNdUv56ckkAVSRpswKTtCCsQgXtoVDEmrIgx9j2vi6uwgOEHC+7wgzTMzvrOeTZYmyNeE8pIiTq7CDQ55NMFiGPRXGx/7YReBmaHPFnq/gpA4G7zbmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,200 +104,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yu Kuai <yukuai@fygo.io>
 
-blkcg_punt_bio_submit() currently queues punted bios on blkg->async_bios,
-so it has to call bio_blkg() to find or create a queue-local blkg.  Bios
-now carry and pin the blkcg css, so punted bio lifetime no longer needs to
-be anchored by a blkg.
+On Sat, Sep 12, 2026 at 11:46:35PM -0700, Andrew Morton wrote:
+>On Sun, 13 Sep 2026 13:19:42 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+>
+>> From: Lance Yang <lance.yang@linux.dev>
+>> 
+>> has_deposited_pgtable() uses !vma_is_dax() to decide whether a huge zero
+>> PMD has a deposited PTE page table. That also accepts raw PFN mappings
+>> of huge_zero_pfn, although vmf_insert_pfn_pmd() does not deposit a page
+>> table on x86.
+>> 
+>> Zapping such a mapping would call pgtable_trans_huge_withdraw() without
+>> a corresponding deposit. With pmd_huge_pte(mm, pmd) == NULL, that causes
+>> a NULL pointer dereference.
+>
+>That's the sort of thing we'd prefer to avoid.
+>
+>> Use vma_is_anonymous() for the huge zero PMD check. This matches how PTE
+>> page tables are allocated, deposited and moved.
+>> 
+>> - For anonymous page faults that install a huge zero PMD,
+>>   do_huge_pmd_anonymous_page() allocates a PTE page table and
+>>   set_huge_zero_folio() deposits it before installing the PMD.
+>> 
+>> - On fork, copy_huge_pmd() allocates and deposits a PTE page table when
+>>   copying a huge zero PMD into an anonymous VMA.
+>> 
+>> - Raw PFN mappings use vmf_insert_pfn_pmd(), and DAX file holes use
+>>   vmf_insert_folio_pmd() to map the huge zero folio. Both use insert_pmd(),
+>>   which deposits a PTE page table only when arch_needs_pgtable_deposit()
+>>   requires it.
+>> 
+>> - Moving an anonymous huge PMD preserves its deposited PTE page table.
+>>   move_huge_pmd() transfers the deposit when necessary. For UFFD MOVE,
+>>   both VMAs must be anonymous, and move_pages_huge_pmd() transfers the
+>>   deposit as well.
+>> 
+>> Keep arch_needs_pgtable_deposit() first so architectures that require a
+>> deposited PTE page table still return true regardless of the VMA type.
+>> 
+>> Commit d80a9cb1a64a ("mm/huge_memory: add and use
+>> normal_or_softleaf_folio_pmd()") removed the vma_is_special_huge() check
+>> in zap_huge_pmd(). That check skipped the huge zero PMD deposit test for
+>> non-DAX VM_PFNMAP and VM_MIXEDMAP mappings. Removing it exposed these
+>> mappings to the incorrect !vma_is_dax() test.
+>> 
+>> Fixes: d80a9cb1a64a ("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()")
+>> Cc: stable@vger.kernel.org
+>
+>How real is this?  Is there a reported-by:?  Do you have a reproducer? 
 
-Keeping the punt state in blkg can instantiate a blkg even when no blkcg
-policy is enabled, just to bounce submission from a shared kthread.  Move
-async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
-punted bios on bio_blkcg() for non-root cgroups.  Root or unassociated bios
-are submitted directly.
+Yes, I reproduced it on x86 with a small test module. It sets
+VM_MIXEDMAP | VM_HUGEPAGE and calls vmf_insert_pfn_pmd() with
+huge_zero_pfn, without touching the page tables directly. A full-PMD
+munmap() crashes before the split series[1] as well.
 
-This preserves the priority-inversion avoidance while preventing
-blkcg_punt_bio_submit() from creating blkgs that are not needed by any
-policy.
+>Is it a theoretical, LLM-found-this thing which can't really happen?
 
-Signed-off-by: Yu Kuai <yukuai@fygo.io>
----
- block/blk-cgroup.c | 52 ++++++++++++++++++++++++++--------------------
- block/blk-cgroup.h | 14 ++++++-------
- 2 files changed, 35 insertions(+), 31 deletions(-)
+I found this while reviewing the split series with LLM assistance.
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 59ccfefe16a8..aa3cee107ebe 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -180,14 +180,10 @@ static void blkg_free(struct blkcg_gq *blkg)
- 
- static void __blkg_release(struct rcu_head *rcu)
- {
- 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
- 
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	WARN_ON(!bio_list_empty(&blkg->async_bios));
--#endif
--
- 	blkg_free(blkg);
- }
- 
- /*
-  * A group is RCU protected, but having an rcu lock does not mean that one
-@@ -226,23 +222,23 @@ static void blkg_release(struct percpu_ref *ref)
- }
- 
- #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
- static struct workqueue_struct *blkcg_punt_bio_wq;
- 
--static void blkg_async_bio_workfn(struct work_struct *work)
-+static void blkcg_async_bio_workfn(struct work_struct *work)
- {
--	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
--					     async_bio_work);
-+	struct blkcg *blkcg = container_of(work, struct blkcg, async_bio_work);
- 	struct bio_list bios = BIO_EMPTY_LIST;
- 	struct bio *bio;
- 	struct blk_plug plug;
- 	bool need_plug = false;
- 
--	/* as long as there are pending bios, @blkg can't go away */
--	spin_lock(&blkg->async_bio_lock);
--	bio_list_merge_init(&bios, &blkg->async_bios);
--	spin_unlock(&blkg->async_bio_lock);
-+	/* as long as there are pending bios, @blkcg can't go away */
-+	{
-+		guard(spinlock)(&blkcg->async_bio_lock);
-+		bio_list_merge_init(&bios, &blkcg->async_bios);
-+	}
- 
- 	/* start plug only when bio_list contains at least 2 bios */
- 	if (bios.head && bios.head->bi_next) {
- 		need_plug = true;
- 		blk_start_plug(&plug);
-@@ -259,19 +255,20 @@ static void blkg_async_bio_workfn(struct work_struct *work)
-  * cgroup.  Use this helper instead of submit_bio to punt the actual issuing to
-  * a dedicated per-blkcg work item to avoid such priority inversions.
-  */
- void blkcg_punt_bio_submit(struct bio *bio)
- {
--	struct blkcg_gq *blkg = bio_blkg(bio);
-+	struct blkcg *blkcg = bio_blkcg(bio);
- 
--	if (blkg && blkg->parent) {
--		spin_lock(&blkg->async_bio_lock);
--		bio_list_add(&blkg->async_bios, bio);
--		spin_unlock(&blkg->async_bio_lock);
--		queue_work(blkcg_punt_bio_wq, &blkg->async_bio_work);
-+	if (blkcg && cgroup_parent(blkcg->css.cgroup)) {
-+		{
-+			guard(spinlock)(&blkcg->async_bio_lock);
-+			bio_list_add(&blkcg->async_bios, bio);
-+		}
-+		queue_work(blkcg_punt_bio_wq, &blkcg->async_bio_work);
- 	} else {
--		/* Never bounce if there is no non-root blkg to queue on. */
-+		/* Never bounce if there is no non-root blkcg to queue on. */
- 		submit_bio(bio);
- 	}
- }
- EXPORT_SYMBOL_GPL(blkcg_punt_bio_submit);
- 
-@@ -350,15 +347,10 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
- 	blkg->q = disk->queue;
- 	INIT_LIST_HEAD(&blkg->q_node);
- 	blkg->blkcg = blkcg;
- 	blkg->blkcg_id = blkcg->css.id;
- 	blkg->iostat.blkg = blkg;
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	spin_lock_init(&blkg->async_bio_lock);
--	bio_list_init(&blkg->async_bios);
--	INIT_WORK(&blkg->async_bio_work, blkg_async_bio_workfn);
--#endif
- 
- 	u64_stats_init(&blkg->iostat.sync);
- 	for_each_possible_cpu(cpu) {
- 		u64_stats_init(&per_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
- 		per_cpu_ptr(blkg->iostat_cpu, cpu)->blkg = blkg;
-@@ -1399,10 +1391,16 @@ static void blkcg_css_free(struct cgroup_subsys_state *css)
- 		if (blkcg->cpd[i])
- 			blkcg_policy[i]->cpd_free_fn(blkcg->cpd[i]);
- 
- 	mutex_unlock(&blkcg_pol_mutex);
- 
-+#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-+	{
-+		guard(spinlock)(&blkcg->async_bio_lock);
-+		WARN_ON(!bio_list_empty(&blkcg->async_bios));
-+	}
-+#endif
- 	free_percpu(blkcg->lhead);
- 	kfree(blkcg);
- }
- 
- static struct cgroup_subsys_state *
-@@ -1447,10 +1445,18 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
- 	}
- 
- 	spin_lock_init(&blkcg->lock);
- 	refcount_set(&blkcg->online_pin, 1);
- 	INIT_HLIST_HEAD(&blkcg->blkg_list);
-+#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-+	spin_lock_init(&blkcg->async_bio_lock);
-+	{
-+		guard(spinlock)(&blkcg->async_bio_lock);
-+		bio_list_init(&blkcg->async_bios);
-+	}
-+	INIT_WORK(&blkcg->async_bio_work, blkcg_async_bio_workfn);
-+#endif
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	INIT_LIST_HEAD(&blkcg->cgwb_list);
- #endif
- 	list_add_tail(&blkcg->all_blkcgs_node, &all_blkcgs);
- 
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index f68ea21958f5..7d73085503d5 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -75,18 +75,11 @@ struct blkcg_gq {
- 
- 	struct blkg_iostat_set __percpu	*iostat_cpu;
- 	struct blkg_iostat_set		iostat;
- 
- 	struct blkg_policy_data		*pd[BLKCG_MAX_POLS];
--#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
--	spinlock_t			async_bio_lock;
--	struct bio_list			async_bios;
--#endif
--	union {
--		struct work_struct	async_bio_work;
--		struct work_struct	free_work;
--	};
-+	struct work_struct		free_work;
- 
- 	atomic_t			use_delay;
- 	atomic64_t			delay_nsec;
- 	atomic64_t			delay_start;
- 	u64				last_delay;
-@@ -111,10 +104,15 @@ struct blkcg {
- 	/*
- 	 * List of updated percpu blkg_iostat_set's since the last flush.
- 	 */
- 	struct llist_head __percpu	*lhead;
- 
-+#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-+	spinlock_t			async_bio_lock; /* protects async_bios */
-+	struct bio_list			async_bios __guarded_by(&async_bio_lock);
-+	struct work_struct		async_bio_work;
-+#endif
- #ifdef CONFIG_BLK_CGROUP_FC_APPID
- 	char                            fc_app_id[FC_APPID_LEN];
- #endif
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	struct list_head		cgwb_list;
--- 
-2.51.0
+mshv_vtl_low derives the PFN from the mmap offset, and its checks do not
+exclude huge_zero_pfn. I haven't tested this on a Hyper-V, though.
 
+[1] https://lore.kernel.org/linux-mm/cover.1787941780.git.yintirui@gmail.com/
+
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -2529,11 +2529,11 @@ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
+>>  		return true;
+>>  
+>>  	/*
+>> -	 * Huge zero always deposited except for DAX which handles itself, see
+>> -	 * set_huge_zero_folio().
+>> +	 * Huge zero PMDs have a deposited page table only for anonymous VMAs,
+>> +	 * see set_huge_zero_folio().
+>>  	 */
+>>  	if (is_huge_zero_pmd(pmdval))
+>> -		return !vma_is_dax(vma);
+>> +		return vma_is_anonymous(vma);
+>>  
+>>  	/*
+>>  	 * Otherwise, only anonymous folios are deposited, see
+>
+>Thanks, I'll add it for test-n-review.
+
+Thanks!
 
