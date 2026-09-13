@@ -4,90 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCDDC88E5C
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 22:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC3AC88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 22:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605186B0088; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
+	id B630B6B008C; Sun, 13 Sep 2026 18:51:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DE046B008C; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
+	id AED916B0092; Sun, 13 Sep 2026 18:51:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F1DB6B0092; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
+	id 9B5B56B0093; Sun, 13 Sep 2026 18:51:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 238EC6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:47:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89E9540C0D
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:47:30 +0000 (UTC)
-X-FDA: 85210227060.17.1672D69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D3AA5140005
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:47:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GX2L01Iw;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AF2B6B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:51:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C4CA80C21
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:51:27 +0000 (UTC)
+X-FDA: 85210237014.22.FE43B75
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3159120003
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:51:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SxVR5iOn;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789339649;
+	s=arc-20220608; t=1789339885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oc0kz/Lcz/Yn57rNNFxonjfaQnrj/yxO/lHTbtb3iGA=;
-	b=N1/qsaioBiXp5Rz16c+oRZEprkEuXNB311HkAFnz0i+Xu+04jgYQTzFsXkhck7k198IjlX
-	U/hRWNvBiz/82fQ/WtUAS6BSaT2XjzLbE0yTd2j8dVS55zyMtl/WMWisDDKhQBA7XNsm4D
-	cDkw40NxZ4fADtPlgVI1qNO3wkAme58=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789339649;
-	b=UXz1pEQW7QfNNWx8qgXeOgAK70W8TyLXFvIIyxe8S6jJQhL3riJ7pG3995PliGymv/SP7e
-	Uof0kBs085mKsSY+mjbcabgrFiZMjgrBgqTYjVBM82jS/FQ2O8t4pLyAwsdmS80qvfJmj9
-	3F+i8wcBueLcL0QnRU1OCZsB8kRPF2o=
+	bh=9ZiTG8sjKFTT4w8nPMlVhXaGC0u1YhzWKKam1CGyYWQ=;
+	b=My5ydeihSZ8eI8dqYzLaxyzfU9c2XYK/czGwXBIXpE50/Jb32YuX6acMS1pwv/rcHB57D5
+	g110JFjdDU0pEolzpsu38nCCn7VFf8tBAHj6pBl4IAOFqE44uGcVpxMR0FEbNeDqQioxMz
+	KygcTBHzyt5dS0E6qW1O7mH3xGGPZqk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GX2L01Iw;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SxVR5iOn;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789339885;
+	b=EnRd2BfEgqqj6BC94ykHKaaq7nmrA4mRrjr7bhLGBFne1sPHVe9+DGX3pTlKu/iin+mjnP
+	NJk1MU19YSwgWjUIlsUa5y1lYDaY27hyGIVEADNOYK7HRvuNzQkK0myygkAOMzx8MFX1jC
+	Rr4UdKdLIq/7A3PI/JxPKajGb0RZYSE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 122EC61002;
-	Sun, 13 Sep 2026 22:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610AD1F000FF;
-	Sun, 13 Sep 2026 22:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789339647;
-	bh=oc0kz/Lcz/Yn57rNNFxonjfaQnrj/yxO/lHTbtb3iGA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GX2L01IwIepGX/OpWrrq1g1pz9hcsLKwHhp6MlxZAmZeAZO4+EKEVTQLTKQpMhGg3
-	 eGhyJ0Pf+TTd9QAE1RBh5HsR2rM7B5SuaQe5na1glgmg6JOwWtyxq4riHNCiO7h4PW
-	 BMzvX8RXR85eJmDDMYzOw9cmYD9HzpD5eZ/StjwY=
-Date: Sun, 13 Sep 2026 15:47:26 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yuan Tan <yuant@nebusec.ai>
-Cc: linux-mm@kvack.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, notasas@gmail.com, rakukuip@gmail.com, Ren Wei
- <weir@nebusec.ai>
-Subject: Re: [PATCH v3 1/1] mm/memory: constrain generic_access_phys() to
- page boundary
-Message-Id: <20260913154726.be94acada0a925cf6dabfbcd@linux-foundation.org>
-In-Reply-To: <1146fc8a-94c8-4e28-aa38-cd0322bea9a4@nebusec.ai>
-References: <cover.1788842306.git.rakukuip@gmail.com>
-	<e06e28a46c2a176238f03b5740df0913e57c2861.1788842306.git.rakukuip@gmail.com>
-	<20260909231815.bcb1ca6091ae0ba1b5ba54e1@linux-foundation.org>
-	<1146fc8a-94c8-4e28-aa38-cd0322bea9a4@nebusec.ai>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D3AA5140005
-X-Stat-Signature: q3fgt3ayfm8su4swztfnir47q71hnzky
+	by sea.source.kernel.org (Postfix) with ESMTP id 7AF0544A8F
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6315C1F0089B
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:51:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789339883;
+	bh=9ZiTG8sjKFTT4w8nPMlVhXaGC0u1YhzWKKam1CGyYWQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SxVR5iOntlyY/xdBsyV1rMUdC68ospWyz0cg6COeUj8kKgoG8FLcWR4Dg2675UMdW
+	 5B992E5VfQ9MMidiiJUqslikjwvNIh4pPWjq2EbzX2N23Mc2icAHyf9N6OBP7XQDIj
+	 s7RQzQvBMSk/uHpwhGQ0WK/hIc3j9pdD8FJY95+f+HYws2J0KquXACTXGfp4SNZKPz
+	 ItDmfm/Duu/YlpJYaC2n5pqkKzjqfNAlm+VXLXaQTO9pkCJOuDGnKGo9WfUxGWAQ8+
+	 4BxBPregV5W/rRMGc/xZVmcWwhX+VgvH0HF3b/p9vWo6pG/i5wpo1A6b1nbAaxrZzR
+	 gzGWNUWMfnWuw==
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-531034aa31bso4097491cf.2
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 15:51:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxfh6SRLIypp+/1zWapJ/feOTrQRVvJlV16Sl/BvFeOZDeEUx0WtlB1X6ISOLHnrhqpqtsbZYr6Rw==@kvack.org
+X-Gm-Message-State: AFuF++mhRvMiLIaee85DVRsEYY0Zqb/Z0FiBiRGUEhKV62utI29BrWno
+	6YHbXq4ARiRvZ2cgJbYBX9SX6qCyupUP18jzRYghGls0tf/Y/H3P7uUCFS8tIomVfvZ0cvHg2ZN
+	ERcWVZuI4h/F6r1m7D5N2YKmqZKhWtjo=
+X-Received: by 2002:a05:620a:2702:b0:92e:71bb:d1c0 with SMTP id
+ af79cd13be357-93a297ee80cmr26633285a.15.1789339882564; Sun, 13 Sep 2026
+ 15:51:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <3fa43eaca792bc0bbde4b82a6c1fcdd3f528b398.1787999152.git.qiwenjie@xiaomi.com>
+ <4aba05e1a2c3b61cb337d373eb9b7a8db4ddd822.1788024049.git.qiwenjie@xiaomi.com>
+ <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
+ <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
+ <076bb01b-6fcf-4691-be8c-0e8507c9fe64@columbia.edu> <CAGsJ_4xMK=rPXCH5OiCOYHKRQp-w+xDJQusJ_ykbuAuLZr+8bA@mail.gmail.com>
+ <1e5118a5-6b61-49d0-85e1-825e22059241@columbia.edu>
+In-Reply-To: <1e5118a5-6b61-49d0-85e1-825e22059241@columbia.edu>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 14 Sep 2026 06:51:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wj6XvPB+QF+_X1BJ_8Y2sZEEFAw6RaJJz-cHaDWLkxaQ@mail.gmail.com>
+X-Gm-Features: AcwNN1WjkmO8uX5Iavm2W9nWdvLG2cwH8oYEJn3mYskY-hmIRTHjLPMkj4xTYTQ
+Message-ID: <CAGsJ_4wj6XvPB+QF+_X1BJ_8Y2sZEEFAw6RaJJz-cHaDWLkxaQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: filemap: retain mapped dropbehind folios
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Wenjie Qi <qwjhust@gmail.com>, willy@infradead.org, jack@suse.cz, 
+	akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, axboe@kernel.dk, 
+	trond.myklebust@hammerspace.com, jaegeuk@kernel.org, chao@kernel.org, 
+	qiwenjie@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3159120003
+X-Stat-Signature: 6rysbqtj5sodxcta14yrk91ek6cjd8ne
 X-Rspam-User: 
-X-HE-Tag: 1789339648-228903
-X-HE-Meta: U2FsdGVkX1+Vy6L45cvJWZeehG3q1xKWqPNWa6qQ8pJKJmi0bLORDKYMEHXGrLmfEszoamK50ijBtC34i64Zzhu3upWF4rmpD62yy8T8o49Rw4AkbkHfHRkKymsIqwF1RsmVBra4lzXzzgDRdEvnhoMbZNWLQLgMNICqHrBuyRB3rL3o9+H+x4o94OwlPkDbX6NLN9vFZxQYSVusKc2fHsLKPnDJ+2L/t2arMbGcrS+oH45OrFu5R+n1lbzt50a1/+9CyXsXaSsdGspgEJtDV7xCWrIz3oyb5m7RMmXge2h5h5GNyG0sQYYqd/6hmMCON2S7xm2dL1JpTMJ9FjooEql5I1NUa1FGINIjQN+2p1bwkASBKGdEVRwVWQpZi+OZ9e2TccpOStgWQdAkKHWA3xcO8Zf4Ep69A/uGh3U1vwhgbrt+4OwPfrZ8lZ/f5KSWmrOnAhQNRJgzbDmCQ5vmTWPlmd0F8x7hvJvcIyL6MajBpgabzmyfGBvmSNPjvTCMLL8x39xvPNJM29GZsvRKuMnHUgjN7CXI+E9pANsmj1FL5Xy5PiEu6P+dAcfeZL6e6bAyZTEqyxol+NEppUZJK49pDBVeJiBCAnZJOWVe+zXT4RDMLtia+WZUelg21d5dwJoTbeQnH3AS2gKzl9qqGqkvL9Uj4MEQoRcPqgiH69gTNa6W3AYqJMBqakMn4dnKqNJKh8bvuu2Dg3VuQXQeoU9+R5ZAmmHhkvRbzGvQwPxL3aYD+yeK3mk/wvUi/RQ/g1YNF/ZCXf3yNQeMasR9dEEdurtpB+/lZ74Ww8XeE2PL1YqUgY0r3kzvueY93Q2UKuk0d9yOahy3y/jxS3i4mXyTnLbUPvSwKYmrhwoOmxskMCL5X5gCQOvr3Fau37MZLFmULVAkAAJAyjHBrygRpqOKZbuz7MBdlVNcz7cRdUYeaxIFLH+Wl5KRQfbd/kSfpO0rJQoHcDV/PE8F2xq
- 1V1rXlIG
- n6dOacHY/4legBppepFESj460DMCIOzOI7FL+mLWrhSlNPTh9ICqkTrJi+a+dtesFNFld5j5Zd5uQAHBj80793VcjWQolbDxD+Hqh6ixTdEji0ihur7SIHjl3AVnuYD8sUQ3UzCyeOaYVdiWvNaxLbyyp0Gx9ioBNgasZVgKTeJ8NKkW7t22/NZuSr/xxNbtkHAYbovzq915n/Do7iVVMw+dQCL571nwvqNYwD1KCoOeRlS3tEesfUiHsBhqIXC+0N2IWzqhU1U4kxhlP8+Dlc8hCaDQMre74jG+a27hGD6X2XhZ9i299hq8n34x6DI6qZE8FB/EEpVAdN95y78W70pH8ZOcb/Go5UH4LJ3YWln42Pr+aHEbBt4baSaQYPDwz+XdFGjPGBR3af3E=
+X-HE-Tag: 1789339885-144887
+X-HE-Meta: U2FsdGVkX1/hQhvbD1hSjtoUGWPcMZwmFdI1KlTv2OBMA9HzuzhQ6k+mhxHEai1e6oGXynVLoEcEkJbTGwt4iN0MDQJo0O4L0WsjE7LnjQb40fT8nZB4/N271bGwIQN9vqa6VbcsJQOsQG6YTauZjbIX3nlSep2ONRLhgF6cX4QmSlYhLt/vYRWoAoO7xj7AgJa2ZrseKslLwVvEW5903ekKlb6UzYjc05SchKzBotYA/3otadIpGifKGdAkzqvGtsMrP48QYhljCCoxzuFmVQLoXRp15YcQHoi21GLVJIR6gTcpuH5wwI8dVh9cVIcjtnbBDEPK8dwvzjAyDmC+p0r++KGi7Ee3Md6QzkQhmuOWO81pP0HltIi1wgCGlT3VuwcTWAHHrGAgMHZf83BA3jyhy6a3/hJ7Af/du/J7Uhytje9cQxPcfDUqJ/uh94wttTFkq4WrZktpyn5A5bQQ45XNDljx5MWKaf0XnunmIPnBJ7r80W6yGZcEwmtSsMjBWFtyU9/GS6+6YaE0Wt4Zn1AEnYHy4eenaa9zeYkKF2DSbyMODe8mBSpy/qGuECCIAvHkfRab+o89NXy9Wk1r59FmUwsjtPcW7x8MoVHoiLoCkqKZrsBhf0K9D6aUKZnZf4AUjAm2W43SGvGFD15vcohzS2ggMWfNUmiod2Rn7DvvVwZCuBOrcm+RX0weAG2FLddXtFWaolDsLmSrfo7he2/dyWhoEtZM9ERWa852sBwxKChwzavohuDZuAjO8Vg9NHsyvbL+q606Pt68IzBwl4E3q+TMENyAaOj4XLrCkBy5pT32s7wwlYQYGPZvO5zIA8/jB0L1oBp/U5D/9UgMs/LgKop2tDnXy3BGtXTF8D8oQrcq9MD+b7UtHAoDp9zM8z08erEVp9vMVmdjQcIuzLPEpiUSGbZzoqxq2gKVauzbW59Z2iGPia50evsckzauGHr9Rh2RdsVGCbxYBc4
+ BvK6UkaH
+ DNwaw2r9l7h3nvIAHIaMX9E2PKJystxUULPBjBxJ6keQE0L2vz2roTL8CbSWVi5L1DzE0NpyDfE/1QdGcZS1yrLK16WrxidU96XUcqzLys01L6+a8V9n43admO6BR06na2vV0653dqHOOslBE8FUM18oyd4S22Zp/WNj3MQ+vOH2Zyox2q1mKjxAjIMch+xFhpxCvAvn5vZ+oScVXI1kTTG510x3FEq+koQca6YTTGDxY/RjF/a+VXaBCzbBV7IYj86LG62sWOChYJ4poyZB7w8SA5bhP/LIyc3jnCiOsP16mAqsc8tISNmov+F3c0oryqlnPQPK9+uvL6brK2JhBdwADIjnpmYrETNBTAjF5DU6uv43iucvdKVhlNQ8PErUMh7JL+2u2kZGi2qPMW1uIaEgWer5q4IKd6RYkHoh3eyfR6iNPjsg8tmgUEUz46kcfJcfp/IZASipVWp7NA1LZnSK+nklEtVaYIY6Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,87 +110,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 13 Sep 2026 01:28:18 -0700 Yuan Tan <yuant@nebusec.ai> wrote:
-
-> 
-> >> +	    (phys_addr != ((resource_size_t)args.pfn << PAGE_SHIFT)) ||
-> > hoo boy we've made a mess of the types in there, but I don't see a
-> > feasible improvement in the context of this patch.
+On Fri, Sep 4, 2026 at 6:36=E2=80=AFAM Tal Zussman <tz2294@columbia.edu> wr=
+ote:
+>
+> On 9/4/26 12:28 AM, Barry Song wrote:
+> > On Sun, Aug 30, 2026 at 7:59=E2=80=AFPM Tal Zussman <tz2294@columbia.ed=
+u> wrote:
+> >>
+> >> On 8/30/26 6:25 AM, Wenjie Qi wrote:
+> >> > From: Wenjie Qi <qiwenjie@xiaomi.com>
+> >> >
+> >> > Fault-around can map ready dropbehind folios without going through t=
+he
+> >> > normal page-cache lookup that clears dropbehind. A mapping represent=
+s a
+> >> > competing cached user, but writeback completion can currently unmap =
+that
+> >> > folio. A later mmap access must then fault it back in.
+> >> >
+> >> > Retain mapped folios instead. For a mapped folio,
+> >> > folio_unmap_invalidate() can call unmap_mapping_folio(), which takes
+> >> > i_mmap_rwsem and may sleep. Retaining the folio also avoids this pat=
+h when
+> >> > folio_end_dropbehind() runs in non-preemptible task context.
+> >> >
+> >> > Unmapped dropbehind folios continue through the existing invalidatio=
+n path.
+> >> >
+> >> > Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when=
+ writeback completes")
+> >> > Cc: stable@vger.kernel.org
+> >> > Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+> >> > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> >> > Reviewed-by: Tal Zussman <tz2294@columbia.edu>
+> >> > ---
+> >> > The mapped-plus-dropbehind state was reproduced in QEMU. The patched
+> >> > kernel retained the mapped folio and continued to evict the unmapped
+> >> > dontcache folio. I did not reproduce the sleeping-in-atomic warning =
+and
+> >> > am not aware of an existing report.
+> >> >
+> >>
+> >> I was able to trigger the sleeping-while-atomic BUG on current mainlin=
+e with
+> >> some help from Claude. The reproducer itself is straightforward enough=
+, but the
+> >> configuration was a little finicky. The atomic context comes from usin=
+g
+> >> threadirqs so that virtblk_done() completes requests from the irq thre=
+ad under
+> >> local_bh_disable() and the vq spinlock with irqs off, so in_task() is =
+true but
+> >> the i_mmap_rwsem down_read() sleeps. It also needed 1 vCPU (so complet=
+ion stays
+> >> in the irq thread rather than softirq) and ext4 -o dioread_lock (so en=
+d_io runs
+> >> inline instead of on a workqueue). With v4 applied the bug is gone, so=
+:
+> >>
 > >
-> > Also, a [0/N] isn't needed or desirable when N==1!  I'll consolidate
-> > both into a singleton patch.
-> 
-> Hi,
-> 
-> 
-> Luxiao is helping us fix some of the bugs found by our bug finding tool. 
-> 
-> 
-> Normally, our patch series includes a reproducer in the cover letter, so
-> we usually send these patches with a cover letter. I believe Luxiao
-> simply forgot to include the reproducer in this version. The reproducer
-> for this bug can be found here:
-> https://lore.kernel.org/all/cover.1784428532.git.rakukuip@gmail.com/ 
+> > Thanks, Tal. Then I'm getting quite confused. Since with Wenjie's
+> > patch, we are no longer going to sleep for dropbehind in `filemap.c`,
+> > do we still need all the complex logic in the block device and file
+> > system layers to move dropbehind to a workqueue task context?
+> >
+>
+> Hi Barry,
+>
+> Let me clarify. Wenjie's patch prevents sleeping in a very specific case.
+> The existing in_task() check covered most other cases, in that it just
+> doesn't do dropbehind invalidation if we're not executing in task context
+> (for example, block device writeback completing in interrupt context).
+>
+> However, dropping the invalidation defeats the point of dropbehind, as it
+> leaves the pages in the page cache. If we get rid of the task-context
+> deferral mechanism, we wouldn't sleep, but we also wouldn't invalidate.
+> Wenjie's change is largely unrelated to this.
 
-Great, thanks.
+Hi Tal,
 
-See, what I'm always looking for in bug fixes is a solid description
-of the significance/impact/risk which that bug has upon our users. 
+Thanks for the clarification. However, I=E2=80=99m still not convinced.
 
-This impact ranges between "Impossibly improbable thing which some AI
-scan found but which nobody is ever going to hit" through to "this
-crashes our entire fleet 12 times per day".
+If `unmap_mapping_folio()` is the only place where we might
+sleep =E2=80=94 where we might take `mapping->i_mmap_rwsem` through
+`i_mmap_lock_read()`, as Wenjian pointed out in [1] =E2=80=94 we have now
+prevented that from happening with `if (!folio_mapped(folio))`.
 
-The range really is that broad and this information matters.  And
-people care about it.  I look to authors to help us understand and
-assess this impact.  So please do whatever you can (organization-wide)
-to ensure that this info is made available to its potential audience.
+So no mapped folio should call `folio_unmap_invalidate()`:
 
+static void filemap_end_dropbehind(struct folio *folio)
+{
+        struct address_space *mapping =3D folio->mapping;
 
-> For future patches, if we are sending a single patch without a cover
-> letter, what would be the preferred way to include the reproducer?
-> Should we put it directly in the commit message, or place it below the
-> --- separator so that the reproducer itself does not become part of the
-> permanent git history? 
+        VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
 
-It depends.
+        if (folio_test_writeback(folio) || folio_test_dirty(folio))
+                return;
+        if (!folio_test_clear_dropbehind(folio))
+                return;
+        if (mapping && !folio_mapped(folio))
+                folio_unmap_invalidate(mapping, folio, 0);
+}
 
-Formally, the reproducer should be made part of selftests/, so the bug
-can never reappear.  I think that's excessive for this project and the
-risk of reintroduction is so low that this isn't worthwhile.
+Why do we still need the `in_task()` check in
+`folio_end_dropbehind()`?
 
-Pasting it in to the formal changelog is reasonable.  Putting it below
-the --- is probably better, as long as the permanent changelog mentions
-its existence.  Then highly motivated people can follow the Link: and
-find the reproducer.
+void folio_end_dropbehind(struct folio *folio)
+{
+        if (!folio_test_dropbehind(folio))
+                return;
 
-The main value in the reproducer is knowing that it exists!  That this
-bug can really be hit from userspace.
+        /*
+         * Hitting !in_task() should not happen off RWF_DONTCACHE writeback=
+,
+         * but can happen if normal writeback just happens to find dirty fo=
+lios
+         * that were created as part of uncached writeback, and that writeb=
+ack
+         * would otherwise not need non-IRQ handling. Just skip the
+         * invalidation in that case.
+         */
+        if (in_task() && folio_trylock(folio)) {
+                filemap_end_dropbehind(folio);
+                folio_unlock(folio);
+        }
+}
 
-> 
-> Also, I have been collecting the bug report by llm into a syzbot-like
-> tracking system[1].
-> The tracker aggregates bug reports from multiple sources, including
-> Sashiko, and then attempts to validate the reports and generate
-> reproducers to make sure it is not a false positive . It also
-> automatically tracks whether a bug has been fixed. 
+Could any other operation in `folio_unmap_invalidate()` sleep for
+unmapped folios? Otherwise, it seems we don't need `in_task()` at
+all?
 
-That's a great initiative, thanks.
+[1] https://sashiko.dev/#/message/CAGFpFsRarmDScAQxHpCtSZxK5H4WCg4Y%3Dy0hXQ=
+LjGT804ZoWkw%40mail.gmail.com
 
-> 
-> For the networking side, I have already imported the Sashiko reports
-> into the bug tracker and shared it with the net maintainers. I am
-> planning to do the same for mm, but haven't gotten to it yet. There are
-> already a few mm bugs in the tracker that were found by our own tool,
-> and none of them seem to have security implications.
-> 
-> If you have a chance, I'd be interested to hear what you think. Any
-> suggestions on how to make it more useful for mm maintainers would be
-> very welcome.
-
-I saw.  I'd love to spend time with this but you know how it is.  We're
-all overwhelmed by the bot invasion at present, and none more than me. 
-I view your contributions as "parallelization of effort".  Keep the
-fixes coming and I'll do my best to get them through our pipeline and
-out to our users.
+Best Regards
+Barry
 
