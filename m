@@ -4,80 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832F9C88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 06:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD93CC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 06:46:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEBC56B0088; Sun, 13 Sep 2026 02:30:50 -0400 (EDT)
+	id A52DC6B0088; Sun, 13 Sep 2026 02:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9C856B008C; Sun, 13 Sep 2026 02:30:50 -0400 (EDT)
+	id A05C46B008C; Sun, 13 Sep 2026 02:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB2A46B0092; Sun, 13 Sep 2026 02:30:50 -0400 (EDT)
+	id 91A276B0092; Sun, 13 Sep 2026 02:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CCB46B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 02:30:50 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 171D4A54FB
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:30:48 +0000 (UTC)
-X-FDA: 85207765776.03.1F57612
-Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 06ECB100003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:30:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F6E46B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 02:46:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 27F12405AE
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:46:39 +0000 (UTC)
+X-FDA: 85207805718.05.23043C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 53E9220002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:46:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XAnBHG8a;
 	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XAnBHG8a;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789281046;
-	b=d1mTMz4weDoMQKQAGRqtAOxkJeQ7TYJw4Jkzm8u1k0rm47ee9vc29+IF4nQl7IYTKWsQjX
-	bNd++qO948w1jjVQCY8wFz5Y057IYEwjCgqSuEiWSbwZ+2yTZMX3Zj06mcGrX5//1tDrGv
-	CseoKWj3oNuWgq57QdoD9zw3Sp9f140=
+	t=1789281997;
+	b=IrHumiZkPMb9qPH3krjDSFSgwsnIzV3xt7ykQTV36bprxXzC/Zq9f6QYpEbihezpgdt6gQ
+	kc/ORRXb8+s4Dyyo8ogaBLl8uMu2X+IXo3Kj5/SWtyGHVgR1w/hCzZYNasOxmcBpwUJ/RG
+	rt3pChfleRz8fpJDHlIRxGzPY77YOEg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789281046;
+	s=arc-20220608; t=1789281997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=qYKYK7b/QquRhyG8h0UK0SMzX2THzVa2mJFJmJdN+HE=;
-	b=4e711UA8zHr82qKheuv8MUdpsViCNEy8MbssZkTx3avou3a6//Ys9KGXeQz+kgRtisPh84
-	E685FzgphubyPjJGetpsobCVxcpkPZNT5vOEaie5s3Cjg//XPWnAhFAfgNmxzr4NzOsy9C
-	wzOvJ4RsUcGp6ftFkooDqLU1clL/90Q=
-X-Envelope-To: linux-mm@kvack.org
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 6431ec6c0f68c77b;
-	Sun, 13 Sep 2026 06:30:42 +0000
-X-Mizu-Trace-ID: 6431ec6c0f68c77b
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	chrisl@kernel.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH] mm: zswap: return -ENOENT when the swap device is gone
-Date: Sun, 13 Sep 2026 14:30:31 +0800
-Message-ID: <20260913063031.1689420-1-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xQwdvU95FrXRFZwRBjEBFe2/Hx2FqUUlTLasQMUqqps=;
+	b=zG6DzFf2nJGslq4Cji3eKATwukBCaUR0OVuIuqHBEnUw6TZZsy1u/KVusuYUyE6A99SLz1
+	RQcFLHhk5VNmpiYTV+PVMEOJi5dPaY51f5sJnG3Nd21HmMnWwGomNa0OG/ECvISUvZ943g
+	SCKd5jhDl75tlIG49+JpJ1fryDdFOOQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 47391401B8;
+	Sun, 13 Sep 2026 06:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72A81F000FF;
+	Sun, 13 Sep 2026 06:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789281996;
+	bh=xQwdvU95FrXRFZwRBjEBFe2/Hx2FqUUlTLasQMUqqps=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XAnBHG8aaIJf3Qg7JPHialtHJS0edKVR9YxPGIF64eWU5k+ntxHydQKfUl+NAY0Nd
+	 9o9UYmJ8HPCNiCz6K64j9IsAo7b8DqvCGwAt17PZsa82RYoIXM9oOW4ik23SPITNqm
+	 jv/7UJh2FCC4QPLUCjPrEFiyUV5vMhR2lGYhmqns=
+Date: Sat, 12 Sep 2026 23:46:35 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
+ ljs@kernel.org, surenb@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge
+ zero PMDs
+Message-Id: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
+In-Reply-To: <20260913051942.40889-1-lance.yang@linux.dev>
+References: <20260913051942.40889-1-lance.yang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06ECB100003
-X-Stat-Signature: b81suiatfwszucmr9u9dqgt8jc1zu8bn
+X-Rspamd-Queue-Id: 53E9220002
+X-Stat-Signature: irdka6wue1949kfo8tn91ymreoswic53
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789281043-69993
-X-HE-Meta: U2FsdGVkX18HsDWYvgMKfE/zU3xQJgai4jh7t4ft4dbv/3f7SoTb2JG/1L40g/iZSbUomTTFHY93XN/kO4sE8qQCO4R7kohwLeMBufgx2ASFBpBFI9PfeO1YhfATP0JIkvuWuX2OFn1/cPjaAltdk+0bF1+DeqA0+i9hJjhUtdhjmg9JNwboAHvEToH+qk1e+Yy+0+xxfgC9/AvXiU4TZqx9HoZMm6JmLLp/TE+1CIPKxcV3mDy0rM2EdXdSv6M1d6fpwzv7sPSDHXx/lg6HNarL4xttRa0YQNYmFB5lqBtJnKFlv7b0pltrJrDO3EgN62oipaAkSl339jjtfUm5ZHUFQ8CTxBO4RuCx7NKmF5AMwgvUXzCBoH/QonHizugiQhRNiIW8INR9BepsYKVQzO7h4p2gMatzZaPvPfL0kkkNaWOs6NaBzwBnux70IlnDLuYpzM3bgALi3rTeH+hvTuONirLsaaupix8lq6FbQoUAJGYbgdcvxztACd7Thrkv1YuOWJ7AcB/mLzZKOm95vi60CMlvfgN7dNSoPWaUXyYPwNCVjSVdbYCh7JnQ7tF82744FrmEjwwKcDsdhBx+INMcZ+2/I8MGsIQflJDzMuM2/2eH1Ltzg9t9r/kiYELdJyVQ5/HsA4Qy7GXEirRwF9bdOfbrNOwxM54B6cJFasnNZ77/qZ3Hncg5y+ieF5+FxeE8ndw3xSnvnainbOE2v1nTrOXh8vCI9pWy4md1iEDg7Y8J4qeFasol91ol11J5juxgnwY6BEWYytxDD1T/gI7DTzIeu/bOhw8TuBGjVPfPZF2UPqul4PxDdaX1vF8nw6NgjOEIEUAnLmoNt1FnjDW29YXXs7Dt3M/SbsGymlcDSNFDX2D63yNL3qqJtD4igdGrz0mr0MqaWzE5kQIToCyK28NTm5w7hiOnG6CP54+2PidSD5CDienOQNBpEnPmAbPB7eH+AGd3GcTVicY
- JlTDC9gl
- AkRbavyKLVnzxbmeVDAA01ZIOx2oRpjbeeuvOeQp1lB6Bo4P63Gojy4I0b0yXlR43AP9Tr5BCLjakvsn0nehqW5CouvxdnZqJnA7g4WMSYeGXdTKH1nwS5aSHG6mvliycfnF4JtgFyxVtrn7LuJ5UJ3jRbZYsdG4uXc0U5kEb2KThgc/kHdOw2LCHzHPDsYinVwBjjnP2wPsSj/rvk60WxDAIM49YSNywczmgqu2YsrSTiJWK4sJpCEs5qQ==
+X-HE-Tag: 1789281997-29454
+X-HE-Meta: U2FsdGVkX18z1Bh6G9qT+jVYqUUHbRevSCxx8qWlhVS2/KYMkHKfkm22EQWC7TmRiXjqp6gtSgAj0l5ldHMHSZywUPjIXUiEuc15t+Ym/xKbJ0d+BHTnwVLQe2DLJRO0uEhU2I4FtP6JMB/Ci4Zvwo7MbnXxYDr1WQcU5xCT/3j1LHcbDB7u0iBNV8KRenR3eUu4h4pFDP9l80+WhhKI6umX78L/Z8psVKJxz5+cRHwJ1EZOXx2QwvsA7ca4mMnkbyOadUgZnYXC5e5Wqs8JL2ulxTSc3bsZs2iedXps/OkPu6KFIUxAFfwJp1TZRvRBvh4KDdypStl6jeBVE+XMb+PL+8jxTz3Ia+sRp0MGOmmJArtrUBpKnLZwL0/IlVzQTaJkXpWxzmrmNBDT8GNMsL5QdxVQSpVO1ouxNK7DKgrdsfmc0giY9sd2Ly2rIdHW2FrIdcuM17VXbs0VR8W884MWQlPJCCZqwfQkkii+2rOQrT/3UEVVrlMXKITK/Riu6buegNRaR8nKePbTCbdhnlhN6P3YtltQh7gkCpdHWuY25VYFedHpIi8n+uyi3P5wdUMS4eHxFoHDLsi3nNlaZsj4qG6tkYYj3SnOmnNSvNNIG96E5hjKU/SZWqwScd8kwJzuc7/ocxjt/TdQPswac782jPJQIbw2rWyGyYaKLHBOl/6afN5CgZQoEeIBRi+BiGM65nMSVh1uSk/nEjxl7yKgP50el0MmwuIOMxZUwMjGROmNSl2QmQgQTB0/pbvGbKhNLyIfYbIhDC4WwMlxFAaXgW/gsPOlc1O95Bn2cxQM3dY8TFleaX9+JbZqCUkjRMYMX7u01LCa7wxklR3K5S2cYNzCkG36Ie+PZg+swocdH1dEDaNwT1e4v4CbOZJJBQqc+iv3CaXVLPvsHAo6TRPEZQWAynQloXrexcHQ9yukjXQakY/rygC6m9FOJMkm6jqC6+Gn82YFXp8ONW2
+ temG7/RU
+ au60t5jr26wi0L9igE5lMQt0ig/Il7kQo9m/ZK4tSP5+ZvYyGGB9fw/LhstMzETIYf/5jGzqVLNyCZItaI16cSnyK09aTuHTQYaBaGbymvIQb2ZTkr/1s2QQ5cazBxRxtnQ5Rh3+MWTC+mQMSOo34DQFJK4F4UEtiuAi4/qkW8hDPb2QpKFqdQB1lqNBQjmUp1LTYMohERnVUZytOpnqICNFo1vE6AH/BKlOeBeJLlhk979LzWPoKe8tRdu/gh8G3U0q8OvEbXB0V7mdico+HwEN4JB0r4LRizZV0R8iB21r1b0PfUi3krscP8edDUNYqkkpZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,39 +93,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_writeback_entry() returns -EEXIST when get_swap_device() finds no
-device.  -EEXIST is the shrinker's "page already in swap cache" signal,
-which makes zswap_shrinker_scan() stop shrinking entirely.  A NULL
-get_swap_device() instead means the device is being swapped off, so the
-entry is simply stale.
+On Sun, 13 Sep 2026 13:19:42 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-Return -ENOENT so the shrinker skips the stale entry and keeps scanning.
-Independent of xswap; affects all swap devices.
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> has_deposited_pgtable() uses !vma_is_dax() to decide whether a huge zero
+> PMD has a deposited PTE page table. That also accepts raw PFN mappings
+> of huge_zero_pfn, although vmf_insert_pfn_pmd() does not deposit a page
+> table on x86.
+> 
+> Zapping such a mapping would call pgtable_trans_huge_withdraw() without
+> a corresponding deposit. With pmd_huge_pte(mm, pmd) == NULL, that causes
+> a NULL pointer dereference.
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
----
-Note:
-This is taken from xswap patchset. Nhat suggested this is a fix, should
-be sent out independently.
+That's the sort of thing we'd prefer to avoid.
 
- mm/zswap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Use vma_is_anonymous() for the huge zero PMD check. This matches how PTE
+> page tables are allocated, deposited and moved.
+> 
+> - For anonymous page faults that install a huge zero PMD,
+>   do_huge_pmd_anonymous_page() allocates a PTE page table and
+>   set_huge_zero_folio() deposits it before installing the PMD.
+> 
+> - On fork, copy_huge_pmd() allocates and deposits a PTE page table when
+>   copying a huge zero PMD into an anonymous VMA.
+> 
+> - Raw PFN mappings use vmf_insert_pfn_pmd(), and DAX file holes use
+>   vmf_insert_folio_pmd() to map the huge zero folio. Both use insert_pmd(),
+>   which deposits a PTE page table only when arch_needs_pgtable_deposit()
+>   requires it.
+> 
+> - Moving an anonymous huge PMD preserves its deposited PTE page table.
+>   move_huge_pmd() transfers the deposit when necessary. For UFFD MOVE,
+>   both VMAs must be anonymous, and move_pages_huge_pmd() transfers the
+>   deposit as well.
+> 
+> Keep arch_needs_pgtable_deposit() first so architectures that require a
+> deposited PTE page table still return true regardless of the VMA type.
+> 
+> Commit d80a9cb1a64a ("mm/huge_memory: add and use
+> normal_or_softleaf_folio_pmd()") removed the vma_is_special_huge() check
+> in zap_huge_pmd(). That check skipped the huge zero PMD deposit test for
+> non-DAX VM_PFNMAP and VM_MIXEDMAP mappings. Removing it exposed these
+> mappings to the incorrect !vma_is_dax() test.
+> 
+> Fixes: d80a9cb1a64a ("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()")
+> Cc: stable@vger.kernel.org
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 37f34e406c8e..b9948d4657d2 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -998,7 +998,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	/* try to allocate swap cache folio */
- 	si = get_swap_device(swpentry);
- 	if (!si)
--		return -EEXIST;
-+		return -ENOENT;
- 
- 	mpol = get_task_policy(current);
- 	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
--- 
-2.54.0
+How real is this?  Is there a reported-by:?  Do you have a reproducer? 
+Is it a theoretical, LLM-found-this thing which can't really happen?
 
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2529,11 +2529,11 @@ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
+>  		return true;
+>  
+>  	/*
+> -	 * Huge zero always deposited except for DAX which handles itself, see
+> -	 * set_huge_zero_folio().
+> +	 * Huge zero PMDs have a deposited page table only for anonymous VMAs,
+> +	 * see set_huge_zero_folio().
+>  	 */
+>  	if (is_huge_zero_pmd(pmdval))
+> -		return !vma_is_dax(vma);
+> +		return vma_is_anonymous(vma);
+>  
+>  	/*
+>  	 * Otherwise, only anonymous folios are deposited, see
+
+Thanks, I'll add it for test-n-review.
 
