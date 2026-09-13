@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45611C88E5C
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 18:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95A2DC88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 18:48:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB67D6B0088; Sun, 13 Sep 2026 14:43:53 -0400 (EDT)
+	id 6E2386B0092; Sun, 13 Sep 2026 14:48:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67616B008C; Sun, 13 Sep 2026 14:43:53 -0400 (EDT)
+	id 693836B0093; Sun, 13 Sep 2026 14:48:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7F5E6B0092; Sun, 13 Sep 2026 14:43:53 -0400 (EDT)
+	id 5A8E56B0095; Sun, 13 Sep 2026 14:48:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E9E6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 14:43:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43AEC1209AE
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:43:52 +0000 (UTC)
-X-FDA: 85209613104.17.F868974
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 91AB0100003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:43:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eNx/h/qR";
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5AB6B0092
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 14:48:56 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CDBC8099B
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:48:53 +0000 (UTC)
+X-FDA: 85209625746.08.24E61A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DCFE980006
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 18:48:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItY4COLM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789325030;
+	s=arc-20220608; t=1789325331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0jcy4Xks1KmzO/76JdqZYak5DRErDriwNl/lBhMKXFU=;
-	b=PdobjtLJl01F9fvcD+TTJdb9vAcg3N+0vtEF36Wuezl29jVu5YP4AsP0Fg8ssJoPSDRt1O
-	vHXdxGlGh54mkF8p7EGUJOyBft2EjVa3BL//qpofgJEzDUO0/Vw3pKQqJ/i33uMXhqLn1/
-	2W1x+0+XwnbyWAzwdFJzDw8vrlDY/mc=
+	bh=jb/hhwiK/UcdPAYGlSzJUb1U4vkmWKdi+D5nmTCyiwc=;
+	b=tAftsuUUlhsNvZqXnMjaHTcyBbSAnmXp9iSyrmXN7189O7Z3dkEND3L6YiXECktE3ondV2
+	my0xsnQEdWgSBtKGd9P05JbVd+qfvfG/ZIQI9qWzKrvIYMSGCGesdFXsVDm1z2LXvirTOi
+	pprYQgZOQg1tgIO68zMg6JHJt9xlXKo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789325030;
-	b=eJ972OFAXawboOVndNKoZQCv/pmYJoO0WPwm+PJXnTystKbvUVVrVNnTkwz7sUCqDs7dz6
-	TnOA50WhmrgXZeoFa7F5SVA8FLz8rGj0G/IDUbsNKgUNTJ4uBr25g0b2+TuwSNAOCgsN0Y
-	EdFMdjk4vJfxTgkyxsF4CI3v23sTDgk=
+	t=1789325331;
+	b=aKAl1mvUwI2T4HAACKU4njobtytfxkXFHqDsa+3EBqkENiuFw1ZkSWUHajH2u1zyx8kPou
+	OnlOLHronqA6iETBLSTUypJC6Qqj+ayOgbCtOJGKP66IvYMzDxgpLW7mae4lgEsNPFsO5M
+	GSktbGS9W8ngR/k/NcB6n6+fHC6Zkio=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eNx/h/qR";
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ItY4COLM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFAC74034E;
-	Sun, 13 Sep 2026 18:43:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8B51F000FF;
-	Sun, 13 Sep 2026 18:43:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B40660F8D;
+	Sun, 13 Sep 2026 18:48:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79701F000FF;
+	Sun, 13 Sep 2026 18:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789325028;
-	bh=0jcy4Xks1KmzO/76JdqZYak5DRErDriwNl/lBhMKXFU=;
+	s=k20260515; t=1789325331;
+	bh=jb/hhwiK/UcdPAYGlSzJUb1U4vkmWKdi+D5nmTCyiwc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eNx/h/qRjBH8CFc2lfKqkmZ1HZbCTa5aBsMZqDhZysDc4vBfloO4DwENDgXqUo026
-	 uO1mcwsr3a1AnUAKeDEeKJIW0W0hJS6GKk5YGJ+u7SuaS1dSbE7oEZHOG03+gGSzk0
-	 4KCe0+0p4Yslz9fOENom+FbB4eZAKkMn3SdkWxp/IIQe/lKFprJCwza8ZiZJ+yu3xH
-	 Yoc+NT0DZFd1w0Hbn2ElMFjeDv66Ra+19KAvyNFAmh7SuFFCr633zkM2RIrL2s/0fi
-	 i1dDI5pTK2kKsc+pIVt+tnz+COmSEDLRmrdNWFTjFCrIur76NETlwNwwhf/rK8MtcJ
-	 i0U6xEh5wEx2g==
-Date: Sun, 13 Sep 2026 19:43:42 +0100
+	b=ItY4COLMkAOPfq5upFo8+NRTEgTDJTWe71lMpMoYvx0ForD2G2ynjMLUv2Mnqq/Jo
+	 C6CeqeBAIXxivARXiF0/4f1ecs//FHJoa5wN0EJkQq+rGGS9/FtWk79Jh/I5fzCZqr
+	 hwZMMnyXadBtXtpmEgWarpdPi/AIA3J8c2CWRh5gPKngo4zKqcGydp/CKNne6/zAAA
+	 xhozv6PlZTBw0YRIbYlFzREHen/VOfCFQhbe5rxQ9EHEZqVlV/OGyByRAIrjc6ugl4
+	 2+ME+jKjjsts8211xwWo0ZHPTCfQl7vVJN1Ht8x9Tq0kbu4rKkT8V0GtXuT6+HfY08
+	 SX9dpAjXFMf0g==
+Date: Sun, 13 Sep 2026 19:48:44 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] khugepaged: hold invalidate_lock across collapse_file()
- readahead
-Message-ID: <aqbtfms0_2ULBIT7@gremlin>
-References: <20260913101142.28802-1-ngocthang2710.1999@gmail.com>
- <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
+ collapse_file() readahead
+Message-ID: <aqbvFtlXd3Jdnfbm@gremlin>
+References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
+ <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
+ <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
-X-Rspamd-Server: rspam04
+In-Reply-To: <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: prt6twqap1h1jej1bk8fo666q33q55mf
-X-Rspamd-Queue-Id: 91AB0100003
-X-HE-Tag: 1789325030-165069
-X-HE-Meta: U2FsdGVkX18L6JU1DLynb/WPppf8NLYhqBWyea52l/0Xi/FaJTSvtXqdLLWrqYUAuq2+Gd7sl8Et4IUSAUgAT7cJABYLP+6mCfzcse3cAQ2txwxpVPjRfvRSVXlwymSJa6WRrJPLZoL/8P/yIIlEELnoef+R47kOay4jTJQFQTw7DqaI1gXDRTPdWfuR8RJmiH3t9oKn1rKlQtuRlSPjBTcKphbXc3rl3TVIr28gmX93XXqSf79o0Ijwe+7Z3Bblgx5CMH0++Pf/2m8UJLkf8RH1EqfQVfqvWPRB8guXzs2tnz7Hn3FDMHwpZ9qaTkmuO2ySkDRlbMvZ/Wff2hNSYg0OXhwHLBqrPn3aoAyYOqQxYVRAyKgkWDZTaG1uPoaC8KcPnapiSOtuCqYyoGxvasIADVtcWiUWEPS1rVSZb+ZjijZ3+IDnbf2K40txyt5uD+x6r7sMXCnqDdGUGhyofp7GKYN3NmMaFpMZdBxjeTAaawXdj8DHikR7S/dLCy6JydKxogr57CUkAy02jU4gaflsRA7y8XKl9aiXwcwk/VCeIOLp6HknMbj3JL6DOaSnmlNE6E4ZL69hxaCKMwC1EZ81MQeDPLio/CSNA8oBscS2tPGEh4xrQ7ztFy6g5o+PJ9k4qXVqo5ge0DYp0CoZZitOhJQ6UNOEUf/F2AW0Ot2rQC8yF+lY2pZgoRApYpks3N18u94VN4stoFRP3O7y3uqYFzHv9n/3xrYpNVuxD0/mSz4qaj6zGz5WaDT3+aM8b6BPN1oSrvdEErvAcRTQxGh1mEeAqRE1Ce+qeg7TrfVZ21Ji+8sxs0PxcVf6ryS1lQKnqW7ZfeZU958T5gKlJ1x8TNmBMCe+s1dVk/FbqLIpZR/PL66w1J8R6/1QIzGyVXxrFvvLzsGFQdWUFsSm09Xsmgj6DGV3VogGVAHDEwE4BMXuvAJWoBDU/omZmLa8vtvWAFQ/j3PKTVrm4xV
- S0aX1Zl1
- 0SmsJP/X6v+ot4e1jFee1lE1ONnye9O7XCfJTgDpuXwJM095QG5KOQQDOXcX4lYnZI0qWNaxz4w1w9Fy9vLdumcuANGsGEbAKv/hQ3RJ7SSXZgJ18wjTWnw8A5+M/zspEGuCLn43FrKsrXEvD0+axofQajvfSg/Sqk3OkpYsMH1dDv8OVnFyNorbDiX6yDOOosgfjeO0Z9flYFMzgHdMA3n7KEuZqbANfQz1l5V+hTFdS+ifSKv+2E6c/qzym+PXOiZtAku9P3QTzLZ9VoecouHViUbM4TeZWHZfVUpD+HCVnlgDH6B4bGij4GJezKgQWOlKJBH8k6ofx1GrtA5iD5rh6iencWaDGEiVJyaHTA4XG74tZb26D6riuTBSZIxHm9GI2Nj236oyazjl2mKuNlIH07UVU0DrpH/yInkk4dJByNAgDzTXFIg3W5FX0zqL3P0MXVkDRerhVnNafRStwWVoPVbJpItToGmpVfwRnaRvIgZjEo2ZeLcLc9CUZaI8M6/ThSokouovhr/VTmB0IQk+Wz3rvDlETvD7m12kHxiDFvqe/oi+2G/Y/oMUiaJNsHoFWzsTo4/CuYg08QCj4EPl6WciiNelad+4O/YVb0mrXdhXPtp8J+WpoLKuwKdqAGGGT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DCFE980006
+X-Stat-Signature: 7k47k7w4jnq7ajq8zmg65dzu36y15kxr
+X-HE-Tag: 1789325331-425999
+X-HE-Meta: U2FsdGVkX1+BccHcxPA9VDni0v96UVIH6bQJY39VzZ2sKucEmZ4D9MIXAq5tBjIHJg4fK2r5ipo1aKsRgfnRT6DYHQyjqNP5wlSXegvJlwtuM44KsY+P3ODOonLD7rC+SYnB5WW6t5uCdOj6W5l+uZrjZsoYHw5XC1MJPEnTXFtzddkdTt1dohyaigHic2uajFgFjtIFCGrwIf04L46KclQ37h0XWoy+pNcsH6u5Ey0Twgpg/SvUxbkqyy9y201HF/inSYqPJuFAy4hsYbxtXjpFCSDpKx3MS4y3TGm5xPubUXTMi5rRz+P9NzYVyuPfN73rvez/ObAZ7doG9rAVuJ/bZmZZ6jmM/Jic9v4ZuWwn+Kz+iyupKXIyCtlZvfco8FFcPBmeg50/2Qb6SDTKKgeSorK0U8bsELQVXp0Clji341/LNdieEEF8idTCtad1qjdFBozgRLEPC5kWQg4sSR/7erTTSazmtnDLEN0XH+2RaP7S3mIVGfuOShaLhczICB3Zvg0Mmslhbgbvu/5H7obHyf19GpSUMe45pcTw8T/xAauN9F7UKgu4Xkav+XAVIrK6Y12Tb/DtaGYnQ/fViMjQXG3FetDURkyNuTx5wyVKlJ6O+tLNqbXcjg7D5zd5oavwjsrtI3mwjnIf8JERX6uvbQGKsmjtTgnf8d2OYpAsMfCOxIy/vw5ibLWQZZJrfewnfqtZ7l8W18BnNjeT+awaH+s7hhZriavB8tWk2JYQjPwUE6nurgm2ukOiq2QCIMV096B/wubWTc2fzPGd7Zyh9dUD0KcaSU9D2/6bP+uwEy2mPN7lMYUxYzui9/WRzWOqA/0Af/xWgmOq1qujYzfeEe1I0cMhn0fLqJ5YXRT2hv3FqZur+/9ZGzzpqc2kXtmzvmQJM9wCjsiyd73fN1CthEOQZ0f16ZdUb2Z0QYCJzY42AOIneH8+pxpJXTQcqFYJtPWMWCfMEAH5rga
+ AS9HCL/0
+ dwgTwgRkVYXr4LvdA+6yTLj/wez/8KCc3w/sHX8Q95sO2Be/K/d/dbz+Pinut/04eUbZ9Qbp2qZrAPp8exW/1tUPKtf7Y1Acv9NiFo9VCBMniqJ3k53eMcQqskjw5MjRdp62aoR7EkcIA41zSROWK2SyUsFhBx7DQQHjxIJsW/RoGCZE3hPu50Pc+LUW/FZV0jVYKR93WuC1alIXAb2JQy+Oihm38irOpyBFmxey+KDhTbGV9zp2Zc6rz0BVwfMMLRFAcZw5mCMSmMSiY8JSoNpiTF8pbSmwHw897zRBCbuPleUBPWlMRvCiqDcw99RzrMhtJZL+k5vXG4EIgpUq1RavCoT8f5bXr8dErMtlN5MmzoPkogHWzrcODFjUcJ4A71NkEsLCRa/y0Q60zN88wVmNkc1Q+OPRxmL22f/CaCaJqem9iMdgj0AX1thJR91pVGvrrlyK/rC9o5H9Z3jPjp0I0m0Vpq6GEtX5cp961YhBPkFjlAMPqj4j96DyKMGvSfq5s2h2lTUpIcS41dZ2quUP9xQpzvFaHUUl4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,129 +99,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 13, 2026 at 12:31:32PM -0400, Zi Yan wrote:
-> +willy and heat
+(Nguyen - do not send v2 in reply to v1, look across mm and see how things are
+done here).
+
+somebody who has a
+
+On Sun, Sep 13, 2026 at 11:17:00AM -0700, Andrew Morton wrote:
+> On Sun, 13 Sep 2026 23:36:44 +0700 Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com> wrote:
 >
-> On Sun Sep 13, 2026 at 6:11 AM EDT, Nguyen Ngoc Thang wrote:
 > > collapse_file() calls page_cache_sync_readahead() to fault in missing
 > > pages before collapsing them into a THP. That helper takes
 > > mapping->invalidate_lock itself for the duration of the call, then
 > > drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
-
-Em-dash.
-
 > > takes invalidate_lock and then waits on each page's folio lock while
 > > holding it. If collapse_file() has already locked one of those folios
 > > by the time truncate reaches it, and then tries to acquire
-> > invalidate_lock again (e.g. on the next iteration, or via a nested
-> > readahead call), the two paths can deadlock/hang on each other's lock:
-> > truncate blocked on the folio lock collapse holds, and collapse
-> > blocked waiting for invalidate_lock that truncate holds.
-
-Please don't send walls of text.
-
+> > invalidate_lock again (e.g. on the first readahead call, since
+> > invalidate_lock is not yet held at that point), the two paths can
+> > deadlock/hang on each other's lock: truncate blocked on the folio lock
+> > collapse holds, and collapse blocked waiting for invalidate_lock that
+> > truncate holds.
 > >
 > > Reproducing this over ~150,000 collapse iterations with truncate
 > > racing concurrently reliably hits hung_task: blocked tasks within
 > > about 20 seconds on an unpatched kernel.
 > >
-> > Fix it by taking invalidate_lock_shared once for the whole scan, before
-> > locking any folio, and using page_cache_ra_unbounded() directly in the
-> > readahead call site instead of page_cache_sync_readahead(), since the
-> > latter would try to retake the lock we already hold.
-> > page_cache_ra_unbounded() does not clamp to EOF like the helper it
-> > replaces, so clamp the requested range explicitly.
+> > Fix it by taking invalidate_lock_shared once for the whole scan, after
+> > alloc_charge_folio() succeeds and before locking any folio, and using
+> > page_cache_ra_unbounded() directly in the readahead call site instead
+> > of page_cache_sync_readahead(), since the latter would try to retake
+> > the lock we already hold. page_cache_ra_unbounded() does not clamp to
+> > EOF like the helper it replaces, so clamp the requested range
+> > explicitly.
+> >
+> > 730633f0b7f9 added invalidate_lock acquisition around readahead but
+> > missed collapse_file(), which already locks pages while calling
+> > readahead; later filesystem conversions made the deadlock reachable by
+> > taking invalidate_lock before waiting on page locks during truncate.
 > >
 > > Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
 > > Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-> > Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> > Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
+>
+> (You forgot to cc the original author)
 
-No Fixes tag?...
+Also a change log, and that mm doesn't like sending a respin in-reply-to a
+previous version. Which is all consistent with somebody using e.g. openclaw to
+pepper generated patches across the kernel...
 
-Given, AFAICT, that you have no contribution history until last wednesday, and
-have emerged from nowhere to sending patches across I think 8 maybe 9 subsystems
-all at once, it seems a near-certainty you're using an LLM to generate patches.
+>
+> Five years.
+>
+> I wonder why this hasn't been discovered by lockdep, AI, syzbot or any
+> other of the tools we've been using for so long.
+>
+> Thanks for doing all this.
 
-Please follow kernel procedure and add an Assisted-by tag disclosing this both
-on this patch and all the others, please.
+See https://lore.kernel.org/linux-mm/aqbtfms0_2ULBIT7@gremlin/
 
-https://docs.kernel.org/process/coding-assistants.html
+I am not really entirely happy with somebody who has sent a flurry of patches
+across disparate subsystems with no previous track record being in charge of a
+potentially backported fix.
 
-Also note that you are also required to have an understanding of what the
-patches are doing:
+It's David's decision but I think this fix should be taken over by somebody
+else.
 
-https://docs.kernel.org/process/generated-content.html
+See https://lore.kernel.org/all/?q=f%3ANguyen+Ngoc+Thang
 
-	"As with the output of any tooling, the result may be incorrect or
-	inappropriate. You are expected to understand and to be able to defend
-	everything you submit. If you are unable to do so, then do not submit
-	the resulting changes."
-
-On that basis I wonder whether it would be best if somebody else could take over
-this patch?
-
-> > ---
-> >  mm/khugepaged.c | 25 ++++++++++++++++++++++---
-> >  1 file changed, 22 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 11ff98d55c76..690ccbcdf593 100644
+>
 > > --- a/mm/khugepaged.c
 > > +++ b/mm/khugepaged.c
-> > @@ -2267,6 +2267,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >  	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
-> >  	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
+> > @@ -2257,6 +2257,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+> >  	enum scan_result result = SCAN_SUCCEED;
+> >  	int nr_none = 0;
+> >  	bool is_shmem = shmem_file(file);
+> > +	bool need_unlock = false;
+> >
+> >  	/*
+> >  	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+> > @@ -2271,6 +2272,15 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+> >  	if (result != SCAN_SUCCEED)
+> >  		goto out;
 > >
 > > +	/*
 > > +	 * Take invalidate_lock before any folio lock: the readahead below
 > > +	 * needs it, and truncate holds it while waiting on folio locks.
 > > +	 */
-> > +	if (!is_shmem)
-> > +		filemap_invalidate_lock_shared(mapping);
-> > +
-> >  	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
-> >  	if (result != SCAN_SUCCEED)
-> >  		goto out;
-> > @@ -2337,10 +2344,20 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >  			}
-> >  		} else {	/* !is_shmem */
-> >  			if (!folio || xa_is_value(folio)) {
-> > +				DEFINE_READAHEAD(ractl, file, &file->f_ra,
-> > +						  mapping, index);
-> > +				pgoff_t eof = DIV_ROUND_UP(i_size_read(mapping->host),
-> > +							    PAGE_SIZE);
-> > +
-> >  				xas_unlock_irq(&xas);
-> > -				page_cache_sync_readahead(mapping, &file->f_ra,
-> > -							  file, index,
-> > -							  end - index);
-> > +				/*
-> > +				 * invalidate_lock held above; don't retake it.
-> > +				 * page_cache_ra_unbounded(), unlike the readahead
-> > +				 * helper this replaces, does not clamp to EOF.
-> > +				 */
-> > +				if (index < eof)
-> > +					page_cache_ra_unbounded(&ractl,
-> > +						min(end, eof) - index, 0);
-> >  				/* drain lru cache to help folio_isolate_lru() */
-> >  				lru_add_drain();
-> >  				folio = filemap_lock_folio(mapping, index);
-> > @@ -2672,6 +2689,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> >  	folio_unlock(new_folio);
-> >  	folio_put(new_folio);
-> >  out:
-> > +	if (!is_shmem)
-> > +		filemap_invalidate_unlock_shared(mapping);
-> >  	VM_BUG_ON(!list_empty(&pagelist));
-> >  	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
-> >  	return result;
+> > +	if (!is_shmem) {
 >
+> Is the shmem special-case a red flag?
 >
+> Probably this fix an acceptable minimal-thing-for-backporting.
 >
->
-> --
-> Best Regards,
-> Yan, Zi
+> Question for maintainers as well as for yourself: but does this
+> indicate a need for a more architected redo?
 >
 
 --
