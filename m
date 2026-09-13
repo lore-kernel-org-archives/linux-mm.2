@@ -4,99 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A25C88E40
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 10:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23B2AC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 11:04:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CED456B008C; Sun, 13 Sep 2026 06:28:34 -0400 (EDT)
+	id 20D096B0088; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E4B6B0092; Sun, 13 Sep 2026 06:28:34 -0400 (EDT)
+	id 1BE8B6B008C; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4136B0093; Sun, 13 Sep 2026 06:28:34 -0400 (EDT)
+	id 0ADBE6B0092; Sun, 13 Sep 2026 07:04:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A24DF6B008C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:28:34 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC3D31A0654
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:28:33 +0000 (UTC)
-X-FDA: 85208364906.19.96000B6
-Received: from mta0.migadu.com (out-213.mta0.migadu.com [91.218.175.213])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 903571A0004
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:28:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RTP+7qa8;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.213 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBCEB6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:04:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 538D916064C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:04:03 +0000 (UTC)
+X-FDA: 85208454366.12.C2A4E7E
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 99E24180007
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 11:04:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ioJvSNvP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ioJvSNvP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789297441;
+	b=6Vlnmin8yIaX/yAJFKShzRrCnnKBwOvraJRrMTIsMFmbc5TtOzbbzRw1BcPHT1GPYolijL
+	fJysq8BmzmI4oZDI7G2APHj35tpzC8MryKj1NbYlToWcS54dWvIZ7wqp8TYFLWWyxfE8o9
+	TV8dFy2ZLLmN+vIAzBd+sAOKFuHpG/I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789295312;
+	s=arc-20220608; t=1789297441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNFrZR5o2ClNxyWY9ZacqntCBgDAdln+Yk42pMsk8aE=;
-	b=Y7rakBkD75PQv8uClMlQbPPV4nfeUzq658zE/cdLNUBlGfCj1hLO2H6YdDjvFhOIQAqeRa
-	2+LpEaRr5Zr+otQjwn72CZNekasZhY6RCk85FD10qvr6sX255quAxNu96lJaicMB5kHgic
-	9qXP5a4tpWBnW2MRql4vCgw5qwjiGkA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RTP+7qa8;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.213 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789295312;
-	b=vRXNyaed7MpXkfeC6Hijve7iljRMJQHSC48ZQhNU8NYc6jPBv22DxFZdLbyhbDKBg+es+J
-	i3n1raWzOvTU/7asVBHf86EVvTU3l2ab4Mhu2bfoUyxVq3QO3RFaKEPmvtv0WlL29jkpUT
-	d7UFVSUSsLkCjrsjbDjsQvA7sdDvj9U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=W6quqEuqAVLHu3zsXDdGSvOmeLHolpa6R9zg2wSv4vI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789295310; v=1; x=1789900110;
- b=RTP+7qa8E27RwXEebfZc1ApKGdgGS+WqVnNAJQhC3GxlRxCa4Lj2TIJtF/Vq9upEwpjZpcWo
- r3hCAI5av6nUt8GxGpKzm5yQZbjq23Lk2kbJ9L7BhGua4hl9+IA8bHaiUJWq7ueJTn0hAXtCGi0
- aoYpcCkzfhnKv09WY9r5VDGA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9c13bf885cb93025;
-	Sun, 13 Sep 2026 10:28:19 +0000
-X-Mizu-Trace-ID: 9c13bf885cb93025
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7cf8e45c-51a3-4de3-9417-170eb34e0713@linux.dev>
-Date: Sun, 13 Sep 2026 18:28:08 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
+	b=Y5gtxj+VIts+92fn1UmqugZ/Ef761VVwxFNkJb6TP6Yjy2PKujjcwBQF37KGwBk//BX/lm
+	Ki8etcmuA48x+gLxKmxW6sBenJhcXhtVHRbxKLc8t75XAzyAme1ijGy83lVT/TTnTJ1tOh
+	GG8/g/FOKg3eddkXpXBIiCvmPF98L/Q=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2dd1dcdcf95so17863965ad.1
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 04:04:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789297440; x=1789902240; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
+        b=ioJvSNvPZ95T6ozCWz2SWN5D9I1ACEGAd1wO1hl1ZM9bbKdwRPL053J3E098luegIC
+         Num+Zr8mGxD3ZatT8RVVxDKHJqrB8vbv7KvDyVfZnLGIOZe7/77eCI++XCg85Xzrpxo9
+         Iu0GTp+XTVU2IZ8gjX+scw4cXJLFqMrEVrgQQ+s2KQ317JmlrruniYf72wW6CvO70p54
+         CZkmPxsHSIMq3R4bAHvTtbRs0eQExzV1w6LVRU9r+uIt+3BQ9yyO/+wPmFR55BSgfLIr
+         LZURpckRfjYNB9v3PJbvE/BZ/TcTul/6iiUMJI6DKuiA85g6JR9B+NW1p+FTeCsSp/1w
+         Lf+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789297440; x=1789902240;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jyuRqgAnVGwyya8hRF/5ry5xM2Hr8OUc+TIWxjrQB+4=;
+        b=EPUDgpwIlzhOcIe6tTOOukoWpIAWzj03FouY1NSBwwKrLNwRj1quEhpeACrKG/UVre
+         nSKD0O0ZfftOhXVqgCV0LD4eBuMFgbXmcq51LAOvBiNZ2B2MPIKUnqNGUppl+P0c2t3c
+         3nNXSqiCVGQ3hU/lz+nKpuU85wkC5h/HXPZlwAPRQ1yJKnO58vmdx/Cd5isu/PP4nNx3
+         c+NcUeZauL1VFk7rg5wnZZqcSZ4tGnVpREx+E1qeIW8QBo6lRzyC8D8W9Vd+/FnivURN
+         i/Qb0D8tkxAn4qYzHzPSicIt+CfrD6PwcC4HlbI7ATy68kBbo7wqNZUZubZ3G0SS0hqL
+         KfLg==
+X-Forwarded-Encrypted: i=1; AKwUvBxDNBtAYUCF8vo+b/fFDiG9WsoyG59E2a2ouWvrUZ4wMADs+EPsbiIMnMfCAQj/3utpRHg0/+6dcg==@kvack.org
+X-Gm-Message-State: AFuF++lfnIlsXcgFC7r7MHqji27svLhPx+g765c6ATWn2zYTNZ1xDv1X
+	cj1BgAH5bneKe7z+N3kUSL4jW3p/KWNxqsa9u053vnYZgZB+7IwVYUms
+X-Gm-Gg: AYBFou0/Xt/X1SDlB9U1tiuBCUOpMs25iOmgIP7T7Cyjcvn4PT0FL4/vIvrR+r//Fui
+	JbT8hNXA7/D1kbLPwl+4StosNRY2owf0nBNnNNq+27ERpcD2R6qmqFjh0QpUqBftycnKj/jyfPM
+	Q15FoUV4MU3kXXPTuz9A70OT++Y/OGJmSsziKbcIzZpMWj3tHMkSU1ykH0N8LtaIXHhbFEZHIu3
+	jL4bdihXdCT8ynN/n4xMP27IqH9HeZ/+qC2zC6PbhqAd84TMv79khNG41nj+2/JqKDX2DfvP+Up
+	iuMQkbgLz8rTSJH/1lfe8IfFK+KOSa4rC8Fg6jwHGuhT6lY2zM54udxG/DejZG0Imevttf/G9Fd
+	KYc8Z+n3naHw1A5xaelcQBtU10dIRjMR5Ny7oiflfQWrckTVkv4tuKgmpJqpkWwWFD6RntqlW1L
+	ImYugwxcEN8Fk11W86y1C3Bo6vZXbT53rjcWH5d1A12nL9s0BaiLzRPrj8Z3Dkg48ND8z3608Vm
+	z8=
+X-Received: by 2002:a17:902:e88f:b0:2d8:d4d2:d137 with SMTP id d9443c01a7336-2dd5f1b11d5mr21545765ad.19.1789297440322;
+        Sun, 13 Sep 2026 04:04:00 -0700 (PDT)
+Received: from celestia ([2402:1980:8858:8cc0:7bda:d54a:257:22ec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cff67aasm32885925ad.79.2026.09.13.04.03.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 04:03:59 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: 
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon/core: add short circuit for esz<min_region_sz in damos_adjust_quota()
+Date: Sun, 13 Sep 2026 19:01:38 +0800
+Message-ID: <20260913110407.32558-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm/mglru: add tracepoint for inc_max_seq()
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260911072848.2346073-1-ridong.chen@linux.dev>
- <20260911072848.2346073-4-ridong.chen@linux.dev>
- <20260911101514.1fe0d543@gandalf.local.home>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260911101514.1fe0d543@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: wk4pdn9owbxqja6bj8ks57mdgiaut5h8
-X-Rspamd-Queue-Id: 903571A0004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789295311-375628
-X-HE-Meta: U2FsdGVkX1/5XEFu3BBNqnTql5Gp6wzWdv+HZJsz4RBBf66ej7YAG9e3OA/AV7G/wMwyoS1yT2OrGcdllfPY7AIOI0lTVv15WcufA0/EFdvFEeHPdL2Ovdh0zbz3uku3lgAtsc4omDqmq/mc7mV970o6q5gxwNJUQ4mekvK2IFmWyXdHVWsctmOgym+Kk7YqcilsxrgREWxYDU5JXjvBEI2vUVH0mLdCcve7one0oH0ZAzkTHA2T+AJuCglvFpfPG4WM8b5W1L4Iu5rFP8eQvYVS8wtKXqTfdCsXksnOwLXC1rfKYJEzZ9DtMwDqc62qk1p0JRcpFzyJl1iKFiutbSk1R1Wj5+zFnDUv/2tj310SO520yjvZk4rlkHikRWz7PsXASzRJbzoy4u6RdifaVO6Nm9Au6bbdac3EsUzECCiS7KvhXsoVZE322GtEpvJ9zScbZDK1MpDG/PjLk9wXcr7BlvLCEDR685S+mDDpQUM8b1dRnuXU907YHOQ0V5vzKVLw0ZfsHKlJG4MwOiQdSV7TiRuonU4otVDlG6/pgb7HwMrCSb+MFBHvwV8jY9nlLT4w0KkUOOHIafnSV/MlWbnvNgQqOAdr+SzeGFgO+9bWWrQOjaMrYjMZE/IH3YlL2AyFTzbmC1toH6WTFT+FCc8O9988GXes8rJ4ivr2ANakDplPBwV2RRPit49YOmKQaAkw7rPGwb3DUGGca7q7mxrk/KuR0BBUu7veW8ZSeUM2T/4r+yEOrLbDP4qLyW77IyVlMkTMgDJIE4V0lHKj7BB7YsZd6Vof5V8bJ3LiPCJC0Q+9fVwp+PyZka3rEqnTKhxDtWVHmx9ZTLJe0hXAXlP1exEQLcFT6qyAbiZmc3BklyYNYD8PmQJWDwrKlm4cdBgpCY3sOsAA/j7h72tlDFYl0jLCYyE9qnuZJ8h57hCIlEE3y6WnaTkU1O1SPaRapf7nJsAnb9f/0mfzMJf
- eljx08XK
- 4/MpEC1ryqmznKCI2/9TqZehn/sHcb+RB7/65ZEGmQ9mQTnPv+/Q6cqFzcl1h8zYURwWoNHtKzqJ8BuLoSDW41Hrq2VzgCv9//23raYNGIysSI2E9YQeP7DqDb+2dbLMJZSYDeGcicndOwfqUs1AhNJM/dz75pXjZrjnXWgQb+L5Pn6YWp5Gt1Lzh0QgXanJvSyo5jrHw/CwBZXc1JZ9Tmqtusm8R8YRmUbfB46gQlvnza0kELmSGyjzVcIZUwLkdhL4SYZJzut7oJqzl9BKjwffdZPP/1d46vqODTL5vwOQAsY9fW9MsMY/n5uji/s7fLLOx
+X-Rspamd-Queue-Id: 99E24180007
+X-Stat-Signature: fuu6tro4r87hri1mejse57ycfg3ezrsu
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789297441-377275
+X-HE-Meta: U2FsdGVkX19e8M6BkyzQk+ajo9lT5JvdbTneDJxwzcb/lLgT0Ox+yUxfpNpMVThx4xNfqkx3ung6tl2OgUTpV+QrR35myE8V/bRAJKcsJiC7LQSBDpmr6JMXiSsas1/lCjfMxNPzCyIgxgOyjF/T0Bi9SrJ3uNLi8PCezLIGtpMeEZv92Hba9WbJleltA2XeAXdB39OqXMz3eNxQYPdNi370LkoWwksmJPZajieH2BN0OB6usIPGz2H8xZPET9pU+8fRR4jmsvnGiTFhIRXs3MvKdNa0KWNkUTiZL9HH3kYgQIi/uWNpIWqfcqG+X+qBq4rIdkMEOG6nq/YhSUK4IDzXbh9aA4Caf4WlQOq1kT7hfe89bVVqij0yN6ZUSo5ea2oK7Azs8Dcb9FT/Oqh70hjc3kc8pVbDB13nRqhOSA4CrPPmQhSIIklwlCe06zKCTUBrXD9dEw0novgnLbMiE1ywew1aSpquoQFs5rfEVE06YQzYflqGJksHUXIAdpdPP8Iv8fE8ZhEVumpN94cCMfT4mrib25vDPFeXU+gNzKwe4fq1d5TeHpm5LMK0r9PGQI45wLXHxkD6A+gWigxRlZefq58gDuV24IIpSHNg8TqYHJg/fcmnI9BV996WTofO55cZZK6AsqfhsKaewpeg3jGrfnA+3PuA8Ibf2R4Ga0mwAGWnWKc8biGCKnPS1+hZD2tFPy7zApNQYuTEIO0w6xRK55IcTDqlf9TOxrdrXk62WN/eMIWoqn1X9LCYL0tCgzWPCxknTr2Oe/Iw4yws6ypq8bNNqm5hMViQZ2UhoFhh4CxYPLnb6+jMDHECFAhDyoPTI/FsvJFGXNscZWUd4UjHbzb5ypST2S1KyrW2D3+NUftP3C3oGDx90GtxWkbVx/eOs1cmsv3F7tkykzi/dH1kweHNFekaLAKOtsjhc0trVZALekC2v+ScMCfqYOO8RQW2wsutSOhzk5RCd7X
+ Jv/iBJZ+
+ c6ZjOdW3aN2ucbpk9MMcTHGZgKasZE5Ba2xFmn/G+Z6B+3EiBN2hJ8VdGDHaOt6JQpDWvkxatFML487PJQpgsIsRjV3TUaylOZTdaAQwqdbIYC023r5y1FYYjNhvkWkdW6d892RYpMVb++J3R+fbNl3TUujJB5jX9CmSZ3F4di/XyJEFeXbyNSFhFU8m9WU73BRtTXvUYvAI5MDPhwZYEw4TA+0ZN91mlZyKzH5i8pOgX+DMV+kKU0Ean0vitN00QRChm1N/llRroPWUGLNK5W9ulEIVa01OF0kO2PqHKIuGqORyTCZhGZU9knnAXibDujIFVu7p19QTAn4DsLcpvjmdw93j9yMTWp+YHZlRc58hnHAeIkIj0e+IwoFrxxNIdGiehdlC4tM/fjHQFDa5Wpmwp7a3a+ywaHbEIwpobNo5Ydz13DgDgSSlXVBR9f3s+WLgxD6vXLO+DsUgoTUrTqcpp/fBsBlSbyFHtD6fQtiZWiSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,41 +119,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+After damos_set_effective_quota(), the effective size quota may be lower
+than min_region_sz (e.g., when the temporal quota goal is
+[over-]achieved).
 
+In this situation, damos_adjust_quota() will still calculates
+quota->min_score.  However, this min_score will not be used in this
+window, because in damon_do_apply_schemes(), damos_quota_is_full() will
+always returns true, preventing the scheme from being applied to any
+region.
 
-On 9/11/2026 10:15 PM, Steven Rostedt wrote:
-> On Fri, 11 Sep 2026 15:28:48 +0800
-> Ridong Chen <ridong.chen@linux.dev> wrote:
-> 
->> +static void trace_inc_max_seq(struct lruvec *lruvec)
->> +{
->> +	int type, gen;
->> +	unsigned long nr[ANON_AND_FILE][MAX_NR_GENS];
->> +	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->> +
->> +	if (!trace_mm_mglru_inc_max_seq_enabled())
->> +		return;
->> +
->> +	for (type = 0; type < ANON_AND_FILE; type++)
->> +		for (gen = 0; gen < MAX_NR_GENS; gen++)
->> +			nr[type][gen] = lru_gen_seq_nr_pages(lrugen, gen, type);
->> +
->> +	trace_mm_mglru_inc_max_seq(mem_cgroup_id(lruvec_memcg(lruvec)),
->> +				   lrugen->max_seq,
->> +				   lrugen->min_seq[LRU_GEN_ANON],
->> +				   lrugen->min_seq[LRU_GEN_FILE],
->> +				   nr[LRU_GEN_ANON], nr[LRU_GEN_FILE]);
->> +}
-> 
-> I would always look at trying to move as much logic into the
-> TP_fast_assign() and not have it be where the tracepoint is called.
-> 
-> -- Steve
+Therefore, add a short circuit for 'esz < min_region_sz' schemes to
+early return from damos_adjust_quota() before calculating min_score.
 
-Thanks. Will update.
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
 
+Changes from RFC v1:
+- RFC v1: https://lore.kernel.org/damon/20260912124406.96535-1-aethernet65535@gmail.com
+- Make patch more complete by covering 'esz < min_region_sz' instead of
+  covering "temporal quota goal is [over-]achieved" only.
+
+---
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index ce8c6f99106e..15758525765e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3318,6 +3318,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 			damos_trace_esz(c, s, quota);
+ 	}
+ 
++	if (damos_quota_is_full(quota, c->min_region_sz))
++		return;
+ 	if (!c->ops.get_scheme_score)
+ 		return;
+ 
 -- 
-Best regards
-Ridong
+2.55.0
 
 
