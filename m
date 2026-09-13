@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C561EC88E5C
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 23:01:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E43DC88E5C
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 23:13:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978FB6B0088; Sun, 13 Sep 2026 19:01:43 -0400 (EDT)
+	id 0B2736B0088; Sun, 13 Sep 2026 19:13:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 951966B008C; Sun, 13 Sep 2026 19:01:43 -0400 (EDT)
+	id 03C8D6B008C; Sun, 13 Sep 2026 19:13:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8683A6B0092; Sun, 13 Sep 2026 19:01:43 -0400 (EDT)
+	id E4D186B0092; Sun, 13 Sep 2026 19:13:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5485A6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 19:01:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 980F2A0CC0
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:01:42 +0000 (UTC)
-X-FDA: 85210262844.10.8FEDDA1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB79E6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 19:13:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A06A040A67
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:13:28 +0000 (UTC)
+X-FDA: 85210292496.30.933C5F2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B2A3A4000D
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:01:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TM97ARPE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id D55DA1C0002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:13:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zYcVK2v9;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789340500;
-	b=qdsRq72uEz4AuaAexSyxATi2VWZm3Vd6wOcqB7X7Ex/tI5U2oghqhUQeU5IYRC0QtAPMvm
-	t+PydhkAOMHM2H1cWgIX9Xl9EG7PqKWuFoDdVLgbeybxFAgc0NjxznskHCSgLnM+tFvAgs
-	QhJhcPhKwXBU1p/IP9A7i9asFq7hNn0=
+	t=1789341207;
+	b=4kQoO/8YbAofw8bQQauBVKJKYEPadkMOyftJ14d8oKKSIOLCX9lW0hWHVHIcpUUNO9HJcM
+	xVNAjQ8jmTg44c2zlTWNUjQxuqw+IB3sP+8JzSBtwMW73lJiWi9INpYBX6hObTsIKFVYI5
+	zynbzwOH2xZw6Q8AbPfRVWAwS4rmGUA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TM97ARPE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zYcVK2v9;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789340500;
+	s=arc-20220608; t=1789341207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99tdpBy09GP4NZtz0Xsy9UP2oQosnHb+3YQeokfanhI=;
-	b=QbIAL1L189RumIPKwUYFdukP1lAOO5W7LUtYHSZ+EQrGuyZWl1ybrzcu+5KAqh+prT3kom
-	TKo324bgeI0wxdMv0rjW7qbNiZjkqy8rzJAaWyrcnqMvF4DyiCrE2o6PRDl+KPc6YIKzgm
-	Y7OQXIII3i2ggrNhTZSmRMFBGclCnao=
+	bh=ATWZYkl6gXglOV8R8lb8BXtXhjp6jIzf5yrr28mOYNs=;
+	b=Ag/kjzAY5aCrLHm004OS4b3g66EE5GeGdLCbL2h5ijhlpsD6XW0nCM/sH4oyVf4YZdyv7x
+	hcPFwQkUH/Q1Tg9zCcMW/joX2oDUwrSUVexmuXLGE4rB+Mx2fv5OZkz4zrLwNZkY8723a+
+	oawmr/mrVzwn7DURM9jvi8caUlg2wsI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3AFF44A98
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:01:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF3B1F00893
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789340499;
-	bh=99tdpBy09GP4NZtz0Xsy9UP2oQosnHb+3YQeokfanhI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TM97ARPEPGldOphV61MxaXcJ8Cmz/SeyVMCYqoV2PChipT5EBrAMjpjZuBOcinf4e
-	 0yybwGl+Pu9DUtJc5TXlM3ozcaaxByFCXVL4vFpuoRzOGQ6vXt0u+hOmKZYiw2tJzD
-	 hQTdan6C0WjJAmpb7uwtuMKvi139ucEos+tilPP5xoOTeGp408O+0bWA6Ygo7pGlf0
-	 zymUg47rRdsbv/WQ6h7+izkMVdc5HwXP8/FDFV40TP/+w6ePD5i0YzkU8gPLiwm6I1
-	 0im2QAvG3pdG2nWsULgYunv5eOIcRGndeLjeC+3n5JZQvdXpJKQ8iiI9bIFAlj9ZWI
-	 FBSZChhNqi9TQ==
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939109f067fso191757785a.2
-        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 16:01:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzOVDrKtFtWWTv1U7Vb887c7Q6Op46YtA538a4zZZce9Hhg4oqcbXT4nexO+i5IcMva/YGUi1zx6Q==@kvack.org
-X-Gm-Message-State: AFuF++nMOzAp8+jOHwwokUPZPRlhGUCaVi1aAGs/ya3s1uSUjLT6Dt/I
-	KFovlS4jXSfqMLI3YqEhQZdt/uwoYAagZAe92EsX7H22ioHNBwwiRxtQuLDkRHgvUT9fsxs7Alv
-	6fALXvLg/LtS7BQg/VfQptDwBzmwe4To=
-X-Received: by 2002:a05:620a:8703:20b0:93a:2a59:3377 with SMTP id
- af79cd13be357-93a2a596b4amr5388585a.41.1789340498890; Sun, 13 Sep 2026
- 16:01:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260911121341.178028-1-alex@ghiti.fr> <20260911121341.178028-3-alex@ghiti.fr>
-In-Reply-To: <20260911121341.178028-3-alex@ghiti.fr>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 14 Sep 2026 07:01:27 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z3bSfMTKvkXsKAz=+dzhmdGOerSfL33t2RkN0CXZV-hw@mail.gmail.com>
-X-Gm-Features: AcwNN1VeUdFTleVj-F2oE0UDk9S9NWy5SYyYKI8DUBOkx_28Wvoxe5F4EMw-zho
-Message-ID: <CAGsJ_4z3bSfMTKvkXsKAz=+dzhmdGOerSfL33t2RkN0CXZV-hw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mm: swap: drop dropbehind swap cache folios on
- writeback completion
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
-	Tal Zussman <tz2294@columbia.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by sea.source.kernel.org (Postfix) with ESMTP id DC22444A33;
+	Sun, 13 Sep 2026 23:13:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7137E1F000FF;
+	Sun, 13 Sep 2026 23:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789341205;
+	bh=ATWZYkl6gXglOV8R8lb8BXtXhjp6jIzf5yrr28mOYNs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=zYcVK2v9RI+Wmrk1Pu/ODVTZVKmwrwtmA10ni+A8Df4mUkVqiqiHgZ17gT8F0Yk/e
+	 8KrNTD5UxXB/Eu3m3D9iDZNRpciGWIfhP25vAmNkLOIjZjL+U5jw/9/Hgo/5iu0TPx
+	 7VNRpXIZ9/204VZVozy6ul97EjIYHuLym7P8C5mA=
+Date: Sun, 13 Sep 2026 16:13:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Chris Li <sparse@chrisli.org>,
+ Alice Ryhl <aliceryhl@google.com>, Andrew Ballance
+ <andrewjballance@gmail.com>, linux-sparse@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, maple-tree@lists.infradead.org
+Subject: Re: [PATCH 1/3] compiler.h: add ASSERT_STATIC_STORAGE()
+Message-Id: <20260913161324.8879b42314924d8264447f45@linux-foundation.org>
+In-Reply-To: <aqXSkthkUVJNu2FD@yury>
+References: <20260911221444.1523311-1-ynorov@nvidia.com>
+	<20260911221444.1523311-2-ynorov@nvidia.com>
+	<20260911225749.8727d23eb76b93141f08e574@linux-foundation.org>
+	<aqXSkthkUVJNu2FD@yury>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B2A3A4000D
-X-Stat-Signature: jqjiecdto856jcqcis4dxmzimz71oai7
-X-HE-Tag: 1789340500-843654
-X-HE-Meta: U2FsdGVkX18HTJmazBxSnexS5MncGycUceyddkHKF/kucYmmO5auxbFhVUN7/xpV7RprnM8qcaC6pGLcVj262CEGv+Aft9TTlXQSMcxBQrzD6KGCWVo4TtV4prDR1S1uercsBnCte1yZQM/mXd/EhljThDQrhj8YpQMzlph4RSZHnuTKsKm4tbfH3iwKc84SdbR/otidb7KVoZPwX3tEG6IE+MNs5b8Y/L4qmc8R4KHoFIHKEOjaDnlCRGACCJNN1mq5Ic8hmLufE4zg5cHUVnkLcIXzxlf//BR8mq99rZRfxfzZMckBA9xN5WoPaQnnK+WNaSzgHk5XY6U/1pleNF7xCG+chhLE5dFCxDhKRr0ZnJ6mUJ97Rbz+I2xJLRqr1IgDwBAw+R1SEnTikPXZd7zdYKK1nU+p1ce7UbiuIOorFJcOUpgIxlKxP2vFENY+q7OpNfJTOcxOAKXWFyblsQuEuYB2NVQpTuc6C8PZdRJXIHNPTjydJtOZ9WgfLE/e5sWh+9Ztf8+aajtVx5ZKjbbw49T3pv1/8iS9VQ+im0w0EWGJNumf46yHBK3ByaHf1pXrUZrSVWuTKtC7CQkTKklsxloOYXPUgJ/B2VqwKcK6VEFBIVbXAUuYbumC1K4AQeWQLAas7VuW92LuhoMgWi4DoKEG/l1a2m35AUK4o9kwNNx9r1nEJ43VLS+E0G1WKJpKFlcDaperkJKpy/RHiEesMi33Lh/pL+dVY/Yg/8moP/X0K7La8vRDr8GQ9lGudi3Z+krhKbWiGIs+1yszhq5BUyZokNepn/j+4RniY++eLhkD0jmfOI7ffB9Y5+O+lWnbeIVI0xSnSFu9dUUbj4T4uAhhb86bPKORB090GyyJyp2hpdBWhysm8n/dRCsMXNpOr7zYw+oUL3ESWsBrgBTs1KYn+LgWFwedJRaheZjmpMXPHjZ5e23TwzYcYDpEvBW5TPzjNp11sze7pOz
- ueMDmOND
- Hijv8/7C4xIetTR0BqzFslH6alnZ2Yl1YPmh4QZymeKCMNiw5iacTf6miZgcrjxm1mamtEJV1mUZ4lx3t80bl5LZ0xeOUyYnAE5kvZ5SNeU+JAiwG2OQn/AUBsAeGdJk9T5g/b3F1fwYmk8QZv1+QaHsFqcGbqLIOYV8dXsUjtkizCFZxRZxNyKuO5InluoKT4fjHnzhXGsWHDOr0raWHhJWKNBN/3AsNsT0r+DEsLmsSP04DdgCoBTnRcBRitDf7rORbRmrQJeCEumOJEvzlN4G0B/w7/R0+Rn8vG3aetrTaFGXUDCydJ+OL52kIDp0TWUhAnSrbGbAtmnm2WGsHWDOB0tJb15Zqxyej9pUJinxwqregxCLckeoE+4lxtRPcw56dxC1Rcna3z9mLMoyfM+XNlCZzelQMPsxvgLBeVRY8FRmAyr6O6er3IFiNI/Mh6BrnF3eeW8fuZT5ED/nZGI8v1g==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D55DA1C0002
+X-Stat-Signature: 9wh9nammc1ot13rqrbb9ahpzt9bfhuqs
+X-HE-Tag: 1789341206-80793
+X-HE-Meta: U2FsdGVkX1/DdSywJrqn9ydwiFFT+8T1oNdvhREGXkCsqQXBLBuOrC7BlynIW4W1ThGV1z8WkHSJq3sBNHv7wLM6/oJgF6t86T8/W4q/wPS5qM4RLSHb6TEwilwoaz5jyeBpeNKjRVn36Ds7z9q8OydQX2gSz45faUyZLcY48cAJO2ky6oKdEgnh0FPNmT6UBJe5DL1P38mMaui9ugbn6kXxEhCGHJamRYA1f/rZ8ptgLG8dr1eYks6EjsmmPfN6elZ7esIHiZV31da8rYZGpcD7Xj4TYKyhjUK6q9mLFRjU2Bw/AaFlE0SoF028sUIjZvKwm41FEuaaDT5p6sFvp8f/9wQ5/4aKP1p4JNykQSGq3MhcNgi8hcVymZDboOM/56a2X0to6hfGWhHca5WhlVJohw64+PQCz6/GR2VPnjRNRki+6cO/sTq9cTows/huXwLA9Bi3TPVyZ/Eq8bUltZH6ODcPNX0zv/Qd0awZVNPSl8p28JmJ/X9GpvKN82/j9TSqqclIghiXEnG74C23kJuwGye1noUjpJf0R67ZC7kdFnAb7aC/A7Rwpin1YQNPrtqkx3axrluyCqk1osixFLz+rql1iwo3uuJqLrDLc/2NxByZSRZazDySQJiE+pzUgyyY14RufGX6Q0KGEHcuVW+ZvSlKAojmSdwXWHHfagxfCbhv0MdW7Qt7zMrvZ333C3x7U2GWFxPwYHW0r78//AeWz0XT4tanVRJvwLVF37tLqLKqMND8CxZ5XL8KXL094R0A5SXS96i6N2hXRI/Twr7L38p+rWB3Cia8jA4+88NXff8knX+O9PkU4kXlZs7JR46QCU3N05m4+HXCGy81uYp1fEYEtVa/EMJOdWJDemTgYNhyIXDU9SykjvPWTULSbpVTBYp6tEX+kAN34Y0N0VigJTOJ5LS5Q1AiYyKRf3+nB7uOTCizGpS37VuxNJPA0R6b3mxTsNvhL6UM6nX
+ O+CfeiON
+ aOudRq3tGzam3iAa7qjoaGqaygCV71yNbTUb+C7YrZp3yeZhl0lO4GzCIKJDnxSy71wO/a4vGz/5USQ7DVe0cyU9uo2stenmFsG02e7opgYRbDdddog9bxuQCMC5qcgUxbZFCOSznbzkOYSe3eX3LjWL2l+N5WfCC+ggRUEi133myqTc/xINaWRIsVQVLHw8BoBuT/W81p3A9YWrp+3kNBbIgK5sgxydiKMkKAasnRig+Pr3UM3Q4dP5wflTjnxYfNHpm3pYPLsujWwdFPGsycy4++STfRUKbaU9mtSPPLgsyBkEbht0QqS06HZx6ioeLHPr3sjLUmSp0rtGdFL/ZBSlotMN/tTrQhR+FS+BzMIbDPoCXcRg9cx/EA9wDa6aXfPaoHMN4sNbqROjInvoawHJxFYVN8kdytVUClkSmeVQXAceCzCFbLsDpR+LkhUPeb98UOgdli+ds8nk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,59 +96,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 8:16=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
-te:
->
-> A PG_dropbehind folio is dropped from its cache once writeback completes
-> rather than left for reclaim to find later; this is implemented for file
-> folios in folio_end_dropbehind(). Extend it to swap cache folios.
->
-> The drop takes the folio and swap cluster locks and may sleep, so it
-> cannot run in interrupt context. Set BIO_COMPLETE_IN_TASK on the write,
-> as the file dropbehind paths do, and drop the folio directly from
-> folio_end_writeback().
->
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
-[...]
+On Sat, 12 Sep 2026 18:31:03 -0400 Yury Norov <ynorov@nvidia.com> wrote:
 
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index 88962571cb93..52eae99de6e3 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -602,6 +602,15 @@ static void swap_bdev_submit_write(struct swap_io_ct=
-x *ctx)
->                 submit_bio_wait(bio);
->                 end_swap_bio_write(bio);
->         } else {
-> +               int p;
-> +
-> +               for (p =3D 0; p < sio->nr_bvecs; p++) {
-> +                       if (folio_test_dropbehind(bvec_folio(&sio->bvecs[=
-p]))) {
-> +                               bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+> > 
+> > Thanks, I'll queue it.
+> > 
+> > Sashiko wants the same treatment for a few other macros:
+> > 	https://sashiko.dev/#/patchset/20260911221444.1523311-1-ynorov@nvidia.com
+> 
+> Below is the list of candidates that my AI finds relevant:
+> 
+> [long list]
+> 
+> I planned to submit this hardening for them per the relevant subsystems
+> after at least landing the ASSERT_STATIC_STORAGE() in -next.
+> 
+> If you're OK to move that material through your tree all in one,
+> I can prepare it as a single series.
 
-Thanks very much, Alexandre. I find the code is really much,
-much better, but I=E2=80=99m still struggling to understand why we need a
-sleepable context after Wenjian=E2=80=99s commit:
+People often do this by sending patches into various maintainers.  It
+can be pretty exhausting and unreliable - maintainer attentiveness
+levels vary a lot.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=3D84=
-8d2ce2fce15fbdc083fbf9691bfa72911033c4
 
-With this question:
+Such a series is applying one concept in many places.  It's justifiable
+to do this in a single series.
 
-https://lore.kernel.org/linux-mm/CAGsJ_4wj6XvPB+QF+_X1BJ_8Y2sZEEFAw6RaJJz-c=
-HaDWLkxaQ@mail.gmail.com/T/#u
 
-In short, it still feels a little strange to me that we need a
-sleepable context, especially now that we no longer call
-`folio_unmap_invalidate()` for unmapped folios.
+It gets me shouted at, but my preferred approach is to take all of it
+into mm.git while ensuring that maintainers are cc'ed.  Results are
+among:
 
-Best Regards
-Barry
+i)   maintainer says ack.  Great, I keep the patch and upstream it
+
+ii)  maintainer merges it.  Great, I drop the mm.git copy when the
+     conflict is reported in linux-next.
+
+iii) maintainer says nothing.  Oh well, I upstream it and hope for the
+     best.
+
+     iiiA): maintainer later shouts at me.  Oh well, I did
+            my best, read your darn email.
+
+So yes, send everything to everyone and I'll do this.
 
