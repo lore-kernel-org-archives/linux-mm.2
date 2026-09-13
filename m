@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B7BBC88E40
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 10:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995D2C88E40
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 10:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65A06B0088; Sun, 13 Sep 2026 06:00:38 -0400 (EDT)
+	id 770BC6B0088; Sun, 13 Sep 2026 06:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E16BB6B008C; Sun, 13 Sep 2026 06:00:38 -0400 (EDT)
+	id 720E96B008C; Sun, 13 Sep 2026 06:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2B416B0092; Sun, 13 Sep 2026 06:00:38 -0400 (EDT)
+	id 636D46B0092; Sun, 13 Sep 2026 06:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AADF16B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:00:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 48BFEA5552
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:00:37 +0000 (UTC)
-X-FDA: 85208294514.22.9A6DD75
-Received: from mta0.migadu.com (out-142.mta0.migadu.com [91.218.175.142])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B0051140008
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:00:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JfyQkN+4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JfyQkN+4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789293635;
-	b=qrXUYatiWbKnRCbdXMCMV59QgSPXA21zNSiwa5RG2KJAAVXWwLyX4UatPGCwcNT133XHAo
-	LE3zX37hy15SKQOc/feC6ZTMJmoMCBK4GGCYEkxMGk4awisoqjp/rvPbKLJ3AvoUrQCOoj
-	ktW3yqqX93Fi15KWapj1QHUbMCP1YPc=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B7156B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:08:33 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B0A31C27CB
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:08:32 +0000 (UTC)
+X-FDA: 85208314464.20.D71FCC3
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 95E8D20003
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:08:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PlQQQEpf;
+	spf=pass (imf03.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789293635;
+	s=arc-20220608; t=1789294110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=41RzS1QznW+Ub7+jeaKRLzeNhoCNTbCMdQbIXDarwzE=;
-	b=e8DhRl1tQSK3BJqIKWHZc/iUHYgJSuuIzoGccDrE13hRLdIgqtyfOX5dCdr4kUCepBomI4
-	oLar5aDvxPoAP8WctSxD7jWbTsHe3K4cEzXaKl65lucEx8Lmy4Zc+SJPO0xYtzEpvowZ3a
-	T+OKsNAljdQ7V5AfE2yypAEhgRCUXH8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=x4lEeuutQHw04q5eI2IDt5aS0x/LR+hbJclQ4L+Pbmw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789293630; v=1; x=1789898430;
- b=JfyQkN+4QySyq7Ez2HNeGJerzThkpfw6WZ2/FLdeZo9n0kVBgb71ujlE3M9ocE3Fu+qSBqeT
- Vc3eODKGZqWggFOPVAkW0SMN5qyuA5qg7OhF6nsUgCAC6mtrFzkwPeIqIL7K3dTaJTuLuoou2E0
- zl3XOZ+S/ynCrd6ebgUFYfwg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 84f15a5693f4a091;
-	Sun, 13 Sep 2026 10:00:30 +0000
-X-Mizu-Trace-ID: 84f15a5693f4a091
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
+	bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
+	b=dVBHF23M6svdf4t3vz40sp7eqongbrLVg+ShAf1HtFB1NwVUz8GrqaAwjAFWwpfu4/vRKl
+	jt3fKKBE3hdQwePaR+4jltODLJXTzvzBwqs275sY/ynoa73IayTqnas5Ez0oRYVSlWr4Im
+	48bL7ueq5rtyu/VseMc1Ca7ZWC0qyaQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789294110;
+	b=jszgT1j1xJwUqOl0TbStlV5Wt/RjBAytz4UNiGt9lglCYlreWIARWRjtq1Gdz3Oh4NLdaa
+	D/eBntHZp96/Jmm0G7N0jvVQXQLM7D0l4TMpNUvq8xZUVJkSqplwR6R0IWsKMdmOKTb0ek
+	BeEDsuRFQT2ZEH3ESNITaTFl0GNPOFs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PlQQQEpf;
+	spf=pass (imf03.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb652d7so668047a91.0
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:08:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789294109; x=1789898909; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
+        b=PlQQQEpfB5gE8zkY5oxJ7vN/IhOZfqGgLWdRbbJNYRFudS7RaBqkor/CJc3dkjJ2Zb
+         lt4YpEhMaIVBmE/3L7IZ5i0lB72Cnl7XWg8DtoQwag6wa/oVROl/iIG/nmIjckoQ1b5Y
+         u2t+IIC7+LNlNqfz4DA5xHC0JI2u3bHTd33wDJF8rqDDwz+Nx1gtM0Cf+j3Diu8dbx+j
+         Uv6IomNjeEf6Opcy9sNDfcSW0dT6R/rtKl8+oMNQqtdZOSlLL6CfpSJaITprSkJH+jch
+         8+wIYQu/dxDyjPpRueI3x/2dBv6cw0WhceZwLbw5QXTJJsIXA4GBaMdfGZwOrNXDYYWa
+         n9zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789294109; x=1789898909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
+        b=mAowSrC+vxRXP+lcbfV4eVOao2jk32HnaiYQGF8VZRQLiewygxBY6zvxwB6kvJp99S
+         /ZNCxp3mEMTZWqUZsRJjgLWeLMKraTto4opHI3gqLNGyuLYgTLLuZSZwNC0R45+uKspN
+         hiRQILt77SxYLwrTSHPTrvHPyh3RPn0ErPixfN/eV8M6dHphOYB5K/DYJItdPa2aM1GC
+         1eiV/KvGzN4IFJ4h8DZw2f7hqKwTKMK0OIAVdPYrcEfMvz/HSDRg+bj0909p9qtpepOI
+         ubHBwMnC+2OG+xPm8p0P/aAHR+hkRA3mvO8vlJF7uTsYVI0/IAh3ApiRx2LDsUECCE2x
+         37Mw==
+X-Forwarded-Encrypted: i=1; AKwUvBxzJ+VmmV/1CJjuFglDwtq+3xY+2jlvasLUVKCvuE+5G5c3T+qfF2E8WTIcVhR6SOiV/wiOCT16jw==@kvack.org
+X-Gm-Message-State: AFuF++n5y4twoCt55ZzbtsjUS1vW4V9IwoM9AtvXP1dq5/Zwc7o3BTnJ
+	fZ/eLa1ssAmZSaRYxIpkG8ebQvoUvkMsXHyUMAmAYJ3C6E2O0u48Q9cw
+X-Gm-Gg: AYBFou1Pis+VxrhuxPw1Y8IV2ecWTqbzocPHRJM2/18P17tcoDiURx5eGKTgYwFcG5o
+	CGKhk28Hgdf43j6ZNFYtNRG99ZZhAzFkPE50ihxF/AAr+OE4AVjrl/A6sVKSkjfGJW/gbEt/kuD
+	uvlKd+sSX/oDKi0k+IxY2omnpzm6LU9X3mHiegwRJFD7bfBTkCPoubcTGJsUm5RDBP076tUM9yz
+	n/osMTGfvz93QrOc2P9G2RGBBVgmhyNIJ2KcE0PoS4OVVr5a/E5HGyJ8ayXbahSHbJOkENzo6Aw
+	taLLFNGAlqvwdDV0DlnRYfCb1Pdkrz1oGis9mT3aP7ONGg4sEdxwdtgrXSKHu0utgovjCQLRf5S
+	gAsVxx0z4KWRrgeUWQ+JH6JIU/uEnb3848s6w3JARQ8n3i9nHeI8Mbi1zQR560r7I+cym33xLv8
+	4zt5p/e44jH7fe4pYa6Kc4OONZlIyqRI4/4iJulSJnzp5VyOlxLJklxXhOqvOfnDkaCpeXQG9ic
+	yClrtANRlauysUQeg==
+X-Received: by 2002:a17:90a:e7cc:b0:398:e436:384 with SMTP id 98e67ed59e1d1-39dbbe86048mr11329558a91.1.1789294108871;
+        Sun, 13 Sep 2026 03:08:28 -0700 (PDT)
+Received: from thangnn-ASUS.. ([2405:4802:1d38:5c70:f608:4e94:6df6:c8b4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d9d5cce86sm4597773a91.4.2026.09.13.03.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 03:08:28 -0700 (PDT)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v8] mm: vmscan: retry folios written back while isolated for traditional LRU
-Date: Sun, 13 Sep 2026 18:00:13 +0800
-Message-Id: <20260913100013.3603815-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] khugepaged: hold invalidate_lock across collapse_file() readahead
+Date: Sun, 13 Sep 2026 17:08:20 +0700
+Message-ID: <20260913100820.28654-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 95E8D20003
+X-Stat-Signature: 9878akc4819jkfd649gafjx9hibchexo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0051140008
-X-Stat-Signature: 47w6tjgcsyompe5pu8crfy8xopbred1i
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789293633-25725
-X-HE-Meta: U2FsdGVkX18bsqrgcZXRd817+pVtOjj9VbVq316R9/f+FaGmfCMJUcJAM2lgt3GdGexI1uAOdyCb/PKi0cJA46dRbLbpjVnoBIW9nlnjogUHoJg2rB2SkoIxb9kmn2Ocx4/V27vJjehZ/uEKxdXBt1orHn8PcM/IhNup5ZPMVp7oqX6OxOHQpaQmhPFFAj2PswrJqmIlZ3dDkmIxukWZghRqlSRRWu3zDEVXH2TTi8flKKSxqMbC8624/P/FbyRbxHC3Ggw26pgolfLJt91cuXLBiEYXOKaK13LK/TBqN41xFflBfTV818c5WrW1pV3uejqz8sX+rt++piDKPc8WJJ6v+Rqx7Vld4Jnj5irAj7/jir2oXdfx7q680lrUxjK6s6i8z/8DgZvdSAGdp+yzEphQgB9tgh09b0Q4H2ROVqaNkXqIKcS57tvCLgO3orH2UZSD1j2SCzdTU3GGFqpE3PMICJl9agsb61F9JeXpSEOJ/VguSd33v+sz5ZWO19SXuD+mfSdrP+Xq9vsmPu0rHwTxeKbiF9q5F2ZtbaRYFEhTP9OjJ8XZ6uZo9XLooqfSTyBsFAkiEK8ke8RHbBj8m60166age5/9ExvCmVzEaQLTIouNW81dExXO22Uz7sEkbOCuZKD5jMDYX0UJhUCZn2U7GC3q9HEB9AziBVV4XX2proSHTLBSW0qlaQfKVJ5q7RBGnyxq7X7+rXqfRzEYuJzySfa6Ub1rmvSAtOcU+AWbO/ZlfFh8za/zZfhmgwZXw+eBmg16lPRe3QKbZr+ks3OZfsmGL8+IwHXtHYDobAnCx+mXsHDsxp+m1x7ibEiF6usGqun8D+//0aoR0sEdjSSc+Umw0m28aZQK6b1Dde8aKTaQgOzJTwoHwaN1uDz14YX+zCPwL+4bKPfpyDW/+MTf8w9XAUiaWSvKBffEjDBldrz/DQGXtQXJmf4Iv4zYiuiuuA12iZ4Txf8svkZ
- YZAMEKQa
- oxDpy0DXxZZrUcmp8c+2NHWEknF8YWOs5IsdYeF6aXr9EOZ8alcPTseNY7iS1dtGid+Yic7h7oUjGTtk2Clx0WH9e4bnaZbbgE5Ls0jFIHv0wmV2HXFbVmohPVEqs1uKYCRKIcAFWOGY4dIG4dAI30uE8Kl1BSRRvJQIpFdevBBNaoViiSMNkWNw49VlsPDQt3KT5TenfpM62suZ4qr0bflbZX3WP1HHwfAJkBPAdoJ3Vudo0Ovu07VHHerv0gAMFYOhEVUYsaZ3/7jI20dBEQA/DlNLcN8WvO0kfCFfVPmcaqJwSi4/igM6OZV9dGitage7k
+X-HE-Tag: 1789294110-697465
+X-HE-Meta: U2FsdGVkX195EkcpRl/bU79UbBhzxlWObKT2zINJ9QwVSrWjbvAzMDfZKUBQ/em+8/MbilQsbiX4mNToSNkg96bV7DL1lQI9X2b9Z4sTuXAGo31uOr8uQKhCCasJkd3loZWuCEKIWBuUzzCCTK9rnSoWhq0ucULev/VQ+DpTp7s5CGFOCs6DSd1eqFL+d3g4pTJpd71bx9/g7dJMBitRKv2F9x2qMg4P+ZZEmx19ZBDuuJyG7wrGpkgwzJyVbkQdJ459vUvGbxUa1sIvhIXjzSVqAvk9e1fadgseOa/yT8+P9/L9BYEvVwyXdoynLtuqP2PWqv2gzKqrRv7TjtWF7AIDaA7rMt7SI/1xGldX/5dA8nMM4g0o1z08bRmj/RUc9if/e7BiX/V5oOVC6D1f89N17RxzjoG2zX2IFQuyWRZE5YQAw9LNladsAt/WVgWw38Y+OWdm6BgtPuijrEhGhj7a2OwucOsLygmFWnuIxoV5IS0qYWETFCwZs+o2XTyedO18So0r2U4Z+g0cuRPZrMvIeeFWb+bt4vp7pJVHTtdEXY7YZXLNNOZS2SHW/IX4DMGoC7544UYq5XwuBgMIUeB2wb0iew3ibVK27dTiXBR96zVbneIcAc+0vOsJd8O1/2z3iou+gplKD9ruI9PMep8js8tYTe2H6uifdowSwKPyS8EbIFCRpWFreifs74ojHXQpORDTsGwQUpLZODmSAjNf5uepmfGcpUaTGw0hgsg4GlE2FUl0DrEx4S5WhXb6221fx8zC+Fbj1OB8gV9a39MMAt3ynmiryM62mnRYmmyR4iHY9VMKbX1pxlLS7BTF8A4eUvgEjYbY7FqBqYSz0vyzSCGb6XNgrFRkZkzZTq50sJnW0Yz++0ncaW7tYvfRPUKdXyds1CkfbITjDreZnTwdjA86nqks5784CGWqH4lMMkDElFHmDrNCWG8arEFPBiavCWiPWgNUEubIfbZ
+ JttYDt3v
+ N7fO8rOS89n+phwsYUUinGnKzc9R1KW0y/TjJjGQa5RZDp/KBa+CnzxsL5GhDuM5fDv3h8Uni0PaBaG1+RbSUvqAOkPTo5QBjzGtlrBl435v5e3EhDPwAlqEp6G7Z39FmEvoFAuXEwE9fMweqtg7vDK6NAYQxERL0OHG1E600qTX1AI6FCislNrhnMCDtfoIDadcoQJdBQ0cUGpZlIwNNYda+J/C2XWbBDTpiJnXjfkUdDeL0RoBxrFgEYjDVnyd1dlhXQAmh/flrFoEPvd6QXl/iwwIW4BdN609ddsTvLnoMYuhoeNAUICn6rQTgG4WUfWfAhlG4i8PR6DQnEggO94n8smpGGiiaA9ChfQkBBrJfIutFMMyw2LTi7yHoR1lIyonrr8Hcvx+/YIDNlCAoqiKhH6eXXmkszQ+yAVTZPReTSVNWa6BydfgvFoWh71p6DcRsEBHE+agHWw/S55jFzWb2fD6bcxTTAtJGict9A3vQB0Ppi7KAPhR2jod7RW4pKm1D68hA95zOMigfWbuXu25reWanUiDBD6VkqgFRG488JvOnzEPp5i4Z6o+pa1a+Y23ZhMevo2me4pl2m4qCva8TYmcBARyNOhF3V9+vR81NHB5WrlTgr2mTUlXltf1R3297jb3Z6ifJs3BHA4Ttb9b3MHuG62DNnzQG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,255 +126,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+collapse_file() calls page_cache_sync_readahead() to fault in missing
+pages before collapsing them into a THP. That helper takes
+mapping->invalidate_lock itself for the duration of the call, then
+drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
+takes invalidate_lock and then waits on each page's folio lock while
+holding it. If collapse_file() has already locked one of those folios
+by the time truncate reaches it, and then tries to acquire
+invalidate_lock again (e.g. on the next iteration, or via a nested
+readahead call), the two paths can deadlock/hang on each other's lock:
+truncate blocked on the folio lock collapse holds, and collapse
+blocked waiting for invalidate_lock that truncate holds.
 
-As commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
-while isolated") mentioned:
+Reproducing this over ~150,000 collapse iterations with truncate
+racing concurrently reliably hits hung_task: blocked tasks within
+about 20 seconds on an unpatched kernel.
 
-  The page reclaim isolates a batch of folios from the tail of one of the
-  LRU lists and works on those folios one by one.  For a suitable
-  swap-backed folio, if the swap device is async, it queues that folio for
-  writeback.  After the page reclaim finishes an entire batch, it puts back
-  the folios it queued for writeback to the head of the original LRU list.
+Fix it by taking invalidate_lock_shared once for the whole scan, before
+locking any folio, and using page_cache_ra_unbounded() directly in the
+readahead call site instead of page_cache_sync_readahead(), since the
+latter would try to retake the lock we already hold.
+page_cache_ra_unbounded() does not clamp to EOF like the helper it
+replaces, so clamp the requested range explicitly.
 
-  In the meantime, the page writeback flushes the queued folios also by
-  batches.  Its batching logic is independent from that of the page
-  reclaim. For each of the folios it writes back, the page writeback calls
-  folio_rotate_reclaimable() which tries to rotate a folio to the tail.
-
-  folio_rotate_reclaimable() only works for a folio after the page reclaim
-  has put it back.  If an async swap device is fast enough, the page
-  writeback can finish with that folio while the page reclaim is still
-  working on the rest of the batch containing it.  In this case, that folio
-  will remain at the head and the page reclaim will not retry it before
-  reaching there".
-
-The commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
-while isolated") only fixed the issue for mglru. However, this issue
-also exists in the traditional active/inactive LRU and was found at [1].
-
-It can be reproduced with below steps:
-
-1. Compile with CONFIG_TRANSPARENT_HUGEPAGE=y
-2. Mount memcg v1, and create memcg named test_memcg and set
-   limit_in_bytes=1G, memsw.limit_in_bytes=2G.
-3. Create a 1G swap file, and allocate 1.35G anon memory in test_memcg.
-
-It was found that:
-
-  cat memory.usage_in_bytes
-  1073700864
-  cat memory.memsw.usage_in_bytes
-  1413124096
-
-  free -h
-                total        used        free
-  Mem:           1.6Gi       1.2Gi       299Mi
-  Swap:          1.0Gi       678Mi       346Mi
-
-As shown above, the test_memcg charged about 324M swap (memsw.usage minus
-usage), but almost 678M swap memory was used, which means that 350M+ may
-be wasted because other memcgs can not use these swap memory.
-
-This issue should be fixed in the same way as mglru. Therefore, the common
-logic was extracted to the 'find_folios_written_back' function firstly,
-which is then reused in the 'shrink_inactive_list' function. Finally,
-retry reclaiming those folios that may have missed the rotation for
-traditional LRU.
-
-After change, the same test case only wasted about 2M swap. The swap
-device usage matches what the memcg actually charged.
-
-  cat memory.usage_in_bytes
-  1070301184
-  cat memory.memsw.usage_in_bytes
-  1412448256
-
-  free -h
-                total        used        free
-  Mem:           1.6Gi       1.2Gi       299Mi
-  Swap:          1.0Gi       327Mi       696Mi
-
-[1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
-[2] https://lore.kernel.org/linux-kernel/CAGsJ_4zqL8ZHNRZ44o_CC69kE7DBVXvbZfvmQxMGiFqRxqHQdA@mail.gmail.com/
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
 ---
-v8: Rebase to the -next tree, adapt to the current reclaim API, and retest.
+ mm/khugepaged.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-[v7]: https://lore.kernel.org/linux-mm/20250111091504.1363075-1-chenridong@huaweicloud.com/
-
- mm/vmscan.c | 104 ++++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 73 insertions(+), 31 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index d1495a7d469d..6e13e570aab8 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -181,6 +181,10 @@ struct scan_control {
- 	struct reclaim_state reclaim_state;
- };
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 11ff98d55c76..690ccbcdf593 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2267,6 +2267,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
+ 	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
  
-+static void find_folios_written_back(struct list_head *list,
-+				     struct list_head *clean, struct lruvec *lruvec,
-+				     int type, bool skip_retry);
++	/*
++	 * Take invalidate_lock before any folio lock: the readahead below
++	 * needs it, and truncate holds it while waiting on folio locks.
++	 */
++	if (!is_shmem)
++		filemap_invalidate_lock_shared(mapping);
 +
- #ifdef ARCH_HAS_PREFETCHW
- static inline void prefetchw_prev_lru_folio(struct folio *folio,
- 		struct list_head *base)
-@@ -2013,14 +2017,16 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 		enum lru_list lru)
- {
- 	LIST_HEAD(folio_list);
-+	LIST_HEAD(clean_list);
- 	unsigned long nr_scanned;
--	unsigned int nr_reclaimed = 0;
--	unsigned long nr_taken;
-+	unsigned int nr_reclaimed, total_reclaimed = 0;
-+	unsigned long nr_taken, isolated;
- 	struct reclaim_stat stat;
- 	bool file = is_file_lru(lru);
- 	enum node_stat_item item;
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	bool stalled = false;
-+	bool skip_retry = false;
- 
- 	while (unlikely(too_many_isolated(pgdat, file, sc))) {
- 		if (stalled)
-@@ -2052,25 +2058,42 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	if (nr_taken == 0)
- 		return 0;
- 
-+	isolated = nr_taken;
-+retry:
- 	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
- 					 lruvec_memcg(lruvec));
-+	total_reclaimed += nr_reclaimed;
+ 	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
+ 	if (result != SCAN_SUCCEED)
+ 		goto out;
+@@ -2337,10 +2344,20 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 			}
+ 		} else {	/* !is_shmem */
+ 			if (!folio || xa_is_value(folio)) {
++				DEFINE_READAHEAD(ractl, file, &file->f_ra,
++						  mapping, index);
++				pgoff_t eof = DIV_ROUND_UP(i_size_read(mapping->host),
++							    PAGE_SIZE);
 +
-+	/* Retry pass is only meant for clean folios without new isolation */
-+	if (isolated)
-+		handle_reclaim_writeback(isolated, pgdat, sc, &stat);
-+	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
-+			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
-+
-+	find_folios_written_back(&folio_list, &clean_list, lruvec, file, skip_retry);
- 
- 	move_folios_to_lru(&folio_list);
- 
- 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
- 					stat.nr_demoted);
--	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
- 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
- 	mod_lruvec_state(lruvec, item, nr_reclaimed);
- 	mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
--	if (nr_scanned > nr_reclaimed)
-+
-+	if (!list_empty(&clean_list)) {
-+		list_splice_init(&clean_list, &folio_list);
-+		skip_retry = true;
-+		/* Retry folios were already isolated and accounted above */
-+		isolated = 0;
-+		goto retry;
-+	}
-+
-+	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
-+	if (nr_scanned > total_reclaimed)
- 		mod_lruvec_state(lruvec, PGROTATE_ANON + file,
--				 nr_scanned - nr_reclaimed);
-+				 nr_scanned - total_reclaimed);
- 
--	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
--	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
--			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
--	return nr_reclaimed;
-+	return total_reclaimed;
- }
- 
- /*
-@@ -5006,8 +5029,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- {
- 	LIST_HEAD(list);
- 	LIST_HEAD(clean);
--	struct folio *folio;
--	struct folio *next;
- 	enum node_stat_item item;
- 	struct reclaim_stat stat;
- 	struct lru_gen_mm_walk *walk;
-@@ -5046,26 +5067,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			type_scanned, reclaimed, &stat, sc->priority,
- 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
- 
--	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
--		DEFINE_MIN_SEQ(lruvec);
--
--		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
--		if (!folio_evictable(folio))
--			continue;
--
--		/* retry folios that may have missed folio_rotate_reclaimable() */
--		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
--		    !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
--			list_move(&folio->lru, &clean);
--			continue;
--		}
--
--		/* don't add rejected folios to the oldest generation */
--		if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
--			folio_set_lru_refs(folio, 0);
--			folio_set_active(folio);
--		}
--	}
-+	find_folios_written_back(&list, &clean, lruvec, type, skip_retry);
- 
- 	move_folios_to_lru(&list);
- 
-@@ -6108,6 +6110,46 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
- 
- #endif /* CONFIG_LRU_GEN */
- 
-+/**
-+ * find_folios_written_back - Find and move the written back folios to a new list.
-+ * @list: folios list
-+ * @clean: the written back folios list
-+ * @lruvec: the lruvec
-+ * @type: LRU type (only used for CONFIG_LRU_GEN)
-+ * @skip_retry: whether skip retry.
-+ */
-+static void find_folios_written_back(struct list_head *list,
-+				     struct list_head *clean, struct lruvec *lruvec,
-+				     int type, bool skip_retry)
-+{
-+	struct folio *folio;
-+	struct folio *next;
-+
-+	list_for_each_entry_safe_reverse(folio, next, list, lru) {
-+#ifdef CONFIG_LRU_GEN
-+		DEFINE_MIN_SEQ(lruvec);
-+#endif
-+		/* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
-+		if (!folio_evictable(folio))
-+			continue;
-+
-+		/* retry folios that may have missed folio_rotate_reclaimable() */
-+		if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
-+		    !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
-+			list_move(&folio->lru, clean);
-+			continue;
-+		}
-+#ifdef CONFIG_LRU_GEN
-+		/* don't add rejected folios to the oldest generation */
-+		if (lruvec->lrugen.enabled &&
-+		    lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
-+			folio_set_lru_refs(folio, 0);
-+			folio_set_active(folio);
-+		}
-+#endif
-+	}
-+}
-+
- static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- {
- 	unsigned long nr[NR_LRU_LISTS];
+ 				xas_unlock_irq(&xas);
+-				page_cache_sync_readahead(mapping, &file->f_ra,
+-							  file, index,
+-							  end - index);
++				/*
++				 * invalidate_lock held above; don't retake it.
++				 * page_cache_ra_unbounded(), unlike the readahead
++				 * helper this replaces, does not clamp to EOF.
++				 */
++				if (index < eof)
++					page_cache_ra_unbounded(&ractl,
++						min(end, eof) - index, 0);
+ 				/* drain lru cache to help folio_isolate_lru() */
+ 				lru_add_drain();
+ 				folio = filemap_lock_folio(mapping, index);
+@@ -2672,6 +2689,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	folio_unlock(new_folio);
+ 	folio_put(new_folio);
+ out:
++	if (!is_shmem)
++		filemap_invalidate_unlock_shared(mapping);
+ 	VM_BUG_ON(!list_empty(&pagelist));
+ 	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
+ 	return result;
 -- 
-2.34.1
+2.43.0
 
 
