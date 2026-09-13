@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 024D9C88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 07:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97AFFC88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 07:50:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88C3C6B0088; Sun, 13 Sep 2026 03:48:36 -0400 (EDT)
+	id AD9D46B008C; Sun, 13 Sep 2026 03:50:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83D3D6B008C; Sun, 13 Sep 2026 03:48:36 -0400 (EDT)
+	id A8C436B0092; Sun, 13 Sep 2026 03:50:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 757CD6B0092; Sun, 13 Sep 2026 03:48:36 -0400 (EDT)
+	id 9A7CE6B0093; Sun, 13 Sep 2026 03:50:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 498EA6B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:48:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51D9B12062B
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:48:35 +0000 (UTC)
-X-FDA: 85207961790.02.63975EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8A366C0003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:48:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AQUAf4uF;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789285713;
-	b=s5cY3w8g3sVXA7PD7jwtx3V8NrnzN8cc4lUBE1I7ItWKh64o3x6PbGtPB4+RZ/aPK+a93z
-	XQHwIu7rxS56+ms2wtBgfBLUoKT4XHU9oBP1VhW+xSKa/4u3oOG0CYTmoNZDn00vjiIHE2
-	8Sj97zsdAyNpuaYxW+8yOujsXFQGW8c=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AQUAf4uF;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D24C6B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:50:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93BEC805DA
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:50:27 +0000 (UTC)
+X-FDA: 85207966494.12.D20AFB9
+Received: from mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6537F20008
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 07:50:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789285713;
+	s=arc-20220608; t=1789285826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qbTN56aFJwoSV1zh3LBt3rCv31f9RqWhm969uraW4/k=;
-	b=nkEmbPqVILO0m0SNBEeG+XMkZGErRmPKTOr3bOPMfulHBXJDnIUK86A1y2Khe9JvUTxtbI
-	4lqjoQVxIoZSxDj1DHpvSQVB/L9T9gE7ahz9ZygcDqLq4E8erqgQewrB8GCexzLLoCXaj1
-	RPweAoDIxzyjgp1MwWxiqDlyrW3+gNY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00E8C60D8D;
-	Sun, 13 Sep 2026 07:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527F81F000FF;
-	Sun, 13 Sep 2026 07:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789285712;
-	bh=qbTN56aFJwoSV1zh3LBt3rCv31f9RqWhm969uraW4/k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AQUAf4uFkNStZ1Tb45HwVwL+jD4BDOL1WJROlgROMNZxvnKJ+C58K3zQn90022Z22
-	 5YKPPtJJ4vXOvkJPPwHpKa2lcbBb03d0cwLGDwnpOZwAwUjItS07Q3ueELNy/b7JNp
-	 Ac3EM806qvU69cwSlSAGYkBY7fvEsup5fnuhlPig=
-Date: Sun, 13 Sep 2026 00:48:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kasong@tencent.com, chrisl@kernel.org
-Subject: Re: [PATCH] mm: zswap: return -ENOENT when the swap device is gone
-Message-Id: <20260913004831.884d37afd92249d763b7f1da@linux-foundation.org>
-In-Reply-To: <20260913063031.1689420-1-hebaoquan@kylinos.cn>
-References: <20260913063031.1689420-1-hebaoquan@kylinos.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=TX0OITl7P7V5AUxoPA8e9i41wKhvI8WTlmi8zwJG46k=;
+	b=xMNWRojh8uXIDSNgCPLJnUA5374VKjiukPKOfqQla7IeNvty1J1G8Wq+u4qIikBN6hQn3w
+	dolCVxb0hPYbxremJ66Nk9gSSBcvcguOiifEUYkemYuR1VxsfVBalB4XWBs2F6wgcw8H1/
+	ExyZacXW+J/JH+cWAlzajL9ItnOZmME=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789285826;
+	b=X3B1oaVs04YfwGQtVzvNm1N5L6FJSo5iy+Fg8c25NWEGpFPrHR95CJehE+JJGbWuxXa0w1
+	lJX5a2kG/QXZehGulDS41rWC7MA5WRiBL8wFHtL4TwIYbleXQwJE1OMQTErztUxxdXUn/6
+	R/uSfgCJpYirQvm85FLUaRSUxKAT0Ts=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 2cded7e6ea0aa955;
+	Sun, 13 Sep 2026 07:50:19 +0000
+X-Mizu-Trace-ID: 2cded7e6ea0aa955
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <hebaoquan@kylinos.cn>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev,
+	baoquan.he@linux.dev,
+	david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH v2 00/12] mm, swap: extendable swap devices (xswap)
+Date: Sun, 13 Sep 2026 15:50:02 +0800
+Message-ID: <20260913075014.1732524-1-hebaoquan@kylinos.cn>
+X-Mailer: git-send-email 2.54.0
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6537F20008
+X-Stat-Signature: yscrqg6wd4hio1z14whtt39cx48fqxt8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8A366C0003
-X-Stat-Signature: qyh57ecx7p717ituhrm3qgboiqdep96a
-X-HE-Tag: 1789285713-227834
-X-HE-Meta: U2FsdGVkX18FZRT0gevv+RkribYqRw0BrIrNorDJ6guA7VF/LxUf3wI4ucp7cU4iRf6pyvGlMc0/gIdT+6uebv+cjPa0V7I61xo4Q51/xptsZ9FCgsDHQuOBbj0Q6E9eKT0L/8s5bVyPBq131QFxXYqqOx0iQM4+LAMJBTR3HXx9Qb2/2aDmhG88I30f7xKODOsLwbU1glh8/r/Rz1JRn6VX17bWHGroNlhji6ANH8V+yQuwpGvisLi7xdolqc0ZyHbXCBN08uUOQ8dBQZRYm5Jj8GZdmq39VJZcTsR4Irs6nP8X5aKiDB36n57WnwMirJ/vdqBqrXexpeH13KqphIMwONkAapfhQVGGpIp1CEO3KxQYxUUkpT/CfWKPDXBSxNePDzmdhSwP/kiJK14j4cAU7cAmvAKyTBkGngf/knmeiEn6tAA6XxPFc7Uy0VLvLJ8rX1XrSRbVbI4//1yw/VevrxeSG3NQic63t1pqzyPW4q06KCjPbDtJyC+F/vZIxmMZtV5rvteWTKHL7HHKRq1LOY+VekPNUWwGa3v0zdfb4JIQsxK5CdzNw+xXxupPYFfIynG/umpMBLWOPWMPy7rK7wjrd8F/TdV/7KsgfheFFqx7Oe1d18pH9lfXi2XJTC+WoT5bK7YGFRcbYyDcQTi00EBjCwCdppDsIlMPjSRbCh2i7hdX3VXbp/Xnu/Kp8oW6HE2WB7zcWH+pw5YpilBSGvue0veKuBv1FVu8pVlsVynlllnl90tJvyi05D8TKFDMYlcEGruuX+qroY695fLMwSm8JDw020L+ETa7XSSJ/haqQ7Ycmj7e+Rc99xO0SDoMYf9CYZNyimeWKaHADpznfh+I99TZWMd0Q+usasnnZTibCn2u0rs6/GnIvZ5ujKDgShgrEPnzewbe/68agn8oBe6nX6TlIn4LIj73G0xqXNmBeEjkBcI1I3KBrwAPl3dW/lSuwSMxzsdu7+Y
- Y+i39NrN
- 1QsagMvdavKvjyYXpgMV8NEIZpJIVDvkoI2gBT+hx1kRA90bjtBnvzEbq2HrjeUtr+A2eqADJBQQJPzWiEC+cn1+rGzJKwxk2WvFTPPm7IjUeDKq9SEwwioEFp1NlcQDk2OEW7BKDrK7FG7aFJvBXfltMHorySe2dKPY8pdsCScduXyXH+RSZuFhyxY4Xyv0LZm/8JCD1kLJtIReHuJHu8+JTcEM8DDMNDHm8vRIvFHOHSTTibbzCzXxEIkZ1Lhb05IX3nKLx1G/IYc7dF2jkGq20rHbTmueWl1mu5IfyV5iP7ao=
+X-HE-Tag: 1789285825-829245
+X-HE-Meta: U2FsdGVkX18854dxJwV/oHSo1ohB2YGmxsMikQfmB0snoD6zXHCfBQuhzfC9pgF/NWL/Lqx5KXIUCIOrguHww8xHK31Cd7qOzDTzJkA8Zt7FS75e1ch+VJ82zZx24DMsGQFD4zxf7M7KmG7/S+nTqV5dL90QznbIv4nywdgHYX5+EP8VLMJX8g3dFCoJNRpLGpRaszyN0VGCKv1/PWpsXCOkbEh7AsVG0QKZbD+k/LF/xm/k+DuZV9nua5U1oqOLgINok1+m8kFe70w7IK8clKEIxkkQ0ThckkeRm4KTYtlS6tO26GUFIFNilpb3IjvFZzANsDAaGVxJTJVOrvwiQyCYipIhAhOO1w18Uyneluub0Q5CxXZLQtvyC+zPvB9nxRy80tEQnkoaHBdIwh/w6MfIer7Ec4LhQUHnHhukyLibDgi0WUlIt0ZrgkAz+3BCxlW6ZmbIFJXBGAgVJlPzG9gk1JpDkCx5lU3cQymSlZ8iBeTTMpDkU3KbVCRZ1N45DiCbzabJo30enpwgfP6HhfCajekMgN3y2BQBOjOqHZEcFDMw3viX8Zbgp8DblGT/nvVZvceUAHoK7eiOMxa+nQJH/0wvXzJIAVhhCozvuRkEg6xHEH2YPzB8w1t6gGhW5StTRfpNm/wiqmvEHjX2cOvfggAVVAi114faBcKNc6LNxnSJWWsPxpl6HE1/AVAyGbRXdOdsAWJZFn6Q5UtOsClR026z1DSfbo/y0eGQaGeeSmSI5cHFCEN9Y8A6b7Tfa1BR9ot2kDzBWVxh6jhB42UK7iJ+P11Tqf0hylwsJnj6FawLY5bpC8tfiffwmo7jjcqzCbWgnC7ZPjWszQ4BAyEvH1NzglNZx2jfx5V1d5TfdwUl8wB+lCSD9E7BDvQyOaCpWkmD3ZCpcKrDaiSTJVrqCAzmygXQYqWawUXNHHzOyzRA4lGft/cFtBOoclXWLNAAB3VUHxGSg6NdT9d
+ 94k5Y5kA
+ cTN6/vJwqL0NzfRjgqiEw5DlM3uggF6/dWVAgQ3RN0aal9FFeANe6cj+WSXar+vD9Ag1FXVrUPl2IkI3xHO6LlW/zIHacwOrmvygcGH+QvXrDQVlbGnFRbYhvTGzxHlfnQ00OwvN7GXZfpeFXHlgr1I67X4zfRSEOOZ34y1INKv9rF3gkCsu9xridVTrsFT6exKBvAa+rgDwgdFeDuQhIhhl1Qfsc8EFBDti8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,21 +90,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 13 Sep 2026 14:30:31 +0800 Baoquan He <hebaoquan@kylinos.cn> wrote:
+Xswap is a swap device with no backing storage. Swap out pages live
+in zswap. Its cluster_info[] array lives in a VM_SPARSE vmalloc area,
+and the area is grown and shrunk on demand as swap usage changes.
 
-> zswap_writeback_entry() returns -EEXIST when get_swap_device() finds no
-> device.  -EEXIST is the shrinker's "page already in swap cache" signal,
-> which makes zswap_shrinker_scan() stop shrinking entirely.  A NULL
-> get_swap_device() instead means the device is being swapped off, so the
-> entry is simply stale.
-> 
-> Return -ENOENT so the shrinker skips the stale entry and keeps scanning.
-> Independent of xswap; affects all swap devices.
+The problem being solved is the static size of compressed swap. Both
+zram and zswap need the size fixed in advance, and neither gives memory
+back when the workload shrinks. The solution should be a device whose
+size can scale up/down as per usage. Xswap does that by mapping the
+metadata lazily instead of reserving it for the whole range.
 
-I'm struggling to understand the userspace-visible runtime effects of this.
+Design
+------
+- si->cluster_info[] stays a plain array. Access is still
+  &si->cluster_info[offset / SWAPFILE_CLUSTER]: no per-access branch, no
+  RCU discipline, no tear-down state machine, no NULL return.
+- Only an initial chunk is mapped at creation. The rest of the address
+  space is reserved, not allocated, so an idle device costs nothing.
+- Growth is driven by allocation. When no free cluster is left and the
+  address space has room, the next chunk is mapped and added to the free
+  list. No userspace involvement.
+- Shrink is driven by frees. The free tail is counted, and whole chunks
+  are unmapped once the mapped range is at most half in use and several
+  chunks can go. One chunk is left mapped as slack, so the next
+  allocation does not map it straight back.
 
-I see that reclaim will prematurely abort, but is this a once-off thing
-which will resolve on the next reclaim attempt, or will the reclaim
-failure persist for a significant period?
+Size
+----
+A device starts at 1xRAM, rounded down to the cluster. That costs
+nothing, because the mapping is lazy. An optional per-device cap,
+/sys/kernel/mm/xswap/type<N>/limit, lets an admin lower the ceiling.
+Grow and shrink both work without it.
+
+Interface
+---------
+  /sys/kernel/mm/xswap/create           write an optional priority
+  /sys/kernel/mm/xswap/destroy          write a swap type
+  /sys/kernel/mm/xswap/type<N>/limit    read/write, in pages
+The device shows up in /proc/swaps as xswap<N>.
+
+Note:
+--------------------------
+Writeback, rmap lookup, etc. Those are consumers of this base. I have
+a writeback prototype on top of this base and will post it as a reference.
+
+Testing
+-------
+x86_64, 8 GiB VM, lockdep and PROVE_RCU on, 4 and 8 GiB MADV_PAGEOUT
+workloads against a zswap-backed device:
+- grow from 36 clusters up to the 3974-cluster limit, and stop there
+- shrink on workload exit, then grow again
+- fill the device to the limit and shrink again
+- create, swapoff, destroy, recreate
+Throughput is within ~2-3% of plain swap+zswap on a 64G/64-thread
+swapout, so it is dominated by zswap compression, not the cluster table.
+
+Changelog
+=========
+- Patch 1 (mm: zswap: return -ENOENT when the swap device is gone) is not
+  part of this series; it was posted separately.
+
+- There is only one size knob now. The runtime ceiling and the debugfs
+  per-device limit are gone. All that is left is the optional per-device
+  cap, /sys/kernel/mm/xswap/type<N>/limit. Grow and shrink work without
+  it.
+
+- The shrink no longer keeps its own count of the free tail. It scans the
+  tail instead, and dropping the counter also removes a call from the
+  cluster allocation path. 
+
+- The priority is no longer a patch of its own. The create attribute
+  takes it:
+    echo 100 > /sys/kernel/mm/xswap/create
+
+RFC v3 -> v1
+- Add patch 16 to support setting xswap device priority at creation.
+  The create sysfs interface (/sys/kernel/mm/xswap/create) previously
+  hardcoded every new device's priority to DEF_SWAP_PRIO, it now
+  accepts an optional priority:
+
+    echo "<percent> [<prio>]" > /sys/kernel/mm/xswap/create
+
+- Bug fix: xswap_lock init ordering. mutex_init(&si->xswap_lock) was called
+  after xswap_map_clusters() (which locks it), i.e. locking an uninitialized
+  mutex. Init now before the first xswap_map_clusters() call. Thanks to Klara.
+
+- Bug fix: Fixes a compile error in !CONFIG_XSWAP builds. xswap_debugfs_root
+  is declared inside CONFIG_XSWAP ifdeffery scope, so the ungarded use
+  caused error when CONFIG_XSWAP is off.
+
+RFC v2-> RFC v3:
+- Replace the "header-only swap file + swapon" creation hack with a
+  proper file-less device created and destroyed via sysfs
+  (/sys/kernel/mm/xswap/{create,destroy}).  This required the
+  __swapoff() refactor and the free_swap_cluster_info() signature
+  change (patches 4, 6, 14).
+
+- Require zswap: refuse to create an xswap device when zswap is
+  unavailable (patch 15).
+
+- Split the unrelated zswap -ENOENT fix out of the series into a
+  standalone patch (patch 1).
+
+- Fix nr_free_tail over-counting on concurrent grow, shrink leaking
+  detached clusters on early bail-out, a re-init race on cluster
+  spinlocks in xswap_map_clusters(), the nr_clusters_mapped update
+  ordering, and swapoff accessing the shrinker-unmapped cluster tail.
+
+- Minor cleanups (checkpatch, /proc/swaps alignment, commit messages).
+
+RFC v1-> RFC v2:
+- Added __GFP_HIGH | __GFP_NOMEMALLOC to alloc_page() and kmalloc_array()
+  in the grow path, plus memalloc_noreclaim_save/restore() wrapping,
+  to prevent the grow path from consuming emergency memory reserves
+  or recursing into swap under PF_MEMALLOC. This is folded into patch 3.
+  This was pointed out by Nhat.
+
+- Folded the mutex serialization fix into the cluster grow patch (patch
+  3). This is suggested by Nhat.
+
+- Fixed coding style issues: corrected indentation of declarations in
+  xswap_unmap_clusters(), removed unnecessary block scope around the
+  err variable in xswap_map_clusters().
+
+- Rebased onto mm-unstable
+
+Baoquan He (11):
+  mm, swap: add CONFIG_XSWAP and xswap fields to swap_info_struct
+  mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+  mm, swap: add xswap cluster grow via VM_SPARSE vmalloc
+  mm, swap: add sysfs create interface for xswap
+  mm, swap: add xswap grow trigger on cluster allocation
+  mm, swap: add xswap_try_shrink and shrink trigger on cluster free
+  mm, swap: free backing pages in xswap_unmap_clusters
+  mm, swap: defer xswap shrink to workqueue to avoid lock recursion
+  mm, swap: refactor swapoff + add xswap_destroy
+  mm, swap: require zswap for xswap devices
+  mm, swap: add sysfs per-device size limit for xswap
+
+Chris Li (1):
+  mm: xswap support for zswap
+
+ include/linux/swap.h |   13 +
+ mm/Kconfig           |    9 +
+ mm/page_io.c         |   16 +
+ mm/swap_state.c      |    7 +
+ mm/swapfile.c        | 1170 ++++++++++++++++++++++++++++++++++++++----
+ mm/zswap.c           |    7 +-
+ 6 files changed, 1118 insertions(+), 104 deletions(-)
+
+-- 
+2.54.0
 
 
