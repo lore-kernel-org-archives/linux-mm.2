@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83341C88E56
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 10:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AC9C88E56
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 10:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3584A6B0092; Sun, 13 Sep 2026 06:11:55 -0400 (EDT)
+	id 117696B0093; Sun, 13 Sep 2026 06:16:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E21E6B0093; Sun, 13 Sep 2026 06:11:55 -0400 (EDT)
+	id 0C8D86B0095; Sun, 13 Sep 2026 06:16:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A9D06B0095; Sun, 13 Sep 2026 06:11:55 -0400 (EDT)
+	id EF9A56B0096; Sun, 13 Sep 2026 06:16:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D9DD06B0092
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:11:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31268120652
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:11:53 +0000 (UTC)
-X-FDA: 85208322906.02.DF1189C
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7D6DB14000E
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:11:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sTdxIw2P;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C3D5F6B0093
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 06:16:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F8308060C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:16:56 +0000 (UTC)
+X-FDA: 85208335632.30.1B9B9C2
+Received: from mta0.migadu.com (out-72.mta0.migadu.com [91.218.175.72])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 14650100002
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 10:16:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pDHbned7;
+	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789294614;
+	b=gOXe0FkdLlwjqVJsR6sndzZQHaQSqIPLDA9XfAATHBGTbpfWnaqMdidBUY5fT+PDPBaaQC
+	TdIsUMCrMYy28+NobbWCjHV2h3qI2O/iD7wKoqt61+wMHBkNjbr8FakNpMyUuQUMro0Ks0
+	vSG+kFdpiEfZ6b+xI8rFu9q/erYATKU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pDHbned7;
+	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789294311;
+	s=arc-20220608; t=1789294614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
-	b=i58v40g4oaXPNAMSGBvuGrcvi+sxRQe2xqZ/oiVl5TmAGS81zK0en9JZ9+VBhjOpRRJkIT
-	DrH4E/uw0Sgpbqnxo8GFBYhnb84Hvld7KPibt/c9y+wBuWdwG7TvyQuGzGebB0PAEr25Vr
-	vjyNJ9CHBMA1C7upxCGxgo4AU997J8U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789294311;
-	b=N3IQ35VoNVtnSzOU/ABeo3/xOLBdg6rJi4E7kVU31/BICd6qWSOwiCUoK/GlO74PCXR0rn
-	ysRvvWLPOsZv+WdvphmGPMsQMO2cyGyJctf+jT05vl10t1Js4qsGCobp3L3AciBwTYct8V
-	nouOz3QVAiF3IcthVsS79cgYoUNTpfg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sTdxIw2P;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ngocthang2710.1999@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=ngocthang2710.1999@gmail.com
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-86b90133ae8so873209b3a.1
-        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 03:11:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789294310; x=1789899110; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
-        b=sTdxIw2PHC+TDcu2n0Z5g9Wga/0A8c3uzK0lYtuvINj+1yFA4xbPzazXy7WgECjhkM
-         y6Di+t8K2SlDerW2wi3waIHFenBlVCr92EyiqTxOkxVsheylH6ZmiaskdpioD1lynUUc
-         IHHQzvt9ex1mHZCSp4jrzLrSI5IoyruDbYdzAqu7afxDWUa594q7c1ELCujBxkLWgCr0
-         JKG/hCzDmR8lGpt1dpuxEHp9Zg9tbK3dNihOAUTTRTFZsodJMQEitKuJO+1LKN/lB1sl
-         0Keb9rLKDKoCbZMU+B7FNYIZG2Q5JixVbpYi/atJVQ6ps8h6ixUzUGWZo2xlrlVoE4fq
-         LyEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789294310; x=1789899110;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cwdi/6Fr4s2UCykzftMpLqN1YkG8FoctaI5sNGgltcw=;
-        b=ZJ9iBozEJIsO8tOsfJYMvjmTi6/Zhm/ndOkJAgfWyJNAptpN2glcvFNkQFQn2PHlZv
-         djwRFc4NQ4zANZTyHoWQ5wNEvbb+dgOWk7swwIm8cfBF3n6wb2fZMvSId3wdJX5s9+qu
-         aSiDvFf64vwszy52GVvtY2adKFPOadrUO7qD9geHh5NUEB/1MVvyP39dQkwwLubCeCOq
-         m/3SAFnHUFmGxR7AngoRrdde0E+hzs3aw/5wddGw5XYuccvsOBUHTh+BM023r+kvJ3Tw
-         zysOPUl3QqSl0Ary5ad382JOdcrvUg8H8Vc5J32hNhtJ0Pq+3Rh49GcpQeFSqGmeaoA1
-         ChNw==
-X-Forwarded-Encrypted: i=1; AKwUvBz/ZnD8oUvZrI13RVgV3eCbznrWkBIunEQI18yLCFp/wlnnMvcci0OGBlNhESla3qQNM+qb/qajtQ==@kvack.org
-X-Gm-Message-State: AFuF++mJJ/c496/NPh0jACMn6oNEaiaNfTsg6zK2snLYBAIKOEmNA0fp
-	xyOE2qrjcWYAjir79NuNhljlhtUgTcOMNonVGNTBzK9exMvfwDMCinjV
-X-Gm-Gg: AYBFou1DP2FmysW4bFu4M+9dC96mobsC1iiwr/NjTYVPZhUaQnSnraHtESNP5BuuulB
-	4sjTkF6lSxgRc3IQV3x7ZXAduJ+oDkb/DJOnWHITdZi4iyYiCxvKT9qD77t01mQeZ9fudTPWzh+
-	jhLPKAexqRMZGgQX29/J9OTX/7B0v4QSw3Z8HrnsJheM556Le0jdSsXixzXJTYcz+beButcgwA5
-	vX60k2AF4yZoQLOXQ0jhuYJyIF8o3LjsfSrm659Rdi4NWCdKxTey3z1NVgXi3F7B/N+JEMG1FaH
-	i5spDcykW4wkho6QTcLnGjUu3Tag6t02HvxaIiH1gDqL7FZu6hXzmCvjzlv//51SIegr77bdrwR
-	Vzat/mEOJDLlrN/hjeg7Ss0BuxoSkF7wdAT0xU2J7E39LDu0S9BTddnNsvNdK3fWfoVxl1hm0m7
-	WSAmiE9DoD4V+9PIycip45MXyHQNdMm3tV2MYgTO3D834hrEBXoyFAdE1tDzfyS/CdneedPzzR0
-	NFn2pvYdrDlmexVGA==
-X-Received: by 2002:a05:6a00:4f85:b0:848:67ca:bfd with SMTP id d2e1a72fcca58-86b318fd2e4mr17232792b3a.16.1789294310240;
-        Sun, 13 Sep 2026 03:11:50 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2405:4802:1d38:5c70:f608:4e94:6df6:c8b4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29cbb0d3sm3141397b3a.42.2026.09.13.03.11.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 03:11:49 -0700 (PDT)
-From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] khugepaged: hold invalidate_lock across collapse_file() readahead
-Date: Sun, 13 Sep 2026 17:11:42 +0700
-Message-ID: <20260913101142.28802-1-ngocthang2710.1999@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n4M0OeoQmY+H04o+rMWiP1rLMMW6op0p5ihqt731dAU=;
+	b=N7HWO7RghUkV+0CtNbvS6fphYWR2JTJq1GdT40lUkLn4hCjMP3iOlcJB8f714i6dF/q/C6
+	/fK4Y7P3pNN9S8hBFXvGFML+a5fP9NUS/95bXzMgUT2iTXP3qyXprVgXJCczAFziQvo3kC
+	0DTSpfa6HrEr/176LRj73gvYlKlALJA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/wu/fbxDNn+n1dkUM4jcl91XU1j5H2XhOQeune7fHf4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789294612; v=1; x=1789899412;
+ b=pDHbned7TWlncl5hhAOnZ+t9WFXCkgclIaMw/gxv+Opi2SH26Fw0McQh73ipQ2E2TM8pxyaO
+ 7yYGXfpBzRJTwRX3ljzQcmYKUXt+sqhtvBAkQ7gkEIF3Ym6G7TdTQtnnKg7B4jK50An2yVWi7Kx
+ qO7ccX0D/HUfMcdNW/icYJ14=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id cbe18b715c9175a4;
+	Sun, 13 Sep 2026 10:16:52 +0000
+X-Mizu-Trace-ID: cbe18b715c9175a4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <46037a37-4cf6-448e-a94b-30a4d16e8814@linux.dev>
+Date: Sun, 13 Sep 2026 18:16:40 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8] mm: vmscan: retry folios written back while isolated
+ for traditional LRU
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>,
+ xieym_ict@hotmail.com
+References: <20260913100013.3603815-1-ridong.chen@linux.dev>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260913100013.3603815-1-ridong.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 14650100002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D6DB14000E
-X-Stat-Signature: 9878akc4819jkfd649gafjx9hibchexo
-X-HE-Tag: 1789294311-775481
-X-HE-Meta: U2FsdGVkX1+6qX1rmFkKodODTEopU7/EGIGIbPsjQXLDLMaFOqN+M1xLJNN9UxQ3d84rL93MS7GwW1T7S6sLVKm0QllPEMkhZk15gZTg3BF64KdVhx12CigTSYG9USPZx1/XawTv1f9bt6dFlalSFkQfQVvU8gYkBSiJrJ0h6MDtHZm+Yd3o4Bey3NGvtLxR9BG8rsPz0tAU8nxOLpyZZ9MTrDhd26lXl57ee0Ut5z46zm036CMTciWymQTB2nAcyU0oXY+eyjNNCD+W9Kpg9Y5cO4aLoo0OZbp4Hct08gyZ7rkGO3sqnDah+a4HptkroXByPGkTVB+KiPjz47WxPXNyVJhOwb7CMjqBNz8w5LP1n6rsi9R/J9MNgGro2xQ0ZjR1mnckxORNqR5z0RTUOoJLot+3JrAgUpAgWKiFXwET0XZV+BurM1qtJJVsCNDP3tVtnO2B8UASW6PL/Er8VluB+uROhwJ4IFGs/hmVFaqMsphS3GWcwmvL2FuTvLU70pq+La33IWvp0LKFzPnyhZ6MqTKg2jxCSdrqr+E+hazQPh5gInTABeKUGmWwn1wbjohC4Ww4Dddx+la9ji1hKrKOXQYlRyORBeolYRlQ6wwuVFvp5ilGUZYdn/6oLx80MtTFmntvQpN8b7iB/TG2hxuvHClCsCnsZCTCkvrHE+5culFJQYIJuPQ8DBuYepV7Icw0N+nPvA8HJ+fzts/XI/aE3SP76rCflD1vsfb/4Lu+1sYNgR1FNo3pv9ZlH3XkJ2ifLF7sz2hcwQplA0aJLzIBADJRNLgTEJwObiJY7zja7n2hAntSQzVPPEf1QR1DeYyEAxMvgH7H/PHSKmSJBqVE28FU4X95sx5VAk3pJQxv+w1e8/vgdobIOo9WDyPaiOJrPuTNKMCOOyz5s2bOa5Dmcgf8q47Qzcj0Nx5iFCsp/ZEowFFSze4hgffg1iIENRdiJ+dm3pVkZfM12zL
- ylts6vRs
- j/B33qiN889vDNvJqGuatKiKakwmuirXQdpTNFUE2oDxkkGDnX2b6TqCeewWEtF2S+icG39OvT54+3ouVTzHBu6Xqmzl+xpQbvboEuVA9f+eCIn6EjK7xN5zFDZ42nb7z4TVhqaxb5XYq6igGT/yUhxXvHfUyFpLpZJT1RVPdfBCgA62lX571oCX/PujZfpVuBnlLRuuEOp3t1XO/FMyWHx00iNTA+ouMAMwzdXm/PN00/SJOxl/z3rBIGBExt2xZaCWrgJwnBLwo4V15eAHDq7rg/SvtwqbZZhrir/v4uIOpKlNr7K5Xx+UXNKuc2YChoj4fSKPDaHIAQUu3j9NpzDacTpyF9c7ke98tNKTZ0eqcps6FcK8tq60u6fXN5IBaT0QVA6JPwfbP/wpoJ9AV8gij+kuvrAg0+aptCUyFAMlQ7R0Oyp2kJt0cabQZ9u4tX3Nxx0hic578pHgty5UpLb8HXlh5KivN+9Pt2FlesgbZIWDNaLkwrYLnn8xM2RopgvAvmRmWfekR2tn5LPeehx1rGEqbopXL5Hq7vAxe1FaTLTSnHeLUqk6ThuoCgoK7mBj0bU9c5J9xwYaL4dSfsZqok4qw20J4nypWzW/S8wtoWrnvFFMrZPxW5lMdlBAsvmso2TVVfB2NYlNsOAsVTtnpqU7ehLLUDD1k
+X-Stat-Signature: 4ky1dwa6g18c6pmzzey1kdjbogrta867
+X-HE-Tag: 1789294613-380464
+X-HE-Meta: U2FsdGVkX19+ZYR5AaIqrXpufuXFYNoeX9ssitkBAh+UZASE8CqAUnLHnyFu5TQXS/LHJLI+RJZtGDJU0ZH28QSOAxXVHM8RDTjlOPm+yh6fEzw1pRu2eQ1KKVq4ueF5s1j6rbBVjYVu+XGlSrp5Kl30C06ri0+Jf9SSzLZ7/ENuTBUC4ZqGHmHPAEH826Y8jwg/TY0XjeXHzIqG5tY9uC5PyS2FAduzexvrMXV3vLjD5drbVbGf0CGspc1EbhVTGz+swWsZ6TShMV4jeMvH1/AB+eMVXHZ71C5ypyXT6aIbaWZ8c7u4ipw90guiGMTvP3IzTVn2Sq6W/cv6KRrNESBTKAeASrTqhqzujuwUIWYzYamiCY5Feh5FsDTZe+qu+VseythqwzUjTeh2A5ybGG7Rcdrn82QtqoFbpCROzc5gwYr0gvkUUzpA39MBti/4bf+mAEqO3ZKfsIOTX0FIlxUW5DnLcdOvFjdmV+fQwTXOAhXz3eSoSblY7de77LCcZzqam4maV+vjM6ulZOboQelFiiumAGZTdvTxBkH6lG8in5yDE/pwRhpTsM+3FSoWK+d3IFF3dyA1Rrh7Z6JCLyMhd+cPoPHKJhL4UbEStT2YPQYNsDVnQ195F7AtjPKhW4C7Cjt1FNGhsqKH72unSZUsFZKCXaX3SmsMXypTl6zN5r5s0HcuteGGX6bBtzlf3iPoNWAssEbI8yVK/9ue+kMRYbbCwUfT5KYYIqiaKvtglm5lruBSuSTjMK7CtcE3iuHnT3yv7clhHlnzOWU6rczSxN0djEb6fPQW5wmJCe6+DjNV7yrkguMfNqGIJgiMQu+DxwDNngErKH97WNtaWkGx9/UvoLiRBUTm2WiTseNNu76xXt9yM93StUKu9F16ZgIqb+JyqOBm6g+wvLkW1WTuU6Sd5S0xYWNGev/L3N1wgFhv5aqRMsusvyX4MVbjxzhJbmjvRnk3yG0gi7Z
+ 17VoFfnI
+ nrB40+sOgM5YiSIJsJ0qgoIBN2u67IGhtv3WpJJ+5okj1zYfidI07STQjk/SUPs+kHr5vKajHwFoDcV86RC06s89eZ1Ums3zANsVF7o0We/SY3IXceSh5fVFjUwDWaDeuq+e8m01TiMcwXSZyOchP5F8TTC8HHZqbmhVMb9Ez1Yt/UEIJbjCRJRrcAyBMD70Eybfs7wAtTCa+JUo0oC3IaRVorEZKY6H0QhYc2fYPGzNpLA9hLhoPMAKnxL6MUljD6BHoyonvwjwXz/g1Ex8mFr1nychVKJJrqCOyAEqPmttmQN3TiQqJdb83fyq9Y8c112c6MFkO4hpnTEaKKuXRsi6QBbukx2xxEnxlOe+Ss4svznYcna/njM+aUCUk+l8nwQql
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,88 +100,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_file() calls page_cache_sync_readahead() to fault in missing
-pages before collapsing them into a THP. That helper takes
-mapping->invalidate_lock itself for the duration of the call, then
-drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
-takes invalidate_lock and then waits on each page's folio lock while
-holding it. If collapse_file() has already locked one of those folios
-by the time truncate reaches it, and then tries to acquire
-invalidate_lock again (e.g. on the next iteration, or via a nested
-readahead call), the two paths can deadlock/hang on each other's lock:
-truncate blocked on the folio lock collapse holds, and collapse
-blocked waiting for invalidate_lock that truncate holds.
 
-Reproducing this over ~150,000 collapse iterations with truncate
-racing concurrently reliably hits hung_task: blocked tasks within
-about 20 seconds on an unpatched kernel.
 
-Fix it by taking invalidate_lock_shared once for the whole scan, before
-locking any folio, and using page_cache_ra_unbounded() directly in the
-readahead call site instead of page_cache_sync_readahead(), since the
-latter would try to retake the lock we already hold.
-page_cache_ra_unbounded() does not clamp to EOF like the helper it
-replaces, so clamp the requested range explicitly.
+On 9/13/2026 6:00 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> As commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+> while isolated") mentioned:
+> 
+>    The page reclaim isolates a batch of folios from the tail of one of the
+>    LRU lists and works on those folios one by one.  For a suitable
+>    swap-backed folio, if the swap device is async, it queues that folio for
+>    writeback.  After the page reclaim finishes an entire batch, it puts back
+>    the folios it queued for writeback to the head of the original LRU list.
+> 
+>    In the meantime, the page writeback flushes the queued folios also by
+>    batches.  Its batching logic is independent from that of the page
+>    reclaim. For each of the folios it writes back, the page writeback calls
+>    folio_rotate_reclaimable() which tries to rotate a folio to the tail.
+> 
+>    folio_rotate_reclaimable() only works for a folio after the page reclaim
+>    has put it back.  If an async swap device is fast enough, the page
+>    writeback can finish with that folio while the page reclaim is still
+>    working on the rest of the batch containing it.  In this case, that folio
+>    will remain at the head and the page reclaim will not retry it before
+>    reaching there".
+> 
+> The commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+> while isolated") only fixed the issue for mglru. However, this issue
+> also exists in the traditional active/inactive LRU and was found at [1].
+> 
+> It can be reproduced with below steps:
+> 
+> 1. Compile with CONFIG_TRANSPARENT_HUGEPAGE=y
+> 2. Mount memcg v1, and create memcg named test_memcg and set
+>     limit_in_bytes=1G, memsw.limit_in_bytes=2G.
+> 3. Create a 1G swap file, and allocate 1.35G anon memory in test_memcg.
+> 
+Hi all,
 
-Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
-Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
----
- mm/khugepaged.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+I am raising this issue again. It has been a long time since the last version [1].
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 11ff98d55c76..690ccbcdf593 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2267,6 +2267,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
- 	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
- 
-+	/*
-+	 * Take invalidate_lock before any folio lock: the readahead below
-+	 * needs it, and truncate holds it while waiting on folio locks.
-+	 */
-+	if (!is_shmem)
-+		filemap_invalidate_lock_shared(mapping);
-+
- 	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
- 	if (result != SCAN_SUCCEED)
- 		goto out;
-@@ -2337,10 +2344,20 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 			}
- 		} else {	/* !is_shmem */
- 			if (!folio || xa_is_value(folio)) {
-+				DEFINE_READAHEAD(ractl, file, &file->f_ra,
-+						  mapping, index);
-+				pgoff_t eof = DIV_ROUND_UP(i_size_read(mapping->host),
-+							    PAGE_SIZE);
-+
- 				xas_unlock_irq(&xas);
--				page_cache_sync_readahead(mapping, &file->f_ra,
--							  file, index,
--							  end - index);
-+				/*
-+				 * invalidate_lock held above; don't retake it.
-+				 * page_cache_ra_unbounded(), unlike the readahead
-+				 * helper this replaces, does not clamp to EOF.
-+				 */
-+				if (index < eof)
-+					page_cache_ra_unbounded(&ractl,
-+						min(end, eof) - index, 0);
- 				/* drain lru cache to help folio_isolate_lru() */
- 				lru_add_drain();
- 				folio = filemap_lock_folio(mapping, index);
-@@ -2672,6 +2689,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	folio_unlock(new_folio);
- 	folio_put(new_folio);
- out:
-+	if (!is_shmem)
-+		filemap_invalidate_unlock_shared(mapping);
- 	VM_BUG_ON(!list_empty(&pagelist));
- 	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
- 	return result;
+It was suspected that Kirill's "[PATCH 0/8] mm: Remove PG_reclaim" would solve 
+this issue, but the issue remains.
+
+I am providing the reproducer(offered by Xuedong Zhao) in the hope that it will 
+help fix this issue.
+
+memcg_malloc.c:
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define ONE_GB (1024 * 1024 * 1024)
+#define SIXTY_FOUR_MB (64 * 1024 * 1024)
+
+/* non-zero fill: zero pages can be deduped/never written to swap, which hides
+  * the "written-back-while-isolated" leak. Use a real byte pattern. */
+#define FILL_BYTE 0xAB
+
+void allocate_memory(size_t size_in_bytes) {
+     size_t total_allocated = 0;
+     char *memory;
+
+     while (total_allocated + ONE_GB <= size_in_bytes) {
+         memory = (char *)malloc(ONE_GB);
+         if (memory == NULL) {
+             perror("malloc");
+             exit(EXIT_FAILURE);
+         }
+         memset(memory, FILL_BYTE, ONE_GB);
+         total_allocated += ONE_GB;
+         printf("Allocated %zu GB\n", total_allocated / ONE_GB);
+         sleep(1);
+     }
+
+     while (total_allocated + SIXTY_FOUR_MB <= size_in_bytes) {
+         memory = (char *)malloc(SIXTY_FOUR_MB);
+         if (memory == NULL) {
+             perror("malloc");
+             exit(EXIT_FAILURE);
+         }
+         memset(memory, FILL_BYTE, SIXTY_FOUR_MB);
+         total_allocated += SIXTY_FOUR_MB;
+         printf("Allocated %zu MB\n", total_allocated / (1024 * 1024));
+         sleep(1);
+     }
+
+     size_t remaining = size_in_bytes - total_allocated;
+     if (remaining > 0) {
+         memory = (char *)malloc(remaining);
+         if (memory == NULL) {
+             perror("malloc");
+             exit(EXIT_FAILURE);
+         }
+         memset(memory, FILL_BYTE, remaining);
+         total_allocated += remaining;
+         printf("Allocated remaining %zu bytes\n", remaining);
+         sleep(1);
+     }
+
+     printf("Total allocated: %zu bytes\n", total_allocated);
+}
+
+int main(int argc, char *argv[]) {
+     if (argc != 2) {
+         fprintf(stderr, "Usage: %s <size_in_gb>\n", argv[0]);
+         return EXIT_FAILURE;
+     }
+
+     double size_in_gb = atof(argv[1]);
+     if (size_in_gb <= 0) {
+         fprintf(stderr, "Invalid size: %s\n", argv[1]);
+         return EXIT_FAILURE;
+     }
+
+     size_t size_in_bytes = (size_t)(size_in_gb * ONE_GB);
+     allocate_memory(size_in_bytes);
+
+     sleep(3600);
+     return EXIT_SUCCESS;
+}
+```
+
+test.sh:
+```
+#!/bin/bash
+set -e
+
+# Variables
+MEMCG_NAME="test_memcg"
+MEM_LIMIT="1G"
+MEMSW_LIMIT="2G"
+PROGRAM_PATH="./memcg_malloc"
+PROGRAM_ARGS="1.35"
+
+# ---- swapfile setup --------------------------------------------------------
+SWAPFILE="/swapfile"
+SWAP_SIZE="1G"          # size of the swap device backing the test
+
+setup_swap() {
+     # already have swap on? then nothing to do
+     if [ "$(swapon --show --noheadings | wc -l)" -gt 0 ]; then
+         echo "swap already active:"; swapon --show
+         return
+     fi
+
+     if [ ! -f "$SWAPFILE" ]; then
+         echo "Creating ${SWAP_SIZE} swapfile at ${SWAPFILE}"
+         # fallocate is fast; fall back to dd if the fs doesn't support it
+         fallocate -l "$SWAP_SIZE" "$SWAPFILE" 2>/dev/null || \
+             dd if=/dev/zero of="$SWAPFILE" bs=1M count=$((8*1024)) status=progress
+         chmod 600 "$SWAPFILE"
+         mkswap "$SWAPFILE"
+     fi
+     swapon "$SWAPFILE"
+     echo "swap enabled:"; swapon --show
+}
+
+setup_swap
+
+# ---- reclaim preconditions -------------------------------------------------
+# This bug is in the *traditional* active/inactive LRU; MGLRU already fixed it
+# in commit 359a5e1416ca, so it must be disabled to reproduce.
+[ -f /sys/kernel/mm/lru_gen/enabled ] && echo 0 > /sys/kernel/mm/lru_gen/enabled
+# Large anon folios make the reclaim/writeback batching race easy to hit.
+echo always > /sys/kernel/mm/transparent_hugepage/enabled
+echo "lru_gen: $(cat /sys/kernel/mm/lru_gen/enabled 2>/dev/null)  thp: $(cat 
+/sys/kernel/mm/transparent_hugepage/enabled)"
+
+# Create the cgroup slice if it doesn't exist
+if ! systemctl list-units --full -all | grep -q "${MEMCG_NAME}.slice"; then
+     echo "Creating cgroup slice ${MEMCG_NAME}.slice"
+     systemctl set-property --runtime -- ${MEMCG_NAME}.slice MemoryMax=${MEM_LIMIT}
+     systemctl set-property --runtime -- ${MEMCG_NAME}.slice 
+MemorySwapMax=${MEMSW_LIMIT}
+fi
+
+# Start the slice to apply the properties
+systemctl start ${MEMCG_NAME}.slice
+
+# Run the program in the cgroup
+echo "Running programs in cgroup slice ${MEMCG_NAME}.slice"
+systemd-run --unit=${MEMCG_NAME}_proc1 --slice=${MEMCG_NAME}.slice 
+${PROGRAM_PATH} ${PROGRAM_ARGS} &
+
+# Pause to let reclaim settle under the 1G limit
+sleep 60
+
+# ---- measurement (cgroup v1) -----------------------------------------------
+echo "########## measurement ##########"
+
+CG=/sys/fs/cgroup/memory/${MEMCG_NAME}.slice/${MEMCG_NAME}_proc1.service
+
+usage=$(cat "$CG/memory.usage_in_bytes" 2>/dev/null || echo 0)
+memsw=$(cat "$CG/memory.memsw.usage_in_bytes" 2>/dev/null || echo 0)
+
+# v1: swap charged to the memcg is memsw.usage - usage
+swap_charged=$((memsw - usage))
+
+# swap actually consumed on the device: /proc/swaps "Used" column is in KiB
+dev_used_kb=$(awk 'NR>1 {sum += $4} END {print sum+0}' /proc/swaps)
+dev_used=$((dev_used_kb * 1024))
+
+# the bug wastes swap: slots written back while isolated are charged on the
+# device but never reused, so device usage outruns what the cgroup accounts for
+waste=$((dev_used - swap_charged))
+
+to_mib() { awk -v b="$1" 'BEGIN { printf "%.0f MiB", b/1024/1024 }'; }
+
+echo "memory.usage_in_bytes        : ${usage} bytes ($(to_mib ${usage}))"
+echo "memory.memsw.usage_in_bytes  : ${memsw} bytes ($(to_mib ${memsw}))"
+echo "swap charged (memsw - usage) : ${swap_charged} bytes ($(to_mib 
+${swap_charged}))"
+echo "swap device used             : ${dev_used} bytes ($(to_mib ${dev_used}))"
+echo "wasted swap (device - cg)    : ${waste} bytes ($(to_mib ${waste}))"
+echo "-----"
+free -h
+echo "--- /proc/swaps ---"; cat /proc/swaps
+
+# Wait for the processes to complete
+wait
+
+# Clean up
+echo "Cleaning up"
+# Reset failed state if the slice is still loaded
+if systemctl list-units --full -all | grep -q "${MEMCG_NAME}.slice"; then
+     systemctl reset-failed ${MEMCG_NAME}.slice
+fi
+systemctl stop ${MEMCG_NAME}.slice
+
+echo "Done"
+
+```
+
+Result shown as:
+
+```
+...
+########## measurement ##########
+memory.usage_in_bytes        : 1070014464 bytes (1020 MiB)
+memory.memsw.usage_in_bytes  : 1413173248 bytes (1348 MiB)
+swap charged (memsw - usage) : 343158784 bytes (327 MiB)
+swap device used             : 344248320 bytes (328 MiB)
+wasted swap (device - cg)    : 1089536 bytes (1 MiB)
+-----
+                total        used        free      shared  buff/cache   available
+Mem:           1.6Gi       1.2Gi       316Mi       0.0Ki        85Mi       287Mi
+Swap:          1.0Gi       328Mi       695Mi
+...
+```
+
+[1] https://lore.kernel.org/linux-mm/20250113155206.GB829144@cmpxchg.org/#r
 -- 
-2.43.0
+Best regards
+Ridong
 
 
