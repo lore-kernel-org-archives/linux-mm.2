@@ -4,128 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F3CBC88E40
-	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 08:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE20CC88E40
+	for <linux-mm@archiver.kernel.org>; Sun, 13 Sep 2026 09:37:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EC816B009B; Sun, 13 Sep 2026 04:41:17 -0400 (EDT)
+	id 9F0846B0088; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C47E6B009D; Sun, 13 Sep 2026 04:41:17 -0400 (EDT)
+	id 9A1F46B008C; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DC086B009E; Sun, 13 Sep 2026 04:41:17 -0400 (EDT)
+	id 891E56B0092; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 252D96B009B
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 04:41:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D159805F0
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 08:41:16 +0000 (UTC)
-X-FDA: 85208094552.30.FBBA538
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 929B080003
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 08:41:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YVbXd05u;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 612A76B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 05:37:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65157A0651
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:37:12 +0000 (UTC)
+X-FDA: 85208235504.12.2D0AB7E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DED1A40004
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 09:37:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXq3ebKy;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789292230;
+	b=2tQbtnFd49Ed7IaQQ8gTLB1fWDJyVS9uJ4c3HhaFwAcHVi+tc2FO0Iss2f2uNlguhv/bDk
+	PrA1cwDNZECosv2rHCBrUVvgJWqi70UzMdd2A6Iq5mLDMvYdQadH41YOGYFyL/mQEwL2re
+	EGtWA+1hCr8RQnw71kVsfQB6OiC5Ujw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXq3ebKy;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789288874;
+	s=arc-20220608; t=1789292230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jabfOFZH7nclzlLV4JN+2R4So1RYw+NkC6onyGlhulM=;
-	b=ZvkTraTRQtMziBeqFGrGZ+l0Si2/MT1ix5lLNnj76G+aN9FcCtfDH6WdM3QWEnJ9j9t0c7
-	LNU1rNOPUYWuhVeRwTNzzrhGXG3uDyg9XC5L8jcB/XBX76X2G7t9uIWulBTV4W6VhCLhGe
-	8QK+u6iWsHZVREJmsRlwDoZiVVd2mZc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789288874;
-	b=be7YaAsjBOZn7Akyx+jM0QMS1yFVPY8cAu4rlTTTBl4lxfDUHLiA7AhxuCUFbsVwhIfXT/
-	+B4LlQSaJqgv0rl+SG7DMWWxesJdkUpsCK6Wdhlr0A+tdKZZAby2k693vV68ejE60xYebR
-	BJ3nJFBKJsiWc3SDSEDT0LFt1ivngEk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=YVbXd05u;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-86b90133ae8so851496b3a.1
-        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 01:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1789288873; x=1789893673; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jabfOFZH7nclzlLV4JN+2R4So1RYw+NkC6onyGlhulM=;
-        b=YVbXd05uP5Sbrrq1UqNfwfk9yIQsb+MyHXCYAkUbtM79rK7uYIbrz/wv7sl7p5w6dB
-         tfoXtXgu1pOsFHjvdg6JrbvmfXvc0ZhSLNpsfyngNZNkdAaKLavu6V5s6rNMGP4oaUVC
-         5aCpYy9qbbeU6QKgYaCZVW01WNdxo3C8kp7RLgChfhEVB/sXIi5y2wXs/boSTlHzAt2Z
-         vCVE0/pc2PLV6yi+zvOtWb9HlDX8AacImDnZPqwI1zBHlSBNuywEtk2iyutiStGjsF1X
-         +JOcb9PCtLA2753h900Rlbd3V+ZrQWfIYuoBFAu7Sk3UwVi3PWkXO6+C1cxI8+YWlpUC
-         OwOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789288873; x=1789893673;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jabfOFZH7nclzlLV4JN+2R4So1RYw+NkC6onyGlhulM=;
-        b=bbHxzQvPYTKPkOnQrS0hF16pPE2K4Sr8Dnmobm39JFQafp/H1U41rxhCzi2xnQ7KRW
-         5B6rDyvx/6xDHg5arJGy6CaoTbyrTG8tmPPRLwxjQ7qxAtYQz4Ct03beN0z05DinZgxd
-         M5FDu1wqOcpqavFAeNbCnuLFS1jP3l3iEuTK1mNSnpVyaSM3PbG5X77OZVfVcc0XF4zr
-         qoB4cJPEUKkdwIuOXQ4W4PUY7xj246DKdGW92J1pNtaBo+vh0RfYSp5EQiSXSrzCqXVE
-         gOq41qzlEeDeUAT6zqFgwykc4zWvm9y8o6kG3VdCKIQdHtP7KpUqlQf0xMpeqCTUpte9
-         dx/g==
-X-Forwarded-Encrypted: i=1; AKwUvByNrY//r5lJU82s+XAOzLM0Ik5N8lGyyeQ0Fz0eO0Au36HJ+8wmPYUrY7lJRdm0JAQqcjOWmYWISA==@kvack.org
-X-Gm-Message-State: AFuF++kXtGnZMUcHpufoicM7l82MBAttZESj6B1J1dZ08L/c0voXRYze
-	zFXEugIMYRVH18HJRO7xEp6GUrewrimK1NF6cfK+qWcVdh9VViFn6pxQm0kNOl9cPz4=
-X-Gm-Gg: AYBFou0hjgPJrzJqN+E1MAj98Z28Ij1oyHEkpOOCRACKzwP0tByDd0Sy7fv3Ub++ohk
-	IswpnwAUbUXqjSqavKYAyV+AIx5yKmzUmWUHYY8+d1locvdJo/BQNA3VZnp4aQGbFNJkvBA4LL/
-	pjQW/6FTymcwl2Ggjh9eqSPJUnGROXcKskJ/THpMYYWe02gGFYrIfb8TMNYtKN8FwnTcanZ37WP
-	z1NfdcrWqXCqwoLLhwQ19dOtECUL9Ljm4Q0hrU3e3n9QWi15yOTymzOsOZxND+dI90m9eDl5okk
-	3FRPV5oQV0qG7pQ7ttJ9LAUxu3yMWVQKnd2+TAQ/pa0M0Q0gWZhbyBFhuhs/rZRPYORUrLGdbau
-	tC1pGtYATxsK7wzCuSckLn/dVPvZfRzfHnfWQ55qjIUhG/M36v8sBgntyRDSBqLqQSR3PfNr4p4
-	JGWoaBd6b/kQVFOLdT9CPxvnxfJOJrBLvOSn25mEAJRGwks5AfsYrHXNRD/ybNl4/Xgh6NQ//Gh
-	IAHmJUQ77ropsG2pWwQf82eaSQ=
-X-Received: by 2002:a05:6a00:c1c6:20b0:86c:52fd:fbdf with SMTP id d2e1a72fcca58-86c52fe0a64mr9440575b3a.20.1789288873401;
-        Sun, 13 Sep 2026 01:41:13 -0700 (PDT)
-Received: from G6L4RL2QG9 ([2409:8a00:1832:cf0:5137:990:100e:cc7e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29cbb0d3sm3070531b3a.42.2026.09.13.01.41.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 13 Sep 2026 01:41:12 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH 6/6] mm/sparse-vmemmap: open-code vmemmap_populate_address()
-Date: Sun, 13 Sep 2026 16:37:34 +0800
-Message-ID: <20260913083734.86802-7-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260913083734.86802-1-songmuchun@bytedance.com>
-References: <20260913083734.86802-1-songmuchun@bytedance.com>
+	bh=TeKLAo2lyBFX9D/j+t1NddJvYANiKwcO6O8pNn5tCYg=;
+	b=G7b81PJGrmta+7kusEcqsWp9+JZCSlt1vuZJD8USSh5yiG/JDHOrJVQIyP+P/jONwCFIN1
+	PHuOujMm2TsBSBkH1jSY7guSuP+CEhY8gTmia8kZbZJXoAXpVIS0VCfymgvOrJbvc/fGwV
+	7gMYyVWH917zf+naCW91vblwjjLWWzM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 370D360AAB;
+	Sun, 13 Sep 2026 09:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B941F000FF;
+	Sun, 13 Sep 2026 09:36:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789292229;
+	bh=TeKLAo2lyBFX9D/j+t1NddJvYANiKwcO6O8pNn5tCYg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZXq3ebKyzE91YMdk8KbwizzTYuRfKiJOjlC7hKcGtHQQZJ5nCJUfiu07FF3uqPR7f
+	 o6PqZ16b+Hzz787iWq7uAC2vR9/5i/IcYkPHKcuLhWMNuP85R6uSJM7F8FyrlWBS1Q
+	 KGIHV9T/yk+v10sUF/WNyxF8c8Po1Eo24e9YNLKt1UalWmzbnS3U12EvMGLOio9tEM
+	 ODMte60um3jwtWBD0ubXBYEB7KUwVDXh6qnHC7TqbJBMW531TTW44iAHQTQrd9L9Ll
+	 YCzgkk7cH0cJu67QwfwU4dQxrTMaBkv9vzAy6OxG6D2amnqezq/M6SGoPo0FCl+y/h
+	 jcgRapmP3RlUQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ Lyude Paul
+ <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve
+ =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian
+ Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>,
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
+ Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar
+ <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd
+ <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Pavel Tikhomirov
+ <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>,
+ Ira Weiny <iweiny@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Philipp Stanner
+ <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ driver-core@lists.linux.dev, linux-block@vger.kernel.org,
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-usb@vger.kernel.org
+Subject: Re: [PATCH v21 9/9] rust: page: add `ExclusivePage` for race-free
+ page access
+In-Reply-To: <aqYUWzRSade_Ww67@casper.infradead.org>
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
+ <20260910-unique-ref-v21-9-e83257373062@kernel.org>
+ <aqYUWzRSade_Ww67@casper.infradead.org>
+Date: Sun, 13 Sep 2026 11:36:53 +0200
+Message-ID: <878q55v6fe.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 929B080003
-X-Stat-Signature: 88jgjdxd7erdmu7f34ysncfquex5xmjw
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DED1A40004
 X-Rspam-User: 
-X-HE-Tag: 1789288874-542749
-X-HE-Meta: U2FsdGVkX18SWTZaRv8C3UZLcAG3ZMWhtYj5hBo77RJdz66zFI3Bn4K/b+qYUFO6H9f2JAucYcB8QNrZdMIL7lU9ZkIsEwfF4HiyEAZJiHUPFR60k88FLGNHmrNAdsp4SjDPp6jEzC8ebUn5STVBFKENRLknD/DV3Kp8hEs0VjyT9XINuyoSya3Z7A0XU1LQ5Diu7nBl7rJAdGB7V+H2JThGQzQylyUIc8RBZ4P8QaUKoehc8o7L3glwXspYaouNeodHr/Yf6sQ3MxDdwuw/3Hdm/QfIqqwlKzh8ubcmgKjWz3M5QL76cOQQPk0Dj3ffZWIUt0sDYsQ2p06rxhyyYL3YtrEea17EDM5flnMm7G+DjaiXw4GdbSZaxcLyY8cPUk91M6BjttPF3F0C1PM31V5lt9iXOikJSIcAEv2Wxd0+dO1Gi9WdNOWKP4aZxra6kd67Ou71KS/QGsO9Tq3unwoNaKhUTvb29GS6SJOeq1MvBB5x8HLrsL+JSi3OXZXaPWGdauoYC5cWq05WLXtnJLrBBK4WqIgqxkTd5fkNqpUAGDaF1gAlk+XDBnfWRZNvrJSde1nKBvMeCFbZGSWMrahMQ8xZptTPWVAauAQEg/AtJX/kQtKgmVcNtn5NbyR1Xk8RB44nPpI2zwYrVy6UULXMr8ywz0UoAVxvrtkbsOelGVZWcKOq90ah9w26Cp+jo6avPAQRvHfbpwZH64gx70AF1flISjUzSyry9hm1oCYfXcA3t1zqTcMlw28O0zwJ1R0C0s7cRxV3I5jspileyUXcuUgOmnr2y84McT5+oVCKF7UQJCqNgQK/DEc/UdoQW2He78LE/2lM5Ot8Afg85bAWkjhksKBpHGG029+kA34kfpJIYaTo0uTtkSEQhaZKJCIiyseqAcQ6E8c5In/N1HJoE0Q0NQ48N967dIhiBzBv7uElrZ38JCeXCON0x2RAgsxYUdv2P5rV9EJQe1P
- 2/1ItRJh
- BCDqLNCsArRJx3GM9GQOfUO6O0F0t0wvRcFvcMJOISRmJqiLLT40+xyOJIu3BUFVSGHcNPE8QVcH1BSZAcNN0TkO/xJo5hHXtLLUAeu4AoyJRWVXeoEmdckCBhdfdLaecx2Dsf3uUpgi6nidMEznU5XSQjn7+OfqzYsTRWcrvjXgXmEGh8wduUE0KBHUSEk5G+i8UDtm0OhImKVRbYm+7sglmuQ36fSVFJ/4qZD62wQX0V048Ww3OZs2THmTo2SRjCuWm1peXdzktj6gN/005GRV8IJVO2AraTMmxSs5Yk10jM2rZdO3PHvLgm3NTQ7u4MZuZGNAtN8Sr7poLuOn4JPn9lGhIsq6hJlMzfNXsYstPx+s=
+X-Stat-Signature: ridd7wj5teb8rxfwx7rhfncfnywy4ruy
+X-HE-Tag: 1789292230-675032
+X-HE-Meta: U2FsdGVkX18xYRRKHapYrihDvSExcQ3UsiDKfoRvIM8UuJ2YkU8HUjquX3oqsPuovaB5ReFSDhFRvH0Xip+hoVttSsAQyGYhITZrujsYXbfs0IIFbIULIWhf4rKdLd7uoNfEl5z5O0P8H3vjBXZS+/XspOaqk6uQ9a9Tq799UL1gDXAQm0+mfRTBD9FckG5FSret07KJ9hctQZ4QZcqSHN66hG9oQ2f12W6LGHa6HdiP5qeDL0rDzamFe0kt8ReI5sITU04fVo2lfPLtkbhE4xTpMkzQh8FtkmeUCkDD7qPK3j5LBKZ5yjJZhHgnaag6LhfU+4ftJ6uN5zd4x1VeNa5ZVS5c7u9jBVbBXBDLkEMLkfhMZ9JidEQEwAuqV5qIdOnHYVSPBOU7SHrn69ENaxv0qSKNAy6lY/d3Eb4YX2bkM7GQUFIytgXg7VMSZ9BMqW3DeJTS6X9UtrQEw1Ym0fc2SNc9EJe6MNzev6P5Aawu9ZqJBzTz36x84gAp6J6wrLpDLyNHpwODeNTClIKQqvNfSx5cLS2aPh85kow8zOLsKkL5BvnqNgMSCpbrBW8bJTjAbUkHR0n5NAyK7TL1wRB0CzjAJJXlyp1yuzl6CGi8Ei0CIshCjgqafoUQpns5hJSkUggZ/XdY8+EFfnofCcsvL0QbqvYafaxRtKG9A5EQfXVz44EMXBtYT52TKZstL3c/ncBEn3ryPfhPh0d4lcjxDeE9k90Eyz7IX1iqBvTzmwLGbp8wzkIYT/pbFkgkTT2ApEfETKWRDqRapWNECWMG80Rm5kxCW78Ns70d1GDP6uyhzJvulukkSOl/HSHtPQk96JFKfmgMTXuORga2+toZ3ZluijrddL92uu+E/AuP3bP0eXdgep+JKeeMhz0NOK+Nyd3RLNccQ20sB/zfh637THYwbG2qdTlFk19zdxAzTOwm0CabaFx458EmOvidpJuaZczsMPMNmJjCoZF
+ BunMDtfd
+ vPmfVvwGY4F9l4ocR1V5JSxPRm4ovmaxZwm6QrpLlFzgKmfBraQQ10r7D7YBiLxAPfWdGv43QlWTz3pdVnTL20RIJqmz9aJhPeA2NGw+LTS5ZNZvbgB13ZuKJKkIQrjwEWEMJLE6G2d4foSMeFtW2UO2igy7VcOZcnRsjDOUy3OXR0jWkc2cay6Y6bANHGVfFYY/u709ZNElgwHCOxUi+WfXQx+3bRRTv9tNFRvVcjFpOPJqQkOx41tNdP0wj0z3oaSeDk6rMl6+WjKuvdS94RXnaokLBAIKhYVFwkF5xPEWVuoUZUUubW7rYwwg0kJDRnVP5TpRw8HYEDe2ude8QTKV5jXCWC7r3qVHlac92ZZLkJ7c47qU+1yHXkWCGMCHKYKlAIxvfloPDAaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,99 +124,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vmemmap_populate_address() no longer has any callers that need the
-returned PTE.  Its only remaining user, vmemmap_populate_range(), only
-checks whether population succeeded.
+Matthew Wilcox <willy@infradead.org> writes:
 
-Open-code vmemmap_populate_address() directly in
-vmemmap_populate_basepages(), remove the now-redundant range helper,
-and return -ENOMEM directly on failure.
+> On Thu, Sep 10, 2026 at 11:00:13AM +0200, Andreas Hindborg wrote:
+>> `ExclusivePage` wraps a regular page but adds an invariant that the
+>> page data area does not incur data races. This means `ExclusivePage`
+>> cannot be mapped to user space or shared with devices, and it
+>> becomes simpler to directly reference the contents of the page.
+>> 
+>> Since `Page` implements `AlwaysRefCounted`, handing out a `&Page`
+>> from an `ExclusivePage` would allow safe code to obtain an
+>> `ARef<Page>` to the page and break the aliasing invariant of
+>> `ExclusivePage`. Thus, do not implement `Deref<Target = Page>` for
+>> `ExclusivePage`.
+>
+> Given this description, I wonder if this shouldn't be implemented by
+> alloc_frozen_pages() / free_frozen_pages().  We'ree certainly trying
+> to move the C parts of the kernel away from thinking that pages have a
+> refcount (folios have a refcount; otheer memdescs may or may not have
+> a refcount).  Do your intended users of this actually have a need for a
+> refcount?
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/sparse-vmemmap.c | 54 ++++++++++++++-------------------------------
- 1 file changed, 17 insertions(+), 37 deletions(-)
+I'm not familiar with that API, but I will take a look. The
+`ExclusivePage` would not need a refcount. The reference is intended to
+be exclusive, giving mutable access to the page contents.
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 8b4904d9c65e..5e0e30c77431 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -303,8 +303,8 @@ static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
- 	return pgd;
- }
- 
--static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
--						  struct vmem_altmap *altmap)
-+int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
-+					 int node, struct vmem_altmap *altmap)
- {
- 	pgd_t *pgd;
- 	p4d_t *p4d;
-@@ -312,48 +312,28 @@ static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
- 	pmd_t *pmd;
- 	pte_t *pte;
- 
--	pgd = vmemmap_pgd_populate(addr, node);
--	if (!pgd)
--		return NULL;
--	p4d = vmemmap_p4d_populate(pgd, addr, node);
--	if (!p4d)
--		return NULL;
--	pud = vmemmap_pud_populate(p4d, addr, node);
--	if (!pud)
--		return NULL;
--	pmd = vmemmap_pmd_populate(pud, addr, node);
--	if (!pmd)
--		return NULL;
--	pte = vmemmap_pte_populate(pmd, addr, node, altmap);
--	if (!pte)
--		return NULL;
--	vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
--
--	return pte;
--}
--
--static int __meminit vmemmap_populate_range(unsigned long start,
--					    unsigned long end, int node,
--					    struct vmem_altmap *altmap)
--{
--	unsigned long addr = start;
--	pte_t *pte;
--
--	for (; addr < end; addr += PAGE_SIZE) {
--		pte = vmemmap_populate_address(addr, node, altmap);
-+	for (unsigned long addr = start; addr < end; addr += PAGE_SIZE) {
-+		pgd = vmemmap_pgd_populate(addr, node);
-+		if (!pgd)
-+			return -ENOMEM;
-+		p4d = vmemmap_p4d_populate(pgd, addr, node);
-+		if (!p4d)
-+			return -ENOMEM;
-+		pud = vmemmap_pud_populate(p4d, addr, node);
-+		if (!pud)
-+			return -ENOMEM;
-+		pmd = vmemmap_pmd_populate(pud, addr, node);
-+		if (!pmd)
-+			return -ENOMEM;
-+		pte = vmemmap_pte_populate(pmd, addr, node, altmap);
- 		if (!pte)
- 			return -ENOMEM;
-+		vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
- 	}
- 
- 	return 0;
- }
- 
--int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
--					 int node, struct vmem_altmap *altmap)
--{
--	return vmemmap_populate_range(start, end, node, altmap);
--}
--
- /*
-  * Write protect the mirrored tail page structs for HVO. This will be
-  * called from the hugetlb code when gathering and initializing the
--- 
-2.54.0
+I could imagine a situation where someone might want to transition a
+page reference from exclusive to shared, but I do not have a user for
+that at the moment.
+
+>
+>> +++ b/rust/kernel/page.rs
+>> @@ -17,7 +17,11 @@
+>>          AlwaysRefCounted,
+>>          RefCounted, //
+>>      },
+>> -    types::Opaque,
+>> +    types::{
+>> +        Opaque,
+>> +        Ownable,
+>> +        Owned, //
+>> +    },
+>
+> While I'm asking stupid questions, what's the significance of the //
+> after Owned?  I see it after RefCounted too.
+
+It is a hack to get rustfmt to format the import statements in a Linus
+compatible manner [1]. As far as I know, it will go away once rustfmt
+learns to do this by itself.
+
+Best regards,
+Andreas Hindborg
+
+
+[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
 
 
