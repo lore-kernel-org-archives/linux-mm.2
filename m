@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA51C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 06:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DB8C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C88846B0088; Mon, 14 Sep 2026 02:33:38 -0400 (EDT)
+	id 927016B0088; Mon, 14 Sep 2026 03:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA946B0092; Mon, 14 Sep 2026 02:33:38 -0400 (EDT)
+	id 8D99F6B008C; Mon, 14 Sep 2026 03:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92646B0093; Mon, 14 Sep 2026 02:33:38 -0400 (EDT)
+	id 7ECA96B0092; Mon, 14 Sep 2026 03:09:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C9116B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:33:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA427810FF
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:33:37 +0000 (UTC)
-X-FDA: 85211401674.14.259B702
-Received: from mta0.migadu.com (out-99.mta0.migadu.com [91.218.175.99])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 87BC780007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:33:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wtt6Q5TQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.99 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wtt6Q5TQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.99 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E2D06B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:09:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99547121192
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:09:39 +0000 (UTC)
+X-FDA: 85211492478.18.46C878D
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ABB53C0007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:09:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M3Gv9R1q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789367615;
-	b=Kgv4UH5XbI3zL8xgV93PCpxTdxOQtXks/xUsP748OzsJb+PNR+nXKl/7JOS06TpIXl5JqP
-	3T3AanPGaemSfkFevtXT8Zh12jUgjQLUtQDx3L7MTy2X9+kS2kslEHnUcYuZHPJB2+YdjO
-	nBFZ6eOyj6/RVlnJAgfQgEifjIBexQc=
+	t=1789369778;
+	b=j3C9toz3N7DPRJrNFZhUOxqOoomJ8Mtn9Uj/zHQBiVlXX8dMuFRX2bfoYPR3k7YwCDkSsV
+	pYxxj6P9EFXPNeWhucPTGT280H97mzxDFf9sEv5pDgS+UOO5MK6kghR3adUYH1Fu9G6EZ4
+	RYjAZQGS1FTMwc/o7pxf4pV5P9/S8wA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M3Gv9R1q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789367615;
+	s=arc-20220608; t=1789369778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkK6YXyG0BbIDE5HmXiBkMtNNwpGFm+QCTqmNoHtfz8=;
-	b=266sYASdx1LiDB+czthDEFek5kBj4m2nFUvIeb3F+WyaAJ8SGN7m4VRz8tR9NL8pq0Dkpz
-	WcdhVTqrL2UkIIO8qs9csuF5JMCBSG6Xpm5c4rCRBUijjWwMOARmUkvkQ14jFNLCYZXscK
-	+V0sYz+SvH/m0+cJqLxZZjwAQNtCp4U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lNz9DH9e6AnUZooDBSooza8NOTOURgctjC5wmMiwXvE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789367614; v=1; x=1789972414;
- b=wtt6Q5TQ892Gzj/x1j7Yh0bdZp9xKG4y+EjUb2IXcQfd8kmO4z/EoXp2zp/8wtdvKYIcjDkT
- k31IOL3Ki1mp0BeR4rEnesuAn4ajGDE6IQ9gn5aYaMA6oKGpqXxkjWDP+JO9ixxvUhInkL9s6gH
- a2y1KJWKCNhVXuDufVaMOLe4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 4202f23c312eafcc;
-	Mon, 14 Sep 2026 06:33:32 +0000
-X-Mizu-Trace-ID: 4202f23c312eafcc
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH] mm: Remove unused exact_nid parameter from memmap_alloc()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260914055130.44543-1-kaitao.cheng@linux.dev>
-Date: Mon, 14 Sep 2026 14:33:14 +0800
-Cc: Mike Rapoport <rppt@kernel.org>,
+	bh=dY/tbtHXJyrWy4yy4iw+QpX+GNXsYElEvogCXMRcIqg=;
+	b=qZCBU5iyf7J3KILDoDlMtbanHKug3b6So9XBddIrvdFvxTWGlbAGElxG2tqxiKxh0zJatC
+	DrRgijbaN1aLtrB15NRpTr59tOyAHTJzWfqqK3AlT/D5xzH+gfAN4abcdI5QMuJ9IDshHi
+	1xN9cjpK9Jy5kwPiH9E1QfRUQRBZ2QU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789369772; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=dY/tbtHXJyrWy4yy4iw+QpX+GNXsYElEvogCXMRcIqg=;
+	b=M3Gv9R1q9HThYMM90V0YMMBL4OO2m4lZ5UO9dkdj4/DlqoNoOpxD4unL3KWTQPooQa6qZel+LR85x7iRrpa4Apr2IsGDIlOwuT599UknwfTAY88IzazrDyhPZTI1j6q9KSsnnY6+BZOWY+Huj++C5UYQpHVWSHDtviEaDQE2WMQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XAsx57d_1789369768;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAsx57d_1789369768 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 14 Sep 2026 15:09:30 +0800
+Message-ID: <093148f4-ed10-4e41-939d-be82e2844fc5@linux.alibaba.com>
+Date: Mon, 14 Sep 2026 15:09:28 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/mglru: factor out lru_gen_seq_nr_pages()
+To: Ridong Chen <ridong.chen@linux.dev>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260911102939.2485750-1-ridong.chen@linux.dev>
+ <20260911102939.2485750-2-ridong.chen@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260911102939.2485750-2-ridong.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <271883C6-95AA-4C60-B99D-FF93BEE695EE@linux.dev>
-References: <20260914055130.44543-1-kaitao.cheng@linux.dev>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 87BC780007
-X-Stat-Signature: yc5pbi7azg6h7bjcsoe4r99urzqo1tne
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789367615-223676
-X-HE-Meta: U2FsdGVkX19T+a6Gc6IH8bMEWLqajeC9nR1FUzlxjt9m9PbTpGi4sCuhi9iS8/BXDxP9WrKsNSWmv6NQHolC9MZrFGoj6hfNIrQGx6vgLpTXeksGogUg67hXibaK/2Je/0k7j1zRwJk9PDmZlNEHlFtlVVhKfG/gNQBZYOhMs32OZonBj9rn4QrhCbOIs+k3+MfE+Aai1ZOJwgHRNAMSTWr6FZVEP+Vs+RIgESyIOcopJsE5FxJsG1Y3cPc5GitNFx7vwjryhrdFaxVu+XsEztPwqiyt50YuZ+YCce2kGImdqXmXhzawmfxRfjGAgkSpD5x1hnWvazwCbT7NnxlMp2urM+4F/zGx6skTxMLUDEP+PUi460q7vZKoaoQ4UkBVBgQU23kxhzrdagUDA5TGRWqV40avuy44WPR2ImYdOlaB97flEiq8iR2cDwoAjZQ9dEtaaT3SdbizGgKFIEBjt2wjnc1VFKOck8gp8wY2VU7NT3+NLS+2hBfqHPvxQqi7F+kD0+ewYlO0cU+x6bhIaPQ683faLfyCXkh5VytYZSBBRPptAne57iFR21wtjBxkSH7VDDrkDiOZryAad7+14iw/61CJdsK0E2LHtX1lSc9iu1KzjSky8Ocu7UbgU3lNtEhLhZGydrdPAdKtZLhP2KlJoEYN1a8uhwTKtirzfMaxT4ABdREQ2neLohNLyf7+OIoIJRqECsIKRSiaZ+n7mtVLuc2KL6Fir52lB440TRnOj3sfkh0eHROijimmBkCJxUN1gu9P7IjYMr7gLVE3fFo86ftEZpUHULCZwIhuEc7ZCyt5hZTZobjHv/MA5WsFf+dTI1QJ+6wc9lWg+sqPlHhVORTBSCb9d3tLOm+VPn3aQBl9ZrB8KINtLsc9N692sR4PKHgse5TXW2YwE9Lz0pxuK8+5ikhbcPxAYuv7hzjVl+SimG5MCOmYhwT7bhlyBw7/vbXlglaP7ahFMii
- xlvi+uMG
- 7a4r9czfa1X7nWhlNqLnoprHzK+1Y+IN1QGMx6LOAoeHq4XzNDcwx9fHS94LQRMwrPKGVwwAIlnw2kvwclE9bMnY5ROsoTr91xaW53eTWSU1c4FGW6Kal8bLrQhRGdQ7y283VzJSq6sIN9j1lcD+wydd/CkEisZ+W3FZ7ZcrACpnqY168Qp5ljZIXl+fzPXj5nwl6rl5gVPRUhCWxHfj7x37URBd4zL5O+9t82mmwYo4qoRFYBe7UpBtqzb0MP8sTrB+oYlLgD0FbaENqK0JCFN5aZnulqD7pr45peCqH408yHPKdxVil/aiDGQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ABB53C0007
+X-Stat-Signature: suy7om8arofqotoarbboppychoag98h5
+X-HE-Tag: 1789369775-116130
+X-HE-Meta: U2FsdGVkX18NRAt5YUHspvIDvstOyzdsM3RXEQXjxd/snoq1yXWJ2zT9xJs84oMqlKtLwg4+damHnqjDGCDiPb0X7CGXCkqGSD+W3OwwQDr1CS7w0RVSf0OKzLlZGJta11KrFaZvq0uj/VUlTyTKeMde9vQTFXvgZ+CtARJELl21pKEVa9U82wX7VpwJMiRtViHHt3C9Cm0GyDE+Oa4ZhBL7U4HvhC24JDNj/DmnxVK++HBasuRg+mbXyM7nJdbVqx4VRvxTkd6eLPotRkxnG0ajHRP3V7nWJM9xQffjITg1Ev9G9tNvodNIJtyVGNkaeF8qqaM5KdMVLndDzVgiPhnmqYHmYs8ZIk1gl8G8Jk6HpYvbdx70JoVovP75T4VXqCjnMzKoefJl7R3oaU4j3BdvqIxnUad2Ah5Jm46ELCjnr/cjb7dENvq+YNyUXQF63ZyfB7BUx0Zd7oEi7voF8jYvohgeOXCMi+POCJWb2J4+OLmQJxf66cUDZ3E51c1rYBbpRXjG3m6St1J6PdmjrW3NnAhNH6Kmi5iKEHPrugoTxizYejnXRnwY/Mkib6nGyjr6ZfNa6Rt3eakrd9JhOVy7PIPPPSeLSLxgvrHgq2F/EZ/Ixwof1KP9HOXbMKVuwWOTk1POZN85kYwuSLz6+mrdg6SCP8LBA/Yb21heRiXzj6dHNaK/5yKVNZxAGcb2lNolYoHc2XQrAY2VI24oAWPo9pRV+vBUNn6l5RJWQZeuESsoSqHVCnWoitaVA4IezIjOH461DCEY209J6p2imrmnlrTYfQpnmACi1sSi/t0JT0VuWNa5USR2+bCxVWSJn5DATyIHXdUrffmr/HCcgXE0Poep5EoDGiUpwdraeJethqQq9ZMqwTmzUDH06J4Z7KTLbyn99dP69oUExl0q0/d0lqFYFgsolJw/PIGimJS22t+YWDocQWetW7DMyvttr08wPXDnbkHx4f932Nz
+ 9qJJNqi0
+ kG81XOUT/nsmOYKX+FfM2hYyWKQXdK6pdIZjfbFM+5jYEgODn4yi5OuxNZ/0SFtnmZhBt1nkI9mfYh+qbBC5d0vMjjPlLztPENo8zwxxN74orQyQ6piYEfoMS7BVa/fycuanXP3cSWf4bBpdXi+xrRoO/COk2QPLc9IURyPzuI59CSJjISZIVwoPuiHDk18MNGDzRFyGoSmw0if4sMVMLAbZ45sc756SHaDb4bzNt2TVpwc3WsHt0d3/9cH5Ojjr6CYzjMn+KEkA/4wZymKeXDISVjJSRCSCdMMzraF3vrPI8+kp5xvzzhDqOkmrnpCUKcLPRps6D54kL0itxAu2AEgPh6T83ZNmfndE98CWwTowxHgwABljMYoQZUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,24 +100,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Sep 14, 2026, at 13:51, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+On 9/11/26 6:29 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> Both lruvec_evictable_size() and the debugfs lru_gen_seq_show() compute
+> the number of pages in a generation the same way: sum lrugen->nr_pages
+> over all zones for a given (gen, type) and clamp each term to >= 0.
 > 
-> Commit ffe55393137c ("mm/sparse: remove sparse buffer pre-allocation
-> mechanism") removed sparse_buffer_init(), which was the only caller of
-> memmap_alloc() that passed true for exact_nid.
+> Factor that out into lru_gen_seq_nr_pages() so the open-coded zone loop
+> lives in one place. No functional change.
 > 
-> All remaining callers pass false, leaving the exact-node allocation
-> branch unreachable. Remove the exact_nid parameter and unconditionally
-> use memblock_alloc_try_nid_raw().
+> A follow-up patch adds a tracepoint that needs the same per-generation
+> page count, and will reuse this helper instead of open-coding it again.
 > 
-> This has no functional impact.
-> 
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
